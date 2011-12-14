@@ -65,7 +65,7 @@ class Controller_Error extends Controller_Template {
 		if ($writable === false)
 		{		
 			// Set the page property. The controller template will handle rendering etc.
-			$this->page = ORM::factory( 'page', '404' );
+			$this->page = ORM::factory( 'page', 'error/404' );
 		}
 		else
 		{

@@ -6,7 +6,8 @@
 * @author Hoop Associates	www.thisishoop.com	mail@hoopassociates.co.uk
 * @copyright 2011, Hoop Associates
 */
-class Controller_Search extends Controller_Template {
+class Controller_Search extends Controller_Template
+{
 	/**
 	* Search index method.
 	* Performs all searching etc.
@@ -14,6 +15,7 @@ class Controller_Search extends Controller_Template {
 	*/
 	public function action_index()
 	{
+		die( "search" );
 		$query = Arr::get( $_REQUEST['search'] );
 		$query = strip_Tags ($query );
 		$query = trim( $query );

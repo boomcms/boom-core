@@ -7,10 +7,11 @@
 * @author Hoop Associates	www.thisishoop.com	mail@hoopassociates.co.uk
 * @copyright 2011, Hoop Associates
 */
+class Controller_Page extends Controller_Template
+{
 
-class Controller_Cms_Page extends Controller {
-	
-	public function action_add() {
+	public function action_add()
+	{
 		// Find the URI we were called with.
 		$uri = $this->request->uri();
 		
@@ -23,12 +24,12 @@ class Controller_Cms_Page extends Controller {
 		$page->add( $page_uri );
 		$page->version->title = 'Untitled';
 		
-		// Output the page object in the format expected by the JS.
-		// TODO
+		echo $this->template;
 	}
 	
 	
-	public function action_save() {
+	public function action_save()
+	{
 		$page = ORM::factory( 'page', $page_id );
 		$page->version->template_rid = $template_rid;
 		$page->version->default_child_template_rid = $default_child_template_rid;
@@ -37,23 +38,12 @@ class Controller_Cms_Page extends Controller {
 		$page->version->setTitle( $title );	
 		$page->version->visiblefrom_timestamp = $visibilefrom_timestamp;
 		$page->version->visiblveto_timestamp = $visibleto_timestamp;
-			
-		
-		
-		
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	public function action_index()
+	{
+		die( 'cms page index' );
+	}
 }
 
 ?>
