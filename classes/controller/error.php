@@ -15,7 +15,6 @@ class Controller_Error extends Controller_Template {
 	*/
 	public function action_404()
 	{
-		die( '404' );
 		// Determine the requested URI of the *initial* request.
 		$initial_uri = Request::initial()->uri();
 		
@@ -59,7 +58,7 @@ class Controller_Error extends Controller_Template {
 		// If we found a parent page see if we have permissions to add a page.	
 		if ($parent->loaded())
 		{
-			$writable = Model_Permissions_Page::may_i( Model_Permissions_Page::ADD, $parent, $this->person );
+			$writable = Model_Permission_Page::may_i( Model_Permission_Page::ADD, $parent, $this->person );
 		}
 		
 		// Not writable? Show the 404 page.

@@ -17,8 +17,8 @@ class Model_Permission_Page extends ORM
 	*/
 	protected $_table_name = 'permissions_page';
 	protected $_has_one = array( 
-		'person'	=> array(),
-		'page'		=> array()
+		//'person'	=> array(),
+	//	'page'		=> array()
 	);
 	
 	
@@ -45,10 +45,11 @@ class Model_Permission_Page extends ORM
 	
 	/**
 	* Clone constant
+	* It's called PCLONE because clone is a reserved word in PHP.
 	*
 	* @var int
 	*/
-	const CLONE = 8;
+	const PCLONE = 8;
 	
 	/**
 	* Publish constant
@@ -74,13 +75,16 @@ class Model_Permission_Page extends ORM
 	*
 	* @example Model_Page_Permission::may_i( Model_Page_Permission::EDIT, $page, $person );
 	*/
-	public static may_i( $what, Model_Page $page, Model_Person $person )
+	public static function may_i( $what, Model_Page $page, Model_Person $person )
 	{
+		// Haven't finished writing this:
+		return true;
+		
 		// Find the page's position in the tree.
 		$left_val = $page->mptt->left_val;
 		
 		// Find the lowest level person permission.
-		$permission = ORM::factory( class_name( self ) )
+		$permission = ORM::factory( 'permission_page' )
 			->join( 'page_mptt', 'page_id', 'page_id' )
 			->where( 'person_id', '=', $person->id )
 			->and_where( 'page_id', '=', $page->id )

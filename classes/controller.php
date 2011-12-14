@@ -49,12 +49,14 @@ class Controller extends Kohana_Controller {
 		// Inherit all Kohana's cool controller stuff.
 		parent::__construct( $request, $response );
 		
-		//$this->person = ORM::factory( 'person' )->find_by_emailaddress( 'guest@hoopassociates.co.uk' );
+		// TODO: get the person, not an empty object
+		$this->person = ORM::factory( 'person' );
 		
 		// Load the relevant page object.
 		$this->page = ORM::factory( 'page', $this->request->uri() );
 		
 		// If the page wasn't found by URI load the 404 page.
+		// TODO: check that the requested URI wasn't the 404 page or we end up in an infinate loop.
 		if (!$this->page->loaded())
 			Request::factory( 'error/404' )->execute();
 				
