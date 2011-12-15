@@ -13,7 +13,10 @@ class Model_Version_Page extends ORM {
 	*/
 	protected $_table_name = 'page_v';
 	protected $_belongs_to = array( 'page' => array( 'model' => 'page', 'foreign_key' => 'active_vid' ) );
-	protected $_has_one = array( 'template'	=> array( 'model' => 'template', 'foreign_key' => 'id' ) );
+	protected $_has_one = array( 
+		'template'	=> array( 'model' => 'template', 'foreign_key' => 'id' ),
+		'person'	=> array( 'model' => 'person', 'foreign_key' => 'id' )
+	);
 	
 	/**
 	* Holds a reference to the page object to which this version belongs.
@@ -49,6 +52,26 @@ class Model_Version_Page extends ORM {
 		$description = ($this->description)? $this->description : 'Page description';
 		
 		return $description;		
+	}
+	
+	/**
+	* Get the visiblefrom_timsetamp property
+	* Turns the timestmap into a human readable time.
+	*
+	* @return string Visible from time.
+	*/
+	public function getVisibleFrom() {
+		return $this->visiblefrom_timestamp;
+	}
+	
+	/**
+	* Get the visibleto_timestamp property
+	* Turns the timestmap into a human readable time.
+	*
+	* @return string Visible to time.
+	*/
+	public function getVisibleTo() {
+		return $this->visibleto_timestamp;
 	}
 	
 	/**

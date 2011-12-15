@@ -47,7 +47,7 @@
 	</head>
 	<body>
 		<?
-			if ( Auth::Instance()->logged_in() )
+			if ( Model_Permission_Page::may_i( Model_Permission_Page::EDIT, $page, $person ) )
 			{
 				echo "<div id='cmsbars'>";
 				echo View::factory( 'cms/subtpl_bar' );

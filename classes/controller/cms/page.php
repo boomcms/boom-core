@@ -7,7 +7,7 @@
 * @author Hoop Associates	www.thisishoop.com	mail@hoopassociates.co.uk
 * @copyright 2011, Hoop Associates
 */
-class Controller_Page extends Controller_Template
+class Controller_Cms_Page extends Controller_Template
 {
 
 	public function action_add()

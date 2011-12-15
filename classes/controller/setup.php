@@ -1,7 +1,7 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
 /**
-* Handles setting up a database on a new sledge install.
+* Handles setup stuff in a new sledge install.
 *
 * @package Controller
 * @author Hoop Associates	www.thisishoop.com	mail@hoopassociates.co.uk
@@ -9,6 +9,11 @@
 */
 class Controller_Setup extends Kohana_Controller
 {
+	/**
+	* Creates the database if it doesn't already exist.
+	*
+	* @throws Sledge_Exception
+	*/
 	public function action_database()
 	{
 		// Check that the datbase doesn't exist. Overwriting databases isn't how we roll.

@@ -73,9 +73,14 @@ class Controller_Template extends Kohana_Controller_Template
 		}
 		$this->template->subtpl_main->subtpl_footer = $subtpl_footer;
 		$this->template->subtpl_main->subtpl_footer->footer_pages = $footer_page_objects;
+		$mode = 'cms';
 		
 		// Set some variables.
 		View::bind_global( 'page', $this->page );
+		View::bind_global( 'person', $this->person );
+		View::bind_global( 'actual_person', $this->actual_person );
+		View::bind_global( 'mode', $mode );
+		View::bind_global( 'request', $this->request );
 		
 	    parent::before();
 	}
