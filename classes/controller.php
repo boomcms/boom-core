@@ -49,6 +49,26 @@ class Controller extends Kohana_Controller {
 		// Inherit all Kohana's cool controller stuff.
 		parent::__construct( $request, $response );
 		
+		// Check that the datbase exists, if not we offer to create it.
+		try{
+			$this->db = Database::instance();
+			$this->db->connect();
+		}
+		catch (Database_Exception $e)
+		{
+			// Is it a database not existing error?
+			if (preg_match( '/Unable to connect to (.*) database &quot;(.*)&quot; does not exist/', $e->getMessage(), $matches ))
+			{
+				$v = View::factory( 'setup/database/tpl_create' );
+				$v->dbname = $matches[2];
+				echo $v;
+				die();
+			}
+			
+			// It's some other error which we don't worry about here.
+			throw $e;
+		}
+		
 		// TODO: get the person, not an empty object
 		$this->person = ORM::factory( 'person' );
 		
