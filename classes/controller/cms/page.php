@@ -13,18 +13,18 @@ class Controller_Cms_Page extends Controller_Template
 	public function action_add()
 	{
 		// Find the URI we were called with.
-		$uri = $this->request->uri();
+		$uri = $this->request->initial()->uri();
 		
 		// Create a new page object.
-		$page = ORM::factory( $page );
+		$page = ORM::factory( 'page' );
 		
-		$page_uri = ORM::factory( 'page_uri' );
-		$page_uri->version->uri = $uri;
+		//$page_uri = ORM::factory( 'page_uri' );
+		//$page_uri->version->uri = $uri;
 		
-		$page->add( $page_uri );
+		//$page->add( $page_uri );
 		$page->version->title = 'Untitled';
 		
-		echo $this->template;
+		echo "Adding a page at " . URL::base( $this->request ) . $uri . "!";
 	}
 	
 	
