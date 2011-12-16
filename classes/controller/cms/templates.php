@@ -45,11 +45,13 @@ class Controller_Cms_Templates extends Controller_Template
 	*/
 	public function action_index()
 	{
+		$new = $this->find();
 		
 		$templates = ORM::factory( 'template' )->where( 'visible', '=', true )->order_by( 'name' )->find_all();
 		
 		$this->template->subtpl_main = View::factory( 'cms/templates/tpl_templates' );
 		$this->template->subtpl_main->templates = $templates;	
+		$this->template->subtpl_main->new = $new;
 		
 		echo $this->template;	
 	}
@@ -65,6 +67,8 @@ class Controller_Cms_Templates extends Controller_Template
 	{
 		if ($dh = @opendir (APPPATH."views/site/templates"))
 		{
+			$new = array();
+			
 			while ($file = readdir($dh))
 			{
 				if (preg_match('/\.php$/',$file))
@@ -77,10 +81,13 @@ class Controller_Cms_Templates extends Controller_Template
 						$template->version->name = $name;
 						$template->version->filename = 'site/templates/' . $name;
 						$template->save();
+						
+						$new[] = $template;
 					}
 				}
 			}
 			closedir($dh);
+			return $new;
 		}
 	}
 }

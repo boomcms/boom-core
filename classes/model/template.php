@@ -18,6 +18,21 @@ class Model_Template extends ORM {
 	);
 	protected $_belongs_to = array( 'version_page' => array( 'model' => 'version_page', 'foreign_key' => 'template_id' ) );
 	protected $_load_with = array( 'version' );	
+	
+	/**
+	* Determines whether the template file exists.
+	*
+	* @return boolean
+	*/
+	public function fileExists()
+	{
+		$exists = file_exists( APPPATH . 'views/' . $this->version->filename . '.php' );
+
+		if (!$exists)
+			$exists = file_exists( MODPATH . 'sledge/views/' . $this->version->filename . '.php' );
+		
+		return $exists;
+	}
 }
 
 ?>

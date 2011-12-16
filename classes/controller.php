@@ -61,8 +61,8 @@ class Controller extends Kohana_Controller {
 			{
 				$v = View::factory( 'setup/database/tpl_create' );
 				$v->dbname = $matches[2];
-				echo $v;
-				die();
+				echo $v->render();
+				exit();
 			}
 			
 			// It's some other error which we don't worry about here.
