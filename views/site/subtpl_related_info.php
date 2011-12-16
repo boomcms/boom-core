@@ -9,7 +9,7 @@ O::fa('chunk_feature')->find_by_page_vid_and_slotname($this->page->vid,'related2
 		<div class="box-ne">
 			<div class="box-se">
 				<div class="box-nw">
-					<h2>Related information</h2>
+					<h2><? echo __( 'Related information' ); ?></h2>
 					<ul>
 						<?= O::fa('chunk_feature')->get_chunk($this->page->rid, 'related1', 'sidebar');?>
 						<?= O::fa('chunk_feature')->get_chunk($this->page->rid, 'related2', 'sidebar');?>

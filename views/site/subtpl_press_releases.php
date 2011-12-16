@@ -21,7 +21,7 @@
 <div class="news style2">
 	<h3>
 		<a href="<?=$this->news_object->absolute_uri()?>">
-			Press releases
+			<? echo __( 'Press releases' ); ?>
 		</a>
 	</h3>
 	<ul>
@@ -39,7 +39,7 @@
 		<?}?>
 		<li class="last">
 			<a href="<?=$this->news_object->absolute_uri()?>">
-				More press releases
+				<? echo __( 'More press releases' ); ?>
 				<img src="/img/arr_2.jpg" alt="press release" />
 			</a>
 		</li>

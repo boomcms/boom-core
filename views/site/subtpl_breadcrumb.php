@@ -5,11 +5,11 @@
 
 <div id="breadcrumb">
 	<p class="toggle">
-		Hide
+		<? echo __( 'Hide' ); ?>
 		<!-- img src="/img/hide.png" alt="Hide breadcrumbs" -->
 	</p>
 	<div>
-	<p>You are here</p>
+	<p><? echo __( 'You are here' ); ?></p>
 	<ul>
 		<?foreach ($this->page->getMptt()->getAncestors() as $anc) {?>
 			<?if ($anc->current_version->internal_name == 'home') $anc->title = 'Home';?>

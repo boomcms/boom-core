@@ -35,6 +35,8 @@ class Controller_Cms_Log extends Controller_Template
 		$this->template->subtpl_main = View::factory( 'cms/templates/tpl_log_search' );
 		$this->template->subtpl_main->searches = $searches;
 		$this->template->subtpl_main->total = $total;
+		
+		echo $this->template;
 	}
 }
 

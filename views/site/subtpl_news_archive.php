@@ -10,14 +10,14 @@
 ?>
 
 <div id="news-archive">
-	<h2><a href="<?=$news_page->absolute_uri();?>">Archive</a></h2>
+	<h2><a href="<?=$news_page->absolute_uri();?>"><? echo __( 'Archive' ); ?></a></h2>
 	<? 
 	$open_cats = isset($_COOKIE['news_archive']) ? explode(',', $_COOKIE['news_archive']) : array();
 	?>
 
 	<ul>
 		<li>
-			<h3 class="title">Date</h3>
+			<h3 class="title"><? echo __( 'Date' ); ?></h3>
 			<?if (count($archived_blog_dates)){?>
 				<ul>
 					<? foreach ($archived_blog_dates['years'] as $_year) { ?>
@@ -41,7 +41,7 @@
 			<?}?>
 		</li>
 		<li>
-			<h3 class="title">Categories</h3>
+			<h3 class="title"><? echo __( 'Categories' ); ?></h3>
 			<? if (count($archived_blog_categories)) {?>
 				<ul>
 					<? foreach ($archived_blog_categories as $tag_rid => $category) {?>
@@ -53,7 +53,7 @@
 					<?}?>
 				</ul>
 			<?} else {?>
-				<small>(No categories)</small>
+				<small>(<? echo __( 'No categories' ); ?>)</small>
 			<?}?>
 		</li>
 	</ul>
