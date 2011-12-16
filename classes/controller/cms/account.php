@@ -93,7 +93,7 @@ class Controller_Cms_Account extends Controller_Template {
 	*/
 	public function action_logout()
 	{
-		if ($this->auth->logged_in()
+		if ($this->auth->logged_in())
 		{
 			Model_Activitylog::log( $this->person, 'logout' );
 		
