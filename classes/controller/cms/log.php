@@ -29,10 +29,12 @@ class Controller_Cms_Log extends Controller_Template
 	*/
 	public function action_search()
 	{
+		$searches = DB::select( 'log_entry', array('count("*")', 'count') )->from( 'log_search' )->group_by( 'log_entry' )->order_by( 'count', 'desc' )->execute();
+		$total = DB::select( array('count("*")', 'count') )->from( 'log_search' )->execute();
 		
-		
-		
-		
+		$this->template->subtpl_main = View::factory( 'cms/templates/tpl_log_search' );
+		$this->template->subtpl_main->searches = $searches;
+		$this->template->subtpl_main->total = $total;
 	}
 }
 
