@@ -14,8 +14,9 @@ class Model_Version_Page extends ORM {
 	protected $_table_name = 'page_v';
 	protected $_belongs_to = array( 'page' => array( 'model' => 'page', 'foreign_key' => 'active_vid' ) );
 	protected $_has_one = array( 
-		'template'	=> array( 'model' => 'template', 'foreign_key' => 'id' ),
-		'person'	=> array( 'model' => 'person', 'foreign_key' => 'id' )
+		'template'			=> array( 'model' => 'template', 'foreign_key' => 'id' ),
+		'person'			=> array( 'model' => 'person', 'foreign_key' => 'id' ),
+		'approval_process'	=> array( 'model' => 'approval_process', 'foreign_key' => 'id' )
 	);
 	
 	/**
@@ -79,6 +80,26 @@ class Model_Version_Page extends ORM {
 	*/
 	public function getVisibleTo() {
 		return $this->visibleto_timestamp;
+	}
+	
+	/**
+	* Get the page type description.
+	* Mostly seems to be used for the 'add page' link in the CMS bar.
+	* For most pages this will return 'page' but for special cases where the page represents something a different string is returned.
+	* For example with NHHG properties where we want the link to say 'Add Property'.
+	*
+	* @return string The page type description
+	*/
+	public function getPageTypeDescription()
+	{
+		if ($this->pagetype_description != '')
+		{
+			return $this->pagetype_description;
+		}
+		else 
+		{
+			return 'Page';
+		}
 	}
 	
 	/**

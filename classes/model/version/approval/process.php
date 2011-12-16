@@ -8,11 +8,12 @@
 *
 */
 
-class approval_process_v_Model extends ORM {
+class Model_Version_Approval_Process extends ORM {
 	/**
 	* Properties to create relationships with Kohana's ORM
 	*/
-	protected $belongs_to = array('approval_process' => array('model' => 'approval_process'));
+	protected $_table_name = 'approval_process_v';
+	protected $_belongs_to = array('approval_process' => array('model' => 'approval_process', 'foreign_key' => 'active_vid' ));
 	
 	/**
 	* Value for approval process action type 'send approval request'
