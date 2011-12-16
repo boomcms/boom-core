@@ -45,6 +45,7 @@ class Controller_Cms_Templates extends Cms_Controller_Template
 	*/
 	public function action_index()
 	{
+		
 		$templates = ORM::factory( 'template' )->where( 'visible', '=', true )->orderby( 'name' )->find_all();
 		
 		$this->template->subtpl_main = View::factory( 'templates/tpl_templates' );
