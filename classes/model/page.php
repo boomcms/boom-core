@@ -19,7 +19,8 @@ class Model_Page extends ORM {
 	);
 	protected $_has_many = array( 
 		'versions'	=> array('model' => 'version_page', 'foreign_key' => 'id'),
-		'uris'		=> array('model' => 'page_uri', 'foreign_key' => 'id')
+		'uris'		=> array('model' => 'page_uri', 'foreign_key' => 'id'),
+		'chunks'	=> array('model' => 'chunk', 'through' => 'chunk_page' )
 	);
 	protected $_belongs_to = array(
 		'page'		=> array('foreign_key' => 'id' )
