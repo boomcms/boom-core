@@ -1,55 +1,55 @@
 <?php
 
 /**
-* Class to handle CMS account related actions - login, logout, reset password, etc.
+* Controller to handle CMS account related actions - login, logout, reset password, etc.
+* Most of the actual work is done by the Auth module but this controller adds extra stuff like logging and displaying the templates.
 *
-* @package Sledge
+* @package Controller
 * @author Hoop Associates	www.thisishoop.com	mail@hoopassociates.co.uk
 * @copyright 2011, Hoop Associates Ltd
 */
-class Account_Controller extends Controller_Template {	
+class Controller_Cms_Account extends Controller_Template {	
 	/**
 	* Log a user into the CMS
 	* @uses Auth::login()
 	* @return void
 	*/
-	public function action_login() {
-		$protocol = ($this->input->server( 'https' ))? "https://" : "http://";
+	public function action_login() 
+	{
+		$protocol = $this->request->protocol();
 		
-		if ($this->auth->logged_in()) {
+		if ($this->auth->logged_in())
+		{
 			//You're already logged in dummy, just go away.
 			$uri = '/';
 				
 			if ($this->input->cookie( 'cms_uri' ) != 'cms')
 				$uri .= $this->input->cookie( 'cms_uri' );
 
-			url::redirect($protocol . $this->input->server( 'SERVER_NAME' ) . $uri, 301);
-			exit;
+			Request::factory( '/' )->execute();
 		}
 		
 		// Gather form data.
-		$email = $this->input->post( 'email', null, true );
-		$password = $this->input->post( 'password', null );
-		$persist = $this->input->post( 'persist', false );
+		$email = Arr::get( 'post', 'email', null );
+		$password = Arr::get( 'post', 'password', null );
+		$persist = Arr::get( 'post', 'persist', false );
 		$msg = '';
 		
-		if ($email && $password) {
+		if ($email && $password)
+		{
 			// A nice little touch to save Hoop people's fingers.
 			// If there's no @ in the email address add @hoopassociates.co.uk to the end.
 			if (!strstr( $email, '@' ))
 				$email .= "@hoopassociates.co.uk";
 				
 			// Do this now and we can pass it to Auth::login() so we only have to query the database once.
-			$person = O::fa('person')->find_by_emailaddress( $email );
+			$person = ORM::factory('person')->with( 'version' )->where( 'emailaddress', '=', $email )->find();
 			
 			// $this->auth does the actual logging in, we just do some cleaning up after.
-			if ($this->auth->login( $person, $password, false, $persist )) {			
-				// We can cache the user details here for subsequent requests.			
-				$cache = Cache::Instance();
-				$cache->set( 'user_person_' . $email, $person, 'user_setting');
-				
+			if ($this->auth->login( $person, $password, $persist ))
+			{				
 				// Log the activity, so we can see what everyone's been getting up to.
-				Model_Activitylog::log( $this->request->client_ip, $this->person, 'login' );
+				Model_Activitylog::log( $this->person, 'login' );
 
 				// Where shall we send them next?
 				$uri = '/';
@@ -58,11 +58,12 @@ class Account_Controller extends Controller_Template {
 					$uri .= $this->input->cookie( 'cms_uri' );
 
 				// Be gone with you.
-				url::redirect($protocol . $this->input->server( 'SERVER_NAME' ) . $uri, 301);
-				exit;
+				Request::factory( $uri )->execute();
 			} else
 				$msg = "We couldn't find your account.	Please try again or <a class=\"resetpasswordlink\" href=\"/cms/forgot-password\">click here</a> to reset your password.";
-		} else {
+		}
+		else
+		{
 			if ($email && !$password)
 				$msg = "Please enter your password.";
 			else if ($password && !$email)
@@ -90,19 +91,16 @@ class Account_Controller extends Controller_Template {
 	* @uses Auth::logout()
 	* @return void
 	*/
-	public function action_logout() {
-		$cp = O::f('activitylog_v');
-		$cp->remotehost = $this->input->ip_address();
-		$cp->activity = "logout";
-		$cp->save_activeversion();
-
-		$this->auth->logout(TRUE);
-		cookie::delete('kohanasession_data');
-
-		if (Kohana::config('core.force_ssl'))
-			url::redirect("https://" . $this->input->server( 'SERVER_NAME' ) . "/", 301);
-		else
-			url::redirect("http://" . $this->input->server( 'SERVER_NAME' ) . "/", 301);
+	public function action_logout()
+	{
+		if ($this->auth->logged_in()
+		{
+			Model_Activitylog::log( $this->person, 'logout' );
+		
+			$this->auth->logout(TRUE);
+		
+			Request::factory( '/' )->execute();
+		}
 	}
 	
 	/**
@@ -111,7 +109,8 @@ class Account_Controller extends Controller_Template {
 	* @uses Text_Password
 	* @return void
 	*/
-	public function action_reset() {
+	public function action_reset()
+	{
 		$email = $this->input->post( 'email', null, true );
 		$client = $this->input->get( 'client', 'Default client name', true );
 		$msg = '';

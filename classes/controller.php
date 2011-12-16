@@ -39,6 +39,13 @@ class Controller extends Kohana_Controller {
 	protected $subtpl_main;
 	
 	/**
+	* Holds the auth instance.
+	* @access protected
+	* @var object
+	*/
+	protected $auth;
+	
+	/**
 	* Sledge controller construct
 	* Performs authentication etc.
  	* @param   Request   $request  Request that created the controller
@@ -74,6 +81,8 @@ class Controller extends Kohana_Controller {
 		
 		// Load the relevant page object.
 		$this->page = ORM::factory( 'page', $this->request->uri() );
+		
+		$this->auth = Auth::instance();
 		
 		// If the page wasn't found by URI load the 404 page.
 		// TODO: check that the requested URI wasn't the 404 page or we end up in an infinate loop.

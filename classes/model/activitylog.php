@@ -7,12 +7,13 @@
 * @copyright 2011, Hoop Associates
 *
 */
-class activitylog_Model extends ORM {
+class Model_Activitylog extends ORM {
 	/**
 	* Properties to create relationships with Kohana's ORM
 	*/
-	protected $has_one = array( 'person' => array('model' => 'person'));
-	protected $foreign_key = array( 'person' => 'audit_person' );
+	protected $_table_name = 'activitylog';
+	//protected $has_one = array( 'person' => array('model' => 'person'));
+	//protected $foreign_key = array( 'person' => 'audit_person' );
 	
 	/**
 	* Function to log an activity.
@@ -23,9 +24,9 @@ class activitylog_Model extends ORM {
 	* @param string $note Additional note about the activity.
 	* @return void
 	*/
-	public static function log( $remote, person_Model $person, $activity, $note = null) {
+	public static function log( Model_Person $person, $activity, $note = null) {
 		$log = new self;
-		$log->remotehost = $remote;
+		$log->remotehost = Request::$client_ip;
 		$log->audit_person = $person->id;
 		$log->activity = $activity;
 		$log->note = $note;
