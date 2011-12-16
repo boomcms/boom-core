@@ -46,7 +46,7 @@ class Controller_Cms_Account extends Controller_Template {
 			$person = ORM::factory('person')->with( 'version' )->where( 'emailaddress', '=', $email )->find();
 			
 			// $this->auth does the actual logging in, we just do some cleaning up after.
-			if ($this->auth->login( $person, $password, $persist ))
+			if ($this->auth->login( $person->version->emailaddress, $password, $persist ))
 			{				
 				// Log the activity, so we can see what everyone's been getting up to.
 				Model_Activitylog::log( $this->person, 'login' );
@@ -71,18 +71,14 @@ class Controller_Cms_Account extends Controller_Template {
 		}
 		
 		//We've not given up already? Oh well, best show them a template I guess.
-		// Main template.
-		$v = new View( 'cms/standard_template');
-		$v->set_global( 'title', $this->page->title );
 		// Login form
-		$v->subtpl = new View( 'cms/templates/tpl_login' );
-		$v->subtpl->msg = $msg;
-		$v->subtpl->email = $email;
-		$v->subtpl->persist = $persist;
-		// Some other template which was embedded. Not sure what it does.
-		$v->subtpl->subtpl_cms_login_warning = new View('cms/subtpl_cms_login_warning');
+		$template = View::factory( 'cms/tpl_login' );
+		$template->client = Kohana::$config->load('config')->get('client_name');
+		$template->msg = $msg;
+		$template->email = $email;
+		$template->persist = $persist;
 		
-		$v->render( true );	
+		echo $template;
 	}
 	
 	/**
