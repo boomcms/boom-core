@@ -6,7 +6,7 @@
 	<?= new View('site/subtpl_siteheader');?>
 	<div id="navigation">
 		<?= new View('site/subtpl_logo');?>
-		<?= new View('site/subtpl_leftnav'); ?>		
+		<?= new View('site/nav/subtpl_left'); ?>		
 		<?= new View('site/subtpl_newsletter');?>
 	</div>
 	<div id="main-content">
