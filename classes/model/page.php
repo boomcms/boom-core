@@ -335,7 +335,7 @@ class Model_Page extends ORM {
 	*/
 	public function getSlot( $type, $slotname, $editable = null)
 	{
-		if (!in_array( $this->_slots, $slotname ))
+		if (!array_key_exists( $slotname, $this->_slots ))
 		{
 			$this->_slots[ $slotname ] = Slot::factory( $type, $this, $slotname, $editable );	
 		}
