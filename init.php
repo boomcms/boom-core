@@ -8,9 +8,9 @@ $dependencies = array( 'auth', 'cache', 'database', 'postgresql', 'orm', 'pagina
 
 foreach( $dependencies as $dep )
 {
-	if (!in_array( $dep, Kohana::modules() ))
+	if (!array_key_exists( $dep, Kohana::modules() ))
 	{
-		throw new SledgeException( "Required module '" . $module . "' not loaded" );
+		throw new Sledge_Exception( "Required module '" . $dep . "' not loaded" );
 	}
 }
 
