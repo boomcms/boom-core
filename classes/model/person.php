@@ -56,6 +56,17 @@ class Model_Person extends ORM {
 		
 	}
 	
+	
+	/**
+	* Shortcut method for getting a user's full name.
+	*
+	* @return string <first name> <last name>
+	*/
+	public function getName()
+	{
+		return $this->version->firstname . " " . $this->version->lastname;
+	}
+	
 	// Another copy and past job. Pretty it up, boy.
 	public function setProfileImage() {
 		if ($_POST['profile_asset_rid'] == 'remove') {
