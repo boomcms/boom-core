@@ -32,7 +32,9 @@ abstract class Slot implements iSlot {
 	*/ 
 	public static function factory( $type, Model_Page $page, $slotname, $editable = null )
 	{
-		$slot = ORM::factory( $type )->where( 'page_id', '=', $page->id )->and_where( 'slotname', '=', $slotname )->find();
+		$slot = ORM::factory( 'chunk_' . $type )->with( 'chunk' )->with( 'chunk_page' )->where( 'page_id', '=', $page->id )->and_where( 'slotname', '=', $slotname )->find();
+		
+		var_dump( $slot );die();
 		
 		/*
 		This is how it should work - but disabled during development (haven't created the cms/site page classes yet).
