@@ -98,9 +98,9 @@ class Controller_Cms_Account extends Controller_Template {
 			Model_Activitylog::log( $this->person, 'logout' );
 		
 			$this->auth->logout(TRUE);
-		
-			Request::factory( '/' )->execute();
 		}
+		
+		Request::factory( '/' )->execute();
 	}
 	
 	/**

@@ -9,7 +9,7 @@ Route::set('auth', 'cms/<action>',
 		'action' => '(login|logout)'
 	))
 	->defaults(array(
-		'controller' => 'cms/account'
+		'controller' => 'cms_account'
 	));
 
 	
