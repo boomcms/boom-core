@@ -32,9 +32,7 @@ abstract class Slot implements iSlot {
 	*/ 
 	public static function factory( $type, Model_Page $page, $slotname, $editable = null )
 	{
-		$slot = ORM::factory( 'chunk_' . $type )->with( 'chunk' )->find();
-		
-		var_dump( $slot );die();
+		$slot = ORM::factory( 'chunk_' . $type )->join( 'chunk', 'inner' )->on( 'chunk_' . $type . '.id', '=', 'active_vid' )->join( 'chunk_page', 'inner' )->on( 'chunk.id', '=', 'chunk_id' )->where( 'page_id', '=', $page->id )->and_where( 'slotname', '=', $slotname )->find();
 		
 		/*
 		This is how it should work - but disabled during development (haven't created the cms/site page classes yet).
@@ -65,6 +63,16 @@ abstract class Slot implements iSlot {
 	public function show()
 	{
 		return $this->slot->show();
+	}
+	
+	public function getSlotname()
+	{
+		return $this->slot->getSlotname();
+	}
+	
+	public function getTitle()
+	{
+		return $this->slot->getTitle();
 	}
 }
 

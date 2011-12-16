@@ -14,6 +14,24 @@ class Model_Chunk_Feature extends ORM implements iSLot
 	*/
 	protected $_table_name = 'chunk_feature';
 	
+	public function show()
+	{
+		return '';
+		
+	}
+	
+	public function getSlotname()
+	{
+		
+		
+	}
+	
+	public function getTitle()
+	{
+		
+		
+		
+	}	
 }
 
 ?>
