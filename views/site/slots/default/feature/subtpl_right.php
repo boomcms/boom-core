@@ -4,7 +4,7 @@
 ?>
 <div class="feature">
 	<a href="#">
-		<span class="title">Default Feature</span>
-		<span class="content">Click on me to add a feature here.</span>
+		<span class="title"><? echo __( 'Default Feature' ); ?></span>
+		<span class="content"><? echo __( 'Click on me to add a feature here' ); ?>.</span>
 	</a>
 </div>

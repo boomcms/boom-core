@@ -4,6 +4,6 @@
 ?>
 <div class="asset_video">
         <p>
-                <em>(Click here to add a video.)</em>
+                <em>( <? echo __( 'Click here to add a video' ); ?>.)</em>
         </p>
 </div>

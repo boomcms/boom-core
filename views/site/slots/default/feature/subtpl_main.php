@@ -8,7 +8,7 @@
 			<div class="feature_sw">
 				<a href="#">
 					<h2>Default feature</h2>
-					<p>Click on me to add a feature here</p>
+					<p><? echo __( 'Click on me to add a feature here' ); ?></p>
 				</a>
 			</div>
 		</div>

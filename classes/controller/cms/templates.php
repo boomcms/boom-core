@@ -60,16 +60,20 @@ class Controller_Cms_Templates extends Cms_Controller_Template
 	*/
 	private function find()
 	{
-		if ($dh = @opendir (APPPATH."views/site/templates")) {
-			while ($file = readdir($dh)) {
-				if (preg_match('/\.php$/',$file)) {
-					$name = preg_replace('/\.php$/','',$file);
-					$template = O::fa('template')->find_by_filename('site/templates/'.$name);
-					if (!$template->rid) {
-						$template->name = $name;
-						$template->filename = 'site/templates/'.$name;
-						$template->save_activeversion();
-						echo $file." added to db!<br/>";
+		if ($dh = @opendir (APPPATH."views/site/templates"))
+		{
+			while ($file = readdir($dh))
+			{
+				if (preg_match('/\.php$/',$file))
+				{
+					$name = preg_replace( '/\.php$/','' , $file );
+					
+					$template = ORM::factory('template')->find_by_filename( 'site/templates/' . $name );
+					if (!$template->id)
+					{
+						$template->version->name = $name;
+						$template->version->filename = 'site/templates/' . $name;
+						$template->save();
 					}
 				}
 			}

@@ -6,7 +6,7 @@
 	<span class="bg">
 		<span class="head">Feature Box</span>
 		<span class="par">
-			Click on me to add a feature here.
+			<? echo __( 'Click on me to add a feature here' ); ?>.
 		</span>
 	</span>
 </a>

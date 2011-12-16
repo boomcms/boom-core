@@ -4,7 +4,7 @@
 ?>
 <li>
 	<a href="#">
-		<h3>New item</h3>
-		<p>Add an item.</p>
+		<h3><? echo __( 'New item' ); ?></h3>
+		<p><? echo __( 'Add an item' ); ?>.</p>
 	</a>
 </li>

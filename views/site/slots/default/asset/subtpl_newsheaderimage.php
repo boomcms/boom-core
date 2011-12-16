@@ -4,6 +4,6 @@
 ?>
 <div class="asset_image chunk-slot">
 	<p>
-		<em>(Click here to add a news image.)</em>
+		<em>( <? echo __( 'Click here to add a news image' ); ?>.)</em>
 	</p>
 </div>

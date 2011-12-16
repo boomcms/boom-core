@@ -8,7 +8,7 @@
 		<ul>
 			<li>
 				<a rel="addlink" href="#">
-					<span class="chunk-linkset-addlink">Add link</span>
+					<span class="chunk-linkset-addlink"><? echo __( 'Add link' ); ?></span>
 				</a>
 			</li>
 		</ul>

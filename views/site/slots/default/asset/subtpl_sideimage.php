@@ -5,7 +5,7 @@
 <figure class="side-image">
 	 <div class="yellow-se">
         <div class="yellow-sw"><!-- style="height: 50px; padding: 4%;" -->
-			<p style="font-size: 1.3em; color: #555555;">Click here to add an image.</p>
+			<p style="font-size: 1.3em; color: #555555;"><? echo __( 'Click here to add an image' ); ?>.</p>
 		</div>
 	</div>
 </figure>

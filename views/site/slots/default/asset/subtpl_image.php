@@ -3,5 +3,5 @@
 	# Hoop Associates   www.thisishoop.com   mail@hoopassociates.co.uk
 ?>
 <p>
-	<em>(Click here to add an image.)</em>
+	<em>( <? echo __( 'Click here to add an image' ); ?>.)</em>
 </p>

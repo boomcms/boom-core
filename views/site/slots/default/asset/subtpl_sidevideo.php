@@ -5,7 +5,7 @@
 <div class="side-video">
 	<div class="yellow-se">
 		<div class="yellow-sw">
-			<p>Click on me to add a video here.</p>
+			<p><? echo __( 'Click on me to add a video here' ); ?>.</p>
 		</div>
 	</div>
 </div>
