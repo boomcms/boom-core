@@ -13,8 +13,8 @@ interface iSlot
 	public function show();
 	public function getSlotname();
 	public function getTitle();
-	public function getPage();
 	public function __toString();
+	
 }
 
 ?>

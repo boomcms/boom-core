@@ -13,7 +13,9 @@ class Model_Chunk extends ORM
 	* Properties to create relationships with Kohana's ORM
 	*/
 	protected $_table_name = 'chunk';
-	protected $_belongs_to = array( 'chunk_page' );	
+//	protected $_table_columns = array( 'id', 'slotname', 'type', 'active_vid' );
+	protected $_belongs_to = array( 'chunk_text' => array( 'foreign_key' => 'id' ) );	
+	protected $_has_many = array( 'pages' => array( 'model' => 'page', 'through' => 'chunk_page' ));
 	
 }
 
