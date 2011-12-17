@@ -7,9 +7,8 @@
 * @author Hoop Associates	www.thisishoop.com	mail@hoopassociates.co.uk
 * @copyright 2011, Hoop Associates Ltd
 */
-class Controller_Cms_Log extends Controller_Template
-{
-	
+class Controller_Cms_Log extends Controller_Template_Cms
+{	
 	/**
 	* Handles displaying the activity log.
 	*
@@ -30,13 +29,14 @@ class Controller_Cms_Log extends Controller_Template
 	public function action_search()
 	{
 		$searches = DB::select( 'log_entry', array('count("*")', 'count') )->from( 'log_search' )->group_by( 'log_entry' )->order_by( 'count', 'desc' )->execute();
-		$total = DB::select( array('count("*")', 'count') )->from( 'log_search' )->execute();
 		
-		$this->template->subtpl_main = View::factory( 'cms/templates/tpl_log_search' );
+		$this->template->subtpl_main = View::factory( 'cms/pages/log/search' );
 		$this->template->subtpl_main->searches = $searches;
-		$this->template->subtpl_main->total = $total;
-		
-		echo $this->template;
+	}
+	
+	public function action_index()
+	{
+		$this->template->subtpl_main = View::factory( 'cms/pages/log/index' );
 	}
 }
 

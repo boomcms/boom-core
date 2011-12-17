@@ -45,6 +45,8 @@ class Controller_Template_Site extends Controller_Template
 		}
 		$this->template->subtpl_main->subtpl_footer = $subtpl_footer;
 		$this->template->subtpl_main->subtpl_footer->footer_pages = $footer_page_objects;
+		
+		View::bind_global( 'page', $this->page );
 	}
 }
 
