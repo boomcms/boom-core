@@ -34,13 +34,6 @@ class Model_Version_Page extends ORM {
 	private $_parent;
 	
 	/**
-	* Default page title
-	* @access public
-	* @var string
-	*/
-	public $title = 'Untitled';
-	
-	/**
 	* Sets up a reference to the page object which holds this as a version.
 	*
 	* @param Model_Page $page The page to which we belong.

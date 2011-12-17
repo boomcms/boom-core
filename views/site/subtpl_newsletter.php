@@ -1,5 +1,5 @@
 <?
-	$newsletter_page = ORM::factory( 'page' )->with( 'version' )->where( 'internal_name', '=', 'newsletter' )->find();
+	$newsletter_page = ORM::factory( 'page' )->where( 'internal_name', '=', 'newsletter' )->find();
 
 	if ($newsletter_page->loaded())
 	{

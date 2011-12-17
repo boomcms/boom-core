@@ -8,14 +8,12 @@
 * @todo Work out which methods we actually need from hoopbasepagemodel and implement them nicely. Then just extend ORM 
 *
 */
-class Model_Page_Uri extends ORM {
+class Model_Page_Uri extends ORM_Versioned {
 	/**
 	* Properties to create relationships with Kohana's ORM
 	*/
 	protected $_table_name = 'page_uri';
-	protected $_has_one = array( 'version' => array( 'model' => 'version_page_uri', 'foreign_key' => 'id' ) );
 	//protected $_belongs_to = array( 'page' => array( 'model' => 'page' ) );
-	protected $_load_with = array( 'version' );
 
 	/** 
 	* Ensures we can find a page ID by URI through cache.

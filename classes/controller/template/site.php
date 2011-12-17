@@ -36,7 +36,7 @@ class Controller_Template_Site extends Controller_Template
 		$footer_pages = array('contact', 'newsletter', 'rssfeeds');
 		foreach ($footer_pages as $internal_name)
 		{
-			$p = ORM::factory( 'page' )->with( 'version' )->where( 'internal_name', '=', $internal_name)->find();
+			$p = ORM::factory( 'page' )->where( 'internal_name', '=', $internal_name)->find();
 			
 			if ($p->loaded())
 			{

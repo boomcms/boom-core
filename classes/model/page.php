@@ -8,13 +8,12 @@
 * @todo Work out which methods we actually need from hoopbasepagemodel and implement them nicely. Then just extend ORM 
 *
 */
-class Model_Page extends ORM {
+class Model_Page extends ORM_Versioned {
 	/**
 	* Properties to create relationships with Kohana's ORM
 	*/
 	protected $_table_name = 'page';
 	protected $_has_one = array( 
-		'version'	=> array( 'model' => 'version_page', 'foreign_key' => 'id' ),
 		'mptt'		=> array( 'model' => 'page_mptt' )
 	);
 	protected $_has_many = array( 
@@ -25,7 +24,6 @@ class Model_Page extends ORM {
 	protected $_belongs_to = array(
 		'page'		=> array('foreign_key' => 'id' )
 	);
-	protected $_load_with = array( 'version' );
 	
 	/**
 	* Page invisible value (stored in page_status column)
@@ -119,57 +117,6 @@ class Model_Page extends ORM {
 	* @var array
 	*/
 	private $_slots = array();
-	
-	/**
-	* Retrieves a page object using the ORM before checking that it hasn't been deleted. 
-	* Pretends that the page wasn't found if it's been deleted.
-	* Checks the cache first before using the database.
-	*
-	* @param int $id Unique key referring to the page in the database. May be a page ID (int).
-	* @return page_Model|false Returns an instance of a page if it exists or false if not found (or deleted).
-	*
-	* @todo Allow passing a URI which joins the page_v table and retrieves by uri
-	*/
-	function __construct( $key = false, $skip_construct = false ) {
-		parent::__construct();
-		$cache = Cache::Instance();
-
-		if (is_string( $key )) {
-			// If the key is a string assume that it represents a URI - find the page ID associated with that URI.
-			$page_id = $cache->get( 'page_id_from_uri_' . md5( $key ) );
-
-			if (!$page_id) {
-				// Not in cache? Try the database instead.
-				$page_uri = ORM::factory( 'page_uri' )->where( "uri", '=', $key )->find();
-
-				if (!$page_uri->loaded())
-					return false;
-
-				$page_id = $page_uri->version->page_id;
-				$cache->set( 'page_id_from_uri_' . md5( $key ), $page_id, 'page_uris' );
-			}
-		} else {
-			// Getting a page by ID.
-			$page_id = $key;
-		}				
-		
-		$page = $cache->get( 'page_model_by_id_' . $page_id );
-
-		if (!$page) {
-			$page = $this->where( 'page.id', '=', $page_id )->find();
-
-			if (is_object($page) && $page->loaded()) {
-				$cache->set( 'page_model_by_id_' . $page_id, $this, 'page_objects' );
-				$page->version->setPage( $page );
-			}
-		}
-
-		// If the page is deleted, pretend we didn't find it.
-		if ($page->deleted === true)
-			return false;
-		else
-			return $page;	
-	}
 	
 	/**
 	* Returns a human readable page status.
