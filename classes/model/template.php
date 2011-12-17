@@ -13,25 +13,26 @@ class Model_Template extends ORM {
 	* Properties to create relationships with Kohana's ORM
 	*/
 	protected $_table_name = 'template';
-	protected $_has_one = array( 
-		'version'	=> array( 'model' => 'version_template', 'foreign_key' => 'id' ),
+	protected $_belongs_to = array
+	( 
+		'version_page' => array( 'model' => 'version_page', 'foreign_key' => 'template_id' ),
 	);
-	protected $_belongs_to = array( 'version_page' => array( 'model' => 'version_page', 'foreign_key' => 'template_id' ) );
+	protected $_has_many = array
+	(
+		'versions' => array( 'model' => 'version_template', 'foreign_key' => 'id', 'far_key' => 'template_id' )
+	);
 	protected $_load_with = array( 'version' );	
 	
-	/**
-	* Determines whether the template file exists.
-	*
-	* @return boolean
-	*/
-	public function fileExists()
+	private $_version;
+	
+	public function version()
 	{
-		$exists = file_exists( APPPATH . 'views/' . $this->version->filename . '.php' );
-
-		if (!$exists)
-			$exists = file_exists( MODPATH . 'sledge/views/' . $this->version->filename . '.php' );
+		if ($this->_version === null)
+		{
+		 	$this->_version = $this->versions->where( 'id' , '=', $this->active_vid )->find();
+		}
 		
-		return $exists;
+		return $this->_version;
 	}
 }
 

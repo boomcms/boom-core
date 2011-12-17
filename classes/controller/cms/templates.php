@@ -40,17 +40,25 @@ class Controller_Cms_Templates extends Controller_Template_Cms
 	{
 		$id = $this->request->param('id');
 		$id = preg_replace( "/[^0-9]+/", "", $id );
-		
 		$template = ORM::factory( 'template', $id );
 		
-		if (isset( $this->request->post ))
+		if ( $this->request->method() == 'POST')
 		{
-			$template->version->name = $_POST['name'];
-			$template->version->description = $_POST['description'];
-			$template->version->filename = $_POST['filename'];
-			$template->version->visible = $_POST['visible'];
+			$version = ORM::factory( 'version_template' );
+			$version->name = Arr::get( $_POST, 'name', $template->version()->name );
+			$version->description = Arr::get( $_POST, 'description', $template->version()->description );
+			$version->filename = Arr::get( $_POST, 'filename', $template->version()->filename );
+			$version->visible = Arr::get( $_POST, 'visible', $template->version()->visible );
+			$version->audit_person = $this->person->id;
+			$version->template_id = $template->id;
+			$version->save();
+			
+			$template->active_vid = $version->id;
 			$template->save();
 		}
+
+		$this->template->subtpl_main = View::factory( 'cms/pages/templates/edit' );
+		$this->template->subtpl_main->template = $template;
 	}
 	
 	/**
@@ -60,8 +68,8 @@ class Controller_Cms_Templates extends Controller_Template_Cms
 	public function action_index()
 	{
 		$new = $this->find();
-		
-		$templates = ORM::factory( 'template' )->where( 'visible', '=', true )->order_by( 'name' )->find_all();
+
+		$templates = ORM::factory( 'template' )->join( 'template_v', 'inner' )->on( 'active_vid', '=', 'template_v.id' )->where( 'visible', '=', true )->order_by( 'name' )->find_all();
 		
 		$this->template->subtpl_main = View::factory( 'cms/pages/templates/index' );
 		$this->template->subtpl_main->templates = $templates;	

@@ -8,7 +8,8 @@
 * @copyright 2011, Hoop Associates
 */
 
-class Controller_Cms_Asset extends Controller {
+class Controller_Cms_Assets extends Controller_Template_Cms
+{
 	
 	public function action_upload()
 	{
@@ -24,6 +25,12 @@ class Controller_Cms_Asset extends Controller {
 	public function action_edit()
 	{
 		
+		
+	}
+	
+	public function action_index()
+	{
+		$this->template->subtpl_main = View::factory( 'cms/pages/assets/index' );
 		
 	}
 	
