@@ -31,12 +31,19 @@ class Controller_Cms_Templates extends Controller_Template
 	*/
 	public function action_edit()
 	{
-		$template = ORM::factory( 'template', $_POST['id'] );
-		$template->version->name = $_POST['name'];
-		$template->version->description = $_POST['description'];
-		$template->version->filename = $_POST['filename'];
-		$template->version->visible = $_POST['visible'];
-		$template->save();
+		$id = $this->request->param('id');
+		$id = preg_replace( "/[^0-9]+/", "", $id );
+		
+		$template = ORM::factory( 'template', $id );
+		
+		if (isset( $this->request->post ))
+		{
+			$template->version->name = $_POST['name'];
+			$template->version->description = $_POST['description'];
+			$template->version->filename = $_POST['filename'];
+			$template->version->visible = $_POST['visible'];
+			$template->save();
+		}
 	}
 	
 	/**
