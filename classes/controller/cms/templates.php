@@ -44,17 +44,16 @@ class Controller_Cms_Templates extends Controller_Template_Cms
 		
 		if ( $this->request->method() == 'POST')
 		{
-			$version = ORM::factory( 'version_template' );
-			$version->name = Arr::get( $_POST, 'name', $template->version()->name );
-			$version->description = Arr::get( $_POST, 'description', $template->version()->description );
-			$version->filename = Arr::get( $_POST, 'filename', $template->version()->filename );
-			$version->visible = Arr::get( $_POST, 'visible', $template->version()->visible );
-			$version->audit_person = $this->person->id;
-			$version->template_id = $template->id;
-			$version->save();
-			
-			$template->active_vid = $version->id;
+			$template->name = Arr::get( $_POST, 'name', $template->name );
+			$template->description = Arr::get( $_POST, 'description', $template->description );
+			$template->filename = Arr::get( $_POST, 'filename', $template->filename );
+			$template->visible = Arr::get( $_POST, 'visible', $template->visible );
+			$template->audit_person = $this->person->id;
+			$template->template_id = $template->id;
 			$template->save();
+			
+			Request::factory( '/cms/templates' )->execute();
+			exit();
 		}
 
 		$this->template->subtpl_main = View::factory( 'cms/pages/templates/edit' );
@@ -69,7 +68,7 @@ class Controller_Cms_Templates extends Controller_Template_Cms
 	{
 		$new = $this->find();
 
-		$templates = ORM::factory( 'template' )->join( 'template_v', 'inner' )->on( 'active_vid', '=', 'template_v.id' )->where( 'visible', '=', true )->order_by( 'name' )->find_all();
+		$templates = ORM::factory( 'template' )->order_by( 'name' )->find_all();
 		
 		$this->template->subtpl_main = View::factory( 'cms/pages/templates/index' );
 		$this->template->subtpl_main->templates = $templates;	
