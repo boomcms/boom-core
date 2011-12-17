@@ -10,17 +10,22 @@
 
 class Controller_Cms_Asset extends Controller {
 	
-	public function add()
+	public function action_upload()
 	{
-
+		
 	}
 	
 	
-	public function replace()
+	public function action_replace()
 	{
 
 	}
 
+	public function action_edit()
+	{
+		
+		
+	}
 	
 }
 

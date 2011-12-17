@@ -26,7 +26,7 @@ class Controller_Cms_Account extends Controller_Template {
 			if ($this->input->cookie( 'cms_uri' ) != 'cms')
 				$uri .= $this->input->cookie( 'cms_uri' );
 
-			Request::factory( '/' )->execute();
+			Request::factory( $uri )->execute();
 		}
 		
 		// Gather form data.

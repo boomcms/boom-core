@@ -41,7 +41,7 @@ class Controller_Setup extends Kohana_Controller
 		}
 		
 		// Everything worked? Well that's just not on.
-		throw new Sledge_Exception( "Attempt to run database create when the database already exists" );
+		Request::factory( '/' )->execute();
 	}
 
 }
