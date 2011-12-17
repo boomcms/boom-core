@@ -7,7 +7,7 @@
 * @author Hoop Associates	www.thisishoop.com	mail@hoopassociates.co.uk
 * @copyright 2011, Hoop Associates Ltd
 */
-class Controller_Cms_Templates extends Controller_Template
+class Controller_Cms_Templates extends Controller_Template_Cms
 {
 	
 	/**
@@ -59,8 +59,6 @@ class Controller_Cms_Templates extends Controller_Template
 		$this->template->subtpl_main = View::factory( 'cms/pages/templates/index' );
 		$this->template->subtpl_main->templates = $templates;	
 		$this->template->subtpl_main->new = $new;
-		
-		echo $this->template;	
 	}
 	
 	/**

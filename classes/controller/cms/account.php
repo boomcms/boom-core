@@ -8,7 +8,7 @@
 * @author Hoop Associates	www.thisishoop.com	mail@hoopassociates.co.uk
 * @copyright 2011, Hoop Associates Ltd
 */
-class Controller_Cms_Account extends Controller_Template {	
+class Controller_Cms_Account extends Controller_Template_Cms {	
 	/**
 	* Log a user into the CMS
 	* @uses Auth::login()
@@ -77,8 +77,6 @@ class Controller_Cms_Account extends Controller_Template {
 		$template->msg = $msg;
 		$template->email = $email;
 		$template->persist = $persist;
-		
-		echo $template;
 	}
 	
 	/**
