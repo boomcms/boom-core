@@ -8,16 +8,26 @@
 
 <div id="nav" class="block">
 	<ul>
-	<?
-		foreach( $page->mptt->getTree() as $mptt )
-		{
-			$p = $mptt->page;
-		
-			if ( $p->isVisible() && $p->visible_in_leftnav == 't' )
+		<?
+			$right = array();
+			foreach( $page->mptt->getTree() as $node )
 			{
-				echo "<li><a href='" . $p->getAbsoluteUri() . "'>$p->title</a>";			
+				if ( $node->page->isVisible() && $node->page->visible_in_leftnav == 't' )
+				{
+					if (count( $right ) > 0)
+					{
+						while ($right[ count($right)-1 ]->right_val < $node->right_val) 
+						{
+							echo str_repeat('  ',count($right)) . "pop right\n"; 
+							//echo "</li>";
+							array_pop( $right );
+						}
+					}
+
+					$right[] = $node;	
+					echo str_repeat('  ',count($right)) . "<li><a href='" . $node->page->getAbsoluteUri() . "'>" . $node->page->title . "</a></li>\n";		
+				}		
 			}
-		}
-	?>
+		?>
 	</ul>
 </div>
