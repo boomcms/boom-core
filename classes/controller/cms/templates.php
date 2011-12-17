@@ -24,12 +24,8 @@ class Controller_Cms_Templates extends Controller_Template_Cms
  	*/
 	public function action_add()
 	{
-		$template = ORM::factory('template');
-		$template->version->name = $_POST['name'];
-		$template->version->description = $_POST['description'];
-		$template->version->filename = $_POST['filename'];
-		$template->version->visible = $_POST['visible'];
-		$template->save();
+		$this->template->subtpl_main = View::factory( 'cms/pages/templates/edit' );
+		$this->template->subtpl_main->template = ORM::factory( 'template' );
 	}
 	
 	/**
@@ -38,8 +34,9 @@ class Controller_Cms_Templates extends Controller_Template_Cms
 	*/
 	public function action_edit()
 	{
-		$id = $this->request->param('id');
+		$id = (int) $this->request->param('id' );
 		$id = preg_replace( "/[^0-9]+/", "", $id );
+		
 		$template = ORM::factory( 'template', $id );
 		
 		if ( $this->request->method() == 'POST')
