@@ -7,7 +7,7 @@
 * @copyright 2011, Hoop Associates
 * 
 */
-class Model_Version_Person extends ORM {
+class Model_Version_Person extends Model_Version {
 	/**
 	* Properties to create relationships with Kohana's ORM
 	*/
@@ -16,4 +16,5 @@ class Model_Version_Person extends ORM {
 	
 	
 }
+
 ?>
