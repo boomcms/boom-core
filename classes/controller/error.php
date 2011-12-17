@@ -6,11 +6,31 @@
 * @author Hoop Associates	www.thisishoop.com	mail@hoopassociates.co.uk
 * @copyright 2011, Hoop Associates
 */
-class Controller_Error extends Controller_Template {
+class Controller_Error extends Controller_Template
+{
+	/**
+	* Error page specific constructor.
+	* Ensures that error pages can only be loading internally and not by entering the URL in the browser.
+	* Unless we have write permissions for the page.
+	*
+	*/
+ 	public function __construct( Request $request, Response $response )
+ 	{
+		parent::__construct( $request, $response );
+		
+		if ($request->is_external() && !Model_Permission_Page::may_i( Model_Permission_Page::EDIT, $this->page, $this->person ))
+		{
+			// An external request and they can't edit the page - send them to the home page instead.
+			Request::factory( '/' )->execute();
+		}
+	}
+	
+	
 	/**
 	* 404 Error handler
 	* This may be called as a sub-request where a page object couldn't be found.
 	* @see http://kohanaframework.org/3.2/guide/api/Request#factory
+	* @return void
 	*
 	*/
 	public function action_404()
