@@ -17,14 +17,13 @@ class Model_Chunk_Text extends ORM implements iSLot
 	
 	public function show()
 	{
-		return ($this->text === null)? '' : $this->text;
+		return 'Text chunk';
 		
 	}
 	
 	public function getSlotname()
 	{
-		
-		
+		return $this->chunk->slotname;
 	}
 	
 	public function getTitle()

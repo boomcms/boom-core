@@ -13,28 +13,28 @@
 		<div class="headings">
 			<h1 class="pageTitle"><?= $page->version->title?></h1>
 			<? 
-				if ($page->getSlot('text', 'standfirst' ))
+				if ($slot = $page->getSlot('text', 'standfirst' ))
 				{ 
-					echo '<h2 class="standFirst">' . $page->getSlot('text', 'standfirst' ) . '</h2>';
+					echo '<h2 class="standFirst">' . $slot->show() . '</h2>';
 				}
 			?>
 		</div>
 		<?
 			if ($page->getSlot('text', 'bodycopy' ))
 			{
-				echo '<div id="content">' . $page->getSlot( 'text', 'bodycopy' ) . '</div>';
+				echo '<div id="content">' . $slot->show(). '</div>';
 			}
 		?>
 		<div id="nav-widget"></div>		
 		<?
 			if ($slot = $page->getSlot('feature', 'feature3' ))
 			{
-				echo View::factory( 'site/slots/slottype/feature/subtpl_center' )->bind( 'slot', $slot );
+				echo $slot->show( 'feature/subtpl_center' );
 			}
 			
 			if ($slot = $page->getSlot('feature', 'feature4' ))
 			{
-				echo View::factory( 'site/slots/slottype/feature/subtpl_center' )->bind( 'slot', $slot );
+				echo $slot->show( 'feature/subtpl_center' );;
 			}
 		?>
 	</div>
@@ -42,12 +42,12 @@
 		<?
 			if ($slot = $page->getSlot('feature', 'feature3' ))
 			{
-				echo View::factory( 'site/slots/slottype/feature/subtpl_right' )->bind( 'slot', $slot );
+			//	echo View::factory( 'site/slots/slottype/feature/subtpl_right' )->bind( 'slot', $slot );
 			}
 			
 			if ($slot = $page->getSlot('feature', 'feature4' ))
 			{
-				echo View::factory( 'site/slots/slottype/feature/subtpl_right' )->bind( 'slot', $slot );
+			//	echo View::factory( 'site/slots/slottype/feature/subtpl_right' )->bind( 'slot', $slot );
 			}
 		?>
 		<?//= O::f('chunk_linkset_v')->get_chunk(O::f('site_page')->get_homepage()->id,'quicklinks','quicklinks');?>
