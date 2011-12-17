@@ -2,7 +2,8 @@
 
 class Controller_Default extends Controller_Template_Site {
 
-	public function action_index()	{
+	public function action_index()
+	{
 		echo  $this->template;
 	}
 

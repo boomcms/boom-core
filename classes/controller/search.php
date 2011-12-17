@@ -41,8 +41,7 @@ class Controller_Search extends Controller_Template
 			);
 			
 			// 
-			$count = $s->get_count();
-			
+			$count = $s->get_count();	
 		}	
 	}
 

@@ -12,9 +12,10 @@
 		foreach( $page->mptt->getTree() as $mptt )
 		{
 			$p = $mptt->page;
-			if ( $p->isVisible() && $p->hidden_from_leftnav === false )
+		
+			if ( $p->isVisible() && $p->visible_in_leftnav == 't' )
 			{
-				echo "<li><a href='" . $p->getAbsoluteUri() . "'>$p->version->title</a>";			
+				echo "<li><a href='" . $p->getAbsoluteUri() . "'>$p->title</a>";			
 			}
 		}
 	?>

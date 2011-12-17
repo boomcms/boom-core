@@ -6,13 +6,13 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="https://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 	<head>
-		<title><?= $page->version->title ?> | <?=Kohana::$config->load('config')->get('client_name')?></title>
+		<title><?= $page->title ?> | <?=Kohana::$config->load('config')->get('client_name')?></title>
 		<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 		<meta http-equiv="Content-Style-Type" content="text/css" />
-		<meta name="description" content="<?= htmlspecialchars( $page->version->getDescription() );?>" />
-		<meta name="keywords" content="<?= htmlspecialchars( $page->version->keywords );?>" />	
+		<meta name="description" content="<?= htmlspecialchars( $page->description );?>" />
+		<meta name="keywords" content="<?= htmlspecialchars( $page->keywords );?>" />	
 		<?
-			if ($page->version->indexed == true)
+			if ($page->indexed)
 			{
 				echo "<meta name='robots' content='index, follow' />";
 			}

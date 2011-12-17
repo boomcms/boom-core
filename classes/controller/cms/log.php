@@ -15,8 +15,8 @@ class Controller_Cms_Log extends Controller_Template_Cms
 	*/
 	public function action_activity()
 	{
-		$last24hours = ORM::factory( 'activitylog' )->where( 'timestamp', '>=', time() - 86400 )->orderby( 'timestamp', 'desc' )->find_all();
-		$last50 = ORM::factory( 'activitylog' )->orderby( 'timestamp', 'desc' )->limit( 50 )->find_all();
+		$last24hours = ORM::factory( 'activitylog' )->where( 'audit_time', '>=', time() - 86400 )->order_by( 'timestamp', 'desc' )->find_all();
+		$last50 = ORM::factory( 'activitylog' )->order_by( 'audit_time', 'desc' )->limit( 50 )->find_all();
 		
 		$this->template->subtpl_main = View::factory( 'cms/templates/tpl_activitylog' );
 		$this->template->subtpl_main->last24hours = $last24hours;

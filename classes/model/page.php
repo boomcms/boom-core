@@ -119,6 +119,14 @@ class Model_Page extends ORM_Versioned {
 	private $_slots = array();
 	
 	/**
+	* Holds the calculated primary URI
+	*
+	* @access private
+	* @var string
+	*/
+	private $_primary_uri;
+	
+	/**
 	* Returns a human readable page status.
 	*
 	* @return string Page status - currently visible or invisible.
@@ -186,7 +194,7 @@ class Model_Page extends ORM_Versioned {
 	* @return boolean true if it's visible, false if it isn't
 	*/
 	public function isVisible() {
-		if ($this->page_status === self::STATUS_VISIBLE && $this->visiblefrom() <= time() && ($this->visibleto() >= now() || $this->visibleto() === null))
+		if ($this->page_status == self::STATUS_VISIBLE && $this->visiblefrom_timestamp <= time() && ($this->visibleto_timestamp >= time() || $this->visibleto_timestamp === null))
 			return true;
 		else
 			return false;		
@@ -247,10 +255,8 @@ class Model_Page extends ORM_Versioned {
 	* @return string The absolute URI.
 	*/
 	public function getAbsoluteUri() {
-		$request = REquest::Instance();
-		
 		// Get the base URL of the current request.
-		$url = URL::base( $request );
+		$url = URL::base();
 		
 		$url .= $this->getPrimaryUri();
 		
@@ -265,7 +271,17 @@ class Model_Page extends ORM_Versioned {
 	*/
 	public function getPrimaryUri() {
 		if ($this->_primary_uri === null)
-			$this->_primary_uri = $this->db->select( 'uri' )->from( 'page_uri' )->join( 'page_uri_v', 'active_vid', 'id' )->where( 'page_id', '=', $this->id )->and_where( 'primary', '=', true );
+		{
+			$uri = DB::select( 'uri' )
+			->from( 'page_uri' )
+			->join( 'page_uri_v', 'inner' )
+			->on( 'active_vid', '=', 'page_uri_v.id' )
+			->where( 'page_id', '=', $this->id )
+			->and_where( 'primary_uri', '=', true )
+			->execute();
+			
+			$this->_primary_uri = $uri->get( 'uri' );
+		}
 			
 		return $this->_primary_uri;		
 	}
