@@ -1,6 +1,21 @@
 <?php
 
 /**
+* Check that other modules required by Sledge (auth, database etc.) are loaded.
+*
+*/
+$dependencies = array( 'auth', 'cache', 'database', 'postgresql', 'orm', 'pagination' );
+
+foreach( $dependencies as $dep )
+{
+	if (!in_array( $dep, Kohana::modules() ))
+	{
+		throw new SledgeException( "Required module '" . $module . "' not loaded" );
+	}
+}
+
+
+/**
 * Defines a shortcut for /cms/account pages (login, logout, etc.) so that account doesn't have to be used in the URL.
 *
 */
