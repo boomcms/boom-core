@@ -6,7 +6,7 @@
 * @author Hoop Associates	www.thisishoop.com	mail@hoopassociates.co.uk
 * @copyright 2011, Hoop Associates
 */
-class Controller_Error extends Controller_Template
+class Controller_Error extends Controller_Template_Site
 {
 	/**
 	* Error page specific constructor.
@@ -52,7 +52,8 @@ class Controller_Error extends Controller_Template
 		if ( $parts_count === 1 )
 		{
 			// We've requested a sub-page of the homepage.
-			$parent = ORM::factory( 'page', '/' );
+			$page_uri = ORM::factory( 'page_uri' )->where( 'uri', '=', '' );
+			$parent = ORM::factory( 'page', $page_uri->page_id );
 		}
 		else
 		{
@@ -67,7 +68,8 @@ class Controller_Error extends Controller_Template
 				$parent_uri = implode( "/", $uri_parts );
 				
 				// See if the parent exists.
-				$parent = ORM::factory( 'page', $parent_uri );
+				$page_uri = ORM::factory( 'page_uri' )->where( 'uri', '=', $parent_uri );
+				$parent = ORM::factory( 'page', $page_uri->page_id );
 				
 				// This is quicker than recounting the length of the array each time.
 				$i--;
@@ -85,7 +87,8 @@ class Controller_Error extends Controller_Template
 		if ($writable === false)
 		{		
 			// Set the page property. The controller template will handle rendering etc.
-			$this->page = ORM::factory( 'page', 'error/404' );
+			$page_uri = ORM::factory( 'page_uri' )->where( 'uri', '=', 'error/404' );
+			$this->page = ORM::factory( 'page',  $page_uri->page_id );
 		}
 		else
 		{

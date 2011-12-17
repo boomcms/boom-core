@@ -7,7 +7,7 @@
 * @author Hoop Associates	www.thisishoop.com	mail@hoopassociates.co.uk
 * @copyright 2011, Hoop Associates
 */
-class Controller_Cms_Page extends Controller_Template
+class Controller_Cms_Page extends Controller_Template_Site
 {
 
 	public function action_add()
@@ -22,7 +22,7 @@ class Controller_Cms_Page extends Controller_Template
 		//$page_uri->version->uri = $uri;
 		
 		//$page->add( $page_uri );
-		$page->version->title = 'Untitled';
+		$page->title = 'Untitled';
 		
 		echo "Adding a page at " . URL::base( $this->request ) . $uri . "!";
 	}
