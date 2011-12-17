@@ -2,11 +2,14 @@
 	# Copyright 2009, Hoop Associates Ltd
 	# Hoop Associates   www.thisishoop.com   mail@hoopassociates.co.uk
 ?>
+
+<?= new View('site/nav/top');?>
+
 <div class="wrapper">
 	<?= new View('site/subtpl_siteheader');?>
 	<div id="navigation">
 		<?= new View('site/subtpl_logo');?>
-		<?= new View('site/nav/subtpl_left'); ?>		
+		<?= new View('site/nav/left'); ?>		
 		<?= new View('site/subtpl_newsletter');?>
 	</div>
 	<div id="main-content">

@@ -47,6 +47,13 @@ class Model_Page_Mptt extends ORM {
 	private $_ordering_policy;
 	
 	/**
+	* Stores the result of self::getRoute()
+	* @access private
+	* @var array
+	*/
+	private $_route;
+	
+	/**
 	* Set the current page's MPTT left value. Method will automatically set a right value of left+1 (It's assumed for now that we're creating a new page and won't therefore have any children).
 	*
 	* @param integer $val The left value.
@@ -92,6 +99,22 @@ class Model_Page_Mptt extends ORM {
 	
 	public function getTree() {
 		return array_merge( $this->getAncestors(), array($this), $this->getChildren() );
+	}
+	
+	/**
+	* The determines the route to get to the current page.
+	* This is used for generating the top nav.
+	*
+	* @return array Array of mptt objects.
+	*/
+	public function getRoute()
+	{
+		if ($this->_route === null)
+		{
+			$this->_route = ORM::factory( 'page_mptt' )->where( 'left_val', '<=', $this->left_val )->and_where(  'right_val', '>=', $this->right_val )->order_by( 'left_val' )->find_all()->as_array();
+		}		
+		
+		return $this->_route;
 	}
 	
 	/**
