@@ -26,6 +26,12 @@ class Controller_Template_Cms extends Controller_Template
 		$this->template->title = 'CMS';
 		$this->template->subtpl_header = View::factory( 'site/subtpl_header' );
 		$this->template->client = Kohana::$config->load( 'core' )->get( 'clientname' );
+		
+		$actionbar = null;
+		$buttonbar = null;
+		
+		View::bind_global( 'actionbar', $actionbar );
+		View::bind_global( 'buttonbar', $buttonbar );
 	}
 	
 	public function after()

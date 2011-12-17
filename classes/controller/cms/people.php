@@ -25,8 +25,17 @@ class Controller_Cms_People extends Controller_Template_Cms {
 	public function action_save()
 	{
 		$id = $this->request->param('id');
-		$id = preg_replace( "/[^0-9]+/", "", $id );		
-				
+		$id = preg_replace( "/[^0-9]+/", "", $id );
+		
+		$person = ORM::factory( 'person', $id );
+		
+		$v = ORM::factory( 'version_person' );
+		$v->firstname = Arr::get( 'post', 'firstname', null );
+		$v->lastname = Arr::get( 'post', 'firstname', null );		
+		$v->emailaddress = Arr::get( 'post', 'firstname', null );
+		
+		$person->version = $v;
+		$person->save();				
 	}
 	
 	public function action_add()

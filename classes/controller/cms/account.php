@@ -77,6 +77,8 @@ class Controller_Cms_Account extends Controller_Template_Cms {
 		$template->msg = $msg;
 		$template->email = $email;
 		$template->persist = $persist;
+		echo $template;
+		exit();
 	}
 	
 	/**

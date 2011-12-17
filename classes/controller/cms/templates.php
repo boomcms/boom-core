@@ -9,6 +9,13 @@
 */
 class Controller_Cms_Templates extends Controller_Template_Cms
 {
+
+	public function before()
+	{	
+		parent::before();
+		
+		$this->template->title = 'Template Manager';
+	}
 	
 	/**
 	* Add a new template to the database.
