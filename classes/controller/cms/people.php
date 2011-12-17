@@ -8,7 +8,7 @@
 * @copyright 2011, Hoop Associates
 */
 
-class Controller_Cms_People extends Controller {
+class Controller_Cms_People extends Controller_Template {
 	
 	public function action_add()
 	{
@@ -35,10 +35,7 @@ class Controller_Cms_People extends Controller {
 	*/
 	public function action_index()
 	{
-		$orderby = Arr::get( 'request', 'orderby', 'date' );
-		$order = Arr::get( 'request', 'order', 'asc' );
-		
-		$people = ORM::factory( 'person' )->order_by( $orderby, $order )->find_all();
+		$people = ORM::factory( 'person' )->find_all();
 		
 		$this->template->subtpl_main = View::factory( 'cms/pages/people/index' );
 		$this->template->subtpl_main->people = $people;

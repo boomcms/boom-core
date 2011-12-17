@@ -32,7 +32,8 @@ class Model_Person extends ORM {
 	* @param string $text_password Plain text password which will be encrypted and set as the user's password.
 	* @return void
 	*/
-	public function setPassword( $text_password ) {
+	public function setPassword( $text_password )
+	{
 		$this->current_version->password = '{SHA}' . base64_encode(sha1($_POST['password'],true));
 		
 	}
@@ -43,17 +44,11 @@ class Model_Person extends ORM {
 	* @param string $emailaddress
 	* @return void
 	*/
-	public function setEmailAddress( $emailaddress ) {
+	public function setEmailAddress( $emailaddress )
+	{
 		$this->emailaddress = strtolower( $this->emailaddress );
-		
-		// Copy and pasted from old Person library. Needs prettying.
-		if (!preg_match('/@hoopassociates\.co\.uk$/',$ki->person->emailaddress) && preg_match('/@hoopassociates\.co\.uk$/',$_POST['email'])) {
-			if ($ki->unit_testing) {
-				return 'set_user_email_denied';
-			}
-			throw new Kohana_Exception('permissions.set_user_email_denied',$_POST['email'].' (by user '.$ki->person->rid);
-		}
-		
+
+
 	}
 	
 	
@@ -67,24 +62,6 @@ class Model_Person extends ORM {
 		return $this->version->firstname . " " . $this->version->lastname;
 	}
 	
-	// Another copy and past job. Pretty it up, boy.
-	public function setProfileImage() {
-		if ($_POST['profile_asset_rid'] == 'remove') {
-			foreach (O::f('relationship')->join("relationship_partner as r1","r1.relationship_id","relationship.id")->join('relationship_partner as r2','r1.relationship_id','r2.relationship_id')->where("r1.item_tablename='person' and r1.item_rid = $person_v->rid and r2.description='profilepic' and r2.item_tablename='asset'")->find_all() as $rel) {
-				O::q("delete from relationship where id = $rel->id");
-			}
-		} else {
-			$asset = O::fa('asset',$_POST['profile_asset_rid']);
-			if ($asset->rid) {
-				foreach (O::f('relationship')->join("relationship_partner as r1","r1.relationship_id","relationship.id")->join('relationship_partner as r2','r1.relationship_id','r2.relationship_id')->where("r1.item_tablename='person' and r1.item_rid = $person_v->rid and r2.description='profilepic' and r2.item_tablename='asset'")->find_all() as $rel) {
-					O::q("delete from relationship where id = $rel->id");
-				}
-
-				Relationship::create_relationship(array('person','asset'),array($person_v->rid,$asset->rid),array('','profilepic'));
-			}
-		}
-	}
-	
 	/**
 	* Determine whether the person is a Hoop user.
 	*
@@ -95,13 +72,9 @@ class Model_Person extends ORM {
 		return true;
 	}
 	
-	public function save( Validation $validation = NULL ) {
-		// Copy and pasted from old Person library. Needs prettying.
-		$uploadedby_tag = O::fa('tag')->find_by_name('Uploaded by');
-		$this_uploadedby_tag = O::fa('tag');
-		$this_uploadedby_tag->parent_rid = $uploadedby_tag->rid;
-		$this_uploadedby_tag->name = $_POST['firstname'] . " " . $_POST['surname'];
-		$this_uploadedby_tag->save_activeversion();
+	public function save( Validation $validation = NULL )
+	{
+
 		
 	}
 	
