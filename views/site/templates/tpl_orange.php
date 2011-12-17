@@ -20,35 +20,21 @@
 			?>
 		</div>
 		<?
-			if ($page->getSlot('text', 'bodycopy' ))
+			if ($slot = $page->getSlot('text', 'bodycopy' ))
 			{
 				echo '<div id="content">' . $slot->show(). '</div>';
 			}
 		?>
 		<div id="nav-widget"></div>		
 		<?
-			if ($slot = $page->getSlot('feature', 'feature3' ))
-			{
-				echo $slot->show( 'feature/subtpl_center' );
-			}
-			
-			if ($slot = $page->getSlot('feature', 'feature4' ))
-			{
-				echo $slot->show( 'feature/subtpl_center' );;
-			}
+			echo $page->getSlot('feature', 'feature3' )->show();
+			echo $page->getSlot('feature', 'feature4' )->show();
 		?>
 	</div>
 	<div id="aside">	
 		<?
-			if ($slot = $page->getSlot('feature', 'feature3' ))
-			{
-			//	echo View::factory( 'site/slots/slottype/feature/subtpl_right' )->bind( 'slot', $slot );
-			}
-			
-			if ($slot = $page->getSlot('feature', 'feature4' ))
-			{
-			//	echo View::factory( 'site/slots/slottype/feature/subtpl_right' )->bind( 'slot', $slot );
-			}
+			echo $page->getSlot('feature', 'feature1' )->show();
+			echo $page->getSlot('feature', 'feature2' )->show();
 		?>
 		<?//= O::f('chunk_linkset_v')->get_chunk(O::f('site_page')->get_homepage()->id,'quicklinks','quicklinks');?>
 	</div>

@@ -14,9 +14,9 @@ class Slot_Cms extends Slot {
 	*
 	* @return string Editable slot HTML.
 	*/
-	public function show( $header = null, $footer = null )
+	public function show()
 	{
-		return $this->slot->show();
+		return "<div>" . $this->slot->show() . "</div>";
 	}
 }
 
