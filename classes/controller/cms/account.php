@@ -46,7 +46,7 @@ class Controller_Cms_Account extends Controller_Template_Cms {
 			$person = ORM::factory('person')->with( 'version' )->where( 'emailaddress', '=', $email )->find();
 			
 			// $this->auth does the actual logging in, we just do some cleaning up after.
-			if ($this->auth->login( $person->version->emailaddress, $password, $persist ))
+			if ($this->auth->login( $person->emailaddress, $password, $persist ))
 			{				
 				// Log the activity, so we can see what everyone's been getting up to.
 				Model_Activitylog::log( $this->person, 'login' );

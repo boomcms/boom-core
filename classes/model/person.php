@@ -10,21 +10,18 @@
 * @todo Finish saving - including handling versioning. i.e. when we save create a new version. This is going to be a common problem across our versioned models.
 * 
 */
-class Model_Person extends ORM {
+class Model_Person extends ORM_Versioned {
 	/**
 	* Properties to create relationships with Kohana's ORM
 	*/
 	protected $_table_name = 'person';
-	protected $_has_one = array( 
-		'version'	=> array( 'model' => 'version_person', 'foreign_key' => 'id' )
-	);
+
 	protected $_has_many = array( 
 		'versions'			=> array( 'model' => 'version_person', 'foreign_key' => 'id' )
 		//'sent_messages'		=> array( 'model' => 'message' ),
 		//'received_messages'	=> array( 'model' => 'message' )
 	);
 	protected $_belongs_to = array( 'version_page' => array( 'model' => 'version_page', 'foreign_key' => 'audit_person' ) );
-	protected $_load_with = array( 'version' );
 	
 	/**
 	* Set the user's password.

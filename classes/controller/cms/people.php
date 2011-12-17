@@ -34,7 +34,7 @@ class Controller_Cms_People extends Controller_Template_Cms {
 		$v->lastname = Arr::get( 'post', 'firstname', null );		
 		$v->emailaddress = Arr::get( 'post', 'firstname', null );
 		
-		$person->version = $v;
+		$person = $v;
 		$person->save();				
 	}
 	
