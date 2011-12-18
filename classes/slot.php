@@ -7,8 +7,13 @@
 * @copyright 2011, Hoop Associates
 */
 
-abstract class Slot extends ORM {
+abstract class Slot implements Showable {
+	protected $slot;
 	
+	protected function __construct( Slot $s )
+	{
+		$this->slot = $s;	
+	}	
 	/**
 	* Factory method for generating slots.
 	*
@@ -20,7 +25,7 @@ abstract class Slot extends ORM {
 	*/ 
 	public static function factory( $type, Model_Page $page, $slotname, $editable = null )
 	{
-		$slot = parent::factory( $type )->where( 'page_id', '=', $page->id )->and_where( 'slotname', '=', $slotname )->find();
+		$slot = ORM::factory( $type )->where( 'page_id', '=', $page->id )->and_where( 'slotname', '=', $slotname )->find();
 		
 		/*
 		This is how it should work - but disabled during development (haven't created the cms/site page classes yet).
@@ -40,10 +45,13 @@ abstract class Slot extends ORM {
 	
 	public function __toString()
 	{
-		return $this->show();
+		return $this->slot->show();
 	}
 	
-	abstract function show();
+	public function show()
+	{
+		$this->slot->show();
+	}
 }
 
 ?>

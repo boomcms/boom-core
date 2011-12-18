@@ -6,7 +6,7 @@
 * @copyright 2011, Hoop Associates
 */
 
-class Slot_Cms extends Slot_Decorator {
+class Slot_Cms extends Slot {
 	public function show()
 	{
 	

@@ -6,7 +6,7 @@
 * @copyright 2011, Hoop Associates
 */
 
-class Slot_Site extends Slot_Decorator {
+class Slot_Site extends Slot {
 	/**
 	* Returns false if no slot is loaded.
 	* As site slots aren't editable they don't have defaults which may be changed.
@@ -15,9 +15,9 @@ class Slot_Site extends Slot_Decorator {
 	* @param Slot $slot
 	* @return mixed
 	*/
-	function __construct( Slot $slot )
+	protected function __construct( Slot $slot )
 	{
-		if (!$this->loaded())
+		if (!$slot->loaded())
 		{
 			return false;
 		}
@@ -26,12 +26,6 @@ class Slot_Site extends Slot_Decorator {
 			return parent::__construct( $slot );
 		}
 	}
-	
-	public function show()
-	{
-		return $this->slot->show();
-	}
-
 }
 
 ?>
