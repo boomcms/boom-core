@@ -28,7 +28,7 @@ class Controller_Error extends Controller_Template
 	
 	/**
 	* 404 Error handler
-	* This may be called as a sub-request where a page object couldn't be found.
+	* This should be called as a sub-request where a page object couldn't be found.
 	* @see http://kohanaframework.org/3.2/guide/api/Request#factory
 	* @return void
 	*
