@@ -7,13 +7,14 @@
 * @copyright 2011, Hoop Associates
 */
 
-abstract class Slot implements Showable {
+abstract class Slot implements iSlot {
 	protected $slot;
 	
 	protected function __construct( Slot $s )
 	{
 		$this->slot = $s;	
 	}	
+	
 	/**
 	* Factory method for generating slots.
 	*

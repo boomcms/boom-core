@@ -8,7 +8,7 @@
 * @copyright 2011, Hoop Associates
 */
 
-interface Showable
+interface iSlot
 {
 	public function show();
 }
