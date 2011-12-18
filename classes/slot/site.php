@@ -1,11 +1,12 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
 /**
+* Site slot decorator.
+* 
 * @package Slots
 * @author Hoop Associates	www.thisishoop.com	mail@hoopassociates.co.uk
 * @copyright 2011, Hoop Associates
 */
-
 class Slot_Site extends Slot {
 	/**
 	* Returns false if no slot is loaded.

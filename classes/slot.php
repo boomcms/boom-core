@@ -6,10 +6,16 @@
 * @author Hoop Associates	www.thisishoop.com	mail@hoopassociates.co.uk
 * @copyright 2011, Hoop Associates
 */
-
 abstract class Slot implements iSlot {
 	protected $slot;
 	
+	/**
+	* Slot constructor
+	* Assigns the passed slot to the $slot property.
+	*
+	* @param Slot $slot A slot object
+	* @return void
+	*/
 	protected function __construct( Slot $s )
 	{
 		$this->slot = $s;	
@@ -49,9 +55,14 @@ abstract class Slot implements iSlot {
 		return $this->slot->show();
 	}
 	
+	/**
+	* Calls the show() method on the decorated slot.
+	*
+	* @return string
+	*/
 	public function show()
 	{
-		$this->slot->show();
+		return $this->slot->show();
 	}
 }
 
