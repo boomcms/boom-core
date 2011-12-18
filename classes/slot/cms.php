@@ -7,7 +7,11 @@
 */
 
 class Slot_Cms extends Slot_Decorator {
-
+	public function show()
+	{
+	
+	
+	}
 }
 
 ?>

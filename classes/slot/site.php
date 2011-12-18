@@ -7,6 +7,10 @@
 */
 
 class Slot_Site extends Slot_Decorator {
+	public function show()
+	{
+
+	}
 
 }
 
