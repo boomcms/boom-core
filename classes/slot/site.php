@@ -16,7 +16,7 @@ class Slot_Site extends Slot {
 	* @param Slot $slot
 	* @return mixed
 	*/
-	protected function __construct( Slot $slot )
+	protected function __construct( iSlot $slot )
 	{
 		if (!$slot->loaded())
 		{

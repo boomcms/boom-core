@@ -16,7 +16,7 @@ abstract class Slot implements iSlot {
 	* @param Slot $slot A slot object
 	* @return void
 	*/
-	protected function __construct( Slot $s )
+	protected function __construct( iSlot $s )
 	{
 		$this->slot = $s;	
 	}	
