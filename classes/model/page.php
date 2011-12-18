@@ -110,6 +110,16 @@ class Model_Page extends ORM {
 	private $_save_children = false;
 	
 	/**
+	* Holds an array of the slots embedded in the page.
+	* Ensures we only query the database once for each slot - and not everytime we want to use the slot.
+	* Used by the getSlot() method
+	*
+	* @access private
+	* @var array
+	*/
+	private $_slots = array();
+	
+	/**
 	* Retrieves a page object using the ORM before checking that it hasn't been deleted. 
 	* Pretends that the page wasn't found if it's been deleted.
 	* Checks the cache first before using the database.
@@ -313,14 +323,23 @@ class Model_Page extends ORM {
 	}
 	
 	/**
+	* Retrieves a slot belonging to the page, identified by a slotname.
 	*
+	* @param string $type The type of slot to show.
+	* @param string $slotname The name of the slot
+	* @param boolean $editable Whether to allow the slot to be editable.
 	*
-	*
+	* @uses slot::factory()
+	* @return string The HTML representation of the slot
 	*/
-	public function getChunk( $type, $slotname, $html_before = null, $html_after = null)
+	public function getSlot( $type, $slotname, $editable = null)
 	{
+		if (!in_array( $this->_slots, $slotname ))
+		{
+			$this->_slots[ $slotname ] = Slot::factory( $type, $this, $slotname, $editable );	
+		}
 		
-		
+		return $this->_slots[ $slotname ];	
 	}
 	
 	/**

@@ -14,17 +14,10 @@ abstract class Slot_Decorator extends Slot {
 		$this->slot = $s;	
 	}	
 	
-	public function __toString()
-	{
-		return $this->slot->show();
-	}
-	
 	public function getSlotname()
 	{
 		return $this->slot->slotname;
 	}
-	
-	abstract function show();
 }
 
 ?>

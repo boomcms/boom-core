@@ -9,20 +9,41 @@
 
 abstract class Slot extends ORM {
 	
-	public static function factory( $type, $page_id, $slotname )
+	/**
+	* Factory method for generating slots.
+	*
+	* @param string $type The type of slot.
+	* @param Model_Page $page The page which the slot belongs to.
+	* @param string $slotname The slotname which identifies the slot
+	* @param boolean $editable Whether editing of the slot should be enabled.
+	* @return Slot
+	*/ 
+	public static function factory( $type, Model_Page $page, $slotname, $editable = null )
 	{
-		$slot = parent::factory( $type )->where( 'page_id', '=', $page_id )->and_where( 'slotname', '=', $slotname )->find();
+		$slot = parent::factory( $type )->where( 'page_id', '=', $page->id )->and_where( 'slotname', '=', $slotname )->find();
 		
-		switch ($mode)
+		/*
+		This is how it should work - but disabled during development (haven't created the cms/site page classes yet).
+		
+		if ($editable !== false && $page instanceof Page_Cms )
 		{
-			case 'cms':
-				return new Slot_Cms( parent::factory( $slot ) );
-				break;
-			default:
-				return new Slot_Site( parent::factory( $slot ) );
-		}	
+			return new Slot_Cms( $slot );
+		}
+		else
+		{
+			return new Slot_Site( $slot );
+		}
+		*/
+		
+		return new Slot_Cms( $slot );
 	}
 	
+	public function __toString()
+	{
+		return $this->show();
+	}
+	
+	abstract function show();
 }
 
 ?>
