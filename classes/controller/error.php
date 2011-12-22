@@ -16,6 +16,7 @@ class Controller_Error extends Controller_Template_Site
 	*/
  	public function __construct( Request $request, Response $response )
  	{
+		//print_r( $request->initial() );die();
 		parent::__construct( $request, $response );
 		
 		if ($request->is_external() && !Model_Permission_Page::may_i( Model_Permission_Page::EDIT, $this->page, $this->person ))

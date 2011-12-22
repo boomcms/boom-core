@@ -21,9 +21,7 @@ class Model_Page extends ORM_Versioned {
 		'uris'		=> array('model' => 'page_uri', 'foreign_key' => 'id'),
 		'chunks'	=> array('model' => 'chunk', 'through' => 'chunk_page' )
 	);
-	protected $_belongs_to = array(
-		'page'		=> array('foreign_key' => 'id' )
-	);
+	protected $_belongs_to = array( 'version_page_uri' => array( 'foreign_key' => 'page_id' ) );
 	
 	/**
 	* Page invisible value (stored in page_status column)

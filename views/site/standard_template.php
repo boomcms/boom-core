@@ -53,6 +53,8 @@
 				echo View::factory( 'cms/subtpl_bar' );
 				echo "</div>";
 			}
+			
+			echo new View('site/nav/top');
 
 			echo $subtpl_main;
 

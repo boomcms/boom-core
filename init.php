@@ -14,7 +14,6 @@ foreach( $dependencies as $dep )
 	}
 }
 
-
 /**
 * Defines a shortcut for /cms/account pages (login, logout, etc.) so that account doesn't have to be used in the URL.
 *
@@ -26,7 +25,6 @@ Route::set('auth', 'cms/<action>',
 	->defaults(array(
 		'controller' => 'cms_account'
 	));
-
 	
 /**
 * Defines the route for /cms pages.
@@ -41,4 +39,9 @@ Route::set('cms', '<directory>/(<controller>(/<action>(/<id>)))',
 		'action'     => 'index',
 	));
 	
+Route::set('home', 'home/')
+	->defaults(array(
+		'controller' => 'default',
+		'action'     => 'index',
+	));
 ?>

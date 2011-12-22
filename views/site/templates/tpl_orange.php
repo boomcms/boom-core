@@ -3,8 +3,6 @@
 	# Hoop Associates   www.thisishoop.com   mail@hoopassociates.co.uk
 ?>
 
-<?= new View('site/nav/top');?>
-
 <div class="wrapper">
 	<?= new View('site/subtpl_siteheader');?>
 	<div id="navigation">

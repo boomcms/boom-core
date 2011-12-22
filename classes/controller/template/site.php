@@ -20,14 +20,14 @@ class Controller_Template_Site extends Controller_Template
 	public $template = 'site/standard_template';
 	
 	public function before()
-	{
+	{	
 		parent::before();
 		
 		// Add the header subtemplate.
 		$this->template->subtpl_header = View::factory( 'site/subtpl_header' );
 		
 		// Add the main subtemplate.
-		$this->template->subtpl_main = View::factory( $this->subtpl_main->version->filename );
+		$this->template->subtpl_main = View::factory( $this->subtpl_main->filename );
 		
 		// Footer templates
 		$subtpl_footer = View::factory( 'site/subtpl_footer' );

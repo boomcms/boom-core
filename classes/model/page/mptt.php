@@ -15,7 +15,7 @@ class Model_Page_Mptt extends ORM {
 	*/
 	protected $_table_name = 'page_mptt';
 	protected $_belongs_to = array( 'page' => array( 'foreign_key' => 'page_id' ) );
-	protected $_has_one = array( 'page' => array( 'foregin_key' => 'id' ) );
+	protected $_has_one = array( 'page' => array( 'foreign_key' => 'id' ) );
 	
 	/**
 	* Store the old left value when it's changed so that we can close the gap in the tree if we move this page elsewhere.
@@ -98,7 +98,7 @@ class Model_Page_Mptt extends ORM {
 	}
 	
 	public function getTree() {
-		return array_merge( $this->getAncestors(), array($this), $this->getChildren() );
+		return array_merge( $this->getAncestors(), $this->getChildren() );
 	}
 	
 	/**

@@ -6,7 +6,7 @@
 * @copyright 2011, Hoop Associates
 */
 
-class Controller extends Sledge_Controller {}
+abstract class Controller extends Sledge_Controller {}
 	
 	
 ?>
