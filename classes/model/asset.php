@@ -7,21 +7,15 @@
 * @copyright 2011, Hoop Associates
 *
 */
-class asset_Model extends ORM {
+class Model_Asset extends ORM_Versioned {
 	/**
 	* Properties to create relationships with Kohana's ORM
 	*/
-	protected $table_name = 'asset';
+	protected $_table_name = 'asset';
 	protected $has_one = array( 
-		'version'			=> array('model' => 'asset_v' ),
 		'asset_type'		=> array('model' => 'asset_type' ),
 		'encoding'			=> array('model' => 'asset_encoding' )
 	);
-	protected $has_many = array( 
-		'versions'	=> array('model' => 'asset_v', 'foreign_key' => 'id'),
-	);
-	protected $load_with = array( 'version' );
-	protected $foreign_key = array( 'version' => 'active_vid' );
 	
 	/**
 	* Value for asset status published.
@@ -34,16 +28,6 @@ class asset_Model extends ORM {
 	* @var integer
 	*/
 	const STATUS_PUBLISHED = 2;
-	
-	/**
-	*
-	* @uses asset_decorator_Model::getDecoration
-	*/
-	public function __construct( $key ) {
-		parent::__construct( $key );
-		
-		return asset_decorator_Model::getDecoration( $this );
-	}
 	
 	/**
 	* Returns a human readable asset status (currently published or unpublished).
