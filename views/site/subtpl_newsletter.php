@@ -4,7 +4,7 @@
 	if ($newsletter_page->loaded())
 	{
 		?>
-			<form id="newsletter" method="post" action="<?= $newsletter_page->getAbsoluteUri() ;?>#newsletter-form">
+			<form id="newsletter" method="post" action="<?= $newsletter_page->uri() ;?>#newsletter-form">
 				<fieldset>
 					<input type="hidden" value="newsletter" name="validation-rules"/>
 					<input type="hidden" value="1" name="small-form"/>

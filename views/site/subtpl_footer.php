@@ -7,7 +7,7 @@
 <?
 	//foreach ( $footer_pages as $footer_page )
 	//{
-	//	echo "<span><a href='" . $p->getAbsoluteUri() . "'>" . $p->version->title . "</a></span>";
+	//	echo "<span><a href='" . $p->uri() . "'>" . $p->version->title . "</a></span>";
 	//}
 ?>
 

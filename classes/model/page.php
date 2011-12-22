@@ -252,7 +252,7 @@ class Model_Page extends ORM_Versioned {
 	* @todo Direct copy and past from MY_Uri library. Needs to be made properly.
 	* @return string The absolute URI.
 	*/
-	public function getAbsoluteUri() {
+	public function uri() {
 		// Get the base URL of the current request.
 		$url = URL::base();
 		

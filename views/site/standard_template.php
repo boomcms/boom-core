@@ -41,7 +41,7 @@
 		<?
 			if ( $page->hasRss() )
 			{
-				echo "<link rel='alternate' type='application/rss+xml' title='RSS' href='" . $page->getAbsoluteUri() . "/.rss' />";
+				echo "<link rel='alternate' type='application/rss+xml' title='RSS' href='" . $page->uri() . "/.rss' />";
 			}
 		?>
 	</head>

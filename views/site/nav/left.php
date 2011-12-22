@@ -28,7 +28,7 @@
 					}
 
 					$right[] = $node;	
-					echo "<li><a href='" . $node->page->getAbsoluteUri() . "'>" . $node->page->title . "</a></li>\n";		
+					echo "<li><a href='" . $node->page->uri() . "'>" . $node->page->title . "</a></li>\n";		
 				}		
 			}
 		?>

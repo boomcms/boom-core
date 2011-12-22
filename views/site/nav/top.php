@@ -16,7 +16,7 @@
 			{
 				$first = false;
 			}
-			echo "<a href='" . $node->page->getAbsoluteUri() . "'";
+			echo "<a href='" . $node->page->uri() . "'";
 		
 			if ($node->page->id === $page->id)
 			{

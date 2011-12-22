@@ -21,7 +21,7 @@ $news = News::get_news('news',3);
 						<?if ($news) {?>
 							<?foreach ($news as $page) {?>
 								<li>
-									<a href="<?=$page->getAbsoluteUri()?>">
+									<a href="<?=$page->uri()?>">
 										<h3><?=$page->current_version->getTitle()?></h3>
 										<p style="color: #999;"><?=date('j F Y',$page->current_version->visiblefrom_timestamp)?></p>
 										<p><?=preg_replace('/<[^>]+>/', '', O::f('chunk_text_v')->get_chunk($page->rid,'standfirst'))?></p>
