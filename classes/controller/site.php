@@ -6,10 +6,8 @@
 * @author Hoop Associates	www.thisishoop.com	mail@hoopassociates.co.uk
 * @copyright 2011, Hoop Associates
 */
-class Controller_Template_Site extends Controller_Template
+class Controller_Site extends Sledge_Controller
 {
-	public $auto_render = false;
-	
 	/**
 	* Set the default template.
 	* Used by Controller_Template to know which template to use.
@@ -19,10 +17,39 @@ class Controller_Template_Site extends Controller_Template
 	*/
 	public $template = 'site/standard_template';
 	
+	/**
+	* The requested page.
+	* @access protected
+	* @var object
+	*/
+	protected $page;
+	
 	public function before()
-	{	
-		parent::before();
+	{
+		// All pages and templates are hard coded for the CMS so this is all site specific.
+		// Find the requested page.
+		$uri = ($this->request->initial()->uri() == '/')? '' : $this->request->initial()->uri();
+		$page_uri = ORM::factory( 'page_uri' )->where( 'uri', '=', $uri )->find();
 		
+		// Load the relevant page object.
+		$this->page = ORM::factory( 'page', $page_uri->page_id );	
+		
+		// If the page wasn't found by URI load the 404 page.
+		// TODO: check that the requested URI wasn't the 404 page or we end up in an infinate loop.
+		if (!$this->page->loaded())
+			Request::factory( 'error/404' )->execute();
+			
+		// Load the relevant template object.
+		$template = ORM::factory( 'template', $this->page->template_id );
+
+		$this->subtpl_main = $template;
+		View::bind_global( 'page', $this->page );
+		
+		parent::before();
+	}
+	
+	public function after()
+	{	
 		// Add the header subtemplate.
 		$this->template->subtpl_header = View::factory( 'site/subtpl_header' );
 		
@@ -46,7 +73,7 @@ class Controller_Template_Site extends Controller_Template
 		$this->template->subtpl_main->subtpl_footer = $subtpl_footer;
 		$this->template->subtpl_main->subtpl_footer->footer_pages = $footer_page_objects;
 		
-		View::bind_global( 'page', $this->page );
+		parent::after();
 	}
 }
 

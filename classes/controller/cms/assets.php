@@ -8,7 +8,7 @@
 * @copyright 2011, Hoop Associates
 */
 
-class Controller_Cms_Assets extends Controller_Template_Cms
+class Controller_Cms_Assets extends Controller_Cms
 {
 	
 	public function action_upload()

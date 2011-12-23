@@ -7,7 +7,7 @@
 * @author Hoop Associates	www.thisishoop.com	mail@hoopassociates.co.uk
 * @copyright 2011, Hoop Associates Ltd
 */
-class Controller_Cms_Templates extends Controller_Template_Cms
+class Controller_Cms_Templates extends Controller_Cms
 {
 
 	public function before()

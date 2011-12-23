@@ -3,12 +3,16 @@
 /**
 * Controller to handle CMS account related actions - login, logout, reset password, etc.
 * Most of the actual work is done by the Auth module but this controller adds extra stuff like logging and displaying the templates.
+* Although this is part of the CMS, and part of the /cms controller directory it extends the site controller.
+* This is because the cms controller requires a user to be logged in.
+* Which would just be silly here.
 *
 * @package Controller
 * @author Hoop Associates	www.thisishoop.com	mail@hoopassociates.co.uk
 * @copyright 2011, Hoop Associates Ltd
 */
-class Controller_Cms_Account extends Controller_Template_Cms {	
+class Controller_Cms_Account extends Controller_Site
+{	
 	/**
 	* Log a user into the CMS
 	* @uses Auth::login()

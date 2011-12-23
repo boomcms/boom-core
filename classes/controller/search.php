@@ -6,7 +6,7 @@
 * @author Hoop Associates	www.thisishoop.com	mail@hoopassociates.co.uk
 * @copyright 2011, Hoop Associates
 */
-class Controller_Search extends Controller_Template
+class Controller_Search extends Controller_Site
 {
 	/**
 	* Search index method.

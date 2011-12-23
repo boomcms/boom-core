@@ -6,7 +6,7 @@
 * @author Hoop Associates	www.thisishoop.com	mail@hoopassociates.co.uk
 * @copyright 2011, Hoop Associates
 */
-class Controller_Error extends Controller_Template_Site
+class Controller_Error extends Controller_Site
 {
 	/**
 	* Error page specific constructor.
