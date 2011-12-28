@@ -97,6 +97,18 @@ class Controller_Error extends Controller_Site
 			Request::factory( 'cms/page/add' )->method( Request::POST )->post( array( 'uri' => $initial_uri ) )->execute();
 		}
 	}
+	
+	public function action_403()
+	{
+		if (! (Auth::instance()->logged_in()) )
+		{
+			Request::factory( '/cms/login' )->execute();
+		}
+		else
+		{
+			$this->subtpl_main = 'error/403';
+		}	
+	}
 }
 
 ?>

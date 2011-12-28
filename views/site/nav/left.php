@@ -15,13 +15,13 @@
 	<ul>
 		<?
 			$right = array();
-			foreach( $page->mptt->getTree() as $node )
+			foreach( $page->mptt->fulltree() as $node )
 			{
 				if ( $node->page->isVisible() && $node->page->visible_in_leftnav == 't' )
 				{
 					if (count( $right ) > 0)
 					{
-						while ($right[ count($right)-1 ]->right_val < $node->right_val) 
+						while ($right[ count($right)-1 ]->rgt < $node->rgt) 
 						{
 							array_pop( $right );
 						}

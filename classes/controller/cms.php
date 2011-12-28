@@ -29,6 +29,13 @@ class Controller_Cms extends Sledge_Controller
 			Request::factory( '/cms/login' )->execute();
 			exit();
 		}
+		
+		// Check the user has the required permissions to view this page.
+		if (!Permissions::may_i( do this )
+		{
+			Request::factory( 'error/403' )->execute();
+		}
+		
 		*/	
 		
 		parent::before();

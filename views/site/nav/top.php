@@ -5,8 +5,9 @@
 
 <div id="topnav" class="block">		
 	<?
-		$first = true;
-		foreach( $page->mptt->getRoute() as $node )
+		$first = true;	
+		// Show the parent pages.
+		foreach( $page->mptt->parents() as $node )
 		{
 			if ($first === false)
 			{
@@ -16,15 +17,14 @@
 			{
 				$first = false;
 			}
-			echo "<a href='" . $node->page->uri() . "'";
-		
-			if ($node->page->id === $page->id)
-			{
-				echo " class='current'";
-			}
-		
-			echo ">" . $node->page->title . "</a>";
-
+			echo "<a href='" , $node->page->uri() , "'>" , $node->page->title , "</a>";
 		}
+		
+		// Show this page.
+		if ($first === false)
+		{
+			echo " &gt; ";
+		}
+		echo "<a href='", $page->uri(), "' class='current'>" , $page->title, "</a>";
 	?>
 </div>
