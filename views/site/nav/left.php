@@ -4,8 +4,8 @@
 	
 	/*
 	This is a half arse effort at the left nav.
-	It currently just spits out the whole tree - without creating sub-lists for child pages.
-	It only checks the visible_in_leftnav value and not the cms value if we're in the CMS.
+	It currently doesn't check for hidden_in_leftnav or hidden_in_leftnav_cms properties
+	Need to auto colapse pages which aren't part of the current sub-tree.
 	There's a lot of PHP in here. It could perhaps be moved to a Nav class?
 	But it's a start!
 	*/
@@ -13,24 +13,35 @@
 
 <div id="nav" class="block">
 	<ul>
-		<?
-			$right = array();
-			foreach( $page->mptt->fulltree() as $node )
+	<?
+		$level = 1;		
+		
+		foreach ($page->mptt->fulltree() as $node)
+		{	
+			// Going down?
+			if ($node->lvl > $level)
 			{
-				if ( $node->page->isVisible() && $node->page->visible_in_leftnav == 't' )
-				{
-					if (count( $right ) > 0)
-					{
-						while ($right[ count($right)-1 ]->rgt < $node->rgt) 
-						{
-							array_pop( $right );
-						}
-					}
-
-					$right[] = $node;	
-					echo "<li><a href='" . $node->page->uri() . "'>" . $node->page->title . "</a></li>\n";		
-				}		
+				$level = $node->lvl;
+			}	
+			
+			// Going up?
+			if ($node->lvl < $level)
+			{
+				echo str_repeat( "</li></ul></li>", $level - $node->lvl );
+				$level = $node->lvl;				
+			}	
+				
+			echo "<li><a href='" , $node->page->uri() , "'>" , $node->page->title , "</a>\n";	
+			
+			if ($node->has_children())
+			{
+				echo "<ul>";
 			}
-		?>
-	</ul>
+			else 
+			{
+				echo "</li>";
+			}
+		}
+	?>
+	
 </div>
