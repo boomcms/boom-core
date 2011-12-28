@@ -5,7 +5,6 @@
 	/*
 	This is a half arse effort at the left nav.
 	It currently doesn't check for hidden_in_leftnav or hidden_in_leftnav_cms properties
-	Need to auto colapse pages which aren't part of the current sub-tree.
 	There's a lot of PHP in here. It could perhaps be moved to a Nav class?
 	But it's a start!
 	*/
@@ -33,9 +32,17 @@
 				
 			echo "<li><a href='" , $node->page->uri() , "'>" , $node->page->title , "</a>\n";	
 			
+			// Start a sub-list if this page has children. Otherwise close the list item.
 			if ($node->has_children())
 			{
-				echo "<ul>";
+				echo "<ul";
+				
+				// Hide sub-trees by default
+				if (!$node->is_in_parents( $page->mptt ) && $node->page_id !== $page->id)
+				{
+					echo " class='hidden'";
+				}
+				echo ">";
 			}
 			else 
 			{
