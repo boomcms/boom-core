@@ -334,7 +334,7 @@ class Model_Page extends ORM_Versioned {
 	* Prevents a page from being saved unless it is a cms_page object.
 	* The cms_page_Model overrides this function to allow saving.
 	*/
-	function save( Validation $validation = NULL )
+	/*function save( Validation $validation = NULL )
 	{
 		if (!$this->_can_be_saved)
 			throw new Kohana_Exception( "page::save() must be called from an instance of cms_page" );
@@ -356,7 +356,7 @@ class Model_Page extends ORM_Versioned {
 		$cache->set( 'page_model_by_id_' . $this->id, $this );
 		
 		return $return;
-	}
+	}*/
 }
 
 

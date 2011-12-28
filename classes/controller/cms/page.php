@@ -9,7 +9,6 @@
 */
 class Controller_Cms_Page extends Controller_Cms
 {
-
 	public function action_add()
 	{
 		// Find the URI we were called with.
@@ -30,6 +29,7 @@ class Controller_Cms_Page extends Controller_Cms
 	
 	public function action_save()
 	{
+	die('3');
 		$page = ORM::factory( 'page', $page_id );
 		$page->version->template_rid = $template_rid;
 		$page->version->default_child_template_rid = $default_child_template_rid;
@@ -38,6 +38,32 @@ class Controller_Cms_Page extends Controller_Cms
 		$page->version->setTitle( $title );	
 		$page->version->visiblefrom_timestamp = $visibilefrom_timestamp;
 		$page->version->visiblveto_timestamp = $visibleto_timestamp;
+	}
+	
+	public function action_clone()
+	{
+		$page_id = $this->request->param( 'id' );
+		$page_id = (int) preg_replace( "/[^0-9]+/", "", $page_id );
+		$page = ORM::factory( 'page', $page_id );
+		
+		if (!$page->loaded())
+		{
+			// Do something.
+			exit();
+		}
+
+		// Copy the versioned column values.
+		$newpage = ORM::factory( 'page' );
+
+		foreach( array_keys( $page->version->object() ) as $column )
+		{
+			if ($column != $page->version->primary_key())
+			{
+				$newpage->version->$column = $page->$column;			
+			}
+		}
+		
+		
 	}
 	
 	public function action_index()
