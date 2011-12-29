@@ -43,9 +43,6 @@ class Controller_Cms_Page extends Controller_Cms
 	{
 		$parent = $this->_page;
 		
-		// Find the URI we were called with.
-		$uri = $this->request->initial()->uri();
-		
 		// Create a new page object.
 		$page = ORM::factory( 'page' );
 		
@@ -55,7 +52,6 @@ class Controller_Cms_Page extends Controller_Cms
 		//$page->add( $page_uri );
 		$page->title = 'Untitled';
 		
-		echo "Adding a page at " . URL::base( $this->request ) . $uri . "!";
 	}
 	
 	
