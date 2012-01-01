@@ -38,8 +38,8 @@ class Controller_Site extends Sledge_Controller
 		
 		// If the page wasn't found by URI load the 404 page.
 		// TODO: check that the requested URI wasn't the 404 page or we end up in an infinate loop.
-		if (!$this->page->loaded())
-			Request::factory( 'error/404' )->execute();
+		//if (!$this->page->loaded())
+		//	Request::factory( 'error/404' )->execute();
 			
 		// Load the relevant template object.
 		$template = ORM::factory( 'template', $this->page->template_id );
@@ -55,7 +55,6 @@ class Controller_Site extends Sledge_Controller
 		$this->template->subtpl_header = View::factory( 'site/subtpl_header' );
 		
 		// Footer templates
-		$subtpl_footer = View::factory( 'site/subtpl_footer' );
 		$footer_page_objects = array();
 
 		$footer_pages = array('contact', 'newsletter', 'rssfeeds');
@@ -68,7 +67,7 @@ class Controller_Site extends Sledge_Controller
 				$footer_page_objects[] = $p;
 			}
 		}
-		$this->template->subtpl_main->subtpl_footer = $subtpl_footer;
+		$this->template->subtpl_main->subtpl_footer = View::factory( 'site/subtpl_footer' );
 		$this->template->subtpl_main->subtpl_footer->footer_pages = $footer_page_objects;
 		
 		parent::after();

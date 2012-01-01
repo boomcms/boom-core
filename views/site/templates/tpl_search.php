@@ -15,21 +15,34 @@
 			<?= $page->getSlot('text', 'standfirst', '<h2 class="standFirst">', '</h2>','ch,ins'); ?>
 		</div>
 		<?= $page->getSlot('text', 'bodycopy', '<div id="content">', '</div>');?>			
-		<ol class="search-results">
-		<? foreach($results as $result) {?>
-			<li<? if ($q == 0) { echo ' class="first"'; } ?>>
-				<h3>
-					<a href="<?=$result->getPrimaryUri();?>"><?=$p->title;?></a>
-				</h3>
-				<p>
-				<?
-					$ex = explode("</p>",$result->getSlot('text', 'standfirst'));
-					echo strip_tags($ex[0]);
-				?>
-				</p>
-			</li>
-		<?}?>
-		</ol>
+		<?
+			if ($count === 0)
+			{
+				echo "Your search returned no results.";
+			}
+			else 
+			{
+				echo "<ol class='search-results'>";
+				foreach($results as $result)
+				{
+					?>
+						<li<? if ($q == 0) { echo ' class="first"'; } ?>>
+							<h3>
+								<a href="<?=$result->getPrimaryUri();?>"><?=$p->title;?></a>
+							</h3>
+							<p>
+							<?
+								$ex = explode("</p>",$result->getSlot('text', 'standfirst'));
+								echo strip_tags($ex[0]);
+							?>
+							</p>
+						</li>
+					<?
+				}	
+
+				echo "</ol>";
+			}
+		?>
 
 		<?= $page->getSlot('feature', 'feature3', 'centre');?>
 		<?= $page->getSlot('feature', 'feature4', 'centre');?>
