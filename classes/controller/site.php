@@ -26,6 +26,8 @@ class Controller_Site extends Sledge_Controller
 	
 	public function before()
 	{
+		parent::before();
+		
 		// All pages and templates are hard coded for the CMS so this is all site specific.
 		// Find the requested page.
 		$uri = ($this->request->initial()->uri() == '/')? '' : $this->request->initial()->uri();
@@ -42,19 +44,15 @@ class Controller_Site extends Sledge_Controller
 		// Load the relevant template object.
 		$template = ORM::factory( 'template', $this->page->template_id );
 
-		$this->subtpl_main = $template;
+		// Add the main subtemplate.
+		$this->template->subtpl_main = View::factory( $template->filename );
 		View::bind_global( 'page', $this->page );
-		
-		parent::before();
 	}
 	
 	public function after()
 	{	
 		// Add the header subtemplate.
 		$this->template->subtpl_header = View::factory( 'site/subtpl_header' );
-		
-		// Add the main subtemplate.
-		$this->template->subtpl_main = View::factory( $this->subtpl_main->filename );
 		
 		// Footer templates
 		$subtpl_footer = View::factory( 'site/subtpl_footer' );

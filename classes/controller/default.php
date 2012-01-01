@@ -4,7 +4,7 @@ class Controller_Default extends Controller_Site
 {
 	public function action_index()
 	{
-		$this->template;
+		//$this->template;
 	}
 
 }

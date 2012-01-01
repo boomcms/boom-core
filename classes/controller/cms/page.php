@@ -44,14 +44,40 @@ class Controller_Cms_Page extends Controller_Cms
 		$parent = $this->_page;
 		
 		// Create a new page object.
-		$page = ORM::factory( 'page' );
-		
-		//$page_uri = ORM::factory( 'page_uri' );
-		//$page_uri->version->uri = $uri;
-		
-		//$page->add( $page_uri );
+		$page = ORM::factory( 'page' );	
 		$page->title = 'Untitled';
+		$page->save();
 		
+		// Add the page to the tree.
+		$mptt = ORM::factory( 'mptt_page' );
+		$mptt->page_id = $page->id;
+		$mptt->insert( $parent->mptt );
+		
+		// Create a URI for the page.
+		$page_uri = ORM::factory( 'page_uri' );
+
+		if ($parent->default_child_uri_prefix)
+			$prefix = $parent->default_child_uri_prefix . '/';
+		else
+			$prefix = ($parent->id) ? $parent->getPrimaryUri() . '/' : '';
+
+		$append = 0;
+		do {
+			$uri = URI::title( $title );
+			$uri = ($append > 0)? $uri. $append : $uri;
+			$uri = strtolower( $uri );
+
+			$append++;
+			
+			$exists = DB::select( '1' )->from( 'page_uri' )->join( 'page_uri_v', 'active_vid', 'id' )->where( 'uri', '=', $uri );
+		} while ($exists === 1);
+		
+		$page_uri->uri = $uri;
+		$page_uri->page_id = $page->id;
+		$page_uri->primary_uri = true;
+		$page_uri->save();
+		
+		Request::factory( $uri )->execute();		
 	}
 	
 	

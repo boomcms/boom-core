@@ -6,24 +6,24 @@
 	<?= new View('site/subtpl_siteheader');?>
 	<div id="navigation">
 		<?= new View('site/subtpl_logo');?>
-		<?= new View('site/subtpl_leftnav'); ?>		
+		<?= new View('site/nav/left'); ?>		
 		<?= new View('site/subtpl_newsletter');?>
 	</div>
 	<div id="main-content">
 		<div class="headings">
-			<h1 class="pageTitle"><?= $this->page->title?></h1>
-			<?= O::f('chunk_text_v')->get_chunk($this->page->rid, 'standfirst', '<h2 class="standFirst">', '</h2>','ch,ins'); ?>
+			<h1 class="pageTitle"><?= $page->title?></h1>
+			<?= $page->getSlot('text', 'standfirst', '<h2 class="standFirst">', '</h2>','ch,ins'); ?>
 		</div>
-		<?= O::f('chunk_text_v')->get_chunk($this->page->rid, 'bodycopy', '<div id="content">', '</div>');?>			
+		<?= $page->getSlot('text', 'bodycopy', '<div id="content">', '</div>');?>			
 		<ol class="search-results">
-		<? foreach($this->sr as $q => $p) {?>
+		<? foreach($results as $result) {?>
 			<li<? if ($q == 0) { echo ' class="first"'; } ?>>
 				<h3>
-					<a href="<?=$p->absolute_uri();?>"><?=$p->title;?></a>
+					<a href="<?=$result->getPrimaryUri();?>"><?=$p->title;?></a>
 				</h3>
 				<p>
 				<?
-					$ex = explode("</p>",O::f('chunk_text_v')->get_chunk($p->rid, 'standfirst'));
+					$ex = explode("</p>",$result->getSlot('text', 'standfirst'));
 					echo strip_tags($ex[0]);
 				?>
 				</p>
@@ -31,13 +31,13 @@
 		<?}?>
 		</ol>
 
-		<?= O::f('chunk_feature_v')->get_chunk($this->page->rid, 'feature3', 'centre');?>
-		<?= O::f('chunk_feature_v')->get_chunk($this->page->rid, 'feature4', 'centre');?>
+		<?= $page->getSlot('feature', 'feature3', 'centre');?>
+		<?= $page->getSlot('feature', 'feature4', 'centre');?>
 	</div>
 	<div id="aside">	
-		<?= O::f('chunk_feature_v')->get_chunk($this->page->rid, 'feature1', 'right');?>
-		<?= O::f('chunk_feature_v')->get_chunk($this->page->rid, 'feature2', 'right');?>
-		<?= O::f('chunk_linkset_v')->get_chunk(O::f('site_page')->get_homepage()->id,'quicklinks','quicklinks');?>
+		<?= $page->getSlot('feature', 'feature1', 'right');?>
+		<?= $page->getSlot('feature', 'feature2', 'right');?>
+		<?//= O::f('chunk_linkset_v')->getSlot(O::f('site_page')->get_homepage()->id,'quicklinks','quicklinks');?>
 	</div>
 					
 	<?= new View('site/subtpl_footer'); ?>

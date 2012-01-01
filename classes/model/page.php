@@ -223,16 +223,13 @@ class Model_Page extends ORM_Versioned {
     * Gets an object referring to the first version of the page - used for getting the creation time / author.
     * @return page_v_Model page_v_model object for first version of the page.
     */
-	public function getFirstVersion() {
-		if ($this->_firstVersion === null) {
-			$cache = Cache::Instance();
-			$this->_firstVersion = $cache->get( 'page_first_version_for_page_id_' . $this->id );
-                    
-			if ($this->_firstVersion === null) {
-				$this->_firstVersion = ORM::factory( 'page_v')->orderby('audit_time', 'asc')->find_by_rid( $this->id ); 
-				$cache->set( 'page_first_version_for_page_id_' . $this->id, $this->_firstVersion, 'page_v_model' );
-			}       
+	public function getFirstVersion()
+	{
+		if ($this->_firstVersion === null)
+		{
+			$this->_firstVersion = ORM::factory( 'version_page')->order_by('audit_time', 'asc')->where( 'rid', '=', $this->id )->limit( 1 )->find(); 
 		}         
+		
 		return $this->_firstVersion;
 	}
 	
@@ -329,34 +326,6 @@ class Model_Page extends ORM_Versioned {
 		}
 		
 	}
-	
-	/**
-	* Prevents a page from being saved unless it is a cms_page object.
-	* The cms_page_Model overrides this function to allow saving.
-	*/
-	/*function save( Validation $validation = NULL )
-	{
-		if (!$this->_can_be_saved)
-			throw new Kohana_Exception( "page::save() must be called from an instance of cms_page" );
-		
-	
-		$return =  parent::save();
-		
-		// Do we need to save our child pages as well?
-		if ($this->_save_children === true)
-		{
-			foreach ($this->getChildren() as $child)
-			{
-				$child->save();
-			}
-		}
-		
-		// Save the new page details to cache.
-		$cache = Cache::Instance();
-		$cache->set( 'page_model_by_id_' . $this->id, $this );
-		
-		return $return;
-	}*/
 }
 
 
