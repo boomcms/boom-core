@@ -39,6 +39,18 @@ Route::set('cms', '<directory>/(<controller>(/<action>(/<id>)))',
 		'action'     => 'index',
 	));
 	
+/**
+* Route for RSS feeds.
+*/
+Route::set('feeds', '<url>.<action>',
+  array(
+  	'url'	 => '.*',
+    'action' => '(rss)',
+  ))
+  ->defaults(array(
+    'controller' => 'feeds',
+  ));
+		
 Route::set('home', 'home/')
 	->defaults(array(
 		'controller' => 'default',
