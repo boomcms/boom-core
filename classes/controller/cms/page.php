@@ -132,14 +132,20 @@ class Controller_Cms_Page extends Controller_Cms
 	*/
 	public function action_delete()
 	{
-		// Call Model_Page::delete().
-		// Sets the version deleted column to true for this page and it's children.
-		// Also deletes the pages from the MPTT tree.
-		// Automatically calls Model_Page::save() to save changes.
-		$this->_page->delete();
+		$page = $this->_page;
+		$page->deleted = true;
+		
+		foreach( $page->mptt->descendants() as $p )
+		{
+			$p->page->deleted = true;
+			$p->save();
+		}
+		
+		$page->mptt->delete();
+		$page->save();			
 		
 		// Go back to the homepage.
-		Request::factory( '/' )->execute();
+		$this->request->redirect( '/' );
 	}
 }
 

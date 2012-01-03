@@ -6,8 +6,17 @@
 * @author Hoop Associates	www.thisishoop.com	mail@hoopassociates.co.uk
 * @copyright 2011, Hoop Associates
 */
-class Controller_Error extends Controller_Site
+class Controller_Error extends Kohana_Controller_Template
 {
+	/**
+	* Set the default template.
+	* Used by Controller_Template to know which template to use.
+	* @see http://kohanaframework.org/3.0/guide/kohana/tutorials/hello-world#that-was-good-but-we-can-do-better
+	* @access public
+	* @var string
+	*/
+	public $template = 'site/standard_template';
+	
 	/**
 	* Error page specific constructor.
 	* Ensures that error pages can only be loading internally and not by entering the URL in the browser.
@@ -26,7 +35,6 @@ class Controller_Error extends Controller_Site
 		}
 	}
 	
-	
 	/**
 	* 404 Error handler
 	* This should be called as a sub-request where a page object couldn't be found.
@@ -36,6 +44,8 @@ class Controller_Error extends Controller_Site
 	*/
 	public function action_404()
 	{
+		die( 'page not found' );
+		/*
 		// Determine the requested URI of the *initial* request.
 		$initial_uri = Request::initial()->uri();
 		
@@ -86,16 +96,18 @@ class Controller_Error extends Controller_Site
 		
 		// Not writable? Show the 404 page.
 		if ($writable === false)
-		{		
+		{		*/
 			// Set the page property. The controller template will handle rendering etc.
-			$page_uri = ORM::factory( 'page_uri' )->where( 'uri', '=', 'error/404' );
+			$page_uri = ORM::factory( 'page_uri' )->where( 'uri', '=', 'error/404' )->find();
 			$this->page = ORM::factory( 'page',  $page_uri->page_id );
-		}
+			
+			print_r( $this->page );die();
+	/*	}
 		else
 		{
 			// Send another sub-request to the add page method with the URI we're adding the page to.
 			Request::factory( 'cms/page/add' )->method( Request::POST )->post( array( 'uri' => $initial_uri ) )->execute();
-		}
+		}*/
 	}
 	
 	public function action_403()
