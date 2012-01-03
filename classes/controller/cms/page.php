@@ -87,15 +87,7 @@ class Controller_Cms_Page extends Controller_Cms
 		$oldpage = $this->_page;
 
 		// Copy the versioned column values.
-		$newpage = ORM::factory( 'page' );
-
-		foreach( array_keys( $oldpage->version->object() ) as $column )
-		{
-			if ($column != $oldpage->version->primary_key())
-			{
-				$newpage->$column = $oldpage->$column;			
-			}
-		}
+		$newpage = $oldpage->copy();
 		
 		// Save the new page.
 		$newpage->save();
