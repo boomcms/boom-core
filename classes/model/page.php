@@ -249,7 +249,7 @@ class Model_Page extends ORM_Versioned {
 	*/
 	public function delete()
 	{
-		foreach( $this->mptt->descendants() as $p )
+		foreach( $this->mptt->children() as $p )
 		{
 			$p->page->delete();
 		}
