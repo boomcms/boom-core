@@ -6,12 +6,12 @@
 	<?= new View('site/subtpl_siteheader');?>
 	<div id="navigation">
 		<?= new View('site/subtpl_logo');?>
-		<?= new View('site/subtpl_leftnav'); ?>		
+		<?= new View('site/nav/left'); ?>		
 	</div>
 	<div id="main-content">
 		<div class="headings">
-			<h1 class="pageTitle"><?= $this->page->title?></h1>
-			<?= O::f('chunk_text_v')->get_chunk($this->page->rid, 'standfirst', '<h2 class="standFirst">', '</h2>','ch,ins'); ?>
+			<h1 class="pageTitle"><?= $page->title?></h1>
+			<?= $page->getSlot('text', 'standfirst', '<h2 class="standFirst">', '</h2>','ch,ins'); ?>
 		</div>
 		<?$news_posts = News::get_news('blog', 6, 'blog_landing');
 		if ($news_posts and count($news_posts)){

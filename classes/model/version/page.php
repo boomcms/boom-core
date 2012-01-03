@@ -127,38 +127,6 @@ class Model_Version_Page extends ORM {
 	}
 	
 	/**
-	* Set the page's title.
-	* Method ensures that a new, unique uri is generated from the new new title and stored as a page URI.
-	*
-	* @uses URI::title()
-	* @param string $title
-	* @return void
-	*/
-	public function setTitle( $title ) {
-		$this->title = $title;
-
-		if ($this->parent_rid && $this->getParent()->default_child_uri_prefix)
-			$prefix = $this->getParent()->default_child_uri_prefix . '/';
-		else
-			$prefix = ($this->parent_rid) ? $this->getParent()->getPrimaryUri() . '/' : '';
-
-		$append = 0;
-		do {
-			$uri = URI::title( $title );
-			$uri = ($append > 0)? $uri. $append : $uri;
-			$uri = strtolower( $uri );
-
-			$append++;
-			
-			$exists = $this->db->select( '1' )->from( 'page_uri' )->join( 'page_uri_v', 'active_vid', 'id' )->where( 'uri', '=', $uri );
-		} while ($exists === 1);
-		
-		$page_uri = ORM::factory( 'page_uri' );
-		$page_uri->version->uri = $uri;
-		$this->add( $page_uri );
-	}
-	
-	/**
 	* Set the child ordering policy.
 	* Sets the property and does associated stuff like calling page_mptt::setOrder().
 	*
@@ -172,25 +140,6 @@ class Model_Version_Page extends ORM {
 		// Reorder the MPTT tree.
 		$this->_page->mptt->setOrderBy( $policy );		
 	}
-	
-	/**
-	* Saves the page version object.
-	* If the version is new then just does parent::save()
-	* If it isn't but it has been changed then we clone the current object, nullify the primary key and then save it to create a new record in the database.
-	*
-	* @param Validation $validation Validation rules.
-	*/
-	public function save( Validation $validation = NULL)
-	{
-		if ($this->loaded() && $this->changed())
-		{
-			$new_version = clone $this;
-			$new_version->$_primary_key = null;
-			return $new_version->save();
-		} else
-			return parent::save();
-	}	
-
 }
 
 ?>

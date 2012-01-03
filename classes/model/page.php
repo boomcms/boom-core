@@ -242,6 +242,23 @@ class Model_Page extends ORM_Versioned {
 	}
 	
 	/**
+	* Delete a page.
+	* Ensures child pages are deleted and that the pages are deleted from the MPTT tree.
+	*
+	* @return ORM
+	*/
+	public function delete()
+	{
+		foreach( $this->mptt->descendants() as $p )
+		{
+			$p->page->delete();
+		}
+		
+		$this->mptt->delete();
+		return parent::delete();
+	}
+	
+	/**
 	* Returns the page's absolute URI.
 	* This method uses Kohana's URL::base() method to generate the base URL from the current request (protocol, hostnane etc.) {@link http://kohanaframework.org/3.2/guide/api/URL#base}
 	* @uses URL::base()
@@ -323,8 +340,57 @@ class Model_Page extends ORM_Versioned {
 	
 			// Set a flag for self::save() to indicate that we've got child pages which need to be saved.
 			$this->_save_children = true;		
-		}
+		}	
+	}
+	
+	/**
+	* Generates a unique URI for the page based on the title.
+	*
+	* @return string The new peimary URI
+	*/
+	public function generateUri()
+	{
+		$parent = $this->mptt->parent()->page;
+	
+		if ($parent->default_child_uri_prefix)
+			$prefix = $parent->default_child_uri_prefix . '/';
+		else
+			$prefix = $parent->getPrimaryUri() . '/';
+
+		$append = 0;
+		$start_uri = $prefix . URL::title( strtolower( $this->title ) );
+	
+		// If we're adding a page to the root node the URL ends up starting with a '/', which we don't want.
+		// So check for and remove a '/' from the start of the URI.
+		if ($start_uri[0] == '/')
+			$start_uri = substr( $start_uri, 1 );
 		
+		// Get a unique URI.
+		// This should be done as part of one of the models - for instance when we set the title property of the page.
+		// For simplicity of getting adding a page working to some extent it's here for now, it can be moved later.
+		do {
+			$uri = ($append > 0)? $start_uri. $append : $start_uri;
+			$append++;
+		
+			$exists = (int) DB::select( 'page_uri.id' )
+						->from( 'page_uri' )
+						->join( 'page_uri_v', 'inner' )
+						->on('active_vid', '=', 'page_uri_v.id' )
+						->where( 'uri', '=', $uri )
+						->limit( 1 )
+						->execute()
+						->get( 'id' );
+		} while ($exists !== 0);
+	
+		// Create a URI for the page.
+		$page_uri = ORM::factory( 'page_uri' );
+		$page_uri->uri = $uri;
+		$page_uri->page_id = $this->id;
+		$page_uri->primary_uri = true;
+		$page_uri->save();	
+		
+		$this->_primary_uri = $uri;	
+		return $uri;
 	}
 }
 
