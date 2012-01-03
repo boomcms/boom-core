@@ -44,40 +44,57 @@ class Controller_Cms_Page extends Controller_Cms
 		$parent = $this->_page;
 		
 		// Create a new page object.
-		$page = ORM::factory( 'page' );	
+		$page = ORM::factory( 'page' );
+		$page->page_status = Model_Page::STATUS_INVISIBLE;	
 		$page->title = 'Untitled';
+		$page->version_status = Model_Page::STATUS_DRAFT;
+		$page->template_id = ($parent->default_child_template_id)? $parent->default_child_template_id : $parent->template_id;
 		$page->save();
 		
 		// Add the page to the tree.
-		$mptt = ORM::factory( 'mptt_page' );
+		$mptt = ORM::factory( 'page_mptt' );
 		$mptt->page_id = $page->id;
-		$mptt->insert( $parent->mptt );
-		
-		// Create a URI for the page.
-		$page_uri = ORM::factory( 'page_uri' );
+		$mptt->insert_as_last_child( $parent->mptt );
+		$mptt->save();
 
 		if ($parent->default_child_uri_prefix)
 			$prefix = $parent->default_child_uri_prefix . '/';
 		else
-			$prefix = ($parent->id) ? $parent->getPrimaryUri() . '/' : '';
+			$prefix = ($parent->loaded()) ? $parent->getPrimaryUri() . '/' : '';
 
 		$append = 0;
+		$start_uri = $prefix . URL::title( strtolower( $page->title ) );
+		
+		// If we're adding a page to the root node the URL ends up starting with a '/', which we don't want.
+		// So check for and remove a '/' from the start of the URI.
+		if ($start_uri[0] == '/')
+			$start_uri = substr( $start_uri, 1 );
+			
+		// Get a unique URI.
+		// This should be done as part of one of the models - for instance when we set the title property of the page.
+		// For simplicity of getting adding a page working to some extent it's here for now, it can be moved later.
 		do {
-			$uri = URI::title( $title );
-			$uri = ($append > 0)? $uri. $append : $uri;
-			$uri = strtolower( $uri );
-
+			$uri = ($append > 0)? $start_uri. $append : $start_uri;
 			$append++;
 			
-			$exists = DB::select( '1' )->from( 'page_uri' )->join( 'page_uri_v', 'active_vid', 'id' )->where( 'uri', '=', $uri );
-		} while ($exists === 1);
+			$exists = (int) DB::select( 'page_uri.id' )
+						->from( 'page_uri' )
+						->join( 'page_uri_v', 'inner' )
+						->on('active_vid', '=', 'page_uri_v.id' )
+						->where( 'uri', '=', $uri )
+						->limit( 1 )
+						->execute()
+						->get( 'id' );
+		} while ($exists !== 0);
 		
+		// Create a URI for the page.
+		$page_uri = ORM::factory( 'page_uri' );
 		$page_uri->uri = $uri;
 		$page_uri->page_id = $page->id;
 		$page_uri->primary_uri = true;
 		$page_uri->save();
 		
-		Request::factory( $uri )->execute();		
+		$this->request->redirect( $uri );
 	}
 	
 	

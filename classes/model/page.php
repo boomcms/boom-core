@@ -148,7 +148,7 @@ class Model_Page extends ORM_Versioned {
 	* @return string Version status
 	*/
 	public function getVersionStatus() {
-		switch( $this->version->version_status ) {
+		switch( $this->version_status ) {
 			case self::STATUS_DRAFT:
 				return 'Draft';
 				break;
@@ -162,7 +162,7 @@ class Model_Page extends ORM_Versioned {
 				return 'Published';
 				break;
 			default:
-				throw new Kohana_Exception( "Page version has unknown version status: " . $this->version->version_status );
+				return null;
 		}	
 	}
 	
