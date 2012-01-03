@@ -11,7 +11,7 @@
 * @author Hoop Associates	www.thisishoop.com	mail@hoopassociates.co.uk
 * @copyright 2011, Hoop Associates Ltd
 */
-class Controller_Cms_Account extends Controller_Site
+class Controller_Cms_Account extends Kohana_Controller
 {	
 	/**
 	* Log a user into the CMS
@@ -22,7 +22,7 @@ class Controller_Cms_Account extends Controller_Site
 	{
 		$protocol = $this->request->protocol();
 		
-		if ($this->auth->logged_in())
+		if (Auth::instance()->logged_in())
 		{
 			//You're already logged in dummy, just go away.
 			$uri = '/';
@@ -34,9 +34,9 @@ class Controller_Cms_Account extends Controller_Site
 		}
 		
 		// Gather form data.
-		$email = Arr::get( 'post', 'email', null );
-		$password = Arr::get( 'post', 'password', null );
-		$persist = Arr::get( 'post', 'persist', false );
+		$email = Arr::get( $_POST, 'email', null );
+		$password = Arr::get( $_POST, 'password', null );
+		$persist = Arr::get( $_POST, 'persist', false );
 		$msg = '';
 		
 		if ($email && $password)
@@ -50,7 +50,7 @@ class Controller_Cms_Account extends Controller_Site
 			$person = ORM::factory('person')->with( 'version' )->where( 'emailaddress', '=', $email )->find();
 			
 			// $this->auth does the actual logging in, we just do some cleaning up after.
-			if ($this->auth->login( $person->emailaddress, $password, $persist ))
+			if (Auth::instance()->login( $person->emailaddress, $password, $persist ))
 			{				
 				// Log the activity, so we can see what everyone's been getting up to.
 				Model_Activitylog::log( $this->person, 'login' );
