@@ -26,8 +26,9 @@ class Controller_Cms_Account extends Kohana_Controller
 		{
 			//You're already logged in dummy, just go away.
 			$uri = '/';
-				
-			if ($cms_uri = Cookie::get( 'cms_uri' ) != 'cms')
+			$cms_uri = Cookie::get( 'cms_uri' );
+			
+			if ($cms_uri != 'cms')
 				$uri .= $cms_uri;
 
 			$this->request->redirect( $uri );
@@ -57,8 +58,9 @@ class Controller_Cms_Account extends Kohana_Controller
 
 				// Where shall we send them next?
 				$uri = '/';
+				$cms_uri = Cookie::get( 'cms_uri' );
 				
-				if ($cms_uri = Cookie::get( 'cms_uri' ) != 'cms')
+				if ($cms_uri != 'cms')
 					$uri .= $cms_uri;
 
 				// Be gone with you.

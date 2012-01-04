@@ -40,6 +40,18 @@ class Controller_Cms extends Sledge_Controller
 		
 		parent::before();
 	}
+	
+	public function action_index()
+	{
+		if (!$this->auth->logged_in())
+		{
+			Request::factory( 'cms/login' )->execute();
+		}
+		else
+		{
+			$this->request->redirect( '/' );
+		}	
+	}
 
 	public function after()
 	{
