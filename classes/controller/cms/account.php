@@ -27,10 +27,10 @@ class Controller_Cms_Account extends Kohana_Controller
 			//You're already logged in dummy, just go away.
 			$uri = '/';
 				
-			if ($this->input->cookie( 'cms_uri' ) != 'cms')
-				$uri .= $this->input->cookie( 'cms_uri' );
+			if ($cms_uri = Cookie::get( 'cms_uri' ) != 'cms')
+				$uri .= $cms_uri;
 
-			Request::factory( $uri )->execute();
+			$this->request->redirect( $uri );
 		}
 		
 		// Gather form data.
@@ -47,22 +47,22 @@ class Controller_Cms_Account extends Kohana_Controller
 				$email .= "@hoopassociates.co.uk";
 				
 			// Do this now and we can pass it to Auth::login() so we only have to query the database once.
-			$person = ORM::factory('person')->with( 'version' )->where( 'emailaddress', '=', $email )->find();
+			$person = ORM::factory('person')->where( 'emailaddress', '=', $email )->find();
 			
 			// $this->auth does the actual logging in, we just do some cleaning up after.
-			if (Auth::instance()->login( $person->emailaddress, $password, $persist ))
+			if (Auth::instance()->login( $person, $password, $persist ))
 			{				
 				// Log the activity, so we can see what everyone's been getting up to.
-				Model_Activitylog::log( $this->person, 'login' );
+				Model_Activitylog::log( $person, 'login' );
 
 				// Where shall we send them next?
 				$uri = '/';
 				
-				if ($this->input->cookie( 'cms_uri' ) != 'cms')
-					$uri .= $this->input->cookie( 'cms_uri' );
+				if ($cms_uri = Cookie::get( 'cms_uri' ) != 'cms')
+					$uri .= $cms_uri;
 
 				// Be gone with you.
-				Request::factory( $uri )->execute();
+				$this->request->redirect( $uri );
 			} else
 				$msg = "We couldn't find your account.	Please try again or <a class=\"resetpasswordlink\" href=\"/cms/forgot-password\">click here</a> to reset your password.";
 		}
@@ -93,14 +93,14 @@ class Controller_Cms_Account extends Kohana_Controller
 	*/
 	public function action_logout()
 	{
-		if ($this->auth->logged_in())
+		if (Auth::instance()->logged_in())
 		{
-			Model_Activitylog::log( $this->person, 'logout' );
+			Model_Activitylog::log( Auth::instance()->get_user(), 'logout' );
 		
-			$this->auth->logout(TRUE);
+			Auth::instance()->logout(TRUE);
 		}
 		
-		Request::factory( '/' )->execute();
+		$this->request->redirect( '/' );
 	}
 	
 	/**

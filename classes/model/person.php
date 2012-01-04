@@ -23,31 +23,6 @@ class Model_Person extends ORM_Versioned {
 	);
 	protected $_belongs_to = array( 'version_page' => array( 'model' => 'version_page', 'foreign_key' => 'audit_person' ) );
 	
-	/**
-	* Set the user's password.
-	*
-	* @param string $text_password Plain text password which will be encrypted and set as the user's password.
-	* @return void
-	*/
-	public function setPassword( $text_password )
-	{
-		$this->current_version->password = '{SHA}' . base64_encode(sha1($_POST['password'],true));
-		
-	}
-	
-	/**
-	* Set the user's email address. Ensures that email addresses are lowercase.
-	*
-	* @param string $emailaddress
-	* @return void
-	*/
-	public function setEmailAddress( $emailaddress )
-	{
-		$this->emailaddress = strtolower( $this->emailaddress );
-
-
-	}
-	
 	
 	/**
 	* Shortcut method for getting a user's full name.
@@ -57,22 +32,6 @@ class Model_Person extends ORM_Versioned {
 	public function getName()
 	{
 		return $this->version->firstname . " " . $this->version->lastname;
-	}
-	
-	/**
-	* Determine whether the person is a Hoop user.
-	*
-	* @return boolean True if they're Hoop, false if a guest or some other user.
-	*/
-	public function isHoop()
-	{
-		return true;
-	}
-	
-	public function save( Validation $validation = NULL )
-	{
-
-		
 	}
 	
 }
