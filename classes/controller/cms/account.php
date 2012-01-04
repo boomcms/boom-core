@@ -14,6 +14,13 @@
 class Controller_Cms_Account extends Kohana_Controller
 {	
 	/**
+	* Return values.
+	* @access private
+	* @var array
+	*/
+	private $_return;
+	
+	/**
 	* Log a user into the CMS
 	* @uses Auth::login()
 	* @return void
@@ -21,24 +28,19 @@ class Controller_Cms_Account extends Kohana_Controller
 	public function action_login() 
 	{
 		$protocol = $this->request->protocol();
+		$redirect_after = '/' . Cookie::get( 'redirect_after' );
+		$this->return['tab'] = 'login';
 		
 		if (Auth::instance()->logged_in())
 		{
 			//You're already logged in dummy, just go away.
-			$uri = '/';
-			$cms_uri = Cookie::get( 'cms_uri' );
-			
-			if ($cms_uri != 'cms')
-				$uri .= $cms_uri;
-
 			$this->request->redirect( $uri );
 		}
 		
 		// Gather form data.
-		$email = Arr::get( $_POST, 'email', null );
+		$this->return['email'] = $email = Arr::get( $_POST, 'email', null );
 		$password = Arr::get( $_POST, 'password', null );
 		$persist = Arr::get( $_POST, 'persist', false );
-		$return = array();
 		$msg = '';
 		
 		if ($email && $password)
@@ -55,57 +57,31 @@ class Controller_Cms_Account extends Kohana_Controller
 			if (Auth::instance()->login( $person, $password, $persist ))
 			{				
 				// Log the activity, so we can see what everyone's been getting up to.
+				Cookie::delete( 'redirect_after' );
 				Model_Activitylog::log( $person, 'login' );
 
-				// Where shall we send them next?
-				$uri = '/';
-				$cms_uri = Cookie::get( 'cms_uri' );
-				
-				if ($cms_uri != 'cms')
-					$uri .= $cms_uri;
-
-				$return['message'] = 'Login successful.';
-				$return['outcome'] = 'success';
-				$return['redirecturl'] = $uri;
+				$this->return['message'] = 'Login successful.';
+				$this->return['outcome'] = 'success';
+				$this->return['redirecturl'] = $redirect_after;
 			}
 			else
 			{
-				$return['message'] = "We couldn't find your account. Please try again or <a class=\"resetpasswordlink\" href=\"/cms/account/forgotten\">click here</a> to reset your password.";
-				$return['outcome'] = 'error';
+				$this->return['message'] = "We couldn't find your account. Please try again or <a class=\"resetpasswordlink\" href=\"/cms/account/forgotten\">click here</a> to reset your password.";
+				$this->return['outcome'] = 'error';
 			}
 		}
 		else
 		{
 			if ($email && !$password)
 			{
-				$return['message'] = "Please enter your password.";
-				$return['outcome'] = 'error';
+				$this->return['message'] = "Please enter your password.";
+				$this->return['outcome'] = 'error';
 			}
 			else if ($password && !$email)
 			{
-				$return['message'] = "Sorry, you gave us your password but we don't know who you are.";
-				$return['outcome'] = 'error';
+				$this->return['message'] = "Sorry, you gave us your password but we don't know who you are.";
+				$this->return['outcome'] = 'error';
 			}
-		}
-		
-		//We've not given up already? Oh well, we'd best give them something to look at.
-		if ($this->request->is_ajax())
-		{
-			echo json_encode( $return );
-			exit();
-		}
-		else
-		{
-			// Login form
-			$template = View::factory( 'cms/tpl_login' );
-			$template->client = Kohana::$config->load('core')->get('client_name');
-			if (isset( $return['message'] ))
-				$template->msg = $return['message'];
-			$template->email = $email;
-			$template->tab = 'login';
-			$template->persist = $persist;
-			echo $template;
-			exit();
 		}
 	}
 	
@@ -135,8 +111,8 @@ class Controller_Cms_Account extends Kohana_Controller
 	*/
 	public function action_forgotten()
 	{
-		$return = array();
-		$email = Arr::get( $_POST, 'email' );
+		$this->return['email'] = $email = Arr::get( $_POST, 'email' );
+		$this->return['tab'] = 'reset';
 
 		if (!empty( $email ))
 		{
@@ -169,31 +145,34 @@ class Controller_Cms_Account extends Kohana_Controller
 							'Reply-To: mail@hoopassociates.co.uk' . "\r\n" ;
 				mail($to, $subject, $message, $headers);
 
-				$return['outcome'] = 'success';
-				$return['message'] = 'Your password will be emailed to you shortly. If you do not receive it today, contact the Hoop team for assistance.';
+				$this->return['outcome'] = 'success';
+				$this->return['message'] = 'Your password will be emailed to you shortly. If you do not receive it today, contact the Hoop team for assistance.';
 			}
 			else
 			{
-				$return['outcome'] = 'error';
-				$return['message'] = "Sorry, we don't seem to know that one. Either try again or contact the hoop team for assistance.";
+				$this->return['outcome'] = 'error';
+				$this->return['message'] = "Sorry, we don't seem to know that one. Either try again or contact the hoop team for assistance.";
 			}
 		}
-		
+	}
+	
+	public function after()
+	{
 		if ($this->request->is_ajax())
 		{
-			echo json_encode( $return );
+			echo json_encode( $this->return );
 		}
 		else
 		{
 			// Password reset form
 			$template = View::factory( 'cms/tpl_login' );
-			$template->email = $email;
 			$template->client = Kohana::$config->load('core')->get('client_name');
 		
-			if (isset( $return['message'] ))
-				$template->msg = $return['message'];
+			foreach( array_keys( $this->return ) as $var )
+			{
+				$template->$var = $this->return[ $var ];
+			}
 		
-			$template->tab = 'reset';
 			echo $template;
 		}
 		

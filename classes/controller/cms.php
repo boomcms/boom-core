@@ -24,6 +24,7 @@ class Controller_Cms extends Sledge_Controller
 		// Require a user to be logged in for anything cmsy.
 		if (!Auth::instance()->logged_in())
 		{
+			Cookie::set( 'redirect_after', Request::current()->uri() );
 			Request::factory( '/cms/login' )->execute();
 			exit();
 		}
