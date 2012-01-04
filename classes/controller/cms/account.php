@@ -155,6 +155,7 @@ class Controller_Cms_Account extends Kohana_Controller
 				
 				$person->password =  '{SHA}' . base64_encode(sha1($passwd, true));
 				$person->consecutive_failed_login_counter = 0;
+				$person->enabled = true;
 				$person->save();
 				
 				// Send an email with the new password.
