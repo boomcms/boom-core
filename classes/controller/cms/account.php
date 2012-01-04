@@ -38,6 +38,7 @@ class Controller_Cms_Account extends Kohana_Controller
 		$email = Arr::get( $_POST, 'email', null );
 		$password = Arr::get( $_POST, 'password', null );
 		$persist = Arr::get( $_POST, 'persist', false );
+		$return = array();
 		$msg = '';
 		
 		if ($email && $password)
@@ -63,28 +64,49 @@ class Controller_Cms_Account extends Kohana_Controller
 				if ($cms_uri != 'cms')
 					$uri .= $cms_uri;
 
-				// Be gone with you.
-				$this->request->redirect( $uri );
-			} else
-				$msg = "We couldn't find your account.	Please try again or <a class=\"resetpasswordlink\" href=\"/cms/forgot-password\">click here</a> to reset your password.";
+				$return['message'] = 'Login successful.';
+				$return['outcome'] = 'success';
+				$return['redirecturl'] = $uri;
+			}
+			else
+			{
+				$return['message'] = "We couldn't find your account. Please try again or <a class=\"resetpasswordlink\" href=\"/cms/account/forgotten\">click here</a> to reset your password.";
+				$return['outcome'] = 'error';
+			}
 		}
 		else
 		{
 			if ($email && !$password)
-				$msg = "Please enter your password.";
+			{
+				$return['message'] = "Please enter your password.";
+				$return['outcome'] = 'error';
+			}
 			else if ($password && !$email)
-				$msg = "Sorry, you gave us your password but we don't know who you are.";
+			{
+				$return['message'] = "Sorry, you gave us your password but we don't know who you are.";
+				$return['outcome'] = 'error';
+			}
 		}
 		
-		//We've not given up already? Oh well, best show them a template I guess.
-		// Login form
-		$template = View::factory( 'cms/tpl_login' );
-		$template->client = Kohana::$config->load('core')->get('client_name');
-		$template->msg = $msg;
-		$template->email = $email;
-		$template->persist = $persist;
-		echo $template;
-		exit();
+		//We've not given up already? Oh well, we'd best give them something to look at.
+		if ($this->request->is_ajax())
+		{
+			echo json_encode( $return );
+			exit();
+		}
+		else
+		{
+			// Login form
+			$template = View::factory( 'cms/tpl_login' );
+			$template->client = Kohana::$config->load('core')->get('client_name');
+			if (isset( $return['message'] ))
+				$template->msg = $return['message'];
+			$template->email = $email;
+			$template->tab = 'login';
+			$template->persist = $persist;
+			echo $template;
+			exit();
+		}
 	}
 	
 	/**
@@ -111,55 +133,69 @@ class Controller_Cms_Account extends Kohana_Controller
 	* @uses Text_Password
 	* @return void
 	*/
-	public function action_reset()
+	public function action_forgotten()
 	{
-		$email = $this->input->post( 'email', null, true );
-		$client = $this->input->get( 'client', 'Default client name', true );
-		$msg = '';
-		$cache = Cache::Instance();
+		$return = array();
+		$email = Arr::get( $_POST, 'email' );
 
-		if (!empty($_POST)) {
-			// find the user with this email address, return an error if we can't find them, make sure we do the search case insensitively
-
-			if (!$person = $cache->get( 'user_person_by_email_' . $email ))
-				$person = O::fa('person')->find_by_emailaddress(strtolower( $email ));
+		if (!empty( $email ))
+		{
+			$person = ORM::factory( 'person' )->where( 'emailaddress', '=', $email )->find();
 			
-			if ($person->emailaddress) {	
+			if ($person->loaded())
+			{	
 				// Log that someone's done something
-				Model_Activitylog::log( $this->request->client_ip, $this->person, 'password reset' );
+				Model_Activitylog::log( $person, 'password reset' );
 
 				// Create a new password and update the user.
+				// FYI Text_Password is a pear module.
 				include 'Text/Password.php';
 				$tp = new Text_Password();
 				$passwd = $tp->create(8);
+				
 				$person->password =  '{SHA}' . base64_encode(sha1($passwd, true));
 				$person->consecutive_failed_login_counter = 0;
-				$person->save_activeversion();
+				$person->save();
+				
+				// Send an email with the new password.
 				$to = $person->emailaddress;
-				$subject = Kohana::config('core.clientnamelong') . ' CMS: Your password has been reset';
+				$subject = Kohana::$config->load('config')->get('client_name') . ' CMS: Your password has been reset';
 				$message = new View('cms/email/tpl_login_reset');
+				$message->person = $person;
+				$message->password = $passwd;
+				
 				$headers = 'From: hoopmaster@hoopassociates.co.uk' . "\r\n" .
 							'Reply-To: mail@hoopassociates.co.uk' . "\r\n" ;
 				mail($to, $subject, $message, $headers);
-				
-				// Make sure we update the cache.
-				$cache->set( 'user_person_by_email_' . $email, $person, 'user_setting' );
-				$cache->set( 'user_person_by_rid_' . $person->rid, $person, 'user_setting' );
 
-				$msg = 'Your password will be emailed to you shortly.  If you do not receive it today, contact the hoop team for assistance.';
-				$this->passwordresetflag = 1;
-			} else
-				$msg = "Sorry, we don't seem to know that one.	Either try again or contact the hoop team for assistance.";
+				$return['outcome'] = 'success';
+				$return['message'] = 'Your password will be emailed to you shortly. If you do not receive it today, contact the Hoop team for assistance.';
+			}
+			else
+			{
+				$return['outcome'] = 'error';
+				$return['message'] = "Sorry, we don't seem to know that one. Either try again or contact the hoop team for assistance.";
+			}
 		}
 		
-		// Main template.
-		$v = new View( 'cms/standard_template');
-		$v->set_global( 'title', 'Password reset' );
-		// Password reset subtemplate
-		$v->subtpl = new View( 'cms/templates/tpl_password' );
-		$v->subtpl->msg = $msg;
-		$v->subtpl->email = $email;
+		if ($this->request->is_ajax())
+		{
+			echo json_encode( $return );
+		}
+		else
+		{
+			// Password reset form
+			$template = View::factory( 'cms/tpl_login' );
+			$template->email = $email;
+			$template->client = Kohana::$config->load('core')->get('client_name');
 		
-		$v->render( true );
+			if (isset( $return['message'] ))
+				$template->msg = $return['message'];
+		
+			$template->tab = 'reset';
+			echo $template;
+		}
+		
+		exit();
 	}
 }
