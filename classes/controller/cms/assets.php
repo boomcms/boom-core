@@ -9,8 +9,7 @@
 */
 
 class Controller_Cms_Assets extends Controller_Cms
-{
-	
+{	
 	public function action_upload()
 	{
 		
@@ -32,8 +31,16 @@ class Controller_Cms_Assets extends Controller_Cms
 	{
 		$this->template->subtpl_main = View::factory( 'cms/pages/assets/index' );
 		
+		$assets = ORM::factory( 'asset' )->find_all()->as_array();
+		$this->template->subtpl_main->assets = $assets;
 	}
 	
+	public function after()
+	{	
+		$this->template->title = 'Asset Manager';
+		
+		parent::after();
+	}
 }
 
 ?>

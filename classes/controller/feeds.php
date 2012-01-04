@@ -52,6 +52,11 @@ class Controller_Feeds extends Kohana_Controller
 		echo $this->page->title;
 		exit;
 	}
+	
+	public function action_404()
+	{
+		die( 'feed not found' );
+	}
 
 }
 

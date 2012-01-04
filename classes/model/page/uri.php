@@ -8,7 +8,7 @@
 * @todo Work out which methods we actually need from hoopbasepagemodel and implement them nicely. Then just extend ORM 
 *
 */
-class Model_Page_Uri extends ORM_Versioned {
+class Model_Page_Uri extends ORM {
 	/**
 	* Properties to create relationships with Kohana's ORM
 	*/

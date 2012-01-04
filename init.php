@@ -42,11 +42,10 @@ Route::set('cms', '<directory>/(<controller>(/<action>(/<id>)))',
 /**
 * Route for RSS feeds.
 */
-Route::set('feeds', '<url>.<action>',
-  array(
-  	'url'	 => '.*',
-    'action' => '(rss)',
-  ))
+Route::set('feeds', '(<uri>)\.<action>',
+	array(
+		'action' => 'rss'
+	))
   ->defaults(array(
     'controller' => 'feeds',
   ));

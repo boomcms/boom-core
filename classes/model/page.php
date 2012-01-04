@@ -286,8 +286,6 @@ class Model_Page extends ORM_Versioned {
 		{
 			$uri = DB::select( 'uri' )
 			->from( 'page_uri' )
-			->join( 'page_uri_v', 'inner' )
-			->on( 'active_vid', '=', 'page_uri_v.id' )
 			->where( 'page_id', '=', $this->id )
 			->and_where( 'primary_uri', '=', true )
 			->execute();
@@ -374,8 +372,6 @@ class Model_Page extends ORM_Versioned {
 		
 			$exists = (int) DB::select( 'page_uri.id' )
 						->from( 'page_uri' )
-						->join( 'page_uri_v', 'inner' )
-						->on('active_vid', '=', 'page_uri_v.id' )
 						->where( 'uri', '=', $uri )
 						->limit( 1 )
 						->execute()

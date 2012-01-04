@@ -11,7 +11,7 @@ class Model_Version_Asset extends ORM {
 	/**
 	* Properties to create relationships with Kohana's ORM
 	*/
-	protected $belongs_to = array('asset' => array('model' => 'asset'));
+	protected $_table_name = 'asset_v';
 	
 	public function get_path($asset_type=false) {
 		if ($asset_type) {
