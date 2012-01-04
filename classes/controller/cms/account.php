@@ -79,7 +79,7 @@ class Controller_Cms_Account extends Kohana_Controller
 		//We've not given up already? Oh well, best show them a template I guess.
 		// Login form
 		$template = View::factory( 'cms/tpl_login' );
-		$template->client = Kohana::$config->load('config')->get('client_name');
+		$template->client = Kohana::$config->load('core')->get('client_name');
 		$template->msg = $msg;
 		$template->email = $email;
 		$template->persist = $persist;

@@ -21,22 +21,18 @@ class Controller_Cms extends Sledge_Controller
 	
 	public function before()
 	{
-		// Require a user to be logged in.
-		// Disabled for now - logging in hasn't been implemented.
-		/*
-		if (!Auth::logged_in())
+		// Require a user to be logged in for anything cmsy.
+		if (!Auth::instance()->logged_in())
 		{
 			Request::factory( '/cms/login' )->execute();
 			exit();
 		}
 		
 		// Check the user has the required permissions to view this page.
-		if (!Permissions::may_i( do this )
+		/*if (!Permissions::may_i( do this )
 		{
 			Request::factory( 'error/403' )->execute();
-		}
-		
-		*/	
+		}*/
 		
 		parent::before();
 	}
@@ -58,7 +54,7 @@ class Controller_Cms extends Sledge_Controller
 		// Add the header subtemplate.
 		$this->template->title = 'CMS';
 		$this->template->subtpl_header = View::factory( 'site/subtpl_header' );
-		$this->template->client = Kohana::$config->load( 'core' )->get( 'clientname' );
+		$this->template->client = Kohana::$config->load('config')->get( 'client_name' );
 		
 		$actionbar = null;
 		$buttonbar = null;
