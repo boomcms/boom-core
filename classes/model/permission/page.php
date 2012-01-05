@@ -77,8 +77,12 @@ class Model_Permission_Page extends ORM
 	*/
 	public static function may_i( $what, Model_Page $page, Model_Person $person )
 	{
-		// Haven't finished writing this:
-		return true;
+		// Haven't finished writing this so
+		// As long as the user is logged in let them do it.
+		if ($person->loaded() && $person->emailaddress != 'guest@hoopassociates.co.uk')
+			return true;
+		else
+			return false;
 		
 		// Find the page's position in the tree.
 		$left_val = $page->mptt->left_val;

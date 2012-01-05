@@ -49,6 +49,11 @@ class Controller_Cms extends Sledge_Controller
 			$this->request->redirect( '/' );
 		}	
 	}
+	
+	public function action_mode()
+	{
+		die( 'hello' );
+	}
 
 	public function after()
 	{
