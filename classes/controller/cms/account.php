@@ -52,22 +52,29 @@ class Controller_Cms_Account extends Kohana_Controller
 				
 			// Do this now and we can pass it to Auth::login() so we only have to query the database once.
 			$person = ORM::factory('person')->where( 'emailaddress', '=', $email )->find();
-			
-			// $this->auth does the actual logging in, we just do some cleaning up after.
-			if (Auth::instance()->login( $person, $password, $persist ))
-			{				
-				// Log the activity, so we can see what everyone's been getting up to.
-				Cookie::delete( 'redirect_after' );
-				Model_Activitylog::log( $person, 'login' );
-
-				$this->return['message'] = 'Login successful.';
-				$this->return['outcome'] = 'success';
-				$this->return['redirecturl'] = $redirect_after;
+		
+			if ($person->enabled == 'f')
+			{
+				$this->return['outcome'] = 'locked';
 			}
 			else
-			{
-				$this->return['message'] = "We couldn't find your account. Please try again or <a class=\"resetpasswordlink\" href=\"/cms/account/forgotten\">click here</a> to reset your password.";
-				$this->return['outcome'] = 'error';
+			{	
+				// $this->auth does the actual logging in, we just do some cleaning up after.
+				if (Auth::instance()->login( $person, $password, $persist ))
+				{				
+					// Log the activity, so we can see what everyone's been getting up to.
+					Cookie::delete( 'redirect_after' );
+					Model_Activitylog::log( $person, 'login' );
+
+					$this->return['message'] = 'Login successful.';
+					$this->return['outcome'] = 'success';
+					$this->return['redirecturl'] = $redirect_after;
+				}
+				else
+				{
+					$this->return['message'] = "We couldn't find your account. Please try again or <a class=\"resetpasswordlink\" href=\"/cms/account/forgotten\">click here</a> to reset your password.";
+					$this->return['outcome'] = 'error';
+				}
 			}
 		}
 		else
