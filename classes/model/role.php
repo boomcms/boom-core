@@ -7,10 +7,9 @@
 * @copyright 2011, Hoop Associates
 * 
 */
-class Model_Group extends ORM_Versioned
+class Model_Role extends ORM_Versioned
 {
-	protected $_table_name = 'group';
-	
+	protected $_table_name = 'role';
 
 }
 
