@@ -70,7 +70,7 @@ class Model_Person extends ORM_Versioned {
 		if (!$action->loaded())
 			return false;
 			
-		return $action->permission & $this->permissions();
+		return (bool) $action->permission & $this->permissions();
 	}
 	
 	/**
