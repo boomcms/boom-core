@@ -12,20 +12,20 @@
 		<div class="headings">
 		
 			<h1 class="pageTitle"><?= $page->title?></h1>
-			<?= $page->getSlot('asset', 'newsheaderimage', 'image_news');?>
+			<?= $page->get_slot('asset', 'newsheaderimage', 'image_news');?>
 		
-			<?= $page->getSlot('text', 'standfirst', '<h2 class="standFirst">', '</h2>','ch,ins'); ?>
+			<?= $page->get_slot('text', 'standfirst', '<h2 class="standFirst">', '</h2>','ch,ins'); ?>
 		</div>
 		
-		<?= $page->getSlot('text', 'bodycopy', '<div id="content">', '</div>');?>
+		<?= $page->get_slot('text', 'bodycopy', '<div id="content">', '</div>');?>
 					
 	</div>
 	<div id="aside">
-		<?= $page->getSlot('text', 'quote', '<h3 class="quote">','</h3>','ch,ins'); ?>
+		<?= $page->get_slot('text', 'quote', '<h3 class="quote">','</h3>','ch,ins'); ?>
 		<?= new View('site/subtpl_relatednewsstories');?>
 		<?= new View('site/subtpl_news_archive');?>
-		<?= $page->getSlot('feature', 'feature1', 'right');?>
-		<?= $page->getSlot('feature', 'feature2', 'right');?>
+		<?= $page->get_slot('feature', 'feature1', 'right');?>
+		<?= $page->get_slot('feature', 'feature2', 'right');?>
 	</div>
 	<?= new View('site/subtpl_footer'); ?>
 </div>

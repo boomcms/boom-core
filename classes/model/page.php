@@ -109,7 +109,7 @@ class Model_Page extends ORM_Versioned {
 	/**
 	* Holds an array of the slots embedded in the page.
 	* Ensures we only query the database once for each slot - and not everytime we want to use the slot.
-	* Used by the getSlot() method
+	* Used by the get_slot() method
 	*
 	* @access private
 	* @var array
@@ -306,11 +306,15 @@ class Model_Page extends ORM_Versioned {
 	* @uses slot::factory()
 	* @return string The HTML representation of the slot
 	*/
-	public function getSlot( $type, $slotname, $editable = null)
+	public function get_slot( $type, $slotname, $editable = null)
 	{
 		if (!array_key_exists( $slotname, $this->_slots ))
 		{
-			$this->_slots[ $slotname ] = Slot::factory( $type, $this, $slotname, $editable );	
+			$this->_slots[ $slotname ] = ORM::factory( "chunk_$type" )
+											->with( "chunk" )
+											->on( 'chunk.active_vid', '=', "chunk_$type" . ".id" )
+											->where( 'slotname', '=', $slotname )
+											->find();
 		}
 		
 		return $this->_slots[ $slotname ];	

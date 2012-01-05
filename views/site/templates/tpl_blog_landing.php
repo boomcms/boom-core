@@ -11,7 +11,7 @@
 	<div id="main-content">
 		<div class="headings">
 			<h1 class="pageTitle"><?= $page->title?></h1>
-			<?= $page->getSlot('text', 'standfirst', '<h2 class="standFirst">', '</h2>','ch,ins'); ?>
+			<?= $page->get_slot('text', 'standfirst', '<h2 class="standFirst">', '</h2>','ch,ins'); ?>
 		</div>
 		<?$news_posts = News::get_news('blog', 6, 'blog_landing');
 		if ($news_posts and count($news_posts)){

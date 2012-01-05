@@ -34,7 +34,11 @@ class Controller_Site extends Sledge_Controller
 		$page_uri = ORM::factory( 'page_uri' )->where( 'uri', '=', $uri )->find();
 		
 		// Load the relevant page object.
-		$this->page = ORM::factory( 'page', $page_uri->page_id );	
+		// We don't load the pages directly from the database because the Page_Site and Page_Cms classes act as decorators, changing the page depending on our environment.
+		if ($this->mode == 'cms')
+			$this->page = new Page_Cms( $page_uri->page_id );
+		else
+			$this->page = new Page_Site( $page_uri->page_id );
 		
 		// If the page wasn't found by URI load the 404 page.
 		// TODO: check that the requested URI wasn't the 404 page or we end up in an infinate loop.

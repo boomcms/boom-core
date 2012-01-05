@@ -11,7 +11,7 @@ interface iSlot
 {
 
 	public function show();
-	public function getSlotname();
+	//public function getSlotname();
 	public function getTitle();
 	public function __toString();
 	

@@ -12,9 +12,9 @@
 	<div id="main-content">
 		<div class="headings">
 			<h1 class="pageTitle"><?= $page->title?></h1>
-			<?= $page->getSlot('text', 'standfirst', '<h2 class="standFirst">', '</h2>','ch,ins'); ?>
+			<?= $page->get_slot('text', 'standfirst', '<h2 class="standFirst">', '</h2>','ch,ins'); ?>
 		</div>
-		<?= $page->getSlot('text', 'bodycopy', '<div id="content">', '</div>');?>			
+		<?= $page->get_slot('text', 'bodycopy', '<div id="content">', '</div>');?>			
 		<?
 			if ($count === 0)
 			{
@@ -32,7 +32,7 @@
 							</h3>
 							<p>
 							<?
-								$ex = explode("</p>",$result->getSlot('text', 'standfirst'));
+								$ex = explode("</p>",$result->get_slot('text', 'standfirst'));
 								echo strip_tags($ex[0]);
 							?>
 							</p>
@@ -44,13 +44,13 @@
 			}
 		?>
 
-		<?= $page->getSlot('feature', 'feature3', 'centre');?>
-		<?= $page->getSlot('feature', 'feature4', 'centre');?>
+		<?= $page->get_slot('feature', 'feature3', 'centre');?>
+		<?= $page->get_slot('feature', 'feature4', 'centre');?>
 	</div>
 	<div id="aside">	
-		<?= $page->getSlot('feature', 'feature1', 'right');?>
-		<?= $page->getSlot('feature', 'feature2', 'right');?>
-		<?//= O::f('chunk_linkset_v')->getSlot(O::f('site_page')->get_homepage()->id,'quicklinks','quicklinks');?>
+		<?= $page->get_slot('feature', 'feature1', 'right');?>
+		<?= $page->get_slot('feature', 'feature2', 'right');?>
+		<?//= O::f('chunk_linkset_v')->get_slot(O::f('site_page')->get_homepage()->id,'quicklinks','quicklinks');?>
 	</div>
 					
 	<?= new View('site/subtpl_footer'); ?>

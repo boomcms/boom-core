@@ -13,7 +13,7 @@
 	<div id="main-content">
 		<div class="headings">
 			<h1 class="pageTitle"><?= $page->title?></h1>
-			<?= $page->getSlot('text', 'standfirst', '<h2 class="standFirst">', '</h2>','ch,ins'); ?>
+			<?= $page->get_slot('text', 'standfirst', '<h2 class="standFirst">', '</h2>' ); ?>
 		</div>
 		<p>
 			<?= __('Fields marked with a') ?> <span class="required">*</span> <?= __('are required') ?>.
@@ -72,8 +72,8 @@
 		</div>
 	</div>
 	<div id="aside">
-		<?= $page->getSlot('feature', 'feature1', 'right');?>
-		<?= $page->getSlot('feature', 'feature2', 'right');?>
+		<?= $page->get_slot('feature', 'feature1', 'right');?>
+		<?= $page->get_slot('feature', 'feature2', 'right');?>
 	</div>
 	<?= new View('site/subtpl_footer'); ?>
 </div>

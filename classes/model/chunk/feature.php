@@ -21,7 +21,7 @@ class Model_Chunk_Feature extends ORM implements iSLot
 		
 	}
 	
-	public function getSlotname()
+	public function get_slotname()
 	{
 		return $this->chunk->slotname;
 	}

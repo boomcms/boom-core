@@ -11,9 +11,9 @@
 	<div id="main-content">
 		<div class="headings">
 			<h1 class="pageTitle"><?= $page->title ?></h1>
-			<?= $page->getSlot('text', 'standfirst', '<h2 class="standFirst">', '</h2>','ch,ins'); ?>
+			<?= $page->get_slot('text', 'standfirst', '<h2 class="standFirst">', '</h2>','ch,ins'); ?>
 		</div>
-		<?= $page->getSlot('text', 'bodycopy', '<div id="content">', '</div>');?>			
+		<?= $page->get_slot('text', 'bodycopy', '<div id="content">', '</div>');?>			
 		<h2>
 			<?= $page->title ?>
 		</h2>
@@ -33,7 +33,7 @@
 	</div>
 	<div id="aside">
 		<?//= new View('site/subtpl_news_archive');?>
-		<?= $page->getSlot( 'feature', 'feature1', 'right');?>
+		<?= $page->get_slot( 'feature', 'feature1', 'right');?>
 	</div>
 	<?= new View('site/subtpl_footer'); ?>
 </div>

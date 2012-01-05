@@ -75,7 +75,7 @@ class Model_Permission_Page extends ORM
 	*
 	* @example Model_Page_Permission::may_i( Model_Page_Permission::EDIT, $page, $person );
 	*/
-	public static function may_i( $what, Model_Page $page, Model_Person $person )
+	public static function may_i( $what, Page $page, Model_Person $person )
 	{
 		// Haven't finished writing this so
 		// As long as the user is logged in let them do it.

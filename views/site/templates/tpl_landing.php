@@ -12,24 +12,24 @@
 	<div id="main-content">
 		<div class="headings">
 			<h1 class="pageTitle"><?=$page->title;?></h1>
-			<?= $page->getSlot('text', 'standfirst', '<h2 class="standFirst">', '</h2>','ch,ins,br'); ?>
+			<?= $page->get_slot('text', 'standfirst', '<h2 class="standFirst">', '</h2>','ch,ins,br'); ?>
 		</div>
-		<?= $page->getSlot('text', 'bodycopy', '<div id="content">', '</div>');?>
+		<?= $page->get_slot('text', 'bodycopy', '<div id="content">', '</div>');?>
 		<div id="nav-widget">
 		</div>
 		<div id="features">
 			<div class="feature-row">
-				<?= $page->getSlot('feature', 'feature1', 'main_left');?>
-				<?= $page->getSlot('feature', 'feature2', 'main');?>
+				<?= $page->get_slot('feature', 'feature1', 'main_left');?>
+				<?= $page->get_slot('feature', 'feature2', 'main');?>
 			</div>
 			<div class="feature-row">
-				<?= $page->getSlot('feature', 'feature3', 'main_left');?>
-				<?= $page->getSlot('feature', 'feature4', 'main');?>
+				<?= $page->get_slot('feature', 'feature3', 'main_left');?>
+				<?= $page->get_slot('feature', 'feature4', 'main');?>
 			</div>
 		</div>
 	</div>
 	<div id="aside">
-		<?= $page->getSlot('asset', 'video', 'sidevideo'); ?>
+		<?= $page->get_slot('asset', 'video', 'sidevideo'); ?>
 	</div>
 	<?= new View('site/subtpl_footer');?>
 </div> 
