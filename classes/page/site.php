@@ -20,6 +20,7 @@ class Page_Site extends Page
 	{
 		$slot = $this->_page->get_slot( $type, $slotname );
 		
-		echo $slot->show();		
+		if ($slot->loaded())
+			echo $slot->show();		
 	}
 }

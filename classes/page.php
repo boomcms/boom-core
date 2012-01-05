@@ -29,6 +29,24 @@ abstract class Page
 		$this->_page = ORM::factory( 'page', $page_id );
 	}
 	
+	/**
+	* Factory method for retrieving a page
+	* 
+	* @param $type string The type of page. Can be cms or site
+	* @param $page_id int The ID of the page
+	* @return Page The page object
+	*/
+	public static function factory( $type, $page_id )
+	{
+		switch( $type )
+		{
+			case 'cms':
+				return new Page_Cms( $page_id );
+			default:
+				return new Page_Site( $page_id );
+		}		
+	}
+	
 	public function __get( $property )
 	{
 		return $this->_page->$property;

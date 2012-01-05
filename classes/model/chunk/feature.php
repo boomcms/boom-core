@@ -17,8 +17,12 @@ class Model_Chunk_Feature extends ORM implements iSLot
 	
 	public function show()
 	{
-		return 'Feature chunk';
-		
+		if ($this->loaded())
+		{
+			// Do feature stuff
+		}
+		else
+			return 'Default Feature';		
 	}
 	
 	public function get_slotname()

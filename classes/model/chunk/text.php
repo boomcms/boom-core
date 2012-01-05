@@ -17,7 +17,10 @@ class Model_Chunk_Text extends ORM implements iSLot
 	
 	public function show()
 	{
-		return 'Text chunk';
+		if ($this->loaded())
+			return $this->text;
+		else
+			return 'Default text';
 		
 	}
 	
