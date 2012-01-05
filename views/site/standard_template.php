@@ -58,9 +58,9 @@
 
 			echo $subtpl_main;
 
-			if (Kohana::$config->load('core')->get('include_analytics') === true)
+			if (Kohana::$config->load('config')->get('include_analytics') === true)
 			{
-				echo View::factory( 'site/subtpl_analytics' );
+				echo View::factory( 'site/analytics' );
 			}
 		?>		
 	</body>
