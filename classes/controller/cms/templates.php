@@ -18,6 +18,11 @@ class Controller_Cms_Templates extends Controller_Cms
 			Request::factory( 'error/403' )->execute();
 		
 		$this->template->title = 'Template Manager';
+		$actionbar = null;
+		$buttonbar = View::factory( 'cms/buttonbar/subtpl_template_manager' );
+		
+		View::bind_global( 'actionbar', $actionbar );
+		View::bind_global( 'buttonbar', $buttonbar );
 	}
 	
 	/**

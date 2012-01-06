@@ -17,7 +17,11 @@ class Model_Person extends ORM_Versioned {
 	protected $_table_name = 'person';
 
 	protected $_has_many = array( 
-		'versions'			=> array( 'model' => 'version_person', 'foreign_key' => 'id' ),
+		'versions'	=> array( 'model' => 'version_person', 'foreign_key' => 'id' ),
+		'roles'		=> array( 
+			'model'		=> 'role',
+			'through'	=> 'person_role',
+		),
 		//'sent_messages'		=> array( 'model' => 'message' ),
 		//'received_messages'	=> array( 'model' => 'message' )
 	);
