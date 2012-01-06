@@ -24,9 +24,12 @@ abstract class Page
 	* @param int $page_id
 	* @return void
 	*/
-	public function __construct( $page_id )
+	public function __construct( $page )
 	{
-		$this->_page = ORM::factory( 'page', $page_id );
+		if (is_object( $page ))
+			$this->_page = $page;
+		else
+			$this->_page = ORM::factory( 'page', $page_id );
 	}
 	
 	/**

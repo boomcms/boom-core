@@ -39,8 +39,13 @@ class Controller_Site extends Sledge_Controller
 			$page_uri = ORM::factory( 'page_uri' )->where( 'uri', '=', 'error/404' )->find();
 		
 		// Load the relevant page object.
-		// We don't load the pages directly from the database because the Page_Site and Page_Cms classes act as decorators, changing the page depending on our environment.
-		$this->page = Page::factory( $this->mode, $page_uri->page_id );
+		$page = ORM::factory( 'page', $page_uri->page_id );
+		$page_type = ($this->mode == 'cms' && $this->person->can( 'edit', $page ))? 'cms' : 'site';
+	
+		// Decorate the page model with a page class.
+		// This allows us to change what the page does depending on whether we're in cms or site mode
+		// Without changing the page model itself.
+		$this->page = Page::factory( $page_type, $page );
 			
 		// Load the relevant template object.
 		$template = ORM::factory( 'template', $this->page->template_id );
