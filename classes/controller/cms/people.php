@@ -11,7 +11,7 @@
 class Controller_Cms_People extends Controller_Cms {
 	
 	public function before()
-	{	
+	{		
 		parent::before();
 		
 		if (!$this->person->can( 'manage people' ))
@@ -19,7 +19,7 @@ class Controller_Cms_People extends Controller_Cms {
 		
 		$this->template->title = 'People Manager';
 		$actionbar = View::factory( 'cms/pages/people/actionbar' );
-		$buttonbar = $v = View::factory( 'cms/pages/people/buttonbar' );
+		$buttonbar = View::factory( 'cms/pages/people/buttonbar' );
 		
 		View::bind_global( 'actionbar', $actionbar );
 		View::bind_global( 'buttonbar', $buttonbar );
@@ -65,12 +65,10 @@ class Controller_Cms_People extends Controller_Cms {
 		
 		$person = ORM::factory( 'person', $id );
 		$activity = ORM::factory( 'activitylog' )->where( 'audit_person', '=', $person->id )->limit( '50' )->order_by( 'audit_time', 'desc' )->find();
-		$roles = ORM::factory( 'role' );
 		
 		$this->template->subtpl_main = View::factory( 'cms/pages/people/view' );
 		$this->template->subtpl_main->person = $person;	
-		$this->template->subtpl_main->activity = $activity;
-		$this->template->subtpl_main->roles = $roles;			
+		$this->template->subtpl_main->activity = $activity;			
 	}
 	
 	/**
@@ -82,9 +80,11 @@ class Controller_Cms_People extends Controller_Cms {
 	public function action_index()
 	{
 		$people = ORM::factory( 'person' )->find_all();
+		$roles = ORM::factory( 'role' )->find_all();
 		
 		$this->template->subtpl_main = View::factory( 'cms/pages/people/index' );
 		$this->template->subtpl_main->people = $people;	
+		$this->template->subtpl_main->roles = $roles;
 	}
 	
 }
