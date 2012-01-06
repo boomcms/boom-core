@@ -85,6 +85,11 @@ abstract class Page
 		}
 	}	
 	
+	public function __toString()
+	{
+		return $this->_page->__toString();
+	}
+	
 	abstract function get_slot($type, $slotname);
 }
 

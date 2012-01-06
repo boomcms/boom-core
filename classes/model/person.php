@@ -27,7 +27,7 @@ class Model_Person extends ORM_Versioned {
 	/**
 	* Stores the user's bitwise permissions after retrieval from the database.
 	* @access private
-	* @var int
+	* @var array
 	*/
 	private $_permissions;
 	
@@ -37,37 +37,38 @@ class Model_Person extends ORM_Versioned {
 	* A user can have many permissions assigned to them from each of the roles they have.
 	* This query uses the bit_or function to find each of the permissions which are set in one integer.
 	*
-	* @todo Create an equivalent of $_permission for page permissions to stop repeated database queries for the same page.
 	* @return int
 	*/
-	public function permissions( $where = false )
+	public function permissions( $where = 'cms' )
 	{
-		// What permissions does the user have at this level of the page tree?
-		if ($where instanceof Page)
-		{
-			$query = DB::query( Database::SELECT, "select bit_or( permission ) as perm from person_role inner join permissions on person_role.role_id = permissions.role_id inner join page_mptt on permissions.where_id = page_mptt.page_id inner join actions on permissions.action_id = actions.id where where_type = 'page' and lft >= :lft and rgt <= :rgt group by permissions.role_id" );
-
-			$query->param( ':lft', $where->mptt->lft );
-			$query->param( ':rgt', $where->mptt->rgt );
-			$result = $query->execute();
-						
-			return $result->get( 'perm' );	
-		}
-		else if ( !$where )
-		{	
-			// Non-treed permissions.
-			if ($this->_permissions === null)
+		$key = (string) $where;
+		
+		if (!isset($this->_permissions[$key]))
+		{		
+			// What permissions does the user have at this level of the page tree?
+			if ($where instanceof Page)
 			{
+				$query = DB::query( Database::SELECT, "select bit_or( permission ) as perm from person_role inner join permissions on person_role.role_id = permissions.role_id inner join page_mptt on permissions.where_id = page_mptt.page_id inner join actions on permissions.action_id = actions.id where where_type = 'page' and lft >= :lft and rgt <= :rgt group by permissions.role_id" );
+
+				$query->param( ':lft', $where->mptt->lft );
+				$query->param( ':rgt', $where->mptt->rgt );
+				$result = $query->execute();
+					
+				$this->_permissions[$key] = $result->get( 'perm' );
+			}
+			else if ( !$where )
+			{	
+				// Non-treed permissions.
 				// Datbase query to retrieve the user's permissions combined across all assigned roles.
 				$query = $this->_db->query( Database::SELECT, "select bit_or( permission ) as perm from person_role inner join role on role_id = role.id inner join role_v on role.active_vid = role_v.id where person_id = $this->id group by person_id" );
 				if ($query->count() === 0)
 					return 0;
-				
-				$this->_permissions = $query->get( 'perm' );		
-			}		
+			
+				$this->_permissions[$key] = $query->get( 'perm' );	
+			}
+		}		
 		
-			return $this->_permissions;
-		}
+		return $this->_permissions[$key];
 	}
 	
 	/**
