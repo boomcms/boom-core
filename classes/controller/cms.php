@@ -29,30 +29,12 @@ class Controller_Cms extends Sledge_Controller
 			exit();
 		}
 		
-		// Check the user has the required permissions to view this page.
-		/*if (!Permissions::may_i( do this )
-		{
-			Request::factory( 'error/403' )->execute();
-		}*/
-		
 		parent::before();
 	}
 	
 	public function action_index()
 	{
-		if (!$this->auth->logged_in())
-		{
-			Request::factory( 'cms/login' )->execute();
-		}
-		else
-		{
-			$this->request->redirect( '/' );
-		}	
-	}
-	
-	public function action_mode()
-	{
-		die( 'hello' );
+		$this->request->redirect( '/' );	
 	}
 
 	public function after()
@@ -61,12 +43,6 @@ class Controller_Cms extends Sledge_Controller
 		$this->template->title = 'CMS';
 		$this->template->subtpl_header = View::factory( 'site/subtpl_header' );
 		$this->template->client = Kohana::$config->load('config')->get( 'client_name' );
-		
-		$actionbar = null;
-		$buttonbar = null;
-		
-		View::bind_global( 'actionbar', $actionbar );
-		View::bind_global( 'buttonbar', $buttonbar );
 		
 		parent::after();
 	}
