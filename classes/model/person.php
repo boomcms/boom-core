@@ -43,8 +43,7 @@ class Model_Person extends ORM_Versioned {
 	{
 		if ($this->_permissions === null)
 		{
-			// Datbase query to retrieve the user's permissions.
-			// 
+			// Datbase query to retrieve the user's permissions combined across all assigned roles.
 			$query = $this->_db->query( Database::SELECT, "select bit_or( permission ) as perm from person_role inner join role on role_id = role.id inner join role_v on role.active_vid = role_v.id where person_id = $this->id group by person_id" );
 			
 			if ($query->count() === 0)
@@ -72,17 +71,6 @@ class Model_Person extends ORM_Versioned {
 			
 		return (bool) $action->permission & $this->permissions();
 	}
-	
-	/**
-	* Shortcut method for getting a user's full name.
-	*
-	* @return string <first name> <last name>
-	*/
-	public function getName()
-	{
-		return $this->version->firstname . " " . $this->version->lastname;
-	}
-	
 }
 
 ?>

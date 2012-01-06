@@ -136,7 +136,7 @@ class Controller_Cms_Account extends Kohana_Controller
 				$tp = new Text_Password();
 				$passwd = $tp->create(8);
 				
-				$person->password =  '{SHA}' . base64_encode(sha1($passwd, true));
+				$person->password = $passwd;
 				$person->consecutive_failed_login_counter = 0;
 				$person->enabled = true;
 				$person->save();
