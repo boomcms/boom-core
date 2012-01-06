@@ -31,7 +31,7 @@
 			}	
 				
 			// Show the page.
-			echo "<li><a href='" , $node->uri() , "'>" , $node->title , "</a>\n";	
+			echo "<li><a href='" , $node->url() , "'>" , $node->title , "</a>\n";	
 			
 			// Start a sub-list if this page has children. Otherwise close the list item.
 			if ($node->mptt->has_children())

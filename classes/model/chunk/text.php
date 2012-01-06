@@ -36,6 +36,11 @@ class Model_Chunk_Text extends ORM implements iSLot
 		
 	}
 	
+	public function __toString()
+	{
+		return $this->show();
+	}
+	
 }
 
 ?>

@@ -18,16 +18,6 @@ abstract class Page
 	protected $_page;
 	
 	/**
-	* Holds an array of the slots embedded in the page.
-	* Ensures we only query the database once for each slot - and not everytime we want to use the slot.
-	* Used by the get_slot() method
-	*
-	* @access private
-	* @var array
-	*/
-	private $_slots = array();
-	
-	/**
 	* Page constructor
 	* Gets the page from the database and stores it in the $_page property.
 	*
@@ -98,33 +88,6 @@ abstract class Page
 	public function __toString()
 	{
 		return $this->_page->__toString();
-	}
-	
-	/**
-	* Retrieves a slot belonging to the page, identified by a slotname.
-	*
-	* @param string $type The type of slot to show.
-	* @param string $slotname The name of the slot
-	* @param boolean $editable Whether to allow the slot to be editable.
-	*
-	* @uses slot::factory()
-	* @return string The HTML representation of the slot
-	*/
-	public function get_slot( $type, $slotname, $editable = null)
-	{
-		if (!array_key_exists( $slotname, $this->_slots ))
-		{
-			$this->_slots[ $slotname ] = ORM::factory( "chunk_$type" )
-											->with( "chunk" )
-											->on( 'chunk.active_vid', '=', "chunk_$type" . ".id" )
-											->join( 'chunk_page' )
-											->on( 'chunk_page.chunk_id', '=', 'chunk.id' )
-											->where( 'chunk_page.page_id', '=', $this->_page->id )											
-											->where( 'slotname', '=', $slotname )
-											->find();
-		}
-		
-		return $this->_slots[ $slotname ];	
 	}
 	
 	/**

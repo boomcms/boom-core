@@ -115,6 +115,16 @@ class Model_Page extends ORM_Versioned {
 	private $_primary_uri;
 	
 	/**
+	* Holds an array of the slots embedded in the page.
+	* Ensures we only query the database once for each slot - and not everytime we want to use the slot.
+	* Used by the get_slot() method
+	*
+	* @access private
+	* @var array
+	*/
+	private $_slots = array();
+	
+	/**
 	* Returns a human readable page status.
 	*
 	* @return string Page status - currently visible or invisible.
@@ -256,7 +266,7 @@ class Model_Page extends ORM_Versioned {
 	* @todo Direct copy and past from MY_Uri library. Needs to be made properly.
 	* @return string The absolute URI.
 	*/
-	public function uri() {
+	public function url() {
 		// Get the base URL of the current request.
 		$url = URL::base();
 		
@@ -284,6 +294,33 @@ class Model_Page extends ORM_Versioned {
 		}
 			
 		return $this->_primary_uri;		
+	}
+	
+	/**
+	* Retrieves a slot belonging to the page, identified by a slotname.
+	*
+	* @param string $type The type of slot to show.
+	* @param string $slotname The name of the slot
+	* @param boolean $editable Whether to allow the slot to be editable.
+	*
+	* @uses slot::factory()
+	* @return string The HTML representation of the slot
+	*/
+	public function get_slot( $type, $slotname, $editable = null)
+	{
+		if (!array_key_exists( $slotname, $this->_slots ))
+		{
+			$this->_slots[ $slotname ] = ORM::factory( "chunk_$type" )
+											->with( "chunk" )
+											->on( 'chunk.active_vid', '=', "chunk_$type" . ".id" )
+											->join( 'chunk_page' )
+											->on( 'chunk_page.chunk_id', '=', 'chunk.id' )
+											->where( 'chunk_page.page_id', '=', $this->id )											
+											->where( 'slotname', '=', $slotname )
+											->find();
+		}
+		
+		return $this->_slots[ $slotname ];	
 	}
 	
 	/**

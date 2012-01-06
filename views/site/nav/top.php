@@ -17,7 +17,7 @@
 			{
 				$first = false;
 			}
-			echo "<a href='" , $node->page->uri() , "'>" , $node->page->title , "</a>";
+			echo "<a href='" , $node->page->url() , "'>" , $node->page->title , "</a>";
 		}
 		
 		// Show this page.
@@ -25,6 +25,6 @@
 		{
 			echo " &gt; ";
 		}
-		echo "<a href='", $page->uri(), "' class='current'>" , $page->title, "</a>";
+		echo "<a href='", $page->url(), "' class='current'>" , $page->title, "</a>";
 	?>
 </div>

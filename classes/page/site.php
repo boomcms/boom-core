@@ -18,7 +18,7 @@ class Page_Site extends Page
 	*/	
 	public function get_slot($type, $slotname, $editable = false)
 	{
-		$slot = parent::get_slot( $type, $slotname );
+		$slot = $this->_page->get_slot( $type, $slotname );
 		
 		if ($slot->loaded())
 			echo $slot->show();		
