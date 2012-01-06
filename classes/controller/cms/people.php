@@ -14,6 +14,9 @@ class Controller_Cms_People extends Controller_Cms {
 	{	
 		parent::before();
 		
+		if (!$this->person->can( 'manage people' ))
+			Request::factory( 'error/403' )->execute();
+		
 		$this->template->title = 'People Manager';
 		$actionbar = View::factory( 'cms/pages/people/actionbar' );
 		$buttonbar = $v = View::factory( 'cms/pages/people/buttonbar' );
@@ -62,10 +65,12 @@ class Controller_Cms_People extends Controller_Cms {
 		
 		$person = ORM::factory( 'person', $id );
 		$activity = ORM::factory( 'activitylog' )->where( 'audit_person', '=', $person->id )->limit( '50' )->order_by( 'audit_time', 'desc' )->find();
+		$roles = ORM::factory( 'role' );
 		
 		$this->template->subtpl_main = View::factory( 'cms/pages/people/view' );
 		$this->template->subtpl_main->person = $person;	
-		$this->template->subtpl_main->activity = $activity;			
+		$this->template->subtpl_main->activity = $activity;
+		$this->template->subtpl_main->roles = $roles;			
 	}
 	
 	/**

@@ -14,6 +14,9 @@ class Controller_Cms_Templates extends Controller_Cms
 	{	
 		parent::before();
 		
+		if (!$this->person->can( 'manage templates'  ))
+			Request::factory( 'error/403' )->execute();
+		
 		$this->template->title = 'Template Manager';
 	}
 	
