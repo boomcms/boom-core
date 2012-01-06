@@ -12,7 +12,7 @@
 	</div>
 	<div id="main-content">
 		<div class="headings">
-			<h1 class="pageTitle"><?= $page->version->title?></h1>
+			<h1 class="pageTitle"><?= $page->title?></h1>
 			<? 
 				$page->get_slot('text', 'standfirst', '<h2 class="standFirst">', '</h2>' );
 			?>
@@ -30,8 +30,8 @@
 		<?
 			$page->get_slot('feature', 'feature1' );
 			$page->get_slot('feature', 'feature2' );
+			$page->get_slot( 'linkset', 'quicklinks' );
 		?>
-		<?//= O::f('chunk_linkset_v')->get_chunk(O::f('site_page')->get_homepage()->id,'quicklinks','quicklinks');?>
 	</div>
 					
 	<?//= $subtpl_footer; ?>
