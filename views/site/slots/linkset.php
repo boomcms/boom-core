@@ -30,7 +30,7 @@
 				
 					if ($link->target_page_id):
 						// internal link
-						echo "<a href='", $link->page->url(), "'>", $link->page->title, "</a>";
+						echo "<a href='", $link->page->url(), "'>", $link->page->title, " &raquo;</a>";
 					else:
 						// external link
 						echo "<a href='$link->url'>$link->title &raquo;</a>";
