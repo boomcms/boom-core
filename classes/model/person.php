@@ -46,7 +46,7 @@ class Model_Person extends ORM_Versioned {
 		if (!isset($this->_permissions[$key]))
 		{		
 			// What permissions does the user have at this level of the page tree?
-			if ($where instanceof Page)
+			if ($where instanceof Page || $where instanceof Model_Page)
 			{
 				$query = DB::query( Database::SELECT, "select bit_or( permission ) as perm from person_role inner join permissions on person_role.role_id = permissions.role_id inner join page_mptt on permissions.where_id = page_mptt.page_id inner join actions on permissions.action_id = actions.id where where_type = 'page' and lft >= :lft and rgt <= :rgt group by permissions.role_id" );
 
@@ -79,6 +79,7 @@ class Model_Person extends ORM_Versioned {
 	*
 	* @param string The requested action
 	* @return bool true if they have the permission, false if not.
+	* @see http://www.php4every1.com/tutorials/implementing-bitwise-permissions/#bw_actions-2
 	*/
 	public function can( $action, $where = false )
 	{
@@ -87,8 +88,10 @@ class Model_Person extends ORM_Versioned {
 		// If the action doesn't exist just say no.
 		if (!$action->loaded())
 			return false;
+		
+		$perms = (int) $action->permission & $this->permissions( $where );
 			
-		return (int) $action->permission & $this->permissions( $where );
+		return (bool) $perms;
 	}
 }
 

@@ -41,7 +41,7 @@ class Controller_Site extends Sledge_Controller
 		// Load the relevant page object.
 		$page = ORM::factory( 'page', $page_uri->page_id );
 		$page_type = ($this->mode == 'cms' && $this->person->can( 'edit', $page ))? 'cms' : 'site';
-	
+		
 		// Decorate the page model with a page class.
 		// This allows us to change what the page does depending on whether we're in cms or site mode
 		// Without changing the page model itself.
