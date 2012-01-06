@@ -18,6 +18,16 @@ abstract class Page
 	protected $_page;
 	
 	/**
+	* Holds an array of the slots embedded in the page.
+	* Ensures we only query the database once for each slot - and not everytime we want to use the slot.
+	* Used by the get_slot() method
+	*
+	* @access private
+	* @var array
+	*/
+	private $_slots = array();
+	
+	/**
 	* Page constructor
 	* Gets the page from the database and stores it in the $_page property.
 	*
@@ -90,7 +100,61 @@ abstract class Page
 		return $this->_page->__toString();
 	}
 	
-	abstract function get_slot($type, $slotname);
+	/**
+	* Retrieves a slot belonging to the page, identified by a slotname.
+	*
+	* @param string $type The type of slot to show.
+	* @param string $slotname The name of the slot
+	* @param boolean $editable Whether to allow the slot to be editable.
+	*
+	* @uses slot::factory()
+	* @return string The HTML representation of the slot
+	*/
+	public function get_slot( $type, $slotname, $editable = null)
+	{
+		if (!array_key_exists( $slotname, $this->_slots ))
+		{
+			$this->_slots[ $slotname ] = ORM::factory( "chunk_$type" )
+											->with( "chunk" )
+											->on( 'chunk.active_vid', '=', "chunk_$type" . ".id" )
+											->where( 'slotname', '=', $slotname )
+											->find();
+		}
+		
+		return $this->_slots[ $slotname ];	
+	}
+	
+	/**
+	* Find which pages to display in this page's lefnav
+	*
+	* @uses Model_Person::logged_in()
+	* @return ORM_Iterator Pages to display in leftnav
+	*/
+	public function leftnav_pages( Model_Person $person )
+	{	
+		$query = ORM::factory( 'page' )
+					->join( 'page_mptt' )
+					->on( 'page_mptt.page_id', '=', 'page.id' )
+					->where( 'scope', '=', $this->_page->mptt->scope )
+					->where( 'page_v.deleted', '=', 'f' );	
+					
+					
+		// CMS or Site leftnav?
+		if (!$person->logged_in())
+		{
+			$query->where( 'page_v.visible_in_leftnav', '=', 't' )
+				  ->where( 'page.page_status', '=', Model_Page::STATUS_VISIBLE );	
+		}
+		else
+		{	
+			$query->where( 'page_v.visible_in_leftnav_cms', '=', 't' );
+		}
+		
+		$query->order_by( 'page_mptt.lft', 'asc' );
+		$pages = $query->find_all();
+		
+		return $pages;
+	}
 }
 
 ?>

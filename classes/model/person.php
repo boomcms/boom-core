@@ -98,6 +98,21 @@ class Model_Person extends ORM_Versioned {
 			
 		return (bool) $perms;
 	}
+	
+	/**
+	* Does the object represent a user who can log in?
+	* The name of this method is slightly misleading - it determines whether the person is a user, not whether they're actually logged in.
+	* But it's used in place of Auth::logged_in() to allow for user mimicking
+	* @todo Add to the Auth class as a way of implementing this better.
+	* @return bool false if the person is unloaded or a guest. True if they're a user.
+	*/
+	public function logged_in()
+	{
+		if (!$this->loaded() || $this->emailaddress == 'guest@hoopassociates.co.uk' || $this->enabled == 'f')
+			return false;
+		else
+			return true;		
+	}
 }
 
 ?>

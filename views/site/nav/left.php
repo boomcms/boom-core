@@ -13,33 +13,33 @@
 <div id="nav" class="block">
 	<ul>
 	<?
-		$level = 1;		
+		$level = 1;	
 		
-		foreach ($page->mptt->fulltree() as $node)
+		foreach ($page->leftnav_pages( $person ) as $node)
 		{	
 			// Going down?
-			if ($node->lvl > $level)
+			if ($node->mptt->lvl > $level)
 			{
-				$level = $node->lvl;
+				$level = $node->mptt->lvl;
 			}	
 			
 			// Going up?
-			if ($node->lvl < $level)
+			if ($node->mptt->lvl < $level)
 			{
-				echo str_repeat( "</li></ul></li>", $level - $node->lvl );
-				$level = $node->lvl;				
+				echo str_repeat( "</li></ul></li>", $level - $node->mptt->lvl );
+				$level = $node->mptt->lvl;				
 			}	
 				
 			// Show the page.
-			echo "<li><a href='" , $node->page->uri() , "'>" , $node->page->title , "</a>\n";	
+			echo "<li><a href='" , $node->uri() , "'>" , $node->title , "</a>\n";	
 			
 			// Start a sub-list if this page has children. Otherwise close the list item.
-			if ($node->has_children())
+			if ($node->mptt->has_children())
 			{
 				echo "<ul";
 				
 				// Hide sub-trees by default
-				if (!$node->is_in_parents( $page->mptt ) && $node->page_id !== $page->id)
+				if (!$node->mptt->is_in_parents( $page->mptt ) && $node->id !== $page->id)
 				{
 					echo " class='hidden'";
 				}

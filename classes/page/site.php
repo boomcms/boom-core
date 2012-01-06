@@ -16,9 +16,9 @@ class Page_Site extends Page
 	* @param string $slotname
 	* @return string The HTML to display the slot
 	*/	
-	public function get_slot($type, $slotname)
+	public function get_slot($type, $slotname, $editable = false)
 	{
-		$slot = $this->_page->get_slot( $type, $slotname );
+		$slot = parent::get_slot( $type, $slotname );
 		
 		if ($slot->loaded())
 			echo $slot->show();		

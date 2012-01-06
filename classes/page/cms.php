@@ -19,7 +19,7 @@ class Page_CMS extends Page
 	*/	
 	public function get_slot($type, $slotname, $htmlbefore = '', $htmlafter = '')
 	{
-		$slot = $this->_page->get_slot( $type, $slotname );
+		$slot = parent::get_slot( $type, $slotname );
 		
 		echo $htmlbefore, "(Editable)", $slot->show(), $htmlafter;		
 	}	
