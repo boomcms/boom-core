@@ -48,10 +48,11 @@ class Model_Person extends ORM_Versioned {
 			// What permissions does the user have at this level of the page tree?
 			if ($where instanceof Page || $where instanceof Model_Page)
 			{
-				$query = DB::query( Database::SELECT, "select bit_or( permission ) as perm from person_role inner join permissions on person_role.role_id = permissions.role_id inner join page_mptt on permissions.where_id = page_mptt.page_id inner join actions on permissions.action_id = actions.id where where_type = 'page' and lft >= :lft and rgt <= :rgt group by permissions.role_id" );
+				$query = DB::query( Database::SELECT, "select bit_or( permission ) as perm from person_role inner join permissions on person_role.role_id = permissions.role_id inner join page_mptt on permissions.where_id = page_mptt.page_id inner join actions on permissions.action_id = actions.id where where_type = 'page' and lft <= :lft and rgt >= :rgt and person_role.person_id = :person group by person_role.person_id" );
 
 				$query->param( ':lft', $where->mptt->lft );
 				$query->param( ':rgt', $where->mptt->rgt );
+				$query->param( ':person', $this->id );
 				$result = $query->execute();
 					
 				$this->_permissions[$key] = $result->get( 'perm' );

@@ -34,14 +34,16 @@ class Controller_Cms_Page extends Controller_Cms
 	
 		if (!$this->_page->loaded())
 		{
-			// Do something.
-			exit();
+			Request::factory( 'error/404' )->execute();
 		}
 	}
 	
 	public function action_add()
 	{
 		$parent = $this->_page;
+		
+		if (!$this->person->can( 'add', $parent ))
+			Request::factory( 'error/403' )->execute();
 		
 		// Create a new page object.
 		$page = ORM::factory( 'page' );
@@ -66,15 +68,18 @@ class Controller_Cms_Page extends Controller_Cms
 	
 	public function action_save()
 	{
+		if (!$this->person->can( 'edit', $this->_page ))
+			Request::factory( 'error/403' )->execute();
+			
 		$page = $this->_page;
 		
-		$page->version->template_rid = $template_rid;
-		$page->version->default_child_template_rid = $default_child_template_rid;
-		$page->version->prompt_for_child_template = $prompt_for_child_template;
-		$page->version->setParent( $parent );
-		$page->version->setTitle( $title );	
-		$page->version->visiblefrom_timestamp = $visibilefrom_timestamp;
-		$page->version->visiblveto_timestamp = $visibleto_timestamp;
+		$page->template_rid = $template_rid;
+		$page->default_child_template_rid = $default_child_template_rid;
+		$page->prompt_for_child_template = $prompt_for_child_template;
+		$page->setParent( $parent );
+		$page->setTitle( $title );	
+		$page->visiblefrom_timestamp = $visibilefrom_timestamp;
+		$page->visiblveto_timestamp = $visibleto_timestamp;
 	}
 	
 	/**
@@ -83,7 +88,10 @@ class Controller_Cms_Page extends Controller_Cms
 	* @todo Clone the page's slots.
 	*/
 	public function action_clone()
-	{		
+	{	
+		if (!$this->person->can( 'clone', $this->_page ))
+			Request::factory( 'error/403' )->execute();
+				
 		$oldpage = $this->_page;
 
 		// Copy the versioned column values.
@@ -109,6 +117,9 @@ class Controller_Cms_Page extends Controller_Cms
 	*/
 	public function action_delete()
 	{
+		if (!$this->person->can( 'add', $this->_page ))
+			Request::factory( 'error/403' )->execute();
+					
 		$this->_page->delete();		
 		
 		// Go back to the homepage.

@@ -34,7 +34,6 @@ class Controller_Site extends Sledge_Controller
 		$page_uri = ORM::factory( 'page_uri' )->where( 'uri', '=', $uri )->find();
 		
 		// If the page wasn't found by URI load the 404 page.
-		// TODO: check that the requested URI wasn't the 404 page or we end up in an infinate loop.
 		if (!$page_uri->loaded() && $uri != 'error/404')
 			$page_uri = ORM::factory( 'page_uri' )->where( 'uri', '=', 'error/404' )->find();
 		
