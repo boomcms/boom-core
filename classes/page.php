@@ -117,6 +117,9 @@ abstract class Page
 			$this->_slots[ $slotname ] = ORM::factory( "chunk_$type" )
 											->with( "chunk" )
 											->on( 'chunk.active_vid', '=', "chunk_$type" . ".id" )
+											->join( 'chunk_page' )
+											->on( 'chunk_page.chunk_id', '=', 'chunk.id' )
+											->where( 'chunk_page.page_id', '=', $this->_page->id )											
 											->where( 'slotname', '=', $slotname )
 											->find();
 		}
