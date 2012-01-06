@@ -14,7 +14,27 @@ class Model_Page_Uri extends ORM {
 	*/
 	protected $_table_name = 'page_uri';
 	//protected $_belongs_to = array( 'page' => array( 'model' => 'page' ) );
-
+	
+	/**
+	* Page URI save method.
+	* Ensures that a page can only have one primary URI
+	*
+	* @param Validation $validation Validation rules
+	*/
+	public function save( Validation $validation = null )
+	{
+		$return = parent::save( $validation );
+		
+		if ($this->primaryuri == 't')
+		{
+			$query = DB::query( Database::UPDATE, "update page_uri set primary_uri = 'f' where page_id = :page and id != :id " );
+			$query->param( ":page", $this->page_id );
+			$query->param( ":id", $this->id );
+			$query->execute();
+		}
+		
+		return $return;		
+	}
 }
 
 ?>
