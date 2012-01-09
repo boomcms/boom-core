@@ -15,7 +15,7 @@
 *
 */
 
-abstract class asset_decorator_Model extends asset_Model {
+abstract class Asset {
 	/**
 	* @access protected
 	* @var object
@@ -23,34 +23,43 @@ abstract class asset_decorator_Model extends asset_Model {
 	*/
 	protected $_asset;
 	
-	/**
-	* Used to initialise the decorator.
-	* Determines which decoration we need from the asset_type name
-	* @param object $asset The asset we're decorating
-	* @return object
-	*/
-	public static function getDecoration( asset_Model $asset ) {
+	public function __construct( Model_Asset $asset )
+	{
 		$this->_asset = $asset;
-		
-		switch( $this->_asset->asset_type->current_version->name ) {
-			case 'image':
-				return new image_decoration_Model();
-				break;
-			case 'video':
-				return new video_decoration_Model();
-				break;
-			case 'mp3':
-				return new mp3_decoration_Model();
-				break;
-			default:
-				return new default_decoration_Model();
-		}
 	}
 	
 	/**
-	* Every decoration must implement a getAsset() method.
+	* Used to initialise the decorator.
+	* Determines which decoration we need from the asset_type name
+	* @param string $type The type of asset
+	* @param object $asset The asset we're decorating
+	* @return Asset
 	*/
-	abstract function get();
+	public static function factory( $type, Model_Asset $asset ) {
+		switch( $type ) {
+			case 'image':
+				return new Asset_Image( $asset );
+				break;
+			case 'video':
+				return new Asset_Video( $asset );
+				break;
+			case 'mp3':
+				return new Asset_MP3( $asset );
+				break;
+			default:
+				return new Asset_Default( $asset );
+		}
+	}
+	
+	public function instance()
+	{
+		return $this->_asset;
+	}
+	
+	/**
+	* Method to show the asset in a page
+	*/
+	abstract function show();
 	
 	/**
 	* Send headers which tell the browser whether or not it should cache the asset.

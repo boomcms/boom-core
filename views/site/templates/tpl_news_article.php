@@ -12,7 +12,7 @@
 		<div class="headings">
 		
 			<h1 class="pageTitle"><?= $page->title?></h1>
-			<?= $page->get_slot('asset', 'newsheaderimage', 'image_news');?>
+			<?= $page->get_slot('asset', 'image', 'image_news');?>
 		
 			<?= $page->get_slot('text', 'standfirst', '<h2 class="standFirst">', '</h2>','ch,ins'); ?>
 		</div>

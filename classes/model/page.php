@@ -324,6 +324,32 @@ class Model_Page extends ORM_Versioned {
 	}
 	
 	/**
+	* Get all the slots associated with the page.
+	*
+	* @return array Array of slots
+	*/
+	public function slots()
+	{
+		$slots = array();
+		
+		foreach (array( 'text', 'feature', 'linkset' ) as $type)
+		{
+			$more = ORM::factory( "chunk_$type" )
+				->with( "chunk" )
+				->on( 'chunk.active_vid', '=', "chunk_$type" . ".id" )
+				->join( 'chunk_page' )
+				->on( 'chunk_page.chunk_id', '=', 'chunk.id' )
+				->where( 'chunk_page.page_id', '=', $this->id )											
+				->find_all()
+				->as_array();
+				
+			$slots = array_merge( $slots, $more );
+		}
+		
+		return $slots;
+	}
+	
+	/**
 	* Set the page's status.
 	* Used to set whether the page is visible or invisible. 
 	* If a page is being set to invisible then all child pages have their setPageStatus() methods called to ensure that they are also made invisible.

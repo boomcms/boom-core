@@ -45,6 +45,19 @@ class Model_Chunk_Linkset extends ORM implements iSLot
 		return $v;	
 	}
 	
+	/**
+	* Copy the slot
+	*
+	* @todo Move this to a ORM_Slot class - it's the same for all slots
+	*/
+	public function copy()
+	{
+		$new = parent::copy();
+		$new->chunk = $this->chunk->copy();
+		
+		return $new;
+	}
+	
 	public function get_slotname()
 	{
 		return $this->chunk->slotname;

@@ -27,6 +27,16 @@ Route::set('auth', 'cms/<action>',
 	));
 	
 /**
+* Route for displaying assets
+*
+*/
+Route::set('asset', 'asset/<id>(/<with>(/<height>(/<quailty>(/<notsure>))))')
+	->defaults(array(
+		'controller' => 'asset',
+		'action'	 => 'index'
+	));
+	
+/**
 * Defines the route for /cms pages.
 *
 */

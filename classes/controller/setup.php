@@ -41,7 +41,7 @@ class Controller_Setup extends Kohana_Controller
 		}
 		
 		// Everything worked? Well that's just not on.
-		Request::factory( '/' )->execute();
+		$this->request->redirect( '/' );
 	}
 
 }
