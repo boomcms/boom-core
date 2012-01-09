@@ -25,7 +25,7 @@ class Model_Page_Uri extends ORM {
 	{
 		$return = parent::save( $validation );
 		
-		if ($this->primaryuri == 't')
+		if ($this->primary_uri == 't')
 		{
 			$query = DB::query( Database::UPDATE, "update page_uri set primary_uri = 'f' where page_id = :page and id != :id " );
 			$query->param( ":page", $this->page_id );

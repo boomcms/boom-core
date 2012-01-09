@@ -117,13 +117,33 @@ class Controller_Cms_Page extends Controller_Cms
 	*/
 	public function action_delete()
 	{
-		if (!$this->person->can( 'add', $this->_page ))
+		if (!$this->person->can( 'delete', $this->_page ))
 			Request::factory( 'error/403' )->execute();
 					
 		$this->_page->delete();		
 		
 		// Go back to the homepage.
 		$this->request->redirect( '/' );
+	}
+	
+	/**
+	* Undo the last page edit
+	*/
+	public function action_undo()
+	{
+		if (!$this->person->can( 'edit', $this->_page ))
+			Request::factory( 'error/403' )->execute();		
+			
+		$version = DB::select( 'page_v.id' )
+						->where( 'rid', '=', $this->_page->id )
+						->order_by( 'id', 'desc' )
+						->limit( 1 )
+						->offset( 1 )
+						->execute();
+		
+		$version_id = $version->get( 'id' );
+		$this->_page->active_vid = $version_id;
+		$this->_page->save();
 	}
 }
 
