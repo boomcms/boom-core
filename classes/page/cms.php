@@ -21,6 +21,6 @@ class Page_CMS extends Page
 	{
 		$slot = $this->_page->get_slot( $type, $slotname );
 		
-		echo $htmlbefore, "(Editable)", $slot->show(), $htmlafter;		
+		echo $htmlbefore, $slot->show(), $htmlafter;		
 	}	
 }
