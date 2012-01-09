@@ -12,45 +12,37 @@
 	<div id="main-content">
 		<div class="headings">
 			<h1 class="pageTitle"><?= $page->title?></h1>
-			<?= $page->get_slot('text', 'standfirst', '<h2 class="standFirst">', '</h2>','ch,ins'); ?>
+			<?= $page->get_slot('text', 'standfirst', '<h2 class="standFirst">', '</h2>' ); ?>
 		</div>
 		<?= $page->get_slot('text', 'bodycopy', '<div id="content">', '</div>');?>			
 		<?
-			if ($count === 0)
-			{
+			if ($count === 0):
 				echo "Your search returned no results.";
-			}
-			else 
-			{
+			else:
 				echo "<ol class='search-results'>";
-				foreach($results as $result)
-				{
-					?>
-						<li<? if ($q == 0) { echo ' class="first"'; } ?>>
-							<h3>
-								<a href="<?=$result->getPrimaryUri();?>"><?=$p->title;?></a>
-							</h3>
-							<p>
-							<?
-								$ex = explode("</p>",$result->get_slot('text', 'standfirst'));
-								echo strip_tags($ex[0]);
-							?>
-							</p>
-						</li>
-					<?
-				}	
+				foreach( $results as $result ):
+					echo "<li";
+					if ($q == 0):
+						echo ' class="first"';
+					echo ">";
+					
+					echo "<h3><a href='", $result->url(), "'>", $result->title, "</a></h3>";
+					echo "<p>", $result->get_slot('text', 'standfirst'), "</p>";
+
+					echo "</li>";
+				endforeach;	
 
 				echo "</ol>";
-			}
+			endif;
 		?>
 
-		<?= $page->get_slot('feature', 'feature3', 'centre');?>
-		<?= $page->get_slot('feature', 'feature4', 'centre');?>
+		<?= $page->get_slot('feature', 'feature3' );?>
+		<?= $page->get_slot('feature', 'feature4' );?>
 	</div>
 	<div id="aside">	
-		<?= $page->get_slot('feature', 'feature1', 'right');?>
-		<?= $page->get_slot('feature', 'feature2', 'right');?>
-		<?//= O::f('chunk_linkset_v')->get_slot(O::f('site_page')->get_homepage()->id,'quicklinks','quicklinks');?>
+		<?= $page->get_slot('feature', 'feature1' );?>
+		<?= $page->get_slot('feature', 'feature2' );?>
+		<?= $page->get_slot( 'linkset', 'quicklinks' );?>
 	</div>
 					
 	<?= new View('site/subtpl_footer'); ?>

@@ -31,7 +31,6 @@
 			$page->get_slot('feature', 'feature1' );
 			$page->get_slot('feature', 'feature2' );
 			$page->get_slot( 'linkset', 'quicklinks' );
-			$page->get_slot( 'linkset', 'links' );
 		?>
 	</div>
 					
