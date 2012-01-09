@@ -20,7 +20,11 @@
 		<?
 			$page->get_slot('text', 'bodycopy', '<div id="content">', '</div>' );
 		?>
-		<div id="nav-widget"></div>		
+		<div id="nav-widget">
+			
+		<? $page->get_slot('slideshow', 'slide1' ); ?>	
+			
+		</div>		
 		<?
 			$page->get_slot('feature', 'feature3' );
 			$page->get_slot('feature', 'feature4' );

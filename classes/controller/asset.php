@@ -18,9 +18,12 @@ class Controller_Asset extends Kohana_Controller
 		$id = $this->request->param( 'id' );
 		
 		$asset = ORM::factory( 'asset', $id );
-		$asset = Asset::factory( $asset->type, $asset );
+		if ($asset->loaded())
+		{
+			$asset = Asset::factory( $asset->type, $asset );
 		
-		echo $asset->show();
+			echo $asset->show();
+		}
 		exit();
 	}
 
