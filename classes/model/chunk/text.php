@@ -20,7 +20,7 @@ class Model_Chunk_Text extends ORM implements iSLot
 		if ($this->loaded())
 			return $this->text;
 		else
-			return 'Default text';
+			return 'Click on me to add some text here.';
 		
 	}
 	

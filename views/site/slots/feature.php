@@ -12,9 +12,9 @@
 	<div class="feature_ne">
 		<div class="feature_se">
 			<div class="feature_sw">
-				<a href="<?=$page->url()?>">
-					<h2><?=$page->title?></h2>
-					<p><?=$page->get_slot( 'text', 'standfirst' ) ?></p>
+				<a href="<?=$url?>">
+					<h2><?=$title?></h2>
+					<p><?=$text ?></p>
 				</a>
 			</div>
 		</div>

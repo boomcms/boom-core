@@ -20,13 +20,24 @@ class Model_Chunk_Feature extends ORM implements iSLot
 	
 	public function show()
 	{
+		$v = View::factory( 'site/slots/feature' );
+		
 		if ($this->loaded())
 		{
 			$target = ORM::factory( 'page', $this->target_page_id );
-			return View::factory( 'site/slots/feature' )->bind( 'page', $target );
+			
+			$v->url = $target->url();
+			$v->title = $target->title;
+			$v->text = $target->get_slot( 'text', 'standfirst' );
 		}
 		else
-			return 'Default Feature';		
+		{
+			$v->url = '';
+			$v->title = 'Default Feature';
+			$v->text = 'Click on me to add a feature box here.';
+		}
+		
+		return $v;		
 	}
 	
 	public function get_slotname()
