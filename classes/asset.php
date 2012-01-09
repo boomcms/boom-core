@@ -47,7 +47,7 @@ abstract class Asset {
 				return new Asset_MP3( $asset );
 				break;
 			default:
-				return new Asset_Default( $asset );*/
+				return new Asset_Default( $asset );
 		}
 	}
 	

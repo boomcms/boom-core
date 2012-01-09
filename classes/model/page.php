@@ -315,7 +315,8 @@ class Model_Page extends ORM_Versioned {
 											->on( 'chunk.active_vid', '=', "chunk_$type" . ".id" )
 											->join( 'chunk_page' )
 											->on( 'chunk_page.chunk_id', '=', 'chunk.id' )
-											->where( 'chunk_page.page_id', '=', $this->id )											
+											->where( 'chunk_page.page_id', '=', $this->id )	
+											->or_where( 'chunk_page.page_id', '=', 0 )											
 											->where( 'slotname', '=', $slotname )
 											->find();
 		}
@@ -339,7 +340,8 @@ class Model_Page extends ORM_Versioned {
 				->on( 'chunk.active_vid', '=', "chunk_$type" . ".id" )
 				->join( 'chunk_page' )
 				->on( 'chunk_page.chunk_id', '=', 'chunk.id' )
-				->where( 'chunk_page.page_id', '=', $this->id )											
+				->where( 'chunk_page.page_id', '=', $this->id )	
+				->or_where( 'chunk_page.page_id', '=', 0 )	
 				->find_all()
 				->as_array();
 				
