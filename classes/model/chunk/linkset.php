@@ -17,19 +17,32 @@ class Model_Chunk_Linkset extends ORM implements iSLot
 		'chunk' => array( 'model' => 'chunk', 'foreign_key' => 'active_vid' ),
 	);
 	protected $_has_many = array(
-		'links' => array( 'model' => 'linksetlinks' ),
+		'links' => array( 'model' => 'linksetlink' ),
 	);
 	protected $_load_with = array( 'links' );
 	
 	
 	public function show()
 	{
+		$v = View::factory( 'site/slots/linkset' );
+		
 		if ($this->loaded())
 		{
-			return View::factory( 'site/slots/linkset' )->bind( 'linkset', $this );
+			$v->title = $this->title;
+			$v->links = $this->links->find_all();
 		}
 		else
-			return 'Default Linkset';		
+		{		
+			$link = ORM::factory( 'linksetlink' );
+			$link->title = 'Add Link';
+			$link->url = '#';
+			
+			// Set some default values.
+			$v->links = array( $link );
+			$v->title = 'Default Linkset';
+		}	
+			
+		return $v;	
 	}
 	
 	public function get_slotname()

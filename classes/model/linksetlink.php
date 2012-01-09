@@ -7,7 +7,7 @@
 * @copyright 2011, Hoop Associates
 *
 */
-class Model_LinksetLinks extends ORM
+class Model_LinksetLink extends ORM
 {
 	/**
 	* Properties to create relationships with Kohana's ORM

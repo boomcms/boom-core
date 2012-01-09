@@ -10,19 +10,19 @@
 
 <div id="quicklinks">
         <h3>
-			<?= $linkset->title; ?>
+			<?= $title; ?>
         </h3>
 
 	<div>
 		<?
-			$count = $linkset->links->count_all();
+			$count = count( $links );
 			
 			if ($count > 0):
 				echo "<ul>";
 
 				$i = 0;
 				
-				foreach($linkset->links->find_all() as $link):
+				foreach($links as $link):
 			 		$i++;
 				
 					echo "<li";
