@@ -20,10 +20,14 @@
 				echo "Your search returned no results.";
 			else:
 				echo "<ol class='search-results'>";
+				
 				foreach( $results as $result ):
 					echo "<li";
+					
 					if ($q == 0):
 						echo ' class="first"';
+					endif;
+					
 					echo ">";
 					
 					echo "<h3><a href='", $result->url(), "'>", $result->title, "</a></h3>";
