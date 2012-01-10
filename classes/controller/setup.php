@@ -52,87 +52,99 @@ class Controller_Setup extends Kohana_Controller
 		$DIR = '/home/rob';
 		
 		// Templates
-		$f = fopen( '$DIR/thisishoop2_templates.csv' );
-		$i = 0;
+		$f = fopen( "$DIR/thisishoop2_templates.csv", 'r' );
 		
-		while( $line = fread( $d ) )
+		while( $line = fgets( $f ) )
 		{
-			if ($i > 0)
-			{
-				list( $person, $time, $id, $rid, $name, $description, $filename ) = explode( ',', $line );
+			list( $person, $time, $id, $rid, $name, $description, $filename ) = explode( '|', $line );
+		
+			$t = ORM::factory( 'template' );
+			$t->audit_person = $person;
+			$t->audit_time = $time;
+			$t->id = $rid;
+			$t->rid = $rid;
+			$t->name = $name;
+			$t->description = $description;
+			$t->filename = trim($filename);
+			$t->save();
 			
-				$t = ORM::factory( 'template' );
-				$t->audit_person = $person;
-				$t->audit_time = $time;
-				$t->id = $id;
-				$t->name = $name;
-				$t->description = $description;
-				$t->filename = $filename;
-				$t->save();
-				
-				echo "Added template $name<br />";
-			}
-			$i++;
+			$t->active_vid = $t->version->id;
+			$t->save();
+			
+			echo "Added template $name<br />";
 		}
 		
-		close( $f );
+		DB::query( Database::UPDATE, "update template set active_vid = template_v.id from template_v where template_v.rid = template.id;" )->execute();
+		
+		fclose( $f );
 		
 		// Pages
 		// Templates
-		$f = fopen( '$DIR/thisishoop2_templates.csv' );
-		$i = 0;
+		$f = fopen( "$DIR/thisishoop2_pages.csv", 'r' );
 		
-		while( $line = fread( $d ) )
+		while( $line = fgets( $f ) )
 		{
-			if ($i > 0)
+			$arr = explode( '|', $line );
+			
+			if (!$arr[9])
+				$arr[9] = null;
+		
+			$p = ORM::factory( 'page' );
+			$p->audit_person = $arr[0];
+			$p->audit_time = $arr[1];
+			$p->id = (int) $arr[3];
+			$p->rid = (int) $arr[3];
+			$p->template_id = (int) $arr[4];
+			$p->default_child_template_id = (int) $arr[5];
+			$p->title = $arr[7];
+			$p->visiblefrom_timestamp = $arr[8];
+			$p->visibleto_timestamp = $arr[9];
+			$p->child_ordering_policy = (int) $arr[11];
+			$p->children_hidden_from_leftnav = ($arr[12] == 't' || $arr[12] == null)? 't' : 'f';
+			$p->children_hidden_from_leftnav_cms = ($arr[13] == 't' || $arr[13] == null)? 't' : 'f';
+			$p->version_status = (int) $arr[15];
+			$p->approval_process_id = (int) $arr[16];
+			$p->ssl_only = ($arr[19] == 't' || $arr[19] == null)? 't' : 'f';
+			$p->pagetype_description = $arr[20];
+			$p->visible_in_leftnav = ($arr[21] == 't' || $arr[21] == null)? 'f' : 't';
+			$p->visible_in_leftnav_cms = ($arr[22] == 't' || $arr[22] == null)? 'f' : 't';
+			$p->keywords = $arr[24];
+			$p->description = $arr[25];
+			$p->pagetype_parent_rid = (int) $arr[27];
+			$p->children_pagetype_parent_rid = (int) $arr[28];
+			$p->indexed = (bool) $arr[37];
+			
+			$p->active_vid = $p->version->id;
+			$p->save();
+			
+			try
 			{
-				$arr = explode( ',', $line );
-			
-				$p = ORM::factory( 'page' );
-				$p->audit_person = $arr[0];
-				$p->audit_time = $arr[1];
-				$p->id = $arr[3];
-				$p->template_id = $arr[4];
-				$p->default_child_template_id = $arr[5];
-				$p->title = $arr[7];
-				$p->visiblefrom_timestamp = $arr[8];
-				$p->visibleto_timestamp = $arr[9];
-				$p->child_ordering_policy = $arr[11];
-				$p->children_hidden_from_leftnav = $arr[12];
-				$p->children_hidden_from_leftnav_cms = $arr[13];
-				$p->version_status = $arr[15];
-				$p->approval_process_id = $arr[16];
-				$p->ssl_only = $arr[19];
-				$p->pagetype_description = $arr[20];
-				$p->visible_in_leftnav = $arr[35];
-				$p->visible_in_leftnav_cms = $arr[36];
-				$p->keywords = $arr[24];
-				$p->description = $arr[25];
-				$p->internal_name = $arr[26];
-				$p->pagetype_parent_rid = $arr[27];
-				$p->children_pagetype_parent_rid = $arr[28];
-				$p->indexed = $arr[37];
 				$p->save();
-				
-				$uri = ORM::factory( 'page_uri' );
-				$uri->page_id = $p->id;
-				$uri->uri = $arr[10];
-				$uri->primary_uri = 't';
-				$uri->save();
-				
-				$mptt = ORM::factory( 'page_mptt' );
-				$mptt->page_id = $p->id;
-				$mptt->scope = 1;
-				$mptt->save();
-				
-				echo "Added page ", $p->name, ' at ', $arr[10], "<br />";
 			}
+			catch (Exception $e)
+			{
+				print_r( $p );
+				throw $e;
+			};
 			
-			$i++;
+			$uri = ORM::factory( 'page_uri' );
+			$uri->page_id = $p->id;
+			$uri->uri = $arr[10];
+			$uri->primary_uri = 't';
+			$uri->save();
+			
+			if (!$arr[6])
+				$arr[6] = 0;
+			
+			DB::query( Database::INSERT, "insert into page_mptt (page_id, parent_id, lft, rgt, scope) values (" . $p->id . ", " . $arr[6] . ", " . $arr[33] . ", " . $arr[34] . ", 1)" )->execute();
+			
+			echo "Added page ", $p->title, ' at ', $arr[10], "<br />";
 		}
 		
 		$mptt = ORM::factory( 'page_mptt' );
-		$mptt->rebuild_tree;
+		$mptt->rebuild_tree();
+		
+		DB::query( Database::UPDATE, "update page set active_vid = page_v.id from page_v where page_v.rid = page.id" )->execute();
 		
 		fclose( $f );	
 		
