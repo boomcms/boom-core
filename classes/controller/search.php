@@ -19,15 +19,15 @@ class Controller_Search extends Controller_Site
 		$query = strip_tags ( $query );
 		$query = trim( $query );
 		
-		$results = array();
+		$results = ORM::factory( 'page' )->find_all();
 		$this->template->subtpl_main->results = $results;
-		$this->template->subtpl_main->count = count( $results );
+		$this->template->subtpl_main->count = ORM::factory( 'page' )->count_all();
 		
 		if ($query === '')
 		{
 			// They didn't enter a search query. Tell them off.
 			$this->template->subtpl_main->message = 'Please enter a search term';
-		}	
+		}
 	}
 
 }

@@ -13,6 +13,11 @@ class Asset_Default extends Asset {
 	{
 		return '';	
 	}
+	
+	public function preview()
+	{
+		$this->show();
+	}
 }
 
 ?>

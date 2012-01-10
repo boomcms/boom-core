@@ -21,10 +21,11 @@
 			else:
 				echo "<ol class='search-results'>";
 				
+				$i = 0;
 				foreach( $results as $result ):
 					echo "<li";
 					
-					if ($q == 0):
+					if ($i == 0):
 						echo ' class="first"';
 					endif;
 					
@@ -34,6 +35,7 @@
 					echo "<p>", $result->get_slot('text', 'standfirst'), "</p>";
 
 					echo "</li>";
+					$i++;
 				endforeach;	
 
 				echo "</ol>";

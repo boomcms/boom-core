@@ -30,6 +30,7 @@ class Controller_Cms_Assets extends Controller_Cms
 	public function action_index()
 	{
 		$this->template->subtpl_main = View::factory( 'cms/pages/assets/index' );
+		$this->template->actionbar = View::factory( 'cms/pages/assets/actionbar' );
 		
 		$assets = ORM::factory( 'asset' )->find_all()->as_array();
 		$this->template->subtpl_main->assets = $assets;
