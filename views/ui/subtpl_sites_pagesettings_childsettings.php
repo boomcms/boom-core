@@ -116,15 +116,15 @@
 						<td>
 							<select name="children_hidden_from_leftnav">
 								<option <?if ($this->page->children_hidden_from_leftnav != 't' and $this->page->children_hidden_from_leftnav != 'f') {echo "selected=\"selected\" ";} ?> value="">Inherit from my parent</option>
-								<option <?if ($this->page->children_hidden_from_leftnav == 't') {echo "selected=\"selected\" ";}?> value="true">Yes</option>
-								<option <?if ($this->page->children_hidden_from_leftnav == 'f') {echo "selected=\"selected\" ";}?> value="false">No</option>
+								<option <?if ($this->page->children_hidden_from_leftnav == true) {echo "selected=\"selected\" ";}?> value="true">Yes</option>
+								<option <?if ($this->page->children_hidden_from_leftnav == false) {echo "selected=\"selected\" ";}?> value="false">No</option>
 							</select>
 						</td>
 					</tr>
 				<?} else {?>
-					<?if ($this->page->children_hidden_from_leftnav == 't'){
+					<?if ($this->page->children_hidden_from_leftnav == true){
 						$hidden_inputs .= '<input type="hidden" name="children_hidden_from_leftnav" value="true" />';
-					} else if ($this->page->children_hidden_from_leftnav == 'f'){
+					} else if ($this->page->children_hidden_from_leftnav == false){
 						$hidden_inputs .= '<input type="hidden" name="children_hidden_from_leftnav" value="false" />';
 					} else {
 						$hidden_inputs .= '<input type="hidden" name="children_hidden_from_leftnav" value="" />';
@@ -135,8 +135,8 @@
 							<td>
 								<?
 									if ($this->page->children_hidden_from_leftnav != 't' and $this->page->children_hidden_from_leftnav != 'f') echo 'Inherit from my parent';
-									if ($this->page->children_hidden_from_leftnav == 't') echo 'Yes';
-									if ($this->page->children_hidden_from_leftnav == 'f') echo 'No';
+									if ($this->page->children_hidden_from_leftnav == true) echo 'Yes';
+									if ($this->page->children_hidden_from_leftnav == false) echo 'No';
 								?>
 							</td>
 						</tr>
@@ -148,15 +148,15 @@
 						<td>
 							<select name="children_hidden_from_leftnav_cms">
 								<option <?if ($this->page->children_hidden_from_leftnav_cms != 't' and $this->page->children_hidden_from_leftnav_cms != 'f') {echo "selected=\"selected\" ";} ?> value="">Inherit from my parent</option>
-								<option <?if ($this->page->children_hidden_from_leftnav_cms == 't') {echo "selected=\"selected\" ";}?> value="true">Yes</option>
-								<option <?if ($this->page->children_hidden_from_leftnav_cms == 'f') {echo "selected=\"selected\" ";}?> value="false">No</option>
+								<option <?if ($this->page->children_hidden_from_leftnav_cms == true) {echo "selected=\"selected\" ";}?> value="true">Yes</option>
+								<option <?if ($this->page->children_hidden_from_leftnav_cms == false) {echo "selected=\"selected\" ";}?> value="false">No</option>
 							</select>
 						</td>
 					</tr>
 				<?} else {?>
-					<?if ($this->page->children_hidden_from_leftnav_cms == 't'){
+					<?if ($this->page->children_hidden_from_leftnav_cms == true){
 						$hidden_inputs .= '<input type="hidden" name="children_hidden_from_leftnav_cms" value="true" />';
-					} else if ($this->page->children_hidden_from_leftnav_cms == 'f'){
+					} else if ($this->page->children_hidden_from_leftnav_cms == false){
 						$hidden_inputs .= '<input type="hidden" name="children_hidden_from_leftnav_cms" value="false" />';
 					} else {
 						$hidden_inputs .= '<input type="hidden" name="children_hidden_from_leftnav_cms" value="" />';
@@ -167,8 +167,8 @@
 							<td>
 								<?
 									if ($this->page->children_hidden_from_leftnav_cms != 't' and $this->page->children_hidden_from_leftnav_cms != 'f') echo 'Inherit from my parent';
-									if ($this->page->children_hidden_from_leftnav_cms == 't') echo 'Yes';
-									if ($this->page->children_hidden_from_leftnav_cms == 'f') echo 'No';
+									if ($this->page->children_hidden_from_leftnav_cms == true) echo 'Yes';
+									if ($this->page->children_hidden_from_leftnav_cms == false) echo 'No';
 								?>
 							</td>
 						</tr>

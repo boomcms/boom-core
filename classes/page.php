@@ -102,18 +102,18 @@ abstract class Page
 					->join( 'page_mptt' )
 					->on( 'page_mptt.page_id', '=', 'page.id' )
 					->where( 'scope', '=', $this->_page->mptt->scope )
-					->where( 'page_v.deleted', '=', 'f' );	
+					->where( 'page_v.deleted', '=', false );	
 					
 					
 		// CMS or Site leftnav?
 		if (!$person->logged_in())
 		{
-			$query->where( 'page_v.visible_in_leftnav', '=', 't' )
+			$query->where( 'page_v.visible_in_leftnav', '=', true )
 				  ->where( 'page.page_status', '=', Model_Page::STATUS_VISIBLE );	
 		}
 		else
 		{	
-			$query->where( 'page_v.visible_in_leftnav_cms', '=', 't' );
+			$query->where( 'page_v.visible_in_leftnav_cms', '=', true );
 		}
 		
 		$query->order_by( 'page_mptt.lft', 'asc' );
