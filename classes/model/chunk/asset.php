@@ -20,10 +20,18 @@ class Model_Chunk_Asset extends ORM implements iSLot
 	
 	public function show()
 	{
-		$v = View::factory( 'site/slots/asset/image' );
-		$v->asset = Asset::factory( 'image', $this->asset );
+		if ($this->loaded())
+		{
+			$v = View::factory( 'site/slots/asset/image' );
+			$v->asset = Asset::factory( 'image', $this->asset_id );
 		
-		return $v;
+			return $v;
+		}
+	}
+	
+	public function show_default()
+	{
+		return "<em>(Click here to add an image.)</em>";
 	}
 	
 	public function get_slotname()

@@ -14,7 +14,8 @@ class Model_Page extends ORM_Versioned {
 	*/
 	protected $_table_name = 'page';
 	protected $_has_one = array( 
-		'mptt'		=> array( 'model' => 'page_mptt' )
+		'mptt'		=> array( 'model' => 'page_mptt' ),
+		'feature_image' => array( 'model' => 'asset', 'foreign_key' => 'id' ),
 	);
 	protected $_has_many = array( 
 		'versions'	=> array('model' => 'version_page', 'foreign_key' => 'id'),
@@ -315,8 +316,10 @@ class Model_Page extends ORM_Versioned {
 											->on( 'chunk.active_vid', '=', "chunk_$type" . ".id" )
 											->join( 'chunk_page' )
 											->on( 'chunk_page.chunk_id', '=', 'chunk.id' )
+											->where_open()
 											->where( 'chunk_page.page_id', '=', $this->id )	
-											->or_where( 'chunk_page.page_id', '=', 0 )											
+											->or_where( 'chunk_page.page_id', '=', 0 )
+											->where_close()										
 											->where( 'slotname', '=', $slotname )
 											->find();
 		}

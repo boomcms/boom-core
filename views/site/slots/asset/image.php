@@ -9,10 +9,6 @@
 ?>
 <p>
 	<?	
-		if ($asset->instance()->loaded()):
-			echo "<img src='/asset/", $asset->instance()->id, "/200/200/85/0' alt='", htmlspecialchars($asset->instance()->description), "'>";
-		else:
-			echo "<em>(Click here to add an image.)</em>";
-		endif;
+		echo "<img src='/asset/", $asset->instance()->id, "/200/200/85/0' alt='", htmlspecialchars($asset->instance()->description), "'>";
 	?>
 </p>

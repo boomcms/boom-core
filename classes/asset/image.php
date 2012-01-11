@@ -9,7 +9,6 @@
 * @copyright 2011, Hoop Associates
 *
 */
-
 class Asset_Image extends Asset {	
 	public function show( $width = null, $height = null, $quality = null )
 	{

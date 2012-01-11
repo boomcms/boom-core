@@ -21,6 +21,9 @@ class Page_CMS extends Page
 	{
 		$slot = $this->_page->get_slot( $type, $slotname );
 		
-		echo $htmlbefore, $slot->show(), $htmlafter;		
+		if ($slot->loaded())
+			echo $htmlbefore, $slot->show(), $htmlafter;
+		else
+			echo $htmlbefore, $slot->show_default(), $htmlafter;
 	}	
 }

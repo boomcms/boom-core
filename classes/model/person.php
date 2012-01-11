@@ -113,6 +113,12 @@ class Model_Person extends ORM_Versioned {
 		else
 			return true;		
 	}
+	
+	public function complete_login()
+	{
+		$this->consecutive_failed_login_counter = 0;
+		$this->save();
+	}
 }
 
 ?>

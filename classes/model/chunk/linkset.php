@@ -24,25 +24,30 @@ class Model_Chunk_Linkset extends ORM implements iSLot
 	
 	public function show()
 	{
-		$v = View::factory( 'site/slots/linkset' );
-		
 		if ($this->loaded())
 		{
+			$v = View::factory( 'site/slots/linkset' );
+			
 			$v->title = $this->title;
 			$v->links = $this->links->find_all();
+			
+			return $v;
 		}
-		else
-		{		
-			$link = ORM::factory( 'linksetlink' );
-			$link->title = 'Add Link';
-			$link->url = '#';
-			
-			// Set some default values.
-			$v->links = array( $link );
-			$v->title = 'Default Linkset';
-		}	
-			
-		return $v;	
+	}
+	
+	public function show_default()
+	{
+		$v = View::factory( 'site/slots/linkset' );
+
+		$link = ORM::factory( 'linksetlink' );
+		$link->title = 'Add Link';
+		$link->url = '#';
+		
+		// Set some default values.
+		$v->links = array( $link );
+		$v->title = 'Default Linkset';
+		
+		return $v;		
 	}
 	
 	/**

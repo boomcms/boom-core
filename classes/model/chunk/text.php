@@ -21,8 +21,12 @@ class Model_Chunk_Text extends ORM implements iSLot
 		if ($this->loaded())
 			return $this->text;
 		else
-			return 'Click on me to add some text here.';
-		
+			return '';
+	}
+	
+	public function show_default()
+	{
+		return 'Click on me to add some text here.';
 	}
 	
 	public function get_slotname()

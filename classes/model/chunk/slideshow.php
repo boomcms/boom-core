@@ -23,26 +23,22 @@ class Model_Chunk_Slideshow extends ORM implements iSLot
 	
 	
 	public function show()
-	{
-		$v = View::factory( 'site/slots/slideshow' );
-		$v->chunk = $this;
-		
+	{	
 		if ($this->loaded())
 		{
+			$v = View::factory( 'site/slots/slideshow' );
+			$v->chunk = $this;
+			
 			$v->title = $this->title;
-			$v->slides = $this->slides->find_all();
-		}
-		else
-		{		
-			$slide = ORM::factory( 'slideshowimage' );
-			$slide->url = '#';
+			$v->slides = $this->slides->find_all();	
 			
-			// Set some default values.
-			$v->slides = array( $slide );
-			$v->title = 'Default Slideshow';
+			return $v;
 		}	
-			
-		return $v;	
+	}
+	
+	public function show_default()
+	{
+		return "Click on me to add a slideshow here";		
 	}
 	
 	/**

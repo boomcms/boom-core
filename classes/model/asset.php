@@ -16,6 +16,9 @@ class Model_Asset extends ORM_Versioned {
 		'asset_type'		=> array('model' => 'asset_type' ),
 		'encoding'			=> array('model' => 'asset_encoding' )
 	);
+	protected $_belongs_to = array(
+		'chunk_asset'		=> array('model' => 'chunk_asset', 'foreign_key' => 'asset_id' ),
+	);
 	
 	/**
 	* Value for asset status published.

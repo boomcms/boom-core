@@ -32,10 +32,13 @@ abstract class Asset {
 	* Used to initialise the decorator.
 	* Determines which decoration we need from the asset_type name
 	* @param string $type The type of asset
-	* @param object $asset The asset we're decorating
+	* @param mixed $asset The asset we're decorating. Can be the object or asset ID.
 	* @return Asset
 	*/
-	public static function factory( $type, Model_Asset $asset ) {
+	public static function factory( $type, $asset ) {
+		if (!is_object( $asset ))
+			$asset = ORM::factory( 'asset', $asset );
+			
 		switch( $type ) {
 			case 'image':
 				return new Asset_Image( $asset );
@@ -54,6 +57,20 @@ abstract class Asset {
 		}
 	}
 	
+	/**
+	* Determine whether a mimetype is supported.
+	* Used to check whether a file can be uploaded.
+	*
+	* @param string $mimetype The mimetype we're checking.
+	* @return bool True if the mimetype is supported by the Sledge, false if not.
+	*/
+	public static function is_supported( $mimetype )
+	{
+		
+		
+		
+	}
+	
 	public function instance()
 	{
 		return $this->_asset;
@@ -65,7 +82,7 @@ abstract class Asset {
 	abstract function show();
 	
 	/**
-	* Method to preview the asset in a page/
+	* Method to preview the asset in a page
 	*/
 	abstract function preview();	
 }

@@ -40,7 +40,7 @@ class Controller_Cms_Account extends Kohana_Controller
 		// Gather form data.
 		$this->return['email'] = $email = Arr::get( $_POST, 'email', null );
 		$password = Arr::get( $_POST, 'password', null );
-		$persist = Arr::get( $_POST, 'persist', false );
+		$persist = (Arr::get( $_POST, 'sledge-remember-me') == 'on')? true : false;
 		$msg = '';
 		
 		if ($email && $password)
@@ -59,7 +59,7 @@ class Controller_Cms_Account extends Kohana_Controller
 			}
 			else
 			{	
-				// $this->auth does the actual logging in, we just do some cleaning up after.
+				// The auth module does the actual logging in, we just do some cleaning up after.
 				if (Auth::instance()->login( $person, $password, $persist ))
 				{				
 					// Log the activity, so we can see what everyone's been getting up to.
