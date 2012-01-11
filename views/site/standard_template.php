@@ -46,14 +46,7 @@
 		?>
 	</head>
 	<body>
-		<?
-			if ( Auth::instance()->logged_in() )
-			{
-				echo "<div id='cmsbars'>";
-				echo View::factory( 'cms/subtpl_bar' );
-				echo "</div>";
-			}
-			
+		<?			
 			echo new View('site/nav/top');
 
 			echo $subtpl_main;

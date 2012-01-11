@@ -16,27 +16,24 @@
 	</div>
 	<div class="sledge-tagmanager-sidebar ui-helper-left">
 
-		<?= new View('cms/ui/subtpl_tag_manager_search');?>
+		<?= new View('ui/subtpl_tag_manager_search');?>
 
-		<?= new View('cms/ui/subtpl_tag_tree')?>
+		<?= new View('ui/subtpl_tag_tree')?>
 	</div>
 </div>
 
 <?
-	$allowed_types = array();
-	$types = O::fa('asset_type')->where("allowed_to_upload = 't' and extension != ''")->find_all();
-	foreach($types as $type){
-		array_push($allowed_types, $type->extension);
-	}
+	$types = Asset::$allowed_types;
 ?>
+
 <script type="text/javascript">
 
 
 	$.sledge.init('people',  {
 		person: {
-			rid: <?= $this->person->rid?>,
-			firstname: '<?= $this->person->firstname?>',
-			lastname: "<?= $this->person->lastname?>"
+			rid: <?= $person->id?>,
+			firstname: '<?= $person->firstname?>',
+			lastname: "<?= $person->lastname?>"
 		}
 	});
 
@@ -50,8 +47,8 @@
 			defaultTagRid: <?=$this->default_tag_rid?>,
 			edition: '<?= $this->edition?>', 
 			type: '<?= $this->type?>',
-			selected: [<?= (count($this->selected) ? "'".implode('\',\'', $this->selected)."'" : '');?>], 
-			types: [<?= (count($this->types) ? "'".implode('\',\'', $this->types)."'" : '');?>],
+			selected: [<?= (count($this->selected) ? "'".implode('\',\'', $selected)."'" : '');?>], 
+			types: [<?= (count($this->types) ? "'".implode('\',\'', $types)."'" : '');?>],
 			excludeSmartTags: <?= (string) (int) $this->exclude_smart_tags?>,
 			template: '<?= $this->template?>',
 			allowedUploadTypes: [ '<?= implode('\', \'', $allowed_types)?>' ]

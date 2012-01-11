@@ -41,6 +41,18 @@ class Controller_Site extends Sledge_Controller
 		$page = ORM::factory( 'page', $page_uri->page_id );
 		$page_type = ($this->mode == 'cms' && $this->person->can( 'edit', $page ))? 'cms' : 'site';
 		
+		// Hack.
+		// If we're in write mode overwrite the standard template with the cms standard template.
+		if ($page_type == 'cms' && !Arr::get( $_GET, 'state' ) == 'siteeditcms')
+		{
+			$this->template = View::factory( 'cms/standard_template' );
+			$title = $page->title;
+			$subtpl_topbar = View::factory( 'ui/subtpl_sites_topbar' );
+			
+			View::bind_global( 'title', $title );
+			View::bind_global( 'subtpl_topbar', $subtpl_topbar );
+		}
+		
 		// Decorate the page model with a page class.
 		// This allows us to change what the page does depending on whether we're in cms or site mode
 		// Without changing the page model itself.

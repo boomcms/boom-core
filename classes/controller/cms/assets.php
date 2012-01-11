@@ -10,8 +10,14 @@
 
 class Controller_Cms_Assets extends Controller_Cms
 {	
+	/**
+	* Asset upload controller
+	*
+	* @uses Asset::is_supported()
+	*/
 	public function action_upload()
 	{
+		
 		
 	}
 	
@@ -30,7 +36,7 @@ class Controller_Cms_Assets extends Controller_Cms
 	public function action_index()
 	{
 		$this->template->subtpl_main = View::factory( 'cms/pages/assets/index' );
-		$this->template->actionbar = View::factory( 'cms/pages/assets/actionbar' );
+		$this->template->subtpl_topbar = View::factory( 'ui/subtpl_assets_topbar' );
 		
 		$assets = ORM::factory( 'asset' )->find_all()->as_array();
 		$this->template->subtpl_main->assets = $assets;

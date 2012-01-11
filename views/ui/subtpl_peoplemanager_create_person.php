@@ -2,7 +2,7 @@
 	# Copyright 2009, Hoop Associates Ltd
 	# Hoop Associates   www.thisishoop.com   mail@hoopassociates.co.uk
 ?>
-<form method="post" action="/_cms_user_manager/save_user" id="sledge-tagmanager-create-person-form">
+<form method="post" action="/cms/people/save" id="sledge-tagmanager-create-person-form">
 	<table width="100%">
 		<tbody>
 			<tr>
@@ -26,12 +26,10 @@
 				<td>
 					<select id="create-group" name="group_rid">
 						<?
-						$groups_tag = Tag::find_tag(1, 'Groups');
-						foreach(Tag::gettags($groups_tag->rid) as $tag) {
-							if (!Tag::is_smart('tag', $tag->rid)) {
-								echo Cms_tag_manager_Controller::recurse_combo($tag, NULL, 0);
-							}
-						}?>
+							foreach( $groups as $group ):
+								echo $group->name;
+							endforeach;
+						?>
 					</select>
 				</td>
 			</tr>

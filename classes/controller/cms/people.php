@@ -8,8 +8,7 @@
 * @copyright 2011, Hoop Associates
 */
 
-class Controller_Cms_People extends Controller_Cms {
-	
+class Controller_Cms_People extends Controller_Cms {	
 	public function before()
 	{		
 		parent::before();
@@ -18,11 +17,9 @@ class Controller_Cms_People extends Controller_Cms {
 			Request::factory( 'error/403' )->execute();
 		
 		$this->template->title = 'People Manager';
-		$actionbar = View::factory( 'cms/pages/people/actionbar' );
-		$buttonbar = View::factory( 'cms/pages/people/buttonbar' );
+		$subtpl_topbar = View::factory( 'ui/subtpl_people_topbar' );
 		
-		View::bind_global( 'actionbar', $actionbar );
-		View::bind_global( 'buttonbar', $buttonbar );
+		View::bind_global( 'subtpl_topbar', $subtpl_topbar );
 	}
 	
 	public function action_save()

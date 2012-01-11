@@ -44,8 +44,9 @@
 			<br />
 			<ul class="sledge-tree sledge-chunk-linkset-internal-links">
 				<?
-					$r = new Recursion_Page_Tree;
-					$r->recurse(O::fa('page')->find_by_title('Site 1'), O::f('site_page')->get_homepage()->rid, true, false, false, false, false, false, false, false);
+					foreach( $page->mptt->full_tree() as $node ):
+						echo "<li>", $node->page->title, "</li>";
+					endforeach;
 				?>
 			</ul>
 		</div>

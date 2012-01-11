@@ -7,7 +7,7 @@
                 </ul>
         </div>
 
-	<?= new View('cms/ui/subtpl_topbar_nav')?>
+	<?= new View('ui/subtpl_topbar_nav')?>
 
 	<div class="ui-helper-clearfix ui-tabs-panel ui-widget-content ui-corner-bottom">
 		<div id="sledge-page-actions" class="ui-helper-right">

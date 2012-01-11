@@ -21,9 +21,13 @@ class Page_CMS extends Page
 	{
 		$slot = $this->_page->get_slot( $type, $slotname );
 		
+		echo "<div id=\"sledge-chunk-slot-replace-me\" />";
+		
 		if ($slot->loaded())
 			echo $htmlbefore, $slot->show(), $htmlafter;
 		else
 			echo $htmlbefore, $slot->show_default(), $htmlafter;
+			
+		echo "</div>";
 	}	
 }

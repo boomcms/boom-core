@@ -40,29 +40,37 @@ class Controller_Cms_Page extends Controller_Cms
 	
 	public function action_add()
 	{
-		$parent = $this->_page;
-		
-		if (!$this->person->can( 'add', $parent ))
-			Request::factory( 'error/403' )->execute();
-		
-		// Create a new page object.
-		$page = ORM::factory( 'page' );
-		$page->page_status = Model_Page::STATUS_INVISIBLE;	
-		$page->title = 'Untitled';
-		$page->version_status = Model_Page::STATUS_DRAFT;
-		$page->template_id = ($parent->default_child_template_id)? $parent->default_child_template_id : $parent->template_id;
-		$page->save();
-		
-		// Add the page to the tree.
-		$mptt = ORM::factory( 'page_mptt' );
-		$mptt->page_id = $page->id;
-		$mptt->insert_as_last_child( $parent->mptt );
-		$mptt->save();
-		
-		// URI needs to be generated after the MPTT is set up.
-		$uri = $page->generateUri();
-		
-		$this->request->redirect( $uri );
+		if (isset( $_POST ))
+		{
+			$parent = $this->_page;
+	
+			if (!$this->person->can( 'add', $parent ))
+				Request::factory( 'error/403' )->execute();
+	
+			// Create a new page object.
+			$page = ORM::factory( 'page' );
+			$page->page_status = Model_Page::STATUS_INVISIBLE;	
+			$page->title = 'Untitled';
+			$page->version_status = Model_Page::STATUS_DRAFT;
+			$page->template_id = ($parent->default_child_template_id)? $parent->default_child_template_id : $parent->template_id;
+			$page->save();
+	
+			// Add the page to the tree.
+			$mptt = ORM::factory( 'page_mptt' );
+			$mptt->page_id = $page->id;
+			$mptt->insert_as_last_child( $parent->mptt );
+			$mptt->save();
+	
+			// URI needs to be generated after the MPTT is set up.
+			$uri = $page->generateUri();
+	
+			$this->request->redirect( $uri );
+		}
+		else
+		{
+			echo View::factory( 'ui/subtpl_sites_page_add' );
+			exit();
+		}
 	}
 	
 	

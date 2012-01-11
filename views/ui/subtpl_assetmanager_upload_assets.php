@@ -1,10 +1,3 @@
-<?
-	$allowed_types = array();
-	$types = O::fa('asset_type')->where("allowed_to_upload = 't' and extension != ''")->find_all();
-	foreach($types as $type){
-		array_push($allowed_types, $type->extension);
-	}
-?>
 <div class="sledge-tabs">
 	<form id="sledge-tagmanager-upload-form">
 		<input type="hidden" name="upload_token" value="<?=sha1(microtime())?>" />
@@ -13,7 +6,7 @@
 				<div class="ui-state-highlight ui-corner-all">
 					<p style="margin: .5em;">
 						<span style="float: left; margin-right: 0.3em; margin-top:-.2em" class="ui-icon ui-icon-info"></span>
-						You may upload up to 5 files at a time.  Allowed types: <?= implode(', ', $allowed_types) ?> 
+						You may upload up to 5 files at a time.  Allowed types: <?= implode(', ', Asset::$allowed_types) ?> 
 					</p>
 				</div>
 			</div>	

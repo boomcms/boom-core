@@ -3,11 +3,11 @@
 	<div id="sledge-topbar-useractions">
 		<ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all" style="border:0;margin-top:1px;">
 			<li class="ui-state-default ui-corner-top"><a href="#">Profile</a></li>
-			<li class="ui-state-default ui-corner-top"><a href="/cms/login/logout">Log out</a></li>
+			<li class="ui-state-default ui-corner-top"><a href="/cms/logout">Log out</a></li>
 		</ul>
 	</div>
 
-	<?= new View('cms/ui/subtpl_topbar_nav')?>
+	<?= new View('ui/subtpl_topbar_nav')?>
 
 	<div class="ui-helper-clearfix ui-tabs-panel ui-widget-content ui-corner-bottom">
 		<div id="sledge-page-actions">
@@ -85,15 +85,18 @@
 	
 	<div id="sledge-topbar-pagesettings" class="ui-helper-clearfix">
 		<div class="ui-helper-center">
-			<?= new View('cms/ui/subtpl_sites_pagesettings');?>
+			<?= new View('ui/subtpl_sites_pagesettings');?>
 		</div>
 	</div>
 
-	<?
-	$published_page = O::fa('page',$this->page->rid);
-	$page_type = ($published_page->id == $this->page->id) ? 'published' : 'a draft';
-	?>
 	<div id="sledge-topbar-revisions" class="ui-helper-clearfix">
-		This page version is <strong><?=$page_type?></strong>. <?if ($page_type == 'a draft' && $published_page->rid) {?>A <a href="#" id="sledge-topbar-status-change">published version</a> exists for this page.<?}?>
+		This page version is <strong><?=$page->getVersionStatus()?></strong>. 
+		<?
+			/*
+			if ($page_type == 'a draft' && $published_page->rid):
+				echo "A <a href='#' id='sledge-topbar-status-change'>published version</a> exists for this page.";
+			endif;
+			*/
+		?>
 	</div>
 </div>

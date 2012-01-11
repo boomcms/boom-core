@@ -2,11 +2,6 @@
 	# Copyright 2009, Hoop Associates Ltd
 	# Hoop Associates   www.thisishoop.com   mail@hoopassociates.co.uk
 ?>
-<?
-
-	$this->page = O::fa('page', (int) $_GET['rid']);
-
-?>
 
 <div style="margin-bottom: .6em">
 	<div class="ui-widget">
@@ -20,8 +15,9 @@
 	<br />
 	<ul class="sledge-tree">
 		<?
-			$r = new Recursion_Page_Tree;
-			$r->recurse(O::fa('page')->find_by_title('Site 1'), O::f('site_page')->get_homepage()->rid, true, false, false, false, false, false, false, false);
+			foreach( $page->mptt->full_tree() as $node ):
+				echo "<li>", $node->page->title, "</li>";
+			endforeach;
 		?>
 	</ul>
 </div>

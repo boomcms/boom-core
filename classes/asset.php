@@ -23,6 +23,13 @@ abstract class Asset {
 	*/
 	protected $_asset;
 	
+	/**
+	* Supported asset types.
+	* @access public
+	* @var array
+	*/
+	public $allowed_types;
+	
 	public function __construct( Model_Asset $asset )
 	{
 		$this->_asset = $asset;

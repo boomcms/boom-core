@@ -23,20 +23,16 @@
 </div>
 
 <?
-	$allowed_types = array();
-	$types = O::fa('asset_type')->where("allowed_to_upload = 't' and extension != ''")->find_all();
-	foreach($types as $type){
-		array_push($allowed_types, $type->extension);
-	}
+	$allowed_types = Asset::$allowed_types;
 ?>
 <script type="text/javascript">
 
 
 	$.sledge.init('assets',  {
 		person: {
-			rid: <?= $this->person->rid?>,
-			firstname: '<?= $this->person->firstname?>',
-			lastname: "<?= $this->person->lastname?>"
+			rid: <?= $person->id?>,
+			firstname: '<?= $person->firstname?>',
+			lastname: "<?= $person->lastname?>"
 		}
 	});
 
