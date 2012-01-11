@@ -41,8 +41,7 @@ class Controller_Site extends Sledge_Controller
 		$page = ORM::factory( 'page', $page_uri->page_id );
 		$page_type = ($this->mode == 'cms' && $this->person->can( 'edit', $page ))? 'cms' : 'site';
 		
-		// Hack.
-		// If we're in write mode overwrite the standard template with the cms standard template.
+		// Set the base template.
 		if ($page_type == 'cms' && !Arr::get( $_GET, 'state' ) == 'siteeditcms')
 		{
 			$this->template = View::factory( 'cms/standard_template' );
@@ -51,6 +50,10 @@ class Controller_Site extends Sledge_Controller
 			
 			View::bind_global( 'title', $title );
 			View::bind_global( 'subtpl_topbar', $subtpl_topbar );
+		}
+		else
+		{
+			$this->template = View::factory( 'site/standard_template' );
 		}
 		
 		// Decorate the page model with a page class.
@@ -61,7 +64,7 @@ class Controller_Site extends Sledge_Controller
 		// Load the relevant template object.
 		$template = ORM::factory( 'template', $this->page->template_id );
 
-		// Add the main subtemplate.
+		// Add the main subtemplate to the standard template.
 		$this->template->subtpl_main = View::factory( $template->filename );
 		View::bind_global( 'page', $this->page );
 	}
@@ -70,22 +73,6 @@ class Controller_Site extends Sledge_Controller
 	{	
 		// Add the header subtemplate.
 		$this->template->subtpl_header = View::factory( 'site/subtpl_header' );
-		
-		// Footer templates
-		$footer_page_objects = array();
-
-		$footer_pages = array('contact', 'newsletter', 'rssfeeds');
-		foreach ($footer_pages as $internal_name)
-		{
-			$p = ORM::factory( 'page' )->where( 'internal_name', '=', $internal_name)->find();
-			
-			if ($p->loaded())
-			{
-				$footer_page_objects[] = $p;
-			}
-		}
-		$this->template->subtpl_main->subtpl_footer = View::factory( 'site/subtpl_footer' );
-		$this->template->subtpl_main->subtpl_footer->footer_pages = $footer_page_objects;
 		
 		parent::after();
 	}

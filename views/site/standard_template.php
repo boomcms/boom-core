@@ -10,7 +10,8 @@
 		<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 		<meta http-equiv="Content-Style-Type" content="text/css" />
 		<meta name="description" content="<?= htmlspecialchars( $page->description );?>" />
-		<meta name="keywords" content="<?= htmlspecialchars( $page->keywords );?>" />	
+		<meta name="keywords" content="<?= htmlspecialchars( $page->keywords );?>" />
+		<link rel="stylesheet" type="text/css" href="sledge/css/main.css" />	
 		<?
 			if ($page->indexed)
 			{
@@ -19,18 +20,6 @@
 			else
 			{
 				echo "<meta name='robots' content='noindex, nofollow' />";
-			}
-		?>
-
-		<?
-			foreach( $css as $file )
-			{
-				echo "<link rel='stylesheet' type='text/css' href='$file' media='screen' />";
-			}
-			
-			foreach( $js as $file )
-			{
-				echo "<script type='text/javascript' src='$file'></script>";
 			}
 		?>
 		
