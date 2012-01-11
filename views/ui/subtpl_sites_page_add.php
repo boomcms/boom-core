@@ -1,13 +1,36 @@
-<form id="sledge-page-add-form">
-	<input type='hidden' name='parent_id' value='<?= $page->id; ?>' />	
-	<table>	
+<form id="sledge-page-add-form">	
+	<table>
+		<tr>
+			<td>
+				<label for="parent-page">
+					Parent page
+				</label>
+			</td>
+			<td>
+				<select name="parent_id" style="width:24em">
+					<option value="0">No parent</option>
+					<?
+						foreach( $page->mptt->fulltree() as $node ):
+							echo "<option value='", $node->page_id, "'";
+							
+							if ($node->page_id == $page->id)
+								echo " selected='selected'";
+								
+							echo ">", $node->page->title, "</option>";
+						endforeach;
+					?>
+					</select>
+				</select>
+			</td>
+		</tr>
+		
 		<?
 		//if ($p['attributes'][$template_change_required_perm]):?>
 			<tr>
 				<td>Template</td>
 				<td>
 					<select name="template_id" style="width: 24em">
-						<option value="0">Inherit from parent</option>
+						<option value="">Inherit from parent</option>
 						<?
 							foreach ($templates as $tpl):
 								if ($tpl->id == $page->default_child_template_id):
