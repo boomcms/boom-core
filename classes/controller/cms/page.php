@@ -125,12 +125,22 @@ class Controller_Cms_Page extends Controller_Cms
 	public function action_delete()
 	{
 		if (!$this->person->can( 'delete', $this->_page ))
-			Request::factory( 'error/403' )->execute();
-					
-		$this->_page->delete();		
+			Request::factory( 'error/403' )->execute();		
+			
+		if ( Request::current()->method() == 'POST' )
+		{
+			$this->_page->delete();
 		
-		// Go back to the homepage.
-		$this->request->redirect( '/' );
+			echo URL::base( Request::current() );
+		}
+		else
+		{
+			$v = View::factory( 'ui/subtpl_sites_page_delete' );
+			$v->page = $this->_page;
+			echo $v;
+		}
+		
+		exit;
 	}
 	
 	/**
