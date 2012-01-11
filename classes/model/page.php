@@ -355,28 +355,42 @@ class Model_Page extends ORM_Versioned {
 	}
 	
 	/**
-	* Set the page's status.
-	* Used to set whether the page is visible or invisible. 
-	* If a page is being set to invisible then all child pages have their setPageStatus() methods called to ensure that they are also made invisible.
+	* Used to re-order this page's children
 	*
-	* @param integer $status Page status value.
-	* @return void
+	* @param int $order The ordering policy ID.
+	* @param string $direction The order direction, should be 'asc' or 'desc'
+	* @todo lock mptt tables to avoid errors.
 	*/
-	public function setStatus( $status )
+	public function order_children( $order, $direction )
 	{
-		$this->page_status = $status;
+		$direction = ($direction == 'asc')? 'asc' : 'desc';
 		
-		// Are we setting the page to invisble? Hide the children as well, if they're are any.
-		if ($status === self::STATUS_INVISIBLE && $this->mptt->countChildren() > 0)
-		{	
-			foreach ($this->getChildren() as $child)
+		if ($order !== self::CHILD_ORDER_MANUAL && $this->mptt->has_children())
+		{
+			// Find the children, sorting the database results by the column we want the children ordered by.
+			$query = ORM::factory( 'page_mptt' )
+				->join( 'page', 'inner' )->on( 'page_mptt.page_id', '=', 'page.id' )
+				->join( 'page_v', 'inner' )->on( 'page.active_vid', '=', 'page_v.id' );
+				
+			if ($direction === self::CHILD_ORDER_ALPHABETIC)
+				$query->order_by( 'title', $direction );
+			else
+				$query->order_by( 'audit_timestamp', $direction );
+			
+			$children = $query->find_all();
+			
+			$left = $this->mptt->lft;
+			
+			// Loop through the children assigning new left and right values.
+			foreach( $children as $child )
 			{
-				$child->setStatus( $status );
-			}	
-	
-			// Set a flag for self::save() to indicate that we've got child pages which need to be saved.
-			$this->_save_children = true;		
-		}	
+				$left++;
+				
+				$child->rgt = $child->rgt - ($child->lft - $left);
+				$child->lft = $left;
+				$child->save();				
+			}
+		}		
 	}
 	
 	/**
