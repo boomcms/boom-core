@@ -7,7 +7,7 @@
 		$titlelist = '';
 		
 		foreach ($page->mptt->descendants() as $pi):
-			$titlelist .= "<li>" . $pi->title . "</li>";
+			$titlelist .= "<li>" . $pi->page->title . "</li>";
 		endforeach;
 		
 		$titlelist = preg_replace("/\, $/", "", $titlelist);
