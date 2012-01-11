@@ -39,15 +39,15 @@ class Controller_Cms_Page extends Controller_Cms
 		{
 			$parent = ORM::factory( 'page', Arr::get( $_POST, 'parent_id', 0 ));
 			
-			if (!$this->person->can( 'add', $parent ))
-				Request::factory( 'error/403' )->execute();
+			//if (!$this->person->can( 'add', $parent ))
+			//	Request::factory( 'error/403' )->execute();
 	
 			// Create a new page object.
 			$page = ORM::factory( 'page' );
 			$page->page_status = Model_Page::STATUS_INVISIBLE;	
 			$page->title = 'Untitled';
 			$page->version_status = Model_Page::STATUS_DRAFT;
-			$page->template_id = Arr::get( $_POST, 'template_id' );
+			$page->template_id = (Arr::get( $_POST, 'template_id' ) !== 0)? Arr::get( $_POST, 'template_id' ) : $parent->default_child_template_id;
 			$page->save();
 	
 			// Add the page to the tree.
@@ -65,7 +65,7 @@ class Controller_Cms_Page extends Controller_Cms
 		{
 			$v = View::factory( 'ui/subtpl_sites_page_add' );
 			$v->templates = ORM::factory( 'template' )->find_all();
-			$v->page = ORM::factory( 'page' );
+			$v->page = $this->_page;
 			echo $v;
 		}
 		
