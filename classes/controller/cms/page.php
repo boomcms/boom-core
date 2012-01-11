@@ -31,19 +31,14 @@ class Controller_Cms_Page extends Controller_Cms
 		$page_id = $this->request->param( 'id' );
 		$page_id = (int) preg_replace( "/[^0-9]+/", "", $page_id );
 		$this->_page = ORM::factory( 'page', $page_id );
-	
-		if (!$this->_page->loaded())
-		{
-			Request::factory( 'error/404' )->execute();
-		}
 	}
 	
 	public function action_add()
 	{
-		if (isset( $_POST ))
+		if (isset( $_POST['parent_id'] ) && isset( $_POST['template_id'] ))
 		{
-			$parent = $this->_page;
-	
+			$parent = ORM::factory( 'page', Arr::get( $_POST, 'parent_id', 0 ));
+			
 			if (!$this->person->can( 'add', $parent ))
 				Request::factory( 'error/403' )->execute();
 	
@@ -52,7 +47,7 @@ class Controller_Cms_Page extends Controller_Cms
 			$page->page_status = Model_Page::STATUS_INVISIBLE;	
 			$page->title = 'Untitled';
 			$page->version_status = Model_Page::STATUS_DRAFT;
-			$page->template_id = ($parent->default_child_template_id)? $parent->default_child_template_id : $parent->template_id;
+			$page->template_id = Arr::get( $_POST, 'template_id' );
 			$page->save();
 	
 			// Add the page to the tree.
@@ -64,13 +59,17 @@ class Controller_Cms_Page extends Controller_Cms
 			// URI needs to be generated after the MPTT is set up.
 			$uri = $page->generateUri();
 	
-			$this->request->redirect( $uri );
+			echo URL::base( $this->request ) . $uri;
 		}
 		else
 		{
-			echo View::factory( 'ui/subtpl_sites_page_add' );
-			exit();
+			$v = View::factory( 'ui/subtpl_sites_page_add' );
+			$v->templates = ORM::factory( 'template' )->find_all();
+			$v->page = ORM::factory( 'page' );
+			echo $v;
 		}
+		
+		exit;
 	}
 	
 	

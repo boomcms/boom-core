@@ -1,34 +1,4 @@
-
-<?
-	# is the template user-changeable?
-	if (Tag::has_tag_name('template',$page->template_rid,'Visible')) {
-		$template_change_required_perm = 'Can edit page template (restricted)';
-		$template_view_required_perm = 'Can view page template (restricted)';
-	} else {
-		$template_change_required_perm = 'Can edit page template (all)';
-		$template_view_required_perm = 'Can view page template (all)';
-	}
-	
-	$p = array();
-	foreach (Kohana::config('permissions.attributes_whats') as $what) {
-		$p['attributes'][$what] = Permissions::may_i($what);
-	}
-
-	$i_can_has_all_templates = $p['attributes']['Can edit page template (all)'];
-
-	$visible_tag = O::fa('tag')->find_by_name('Visible');
-
-	$templates = (!$i_can_has_all_templates) ? Relationship::find_partners('template',$visible_tag) : O::fa('template');
-
-	$templates = $templates->orderby('name','asc')->find_all();
-
-?>
-
-
-<form id="sledge-page-add-form">
-
-	<input type="hidden" name="page_rid" value="<?=$page->rid;?>" />
-	
+<form id="sledge-page-add-form">	
 	<table>
 		<tr>
 			<td>
@@ -37,10 +7,10 @@
 				</label>
 			</td>
 			<td>
-				<select name="parent_rid" style="width:24em">
+				<select name="parent_id" style="width:24em">
 					<option value="0">No parent</option>
 					<?
-						foreach( $page->mptt->full_tree() as $node ):
+						foreach( $page->mptt->fulltree() as $node ):
 							echo "<option value='", $node->page_id, "'>", $node->page->title, "</option>";
 						endforeach;
 					?>
@@ -50,11 +20,11 @@
 		</tr>
 		
 		<?
-		if ($p['attributes'][$template_change_required_perm]):?>
+		//if ($p['attributes'][$template_change_required_perm]):?>
 			<tr>
 				<td>Template</td>
 				<td>
-					<select name="template_rid" style="width: 24em">
+					<select name="template_id" style="width: 24em">
 						<option value="">Inherit from parent</option>
 						<?
 							foreach ($templates as $tpl):
@@ -68,7 +38,7 @@
 					</select>
 				</td>
 			</tr>
-		<?else:
+		<?/*else:
 			$hidden_inputs .= '<input type="hidden" name="template" value="'.$page->template_rid.'" />';
 			if ($p['attributes'][$template_view_required_perm]):?>
 				<tr>
@@ -89,6 +59,6 @@
 					</td>
 				</tr>
 			<?endif;
-		endif;?>
+		endif;*/?>
 	</table>
 </form>
