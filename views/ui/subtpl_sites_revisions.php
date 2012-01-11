@@ -1,31 +1,26 @@
-<?
-if (!isset($_GET['rid'])) exit;
-$published_page = O::fa('page',$_GET['rid']);
-$current_page = O::f('page_v', $_GET['vid']);
-$count = O::f('page_v')->where("rid = {$_GET['rid']} and autosave != 't'")->find_all()->count();
-?>
 <div id="slege-page-revisions">
 	<div id="sledge-page-revisions-list">
 		<table width="100%">
 			<tbody>
-				<?foreach (O::f('page_v')->where("rid = {$_GET['rid']} and autosave != 't'")->orderby('audit_time','desc')->find_all() as $i => $page_v) {?>
-					<? $person = O::fa('person',$page_v->audit_person); ?>
+				<?
+				$count = count( $versions );
+				foreach ($versions as $i => $version):?>
 					<tr>
-						<td width="20"><input type="checkbox" id="revision-<?=$page_v->id?>" class="sledge-page-revision-check ui-helper-reset"<?if ($page_v->id == $current_page->id){?> checked="checked"<?}?> /></td>
+						<td width="20"><input type="checkbox" id="revision-<?=$version->id?>" class="sledge-page-revision-check ui-helper-reset"<?if ($version->id == $page->active_vid){?> checked="checked"<?}?> /></td>
 						<td>
-							<label for="revision-<?=$page_v->id?>">
+							<label for="revision-<?=$version->id?>">
 								Version <?=$count-$i?>
-								<?if ($page_v->id == $published_page->id) {?>
+								<?/*if ($version->id == $published_page->id) {?>
 									<small><strong>(<em>Published version</em>)</strong></small>
-								<?}?>
-								<?if ($page_v->id == $current_page->id) {?>
+								<?}*/?>
+								<?if ($version->id == $page->active_vid) {?>
 									<small><strong>(<em>Current version</em>)</strong></small>
 								<?}?>
 							</label><br />
-							<small><?=date('j F Y H:i')?> by <?=($person->rid) ? $person->firstname.' '.$person->lastname : 'Unknown'?></small>
+							<small><?=date('j F Y H:i')?> by <?=($version->person->id) ? $version->person->getName() : 'Unknown'?></small>
 						</td>
 					</tr>
-				<?}?>
+				<?endforeach;?>
 			</tbody>
 		</table>
 	</div>

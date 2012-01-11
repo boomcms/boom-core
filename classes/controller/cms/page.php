@@ -162,6 +162,19 @@ class Controller_Cms_Page extends Controller_Cms
 		$this->_page->active_vid = $version_id;
 		$this->_page->save();
 	}
+	
+	public function action_revisions()
+	{
+		$page = $this->_page;
+		$versions = ORM::factory( 'version_page' )->where( 'rid', '=', $page->id )->find_all();
+		
+		$v = View::factory( 'ui/subtpl_sites_revisions' );
+		$v->page = $page;
+		$v->versions = $versions;
+		
+		echo $v;
+		exit;
+	}
 }
 
 ?>

@@ -14,7 +14,7 @@
 	Feature image
 </button>
 
-<button id="sledge-topbar-information" class="sledge-button">
+<button id="#sledge-topbar-information" class="sledge-button">
 	Information
 </button>
 
