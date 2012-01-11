@@ -124,15 +124,15 @@
 						<td>
 							<select name="ssl_only">
 								<option <?if ($page->ssl_only != 't' and $page->ssl_only != 'f') {echo "selected=\"selected\" ";}?> value="">Inherit from my parent</option>
-								<option <?if ($page->ssl_only == 't') {echo "selected=\"selected\" ";}?> value="true">Yes</option>
-								<option <?if ($page->ssl_only == 'f') {echo "selected=\"selected\" ";}?> value="false">No</option>
+								<option <?if ($page->ssl_only == true) {echo "selected=\"selected\" ";}?> value="true">Yes</option>
+								<option <?if ($page->ssl_only == false) {echo "selected=\"selected\" ";}?> value="false">No</option>
 							</select>
 						</td>
 					</tr>
 			<?} else {?>
-				<?if ($page->ssl_only == 't') {
+				<?if ($page->ssl_only == true) {
 					$hidden_inputs .= '<input type="hidden" name="ssl_only" value="true" />';
-				} else if ($page->ssl_only == 'f') {
+				} else if ($page->ssl_only == false) {
 					$hidden_inputs .= '<input type="hidden" name="ssl_only" value="false" />';
 				} else {
 					$hidden_inputs .= '<input type="hidden" name="ssl_only" value="" />';
@@ -143,8 +143,8 @@
 						<td>
 							<?
 								if ($page->ssl_only != 't' and $page->ssl_only != 'f') echo 'Inherit from my parent';
-								if ($page->ssl_only == 't') echo 'Yes';
-								if ($page->ssl_only == 'f') echo 'No';
+								if ($page->ssl_only == true) echo 'Yes';
+								if ($page->ssl_only == false) echo 'No';
 							?>
 						</td>
 					</tr>

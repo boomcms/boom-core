@@ -108,7 +108,7 @@ class Model_Person extends ORM_Versioned {
 	*/
 	public function logged_in()
 	{
-		if (!$this->loaded() || $this->emailaddress == 'guest@hoopassociates.co.uk' || $this->enabled == 'f')
+		if (!$this->loaded() || $this->emailaddress == 'guest@hoopassociates.co.uk' || $this->enabled == false)
 			return false;
 		else
 			return true;		

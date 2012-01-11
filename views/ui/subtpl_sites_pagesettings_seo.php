@@ -72,8 +72,8 @@
 						<td>Allow page indexing</td>
 						<td>
 							<select name="indexed">
-								<option <?if ($this->page->indexed == 't') {?>selected="selected" <?}?> value="t">Yes</option>
-								<option <?if ($this->page->indexed == 'f') {?>selected="selected" <?}?> value="f">No</option>
+								<option <?if ($this->page->indexed == true) {?>selected="selected" <?}?> value="t">Yes</option>
+								<option <?if ($this->page->indexed == false) {?>selected="selected" <?}?> value="f">No</option>
 							</select>
 						</td>
 					</tr>
@@ -83,7 +83,7 @@
 						<tr>
 							<td>Allow page indexing</td>
 							<td>
-								<?=($this->page->indexed == 't') ? 'Yes' : 'No'?>
+								<?=($this->page->indexed == true) ? 'Yes' : 'No'?>
 							</td>
 						</tr>
 					<?}?>
@@ -166,7 +166,7 @@
 						<td>
 							<select name="hidden_from_search_results">
 								<option value="no">No</option>
-								<option value="yes"<?if ($this->page->hidden_from_search_results == 't'){?> selected="selected"<?}?>>Yes</option>
+								<option value="yes"<?if ($this->page->hidden_from_search_results == true){?> selected="selected"<?}?>>Yes</option>
 							</select>
 						</td>
 					</tr>

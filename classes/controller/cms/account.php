@@ -53,7 +53,7 @@ class Controller_Cms_Account extends Kohana_Controller
 			// Do this now and we can pass it to Auth::login() so we only have to query the database once.
 			$person = ORM::factory('person')->where( 'emailaddress', '=', $email )->find();
 		
-			if ($person->enabled == 'f')
+			if ($person->enabled == false)
 			{
 				$this->return['outcome'] = 'locked';
 			}
