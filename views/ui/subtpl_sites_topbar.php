@@ -11,31 +11,40 @@
 
 	<div class="ui-helper-clearfix ui-tabs-panel ui-widget-content ui-corner-bottom">
 		<div id="sledge-page-actions">
-			<button id="sledge-page-save" class="sledge-button ui-button-text-icon ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only">
-				<span class="ui-button-text">
-					<span class="ui-button-icon-primary ui-icon ui-icon-disk"></span>
-					Save
-				</span>
-			</button>
-			<div id="sledge-page-undo-splitbutton" class="ui-splitbutton ui-buttonset">
-				<button id="sledge-page-undo" disabled="disabled" class="sledge-button ui-button-text-icon ui-button ui-widget ui-state-default ui-button-text-only ui-corner-left">
-					<span class="ui-button-text">
-						<span class="ui-button-icon-primary ui-icon ui-icon-cancel"></span>
-						Undo
-					</span>
-				</button>
-				<button disabled="disabled" class="ui-button ui-widget ui-state-default ui-button-icon-only sledge-button ui-corner-right ui-splitbutton-hitarea">
-					<span class="ui-button-icon-primary ui-icon ui-icon-triangle-1-s"></span>
-					<span class="ui-button-text">Select an action</span>
-				</button>
-			</div>
-
-			<button id="sledge-page-delete" class="sledge-button ui-button-text-icon ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only">
-				<span class="ui-button-text">
-					<span class="ui-button-icon-primary ui-icon ui-icon-circle-close"></span>
-					Delete
-				</span>
-			</button>
+			<?
+				if ($person->can( 'edit', $page )):
+			?>
+					<button id="sledge-page-save" class="sledge-button ui-button-text-icon ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only">
+						<span class="ui-button-text">
+							<span class="ui-button-icon-primary ui-icon ui-icon-disk"></span>
+							Save
+						</span>
+					</button>
+					<div id="sledge-page-undo-splitbutton" class="ui-splitbutton ui-buttonset">
+						<button id="sledge-page-undo" disabled="disabled" class="sledge-button ui-button-text-icon ui-button ui-widget ui-state-default ui-button-text-only ui-corner-left">
+							<span class="ui-button-text">
+								<span class="ui-button-icon-primary ui-icon ui-icon-cancel"></span>
+								Undo
+							</span>
+						</button>
+						<button disabled="disabled" class="ui-button ui-widget ui-state-default ui-button-icon-only sledge-button ui-corner-right ui-splitbutton-hitarea">
+							<span class="ui-button-icon-primary ui-icon ui-icon-triangle-1-s"></span>
+							<span class="ui-button-text">Select an action</span>
+						</button>
+					</div>
+			<?
+				endif;
+				if ($person->can( 'delete', $page )):
+			?>
+					<button id="sledge-page-delete" class="sledge-button ui-button-text-icon ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only">
+						<span class="ui-button-text">
+							<span class="ui-button-icon-primary ui-icon ui-icon-circle-close"></span>
+							Delete
+						</span>
+					</button>
+			<?
+				endif;
+			?>
 			<button id="sledge-page-publish" class="sledge-button ui-button-text-icon ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only">
 				<span class="ui-button-text">
 					<span class="ui-button-icon-primary ui-icon ui-icon-check"></span>
@@ -47,21 +56,31 @@
 
 
 		<div id="sledge-page-metadata" class="ui-helper-right">
-			<div id="sledge-page-settings-menu" class="ui-splitbutton ui-buttonset">
-				<button id="sledge-page-settings" class="sledge-button sledge-splitbutton ui-button-text-icons ui-button ui-widget ui-state-default ui-button-text-only ui-corner-left ui-corner-right ui-splitbutton-hitarea">
-					<span class="ui-button-text">
-						<span class="ui-button-icon-primary ui-icon ui-icon-wrench"></span>
-						Settings
-						<span class="ui-button-icon-secondary ui-icon ui-icon-triangle-1-s"></span>
-					</span>
-				</button>
-			</div>
-			<button id="sledge-page-addpage" class="sledge-button ui-helper-left ui-button-text-icon ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only">
-				<span class="ui-button-text">
-					<span class="ui-button-icon-primary ui-icon ui-icon-circle-plus"></span>
-					Add page
-				</span>
-			</button>
+			<?
+				if ($person->can( 'edit', $page )):
+			?>
+					<div id="sledge-page-settings-menu" class="ui-splitbutton ui-buttonset">
+						<button id="sledge-page-settings" class="sledge-button sledge-splitbutton ui-button-text-icons ui-button ui-widget ui-state-default ui-button-text-only ui-corner-left ui-corner-right ui-splitbutton-hitarea">
+							<span class="ui-button-text">
+								<span class="ui-button-icon-primary ui-icon ui-icon-wrench"></span>
+								Settings
+								<span class="ui-button-icon-secondary ui-icon ui-icon-triangle-1-s"></span>
+							</span>
+						</button>
+					</div>
+			<?
+				endif;
+				if ($person->can( 'add', $page )):
+			?>
+					<button id="sledge-page-addpage" class="sledge-button ui-helper-left ui-button-text-icon ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only">
+						<span class="ui-button-text">
+							<span class="ui-button-icon-primary ui-icon ui-icon-circle-plus"></span>
+							Add page
+						</span>
+					</button>
+			<?
+				endif;
+			?>
 			<div id="sledge-page-preview-splitbutton" class="ui-splitbutton ui-buttonset">
 				<button id="sledge-page-preview" class="sledge-button ui-button-text-icon ui-button ui-widget ui-state-default ui-button-text-only ui-corner-left">
 					<span class="ui-button-text">
