@@ -11,6 +11,39 @@
 class Controller_Cms_Assets extends Controller_Cms
 {	
 	/**
+	* Delete controller
+	* Allows deleting multiple assets
+	*
+	*/
+	public function action_delete()
+	{
+		$asset_ids = explode( ",", Arr::get( $_POST, 'assets' ) );
+		
+		foreach( $asset_ids as $asset_id )
+		{
+			$asset = ORM::factory( 'asset', $asset_id );
+			$asset->delete();
+		}
+		
+		exit;		
+	}
+	
+	
+	/**
+	* Download controller.
+	* Allows downloading of assets in archived format.
+	* Method can be zip, tgz, tbz2
+	*/
+	public function action_download()
+	{
+		$asset_ids = explode( ",", Arr::get( $_GET, 'assets' ) );
+		$method = Arr::get( $_GET, 'method' );
+		
+		// Do the download.
+		
+	}
+	
+	/**
 	* Asset upload controller
 	*
 	* @uses Asset::is_supported()
