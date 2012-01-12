@@ -19,15 +19,22 @@ class Controller_Search extends Controller_Site
 		$query = strip_tags ( $query );
 		$query = trim( $query );
 		
-		$results = ORM::factory( 'page' )->find_all();
-		$this->template->subtpl_main->results = $results;
-		$this->template->subtpl_main->count = ORM::factory( 'page' )->count_all();
+		$page = Arr::get( $_REQUEST, 'page', 1 );
 		
-		if ($query === '')
-		{
-			// They didn't enter a search query. Tell them off.
-			$this->template->subtpl_main->message = 'Please enter a search term';
-		}
+		$results = ORM::factory( 'page' )->limit( 10 )->offset( ($page - 1) * 10)->order_by( 'page.id', 'asc' )->find_all();
+		$count = ORM::factory( 'page' )->count_all();
+		$this->template->subtpl_main->results = $results;
+		$this->template->subtpl_main->count = $count;
+		
+		$total_pages = ceil( $count / 10 );
+		$pagination = View::factory( 'pagination/search_results' );
+		$pagination->current_page = $page;
+		$pagination->total_pages = $total_pages;
+		$pagination->base_url = $this->page->url();
+		$pagination->previous_page = ($page > 1)? $page -1 : 0;
+		$pagination->next_page = ($page < $total_pages)? $page +1 : 0;
+		
+		$this->template->subtpl_main->pagination = $pagination;
 	}
 
 }

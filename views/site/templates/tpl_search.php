@@ -19,6 +19,8 @@
 			if ($count === 0):
 				echo "Your search returned no results.";
 			else:
+				echo $pagination;
+				
 				echo "<ol class='search-results'>";
 				
 				$i = 0;
@@ -39,6 +41,8 @@
 				endforeach;	
 
 				echo "</ol>";
+				
+				echo $pagination;
 			endif;
 		?>
 
