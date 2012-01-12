@@ -37,12 +37,14 @@ class Controller_Cms_Page extends Controller_Cms
 	{
 		if (isset( $_POST['parent_id'] ) && isset( $_POST['template_id'] ))
 		{
+			// Find the parent page.
 			$parent = ORM::factory( 'page', Arr::get( $_POST, 'parent_id', 1 ));
 			
+			// Check for add permissions on the parent page.
 			if (!$this->person->can( 'add', $parent ))
 				Request::factory( 'error/403' )->execute();
 				
-			// What template to use?
+			// Which template to use?
 			$template = Arr::get( $_POST, 'template_id' );
 			if (!$template)
 			{
@@ -57,12 +59,13 @@ class Controller_Cms_Page extends Controller_Cms
 			$page->version_status = Model_Page::STATUS_DRAFT;
 			$page->template_id = $template;
 			$page->save();
-	
-			// Add the page to the tree.
-			$mptt = ORM::factory( 'page_mptt' );
-			$mptt->page_id = $page->id;
-			$mptt->insert_as_last_child( $parent->mptt );
-			$mptt->save();
+			
+			// Add to the tree.
+			$page->mptt->page_id = $page->id;
+			$page->mptt->insert_as_last_child( $parent->mptt );
+			
+			// Save the page.
+			$page->save();
 	
 			// URI needs to be generated after the MPTT is set up.
 			$uri = $page->generateUri();
