@@ -37,17 +37,25 @@ class Controller_Cms_Page extends Controller_Cms
 	{
 		if (isset( $_POST['parent_id'] ) && isset( $_POST['template_id'] ))
 		{
-			$parent = ORM::factory( 'page', Arr::get( $_POST, 'parent_id', 0 ));
+			$parent = ORM::factory( 'page', Arr::get( $_POST, 'parent_id', 1 ));
 			
-			//if (!$this->person->can( 'add', $parent ))
-			//	Request::factory( 'error/403' )->execute();
+			if (!$this->person->can( 'add', $parent ))
+				Request::factory( 'error/403' )->execute();
+				
+			// What template to use?
+			$template = Arr::get( $_POST, 'template_id' );
+			if (!$template)
+			{
+				// Inherit from parent.
+				$template = ($parent->default_child_template_id != 0)? $parent->default_child_template_id : $parent->template_id;
+			}
 	
 			// Create a new page object.
 			$page = ORM::factory( 'page' );
 			$page->page_status = Model_Page::STATUS_INVISIBLE;	
 			$page->title = 'Untitled';
 			$page->version_status = Model_Page::STATUS_DRAFT;
-			$page->template_id = (Arr::get( $_POST, 'template_id' ) !== 0)? Arr::get( $_POST, 'template_id' ) : $parent->default_child_template_id;
+			$page->template_id = $template;
 			$page->save();
 	
 			// Add the page to the tree.
