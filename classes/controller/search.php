@@ -19,13 +19,19 @@ class Controller_Search extends Controller_Site
 		$query = strip_tags ( $query );
 		$query = trim( $query );
 		
+		// What page are we looking at?
 		$page = Arr::get( $_REQUEST, 'page', 1 );
 		
-		$results = ORM::factory( 'page' )->limit( 10 )->offset( ($page - 1) * 10)->order_by( 'page.id', 'asc' )->find_all();
-		$count = ORM::factory( 'page' )->count_all();
+		// Find and count results.
+		$query = ORM::factory( 'page' );
+		
+		$count = $query->count_all();
+		$results = $query->limit( 10 )->offset( ($page - 1) * 10)->order_by( 'page.id', 'asc' )->find_all();
+		
 		$this->template->subtpl_main->results = $results;
 		$this->template->subtpl_main->count = $count;
 		
+		// Configure pagination template.
 		$total_pages = ceil( $count / 10 );
 		$pagination = View::factory( 'pagination/search_results' );
 		$pagination->current_page = $page;
