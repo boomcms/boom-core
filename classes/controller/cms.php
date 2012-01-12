@@ -9,18 +9,12 @@
 */
 class Controller_Cms extends Sledge_Controller
 {	
-
-	/**
-	* Set the default template.
-	* Used by Controller_Template to know which template to use.
-	* @see http://kohanaframework.org/3.0/guide/kohana/tutorials/hello-world#that-was-good-but-we-can-do-better
-	* @access public
-	* @var string
-	*/
-	public $template = 'cms/standard_template';
-	
 	public function before()
 	{
+		parent::before();
+		
+		$this->template = View::factory( 'cms/standard_template' );
+		
 		// Require a user to be logged in for anything cmsy.
 		if (!Auth::instance()->logged_in())
 		{
@@ -28,8 +22,6 @@ class Controller_Cms extends Sledge_Controller
 			Request::factory( '/cms/login' )->execute();
 			exit();
 		}
-		
-		parent::before();
 	}
 	
 	public function action_index()
@@ -45,14 +37,6 @@ class Controller_Cms extends Sledge_Controller
 		$this->template->client = Kohana::$config->load('config')->get( 'client_name' );
 		
 		parent::after();
-	}
-	
-
-	public function action_who()
-	{
-		die( 'hello' );
-		$this->template->subtpl_main = View::factory( 'cms/pages/who/index' );
-		
 	}
 }
 
