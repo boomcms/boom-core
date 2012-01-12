@@ -68,6 +68,20 @@ class Controller_Cms_People extends Controller_Cms {
 		$this->template->subtpl_main->activity = $activity;			
 	}
 	
+	public function action_delete()
+	{
+		// Not sure what format this data is being submitted in.
+		$people = array of people IDs.
+		
+		foreach( $people as $person_id )
+		{
+			$person = ORM::factory( 'person', $person_id );
+			$person->delete();
+		}	
+		
+			
+	}
+	
 	/**
 	* People manager default page.
 	* Displays the people manager template with an array of people.
