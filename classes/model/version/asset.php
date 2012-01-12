@@ -13,6 +13,10 @@ class Model_Version_Asset extends ORM {
 	*/
 	protected $_table_name = 'asset_v';
 	
+	protected $_has_one = array(
+		'asset'	=> array( 'model' => 'asset', 'foreign_key' => 'id' ),
+	);
+	
 	public function get_path($asset_type=false) {
 		if ($asset_type) {
 			return Kohana::config('core.assetpath').$this->rid.'.'.$asset_type->extension;

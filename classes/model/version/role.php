@@ -13,7 +13,9 @@ class Model_Version_Role extends Model_Version {
 	*/
 	protected $_table_name = 'role_v';
 	
-	
+	protected $_has_one = array(
+		'role'	=> array( 'model' => 'role', 'foreign_key' => 'id' ),
+	);	
 }
 
 ?>

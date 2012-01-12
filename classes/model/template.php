@@ -13,14 +13,18 @@ class Model_Template extends ORM_Versioned {
 	* Properties to create relationships with Kohana's ORM
 	*/
 	protected $_table_name = 'template';
-	protected $_belongs_to = array
-	( 
-		'version_page' => array( 'model' => 'version_page', 'foreign_key' => 'template_id' ),
-	);
-	protected $_has_many = array
+
+	protected $_has_one = array
 	(
-		'versions' => array( 'model' => 'version_template', 'foreign_key' => 'id', 'far_key' => 'template_id' )
+		'page' => array( 'model' => 'version_page', 'foreign_key' => 'active_vid' )
 	);
+	
+	protected $_belongs_to = array( 
+		'version'  => array( 'model' => 'version_template', 'foreign_key' => 'active_vid' ), 
+		'page'	   => array( 'model' => 'version_page', 'foreign_key' => 'template_id' ),
+	);
+	
+	protected $_load_with = array( 'version' );
 }
 
 ?>

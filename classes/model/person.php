@@ -17,7 +17,6 @@ class Model_Person extends ORM_Versioned {
 	protected $_table_name = 'person';
 
 	protected $_has_many = array( 
-		'versions'	=> array( 'model' => 'version_person', 'foreign_key' => 'id' ),
 		'roles'		=> array( 
 			'model'		=> 'role',
 			'through'	=> 'person_role',
@@ -26,7 +25,12 @@ class Model_Person extends ORM_Versioned {
 		//'received_messages'	=> array( 'model' => 'message' )
 	);
 	
-	protected $_belongs_to = array( 'version_page' => array( 'model' => 'version_page', 'foreign_key' => 'audit_person' ) );
+	protected $_belongs_to = array( 
+		'version'  => array( 'model' => 'version_person', 'foreign_key' => 'active_vid' ), 
+		'version_page' => array( 'model' => 'version_page', 'foreign_key' => 'audit_person' ) 
+	);
+	
+	protected $_load_with = array( 'version' );
 	
 	/**
 	* Stores the user's bitwise permissions after retrieval from the database.

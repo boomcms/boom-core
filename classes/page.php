@@ -99,21 +99,22 @@ abstract class Page
 	public function leftnav_pages( Model_Person $person )
 	{	
 		$query = ORM::factory( 'page' )
+					->with( 'version' )
 					->join( 'page_mptt' )
 					->on( 'page_mptt.page_id', '=', 'page.id' )
 					->where( 'scope', '=', $this->_page->mptt->scope )
-					->where( 'page_v.deleted', '=', false );	
+					->where( 'version.deleted', '=', false );	
 					
 					
 		// CMS or Site leftnav?
 		if (!$person->logged_in())
 		{
-			$query->where( 'page_v.visible_in_leftnav', '=', true )
+			$query->where( 'version.visible_in_leftnav', '=', true )
 				  ->where( 'page.page_status', '=', Model_Page::STATUS_VISIBLE );	
 		}
 		else
 		{	
-			$query->where( 'page_v.visible_in_leftnav_cms', '=', true );
+			$query->where( 'version.visible_in_leftnav_cms', '=', true );
 		}
 		
 		$query->order_by( 'page_mptt.lft', 'asc' );

@@ -12,19 +12,15 @@ class Model_Version_Page extends ORM {
 	* Properties to create relationships with Kohana's ORM
 	*/
 	protected $_table_name = 'page_v';
-	protected $_belongs_to = array( 'page' => array( 'model' => 'page', 'foreign_key' => 'active_vid' ) );
-	protected $_has_one = array( 
-		'template'			=> array( 'model' => 'template', 'foreign_key' => 'id' ),
+	protected $_belongs_to = array( 
 		'person'			=> array( 'model' => 'person', 'foreign_key' => 'id' ),
 		'approval_process'	=> array( 'model' => 'approval_process', 'foreign_key' => 'id' )
 	);
 	
-	/**
-	* Holds a reference to the page object to which this version belongs.
-	* @access private
-	* @var object
-	*/
-	private $_page;
+	protected $_has_one = array(
+		'page'				=> array( 'model' => 'page', 'foreign_key' => 'id' ),
+		'template'			=> array( 'model' => 'template', 'foreign_key' => 'id' ),
+	);
 	
 	/**
 	* Holds an object representing the parent page.
@@ -33,14 +29,6 @@ class Model_Version_Page extends ORM {
 	*/
 	private $_parent;
 	
-	/**
-	* Sets up a reference to the page object which holds this as a version.
-	*
-	* @param Model_Page $page The page to which we belong.
-	*/
-	public function setPage( Model_Page $page ) {
-		$this->_page =& $page;		
-	}
 	
 	/**
 	* Get the page description.

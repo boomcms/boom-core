@@ -13,7 +13,7 @@ class Model_Page_Uri extends ORM {
 	* Properties to create relationships with Kohana's ORM
 	*/
 	protected $_table_name = 'page_uri';
-	//protected $_belongs_to = array( 'page' => array( 'model' => 'page' ) );
+	protected $_belongs_to = array( 'page' => array( 'model' => 'page', 'foreign_key' => 'page_id' ) );
 	
 	/**
 	* Page URI save method.

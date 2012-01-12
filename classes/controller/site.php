@@ -27,7 +27,7 @@ class Controller_Site extends Sledge_Controller
 	public function before()
 	{
 		parent::before();
-		
+
 		// All pages and templates are hard coded for the CMS so this is all site specific.
 		// Find the requested page.
 		$uri = ($this->request->initial()->uri() == '/')? '' : $this->request->initial()->uri();
@@ -38,8 +38,15 @@ class Controller_Site extends Sledge_Controller
 			$page_uri = ORM::factory( 'page_uri' )->where( 'uri', '=', 'error/404' )->find();
 		
 		// Load the relevant page object.
-		$page = ORM::factory( 'page', $page_uri->page_id );
+		//print_r( $page_uri );exit;
+		$page = $page_uri->page;
+
 		$page_type = ($this->mode == 'cms' && $this->person->can( 'edit', $page ))? 'cms' : 'site';
+		
+		// Decorate the page model with a page class.
+		// This allows us to change what the page does depending on whether we're in cms or site mode
+		// Without changing the page model itself.
+		$this->page = Page::factory( $page_type, $page );
 		
 		// Set the base template.
 		if ($page_type == 'cms' && !Arr::get( $_GET, 'state' ) == 'siteeditcms')
@@ -55,24 +62,17 @@ class Controller_Site extends Sledge_Controller
 		{
 			$this->template = View::factory( 'site/standard_template' );
 		}
-		
-		// Decorate the page model with a page class.
-		// This allows us to change what the page does depending on whether we're in cms or site mode
-		// Without changing the page model itself.
-		$this->page = Page::factory( $page_type, $page );
-			
-		// Load the relevant template object.
-		$template = ORM::factory( 'template', $this->page->template_id );
 
 		// Add the main subtemplate to the standard template.
-		$this->template->subtpl_main = View::factory( $template->filename );
-		View::bind_global( 'page', $this->page );
+		$this->template->subtpl_main = View::factory( $this->page->template->filename );
 	}
 	
 	public function after()
 	{	
 		// Add the header subtemplate.
 		$this->template->subtpl_header = View::factory( 'site/subtpl_header' );
+		
+		View::bind_global( 'page', $this->page );
 		
 		parent::after();
 	}

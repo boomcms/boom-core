@@ -12,6 +12,9 @@ class Model_Version_Template extends Model_Version {
 	* Properties to create relationships with Kohana's ORM
 	*/
 	protected $_table_name = 'template_v';
+	protected $_has_one = array(
+		'template'	=> array( 'model' => 'template', 'foreign_key' => 'id' ),
+	);
 	
 	/**
 	* Determines whether the template file exists.

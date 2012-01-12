@@ -12,7 +12,9 @@ class Model_Version_Person extends Model_Version {
 	* Properties to create relationships with Kohana's ORM
 	*/
 	protected $_table_name = 'person_v';
-	protected $_belongs_to = array( 'person' => array( 'model' => 'person', 'foreign_key' => 'active_vid' ) );
+	protected $_has_one = array(
+		'person'	=> array( 'model' => 'person', 'foreign_key' => 'id' ),
+	);
 	
 	/**
 	* Filters for the versioned person columns

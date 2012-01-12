@@ -18,11 +18,14 @@ class Model_Page extends ORM_Versioned {
 		'feature_image' => array( 'model' => 'asset', 'foreign_key' => 'id' ),
 	);
 	protected $_has_many = array( 
-		'versions'	=> array('model' => 'version_page', 'foreign_key' => 'id'),
-		'uris'		=> array('model' => 'page_uri', 'foreign_key' => 'id'),
+		'uris'		=> array('model' => 'page_uri', 'foreign_key' => 'page_id'),
 		'chunks'	=> array('model' => 'chunk', 'through' => 'chunk_page' )
 	);
-	protected $_belongs_to = array( 'version_page_uri' => array( 'foreign_key' => 'page_id' ) );
+	protected $_belongs_to = array(
+		'version'  => array( 'model' => 'version_page', 'foreign_key' => 'active_vid' ), 
+	);
+	
+	protected $_load_with = array('version');
 	
 	/**
 	* Page invisible value (stored in page_status column)
@@ -77,13 +80,6 @@ class Model_Page extends ORM_Versioned {
 	* @var integer
 	*/
 	const CHILD_ORDER_DATE = 3;
-	
-	/**
-	* @access private
-	* @var boolean
-	* By default do not allow a page to be saved - overridden by cms_page which is the only time we want to allow saving of pages.
-	*/
-	private $_can_be_saved = false;
 	
 	/**
 	* @access private
