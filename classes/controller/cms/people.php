@@ -70,16 +70,16 @@ class Controller_Cms_People extends Controller_Cms {
 	
 	public function action_delete()
 	{
-		// Not sure what format this data is being submitted in.
-		$people = array of people IDs.
-		
+		$people = Arr::get( $_POST, 'people' );
+	
 		foreach( $people as $person_id )
 		{
+			$person_id = str_replace( "person_", "", $person_id );
 			$person = ORM::factory( 'person', $person_id );
 			$person->delete();
 		}	
 		
-			
+		exit;
 	}
 	
 	/**
