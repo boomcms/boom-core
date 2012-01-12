@@ -14,27 +14,8 @@ class Model_Page_Mptt extends ORM_MPTT {
 	* Properties to create relationships with Kohana's ORM
 	*/
 	protected $_table_name = 'page_mptt';
-	protected $_belongs_to = array( 'page' => array( 'foreign_key' => 'page_id' ) );
-	protected $_has_one = array( 'page' => array( 'foreign_key' => 'id' ) );
+	protected $_belongs_to = array( 'page' => array( 'foreign_key' => 'page_id' ) );	
 	
-	
-	/**
-	* Hold the new child ordering policy.
-	* Property is only set when we set a new child ordering policy. Used when save() is called to determine how to order the children.
-	* @access private
-	* @var string
-	*/
-	private $_ordering_policy;
-	
-	/**
-	* Set the child ordering policy.
-	*
-	* @param integer $policy The child ordering policy ID.
-	* @return void
-	*/
-	protected function setOrderBy( $policy ) {
-		$this->_ordering_policy = $policy;
-	}
 }
 
 
