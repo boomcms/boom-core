@@ -4,7 +4,7 @@
 * Check that other modules required by Sledge (auth, database etc.) are loaded.
 *
 */
-$dependencies = array( 'auth', 'cache', 'database', 'orm', 'pagination' );
+$dependencies = array( 'auth', 'cache', 'database', 'orm' );
 
 foreach( $dependencies as $dep )
 {
