@@ -14,12 +14,12 @@ class Model_Version_Page extends ORM {
 	protected $_table_name = 'page_v';
 	protected $_belongs_to = array( 
 		'person'			=> array( 'model' => 'person', 'foreign_key' => 'id' ),
+		'template'			=> array( 'model' => 'template', 'foreign_key' => 'template_id' ),
 		'approval_process'	=> array( 'model' => 'approval_process', 'foreign_key' => 'id' )
 	);
 	
 	protected $_has_one = array(
 		'page'				=> array( 'model' => 'page', 'foreign_key' => 'id' ),
-		'template'			=> array( 'model' => 'template', 'foreign_key' => 'id' ),
 	);
 	
 	/**
