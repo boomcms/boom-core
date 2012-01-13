@@ -16,9 +16,20 @@ echo "Great! Things are always more fun when you've got a friend to help you"
 
 echo
 echo "First I'm going to make your cache and log directories writable. This will keep Kohana happy and make our server a better place to be"
-sudo chmod 777 ./application/cache
-sudo chmod 777 ./application/logs
-sudo chmod 777 ./application/config
+
+if [ ! -d "../../../application/cache" ]; then
+	sudo mkdir -m 777 ../../../application/cache
+else
+	sudo chmod 777 ../../../application/cache
+fi
+
+if [ ! -d "../../../application/logs" ]; then
+        sudo mkdir -m 777 ../../../application/logs
+else
+        sudo chmod 777 ../../../application/logs
+fi
+
+sudo chmod 777 ../../../application/config
 
 
 if [ ! -d "/etc/apache2/vhosts.d/" ]; then
