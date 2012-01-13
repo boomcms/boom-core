@@ -133,6 +133,13 @@ class Model_Page extends ORM_Versioned {
 	*/
 	private $_slots = array();
 	
+	/**
+	* Adds a new child page to this page's MPTT tree.
+	* Takes care of putting the child in the correct possition according to this page's child ordering policy.
+	*
+	* @param Model_Page $page The new child page.
+	* @return void
+	*/
 	public function add_child( Model_Page $page )
 	{
 		if ($this->child_ordering_policy & self::CHILD_ORDER_DATE)
