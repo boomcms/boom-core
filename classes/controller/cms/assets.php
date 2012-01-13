@@ -11,6 +11,30 @@
 class Controller_Cms_Assets extends Controller_Cms
 {	
 	/**
+	* Show assets by tag
+	*
+	* @todo Use the tag MPTT tree to find assets which are tagged with child tags of the supplied tag.
+	*/
+	public function by_tag()
+	{
+		$tag_id = $this->request->param( 'id' );
+		$tag = ORM::factory( 'tag', $tag_id );
+		
+		// Check that the tag exists.
+		if ($tag->loaded())
+		{
+			$assets = ORM::factory( 'asset' )
+						->join( 'tagged_object', 'inner' )
+						->on( 'tag_id', '=', $tag->id )
+						->where( 'object_type', '=', Model_Tagged_Object::OBJECT_TYPE_ASSET )
+						->find_all();
+						
+			// Output the data.
+			// Need to find out which format this needs to be done in.		
+		}
+	}
+	
+	/**
 	* Delete controller
 	* Allows deleting multiple assets
 	*
