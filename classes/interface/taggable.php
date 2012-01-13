@@ -17,7 +17,7 @@ interface Interface_Taggable
 	*
 	* @return array Array of Model_Tag objects.
 	*/
-	abstract function tags();
+	public function tags();
 	
 	/**
 	* Method to apply a tag to an object.
@@ -25,7 +25,7 @@ interface Interface_Taggable
 	* @param Model_Tag $tag The tag to be applied.
 	* @return bool True on success, false on failure
 	*/
-	abstract function apply_tag( Model_Tag $tag );
+	public function apply_tag( Model_Tag $tag );
 }
 
 ?>
