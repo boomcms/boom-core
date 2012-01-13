@@ -133,6 +133,21 @@ class Model_Page extends ORM_Versioned {
 	*/
 	private $_slots = array();
 	
+	public function add_child( Model_Page $page )
+	{
+		if ($this->child_ordering_policy & self::CHILD_ORDER_DATE)
+		{
+			if ( $this->child_ordering_policy & self::CHILD_ORDER_ASC)
+			{
+				$page->mptt->insert_as_last_child( $this->mptt );
+			}
+			else
+			{
+				$page->mptt->insert_as_first_child( $this->mptt );
+			}
+		}		
+	}
+	
 	/**
 	* Returns a human readable page status.
 	*

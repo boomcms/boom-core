@@ -64,17 +64,7 @@ class Controller_Cms_Page extends Controller_Cms
 			$page->mptt->page_id = $page->id;
 			
 			// Where should we put it?
-			if ($parent->child_ordering_policy & Model_Page::CHILD_ORDER_DATE)
-			{
-				if ( $parent->child_ordering_policy & Model_Page::CHILD_ORDER_ASC)
-				{
-					$page->mptt->insert_as_last_child( $parent->mptt );
-				}
-				else
-				{
-					$page->mptt->insert_as_first_child( $parent->mptt );
-				}
-			}
+			$parent->add_child( $page );
 			
 			// Save the page.
 			$page->save();
