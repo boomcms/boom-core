@@ -9,7 +9,8 @@
 * @copyright 2011, Hoop Associates
 * 
 */
-interface taggable {
+interface Interface_Taggable
+{
 	
 	/**
 	* Method to retrieve all tags which have been applied to the object.

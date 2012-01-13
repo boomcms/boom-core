@@ -7,7 +7,7 @@
 * @copyright 2011, Hoop Associates
 *
 */
-class Model_Chunk_Text extends ORM implements iSLot
+class Model_Chunk_Text extends ORM implements Interface_SLot
 {
 	/**
 	* Properties to create relationships with Kohana's ORM

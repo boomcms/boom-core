@@ -7,7 +7,7 @@
 * @author Hoop Associates	www.thisishoop.com	mail@hoopassociates.co.uk
 * @copyright 2011, Hoop Associates
 */
-interface iSlot
+interface Interface_Slot
 {
 
 	public function show();
