@@ -12,7 +12,7 @@
 class Asset_Image extends Asset {	
 	public function show( $width = null, $height = null, $quality = null )
 	{
-		$image = Image::factory( ASSETPATH . $this->instance()->filename );
+		$image = Image::factory( ASSETPATH . $this->instance()->pk() );
 		
 		if ($width || $height)
 			$image->resize( $width, $height );

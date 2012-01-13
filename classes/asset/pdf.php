@@ -17,7 +17,7 @@ class Asset_Pdf extends Asset {
 		header('Content-Length: ' . filesize(ASSETPATH . $this->instance()->filename));
 		header('Accept-Ranges: bytes');
 
-		@readfile(ASSETPATH . $this->instance()->filename);	
+		@readfile(ASSETPATH . $this->instance()->pk() );	
 	}
 	
 	public function preview()

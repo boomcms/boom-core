@@ -13,7 +13,7 @@ class Asset_Mp3 extends Asset
 {	
 	public function show() {
 		header('Content-type: audio/mpeg');
-		header("Content-Length: ".filesize(ASSETPATH . $this->instance()->filename));
+		header("Content-Length: ".filesize(ASSETPATH . $this->instance()->pk() ));
 		ob_clean();
 		flush();
 		readfile(ASSETPATH . $this->instance()->filename);
