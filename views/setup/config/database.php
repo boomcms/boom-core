@@ -9,6 +9,7 @@
 
 Please enter your database connection information:
 <br />
+These details can be changed later in APPPATH/config/database.php
 	
 <form action='/setup/config' method='post'>
 	<input type='hidden' name='group' value='database' />
