@@ -2,7 +2,7 @@
 	# Copyright 2009, Hoop Associates Ltd
 	# Hoop Associates   www.thisishoop.com   mail@hoopassociates.co.uk
 ?>
-<form method="post" action="/cms/people/save" id="sledge-tagmanager-create-person-form">
+<form method="post" action="/cms/people/add" id="sledge-tagmanager-create-person-form">
 	<table width="100%">
 		<tbody>
 			<tr>

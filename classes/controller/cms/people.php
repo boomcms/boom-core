@@ -38,14 +38,39 @@ class Controller_Cms_People extends Controller_Cms {
 		$person->save();				
 	}
 	
+	/**
+	* Add person controller.
+	*/
 	public function action_add()
 	{
-		$person = ORM::factory( 'person' );
-		$activity = ORM::factory( 'activitylog' );
+		if ($this->request->method() == 'post')
+		{
+			// Create the person
+			$values = array(
+				'firstname'		=>	Arr::get( $_POST, 'create-firstname',
+				'lastname'		=>	Arr::get( $_POST, 'create-surname',
+				'emailaddress'	=>	Arr::get( $_POST, 'create-email',
+				'password'		=>	Arr::get( $_POST, 'create-password',
+			);
+			
+			$person = ORM::factory( 'person' )->values( $values )->create();
+			
+			// Add the person to the initial group.
+			$group_id = Arr::get( $_POST, 'group_id' );
+			$person->add( 'role', ORM::factory( 'roles', $group_id ) );
+			
+			$person->save();
+			
+			echo $person->pk();
+		}
+		else
+		{
+			$v = View::factory( 'ui/subtpl_peoplemanager/create_person' )
+			$v->groups = ORM::factory( 'roles' )->find_all();
+			echo $v;
+		}	
 		
-		$this->template->subtpl_main = View::factory( 'cms/pages/people/view' );
-		$this->template->subtpl_main->person = $person;	
-		$this->template->subtpl_main->activity = $activity;		
+		exit;
 	}
 	
 	/**
