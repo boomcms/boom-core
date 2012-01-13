@@ -7,7 +7,7 @@
 * @copyright 2011, Hoop Associates
 *
 */
-class Model_Asset extends ORM_Versioned {
+class Model_Asset extends ORM_Versioned implements Interface_Taggable {
 	/**
 	* Properties to create relationships with Kohana's ORM
 	*/
@@ -35,6 +35,14 @@ class Model_Asset extends ORM_Versioned {
 	const STATUS_PUBLISHED = 2;
 	
 	/**
+	* Array of tags which have been applied to the current asset.
+	* @see self::tags()
+	* @access private
+	* @var array
+	*/
+	private $_tags;
+	
+	/**
 	* Returns a human readable asset status (currently published or unpublished).
 	*
 	* @return string Asset status
@@ -50,5 +58,65 @@ class Model_Asset extends ORM_Versioned {
 			default:
 				throw new Kohana_Exception( 'Asset has unknown asset status value: ' . $this->status );
 		}			
+	}
+	
+	/**
+	* Apply a tag to the current asset.
+	* Required by the taggable interface.
+	* Creates a relationship with the tag table in the tagged_objects table.
+	*
+	* @uses self::$_tags
+	* @uses Model_Tagged_Object
+	* @param Model_Tag $tag The tag to be applied.
+	* @return bool True on success, false on failure
+	*/
+	public function apply_tag( Model_Tag $tag )
+	{
+		$values = array( 
+			'tag_id'		=> $tag->pk(),
+			'object_type'	=> Model_Tagged_Object::OBJECT_TYPE_ASSET,
+			'object_id'		=> $this->pk()
+		);
+		
+		try
+		{
+			$tagged = ORM::factory( 'tagged_object' )->values( $values )->create();
+		}
+		catch( DatabaseException $e )
+		{
+			return false;
+		}
+		
+		// Add the new relationship to self::$_tags if it's been loaded.
+		if (is_array( $this->_tags ))
+		{
+			$this->_tags = array_push( $this->_tags, $tag );
+		}		
+	}
+	
+	/**
+	* Determines which tags have been applied to an asset.
+	* Required by the taggable interface.
+	*
+	* @todo Inherit parent tags of applied tags through the tag MPTT tree.
+	*
+	* @uses Model_Tagged_Object
+	* @uses self::$_tags
+	* @return array Array of Model_Tag ojects.
+	*/
+	public function tags()
+	{
+		if ($this->_tags === null)
+		{
+			$this->_tags = ORM::factory( 'tag' )
+							->join( 'tagged_object', 'inner' )
+							->on( 'tag_id', '=', 'tag.id' )
+							->where( 'object_type', '=', Model_Tagged_Object::OBJECT_TYPE_ASSET )
+							->where( 'object_id', '=', $this->pk() )
+							->find_all()
+							->as_array();
+		}
+		
+		return $this->_tags;
 	}
 }
