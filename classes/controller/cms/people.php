@@ -47,10 +47,10 @@ class Controller_Cms_People extends Controller_Cms {
 		{
 			// Create the person
 			$values = array(
-				'firstname'		=>	Arr::get( $_POST, 'create-firstname',
-				'lastname'		=>	Arr::get( $_POST, 'create-surname',
-				'emailaddress'	=>	Arr::get( $_POST, 'create-email',
-				'password'		=>	Arr::get( $_POST, 'create-password',
+				'firstname'		=>	Arr::get( $_POST, 'create-firstname' ),
+				'lastname'		=>	Arr::get( $_POST, 'create-surname' ),
+				'emailaddress'	=>	Arr::get( $_POST, 'create-email' ),
+				'password'		=>	Arr::get( $_POST, 'create-password' ),
 			);
 			
 			$person = ORM::factory( 'person' )->values( $values )->create();
@@ -65,7 +65,7 @@ class Controller_Cms_People extends Controller_Cms {
 		}
 		else
 		{
-			$v = View::factory( 'ui/subtpl_peoplemanager/create_person' )
+			$v = View::factory( 'ui/subtpl_peoplemanager/create_person' );
 			$v->groups = ORM::factory( 'roles' )->find_all();
 			echo $v;
 		}	
