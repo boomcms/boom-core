@@ -79,7 +79,19 @@ class Model_Page extends ORM_Versioned {
 	* Child ordering policy value for date
 	* @var integer
 	*/
-	const CHILD_ORDER_DATE = 3;
+	const CHILD_ORDER_DATE = 4;
+	
+	/**
+	* Child ordering policy for ascending.
+	* @var integer
+	*/
+	const CHILD_ORDER_ASC = 8;
+
+	/**
+	* Child ordering policy for descending.
+	* @var integer
+	*/
+	const CHILD_ORDER_DESC = 16;	
 	
 	/**
 	* @access private
