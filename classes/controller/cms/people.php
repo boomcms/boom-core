@@ -114,13 +114,12 @@ class Controller_Cms_People extends Controller_Cms {
 	* @return void
 	*/
 	public function action_index()
-	{
-		$people = ORM::factory( 'person' )->find_all();
-		$roles = ORM::factory( 'role' )->find_all();
-		
-		$this->template->subtpl_main = View::factory( 'cms/pages/people/index' );
-		$this->template->subtpl_main->people = $people;	
-		$this->template->subtpl_main->roles = $roles;
+	{	
+		if (isset( $_GET['state'] ))
+		{	
+			$this->template->subtpl_main = View::factory( 'ui/tpl_people_manager' );
+			exit;
+		}
 	}
 	
 }

@@ -16,15 +16,11 @@
 	</div>
 	<div class="sledge-tagmanager-sidebar ui-helper-left">
 
-		<?= new View('ui/subtpl_tag_manager_search');?>
+		<?//= new View('ui/subtpl_tag_manager_search');?>
 
-		<?= new View('ui/subtpl_tag_tree')?>
+		<?//= new View('ui/subtpl_tag_tree')?>
 	</div>
 </div>
-
-<?
-	$types = Asset::$allowed_types;
-?>
 
 <script type="text/javascript">
 

@@ -10,6 +10,19 @@
 
 class Controller_Cms_Assets extends Controller_Cms
 {	
+	public function before()
+	{		
+		parent::before();
+		
+		if (!$this->person->can( 'manage assets' ))
+			Request::factory( 'error/403' )->execute();
+		
+		$this->template->title = 'Asset Manager';
+		$subtpl_topbar = View::factory( 'ui/subtpl_assets_topbar' );
+		
+		View::bind_global( 'subtpl_topbar', $subtpl_topbar );
+	}
+	
 	/**
 	* Show assets by tag
 	*
@@ -107,12 +120,12 @@ class Controller_Cms_Assets extends Controller_Cms
 	}
 	
 	public function action_index()
-	{
-		$this->template->subtpl_main = View::factory( 'cms/pages/assets/index' );
-		$this->template->subtpl_topbar = View::factory( 'ui/subtpl_assets_topbar' );
-		
-		$assets = ORM::factory( 'asset' )->find_all()->as_array();
-		$this->template->subtpl_main->assets = $assets;
+	{		
+		if (isset( $_GET['state'] ))
+		{
+			$this->template->subtpl_main = View::factory( 'ui/tpl_asset_manager' );
+			exit;
+		}
 	}
 	
 	public function after()
