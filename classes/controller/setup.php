@@ -10,6 +10,53 @@
 class Controller_Setup extends Kohana_Controller
 {
 	/**
+	* Creates runtime configuration files
+	*/
+	public function action_config()
+	{
+		$config_dir = APPPATH . 'config';
+		
+		// Check that the config files haven't already been created.
+		if (!Kohana::$config->load( 'database.default.connection.sledge' ))
+		{
+			if (!is_writable( $config_dir ))
+			{
+				throw new Sledge_Exception( "Config directory $config_dir must be writable" );
+				exit;
+			}
+			
+			$group = Arr::get( $_POST, 'group' );
+			
+			if ($group == 'database')
+			{
+				$config = array(
+					'default' => array
+					(
+						'type'		 => 'mysql',
+						'connection' => array
+						(	
+							'hostname'	=> Arr::get( $_POST, 'hostname' ),
+							'username'	=> Arr::get( $_POST, 'username' ),
+							'password'	=> Arr::get( $_POST, 'password' ),
+							'persistent'=> true,
+							'database'	=> Arr::get( $_POST, 'dbname' ),
+							'sledge'	=> true,
+						)
+					),
+				);
+				
+				file_put_contents( $config_dir . '/database.php', "<?php \n\n return " . var_export( $config, true ) . ";\n\n?>" );
+				
+				$v = View::factory( 'setup/config/completed' );
+				$v->location = $config_dir;
+				echo $v;				
+			}
+		}
+		
+		exit;		
+	}
+	
+	/**
 	* Creates the database if it doesn't already exist.
 	*
 	* @throws Sledge_Exception
