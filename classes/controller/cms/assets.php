@@ -40,7 +40,23 @@ class Controller_Cms_Assets extends Controller_Cms
 		$method = Arr::get( $_GET, 'method' );
 		
 		// Do the download.
+		if ($method == 'zip')
+		{
+			$archive = new ZipArchive();
+			
+			foreach ($asset_ids as $asset_id )
+			{
+				$asset = ORM::factory( 'asset', $asset_id );
+				if ($asset->loaded())
+				{
+					$archive->addFile( ASSETPATH . $asset->id, $asset->filename );
+				}
+			}
+			
+			$archive->close();
+		}
 		
+		// TODO: Zip download.		
 	}
 	
 	/**
