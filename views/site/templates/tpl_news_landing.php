@@ -19,10 +19,11 @@
 		</h2>
 		<ul class="news-listing">
 			<?
-				//foreach ($news as $n)
-				//{
-				//	echo new View('site/subtpl_newslanding_item', array('n' => $n));
-				//}
+				// Get 10 Child pages of the news page.
+				foreach ($page->mptt->children(null, null, 10) as $child )
+				{
+					echo View::factory('site/subtpl_newslanding_item', array('page' => $child->page));
+				}
 			?>
 		</ul>
 			<?

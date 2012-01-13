@@ -1,25 +1,57 @@
 <?php
-	# Copyright 2009, Hoop Associates Ltd
-	# Hoop Associates   www.thisishoop.com   mail@hoopassociates.co.uk
+/**
+* Displays a summary of a news page.
+* This template is called by the news page template to display summaries of news items.
+*
+* @package Templates
+* @author Hoop Associates	www.thisishoop.com	mail@hoopassociates.co.uk
+* @copyright 2011, Hoop Associates
+*
+*/
 ?>
 <li>
-	<? $pic = O::fa('asset')->join('chunk_asset_v','chunk_asset_v.asset_rid','asset_v.rid')->join('chunk_asset','chunk_asset_v.id','chunk_asset.active_vid')->where("chunk_asset_v.page_vid={$target->vid} and slotname='newsheaderimage'")->find(); ?>
-	<? if ($pic->id) {?>
-		<div class="first">
-			<a href="<?=$target->absolute_uri();?>" title="<?=$target->title;?>">
-				<img src="/get_asset/<?=$pic->rid?>/120/100/85/0" alt="<?=$pic->description?>" />
-			</a>
-		</div>
-		<div class="description">
-	<? } else {?>
-		<div>
-	<?}?>
+	<? 
+		// Find the news image associated with the page.
+		// This really shouldn't be in the template.
+		// But I need to create a general getting slot and related data method to pages.
+		// Will do this when I have a better idea what is required - I don't want to make it too specific to this use.
+		$image = ORM::factory( 'asset' )
+		 		->join( 'chunk_asset', 'inner' )
+				->on( 'asset_id', '=', 'asset.id' )
+				->join( 'chunk', 'inner' )
+				->on( 'chunk.active_vid', '=', 'chunk_asset.id' )
+				->join( 'chunk_page', 'inner' )
+				->on( 'chunk.id', '=', 'chunk_page.chunk_id' )
+				->where( 'chunk_page.page_id', '=', $page->pk() )
+				->where( 'slotname', '=', 'newsheaderimage' )
+				->find();
+	
+		if ($image->loaded()):
+			?>
+				<div class="first">
+					<a href="<?=$page->url();?>" title="<?=$page->title;?>">
+						<img src="/get_asset/<?=$images->id?>/120/100/85/0" alt="<?=$image->description?>" />
+					</a>
+				</div>
+				<div class="description">
+			<?
+		else:
+			echo "<div>";
+		endif;
+	?>
+
 		<h3>
-			<a href="<?=$target->absolute_uri()?>" title="<?=$target->title;?>">
-				<?=$target->title?>
+			<a href="<?=$page->url()?>" title="<?=$page->title;?>">
+				<?=$page->title?>
 			</a>
 		</h3>
-		<p>Date: <?=date('d.m.Y', $target->visiblefrom_timestamp);?></p>
-		<p><?= O::f('chunk_text_v')->get_chunk($target->rid, 'standfirst');?></p>
-		<p class-"more"><a href="<?=$target->absolute_uri();?>" title="<?=$target->title;?>">Read more &raquo;</a></p>
+		<p>
+			Date: <?=date('d.m.Y', $page->visiblefrom_timestamp);?>
+		</p>
+		<p>
+			<?= $page->get_slot('text', 'standfirst'); ?>
+		</p>
+		<p class-"more">
+			<a href="<?=$page->url();?>" title="<?=$page->title;?>">Read more &raquo;</a>
+		</p>
 </li>
