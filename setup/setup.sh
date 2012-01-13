@@ -1,12 +1,5 @@
 #!/bin/bash
 
-# Text color variables
-txtbld=$(tput bold)       # Bold
-txtgrn=$(tput setaf 2)    # Green
-txtred=$(tput setaf 1)    # Red
-txtyel=$(tput setaf 3)    # Yellow
-txtrst=$(tput sgr0)       # Text reset
-
 DIR="$( cd -P "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $DIR
 
@@ -20,6 +13,13 @@ fi
 
 echo
 echo "Great! Things are always more fun when you've got a friend to help you"
+
+echo
+echo "First I'm going to make your cache and log directories writable. This will keep Kohana happy and make our server a better place to be"
+sudo chmod 777 ./application/cache
+sudo chmod 777 ./application/logs
+sudo chmod 777 ./application/config
+
 
 if [ ! -d "/etc/apache2/vhosts.d/" ]; then
 	echo
