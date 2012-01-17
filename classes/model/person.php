@@ -15,21 +15,17 @@ class Model_Person extends ORM_Versioned {
 	* Properties to create relationships with Kohana's ORM
 	*/
 	protected $_table_name = 'person';
-
 	protected $_has_many = array( 
 		'roles'		=> array( 
 			'model'		=> 'role',
 			'through'	=> 'person_role',
 		),
-		//'sent_messages'		=> array( 'model' => 'message' ),
-		//'received_messages'	=> array( 'model' => 'message' )
-	);
-	
+		'activities' => array( 'model' => 'activitylog', 'foreign_key' => 'audit_person' ),
+	);	
 	protected $_belongs_to = array( 
 		'version'  => array( 'model' => 'version_person', 'foreign_key' => 'active_vid' ), 
-		'version_page' => array( 'model' => 'version_page', 'foreign_key' => 'audit_person' ) 
-	);
-	
+	);	
+
 	protected $_load_with = array( 'version' );
 	
 	/**

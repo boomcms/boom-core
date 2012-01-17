@@ -2,55 +2,52 @@
 	# Copyright 2009, Hoop Associates Ltd
 	# Hoop Associates		www.thisishoop.com	 mail@hoopassociates.co.uk
 ?>
-<?
-$c = isset($this->c) ? $this->c : 0;
-$person_groups = array();
-foreach (Relationship::find_partners('tag', 'person', $this->item->rid)->find_all() as $group) {
-	$person_groups[] = $group->rid;
-}
-?>
 
 <div id="sledge-person-detailview">
 
 	<form onsubmit="return false;">
 		
-		<input type="hidden" name="person_rid" value="<?=$this->item->rid;?>" />
-		<input type="hidden" name="groups" value="<?=implode(',', $person_groups)?>" />
+		<input type="hidden" name="person_id" value="<?=$person->id;?>" />
+		<input type="hidden" name="groups" value="<?=implode(',', $person->roles->find_all()->as_array())?>" />
 
 		<div class="sledge-tabs ui-helper-clearfix">
 
 			<ul>
-				<li><a href="#sledge-person-detailview-information<?=$c;?>">Information</a></li>
-				<li><a href="#sledge-person-detailview-activity<?=$c;?>">Activity</a></li>
-				<li><a href="#sledge-person-detailview-groups<?=$c;?>">Groups</a></li>
-				<li><a href="#sledge-person-detailview-permissions<?=$c;?>">Permissions</a></li>
+				<li><a href="#sledge-person-detailview-information<?=$person->id;?>">Information</a></li>
+				<li><a href="#sledge-person-detailview-activity<?=$person->id;?>">Activity</a></li>
+				<li><a href="#sledge-person-detailview-groups<?=$person->id;?>">Groups</a></li>
+				<li><a href="#sledge-person-detailview-permissions<?=$person->id;?>">Permissions</a></li>
 			</ul>
 
 			<div class="ui-tabs-panel ui-widget-content ui-helper-left">
-
-				<a href="/_ajax/call/Person/get_image/<?=$this->item->rid;?>/600" 
-					title="<?= $this->item->firstname.' '.$this->item->lastname?>" 
-					title="Click for larger view" 
-					class="ui-helper-left sledge-asset-preview">
-					<img class="ui-state-active ui-corner-all" src="/_ajax/call/Person/get_image/<?=$this->item->rid;?>/160">
-				</a>
-
+				<?
+					if ($person->image->loaded()):
+						?>
+							<a href="/asset/<?=$person->image->id;?>/600" 
+								title="<?= $person->getName() ?>" 
+								title="Click for larger view" 
+								class="ui-helper-left sledge-asset-preview">
+								<img class="ui-state-active ui-corner-all" src="/asset/<?=$person->image->id;?>/160">
+							</a>
+						<?
+					endif;
+				?>
 			</div>
 
-			<div id="sledge-person-detailview-information<?=$c;?>" class="ui-helper-left">
+			<div id="sledge-person-detailview-information<?=$person->id;?>" class="ui-helper-left">
 				<table width="100%">
 					<tbody>
 						<tr>
 							<td><label for="person-firstname">First name:</label></td>
-							<td><input type="text" id="person-firstname" name="firstname" class="sledge-input" value="<?=$this->item->firstname?>" /></td>
+							<td><input type="text" id="person-firstname" name="firstname" class="sledge-input" value="<?=$person->firstname?>" /></td>
 						</tr>
 						<tr>
 							<td><label for="person-lastname">Surname:</label></td>
-							<td><input type="text" id="person-lastname" name="surname" class="sledge-input" value="<?=$this->item->lastname?>" /></td>
+							<td><input type="text" id="person-lastname" name="surname" class="sledge-input" value="<?=$person->lastname?>" /></td>
 						</tr>
 						<tr>
 							<td><label for="person-email">Email:</label></td>
-							<td><input type="text" id="person-email" name="email" class="sledge-input" value="<?=$this->item->emailaddress?>" /></td>
+							<td><input type="text" id="person-email" name="email" class="sledge-input" value="<?=$person->emailaddress?>" /></td>
 						</tr>
 						<tr>
 							<td><label for="person-password">New Password:</label></td>
@@ -60,11 +57,11 @@ foreach (Relationship::find_partners('tag', 'person', $this->item->rid)->find_al
 				</table>
 			</div>
 
-			<div id="sledge-person-detailview-activity<?=$c;?>" class="ui-helper-left">
+			<div id="sledge-person-detailview-activity<?=$person->id;?>" class="ui-helper-left">
 				<?
-					$count = 0;
-					$activity = O::fa('activitylog')->orderby('timestamp','desc')->limit(50)->find_all_by_audit_person((string)$this->item->rid);
-					if (count($activity)) {?>
+					if ($person->activities->count_all() > 0):
+						$i = 0;
+						?>
 						<table width="100%">
 							<thead>
 								<th>Time</th>
@@ -72,35 +69,35 @@ foreach (Relationship::find_partners('tag', 'person', $this->item->rid)->find_al
 								<th>Note</th>
 							</thead>
 							<tbody>
-								<?foreach ($activity as $al) {?>
-									<tr class="sledge-row-<?if (($count%2)==0) echo 'odd'; else echo 'even';?>">
+								<?foreach ($person->activities->find_all() as $al):?>
+									<tr class="sledge-row-<?if (($i%2)==0) echo 'odd'; else echo 'even';?>">
 										<td><?=date('d F Y H:i:s', strtotime($al->audit_time));?></td>
 										<td><?=$al->activity;?></td>
 										<td><?=$al->note;?></td>
 									</tr>
-									<?$count++;?>
-								<?}?>
+									<?$i++;?>
+								<?endforeach;?>
 							</tbody>
 						</table>
-					<?} else {?>
+					<?else:?>
 						<p>
 							(No activity logged)
 						</p>
-					<?}
+					<?endif;
 				?>
 			</div>
 
-			<div id="sledge-person-detailview-groups<?=$c;?>" class="ui-helper-left">
+			<div id="sledge-person-detailview-groups<?=$person->id;?>" class="ui-helper-left">
 
 
 			</div>
 
-			<div id="sledge-person-detailview-permissions<?=$c;?>" class="ui-helper-left">
+			<div id="sledge-person-detailview-permissions<?=$person->id;?>" class="ui-helper-left">
 				<table width="100%">
 					<tbody>
 					<?
-						$i=0;
-						foreach (Permissions::get_permission_counts($this->item->rid,false) as $iperm) {
+						/*$i=0;
+						foreach (Permissions::get_permission_counts($person->rid,false) as $iperm) {
 							foreach ($iperm as $page_rid=>$perm) {
 								if (isset($perm['page']['can']) || isset($perm['page']['cant'])) {
 									if (!isset($perm['page']['can'])) $perm['page']['can'] = 0;
@@ -181,24 +178,24 @@ foreach (Relationship::find_partners('tag', 'person', $this->item->rid)->find_al
 								}
 								$i++;
 							}
-						}
+						}*/
 					?>
 					</tbody>
 				</table>
 
 				<p>
-					<button class="sledge-button sledge-detailview-person-add-permission" rel="<?=$this->item->rid?>">Add permission</button>
+					<button class="sledge-button sledge-detailview-person-add-permission" rel="<?=$person->rid?>">Add permission</button>
 				</p>
 			</div>
 
 			<br class="ui-helper-clear" />
 
 			<div style="padding: .8em 0 .8em .8em;border-color:#ccc;border-width:1px 0 0 0;" class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
-				<button class="sledge-button ui-button-text-icon sledge-tagmanager-person-save" rel="<?=$this->item->rid?>">
+				<button class="sledge-button ui-button-text-icon sledge-tagmanager-person-save" rel="<?=$person->rid?>">
 					<span class="ui-button-icon-primary ui-icon ui-icon-disk"></span>
 					Save
 				</button>
-				<button class="sledge-button ui-button-text-icon sledge-tagmanager-person-delete" rel="<?=$this->item->rid?>">
+				<button class="sledge-button ui-button-text-icon sledge-tagmanager-person-delete" rel="<?=$person->rid?>">
 					<span class="ui-button-icon-primary ui-icon ui-icon-circle-close"></span>
 					Delete
 				</button>

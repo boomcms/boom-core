@@ -86,11 +86,12 @@ class Controller_Cms_People extends Controller_Cms {
 		$id = preg_replace( "/[^0-9]+/", "", $id );
 		
 		$person = ORM::factory( 'person', $id );
-		$activity = ORM::factory( 'activitylog' )->where( 'audit_person', '=', $person->id )->limit( '50' )->order_by( 'audit_time', 'desc' )->find();
 		
-		$this->template->subtpl_main = View::factory( 'cms/pages/people/view' );
-		$this->template->subtpl_main->person = $person;	
-		$this->template->subtpl_main->activity = $activity;			
+		$v = View::factory( 'ui/subtpl_tag_manager_person_detailview' );
+		$v->person = $person;	
+		
+		echo $v;
+		exit;	
 	}
 	
 	public function action_delete()

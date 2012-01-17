@@ -15,6 +15,9 @@ class Model_Version_Person extends Model_Version {
 	protected $_has_one = array(
 		'person'	=> array( 'model' => 'person', 'foreign_key' => 'id' ),
 	);
+	protected $_belongs_to = array(
+		'image'	=>	array( 'model'	=> 'asset', 'foreign_key' => 'image_id' ),
+	);
 	
 	/**
 	* Filters for the versioned person columns

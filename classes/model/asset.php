@@ -12,17 +12,13 @@ class Model_Asset extends ORM_Versioned implements Interface_Taggable {
 	* Properties to create relationships with Kohana's ORM
 	*/
 	protected $_table_name = 'asset';
-	protected $has_one = array( 
-		'asset_type'		=> array('model' => 'asset_type' ),
-		'encoding'			=> array('model' => 'asset_encoding' )
-	);
 	protected $_belongs_to = array(
 		'version'  => array( 'model' => 'version_asset', 'foreign_key' => 'active_vid' ), 	
-		'chunk_asset'		=> array('model' => 'chunk_asset', 'foreign_key' => 'asset_id' ),
 	);
 	protected $_has_many = array(
 		'revisions'	=>	array( 'model' => 'version_asset', 'foreign_key' => 'rid' ),
 	);
+
 	protected $_load_with = array( 'version' );
 	
 	/**
