@@ -99,7 +99,7 @@ class Model_Page extends ORM_Versioned {
 	* @var object
 	* Holds the first version of the page. Useful for finding the creation time / person.
 	*/
-	private $_firstVersion;
+	private $_first_version;
 	
 	/**
 	* @access private
@@ -114,6 +114,14 @@ class Model_Page extends ORM_Versioned {
 	* @var string
 	*/
 	private $_primary_uri;
+	
+	/**
+	* Cached result for self::url()
+	*
+	* @access private
+	* @var string
+	*/
+	private $_url;
 	
 	/**
 	* Holds an array of the slots embedded in the page.
@@ -244,7 +252,7 @@ class Model_Page extends ORM_Versioned {
 				return 'Date';
 				break;
 			default:
-				throw new Kohana_Exception( "Page version has unknown child ordering policy: " . $this->child_ordering_policy );
+				throw new Sledge_Exception( "Page version has unknown child ordering policy: " . $this->child_ordering_policy );
 		}	
 	}
 	
@@ -286,20 +294,12 @@ class Model_Page extends ORM_Versioned {
     */
 	public function getFirstVersion()
 	{
-		if ($this->_firstVersion === null)
+		if ($this->_first_version === null)
 		{
-			$this->_firstVersion = ORM::factory( 'version_page')->order_by('audit_time', 'asc')->where( 'rid', '=', $this->id )->limit( 1 )->find(); 
+			$this->_first_version = ORM::factory( 'version_page')->order_by('audit_time', 'asc')->where( 'rid', '=', $this->id )->limit( 1 )->find(); 
 		}         
 		
 		return $this->_firstVersion;
-	}
-	
-	/**
-	* Returns the related mptt_Model object
-	* @return object
-	*/
-	public function getMptt() {
-		return $this->mptt;
 	}
 	
 	/**
@@ -328,12 +328,15 @@ class Model_Page extends ORM_Versioned {
 	* @return string The absolute URI.
 	*/
 	public function url() {
-		// Get the base URL of the current request.
-		$url = URL::base();
+		if ($this->_url === null)
+		{
+			// Get the base URL of the current request.
+			$this->_url = URL::base();
 		
-		$url .= $this->getPrimaryUri();
+			$this->_url .= $this->getPrimaryUri();
+		}
 		
-		return $url;		
+		return $this->_url;		
 	}
 	
 	/**
@@ -458,7 +461,7 @@ class Model_Page extends ORM_Versioned {
 	*
 	* @return string The new peimary URI
 	*/
-	public function generateUri()
+	public function generate_uri()
 	{
 		$parent = $this->mptt->parent()->page;
 	

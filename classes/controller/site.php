@@ -38,7 +38,7 @@ class Controller_Site extends Sledge_Controller
 			$page_uri = ORM::factory( 'page_uri' )->where( 'uri', '=', 'error/404' )->find();
 		
 		$page = $page_uri->page;
-
+		
 		$page_type = ($this->mode == 'cms' && $this->person->can( 'edit', $page ))? 'cms' : 'site';
 		
 		// Decorate the page model with a page class.

@@ -6,7 +6,6 @@ class Controller_Default extends Controller_Site
 	{
 		//$this->template;
 	}
-
 }
 
 ?>

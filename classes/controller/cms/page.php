@@ -70,7 +70,7 @@ class Controller_Cms_Page extends Controller_Cms
 			$page->save();
 	
 			// URI needs to be generated after the MPTT is set up.
-			$uri = $page->generateUri();
+			$uri = $page->generate_uri();
 	
 			echo URL::base( $this->request ) . $uri;
 		}
