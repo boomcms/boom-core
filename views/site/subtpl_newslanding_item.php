@@ -46,7 +46,7 @@
 			</a>
 		</h3>
 		<p>
-			Date: <?=date('d.m.Y', $page->visiblefrom_timestamp);?>
+			Date: <?=date('d.m.Y', $page->visible_from);?>
 		</p>
 		<p>
 			<?= $page->get_slot('text', 'standfirst'); ?>

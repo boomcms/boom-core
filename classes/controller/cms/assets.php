@@ -103,7 +103,8 @@ class Controller_Cms_Assets extends Controller_Cms
 	*/
 	public function action_upload()
 	{
-		
+		echo View::factory( 'ui/subtpl_assetmanager_upload_assets' );
+		exit;
 		
 	}
 	
@@ -123,15 +124,23 @@ class Controller_Cms_Assets extends Controller_Cms
 	{		
 		if (isset( $_GET['state'] ))
 		{
-			$this->template->subtpl_main = View::factory( 'ui/tpl_asset_manager' );
+			View::bind_global( 'person', $this->person );
+			$v = View::factory( 'ui/tpl_asset_manager' );
+			$v->basetag_rid = 0;
+			$v->default_tag_rid = 0;
+			$v->edition = 'cms';
+			$v->type = 'asset';
+			$v->selected = array();
+			$v->types = array();
+			$v->exclude_smart_tags = true;
+			$v->template = '';
+			echo $v;
 			exit;
 		}
 	}
 	
 	public function after()
-	{	
-		$this->template->title = 'Asset Manager';
-		
+	{		
 		parent::after();
 	}
 }

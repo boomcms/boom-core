@@ -37,8 +37,6 @@ class Controller_Site extends Sledge_Controller
 		if (!$page_uri->loaded() && $uri != 'error/404')
 			$page_uri = ORM::factory( 'page_uri' )->where( 'uri', '=', 'error/404' )->find();
 		
-		// Load the relevant page object.
-		//print_r( $page_uri );exit;
 		$page = $page_uri->page;
 
 		$page_type = ($this->mode == 'cms' && $this->person->can( 'edit', $page ))? 'cms' : 'site';
@@ -49,7 +47,7 @@ class Controller_Site extends Sledge_Controller
 		$this->page = Page::factory( $page_type, $page );
 		
 		// Set the base template.
-		if ($page_type == 'cms' && !Arr::get( $_GET, 'state' ) == 'siteeditcms')
+		if ($page_type == 'cms' && !Arr::get( $_GET, 'state' ))
 		{
 			$this->template = View::factory( 'cms/standard_template' );
 			$title = $page->title;

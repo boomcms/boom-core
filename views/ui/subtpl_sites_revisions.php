@@ -10,12 +10,15 @@
 						<td>
 							<label for="revision-<?=$version->id?>">
 								Version <?=$count-$i?>
-								<?/*if ($version->id == $published_page->id) {?>
-									<small><strong>(<em>Published version</em>)</strong></small>
-								<?}*/?>
-								<?if ($version->id == $page->active_vid) {?>
-									<small><strong>(<em>Current version</em>)</strong></small>
-								<?}?>
+								<?
+									if ($version->id == $page->published_vid):
+										echo "<small><strong>(<em>Published version</em>)</strong></small>";
+									endif;
+								
+									if ($version->id == $page->active_vid):
+										echo "<small><strong>(<em>Current version</em>)</strong></small>";
+									endif;
+								?>
 							</label><br />
 							<small><?=date('j F Y H:i')?> by <?=($version->person->id) ? $version->person->getName() : 'Unknown'?></small>
 						</td>

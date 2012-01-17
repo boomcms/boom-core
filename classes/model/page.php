@@ -22,6 +22,7 @@ class Model_Page extends ORM_Versioned {
 		'chunks'	=> array('model' => 'chunk', 'through' => 'chunk_page' )
 	);
 	protected $_belongs_to = array(
+		'published_version'  => array( 'model' => 'version_page', 'foreign_key' => 'published_vid' ), 
 		'version'  => array( 'model' => 'version_page', 'foreign_key' => 'active_vid' ), 
 	);
 	

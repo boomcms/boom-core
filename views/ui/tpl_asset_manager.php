@@ -16,15 +16,12 @@
 	</div>
 	<div class="sledge-tagmanager-sidebar ui-helper-left">
 
-		<?= new View('cms/ui/subtpl_tag_manager_search')?>
+		<?= new View('ui/subtpl_tag_manager_search')?>
 
-		<?= new View('cms/ui/subtpl_tag_tree')?>
+		<?//= new View('ui/subtpl_tag_tree')?>
 	</div>
 </div>
 
-<?
-	$allowed_types = Asset::$allowed_types;
-?>
 <script type="text/javascript">
 
 
@@ -44,15 +41,15 @@
 		options: {
 			sortby: 'NULL',
 			order: 'NULL',
-			basetagRid: <?= $this->basetag_rid?>, 
-			defaultTagRid: <?=$this->default_tag_rid?>,
-			edition: '<?= $this->edition?>', 
-			type: '<?= $this->type?>',
-			selected: [<?= (count($this->selected) ? "'".implode('\',\'', $this->selected)."'" : '');?>], 
-			types: [<?= (count($this->types) ? "'".implode('\',\'', $this->types)."'" : '');?>],
-			excludeSmartTags: <?= (string) (int) $this->exclude_smart_tags?>,
-			template: '<?= $this->template?>',
-			allowedUploadTypes: [ '<?= implode('\', \'', $allowed_types)?>' ]
+			basetagRid: <?= $basetag_rid?>, 
+			defaultTagRid: <?=$default_tag_rid?>,
+			edition: '<?= $edition?>', 
+			type: '<?= $type?>',
+			selected: [<?= (count($selected) ? "'".implode('\',\'', $selected)."'" : '');?>], 
+			types: [<?= (count($types) ? "'".implode('\',\'', $types)."'" : '');?>],
+			excludeSmartTags: <?= (string) (int) $exclude_smart_tags?>,
+			template: '<?= $template?>',
+			allowedUploadTypes: [ '<?= implode('\', \'', Asset::$allowed_types)?>' ]
 		}
 	});
 </script>
