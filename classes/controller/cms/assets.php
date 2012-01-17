@@ -139,6 +139,22 @@ class Controller_Cms_Assets extends Controller_Cms
 		}
 	}
 	
+	/**
+	* Controller to show an assets detailed view.
+	*
+	*/
+	public function action_view()
+	{
+		$asset_id = $this->request->param( 'id' );
+		$asset = ORM::factory( 'asset', $asset_id );
+		
+		$v = View::factory( 'ui/subtpl_tag_manager_asset_detailview' );
+		$v->asset = $asset;
+		
+		echo $v;
+		exit;
+	}
+	
 	public function after()
 	{		
 		parent::after();

@@ -20,6 +20,9 @@ class Model_Asset extends ORM_Versioned implements Interface_Taggable {
 		'version'  => array( 'model' => 'version_asset', 'foreign_key' => 'active_vid' ), 	
 		'chunk_asset'		=> array('model' => 'chunk_asset', 'foreign_key' => 'asset_id' ),
 	);
+	protected $_has_many = array(
+		'revisions'	=>	array( 'model' => 'version_asset', 'foreign_key' => 'rid' ),
+	);
 	protected $_load_with = array( 'version' );
 	
 	/**
@@ -109,7 +112,7 @@ class Model_Asset extends ORM_Versioned implements Interface_Taggable {
 		if ($this->_tags === null)
 		{
 			$this->_tags = ORM::factory( 'tag' )
-							->join( 'tagged_object', 'inner' )
+							->join( 'tagged_objects', 'inner' )
 							->on( 'tag_id', '=', 'tag.id' )
 							->where( 'object_type', '=', Model_Tagged_Object::OBJECT_TYPE_ASSET )
 							->where( 'object_id', '=', $this->pk() )

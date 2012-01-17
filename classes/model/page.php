@@ -96,13 +96,6 @@ class Model_Page extends ORM_Versioned {
 	
 	/**
 	* @access private
-	* @var object
-	* Holds the first version of the page. Useful for finding the creation time / person.
-	*/
-	private $_first_version;
-	
-	/**
-	* @access private
 	* @var string
 	*/
 	private $_absolute_uri;
@@ -288,19 +281,6 @@ class Model_Page extends ORM_Versioned {
 		return false;
 	}
 	
-    /**
-    * Gets an object referring to the first version of the page - used for getting the creation time / author.
-    * @return page_v_Model page_v_model object for first version of the page.
-    */
-	public function getFirstVersion()
-	{
-		if ($this->_first_version === null)
-		{
-			$this->_first_version = ORM::factory( 'version_page')->order_by('audit_time', 'asc')->where( 'rid', '=', $this->id )->limit( 1 )->find(); 
-		}         
-		
-		return $this->_firstVersion;
-	}
 	
 	/**
 	* Delete a page.

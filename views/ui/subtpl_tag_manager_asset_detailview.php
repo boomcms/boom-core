@@ -1,34 +1,34 @@
-$asset<div id="sledge-asset-detailview">
+<div id="sledge-asset-detailview">
 
 	<form onsubmit="return false;">
 
 		<input type="hidden" name="id" value="<?= $asset->id?>" />
-		<input type="hidden" name="tags" value="<?=implode(',', $tags)?>" />
+		<input type="hidden" name="tags" value="<?=implode(',', $asset->tags())?>" />
 		<input type="hidden" name="old_visiblefrom_timestamp" id="old_visiblefrom_timestamp" value="<?=date("Y-m-d H:i:s", $asset->visible_from)?>" />
-		<input type="hidden" name="old_ref_status_rid" id="old_ref_status_rid" value="<?=$asset->ref_status_rid?>" />
+		<input type="hidden" name="old_ref_status_rid" id="old_ref_status_rid" value="<?=$asset->status?>" />
 
 		<div class="sledge-tabs ui-helper-clearfix">
 
 			<ul>
-				<li><a href="#sledge-asset-detailview-attributes<?=$c;?>">Attributes</a></li>
-				<li><a href="#sledge-asset-detailview-info<?=$c;?>">Info</a></li>
-				<li><a href="#sledge-asset-detailview-metadata<?=$c;?>">Metadata</a></li>
-				<li><a href="#sledge-asset-detailview-folders<?=$c;?>">Folders</a></li>
-				<li><a href="#sledge-asset-detailview-relationships<?=$c;?>">Asset relationships</a></li>
+				<li><a href="#sledge-asset-detailview-attributes<?=$asset->id;?>">Attributes</a></li>
+				<li><a href="#sledge-asset-detailview-info<?=$asset->id;?>">Info</a></li>
+				<li><a href="#sledge-asset-detailview-metadata<?=$asset->id;?>">Metadata</a></li>
+				<li><a href="#sledge-asset-detailview-folders<?=$asset->id;?>">Folders</a></li>
+				<li><a href="#sledge-asset-detailview-relationships<?=$asset->id;?>">Asset relationships</a></li>
 			</ul>
 
 			<div class="ui-tabs-panel ui-widget-content ui-helper-left">
 
-				<a href="/_ajax/call/asset/get_asset/<?= $asset->id?>/600/500" 
+				<a href="/asset/<?= $asset->id?>/600/500" 
 					title="<?= $asset->title?>" 
 					title="Click for larger view" 
 					class="ui-helper-left sledge-asset-preview">
-					<img class="ui-state-active ui-corner-all" src="/_ajax/call/asset/get_asset/<?= $asset->rid?>/160">
+					<img class="ui-state-active ui-corner-all" src="/asset/<?= $asset->id?>/160">
 				</a>
 
 			</div>
 
-			<div id="sledge-asset-detailview-attributes<?=$c;?>" class="ui-helper-left">
+			<div id="sledge-asset-detailview-attributes<?=$asset->id;?>" class="ui-helper-left">
 				<table>
 					<tr>
 						<td>Title</td>
@@ -52,7 +52,21 @@ $asset<div id="sledge-asset-detailview">
 						<td>Status</td>
 						<td>
 							<select name="ref_status_rid">
+								<?
+									echo "<option value='" . Model_Asset::STATUS_PUBLISHED . "'";
+									if ($asset->status === Model_Asset::STATUS_PUBLISHED)
+									{
+										echo " selected='selected'";
+									}
+									echo ">Published</option>";
 
+									echo "<option value='" . Model_Asset::STATUS_UNPUBLISHED . "'";
+									if ($asset->status === Model_Asset::STATUS_UNPUBLISHED)
+									{
+										echo " selected='selected'";
+									}
+									echo ">Unpublished</option>";
+								?>									
 							</select>
 						</td>
 					</tr>
@@ -65,7 +79,7 @@ $asset<div id="sledge-asset-detailview">
 				</table>
 			</div>
 
-			<div id="sledge-asset-detailview-info<?=$c;?>" class="ui-helper-left">
+			<div id="sledge-asset-detailview-info<?=$asset->id;?>" class="ui-helper-left">
 
 				<table width="100%">
 					<tr>
@@ -74,7 +88,7 @@ $asset<div id="sledge-asset-detailview">
 					</tr>
 					<tr>
 						<td>Filesize</td>
-						<td><?= Misc::format_filesize($asset->filesize) ?></td>
+						<td><?= $asset->filesize ?></td>
 					</tr>
 					<?
 						if ($asset->type == 'image'):
@@ -88,11 +102,11 @@ $asset<div id="sledge-asset-detailview">
 					?>
 					<tr>
 						<td>Uploaded by</td>
-						<td><?= $asset->getFirstVersion()->person->getName()?></td>
+						<td><?= $asset->first_version()->person->getName()?></td>
 					</tr>
 					<tr>
 						<td>Upload on</td>
-						<td><?= date('d F Y h:i:s', $asset->getFirstVersion()->audit_time)?></td>
+						<td><?= date('d F Y h:i:s', $asset->first_version()->audit_time)?></td>
 					</tr>
 					<tr>
 						<td>Versions</td>
@@ -102,14 +116,14 @@ $asset<div id="sledge-asset-detailview">
 
 			</div>
 
-			<div id="sledge-asset-detailview-metadata<?=$c;?>" class="ui-helper-left">
+			<div id="sledge-asset-detailview-metadata<?=$asset->id;?>" class="ui-helper-left">
 				metadata
 			</div>
 
-			<div id="sledge-asset-detailview-folders<?=$c;?>" class="ui-helper-left">
+			<div id="sledge-asset-detailview-folders<?=$asset->id;?>" class="ui-helper-left">
 			</div>
 
-			<div id="sledge-asset-detailview-relationships<?=$c;?>" class="ui-helper-left">
+			<div id="sledge-asset-detailview-relationships<?=$asset->id;?>" class="ui-helper-left">
 				relationships
 			</div>
 
