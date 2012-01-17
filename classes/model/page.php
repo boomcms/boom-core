@@ -108,15 +108,6 @@ class Model_Page extends ORM_Versioned {
 	private $_absolute_uri;
 	
 	/**
-	* Do we need to save the children?
-	* Flag indicating whether we've made changes to child pages. Checked by save()
-	*
-	* @access private
-	* @var boolean
-	*/
-	private $_save_children = false;
-	
-	/**
 	* Holds the calculated primary URI
 	*
 	* @access private
@@ -126,7 +117,7 @@ class Model_Page extends ORM_Versioned {
 	
 	/**
 	* Holds an array of the slots embedded in the page.
-	* Ensures we only query the database once for each slot - and not everytime we want to use the slot.
+	* Ensures we only query the database once for each slot - and not every time we want to use the slot.
 	* Used by the get_slot() method
 	*
 	* @access private
@@ -136,7 +127,7 @@ class Model_Page extends ORM_Versioned {
 	
 	/**
 	* Adds a new child page to this page's MPTT tree.
-	* Takes care of putting the child in the correct possition according to this page's child ordering policy.
+	* Takes care of putting the child in the correct position according to this page's child ordering policy.
 	*
 	* @param Model_Page $page The new child page.
 	* @return void
@@ -145,7 +136,7 @@ class Model_Page extends ORM_Versioned {
 	{
 		if ($this->child_ordering_policy & self::CHILD_ORDER_DATE)
 		{
-			if ( $this->child_ordering_policy & self::CHILD_ORDER_ASC)
+			if ($this->child_ordering_policy & self::CHILD_ORDER_ASC)
 			{
 				$page->mptt->insert_as_last_child( $this->mptt );
 			}
@@ -153,6 +144,44 @@ class Model_Page extends ORM_Versioned {
 			{
 				$page->mptt->insert_as_first_child( $this->mptt );
 			}
+		}
+		else if ($this->child_ordering_policy & self::CHILD_ORDER_ALPHABETIC)
+		{
+			// Ordering alphabetically? 
+			// Find the page_mptt record of the page which comes ater this alphabetically.
+			$mptt = ORM::factory( 'page_mptt' )
+					->join( 'page', 'inner' )
+					->on( 'page.id', '=', 'page_mptt.page_id' )
+					->join( 'page_v', 'inner' )
+					->on( 'page.active_vid', '=', 'page_v.id' )
+					->where( 'title', '>', $page->title );
+					
+			if ($this->child_ordering_policy & self::CHILD_ORDER_ASC)
+			{
+				$mptt->order_by( 'title', 'asc' );
+			}
+			else
+			{
+				$mptt->order_by( 'title', 'desc' );
+			}
+			
+			$mptt->limit( 1 )->find();
+			
+			if (!$mptt->loaded())
+			{
+				// If a record wasn't loaded then there's no page after this one.
+				// Insert as the last child of the parent.
+				$page->mptt->insert_as_last_child( $mptt );
+			}
+			else
+			{
+				$page->mptt->insert_as_prev_sibling( $mptt );
+			}
+		}
+		else
+		{
+			// For anything else (such as ordering children manually) just stick it at the end for now.
+			$page->mptt->insert_as_last_child( $this->mptt );
 		}		
 	}
 	
