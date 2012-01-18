@@ -88,6 +88,10 @@ class Model_Person extends ORM_Versioned {
 	*/
 	public function can( $action, $where = false )
 	{
+		// If a record wasn't loaded, thye can't do it.
+		if (!$this->loaded())
+			return false;
+			
 		$action = ORM::factory( 'action' )->where( 'name', '=', $action )->find();
 		
 		// If the action doesn't exist just say no.

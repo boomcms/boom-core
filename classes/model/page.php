@@ -23,11 +23,10 @@ class Model_Page extends ORM_Versioned {
 		'revisions' => array('model' => 'version_page', 'foreign_key' => 'rid' ),
 	);
 	protected $_belongs_to = array(
-		'published_version'  => array( 'model' => 'version_page', 'foreign_key' => 'published_vid' ), 
-		'version'  => array( 'model' => 'version_page', 'foreign_key' => 'active_vid' ), 
+	//	'published_version'  => array( 'model' => 'version_page', 'foreign_key' => 'published_vid' ), 
+		'version'  => array( 'model' => 'version_page', 'foreign_key' => 'published_vid' ), 
 	);
-	
-	protected $_load_with = array('version');
+	protected $_load_with = array( 'version' );
 	
 	/**
 	* Page invisible value (stored in page_status column)
@@ -126,6 +125,34 @@ class Model_Page extends ORM_Versioned {
 	* @var array
 	*/
 	private $_slots = array();
+	
+	/**
+	* Load database values into the object.
+	*
+	* This is customised to ensure that a user who cannot edit the current page sees the current, published version.
+	* While someone who can edit the page sees the current version, whatever it's status.
+	* Essentially this function replaces $this->version if the user can edit the page.
+	* This isn't a very efficient way of doing it since it means that the published version is loaded and then the published version
+	* Resulting in two database queries when we only need the data from one.
+	* However, I can't see any other way of doing this at the moment, within the constraints of Kohana.
+	*
+	* This logic is here, rather than __construct or _initialize as putting this code in those methods wouldn't work for loading pages through related objects, e.g. $page_uri->page.
+	*/
+	protected function _load_values(array $values)
+	{		
+		parent::_load_values( $values );
+		
+		if ($this->loaded())
+		{
+			$person = Auth::instance()->get_user();
+
+			if ($person->can( 'edit', $this ) && $this->active_vid != $this->published_vid)
+			{
+				$this->version->clear();
+				$this->version->where( 'id', '=', $this->active_vid )->find();
+			}
+		}
+	}
 	
 	/**
 	* Adds a new child page to this page's MPTT tree.
