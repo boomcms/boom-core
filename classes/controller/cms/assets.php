@@ -126,14 +126,8 @@ class Controller_Cms_Assets extends Controller_Cms
 		{
 			View::bind_global( 'person', $this->person );
 			$v = View::factory( 'ui/tpl_asset_manager' );
-			$v->basetag_rid = 0;
-			$v->default_tag_rid = 0;
-			$v->edition = 'cms';
-			$v->type = 'asset';
-			$v->selected = array();
-			$v->types = array();
-			$v->exclude_smart_tags = true;
-			$v->template = '';
+			$v->assets = ORM::factory( 'asset' )->find_all();
+			
 			echo $v;
 			exit;
 		}

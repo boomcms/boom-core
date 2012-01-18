@@ -118,7 +118,9 @@ class Controller_Cms_People extends Controller_Cms {
 	{	
 		if (isset( $_GET['state'] ))
 		{	
-			$this->template->subtpl_main = View::factory( 'ui/tpl_people_manager' );
+			$v = View::factory( 'ui/tpl_people_manager' );
+			$v->people = ORM::factory( 'person' )->find_all();
+			echo $v;
 			exit;
 		}
 	}

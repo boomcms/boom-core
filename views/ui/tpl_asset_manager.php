@@ -8,7 +8,7 @@
 		<div class="sledge-tagmanager-body ui-helper-clearfix">
 			<div class="sledge-tagmanager-rightpane">
 				<div class="content">
-					&nbsp;
+					Asset folders
 				</div>
 			</div>
 
@@ -18,10 +18,29 @@
 
 		<?= new View('ui/subtpl_tag_manager_search')?>
 
-		<?//= new View('ui/subtpl_tag_tree')?>
+		<ul class="users tree">
+		<?
+			foreach ($assets as $asset):
+				?>
+					<li>
+						<div class="row">
+							<div class="col1 check">
+								<input type="checkbox" name="massaction" id="ma<?=$asset->id?>" />
+							</div>						
+							<div class="col2 title">
+								<a href='/cms/assets/view/<?= $asset->id ?>'>
+									<?= $asset->title ?>
+								</a>
+							</div>
+						</div>
+					</li>
+				<?
+			endforeach;
+		?>
+		</ul>
 	</div>
 </div>
-
+<?/*
 <script type="text/javascript">
 
 
@@ -53,3 +72,4 @@
 		}
 	});
 </script>
+*/?>
