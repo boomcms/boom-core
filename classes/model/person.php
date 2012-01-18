@@ -20,7 +20,7 @@ class Model_Person extends ORM_Versioned {
 			'model'		=> 'role',
 			'through'	=> 'person_role',
 		),
-		'activities' => array( 'model' => 'activitylog', 'foreign_key' => 'audit_person' ),
+		'activities' => array( 'model' => 'activitylog', 'foreign_key' => 'person' ),
 	);	
 	protected $_belongs_to = array( 
 		'version'  => array( 'model' => 'version_person', 'foreign_key' => 'active_vid' ), 

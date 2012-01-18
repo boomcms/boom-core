@@ -68,10 +68,7 @@
 					<td>
 						<select name="report_problem_site-page" id="report_problem_site-page">
 							<option value="">- Please select a page -</option>
-							<?
-							$r = new Recursion_Page_Combo;
-							$r->recurse(O::f('site_page')->get_homepage(),$this->page->rid,true,false,false,false,false,false,false,false,false);
-							?>
+
 						</select>
 					</td>
 				</tr>

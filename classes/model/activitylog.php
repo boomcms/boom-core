@@ -27,9 +27,10 @@ class Model_Activitylog extends ORM {
 	public static function log( Model_Person $person, $activity, $note = null) {
 		$log = new self;
 		$log->remotehost = Request::$client_ip;
-		$log->audit_person = $person->id;
+		$log->person = $person->id;
 		$log->activity = $activity;
 		$log->note = $note;
+		$log->time = time();
 		
 		$log->save();		
 	}

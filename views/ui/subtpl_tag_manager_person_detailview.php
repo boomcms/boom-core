@@ -71,7 +71,7 @@
 							<tbody>
 								<?foreach ($person->activities->find_all() as $al):?>
 									<tr class="sledge-row-<?if (($i%2)==0) echo 'odd'; else echo 'even';?>">
-										<td><?=date('d F Y H:i:s', strtotime($al->audit_time));?></td>
+										<td><?=date('d F Y H:i:s', strtotime($al->time));?></td>
 										<td><?=$al->activity;?></td>
 										<td><?=$al->note;?></td>
 									</tr>
