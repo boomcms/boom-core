@@ -4,9 +4,9 @@
 			<tbody>
 				<?
 				$count = $page->revisions->count_all();
-				foreach ($page->revisions->find_all() as $i => $version):?>
+				foreach ($page->revisions->order_by( 'id', 'desc' )->find_all() as $i => $version):?>
 					<tr>
-						<td width="20"><input type="checkbox" id="revision-<?=$version->id?>" class="sledge-page-revision-check ui-helper-reset"<?if ($version->id == $page->active_vid){?> checked="checked"<?}?> /></td>
+						<td width="20"><input type="checkbox" id="revision-<?=$version->id?>" class="sledge-page-revision-check ui-helper-reset"<?if ($version->id == $page->version->id):?> checked="checked"<?endif?> /></td>
 						<td>
 							<label for="revision-<?=$version->id?>">
 								Version <?=$count-$i?>

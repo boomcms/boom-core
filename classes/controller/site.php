@@ -41,6 +41,12 @@ class Controller_Site extends Sledge_Controller
 		
 		$page_type = ($this->mode == 'cms' && $this->person->can( 'edit', $page ))? 'cms' : 'site';
 		
+		if (Arr::get( $_GET, 'version' ) && $this->person->can( 'edit', $page ))
+		{
+			$page->version->clear();
+			$page->version->where( 'id', '=', Arr::get( $_GET, 'version' ) )->find();
+		}
+		
 		// Decorate the page model with a page class.
 		// This allows us to change what the page does depending on whether we're in cms or site mode
 		// Without changing the page model itself.

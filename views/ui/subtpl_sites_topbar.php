@@ -99,12 +99,18 @@
 					<span class="ui-button-text">Select an action</span>
 				</button>
 			</div>
-			<button id="sledge-page-versions" class="sledge-button ui-helper-left ui-button-text-icon ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only">
-				<span class="ui-button-text">
-					<span class="ui-button-icon-primary ui-icon ui-icon-transferthick-e-w"></span>
-					Versions
-				</span>
-			</button>
+			<?
+				if ($page->revisions->count_all() > 1):
+			?>
+					<button id="sledge-page-versions" class="sledge-button ui-helper-left ui-button-text-icon ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only">
+						<span class="ui-button-text">
+							<span class="ui-button-icon-primary ui-icon ui-icon-transferthick-e-w"></span>
+							Versions
+						</span>
+					</button>
+			<?
+				endif;
+			?>
 		</div>
 	</div>
 	
@@ -117,11 +123,11 @@
 	<div id="sledge-topbar-revisions" class="ui-helper-clearfix">
 		This page version is <strong><?=$page->getVersionStatus()?></strong>. 
 		<?
-			/*
-			if ($page_type == 'a draft' && $published_page->rid):
+			
+			if ($page->version_status == Model_Page::STATUS_DRAFT && $page->has_published_version()):
 				echo "A <a href='#' id='sledge-topbar-status-change'>published version</a> exists for this page.";
 			endif;
-			*/
+			
 		?>
 	</div>
 </div>

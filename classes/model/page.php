@@ -282,6 +282,15 @@ class Model_Page extends ORM_Versioned {
 		return false;
 	}
 	
+	/**
+	* Determine whether a published version exists for the page.
+	*
+	* @return bool
+	*/
+	public function has_published_version()
+	{
+		return $this->revisions->where( 'version_status', '=', self::STATUS_PUBLISHED )->find()->loaded();
+	}
 	
 	/**
 	* Delete a page.
