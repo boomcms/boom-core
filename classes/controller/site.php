@@ -39,7 +39,7 @@ class Controller_Site extends Sledge_Controller
 		
 		$page = $page_uri->page;
 		
-		$page_type = ($this->mode == 'cms' && $this->person->can( 'edit', $page ))? 'cms' : 'site';
+		$page_type = ($this->person->can( 'edit', $page ))? 'cms' : 'site';
 		
 		if (Arr::get( $_GET, 'version' ) && $this->person->can( 'edit', $page ))
 		{

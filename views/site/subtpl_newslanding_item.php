@@ -22,7 +22,7 @@
 				->on( 'chunk.active_vid', '=', 'chunk_asset.id' )
 				->join( 'chunk_page', 'inner' )
 				->on( 'chunk.id', '=', 'chunk_page.chunk_id' )
-				->where( 'chunk_page.page_id', '=', $page->pk() )
+				->where( 'chunk_page.page_vid', '=', $page->version->pk() )
 				->where( 'slotname', '=', 'newsheaderimage' )
 				->find();
 	

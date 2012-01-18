@@ -23,7 +23,7 @@ class Controller_Search extends Controller_Site
 		$page = Arr::get( $_REQUEST, 'page', 1 );
 		
 		// Find and count results.
-		$query = ORM::factory( 'page' );
+		$query = ORM::factory( 'page' )->where( 'deleted', '=', 'false' );
 		
 		$count = $query->count_all();
 		$results = $query->limit( 10 )->offset( ($page - 1) * 10)->order_by( 'page.id', 'asc' )->find_all();
