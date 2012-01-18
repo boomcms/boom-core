@@ -370,8 +370,8 @@ class Model_Page extends ORM_Versioned {
 											->join( 'chunk_page' )
 											->on( 'chunk_page.chunk_id', '=', 'chunk.id' )
 											->where_open()
-											->where( 'chunk_page.page_id', '=', $this->id )	
-											->or_where( 'chunk_page.page_id', '=', 0 )
+											->where( 'chunk_page.page_vid', '=', $this->version->id )	
+											->or_where( 'chunk_page.page_vid', '=', 0 )
 											->where_close()										
 											->where( 'slotname', '=', $slotname )
 											->find();
