@@ -19,7 +19,8 @@ class Model_Page extends ORM_Versioned {
 	);
 	protected $_has_many = array( 
 		'uris'		=> array('model' => 'page_uri', 'foreign_key' => 'page_id'),
-		'chunks'	=> array('model' => 'chunk', 'through' => 'chunk_page' )
+		'chunks'	=> array('model' => 'chunk', 'through' => 'chunk_page' ),
+		'revisions' => array('model' => 'version_page', 'foreign_key' => 'rid' ),
 	);
 	protected $_belongs_to = array(
 		'published_version'  => array( 'model' => 'version_page', 'foreign_key' => 'published_vid' ), 
@@ -264,8 +265,8 @@ class Model_Page extends ORM_Versioned {
 	* Checks that a page is published.
 	* @return boolean true if it's published, false if it isn't.
 	*/
-	public function isPublished() {
-		if ($this->version_status === self::STATUS_PUBLISHED)
+	public function is_published() {
+		if ($this->version_status == self::STATUS_PUBLISHED)
 			return true;
 		else
 			return false;		

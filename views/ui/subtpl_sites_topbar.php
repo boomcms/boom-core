@@ -45,12 +45,18 @@
 			<?
 				endif;
 			?>
-			<button id="sledge-page-publish" class="sledge-button ui-button-text-icon ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only">
-				<span class="ui-button-text">
-					<span class="ui-button-icon-primary ui-icon ui-icon-check"></span>
-					Publish
-				</span>
-			</button>
+			<?
+				if (!$page->is_published()):
+			?>
+					<button id="sledge-page-publish" class="sledge-button ui-button-text-icon ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only">
+						<span class="ui-button-text">
+							<span class="ui-button-icon-primary ui-icon ui-icon-check"></span>
+							Publish
+						</span>
+					</button>
+			<?
+				endif;
+			?>
 
 		</div>
 

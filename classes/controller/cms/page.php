@@ -178,12 +178,8 @@ class Controller_Cms_Page extends Controller_Cms
 	
 	public function action_revisions()
 	{
-		$page = $this->_page;
-		$versions = ORM::factory( 'version_page' )->where( 'rid', '=', $page->id )->find_all();
-		
 		$v = View::factory( 'ui/subtpl_sites_revisions' );
-		$v->page = $page;
-		$v->versions = $versions;
+		$v->page = $this->_page;
 		
 		echo $v;
 		exit;

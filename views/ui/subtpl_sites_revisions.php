@@ -3,8 +3,8 @@
 		<table width="100%">
 			<tbody>
 				<?
-				$count = count( $versions );
-				foreach ($versions as $i => $version):?>
+				$count = $page->revisions->count_all();
+				foreach ($page->revisions->find_all() as $i => $version):?>
 					<tr>
 						<td width="20"><input type="checkbox" id="revision-<?=$version->id?>" class="sledge-page-revision-check ui-helper-reset"<?if ($version->id == $page->active_vid){?> checked="checked"<?}?> /></td>
 						<td>

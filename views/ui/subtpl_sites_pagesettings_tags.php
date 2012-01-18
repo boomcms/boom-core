@@ -1,8 +1,3 @@
-<?
-
-//sleep(1);
-
-?>
 <div class="sledge-tabs">
 	<ul>
 		<li><a href="#page-tags">Page tags</a></li>
