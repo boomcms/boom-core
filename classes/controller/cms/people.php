@@ -8,7 +8,8 @@
 * @copyright 2011, Hoop Associates
 */
 
-class Controller_Cms_People extends Controller_Cms {	
+class Controller_Cms_People extends Controller_Cms
+{	
 	public function before()
 	{		
 		parent::before();

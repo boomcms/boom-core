@@ -21,7 +21,7 @@ class Model_Version_Template extends Model_Version {
 	*
 	* @return boolean
 	*/
-	public function fileExists()
+	public function file_exists()
 	{
 		$exists = file_exists( APPPATH . 'views/' . $this->filename . '.php' );
 
