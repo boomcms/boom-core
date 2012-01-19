@@ -164,8 +164,8 @@ class Controller_Cms_Page extends Controller_Cms
 		if (isset( $data->children_visible_in_leftnav_cms ))
 			$page->children_visible_in_leftnav_cms = ($data->children_visible_in_leftnav_cms = "")? null : (bool) $data->children_visible_in_leftnav_cms;
 			
-		if (isset( $data->default_child_default_child_template_id ))
-			$page->default_child_default_child_template_id = $data->default_child_default_child_template_id;
+		//if (isset( $data->default_child_default_child_template_id ))
+		//	$page->default_child_default_child_template_id = $data->default_child_default_child_template_id;
 			
 		if (isset( $data->default_child_template_id ))
 			$page->default_child_template_id = $page->default_child_template_id;
@@ -173,8 +173,11 @@ class Controller_Cms_Page extends Controller_Cms
 		if (isset( $data->default_child_uri_prefix ))
 			$page->default_child_uri_prefix = $data->default_child_uri_prefix;
 			
-		if (isset( $data->pagetype_parent_id ))
-			$page->pagetype_parent_id = $data->pagetype_parent_id;
+		//if (isset( $data->pagetype_parent_id ))
+		//	$page->pagetype_parent_id = $data->pagetype_parent_id;
+			
+		if (isset( $data->child_ordering_policy ) && isset( $data->child_ordering_direction ))
+			$page->order_children( (int) $data->child_ordering_policy, $data->child_ordering_direction );
 			
 		// Admin settings tab.
 		if (isset( $data->internal_name ))

@@ -46,10 +46,14 @@
 					<tr>
 						<td>Child ordering policy</td>
 						<td>
-							<select name="child_ordering_policy_rid">
-							<?
-								
-							?>
+							<select name="child_ordering_policy">
+								<option value='<?= Model_Page::CHILD_ORDER_MANUAL ?>'>Manual</option>
+								<option value='<?= Model_Page::CHILD_ORDER_DATE ?>'>Date</option>
+								<option value='<?= Model_Page::CHILD_ORDER_ALPHABETIC ?>'>Alphabetic</option>
+							</select>
+							<select name="child_ordering_direction">
+								<option value='asc'>Asc</option>
+								<option value='desc'>Desc</option>
 							</select>
 						</td>
 					</tr>

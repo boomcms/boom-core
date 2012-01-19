@@ -400,25 +400,32 @@ class Model_Page extends ORM_Versioned {
 			// Find the children, sorting the database results by the column we want the children ordered by.
 			$query = ORM::factory( 'page_mptt' )
 				->join( 'page', 'inner' )->on( 'page_mptt.page_id', '=', 'page.id' )
-				->join( 'page_v', 'inner' )->on( 'page.active_vid', '=', 'page_v.id' );
+				->join( 'page_v', 'inner' )->on( 'page.active_vid', '=', 'page_v.id' )
+				->where( 'parent_id', '=', $this->mptt->id );
 				
-			if ($direction === self::CHILD_ORDER_ALPHABETIC)
+			if ($order == self::CHILD_ORDER_ALPHABETIC)
 				$query->order_by( 'title', $direction );
 			else
-				$query->order_by( 'audit_timestamp', $direction );
+				$query->order_by( 'audit_time', $direction );
 			
 			$children = $query->find_all();
 			
-			$left = $this->mptt->lft;
+			$previous = null;
 			
 			// Loop through the children assigning new left and right values.
 			foreach( $children as $child )
 			{
-				$left++;
+				if ($previous === null)
+				{
+					$child->move_to_first_child( $this->mptt );
+					$first = false;
+				}
+				else
+				{
+					$child->move_to_next_sibling( $previous );
+				}
 				
-				$child->rgt = $child->rgt - ($child->lft - $left);
-				$child->lft = $left;
-				$child->save();				
+				$previous = $child;
 			}
 		}		
 	}
@@ -426,7 +433,7 @@ class Model_Page extends ORM_Versioned {
 	/**
 	* Generates a unique URI for the page based on the title.
 	*
-	* @return string The new peimary URI
+	* @return string The new primary URI
 	*/
 	public function generate_uri()
 	{
