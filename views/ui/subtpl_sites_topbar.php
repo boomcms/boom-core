@@ -130,7 +130,7 @@
 			{
 				 echo "not published</strong> ";
 			
-				if ($page->is_published()):
+				if ($page->has_published_version()):
 					echo "A <a href='#' id='sledge-topbar-status-change'>published version</a> exists for this page.";
 				endif;
 			}

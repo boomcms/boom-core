@@ -113,14 +113,6 @@ class Controller_Cms_Page extends Controller_Cms
 			//}
 			exit;
 		}
-
-		$page->template_rid = $template_rid;
-		$page->default_child_template_rid = $default_child_template_rid;
-		$page->prompt_for_child_template = $prompt_for_child_template;
-		$page->setParent( $parent );
-		$page->setTitle( $title );	
-		$page->visiblefrom_timestamp = $visibilefrom_timestamp;
-		$page->visiblveto_timestamp = $visibleto_timestamp;
 	}
 	
 	/**

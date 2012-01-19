@@ -286,9 +286,8 @@ class Model_Page extends ORM_Versioned {
 	* Checks that a page is published.
 	* @return boolean true if it's published, false if it isn't.
 	*/
-	public function is_published()
-	{
-		return !($this->published_vid === 0);		
+	public function is_published() {
+		return $this->published_vid == $this->version->id;
 	}
 	
 	/**
@@ -299,6 +298,16 @@ class Model_Page extends ORM_Versioned {
 	*/
 	public function hasRss() {
 		return false;
+	}
+	
+	/**
+	* Determine whether a published version exists for the page.
+	*
+	* @return bool
+	*/
+	public function has_published_version()
+	{
+		return !($this->published_vid == 0);
 	}
 	
 	/**
