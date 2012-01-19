@@ -12,7 +12,7 @@
 */
 abstract class Model_Version extends ORM {
 	
-	public function getAuditTime()
+	public function get_time()
 	{
 		
 		return $this->audit_time;

@@ -15,7 +15,7 @@ class Controller_Cms_Page extends Controller_Cms
 	* @var object
 	* @access private
 	*/
-	private $_page;
+	protected $_page;
 	
 	/**
 	* Load the current page.

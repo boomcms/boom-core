@@ -7,7 +7,7 @@
 * @copyright 2011, Hoop Associates
 *
 */
-class Model_Version_Page extends ORM {
+class Model_Version_Page extends Model_Version {
 	/**
 	* Properties to create relationships with Kohana's ORM
 	*/
@@ -37,10 +37,12 @@ class Model_Version_Page extends ORM {
 	* @return string The page description.
 	* @todo Retrieval of 'standfirst' text chunk.
 	*/
-	public function getDescription() {
-		$description = ($this->description)? $this->description : 'Page description';
-		
-		return $description;		
+	public function get_description() {
+		return $this->description;		
+	}
+	
+	public function get_keywords() {
+		return $this->keywords;		
 	}
 	
 	/**
