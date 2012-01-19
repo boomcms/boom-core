@@ -10,8 +10,8 @@
 					<tr>
 						<td>Children parent page</td>
 						<td>
-							<select name="pagetype_parent_rid" id="pagetype_parent_rid" style="width:14em">
-							<option value="$page->id">Default (this page)</option>
+							<select name="pagetype_parent_id" id="pagetype_parent_id" style="width:14em">
+							<option value="">Default (this page)</option>
 								<?
 									foreach( $page->mptt->fulltree() as $node ):
 										if( $node->page_id != $page->id ):
@@ -28,7 +28,7 @@
 					<tr>
 						<td>Default child template</td>
 						<td>
-							<select name="default_child_template_rid">
+							<select name="default_child_template_id">
 								<option value="$page->template_id">Same as this page</option><?
 									foreach ($templates as $tpl):
 										if ($tpl->id == $page->template_id):
@@ -64,8 +64,8 @@
 						<td>
 							<select name="children_visible_in_leftnav">
 								<option <?if ($page->children_visible_in_leftnav != 't' and $page->children_visible_in_leftnav != 'f') {echo "selected=\"selected\" ";} ?> value="">Inherit from my parent</option>
-								<option <?if ($page->children_visible_in_leftnav == true) {echo "selected=\"selected\" ";}?> value="true">Yes</option>
-								<option <?if ($page->children_visible_in_leftnav == false) {echo "selected=\"selected\" ";}?> value="false">No</option>
+								<option <?if ($page->children_visible_in_leftnav == true) {echo "selected=\"selected\" ";}?> value="1">Yes</option>
+								<option <?if ($page->children_visible_in_leftnav == false) {echo "selected=\"selected\" ";}?> value="0">No</option>
 							</select>
 						</td>
 					</tr>
@@ -123,7 +123,7 @@
 					<tr>
 						<td>Default grandchild template</td>
 						<td>
-							<select name="default_child_default_child_template_rid">
+							<select name="default_child_default_child_template_id">
 								<option value="">Inherit from childs parent</option>
 								<?
 									foreach ($templates as $tpl):

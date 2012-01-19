@@ -13,13 +13,13 @@ class Model_Version_Page extends Model_Version {
 	*/
 	protected $_table_name = 'page_v';
 	protected $_belongs_to = array( 
-		'person'			=> array( 'model' => 'person', 'foreign_key' => 'id' ),
 		'template'			=> array( 'model' => 'template', 'foreign_key' => 'template_id' ),
-		'approval_process'	=> array( 'model' => 'approval_process', 'foreign_key' => 'id' )
+		'approval_process'	=> array( 'model' => 'approval_process', 'foreign_key' => 'id' ),
+		'person'	=> array( 'model' => 'person', 'foreign_key' => 'audit_person' ),
 	);
 	
 	protected $_has_one = array(
-		'page'				=> array( 'model' => 'page', 'foreign_key' => 'id' ),
+		'page'		=> array( 'model' => 'page', 'foreign_key' => 'id' ),
 	);
 	
 	/**

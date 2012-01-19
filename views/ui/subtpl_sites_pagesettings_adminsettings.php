@@ -10,7 +10,7 @@
 			<?//if ($p['attributes']['Can edit page type']){?>
 				<tr>
 					<td>Page type</td>
-					<td><input id="pagetype_description" type="text" name="pagetype_description" class="sledge-input" value="" /></td>
+					<td><input id="pagetype_description" type="text" name="pagetype_description" class="sledge-input" value="<?= $page->pagetype_description ?>" /></td>
 				</tr>
 			<?//}?>
 			<?/*if ($p['attributes']['Can edit page cache duration']){?>

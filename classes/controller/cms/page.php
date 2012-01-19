@@ -110,10 +110,91 @@ class Controller_Cms_Page extends Controller_Cms
 					$page->save();
 				}
 			//}
+			echo URL::base( Request::current() ) . $page->url();
 			exit;
 		}
 		
+		// Otherwise we're change page settings.
 		// Do editing page stuff.
+		if (isset( $data->title ))
+			$page->title = $data->title;
+			
+		// SEO tab.
+		if (isset( $data->description ))
+			$page->description = $data->description;
+			
+		if (isset( $data->hidden_from_search_results ))
+			$page->hidden_from_search_results = (bool) $data->hidden_from_search_results;
+			
+		if (isset( $data->indexed ))
+			$page->indexed = (bool) $data->indexed;
+			
+		if (isset( $data->keywords ))
+			$page->keywords = $data->keywords;
+			
+		// Publishing tab.
+		//if (isset( $data->parent_id ))
+		// TODO: reparent page.
+		
+		if (isset( $data->template ))
+			$page->template_id = (int) preg_replace( "/[^0-9]+/", "", $data->template );
+			
+		//if (isset( $data->uri ))
+		// TODO change page uri.
+		
+		if (isset( $data->visible_from ))
+			$page->visible_from = strtotime( $data->visible_from );
+			
+		if (isset( $data->visible_to ))
+			$page->visible_to = ($data->visible_to == "")? null : strtotime( $data->visible_to );
+			
+		if (isset( $data->visible_in_leftnav ))
+			$page->visible_in_leftnav = ($data->visible_in_leftnav == "")? null : (bool) $data->visible_in_leftnav;
+			
+		if (isset( $data->visible_in_leftnav_cms ))
+			$page->visible_in_leftnav_cms = ($data->visible_in_leftnav_cms == "")? null : (bool) $data->visible_in_leftnav_cms;
+			
+		// Child page settings tab.
+		if (isset( $data->children_visible_in_leftnav ))
+			$page->children_visible_in_leftnav = ($data->children_visible_in_leftnav = "")? null : (bool) $data->children_visible_in_leftnav;
+			
+		if (isset( $data->children_visible_in_leftnav_cms ))
+			$page->children_visible_in_leftnav_cms = ($data->children_visible_in_leftnav_cms = "")? null : (bool) $data->children_visible_in_leftnav_cms;
+			
+		if (isset( $data->default_child_default_child_template_id ))
+			$page->default_child_default_child_template_id = $data->default_child_default_child_template_id;
+			
+		if (isset( $data->default_child_template_id ))
+			$page->default_child_template_id = $page->default_child_template_id;
+			
+		if (isset( $data->default_child_uri_prefix ))
+			$page->default_child_uri_prefix = $data->default_child_uri_prefix;
+			
+		if (isset( $data->pagetype_parent_id ))
+			$page->pagetype_parent_id = $data->pagetype_parent_id;
+			
+		// Admin settings tab.
+		if (isset( $data->internal_name ))
+			$page->internal_name = $data->internal_name;
+			
+		if (isset( $data->pagetype_description ))
+			$page->pagetype_description = $data->pagetype_description;
+			
+		if (isset( $data->ssl_only ))
+			$page->ssl_only = ($data->ssl_only = "")? null : (bool) $data->ssl_only;
+		
+		// Remember the old version ID.
+		$old_vid = $page->version->id;
+		
+		// Save the new settings.
+		$page->save();	
+		
+		// Copy any slots to the new version.
+		$query = DB::query( Database::INSERT, "insert into chunk_page (page_vid, chunk_id) select chunk_id, :new_vid from chunk_page where page_vid = :old_vid" );
+		$new_vid = $page->active_vid;
+		$query->bind( ':new_vid', $new_vid );
+		$query->bind( ':old_vid', $old_vid );
+		$query->execute();
 		
 		// Are we publishing this version?
 		if (isset( $data->publish ))
@@ -124,8 +205,10 @@ class Controller_Cms_Page extends Controller_Cms
 				$page->published_vid = $page->active_vid;
 				$page->save();
 			//}
-			exit;
 		}
+		
+		echo URL::base( Request::current() ) . $page->url();
+		exit;
 	}
 	
 	/**

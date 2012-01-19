@@ -13,7 +13,7 @@
 					<tr>
 						<td>Visible from</td>
 						<td>
-							<input id="page-visible-from" name="visible_from_timestamp" class="sledge-input sledge-datepicker" value="<?=date("d F Y", $page->visible_from);?>" />
+							<input id="page-visible-from" name="visible_from" class="sledge-input sledge-datepicker" value="<?=date("d F Y", $page->visible_from);?>" />
 							<select>
 								<option>12:00</option>
 							</select>
@@ -28,9 +28,9 @@
 						</td>
 						<td>	
 							<input	id="page-visible-to" 
-								name="visible_to_timestamp" 
+								name="visible_to" 
 								class="sledge-input sledge-datepicker" 
-								value="<?=($page->visible_to) ?	date('Y-m-d H:i:s',$page->visibleto_timestamp) : 'forever'; ?>"
+								value="<?=($page->visible_to) ?	date('Y-m-d H:i:s',$page->visible_to) : 'forever'; ?>"
 								<?=(!$page->visible_to) ? ' disabled="disabled"' : ''; ?>
 							/>
 							<select id="page-visible-to-time" disabled="diabled">
@@ -43,7 +43,7 @@
 					<tr>
 						<td>Parent page</td>
 						<td>
-							<select style="width: 25em" name="parent_rid">
+							<select style="width: 25em" name="parent_id">
 							<option value="0">No parent</option>
 							<?
 								foreach( $page->mptt->fulltree() as $node ):

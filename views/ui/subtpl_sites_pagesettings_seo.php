@@ -43,8 +43,8 @@
 						<td>Allow page indexing</td>
 						<td>
 							<select name="indexed">
-								<option <?if ($page->indexed) echo "selected='selected' value='1'>Yes</option>"; ?>
-								<option <?if (!$page->indexed) echo "selected='selected' value='0'>No</option>"; ?>
+								<option <?if ($page->indexed) echo "selected='selected' "; echo "value='1'>Yes</option>"; ?>
+								<option <?if (!$page->indexed) echo "selected='selected' "; echo "value='0'>No</option>"; ?>
 							</select>
 						</td>
 					</tr>
