@@ -116,8 +116,8 @@ class Controller_Cms_Page extends Controller_Cms
 		
 		// Otherwise we're change page settings.
 		// Do editing page stuff.
-		if (isset( $data->title ))
-			$page->title = $data->title;
+		//if (isset( $data->title ))
+		//	$page->title = $data->title;
 			
 		// SEO tab.
 		if (isset( $data->description ))
