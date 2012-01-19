@@ -3,7 +3,8 @@
 <?
 	$msg = '';
 
-	if ($count = $page->mptt->count() > 0):
+	$count = $page->mptt->count();
+	if ($count > 0):
 		$titlelist = '';
 		
 		foreach ($page->mptt->descendants() as $pi):
