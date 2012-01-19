@@ -56,7 +56,6 @@ class Controller_Cms_Page extends Controller_Cms
 			$page = ORM::factory( 'page' );
 			$page->page_status = Model_Page::STATUS_INVISIBLE;	
 			$page->title = 'Untitled';
-			$page->version_status = Model_Page::STATUS_DRAFT;
 			$page->template_id = $template;
 			$page->save();
 			
