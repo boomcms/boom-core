@@ -163,6 +163,24 @@ class Controller_Cms_Account extends Kohana_Controller
 		}
 	}
 	
+	/**
+	* Show the user's profile.
+	* This is found by clicking the 'profile' link next to 'log out' in the cms top bar.
+	* This doesn't really 'fit' in this class since it requires a user to be logged in and needs all the cms controller stuff.
+	* But I'm not sure where else to put it for now - it doesn't fit anywhere else either.
+	* At least it fits in here 'logically'
+	*/
+	public function action_profile()
+	{
+		$v = View::factory( 'ui/subtpl_account_details' );
+		$v->person = Auth::instance()->get_user();
+		$v->actual_person = Auth::instance()->get_user();
+		$v->people = ORM::factory( 'person' )->find_all();
+		
+		echo $v;
+		exit;
+	}
+	
 	public function after()
 	{
 		if ($this->request->is_ajax())

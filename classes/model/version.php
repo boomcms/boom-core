@@ -15,7 +15,7 @@ abstract class Model_Version extends ORM {
 	public function get_time()
 	{
 		
-		return $this->audit_time;
+		return date( "l j F Y H:i", $this->audit_time );
 		
 	}
 	

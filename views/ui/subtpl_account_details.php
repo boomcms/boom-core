@@ -94,16 +94,3 @@
 		</table>
 	</form>
 </div>
-<div style="margin-top:10px; position: absolute;">
-	<a id="save-details" href="#" class="button left" style="margin-left: 20px;">
-		<span class="left">&nbsp;</span>
-		<span class="center">Save</span>
-		<span class="right">&nbsp;</span>
-	</a>
-	<a id="cancel-save-details" href="#" class="button left" style="margin-left: 20px;">
-		<span class="left">&nbsp;</span>
-		<span class="center">Cancel</span>
-		<span class="right">&nbsp;</span>
-	</a>
-	<img style="display:none;" class="cmsloader" id="cmsloader_update_user_details" src="/sledge/img/ajax-loader.gif" alt="wait" />
-</div>

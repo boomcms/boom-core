@@ -47,7 +47,7 @@
 								<input type="checkbox" name="massaction" id="ma<?=$person->id?>" />
 							</div>
 							<div class="col2 date">
-								<?= $person->getAuditTime() ?>
+								<?= $person->get_time() ?>
 							</div>
 							<div class="col3 username">
 								<a title="<?= $person->getName() ?>" id="person_<?=$person->id;?>" href="/cms/people/view/<?=$person->id?>" class="user">
