@@ -110,7 +110,8 @@ abstract class Page
 		if (!$person->logged_in())
 		{
 			$query->where( 'version.visible_in_leftnav', '=', true )
-				  ->where( 'page.page_status', '=', Model_Page::STATUS_VISIBLE );	
+				  ->where( 'page.published_vid', '!=', 0 )
+				  ->where( 'page.visible', '=', true );	
 		}
 		else
 		{	

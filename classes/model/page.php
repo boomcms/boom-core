@@ -29,18 +29,6 @@ class Model_Page extends ORM_Versioned {
 	protected $_load_with = array( 'version' );
 	
 	/**
-	* Page invisible value (stored in page_status column)
-	* @var integer
-	*/
-	const STATUS_INVISIBLE = 1;
-	
-	/**
-	* Page visible value (stored in page_status column)
-	* @var integer
-	*/
-	const STATUS_VISIBLE = 2;
-	
-	/**
 	* Page version status value for a draft version
 	* @var integer
 	*/
@@ -209,24 +197,6 @@ class Model_Page extends ORM_Versioned {
 	}
 	
 	/**
-	* Returns a human readable page status.
-	*
-	* @return string Page status - currently visible or invisible.
-	*/
-	public function getPageStatus() {
-		switch( $this->page_status ) {
-			case self::STATUS_VISIBLE:
-				return 'Visible';
-				break;
-			case self::STATUS_INVISIBLE:
-				return 'Invisible';
-				break;
-			default:
-				throw new Kohana_Exception( 'Page has unknown page status value: ' . $this->page_status );
-		}		
-	}
-	
-	/**
 	* Return a human readable representation of the version status.
 	*
 	* @return string Version status
@@ -269,17 +239,6 @@ class Model_Page extends ORM_Versioned {
 			default:
 				throw new Sledge_Exception( "Page version has unknown child ordering policy: " . $this->child_ordering_policy );
 		}	
-	}
-	
-	/**
-	* Checks that the page is visible.
-	* @return boolean true if it's visible, false if it isn't
-	*/
-	public function isVisible() {
-		if ($this->page_status == self::STATUS_VISIBLE && $this->visiblefrom_timestamp <= time() && ($this->visibleto_timestamp >= time() || $this->visibleto_timestamp === null))
-			return true;
-		else
-			return false;		
 	}
 	
 	/**
