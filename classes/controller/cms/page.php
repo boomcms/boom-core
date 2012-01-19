@@ -190,8 +190,8 @@ class Controller_Cms_Page extends Controller_Cms
 		$page->save();	
 		
 		// Copy any slots to the new version.
-		$query = DB::query( Database::INSERT, "insert into chunk_page (page_vid, chunk_id) select chunk_id, :new_vid from chunk_page where page_vid = :old_vid" );
-		$new_vid = $page->active_vid;
+		$query = DB::query( Database::INSERT, "insert into chunk_page (chunk_id, page_vid) select chunk_id, :new_vid from chunk_page where page_vid = :old_vid" );
+		$new_vid = $page->version->id;
 		$query->bind( ':new_vid', $new_vid );
 		$query->bind( ':old_vid', $old_vid );
 		$query->execute();
