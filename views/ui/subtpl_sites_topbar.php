@@ -120,14 +120,20 @@
 		</div>
 	</div>
 
-	<div id="sledge-topbar-revisions" class="ui-helper-clearfix">
-		This page version is <strong><?=$page->getVersionStatus()?></strong>. 
+	<div id="sledge-topbar-revisions" class="ui-helper-clearfix">This page version is <strong>
 		<?
+			if ($page->published_vid === $page->version->id)
+			{
+				echo "published</strong>";
+			}
+			else
+			{
+				 echo "not published</strong> ";
 			
-			if ($page->version_status == Model_Page::STATUS_DRAFT && $page->has_published_version()):
-				echo "A <a href='#' id='sledge-topbar-status-change'>published version</a> exists for this page.";
-			endif;
-			
+				if ($page->is_published()):
+					echo "A <a href='#' id='sledge-topbar-status-change'>published version</a> exists for this page.";
+				endif;
+			}
 		?>
 	</div>
 </div>

@@ -88,11 +88,32 @@ class Controller_Cms_Page extends Controller_Cms
 	
 	public function action_save()
 	{
+		$page = $this->_page;
+		
 		if (!$this->person->can( 'edit', $this->_page ))
 			Request::factory( 'error/403' )->execute();
 			
-		$page = $this->_page;
-		
+		$data = json_decode( Arr::get( $_POST, 'data' ));
+
+		// If a version ID and publish is sent then all we're doing is making that version published.
+		if (isset( $data->vid ) && isset( $data->publish ))
+		{
+			// TODO
+			//if ($person->can( 'publish', $page ))
+			//{
+				$vid = (int) preg_replace( "/[^0-9]+/", "", $data->vid );
+				$version = ORM::factory( 'version_page', $vid );
+				
+				// Check that the version belongs to the current page.
+				if ($version->rid === $page->id)
+				{
+					$page->published_vid = $version->id;
+					$page->save();
+				}
+			//}
+			exit;
+		}
+
 		$page->template_rid = $template_rid;
 		$page->default_child_template_rid = $default_child_template_rid;
 		$page->prompt_for_child_template = $prompt_for_child_template;
@@ -154,26 +175,6 @@ class Controller_Cms_Page extends Controller_Cms
 		}
 		
 		exit;
-	}
-	
-	/**
-	* Undo the last page edit
-	*/
-	public function action_undo()
-	{
-		if (!$this->person->can( 'edit', $this->_page ))
-			Request::factory( 'error/403' )->execute();		
-			
-		$version = DB::select( 'page_v.id' )
-						->where( 'rid', '=', $this->_page->id )
-						->order_by( 'id', 'desc' )
-						->limit( 1 )
-						->offset( 1 )
-						->execute();
-		
-		$version_id = $version->get( 'id' );
-		$this->_page->active_vid = $version_id;
-		$this->_page->save();
 	}
 	
 	public function action_revisions()

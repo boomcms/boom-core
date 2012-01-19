@@ -95,12 +95,6 @@ class Model_Page extends ORM_Versioned {
 	const CHILD_ORDER_DESC = 16;	
 	
 	/**
-	* @access private
-	* @var string
-	*/
-	private $_absolute_uri;
-	
-	/**
 	* Holds the calculated primary URI
 	*
 	* @access private
@@ -292,11 +286,9 @@ class Model_Page extends ORM_Versioned {
 	* Checks that a page is published.
 	* @return boolean true if it's published, false if it isn't.
 	*/
-	public function is_published() {
-		if ($this->version_status == self::STATUS_PUBLISHED)
-			return true;
-		else
-			return false;		
+	public function is_published()
+	{
+		return !($this->published_vid === 0);		
 	}
 	
 	/**
@@ -307,16 +299,6 @@ class Model_Page extends ORM_Versioned {
 	*/
 	public function hasRss() {
 		return false;
-	}
-	
-	/**
-	* Determine whether a published version exists for the page.
-	*
-	* @return bool
-	*/
-	public function has_published_version()
-	{
-		return $this->revisions->where( 'version_status', '=', self::STATUS_PUBLISHED )->find()->loaded();
 	}
 	
 	/**
