@@ -47,13 +47,13 @@
 						<td>Child ordering policy</td>
 						<td>
 							<select name="child_ordering_policy">
-								<option value='<?= Model_Page::CHILD_ORDER_MANUAL ?>'>Manual</option>
-								<option value='<?= Model_Page::CHILD_ORDER_DATE ?>'>Date</option>
-								<option value='<?= Model_Page::CHILD_ORDER_ALPHABETIC ?>'>Alphabetic</option>
+								<option value='<?= Model_Page::CHILD_ORDER_MANUAL ?>'<? if ($page->child_ordering_policy & Model_Page::CHILD_ORDER_MANUAL) echo " selected='selected'"; ?>>Manual</option>
+								<option value='<?= Model_Page::CHILD_ORDER_DATE ?>'<? if ($page->child_ordering_policy & Model_Page::CHILD_ORDER_DATE) echo " selected='selected'"; ?>>Date</option>
+								<option value='<?= Model_Page::CHILD_ORDER_ALPHABETIC ?>'<? if ($page->child_ordering_policy & Model_Page::CHILD_ORDER_ALPHABETIC) echo " selected='selected'"; ?>'>Alphabetic</option>
 							</select>
 							<select name="child_ordering_direction">
-								<option value='asc'>Asc</option>
-								<option value='desc'>Desc</option>
+								<option value='asc'<? if ($page->child_ordering_policy & Model_Page::CHILD_ORDER_ASC) echo " selected='selected'"; ?>>Asc</option>
+								<option value='desc'<? if ($page->child_ordering_policy & Model_Page::CHILD_ORDER_DESC) echo " selected='selected'"; ?>>Desc</option>
 							</select>
 						</td>
 					</tr>

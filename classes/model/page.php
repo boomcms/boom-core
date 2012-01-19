@@ -427,7 +427,10 @@ class Model_Page extends ORM_Versioned {
 				
 				$previous = $child;
 			}
-		}		
+		}	
+		
+		$direction = ($direction == 'asc')? self::CHILD_ORDER_ASC : self::CHILD_ORDER_DESC;	
+		$this->child_ordering_policy = $direction | $order;
 	}
 	
 	/**
