@@ -70,15 +70,14 @@ class Controller_Setup extends Kohana_Controller
 		catch (Database_Exception $e)
 		{
 			// Is it a database not existing error?
-			if (preg_match( '/Unable to connect to (.*) database &quot;(.*)&quot; does not exist/', $e->getMessage(), $matches ))
+			if (preg_match( "/Unknown database '(.*)'/", $e->getMessage(), $matches ))
 			{
-				$dbname = $matches[2];
+				$dbname = $matches[1];
 				
-				exec( "createdb -Uhoopster " . $dbname );
-				exec( "psql -Uhoopster " . $dbname . " <  " . MODPATH . "sledge/sql/sledge_full.sql" );
+				exec( "mysqladmin -u root create " . $dbname );
+				exec( "mysql -u root " . $dbname . " <  " . MODPATH . "sledge/sql/sledge_full.mysql.sql" );
 
-				Request::factory( '/' )->execute();
-				exit();
+				$this->request->redirect( '/' );
 			}
 			
 			// It's some other error which we don't worry about here.
