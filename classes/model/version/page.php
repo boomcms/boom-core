@@ -16,6 +16,7 @@ class Model_Version_Page extends Model_Version {
 		'template'			=> array( 'model' => 'template', 'foreign_key' => 'template_id' ),
 		'approval_process'	=> array( 'model' => 'approval_process', 'foreign_key' => 'id' ),
 		'person'	=> array( 'model' => 'person', 'foreign_key' => 'audit_person' ),
+		'image'	=>	array( 'model'	=> 'asset', 'foreign_key' => 'feature_image' ),
 	);
 	
 	protected $_has_one = array(
@@ -43,6 +44,23 @@ class Model_Version_Page extends Model_Version {
 	
 	public function get_keywords() {
 		return $this->keywords;		
+	}
+	
+	/**
+	* Does the page have a feature image set?
+	*
+	* @return bool
+	*/
+	public function has_image()
+	{
+		if ($this->feature_image == 0 || !$this->image->loaded())
+		{
+			return false;
+		}
+		else
+		{
+			return true;
+		}
 	}
 	
 	/**
