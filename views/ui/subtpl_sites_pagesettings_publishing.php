@@ -9,6 +9,15 @@
 		
 		<div id="sledge-pagesettings-basic">
 			<table width="100%">
+				<tr>
+					<td>Visible</td>
+					<td>
+						<select id="page-visible" name="visible" class="sledge-input sledge_select">
+							<option value='1' <? if ($page->visible) echo "selected='selected'"; ?>>Yes</option>
+							<option value='0' <? if (!$page->visible) echo "selected='selected'"; ?>>No</option>
+						</select>
+					</td>
+				</tr>
 				<?//if ($p['current_version']['Can edit page visible from']){?>
 					<tr>
 						<td>Visible from</td>

@@ -54,7 +54,7 @@ class Controller_Cms_Page extends Controller_Cms
 	
 			// Create a new page object.
 			$page = ORM::factory( 'page' );
-			$page->page_status = Model_Page::STATUS_INVISIBLE;	
+			$page->visible = false;	
 			$page->title = 'Untitled';
 			$page->template_id = $template;
 			$page->save();
@@ -135,6 +135,9 @@ class Controller_Cms_Page extends Controller_Cms
 		// Publishing tab.
 		//if (isset( $data->parent_id ))
 		// TODO: reparent page.
+		
+		if (isset( $data->visible ))
+			$page->visible = (bool) $data->visible;
 		
 		if (isset( $data->template ))
 			$page->template_id = (int) preg_replace( "/[^0-9]+/", "", $data->template );
