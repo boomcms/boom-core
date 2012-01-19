@@ -112,6 +112,20 @@ class Controller_Cms_Page extends Controller_Cms
 			//}
 			exit;
 		}
+		
+		// Do editing page stuff.
+		
+		// Are we publishing this version?
+		if (isset( $data->publish ))
+		{
+			// TODO
+			//if ($person->can( 'publish', $page ))
+			//{
+				$page->published_vid = $page->active_vid;
+				$page->save();
+			//}
+			exit;
+		}
 	}
 	
 	/**
