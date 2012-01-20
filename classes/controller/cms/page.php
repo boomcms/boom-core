@@ -93,34 +93,36 @@ class Controller_Cms_Page extends Controller_Cms
 	public function action_save()
 	{
 		$page = $this->_page;
-		$parent = $page->mptt->parent()->page;
+		if (!$page->mptt->is_root())
+		{
+			$parent = $page->mptt->parent()->page;
+		}
 		
-		if (!$this->person->can( 'edit', $this->_page ))
+		if (!$this->person->can( 'edit', $page ))
 			Request::factory( 'error/403' )->execute();
 			
 		$data = json_decode( Arr::get( $_POST, 'data' ));
-
-		// If a version ID and publish is sent then all we're doing is making that version published.
-		if (isset( $data->vid ) && isset( $data->publish ))
-		{
-			// TODO
-			//if ($person->can( 'publish', $page ))
-			//{
-				$vid = (int) preg_replace( "/[^0-9]+/", "", $data->vid );
-				$version = ORM::factory( 'version_page', $vid );
-				
-				// Check that the version belongs to the current page.
-				if ($version->rid === $page->id)
-				{
-					$page->published_vid = $version->id;
-					$page->save();
-				}
-			//}
-			echo URL::base( Request::current() ) . $page->url();
-			exit;
-		}
 		
-		// Otherwise we're change page settings.
+		// Page save is sent a version ID.
+		// This allows viewing an old version and then editing / publishing that version.
+		// Most of the time the vid will be page's current version ID - i.e. the user is viewing page as standard.
+		// So check the vid, and load an older version if necessary.
+		if ($page->active_vid != $data->vid)
+		{
+			$version = ORM::factory( 'version_page', $data->vid );
+			
+			// Check that the version belongs to the current page.
+			if ($version->rid === $page->id)
+			{
+				$page->version = ORM::factory( 'version_page', $data->vid );
+			}
+			else
+			{
+				echo $page->url();
+				exit;
+			}
+		}
+				
 		// Do editing page stuff.
 		//if (isset( $data->title ))
 		//	$page->title = $data->title;
@@ -217,7 +219,7 @@ class Controller_Cms_Page extends Controller_Cms
 			// TODO
 			//if ($person->can( 'publish', $page ))
 			//{
-				$page->published_vid = $page->active_vid;
+				$page->published_vid = $page->version->id;
 				$page->save();
 			//}
 		}

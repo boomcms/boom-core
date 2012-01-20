@@ -295,7 +295,10 @@ class Model_Page extends ORM_Versioned {
 			// Get the base URL of the current request.
 			$this->_url = URL::base( Request::current() );
 		
-			$this->_url .= $this->get_primary_uri();
+			if ($this->_url != '')
+			{
+				$this->_url .= $this->get_primary_uri();
+			}
 		}
 		
 		return $this->_url;		
