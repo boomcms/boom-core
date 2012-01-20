@@ -34,7 +34,7 @@ class Controller_Cms_Account extends Kohana_Controller
 		if (Auth::instance()->logged_in())
 		{
 			//You're already logged in dummy, just go away.
-			$this->request->redirect( $uri );
+			$this->request->redirect( $redirect_after );
 		}
 		
 		// Gather form data.
