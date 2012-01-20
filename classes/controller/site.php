@@ -34,7 +34,7 @@ class Controller_Site extends Sledge_Controller
 
 		if ($uri != '')
 		{
-			$uri = substr( $Request::detect_uri(), 1 );
+			$uri = substr( $uri, 1 );
 		}
 		
 		$page_uri = ORM::factory( 'page_uri' )->where( 'uri', '=', $uri )->find();
