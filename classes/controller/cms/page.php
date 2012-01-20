@@ -31,6 +31,39 @@ class Controller_Cms_Page extends Controller_Cms
 		$page_id = $this->request->param( 'id' );
 		$page_id = (int) preg_replace( "/[^0-9]+/", "", $page_id );
 		$this->_page = ORM::factory( 'page', $page_id );
+		
+		// Most of these methods can be  sent a version ID.
+		// This allows viewing an old version and then editing / publishing that version.
+		// Most of the time the vid will be page's current version ID - i.e. the user is viewing page as standard.
+		// So check the vid, and load an older version if necessary.
+		$data = json_decode( Arr::get( $_POST, 'data' ));
+		if (isset( $data->vid ))
+		{
+			$vid = $data->vid;
+		}
+		else if ( Arr::get( $_GET, 'vid' ))
+		{
+			$vid = Arr::get( $_GET, 'vid' );
+		}
+		
+		if (isset( $vid ))
+		{
+			if ($this->_page->active_vid != $vid)
+			{
+				$version = ORM::factory( 'version_page', $vid );
+			
+				// Check that the version belongs to the current page.
+				if ($version->rid === $this->_page->id)
+				{
+					$this->_page->version = $version;
+				}
+				else
+				{
+					echo $this->_page->url();
+					exit;
+				}
+			}
+		}
 	}
 	
 	public function action_add()
@@ -102,26 +135,6 @@ class Controller_Cms_Page extends Controller_Cms
 			Request::factory( 'error/403' )->execute();
 			
 		$data = json_decode( Arr::get( $_POST, 'data' ));
-		
-		// Page save is sent a version ID.
-		// This allows viewing an old version and then editing / publishing that version.
-		// Most of the time the vid will be page's current version ID - i.e. the user is viewing page as standard.
-		// So check the vid, and load an older version if necessary.
-		if ($page->active_vid != $data->vid)
-		{
-			$version = ORM::factory( 'version_page', $data->vid );
-			
-			// Check that the version belongs to the current page.
-			if ($version->rid === $page->id)
-			{
-				$page->version = ORM::factory( 'version_page', $data->vid );
-			}
-			else
-			{
-				echo $page->url();
-				exit;
-			}
-		}
 				
 		// Do editing page stuff.
 		//if (isset( $data->title ))

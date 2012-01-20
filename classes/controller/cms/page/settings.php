@@ -9,7 +9,7 @@
 */
 class Controller_Cms_Page_Settings extends Controller_Cms_Page
 {
-	
+
 	public function action_publishing()
 	{
 		$this->template = View::factory( 'ui/subtpl_sites_pagesettings_publishing' );
