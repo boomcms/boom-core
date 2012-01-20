@@ -120,7 +120,8 @@
 		</div>
 	</div>
 
-	<div id="sledge-topbar-revisions" class="ui-helper-clearfix">This page version is <strong>
+	<div id="sledge-topbar-revisions" class="ui-helper-clearfix">This page is 
+		<strong><?= $page->is_visible()? 'visible' : 'invisible'; ?></strong> and this version is <strong>
 		<?
 			if ($page->published_vid === $page->version->id)
 			{
@@ -131,7 +132,7 @@
 				 echo "not published</strong> ";
 			
 				if ($page->has_published_version()):
-					echo "A <a href='#' id='sledge-topbar-status-change'>published version</a> exists for this page.";
+					echo "but a <a href='#' id='sledge-topbar-status-change'>published version</a> exists.";
 				endif;
 			}
 		?>
