@@ -110,8 +110,15 @@ abstract class Page
 		{
 			$query->join( array( 'page_v', 'v'), 'inner' )
 				  ->on( 'page.published_vid', '=', 'v.id' )
-				  ->where( 'version.visible_in_leftnav', '=', true )
-				  ->where( 'page.published_vid', '!=', 0 )
+				  ->where( 'v.visible_from', '<=', time() )
+				  ->and_where_open()
+				  ->or_where_open()
+				  ->where( 'v.visible_to', '>=', time() )
+				  ->or_where( 'v.visible_to', '=', 0 )
+				  ->or_where_close()
+				  ->and_where_close()
+				  ->where( 'v.visible_in_leftnav', '=', true )
+				  ->where( 'page.published_vid', '!=', null )
 				  ->where( 'page.visible', '=', true );	
 		}
 		else
@@ -123,7 +130,7 @@ abstract class Page
 		
 		$query->order_by( 'page_mptt.lft', 'asc' );
 		$pages = $query->find_all();
-		
+			
 		return $pages;
 	}
 }

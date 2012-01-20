@@ -221,7 +221,7 @@ class Controller_Cms_Page extends Controller_Cms
 			//}
 		}
 		
-		echo URL::base( Request::current() ) . $page->url();
+		echo $page->url();
 		exit;
 	}
 	

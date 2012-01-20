@@ -241,6 +241,11 @@ class Model_Page extends ORM_Versioned {
 		}	
 	}
 	
+	public function is_visible()
+	{
+		return $this->visible;
+	}
+	
 	/**
 	* Checks that a page is published.
 	* @return boolean true if it's published, false if it isn't.
