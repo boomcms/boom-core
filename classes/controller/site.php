@@ -30,16 +30,31 @@ class Controller_Site extends Sledge_Controller
 
 		// All pages and templates are hard coded for the CMS so this is all site specific.
 		// Find the requested page.
-		$uri = ($this->request->initial()->uri() == '/')? '' : $this->request->initial()->uri();
+		$uri = Request::detect_uri();
+
+		if ($uri != '')
+		{
+			$uri = substr( $Request::detect_uri(), 1 );
+		}
+		
 		$page_uri = ORM::factory( 'page_uri' )->where( 'uri', '=', $uri )->find();
 		
 		// If the page wasn't found by URI load the 404 page.
 		if (!$page_uri->loaded() && $uri != 'error/404')
-			$page_uri = ORM::factory( 'page_uri' )->where( 'uri', '=', 'error/404' )->find();
+			throw new HTTP_Exception_404;
 		
 		$page = $page_uri->page;
 		
 		$page_type = ($this->person->can( 'edit', $page ))? 'cms' : 'site';
+		
+		// If they can't edit the page check that it's visible.
+		if ($page_type == 'site')
+		{
+			if (!$page->is_visible() || !$page->is_published())
+			{
+				throw new HTTP_Exception_404;
+			}
+		}
 		
 		if (Arr::get( $_GET, 'version' ) && $this->person->can( 'edit', $page ))
 		{
