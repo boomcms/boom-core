@@ -445,7 +445,7 @@ class Model_Page extends ORM_Versioned {
 		if ($parent->default_child_uri_prefix)
 			$prefix = $parent->default_child_uri_prefix . '/';
 		else
-			$prefix = $parent->getPrimaryUri() . '/';
+			$prefix = $parent->get_primary_uri() . '/';
 
 		$append = 0;
 		$start_uri = $prefix . URL::title( strtolower( $this->title ) );
