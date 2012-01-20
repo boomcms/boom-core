@@ -250,16 +250,6 @@ class Model_Page extends ORM_Versioned {
 	}
 	
 	/**
-	* Determine whether there is an RSS feed for the page.
-	*
-	* @return boolean true is there is, false if there isn't
-	* @todo Work out how we're actually going to do this in Sledge 3.
-	*/
-	public function hasRss() {
-		return false;
-	}
-	
-	/**
 	* Determine whether a published version exists for the page.
 	*
 	* @return bool
@@ -298,9 +288,9 @@ class Model_Page extends ORM_Versioned {
 		if ($this->_url === null)
 		{
 			// Get the base URL of the current request.
-			$this->_url = URL::base();
+			$this->_url = URL::base( Request::current() );
 		
-			$this->_url .= $this->getPrimaryUri();
+			$this->_url .= $this->get_primary_uri();
 		}
 		
 		return $this->_url;		
@@ -312,7 +302,7 @@ class Model_Page extends ORM_Versioned {
 	* @return string The RELATIVE primary URI of the page.
 	*
 	*/
-	public function getPrimaryUri() {
+	public function get_primary_uri() {
 		if ($this->_primary_uri === null)
 		{
 			$uri = DB::select( 'uri' )

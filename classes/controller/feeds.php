@@ -1,7 +1,7 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
 /**
-* Controller for displaying RSS feeds.
+* Controller for displaying feeds of any kind, but only RSS is supported at the moment.
 * This controller doesn't extend any of the Sledge base controllers because it doesn't need any of their templating code.
 * It is it's own little island in the Sledge, refusing to mix with the other controllers.
 *
@@ -19,45 +19,56 @@ class Controller_Feeds extends Kohana_Controller
 	private $_page;
 	
 	/**
+	* The current template.
+	* @access private
+	* @var View
+	*/
+	private $_template;
+	
+	/**
 	* Method called before the main controller method (the clue's in the name).
 	* Handles finding the page which is being RSS'd and checking that RSS feeds are enabled.
 	*/
 	public function before()
 	{
-		$url = $this->request->param( 'url' );
+		$uri = $this->request->param( 'uri' );
 		
 		// Find the page.
 		$page_uri = ORM::factory( 'page_uri' )->where( 'uri', '=', $uri )->find();
 		
 		if ($page_uri->loaded())
 		{
-			$this->page = ORM::factory( 'page' )->where( 'page_id', '=', $page_uri->page_id )->find();
-			
-			if (!$this->page->loaded())
+			if ($page_uri->page->loaded() && $page_uri->page->enable_rss)
+			{
+				$this->_page = $page_uri->page;
+			}
+			else
 			{
 				$this->action_404();
 			}	
-			
-			// Check that the page allows RSS feeds.
-			// TODO	
 		}
 		else
 		{
 			$this->action_404();
-		}	
+		}
 	}
 	
 	public function action_rss()
 	{
-		echo $this->page->title;
-		exit;
+		$this->_template = View::factory( 'feeds/rss' );
+		$this->_template->page = $this->_page;
 	}
 	
 	public function action_404()
 	{
 		die( 'feed not found' );
 	}
-
+	
+	public function after()
+	{
+		echo $this->_template;
+		exit;
+	}
 }
 
 ?>

@@ -28,9 +28,9 @@
 		?>
 
 		<?
-			if ( $page->hasRss() )
+			if ( $page->enable_rss )
 			{
-				echo "<link rel='alternate' type='application/rss+xml' title='RSS' href='" . $page->uri() . "/.rss' />";
+				echo "<link rel='alternate' type='application/rss+xml' title='RSS' href='" . URL::base( Request::current() ) . "rss/" . $page->get_primary_uri() . "' />";
 			}
 		?>
 	</head>

@@ -72,7 +72,7 @@
 					<tr>
 						<td>URI</td>
 						<td>
-							<input class="sledge-input sledge-input-uri" type="text" name="uri" value="<?=$page->url()?>" />
+							<input class="sledge-input sledge-input-uri" type="text" name="uri" value="<?=$page->get_primary_uri()?>" />
 						</td>
 					</tr>
 				<?//}?>
@@ -84,6 +84,16 @@
 								<option <?if ($page->visible_in_leftnav == null) echo "selected=\"selected\" ";?> value="">Inherit from my parent</option>
 								<option <?if ($page->visible_in_leftnav == true) echo "selected=\"selected\" ";?> value="1">Yes</option>
 								<option <?if ($page->visible_in_leftnav == false) echo "selected=\"selected\" ";?> value="0">No</option>
+							</select>
+						</td>
+					</tr>
+					
+					<tr>
+						<td>Enable RSS feeds?</td>
+						<td>
+							<select name="enable_rss">
+								<option <?if ($page->enable_rss) echo "selected=\"selected\" ";?> value="1">Yes</option>
+								<option <?if (!$page->enable_rss) echo "selected=\"selected\" ";?> value="0">No</option>
 							</select>
 						</td>
 					</tr>

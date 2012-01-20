@@ -147,6 +147,9 @@ class Controller_Cms_Page extends Controller_Cms
 		if (isset( $data->template ))
 			$page->template_id = (int) preg_replace( "/[^0-9]+/", "", $data->template );
 			
+		if (isset( $data->enable_rss ))
+			$page->enable_rss = (bool) $data->enable_rss;
+			
 		//if (isset( $data->uri ))
 		// TODO change page uri.
 		
