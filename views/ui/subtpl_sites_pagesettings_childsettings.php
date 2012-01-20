@@ -31,7 +31,7 @@
 							<select name="default_child_template_id">
 								<option value="$page->template_id">Same as this page</option><?
 									foreach ($templates as $tpl):
-										if ($tpl->id == $page->template_id):
+										if ($tpl->id == $page->default_child_template_id):
 											?><option selected="selected" value="<?=$tpl->id?>"><?=$tpl->name?></option><?
 										else:
 											?><option value="<?=$tpl->id?>"><?=$tpl->name?></option><?

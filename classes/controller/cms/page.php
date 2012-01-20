@@ -36,10 +36,10 @@ class Controller_Cms_Page extends Controller_Cms
 	public function action_add()
 	{
 		if (isset( $_POST['parent_id'] ) && isset( $_POST['template_id'] ))
-		{
+		{			
 			// Find the parent page.
 			$parent = ORM::factory( 'page', Arr::get( $_POST, 'parent_id', 1 ));
-			
+						
 			// Check for add permissions on the parent page.
 			if (!$this->person->can( 'add', $parent ))
 				Request::factory( 'error/403' )->execute();
@@ -58,19 +58,19 @@ class Controller_Cms_Page extends Controller_Cms
 			$page->title = 'Untitled';
 			$page->template_id = $template;
 			$page->save();
-			
+						
 			// Add to the tree.
 			$page->mptt->page_id = $page->id;
 			
 			// Where should we put it?
 			$parent->add_child( $page );
-			
+						
 			// Save the page.
 			$page->save();
 	
 			// URI needs to be generated after the MPTT is set up.
 			$uri = $page->generate_uri();
-	
+				
 			echo URL::base( $this->request ) . $uri;
 		}
 		else
@@ -168,7 +168,7 @@ class Controller_Cms_Page extends Controller_Cms
 		//	$page->default_child_default_child_template_id = $data->default_child_default_child_template_id;
 			
 		if (isset( $data->default_child_template_id ))
-			$page->default_child_template_id = $page->default_child_template_id;
+			$page->default_child_template_id = $data->default_child_template_id;
 			
 		if (isset( $data->default_child_uri_prefix ))
 			$page->default_child_uri_prefix = $data->default_child_uri_prefix;

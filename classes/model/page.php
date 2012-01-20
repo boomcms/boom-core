@@ -159,7 +159,7 @@ class Model_Page extends ORM_Versioned {
 		else if ($this->child_ordering_policy & self::CHILD_ORDER_ALPHABETIC)
 		{
 			// Ordering alphabetically? 
-			// Find the page_mptt record of the page which comes ater this alphabetically.
+			// Find the page_mptt record of the page which comes after this alphabetically.
 			$mptt = ORM::factory( 'page_mptt' )
 					->join( 'page', 'inner' )
 					->on( 'page.id', '=', 'page_mptt.page_id' )
@@ -177,12 +177,12 @@ class Model_Page extends ORM_Versioned {
 			}
 			
 			$mptt->limit( 1 )->find();
-			
+						
 			if (!$mptt->loaded())
 			{
 				// If a record wasn't loaded then there's no page after this one.
 				// Insert as the last child of the parent.
-				$page->mptt->insert_as_last_child( $mptt );
+				$page->mptt->insert_as_last_child( $this->mptt );
 			}
 			else
 			{
@@ -456,8 +456,6 @@ class Model_Page extends ORM_Versioned {
 			$start_uri = substr( $start_uri, 1 );
 		
 		// Get a unique URI.
-		// This should be done as part of one of the models - for instance when we set the title property of the page.
-		// For simplicity of getting adding a page working to some extent it's here for now, it can be moved later.
 		do {
 			$uri = ($append > 0)? $start_uri. $append : $start_uri;
 			$append++;
