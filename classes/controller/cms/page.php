@@ -56,6 +56,10 @@ class Controller_Cms_Page extends Controller_Cms
 			$page = ORM::factory( 'page' );
 			$page->visible = false;	
 			$page->title = 'Untitled';
+			$page->visible_in_leftnav = $parent->children_visible_in_leftnav;
+			$page->visible_in_leftnav_cms = $parent->children_visible_in_leftnav_cms;
+			$page->children_visible_in_leftnav = $parent->children_visible_in_leftnav;
+			$page->children_visible_in_leftnav_cms = $parent->children_visible_in_leftnav_cms;
 			$page->template_id = $template;
 			$page->save();
 						
