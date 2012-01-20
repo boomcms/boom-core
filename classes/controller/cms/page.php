@@ -60,6 +60,7 @@ class Controller_Cms_Page extends Controller_Cms
 			$page->visible_in_leftnav_cms = $parent->children_visible_in_leftnav_cms;
 			$page->children_visible_in_leftnav = $parent->children_visible_in_leftnav;
 			$page->children_visible_in_leftnav_cms = $parent->children_visible_in_leftnav_cms;
+			$page->ssl_only = $parent->ssl_only;
 			$page->template_id = $template;
 			$page->save();
 						
@@ -195,7 +196,7 @@ class Controller_Cms_Page extends Controller_Cms
 			$page->pagetype_description = $data->pagetype_description;
 			
 		if (isset( $data->ssl_only ))
-			$page->ssl_only = ($data->ssl_only = "")? null : (bool) $data->ssl_only;
+			$page->ssl_only = ($data->ssl_only = "")? $parent->ssl_only : (bool) $data->ssl_only;
 		
 		// Remember the old version ID.
 		$old_vid = $page->version->id;
