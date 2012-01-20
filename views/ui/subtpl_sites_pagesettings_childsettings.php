@@ -92,12 +92,12 @@
 			<table width="100%">
 				<?//if ($p['child_settings']['Can edit page children hidden from leftnav']){?>
 					<tr>
-						<td>Children hidden from leftnav?</td>
+						<td>Children visible in leftnav?</td>
 						<td>
 							<select name="children_visible_in_leftnav">
-								<option <?if ($page->children_visible_in_leftnav != 't' and $page->children_visible_in_leftnav != 'f') {echo "selected=\"selected\" ";} ?> value="">Inherit from my parent</option>
-								<option <?if ($page->children_visible_in_leftnav == true) {echo "selected=\"selected\" ";}?> value="1">Yes</option>
-								<option <?if ($page->children_visible_in_leftnav == false) {echo "selected=\"selected\" ";}?> value="0">No</option>
+								<option <?if ($page->children_visible_in_leftnav == null) echo "selected='selected'"; ?> value="">Inherit from my parent</option>
+								<option <?if ($page->children_visible_in_leftnav == true) echo "selected=\"selected\" ";?> value="1">Yes</option>
+								<option <?if ($page->children_visible_in_leftnav == false) echo "selected=\"selected\" ";?> value="0">No</option>
 							</select>
 						</td>
 					</tr>
@@ -107,9 +107,9 @@
 						<td>Children visible in CMS leftnav?</td>
 						<td>
 							<select name="children_visible_in_leftnav_cms">
-								<option <?if ($page->children_visible_in_leftnav_cms === null) echo "selected='selected'"; ?> value="">Inherit from my parent</option>
-								<option <?if ($page->children_visible_in_leftnav_cms === true) echo "selected=\"selected\" ";?> value="1">Yes</option>
-								<option <?if ($page->children_visible_in_leftnav_cms === false) echo "selected=\"selected\" ";?> value="0">No</option>
+								<option <?if ($page->children_visible_in_leftnav_cms == null) echo "selected='selected'"; ?> value="">Inherit from my parent</option>
+								<option <?if ($page->children_visible_in_leftnav_cms == true) echo "selected=\"selected\" ";?> value="1">Yes</option>
+								<option <?if ($page->children_visible_in_leftnav_cms == false) echo "selected=\"selected\" ";?> value="0">No</option>
 							</select>
 						</td>
 					</tr>

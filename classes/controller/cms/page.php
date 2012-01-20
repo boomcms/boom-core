@@ -92,6 +92,7 @@ class Controller_Cms_Page extends Controller_Cms
 	public function action_save()
 	{
 		$page = $this->_page;
+		$parent = $page->mptt->parent()->page;
 		
 		if (!$this->person->can( 'edit', $this->_page ))
 			Request::factory( 'error/403' )->execute();
@@ -156,17 +157,17 @@ class Controller_Cms_Page extends Controller_Cms
 			$page->visible_to = ($data->visible_to == "")? null : strtotime( $data->visible_to );
 			
 		if (isset( $data->visible_in_leftnav ))
-			$page->visible_in_leftnav = ($data->visible_in_leftnav == "")? null : (bool) $data->visible_in_leftnav;
+			$page->visible_in_leftnav = ($data->visible_in_leftnav == "")? $parent->children_visible_in_leftnav : (bool) $data->visible_in_leftnav;
 			
 		if (isset( $data->visible_in_leftnav_cms ))
-			$page->visible_in_leftnav_cms = ($data->visible_in_leftnav_cms == "")? null : (bool) $data->visible_in_leftnav_cms;
+			$page->visible_in_leftnav_cms = ($data->visible_in_leftnav_cms == "")? $parent->children_visible_in_leftnav_cms : (bool) $data->visible_in_leftnav_cms;
 			
 		// Child page settings tab.
 		if (isset( $data->children_visible_in_leftnav ))
-			$page->children_visible_in_leftnav = ($data->children_visible_in_leftnav = "")? null : (bool) $data->children_visible_in_leftnav;
+			$page->children_visible_in_leftnav = ($data->children_visible_in_leftnav = "")? $parent->children_visible_in_leftnav : (bool) $data->children_visible_in_leftnav;
 			
 		if (isset( $data->children_visible_in_leftnav_cms ))
-			$page->children_visible_in_leftnav_cms = ($data->children_visible_in_leftnav_cms = "")? null : (bool) $data->children_visible_in_leftnav_cms;
+			$page->children_visible_in_leftnav_cms = ($data->children_visible_in_leftnav_cms = "")? $parent->children_visible_in_leftnav_cms : (bool) $data->children_visible_in_leftnav_cms;
 			
 		//if (isset( $data->default_child_default_child_template_id ))
 		//	$page->default_child_default_child_template_id = $data->default_child_default_child_template_id;
