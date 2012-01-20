@@ -57,6 +57,10 @@
 							<?
 								foreach( $page->mptt->fulltree() as $node ):
 									echo "<option value='", $node->page_id, "'";
+									if ($node->id == $page->mptt->parent_id)
+									{
+										echo " selected='selected'";
+									}
 									echo ">", $node->page->title, "</option>";
 								endforeach;
 							?>
@@ -77,7 +81,7 @@
 						<td>Visible in navigation?</td>
 						<td>
 							<select name="visible_in_leftnav">
-								<option <?if ($page->visible_in_leftnav === null) echo "selected=\"selected\" ";?> value="">Inherit from my parent</option>
+								<option <?if ($page->visible_in_leftnav === null) echo "selected=\"selected\" ";?> value="0">Inherit from my parent</option>
 								<option <?if ($page->visible_in_leftnav === true) echo "selected=\"selected\" ";?> value="true">Yes</option>
 								<option <?if ($page->visible_in_leftnav === false) echo "selected=\"selected\" ";?> value="false">No</option>
 							</select>
