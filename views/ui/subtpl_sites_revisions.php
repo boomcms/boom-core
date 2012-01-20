@@ -4,23 +4,23 @@
 			<tbody>
 				<?
 				$count = $page->revisions->count_all();
-				foreach ($page->revisions->order_by( 'id', 'desc' )->find_all() as $i => $version):?>
+				foreach ($page->revisions->order_by( 'id', 'desc' )->find_all() as $i => $revision):?>
 					<tr>
-						<td width="20"><input type="checkbox" id="revision-<?=$version->id?>" class="sledge-page-revision-check ui-helper-reset"<?if ($version->id == $page->version->id):?> checked="checked"<?endif?> /></td>
+						<td width="20"><input type="checkbox" id="revision-<?=$revision->id?>" class="sledge-page-revision-check ui-helper-reset"<?if ($revision->id == $page->version->id):?> checked="checked"<?endif?> /></td>
 						<td>
-							<label for="revision-<?=$version->id?>">
+							<label for="revision-<?=$revision->id?>">
 								Version <?=$count-$i?>
 								<?
-									if ($version->id == $page->published_vid):
+									if ($revision->id == $page->published_vid):
 										echo "<small><strong>(<em>Published version</em>)</strong></small>";
 									endif;
 								
-									if ($version->id == $page->active_vid):
+									if ($revision->id == $page->active_vid):
 										echo "<small><strong>(<em>Current version</em>)</strong></small>";
 									endif;
 								?>
 							</label><br />
-							<small><?=date('j F Y H:i')?> by <?=($version->person->id) ? $version->person->getName() : 'Unknown'?></small>
+							<small><?= $revision->get_time() ?> by <?=($revision->person->id) ? $revision->person->getName() : 'Unknown'?></small>
 						</td>
 					</tr>
 				<?endforeach;?>

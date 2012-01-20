@@ -243,7 +243,9 @@ class Model_Page extends ORM_Versioned {
 	
 	public function is_visible()
 	{
-		return $this->visible;
+		$time = time();
+		
+		return ($this->visible && $this->visible_from <= $time && ($this->visible_to >= $time || $this->visible_to == 0));
 	}
 	
 	/**
