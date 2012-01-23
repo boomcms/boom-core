@@ -7,12 +7,12 @@
 * @copyright 2011, Hoop Associates
 * 
 */
-class Model_Role extends ORM_Versioned
+class Model_Group extends ORM_Versioned
 {
-	protected $_table_name = 'role';
+	protected $_table_name = 'groups';
 
 	protected $_belongs_to = array( 
-		'version'  => array( 'model' => 'version_role', 'foreign_key' => 'active_vid' ), 
+		'version'  => array( 'model' => 'version_group', 'foreign_key' => 'active_vid' ), 
 	);
 	
 	protected $_load_with = array( 'version' );
