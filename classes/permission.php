@@ -70,10 +70,6 @@ class Permission
 				return new Permission_Page( $person, $object );
 			}
 		}
-		else if ($object === false)
-		{
-			return new self( $person );
-		}
 		else
 		{
 			return new Permission_Cms( $person, $object );
