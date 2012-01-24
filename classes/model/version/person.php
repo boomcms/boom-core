@@ -12,6 +12,8 @@ class Model_Version_Person extends Model_Version {
 	* Properties to create relationships with Kohana's ORM
 	*/
 	protected $_table_name = 'person_v';
+	protected $_db_group = 'hoopid';
+	
 	protected $_has_one = array(
 		'person'	=> array( 'model' => 'person', 'foreign_key' => 'id' ),
 	);

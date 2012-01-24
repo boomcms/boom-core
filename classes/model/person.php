@@ -12,6 +12,7 @@ class Model_Person extends ORM_Versioned {
 	* Properties to create relationships with Kohana's ORM
 	*/
 	protected $_table_name = 'person';
+	protected $_db_group = 'hoopid';
 	protected $_has_many = array( 
 		'groups'		=> array( 
 			'model'		=> 'group',
