@@ -55,6 +55,7 @@ class Controller_Cms_Page_Settings extends Controller_Cms_Page
 	public function after()
 	{
 		$this->template->page = $this->_page;
+		$this->template->person = $this->person;
 		
 		echo $this->template;
 		exit;	

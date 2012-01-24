@@ -8,7 +8,7 @@
 	<form onsubmit="return false;">
 		
 		<input type="hidden" name="person_id" value="<?=$person->id;?>" />
-		<input type="hidden" name="groups" value="<?=implode(',', $person->roles->find_all()->as_array())?>" />
+		<input type="hidden" name="groups" value="<?=implode(',', $person->groups->find_all()->as_array())?>" />
 
 		<div class="sledge-tabs ui-helper-clearfix">
 

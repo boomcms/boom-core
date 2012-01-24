@@ -53,17 +53,16 @@ class Permission_Page extends Permission
 				$required = self::DELETE;
 				break;
 		}
-		
-		$result = $this->check( $required );
 				
-		return $this->check( $required );
+		return $this->check( (int) $required );
 	}
 	
 	protected function check( $required = 0 )
 	{
 	 	parent::check();
 		
-		$perms = (int) $this->_result->get( 'permission' ) & $required;
+		$has = (int) $this->_result->get( 'permission' );
+		$perms = (int) $has & $required;
 			
 		return (bool) $perms;
 	}

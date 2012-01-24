@@ -13,9 +13,9 @@ class Model_Person extends ORM_Versioned {
 	*/
 	protected $_table_name = 'person';
 	protected $_has_many = array( 
-		'roles'		=> array( 
-			'model'		=> 'role',
-			'through'	=> 'person_role',
+		'groups'		=> array( 
+			'model'		=> 'group',
+			'through'	=> 'person_group',
 		),
 		'activities' => array( 'model' => 'activitylog', 'foreign_key' => 'person' ),
 	);	
@@ -42,13 +42,13 @@ class Model_Person extends ORM_Versioned {
 	* @return bool true if they have the permission, false if not.
 	* @see http://www.php4every1.com/tutorials/implementing-bitwise-permissions/#bw_actions-2
 	*/
-	public function can( $action, $what = false )
+	public function can( $action, $what = false, $property = false )
 	{
 		// If a record wasn't loaded, thye can't do it.
 		if (!$this->loaded())
 			return false;
-						
-		$permission = Permission::factory( $this, $what );
+			
+		$permission = Permission::factory( $this, $what, $property );
 		return $permission->can( $action );
 	}
 	

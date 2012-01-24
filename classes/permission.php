@@ -57,11 +57,18 @@ abstract class Permission
 	* @param mixed The object we're checking for permissions on
 	* @return Permissions Permissions object
 	*/
-	public static function factory( Model_Person $person, $object = false )
+	public static function factory( Model_Person $person, $object = false, $property = false )
 	{
 		if ($object instanceof Model_Page || $object instanceof Page)
 		{
-			return new Permission_Page( $person, $object );
+			if ($property)
+			{
+				return new Permission_Page_Property( $person, $object, $property );
+			}
+			else
+			{
+				return new Permission_Page( $person, $object );
+			}
 		}
 		else
 		{
@@ -77,6 +84,15 @@ abstract class Permission
 	* @return boolean True if the person can, false if they can't
 	*/
 	abstract function can( $action );
+	
+	/**
+	* Find all matching permissions.
+	* Could be useful for finding all permissions for a user, or all users who have permissions for an action.
+	*/
+	public function find_all()
+	{
+		
+	}
 	
 	protected function check()
 	{
