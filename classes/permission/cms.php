@@ -22,14 +22,9 @@ class Permission_Cms extends Permission
 	*/
 	public function can( $action )
 	{
-		$this->_query->where( 'actions.name', '=', $action );
+		parent::can( $action );
 		
-		return $this->check();
-	}
-	
-	protected function check()
-	{
-		parent::check();
+		$this->_query->where( 'actions.name', '=', $action );
 		
 		return (bool) $this->_result->get( 'permission' );
 	}

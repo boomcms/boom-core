@@ -136,11 +136,17 @@ class Controller_Cms_Page extends Controller_Cms
 			
 		$data = json_decode( Arr::get( $_POST, 'data' ));
 		
-		// Set any page properties.
-		foreach( array_keys( $page->object() ) as $column )
+		// Update visibility seperately because it's not a versioned column.
+		if (isset( $data->visible ) && $this->person->can( 'edit', $page, 'visible' ))
+		{
+			$page->visible = $data->visible;
+		}
+		
+		// Set any versioned. properties.
+		foreach( array_keys( $page->version->object() ) as $column )
 		{
 			if (isset( $data->$column ) && $this->person->can( 'edit', $page, $column ))
-			{
+			{				
 				if (
 					$column == 'visible_in_leftnav' ||
 					$column == 'visible_in_leftnav_cms' ||
@@ -157,6 +163,10 @@ class Controller_Cms_Page extends Controller_Cms
 					// A special case for the child ordering policy.
 					$page->order_children( (int) $data->child_ordering_policy, $data->child_ordering_direction );
 				}
+				else if ($column == 'visible_from' || $column == 'visible_to')
+				{
+					$page->$column = strtotime( $data->$column );
+				}
 				else
 				{
 					$page->$column = $data->$column;
@@ -169,13 +179,16 @@ class Controller_Cms_Page extends Controller_Cms
 		
 		// Save the new settings.
 		$page->save();	
-				
-		// Copy any slots to the new version.
-		$query = DB::query( Database::INSERT, "insert into chunk_page (chunk_id, page_vid) select chunk_id, :new_vid from chunk_page where page_vid = :old_vid" );
 		$new_vid = $page->version->id;
-		$query->bind( ':new_vid', $new_vid );
-		$query->bind( ':old_vid', $old_vid );
-		$query->execute();
+						
+		// Copy any slots to the new version.
+		if ($old_vid != $new_vid)
+		{
+			$query = DB::query( Database::INSERT, "insert into chunk_page (chunk_id, page_vid) select chunk_id, :new_vid from chunk_page where page_vid = :old_vid" );
+			$query->bind( ':new_vid', $new_vid );
+			$query->bind( ':old_vid', $old_vid );
+			$query->execute();
+		}
 		
 		// Are we publishing this version?
 		if (isset( $data->publish ))
@@ -188,7 +201,6 @@ class Controller_Cms_Page extends Controller_Cms
 			//}
 		}
 		
-		die( '3' );
 		echo $page->url();
 		exit;
 	}
