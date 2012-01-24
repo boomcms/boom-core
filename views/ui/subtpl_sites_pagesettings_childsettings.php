@@ -6,13 +6,13 @@
 		</ul>
 		<div id="child-settings-basic">
 			<table width="100%">
-				<?if ($person->can( 'view', $page, 'child parent page' )):
+				<?if ($person->can( 'view', $page, 'pagetype_parent_id' )):
 					?>
 						<tr>
 							<td>Children parent page</td>
 							<td>
 								<?
-									if ($person->can( 'edit', $page, 'child parent page' )):
+									if ($person->can( 'edit', $page, 'pagetype_parent_id' )):
 										?>
 											<select name="pagetype_parent_id" id="pagetype_parent_id" style="width:14em">
 											<option value="">Default (this page)</option>
@@ -32,13 +32,13 @@
 						</tr>
 					<?
 				endif;
-				if ($person->can( 'view', $page, 'default child tempalte' )):
+				if ($person->can( 'view', $page, 'default_child_template_id' )):
 					?>
 						<tr>
 							<td>Default child template</td>
 							<td>
 								<?
-									if ($person->can( 'edit', $page, 'default child template' )):
+									if ($person->can( 'edit', $page, 'default_child_template_id' )):
 										?>
 											<select name="default_child_template_id">
 												<option value="$page->template_id">Same as this page</option><?
@@ -61,13 +61,13 @@
 					<?
 				endif;
 				
-				if ($person->can( 'edit', $page, 'child ordering policy' )):
+				if ($person->can( 'edit', $page, 'child_ordering_policy' )):
 					?>
 						<tr>
 							<td>Child ordering policy</td>
 							<td>
 								<?
-									if ($person->can( 'edit', $page, 'child ordering policy' )):
+									if ($person->can( 'edit', $page, 'child_ordering_policy' )):
 										?>
 											<select name="child_ordering_policy">
 												<option value='<?= Model_Page::CHILD_ORDER_MANUAL ?>'
@@ -119,13 +119,13 @@
 		<div id="child-settings-advanced">
 			<table width="100%">
 				<?
-					if ($person->can( 'view', $page, 'children visible in leftnav' )):
+					if ($person->can( 'view', $page, 'children_visible_in_leftnav' )):
 						?>
 							<tr>
 								<td>Children visible in leftnav?</td>
 								<td>
 									<?
-										if ($person->can( 'edit', $page, 'children visible in leftnav' )):
+										if ($person->can( 'edit', $page, 'children_visible_in_leftnav' )):
 											?>
 												<select name="children_visible_in_leftnav">
 													<option <?if ($page->children_visible_in_leftnav == null) echo "selected='selected'"; ?> value="">Inherit from my parent</option>
@@ -141,13 +141,13 @@
 							</tr>
 						<?
 				endif;
-				if ($person->can( 'view', $page, 'children visible in leftnav cms' )):
+				if ($person->can( 'view', $page, 'children_visible_in_leftnav_cms' )):
 					?>
 						<tr>
 							<td>Children visible in CMS leftnav?</td>
 							<td>
 								<?
-									if ($person->can( 'edit', $page, 'children visible in leftnav cms' )):
+									if ($person->can( 'edit', $page, 'children_visible_in_leftnav_cms' )):
 										?>
 											<select name="children_visible_in_leftnav_cms">
 												<option <?if ($page->children_visible_in_leftnav_cms == null) echo "selected='selected'"; ?> value="">Inherit from my parent</option>
@@ -164,13 +164,13 @@
 					<?
 				endif;
 				
-				if ($person->can( 'view', $page, 'child uri prefix')):
+				if ($person->can( 'view', $page, 'default_child_uri_prefix')):
 					?>
 						<tr>
 							<td>Default child URI prefix</td>
 							<td>
 								<?
-									if ($person->can( 'edit', $page, 'child uri prefix' )):
+									if ($person->can( 'edit', $page, 'default_child_uri_prefix' )):
 										echo "<input type='text' class='sledge-input' name='default_child_uri_prefix' value='$page->default_child_uri_prefix' />";
 									else:
 										echo $page->default_child_uri_prefix;
@@ -181,13 +181,13 @@
 					<?
 				endif;
 
-				if ($person->can( 'view', 'default grandchild template' )):
+				if ($person->can( 'view', 'default_child_default_child_template_id' )):
 					?>
 						<tr>
 							<td>Default grandchild template</td>
 							<td>
 								<?
-									if ($person->can( 'edit', 'default grandchild template' )):
+									if ($person->can( 'edit', 'default_child_default_child_template_id' )):
 										?>
 											<select name="default_child_default_child_template_id">
 												<option value="">Inherit from childs parent</option>

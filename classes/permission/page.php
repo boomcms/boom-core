@@ -33,6 +33,8 @@ class Permission_Page extends Permission
 	
 	public function can( $action )
 	{
+		parent::can( $action );
+		
 		$required;
 		
 		switch( $action )
@@ -54,13 +56,6 @@ class Permission_Page extends Permission
 				break;
 		}
 				
-		return $this->check( (int) $required );
-	}
-	
-	protected function check( $required = 0 )
-	{
-	 	parent::check();
-		
 		$has = (int) $this->_result->get( 'permission' );
 		$perms = (int) $has & $required;
 			

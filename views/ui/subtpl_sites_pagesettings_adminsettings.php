@@ -1,11 +1,11 @@
 <form name="pagesettings-adminsettings">
 	<div id="admin-setings" class="sledge-tabs">
 		<table width="100%">
-		    <? if ($person->can( 'view', $page, 'internal name' )):?>
+		    <? if ($person->can( 'view', $page, 'internal_name' )):?>
 				<tr>
 					<td>Internal name</td>
 					<td>
-						<? if ($person->can( 'edit', $page, 'internal name' )):?>
+						<? if ($person->can( 'edit', $page, 'internal_name' )):?>
 							<input type="text" class="sledge-input" name="internal_name" id="internal_name" value="<?=$page->internal_name;?>" />
 						<? else:
 							echo $page->internal_name;
@@ -14,12 +14,12 @@
 				</tr>
 			<? endif;
 			
-			if ($person->can( 'view', $page, 'page type' )):?>
+			if ($person->can( 'view', $page, 'pagetype_description' )):?>
 				<tr>
 					<td>Page type</td>
 					<td>
 						<?
-							if ($person->can( 'edit', $page, 'page type' )):
+							if ($person->can( 'edit', $page, 'pagetype_description' )):
 								echo "<input id='pagetype_description' type='text' name='pagetype_description' class='sledge-input' value='", $page->pagetype_description, "'/>";
 							else:
 								echo $page->pagetype_description;
@@ -29,12 +29,12 @@
 				</tr>
 			<?endif;
 			
-			if ($person->can( 'view', $page, 'cache duration' )):?>
+			if ($person->can( 'view', $page, 'cache_duration' )):?>
 				<tr>
 					<td>Cache duration</td>
 					<td>
 						<?
-							if ($person->can( 'edit', $page, 'cache duration' )):?>
+							if ($person->can( 'edit', $page, 'cache_duration' )):?>
 								<select name="cache_duration">
 									<option <?if ($page->cache_duration === null){echo "selected=\"selected\" ";}?> value="">Inherit from my parent</option>
 									<option <?if ($page->cache_duration == '0'){echo "selected=\"selected\" ";}?> value="0">Disable caching</option>
@@ -54,12 +54,12 @@
 				</tr>
 			<?endif;
 			
-			if ($person->can( 'view', $page, 'ssl only' )):?>
+			if ($person->can( 'view', $page, 'ssl_only' )):?>
 				<tr>
 					<td>Secure page?</td>
 					<td>
 						<?
-							if ($person->can( 'edit', $page, 'ssl only' )):?>
+							if ($person->can( 'edit', $page, 'ssl_only' )):?>
 								<select name="ssl_only">
 									<option <?if ($page->ssl_only === null) echo "selected=\"selected\" ";?> value="">Inherit from my parent</option>
 									<option <?if ($page->ssl_only === true) echo "selected=\"selected\" ";?> value="true">Yes</option>

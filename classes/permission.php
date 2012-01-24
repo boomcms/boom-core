@@ -7,7 +7,7 @@
 * @copyright 2011, Hoop Associates
 * 
 */
-abstract class Permission
+class Permission
 {
 	/**
 	* The person object which is having it's permissions checked.
@@ -70,10 +70,25 @@ abstract class Permission
 				return new Permission_Page( $person, $object );
 			}
 		}
+		else if ($object === false)
+		{
+			return new self( $person );
+		}
 		else
 		{
 			return new Permission_Cms( $person, $object );
 		}
+	}
+	
+	/**
+	* Find all matching permissions.
+	* Could be useful for finding all permissions for a user, or all users who have permissions for an action.
+	*/
+	public function find_all()
+	{
+		$result = $this->_query->execute();
+		
+		return $result;
 	}
 	
 	/**
@@ -83,18 +98,7 @@ abstract class Permission
 	* @param int
 	* @return boolean True if the person can, false if they can't
 	*/
-	abstract function can( $action );
-	
-	/**
-	* Find all matching permissions.
-	* Could be useful for finding all permissions for a user, or all users who have permissions for an action.
-	*/
-	public function find_all()
-	{
-		
-	}
-	
-	protected function check()
+	public function can( $action )
 	{
 		$this->_result = $this->_query->execute();
 	}

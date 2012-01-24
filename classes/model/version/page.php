@@ -30,6 +30,25 @@ class Model_Version_Page extends Model_Version {
 	*/
 	private $_parent;
 	
+	/**
+	* Filters for the versioned person columns
+	* @see http://kohanaframework.org/3.2/guide/orm/filters
+	*/
+	public function filters()
+	{
+	    return array(
+			'visible_from' => array(
+				array( 'strtotime' ),
+			),
+	        'visible_to' => array(
+	            array( 'strtotime' ),
+	        ),
+			'visible_in_leftnav' => array(
+				array( array( 'this', 'inherit_property') )
+			),
+	    );
+	}
+	
 	
 	/**
 	* Get the page description.

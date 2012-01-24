@@ -135,90 +135,41 @@ class Controller_Cms_Page extends Controller_Cms
 			Request::factory( 'error/403' )->execute();
 			
 		$data = json_decode( Arr::get( $_POST, 'data' ));
+		
+		// Set any page properties.
+		foreach( array_keys( $page->object() ) as $column )
+		{
+			if (isset( $data->$column ) && $this->person->can( 'edit', $page, $column ))
+			{
+				if (
+					$column == 'visible_in_leftnav' ||
+					$column == 'visible_in_leftnav_cms' ||
+					$column == 'children_visible_in_leftnav' ||
+					$column == 'children_visible_in_leftnav_cms' ||
+					$column == 'ssl_only'
+				)
+				{
+					// Columns which inherit from the parent if an empty value is sent.
+					$page->$column = ($data->$column == "")? $parent->$column : $data->$column;
+				}
+				else if ($column == 'child_ordering_policy' && isset( $data->child_ordering_direction ))
+				{
+					// A special case for the child ordering policy.
+					$page->order_children( (int) $data->child_ordering_policy, $data->child_ordering_direction );
+				}
+				else
+				{
+					$page->$column = $data->$column;
+				}
+			}
+		}
 				
-		// Do editing page stuff.
-		//if (isset( $data->title ))
-		//	$page->title = $data->title;
-			
-		// SEO tab.
-		if (isset( $data->description ))
-			$page->description = $data->description;
-			
-		if (isset( $data->hidden_from_search_results ))
-			$page->hidden_from_search_results = (bool) $data->hidden_from_search_results;
-			
-		if (isset( $data->indexed ))
-			$page->indexed = (bool) $data->indexed;
-			
-		if (isset( $data->keywords ))
-			$page->keywords = $data->keywords;
-			
-		// Publishing tab.
-		//if (isset( $data->parent_id ))
-		// TODO: reparent page.
-		
-		if (isset( $data->visible ))
-			$page->visible = (bool) $data->visible;
-		
-		if (isset( $data->template ))
-			$page->template_id = (int) preg_replace( "/[^0-9]+/", "", $data->template );
-			
-		if (isset( $data->enable_rss ))
-			$page->enable_rss = (bool) $data->enable_rss;
-			
-		//if (isset( $data->uri ))
-		// TODO change page uri.
-		
-		if (isset( $data->visible_from ))
-			$page->visible_from = strtotime( $data->visible_from );
-			
-		if (isset( $data->visible_to ))
-			$page->visible_to = ($data->visible_to == "")? null : strtotime( $data->visible_to );
-			
-		if (isset( $data->visible_in_leftnav ))
-			$page->visible_in_leftnav = ($data->visible_in_leftnav == "")? $parent->children_visible_in_leftnav : (bool) $data->visible_in_leftnav;
-			
-		if (isset( $data->visible_in_leftnav_cms ))
-			$page->visible_in_leftnav_cms = ($data->visible_in_leftnav_cms == "")? $parent->children_visible_in_leftnav_cms : (bool) $data->visible_in_leftnav_cms;
-			
-		// Child page settings tab.
-		if (isset( $data->children_visible_in_leftnav ))
-			$page->children_visible_in_leftnav = ($data->children_visible_in_leftnav = "")? $parent->children_visible_in_leftnav : (bool) $data->children_visible_in_leftnav;
-			
-		if (isset( $data->children_visible_in_leftnav_cms ))
-			$page->children_visible_in_leftnav_cms = ($data->children_visible_in_leftnav_cms = "")? $parent->children_visible_in_leftnav_cms : (bool) $data->children_visible_in_leftnav_cms;
-			
-		//if (isset( $data->default_child_default_child_template_id ))
-		//	$page->default_child_default_child_template_id = $data->default_child_default_child_template_id;
-			
-		if (isset( $data->default_child_template_id ))
-			$page->default_child_template_id = $data->default_child_template_id;
-			
-		if (isset( $data->default_child_uri_prefix ))
-			$page->default_child_uri_prefix = $data->default_child_uri_prefix;
-			
-		//if (isset( $data->pagetype_parent_id ))
-		//	$page->pagetype_parent_id = $data->pagetype_parent_id;
-			
-		if (isset( $data->child_ordering_policy ) && isset( $data->child_ordering_direction ))
-			$page->order_children( (int) $data->child_ordering_policy, $data->child_ordering_direction );
-			
-		// Admin settings tab.
-		if (isset( $data->internal_name ))
-			$page->internal_name = $data->internal_name;
-			
-		if (isset( $data->pagetype_description ))
-			$page->pagetype_description = $data->pagetype_description;
-			
-		if (isset( $data->ssl_only ))
-			$page->ssl_only = ($data->ssl_only = "")? $parent->ssl_only : (bool) $data->ssl_only;
-		
 		// Remember the old version ID.
 		$old_vid = $page->version->id;
 		
 		// Save the new settings.
 		$page->save();	
-		
+				
 		// Copy any slots to the new version.
 		$query = DB::query( Database::INSERT, "insert into chunk_page (chunk_id, page_vid) select chunk_id, :new_vid from chunk_page where page_vid = :old_vid" );
 		$new_vid = $page->version->id;
@@ -237,6 +188,7 @@ class Controller_Cms_Page extends Controller_Cms
 			//}
 		}
 		
+		die( '3' );
 		echo $page->url();
 		exit;
 	}
