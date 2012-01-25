@@ -12,6 +12,7 @@ class Model_Person_Group extends ORM {
 	* Properties to create relationships with Kohana's ORM
 	*/
 	protected $_table_name = 'person_group';
+	protected $_db_group = 'default';
 
 	
 }

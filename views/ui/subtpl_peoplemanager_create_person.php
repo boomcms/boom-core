@@ -24,10 +24,10 @@
 			<tr>
 				<td><label for="create-group">Group</label></td>
 				<td>
-					<select id="create-group" name="group_rid">
+					<select id="create-group" name="group_id">
 						<?
 							foreach( $groups as $group ):
-								echo $group->name;
+								echo "<option value='", $group->id, "'>", $group->name, "</option>";
 							endforeach;
 						?>
 					</select>
@@ -35,4 +35,6 @@
 			</tr>
 		</tbody>
 	</table>
+	
+<input type='submit' />
 </form>

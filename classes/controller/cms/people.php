@@ -44,30 +44,31 @@ class Controller_Cms_People extends Controller_Cms
 	*/
 	public function action_add()
 	{
-		if ($this->request->method() == 'post')
+		if ($this->request->method() == 'POST')
 		{
 			// Create the person
-			$values = array(
-				'firstname'		=>	Arr::get( $_POST, 'create-firstname' ),
-				'lastname'		=>	Arr::get( $_POST, 'create-surname' ),
-				'emailaddress'	=>	Arr::get( $_POST, 'create-email' ),
-				'password'		=>	Arr::get( $_POST, 'create-password' ),
-			);
-			
-			$person = ORM::factory( 'person' )->values( $values )->create();
+			$person = ORM::factory( 'person' );
+			$person->firstname = Arr::get( $_POST, 'firstname' );
+			$person->lastname = Arr::get( $_POST, 'surname' );
+			$person->emailaddress = Arr::get( $_POST, 'email' );
+			$person->password = Arr::get( $_POST, 'password' );
+			$person->save();
 			
 			// Add the person to the initial group.
 			$group_id = Arr::get( $_POST, 'group_id' );
-			$person->add( 'role', ORM::factory( 'roles', $group_id ) );
 			
-			$person->save();
+			// Add the person to the group.
+			// This can't be done using Kohana's $person->add because the tables are in different databases.
+			$link = ORM::factory( 'person_group' )
+					->values( array( 'group_id' => $group_id, 'person_id' => $person->pk() ))
+					->create();
 			
-			echo $person->pk();
+			$this->request->redirect( '/cms/people/view/' . $person->pk() );
 		}
 		else
 		{
-			$v = View::factory( 'ui/subtpl_peoplemanager/create_person' );
-			$v->groups = ORM::factory( 'roles' )->find_all();
+			$v = View::factory( 'ui/subtpl_peoplemanager_create_person' );
+			$v->groups = ORM::factory( 'group' )->find_all();
 			echo $v;
 		}	
 		

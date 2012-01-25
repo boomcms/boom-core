@@ -3,7 +3,7 @@
         <div id="sledge-topbar-useractions">
                 <ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all" style="border:0;margin-top:1px;">
                         <li class="ui-state-default ui-corner-top"><a href="#">Profile</a></li>
-                        <li class="ui-state-default ui-corner-top"><a href="/cms/login/logout">Log out</a></li>
+                        <li class="ui-state-default ui-corner-top"><a href="/cms/logout">Log out</a></li>
                 </ul>
         </div>
 
@@ -11,7 +11,7 @@
 
 	<div class="ui-helper-clearfix ui-tabs-panel ui-widget-content ui-corner-bottom">
 		<div id="sledge-page-actions" class="ui-helper-right">
-			<button id="sledge-tagmanager-create-person" class="sledge-button ui-button-text-icon">
+			<button id="sledge-tagmanager-create-person" class="sledge-button ui-button-text-icon" onclick="window.frames[0].location='/cms/people/add'">
 				<span class="ui-button-icon-primary ui-icon ui-icon-person"></span>
 				New person
 			</button>
