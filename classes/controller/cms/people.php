@@ -152,6 +152,30 @@ class Controller_Cms_People extends Controller_Cms
 		exit;
 	}
 	
+	public function action_delete_group()
+	{
+		$id = $this->request->param('id');
+		$id = preg_replace( "/[^0-9]+/", "", $id );
+		
+		$person = ORM::factory( 'person', $id );
+		
+		if ($person->loaded())
+		{
+			$groups = Arr::get( $_POST, 'group_id' );
+		
+			if (is_array( $groups ))
+			{
+				ORM::factory( 'person_group' )->where( 'group_id', '=', $groups )->where( 'person_id', '=', $person->pk() )->delete();
+			}
+			else
+			{
+				ORM::factory( 'person_group' )->where( 'group_id', '=', $groups )->where( 'person_id', '=', $person->pk() )->delete();
+			}
+		}
+		
+		$this->request->redirect( '/cms/people/view/' . $person->pk() );
+	}
+	
 	/**
 	* People manager default page.
 	* Displays the people manager template with an array of people.

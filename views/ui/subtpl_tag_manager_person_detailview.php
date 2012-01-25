@@ -88,18 +88,21 @@
 			</div>
 
 			<div id="sledge-person-detailview-groups<?=$person->id;?>" class="ui-helper-left">
-			User is a member of these groups:
+				<form action="/cms/people/delete_group/<?= $person->id ?>" method='post'>
+					User is a member of these groups:
 			
-				<?
-					foreach( $person->groups->find_all() as $group ):
-						echo $group->name, "<br />";
-					endforeach;
-				?>
+						<?
+							foreach( $person->groups->find_all() as $group ):
+								echo $group->name, "<input type='checkbox' name='group_id' value='", $group->id, "'><br />";
+							endforeach;
+						?>
 				
-				<button class="sledge-button ui-button-text-icon sledge-tagmanager-person-groups-add" onclick="document.location='/cms/people/add_group/<?= $person->id ?>'">
-					<span class="ui-button-icon-primary ui-icon ui-icon-circle-close"></span>
-					Add Group
-				</button>
+						<button class="sledge-button ui-button-text-icon sledge-tagmanager-person-groups-add" onclick="document.location='/cms/people/add_group/<?= $person->id ?>'">
+							<span class="ui-button-icon-primary ui-icon ui-icon-circle-close"></span>
+							Add Group
+						</button>
+					<input type='submit' value='Delete Groups' />
+				</form>
 			</div>
 
 			<div id="sledge-person-detailview-permissions<?=$person->id;?>" class="ui-helper-left">
