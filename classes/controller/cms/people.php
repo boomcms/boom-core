@@ -59,9 +59,9 @@ class Controller_Cms_People extends Controller_Cms
 			
 			// Add the person to the group.
 			// This can't be done using Kohana's $person->add because the tables are in different databases.
-			$link = ORM::factory( 'person_group' )
-					->values( array( 'group_id' => $group_id, 'person_id' => $person->pk() ))
-					->create();
+			ORM::factory( 'person_group' )
+				->values( array( 'group_id' => $group_id, 'person_id' => $person->pk() ))
+				->create();
 			
 			$this->request->redirect( '/cms/people/view/' . $person->pk() );
 		}
@@ -73,6 +73,57 @@ class Controller_Cms_People extends Controller_Cms
 		}	
 		
 		exit;
+	}
+	
+	public function action_add_group()
+	{
+		$id = $this->request->param('id');
+		$id = preg_replace( "/[^0-9]+/", "", $id );
+		
+		$person = ORM::factory( 'person', $id );
+		
+		if ($person->loaded())
+		{
+			if ($this->request->method() == 'POST')
+			{
+				$groups = Arr::get( $_POST, 'group_id' );
+				
+				if (is_array( $groups ))
+				{
+					foreach( $groups as $group_id )
+					{
+						// Add the person to the group.
+						// This can't be done using Kohana's $person->add because the tables are in different databases.
+						ORM::factory( 'person_group' )
+							->values( array( 'group_id' => $group_id, 'person_id' => $person->pk() ))
+							->create();
+					}	
+				}
+				else
+				{
+					ORM::factory( 'person_group' )
+						->values( array( 'group_id' => $groups, 'person_id' => $person->pk() ))
+						->create();
+				}				
+				$this->request->redirect( '/cms/people/view/' . $person->pk() );
+			}
+			else
+			{
+				// Find the groups that this person isn't already a member of.
+				$groups = ORM::factory( 'group' )
+							->join( 'person_group', 'right outer' )
+							->on( 'person_group.group_id', '!=', 'group.id' )
+							->where( 'person_group.person_id', '=', $person->pk() )
+							->find_all();
+							
+				$v = View::factory( 'ui/subtpl_person_addgroup' );
+				$v->person = $person;
+				$v->groups = $groups;
+				
+				echo $v;
+				exit;
+			}
+		}
 	}
 	
 	/**
