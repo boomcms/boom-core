@@ -58,10 +58,7 @@ class Controller_Cms_People extends Controller_Cms
 			$group_id = Arr::get( $_POST, 'group_id' );
 			
 			// Add the person to the group.
-			// This can't be done using Kohana's $person->add because the tables are in different databases.
-			ORM::factory( 'person_group' )
-				->values( array( 'group_id' => $group_id, 'person_id' => $person->pk() ))
-				->create();
+			$person->add_group( $group_id );
 			
 			$this->request->redirect( '/cms/people/view/' . $person->pk() );
 		}
@@ -92,18 +89,12 @@ class Controller_Cms_People extends Controller_Cms
 				{
 					foreach( $groups as $group_id )
 					{
-						// Add the person to the group.
-						// This can't be done using Kohana's $person->add because the tables are in different databases.
-						ORM::factory( 'person_group' )
-							->values( array( 'group_id' => $group_id, 'person_id' => $person->pk() ))
-							->create();
+						$person->add_group( $group_id );
 					}	
 				}
 				else
 				{
-					ORM::factory( 'person_group' )
-						->values( array( 'group_id' => $groups, 'person_id' => $person->pk() ))
-						->create();
+					$person->add_group( $groups );
 				}				
 				$this->request->redirect( '/cms/people/view/' . $person->pk() );
 			}

@@ -34,6 +34,29 @@ class Model_Person extends ORM_Versioned {
 	private $_permissions;
 	
 	/**
+	* Assign the person to a group.
+	* This can't be done using Kohana's $person->add because the tables are in different databases so it doesn't seem to work
+	*
+	* @param mixed $group Group ID or group object.
+	* @return void
+	*/
+	public function add_group( $group )
+	{
+		if (is_int( $group ))
+		{
+			// Even though we only need the group ID we load the group to check that it exists.
+			$group = ORM::factory( 'group', $group );
+		}
+		
+		if ($group instanceof Model_Group && $group->loaded())
+		{
+			ORM::factory( 'person_group' )
+				->values( array( 'group_id' => $group->pk(), 'person_id' => $this->pk() ))
+				->create();
+		}	
+	}
+	
+	/**
 	* Can the user perform the requested action?
 	* This method can be used in a couple of ways
 	* To get permissions for a CMS action which isn't part of a tree $person->can( 'manage people' )
