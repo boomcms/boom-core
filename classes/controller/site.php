@@ -91,8 +91,21 @@ class Controller_Site extends Sledge_Controller
 	*/
 	public function action_show()
 	{
-		
-		
+		/*
+		* Do some form handling stuff.
+		* Ultimately this should go as a different controller method using routing rules (with a callback function)
+		* to route forms to a the different controller.
+		*
+		* This way will do for now though. But odn't forget to change me!
+		*/
+		if (Request::initial()->method() == 'POST')
+		{
+			if ($postbox = Arr::get( $_POST, 'postbox' ))
+			{
+				$form = Postbox::factory( $postbox );
+				exit;
+			}
+		}
 	}
 	
 	public function after()

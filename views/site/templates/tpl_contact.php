@@ -19,7 +19,7 @@
 			<?= __('Fields marked with a') ?> <span class="required">*</span> <?= __('are required') ?>.
 		</p>
 		<form method="post" action="<?= $page->url() ;?>" class="contactform">
-			<input type="hidden" name="validation-rules" value="companycontact" />
+			<input type='hidden' name='postbox' value='contact' />
 			<fieldset>
 				<ul>
 					<li>
