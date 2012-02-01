@@ -1,5 +1,5 @@
 <div class="sledge-tabs">
-	<form id="sledge-tagmanager-upload-form">
+	<form id="sledge-tagmanager-upload-form" action='/cms/assets/upload'>
 		<input type="hidden" name="upload_token" value="<?=sha1(microtime())?>" />
 		<div id="upload-advanced">
 			<div class="ui-widget" id="sledge-asset-upload-info">
@@ -15,5 +15,7 @@
 				<input type="file" id="sledge-asset-upload-file" />
 			</p>
 		</div>
+		
+		<input type='submit' />
 	</form>
 </div>

@@ -103,9 +103,16 @@ class Controller_Cms_Assets extends Controller_Cms
 	*/
 	public function action_upload()
 	{
-		echo View::factory( 'ui/subtpl_assetmanager_upload_assets' );
-		exit;
-		
+		if ($this->request->method == 'POST')
+		{
+			
+			
+		}
+		else
+		{
+			echo View::factory( 'ui/subtpl_assetmanager_upload_assets' );
+			exit;
+		}
 	}
 	
 	
