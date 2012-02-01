@@ -163,9 +163,10 @@ class Controller_Cms_Page extends Controller_Cms
 					// A special case for the child ordering policy.
 					$page->order_children( (int) $data->child_ordering_policy, $data->child_ordering_direction );
 				}
-				else if ($column == 'visible_from' || $column == 'visible_to')
+				else if ($column == 'visible_from')
 				{
 					$page->$column = strtotime( $data->$column );
+					$page->visible_to = (isset( $page->visible_to ))? strtotime( $data->visible_to ) : null;	
 				}
 				else
 				{

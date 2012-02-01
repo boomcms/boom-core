@@ -39,7 +39,7 @@
 						<? if ($person->can( 'edit', $page, 'visible_to' )):?>
 							<td>
 								<label for="page-visible-to">Visible to</label>
-								<input id="sledge-page-toggle-visible" type="checkbox" value="1" class="ui-helper-right ui-helper-reset"<?=($page->visible_to) ? ' checked="checked"' : ''; ?> />
+								<input id="sledge-page-toggle-visible" type="checkbox" value="1" name='toggle_visible_to' class="ui-helper-right ui-helper-reset"<?=($page->visible_to) ? ' checked="checked"' : ''; ?> />
 							</td>
 							<td>	
 								<input	id="page-visible-to" 
