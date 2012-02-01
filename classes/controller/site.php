@@ -86,6 +86,15 @@ class Controller_Site extends Sledge_Controller
 		$this->template->subtpl_main = View::factory( $this->page->template->filename );
 	}
 	
+	/**
+	* Show a site page
+	*/
+	public function action_show()
+	{
+		
+		
+	}
+	
 	public function after()
 	{	
 		// Add the header subtemplate.
