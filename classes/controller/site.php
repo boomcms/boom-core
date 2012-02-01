@@ -1,7 +1,7 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
 /**
-* Sledge CMS controller template.
+* Sledge site controller.
 * @package Controller
 * @author Hoop Associates	www.thisishoop.com	mail@hoopassociates.co.uk
 * @copyright 2011, Hoop Associates
@@ -100,10 +100,13 @@ class Controller_Site extends Sledge_Controller
 		*/
 		if (Request::initial()->method() == 'POST')
 		{
-			if ($postbox = Arr::get( $_POST, 'postbox' ))
+			$postbox = Arr::get( $_POST, 'postbox' );
+			$controller = new ReflectionClass( "Controller_Postbox" );
+
+			if ($controller->hasMethod( "action_$postbox" ))
 			{
-				$form = Postbox::factory( $postbox );
-				exit;
+				$method = $controller->getMethod( "action_$postbox" );
+				$method->invoke( $controller->newInstance() );
 			}
 		}
 	}
