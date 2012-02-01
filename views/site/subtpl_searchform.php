@@ -5,6 +5,7 @@
 <form action="/search" method="post" id="searchform">
 	<fieldset>
 		<label for="searchbox"><? echo __( 'Search' ); ?></label>
+		<input type='hidden' name='postbox' value='search' />
 		<input type="text" name="search" id="searchbox" />
 		<input type="submit" value="Find" class="button" />			
 	</fieldset>

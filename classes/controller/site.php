@@ -106,7 +106,7 @@ class Controller_Site extends Sledge_Controller
 			if ($controller->hasMethod( "action_$postbox" ))
 			{
 				$method = $controller->getMethod( "action_$postbox" );
-				$method->invoke( $controller->newInstance() );
+				$method->invoke( $controller->newInstance( $this->request, $this->response ) );
 			}
 		}
 	}
