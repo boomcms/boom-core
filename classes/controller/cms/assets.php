@@ -54,7 +54,7 @@ class Controller_Cms_Assets extends Controller_Cms
 	*/
 	public function action_delete()
 	{
-		$asset_ids = explode( ",", Arr::get( $_POST, 'assets' ) );
+		$asset_ids = explode( ",", Arr::get( $_REQUEST, 'assets' ) );
 		
 		foreach( $asset_ids as $asset_id )
 		{
@@ -62,7 +62,7 @@ class Controller_Cms_Assets extends Controller_Cms
 			$asset->delete();
 		}
 		
-		exit;		
+		$this->request->redirect( '/cms/assets' );		
 	}
 	
 	
@@ -167,7 +167,7 @@ class Controller_Cms_Assets extends Controller_Cms
 	public function action_index()
 	{		
 		$this->template->subtpl_main = View::factory( 'ui/tpl_asset_manager' );
-		$this->template->subtpl_main->assets = ORM::factory( 'asset' )->find_all();
+		$this->template->subtpl_main->assets = ORM::factory( 'asset' )->where( 'deleted', '=', false )->find_all();
 	}
 	
 	/**

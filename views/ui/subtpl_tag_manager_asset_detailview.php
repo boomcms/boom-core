@@ -134,7 +134,7 @@
 					<span class="ui-button-icon-primary ui-icon ui-icon-disk"></span>
 					Save
 				</button>
-				<button class="sledge-button ui-button-text-icon sledge-tagmanager-asset-delete" rel="<?=$asset->id?>">
+				<button class="sledge-button ui-button-text-icon sledge-tagmanager-asset-delete" id="sledge-tagmanager-delete-asset" rel="<?=$asset->id?>">
 					<span class="ui-button-icon-primary ui-icon ui-icon-circle-close"></span>
 					Delete
 				</button>
