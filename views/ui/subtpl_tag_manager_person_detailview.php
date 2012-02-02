@@ -88,7 +88,6 @@
 			</div>
 
 			<div id="sledge-person-detailview-groups<?=$person->id;?>" class="ui-helper-left">
-				<form action="/cms/people/delete_group/<?= $person->id ?>" method='post'>
 					User is a member of these groups:
 			
 						<?
@@ -101,7 +100,6 @@
 							<span class="ui-button-icon-primary ui-icon ui-icon-circle-close"></span>
 							Add Group
 						</button>
-					<input type='submit' value='Delete Groups' />
 				</form>
 			</div>
 
