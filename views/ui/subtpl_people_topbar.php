@@ -11,7 +11,7 @@
 
 	<div class="ui-helper-clearfix ui-tabs-panel ui-widget-content ui-corner-bottom">
 		<div id="sledge-page-actions" class="ui-helper-right">
-			<button id="sledge-tagmanager-create-person" class="sledge-button ui-button-text-icon" onclick="window.frames[0].location='/cms/people/add'">
+			<button id="sledge-tagmanager-create-person" class="sledge-button ui-button-text-icon" onclick="window.location='/cms/people/add'">
 				<span class="ui-button-icon-primary ui-icon ui-icon-person"></span>
 				New person
 			</button>
