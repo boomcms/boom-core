@@ -44,7 +44,7 @@ class Permission
 	{
 		$this->_person = $person;	
 		
-		$this->_query = DB::select( "permissions.permission" )->from( 'person_group' )
+		$this->_query = DB::select()->from( 'person_group' )
 						->join( 'permissions', 'inner' )
 						->on( 'person_group.group_id', '=', 'permissions.group_id' )
 						->where( 'person_group.person_id', '=', $person->pk() );
@@ -82,6 +82,13 @@ class Permission
 	*/
 	public function find_all()
 	{
+		$this->_query->select( "permissions.*" )
+					->select( "actions.*" )
+					->select( array(  'group_v.name', 'group_name' ) )
+					->join( 'groups' )
+					->on( 'groups.id', '=', 'person_group.group_id' )
+					->join( 'group_v' )
+					->on( 'groups.active_vid', '=', 'group_v.id' );
 		$result = $this->_query->execute();
 		
 		return $result;
@@ -96,7 +103,7 @@ class Permission
 	*/
 	public function can( $action )
 	{
-		$this->_result = $this->_query->execute();
+		$this->_result = $this->_query->select( "permissions.permission" )->execute();
 	}
 }
 

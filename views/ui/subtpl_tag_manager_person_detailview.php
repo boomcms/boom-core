@@ -104,92 +104,17 @@
 			</div>
 
 			<div id="sledge-person-detailview-permissions<?=$person->id;?>" class="ui-helper-left">
+				User has these permissions:
 				<table width="100%">
 					<tbody>
 					<?
-						/*$i=0;
-						foreach (Permissions::get_permission_counts($person->rid,false) as $iperm) {
-							foreach ($iperm as $page_rid=>$perm) {
-								if (isset($perm['page']['can']) || isset($perm['page']['cant'])) {
-									if (!isset($perm['page']['can'])) $perm['page']['can'] = 0;
-									if (!isset($perm['page']['cant'])) $perm['page']['cant'] = 0;?>
-
-									<tr class="sledge-row-<?=!($i%2)?'even':'odd'?>">
-										<td valign="top" width="30%">
-											<a href="#" rel="<?=$page_rid?>" class="sledge-edit-permission-where-page">
-												<span>
-													<?=$perm['title']?>
-												</span>
-											</a>
-										</td>
-										<td>
-											<a href="#" class="sledge-edit-permission-what" rel="<?=$page_rid?>">
-												<span>
-													<?=$perm['page']['can']?> can<?if($perm['page']['can']!=1) echo 's';?>,
-													<?=$perm['page']['cant']?> cant<?if($perm['page']['cant']!=1) echo 's';?>
-												</span>
-											</a>
-										</td>
-									</tr>
-								<?}else{?>
-									<tr class="sledge-row-<?=!($i%2)?'even':'odd'?>">
-										<td valign="top" width="30%">
-											<a href="#" rel="<?=$page_rid?>" class="sledge-edit-permission-where-page">
-												<span>
-													<?=$perm['title']?>
-												</span>
-											</a>
-										</td>
-										<td>
-											<a href="#" class="sledge-edit-permission-what" rel="<?=$page_rid?>">
-												<span>
-													0 cans, 0 cants
-												</span>
-											</a>
-										</td>
-									</tr>
-								<?}
-								if (isset($perm['slot'])) {
-									foreach ($perm['slot'] as $slottype=>$slotnames) {
-										if (is_array($slotnames)) {
-											foreach ($slotnames as $slotname=>$access) {
-												if ($slottype == null) {
-													$slottype = 'any';
-												}
-												if ($slotname == null) {
-													$slotname = 'any';
-												}
-												if (!isset($access['can'])) {
-													$access['can'] = 0;
-												}
-												if (!isset($access['cant'])) {
-													$access['cant']=0;
-												}
-												?>
-												<tr class="sledge-row-<?=!($i%2)?'even':'odd'?>">
-													<td valign="top" width="30%">
-														<a href="#" rel="<?=$page_rid?>-<?=$slottype?>-<?=$slotname?>" class="sledge-edit-permission-where-slot">
-															<span>
-																&nbsp;&nbsp;Slot permissions: <?=ucfirst($slottype)?>, <?=ucfirst($slotname)?>
-															</span>
-														</a>
-													</td>
-													<td>
-														<a href="#" class="sledge-edit-permission-what slot" rel="<?=$page_rid?>-<?=$slottype?>-<?=$slotname?>">
-															<span>
-																<?=$access['can']?> can<?if($access['can']!=1) echo 's';?>,
-																<?=$access['cant']?> cant<?if($access['cant']!=1) echo 's';?>
-															</span>
-														</a>
-													</td>
-												</tr>
-											<?}
-										}
-									}
-								}
-								$i++;
-							}
-						}*/
+						$perms = Permission::factory( $person )->find_all();
+						
+						foreach( $perms as $perm ):
+							echo "User has permission ", $perm['permission'], " on action ";
+							echo $perm['name'], "(", $perm['description'], ") from group ", $perm['group_name'];
+							echo "<br />";
+						endforeach;
 					?>
 					</tbody>
 				</table>
