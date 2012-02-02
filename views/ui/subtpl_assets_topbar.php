@@ -11,7 +11,7 @@
 
 	<div class="ui-helper-clearfix ui-tabs-panel ui-widget-content ui-corner-bottom">
 		<div id="sledge-page-actions" class="ui-helper-right">
-			<button id="sledge-tagmanager-upload" class="sledge-button ui-button-text-icon" onclick="window.location='/cms/assets/upload'">
+			<button id="sledge-tagmanager-upload" class="sledge-button ui-button-text-icon">
 				<span class="ui-button-icon-primary ui-icon ui-icon-disk"></span>
 				Upload files
 			</button>
