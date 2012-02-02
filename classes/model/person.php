@@ -47,9 +47,7 @@ class Model_Person extends ORM_Versioned {
 			// Even though we only need the group ID we load the group to check that it exists.
 			$group = ORM::factory( 'group', $group );
 		}
-		
-		var_dump( $group );
-		
+				
 		if ($group instanceof Model_Group && $group->loaded())
 		{
 			ORM::factory( 'person_group' )

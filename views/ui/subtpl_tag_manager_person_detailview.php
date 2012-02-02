@@ -5,7 +5,7 @@
 
 <div id="sledge-person-detailview">
 
-	<form onsubmit="return false;">
+	<form action="/cms/people/save/<?=$person->id;?>" method="post" enctype='multipart/formdata' <?//onsubmit="return false;"?>>
 		
 		<input type="hidden" name="person_id" id='person_id' value="<?=$person->id;?>" />
 		<input type="hidden" name="groups" value="<?=implode(',', $person->groups->find_all()->as_array())?>" />

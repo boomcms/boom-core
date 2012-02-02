@@ -27,12 +27,23 @@ class Controller_Cms_People extends Controller_Cms
 	{
 		$id = $this->request->param('id');
 		$id = preg_replace( "/[^0-9]+/", "", $id );
-		
 		$person = ORM::factory( 'person', $id );
-		$person->firstname = Arr::get( 'post', 'firstname', null );
-		$person->lastname = Arr::get( 'post', 'firstname', null );		
-		$person->emailaddress = Arr::get( 'post', 'firstname', null );
-		$person->save();				
+		
+		if ($person->loaded())
+		{
+			$person->firstname = Arr::get( $_POST, 'firstname' );
+			$person->lastname = Arr::get( $_POST, 'surname' );		
+			$person->emailaddress = Arr::get( $_POST, 'email' );
+		
+			if (Arr::get( $_POST, 'password' ))
+			{
+				$person->password = Arr::get( $_POST, 'password' );
+			}
+		
+			$person->save();
+		
+			$this->request->redirect( "/cms/people/view/$person->id" );	
+		}		
 	}
 	
 	/**
