@@ -105,6 +105,7 @@
 
 			<div id="sledge-person-detailview-permissions<?=$person->id;?>" class="ui-helper-left">
 				User has these permissions:
+				<br />
 				<table width="100%">
 					<tbody>
 					<?
