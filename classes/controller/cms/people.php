@@ -131,11 +131,8 @@ class Controller_Cms_People extends Controller_Cms
 		
 		$person = ORM::factory( 'person', $id );
 		
-		$v = View::factory( 'ui/subtpl_tag_manager_person_detailview' );
-		$v->person = $person;	
-		
-		echo $v;
-		exit;	
+		$this->template->subtpl_main = View::factory( 'ui/subtpl_tag_manager_person_detailview' );
+		$this->template->subtpl_main->person = $person;		
 	}
 	
 	public function action_delete()
@@ -184,13 +181,8 @@ class Controller_Cms_People extends Controller_Cms
 	*/
 	public function action_index()
 	{	
-		if (isset( $_GET['state'] ))
-		{	
-			$v = View::factory( 'ui/tpl_people_manager' );
-			$v->people = ORM::factory( 'person' )->find_all();
-			echo $v;
-			exit;
-		}
+		$this->template->subtpl_main = View::factory( 'ui/tpl_people_manager' );
+		$this->template->subtpl_main->people = ORM::factory( 'person' )->find_all();
 	}
 	
 }

@@ -1,6 +1,8 @@
 <?php
-	# Copyright 2009 - 2011, Hoop Associates Ltd
-	# Hoop Associates		www.thisishoop.com	 mail@hoopassociates.co.uk
+/**
+* This is the standard template for non-editable site pages.
+* Nothing really special here - it requires a $page variable representing the page and doesn't include any jQuery stuff.
+*/
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">

@@ -58,10 +58,8 @@ class Controller_Cms_Templates extends Controller_Cms
 			exit();
 		}
 
-		$v = View::factory( 'cms/pages/templates/edit' );
-		$v->template = $template;
-		echo $v;
-		exit;
+		$this->template->subtpl_main = View::factory( 'cms/pages/templates/edit' );
+		$this->template->subtpl_main->template = $template;
 	}
 	
 	/**
@@ -70,19 +68,13 @@ class Controller_Cms_Templates extends Controller_Cms
 	*/
 	public function action_index()
 	{
-		if ( isset( $_GET['state'] ))
-		{
-			$new = $this->find();
+		$new = $this->find();
 
-			$templates = ORM::factory( 'template' )->order_by( 'name' )->find_all();
-		
-			$v = View::factory( 'cms/pages/templates/index' );
-			$v->templates = $templates;	
-			$v->new = $new;
-			
-			echo $v;
-			exit;
-		}
+		$templates = ORM::factory( 'template' )->order_by( 'name' )->find_all();
+	
+		$this->template->subtpl_main = View::factory( 'cms/pages/templates/index' );
+		$this->template->subtpl_main->templates = $templates;	
+		$this->template->subtpl_main->new = $new;
 	}
 	
 	/**

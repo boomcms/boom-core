@@ -130,15 +130,8 @@ class Controller_Cms_Assets extends Controller_Cms
 	
 	public function action_index()
 	{		
-		if (isset( $_GET['state'] ))
-		{
-			View::bind_global( 'person', $this->person );
-			$v = View::factory( 'ui/tpl_asset_manager' );
-			$v->assets = ORM::factory( 'asset' )->find_all();
-			
-			echo $v;
-			exit;
-		}
+		$this->template->subtpl_main = View::factory( 'ui/tpl_asset_manager' );
+		$this->template->subtpl_main->assets = ORM::factory( 'asset' )->find_all();
 	}
 	
 	/**
@@ -150,16 +143,8 @@ class Controller_Cms_Assets extends Controller_Cms
 		$asset_id = $this->request->param( 'id' );
 		$asset = ORM::factory( 'asset', $asset_id );
 		
-		$v = View::factory( 'ui/subtpl_tag_manager_asset_detailview' );
-		$v->asset = $asset;
-		
-		echo $v;
-		exit;
-	}
-	
-	public function after()
-	{		
-		parent::after();
+		$this->template->subtpl_main = View::factory( 'ui/subtpl_tag_manager_asset_detailview' );
+		$this->template->subtpl_main->asset = $asset;
 	}
 }
 

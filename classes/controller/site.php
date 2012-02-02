@@ -30,7 +30,9 @@ class Controller_Site extends Sledge_Controller
 
 		// All pages and templates are hard coded for the CMS so this is all site specific.
 		// Find the requested page.
-		$uri = Request::detect_uri();
+		// If /ajax is in the uri then $ajax will be > 0. This will be used later to decide whether display the template in an iframe of the standard template.
+		$uri = Request::detect_uri();	
+		$uri = str_replace( '/ajax', '', $uri, &$ajax );
 
 		if ($uri != '')
 		{
@@ -68,14 +70,9 @@ class Controller_Site extends Sledge_Controller
 		$this->page = Page::factory( $page_type, $page );
 		
 		// Set the base template.
-		if ($page_type == 'cms' && !Arr::get( $_GET, 'state' ))
+		if ($page_type == 'cms' && !$ajax)
 		{
-			$this->template = View::factory( 'cms/standard_template' );
-			$title = $page->title;
-			$subtpl_topbar = View::factory( 'ui/subtpl_sites_topbar' );
-			
-			View::bind_global( 'title', $title );
-			View::bind_global( 'subtpl_topbar', $subtpl_topbar );
+			$this->template = View::factory( 'site/standard_template_editable' );
 		}
 		else
 		{
