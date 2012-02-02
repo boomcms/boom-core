@@ -130,9 +130,20 @@ class Controller_Cms_Assets extends Controller_Cms
 	{
 		if ($this->request->method() == 'POST')
 		{
-			var_dump( $_FILE );
-			exit;
+			foreach( $_FILES as $file)
+			{
+				if (in_array( $file['type'], Asset::$allowed_types ))
+				{
+					$asset = ORM::factory( 'asset' );
+					$asset->filename = $file['name'];
+					$asset->title = 'Untitled Asset';
+					$asset->save();
 			
+					Upload::save( $file, $asset->id, ASSETPATH );
+				}
+			}
+			
+			$this->request->redirect( '/cms/assets' );
 		}
 		else
 		{

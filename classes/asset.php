@@ -28,7 +28,7 @@ abstract class Asset {
 	* @access public
 	* @var array
 	*/
-	public static $allowed_types = array();
+	public static $allowed_types = array( 'image/jpeg' );
 	
 	public function __construct( Model_Asset $asset )
 	{
