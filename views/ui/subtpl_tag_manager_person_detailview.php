@@ -96,7 +96,7 @@
 							endforeach;
 						?>
 				
-						<button class="sledge-button ui-button-text-icon sledge-tagmanager-person-groups-add" onclick="document.location='/cms/people/add_group/<?= $person->id ?>'">
+						<button class="sledge-button ui-button-text-icon sledge-tagmanager-person-groups-add" onclick="document.location='/cms/people/add_group/<?= $person->id ?>'; return false;">
 							<span class="ui-button-icon-primary ui-icon ui-icon-circle-close"></span>
 							Add Group
 						</button>
