@@ -11,7 +11,7 @@
 
 	<div class="ui-helper-clearfix ui-tabs-panel ui-widget-content ui-corner-bottom">
 		<div id="sledge-page-actions" class="ui-helper-right">
-			<button id="sledge-tagmanager-create-template" class="sledge-button ui-button-text-icon">
+			<button id="sledge-tagmanager-create-template" class="sledge-button ui-button-text-icon" onclick="window.location='/cms/templates/add'">
 				<span class="ui-button-icon-primary ui-icon ui-icon-template"></span>
 				New template
 			</button>

@@ -29,13 +29,9 @@ class Controller_Cms_People extends Controller_Cms
 		$id = preg_replace( "/[^0-9]+/", "", $id );
 		
 		$person = ORM::factory( 'person', $id );
-		
-		$v = ORM::factory( 'version_person' );
-		$v->firstname = Arr::get( 'post', 'firstname', null );
-		$v->lastname = Arr::get( 'post', 'firstname', null );		
-		$v->emailaddress = Arr::get( 'post', 'firstname', null );
-		
-		$person = $v;
+		$person->firstname = Arr::get( 'post', 'firstname', null );
+		$person->lastname = Arr::get( 'post', 'firstname', null );		
+		$person->emailaddress = Arr::get( 'post', 'firstname', null );
 		$person->save();				
 	}
 	
@@ -64,12 +60,9 @@ class Controller_Cms_People extends Controller_Cms
 		}
 		else
 		{
-			$v = View::factory( 'ui/subtpl_peoplemanager_create_person' );
-			$v->groups = ORM::factory( 'group' )->find_all();
-			echo $v;
+			$this->template->subtpl_main = View::factory( 'ui/subtpl_peoplemanager_create_person' );
+			$this->template->subtpl_main->groups = ORM::factory( 'group' )->find_all();
 		}	
-		
-		exit;
 	}
 	
 	public function action_add_group()

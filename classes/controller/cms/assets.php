@@ -111,8 +111,7 @@ class Controller_Cms_Assets extends Controller_Cms
 		}
 		else
 		{
-			echo View::factory( 'ui/subtpl_assetmanager_upload_assets' );
-			exit;
+			$this->template->subtpl_main = View::factory( 'ui/subtpl_assetmanager_upload_assets' );
 		}
 	}
 	
