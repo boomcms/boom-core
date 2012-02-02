@@ -190,7 +190,7 @@ class Controller_Cms_People extends Controller_Cms
 	public function action_index()
 	{	
 		$this->template->subtpl_main = View::factory( 'ui/tpl_people_manager' );
-		$this->template->subtpl_main->people = ORM::factory( 'person' )->find_all();
+		$this->template->subtpl_main->people = ORM::factory( 'person' )->where( 'deleted', '=', 'false' )->find_all();
 	}
 	
 }
