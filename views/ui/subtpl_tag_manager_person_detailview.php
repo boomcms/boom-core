@@ -195,10 +195,6 @@
 					?>
 					</tbody>
 				</table>
-
-				<p>
-					<button class="sledge-button sledge-detailview-person-add-permission" rel="<?=$person->rid?>">Add permission</button>
-				</p>
 			</div>
 
 			<br class="ui-helper-clear" />
