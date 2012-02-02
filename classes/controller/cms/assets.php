@@ -179,8 +179,15 @@ class Controller_Cms_Assets extends Controller_Cms
 		$asset_id = $this->request->param( 'id' );
 		$asset = ORM::factory( 'asset', $asset_id );
 		
-		$this->template->subtpl_main = View::factory( 'ui/subtpl_tag_manager_asset_detailview' );
-		$this->template->subtpl_main->asset = $asset;
+		if ($asset->loaded())
+		{
+			$this->template->subtpl_main = View::factory( 'ui/subtpl_tag_manager_asset_detailview' );
+			$this->template->subtpl_main->asset = $asset;
+		}
+		else
+		{
+			Request::factory( 'error/404' )->execute();
+		}
 	}
 }
 
