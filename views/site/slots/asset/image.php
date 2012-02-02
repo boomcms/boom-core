@@ -9,6 +9,6 @@
 ?>
 <p>
 	<?	
-		echo "<img src='/asset/", $asset->instance()->id, "/200/200/85/0' alt='", htmlspecialchars($asset->instance()->description), "'>";
+		echo "<img src='/asset/view/", $asset->instance()->id, "/200/200/85/0' alt='", htmlspecialchars($asset->instance()->description), "'>";
 	?>
 </p>
