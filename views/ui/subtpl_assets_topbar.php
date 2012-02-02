@@ -3,7 +3,7 @@
         <div id="sledge-topbar-useractions">
                 <ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all" style="border:0;margin-top:1px;">
                         <li class="ui-state-default ui-corner-top"><a href="#">Profile</a></li>
-                        <li class="ui-state-default ui-corner-top"><a href="/cms/login/logout">Log out</a></li>
+                        <li class="ui-state-default ui-corner-top"><a href="/cms/logout">Log out</a></li>
                 </ul>
         </div>
 
