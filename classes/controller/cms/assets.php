@@ -137,6 +137,9 @@ class Controller_Cms_Assets extends Controller_Cms
 					$asset = ORM::factory( 'asset' );
 					$asset->filename = $file['name'];
 					$asset->title = 'Untitled Asset';
+					
+					// TODO: this needs to work for any asset type.
+					$asset->type = 'image';
 					$asset->save();
 			
 					Upload::save( $file, $asset->id, ASSETPATH );
