@@ -101,7 +101,7 @@ class Controller_Site extends Sledge_Controller
 		if (Request::initial()->method() == 'POST')
 		{
 			$postbox = Arr::get( $_POST, 'postbox' );
-			$controller = new ReflectionClass( "Controller_Postbox" );
+			$controller = new ReflectionClass( "Controller_Form" );
 
 			if ($controller->hasMethod( "action_$postbox" ))
 			{
