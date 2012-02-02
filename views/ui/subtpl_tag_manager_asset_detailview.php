@@ -1,6 +1,6 @@
 <div id="sledge-asset-detailview">
 
-	<form onsubmit="return false;">
+	<form action="/asset/save/<?= $asset->id?>" method='post' id="asset-save" <? //onsubmit="return false;"?>>
 
 		<input type="hidden" name="id" id="asset_id" value="<?= $asset->id?>" />
 		<input type="hidden" name="tags" value="<?=implode(',', $asset->tags())?>" />
@@ -19,11 +19,11 @@
 
 			<div class="ui-tabs-panel ui-widget-content ui-helper-left">
 
-				<a href="/asset/<?= $asset->id?>/600/500" 
+				<a href="/asset/view/<?= $asset->id?>/600/500" 
 					title="<?= $asset->title?>" 
 					title="Click for larger view" 
 					class="ui-helper-left sledge-asset-preview">
-					<img class="ui-state-active ui-corner-all" src="/asset/<?= $asset->id?>/160">
+					<img class="ui-state-active ui-corner-all" src="/asset/view/<?= $asset->id?>/160">
 				</a>
 
 			</div>
@@ -73,7 +73,7 @@
 					<tr>
 						<td>Visible from</td>
 						<td>
-							<input type="text" name="visiblefrom_timestamp" class="sledge-datepicker sledge-input" value="<?= date('d F Y', $asset->visible_from);?>" />
+							<input type="text" name="visible_from" class="sledge-datepicker sledge-input" value="<?= date('d F Y', $asset->visible_from);?>" />
 						</td>
 					</tr>
 				</table>

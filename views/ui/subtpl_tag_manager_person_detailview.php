@@ -23,11 +23,11 @@
 				<?
 					if ($person->image->loaded()):
 						?>
-							<a href="/asset/<?=$person->image->id;?>/600" 
+							<a href="/asset/view/<?=$person->image->id;?>/600" 
 								title="<?= $person->getName() ?>" 
 								title="Click for larger view" 
 								class="ui-helper-left sledge-asset-preview">
-								<img class="ui-state-active ui-corner-all" src="/asset/<?=$person->image->id;?>/160">
+								<img class="ui-state-active ui-corner-all" src="/asset/view/<?=$person->image->id;?>/160">
 							</a>
 						<?
 					endif;
