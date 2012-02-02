@@ -2,7 +2,7 @@
 
 	<form onsubmit="return false;">
 
-		<input type="hidden" name="id" value="<?= $asset->id?>" />
+		<input type="hidden" name="id" id="asset_id" value="<?= $asset->id?>" />
 		<input type="hidden" name="tags" value="<?=implode(',', $asset->tags())?>" />
 		<input type="hidden" name="old_visiblefrom_timestamp" id="old_visiblefrom_timestamp" value="<?=date("Y-m-d H:i:s", $asset->visible_from)?>" />
 		<input type="hidden" name="old_ref_status_rid" id="old_ref_status_rid" value="<?=$asset->status?>" />
@@ -138,7 +138,7 @@
 					<span class="ui-button-icon-primary ui-icon ui-icon-circle-close"></span>
 					Delete
 				</button>
-				<button class="sledge-button ui-button-text-icon sledge-tagmanager-asset-download" rel="<?=$asset->id?>">
+				<button class="sledge-button ui-button-text-icon sledge-tagmanager-asset-download" id="sledge-tagmanager-download-asset">
 					<span class="ui-button-icon-primary ui-icon ui-icon-arrowreturn-1-s"></span>
 					Download
 				</button>

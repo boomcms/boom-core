@@ -118,4 +118,24 @@ class Model_Asset extends ORM_Versioned implements Interface_Taggable {
 		
 		return $this->_tags;
 	}
+	
+	/**
+	* Find the mimetype of the asset file.
+	*
+	* @return string Mimetype string.
+	*/
+	public function get_mime()
+	{
+		return File::mime( ASSETPATH . $this->id );
+	}
+	
+	/**
+	* Get the size of the asset file.
+	*
+	* @return int size in bytes
+	*/
+	public function get_filesize()
+	{
+		return filesize( ASSETPATH . $this->id );
+	}
 }

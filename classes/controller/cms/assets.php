@@ -74,26 +74,51 @@ class Controller_Cms_Assets extends Controller_Cms
 	public function action_download()
 	{
 		$asset_ids = explode( ",", Arr::get( $_GET, 'assets' ) );
-		$method = Arr::get( $_GET, 'method' );
+		$assets = count( $asset_ids );
 		
-		// Do the download.
-		if ($method == 'zip')
+		if ($assets > 1 )
 		{
-			$archive = new ZipArchive();
-			
-			foreach ($asset_ids as $asset_id )
-			{
-				$asset = ORM::factory( 'asset', $asset_id );
-				if ($asset->loaded())
-				{
-					$archive->addFile( ASSETPATH . $asset->id, $asset->filename );
-				}
-			}
-			
-			$archive->close();
-		}
+			// Multi-asset download.
+			$method = Arr::get( $_GET, 'method' );
 		
-		// TODO: Zip download.		
+			// Do the download.
+			if ($method == 'zip')
+			{
+				$archive = new ZipArchive();
+			
+				foreach ($asset_ids as $asset_id )
+				{
+					$asset = ORM::factory( 'asset', $asset_id );
+					if ($asset->loaded())
+					{
+						$archive->addFile( ASSETPATH . $asset->id, $asset->filename );
+					}
+				}
+			
+				$archive->close();
+			}
+		
+			// TODO: Zip download.	
+		}
+		else if ($assets === 1)
+		{
+			// Download a single asset.
+			$asset = ORM::factory( 'asset', $asset_ids[0] );
+			if ($asset->loaded())
+			{
+		        header("Expires: ".gmdate("D, d M Y H:i:s",time()+(3600*7))." GMT\n");
+		        header("Content-Type: ". $asset->get_mime() ."\n");
+		        header("Content-Transfer-Encoding: binary\n");
+		        header("Content-Length: ".($asset->get_filesize()+ob_get_length()).";\n");
+		        header('Content-Disposition: attachment; filename="'.basename($asset->filename)."\"\n\n");
+		        ob_end_flush();
+
+		        readfile( ASSETPATH . $asset->id );
+		        exit();
+			}	
+		}	
+		
+		exit;
 	}
 	
 	/**
