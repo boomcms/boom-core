@@ -35,6 +35,4 @@
 			</tr>
 		</tbody>
 	</table>
-	
-<input type='submit' />
 </form>

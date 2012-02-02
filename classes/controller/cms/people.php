@@ -60,8 +60,10 @@ class Controller_Cms_People extends Controller_Cms
 		}
 		else
 		{
-			$this->template->subtpl_main = View::factory( 'ui/subtpl_peoplemanager_create_person' );
-			$this->template->subtpl_main->groups = ORM::factory( 'group' )->find_all();
+			$v = View::factory( 'ui/subtpl_peoplemanager_create_person' );
+			$v->groups = ORM::factory( 'group' )->find_all();
+			echo $v;
+			exit;
 		}	
 	}
 	
