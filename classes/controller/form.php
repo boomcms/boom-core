@@ -7,13 +7,26 @@
 * @author Hoop Associates	www.thisishoop.com	mail@hoopassociates.co.uk
 * @copyright 2011, Hoop Associates
 */
-class Controller_Form extends Kohana_Controller
-{
-	
+class Controller_Form extends Controller_Site
+{	
+	/**
+	* Controller method for the contact-us form.
+	*
+	* Contact Us has 3 inputs:
+	* name - text
+	* email - text
+	* message - text
+	*/
 	public function action_contact()
 	{
-		exit;
+		$name = Arr::get( $_POST, 'name' );
+		$email = Arr::get( $_POST, 'email' );
+		$message = Arr::get( $_POST, 'message' );
+				
+		// Not going to bother doing validation etc. at the moment - just want to get forms working.
+		mail( 'robt@hoopassociates.co.uk', 'Contact Us Form', "Name: $name\nEmail: $email\nMessage: $message" );
 		
+		$this->template->sent = true;	
 	}
 	
 	public function action_search()

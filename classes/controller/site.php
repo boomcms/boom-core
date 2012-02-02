@@ -96,7 +96,11 @@ class Controller_Site extends Sledge_Controller
 		* Ultimately this should go as a different controller method using routing rules (with a callback function)
 		* to route forms to a the different controller.
 		*
-		* This way will do for now though. But odn't forget to change me!
+		* This way will do for now though. But don't forget to change me!
+		*
+		* This is a way of ensuring that forms, such as the contact us page, will work whichever URL they use.
+		* We could conceivably create a new page with the contact us form template and it would still work.
+		*
 		*/
 		if (Request::initial()->method() == 'POST')
 		{
@@ -105,8 +109,7 @@ class Controller_Site extends Sledge_Controller
 
 			if ($controller->hasMethod( "action_$postbox" ))
 			{
-				$method = $controller->getMethod( "action_$postbox" );
-				$method->invoke( $controller->newInstance( $this->request, $this->response ) );
+				Request::factory( "form/$postbox" )->post( array_keys( $_POST ), array_values( $_POST ) )->execute();
 			}
 		}
 	}
