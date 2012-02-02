@@ -129,14 +129,30 @@ class Controller_Cms_People extends Controller_Cms
 	
 	public function action_delete()
 	{
-		$people = Arr::get( $_POST, 'people' );
-	
-		foreach( $people as $person_id )
+		if ($this->request->method() == 'POST')
 		{
-			$person_id = str_replace( "person_", "", $person_id );
-			$person = ORM::factory( 'person', $person_id );
-			$person->delete();
-		}	
+			$people = Arr::get( $_POST, 'people' );
+			
+			if (is_array( $people ))
+			{	
+				foreach( $people as $person_id )
+				{
+					$person_id = str_replace( "person_", "", $person_id );
+					$person = ORM::factory( 'person', $person_id );
+					$person->delete();
+				}	
+			}
+			else
+			{
+				$person_id = str_replace( "person_", "", $people );
+				$person = ORM::factory( 'person', $person_id );
+				$person->delete();
+			}				
+		}
+		else
+		{
+			echo View::factory( 'ui/subtpl_peoplemanager_confirm_delete' );
+		}
 		
 		exit;
 	}

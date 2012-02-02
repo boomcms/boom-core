@@ -7,7 +7,7 @@
 
 	<form onsubmit="return false;">
 		
-		<input type="hidden" name="person_id" value="<?=$person->id;?>" />
+		<input type="hidden" name="person_id" id='person_id' value="<?=$person->id;?>" />
 		<input type="hidden" name="groups" value="<?=implode(',', $person->groups->find_all()->as_array())?>" />
 
 		<div class="sledge-tabs ui-helper-clearfix">
@@ -208,7 +208,7 @@
 					<span class="ui-button-icon-primary ui-icon ui-icon-disk"></span>
 					Save
 				</button>
-				<button class="sledge-button ui-button-text-icon sledge-tagmanager-person-delete" rel="<?=$person->rid?>">
+				<button class="sledge-button ui-button-text-icon sledge-tagmanager-person-delete" id="sledge-tagmanager-delete-person" rel="<?=$person->rid?>">
 					<span class="ui-button-icon-primary ui-icon ui-icon-circle-close"></span>
 					Delete
 				</button>
