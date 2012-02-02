@@ -142,6 +142,10 @@
 					<span class="ui-button-icon-primary ui-icon ui-icon-arrowreturn-1-s"></span>
 					Download
 				</button>
+				<button class="sledge-button ui-button-text-icon sledge-tagmanager-asset-replace" id="sledge-tagmanager-replace-asset">
+					<span class="ui-button-icon-primary ui-icon ui-icon-disk"></span>
+					Replace
+				</button>
 			</div>
 		</div>
 	
