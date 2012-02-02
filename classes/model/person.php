@@ -42,11 +42,13 @@ class Model_Person extends ORM_Versioned {
 	*/
 	public function add_group( $group )
 	{
-		if (is_int( $group ))
+		if (!is_object( $group ))
 		{
 			// Even though we only need the group ID we load the group to check that it exists.
 			$group = ORM::factory( 'group', $group );
 		}
+		
+		var_dump( $group );
 		
 		if ($group instanceof Model_Group && $group->loaded())
 		{
