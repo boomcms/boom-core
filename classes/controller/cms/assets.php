@@ -103,9 +103,10 @@ class Controller_Cms_Assets extends Controller_Cms
 	*/
 	public function action_upload()
 	{
-		if ($this->request->method == 'POST')
+		if ($this->request->method() == 'POST')
 		{
-			
+			var_dump( $_FILE );
+			exit;
 			
 		}
 		else
