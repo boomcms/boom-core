@@ -204,7 +204,7 @@
 			<br class="ui-helper-clear" />
 
 			<div style="padding: .8em 0 .8em .8em;border-color:#ccc;border-width:1px 0 0 0;" class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
-				<button class="sledge-button ui-button-text-icon sledge-tagmanager-person-save" rel="<?=$person->rid?>">
+				<button class="sledge-button ui-button-text-icon sledge-tagmanager-person-save" rel="<?=$person->rid?>" id='sledge-tagmanager-save-person'>
 					<span class="ui-button-icon-primary ui-icon ui-icon-disk"></span>
 					Save
 				</button>
