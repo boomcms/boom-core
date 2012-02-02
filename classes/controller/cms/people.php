@@ -100,12 +100,9 @@ class Controller_Cms_People extends Controller_Cms
 							->where( 'person_group.person_id', '=', $person->pk() )
 							->find_all();
 							
-				$v = View::factory( 'ui/subtpl_person_addgroup' );
-				$v->person = $person;
-				$v->groups = $groups;
-				
-				echo $v;
-				exit;
+				$this->template->subtpl_main = View::factory( 'ui/subtpl_person_addgroup' );
+				$this->template->subtpl_main->person = $person;
+				$this->template->subtpl_main->groups = $groups;
 			}
 		}
 	}
