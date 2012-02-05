@@ -143,7 +143,7 @@
 						<td width="180">Template:</td>
 						<td>
 							<? if ($person->can( 'edit', $page, 'template_id' )): ?>
-								<select name="template">
+								<select name="template_id">
 									<?
 										foreach ($templates as $tpl):
 											if ($tpl->id == $page->template_id):
