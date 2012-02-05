@@ -23,6 +23,8 @@
 	<link rel="stylesheet" type="text/css" href="/sledge/css/ui-smoothness/jquery-ui.css" />
 	<link rel="stylesheet" type="text/css" href="/sledge/css/sledge.ui.css" />
 	<link rel="stylesheet" type="text/css" href="/sledge/css/cms.css" />
+
+	<base target="_top" />
 </head>
 <body>
 	<div id="sledge-wysiwyg-toolbar" class="mceEditor o2k7Skin o2k7SkinSilver"></div>
