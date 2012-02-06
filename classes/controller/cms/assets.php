@@ -122,6 +122,49 @@ class Controller_Cms_Assets extends Controller_Cms
 	}
 	
 	/**
+	* Asset replace controller
+	*
+	* @uses Asset::is_supported()
+	*/
+	public function action_replace()
+	{
+		$asset_id = preg_replace( '/[^0-9]+/', '', $this->request->param( 'id' ) );
+		$asset = ORM::factory( 'asset', $asset_id );
+				
+		if ($asset->loaded())
+		{
+			if ($this->request->method() == 'POST')
+			{
+				if (isset( $_FILES['file'] ))
+				{
+					$file = $_FILES['file'];
+					
+					if (in_array( $file['type'], Asset::$allowed_types ))
+					{
+						$asset->filename = $file['name'];
+					
+						// TODO: this needs to work for any asset type.
+						$asset->type = 'image';
+						$asset->save();
+			
+						Upload::save( $file, $asset->id, ASSETPATH );
+					}
+				}
+			
+				$this->request->redirect( '/cms/assets' );
+			}
+			else
+			{
+				$v = View::factory( 'ui/subtpl_assetmanager_replace_asset' );
+				$v->asset = $asset;
+				echo $v;
+				
+				exit;
+			}
+		}
+	}
+	
+	/**
 	* Asset upload controller
 	*
 	* @uses Asset::is_supported()
@@ -153,12 +196,6 @@ class Controller_Cms_Assets extends Controller_Cms
 			echo View::factory( 'ui/subtpl_assetmanager_upload_assets' );
 			exit;
 		}
-	}
-	
-	
-	public function action_replace()
-	{
-
 	}
 
 	public function action_edit()
