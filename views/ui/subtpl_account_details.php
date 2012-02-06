@@ -4,6 +4,13 @@
  * @package Template
  * @author Hoop Associates	www.thisishoop.com	mail@hoopassociates.co.uk
  * @copyright 2011, Hoop Associates
+ *
+ * Rendered by Controller_Cms_Account::action_profile()
+ * Submits to Controller_Cms_Account::action_profile()
+ *
+ * Variables:
+ *	$actual_person Instance of Model_Person - The current logged in user.
+ *	$people Array of Model_Person objects - For selecting a user to mimick
  */
 ?>
 
