@@ -351,6 +351,7 @@ class Model_Page extends ORM_Versioned {
 											->or_where( 'chunk_page.page_vid', '=', 0 )
 											->where_close()										
 											->where( 'slotname', '=', $slotname )
+											->order_by( 'page_vid', 'desc' )
 											->find();
 		}
 		

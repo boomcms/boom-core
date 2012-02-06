@@ -225,6 +225,44 @@ class Controller_Cms_Page extends Controller_Cms
 			}
 		}
 		
+		// Asset slots
+		// Text slots first.
+		foreach( $data->slots->asset as $name => $target )
+		{
+			$target = (int) $target;
+						
+			// Get the current slot.
+			$current = ORM::factory( "chunk_asset" )
+											->with( "chunk" )
+											->on( 'chunk.active_vid', '=', "chunk_asset" . ".id" )
+											->join( 'chunk_page' )
+											->on( 'chunk_page.chunk_id', '=', 'chunk.id' )
+											->where_open()
+											->where( 'chunk_page.page_vid', '=', $old_vid )	
+											->or_where( 'chunk_page.page_vid', '=', 0 )
+											->where_close()									
+											->where( 'slotname', '=', $name )
+											->find();
+			
+			if ($current->asset_id != $target && $target != 0)
+			{
+				// Create a new slot.
+				$chunk_asset = ORM::factory( 'chunk_asset' );
+				$chunk_asset->asset_id = $target;
+				$chunk_asset->save();
+				
+				$chunk = ORM::factory( 'chunk' );
+				$chunk->slotname = $name;
+				$chunk->active_vid = $chunk_asset->id;
+				$chunk->save();
+				
+				$chunk_page = ORM::factory( 'chunk_page' );
+				$chunk_page->chunk_id = $chunk->id;
+				$chunk_page->page_vid = $page->version->id;
+				$chunk_page->save();
+			}
+		}
+		
 		// Are we publishing this version?
 		if (isset( $data->publish ))
 		{

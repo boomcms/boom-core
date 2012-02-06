@@ -25,8 +25,13 @@ class Page_CMS extends Page
 			$html = $htmlbefore . $slot->show() . $htmlafter;
 		else
 			$html = $htmlbefore . $slot->show_default() . $htmlafter;
+			
+		if ($type == 'asset')
+			$target = $slot->asset_id;
+		else
+			$target = 0;
 		
-		echo $this->addcmsclasses( $html, $type, $slotname );
+		echo $this->addcmsclasses( $html, $type, $slotname, $target );
 	}	
 	
 	/**
@@ -34,7 +39,7 @@ class Page_CMS extends Page
 	* Ripped from sledge2. Needs a rewrite.
 	* This makes the slot editable.
 	*/
-	private function addcmsclasses($html, $slottype, $slotname) {
+	private function addcmsclasses($html, $slottype, $slotname, $target) {
 		$disablededitoroptions = '';
 		$editor = 'tinyMCE';
 		$cmsclasses = '';
@@ -63,11 +68,11 @@ class Page_CMS extends Page
 			$cmsclasses = "{" . 
 			$slottype . " " . 
 			$slotname . " "; 
-			//if (isset($data['target']) and $data['target']->rid) {
-			//	$cmsclasses .= $data['target']->rid . " "; 
-			//} else {
-			///	$cmsclasses .= "0 ";
-			//}
+			if ($target) {
+				$cmsclasses .= $target . " "; 
+			} else {
+				$cmsclasses .= "0 ";
+			}
 			//$cmsclasses .= $data['template'];
 			$cmsclasses .= "}";
 		}
