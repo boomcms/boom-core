@@ -37,7 +37,7 @@
 								<option value="">- Select a user to mimic -</option>
 								<?
 									foreach ($people as $p):
-										if ($p->id !== $actual_person->id && $p->id !== $person->id):
+										if ($p->id !== $actual_person->id):
 											echo "<option value='$p->id'";
 						
 											if ($p->id == $person->rid) 
@@ -60,7 +60,7 @@
 			?>
 			<tr>
 				<td><label for="firstname">First name:</label></td>
-				<td><?= Form::input('firstname', $actual_person->firstname, array('size' => 35 )) ?></td>
+				<td><?= Form::input('firstname', $person->firstname, array('size' => 35 )) ?></td>
 			</tr>
 			<tr>
 				<td></td>
@@ -70,7 +70,7 @@
 			</tr>
 			<tr>
 				<td><label for="lastname">Last name:</label></td>
-				<td><?= Form::input('lastname', $actual_person->lastname, array('size' => 35 )) ?></td>
+				<td><?= Form::input('lastname', $person->lastname, array('size' => 35 )) ?></td>
 			</tr>
 			<tr>
 				<td></td>
