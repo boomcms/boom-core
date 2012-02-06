@@ -60,17 +60,17 @@
 					<tr>
 						<td>Status</td>
 						<td>
-							<select name="ref_status_rid">
+							<select name="status">
 								<?
 									echo "<option value='" . Model_Asset::STATUS_PUBLISHED . "'";
-									if ($asset->status === Model_Asset::STATUS_PUBLISHED)
+									if ($asset->status == Model_Asset::STATUS_PUBLISHED)
 									{
 										echo " selected='selected'";
 									}
 									echo ">Published</option>";
 
 									echo "<option value='" . Model_Asset::STATUS_UNPUBLISHED . "'";
-									if ($asset->status === Model_Asset::STATUS_UNPUBLISHED)
+									if ($asset->status == Model_Asset::STATUS_UNPUBLISHED)
 									{
 										echo " selected='selected'";
 									}

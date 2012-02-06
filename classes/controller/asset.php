@@ -29,8 +29,11 @@ class Controller_Asset extends Kohana_Controller
 	public function action_view()
 	{
 
-		$this->asset = Asset::factory( $this->asset->type, $this->asset );
-		echo $this->asset->show();
+		if ($this->asset->loaded() && $this->asset->status == Model_Asset::STATUS_PUBLISHED)
+		{
+			$this->asset = Asset::factory( $this->asset->type, $this->asset );	
+			echo $this->asset->show();
+		}
 			
 		exit();
 	}
@@ -40,6 +43,7 @@ class Controller_Asset extends Kohana_Controller
 		$this->asset->title = Arr::get( $_POST, 'title' );
 		$this->asset->filename = Arr::get( $_POST, 'filename' );
 		$this->asset->description = Arr::get( $_POST, 'description' );
+		$this->asset->status = Arr::get( $_POST, 'status' );
 		$this->asset->visible_from = strtotime( Arr::get( $_POST, 'visible_from' ) );
 		$this->asset->save();
 		
