@@ -1,3 +1,12 @@
+<?
+/**
+* Subtemplate to display information about an asset.
+*
+* Rendered by: Controller_Cms_Assets::action_view()
+* Variables:
+*	$asset - An instance of Model_Asset representing the asset being viewed.
+*/
+?>
 <div id="sledge-asset-detailview">
 
 	<form action="/asset/save/<?= $asset->id?>" method='post' id="asset-save" <? //onsubmit="return false;"?>>
