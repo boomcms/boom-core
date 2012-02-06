@@ -1,12 +1,27 @@
 <?php
 
 /**
-* This model handles page MPTT records and associated methods. We also have an MPTT library. The library has functions which relate to the MPTT tree as a whole - this model should be used in relation to a particular record in the MPTT tree.
+* We use a 3rd party Kohana module to handle mptt trees.
+* @see https://github.com/evopix/orm-mptt
+*
+* Table name: page_mptt
+* 
+*************************** Table Columns ************************
+****	Name			****	Data Type	****	Description					
+****	page_id			****	integer		****	ID of the page the MPTT values belong to.
+****	lft				****	integer		****	The page's MPTT left value (left is a reserved word).
+****	rgt				****	integer		****	The page's MPTT right values (right is a reserved word).
+****	parent_id		****	integer		****	MPTT ID of the parent page. Used to recalculate the tree.
+****	lvl				****	integer		****	The page's level in the tree.
+****	scope			****	integer		****	This appears to allow multiple trees to be stored in the same table.
+****	id				****	integer		****	Primary key. auto increment.
+******************************************************************
+*
 * @package Models
 * @author Hoop Associates	www.thisishoop.com	mail@hoopassociates.co.uk
 * @copyright 2011, Hoop Associates
-* @link http://www.sitepoint.com/hierarchical-data-database-2/
-* @todo MPTT trees currently don't support child order policies.
+* @see http://www.sitepoint.com/hierarchical-data-database-2/
+* @see
 *
 */
 class Model_Page_Mptt extends ORM_MPTT {

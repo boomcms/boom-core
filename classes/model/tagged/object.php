@@ -19,6 +19,16 @@
 *
 * @todo The second hurdle could be overcome by having models which inherit from this one, but we'd still have the first problem. Having models inherit from this one would definitely be cool though.
 *
+* Table name: tagged_objects
+* 
+*************************** Table Columns ************************
+****	Name			****	Data Type	****	Description		
+****	tag_id			****	integer		****	The ID of the tag.	
+****	object_type		****	string		****	The type of object which is tagged (page, asset, etc.)
+****	object_id		****	integer		****	The ID of the tagged object.
+******************************************************************
+*
+*
 * @package Models
 * @author Hoop Associates	www.thisishoop.com	mail@hoopassociates.co.uk
 * @copyright 2011, Hoop Associates

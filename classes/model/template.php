@@ -2,10 +2,19 @@
 
 /**
 *
+* Table name: template
+* This table is versioned! (Does it really need to be?)
+*
+*************************** Table Columns ************************
+****	Name			****	Data Type	****	Description		
+****	id				****	integer		****	Primary key. auto increment.			
+****	active_vid		****	integer		****	The ID of the current version.
+****	sequence		****	integer		****	Not sure this is used.
+******************************************************************
+*
 * @package Models
 * @author Hoop Associates	www.thisishoop.com	mail@hoopassociates.co.uk
 * @copyright 2011, Hoop Associates
-* @todo Work out which methods we actually need from hoopbasepagemodel and implement them nicely. Then just extend ORM 
 *
 */
 class Model_Template extends ORM_Versioned {

@@ -2,6 +2,27 @@
 
 /**
 *
+* The version table for people.
+*
+* Table name: person_v
+* This is stored in a different database!
+* 
+*************************** Table Columns ************************
+****	Name							****	Data Type	****	Description		
+****	id								****	integer		****	Primary key. auto increment.			
+****	rid								****	integer		****	ID of the person that this version belongs to.
+****	firstname						****	string		****	The person's first name.
+****	lastname						****	string		****	The person's last name.
+****	emailaddress					****	string		****	Unique field, usually the column which is used to find user details.
+****	password						****	string		****	Hash password.
+****	consecutive_failed_login_counter****	integer		****	Number of failed logins in a row. Used for locking an account after 5 failed logins. This should perhaps not be versioned?
+****	enabled							****	boolean		****	Set to false to prevent the account being used.
+****	audit_person					****	integer		****	Person ID of the user who created the version.
+****	audit_time						****	integer		****	Unix timestamp of when the version was created.
+****	deleted							****	boolean		****	Whether the group has been deleted.
+****	image_id						****	integer		****	Asset ID of the user's profile image.
+******************************************************************
+*
 * @package Models
 * @author Hoop Associates	www.thisishoop.com	mail@hoopassociates.co.uk
 * @copyright 2011, Hoop Associates

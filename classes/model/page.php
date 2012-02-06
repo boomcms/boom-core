@@ -2,10 +2,22 @@
 
 /**
 *
+* Table name: page
+* This table is versioned!
+*
+*************************** Table Columns ************************
+****	Name			****	Data Type	****	Description					
+****	id				****	integer		****	Primary key, auto increment
+****	active_vid		****	string		****	ID of the current version.
+****	sequence		****	string		****	Not sure, think it's used for manually ordering pages.
+****	published_vid	****	integer		****	The ID of the published version.
+****	visible			****	boolean		****	Whether the page is visible or invisible.
+******************************************************************
+*
+* @see Model_Version_Page
 * @package Models
 * @author Hoop Associates	www.thisishoop.com	mail@hoopassociates.co.uk
 * @copyright 2011, Hoop Associates
-* @todo Work out which methods we actually need from hoopbasepagemodel and implement them nicely. Then just extend ORM 
 *
 */
 class Model_Page extends ORM_Versioned {

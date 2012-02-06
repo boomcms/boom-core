@@ -2,6 +2,17 @@
 
 /**
 *
+* Table name: person
+* This table is versioned!
+* This table is stored in a different database.
+*
+*************************** Table Columns ************************
+****	Name			****	Data Type	****	Description					
+****	id				****	integer		****	Primary key, auto increment
+****	active_vid		****	integer		****	ID of the current version.
+******************************************************************
+*
+* @see Model_Version_Person
 * @package Models
 * @author Hoop Associates	www.thisishoop.com	mail@hoopassociates.co.uk
 * @copyright 2011, Hoop Associates

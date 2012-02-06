@@ -1,6 +1,19 @@
 <?php
 
 /**
+* Logs actions performed in the CMS.
+*
+*
+* Table name: activitylog
+*************************** Table Columns ************************
+****	Name			****	Data Type	****	Description					
+****	id				****	integer		****	Primary key, auto increment
+****	remotehost		****	string		****	The IP address the action was performed from. In the format aaa.bbb.ccc.ddd.
+****	activity		****	string		****	What the user did.
+****	note			****	string		****	Extra information relating to the action.
+****	person			****	integer		****	The person ID of the user performing the action
+****	time			****	integer		****	Unix timestamp of when the action occurred.
+******************************************************************
 *
 * @package Activitylog
 * @author Hoop Associates	www.thisishoop.com	mail@hoopassociates.co.uk

@@ -2,7 +2,18 @@
 
 /**
 * Asset Model
-* @package Asset
+*
+*
+* Table name: asset
+* This table is versioned. Full column list in Model_Version_Asset.
+*************************** Table Columns ************************
+****	Name			****	Data Type	****	Description					
+****	id				****	integer		****	Primary key, auto increment
+****	active_vid		****	integer		****	ID of the active version.
+******************************************************************
+*
+* @see Model_Version_Asset
+* @package Model
 * @author Hoop Associates	www.thisishoop.com	mail@hoopassociates.co.uk
 * @copyright 2011, Hoop Associates
 *

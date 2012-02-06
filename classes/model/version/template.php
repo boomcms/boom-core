@@ -2,6 +2,23 @@
 
 /**
 *
+* The version table for templates.
+*
+* Table name: template_v
+* 
+*************************** Table Columns ************************
+****	Name			****	Data Type	****	Description		
+****	id				****	integer		****	Primary key. auto increment.			
+****	rid				****	integer		****	ID of the template that this version belongs to.
+****	name			****	string		****	The name of the template.
+****	description		****	string		****	A description of the template. Shown in the template manager.
+****	filename		****	string		****	The template filename.
+****	visible			****	boolean		****	Whether the template is visible. Not sure this is needed.
+****	audit_person	****	integer		****	Person ID of the user who created the version.
+****	audit_time		****	integer		****	Unix timestamp of when the version was created.
+****	deleted			****	boolean		****	Whether the group has been deleted.
+******************************************************************
+*
 * @package Models
 * @author Hoop Associates	www.thisishoop.com	mail@hoopassociates.co.uk
 * @copyright 2011, Hoop Associates

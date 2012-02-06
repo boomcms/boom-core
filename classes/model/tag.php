@@ -2,10 +2,19 @@
 
 /**
 *
+* Table name: tag
+* This table is versioned!
+*
+*************************** Table Columns ************************
+****	Name			****	Data Type	****	Description		
+****	id				****	integer		****	Primary key. auto increment.			
+****	active_vid		****	integer		****	The ID of the current version.
+******************************************************************
+*
+* @see Model_Version_Tag
 * @package Models
 * @author Hoop Associates	www.thisishoop.com	mail@hoopassociates.co.uk
 * @copyright 2011, Hoop Associates
-* @todo Work out which methods we actually need from hoopbasepagemodel and implement them nicely. Then just extend ORM 
 *
 */
 class Model_Tag extends ORM_Versioned {
