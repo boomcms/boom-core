@@ -122,7 +122,12 @@ class Controller_Cms_Page extends Controller_Cms
 		exit;
 	}
 	
-	
+	/**
+	* Save the page.
+	* This needs a jolly good refactoring.
+	* This code looks like it could've come out of Sledge2, but it is actually new code.
+	* Sorry :(
+	*/
 	public function action_save()
 	{
 		$page = $this->_page;
@@ -216,7 +221,7 @@ class Controller_Cms_Page extends Controller_Cms
 				$chunk_page = ORM::factory( 'chunk_page' );
 				$chunk_page->chunk_id = $chunk->id;
 				$chunk_page->page_vid = $page->version->id;
-				$chunk_pagekljhljhg->save();
+				$chunk_page->save();
 			}
 		}
 		
