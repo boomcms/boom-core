@@ -179,6 +179,16 @@ class Controller_Cms_Page extends Controller_Cms
 				}
 			}
 		}
+		
+		// Change the page's primary URI.
+		if (isset( $data->uri ) && $data->uri != $page->get_primary_uri() && $this->person->can( 'edit', $page, 'uri' ))
+		{
+			$page_uri = ORM::factory( 'page_uri' );
+			$page_uri->uri = $data->uri;
+			$page_uri->page_id = $page->id;
+			$page_uri->primary_uri = true;
+			$page_uri->save();
+		}
 				
 		// Remember the old version ID.
 		$old_vid = $page->version->id;
