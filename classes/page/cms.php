@@ -21,13 +21,71 @@ class Page_CMS extends Page
 	{
 		$slot = $this->_page->get_slot( $type, $slotname );
 		
-		echo "<div id=\"sledge-chunk-slot-replace-me\" />";
-		
 		if ($slot->loaded())
-			echo $htmlbefore, $slot->show(), $htmlafter;
+			$html = $htmlbefore . $slot->show() . $htmlafter;
 		else
-			echo $htmlbefore, $slot->show_default(), $htmlafter;
+			$html = $htmlbefore . $slot->show_default() . $htmlafter;
 			
-		echo "</div>";
+		echo $this->addcmsclasses( $html, $type, $slotname );
 	}	
+	
+	/**
+	* Addcmsclasses method.
+	* Ripped from sledge2. Needs a rewrite.
+	* This makes the slot editable.
+	*/
+	private function addcmsclasses($html, $slottype, $slotname) {
+		$disablededitoroptions = '';
+		$editor = 'tinyMCE';
+		
+		if ($slottype == "text") {
+			$cmsclasses = "{" . 
+			$slottype . " " . 
+			$slotname . " " . 
+			$disablededitoroptions . 
+			$editor .
+			"}";
+		} elseif ($slottype == "linkset") {
+			$cmsclasses = "{" . 
+			$slottype . " " . 
+			$slotname . " " .
+			//$data['template'] .
+			"}";
+		} else if ($slottype == 'asset-caption') {
+			$cmsclasses = "{" .
+			$slottype . " " .
+			$slotname . " " .
+			$disablededitoroptions .
+			$editor .
+			"}";
+		} else {
+			$cmsclasses = "{" . 
+			$slottype . " " . 
+			$slotname . " "; 
+			//if (isset($data['target']) and $data['target']->rid) {
+			//	$cmsclasses .= $data['target']->rid . " "; 
+			//} else {
+			///	$cmsclasses .= "0 ";
+			//}
+			//$cmsclasses .= $data['template'] .	"}";
+		}
+
+		$pattern1 = "/^(.*?)class=\"([^\"]*)?chunk-slot([^\"]*)?\"/i";	// chunk-slot already defined, add cms classes on the matching tag
+		$pattern2 = "/^(.*?)class=\"([^\"]+)\"/i";			// class attribute already exists in container tag
+		$pattern3 = "/^(<[^>]+)>/";					// no class attribute in container tag
+
+		$replacement1 = "$1class=\"$2 chunk-slot$3 {$cmsclasses}\"";
+		$replacement2 = "$1class=\"$2 chunk-slot {$cmsclasses}\"";
+		$replacement3 = "$1 class=\"chunk-slot {$cmsclasses}\">";
+				
+		if (preg_match($pattern1, $html)) {
+			return preg_replace($pattern1, $replacement1, $html, 1);
+		} else if (preg_match($pattern2, $html)) {
+			return preg_replace($pattern2, $replacement2, $html, 1);
+		} else if (preg_match($pattern3, $html)) {
+			return preg_replace($pattern3, $replacement3, $html, 1);
+		} else {	
+			return $html;
+		}
+	}
 }
