@@ -247,10 +247,7 @@ class Controller_Cms_Page extends Controller_Cms
 											->on( 'chunk.active_vid', '=', "chunk_asset" . ".id" )
 											->join( 'chunk_page' )
 											->on( 'chunk_page.chunk_id', '=', 'chunk.id' )
-											->where_open()
-											->where( 'chunk_page.page_vid', '=', $old_vid )	
-											->or_where( 'chunk_page.page_vid', '=', 0 )
-											->where_close()									
+											->where( 'chunk_page.page_vid', '=', $old_vid )									
 											->where( 'slotname', '=', $name )
 											->find();
 			
