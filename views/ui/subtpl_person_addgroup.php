@@ -1,8 +1,17 @@
 <?php
-	# Copyright 2009, Hoop Associates Ltd
-	# Hoop Associates		www.thisishoop.com	 mail@hoopassociates.co.uk
+/**
+* Form to add a person to a group.
+*
+* Rendered by: Controller_Cms_People::action_add_group()
+*
+*********************** Variables **********************
+****	$person	****	Instance of Model_Person		****	The person being added to a group.
+****	$groups	****	Array of Model_Group instances	****	Array of groups the user doesn't already belong to.
+********************************************************
+*
+* @see Controller_Cms_People::action_add_group()
+*/
 ?>
-
 <div id="sledge-person-addgroup">
 
 	<form action="/cms/people/add_group/<?= $person->id ?>" method='post'>

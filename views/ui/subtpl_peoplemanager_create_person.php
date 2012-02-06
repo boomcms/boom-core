@@ -8,7 +8,7 @@
 *	$groups	****	Array of Model_Group instances
 ********************************************************
 *
-* @see Controller_Cms_Assets::action_replace()
+* @see Controller_Cms_People::action_add()
 */
 ?>
 <form method="post" action="/cms/people/add" id="sledge-tagmanager-create-person-form">
