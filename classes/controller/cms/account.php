@@ -172,13 +172,58 @@ class Controller_Cms_Account extends Kohana_Controller
 	*/
 	public function action_profile()
 	{
-		$v = View::factory( 'ui/subtpl_account_details' );
-		$v->person = Auth::instance()->get_user();
-		$v->actual_person = Auth::instance()->get_user();
-		$v->people = ORM::factory( 'person' )->find_all();
+		$person = Auth::instance()->get_user();
 		
-		echo $v;
-		exit;
+		if ( $this->request->method() == 'POST' )
+		{
+			$data = json_decode( Arr::get( $_POST, 'data' ));
+			
+			if ($data->firstname)
+			{
+				$person->firstname = $data->firstname;
+			}
+			
+			if ($data->lastname)
+			{
+				$person->lastname = $data->lastname;
+			}
+			
+			$password = $data->password;
+			$confirm = $data->confirm;
+			
+			if ($password && $password == $confirm)
+			{
+				$person->password = $password;
+			}
+			
+			$person->save();
+			
+			if ($person->can( 'manage people' ) && $data->switch_user)
+			{
+				$mimick_user = ORM::factory( 'person', $data->switch_user );
+				
+				if ($mimick_user->loaded())
+				{
+					Cookie::set( 'switch_person_id', $mimick_user->id );
+				}
+			}
+			else
+			{
+				 Cookie::delete( 'switch_person_id' );
+			}
+			
+			exit;
+		}
+		else
+		{
+			$v = View::factory( 'ui/subtpl_account_details' );
+			$v->person = $person;
+			$v->actual_person = Auth::instance()->get_user();
+			$v->people = ORM::factory( 'person' )->where( 'deleted', '=', false )->find_all();
+		
+			echo $v;
+			exit;
+		}
 	}
 	
 	public function after()

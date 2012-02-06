@@ -11,7 +11,7 @@
 	You can use this form to update your account details. If you leave the password fields blank your password will not be changed.
 </p>
 <div style="margin-top: 20px;">
-	<form id="update-details-form">
+	<form id="update-details-form" onsubmit='return false;'>
 		<table>
 			<?
 				if ($actual_person->can( 'manage people' )):
