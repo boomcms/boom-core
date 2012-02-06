@@ -10,7 +10,6 @@
  *	$people			****	Array of Model_Person objects	****	For selecting a user to mimick
  ********************************************************
  *
- * @see Controller_Cms_Account::action_profile()
  */
 ?>
 

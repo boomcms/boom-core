@@ -1,3 +1,15 @@
+<?php
+/**
+* Displays a page's revision history.
+*
+* Rendered by:	Controller_Cms_Page::action_revisions()
+*
+*********************** Variables **********************
+*	$page	****	Instance of Model_Page		****	The page being viewed.
+********************************************************
+*
+*/
+?>
 <div id="slege-page-revisions">
 	<div id="sledge-page-revisions-list">
 		<table width="100%">

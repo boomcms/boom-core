@@ -1,3 +1,17 @@
+<?php
+/**
+* Information tab of page settings.
+*
+* Rendered by:	Controller_Cms_Page_Settings::action_information()
+* Submits to:	Controller_Cms_Page::action_save()
+*
+*********************** Variables **********************
+*	$person	****	Instance of Model_Person	****	The active user.
+*	$page	****	Instance of Model_Page		****	The page being edited.
+********************************************************
+*
+*/
+?>
 <div id="sledge-pagesettings-information">
 
 	<table width="100%">

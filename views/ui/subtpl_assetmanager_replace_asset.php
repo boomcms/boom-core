@@ -5,7 +5,6 @@
 *
 * Rendered by: Controller_Cms_Assets::action_replace()
 *
-* @see Controller_Cms_Assets::action_replace()
 */
 ?>
 <div class="sledge-tabs">

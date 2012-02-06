@@ -1,13 +1,20 @@
 <?php
-	# Copyright 2009, Hoop Associates Ltd
-	# Hoop Associates   www.thisishoop.com	 mail@hoopassociates.co.uk
+/**
+* The CMS people manager.
+*
+* Rendered by:	Controller_Cms_People::action_index()
+*
+*********************** Variables **********************
+*	$people	****	Array of Model_Person instances	****	Array of people to manager.
+********************************************************
+*
+*/
 ?>
+<?= new View('ui/subtpl_tag_manager_search')?>
 <div id="sledge-tagmanager">
-
-
-	<div class="sledge-tagmanager-main ui-helper-right">
+	<div class="sledge-tagmanager-main ui-helper-left">
 		<div class="sledge-tagmanager-body ui-helper-clearfix">
-			<div class="sledge-tagmanager-rightpane">
+			<div class="sledge-tagmanager-leftpane">
 				<div class="content">
 					<ul class="groups tree">
 					<?
@@ -33,10 +40,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="sledge-tagmanager-sidebar ui-helper-left">
-
-		<?= new View('ui/subtpl_tag_manager_search');?>
-
+	<div class="sledge-tagmanager-sidebar ui-helper-right">
 		<ul class="users tree">
 		<?
 			foreach ($people as $person):

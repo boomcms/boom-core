@@ -4,7 +4,6 @@
 *
 * Rendered by: Controller_Cms_Assets::action_upload()
 *
-* @see Controller_Cms_Assets::action_upload()
 */
 ?>
 <div class="sledge-tabs">

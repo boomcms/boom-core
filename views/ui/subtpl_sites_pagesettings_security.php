@@ -1,3 +1,11 @@
+<?php
+/**
+* Security tab of page settings.
+*
+* Rendered by:	Controller_Cms_Page_Settings::action_security()
+*
+*/
+?>
 <div id="sledge-pagesettings-featureimage">
 
 	<div class="ui-widget">

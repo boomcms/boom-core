@@ -1,3 +1,16 @@
+<?php
+/**
+* The lovely little bar along the top of the CMS view.
+* Only displayed if the user is logged in, I believe.
+*
+* Rendered by:	views/cms/standard_template.php & views/site/standard_tempalte_editable.php
+*
+*********************** Variables **********************
+*	$person	****	Instance of Model_Person	****	The active user.
+********************************************************
+*
+*/
+?>
 <ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
 	<li>
 		<a href='/'>Home</a>

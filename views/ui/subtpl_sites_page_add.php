@@ -1,3 +1,17 @@
+<?php
+/**
+* Form to add a new page.
+* Gives the option to chose the parent page and template of the new page.
+*
+* Rendered by: Controller_Cms_Page::action_add()
+*
+*********************** Variables **********************
+*	$page		****	Instance of Model_Page				****	The page from which the add page button was clicked. 
+*	$templates	****	Array of Model_Template instances	****	Array of available templates.
+********************************************************
+*
+*/
+?>
 <form id="sledge-page-add-form">	
 	<table>
 		<tr>
@@ -43,27 +57,5 @@
 					</select>
 				</td>
 			</tr>
-		<?/*else:
-			$hidden_inputs .= '<input type="hidden" name="template" value="'.$page->template_rid.'" />';
-			if ($p['attributes'][$template_view_required_perm]):?>
-				<tr>
-					<td>Template</td>
-					<td>
-						<select name="template_rid">
-							<option>
-							<?
-								foreach ($templates as $tpl):
-
-									if ($tpl->id == $page->default_child_template_id):
-										echo $tpl->name;
-									endif;
-								endforeach;
-							?>
-							</option>
-						</select>
-					</td>
-				</tr>
-			<?endif;
-		endif;*/?>
 	</table>
 </form>

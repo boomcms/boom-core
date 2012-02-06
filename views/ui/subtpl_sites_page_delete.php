@@ -1,3 +1,15 @@
+<?php
+/**
+* Delete page confirmation.
+*
+* Rendered by: Controller_Cms_Page::action_delete()
+*
+*********************** Variables **********************
+*	$page	****	Instance of Model_Page	****	The page being deleted
+********************************************************
+*
+*/
+?>
 <p>Are you sure you want to delete this page? This cannot be recovered.</p>
 
 <?

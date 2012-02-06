@@ -1,3 +1,18 @@
+<?php
+/**
+* Publishing tab of page settings.
+*
+* Rendered by:	Controller_Cms_Page_Settings::action_publishing()
+* Submits to:	Controller_Cms_Page::action_save()
+*
+*********************** Variables **********************
+*	$person		****	Instance of Model_Person			****	The active user.
+*	$page		****	Instance of Model_Page				****	The page being edited.
+*	$templates	****	Array of Model_Template instances	****	Array of available templates.
+********************************************************
+*
+*/
+?>
 <form id="sledge-form-pagesettings-publishing" name="pagesettings-publishing">
 
 	<div id="sledge-pagesettings" class="sledge-tabs">

@@ -9,7 +9,6 @@
 ****	$groups	****	Array of Model_Group instances	****	Array of groups the user doesn't already belong to.
 ********************************************************
 *
-* @see Controller_Cms_People::action_add_group()
 */
 ?>
 <div id="sledge-person-addgroup">

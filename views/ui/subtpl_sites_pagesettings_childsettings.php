@@ -1,3 +1,18 @@
+<?php
+/**
+* Child settings tab of page settings.
+*
+* Rendered by:	Controller_Cms_Page_Settings::action_children()
+* Submits to:	Controller_Cms_Page::action_save()
+*
+*********************** Variables **********************
+*	$person		****	Instance of Model_Person			****	The active user.
+*	$page		****	Instance of Model_Page				****	The page being edited.
+*	$templates	****	Array of Model_Template instances	****	Available templates.
+********************************************************
+*
+*/
+?>
 <form id="sledge-form-pagesettings-childsettings" name="pagesettings-childsettings">
 	<div id="child-settings" class="sledge-tabs">
 		<ul>

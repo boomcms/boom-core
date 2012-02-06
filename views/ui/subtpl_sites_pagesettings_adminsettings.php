@@ -1,3 +1,17 @@
+<?php
+/**
+* Admin settings tab of page settings.
+*
+* Rendered by:	Controller_Cms_Page_Settings::action_admin()
+* Submits to:	Controller_Cms_Page::action_save()
+*
+*********************** Variables **********************
+*	$person	****	Instance of Model_Person	****	The active user.
+*	$page	****	Instance of Model_Page		****	The page being edited.
+********************************************************
+*
+*/
+?>
 <form name="pagesettings-adminsettings">
 	<div id="admin-setings" class="sledge-tabs">
 		<table width="100%">
