@@ -1,10 +1,11 @@
-<?
-/*
-* Subtemplate to replace an asset.
+<?php
+/**
+* Allows replacing an existing asset with a new file.
+* Template to upload the new file.
 *
-* Rendered from: Controller_Cms_Assets::action_replace()
-* Variables:
-*	$asset Instance of Model_Asset - The asset being replace.
+* Rendered by: Controller_Cms_Assets::action_replace()
+*
+* @see Controller_Cms_Assets::action_replace()
 */
 ?>
 <div class="sledge-tabs">

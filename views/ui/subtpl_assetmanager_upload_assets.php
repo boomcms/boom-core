@@ -1,3 +1,12 @@
+<?php
+/**
+* Allows uploading new assets.
+*
+* Rendered by: Controller_Cms_Assets::action_upload()
+*
+* @see Controller_Cms_Assets::action_upload()
+*/
+?>
 <div class="sledge-tabs">
 	<form id="sledge-tagmanager-upload-form" action='/cms/assets/upload' method='post' enctype="multipart/form-data">
 		<input type="hidden" name="upload_token" value="<?=sha1(microtime())?>" />

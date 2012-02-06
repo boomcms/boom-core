@@ -1,3 +1,12 @@
+<?php
+/**
+* Used when downloading multiple assets.
+* Allows the user to chose a compression format.
+*
+* Rendered by: Currently not implemented.
+*
+*/
+?>
 <div class="ui-widget" id="sledge-asset-upload-info">
 	<div class="ui-state-highlight ui-corner-all">
 		<p style="margin: .5em;">

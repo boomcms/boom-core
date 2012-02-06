@@ -1,6 +1,15 @@
 <?php
-	# Copyright 2009, Hoop Associates Ltd
-	# Hoop Associates   www.thisishoop.com   mail@hoopassociates.co.uk
+/**
+* Form to add a new person.
+*
+* Rendered by: Controller_Cms_People::action_add()
+*
+*********************** Variables **********************
+*	$groups	****	Array of Model_Group instances
+********************************************************
+*
+* @see Controller_Cms_Assets::action_replace()
+*/
 ?>
 <form method="post" action="/cms/people/add" id="sledge-tagmanager-create-person-form">
 	<table width="100%">
