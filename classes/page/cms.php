@@ -25,7 +25,7 @@ class Page_CMS extends Page
 			$html = $htmlbefore . $slot->show() . $htmlafter;
 		else
 			$html = $htmlbefore . $slot->show_default() . $htmlafter;
-			
+		
 		echo $this->addcmsclasses( $html, $type, $slotname );
 	}	
 	
@@ -37,6 +37,7 @@ class Page_CMS extends Page
 	private function addcmsclasses($html, $slottype, $slotname) {
 		$disablededitoroptions = '';
 		$editor = 'tinyMCE';
+		$cmsclasses = '';
 		
 		if ($slottype == "text") {
 			$cmsclasses = "{" . 
@@ -67,7 +68,8 @@ class Page_CMS extends Page
 			//} else {
 			///	$cmsclasses .= "0 ";
 			//}
-			//$cmsclasses .= $data['template'] .	"}";
+			//$cmsclasses .= $data['template'];
+			$cmsclasses .= "}";
 		}
 
 		$pattern1 = "/^(.*?)class=\"([^\"]*)?chunk-slot([^\"]*)?\"/i";	// chunk-slot already defined, add cms classes on the matching tag

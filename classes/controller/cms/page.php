@@ -135,7 +135,7 @@ class Controller_Cms_Page extends Controller_Cms
 			Request::factory( 'error/403' )->execute();
 			
 		$data = json_decode( Arr::get( $_POST, 'data' ));
-		
+				
 		// Update visibility seperately because it's not a versioned column.
 		if (isset( $data->visible ) && $this->person->can( 'edit', $page, 'visible' ))
 		{
@@ -181,14 +181,43 @@ class Controller_Cms_Page extends Controller_Cms
 		// Save the new settings.
 		$page->save();	
 		$new_vid = $page->version->id;
-						
-		// Copy any slots to the new version.
-		if ($old_vid != $new_vid)
+		
+		// Update slots.
+	
+		// Text slots first.
+		foreach( $data->slots->text as $name => $text )
 		{
-			$query = DB::query( Database::INSERT, "insert into chunk_page (chunk_id, page_vid) select chunk_id, :new_vid from chunk_page where page_vid = :old_vid" );
-			$query->bind( ':new_vid', $new_vid );
-			$query->bind( ':old_vid', $old_vid );
-			$query->execute();
+			$text = html_entity_decode( $text );
+			$text = urldecode( $text );
+			$text = trim( $text );
+			
+			// Get the current slot.
+			$current = ORM::factory( "chunk_text" )
+											->with( "chunk" )
+											->on( 'chunk.active_vid', '=', "chunk_text" . ".id" )
+											->join( 'chunk_page' )
+											->on( 'chunk_page.chunk_id', '=', 'chunk.id' )
+											->where( 'chunk_page.page_vid', '=', $old_vid )										
+											->where( 'slotname', '=', $name )
+											->find();
+			
+			if ($current->text != $text && $text != 'Click on me to add some text here.')
+			{
+				// Create a new slot.
+				$chunk_text = ORM::factory( 'chunk_text' );
+				$chunk_text->text = $text;
+				$chunk_text->save();
+				
+				$chunk = ORM::factory( 'chunk' );
+				$chunk->slotname = $name;
+				$chunk->active_vid = $chunk_text->id;
+				$chunk->save();
+				
+				$chunk_page = ORM::factory( 'chunk_page' );
+				$chunk_page->chunk_id = $chunk->id;
+				$chunk_page->page_vid = $page->version->id;
+				$chunk_pagekljhljhg->save();
+			}
 		}
 		
 		// Are we publishing this version?
