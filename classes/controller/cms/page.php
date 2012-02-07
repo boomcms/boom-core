@@ -113,7 +113,7 @@ class Controller_Cms_Page extends Controller_Cms
 		}
 		else
 		{
-			$v = View::factory( 'ui/subtpl_sites_page_add' );
+			$v = View::factory( 'cms/ui/site/page/add' );
 			$v->templates = ORM::factory( 'template' )->find_all();
 			$v->page = $this->_page;
 			echo $v;
@@ -331,7 +331,7 @@ class Controller_Cms_Page extends Controller_Cms
 		}
 		else
 		{
-			$v = View::factory( 'ui/subtpl_sites_page_delete' );
+			$v = View::factory( 'cms/ui/site/page/delete' );
 			$v->page = $this->_page;
 			echo $v;
 		}
@@ -341,7 +341,7 @@ class Controller_Cms_Page extends Controller_Cms
 	
 	public function action_revisions()
 	{
-		$v = View::factory( 'ui/subtpl_sites_revisions' );
+		$v = View::factory( 'cms/ui/site/page/revisions' );
 		$v->page = $this->_page;
 		
 		echo $v;

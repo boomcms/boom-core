@@ -30,7 +30,7 @@
 	<div id="sledge-wysiwyg-toolbar" class="mceEditor o2k7Skin o2k7SkinSilver"></div>
 
 	<?
-		echo View::factory( 'ui/subtpl_sites_topbar' );
+		echo View::factory( 'cms/ui/site/topbar' );
 	?>
 
 	<div id="sledge-dialogs">

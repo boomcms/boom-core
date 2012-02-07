@@ -216,7 +216,7 @@ class Controller_Cms_Account extends Kohana_Controller
 		}
 		else
 		{
-			$v = View::factory( 'ui/subtpl_account_details' );
+			$v = View::factory( 'cms/ui/account_details' );
 			$v->person = $person;
 			$v->actual_person = Auth::instance()->get_real_user();
 			$v->people = ORM::factory( 'person' )->where( 'deleted', '=', false )->find_all();

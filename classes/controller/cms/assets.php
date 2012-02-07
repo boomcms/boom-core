@@ -18,7 +18,7 @@ class Controller_Cms_Assets extends Controller_Cms
 			Request::factory( 'error/403' )->execute();
 		
 		$this->template->title = 'Asset Manager';
-		$subtpl_topbar = View::factory( 'ui/subtpl_assets_topbar' );
+		$subtpl_topbar = View::factory( 'cms/ui/assets/topbar' );
 		
 		View::bind_global( 'subtpl_topbar', $subtpl_topbar );
 	}
@@ -155,7 +155,7 @@ class Controller_Cms_Assets extends Controller_Cms
 			}
 			else
 			{
-				$v = View::factory( 'ui/subtpl_assetmanager_replace_asset' );
+				$v = View::factory( 'cms/ui/assets/replace_asset' );
 				$v->asset = $asset;
 				echo $v;
 				
@@ -193,7 +193,7 @@ class Controller_Cms_Assets extends Controller_Cms
 		}
 		else
 		{
-			echo View::factory( 'ui/subtpl_assetmanager_upload_assets' );
+			echo View::factory( 'cms/ui/assets/upload_assets' );
 			exit;
 		}
 	}
@@ -206,7 +206,7 @@ class Controller_Cms_Assets extends Controller_Cms
 	
 	public function action_index()
 	{		
-		$this->template->subtpl_main = View::factory( 'ui/tpl_asset_manager' );
+		$this->template->subtpl_main = View::factory( 'cms/ui/assets/manager' );
 		$this->template->subtpl_main->assets = ORM::factory( 'asset' )->where( 'deleted', '=', false )->find_all();
 	}
 	
@@ -221,7 +221,7 @@ class Controller_Cms_Assets extends Controller_Cms
 		
 		if ($asset->loaded())
 		{
-			$this->template->subtpl_main = View::factory( 'ui/subtpl_tag_manager_asset_detailview' );
+			$this->template->subtpl_main = View::factory( 'cms/ui/assets/detailview' );
 			$this->template->subtpl_main->asset = $asset;
 		}
 		else

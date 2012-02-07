@@ -18,7 +18,7 @@ class Controller_Cms_People extends Controller_Cms
 			Request::factory( 'error/403' )->execute();
 		
 		$this->template->title = 'People Manager';
-		$subtpl_topbar = View::factory( 'ui/subtpl_people_topbar' );
+		$subtpl_topbar = View::factory( 'cms/ui/people/topbar' );
 		
 		View::bind_global( 'subtpl_topbar', $subtpl_topbar );
 	}
@@ -71,7 +71,7 @@ class Controller_Cms_People extends Controller_Cms
 		}
 		else
 		{
-			$v = View::factory( 'ui/subtpl_peoplemanager_create_person' );
+			$v = View::factory( 'cms/ui/people/create_person' );
 			$v->groups = ORM::factory( 'group' )->find_all();
 			echo $v;
 			exit;
@@ -113,7 +113,7 @@ class Controller_Cms_People extends Controller_Cms
 							->where( 'person_group.person_id', '=', $person->pk() )
 							->find_all();
 							
-				$this->template->subtpl_main = View::factory( 'ui/subtpl_person_addgroup' );
+				$this->template->subtpl_main = View::factory( 'cms/ui/people/addgroup' );
 				$this->template->subtpl_main->person = $person;
 				$this->template->subtpl_main->groups = $groups;
 			}
@@ -134,7 +134,7 @@ class Controller_Cms_People extends Controller_Cms
 		
 		$person = ORM::factory( 'person', $id );
 		
-		$this->template->subtpl_main = View::factory( 'ui/subtpl_tag_manager_person_detailview' );
+		$this->template->subtpl_main = View::factory( 'cms/ui/people/detailview' );
 		$this->template->subtpl_main->person = $person;		
 	}
 	
@@ -162,7 +162,7 @@ class Controller_Cms_People extends Controller_Cms
 		}
 		else
 		{
-			echo View::factory( 'ui/subtpl_peoplemanager_confirm_delete' );
+			echo View::factory( 'cms/ui/people/confirm_delete' );
 		}
 		
 		exit;
@@ -200,7 +200,7 @@ class Controller_Cms_People extends Controller_Cms
 	*/
 	public function action_index()
 	{	
-		$this->template->subtpl_main = View::factory( 'ui/tpl_people_manager' );
+		$this->template->subtpl_main = View::factory( 'cms/ui/people/manager' );
 		$this->template->subtpl_main->people = ORM::factory( 'person' )->where( 'deleted', '=', 'false' )->find_all();
 	}
 	

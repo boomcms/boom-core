@@ -12,44 +12,44 @@ class Controller_Cms_Page_Settings extends Controller_Cms_Page
 
 	public function action_publishing()
 	{
-		$this->template = View::factory( 'ui/subtpl_sites_pagesettings_publishing' );
+		$this->template = View::factory( 'cms/ui/site/page/settings/publishing' );
 		$this->template->templates = ORM::factory( 'template' )->find_all();
 	}
 	
 	public function action_seo()
 	{
-		$this->template = View::factory( 'ui/subtpl_sites_pagesettings_seo' );
+		$this->template = View::factory( 'cms/ui/site/page/settings/seo' );
 	}
 	
 	public function action_tags()
 	{
-		$this->template = View::factory( 'ui/subtpl_sites_pagesettings_tags' );
+		$this->template = View::factory( 'cms/ui/site/page/settings/tags' );
 	}
 	
 	public function action_feature()
 	{
-		$this->template = View::factory( 'ui/subtpl_sites_pagesettings_featureimage' );
+		$this->template = View::factory( 'cms/ui/site/page/settings/featureimage' );
 	}
 	
 	public function action_information()
 	{
-		$this->template = View::factory( 'ui/subtpl_sites_pagesettings_information' );
+		$this->template = View::factory( 'cms/ui/site/page/settings/information' );
 	}
 	
 	public function action_security()
 	{
-		$this->template = View::factory( 'ui/subtpl_sites_pagesettings_security' );
+		$this->template = View::factory( 'cms/ui/site/page/settings/security' );
 	}
 	
 	public function action_children()
 	{
-		$this->template = View::factory( 'ui/subtpl_sites_pagesettings_childsettings' );
+		$this->template = View::factory( 'cms/ui/site/page/settings/childsettings' );
 		$this->template->templates = ORM::factory( 'template' )->find_all();
 	}
 	
 	public function action_admin()
 	{
-		$this->template = View::factory( 'ui/subtpl_sites_pagesettings_adminsettings' );
+		$this->template = View::factory( 'cms/ui/site/page/settings/adminsettings' );
 	}
 	
 	public function after()

@@ -17,7 +17,7 @@ class Controller_Cms_Templates extends Controller_Cms
 		if (!$this->person->can( 'manage templates'  ))
 			Request::factory( 'error/403' )->execute();
 			
-		$subtpl_topbar = View::factory( 'ui/subtpl_templates_topbar' );
+		$subtpl_topbar = View::factory( 'cms/ui/templates/topbar' );
 		View::bind_global( 'subtpl_topbar', $subtpl_topbar );
 		
 		$this->template->title = 'Template Manager';
