@@ -108,10 +108,12 @@ class Controller_Cms_People extends Controller_Cms
 			{
 				// Find the groups that this person isn't already a member of.
 				$groups = ORM::factory( 'group' )
-							->join( 'person_group', 'right outer' )
-							->on( 'person_group.group_id', '!=', 'group.id' )
-							->where( 'person_group.person_id', '=', $person->pk() )
-							->find_all();
+						->where('group.id', 'NOT IN', 
+							DB::Select( 'group_id' )
+							->from( 'person_group' )
+							->where( 'person_id', '=', $person->pk() )
+						)
+						->find_all();
 							
 				$this->template->subtpl_main = View::factory( 'cms/ui/people/addgroup' );
 				$this->template->subtpl_main->person = $person;
