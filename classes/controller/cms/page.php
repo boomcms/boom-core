@@ -191,7 +191,7 @@ class Controller_Cms_Page extends Controller_Cms
 		}
 				
 		// Remember the old version ID.
-		$old_vid = $page->version->id;
+		$old_version = $page->version;
 		
 		// Save the new settings.
 		$page->save();	
@@ -207,31 +207,21 @@ class Controller_Cms_Page extends Controller_Cms
 			$text = trim( $text );
 			
 			// Get the current slot.
-			$current = ORM::factory( "chunk_text" )
-											->with( "chunk" )
-											->on( 'chunk.active_vid', '=', "chunk_text" . ".id" )
-											->join( 'chunk_page' )
-											->on( 'chunk_page.chunk_id', '=', 'chunk.id' )
-											->where( 'chunk_page.page_vid', '=', $old_vid )										
+			$current = ORM::factory( "chunk", null, 'text' )
+											->where( 'chunk_page.page_vid', '=', $old_version->id )										
 											->where( 'slotname', '=', $name )
 											->find();
 			
 			if ($current->text != $text && $text != 'Click on me to add some text here.')
 			{
-				// Create a new slot.
-				$chunk_text = ORM::factory( 'chunk_text' );
-				$chunk_text->text = $text;
-				$chunk_text->save();
-				
-				$chunk = ORM::factory( 'chunk' );
+				// Create a new slot.				
+				$chunk = ORM::factory( 'chunk', null, 'text' );
 				$chunk->slotname = $name;
 				$chunk->active_vid = $chunk_text->id;
+				$chunk->slot->text = $text;
 				$chunk->save();
 				
-				$chunk_page = ORM::factory( 'chunk_page' );
-				$chunk_page->chunk_id = $chunk->id;
-				$chunk_page->page_vid = $page->version->id;
-				$chunk_page->save();
+				$page->version->add( $chunk );
 			}
 		}
 		
@@ -247,7 +237,7 @@ class Controller_Cms_Page extends Controller_Cms
 											->on( 'chunk.active_vid', '=', "chunk_asset" . ".id" )
 											->join( 'chunk_page' )
 											->on( 'chunk_page.chunk_id', '=', 'chunk.id' )
-											->where( 'chunk_page.page_vid', '=', $old_vid )									
+											->where( 'chunk_page.page_vid', '=', $old_version->id )									
 											->where( 'slotname', '=', $name )
 											->find();
 			
@@ -263,10 +253,7 @@ class Controller_Cms_Page extends Controller_Cms
 				$chunk->active_vid = $chunk_asset->id;
 				$chunk->save();
 				
-				$chunk_page = ORM::factory( 'chunk_page' );
-				$chunk_page->chunk_id = $chunk->id;
-				$chunk_page->page_vid = $page->version->id;
-				$chunk_page->save();
+				$page->version->add( $chunk );
 			}
 		}
 		

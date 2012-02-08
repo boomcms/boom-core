@@ -2,7 +2,7 @@
 /**
 * Model for the chunk table.
 * The chunk table is only useful with one of the related tables (chunk_text for example for a text chunk).
-* This class has a custom constructor which takes an extra argument for the slot type and creates the table join.
+* This class has a custom constructor which joins a chunk type table depending on the value of the type column.
 *
 * Table name: chunk
 *
@@ -28,17 +28,17 @@ class Model_Chunk extends ORM
 	
 	/**
 	* Custom constructor for the slots tables.
-	* Accepts an extra parameter in the form of a slot type (text, feature, etc. )
+	* Uses the type column to determine which table to join (if a record was loaded).
 	* Joins the required slot type table and loads the slot data with the chunk data.
 	*/
-	public function __construct( $type = null, $id = null )
+	public function __construct( $id = null )
 	{
 		parent::__construct( $id );
 		
-		if ($type !== null)
+		if ($type !== null && $this->loaded())
 		{
 			$slot = array(
-	        	'model' => "chunk_$type",
+	        	'model' => "chunk_" . $this->type,
 	        	'foreign_key' => "active_vid",
 			);
 
