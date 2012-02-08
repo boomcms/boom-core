@@ -67,6 +67,10 @@ class Model_Version_Page extends Model_Version {
 		'page'		=> array( 'model' => 'page', 'foreign_key' => 'id' ),
 	);
 	
+	protected $_has_many = array(
+		'chunks'	=> array( 'through' => 'chunk_page', 'foreign_key' => 'page_vid' ),
+	);
+	
 	/**
 	* Holds an object representing the parent page.
 	* @access private

@@ -31,7 +31,6 @@ class Model_Page extends ORM_Versioned {
 	);
 	protected $_has_many = array( 
 		'uris'		=> array('model' => 'page_uri', 'foreign_key' => 'page_id'),
-		'chunks'	=> array('model' => 'chunk', 'through' => 'chunk_page' ),
 		'revisions' => array('model' => 'version_page', 'foreign_key' => 'rid' ),
 	);
 	protected $_belongs_to = array(
