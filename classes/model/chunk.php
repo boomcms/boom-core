@@ -14,6 +14,11 @@ class Model_Chunk extends ORM
 	protected $_table_name = 'chunk';
 	protected $_belongs_to = array( 'chunk_text' => array( 'foreign_key' => 'id' ) );		
 	
+	/**
+	* Custom constructor for the slots tables.
+	* Accepts an extra parameter in the form of a slot type (text, feature, etc. )
+	* Joins the required slot type table and loads the slot data with the chunk data.
+	*/
 	public function __construct( $type = null, $id = null )
 	{
 		parent::__construct( $id );
