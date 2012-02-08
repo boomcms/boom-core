@@ -1,15 +1,19 @@
 <?php
-	# Copyright 2009, Hoop Associates Ltd
-	# Hoop Associates   www.thisishoop.com   mail@hoopassociates.co.uk
-	
-	/*
-	This is a half arse effort at the left nav.
-	It currently doesn't check for hidden_in_leftnav or hidden_in_leftnav_cms properties
-	There's a lot of PHP in here. It could perhaps be moved to a Nav class?
-	But it's a start!
-	*/
+/**
+* Subtemplate for the leftnav.
+* There's a lot of PHP in here. It could perhaps be moved to a Nav class?
+* But then do we want to move all the HTML to a class? It may perhaps be less clear?]
+* It's something to think about.
+*
+* Rendered by just about any template that wants a leftnav.
+*
+*********************** Variables **********************
+*	$page		****	instance of Page. Not Model_Page! The leftnav methods are in the page class.
+*	$person		****	instance of Model_Person	****	Current active user. Used to determine whether to show CMS or site leftnav.
+********************************************************
+*
+*/
 ?>
-
 <div id="nav" class="block">
 	<ul>
 	<?
