@@ -54,11 +54,17 @@ class Controller_Cms_People extends Controller_Cms
 		if ($this->request->method() == 'POST')
 		{
 			// Check that person doesn't already exist.
-			$exists = ORM::factory( 'person' )->where( 'emailaddress', '=', Arr::get( $_POST, 'email' ) )->find();
+			$person = ORM::factory( 'person' )->where( 'emailaddress', '=', Arr::get( $_POST, 'email' ) )->find();
 			
-			if ($exists->loaded)
+			if ($person->loaded())
 			{
-				// Just add this user to the given group.
+				// Add this user to the group and update details.
+				$person->firstname = Arr::get( $_POST, 'firstname' );
+				$person->lastname = Arr::get( $_POST, 'surname' );
+				$person->password = Arr::get( $_POST, 'password' );		
+				$person->save();	
+				
+				$group_id = Arr::get( $_POST, 'group_id' );	
 				$person->add_group( $group_id );
 			}
 			else
