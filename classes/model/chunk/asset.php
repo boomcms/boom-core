@@ -1,7 +1,19 @@
 <?php
-
 /**
-* Asset chunk model
+* Model for the asset chunk table.
+*
+* Table name: chunk_asset
+*
+*************************** Table Columns ************************
+****	Name			****	Data Type	****	Description					
+****	id				****	integer		****	Primary key, auto increment
+****	asset_id		****	integer		****	ID of the asset being slotted.
+****	text			****	string		****	Not sure why asset slots need text.
+****	audit_person	****	integer		****	ID of the person who edited the chunk.
+****	audit_time		****	integer		****	Unix timestamp of when the chunk was edited.
+****	deleted			****	boolean		****	Whether the chunk has been deleted.
+******************************************************************
+*
 * @package Models
 * @author Hoop Associates	www.thisishoop.com	mail@hoopassociates.co.uk
 * @copyright 2011, Hoop Associates

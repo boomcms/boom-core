@@ -46,6 +46,25 @@ class Model_Chunk extends ORM
 			$this->with( 'slot' );
 		}
 	}
+	
+	/**
+	* Intercept setting the type column to define the relationship.
+	*/
+	public function set( $column, $value )
+	{
+		if ($column == 'type')
+		{
+			$slot = array(
+	        	'model' => "chunk_" . $value,
+	        	'foreign_key' => "active_vid",
+			);
+
+	        $this->_belongs_to['slot'] = $slot;
+			$this->slot = ORM::factory( 'chunk_' . $value );
+		}
+		
+		parent::set( $column, $value );
+	}
 }
 
 ?>

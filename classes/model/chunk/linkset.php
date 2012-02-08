@@ -1,7 +1,18 @@
 <?php
-
 /**
-* Linkset chunk model
+* Model for the linkset chunk table.
+*
+* Table name: chunk_linkset
+*
+*************************** Table Columns ************************
+****	Name			****	Data Type	****	Description					
+****	id				****	integer		****	Primary key, auto increment
+****	title			****	string		****	The linkset title.
+****	audit_person	****	integer		****	ID of the person who edited the chunk.
+****	audit_time		****	integer		****	Unix timestamp of when the chunk was edited.
+****	deleted			****	boolean		****	Whether the chunk has been deleted.
+******************************************************************
+*
 * @package Models
 * @author Hoop Associates	www.thisishoop.com	mail@hoopassociates.co.uk
 * @copyright 2011, Hoop Associates

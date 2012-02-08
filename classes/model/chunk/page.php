@@ -1,7 +1,15 @@
 <?php
-
 /**
-* Chunk_page model
+* Join table for chunks and page versions.
+*
+* Table name: chunk_page
+*
+*************************** Table Columns ************************
+****	Name			****	Data Type	****	Description					
+****	page_vid		****	integer		****	ID of the page version the chunk belongs to.
+****	chunk_id		****	integer		****	ID of the chunk being slotted.
+******************************************************************
+*
 * @package Models
 * @author Hoop Associates	www.thisishoop.com	mail@hoopassociates.co.uk
 * @copyright 2011, Hoop Associates
