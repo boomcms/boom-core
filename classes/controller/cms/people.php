@@ -56,33 +56,20 @@ class Controller_Cms_People extends Controller_Cms
 			// Check that person doesn't already exist.
 			$person = ORM::factory( 'person' )->where( 'emailaddress', '=', Arr::get( $_POST, 'email' ) )->find();
 			
-			if ($person->loaded())
+			if (!$person->loaded())
 			{
-				// Add this user to the group and update details.
-				$person->firstname = Arr::get( $_POST, 'firstname' );
-				$person->lastname = Arr::get( $_POST, 'surname' );
-				$person->password = Arr::get( $_POST, 'password' );		
-				$person->save();	
-				
-				$group_id = Arr::get( $_POST, 'group_id' );	
-				$person->add_group( $group_id );
-			}
-			else
-			{
-				// Create the person
 				$person = ORM::factory( 'person' );
-				$person->firstname = Arr::get( $_POST, 'firstname' );
-				$person->lastname = Arr::get( $_POST, 'surname' );
 				$person->emailaddress = Arr::get( $_POST, 'email' );
-				$person->password = Arr::get( $_POST, 'password' );
-				$person->save();
-			
-				// Add the person to the initial group.
-				$group_id = Arr::get( $_POST, 'group_id' );
-			
-				// Add the person to the group.
-				$person->add_group( $group_id );
 			}
+			
+			// Add this user to the group and update details.
+			$person->firstname = Arr::get( $_POST, 'firstname' );
+			$person->lastname = Arr::get( $_POST, 'surname' );
+			$person->password = Arr::get( $_POST, 'password' );		
+			$person->save();	
+			
+			$group_id = Arr::get( $_POST, 'group_id' );	
+			$person->add_group( $group_id );
 			
 			$this->request->redirect( '/cms/people/view/' . $person->pk() );
 		}
