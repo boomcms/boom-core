@@ -32,7 +32,6 @@ class Controller_Cms extends Sledge_Controller
 	public function after()
 	{
 		// Add the header subtemplate.
-		$this->template->subtpl_header = View::factory( 'site/subtpl_header' );
 		$this->template->client = Kohana::$config->load('config')->get( 'client_name' );
 		
 		parent::after();

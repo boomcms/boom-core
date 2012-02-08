@@ -1,10 +1,26 @@
-<?
+<?php
 /**
 * This is the standard template for editable site pages - i.e. the CMS view.
 * This is very similar to the CMS standard template since it requires all the JavaScript stuff.
 * But because these pages aren't hard coded the templates require a $page variable.
 *
 * At one point this was shared with the cms standard template but I think it's important to keep the distinction between hard coded cms pages and variable site page albeit in cms view.
+*
+*
+* Rendered by Sledge_Controller::after() via Controller_Site::before();
+*
+*********************** Variables **********************
+*	global $page			****	Instance of Page. Not Model_Page, but it can be used in the same way.
+*	global $actual_person	****	Instance of Model_Person		****	The current logged in user.
+*	global $person			****	Instance of Model_Person		****	The active user.
+*	global $mode			****	string							****	'cms' or 'site'.
+*	global $request			****	Instance of Request				****	See http://kohanaframework.org/3.2/guide/api/Request
+********************************************************
+*
+* @uses Request::detect_uri()
+* @uses URL::query()
+* @uses View::factory()
+* @uses Kohana::$config
 */
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -23,8 +39,6 @@
 	<link rel="stylesheet" type="text/css" href="/sledge/css/ui-smoothness/jquery-ui.css" />
 	<link rel="stylesheet" type="text/css" href="/sledge/css/sledge.ui.css" />
 	<link rel="stylesheet" type="text/css" href="/sledge/css/cms.css" />
-
-	<base target="_top" />
 </head>
 <body>
 	<div id="sledge-wysiwyg-toolbar" class="mceEditor o2k7Skin o2k7SkinSilver"></div>

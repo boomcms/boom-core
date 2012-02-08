@@ -113,9 +113,6 @@ class Controller_Site extends Sledge_Controller
 	
 	public function after()
 	{	
-		// Add the header subtemplate.
-		$this->template->subtpl_header = View::factory( 'site/subtpl_header' );
-		
 		View::bind_global( 'page', $this->page );
 		
 		parent::after();

@@ -1,10 +1,23 @@
 <?php
 /**
-* This is the standard template for non-editable site pages.
+* This is the base template for non-editable site pages.
 * Nothing really special here - it requires a $page variable representing the page and doesn't include any jQuery stuff.
+*
+* Rendered by Sledge_Controller::after() via Controller_Site::before();
+*
+*********************** Variables **********************
+*	global $page			****	Instance of Page. Not Model_Page, but it can be used in the same way.
+*	global $actual_person	****	Instance of Model_Person		****	The current logged in user.
+*	global $person			****	Instance of Model_Person		****	The active user.
+*	global $mode			****	string							****	'cms' or 'site'.
+*	global $request			****	Instance of Request				****	See http://kohanaframework.org/3.2/guide/api/Request
+********************************************************
+*
+* @uses Kohana::$config
+* @uses URL::base()
+* @uses View::factory()
 */
 ?>
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="https://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 	<head>
@@ -27,13 +40,13 @@
 		?>
 		
 		<?
-			echo $subtpl_header;
+			echo View::factory( 'site/subtpl_header' );
 		?>
 
 		<?
 			if ( $page->enable_rss )
 			{
-				echo "<link rel='alternate' type='application/rss+xml' title='RSS' href='" . URL::base( Request::current() ) . "rss/" . $page->get_primary_uri() . "' />";
+				echo "<link rel='alternate' type='application/rss+xml' title='RSS' href='" . URL::base( $request ) . "rss/" . $page->get_primary_uri() . "' />";
 			}
 		?>
 	</head>
