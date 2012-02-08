@@ -69,7 +69,18 @@ class Model_Version_Person extends Model_Version {
 	*/
 	protected function hash_password( $password )
 	{
-		return "{SHA}" . base64_encode(sha1($password, TRUE));
+		// Check that the password hasn't already been encrypted.
+		// This is necessary because of the way table versioning works.
+		// When a new version is created the current values are copied to a new Model_Version_Person object.
+		// This can cause a password to be encrypted each time a new version is saved.
+		if (substr( $password, 0, 5 ) != "{SHA}")
+		{
+			return "{SHA}" . base64_encode(sha1($password, TRUE));
+		}
+		else
+		{
+			return $password;
+		}
 	}
 	
 	/**

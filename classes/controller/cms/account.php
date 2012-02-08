@@ -207,7 +207,7 @@ class Controller_Cms_Account extends Kohana_Controller
 					Auth::instance()->mimick_user( $mimick_user );
 				}
 			}
-			else
+			else if (Auth::instance()->is_mimicking())
 			{
 				 Auth::instance()->mimick_user( null );
 			}
