@@ -1,6 +1,16 @@
 <?php
-	# Copyright 2009, Hoop Associates Ltd
-	# Hoop Associates   www.thisishoop.com   mail@hoopassociates.co.uk
+/**
+* Template used for email to inform a user that their account has been locked.
+*
+* Rendered by Model_Version_Person::login_failed() when Model_Version_Person::consecutive_failed_login_counter is >= 5.
+*
+*********************** Variables **********************
+*	$person		****	instance of Model_Person	****	The person who's account has been locked.
+********************************************************
+*
+* @uses URL::base()
+* @uses Request::current()
+*/
 ?>
 Dear <?=$person->getName()?>,
 

@@ -1,6 +1,20 @@
 <?php
-	# Copyright 2009, Hoop Associates Ltd
-	# Hoop Associates   www.thisishoop.com   mail@hoopassociates.co.uk
+/**
+* Pagination template for search results.
+* It's a horrible template, don't blame Rob.
+*
+* Rendered by views/site/templates/tp_search.php
+* Configured in Controller_Form::action_search()
+*
+*********************** Variables **********************
+*	$base_url		****	string		****	Err. http://www.example.com/search I assume?
+*	$previous_page	****	integer		****	The number of the previous page, if we're on page > 1.
+*	$total_pages	****	integer		****	The total number of pages available...
+*	$current_page	****	integer		****	Number of the current page.
+*	$next_page		****	integer		****	I reckon you can get this one by yourself.
+********************************************************
+*
+*/
 ?>
 <?php
 /**
