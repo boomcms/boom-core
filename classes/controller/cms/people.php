@@ -53,19 +53,30 @@ class Controller_Cms_People extends Controller_Cms
 	{
 		if ($this->request->method() == 'POST')
 		{
-			// Create the person
-			$person = ORM::factory( 'person' );
-			$person->firstname = Arr::get( $_POST, 'firstname' );
-			$person->lastname = Arr::get( $_POST, 'surname' );
-			$person->emailaddress = Arr::get( $_POST, 'email' );
-			$person->password = Arr::get( $_POST, 'password' );
-			$person->save();
+			// Check that person doesn't already exist.
+			$exists = ORM::factory( 'person' )->where( 'emailaddress', '=', Arr::get( $_POST, 'email' ) )->find();
 			
-			// Add the person to the initial group.
-			$group_id = Arr::get( $_POST, 'group_id' );
+			if ($exists->loaded)
+			{
+				// Just add this user to the given group.
+				$person->add_group( $group_id );
+			}
+			else
+			{
+				// Create the person
+				$person = ORM::factory( 'person' );
+				$person->firstname = Arr::get( $_POST, 'firstname' );
+				$person->lastname = Arr::get( $_POST, 'surname' );
+				$person->emailaddress = Arr::get( $_POST, 'email' );
+				$person->password = Arr::get( $_POST, 'password' );
+				$person->save();
 			
-			// Add the person to the group.
-			$person->add_group( $group_id );
+				// Add the person to the initial group.
+				$group_id = Arr::get( $_POST, 'group_id' );
+			
+				// Add the person to the group.
+				$person->add_group( $group_id );
+			}
 			
 			$this->request->redirect( '/cms/people/view/' . $person->pk() );
 		}
