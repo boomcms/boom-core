@@ -419,6 +419,8 @@ class Model_Page extends ORM_Versioned {
 	/**
 	* Generates a unique URI for the page based on the title.
 	*
+	* @uses Model_Page::get_primary_url()
+	* @uses URL::title()
 	* @return string The new primary URI
 	*/
 	public function generate_uri()
