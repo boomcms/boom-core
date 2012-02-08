@@ -352,9 +352,7 @@ class Model_Page extends ORM_Versioned {
 	{
 		if (!array_key_exists( $slotname, $this->_slots ))
 		{
-			$this->_slots[ $slotname ] = ORM::factory( "chunk_$type" )
-											->with( "chunk" )
-											->on( 'chunk.active_vid', '=', "chunk_$type" . ".id" )
+			$this->_slots[ $slotname ] = ORM::factory( "chunk" )
 											->join( 'chunk_page' )
 											->on( 'chunk_page.chunk_id', '=', 'chunk.id' )
 											->where_open()
@@ -367,33 +365,6 @@ class Model_Page extends ORM_Versioned {
 		}
 		
 		return $this->_slots[ $slotname ];	
-	}
-	
-	/**
-	* Get all the slots associated with the page.
-	*
-	* @return array Array of slots
-	*/
-	public function slots()
-	{
-		$slots = array();
-		
-		foreach (array( 'text', 'feature', 'linkset' ) as $type)
-		{
-			$more = ORM::factory( "chunk_$type" )
-				->with( "chunk" )
-				->on( 'chunk.active_vid', '=', "chunk_$type" . ".id" )
-				->join( 'chunk_page' )
-				->on( 'chunk_page.chunk_id', '=', 'chunk.id' )
-				->where( 'chunk_page.page_id', '=', $this->id )	
-				->or_where( 'chunk_page.page_id', '=', 0 )	
-				->find_all()
-				->as_array();
-				
-			$slots = array_merge( $slots, $more );
-		}
-		
-		return $slots;
 	}
 	
 	/**
@@ -481,11 +452,13 @@ class Model_Page extends ORM_Versioned {
 		} while ($exists !== 0);
 	
 		// Create a URI for the page.
-		$page_uri = ORM::factory( 'page_uri' );
-		$page_uri->uri = $uri;
-		$page_uri->page_id = $this->id;
-		$page_uri->primary_uri = true;
-		$page_uri->save();	
+		$page_uri = ORM::factory( 'page_uri' )
+					->values( 
+						array( 'uri' => $uri, 'primary_uri' => true ) 
+					)
+					->create();
+					
+		$this->add( $page_uri );	
 		
 		$this->_primary_uri = $uri;	
 		return $uri;
