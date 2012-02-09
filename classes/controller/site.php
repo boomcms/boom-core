@@ -32,7 +32,7 @@ class Controller_Site extends Sledge_Controller
 		// Find the requested page.
 		// If /ajax is in the uri then $ajax will be > 0. This will be used later to decide whether display the template in an iframe of the standard template.
 		$uri = Request::detect_uri();	
-		$uri = str_replace( '/ajax', '', $uri, &$ajax );
+		$uri = str_replace( '/ajax', '', $uri, $ajax );
 
 		if ($uri != '')
 		{
