@@ -26,7 +26,7 @@ class Model_Chunk_Asset extends ORM implements Interface_SLot
 	*/
 	protected $_table_name = 'chunk_asset';
 	protected $_has_one = array( 
-		'chunk' => array( 'model' => 'chunk', 'foreign_key' => 'active_vid' ),
+	//	'chunk' => array( 'model' => 'chunk', 'foreign_key' => 'active_vid' ),
 		'asset' => array( 'model' => 'asset', 'foreign_key' => 'id' ),
 	);
 	

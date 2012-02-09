@@ -25,7 +25,7 @@ class Model_Chunk_Feature extends ORM implements Interface_SLot
 	*/
 	protected $_table_name = 'chunk_feature';
 	protected $_has_one = array( 
-		'chunk' => array( 'model' => 'chunk', 'foreign_key' => 'active_vid' ),
+	//	'chunk' => array( 'model' => 'chunk', 'foreign_key' => 'active_vid' ),
 	);
 	
 	

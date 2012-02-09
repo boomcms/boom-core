@@ -35,7 +35,7 @@ class Model_Chunk extends ORM
 	{
 		parent::__construct( $id );
 		
-		if ($type !== null && $this->loaded())
+		/*if ($this->loaded())
 		{
 			$slot = array(
 	        	'model' => "chunk_" . $this->type,
@@ -44,13 +44,13 @@ class Model_Chunk extends ORM
 
 	        $this->_belongs_to['slot'] = $slot;
 			$this->with( 'slot' );
-		}
+		}*/
 	}
 	
 	/**
 	* Intercept setting the type column to define the relationship.
 	*/
-	public function set( $column, $value )
+/*	public function set( $column, $value )
 	{
 		if ($column == 'type')
 		{
@@ -64,7 +64,7 @@ class Model_Chunk extends ORM
 		}
 		
 		parent::set( $column, $value );
-	}
+	}*/
 }
 
 ?>
