@@ -198,7 +198,7 @@ class Controller_Cms_Page extends Controller_Cms
 		$new_vid = $page->version->id;
 		
 		// Update slots.
-	
+	/*
 		// Text slots first.
 		foreach( $data->slots->text as $name => $text )
 		{
@@ -256,7 +256,7 @@ class Controller_Cms_Page extends Controller_Cms
 				$page->version->add( $chunk );
 			}
 		}
-		
+		*/
 		// Are we publishing this version?
 		if (isset( $data->publish ))
 		{
