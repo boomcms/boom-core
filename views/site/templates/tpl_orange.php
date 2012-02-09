@@ -14,7 +14,7 @@
 		<div class="headings">
 			<h1 id='sledge-page-title' class="pageTitle"><?= $page->title?></h1>
 			<? 
-				$page->get_slot('text', 'standfirst', '<h2 class="standFirst">', '</h2>' );
+				$page->get_slot('text', 'standfirst', '<h2>', '</h2>' );
 			?>
 		</div>
 		<?

@@ -47,9 +47,9 @@ class Page_CMS extends Page
 		if ($slottype == "text") {
 			$cmsclasses = "{" . 
 			$slottype . " " . 
-			$slotname . " " . 
-			$disablededitoroptions . 
-			$editor .
+			$slotname . 
+			//$disablededitoroptions . 
+			//$editor .
 			"}";
 		} elseif ($slottype == "linkset") {
 			$cmsclasses = "{" . 
@@ -61,17 +61,17 @@ class Page_CMS extends Page
 			$cmsclasses = "{" .
 			$slottype . " " .
 			$slotname . " " .
-			$disablededitoroptions .
-			$editor .
+			//$disablededitoroptions .
+			//$editor .
 			"}";
 		} else {
 			$cmsclasses = "{" . 
 			$slottype . " " . 
 			$slotname . " "; 
 			if ($target) {
-				$cmsclasses .= $target . " "; 
+				$cmsclasses .= $target; 
 			} else {
-				$cmsclasses .= "0 ";
+				$cmsclasses .= "0";
 			}
 			//$cmsclasses .= $data['template'];
 			$cmsclasses .= "}";
