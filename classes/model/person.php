@@ -81,6 +81,8 @@ class Model_Person extends ORM_Versioned {
 			
 			return true;
 		}	
+		
+		return false;
 	}
 	
 	/**

@@ -106,8 +106,6 @@ class Model_Version_Person extends Model_Version {
 		{
 			$this->enabled = false;
 			
-			// I don't really like this code being here.
-			// It could perhaps become a filter in the Person model when the failed counter is set?
 			// We should also setup an email class which handles the templating and mailing.
 			$subject = Kohana::$config->load('config')->get('client_name') . ' CMS: Account Locked';
 			$message = new View('cms/email/tpl_account_locked');
