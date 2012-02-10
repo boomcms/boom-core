@@ -49,7 +49,7 @@ class Model_Person extends ORM_Versioned {
 	* This can't be done using Kohana's $person->add because the tables are in different databases so it doesn't seem to work
 	*
 	* @param mixed $group Group ID or group object.
-	* @return void
+	* @return boolean True on success, false on failure.
 	*/
 	public function add_group( $group )
 	{
@@ -61,9 +61,25 @@ class Model_Person extends ORM_Versioned {
 				
 		if ($group instanceof Model_Group && $group->loaded())
 		{
-			ORM::factory( 'person_group' )
+			try
+			{
+				ORM::factory( 'person_group' )
 				->values( array( 'group_id' => $group->pk(), 'person_id' => $this->pk() ))
 				->create();
+			}
+			catch (Database_Exception $e)
+			{
+				if ($e->getCode() !== 1062)
+				{
+					throw $e;
+				}
+				else
+				{
+					return false;
+				}
+			}
+			
+			return true;
 		}	
 	}
 	
