@@ -17,21 +17,24 @@ class Page_CMS extends Page
 	* @param string $slotname
 	* @return string The HTML to display the slot
 	*/	
-	public function get_slot($type, $slotname, $htmlbefore = '', $htmlafter = '')
+	public function get_slot($type, $slotname, $htmlbefore = '<div>', $htmlafter = '</div>')
 	{
 		$slot = $this->_page->get_slot( $type, $slotname );
 		
-		if ($slot->loaded())
+		if ($slot->loaded()) {
+			$htmlbefore = $this->addcmsclasses( $htmlbefore, $type, $slotname, '' );
 			$html = $htmlbefore . $slot->show() . $htmlafter;
-		else
+		} else {
+			$htmlbefore = $this->addcmsclasses( $htmlbefore, $type, $slotname, '' );
 			$html = $htmlbefore . $slot->show_default() . $htmlafter;
+		}
 			
 		if ($type == 'asset')
 			$target = $slot->asset_id;
 		else
 			$target = 0;
 		
-		echo $this->addcmsclasses( $html, $type, $slotname, $target );
+		echo $html;
 	}	
 	
 	/**
