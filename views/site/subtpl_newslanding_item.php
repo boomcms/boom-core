@@ -19,7 +19,7 @@
 		 		->join( 'chunk_asset', 'inner' )
 				->on( 'asset_id', '=', 'asset.id' )
 				->join( 'chunk', 'inner' )
-				->on( 'chunk.active_vid', '=', 'chunk_asset.id' )
+				->on( 'chunk.id', '=', 'chunk_asset.chunk_id' )
 				->join( 'chunk_page', 'inner' )
 				->on( 'chunk.id', '=', 'chunk_page.chunk_id' )
 				->where( 'chunk_page.page_vid', '=', $page->version->pk() )
