@@ -26,7 +26,7 @@ class Page_CMS extends Page
 			$html = $htmlbefore . $slot->data->show() . $htmlafter;
 		} else {
 			$html = $this->addcmsclasses( $htmlbefore, $type, $slotname, '' );
-			//$html = $htmlbefore . $slot->data->show_default() . $htmlafter;
+			$html = $htmlbefore . ORM::factory( "chunk_$type" )->show_default() . $htmlafter;
 		}
 			
 		if ($type == 'asset')
