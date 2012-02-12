@@ -30,7 +30,7 @@ class Page_CMS extends Page
 		}
 			
 		if ($type == 'asset')
-			$target = $slot->asset_id;
+			$target = $slot->data->asset_id;
 		else
 			$target = 0;
 		

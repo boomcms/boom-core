@@ -35,36 +35,33 @@ class Model_Chunk extends ORM
 	{
 		parent::__construct( $id );
 		
-		/*if ($this->loaded())
+		if ($this->type !== null)
 		{
-			$slot = array(
-	        	'model' => "chunk_" . $this->type,
-	        	'foreign_key' => "active_vid",
-			);
-
-	        $this->_belongs_to['slot'] = $slot;
-			$this->with( 'slot' );
-		}*/
+	        $this->_has_one['data'] = array( 'model' => "chunk_" . $this->type );
+		}
 	}
 	
 	/**
 	* Intercept setting the type column to define the relationship.
 	*/
-/*	public function set( $column, $value )
+	public function set( $column, $value )
 	{
 		if ($column == 'type')
 		{
-			$slot = array(
-	        	'model' => "chunk_" . $value,
-	        	'foreign_key' => "active_vid",
-			);
-
-	        $this->_belongs_to['slot'] = $slot;
-			$this->slot = ORM::factory( 'chunk_' . $value );
+			$this->_has_one['data'] = array( 'model' => "chunk_" . $this->type );
+			$this->data = ORM::factory( 'chunk_' . $value );
 		}
 		
 		parent::set( $column, $value );
-	}*/
+	}
+	
+	public function show()
+	{
+		if ($this->loaded())
+		{
+			//return $this->data->show();
+		}
+	}
 }
 
 ?>

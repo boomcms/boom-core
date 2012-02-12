@@ -352,9 +352,7 @@ class Model_Page extends ORM_Versioned {
 	{
 		if (!array_key_exists( $slotname, $this->_slots ))
 		{
-			$this->_slots[ $slotname ] = ORM::factory( "chunk_$type" )
-											->join( 'chunk' )
-											->on( "chunk_$type.id", '=', 'chunk.active_vid' )
+			$this->_slots[ $slotname ] = ORM::factory( "chunk" )
 											->join( 'chunk_page' )
 											->on( 'chunk_page.chunk_id', '=', 'chunk.id' )
 											->where_open()
