@@ -23,10 +23,10 @@ class Page_CMS extends Page
 		
 		if ($slot->loaded()) {
 			$htmlbefore = $this->addcmsclasses( $htmlbefore, $type, $slotname, '' );
-			$html = $htmlbefore . $slot->show() . $htmlafter;
+			$html = $htmlbefore . $slot->data->show() . $htmlafter;
 		} else {
-			$htmlbefore = $this->addcmsclasses( $htmlbefore, $type, $slotname, '' );
-			$html = $htmlbefore . $slot->show_default() . $htmlafter;
+			$html = $this->addcmsclasses( $htmlbefore, $type, $slotname, '' );
+			//$html = $htmlbefore . $slot->data->show_default() . $htmlafter;
 		}
 			
 		if ($type == 'asset')

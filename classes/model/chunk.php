@@ -21,6 +21,8 @@
 */
 class Model_Chunk extends ORM
 {
+	public $data;
+	
 	/**
 	* Properties to create relationships with Kohana's ORM
 	*/
@@ -31,13 +33,13 @@ class Model_Chunk extends ORM
 	* Uses the type column to determine which table to join (if a record was loaded).
 	* Joins the required slot type table and loads the slot data with the chunk data.
 	*/
-	public function __construct( $id = null )
+	public function _load_values( array $values )
 	{
-		parent::__construct( $id );
+		parent::_load_values( $values );
 		
 		if ($this->type !== null)
 		{
-	        $this->_has_one['data'] = array( 'model' => "chunk_" . $this->type );
+	        $this->data = ORM::factory( "chunk_$this->type", $this->id );
 		}
 	}
 	

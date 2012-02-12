@@ -24,14 +24,11 @@ class Model_Chunk_Linkset extends ORM implements Interface_SLot
 	* Properties to create relationships with Kohana's ORM
 	*/
 	protected $_table_name = 'chunk_linkset';
-	protected $_has_one = array( 
-		'chunk' => array( 'model' => 'chunk', 'foreign_key' => 'active_vid' ),
-	);
+	protected $_primary_key = 'chunk_id';
 	protected $_has_many = array(
 		'links' => array( 'model' => 'linksetlink' ),
 	);
 	protected $_load_with = array( 'links' );
-	
 	
 	public function show()
 	{

@@ -24,8 +24,7 @@ class Model_Chunk_Text extends ORM implements Interface_Slot
 	* Properties to create relationships with Kohana's ORM
 	*/
 	protected $_table_name = 'chunk_text';
-//	protected $_has_one = array( 'chunk' => array( 'model' => 'chunk', 'foreign_key' => 'active_vid' ));
-	protected $_load_with = array( 'chunk' );
+	protected $_primary_key = 'chunk_id';
 	
 	public function show()
 	{

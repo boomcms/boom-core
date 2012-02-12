@@ -13,8 +13,8 @@ class Model_Chunk_Tag extends ORM implements Interface_SLot
 	* Properties to create relationships with Kohana's ORM
 	*/
 	protected $_table_name = 'chunk_tag';
-	protected $_has_one = array( 'chunk' => array( 'model' => 'chunk', 'foreign_key' => 'active_vid' ));
-	
+	protected $_primary_key = 'chunk_id';
+		
 	public function show()
 	{
 		return 'Tag chunk';

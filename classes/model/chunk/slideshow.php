@@ -13,9 +13,7 @@ class Model_Chunk_Slideshow extends ORM implements Interface_SLot
 	* Properties to create relationships with Kohana's ORM
 	*/
 	protected $_table_name = 'chunk_slideshow';
-	protected $_has_one = array( 
-		'chunk' => array( 'model' => 'chunk', 'foreign_key' => 'active_vid' ),
-	);
+	protected $_primary_key = 'chunk_id';
 	protected $_has_many = array(
 		'slides' => array( 'model' => 'slideshowimage', 'foreign_key' => 'chunk_id' ),
 	);
