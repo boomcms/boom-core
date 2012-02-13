@@ -25,6 +25,62 @@ class Model_Page_Uri extends ORM {
 	protected $_belongs_to = array( 'page' => array( 'model' => 'page', 'foreign_key' => 'page_id' ) );
 	
 	/**
+	* ORM Validation rules
+	* @see http://kohanaframework.org/3.2/guide/orm/examples/validation
+	*/
+	public function rules()
+		{
+		return array(
+			'page_id' => array(
+				array('not_empty'),
+				array('numeric'),
+			),
+			'uri' => array(
+				array('not_empty'),
+			),
+		);
+	}
+    
+	public function filters()
+	{
+		return array(
+			'uri' => array(
+				array(array($this, 'valid_uri')),
+			),
+		);
+	}
+	
+	/**
+	* Make a URI valid.
+	* Remove extra /'s etc.
+	*/
+	protected function valid_uri( $uri )
+	{
+		// Make sure it's a uri and not a URL.
+		$uri = parse_url( $uri, PHP_URL_PATH);
+		
+		// Remove a leading '/'
+		if (substr( $uri, 0, 1 ) == '/' )
+		{
+			$uri = substr( $uri, 1 );
+		}
+		
+		// Remove a trailing '/'
+		if (substr( $uri, -1, 1 ) == '/' )
+		{
+			$uri = substr( $uri, 0, -1 );
+		}
+		
+		// Remove duplicate forward slashes.
+		$uri = preg_replace( '|/+|', '/', $uri );
+		
+		// Make sure there's no HTML in there.
+		$uri = strip_tags( $uri );
+		
+		return $uri;
+	}
+	
+	/**
 	* Page URI save method.
 	* Ensures that a page can only have one primary URI
 	*
