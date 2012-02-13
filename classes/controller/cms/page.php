@@ -198,29 +198,35 @@ class Controller_Cms_Page extends Controller_Cms
 		$new_vid = $page->version->id;
 		
 		// Update slots.
-		/*
+		
 		foreach( $data->slots as $type => $slot )
 		{
+			$properties = array_keys( get_object_vars( $slot ) );
+			$name = $properties[0];
+			
 			$chunk = ORM::factory( 'chunk' );
-			$chunk->type = $type;
+			$chunk->type = $type;		
+			$chunk->slotname = $name;
 			
 			switch( $type )
 			{
 				case 'text':
-					$chunk->data->text = $slot->text;
+					$chunk->data->text = $slot->$name;
 					break;
 				case 'feature':
+					$chunk->data->target_page_id = $slot->$name;
 					break;
 				case 'asset':
+					$chunk->data->asset_id = $slot->$name;
 					break;
 				case 'linkset':
 					break;
 			}
 			
 			$chunk->save();
-			$page->add( 'chunk', $chunk );
-		}*/
-		
+			$page->version->add( 'chunks', $chunk );
+		}
+
 		// Are we publishing this version?
 		if (isset( $data->publish ))
 		{
