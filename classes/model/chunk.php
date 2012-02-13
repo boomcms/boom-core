@@ -63,7 +63,7 @@ class Model_Chunk extends ORM
 	{
 		if ($this->loaded())
 		{
-			//return $this->data->show();
+			return $this->data->show();
 		}
 	}
 }
