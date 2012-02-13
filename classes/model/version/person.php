@@ -43,6 +43,26 @@ class Model_Version_Person extends Model_Version {
 	);
 	
 	/**
+	* ORM Validation rules
+	* @see http://kohanaframework.org/3.2/guide/orm/examples/validation
+	*/
+	public function rules()
+		{
+		return array(
+			'firstname' => array(
+				array('not_empty'),
+			),
+			'lastname' => array(
+				array('not_empty'),
+			),
+			'emailaddress' => array(
+				array('not_empty'),
+				array('email'),
+			),
+		);
+	}
+    	
+	/**
 	* Filters for the versioned person columns
 	* @see http://kohanaframework.org/3.2/guide/orm/filters
 	*/
