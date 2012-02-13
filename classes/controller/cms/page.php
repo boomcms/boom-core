@@ -204,27 +204,30 @@ class Controller_Cms_Page extends Controller_Cms
 			$properties = array_keys( get_object_vars( $slot ) );
 			$name = $properties[0];
 			
-			$chunk = ORM::factory( 'chunk' );
-			$chunk->type = $type;		
-			$chunk->slotname = $name;
+			if ($slot->$name)
+			{	
+				$chunk = ORM::factory( 'chunk' );
+				$chunk->type = $type;		
+				$chunk->slotname = $name;
 			
-			switch( $type )
-			{
-				case 'text':
-					$chunk->data->text = $slot->$name;
-					break;
-				case 'feature':
-					$chunk->data->target_page_id = $slot->$name;
-					break;
-				case 'asset':
-					$chunk->data->asset_id = $slot->$name;
-					break;
-				case 'linkset':
-					break;
+				switch( $type )
+				{
+					case 'text':
+						$chunk->data->text = $slot->$name;
+						break;
+					case 'feature':
+						$chunk->data->target_page_id = $slot->$name;
+						break;
+					case 'asset':
+						$chunk->data->asset_id = $slot->$name;
+						break;
+					case 'linkset':
+						break;
+				}
+			
+				$chunk->save();
+				$page->version->add( 'chunks', $chunk );
 			}
-			
-			$chunk->save();
-			$page->version->add( 'chunks', $chunk );
 		}
 
 		// Are we publishing this version?
