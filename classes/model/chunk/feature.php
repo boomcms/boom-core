@@ -18,7 +18,7 @@
 * @copyright 2011, Hoop Associates
 *
 */
-class Model_Chunk_Feature extends ORM implements Interface_SLot
+class Model_Chunk_Feature extends ORM implements Interface_Slot
 {
 	/**
 	* Properties to create relationships with Kohana's ORM
