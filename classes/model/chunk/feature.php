@@ -26,6 +26,10 @@ class Model_Chunk_Feature extends ORM implements Interface_SLot
 	protected $_table_name = 'chunk_feature';
 	protected $_primary_key = 'chunk_id';
 	
+	protected $_belongs_to = array(
+		'page' => array( 'model' => 'page', 'foreign_key' => 'target_page_id' ),
+	);
+	
 	public function show()
 	{
 		if ($this->loaded())

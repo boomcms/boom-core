@@ -37,9 +37,9 @@ class Model_Chunk extends ORM
 	{
 		parent::_load_values( $values );
 		
-		if ($this->type !== null)
+		if ($this->type)
 		{
-	        $this->data = ORM::factory( "chunk_$this->type", $this->id );
+	        $this->data = ORM::factory( "chunk_" . $this->type, $this->id );
 		}
 	}
 	
@@ -53,8 +53,10 @@ class Model_Chunk extends ORM
 			$this->_has_one['data'] = array( 'model' => "chunk_" . $this->type );
 			$this->data = ORM::factory( 'chunk_' . $value );
 		}
-		
-		parent::set( $column, $value );
+		else
+		{
+			parent::set( $column, $value );
+		}
 	}
 	
 	public function show()
