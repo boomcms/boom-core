@@ -198,65 +198,29 @@ class Controller_Cms_Page extends Controller_Cms
 		$new_vid = $page->version->id;
 		
 		// Update slots.
-	/*
-		// Text slots first.
-		foreach( $data->slots->text as $name => $text )
+		/*
+		foreach( $data->slots as $type => $slot )
 		{
-			$text = html_entity_decode( $text );
-			$text = urldecode( $text );
-			$text = trim( $text );
+			$chunk = ORM::factory( 'chunk' );
+			$chunk->type = $type;
 			
-			// Get the current slot.
-			$current = ORM::factory( "chunk", null, 'text' )
-											->where( 'chunk_page.page_vid', '=', $old_version->id )										
-											->where( 'slotname', '=', $name )
-											->find();
-			
-			if ($current->text != $text && $text != 'Click on me to add some text here.')
+			switch( $type )
 			{
-				// Create a new slot.				
-				$chunk = ORM::factory( 'chunk', null, 'text' );
-				$chunk->slotname = $name;
-				$chunk->active_vid = $chunk_text->id;
-				$chunk->slot->text = $text;
-				$chunk->save();
-				
-				$page->version->add( $chunk );
+				case 'text':
+					$chunk->data->text = $slot->text;
+					break;
+				case 'feature':
+					break;
+				case 'asset':
+					break;
+				case 'linkset':
+					break;
 			}
-		}
+			
+			$chunk->save();
+			$page->add( 'chunk', $chunk );
+		}*/
 		
-		// Asset slots
-		// Text slots first.
-		foreach( $data->slots->asset as $name => $target )
-		{
-			$target = (int) $target;
-						
-			// Get the current slot.
-			$current = ORM::factory( "chunk_asset" )
-											->with( "chunk" )
-											->on( 'chunk.active_vid', '=', "chunk_asset" . ".id" )
-											->join( 'chunk_page' )
-											->on( 'chunk_page.chunk_id', '=', 'chunk.id' )
-											->where( 'chunk_page.page_vid', '=', $old_version->id )									
-											->where( 'slotname', '=', $name )
-											->find();
-			
-			if ($current->asset_id != $target && $target != 0)
-			{
-				// Create a new slot.
-				$chunk_asset = ORM::factory( 'chunk_asset' );
-				$chunk_asset->asset_id = $target;
-				$chunk_asset->save();
-				
-				$chunk = ORM::factory( 'chunk' );
-				$chunk->slotname = $name;
-				$chunk->active_vid = $chunk_asset->id;
-				$chunk->save();
-				
-				$page->version->add( $chunk );
-			}
-		}
-		*/
 		// Are we publishing this version?
 		if (isset( $data->publish ))
 		{
