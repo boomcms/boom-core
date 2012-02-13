@@ -37,6 +37,7 @@ class Model_Page_Uri extends ORM {
 			),
 			'uri' => array(
 				array('not_empty'),
+				array('max_length', array( ':value', 2048)),
 			),
 		);
 	}
@@ -85,9 +86,19 @@ class Model_Page_Uri extends ORM {
 	* Ensures that a page can only have one primary URI
 	*
 	* @param Validation $validation Validation rules
+	* @throws Sledge_Exception
 	*/
 	public function save( Validation $validation = null )
 	{
+		// Check that the URI isn't already in use.
+		$existing = DB::select( 'page_id' )->from( 'page_uri' )->where( 'uri', '=', $this->uri )->limit( 1 )->execute();
+		
+		if ($existing->count() > 0)
+		{
+			throw new Sledge_Exception( 'URI is already in use' );
+			return;
+		}
+		
 		$return = parent::save( $validation );
 		
 		if ($this->primary_uri == true)
