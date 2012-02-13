@@ -66,6 +66,22 @@ class Model_Chunk extends ORM
 			return $this->data->show();
 		}
 	}
+	
+	public function save( Validation $validation = null )
+	{
+		if ($this->loaded() && ($this->changed() || $this->data->changed()))
+		{
+			$this->$_primary_key = null;
+			parent::save( $validation );
+			
+			$this->data->chunk_id = $this->pk();
+			$this->data->save( $validation );
+		}
+		else
+		{
+			parent::save( $validation );
+		}
+	}
 }
 
 ?>
