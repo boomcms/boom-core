@@ -110,6 +110,32 @@ class Model_Person extends ORM_Versioned {
 		$this->consecutive_failed_login_counter = 0;
 		$this->save();
 	}
+	
+	/**
+	* Check the email address is unique before saving.
+	*
+	* @throws Sledge_Exception
+	*/
+	public function save( Validation $validation = null )
+	{
+		if (!$this->loaded())
+		{
+			// Check that the emailaddress isn't already in use.
+			$existing = DB::select( 'rid' )
+					->from( 'person_v' )
+					->where( 'emailaddress', '=', $this->emailaddress )
+					->limit( 1 )
+					->execute();
+		
+			if ($existing->count() > 0)
+			{
+				throw new Sledge_Exception( 'Emailaddress is already in use.' );
+				return;
+			}
+		}
+		
+		parent::save( $validation );
+	}
 }
 
 ?>
