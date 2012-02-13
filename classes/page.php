@@ -96,7 +96,7 @@ abstract class Page
 	* @uses Model_Person::logged_in()
 	* @return ORM_Iterator Pages to display in leftnav
 	*/
-	public function leftnav_pages( Model_Person $person )
+	public function leftnav_pages()
 	{	
 		$query = ORM::factory( 'page' )
 					->join( 'page_mptt' )
@@ -106,7 +106,7 @@ abstract class Page
 					
 					
 		// CMS or Site leftnav?
-		if (!$person->logged_in())
+		if (!Auth::instance()->logged_in())
 		{
 			$query->join( array( 'page_v', 'v'), 'inner' )
 				  ->on( 'page.published_vid', '=', 'v.id' )
