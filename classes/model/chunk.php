@@ -72,6 +72,7 @@ class Model_Chunk extends ORM
 		if ($this->loaded() && ($this->changed() || $this->data->changed()))
 		{
 			$this->{$this->_primary_key} = null;
+			$this->_loaded = false;
 			parent::save( $validation );
 			
 			$this->data->chunk_id = $this->pk();
