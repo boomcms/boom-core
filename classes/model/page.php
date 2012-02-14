@@ -176,19 +176,19 @@ class Model_Page extends ORM_Versioned {
 					->on( 'page.id', '=', 'page_mptt.page_id' )
 					->join( 'page_v', 'inner' )
 					->on( 'page.active_vid', '=', 'page_v.id' )
-					->where( 'title', '>', $page->title );
+					->where( 'page_mptt.parent_id', '=', $this->mptt->id );
 					
 			if ($this->child_ordering_policy & self::CHILD_ORDER_ASC)
 			{
-				$mptt->order_by( 'title', 'asc' );
+				$mptt->where( 'title', '>', $page->title )->order_by( 'title', 'asc' );
 			}
 			else
 			{
-				$mptt->order_by( 'title', 'desc' );
+				$mptt->where( 'title', '<', $page->title )->order_by( 'title', 'desc' );
 			}
 			
 			$mptt->limit( 1 )->find();
-						
+									
 			if (!$mptt->loaded())
 			{
 				// If a record wasn't loaded then there's no page after this one.
@@ -197,14 +197,16 @@ class Model_Page extends ORM_Versioned {
 			}
 			else
 			{
-				$page->mptt->insert_as_prev_sibling( $mptt );
+				$page->mptt->insert_as_next_sibling( $mptt );
 			}
 		}
 		else
 		{
 			// For anything else (such as ordering children manually) just stick it at the end for now.
 			$page->mptt->insert_as_last_child( $this->mptt );
-		}		
+		}
+		
+		$this->mptt->reload();	
 	}
 	
 	/**
