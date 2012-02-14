@@ -394,14 +394,13 @@ class Model_Page extends ORM_Versioned {
 			$children = $query->find_all();
 			
 			$previous = null;
-			
+						
 			// Loop through the children assigning new left and right values.
 			foreach( $children as $child )
 			{
 				if ($previous === null)
 				{
 					$child->move_to_first_child( $this->mptt );
-					$first = false;
 				}
 				else
 				{
