@@ -53,10 +53,8 @@ class Model_Chunk extends ORM
 			$this->_has_one['data'] = array( 'model' => "chunk_" . $this->type );
 			$this->data = ORM::factory( 'chunk_' . $value );
 		}
-		else
-		{
-			parent::set( $column, $value );
-		}
+
+		parent::set( $column, $value );
 	}
 	
 	public function show()
@@ -85,6 +83,12 @@ class Model_Chunk extends ORM
 		else
 		{
 			parent::save( $validation );
+			
+			if ($this->type != '' && is_object( $this->data ))
+			{
+				$this->data->chunk_id = $this->pk();
+				$this->data->save();
+			}
 		}
 	}
 }
