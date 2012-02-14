@@ -61,9 +61,13 @@ class Model_Chunk extends ORM
 	
 	public function show()
 	{
-		if ($this->loaded())
+		if (is_object( $this->data ))
 		{
 			return $this->data->show();
+		}
+		else
+		{
+			return null;
 		}
 	}
 	
