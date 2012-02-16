@@ -60,6 +60,6 @@
 			{
 				echo View::factory( 'site/analytics' );
 			}
-		?>		
+		?>	
 	</body>
 </html>
