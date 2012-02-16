@@ -89,6 +89,14 @@ class Import
 		$page->keywords = $details['keywords'];
 		$page->description = $details['description'];
 		
+		// Find the page's feature image.
+		$feature = $db->query( Database::SELECT, "select item_rid from relationship_partner where item_tablename = 'asset' and relationship_id = (select relationship_id from relationship_partner where description = 'featureimage' and item_tablename = 'page' and item_rid = " . $details['rid'] . ")" )->as_array();
+		
+		if (sizeof( $feature ) > 0)
+		{
+			$page->feature_image = $feature[0]['item_rid'];
+		}
+		
 		$page->save();
 
 		ORM::factory( 'page_uri' )->values( array( 'page_id' => $details['rid'], 'uri' => $details['uri'], 'primary_uri' => true ))->create();
