@@ -94,34 +94,63 @@ class Controller_Setup extends Kohana_Controller
 		$old = Database::instance( 'old' );
 		$new = Database::instance();
 		
-		// Pages.
 		$new->query( Database::DELETE, "truncate page" );
 		$new->query( Database::DELETE, "truncate page_v" );
 		$new->query( Database::DELETE, "truncate page_uri" );
 		$new->query( Database::DELETE, "truncate page_mptt" );
+		$new->query( Database::DELETE, "truncate chunk_page" );
+		$new->query( Database::DELETE, "truncate chunk" );
+		$new->query( Database::DELETE, "truncate chunk_text" );
+		$new->query( Database::DELETE, "truncate chunk_feature" );
+		$new->query( Database::DELETE, "truncate chunk_asset" );
+		$new->query( Database::DELETE, "truncate chunk_linkset" );
+		$new->query( Database::DELETE, "truncate linksetlinks" );
+		$new->query( Database::DELETE, "truncate asset" );
+		$new->query( Database::DELETE, "truncate template" );
+		$new->query( Database::DELETE, "truncate template_v" );
 		
+		// Templates.
+		$templates = $old->query( Database::SELECT, "select deleted, template_v.* from template inner join template_v on active_vid = template_v.id" );
+		
+		foreach( $templates as $t )
+		{
+			$template = ORM::factory( 'template' );
+			$template->id = $t['rid'];
+			$template->filename = $t['filename'];
+			$template->name = $t['name'];
+			$template->description = $t['description'];
+			$template->deleted = ($t['deleted'] == 't')? true : false;
+			$template->save();					
+		}		
+		
+		// Assets.
+		$assets = $old->query( Database::SELECT, "select * from cms_asset" );
+		
+		foreach( $assets as $a )
+		{
+			$asset = ORM::factory( 'asset' );
+			$asset->id = $a['id'];
+			$asset->title = $a['title'];
+			$asset->save();					
+		}
+			
+		// Pages.
 		$homepage = $old->query( Database::SELECT, "select * from cms_page where uri = ''" )->as_array();
 		
-		$page = ORM::factory( 'page' );
-		$page->template_id = $homepage[0]['template_rid'];
-		$page->default_child_template_id = $homepage[0]['default_child_template_rid'];
-		$page->prompt_for_child_template = ($homepage[0]['prompt_for_child_template'] == 't')? true : false;
-		$page->title = $homepage[0]['title'];
-		$page->visible_from = strtotime( $homepage[0]['visiblefrom_timestamp'] );
-		$page->visible_to = strtotime( $homepage[0]['visibleto_timestamp'] );
-		$page->keywords = $homepage[0]['keywords'];
-		$page->description = $homepage[0]['description'];
-		$page->save();
-		$page->published_vid = $page->active_vid;
-		$page->save();
-		
-		ORM::factory( 'page_uri' )->values( array( 'page_id' => $page->id, 'uri' => '', 'primary_uri' => true ))->create();
-		
+		$page = Import::import_page( $homepage[0] );
+				
 		$mptt = ORM::factory( 'page_mptt' )->values( array( 'page_id' => $page->id ))->create();
 		$mptt->make_root();
 		
 		// Home page slots.
+		Import::chunk_text( $old, $homepage[0]['vid'], $page );
+		Import::chunk_feature( $old, $homepage[0]['vid'], $page );
+		Import::chunk_asset( $old, $homepage[0]['vid'], $page );
 		
+		// Descend down the tree.
+		Import::child_pages( $old, $homepage[0]['rid'], $page, $mptt );
+		
+		$new->query( Database::UPDATE, "update page set published_vid = active_vid" );
 	}
 }
 

@@ -50,13 +50,13 @@ class Controller_Site extends Sledge_Controller
 		$page_type = ($this->person->can( 'edit', $page ))? 'cms' : 'site';
 		
 		// If they can't edit the page check that it's visible.
-		if ($page_type == 'site')
+		/*if ($page_type == 'site')
 		{
 			if (!$page->is_visible() || !$page->is_published())
 			{
 				throw new HTTP_Exception_404;
 			}
-		}
+		}*/
 		
 		if (Arr::get( $_GET, 'version' ) && $this->person->can( 'edit', $page ))
 		{
@@ -80,10 +80,15 @@ class Controller_Site extends Sledge_Controller
 		}
 
 		// Add the main subtemplate to the standard template.
-		//$this->template->subtpl_main = View::factory( $this->page->template->filename );
-		
-		// Force use of the orange template until templates are redeveloped.
-		$this->template->subtpl_main = View::factory( 'site/templates/tpl_orange' );
+		if ( $this->page->template->filename == 'site/templates/tpl_home' )
+		{
+			$this->template->subtpl_main = View::factory( $this->page->template->filename );
+		}
+		else
+		{
+			// Force use of the orange template until templates are redeveloped.
+			$this->template->subtpl_main = View::factory( 'site/templates/tpl_orange' );
+		}
 	}
 	
 	/**
