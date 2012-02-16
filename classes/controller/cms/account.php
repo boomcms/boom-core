@@ -212,7 +212,7 @@ class Controller_Cms_Account extends Kohana_Controller
 				 Auth::instance()->mimick_user( null );
 			}
 			
-			exit;
+			$this->response->body( "1" );
 		}
 		else
 		{
@@ -221,31 +221,31 @@ class Controller_Cms_Account extends Kohana_Controller
 			$v->actual_person = Auth::instance()->get_real_user();
 			$v->people = ORM::factory( 'person' )->where( 'deleted', '=', false )->find_all();
 		
-			echo $v;
-			exit;
+			$this->response->body( $v->render() );
 		}
 	}
 	
 	public function after()
 	{
-		if ($this->request->is_ajax())
+		if( !$this->response->body() )
 		{
-			echo json_encode( $this->return );
-		}
-		else
-		{
-			// Password reset form
-			$template = View::factory( 'cms/tpl_login' );
-			$template->client = Kohana::$config->load('core')->get('client_name');
-		
-			foreach( array_keys( $this->return ) as $var )
+			if ($this->request->is_ajax())
 			{
-				$template->$var = $this->return[ $var ];
+				$this->response->body( json_encode( $this->return ) );
 			}
+			else
+			{
+				// Password reset form
+				$template = View::factory( 'cms/tpl_login' );
+				$template->client = Kohana::$config->load('core')->get('client_name');
 		
-			echo $template;
+				foreach( array_keys( $this->return ) as $var )
+				{
+					$template->$var = $this->return[ $var ];
+				}
+		
+				$this->response->body( $template );
+			}
 		}
-		
-		exit();
 	}
 }

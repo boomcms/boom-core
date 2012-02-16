@@ -19,8 +19,8 @@ class Controller_Cms extends Sledge_Controller
 		if (!Auth::instance()->logged_in())
 		{
 			Cookie::set( 'redirect_after', Request::current()->uri() );
-			Request::factory( '/cms/login' )->execute();
-			exit();
+			
+			$this->request->redirect( '/cms/login' );
 		}
 	}
 	

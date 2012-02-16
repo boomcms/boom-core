@@ -17,7 +17,7 @@ class Controller_Asset extends Kohana_Controller
 		$this->asset = ORM::factory( 'asset', $id );
 		if (!$this->asset->loaded())
 		{
-			exit;
+			$this->request->redirect( '/' );
 		}
 	}
 	
@@ -32,10 +32,8 @@ class Controller_Asset extends Kohana_Controller
 		if ($this->asset->loaded() && $this->asset->status == Model_Asset::STATUS_PUBLISHED)
 		{
 			$this->asset = Asset::factory( $this->asset->type, $this->asset );	
-			echo $this->asset->show();
+			$this->response->body( $this->asset->show() );
 		}
-			
-		exit();
 	}
 	
 	public function action_save()

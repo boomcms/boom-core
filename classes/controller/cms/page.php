@@ -59,8 +59,7 @@ class Controller_Cms_Page extends Controller_Cms
 				}
 				else
 				{
-					echo $this->_page->url();
-					exit;
+					$this->response->body( $this->_page->url() );
 				}
 			}
 		}
@@ -109,17 +108,15 @@ class Controller_Cms_Page extends Controller_Cms
 			// URI needs to be generated after the MPTT is set up.
 			$uri = $page->generate_uri();
 				
-			echo URL::base( $this->request ) . $uri;
+			$this->response->body( URL::base( $this->request ) . $uri );
 		}
 		else
 		{
 			$v = View::factory( 'cms/ui/site/page/add' );
 			$v->templates = ORM::factory( 'template' )->find_all();
 			$v->page = $this->_page;
-			echo $v;
+			$this->response->body( $v );
 		}
-		
-		exit;
 	}
 	
 	/**
@@ -241,8 +238,7 @@ class Controller_Cms_Page extends Controller_Cms
 			//}
 		}
 		
-		echo $page->url();
-		exit;
+		$this->response->body( $page->url() );
 	}
 	
 	/**
@@ -287,16 +283,14 @@ class Controller_Cms_Page extends Controller_Cms
 		{
 			$this->_page->delete();
 		
-			echo URL::base( Request::current() );
+			$this->response->body( URL::base( Request::current() ) );
 		}
 		else
 		{
 			$v = View::factory( 'cms/ui/site/page/delete' );
 			$v->page = $this->_page;
-			echo $v;
+			$this->response->body( $v );
 		}
-		
-		exit;
 	}
 	
 	public function action_revisions()
@@ -304,8 +298,7 @@ class Controller_Cms_Page extends Controller_Cms
 		$v = View::factory( 'cms/ui/site/page/revisions' );
 		$v->page = $this->_page;
 		
-		echo $v;
-		exit;
+		$this->response->body( $v );
 	}
 }
 

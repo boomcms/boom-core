@@ -77,8 +77,7 @@ class Controller_Cms_People extends Controller_Cms
 		{
 			$v = View::factory( 'cms/ui/people/create_person' );
 			$v->groups = ORM::factory( 'group' )->find_all();
-			echo $v;
-			exit;
+			$this->response->body( $v );
 		}	
 	}
 	
@@ -168,10 +167,8 @@ class Controller_Cms_People extends Controller_Cms
 		}
 		else
 		{
-			echo View::factory( 'cms/ui/people/confirm_delete' );
+			$this->response->body( View::factory( 'cms/ui/people/confirm_delete' ) );
 		}
-		
-		exit;
 	}
 	
 	public function action_delete_group()

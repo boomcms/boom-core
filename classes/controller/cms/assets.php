@@ -106,19 +106,15 @@ class Controller_Cms_Assets extends Controller_Cms
 			$asset = ORM::factory( 'asset', $asset_ids[0] );
 			if ($asset->loaded())
 			{
-		        header("Expires: ".gmdate("D, d M Y H:i:s",time()+(3600*7))." GMT\n");
-		        header("Content-Type: ". $asset->get_mime() ."\n");
-		        header("Content-Transfer-Encoding: binary\n");
-		        header("Content-Length: ".($asset->get_filesize()+ob_get_length()).";\n");
-		        header('Content-Disposition: attachment; filename="'.basename($asset->filename)."\"\n\n");
-		        ob_end_flush();
+		        $this->response->headers( 'Expires', gmdate("D, d M Y H:i:s",time()+(3600*7))." GMT" );
+		        $this->response->headers( 'Content-Type', $asset->get_mime() );
+		        $this->response->headers( 'Content-Transfer-Encoding', 'binary' );
+		        $this->response->headers( 'Content-Length', $asset->get_filesize() );
+		        $this->response->headers( 'Content-Disposition',  'attachment; filename="'.basename($asset->filename) );
 
-		        readfile( ASSETPATH . $asset->id );
-		        exit();
+		        $this->response->body( readfile( ASSETPATH . $asset->id ) );
 			}	
 		}	
-		
-		exit;
 	}
 	
 	/**
@@ -157,9 +153,7 @@ class Controller_Cms_Assets extends Controller_Cms
 			{
 				$v = View::factory( 'cms/ui/assets/replace_asset' );
 				$v->asset = $asset;
-				echo $v;
-				
-				exit;
+				$this->response->body( $v );
 			}
 		}
 	}
@@ -193,8 +187,7 @@ class Controller_Cms_Assets extends Controller_Cms
 		}
 		else
 		{
-			echo View::factory( 'cms/ui/assets/upload_assets' );
-			exit;
+			$this->response->body( View::factory( 'cms/ui/assets/upload_assets' )->render() );
 		}
 	}
 

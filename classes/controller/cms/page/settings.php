@@ -57,7 +57,6 @@ class Controller_Cms_Page_Settings extends Controller_Cms_Page
 		$this->template->page = $this->_page;
 		$this->template->person = $this->person;
 		
-		echo $this->template;
-		exit;	
+		$this->response->body( $this->template );
 	}
 }

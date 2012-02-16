@@ -19,7 +19,7 @@ class Controller_Setup extends Kohana_Controller
 		if (!is_writable( $config_dir ))
 		{
 			throw new Sledge_Exception( "Config directory $config_dir must be writable" );
-			exit;
+			return;
 		}
 		
 		$group = Arr::get( $_POST, 'group' );

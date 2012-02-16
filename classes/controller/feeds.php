@@ -61,13 +61,12 @@ class Controller_Feeds extends Kohana_Controller
 	
 	public function action_404()
 	{
-		die( 'feed not found' );
+		$this->response->body( Request::factory( 'error/404' )->execute() );
 	}
 	
 	public function after()
 	{
-		echo $this->_template;
-		exit;
+		$this->response->body( $this->_template );
 	}
 }
 
