@@ -22,17 +22,25 @@ class Page_CMS extends Page
 		$slot = $this->_page->get_slot( $type, $slotname );
 		
 		if ($slot->loaded()) {
-			$htmlbefore = $this->addcmsclasses( $htmlbefore, $type, $slotname, '' );
+			
+			switch ($type)
+			{
+				case 'asset':
+					$target = $slot->data->asset_id;
+					break;
+				case 'feature':
+					$target = $slot->data->target_page_id;
+					break;
+				default:
+					$target = 0;
+			}
+			
+			$htmlbefore = $this->addcmsclasses( $htmlbefore, $type, $slotname, $target );
 			$html = $htmlbefore . $slot->data->show() . $htmlafter;
 		} else {
 			$htmlbefore = $this->addcmsclasses( $htmlbefore, $type, $slotname, '' );
 			$html = $htmlbefore . ORM::factory( "chunk_$type" )->show_default() . $htmlafter;
 		}
-			
-		if ($type == 'asset')
-			$target = $slot->data->asset_id;
-		else
-			$target = 0;
 		
 		echo $html;
 	}	
