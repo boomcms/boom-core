@@ -26,6 +26,19 @@ class Model_Chunk_Text extends ORM implements Interface_Slot
 	protected $_table_name = 'chunk_text';
 	protected $_primary_key = 'chunk_id';
 	
+	/**
+	* Filters for the versioned person columns
+	* @see http://kohanaframework.org/3.2/guide/orm/filters
+	*/
+	public function filters()
+	{
+	    return array(
+			'text' => array(
+				array( 'html_entity_decode' ),
+			),
+	    );
+	}
+	
 	public function show()
 	{
 		if ($this->loaded())
