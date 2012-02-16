@@ -39,7 +39,7 @@ class Model_Chunk_Feature extends ORM implements Interface_Slot
 			$target = ORM::factory( 'page', $this->target_page_id );
 			$v->url = $target->url();
 			$v->title = $target->title;
-			$v->text = $target->get_slot( 'text', 'standfirst' );
+			$v->text = $target->get_slot( 'text', 'standfirst' )->show();
 			
 			return $v;	
 		}	
