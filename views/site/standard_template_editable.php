@@ -97,7 +97,5 @@
 		})(jQuery);
 		//]]>
 	</script>
-	
-	<?= View::factory('profiler/stats'); ?>
 </body>
 </html>
