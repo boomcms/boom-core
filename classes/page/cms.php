@@ -26,6 +26,11 @@ class Page_CMS extends Page
 		if ($type == 'feature')
 		{
 			$template = $htmlbefore;
+			
+			if ($template = '<div>')
+			{
+				$template = '';
+			}
 			$htmlbefore = '<div>';
 		}
 		

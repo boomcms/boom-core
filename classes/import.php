@@ -79,13 +79,24 @@ class Import
 		$page->id = $details['rid'];
 		$page->template_id = $details['template_rid'];
 		$page->default_child_template_id = $details['default_child_template_rid'];
-		$page->prompt_for_child_template = ($details['prompt_for_child_template'] == 't')? true : false;
+		$page->prompt_for_child_template = ($details['prompt_for_child_template'] == 't');
 		$page->title = $details['title'];
 		$page->visible_from = strtotime( $details['visiblefrom_timestamp'] );
 		$page->visible_to = strtotime( $details['visibleto_timestamp'] );
-		$page->visible =  ($details['ref_page_status_rid'] == 2)? true : false;
+		$page->visible =  ($details['ref_page_status_rid'] == 2);
+		$page->visible_in_leftnav = !($details['hidden_from_leftnav'] == 'f');
+		$page->visible_in_leftnav_cms = !($details['hidden_from_leftnav_cms'] == 'f');
 		$page->keywords = $details['keywords'];
 		$page->description = $details['description'];
+		
+		// Find the page's feature image.
+		$feature = $db->query( Database::SELECT, "select item_rid from relationship_partner where item_tablename = 'asset' and relationship_id = (select relationship_id from relationship_partner where description = 'featureimage' and item_tablename = 'page' and item_rid = " . $details['rid'] . ")" )->as_array();
+		
+		if (sizeof( $feature ) > 0)
+		{
+			$page->feature_image = $feature[0]['item_rid'];
+		}
+		
 		$page->save();
 
 		ORM::factory( 'page_uri' )->values( array( 'page_id' => $details['rid'], 'uri' => $details['uri'], 'primary_uri' => true ))->create();
