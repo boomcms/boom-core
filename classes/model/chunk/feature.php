@@ -34,6 +34,11 @@ class Model_Chunk_Feature extends ORM implements Interface_Slot
 	{
 		if ($this->loaded())
 		{
+			if (!$template)
+			{
+				$template = 'main';
+			}
+			
 			$v = View::factory( "site/slots/slottype/feature/subtpl_$template" );
 		
 			$target = ORM::factory( 'page', $this->target_page_id );

@@ -29,7 +29,7 @@ class Page_CMS extends Page
 			
 			if ($template = '<div>')
 			{
-				$template = '';
+				$template = null;
 			}
 			$htmlbefore = '<div>';
 		}
