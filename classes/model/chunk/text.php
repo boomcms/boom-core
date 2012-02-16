@@ -35,6 +35,7 @@ class Model_Chunk_Text extends ORM implements Interface_Slot
 	    return array(
 			'text' => array(
 				array( 'html_entity_decode' ),
+				array( 'urldecode' ),
 			),
 	    );
 	}
