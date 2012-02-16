@@ -70,6 +70,19 @@ class Model_Version_Page extends Model_Version {
 	protected $_has_many = array(
 		'chunks'	=> array( 'through' => 'chunk_page', 'foreign_key' => 'page_vid' ),
 	);
+	
+	/**
+	* Filters for the versioned person columns
+	* @see http://kohanaframework.org/3.2/guide/orm/filters
+	*/
+	public function filters()
+	{
+	    return array(
+			'title' => array(
+				array( 'html_entity_decode' ),
+			),
+	    );
+	}
 		
 	/**
 	* Get the page description.
