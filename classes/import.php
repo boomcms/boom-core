@@ -84,8 +84,8 @@ class Import
 		$page->visible_from = strtotime( $details['visiblefrom_timestamp'] );
 		$page->visible_to = strtotime( $details['visibleto_timestamp'] );
 		$page->visible =  ($details['ref_page_status_rid'] == 2);
-		$page->visible_in_leftnav = ($details['hidden_from_leftnav'] == 'f');
-		$page->visible_in_leftnav_cms = ($details['hidden_from_leftnav_cms'] == 'f');
+		$page->visible_in_leftnav = !($details['hidden_from_leftnav'] == 'f');
+		$page->visible_in_leftnav_cms = !($details['hidden_from_leftnav_cms'] == 'f');
 		$page->keywords = $details['keywords'];
 		$page->description = $details['description'];
 		
