@@ -22,7 +22,7 @@
 		?>
 		<div id="nav-widget">
 			
-		<? $page->get_slot('slideshow', 'slide1' ); ?>	
+		<? //$page->get_slot('slideshow', 'slide1' ); ?>	
 			
 		</div>		
 		<?
