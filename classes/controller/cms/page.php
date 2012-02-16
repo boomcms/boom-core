@@ -190,6 +190,13 @@ class Controller_Cms_Page extends Controller_Cms
 		// Remember the old version ID.
 		$old_version = $page->version;
 		
+		// If the version hasn't been changed, force it to create a new page version.
+		// This is done so that we get a new version when editing slots.
+		if (!$page->version->changed())
+		{
+			$page->version = $page->version->copy();
+		}
+		
 		// Save the new settings.
 		$page->save();	
 		$new_vid = $page->version->id;
