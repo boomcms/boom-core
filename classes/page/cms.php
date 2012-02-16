@@ -25,7 +25,7 @@ class Page_CMS extends Page
 			$htmlbefore = $this->addcmsclasses( $htmlbefore, $type, $slotname, '' );
 			$html = $htmlbefore . $slot->data->show() . $htmlafter;
 		} else {
-			$html = $this->addcmsclasses( $htmlbefore, $type, $slotname, '' );
+			$htmlbefore = $this->addcmsclasses( $htmlbefore, $type, $slotname, '' );
 			$html = $htmlbefore . ORM::factory( "chunk_$type" )->show_default() . $htmlafter;
 		}
 			
