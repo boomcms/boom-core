@@ -80,7 +80,10 @@ class Controller_Site extends Sledge_Controller
 		}
 
 		// Add the main subtemplate to the standard template.
-		$this->template->subtpl_main = View::factory( $this->page->template->filename );
+		//$this->template->subtpl_main = View::factory( $this->page->template->filename );
+		
+		// Force use of the orange template until templates are redeveloped.
+		$this->template->subtpl_main = View::factory( 'site/templates/tpl_orange' );
 	}
 	
 	/**

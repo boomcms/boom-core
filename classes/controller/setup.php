@@ -87,6 +87,42 @@ class Controller_Setup extends Kohana_Controller
 		// Everything worked? Well that's just not on.
 		$this->request->redirect( '/' );
 	}
+	
+	public function action_import()
+	{
+		// Import pages.
+		$old = Database::instance( 'old' );
+		$new = Database::instance();
+		
+		// Pages.
+		$new->query( Database::DELETE, "truncate page" );
+		$new->query( Database::DELETE, "truncate page_v" );
+		$new->query( Database::DELETE, "truncate page_uri" );
+		$new->query( Database::DELETE, "truncate page_mptt" );
+		
+		$homepage = $old->query( Database::SELECT, "select * from cms_page where uri = ''" )->as_array();
+		
+		$page = ORM::factory( 'page' );
+		$page->template_id = $homepage[0]['template_rid'];
+		$page->default_child_template_id = $homepage[0]['default_child_template_rid'];
+		$page->prompt_for_child_template = ($homepage[0]['prompt_for_child_template'] == 't')? true : false;
+		$page->title = $homepage[0]['title'];
+		$page->visible_from = strtotime( $homepage[0]['visiblefrom_timestamp'] );
+		$page->visible_to = strtotime( $homepage[0]['visibleto_timestamp'] );
+		$page->keywords = $homepage[0]['keywords'];
+		$page->description = $homepage[0]['description'];
+		$page->save();
+		$page->published_vid = $page->active_vid;
+		$page->save();
+		
+		ORM::factory( 'page_uri' )->values( array( 'page_id' => $page->id, 'uri' => '', 'primary_uri' => true ))->create();
+		
+		$mptt = ORM::factory( 'page_mptt' )->values( array( 'page_id' => $page->id ))->create();
+		$mptt->make_root();
+		
+		// Home page slots.
+		
+	}
 }
 
 ?>
