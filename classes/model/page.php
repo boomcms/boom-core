@@ -457,11 +457,9 @@ class Model_Page extends ORM_Versioned {
 		// Create a URI for the page.
 		$page_uri = ORM::factory( 'page_uri' )
 					->values( 
-						array( 'uri' => $uri, 'primary_uri' => true ) 
+						array( 'page_id' => $this->pk(), 'uri' => $uri, 'primary_uri' => true ) 
 					)
 					->create();
-					
-		$this->add( $page_uri );	
 		
 		$this->_primary_uri = $uri;	
 		return $uri;
