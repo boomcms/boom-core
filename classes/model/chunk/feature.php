@@ -30,11 +30,11 @@ class Model_Chunk_Feature extends ORM implements Interface_Slot
 		'page' => array( 'model' => 'page', 'foreign_key' => 'target_page_id' ),
 	);
 	
-	public function show()
+	public function show( $template = 'main' )
 	{
 		if ($this->loaded())
 		{
-			$v = View::factory( 'site/slots/feature' );
+			$v = View::factory( "site/slots/slottype/feature/subtpl_$template" );
 		
 			$target = ORM::factory( 'page', $this->target_page_id );
 			$v->url = $target->url();

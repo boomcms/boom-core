@@ -27,16 +27,16 @@
 		<meta http-equiv="Content-Style-Type" content="text/css" />
 		<meta name="description" content="<?= htmlspecialchars( $page->description );?>" />
 		<meta name="keywords" content="<?= htmlspecialchars( $page->keywords );?>" />
-		<link rel="stylesheet" type="text/css" href="/sledge/css/main.css" />	
+		<link rel="stylesheet" type="text/css" href="/css/blueprint/screen.css" />
+		<link rel="stylesheet" type="text/css" href="/css/blueprint/plugins/50-180percent/screen.css" />
+		<link rel="stylesheet" type="text/css" href="/css/main.css" />	
+		<!--<link rel="stylesheet" type="text/css" href="/sledge/css/main.css" />-->	
 		<?
-			if ($page->indexed)
-			{
+			if ($page->indexed):
 				echo "<meta name='robots' content='index, follow' />";
-			}
-			else
-			{
+			else:
 				echo "<meta name='robots' content='noindex, nofollow' />";
-			}
+			endif;
 		?>
 		
 		<?

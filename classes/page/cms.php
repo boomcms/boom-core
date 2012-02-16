@@ -21,7 +21,16 @@ class Page_CMS extends Page
 	{
 		$slot = $this->_page->get_slot( $type, $slotname );
 		
-		if ($slot->loaded()) {
+		// Bit of a hack - the 3rd paramater for feature boxes is the posititon of the feature box at the moment.
+		// This all needs changing...
+		if ($type == 'feature')
+		{
+			$template = $htmlbefore;
+			$htmlbefore = '<div>';
+		}
+		
+		if ($slot->loaded())
+		{
 			
 			switch ($type)
 			{
@@ -35,9 +44,12 @@ class Page_CMS extends Page
 					$target = 0;
 			}
 			
+
 			$htmlbefore = $this->addcmsclasses( $htmlbefore, $type, $slotname, $target );
-			$html = $htmlbefore . $slot->data->show() . $htmlafter;
-		} else {
+			$html = $htmlbefore . $slot->data->show( @$template ) . $htmlafter;
+		}
+		else
+		{
 			$htmlbefore = $this->addcmsclasses( $htmlbefore, $type, $slotname, '' );
 			$html = $htmlbefore . ORM::factory( "chunk_$type" )->show_default() . $htmlafter;
 		}
