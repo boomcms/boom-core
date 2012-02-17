@@ -105,6 +105,7 @@ abstract class Page
 					->join( 'page_uri', 'inner' )
 					->on( 'page_uri.page_id', '=', 'page.id' )
 					->where( 'scope', '=', $this->_page->mptt->scope )
+					->where( 'primary_uri', '=', true )
 					->where( 'v.deleted', '=', false );	
 					
 					
