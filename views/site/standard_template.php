@@ -51,7 +51,10 @@
 	</head>
 	<body>
 		<?			
-			echo new View('site/nav/top');
+			if ($mode == 'cms')
+			{
+				echo new View('site/nav/top');
+			}
 
 			echo $subtpl_main;
 
@@ -61,6 +64,6 @@
 			}
 		?>	
 		
-	<?= View::factory('profiler/stats'); ?>
+	<?//= View::factory('profiler/stats'); ?>
 	</body>
 </html>
