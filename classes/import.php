@@ -88,16 +88,19 @@ class Import
 		$page->visible_in_leftnav_cms = (bool) !($details['hidden_from_leftnav_cms'] == 't');
 		$page->keywords = $details['keywords'];
 		$page->description = $details['description'];
+		$page->internal_name = $details['internal_name'];
+		$page->save();
 		
 		// Find the page's feature image.
 		$feature = $db->query( Database::SELECT, "select item_rid from relationship_partner where item_tablename = 'asset' and relationship_id = (select relationship_id from relationship_partner where description = 'featureimage' and item_tablename = 'page' and item_rid = " . $details['rid'] . ")" )->as_array();
 		
 		if (sizeof( $feature ) > 0)
 		{
-			$page->feature_image = $feature[0]['item_rid'];
+			$feature = $db->query( Database::SELECT, "select active_vid from asset where id = '" . $feature[0]['item_rid'] . "'" )->as_array();
+			$page->feature_image = $feature[0]['active_vid'];
+			
+			Database::instance()->query( Database::UPDATE, "update page_v set feature_image = '" . $feature[0]['active_vid'] . "' where rid = " . $details['rid'] );
 		}
-		
-		$page->save();
 		
 		Database::instance()->query( Database::UPDATE, "update page_v set audit_time = '" . strtotime( $details['audit_time'] ) . "' where rid = " . $details['rid'] );
 
