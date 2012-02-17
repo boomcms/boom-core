@@ -26,15 +26,15 @@
 			$node = $pages[$i];
 
 			// Going down?
-			if ($node['lvl'] > $level)
+			if ($i < ($count - 1) && $pages[ $i + 1 ]['lvl'] > $node['lvl'])
 			{
 				$level = $node['lvl'];
 			}	
 			
 			// Going up?
-			if ($i < ($count - 1) && $node['lvl'] > $pages[ $i + 1 ]['lvl'])
+			if ($i > 0 && $node['lvl'] < $pages[ $i - 1 ]['lvl'])
 			{
-				echo str_repeat( "</li></ul></li>", $node['lvl'] - $pages[ $i + 1 ]['lvl'] );
+				echo str_repeat( "</li></ul></li>", $pages[ $i - 1 ]['lvl'] - $node['lvl'] );
 				$level = $node['lvl'];				
 			}	
 				
@@ -42,13 +42,13 @@
 			echo "<li><a href='/" , $node['uri'] , "'>" , $node['title'] , "</a>\n";	
 			
 			// Start a sub-list if this page has children. Otherwise close the list item.
-			if ($i < ($count - 1) && $pages[ $i + 1 ]['lft'] > $node['lft'] && $pages[ $i + 1 ]['rgt'] < $node['rgt'])
+			if ($i < ($count - 1) && $pages[ $i + 1 ]['parent_id'] == $node['id'])
 			{
 				echo "<ul";
 				
 				// Hide sub-trees by default
 				// If current node is not a direct child of the page we're viewing.
-				if ($node['lvl']['parent_id'] != $page->mptt->id && $node['id'] != $page->id)
+				if (!($node['lft'] < $page->mptt->lft && $node['rgt'] > $page->mptt->rgt) && $node['page_id'] != $page->id)
 				{
 					echo " class='hidden'";
 				}
