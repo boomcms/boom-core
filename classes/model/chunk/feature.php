@@ -27,7 +27,7 @@ class Model_Chunk_Feature extends ORM implements Interface_Slot
 	protected $_primary_key = 'chunk_id';
 	
 	protected $_belongs_to = array(
-		'page' => array( 'model' => 'page', 'foreign_key' => 'target_page_id' ),
+		'target' => array( 'model' => 'page', 'foreign_key' => 'target_page_id' ),
 	);
 	
 	public function show( $template = 'main' )
@@ -41,10 +41,14 @@ class Model_Chunk_Feature extends ORM implements Interface_Slot
 			
 			$v = View::factory( "site/slots/slottype/feature/subtpl_$template" );
 		
-			$target = ORM::factory( 'page', $this->target_page_id );
-			$v->url = $target->url();
-			$v->title = $target->title;
-			$v->text = $target->get_slot( 'text', 'standfirst' )->show();
+			$v->url = $this->target->url();
+			$v->title = $this->target->title;
+			$v->text = $this->target->get_slot( 'text', 'standfirst' )->show();
+			
+			if ($this->target->feature_image)
+			{
+				$v->image_id = $this->target->feature_image;
+			}
 			
 			return $v;	
 		}	

@@ -27,7 +27,7 @@ class Page_CMS extends Page
 		{
 			$template = $htmlbefore;
 			
-			if ($template = '<div>')
+			if ($template == '<div>')
 			{
 				$template = null;
 			}
