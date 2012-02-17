@@ -100,7 +100,12 @@ class Import
 			$page_uri->page_id = $page->id;
 			$page_uri->uri = $uri['uri'];
 			$page_uri->primary_uri = false;
-			$page_uri->save();			
+			
+			try
+			{
+				$page_uri->save();
+			}
+			catch( Sledge_Exception $e ){}			
 		}
 		
 		// Find the page's feature image.
