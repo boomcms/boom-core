@@ -80,15 +80,15 @@ class Controller_Site extends Sledge_Controller
 		}
 
 		// Add the main subtemplate to the standard template.
-		if ( $this->page->template->filename == 'site/templates/tpl_home' )
-		{
+		//if ( $this->page->template->filename == 'site/templates/tpl_home' )
+		//{
 			$this->template->subtpl_main = View::factory( $this->page->template->filename );
-		}
-		else
-		{
+		//}
+		//else
+		//{
 			// Force use of the orange template until templates are redeveloped.
-			$this->template->subtpl_main = View::factory( 'site/templates/tpl_orange' );
-		}
+			//$this->template->subtpl_main = View::factory( 'site/templates/tpl_orange' );
+		//}
 	}
 	
 	/**

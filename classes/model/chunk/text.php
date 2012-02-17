@@ -43,9 +43,16 @@ class Model_Chunk_Text extends ORM implements Interface_Slot
 	public function show()
 	{
 		if ($this->loaded())
-			return $this->text;
+		{
+			// Fix image links.
+			$text = $this->text;
+			$text = preg_replace( "|hoopdb://image/(\d+)|", "/asset/view/$1", $text );
+			return $text;
+		}
 		else
+		{
 			return '';
+		}
 	}
 	
 	public function show_default()
