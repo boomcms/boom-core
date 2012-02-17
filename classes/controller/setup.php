@@ -137,7 +137,7 @@ class Controller_Setup extends Kohana_Controller
 		// Pages.
 		$homepage = $old->query( Database::SELECT, "select * from cms_page where uri = ''" )->as_array();
 		
-		$page = Import::import_page( $homepage[0] );
+		$page = Import::import_page( $homepage[0], $old );
 				
 		$mptt = ORM::factory( 'page_mptt' )->values( array( 'page_id' => $page->id ))->create();
 		$mptt->make_root();

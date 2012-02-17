@@ -58,7 +58,7 @@ class Import
 		
 		foreach( $pages as $p )
 		{
-			$x = self::import_page( $p );
+			$x = self::import_page( $p, $db );
 			
 			$mptt = ORM::factory( 'page_mptt' )->values( array( 'page_id' => $p['rid'] ));
 			$mptt->insert_as_last_child( $parent );
@@ -73,7 +73,7 @@ class Import
 		}		
 	}
 	
-	public static function import_page( array $details )
+	public static function import_page( array $details, $db )
 	{
 		$page = ORM::factory( 'page' );
 		$page->id = $details['rid'];
