@@ -84,8 +84,8 @@ class Import
 		$page->visible_from = strtotime( $details['visiblefrom_timestamp'] );
 		$page->visible_to = strtotime( $details['visibleto_timestamp'] );
 		$page->visible =  ($details['ref_page_status_rid'] == 2);
-		$page->visible_in_leftnav = !($details['hidden_from_leftnav'] == 'f');
-		$page->visible_in_leftnav_cms = !($details['hidden_from_leftnav_cms'] == 'f');
+		$page->visible_in_leftnav = (bool) !($details['hidden_from_leftnav'] == 't');
+		$page->visible_in_leftnav_cms = (bool) !($details['hidden_from_leftnav_cms'] == 't');
 		$page->keywords = $details['keywords'];
 		$page->description = $details['description'];
 		
@@ -98,6 +98,8 @@ class Import
 		}
 		
 		$page->save();
+		
+		Database::instance()->query( Database::UPDATE, "update page_v set audit_time = '" . strtotime( $details['audit_time'] ) . "' where rid = " . $details['rid'] );
 
 		ORM::factory( 'page_uri' )->values( array( 'page_id' => $details['rid'], 'uri' => $details['uri'], 'primary_uri' => true ))->create();
 		

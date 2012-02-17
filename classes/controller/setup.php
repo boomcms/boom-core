@@ -129,8 +129,11 @@ class Controller_Setup extends Kohana_Controller
 		foreach( $assets as $a )
 		{
 			$asset = ORM::factory( 'asset' );
-			$asset->id = $a['id'];
+			$asset->id = $a['rid'];
 			$asset->title = $a['title'];
+			$asset->status = 2;
+			$asset->type = 'image';
+			
 			$asset->save();					
 		}
 			

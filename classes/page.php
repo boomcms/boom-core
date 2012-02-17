@@ -98,9 +98,12 @@ abstract class Page
 	*/
 	public function leftnav_pages()
 	{	
-		$query = ORM::factory( 'page' )
+		$query = DB::SELECT( 'page.id', 'page_uri.uri', 'v.title', 'page_mptt.*' )
+					->from( 'page' )
 					->join( 'page_mptt' )
 					->on( 'page_mptt.page_id', '=', 'page.id' )
+					->join( 'page_uri', 'inner' )
+					->on( 'page_uri.page_id', '=', 'page.id' )
 					->where( 'scope', '=', $this->_page->mptt->scope )
 					->where( 'v.deleted', '=', false );	
 					
@@ -129,8 +132,9 @@ abstract class Page
 		}
 		
 		$query->order_by( 'page_mptt.lft', 'asc' );
-		$pages = $query->find_all();
-			
+		
+		$pages = $query->execute()->as_array();
+					
 		return $pages;
 	}
 }
