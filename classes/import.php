@@ -92,14 +92,14 @@ class Import
 		$page->save();
 		
 		// Import secondary URIs.
-		$uris = $db->query( "select uri from secondary_uri inner join secondary_uri_v on active_vid = secondary_uri_v.id where page_rid = " . $details['rid'] );
+		$uris = $db->query( Database::SELECT, "select uri from secondary_uri inner join secondary_uri_v on active_vid = secondary_uri_v.id where page_rid = " . $details['rid'] );
 		
 		foreach( $uris as $uri )
 		{
 			$page_uri = ORM::factory( 'page_uri' );
 			$page_uri->page_id = $page->id;
 			$page_uri->uri = $uri['uri'];
-			$page_uri->secondary_uri = false;
+			$page_uri->primary_uri = false;
 			$page_uri->save();			
 		}
 		
