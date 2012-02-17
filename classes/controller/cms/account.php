@@ -28,13 +28,12 @@ class Controller_Cms_Account extends Kohana_Controller
 	public function action_login() 
 	{
 		$protocol = $this->request->protocol();
-		$redirect_after = '/' . Cookie::get( 'redirect_after' );
 		$this->return['tab'] = 'login';
 		
 		if (Auth::instance()->logged_in())
 		{
 			//You're already logged in dummy, just go away.
-			$this->request->redirect( $redirect_after );
+			$this->request->redirect( '/' );
 		}
 		
 		// Gather form data.
@@ -63,12 +62,11 @@ class Controller_Cms_Account extends Kohana_Controller
 				if (Auth::instance()->login( $person, $password, $persist ))
 				{				
 					// Log the activity, so we can see what everyone's been getting up to.
-					Cookie::delete( 'redirect_after' );
 					Model_Activitylog::log( $person, 'login' );
 
 					$this->return['message'] = 'Login successful.';
 					$this->return['outcome'] = 'success';
-					$this->return['redirecturl'] = $redirect_after;
+					$this->return['redirecturl'] = '/';
 				}
 				else
 				{
