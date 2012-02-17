@@ -98,7 +98,7 @@ abstract class Page
 	*/
 	public function leftnav_pages()
 	{	
-		$query = DB::SELECT( 'page.id', 'page_uri.uri', 'v.title', 'page_mptt.*' )
+		$query = DB::SELECT( array( 'page.id', 'page_id' ), 'page_uri.uri', 'v.title', 'page_mptt.*' )
 					->from( 'page' )
 					->join( 'page_mptt' )
 					->on( 'page_mptt.page_id', '=', 'page.id' )

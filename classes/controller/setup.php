@@ -106,6 +106,7 @@ class Controller_Setup extends Kohana_Controller
 		$new->query( Database::DELETE, "truncate chunk_linkset" );
 		$new->query( Database::DELETE, "truncate linksetlinks" );
 		$new->query( Database::DELETE, "truncate asset" );
+		$new->query( Database::DELETE, "truncate asset_v" );
 		$new->query( Database::DELETE, "truncate template" );
 		$new->query( Database::DELETE, "truncate template_v" );
 		
@@ -124,12 +125,12 @@ class Controller_Setup extends Kohana_Controller
 		}		
 		
 		// Assets.
-		$assets = $old->query( Database::SELECT, "select * from cms_asset" );
+		$assets = $old->query( Database::SELECT, "select *, asset_v.id as vid from asset inner join asset_v on asset.active_vid = asset_v.id" );
 		
 		foreach( $assets as $a )
 		{
 			$asset = ORM::factory( 'asset' );
-			$asset->id = $a['rid'];
+			$asset->id = $a['vid'];
 			$asset->title = $a['title'];
 			$asset->status = 2;
 			$asset->type = 'image';

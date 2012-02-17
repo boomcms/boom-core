@@ -64,6 +64,6 @@
 			}
 		?>	
 		
-	<?//= View::factory('profiler/stats'); ?>
+	<?= View::factory('profiler/stats'); ?>
 	</body>
 </html>
