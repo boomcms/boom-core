@@ -13,7 +13,7 @@
 			</div>
 
 			<div id="bodyContent">
-				<h1 class="pageTitle"><?= $page->title?></h1>
+				<h1 class="pageTitle" id='sledge-page-title'><?= $page->title?></h1>
 	
 				<div class="column sm">
 					<? $page->get_slot('text', 'quote', '<h3 class="quote">','</h3>','ch, ins'); ?>

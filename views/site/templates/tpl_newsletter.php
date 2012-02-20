@@ -27,7 +27,7 @@
 				</div>
 				
 				<div class="yui-g">
-					<h1 class="pageTitle"><?= $this->page->title?></h1>
+					<h1 class="pageTitle" id='sledge-page-title'><?= $this->page->title?></h1>
 
 					<?if (isset($_POST['submit']) and !isset($_POST['small-form']) and !sizeof($this->post_errors)){
 						$list_name = '';

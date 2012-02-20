@@ -12,7 +12,7 @@
 	</div>
 	<div id="main-content">
 		<div class="headings">
-			<h1 class="pageTitle"><?= $page->title?></h1>
+			<h1 class="pageTitle" id='sledge-page-title'><?= $page->title?></h1>
 			<?= $page->get_slot('text', 'standfirst', '<h2 class="standFirst">', '</h2>' ); ?>
 		</div>
 		<p>

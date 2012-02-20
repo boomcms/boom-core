@@ -41,7 +41,7 @@ $this->pagination_uri = $this->page->absolute_uri();
 	</div>
 	<div id="main-content">
 		<div class="headings">
-			<h1 class="pageTitle"><?=$this->page->title;?></h1>
+			<h1 class="pageTitle" id='sledge-page-title'><?=$this->page->title;?></h1>
 			<?= O::fa('chunk_text')->get_chunk($this->page->rid, 'standfirst', '<h2 class="standFirst">', '</h2>','ch,ins,br'); ?>
 		</div>
 		<?= O::fa('chunk_text')->get_chunk($this->page->rid, 'bodycopy', '<div id="content">', '</div>');?>

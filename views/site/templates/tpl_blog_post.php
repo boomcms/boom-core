@@ -36,7 +36,7 @@
 	</div>
 	<div id="main-content"> 	
 		<div class="headings">
-			<h1 class="pageTitle"><?= $this->page->title?></h1>
+			<h1 class="pageTitle" id='sledge-page-title'><?= $this->page->title?></h1>
 			<?= O::f('chunk_text_v')->get_chunk($this->page->rid, 'standfirst', '<h2 class="standFirst">', '</h2>','ch,ins'); ?>
 		</div>
 		<?= O::f('chunk_text_v')->get_chunk($this->page->rid, 'bodycopy', '<div id="content" class="clearfix">', '</div>');?>
