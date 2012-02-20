@@ -134,12 +134,20 @@ class Controller_Setup extends Kohana_Controller
 		foreach( $assets as $a )
 		{
 			$asset = ORM::factory( 'asset' );
-			$asset->id = $a['vid'];
+			$asset->id = $a['rid'];
 			$asset->title = $a['title'];
+			$asset->width = $a['width'];
+			$asset->height = $a['height'];
+			$asset->filename = $a['filename'];
+			$asset->crop_start_x = $a['crop_start_x'];
+			$asset->crop_start_y = $a['crop_start_y'];
+			$asset->crop_end_x = $a['crop_end_x'];
+			$asset->crop_end_y = $a['crop_end_y'];
 			$asset->status = 2;
 			$asset->type = 'image';
+			$asset->save();	
 			
-			$asset->save();					
+			$new->query( Database::UPDATE, "update asset inner join asset_v on active_vid = asset_v.id set active_vid = " . $a['vid'] . ", asset_v.id = " . $a['vid'] . " where asset.id = " . $a['rid'] );				
 		}
 			
 		// Pages.
