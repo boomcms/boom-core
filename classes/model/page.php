@@ -497,7 +497,7 @@ class Model_Page extends ORM_Versioned implements Interface_Taggable {
 				->join( 'tagged_objects', 'inner' )
 				->on( 'tag.id', '=', 'tagged_objects.tag_id' )
 				->where( 'tagged_objects.object_id', '=', $this->id )
-				->where( 'tagged_objects.object_type', '=', 'page' )
+				->where( 'tagged_objects.object_type', '=', Model_Tagged_Object::OBJECT_TYPE_PAGE )
 				->where( 'parent_id', '=', $parent->id )
 				->execute()->as_array();
 		}

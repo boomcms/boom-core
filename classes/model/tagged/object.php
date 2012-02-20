@@ -41,6 +41,8 @@ class Model_Tagged_Object extends ORM {
 	*/
 	const OBJECT_TYPE_ASSET = 1;
 	
+	const OBJECT_TYPE_PAGE = 2;
+	
 }
 
 ?>
