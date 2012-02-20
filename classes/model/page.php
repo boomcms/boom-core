@@ -20,7 +20,7 @@
 * @copyright 2011, Hoop Associates
 *
 */
-class Model_Page extends ORM_Versioned {
+class Model_Page extends ORM_Versioned implements Interface_Taggable {
 	/**
 	* Properties to create relationships with Kohana's ORM
 	*/
@@ -464,6 +464,46 @@ class Model_Page extends ORM_Versioned {
 		$this->_primary_uri = $uri;	
 		return $uri;
 	}
+	
+	public function get_tags( $under = null ){}
+		
+	/**
+	* Find select columns of tags applied to this page.
+	*
+	* @param mixed Model_Tag or string. If a string used as the route to the parent tag.
+	* @return array
+	*/
+	public function get_tag_columns( array $columns, $parent )
+	{
+		if ($this->loaded())
+		{
+			if (!$parent instanceof Model_Tag)
+			{
+				$parent = ORM::factory( 'tag' )->find_by_route( $parent );
+			}
+				
+			$query = DB::select();
+		
+			foreach( $columns as $column )
+			{
+				$query->select( $column );
+			}
+		
+			return $query->from( 'tag' )
+				->join( 'tag_v', 'inner' )
+				->on( 'active_vid', '=', 'tag_v.id' )
+				->join( 'tag_mptt', 'inner' )
+				->on( 'tag_mptt.id', '=', 'tag.id' )
+				->join( 'tagged_objects', 'inner' )
+				->on( 'tag.id', '=', 'tagged_objects.tag_id' )
+				->where( 'tagged_objects.object_id', '=', $this->id )
+				->where( 'tagged_objects.object_type', '=', 'page' )
+				->where( 'parent_id', '=', $parent->id )
+				->execute()->as_array();
+		}
+	}
+	
+	public function apply_tag( Model_Tag $tag ){}
 }
 
 

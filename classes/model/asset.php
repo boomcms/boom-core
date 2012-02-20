@@ -114,7 +114,7 @@ class Model_Asset extends ORM_Versioned implements Interface_Taggable {
 	* @uses self::$_tags
 	* @return array Array of Model_Tag ojects.
 	*/
-	public function tags()
+	public function get_tags( $under = null )
 	{
 		if ($this->_tags === null)
 		{
@@ -128,6 +128,12 @@ class Model_Asset extends ORM_Versioned implements Interface_Taggable {
 		}
 		
 		return $this->_tags;
+	}
+	
+	public function get_tag_columns( array $columns, $under )
+	{
+		
+		
 	}
 	
 	/**

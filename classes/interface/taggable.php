@@ -15,9 +15,19 @@ interface Interface_Taggable
 	/**
 	* Method to retrieve all tags which have been applied to the object.
 	*
+	* @param string $under Find the tags in a specific sub-tree.
 	* @return array Array of Model_Tag objects.
 	*/
-	public function tags();
+	public function get_tags( $under = null );
+	
+	/**
+	* As above but limits results to certain columns
+	*
+	* @param array $columns Array of column names to return.
+	* @param string $under Find the tags in a specific sub-tree.
+	* @return array Array of tag names.
+	*/
+	public function get_tag_columns( array $columns, $under );	
 	
 	/**
 	* Method to apply a tag to an object.

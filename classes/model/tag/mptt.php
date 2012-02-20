@@ -23,12 +23,13 @@
 * @copyright 2011, Hoop Associates
 *
 */
-class Model_Tag_Mptt extends ORM_MPTT {
+class Model_Tag_Mptt extends ORM_MPTT
+{
 	/**
 	* Properties to create relationships with Kohana's ORM
 	*/
 	protected $_table_name = 'tag_mptt';
-	protected $_belongs_to = array( 'tag' => array() );	
+	protected $_has_one = array( 'tag' => array( 'foreign_key' => 'id' ) );	
 	
 }
 
