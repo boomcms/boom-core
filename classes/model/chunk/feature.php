@@ -39,7 +39,7 @@ class Model_Chunk_Feature extends ORM implements Interface_Slot
 				$template = 'main';
 			}
 			
-			$v = View::factory( "site/slots/slottype/feature/subtpl_$template" );
+			$v = View::factory( "site/slots/feature/$template" );
 		
 			$v->url = $this->target->url();
 			$v->title = $this->target->title;
@@ -54,9 +54,9 @@ class Model_Chunk_Feature extends ORM implements Interface_Slot
 		}	
 	}
 	
-	public function show_default()
+	public function show_default( $template = 'main' )
 	{
-		$v = View::factory( 'site/slots/feature' );
+		$v = View::factory( "site/slots/feature/$template" );
 		$v->url = '';
 		$v->title = 'Default Feature';
 		$v->text = 'Click on me to add a feature box here.';	
