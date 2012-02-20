@@ -128,11 +128,7 @@ class Controller_Cms_Account extends Kohana_Controller
 				// Log that someone's done something
 				Model_Activitylog::log( $person, 'password reset' );
 
-				// Create a new password and update the user.
-				// FYI Text_Password is a pear module.
-				include 'Text/Password.php';
-				$tp = new Text_Password();
-				$passwd = $tp->create(8);
+				$passwd = Text::random();
 				
 				$person->password = $passwd;
 				$person->consecutive_failed_login_counter = 0;
