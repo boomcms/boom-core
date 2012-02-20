@@ -203,32 +203,29 @@ class Controller_Cms_Page extends Controller_Cms
 		
 		// Update slots.
 		
-		foreach( $data->slots as $type => $slot )
+		foreach( $data->slots as $type => $obj )
 		{
-			$properties = array_keys( get_object_vars( $slot ) );
-			$name = $properties[0];
-			
-			if ($slot->$name)
-			{	
+			foreach( get_object_vars( $obj ) as $name => $data )
+			{
 				$chunk = ORM::factory( 'chunk' );
 				$chunk->type = $type;		
 				$chunk->slotname = $name;
-			
+		
 				switch( $type )
 				{
 					case 'text':
-						$chunk->data->text = $slot->$name;
+						$chunk->data->text = $data;
 						break;
 					case 'feature':
-						$chunk->data->target_page_id = $slot->$name;
+						$chunk->data->target_page_id = $data;
 						break;
 					case 'asset':
-						$chunk->data->asset_id = $slot->$name;
+						$chunk->data->asset_id = $data;
 						break;
 					case 'linkset':
 						break;
 				}
-			
+		
 				$chunk->save();
 				$page->version->add( 'chunks', $chunk );
 			}
