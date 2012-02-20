@@ -123,6 +123,23 @@ class Import
 
 		ORM::factory( 'page_uri' )->values( array( 'page_id' => $details['rid'], 'uri' => $details['uri'], 'primary_uri' => true ))->create();
 		
+		// Import tags for this page.
+		$tags = $db->query( Database::SELECT, "select item_rid from relationship_partner inner join (select relationship_id from relationship_partner where item_tablename = 'page' and item_rid = " . $details['rid'] . ") as q on q.relationship_id = relationship_partner.relationship_id where item_tablename = 'tag'" );
+		
+		foreach( $tags as $tag )
+		{
+			$to = ORM::factory( 'tagged_object' );
+			$to->tag_id = $tag;
+			$to->object_type = Model_Tagged_Object::OBJECT_TYPE_PAGE;
+			$to->object_id = $details['rid'];
+			
+			try
+			{
+				$to->save();
+			}
+			catch( Database_Exception $e ){}
+		}
+		
 		return $page;
 	}
 	

@@ -112,6 +112,7 @@ class Controller_Setup extends Kohana_Controller
 		$new->query( Database::DELETE, "truncate tag" );
 		$new->query( Database::DELETE, "truncate tag_v" );
 		$new->query( Database::DELETE, "truncate tag_mptt" );
+		$new->query( Database::DELETE, "truncate tagged_objects" );
 		
 		// Templates.
 		$templates = $old->query( Database::SELECT, "select deleted, template_v.* from template inner join template_v on active_vid = template_v.id" );
