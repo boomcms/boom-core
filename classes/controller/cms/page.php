@@ -205,7 +205,7 @@ class Controller_Cms_Page extends Controller_Cms
 		
 		foreach( $data->slots as $type => $obj )
 		{
-			foreach( get_object_vars( $obj ) as $name => $data )
+			foreach( get_object_vars( $obj ) as $name => $slot_data )
 			{
 				$chunk = ORM::factory( 'chunk' );
 				$chunk->type = $type;		
@@ -214,13 +214,13 @@ class Controller_Cms_Page extends Controller_Cms
 				switch( $type )
 				{
 					case 'text':
-						$chunk->data->text = $data;
+						$chunk->data->text = $slot_data;
 						break;
 					case 'feature':
-						$chunk->data->target_page_id = $data;
+						$chunk->data->target_page_id = $slot_data;
 						break;
 					case 'asset':
-						$chunk->data->asset_id = $data;
+						$chunk->data->asset_id = $slot_data;
 						break;
 					case 'linkset':
 						break;
