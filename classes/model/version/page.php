@@ -80,6 +80,7 @@ class Model_Version_Page extends Model_Version {
 	    return array(
 			'title' => array(
 				array( 'html_entity_decode' ),
+				array( 'urldecode' ),
 			),
 	    );
 	}
