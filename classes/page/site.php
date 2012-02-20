@@ -16,11 +16,16 @@ class Page_Site extends Page
 	* @param string $slotname
 	* @return string The HTML to display the slot
 	*/	
-	public function get_slot($type, $slotname, $editable = false)
+	public function get_slot($type, $slotname, $template = null)
 	{
 		$slot = $this->_page->get_slot( $type, $slotname );
 		
+		if ($template = "<div>")
+		{
+			$template = "main";
+		}
+				
 		if ($slot->loaded())
-			echo $slot->show();		
+			echo $slot->show( $template );		
 	}
 }

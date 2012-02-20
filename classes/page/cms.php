@@ -56,7 +56,7 @@ class Page_CMS extends Page
 		else
 		{
 			$htmlbefore = $this->addcmsclasses( $htmlbefore, $type, $slotname, '' );
-			$html = $htmlbefore . ORM::factory( "chunk_$type" )->show_default() . $htmlafter;
+			$html = $htmlbefore . ORM::factory( "chunk_$type" )->show_default( @$template ) . $htmlafter;
 		}
 		
 		echo $html;
