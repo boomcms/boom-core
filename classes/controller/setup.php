@@ -109,6 +109,9 @@ class Controller_Setup extends Kohana_Controller
 		$new->query( Database::DELETE, "truncate asset_v" );
 		$new->query( Database::DELETE, "truncate template" );
 		$new->query( Database::DELETE, "truncate template_v" );
+		$new->query( Database::DELETE, "truncate tag" );
+		$new->query( Database::DELETE, "truncate tag_v" );
+		$new->query( Database::DELETE, "truncate tag_mptt" );
 		
 		// Templates.
 		$templates = $old->query( Database::SELECT, "select deleted, template_v.* from template inner join template_v on active_vid = template_v.id" );
@@ -155,6 +158,9 @@ class Controller_Setup extends Kohana_Controller
 		Import::child_pages( $old, $homepage[0]['rid'], $page, $mptt );
 		
 		$new->query( Database::UPDATE, "update page set published_vid = active_vid" );
+		
+		// Import tags.
+		Import::child_tags( $old );
 	}
 }
 

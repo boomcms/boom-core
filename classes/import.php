@@ -125,6 +125,36 @@ class Import
 		
 		return $page;
 	}
+	
+	public static function child_tags( $db, $parent = 1 )
+	{
+		$tags = $db->query( Database::SELECT, "select tag_v.* from tag inner join tag_v on active_vid = tag_v.id where parent_rid = " . $parent )->as_array();
+		
+		foreach( $tags as $tag )
+		{
+			if ($parent != 1 || $tag['name'] == 'Pages')
+			{
+				$t = ORM::factory( 'tag' );
+				$t->id = $tag['rid'];
+				$t->name = $tag['name'];
+				$t->save();
+			
+				$mptt = ORM::factory( 'tag_mptt' );
+				$mptt->id = $tag['rid'];
+			
+				if ($parent == 1)
+				{
+					$mptt->make_root();
+				}
+				else
+				{
+					$mptt->insert_as_last_child( $parent );
+				}
+			
+				self::child_tags( $db, $tag['rid'] );	
+			}
+		}
+	}
 }
 
 ?>
