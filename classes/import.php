@@ -154,14 +154,21 @@ class Import
 			$chunk->slotname = $xx['slotname'];
 			$chunk->save();
 	
-			$images = $db->query( Database::SELECT, "select item_rid from relationship_partner where relationship_id in (select relationship_id from relationship_partner where item_tablename = 'tag' and item_rid = " . $xx['target_tag_rid'] . ") and item_tablename = 'asset';" );	
+			$images = $db->query( Database::SELECT, "select item_rid from relationship_partner inner join asset on item_rid = asset.id inner join asset_v on active_vid = asset_v.id where relationship_id in (select relationship_id from relationship_partner where item_tablename = 'tag' and item_rid = " . $xx['target_tag_rid'] . ") and item_tablename = 'asset' order by audit_time asc" );	
 			
+			$first = true;
 			foreach( $images as $image )
 			{
+				if (!$page->feature_image->loaded() && $first == true)
+				{
+					Database::instance()->query( Database::UPDATE, "update page_v set feature_image = " . $image['item_rid'] . " where rid = " . $page->id );
+				}
+				
 				$s = ORM::factory( 'slideshowimage' );
 				$s->chunk_id = $chunk->id;
 				$s->asset_id = $image['item_rid'];
 				$s->save();
+				$first = false;
 			}		
 			
 			$page->version->add( 'chunks', $chunk );
