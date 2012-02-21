@@ -27,7 +27,6 @@ class Model_Page extends ORM_Versioned implements Interface_Taggable {
 	protected $_table_name = 'page';
 	protected $_has_one = array( 
 		'mptt'		=> array( 'model' => 'page_mptt' ),
-		'feature_image' => array( 'model' => 'asset', 'foreign_key' => 'id' ),
 	);
 	protected $_has_many = array( 
 		'uris'		=> array('model' => 'page_uri', 'foreign_key' => 'page_id'),
