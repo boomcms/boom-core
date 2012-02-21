@@ -75,6 +75,9 @@ class Import
 	
 	public static function import_page( array $details, $db )
 	{
+		// Find when the page was created.
+		$created = $db->query( Database::SELECT, "select min(audit_time) from page_v where rid = " . $details['rid'] )->as_array();
+		
 		$page = ORM::factory( 'page' );
 		$page->id = $details['rid'];
 		$page->template_id = $details['template_rid'];
@@ -89,6 +92,7 @@ class Import
 		$page->keywords = $details['keywords'];
 		$page->description = $details['description'];
 		$page->internal_name = $details['internal_name'];
+		$page->created = strtotime( $created[0]['min'] );
 		$page->save();
 		
 		// Import secondary URIs.
