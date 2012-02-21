@@ -504,6 +504,16 @@ class Model_Page extends ORM_Versioned implements Interface_Taggable {
 	}
 	
 	public function apply_tag( Model_Tag $tag ){}
+		
+	/**
+	* Page create method - set the page creation time.
+	*/
+	public function create( Validation $validation = null )
+	{
+		$this->created = time();
+		
+		parent::create( $validation );
+	}
 }
 
 
