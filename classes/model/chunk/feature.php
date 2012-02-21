@@ -32,8 +32,9 @@ class Model_Chunk_Feature extends ORM implements Interface_Slot
 	
 	public function show( $template = 'main' )
 	{
-		if ($this->loaded())
-		{
+		// Loaded check was disabled for inserting a new feature chunk.
+		//if ($this->loaded())
+		//{
 			if (!$template)
 			{
 				$template = 'main';
@@ -51,7 +52,7 @@ class Model_Chunk_Feature extends ORM implements Interface_Slot
 			}
 			
 			return $v;	
-		}	
+	//	}	
 	}
 	
 	public function show_default( $template = 'main' )
