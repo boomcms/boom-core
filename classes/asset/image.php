@@ -14,14 +14,14 @@ class Asset_Image extends Asset {
 	{
 		$image = Image::factory( ASSETPATH . $this->instance()->pk() );
 		
-		$width = ($width == null)? $this->instance()->width : $width;
-		$height = ($height == null)? $this->instance()->height : $height;
+		$height = ($height == null)? 400 : $height;
 		
 		if ($width || $height)
-			$image->resize( $width, $height );
+			$image->resize( $height, $width );
 			
 		header('Content-type: ' . $image->mime);
-		return $image->render( null, $quality );		
+		echo $image->render( null, $quality );
+		exit;		
 	}
 	
 	public function preview()
