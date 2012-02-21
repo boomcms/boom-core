@@ -20,11 +20,16 @@ class Model_Chunk_Slideshow extends ORM implements Interface_SLot
 	protected $_load_with = array( 'slides' );
 	
 	
-	public function show()
+	public function show( $template = 'circles' )
 	{	
+		if (!$template)
+		{
+			$template = 'circles';
+		}
+		
 		if ($this->loaded())
 		{
-			$v = View::factory( 'site/slots/slideshow' );
+			$v = View::factory( "site/slots/slideshow/$template" );
 			$v->chunk = $this;
 			
 			$v->title = $this->title;
