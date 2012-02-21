@@ -14,7 +14,7 @@ class Asset_Image extends Asset {
 	{
 		$image = Image::factory( ASSETPATH . $this->instance()->pk() );
 		
-		$height = ($height == null)? 400 : $height;
+		$width = ($width == 0)? null : $width;
 		
 		if ($width || $height)
 			$image->resize( $height, $width );

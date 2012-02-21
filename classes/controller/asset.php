@@ -32,7 +32,7 @@ class Controller_Asset extends Kohana_Controller
 		if ($this->asset->loaded() && $this->asset->status == Model_Asset::STATUS_PUBLISHED)
 		{
 			$this->asset = Asset::factory( $this->asset->type, $this->asset );	
-			$this->response->body( $this->asset->show() );
+			$this->asset->show( $this->request->param( 'width' ), $this->request->param( 'height' ));
 		}
 	}
 	

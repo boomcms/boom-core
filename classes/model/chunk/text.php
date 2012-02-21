@@ -46,7 +46,7 @@ class Model_Chunk_Text extends ORM implements Interface_Slot
 		{
 			// Fix image links.
 			$text = $this->text;
-			$text = preg_replace( "|hoopdb://image/(\d+)|", "/asset/view/$1", $text );
+			$text = preg_replace( "|hoopdb://image/(\d+)|", "/asset/view/$1/0/400", $text );
 			
 			// Fix internal page links.
 			$text = preg_replace_callback( "|hoopdb://page/(\d+)|", 
