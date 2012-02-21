@@ -163,6 +163,8 @@ class Import
 				$s->asset_id = $image['item_rid'];
 				$s->save();
 			}		
+			
+			$page->version->add( 'chunks', $chunk );
 		}
 		
 		return $page;

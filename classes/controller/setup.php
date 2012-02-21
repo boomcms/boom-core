@@ -105,6 +105,8 @@ class Controller_Setup extends Kohana_Controller
 		$new->query( Database::DELETE, "truncate chunk_asset" );
 		$new->query( Database::DELETE, "truncate chunk_linkset" );
 		$new->query( Database::DELETE, "truncate linksetlinks" );
+		$new->query( Database::DELETE, "truncate chunk_slideshow" );
+		$new->query( Database::DELETE, "truncate slideshowimages" );
 		$new->query( Database::DELETE, "truncate asset" );
 		$new->query( Database::DELETE, "truncate asset_v" );
 		$new->query( Database::DELETE, "truncate template" );
