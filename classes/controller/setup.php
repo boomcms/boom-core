@@ -121,7 +121,7 @@ class Controller_Setup extends Kohana_Controller
 		{
 			$template = ORM::factory( 'template' );
 			$template->id = $t['rid'];
-			$template->filename = $t['filename'];
+			$template->filename = str_replace( "tpl_", "", $t['filename'] );
 			$template->name = $t['name'];
 			$template->description = $t['description'];
 			$template->deleted = ($t['deleted'] == 't')? true : false;
