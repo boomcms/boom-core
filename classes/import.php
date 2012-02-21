@@ -144,6 +144,27 @@ class Import
 			catch( Database_Exception $e ){}
 		}
 		
+		// Import any slideshows on this page.
+		$x = $db->query( Database::SELECT, "select target_tag_rid, slotname from chunk_tag inner join chunk_tag_v on active_vid = chunk_tag_v.id where page_vid = " . $details['vid'] );
+		
+		foreach ($x as $xx)
+		{
+			$chunk = ORM::factory( 'chunk' );
+			$chunk->type = 'slideshow';
+			$chunk->slotname = $xx['slotname'];
+			$chunk->save();
+	
+			$images = $db->query( Database::SELECT, "select item_rid from relationship_partner where relationship_id in (select relationship_id from relationship_partner where item_tablename = 'tag' and item_rid = " . $xx['target_tag_rid'] . ") and item_tablename = 'asset';" );	
+			
+			foreach( $images as $image )
+			{
+				$s = ORM::factory( 'slideshowimage' );
+				$s->chunk_id = $chunk->id;
+				$s->asset_id = $image['item_rid'];
+				$s->save();
+			}		
+		}
+		
 		return $page;
 	}
 	
