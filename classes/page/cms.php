@@ -68,65 +68,58 @@ class Page_CMS extends Page
 	* This makes the slot editable.
 	*/
 	private function addcmsclasses($html, $slottype, $slotname, $target) {
-		if ($slottype != 'slideshow')
-		{
-			$disablededitoroptions = '';
-			$editor = 'tinyMCE';
-			$cmsclasses = '';
-		
-			if ($slottype == "text") {
-				$cmsclasses = "{" . 
-				$slottype . " " . 
-				$slotname . 
-				//$disablededitoroptions . 
-				//$editor .
-				"}";
-			} elseif ($slottype == "linkset") {
-				$cmsclasses = "{" . 
-				$slottype . " " . 
-				$slotname . " " .
-				//$data['template'] .
-				"}";
-			} else if ($slottype == 'asset-caption') {
-				$cmsclasses = "{" .
-				$slottype . " " .
-				$slotname . " " .
-				//$disablededitoroptions .
-				//$editor .
-				"}";
+		$disablededitoroptions = '';
+		$editor = 'tinyMCE';
+		$cmsclasses = '';
+	
+		if ($slottype == "text") {
+			$cmsclasses = "{" . 
+			$slottype . " " . 
+			$slotname . 
+			//$disablededitoroptions . 
+			//$editor .
+			"}";
+		} elseif ($slottype == "linkset") {
+			$cmsclasses = "{" . 
+			$slottype . " " . 
+			$slotname . " " .
+			//$data['template'] .
+			"}";
+		} else if ($slottype == 'asset-caption') {
+			$cmsclasses = "{" .
+			$slottype . " " .
+			$slotname . " " .
+			//$disablededitoroptions .
+			//$editor .
+			"}";
+		} else {
+			$cmsclasses = "{" . 
+			$slottype . " " . 
+			$slotname . " "; 
+			if ($target) {
+				$cmsclasses .= $target; 
 			} else {
-				$cmsclasses = "{" . 
-				$slottype . " " . 
-				$slotname . " "; 
-				if ($target) {
-					$cmsclasses .= $target; 
-				} else {
-					$cmsclasses .= "0";
-				}
-				//$cmsclasses .= $data['template'];
-				$cmsclasses .= "}";
+				$cmsclasses .= "0";
 			}
-
-			$pattern1 = "/^(.*?)class=\"([^\"]*)?chunk-slot([^\"]*)?\"/i";	// chunk-slot already defined, add cms classes on the matching tag
-			$pattern2 = "/^(.*?)class=\"([^\"]+)\"/i";			// class attribute already exists in container tag
-			$pattern3 = "/^(<[^>]+)>/";					// no class attribute in container tag
-
-			$replacement1 = "$1class=\"$2 chunk-slot$3 {$cmsclasses}\"";
-			$replacement2 = "$1class=\"$2 chunk-slot {$cmsclasses}\"";
-			$replacement3 = "$1 class=\"chunk-slot {$cmsclasses}\">";
-				
-			if (preg_match($pattern1, $html)) {
-				return preg_replace($pattern1, $replacement1, $html, 1);
-			} else if (preg_match($pattern2, $html)) {
-				return preg_replace($pattern2, $replacement2, $html, 1);
-			} else if (preg_match($pattern3, $html)) {
-				return preg_replace($pattern3, $replacement3, $html, 1);
-			} else {	
-				return $html;
-			}
+			//$cmsclasses .= $data['template'];
+			$cmsclasses .= "}";
 		}
-		else
-		{
+
+		$pattern1 = "/^(.*?)class=\"([^\"]*)?chunk-slot([^\"]*)?\"/i";	// chunk-slot already defined, add cms classes on the matching tag
+		$pattern2 = "/^(.*?)class=\"([^\"]+)\"/i";			// class attribute already exists in container tag
+		$pattern3 = "/^(<[^>]+)>/";					// no class attribute in container tag
+
+		$replacement1 = "$1class=\"$2 chunk-slot$3 {$cmsclasses}\"";
+		$replacement2 = "$1class=\"$2 chunk-slot {$cmsclasses}\"";
+		$replacement3 = "$1 class=\"chunk-slot {$cmsclasses}\">";
+			
+		if (preg_match($pattern1, $html)) {
+			return preg_replace($pattern1, $replacement1, $html, 1);
+		} else if (preg_match($pattern2, $html)) {
+			return preg_replace($pattern2, $replacement2, $html, 1);
+		} else if (preg_match($pattern3, $html)) {
+			return preg_replace($pattern3, $replacement3, $html, 1);
+		} else {	
 			return $html;
 		}
 	}
