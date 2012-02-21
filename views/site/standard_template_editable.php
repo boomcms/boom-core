@@ -91,6 +91,7 @@
 						echo "id: $page->id,"; 
 						echo "vid: ", $page->version->id, ",";
 					endif;
+				
 				?> 
 			});
 

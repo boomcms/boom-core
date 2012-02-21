@@ -67,5 +67,30 @@
 		?>	
 		
 	<?= View::factory('profiler/stats'); ?>
+	
+	<?
+	if ($person->can( 'edit', $page )):
+		?>
+		<script type="text/javascript">
+		//<![CDATA[
+			var timer = setInterval(function(){
+
+				if (window.parent.$ && window.parent.$.sledge && window.parent.$.sledge.page) {
+
+					clearInterval(timer);
+
+					window.parent.$.sledge.page.register({
+						rid: <?=$page->id;?>,
+						vid: <?=$page->version->id;?>,
+						writable: 1,
+						editorOptions: {}
+					});
+				}
+			}, 100);
+		//]]>
+		</script>
+		<?
+	endif;
+	?>
 	</body>
 </html>
