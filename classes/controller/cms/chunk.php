@@ -33,9 +33,23 @@ class Controller_Cms_Chunk extends Controller_Cms
 		$this->_page = ORM::factory( 'page', $page_id );
 	}
 	
+	/**
+	* Display the edit feature template.
+	*/
 	public function action_feature()
 	{
 		$v = View::factory( 'cms/ui/site/page/slot/feature' );
+		$v->page = $this->_page;
+		
+		$this->response->body( $v );
+	}
+	
+	/**
+	* Display the edit asset template.
+	*/
+	public function action_asset()
+	{
+		$v = View::factory( 'cms/ui/site/page/slot/asset' );
 		$v->page = $this->_page;
 		
 		$this->response->body( $v );
