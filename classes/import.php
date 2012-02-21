@@ -159,7 +159,7 @@ class Import
 			$first = true;
 			foreach( $images as $image )
 			{
-				if (!$page->feature_image->loaded() && $first == true)
+				if (!$page->feature_image && $first == true)
 				{
 					Database::instance()->query( Database::UPDATE, "update page_v set feature_image = " . $image['item_rid'] . " where rid = " . $page->id );
 				}
