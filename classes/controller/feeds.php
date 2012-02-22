@@ -55,8 +55,18 @@ class Controller_Feeds extends Kohana_Controller
 	
 	public function action_rss()
 	{
+		$children = ORM::factory( 'page' )
+					->join( 'page_mptt', 'inner' )
+					->on( 'page_mptt.page_id', '=', 'page.id' )
+					->where( 'scope', '=', $this->_page->mptt->scope )
+					->where( 'lft', '>', $this->_page->mptt->lft )
+					->where( 'rgt', '>', $this->_page->mptt->rgt )
+					->order_by( 'visible_from', 'desc' )
+					->find_all();
+					
 		$this->_template = View::factory( 'feeds/rss' );
 		$this->_template->page = $this->_page;
+		$this->_template->children = $children;
 	}
 	
 	public function action_404()

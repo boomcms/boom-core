@@ -13,21 +13,21 @@
 		<WebMaster/>
 		
 		<?
-			foreach ($page->mptt->children() as $p):
+			foreach ($children as $p):
 				?>
 				<item>
 				<title>
-					<![CDATA[ <?= $p->page->title ?> ]]>
+					<![CDATA[ <?= $p->title ?> ]]>
 				</title>
 				<link>
 					<?= $p->page->url() ?>
 				</link>
 				<description>
 					<![CDATA[ 
-						<?= utf8_encode( $p->page->get_slot( 'text', 'standfirst')->show() ) ?>
+						<?= utf8_encode( $p->get_slot( 'text', 'standfirst')->show() ) ?>
 					]]>
 				</description>
-				<pubDate><?= date('D, M j, Y H:i', $p->page->visible_from) ?></pubDate>
+				<pubDate><?= date('D, M j, Y H:i', $p->visible_from) ?></pubDate>
 				</item>
 				
 				<?
