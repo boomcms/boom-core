@@ -106,7 +106,18 @@ class Controller_Site extends Sledge_Controller
 
 			if ($controller->hasMethod( "action_$postbox" ))
 			{
-				Request::factory( "form/$postbox" )->post( array_keys( $_POST ), array_values( $_POST ) )->execute();
+				$errors = Request::factory( "form/$postbox" )
+						->post( array_keys( $_POST ), array_values( $_POST ) )
+						->execute()->body();
+					
+				if ($errors != "")
+				{
+					$this->template->subtpl_main->errors = unserialize( $errors );
+				}
+				else
+				{
+					$this->template->subtpl_main->success = true;
+				}
 			}
 		}
 	}
