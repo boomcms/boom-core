@@ -55,6 +55,17 @@ class Controller_Cms_Chunk extends Controller_Cms
 		$this->response->body( $v );
 	}
 	
+	/**
+	* Display the edit linkset template.
+	*/
+	public function action_linkset()
+	{
+		$v = View::factory( 'cms/ui/site/page/slot/linkset' );
+		$v->page = $this->_page;
+		
+		$this->response->body( $v );
+	}
+	
 	public function action_insert()
 	{
 		$template = Arr::get( $_GET, 'template' );
