@@ -157,8 +157,8 @@ class Controller_Setup extends Kohana_Controller
 		
 		$page = Import::import_page( $homepage[0], $old );
 				
-		$mptt = ORM::factory( 'page_mptt' )->values( array( 'page_id' => $page->id ))->create();
-		$mptt->make_root();
+		$hmptt = ORM::factory( 'page_mptt' )->values( array( 'page_id' => $page->id ))->create();
+		$hmptt->make_root();
 		
 		// Home page slots.
 		Import::chunk_text( $old, $homepage[0]['vid'], $page );
@@ -166,15 +166,16 @@ class Controller_Setup extends Kohana_Controller
 		Import::chunk_asset( $old, $homepage[0]['vid'], $page );
 		
 		// Descend down the tree.
-		Import::child_pages( $old, $homepage[0]['rid'], $page, $mptt );
+		Import::child_pages( $old, $homepage[0]['rid'], $page, $hmptt );
 		
 		// Import page's which aren't part of the main tree - 404 etc.
 		$other = $old->query( Database::SELECT, "select * from cms_page where uri is null and title = 'Other'" )->as_array();
 		
 		$page = Import::import_page( $other[0], $old );
 				
-		$mptt = ORM::factory( 'page_mptt' )->values( array( 'page_id' => $page->id ))->create();
-		$mptt->make_root();
+		$mptt = ORM::factory( 'page_mptt' );
+		$mptt->page_id = $page->id;
+		$mptt->insert_as_last_child( $hmptt );
 		
 		// Home page slots.
 		Import::chunk_text( $old, $other[0]['vid'], $page );
