@@ -23,7 +23,7 @@ class Page_CMS extends Page
 		
 		// Bit of a hack - the 3rd paramater for feature boxes is the posititon of the feature box at the moment.
 		// This all needs changing...
-		if ($type == 'feature' || $type == 'slideshow')
+		if ($type == 'feature' || $type == 'slideshow' || $type == 'linkset')
 		{
 			$template = $htmlbefore;
 			

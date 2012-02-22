@@ -30,11 +30,11 @@ class Model_Chunk_Linkset extends ORM implements Interface_SLot
 	);
 	protected $_load_with = array( 'links' );
 	
-	public function show()
+	public function show( $template = 'quicklinks' )
 	{
 		if ($this->loaded())
 		{
-			$v = View::factory( 'site/slots/linkset' );
+			$v = View::factory( "site/slots/linkset/$template" );
 			
 			$v->title = $this->title;
 			$v->links = $this->links->find_all();
@@ -43,9 +43,9 @@ class Model_Chunk_Linkset extends ORM implements Interface_SLot
 		}
 	}
 	
-	public function show_default()
+	public function show_default( $template = 'quicklinks' )
 	{
-		$v = View::factory( 'site/slots/linkset' );
+		$v = View::factory( "site/slots/linkset/$template" );
 
 		$link = ORM::factory( 'linksetlink' );
 		$link->title = 'Add Link';

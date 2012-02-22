@@ -150,33 +150,36 @@ class Import
 		}
 		
 		// Import any slideshows on this page.
-		$x = $db->query( Database::SELECT, "select target_tag_rid, slotname from chunk_tag inner join chunk_tag_v on active_vid = chunk_tag_v.id where page_vid = " . $details['vid'] );
+		$x = $db->query( Database::SELECT, "select target_tag_rid, slotname from chunk_tag inner join chunk_tag_v on active_vid = chunk_tag_v.id where page_vid = " . $details['vid'] )->as_array();
 		
-		foreach ($x as $xx)
+		if (sizeof( $x ) > 0)
 		{
-			$chunk = ORM::factory( 'chunk' );
-			$chunk->type = 'slideshow';
-			$chunk->slotname = $xx['slotname'];
-			$chunk->save();
-	
-			$images = $db->query( Database::SELECT, "select item_rid from relationship_partner inner join asset on item_rid = asset.id inner join asset_v on active_vid = asset_v.id where relationship_id in (select relationship_id from relationship_partner where item_tablename = 'tag' and item_rid = " . $xx['target_tag_rid'] . ") and item_tablename = 'asset' and asset.deleted is null order by visiblefrom_timestamp desc" );	
-			
-			$first = true;
-			foreach( $images as $image )
+			foreach ($x as $xx)
 			{
-				if (!$page->feature_image && $first == true)
-				{
-					Database::instance()->query( Database::UPDATE, "update page_v set feature_image = " . $image['item_rid'] . " where rid = " . $page->id );
-				}
-				
-				$s = ORM::factory( 'slideshowimage' );
-				$s->chunk_id = $chunk->id;
-				$s->asset_id = $image['item_rid'];
-				$s->save();
-				$first = false;
-			}		
+				$chunk = ORM::factory( 'chunk' );
+				$chunk->type = 'slideshow';
+				$chunk->slotname = $xx['slotname'];
+				$chunk->save();
+	
+				$images = $db->query( Database::SELECT, "select item_rid from relationship_partner inner join asset on item_rid = asset.id inner join asset_v on active_vid = asset_v.id where relationship_id in (select relationship_id from relationship_partner where item_tablename = 'tag' and item_rid = " . $xx['target_tag_rid'] . ") and item_tablename = 'asset' and asset.deleted is null order by visiblefrom_timestamp desc" );	
 			
-			$page->version->add( 'chunks', $chunk );
+				$first = true;
+				foreach( $images as $image )
+				{
+					if (!$page->feature_image && $first == true)
+					{
+						Database::instance()->query( Database::UPDATE, "update page_v set feature_image = " . $image['item_rid'] . " where rid = " . $page->id );
+					}
+				
+					$s = ORM::factory( 'slideshowimage' );
+					$s->chunk_id = $chunk->id;
+					$s->asset_id = $image['item_rid'];
+					$s->save();
+					$first = false;
+				}		
+			
+				$page->version->add( 'chunks', $chunk );
+			}
 		}
 		
 		return $page;
