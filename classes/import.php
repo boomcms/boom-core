@@ -145,10 +145,10 @@ class Import
 		
 		if (sizeof( $feature ) > 0)
 		{
-			$feature = $db->query( Database::SELECT, "select active_vid from asset where id = '" . $feature[0]['item_rid'] . "'" )->as_array();
-			$page->feature_image = $feature[0]['active_vid'];
+		//	$feature = $db->query( Database::SELECT, "select active_vid from asset where id = '" . $feature[0]['item_rid'] . "'" )->as_array();
+			$page->feature_image = $feature[0]['item_rid'];
 			
-			Database::instance()->query( Database::UPDATE, "update page_v set feature_image = '" . $feature[0]['active_vid'] . "' where rid = " . $details['rid'] );
+			Database::instance()->query( Database::UPDATE, "update page_v set feature_image = '" . $feature[0]['item_rid'] . "' where rid = " . $details['rid'] );
 		}
 		
 		Database::instance()->query( Database::UPDATE, "update page_v set audit_time = '" . strtotime( $details['audit_time'] ) . "' where rid = " . $details['rid'] );
