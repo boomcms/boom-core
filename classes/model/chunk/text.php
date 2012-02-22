@@ -57,6 +57,18 @@ class Model_Chunk_Text extends ORM implements Interface_Slot
 				}, 
 				$text 
 			);
+			
+			// Utoob video links in the form video:blahblahblah
+			// Setting default height and width needs to be improved - we don't want to have to do it for every text slot.
+			$video_width = Kohana::$config->load( 'config' )->get('video_width');
+			$video_width = ($video_width != '')? $width_width : '560';
+			
+			$video_height = Kohana::$config->load( 'config' )->get('video_height');
+			$video_height = ($video_height != '')? $width_height : '315';
+
+			$text = preg_replace( "|video:([a-zA-Z0-9:/._\-]+)|", "<iframe width='$video_width' height='$video_height' src='$1' frameborder='0' class='video' allowfullscreen></iframe>", $text );
+			
+			
 			return $text;
 		}
 		else
