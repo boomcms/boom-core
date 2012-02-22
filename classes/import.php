@@ -125,6 +125,11 @@ class Import
 		
 		Database::instance()->query( Database::UPDATE, "update page_v set audit_time = '" . strtotime( $details['audit_time'] ) . "' where rid = " . $details['rid'] );
 
+		if ($details['uri'] == '404')
+		{
+			$details['uri'] = 'error/404';
+		}
+		
 		ORM::factory( 'page_uri' )->values( array( 'page_id' => $details['rid'], 'uri' => $details['uri'], 'primary_uri' => true ))->create();
 		
 		// Import tags for this page.
