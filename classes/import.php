@@ -159,7 +159,7 @@ class Import
 			$chunk->slotname = $xx['slotname'];
 			$chunk->save();
 	
-			$images = $db->query( Database::SELECT, "select item_rid from relationship_partner inner join asset on item_rid = asset.id inner join asset_v on active_vid = asset_v.id where relationship_id in (select relationship_id from relationship_partner where item_tablename = 'tag' and item_rid = " . $xx['target_tag_rid'] . ") and item_tablename = 'asset' order by visiblefrom_timestamp desc" );	
+			$images = $db->query( Database::SELECT, "select item_rid from relationship_partner inner join asset on item_rid = asset.id inner join asset_v on active_vid = asset_v.id where relationship_id in (select relationship_id from relationship_partner where item_tablename = 'tag' and item_rid = " . $xx['target_tag_rid'] . ") and item_tablename = 'asset' and asset.deleted is null order by visiblefrom_timestamp desc" );	
 			
 			$first = true;
 			foreach( $images as $image )
