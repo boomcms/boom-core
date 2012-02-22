@@ -170,6 +170,8 @@ class Controller_Setup extends Kohana_Controller
 		
 		// Import page's which aren't part of the main tree - 404 etc.
 		$other = $old->query( Database::SELECT, "select * from cms_page where uri is null and title = 'Other'" )->as_array();
+		$other[0]['hidden_from_leftnav'] = 't';
+		$other[0]['hidden_from_leftnav_cms'] = 't';
 		
 		$page = Import::import_page( $other[0], $old );
 				
