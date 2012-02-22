@@ -90,6 +90,7 @@ class Controller_Setup extends Kohana_Controller
 	
 	public function action_import()
 	{
+		set_time_limit( 600 );
 		// Import pages.
 		$old = Database::instance( 'old' );
 		$new = Database::instance();
