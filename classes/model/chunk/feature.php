@@ -41,11 +41,11 @@ class Model_Chunk_Feature extends ORM implements Interface_Slot
 			}
 			
 			$v = View::factory( "site/slots/feature/$template" );
-		
+					
 			$v->url = $this->target->url();
 			$v->title = $this->target->title;
 			$v->text = $this->target->get_slot( 'text', 'standfirst' )->show();
-			
+						
 			if ($this->target->feature_image)
 			{
 				$v->image_id = $this->target->feature_image;
