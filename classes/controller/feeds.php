@@ -66,6 +66,7 @@ class Controller_Feeds extends Kohana_Controller
 	
 	public function after()
 	{
+		$this->response->headers( 'content-type', 'application/xml' );
 		$this->response->body( $this->_template );
 	}
 }

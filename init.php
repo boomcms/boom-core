@@ -17,7 +17,7 @@ foreach( $dependencies as $dep )
 /**
 * Route for RSS feeds.
 */
-Route::set('feeds', '<uri>/<action>',
+Route::set('feeds', '<action>/<uri>',
 	array(
 		'action' => 'rss'
 	))
