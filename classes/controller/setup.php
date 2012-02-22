@@ -188,6 +188,8 @@ class Controller_Setup extends Kohana_Controller
 		
 		// Import tags.
 		Import::child_tags( $old );
+		
+		Import::rss_pages( $old );
 	}
 }
 

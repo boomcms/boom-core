@@ -211,6 +211,20 @@ class Import
 			}
 		}
 	}
+	
+	public static function rss_pages( $db )
+	{
+		$tags = $db->query( Database::SELECT, "select tag.id from tag inner join tag_v on tag.active_vid = tag_v.id where name = 'Has RSS'" )->as_array();
+		$rss_tag = $tags[0]['id'];
+		
+		// Does the page have RSS enabled?
+		$rss_pages = $db->query( Database::SELECT, "select item_rid from relationship_partner where relationship_id in (select relationship_id from relationship_partner where item_tablename = 'tag' and item_rid = " . $rss_tag . ") and item_tablename = 'page'" )->as_array();
+		
+		foreach( $rss_pages as $p )
+		{
+			Database::instance()->query( Database::UPDATE, "update page_v set enable_rss = true where rid = " . $p['item_rid'] );
+		}
+	}
 }
 
 ?>
