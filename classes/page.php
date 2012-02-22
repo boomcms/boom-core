@@ -89,56 +89,6 @@ abstract class Page
 	{
 		return $this->_page->__toString();
 	}
-	
-	/**
-	* Find which pages to display in this page's lefnav
-	*
-	* @uses Model_Person::logged_in()
-	* @return ORM_Iterator Pages to display in leftnav
-	*/
-	public function leftnav_pages()
-	{	
-		$query = DB::SELECT( array( 'page.id', 'page_id' ), 'page_uri.uri', 'v.title', 'page_mptt.*' )
-					->from( 'page' )
-					->join( 'page_mptt' )
-					->on( 'page_mptt.page_id', '=', 'page.id' )
-					->join( 'page_uri', 'inner' )
-					->on( 'page_uri.page_id', '=', 'page.id' )
-					->where( 'scope', '=', $this->_page->mptt->scope )
-					->where( 'lvl', '!=', 1 )
-					->where( 'primary_uri', '=', true )
-					->where( 'v.deleted', '=', false );	
-					
-					
-		// CMS or Site leftnav?
-		if (!Auth::instance()->logged_in())
-		{
-			$query->join( array( 'page_v', 'v'), 'inner' )
-				  ->on( 'page.published_vid', '=', 'v.id' )
-				  ->where( 'v.visible_from', '<=', time() )
-				  ->and_where_open()
-				  ->or_where_open()
-				  ->where( 'v.visible_to', '>=', time() )
-				  ->or_where( 'v.visible_to', '=', 0 )
-				  ->or_where_close()
-				  ->and_where_close()
-				  ->where( 'v.visible_in_leftnav', '=', true )
-				  ->where( 'page.published_vid', '!=', null )
-				  ->where( 'page.visible', '=', true );	
-		}
-		else
-		{	
-			$query->join( array( 'page_v', 'v'), 'inner' )
-				  ->on( 'page.active_vid', '=', 'v.id' )
-				  ->where( 'v.visible_in_leftnav_cms', '=', true );
-		}
-		
-		$query->order_by( 'page_mptt.lft', 'asc' );
-		
-		$pages = $query->execute()->as_array();
-					
-		return $pages;
-	}
 }
 
 ?>

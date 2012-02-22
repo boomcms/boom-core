@@ -14,22 +14,24 @@ class Controller_Tree extends Kohana_Controller
 	
 	public function before()
 	{
-		$mptt = ORM::factory( 'page_mptt' )->where( 'page_id', '=', $this->request->param( 'id' ) )->find();
-		
 		$this->_query = DB::SELECT( array( 'page.id', 'page_id' ), 'page_uri.uri', 'v.title', 'page_mptt.*' )
 					->from( 'page' )
 					->join( 'page_mptt' )
 					->on( 'page_mptt.page_id', '=', 'page.id' )
 					->join( 'page_uri', 'inner' )
 					->on( 'page_uri.page_id', '=', 'page.id' )
-					->where( 'scope', '=', $mptt->scope )
-					->where( 'lvl', '!=', 1 )
 					->where( 'primary_uri', '=', true )
 					->where( 'v.deleted', '=', false );
 	}
 	
+	/**
+	* Generate a page tree for leftnavs.
+	*/
 	public function action_leftnav()
 	{
+		$mptt = ORM::factory( 'page_mptt' )->where( 'page_id', '=', $this->request->param( 'id' ) )->find();
+		$this->_query->where( 'lvl', '!=', 1 )->where( 'scope', '=', $mptt->scope );
+		
 		if (Auth::instance()->logged_in())
 		{
 			$this->_query->join( array( 'page_v', 'v'), 'inner' )
@@ -51,6 +53,15 @@ class Controller_Tree extends Kohana_Controller
 				  ->where( 'page.published_vid', '!=', null )
 				  ->where( 'page.visible', '=', true );
 		}
+	}
+	
+	/**
+	* Generate a full page tree, for use with feature boxes etc.
+	*/
+	public function action_full()
+	{
+		$this->_query->join( array( 'page_v', 'v'), 'inner' )
+			  ->on( 'page.active_vid', '=', 'v.id' );
 	}
 	
 	public function after()
