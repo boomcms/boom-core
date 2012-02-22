@@ -1,15 +1,14 @@
 <?php
 /**
-* Subtemplate for the leftnav.
+* Subtemplate for a page tree.
 * There's a lot of PHP in here. It could perhaps be moved to a Nav class?
 * But then do we want to move all the HTML to a class? It may perhaps be less clear?]
 * It's something to think about.
 *
-* Rendered by just about any template that wants a leftnav.
+* Rendered by Controller_Tree::action_after()
 *
 *********************** Variables **********************
 *	$page		****	instance of Page. Not Model_Page! The leftnav methods are in the page class.
-*	$person		****	instance of Model_Person	****	Current active user. Used to determine whether to show CMS or site leftnav.
 ********************************************************
 *
 */
@@ -18,7 +17,6 @@
 	<ul>
 	<?
 		$level = 1;	
-		$pages = $page->leftnav_pages( $person );
 		$count = sizeof( $pages );
 		
 		for ($i = 0; $i < $count; $i++)
