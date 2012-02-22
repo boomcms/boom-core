@@ -45,25 +45,22 @@
 		?>
 
 		<?
-			if ( $page->enable_rss )
-			{
+			if ( $page->enable_rss ):
 				echo "<link rel='alternate' type='application/rss+xml' title='RSS' href='" . URL::base( $request ) . "rss/" . $page->get_primary_uri() . "' />";
-			}
+			endif;
 		?>
 	</head>
 	<body>
 		<?			
-			if ($mode == 'cms')
-			{
+			if ($mode == 'cms'):
 				echo new View('site/nav/top');
-			}
+			endif;
 
 			echo $subtpl_main;
 
-			if (Kohana::$config->load('config')->get('include_analytics') === true)
-			{
+			if (Kohana::$config->load('config')->get('include_analytics') === true):
 				echo View::factory( 'site/analytics' );
-			}
+			endif;
 		?>	
 		
 	<?= View::factory('profiler/stats'); ?>
