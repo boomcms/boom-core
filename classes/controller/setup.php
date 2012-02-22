@@ -164,6 +164,7 @@ class Controller_Setup extends Kohana_Controller
 		Import::chunk_text( $old, $homepage[0]['vid'], $page );
 		Import::chunk_feature( $old, $homepage[0]['vid'], $page );
 		Import::chunk_asset( $old, $homepage[0]['vid'], $page );
+		Import::chunk_linkset( $old, $homepage[0]['vid'], $page );
 		
 		// Descend down the tree.
 		Import::child_pages( $old, $homepage[0]['rid'], $page, $hmptt );
@@ -179,7 +180,7 @@ class Controller_Setup extends Kohana_Controller
 		$mptt->page_id = $page->id;
 		$mptt->insert_as_last_child( $hmptt );
 		
-		// Home page slots.
+		// other page slots.
 		Import::chunk_text( $old, $other[0]['vid'], $page );
 		Import::chunk_feature( $old, $other[0]['vid'], $page );
 		Import::chunk_asset( $old, $other[0]['vid'], $page );

@@ -50,6 +50,33 @@ class Import
 		}
 	}
 	
+	public static function chunk_linkset( $db, $page_vid, $page )
+	{
+		$chunks = $db->query( Database::SELECT, "select slotname, chunk_linkset.id from chunk_linkset inner join chunk_linkset_v on active_vid = chunk_linkset_v.id where page_vid = " . $page_vid );
+				
+		foreach ( $chunks as $chunk )
+		{
+			$new_chunk = ORM::factory( 'chunk' );
+			$new_chunk->type = 'linkset';
+			$new_chunk->slotname = $chunk['slotname'];
+			$new_chunk->save();
+			
+			$links = $db->query( Database::SELECT, "select name, uri, target_page_rid from linkset_links inner join linkset_links_v on active_vid = linkset_links_v.id where chunk_linkset_rid = " . $chunk['id'] );
+			
+			foreach( $links as $link )
+			{
+				$l = ORM::factory( 'linksetlink' );
+				$l->chunk_linkset_id = $new_chunk->id;
+				$l->title = $link['name'];
+				$l->url = $link['uri'];
+				$l->target_page_id = $link['target_page_rid'];
+				$l->save();
+			}
+			
+			$page->version->add( 'chunks', $new_chunk );
+		}
+	}
+	
 	public static function child_pages( $db, $page_rid, $page, $parent )
 	{
 		$page->reload();
@@ -67,6 +94,7 @@ class Import
 			Import::chunk_text( $db, $p['vid'], $x );
 			Import::chunk_feature( $db, $p['vid'], $x );
 			Import::chunk_asset( $db, $p['vid'], $x );
+			Import::chunk_linkset( $db, $p['vid'], $x );
 
 			// Descend down the tree.
 			Import::child_pages( $db, $p['rid'], $x, $mptt );

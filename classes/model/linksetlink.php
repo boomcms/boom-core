@@ -27,8 +27,8 @@ class Model_LinksetLink extends ORM
 	*/
 	protected $_table_name = 'linksetlinks';	
 	
-	protected $_has_one = array(
-		'page'	=> array( 'model' => 'page', 'foreign_key' => 'id')
+	protected $_belongs_to = array(
+		'target'	=> array( 'model' => 'page', 'foreign_key' => 'target_page_id')
 	);
 }
 
