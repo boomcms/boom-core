@@ -70,7 +70,7 @@ class Controller_Site extends Sledge_Controller
 		$this->page = Page::factory( $page_type, $page );
 		
 		// Set the base template.
-		if ($page_type == 'cms' && !$ajax)
+		if (Auth::instance()->logged_in() && !$ajax)
 		{
 			$this->template = View::factory( 'site/standard_template_editable' );
 		}
