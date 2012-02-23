@@ -50,7 +50,8 @@ class Controller_Cms_Chunk extends Controller_Cms
 	public function action_asset()
 	{
 		$v = View::factory( 'cms/ui/site/page/slot/asset' );
-		$v->page = $this->_page;
+		$v->assets = ORM::factory( 'asset' )->limit( 30 )->find_all();
+
 		
 		$this->response->body( $v );
 	}
@@ -86,6 +87,17 @@ class Controller_Cms_Chunk extends Controller_Cms
 		$output = "<div class='chunk-slot {" . $chunk->type . " " . $chunk->slotname . " " . Arr::get( $_GET, 'preview_target_rid' ) . "}'>" . $chunk->show( $template ) . "</div>";
 		
 		$this->response->body( $output );
+	}
+	
+	/**
+	* Insert an internal link into a text slot.
+	* This controller displays the form to select a page to link to.
+	*/
+	public function action_insert_link()
+	{
+		$v = View::factory( 'cms/ui/site/page/slot/insert_link' );
+		
+		$this->response->body( $v );
 	}
 	
 	public function after()

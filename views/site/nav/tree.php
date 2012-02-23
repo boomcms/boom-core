@@ -46,7 +46,7 @@
 				
 				// Hide sub-trees by default
 				// If current node is not a direct child of the page we're viewing.
-				if (!($node['lft'] < $page->mptt->lft && $node['rgt'] > $page->mptt->rgt) && $node['page_id'] != $page->id)
+				if ($page->loaded() && !($node['lft'] < $page->mptt->lft && $node['rgt'] > $page->mptt->rgt) && $node['page_id'] != $page->id)
 				{
 					echo " class='hidden'";
 				}
