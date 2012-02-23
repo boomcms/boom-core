@@ -109,6 +109,11 @@ class Model_Page extends ORM_Versioned implements Interface_Taggable {
 	private $_url;
 	
 	/**
+	* Don't reload on wakeup.
+	*/
+	protected $_reload_on_wakeup = false;
+	
+	/**
 	* Holds an array of the slots embedded in the page.
 	* Ensures we only query the database once for each slot - and not every time we want to use the slot.
 	* Used by the get_slot() method

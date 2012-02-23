@@ -229,6 +229,7 @@ class Controller_Cms_Page extends Controller_Cms
 				if ($chunk->save())
 				{
 					$page->version->add( 'chunks', $chunk );
+					
 				}
 			}
 		}
