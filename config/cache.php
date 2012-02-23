@@ -7,7 +7,7 @@ return array(
 			array(
 				'host'		=> 'localhost',
 				'port'		=> 11211,
-				'persistent'=> FALSE
+				'persistent'=> TRUE
 				)
 			),
 		'compression'	=> FALSE,				// Use compression?

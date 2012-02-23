@@ -107,6 +107,8 @@ class Model_Page_Uri extends ORM {
 			$query->param( ":page", $this->page_id );
 			$query->param( ":id", $this->id );
 			$query->execute();
+			
+			Cache::instance()->set( 'primary_uri_for_page:' . $this->page_id );
 		}
 		
 		return $return;		

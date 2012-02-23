@@ -327,13 +327,19 @@ class Model_Page extends ORM_Versioned implements Interface_Taggable {
 	public function get_primary_uri() {
 		if ($this->_primary_uri === null)
 		{
-			$uri = DB::select( 'uri' )
-			->from( 'page_uri' )
-			->where( 'page_id', '=', $this->id )
-			->and_where( 'primary_uri', '=', true )
-			->execute();
+			$uri = Cache::instance()->get( 'primary_uri_for_page:' . $this->pk() );
 			
-			$this->_primary_uri = $uri->get( 'uri' );
+			if (!$uri)
+			{
+				$uri = DB::select( 'uri' )
+				->from( 'page_uri' )
+				->where( 'page_id', '=', $this->id )
+				->and_where( 'primary_uri', '=', true )
+				->execute();
+		
+				$this->_primary_uri = $uri->get( 'uri' );
+				Cache::instance()->set( 'primary_uri_for_page:' . $this->pk(), $this->_primary_uri );
+			}
 		}
 			
 		return $this->_primary_uri;		
@@ -354,18 +360,18 @@ class Model_Page extends ORM_Versioned implements Interface_Taggable {
 		if (!array_key_exists( $slotname, $this->_slots ))
 		{
 			$this->_slots[ $slotname ] = ORM::factory( "chunk" )
-											->join( 'chunk_page' )
-											->on( 'chunk_page.chunk_id', '=', 'chunk.id' )
-											->where_open()
-											->where( 'chunk_page.page_vid', '=', $this->version->id )	
-											->or_where( 'chunk_page.page_vid', '=', 0 )
-											->where_close()										
-											->where( 'slotname', '=', $slotname )
-											->order_by( 'page_vid', 'desc' )
-											->find();
+										->join( 'chunk_page' )
+										->on( 'chunk_page.chunk_id', '=', 'chunk.id' )
+										->where_open()
+										->where( 'chunk_page.page_vid', '=', $this->version->id )	
+										->or_where( 'chunk_page.page_vid', '=', 0 )
+										->where_close()										
+										->where( 'slotname', '=', $slotname )
+										->order_by( 'page_vid', 'desc' )
+										->find();
 		}
 		
-		return $this->_slots[ $slotname ];	
+		return $this->_slots[ $slotname ];
 	}
 	
 	/**
