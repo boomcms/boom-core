@@ -325,11 +325,11 @@ class Model_Page extends ORM_Versioned implements Interface_Taggable {
 	*
 	*/
 	public function get_primary_uri() {
-		if ($this->_primary_uri === null)
+		if ($this->_primary_uri == null)
 		{
-			$uri = Cache::instance()->get( 'primary_uri_for_page:' . $this->pk() );
+			$this->_primary_uri = Cache::instance()->get( 'primary_uri_for_page:' . $this->pk() );
 			
-			if (!$uri)
+			if (!$this->_primary_uri)
 			{
 				$uri = DB::select( 'uri' )
 				->from( 'page_uri' )
