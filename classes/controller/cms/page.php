@@ -226,8 +226,10 @@ class Controller_Cms_Page extends Controller_Cms
 						break;
 				}
 		
-				$chunk->save();
-				$page->version->add( 'chunks', $chunk );
+				if ($chunk->save())
+				{
+					$page->version->add( 'chunks', $chunk );
+				}
 			}
 		}
 

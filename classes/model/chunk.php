@@ -82,6 +82,20 @@ class Model_Chunk extends ORM
 		}
 		else
 		{
+			// Check that we're not saving an empty chunk.
+			if ($this->type == 'feature' && $this->data->target_page_id == 0)
+			{
+				return false;
+			}
+			else if ($this->type == 'asset' && $this->data->asset_id == 0)
+			{
+				return false;
+			}
+			else if ($this->type == 'text' && $this->data->text == 'Click on me to add some text here.')
+			{
+				return false;
+			}
+						
 			parent::save( $validation );
 			
 			if ($this->type != '' && is_object( $this->data ))
@@ -90,6 +104,8 @@ class Model_Chunk extends ORM
 				$this->data->save();
 			}
 		}
+		
+		return true;
 	}
 }
 
