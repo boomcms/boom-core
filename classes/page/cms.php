@@ -32,7 +32,7 @@ class Page_CMS extends Page
 				$template = null;
 			}
 			$htmlbefore = '<div>';
-		}
+		}		
 		
 		if ($slot->loaded())
 		{

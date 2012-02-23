@@ -47,7 +47,7 @@ class Controller_Site extends Sledge_Controller
 		
 		$page = $page_uri->page;
 		
-		$page_type = ($this->person->can( 'edit', $page ))? 'cms' : 'site';
+		$this->mode = ($this->person->can( 'edit', $page ))? 'cms' : 'site';
 		
 		// If they can't edit the page check that it's visible.
 		/*if ($page_type == 'site')
@@ -67,7 +67,7 @@ class Controller_Site extends Sledge_Controller
 		// Decorate the page model with a page class.
 		// This allows us to change what the page does depending on whether we're in cms or site mode
 		// Without changing the page model itself.
-		$this->page = Page::factory( $page_type, $page );
+		$this->page = Page::factory( $this->mode, $page );
 		
 		// Set the base template.
 		if (Auth::instance()->logged_in() && !$ajax)

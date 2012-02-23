@@ -20,12 +20,12 @@ class Page_Site extends Page
 	{
 		$slot = $this->_page->get_slot( $type, $slotname );
 		
-		if ($template = "<div>")
+		if ($template == "<div>")
 		{
-			$template = "main";
+			$template = null;
 		}
-				
+								
 		if ($slot->loaded())
-			echo $slot->show( $template );		
+			echo $slot->data->show( $template );
 	}
 }
