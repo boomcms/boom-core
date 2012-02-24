@@ -73,7 +73,7 @@ class Controller_Tree extends Kohana_Controller
 		$v->pages = $pages;
 		$v->page = ORM::factory( 'page', $this->request->param( 'id' ) );
 		
-		$v->state = $this->request->param( 'id' )? $this->request->param( 'id' ) : 'collapsed';
+		$v->state = ($this->request->param( 'id' ) == 'expanded')? 'expanded' : 'collapsed';
 		
 		$this->response->body( $v );
 	}
