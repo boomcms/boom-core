@@ -234,14 +234,14 @@ class Import
 			$mptt = ORM::factory( 'tag_mptt' );
 			$mptt->id = $tag['rid'];
 		
-			if ($parent == null)
-			{
-				$mptt->make_root();
-			}
-			else
-			{
-				$mptt->insert_as_last_child( $tag['rid'] );
-			}
+			//if ($parent == null)
+		//	{
+		//		$mptt->make_root();
+		//	}
+		//	else
+		//	{
+				$mptt->insert_as_last_child( $parent );
+		//	}
 		
 			self::child_tags( $db, $tag['rid'] );	
 		}
