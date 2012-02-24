@@ -13,6 +13,7 @@ class Controller_Tag extends Kohana_Controller
 	/**
 	* Generate a tag tree.
 	* Can be passed a parent tag in the form tag1/tag2/tag3 in the post variables to show only that subtree.
+	* Also accepts a state (collapsed or expanded) in the post variables.
 	*/
 	public function action_tree()
 	{
@@ -33,6 +34,7 @@ class Controller_Tag extends Kohana_Controller
 
 		$v = View::factory( 'cms/ui/tags/tree' );
 		$v->tags = $tags;
+		$v->state = Arr::get( Request::current()->post(), 'state', 'collapsed' );
 
 		$this->response->body( $v );
 	}

@@ -40,6 +40,7 @@ class Controller_Cms_Assets extends Controller_Cms
 						->join( 'tagged_object', 'inner' )
 						->on( 'tag_id', '=', $tag->id )
 						->where( 'object_type', '=', Model_Tagged_Object::OBJECT_TYPE_ASSET )
+						->limit( 10 )
 						->find_all();
 						
 			// Output the data.

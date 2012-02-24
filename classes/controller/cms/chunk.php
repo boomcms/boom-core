@@ -50,9 +50,9 @@ class Controller_Cms_Chunk extends Controller_Cms
 	public function action_asset()
 	{
 		$page = Arr::get( $_REQUEST, 'page', 1 );
-		$v = View::factory( 'cms/ui/site/page/slot/asset' );
-		$v->assets = ORM::factory( 'asset' )->limit( 10 )->offset( ($page - 1) * 10)->find_all();
-		$v->pages = ceil( ORM::factory( 'asset' )->count_all()/ 10 );
+		
+		$v = View::factory( 'cms/ui/assets/manager' );
+		$v->assets = ORM::factory( 'asset' )->where( 'deleted', '=', false )->limit( 10 )->find_all();
 		
 		$this->response->body( $v );
 	}
