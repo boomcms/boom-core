@@ -23,6 +23,8 @@ class Controller_Tag extends Kohana_Controller
 					->join( 'tag_mptt' )
 					->on( 'tag_mptt.id', '=', 'tag.id' )
 					->where( 'version.deleted', '=', false )
+					->where( 'lft', '>=', 1 )
+					->where( 'rgt', '<=', 2340 ) 
 					->order_by( 'lft', 'asc' );
 
 	}

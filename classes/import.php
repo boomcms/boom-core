@@ -213,33 +213,37 @@ class Import
 		return $page;
 	}
 	
-	public static function child_tags( $db, $parent = 1 )
+	public static function child_tags( $db, $parent = null )
 	{
-		$tags = $db->query( Database::SELECT, "select tag_v.* from tag inner join tag_v on active_vid = tag_v.id where parent_rid = " . $parent )->as_array();
+		if ($parent == null)
+		{
+			$tags = $db->query( Database::SELECT, "select tag_v.* from tag inner join tag_v on active_vid = tag_v.id where parent_rid is null" )->as_array();
+		}
+		else
+		{
+			$tags = $db->query( Database::SELECT, "select tag_v.* from tag inner join tag_v on active_vid = tag_v.id where parent_rid = " . $parent )->as_array();	
+		}
 		
 		foreach( $tags as $tag )
 		{
-			if ($parent != 1 || $tag['name'] == 'Pages' || ($tag['name'] == 'Assets' && $parent == 1))
+			$t = ORM::factory( 'tag' );
+			$t->id = $tag['rid'];
+			$t->name = $tag['name'];
+			$t->save();
+		
+			$mptt = ORM::factory( 'tag_mptt' );
+			$mptt->id = $tag['rid'];
+		
+			if ($parent == null)
 			{
-				$t = ORM::factory( 'tag' );
-				$t->id = $tag['rid'];
-				$t->name = $tag['name'];
-				$t->save();
-			
-				$mptt = ORM::factory( 'tag_mptt' );
-				$mptt->id = $tag['rid'];
-			
-				if ($parent == 1)
-				{
-					$mptt->make_root();
-				}
-				else
-				{
-					$mptt->insert_as_last_child( $parent );
-				}
-			
-				self::child_tags( $db, $tag['rid'] );	
+				$mptt->make_root();
 			}
+			else
+			{
+				$mptt->insert_as_last_child( $tag['rid'] );
+			}
+		
+			self::child_tags( $db, $tag['rid'] );	
 		}
 	}
 	
