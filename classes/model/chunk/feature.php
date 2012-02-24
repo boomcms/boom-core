@@ -30,11 +30,12 @@ class Model_Chunk_Feature extends ORM implements Interface_Slot
 		'target' => array( 'model' => 'page', 'foreign_key' => 'target_page_id' ),
 	);
 	
-	public function show( $template = null )
+	public function show ( $template = null )
 	{
 		// Loaded check was disabled for inserting a new feature chunk.
 		//if ($this->loaded())
 		//{
+			var_dump( $template );
 			
 			if ($template == null)
 			{

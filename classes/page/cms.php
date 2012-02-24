@@ -46,7 +46,7 @@ class Page_CMS extends Page
 		
 		if (isset( $target ))
 		{
-			echo "<div class='chunk-slot {", $type, " ", $slotname, " ", $target, "}'>", $html, "</div>";
+			echo "<div class='chunk-slot {", $type, " ", $slotname, " ", $target, " ", $template, "}'>", $html, "</div>";
 		}
 		else
 		{

@@ -70,6 +70,7 @@ class Controller_Cms_Chunk extends Controller_Cms
 	public function action_insert()
 	{
 		$template = Arr::get( $_GET, 'template' );
+	
 		if ($template == 'undefined')
 		{
 			$template = null;
@@ -84,7 +85,9 @@ class Controller_Cms_Chunk extends Controller_Cms
 			$chunk->data->target = ORM::factory( 'page', Arr::get( $_GET, 'preview_target_rid' ) );
 		}
 		
-		$output = "<div class='chunk-slot {" . $chunk->type . " " . $chunk->slotname . " " . Arr::get( $_GET, 'preview_target_rid' ) . "}'>" . $chunk->show( $template ) . "</div>";
+		var_dump( $template );
+		
+		$output = "<div class='chunk-slot {" . $chunk->type . " " . $chunk->slotname . " " . Arr::get( $_GET, 'preview_target_rid' ) . " " . $template . "}'>" . $chunk->show( $template ) . "</div>";
 		
 		$this->response->body( $output );
 	}

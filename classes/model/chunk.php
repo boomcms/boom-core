@@ -57,11 +57,11 @@ class Model_Chunk extends ORM
 		parent::set( $column, $value );
 	}
 	
-	public function show()
+	public function show( $template = null )
 	{
 		if (is_object( $this->data ))
 		{
-			return $this->data->show();
+			return $this->data->show( $template );
 		}
 		else
 		{
