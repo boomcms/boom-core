@@ -35,7 +35,6 @@ class Model_Chunk_Feature extends ORM implements Interface_Slot
 		// Loaded check was disabled for inserting a new feature chunk.
 		//if ($this->loaded())
 		//{
-			var_dump( $template );
 			
 			if ($template == null)
 			{
