@@ -50,7 +50,7 @@ name=$REPLY
 file=/etc/apache2/vhosts.d/$name.conf
 docroot=${DIR/"/modules/sledge/setup"/""}
 
-sudo cp ./vhost.conf $file
+sudo cp ../../../apache/vhost.conf $file
 sudo sed "s|{docroot}|$docroot|" -i $file
 sudo sed "s/{hostname}/$name/" -i $file
 
