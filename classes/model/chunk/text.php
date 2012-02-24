@@ -40,7 +40,7 @@ class Model_Chunk_Text extends ORM implements Interface_Slot
 	    );
 	}
 	
-	public function show()
+	public function show( $template = null)
 	{
 		if ($this->loaded())
 		{
@@ -68,8 +68,16 @@ class Model_Chunk_Text extends ORM implements Interface_Slot
 
 			$text = preg_replace( "|video:([a-zA-Z0-9:/._\-]+)|", "<iframe width='$video_width' height='$video_height' src='$1' frameborder='0' class='video' allowfullscreen></iframe>", $text );
 			
-			
-			return $text;
+			if ($template == 'standfirst')
+			{
+				$v = View::factory( "site/slots/text/$template" );
+				$v->text = $text;
+				return $v;
+			}
+			else
+			{
+				return $text;
+			}
 		}
 		else
 		{

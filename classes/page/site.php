@@ -19,11 +19,6 @@ class Page_Site extends Page
 	public function get_slot($type, $slotname, $template = null)
 	{
 		$slot = $this->_page->get_slot( $type, $slotname );
-		
-		if ($template == "<div>")
-		{
-			$template = null;
-		}
 								
 		if ($slot->loaded())
 			echo $slot->data->show( $template );
