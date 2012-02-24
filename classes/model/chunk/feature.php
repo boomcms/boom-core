@@ -45,7 +45,7 @@ class Model_Chunk_Feature extends ORM implements Interface_Slot
 					
 			$v->url = $this->target->url();
 			$v->title = $this->target->title;
-			$v->text = $this->target->get_slot( 'text', 'standfirst' )->show();
+			$v->text = strip_tags( $this->target->get_slot( 'text', 'standfirst' )->show() );
 						
 			if ($this->target->feature_image)
 			{
