@@ -8,31 +8,33 @@
 * @author Hoop Associates	www.thisishoop.com	mail@hoopassociates.co.uk
 * @copyright 2011, Hoop Associates
 */
-class Controller_Tree extends Kohana_Controller
+class Controller_Tag extends Kohana_Controller
 {	
+	protected $_query;
 	/**
 	* Generate a tag tree.
 	*/
 	public function action_tree()
 	{
-		$tags = DB::SELECT( array( 'tag.id', 'tag_id' ), 'version.title', 'tag_mptt.*' )
+		$this->_query = DB::select( array( 'tag.id', 'tag_id' ), 'version.name', 'tag_mptt.*' )
 					->from( 'tag' )
+					->join( array( 'tag_v', 'version'), 'inner' )
+					->on( 'active_vid', '=', 'version.id' )
 					->join( 'tag_mptt' )
 					->on( 'tag_mptt.id', '=', 'tag.id' )
 					->where( 'version.deleted', '=', false )
-					->order_by( 'ft', 'asc' )
-					->find_all()->as_array();
+					->order_by( 'lft', 'asc' );
 
 	}
 	
 	public function after()
 	{
-		$this->_query->order_by( 'page_mptt.lft', 'asc' );
-		$pages = $this->_query->execute()->as_array();
+		$tags = $this->_query->execute()->as_array();
+		
+	//	var_Dump( $tags[0] );exit;
 						
-		$v = View::factory( 'site/nav/tree' );
-		$v->pages = $pages;
-		$v->page = ORM::factory( 'page', $this->request->param( 'id' ) );
+		$v = View::factory( 'cms/ui/tags/tree' );
+		$v->tags = $tags;
 		
 		$this->response->body( $v );
 	}
