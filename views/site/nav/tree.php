@@ -9,6 +9,7 @@
 *
 *********************** Variables **********************
 *	$page		****	instance of Page. Not Model_Page! The leftnav methods are in the page class.
+*	$state		****	string		****	Set to either collapsed or expanded. Populated from a GET parameter. 
 ********************************************************
 *
 */
@@ -44,9 +45,9 @@
 			{
 				echo "<ul";
 				
-				// Hide sub-trees by default
+				// Hide sub-trees unless state is expanded.
 				// If current node is not a direct child of the page we're viewing.
-				if ($page->loaded() && !($node['lft'] < $page->mptt->lft && $node['rgt'] > $page->mptt->rgt) && $node['page_id'] != $page->id)
+				if ($state == 'collapsed' && !($node['lft'] < $page->mptt->lft && $node['rgt'] > $page->mptt->rgt) && $node['page_id'] != $page->id)
 				{
 					echo " class='hidden'";
 				}
