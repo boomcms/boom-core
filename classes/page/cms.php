@@ -44,7 +44,7 @@ class Page_CMS extends Page
 			$target = 0;
 		}
 		
-		if ($type == 'feature' || $type == 'asset')
+		if (isset( $target ))
 		{
 			echo "<div class='chunk-slot {", $type, " ", $slotname, " ", $target, "}'>", $html, "</div>";
 		}
