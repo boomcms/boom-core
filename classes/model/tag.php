@@ -78,6 +78,7 @@ class Model_Tag extends ORM_Versioned {
 					->on( 'tag.id', '=', 'tag_mptt.id' )
 					->where( 'parent_id', '=', $parent )
 					->where( 'name', '=', $tag )
+					->limit( 1 )
 					->execute()->as_array();
 					
 			if (count( $query ))
@@ -86,7 +87,7 @@ class Model_Tag extends ORM_Versioned {
 			}
 			else
 			{
-				return false;
+				return ORM::factory( 'tag' );
 			}
 		}
 		
