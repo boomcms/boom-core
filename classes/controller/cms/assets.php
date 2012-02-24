@@ -202,6 +202,7 @@ class Controller_Cms_Assets extends Controller_Cms
 	{		
 		$this->template->subtpl_main = View::factory( 'cms/ui/assets/manager' );
 		$this->template->subtpl_main->assets = ORM::factory( 'asset' )->where( 'deleted', '=', false )->find_all();
+		$this->template->subtpl_main->state = Arr::get( Request::current()->post(), 'state', 'collapsed' );
 	}
 	
 	/**

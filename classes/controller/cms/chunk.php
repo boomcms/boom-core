@@ -53,6 +53,7 @@ class Controller_Cms_Chunk extends Controller_Cms
 		
 		$v = View::factory( 'cms/ui/assets/manager' );
 		$v->assets = ORM::factory( 'asset' )->where( 'deleted', '=', false )->limit( 10 )->find_all();
+		$v->state = Arr::get( Request::current()->post(), 'state', 'collapsed' );
 		
 		$this->response->body( $v );
 	}

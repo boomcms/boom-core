@@ -27,8 +27,8 @@ class Controller_Tag extends Kohana_Controller
 					->on( 'tag_mptt.id', '=', 'tag.id' )
 					->where( 'version.deleted', '=', false )
 					->where( 'scope', '=', $parent->mptt->scope )
-					->where( 'lft', '>=', $parent->mptt->lft )
-					->where( 'rgt', '<=', $parent->mptt->rgt )
+					->where( 'lft', '>', $parent->mptt->lft )
+					->where( 'rgt', '<', $parent->mptt->rgt )
 					->order_by( 'lft', 'asc' )
 					->execute()->as_array();
 
