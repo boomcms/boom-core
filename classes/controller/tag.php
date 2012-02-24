@@ -12,10 +12,12 @@ class Controller_Tag extends Kohana_Controller
 {	
 	/**
 	* Generate a tag tree.
+	* Can be passed a parent tag in the form tag1/tag2/tag3 in the post variables to show only that subtree.
 	*/
 	public function action_tree()
 	{
-
+		$parent = Arr::get( Request::current()->post(), 'parent', 'tags' );
+		$parent = ORM::factory( 'tag' )->find_by_route( $parent );
 		$tags = DB::select( array( 'tag.id', 'tag_id' ), 'version.name', 'tag_mptt.*' )
 					->from( 'tag' )
 					->join( array( 'tag_v', 'version'), 'inner' )
@@ -23,6 +25,9 @@ class Controller_Tag extends Kohana_Controller
 					->join( 'tag_mptt' )
 					->on( 'tag_mptt.id', '=', 'tag.id' )
 					->where( 'version.deleted', '=', false )
+					->where( 'scope', '=', $parent->mptt->scope )
+					->where( 'lft', '>=', $parent->mptt->lft )
+					->where( 'rgt', '<=', $parent->mptt->rgt )
 					->order_by( 'lft', 'asc' )
 					->execute()->as_array();
 
