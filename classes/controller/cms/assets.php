@@ -200,9 +200,23 @@ class Controller_Cms_Assets extends Controller_Cms
 	
 	public function action_index()
 	{		
+		$page = Arr::get( $_REQUEST, 'page', 1 );
+		$query = ORM::factory( 'asset' )->where( 'deleted', '=', false );
+		
+		$pages = ceil( $query->count_all() / 10 );
+		$assets = $query->limit( 10 )->offset( ($page - 1) * 10 )->find_all();
+		
+		$pagination = View::factory( 'pagination' );
+		$pagination->total_pages = $pages;
+		$pagination->current_page = $page;
+		$pagination->previous_page = $page - 1;
+		$pagination->next_page = $page + 1;
+		$pagination->base_url = '';
+		
 		$this->template->subtpl_main = View::factory( 'cms/ui/assets/manager' );
-		$this->template->subtpl_main->assets = ORM::factory( 'asset' )->where( 'deleted', '=', false )->find_all();
+		$this->template->subtpl_main->assets = $assets;
 		$this->template->subtpl_main->state = Arr::get( Request::current()->post(), 'state', 'collapsed' );
+		$this->template->subtpl_main->pagination = $pagination;
 	}
 	
 	/**

@@ -45,15 +45,30 @@ class Controller_Cms_Chunk extends Controller_Cms
 	}
 	
 	/**
-	* Display the edit asset template.
+	* Display the asset manager to select which asset to insert.
+	* This needs combining with the cms asset manager.
+	* Code duplication alert!
+	* 
 	*/
 	public function action_asset()
 	{
 		$page = Arr::get( $_REQUEST, 'page', 1 );
+		$query = ORM::factory( 'asset' )->where( 'deleted', '=', false );
+		
+		$pages = ceil( $query->count_all() / 10 );
+		$assets = $query->limit( 10 )->offset( ($page - 1) * 10 )->find_all();
+		
+		$pagination = View::factory( 'pagination' );
+		$pagination->total_pages = $pages;
+		$pagination->current_page = $page;
+		$pagination->previous_page = $page - 1;
+		$pagination->next_page = $page + 1;
+		$pagination->base_url = '';
 		
 		$v = View::factory( 'cms/ui/assets/manager' );
-		$v->assets = ORM::factory( 'asset' )->where( 'deleted', '=', false )->limit( 10 )->find_all();
+		$v->assets = $assets;
 		$v->state = Arr::get( Request::current()->post(), 'state', 'collapsed' );
+		$v->pagination = $pagination;
 		
 		$this->response->body( $v );
 	}
