@@ -158,7 +158,7 @@ class Controller_Setup extends Kohana_Controller
 		
 		$page = Import::import_page( $homepage[0], $old );
 				
-		$hmptt = ORM::factory( 'page_mptt' )->values( array( 'page_id' => $page->id ))->create();
+		$hmptt = ORM::factory( 'page_mptt' )->values( array( 'id' => $page->id ))->create();
 		$hmptt->make_root();
 		
 		// Home page slots.
@@ -171,15 +171,19 @@ class Controller_Setup extends Kohana_Controller
 		Import::child_pages( $old, $homepage[0]['rid'], $page, $hmptt );
 		
 		// Import page's which aren't part of the main tree - 404 etc.
-		$other = $old->query( Database::SELECT, "select * from cms_page where uri is null and title = 'Other'" )->as_array();
+		/*$other = $old->query( Database::SELECT, "select * from cms_page where uri is null and title = 'Other'" )->as_array();
 		$other[0]['hidden_from_leftnav'] = 't';
 		$other[0]['hidden_from_leftnav_cms'] = 't';
 		
 		$page = Import::import_page( $other[0], $old );
 				
 		$mptt = ORM::factory( 'page_mptt' );
-		$mptt->page_id = $page->id;
-		$mptt->insert_as_last_child( $hmptt );
+		$mptt->id = $page->id;
+		try
+		{
+			$mptt->insert_as_last_child( $hmptt );
+		}
+		catch (Exception $e ){}
 		
 		// other page slots.
 		Import::chunk_text( $old, $other[0]['vid'], $page );
@@ -188,7 +192,7 @@ class Controller_Setup extends Kohana_Controller
 		
 		// Descend down the tree.
 		Import::child_pages( $old, $other[0]['rid'], $page, $mptt );		
-		
+		*/
 		$new->query( Database::UPDATE, "update page set published_vid = active_vid" );
 		
 		// Import tags.

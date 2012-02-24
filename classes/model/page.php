@@ -25,16 +25,14 @@ class Model_Page extends ORM_Versioned implements Interface_Taggable {
 	* Properties to create relationships with Kohana's ORM
 	*/
 	protected $_table_name = 'page';
-	protected $_has_one = array( 
-		'mptt'		=> array( 'model' => 'page_mptt' ),
-	);
 	protected $_has_many = array( 
 		'uris'		=> array('model' => 'page_uri', 'foreign_key' => 'page_id'),
 		'revisions' => array('model' => 'version_page', 'foreign_key' => 'rid' ),
 	);
 	protected $_belongs_to = array(
 	//	'published_version'  => array( 'model' => 'version_page', 'foreign_key' => 'published_vid' ), 
-		'version'  => array( 'model' => 'version_page', 'foreign_key' => 'published_vid' ), 
+		'version'	=> array( 'model' => 'version_page', 'foreign_key' => 'published_vid' ), 
+		'mptt'		=> array( 'model' => 'page_mptt', 'foreign_key' => 'id' ),
 	);
 	protected $_load_with = array( 'version' );
 	
@@ -172,7 +170,7 @@ class Model_Page extends ORM_Versioned implements Interface_Taggable {
 			// Find the page_mptt record of the page which comes after this alphabetically.
 			$mptt = ORM::factory( 'page_mptt' )
 					->join( 'page', 'inner' )
-					->on( 'page.id', '=', 'page_mptt.page_id' )
+					->on( 'page.id', '=', 'page_mptt.id' )
 					->join( 'page_v', 'inner' )
 					->on( 'page.active_vid', '=', 'page_v.id' )
 					->where( 'page_mptt.parent_id', '=', $this->mptt->id );
@@ -389,7 +387,7 @@ class Model_Page extends ORM_Versioned implements Interface_Taggable {
 		{
 			// Find the children, sorting the database results by the column we want the children ordered by.
 			$query = ORM::factory( 'page_mptt' )
-				->join( 'page', 'inner' )->on( 'page_mptt.page_id', '=', 'page.id' )
+				->join( 'page', 'inner' )->on( 'page_mptt.id', '=', 'page.id' )
 				->join( 'page_v', 'inner' )->on( 'page.active_vid', '=', 'page_v.id' )
 				->where( 'parent_id', '=', $this->mptt->id );
 				

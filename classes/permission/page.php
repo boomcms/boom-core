@@ -24,7 +24,7 @@ class Permission_Page extends Permission
 		$this->_page = $page;
 		
 		$this->_query->join( 'page_mptt', 'inner' )
-					->on( 'permissions.where_id', '=', 'page_mptt.page_id' )
+					->on( 'permissions.where_id', '=', 'page_mptt.id' )
 					->where( 'permissions.where_type', '=', 'page' )
 					->where( 'page_mptt.lft', '<=', $page->mptt->lft )
 					->where( 'page_mptt.rgt', '>=', $page->mptt->rgt )

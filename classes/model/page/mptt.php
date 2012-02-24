@@ -29,7 +29,7 @@ class Model_Page_Mptt extends ORM_MPTT {
 	* Properties to create relationships with Kohana's ORM
 	*/
 	protected $_table_name = 'page_mptt';
-	protected $_belongs_to = array( 'page' => array( 'foreign_key' => 'page_id' ) );	
+	protected $_belongs_to = array( 'page' => array( 'foreign_key' => 'id' ) );	
 	
 }
 

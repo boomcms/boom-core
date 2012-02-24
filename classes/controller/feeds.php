@@ -57,7 +57,7 @@ class Controller_Feeds extends Kohana_Controller
 	{
 		$children = ORM::factory( 'page' )
 					->join( 'page_mptt', 'inner' )
-					->on( 'page_mptt.page_id', '=', 'page.id' )
+					->on( 'page_mptt.id', '=', 'page.id' )
 					->where( 'scope', '=', $this->_page->mptt->scope )
 					->where( 'lft', '>', $this->_page->mptt->lft )
 					->where( 'rgt', '>', $this->_page->mptt->rgt )

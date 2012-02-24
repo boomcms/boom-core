@@ -17,7 +17,7 @@ class Controller_Tree extends Kohana_Controller
 		$this->_query = DB::SELECT( array( 'page.id', 'page_id' ), 'page_uri.uri', 'v.title', 'page_mptt.*' )
 					->from( 'page' )
 					->join( 'page_mptt' )
-					->on( 'page_mptt.page_id', '=', 'page.id' )
+					->on( 'page_mptt.id', '=', 'page.id' )
 					->join( 'page_uri', 'inner' )
 					->on( 'page_uri.page_id', '=', 'page.id' )
 					->where( 'primary_uri', '=', true )
@@ -29,7 +29,7 @@ class Controller_Tree extends Kohana_Controller
 	*/
 	public function action_leftnav()
 	{
-		$mptt = ORM::factory( 'page_mptt' )->where( 'page_id', '=', $this->request->param( 'id' ) )->find();
+		$mptt = ORM::factory( 'page_mptt' )->where( 'id', '=', $this->request->param( 'id' ) )->find();
 		$this->_query->where( 'lvl', '!=', 1 )->where( 'scope', '=', $mptt->scope );
 		
 		if (Auth::instance()->logged_in())

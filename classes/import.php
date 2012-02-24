@@ -87,8 +87,9 @@ class Import
 		{
 			$x = self::import_page( $p, $db );
 			
-			$mptt = ORM::factory( 'page_mptt' )->values( array( 'page_id' => $p['rid'] ));
-			$mptt->insert_as_last_child( $parent );
+			$mptt = ORM::factory( 'page_mptt' );
+			$mptt->id = $p['rid'];
+			$mptt->insert_as_last_child( $page_rid );
 
 			// Home page slots.
 			Import::chunk_text( $db, $p['vid'], $x );
