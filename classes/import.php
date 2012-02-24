@@ -219,7 +219,7 @@ class Import
 		
 		foreach( $tags as $tag )
 		{
-			if ($parent != 1 || $tag['name'] == 'Pages' || $tag['name'] == 'Assets')
+			if ($parent != 1 || $tag['name'] == 'Pages' || ($tag['name'] == 'Assets' && $parent == 1))
 			{
 				$t = ORM::factory( 'tag' );
 				$t->id = $tag['rid'];
