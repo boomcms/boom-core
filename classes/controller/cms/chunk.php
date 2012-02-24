@@ -84,9 +84,7 @@ class Controller_Cms_Chunk extends Controller_Cms
 		{
 			$chunk->data->target = ORM::factory( 'page', Arr::get( $_GET, 'preview_target_rid' ) );
 		}
-		
-		var_dump( $template );
-		
+				
 		$output = "<div class='chunk-slot {" . $chunk->type . " " . $chunk->slotname . " " . Arr::get( $_GET, 'preview_target_rid' ) . " " . $template . "}'>" . $chunk->show( $template ) . "</div>";
 		
 		$this->response->body( $output );
