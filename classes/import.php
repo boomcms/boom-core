@@ -253,6 +253,25 @@ class Import
 			Database::instance()->query( Database::UPDATE, "update page_v set enable_rss = true where rid = " . $p['item_rid'] );
 		}
 	}
+	
+	public static function asset_tags( $db, $asset_id )
+	{
+		$tags = $db->query( Database::SELECT, "select item_rid from relationship_partner where relationship_id in (select relationship_id from relationship_partner where item_tablename = 'asset' and item_rid = " . $asset_id . ") and item_tablename = 'tag'" );
+		
+		foreach ($tags as $tag)
+		{
+			$x = ORM::factory( 'tagged_object' );
+			$x->object_type = Model_Tagged_Object::OBJECT_TYPE_ASSET;
+			$x->object_id = $asset_id;
+			$x->tag_id = $tag['item_rid'];
+			
+			try
+			{
+				$x->save();
+			}
+			catch (Exception $e){}
+		}
+	}
 }
 
 ?>

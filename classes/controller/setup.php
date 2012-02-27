@@ -150,6 +150,8 @@ class Controller_Setup extends Kohana_Controller
 			$asset->type = 'image';
 			$asset->save();	
 			
+			Import::asset_tags( $old, $a['rid'] );
+			
 			$new->query( Database::UPDATE, "update asset inner join asset_v on active_vid = asset_v.id set active_vid = " . $a['vid'] . ", asset_v.id = " . $a['vid'] . " where asset.id = " . $a['rid'] );				
 		}
 			

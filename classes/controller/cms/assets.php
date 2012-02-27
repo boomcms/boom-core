@@ -201,11 +201,17 @@ class Controller_Cms_Assets extends Controller_Cms
 	public function action_index()
 	{		
 		$page = Arr::get( $_REQUEST, 'page', 1 );
-		$query = ORM::factory( 'asset' )->where( 'deleted', '=', false );
+		$tag = Arr::get( $_REQUEST, 'tag' );
+		if (!$tag)
+		{
+			$tag = ORM::factory( 'tag' )->find_by_route( 'tags/assets' );
+		}
+		
+		$query = ORM::factory( 'asset' )->where( 'tag', '=', $tag )->where( 'deleted', '=', false );
 		
 		$pages = ceil( $query->count_all() / 10 );
-		$assets = $query->limit( 10 )->offset( ($page - 1) * 10 )->find_all();
-		
+		$assets = $query->limit( 10 )->where( 'tag', '=', $tag )->offset( ($page - 1) * 10 )->find_all();
+				
 		$pagination = View::factory( 'pagination' );
 		$pagination->total_pages = $pages;
 		$pagination->current_page = $page;
