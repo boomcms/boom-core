@@ -353,7 +353,7 @@ class Model_Page extends ORM_Versioned implements Interface_Taggable {
 	* @uses slot::factory()
 	* @return string The HTML representation of the slot
 	*/
-	public function get_slot( $type, $slotname, $editable = null)
+	public function get_slot( $type, $slotname, $template = null, $editable = true)
 	{
 		if (!array_key_exists( $slotname, $this->_slots ))
 		{
@@ -369,7 +369,28 @@ class Model_Page extends ORM_Versioned implements Interface_Taggable {
 										->find();
 		}
 		
-		return $this->_slots[ $slotname ];
+		$slot = $this->_slots[ $slotname ];
+		$html;
+		
+		if ($slot->loaded())
+		{
+			$html = $slot->show( $template );
+		}
+		
+		if ($editable = true && Auth::instance()->get_user()->can( 'edit', $this ))
+		{
+			// Couldn't find a slot? Return a default slot.
+			if (!$slot->loaded())
+			{
+				$html = ORM::factory( "chunk_$type" )->show_default( $template );
+			}
+			
+			// Make it editable.
+			return "<div class='chunk-slot {" . $type . " " . $slotname . " " . $slot->get_target() . " " . $template . "}'>" . $html . "</div>";
+		}
+		
+		// Not editing? Return the basic HTML.
+		return $html;
 	}
 	
 	/**

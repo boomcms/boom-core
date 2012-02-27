@@ -69,6 +69,23 @@ class Model_Chunk extends ORM
 		}
 	}
 	
+	public function get_target()
+	{
+		switch ($this->type)
+		{
+			case 'asset':
+				$target = $this->data->asset_id;
+				break;
+			case 'feature':
+				$target = $this->data->target_page_id;
+				break;
+			default:
+				$target = 0;
+		}
+		
+		return $target;
+	}
+	
 	public function save( Validation $validation = null )
 	{
 		if ($this->loaded() && ($this->changed() || $this->data->changed()))

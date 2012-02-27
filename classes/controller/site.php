@@ -45,29 +45,24 @@ class Controller_Site extends Sledge_Controller
 		if (!$page_uri->loaded() && $uri != 'error/404')
 			throw new HTTP_Exception_404;
 		
-		$page = $page_uri->page;
+		$this->page = $page_uri->page;
 		
-		$this->mode = ($this->person->can( 'edit', $page ))? 'cms' : 'site';
+		$this->mode = ($this->person->can( 'edit', $this->page ))? 'cms' : 'site';
 		
 		// If they can't edit the page check that it's visible.
 		if ($this->mode == 'site')
 		{
-			if (!$page->is_visible() || !$page->is_published())
+			if (!$this->page->is_visible() || !$this->page->is_published())
 			{
 				throw new HTTP_Exception_404;
 			}
 		}
 		
-		if (Arr::get( $_GET, 'version' ) && $this->person->can( 'edit', $page ))
+		if (Arr::get( $_GET, 'version' ) && $this->mode == 'cms')
 		{
 			$page->version->clear();
 			$page->version->where( 'id', '=', Arr::get( $_GET, 'version' ) )->find();
 		}
-		
-		// Decorate the page model with a page class.
-		// This allows us to change what the page does depending on whether we're in cms or site mode
-		// Without changing the page model itself.
-		$this->page = Page::factory( $this->mode, $page );
 		
 		// Set the base template.
 		if (Auth::instance()->logged_in() && !$ajax)

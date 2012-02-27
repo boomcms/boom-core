@@ -59,7 +59,7 @@ class Permission
 	*/
 	public static function factory( Model_Person $person, $object = false, $property = false )
 	{
-		if ($object instanceof Model_Page || $object instanceof Page)
+		if ($object instanceof Model_Page)
 		{
 			if ($property)
 			{
