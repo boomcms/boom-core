@@ -50,13 +50,13 @@ class Controller_Site extends Sledge_Controller
 		$this->mode = ($this->person->can( 'edit', $page ))? 'cms' : 'site';
 		
 		// If they can't edit the page check that it's visible.
-		/*if ($page_type == 'site')
+		if ($this->mode == 'site')
 		{
 			if (!$page->is_visible() || !$page->is_published())
 			{
 				throw new HTTP_Exception_404;
 			}
-		}*/
+		}
 		
 		if (Arr::get( $_GET, 'version' ) && $this->person->can( 'edit', $page ))
 		{
