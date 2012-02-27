@@ -53,10 +53,16 @@ class Controller_Cms_Chunk extends Controller_Cms
 	public function action_asset()
 	{
 		$page = Arr::get( $_REQUEST, 'page', 1 );
-		$query = ORM::factory( 'asset' )->where( 'deleted', '=', false );
+		$tag = Arr::get( $_REQUEST, 'tag' );
+		if (!$tag)
+		{
+			$tag = ORM::factory( 'tag' )->find_by_route( 'tags/assets' );
+		}
 		
-		$pages = ceil( $query->count_all() / 10 );
-		$assets = $query->limit( 10 )->offset( ($page - 1) * 10 )->find_all();
+		$query = ORM::factory( 'asset' )->where( 'tag', '=', $tag )->where( 'deleted', '=', false );
+		
+		$pages = ceil( $query->count_all() / 30 );
+		$assets = $query->limit( 30 )->where( 'tag', '=', $tag )->offset( ($page - 1) * 30 )->find_all();
 		
 		$pagination = View::factory( 'pagination' );
 		$pagination->total_pages = $pages;
@@ -67,7 +73,6 @@ class Controller_Cms_Chunk extends Controller_Cms
 		
 		$v = View::factory( 'cms/ui/assets/manager' );
 		$v->assets = $assets;
-		$v->state = Arr::get( Request::current()->post(), 'state', 'collapsed' );
 		$v->pagination = $pagination;
 		
 		$this->response->body( $v );

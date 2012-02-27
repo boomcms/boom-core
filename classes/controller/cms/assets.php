@@ -209,8 +209,8 @@ class Controller_Cms_Assets extends Controller_Cms
 		
 		$query = ORM::factory( 'asset' )->where( 'tag', '=', $tag )->where( 'deleted', '=', false );
 		
-		$pages = ceil( $query->count_all() / 10 );
-		$assets = $query->limit( 10 )->where( 'tag', '=', $tag )->offset( ($page - 1) * 10 )->find_all();
+		$pages = ceil( $query->count_all() / 30 );
+		$assets = $query->limit( 30 )->where( 'tag', '=', $tag )->offset( ($page - 1) * 30 )->find_all();
 				
 		$pagination = View::factory( 'pagination' );
 		$pagination->total_pages = $pages;
@@ -221,7 +221,6 @@ class Controller_Cms_Assets extends Controller_Cms
 		
 		$this->template->subtpl_main = View::factory( 'cms/ui/assets/manager' );
 		$this->template->subtpl_main->assets = $assets;
-		$this->template->subtpl_main->state = Arr::get( Request::current()->post(), 'state', 'collapsed' );
 		$this->template->subtpl_main->pagination = $pagination;
 	}
 	
