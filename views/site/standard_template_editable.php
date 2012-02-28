@@ -15,6 +15,7 @@
 *	global $person			****	Instance of Model_Person		****	The active user.
 *	global $mode			****	string							****	'cms' or 'site'.
 *	global $request			****	Instance of Request				****	See http://kohanaframework.org/3.2/guide/api/Request
+*	global $params			****	array 							****	An array of URI parameters.
 ********************************************************
 *
 * @uses Request::detect_uri()

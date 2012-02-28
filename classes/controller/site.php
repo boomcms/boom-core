@@ -24,10 +24,12 @@ class Controller_Site extends Sledge_Controller
 	*/
 	protected $page;
 	
+	protected $_params;
+	
 	public function before()
 	{
 		parent::before();
-
+		
 		// All pages and templates are hard coded for the CMS so this is all site specific.
 		// Find the requested page.
 		// If /ajax is in the uri then $ajax will be > 0. This will be used later to decide whether display the template in an iframe of the standard template.
@@ -39,10 +41,41 @@ class Controller_Site extends Sledge_Controller
 			$uri = substr( $uri, 1 );
 		}
 		
-		$page_uri = ORM::factory( 'page_uri' )->where( 'uri', '=', $uri )->find();
+		/* If the URI is more than 1 level deep search for a matching URI and put any extra levels in an array of parameters.
+		 For example,
+			uri: blog/author/Nick%20Smith
+			Will first try and find a page with 'blog/author/Nick%20Smith' as a uri.
+			If this fails 'blog/author' will be used as the uri.
+			If this fails 'blog' will be used.
+			If a page is found with a uri of 'blog' this will be used for the page.
+			$this->_params will contain array( 'author', 'Nick Smith' );
+			
+			This is only done when the URI is more than 1 level deep, otherwise there's no paramaters included anyway!
+		*/
+		$parts = explode( '/', $uri );
+		$count = count( $parts );
 		
+		if ($count < 2)
+		{
+			$page_uri = ORM::factory( 'page_uri' )->where( 'uri', '=', $uri )->find();
+		}
+		else
+		{
+			for ($i = $count; $i >= 0; $i--)
+			{
+				$uri = implode( '/', array_slice( $parts, 0, $i ) );
+				$page_uri = ORM::factory( 'page_uri' )->where( 'uri', '=', $uri )->find();
+				
+				if ($page_uri->loaded())
+				{
+					$this->_params = array_slice( $parts, $i );
+					break;
+				}			
+			}
+		}
+				
 		// If the page wasn't found by URI load the 404 page.
-		if (!$page_uri->loaded() && $uri != 'error/404')
+		if ((!$page_uri || !$page_uri->loaded()) && $uri != 'error/404')
 			throw new HTTP_Exception_404;
 		
 		$this->page = $page_uri->page;
@@ -120,6 +153,7 @@ class Controller_Site extends Sledge_Controller
 	public function after()
 	{	
 		View::bind_global( 'page', $this->page );
+		View::bind_global( 'params', $this->_params );
 		
 		parent::after();
 	}
