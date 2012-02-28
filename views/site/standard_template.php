@@ -28,7 +28,7 @@
 		<meta name="description" content="<?= htmlspecialchars( $page->description );?>" />
 		<meta name="keywords" content="<?= htmlspecialchars( $page->keywords );?>" />
 		<script type='text/javascript' src='/sledge/js/jquery.js'></script>
-		<script type="text/javascript" src="/js/main_init.js"></script>
+		<script type="text/javascript" src="/site/js/main_init.js"></script>
 		
 		<?= View::factory( 'site/css' ); ?>
 
