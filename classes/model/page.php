@@ -489,53 +489,21 @@ class Model_Page extends ORM_Taggable
 		$this->_primary_uri = $uri;	
 		return $uri;
 	}
-			
+		
 	/**
-	* Find select columns of tags applied to this page.
+	* Creates table joins and where statements to limit query results to a sub-tree.
 	*
-	* @param mixed Model_Tag or string. If a string used as the route to the parent tag.
-	* @return array
-	*/
-	public function get_tag_columns( array $columns, $parent )
+	* @param Model_Page $parent The parent page.
+	*/	
+	public function child_of( Model_Page $parent )
 	{
-		if ($this->loaded())
-		{
-			if (!$parent instanceof Model_Tag)
-			{
-				$parent = ORM::factory( 'tag' )->find_by_route( $parent );
-			}
-				
-			$query = DB::select();
-		
-			foreach( $columns as $column )
-			{
-				$query->select( $column );
-			}
-		
-			return $query->from( 'tag' )
-				->join( 'tag_v', 'inner' )
-				->on( 'active_vid', '=', 'tag_v.id' )
-				->join( 'tag_mptt', 'inner' )
-				->on( 'tag_mptt.id', '=', 'tag.id' )
-				->join( 'tagged_objects', 'inner' )
-				->on( 'tag.id', '=', 'tagged_objects.tag_id' )
-				->where( 'tagged_objects.object_id', '=', $this->id )
-				->where( 'tagged_objects.object_type', '=', Model_Tagged_Object::OBJECT_TYPE_PAGE )
-				->where( 'parent_id', '=', $parent->id )
-				->execute()->as_array();
-		}
-	}
-	
-	public function apply_tag( Model_Tag $tag ){}
-		
-	/**
-	* Page create method - set the page creation time.
-	*/
-	public function create( Validation $validation = null )
-	{
-		$this->created = time();
-		
-		parent::create( $validation );
+		$this->join( 'page_mptt', 'inner' )
+			->on( 'page_mptt.id', '=', $this->_table_name . "." . $this->_primary_key )
+			->where( 'page_mptt.scope', '=', $parent->mptt->scope )
+			->where( 'page_mptt.lft', '>=', $parent->mptt->lft )
+			->where( 'page_mptt.rgt', '<=', $parent->mptt->rgt );
+			
+		return $this;
 	}
 }
 
