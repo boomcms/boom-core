@@ -355,7 +355,6 @@ class Model_Page extends ORM_Versioned implements Interface_Taggable {
 	*/
 	public function get_slot( $type, $slotname, $template = null, $editable = true)
 	{
-		var_dump( $editable );
 		if (!array_key_exists( $slotname, $this->_slots ))
 		{
 			$this->_slots[ $slotname ] = ORM::factory( "chunk" )
