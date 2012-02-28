@@ -75,7 +75,7 @@ class Controller_Setup extends Kohana_Controller
 				$dbname = $matches[1];
 				
 				exec( "mysqladmin -u root create " . $dbname );
-				exec( "mysql -u root " . $dbname . " <  " . APPPATH . "../sql/sledge_full.mysql.sql" );
+				exec( "mysql -u root " . $dbname . " <  " . APPPATH . "../sql/database.sql" );
 
 				$this->request->redirect( '/' );
 			}
