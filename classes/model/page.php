@@ -20,7 +20,7 @@
 * @copyright 2011, Hoop Associates
 *
 */
-class Model_Page extends ORM_Versioned
+class Model_Page extends ORM_Taggable
 {
 	/**
 	* Properties to create relationships with Kohana's ORM

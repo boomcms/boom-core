@@ -18,7 +18,7 @@
 * @copyright 2011, Hoop Associates
 *
 */
-class Model_Asset extends ORM_Versioned
+class Model_Asset extends ORM_Taggable
 {
 	/**
 	* Properties to create relationships with Kohana's ORM
