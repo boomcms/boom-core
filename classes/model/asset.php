@@ -18,7 +18,8 @@
 * @copyright 2011, Hoop Associates
 *
 */
-class Model_Asset extends ORM_Versioned implements Interface_Taggable {
+class Model_Asset extends ORM_Versioned
+{
 	/**
 	* Properties to create relationships with Kohana's ORM
 	*/
@@ -102,38 +103,6 @@ class Model_Asset extends ORM_Versioned implements Interface_Taggable {
 		{
 			$this->_tags = array_push( $this->_tags, $tag );
 		}		
-	}
-	
-	/**
-	* Determines which tags have been applied to an asset.
-	* Required by the taggable interface.
-	*
-	* @todo Inherit parent tags of applied tags through the tag MPTT tree.
-	*
-	* @uses Model_Tagged_Object
-	* @uses self::$_tags
-	* @return array Array of Model_Tag ojects.
-	*/
-	public function get_tags( $under = null )
-	{
-		if ($this->_tags === null)
-		{
-			$this->_tags = ORM::factory( 'tag' )
-							->join( 'tagged_objects', 'inner' )
-							->on( 'tag_id', '=', 'tag.id' )
-							->where( 'object_type', '=', Model_Tagged_Object::OBJECT_TYPE_ASSET )
-							->where( 'object_id', '=', $this->pk() )
-							->find_all()
-							->as_array();
-		}
-		
-		return $this->_tags;
-	}
-	
-	public function get_tag_columns( array $columns, $under )
-	{
-		
-		
 	}
 	
 	/**

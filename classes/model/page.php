@@ -20,7 +20,8 @@
 * @copyright 2011, Hoop Associates
 *
 */
-class Model_Page extends ORM_Versioned implements Interface_Taggable {
+class Model_Page extends ORM_Versioned
+{
 	/**
 	* Properties to create relationships with Kohana's ORM
 	*/
@@ -370,7 +371,7 @@ class Model_Page extends ORM_Versioned implements Interface_Taggable {
 		}
 		
 		$slot = $this->_slots[ $slotname ];
-		$html;
+		$html = '';
 		
 		if ($slot->loaded())
 		{
@@ -488,9 +489,7 @@ class Model_Page extends ORM_Versioned implements Interface_Taggable {
 		$this->_primary_uri = $uri;	
 		return $uri;
 	}
-	
-	public function get_tags( $under = null ){}
-		
+			
 	/**
 	* Find select columns of tags applied to this page.
 	*
