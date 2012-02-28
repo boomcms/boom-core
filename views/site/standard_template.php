@@ -54,7 +54,7 @@
 	<body>
 		<?			
 			if ($mode == 'cms'):
-				echo new View('site/nav/top');
+				echo View::factory('site/nav/top');
 			endif;
 
 			echo $subtpl_main;

@@ -138,7 +138,7 @@ class Controller_Cms_Account extends Kohana_Controller
 				// Send an email with the new password.
 				$to = $person->emailaddress;
 				$subject = Kohana::$config->load('config')->get('client_name') . ' CMS: Your password has been reset';
-				$message = new View('cms/email/tpl_login_reset');
+				$message = View::factory('cms/email/tpl_login_reset');
 				$message->person = $person;
 				$message->password = $passwd;
 				

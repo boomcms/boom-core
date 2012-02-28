@@ -128,7 +128,7 @@ class Model_Version_Person extends Model_Version {
 			
 			// We should also setup an email class which handles the templating and mailing.
 			$subject = Kohana::$config->load('config')->get('client_name') . ' CMS: Account Locked';
-			$message = new View('cms/email/tpl_account_locked');
+			$message = View::factory('cms/email/tpl_account_locked');
 			$message->person = $this;
 		
 			$headers = 'From: hoopmaster@hoopassociates.co.uk' . "\r\n" .
