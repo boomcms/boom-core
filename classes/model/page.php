@@ -355,6 +355,7 @@ class Model_Page extends ORM_Versioned implements Interface_Taggable {
 	*/
 	public function get_slot( $type, $slotname, $template = null, $editable = true)
 	{
+		var_dump( $editable );
 		if (!array_key_exists( $slotname, $this->_slots ))
 		{
 			$this->_slots[ $slotname ] = ORM::factory( "chunk" )
@@ -377,7 +378,7 @@ class Model_Page extends ORM_Versioned implements Interface_Taggable {
 			$html = $slot->show( $template );
 		}
 		
-		if ($editable = true && Auth::instance()->get_user()->can( 'edit', $this ))
+		if ($editable == true && Auth::instance()->get_user()->can( 'edit', $this ))
 		{
 			// Couldn't find a slot? Return a default slot.
 			if (!$slot->loaded())
