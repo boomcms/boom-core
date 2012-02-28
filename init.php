@@ -75,10 +75,5 @@ Route::set('home', 'home/')
 		'controller' => 'default',
 		'action'     => 'index',
 	));
-	
-Route::set('404', 'error/404')
-	->defaults(array(
-		'controller' => 'default',
-		'action'     => 'index',
-	));
+
 ?>
