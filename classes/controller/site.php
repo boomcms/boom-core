@@ -24,7 +24,7 @@ class Controller_Site extends Sledge_Controller
 	*/
 	protected $page;
 	
-	protected $_params;
+	protected $_params = array();
 	
 	public function before()
 	{
