@@ -177,6 +177,29 @@ class Controller_Cms_Page extends Controller_Cms
 			}
 		}
 		
+		// Cascade visible in leftnav  and visible in leftnav cms settings to child pages.
+		// Edit the existing page version so that we don't have to update slots etc.
+		if (
+			(isset( $data->visible_in_leftnav_cascade ) && $data->visible_in_leftnav_cascade == 1)
+			|| (isset( $data->visible_in_leftnav_cms_cascade ) && $data->visible_in_leftnav_cms_cascade == 1)
+		)
+		{
+			foreach( $page->mptt->children() as $child )
+			{
+				if (isset( $data->visible_in_leftnav_cascade ) && $data->visible_in_leftnav_cascade == 1)
+				{
+					$child->page->version->visible_in_leftnav = $page->children_visible_in_leftnav;
+				}
+				
+				if (isset( $data->visible_in_leftnav_cms_cascade ) && $data->visible_in_leftnav_cms_cascade == 1)
+				{
+					$child->page->version->visible_in_leftnav_cms = $page->children_visible_in_leftnav_cms;
+				}		
+				
+				$child->page->version->save();		
+			}
+		}
+		
 		// Change the page's primary URI.
 		if (isset( $data->uri ) && $data->uri != $page->get_primary_uri() && $this->person->can( 'edit', $page, 'uri' ))
 		{
