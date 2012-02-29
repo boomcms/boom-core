@@ -24,7 +24,7 @@
 				</link>
 				<description>
 					<![CDATA[ 
-						<?= utf8_encode( $p->get_slot( 'text', 'standfirst')->show() ) ?>
+						<?= utf8_encode( $p->get_slot( 'text', 'standfirst', null, null, false ) ) ?>
 					]]>
 				</description>
 				<pubDate><?= date('D, M j, Y H:i', $p->visible_from) ?></pubDate>
