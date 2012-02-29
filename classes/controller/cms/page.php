@@ -97,7 +97,7 @@ class Controller_Cms_Page extends Controller_Cms
 			$page->save();
 						
 			// Add to the tree.
-			$page->mptt->page_id = $page->id;
+			$page->mptt->id = $page->id;
 			
 			// Where should we put it?
 			$parent->add_child( $page );
