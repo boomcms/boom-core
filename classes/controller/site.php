@@ -76,7 +76,9 @@ class Controller_Site extends Sledge_Controller
 				
 		// If the page wasn't found by URI load the 404 page.
 		if ((!$page_uri || !$page_uri->loaded()) && $uri != 'error/404')
+		{
 			throw new HTTP_Exception_404;
+		}
 		
 		$this->page = $page_uri->page;
 		$this->mode = ($this->person->can( 'edit', $this->page ))? 'cms' : 'site';
