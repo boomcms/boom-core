@@ -79,7 +79,6 @@ class Controller_Site extends Sledge_Controller
 			throw new HTTP_Exception_404;
 		
 		$this->page = $page_uri->page;
-		
 		$this->mode = ($this->person->can( 'edit', $this->page ))? 'cms' : 'site';
 		
 		// If they can't edit the page check that it's visible.
@@ -93,8 +92,8 @@ class Controller_Site extends Sledge_Controller
 		
 		if (Arr::get( $_GET, 'version' ) && $this->mode == 'cms')
 		{
-			$page->version->clear();
-			$page->version->where( 'id', '=', Arr::get( $_GET, 'version' ) )->find();
+			$this->page->version->clear();
+			$this->page->version->where( 'id', '=', Arr::get( $_GET, 'version' ) )->find();
 		}
 		
 		// Set the base template.
