@@ -79,6 +79,9 @@ class Model_Chunk extends ORM
 			case 'feature':
 				$target = $this->data->target_page_id;
 				break;
+			case 'slideshow':
+				$target = implode( "-", $this->data->get_asset_ids() );
+				break;
 			default:
 				$target = 0;
 		}

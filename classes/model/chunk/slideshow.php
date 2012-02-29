@@ -7,7 +7,7 @@
 * @copyright 2011, Hoop Associates
 *
 */
-class Model_Chunk_Slideshow extends ORM implements Interface_SLot
+class Model_Chunk_Slideshow extends ORM
 {
 	/**
 	* Properties to create relationships with Kohana's ORM
@@ -18,6 +18,8 @@ class Model_Chunk_Slideshow extends ORM implements Interface_SLot
 		'slides' => array( 'model' => 'slideshowimage', 'foreign_key' => 'chunk_id' ),
 	);
 	protected $_load_with = array( 'slides' );
+	
+	private $_asset_ids = array();
 	
 	
 	public function show( $template = 'circles' )
@@ -39,35 +41,61 @@ class Model_Chunk_Slideshow extends ORM implements Interface_SLot
 		}	
 	}
 	
+	/**
+	* Return an array of asset ids which are used in this slideshow.
+	*
+	* @todo This needs optimizing so that the database query is only done once per request.
+	*/
+	public function get_asset_ids()
+	{
+		if (empty( $this->_asset_ids ))
+		{
+			foreach( $this->slides->find_all() as $slide )
+			{
+				$this->_asset_ids[] = $slide->asset_id;
+			}
+		}
+		
+		return $this->_asset_ids;
+	}
+	
+	/**
+	* Accepts and array of asset IDs and sets them as the slides.
+	*
+	*/
+	public function set_asset_ids( array $assets )
+	{
+		$this->_asset_ids = $assets;
+	}
+	
 	public function show_default()
 	{
 		return "Click on me to add a slideshow here";		
 	}
 	
-	/**
-	* Copy the slot
-	*
-	* @todo Move this to a ORM_Slot class - it's the same for all slots
-	*/
-	public function copy()
+	public function save( Validation $validation = null )
 	{
-		$new = parent::copy();
-		$new->chunk = $this->chunk->copy();
+		$return = parent::save( $validation );
 		
-		return $new;
+		// Remove all existing slides.
+		DB::query( Database::DELETE, "delete from slideshowimages where chunk_id = " . $this->pk() );
+				
+		foreach( $this->_asset_ids as $asset )
+		{
+			// Check the asset exists.
+			$asset = ORM::factory( 'asset', $asset );
+			
+			if ($asset->loaded())
+			{
+				$slide = ORM::factory( 'slideshowimage' )->values( array(
+					'chunk_id'	=>	$this->chunk_id,
+					'asset_id'	=>	$asset->pk()
+				))->create();
+			}
+		}
+		
+		return $return;
 	}
-	
-	public function get_slotname()
-	{
-		return $this->chunk->slotname;
-	}
-	
-	public function getTitle()
-	{
-		
-		
-		
-	}	
 }
 
 ?>

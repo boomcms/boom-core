@@ -18,7 +18,7 @@
 * @copyright 2011, Hoop Associates
 *
 */
-class Model_Chunk_Text extends ORM implements Interface_Slot
+class Model_Chunk_Text extends ORM
 {
 	/**
 	* Properties to create relationships with Kohana's ORM
@@ -88,18 +88,6 @@ class Model_Chunk_Text extends ORM implements Interface_Slot
 	public function show_default()
 	{
 		return 'Click on me to add some text here.';
-	}
-	
-	public function get_slotname()
-	{
-		return $this->chunk->slotname;
-	}
-	
-	public function getTitle()
-	{
-		
-		
-		
 	}
 	
 	public function __toString()

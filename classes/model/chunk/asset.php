@@ -19,7 +19,7 @@
 * @copyright 2011, Hoop Associates
 *
 */
-class Model_Chunk_Asset extends ORM implements Interface_SLot
+class Model_Chunk_Asset extends ORM
 {
 	/**
 	* Properties to create relationships with Kohana's ORM
@@ -44,18 +44,6 @@ class Model_Chunk_Asset extends ORM implements Interface_SLot
 	public function show_default()
 	{
 		return "<em>(Click here to add an image.)</em>";
-	}
-	
-	public function get_slotname()
-	{
-		return $this->chunk->slotname;
-	}
-	
-	public function getTitle()
-	{
-		
-		
-		
 	}	
 }
 

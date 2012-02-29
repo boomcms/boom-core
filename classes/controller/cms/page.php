@@ -222,6 +222,9 @@ class Controller_Cms_Page extends Controller_Cms
 					case 'asset':
 						$chunk->data->asset_id = $slot_data;
 						break;
+					case 'slideshow':
+						$chunk->data->set_asset_ids( explode( "-", $slot_data ));
+						break;
 					case 'linkset':
 						break;
 				}

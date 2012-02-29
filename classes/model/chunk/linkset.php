@@ -18,7 +18,7 @@
 * @copyright 2011, Hoop Associates
 *
 */
-class Model_Chunk_Linkset extends ORM implements Interface_SLot
+class Model_Chunk_Linkset extends ORM
 {
 	/**
 	* Properties to create relationships with Kohana's ORM
@@ -81,18 +81,6 @@ class Model_Chunk_Linkset extends ORM implements Interface_SLot
 		$new->chunk = $this->chunk->copy();
 		
 		return $new;
-	}
-	
-	public function get_slotname()
-	{
-		return $this->chunk->slotname;
-	}
-	
-	public function getTitle()
-	{
-		
-		
-		
 	}	
 }
 

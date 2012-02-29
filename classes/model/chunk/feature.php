@@ -18,7 +18,7 @@
 * @copyright 2011, Hoop Associates
 *
 */
-class Model_Chunk_Feature extends ORM implements Interface_Slot
+class Model_Chunk_Feature extends ORM
 {
 	/**
 	* Properties to create relationships with Kohana's ORM
@@ -64,18 +64,6 @@ class Model_Chunk_Feature extends ORM implements Interface_Slot
 		$v->text = 'Click on me to add a feature box here.';	
 		return $v;
 	}
-		
-	public function get_slotname()
-	{
-		return $this->chunk->slotname;
-	}
-	
-	public function getTitle()
-	{
-		
-		
-		
-	}	
 }
 
 ?>
