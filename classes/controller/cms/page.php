@@ -294,7 +294,7 @@ class Controller_Cms_Page extends Controller_Cms
 		
 		// Add the new page to the tree.
 		$mptt = ORM::factory( 'page_mptt' );
-		$mptt->page_id = $newpage->id;
+		$mptt->id = $newpage->id;
 		$mptt->insert_as_next_sibling( $oldpage->mptt );
 		$mptt->save();
 		

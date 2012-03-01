@@ -8,13 +8,12 @@
 * 
 *************************** Table Columns ************************
 ****	Name			****	Data Type	****	Description					
-****	page_id			****	integer		****	ID of the page the MPTT values belong to.
+****	id				****	integer		****	ID of the page the MPTT values belong to. Primary key.
 ****	lft				****	integer		****	The page's MPTT left value (left is a reserved word).
 ****	rgt				****	integer		****	The page's MPTT right values (right is a reserved word).
 ****	parent_id		****	integer		****	MPTT ID of the parent page. Used to recalculate the tree.
 ****	lvl				****	integer		****	The page's level in the tree.
 ****	scope			****	integer		****	This appears to allow multiple trees to be stored in the same table.
-****	id				****	integer		****	Primary key. auto increment.
 ******************************************************************
 *
 * @package Models
