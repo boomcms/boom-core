@@ -349,12 +349,14 @@ class Model_Page extends ORM_Taggable
 	*
 	* @param string $type The type of slot to show.
 	* @param string $slotname The name of the slot
+	* @param string $template The template to use for displaying the slot.
 	* @param boolean $editable Whether to allow the slot to be editable.
+	* @param boolean $inherit Inherit the slot down the tree?
 	*
 	* @uses slot::factory()
 	* @return string The HTML representation of the slot
 	*/
-	public function get_slot( $type, $slotname, $template = null, $editable = true)
+	public function get_slot( $type, $slotname, $template = null, $editable = true, $inherit = false)
 	{
 		if (!array_key_exists( $slotname, $this->_slots ))
 		{

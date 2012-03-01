@@ -68,13 +68,13 @@ class Controller_Cms_Templates extends Controller_Cms
 	*/
 	public function action_index()
 	{
-		$new = $this->find();
+		//$new = $this->find();
 
 		$templates = ORM::factory( 'template' )->order_by( 'name' )->find_all();
 	
 		$this->template->subtpl_main = View::factory( 'cms/pages/templates/index' );
 		$this->template->subtpl_main->templates = $templates;	
-		$this->template->subtpl_main->new = $new;
+		//$this->template->subtpl_main->new = $new;
 	}
 	
 	/**

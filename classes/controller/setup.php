@@ -128,7 +128,11 @@ class Controller_Setup extends Kohana_Controller
 			$template->name = $t['name'];
 			$template->description = $t['description'];
 			$template->deleted = ($t['deleted'] == 't')? true : false;
-			$template->save();					
+			
+			if ($template->file_exists())
+			{
+				$template->save();
+			}				
 		}		
 		
 		// Assets.
