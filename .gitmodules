@@ -1,3 +1,3 @@
-[submodule "static/site/qunit"]
-	path = static/site/qunit
+[submodule "static/cms/js/qunit"]
+	path = static/cms/js/qunit
 	url = git://github.com/jquery/qunit.git
