@@ -1,6 +1,6 @@
 <?php
 /**
-* Pagination template for search results.
+* Pagination template which can be used for any pagination links.
 * It's a horrible template, don't blame Rob.
 *
 * Rendered by views/site/templates/tp_search.php

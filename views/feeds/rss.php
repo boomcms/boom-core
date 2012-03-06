@@ -1,3 +1,20 @@
+<?php
+/**
+* RSS feed template.
+* Displays a page and its children in RSS format.
+*
+* Rendered by Controller_Feeds::action_rss();
+*
+*********************** Variables **********************
+*	$page			****	instance of Model_Page			****	The page being displayed as an RSS feed.
+*	$children		****	array of Model_Page instances	****	Child pages to include as feed items.
+********************************************************
+*
+* @package Templates
+* @author Hoop Associates	www.thisishoop.com	mail@hoopassociates.co.uk
+* @copyright 2012, Hoop Associates
+*/
+?>
 <rss version="2.0">
 	<channel>
 		<title><?= $page->title ?></title>
