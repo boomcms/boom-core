@@ -28,7 +28,7 @@ class Model_Page_Uri extends ORM {
 	* ORM Validation rules
 	* @see http://kohanaframework.org/3.2/guide/orm/examples/validation
 	*/
-	/*public function rules()
+	public function rules()
 		{
 		return array(
 			'page_id' => array(
@@ -40,7 +40,7 @@ class Model_Page_Uri extends ORM {
 				array('max_length', array( ':value', 2048)),
 			),
 		);
-	}*/
+	}
     
 	public function filters()
 	{
