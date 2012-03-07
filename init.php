@@ -1,20 +1,6 @@
 <?php
 
 /**
-* Check that other modules required by Sledge (auth, database etc.) are loaded.
-*
-*/
-$dependencies = array( 'auth', 'cache', 'database', 'orm' );
-
-foreach( $dependencies as $dep )
-{
-	if (!array_key_exists( $dep, Kohana::modules() ))
-	{
-		throw new Sledge_Exception( "Required module '" . $dep . "' not loaded" );
-	}
-}
-
-/**
 * Route for RSS feeds.
 */
 Route::set('feeds', '<action>/<uri>',
@@ -65,12 +51,6 @@ Route::set('cms', '<directory>/(<controller>(/<action>(/<id>)))',
 	array(
 		'directory'	=> 'cms'
 	))
-	->defaults(array(
-		'controller' => 'default',
-		'action'     => 'index',
-	));
-		
-Route::set('home', 'home/')
 	->defaults(array(
 		'controller' => 'default',
 		'action'     => 'index',
