@@ -56,6 +56,8 @@ class Model_Tag extends ORM_Versioned {
 	
 	/**
 	* Find a tag by the given route.
+	* If the route exists then the tag returned will be the one named with the last part of the route.
+	* So, if searching for 'pages/categories' the tag returned will be the categories tag.
 	*
 	* @example ORM::factory( 'tag' )->find_by_route( 'pages/categories' )
 	* @param string $route The route to the tag.
@@ -65,7 +67,7 @@ class Model_Tag extends ORM_Versioned {
 	{
 		// This could be done as a single query, but I think it's probably quicker to do it as individual queries.
 		// Something to look at though.
-		$parent = null;
+		$parent = 0;
 		$tags = explode( '/', $route );
 		
 		foreach( $tags as $tag )
@@ -80,8 +82,8 @@ class Model_Tag extends ORM_Versioned {
 					->where( 'name', '=', $tag )
 					->limit( 1 )
 					->execute()->as_array();
-					
-			if (count( $query ))
+								
+			if (sizeof( $query ) > 0)
 			{
 				$parent = $query[0]['id'];
 			}
