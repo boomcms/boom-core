@@ -1,7 +1,6 @@
 <?php
-
 /**
-*
+* This is the base class for the Permissions system.
 * @package Permissions
 * @author Hoop Associates	www.thisishoop.com	mail@hoopassociates.co.uk
 * @copyright 2011, Hoop Associates
