@@ -30,23 +30,17 @@
 	<title><?= $page->title; ?> | <?=Kohana::$config->load('config')->get('client_name')?></title>
 	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 	<meta http-equiv="Content-Style-Type" content="text/css" />
-	<?/*
-	<link rel="stylesheet" type="text/css" href="/sledge/css/ui-smoothness/jquery-ui.css" media="screen" />
-	<link rel="stylesheet" type="text/css" href="/sledge/css/sledge.ui.css" media="screen" />
-	*/?>
-	<link rel="stylesheet" type="text/css" href="/sledge/js/tiny_mce/themes/advanced/skins/o2k7/ui.css" />
-	<link rel="stylesheet" type="text/css" href="/sledge/js/tiny_mce/themes/advanced/skins/o2k7/ui_silver.css" />
-	<link rel="stylesheet" type="text/css" href="/sledge/css/sledge.tagmanager.css" media="screen" />
-	<link rel="stylesheet" type="text/css" href="/sledge/css/ui-smoothness/jquery-ui.css" />
-	<link rel="stylesheet" type="text/css" href="/sledge/css/sledge.ui.css" />
-	<link rel="stylesheet" type="text/css" href="/sledge/css/cms.css" />
+	<?= HTML::style( "sledge/js/tiny_mce/themes/advanced/skins/o2k7/ui.css" ) ?>
+	<?= HTML::style( "sledge/js/tiny_mce/themes/advanced/skins/o2k7/ui_silver.css" ) ?>
+	<?= HTML::style( "sledge/css/sledge.tagmanager.css" ) ?>
+	<?= HTML::style( "sledge/css/ui-smoothness/jquery-ui.css" ) ?>
+	<?= HTML::style( "sledge/css/sledge.ui.css" ) ?>
+	<?= HTML::style( "sledge/css/cms.css" ) ?>
 </head>
 <body>
 	<div id="sledge-wysiwyg-toolbar" class="mceEditor o2k7Skin o2k7SkinSilver"></div>
 
-	<?
-		echo View::factory( 'cms/ui/site/topbar' );
-	?>
+	<?= View::factory( 'cms/ui/site/topbar' ) ?>
 
 	<div id="sledge-dialogs">
 		<div id="sledge-dialog-alerts">
@@ -59,19 +53,19 @@
 		<iframe id="sledge-page-edit-iframe" src="<?= '/ajax' . Request::detect_uri() . URL::query();?>"></iframe>
 	</div>
 
-	<script type="text/javascript" src="/sledge/js/sledge.helpers.js"></script>
-	<script type='text/javascript' src='/sledge/js/jquery.js'></script>
-	<script type='text/javascript' src='/sledge/js/sledge.jquery.ui.js'></script>
-	<script type='text/javascript' src='/sledge/js/jquery.ui.button.js'></script>
-	<script type='text/javascript' src='/sledge/js/sledge.plugins.js'></script>
-	<script type='text/javascript' src='/sledge/js/sledge.config.js'></script>
-	<script type='text/javascript' src='/sledge/js/sledge.core.js'></script>
-	<script type='text/javascript' src='/sledge/js/sledge.chunk.js'></script>
-	<script type='text/javascript' src='/sledge/js/sledge.page.js'></script>
-	<script type='text/javascript' src='/sledge/js/sledge.helpers.js'></script>
-	<script type='text/javascript' src='/sledge/js/sledge.tagmanager.js'></script>
-	<script type='text/javascript' src='/sledge/js/sledge.tagmanager.assets.js'></script>
-	<script type='text/javascript' src='/sledge/js/sledge.tagmanager.items.js'></script>
+	<?= HTML::script( "sledge/js/sledge.helpers.js" ) ?>
+	<?= HTML::script( "sledge/js/jquery.js" ) ?>
+	<?= HTML::script( "sledge/js/sledge.jquery.ui.js" ) ?>
+	<?= HTML::script( "sledge/js/jquery.ui.button.js" ) ?>
+	<?= HTML::script( "sledge/js/sledge.plugins.js" ) ?>
+	<?= HTML::script( "sledge/js/sledge.config.js" ) ?>
+	<?= HTML::script( "sledge/js/sledge.core.js" ) ?>
+	<?= HTML::script( "sledge/js/sledge.chunk.js" ) ?>
+	<?= HTML::script( "sledge/js/sledge.page.js" ) ?>
+	<?= HTML::script( "sledge/js/sledge.helpers.js" ) ?>
+	<?= HTML::script( "sledge/js/sledge.tagmanager.js" ) ?>
+	<?= HTML::script( "sledge/js/sledge.tagmanager.assets.js" ) ?>
+	<?= HTML::script( "sledge/js/sledge.tagmanager.items.js" ) ?>
 
 	<script type="text/javascript">
 		//<![CDATA[

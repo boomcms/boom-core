@@ -46,7 +46,7 @@
 		?>
 	</head>
 	<body>
-		<?			
+		<?
 			if ($mode == 'cms'):
 				echo View::factory('site/nav/top');
 			endif;
