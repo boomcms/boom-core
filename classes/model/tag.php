@@ -30,6 +30,13 @@ class Model_Tag extends ORM_Versioned {
 	protected $_load_with = array('version');
 	
 	/**
+	* Session cache for the get_full_name() method.
+	* @access protected
+	* @var string
+	*/
+	protected $_full_name = null;
+	
+	/**
 	* Finds the tag with a given name, creates the tag if it doesn't exist.
 	*
 	* @param string Tag name
@@ -94,6 +101,43 @@ class Model_Tag extends ORM_Versioned {
 		}
 		
 		return ORM::factory( 'tag', $parent );
+	}
+	
+	/**
+	* Returns the name of the current tag and all it's parents in the form parent1/parent2/name.
+	*
+	* @return string
+	*/
+	public function get_full_name()
+	{
+		if (!$this->loaded())
+		{
+			return '';
+		}
+		
+		if ($this->_full_name == null)
+		{
+			$query = DB::select( 'tag_v.name' )
+				->from( 'tag' )
+				->join( 'tag_v', 'inner' )
+				->on( 'tag.active_vid', '=', 'tag_v.id' )
+				->join( 'tag_mptt', 'inner' )
+				->on( 'tag.id', '=', 'tag_mptt.id' )
+				->where( 'tag_mptt.lft', '<', $this->mptt->lft )
+				->where( 'tag_mptt.rgt', '>', $this->mptt->rgt )
+				->order_by( 'tag_mptt.lft', 'asc' );
+				 
+			$results = $query->execute();
+			
+			foreach( $results as $parent )
+			{
+				$this->_full_name .= $parent['name'] . '/';
+			}
+			
+			$this->_full_name .= $this->name;	
+		}
+		
+		return $this->_full_name;
 	}
 }
 
