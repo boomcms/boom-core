@@ -39,13 +39,7 @@
 			else:
 				echo "<meta name='robots' content='noindex, nofollow' />";
 			endif;
-		?>
-		
-		<?
-			echo View::factory( 'site/subtpl_header' );
-		?>
 
-		<?
 			if ( $page->enable_rss ):
 				echo "<link rel='alternate' type='application/rss+xml' title='RSS' href='" . URL::base( $request ) . "rss/" . $page->get_primary_uri() . "' />";
 			endif;
