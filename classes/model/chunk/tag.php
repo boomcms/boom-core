@@ -1,25 +1,5 @@
-<?php
+<?php defined('SYSPATH') or die('No direct script access.');
 
-/**
-* Tag chunk model
-* @package Models
-* @author Hoop Associates	www.thisishoop.com	mail@hoopassociates.co.uk
-* @copyright 2011, Hoop Associates
-*
-*/
-class Model_Chunk_Tag extends ORM
-{
-	/**
-	* Properties to create relationships with Kohana's ORM
-	*/
-	protected $_table_name = 'chunk_tag';
-	protected $_primary_key = 'chunk_id';
-		
-	public function show()
-	{
-		return 'Tag chunk';
-		
-	}
-}
+class Model_Chunk_tag extends Sledge_Model_Chunk_Tag {}
 
 ?>
