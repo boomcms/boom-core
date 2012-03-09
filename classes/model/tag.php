@@ -74,7 +74,7 @@ class Model_Tag extends ORM_Versioned {
 	{
 		// This could be done as a single query, but I think it's probably quicker to do it as individual queries.
 		// Something to look at though.
-		$parent = 0;
+		$parent = null;
 		$tags = explode( '/', $route );
 		
 		foreach( $tags as $tag )
