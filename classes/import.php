@@ -159,7 +159,11 @@ class Import
 			$details['uri'] = 'error/404';
 		}
 		
-		ORM::factory( 'page_uri' )->values( array( 'page_id' => $details['rid'], 'uri' => $details['uri'], 'primary_uri' => true ))->create();
+		try
+		{
+			ORM::factory( 'page_uri' )->values( array( 'page_id' => $details['rid'], 'uri' => $details['uri'], 'primary_uri' => true ))->create();
+		}
+		catch (Exception $e) {}
 		
 		// Import tags for this page.
 		$tags = $db->query( Database::SELECT, "select item_rid from relationship_partner inner join (select relationship_id from relationship_partner where item_tablename = 'page' and item_rid = " . $details['rid'] . ") as q on q.relationship_id = relationship_partner.relationship_id where item_tablename = 'tag'" );
