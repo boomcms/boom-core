@@ -233,7 +233,7 @@ class Import
 		{
 			$t = ORM::factory( 'tag' );
 			$t->id = $tag['rid'];
-			$t->name = $tag['name'];
+			$t->name = stripslashes($tag['name']);
 			$t->save();
 		
 			$mptt = ORM::factory( 'tag_mptt' );
