@@ -38,10 +38,10 @@ Route::set('asset', 'asset/(<action>/)<id>(/<with>(/<height>(/<quailty>(/<notsur
 * Defines the route for /cms page settings pages..
 *
 */
-Route::set('page_settings', 'cms/page/settings/<action>/<id>' )
+Route::set('page_settings', 'cms/page/settings/<tab>/<id>' )
 	->defaults(array(
-		'controller' => 'cms_page_settings',
-		'action'     => 'index',
+		'controller' => 'cms_page',
+		'action'     => 'settings',
 	));	
 /**
 * Defines the route for /cms pages.
