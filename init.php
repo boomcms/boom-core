@@ -48,9 +48,12 @@ Route::set('page_settings', 'cms/page/settings/<tab>/<id>' )
 * Tag manager route.
 *
 */
-Route::set('tags', 'cms/tags(/<id>)')
+Route::set('tags', 'cms/tags(/<id>)',
+	array(
+		'id'	=>	'\d+',
+	))
 	->defaults(array(
-		'action'     => 'index',
+		'action'	=> 'index',
 		'directory'	=> 'cms',
 		'controller'=> 'tags',
 	));
