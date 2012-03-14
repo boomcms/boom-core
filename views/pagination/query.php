@@ -24,7 +24,7 @@
  */
 ?>
 <?php if ($previous_page): ?>
-	<a href="<?=$base_url?><?=$previous_page?>" class="corner-5">&lt;</a>
+	<a href="<?=$base_url?>?<?=URL::query( array( 'page' => $previous_page ))?>" class="corner-5">&lt;</a>
 <?php endif ?>
 
 
@@ -34,7 +34,7 @@
 		<?php if ($i == $current_page): ?>
 			<strong class="current" class="corner-5"><?php echo $i ?></strong>
 		<?php else: ?>
-			<a href="<?=$base_url?><?=$i?>"><?php echo $i ?></a>
+			<a href="<?=$base_url?><?=URL::query( array( 'page' => $i ))?>"><?php echo $i ?></a>
 		<?php endif ?>
 	<?php endfor ?>
 
@@ -44,49 +44,49 @@
 		<?php if ($i == $current_page): ?>
 			<strong class="current"><?php echo $i ?></strong>
 		<?php else: ?>
-			<a href="<?=$base_url?><?=$i?>" class="corner-5"><?php echo $i ?></a>
+			<a href="<?=$base_url?>?<?=URL::query( array( 'page' => $i ))?>" class="corner-5"><?php echo $i ?></a>
 		<?php endif ?>
 	<?php endfor ?>
 
 	<span class="break">&hellip;</span>
-	<a href="<?=$base_url?><?=($total_pages-1)?>" class="corner-5"><?php echo $total_pages - 1 ?></a>
-	<a href="<?=$base_url?><?=$total_pages?>" class="corner-5"><?php echo $total_pages ?></a>
+	<a href="<?=$base_url?>?<?=URL::query( array( 'page' => $total_pages-1 ))?>" class="corner-5"><?php echo $total_pages - 1 ?></a>
+	<a href="<?=$base_url?>?<?=URL::query( array( 'page' => $total_pages ))?>" class="corner-5"><?php echo $total_pages ?></a>
 
 <?php elseif ($current_page > $total_pages - 8): /* « Previous  1 2 … 17 18 19 20 21 22 23 24 25 26  Next » */ ?>
 
-	<a href="<?=$base_url?>1" class="corner-5">1</a>
-	<a href="<?=$base_url?>2" class="corner-5">2</a>
+	<a href="<?=$base_url?>?<?=URL::query( array( 'page' => 1 ))?>" class="corner-5">1</a>
+	<a href="<?=$base_url?>?<?=URL::query( array( 'page' => 2 ))?>" class="corner-5">2</a>
 	<span class="break">&hellip;</span>
 
 	<?php for ($i = $total_pages - 9; $i <= $total_pages; $i++): ?>
 		<?php if ($i == $current_page): ?>
 			<strong class="current" class="corner-5"><?php echo $i ?></strong>
 		<?php else: ?>
-			<a href="<?=$base_url?><?=$i?>" class="corner-5"><?php echo $i ?></a>
+			<a href="<?=$base_url?>?<?=URL::query( array( 'page' => $i ))?>" class="corner-5"><?php echo $i ?></a>
 		<?php endif ?>
 	<?php endfor ?>
 
 <?php else: /* « Previous  1 2 … 5 6 7 8 9 10 11 12 13 14 … 25 26  Next » */ ?>
 
-	<a href="<?=$base_url?>1" class="corner-5">1</a>
-	<a href="<?=$base_url?>2" class="corner-5">2</a>
+	<a href="<?=$base_url?>?<?=URL::query( array( 'page' => 1 ))?>" class="corner-5">1</a>
+	<a href="<?=$base_url?>?<?=URL::query( array( 'page' => 2 ))?>" class="corner-5">2</a>
 	<span class="break">&hellip;</span>
 
 	<?php for ($i = $current_page - 5; $i <= $current_page + 5; $i++): ?>
 		<?php if ($i == $current_page): ?>
 			<strong class="current" class="corner-5"><?php echo $i ?></strong>
 		<?php else: ?>
-			<a href="<?=$base_url?><?=$i?>" class="corner-5"><?php echo $i ?></a>
+			<a href="<?=$base_url?>?<?=URL::query( array( 'page' => $i ))?>" class="corner-5"><?php echo $i ?></a>
 		<?php endif ?>
 	<?php endfor ?>
 
 	<span class="break">&hellip;</span>
-	<a href="<?=$base_url?><?=($total_pages-1)?>" class="corner-5"><?php echo $total_pages - 1 ?></a>
-	<a href="<?=$base_url?><?=$total_pages?>" class="corner-5"><?php echo $total_pages ?></a>
+	<a href="<?=$base_url?>?<?=URL::query( array( 'page' => $total_pages-1 ))?>" class="corner-5"><?php echo $total_pages - 1 ?></a>
+	<a href="<?=$base_url?>?<?=URL::query( array( 'page' => $total_pages ))?>" class="corner-5"><?php echo $total_pages ?></a>
 
 <?php endif ?>
 
 
 <?php if ($next_page): ?>
-	<a href="<?=$base_url?><?=$next_page?>" class="corner-5">&gt;</a>
+	<a href="<?=$base_url?>?<?=URL::query( array( 'page' => $next_page ))?>" class="corner-5">&gt;</a>
 <?php endif ?>
