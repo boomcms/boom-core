@@ -71,4 +71,16 @@ Route::set('cms', '<directory>/(<controller>(/<action>(/<id>)))',
 		'action'     => 'index',
 	));
 
+/**
+* Defines the route for /sledge pages.
+*
+*/
+Route::set('sledge', '<directory>/(<controller>(/<action>(/<id>)))',
+	array(
+		'directory'	=> 'sledge'
+	))
+	->defaults(array(
+		'controller' => 'default',
+		'action'     => 'index',
+	));
 ?>
