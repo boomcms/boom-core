@@ -4,25 +4,30 @@
 *
 */
 ?>
-
-<p>
-	<?= $results ?> Results
-</p>
+<?
+	if (isset( $pagination )):
+		echo "<p class='pagination corner-5 clearfix'>", $pagination, "</p>";
+	endif;
+?>
 
 <ul class="tag-archive">
 	
 <?
-	foreach ($pages as $i => $p):
+	foreach ($pages as $page):
 		?>
 			<li class="list">
 				<h3>
-					<a href="<?=$p->url()?>"><?=$p->title?>&nbsp;&raquo;</a>
+					<a href="<?=$page->url()?>"><?=$page->title?>&nbsp;&raquo;</a>
 				</h3>
 				<h4>
-					<?= $p->get_slot( 'text', 'standfirst', null, false ) ?>
+					<?= $page->get_slot( 'text', 'standfirst', null, false ) ?>
 				</h4>
 			</li>
 		<?
 	endforeach;
 	echo "</ul>";
+
+	if (isset( $pagination )):
+		echo "<p class='pagination corner-5 clearfix'>", $pagination, "</p>";
+	endif;
 ?>
