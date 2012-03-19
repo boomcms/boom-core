@@ -1,5 +1,6 @@
 <?php
 
+
 /**
 * Route for RSS feeds.
 */
@@ -62,7 +63,7 @@ Route::set('tags', 'cms/tags(/<id>)',
 * Defines the route for /cms pages.
 *
 */
-Route::set('cms', '<directory>/(<controller>(/<action>(/<id>)))',
+Route::set('cms', '<directory>/<controller>/<action>(/<id>)',
 	array(
 		'directory'	=> 'cms'
 	))
@@ -83,4 +84,5 @@ Route::set('sledge', '<directory>/(<controller>(/<action>(/<id>)))',
 		'controller' => 'default',
 		'action'     => 'index',
 	));
+	
 ?>
