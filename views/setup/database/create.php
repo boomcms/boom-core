@@ -18,4 +18,4 @@
 	
 The database <?=$dbname?> does not exist. Wanna try and create it?
 	
-<a href='/setup/database'>Hell yeah!</a>
+<a href='/?creatdb'>Hell yeah!</a>
