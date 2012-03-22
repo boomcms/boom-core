@@ -38,7 +38,14 @@
 			}	
 				
 			// Show the page.
-			echo "<li id='p", $node['id'], "'><a id='" . $node['page_id'] . "' href='/" , $node['uri'] , "'>" , $node['title'] , "</a>\n";	
+			echo "<li id='p", $node['id'], "'><a";
+			
+			if ($node['visible'] == false)
+			{
+				echo " class='leftnav-page-invisible'";
+			}
+			
+			echo " id='" . $node['page_id'] . "' href='/" , $node['uri'] , "'>" , $node['title'] , "</a>\n";	
 			
 			// Start a sub-list if this page has children. Otherwise close the list item.
 			if ($i < ($count - 1) && $pages[ $i + 1 ]['parent_id'] == $node['id'])
