@@ -44,6 +44,10 @@
 			{
 				echo " class='leftnav-page-invisible'";
 			}
+			else if ($node['visible_in_leftnav'] == false)
+			{
+				echo " style='color: #ff0000'";
+			}
 			
 			echo " id='" . $node['page_id'] . "' href='/" , $node['uri'] , "'>" , $node['title'] , "</a>\n";	
 			
