@@ -1,5 +1,4 @@
 <?php
-#test commit
 
 /**
 * Route for RSS feeds.
@@ -96,6 +95,22 @@ Route::set('site', '<controller>/<action>/<page_id>/<data>',
 	->defaults(array(
 		'controller' => 'site',
 		'action'     => 'show',
+	));
+	
+Route::set('cms', '<controller>(/<action>)',
+	array(
+		'controller'	=> 'cms',
+	))
+	->defaults(array(
+		'action'     => 'index',
+	));
+Route::set('cms2', '<directory>/<controller>(/<action>(/<id>))',
+	array(
+		'directory'	=> 'cms',
+	))
+	->defaults(array(
+		'default'	 => 'cms',
+		'action'     => 'index',
 	));
 	
 
