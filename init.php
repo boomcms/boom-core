@@ -86,8 +86,7 @@ Route::set('sledge', '<directory>/(<controller>(/<action>(/<id>)))',
 	));
 	
 /**
- * Set the routes. Each route must have a minimum of a name, a URI and a set of
- * defaults for the URI.
+ * Site route - displays a site page.
  */
 Route::set('site', '<controller>/<action>/<page_id>/<data>',
 	array(
