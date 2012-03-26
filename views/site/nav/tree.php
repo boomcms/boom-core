@@ -38,7 +38,7 @@
 			}	
 				
 			// Show the page.
-			echo "<li class='ui-helper-clearfix ui-state-default' id='p", $node['id'], "'><span class='sledge-tree-hitarea'></span><a";
+			echo "<li id='p", $node['id'], "'><a";
 			
 			if ($node['visible'] == false)
 			{
