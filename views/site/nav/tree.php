@@ -54,7 +54,7 @@
 			// Start a sub-list if this page has children. Otherwise close the list item.
 			if ($i < ($count - 1) && $pages[ $i + 1 ]['parent_id'] == $node['id'])
 			{
-				echo "<ul";
+				echo "<ul";		
 				
 				// Hide sub-trees unless state is expanded.
 				// If current node is not a direct child of the page we're viewing.
@@ -62,6 +62,11 @@
 				{
 					echo " class='hidden'";
 				}
+				else if ($node['child_ordering_policy'] & Model_Page::CHILD_ORDER_MANUAL)
+				{
+					echo " class='ui-sortable'";
+				}
+				
 				echo ">";
 			}
 			else 
