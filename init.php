@@ -85,34 +85,13 @@ Route::set('sledge', '<directory>/(<controller>(/<action>(/<id>)))',
 	));
 	
 /**
- * Site route - displays a site page.
+ * Default route.
  */
-Route::set('site', '<controller>/<action>/<page_id>/<data>',
-	array(
-		'controller'	=> 'site',
-		'action'		=> 'show',
-	))
+Route::set('default', '(<controller>(/<action>(/<id>)))')
 	->defaults(array(
 		'controller' => 'site',
-		'action'     => 'show',
-	));
-	
-Route::set('cms', '<controller>(/<action>)',
-	array(
-		'controller'	=> 'cms',
-	))
-	->defaults(array(
 		'action'     => 'index',
 	));
-Route::set('cms2', '<directory>/<controller>(/<action>(/<id>))',
-	array(
-		'directory'	=> 'cms',
-	))
-	->defaults(array(
-		'default'	 => 'cms',
-		'action'     => 'index',
-	));
-	
 
 // Sledge setup.	
 // Has the runtime database configuration been created?
