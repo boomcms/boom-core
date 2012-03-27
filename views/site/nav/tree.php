@@ -15,7 +15,7 @@
 */
 ?>
 <div id="nav" class="block">
-	<ul>
+	<ul id="navsort" class="ui-sortable">
 	<?
 		$level = 1;	
 		$count = sizeof( $pages );
