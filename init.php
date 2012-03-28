@@ -30,7 +30,7 @@ Route::set('auth', 'cms/<action>',
 * Route for displaying / saving assets
 *
 */
-Route::set('asset', 'asset/(<action>/)<id>(/<with>(/<height>(/<quailty>(/<notsure>))))')
+Route::set('asset', 'asset/(<action>/)<id>(/<width>(/<height>(/<quailty>(/<crop>))))')
 	->defaults(array(
 		'controller' => 'asset',
 		'action'	 => 'index'
