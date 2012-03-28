@@ -1,6 +1,6 @@
 <?php
 
-set_exception_handler( array( 'Sledge', 'exception_handler' ) );
+set_exception_handler( array( 'Sledge_Exception', 'handler' ) );
 
 /**
 * Route for RSS feeds.
