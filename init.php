@@ -1,5 +1,8 @@
 <?php
 
+/*
+* Let the Sledge take charge of exceptions.
+*/
 set_exception_handler( array( 'Sledge_Exception', 'handler' ) );
 
 /* Include the userguide module if this isn't a live instance.
@@ -9,7 +12,6 @@ if (Kohana::$config->load( 'sledge' )->get( 'environment' ) != 'live')
 {
 	Kohana::modules( array_merge( Kohana::modules(), array(MODPATH . 'guide') ) );
 }
-
 
 /**
 * Route for RSS feeds.
