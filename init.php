@@ -111,7 +111,7 @@ Route::set('default', '(<controller>(/<action>(/<id>)))')
 // Sledge apps ship with no database configuration.
 // If this sledge is newly cloned then we need to set the database connection information.
 // This checks for the sledge property in the database config which is set by our config setup script.
-if (!Kohana::$config->load( 'database.default.connection.sledge' ))
+/*if (!Kohana::$config->load( 'database.default.connection.sledge' ))
 {
 	echo Request::factory( 'setup/dbconfig' )->post( $_POST )->execute();
 	exit;			
@@ -141,6 +141,6 @@ catch (Database_Exception $e)
 	
 	// It's some other error which we don't worry about here.
 	throw $e;
-}
+}*/
 	
 ?>
