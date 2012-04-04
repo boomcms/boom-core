@@ -1,5 +1,5 @@
 <?php defined('SYSPATH') OR die('No direct script access.');
 
-class Model_Chunk_Page extends Sledge_Model_Chunk_Page {}
+class Controller_Ajax extends Sledge_Controller_Ajax {}
 
 ?>
