@@ -66,7 +66,7 @@
 				// If current node is not a direct child of the page we're viewing.
 				if ($state == 'collapsed' && !($node['lft'] < $page->mptt->lft && $node['rgt'] > $page->mptt->rgt) && $node['page_id'] != $page->id)
 				{
-					$class = $class . " hidden";
+					$class = $class . " hidden ui-helper-hidden";
 				}
 				
 				if ($class != '')
