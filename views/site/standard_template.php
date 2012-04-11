@@ -61,7 +61,7 @@
 	<?= View::factory('profiler/stats'); ?>
 	
 	<?
-	if ($person->can( 'edit', $page )):
+	if ($person->can( 'edit_page', $page )):
 		?>
 		<script type="text/javascript">
 		//<![CDATA[
