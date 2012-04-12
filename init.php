@@ -8,7 +8,7 @@ set_exception_handler( array( 'Sledge_Exception', 'handler' ) );
 /* Include the userguide module if this isn't a live instance.
 * @link http://kohanaframework.org/3.2/guide/userguide
 */
-if (Kohana::$environment == Kohana::TESTING)
+if (Kohana::$environment != Kohana::PRODUCTION)
 {
 	Kohana::modules( array_merge( Kohana::modules(), array(MODPATH . 'guide') ) );
 }
