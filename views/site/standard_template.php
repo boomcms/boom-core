@@ -57,8 +57,6 @@
 				echo View::factory( 'site/analytics' );
 			endif;
 		?>	
-		
-	<?= View::factory('profiler/stats'); ?>
 	
 	<?
 	if ($person->can( 'edit_page', $page )):
