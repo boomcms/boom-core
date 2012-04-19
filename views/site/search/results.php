@@ -24,9 +24,9 @@
 					<h3>
 						<a href="<?=$page->url()?>"><?=$page->title?>&nbsp;&raquo;</a>
 					</h3>
-					<h4>
-						<?= $page->get_slot( 'text', 'standfirst', null, false ) ?>
-					</h4>
+					<p>
+						<?= strip_tags($page->get_slot( 'text', 'standfirst', null, false )) ?>
+					</p>
 				</li>
 			<?
 		endforeach;
