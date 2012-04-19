@@ -10,24 +10,34 @@
 	endif;
 ?>
 
-<ul class="tag-archive">
-	
-<?
-	foreach ($pages as $page):
-		?>
-			<li class="list">
-				<h3>
-					<a href="<?=$page->url()?>"><?=$page->title?>&nbsp;&raquo;</a>
-				</h3>
-				<h4>
-					<?= $page->get_slot( 'text', 'standfirst', null, false ) ?>
-				</h4>
-			</li>
-		<?
-	endforeach;
-	echo "</ul>";
+<? if ($total > 0): ?>
+	<p>
+		Showing <?= $returned ?> of <?= Text::plural( $total, 'result' ) ?>.
+	</p>
 
-	if (isset( $pagination )):
-		echo "<p class='pagination corner-5 clearfix'>", $pagination, "</p>";
-	endif;
-?>
+	<ol class="search-results">
+	
+	<?
+		foreach ($pages as $page):
+			?>
+				<li>
+					<h3>
+						<a href="<?=$page->url()?>"><?=$page->title?>&nbsp;&raquo;</a>
+					</h3>
+					<h4>
+						<?= $page->get_slot( 'text', 'standfirst', null, false ) ?>
+					</h4>
+				</li>
+			<?
+		endforeach;
+		echo "</ol>";
+
+		if (isset( $pagination )):
+			echo "<p class='pagination corner-5 clearfix'>", $pagination, "</p>";
+		endif;
+	?>
+<? else: ?>
+	<p>
+		Your search returned no results.
+	</p>
+<? endif; ?>
