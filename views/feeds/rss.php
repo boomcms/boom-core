@@ -20,31 +20,33 @@
 		<title><?= $page->title ?></title>
 		<link><?= $page->url()?></link>
 		<description>
-			<?= htmlentities( $page->get_slot( 'text', 'standfirst') ) ?>
+			<?= htmlentities( $page->get_slot( 'text', 'standfirst', null, false ) ) ?>
 		</description>
 		<language>en-us</language>
-		<pubDate><?= date('D, M j, Y H:i', $page->visible_from) ?></pubDate>
-		<lastBuildDate><?= date('D, j M Y H:i:s', time()) ?></lastBuildDate>
-		<docs/>
-		<managingEditor/>
-		<WebMaster/>
+		<pubDate><?= date('r', $page->visible_from) ?></pubDate>
+		<lastBuildDate><?= date('r', time()) ?></lastBuildDate>
 		
 		<?
 			foreach ($children as $p):
 				?>
 				<item>
-				<title>
-					<![CDATA[ <?= $p->title ?> ]]>
-				</title>
-				<link>
-					<?= $p->page->url() ?>
-				</link>
-				<description>
-					<![CDATA[ 
-						<?= utf8_encode( $p->get_slot( 'text', 'standfirst', null, null, false ) ) ?>
-					]]>
-				</description>
-				<pubDate><?= date('D, M j, Y H:i', $p->visible_from) ?></pubDate>
+					<guid>
+						<?= $p->url() ?>
+					</guid>
+					<title>
+						<![CDATA[ <?= html_entity_decode($p->title, ENT_QUOTES, 'UTF-8') ?> ]]>
+					</title>
+					<link>
+						<?= $p->url() ?>
+					</link>
+					<description>
+						<![CDATA[ 
+							<?= html_entity_decode( strip_tags( $p->get_slot( 'text', 'standfirst', null, false ) ), ENT_QUOTES, 'UTF-8') ?>
+						]]>
+					</description>
+					<pubDate>
+						<?= date('r', $p->visible_from) ?>
+					</pubDate>
 				</item>
 				
 				<?
