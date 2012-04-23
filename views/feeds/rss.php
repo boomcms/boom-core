@@ -22,7 +22,7 @@
 		<description>
 			<?= htmlentities( $page->get_slot( 'text', 'standfirst', null, false ) ) ?>
 		</description>
-		<language>en-us</language>
+		<language>en-gb</language>
 		<pubDate><?= date('r', $page->visible_from) ?></pubDate>
 		<lastBuildDate><?= date('r', time()) ?></lastBuildDate>
 		
