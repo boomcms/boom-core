@@ -16,7 +16,7 @@ if (Kohana::$environment != Kohana::PRODUCTION)
 /**
 * Route for RSS feeds.
 */
-Route::set('feeds', '<action>/<uri>',
+Route::set('feeds', '<url>/<action>',
 	array(
 		'action' => 'rss'
 	))
