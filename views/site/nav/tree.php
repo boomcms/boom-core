@@ -55,23 +55,16 @@
 			if ($i < ($count - 1) && $pages[ $i + 1 ]['parent_id'] == $node['id'])
 			{
 				echo "<ul";
-				$class = '';
-				
-				if ($node['child_ordering_policy'] & Model_Page::CHILD_ORDER_MANUAL)
-				{
-					$class = "ui-sortable";
-				}
-				
+
 				// Hide sub-trees unless state is expanded.
 				// If current node is not a direct child of the page we're viewing.
 				if ($state == 'collapsed' && !($node['lft'] < $page->mptt->lft && $node['rgt'] > $page->mptt->rgt) && $node['page_id'] != $page->id)
 				{
-					$class = $class . " hidden ui-helper-hidden";
+					echo " class='hidden ui-helper-hidden'";
 				}
-				
-				if ($class != '')
+				elseif ($node['child_ordering_policy'] & Model_Page::CHILD_ORDER_MANUAL && $node['page_id'] == $page->id)
 				{
-					echo " class='", trim( $class ), "'";
+					echo " class='sledge-sortable'";
 				}
 				
 				echo ">";
