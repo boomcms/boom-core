@@ -14,7 +14,7 @@
 *
 */
 ?>
-<div id="side-nav" class="block">
+<div id="nav" class="block">
 	<ul>
 	<?
 		$level = 1;	
