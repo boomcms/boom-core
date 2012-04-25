@@ -109,7 +109,7 @@ Route::set('app', 'app/<controller>(/<action>(/<id>))')
 /**
  * Default route.
  */
-Route::set('default', '(<controller>(/<action>(/<id>)))')
+Route::set('default', '(<controller>(/<action>(/<id>(/<url>))))')
 	->defaults(array(
 		'controller' => 'site',
 		'action'     => 'index',
