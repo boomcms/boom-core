@@ -98,6 +98,15 @@ Route::set('sledge', '<directory>/(<controller>(/<action>(/<id>)))',
 	));
 	
 /**
+* Route for app specific controllers.
+*/
+Route::set('app', 'app/<controller>(/<action>(/<id>))')
+	->defaults(array(
+		'controller' => 'default',
+		'action'     => 'index',
+	));
+	
+/**
  * Default route.
  */
 Route::set('default', '(<controller>(/<action>(/<id>)))')
