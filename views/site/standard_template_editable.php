@@ -35,7 +35,7 @@
 	<?= HTML::style( "sledge/css/sledge.tagmanager.css" ) ?>
 	<?= HTML::style( "sledge/css/ui-" . $person->theme . "/jquery-ui.css" ) ?>
 	<?= HTML::style( "sledge/css/sledge.ui.css" ) ?>
-	<?= HTML::style( "sledge/css/cms.css" ) ?>
+	<?= HTML::style( "/sledge/css/cms.css" ) ?>
 </head>
 <body>
 	<div id="sledge-wysiwyg-toolbar" class="mceEditor o2k7Skin o2k7SkinSilver"></div>
