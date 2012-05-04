@@ -1,0 +1,1 @@
+<h2>Default standfirst</h2>
