@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project name="thisishoop3" default="help">
+<project name="sledge" default="help">
 	<property name="basedir" value="${project.basedir}" />
 	<property name="builddir" value="${basedir}/build" />
 	<property name="srcdir" value="${basedir}/src" />
@@ -296,12 +296,12 @@
 	<target name="update">
 		<!-- git pull the application -->
 		<gitpull
-    			repository="${repo.dir.resolved}" 
+    			repository="${basedir}" 
     			source="origin" refspec="master" 
     			strategy="recursive" keep="true"
     			force="true" quiet="true" rebase="true" />
 		<!-- Update git submodules -->
-		<exec command="git submodule update" dir="${basedir} />
+		<exec command="git submodule update" dir="${basedir}" />
 
 		<!-- Run database migrations -->
 		<phingcall target="migrate" />
