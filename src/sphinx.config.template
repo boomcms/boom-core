@@ -16,9 +16,10 @@ source @app.name@-page_text
 	sql_range_step = 10000
 
 	sql_query				= \
-		select chunk.id, chunk.slotname, page.id as page_id, chunk_text.text, page_v.title, page_v.description, page_v.keywords, visible_from from page inner join page_v on published_vid = page_v.id inner join chunk_page on page_v.id = chunk_page.page_vid inner join chunk on chunk_page.chunk_id = chunk.id inner join chunk_text on chunk.id = chunk_text.chunk_id where chunk.type = 'text' and page_v.deleted = false and page_v.visible_from <= unix_timestamp() and page_v.hidden_from_search_results = false and (page_v.visible_to = 0 or page_v.visible_to >= unix_timestamp()) and page_v.id >= $start and page_v.id <= $end;
+		select chunk.id, chunk.slotname, page.id as page_id, chunk_text.text, page_v.title, page_v.description, page_v.keywords, visible_from, page_mptt.parent_id from page inner join page_v on published_vid = page_v.id inner join chunk_page on page_v.id = chunk_page.page_vid inner join chunk on chunk_page.chunk_id = chunk.id inner join chunk_text on chunk.id = chunk_text.chunk_id inner join page_mptt on page.id = page_mptt.id where chunk.type = 'text' and page_v.deleted = false and page_v.visible_from <= unix_timestamp() and page_v.hidden_from_search_results = false and (page_v.visible_to = 0 or page_v.visible_to >= unix_timestamp()) and page_v.id >= $start and page_v.id <= $end;
 
 	sql_attr_uint			= page_id:32
+	sql_attr_uint			= parent_id
 	sql_attr_timestamp		= visible_from
 	sql_attr_string			= slotname
 }
@@ -29,28 +30,8 @@ source @app.name@-page_text-delta : @app.name@-page_text
 	sql_query_range =
 	sql_range_step = 0
 	sql_query				= \
-		select chunk.id, chunk.slotname, page.id as page_id, chunk_text.text, page_v.title, page_v.description, page_v.keywords, visible_from from page inner join page_v on published_vid = page_v.id inner join chunk_page on page_v.id = chunk_page.page_vid inner join chunk on chunk_page.chunk_id = chunk.id inner join chunk_text on chunk.id = chunk_text.chunk_id where chunk.type = 'text' and page_v.deleted = false and page_v.visible_from <= unix_timestamp() and (page_v.visible_to = 0 or page_v.visible_to >= unix_timestamp()) and page_v.hidden_from_search_results = false and page_v.id >= (SELECT max_doc_id FROM sph_counter WHERE counter_id=1 );
+		select chunk.id, chunk.slotname, page.id as page_id, chunk_text.text, page_v.title, page_v.description, page_v.keywords, visible_from, parent_id from page inner join page_v on published_vid = page_v.id inner join chunk_page on page_v.id = chunk_page.page_vid inner join chunk on chunk_page.chunk_id = chunk.id inner join chunk_text on chunk.id = chunk_text.chunk_id inner join page_mptt on page.id = page_mptt.id where chunk.type = 'text' and page_v.deleted = false and page_v.visible_from <= unix_timestamp() and (page_v.visible_to = 0 or page_v.visible_to >= unix_timestamp()) and page_v.hidden_from_search_results = false and page_v.id >= (SELECT max_doc_id FROM sph_counter WHERE counter_id=1 );
 }
-
-# Source definition for NHHG postcode finder
-source @app.name@-pcfinder
-{
-	# data source type. mandatory, no default value
-	type					= mssql
-	sql_host				= 10.20.32.99
-	sql_user				= db-9g57f30
-	sql_pass				= paSVoIT3Zt
-	sql_db					= db-NHH30
-
-	sql_query				= select * from tblPostcodeFinder;
-	
-	sql_attr_string			= housing_officer
-	sql_attr_string			= authority
-	sql_attr_string			= address
-	sql_attr_string			= mobile
-	sql_attr_string			= email
-}
-
 
 #############################################################################
 ## index definition
@@ -82,23 +63,4 @@ index @app.name@-page_text-delta : @app.name@-page_text
 	source			= @app.name@-page_text-delta
 	path			= /var/lib/sphinxsearch/data/@app.name@.page_text.delta
 	morphology		= stem_en
-}
-
-# Index definition for NHHG postcode finder
-index @app.name@-pcfinder
-{
-	source			= @app.name@-pcfinder
-	path			= /var/lib/sphinxsearch/data/@app.name@.pcfinder
-
-	docinfo			= extern
-	mlock			= 0
-	morphology		= none
-
-	min_word_len	= 2
-	charset_type	= utf-8
-	html_strip		= 1
-
-    enable_star     = 0
-
-	#ignore_chars		= U+002E
 }
