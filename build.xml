@@ -299,7 +299,7 @@
     			repository="${basedir}" 
     			source="origin" refspec="master" 
     			strategy="recursive" keep="true"
-    			force="true" quiet="true" rebase="true" />
+    			force="true"  />
 		<!-- Update git submodules -->
 		<exec command="git submodule update" dir="${basedir}" />
 
