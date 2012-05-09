@@ -1,154 +1,300 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project name="name-of-project" default="build">
- <target name="build"
-   depends="prepare,lint,phploc,pdepend,phpcs-ci,phpcpd,phpunit,phpcb"/>
-<!-- phpmd-ci and phpdoc targets removed from default build target list as they seem to require
-     extensive configuration for which no time is available as of 03-Apr-2012 -->
-<!--   depends="prepare,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdoc,phpunit,phpcb"/> -->
+<project name="thisishoop3" default="help">
+	<property name="basedir" value="${project.basedir}" />
+	<property name="builddir" value="${basedir}/build" />
+	<property name="srcdir" value="${basedir}/src" />
 
- <target name="build-parallel"
-   depends="prepare,lint,tools-parallel,phpunit,phpcb"/>
+	<target name="build" depends="clean,prepare">
+		<property file="build.properties" />
+		
+		<!-- Copy the PHP source code to the build directory, removing PHP comments and whitespace as we go. -->
+		<copy todir="${builddir}/src"> 
+			<filterchain>
+				<stripwhitespace />
+				<striplinebreaks />
+			</filterchain>
 
- <target name="tools-parallel"
-         description="Run tools in parallel">
-  <parallel threadCount="2">
-   <sequential>
-    <antcall target="pdepend"/>
-    <antcall target="phpmd-ci"/>
-   </sequential>
-   <antcall target="phpcpd"/>
-   <antcall target="phpcs-ci"/>
-   <antcall target="phploc"/>
-   <antcall target="phpdoc"/>
-  </parallel>
- </target>
+			<fileset dir="${basedir}">
+				<include name="**/*.php" />
+				
+				<exclude name="build/**" />
+				<exclude name="**/cache/**" />
+				
+				<!-- Application directories - assets, logs, cache etc. -->
+				<exclude name="application/cache/**" />
+				<exclude name="application/logs/**" />
+				<exclude name="application/assets/**" />
+			</fileset>
+		</copy>
+		
+		<!-- Copy any other files separately because we don't want to strip php comments / whitespace from them. -->
+		<copy todir="${builddir}/src"> 
+			<fileset dir="${basedir}">
+				<include name="**/**" />
+				<exclude name="**/*.php" />
+				<exclude name="**/cache/**" />
+				<include name="apache/vhost.conf" />
+				
+				<!-- Exclude build files -->
+				<exclude name="build/**" />
+				<exclude name="**/build.xml" />
+				
+				<!-- exclude git files -->
+				<exclude name="**/.git*" />
+				<exclude name="**/.git/**" />
+				
+				<!-- Exclude userguide module and files -->
+				<exclude name="**/*.md" />
+				<exclude name="modules/guide/**" />
+				
+				<!-- Exclude tests and unittest module -->
+				<exclude name="modules/unittest/**" />
+				<exclude name="**/tests/**" />
+				<exclude name="**/phpunit.xml" />
+				<exclude name="*.tgz" />
+				
+				<!-- Application directories - assets, logs, cache etc. -->
+				<exclude name="application/logs/**" />
+				<exclude name="application/assets/**" />
+			</fileset>
+		</copy>
+		
+		<!-- Create the application directories in the build dir -->
+		<mkdir dir="${builddir}/application/assets" mode="0777" />
+		<mkdir dir="${builddir}/application/cache" mode="0777" />
+		<mkdir dir="${builddir}/application/logs" mode="0777" />
+	</target>
+	
+	<target name="ci" depends="dist">
+		<copy file="${builddir}/thisishoop3.tgz" tofile="/srv/projects/pear/docroot/thisishoop-3.0.0.tgz" overwrite="true" />
+		<exec command="pirum add /srv/projects/pear/docroot/ /srv/projects/pear/docroot/thisishoop-3.0.0.tgz" />
+	</target>
+	
+	<!-- clear the build directory -->
+	<target name="clean">
+		<delete dir="${builddir}/src" />
+	</target>
+	
+	<target name="create-db" description="Create the database and add the changelog table for dbdeploy">
+		<property file="build.properties" />
+		
+		<!-- Create the database -->
+		<if>
+			<equals arg1="${db.password}" arg2="" />
+			<then>
+		        <exec
+		            command="mysqladmin -h${db.host} -u${db.user} create ${db.name}"
+		            dir="${basedir}"
+		            checkreturn="true" />
+		
+		        <exec
+		            command="mysql -h${db.host} -u${db.user} ${db.name} &lt; ${basedir}/db/setup.sql"
+		            dir="${basedir}"
+		            checkreturn="true" />
+			</then>
+			<else>
+		        <exec
+		            command="mysqladmin -h${db.host} -u${db.user} -p${db.password} create ${db.name}"
+		            dir="${basedir}"
+		            checkreturn="true" />
+		
+		        <exec
+		            command="mysql -h${db.host} -u${db.user} -p${db.password} ${db.name} &lt; ${basedir}/db/setup.sql"
+		            dir="${basedir}"
+		            checkreturn="true" />
+			</else>
+		</if>
+	</target>
+	
+	<!-- Create a pear package for the app. -->
+	<target name="dist" depends="build">
+		<property file="build.properties" />
+		
+		<pearpkg2 name="${app.name}" dir="${builddir}/src">
+			<option name="outputdirectory" value="${builddir}/src"/>
+			<option name="packagefile" value="package.xml"/>
+			<option name="packagedirectory" value="${builddir}/src"/>
+			<option name="baseinstalldir" value="${app.name}"/>
+			<option name="uri" value="pear.thisishoop.com/${app.name}"/>
+			<option name="summary" value="test"/>
+			<option name="description" value="test"/>
+			<option name="apiversion" value="${version}"/>
+			<option name="apistability" value="beta"/>
+			<option name="releaseversion" value="${version}"/>
+			<option name="releasestability" value="beta"/>
+			<option name="license" value="none"/>
+			<option name="phpdep" value="5.3.0"/>
+			<option name="pearinstallerdep" value="1.4.6"/>
+			<option name="packagetype" value="php"/>
+			<option name="notes" value="test"/>
+			
+			<mapping name="dir_roles">
+				<element key="/" value="www" />
+			</mapping>
+			
+			<mapping name="maintainers">
+				<element>
+					<element key="handle" value="devteam"/>
+					<element key="name" value="Hoop Developers"/>
+					<element key="email" value="devteam@hoopassociates.org"/>
+					<element key="role" value="lead"/>
+				</element>
+			</mapping>
+			<fileset dir="${builddir}/src">
+				<include name="**/**" />
+			</fileset>
+		</pearpkg2>
+		
+		<!-- Package it into a tar file -->
+		<tar destfile="${builddir}/${app.name}-${version}.tar" basedir="${builddir}/src" />
+	</target>
+	
+	<target name="help">
+		<echo message="General Targets"/>
+		<echo message="==============="/>
+		<echo message="phing test              Run unit tests."/>
+		<echo message=""/>
+		<echo message="Sledge Developer Targets"/>
+		<echo message="========================"/>
+		<echo message="phing dev-setup         Setup for development of the sledge application."/>
+		<echo message=""/>
+		<echo message="Misc Targets"/>
+		<echo message="============"/>
+		<echo message="phing ci                Alias task for continuous integration servers"/>
+		<echo message="phing dist              Create a pear package of the appliation source code"/>
+	</target>
+	
+    <!-- Database migration task -->
+    <target name="migrate" description="Database Migrations" depends="prepare">  
+		<tstamp/>
+		
+		<property file="build.properties" />
 
- <target name="clean" description="Cleanup build artifacts">
-  <delete dir="${basedir}/build/api"/>
-  <delete dir="${basedir}/build/code-browser"/>
-  <delete dir="${basedir}/build/coverage"/>
-  <delete dir="${basedir}/build/logs"/>
-  <delete dir="${basedir}/build/pdepend"/>
- </target>
+        <!-- load the dbdeploy task -->
+        <taskdef name="dbdeploy" classname="phing.tasks.ext.dbdeploy.DbDeployTask"/>
 
- <target name="prepare" depends="clean"
-         description="Prepare for build">
-  <mkdir dir="${basedir}/build/api"/>
-  <mkdir dir="${basedir}/build/code-browser"/>
-  <mkdir dir="${basedir}/build/coverage"/>
-  <mkdir dir="${basedir}/build/logs"/>
-  <mkdir dir="${basedir}/build/pdepend"/>
- </target>
+        <!-- these two filenames will contain the generated SQL to do the deploy and roll it back-->
+        <property name="build.dbdeploy.deployfile" value="deploy/scripts/deploy-${DSTAMP}${TSTAMP}.sql" />
+        <property name="build.dbdeploy.undofile" value="deploy/scripts/undo-${DSTAMP}${TSTAMP}.sql" />
 
- <target name="lint">
-  <apply executable="php" failonerror="true">
-   <arg value="-l" />
+        <!-- generate the deployment scripts -->
+        <dbdeploy 
+            url="mysql:host=${db.host};dbname=${db.name}" 
+            userid="${db.user}" 
+            password="${db.password}" 
+            dir="${basedir}/db/deltas" 
+            outputfile="${builddir}/${build.dbdeploy.deployfile}" 
+            undooutputfile="${builddir}/${build.dbdeploy.undofile}" />
 
-   <fileset dir="${basedir}">
-    <include name="**/*.php" />
-    <modified />
-   </fileset>
+        <!-- execute the SQL - Use mysql command line to avoid trouble with large files or many statements and PDO -->
+		<if>
+			<equals arg1="${db.password}" arg2="" />
+			<then>
+		        <exec
+		            command="mysql -h${db.host} -u${db.user} ${db.name} &lt; ${builddir}/${build.dbdeploy.deployfile}"
+		            dir="${basedir}"
+		            checkreturn="true" />
+			</then>
+			<else>
+		        <exec
+		            command="mysql -h${db.host} -u${db.user} -p${db.password} ${db.name} &lt; ${builddir}/${build.dbdeploy.deployfile}"
+		            dir="${basedir}"
+		            checkreturn="true" />
+			</else>
+		</if>
+    </target>
 
-<!--   <fileset dir="${basedir}/tests">
-    <include name="**/*.php" />
-    <modified />
-   </fileset> -->
-  </apply>
- </target>
-
- <target name="phploc" description="Measure project size using PHPLOC">
-  <exec executable="phploc">
-   <arg value="--log-csv" />
-   <arg value="${basedir}/build/logs/phploc.csv" />
-   <arg path="${basedir}" /> <!-- Not ideally here and elsewhere this includes tests -->
-  </exec>
- </target>
-
- <target name="pdepend"
-         description="Calculate software metrics using PHP_Depend">
-  <exec executable="pdepend">
-   <arg value="--jdepend-xml=${basedir}/build/logs/jdepend.xml" />
-   <arg value="--jdepend-chart=${basedir}/build/pdepend/dependencies.svg" />
-   <arg value="--overview-pyramid=${basedir}/build/pdepend/overview-pyramid.svg" />
-   <arg path="${basedir}" />
-  </exec>
- </target>
-
- <target name="phpmd"
-         description="Perform project mess detection using PHPMD and print human readable output. Intended for usage on the command line before committing.">
-  <exec executable="phpmd">
-   <arg path="${basedir}" />
-   <arg value="text" />
-   <arg value="${basedir}/build/phpmd.xml" />
-  </exec>
- </target>
-
- <target name="phpmd-ci"
-         description="Perform project mess detection using PHPMD creating a log file for the continuous integration server">
-  <exec executable="phpmd">
-   <arg path="${basedir}" />
-   <arg value="xml" />
-   <arg value="${basedir}/build/phpmd.xml" />
-   <arg value="--reportfile" />
-   <arg value="${basedir}/build/logs/pmd.xml" />
-  </exec>
- </target>
-
- <target name="phpcs"
-         description="Find coding standard violations using PHP_CodeSniffer and print human readable output. Intended for usage on the command line before committing.">
-  <exec executable="phpcs">
-   <arg value="--standard=Kohana" />
-   <arg value="--extensions=php" />
-   <arg path="${basedir}" />
-  </exec>
- </target>
-
- <target name="phpcs-ci"
-         description="Find coding standard violations using PHP_CodeSniffer creating a log file for the continuous integration server">
-  <exec executable="phpcs" output="/dev/null">
-   <arg value="--report=checkstyle" />
-   <arg value="--report-file=${basedir}/build/logs/checkstyle.xml" />
-   <arg value="--standard=Kohana" />
-   <arg value="--extensions=php" />
-   <arg path="${basedir}" />
-  </exec>
- </target>
-
- <target name="phpcpd" description="Find duplicate code using PHPCPD">
-  <exec executable="phpcpd">
-   <arg value="--log-pmd" />
-   <arg value="${basedir}/build/logs/pmd-cpd.xml" />
-   <arg path="${basedir}" />
-  </exec>
- </target>
-
- <target name="phpdoc"
-         description="Generate API documentation using PHPDocumentor">
-  <exec executable="phpdoc">
-   <arg value="--directory" />
-   <arg path="${basedir}" />
-   <arg value="--target" />
-   <arg path="${basedir}/build/api" />
-  </exec>
- </target>
-
- <target name="phpunit" description="Run unit tests with PHPUnit">
-  <exec executable="phpunit" dir="./tests" failonerror="true">
-   <arg value="--configuration" />
-   <arg value="phpunit-ci.xml" />
-  </exec>
- </target>
-
- <target name="phpcb"
-         description="Aggregate tool output with PHP_CodeBrowser">
-  <exec executable="phpcb">
-   <arg value="--log" />
-   <arg path="${basedir}/build/logs" />
-   <arg value="--source" />
-   <arg path="${basedir}" />
-   <arg value="--output" />
-   <arg path="${basedir}/build/code-browser" />
-  </exec>
- </target>
+	<target name="prepare">
+		<mkdir dir="${builddir}" mode="0766" />
+		<mkdir dir="${builddir}/deploy" mode="0766" />
+		<mkdir dir="${builddir}/deploy/scripts" mode="0766" />
+		<mkdir dir="${builddir}/src" mode="0766" />
+	</target>
+	
+	<target name="test">
+		
+	</target>
+	
+	<!-- setup the application on a development machine -->
+	<target name="setup-dev">	
+		<!-- Create application directories -->
+		<mkdir dir="application/assets" mode="0766" />
+		<mkdir dir="application/cache" mode="0766" />
+		<mkdir dir="application/logs" mode="0766" />
+		
+		<echo>We're going to setup your database configuration</echo>
+		<propertyprompt propertyName="db.user" promptText="Enter the database username" defaultValue="" />
+		<propertyprompt propertyName="db.password" promptText="Enter the database password" defaultValue="" />
+		<propertyprompt propertyName="db.host" promptText="Enter the database hostname" defaultValue="localhost" />
+		<propertyprompt propertyName="db.name" promptText="Enter the name of the database" defaultValue="" />
+		
+		<!-- Copy the build properties file -->
+		<copy file="${srcdir}/build.properties.template" tofile="${basedir}/build.properties" overwrite="true">
+			<filterchain>
+			  <replacetokens>
+			    <token key="db.user" value="${db.user}" />
+				<token key="db.password" value="${db.password}" />
+				<token key="db.host" value="${db.host}" />
+				<token key="db.name" value="${db.name}" />
+			  </replacetokens>
+			</filterchain>
+		</copy>	
+		
+		<!-- Copy the database config file -->
+		<copy file="${srcdir}/config/database.php" tofile="${basedir}/application/config/database.php" overwrite="true">
+			<filterchain>
+			  <replacetokens>
+			    <token key="db.user" value="${db.user}" />
+				<token key="db.password" value="${db.password}" />
+				<token key="db.host" value="${db.host}" />
+				<token key="db.name" value="${db.name}" />
+			  </replacetokens>
+			</filterchain>
+		</copy>
+		
+		<!-- Copy the vhost file into place -->
+		<echo>Now we're going to copy your apache vhost file into place.</echo>
+		<propertyprompt propertyName="vhostdir" promptText="Where do you keep your apache vhost files?" defaultValue="/etc/apache2/vhosts.d" />
+		<propertyprompt propertyName="server_name" promptText="What is the ServerName property going to be?" defaultValue="" />
+		
+		<copy file="${srcdir}/vhost.conf" tofile="${vhostdir}/${server_name}.conf" overwrite="true">
+			<filterchain>
+			  <replacetokens>
+			    <token key="doc_root" value="${basedir}" />
+				<token key="environment" value="DEVELOPMENT" />
+				<token key="server_name" value="${server_name}" />
+			  </replacetokens>
+			</filterchain>
+		</copy>
+		
+		<!-- Create the database -->
+		<phingcall target="create-db" />
+		<phingcall target="migrate" />
+		<phingcall target="setup-sphinx" />
+		
+		<echo>Don't forget to restart apache!</echo>
+	</target>
+	
+	<target name="setup-sphinx">
+		<property file="build.properties" />
+		
+		<copy file="${srcdir}/sphinx.config.template" tofile="/etc/sphinxsearch/sites/${app.name}" overwrite="true">
+			<filterchain>
+			  <replacetokens>
+			    <token key="db.user" value="${db.user}" />
+				<token key="db.password" value="${db.password}" />
+				<token key="db.host" value="${db.host}" />
+				<token key="db.name" value="${db.name}" />
+				<token key="app.name" value="${app.name}" />
+				<token key="app.path" value="${basedir}" />
+			  </replacetokens>
+			</filterchain>
+		</copy>
+	</target>
+	
+	<target name="update-sledge">
+		<exec command="git checkout master" dir="${basedir}/modules/sledge" />
+		<exec command="git pull origin master" dir="${basedir}/modules/sledge" />
+	</target>
 </project>
