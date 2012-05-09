@@ -292,6 +292,20 @@
 			</filterchain>
 		</copy>
 	</target>
+
+	<target name="update">
+		<!-- git pull the application -->
+		<gitpull
+    			repository="${repo.dir.resolved}" 
+    			source="origin" refspec="master" 
+    			strategy="recursive" keep="true"
+    			force="true" quiet="true" rebase="true" />
+		<!-- Update git submodules -->
+		<exec command="git submodule update" dir="${basedir} />
+
+		<!-- Run database migrations -->
+		<phingcall target="migrate" />
+	</target>
 	
 	<target name="update-sledge">
 		<exec command="git checkout master" dir="${basedir}/modules/sledge" />
