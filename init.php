@@ -114,7 +114,10 @@ Route::set('default', '(<controller>(/<action>(/<id>(/<url>))))')
 		'controller' => 'site',
 		'action'     => 'index',
 	));
-	
+
+/**
+* Add core items to the menu.
+*/
 Sledge_Menu::add( '/cms/assets', 'Assets', 'manage_assets' );
 Sledge_Menu::add( '/cms/people', 'People', 'manage_people' );
 Sledge_Menu::add( '/cms/templates', 'Templates', 'manage_templates' );
