@@ -115,4 +115,8 @@ Route::set('default', '(<controller>(/<action>(/<id>(/<url>))))')
 		'action'     => 'index',
 	));
 	
+Sledge_Menu::add( '/cms/assets', 'Assets', 'manage_assets' );
+Sledge_Menu::add( '/cms/people', 'People', 'manage_people' );
+Sledge_Menu::add( '/cms/templates', 'Templates', 'manage_templates' );
+
 ?>
