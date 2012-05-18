@@ -237,10 +237,6 @@
 				<!-- TODO: include app tests -->			
 			</batchtest>
 		</phpunit>
-		
-		<coverage-report outfile="${builddir}/coverage_db/coverage.xml">
-			<report todir="${builddir}/reports/coverage"/>
-		</coverage-report>
 	</target>
 	
 	<!-- setup the application on a development machine -->
