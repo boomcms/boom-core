@@ -114,6 +114,15 @@ Route::set('default', '(<controller>(/<action>(/<id>(/<url>))))')
 		'controller' => 'site',
 		'action'     => 'index',
 	));
+	
+Route::set('catchall', function($uri)
+	{
+		return array(
+			'controller' => 'site',
+			'action'     => 'index'
+		);
+	}
+);
 
 /**
 * Add core items to the menu.
