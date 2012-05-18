@@ -225,7 +225,7 @@
 			</fileset>
 		</coverage-setup>
 
-		<phpunit bootstrap="${project.basedir}/modules/sledge/tests/bootstrap.php" codecoverage="true">
+		<phpunit bootstrap="${project.basedir}/modules/sledge/tests/bootstrap.ci.php" codecoverage="true">
 			<formatter todir="${builddir}/reports" type="xml" />
 			
 			<batchtest>			
