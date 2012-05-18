@@ -67,8 +67,7 @@
 	</target>
 	
 	<target name="ci" depends="dist">
-		<copy file="${builddir}/thisishoop3.tgz" tofile="/srv/projects/pear/docroot/thisishoop-3.0.0.tgz" overwrite="true" />
-		<exec command="pirum add /srv/projects/pear/docroot/ /srv/projects/pear/docroot/thisishoop-3.0.0.tgz" />
+		<phingcall target="test" />
 	</target>
 	
 	<!-- clear the build directory -->
@@ -212,8 +211,40 @@
 		<mkdir dir="${builddir}/src" mode="0766" />
 	</target>
 	
+	<!-- When unit tests -->
 	<target name="test">
+		<!-- Make sure directories exist for the reports and code coverage database -->
+		<mkdir dir="${builddir}/reports" mode="0766" />
+		<mkdir dir="${builddir}/reports/coverage" mode="0766" />
+		<mkdir dir="${builddir}/coverage_db" mode="0766" />
+
+		<coverage-setup database="${builddir}/coverage_db/coverage.db">
+			<fileset dir="${project.basedir}/modules/sledge/classes/">
+			    <include name="*.php" />
+			    <include name="**/*.php/" />
+			</fileset>
+			<fileset dir="${project.basedir}/application/classes/">
+			    <include name="*.php" />
+			    <include name="**/*.php/" />
+			</fileset>
+		</coverage-setup>
+
+		<phpunit bootstrap="${project.basedir}/modules/sledge/tests/bootstrap.php" codecoverage="true">
+			<formatter todir="${builddir}/reports" type="xml" />
+			
+			<batchtest>			
+				<!-- Include sledge tests -->
+				<fileset dir="${project.basedir}/modules/sledge/tests/unit">
+					<include name="**/*.php" />	
+				</fileset>
+				
+				<!-- TODO: include app tests -->			
+			</batchtest>
+		</phpunit>
 		
+		<coverage-report outfile="${builddir}/coverage_db/coverage.xml">
+			<report todir="${builddir}/reports/coverage"/>
+		</coverage-report>
 	</target>
 	
 	<!-- setup the application on a development machine -->
