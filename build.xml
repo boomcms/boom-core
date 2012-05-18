@@ -225,12 +225,12 @@
 			</fileset>
 		</coverage-setup>
 
-		<phpunit bootstrap="${project.basedir}/modules/sledge/tests/bootstrap.ci.php" codecoverage="true">
+		<phpunit bootstrap="${project.basedir}/tests/bootstrap.ci.php" codecoverage="true">
 			<formatter todir="${builddir}/reports" type="xml" />
 			
 			<batchtest>			
 				<!-- Include sledge tests -->
-				<fileset dir="${project.basedir}/modules/sledge/tests/unit">
+				<fileset dir="${project.basedir}/tests/unit">
 					<include name="**/*.php" />	
 				</fileset>
 				
