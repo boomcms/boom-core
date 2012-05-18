@@ -223,10 +223,6 @@
 			    <include name="*.php" />
 			    <include name="**/*.php/" />
 			</fileset>
-			<fileset dir="${project.basedir}/application/classes/">
-			    <include name="*.php" />
-			    <include name="**/*.php/" />
-			</fileset>
 		</coverage-setup>
 
 		<phpunit bootstrap="${project.basedir}/modules/sledge/tests/bootstrap.php" codecoverage="true">
