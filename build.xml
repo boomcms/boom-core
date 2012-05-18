@@ -211,34 +211,6 @@
 		<mkdir dir="${builddir}/src" mode="0766" />
 	</target>
 	
-	<!-- When unit tests -->
-	<target name="test">
-		<!-- Make sure directories exist for the reports and code coverage database -->
-		<mkdir dir="${builddir}/reports" mode="0766" />
-		<mkdir dir="${builddir}/reports/coverage" mode="0766" />
-		<mkdir dir="${builddir}/coverage_db" mode="0766" />
-
-		<coverage-setup database="${builddir}/coverage_db/coverage.db">
-			<fileset dir="${project.basedir}/classes/">
-			    <include name="*.php" />
-			    <include name="**/*.php/" />
-			</fileset>
-		</coverage-setup>
-
-		<phpunit bootstrap="${project.basedir}/tests/bootstrap.ci.php" codecoverage="true">
-			<formatter todir="${builddir}/reports" type="xml" />
-			
-			<batchtest>			
-				<!-- Include sledge tests -->
-				<fileset dir="${project.basedir}/tests/unit">
-					<include name="**/*.php" />	
-				</fileset>
-				
-				<!-- TODO: include app tests -->			
-			</batchtest>
-		</phpunit>
-	</target>
-	
 	<!-- setup the application on a development machine -->
 	<target name="setup-dev">	
 		<!-- Create application directories -->
@@ -314,6 +286,34 @@
 			  </replacetokens>
 			</filterchain>
 		</copy>
+	</target>
+	
+	<!-- When unit tests -->
+	<target name="test">
+		<!-- Make sure directories exist for the reports and code coverage database -->
+		<mkdir dir="${builddir}/reports" mode="0766" />
+		<mkdir dir="${builddir}/reports/coverage" mode="0766" />
+		<mkdir dir="${builddir}/coverage_db" mode="0766" />
+
+		<coverage-setup database="${builddir}/coverage_db/coverage.db">
+			<fileset dir="${project.basedir}/classes/">
+			    <include name="*.php" />
+			    <include name="**/*.php/" />
+			</fileset>
+		</coverage-setup>
+
+		<phpunit bootstrap="${project.basedir}/tests/bootstrap.ci.php" codecoverage="true">
+			<formatter todir="${builddir}/reports" type="xml" />
+			
+			<batchtest>			
+				<!-- Include sledge tests -->
+				<fileset dir="${project.basedir}/tests/unit">
+					<include name="**/*.php" />	
+				</fileset>
+				
+				<!-- TODO: include app tests -->			
+			</batchtest>
+		</phpunit>
 	</target>
 
 	<target name="update">
