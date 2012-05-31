@@ -61,9 +61,9 @@
 		</copy>
 		
 		<!-- Create the application directories in the build dir -->
-		<mkdir dir="${builddir}/application/assets" mode="0777" />
-		<mkdir dir="${builddir}/application/cache" mode="0777" />
-		<mkdir dir="${builddir}/application/logs" mode="0777" />
+		<mkdir dir="${basedir}/application/assets" mode="777" />
+		<mkdir dir="${basedir}/application/cache" mode="777" />
+		<mkdir dir="${basedir}/application/logs" mode="777" />
 	</target>
 	
 	<target name="ci" depends="dist">
@@ -214,9 +214,9 @@
 	<!-- setup the application on a development machine -->
 	<target name="setup-dev">	
 		<!-- Create application directories -->
-		<mkdir dir="application/assets" mode="0766" />
-		<mkdir dir="application/cache" mode="0766" />
-		<mkdir dir="application/logs" mode="0766" />
+		<mkdir dir="${basedir}application/assets" mode="0777" />
+		<mkdir dir="${basedir}application/cache" mode="0777" />
+		<mkdir dir="${basedir}application/logs" mode="0777" />
 		
 		<echo>We're going to setup your database configuration</echo>
 		<propertyprompt propertyName="db.user" promptText="Enter the database username" defaultValue="" />
