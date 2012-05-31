@@ -264,7 +264,7 @@
 		</copy>
 
 		<!-- Create the database -->
-		<propertyprompt propertyName="dodb" promptText="Would you like to create a database?" defaultValue="no" />
+		<propertyprompt propertyName="dodb" promptText="Would you like to create the database?" defaultValue="no" />
 		
 		<if>
 			<or>
