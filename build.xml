@@ -262,10 +262,21 @@
 			  </replacetokens>
 			</filterchain>
 		</copy>
-		
+
 		<!-- Create the database -->
-		<phingcall target="create-db" />
-		<phingcall target="migrate" />
+		<propertyprompt propertyName="dodb" promptText="Would you like to create a database?" defaultValue="no" />
+		
+		<if>
+			<or>
+				<equals arg1="${dodb}" arg2="y" />
+				<equals arg1="${dodb}" arg2="yes" />
+			</or>
+			<then>
+				<phingcall target="create-db" />
+				<phingcall target="migrate" />
+			</then>
+		</if>
+
 		<phingcall target="setup-sphinx" />
 		
 		<echo>Don't forget to restart apache!</echo>
