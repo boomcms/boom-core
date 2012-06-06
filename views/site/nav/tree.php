@@ -14,7 +14,7 @@
 *
 */
 ?>
-<div id="nav" class="block">
+<div id="nav" class="sledge-tree block">
 	<ul>
 	<?
 		$level = 1;	
