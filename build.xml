@@ -212,11 +212,12 @@
 	</target>
 	
 	<!-- setup the application on a development machine -->
-	<target name="setup-dev">	
+	<target name="setup-dev">
+		<echo msg="${basedir}application/assets" />
 		<!-- Create application directories -->
-		<mkdir dir="${basedir}application/assets" mode="0777" />
-		<mkdir dir="${basedir}application/cache" mode="0777" />
-		<mkdir dir="${basedir}application/logs" mode="0777" />
+		<mkdir dir="${basedir}/application/assets" mode="0777" />
+		<mkdir dir="${basedir}/application/cache" mode="0777" />
+		<mkdir dir="${basedir}/application/logs" mode="0777" />
 		
 		<echo>We're going to setup your database configuration</echo>
 		<propertyprompt propertyName="db.user" promptText="Enter the database username" defaultValue="" />
@@ -234,8 +235,8 @@
 				<token key="db.name" value="${db.name}" />
 			  </replacetokens>
 			</filterchain>
-		</copy>	
-		
+		</copy>
+
 		<!-- Copy the database config file -->
 		<copy file="${srcdir}/config/database.php" tofile="${basedir}/application/config/database.php" overwrite="true">
 			<filterchain>
@@ -247,6 +248,7 @@
 			  </replacetokens>
 			</filterchain>
 		</copy>
+		<chmod file="${basedir}/application/config/database.php" mode="0777" />
 		
 		<!-- Copy the vhost file into place -->
 		<echo>Now we're going to copy your apache vhost file into place.</echo>
