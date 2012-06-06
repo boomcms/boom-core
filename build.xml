@@ -270,14 +270,15 @@
 			<or>
 				<equals arg1="${dodb}" arg2="y" />
 				<equals arg1="${dodb}" arg2="yes" />
+				<echo>Skipping database setup and migration.</echo>
+				<echo>Skipping Sphinx setup - assuming it's already setup for the existing database.</echo>
 			</or>
 			<then>
 				<phingcall target="create-db" />
 				<phingcall target="migrate" />
+				<phingcall target="setup-sphinx" />
 			</then>
 		</if>
-
-		<phingcall target="setup-sphinx" />
 		
 		<echo>Don't forget to restart apache!</echo>
 	</target>
