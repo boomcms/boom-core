@@ -42,15 +42,18 @@ source @app.name@-assets
 			sql_pass				= @db.password@
 			sql_db					= @db.name@
 
-	sql_query = select asset.id, asset_v.title, asset_v.filename, asset_v.description, asset_v.visible_from, status, type, audit_person, audit_time, filesize, (select audit_person from asset_v where id = (select min(id) from asset_v where rid = asset.id)) as uploaded_by, title as title2 from asset inner join asset_v on asset.active_vid = asset_v.id where deleted = false
+	sql_query = select asset.id, asset_v.title, asset_v.filename, asset_v.description, asset_v.visible_from, status, type, audit_person, audit_time, filesize, (select audit_person from asset_v where id = (select min(id) from asset_v where rid = asset.id)) as uploaded_by, (select audit_time from asset_v where id = (select min(id) from asset_v where rid = asset.id)) as uploaded, title as title2, description as description2 from asset inner join asset_v on asset.active_vid = asset_v.id where deleted = false
 
 	sql_attr_timestamp	= visible_from
 	sql_attr_timestamp	= audit_time
 	sql_attr_string		= type
 	sql_attr_string		= title
+	sql_attr_string		= description
 	sql_attr_uint		= audit_person
 	sql_attr_uint		= uploaded_by
 	sql_attr_uint		= status
+	sql_attr_uint		= filesize
+	sql_attr_uint		= uploaded
 
 	sql_attr_multi = uint tags from query; select object_id, tag_id from tagged_objects where object_type = 1
 }
