@@ -33,6 +33,28 @@ source @app.name@-page_text-delta : @app.name@-page_text
 		select chunk.id, chunk.slotname, page.id as page_id, chunk_text.text, page_v.title, page_v.description, page_v.keywords, visible_from, parent_id from page inner join page_v on published_vid = page_v.id inner join chunk_page on page_v.id = chunk_page.page_vid inner join chunk on chunk_page.chunk_id = chunk.id inner join chunk_text on chunk.id = chunk_text.chunk_id inner join page_mptt on page.id = page_mptt.id where chunk.type = 'text' and page_v.deleted = false and page_v.visible_from <= unix_timestamp() and (page_v.visible_to = 0 or page_v.visible_to >= unix_timestamp()) and page_v.hidden_from_search_results = false and page_v.id >= (SELECT max_doc_id FROM sph_counter WHERE counter_id=1 );
 }
 
+# Source for searching assets.
+source @app.name@-assets
+{
+			type					= mysql
+			sql_host				= @db.host@
+			sql_user				= @db.user@
+			sql_pass				= @db.password@
+			sql_db					= @db.name@
+
+	sql_query = select asset.id, asset_v.title, asset_v.filename, asset_v.description, asset_v.visible_from, status, type, audit_person, audit_time, filesize, (select audit_person from asset_v where id = (select min(id) from asset_v where rid = asset.id)) as uploaded_by from asset inner join asset_v on asset.active_vid = asset_v.id where deleted = false
+
+	sql_attr_timestamp	= visible_from
+	sql_attr_timestamp	= audit_time
+	sql_attr_uint		= status
+	sql_attr_string		= type
+	sql_attr_uint		= audit_person
+	sql_attr_uint		= uploaded_by
+
+	sql_attr_multi = uint tags from query; select object_id, tag_id from tagged_objects where object_type = 1
+}
+
+
 #############################################################################
 ## index definition
 #############################################################################
@@ -63,4 +85,11 @@ index @app.name@-page_text-delta : @app.name@-page_text
 	source			= @app.name@-page_text-delta
 	path			= /var/lib/sphinxsearch/data/@app.name@.page_text.delta
 	morphology		= stem_en
+}
+
+index @app.name@-assets
+{
+	source			= @app.name@-assets
+
+	path			= /var/lib/sphinxsearch/data/@app.name@.assets
 }
