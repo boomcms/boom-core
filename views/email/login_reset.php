@@ -15,13 +15,8 @@
 
 Dear <?=$person->getName()?>,
 
-You have requested a new password for <?= URL::base( Request::current() ) ?>cms/login
+In order to create a new password for your CMS account please <a href="<?= URL::site( '/cms/account/forgotten' ) ?>?email=<?= $person->emailaddress ?>&token=<?= $token ?>">click here</a>.
 
-Your new password is: <?=$password ?>
-
-
-Please keep this new password in a secure location.
-
-Login to the CMS at <?= URL::base( Request::current() ) ?>cms/login?email=<?=$person->emailaddress?>
+This link will be valid for one hour.
 
 Thank you.  
