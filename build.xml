@@ -65,6 +65,7 @@
 	</target>
 	
 	<target name="ci">
+		<mkdir dir="${builddir}/logs" mode="0766" />
 		<phingcall target="create_dirs" />
 		<phingcall target="phpunit" />
 		<phingcall target="phpcs-ci" />
@@ -227,6 +228,8 @@
 			<arg value="bootstrap.ci.php" />
 			<arg value="--coverage-clover" />
 			<arg value="${builddir}/logs/clover.xml" />
+			<arg value="--log-junit" />
+			<arg value="${builddir}/logs/junit.xml" />
 		</exec>
 	</target>
 
