@@ -61,12 +61,11 @@
 		</copy>
 		
 		<!-- Create the application directories in the build dir -->
-		<mkdir dir="${basedir}/application/assets" mode="777" />
-		<mkdir dir="${basedir}/application/cache" mode="777" />
-		<mkdir dir="${basedir}/application/logs" mode="777" />
+		<phingcall target="create_dirs" />
 	</target>
 	
 	<target name="ci" depends="dist">
+		<phingcall target="create_dirs" />
 		<phingcall target="test" />
 	</target>
 	
@@ -104,6 +103,13 @@
 		            checkreturn="true" />
 			</else>
 		</if>
+	</target>
+	
+	<target name="create_dirs">
+		<!-- Creates asset, cache, and log dirs which are ignored by git. Used by a few targets -->
+		<mkdir dir="${basedir}/application/assets" mode="777" />
+		<mkdir dir="${basedir}/application/cache" mode="777" />
+		<mkdir dir="${basedir}/application/logs" mode="777" />
 	</target>
 	
 	<!-- Create a pear package for the app. -->
@@ -213,11 +219,8 @@
 	
 	<!-- setup the application on a development machine -->
 	<target name="setup-dev">
-		<echo msg="${basedir}application/assets" />
 		<!-- Create application directories -->
-		<mkdir dir="${basedir}/application/assets" mode="0777" />
-		<mkdir dir="${basedir}/application/cache" mode="0777" />
-		<mkdir dir="${basedir}/application/logs" mode="0777" />
+		<phingcall target="create_dir" />
 		
 		<echo>We're going to setup your database configuration</echo>
 		<propertyprompt propertyName="db.user" promptText="Enter the database username" defaultValue="" />
