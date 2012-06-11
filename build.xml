@@ -311,6 +311,10 @@
 			</filterchain>
 		</copy>
 	</target>
+	
+	<target name="test">
+		<phingcall target="phpunit" />
+	</target>
 
 	<target name="update">
 		<!-- git pull the application -->
