@@ -41,7 +41,8 @@
 		<phingcall target="create_dirs" />
 		<phingcall target="phpunit" />
 		<phingcall target="phpcs-ci" />
-		<phingcall target="build" />
+		<phingcall target="phploc" />
+		<!--<phingcall target="build" />-->
 	</target>
 	
 	<!-- clear the build directory -->
@@ -192,6 +193,14 @@
 			<arg value="--standard=Kohana" />
 			<arg value="--extensions=php" />
 			<arg path="${basedir}/modules/sledge/classes" />
+		</exec>
+	</target>
+	
+	<target name="phploc" description="Measure project size using PHPLOC">
+		<exec executable="phploc">
+			<arg value="--log-csv" />
+			<arg value="${basedir}/build/logs/phploc.csv" />
+			<arg path="${basedir}" /> <!-- Not ideally here and elsewhere this includes tests -->
 		</exec>
 	</target>
 
