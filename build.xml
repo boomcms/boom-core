@@ -27,48 +27,21 @@
 				<exclude name="application/assets/**" />
 			</fileset>
 		</copy>
-		
-		<!-- Copy any other files separately because we don't want to strip php comments / whitespace from them. -->
-		<copy todir="${builddir}/src"> 
-			<fileset dir="${basedir}">
-				<include name="**/**" />
-				<exclude name="**/*.php" />
-				<exclude name="**/cache/**" />
-				<include name="apache/vhost.conf" />
-				
-				<!-- Exclude build files -->
-				<exclude name="build/**" />
-				<exclude name="**/build.xml" />
-				
-				<!-- exclude git files -->
-				<exclude name="**/.git*" />
-				<exclude name="**/.git/**" />
-				
-				<!-- Exclude userguide module and files -->
-				<exclude name="**/*.md" />
-				<exclude name="modules/guide/**" />
-				
-				<!-- Exclude tests and unittest module -->
-				<exclude name="modules/unittest/**" />
-				<exclude name="**/tests/**" />
-				<exclude name="**/phpunit.xml" />
-				<exclude name="*.tgz" />
-				
-				<!-- Application directories - assets, logs, cache etc. -->
-				<exclude name="application/logs/**" />
-				<exclude name="application/assets/**" />
+	
+		<copy todir="${basedir}" overwrite="true"> 
+			<fileset dir="${builddir}/src">		
+				<include name="**/*.php" />
 			</fileset>
 		</copy>
-		
-		<!-- Create the application directories in the build dir -->
-		<phingcall target="create_dirs" />
 	</target>
 	
 	<target name="ci">
 		<mkdir dir="${builddir}/logs" mode="0766" />
+		<mkdir dir="${builddir}/reports" mode="0766" />
 		<phingcall target="create_dirs" />
 		<phingcall target="phpunit" />
 		<phingcall target="phpcs-ci" />
+		<phingcall target="build" />
 	</target>
 	
 	<!-- clear the build directory -->
