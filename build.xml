@@ -66,7 +66,8 @@
 	
 	<target name="ci">
 		<phingcall target="create_dirs" />
-		<phingcall target="test" />
+		<phingcall target="phpunit" />
+		<phingcall target="phpcs-ci" />
 	</target>
 	
 	<!-- clear the build directory -->
@@ -210,6 +211,25 @@
 		</if>
     </target>
 
+	<target name="phpcs-ci" description="Find coding standard violations using PHP_CodeSniffer creating a log file for the continuous integration server">
+		<exec executable="phpcs" output="/dev/null">
+			<arg value="--report=checkstyle" />
+			<arg value="--report-file=${basedir}/build/logs/checkstyle.xml" />
+			<arg value="--standard=Kohana" />
+			<arg value="--extensions=php" />
+			<arg path="${basedir}/modules/sledge/classes" />
+		</exec>
+	</target>
+
+	<target name="phpunit" description="Run unit tests with PHPUnit">
+		<exec executable="phpunit" dir="${basedir}/modules/sledge/tests" failonerror="true">
+			<arg value="--bootstrap" />
+			<arg value="bootstrap.ci.php" />
+			<arg value="--coverage-clover" />
+			<arg value="${builddir}/logs/clover.xml" />
+		</exec>
+	</target>
+
 	<target name="prepare">
 		<mkdir dir="${builddir}" mode="0766" />
 		<mkdir dir="${builddir}/deploy" mode="0766" />
@@ -305,36 +325,6 @@
 			  </replacetokens>
 			</filterchain>
 		</copy>
-	</target>
-	
-	<!-- When unit tests -->
-	<target name="test">
-		<!-- Make sure directories exist for the reports and code coverage database -->
-		<mkdir dir="${builddir}/reports" mode="0766" />
-		<mkdir dir="${builddir}/reports/coverage" mode="0766" />
-		<mkdir dir="${builddir}/coverage_db" mode="0766" />
-
-		<!--<coverage-setup database="${builddir}/coverage_db/coverage.db">
-			<fileset dir="${project.basedir}/modules/sledge/classes/">
-			    <include name="*.php" />
-			    <include name="**/*.php/" />
-			</fileset>
-		</coverage-setup>-->
-
-		<phpunit bootstrap="${project.basedir}/modules/sledge/tests/bootstrap.ci.php">
-			<!--<formatter todir="${builddir}/reports" type="xml" />-->
-			
-			<batchtest>			
-				<!-- Include sledge tests -->
-				<fileset dir="${project.basedir}/modules/sledge/tests">
-					<include name="**/*.php" />	
-					<exclude name="bootstrap.php" />
-					<exclude name="bootstrap.ci.php" />
-				</fileset>
-				
-				<!-- TODO: include app tests -->			
-			</batchtest>
-		</phpunit>
 	</target>
 
 	<target name="update">
