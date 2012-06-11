@@ -64,7 +64,7 @@
 		<phingcall target="create_dirs" />
 	</target>
 	
-	<target name="ci" depends="dist">
+	<target name="ci">
 		<phingcall target="create_dirs" />
 		<phingcall target="test" />
 	</target>
