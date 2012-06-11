@@ -225,7 +225,7 @@
 	<!-- setup the application on a development machine -->
 	<target name="setup-dev">
 		<!-- Create application directories -->
-		<phingcall target="create_dir" />
+		<phingcall target="create_dirs" />
 		
 		<echo>We're going to setup your database configuration</echo>
 		<propertyprompt propertyName="db.user" promptText="Enter the database username" defaultValue="" />
