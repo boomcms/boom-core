@@ -134,11 +134,11 @@
 	<target name="help">
 		<echo message="General Targets"/>
 		<echo message="==============="/>
-		<echo message="phing test              Run unit tests."/>
-		<echo message=""/>
-		<echo message="Sledge Developer Targets"/>
-		<echo message="========================"/>
-		<echo message="phing dev-setup         Setup for development of the sledge application."/>
+		<echo message="phing dev-setup			Setup for development of the sledge application."/>
+		<echo message="phing migrate			Run database update scripts with dbdeploy" />
+		<echo message="phing test				Run unit tests."/>
+		<echo message="phing update				Pull the latest code from git and run any database migration scripts."/>
+		<echo message="" />
 		<echo message=""/>
 		<echo message="Misc Targets"/>
 		<echo message="============"/>
