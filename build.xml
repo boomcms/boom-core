@@ -312,7 +312,7 @@
 		<mkdir dir="${builddir}/coverage_db" mode="0766" />
 
 		<coverage-setup database="${builddir}/coverage_db/coverage.db">
-			<fileset dir="${project.basedir}/classes/">
+			<fileset dir="${project.basedir}/modules/sledge/classes/">
 			    <include name="*.php" />
 			    <include name="**/*.php/" />
 			</fileset>
