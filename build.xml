@@ -222,7 +222,7 @@
 	</target>
 
 	<target name="phpunit" description="Run unit tests with PHPUnit">
-		<exec executable="phpunit" dir="${basedir}/modules/sledge/tests" checkreturn="true">
+		<exec executable="phpunit" dir="${basedir}/modules/sledge/tests">
 			<arg value="--bootstrap" />
 			<arg value="bootstrap.ci.php" />
 			<arg value="--coverage-clover" />
