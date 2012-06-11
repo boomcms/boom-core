@@ -314,20 +314,22 @@
 		<mkdir dir="${builddir}/reports/coverage" mode="0766" />
 		<mkdir dir="${builddir}/coverage_db" mode="0766" />
 
-		<coverage-setup database="${builddir}/coverage_db/coverage.db">
+		<!--<coverage-setup database="${builddir}/coverage_db/coverage.db">
 			<fileset dir="${project.basedir}/modules/sledge/classes/">
 			    <include name="*.php" />
 			    <include name="**/*.php/" />
 			</fileset>
-		</coverage-setup>
+		</coverage-setup>-->
 
-		<phpunit bootstrap="${project.basedir}/modules/sledge/tests/bootstrap.ci.php" codecoverage="true">
-			<formatter todir="${builddir}/reports" type="xml" />
+		<phpunit bootstrap="${project.basedir}/modules/sledge/tests/bootstrap.ci.php">
+			<!--<formatter todir="${builddir}/reports" type="xml" />-->
 			
 			<batchtest>			
 				<!-- Include sledge tests -->
 				<fileset dir="${project.basedir}/modules/sledge/tests">
 					<include name="**/*.php" />	
+					<exclude name="bootstrap.php" />
+					<exclude name="bootstrap.ci.php" />
 				</fileset>
 				
 				<!-- TODO: include app tests -->			
