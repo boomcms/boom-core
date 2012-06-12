@@ -36,6 +36,7 @@
 	</target>
 	
 	<target name="ci">
+		<mkdir dir="${builddir}" mode="0766" />
 		<mkdir dir="${builddir}/logs" mode="0766" />
 		<mkdir dir="${builddir}/reports" mode="0766" />
 		<phingcall target="create_dirs" />
@@ -207,13 +208,13 @@
 	<target name="phpunit" description="Run unit tests with PHPUnit">
 		<exec executable="phpunit" dir="${basedir}">
 			<arg value="--bootstrap" />
-			<arg value="bootstrap.php" />
+			<arg value="${basedir}/modules/sledge/bootstrap.php" />
 			<arg value="--coverage-clover" />
 			<arg value="${builddir}/logs/clover.xml" />
 			<arg value="--log-junit" />
 			<arg value="${builddir}/logs/junit.xml" />
 			<arg value="--configuration" />
-			<arg value="modules/sledge/tests/phpunit.xml" />
+			<arg value="${basedir}/modules/sledge/tests/phpunit.xml" />
 		</exec>
 	</target>
 
