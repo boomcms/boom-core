@@ -105,6 +105,15 @@ Route::set('app', 'app/<controller>(/<action>(/<id>))')
 		'controller' => 'default',
 		'action'     => 'index',
 	));
+	
+if (Kohana::$environment !== Kohana::PRODUCTION)
+{
+	Route::set('setup', '<controller>/<action>',
+		array(
+			'controller'	=>	'setup',
+			'action'		=>	'import',
+		));
+}	
 
 Route::set('catchall', function($uri)
 	{
