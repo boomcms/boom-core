@@ -212,6 +212,8 @@
 			<arg value="${builddir}/logs/clover.xml" />
 			<arg value="--log-junit" />
 			<arg value="${builddir}/logs/junit.xml" />
+			<arg value="--configuration" />
+			<arg value="modules/sledge/tests/phpunit.xml" />
 		</exec>
 	</target>
 
