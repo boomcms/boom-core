@@ -1,3 +1,6 @@
 [submodule "static/cms/js/qunit"]
 	path = static/cms/js/qunit
 	url = git://github.com/jquery/qunit.git
+[submodule "vendor/createsend"]
+	path = vendor/createsend
+	url = https://github.com/campaignmonitor/createsend-php.git
