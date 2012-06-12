@@ -105,16 +105,7 @@ Route::set('app', 'app/<controller>(/<action>(/<id>))')
 		'controller' => 'default',
 		'action'     => 'index',
 	));
-	
-/**
- * Default route.
- */
-Route::set('default', '(<controller>(/<action>(/<id>(/<url>))))')
-	->defaults(array(
-		'controller' => 'site',
-		'action'     => 'index',
-	));
-	
+
 Route::set('catchall', function($uri)
 	{
 		return array(
