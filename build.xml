@@ -207,7 +207,7 @@
 	<target name="phpunit" description="Run unit tests with PHPUnit">
 		<exec executable="phpunit" dir="${basedir}">
 			<arg value="--bootstrap" />
-			<arg value="bootstrap.ci.php" />
+			<arg value="bootstrap.php" />
 			<arg value="--coverage-clover" />
 			<arg value="${builddir}/logs/clover.xml" />
 			<arg value="--log-junit" />
