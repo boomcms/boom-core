@@ -16,6 +16,9 @@ alter table asset_v drop synced;
 alter table asset_v drop search_priority;
 alter table tag_v drop can_be_slot_perm;
 alter table tag_v drop hidden_from_tree;
+alter table page drop created;
+alter table page drop parent;
+alter table page drop level;
 
 -- //@UNDO
 
