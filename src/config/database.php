@@ -14,7 +14,7 @@ return array(
 		'schema'       => '',
 		'table_prefix' => '',
 		'charset'      => 'utf8',
-		'caching'      => FALSE,
+		'caching'      => TRUE,
 		'profiling'    => TRUE,
 	),
 
