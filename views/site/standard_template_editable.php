@@ -33,7 +33,7 @@
 	<?= HTML::style( "sledge/js/tiny_mce/themes/advanced/skins/o2k7/ui.css" ) ?>
 	<?= HTML::style( "sledge/js/tiny_mce/themes/advanced/skins/o2k7/ui_silver.css" ) ?>
 	<?= HTML::style( "sledge/css/sledge.tagmanager.css" ) ?>
-	<?= HTML::style( "sledge/css/ui-" . $person->theme . "/jquery-ui.css", array( 'id' => 'sledge-theme-css' ) ) ?>
+	<?= HTML::style( "sledge/css/ui-" . $actual_person->theme . "/jquery-ui.css", array( 'id' => 'sledge-theme-css' ) ) ?>
 	<?= HTML::style( "sledge/css/sledge.ui.css" ) ?>
 	<?= HTML::style( "/sledge/css/cms.css" ) ?>
 </head>
