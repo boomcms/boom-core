@@ -115,6 +115,12 @@ if (Kohana::$environment !== Kohana::PRODUCTION)
 		));
 }	
 
+/**
+* Any URIs not caught by a previous route will be caught by this.
+* This route directs all requests to the Controller_Site::action_index() controller.
+* The requested page is retrieved from the db and can be accessed from $this->request->param( 'page' ) from within the controller.
+* If the URI isn't matched then a page with URI 'error/404' is used.
+*/
 Route::set('catchall', function($uri)
 	{
 		$result = Sledge::process_uri( $uri );
