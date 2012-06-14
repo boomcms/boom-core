@@ -117,10 +117,25 @@ if (Kohana::$environment !== Kohana::PRODUCTION)
 
 Route::set('catchall', function($uri)
 	{
-		return array(
-			'controller' => 'site',
-			'action'     => 'index'
-		);
+		$result = Sledge::process_uri( $uri );
+		
+		if ($result !== NULL)
+		{
+			return array(
+				'controller' 	=> 'site',
+				'action'     	=> 'index',
+				'page'			=> ORM::factory( 'page', $result['page_id'] ),
+				'options'		=> $result['options'],
+			);
+		}
+		else
+		{
+			return array(
+				'controller' 	=> 'site',
+				'action'     	=> 'index',
+				'page'			=> ORM::factory( 'page' )->join( 'page_uri' )->on( 'page.id', '=', 'page_uri.page_id' )->where( 'uri', '=', 'error/404' )->find(),
+			);
+		}			
 	}
 );
 
