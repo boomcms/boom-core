@@ -175,14 +175,12 @@
 			<then>
 		        <exec
 		            command="mysql -h${db.host} -u${db.user} ${db.name} &lt; ${builddir}/${build.dbdeploy.deployfile}"
-		            dir="${basedir}"
-		            checkreturn="true" />
+		            dir="${basedir}"  />
 			</then>
 			<else>
 		        <exec
 		            command="mysql -h${db.host} -u${db.user} -p${db.password} ${db.name} &lt; ${builddir}/${build.dbdeploy.deployfile}"
-		            dir="${basedir}"
-		            checkreturn="true" />
+		            dir="${basedir}" />
 			</else>
 		</if>
     </target>
@@ -281,8 +279,6 @@
 		        <exec command="mysql -h${db.host} -u${db.user} -p${db.password} -e &quot;show databases like '${db.name}'&quot;" outputProperty='db.exists' />
 			</else>
 		</if>
-
-<echo message="${db.exists}" />
 
 		<if>
 			<or>
