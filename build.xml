@@ -224,9 +224,19 @@
 		<mkdir dir="${builddir}/deploy/scripts" mode="0766" />
 		<mkdir dir="${builddir}/src" mode="0766" />
 	</target>
-	
+
 	<!-- setup the application on a development machine -->
 	<target name="setup-dev">
+		<!-- This needs to be run as root. Are they root? -->
+		<exec command="whoami" outputProperty="user" />
+		<if>
+			<not>
+				<equals arg1="${user}" arg2="root" />
+			</not>
+			<then>
+				<fail message="You should run this as root" />
+			</then>
+		</if>
 		<!-- Create application directories -->
 		<phingcall target="create_dirs" />
 		
@@ -260,29 +270,23 @@
 			</filterchain>
 		</copy>
 		<chmod file="${basedir}/application/config/database.php" mode="0777" />
-		
-		<!-- Copy the vhost file into place -->
-		<echo>Now we're going to copy your apache vhost file into place.</echo>
-		<propertyprompt propertyName="vhostdir" promptText="Where do you keep your apache vhost files?" defaultValue="/etc/apache2/vhosts.d" />
-		<propertyprompt propertyName="server_name" promptText="What is the ServerName property going to be?" defaultValue="" />
-		
-		<copy file="${srcdir}/vhost.conf" tofile="${vhostdir}/${server_name}.conf" overwrite="true">
-			<filterchain>
-			  <replacetokens>
-			    <token key="doc_root" value="${basedir}" />
-				<token key="environment" value="DEVELOPMENT" />
-				<token key="server_name" value="${server_name}" />
-			  </replacetokens>
-			</filterchain>
-		</copy>
 
-		<!-- Create the database -->
-		<propertyprompt propertyName="dodb" promptText="Would you like to create the database?" defaultValue="no" />
+		<!-- Does the database already exist? -->
+		<if>
+			<equals arg1="${db.password}" arg2="" />
+			<then>
+		        <exec command="mysql -h${db.host} -u${db.user} -e &quot;show databases like '${db.name}'&quot;" outputProperty='db.exists' />
+			</then>
+			<else>
+		        <exec command="mysql -h${db.host} -u${db.user} -p${db.password} -e &quot;show databases like '${db.name}'&quot;" outputProperty='db.exists' />
+			</else>
+		</if>
+
+<echo message="${db.exists}" />
 
 		<if>
 			<or>
-				<equals arg1="${dodb}" arg2="y" />
-				<equals arg1="${dodb}" arg2="yes" />
+				<equals arg1="${db.exists}" arg2="" />
 			</or>
 			<then>
 				<phingcall target="create-db" />
@@ -290,12 +294,41 @@
 				<phingcall target="setup-sphinx" />
 			</then>
 			<else>
-				<echo>Skipping database setup and migration.</echo>
-				<echo>Skipping Sphinx setup - assuming it's already setup for the existing database.</echo>
+				<echo>Database exists, not creating.</echo>
 			</else>
 		</if>
+
+		<!-- Copy the vhost file into place -->
+		<echo>Now we're going to copy your apache vhost file into place.</echo>
+		<propertyprompt propertyName="vhostdir" promptText="Where do you keep your apache vhost files?" defaultValue="/etc/apache2/vhosts.d" />
+		<propertyprompt propertyName="server_name" promptText="What is the ServerName property going to be?" defaultValue="" />
+		<propertyprompt propertyName="listen_addr" promptText="What IP address does the server listen on?" defaultValue="" />
+
+		<copy file="${srcdir}/vhost.conf" tofile="${vhostdir}/${server_name}.conf" overwrite="true">
+			<filterchain>
+			  <replacetokens>
+			    <token key="doc_root" value="${basedir}" />
+				<token key="environment" value="DEVELOPMENT" />
+				<token key="server_name" value="${server_name}" />
+				<token key="listen_addr" value="${listen_addr}" />
+			  </replacetokens>
+			</filterchain>
+		</copy>
+
+		<!-- Restart Apache, if the syntax is ok -->
+		<exec command="sudo apache2ctl configtest" outputProperty="syntaxok" />
 		
-		<echo>Don't forget to restart apache!</echo>
+		<if>
+			<equals arg1="${syntaxok}" arg2="Syntax OK" />
+
+			<then>
+				<echo message="Apache config syntax OK, restarting apache" />
+				<exec command="apache2ctl -k graceful" />
+			</then>
+			<else>
+				<echo message="There's an error in your apache syntax. Fix errors and restart apache manually" level="warn" />
+			</else>
+		</if>
 	</target>
 	
 	<target name="setup-sphinx">
