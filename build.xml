@@ -343,6 +343,26 @@
 			</filterchain>
 		</copy>
 	</target>
+
+	<target name="sync">
+		<taskdef name="sync" classname="phing.tasks.ext.FileSyncTask" />
+		<propertyprompt propertyName="target" promptText="Where shall we sync from?" defaultValue="" />
+
+		<if>
+			<equals arg1="${target}" arg2="" />
+
+			<then>
+				<fail message="You need to tell me where to sync from" />
+			</then>
+		</if>
+
+		<echo message="Syncing assets" />
+		<sync
+		    sourcedir="${target}/application/assets"
+		    destinationdir="${basedir}/application/assets"
+		    listonly="true"
+		    verbose="true" />
+	</target>
 	
 	<target name="test">
 		<exec executable="phpunit" dir="${basedir}">
