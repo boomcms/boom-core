@@ -358,9 +358,8 @@
 
 		<echo message="Syncing assets" />
 		<sync
-		    sourcedir="${target}/application/assets"
+		    sourcedir="${target}/application/assets/*"
 		    destinationdir="${basedir}/application/assets"
-		    listonly="true"
 		    verbose="true" />
 	</target>
 	
