@@ -13,7 +13,7 @@ if (Kohana::$environment === Kohana::TESTING)
 			'table_prefix' => '',
 			'charset'      => NULL,
 			'caching'      => FALSE,
-			'profiling'    => TRUE,
+			'profiling'    => FALSE,
 		);
 }
 else
