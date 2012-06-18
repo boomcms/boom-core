@@ -47,7 +47,7 @@
 	</head>
 	<body>
 		<?
-			if ($mode == 'cms'):
+			if ($mode == 'cms' AND Session::instance()->get( "page_status", "edit" ) == "edit"):
 				echo View::factory('site/nav/top');
 			endif;
 
@@ -59,7 +59,7 @@
 		?>	
 	
 	<?
-	if ($person->can( 'edit_page', $page )):
+	if (Session::instance()->get( "page_status", "edit" ) == "edit" AND $person->can( 'edit_page', $page )):
 		?>
 		<script type="text/javascript">
 		//<![CDATA[
