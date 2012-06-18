@@ -40,7 +40,13 @@
 <body>
 	<div id="sledge-wysiwyg-toolbar" class="mceEditor o2k7Skin o2k7SkinSilver"></div>
 
-	<?= View::factory( 'cms/ui/site/topbar' ) ?>
+	<?
+		if (Session::instance()->get( "page_status", "edit" ) == "edit"):
+			echo View::factory( 'cms/ui/site/topbar' );
+		else:
+			echo View::factory( 'cms/ui/site/topbar_preview' );
+		endif;
+	?>
 
 	<div id="sledge-dialogs">
 		<div id="sledge-dialog-alerts">
