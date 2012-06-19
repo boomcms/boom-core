@@ -41,7 +41,7 @@
 	<div id="sledge-wysiwyg-toolbar" class="mceEditor o2k7Skin o2k7SkinSilver"></div>
 
 	<?
-		if (Session::instance()->get( "page_status", "edit" ) == "edit"):
+		if (Editor::state() == "edit"):
 			echo View::factory( 'cms/ui/site/topbar' );
 		else:
 			echo View::factory( 'cms/ui/site/topbar_preview' );
