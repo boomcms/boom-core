@@ -1,4 +1,4 @@
-<a href="#" style="height: 50px;" class="<?= $class ?>">
+<a href="#" style="height: 50px;"">
 	<strong>Click to add feature link</strong>
 	Default feature link text. &raquo;
 </a>
