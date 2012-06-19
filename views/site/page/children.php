@@ -11,7 +11,7 @@
 					<? // TODO: News page's image goes here. ?>
 				</a>
 				<p style="clear: both;">
-					<?= $p->get_slot( 'text', 'standfirst', 'paragraph', false ) ?>
+					<?= Chunk::factory( 'text', 'standfirst', $p )->editable( FALSE ); ?>
 				
 					<a href="<?=$p->url()?>" title="<?=$p->title?>">READ MORE &raquo;</a>
 				</p>
