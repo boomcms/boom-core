@@ -1,5 +1,5 @@
 <div id="library-search">
-	<form action="<?=$page->url()?>" method="post">
+	<form action="<?= $url ?>" method="post">
 		<div class="clearfix">
 			<h2>Search the library</h2>
 		</div>
@@ -18,7 +18,7 @@
 		</select>
 		<input type="submit" name="submit" value="Go" />
 		<p>or</p>
-		<a href="<?=$page->url()?>">
+		<a href="<?= $url ?>">
 			<img src="/img/view_all.png" class="view" alt="View all">
 		</a>
 		<p class="hide"><a href="#">Hide options</a></p>
