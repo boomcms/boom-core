@@ -4,7 +4,7 @@
 			<h2>Search the library</h2>
 		</div>
 		<label for="library-categories">To show all documents that relate to a category choose from the dropdown list.</label>
-		<select id="library-categories" name="library-categories">
+		<select id="library-categories" name="tag">
 			<option selected="selected">Choose a category</option>
 			<?
 				if ( ! empty( $kids )):
