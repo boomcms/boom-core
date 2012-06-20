@@ -31,7 +31,7 @@
 	
 	<?= @$pagination ?>
 
-	<div class="library-results rel-toplevel-<?= $tag->pk() ?>">
+	<div class="library-results rel-toplevel-<?= $parent_tag->pk() ?>">
 		<div id="chunk-gallery" class="clearfix">
 			<? if ($total === 0): ?>
 				<p>
