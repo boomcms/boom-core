@@ -1,5 +1,6 @@
 -- //
 
+delete template_v.* from template_v left join template on template_v.id = template.active_vid where template.id is null;
 drop table template;
 alter table template_v rename to template;
 alter table template drop id;
