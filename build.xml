@@ -39,6 +39,15 @@
 		<mkdir dir="${builddir}" mode="0766" />
 		<mkdir dir="${builddir}/logs" mode="0766" />
 		<mkdir dir="${builddir}/reports" mode="0766" />
+
+		<gitpull
+    			repository="${basedir}" 
+    			source="origin" refspec="master" 
+    			strategy="recursive" keep="true"
+    			force="true"  />
+		<!-- Update git submodules -->
+		<exec command="git submodule update" dir="${basedir}" />
+
 		<phingcall target="create_dirs" />
 		<phingcall target="phpunit" />
 		<phingcall target="phpcs-ci" />
