@@ -41,7 +41,7 @@ CREATE TABLE `actions` (
   `component` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `actions_name` (`name`)
-) ENGINE=MyISAM AUTO_INCREMENT=68 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=68 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -70,7 +70,7 @@ CREATE TABLE `activitylog` (
   `time` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `activitylog_person` (`person`)
-) ENGINE=MyISAM AUTO_INCREMENT=370 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=370 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -94,7 +94,7 @@ CREATE TABLE `approval_process` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `active_vid` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -128,7 +128,7 @@ CREATE TABLE `approval_process_v` (
   `audit_time` int(11) DEFAULT NULL,
   `deleted` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -151,7 +151,7 @@ CREATE TABLE `approval_request` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `active_vid` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -185,7 +185,7 @@ CREATE TABLE `approval_request_v` (
   `audit_time` int(11) DEFAULT NULL,
   `deleted` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -209,7 +209,7 @@ CREATE TABLE `asset` (
   `active_vid` mediumint(8) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `asset_active_vid` (`active_vid`)
-) ENGINE=MyISAM AUTO_INCREMENT=7319 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=7319 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -261,7 +261,7 @@ CREATE TABLE `asset_v` (
   KEY `asset_v_deleted_audit_time_asc` (`deleted`,`audit_time`),
   KEY `asset_v_deleted_audit_time_desc` (`deleted`,`audit_time`),
   KEY `asset_v_audit_person` (`audit_person`)
-) ENGINE=MyISAM AUTO_INCREMENT=10869 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=10869 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -291,7 +291,7 @@ CREATE TABLE `chunk` (
   PRIMARY KEY (`id`),
   KEY `chunk_slotname_active_vid_type` (`slotname`,`type`),
   KEY `chunk_type` (`type`)
-) ENGINE=MyISAM AUTO_INCREMENT=3866 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=3866 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -316,7 +316,7 @@ CREATE TABLE `chunk_asset` (
   `text` varchar(50) DEFAULT NULL,
   `chunk_id` mediumint(8) unsigned NOT NULL,
   PRIMARY KEY (`chunk_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -340,7 +340,7 @@ CREATE TABLE `chunk_feature` (
   `target_page_id` smallint(5) unsigned NOT NULL,
   `chunk_id` mediumint(8) unsigned NOT NULL,
   PRIMARY KEY (`chunk_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -364,7 +364,7 @@ CREATE TABLE `chunk_linkset` (
   `title` varchar(20) NOT NULL,
   `chunk_id` mediumint(8) unsigned NOT NULL,
   PRIMARY KEY (`chunk_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -388,7 +388,7 @@ CREATE TABLE `chunk_page` (
   `page_vid` int(10) unsigned DEFAULT NULL,
   `chunk_id` int(10) unsigned DEFAULT NULL,
   UNIQUE KEY `chunk_page_page_vid_chunk_id` (`page_vid`,`chunk_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -412,7 +412,7 @@ CREATE TABLE `chunk_slideshow` (
   `title` varchar(25) NOT NULL,
   `chunk_id` mediumint(8) unsigned NOT NULL,
   PRIMARY KEY (`chunk_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -436,7 +436,7 @@ CREATE TABLE `chunk_text` (
   `text` text NOT NULL,
   `chunk_id` mediumint(8) unsigned NOT NULL,
   PRIMARY KEY (`chunk_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -466,7 +466,7 @@ CREATE TABLE `group_v` (
   `deleted` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `role_v_name` (`name`)
-) ENGINE=MyISAM AUTO_INCREMENT=27 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=27 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -491,7 +491,7 @@ CREATE TABLE `groups` (
   `active_vid` smallint(5) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `role_active_vid` (`active_vid`)
-) ENGINE=MyISAM AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -519,7 +519,7 @@ CREATE TABLE `linksetlinks` (
   `title` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `linksetlinks_chunk_linkset_id` (`chunk_linkset_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=2496 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=2496 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -552,7 +552,7 @@ CREATE TABLE `message` (
   PRIMARY KEY (`id`),
   KEY `message_reciever_id_deleted_unread` (`receiver_id`,`deleted`,`unread`),
   KEY `message_sender_id` (`sender_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -578,7 +578,7 @@ CREATE TABLE `newsletter_tokens` (
   `email` varchar(255) NOT NULL,
   `date` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=25 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -611,7 +611,7 @@ CREATE TABLE `page` (
   KEY `page_sequence` (`sequence`),
   KEY `page_active_vid` (`active_vid`),
   KEY `page_parent` (`parent`)
-) ENGINE=MyISAM AUTO_INCREMENT=1615 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=1615 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -645,7 +645,7 @@ CREATE TABLE `page_mptt` (
   KEY `page_mptt_page_id_lft` (`lft`),
   KEY `page_mptt_lft_scope_page_id` (`lft`,`scope`),
   KEY `page_mptt_lft` (`lft`)
-) ENGINE=MyISAM AUTO_INCREMENT=1615 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=1615 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -673,7 +673,7 @@ CREATE TABLE `page_uri` (
   PRIMARY KEY (`id`),
   KEY `page_uri_page_id_primary_uri` (`page_id`,`primary_uri`),
   KEY `page_uri_uri` (`uri`(1000))
-) ENGINE=MyISAM AUTO_INCREMENT=1806 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=1806 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -738,7 +738,7 @@ CREATE TABLE `page_v` (
   KEY `page_v_title_rid_deleted` (`title`,`rid`,`deleted`),
   KEY `page_v_visible_in_leftnav_deleted` (`visible_in_leftnav`,`deleted`),
   KEY `page_v_visible_in_leftnav_cms_deleted` (`visible_in_leftnav_cms`,`deleted`)
-) ENGINE=MyISAM AUTO_INCREMENT=870 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=870 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -767,7 +767,7 @@ CREATE TABLE `permissions` (
   `value` tinyint(3) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `permissions_role_id_action_id_where_id` (`group_id`,`action_id`,`where_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=104 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=104 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -791,7 +791,7 @@ CREATE TABLE `person_group` (
   `person_id` smallint(5) unsigned NOT NULL,
   `group_id` smallint(5) unsigned NOT NULL,
   PRIMARY KEY (`person_id`,`group_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -814,7 +814,7 @@ DROP TABLE IF EXISTS `plugins`;
 CREATE TABLE `plugins` (
   `name` varchar(50) NOT NULL,
   PRIMARY KEY (`name`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -840,7 +840,7 @@ CREATE TABLE `slideshowimages` (
   `url` varchar(100) DEFAULT NULL,
   `chunk_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3275 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=3275 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -865,7 +865,7 @@ CREATE TABLE `tag` (
   `active_vid` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `tag_active_vid` (`active_vid`)
-) ENGINE=MyISAM AUTO_INCREMENT=2433 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=2433 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -893,7 +893,7 @@ CREATE TABLE `tag_mptt` (
   `lvl` smallint(5) unsigned DEFAULT NULL,
   `scope` smallint(5) unsigned NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -930,7 +930,7 @@ CREATE TABLE `tag_v` (
   `audit_time` int(11) DEFAULT NULL,
   `deleted` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=1752 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=1752 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -956,7 +956,7 @@ CREATE TABLE `tagged_objects` (
   `object_id` int(11) NOT NULL,
   PRIMARY KEY (`tag_id`,`object_type`,`object_id`),
   KEY `tagged_objects_tag_id_object_type` (`tag_id`,`object_type`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -983,7 +983,7 @@ CREATE TABLE `template` (
   PRIMARY KEY (`id`),
   KEY `template_sequence` (`sequence`),
   KEY `template_active_vid` (`active_vid`)
-) ENGINE=MyISAM AUTO_INCREMENT=52 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=52 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1014,7 +1014,7 @@ CREATE TABLE `template_v` (
   `audit_time` int(11) DEFAULT NULL,
   `deleted` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=25 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1041,7 +1041,7 @@ CREATE TABLE `user_tokens` (
   `user_agent` varchar(255) DEFAULT NULL,
   `token` char(40) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
