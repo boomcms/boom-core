@@ -13,7 +13,7 @@
 */
 ?>
 
-Dear <?=$person->getName()?>,
+Dear <?=$person->name()?>,
 
 In order to create a new password for your CMS account please <a href="<?= URL::site( '/cms/account/forgotten' ) ?>?email=<?= $person->emailaddress ?>&token=<?= $token ?>">click here</a>.
 

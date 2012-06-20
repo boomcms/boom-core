@@ -12,7 +12,7 @@
 * @uses Request::current()
 */
 ?>
-Dear <?=$person->getName()?>,
+Dear <?=$person->name()?>,
 
 As a security precaution, we temporarily freeze access to an account on the CMS if the
 password has been entered incorrectly three or more times consecutively.  This is to
