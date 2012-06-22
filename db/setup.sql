@@ -608,7 +608,7 @@ CREATE TABLE `page` (
 
 LOCK TABLES `page` WRITE;
 /*!40000 ALTER TABLE `page` DISABLE KEYS */;
-INSERT INTO `page` VALUES (5,1,2,1,1,1258020041,NULL,NULL)
+INSERT INTO `page` VALUES (5,1,2,1,1,1258020041,NULL,NULL);
 /*!40000 ALTER TABLE `page` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -642,7 +642,7 @@ CREATE TABLE `page_mptt` (
 
 LOCK TABLES `page_mptt` WRITE;
 /*!40000 ALTER TABLE `page_mptt` DISABLE KEYS */;
-INSERT INTO `page_mptt` VALUES (1,2,NULL,1,1,5)
+INSERT INTO `page_mptt` VALUES (1,2,NULL,1,1,5);
 /*!40000 ALTER TABLE `page_mptt` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -670,7 +670,7 @@ CREATE TABLE `page_uri` (
 
 LOCK TABLES `page_uri` WRITE;
 /*!40000 ALTER TABLE `page_uri` DISABLE KEYS */;
-INSERT INTO `page_uri` VALUES (2,5,'',1)
+INSERT INTO `page_uri` VALUES (2,5,'',1);
 /*!40000 ALTER TABLE `page_uri` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -735,7 +735,7 @@ CREATE TABLE `page_v` (
 
 LOCK TABLES `page_v` WRITE;
 /*!40000 ALTER TABLE `page_v` DISABLE KEYS */;
-INSERT INTO `page_v` VALUES (1,5,26,1,0,'We create great digital experiences',1258020041,0,1,1,1,NULL,0,NULL,1,1,'experience design, user experience design, digital marketing, social media, web design, web design & build, web design london, digital marketing london, digital agency london, mobile optimisation, SEO, search engine optimisation','Homepage of Hoop Associates, a digital strategy, web design and build agency based in London.',NULL,NULL,NULL,NULL,NULL,1,NULL,NULL,NULL,NULL,0,NULL,0,NULL,0,1328635158,0,6672,0)
+INSERT INTO `page_v` VALUES (1,5,26,1,0,'We create great digital experiences',1258020041,0,1,1,1,NULL,0,NULL,1,1,'experience design, user experience design, digital marketing, social media, web design, web design & build, web design london, digital marketing london, digital agency london, mobile optimisation, SEO, search engine optimisation','Homepage of Hoop Associates, a digital strategy, web design and build agency based in London.',NULL,NULL,NULL,NULL,NULL,1,NULL,NULL,NULL,NULL,0,NULL,0,NULL,0,1328635158,0,6672,0);
 /*!40000 ALTER TABLE `page_v` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -978,7 +978,7 @@ CREATE TABLE `template` (
 
 LOCK TABLES `template` WRITE;
 /*!40000 ALTER TABLE `template` DISABLE KEYS */;
-INSERT INTO `template` VALUES (1,1,0)
+INSERT INTO `template` VALUES (1,1,0);
 /*!40000 ALTER TABLE `template` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1009,7 +1009,7 @@ CREATE TABLE `template_v` (
 
 LOCK TABLES `template_v` WRITE;
 /*!40000 ALTER TABLE `template_v` DISABLE KEYS */;
-INSERT INTO `template_v` VALUES (1,1,'\'Orange\' template','This is the \'orange\' template, on which most pages are based.','site/templates/orange',0,0,1333038288,0)
+INSERT INTO `template_v` VALUES (1,1,'\'Orange\' template','This is the \'orange\' template, on which most pages are based.','site/templates/orange',0,0,1333038288,0);
 /*!40000 ALTER TABLE `template_v` ENABLE KEYS */;
 UNLOCK TABLES;
 
