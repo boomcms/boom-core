@@ -3,7 +3,7 @@
 if (Kohana::$environment === Kohana::TESTING)
 {
 	return array(
-		array(
+		'default' => array(
 			'type' => 'mysql',
 			'connection' => array(
 				'hostname' => '@db.host@',
