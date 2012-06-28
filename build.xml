@@ -288,7 +288,6 @@
 		<property name="db.password" value="hoopster" />
 		<property name="db.host" value="localhost" />
 		<property name="db.name" value="db" />
-		<property name="app.name" value="sledge" />
 		
 		<!-- Copy the build properties file -->
 		<copy file="${srcdir}/build.properties.template" tofile="${basedir}/build.properties" overwrite="true">
@@ -298,6 +297,7 @@
 				<token key="db.password" value="${db.password}" />
 				<token key="db.host" value="${db.host}" />
 				<token key="db.name" value="${db.name}" />
+				<token key="app.name" value="${app.name}" />
 			  </replacetokens>
 			</filterchain>
 		</copy>
@@ -310,6 +310,7 @@
 				<token key="db.password" value="${db.password}" />
 				<token key="db.host" value="${db.host}" />
 				<token key="db.name" value="${db.name}" />
+				<token key="app.name" value="${app.name}" />
 			  </replacetokens>
 			</filterchain>
 		</copy>
