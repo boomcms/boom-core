@@ -297,6 +297,19 @@
 			  </replacetokens>
 			</filterchain>
 		</copy>
+
+		<!-- Copy the database config file -->
+		<copy file="${srcdir}/config/database.php" tofile="${basedir}/application/config/database.php" overwrite="true">
+			<filterchain>
+			  <replacetokens>
+			    <token key="db.user" value="${db.user}" />
+				<token key="db.password" value="${db.password}" />
+				<token key="db.host" value="${db.host}" />
+				<token key="db.name" value="${db.name}" />
+			  </replacetokens>
+			</filterchain>
+		</copy>
+		<chmod file="${basedir}/application/config/database.php" mode="0777" />
 	</target>
 	
 	<target name="setup-sphinx">
