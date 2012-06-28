@@ -10,7 +10,7 @@ if (Kohana::$environment === Kohana::TESTING)
 				'username' => '@db.user@',
 				'password' => '@db.password@',
 				'persistent' => true,
-				'database' => '@db.name@',
+				'database' => '@app.name@_test',
 			),
 			'primary_key'  => 'id',   // Column to return from INSERT queries, see #2188 and #2273
 			'schema'       => '',
