@@ -115,6 +115,22 @@
 				<phingcall target="migrate">
 					<property name="db.name" value="${test.db.name}" />
 				</phingcall>
+
+				<if>
+					<equals arg1="${db.password}" arg2="" />
+					<then>
+				        <exec
+				            command="mysql -h${db.host} -u${db.user} ${test.db.name} &lt; ${basedir}/db/hoopid.sql"
+				            dir="${basedir}"
+				            checkreturn="true" />
+					</then>
+					<else>
+				        <exec
+				            command="mysql -h${db.host} -u${db.user} -p${db.password} ${test.db.name} &lt; ${basedir}/db/hoopid.sql"
+				            dir="${basedir}"
+				            checkreturn="true" />
+					</else>
+				</if>
 			</then>
 		</if>
 	</target>
@@ -401,12 +417,14 @@
 	</target>
 	
 	<target name="test" depends="create-test-db">
-		<exec executable="phpunit" dir="${basedir}">
+		<exec executable="phpunit" dir="${basedir}" outputproperty="output">
 			<arg value="--bootstrap" />
 			<arg value="${basedir}/modules/sledge/tests/bootstrap.php" />
 			<arg value="--configuration" />
 			<arg value="${basedir}/modules/sledge/tests/phpunit.xml" />
 		</exec>
+
+		<echo message="${output}" />
 	</target>
 
 	<target name="update">
