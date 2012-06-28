@@ -90,6 +90,34 @@
 			</else>
 		</if>
 	</target>
+
+	<target name="create-test-db">
+		<property file="build.properties" />
+		<property name="test.db.name" value="${app.name}_test" />
+
+		<!-- Does the test database exist? -->
+		<if>
+			<equals arg1="${db.password}" arg2="" />
+			<then>
+		        <exec command="mysql -h${db.host} -u${db.user} -e &quot;show databases like '${test.db.name}'&quot;" outputProperty='db.exists' />
+			</then>
+			<else>
+		        <exec command="mysql -h${db.host} -u${db.user} -p${db.password} -e &quot;show databases like '${test.db.name}'&quot;" outputProperty='db.exists' />
+			</else>
+		</if>
+
+		<if>
+			<equals arg1="${db.exists}" arg2="" />
+			<then>
+				<phingcall target="create-db">
+					<property name="db.name" value="${test.db.name}" />
+				</phingcall>
+				<phingcall target="migrate">
+					<property name="db.name" value="${test.db.name}" />
+				</phingcall>
+			</then>
+		</if>
+	</target>
 	
 	<target name="create_dirs">
 		<!-- Creates asset, cache, and log dirs which are ignored by git. Used by a few targets -->
@@ -212,7 +240,7 @@
 		</exec>
 	</target>
 
-	<target name="phpunit" description="Run unit tests for CI">
+	<target name="phpunit" depends="create-test-db" description="Run unit tests for CI">
 		<exec executable="phpunit" dir="${basedir}">
 			<arg value="--bootstrap" />
 			<arg value="${basedir}/modules/sledge/tests/bootstrap.php" />
@@ -372,7 +400,7 @@
 		    verbose="true" />
 	</target>
 	
-	<target name="test">
+	<target name="test" depends="create-test-db">
 		<exec executable="phpunit" dir="${basedir}">
 			<arg value="--bootstrap" />
 			<arg value="${basedir}/modules/sledge/tests/bootstrap.php" />
