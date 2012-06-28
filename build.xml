@@ -35,7 +35,7 @@
 		</copy>
 	</target>
 	
-	<target name="ci">
+	<target name="ci" depends="setup-ci">
 		<mkdir dir="${builddir}" mode="0766" />
 		<mkdir dir="${builddir}/logs" mode="0766" />
 		<mkdir dir="${builddir}/reports" mode="0766" />
@@ -274,6 +274,46 @@
 		<mkdir dir="${builddir}/deploy" mode="0766" />
 		<mkdir dir="${builddir}/deploy/scripts" mode="0766" />
 		<mkdir dir="${builddir}/src" mode="0766" />
+	</target>
+
+	<!-- setup the application on a development machine -->
+	<target name="setup-ci">
+		<!-- Create application directories -->
+		<phingcall target="create_dirs" />
+		
+		<property name="db.user" value="root" />
+		<property name="db.password" value="hoopster" />
+		<property name="db.host" value="localhost" />
+		<property name="db.name" value="db" />
+		
+		<!-- Copy the build properties file -->
+		<copy file="${srcdir}/build.properties.template" tofile="${basedir}/build.properties" overwrite="true">
+			<filterchain>
+			  <replacetokens>
+			    <token key="db.user" value="${db.user}" />
+				<token key="db.password" value="${db.password}" />
+				<token key="db.host" value="${db.host}" />
+				<token key="db.name" value="${db.name}" />
+			  </replacetokens>
+			</filterchain>
+		</copy>
+	</target>
+	
+	<target name="setup-sphinx">
+		<property file="build.properties" />
+		
+		<copy file="${srcdir}/sphinx.config.template" tofile="/etc/sphinxsearch/sites/${app.name}" overwrite="true">
+			<filterchain>
+			  <replacetokens>
+			    <token key="db.user" value="${db.user}" />
+				<token key="db.password" value="${db.password}" />
+				<token key="db.host" value="${db.host}" />
+				<token key="db.name" value="${db.name}" />
+				<token key="app.name" value="${app.name}" />
+				<token key="app.path" value="${basedir}" />
+			  </replacetokens>
+			</filterchain>
+		</copy>
 	</target>
 
 	<!-- setup the application on a development machine -->
