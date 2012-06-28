@@ -288,6 +288,7 @@
 		<property name="db.password" value="hoopster" />
 		<property name="db.host" value="localhost" />
 		<property name="db.name" value="db" />
+		<property name="app.name" value="sledge" />
 		
 		<!-- Copy the build properties file -->
 		<copy file="${srcdir}/build.properties.template" tofile="${basedir}/build.properties" overwrite="true">
