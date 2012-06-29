@@ -303,7 +303,7 @@
 		</copy>
 
 		<!-- Copy the database config file -->
-		<copy file="${srcdir}/config/database.php" tofile="${basedir}/application/config/database.php" overwrite="true">
+		<copy file="${srcdir}/config/instance.php" tofile="${basedir}/application/config/instance.php" overwrite="true">
 			<filterchain>
 			  <replacetokens>
 			    <token key="db.user" value="${db.user}" />
@@ -367,8 +367,8 @@
 			</filterchain>
 		</copy>
 
-		<!-- Copy the database config file -->
-		<copy file="${srcdir}/config/database.php" tofile="${basedir}/application/config/database.php" overwrite="true">
+		<!-- Copy the instance config file -->
+		<copy file="${srcdir}/config/instance.php" tofile="${basedir}/application/config/instance.php" overwrite="true">
 			<filterchain>
 			  <replacetokens>
 			    <token key="db.user" value="${db.user}" />
