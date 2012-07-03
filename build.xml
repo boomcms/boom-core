@@ -378,7 +378,7 @@
 			  </replacetokens>
 			</filterchain>
 		</copy>
-		<chmod file="${basedir}/application/config/database.php" mode="0777" />
+		<chmod file="${basedir}/application/config/instance.php" mode="0777" />
 
 		<!-- Does the database already exist? -->
 		<if>
