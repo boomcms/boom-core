@@ -71,21 +71,9 @@ Route::set('cms', '<directory>(/<controller>(/<action>(/<id>)))',
 	));
 
 /**
-* Defines the route for /sledge pages.
-*
-*/
-Route::set('sledge', '<directory>/(<controller>(/<action>(/<id>)))',
-	array(
-		'directory'	=> 'sledge'
-	))
-	->defaults(array(
-		'controller' => 'default',
-		'action'     => 'index',
-	));
-/**
 * Defines the route for plugin controllers.
 */
-Route::set('plugin', '<directory>/(<controller>(/<action>(/<id>)))',
+Route::set('plugin', '<directory>/(<controller>(/<action>))',
 	array(
 		'directory'	=> 'plugin'
 	))
@@ -161,6 +149,7 @@ Plugin::register( array(
 	'createsend'	=>	'plugin/createsend/signup',
  	'twitter'		=>	'plugin/twitter/feed',
 	'search'		=>	'plugin/search',
+	'leftnav'		=>	'plugin/tree/leftav',
 ));
 
 ?>
