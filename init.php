@@ -82,6 +82,17 @@ Route::set('sledge', '<directory>/(<controller>(/<action>(/<id>)))',
 		'controller' => 'default',
 		'action'     => 'index',
 	));
+/**
+* Defines the route for plugin controllers.
+*/
+Route::set('plugin', '<directory>/(<controller>(/<action>(/<id>)))',
+	array(
+		'directory'	=> 'plugin'
+	))
+	->defaults(array(
+		'controller' => 'default',
+		'action'     => 'index',
+	));
 	
 /**
 * Route for app specific controllers.
