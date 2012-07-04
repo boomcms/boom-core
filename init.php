@@ -149,7 +149,7 @@ Plugin::register( array(
 	'createsend'	=>	'plugin/createsend/signup',
  	'twitter'		=>	'plugin/twitter/feed',
 	'search'		=>	'plugin/search',
-	'leftnav'		=>	'plugin/tree/leftav',
+	'leftnav'		=>	'plugin/tree/leftnav',
 ));
 
 ?>
