@@ -148,8 +148,7 @@ Plugin::register( array(
 	'archive'		=>	array( 'uri' => 'sledge/archive' ),
 	'child_pages'	=>	array( 'uri' => 'sledge/page/children' ),
 	'createsend'	=>	array( 'uri' => 'sledge/createsend/signup' ),
-	'search'		=>	array( 'uri' => 'sledge/search', 'redirect_form_data' => TRUE ),
-	'twitter'		=>	array( 'uri' => 'sledge/twitter/feed' ),
+ 	'twitter'		=>	array( 'uri' => 'sledge/twitter/feed' ),
 ));
 
 ?>
