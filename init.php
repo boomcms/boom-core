@@ -145,10 +145,11 @@ if (Auth::instance()->logged_in())
 * Register the default Sledge plugins.
 */
 Plugin::register( array( 
-	'archive'		=>	array( 'uri' => 'sledge/archive' ),
-	'child_pages'	=>	array( 'uri' => 'sledge/page/children' ),
-	'createsend'	=>	array( 'uri' => 'sledge/createsend/signup' ),
- 	'twitter'		=>	array( 'uri' => 'sledge/twitter/feed' ),
+	'archive'		=>	array( 'uri' => 'plugin/archive' ),
+	'child_pages'	=>	array( 'uri' => 'plugin/page/children' ),
+	'createsend'	=>	array( 'uri' => 'plugin/createsend/signup' ),
+ 	'twitter'		=>	array( 'uri' => 'plugin/twitter/feed' ),
+	'search'		=>	array( 'uri' => 'plugin/search' ),
 ));
 
 ?>
