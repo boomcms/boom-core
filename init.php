@@ -134,8 +134,22 @@ Route::set('catchall', function($uri)
 /**
 * Add core items to the menu.
 */
-Sledge_Menu::add( '/cms/assets', 'Assets', 'manage_assets' );
-Sledge_Menu::add( '/cms/people', 'People', 'manage_people' );
-Sledge_Menu::add( '/cms/templates', 'Templates', 'manage_templates' );
+if (Auth::instance()->logged_in())
+{
+	Sledge_Menu::add( '/cms/assets', 'Assets', 'manage_assets' );
+	Sledge_Menu::add( '/cms/people', 'People', 'manage_people' );
+	Sledge_Menu::add( '/cms/templates', 'Templates', 'manage_templates' );
+}
+
+/**
+* Register the default Sledge plugins.
+*/
+Plugin::register( array( 
+	'archive'		=>	array( 'uri' => 'sledge/archive' ),
+	'child_pages'	=>	array( 'uri' => 'sledge/page/children' ),
+	'createsend'	=>	array( 'uri' => 'sledge/createsend/signup' ),
+	'search'		=>	array( 'uri' => 'sledge/search', 'redirect_form_data' => TRUE ),
+	'twitter'		=>	array( 'uri' => 'sledge/twitter/feed' ),
+));
 
 ?>
