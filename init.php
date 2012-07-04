@@ -73,7 +73,7 @@ Route::set('cms', '<directory>(/<controller>(/<action>(/<id>)))',
 /**
 * Defines the route for plugin controllers.
 */
-Route::set('plugin', '<directory>/(<controller>(/<action>))',
+Route::set('plugin', '<directory>/<controller>(/<action>)',
 	array(
 		'directory'	=> 'plugin'
 	))
