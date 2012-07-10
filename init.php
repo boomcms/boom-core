@@ -150,6 +150,7 @@ Plugin::register( array(
  	'twitter'		=>	'plugin/twitter/feed',
 	'search'		=>	'plugin/search',
 	'leftnav'		=>	'plugin/tree/leftnav',
+	'mainnav'		=>	'plugin/tree/mainnav',
 ));
 
 ?>
