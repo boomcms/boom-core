@@ -131,16 +131,6 @@ Route::set('catchall', function($uri)
 );
 
 /**
-* Add core items to the menu.
-*/
-if (Auth::instance()->logged_in())
-{
-	Sledge_Menu::add( '/cms/assets', 'Assets', 'manage_assets' );
-	Sledge_Menu::add( '/cms/people', 'People', 'manage_people' );
-	Sledge_Menu::add( '/cms/templates', 'Templates', 'manage_templates' );
-}
-
-/**
 * Register the default Sledge plugins.
 */
 Plugin::register( array( 
