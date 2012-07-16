@@ -33,6 +33,33 @@ source @app.name@-page_text-delta : @app.name@-page_text
 		select chunk.id, chunk.slotname, page.id as page_id, chunk_text.text, page_v.title, page_v.description, page_v.keywords, visible_from, parent_id from page inner join page_v on published_vid = page_v.id inner join chunk_page on page_v.id = chunk_page.page_vid inner join chunk on chunk_page.chunk_id = chunk.id inner join chunk_text on chunk.id = chunk_text.chunk_id inner join page_mptt on page.id = page_mptt.id where chunk.type = 'text' and page_v.deleted = false and page_v.visible_from <= unix_timestamp() and (page_v.visible_to = 0 or page_v.visible_to >= unix_timestamp()) and page_v.hidden_from_search_results = false and page_v.id >= (SELECT max_doc_id FROM sph_counter WHERE counter_id=1 );
 }
 
+source @app.name@-pages-site
+{
+	type		= mysql
+	sql_host	= localhost
+	sql_user	= root
+	sql_pass	= hoopster
+	sql_db		= thisishoop3_dev
+
+	sql_query	= select page.id, page.id as page_id, title, internal_name, parent_id, visible_in_leftnav, visible_in_leftnav_cms, title as title2, visible_from from page inner join page_v on active_vid = page_v.id inner join page_mptt on page.id = page_mptt.id where (visible = true or (visible_from < unix_timestamp(now()) and (visible_to = 0 or visible_to > unix_timestamp(now()))))
+
+	sql_attr_string	= title
+	sql_attr_string	= internal_name
+	sql_attr_uint	= parent_id
+	sql_attr_uint	= page_id
+	sql_attr_uint	= visible_in_leftnav
+	sql_attr_uint	= visible_in_leftnav_cms
+	sql_attr_timestamp = visible_from
+
+	sql_attr_multi	= uint tags from query; select object_id, tag_id from tagged_objects where object_type = 2;
+}
+
+source@app.name@-pages-cms  : @app.name@-pages-site
+{
+        sql_query       = select page.id, page.id as page_id, title, internal_name, parent_id, visible_in_leftnav, visible_in_leftnav_cms, title as title2, visible_from from page inner join page_v on active_vid = page_v.id inner join page_mptt on page.id = page_mptt.id where (visible = true or (visible_from < unix_timestamp(now()) and (visible_to = 0 or visible_to > unix_timestamp(now()))))
+}
+
+
 #############################################################################
 ## index definition
 #############################################################################
@@ -63,4 +90,16 @@ index @app.name@-page_text-delta : @app.name@-page_text
 	source			= @app.name@-page_text-delta
 	path			= /var/lib/sphinxsearch/data/@app.name@.page_text.delta
 	morphology		= stem_en
+}
+
+index @app.name@-pages-site
+{
+        source                  = thisishoop3-pages-site
+        path                    = /var/lib/sphinxsearch/data/thisishoop3.pages.site
+}
+
+index @app.name@-pages-cms
+{
+        source                  = thisishoop3-pages-cms
+        path                    = /var/lib/sphinxsearch/data/thisishoop3.pages.cms
 }
