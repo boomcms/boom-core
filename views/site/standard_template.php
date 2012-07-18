@@ -23,7 +23,7 @@
 <html xmlns="https://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 	<head>
 		<base target="_top" />
-		<title><?= $page->title ?> | <?=Kohana::$config->load('config')->get('client_name')?></title>
+		<title><?= $page->title ?> | <?= Arr::get($config, 'client_name' )?></title>
 		<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 		<meta http-equiv="Content-Style-Type" content="text/css" />
 		<meta name="description" content="<?= htmlspecialchars( $page->description );?>" />
@@ -53,7 +53,7 @@
 
 			echo $subtpl_main;
 
-			if (Kohana::$config->load('config')->get('include_analytics') === true):
+			if (Arr::get($config, 'include_analytics') === TRUE AND Kohana::$environment === Kohana::PRODUCTION):
 				echo View::factory( 'site/analytics' );
 			endif;
 		?>	
