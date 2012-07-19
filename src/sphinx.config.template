@@ -16,7 +16,7 @@ source @app.name@-page_text
 	sql_range_step = 10000
 
 	sql_query				= \
-		select chunk.id, chunk.slotname, page.id as page_id, chunk_text.text, page_v.title, page_v.description, page_v.keywords, visible_from, page_mptt.parent_id from page inner join page_v on published_vid = page_v.id inner join chunk_page on page_v.id = chunk_page.page_vid inner join chunk on chunk_page.chunk_id = chunk.id inner join chunk_text on chunk.id = chunk_text.chunk_id inner join page_mptt on page.id = page_mptt.id where chunk.type = 'text' and page_v.deleted = false and page_v.visible_from <= unix_timestamp() and page_v.hidden_from_search_results = false and (page_v.visible_to = 0 or page_v.visible_to >= unix_timestamp()) and page_v.id >= $start and page_v.id <= $end;
+		select chunk.id, chunk.slotname, page.id as page_id, chunk_text.text, page_v.title, page_v.description, page_v.keywords, visible_from, page_mptt.parent_id from page inner join page_v on published_vid = page_v.id inner join page_chunk on page_v.id = page_chunk.page_vid inner join chunk on page_chunk.chunk_id = chunk.id inner join chunk_text on chunk.id = chunk_text.chunk_id inner join page_mptt on page.id = page_mptt.id where chunk.type = 'text' and page_v.deleted = false and page_v.visible_from <= unix_timestamp() and page_v.hidden_from_search_results = false and (page_v.visible_to = 0 or page_v.visible_to >= unix_timestamp()) and page_v.id >= $start and page_v.id <= $end;
 
 	sql_attr_uint			= page_id:32
 	sql_attr_uint			= parent_id
@@ -30,7 +30,7 @@ source @app.name@-page_text-delta : @app.name@-page_text
 	sql_query_range =
 	sql_range_step = 0
 	sql_query				= \
-		select chunk.id, chunk.slotname, page.id as page_id, chunk_text.text, page_v.title, page_v.description, page_v.keywords, visible_from, parent_id from page inner join page_v on published_vid = page_v.id inner join chunk_page on page_v.id = chunk_page.page_vid inner join chunk on chunk_page.chunk_id = chunk.id inner join chunk_text on chunk.id = chunk_text.chunk_id inner join page_mptt on page.id = page_mptt.id where chunk.type = 'text' and page_v.deleted = false and page_v.visible_from <= unix_timestamp() and (page_v.visible_to = 0 or page_v.visible_to >= unix_timestamp()) and page_v.hidden_from_search_results = false and page_v.id >= (SELECT max_doc_id FROM sph_counter WHERE counter_id=1 );
+		select chunk.id, chunk.slotname, page.id as page_id, chunk_text.text, page_v.title, page_v.description, page_v.keywords, visible_from, parent_id from page inner join page_v on published_vid = page_v.id inner join page_chunk on page_v.id = page_chunk.page_vid inner join chunk on page_chunk.chunk_id = chunk.id inner join chunk_text on chunk.id = chunk_text.chunk_id inner join page_mptt on page.id = page_mptt.id where chunk.type = 'text' and page_v.deleted = false and page_v.visible_from <= unix_timestamp() and (page_v.visible_to = 0 or page_v.visible_to >= unix_timestamp()) and page_v.hidden_from_search_results = false and page_v.id >= (SELECT max_doc_id FROM sph_counter WHERE counter_id=1 );
 }
 
 source @app.name@-pages-site
