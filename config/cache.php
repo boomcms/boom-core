@@ -2,6 +2,7 @@
 
 return array(
 	'memcache' => array(
+		'namespace'			 => Arr::get(Kohana::$config->load( 'database.default.connection' ), 'database'),
 		'driver'             => 'memcache',
 		'default_expire'     => NULL,
 		'compression'        => FALSE,              // Use Zlib compression (can cause issues with integers)
