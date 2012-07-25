@@ -39,9 +39,9 @@
 	</target>
 	
 	<target name="ci" depends="setup-ci">
-		<mkdir dir="${builddir}" mode="0766" />
-		<mkdir dir="${builddir}/logs" mode="0766" />
-		<mkdir dir="${builddir}/reports" mode="0766" />
+		<mkdir dir="${builddir}" mode="0777" />
+		<mkdir dir="${builddir}/logs" mode="0777" />
+		<mkdir dir="${builddir}/reports" mode="0777" />
 
 		<gitpull
     			repository="${basedir}" 
@@ -273,10 +273,10 @@
 	</target>
 
 	<target name="prepare">
-		<mkdir dir="${builddir}" mode="0766" />
-		<mkdir dir="${builddir}/deploy" mode="0766" />
-		<mkdir dir="${builddir}/deploy/scripts" mode="0766" />
-		<mkdir dir="${builddir}/src" mode="0766" />
+		<mkdir dir="${builddir}" mode="0777" />
+		<mkdir dir="${builddir}/deploy" mode="0777" />
+		<mkdir dir="${builddir}/deploy/scripts" mode="0777" />
+		<mkdir dir="${builddir}/src" mode="0777" />
 	</target>
 
 	<!-- setup the application on a development machine -->
