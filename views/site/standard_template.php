@@ -47,10 +47,6 @@
 	</head>
 	<body>
 		<?
-			if ($mode == 'cms' AND Editor::state() == Editor::EDIT):
-				echo View::factory('site/nav/top');
-			endif;
-
 			echo $subtpl_main;
 
 			if (Arr::get($config, 'include_analytics') === TRUE AND Kohana::$environment === Kohana::PRODUCTION):
