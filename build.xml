@@ -493,7 +493,7 @@
     			strategy="recursive" keep="true"
     			force="true"  />
 		<!-- Update git submodules -->
-		<exec command="git submodule update" dir="${basedir}" />
+		<exec command="git submodule update --recursive --init" dir="${basedir}" />
 
 		<!-- Run database migrations -->
 		<phingcall target="migrate" />
