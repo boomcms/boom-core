@@ -135,7 +135,7 @@ Route::set('catchall', function($uri)
 */
 Plugin::register( array( 
 	'archive'		=>	'plugin/archive',
-	'child_pages'	=>	'plugin/page/children',
+	'child_pages'	=>	'plugin/page/children_html',
 	'createsend'	=>	'plugin/createsend/signup',
  	'twitter'		=>	'plugin/twitter/feed',
 	'search'		=>	'plugin/search',
