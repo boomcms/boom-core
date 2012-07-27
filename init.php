@@ -108,23 +108,38 @@ if (Kohana::$environment !== Kohana::PRODUCTION)
 */
 Route::set('catchall', function($uri)
 	{
-		$result = Sledge::process_uri( $uri );
-		
+		$result = Sledge::process_uri($uri);
+
 		if ($result !== NULL)
 		{
-			return array(
-				'controller' 	=> 'site',
-				'action'     	=> 'index',
-				'page'			=> ORM::factory( 'page', $result['page_id'] ),
-				'options'		=> $result['options'],
-			);
+			// If the URI used to access the page wasn't the primary URI then redirect them, otherwise send them to the site controller
+			$page_uri = $result['page_uri'];
+
+			if ( ! $page_uri->primary_uri)
+			{
+				return array(
+					'controller' 	=> 'site',
+					'action'     	=> 'redirect',
+					'page'			=> $page_uri->page,
+					'options'		=> $result['options'],
+				);
+			}
+			else
+			{
+				return array(
+					'controller' 	=> 'site',
+					'action'     	=> 'index',
+					'page'			=> $page_uri->page,
+					'options'		=> $result['options'],
+				);
+			}
 		}
 		else
 		{
 			return array(
 				'controller' 	=> 'site',
 				'action'     	=> 'index',
-				'page'			=> ORM::factory( 'page' )->join( 'page_uri' )->on( 'page.id', '=', 'page_uri.page_id' )->where( 'uri', '=', 'error/404' )->find(),
+				'page'			=> ORM::factory('page')->join('page_uri')->on('page.id', '=', 'page_uri.page_id')->where('uri', '=', 'error/404')->find(),
 			);
 		}			
 	}
