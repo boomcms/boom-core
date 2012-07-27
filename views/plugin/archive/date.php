@@ -9,7 +9,7 @@
 				foreach ($months as $month => $data):
 					echo "<li>";
 					echo "<a href='/blog/date/", $year, "/", $month, "'>", $data['name'];
-					echo " <span class='number'>(", $data['count'], " ", Inflector::plural(	'page', $data['count'] ); 
+					echo " <span class='number'>(", $data['count'], " ", Inflector::plural(	'page', $data['count']); 
 					echo ")</span>&nbsp;&raquo;</a></li>";
 				endforeach;
 				echo "</ul></li>";

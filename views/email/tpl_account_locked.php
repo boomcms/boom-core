@@ -21,7 +21,7 @@ prevent unauthorised 'brute force' attempts to access your account.
 Your account has just been frozen for this reason.  You can unfreeze it by
 resetting your password: 
 
-CMS password reset:   <? URL::base( Request::current() ) ?>/cms/account/reset?email=<?=$person->emailaddress?>
+CMS password reset:   <? URL::base( Request::current()) ?>/cms/account/reset?email=<?=$person->emailaddress?>
 
 
 

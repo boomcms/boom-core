@@ -1,4 +1,4 @@
-<? if (isset( $cs_error )): ?>
+<? if (isset($cs_error)): ?>
 	<p>
 		<?= $cs_error ?>
 	</p>
@@ -32,7 +32,7 @@
 						?>
 					</label>
 				</span>
-				<?=form::input('email', $request->post('email'), array('class' => 'textinput corner-5') );?>
+				<?=form::input('email', $request->post('email'), array('class' => 'textinput corner-5'));?>
 			</p>
 			<p>
 				<button type="submit" name="submit" class="button button-3 corner-5">Subscribe</button>

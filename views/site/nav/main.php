@@ -10,7 +10,7 @@
 			$classes .= ' last';
 		endif;
 		
-		$class = trim( $classes );
+		$class = trim($classes);
 		
 		?>
 		<li id="p<?= $p['id'] ?>"

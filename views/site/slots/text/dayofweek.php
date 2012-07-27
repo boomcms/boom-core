@@ -22,7 +22,7 @@
 			 	echo " selected='selected'";
 		  	endif;
 		
-			echo ">", __( $day ), "</option>";
+			echo ">", __($day), "</option>";
 		endforeach;
 	?>
 </select>

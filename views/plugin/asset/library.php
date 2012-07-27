@@ -7,9 +7,9 @@
 		<select id="library-categories" name="tag">
 			<option selected="selected">Choose a category</option>
 			<?
-				if ( ! empty( $kids )):
+				if ( ! empty($kids)):
 					foreach ($kids as $kid): ?>
-						<option value="<?=$kid['id'] ?>"<?if ($kid['id'] == $tag->pk() ): ?> selected="selected"<? endif; ?>>
+						<option value="<?=$kid['id'] ?>"<?if ($kid['id'] == $tag->pk()): ?> selected="selected"<? endif; ?>>
 							<?= $kid['name'] ?>
 						</option>
 					<? endforeach;
@@ -50,7 +50,7 @@
 							<img src="/asset/thumb/<?= $asset->id ?>/100/100/85/1" alt="<?= $asset->title ?>" />
 						</dt>
 						<dd class="description">
-							<p><?= $asset->title ?> <a onclick="_gaq.push(['_trackEvent', 'Downloads', '<?= $asset->get_type() ?>', '<?=$asset->title?>']);" href="/asset/view/<?=$asset->id?>"><?=$asset->get_type()?> <?= Text::bytes( $asset->filesize ) ?></a></p>
+							<p><?= $asset->title ?> <a onclick="_gaq.push(['_trackEvent', 'Downloads', '<?= $asset->get_type() ?>', '<?=$asset->title?>']);" href="/asset/view/<?=$asset->id?>"><?=$asset->get_type()?> <?= Text::bytes($asset->filesize) ?></a></p>
 							<p class="download">
 								<a onclick="_gaq.push(['_trackEvent', 'Downloads', '<?=$asset->get_type()?>', '<?=$asset->title?>']);" href="/asset/view/<?=$asset->id?>">
 									<img src="/img/download.png" alt="Download <?=$asset->title?>">

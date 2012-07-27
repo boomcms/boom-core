@@ -7,7 +7,7 @@
 	<?
 		$first = true;	
 		// Show the parent pages.
-		foreach( $page->mptt->parents() as $node )
+		foreach($page->mptt->parents() as $node)
 		{
 			if ($first === false)
 			{

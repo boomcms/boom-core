@@ -11,14 +11,14 @@
 					<? // TODO: News page's image goes here. ?>
 				</a>
 				<p style="clear: both;">
-					<?= Chunk::factory('text', 'standfirst', $p )->editable( FALSE ); ?>
+					<?= Chunk::factory('text', 'standfirst', $p)->editable( FALSE); ?>
 				
 					<a href="<?=$p->url()?>" title="<?=$p->title?>">READ MORE &raquo;</a>
 				</p>
 				<p class="add-comment"><a href="<?=$p->url()?>#post-comment">Add a comment</a></p>
 			
 				<?
-					$tweet_this = urlencode("Check out this cool link: " . $p->url() );
+					$tweet_this = urlencode("Check out this cool link: " . $p->url());
 				?>
 				<p class="tweet"><a href="http://twitter.com/home/?status=<?=$tweet_this?>">Tweet this</a></p>
 			</li>

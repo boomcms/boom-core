@@ -26,8 +26,8 @@
 		<title><?= $page->title ?> | <?= Arr::get($config, 'client_name')?></title>
 		<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 		<meta http-equiv="Content-Style-Type" content="text/css" />
-		<meta name="description" content="<?= htmlspecialchars( $page->description );?>" />
-		<meta name="keywords" content="<?= htmlspecialchars( $page->keywords );?>" />
+		<meta name="description" content="<?= htmlspecialchars($page->description);?>" />
+		<meta name="keywords" content="<?= htmlspecialchars($page->keywords);?>" />
 		<script type='text/javascript' src='/sledge/js/jquery.js'></script>
 		<script type="text/javascript" src="/site/js/main_init.js"></script>
 		
@@ -40,8 +40,8 @@
 				echo "<meta name='robots' content='noindex, nofollow' />";
 			endif;
 
-			if ( $page->enable_rss ):
-				echo "<link rel='alternate' type='application/rss+xml' title='RSS' href='" . URL::base( $request ) . "rss/" . $page->get_primary_uri() . "' />";
+			if ($page->enable_rss):
+				echo "<link rel='alternate' type='application/rss+xml' title='RSS' href='" . URL::base($request) . "rss/" . $page->get_primary_uri() . "' />";
 			endif;
 		?>
 	</head>
@@ -55,7 +55,7 @@
 		?>	
 	
 	<?
-	if (Editor::state() == Editor::EDIT AND $person->can('edit_page', $page )):
+	if (Editor::state() == Editor::EDIT AND $person->can('edit_page', $page)):
 		?>
 		<script type="text/javascript">
 		//<![CDATA[

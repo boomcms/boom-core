@@ -33,7 +33,7 @@
 	<?= HTML::style("sledge/js/tiny_mce/themes/advanced/skins/o2k7/ui.css") ?>
 	<?= HTML::style("sledge/js/tiny_mce/themes/advanced/skins/o2k7/ui_silver.css") ?>
 	<?= HTML::style("sledge/css/sledge.tagmanager.css") ?>
-	<?= HTML::style("sledge/css/ui-" . $actual_person->theme . "/jquery-ui.css", array('id' => 'sledge-theme-css') ) ?>
+	<?= HTML::style("sledge/css/ui-" . $actual_person->theme . "/jquery-ui.css", array('id' => 'sledge-theme-css')) ?>
 	<?= HTML::style("sledge/css/sledge.ui.css") ?>
 	<?= HTML::style("/sledge/css/cms.css") ?>
 </head>
@@ -56,7 +56,7 @@
 
 	<div id="sledge-loader-dialog-overlay" class="ui-widget-overlay"></div>
 	<div id="sledge-page-edit">
-		<iframe id="sledge-page-edit-iframe" src="<?= Request::detect_uri() . URL::query( array('editpage' => 1 ) );?>"></iframe>
+		<iframe id="sledge-page-edit-iframe" src="<?= Request::detect_uri() . URL::query( array('editpage' => 1));?>"></iframe>
 	</div>
 
 	<?= HTML::script("sledge/js/sledge.helpers.js") ?>
@@ -88,7 +88,7 @@
 			$.sledge.page.init({
 				defaultRid: 1,
 				<? 
-					if (isset( $page )): 
+					if (isset($page)): 
 						echo "id: $page->id,"; 
 						echo "vid: ", $page->version->id, ",";
 					endif;
