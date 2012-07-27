@@ -4,7 +4,7 @@
 	</p>
 <? endif; ?>
 
-<form method="post" action="<?= ORM::factory( 'page' )->where( 'internal_name', '=', 'newsletter' )->find()->url(); ?>" class="site-form">
+<form method="post" action="<?= ORM::factory('page')->where('internal_name', '=', 'newsletter')->find()->url(); ?>" class="site-form">
 	<fieldset>
 			<p>
 				<span class="label">
@@ -18,7 +18,7 @@
 						?>
 					</label>
 				</span>
-				<?=form::input('name', $request->post( 'name' ), array( 'class' => 'textinput corner-5' ));?>
+				<?=form::input('name', $request->post('name'), array('class' => 'textinput corner-5'));?>
 			</p>
 			<p>	
 				<span class="label">
@@ -32,7 +32,7 @@
 						?>
 					</label>
 				</span>
-				<?=form::input('email', $request->post( 'email' ), array( 'class' => 'textinput corner-5') );?>
+				<?=form::input('email', $request->post('email'), array('class' => 'textinput corner-5') );?>
 			</p>
 			<p>
 				<button type="submit" name="submit" class="button button-3 corner-5">Subscribe</button>

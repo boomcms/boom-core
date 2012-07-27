@@ -12,7 +12,7 @@
 
 <? if ($total > 0): ?>
 	<p>
-		Showing <?= $returned ?> of <?= Text::plural( $total, 'result' ) ?>.
+		Showing <?= $returned ?> of <?= Text::plural( $total, 'result') ?>.
 	</p>
 
 	<ol class="search-results">
@@ -25,7 +25,7 @@
 						<a href="<?=$page->url()?>"><?=$page->title?>&nbsp;&raquo;</a>
 					</h3>
 					<p>
-						<?= strip_tags($page->get_slot( 'text', 'standfirst', null, false )) ?>
+						<?= strip_tags($page->get_slot('text', 'standfirst', null, false )) ?>
 					</p>
 				</li>
 			<?

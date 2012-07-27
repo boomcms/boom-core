@@ -15,7 +15,7 @@
 
 Dear <?=$person->name()?>,
 
-In order to create a new password for your CMS account please go to <a href="<?= URL::site( '/cms/account/reset' ) ?>?email=<?= $person->emailaddress ?>&token=<?= $token ?>"><?= URL::site( '/cms/account/reset' ) ?>?email=<?= $person->emailaddress ?>&token=<?= $token ?></a>.
+In order to create a new password for your CMS account please go to <a href="<?= URL::site('/cms/account/reset') ?>?email=<?= $person->emailaddress ?>&token=<?= $token ?>"><?= URL::site('/cms/account/reset') ?>?email=<?= $person->emailaddress ?>&token=<?= $token ?></a>.
 
 This link will be valid for one hour.
 

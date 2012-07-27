@@ -23,7 +23,7 @@
 <html xmlns="https://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 	<head>
 		<base target="_top" />
-		<title><?= $page->title ?> | <?= Arr::get($config, 'client_name' )?></title>
+		<title><?= $page->title ?> | <?= Arr::get($config, 'client_name')?></title>
 		<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 		<meta http-equiv="Content-Style-Type" content="text/css" />
 		<meta name="description" content="<?= htmlspecialchars( $page->description );?>" />
@@ -31,7 +31,7 @@
 		<script type='text/javascript' src='/sledge/js/jquery.js'></script>
 		<script type="text/javascript" src="/site/js/main_init.js"></script>
 		
-		<?= View::factory( 'site/css' ); ?>
+		<?= View::factory('site/css'); ?>
 
 		<?
 			if ($page->indexed):
@@ -50,12 +50,12 @@
 			echo $subtpl_main;
 
 			if (Arr::get($config, 'include_analytics') === TRUE AND Kohana::$environment === Kohana::PRODUCTION):
-				echo View::factory( 'site/analytics' );
+				echo View::factory('site/analytics');
 			endif;
 		?>	
 	
 	<?
-	if (Editor::state() == Editor::EDIT AND $person->can( 'edit_page', $page )):
+	if (Editor::state() == Editor::EDIT AND $person->can('edit_page', $page )):
 		?>
 		<script type="text/javascript">
 		//<![CDATA[

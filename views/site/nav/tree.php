@@ -33,7 +33,7 @@
 			// Going up?
 			if ($i > 0 && $node['lvl'] < $pages[ $i - 1 ]['lvl'])
 			{
-				echo str_repeat( "</li></ul></li>", $pages[ $i - 1 ]['lvl'] - $node['lvl'] );
+				echo str_repeat("</li></ul></li>", $pages[ $i - 1 ]['lvl'] - $node['lvl'] );
 				$level = $node['lvl'];				
 			}	
 				

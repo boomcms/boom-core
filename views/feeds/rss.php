@@ -20,7 +20,7 @@
 		<title><?= $page->title ?></title>
 		<link><?= $page->url()?></link>
 		<description>
-			<?= htmlentities( $page->get_slot( 'text', 'standfirst', null, false ) ) ?>
+			<?= htmlentities( $page->get_slot('text', 'standfirst', null, false ) ) ?>
 		</description>
 		<language>en-gb</language>
 		<pubDate><?= date('r', $page->visible_from) ?></pubDate>
@@ -41,7 +41,7 @@
 					</link>
 					<description>
 						<![CDATA[ 
-							<?= html_entity_decode( strip_tags( $p->get_slot( 'text', 'standfirst', null, false ) ), ENT_QUOTES, 'UTF-8') ?>
+							<?= html_entity_decode( strip_tags( $p->get_slot('text', 'standfirst', null, false ) ), ENT_QUOTES, 'UTF-8') ?>
 						]]>
 					</description>
 					<pubDate>
