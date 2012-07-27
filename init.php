@@ -115,7 +115,7 @@ Route::set('catchall', function($uri)
 			// If the URI used to access the page wasn't the primary URI then redirect them, otherwise send them to the site controller
 			$page_uri = $result['page_uri'];
 
-			if ( ! $page_uri->primary_uri)
+			if ($page_uri->primary_uri == FALSE)
 			{
 				return array(
 					'controller' 	=> 'site',
