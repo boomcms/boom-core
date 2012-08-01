@@ -3,7 +3,7 @@
 /*
 * Let the Sledge take charge of exceptions.
 */
-set_exception_handler( array( 'Sledge_Exception', 'handler' ) );
+set_exception_handler(array('Sledge_Exception', 'handler'));
 
 /**
  * Log remotely.
@@ -20,7 +20,7 @@ Kohana::$log->attach(
 */
 if (Kohana::$environment != Kohana::PRODUCTION)
 {
-	Kohana::modules( array_merge( Kohana::modules(), array(MODPATH . 'guide') ) );
+	Kohana::modules(array_merge(Kohana::modules(), array(MODPATH . 'guide')));
 }
 
 /**
@@ -158,7 +158,7 @@ Route::set('catchall', function($uri)
 /**
 * Register the default Sledge plugins.
 */
-Plugin::register( array( 
+Plugin::register(array( 
 	'archive'		=>	'plugin/archive',
 	'child_pages'	=>	'plugin/page/children_html',
 	'createsend'	=>	'plugin/createsend/signup',
