@@ -29,8 +29,6 @@ if (Kohana::$environment != Kohana::PRODUCTION)
 	Kohana::modules( array_merge( Kohana::modules(), array(MODPATH . 'guide') ) );
 }
 
-throw new Kohana_Exception("test");
-
 /**
 * Route for RSS feeds.
 */
