@@ -5,6 +5,22 @@
 */
 set_exception_handler( array( 'Sledge_Exception', 'handler' ) );
 
+/**
+ * Log remotely.
+ */
+Kohana::$log->attach(
+	new Log_Remote(
+		'https://status.thisishoop.com/log', 
+		'nIPOjkcaCGNdml3qjvtE-CQs3IZKffx7DP1JkJYrk-52qSXQYbvuGYjmDT63bn',
+		array(
+			CURLOPT_SSL_VERIFYHOST => 0,
+			CURLOPT_SSL_VERIFYPEER => 0,
+			// CURLOPT_SSL_VERIFYPEER	=>	TRUE,
+			// CURLOPT_CAINFO			=>	MODPATH . 'sledge/vendor/cacert.pem',
+		)
+	)
+);
+
 /* Include the userguide module if this isn't a live instance.
 * @link http://kohanaframework.org/3.2/guide/userguide
 */
@@ -12,6 +28,8 @@ if (Kohana::$environment != Kohana::PRODUCTION)
 {
 	Kohana::modules( array_merge( Kohana::modules(), array(MODPATH . 'guide') ) );
 }
+
+throw new Kohana_Exception("test");
 
 /**
 * Route for RSS feeds.
