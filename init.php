@@ -11,13 +11,7 @@ set_exception_handler( array( 'Sledge_Exception', 'handler' ) );
 Kohana::$log->attach(
 	new Log_Remote(
 		'https://status.thisishoop.com/log', 
-		'nIPOjkcaCGNdml3qjvtE-CQs3IZKffx7DP1JkJYrk-52qSXQYbvuGYjmDT63bn',
-		array(
-			CURLOPT_SSL_VERIFYHOST => 0,
-			CURLOPT_SSL_VERIFYPEER => 0,
-			// CURLOPT_SSL_VERIFYPEER	=>	TRUE,
-			// CURLOPT_CAINFO			=>	MODPATH . 'sledge/vendor/cacert.pem',
-		)
+		'nIPOjkcaCGNdml3qjvtE-CQs3IZKffx7DP1JkJYrk-52qSXQYbvuGYjmDT63bn'
 	)
 );
 
