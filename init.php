@@ -14,9 +14,11 @@ Kohana::$log->attach(
 		array(
 			'hostname'	=>	$_SERVER['SERVER_NAME'],
 			'key'		=>	'nIPOjkcaCGNdml3qjvtE-CQs3IZKffx7DP1JkJYrk-52qSXQYbvuGYjmDT63bn',
-		),
+		)
 	)
 );
+
+throw new Kohana_Exception("hello");
 
 /* Include the userguide module if this isn't a live instance.
 * @link http://kohanaframework.org/3.2/guide/userguide
