@@ -11,7 +11,10 @@ set_exception_handler(array('Sledge_Exception', 'handler'));
 Kohana::$log->attach(
 	new Log_Remote(
 		'https://status.thisishoop.com/log/add', 
-		'nIPOjkcaCGNdml3qjvtE-CQs3IZKffx7DP1JkJYrk-52qSXQYbvuGYjmDT63bn'
+		array(
+			'hostname'	=>	$_SERVER['SERVER_NAME'],
+			'key'		=>	'nIPOjkcaCGNdml3qjvtE-CQs3IZKffx7DP1JkJYrk-52qSXQYbvuGYjmDT63bn',
+		),
 	)
 );
 
