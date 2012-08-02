@@ -14,7 +14,7 @@ Kohana::$log->attach(
 		array(
 			'hostname'	=>	$_SERVER['SERVER_NAME'],
 			'key'		=>	'nIPOjkcaCGNdml3qjvtE-CQs3IZKffx7DP1JkJYrk-52qSXQYbvuGYjmDT63bn',
-		),
+		)
 	)
 );
 
