@@ -146,15 +146,7 @@ Route::set('catchall', function($uri)
 					'options'		=> $result['options'],
 				);
 			}
-		}
-		else
-		{
-			return array(
-				'controller' 	=> 'site',
-				'action'     	=> 'index',
-				'page'			=> ORM::factory('page')->join('page_uri')->on('page.id', '=', 'page_uri.page_id')->where('uri', '=', 'error/404')->find(),
-			);
-		}			
+		}	
 	}
 );
 
