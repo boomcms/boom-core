@@ -3,7 +3,7 @@
 /*
 * Let the Sledge take charge of exceptions.
 */
-set_exception_handler(array('Sledge_Exception', 'handler'));
+set_exception_handler(array('Sledge', 'exception_handler'));
 
 /**
  * Log remotely.
