@@ -1,5 +1,3 @@
 <?php defined('SYSPATH') OR die('No direct script access.');
 
-class Kodoc extends Sledge_kodoc {}
-	
-?>
+class Auth_Hoop extends Sledge_Auth_Hoop {}
