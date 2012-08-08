@@ -21,7 +21,7 @@ Kohana::$log->attach(
 /* Include the userguide module if this isn't a live instance.
 * @link http://kohanaframework.org/3.2/guide/userguide
 */
-if (Kohana::$environment != Kohana::PRODUCTION)
+if (Kohana::$environment === Kohana::DEVELOPMENT)
 {
 	Kohana::modules(array_merge(Kohana::modules(), array(MODPATH . 'guide')));
 }
@@ -104,7 +104,7 @@ Route::set('app', 'app/<controller>(/<action>(/<id>))')
 		'action'     => 'index',
 	));
 	
-if (Kohana::$environment !== Kohana::PRODUCTION)
+if (Kohana::$environment == Kohana::DEVELOPMENT)
 {
 	Route::set('setup', '<controller>/<action>',
 		array(
