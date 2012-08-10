@@ -62,7 +62,6 @@
 	<?= HTML::script("sledge/js/sledge.helpers.js") ?>
 	<?= HTML::script("sledge/js/jquery.js") ?>
 	<?= HTML::script("sledge/js/sledge.jquery.ui.js") ?>
-	<?= HTML::script("sledge/js/jquery.ui.button.js") ?>
 	<?= HTML::script("sledge/js/sledge.plugins.js") ?>
 	<?= HTML::script("sledge/js/sledge.config.js") ?>
 	<?= HTML::script("sledge/js/sledge.core.js") ?>
