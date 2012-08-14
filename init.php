@@ -102,16 +102,7 @@ Route::set('app', 'app/<controller>(/<action>(/<id>))')
 	->defaults(array(
 		'controller' => 'default',
 		'action'     => 'index',
-	));
-	
-if (Kohana::$environment == Kohana::DEVELOPMENT)
-{
-	Route::set('setup', '<controller>/<action>',
-		array(
-			'controller'	=>	'setup',
-			'action'		=>	'import',
-		));
-}	
+	));	
 
 /**
 * Any URIs not caught by a previous route will be caught by this.
