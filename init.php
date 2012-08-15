@@ -16,9 +16,10 @@ if ( ! defined('SKIP_SLEDGE_INIT'))
 	 */
 	Kohana::$log->attach(
 		new Log_Remote(
-			'https://status.thisishoop.com/log/add', 
+			'https://status.thisishoop.com/api/log/new', 
 			array(
 				'hostname'	=>	$_SERVER['SERVER_NAME'],
+				'api_key'	=>	'gChlK4F5BwP3NY21IgJc-WlYY3uFwayguKNMI96dJ-pJfNHj6HtaegA7ZRA38E',
 				'key'		=>	'nIPOjkcaCGNdml3qjvtE-CQs3IZKffx7DP1JkJYrk-52qSXQYbvuGYjmDT63bn',
 			)
 		)
