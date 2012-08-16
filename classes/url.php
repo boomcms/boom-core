@@ -5,5 +5,3 @@
 * @category Helpers
 */
 class URL extends Sledge_URL {}
-	
-?>

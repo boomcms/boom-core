@@ -5,5 +5,3 @@
 * @category Helpers
 */
 class Text extends Sledge_Text {}
-	
-?>

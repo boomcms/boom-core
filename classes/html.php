@@ -4,5 +4,3 @@
 * @category Helpers
 */
 class HTML extends Sledge_HTML {}
-	
-?>
