@@ -1,0 +1,1 @@
+<img src="/asset/view/<?= $asset;?>/430/260" />
