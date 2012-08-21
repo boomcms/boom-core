@@ -4,5 +4,5 @@
 ?>
 <li>
 	<h3>News article title</h3>
-	<p class="paragraph">Click here to feature a lead news story</p>
+	<p class="paragraph"><?= __(Kohana::message('chunks', 'feature')) ?></p>
 </li>
