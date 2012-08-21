@@ -1,1 +1,1 @@
-<img src="/asset/view/<?= $asset;?>/430/260" />
+<img src="<?= Asset::PATH ?><?= $asset;?>/430/260" />
