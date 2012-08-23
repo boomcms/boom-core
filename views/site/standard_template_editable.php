@@ -42,9 +42,9 @@
 
 	<?
 		if (Editor::state() == Editor::EDIT):
-			echo View::factory('cms/ui/site/topbar');
+			echo View::factory('sledge/editor/topbar');
 		else:
-			echo View::factory('cms/ui/site/topbar_preview');
+			echo View::factory('sledge/editor/topbar_preview');
 		endif;
 	?>
 
