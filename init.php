@@ -71,10 +71,9 @@ if ( ! defined('SKIP_SLEDGE_INIT'))
 	* Defines the route for /cms page settings pages..
 	*
 	*/
-	Route::set('page_settings', 'cms/page/settings/<tab>/<id>' )
+	Route::set('page_settings', 'cms/page/settings/<action>/<id>' )
 		->defaults(array(
-			'controller' => 'cms_page',
-			'action'     => 'settings',
+			'controller' => 'cms_page_settings',
 		));
 
 	/**

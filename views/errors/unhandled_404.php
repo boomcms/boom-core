@@ -1,1 +1,0 @@
-Couldn't handle an error because there's no error template!

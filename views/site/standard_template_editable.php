@@ -35,16 +35,16 @@
 	<?= HTML::style("sledge/css/sledge.tagmanager.css") ?>
 	<?= HTML::style("sledge/css/ui-" . $actual_person->theme . "/jquery-ui.css", array('id' => 'sledge-theme-css')) ?>
 	<?= HTML::style("sledge/css/sledge.ui.css") ?>
-	<?= HTML::style("/sledge/css/cms.css") ?>
+	<?= HTML::style("sledge/css/cms.css") ?>
 </head>
 <body>
 	<div id="sledge-wysiwyg-toolbar" class="mceEditor o2k7Skin o2k7SkinSilver"></div>
 
 	<?
 		if (Editor::state() == Editor::EDIT):
-			echo View::factory('cms/ui/site/topbar');
+			echo View::factory('sledge/editor/topbar');
 		else:
-			echo View::factory('cms/ui/site/topbar_preview');
+			echo View::factory('sledge/editor/topbar_preview');
 		endif;
 	?>
 
