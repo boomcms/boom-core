@@ -77,6 +77,15 @@ if ( ! defined('SKIP_SLEDGE_INIT'))
 		));
 
 	/**
+	* Defines the route for /cms page uris pages..
+	*
+	*/
+	Route::set('page_uris', 'cms/page/uri/<action>/<id>' )
+		->defaults(array(
+			'controller' => 'cms_page_uri',
+		));
+
+	/**
 	* Defines the route for /cms pages.
 	*
 	*/
