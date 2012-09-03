@@ -34,17 +34,6 @@ if ( ! defined('SKIP_SLEDGE_INIT'))
 	}
 
 	/**
-	* Route for RSS feeds.
-	*/
-	Route::set('feeds', '<url>/<action>',
-		array(
-			'action' => 'rss'
-		))
-	   ->defaults(array(
-	     'controller' => 'feeds',
-	   ));
-
-	/**
 	* Defines a shortcut for /cms/account pages (login, logout, etc.) so that account doesn't have to be used in the URL.
 	*
 	*/
@@ -127,6 +116,9 @@ if ( ! defined('SKIP_SLEDGE_INIT'))
 	*/
 	Route::set('catchall', function($uri)
 		{
+			preg_match('|/.([a-zA-Z]+)$|', $uri, $format);
+			preg_replace('|/.([a-zA-Z]+)$|', '', $uri);
+
 			$result = Sledge::process_uri($uri);
 
 			if ($result !== NULL)
@@ -145,9 +137,11 @@ if ( ! defined('SKIP_SLEDGE_INIT'))
 				}
 				else
 				{
+					$format = (empty($format))? 'html' : $format[1];
+
 					return array(
 						'controller' 	=> 'site',
-						'action'     	=> 'index',
+						'action'     	=> $format,
 						'page'			=> $page_uri->page,
 						'options'		=> $result['options'],
 					);
