@@ -4,3 +4,6 @@
 [submodule "vendor/createsend"]
 	path = vendor/createsend
 	url = https://github.com/campaignmonitor/createsend-php.git
+[submodule "vendor/snappy"]
+	path = vendor/snappy
+	url = git://github.com/KnpLabs/snappy.git
