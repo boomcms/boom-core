@@ -116,7 +116,7 @@ if ( ! defined('SKIP_SLEDGE_INIT'))
 	*/
 	Route::set('catchall', function($uri)
 		{
-			preg_match('|/?.([a-zA-Z]+)$|', $uri, $format);
+			preg_match('|.([a-zA-Z]+)$|', $uri, $format);
 			$uri = preg_replace('|/?.([a-zA-Z]+)$|', '', $uri);
 
 			$result = Sledge::process_uri($uri);
