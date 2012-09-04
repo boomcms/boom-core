@@ -113,13 +113,30 @@ if ( ! defined('SKIP_SLEDGE_INIT'))
 	* This route directs all requests to the Controller_Site::action_index() controller.
 	* The requested page is retrieved from the db and can be accessed from $this->request->param( 'page' ) from within the controller.
 	* If the URI isn't matched then a page with URI 'error/404' is used.
+	*
+	* This is starting to become quite unwieldy, some rewriting may be required.
 	*/
 	Route::set('catchall', function($uri)
 		{
 			preg_match('|\.([a-zA-Z]+)$|', $uri, $format);
 			$uri = preg_replace('|/?\.([a-zA-Z]+)$|', '', $uri);
 
-			$result = Sledge::process_uri($uri);
+			if (substr($uri, 0, 1) == '_')
+			{
+				// If URI is prefixed with an underscore then it's a short URI
+				$page_id = substr($uri, 1);
+				$page_id = base_convert($page_id, 36, 10);
+				return array(
+					'controller' 	=> 'site',
+					'action'     	=> 'redirect',
+					'page'			=> ORM::factory('page', $page_id),
+					'options'		=> array(),
+				);
+			}
+			else
+			{
+				$result = Sledge::process_uri($uri);
+			}
 
 			if ($result !== NULL)
 			{
