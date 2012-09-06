@@ -143,7 +143,7 @@ if ( ! defined('SKIP_SLEDGE_INIT'))
 				// If the URI used to access the page wasn't the primary URI then redirect them, otherwise send them to the site controller
 				$page_uri = $result['page_uri'];
 
-				if ($page_uri->primary_uri == FALSE)
+				if ($page_uri->primary_uri == FALSE AND $page_uri->redirect == TRUE)
 				{
 					return array(
 						'controller' 	=> 'site',
