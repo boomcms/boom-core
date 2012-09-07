@@ -2,7 +2,7 @@
 ## data source definition
 #############################################################################
 
-source @app.name@-page_text
+source @db.name@-page_text
 {
 	# data source type. mandatory, no default value
 	type					= mysql
@@ -24,7 +24,7 @@ source @app.name@-page_text
 	sql_attr_string			= slotname
 }
 
-source @app.name@-page_text-delta : @app.name@-page_text
+source @db.name@-page_text-delta : @db.name@-page_text
 {
 	sql_query_pre = 
 	sql_query_range =
@@ -37,10 +37,10 @@ source @app.name@-page_text-delta : @app.name@-page_text
 ## index definition
 #############################################################################
 
-index @app.name@-page_text
+index @db.name@-page_text
 {
-	source			= @app.name@-page_text
-	path			= /var/lib/sphinxsearch/data/@app.name@.page_text
+	source			= @db.name@-page_text
+	path			= /var/lib/sphinxsearch/data/@db.name@.page_text
 
 	docinfo			= extern
 	mlock			= 0
@@ -58,9 +58,9 @@ index @app.name@-page_text
 	#ignore_chars		= U+002E
 }
 
-index @app.name@-page_text-delta : @app.name@-page_text
+index @db.name@-page_text-delta : @db.name@-page_text
 {
-	source			= @app.name@-page_text-delta
-	path			= /var/lib/sphinxsearch/data/@app.name@.page_text.delta
+	source			= @db.name@-page_text-delta
+	path			= /var/lib/sphinxsearch/data/@db.name@.page_text.delta
 	morphology		= stem_en
 }

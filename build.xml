@@ -320,14 +320,13 @@
 	<target name="setup-sphinx">
 		<property file="build.properties" />
 		
-		<copy file="${srcdir}/sphinx.config.template" tofile="/etc/sphinxsearch/sites/${app.name}" overwrite="true">
+		<copy file="${srcdir}/sphinx.config.template" tofile="/etc/sphinxsearch/sites/${db.name}" overwrite="true">
 			<filterchain>
 			  <replacetokens>
 			    <token key="db.user" value="${db.user}" />
 				<token key="db.password" value="${db.password}" />
 				<token key="db.host" value="${db.host}" />
 				<token key="db.name" value="${db.name}" />
-				<token key="app.name" value="${app.name}" />
 				<token key="app.path" value="${basedir}" />
 			  </replacetokens>
 			</filterchain>
