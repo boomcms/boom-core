@@ -279,6 +279,38 @@
 		<mkdir dir="${builddir}/src" mode="0777" />
 	</target>
 
+	<target name="setup-apache">
+		<propertyprompt propertyName="vhostdir" promptText="Where do you keep your apache vhost files?" defaultValue="/etc/apache2/vhosts.d" />
+		<propertyprompt propertyName="server_name" promptText="What is the ServerName property going to be?" defaultValue="" />
+		<propertyprompt propertyName="listen_addr" promptText="What IP address does the server listen on?" defaultValue="" />
+
+		<copy file="${srcdir}/vhost.conf" tofile="${vhostdir}/${server_name}.conf" overwrite="true">
+			<filterchain>
+			  <replacetokens>
+			    <token key="doc_root" value="${basedir}" />
+				<token key="environment" value="DEVELOPMENT" />
+				<token key="server_name" value="${server_name}" />
+				<token key="listen_addr" value="${listen_addr}" />
+			  </replacetokens>
+			</filterchain>
+		</copy>
+
+		<!-- Restart Apache, if the syntax is ok -->
+		<exec command="sudo apache2ctl configtest" outputProperty="syntaxok" />
+		
+		<if>
+			<equals arg1="${syntaxok}" arg2="Syntax OK" />
+
+			<then>
+				<echo message="Apache config syntax OK, restarting apache" />
+				<exec command="apache2ctl -k graceful" />
+			</then>
+			<else>
+				<echo message="There's an error in your apache syntax. Fix errors and restart apache manually" level="warn" />
+			</else>
+		</if>
+	</target>
+
 	<!-- setup the application on a development machine -->
 	<target name="setup-ci">
 		<!-- Create application directories -->
@@ -406,35 +438,7 @@
 
 		<!-- Copy the vhost file into place -->
 		<echo>Now we're going to copy your apache vhost file into place.</echo>
-		<propertyprompt propertyName="vhostdir" promptText="Where do you keep your apache vhost files?" defaultValue="/etc/apache2/vhosts.d" />
-		<propertyprompt propertyName="server_name" promptText="What is the ServerName property going to be?" defaultValue="" />
-		<propertyprompt propertyName="listen_addr" promptText="What IP address does the server listen on?" defaultValue="" />
-
-		<copy file="${srcdir}/vhost.conf" tofile="${vhostdir}/${server_name}.conf" overwrite="true">
-			<filterchain>
-			  <replacetokens>
-			    <token key="doc_root" value="${basedir}" />
-				<token key="environment" value="DEVELOPMENT" />
-				<token key="server_name" value="${server_name}" />
-				<token key="listen_addr" value="${listen_addr}" />
-			  </replacetokens>
-			</filterchain>
-		</copy>
-
-		<!-- Restart Apache, if the syntax is ok -->
-		<exec command="sudo apache2ctl configtest" outputProperty="syntaxok" />
-		
-		<if>
-			<equals arg1="${syntaxok}" arg2="Syntax OK" />
-
-			<then>
-				<echo message="Apache config syntax OK, restarting apache" />
-				<exec command="apache2ctl -k graceful" />
-			</then>
-			<else>
-				<echo message="There's an error in your apache syntax. Fix errors and restart apache manually" level="warn" />
-			</else>
-		</if>
+		<phingcall target="setup-apache" />
 	</target>
 	
 	<target name="setup-sphinx">
