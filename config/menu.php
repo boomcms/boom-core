@@ -11,19 +11,24 @@ return array(
 			'title'		=>	'Assets',
 			'url'		=>	'/cms/assets',
 			'action'	=>	'manage_assets',
-			'priority'	=>	2,
+			'priority'	=>	3,
 		),
 		'people'	=>	array(
 			'title'		=>	'People',
 			'url'		=>	'/cms/people',
 			'action'	=>	'manage_people',
-			'priority'	=>	3,
+			'priority'	=>	4,
 		),
+		'pages'	=>	array(
+			'title'		=>	'Pages',
+			'url'		=>	'/cms/pages',
+			'priority'	=>	2,
+		),		
 		'templates'	=>	array(
 			'title'		=>	'Templates',
 			'url'		=>	'/cms/templates',
 			'action'	=>	'manage_templates',
-			'priority'	=>	4,
+			'priority'	=>	5,
 		),
 	),
 );
