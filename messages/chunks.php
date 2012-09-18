@@ -6,8 +6,5 @@ return array(
 	'feature'	=>	'Click to feature a page here.',
 	'linkset'	=>	'',
 	'slideshow'	=>	'Click to insert a slideshow here.',
-	'asset'		=>	array(
-		'image'		=>	'',
-		'video'		=>	'',
-	)
+	'video'		=>	'Click here to add a video.',
 );
