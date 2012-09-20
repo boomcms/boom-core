@@ -16,7 +16,7 @@ if ( ! defined('SKIP_SLEDGE_INIT'))
 	 */
 	Kohana::$log->attach(
 		new Log_Remote(
-			'https://status.thisishoop.com/api/logs/new', 
+			'https://status.thisishoop.com/api/logs/new',
 			array(
 				'hostname'	=>	$_SERVER['SERVER_NAME'],
 				'api_key'	=>	'gChlK4F5BwP3NY21IgJc-WlYY3uFwayguKNMI96dJ-pJfNHj6HtaegA7ZRA38E',
@@ -44,7 +44,7 @@ if ( ! defined('SKIP_SLEDGE_INIT'))
 		->defaults(array(
 			'controller' => 'cms_account'
 		));
-	
+
 
 	/**
 	* Route for displaying / saving assets
@@ -166,17 +166,4 @@ if ( ! defined('SKIP_SLEDGE_INIT'))
 			}
 		}
 	);
-
-	/**
-	* Register the default Sledge plugins.
-	*/
-	Plugin::register(array(
-		'archive'		=>	'plugin/archive',
-		'child_pages'	=>	'plugin/page/children_html',
-		'createsend'	=>	'plugin/createsend/signup',
-	 	'twitter'		=>	'plugin/twitter/feed',
-		'search'		=>	'plugin/search',
-		'leftnav'		=>	'plugin/tree/leftnav',
-		'mainnav'		=>	'plugin/tree/mainnav',
-	));
 }
