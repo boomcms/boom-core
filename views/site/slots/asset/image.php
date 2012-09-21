@@ -1,1 +1,1 @@
-<img src="<?= Asset::PATH ?><?= $asset;?>/430/260" />
+<img src="<?= Asset::PATH ?><?= $asset->id;?>/430/260" />
