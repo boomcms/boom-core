@@ -56,7 +56,7 @@
 
 	<div id="sledge-loader-dialog-overlay" class="ui-widget-overlay"></div>
 	<div id="sledge-page-edit">
-		<iframe id="sledge-page-edit-iframe" src="<?= Request::detect_uri() . URL::query( array('editpage' => 1));?>"></iframe>
+		<iframe id="sledge-page-edit-iframe" src="<?= URL::site(Request::detect_uri()) . URL::query( array('editpage' => 1));?>"></iframe>
 	</div>
 
 	<?= HTML::script("sledge/js/sledge.helpers.js") ?>
