@@ -65,8 +65,8 @@
 	<?= HTML::script("sledge/js/sledge.page.js") ?>
 	<?= HTML::script("sledge/js/sledge.helpers.js") ?>
 	<?= HTML::script("sledge/js/sledge.tagmanager.js") ?>
-	<?= HTML::script("sledge/js/sledge.tagmanager.assets.js") ?>
-	<?= HTML::script("sledge/js/sledge.tagmanager.items.js") ?>
+	<?= HTML::script("sledge/js/sledge.assets.js") ?>
+	<?= HTML::script("sledge/js/sledge.items.js") ?>
 
 	<script type="text/javascript">
 		//<![CDATA[
