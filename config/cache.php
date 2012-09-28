@@ -1,8 +1,13 @@
 <?php defined('SYSPATH') or die('No direct access allowed.');
 
 return array(
+	'apc' => array(
+		'namespace'			 => Arr::get(Kohana::$config->load('database.default.connection' ), 'database'),
+		'driver'             => 'apc',
+		'default_expire'     => NULL,			
+	),
 	'memcache' => array(
-		'namespace'			 => Arr::get(Kohana::$config->load( 'database.default.connection' ), 'database'),
+		'namespace'			 => Arr::get(Kohana::$config->load('database.default.connection' ), 'database'),
 		'driver'             => 'memcache',
 		'default_expire'     => NULL,
 		'compression'        => FALSE,              // Use Zlib compression (can cause issues with integers)
