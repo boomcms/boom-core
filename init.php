@@ -6,25 +6,6 @@
 // Although this code should probably be moved to a Sledge::init() function which is only called when necessary, but this way will do for now.
 if ( ! defined('SKIP_SLEDGE_INIT'))
 {
-	/*
-	* Let the Sledge take charge of exceptions.
-	*/
-	set_exception_handler(array('Sledge', 'exception_handler'));
-
-	/**
-	 * Log remotely.
-	 */
-	Kohana::$log->attach(
-		new Log_Remote(
-			'https://status.thisishoop.com/api/logs/new',
-			array(
-				'hostname'	=>	$_SERVER['SERVER_NAME'],
-				'api_key'	=>	'gChlK4F5BwP3NY21IgJc-WlYY3uFwayguKNMI96dJ-pJfNHj6HtaegA7ZRA38E',
-				'key'		=>	'nIPOjkcaCGNdml3qjvtE-CQs3IZKffx7DP1JkJYrk-52qSXQYbvuGYjmDT63bn',
-			)
-		)
-	);
-
 	/* Include the userguide module if this isn't a live instance.
 	* @link http://kohanaframework.org/3.2/guide/userguide
 	*/
