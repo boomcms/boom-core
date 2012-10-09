@@ -1,1 +1,1 @@
-<img src="<?= Asset::PATH ?><?= $asset->id;?>/430/260" />
+<img src="<?= Sledge_Asset::PATH ?><?= $asset->id;?>/430/260" />

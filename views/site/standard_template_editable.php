@@ -30,8 +30,8 @@
 	<title><?= $page->title; ?> | <?= Arr::get($config, 'client_name')?></title>
 	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 	<meta http-equiv="Content-Style-Type" content="text/css" />
-	<?= HTML::style("sledge/css/cms.css") ?>
-	<?= HTML::style("sledge/css/ui-" . $actual_person->theme . "/jquery-ui.css", array('id' => 'sledge-theme-css')) ?>
+	<?= HTML::style("media/sledge/css/cms.css") ?>
+	<?= HTML::style("media/sledge/css/ui-" . $actual_person->theme . "/jquery-ui.css", array('id' => 'sledge-theme-css')) ?>
 </head>
 <body>
 	<div id="sledge-wysiwyg-toolbar" class="mceEditor o2k7Skin o2k7SkinSilver"></div>
@@ -55,18 +55,19 @@
 		<iframe id="s-page-edit-iframe" src="<?= URL::site(Request::detect_uri()) . URL::query( array('editpage' => 1));?>"></iframe>
 	</div>
 
-	<?= HTML::script("sledge/js/sledge.helpers.js") ?>
-	<?= HTML::script("sledge/js/jquery.js") ?>
-	<?= HTML::script("sledge/js/sledge.jquery.ui.js") ?>
-	<?= HTML::script("sledge/js/sledge.plugins.js") ?>
-	<?= HTML::script("sledge/js/sledge.config.js") ?>
-	<?= HTML::script("sledge/js/sledge.core.js") ?>
-	<?= HTML::script("sledge/js/sledge.chunk.js") ?>
-	<?= HTML::script("sledge/js/sledge.page.js") ?>
-	<?= HTML::script("sledge/js/sledge.helpers.js") ?>
-	<?= HTML::script("sledge/js/sledge.tagmanager.js") ?>
-	<?= HTML::script("sledge/js/sledge.assets.js") ?>
-	<?= HTML::script("sledge/js/sledge.items.js") ?>
+	<?= HTML::script("media/sledge/js/sledge.helpers.js") ?>
+	<?= HTML::script("media/sledge/js/jquery.js") ?>
+	<?= HTML::script("media/sledge/js/sledge.jquery.ui.js") ?>
+	<?= HTML::script("media/sledge/js/sledge.plugins.js") ?>
+	<?= HTML::script("media/sledge/js/sledge.config.js") ?>
+	<?= HTML::script("media/sledge/js/sledge.core.js") ?>
+	<?= HTML::script("media/sledge/js/sledge.chunk.js") ?>
+	<?= HTML::script("media/sledge/js/sledge.page.js") ?>
+	<?= HTML::script("media/sledge/js/sledge.helpers.js") ?>
+	<?= HTML::script("media/sledge/js/sledge.tagmanager.js") ?>
+	<?= HTML::script("media/sledge/js/sledge.assets.js") ?>
+	<?= HTML::script("media/sledge/js/sledge.links.js") ?>
+	<?= HTML::script("media/sledge/js/sledge.items.js") ?>
 
 	<script type="text/javascript">
 		//<![CDATA[

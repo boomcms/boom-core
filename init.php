@@ -6,25 +6,6 @@
 // Although this code should probably be moved to a Sledge::init() function which is only called when necessary, but this way will do for now.
 if ( ! defined('SKIP_SLEDGE_INIT'))
 {
-	/*
-	* Let the Sledge take charge of exceptions.
-	*/
-	set_exception_handler(array('Sledge', 'exception_handler'));
-
-	/**
-	 * Log remotely.
-	 */
-	Kohana::$log->attach(
-		new Log_Remote(
-			'https://status.thisishoop.com/api/logs/new',
-			array(
-				'hostname'	=>	$_SERVER['SERVER_NAME'],
-				'api_key'	=>	'gChlK4F5BwP3NY21IgJc-WlYY3uFwayguKNMI96dJ-pJfNHj6HtaegA7ZRA38E',
-				'key'		=>	'nIPOjkcaCGNdml3qjvtE-CQs3IZKffx7DP1JkJYrk-52qSXQYbvuGYjmDT63bn',
-			)
-		)
-	);
-
 	/* Include the userguide module if this isn't a live instance.
 	* @link http://kohanaframework.org/3.2/guide/userguide
 	*/
@@ -100,13 +81,25 @@ if ( ! defined('SKIP_SLEDGE_INIT'))
 		));
 
 	/**
-	* Route for app specific controllers.
-	*/
-	Route::set('app', 'app/<controller>(/<action>(/<id>))')
-		->defaults(array(
-			'controller' => 'default',
-			'action'     => 'index',
-		));
+	 * Route for vanity URIs. Vanity URIs are the page ID base-36 encoded and prefixed with an underscore.
+	 * Vanity URIs redirect to the page's primary URI
+	 */
+	Route::set('vanity', function($uri)
+		{
+			if (substr($uri, 0, 1) == '_')
+			{
+				// If URI is prefixed with an underscore then it's a short URI
+				$page_id = substr($uri, 1);
+				$page_id = base_convert($page_id, 36, 10);
+
+				return array(
+					'controller' 	=> 'site',
+					'action'     	=> 'redirect',
+					'page'			=> ORM::factory('page', $page_id),
+				);
+			}
+		}
+	);
 
 	/**
 	* Any URIs not caught by a previous route will be caught by this.
@@ -116,53 +109,29 @@ if ( ! defined('SKIP_SLEDGE_INIT'))
 	*
 	* This is starting to become quite unwieldy, some rewriting may be required.
 	*/
-	Route::set('catchall', function($uri)
+	Route::set('sledge', function($uri)
 		{
 			preg_match('|\.([a-zA-Z]+)$|', $uri, $format);
 			$uri = preg_replace('|/?\.([a-zA-Z]+)$|', '', $uri);
 
-			if (substr($uri, 0, 1) == '_')
-			{
-				// If URI is prefixed with an underscore then it's a short URI
-				$page_id = substr($uri, 1);
-				$page_id = base_convert($page_id, 36, 10);
-				return array(
-					'controller' 	=> 'site',
-					'action'     	=> 'redirect',
-					'page'			=> ORM::factory('page', $page_id),
-					'options'		=> array(),
-				);
-			}
-			else
-			{
-				$result = Sledge::process_uri($uri);
-			}
+			$page_uri = ORM::factory('page_uri', array('uri' => $uri));
 
-			if ($result !== NULL)
+			if ($page_uri->loaded() AND $page_uri->page->loaded())
 			{
-				// If the URI used to access the page wasn't the primary URI then redirect them, otherwise send them to the site controller
-				$page_uri = $result['page_uri'];
-
 				if ($page_uri->primary_uri == FALSE AND $page_uri->redirect == TRUE)
 				{
-					return array(
-						'controller' 	=> 'site',
-						'action'     	=> 'redirect',
-						'page'			=> $page_uri->page,
-						'options'		=> $result['options'],
-					);
+					$action = 'redirect';
 				}
 				else
 				{
-					$format = (empty($format))? 'html' : $format[1];
-
-					return array(
-						'controller' 	=> 'site',
-						'action'     	=> $format,
-						'page'			=> $page_uri->page,
-						'options'		=> $result['options'],
-					);
+					$action = $format = (empty($format))? 'html' : $format[1];
 				}
+				
+				return array(
+					'controller' 	=> 'site',
+					'action'     	=> $action,
+					'page'			=> $page_uri->page,
+				);
 			}
 		}
 	);
