@@ -2,7 +2,7 @@
 ## data source definition
 #############################################################################
 
-source @db.name@-page_text
+source @db.name@-page_text-site
 {
 	# data source type. mandatory, no default value
 	type					= mysql
@@ -16,7 +16,7 @@ source @db.name@-page_text
 	sql_range_step = 10000
 
 	sql_query				= \
-		select chunk.id, chunk.slotname, page.id as page_id, chunk_text.text, page_v.title, page_v.description, page_v.keywords, visible_from, page_mptt.parent_id from page inner join page_v on published_vid = page_v.id inner join page_chunk on page_v.id = page_chunk.page_vid inner join chunk on page_chunk.chunk_id = chunk.id inner join chunk_text on chunk.id = chunk_text.chunk_id inner join page_mptt on page.id = page_mptt.id where chunk.type = 'text' and page_v.deleted = false and page_v.visible_from <= unix_timestamp() and page_v.hidden_from_search_results = false and (page_v.visible_to = 0 or page_v.visible_to >= unix_timestamp()) and page_v.id >= $start and page_v.id <= $end;
+		select chunk.id, chunk.slotname, page.id as page_id, chunk_text.text, page_v.title, page_v.description, page_v.keywords, visible_from, page_mptt.parent_id from page inner join page_v on published_vid = page_v.id inner join page_chunk on page_v.id = page_chunk.page_vid inner join chunk on page_chunk.chunk_id = chunk.id inner join chunk_text on chunk.id = chunk_text.chunk_id inner join page_mptt on page.id = page_mptt.id where page_v.deleted = false and page_v.visible_from <= unix_timestamp() and page_v.hidden_from_search_results = false and (page_v.visible_to = 0 or page_v.visible_to >= unix_timestamp()) and page_v.id >= $start and page_v.id <= $end;
 
 	sql_attr_uint			= page_id:32
 	sql_attr_uint			= parent_id
@@ -24,23 +24,47 @@ source @db.name@-page_text
 	sql_attr_string			= slotname
 }
 
-source @db.name@-page_text-delta : @db.name@-page_text
+source @db.name@-page_text-site-delta : @db.name@-page_text-site
 {
 	sql_query_pre = 
 	sql_query_range =
 	sql_range_step = 0
 	sql_query				= \
-		select chunk.id, chunk.slotname, page.id as page_id, chunk_text.text, page_v.title, page_v.description, page_v.keywords, visible_from, parent_id from page inner join page_v on published_vid = page_v.id inner join page_chunk on page_v.id = page_chunk.page_vid inner join chunk on page_chunk.chunk_id = chunk.id inner join chunk_text on chunk.id = chunk_text.chunk_id inner join page_mptt on page.id = page_mptt.id where chunk.type = 'text' and page_v.deleted = false and page_v.visible_from <= unix_timestamp() and (page_v.visible_to = 0 or page_v.visible_to >= unix_timestamp()) and page_v.hidden_from_search_results = false and page_v.id >= (SELECT max_doc_id FROM sph_counter WHERE counter_id=1 );
+		select chunk.id, chunk.slotname, page.id as page_id, chunk_text.text, page_v.title, page_v.description, page_v.keywords, visible_from, parent_id from page inner join page_v on published_vid = page_v.id inner join page_chunk on page_v.id = page_chunk.page_vid inner join chunk on page_chunk.chunk_id = chunk.id inner join chunk_text on chunk.id = chunk_text.chunk_id inner join page_mptt on page.id = page_mptt.id where page_v.deleted = false and page_v.visible_from <= unix_timestamp() and (page_v.visible_to = 0 or page_v.visible_to >= unix_timestamp()) and page_v.hidden_from_search_results = false and page_v.id >= (SELECT max_doc_id FROM sph_counter WHERE counter_id=1 );
+}
+
+source @db.name@-page_text-cms : @db.name@-page_text-site
+{
+	sql_query_pre = REPLACE INTO sph_counter SELECT 2, MAX(id) from page_v
+    sql_query_range = select min(id), max(id) from page_v
+	sql_range_step = 10000
+
+	sql_query				= \
+		select chunk.id, chunk.slotname, page.id as page_id, chunk_text.text, page_v.title, page_v.description, page_v.keywords, visible_from, page_mptt.parent_id from page inner join page_v on active_vid = page_v.id inner join page_chunk on page_v.id = page_chunk.page_vid inner join chunk on page_chunk.chunk_id = chunk.id inner join chunk_text on chunk.id = chunk_text.chunk_id inner join page_mptt on page.id = page_mptt.id where page_v.deleted = false and page_v.visible_from <= unix_timestamp() and page_v.hidden_from_search_results = false and (page_v.visible_to = 0 or page_v.visible_to >= unix_timestamp()) and page_v.id >= $start and page_v.id <= $end;
+
+	sql_attr_uint			= page_id:32
+	sql_attr_uint			= parent_id
+	sql_attr_timestamp		= visible_from
+	sql_attr_string			= slotname
+}
+
+source @db.name@-page_text-cms-delta : @db.name@-page_text-cms
+{
+	sql_query_pre = 
+	sql_query_range =
+	sql_range_step = 0
+	sql_query				= \
+		select chunk.id, chunk.slotname, page.id as page_id, chunk_text.text, page_v.title, page_v.description, page_v.keywords, visible_from, parent_id from page inner join page_v on active_vid = page_v.id inner join page_chunk on page_v.id = page_chunk.page_vid inner join chunk on page_chunk.chunk_id = chunk.id inner join chunk_text on chunk.id = chunk_text.chunk_id inner join page_mptt on page.id = page_mptt.id where page_v.deleted = false and page_v.visible_from <= unix_timestamp() and (page_v.visible_to = 0 or page_v.visible_to >= unix_timestamp()) and page_v.hidden_from_search_results = false and page_v.id >= (SELECT max_doc_id FROM sph_counter WHERE counter_id=2 );
 }
 
 #############################################################################
 ## index definition
 #############################################################################
 
-index @db.name@-page_text
+index @db.name@-page_text-site
 {
-	source			= @db.name@-page_text
-	path			= /var/lib/sphinxsearch/data/@db.name@.page_text
+	source			= @db.name@-page_text-site
+	path			= /var/lib/sphinxsearch/data/@db.name@.page_text.site
 
 	docinfo			= extern
 	mlock			= 0
@@ -58,9 +82,23 @@ index @db.name@-page_text
 	#ignore_chars		= U+002E
 }
 
-index @db.name@-page_text-delta : @db.name@-page_text
+index @db.name@-page_text-site-delta : @db.name@-page_text-site
 {
-	source			= @db.name@-page_text-delta
-	path			= /var/lib/sphinxsearch/data/@db.name@.page_text.delta
+	source			= @db.name@-page_text-site-delta
+	path			= /var/lib/sphinxsearch/data/@db.name@.page_text.site.delta
+	morphology		= stem_en
+}
+
+index @db.name@-page_text-cms : @db.name@-page_text-site
+{
+	source			= @db.name@-page_text-cms-delta
+	path			= /var/lib/sphinxsearch/data/@db.name@.page_text.cms
+	morphology		= stem_en
+}
+
+index @db.name@-page_text-cms-delta : @db.name@-page_text-cms
+{
+	source			= @db.name@-page_text-cms-delta
+	path			= /var/lib/sphinxsearch/data/@db.name@.page_text.cms.delta
 	morphology		= stem_en
 }
