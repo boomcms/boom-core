@@ -93,7 +93,7 @@ if ( ! defined('SKIP_SLEDGE_INIT'))
 				$page_id = base_convert($page_id, 36, 10);
 
 				return array(
-					'controller' 	=> 'site',
+					'controller' 	=> 'page',
 					'action'     	=> 'redirect',
 					'page'			=> ORM::factory('page', $page_id),
 				);
@@ -126,9 +126,9 @@ if ( ! defined('SKIP_SLEDGE_INIT'))
 				{
 					$action = $format = (empty($format))? 'html' : $format[1];
 				}
-				
+
 				return array(
-					'controller' 	=> 'site',
+					'controller' 	=> 'page',
 					'action'     	=> $action,
 					'page'			=> $page_uri->page,
 				);
