@@ -2,7 +2,7 @@
 
 return array(
 	'archive'		=>	'plugin/archive',
-	'child_pages'	=>	'plugin/page/children_html',
+	'child_pages'	=>	'plugin/page/children',
 	'createsend'	=>	'plugin/createsend/signup',
 	'twitter'		=>	'plugin/twitter/feed',
 	'search'		=>	'plugin/search',
