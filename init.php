@@ -80,6 +80,11 @@ if ( ! defined('SKIP_SLEDGE_INIT'))
 			'action'     => 'index',
 		));
 
+	Route::set('child_page_plugin', 'plugin/page/children.<action>')
+		->defaults(array(
+			'controller'	=>	'plugin_page_children'
+		));
+
 	/**
 	 * Route for vanity URIs. Vanity URIs are the page ID base-36 encoded and prefixed with an underscore.
 	 * Vanity URIs redirect to the page's primary URI
