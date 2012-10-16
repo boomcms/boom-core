@@ -1,5 +1,5 @@
 <?
-	$authors = $page->authors();
+	$authors = $page->get_tags('Authors');
 
 	if ( ! empty($authors)):
 		foreach ($authors as & $author):
