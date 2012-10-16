@@ -1,5 +1,5 @@
 <?
-	$tags = $page->tags();
+	$tags = $page->get_tags();
 
 	if ( ! empty($tags)):
 		foreach ($tags as & $tag):
