@@ -1,5 +1,5 @@
 <?
-	$cats = $page->categories();
+	$cats = $page->get_tags('Categories');
 
 	if ( ! empty($cats)):
 		foreach ($cats as & $cat):
