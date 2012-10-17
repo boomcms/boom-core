@@ -134,8 +134,8 @@ if ( ! defined('SKIP_SLEDGE_INIT'))
 
 				return array(
 					'controller' 	=> 'page',
-					'action'     	=> $action,
-					'page'			=> $page_uri->page,
+					'action'		=> $action,
+					'page'		=> $page_uri->page,
 				);
 			}
 		}
