@@ -23,7 +23,7 @@ if ( ! defined('SKIP_SLEDGE_INIT'))
 			'action' => '(login|logout)'
 		))
 		->defaults(array(
-			'controller' => 'cms_account'
+			'controller' => 'cms_auth'
 		));
 
 
