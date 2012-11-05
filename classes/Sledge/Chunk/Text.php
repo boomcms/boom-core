@@ -54,6 +54,13 @@ class Sledge_Chunk_Text extends Chunk
 	{
 		$text = __(Kohana::message('chunks', 'text'));
 
+		// Add a <p> tag around the default text for bodycopies.
+		// This needs to be done a bit better. Perhaps use default temlates instead of _add_htm()?
+		if ($this->_slotname == 'bodycopy' OR $this->_slotname == 'bodycopy2')
+		{
+			$text = "<p>$text</p>";
+		}
+
 		if ($this->_template === NULL)
 		{
 			return $this->_add_html($text);
