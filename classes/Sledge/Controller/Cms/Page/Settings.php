@@ -133,7 +133,7 @@ class Sledge_Controller_Cms_Page_Settings extends Controller_Cms_Page
 	{
 		if ($this->request->method() == Request::POST)
 		{
-			$this->update_columns(array('feature_image'));
+			$this->update_columns(array('feature_image_id'));
 			$this->page->save();
 
 			// Ensure slot data doesn't get lost.

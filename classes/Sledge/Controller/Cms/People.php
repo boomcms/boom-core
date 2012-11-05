@@ -61,7 +61,12 @@ class Sledge_Controller_Cms_People extends Sledge_Controller
 				foreach ( (array) $groups as $group_id)
 				{
 					Sledge::log("Added person $person->emailaddress to group with ID $group_id");
-					$person->add_group($group_id);
+
+					try
+					{
+						$person->add('groups', $group);
+					}
+					catch (Database_Exception $e) {}
 				}
 			}
 			else
@@ -131,15 +136,12 @@ class Sledge_Controller_Cms_People extends Sledge_Controller
 	 */
 	public function action_delete_group()
 	{
-		try
-		{
-			ORM::factory('Person_group')
-				->where('person_id', '=', $this->request->param('id'))
-				->where('group_id', '=', $this->request->post('groups'))
-				->find()
-				->delete();
-		}
-		catch (Exception $e) {}
+//		try
+//		{
+			ORM::factory('person', $this->request->param('id'))
+				->remove('groups', $this->request->post('groups'));
+//		}
+//		catch (Exception $e) {}
 	}
 
 	/**
@@ -225,7 +227,7 @@ class Sledge_Controller_Cms_People extends Sledge_Controller
 
 		$this->template = View::factory('sledge/people/list', array(
 			'people'	=>	$people,
-			'group'	=>	ORM::factory('group', $group),
+			'group'	=>	ORM::factory('Group', $group),
 			'total'	=>	$total,
 			'sortby'	=>	$sortby,
 			'order'	=>	$order,

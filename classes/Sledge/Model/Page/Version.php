@@ -16,7 +16,7 @@ class Sledge_Model_Page_Version extends Model_Version
 	protected $_belongs_to = array(
 		'template'		=>	array('model' => 'Template', 'foreign_key' => 'template_id'),
 		'person'		=>	array('model' => 'Person', 'foreign_key' => 'audit_person'),
-		'image'		=>	array('model' => 'Asset', 'foreign_key' => 'feature_image'),
+		'image'		=>	array('model' => 'Asset', 'foreign_key' => 'feature_image_id'),
 	);
 
 	protected $_has_one = array(
@@ -52,7 +52,7 @@ class Sledge_Model_Page_Version extends Model_Version
 		'audit_person'					=>	'',
 		'audit_time'					=>	'',
 		'deleted'						=>	'',
-		'feature_image'					=>	'',
+		'feature_image_id'					=>	'',
 		'published'						=>	'',
 	);
 
@@ -108,7 +108,7 @@ class Sledge_Model_Page_Version extends Model_Version
 	*/
 	public function has_image()
 	{
-		if ($this->feature_image == 0 OR ! $this->image->loaded())
+		if ($this->feature_image_id == 0 OR ! $this->image->loaded())
 		{
 			return FALSE;
 		}
