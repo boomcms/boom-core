@@ -185,6 +185,6 @@ class Sledge_Model_Page_Version extends Model_Version
 		}
 
 		// Return a Model_Asset object for this asset ID.
-		return $this->_thumbnail = ORM::factory('asset', $asset_id);
+		return $this->_thumbnail = ORM::factory('Asset', $asset_id);
 	}
 }
