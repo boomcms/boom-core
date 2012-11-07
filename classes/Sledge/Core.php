@@ -92,7 +92,10 @@ class Sledge_Core
 			}
 
 			// Output the response body.
-			echo $response;
+			if (isset($response))
+			{
+				echo $response;
+			}
 		}
 		catch (Exception $e)
 		{

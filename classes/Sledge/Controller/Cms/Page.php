@@ -396,8 +396,8 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 
 		// Try and find existing details from db / cache.
 		$person_page = ORM::factory('Person_Page', array(
-			'person_id' =>	$this->person->id,
-			'page_id' => $this->page->id
+			'person_id'	=>	$this->person->id,
+			'page_id'		=>	$this->page->id
 		));
 
 		// Set the values and save.
@@ -405,9 +405,9 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 		// If it was loaded it will be updated.
 		$person_page->values(array(
 			'person_id'		=>	$this->person->id,
-			'page_id'		=>	$this->page->id,
+			'page_id'			=>	$this->page->id,
 			'since'			=>	$time,
-			'last_active'	=>	$time,
+			'last_active'		=>	$time,
 			'saved'			=>	FALSE,
 		));
 		$person_page->save();
