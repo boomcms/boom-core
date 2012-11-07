@@ -1,3 +1,3 @@
 <?php defined('SYSPATH') OR die('No direct script access.');
 
-class Controller extends Sledge_Controller {}
+class Model_Role extends Sledge_Model_Role {}

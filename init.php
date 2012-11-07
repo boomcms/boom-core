@@ -23,7 +23,7 @@ if ( ! defined('SKIP_SLEDGE_INIT'))
 			'action' => '(login|logout)'
 		))
 		->defaults(array(
-			'controller' => 'cms_account'
+			'controller' => 'cms_auth'
 		));
 
 
@@ -80,6 +80,11 @@ if ( ! defined('SKIP_SLEDGE_INIT'))
 			'action'     => 'index',
 		));
 
+	Route::set('child_page_plugin', 'plugin/page/children.<action>')
+		->defaults(array(
+			'controller'	=>	'plugin_page_children'
+		));
+
 	/**
 	 * Route for vanity URIs. Vanity URIs are the page ID base-36 encoded and prefixed with an underscore.
 	 * Vanity URIs redirect to the page's primary URI
@@ -93,7 +98,7 @@ if ( ! defined('SKIP_SLEDGE_INIT'))
 				$page_id = base_convert($page_id, 36, 10);
 
 				return array(
-					'controller' 	=> 'site',
+					'controller' 	=> 'page',
 					'action'     	=> 'redirect',
 					'page'			=> ORM::factory('page', $page_id),
 				);
@@ -126,11 +131,11 @@ if ( ! defined('SKIP_SLEDGE_INIT'))
 				{
 					$action = $format = (empty($format))? 'html' : $format[1];
 				}
-				
+
 				return array(
-					'controller' 	=> 'site',
-					'action'     	=> $action,
-					'page'			=> $page_uri->page,
+					'controller' 	=> 'page',
+					'action'		=> $action,
+					'page'		=> $page_uri->page,
 				);
 			}
 		}
