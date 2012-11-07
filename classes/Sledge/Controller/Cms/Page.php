@@ -140,7 +140,11 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 		if ($this->request->post('parent_id') !== NULL AND $this->request->post('template_id') !== NULL)
 		{
 			// Find the parent page.
+<<<<<<< HEAD:classes/Sledge/Controller/Cms/Page.php
 			$parent = ORM::factory('Page', $this->request->post('parent_id'));
+=======
+			$parent = ORM::factory('page', $this->request->post('parent_id'));
+>>>>>>> origin/master:classes/sledge/controller/cms/page.php
 
 			// Check for add permissions on the parent page.
 			if ( ! $this->auth->logged_in('add_page', $parent))
@@ -157,7 +161,11 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 			}
 
 			// Create a new page object.
+<<<<<<< HEAD:classes/Sledge/Controller/Cms/Page.php
 			$page = ORM::factory('Page');
+=======
+			$page = ORM::factory('page');
+>>>>>>> origin/master:classes/sledge/controller/cms/page.php
 			$page->visible = FALSE;
 			$page->title = 'Untitled';
 			$page->visible_in_leftnav = $parent->children_visible_in_leftnav;
@@ -187,7 +195,7 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 			// Logging.
 			Sledge::log("Added a new page under " . $parent->title, "Page ID: " . $page->id);
 
-			$this->response->body(URL::base($this->request) . $uri);
+			$this->response->body(URL::site($uri));
 		}
 		else
 		{
@@ -304,7 +312,11 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 
 		if ( (int) $parent_id != $this->page->mptt->parent_id AND $parent_id != $this->page->id)
 		{
+<<<<<<< HEAD:classes/Sledge/Controller/Cms/Page.php
 			$parent = ORM::factory('Page', $parent_id);
+=======
+			$parent = ORM::factory('page', $parent_id);
+>>>>>>> origin/master:classes/sledge/controller/cms/page.php
 
 			if ($parent->loaded())
 			{
@@ -562,7 +574,11 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 			{
 				if ($this->auth->logged_in("edit_slot_$name", $page) AND ! isset($obj->delete))
 				{
+<<<<<<< HEAD:classes/Sledge/Controller/Cms/Page.php
 					$chunk = ORM::factory('Chunk');
+=======
+					$chunk = ORM::factory('chunk');
+>>>>>>> origin/master:classes/sledge/controller/cms/page.php
 					$chunk->type = $type;
 					$chunk->slotname = $name;
 
@@ -627,7 +643,11 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 				->join('chunk', 'inner')
 				->on('page_chunks.chunk_id', '=', 'chunks.id')
 				->group_by('slotname')
+<<<<<<< HEAD:classes/Sledge/Controller/Cms/Page.php
 				->where('page_chunks.page_vid', '=', $old_vid);
+=======
+				->where('page_chunk.page_vid', '=', $old_vid);
+>>>>>>> origin/master:classes/sledge/controller/cms/page.php
 
 			if ( ! empty($slotnames))
 			{

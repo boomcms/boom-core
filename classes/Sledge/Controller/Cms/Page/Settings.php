@@ -73,7 +73,7 @@ class Sledge_Controller_Cms_Page_Settings extends Controller_Cms_Page
 			$this->page->save();
 
 			// Updated existing child pages with leftnav visibility or template.
-			if ($this->request->post('visible_in_leftnav_cascade') == 1 OR 
+			if ($this->request->post('visible_in_leftnav_cascade') == 1 OR
 				$this->request->post('visible_in_leftnav_cms_cascase') == 1 OR
 				$this->request->post('child_template_cascade') == 1
 			)
@@ -213,7 +213,7 @@ class Sledge_Controller_Cms_Page_Settings extends Controller_Cms_Page
 	}
 
 	/**
-	* Edit the page's tags.  
+	* Edit the page's tags.
 	*
 	* @throws HTTP_Exception_403
 	* @uses Model_Page::add()
@@ -322,7 +322,7 @@ class Sledge_Controller_Cms_Page_Settings extends Controller_Cms_Page
 			$value = $this->request->post($column);
 
 			// Check that the column has been changed and then check for the required permission.
-			// Although with Kohana's ORM we don't really need to check for a changed value 
+			// Although with Kohana's ORM we don't really need to check for a changed value
 			// doing this means that we don't check for edit permissions on columns which aren't being changed.
 			if ($this->page->$column != $value AND $this->auth->logged_in("edit_$column", $this->page))
 			{
@@ -335,7 +335,7 @@ class Sledge_Controller_Cms_Page_Settings extends Controller_Cms_Page
 	 * Update page columns which are inherited from the parent page if no value is given.
 	 *
 	 * @param	array 	$columns	Array of column names.
-	 */ 
+	 */
 	public function update_inherited_columns(array $columns)
 	{
 		foreach ($columns as $column)
@@ -357,7 +357,7 @@ class Sledge_Controller_Cms_Page_Settings extends Controller_Cms_Page
 				}
 				else
 				{
-					// A value has been given so 
+					// A value has been given so
 					$this->page->$column = $value;
 				}
 			}
