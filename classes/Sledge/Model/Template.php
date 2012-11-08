@@ -36,22 +36,22 @@ class Sledge_Model_Template extends ORM
 	}
 
 	/**
-	* Returns a count of the number of the pages which use a template.  
+	* Returns a count of the number of the pages which use a template.
 	*
 	* @return int
 	*/
-	public function get_page_count()
+	public function page_count()
 	{
 		if ( ! $this->loaded())
 		{
 			return 0;
 		}
 
-		$query = DB::select(array('count("*")', 'pages'))
+		$query = DB::select(array(DB::expr('count(*)'), 'pages'))
 			->from('pages')
 			->join('page_versions', 'inner')
 			->on('pages.active_vid', '=', 'page_versions.id')
-			->where('template_id', '=', $this->pk())
+			->where('template_id', '=', $this->id)
 			->where('deleted', '=', FALSE)
 			->execute()
 			->as_array();
