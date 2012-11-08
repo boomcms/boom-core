@@ -45,52 +45,6 @@ class Sledge_Core
 	}
 
 	/**
-	 * This function controls menu generation.
-	 *
-	 * @param	string	$section	The name of the menu to be generated.
-	 * @return 	string
-	 */
-	public static function menu($section)
-	{
-		// Get all the menu items for the given section.
-		$menu_items = Kohana::$config->load('menu')->$section;
-
-		// Array of items we're going to include for this menu.
-		$menu = array();
-
-		foreach ($menu_items as $details)
-		{
-			// Include the item in the menu if a required action isn't given or the current user is allowed to perform the action.
-			if ( ! isset($details['action']) OR Auth::instance()->logged_in($details['action']))
-			{
-				// If no position is set then use a high number to move it to the end.
-				$details['priority'] = isset($details['priority'])? $details['priority'] : 1000;
-
-				// Add the item to the memu.
-				$menu[] = $details;
-			}
-		}
-
-		// Sort the menu items by priority.
-		usort($menu, function($a, $b){
-			return $a['priority'] - $b['priority'];
-		});
-
-		// Check that we've got some items to add to the menu.
-		if ( ! empty($menu))
-		{
-			// If there's a template for this section then use that, otherwise use a generic template.
-			$template = (Kohana::find_file('views', "sledge/menu/$section"))? "sledge/menu/$section" : "sledge/menu/default";
-			$template = View::factory($template);
-			$template->menu = $menu;
-
-			return $template->render();
-		}
-
-		return "";
-	}
-
-	/**
 	* Returns an array of available themes.
 	*
 	* @return array
