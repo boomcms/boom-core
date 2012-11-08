@@ -102,9 +102,10 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 
 			foreach ($details as $detail)
 			{
+				$person = ORM::factory('Person', $detail['person_id']);
 				$people[] = array(
 					'id'			=>	$detail['person_id'],
-					'name'		=>	ORM::factory('Person', $detail['person_id'])->name(),
+					'name'		=>	$person->firstname . " " . $person->lastname,
 					'since'		=>	$detail['since'],
 					'saved'		=>	(bool) $detail['saved'],
 				);

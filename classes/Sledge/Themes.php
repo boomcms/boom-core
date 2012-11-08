@@ -36,7 +36,7 @@ class Sledge_Themes
 			}
 		}
 
-		return Theme::$default;
+		return Themes::$default;
 	}
 
 	/**
