@@ -33,12 +33,25 @@ class Sledge_URL extends Kohana_URL
 		{
 			$uri = ($append > 0)? ($start_uri. $append) : $start_uri;
 			$append++;
-		
+
 			$page_uri = ORM::factory('Page_URI', array('uri' => $uri));
 		}
 		while ($page_uri->loaded() == TRUE);
-	
-		return $uri;		
+
+		return $uri;
+	}
+
+	/**
+	 * Generate a gravatar URL.
+	 *
+	 * @param	string	$email	Emailaddress of the gravater.
+	 * @param	integer	$size
+	 * @param	string	$default
+	 * @return	string
+	 */
+	public static function gravatar($email, $size = 80, $default = 'wavatar')
+	{
+		return "http://www.gravatar.com/avatar/" . md5($email) . "?s=$size&d=" . urlencode($default);
 	}
 
 	/**
@@ -55,9 +68,9 @@ class Sledge_URL extends Kohana_URL
 		{
 			$index = FALSE;
 		}
-		
+
 		return parent::site($uri, $protocol, $index);
 	}
 }
-	
+
 ?>
