@@ -30,7 +30,7 @@ class Sledge_Controller_Cms_Page_Uri extends Controller_Cms_Page
 			{
 				$this->page->add_uri($uri, FALSE);
 			}
-			catch (Sledge_Exception $e)
+			catch (Exception $e)
 			{
 				// URI is already in use.
 				// This response will trigger the JS to ask the user if they want to move the URI.

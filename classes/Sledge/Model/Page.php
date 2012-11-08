@@ -154,25 +154,15 @@ class Sledge_Model_Page extends ORM_Taggable
 			if ( ! $page_uri->loaded())
 			{
 				//  It's not an old URI, so create a new one.
-				// Check that the URI isn't already in use.
-				$existing = DB::select('page_id')
-					->from('page_uris')
-					->where('uri', '=', $uri)
-					->limit(1)
-					->execute();
-
-				if ($existing->count() > 0)
-				{
-					throw new Sledge_Exception('URI is already in use');
-				}
-
-				$page_uri = ORM::factory('Page_URI');
-				$page_uri->uri = $uri;
-				$page_uri->page_id = $this->id;
+				$page_uri = ORM::factory('Page_URI')
+					->values(array(
+						'uri'		=>	$uri,
+						'page_id'	=>	$this->id,
+					));
 			}
 
 			$page_uri->primary_uri = $primary;
-			$page_uri->save();
+			$page_uri->create();
 
 			if ($primary == TRUE)
 			{
@@ -328,7 +318,7 @@ class Sledge_Model_Page extends ORM_Taggable
 				return 'Date';
 				break;
 			default:
-				throw new Sledge_Exception("Page version has unknown child ordering policy: " . $this->child_ordering_policy);
+				throw new Exception("Page version has unknown child ordering policy: " . $this->child_ordering_policy);
 		}
 	}
 

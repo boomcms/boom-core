@@ -52,7 +52,7 @@ class Sledge_Controller_Plugin_Createsend extends Sledge_Controller
 		{
 			// Make sure we've got an email address and password.
 			$validation = $this->_get_validation();
-		
+
 			if ($validation->check())
 			{
 				// Include the Createsend API.
@@ -61,10 +61,10 @@ class Sledge_Controller_Plugin_Createsend extends Sledge_Controller
 				// Get a list ID and API key from the application config.
 				$list_id = Kohana::$config->load('createsend')->get('list_id');
 				$api_key = Kohana::$config->load('createsend')->get('api_key');
-			
+
 				if ( ! $list_id OR ! $api_key)
 				{
-					throw new Sledge_Exception("Site has not been configured for newsletter signups.");
+					throw new Exception("Site has not been configured for newsletter signups.");
 				}
 
 				// Submit the data to createsend.
@@ -83,7 +83,7 @@ class Sledge_Controller_Plugin_Createsend extends Sledge_Controller
 					// Display the signup form again with the response from createsend.
 					$this->template = View::factory('sledge/plugin/createsend/form');
 
-					$this->template->cs_error = $result->response->Message; 
+					$this->template->cs_error = $result->response->Message;
 				}
 			}
 			else
@@ -100,4 +100,4 @@ class Sledge_Controller_Plugin_Createsend extends Sledge_Controller
 			$this->template = View::factory('sledge/plugin/createsend/form');
 		}
 	}
-} 
+}

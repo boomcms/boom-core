@@ -37,7 +37,7 @@ class Sledge_Model_Page_URI extends ORM
 
 		if ($exists->count() > 0)
 		{
-			throw new Sledge_Exception("URI :uri is already in use", array(':uri' => $this->uri));
+			throw new Exception("URI :uri is already in use", array(':uri' => $this->uri));
 		}
 
 		return parent::create($validation);

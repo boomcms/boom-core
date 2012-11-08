@@ -18,7 +18,7 @@ class Sledge_Model_Chunk_Text extends ORM
 		'chunk_id'	=>	'',
 		'title'		=>	'',
 	);
-	
+
 	/**
 	* Filters for the versioned person columns
 	* @link http://kohanaframework.org/3.2/guide/orm/filters
@@ -60,7 +60,7 @@ class Sledge_Model_Chunk_Text extends ORM
 			{
 				$query->values(array($this->chunk_id, $asset_id, $i));
 			}
-			
+
 			try
 			{
 				$query->execute();
@@ -68,8 +68,8 @@ class Sledge_Model_Chunk_Text extends ORM
 			catch (Database_Exception $e)
 			{
 				// Don't let database failures in logging prevent the chunk from being saved.
-				Sledge_Exception::log($e);
-			} 
+				Kohana_Exception::log($e);
+			}
 		}
 
 		return $this;

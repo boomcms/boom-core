@@ -184,7 +184,7 @@ abstract class Sledge_Chunk
 			catch (Exception $e)
 			{
 				// Log the error.
-				Sledge_Exception::log($e);
+				Kohana_Exception::log($e);
 				return;
 			}
 		}

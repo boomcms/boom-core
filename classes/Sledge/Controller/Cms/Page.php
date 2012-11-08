@@ -289,7 +289,7 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 	 * ---------------|-----------------|---------------
 	 * parent_id	|	int		|	The page ID of the new parent page.
 	 *
-	 * @throws	Sledge_Exception
+	 * @throws	Exception
 	 * @throws	HTTP_Exception_403
 	 * @uses		Model_Page::sort_children()
 	 */
@@ -315,7 +315,7 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 			}
 			else
 			{
-				throw new Sledge_Exception("Cannot find new parent with page ID $parent_id");
+				throw new Exception("Cannot find new parent with page ID $parent_id");
 			}
 		}
 	}

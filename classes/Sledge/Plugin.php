@@ -26,7 +26,7 @@ abstract class Sledge_Plugin
 		// Check that the plugin has been register.
 		if ( ! Plugin::is_registered($name))
 		{
-			throw new Sledge_Exception("Attempting to include unregistered plugin: " . $name);
+			throw new Exception("Attempting to include unregistered plugin: " . $name);
 		}
 
 		// Prepare the request.

@@ -47,9 +47,7 @@ class Sledge_Controller extends Kohana_Controller
 		$this->config = Kohana::$config->load('config');
 
 		// Require the user to be logged in if the site isn't live.
-		// skipenvcheck is sent for template previews to bypass the login requirement.
-
-		if (Kohana::$environment != Kohana::PRODUCTION AND $this->request->is_initial() AND ! ($this->auth->logged_in() OR $this->request->query('skipenvcheck') == 1))
+		if (Kohana::$environment != Kohana::PRODUCTION AND ! $this->auth->logged_in())
 		{
 			throw new HTTP_Exception_403;
 		}

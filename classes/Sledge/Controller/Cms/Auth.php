@@ -12,4 +12,17 @@
  */
 class Sledge_Controller_Cms_Auth extends Kohana_Controller
 {
+	public function action_login()
+	{
+		if (Auth::instance()->login('admin', 'hello'))
+		{
+			$this->response
+				->body('logged in');
+		}
+		else
+		{
+			$this->response
+				->body('not logged in');
+		}
+	}
 }
