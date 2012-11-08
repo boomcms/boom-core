@@ -138,40 +138,19 @@ class Sledge_Controller_Cms_Assets extends Sledge_Controller
 	 */
 	public function action_filters()
 	{
-		// Get the IDs of people who have uploaded assets to the asset manager.
-		// Used for the 'uploaded by' filter.
-		$this->template = View::factory('sledge/assets/filters');
-
-		// Get the IDs of the people who have uploaded assets.
-		$people_ids = DB::select('audit_person')
-			->from('asset_versions')
-			->group_by('rid')
-			->where('rubbish', '=', FALSE)
-			->distinct(TRUE)
+		// Get the names of the people who have uploaded assets
+		$uploaders = DB::select('id', 'firstname', 'lastname')
+			->from('people')
+			->where('id', 'in', DB::select('audit_person')
+				->from('asset_versions')
+				->group_by('rid')
+				->where('rubbish', '=', FALSE)
+				->distinct(TRUE)
+			)
+			->order_by('firstname', 'asc')
+			->order_by('lastname', 'asc')
 			->execute()
-			->as_array('audit_person');
-
-		// Get the names of these people.
-		// These have to be seperate queries because of being in different databases.
-		if ( ! empty($people_ids))
-		{
-			$uploaders = DB::select('rid', 'firstname', 'lastname')
-				->from('person')
-				->join('person_v', 'inner')
-				->on('person.active_vid', '=', 'person_v.id')
-				->where('rid', 'in', $people_ids)
-				->order_by('firstname', 'asc')
-				->order_by('lastname', 'asc')
-				->where('deleted', '=', FALSE)
-				->execute('hoopid')
-				->as_array();
-
-			$this->template->set('uploaders', $uploaders);
-		}
-		else
-		{
-			$this->template->set('uploaders', array());
-		}
+			->as_array();
 
 		// Get the available asset types.
 		// Used for the 'uploaded by' filter.
@@ -189,7 +168,11 @@ class Sledge_Controller_Cms_Assets extends Sledge_Controller
 		$types = array_map(array('Sledge_Asset', 'get_type'), $types);
 		$types = array_map('ucfirst', $types);
 
-		$this->template->set('types', $types);
+		// Put it all in a view.
+		$this->template = View::factory('sledge/assets/filters', array(
+			'uploaders'	=>	$uploaders,
+			'types'		=>	$types,
+		));
 	}
 
 	/**
