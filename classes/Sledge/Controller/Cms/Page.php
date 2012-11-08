@@ -91,8 +91,10 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 			// Get the details of the other people viewing this page who were last active in the past 2 minutes
 			// The JS polls the server every 30 seconds at the moment so two moments allows for a couple of failed requests.
 			// We're interesed in their person ID, when they started looking at the page, and whether they've saved the page.
-			$details = DB::select('people_pages.person_id', 'people_pages.since', 'people_pages.saved')
+			$details = DB::select('people_pages.person_id', 'people_pages.since', 'people_pages.saved', 'people.firstname', 'people.lastname')
 				->from('people_pages')
+				->join('people', 'inner')
+				->on('people_pages.person_id', '=', 'people.id')
 				->where('people_pages.page_id', '=', $us->page_id)
 				->where('people_pages.person_id', '!=', $this->person->id)
 				->where('people_pages.last_active', '>=', $time - 120)
@@ -102,10 +104,9 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 
 			foreach ($details as $detail)
 			{
-				$person = ORM::factory('Person', $detail['person_id']);
 				$people[] = array(
 					'id'			=>	$detail['person_id'],
-					'name'		=>	$person->firstname . " " . $person->lastname,
+					'name'		=>	$detail['firstname'] . " " . $detail['lastname'],
 					'since'		=>	$detail['since'],
 					'saved'		=>	(bool) $detail['saved'],
 				);
