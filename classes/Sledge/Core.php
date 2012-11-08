@@ -43,32 +43,4 @@ class Sledge_Core
 			))
 			->execute();
 	}
-
-	/**
-	* Returns an array of available themes.
-	*
-	* @return array
-	*/
-	public static function themes()
-	{
-		if (Kohana::$environment !== Kohana::PRODUCTION OR ! $themes = Cache::instance()->get('themes'))
-		{
-			$files = Kohana::list_files('media/sledge/css/themes');
-
-			foreach ($files as $dir => $files)
-			{
-				// $dir is a directory and there's a jquery-ui.css file in it.
-				if (is_array($files) AND isset($files[$dir . '/jquery-ui.css']))
-				{
-					// Get the last part of the directory name and remove /ui- to get the theme name.
-					$theme = substr(strrchr($dir, '/'), 1);
-					$themes[$theme] = ucfirst($theme);
-				}
-			}
-
-			Cache::instance()->set('themes', $themes, 3600);
-		}
-
-		return $themes;
-	}
 } // End Sledge_Core
