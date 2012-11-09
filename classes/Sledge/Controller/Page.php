@@ -189,14 +189,9 @@ class Sledge_Controller_Page extends Sledge_Controller
 	 */
 	public function action_rss()
 	{
-		if ( ! $this->page->enable_rss)
-		{
-			throw new HTTP_Exception_404;
-		}
-
 		// RSS feeds for a page display a list of the child pages so get the children of the current page.
 		// Use the child page plugin to avoid code duplication.
-		$children = Request::factory('plugin/page/children')
+		$pages = Request::factory('plugin/page/children.json')
 				->post(array(
 					'parent'	=>	$this->page,
 					'order'		=>	'visible_from',
@@ -204,13 +199,31 @@ class Sledge_Controller_Page extends Sledge_Controller
 				->execute()
 				->body();
 
-		$children = json_decode($children);
+		$pages = json_decode($pages);
 
-		// Generate the feed template.
-		$this->template = View::factory('site/feeds/rss');
-		$this->template->children = $children['pages'];
+		foreach ($pages as & $page)
+		{
+			$p = ORM::factory('Page', $page->id);
+
+			$page = array(
+				'title'			=>	html_entity_decode($p->title),
+				'link'			=>	$page->uri,
+				'guid'			=>	$page->uri,
+				'description'	=>	strip_tags(Chunk::factory('text', 'standfirst', $p)->text()),
+				'pubDate'		=>	$p->visible_from,
+			);
+		}
+
+		$feed = Feed::create(array(
+				'title'	=>	$this->page->title,
+				'link'	=>	$this->page->url() . ".rss",
+			),
+			$pages
+		);
 
 		// Send RSS headers.
-		$this->response->headers('Content-Type', 'application/rss+xml');
+		$this->response
+			->headers('Content-Type', 'application/rss+xml')
+			->body($feed);
 	}
 }
