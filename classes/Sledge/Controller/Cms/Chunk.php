@@ -115,6 +115,7 @@ class Sledge_Controller_Cms_Chunk extends Sledge_Controller
 				$asset_id = $slide['asset_rid'];
 				$slide = ORM::factory('Chunk_Slideshow_Slide');
 				$slide->asset_id = $asset_id;
+				$slide->caption = $caption;
 
 				if ($url != '#')
 				{
