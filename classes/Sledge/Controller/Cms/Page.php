@@ -586,7 +586,7 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 							break;
 
 						case 'slideshow':
-							$chunk->data->set_asset_ids( explode("-", $slot_data));
+							$chunk->data->slides($slot_data->slides);
 							break;
 
 						case 'linkset':

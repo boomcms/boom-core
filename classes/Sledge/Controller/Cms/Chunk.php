@@ -105,15 +105,17 @@ class Sledge_Controller_Cms_Chunk extends Sledge_Controller
 		}
 		elseif ($chunk->type == 'slideshow')
 		{
-			$slides = $this->request->query('data');
+			$slides = Arr::get($this->request->query('data'), 'slides');
 			$target = implode("-", Arr::pluck($slides, 0));
-			
+
 			foreach ($slides as & $slide)
 			{
-				list($asset_id, $url) = $slide;
-				$slide = ORM::factory('Chunk_slideshow_slide');
+				$caption = $slide['caption'];
+				$url = $slide['link'];
+				$asset_id = $slide['asset_rid'];
+				$slide = ORM::factory('Chunk_Slideshow_Slide');
 				$slide->asset_id = $asset_id;
-				
+
 				if ($url != '#')
 				{
 					$slide->url = $url;
