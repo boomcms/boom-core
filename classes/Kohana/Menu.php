@@ -77,7 +77,7 @@ class Kohana_Menu
 		foreach ($this->_items as $item)
 		{
 			// Include the item in the menu if a required role isn't given or the current user is logged in to the role.
-			if ( ! isset($item['role']) OR $auth->logged_in($item['action']))
+			if ( ! isset($item['role']) OR $auth->logged_in($item['role']))
 			{
 				$items[] = $item;
 			}
