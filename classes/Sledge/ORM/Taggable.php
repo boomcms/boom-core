@@ -8,7 +8,7 @@
 * @copyright 2011, Hoop Associates
 */
 class Sledge_ORM_Taggable extends ORM_Versioned
-{	
+{
 	/**
 	* Adds a tag to an object.
 	* Kohana relationships can't be used for the tag relationships because the tags_applied table holds relationships with tags and assets, tags and pages etc.
@@ -26,9 +26,9 @@ class Sledge_ORM_Taggable extends ORM_Versioned
 
 			$query = DB::insert('tags_applied', array('object_type', 'object_id', 'tag_id'));
 			$object_type = $this->get_object_type_id();
-			
+
 			foreach ( (array) $far_keys as $key)
-			{		
+			{
 				$query->values( array($object_type, $this->pk(), $key));
 			}
 
@@ -40,7 +40,7 @@ class Sledge_ORM_Taggable extends ORM_Versioned
 			return parent::add($alias, $far_keys);
 		}
 	}
-	
+
 	/**
 	 * Find all tags associates with this object.
 	 *
@@ -61,7 +61,7 @@ class Sledge_ORM_Taggable extends ORM_Versioned
 		}
 		elseif ($root === TRUE)
 		{
-			$query->where('tags.parent_id', '=', NULL);
+			$query->where('tag.parent_id', '=', NULL);
 		}
 
 		return $query
@@ -83,10 +83,10 @@ class Sledge_ORM_Taggable extends ORM_Versioned
 		{
 			parent::where($column, $op, $value);
 		}
-		
+
 		return $this;
 	}
-	
+
 	/**
 	* Sets up the necessary joins / wheres to find objects by what they're tagged.
 	*/
@@ -105,7 +105,7 @@ class Sledge_ORM_Taggable extends ORM_Versioned
 		{
 			$tag = ORM::factory('Tag', array('path' => $value));
 		}
-		
+
 		// Get the tag's mptt values.
 		// Find by tag inherits from children.
 		// So if something is tagged with a child of the tag we're called with
@@ -116,10 +116,10 @@ class Sledge_ORM_Taggable extends ORM_Versioned
 			->on('tags_applied.tag_id', '=', 'tags.id')
 			->where('tags_applied.object_type', '=', $this->get_object_type_id())
 			->where('tags.path', 'like', $tag->path . '%');
-			
+
 		return $this;
 	}
-	
+
 	/**
 	* Works out the object ID to be used in the tagged_object table.
 	*
@@ -140,7 +140,7 @@ class Sledge_ORM_Taggable extends ORM_Versioned
 			// Non-taggable object. This will cause us to find nothing.
 			$object_type = 0;
 		}
-		
+
 		return $object_type;
 	}
 }
