@@ -39,11 +39,10 @@ class Sledge_Controller_Cms_Chunk extends Sledge_Controller
 	}
 
 	/**
-	* Display the asset manager to select which asset to insert.
-	* This needs combining with the cms asset manager.
-	* @todo Code duplication alert!
-	*
-	*/
+	 * Edit an asset chunk.
+	 * F
+	 *
+	 */
 	public function action_asset()
 	{
 		$this->response->body(Request::factory('cms/assets/manager')->execute()->body());
