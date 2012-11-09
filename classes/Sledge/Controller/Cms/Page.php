@@ -586,6 +586,21 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 							break;
 
 						case 'slideshow':
+							foreach ($slot_data->slides as & $slide)
+							{
+								$caption = $slide->caption;
+								$url = $slide->link;
+								$asset_id = $slide->asset_rid;
+								$slide = ORM::factory('chunk_slideshow_slide');
+								$slide->asset_id = $asset_id;
+								$slide->caption = $caption;
+
+								if ($url != '#')
+								{
+									$slide->url = $url;
+								}
+							}
+
 							$chunk->data->slides($slot_data->slides);
 							break;
 

@@ -23,9 +23,9 @@ class Sledge_Model_Chunk_Slideshow extends ORM
 		'title'		=>	'',
 		'chunk_id'	=>	'',
 	);
-	
+
 	private $_asset_ids = array();
-	
+
 	protected $_slides = NULL;
 
 	/**
@@ -42,21 +42,21 @@ class Sledge_Model_Chunk_Slideshow extends ORM
 				$this->_asset_ids[] = $slide->asset_id;
 			}
 		}
-		
+
 		return $this->_asset_ids;
 	}
 
 	public function preview($template)
-	{	
+	{
 		$v = View::factory("site/slots/slideshow/$template");
 		$v->chunk = $this;
-		
+
 		$v->title = $this->title;
-		$v->slides = $this->slides();	
-		
+		$v->slides = $this->slides();
+
 		return $v;
 	}
-	
+
 	/**
 	* Accepts and array of asset IDs and sets them as the slides.
 	*
@@ -65,7 +65,7 @@ class Sledge_Model_Chunk_Slideshow extends ORM
 	{
 		$this->_asset_ids = $assets;
 	}
-	
+
 	/**
 	* Sets or gets the slideshows slides
 	*
@@ -78,7 +78,7 @@ class Sledge_Model_Chunk_Slideshow extends ORM
 			{
 				$this->_slides = $this->slides->find_all();
 			}
-			
+
 			return $this->_slides;
 		}
 		else
@@ -90,26 +90,16 @@ class Sledge_Model_Chunk_Slideshow extends ORM
 	public function save( Validation $validation = NULL)
 	{
 		$return = parent::save($validation);
-		
+
 		// Remove all existing slides.
 		DB::query(Database::DELETE, "delete from chunk_slideshow_slides where chunk_id = " . $this->pk());
-				
-		foreach ($this->_asset_ids as $asset)
+
+		foreach ($this->_slides as $slide)
 		{
-			// Check the asset exists.
-			$asset = ORM::factory('Asset', $asset);
-			
-			if ($asset->loaded())
-			{
-				ORM::factory('Chunk_slideshow_slide')
-					->values( array(
-						'chunk_id'	=>	$this->chunk_id,
-						'asset_id'	=>	$asset->pk()
-					))
-					->create();
-			}
+			$slide->chunk_id = $this->chunk_id;
+			$slide->save();
 		}
-		
+
 		return $return;
 	}
 }
