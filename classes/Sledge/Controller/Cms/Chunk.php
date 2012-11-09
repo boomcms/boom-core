@@ -37,15 +37,15 @@ class Sledge_Controller_Cms_Chunk extends Sledge_Controller
 			throw new HTTP_Exception_403;
 		}
 	}
-	
+
 	/**
 	* Display the asset manager to select which asset to insert.
 	* This needs combining with the cms asset manager.
 	* @todo Code duplication alert!
-	* 
+	*
 	*/
 	public function action_asset()
-	{	
+	{
 		$this->response->body(Request::factory('cms/assets/manager')->execute()->body());
 	}
 
@@ -60,9 +60,9 @@ class Sledge_Controller_Cms_Chunk extends Sledge_Controller
 	}
 
 	/**
-	* Insert a new chunk.  
+	* Insert a new chunk.
 	*
-	* **Accepted GET parameters:**  
+	* **Accepted GET parameters:**
 	* Name					|	Type	|	Description
 	*-----------------------|-----------|---------------
 	* slottype				| 	string 	|	The type of slot being inserted; feature, linkset, etc.
@@ -75,17 +75,17 @@ class Sledge_Controller_Cms_Chunk extends Sledge_Controller
 	public function action_insert()
 	{
 		$template = $this->request->query('template');
-	
+
 		if ($template == 'undefined')
 		{
 			$template = NULL;
 		}
-		
+
 		$chunk = ORM::factory('Chunk');
 		$chunk->type = $this->request->query('slottype');
 		$chunk->slotname = $this->request->query('slotname');
 		$target = 0;
-		
+
 		if ($chunk->type == 'feature')
 		{
 			$chunk->data->target = ORM::factory('Page', $this->request->query('preview_target_rid'));
@@ -122,12 +122,12 @@ class Sledge_Controller_Cms_Chunk extends Sledge_Controller
 					$slide->url = $url;
 				}
 			}
-			
+
 			$chunk->data->slides($slides);
 		}
-				
+
 		$output = HTML::chunk_classes($chunk->data->preview($template), $chunk->type, $chunk->slotname, $target, $template, 0, TRUE);
-		
+
 		$this->response->body($output);
 	}
 
@@ -149,7 +149,7 @@ class Sledge_Controller_Cms_Chunk extends Sledge_Controller
 			'page'	=>	$this->page,
 		));
 	}
-	
+
 	/**
 	* Display the edit slideshow template.
 	*/
@@ -158,14 +158,5 @@ class Sledge_Controller_Cms_Chunk extends Sledge_Controller
 		$this->template = View::factory('sledge/editor/slot/slideshow', array(
 			'page'	=>	$this->page,
 		));
-	}
-
-	/**
-	* Display the edit linkset template.
-	*/
-	public function action_tag()
-	{
-		$tag_id = $this->request->query('tag');
-		$this->response->body(Request::factory("cms/tag/tree/$tag_id")->post( array('parent' => 'tags/assets'))->execute());
 	}
 }
