@@ -332,7 +332,7 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 	{
 		if ($this->auth->logged_in('publish_page', $this->page))
 		{
-			DB::update('page')
+			DB::update('pages')
 				->set(array('published_vid' => $this->page->version->id))
 				->where('id', '=', $this->page->id)
 				->execute();
