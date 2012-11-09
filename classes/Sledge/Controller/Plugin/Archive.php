@@ -52,12 +52,12 @@ class Sledge_Controller_Plugin_Archive extends Sledge_Controller
 	{
 		// Build a query to get a count of pages grouped by year and month.
 		$query = DB::select()
-			->select(array(DB::expr('year("t")'), 'year'))
-			->select(array(DB::expr('month("t")'), 'month'))
-			->select(array(DB::expr('monthname("t")'), 'name'))
-			->select(array(DB::expr('count("*")'), 'count'))
+			->select(array(DB::expr('year(t)'), 'year'))
+			->select(array(DB::expr('month(t)'), 'month'))
+			->select(array(DB::expr('monthname(t)'), 'name'))
+			->select(array(DB::expr('count(*)'), 'count'))
 			->from(array(
-				DB::select(array('from_unixtime("visible_from")', 't'))
+				DB::select(array(DB::expr('from_unixtime(visible_from)'), 't'))
 					->from('pages')
 					->join('page_versions', 'inner')
 					->on('pages.' . Page::join_column($this->parent, $this->person), '=', 'page_versions.id')
