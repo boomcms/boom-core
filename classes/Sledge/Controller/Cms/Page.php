@@ -361,7 +361,7 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 	{
 		if (Kohana::$environment == Kohana::PRODUCTION OR Kohana::$environment == Kohana::STAGING)
 		{
-			$this->response->check_cache($this->page->active_vid . "-" . $this->page->published_vid, $this->request);
+			HTTP::check_cache($this->request, $this->response, $this->page->active_vid . "-" . $this->page->published_vid);
 		}
 
 		// Get all revisions back to the last published version, then all published versions before that.
