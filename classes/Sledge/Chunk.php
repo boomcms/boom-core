@@ -69,37 +69,16 @@ abstract class Sledge_Chunk
 	*/
 	protected $_type;
 
-	public function __construct($slotname, $page = NULL, $inherit = FALSE)
+	public function __construct($slotname, Model_Page $page, Model_Chunk $chunk, $editable = TRUE)
 	{
 		// Set the slotname.
 		$this->_slotname = $slotname;
 
-		// Set the page that the chunk belongs to.
-		// This is used for permissions check, and quite importantly, for finding the chunk.
-		if ($page === NULL)
-		{
-			// No page was given so use the page from the current request.
-			$this->_page = Request::current()->param('page');
-		}
-		elseif ($page === 0)
-		{
-			// 0 was given as the page - this signifies a 'global' chunk not assigned to any page.
-			$this->_page = ORM::factory('Page');
-		}
-		else
-		{
-			$this->_page = $page;
-		}
+		$this->_page = $page;
 
-		// The chunk is being cascaded down the tree so find the page that the chunk is actually assigned to.
-		$this->_page = ($inherit === TRUE)? Chunk::inherit_from(get_class($this), $slotname, $this->_page) : $this->_page;
+		$this->_chunk = $chunk;
 
-		// Load the chunk
-		$this->_chunk = Chunk::find(get_class($this), $slotname, $this->_page->version, $inherit);
-
-		// Should the chunk be editable?
-		// This can be changed to calling editable(), for instance if we want to make a chunk read only.
-		$this->_editable = (Editor::state() == Editor::EDIT AND Auth::instance()->logged_in("edit_slot_$this->_slotname", $this->_page));
+		$this->_editable = $editable;
 	}
 
 	/**
@@ -202,9 +181,9 @@ abstract class Sledge_Chunk
 	 * Returns a chunk object of the required type.
 	 *
 	 * @param	string	$type		Chunk type, e.g. text, feature, etc.
-	 * @param	string	$slotname	The name of the slot to retrieve a chunk from.
+	 * @param	string	$slotname		The name of the slot to retrieve a chunk from.
 	 * @param	mixed	$page		The page the chunk belongs to. If not given then the page from the current request will be used.
-	 * @param	boolean	$inherit	Whether the chunk should be inherited down the page tree.
+	 * @param	boolean	$inherit		Whether the chunk should be inherited down the page tree.
 	 * @return 	Chunk
 	 */
 	public static function factory($type, $slotname, $page = NULL, $inherit = FALSE)
@@ -212,7 +191,30 @@ abstract class Sledge_Chunk
 		// Set the class name.
 		$class = "Chunk_" . ucfirst($type);
 
-		return new $class($slotname, $page, $inherit);
+		// Set the page that the chunk belongs to.
+		// This is used for permissions check, and quite importantly, for finding the chunk.
+		if ($page === NULL)
+		{
+			// No page was given so use the page from the current request.
+			$page = Request::current()->param('page');
+		}
+		elseif ($page === 0)
+		{
+			// 0 was given as the page - this signifies a 'global' chunk not assigned to any page.
+			$page = ORM::factory('Page');
+		}
+
+		// The chunk is being cascaded down the tree so find the page that the chunk is actually assigned to.
+		$page = ($inherit === TRUE)? Chunk::inherit_from($type, $slotname, $page) : $page;
+
+		// Load the chunk
+		$chunk = Chunk::find($type, $slotname, $page->version, $inherit);
+
+		// Should the chunk be editable?
+		// This can be changed to calling editable(), for instance if we want to make a chunk read only.
+		$editable = (Editor::state() == Editor::EDIT AND Auth::instance()->logged_in("edit_slot_$slotname", $page));
+
+		return new $class($slotname, $page, $chunk, $editable);
 	}
 
 	/**
