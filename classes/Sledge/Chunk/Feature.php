@@ -13,8 +13,15 @@ class Sledge_Chunk_Feature extends Chunk
 	* @var Model_Page
 	*/
 	protected $_target_page;
-	
+
 	protected $_type = 'feature';
+
+	public function __construct($slotname, Model_Page $page, Model_Chunk $chunk, $editable = TRUE)
+	{
+		parent::__construct($slotname, $page, $chunk, $editable);
+
+		$this->_target_page = ORM::factory('Page', $this->_chunk->target_page_id);
+	}
 
 	/**
 	* Show a chunk where the target is set.
@@ -38,9 +45,14 @@ class Sledge_Chunk_Feature extends Chunk
 		return View::factory("site/slots/default/feature/$this->_template");
 	}
 
+	public function has_content()
+	{
+		return $this->_target_page->loaded();
+	}
+
 	public function target()
 	{
-		return $this->target_page()->pk();
+		return $this->_target_page->id;
 	}
 
 	/**
@@ -50,11 +62,6 @@ class Sledge_Chunk_Feature extends Chunk
 	*/
 	public function target_page()
 	{
-		if ($this->_target_page === NULL)
-		{
-			$this->_target_page = ORM::factory('Page', $this->_chunk->target_page_id);
-		}
-
 		return $this->_target_page;
 	}
 }

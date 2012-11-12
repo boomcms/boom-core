@@ -17,14 +17,21 @@ class Sledge_Chunk_Slideshow extends Chunk
 		$v = View::factory("site/slots/slideshow/$this->_template");
 		$v->chunk = $this->_chunk;
 		$v->title = $this->_chunk->title;
-		$v->slides = $this->_chunk->slides();	
-		
+		$v->slides = $this->_chunk->slides();
+
 		return $v;
 	}
 
 	public function _show_default()
 	{
 		return View::factory("site/slots/default/slideshow/$this->_template");
+	}
+
+	public function has_content()
+	{
+		$slides = $this->_chunk->slides();
+
+		return ! empty($slides);
 	}
 
 	public function target()

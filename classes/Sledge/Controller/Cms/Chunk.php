@@ -40,11 +40,28 @@ class Sledge_Controller_Cms_Chunk extends Sledge_Controller
 
 	/**
 	 * Edit an asset chunk.
-	 * For get requests display an asset manager, for post requests save the asset ID etc.
+	 * For get requests preview the asset chunk, for post requests save the changes.
 	 *
 	 */
 	public function action_asset()
 	{
+		if ($this->request->method() === Request::GET)
+		{
+			$chunk = ORM::factory('Chunk_Asset')
+				->values(array(
+					'asset_id'	=>	$this->request->query('asset_id'),
+					'link'		=>	$this->request->query('url'),
+				));
+
+			$chunk = new Chunk_Asset($this->request->query('slotname'), $this->page, $chunk);
+			$chunk->template($this->request->query('template'));
+
+			$this->response->body($chunk->execute());
+		}
+		else
+		{
+
+		}
 	}
 
 	/**

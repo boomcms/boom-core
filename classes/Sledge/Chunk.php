@@ -41,6 +41,8 @@ abstract class Sledge_Chunk
 	*/
 	protected $_params = array();
 
+	protected $_slotname;
+
 	/**
 	* The name of the template to display
 	* @access protected
@@ -55,13 +57,15 @@ abstract class Sledge_Chunk
 	*/
 	protected $_type;
 
-	public function __construct(Model_Page $page, Model_Chunk $chunk, $editable = TRUE)
+	public function __construct($slotname, Model_Page $page, Model_Chunk $chunk, $editable = TRUE)
 	{
 		$this->_page = $page;
 
 		$this->_chunk = $chunk;
 
 		$this->_editable = $editable;
+
+		$this->_slotname = $slotname;
 	}
 
 	/**
@@ -114,10 +118,10 @@ abstract class Sledge_Chunk
 		// If profiling is enabled then record how long it takes to generate this chunk.
 		if (Kohana::$profiling === TRUE)
 		{
-			$benchmark = Profiler::start("Chunks", $this->_chunk->slotname);
+			$benchmark = Profiler::start("Chunks", $this->_slotname);
 		}
 
-		$cache_key = "chunk_data:" . md5($this->_chunk->slotname . $this->_page->version->id);
+		$cache_key = "chunk_data:" . md5($this->_slotname . $this->_page->version->id);
 		$cache = Cache::instance();
 
 		if (Auth::instance()->logged_in() OR ($html = $cache->get($cache_key)) === NULL)
@@ -132,7 +136,7 @@ abstract class Sledge_Chunk
 				// Make the content editable.
 				if ($this->_editable === TRUE)
 				{
-					$html = HTML::chunk_classes($html, $this->_type, $this->_chunk->slotname, $this->target(), $this->_template, $this->_page->id, $this->has_content());
+					$html = HTML::chunk_classes($html, $this->_type, $this->_slotname, $this->target(), $this->_template, $this->_page->id, $this->has_content());
 				}
 				elseif ( ! Auth::instance()->logged_in() OR Editor::state() == Editor::PREVIEW_PUBLISHED)
 				{
@@ -247,12 +251,9 @@ abstract class Sledge_Chunk
 	/**
 	* Returns whether the chunk has any content.
 	*
-	* @return bool
+	* @return	bool
 	*/
-	public function has_content()
-	{
-		return $this->_chunk->loaded();
-	}
+	abstract public function has_content();
 
 	/**
 	 * Generate the HTML to display the chunk
@@ -266,7 +267,7 @@ abstract class Sledge_Chunk
 			$this->_template = $this->_default_template;
 		}
 
-		if ($this->_chunk->loaded())
+		if ($this->has_content())
 		{
 			// Display the chunk.
 			$return = $this->_show();

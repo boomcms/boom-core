@@ -71,6 +71,11 @@ class Sledge_Chunk_Text extends Chunk
 		}
 	}
 
+	public function has_content()
+	{
+		return $this->_chunk->text != NULL;
+	}
+
 	/**
 	* Returns the text from the chunk.
 	*/
