@@ -40,12 +40,11 @@ class Sledge_Controller_Cms_Chunk extends Sledge_Controller
 
 	/**
 	 * Edit an asset chunk.
-	 * F
+	 * For get requests display an asset manager, for post requests save the asset ID etc.
 	 *
 	 */
 	public function action_asset()
 	{
-		$this->response->body(Request::factory('cms/assets/manager')->execute()->body());
 	}
 
 	/**
