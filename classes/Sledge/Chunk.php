@@ -28,13 +28,6 @@ abstract class Sledge_Chunk
 	protected $_editable;
 
 	/**
-	* Whether the chunk should be inherited down the page tree.
-	* @access protected
-	* @var bool
-	*/
-	protected $_inherit = FALSE;
-
-	/**
 	* The page that the chunk belongs to.
 	* @access protected
 	* @var Model_Page
@@ -47,13 +40,6 @@ abstract class Sledge_Chunk
 	* @var array
 	*/
 	protected $_params = array();
-
-	/**
-	* The name of the slot.
-	* @access protected
-	* @var string
-	*/
-	protected $_slotname;
 
 	/**
 	* The name of the template to display
@@ -69,11 +55,8 @@ abstract class Sledge_Chunk
 	*/
 	protected $_type;
 
-	public function __construct($slotname, Model_Page $page, Model_Chunk $chunk, $editable = TRUE)
+	public function __construct(Model_Page $page, Model_Chunk $chunk, $editable = TRUE)
 	{
-		// Set the slotname.
-		$this->_slotname = $slotname;
-
 		$this->_page = $page;
 
 		$this->_chunk = $chunk;
@@ -131,10 +114,10 @@ abstract class Sledge_Chunk
 		// If profiling is enabled then record how long it takes to generate this chunk.
 		if (Kohana::$profiling === TRUE)
 		{
-			$benchmark = Profiler::start("Chunks", $this->_slotname);
+			$benchmark = Profiler::start("Chunks", $this->_chunk->slotname);
 		}
 
-		$cache_key = "chunk_data:" . md5($this->_slotname . $this->_page->version->id);
+		$cache_key = "chunk_data:" . md5($this->_chunk->slotname . $this->_page->version->id);
 		$cache = Cache::instance();
 
 		if (Auth::instance()->logged_in() OR ($html = $cache->get($cache_key)) === NULL)
@@ -149,7 +132,7 @@ abstract class Sledge_Chunk
 				// Make the content editable.
 				if ($this->_editable === TRUE)
 				{
-					$html = HTML::chunk_classes($html, $this->_type, $this->_slotname, $this->target(), $this->_template, $this->_page->id, $this->has_content());
+					$html = HTML::chunk_classes($html, $this->_type, $this->_chunk->slotname, $this->target(), $this->_template, $this->_page->id, $this->has_content());
 				}
 				elseif ( ! Auth::instance()->logged_in() OR Editor::state() == Editor::PREVIEW_PUBLISHED)
 				{
