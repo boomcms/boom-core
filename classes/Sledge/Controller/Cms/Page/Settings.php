@@ -301,6 +301,8 @@ class Sledge_Controller_Cms_Page_Settings extends Controller_Cms_Page
 			$this->page->visible_to = ($visible_to != NULL)? strtotime($visible_to) : NULL;
 			$this->page->visible = $this->request->post('visible');
 			$this->page->save();
+
+			Request::factory('cms/page/save_slots/' . $this->page->id)->execute();
 		}
 		else
 		{
