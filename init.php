@@ -66,6 +66,11 @@ Route::set('child_page_plugin', 'plugin/page/children.<action>')
 		'controller'	=>	'plugin_page_children'
 	));
 
+Route::set('chunks', 'cms/chunk/<controller>/<action>/<page>')
+	->defaults(array(
+		'directory'	=>	'cms_chunk'
+	));
+
 /**
  * Route for vanity URIs. Vanity URIs are the page ID base-36 encoded and prefixed with an underscore.
  * Vanity URIs redirect to the page's primary URI

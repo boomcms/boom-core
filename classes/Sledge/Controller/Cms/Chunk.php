@@ -39,42 +39,6 @@ class Sledge_Controller_Cms_Chunk extends Sledge_Controller
 	}
 
 	/**
-	 * Edit an asset chunk.
-	 * For get requests preview the asset chunk, for post requests save the changes.
-	 *
-	 */
-	public function action_asset()
-	{
-		if ($this->request->method() === Request::GET)
-		{
-			$chunk = ORM::factory('Chunk_Asset')
-				->values(array(
-					'asset_id'	=>	$this->request->query('asset_id'),
-					'link'		=>	$this->request->query('url'),
-				));
-
-			$chunk = new Chunk_Asset($this->request->query('slotname'), $this->page, $chunk);
-			$chunk->template($this->request->query('template'));
-
-			$this->response->body($chunk->execute());
-		}
-		else
-		{
-
-		}
-	}
-
-	/**
-	* Display the edit feature template.
-	*/
-	public function action_feature()
-	{
-		$this->template = View::factory('sledge/editor/slot/feature', array(
-			'page'	=>	$this->page,
-		));
-	}
-
-	/**
 	* Insert a new chunk.
 	*
 	* **Accepted GET parameters:**
@@ -153,25 +117,5 @@ class Sledge_Controller_Cms_Chunk extends Sledge_Controller
 	public function action_insert_link()
 	{
 		$this->template = View::factory('sledge/editor/slot/insert_link');
-	}
-
-	/**
-	* Display the edit linkset template.
-	*/
-	public function action_linkset()
-	{
-		$this->template = View::factory('sledge/editor/slot/linkset', array(
-			'page'	=>	$this->page,
-		));
-	}
-
-	/**
-	* Display the edit slideshow template.
-	*/
-	public function action_slideshow()
-	{
-		$this->template = View::factory('sledge/editor/slot/slideshow', array(
-			'page'	=>	$this->page,
-		));
 	}
 }
