@@ -17,4 +17,17 @@ class Sledge_Controller_Cms_Chunk_Feature extends Sledge_Controller_Cms_Chunk
 		));
 	}
 
+	public function action_preview()
+	{
+		$model = ORM::factory('Chunk_Feature')
+			->values(array(
+				'target_page_id'	=>	$this->request->query('preview_target_rid')
+			));
+
+		$chunk = new Chunk_Feature($this->request->query('slotname'), $this->page, $model);
+		$chunk->template($this->request->query('template'));
+
+		$this->response->body($chunk->execute());
+	}
+
 }
