@@ -52,7 +52,7 @@ class Sledge_Model_Page_Version extends Model_Version
 		'audit_person'					=>	'',
 		'audit_time'					=>	'',
 		'deleted'						=>	'',
-		'feature_image_id'					=>	'',
+		'feature_image_id'				=>	'',
 		'published'						=>	'',
 	);
 
@@ -165,7 +165,7 @@ class Sledge_Model_Page_Version extends Model_Version
 					->on('assets.active_vid', '=', 'asset_versions.id')
 					->order_by('position', 'asc')
 					->limit(1)
-					->where('chunk_text_assets.chunk_id', '=', $chunk->chunk_id)
+					->where('chunk_text_assets.chunk_id', '=', $chunk->id)
 					->where('asset_versions.type', '=', Sledge_Asset::IMAGE);
 
 				// If the current user isn't logged in then make sure it's a published asset.
