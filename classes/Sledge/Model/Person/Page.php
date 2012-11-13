@@ -5,7 +5,7 @@
  *
  * @package Sledge
  * @category Models
- * 
+ *
  */
 class Sledge_Model_Person_Page extends ORM
 {
@@ -17,7 +17,6 @@ class Sledge_Model_Person_Page extends ORM
 		'since'			=>	'',
 		'last_active'		=>	'',
 		'saved'			=>	FALSE,
-		'id'				=>	'',
 	);
 
 	protected $_cache_columns = array('person_id');
