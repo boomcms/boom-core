@@ -72,5 +72,3 @@ class Sledge_URL extends Kohana_URL
 		return parent::site($uri, $protocol, $index);
 	}
 }
-
-?>

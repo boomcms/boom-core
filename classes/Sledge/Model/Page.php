@@ -15,7 +15,7 @@ class Sledge_Model_Page extends ORM_Taggable
 	* Properties to create relationships with Kohana's ORM
 	*/
 	protected $_has_many = array(
-		'uris'		=> array('model' => 'Page_URI', 'foreign_key' => 'page_id'),
+		'links'	=> array('model' => 'Page_Links'),
 		'revisions' => array('model' => 'Page_Version', 'foreign_key' => 'rid'),
 	);
 	protected $_belongs_to = array(
@@ -70,7 +70,7 @@ class Sledge_Model_Page extends ORM_Taggable
 	* @access private
 	* @var string
 	*/
-	private $_primary_uri;
+	private $_primary_link;
 
 	/**
 	* Cached result for self::url()
@@ -161,7 +161,7 @@ class Sledge_Model_Page extends ORM_Taggable
 					));
 			}
 
-			$page_uri->primary_uri = $primary;
+			$page_uri->is_primary = $primary;
 			$page_uri->create();
 
 			if ($primary == TRUE)
@@ -171,15 +171,15 @@ class Sledge_Model_Page extends ORM_Taggable
 
 				// Ensure that this is the only primary URI for the page.
 				// We do this through the ORM rather than a DB update query to catch cached URIs
-				$page_uris = ORM::factory('Page_URI')
+				$page_links = ORM::factory('Page_URI')
 					->where('page_id', '=', $this->id)
 					->where('id', '!=', $page_uri->id)
-					->where('primary_uri', '=', TRUE)
+					->where('is_primary', '=', TRUE)
 					->find_all();
 
-				foreach ($page_uris as $page_uri)
+				foreach ($page_links as $page_uri)
 				{
-					$page_uri->primary_uri = FALSE;
+					$page_uri->is_primary = FALSE;
 					$page_uri->save();
 				}
 			}
@@ -346,27 +346,27 @@ class Sledge_Model_Page extends ORM_Taggable
 	* @return string The RELATIVE primary URI of the page.
 	*
 	*/
-	public function get_primary_uri()
+	public function get_primary_link()
 	{
-		if ($this->_primary_uri == NULL)
+		if ($this->_primary_link == NULL)
 		{
-			$this->_primary_uri = Cache::instance()->get('primary_uri_for_page:' . $this->pk());
+			$this->_primary_link = $this->_cache->get('primary_link_for_page:' . $this->id);
 
-			if ($this->_primary_uri === NULL)
+			if ($this->_primary_link === NULL)
 			{
-				$uri = DB::select('uri')
-					->from('page_uris')
+				$this->_primary_link = DB::select('location')
+					->from('page_links')
 					->where('page_id', '=', $this->id)
-					->and_where('primary_uri', '=', TRUE)
-					->execute();
+					->and_where('is_primary', '=', TRUE)
+					->limit(1)
+					->execute()
+					->get('location');
 
-				$this->_primary_uri = $uri->get('uri');
-
-				$this->_cache->set('primary_uri_for_page:' . $this->pk(), $this->_primary_uri);
+				$this->_cache->set('primary_link_for_page:' . $this->id, $this->_primary_link);
 			}
 		}
 
-		return $this->_primary_uri;
+		return $this->_primary_link;
 	}
 
 	/**
@@ -589,7 +589,7 @@ class Sledge_Model_Page extends ORM_Taggable
 		if ($this->_url === NULL)
 		{
 			// Get the base URL of the current request.
-			$this->_url = URL::site($this->get_primary_uri());
+			$this->_url = URL::site($this->get_primary_link());
 		}
 
 		return $this->_url;

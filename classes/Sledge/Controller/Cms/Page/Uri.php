@@ -59,7 +59,7 @@ class Sledge_Controller_Cms_Page_Uri extends Controller_Cms_Page
 		$uri = ORM::factory('Page_URI')
 			->where('page_id', '=', $this->page->id)
 			->where('uri', '=', $this->request->post('uri'))
-			->where('primary_uri', '=', FALSE)
+			->where('is_primary', '=', FALSE)
 			->find();
 
 		// Delete the URI.
@@ -94,7 +94,7 @@ class Sledge_Controller_Cms_Page_Uri extends Controller_Cms_Page
 				$uri->page = $this->page;
 
 				// Make sure that it's only a secondary URI for the this page.
-				$uri->primary_uri = FALSE;
+				$uri->is_primary = FALSE;
 
 				$uri->save();
 			}

@@ -15,13 +15,13 @@ class Sledge_Controller_Cms_Tree extends Kohana_Controller
 
 	public function before()
 	{
-		$this->_query = DB::select( array('pages.id', 'page_id'), 'v.child_ordering_policy', 'pages.visible', 'v.visible_in_leftnav', 'page_uris.uri', 'v.title', 'page_mptt.*')
+		$this->_query = DB::select( array('pages.id', 'page_id'), 'v.child_ordering_policy', 'pages.visible', 'v.visible_in_leftnav', 'page_links.location', 'v.title', 'page_mptt.*')
 					->from('pages')
 					->join('page_mptt')
 					->on('page_mptt.id', '=', 'pages.id')
-					->join('page_uris', 'inner')
-					->on('page_uris.page_id', '=', 'pages.id')
-					->where('primary_uri', '=', TRUE)
+					->join('page_links', 'inner')
+					->on('page_links.page_id', '=', 'pages.id')
+					->where('is_primary', '=', TRUE)
 					->where('v.deleted', '=', FALSE);
 	}
 

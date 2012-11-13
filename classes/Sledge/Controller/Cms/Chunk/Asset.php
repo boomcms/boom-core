@@ -24,4 +24,11 @@ class Sledge_Controller_Cms_Chunk_Asset extends Sledge_Controller
 		$this->response->body($chunk->execute());
 	}
 
+	/**
+	 * Save one or more asset slots to a page.
+	 */
+	public function action_save()
+	{
+		
+	}
 }

@@ -31,7 +31,7 @@ Route::set('page_settings', 'cms/page/settings/<action>/<id>' )
 * Defines the route for /cms page uris pages..
 *
 */
-Route::set('page_uris', 'cms/page/uri/<action>/<id>' )
+Route::set('page_links', 'cms/page/uri/<action>/<id>' )
 	->defaults(array(
 		'controller' => 'cms_page_uri',
 	));
@@ -75,15 +75,15 @@ Route::set('chunks', 'cms/chunk/<controller>/<action>/<page>')
  * Route for vanity URIs. Vanity URIs are the page ID base-36 encoded and prefixed with an underscore.
  * Vanity URIs redirect to the page's primary URI
  */
-Route::set('vanity', '_<uri>', array(
-		'uri'	=>	'[a-zA-Z0-9]',
+Route::set('vanity', '_<link>', array(
+		'link'	=>	'[a-zA-Z0-9]',
 	))
 	->filter(function(Route $route, $params, Request $request)
 		{
 			// Turn the vanity URI into a page ID.
-			$page_id = base_convert($params['uri'], 36, 10);
+			$page_id = base_convert($params['link'], 36, 10);
 
-			HTTP::redirect(ORM::factory('Page', $page_id)->url(), 302);
+			HTTP::redirect(ORM::factory('Page', $page_id)->link(), 302);
 			return FALSE;
 		}
 	);
@@ -96,8 +96,8 @@ Route::set('vanity', '_<uri>', array(
 *
 * This is starting to become quite unwieldy, some rewriting may be required.
 */
-Route::set('sledge', '<uri>(.<action>)', array(
-		'uri'	=>	'.*?',
+Route::set('sledge', '<location>(.<action>)', array(
+		'location'	=>	'.*?',
 	))
 	->defaults(array(
 		'controller'	=>	'page',
@@ -105,17 +105,17 @@ Route::set('sledge', '<uri>(.<action>)', array(
 	))
 	->filter(function(Route $route, $params, Request $request)
 		{
-			$page_uri = ORM::factory('Page_URI', array('uri' => $params['uri']));
+			$page_link = ORM::factory('Page_Link', array('location' => $params['location']));
 
-			if ($page_uri->loaded() AND $page_uri->page->loaded())
+			if ($page_link->loaded() AND $page_link->page->loaded())
 			{
-				if ($page_uri->primary_uri == FALSE AND $page_uri->redirect == TRUE)
+				if ( ! $page_link->is_primary AND $page_link->redirect)
 				{
-					HTTP::redirect($page->url(), 301);
+					HTTP::redirect($page->link(), 301);
 					return FALSE;
 				}
 
-				$params['page'] = $page_uri->page;
+				$params['page'] = $page_link->page;
 				return $params;
 			}
 

@@ -182,7 +182,7 @@ class Sledge_Controller_Plugin_Page_Children extends Sledge_Controller
 		// This is done individually in each action because different output formats needs different columns
 		$time = time();
 		$results = $query
-			->select('pages.id', 'page_versions.title', 'page_uris.uri')
+			->select('pages.id', 'page_versions.title', 'page_links.location')
 			->select(array(DB::expr("visible = true and visible_from <= $time and (visible_to >= $time or visible_to = 0)"), 'visible'))
 			->select(array(
 				DB::select(DB::expr('1'))
@@ -286,11 +286,11 @@ class Sledge_Controller_Plugin_Page_Children extends Sledge_Controller
 			->on('pages.' . Page::join_column($this->parent, $this->person), '=', 'page_versions.id')
 			->join('page_mptt', 'inner')
 			->on('pages.id', '=', 'page_mptt.id')
-			->join('page_uris', 'inner')
-			->on('pages.id', '=', 'page_uris.page_id')
+			->join('page_links', 'inner')
+			->on('pages.id', '=', 'page_links.page_id')
 			->where('page_versions.deleted', '=', FALSE)
 			->where('page_mptt.parent_id', '=', $this->parent->id)
-			->where('page_uris.primary_uri', '=', TRUE)
+			->where('page_links.is_primary', '=', TRUE)
 			->order_by($this->sort_column, $this->sort_direction);
 
 		// Filtering by date from?
