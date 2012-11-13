@@ -14,12 +14,11 @@ class Sledge_Chunk_Slideshow extends Chunk
 
 	protected function _show()
 	{
-		$v = View::factory("site/slots/slideshow/$this->_template");
-		$v->chunk = $this->_chunk;
-		$v->title = $this->_chunk->title;
-		$v->slides = $this->_chunk->slides();
-
-		return $v;
+		return View::factory("site/slots/slideshow/$this->_template", array(
+			'chunk'	=>	$this->_chunk,
+			'title'		=>	$this->_chunk->title,
+			'slides'	=>	$this->_chunk->slides->find_all(),
+		));
 	}
 
 	public function _show_default()
@@ -29,13 +28,8 @@ class Sledge_Chunk_Slideshow extends Chunk
 
 	public function has_content()
 	{
-		$slides = $this->_chunk->slides();
-
-		return ! empty($slides);
-	}
-
-	public function target()
-	{
-		return implode("-", $this->_chunk->get_asset_ids());
+		return $this->_chunk
+			->slides
+			->count_all() >0;
 	}
 }
