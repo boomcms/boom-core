@@ -1,9 +1,9 @@
 <?php defined('SYSPATH') OR die('No direct script access.');
 /**
-* @package Sledge
-* @category Chunks
-* @author Hoop Associates	www.thisishoop.com	mail@hoopassociates.co.uk
-* @copyright 2012, Hoop Associates
+* @package	Sledge
+* @category	Chunks
+* @author	Rob Taylor
+* @copyright	Hoop Associates
 *
 */
 class Sledge_Chunk_Slideshow extends Chunk

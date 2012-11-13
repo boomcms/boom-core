@@ -41,8 +41,6 @@ abstract class Sledge_Chunk
 	*/
 	protected $_params = array();
 
-	protected $_slotname;
-
 	/**
 	* The name of the template to display
 	* @access protected
@@ -57,15 +55,13 @@ abstract class Sledge_Chunk
 	*/
 	protected $_type;
 
-	public function __construct($slotname, Model_Page $page, Model_Chunk $chunk, $editable = TRUE)
+	public function __construct(Model_Page $page, $chunk, $editable = TRUE)
 	{
 		$this->_page = $page;
 
 		$this->_chunk = $chunk;
 
 		$this->_editable = $editable;
-
-		$this->_slotname = $slotname;
 	}
 
 	/**
@@ -118,10 +114,10 @@ abstract class Sledge_Chunk
 		// If profiling is enabled then record how long it takes to generate this chunk.
 		if (Kohana::$profiling === TRUE)
 		{
-			$benchmark = Profiler::start("Chunks", $this->_slotname);
+			$benchmark = Profiler::start("Chunks", $this->_chunk->slotname);
 		}
 
-		$cache_key = "chunk_data:" . md5($this->_slotname . $this->_page->version->id);
+		$cache_key = "chunk_data:" . md5($this->_chunk->slotname . $this->_page->version->id);
 		$cache = Cache::instance();
 
 		if (Auth::instance()->logged_in() OR ($html = $cache->get($cache_key)) === NULL)
@@ -136,7 +132,7 @@ abstract class Sledge_Chunk
 				// Make the content editable.
 				if ($this->_editable === TRUE)
 				{
-					$html = HTML::chunk_classes($html, $this->_type, $this->_slotname, $this->target(), $this->_template, $this->_page->id, $this->has_content());
+					$html = HTML::chunk_classes($html, $this->_type, $this->_chunk->slotname, $this->target(), $this->_template, $this->_page->id, $this->has_content());
 				}
 				elseif ( ! Auth::instance()->logged_in() OR Editor::state() == Editor::PREVIEW_PUBLISHED)
 				{
@@ -201,7 +197,7 @@ abstract class Sledge_Chunk
 		// This can be changed to calling editable(), for instance if we want to make a chunk read only.
 		$editable = (Editor::state() == Editor::EDIT AND Auth::instance()->logged_in("edit_slot_$slotname", $page));
 
-		return new $class($slotname, $page, $chunk, $editable);
+		return new $class($page, $chunk, $editable);
 	}
 
 	/**
@@ -233,10 +229,8 @@ abstract class Sledge_Chunk
 
 		// Awww, query the database :(
 		$chunk = ORM::factory($model)
-			->join('chunks', 'inner')
-			->on(strtolower($model) . ".chunk_id", '=', 'chunks.id')
 			->join('page_chunks')
-			->on('page_chunks.chunk_id', '=', 'chunks.id')
+			->on('page_chunks.chunk_id', '=', 'id')
 			->limit(1)
 			->where('slotname', '=', $slotname)
 			->where('page_chunks.page_vid', '=', $version_id)
@@ -319,10 +313,8 @@ abstract class Sledge_Chunk
 			// Awww, query the database :(
 			$page_id = DB::select('pages.id')
 				->from($table_name)
-				->join('chunks', 'inner')
-				->on($table_name . ".chunk_id", '=', 'chunks.id')
 				->join('page_chunks')
-				->on('page_chunks.chunk_id', '=', 'chunks.id')
+				->on('page_chunks.chunk_id', '=', "$table_name.id")
 				->where('slotname', '=', $slotname)
 				->join('pages', 'inner')
 				->on('page_chunks.page_vid', '=', 'pages.' . Page::join_column($page, Auth::instance()->get_user()))

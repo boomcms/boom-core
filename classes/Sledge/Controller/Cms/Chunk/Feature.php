@@ -29,5 +29,4 @@ class Sledge_Controller_Cms_Chunk_Feature extends Sledge_Controller_Cms_Chunk
 
 		$this->response->body($chunk->execute());
 	}
-
 }

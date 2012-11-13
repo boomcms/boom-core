@@ -11,12 +11,11 @@ class Sledge_Model_Chunk_Text extends ORM
 	/**
 	* Properties to create relationships with Kohana's ORM
 	*/
-	protected $_primary_key = 'chunk_id';
-	protected $_belongs_to = array('chunk' => array());
 	protected $_table_columns = array(
 		'text'		=>	'',
-		'chunk_id'	=>	'',
+		'id'		=>	'',
 		'title'		=>	'',
+		'slotname'	=>	'',
 	);
 
 	/**

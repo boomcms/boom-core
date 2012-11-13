@@ -1,9 +1,9 @@
 <?php defined('SYSPATH') OR die('No direct script access.');
 /**
-* @package Sledge
-* @category Chunks
-* @author Hoop Associates	www.thisishoop.com	mail@hoopassociates.co.uk
-* @copyright 2012, Hoop Associates
+* @package	Sledge
+* @category	Chunks
+* @author	Rob Taylor
+* @copyright	Hoop Associates
 *
 */
 class Sledge_Chunk_Text extends Chunk
@@ -12,7 +12,7 @@ class Sledge_Chunk_Text extends Chunk
 
 	protected function _add_html($text)
 	{
-		switch ($this->_slotname)
+		switch ($this->_chunk->slotname)
 		{
 			case 'standfirst':
 				return "<h2 class=\"standFirst\">$text</h2>";
@@ -56,7 +56,7 @@ class Sledge_Chunk_Text extends Chunk
 
 		// Add a <p> tag around the default text for bodycopies.
 		// This needs to be done a bit better. Perhaps use default temlates instead of _add_htm()?
-		if ($this->_slotname == 'bodycopy' OR $this->_slotname == 'bodycopy2')
+		if ($this->_chunk->slotname == 'bodycopy' OR $this->_chunk->slotname == 'bodycopy2')
 		{
 			$text = "<p>$text</p>";
 		}

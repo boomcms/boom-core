@@ -13,14 +13,14 @@ class Sledge_Model_Chunk_Linkset extends ORM
 	/**
 	* Properties to create relationships with Kohana's ORM
 	*/
-	protected $_primary_key = 'chunk_id';
 	protected $_has_many = array(
 		'links' => array('model' => 'Chunk_Linkset_Link', 'foreign_key' => 'chunk_linkset_id'),
 	);
 	protected $_load_with = array('links');
 	protected $_table_columns = array(
-		'chunk_id'	=>	'',
+		'id'		=>	'',
 		'title'		=>	'',
+		'slotname'	=>	'',
 	);
 
 	protected $_links = array();
@@ -34,10 +34,10 @@ class Sledge_Model_Chunk_Linkset extends ORM
 	{
 		$new = parent::copy();
 		$new->chunk = $this->chunk->copy();
-		
+
 		return $new;
 	}
-	
+
 	/**
 	* Gets or sets the linkset's links.
 	*/
@@ -49,12 +49,12 @@ class Sledge_Model_Chunk_Linkset extends ORM
 			{
 				$this->_links = $this->links->find_all()->as_array();
 			}
-			
+
 			return $this->_links;
 		}
 
 		$this->_links = array();
-	
+
 		foreach ($links as $link)
 		{
 			$link = (array) $link;
@@ -75,36 +75,17 @@ class Sledge_Model_Chunk_Linkset extends ORM
 		}
 	}
 
-	public function preview($template)
-	{
-		$links = $this->links();
-
-		if (empty($links))
-		{
-			$v = View::factory("site/slots/default/linkset/$template");
-		}
-		else
-		{
-			$v = View::factory("site/slots/linkset/$template");
-		}
-
-		$v->title = $this->title;
-		$v->links = $links;
-		
-		return $v;
-	}
-	
 	public function save(Validation $validation = NULL)
 	{
 		$return = parent::save($validation);
-				
+
 		// Save all the links.
 		foreach ($this->_links as $link)
 		{
 			$link->chunk_linkset_id = $this->chunk_id;
 			$link->save();
 		}
-				
+
 		return $return;
 	}
 }

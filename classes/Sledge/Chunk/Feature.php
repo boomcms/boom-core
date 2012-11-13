@@ -1,9 +1,9 @@
 <?php defined('SYSPATH') OR die('No direct script access.');
 /**
-* @package Sledge
-* @category Chunks
-* @author Hoop Associates	www.thisishoop.com	mail@hoopassociates.co.uk
-* @copyright 2012, Hoop Associates
+* @package	Sledge
+* @category	Chunks
+* @author	Rob Taylor
+* @copyright	Hoop Associates
 *
 */
 class Sledge_Chunk_Feature extends Chunk
@@ -16,11 +16,11 @@ class Sledge_Chunk_Feature extends Chunk
 
 	protected $_type = 'feature';
 
-	public function __construct($slotname, Model_Page $page, Model_Chunk $chunk, $editable = TRUE)
+	public function __construct(Model_Page $page, $chunk, $editable = TRUE)
 	{
-		parent::__construct($slotname, $page, $chunk, $editable);
+		parent::__construct($page, $chunk, $editable);
 
-		$this->_target_page = ORM::factory('Page', $this->_chunk->target_page_id);
+		$this->_target_page = $this->_chunk->target;
 	}
 
 	/**

@@ -14,14 +14,14 @@ class Sledge_Model_Chunk_Slideshow extends ORM
 	/**
 	* Properties to create relationships with Kohana's ORM
 	*/
-	protected $_primary_key = 'chunk_id';
 	protected $_has_many = array(
 		'slides' => array('model' => 'Chunk_Slideshow_Slide', 'foreign_key' => 'chunk_id'),
 	);
 	protected $_load_with = array('slides');
 	protected $_table_columns = array(
 		'title'		=>	'',
-		'chunk_id'	=>	'',
+		'id'		=>	'',
+		'slotname'	=>	'',
 	);
 
 	private $_asset_ids = array();
@@ -44,17 +44,6 @@ class Sledge_Model_Chunk_Slideshow extends ORM
 		}
 
 		return $this->_asset_ids;
-	}
-
-	public function preview($template)
-	{
-		$v = View::factory("site/slots/slideshow/$template");
-		$v->chunk = $this;
-
-		$v->title = $this->title;
-		$v->slides = $this->slides();
-
-		return $v;
 	}
 
 	/**

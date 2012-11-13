@@ -13,21 +13,13 @@ class Sledge_Model_Chunk_Feature extends ORM
 	/**
 	* Properties to create relationships with Kohana's ORM
 	*/
-	protected $_primary_key = 'chunk_id';
 	protected $_table_columns = array(
-		'chunk_id'			=> '',
-		'target_page_id'	=> '',
+		'id'				=>	'',
+		'target_page_id'	=>	'',
+		'slotname'			=>	'',
 	);
-	
+
 	protected $_belongs_to = array(
 		'target' => array('model' => 'Page', 'foreign_key' => 'target_page_id'),
 	);
-
-	public function preview($template)
-	{	
-		$v = View::factory("site/slots/feature/$template");
-		$v->target = $this->target;
-	
-		return $v;	
-	}
 }
