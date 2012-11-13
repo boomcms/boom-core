@@ -17,4 +17,8 @@ class Sledge_Controller_Cms_Chunk_Slideshow extends Sledge_Controller_Cms_Chunk
 		));
 	}
 
+	public function action_save()
+	{
+
+	}
 }

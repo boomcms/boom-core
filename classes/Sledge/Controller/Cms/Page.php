@@ -522,7 +522,16 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 		}
 
 		// Update slots.
-		Request::factory('cms/page/save_slots/' . $page->pk())->post( array('slots' => $data->slots))->execute();
+		foreach (array('asset', 'feature', 'linkset', 'slideshow', 'text') as $slottype)
+		{
+			Request::factory("cms/chunk/$slottype/save")
+				->post(array(
+					'chunks'	=>	(array) $data->slots->$slottype,
+				))
+				->execute();
+		}
+
+		Request::factory('cms/page/save_slots/' . $page->pk())-> post( array('slots' => $data->slots))->execute();
 
 		// Are we publishing this version?
 		if (isset($data->publish))
