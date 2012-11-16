@@ -16,7 +16,7 @@ class Sledge_Model_Activity extends ORM
 		'remotehost'	=>	'',
 		'description'	=>	'',
 		'note'		=>	'',
-		'person'		=>	'',
+		'person_id'	=>	'',
 		'time'		=>	'',
 	);
 }
