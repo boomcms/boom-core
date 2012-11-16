@@ -143,7 +143,7 @@ class Sledge_Controller_Plugin_Archive extends Sledge_Controller
 						$section = 'author';
 						break;
 
-					case Page::CATEGORIES:
+					case 'Categories':
 						$section = 'category';
 						break;
 
