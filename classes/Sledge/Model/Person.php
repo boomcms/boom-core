@@ -6,8 +6,19 @@
  * @category Models
  *
  */
-class Sledge_Model_Person extends ORM implements Email_Recipient
+class Sledge_Model_Person extends ORM
 {
+	protected $_table_name = 'people';
+
+	protected $_table_columns = array(
+		'id'			=>	'',
+		'firstname'	=>	'',
+		'lastname'		=>	'',
+		'email'		=>	'',
+		'enabled'		=>	'',
+		'theme'		=>	'',
+	);
+
 	/**
 	* Properties to create relationships with Kohana's ORM
 	*/
@@ -18,9 +29,4 @@ class Sledge_Model_Person extends ORM implements Email_Recipient
 		),
 		'activities' => array(),
 	);
-
-	public function email()
-	{
-		return $this->emailaddress;
-	}
 }

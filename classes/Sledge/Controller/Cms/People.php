@@ -12,6 +12,12 @@
 class Sledge_Controller_Cms_People extends Sledge_Controller
 {
 	/**
+	 *
+	 * @var	string	Directory where the views which relate to this class are held.
+	 */
+	protected $_view_directory = 'sledge/people/';
+
+	/**
 	 * Check that they can manage people.
 	 */
 	public function before()
@@ -31,7 +37,7 @@ class Sledge_Controller_Cms_People extends Sledge_Controller
 	 */
 	public function action_add()
 	{
-		$this->template = View::factory('sledge/people/create_person', array(
+		$this->template = View::factory($this->_view_directory . "new", array(
 			'groups'	=>	ORM::factory('Group')
 				->where('deleted', '=', FALSE)
 				->order_by('name', 'asc')
@@ -121,7 +127,9 @@ class Sledge_Controller_Cms_People extends Sledge_Controller
 		}
 		else
 		{
-			$this->response->body(View::factory('sledge/people/confirm_delete'));
+			$this->response->body(
+				View::factory('sledge/people/confirm_delete')
+			);
 		}
 	}
 
@@ -138,7 +146,7 @@ class Sledge_Controller_Cms_People extends Sledge_Controller
 	{
 //		try
 //		{
-			ORM::factory('person', $this->request->param('id'))
+			ORM::factory('Person', $this->request->param('id'))
 				->remove('groups', $this->request->post('groups'));
 //		}
 //		catch (Exception $e) {}
@@ -175,47 +183,28 @@ class Sledge_Controller_Cms_People extends Sledge_Controller
 		// Import query string paramaters
 		$page	=	max(1, $this->request->query('page'));
 		$group	=	$this->request->query('tag');
-		$sortby	=	$this->request->query('sortby');
 		$order	=	$this->request->query('order');
 
-		$subquery = DB::select('person_id')
-			->from('people_groups');
+		$query = ORM::factory('Person');
 
 		if ($group)
 		{
 			// Restrict results by group.
-			$subquery->where('group_id', '=', $group);
-		}
-		else
-		{
-			// Only get people who belong to a group in this CMS.
-			$subquery->distinct(TRUE);
+			$query
+				->join('people_groups', 'inner')
+				->on('person_id', '=', 'id')
+				->where('group_id', '=', $group);
 		}
 
-		$subquery = $subquery
-			->execute()
-			->as_array();
-
-		$query = ORM::factory('Person')
-			->where('deleted', '=', FALSE)
-			->where('person.id', 'IN', $subquery);
-
-		if ($sortby == 'audit_time' AND ($order == 'desc' OR $order == 'asc'))
+		if ( ! ($order == 'desc' OR $order == 'asc'))
 		{
-			$query->order_by($sortby, $order);
-		}
-		elseif ($sortby == 'name' AND ($order == 'desc' OR $order == 'asc'))
-		{
-			$query->order_by('firstname', $order);
-			$query->order_by('lastname', $order);
-		}
-		else
-		{
-			$sortby = 'name';
+			// Sort ascending by default.
 			$order = 'asc';
-			$query->order_by('firstname', $order);
-			$query->order_by('lastname', $order);
 		}
+
+		$query
+			->order_by('firstname', $order)
+			->order_by('lastname', $order);
 
 		$count = clone $query;
 		$total = $count->count_all();
@@ -229,7 +218,6 @@ class Sledge_Controller_Cms_People extends Sledge_Controller
 			'people'	=>	$people,
 			'group'	=>	ORM::factory('Group', $group),
 			'total'	=>	$total,
-			'sortby'	=>	$sortby,
 			'order'	=>	$order,
 		));
 
@@ -276,28 +264,32 @@ class Sledge_Controller_Cms_People extends Sledge_Controller
 		}
 		else
 		{
-			$person = ORM::factory('Person', array('emailaddress' => $this->request->post('email')));
+			$person = ORM::factory('Person', array(
+				'email'	=>	$this->request->post('email')
+			));
 		}
 
-		if ( ! $person->loaded())
-		{
-			// Set the person details.
-			$person->firstname = $this->request->post('firstname');
-			$person->lastname = $this->request->post('surname');
-			$person->enabled = $this->request->post('status');
-
-			$person->save();
-		}
+		// Set the person details.
+		$person
+			->values(array(
+				'firstname'	=>	$this->request->post('firstname'),
+				'lastname'		=>	$this->request->post('surname'),
+				'enabled'		=>	$this->request->post('status')
+			))
+			->save();
 
 		// If we're adding a new user then a group ID may be given to add the user to an inital group.
-		$group_id = (int) $this->request->post('group_id');
-
-		if ($group_id > 0)
+		if ($this->request->post('group_id') > 0)
 		{
-			$person->add_group($group_id);
+			$group = ORM::factory('Group', $this->request->post('group_id'));
+
+			if ($group->loaded())
+			{
+				$person->add('groups', $group);
+			}
 		}
 
-		Sledge::log("Added user $person->emailaddress (ID: $person->id) to the CMS");
+		Sledge::log("Added user $person->email (ID: $person->id) to the CMS");
 		$this->response->body($person->id);
 	}
 
@@ -322,7 +314,7 @@ class Sledge_Controller_Cms_People extends Sledge_Controller
 			}
 		}
 
-		$this->template = View::factory('sledge/people/detailview', array(
+		$this->template = View::factory($this->_view_directory . "view", array(
 			'people'	=>	$people,
 		));
 	}
