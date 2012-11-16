@@ -530,7 +530,7 @@ class Sledge_Model_Page extends ORM_Taggable
 		{
 			$this->_related[$column] = $value;
 
-			$join_column = Page::join_column($this, Auth::instance()->get_user());
+			$join_column = Page::join_column($this, Auth::instance());
 			$this->$join_column = $value->pk();
 			$this->_changed[$column] = $value->pk();
 		}

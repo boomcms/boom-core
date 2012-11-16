@@ -261,7 +261,7 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 				$titles = DB::select('page_versions.title')
 					->from('pages')
 					->join('page_versions', 'inner')
-					->on("page." . Page::join_column($this->page, $this->person), '=', 'page_versions.id')
+					->on("page." . Page::join_column($this->page, $this->auth), '=', 'page_versions.id')
 					->join('page_mptt', 'inner')
 					->on('page_mptt.id', '=', 'pages.id')
 					->where('scope', '=', $mptt->scope)

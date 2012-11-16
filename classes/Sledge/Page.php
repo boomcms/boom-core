@@ -12,17 +12,17 @@ abstract class Sledge_Page
 	 * i.e. Whether active_vid or published_vid should be used.
 	 * These changes depending on whether the person can edit the page or the editor state.
 	 *
-	 * Requires a Model_Page and Model_Person as its parameters to check whether the person can edit the page.
+	 * Requires a Model_Page and an Auth instance as its parameters to check whether the person can edit the page.
 	 *
 	 * @param	Model_Page	$page
-	 * @param	Model_Person	$person
+	 * @param	Auth			$auth
 	 * @return 	string
 	 */
-	public static function join_column(Model_Page $page, Model_Person $person)
+	public static function join_column(Model_Page $page, Auth $auth)
 	{
 		// If the person can't edit this page or they are previewing published pages only
 		// then they can only see the published version.
-		if (Editor::state() === Editor::PREVIEW_PUBLISHED OR ! Auth::instance()->logged_in('edit_page', $page))
+		if (Editor::state() === Editor::PREVIEW_PUBLISHED OR ! $auth->logged_in('edit_page', $page))
 		{
 			return "published_vid";
 		}

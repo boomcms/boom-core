@@ -283,7 +283,7 @@ class Sledge_Controller_Plugin_Page_Children extends Sledge_Controller
 		$query = DB::select()
 			->from('pages')
 			->join('page_versions', 'inner')
-			->on('pages.' . Page::join_column($this->parent, $this->person), '=', 'page_versions.id')
+			->on('pages.' . Page::join_column($this->parent, $this->auth), '=', 'page_versions.id')
 			->join('page_mptt', 'inner')
 			->on('pages.id', '=', 'page_mptt.id')
 			->join('page_links', 'inner')

@@ -60,7 +60,7 @@ class Sledge_Controller_Plugin_Archive extends Sledge_Controller
 				DB::select(array(DB::expr('from_unixtime(visible_from)'), 't'))
 					->from('pages')
 					->join('page_versions', 'inner')
-					->on('pages.' . Page::join_column($this->parent, $this->person), '=', 'page_versions.id')
+					->on('pages.' . Page::join_column($this->parent, $this->auth), '=', 'page_versions.id')
 					->join('page_mptt', 'inner')
 					->on('page_mptt.id', '=', 'pages.id')
 					->where('page_mptt.parent_id', '=', $this->parent->id),
@@ -185,7 +185,7 @@ class Sledge_Controller_Plugin_Archive extends Sledge_Controller
 			->join('pages', 'inner')
 			->on('tags_applied.object_id', '=', 'pages.id')
 			->join('page_versions', 'inner')
-			->on('pages.' . Page::join_column($this->parent, $this->auth->get_user()), '=', 'page_versions.id')
+			->on('pages.' . Page::join_column($this->parent, $this->auth), '=', 'page_versions.id')
 			->where('page_versions.deleted', '=', FALSE)
 			->order_by('name', 'asc');
 

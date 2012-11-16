@@ -317,7 +317,7 @@ abstract class Sledge_Chunk
 				->on('page_chunks.chunk_id', '=', "$table_name.id")
 				->where('slotname', '=', $slotname)
 				->join('pages', 'inner')
-				->on('page_chunks.page_vid', '=', 'pages.' . Page::join_column($page, Auth::instance()->get_user()))
+				->on('page_chunks.page_vid', '=', 'pages.' . Page::join_column($page, Auth::instance()))
 				->join('page_mptt', 'inner')
 				->on('page_mptt.id', '=', 'pages.id')
 				->where('page_mptt.scope', '=', $page->mptt->scope)
