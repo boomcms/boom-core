@@ -34,7 +34,7 @@ class Sledge_Controller_Cms_Page_Link extends Controller_Cms_Page
 
 			try
 			{
-				$this->page->add_link($link, FALSE);
+				$this->_add_link($link, FALSE);
 			}
 			catch (Exception $e)
 			{
@@ -120,15 +120,15 @@ class Sledge_Controller_Cms_Page_Link extends Controller_Cms_Page
 	}
 
 	/**
-	* Set a link to be the primary link for a page.
-	* Checks that the user has the 'edit_primary_link' permission for this page.
-	*
-	* **Expected POST variables:**
-	* Name		|	Type		|	Description
-	* ----------------|-----------------|---------------
-	* link 		|	string 	|	New primary link for the page.
-	*
-	*/
+	 * Set a link to be the primary link for a page.
+	 * Checks that the user has the 'edit_primary_link' permission for this page.
+	 *
+	 * **Expected POST variables:**
+	 * Name		|	Type		|	Description
+	 * ----------------|-----------------|---------------
+	 * link 		|	string 	|	New primary link for the page.
+	 *
+	 */
 	public function action_primary()
 	{
 		if ( ! $this->auth->logged_in('edit_primary_link', $this->page))
@@ -141,7 +141,7 @@ class Sledge_Controller_Cms_Page_Link extends Controller_Cms_Page
 		// Change the page's primary link.
 		if ($link != $this->page->primary_link())
 		{
-			$this->page->add_link($link, TRUE);
+			$this->_add_link($link, TRUE);
 
 			Sledge::log("Added primary link $link to page " . $this->page->title . "(ID: " . $this->page->id . ")");
 		}
@@ -161,4 +161,58 @@ class Sledge_Controller_Cms_Page_Link extends Controller_Cms_Page
 		$link->save();
 	}
 
+	/**
+	 * Add a link to a page.
+	 * Used for adding a new primary or secondary link.
+	 *
+	 * @param	string	$link		Link to be added.
+	 * @param	boolean	$primary	Whether the link should be added as a primary link
+	 */
+	protected function _add_link($link, $primary = FALSE)
+	{
+		if ($this->page->loaded())
+		{
+			$link = trim($link);
+
+			// Check that this isn't an old link for this page.
+			// This could happen when the page title is changed but the user goes back to a version with the old title and saves from there.
+			$page_link = ORM::factory('Page_Link')
+				->where('location', '=', $link)
+				->where('page_id', '=', $this->page->id)
+				->find();
+
+			if ( ! $page_link->loaded())
+			{
+				//  It's not an old LINK, so create a new one.
+				$page_link = ORM::factory('Page_Link')
+					->values(array(
+						'location'	=>	$link,
+						'page_id'	=>	$this->id,
+					));
+			}
+
+			$page_link->is_primary = $primary;
+			$page_link->create();
+
+			if ($primary == TRUE)
+			{
+				// Save the primary link in cache
+				$this->_cache->set('primary_link_for_page:' . $this->page->id, $link);
+
+				// Ensure that this is the only primary link for the page.
+				// We do this through the ORM rather than a DB update query to catch cached links
+				$page_links = ORM::factory('Page_Link')
+					->where('page_id', '=', $this->page->id)
+					->where('id', '!=', $page_link->id)
+					->where('is_primary', '=', TRUE)
+					->find_all();
+
+				foreach ($page_links as $page_link)
+				{
+					$page_link->is_primary = FALSE;
+					$page_link->save();
+				}
+			}
+		}
+	}
 } // End Sledge_Controller_Cms_Page

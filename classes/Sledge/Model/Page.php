@@ -133,60 +133,6 @@ class Sledge_Model_Page extends ORM_Taggable
 	}
 
 	/**
-	 * Adds a URI to the page
-	 *
-	 * @param	string	$uri		URI to add
-	 * @param	boolean	$primary	Whether the URI should be added as a primary URI
-	 */
-	public function add_link($link, $primary = FALSE)
-	{
-		if ($this->loaded())
-		{
-			$link = trim($link);
-
-			// Check that this isn't an old link for this page.
-			// This could happen when the page title is changed but the user goes back to a version with the old title and saves from there.
-			$page_link = ORM::factory('Page_Link')
-				->where('location', '=', $link)
-				->where('page_id', '=', $this->id)
-				->find();
-
-			if ( ! $page_link->loaded())
-			{
-				//  It's not an old LINK, so create a new one.
-				$page_link = ORM::factory('Page_Link')
-					->values(array(
-						'location'	=>	$link,
-						'page_id'	=>	$this->id,
-					));
-			}
-
-			$page_link->is_primary = $primary;
-			$page_link->create();
-
-			if ($primary == TRUE)
-			{
-				// Save the primary link in cache
-				$this->_cache->set('primary_link_for_page:' . $this->id, $link);
-
-				// Ensure that this is the only primary link for the page.
-				// We do this through the ORM rather than a DB update query to catch cached links
-				$page_links = ORM::factory('Page_Link')
-					->where('page_id', '=', $this->id)
-					->where('id', '!=', $page_link->id)
-					->where('is_primary', '=', TRUE)
-					->find_all();
-
-				foreach ($page_links as $page_link)
-				{
-					$page_link->is_primary = FALSE;
-					$page_link->save();
-				}
-			}
-		}
-	}
-
-	/**
 	* Adds a new child page to this page's MPTT tree.
 	* Takes care of putting the child in the correct position according to this page's child ordering policy.
 	*
