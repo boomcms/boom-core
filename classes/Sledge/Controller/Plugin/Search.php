@@ -53,7 +53,7 @@ class Sledge_Controller_Plugin_Search extends Kohana_Controller
 				$pagination = View::factory('pagination/query');
 				$pagination->total_pages = $count;
 				$pagination->current_page = $p;
-				$pagination->base_url = Request::initial()->url();
+				$pagination->base_url = Request::initial()->link();
 				$pagination->previous_page = $p - 1;
 				$pagination->next_page = ($p == $count)? 0 : ($p + 1);
 				$v->pagination = $pagination;

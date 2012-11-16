@@ -28,12 +28,12 @@ Route::set('page_settings', 'cms/page/settings/<action>/<id>' )
 	));
 
 /**
-* Defines the route for /cms page uris pages..
+* Defines the route for /cms page links pages..
 *
 */
-Route::set('page_links', 'cms/page/uri/<action>/<id>' )
+Route::set('page_links', 'cms/page/link/<action>/<id>' )
 	->defaults(array(
-		'controller' => 'cms_page_uri',
+		'controller' => 'cms_page_link',
 	));
 
 /**

@@ -15,7 +15,7 @@ class Sledge_Model_Page extends ORM_Taggable
 	* Properties to create relationships with Kohana's ORM
 	*/
 	protected $_has_many = array(
-		'links'	=> array('model' => 'Page_Links'),
+		'links'	=> array('model' => 'Page_Link'),
 		'revisions' => array('model' => 'Page_Version', 'foreign_key' => 'rid'),
 	);
 	protected $_belongs_to = array(
@@ -73,12 +73,12 @@ class Sledge_Model_Page extends ORM_Taggable
 	private $_primary_link;
 
 	/**
-	* Cached result for self::url()
+	* Cached result for self::link()
 	*
 	* @access private
 	* @var string
 	*/
-	private $_url;
+	private $_link;
 
 	/**
 	* Load database values into the object.
@@ -346,7 +346,7 @@ class Sledge_Model_Page extends ORM_Taggable
 	* @return string The RELATIVE primary URI of the page.
 	*
 	*/
-	public function get_primary_link()
+	public function primary_link()
 	{
 		if ($this->_primary_link == NULL)
 		{
@@ -393,6 +393,25 @@ class Sledge_Model_Page extends ORM_Taggable
 		$time = time();
 
 		return ($this->visible AND $this->visible_from <= $time AND ($this->visible_to >= $time OR $this->visible_to == 0));
+	}
+
+	/**
+	 * Returns the page's absolute link.
+	 * This method uses Kohana's URL::base() method to generate the base URL from the current request (protocol, hostnane etc.) {@link http://kohanaframework.org/3.2/guide/api/URL#base}
+	 *
+	 * @uses	URL::base()
+	 * @uses	Request::Instance()
+	 * @return string The absolute URI.
+	 */
+	public function link()
+	{
+		if ($this->_link === NULL)
+		{
+			// Get the base link of the current request.
+			$this->_link = URL::site($this->primary_link());
+		}
+
+		return $this->_link;
 	}
 
 	/**
@@ -528,7 +547,7 @@ class Sledge_Model_Page extends ORM_Taggable
 	 *
 	 * @return 	string
 	 */
-	public function short_uri()
+	public function short_link()
 	{
 		return "_" . base_convert($this->id, 10, 36);
 	}
@@ -575,24 +594,6 @@ class Sledge_Model_Page extends ORM_Taggable
 				$previous = $child;
 			}
 		}
-	}
-
-	/**
-	* Returns the page's absolute URI.
-	* This method uses Kohana's URL::base() method to generate the base URL from the current request (protocol, hostnane etc.) {@link http://kohanaframework.org/3.2/guide/api/URL#base}
-	* @uses URL::base()
-	* @uses Request::Instance()
-	* @return string The absolute URI.
-	*/
-	public function url()
-	{
-		if ($this->_url === NULL)
-		{
-			// Get the base URL of the current request.
-			$this->_url = URL::site($this->get_primary_link());
-		}
-
-		return $this->_url;
 	}
 
 	/**

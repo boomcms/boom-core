@@ -19,7 +19,7 @@
 					echo " class='$classes'";
 				endif; 
 			?>
-			><a href="<?=URL::site($p['uri']);?>"><?=ucfirst($p['title']);?></a>
+			><a href="<?=URL::site($p['link']);?>"><?=ucfirst($p['title']);?></a>
 		</li>
 	<? endforeach; ?>
 </ul>

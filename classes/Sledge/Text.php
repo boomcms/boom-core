@@ -61,7 +61,7 @@ class Sledge_Text extends Twitter_Text
 			function ($match)
 			{
 				$p = ORM::factory('Page', $match[1]);
-				return $p->url();
+				return $p->link();
 			}, 
 			$text 
 		);

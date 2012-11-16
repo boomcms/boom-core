@@ -106,7 +106,7 @@ class Sledge_Controller_Page extends Sledge_Controller
 	public function action_jpeg()
 	{
 		// Name of the cache file.
-		$file = APPPATH . 'cache/' . md5($this->page->url() . serialize($this->request->query()));
+		$file = APPPATH . 'cache/' . md5($this->page->link() . serialize($this->request->query()));
 
 		// When the cache file was last modified. Used to determine whether the file should be regenerated and HTTP last-modified header.
 		$filemtime = file_exists($file)? filemtime($file) : 0;
@@ -124,7 +124,7 @@ class Sledge_Controller_Page extends Sledge_Controller
 			try
 			{
 				$snappy = new Knp\Snappy\Image('wkhtmltoimage');
-				$snappy->generate($this->page->url() . "?$query", $file, array(), TRUE);
+				$snappy->generate($this->page->link() . "?$query", $file, array(), TRUE);
 			}
 			catch (Exception $e)
 			{
@@ -216,7 +216,7 @@ class Sledge_Controller_Page extends Sledge_Controller
 
 		$feed = Feed::create(array(
 				'title'	=>	$this->page->title,
-				'link'	=>	$this->page->url() . ".rss",
+				'link'	=>	$this->page->link() . ".rss",
 			),
 			$pages
 		);

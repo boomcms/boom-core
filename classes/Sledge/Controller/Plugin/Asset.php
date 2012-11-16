@@ -70,7 +70,7 @@ class Sledge_Controller_Plugin_Asset extends Sledge_Controller
 					$v->assets = $assets;
 					$v->total = $total;
 					$v->kids = $kids;
-					$v->url = $url = ($this->request->post('url'))? $this->request->post('url') : Request::initial()->param('page')->url();
+					$v->url = $url = ($this->request->post('url'))? $this->request->post('url') : Request::initial()->param('page')->link();
 
 					if ($total_pages > 1)
 					{

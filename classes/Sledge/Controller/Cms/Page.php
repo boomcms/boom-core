@@ -180,7 +180,7 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 			$page->save();
 
 			// URI needs to be generated after the MPTT is set up.
-			$prefix = ($parent->default_child_uri_prefix)? $parent->default_child_uri_prefix : $parent->get_primary_uri();
+			$prefix = ($parent->default_child_uri_prefix)? $parent->default_child_uri_prefix : $parent->primary_link();
 			$uri = URL::generate($prefix, $page->title);
 
 			// Add the URI as the primary URI for this page.
@@ -245,7 +245,7 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 			$this->page->delete($delete_children);
 
 			// Redirect to the parent page.
-			$this->response->body($parent->url());
+			$this->response->body($parent->link());
 		}
 		else
 		{
@@ -463,7 +463,7 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 
 			$parent = $page->parent();
 
-			$prefix = ($parent->default_child_uri_prefix)? $parent->default_child_uri_prefix : $parent->get_primary_uri();
+			$prefix = ($parent->default_child_uri_prefix)? $parent->default_child_uri_prefix : $parent->primary_link();
 
 			$page_uri = ORM::factory('Page_URI')
 				->where('uri', '=', $prefix . '/' . URL::title($page->title))
@@ -513,7 +513,7 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 		Sledge::log("Saved page $page->title (ID: $page->id)");
 
 		// Change the page's primary URI.
-		if (isset($data->uri) AND $data->uri != $page->get_primary_uri())
+		if (isset($data->uri) AND $data->uri != $page->primary_link())
 		{
 			// Reload the page after save.
 			$reload = TRUE;
@@ -542,7 +542,7 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 		$this->response->body(json_encode(
 			array(
 				'reload'	=>	$reload,
-				'url' => $page->url(),
+				'url' => $page->link(),
 				'vid' => $this->page->version->id,
 				'status'	=>	View::factory('sledge/editor/page/status', array('auth' => $this->auth, 'page' => $page))->render(),
 			)

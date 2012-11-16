@@ -30,7 +30,7 @@ class Sledge_Chunk_Asset extends Chunk
 		{
 			$target = ORM::factory('Page', $this->_chunk->url);
 			$v->title = $target->title;
-			$v->url = $target->url();
+			$v->url = $target->link();
 		}
 		else
 		{

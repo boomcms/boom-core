@@ -182,7 +182,7 @@ class Sledge_Controller_Cms_Page_Settings extends Controller_Cms_Page
 
 			if ($reload)
 			{
-				$this->response->body($this->page->url());
+				$this->response->body($this->page->link());
 			}
 		}
 		else

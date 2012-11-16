@@ -5,7 +5,6 @@
  * @package	Sledge
  * @category	Helpers
  */
-
 abstract class Sledge_Page
 {
 	/**

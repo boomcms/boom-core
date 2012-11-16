@@ -49,7 +49,7 @@
 				echo " style='color: #ff0000'";
 			}
 			
-			echo " id='", $node['page_id'], "' href='/", $node['uri'], "' rel='", $node['page_id'], "'>", $node['title'], "</a>\n";	
+			echo " id='", $node['page_id'], "' href='/", $node['link'], "' rel='", $node['page_id'], "'>", $node['title'], "</a>\n";	
 			
 			// Start a sub-list if this page has children. Otherwise close the list item.
 			if ($i < ($count - 1) && $pages[ $i + 1 ]['parent_id'] == $node['id'])
