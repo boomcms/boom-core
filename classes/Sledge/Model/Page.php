@@ -138,49 +138,49 @@ class Sledge_Model_Page extends ORM_Taggable
 	 * @param	string	$uri		URI to add
 	 * @param	boolean	$primary	Whether the URI should be added as a primary URI
 	 */
-	public function add_uri($uri, $primary = FALSE)
+	public function add_link($link, $primary = FALSE)
 	{
 		if ($this->loaded())
 		{
-			$uri = trim($uri);
+			$link = trim($link);
 
-			// Check that this isn't an old URI for this page.
+			// Check that this isn't an old link for this page.
 			// This could happen when the page title is changed but the user goes back to a version with the old title and saves from there.
-			$page_uri = ORM::factory('Page_URI')
-				->where('uri', '=', $uri)
+			$page_link = ORM::factory('Page_Link')
+				->where('location', '=', $link)
 				->where('page_id', '=', $this->id)
 				->find();
 
-			if ( ! $page_uri->loaded())
+			if ( ! $page_link->loaded())
 			{
-				//  It's not an old URI, so create a new one.
-				$page_uri = ORM::factory('Page_URI')
+				//  It's not an old LINK, so create a new one.
+				$page_link = ORM::factory('Page_Link')
 					->values(array(
-						'uri'		=>	$uri,
+						'location'	=>	$link,
 						'page_id'	=>	$this->id,
 					));
 			}
 
-			$page_uri->is_primary = $primary;
-			$page_uri->create();
+			$page_link->is_primary = $primary;
+			$page_link->create();
 
 			if ($primary == TRUE)
 			{
-				// Save the primary URI in cache
-				$this->_cache->set('primary_uri_for_page:' . $this->id, $uri);
+				// Save the primary link in cache
+				$this->_cache->set('primary_link_for_page:' . $this->id, $link);
 
-				// Ensure that this is the only primary URI for the page.
-				// We do this through the ORM rather than a DB update query to catch cached URIs
-				$page_links = ORM::factory('Page_URI')
+				// Ensure that this is the only primary link for the page.
+				// We do this through the ORM rather than a DB update query to catch cached links
+				$page_links = ORM::factory('Page_Link')
 					->where('page_id', '=', $this->id)
-					->where('id', '!=', $page_uri->id)
+					->where('id', '!=', $page_link->id)
 					->where('is_primary', '=', TRUE)
 					->find_all();
 
-				foreach ($page_links as $page_uri)
+				foreach ($page_links as $page_link)
 				{
-					$page_uri->is_primary = FALSE;
-					$page_uri->save();
+					$page_link->is_primary = FALSE;
+					$page_link->save();
 				}
 			}
 		}

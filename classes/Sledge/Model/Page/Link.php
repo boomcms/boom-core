@@ -37,7 +37,7 @@ class Sledge_Model_Page_Link extends ORM
 
 		if ($exists->count() > 0)
 		{
-			throw new Exception("Link :link is already in use", array(':link' => $this->location));
+			throw new Kohana_Exception("Link :link is already in use", array(':link' => $this->location));
 		}
 
 		return parent::create($validation);

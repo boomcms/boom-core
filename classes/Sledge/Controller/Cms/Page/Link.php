@@ -65,7 +65,7 @@ class Sledge_Controller_Cms_Page_Link extends Controller_Cms_Page
 		// Don't delete with direct db query or we won't delete the cached version.
 		$link = ORM::factory('Page_Link')
 			->where('page_id', '=', $this->page->id)
-			->where('link', '=', $this->request->post('link'))
+			->where('location', '=', $this->request->post('link'))
 			->where('is_primary', '=', FALSE)
 			->find();
 
@@ -92,7 +92,7 @@ class Sledge_Controller_Cms_Page_Link extends Controller_Cms_Page
 	public function action_move()
 	{
 		$link = ORM::factory('Page_Link', array(
-			'link' => $this->request->query('link')
+			'location'	=> $this->request->query('link')
 		));
 
 		if ( ! $link->loaded())

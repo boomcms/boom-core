@@ -8,21 +8,6 @@
 abstract class Sledge_Page
 {
 	/**
-	 * The route to the authors tag.
-	 */
-	const AUTHORS = 'authors';
-
-	/**
-	 * The route to the categories tag.
-	 */
-	const CATEGORIES = 'categories';
-
-	/**
-	 * The route to the tags tag.
-	 */
-	const TAGS = NULL;
-
-	/**
 	 * Returns the column name which should be used for joining the page table to the page_versions table.
 	 * i.e. Whether active_vid or published_vid should be used.
 	 * These changes depending on whether the person can edit the page or the editor state.
