@@ -67,7 +67,7 @@ class Sledge_Controller_Cms_Page_Settings extends Controller_Cms_Page
 
 			// These settings aren't inherited
 			$this->update_columns(array(
-				'default_grandchild_template_id', 'default_child_template_id', 'default_child_uri_prefix'
+				'default_grandchild_template_id', 'default_child_template_id', 'default_child_link_prefix'
 			));
 
 			$this->page->save();

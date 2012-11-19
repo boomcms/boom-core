@@ -44,7 +44,7 @@ class Sledge_Model_Page_Version extends Model_Version
 		'keywords'					=>	'',
 		'description'					=>	'',
 		'internal_name'					=>	'',
-		'default_child_uri_prefix'			=>	'',
+		'default_child_link_prefix'			=>	'',
 		'indexed'						=>	'',
 		'hidden_from_search_results'		=>	'',
 		'default_grandchild_template_id'	=>	'',

@@ -180,7 +180,7 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 			$page->save();
 
 			// URI needs to be generated after the MPTT is set up.
-			$prefix = ($parent->default_child_uri_prefix)? $parent->default_child_uri_prefix : $parent->primary_link();
+			$prefix = ($parent->default_child_link_prefix)? $parent->default_child_link_prefix : $parent->primary_link();
 			$uri = URL::generate($prefix, $page->title);
 
 			// Add the URI as the primary URI for this page.
@@ -463,7 +463,7 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 
 			$parent = $page->parent();
 
-			$prefix = ($parent->default_child_uri_prefix)? $parent->default_child_uri_prefix : $parent->primary_link();
+			$prefix = ($parent->default_child_link_prefix)? $parent->default_child_link_prefix : $parent->primary_link();
 
 			// Does the link already exist?
 			$link = ORM::factory('Page_Link')
