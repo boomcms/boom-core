@@ -12,8 +12,7 @@ class Sledge_Model_Person extends ORM
 
 	protected $_table_columns = array(
 		'id'			=>	'',
-		'firstname'	=>	'',
-		'lastname'		=>	'',
+		'name'		=>	'',
 		'email'		=>	'',
 		'enabled'		=>	'',
 		'theme'		=>	'',

@@ -66,11 +66,11 @@ class Sledge_Controller_Cms_People extends Sledge_Controller
 
 				foreach ( (array) $groups as $group_id)
 				{
-					Sledge::log("Added person $person->emailaddress to group with ID $group_id");
+					Sledge::log("Added person $person->email to group with ID $group_id");
 
 					try
 					{
-						$person->add('groups', $group);
+						$person->add('groups', $group_id);
 					}
 					catch (Database_Exception $e) {}
 				}
@@ -109,27 +109,18 @@ class Sledge_Controller_Cms_People extends Sledge_Controller
 	 */
 	public function action_delete()
 	{
-		if ($this->request->method() === Request::POST)
-		{
-			$people = (array) $this->request->post('people');
+		$people = (array) $this->request->post('people');
 
-			foreach ($people as $person_id)
+		foreach ($people as $person_id)
+		{
+			Sledge::log("Deleted person $person->email");
+
+			try
 			{
-				Sledge::log("Deleted person $person->emailaddress");
-
-				try
-				{
-					ORM::factory('Person', $person_id)
-						->delete();
-				}
-				catch (Exception $e) {}
+				ORM::factory('Person', $person_id)
+					->delete();
 			}
-		}
-		else
-		{
-			$this->response->body(
-				View::factory('sledge/people/confirm_delete')
-			);
+			catch (Exception $e) {}
 		}
 	}
 
@@ -174,7 +165,7 @@ class Sledge_Controller_Cms_People extends Sledge_Controller
 	 * ----------------------|-----------------|---------------
 	 * page			|	int		|	Which page of results to display. Default is 1.
 	 * group			|	int		|	Enables filtering people by group.
-	 * sortby			|	string	|	Which column to sort results by. Default is firstname, lastname.
+	 * sortby			|	string	|	Which column to sort results by. Default is name.
 	 * order			|	string	|	CWhich direction to sort results in, can be 'asc' or 'desc'. Default is asc.
 	 *
 	 */
@@ -202,9 +193,7 @@ class Sledge_Controller_Cms_People extends Sledge_Controller
 			$order = 'asc';
 		}
 
-		$query
-			->order_by('firstname', $order)
-			->order_by('lastname', $order);
+		$query->order_by('name', $order);
 
 		$count = clone $query;
 		$total = $count->count_all();
@@ -246,8 +235,7 @@ class Sledge_Controller_Cms_People extends Sledge_Controller
 	 * Name			|	Type		|	Description
 	 * ---------------------|-----------------|---------------
 	 * emailaddress		|	string	|	Email address of the new user. Required.
-	 * firstname		|	string	|	User's first name. Required.
-	 * surname		|	string	|	User's last name. Required.
+	 * name§			|	string	|	User's name.
 	 * password		|	string	|	User's password.
 	 * group_id		|	int		|	ID of a group to add the user to.
 	 *
@@ -269,11 +257,16 @@ class Sledge_Controller_Cms_People extends Sledge_Controller
 			));
 		}
 
+		if ( ! $person->loaded())
+		{
+			// If the person wasn't loaded then we're creating a new person so allow the email address to be set.
+			$person->email = $this->request->post('email');
+		}
+
 		// Set the person details.
 		$person
 			->values(array(
-				'firstname'	=>	$this->request->post('firstname'),
-				'lastname'		=>	$this->request->post('surname'),
+				'name'		=>	$this->request->post('name'),
 				'enabled'		=>	$this->request->post('status')
 			))
 			->save();

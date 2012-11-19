@@ -15,7 +15,7 @@ class Sledge_Controller_Cms_Auth extends Controller
 		{
 			$openid = new LightOpenID($_SERVER['HTTP_HOST']);
 			$openid->identity = 'https://www.google.com/accounts/o8/id';
-			$openid->required = array('contact/email');
+			$openid->required = array('contact/email', 'namePerson');
 
 			$this->redirect($openid->authUrl());
 		}
@@ -30,6 +30,13 @@ class Sledge_Controller_Cms_Auth extends Controller
 				if ( ! $person->loaded())
 				{
 					die('invalid email');
+				}
+
+				if (isset($attrs['namePerson']) AND $person->name != $attrs['namePerson'])
+				{
+					// Update the person's name.
+					$person->name = $attrs['namePerson'];
+					$person->save();
 				}
 
 				Auth::instance()->login($person, " ");
