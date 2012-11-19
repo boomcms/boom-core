@@ -173,8 +173,13 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 			// Add to the tree.
 			$page->mptt->id = $page->id;
 
-			// Where should we put it?
-			$parent->add_child($page);
+			// Add it as the last child of the parent for now.
+			$page->mptt->insert_as_last_child($parent->id);
+
+			// Now sort the children of the parent.
+			// This could be done in one go, and used to be done like that.
+			// But changed to this method to re-use code.
+			$parent->sort_children();
 
 			// Save the page.
 			$page->save();

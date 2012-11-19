@@ -133,97 +133,6 @@ class Sledge_Model_Page extends ORM_Taggable
 	}
 
 	/**
-	* Adds a new child page to this page's MPTT tree.
-	* Takes care of putting the child in the correct position according to this page's child ordering policy.
-	*
-	* @param Model_Page $page The new child page.
-	* @return void
-	*/
-	public function add_child(Model_Page $page)
-	{
-		if ($this->child_ordering_policy & self::CHILD_ORDER_DATE)
-		{
-			if ($this->child_ordering_policy & self::CHILD_ORDER_ASC)
-			{
-				$page->mptt->insert_as_last_child($this->mptt);
-			}
-			else
-			{
-				$page->mptt->insert_as_first_child($this->mptt);
-			}
-		}
-		elseif ($this->child_ordering_policy & self::CHILD_ORDER_ALPHABETIC)
-		{
-			// Ordering alphabetically?
-			// Find the page_mptt record of the page which comes after this alphabetically.
-			$mptt = ORM::factory('Page_MPTT')
-				->join('pages', 'inner')
-				->on('pages.id', '=', 'page_mptt.id')
-				->join('page_versions', 'inner')
-				->on('pages.active_vid', '=', 'page_versions.id')
-				->where('page_mptt.parent_id', '=', $this->mptt->id);
-
-			if ($this->child_ordering_policy & self::CHILD_ORDER_ASC)
-			{
-				$mptt->where('title', '>', $page->title)->order_by('title', 'asc');
-			}
-			else
-			{
-				$mptt->where('title', '<', $page->title)->order_by('title', 'desc');
-			}
-
-			$mptt
-				->limit(1)
-				->find();
-
-			if ( ! $mptt->loaded())
-			{
-				// If a record wasn't loaded then there's no page after this one.
-				// Insert as the last child of the parent.
-				$page->mptt->insert_as_last_child($this->mptt);
-			}
-			else
-			{
-				$page->mptt->insert_as_next_sibling($mptt);
-			}
-		}
-		else
-		{
-			// For anything else (such as ordering children manually) just stick it at the end for now.
-			$page->mptt->insert_as_last_child($this->mptt);
-		}
-
-		$this->mptt->reload();
-	}
-
-	/**
-	* Creates table joins and where statements to limit query results to a sub-tree.
-	*
-	* @param Model_Page $parent The parent page.
-	*/
-	public function child_of(Model_Page $parent)
-	{
-		$this
-			->join('page_mptt', 'inner')
-			->on('page_mptt.id', '=', $this->_table_name . "." . $this->_primary_key)
-			->where('page_mptt.scope', '=', $parent->mptt->scope)
-			->where('page_mptt.lft', '>=', $parent->mptt->lft)
-			->where('page_mptt.rgt', '<=', $parent->mptt->rgt);
-
-		return $this;
-	}
-
-	/**
-	* Returns how many versions a page has.
-	*
-	* @uses Model_Page::version_ids()
-	*/
-	public function count_versions()
-	{
-		return count($this->version_ids());
-	}
-
-	/**
 	* Delete a page.
 	* Ensures child pages are deleted and that the pages are deleted from the MPTT tree.
 	*
@@ -243,47 +152,6 @@ class Sledge_Model_Page extends ORM_Taggable
 		$this->mptt->delete();
 
 		return parent::delete();
-	}
-
-	/**
-	* Return a human readable representation of the child ordering policy.
-	*
-	* @return string Child ordering policy
-	*/
-	public function get_child_ordering_policy()
-	{
-		switch ($this->child_ordering_policy)
-		{
-			case self::CHILD_ORDER_MANUAL:
-				return 'Manual';
-				break;
-			case self::CHILD_ORDER_ALPHABETIC:
-				return 'Alphabetic';
-				break;
-			case self::CHILD_ORDER_DATE:
-				return 'Date';
-				break;
-			default:
-				throw new Exception("Page version has unknown child ordering policy: " . $this->child_ordering_policy);
-		}
-	}
-
-	/**
-	* Builds a query to find the current page's children.
-	*/
-	public function get_children()
-	{
-		if ( ! $this->loaded())
-		{
-			return FALSE;
-		}
-
-		return ORM::factory('Page')
-			->join('page_mptt', 'inner')
-			->on('pages.id', '=', 'page_mptt.id')
-			->where('lft', '>', $this->mptt->lft)
-			->where('rgt', '<', $this->mptt->rgt)
-			->where('scope', '=', $this->mptt->scope);
 	}
 
 	/**
@@ -336,9 +204,7 @@ class Sledge_Model_Page extends ORM_Taggable
 
 	public function is_visible()
 	{
-		$time = time();
-
-		return ($this->visible AND $this->visible_from <= $time AND ($this->visible_to >= $time OR $this->visible_to == 0));
+		return ($this->visible AND $this->visible_from <= $_SERVER['REQUEST_TIME'] AND ($this->visible_to >= $_SERVER['REQUEST_TIME'] OR $this->visible_to == 0));
 	}
 
 	/**
@@ -373,100 +239,6 @@ class Sledge_Model_Page extends ORM_Taggable
 	}
 
 	/**
-	* Used to re-order this page's children
-	*
-	* @param int $order The ordering policy ID.
-	* @param string $direction The order direction, should be 'asc' or 'desc'
-	* @todo lock mptt tables to avoid errors.
-	*/
-	public function order_children($order, $direction)
-	{
-		$direction = ($direction == 'asc')? 'asc' : 'desc';
-
-		if (is_string($order))
-		{
-			switch ($order)
-			{
-				case 'manual':
-					$order = self::CHILD_ORDER_MANUAL;
-					break;
-				case 'date':
-					$order = self::CHILD_ORDER_DATE;
-					break;
-				default:
-					$order = self::CHILD_ORDER_ALPHABETIC;
-			}
-		}
-
-		if ($this->mptt->has_children())
-		{
-			// Find the children, sorting the database results by the column we want the children ordered by.
-			$query = ORM::factory('Page_mptt')
-				->join('page', 'inner')->on('page_mptt.id', '=', 'page.id')
-				->join('page_v', 'inner')->on('page.active_vid', '=', 'page_v.id')
-				->where('parent_id', '=', $this->mptt->id);
-
-			if ($order == self::CHILD_ORDER_ALPHABETIC)
-			{
-				$query->order_by('title', $direction);
-			}
-			elseif ($order == self::CHILD_ORDER_DATE)
-			{
-				$query->order_by('audit_time', $direction);
-			}
-			else
-			{
-				$query->order_by('sequence', 'asc');
-			}
-
-			$children = $query->find_all();
-
-			$previous = NULL;
-
-			// Loop through the children assigning new left and right values.
-			foreach ($children as $child)
-			{
-				if ($previous === NULL)
-				{
-					$child->move_to_first_child($this->mptt);
-				}
-				else
-				{
-					$child->move_to_next_sibling($previous);
-				}
-
-				$previous = $child;
-			}
-		}
-
-		$direction = ($direction == 'asc')? (self::CHILD_ORDER_ASC) : (self::CHILD_ORDER_DESC);
-		$this->child_ordering_policy = $direction | $order;
-	}
-
-	/**
-	* Save the page.
-	* Updates the cache with an array of page versions for use by Controller_Cms_Page::action_revisions()
-	*/
-	public function save( Validation $validation = NULL)
-	{
-		parent::save($validation);
-
-		// Has the version been saved?
-		if ($this->version->saved())
-		{
-			// If there's a revision list in the cache then update it.
-			$cache_key = 'page_versions:' . $this->pk();
-
-			if ($revisions = Cache::instance()->get($cache_key))
-			{
-				array_unshift($revisions, $this->active_vid);
-				$this->_cache->set($cache_key, $revisions);
-				$this->_cache->set("version_count:" . $this->pk(), count($revisions));
-			}
-		}
-	}
-
-	/**
 	 * This ensures that when assigning a new version to a page the active_vid or published_vid is updated depending on whether the person can edit the page.
 	 * This fixes a bug whereby when Sledge_Controller_Cms_Page::action_page() assigns a new version to the page the published_vid is updated, even though the logged in user is accessing the page version based on the active_vid column.
 	 */
@@ -498,78 +270,60 @@ class Sledge_Model_Page extends ORM_Taggable
 		return "_" . base_convert($this->id, 10, 36);
 	}
 
+	/**
+	 * Sort the page's children as specified by the child ordering policy.
+	 * Should be called when changing a page's child ordering policy or adding a new child.
+	 *
+	 * @return	Model_Page
+	 */
 	public function sort_children()
 	{
-		if ($this->mptt->has_children())
+		// Determine which column to sort by.
+		if ($this->child_ordering_policy & static::CHILD_ORDER_ALPHABETIC)
 		{
-			// Find the children, sorting the database results by the column we want the children ordered by.
-			$query = ORM::factory('Page_mptt')
-				->join('page', 'inner')->on('page_mptt.id', '=', 'page.id')
-				->join('page_v', 'inner')->on('page.active_vid', '=', 'page_v.id')
-				->where('parent_id', '=', $this->mptt->id);
+			$column = 'title';
+		}
+		elseif ($this->child_ordering_policy & static::CHILD_ORDER_DATE)
+		{
+			$column = 'audit_time';
+		}
+		else
+		{
+			$column = 'sequence';
+		}
 
-			if ($this->child_ordering_policy & self::CHILD_ORDER_ALPHABETIC)
+		// Determine the direction to sort in.
+		$direction = ($this->child_ordering_policy & static::CHILD_ORDER_ASC)? 'asc' : 'desc';
+
+		// Find the children, sorting the database results by the column we want the children ordered by.
+		$children = ORM::factory('Page_MPTT')
+			->join('page', 'inner')
+			->on('page_mptt.id', '=', 'page.id')
+			->join('page_v', 'inner')
+			->on('page.active_vid', '=', 'page_v.id')
+			->where('parent_id', '=', $this->id)
+			->order_by($column, $direction)
+			->find_all();
+
+		// Flag to show that loop is on it's first iteration.
+		$first = TRUE;
+
+		// Loop through the children assigning new left and right values.
+		foreach ($children as $child)
+		{
+			if ($first)
 			{
-				$query->order_by('title', 'asc');
-			}
-			elseif ($this->child_ordering_policy & self::CHILD_ORDER_DATE)
-			{
-				$query->order_by('audit_time', 'desc');
+				// First iteration of the loop so make the page the first child.
+				$child->move_to_first_child($this->id);
+				$first = FALSE;
 			}
 			else
 			{
-				$query->order_by('sequence', 'asc');
-			}
-
-			$children = $query->find_all();
-
-			$previous = NULL;
-
-			// Loop through the children assigning new left and right values.
-			foreach ($children as $child)
-			{
-				if ($previous === NULL)
-				{
-					$child->move_to_first_child($this->mptt);
-				}
-				else
-				{
-					$child->move_to_next_sibling($previous);
-				}
-
-				$previous = $child;
+				// For all the other children move to the end.
+				$child->move_to_last_child($this->id);
 			}
 		}
-	}
 
-	/**
-	 * Returns an array of page version IDs.
-	 * Tries to get a cached version ID list first before retrieving IDs from the database.
-	 * Used to display a list of versions and to notify the user how many versions there are.
-	 *
-	 * @return integer
-	 */
-	public function version_ids()
-	{
-		$cache_key = 'page_versions:' . $this->id;
-
-		// Cache the version IDs of the page versions
-		// Only cache the IDs so that the version objects are only cached in one place.
-		if ( ! $revisions = $this->_cache->get($cache_key))
-		{
-			$revisions = DB::select('page_versions.id')
-							->from('page_versions')
-							->where('rid', '=', $this->id)
-							->order_by('id', 'desc')
-							->execute();
-			$revisions = Arr::pluck($revisions, 'id');
-
-			$this->_cache->set($cache_key, $revisions);
-		}
-
-		// Just in case something's fouled up our cache.
-		$revisions = array_unique($revisions);
-
-		return $revisions;
+		return $this;
 	}
 }
