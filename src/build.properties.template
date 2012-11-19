@@ -1,6 +1,0 @@
-version=3.0.0
-app.name=nhhg
-db.user=@db.user@
-db.password=@db.password@
-db.name=@db.name@
-db.host=@db.host@
