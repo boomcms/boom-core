@@ -421,7 +421,7 @@ class Sledge_Controller_Cms_Assets extends Sledge_Controller
 			}
 		}
 
-		$this->template = View::factory('sledge/assets/detailview', array(
+		$this->template = View::factory('sledge/assets/view', array(
 			'assets'	=>	$assets,
 		));
 	}
