@@ -85,40 +85,6 @@ class Sledge_Model_Page_Version extends ORM
 	}
 
 	/**
-	* Get the page description.
-	* Returns $this->description if set or the current page's standfirst if not.
-	*
-	* @return string The page description.
-	* @todo Retrieval of 'standfirst' text chunk.
-	*/
-	public function get_description()
-	{
-		return $this->description;
-	}
-
-	public function get_keywords()
-	{
-		return $this->keywords;
-	}
-
-	/**
-	* Does the page have a feature image set?
-	*
-	* @return bool
-	*/
-	public function has_image()
-	{
-		if ($this->feature_image_id == 0 OR ! $this->image->loaded())
-		{
-			return FALSE;
-		}
-		else
-		{
-			return TRUE;
-		}
-	}
-
-	/**
 	 * Returns a thumbnail for the current page.
 	 * The thumbnail is the first image in the bodycopy.
 	 *

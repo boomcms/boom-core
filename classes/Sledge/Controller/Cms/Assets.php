@@ -338,31 +338,31 @@ class Sledge_Controller_Cms_Assets extends Sledge_Controller
 	public function action_tag()
 	{
 		$asset_ids = array_unique(explode("-", $this->request->param('id')));
-		$tags = (array) $this->request->post('tags');
+		$tag_ids = (array) $this->request->post('tags');
 
-		// Convert tag IDs into tag objects.
-		foreach ($tags as & $tag)
-		{
-			$tag = ORM::factory('Tag', $tag);
-		}
+		// Prepare the insert query object.
+		$query = DB::insert('tags_applied');
 
 		foreach ($asset_ids as $asset_id)
 		{
-			$asset = ORM::factory('Asset', $asset_id);
-
-			if ($asset->loaded())
+			foreach ($tag_ids as $tag_id)
 			{
-				foreach ($tags as $tag)
-				{
-					// Catch exceptions incase the tag has already been applied to this asset.
-					try
-					{
-						$asset->apply_tag($tag);
-					}
-					catch (Exception $e) {}
-				}
+				// Add the tag and asset ID to the query.
+				$query->values(array(
+					'tag_id'		=>	$tag_id,
+					'asset_id'		=>	$asset_id,
+					'object_type'	=>	Model_Tag_Applied::OBJECT_TYPE_ASSET,
+				));
 			}
 		}
+
+		// Execute the query.
+		// Ignore database exceptions incase the person is applying a tag to an asset where it's already applied.
+//		try
+//		{
+			$query->execute();
+//		}
+//		catch (Database_Exception $e) {}
 	}
 
 	/**

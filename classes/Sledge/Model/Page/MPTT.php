@@ -28,6 +28,3 @@ class Sledge_Model_Page_MPTT extends ORM_MPTT
 	);
 	protected $_reload_on_wakeup = TRUE;
 }
-
-
-?>

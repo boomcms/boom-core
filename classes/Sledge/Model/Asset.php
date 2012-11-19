@@ -49,14 +49,6 @@ class Sledge_Model_Asset extends ORM_Taggable
 	protected $_old_files = NULL;
 
 	/**
-	* Array of tags which have been applied to the current asset.
-	* @see self::tags()
-	* @access private
-	* @var array
-	*/
-	private $_tags;
-
-	/**
 	 * Returns an array of old files which have been replaced.
 	 * Where an asset has been replaced the array will contain the names of the backup files for the previous versions.
 	 *
@@ -110,40 +102,6 @@ class Sledge_Model_Asset extends ORM_Taggable
 				break;
 			default:
 				throw new Kohana_Exception('Asset has unknown asset status value: ' . $this->status);
-		}
-	}
-
-	/**
-	* Apply a tag to the current asset.
-	* Required by the taggable interface.
-	* Creates a relationship with the tag table in the tags_applied table.
-	*
-	* @uses self::$_tags
-	* @usesModel_Tag_Applied
-	* @param Model_Tag $tag The tag to be applied.
-	* @return bool True on success, FALSE on failure
-	*/
-	public function apply_tag(Model_Tag $tag)
-	{
-		$values = array(
-			'tag_id'		=> $tag->pk(),
-			'object_type'	=>Model_Tag_Applied::OBJECT_TYPE_ASSET,
-			'object_id'		=> $this->pk()
-		);
-
-		try
-		{
-			$tagged = ORM::factory('Tagged_object')->values($values)->create();
-		}
-		catch (DatabaseException $e)
-		{
-			return FALSE;
-		}
-
-		// Add the new relationship to self::$_tags if it's been loaded.
-		if (is_array($this->_tags))
-		{
-			$this->_tags = array_push($this->_tags, $tag);
 		}
 	}
 
