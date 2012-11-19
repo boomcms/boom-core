@@ -72,4 +72,35 @@ class Sledge_Model_Page_Link extends ORM
 			),
 		);
 	}
+
+	/**
+	 * Function to be called when making a link the primary link for a page.
+	 * Updates the page's primary link in the cache and ensures that this will be the only primary link for a page.
+	 *
+	 * This function will be called when making an existing link the primary link for a page
+	 * Or when the page title is changed and a new link is created which will be made the primary link.
+	 *
+	 * @return	Model_Page_Link
+	 */
+	public function make_primary()
+	{
+		// Save the primary link in cache
+		Cache::instance()->set('primary_link_for_page:' . $this->page_id, $this->location);
+
+		// Ensure that this is the only primary link for the page.
+		// We do this through the ORM rather than a DB update query to catch cached links
+		$page_links = ORM::factory('Page_Link')
+			->where('page_id', '=', $this->page_id)
+			->where('id', '!=', $this->id)
+			->where('is_primary', '=', TRUE)
+			->find_all();
+
+		foreach ($page_links as $page_link)
+		{
+			$page_link->is_primary = FALSE;
+			$page_link->save();
+		}
+
+		return $this;
+	}
 }

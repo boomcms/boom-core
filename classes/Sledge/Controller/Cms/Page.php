@@ -465,31 +465,31 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 
 			$prefix = ($parent->default_child_uri_prefix)? $parent->default_child_uri_prefix : $parent->primary_link();
 
-			$page_uri = ORM::factory('Page_URI')
-				->where('uri', '=', $prefix . '/' . URL::title($page->title))
-				->where('page_id', '=', $page->id)
+			// Does the link already exist?
+			$link = ORM::factory('Page_Link')
+				->where('location', '=', $prefix . '/' . URL::title($page->title))
 				->find();
 
-			if ($page_uri->loaded())
+			if ($link->loaded() OR $link->page_id !== $page->id)
 			{
-				// URI has already been used for this page so no need to generate a new one.
-				$uri = $page_uri->uri;
-			}
-			else
-			{
-				$uri = URL::generate($prefix, $page->title);
+				// Link hasn't been used for this page before so create a new one.
+				$link = ORM::factory('Page_Link')
+					->values(array(
+						'page_id'	=>	$page->id,
+						'location'	=>	URL::generate($prefix, $page->title),
+					));
 			}
 
-			// Saved the URI
 			// If this the home page then only save the new URI as a secondary uri.
-			if ($page->mptt->is_root())
+			if ( ! $page->mptt->is_root())
 			{
-				Request::factory('cms/page/uri/add/' . $page->pk())->post(array('uri' => $uri))->execute();
+				// Page isn't the homepage so make the link primary.
+				$link->is_primary = TRUE;
+				$link->make_primary();
 			}
-			else
-			{
-				Request::factory('cms/page/uri/primary/' . $page->pk())->post(array('uri' => $uri))->execute();
-			}
+
+			// Saved the link
+			$link->save();
 		}
 
 		/**
