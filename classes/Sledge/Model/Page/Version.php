@@ -8,7 +8,7 @@
 * @copyright	Hoop Associates
 *
 */
-class Sledge_Model_Page_Version extends Model_Version
+class Sledge_Model_Page_Version extends ORM
 {
 	/**
 	* Properties to create relationships with Kohana's ORM
