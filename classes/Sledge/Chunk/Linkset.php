@@ -29,8 +29,6 @@ class Sledge_Chunk_Linkset extends Chunk
 
 	public function has_content()
 	{
-		$links = $this->_chunk->links();
-
-		return ! empty($links);
+		return $this->_chunk->links->count_all() > 0;
 	}
 }
