@@ -119,7 +119,7 @@ class Sledge_Controller_Cms_Video extends Sledge_Controller
 			$asset->filename = $video_key; // Store the video key in the filename column.
 			$asset->type = Sledge_Asset::BOTR;
 			$asset->encoded = FALSE;
-			$asset->visible_from = time();
+			$asset->visible_from = $_SERVER['REQUEST_TIME'];
 			$asset->save();
 
 			$this->redirect("/cms/assets#asset/" . $asset->id);

@@ -29,9 +29,6 @@ class Sledge_Core
 		// Person ID of the person logged in.
 		$person_id = Auth::instance()->get_real_user()->id;
 
-		// Get the current time.
-		$time = time();
-
 		// Save all the information to the database.
 		// We use a prepared statement here so that we can do INSERT DELAYED can help with performance.
 		// http://dev.mysql.com/doc/refman/5.0/en/insert-speed.html
@@ -41,7 +38,7 @@ class Sledge_Core
 				':activity'		=>	$activity,
 				':note'		=>	$note,
 				':person'		=>	$person_id,
-				':time'		=>	$time,
+				':time'		=>	$_SERVER['REQUEST_TIME'],
 			))
 			->execute();
 	}

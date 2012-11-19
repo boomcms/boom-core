@@ -180,10 +180,9 @@ class Sledge_Controller_Plugin_Page_Children extends Sledge_Controller
 
 		// Set the select columns.
 		// This is done individually in each action because different output formats needs different columns
-		$time = time();
 		$results = $query
 			->select('pages.id', 'page_versions.title', 'page_links.location')
-			->select(array(DB::expr("visible = true and visible_from <= $time and (visible_to >= $time or visible_to = 0)"), 'visible'))
+			->select(array(DB::expr("visible = true and visible_from <= " . $_SERVER['REQUEST_TIME'] . " and (visible_to >= " . $_SERVER['REQUEST_TIME'] . " or visible_to = 0)"), 'visible'))
 			->select(array(
 				DB::select(DB::expr('1'))
 					->from('page_mptt')
@@ -276,9 +275,6 @@ class Sledge_Controller_Plugin_Page_Children extends Sledge_Controller
 	 */
 	protected function build_query()
 	{
-		// Used in a few places for comparison to visible_from and visible_to columns.
-		$time = time();
-
 		// Build the query.
 		$query = DB::select()
 			->from('pages')

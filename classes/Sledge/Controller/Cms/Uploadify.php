@@ -64,7 +64,7 @@ class Sledge_Controller_Cms_Uploadify extends Kohana_Controller
 					$asset->filesize = $file['size'];
 					$asset->version->audit_person = $this->request->post('person');
 					$asset->type = Sledge_Asset::type_from_mime(File::mime($file['tmp_name']));
-					$asset->visible_from = time();
+					$asset->visible_from = $_SERVER['REQUEST_TIME'];
 
 					if ($asset->type == Sledge_Asset::IMAGE)
 					{

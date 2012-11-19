@@ -72,9 +72,6 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 	 */
 	public function action_active_people()
 	{
-		// Get the current time
-		$time = time();
-
 		// Update the time that we were last active on this page.
 		// We use to ensure that people who closed their browser and wandered off don't appear as editing the page.
 		$us = ORM::factory('Person_Page', array(
@@ -85,7 +82,7 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 		// Are they known to be viewing this page?
 		if ($us->loaded())
 		{
-			$us->last_active = $time;
+			$us->last_active = $_SERVER['REQUEST_TIME'];
 			$us->save();
 
 			// Get the details of the other people viewing this page who were last active in the past 2 minutes
@@ -97,7 +94,7 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 				->on('people_pages.person_id', '=', 'people.id')
 				->where('people_pages.page_id', '=', $us->page_id)
 				->where('people_pages.person_id', '!=', $this->person->id)
-				->where('people_pages.last_active', '>=', $time - 120)
+				->where('people_pages.last_active', '>=', $_SERVER['REQUEST_TIME'] - 120)
 				->execute();
 
 			$people = array();
@@ -166,7 +163,7 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 			$page->visible_in_leftnav_cms = $parent->children_visible_in_leftnav_cms;
 			$page->children_visible_in_leftnav = $parent->children_visible_in_leftnav;
 			$page->children_visible_in_leftnav_cms = $parent->children_visible_in_leftnav_cms;
-			$page->visible_from = time();
+			$page->visible_from = $_SERVER['REQUEST_TIME'];
 			$page->template_id = $template;
 			$page->save();
 
@@ -398,9 +395,6 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 	public function action_topbar()
 	{
 		// Log the current user as editing this page.
-		// Get the time, we insert this into the since and last active columns so we don't want to call time() twice.
-		$time = time();
-
 		// Try and find existing details from db / cache.
 		$person_page = ORM::factory('Person_Page', array(
 			'person_id'	=>	$this->person->id,
@@ -413,8 +407,8 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 		$person_page->values(array(
 			'person_id'		=>	$this->person->id,
 			'page_id'			=>	$this->page->id,
-			'since'			=>	$time,
-			'last_active'		=>	$time,
+			'since'			=>	$_SERVER['REQUEST_TIME'],
+			'last_active'		=>	$_SERVER['REQUEST_TIME'],
 			'saved'			=>	FALSE,
 		));
 		$person_page->save();

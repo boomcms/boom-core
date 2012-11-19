@@ -112,7 +112,7 @@ class Sledge_Controller_Page extends Sledge_Controller
 		$filemtime = file_exists($file)? filemtime($file) : 0;
 
 		// Only create the cache file if it doesn't already exist or it's over an hour old.
-		if ($filemtime <= time() - 3600)
+		if ($filemtime <= $_SERVER['REQUEST_TIME'] - 3600)
 		{
 			// Send the current query params for reviewing a page with a template.
 			// Send skipenvcheck as this will prevent us being forwarded to the login page.
@@ -133,7 +133,7 @@ class Sledge_Controller_Page extends Sledge_Controller
 			}
 
 			// Set the file modified time.
-			$filemtime = time();
+			$filemtime = $_SERVER['REQUEST_TIME'];
 		}
 
 		if ($this->request->headers('If-Modified-Since') AND strtotime($this->request->headers('If-Modified-Since')) >= $filemtime)
@@ -149,7 +149,7 @@ class Sledge_Controller_Page extends Sledge_Controller
 
 				$this->response->headers('content-type', 'image/jpeg');
 				$this->response->headers('Cache-Control', 'must-revalidate, public');
-				$this->response->headers('Expires', gmdate(DATE_RFC1123, time() + 3600));
+				$this->response->headers('Expires', gmdate(DATE_RFC1123, $_SERVER['REQUEST_TIME'] + 3600));
 				$this->response->headers('Last-Modified', gmdate(DATE_RFC1123, $filemtime));
 				$this->response->body($image->render());
 			}

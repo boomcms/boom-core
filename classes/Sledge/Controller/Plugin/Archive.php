@@ -203,12 +203,11 @@ class Sledge_Controller_Plugin_Archive extends Sledge_Controller
 		if ( ! $this->auth->logged_in())
 		{
 			// Only count pages which are visible and published.
-			$time = time();
 			$query
 				->where('visible', '=', TRUE)
-				->where('visible_from', '<=', $time)
+				->where('visible_from', '<=', $_SERVER['REQUEST_TIME'])
 				->and_where_open()
-					->where('visible_to', '>=', $time)
+					->where('visible_to', '>=', $_SERVER['REQUEST_TIME'])
 					->or_where('visible_to', '=', 0)
 				->and_where_close();
 		}

@@ -171,7 +171,7 @@ class Sledge_Model_Page_Version extends ORM
 				// If the current user isn't logged in then make sure it's a published asset.
 				if ( ! Auth::instance()->logged_in())
 				{
-					$query->where('asset_versions.visible_from', '<=', time())
+					$query->where('asset_versions.visible_from', '<=', $_SERVER['REQUEST_TIME'])
 						->where('status', '=', Model_Asset::STATUS_PUBLISHED);
 				}
 
