@@ -35,7 +35,7 @@ class Sledge_HTTP_Exception_404 extends Kohana_HTTP_Exception_404
 		else
 		{
 			// Show the sledge/error/404 view.
-			$body = View::factory('sledge/error/404');
+			$body = View::factory('sledge/errors/404');
 		}
 
 		// Set the response body.

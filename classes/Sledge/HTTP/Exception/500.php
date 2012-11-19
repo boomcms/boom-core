@@ -36,7 +36,7 @@ class Sledge_HTTP_Exception_500 extends Kohana_HTTP_Exception_500
 			else
 			{
 				// Show the sledge/error/500 view.
-				$body = View::factory('sledge/error/500');
+				$body = View::factory('sledge/errors/500');
 			}
 		}
 

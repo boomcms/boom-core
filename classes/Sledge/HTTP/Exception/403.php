@@ -36,7 +36,7 @@ class Sledge_HTTP_Exception_403 extends Kohana_HTTP_Exception_403
 			else
 			{
 				// Show the default 403 view
-				$body = View::factory('sledge/error/403');
+				$body = View::factory('sledge/errors/403');
 			}
 
 			// Set the repsonse body.
