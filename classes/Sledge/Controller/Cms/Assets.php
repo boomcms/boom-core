@@ -139,7 +139,7 @@ class Sledge_Controller_Cms_Assets extends Sledge_Controller
 	public function action_filters()
 	{
 		// Get the names of the people who have uploaded assets
-		$uploaders = DB::select('id', 'firstname', 'lastname')
+		$uploaders = DB::select('id', 'name')
 			->from('people')
 			->where('id', 'in', DB::select('audit_person')
 				->from('asset_versions')
@@ -147,8 +147,7 @@ class Sledge_Controller_Cms_Assets extends Sledge_Controller
 				->where('rubbish', '=', FALSE)
 				->distinct(TRUE)
 			)
-			->order_by('firstname', 'asc')
-			->order_by('lastname', 'asc')
+			->order_by('name', 'asc')
 			->execute()
 			->as_array();
 
