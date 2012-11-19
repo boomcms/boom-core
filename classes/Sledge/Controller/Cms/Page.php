@@ -263,7 +263,7 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 				$titles = DB::select('page_versions.title')
 					->from('pages')
 					->join('page_versions', 'inner')
-					->on("page." . Page::join_column($this->page, $this->auth), '=', 'page_versions.id')
+					->on("pages." . Page::join_column($this->page, $this->auth), '=', 'page_versions.id')
 					->join('page_mptt', 'inner')
 					->on('page_mptt.id', '=', 'pages.id')
 					->where('scope', '=', $mptt->scope)
@@ -271,7 +271,8 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 					->where('rgt', '<', $mptt->rgt)
 					->order_by('title', 'asc')
 					->execute()
-					->as_array('title');
+					->as_array();
+				$titles = Arr::pluck($titles, 'title');
 			}
 
 			$this->template = View::factory('sledge/editor/page/delete', array(
