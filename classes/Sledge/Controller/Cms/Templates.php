@@ -12,65 +12,80 @@
 class Sledge_Controller_Cms_Templates extends Sledge_Controller
 {
 	/**
+	 *
+	 * @var	string	Directory where the views used by this controller are.
+	 */
+	protected $_view_directory = 'sledge/templates';
+
+	/**
 	* Check that they can manage templates.
 	*/
 	public function before()
-	{	
+	{
 		parent::before();
-		
+
 		if ( ! $this->auth->logged_in('manage_templates'))
 		{
 			throw new HTTP_Exception_403;
 		}
 	}
-	
+
+	/**
+	 * Display a list of the CMS templates.
+	 * Automagically adds any templates which appear in the filesystem but not in the database.
+	 */
 	public function action_index()
-	{	
-		// Look for new templates.
+	{
+		// Prepare an array to record imported templates.
 		$imported = array();
-		if ($dh = @opendir(APPPATH . "views/" . Sledge::TEMPLATE_DIR))
-		{
-			while ($file = readdir($dh))
-			{
-				if (preg_match('/\.php$/D',$file) AND substr($file, 0, 1) != '.')
-				{
-					$file = str_replace(APPPATH . "views/" . Sledge::TEMPLATE_DIR, "", $file);
-					$file = str_replace(".php", "", $file);
 
-					$template = ORM::factory('Template')
-						->where('filename', '=', $file)
-						->find();
-					
-					if ( ! $template->loaded())
-					{
-						$template->name = ucwords(str_replace("_", " ", $file));
-						$template->filename = $file;
-						$template->visible = TRUE;
-						$template->save();
-						
-						$imported[] = $template->pk();
-					}
-				}
-			}
-			closedir($dh);
-		}
-
-		$this->template = View::factory('sledge/templates/index', array(
-			'imported'		=>	$imported,
-			'templates'	=>	ORM::factory('Template')->order_by('name', 'asc')->find_all(),
-		));
-		
 		// Get the filenames of the available templates.
+		// This will be used to import any new templates and to populate a select box in the template manager of template filenames.
 		$filenames = Kohana::list_files("views/" . Sledge::TEMPLATE_DIR);
-		
-		// Remove the directory from the filenames.
+
 		foreach ($filenames as & $filename)
 		{
+			// Remove the directory path so that we're just left with a filename.
 			$filename = str_replace(APPPATH . "views/" . Sledge::TEMPLATE_DIR, "", $filename);
-			$filename = str_replace(".php", "", $filename);
+
+			// Remove the file extension.
+			$filename = str_replace(EXT, "", $filename);
 		}
-		
-		$this->template->set('filenames', $filenames);
+
+		// Find any templates which don't exist in the database.
+		foreach ($filenames as $filename)
+		{
+			// Does a template with the specified filename already exist?
+			// i.e. has the template already been added to the database.
+			$template = ORM::factory('Template')
+				->where('filename', '=', $filename)
+				->find();
+
+			if ( ! $template->loaded())
+			{
+				// The template doesn't exist so create it.
+				$template
+					->values(array(
+						'name'	=>	ucwords(str_replace("_", " ", $filename)),
+						'filename'	=>	$filename,
+						'visible'	=>	TRUE,
+					))
+					->save();
+
+				$imported[] = $template->id;
+			}
+		}
+
+		// Get all the templates which now exist in the database.
+		$templates = ORM::factory('Template')
+			->order_by('name', 'asc')
+			->find_all();
+
+		$this->template = View::factory("$this->_view_directory/index", array(
+			'imported'		=>	$imported,		// The IDs of the templates which we've just added.
+			'templates'	=>	$templates,		// All the templates which are in the database.
+			'filenames'	=>	$filenames,		// The filenames of all templates on the filesystem.
+		));
 	}
 
 	/**
@@ -82,7 +97,7 @@ class Sledge_Controller_Cms_Templates extends Sledge_Controller
 	public function action_pages()
 	{
 		$template_id = $this->request->param('id');
-		
+
 		$pages = DB::select('page_versions.title', 'page_links.location')
 			->from('pages')
 			->join('page_versions', 'inner')
@@ -94,66 +109,65 @@ class Sledge_Controller_Cms_Templates extends Sledge_Controller
 			->where('deleted', '=', FALSE)
 			->order_by('title', 'asc')
 			->execute();
-			
-		$this->template = View::factory('sledge/templates/page', array(
+
+		$this->template = View::factory("$this->_view_directory/pages", array(
 			'pages'	=>	$pages,
 		));
 	}
-	
+
 	/**
 	 * Batch save all the templates.
 	 */
 	public function action_save()
 	{
-		$templates = $this->request->post('templates');
-		$errors = array();
-		
-		// Save changes to template data.
-		foreach ($templates as $template)
-		{
-			$filename = $this->request->post("filename-$template");
-			
-			// Is the filename valid?
-			if (strpos($filename, "..") !== FALSE OR substr($filename, 0, 1) == '/' OR ! Kohana::find_file("views/" . Sledge::TEMPLATE_DIR, $filename))
-			{
-				$errors[] = "Invalid filename: $filename";
-			}
-			else
-			{
-				$t = ORM::factory('Template', $template);
-				$t->name = $this->request->post("name-$template");
-				$t->filename = $filename;
-				$t->description = $this->request->post("description-$template");
-				$t->visible = (bool) $this->request->post("visible-$template");
+		// Get the POST data.
+		$post = $this->request->post();
 
-				try
-				{
-					$t->save();
-				}
-				catch (ORM_Validation_Exception $e)
-				{
-					$errors[] = $e->errors('models');
-				}
+		// Get the template data from the POST array.
+		$template_ids = $post['templates'];
+
+		// Define an array to record any errors as we go along.
+		$errors = array();
+
+		// Save changes to template data.
+		foreach ($template_ids as $template_id)
+		{
+			try
+			{
+				// Update the template.
+				$template = ORM::factory('Template', $template_id)
+					->values(array(
+						'name'		=>	$post["name-$template_id"],
+						'filename'		=>	$post["filename-$template_id"],
+						'description'	=>	$post["description-$template_id"],
+						'visible'		=>	(bool) $post["visible-$template_id"],
+					))
+					->save();
+			}
+			catch (ORM_Validation_Exception $e)
+			{
+				$errors[] = $e->errors('models');
 			}
 		}
-		
-		// Remove any delete templates.
-		$existing = DB::select('template.id')
-			->from('template')
+
+		// Get the ID of all templates in the database.
+		// Any of these which weren't in the POST array are being deleted.
+		$existing = DB::select('id')
+			->from('templates')
 			->execute()
 			->as_array();
-		
+
 		// Get the IDs from the results array
-		$existing = Arr::pluck($existing, 'id');		
-					
+		$existing = Arr::pluck($existing, 'id');
+
 		// Find the IDs of the templates which are in the database but weren't submitted in the form.
-		$deleted = array_diff($existing, $templates);
-		
+		$deleted = array_diff($existing, $template_ids);
+
 		// Templates are versioned so we have to instantiate an object and call delete().
 		foreach ($deleted as $d)
 		{
-			$t = ORM::factory('Template', $d);
-			$t->delete();
+			ORM::factory('Template', $d)
+				->delete();
 		}
 	}
 }
