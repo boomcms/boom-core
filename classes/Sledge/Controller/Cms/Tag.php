@@ -9,18 +9,18 @@
  * @copyright	Hoop Associates
  */
 class Sledge_Controller_Cms_Tag extends Sledge_Controller
-{	
+{
 	protected $tag;
-	
+
 	public function before()
 	{
 		parent::before();
-		
+
 		if ( ! $this->auth->logged_in('manage_tags'))
 		{
 			throw new HTTP_Exception_403;
 		}
-			
+
 		$this->tag = ORM::factory('Tag', $this->request->param('id'));
 	}
 
@@ -95,7 +95,7 @@ class Sledge_Controller_Cms_Tag extends Sledge_Controller
 		Sledge::log("Deleted tag " . $this->tag->name . " (ID: " . $this->tag->id . ")");
 		$this->tag->delete();
 	}
-	
+
 	/**
 	 * Display the edit tag form.
 	 */
@@ -147,7 +147,7 @@ class Sledge_Controller_Cms_Tag extends Sledge_Controller
 			'root'		=>	(is_object($parent))? $parent->id : 0,
 			'state'	=>	Arr::get(Request::current()->post(), 'state', 'collapsed'),
 		));
-		
+
 		if ($this->request->param('id'))
 		{
 			$this->template->current = ORM::factory('Tag', $this->request->param('id'));
