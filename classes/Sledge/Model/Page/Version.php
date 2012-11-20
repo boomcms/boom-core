@@ -127,17 +127,15 @@ class Sledge_Model_Page_Version extends ORM
 					->from('chunk_text_assets')
 					->join('assets', 'inner')
 					->on('chunk_text_assets.asset_id', '=', 'assets.id')
-					->join('asset_versions', 'inner')
-					->on('assets.active_vid', '=', 'asset_versions.id')
 					->order_by('position', 'asc')
 					->limit(1)
 					->where('chunk_text_assets.chunk_id', '=', $chunk->id)
-					->where('asset_versions.type', '=', Sledge_Asset::IMAGE);
+					->where('assets.type', '=', Sledge_Asset::IMAGE);
 
 				// If the current user isn't logged in then make sure it's a published asset.
 				if ( ! Auth::instance()->logged_in())
 				{
-					$query->where('asset_versions.visible_from', '<=', $_SERVER['REQUEST_TIME'])
+					$query->where('assets.visible_from', '<=', $_SERVER['REQUEST_TIME'])
 						->where('status', '=', Model_Asset::STATUS_PUBLISHED);
 				}
 

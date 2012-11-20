@@ -3,7 +3,6 @@
 /**
 * Asset Model
 *
-* @see	[Model_Asset_Version]
 * @package	Sledge
 * @category	Assets
 * @category	Models
@@ -13,21 +12,22 @@
 */
 class Sledge_Model_Asset extends ORM_Taggable
 {
-	/**
-	* Properties to create relationships with Kohana's ORM
-	*/
-	protected $_belongs_to = array(
-		'version'  => array('model' => 'Asset_Version', 'foreign_key' => 'active_vid'),
-	);
-	protected $_has_many = array(
-		'revisions'	=>	array('model' => 'Asset_Version', 'foreign_key' => 'rid'),
-	);
-
-	protected $_load_with = array('version');
-
 	protected $_table_columns = array(
 		'id'			=>	'',
-		'active_vid'	=>	'',
+		'title'			=>	'',
+		'description'	=>	'',
+		'width'		=>	'',
+		'height'		=>	'',
+		'filename'		=>	'',
+		'visible_from'	=>	'',
+		'status'		=>	'',
+		'type'		=>	'',
+		'filesize'		=>	'',
+		'rubbish'		=>	FALSE,
+		'duration'		=>	'',
+		'encoded'		=>	'',
+		'views'		=>	'',
+		'uploaded_by'	=>	'',
 	);
 
 	/**
@@ -47,6 +47,14 @@ class Sledge_Model_Asset extends ORM_Taggable
 	 * @var	array	Cache variable for [Model_Asset::old_files()]
 	 */
 	protected $_old_files = NULL;
+
+	/**
+	* Returns a human readable asset type.
+	*/
+	public function get_type()
+	{
+		return Sledge_Asset::get_type($this->type);
+	}
 
 	/**
 	 * Returns an array of old files which have been replaced.
