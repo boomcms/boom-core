@@ -90,6 +90,13 @@ class Sledge_Model_Page extends ORM_Taggable
 	const CHILD_ORDER_DESC = 16;
 
 	/**
+	 * Hold the calculated thumbnail for this version.
+	 * @see Model_Version_Sledge_Asset::thumbnail()
+	 * @var Model_Asset
+	 */
+	protected $_thumbnail;
+
+	/**
 	* Holds the calculated primary URI
 	*
 	* @access private
@@ -104,6 +111,11 @@ class Sledge_Model_Page extends ORM_Taggable
 	* @var string
 	*/
 	private $_link;
+
+	public function __construct($id = NULL)
+	{
+
+	}
 
 	/**
 	* Adds a new child page to this page's MPTT tree.
@@ -247,6 +259,27 @@ class Sledge_Model_Page extends ORM_Taggable
 	}
 
 	/**
+	* Filters for the versioned person columns
+	* @link http://kohanaframework.org/3.2/guide/orm/filters
+	*/
+	public function filters()
+	{
+	    return array(
+			'title' => array(
+				array('html_entity_decode'),
+				array('urldecode'),
+				array('trim'),
+			),
+			'keywords' => array(
+				array('trim'),
+			),
+			'description' => array(
+				array('trim'),
+			),
+	   );
+	}
+
+	/**
 	* Get the page's primary URI
 	* From the page's available URIs finds the one which is marked as the primary URI.
 	* @return string The RELATIVE primary URI of the page.
@@ -383,5 +416,73 @@ class Sledge_Model_Page extends ORM_Taggable
 		}
 
 		return $this;
+	}
+
+	/**
+	 * Returns a thumbnail for the current page.
+	 * The thumbnail is the first image in the bodycopy.
+	 *
+	 * This function:
+	 * * SHOULD always return an instance of Model_Asset
+	 * * SHOULD return an instance of Model_Asset where the type property = Sledge_Asset::IMAGE (i.e. not return an asset representing a video or pdf)
+	 * * SHOULD NOT return an asset which is unpublished when the current user is not logged in.
+	 * * For guest users SHOULD return the first image in the body copy which is published.
+	 * * Where there is no image (or no published image) in the bodycopy SHOULD return an empty Model_Asset
+	 *
+	 * @todo 	Need to write tests for the above.
+	 * @return 	Model_Asset
+	 */
+	public function thumbnail()
+	{
+		// Try and get it from the $_thumbnail property to prevent running the code multiple times
+		if ($this->_thumbnail !== NULL)
+		{
+			return $this->_thumbnail;
+		}
+
+		// Try and get it from the cache.
+		// We don't have to worry about updating this cache - when the bodycopy is changed a new page version is created anyway.
+		// So once the thumbnail for a particular page version is cached the cache should never have to be changed.
+		$cache_key = 'thumbnail_for_page_versions:' . $this->id;
+
+		if ( ! $asset_id = $this->_cache->get($cache_key))
+		{
+			// Get the standfirst for this page version.
+			$chunk = Chunk::find('text', 'bodycopy', $this);
+
+			if ( ! $chunk->loaded())
+			{
+				$asset_id = 0;
+			}
+			else
+			{
+				// Find the first image in this chunk.
+				$query = DB::select('chunk_text_assets.asset_id')
+					->from('chunk_text_assets')
+					->join('assets', 'inner')
+					->on('chunk_text_assets.asset_id', '=', 'assets.id')
+					->order_by('position', 'asc')
+					->limit(1)
+					->where('chunk_text_assets.chunk_id', '=', $chunk->id)
+					->where('assets.type', '=', Sledge_Asset::IMAGE);
+
+				// If the current user isn't logged in then make sure it's a published asset.
+				if ( ! Auth::instance()->logged_in())
+				{
+					$query->where('assets.visible_from', '<=', $_SERVER['REQUEST_TIME'])
+						->where('status', '=', Model_Asset::STATUS_PUBLISHED);
+				}
+
+				// Run the query and get the result.
+				$result = $query->execute()->as_array();
+				$asset_id = (isset($result[0]))? $result[0]['asset_id'] : 0;
+			}
+
+			// Save it to cache.
+			$this->_cache->set($cache_key, $asset_id);
+		}
+
+		// Return a Model_Asset object for this asset ID.
+		return $this->_thumbnail = ORM::factory('Asset', $asset_id);
 	}
 }
