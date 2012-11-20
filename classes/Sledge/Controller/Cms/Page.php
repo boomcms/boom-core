@@ -32,8 +32,6 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 
 		if ($page_id)
 		{
-			$this->page = ORM::factory('Page', $page_id);
-
 			// Most of these methods can be  sent a version ID.
 			// This allows viewing an old version and then editing / publishing that version.
 			// Most of the time the vid will be page's current version ID - i.e. the user is viewing page as standard.
@@ -53,7 +51,11 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 
 			if (isset($vid) AND $this->page->active_vid !== $vid)
 			{
-				$this->page->version = ORM::factory('page_version', $vid);
+				$this->page = ORM::factory('Page', $vid);
+			}
+			else
+			{
+				$this->page = ORM::factory('Page', array('page_id' => $page_id));
 			}
 		}
 	}
@@ -446,12 +448,12 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 		*/
 		$data = json_decode($this->request->post('data'));
 
-		$page->version->title = $data->title;
+		$page->title = $data->title;
 
 		/**
 		* If the page title has been changed, update the primary URI.
 		*/
-		if ($page->version->changed('title'))
+		if ($page->changed('title'))
 		{
 			// Reload the page after save.
 			$reload = TRUE;
@@ -491,12 +493,12 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 		 * If the version hasn't been changed, force it to create a new page version.
 		 * This allows us to ensure versioning of changes to page slots.
 		 */
-		if ( ! $page->version->changed())
+		if ( ! $page->changed())
 		{
-			$page->version = $page->version->copy();
+			$page = $page->copy();
 
-			// Don't copy the value of the published column.
-			$page->version->published = FALSE;
+			// Don't copy the value of the published columns.
+			$page->published_from = $page->published_to = NULL;
 		}
 
 		/**
@@ -537,8 +539,8 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 		$this->response->body(json_encode(
 			array(
 				'reload'	=>	$reload,
-				'url' => $page->link(),
-				'vid' => $this->page->version->id,
+				'url'		=> $page->link(),
+				'vid'		=> $this->page->id,
 				'status'	=>	View::factory('sledge/editor/page/status', array('auth' => $this->auth, 'page' => $page))->render(),
 			)
 		));
@@ -615,7 +617,7 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 
 					if ($chunk->save())
 					{
-						$page->version->add('chunks', $chunk);
+						$page->add('chunks', $chunk);
 					}
 				}
 			}

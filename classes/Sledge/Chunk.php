@@ -117,7 +117,7 @@ abstract class Sledge_Chunk
 			$benchmark = Profiler::start("Chunks", $this->_chunk->slotname);
 		}
 
-		$cache_key = "chunk_data:" . md5($this->_chunk->slotname . $this->_page->version->id);
+		$cache_key = "chunk_data:" . md5($this->_chunk->slotname . $this->_page->id);
 		$cache = Cache::instance();
 
 		if (Auth::instance()->logged_in() OR ($html = $cache->get($cache_key)) === NULL)
@@ -191,7 +191,7 @@ abstract class Sledge_Chunk
 		$page = ($inherit === TRUE)? Chunk::inherit_from($type, $slotname, $page) : $page;
 
 		// Load the chunk
-		$chunk = Chunk::find($type, $slotname, $page->version, $inherit);
+		$chunk = Chunk::find($type, $slotname, $page, $inherit);
 
 		// Should the chunk be editable?
 		// This can be changed to calling editable(), for instance if we want to make a chunk read only.
@@ -209,13 +209,13 @@ abstract class Sledge_Chunk
 	 * @param	Model_Page_Version	$page_versions		The page version that the chunk belongs to.
 	 * @return 	Chunk
 	 */
-	public static function find($type, $slotname, Model_Page_Version $page_versions)
+	public static function find($type, $slotname, Model_Page $page)
 	{
 		// Get the name of the model that we're looking.
 		// e.g. if type is text we want a chunk_text model
 		$model = (strpos($type, "Chunk_") === 0)? ucfirst($type) : "Chunk_" . ucfirst($type);
 
-		$version_id = $page_versions->id;
+		$version_id = $page->id;
 		$version_id = (int) $version_id;
 
 		// Try and get it from the cache
@@ -306,7 +306,7 @@ abstract class Sledge_Chunk
 		$type = strtolower($type);
 		$table_name = Inflector::plural((strpos($type, "chunk_") === 0)? $type : "chunk_$type");
 
-		$cache_key = 'chunk_inerited_from:' . $type . '_' . $slotname . '_' . $page->version->id;
+		$cache_key = 'chunk_inerited_from:' . $type . '_' . $slotname . '_' . $page->id;
 
 		if ( ! $page_id = Cache::instance()->get($cache_key))
 		{
@@ -317,7 +317,7 @@ abstract class Sledge_Chunk
 				->on('page_chunks.chunk_id', '=', "$table_name.id")
 				->where('slotname', '=', $slotname)
 				->join('pages', 'inner')
-				->on('page_chunks.page_vid', '=', 'pages.' . Page::join_column($page, Auth::instance()))
+				->on('page_chunks.page_vid', '=', 'pages.id')
 				->join('page_mptt', 'inner')
 				->on('page_mptt.id', '=', 'pages.id')
 				->where('page_mptt.scope', '=', $page->mptt->scope)

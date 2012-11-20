@@ -379,7 +379,7 @@ class Sledge_Controller_Cms_Page_Settings extends Controller_Cms_Page
 			$this->response->headers('content-type', 'application/json');
 			$this->response->body(json_encode(
 				array(
-					'vid'		=>	$this->page->version->id,
+					'vid'		=>	$this->page->id,
 					'status'	=>	View::factory('sledge/editor/page/status', array('page' => $this->page, 'auth' => $this->auth))->render(),
 				)
 			));

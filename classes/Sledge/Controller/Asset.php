@@ -42,7 +42,7 @@ class Sledge_Controller_Asset extends Sledge_Controller
 				$this->response->headers('Cache-Control', 'public');
 
 				// cache by etag.
-				HTTP::check_cache($this->request, $this->response, $this->asset->version->id);
+				HTTP::check_cache($this->request, $this->response, $this->asset->last_modified);
 
 				// Cache by last modified time.
 				$this->response->headers('Last-Modified', gmdate(DATE_RFC1123, $this->asset->last_modified));
@@ -70,7 +70,7 @@ class Sledge_Controller_Asset extends Sledge_Controller
 				$this->response->headers('Cache-Control', 'public');
 
 				// cache by etag.
-				HTTP::check_cache($this->request, $this->response, $this->asset->version->id);
+				HTTP::check_cache($this->request, $this->response, $this->asset->last_modified);
 
 				// Cache by last modified time.
 				$this->response->headers('Last-Modified', gmdate(DATE_RFC1123, $this->asset->last_modified));

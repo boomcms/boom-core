@@ -22,15 +22,15 @@ class Sledge_Controller_Cms_Uploadify extends Kohana_Controller
 		if ( ! empty($_FILES))
 		{
 			if ( is_array($_FILES['s-assets-upload-files']['tmp_name']) ) {
-				$newfiles = array(); 
-				    foreach($_FILES as $fieldname => $fieldvalue) 
-				        foreach($fieldvalue as $paramname => $paramvalue) 
-				            foreach((array)$paramvalue as $index => $value) 
+				$newfiles = array();
+				    foreach($_FILES as $fieldname => $fieldvalue)
+				        foreach($fieldvalue as $paramname => $paramvalue)
+				            foreach((array)$paramvalue as $index => $value)
 				                $newfiles[$fieldname][$index][$paramname] = $value;
 			} else {
 				$newfiles = $_FILES;
 			}
-			
+
 			/**
 			* Validate based on the upload token.
 			*/
@@ -72,7 +72,7 @@ class Sledge_Controller_Cms_Uploadify extends Kohana_Controller
 					}
 
 					$asset->filesize = $file['size'];
-					$asset->version->audit_person = $this->request->post('person');
+					$asset->uploaded_by = $this->request->post('person');
 					$asset->type = Sledge_Asset::type_from_mime(File::mime($file['tmp_name']));
 					$asset->visible_from = $_SERVER['REQUEST_TIME'];
 

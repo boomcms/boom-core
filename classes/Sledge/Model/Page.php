@@ -22,6 +22,7 @@ class Sledge_Model_Page extends ORM_Taggable
 	);
 
 	protected $_has_many = array(
+		'revisions'	=> array('model' => 'Page', 'foreign_key' => 'page_id'),
 		'links'	=> array('model' => 'Page_Link', 'foreign_key' => 'page_id'),
 		'chunks'	=> array('through' => 'pages_chunks'),
 	);
@@ -111,11 +112,6 @@ class Sledge_Model_Page extends ORM_Taggable
 	* @var string
 	*/
 	private $_link;
-
-	public function __construct($id = NULL)
-	{
-
-	}
 
 	/**
 	* Adds a new child page to this page's MPTT tree.
@@ -231,6 +227,35 @@ class Sledge_Model_Page extends ORM_Taggable
 	}
 
 	/**
+	 * Adds 'where' criteria to get the current page version
+	 * For logged in users get's the most recent version
+	 * For logged out users get's the current published version.
+	 *
+	 * @reutrn	Model_Page
+	 */
+	public function current_version()
+	{
+		if (Auth::instance()->logged_in())
+		{
+			// Current user is logged in so get the most recent version.
+			$this
+				->order_by('id', 'desc')
+				->limit(1);
+		}
+		else
+		{
+			// User isn't logged in so get the current published & visible version.
+			$this
+				->where('published_from', '<=', $_SERVER['REQUEST_TIME'])
+				->where('published_to', '>=', $_SERVER['REQUEST_TIME'])
+				->where('visible_from', '<=', $_SERVER['REQUEST_TIME'])
+				->where('visible_to', '>=', $_SERVER['REQUEST_TIME']);
+		}
+
+		return $this;
+	}
+
+	/**
 	* Delete a page.
 	* Ensures child pages are deleted and that the pages are deleted from the MPTT tree.
 	*
@@ -324,12 +349,13 @@ class Sledge_Model_Page extends ORM_Taggable
 	*/
 	public function is_published()
 	{
+		return TRUE;
 		return $this->published_vid == $this->version->id;
 	}
 
 	public function is_visible()
 	{
-		return ($this->visible AND $this->visible_from <= $_SERVER['REQUEST_TIME'] AND ($this->visible_to >= $_SERVER['REQUEST_TIME'] OR $this->visible_to == 0));
+		return ($this->visible_from <= $_SERVER['REQUEST_TIME'] AND ($this->visible_to >= $_SERVER['REQUEST_TIME'] OR $this->visible_to == 0));
 	}
 
 	/**

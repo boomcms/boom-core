@@ -20,7 +20,7 @@ class Sledge_Controller_Plugin_Archive extends Sledge_Controller
 		parent::before();
 
 		// If a parent page has been specified then use it, otherwise use the parent of the inital request.
-		$this->parent = ($this->request->post('parent'))? ORM::factory('Page', $this->request->post('parent')) : Request::initial()->param('page');
+		$this->parent = ($this->request->post('parent'))? ORM::factory('Page', array('page_id' => $this->request->post('parent'))) : Request::initial()->param('page');
 
 		// If the parent isn't found then throw a 404.
 		if ( !  $this->parent->loaded())
@@ -59,11 +59,9 @@ class Sledge_Controller_Plugin_Archive extends Sledge_Controller
 			->from(array(
 				DB::select(array(DB::expr('from_unixtime(visible_from)'), 't'))
 					->from('pages')
-					->join('page_versions', 'inner')
-					->on('pages.' . Page::join_column($this->parent, $this->auth), '=', 'page_versions.id')
 					->join('page_mptt', 'inner')
-					->on('page_mptt.id', '=', 'pages.id')
-					->where('page_mptt.parent_id', '=', $this->parent->id),
+					->on('page_mptt.id', '=', 'pages.page_id')
+					->where('page_mptt.parent_id', '=', $this->parent->page_id),
 				'q'
 			))
 			->group_by('year', 'month')
@@ -116,7 +114,7 @@ class Sledge_Controller_Plugin_Archive extends Sledge_Controller
 				$sections[] = View::factory('sledge/plugin/archive/date', array(
 					'dates' => json_decode(
 						Request::factory('plugin/archive/date')
-							->post(array('parent' => $this->parent->id))
+							->post(array('parent' => $this->parent->page_id))
 							->execute()
 							->body()
 					),
@@ -129,7 +127,7 @@ class Sledge_Controller_Plugin_Archive extends Sledge_Controller
 				$v = View::factory("sledge/plugin/archive/tag")
 					->set('tags',  json_decode(
 						Request::factory('plugin/archive/tag')
-							->post(array('parent' => $this->parent->id, 'name' => $name, 'route' => $route))
+							->post(array('parent' => $this->parent->page_id, 'name' => $name, 'route' => $route))
 							->execute()
 							->body()
 					))
@@ -173,7 +171,7 @@ class Sledge_Controller_Plugin_Archive extends Sledge_Controller
 	public function action_tag()
 	{
 		// Build the query.
-		$query = DB::select('tags.name', array(DB::expr('count("tags.id")'), 'count'))
+		$query = DB::select('tags.name', array(DB::expr('count(tags.id)'), 'count'))
 			->from('tags')
 			->join('tags_applied', 'inner')
 			->on('tags_applied.tag_id', '=', 'tags.id')
@@ -181,12 +179,10 @@ class Sledge_Controller_Plugin_Archive extends Sledge_Controller
 			->group_by('tags.id')
 			->join('page_mptt', 'inner')
 			->on('tags_applied.object_id', '=', 'page_mptt.id')
-			->where('page_mptt.parent_id', '=', $this->parent->id)
+			->where('page_mptt.parent_id', '=', $this->parent->page_id)
 			->join('pages', 'inner')
-			->on('tags_applied.object_id', '=', 'pages.id')
-			->join('page_versions', 'inner')
-			->on('pages.' . Page::join_column($this->parent, $this->auth), '=', 'page_versions.id')
-			->where('page_versions.deleted', '=', FALSE)
+			->on('tags_applied.object_id', '=', 'pages.page_id')
+			->where('pages.deleted', '=', FALSE)
 			->order_by('name', 'asc');
 
 		if ($this->request->post('route'))

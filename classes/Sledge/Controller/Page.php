@@ -58,7 +58,7 @@ class Sledge_Controller_Page extends Sledge_Controller
 		// Enables viewing a previous version of a page.
 		if ($this->request->query('version') !== NULL AND $mode == 'cms')
 		{
-			$this->page->version = ORM::factory('page_version', $this->request->query('version'));
+//			$this->page = ORM::factory('page_version', $this->request->query('version'));
 		}
 
 
