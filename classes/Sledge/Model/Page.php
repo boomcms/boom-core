@@ -12,6 +12,13 @@
 class Sledge_Model_Page extends ORM_Taggable
 {
 	/**
+	 * The first version of the object.
+	 * Useful for getting the created time / person.
+	 * @var	object
+	 */
+	private $_first_version;
+
+	/**
 	* Properties to create relationships with Kohana's ORM
 	*/
 	protected $_has_many = array(
@@ -81,6 +88,18 @@ class Sledge_Model_Page extends ORM_Taggable
 	private $_link;
 
 	/**
+	 * Pass any method calls not handled by this class to the version object.
+	 *
+	 * @param	string	$method	Method name
+	 * @param	array 	$args	array of arguments
+	 */
+	public function __call($method, $args)
+	{
+		$method = new ReflectionMethod(get_class($this->version), $method);
+		return $method->invokeArgs($this->version, $args);
+	}
+
+	/**
 	* Load database values into the object.
 	*
 	* This is customised to ensure that a user who cannot edit the current page sees the current, published version.
@@ -95,6 +114,12 @@ class Sledge_Model_Page extends ORM_Taggable
 	protected function _load_values(array $values)
 	{
 		parent::_load_values($values);
+
+		if ($this->loaded() AND (bool) $this->version->deleted == TRUE)
+		{
+			$this->version->clear();
+			$this->clear();
+		}
 
 		if ($this->loaded())
 		{
@@ -129,7 +154,14 @@ class Sledge_Model_Page extends ORM_Taggable
 			}
 		}
 
-		return parent::__get($column);
+		if (isset($this->$column) OR array_key_exists($column, $this->_object))
+		{
+			return parent::__get($column);
+		}
+		else
+		{
+			return $this->version->$column;
+		}
 	}
 
 	/**
@@ -246,6 +278,48 @@ class Sledge_Model_Page extends ORM_Taggable
 	}
 
 	/**
+	 * Check whether the model data has been changed.
+	 * Extends the default behaviour to check the versioned data.
+	 *
+	 * @param	string	$field	Field to check for changes
+	 * @return 	boolean
+	 */
+	public function changed($field = NULL)
+	{
+		$return = parent::changed($field);
+
+		if ( ! $return)
+		{
+			$return = $this->version->changed($field);
+		}
+
+		return $return;
+	}
+
+	/**
+	 * Copy an object into a new object.
+	 * Resets the primary key so that the new object can be saved to the database as a new record.
+	 *
+	 * @return 	ORM
+	 */
+	public function copy()
+	{
+		$new = parent::copy();
+		$new->active_vid = NULL;
+
+		$new->version = $this->version->copy();
+		return $new;
+	}
+
+	public function create(Validation $validation = NULL)
+	{
+		parent::create($validation);
+
+		$this->version->rid = $this->id;
+		return $this->update($validation);
+	}
+
+	/**
 	* Delete a page.
 	* Ensures child pages are deleted and that the pages are deleted from the MPTT tree.
 	*
@@ -264,7 +338,43 @@ class Sledge_Model_Page extends ORM_Taggable
 		$this->mptt->reload();
 		$this->mptt->delete();
 
-		return parent::delete();
+		if ($this->loaded())
+		{
+			$this->version->deleted = TRUE;
+			$this->save();
+
+			$this->version->clear();
+			return $this->clear();
+		}
+	}
+
+	/**
+	 * Find the first version of the current object.
+	 *
+	 * @return 	Model_Version
+	 */
+	public function first_version()
+	{
+		if ($this->_first_version === NULL)
+		{
+			$this->_first_version = ORM::factory($this->version->_object_name)
+						->order_by('id', 'asc')
+						->where('rid', '=', $this->pk())
+						->limit(1)
+						->find();
+		}
+
+		return $this->_first_version;
+	}
+
+	/**
+	 * Reload the current object and version
+	 */
+	public function reload()
+	{
+		parent::reload();
+
+		$this->version->reload();
 	}
 
 	/**
@@ -367,7 +477,16 @@ class Sledge_Model_Page extends ORM_Taggable
 		}
 		else
 		{
-			return parent::set($column, $value);
+			try
+			{
+				parent::set($column, $value);
+			}
+			catch (Kohana_Exception $e)
+			{
+				$this->version->set($column, $value);
+			}
+
+			return $this;
 		}
 	}
 
@@ -424,5 +543,45 @@ class Sledge_Model_Page extends ORM_Taggable
 		}
 
 		return $this;
+	}
+
+	public function unserialize($data)
+	{
+		parent::unserialize($data);
+
+		if ($this->_loaded AND $this->deleted)
+		{
+			$this->clear();
+			$this->version->clear();
+		}
+	}
+
+	public function update(Validation $validation = NULL)
+	{
+		// Has the version been changed?
+		$changed = $this->version->changed();
+
+		if ( ! empty($changed))
+		{
+			$version = $this->version->copy();
+			$version->rid = $this->id;
+
+			$auth = Auth::instance();
+
+			if ($auth->logged_in())
+			{
+				$version->audit_person = $auth->get_user()->pk();
+			}
+
+			$version->audit_time = time();
+			$version->save();
+
+			$this->active_vid = $version->id;
+			$this->_related['version'] = $version;
+
+			unset($this->_changed['version']);
+		}
+
+		return parent::update($validation);
 	}
 }

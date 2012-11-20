@@ -211,15 +211,14 @@ class Sledge_Controller_Cms_Assets extends Sledge_Controller
 		$sortby = Arr::get($query_data, 'sortby');
 		$order = Arr::get($query_data, 'order');
 
-		$query = ORM::factory('Asset')
-			->where('deleted', '=', FALSE);
+		$query = ORM::factory('Asset');
 
 		if ($tag->loaded())
 		{
 			$query->where('tag', '=', $tag);
 		}
 
-		if (($sortby == 'audit_time' OR $sortby == 'title' OR $sortby == 'filesize') AND ($order == 'desc' OR $order == 'asc'))
+		if (($sortby == 'last_modified' OR $sortby == 'title' OR $sortby == 'filesize') AND ($order == 'desc' OR $order == 'asc'))
 		{
 			$query->order_by($sortby, $order);
 		}

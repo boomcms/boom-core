@@ -45,9 +45,9 @@ class Sledge_Controller_Asset extends Sledge_Controller
 				HTTP::check_cache($this->request, $this->response, $this->asset->version->id);
 
 				// Cache by last modified time.
-				$this->response->headers('Last-Modified', gmdate(DATE_RFC1123, $this->asset->audit_time));
+				$this->response->headers('Last-Modified', gmdate(DATE_RFC1123, $this->asset->last_modified));
 
-				if ($this->request->headers('If-Modified-Since') AND strtotime($this->request->headers('If-Modified-Since')) >= $this->asset->audit_time)
+				if ($this->request->headers('If-Modified-Since') AND strtotime($this->request->headers('If-Modified-Since')) >= $this->asset->last_modified)
 				{
 					$this->response->status(304);
 					return;
@@ -73,9 +73,9 @@ class Sledge_Controller_Asset extends Sledge_Controller
 				HTTP::check_cache($this->request, $this->response, $this->asset->version->id);
 
 				// Cache by last modified time.
-				$this->response->headers('Last-Modified', gmdate(DATE_RFC1123, $this->asset->audit_time));
+				$this->response->headers('Last-Modified', gmdate(DATE_RFC1123, $this->asset->last_modified));
 
-				if ($this->request->headers('If-Modified-Since') AND strtotime($this->request->headers('If-Modified-Since')) >= $this->asset->audit_time)
+				if ($this->request->headers('If-Modified-Since') AND strtotime($this->request->headers('If-Modified-Since')) >= $this->asset->last_modified)
 				{
 					$this->response->status(304);
 				}

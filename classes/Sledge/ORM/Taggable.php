@@ -7,7 +7,7 @@
 * @author Hoop Associates	www.thisishoop.com	mail@hoopassociates.co.uk
 * @copyright 2011, Hoop Associates
 */
-class Sledge_ORM_Taggable extends ORM_Versioned
+class Sledge_ORM_Taggable extends ORM
 {
 	/**
 	* Adds a tag to an object.

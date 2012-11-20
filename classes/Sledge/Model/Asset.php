@@ -12,22 +12,28 @@
 */
 class Sledge_Model_Asset extends ORM_Taggable
 {
+	protected $_belongs_to = array(
+		'uploader'	=>	array('model'	=>	'person', 'foreign_key' => 'uploaded_by'),
+	);
+
 	protected $_table_columns = array(
-		'id'			=>	'',
-		'title'			=>	'',
-		'description'	=>	'',
-		'width'		=>	'',
-		'height'		=>	'',
-		'filename'		=>	'',
-		'visible_from'	=>	'',
-		'status'		=>	'',
-		'type'		=>	'',
-		'filesize'		=>	'',
-		'rubbish'		=>	FALSE,
-		'duration'		=>	'',
-		'encoded'		=>	'',
-		'views'		=>	'',
-		'uploaded_by'	=>	'',
+		'id'				=>	'',
+		'title'				=>	'',
+		'description'		=>	'',
+		'width'			=>	'',
+		'height'			=>	'',
+		'filename'			=>	'',
+		'visible_from'		=>	'',
+		'status'			=>	'',
+		'type'			=>	'',
+		'filesize'			=>	'',
+		'rubbish'			=>	FALSE,
+		'duration'			=>	'',
+		'encoded'			=>	'',
+		'views'			=>	'',
+		'uploaded_by'		=>	'',
+		'uploaded_time'	=>	'',
+		'last_modified'		=>	'',
 	);
 
 	/**
