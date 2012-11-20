@@ -1,19 +1,23 @@
 <?php defined('SYSPATH') OR die('No direct script access.');
 
 /**
- * Asset controller
- * Contains methods for adding / replacing an asset etc.
- *
- * The asset manager uses AJAX for adding assets etc. so when this controller doesn't use the standard template for its views.
- *
- * @package	Sledge
- * @category	Assets
- * @category	Controllers
- * @author	Rob Taylor
- * @copyright	Hoop Associates
- */
+  * Asset controller
+  * Contains methods for adding / replacing an asset etc.
+  *
+  * @package	Sledge
+  * @category	Assets
+  * @category	Controllers
+  * @author	Rob Taylor
+  * @copyright	Hoop Associates
+  */
 class Sledge_Controller_Cms_Assets extends Sledge_Controller
 {
+	/**
+	 *
+	 * @var	string	Directory where the view files used in this class are stored.
+	 */
+	protected $_view_directory = 'sledge/assets';
+
 	/**
 	 * Check that they can manage assets.
 	 */
@@ -21,10 +25,10 @@ class Sledge_Controller_Cms_Assets extends Sledge_Controller
 	{
 		parent::before();
 
-		// The permissions check is currently disabled because uploadify can't authenticate.
-		// This is a massive security problem which needs to be fixed before any sites launch.
-		// if ( ! $this->auth->logged_in('manage assets'))
-		// 	throw new HTTP_Exception_403;
+		 if ( ! $this->auth->logged_in('manage assets'))
+		 {
+			 throw new HTTP_Exception_403;
+		 }
 	}
 
 	/**
@@ -32,34 +36,50 @@ class Sledge_Controller_Cms_Assets extends Sledge_Controller
 	 * Allows deleting multiple assets.
 	 *
 	 * **Accepted POST parameters:**
-	 * Name		|	Type	|	Description
-	 * -----------|-----------|---------------
-	 * assets	|  array 	|	Array of asset IDs to be deleted.
+	 * Name		|	Type		|	Description
+	 * ---------------|-----------------|---------------
+	 * assets		|  array	 	|	Array of asset IDs to be deleted.
 	 *
-	 * @uses Model_Asset::delete()
+	 * @uses	Model_Asset::delete()
+	 * @uses	Sledge::log()
 	 */
 	public function action_delete()
 	{
+		// Get the asset IDs from the POST data.
 		$asset_ids = (array) $this->request->post('assets');
+
+		// Make sure no assets appear in the array multiple times.
 		$asset_ids = array_unique($asset_ids);
 
 		foreach ($asset_ids as $asset_id)
 		{
+			// Load the asset from the database.
 			$asset = ORM::factory('Asset', $asset_id);
 
 			// If the asset isn't marked as rubbish then mark it as so.
 			// If it's already marked as rubbish then delete it for real.
 			if ($asset->rubbish)
 			{
+				// Delete the asset.
 				$asset->delete();
-				Sledge::log("Deleted asset $asset->title (ID: $asset->id)");
+
+				// Set the message to be added to the CMS log.
+				$log_message = "Deleted asset $asset->title (ID: $asset->id)";
 			}
 			else
 			{
+				// Make the asset as rubbish.
 				$asset->rubbish = TRUE;
+
+				// Save the changes.
 				$asset->save();
-				Sledge::log("Moved asset $asset->title (ID: $asset->id) to rubbish bin.");
+
+				// Set the message to be added to the CMS log.
+				$log_message = "Moved asset $asset->title (ID: $asset->id) to rubbish bin.";
 			}
+
+			// Log the action.
+			Sledge::log($log_message);
 		}
 	}
 
@@ -68,38 +88,54 @@ class Sledge_Controller_Cms_Assets extends Sledge_Controller
 	 * Allows downloading of assets in zip format.
 	 *
 	 *  This controller performs two roles:
-	 * - If a single asset ID is sent then the asset is downloaded in 'normally'
-	 * - If multiple asset IDs are sent then a .zip is created which contains the associates assets.
+	 *	*	If a single asset ID is sent then the asset is downloaded  'normally'
+	 *	*	If multiple asset IDs are sent then a .zip is created which contains the associates assets.
 	 *
 	 *
 	 * **Accepted GET parameters:**
-	 * Name		|	Type	|	Description
-	 * -----------|-----------|---------------
-	 * assets	|  string 	|	Comma separated list of asset IDs.
+	 * Name		|	Type		|	Description
+	 * ---------------|-----------	------|---------------
+	 * assets		|  string		|	Comma separated list of asset IDs.
 	 *
 	 * @uses ZipArchive
 	 */
 	public function action_download()
 	{
+		// Get a unique array of asset IDs to download.
 		$asset_ids = array_unique(explode(",", $this->request->query('assets')));
-		$assets = count($asset_ids);
 
-		if ($assets > 1)
+		// How many assets are we downloading?
+		$asset_count = count($asset_ids);
+
+		if ($asset_count > 1)
 		{
-			// Get the session ID. This is used in a few places within this if block as it's used in the filename for temp zip file.
-			$session_id = Session::instance()->id();
+			// Multiple asset download - create a zip file of assets.
 
-			// Multi-asset download.
+			// Get the session ID. This is used in a few places within this if block as it's used in the filename for temp zip file.
+			$session_id = Session::instance()
+				->id();
+
+			// The name of the temporary file where the zip archive will be created.
+			$tmp_filename = APPPATH . 'cache/cms_assets_' . $session_id . 'file.zip';
+
 			// Create the zip archive.
 			$zip = new ZipArchive;
-			$zip->open('/tmp/cms_assets_' . $session_id . 'file.zip', ZipArchive::CREATE);
-			foreach ($asset_ids as $asset_id) {
+			$zip->open($tmp_filename, ZipArchive::CREATE);
+
+			// Add the assets to the zip archive
+			foreach ($asset_ids as $asset_id)
+			{
+				// Load the asset from the database to check that it exists.
 				$asset = ORM::factory('Asset', $asset_id);
-				if ($asset->loaded()) {
+
+				if ($asset->loaded())
+				{
+					// Asset exists add it to the archive.
 					$zip->addFile(ASSETPATH . $asset->id, $asset->filename);
 				}
 			}
 
+			// Finished adding files to the archive.
 			$zip->close();
 
 			// Send it to the user's browser.
@@ -110,17 +146,23 @@ class Sledge_Controller_Cms_Assets extends Sledge_Controller
 					"Pragma" => "no-cache",
 					"Expires" => "0"
 				))
-				->body(readfile('/tmp/cms_assets_' . $session_id . 'file.zip'));
+				->body(
+					readfile($tmp_filename)
+				);
 
 			// Delete the temporary file.
-			unlink('/tmp/cms_assets_' . $session_id . 'file.zip');
+			unlink($tmp_filename);
 		}
-		elseif ($assets == 1)
+		elseif ($asset_count == 1)
 		{
 			// Download a single asset.
+
+			// Load the asset from the database to check that it exists.
 			$asset = ORM::factory('Asset', $asset_ids[0]);
+
 			if ($asset->loaded())
 			{
+				// Asset exists, send the file contents.
 				$this->response
 					->headers(array(
 						"Content-type" => $asset->get_mime(),
@@ -128,7 +170,9 @@ class Sledge_Controller_Cms_Assets extends Sledge_Controller
 						"Pragma" => "no-cache",
 						"Expires" => "0"
 					))
-					->body(readfile(ASSETPATH . $asset->id));
+					->body(
+						readfile(ASSETPATH . $asset->id)
+					);
 			}
 		}
 	}
@@ -160,12 +204,13 @@ class Sledge_Controller_Cms_Assets extends Sledge_Controller
 			->execute()
 			->as_array();
 
+		// Turn the numeric asset types into user friendly strings.
 		$types = Arr::pluck($types, 'type');
 		$types = array_map(array('Sledge_Asset', 'get_type'), $types);
 		$types = array_map('ucfirst', $types);
 
 		// Put it all in a view.
-		$this->template = View::factory('sledge/assets/filters', array(
+		$this->template = View::factory("$this->_view_directory/filters", array(
 			'uploaders'	=>	$uploaders,
 			'types'		=>	$types,
 		));
@@ -177,8 +222,11 @@ class Sledge_Controller_Cms_Assets extends Sledge_Controller
 	 */
 	public function action_index()
 	{
-		$this->template = View::factory('sledge/assets/index')
-			->set('content', Request::factory('cms/assets/manager')->execute()->body());
+		$this->template = View::factory("$this->_view_directory/index", array(
+			'content'	=>	Request::factory('cms/assets/manager')
+				->execute()
+				->body()
+		));
 	}
 
 	/**
@@ -186,33 +234,33 @@ class Sledge_Controller_Cms_Assets extends Sledge_Controller
 	 * This is used for the main content of the asset manager.
 	 *
 	 * **Accepted GET parameters:**
-	 * Name		|	Type	|	Description
-	 * -----------|-----------|---------------
-	 * page  	| int	 	|	The current page to display. Optional, default is 1.
-	 * perpage	| int		|	Number of assets to display on each page. Optional, default is 30.
-	 * tag		| string	|	A tag to filter assets by. Through the magic of hackery also used to filter assets by filters.
-	 * sortby	| string	|	The column to sort results by. Optional, default is title.
-	 * order		| string	|	The direction to sort assets in. Option, default is ascending.
+	 * Name		|	Type		|	Description
+	 * ---------------|-----------------|---------------
+	 * page		|	 int	 	|	The current page to display. Optional, default is 1.
+	 * perpage	|	 int		|	Number of assets to display on each page. Optional, default is 30.
+	 * tag		|	 string	|	A tag to filter assets by. Through the magic of hackery also used to filter assets by filters.
+	 * sortby		|	 string	|	The column to sort results by. Optional, default is title.
+	 * order		|	string	|	The direction to sort assets in. Option, default is ascending.
 	 *
 	 */
 	public function action_list()
 	{
+		// Get the query data.
 		$query_data = $this->request->query();
 
-		// G
-		$page = Arr::get($query_data, 'page', 1);
-		$perpage = Arr::get($query_data, 'perpage', 30);
-		$tag = ORM::factory('Tag', Arr::get($query_data, 'tag'));
+		// Load the query data into variables.
+		$page		=	Arr::get($query_data, 'page', 1);
+		$perpage		=	Arr::get($query_data, 'perpage', 30);
+		$tag			=	ORM::factory('Tag', Arr::get($query_data, 'tag'));
+		$uploaded_by	=	Arr::get($query_data, 'uploaded_by');
+		$type		=	Arr::get($query_data, 'type');
+		$sortby		=	Arr::get($query_data, 'sortby');
+		$order		=	Arr::get($query_data, 'order');
 
-		// Get type and uploaded by filters.
-		$uploaded_by = Arr::get($query_data, 'uploaded_by');
-		$type = Arr::get($query_data, 'type');
-
-		$sortby = Arr::get($query_data, 'sortby');
-		$order = Arr::get($query_data, 'order');
-
+		// Prepare the database query.
 		$query = ORM::factory('Asset');
 
+		// If a valid tag was given then filter the results by tag..
 		if ($tag->loaded())
 		{
 			$query->where('tag', '=', $tag);
@@ -220,10 +268,12 @@ class Sledge_Controller_Cms_Assets extends Sledge_Controller
 
 		if (($sortby == 'last_modified' OR $sortby == 'title' OR $sortby == 'filesize') AND ($order == 'desc' OR $order == 'asc'))
 		{
+			// A valid sort column and direction was given so use them.
 			$query->order_by($sortby, $order);
 		}
 		else
 		{
+			// No sort column or direction was given, or one of them was invalid, sort by title ascending by default.
 			$sortby = 'title';
 			$order = 'asc';
 			$query->order_by('title', 'asc');
@@ -246,22 +296,29 @@ class Sledge_Controller_Cms_Assets extends Sledge_Controller
 		// Filtering by deleted assets?
 		$query->where('rubbish', '=', ($this->request->query('rubbish') == 'rubbish'));
 
+		// Clone the query to count the number of matching assets.
 		$count = clone $query;
-		$size = clone $query;
 		$total = $count->count_all();
-		$size = $size->size_all();
 
-		$assets = $query
-			->limit($perpage)
-			->offset(($page - 1) * $perpage)
-			->find_all();
-
-		if (count($assets) === 0)
+		// Were any assets found?
+		if ($total === 0)
 		{
-			$this->template = View::factory('sledge/assets/none_found');
+			// Nope, show a message explaining that we couldn't find anything.
+			$this->template = View::factory("$this->_view_directory/none_found");
 		}
 		else
 		{
+			// Clone the query to get the total size of the matching assets.
+			$size = clone $query;
+			$size = $size->size_all();
+
+			// Retrieve the matching assets.
+			$assets = $query
+				->limit($perpage)
+				->offset(($page - 1) * $perpage)
+				->find_all();
+
+			// Put everthing in the views.
 			$this->template = View::factory('sledge/assets/list', array(
 				'assets'		=>	$assets,
 				'tag'			=>	$tag,
@@ -271,10 +328,12 @@ class Sledge_Controller_Cms_Assets extends Sledge_Controller
 				'order'		=>	$order,
 			));
 
+			// How many pages are there?
 			$pages = ceil($total / $perpage);
 
 			if ($pages > 1)
 			{
+				// More than one page - generate pagination links.
 				$url = '#tag/' . $this->request->query('tag');
 				$pagination = View::factory('pagination/query', array(
 					'current_page'		=>	$page,
@@ -284,6 +343,7 @@ class Sledge_Controller_Cms_Assets extends Sledge_Controller
 					'next_page'		=>	($page == $pages) ? 0 : ($page + 1),
 				));
 
+				// Add the pagination view to the main view.
 				$this->template->set('pagination', $pagination);
 			}
 		}
@@ -294,11 +354,10 @@ class Sledge_Controller_Cms_Assets extends Sledge_Controller
 	 * Used by the CMS assets page (/cms/assets) and for editing asset chunks, slideshows, feature images etc.
 	 *
 	 * This just makes internal requests for the filters and tags. This allows the possibility of making those requests asynchronous in future.
-	 * @link http://techportal.ibuildings.com/2010/11/16/optimising-hmvc-web-applications-for-performance/
 	 */
 	public function action_manager()
 	{
-		$this->template = View::factory('sledge/assets/manager', array(
+		$this->template = View::factory("$this->_view_directory/manager", array(
 			'filters'	=>	Request::factory('cms/assets/filters')->execute(),
 			'tags'	=>	Request::factory('cms/tag/tree')->post(array('type' => 1))->execute(),
 		));
@@ -307,33 +366,50 @@ class Sledge_Controller_Cms_Assets extends Sledge_Controller
 	/**
 	 * Save an asset.
 	 *
-	 * @todo This should be in Controller_Cms_Assets
 	 */
 	public function action_save()
 	{
+		// Load the asset data.
 		$asset = ORM::factory('Asset', $this->request->param('id'));
-		$asset->title = $this->request->post('title');
-		$asset->filename = $this->request->post('filename');
-		$asset->description = $this->request->post('description');
-		$asset->status = $this->request->post('status');
-		$asset->visible_from = strtotime($this->request->post('visible_from'));
-		$asset->save();
 
+		// Does the asset exist?
+		if ( ! $asset->loaded())
+		{
+			throw new HTTP_Exception_404;
+		}
+
+		// Get the POST data.
+		$post = $this->request->post();
+
+		// Set the asset details.
+		$asset
+			->values(array(
+				'title'			=>	$post['title'],
+				'description'	=>	$post['description'],
+				'status'		=>	$post['status'],
+				'visible_from'	=>	strtotime($post['visible_from']),
+			))
+			->save();
+
+		// Redirect to the asset's page.
 		$this->redirect('/cms/assets/view/' . $asset->id);
 	}
 
 	/**
-	 * Add tags to an asset.
+	 * Add tags to a single or multiple assets.
 	 *
 	 * **Accepted POST parameters:**
-	 * Name		|	Type	|	Description
-	 * -----------|-----------|---------------
-	 * tags  	|  array 	|	Array of tag IDs to be removed from the asset.
+	 * Name		|	Type		|	Description
+	 * ---------------|-----------------|---------------
+	 * tags		|	array	|	Array of tag IDs to be removed from the asset.
 	 *
 	 */
 	public function action_tag()
 	{
+		// Get the IDs of the assets the tags are being applied to.
 		$asset_ids = array_unique(explode("-", $this->request->param('id')));
+
+		// Get the IDs of the tags which are being added.
 		$tag_ids = (array) $this->request->post('tags');
 
 		// Prepare the insert query object.
@@ -354,34 +430,37 @@ class Sledge_Controller_Cms_Assets extends Sledge_Controller
 
 		// Execute the query.
 		// Ignore database exceptions incase the person is applying a tag to an asset where it's already applied.
-//		try
-//		{
+		try
+		{
 			$query->execute();
-//		}
-//		catch (Database_Exception $e) {}
+		}
+		catch (Database_Exception $e) {}
 	}
 
 	/**
 	 * Remove tags from an asset.
 	 *
 	 * **Accepted POST parameters:**
-	 * Name		|	Type	|	Description
-	 * -----------|-----------|---------------
-	 * tags  	|  array 	|	Array of tag IDs to be removed from the asset.
+	 * Name		|	Type		|	Description
+	 * ---------------|-----------------|---------------
+	 * tags		|	array 	|	Array of tag IDs to be removed from the asset.
 	 *
 	 */
 	public function action_untag()
 	{
+		// Load the asset data.
 		$asset = ORM::factory('Asset', $this->request->param('id'));
 
+		// Can't remove tags from an asset which doesn't exist.
 		if ($asset->loaded())
 		{
-			$tags = (array) $this->request->post('tags');
+			// Get an array of tag IDs which are being removed.
+			$tag_ids = (array) $this->request->post('tags');
 
 			DB::delete('tags_applied')
 				->where('object_type', '=', $asset->get_object_type_id())
-				->where('object_id', '=', $asset->pk())
-				->where('tag_id', 'IN', $tags)
+				->where('object_id', '=', $asset->id)
+				->where('tag_id', 'IN', $tag_ids)
 				->execute();
 		}
 	}
@@ -395,12 +474,16 @@ class Sledge_Controller_Cms_Assets extends Sledge_Controller
 	 */
 	public function action_view()
 	{
+		// Get the IDs of the assets we're viewing.
 		$asset_ids = (array) explode("-", $this->request->param('id'));
+
+		// Prepare an array for the asset objects.
 		$assets = array();
 
 		// Get the assets from the database.
 		foreach ($asset_ids as $asset_id)
 		{
+			// Load this asset.
 			$asset = ORM::factory('Asset', $asset_id);
 
 			// Don't include assets which don't exist.
@@ -413,13 +496,14 @@ class Sledge_Controller_Cms_Assets extends Sledge_Controller
 					$asset->reload();
 				}
 
+				// Add the asset to the array.
 				$assets[] = $asset;
 			}
 		}
 
-		$this->template = View::factory('sledge/assets/view', array(
+		// Pop it all in the view.
+		$this->template = View::factory("$this->_view_directory/view", array(
 			'assets'	=>	$assets,
 		));
 	}
-
 }
