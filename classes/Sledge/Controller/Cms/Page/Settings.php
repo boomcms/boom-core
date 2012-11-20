@@ -63,7 +63,7 @@ class Sledge_Controller_Cms_Page_Settings extends Controller_Cms_Page
 				'children_visible_in_leftnav', 'children_visible_in_leftnav_cms'
 			));
 
-			$this->page->order_children( (int) $this->request->post('child_ordering_policy'), $this->request->post('child_ordering_direction'));
+			$this->page->child_ordering_policy($this->request->post('child_ordering_policy'), $this->request->post('child_ordering_direction'));
 
 			// These settings aren't inherited
 			$this->update_columns(array(

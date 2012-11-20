@@ -133,6 +133,119 @@ class Sledge_Model_Page extends ORM_Taggable
 	}
 
 	/**
+	* Adds a new child page to this page's MPTT tree.
+	* Ensures that the child is added in the correct position according to this page's child ordering policy.
+	*
+	* @param Model_Page $page The new child page.
+	* @return Model_Page
+	*/
+	public function add_child(Model_Page $page)
+	{
+		// Get the child ordering policy column and direction.
+		list($column, $direction) = $this->child_ordering_policy();
+
+		// Find the page_mptt record of the page which comes after this one.
+		$mptt = ORM::factory('page_mptt')
+			->join('page', 'inner')
+			->on('page.id', '=', 'page_mptt.id')
+			->join('page_v', 'inner')
+			->on('page.active_vid', '=', 'page_v.id')
+			->where('page_mptt.parent_id', '=', $this->mptt->id)
+			->where($column, '>', $page->$column)
+			->order_by($column, $direction)
+			->limit(1)
+			->find();
+
+		if ( ! $mptt->loaded())
+		{
+			// If a record wasn't loaded then there's no page after this one.
+			// Insert as the last child of the parent.
+			$page->mptt->insert_as_last_child($this->mptt);
+		}
+		else
+		{
+			$page->mptt->insert_as_next_sibling($mptt);
+		}
+
+		// Reload the MPTT values for this page.
+		$this->mptt->reload();
+
+		// Return the current object.
+		return $this;
+	}
+
+	/**
+	 * Getter / setter for the child_ordering_policy column.
+	 * When used as a getter converts the integer stored in the child_ordering_policy column to an array of column and direction which can be used when querying the database.
+	 * When used as a setter converts the column and direction to an integer which can be stored in the child_ordering_policy column.
+	 *
+	 * @param	string	$column
+	 * @param	string	$direction
+	 */
+	public function child_ordering_policy($column = NULL, $direction = NULL)
+	{
+		if ($column === NULL AND $direction === NULL)
+		{
+			// Act as getter.
+			// Determine which column to sort by.
+			if ($this->child_ordering_policy & Model_Page::CHILD_ORDER_ALPHABETIC)
+			{
+				$column = 'title';
+			}
+			elseif ($this->child_ordering_policy & Model_Page::CHILD_ORDER_DATE)
+			{
+				$column = 'visible_from';
+			}
+			else
+			{
+				$column = 'sequence';
+			}
+
+			// Determine the direction to sort in.
+			$direction = ($this->child_ordering_policy & Model_Page::CHILD_ORDER_ASC)? 'asc' : 'desc';
+
+			// Return the column and direction as an array.
+			return array($column, $direction);
+		}
+		else
+		{
+			// Act as setter.
+
+			// Convert the column into an integer.
+			switch ($column)
+			{
+				case 'manual':
+					$order = Model_Page::CHILD_ORDER_MANUAL;
+					break;
+
+				case 'date':
+					$order = Model_Page::CHILD_ORDER_DATE;
+					break;
+
+				default:
+					$order = Model_Page::CHILD_ORDER_ALPHABETIC;
+			}
+
+			// Convert the direction to an integer and apply it to $order
+			switch ($direction)
+			{
+				case 'asc':
+					$order | Model_Page::CHILD_ORDER_ASC;
+					break;
+
+				default:
+					$order | Model_Page::CHILD_ORDER_DESC;
+			}
+
+			// Set the value of the child_ordering_policy column.
+			$this->child_ordering_policy = $order;
+
+			// Rethrn the current object.
+			return $this;
+		}
+	}
+
+	/**
 	* Delete a page.
 	* Ensures child pages are deleted and that the pages are deleted from the MPTT tree.
 	*
@@ -272,28 +385,14 @@ class Sledge_Model_Page extends ORM_Taggable
 
 	/**
 	 * Sort the page's children as specified by the child ordering policy.
-	 * Should be called when changing a page's child ordering policy or adding a new child.
+	 * Called when changing a page's child ordering policy.
 	 *
 	 * @return	Model_Page
 	 */
 	public function sort_children()
 	{
-		// Determine which column to sort by.
-		if ($this->child_ordering_policy & static::CHILD_ORDER_ALPHABETIC)
-		{
-			$column = 'title';
-		}
-		elseif ($this->child_ordering_policy & static::CHILD_ORDER_DATE)
-		{
-			$column = 'audit_time';
-		}
-		else
-		{
-			$column = 'sequence';
-		}
-
-		// Determine the direction to sort in.
-		$direction = ($this->child_ordering_policy & static::CHILD_ORDER_ASC)? 'asc' : 'desc';
+		// Get the column and direction to order by.
+		list($column, $direction) = $this->child_ordering_policy();
 
 		// Find the children, sorting the database results by the column we want the children ordered by.
 		$children = ORM::factory('Page_MPTT')
