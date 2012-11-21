@@ -99,7 +99,7 @@ class Sledge_Controller_Plugin_Archive extends Sledge_Controller
 		$options = $this->request->post();
 
 		// Create a hash of the data for caching.
-		$hash = md5($this->parent->id . "-" . $this->auth->logged_in() . "-" . serialize($options));
+		$hash = md5($this->parent->page_id . "-" . $this->auth->logged_in() . "-" . serialize($options));
 
 		// Try and get it from the cache.
 		 if (Kohana::$environment === Kohana::DEVELOPMENT OR ! Fragment::load("child_page_list:$hash", Date::HOUR))
@@ -153,10 +153,11 @@ class Sledge_Controller_Plugin_Archive extends Sledge_Controller
 				$sections[] = $v;
 			}
 
-			echo View::factory("sledge/plugin/archive/index")
-				->set('parent', $this->parent)
-				->set('sections', $sections)
-				->set('title',  ($this->request->post('title'))? $this->request->post('title') : 'Archive');
+			echo View::factory("sledge/plugin/archive/index", array(
+				'parent'	=>	$this->parent,
+				'sections'	=>	$sections,
+				'title'		=>	($this->request->post('title'))? $this->request->post('title') : 'Archive'
+			));
 
 			// Update the cache.
 			Fragment::save();
@@ -175,7 +176,7 @@ class Sledge_Controller_Plugin_Archive extends Sledge_Controller
 			->from('tags')
 			->join('tags_applied', 'inner')
 			->on('tags_applied.tag_id', '=', 'tags.id')
-			->where('tags_applied.object_type', '=',Model_Tag_Applied::OBJECT_TYPE_PAGE)
+			->where('tags_applied.object_type', '=', Model_Tag_Applied::OBJECT_TYPE_PAGE)
 			->group_by('tags.id')
 			->join('page_mptt', 'inner')
 			->on('tags_applied.object_id', '=', 'page_mptt.id')
