@@ -13,6 +13,22 @@
 class Sledge_Controller_Cms_Uploadify extends Kohana_Controller
 {
 	/**
+	* Asset upload form.
+	*
+	*/
+	public function action_form()
+	{
+			// Encypt the session ID and user ID to create an upload token.
+			$encrypt = Encrypt::instance();
+			$token = $encrypt->encode(microtime( TRUE) . " " . Session::instance()->id() . " " . Auth::instance()->get_user()->pk());
+
+			$v = View::factory('sledge/assets/upload_assets');
+			$v->token = $token;
+
+			$this->response->body($v);
+	}
+
+	/**
 	* Asset upload controller.
 	* Backend to the uploadify for uploading multiple assets at once.
 	*
@@ -140,7 +156,16 @@ class Sledge_Controller_Cms_Uploadify extends Kohana_Controller
 				// }
 			}
 		}
-		elseif ($this->request->post('upload_token') !== NULL)
+		
+	}
+	
+	/**
+	* Get the rids of newly uploaded assets.
+	*
+	*/
+	public function action_get_rids()
+	{
+		if ($this->request->post('upload_token') !== NULL)
 		{
 			// Return the IDs of all the assets uploaded in this 'batch'.
 			$cache_key = 'asset-upload-ids:' . $this->request->post('upload_token');
@@ -152,16 +177,6 @@ class Sledge_Controller_Cms_Uploadify extends Kohana_Controller
 				$this->response->body( json_encode( array('rids' => $asset_ids, 'errors' => array())));
 			}
 		}
-		else
-		{
-			// Encypt the session ID and user ID to create an upload token.
-			$encrypt = Encrypt::instance();
-			$token = $encrypt->encode(microtime( TRUE) . " " . Session::instance()->id() . " " . Auth::instance()->get_user()->pk());
-
-			$v = View::factory('sledge/assets/upload_assets');
-			$v->token = $token;
-
-			$this->response->body($v);
-		}
 	}
+
 }
