@@ -413,7 +413,8 @@ class Sledge_Model_Page_Version extends ORM_Taggable
 	{
 		if ($this->_primary_link == NULL)
 		{
-			$this->_primary_link = $this->_cache->get('primary_link_for_page:' . $this->id);
+			$cache_key = "primary_link_for_page:$this->page_id";
+			$this->_primary_link = $this->_cache->get($cache_key);
 
 			if ($this->_primary_link === NULL)
 			{
