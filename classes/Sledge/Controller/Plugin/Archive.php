@@ -20,7 +20,7 @@ class Sledge_Controller_Plugin_Archive extends Sledge_Controller
 		parent::before();
 
 		// If a parent page has been specified then use it, otherwise use the parent of the inital request.
-		$this->parent = ($this->request->post('parent'))? ORM::factory('Page', array('page_id' => $this->request->post('parent'))) : Request::initial()->param('page');
+		$this->parent = ($this->request->post('parent'))? ORM::factory('Page_Version', array('page_id' => $this->request->post('parent'))) : Request::initial()->param('page');
 
 		// If the parent isn't found then throw a 404.
 		if ( !  $this->parent->loaded())
@@ -58,9 +58,9 @@ class Sledge_Controller_Plugin_Archive extends Sledge_Controller
 			->select(array(DB::expr('count(*)'), 'count'))
 			->from(array(
 				DB::select(array(DB::expr('from_unixtime(visible_from)'), 't'))
-					->from('pages')
+					->from('page_versions')
 					->join('page_mptt', 'inner')
-					->on('page_mptt.id', '=', 'pages.page_id')
+					->on('page_mptt.id', '=', 'page_versions.page_id')
 					->where('page_mptt.parent_id', '=', $this->parent->page_id),
 				'q'
 			))
@@ -180,9 +180,9 @@ class Sledge_Controller_Plugin_Archive extends Sledge_Controller
 			->join('page_mptt', 'inner')
 			->on('tags_applied.object_id', '=', 'page_mptt.id')
 			->where('page_mptt.parent_id', '=', $this->parent->page_id)
-			->join('pages', 'inner')
-			->on('tags_applied.object_id', '=', 'pages.page_id')
-			->where('pages.deleted', '=', FALSE)
+			->join('page_versions', 'inner')
+			->on('tags_applied.object_id', '=', 'page_versions.page_id')
+			->where('page_versions.deleted', '=', FALSE)
 			->order_by('name', 'asc');
 
 		if ($this->request->post('route'))

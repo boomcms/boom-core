@@ -90,7 +90,7 @@ class Sledge_Controller_Plugin_Page_Children extends Sledge_Controller
 			// Parent may be an object when this is an internal request - no point instantiating a new object when we already have one.
 			if ( ! is_object($this->parent))
 			{
-				$this->parent = ORM::factory('Page', $this->request->post('parent'));
+				$this->parent = ORM::factory('Page_Version', array('page_id' => $this->request->post('parent')));
 			}
 		}
 		elseif (Request::$current !== Request::$initial)
@@ -107,19 +107,21 @@ class Sledge_Controller_Plugin_Page_Children extends Sledge_Controller
 
 
 		// If a sort column is given then use it, otherwise use the parent page default child order column
+		list($column, $direction) = $this->parent->child_ordering_policy();
+
 		if ($this->request->post('order'))
 		{
 			$this->sort_column = ($this->request->post('order') === 'title')? 'title' : 'visible_from';
 		}
 		else
 		{
-			$this->sort_column = ($this->parent->child_ordering_policy & Model_Page::CHILD_ORDER_ALPHABETIC)? 'title' : 'visible_from';
+			$this->sort_column = $column;
 		}
 
 		// If a direction has been set then use that, overwise use the parent default child order direction
 		if ( ! $this->request->post('direction'))
 		{
-			$this->sort_direction = ($this->parent->child_ordering_policy & Model_Page::CHILD_ORDER_DESC)? 'desc' : 'asc';
+			$this->sort_direction = $direction;
 		}
 		else
 		{
@@ -181,8 +183,8 @@ class Sledge_Controller_Plugin_Page_Children extends Sledge_Controller
 		// Set the select columns.
 		// This is done individually in each action because different output formats needs different columns
 		$results = $query
-			->select('pages.id', 'page_versions.title', 'page_links.location')
-			->select(array(DB::expr("visible = true and visible_from <= " . $_SERVER['REQUEST_TIME'] . " and (visible_to >= " . $_SERVER['REQUEST_TIME'] . " or visible_to = 0)"), 'visible'))
+			->select('page_versions.page_id', 'title', 'page_links.location')
+			->select(array(DB::expr("visible_from <= " . $_SERVER['REQUEST_TIME'] . " and (visible_to >= " . $_SERVER['REQUEST_TIME'] . " or visible_to = 0)"), 'visible'))
 			->select(array(
 				DB::select(DB::expr('1'))
 					->from('page_mptt')
@@ -211,14 +213,20 @@ class Sledge_Controller_Plugin_Page_Children extends Sledge_Controller
 		{
 			list($query, $total) = $this->build_query();
 
-			$result = $query->select('pages.id')->execute();
-			$count = $result->count();
-			$pages = $result->as_array();
+			$result = $query
+				->select('page_versions.id')
+				->execute();
+
+			$count = $result
+				->count();
+
+			$pages = $result
+				->as_array();
 
 			// For HTML page lists get page objects for the template.
 			array_walk($pages, function(&$page)
 				{
-					$page = ORM::factory('Page', $page['id']);
+					$page = ORM::factory('Page_Version', array('page_id' => $page['id']));
 				}
 			);
 
@@ -232,9 +240,10 @@ class Sledge_Controller_Plugin_Page_Children extends Sledge_Controller
 			// Which template to use?
 			$template = ($this->request->post('template'))? $this->request->post('template') : "sledge/plugin/page/children";
 
-			$v = View::factory($template);
-			$v->set('page', $this->parent);
-			$v->set('pages', $pages);
+			$v = View::factory($template, array(
+				'page'	=>	$this->parent,
+				'pages'	=>	$pages,
+			));
 
 			// Pagination is disabled when results per page is 0 or there's only one page of results.
 			if ($this->perpage > 0 AND $total > $this->perpage)
@@ -277,13 +286,11 @@ class Sledge_Controller_Plugin_Page_Children extends Sledge_Controller
 	{
 		// Build the query.
 		$query = DB::select()
-			->from('pages')
-			->join('page_versions', 'inner')
-			->on('pages.' . Page::join_column($this->parent, $this->auth), '=', 'page_versions.id')
+			->from('page_versions')
 			->join('page_mptt', 'inner')
-			->on('pages.id', '=', 'page_mptt.id')
+			->on('page_versions.page_id', '=', 'page_mptt.id')
 			->join('page_links', 'inner')
-			->on('pages.id', '=', 'page_links.page_id')
+			->on('page_versions.page_id', '=', 'page_links.page_id')
 			->where('page_versions.deleted', '=', FALSE)
 			->where('page_mptt.parent_id', '=', $this->parent->id)
 			->where('page_links.is_primary', '=', TRUE)
@@ -327,7 +334,7 @@ class Sledge_Controller_Plugin_Page_Children extends Sledge_Controller
 		{
 			$query
 				->join('tags_applied', 'inner')
-				->on('tags_applied.object_id', '=', 'pages.id')
+				->on('tags_applied.object_id', '=', 'page_versions.id')
 				->join('tags', 'inner')
 				->on('tags_applied.tag_id', '=', 'tags.id')
 				->where('tags_applied.object_type', '=', $this->parent->get_object_type_id())
@@ -340,7 +347,7 @@ class Sledge_Controller_Plugin_Page_Children extends Sledge_Controller
 		if ($this->perpage > 0)
 		{
 			$total = clone $query;
-			$total = $total->select(array(DB::expr('COUNT("*")'), 'count'))->execute();
+			$total = $total->select(array(DB::expr('COUNT(*)'), 'count'))->execute();
 			$total = $total[0]['count'];
 
 			$query

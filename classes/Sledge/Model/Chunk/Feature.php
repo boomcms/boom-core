@@ -18,8 +18,4 @@ class Sledge_Model_Chunk_Feature extends ORM
 		'target_page_id'	=>	'',
 		'slotname'			=>	'',
 	);
-
-	protected $_belongs_to = array(
-		'target' => array('model' => 'Page', 'foreign_key' => 'target_page_id'),
-	);
 }

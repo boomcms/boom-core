@@ -49,13 +49,13 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 				$vid = $this->request->query('vid');
 			}
 
-			if (isset($vid) AND $this->page->active_vid !== $vid)
+			if (isset($vid))
 			{
-				$this->page = ORM::factory('Page', $vid);
+				$this->page = ORM::factory('Page_Version', $vid);
 			}
 			else
 			{
-				$this->page = ORM::factory('Page', array('page_id' => $page_id));
+				$this->page = ORM::factory('Page_Version', array('page_id' => $page_id));
 			}
 		}
 	}

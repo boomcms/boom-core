@@ -2,14 +2,13 @@
 
 /**
 *
-* @see		Model_Page_Version
 * @package	Sledge
 * @category	Models
 * @author	Rob Taylor
 * @copyright	Hoop Associates
 *
 */
-class Sledge_Model_Page extends ORM_Taggable
+class Sledge_Model_Page_Version extends ORM_Taggable
 {
 	/**
 	* Properties to create relationships with Kohana's ORM
@@ -22,7 +21,7 @@ class Sledge_Model_Page extends ORM_Taggable
 	);
 
 	protected $_has_many = array(
-		'revisions'	=> array('model' => 'Page', 'foreign_key' => 'page_id'),
+		'revisions'	=> array('model' => 'Page_Version', 'foreign_key' => 'page_id'),
 		'links'	=> array('model' => 'Page_Link', 'foreign_key' => 'page_id'),
 		'chunks'	=> array('through' => 'pages_chunks'),
 	);
@@ -113,6 +112,40 @@ class Sledge_Model_Page extends ORM_Taggable
 	*/
 	private $_link;
 
+	public function __construct($id = NULL)
+	{
+		$this->_initialize();
+
+		if ($id !== NULL)
+		{
+			if (is_array($id))
+			{
+				foreach ($id as $column => $value)
+				{
+					// Passing an array of column => values
+					$this->where($column, '=', $value);
+				}
+			}
+			else
+			{
+				// Passing the primary key
+				$this->where($this->_object_name.'.'.$this->_primary_key, '=', $id);
+			}
+
+			$this
+				->current_version()
+				->find();
+
+		}
+		elseif ( ! empty($this->_cast_data))
+		{
+			// Load preloaded data from a database call cast
+			$this->_load_values($this->_cast_data);
+
+			$this->_cast_data = array();
+		}
+	}
+
 	/**
 	* Adds a new child page to this page's MPTT tree.
 	* Ensures that the child is added in the correct position according to this page's child ordering policy.
@@ -169,11 +202,11 @@ class Sledge_Model_Page extends ORM_Taggable
 		{
 			// Act as getter.
 			// Determine which column to sort by.
-			if ($this->child_ordering_policy & Model_Page::CHILD_ORDER_ALPHABETIC)
+			if ($this->child_ordering_policy & Model_Page_Version::CHILD_ORDER_ALPHABETIC)
 			{
 				$column = 'title';
 			}
-			elseif ($this->child_ordering_policy & Model_Page::CHILD_ORDER_DATE)
+			elseif ($this->child_ordering_policy & Model_Page_Version::CHILD_ORDER_DATE)
 			{
 				$column = 'visible_from';
 			}
@@ -183,7 +216,7 @@ class Sledge_Model_Page extends ORM_Taggable
 			}
 
 			// Determine the direction to sort in.
-			$direction = ($this->child_ordering_policy & Model_Page::CHILD_ORDER_ASC)? 'asc' : 'desc';
+			$direction = ($this->child_ordering_policy & Model_Page_Version::CHILD_ORDER_ASC)? 'asc' : 'desc';
 
 			// Return the column and direction as an array.
 			return array($column, $direction);
@@ -196,26 +229,26 @@ class Sledge_Model_Page extends ORM_Taggable
 			switch ($column)
 			{
 				case 'manual':
-					$order = Model_Page::CHILD_ORDER_MANUAL;
+					$order = Model_Page_Version::CHILD_ORDER_MANUAL;
 					break;
 
 				case 'date':
-					$order = Model_Page::CHILD_ORDER_DATE;
+					$order = Model_Page_Version::CHILD_ORDER_DATE;
 					break;
 
 				default:
-					$order = Model_Page::CHILD_ORDER_ALPHABETIC;
+					$order = Model_Page_Version::CHILD_ORDER_ALPHABETIC;
 			}
 
 			// Convert the direction to an integer and apply it to $order
 			switch ($direction)
 			{
 				case 'asc':
-					$order | Model_Page::CHILD_ORDER_ASC;
+					$order | Model_Page_Version::CHILD_ORDER_ASC;
 					break;
 
 				default:
-					$order | Model_Page::CHILD_ORDER_DESC;
+					$order | Model_Page_Version::CHILD_ORDER_DESC;
 			}
 
 			// Set the value of the child_ordering_policy column.
@@ -302,6 +335,17 @@ class Sledge_Model_Page extends ORM_Taggable
 				array('trim'),
 			),
 	   );
+	}
+
+	/**
+	 * Get the first version of the current page.
+	 */
+	public function first_version()
+	{
+		return ORM::factory('Page_Version')
+			->where('page_id', '=', $this->page_id)
+			->order_by('id', 'asc')
+			->find();
 	}
 
 	/**
@@ -469,7 +513,7 @@ class Sledge_Model_Page extends ORM_Taggable
 		// Try and get it from the cache.
 		// We don't have to worry about updating this cache - when the bodycopy is changed a new page version is created anyway.
 		// So once the thumbnail for a particular page version is cached the cache should never have to be changed.
-		$cache_key = 'thumbnail_for_page_versions:' . $this->id;
+		$cache_key = 'thumbnail_for_page_version:' . $this->id;
 
 		if ( ! $asset_id = $this->_cache->get($cache_key))
 		{

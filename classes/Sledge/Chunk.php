@@ -55,7 +55,7 @@ abstract class Sledge_Chunk
 	*/
 	protected $_type;
 
-	public function __construct(Model_Page $page, $chunk, $editable = TRUE)
+	public function __construct(Model_Page_Version $page, $chunk, $editable = TRUE)
 	{
 		$this->_page = $page;
 
@@ -184,7 +184,7 @@ abstract class Sledge_Chunk
 		elseif ($page === 0)
 		{
 			// 0 was given as the page - this signifies a 'global' chunk not assigned to any page.
-			$page = ORM::factory('Page');
+			$page = ORM::factory('Page_Version');
 		}
 
 		// The chunk is being cascaded down the tree so find the page that the chunk is actually assigned to.
@@ -209,7 +209,7 @@ abstract class Sledge_Chunk
 	 * @param	Model_Page_Version	$page_versions		The page version that the chunk belongs to.
 	 * @return 	Chunk
 	 */
-	public static function find($type, $slotname, Model_Page $page)
+	public static function find($type, $slotname, Model_Page_Version $page)
 	{
 		// Get the name of the model that we're looking.
 		// e.g. if type is text we want a chunk_text model
@@ -231,7 +231,6 @@ abstract class Sledge_Chunk
 		$chunk = ORM::factory($model)
 			->join('page_chunks')
 			->on('page_chunks.chunk_id', '=', 'id')
-			->limit(1)
 			->where('slotname', '=', $slotname)
 			->where('page_chunks.page_vid', '=', $version_id)
 			->find();
@@ -299,7 +298,7 @@ abstract class Sledge_Chunk
 	 * @param	Model_Page	$page		The page the chunk is appearing in, i.e. where the in the tree the chunk should be inherited to.
 	 * @return Model_Page
 	 */
-	public static function inherit_from($type, $slotname, Model_Page $page)
+	public static function inherit_from($type, $slotname, Model_Page_Version $page)
 	{
 		// Get the name of the model that we're looking.
 		// e.g. if type is text we want a chunk_text model
@@ -311,15 +310,15 @@ abstract class Sledge_Chunk
 		if ( ! $page_id = Cache::instance()->get($cache_key))
 		{
 			// Awww, query the database :(
-			$page_id = DB::select('pages.id')
+			$page_id = DB::select('page_versions.page_id')
 				->from($table_name)
 				->join('page_chunks')
 				->on('page_chunks.chunk_id', '=', "$table_name.id")
 				->where('slotname', '=', $slotname)
-				->join('pages', 'inner')
-				->on('page_chunks.page_vid', '=', 'pages.id')
+				->join('page_versions', 'inner')
+				->on('page_chunks.page_vid', '=', 'page_versions.id')
 				->join('page_mptt', 'inner')
-				->on('page_mptt.id', '=', 'pages.id')
+				->on('page_mptt.id', '=', 'page_versions.page_id')
 				->where('page_mptt.scope', '=', $page->mptt->scope)
 				->where('page_mptt.lft', '<=', $page->mptt->lft)
 				->where('page_mptt.rgt', '>=', $page->mptt->rgt)
@@ -332,7 +331,7 @@ abstract class Sledge_Chunk
 			Cache::instance()->set($cache_key, $page_id);
 		}
 
-		return ORM::factory('Page', $page_id);
+		return ORM::factory('Page_Version', array('page_id' => $page_id));
 	}
 
 	/**

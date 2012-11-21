@@ -9,7 +9,6 @@
  */
 class Sledge_Model_Person_Page extends ORM
 {
-	protected $_db_group = 'default';
 	protected $_table_name = 'people_pages';
 	protected $_table_columns = array(
 		'person_id'		=>	'',

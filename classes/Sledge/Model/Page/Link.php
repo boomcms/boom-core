@@ -9,10 +9,6 @@
 */
 class Sledge_Model_Page_Link extends ORM
 {
-	/**
-	* Properties to create relationships with Kohana's ORM
-	*/
-	protected $_belongs_to = array('page' => array());
 	protected $_table_columns = array(
 		'id'			=>	'',
 		'page_id'		=>	'',
