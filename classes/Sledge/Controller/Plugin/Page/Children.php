@@ -209,12 +209,12 @@ class Sledge_Controller_Plugin_Page_Children extends Sledge_Controller
 		$hash = md5($this->parent->id . "-" . $this->auth->logged_in() . "-" . serialize($this->request->post()));
 
 		// Try and get it from the cache, unless they're logged in.
-		if ($this->auth->logged_in() OR ! Fragment::load("child_page_list:$hash", Date::MINUTE * 5))
+		if ($this->auth->logged_in() OR ! Fragment::load("child_page_list:$hash", 300))
 		{
 			list($query, $total) = $this->build_query();
 
 			$result = $query
-				->select('page_versions.id')
+				->select('page_versions.page_id')
 				->execute();
 
 			$count = $result
@@ -226,7 +226,7 @@ class Sledge_Controller_Plugin_Page_Children extends Sledge_Controller
 			// For HTML page lists get page objects for the template.
 			array_walk($pages, function(&$page)
 				{
-					$page = ORM::factory('Page_Version', array('page_id' => $page['id']));
+					$page = ORM::factory('Page_Version', array('page_id' => $page['page_id']));
 				}
 			);
 
@@ -292,7 +292,7 @@ class Sledge_Controller_Plugin_Page_Children extends Sledge_Controller
 			->join('page_links', 'inner')
 			->on('page_versions.page_id', '=', 'page_links.page_id')
 			->where('page_versions.deleted', '=', FALSE)
-			->where('page_mptt.parent_id', '=', $this->parent->id)
+			->where('page_mptt.parent_id', '=', $this->parent->page_id)
 			->where('page_links.is_primary', '=', TRUE)
 			->order_by($this->sort_column, $this->sort_direction);
 
@@ -308,13 +308,30 @@ class Sledge_Controller_Plugin_Page_Children extends Sledge_Controller
 			$query->where(DB::expr('month(from_unixtime(visible_from))'), '=', $this->month);
 		}
 
-		// Filtering by nav visibility?
-		if ($this->nav AND $this->auth->logged_in() AND Editor::state() == Editor::EDIT)
+		// Logged in view?
+		if ($this->auth->logged_in() AND Editor::state() == Editor::EDIT)
 		{
-			$query->where('visible_in_leftnav_cms', '=', TRUE);
+			// Get the most recent version for each page.
+			$query
+				->join(array(
+					DB::select(array(DB::expr('min(id)'), 'id'), 'page_id')
+						->from('page_versions')
+						->group_by('page_id'),
+					'pages'
+				))
+				->on('page_versions.page_id', '=', 'pages.page_id')
+				->on('page_versions.id', '=', 'pages.id');
+
+			// Filtering by leftnav visibility?
+			if ($this->nav)
+			{
+				$query->where('visible_in_leftnav_cms', '=', TRUE);
+			}
 		}
 		elseif ( ! $this->auth->logged_in() OR Editor::state() != Editor::EDIT)
 		{
+			// TODO: limit results to current published version.
+
 			$query
 				->where('visible', '=', TRUE)
 				->where('visible_from', '<=', $time)
