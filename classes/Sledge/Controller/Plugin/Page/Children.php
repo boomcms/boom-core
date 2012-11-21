@@ -330,14 +330,27 @@ class Sledge_Controller_Plugin_Page_Children extends Sledge_Controller
 		}
 		elseif ( ! $this->auth->logged_in() OR Editor::state() != Editor::EDIT)
 		{
-			// TODO: limit results to current published version.
+			// Get the most recent published version for each page.
+			$query
+				->join(array(
+					DB::select(array(DB::expr('min(id)'), 'id'), 'page_id')
+						->from('page_versions')
+						->where('published_from', '<=', $_SERVER['REQUEST_TIME'])
+						->and_where_open()
+							->where('published_to', '>=', $_SERVER['REQUEST_TIME'])
+							->or_where('published_to', '=', 0)
+						->and_where_close()
+						->group_by('page_id'),
+					'pages'
+				))
+				->on('page_versions.page_id', '=', 'pages.page_id')
+				->on('page_versions.id', '=', 'pages.id');
 
 			$query
-				->where('visible', '=', TRUE)
-				->where('visible_from', '<=', $time)
+				->where('visible_from', '<=', $_SERVER['REQUEST_TIME'])
 				->and_where_open()
-				->where('visible_to', '>=', $time)
-				->or_where('visible_to', '=', 0)
+					->where('visible_to', '>=', $_SERVER['REQUEST_TIME'])
+					->or_where('visible_to', '=', 0)
 				->and_where_close();
 
 			if ($this->nav)

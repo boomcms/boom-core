@@ -349,35 +349,6 @@ class Sledge_Model_Page_Version extends ORM_Taggable
 	}
 
 	/**
-	* Get the page's primary URI
-	* From the page's available URIs finds the one which is marked as the primary URI.
-	* @return string The RELATIVE primary URI of the page.
-	*
-	*/
-	public function primary_link()
-	{
-		if ($this->_primary_link == NULL)
-		{
-			$this->_primary_link = $this->_cache->get('primary_link_for_page:' . $this->id);
-
-			if ($this->_primary_link === NULL)
-			{
-				$this->_primary_link = DB::select('location')
-					->from('page_links')
-					->where('page_id', '=', $this->id)
-					->and_where('is_primary', '=', TRUE)
-					->limit(1)
-					->execute()
-					->get('location');
-
-				$this->_cache->set('primary_link_for_page:' . $this->id, $this->_primary_link);
-			}
-		}
-
-		return $this->_primary_link;
-	}
-
-	/**
 	* Determine whether a published version exists for the page.
 	*
 	* @return bool
@@ -393,8 +364,7 @@ class Sledge_Model_Page_Version extends ORM_Taggable
 	*/
 	public function is_published()
 	{
-		return TRUE;
-		return $this->published_vid == $this->version->id;
+		return ($this->published_from <= $_SERVER['REQUEST_TIME'] AND ($this->published_to >= $_SERVER['REQUEST_TIME'] OR $this->published_to == 0));
 	}
 
 	public function is_visible()
@@ -432,6 +402,36 @@ class Sledge_Model_Page_Version extends ORM_Taggable
 	{
 		return ($this->mptt->is_root())? $this : $this->mptt->parent()->page;
 	}
+
+	/**
+	* Get the page's primary URI
+	* From the page's available URIs finds the one which is marked as the primary URI.
+	* @return string The RELATIVE primary URI of the page.
+	*
+	*/
+	public function primary_link()
+	{
+		if ($this->_primary_link == NULL)
+		{
+			$this->_primary_link = $this->_cache->get('primary_link_for_page:' . $this->id);
+
+			if ($this->_primary_link === NULL)
+			{
+				$this->_primary_link = DB::select('location')
+					->from('page_links')
+					->where('page_id', '=', $this->page_id)
+					->where('is_primary', '=', TRUE)
+					->limit(1)
+					->execute()
+					->get('location');
+
+				$this->_cache->set($cache_key, $this->_primary_link);
+			}
+		}
+
+		return $this->_primary_link;
+	}
+
 
 	/**
 	 * Generate a short URI for the page, similar to t.co etc.
