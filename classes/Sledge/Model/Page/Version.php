@@ -123,7 +123,9 @@ class Sledge_Model_Page_Version extends ORM_Taggable
 				foreach ($id as $column => $value)
 				{
 					// Passing an array of column => values
-					$this->where($column, '=', $value);
+					$this
+						->where($column, '=', $value)
+						->current_version();
 				}
 			}
 			else
@@ -132,9 +134,7 @@ class Sledge_Model_Page_Version extends ORM_Taggable
 				$this->where($this->_object_name.'.'.$this->_primary_key, '=', $id);
 			}
 
-			$this
-				->current_version()
-				->find();
+			$this->find();
 
 		}
 		elseif ( ! empty($this->_cast_data))

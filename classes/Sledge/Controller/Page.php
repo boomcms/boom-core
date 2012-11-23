@@ -203,7 +203,7 @@ class Sledge_Controller_Page extends Sledge_Controller
 
 		foreach ($pages as & $page)
 		{
-			$p = ORM::factory('Page', $page->id);
+			$p = ORM::factory('Page_Version', array('page_id' => $page->page_id));
 
 			$page = array(
 				'title'			=>	html_entity_decode($p->title),
