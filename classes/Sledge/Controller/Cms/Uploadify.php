@@ -37,15 +37,29 @@ class Sledge_Controller_Cms_Uploadify extends Kohana_Controller
 	{
 		if ( ! empty($_FILES))
 		{
-			if ( is_array($_FILES['s-assets-upload-files']['tmp_name']) ) {
-				$newfiles = array();
-				    foreach($_FILES as $fieldname => $fieldvalue)
-				        foreach($fieldvalue as $paramname => $paramvalue)
-				            foreach((array)$paramvalue as $index => $value)
-				                $newfiles[$fieldname][$index][$paramname] = $value;
+			// Normalise the $_FILES array, which varies according to upload method.
+			// Result should be an array of files in $newfiles.
+			if ( array_key_exists( 's-assets-upload-files', $_FILES ) ) {
+
+				if ( is_array($_FILES['s-assets-upload-files']['tmp_name']) ) {
+					// HTTP POST, multiple files
+					$newfiles = array(); 
+					    foreach($_FILES as $fieldname => $fieldvalue) 
+					        foreach($fieldvalue as $paramname => $paramvalue) 
+					            foreach((array)$paramvalue as $index => $value) 
+					                $newfiles[$fieldname][$index][$paramname] = $value;
+				} else {
+					// HTTP POST, single file
+					$newfiles = $_FILES;
+				}
+
+				$newfiles = $newfiles['s-assets-upload-files'];
+
 			} else {
+				// Uploadify POST
 				$newfiles = $_FILES;
 			}
+
 
 			/**
 			* Validate based on the upload token.
@@ -67,7 +81,7 @@ class Sledge_Controller_Cms_Uploadify extends Kohana_Controller
 			}
 
 			// Process the files.
-			foreach ($newfiles['s-assets-upload-files'] as $file)
+			foreach ($newfiles as $file)
 			{
 				// if (in_array($file['type'], Sledge_Asset::$allowed_types))
 				// {
