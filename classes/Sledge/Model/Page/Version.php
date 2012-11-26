@@ -160,10 +160,16 @@ class Sledge_Model_Page_Version extends ORM_Taggable
 
 		// Find the page_mptt record of the page which comes after this one.
 		$mptt = ORM::factory('page_mptt')
-			->join('page', 'inner')
-			->on('page.id', '=', 'page_mptt.id')
-			->join('page_v', 'inner')
-			->on('page.active_vid', '=', 'page_v.id')
+			->join('page_versions', 'inner')
+			->on('page_versions.page_id', '=', 'page_mptt.id')
+			->join(array(
+				DB::select(array(DB::expr('min(id)'), 'id'), 'page_id')
+					->from('page_versions')
+					->group_by('page_id'),
+				'pages'
+			))
+			->on('page_versions.page_id', '=', 'pages.page_id')
+			->on('page_versions.id', '=', 'pages.id')
 			->where('page_mptt.parent_id', '=', $this->mptt->id)
 			->where($column, '>', $page->$column)
 			->order_by($column, $direction)
@@ -400,7 +406,7 @@ class Sledge_Model_Page_Version extends ORM_Taggable
 	 */
 	public function parent()
 	{
-		return ($this->mptt->is_root())? $this : $this->mptt->parent()->page;
+		return ($this->mptt->is_root())? $this : ORM::factory('Page_Version', array('page_id' => $this->mptt->parent_id));
 	}
 
 	/**

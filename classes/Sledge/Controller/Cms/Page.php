@@ -141,7 +141,7 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 		if ($this->request->post('parent_id') !== NULL AND $this->request->post('template_id') !== NULL)
 		{
 			// Find the parent page.
-			$parent = ORM::factory('Page', $this->request->post('parent_id'));
+			$parent = ORM::factory('Page_Version', array('page_id' => $this->request->post('parent_id')));
 
 			// Check for add permissions on the parent page.
 			if ( ! $this->auth->logged_in('add_page', $parent))
@@ -158,19 +158,18 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 			}
 
 			// Create a new page object.
-			$page = ORM::factory('Page');
-			$page->visible = FALSE;
+			$page = ORM::factory('Page_Version');
+			$page->page_id = DB::select(array(DB::expr('max(page_id) + 1'), 'page_id'))->from('page_versions')->execute()->get('page_id');
 			$page->title = 'Untitled';
 			$page->visible_in_leftnav = $parent->children_visible_in_leftnav;
 			$page->visible_in_leftnav_cms = $parent->children_visible_in_leftnav_cms;
 			$page->children_visible_in_leftnav = $parent->children_visible_in_leftnav;
 			$page->children_visible_in_leftnav_cms = $parent->children_visible_in_leftnav_cms;
-			$page->visible_from = $_SERVER['REQUEST_TIME'];
 			$page->template_id = $template;
 			$page->save();
 
 			// Add to the tree.
-			$page->mptt->id = $page->id;
+			$page->mptt->id = $page->page_id;
 
 			// Add the page to the correct place in the tree according the parent's child ordering policy.
 			$parent->add_child($page);
