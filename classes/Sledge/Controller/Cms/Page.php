@@ -138,61 +138,13 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 	 */
 	public function action_add()
 	{
-		if ($this->request->post('parent_id') !== NULL AND $this->request->post('template_id') !== NULL)
+		// If no parent page ID or template ID has been given show a form to selected the parent page and template.
+		if ($this->request->post('parent_id') == NULL OR $this->request->post('template_id') == NULL)
 		{
-			// Find the parent page.
-			$parent = ORM::factory('Page_Version', array('page_id' => $this->request->post('parent_id')));
-
-			// Check for add permissions on the parent page.
-			if ( ! $this->auth->logged_in('add_page', $parent))
-			{
-				throw new HTTP_Exception_403;
-			}
-
-			// Which template to use?
-			$template = $this->request->post('template_id');
-			if ( ! $template)
-			{
-				// Inherit from parent.
-				$template = ($parent->default_child_template_id != 0)? $parent->default_child_template_id : $parent->template_id;
-			}
-
-			// Create a new page object.
-			$page = ORM::factory('Page_Version');
-			$page->page_id = DB::select(array(DB::expr('max(page_id) + 1'), 'page_id'))->from('page_versions')->execute()->get('page_id');
-			$page->title = 'Untitled';
-			$page->visible_in_leftnav = $parent->children_visible_in_leftnav;
-			$page->visible_in_leftnav_cms = $parent->children_visible_in_leftnav_cms;
-			$page->children_visible_in_leftnav = $parent->children_visible_in_leftnav;
-			$page->children_visible_in_leftnav_cms = $parent->children_visible_in_leftnav_cms;
-			$page->template_id = $template;
-			$page->save();
-
-			// Add to the tree.
-			$page->mptt->id = $page->page_id;
-
-			// Add the page to the correct place in the tree according the parent's child ordering policy.
-			$parent->add_child($page);
-
-			// Save the page.
-			$page->save();
-
-			// URI needs to be generated after the MPTT is set up.
-			$prefix = ($parent->default_child_link_prefix)? $parent->default_child_link_prefix : $parent->primary_link();
-			$uri = URL::generate($prefix, $page->title);
-
-			// Add the URI as the primary URI for this page.
-			Request::factory('cms/page/uri/primary/' . $page->pk())->post(array('uri' => $uri))->execute();
-
-			// Logging.
-			Sledge::log("Added a new page under " . $parent->title, "Page ID: " . $page->id);
-
-			$this->response->body(URL::site($uri));
-		}
-		else
-		{
-			// Work out what the default template should be.
-			// Priority is the parent page's default_child_template_id, then the grandparent's default_grandchild_template_id, then the parent page template id.
+			// Work out which template in the select box should be selected.
+			// Priority is the parent page's default_child_template_id
+			// then the grandparent's default_grandchild_template_id
+			// then the parent page template id.
 			if ($this->page->default_child_template_id == 0)
 			{
 				$grandparent = $this->page->parent();
@@ -203,14 +155,77 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 				$default_template = $this->page->default_child_template_id;
 			}
 
+			// Get all the templates which exist in the DB.
+			$templates = ORM::factory('Template')
+				->where('visible', '=', TRUE)
+				->order_by('name', 'asc')
+				->find_all();
+
+			// Show the form for selecting the parent page and template.
 			$this->template = View::factory('sledge/editor/page/add', array(
-				'templates'		=>	ORM::factory('Template')
-					->where('visible', '=', TRUE)
-					->order_by('name', 'asc')
-					->find_all(),
+				'templates'		=>	$templates,
 				'page'			=>	$this->page,
 				'default_template'	=>	$default_template,
 			));
+		}
+		else
+		{
+			// Find the parent page.
+			$parent = ORM::factory('Page_Version', array(
+				'page_id' => $this->request->post('parent_id')
+			));
+
+			// Check for add permissions on the parent page.
+			if ( ! $this->auth->logged_in('add_page', $parent))
+			{
+				throw new HTTP_Exception_403;
+			}
+
+			// Create a new page object.
+			$page = ORM::factory('Page_Version');
+			$page->page_id = DB::select(array(DB::expr('max(page_id) + 1'), 'page_id'))->from('page_versions')->execute()->get('page_id');
+			$page->title = 'Untitled';
+			$page->template_id = $this->request->post('template_id');
+
+			// These settings are all inherited from the parent.
+			$page->visible_in_leftnav = $parent->children_visible_in_leftnav;
+			$page->visible_in_leftnav_cms = $parent->children_visible_in_leftnav_cms;
+			$page->children_visible_in_leftnav = $parent->children_visible_in_leftnav;
+			$page->children_visible_in_leftnav_cms = $parent->children_visible_in_leftnav_cms;
+
+			// Save the page.
+			$page->save();
+
+			// Set the ID for the page's record in the mptt table to the page_id
+			$page->mptt->id = $page->page_id;
+
+			// Add the page to the correct place in the tree according the parent's child ordering policy.
+			$parent->add_child($page);
+
+			// Save the page.
+			$page->save();
+
+			// Generate the link for the page.
+			// What is the prefix for the link? If a default default_chinl_link_prefix has been set for the parent then use that, otherwise use the parent's primary link.
+			$prefix = ($parent->default_child_link_prefix)? $parent->default_child_link_prefix : $parent->primary_link();
+
+			// Generate a link from the prefix and the page's title.
+			$link = URL::generate($prefix, $page->title);
+
+			// Add the link as the primary link for this page.
+			ORM::factory('Page_Link')
+				->values(array(
+					'location'		=>	$link,
+					'page_id'		=>	$page->page_id,
+					'is_primary'	=>	TRUE,
+				))
+				->create();
+
+			// Log the action.
+			Sledge::log("Added a new page under " . $parent->title, "Page ID: " . $page->id);
+
+			// Redirect the user to the new page.
+			$this->response->body(URL::site($link));
 		}
 	}
 

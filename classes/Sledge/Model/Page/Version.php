@@ -17,7 +17,7 @@ class Sledge_Model_Page_Version extends ORM_Taggable
 		'template'		=>	array('model' => 'Template', 'foreign_key' => 'template_id'),
 		'person'		=>	array('model' => 'Person', 'foreign_key' => 'audit_person'),
 		'image'		=>	array('model' => 'Asset', 'foreign_key' => 'feature_image_id'),
-		'mptt'		=>	array('model' => 'Page_MPTT', 'foreign_key' => 'id')
+		'mptt'		=>	array('model' => 'Page_MPTT', 'foreign_key' => 'page_id')
 	);
 
 	protected $_has_many = array(
@@ -153,7 +153,7 @@ class Sledge_Model_Page_Version extends ORM_Taggable
 	* @param Model_Page $page The new child page.
 	* @return Model_Page
 	*/
-	public function add_child(Model_Page $page)
+	public function add_child(Model_Version_Page $page)
 	{
 		// Get the child ordering policy column and direction.
 		list($column, $direction) = $this->child_ordering_policy();
@@ -163,7 +163,7 @@ class Sledge_Model_Page_Version extends ORM_Taggable
 			->join('page_versions', 'inner')
 			->on('page_versions.page_id', '=', 'page_mptt.id')
 			->join(array(
-				DB::select(array(DB::expr('min(id)'), 'id'), 'page_id')
+				DB::select(array(DB::expr('max(id)'), 'id'), 'page_id')
 					->from('page_versions')
 					->group_by('page_id'),
 				'pages'
