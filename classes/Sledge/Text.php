@@ -36,8 +36,8 @@ class Sledge_Text extends Twitter_Text
 			{
 				// Vimeo video
 				$id = str_replace("/", "", $url['path']);
-				
-					return "<iframe src='http://player.vimeo.com/video/$id' width='500' height='281' frameborder='0' webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>";			
+
+					return "<iframe src='http://player.vimeo.com/video/$id' width='500' height='281' frameborder='0' webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>";
 			}
 
 			return $matches[0];
@@ -55,17 +55,19 @@ class Sledge_Text extends Twitter_Text
 	{
 		// Image links in the form hoopdb://image/123
 		$text = preg_replace('|hoopdb://image/(\d+)|', Sledge_Asset::PATH . '$1/400', $text);
-		
+
 		// Fix internal page links.
-		$text = preg_replace_callback('|hoopdb://page/(\d+)|', 
+		$text = preg_replace_callback('|hoopdb://page/(\d+)|',
 			function ($match)
 			{
-				$p = ORM::factory('Page', $match[1]);
-				return $p->link();
-			}, 
-			$text 
+				return ORM::factory('Page_Version', array(
+					'page_id' => $match[1]
+				))
+				->link();
+			},
+			$text
 		);
-		
+
 		// Utoob video links in the form video:blahblahblah
 		// Setting default height and width needs to be improved - we don't want to have to do it for every text slot.
 		$config = Kohana::$config->load('config');
