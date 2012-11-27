@@ -354,8 +354,8 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 		if ($parent_id != $this->page->mptt->parent_id AND $parent_id != $this->page->id)
 		{
 			// Try and get the new parent page from the database.
-			$parent = ORM::factory('Page',array(
-				'parent_id' => $parent_id
+			$parent = ORM::factory('Page_Version', array(
+				'page_id' => $parent_id
 			));
 
 			// Does the new parent exist?
@@ -364,7 +364,7 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 				// Parent page exists, so reparent the page.
 
 				// Log the action.
-				Sledge::log("Moved page " . $this->page->title . " (ID: " . $this->page->id . ") to child of " . $this->page->title . "(ID: " . $this->page->id . ")");
+				Sledge::log("Moved page " . $this->page->title . " (ID: " . $this->page->page_id . ") to child of " . $this->page->title . "(ID: " . $this->page->page_id . ")");
 
 				// Move the page to be the last child of the new parent.
 				$this->page->mptt->move_to_last_child($parent_id);
@@ -381,34 +381,39 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 	}
 
 	/**
-	 * Update the page's published version.
+	 * Mark a particular page version as published.
 	 * Performs a permissions check to check that the user can perform a page publish.
-	 * With no version ID the current version is made the published version.
+	 * With no version ID the current version is published.
 	 * Or a version ID can be sent via $_GET['vid'] to make that version publishd.
 	 */
 	public function action_publish()
 	{
-		if ($this->auth->logged_in('publish_page', $this->page))
+		// Does the current user have the publish_page role for this page?
+		if ( ! $this->auth->logged_in('publish_page', $this->page))
 		{
-			DB::update('pages')
-				->set(array('published_vid' => $this->page->version->id))
-				->where('id', '=', $this->page->id)
-				->execute();
-
-			// Set the page version's published column to TRUE.
-			// Can't do this via the ORM as we don't want a new version to be created.
-			DB::update('page_versions')
-				->set(array('published' => TRUE))
-				->where('id', '=', $this->page->version->id)
-				->execute();
-
-			// Since we've just editied this version object directly we need to reload it to get the current data in the cache.
-			$this->page->reload();
-
-			Sledge::log("Published page " . $this->page->title . " (ID: " . $this->page->id . ")");
-
-			$this->template = View::factory("$this->_view_directory/status", array('page' => $this->page));
+			// Now, throw a 403.
+			throw new HTTP_Exception_403;
 		}
+
+		// Log the action.
+		Sledge::log("Published page " . $this->page->title . " (ID: " . $this->page->page_id . ")");
+
+		// Update the page version to make it published.
+		// Can't do this via the ORM as we don't want a new version to be created.
+		DB::update('page_versions')
+			->set(array(
+				'published_from' => $_SERVER['REQUEST_TIME'],
+			))
+			->where('id', '=', $this->page->id)
+			->execute();
+
+		// Since we've just edited this version object directly we need to reload it to get the current data in the cache.
+		$this->page->reload();
+
+		// Show the page status.
+		$this->template = View::factory("$this->_view_directory/status", array(
+			'page' => $this->page
+		));
 	}
 
 	/**
