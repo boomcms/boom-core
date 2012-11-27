@@ -13,9 +13,16 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 {
 	/**
 	*
-	* @var	Model_Page	Object representing the current page.
+	* @var	Model_Version_Page	Object representing the current page.
 	*/
 	protected $page;
+
+	/**
+	 * The directory where views used by this class are stored.
+	 *
+	 * @var	string
+	 */
+	protected $_view_directory = 'sledge/editor/page';
 
 	/**
 	 * Load the current page.
@@ -77,8 +84,8 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 		// Update the time that we were last active on this page.
 		// We use to ensure that people who closed their browser and wandered off don't appear as editing the page.
 		$us = ORM::factory('Person_Page', array(
-			'person_id' => $this->person->id,
-			'page_id'	=> $this->page->id,
+			'person_id'	=>	$this->person->id,
+			'page_id'		=>	$this->page->id,
 		));
 
 		// Are they known to be viewing this page?
@@ -134,7 +141,8 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 	 * parent_id		|	int		|	The ID of the page our new page should be created as a child of.
 	 * template_id		|	int		|	ID of the template to be used by the new page.
 	 *
-	 * @uses URL::generate()
+	 * @uses	URL::generate()
+	 * @uses	Model_Page::add_child()
 	 */
 	public function action_add()
 	{
@@ -162,7 +170,7 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 				->find_all();
 
 			// Show the form for selecting the parent page and template.
-			$this->template = View::factory('sledge/editor/page/add', array(
+			$this->template = View::factory("$this->_view_directory/add", array(
 				'templates'		=>	$templates,
 				'page'			=>	$this->page,
 				'default_template'	=>	$default_template,
@@ -234,7 +242,8 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 	 * This is a dual function controller. If requested via GET a confirmation dialogue is displayed.
 	 * If requested via POST the page is deleted using Model_Page::delete().
 	 *
-	 * @uses	Model_Page::delete()
+	 * @uses	Model_Version_Page::delete()
+	 * @uses	Model_Version_Page::parent();
 	 */
 	public function action_delete()
 	{
@@ -243,54 +252,72 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 			throw new HTTP_Exception_403;
 		}
 
-		if (Request::current()->method() === Request::POST)
+		if (Request::current()->method() === Request::GET)
 		{
-			Sledge::log("Deleted page " . $this->page->title . " (ID: " . $this->page->id . ")");
+			// Get request
+			// Show a confirmation dialogue warning that child pages will become inaccessible and asking whether to delete the children.
 
-			// Get the parent page. We'll redirect to this after.
-			$parent = $this->page->mptt->parent_id;
-			$parent = ORM::factory('Page', $parent);
-
-			// Are we deleting child pages?
-			$delete_children = ($this->request->post('with_children') == 1);
-
-			// Delete the page.
-			$this->page->delete($delete_children);
-
-			// Redirect to the parent page.
-			$this->response->body($parent->link());
-		}
-		else
-		{
+			// Get the page's MPTT values.
 			$mptt = $this->page->mptt;
 
-			/**
-			* Get the titles of this page's descendant pages to tell the user that these pages will disappear.
-			*/
+			// Prepare an array for the descendent page titles.
 			$titles = array();
 
+			// Does the page have children?
 			if ($mptt->has_children())
 			{
+				// Yes, the page has children, so get the titles of the descendent pages from the database.
 				$titles = DB::select('page_versions.title')
-					->from('pages')
-					->join('page_versions', 'inner')
-					->on("pages." . Page::join_column($this->page, $this->auth), '=', 'page_versions.id')
+					->from('page_versions')
+					->join(array(
+						DB::select(array(DB::expr('max(id)'), 'id'), 'page_id')
+							->from('page_versions')
+							->group_by('page_id'),
+						'pages'
+					))
+					->on('page_versions.page_id', '=', 'pages.page_id')
+					->on('page_versions.id', '=', 'pages.id')
 					->join('page_mptt', 'inner')
-					->on('page_mptt.id', '=', 'pages.id')
+					->on('page_mptt.id', '=', 'page_versions.page_id')
 					->where('scope', '=', $mptt->scope)
 					->where('lft', '>', $mptt->lft)
 					->where('rgt', '<', $mptt->rgt)
 					->order_by('title', 'asc')
 					->execute()
 					->as_array();
+
+				// Turn the results array into an array containing just the page titles.
 				$titles = Arr::pluck($titles, 'title');
 			}
 
-			$this->template = View::factory('sledge/editor/page/delete', array(
+			// Show the confirmation
+			$this->template = View::factory("$this->_view_directory/delete", array(
 				'count'	=>	count($titles),
 				'titles'	=>	$titles,
 				'page'	=>	$this->page,
 			));
+		}
+		else
+		{
+			// POST request.
+			// The confirmation dialogue has been displayed and the user has clicked the confirm button.
+			// So delete the page.
+
+			// Log the action.
+			Sledge::log("Deleted page " . $this->page->title . " (ID: " . $this->page->id . ")");
+
+			// Get the parent of the page which is being deleted.
+			// We'll redirect to this after.
+			$parent = $this->page->parent();
+
+			// Are we deleting child pages?
+			$with_children = ($this->request->post('with_children') == 1);
+
+			// Delete the page.
+			$this->page->delete($with_children);
+
+			// Redirect to the parent page.
+			$this->response->body($parent->link());
 		}
 	}
 
@@ -363,7 +390,7 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 
 			Sledge::log("Published page " . $this->page->title . " (ID: " . $this->page->id . ")");
 
-			$this->template = View::factory('sledge/editor/page/status', array('page' => $this->page));
+			$this->template = View::factory("$this->_view_directory/status", array('page' => $this->page));
 		}
 	}
 
@@ -397,7 +424,7 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 
 		$count = count($revisions);
 
-		$this->template = View::factory('sledge/editor/page/revisions', array(
+		$this->template = View::factory("$this->_view_directory/revisions", array(
 			'count'	=>	$count,
 			'revisions'	=>	$revisions,
 			'page'	=>	$this->page,
@@ -555,7 +582,7 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 				'reload'	=>	$reload,
 				'url'		=> $page->link(),
 				'vid'		=> $this->page->id,
-				'status'	=>	View::factory('sledge/editor/page/status', array('auth' => $this->auth, 'page' => $page))->render(),
+				'status'	=>	View::factory("$this->_view_directory/status", array('auth' => $this->auth, 'page' => $page))->render(),
 			)
 		));
 	}

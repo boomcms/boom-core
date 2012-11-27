@@ -301,29 +301,50 @@ class Sledge_Model_Page_Version extends ORM_Taggable
 	}
 
 	/**
-	* Delete a page.
-	* Ensures child pages are deleted and that the pages are deleted from the MPTT tree.
-	*
-	* @return ORM
-	*/
-	public function delete($children = FALSE)
+	 * Delete a page.
+	 *
+	 * Deleting a page involves three things:
+	 *	*	Sets the deleted flag on the page to true
+	 *	*	Deletes the page from the MPTT tree.
+	 *	*	If $with_children is true calls itself recursively to delete child pages
+	 *
+	 * @param	boolean	$with_children	Whether to delete the child pages as well.
+	 * @return	Model_Version_Page
+	 */
+	public function delete($with_children = FALSE)
 	{
+		// Can't delete a page which doesn't exist.
 		if ($this->loaded())
 		{
-			if ($children === TRUE)
+			// Delete the child pages as well?
+			if ($with_children === TRUE)
 			{
-				foreach ($this->mptt->children() as $p)
+				// Get the mptt values of the child pages.
+				foreach ($this->mptt->children() as $mptt)
 				{
-					$p->page->delete();
+					// Delete the page.
+					ORM::factory('Page_Version', array(
+						'page_id'	=>	$mptt->id,
+					))
+					->delete($with_children);
 				}
+
+				// Reload the MPTT values.
+				// When the MPTT record is deleted the gap is closed in the tree
+				// So if we don't reload the values after deleting children the gap will be closed incorrectly and the tree will get screwed up.
+				$this->mptt->reload();
 			}
 
-			$this->mptt->reload();
+			// Delete the page from the MPTT tree.
 			$this->mptt->delete();
 
+			// Flag the page as deleted.
 			$this->deleted = TRUE;
+
+			// Save the page.
 			$this->save();
 
+			// Return a cleared object.
 			return $this->clear();
 		}
 	}
