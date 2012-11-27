@@ -144,6 +144,12 @@ class Sledge_Model_Page_Version extends ORM_Taggable
 
 			$this->_cast_data = array();
 		}
+
+		// If the deleted flag has been set clear the object.
+		if ($this->deleted)
+		{
+			$this->clear();
+		}
 	}
 
 	/**
@@ -402,7 +408,7 @@ class Sledge_Model_Page_Version extends ORM_Taggable
 	 * If the current page is the root node then the current page is returned.
 	 * Otherwise a page object for the parent page is returned.
 	 *
-	 * @return 	Model_Page
+	 * @return 	Model_Version_Page
 	 */
 	public function parent()
 	{
