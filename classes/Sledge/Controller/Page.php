@@ -58,7 +58,7 @@ class Sledge_Controller_Page extends Sledge_Controller
 		// Enables viewing a previous version of a page.
 		if ($this->request->query('version') !== NULL AND $mode == 'cms')
 		{
-//			$this->page = ORM::factory('page_version', $this->request->query('version'));
+//			$this->page = ORM::factory('Page', $this->request->query('version'));
 		}
 
 
@@ -71,7 +71,7 @@ class Sledge_Controller_Page extends Sledge_Controller
 			}
 		}
 
-		$template = ($this->request->query('template'))? ORM::factory('Template', $this->request->query('template')) : $this->page->template;
+		$template = ($this->request->query('template'))? ORM::factory('Template', $this->request->query('template')) : $this->page->version()->template;
 
 		// If no template has been set or the template file doesn't exist then use the orange template.
 		$filename = ($template->loaded() AND Kohana::find_file('views', Sledge::TEMPLATE_DIR . $template->filename))? $template->filename : 'orange';
@@ -203,12 +203,12 @@ class Sledge_Controller_Page extends Sledge_Controller
 
 		foreach ($pages as & $page)
 		{
-			$p = ORM::factory('Page_Version', array('page_id' => $page->page_id));
+			$p = ORM::factory('Page', $page->id);
 
 			$page = array(
 				'title'			=>	html_entity_decode($p->title),
 				'link'			=>	$page->uri,
-				'guid'			=>	$page->uri,
+				'guid'		=>	$page->uri,
 				'description'	=>	strip_tags(Chunk::factory('text', 'standfirst', $p)->text()),
 				'pubDate'		=>	$p->visible_from,
 			);

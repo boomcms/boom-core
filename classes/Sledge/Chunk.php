@@ -184,7 +184,7 @@ abstract class Sledge_Chunk
 		elseif ($page === 0)
 		{
 			// 0 was given as the page - this signifies a 'global' chunk not assigned to any page.
-			$page = ORM::factory('Page_Version');
+			$page = ORM::factory('Page');
 		}
 
 		// The chunk is being cascaded down the tree so find the page that the chunk is actually assigned to.
@@ -331,7 +331,7 @@ abstract class Sledge_Chunk
 			Cache::instance()->set($cache_key, $page_id);
 		}
 
-		return ORM::factory('Page_Version', array('page_id' => $page_id));
+		return ORM::factory('Page', $page_id);
 	}
 
 	/**

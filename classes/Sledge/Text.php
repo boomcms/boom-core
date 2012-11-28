@@ -1,9 +1,10 @@
 <?php defined('SYSPATH') OR die('No direct script access.');
+
 /**
-* @package Sledge
-* @category Helpers
+ * @package Sledge
+ * @category Helpers
 */
-class Sledge_Text extends Twitter_Text
+class Sledge_Text extends Kohana_Text
 {
 	/**
 	 * Auto-embed youtube and similar videos.
@@ -60,10 +61,8 @@ class Sledge_Text extends Twitter_Text
 		$text = preg_replace_callback('|hoopdb://page/(\d+)|',
 			function ($match)
 			{
-				return ORM::factory('Page_Version', array(
-					'page_id' => $match[1]
-				))
-				->link();
+				return ORM::factory('Page', $match[1])
+					->link();
 			},
 			$text
 		);

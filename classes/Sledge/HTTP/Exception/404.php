@@ -21,7 +21,7 @@ class Sledge_HTTP_Exception_404 extends Kohana_HTTP_Exception_404
 		}
 
 		// Look for a page with '404' as the internal name.
-		$page = ORM::factory('Page_Version', array(
+		$page = ORM::factory('Page', array(
 			'internal_name'	=>	404,
 		));
 

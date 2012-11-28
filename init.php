@@ -83,7 +83,7 @@ Route::set('vanity', '_<link>', array(
 			// Turn the vanity URI into a page ID.
 			$page_id = base_convert($params['link'], 36, 10);
 
-			HTTP::redirect(ORM::factory('Page_Version', array('page_id' => $page_id))->link(), 302);
+			HTTP::redirect(ORM::factory('Page', $page_id)->link(), 302);
 			return FALSE;
 		}
 	);
@@ -112,7 +112,7 @@ Route::set('sledge', '<location>(.<action>)', array(
 				return FALSE;
 			}
 
-			$page = ORM::factory('Page_Version', array('page_id' => $page_link->page_id));
+			$page = ORM::factory('Page', $page_link->page_id);
 
 			if ($page->loaded())
 			{

@@ -90,7 +90,7 @@ class Sledge_Controller_Plugin_Page_Children extends Sledge_Controller
 			// Parent may be an object when this is an internal request - no point instantiating a new object when we already have one.
 			if ( ! is_object($this->parent))
 			{
-				$this->parent = ORM::factory('Page_Version', array('page_id' => $this->request->post('parent')));
+				$this->parent = ORM::factory('Page', $this->request->post('parent'));
 			}
 		}
 		elseif (Request::$current !== Request::$initial)
@@ -107,7 +107,7 @@ class Sledge_Controller_Plugin_Page_Children extends Sledge_Controller
 
 
 		// If a sort column is given then use it, otherwise use the parent page default child order column
-		list($column, $direction) = $this->parent->child_ordering_policy();
+		list($column, $direction) = $this->parent->children_ordering_policy();
 
 		if ($this->request->post('order'))
 		{
@@ -226,7 +226,7 @@ class Sledge_Controller_Plugin_Page_Children extends Sledge_Controller
 			// For HTML page lists get page objects for the template.
 			array_walk($pages, function(&$page)
 				{
-					$page = ORM::factory('Page_Version', array('page_id' => $page['page_id']));
+					$page = ORM::factory('Page', $page['page_id']);
 				}
 			);
 

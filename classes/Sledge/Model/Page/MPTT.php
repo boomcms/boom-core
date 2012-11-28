@@ -17,25 +17,14 @@ class Sledge_Model_Page_MPTT extends ORM_MPTT
 	* Properties to create relationships with Kohana's ORM
 	*/
 	protected $_table_name = 'page_mptt';
+	protected $_belongs_to = array('page' => array('foreign_key' => 'id'));
 	protected $_table_columns = array(
-		'id'	=>	'',
-		'lft'	=>	'',
-		'rgt'	=>	'',
+		'id'			=>	'',
+		'lft'			=>	'',
+		'rgt'			=>	'',
 		'parent_id'	=>	'',
-		'lvl'	=>	'',
-		'scope'	=>	'',
+		'lvl'			=>	'',
+		'scope'		=>	'',
 	);
 	protected $_reload_on_wakeup = TRUE;
-
-	/**
-	 * Get the related page
-	 *
-	 * @return	Model_Page
-	 */
-	public function page()
-	{
-		return ORM::factory('Page_Version', array(
-			'page_id'	=>	$this->id,
-		));
-	}
 }

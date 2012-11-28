@@ -58,11 +58,11 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 
 			if (isset($vid))
 			{
-				$this->page = ORM::factory('Page_Version', $vid);
+				$this->page = ORM::factory('Page', $vid);
 			}
 			else
 			{
-				$this->page = ORM::factory('Page_Version', array('page_id' => $page_id));
+				$this->page = ORM::factory('Page', $page_id);
 			}
 		}
 	}
@@ -115,9 +115,7 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 		else
 		{
 			// Find the parent page.
-			$parent = ORM::factory('Page_Version', array(
-				'page_id' => $this->request->post('parent_id')
-			));
+			$parent = ORM::factory('Page',  $this->request->post('parent_id'));
 
 			// Check for add permissions on the parent page.
 			if ( ! $this->auth->logged_in('add_page', $parent))
@@ -126,8 +124,8 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 			}
 
 			// Create a new page object.
-			$page = ORM::factory('Page_Version');
-			$page->page_id = DB::select(array(DB::expr('max(page_id) + 1'), 'page_id'))->from('page_versions')->execute()->get('page_id');
+			$page = ORM::factory('Page');
+			$page->id = DB::select(array(DB::expr('max(page_id) + 1'), 'page_id'))->from('page_versions')->execute()->get('page_id');
 			$page->title = 'Untitled';
 			$page->template_id = $this->request->post('template_id');
 
@@ -141,7 +139,7 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 			$page->save();
 
 			// Set the ID for the page's record in the mptt table to the page_id
-			$page->mptt->id = $page->page_id;
+			$page->mptt->id = $page->id;
 
 			// Add the page to the correct place in the tree according the parent's child ordering policy.
 			$parent->add_child($page);
@@ -160,7 +158,7 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 			ORM::factory('Page_Link')
 				->values(array(
 					'location'		=>	$link,
-					'page_id'		=>	$page->page_id,
+					'page_id'		=>	$page->id,
 					'is_primary'	=>	TRUE,
 				))
 				->create();
@@ -290,9 +288,7 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 		if ($parent_id != $this->page->mptt->parent_id AND $parent_id != $this->page->id)
 		{
 			// Try and get the new parent page from the database.
-			$parent = ORM::factory('Page_Version', array(
-				'page_id' => $parent_id
-			));
+			$parent = ORM::factory('Page', $parent_id);
 
 			// Does the new parent exist?
 			if ($parent->loaded())
@@ -372,7 +368,7 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 		// Turn the version IDs into ORM objects.
 		foreach ($revisions as & $revision)
 		{
-			$revision = ORM::factory('page_version', $revision['id']);
+			$revision = ORM::factory('Page', $revision['id']);
 		}
 
 		$count = count($revisions);

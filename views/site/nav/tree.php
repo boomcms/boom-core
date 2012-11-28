@@ -62,7 +62,7 @@
 				{
 					echo " class='hidden ui-helper-hidden'";
 				}
-				elseif ($node['child_ordering_policy'] & Model_Page::CHILD_ORDER_MANUAL && $node['page_id'] == $page->id)
+				elseif ($node['children_ordering_policy'] & Model_Page::CHILD_ORDER_MANUAL && $node['page_id'] == $page->id)
 				{
 					echo " class='sledge-sortable'";
 				}
