@@ -9,5 +9,3 @@ return array(
 	'leftnav'		=>	'plugin/tree/leftnav',
 	'mainnav'		=>	'plugin/tree/mainnav',
 );
-
-?>
