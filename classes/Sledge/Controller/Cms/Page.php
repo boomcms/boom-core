@@ -99,7 +99,7 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 				$default_template = $this->page->default_child_template_id;
 			}
 
-			// Get all the templates which exist in the DB.
+			// Get all the templates which exist in the DB, ordered alphabetically.
 			$templates = ORM::factory('Template')
 				->where('visible', '=', TRUE)
 				->order_by('name', 'asc')
