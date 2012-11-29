@@ -80,24 +80,24 @@ abstract class Sledge_Chunk
 	}
 
 	/**
-	* Displays the chunk when chunk data has been set.
-	*
-	* @return View
-	*/
+	 * Displays the chunk when chunk data has been set.
+	 *
+	 * @return View
+	 */
 	abstract protected function _show();
 
 	/**
-	* Displays default chunk HTML
-	*
-	* @return View
-	*/
+	 * Displays default chunk HTML
+	 *
+	 * @return View
+	 */
 	abstract protected function _show_default();
 
 	/**
-	* Sets wether the chunk should be editable.
-	*
-	* @param bool $value
-	*/
+	 * Sets wether the chunk should be editable.
+	 *
+	 * @param bool $value
+	 */
 	public function editable($value)
 	{
 		// Set the value of $_editable.
@@ -107,8 +107,8 @@ abstract class Sledge_Chunk
 	}
 
 	/**
-	* Attempts to get the chunk data from the cache, otherwise calls _execute to generate the cache.
-	*/
+	 * Attempts to get the chunk data from the cache, otherwise calls _execute to generate the cache.
+	 */
 	public function execute()
 	{
 		// If profiling is enabled then record how long it takes to generate this chunk.
@@ -242,10 +242,10 @@ abstract class Sledge_Chunk
 	}
 
 	/**
-	* Returns whether the chunk has any content.
-	*
-	* @return	bool
-	*/
+	 * Returns whether the chunk has any content.
+	 *
+	 * @return	bool
+	 */
 	abstract public function has_content();
 
 	/**
@@ -335,8 +335,8 @@ abstract class Sledge_Chunk
 	}
 
 	/**
-	* Getter / setter method for template parameters.
-	*/
+	 * Getter / setter method for template parameters.
+	 */
 	public function params($params = NULL)
 	{
 		if ($params === NULL)
@@ -351,20 +351,20 @@ abstract class Sledge_Chunk
 	}
 
 	/**
-	* Returns the target of the slot.
-	* Used for adding the cmsclasses.
-	*/
+	 * Returns the target of the slot.
+	 * Used for adding the cmsclasses.
+	 */
 	public function target()
 	{
 		return "0";
 	}
 
 	/**
-	* Set the template to display the chunk
-	*
-	* @param string $template The name of a view file.
-	* @return Chunk
-	*/
+	 * Set the template to display the chunk
+	 *
+	 * @param	string	$template	The name of a view file.
+	 * @return	Chunk
+	 */
 	public function template($template = NULL)
 	{
 		// Set the template filename.

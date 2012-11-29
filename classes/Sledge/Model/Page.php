@@ -11,8 +11,8 @@
 class Sledge_Model_Page extends ORM_Taggable
 {
 	/**
-	* Properties to create relationships with Kohana's ORM
-	*/
+	 * Properties to create relationships with Kohana's ORM
+	 */
 	protected $_belongs_to = array(
 		'mptt'		=>	array('model' => 'Page_MPTT', 'foreign_key' => 'id')
 	);
@@ -49,33 +49,33 @@ class Sledge_Model_Page extends ORM_Taggable
 	protected $_cache_columns = array('internal_name');
 
 	/**
-	* Child ordering policy value for manual
-	* @var integer
-	*/
+	 * Child ordering policy value for manual
+	 * @var	integer
+	 */
 	const CHILD_ORDER_MANUAL = 1;
 
 	/**
-	* Child ordering policy value for alphabetic
-	* @var integer
-	*/
+	 * Child ordering policy value for alphabetic
+	 * @var	integer
+	 */
 	const CHILD_ORDER_ALPHABETIC = 2;
 
 	/**
-	* Child ordering policy value for date
-	* @var integer
-	*/
+	 * Child ordering policy value for date
+	 * @var	integer
+	 */
 	const CHILD_ORDER_DATE = 4;
 
 	/**
-	* Child ordering policy for ascending.
-	* @var integer
-	*/
+	 * Child ordering policy for ascending.
+	 * @var	integer
+	 */
 	const CHILD_ORDER_ASC = 8;
 
 	/**
-	* Child ordering policy for descending.
-	* @var integer
-	*/
+	 * Child ordering policy for descending.
+	 * @var	integer
+	 */
 	const CHILD_ORDER_DESC = 16;
 
 	/**
@@ -86,28 +86,28 @@ class Sledge_Model_Page extends ORM_Taggable
 	protected $_thumbnail;
 
 	/**
-	* Holds the calculated primary URI
-	*
-	* @access private
-	* @var string
-	*/
+	 * Holds the calculated primary URI
+	 *
+	 * @access	private
+	 * @var		string
+	 */
 	private $_primary_link;
 
 	/**
-	* Cached result for self::link()
-	*
-	* @access private
-	* @var string
-	*/
+	 * Cached result for self::link()
+	 *
+	 * @access	private
+	 * @var		string
+	 */
 	private $_link;
 
 	/**
-	* Adds a new child page to this page's MPTT tree.
-	* Ensures that the child is added in the correct position according to this page's child ordering policy.
-	*
-	* @param Model_Page $page The new child page.
-	* @return Model_Page
-	*/
+	 * Adds a new child page to this page's MPTT tree.
+	 * Ensures that the child is added in the correct position according to this page's child ordering policy.
+	 *
+	 * @param	Model_Page	$page	The new child page.
+	 * @return	Model_Page
+	 */
 	public function add_child(Model_Version_Page $page)
 	{
 		// Get the child ordering policy column and direction.
@@ -279,10 +279,10 @@ class Sledge_Model_Page extends ORM_Taggable
 	}
 
 	/**
-	* Determine whether a published version exists for the page.
-	*
-	* @return bool
-	*/
+	 * Determine whether a published version exists for the page.
+	 *
+	 * @return	bool
+	 */
 	public function has_published_version()
 	{
 		return TRUE;
@@ -290,9 +290,9 @@ class Sledge_Model_Page extends ORM_Taggable
 	}
 
 	/**
-	* Checks that a page is published.
-	* @return boolean TRUE if it's published, FALSE if it isn't.
-	*/
+	 * Checks that a page is published.
+	 * @return	boolean
+	 */
 	public function is_published()
 	{
 		return TRUE;
@@ -336,11 +336,11 @@ class Sledge_Model_Page extends ORM_Taggable
 	}
 
 	/**
-	* Get the page's primary URI
-	* From the page's available URIs finds the one which is marked as the primary URI.
-	* @return string The RELATIVE primary URI of the page.
-	*
-	*/
+	 * Get the page's primary URI
+	 * From the page's available URIs finds the one which is marked as the primary URI.
+	 *
+	 * @return	string	The RELATIVE primary URI of the page.
+	 */
 	public function primary_link()
 	{
 		if ($this->_primary_link == NULL)
