@@ -112,7 +112,7 @@ Route::set('sledge', '<location>(.<action>)', array(
 				return FALSE;
 			}
 
-			$page = ORM::factory('Page', $page_link->page_id);
+			$page = $page_link->page;
 
 			if ($page->loaded())
 			{

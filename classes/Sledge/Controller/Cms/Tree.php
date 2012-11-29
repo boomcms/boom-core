@@ -15,7 +15,7 @@ class Sledge_Controller_Cms_Tree extends Kohana_Controller
 
 	public function before()
 	{
-		$this->_query = DB::select( array('pages.id', 'page_id'), 'v.children_ordering_policy', 'pages.visible', 'v.visible_in_leftnav', 'page_links.location', 'v.title', 'page_mptt.*')
+		$this->_query = DB::select( array('pages.id', 'page_id'), 'v.children_ordering_policy', 'pages.visible', 'v.visible_in_nav', 'page_links.location', 'v.title', 'page_mptt.*')
 					->from('pages')
 					->join('page_mptt')
 					->on('page_mptt.id', '=', 'pages.id')
@@ -50,7 +50,7 @@ class Sledge_Controller_Cms_Tree extends Kohana_Controller
 		{
 			$this->_query->join( array('page_versions', 'v'), 'inner')
 				  ->on('pages.active_vid', '=', 'v.id')
-				  ->where('v.visible_in_leftnav_cms', '=', TRUE);
+				  ->where('v.visible_in_nav_cms', '=', TRUE);
 		}
 		else
 		{
@@ -63,7 +63,7 @@ class Sledge_Controller_Cms_Tree extends Kohana_Controller
 				  ->or_where('v.visible_to', '=', 0)
 				  ->or_where_close()
 				  ->and_where_close()
-				  ->where('v.visible_in_leftnav', '=', TRUE)
+				  ->where('v.visible_in_nav', '=', TRUE)
 				  ->where('pages.published_vid', '!=', NULL)
 				  ->where('pages.visible', '=', TRUE);
 		}
@@ -82,7 +82,7 @@ class Sledge_Controller_Cms_Tree extends Kohana_Controller
 		{
 			$this->_query->join( array('page_versions', 'v'), 'inner')
 				  ->on('pages.active_vid', '=', 'v.id')
-				  ->where('v.visible_in_leftnav_cms', '=', TRUE);
+				  ->where('v.visible_in_nav_cms', '=', TRUE);
 		}
 		else
 		{
@@ -95,7 +95,7 @@ class Sledge_Controller_Cms_Tree extends Kohana_Controller
 				  ->or_where('v.visible_to', '=', 0)
 				  ->or_where_close()
 				  ->and_where_close()
-				  ->where('v.visible_in_leftnav', '=', TRUE)
+				  ->where('v.visible_in_nav', '=', TRUE)
 				  ->where('pages.published_vid', '!=', NULL)
 				  ->where('pages.visible', '=', TRUE);
 		}

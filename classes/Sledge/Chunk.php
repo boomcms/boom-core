@@ -191,7 +191,7 @@ abstract class Sledge_Chunk
 		$page = ($inherit === TRUE)? Chunk::inherit_from($type, $slotname, $page) : $page;
 
 		// Load the chunk
-		$chunk = Chunk::find($type, $slotname, $page, $inherit);
+		$chunk = Chunk::find($type, $slotname, $page->version(), $inherit);
 
 		// Should the chunk be editable?
 		// This can be changed to calling editable(), for instance if we want to make a chunk read only.
@@ -206,16 +206,16 @@ abstract class Sledge_Chunk
 	 *
 	 * @param	string		$type		Type of chunk, e.g. text, feature.
 	 * @param	string		$slotname	The name of the slot that the chunk belongs to.
-	 * @param	Model_Page_Version	$page_versions		The page version that the chunk belongs to.
+	 * @param	Model_Page_Version	$page_version	The page version that the chunk belongs to.
 	 * @return 	Chunk
 	 */
-	public static function find($type, $slotname, Model_Page_Version $page)
+	public static function find($type, $slotname, Model_Page_Version $version)
 	{
 		// Get the name of the model that we're looking.
 		// e.g. if type is text we want a chunk_text model
 		$model = (strpos($type, "Chunk_") === 0)? ucfirst($type) : "Chunk_" . ucfirst($type);
 
-		$version_id = $page->id;
+		$version_id = $version->id;
 		$version_id = (int) $version_id;
 
 		// Try and get it from the cache

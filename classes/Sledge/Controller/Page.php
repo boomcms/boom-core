@@ -6,7 +6,7 @@
  * 		http://test.com/page.<extension>
  * The actions in this class relate to the supported output formats e.g. action_jpeg outputs the page as a jpeg
  * The default format when none is given is html. When displaying a page as HTML the editor will also be loaded for editing the page if the user is logged in.
-  *
+ *
  * @package 	Sledge
  * @category 	Controllers
  * @author 	Rob Taylor
@@ -14,34 +14,81 @@
 class Sledge_Controller_Page extends Sledge_Controller
 {
 	/**
+	 * Whether the editor should be enabled
+	 * This is mainly used for rendering the page in HTML format where the editor toolbar will be inserted into the site HTML.
+	 * However it's also used for other formats to allow viewing a previous version of the page.
+	 *
+	 * This property is FALSE by default but will be set to TRUE in Sledge_Controller_Page::before() if the current user is allowed to edit this page and the editor is enabled (i.e. not in preview mode).
+	 *
+	 * @var	boolean
+	 */
+	protected $_editable = FALSE;
+
+	/**
 	 * @var	Model_Page	Which page is being displayed. Set in Controller_Site::before() from $this->request->param('page')
 	 *
 	 */
-	public $page;
+	protected $_page;
 
 	/**
-	 * Set the default template.
-	 * Used by Controller_Template to know which template to use.
-	 * @link http://kohanaframework.org/3.0/guide/kohana/tutorials/hello-world#that-was-good-but-we-can-do-better
-	 * @access public
-	 * @var string
+	 * The version of the page to be displayed.
+	 * This can be changed from the default version by setting a version ID in the query string.
+	 *
+	 * @var	Model_Page_Version
 	 */
-	public $template;
+	protected $_page_version;
 
 	/**
 	 * Set the page and options properties.
 	 */
 	public function before()
 	{
+		// Inherit from parent.
 		parent::before();
 
-		$this->page = $this->request->param('page');
+		// Assign the page we're viewing to Sledge_Controller_Page::$_page;
+		$this->_page = $this->request->param('page');
 
-		// Make the page available to views.
-		View::bind_global('page', $this->page);
-		View::bind_global('config', $this->config);
-		View::bind_global('person', $this->person);
-		View::bind_global('actual_person', $this->actual_person);
+		// Should the editor be enabled?
+		if (Editor::state() == Editor::EDIT AND $this->auth->logged_in('edit_page', $this->_page))
+		{
+			$this->_editable = TRUE;
+		}
+
+		// If the page shouldn't be editable then check that it's visible.
+		if ( ! $this->_editable)
+		{
+			if ( ! $this->_page->is_visible() OR (Editor::state() == Editor::PREVIEW_PUBLISHED AND ! $this->_page->is_published()))
+			{
+				throw new HTTP_Exception_404;
+			}
+		}
+
+		// If the editor is enabled and a version ID has been given in the query string display the specified version.
+		// Otherwise show the default version (most recent for editors, most recent published for site).
+		if ($this->_editable AND $this->request->query('version'))
+		{
+			$version = ORM::factory('Page_Version', $this->request->query('version'));
+
+			// Check that this version belongs to the current page.
+			if ($version->page_id != $this->_page->id)
+			{
+				// Page IDs don't match, throw a 500 error.
+				throw new HTTP_Exception_500;
+			}
+
+			// Set the version with the page.
+			$this->_page->version($version);
+		}
+
+		// Check that the page hasn't been deleted at this version.
+		if ($this->_page->version()->page_deleted)
+		{
+			throw new HTTP_Exception_404;
+		}
+
+		// Set some view global variables.
+		View::bind_global('page', $this->_page);
 		View::bind_global('auth', $this->auth);
 		View::bind_global('request', $this->request);
 	}
@@ -53,25 +100,7 @@ class Sledge_Controller_Page extends Sledge_Controller
 	 */
 	public function action_html()
 	{
-		$mode = (Editor::state() == Editor::EDIT AND $this->auth->logged_in('edit_page', $this->page))? 'cms' : 'site';
-
-		// Enables viewing a previous version of a page.
-		if ($this->request->query('version') !== NULL AND $mode == 'cms')
-		{
-//			$this->page = ORM::factory('Page', $this->request->query('version'));
-		}
-
-
-		// If they can't edit the page check that it's visible.
-		if ($mode == 'site' OR Editor::state() != Editor::EDIT)
-		{
-			if ( ! $this->page->is_visible() OR (Editor::state() == Editor::PREVIEW_PUBLISHED AND ! $this->page->is_published()))
-			{
-				throw new HTTP_Exception_404;
-			}
-		}
-
-		$template = ($this->request->query('template'))? ORM::factory('Template', $this->request->query('template')) : $this->page->version()->template;
+		$template = ($this->request->query('template'))? ORM::factory('Template', $this->request->query('template')) : $this->_page->version()->template;
 
 		// If no template has been set or the template file doesn't exist then use the orange template.
 		$filename = ($template->loaded() AND Kohana::find_file('views', Sledge::TEMPLATE_DIR . $template->filename))? $template->filename : 'orange';
@@ -106,14 +135,14 @@ class Sledge_Controller_Page extends Sledge_Controller
 		$this->response->headers('Content-Type', 'application/json');
 
 		$this->response->body(json_encode(array(
-			'id'			=>	$this->page->id,
-			'title'			=>	$this->page->title,
-			'visible'		=>	$this->page->visible,
-			'visible_to'	=>	$this->page->visible_to,
-			'visible_from'	=>	$this->page->visible_from,
-			'parent'		=>	$this->page->mptt->parent_id,
-			'bodycopy'		=>	Chunk::factory('text', 'bodycopy', $this->page)->text(),
-			'standfirst'	=>	Chunk::factory('text', 'standfirst', $this->page)->text(),
+			'id'			=>	$this->_page->id,
+			'title'			=>	$this->_page->title,
+			'visible'		=>	$this->_page->visible,
+			'visible_to'	=>	$this->_page->visible_to,
+			'visible_from'	=>	$this->_page->visible_from,
+			'parent'		=>	$this->_page->mptt->parent_id,
+			'bodycopy'	=>	Chunk::factory('text', 'bodycopy', $this->_page)->text(),
+			'standfirst'		=>	Chunk::factory('text', 'standfirst', $this->_page)->text(),
 		)));
 	}
 
@@ -128,7 +157,7 @@ class Sledge_Controller_Page extends Sledge_Controller
 		// Use the child page plugin to avoid code duplication.
 		$pages = Request::factory('plugin/page/children.json')
 				->post(array(
-					'parent'	=>	$this->page,
+					'parent'	=>	$this->_page,
 					'order'		=>	'visible_from',
 				))
 				->execute()
@@ -141,7 +170,7 @@ class Sledge_Controller_Page extends Sledge_Controller
 			$p = ORM::factory('Page', $page->id);
 
 			$page = array(
-				'title'			=>	html_entity_decode($p->title),
+				'title'			=>	html_entity_decode($p->version()->title),
 				'link'			=>	$page->uri,
 				'guid'		=>	$page->uri,
 				'description'	=>	strip_tags(Chunk::factory('text', 'standfirst', $p)->text()),
@@ -150,8 +179,8 @@ class Sledge_Controller_Page extends Sledge_Controller
 		}
 
 		$feed = Feed::create(array(
-				'title'	=>	$this->page->title,
-				'link'	=>	$this->page->link() . ".rss",
+				'title'	=>	$this->_page->title,
+				'link'	=>	$this->_page->link() . ".rss",
 			),
 			$pages
 		);

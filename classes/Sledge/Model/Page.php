@@ -14,7 +14,8 @@ class Sledge_Model_Page extends ORM_Taggable
 	 * Properties to create relationships with Kohana's ORM
 	 */
 	protected $_belongs_to = array(
-		'mptt'		=>	array('model' => 'Page_MPTT', 'foreign_key' => 'id')
+		'mptt'		=>	array('model' => 'Page_MPTT', 'foreign_key' => 'id'),
+		'version'		=>	array('model' => 'Page_Version'),
 	);
 
 	protected $_has_many = array(
@@ -25,10 +26,7 @@ class Sledge_Model_Page extends ORM_Taggable
 
 	protected $_table_columns = array(
 		'id'						=>	'',
-		'deleted'					=>	'',
-		'active_vid'				=>	'',
 		'sequence'					=>	'',
-		'published_vid'				=>	'',
 		'visible'					=>	'',
 		'visible_from'				=>	'',
 		'visible_to'				=>	'',
@@ -44,9 +42,18 @@ class Sledge_Model_Page extends ORM_Taggable
 		'children_ordering_policy'		=>	'',
 		'children_prompt_for_template'	=>	'',
 		'grandchild_template_id'		=>	'',
+		'keywords'				=>	'',
+		'description'				=>	'',
 	);
 
 	protected $_cache_columns = array('internal_name');
+
+	/**
+	 * A Model_Page_Version object which should be used with this page.
+	 *
+	 * @var	Model_Page_Version
+	 */
+	protected $_version;
 
 	/**
 	 * Child ordering policy value for manual
@@ -345,8 +352,9 @@ class Sledge_Model_Page extends ORM_Taggable
 	{
 		if ($this->_primary_link == NULL)
 		{
+			$cache = Cache::instance();
 			$cache_key = "primary_link_for_page:$this->id";
-			$this->_primary_link = $this->_cache->get($cache_key);
+			$this->_primary_link = $cache->get($cache_key);
 
 			if ($this->_primary_link === NULL)
 			{
@@ -358,7 +366,7 @@ class Sledge_Model_Page extends ORM_Taggable
 					->execute()
 					->get('location');
 
-				$this->_cache->set($cache_key, $this->_primary_link);
+				$cache->set($cache_key, $this->_primary_link);
 			}
 		}
 
@@ -447,8 +455,9 @@ class Sledge_Model_Page extends ORM_Taggable
 		// We don't have to worry about updating this cache - when the bodycopy is changed a new page version is created anyway.
 		// So once the thumbnail for a particular page version is cached the cache should never have to be changed.
 		$cache_key = 'thumbnail_for_page_version:' . $this->id;
+		$cache = Cache::instance();
 
-		if ( ! $asset_id = $this->_cache->get($cache_key))
+		if ( ! $asset_id = $cache->get($cache_key))
 		{
 			// Get the standfirst for this page version.
 			$chunk = Chunk::find('text', 'bodycopy', $this);
@@ -482,7 +491,7 @@ class Sledge_Model_Page extends ORM_Taggable
 			}
 
 			// Save it to cache.
-			$this->_cache->set($cache_key, $asset_id);
+			$cache->set($cache_key, $asset_id);
 		}
 
 		// Return a Model_Asset object for this asset ID.
@@ -490,14 +499,96 @@ class Sledge_Model_Page extends ORM_Taggable
 	}
 
 	/**
-	 * Gets the Model_Page_Version object for the current version of the page.
-	 * Will be the most recent version if logged in or the most recent published version for site visitors.
+	 * Returns the version which should be used for the page.
+	 * For CMS users the most recent version is used.
+	 * For site users the most recent published version is used.
 	 *
-	 * @return	Model_Page_Version
+	 * @uses		Model_Page::$_version
+	 * @return	Model_Version_Page
 	 */
-	public function version()
+	public function version($version = NULL)
 	{
-		// TODO: return most recent published version in site mode, just return the active version for now.
-		return ORM::factory('Page_Version', $this->active_vid);
+		if ($version !== NULL AND $version instanceof Model_Page_Version)
+		{
+			// Act as a setter.
+
+			// Check that the version belongs to this page.
+			if ($this->id === $version->page_id)
+			{
+				// Set the $_version property for the page.
+				$this->_version = $version;
+
+				// Return the current object.
+				return $this;
+			}
+		}
+
+		// Act as a getter.
+
+		// Has $this->_version been set?
+		if ($this->_version !== NULL)
+		{
+			// Yes it has, return it.
+			return $this->_version;
+		}
+
+		// No it hasn't, query the database for the right version to use.
+
+		// Start the query.
+		$query = ORM::factory('Page_Version')
+			->where('page_id', '=', $this->id);
+
+		if (Auth::instance()->logged_in())
+		{
+			// For logged in users get the version with the highest ID.
+			$query
+				->order_by('id', 'desc');
+		}
+		else
+		{
+			// For site users get the published version with the embargoed time that's most recent to the current time.
+			// Order by ID as well incase there's multiple versions with the same embargoed time.
+			$query
+				->where('published', '=', TRUE)
+				->where('embargoed_until', '<=', $_SERVER['REQUEST_TIME'])
+				->order_by('embargoed_until', 'desc')
+				->order_by('id', 'desc');
+		}
+
+		// Run the query and return the result.
+		return $this->_version = $query
+			->find();
+	}
+
+	/**
+	 * Loads a page with the relevant record from the page_versions table.
+	 * Logged in users get the most recent version (highest PK)
+	 * Logged out users get the version with the highest published_from time which is in the past.
+	 *
+	 * @return	Model_Page
+	 */
+	public function with_version()
+	{
+		// Build a subquery to get the ID of the current version.
+		$subquery = DB::select(array(DB::expr('max(id)'), 'id'), 'page_id')
+			->from('page_versions')
+			->group_by('page_id');
+
+		if ( ! Auth::instance()->logged_in())
+		{
+			// If the current user isn't logged in then restrict the results to versions which are currently live.
+			$subquery->where('published_from', '<=', $_SERVER['REQUEST_TIME']);
+		}
+
+		// Add the page_version columns to the select and create the necessary joins.
+		$this
+			->select('page_versions.*')
+			->join(array($subquery, 'current_version'))
+			->on($this->_table_name . "." . $this->_primary_key, '=', 'current_version.page_id')
+			->join(array('page_versions', 'version'), 'inner')
+			->on('current_version.id', '=', 'version.id');
+
+		// Return the current object.
+		return $this;
 	}
 }

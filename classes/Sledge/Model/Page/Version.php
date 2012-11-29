@@ -23,11 +23,13 @@ class Sledge_Model_Page_Version extends ORM
 		'page_id'			=>	'',
 		'template_id'		=>	'',
 		'title'				=>	'',
-		'keywords'		=>	'',
-		'description'		=>	'',
-		'created_by'		=>	'',
-		'created_time'		=>	'',
+		'edited_by'		=>	'',
+		'edited_time'		=>	'',
+		'page_deleted'		=>	'',
 		'feature_image_id'	=>	'',
+		'published'			=>	'',
+		'embargoed_until'	=>	'',
+		'stashed'			=>	'',
 	);
 
 	protected $_cache_columns = array('internal_name');

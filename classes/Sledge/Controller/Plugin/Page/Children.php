@@ -12,7 +12,7 @@
  * tag			|	A tag path if filtering by tag.
  * order			|	Which column to order by, can be title or visible_from.
  * direction		|	Which direction to sort in.
- * navigation		|	Whether to treat the page list as a navigation. This restricts results by the visible_in_leftnav and visible_in_leftnav_cms settings.
+ * navigation		|	Whether to treat the page list as a navigation. This restricts results by the visible_in_nav and visible_in_nav_cms settings.
  *
  * @package	Sledge
  * @category	Controllers
@@ -35,7 +35,7 @@ class Sledge_Controller_Plugin_Page_Children extends Sledge_Controller
 
 	/**
 	 *
-	 * @var boolean	Whether to filter the pages by leftnav visibility (i.e. on the visible_in_leftnav or visible_in_leftnav_cms columns).
+	 * @var boolean	Whether to filter the pages by leftnav visibility (i.e. on the visible_in_nav or visible_in_nav_cms columns).
 	 */
 	protected $nav = FALSE;
 
@@ -183,7 +183,7 @@ class Sledge_Controller_Plugin_Page_Children extends Sledge_Controller
 		// Set the select columns.
 		// This is done individually in each action because different output formats needs different columns
 		$results = $query
-			->select('page_versions.page_id', 'title', 'page_links.location')
+			->select('pages.id', 'title', 'page_links.location')
 			->select(array(DB::expr("visible_from <= " . $_SERVER['REQUEST_TIME'] . " and (visible_to >= " . $_SERVER['REQUEST_TIME'] . " or visible_to = 0)"), 'visible'))
 			->select(array(
 				DB::select(DB::expr('1'))
@@ -214,7 +214,7 @@ class Sledge_Controller_Plugin_Page_Children extends Sledge_Controller
 			list($query, $total) = $this->build_query();
 
 			$result = $query
-				->select('page_versions.page_id')
+				->select('pages.id')
 				->execute();
 
 			$count = $result
@@ -226,7 +226,7 @@ class Sledge_Controller_Plugin_Page_Children extends Sledge_Controller
 			// For HTML page lists get page objects for the template.
 			array_walk($pages, function(&$page)
 				{
-					$page = ORM::factory('Page', $page['page_id']);
+					$page = ORM::factory('Page', $page['id']);
 				}
 			);
 
@@ -240,7 +240,7 @@ class Sledge_Controller_Plugin_Page_Children extends Sledge_Controller
 			// Which template to use?
 			$template = ($this->request->post('template'))? $this->request->post('template') : "sledge/plugin/page/children";
 
-			$v = View::factory($template, array(
+			$view = View::factory($template, array(
 				'page'	=>	$this->parent,
 				'pages'	=>	$pages,
 			));
@@ -261,10 +261,10 @@ class Sledge_Controller_Plugin_Page_Children extends Sledge_Controller
 				));
 
 				// Add pagination values to template.
-				$v->set('pagination', $pagination);
+				$view->set('pagination', $pagination);
 			} // End pagination
 
-			echo $v;
+			echo $view;
 		}
 
 		// Update the cache.
@@ -286,13 +286,15 @@ class Sledge_Controller_Plugin_Page_Children extends Sledge_Controller
 	{
 		// Build the query.
 		$query = DB::select()
-			->from('page_versions')
+			->from('pages')
+			->join('page_versions', 'inner')
+			->on('pages.id', '=', 'page_versions.page_id')
 			->join('page_mptt', 'inner')
-			->on('page_versions.page_id', '=', 'page_mptt.id')
+			->on('pages.id', '=', 'page_mptt.id')
 			->join('page_links', 'inner')
-			->on('page_versions.page_id', '=', 'page_links.page_id')
-			->where('page_versions.deleted', '=', FALSE)
-			->where('page_mptt.parent_id', '=', $this->parent->page_id)
+			->on('pages.id', '=', 'page_links.page_id')
+			->where('page_versions.page_deleted', '=', FALSE)
+			->where('page_mptt.parent_id', '=', $this->parent->id)
 			->where('page_links.is_primary', '=', TRUE)
 			->order_by($this->sort_column, $this->sort_direction);
 
@@ -314,18 +316,17 @@ class Sledge_Controller_Plugin_Page_Children extends Sledge_Controller
 			// Get the most recent version for each page.
 			$query
 				->join(array(
-					DB::select(array(DB::expr('min(id)'), 'id'), 'page_id')
+					DB::select(array(DB::expr('max(id)'), 'id'))
 						->from('page_versions')
-						->group_by('page_id'),
-					'pages'
+						->where('page_id', '=', $this->page->id),
+					'current_version'
 				))
-				->on('page_versions.page_id', '=', 'pages.page_id')
-				->on('page_versions.id', '=', 'pages.id');
+				->on('page_versions.id', '=', 'current_version.id');
 
 			// Filtering by leftnav visibility?
 			if ($this->nav)
 			{
-				$query->where('visible_in_leftnav_cms', '=', TRUE);
+				$query->where('visible_in_nav_cms', '=', TRUE);
 			}
 		}
 		elseif ( ! $this->auth->logged_in() OR Editor::state() != Editor::EDIT)
@@ -333,18 +334,14 @@ class Sledge_Controller_Plugin_Page_Children extends Sledge_Controller
 			// Get the most recent published version for each page.
 			$query
 				->join(array(
-					DB::select(array(DB::expr('min(id)'), 'id'), 'page_id')
+					DB::select(array(DB::expr('max(id)'), 'id'))
 						->from('page_versions')
-						->where('published_from', '<=', $_SERVER['REQUEST_TIME'])
-						->and_where_open()
-							->where('published_to', '>=', $_SERVER['REQUEST_TIME'])
-							->or_where('published_to', '=', 0)
-						->and_where_close()
-						->group_by('page_id'),
-					'pages'
+						->where('page_id', '=', $this->page->id)
+						->where('embargoed_until', '<=', $_SERVER['REQUEST_TIME'])
+						->where('published', '=', TRUE),
+					'current_version'
 				))
-				->on('page_versions.page_id', '=', 'pages.page_id')
-				->on('page_versions.id', '=', 'pages.id');
+				->on('page_versions.id', '=', 'current_version.id');
 
 			$query
 				->where('visible_from', '<=', $_SERVER['REQUEST_TIME'])
@@ -355,7 +352,7 @@ class Sledge_Controller_Plugin_Page_Children extends Sledge_Controller
 
 			if ($this->nav)
 			{
-				$query->where('visible_in_leftnav', '=', TRUE);
+				$query->where('visible_in_nav', '=', TRUE);
 			}
 		}
 

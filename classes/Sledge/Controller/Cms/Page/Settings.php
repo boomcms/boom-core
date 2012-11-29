@@ -60,7 +60,7 @@ class Sledge_Controller_Cms_Page_Settings extends Controller_Cms_Page
 		if ($this->request->method() == Request::POST)
 		{
 			$this->update_inherited_columns(array(
-				'children_visible_in_leftnav', 'children_visible_in_leftnav_cms'
+				'children_visible_in_nav', 'children_visible_in_nav_cms'
 			));
 
 			$this->page->children_ordering_policy($this->request->post('children_ordering_policy'), $this->request->post('child_ordering_direction'));
@@ -73,8 +73,8 @@ class Sledge_Controller_Cms_Page_Settings extends Controller_Cms_Page
 			$this->page->save();
 
 			// Updated existing child pages with leftnav visibility or template.
-			if ($this->request->post('visible_in_leftnav_cascade') == 1 OR
-				$this->request->post('visible_in_leftnav_cms_cascase') == 1 OR
+			if ($this->request->post('visible_in_nav_cascade') == 1 OR
+				$this->request->post('visible_in_nav_cms_cascase') == 1 OR
 				$this->request->post('child_template_cascade') == 1
 			)
 			{
@@ -91,13 +91,13 @@ class Sledge_Controller_Cms_Page_Settings extends Controller_Cms_Page
 				{
 					$child = ORM::factory('Page', $child['id']);
 
-					if ($this->request->post('visible_in_leftnav_cascade') == 1)
+					if ($this->request->post('visible_in_nav_cascade') == 1)
 					{
-						$child->visible_in_leftnav = $this->page->children_visible_in_leftnav;
+						$child->visible_in_nav = $this->page->children_visible_in_nav;
 					}
-					if ($this->request->post('visible_in_leftnav_cms_cascade') == 1)
+					if ($this->request->post('visible_in_nav_cms_cascade') == 1)
 					{
-						$child->visible_in_leftnav_cms = $this->page->children_visible_in_leftnav_cms;
+						$child->visible_in_nav_cms = $this->page->children_visible_in_nav_cms;
 					}
 					if ($this->request->post('child_template_cascade') == 1)
 					{
@@ -165,7 +165,7 @@ class Sledge_Controller_Cms_Page_Settings extends Controller_Cms_Page
 			}
 
 			$this->update_inherited_columns(array(
-				'template_id', 'visible_in_leftnav', 'visible_in_leftnav_cms'
+				'template_id', 'visible_in_nav', 'visible_in_nav_cms'
 			));
 
 			// Make the browser reload the page if the template has been changed.
@@ -196,7 +196,7 @@ class Sledge_Controller_Cms_Page_Settings extends Controller_Cms_Page
 		if ($this->request->method() == Request::POST)
 		{
 			$this->update_columns(array(
-				'description', 'keywords', 'indexed', 'hidden_from_search_results'
+				'description', 'keywords', 'indexed', 'internal_indexing'
 			));
 
 			$this->page->save();

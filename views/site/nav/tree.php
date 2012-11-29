@@ -44,7 +44,7 @@
 			{
 				echo " class='leftnav-page-invisible'";
 			}
-			else if ($node['visible_in_leftnav'] == false)
+			else if ($node['visible_in_nav'] == false)
 			{
 				echo " style='color: #ff0000'";
 			}

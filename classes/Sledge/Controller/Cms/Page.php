@@ -130,10 +130,10 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 			$page->template_id = $this->request->post('template_id');
 
 			// These settings are all inherited from the parent.
-			$page->visible_in_leftnav = $parent->children_visible_in_leftnav;
-			$page->visible_in_leftnav_cms = $parent->children_visible_in_leftnav_cms;
-			$page->children_visible_in_leftnav = $parent->children_visible_in_leftnav;
-			$page->children_visible_in_leftnav_cms = $parent->children_visible_in_leftnav_cms;
+			$page->visible_in_nav = $parent->children_visible_in_nav;
+			$page->visible_in_nav_cms = $parent->children_visible_in_nav_cms;
+			$page->children_visible_in_nav = $parent->children_visible_in_nav;
+			$page->children_visible_in_nav_cms = $parent->children_visible_in_nav_cms;
 
 			// Save the page.
 			$page->save();

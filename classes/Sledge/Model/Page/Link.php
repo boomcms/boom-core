@@ -2,13 +2,14 @@
 
 /**
  *
-* @package	Sledge
-* @category	Models
-* @author	Rob Taylor
-* @copyright	Hoop Associates
-*/
+ * @package	Sledge
+ * @category	Models
+ * @author	Rob Taylor
+ * @copyright	Hoop Associates
+ */
 class Sledge_Model_Page_Link extends ORM
 {
+	protected $_belongs_to = array('page' => array('foreign_key' => 'page_id'));
 	protected $_table_columns = array(
 		'id'			=>	'',
 		'page_id'		=>	'',
