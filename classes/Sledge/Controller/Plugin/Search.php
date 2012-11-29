@@ -10,13 +10,13 @@
 class Sledge_Controller_Plugin_Search extends Kohana_Controller
 {
 	public function action_index()
-	{		
+	{
 		$q = $this->request->post('search') or $q = $this->request->query('search');
-		
+
 		if ($q)
 		{
 			$p = $this->request->post('page') or $p = $this->request->query('page') or $p = 1;
-			
+
 			if ( ! class_exists('SphinxClient'))
 			{
 				require "sphinxapi.php";
@@ -28,7 +28,7 @@ class Sledge_Controller_Plugin_Search extends Kohana_Controller
 			$sx->setGroupBy('page_id', SPH_GROUPBY_ATTR, "@relevance desc");
 
 			$index_name = Kohana::$config->load('instance')->db_name . "-page_text-";
-			$index_name .= ($this->auth->logged_in() AND Editor::state() == Editor::EDIT)? 'cms' : 'site';
+			$index_name .= (Auth::instance()->logged_in() AND Editor::state() == Editor::EDIT)? 'cms' : 'site';
 
 			$results = $sx->query($q, "$index_name, $index_name-delta");
 
@@ -61,7 +61,7 @@ class Sledge_Controller_Plugin_Search extends Kohana_Controller
 
 			$this->response->body($v);
 		}
-		
+
 	}
-	
+
 }
