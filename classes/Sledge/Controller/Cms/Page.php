@@ -485,7 +485,10 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 		 */
 		if ( ! $page->changed())
 		{
-			$page = $page->copy();
+			$values = $page->object();
+
+			$page = ORM::factory('Page')
+				->values($values);
 
 			// Don't copy the value of the published columns.
 			$page->published_from = $page->published_to = NULL;
