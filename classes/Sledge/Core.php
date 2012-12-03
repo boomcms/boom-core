@@ -3,10 +3,9 @@
 /**
 * Sledge helper methods
 *
-* @package Sledge
-* @category Base
-* @author Hoop Associates	www.thisishoop.com	mail@hoopassociates.co.uk
-* @copyright 2011, Hoop Associates
+* @package	Sledge
+* @author	Rob Taylor
+* @copyright	Hoop Associates
 *
 */
 class Sledge_Core
@@ -32,7 +31,7 @@ class Sledge_Core
 		// Save all the information to the database.
 		// We use a prepared statement here so that we can do INSERT DELAYED can help with performance.
 		// http://dev.mysql.com/doc/refman/5.0/en/insert-speed.html
-		$query = DB::query(Database::INSERT, "insert delayed into activities (remotehost, description, note, person_id, time) values (:remotehost, :activity, :note, :person, :time)")
+		$query = DB::query(Database::INSERT, "insert delayed into logs (remotehost, description, note, person_id, time) values (:remotehost, :activity, :note, :person, :time)")
 			->parameters(array(
 				':remotehost'	=>	$ip,
 				':activity'		=>	$activity,

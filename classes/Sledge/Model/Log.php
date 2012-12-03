@@ -9,7 +9,7 @@
 * @copyright	Hoop Associates
 *
 */
-class Sledge_Model_Activity extends ORM
+class Sledge_Model_Log extends ORM
 {
 	protected $_table_columns = array(
 		'id'			=>	'',
