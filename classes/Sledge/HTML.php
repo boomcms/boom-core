@@ -3,38 +3,6 @@
 abstract class Sledge_HTML extends Kohana_HTML
 {
 	/**
-	 * This replaces Kohana's HTML::attributes function to improve performance.
-	 * Kohana's function sorts the attributes which is unnecessary and causes a performance hit.
-	 */
-	public static function attributes(array $attributes = NULL)
-	{
-	    if (empty($attributes))
-	        return '';
-	
-		$compiled = '';
-	
-	    foreach ($attributes as $key => $value)
-	    {
-	        if ($value === NULL)
-	        {
-	            // Skip attributes that have NULL values
-	            continue;
-	        }
-	
-	        if (is_int($key))
-	        {
-	            // Assume non-associative keys are mirrored attributes
-	            $key = $value;
-	        }
-	
-	        // Add the attribute value
-	        $compiled .= ' ' . $key . '="' . HTML::chars($value) . '"';
-	    }
-	
-	    return $compiled;
-	}
-
-	/**
 	 * This adds the necessary classes to chunk HTML for them to be picked up by the JS editor.
 	 * i.e. it makes chunks editable.
 	 *
@@ -49,11 +17,11 @@ abstract class Sledge_HTML extends Kohana_HTML
 	{
 		$html = trim( (string) $html);
 
-		$cmsclasses = "{" . 
-			$type . " " . 
-			$slotname . " " . 
-			$target . " " . 
-			$template . " " . 
+		$cmsclasses = "{" .
+			$type . " " .
+			$slotname . " " .
+			$target . " " .
+			$template . " " .
 			$page . " " .
 			(int) $has_content . "}";
 
@@ -78,7 +46,7 @@ abstract class Sledge_HTML extends Kohana_HTML
 			return preg_replace($pattern3, $replacement3, $html, 1);
 		}
 		else
-		{	
+		{
 			return $html;
 		}
 	}
