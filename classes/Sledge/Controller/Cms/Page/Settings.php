@@ -21,8 +21,19 @@ class Sledge_Controller_Cms_Page_Settings extends Controller_Cms_Page
 	 *
 	 * @var	Model_Page
 	 */
-	protected $parent;
+	protected $_parent;
 
+	/**
+	 *
+	 * @var	string	Directory where views used by this class are stored.
+	 */
+	protected $_view_directory = 'sledge/editor/page/settings';
+
+	/**
+	 * Check that the current user can edit the specified page before allowing access to any of these functions.
+	 *
+	 * @throws	HTTP_Exception_403
+	 */
 	public function before()
 	{
 		parent::before();
@@ -149,8 +160,31 @@ class Sledge_Controller_Cms_Page_Settings extends Controller_Cms_Page
 
 	public function action_information()
 	{
-		// There's nothing to change in the page information view so only display the view.
-		$this->template = 'information';
+		// Get the first version of the page.
+		// This is used to display the author and creation time of the page.
+		$first_version = $this->page
+			->first_version();
+
+		// Get a count of the number of versions for this page.
+		// Only count the versions which have been published.
+		$version_count = $this->page
+			->versions
+			->where('stashed', '=', FALSE)
+			->where('published', '=', TRUE)
+			->where('embargoed_until', '<=', $_SERVER['REQUEST_TIME'])
+			->count_all();
+
+		// Get the current version of the page to report when the page was last modified and by whom.
+		$current_version = $this->page
+			->version();
+
+		$this->template = View::factory("$this->_view_directory/information", array(
+			'created_by'		=>	$first_version->person->name,
+			'created_time'		=>	$first_version->edited_time,
+			'last_modified_by'	=>	$current_version->person->name,
+			'last_modified_time'	=>	$current_version->edited_time,
+			'version_count'		=>	$version_count,
+		));
 	}
 
 	public function action_publishing()
@@ -350,9 +384,9 @@ class Sledge_Controller_Cms_Page_Settings extends Controller_Cms_Page
 				if ($value == "")
 				{
 					// Lazy-load the page parent.
-					if ($this->parent === NULL)
+					if ($this->_parent === NULL)
 					{
-						$this->parent = $this->page->parent();
+						$this->_parent = $this->page->parent();
 					}
 
 					$this->page->$column = $parent->$column;
