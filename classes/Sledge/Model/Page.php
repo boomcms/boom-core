@@ -19,7 +19,7 @@ class Sledge_Model_Page extends ORM_Taggable
 	);
 
 	protected $_has_many = array(
-		'revisions'	=> array('model' => 'Page_Version', 'foreign_key' => 'page_id'),
+		'versions'	=> array('model' => 'Page_Version', 'foreign_key' => 'page_id'),
 		'links'	=> array('model' => 'Page_Link', 'foreign_key' => 'page_id'),
 		'chunks'	=> array('through' => 'pages_chunks'),
 	);
@@ -279,8 +279,8 @@ class Sledge_Model_Page extends ORM_Taggable
 	 */
 	public function first_version()
 	{
-		return ORM::factory('Page')
-			->where('page_id', '=', $this->id)
+		return $this
+			->versions
 			->order_by('id', 'asc')
 			->find();
 	}

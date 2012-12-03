@@ -8,10 +8,10 @@
  * The developer can just do Plugin::insert( name, options);
  *
  *
- * @package Sledge
- * @category Plugins
- * @author Hoop Associates	www.thisishoop.com	mail@hoopassociates.co.uk
- * @copyright 2012, Hoop Associates
+ * @package	Sledge
+ * @category	Plugins
+ * @author	Rob Taylor
+ * @copyright	Hoop Associates
  *
  */
 abstract class Sledge_Plugin
@@ -29,27 +29,35 @@ abstract class Sledge_Plugin
 			throw new Exception("Attempting to include unregistered plugin: " . $name);
 		}
 
-		// Prepare the request.
-		$request = Request::factory(Kohana::$config->load('plugins')->$name)->post($options);
+		// Execute the request and get the response
+		$response = Request::factory(
+				Kohana::$config
+					->load('plugins')
+					->$name
+			)
+			->post($options)
+			->execute();
 
-		// Excute the request and return the output.
-		try
+		// Was there an error?
+		if ($response->status() === 500)
 		{
-			return $request->execute();
-		}
-		catch (Exception $e)
-		{
-			// If the site is in production then don't allow a failure in a plugin to bring down the whole page, just log the error.
-			// If the environment isn't production then rethrow the error so that it can be debugged.
-			if (Kohana::$environment == Kohana::PRODUCTION OR Kohana::$environment == Kohana::STAGING)
+			// Log the error.
+			Log::instance()->add(Log::ERROR, $response->body());
+
+			// If the site is in development throw an exception so that the error can be debugged.
+			if (Kohana::$environment === Kohana::DEVELOPMENT)
 			{
-				Log::instance()->add(Log::ERROR, $e->getMessage() . "\n" . $e->getTraceAsString());
-			}
-			else
-			{
-				throw $e;
+				throw new Kohana_Exception($response->body());
 			}
 		}
+		else
+		{
+			// Return the response body.
+			return $response
+				->body();
+		}
+
+
 	}
 
 	/**

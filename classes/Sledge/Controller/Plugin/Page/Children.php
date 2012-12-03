@@ -318,7 +318,7 @@ class Sledge_Controller_Plugin_Page_Children extends Sledge_Controller
 				->join(array(
 					DB::select(array(DB::expr('max(id)'), 'id'))
 						->from('page_versions')
-						->where('page_id', '=', $this->page->id),
+						->where('page_id', '=', $this->parent->id),
 					'current_version'
 				))
 				->on('page_versions.id', '=', 'current_version.id');

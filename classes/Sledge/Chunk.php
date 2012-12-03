@@ -197,7 +197,7 @@ abstract class Sledge_Chunk
 		// This can be changed to calling editable(), for instance if we want to make a chunk read only.
 		$editable = (Editor::state() == Editor::EDIT AND Auth::instance()->logged_in("edit_slot_$slotname", $page));
 
-		return new $class($page, $chunk, $editable);
+		return new $class($page->version(), $chunk, $editable);
 	}
 
 	/**
@@ -294,11 +294,11 @@ abstract class Sledge_Chunk
 	 * Used when inheriting a chunk to determine which page a chunk should be inherited from.
 	 *
 	 * @param	string		$type		Slottype.
-	 * @param	string		$slotname	Name of the slot.
+	 * @param	string		$slotname		Name of the slot.
 	 * @param	Model_Page	$page		The page the chunk is appearing in, i.e. where the in the tree the chunk should be inherited to.
 	 * @return Model_Page
 	 */
-	public static function inherit_from($type, $slotname, Model_Page_Version $page)
+	public static function inherit_from($type, $slotname, Model_Page $page)
 	{
 		// Get the name of the model that we're looking.
 		// e.g. if type is text we want a chunk_text model
@@ -326,7 +326,7 @@ abstract class Sledge_Chunk
 				->limit(1)
 				->execute();
 
-			$page_id = (isset($page_id[0]))? $page_id[0]['id'] : 0;
+			$page_id = (isset($page_id[0]))? $page_id[0]['page_id'] : 0;
 
 			Cache::instance()->set($cache_key, $page_id);
 		}

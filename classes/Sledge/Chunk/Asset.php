@@ -29,7 +29,7 @@ class Sledge_Chunk_Asset extends Chunk
 		if (preg_match('/^\d+$/D', $this->_chunk->url))
 		{
 			$target = ORM::factory('Page', $this->_chunk->url);
-			$v->title = $target->title;
+			$v->title = $p->version()->title;
 			$v->url = $target->link();
 		}
 		else
