@@ -669,4 +669,16 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 			'page'	=>	$this->page
 		));
 	}
+	
+	/**
+	* WYSIWYG toolbar.
+	*
+	*/
+	public function action_text_toolbar()
+	{
+
+			$v = View::factory('sledge/editor/page/text_toolbar');
+
+			$this->response->body($v);
+	}
 } // End Sledge_Controller_Cms_Page
