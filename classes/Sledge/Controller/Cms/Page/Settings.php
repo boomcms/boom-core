@@ -58,7 +58,7 @@ class Sledge_Controller_Cms_Page_Settings extends Controller_Cms_Page
 			Request::factory('cms/page/save_slots/' . $this->page->id)->execute();
 
 			// Log the action.
-			Sledge::log("Saved admin settings for page " . $this->page->title . " (ID: " . $this->page->id . ")");
+			Sledge::log("Saved admin settings for page " . $this->page->version()->title . " (ID: " . $this->page->id . ")");
 		}
 		else
 		{
@@ -89,7 +89,7 @@ class Sledge_Controller_Cms_Page_Settings extends Controller_Cms_Page
 				$this->request->post('child_template_cascade') == 1
 			)
 			{
-				$child_template = ($this->page->children_template_id == 0)? $this->page->template_id : $this->page->children_template_id;
+				$child_template = ($this->page->children_template_id == 0)? $this->page->version()->template_id : $this->page->children_template_id;
 
 				$children = DB::select('page_mptt.id')
 					->from('page_mptt')
@@ -126,11 +126,11 @@ class Sledge_Controller_Cms_Page_Settings extends Controller_Cms_Page
 			Request::factory('cms/page/save_slots/' . $this->page->id)->execute();
 
 			// Log the action.
-			Sledge::log("Saved child page settings for page " . $this->page->title . " (ID: " . $this->page->id . ")");
+			Sledge::log("Saved child page settings for page " . $this->page->version()->title . " (ID: " . $this->page->id . ")");
 		}
 		else
 		{
-			$default_child_template = ($this->page->children_template_id != 0)? $this->page->children_template_id : $this->page->template_id;
+			$default_child_template = ($this->page->children_template_id != 0)? $this->page->children_template_id : $this->page->version()->template_id;
 			$default_grandchild_template = ($this->page->grandchild_template_id != 0)? $this->page->grandchild_template_id : $this->page->version()->template_id;
 
 			$this->template = View::factory('sledge/editor/page/settings/children');
@@ -150,7 +150,7 @@ class Sledge_Controller_Cms_Page_Settings extends Controller_Cms_Page
 			// Ensure slot data doesn't get lost.
 			Request::factory('cms/page/save_slots/' . $this->page->id)->execute();
 
-			Sledge::log("Saved feature image for page " . $this->page->title . " (ID: " . $this->page->id . ")");
+			Sledge::log("Saved feature image for page " . $this->page->version()->title . " (ID: " . $this->page->id . ")");
 		}
 		else
 		{
@@ -212,7 +212,7 @@ class Sledge_Controller_Cms_Page_Settings extends Controller_Cms_Page
 			Request::factory('cms/page/save_slots/' . $this->page->id)->execute();
 
 			// Log the action.
-			Sledge::log("Saved publishing settings for page " . $this->page->title . " (ID: " . $this->page->id . ")");
+			Sledge::log("Saved publishing settings for page " . $this->page->version()->title . " (ID: " . $this->page->id . ")");
 
 			if ($reload)
 			{
@@ -238,7 +238,7 @@ class Sledge_Controller_Cms_Page_Settings extends Controller_Cms_Page
 			// Ensure slot data doesn't get lost.
 			Request::factory('cms/page/save_slots/' . $this->page->id)->execute();
 
-			Sledge::log("Saved search settings for page " . $this->page->title . " (ID: " . $this->page->id . ")");
+			Sledge::log("Saved search settings for page " . $this->page->version()->title . " (ID: " . $this->page->id . ")");
 		}
 		else
 		{

@@ -92,7 +92,7 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 			if ($this->page->children_template_id == 0)
 			{
 				$grandparent = $this->page->parent();
-				$default_template = ($grandparent->grandchild_template_id != 0)? $grandparent->grandchild_template_id : $this->page->template_id;
+				$default_template = ($grandparent->grandchild_template_id != 0)? $grandparent->grandchild_template_id : $this->page->version()->template_id;
 			}
 			else
 			{
@@ -244,7 +244,7 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 			// So delete the page.
 
 			// Log the action.
-			Sledge::log("Deleted page " . $this->page->title . " (ID: " . $this->page->id . ")");
+			Sledge::log("Deleted page " . $this->page->version()->title . " (ID: " . $this->page->id . ")");
 
 			// Get the parent of the page which is being deleted.
 			// We'll redirect to this after.
@@ -302,7 +302,7 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 				// Parent page exists, so reparent the page.
 
 				// Log the action.
-				Sledge::log("Moved page " . $this->page->title . " (ID: " . $this->page->page_id . ") to child of " . $this->page->title . "(ID: " . $this->page->page_id . ")");
+				Sledge::log("Moved page " . $this->page->version()->title . " (ID: " . $this->page->page_id . ") to child of " . $this->page->version()->title . "(ID: " . $this->page->page_id . ")");
 
 				// Move the page to be the last child of the new parent.
 				$this->page->mptt->move_to_last_child($parent_id);
@@ -334,7 +334,7 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 		}
 
 		// Log the action.
-		Sledge::log("Published page " . $this->page->title . " (ID: " . $this->page->page_id . ")");
+		Sledge::log("Published page " . $this->page->version()->title . " (ID: " . $this->page->page_id . ")");
 
 		// Update the page version to make it published.
 		// Can't do this via the ORM as we don't want a new version to be created.

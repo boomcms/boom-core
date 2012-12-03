@@ -54,7 +54,7 @@ class Sledge_Controller_Cms_Page_Link extends Controller_Cms_Page
 					))
 					->create();
 
-				Sledge::log("Added secondary link $link to page " . $this->page->title . "(ID: " . $this->page->id . ")");
+				Sledge::log("Added secondary link $link to page " . $this->page->version()->title . "(ID: " . $this->page->id . ")");
 			}
 		}
 		else
