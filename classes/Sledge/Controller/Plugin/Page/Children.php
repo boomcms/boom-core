@@ -213,13 +213,16 @@ class Sledge_Controller_Plugin_Page_Children extends Sledge_Controller
 		{
 			list($query, $total) = $this->build_query();
 
+			// Execute the query.
 			$result = $query
 				->select('pages.id')
 				->execute();
 
+			// Get the number of results returned.
 			$count = $result
 				->count();
 
+			// Get the details of the pages matching the query.
 			$pages = $result
 				->as_array();
 
@@ -319,7 +322,7 @@ class Sledge_Controller_Plugin_Page_Children extends Sledge_Controller
 					DB::select(array(DB::expr('max(id)'), 'id'))
 						->from('page_versions')
 						->where('stashed', '=', FALSE)
-						->where('page_id', '=', $this->parent->id),
+						->group_by('page_id'),
 					'current_version'
 				))
 				->on('page_versions.id', '=', 'current_version.id');
@@ -363,7 +366,7 @@ class Sledge_Controller_Plugin_Page_Children extends Sledge_Controller
 		{
 			$query
 				->join('tags_applied', 'inner')
-				->on('tags_applied.object_id', '=', 'page_versions.id')
+				->on('tags_applied.object_id', '=', 'pages.id')
 				->join('tags', 'inner')
 				->on('tags_applied.tag_id', '=', 'tags.id')
 				->where('tags_applied.object_type', '=', $this->parent->get_object_type_id())
