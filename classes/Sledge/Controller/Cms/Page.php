@@ -86,17 +86,17 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 		if ($this->request->post('parent_id') == NULL OR $this->request->post('template_id') == NULL)
 		{
 			// Work out which template in the select box should be selected.
-			// Priority is the parent page's default_child_template_id
-			// then the grandparent's default_grandchild_template_id
+			// Priority is the parent page's children_template_id
+			// then the grandparent's grandchild_template_id
 			// then the parent page template id.
-			if ($this->page->default_child_template_id == 0)
+			if ($this->page->children_template_id == 0)
 			{
 				$grandparent = $this->page->parent();
-				$default_template = ($grandparent->default_grandchild_template_id != 0)? $grandparent->default_grandchild_template_id : $this->page->template_id;
+				$default_template = ($grandparent->grandchild_template_id != 0)? $grandparent->grandchild_template_id : $this->page->template_id;
 			}
 			else
 			{
-				$default_template = $this->page->default_child_template_id;
+				$default_template = $this->page->children_template_id;
 			}
 
 			// Get all the templates which exist in the DB, ordered alphabetically.
@@ -149,7 +149,7 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 
 			// Generate the link for the page.
 			// What is the prefix for the link? If a default default_chinl_link_prefix has been set for the parent then use that, otherwise use the parent's primary link.
-			$prefix = ($parent->default_child_link_prefix)? $parent->default_child_link_prefix : $parent->primary_link();
+			$prefix = ($parent->children_link_prefix)? $parent->children_link_prefix : $parent->primary_link();
 
 			// Generate a link from the prefix and the page's title.
 			$link = URL::generate($prefix, $page->title);
@@ -418,7 +418,7 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 
 			$parent = $page->parent();
 
-			$prefix = ($parent->default_child_link_prefix)? $parent->default_child_link_prefix : $parent->primary_link();
+			$prefix = ($parent->children_link_prefix)? $parent->children_link_prefix : $parent->primary_link();
 
 			// Does the link already exist?
 			$link = ORM::factory('Page_Link')

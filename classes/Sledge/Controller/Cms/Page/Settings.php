@@ -78,7 +78,7 @@ class Sledge_Controller_Cms_Page_Settings extends Controller_Cms_Page
 
 			// These settings aren't inherited
 			$this->update_columns(array(
-				'default_grandchild_template_id', 'default_child_template_id', 'default_child_link_prefix'
+				'grandchild_template_id', 'children_template_id', 'children_link_prefix'
 			));
 
 			$this->page->save();
@@ -89,7 +89,7 @@ class Sledge_Controller_Cms_Page_Settings extends Controller_Cms_Page
 				$this->request->post('child_template_cascade') == 1
 			)
 			{
-				$child_template = ($this->page->default_child_template_id == 0)? $this->page->template_id : $this->page->default_child_template_id;
+				$child_template = ($this->page->children_template_id == 0)? $this->page->template_id : $this->page->children_template_id;
 
 				$children = DB::select('page_mptt.id')
 					->from('page_mptt')
@@ -130,8 +130,8 @@ class Sledge_Controller_Cms_Page_Settings extends Controller_Cms_Page
 		}
 		else
 		{
-			$default_child_template = ($this->page->default_child_template_id != 0)? $this->page->default_child_template_id : $this->page->template_id;
-			$default_grandchild_template = ($this->page->default_grandchild_template_id != 0)? $this->page->default_grandchild_template_id : $this->page->template_id;
+			$default_child_template = ($this->page->children_template_id != 0)? $this->page->children_template_id : $this->page->template_id;
+			$default_grandchild_template = ($this->page->grandchild_template_id != 0)? $this->page->grandchild_template_id : $this->page->version()->template_id;
 
 			$this->template = View::factory('sledge/editor/page/settings/children');
 			$this->template->default_child_template = $default_child_template;
