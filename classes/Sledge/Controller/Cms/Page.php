@@ -348,38 +348,6 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 		));
 	}
 
-	/**
-	 * Display a list of page versions.
-	 *
-	 */
-	public function action_revisions()
-	{
-		// Get all revisions back to the last published version, then all published versions before that.
-		$revisions = DB::select('page_versions.id')
-			->from('page_versions')
-			->where('page_id', '=', $this->page->page_id)
-			->and_where_open()
-			->where('id', '>=', $this->page->published_vid)
-			->or_where('published', '=', TRUE)
-			->and_where_close()
-			->execute()
-			->as_array();
-
-		// Turn the version IDs into ORM objects.
-		foreach ($revisions as & $revision)
-		{
-			$revision = ORM::factory('Page', $revision['id']);
-		}
-
-		$count = count($revisions);
-
-		$this->template = View::factory("$this->_view_directory/revisions", array(
-			'count'	=>	$count,
-			'revisions'	=>	$revisions,
-			'page'	=>	$this->page,
-		));
-	}
-
 	public function action_topbar()
 	{
 		// Log the current user as editing this page.
@@ -669,7 +637,7 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 			'page'	=>	$this->page
 		));
 	}
-	
+
 	/**
 	* WYSIWYG toolbar.
 	*
