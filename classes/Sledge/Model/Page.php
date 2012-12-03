@@ -460,7 +460,7 @@ class Sledge_Model_Page extends ORM_Taggable
 		if ( ! $asset_id = $cache->get($cache_key))
 		{
 			// Get the standfirst for this page version.
-			$chunk = Chunk::find('text', 'bodycopy', $this);
+			$chunk = Chunk::find('text', 'bodycopy', $this->version());
 
 			if ( ! $chunk->loaded())
 			{

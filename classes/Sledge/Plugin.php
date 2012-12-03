@@ -47,7 +47,8 @@ abstract class Sledge_Plugin
 			// If the site is in development throw an exception so that the error can be debugged.
 			if (Kohana::$environment === Kohana::DEVELOPMENT)
 			{
-				throw new Kohana_Exception($response->body());
+				return $response
+					->body();
 			}
 		}
 		else
@@ -56,8 +57,6 @@ abstract class Sledge_Plugin
 			return $response
 				->body();
 		}
-
-
 	}
 
 	/**
