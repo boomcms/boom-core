@@ -90,13 +90,4 @@ class Sledge_Text extends Kohana_Text
 		$text = preg_replace('|<(.*?)src=[\'"]' . Sledge_Asset::PATH . '(\d+)(.*?)[\'"](.*)>|', '<$1 src="hoopdb://image/$2"$4>', $text);
 		return $text;
 	}
-
-	/**
-	* Concatenates a count and a pluralised description.
-	* @uses Inflector::plural()
-	*/
-	public static function plural($count, $text)
-	{
-		return $count . " " . Inflector::plural($text, $count);
-	}
 }
