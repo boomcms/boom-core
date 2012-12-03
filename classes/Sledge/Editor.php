@@ -28,4 +28,30 @@ abstract class Sledge_Editor
 			return Session::instance()->set("editor_state", $state);
 		}
 	}
+
+	/**
+	 * The time to use for viewing live pages.
+	 * This allows for viewing pages as they were at a certain time in the page.
+	 * If no time has been set then the value of $_SERVER['REQUEST_TIME'] is used.
+	 *
+	 * @param	integer	$time	Used to set the live time, should be a unix timestamp.
+	 */
+	public static function live_time($time = NULL)
+	{
+		// The name of the session data key where the live time is stored.
+		$session_key = 'editor_live_time';
+
+		if ($time === NULL)
+		{
+			// Act as a getter.
+			return Session::instance()
+				->get($session_key, $_SERVER['REQUEST_TIME']);
+		}
+		else
+		{
+			// Set the time that should be used for viewing pages.
+			return Session::instance()
+				->get($session_key, $time);
+		}
+	}
 }

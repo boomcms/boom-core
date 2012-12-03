@@ -171,7 +171,7 @@ class Sledge_Controller_Cms_Page_Settings extends Controller_Cms_Page
 			->versions
 			->where('stashed', '=', FALSE)
 			->where('published', '=', TRUE)
-			->where('embargoed_until', '<=', $_SERVER['REQUEST_TIME'])
+			->where('embargoed_until', '<=', Editor::live_time())
 			->count_all();
 
 		// Get the current version of the page to report when the page was last modified and by whom.

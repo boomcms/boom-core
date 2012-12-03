@@ -303,12 +303,12 @@ class Sledge_Model_Page extends ORM_Taggable
 	public function is_published()
 	{
 		return TRUE;
-		return ($this->published_from <= $_SERVER['REQUEST_TIME'] AND ($this->published_to >= $_SERVER['REQUEST_TIME'] OR $this->published_to == 0));
+		return ($this->published_from <= Editor::live_time() AND ($this->published_to >= Editor::live_time() OR $this->published_to == 0));
 	}
 
 	public function is_visible()
 	{
-		return ($this->visible AND $this->visible_from <= $_SERVER['REQUEST_TIME'] AND ($this->visible_to >= $_SERVER['REQUEST_TIME'] OR $this->visible_to == 0));
+		return ($this->visible AND $this->visible_from <= Editor::live_time() AND ($this->visible_to >= Editor::live_time() OR $this->visible_to == 0));
 	}
 
 	/**
@@ -481,7 +481,7 @@ class Sledge_Model_Page extends ORM_Taggable
 				// If the current user isn't logged in then make sure it's a published asset.
 				if ( ! Auth::instance()->logged_in())
 				{
-					$query->where('assets.visible_from', '<=', $_SERVER['REQUEST_TIME'])
+					$query->where('assets.visible_from', '<=', Editor::live_time())
 						->where('status', '=', Model_Asset::STATUS_PUBLISHED);
 				}
 
@@ -550,7 +550,7 @@ class Sledge_Model_Page extends ORM_Taggable
 			// Order by ID as well incase there's multiple versions with the same embargoed time.
 			$query
 				->where('published', '=', TRUE)
-				->where('embargoed_until', '<=', $_SERVER['REQUEST_TIME'])
+				->where('embargoed_until', '<=', Editor::live_time())
 				->order_by('embargoed_until', 'desc')
 				->order_by('id', 'desc');
 		}
@@ -577,7 +577,7 @@ class Sledge_Model_Page extends ORM_Taggable
 		if ( ! Auth::instance()->logged_in())
 		{
 			// If the current user isn't logged in then restrict the results to versions which are currently live.
-			$subquery->where('published_from', '<=', $_SERVER['REQUEST_TIME']);
+			$subquery->where('published_from', '<=', Editor::live_time());
 		}
 
 		// Add the page_version columns to the select and create the necessary joins.
