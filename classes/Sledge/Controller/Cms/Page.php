@@ -377,7 +377,6 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 
 		// Show the editor topbar
 		$this->template = View::factory('sledge/editor/iframe');
-		View::bind_global('config', $this->config);
 		View::bind_global('page', $this->page);
 	}
 

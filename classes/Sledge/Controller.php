@@ -1,75 +1,52 @@
 <?php defined('SYSPATH') OR die('No direct script access.');
 
 /**
-* Sledge base controller.
-* Contains components common to site and cms and controllers.
-* @package Sledge
-* @category Controllers
-* @author Hoop Associates	www.thisishoop.com	mail@hoopassociates.co.uk
-* @copyright 2011, Hoop Associates
-*/
-class Sledge_Controller extends Kohana_Controller
+ * Sledge base controller.
+ * Contains components common to site and cms and controllers.
+ *
+ * @package	Sledge
+ * @category	Controllers
+ * @author	Rob Taylor
+ * @copyright	Hoop Associates
+ */
+class Sledge_Controller extends Controller
 {
 	/**
-	* The current user.
-	* @access protected
-	* @var object
-	*/
+	 * The current user.
+	 *
+	 * @access	protected
+	 * @var		Model_Person
+	 */
 	protected $person;
 
 	/**
-	* The real current user.
-	* Used for Hoop users to pose as a different user.
-	* @access protected
-	* @var object
-	*/
+	 * The real current user.
+	 * Used for Hoop users to pose as a different user.
+	 *
+	 * @access	protected
+	 * @var		Model_Person
+	 */
 	protected $actual_person;
 
 	/**
-	* Holds the auth instance.
-	* @access protected
-	* @var object
-	*/
+	 * Holds the auth instance.
+	 *
+	 * @access	protected
+	 * @var		Auth
+	 */
 	protected $auth;
-
-	/**
-	* Holds the config variables.
-	* @access protected
-	* @var array
-	*/
-	protected $config;
 
 	protected $template;
 
 	public function before()
 	{
+		// Assign the auth instance to a property so that permissions can be checked within the controller without repeatd calles to Auth::instnace()
 		$this->auth = Auth::instance();
-		$this->config = Kohana::$config->load('config');
 
 		// Require the user to be logged in if the site isn't live.
 		if (Kohana::$environment != Kohana::PRODUCTION AND ! $this->auth->logged_in())
 		{
 			throw new HTTP_Exception_403;
-		}
-
-		// Force HTTPS when logged in.
-		if ($this->auth->logged_in() AND $this->request->is_initial() AND ! $this->request->protocol() == 'HTTPS')
-		{
-			$this->redirect(URL::site($this->request->detect_uri(), 'https'));
-		}
-
-		/** CSRF security check.
-		* If there is an input named 'csrf' in POST / GET then validate it.
-		* @link http://thisishoop3/index.php/guide/api/Security#token
-		*/
-		if ($this->request->post('csrf') OR $this->request->query('csrf'))
-		{
-			$token = ($this->request->method() === Request::POST)? $this->request->post('csrf') : $this->request->query('csrf');
-
-			if ( ! Security::check($token))
-			{
-				throw new HTTP_Exception_500;
-			}
 		}
 
 		// Who are we?
@@ -79,7 +56,7 @@ class Sledge_Controller extends Kohana_Controller
 
 	public function after()
 	{
-		if ( ! $this->response->body() AND $this->template instanceof View)
+		if ($this->template instanceof View AND ! $this->response->body())
 		{
 			parent::after();
 
@@ -90,17 +67,15 @@ class Sledge_Controller extends Kohana_Controller
 			View::bind_global('auth', $this->auth);
 
 			// Show the template.
-			$this->response->body($this->template);
+			$this->response
+				->body($this->template);
 		}
 
-		// Only cache by etag here if a cache-control header hasn't already been sent.
-		// If the header has already been sent then it's probably because the controller has handled it's own caching (e.g. the asset controller).
-		if ( ! $this->response->headers('Cache-Control') AND $this->response->body())
+		// Make cache private if the user is logged in.
+		if ($this->auth->logged_in())
 		{
-			// Make the cache public for logged-out requests, private for CMS requests.
-			$cache = ($this->auth->logged_in())? 'private' : 'public';
-			$this->response->headers('Cache-Control', $cache);
-			// $this->response->check_cache(NULL, $this->request);
+			$this->response
+				->headers('Cache-Control', 'private');
 		}
 	}
 }

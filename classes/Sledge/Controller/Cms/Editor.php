@@ -135,7 +135,6 @@ class Sledge_Controller_Cms_Editor extends Sledge_Controller
 		$person_page->save();
 
 		// Set some global variables for the view.
-		View::bind_global('config', $this->config);
 		View::bind_global('page', $page);
 
 		// Show the editor topbar
