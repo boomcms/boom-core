@@ -14,12 +14,10 @@ class Sledge_Chunk_Linkset extends Chunk
 
 	protected function _show()
 	{
-		$v = View::factory("site/slots/linkset/$this->_template");
-
-		$v->title = $this->_chunk->title;
-		$v->links = $this->_chunk->links();
-
-		return $v;
+		return View::factory("site/slots/linkset/$this->_template", array(
+			'title'		=>	$this->_chunk->title,
+			'links'	=>	$this->_chunk->links->find_all(),
+		));
 	}
 
 	public function _show_default()

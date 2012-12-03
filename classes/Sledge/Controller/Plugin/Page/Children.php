@@ -318,6 +318,7 @@ class Sledge_Controller_Plugin_Page_Children extends Sledge_Controller
 				->join(array(
 					DB::select(array(DB::expr('max(id)'), 'id'))
 						->from('page_versions')
+						->where('stashed', '=', FALSE)
 						->where('page_id', '=', $this->parent->id),
 					'current_version'
 				))
@@ -338,6 +339,7 @@ class Sledge_Controller_Plugin_Page_Children extends Sledge_Controller
 						->from('page_versions')
 						->where('page_id', '=', $this->page->id)
 						->where('embargoed_until', '<=', $_SERVER['REQUEST_TIME'])
+						->where('stashed', '=', FALSE)
 						->where('published', '=', TRUE),
 					'current_version'
 				))
