@@ -69,7 +69,7 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 
 	/**
 	 * Add a new page to the CMS.
-	 * If not parent ID and template ID are set a template allowing the user to set these values is displayed.
+	 * If no parent ID and template ID are set a template allowing the user to set these values is displayed.
 	 *
 	 * **Accepted POST variables:**
 	 * Name			|	Type		|	Description
@@ -123,20 +123,29 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 				throw new HTTP_Exception_403;
 			}
 
-			// Create a new page object.
-			$page = ORM::factory('Page');
-			$page->id = DB::select(array(DB::expr('max(page_id) + 1'), 'page_id'))->from('page_versions')->execute()->get('page_id');
-			$page->title = 'Untitled';
-			$page->template_id = $this->request->post('template_id');
+			// Create the new page with nav values inherited from the parent.
+			$page = ORM::factory('Page')
+				->values(array(
+					'visible_in_nav'				=>	$parent->children_visible_in_nav,
+					'visible_in_nav_cms'			=>	$parent->children_visible_in_nav_cms,
+					'children_visible_in_nav'		=>	$parent->children_visible_in_nav,
+					'children_visible_in_nav_cms'	=>	$parent->children_visible_in_nav_cms
+				))
+				->create();
 
-			// These settings are all inherited from the parent.
-			$page->visible_in_nav = $parent->children_visible_in_nav;
-			$page->visible_in_nav_cms = $parent->children_visible_in_nav_cms;
-			$page->children_visible_in_nav = $parent->children_visible_in_nav;
-			$page->children_visible_in_nav_cms = $parent->children_visible_in_nav_cms;
+			// What the title of the page will be.
+			$title = 'Untitled';
 
-			// Save the page.
-			$page->save();
+			// Create a version for the page.
+			ORM::factory('Page_Version')
+				->values(array(
+					'edited_by'	=>	$this->person->id,
+					'edited_time'	=>	time(),
+					'page_id'		=>	$page->id,
+					'template_id'	=>	$this->request->post('template_id'),
+					'title'			=>	$title,
+				))
+				->create();
 
 			// Set the ID for the page's record in the mptt table to the page_id
 			$page->mptt->id = $page->id;
@@ -144,15 +153,12 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 			// Add the page to the correct place in the tree according the parent's child ordering policy.
 			$parent->add_child($page);
 
-			// Save the page.
-			$page->save();
-
 			// Generate the link for the page.
 			// What is the prefix for the link? If a default default_chinl_link_prefix has been set for the parent then use that, otherwise use the parent's primary link.
 			$prefix = ($parent->children_link_prefix)? $parent->children_link_prefix : $parent->primary_link();
 
 			// Generate a link from the prefix and the page's title.
-			$link = URL::generate($prefix, $page->title);
+			$link = URL::generate($prefix, $title);
 
 			// Add the link as the primary link for this page.
 			ORM::factory('Page_Link')
@@ -164,7 +170,7 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 				->create();
 
 			// Log the action.
-			Sledge::log("Added a new page under " . $parent->title, "Page ID: " . $page->id);
+			Sledge::log("Added a new page under " . $parent->version()->title, "Page ID: " . $page->id);
 
 			// Redirect the user to the new page.
 			$this->response->body(URL::site($link));

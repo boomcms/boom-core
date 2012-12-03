@@ -15,7 +15,6 @@ class Sledge_Model_Page extends ORM_Taggable
 	 */
 	protected $_belongs_to = array(
 		'mptt'		=>	array('model' => 'Page_MPTT', 'foreign_key' => 'id'),
-		'version'		=>	array('model' => 'Page_Version'),
 	);
 
 	protected $_has_many = array(
@@ -122,16 +121,8 @@ class Sledge_Model_Page extends ORM_Taggable
 
 		// Find the page_mptt record of the page which comes after this one.
 		$mptt = ORM::factory('page_mptt')
-			->join('page_versions', 'inner')
-			->on('page_versions.page_id', '=', 'page_mptt.id')
-			->join(array(
-				DB::select(array(DB::expr('max(id)'), 'id'), 'page_id')
-					->from('page_versions')
-					->group_by('page_id'),
-				'pages'
-			))
-			->on('page_versions.page_id', '=', 'pages.page_id')
-			->on('page_versions.id', '=', 'pages.id')
+			->join('pages', 'inner')
+			->on('pages.id', '=', 'page_mptt.id')
 			->where('page_mptt.parent_id', '=', $this->mptt->id)
 			->where($column, '>', $page->$column)
 			->order_by($column, $direction)
