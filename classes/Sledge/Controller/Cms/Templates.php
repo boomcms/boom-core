@@ -99,14 +99,19 @@ class Sledge_Controller_Cms_Templates extends Sledge_Controller
 		$template_id = $this->request->param('id');
 
 		$pages = DB::select('page_versions.title', 'page_links.location')
-			->from('pages')
-			->join('page_versions', 'inner')
-			->on('pages.active_vid', '=', 'page_versions.id')
+			->from('page_versions')
+			->join(array(
+				DB::select(array(DB::expr('max(id)'), 'id'))
+					->from('page_versions')
+					->group_by('page_id'),
+				'current_version'
+			))
+			->on('page_versions.id', '=', 'current_version.id')
 			->join('page_links', 'inner')
-			->on('pages.id', '=', 'page_links.page_id')
+			->on('page_versions.page_id', '=', 'page_links.page_id')
 			->where('page_versions.template_id', '=', $template_id)
 			->where('is_primary', '=', TRUE)
-			->where('deleted', '=', FALSE)
+			->where('page_deleted', '=', FALSE)
 			->order_by('title', 'asc')
 			->execute();
 

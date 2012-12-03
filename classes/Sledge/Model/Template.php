@@ -47,16 +47,20 @@ class Sledge_Model_Template extends ORM
 			return 0;
 		}
 
-		$query = DB::select(array(DB::expr('count(*)'), 'pages'))
-			->from('pages')
-			->join('page_versions', 'inner')
-			->on('pages.active_vid', '=', 'page_versions.id')
+		// Query the database for the number of pages using this template and return the result.
+		return DB::select(array(DB::expr('count(*)'), 'pages'))
+			->from('page_versions')
+			->join(array(
+				DB::select(array(DB::expr('max(id)'), 'id'))
+					->from('page_versions')
+					->group_by('page_id'),
+				'current_version'
+			))
+			->on('page_versions.id', '=', 'current_version.id')
 			->where('template_id', '=', $this->id)
-			->where('deleted', '=', FALSE)
+			->where('page_deleted', '=', FALSE)
 			->execute()
-			->as_array();
-
-		return $query[0]['pages'];
+			->get('pages');
 	}
 
 	/**
