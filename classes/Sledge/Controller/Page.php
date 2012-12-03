@@ -31,14 +31,6 @@ class Sledge_Controller_Page extends Sledge_Controller
 	protected $_page;
 
 	/**
-	 * The version of the page to be displayed.
-	 * This can be changed from the default version by setting a version ID in the query string.
-	 *
-	 * @var	Model_Page_Version
-	 */
-	protected $_page_version;
-
-	/**
 	 * Set the page and options properties.
 	 */
 	public function before()
@@ -132,18 +124,18 @@ class Sledge_Controller_Page extends Sledge_Controller
 	 */
 	public function action_json()
 	{
-		$this->response->headers('Content-Type', 'application/json');
-
-		$this->response->body(json_encode(array(
-			'id'			=>	$this->_page->id,
-			'title'			=>	$this->_page->title,
-			'visible'		=>	$this->_page->visible,
-			'visible_to'	=>	$this->_page->visible_to,
-			'visible_from'	=>	$this->_page->visible_from,
-			'parent'		=>	$this->_page->mptt->parent_id,
-			'bodycopy'	=>	Chunk::factory('text', 'bodycopy', $this->_page)->text(),
-			'standfirst'		=>	Chunk::factory('text', 'standfirst', $this->_page)->text(),
-		)));
+		$this->response
+			->headers('Content-Type', 'application/json')
+			->body(json_encode(array(
+				'id'			=>	$this->_page->id,
+				'title'			=>	$this->_page->version()->title,
+				'visible'		=>	$this->_page->visible,
+				'visible_to'	=>	$this->_page->visible_to,
+				'visible_from'	=>	$this->_page->visible_from,
+				'parent'		=>	$this->_page->mptt->parent_id,
+				'bodycopy'	=>	Chunk::factory('text', 'bodycopy', $this->_page)->text(),
+				'standfirst'		=>	Chunk::factory('text', 'standfirst', $this->_page)->text(),
+			)));
 	}
 
 	/**
