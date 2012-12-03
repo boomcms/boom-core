@@ -390,10 +390,17 @@ class Sledge_Model_Page extends ORM_Taggable
 
 		// Find the children, sorting the database results by the column we want the children ordered by.
 		$children = ORM::factory('Page_MPTT')
-			->join('page', 'inner')
-			->on('page_mptt.id', '=', 'page.id')
-			->join('page_v', 'inner')
-			->on('page.active_vid', '=', 'page_v.id')
+			->join('pages', 'inner')
+			->on('page_mptt.id', '=', 'pages.id')
+			->join('page_versions', 'inner')
+			->on('pages.id', '=', 'page_versions.page_id')
+			->join(array(
+				DB::select(array('max(id)', 'id'), 'page_id')
+					->from('page_versions')
+					->group_by('page_id'),
+				'current_version'
+			))
+			->on('current_version.id', '=', 'page_versions.id')
 			->where('parent_id', '=', $this->id)
 			->order_by($column, $direction)
 			->find_all();
