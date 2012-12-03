@@ -53,22 +53,4 @@ class Sledge_URL extends Kohana_URL
 	{
 		return "http://www.gravatar.com/avatar/" . md5($email) . "?s=$size&d=" . urlencode($default);
 	}
-
-	/**
-	* This attempts to fix a (possibly intentional?) bug in Kohana.
-	* @link http://kohanaframework.org/3.2/guide/api/URL#site
-	* @link http://kohanaframework.org/3.2/guide/api/URL#base
-	*
-	* In the method declarations for URL::site() and URL::base() the default value for $index is TRUE in site but FALSE in base()
-	* This leads to inconsistencies, which this extension aims to fix.
-	*/
-	public static function site($uri = '', $protocol = NULL, $index = NULL)
-	{
-		if ($index === NULL)
-		{
-			$index = FALSE;
-		}
-
-		return parent::site($uri, $protocol, $index);
-	}
 }
