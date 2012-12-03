@@ -340,15 +340,14 @@ class Sledge_Controller_Plugin_Page_Children extends Sledge_Controller
 				->join(array(
 					DB::select(array(DB::expr('max(id)'), 'id'))
 						->from('page_versions')
-						->where('page_id', '=', $this->page->id)
 						->where('embargoed_until', '<=', Editor::live_time())
 						->where('stashed', '=', FALSE)
-						->where('published', '=', TRUE),
+						->where('published', '=', TRUE)
+						->group_by('page_id'),
 					'current_version'
 				))
-				->on('page_versions.id', '=', 'current_version.id');
-
-			$query
+				->on('page_versions.id', '=', 'current_version.id')
+				->where('page_versions.page_deleted', '=', FALSE)
 				->where('visible_from', '<=', Editor::live_time())
 				->and_where_open()
 					->where('visible_to', '>=', Editor::live_time())
