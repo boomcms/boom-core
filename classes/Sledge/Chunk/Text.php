@@ -34,7 +34,7 @@ class Sledge_Chunk_Text extends Chunk
 		$text = Text::decode_chunk($text);
 
 		// Embed youtube videos when in site view.
-		if ( ! Auth::instance()->logged_in() OR Editor::state() != Editor::EDIT)
+		if (Editor::state() != Editor::EDIT)
 		{
 			$text = Text::auto_link_video($text);
 		}

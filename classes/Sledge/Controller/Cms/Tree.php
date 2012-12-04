@@ -46,7 +46,7 @@ class Sledge_Controller_Cms_Tree extends Kohana_Controller
 					->where('rgt', '<', $top->rgt)
 					->where('scope', '=', $top->scope);
 
-		if ($this->auth->logged_in() AND Editor::state() === Editor::EDIT)
+		if (Editor::state() === Editor::EDIT)
 		{
 			$this->_query->join( array('page_versions', 'v'), 'inner')
 				  ->on('pages.active_vid', '=', 'v.id')

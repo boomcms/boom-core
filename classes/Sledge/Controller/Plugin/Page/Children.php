@@ -314,7 +314,7 @@ class Sledge_Controller_Plugin_Page_Children extends Sledge_Controller
 		}
 
 		// Logged in view?
-		if ($this->auth->logged_in() AND Editor::state() == Editor::EDIT)
+		if (Editor::state() === Editor::EDIT)
 		{
 			// Get the most recent version for each page.
 			$query
@@ -333,7 +333,7 @@ class Sledge_Controller_Plugin_Page_Children extends Sledge_Controller
 				$query->where('visible_in_nav_cms', '=', TRUE);
 			}
 		}
-		elseif ( ! $this->auth->logged_in() OR Editor::state() != Editor::EDIT)
+		else
 		{
 			// Get the most recent published version for each page.
 			$query

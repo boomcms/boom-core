@@ -134,7 +134,7 @@ abstract class Sledge_Chunk
 				{
 					$html = HTML::chunk_classes($html, $this->_type, $this->_chunk->slotname, $this->target(), $this->_template, $this->_page->id, $this->has_content());
 				}
-				elseif ( ! Auth::instance()->logged_in() OR Editor::state() == Editor::PREVIEW_PUBLISHED)
+				elseif (Editor::state() == Editor::DISABLED)
 				{
 					// Save to cache when in site view.
 					// Originally the chunk code was designed to be able to generate the cache for the site view when browsing a page in the CMS.

@@ -88,16 +88,28 @@ class Sledge_Controller_Cms_Editor extends Sledge_Controller
 	 * **Expected POST variables:**
 	 * Name		|	Type		|	Description
 	 * ---------------|-----------------|---------------
-	 * state		|	string 	|	Either preview-published, preview-all, or edit.
+	 * state		|	string 	|	Either disabled, preview-all, or edit.
 	 *
 	 * @uses	Editor::state()
 	 */
 	public function action_state()
 	{
+		// Get the state from the POST data.
 		$state = $this->request->post('state');
 
+		// Convert the text from POST to an integer.
+		$numeric_state = constant("Editor::" . strtoupper($state));
+
+		// Check that the state is valid
+		if ($numeric_state === NULL)
+		{
+			throw new Kohana_Exception("Invalid editor state: :state", array(
+				':state'	=>	$state,
+			));
+		}
+
 		// Save the state to the session data.
-		Editor::state($state);
+		Editor::state($numeric_state);
 	}
 
 	/**

@@ -28,7 +28,7 @@ class Sledge_Controller_Plugin_Search extends Kohana_Controller
 			$sx->setGroupBy('page_id', SPH_GROUPBY_ATTR, "@relevance desc");
 
 			$index_name = Kohana::$config->load('instance')->db_name . "-page_text-";
-			$index_name .= (Auth::instance()->logged_in() AND Editor::state() == Editor::EDIT)? 'cms' : 'site';
+			$index_name .= (Editor::state() === Editor::EDIT)? 'cms' : 'site';
 
 			$results = $sx->query($q, "$index_name, $index_name-delta");
 

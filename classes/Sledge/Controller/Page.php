@@ -50,7 +50,7 @@ class Sledge_Controller_Page extends Sledge_Controller
 		// If the page shouldn't be editable then check that it's visible.
 		if ( ! $this->_editable)
 		{
-			if ( ! $this->_page->is_visible() OR (Editor::state() == Editor::PREVIEW_PUBLISHED AND ! $this->_page->is_published()))
+			if ( ! $this->_page->is_visible() OR (Editor::state() === Editor::DISABLED AND ! $this->_page->is_published()))
 			{
 				throw new HTTP_Exception_404;
 			}
