@@ -23,7 +23,7 @@ class Sledge_Text extends Kohana_Text
 		return preg_replace_callback('~(?i)\b((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:\'".,<>?«»“”‘’]))~', function($matches){
 			$url = parse_url($matches[0]);
 
-			if (strpos($url['host'], 'youtube') !== FALSE)
+			if (strpos($url['host'], 'youtube') !== FALSE AND isset($url['query']))
 			{
 				// Youtube video
 				parse_str($url['query']);
@@ -33,12 +33,12 @@ class Sledge_Text extends Kohana_Text
 					return "<iframe width='560' height='315' src='http://www.youtube.com/embed/$v' frameborder='0' allowfullscreen></iframe>";
 				}
 			}
-			elseif (strpos($url['host'], 'vimeo') !== FALSE)
+			elseif (strpos($url['host'], 'vimeo') !== FALSE AND isset($url['path']))
 			{
 				// Vimeo video
 				$id = str_replace("/", "", $url['path']);
 
-					return "<iframe src='http://player.vimeo.com/video/$id' width='500' height='281' frameborder='0' webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>";
+				return "<iframe src='http://player.vimeo.com/video/$id' width='500' height='281' frameborder='0' webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>";
 			}
 
 			return $matches[0];

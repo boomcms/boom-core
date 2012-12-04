@@ -114,7 +114,7 @@ class Sledge_Model_Page extends ORM_Taggable
 	 * @param	Model_Page	$page	The new child page.
 	 * @return	Model_Page
 	 */
-	public function add_child(Model_Version_Page $page)
+	public function add_child(Model_Page $page)
 	{
 		// Get the child ordering policy column and direction.
 		list($column, $direction) = $this->children_ordering_policy();

@@ -15,7 +15,7 @@ class Sledge_Model_Page_Version extends ORM
 	*/
 	protected $_belongs_to = array(
 		'template'		=>	array('model' => 'Template', 'foreign_key' => 'template_id'),
-		'person'		=>	array('model' => 'Person', 'foreign_key' => 'created_by'),
+		'person'		=>	array('model' => 'Person', 'foreign_key' => 'edited_by'),
 	);
 
 	protected $_table_columns = array(
