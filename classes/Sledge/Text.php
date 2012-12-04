@@ -67,14 +67,6 @@ class Sledge_Text extends Kohana_Text
 			$text
 		);
 
-		// Utoob video links in the form video:blahblahblah
-		// Setting default height and width needs to be improved - we don't want to have to do it for every text slot.
-		$config = Kohana::$config->load('config');
-		$video_width = Arr::get($config, 'video_width', 560);
-		$video_height = Arr::get($config, 'video_height', 315);
-
-		$text = preg_replace('|video:([a-zA-Z0-9:/._\-]+)|', '<iframe width=\'$video_width\' height=\'$video_height\' src=\'$1\' frameborder=\'0\' class=\'video\' allowfullscreen></iframe>', $text);
-
 		return $text;
 	}
 
