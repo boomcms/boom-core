@@ -5,5 +5,4 @@ return array(
 	'createsend'	=>	'plugin/createsend/signup',
 	'search'		=>	'plugin/search',
 	'leftnav'		=>	'plugin/tree/leftnav',
-	'mainnav'		=>	'plugin/tree/mainnav',
 );
