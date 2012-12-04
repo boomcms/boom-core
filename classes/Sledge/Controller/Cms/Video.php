@@ -19,6 +19,8 @@ class Sledge_Controller_Cms_Video extends Sledge_Controller
 
 	public function before()
 	{
+		parent::before();
+
 		require(Kohana::find_file('vendor', 'botr'));
 
 		// Load the botr config to get the api key / secret.
