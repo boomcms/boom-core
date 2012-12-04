@@ -40,12 +40,11 @@ Route::set('page_links', 'cms/page/link/<action>/<id>' )
 * Defines the route for /cms pages.
 *
 */
-Route::set('cms', '<directory>(/<controller>(/<action>(/<id>)))',
+Route::set('cms', '<directory>/<controller>(/<action>(/<id>))',
 	array(
 		'directory'	=> 'cms'
 	))
 	->defaults(array(
-		'controller' => 'default',
 		'action'     => 'index',
 	));
 
