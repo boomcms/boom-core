@@ -35,35 +35,11 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 	{
 		parent::before();
 
-		$page_id = $this->request->param('id');
-
-		if ($page_id)
+		// Has a page ID been given?
+		if ($page_id = $this->request->param('id'))
 		{
-			// Most of these methods can be  sent a version ID.
-			// This allows viewing an old version and then editing / publishing that version.
-			// Most of the time the vid will be page's current version ID - i.e. the user is viewing page as standard.
-			// So check the vid, and load an older version if necessary.
-			if (is_string($this->request->post('data')))
-			{
-				$data = json_decode($this->request->post('data'));
-				if (isset($data->vid))
-				{
-					$vid = $data->vid;
-				}
-			}
-			elseif ($this->request->query('vid'))
-			{
-				$vid = $this->request->query('vid');
-			}
-
-			if (isset($vid))
-			{
-				$this->page = ORM::factory('Page', $vid);
-			}
-			else
-			{
-				$this->page = ORM::factory('Page', $page_id);
-			}
+			// Yes! Load the page from the database.
+			$this->page = ORM::factory('Page', $page_id);
 		}
 	}
 
@@ -277,7 +253,6 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 	 *
 	 * @throws	HTTP_Exception_403
 	 * @uses		Model_Version_Page::sort_children()
-	 * @uses		Model_Version_Page::sort_children()
 	 */
 	public function action_move()
 	{
@@ -305,7 +280,9 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 				Sledge::log("Moved page " . $this->page->version()->title . " (ID: " . $this->page->page_id . ") to child of " . $this->page->version()->title . "(ID: " . $this->page->page_id . ")");
 
 				// Move the page to be the last child of the new parent.
-				$this->page->mptt->move_to_last_child($parent_id);
+				$this->page
+					->mptt
+					->move_to_last_child($parent_id);
 
 				// Sort the parent's children according to it's child ordering policy.
 				$parent->sort_children();
@@ -375,32 +352,6 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 			'page'	=>	ORM::factory('Page', $this->request->param('id')),
 			'state'	=>	'collapsed',
 		));
-	}
-
-	public function action_topbar()
-	{
-		// Log the current user as editing this page.
-		// Try and find existing details from db / cache.
-		$person_page = ORM::factory('Person_Page', array(
-			'person_id'	=>	$this->person->id,
-			'page_id'		=>	$this->page->id
-		));
-
-		// Set the values and save.
-		// By also setting the person ID we ensure that if $person_page wasn't loaded it will be created.
-		// If it was loaded it will be updated.
-		$person_page->values(array(
-			'person_id'		=>	$this->person->id,
-			'page_id'			=>	$this->page->id,
-			'since'			=>	$_SERVER['REQUEST_TIME'],
-			'last_active'		=>	$_SERVER['REQUEST_TIME'],
-			'saved'			=>	FALSE,
-		));
-		$person_page->save();
-
-		// Show the editor topbar
-		$this->template = View::factory('sledge/editor/iframe');
-		View::bind_global('page', $this->page);
 	}
 
 	/**
@@ -654,16 +605,6 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 			}
 			catch (Exception $e) {}
 		}
-	}
-
-	/**
-	* Display a page settings template.
-	*/
-	public function action_settings()
-	{
-		$this->template = View::factory('cms/ui/site/page/settings/' . $this->request->param('tab'), array(
-			'page'	=>	$this->page
-		));
 	}
 
 	/**
