@@ -258,7 +258,8 @@ class Sledge_Controller_Cms_Assets extends Sledge_Controller
 		$order		=	Arr::get($query_data, 'order');
 
 		// Prepare the database query.
-		$query = ORM::factory('Asset');
+		$query = DB::select()
+			->from('assets');
 
 		// If a valid tag was given then filter the results by tag..
 		if ($tag->loaded())
@@ -296,9 +297,16 @@ class Sledge_Controller_Cms_Assets extends Sledge_Controller
 		// Filtering by deleted assets?
 		$query->where('rubbish', '=', ($this->request->query('rubbish') == 'rubbish'));
 
-		// Clone the query to count the number of matching assets.
-		$count = clone $query;
-		$total = $count->count_all();
+		// Clone the query to count the number of matching assets and their total size.
+		$query2 = clone $query;
+		$result = $query2
+			->select(array(DB::expr('sum(filesize)'), 'filesize'))
+			->select(array(DB::expr('count(*)'), 'total'))
+			->execute();
+
+		// Get the asset count and total size from the result
+		$size = $result->get('filesize');
+		$total = $result->get('total');
 
 		// Were any assets found?
 		if ($total === 0)
@@ -308,15 +316,12 @@ class Sledge_Controller_Cms_Assets extends Sledge_Controller
 		}
 		else
 		{
-			// Clone the query to get the total size of the matching assets.
-			$size = clone $query;
-			$size = $size->size_all();
-
-			// Retrieve the matching assets.
+			// Retrieve the results and load Model_Asset classes
 			$assets = $query
 				->limit($perpage)
 				->offset(($page - 1) * $perpage)
-				->find_all();
+				->as_object('Model_Asset')
+				->execute();
 
 			// Put everthing in the views.
 			$this->template = View::factory('sledge/assets/list', array(

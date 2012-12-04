@@ -128,46 +128,4 @@ class Sledge_Model_Asset extends ORM_Taggable
 	{
 		return File::mime(ASSETPATH . $this->id);
 	}
-
-	/**
-	* Similar to count_all() but this sums the filesize column of the current query.
-	*/
-	public function size_all()
-	{
-		$selects = array();
-
-		foreach ($this->_db_pending as $key => $method)
-		{
-		    if ($method['name'] == 'select')
-		    {
-		        // Ignore any selected columns for now
-		        $selects[] = $method;
-		        unset($this->_db_pending[$key]);
-		    }
-		}
-
-		if ( ! empty($this->_load_with))
-		{
-		    foreach ($this->_load_with as $alias)
-		    {
-		        // Bind relationship
-		        $this->with($alias);
-		    }
-		}
-
-		$this->_build(Database::SELECT);
-
-		$filesize = $this->_db_builder->from(array($this->_table_name, $this->_object_name))
-		    ->select(array(DB::expr('sum("filesize")'), 'filesize'))
-		    ->execute($this->_db)
-		    ->get('filesize');
-
-		// Add back in selected columns
-		$this->_db_pending += $selects;
-
-		$this->reset();
-
-		// Return the total filesize of the assets.
-		return $filesize;
-	}
 }
