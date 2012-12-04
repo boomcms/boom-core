@@ -24,6 +24,7 @@ class Sledge_Controller_Cms_Templates extends Sledge_Controller
 	{
 		parent::before();
 
+		// Are they allowed to view the template manager?
 		if ( ! $this->auth->logged_in('manage_templates'))
 		{
 			throw new HTTP_Exception_403;
@@ -72,6 +73,7 @@ class Sledge_Controller_Cms_Templates extends Sledge_Controller
 					))
 					->save();
 
+				// Add teh template to the array of imorted templates.
 				$imported[] = $template->id;
 			}
 		}
