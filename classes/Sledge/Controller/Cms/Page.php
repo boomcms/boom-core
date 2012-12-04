@@ -354,6 +354,29 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 		));
 	}
 
+	public function action_tree()
+	{
+		$pages = DB::select( array('pages.id', 'page_id'), 'v.children_ordering_policy', 'pages.visible', 'v.visible_in_nav', 'page_links.location', 'v.title', 'page_mptt.*')
+			->from('pages')
+			->join('page_mptt')
+			->on('page_mptt.id', '=', 'pages.id')
+			->join('page_links', 'inner')
+			->on('page_links.page_id', '=', 'pages.id')
+			->where('is_primary', '=', TRUE)
+			->where('v.deleted', '=', FALSE)
+			->join( array('page_versions', 'v'), 'inner')
+			->on('pages.active_vid', '=', 'v.id')
+			->order_by('page_mptt.lft', 'asc')
+			->execute()
+			->as_array();
+
+		$this->template = View::factory('sledge/pages/tree', array(
+			'pages'	=>	$pages,
+			'page'	=>	ORM::factory('Page', $this->request->param('id')),
+			'state'	=>	'collapsed',
+		));
+	}
+
 	public function action_topbar()
 	{
 		// Log the current user as editing this page.
