@@ -15,6 +15,7 @@ class Sledge_Model_Group extends ORM
 	protected $_table_columns = array(
 		'id'			=>	'',
 		'name'		=>	'',
+		'deleted'		=>	'',
 	);
 
 	/**
