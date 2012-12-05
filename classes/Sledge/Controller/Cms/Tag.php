@@ -92,7 +92,7 @@ class Sledge_Controller_Cms_Tag extends Sledge_Controller
 	 */
 	public function action_delete()
 	{
-		Sledge::log("Deleted tag " . $this->tag->name . " (ID: " . $this->tag->id . ")");
+		$this->_log("Deleted tag " . $this->tag->name . " (ID: " . $this->tag->id . ")");
 		$this->tag->delete();
 	}
 
@@ -195,6 +195,6 @@ class Sledge_Controller_Cms_Tag extends Sledge_Controller
 			$this->tag->path($this->tag->name);
 		}
 
-		Sledge::log("Updated tag " . $this->tag->name . " (ID: " . $this->tag->id . ")");
+		$this->_log("Updated tag " . $this->tag->name . " (ID: " . $this->tag->id . ")");
 	}
 }

@@ -146,7 +146,7 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 				->create();
 
 			// Log the action.
-			Sledge::log("Added a new page under " . $parent->version()->title, "Page ID: " . $page->id);
+			$this->_log("Added a new page under " . $parent->version()->title, "Page ID: " . $page->id);
 
 			// Redirect the user to the new page.
 			$this->response->body(URL::site($link));
@@ -220,7 +220,7 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 			// So delete the page.
 
 			// Log the action.
-			Sledge::log("Deleted page " . $this->page->version()->title . " (ID: " . $this->page->id . ")");
+			$this->_log("Deleted page " . $this->page->version()->title . " (ID: " . $this->page->id . ")");
 
 			// Get the parent of the page which is being deleted.
 			// We'll redirect to this after.
@@ -277,7 +277,7 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 				// Parent page exists, so reparent the page.
 
 				// Log the action.
-				Sledge::log("Moved page " . $this->page->version()->title . " (ID: " . $this->page->page_id . ") to child of " . $this->page->version()->title . "(ID: " . $this->page->page_id . ")");
+				$this->_log("Moved page " . $this->page->version()->title . " (ID: " . $this->page->page_id . ") to child of " . $this->page->version()->title . "(ID: " . $this->page->page_id . ")");
 
 				// Move the page to be the last child of the new parent.
 				$this->page
@@ -311,7 +311,7 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 		}
 
 		// Log the action.
-		Sledge::log("Published page " . $this->page->version()->title . " (ID: " . $this->page->page_id . ")");
+		$this->_log("Published page " . $this->page->version()->title . " (ID: " . $this->page->page_id . ")");
 
 		// Update the page version to make it published.
 		// Can't do this via the ORM as we don't want a new version to be created.
@@ -447,7 +447,7 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 		$page->save();
 
 		// Log the action.
-		Sledge::log("Saved page $page->title (ID: $page->id)");
+		$this->_log("Saved page $page->title (ID: $page->id)");
 
 		// Change the page's primary URI.
 		if (isset($data->uri) AND $data->uri != $page->primary_link())

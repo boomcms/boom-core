@@ -1,12 +1,17 @@
 <?php defined('SYSPATH') OR die('No direct script access.');
 
 /**
- * Functions to edit page settings.
+ * ##Controller to edit page settings.
+ *
  * Each function relates to a view in the sledge/editor/page/settings directory.
- * When called without POST data the functions will display the relevant view. When called with POST data the controller will save the data in that view.
+ *
+ * When called as a GET the functions will display the relevant view.
+ * When called as a POST request the controller will save the data in that view.
+ *
  * The controllers are tied quite strictly to the view so that the controller will only try and save what it expects to be in the view.
  * Therefore when adding a new setting it will need to be added to the view and to the controller.
- * This is done so that the controllers and quickly save their settings without having to check what data has been sent to determine what they need to do.
+ * This is done so that the controllers can quickly save their settings without having to check what data has been sent to determine what they need to do.
+ * It's more secure as well.
  *
  * This class extends the Controller_Cms_Page class so that it inherits the $_page property and the before() function.
  *
@@ -24,52 +29,114 @@ class Sledge_Controller_Cms_Page_Settings extends Controller_Cms_Page
 	protected $_parent;
 
 	/**
+	 * **The request method of the current request.**
+	 *
+	 * The functions in this class do different things depending on whether the request is GET or POST.
+	 * GET requests show a form to edit settings, POST requests update the settings.
+	 *
+	 * This is easy enough to get from [Request::method()] but the functions in this class use:
+	 *
+	 * 	if (request method is get)
+	 *	elseif (request method is post)
+	 *	endif
+	 *
+	 * So making the request method available in a class property avoid us calling [Request::method()] twice in each function.
+	 *
+	 * The value of this is set in [Sledge_Controller_Cms_Page_Settings::before()]
+	 *
+	 * @var	integer
+	 */
+	protected $_method;
+
+	/**
 	 *
 	 * @var	string	Directory where views used by this class are stored.
 	 */
 	protected $_view_directory = 'sledge/editor/page/settings';
 
-	/**
-	 * Check that the current user can edit the specified page before allowing access to any of these functions.
-	 *
-	 * @throws	HTTP_Exception_403
-	 */
 	public function before()
 	{
 		parent::before();
 
-		// Check that the user can edit this page.
-		if ( ! $this->auth->logged_in('edit', $this->page))
-		{
-			throw new HTTP_Exception_403;
-		}
+		// Assign the request method to $this->_method
+		$this->_method = $this->request->method();
 	}
 
+	/**
+	 * **Edit the page admin settings.**
+	 *
+	 * Settings in this group:
+	 *
+	 *  * Internal name
+	 *
+	 * @uses	Sledge_Controller::_authorization()
+	 * @uses	Sledge_Controller::_log()
+	 */
 	public function action_admin()
 	{
-		if ($this->request->method() == Request::POST)
+		// Permissions check
+		$this->_authorization('edit_page_admin', $this->page);
+
+		if ($this->_method === Request::GET)
 		{
+			// GET request - display the admin settings form.
+			$this->template = View::factory("$this->_view_directory/admin");
+		}
+		elseif ($this->_method == Request::POST)
+		{
+			// Log the action.
+			$this->_log("Saved admin settings for page " . $this->page->version()->title . " (ID: " . $this->page->id . ")");
+
+			// Set the new page internal name.
 			$this->update_columns(array(
 				'internal_name'
 			));
 			$this->page->save();
-
-			// Ensure slot data doesn't get lost.
-			Request::factory('cms/page/save_slots/' . $this->page->id)->execute();
-
-			// Log the action.
-			Sledge::log("Saved admin settings for page " . $this->page->version()->title . " (ID: " . $this->page->id . ")");
-		}
-		else
-		{
-			$this->template = 'admin';
 		}
 	}
 
+	/**
+	 * **Edit the child page settings.**
+	 *
+	 * Settings in this group:
+	 *
+	 *  * Basic:
+	 *    * Default child template
+	 *    * Child ordering policy
+	 *  * Advanced:
+	 *    * Children visible in nav
+	 *    * Children visible in CMS nav
+	 *    * Default child URL prefix
+	 *    * Default grandchild template
+	 *
+	 * @uses	Sledge_Controller::_authorization()
+	 * @uses	Sledge_Controller::_log()
+	 */
 	public function action_children()
 	{
-		if ($this->request->method() == Request::POST)
+		// Permissions check
+		// These settings are divided into basic and advanced.
+		// We only need to check for the basic permissions here
+		// If they can't edit the basic stuff then they shouldn't have the advanced settings either.
+		$this->_authorization('edit_page_children_basic', $this->page);
+
+		if ($this->_method === REQUEST::GET)
 		{
+			// Show the child page settings form.
+
+			$default_child_template = ($this->page->children_template_id != 0)? $this->page->children_template_id : $this->page->version()->template_id;
+			$default_grandchild_template = ($this->page->grandchild_template_id != 0)? $this->page->grandchild_template_id : $this->page->version()->template_id;
+
+			$this->template = View::factory("$this->_view_directory/children", array(
+				'default_child_template'		=>	$default_child_template,
+				'default_grandchild_template'	=>	$default_grandchild_template,
+				'page'					=>	$this->page,
+			));
+		}
+		elseif ($this->_method === Request::POST)
+		{
+			// Save the new settings.
+
 			$this->update_inherited_columns(array(
 				'children_visible_in_nav', 'children_visible_in_nav_cms'
 			));
@@ -116,50 +183,25 @@ class Sledge_Controller_Cms_Page_Settings extends Controller_Cms_Page
 					}
 
 					$child->save();
-
-					// Import slot data from the previous version.
-					Request::factory('cms/page/save_slots/' . $child->id)->execute();
 				}
 			}
 
-			// Ensure slot data doesn't get lost.
-			Request::factory('cms/page/save_slots/' . $this->page->id)->execute();
-
 			// Log the action.
-			Sledge::log("Saved child page settings for page " . $this->page->version()->title . " (ID: " . $this->page->id . ")");
-		}
-		else
-		{
-			$default_child_template = ($this->page->children_template_id != 0)? $this->page->children_template_id : $this->page->version()->template_id;
-			$default_grandchild_template = ($this->page->grandchild_template_id != 0)? $this->page->grandchild_template_id : $this->page->version()->template_id;
-
-			$this->template = View::factory('sledge/editor/page/settings/children');
-			$this->template->default_child_template = $default_child_template;
-			$this->template->default_grandchild_template = $default_grandchild_template;
-			$this->template->page = $this->page;
+			$this->_log("Saved child page settings for page " . $this->page->version()->title . " (ID: " . $this->page->id . ")");
 		}
 	}
 
-	public function action_feature()
-	{
-		if ($this->request->method() == Request::POST)
-		{
-			$this->update_columns(array('feature_image_id'));
-			$this->page->save();
-
-			// Ensure slot data doesn't get lost.
-			Request::factory('cms/page/save_slots/' . $this->page->id)->execute();
-
-			Sledge::log("Saved feature image for page " . $this->page->version()->title . " (ID: " . $this->page->id . ")");
-		}
-		else
-		{
-			$this->template = 'feature';
-		}
-	}
-
+	/**
+	 * Shows information about the page such as who created it, who last edited it.
+	 * Doesn't include any settings which can be changed.
+	 *
+	 * @uses	Sledge_Controller::_authorization()
+	 */
 	public function action_information()
 	{
+		// Permissions check
+		$this->_authorization('edit_page', $this->page);
+
 		// Get the first version of the page.
 		// This is used to display the author and creation time of the page.
 		$first_version = $this->page
@@ -187,9 +229,34 @@ class Sledge_Controller_Cms_Page_Settings extends Controller_Cms_Page
 		));
 	}
 
-	public function action_publishing()
+	/**
+	 * ** Edit page navigation settings. **
+	 *
+	 * Settings in this group:
+	 *
+	 *  * Basic:
+	 *    * Visible in navigation
+	 *    * Visible in CMS navigation
+	 *  * Advanced:
+	 *    * Parent page
+	 *
+	 * @uses	Sledge_Controller::_authorization()
+	 * @uses	Sledge_Controller::_log()
+	 */
+	public function action_navigation()
 	{
-		if ($this->request->method() == Request::POST)
+		// Permissions check
+		// The need to have a minimum of being able to edit the basic navigation settings.
+		// If they can't edit the basic settings they won't be able to edit the advanced settings either.
+		$this->_authorization('edit_page_navigation_basic', $this->page);
+
+		if ($this->_method === Request::GET)
+		{
+			$this->template = View::factory("$this->_view_directory/navigation", array(
+
+			));
+		}
+		elseif ($this->_method === Request::POST)
 		{
 			// Reparenting the page?
 			$parent_id = $this->request->post('parent_id');
@@ -202,66 +269,87 @@ class Sledge_Controller_Cms_Page_Settings extends Controller_Cms_Page
 				'template_id', 'visible_in_nav', 'visible_in_nav_cms'
 			));
 
-			// Make the browser reload the page if the template has been changed.
-			$reload = $this->page->changed('template_id');
-
 			// Save the new settings.
 			$this->page->save();
 
-			// Ensure slot data doesn't get lost.
-			Request::factory('cms/page/save_slots/' . $this->page->id)->execute();
-
 			// Log the action.
-			Sledge::log("Saved publishing settings for page " . $this->page->version()->title . " (ID: " . $this->page->id . ")");
-
-			if ($reload)
-			{
-				$this->response->body($this->page->link());
-			}
-		}
-		else
-		{
-			$this->template = 'publishing';
-		}
-	}
-
-	public function action_search()
-	{
-		if ($this->request->method() == Request::POST)
-		{
-			$this->update_columns(array(
-				'description', 'keywords', 'indexed', 'internal_indexing'
-			));
-
-			$this->page->save();
-
-			// Ensure slot data doesn't get lost.
-			Request::factory('cms/page/save_slots/' . $this->page->id)->execute();
-
-			Sledge::log("Saved search settings for page " . $this->page->version()->title . " (ID: " . $this->page->id . ")");
-		}
-		else
-		{
-			$this->template = 'search';
+			$this->_log("Saved publishing settings for page " . $this->page->version()->title . " (ID: " . $this->page->id . ")");
 		}
 	}
 
 	/**
-	* Edit the page's tags.
-	*
-	* @throws HTTP_Exception_403
-	* @uses Model_Page::add()
-	* @uses Model_Page::get_tags()
-	* @todo Only retrieve IDs of current tags instead of complete object.
-	*/
+	 * ** Edit page search settings. **
+	 *
+	 * Settings in this group:
+	 *
+	 *  * Basic:
+	 *     * Keywords
+	 *     * Description
+	 *  Advanced:
+	 *     * External indexing
+	 *     * Internal indexing
+	 *
+	 * @uses	Sledge_Controller::_authorization()
+	 * @uses	Sledge_Controller::_log()
+	 */
+	public function action_search()
+	{
+		// Check permissions
+		$this->_authorization('edit_page_search_basic', $this->page);
+
+		if ($this->_method === Request::GET)
+		{
+			// GET request - show the search settings template.
+			$this->_template = View::factory("$this->_view_directory/search");
+		}
+		elseif ($this->_method === Request::POST)
+		{
+			// Log the action
+			$this->_log("Saved search settings for page " . $this->page->version()->title . " (ID: " . $this->page->id . ")");
+
+			// Get the POST data.
+			$post = $this->request->post();
+
+			// Update the basic settings.
+			$this->page
+				->values(array(
+					'description'	=>	$post['description'],
+					'keywords'	=>	$post['keywords']
+				));
+
+			// If the current user can edit the advanced settings then update the values for those as well.
+			if ($this->auth->logged_in('edit_page_children_advanced'))
+			{
+				$this->page
+					->values(array(
+						'external_indexing'	=>	$post['external_indexing'],
+						'internal_indexing'	=>	$post['internal_indexing']
+					));
+			}
+
+			// Save the page.
+			$this->page
+				->save();
+		}
+	}
+
+	/**
+	 * ** Edit the page tags. **
+	 *
+	 * @uses	Sledge_Controller::_authorization()
+	 */
 	public function action_tags()
 	{
-		if ( ! $this->auth->logged_in('edit_tags', $this->page))
-		{
-			throw new HTTP_Exception_403;
-		}
+		// Permissions check
+		$this->_authorization('edit_page', $this->page);
 
-		if ($this->request->method() == Request::POST)
+		if ($this->_method === Request::GET)
+		{
+			$this->template = View::factory("$this->_view_directory/tags", array(
+				'current_tags'	=>	$this->page->get_tags(NULL, false),
+			));
+		}
+		elseif ($this->_method === Request::POST)
 		{
 			$tag = ORM::factory('Tag', array('path' => $this->request->post('tag')));
 			$page = $this->page;
@@ -306,119 +394,53 @@ class Sledge_Controller_Cms_Page_Settings extends Controller_Cms_Page
 			elseif ($action == 'remove')
 			{
 				DB::delete('tags_applied')
-				->where('object_type', '=', $page->get_object_type_id())
-				->where('object_id', '=', $page->id)
-				->where('tag_id', '=', $tag->id)
-				->execute();
+					->where('object_type', '=', $page->get_object_type_id())
+					->where('object_id', '=', $page->id)
+					->where('tag_id', '=', $tag->id)
+					->execute();
 			}
-		}
-		else
-		{
-			$this->response->headers('Cache-Control', 'no-cache');
-			$this->template = 'tags';
 		}
 	}
 
+	/**
+	 * ** Edit page visibility settings. **
+	 *
+	 * Settings in this group:
+	 *  * visible
+	 *  * visible from
+	 *  * visible to
+	 *
+	 * @uses	Sledge_Controller::_log()
+	 * @uses	Sledge_Controller::_authorization();
+	 */
 	public function action_visibility()
 	{
 		// Permissions check.
-		if ( ! $this->auth->logged_in('edit_visibility', $this->page))
+		$this->_authorization('edit_page', $this->page);
+
+		if ($this->_method === Request::GET)
 		{
-			throw new HTTP_Exception_403;
+			// GET request - show the visiblity form.
+			$this->_template = View::factory("$this->_view_directory/visibility");
 		}
-
-		if ($this->request->method() == Request::POST)
+		elseif ($this->_method === Request::POST)
 		{
-			$visible_to = $this->request->post('visible_to');
+			// POST request - save changes to page visibility settings.
 
-			$this->page->visible_from = strtotime($this->request->post('visible_from'));
-			$this->page->visible_to = ($visible_to != NULL)? strtotime($visible_to) : NULL;
-			$this->page->visible = $this->request->post('visible');
-			$this->page->save();
+			// Get the POST data
+			$post = $this->request->post();
 
-			Request::factory('cms/page/save_slots/' . $this->page->id)->execute();
+			// Log the action
+			$this->_log("Updated visibility settings for page " . $this->page->version()->title . " (ID: " . $this->page->id . ")");
+
+			// Update the page settings.
+			$this->page
+				->values(array(
+					'visible_from'	=>	strtotime($post['visible_from']),
+					'visible_to'	=>	isset($post['visible_to'])? strtotime($post['visible_to']) : NULL,
+					'visible'		=>	$post['visible']
+				))
+				->save();
 		}
-		else
-		{
-			$this->template = 'visibility';
-		}
-	}
-
-	/**
-	 * Update page columns with values from the POST data.
-	 * Checks that a column has been changed and that the current is allowed to change that column.
-	 * Controller functions which change page columns should call this function with an array of column names.
-	 *
-	 * @param	array 	$columns	Array of column names.
-	 */
-	public function update_columns(array $columns)
-	{
-		foreach ($columns as $column)
-		{
-			$value = $this->request->post($column);
-
-			// Check that the column has been changed and then check for the required permission.
-			// Although with Kohana's ORM we don't really need to check for a changed value
-			// doing this means that we don't check for edit permissions on columns which aren't being changed.
-			if ($this->page->$column != $value AND $this->auth->logged_in("edit_$column", $this->page))
-			{
-				$this->page->$column = $value;
-			}
-		}
-	}
-
-	/**
-	 * Update page columns which are inherited from the parent page if no value is given.
-	 *
-	 * @param	array 	$columns	Array of column names.
-	 */
-	public function update_inherited_columns(array $columns)
-	{
-		foreach ($columns as $column)
-		{
-			$value = $this->request->post($column);
-
-			if ($this->page->$column != $value AND $this->auth->logged_in("edit_$column", $this->page))
-			{
-				// If no value is given then inherit from the parent page.
-				if ($value == "")
-				{
-					// Lazy-load the page parent.
-					if ($this->_parent === NULL)
-					{
-						$this->_parent = $this->page->parent();
-					}
-
-					$this->page->$column = $parent->$column;
-				}
-				else
-				{
-					// A value has been given so
-					$this->page->$column = $value;
-				}
-			}
-		}
-	}
-
-	public function after()
-	{
-		if ($this->request->method() == Request::GET AND ! $this->template instanceof View)
-		{
-			// Turn the view filename into a view object and add the current page object to the view.
-			$this->template = View::factory('sledge/editor/page/settings/' . $this->template)
-				->set('page', $this->page);
-		}
-		elseif ($this->request->method() == Request::POST AND ! $this->response->body())
-		{
-			$this->response->headers('content-type', 'application/json');
-			$this->response->body(json_encode(
-				array(
-					'vid'		=>	$this->page->id,
-					'status'	=>	View::factory('sledge/editor/page/status', array('page' => $this->page, 'auth' => $this->auth))->render(),
-				)
-			));
-		}
-
-		parent::after();
 	}
 } // End Sledge_Controller_Cms_Page

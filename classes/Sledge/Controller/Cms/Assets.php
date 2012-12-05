@@ -41,7 +41,7 @@ class Sledge_Controller_Cms_Assets extends Sledge_Controller
 	 * assets		|  array	 	|	Array of asset IDs to be deleted.
 	 *
 	 * @uses	Model_Asset::delete()
-	 * @uses	Sledge::log()
+	 * @uses	$this->_log()
 	 */
 	public function action_delete()
 	{
@@ -79,7 +79,7 @@ class Sledge_Controller_Cms_Assets extends Sledge_Controller
 			}
 
 			// Log the action.
-			Sledge::log($log_message);
+			$this->_log($log_message);
 		}
 	}
 

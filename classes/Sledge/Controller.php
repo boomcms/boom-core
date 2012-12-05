@@ -54,6 +54,40 @@ class Sledge_Controller extends Controller
 		$this->actual_person = $this->auth->get_real_user();
 	}
 
+	/**
+	 * Checks whether the current user is authorized to perform a particular action.
+	 * Throws a HTTP_Exception_403 error if the user hasn't been given the required role.
+	 *
+	 * @param	string	$role
+	 * @param	Model_Page	$page
+	 * @throws	HTTP_Exception_403
+	 */
+	protected function _authorization($role, Model_Page $page = NULL)
+	{
+		if ( ! $this->auth->logged_in($role, $page))
+		{
+			throw new HTTP_Exception_403;
+		}
+	}
+
+	/**
+	 * Log an action in the CMS log
+	 *
+	 * @param	type	$activity
+	 */
+	protected function _log($activity)
+	{
+		// Add an item to the log table with the relevant details
+		ORM::factory('log')
+			->values(array(
+				'ip'			=>	Request::$client_ip,
+				'activity'		=>	$activity,
+				'person_id'	=>	$this->actual_person->id,
+				'time'		=>	$_SERVER['REQUEST_TIME'],
+			))
+			->create();
+	}
+
 	public function after()
 	{
 		if ($this->template instanceof View AND ! $this->response->body())
