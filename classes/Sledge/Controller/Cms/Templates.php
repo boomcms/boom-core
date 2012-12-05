@@ -42,12 +42,12 @@ class Sledge_Controller_Cms_Templates extends Sledge_Controller
 
 		// Get the filenames of the available templates.
 		// This will be used to import any new templates and to populate a select box in the template manager of template filenames.
-		$filenames = Kohana::list_files("views/" . Sledge::TEMPLATE_DIR);
+		$filenames = Kohana::list_files("views/" . Model_Template::DIRECTORY);
 
 		foreach ($filenames as & $filename)
 		{
 			// Remove the directory path so that we're just left with a filename.
-			$filename = str_replace(APPPATH . "views/" . Sledge::TEMPLATE_DIR, "", $filename);
+			$filename = str_replace(APPPATH . "views/" . Model_Template::DIRECTORY, "", $filename);
 
 			// Remove the file extension.
 			$filename = str_replace(EXT, "", $filename);

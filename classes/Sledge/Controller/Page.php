@@ -95,9 +95,9 @@ class Sledge_Controller_Page extends Sledge_Controller
 		$template = ($this->request->query('template'))? ORM::factory('Template', $this->request->query('template')) : $this->_page->version()->template;
 
 		// If no template has been set or the template file doesn't exist then use the orange template.
-		$filename = ($template->loaded() AND Kohana::find_file('views', Sledge::TEMPLATE_DIR . $template->filename))? $template->filename : 'orange';
+		$filename = ($template->loaded() AND Kohana::find_file('views', Model_Template::DIRECTORY . $template->filename))? $template->filename : 'orange';
 
-		$html = View::factory(Sledge::TEMPLATE_DIR . $filename)->render();
+		$html = View::factory(Model_Template::DIRECTORY . $filename)->render();
 
 		// If we're in the CMS then add the sledge editor the the page.
 		if ($this->auth->logged_in())

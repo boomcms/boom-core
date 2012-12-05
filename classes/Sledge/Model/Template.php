@@ -11,6 +11,11 @@
 class Sledge_Model_Template extends ORM
 {
 	/**
+	 * The name of the directory (in the views directory) where template files are stored.
+	 */
+	const DIRECTORY = 'site/templates/';
+
+	/**
 	* Properties to create relationships with Kohana's ORM
 	*/
 	protected $_has_one = array(
@@ -25,14 +30,14 @@ class Sledge_Model_Template extends ORM
 	);
 
 	/**
-	* Determines whether the template file exists.
-	*
-	* @return boolean
-	* @todo This should use Kohana::find_file();
-	*/
+	 * Determines whether the template file exists.
+	 *
+	 * @uses	Kohana::find_file()
+	 * @return boolean
+	 */
 	public function file_exists()
 	{
-		return (bool) Kohana::find_file("views", Sledge::TEMPLATE_DIR . $this->filename);
+		return (bool) Kohana::find_file("views", Model_Template::DIRECTORY . $this->filename);
 	}
 
 	/**
