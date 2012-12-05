@@ -49,10 +49,7 @@ class Sledge_Auth_Sledge extends Auth
 					->join('roles', 'inner')
 					->on('roles.id', '=', 'people_roles.role_id')
 					->where('person_id', '=', $person->id)
-					->and_where_open()
-						->where('roles.name', '=', $role)
-						->or_where('roles.name', '=', '*')
-					->and_where_close();
+					->where('roles.name', '=', $role);
 
 				if ($page !== NULL)
 				{
@@ -65,7 +62,6 @@ class Sledge_Auth_Sledge extends Auth
 							->where('scope', '=', $page->mptt->scope)
 							->or_where_open()
 								->where('people_roles.page_id', '=', 0)
-								->where('roles.name', '=', '*')
 							->or_where_close()
 						->and_where_close();
 				}
