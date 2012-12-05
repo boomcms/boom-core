@@ -80,18 +80,21 @@ class Sledge_Controller_Cms_Page_Settings extends Controller_Cms_Page
 		if ($this->_method === Request::GET)
 		{
 			// GET request - display the admin settings form.
-			$this->template = View::factory("$this->_view_directory/admin");
+			$this->template = View::factory("$this->_view_directory/admin", array(
+				'page'	=>	$this->page,
+			));
 		}
-		elseif ($this->_method == Request::POST)
+		elseif ($this->_method === Request::POST)
 		{
 			// Log the action.
 			$this->_log("Saved admin settings for page " . $this->page->version()->title . " (ID: " . $this->page->id . ")");
 
-			// Set the new page internal name.
-			$this->update_columns(array(
-				'internal_name'
-			));
-			$this->page->save();
+			// Set the new page internal name and save the page.
+			$this->page
+				->values(array(
+					'internal_name'		=>	$this->request->post('internal_name'),
+				))
+				->save();
 		}
 	}
 
@@ -120,18 +123,43 @@ class Sledge_Controller_Cms_Page_Settings extends Controller_Cms_Page
 		// If they can't edit the basic stuff then they shouldn't have the advanced settings either.
 		$this->_authorization('edit_page_children_basic', $this->page);
 
+		// Is the current user allowed to edit the advanced settings?
+		$allow_advanced = $this->auth->logged_in('edit_page_children_advanced');
+
 		if ($this->_method === REQUEST::GET)
 		{
 			// Show the child page settings form.
 
-			$default_child_template = ($this->page->children_template_id != 0)? $this->page->children_template_id : $this->page->version()->template_id;
-			$default_grandchild_template = ($this->page->grandchild_template_id != 0)? $this->page->grandchild_template_id : $this->page->version()->template_id;
+			// Get the id and names of all the templates in the database.
+			// These are used by both the basic and the advanced settings.
+			$templates = DB::select('id', 'name')
+				->from('templates')
+				->order_by('name', 'asc')
+				->execute()
+				->as_array('id', 'name');
 
+			// Get the current child ordering policy column and direction.
+			list($child_order_colum, $child_order_direciton) = $this->page->children_ordering_policy();
+
+			// Create the main view with the basic settings
 			$this->template = View::factory("$this->_view_directory/children", array(
-				'default_child_template'		=>	$default_child_template,
-				'default_grandchild_template'	=>	$default_grandchild_template,
-				'page'					=>	$this->page,
+				'default_child_template'	=>	($this->page->children_template_id != 0)? $this->page->children_template_id : $this->page->version()->template_id,
+				'templates'			=>	$templates,
+				'child_order_column'		=>	$child_order_colum,
+				'child_order_direction'	=>	$child_order_direciton,
+				'allow_advanced'		=>	$allow_advanced,
 			));
+
+			// If we're showing the advanced settings then set the neccessary variables.
+			if ($allow_advanced)
+			{
+				// Add the view for the advanced settings to the main view.
+				$this->template->set(array(
+					'default_grandchild_template'	=>	($this->page->grandchild_template_id != 0)? $this->page->grandchild_template_id : $this->page->version()->template_id,
+					'page'					=>	$this->page,
+					'templates'				=>	$templates,
+				));
+			}
 		}
 		elseif ($this->_method === Request::POST)
 		{
@@ -250,10 +278,15 @@ class Sledge_Controller_Cms_Page_Settings extends Controller_Cms_Page
 		// If they can't edit the basic settings they won't be able to edit the advanced settings either.
 		$this->_authorization('edit_page_navigation_basic', $this->page);
 
+		// Is the current user allowed to edit the advanced settings?
+		$allow_advanced = $this->auth->logged_in('edit_page_navigation_advanced');
+
 		if ($this->_method === Request::GET)
 		{
+			// GET request - show the navigation settings form.
 			$this->template = View::factory("$this->_view_directory/navigation", array(
-
+				'page'			=>	$this->page,
+				'allow_advanced'	=>	$allow_advanced,
 			));
 		}
 		elseif ($this->_method === Request::POST)
@@ -273,7 +306,7 @@ class Sledge_Controller_Cms_Page_Settings extends Controller_Cms_Page
 			$this->page->save();
 
 			// Log the action.
-			$this->_log("Saved publishing settings for page " . $this->page->version()->title . " (ID: " . $this->page->id . ")");
+			$this->_log("Saved navigation settings for page " . $this->page->version()->title . " (ID: " . $this->page->id . ")");
 		}
 	}
 
@@ -297,10 +330,15 @@ class Sledge_Controller_Cms_Page_Settings extends Controller_Cms_Page
 		// Check permissions
 		$this->_authorization('edit_page_search_basic', $this->page);
 
+		// Is the current user allowed to edit the advanced settings?
+		$allow_advanced = $this->auth->logged_in('edit_page_search_advanced');
+
 		if ($this->_method === Request::GET)
 		{
 			// GET request - show the search settings template.
-			$this->_template = View::factory("$this->_view_directory/search");
+			$this->_template = View::factory("$this->_view_directory/search", array(
+				'allow_advanced'	=>	$allow_advanced,
+			));
 		}
 		elseif ($this->_method === Request::POST)
 		{
@@ -345,6 +383,7 @@ class Sledge_Controller_Cms_Page_Settings extends Controller_Cms_Page
 
 		if ($this->_method === Request::GET)
 		{
+			// GET request - show the tag editor view.
 			$this->template = View::factory("$this->_view_directory/tags", array(
 				'current_tags'	=>	$this->page->get_tags(NULL, false),
 			));
@@ -393,6 +432,7 @@ class Sledge_Controller_Cms_Page_Settings extends Controller_Cms_Page
 			}
 			elseif ($action == 'remove')
 			{
+				// Remove the specified tag from the page.
 				DB::delete('tags_applied')
 					->where('object_type', '=', $page->get_object_type_id())
 					->where('object_id', '=', $page->id)
@@ -421,7 +461,9 @@ class Sledge_Controller_Cms_Page_Settings extends Controller_Cms_Page
 		if ($this->_method === Request::GET)
 		{
 			// GET request - show the visiblity form.
-			$this->_template = View::factory("$this->_view_directory/visibility");
+			$this->_template = View::factory("$this->_view_directory/visibility", array(
+				'page'	=>	$this->page,
+			));
 		}
 		elseif ($this->_method === Request::POST)
 		{

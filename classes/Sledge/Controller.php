@@ -78,7 +78,7 @@ class Sledge_Controller extends Controller
 	protected function _log($activity)
 	{
 		// Add an item to the log table with the relevant details
-		ORM::factory('log')
+		ORM::factory('Log')
 			->values(array(
 				'ip'			=>	Request::$client_ip,
 				'activity'		=>	$activity,
