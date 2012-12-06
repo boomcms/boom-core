@@ -78,22 +78,22 @@ class Sledge_Controller_Cms_Page_Settings extends Controller_Cms_Page
 	public function action_admin()
 	{
 		// Permissions check
-		$this->_authorization('edit_page_admin', $this->page);
+		$this->_authorization('edit_page_admin', $this->_page);
 
 		if ($this->_method === Request::GET)
 		{
 			// GET request - display the admin settings form.
 			$this->template = View::factory("$this->_view_directory/admin", array(
-				'page'	=>	$this->page,
+				'page'	=>	$this->_page,
 			));
 		}
 		elseif ($this->_method === Request::POST)
 		{
 			// Log the action.
-			$this->_log("Saved admin settings for page " . $this->page->version()->title . " (ID: " . $this->page->id . ")");
+			$this->_log("Saved admin settings for page " . $this->_page->version()->title . " (ID: " . $this->_page->id . ")");
 
 			// Set the new page internal name and save the page.
-			$this->page
+			$this->_page
 				->values(array(
 					'internal_name'		=>	$this->request->post('internal_name'),
 				))
@@ -124,7 +124,7 @@ class Sledge_Controller_Cms_Page_Settings extends Controller_Cms_Page
 		// These settings are divided into basic and advanced.
 		// We only need to check for the basic permissions here
 		// If they can't edit the basic stuff then they shouldn't have the advanced settings either.
-		$this->_authorization('edit_page_children_basic', $this->page);
+		$this->_authorization('edit_page_children_basic', $this->_page);
 
 		// Is the current user allowed to edit the advanced settings?
 		$allow_advanced = $this->auth->logged_in('edit_page_children_advanced');
@@ -142,11 +142,11 @@ class Sledge_Controller_Cms_Page_Settings extends Controller_Cms_Page
 				->as_array('id', 'name');
 
 			// Get the current child ordering policy column and direction.
-			list($child_order_colum, $child_order_direciton) = $this->page->children_ordering_policy();
+			list($child_order_colum, $child_order_direciton) = $this->_page->children_ordering_policy();
 
 			// Create the main view with the basic settings
 			$this->template = View::factory("$this->_view_directory/children", array(
-				'default_child_template'	=>	($this->page->children_template_id != 0)? $this->page->children_template_id : $this->page->version()->template_id,
+				'default_child_template'	=>	($this->_page->children_template_id != 0)? $this->_page->children_template_id : $this->_page->version()->template_id,
 				'templates'			=>	$templates,
 				'child_order_column'		=>	$child_order_colum,
 				'child_order_direction'	=>	$child_order_direciton,
@@ -158,8 +158,8 @@ class Sledge_Controller_Cms_Page_Settings extends Controller_Cms_Page
 			{
 				// Add the view for the advanced settings to the main view.
 				$this->template->set(array(
-					'default_grandchild_template'	=>	($this->page->grandchild_template_id != 0)? $this->page->grandchild_template_id : $this->page->version()->template_id,
-					'page'					=>	$this->page,
+					'default_grandchild_template'	=>	($this->_page->grandchild_template_id != 0)? $this->_page->grandchild_template_id : $this->_page->version()->template_id,
+					'page'					=>	$this->_page,
 					'templates'				=>	$templates,
 				));
 			}
@@ -171,12 +171,12 @@ class Sledge_Controller_Cms_Page_Settings extends Controller_Cms_Page
 			$post = $this->request->post();
 
 			// Log the action.
-			$this->_log("Saved child page settings for page " . $this->page->version()->title . " (ID: " . $this->page->id . ")");
+			$this->_log("Saved child page settings for page " . $this->_page->version()->title . " (ID: " . $this->_page->id . ")");
 
 			// Set the new advanced settings, if allowed.
 			if ($allow_advanced)
 			{
-				$this->page
+				$this->_page
 					->values($post, array(
 						'children_visible_in_nav',
 						'children_visible_in_nav_cms',
@@ -193,13 +193,13 @@ class Sledge_Controller_Cms_Page_Settings extends Controller_Cms_Page
 					if ($post['child_template_cascade'] == 1)
 					{
 						// Which template should be cascaded to the children?
-						$child_template = ($this->page->children_template_id == 0)? $this->page->version()->template_id : $this->page->children_template_id;
+						$child_template = ($this->_page->children_template_id == 0)? $this->_page->version()->template_id : $this->_page->children_template_id;
 					}
 
 					// Get IDs of the child pages.
 					$children = DB::select('page_mptt.id')
 						->from('page_mptt')
-						->where('parent_id', '=', $this->page->id)
+						->where('parent_id', '=', $this->_page->id)
 						->execute();
 
 					// Loop through the children, loading them from the database / cache and update the settings.
@@ -210,13 +210,13 @@ class Sledge_Controller_Cms_Page_Settings extends Controller_Cms_Page
 						// Cascading the visible_in_nav setting?
 						if ($post['visible_in_nav_cascade'] == 1)
 						{
-							$child->visible_in_nav = $this->page->children_visible_in_nav;
+							$child->visible_in_nav = $this->_page->children_visible_in_nav;
 						}
 
 						// Cascading the visible_in_nav_cms setting?
 						if ($post['visible_in_nav_cms_cascade'] == 1)
 						{
-							$child->visible_in_nav_cms = $this->page->children_visible_in_nav_cms;
+							$child->visible_in_nav_cms = $this->_page->children_visible_in_nav_cms;
 						}
 
 						// Cascading the template setting?
@@ -231,7 +231,7 @@ class Sledge_Controller_Cms_Page_Settings extends Controller_Cms_Page
 				}
 
 				// Update the basic values and save the page.
-				$this->page
+				$this->_page
 					->children_ordering_policy($post['children_ordering_policy'], $post['child_ordering_direction'])
 					->set('children_template_id', $post['children_template_id'])
 					->save();
@@ -249,16 +249,16 @@ class Sledge_Controller_Cms_Page_Settings extends Controller_Cms_Page
 	public function action_information()
 	{
 		// Permissions check
-		$this->_authorization('edit_page', $this->page);
+		$this->_authorization('edit_page', $this->_page);
 
 		// Get the first version of the page.
 		// This is used to display the author and creation time of the page.
-		$first_version = $this->page
+		$first_version = $this->_page
 			->first_version();
 
 		// Get a count of the number of versions for this page.
 		// Only count the versions which have been published.
-		$version_count = $this->page
+		$version_count = $this->_page
 			->versions
 			->where('stashed', '=', FALSE)
 			->where('published', '=', TRUE)
@@ -266,7 +266,7 @@ class Sledge_Controller_Cms_Page_Settings extends Controller_Cms_Page
 			->count_all();
 
 		// Get the current version of the page to report when the page was last modified and by whom.
-		$current_version = $this->page
+		$current_version = $this->_page
 			->version();
 
 		// Add the data to the view
@@ -308,7 +308,7 @@ class Sledge_Controller_Cms_Page_Settings extends Controller_Cms_Page
 		// Permissions check
 		// The need to have a minimum of being able to edit the basic navigation settings.
 		// If they can't edit the basic settings they won't be able to edit the advanced settings either.
-		$this->_authorization('edit_page_navigation_basic', $this->page);
+		$this->_authorization('edit_page_navigation_basic', $this->_page);
 
 		// Is the current user allowed to edit the advanced settings?
 		$allow_advanced = $this->auth->logged_in('edit_page_navigation_advanced');
@@ -317,7 +317,7 @@ class Sledge_Controller_Cms_Page_Settings extends Controller_Cms_Page
 		{
 			// GET request - show the navigation settings form.
 			$this->template = View::factory("$this->_view_directory/navigation", array(
-				'page'			=>	$this->page,
+				'page'			=>	$this->_page,
 				'allow_advanced'	=>	$allow_advanced,
 			));
 		}
@@ -331,7 +331,7 @@ class Sledge_Controller_Cms_Page_Settings extends Controller_Cms_Page
 			{
 				// Reparenting the page?
 				// Check that the ID of the parent has been changed and the page hasn't been set to be a child of itself.
-				if ($parent_id AND $post['parent_id'] != $this->page->mptt->parent_id AND $post['parent_id'] != $this->page->id)
+				if ($parent_id AND $post['parent_id'] != $this->_page->mptt->parent_id AND $post['parent_id'] != $this->_page->id)
 				{
 					// Check that the new parent ID is a valid page.
 					$parent = ORM::factory('page', $post['parent_id']);
@@ -340,7 +340,7 @@ class Sledge_Controller_Cms_Page_Settings extends Controller_Cms_Page
 					{
 						// New parent is a valid page so update the page.
 						// Move the page to be the last child of the new parent.
-						$this->page
+						$this->_page
 							->mptt
 							->move_to_last_child($post['parent_id']);
 
@@ -351,10 +351,10 @@ class Sledge_Controller_Cms_Page_Settings extends Controller_Cms_Page
 			}
 
 			// Log the action.
-			$this->_log("Saved navigation settings for page " . $this->page->version()->title . " (ID: " . $this->page->id . ")");
+			$this->_log("Saved navigation settings for page " . $this->_page->version()->title . " (ID: " . $this->_page->id . ")");
 
 			// Update the visible_in_nav and visible_in_nav_cms settings.
-			$this->page
+			$this->_page
 				->values(array(
 					'visible_in_nav'		=>	$post['visible_in_nav'],
 					'visible_in_nav_cms'	=>	$post['visible_in_nav_cms'],
@@ -381,7 +381,7 @@ class Sledge_Controller_Cms_Page_Settings extends Controller_Cms_Page
 	public function action_search()
 	{
 		// Check permissions
-		$this->_authorization('edit_page_search_basic', $this->page);
+		$this->_authorization('edit_page_search_basic', $this->_page);
 
 		// Is the current user allowed to edit the advanced settings?
 		$allow_advanced = $this->auth->logged_in('edit_page_search_advanced');
@@ -396,13 +396,13 @@ class Sledge_Controller_Cms_Page_Settings extends Controller_Cms_Page
 		elseif ($this->_method === Request::POST)
 		{
 			// Log the action
-			$this->_log("Saved search settings for page " . $this->page->version()->title . " (ID: " . $this->page->id . ")");
+			$this->_log("Saved search settings for page " . $this->_page->version()->title . " (ID: " . $this->_page->id . ")");
 
 			// Get the POST data.
 			$post = $this->request->post();
 
 			// Update the basic settings.
-			$this->page
+			$this->_page
 				->values(array(
 					'description'	=>	$post['description'],
 					'keywords'	=>	$post['keywords']
@@ -411,7 +411,7 @@ class Sledge_Controller_Cms_Page_Settings extends Controller_Cms_Page
 			// If the current user can edit the advanced settings then update the values for those as well.
 			if ($this->auth->logged_in('edit_page_children_advanced'))
 			{
-				$this->page
+				$this->_page
 					->values(array(
 						'external_indexing'	=>	$post['external_indexing'],
 						'internal_indexing'	=>	$post['internal_indexing']
@@ -419,7 +419,7 @@ class Sledge_Controller_Cms_Page_Settings extends Controller_Cms_Page
 			}
 
 			// Save the page.
-			$this->page
+			$this->_page
 				->save();
 		}
 	}
@@ -432,19 +432,19 @@ class Sledge_Controller_Cms_Page_Settings extends Controller_Cms_Page
 	public function action_tags()
 	{
 		// Permissions check
-		$this->_authorization('edit_page', $this->page);
+		$this->_authorization('edit_page', $this->_page);
 
 		if ($this->_method === Request::GET)
 		{
 			// GET request - show the tag editor view.
 			$this->template = View::factory("$this->_view_directory/tags", array(
-				'current_tags'	=>	$this->page->get_tags(NULL, false),
+				'current_tags'	=>	$this->_page->get_tags(NULL, false),
 			));
 		}
 		elseif ($this->_method === Request::POST)
 		{
 			$tag = ORM::factory('Tag', array('path' => $this->request->post('tag')));
-			$page = $this->page;
+			$page = $this->_page;
 			$action = ($this->request->post('action') == 'add')? 'add' : 'remove';
 
 			if ($action == 'add')
@@ -509,13 +509,13 @@ class Sledge_Controller_Cms_Page_Settings extends Controller_Cms_Page
 	public function action_visibility()
 	{
 		// Permissions check.
-		$this->_authorization('edit_page', $this->page);
+		$this->_authorization('edit_page', $this->_page);
 
 		if ($this->_method === Request::GET)
 		{
 			// GET request - show the visiblity form.
 			$this->template = View::factory("$this->_view_directory/visibility", array(
-				'page'	=>	$this->page,
+				'page'	=>	$this->_page,
 			));
 		}
 		elseif ($this->_method === Request::POST)
@@ -526,10 +526,10 @@ class Sledge_Controller_Cms_Page_Settings extends Controller_Cms_Page
 			$post = $this->request->post();
 
 			// Log the action
-			$this->_log("Updated visibility settings for page " . $this->page->version()->title . " (ID: " . $this->page->id . ")");
+			$this->_log("Updated visibility settings for page " . $this->_page->version()->title . " (ID: " . $this->_page->id . ")");
 
 			// Update the page settings.
-			$this->page
+			$this->_page
 				->values(array(
 					'visible_from'	=>	strtotime($post['visible_from']),
 					'visible_to'	=>	isset($post['visible_to'])? strtotime($post['visible_to']) : NULL,

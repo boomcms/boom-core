@@ -37,7 +37,7 @@ class Sledge_Controller_Cms_Page_Link extends Controller_Cms_Page
 				->where('location', '=', $link)
 				->find();
 
-			if ($page_link->loaded() AND $page_link->page_id !== $this->page->id)
+			if ($page_link->loaded() AND $page_link->page_id !== $this->_page->id)
 			{
 				// Link is being used for a different page.
 				// Notify that the link is already in use so that the JS can load a prompt to move the link.
@@ -49,19 +49,19 @@ class Sledge_Controller_Cms_Page_Link extends Controller_Cms_Page
 				$page_link = ORM::factory('Page_Link')
 					->values(array(
 						'location'		=>	$link,
-						'page_id'		=>	$this->page->id,
+						'page_id'		=>	$this->_page->id,
 						'is_primary'	=>	FALSE,
 					))
 					->create();
 
-				$this->_log("Added secondary link $link to page " . $this->page->version()->title . "(ID: " . $this->page->id . ")");
+				$this->_log("Added secondary link $link to page " . $this->_page->version()->title . "(ID: " . $this->_page->id . ")");
 			}
 		}
 		else
 		{
 			// Display a list of existing secondary links
 			$this->template = View::factory("$this->_view_directory/add", array(
-				'page'	=> $this->page,
+				'page'	=> $this->_page,
 			));
 		}
 	}
@@ -75,7 +75,7 @@ class Sledge_Controller_Cms_Page_Link extends Controller_Cms_Page
 		// Get the link object.
 		// Don't delete with direct db query or we won't delete the cached version.
 		$link = ORM::factory('Page_Link')
-			->where('page_id', '=', $this->page->id)
+			->where('page_id', '=', $this->_page->id)
 			->where('location', '=', $this->request->post('link'))
 			->where('is_primary', '=', FALSE)
 			->find();
@@ -93,7 +93,7 @@ class Sledge_Controller_Cms_Page_Link extends Controller_Cms_Page
 	public function action_list()
 	{
 		$this->template = View::factory("$this->_view_directory/list", array(
-			'page'	=> $this->page,
+			'page'	=> $this->_page,
 		));
 	}
 
@@ -115,7 +115,7 @@ class Sledge_Controller_Cms_Page_Link extends Controller_Cms_Page
 		{
 			// Move the link to this page.
 			$link->values(array(
-				'page_id'		=>	$this->page->id,
+				'page_id'		=>	$this->_page->id,
 				'is_primary'	=>	FALSE,	// Make sure that it's only a secondary link for the this page.
 			))
 			->save();
@@ -125,7 +125,7 @@ class Sledge_Controller_Cms_Page_Link extends Controller_Cms_Page
 			$this->template = View::factory("$this->_view_directory/move", array(
 				'link'		=>	$link,
 				'current'	=>	$link->page,
-				'page'	=>	$this->page,
+				'page'	=>	$this->_page,
 			));
 		}
 	}

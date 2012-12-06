@@ -39,7 +39,7 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 		if ($page_id = $this->request->param('id'))
 		{
 			// Yes! Load the page from the database.
-			$this->page = ORM::factory('Page', $page_id);
+			$this->_page = ORM::factory('Page', $page_id);
 		}
 	}
 
@@ -65,14 +65,14 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 			// Priority is the parent page's children_template_id
 			// then the grandparent's grandchild_template_id
 			// then the parent page template id.
-			if ($this->page->children_template_id == 0)
+			if ($this->_page->children_template_id == 0)
 			{
-				$grandparent = $this->page->parent();
-				$default_template = ($grandparent->grandchild_template_id != 0)? $grandparent->grandchild_template_id : $this->page->version()->template_id;
+				$grandparent = $this->_page->parent();
+				$default_template = ($grandparent->grandchild_template_id != 0)? $grandparent->grandchild_template_id : $this->_page->version()->template_id;
 			}
 			else
 			{
-				$default_template = $this->page->children_template_id;
+				$default_template = $this->_page->children_template_id;
 			}
 
 			// Get all the templates which exist in the DB, ordered alphabetically.
@@ -84,7 +84,7 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 			// Show the form for selecting the parent page and template.
 			$this->template = View::factory("$this->_view_directory/add", array(
 				'templates'		=>	$templates,
-				'page'			=>	$this->page,
+				'page'			=>	$this->_page,
 				'default_template'	=>	$default_template,
 			));
 		}
@@ -163,18 +163,18 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 	 */
 	public function action_delete()
 	{
-		if ( ! $this->auth->logged_in('delete_page', $this->page) OR $this->page->mptt->is_root())
+		if ( ! $this->auth->logged_in('delete_page', $this->_page) OR $this->_page->mptt->is_root())
 		{
 			throw new HTTP_Exception_403;
 		}
 
-		if (Request::current()->method() === Request::GET)
+		if ($this->request->method() === Request::GET)
 		{
 			// Get request
 			// Show a confirmation dialogue warning that child pages will become inaccessible and asking whether to delete the children.
 
 			// Get the page's MPTT values.
-			$mptt = $this->page->mptt;
+			$mptt = $this->_page->mptt;
 
 			// Prepare an array for the descendent page titles.
 			$titles = array();
@@ -210,7 +210,7 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 			$this->template = View::factory("$this->_view_directory/delete", array(
 				'count'	=>	count($titles),
 				'titles'	=>	$titles,
-				'page'	=>	$this->page,
+				'page'	=>	$this->_page,
 			));
 		}
 		else
@@ -220,17 +220,17 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 			// So delete the page.
 
 			// Log the action.
-			$this->_log("Deleted page " . $this->page->version()->title . " (ID: " . $this->page->id . ")");
+			$this->_log("Deleted page " . $this->_page->version()->title . " (ID: " . $this->_page->id . ")");
 
 			// Get the parent of the page which is being deleted.
 			// We'll redirect to this after.
-			$parent = $this->page->parent();
+			$parent = $this->_page->parent();
 
 			// Are we deleting child pages?
 			$with_children = ($this->request->post('with_children') == 1);
 
 			// Delete the page.
-			$this->page->delete($with_children);
+			$this->_page->delete($with_children);
 
 			// Redirect to the parent page.
 			$this->response->body($parent->link());
@@ -246,14 +246,14 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 	public function action_publish()
 	{
 		// Does the current user have the publish_page role for this page?
-		if ( ! $this->auth->logged_in('publish_page', $this->page))
+		if ( ! $this->auth->logged_in('publish_page', $this->_page))
 		{
 			// Now, throw a 403.
 			throw new HTTP_Exception_403;
 		}
 
 		// Log the action.
-		$this->_log("Published page " . $this->page->version()->title . " (ID: " . $this->page->page_id . ")");
+		$this->_log("Published page " . $this->_page->version()->title . " (ID: " . $this->_page->page_id . ")");
 
 		// Update the page version to make it published.
 		// Can't do this via the ORM as we don't want a new version to be created.
@@ -261,15 +261,15 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 			->set(array(
 				'published_from' => $_SERVER['REQUEST_TIME'],
 			))
-			->where('id', '=', $this->page->id)
+			->where('id', '=', $this->_page->id)
 			->execute();
 
 		// Since we've just edited this version object directly we need to reload it to get the current data in the cache.
-		$this->page->reload();
+		$this->_page->reload();
 
 		// Show the page status.
 		$this->template = View::factory("$this->_view_directory/status", array(
-			'page' => $this->page
+			'page' => $this->_page
 		));
 	}
 
@@ -309,7 +309,7 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 	 */
 	public function action_save()
 	{
-		$page = $this->page;
+		$page = $this->_page;
 
 		// Don't reload the page after save by default.
 		$reload = FALSE;
@@ -422,7 +422,7 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 			array(
 				'reload'	=>	$reload,
 				'url'		=> $page->link(),
-				'vid'		=> $this->page->id,
+				'vid'		=> $this->_page->id,
 				'status'	=>	View::factory("$this->_view_directory/status", array('auth' => $this->auth, 'page' => $page))->render(),
 			)
 		));
@@ -439,7 +439,7 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 	 */
 	public function action_save_slots()
 	{
-		$page = $this->page;
+		$page = $this->_page;
 
 		$slots = $this->request->post('slots');
 

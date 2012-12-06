@@ -28,7 +28,7 @@ class Sledge_Model_Chunk_Text extends ORM
 			'text' => array(
 				array('html_entity_decode'),
 				array('urldecode'),
-				array('Text::encode_chunk'),
+				array('Chunk_Text::munge'),
 			),
 	   );
 	}
