@@ -614,8 +614,11 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 	public function action_text_toolbar()
 	{
 
-			$v = View::factory('sledge/editor/page/text_toolbar');
-
-			$this->response->body($v);
+		$v = View::factory(  
+ 			'sledge/editor/page/text_toolbar',   
+ 				array( 'mode' => $this->request->query('mode') )  
+ 		);
+		
+		$this->response->body($v);
 	}
 } // End Sledge_Controller_Cms_Page
