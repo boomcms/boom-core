@@ -13,7 +13,7 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 {
 	/**
 	*
-	* @var	Model_Version_Page	Object representing the current page.
+	* @var	Model_Page	Object representing the current page.
 	*/
 	protected $page;
 
@@ -234,64 +234,6 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 
 			// Redirect to the parent page.
 			$this->response->body($parent->link());
-		}
-	}
-
-	/**
-	 * Move a page to a different position in the tree (reparent).
-	 *
-	 * Performs checks before moving the page:
-	 *	*	That the current user has the required permission.
-	 *	*	The new parent ID is different to the current parent ID.
-	 *	*	The new parent ID is not the current page.
-	 *	*	The new parent page exists.
-	 *
-	 * **Expected POST variables:**
-	 * Name		|	Type		|	Description
-	 * ---------------|-----------------|---------------
-	 * parent_id	|	int		|	The page ID of the new parent page.
-	 *
-	 * @throws	HTTP_Exception_403
-	 * @uses		Model_Version_Page::sort_children()
-	 */
-	public function action_move()
-	{
-		// Check that the current user can edit this page.
-		if ( ! $this->auth->logged_in('edit_parent', $this->page))
-		{
-			throw new HTTP_Exception_403;
-		}
-
-		// Get the ID of the new parent page.
-		$parent_id = $this->request->post('parent_id');
-
-		// Check that the new parent ID is different to the current parent ID and that the new parent ID is not the ID of the current page.
-		if ($parent_id != $this->page->mptt->parent_id AND $parent_id != $this->page->id)
-		{
-			// Try and get the new parent page from the database.
-			$parent = ORM::factory('Page', $parent_id);
-
-			// Does the new parent exist?
-			if ($parent->loaded())
-			{
-				// Parent page exists, so reparent the page.
-
-				// Log the action.
-				$this->_log("Moved page " . $this->page->version()->title . " (ID: " . $this->page->page_id . ") to child of " . $this->page->version()->title . "(ID: " . $this->page->page_id . ")");
-
-				// Move the page to be the last child of the new parent.
-				$this->page
-					->mptt
-					->move_to_last_child($parent_id);
-
-				// Sort the parent's children according to it's child ordering policy.
-				$parent->sort_children();
-			}
-			else
-			{
-				// Parent page doesn't exist so throw an exception.
-				throw new Exception("Cannot find new parent with page ID $parent_id");
-			}
 		}
 	}
 
@@ -614,11 +556,11 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 	public function action_text_toolbar()
 	{
 
-		$v = View::factory(  
- 			'sledge/editor/page/text_toolbar',   
- 				array( 'mode' => $this->request->query('mode') )  
+		$v = View::factory(
+ 			'sledge/editor/page/text_toolbar',
+ 				array( 'mode' => $this->request->query('mode') )
  		);
-		
+
 		$this->response->body($v);
 	}
 } // End Sledge_Controller_Cms_Page

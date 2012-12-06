@@ -15,6 +15,8 @@
  *
  * This class extends the Controller_Cms_Page class so that it inherits the $_page property and the before() function.
  *
+ *
+ * @todo There's a lot of duplication in here for handing POST requests. We could perhaps add a function to save certain settings and have each controller call that function with the settings it wants updated. The current approach gives more flexibility for settings which don't work in a standard way though. At the moment going to stick with the duplication/flexibility, something to think about later though.
  * @package	Sledge
  * @category	Controllers
  */
@@ -68,6 +70,7 @@ class Sledge_Controller_Cms_Page_Settings extends Controller_Cms_Page
 	 * Settings in this group:
 	 *
 	 *  * Internal name
+	 *
 	 *
 	 * @uses	Sledge_Controller::_authorization()
 	 * @uses	Sledge_Controller::_log()
@@ -163,59 +166,77 @@ class Sledge_Controller_Cms_Page_Settings extends Controller_Cms_Page
 		}
 		elseif ($this->_method === Request::POST)
 		{
-			// Save the new settings.
-
-			$this->update_inherited_columns(array(
-				'children_visible_in_nav', 'children_visible_in_nav_cms'
-			));
-
-			$this->page->children_ordering_policy($this->request->post('children_ordering_policy'), $this->request->post('child_ordering_direction'));
-
-			// These settings aren't inherited
-			$this->update_columns(array(
-				'grandchild_template_id', 'children_template_id', 'children_link_prefix'
-			));
-
-			$this->page->save();
-
-			// Updated existing child pages with leftnav visibility or template.
-			if ($this->request->post('visible_in_nav_cascade') == 1 OR
-				$this->request->post('visible_in_nav_cms_cascase') == 1 OR
-				$this->request->post('child_template_cascade') == 1
-			)
-			{
-				$child_template = ($this->page->children_template_id == 0)? $this->page->version()->template_id : $this->page->children_template_id;
-
-				$children = DB::select('page_mptt.id')
-					->from('page_mptt')
-					->where('scope', '=', $this->page->mptt->scope)
-					->where('lft', '>', $this->page->mptt->lft)
-					->where('rgt', '<', $this->page->mptt->rgt)
-					->execute();
-
-				foreach ($children as $child)
-				{
-					$child = ORM::factory('Page', $child['id']);
-
-					if ($this->request->post('visible_in_nav_cascade') == 1)
-					{
-						$child->visible_in_nav = $this->page->children_visible_in_nav;
-					}
-					if ($this->request->post('visible_in_nav_cms_cascade') == 1)
-					{
-						$child->visible_in_nav_cms = $this->page->children_visible_in_nav_cms;
-					}
-					if ($this->request->post('child_template_cascade') == 1)
-					{
-						$child->template_id = $child_template;
-					}
-
-					$child->save();
-				}
-			}
+			// POST request - update the child page settings.
+			// Get the POST data.
+			$post = $this->request->post();
 
 			// Log the action.
 			$this->_log("Saved child page settings for page " . $this->page->version()->title . " (ID: " . $this->page->id . ")");
+
+			// Set the new advanced settings, if allowed.
+			if ($allow_advanced)
+			{
+				$this->page
+					->values($post, array(
+						'children_visible_in_nav',
+						'children_visible_in_nav_cms',
+						'children_link_prefix'	,
+						'grandchild_template_id'
+					));
+
+				// Updated existing child pages with leftnav visibility or template if required.
+				if ($post['visible_in_nav_cascade'] == 1 OR
+					$post['visible_in_nav_cms_cascase'] == 1 OR
+					$post['child_template_cascade'] == 1
+				)
+				{
+					if ($post['child_template_cascade'] == 1)
+					{
+						// Which template should be cascaded to the children?
+						$child_template = ($this->page->children_template_id == 0)? $this->page->version()->template_id : $this->page->children_template_id;
+					}
+
+					// Get IDs of the child pages.
+					$children = DB::select('page_mptt.id')
+						->from('page_mptt')
+						->where('parent_id', '=', $this->page->id)
+						->execute();
+
+					// Loop through the children, loading them from the database / cache and update the settings.
+					foreach ($children as $child)
+					{
+						$child = ORM::factory('Page', $child['id']);
+
+						// Cascading the visible_in_nav setting?
+						if ($post['visible_in_nav_cascade'] == 1)
+						{
+							$child->visible_in_nav = $this->page->children_visible_in_nav;
+						}
+
+						// Cascading the visible_in_nav_cms setting?
+						if ($post['visible_in_nav_cms_cascade'] == 1)
+						{
+							$child->visible_in_nav_cms = $this->page->children_visible_in_nav_cms;
+						}
+
+						// Cascading the template setting?
+						if ($post['child_template_cascade'] == 1)
+						{
+							$child->template_id = $child_template;
+						}
+
+						// Save the child page.
+						$child->save();
+					}
+				}
+
+				// Update the basic values and save the page.
+				$this->page
+					->children_ordering_policy($post['children_ordering_policy'], $post['child_ordering_direction'])
+					->set('children_template_id', $post['children_template_id'])
+					->save();
+
+			}
 		}
 	}
 
@@ -248,6 +269,7 @@ class Sledge_Controller_Cms_Page_Settings extends Controller_Cms_Page
 		$current_version = $this->page
 			->version();
 
+		// Add the data to the view
 		$this->template = View::factory("$this->_view_directory/information", array(
 			'created_by'		=>	$first_version->person->name,
 			'created_time'		=>	$first_version->edited_time,
@@ -258,7 +280,7 @@ class Sledge_Controller_Cms_Page_Settings extends Controller_Cms_Page
 	}
 
 	/**
-	 * ** Edit page navigation settings. **
+	 * **Edit page navigation settings.**
 	 *
 	 * Settings in this group:
 	 *
@@ -268,8 +290,18 @@ class Sledge_Controller_Cms_Page_Settings extends Controller_Cms_Page
 	 *  * Advanced:
 	 *    * Parent page
 	 *
+	 *
+	 *  **Performs the following checks before reparenting a page:**
+	 *
+	 * *	That the current user has the required permission.
+	 * *	The new parent ID is different to the current parent ID.
+	 * *	The new parent ID is not the current page.
+	 * *	The new parent page exists.
+	 *
 	 * @uses	Sledge_Controller::_authorization()
 	 * @uses	Sledge_Controller::_log()
+	 * @uses	Model_Page_MPTT::move_tp_last_child()
+	 * @uses	Model_Page::sort_children()
 	 */
 	public function action_navigation()
 	{
@@ -291,18 +323,35 @@ class Sledge_Controller_Cms_Page_Settings extends Controller_Cms_Page
 		}
 		elseif ($this->_method === Request::POST)
 		{
-			// Reparenting the page?
-//			$parent_id = $this->request->post('parent_id');
-//			if ($parent_id AND $parent_id != $this->page->mptt->parent_id AND $parent_id != $this->page->id)
-//			{
-//				Request::factory('cms/page/move/' . $this->page->pk())->post(array('parent_id' => $parent_id))->execute();
-//			}
+			// Get the POST data.
+			$post = $this->request->post();
+
+			// Allow changing the advanced settings?
+			if ($allow_advanced)
+			{
+				// Reparenting the page?
+				// Check that the ID of the parent has been changed and the page hasn't been set to be a child of itself.
+				if ($parent_id AND $post['parent_id'] != $this->page->mptt->parent_id AND $post['parent_id'] != $this->page->id)
+				{
+					// Check that the new parent ID is a valid page.
+					$parent = ORM::factory('page', $post['parent_id']);
+
+					if ($parent->loaded())
+					{
+						// New parent is a valid page so update the page.
+						// Move the page to be the last child of the new parent.
+						$this->page
+							->mptt
+							->move_to_last_child($post['parent_id']);
+
+						// Now sort the parent's children according to it's child ordering policy to move the new page into place.
+						$parent->sort_children();
+					}
+				}
+			}
 
 			// Log the action.
 			$this->_log("Saved navigation settings for page " . $this->page->version()->title . " (ID: " . $this->page->id . ")");
-
-			// Get the POST data.
-			$post = $this->request->post();
 
 			// Update the visible_in_nav and visible_in_nav_cms settings.
 			$this->page
