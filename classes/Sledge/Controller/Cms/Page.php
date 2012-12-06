@@ -565,4 +565,16 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 
 		$this->response->body($v);
 	}
+
+	/**
+	* slideshow toolbar.
+	*
+	*/
+	public function action_slide_toolbar()
+	{
+
+			$v = View::factory( 'sledge/editor/page/slide_toolbar' );
+
+			$this->response->body($v);
+	}
 } // End Sledge_Controller_Cms_Page
