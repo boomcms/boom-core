@@ -76,10 +76,12 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 			}
 
 			// Get all the templates which exist in the DB, ordered alphabetically.
-			$templates = ORM::factory('Template')
+			$templates = DB::select('id', 'name')
+				->from('templates')
 				->where('visible', '=', TRUE)
 				->order_by('name', 'asc')
-				->find_all();
+				->execute()
+				->as_array('id', 'name');
 
 			// Show the form for selecting the parent page and template.
 			$this->template = View::factory("$this->_view_directory/add", array(
