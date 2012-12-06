@@ -28,6 +28,11 @@ class Sledge_Chunk_Text extends Chunk
 		}
 	}
 
+	/**
+	 *
+	 * @uses Chunk_Text::unmunge()
+	 * @uses Chunk_Text::embed_video()
+	 */
 	protected function _show()
 	{
 		$text = $this->_chunk->text;
