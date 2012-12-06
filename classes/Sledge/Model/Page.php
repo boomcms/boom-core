@@ -219,20 +219,51 @@ class Sledge_Model_Page extends ORM_Taggable
 	}
 
 	/**
-	 * Delete a page.
+	 * Create a new version of a page.
 	 *
-	 * Deleting a page involves three things:
-	 *	*	Sets the deleted flag on the page to true
-	 *	*	Deletes the page from the MPTT tree.
-	 *	*	If $with_children is true calls itself recursively to delete child pages
+	 * Accepts an optional array of values to apply to the new version.
+	 *
+	 * @param array $values
+	 * @return Model_Page_Version
+	 */
+	public function create_version(array $values = NULL)
+	{
+		// Get the current version
+		$current = $this->version();
+
+		// Create a new version with the same values as the current version.
+		$this->_version = ORM::factory('Page_Version')
+			->values($current->object());
+
+		// Update the new version with any update values.
+		if ( ! empty($values))
+		{
+			$this->_version
+				->values($values);
+		}
+
+		// Return the new version
+		return $this->_version;
+	}
+
+	/**
+	 * **Delete a page.**
+	 *
+	 * Deleting a page involves a number of steps:
+	 *
+	 * *	Create a new version of the page.
+	 * *	Sets the deleted flag of the new version to TRUE.
+	 * *	Publish the new, deleted version.
+	 * *	Delete the page from the MPTT tree.
+	 * *	If $with_children is true calls itself recursively to delete child pages
 	 *
 	 * @param	boolean	$with_children	Whether to delete the child pages as well.
-	 * @return	Model_Version_Page
+	 * @return	Model_Page
 	 */
 	public function delete($with_children = FALSE)
 	{
 		// Can't delete a page which doesn't exist.
-		if ($this->loaded())
+		if ($this->_loaded)
 		{
 			// Delete the child pages as well?
 			if ($with_children === TRUE)
@@ -255,12 +286,15 @@ class Sledge_Model_Page extends ORM_Taggable
 			$this->mptt->delete();
 
 			// Flag the page as deleted.
-			$this->deleted = TRUE;
+			$this
+				->create_version(array(
+					'page_deleted'		=>	TRUE,	// Flag the new version as deleting the page
+					'embargoed_until'	=>	$_SERVER['REQUEST_TIME'],	// Make the new version live
+					'published'			=>	TRUE
+				))
+				->create();
 
-			// Save the page.
-			$this->save();
-
-			// Return a cleared object.
+			// Return a cleared page object.
 			return $this->clear();
 		}
 	}
