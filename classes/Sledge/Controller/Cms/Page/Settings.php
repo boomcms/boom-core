@@ -292,21 +292,25 @@ class Sledge_Controller_Cms_Page_Settings extends Controller_Cms_Page
 		elseif ($this->_method === Request::POST)
 		{
 			// Reparenting the page?
-			$parent_id = $this->request->post('parent_id');
-			if ($parent_id AND $parent_id != $this->page->mptt->parent_id AND $parent_id != $this->page->id)
-			{
-				Request::factory('cms/page/move/' . $this->page->pk())->post(array('parent_id' => $parent_id))->execute();
-			}
-
-			$this->update_inherited_columns(array(
-				'template_id', 'visible_in_nav', 'visible_in_nav_cms'
-			));
-
-			// Save the new settings.
-			$this->page->save();
+//			$parent_id = $this->request->post('parent_id');
+//			if ($parent_id AND $parent_id != $this->page->mptt->parent_id AND $parent_id != $this->page->id)
+//			{
+//				Request::factory('cms/page/move/' . $this->page->pk())->post(array('parent_id' => $parent_id))->execute();
+//			}
 
 			// Log the action.
 			$this->_log("Saved navigation settings for page " . $this->page->version()->title . " (ID: " . $this->page->id . ")");
+
+			// Get the POST data.
+			$post = $this->request->post();
+
+			// Update the visible_in_nav and visible_in_nav_cms settings.
+			$this->page
+				->values(array(
+					'visible_in_nav'		=>	$post['visible_in_nav'],
+					'visible_in_nav_cms'	=>	$post['visible_in_nav_cms'],
+				))
+				->save();
 		}
 	}
 
@@ -461,7 +465,7 @@ class Sledge_Controller_Cms_Page_Settings extends Controller_Cms_Page
 		if ($this->_method === Request::GET)
 		{
 			// GET request - show the visiblity form.
-			$this->_template = View::factory("$this->_view_directory/visibility", array(
+			$this->template = View::factory("$this->_view_directory/visibility", array(
 				'page'	=>	$this->page,
 			));
 		}
