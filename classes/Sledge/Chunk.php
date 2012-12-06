@@ -193,9 +193,12 @@ abstract class Sledge_Chunk
 		// Load the chunk
 		$chunk = Chunk::find($type, $slotname, $page->version(), $inherit);
 
-		// Should the chunk be editable?
-		// This can be changed to calling editable(), for instance if we want to make a chunk read only.
-		$editable = (Editor::state() == Editor::EDIT AND Auth::instance()->logged_in("edit_slot_$slotname", $page));
+		/** Should the chunk be editable?
+		 * This can be changed to calling editable(), for instance if we want to make a chunk read only.
+		 *
+		 * @todo Chunk::factory() will be called multiple times to display a single page - need to remove duplicate calles to Auth::instance()->logged_in()
+		 */
+		$editable = (Editor::state() == Editor::EDIT AND Auth::instance()->logged_in("edit_page_content", $page));
 
 		return new $class($page->version(), $chunk, $editable);
 	}
