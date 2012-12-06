@@ -15,7 +15,7 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 	*
 	* @var	Model_Page	Object representing the current page.
 	*/
-	protected $page;
+	protected $_page;
 
 	/**
 	 * The directory where views used by this class are stored.
