@@ -16,10 +16,8 @@ class Sledge_Controller_Cms_Tag extends Sledge_Controller
 	{
 		parent::before();
 
-		if ( ! $this->auth->logged_in('manage_tags'))
-		{
-			throw new HTTP_Exception_403;
-		}
+		// Permissions check.
+		$this->_authorization('manage_tags');
 
 		$this->tag = ORM::factory('Tag', $this->request->param('id'));
 	}

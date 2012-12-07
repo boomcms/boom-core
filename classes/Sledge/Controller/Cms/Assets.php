@@ -25,10 +25,8 @@ class Sledge_Controller_Cms_Assets extends Sledge_Controller
 	{
 		parent::before();
 
-		 if ( ! $this->auth->logged_in('manage assets'))
-		 {
-			 throw new HTTP_Exception_403;
-		 }
+		// Permissions check.
+		$this->_authorization('manage assets');
 	}
 
 	/**

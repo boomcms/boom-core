@@ -20,10 +20,8 @@ class Sledge_Controller_Cms_Pages extends Sledge_Controller
 	{
 		parent::before();
 
-		if ( ! $this->auth->logged_in('manage_pages'))
-		{
-			throw new HTTP_Exception_403;
-		}
+		// Permissions check
+		$this->_authorization('manage_pages');
 	}
 
 	/**

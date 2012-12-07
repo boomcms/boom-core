@@ -25,10 +25,7 @@ class Sledge_Controller_Cms_Templates extends Sledge_Controller
 		parent::before();
 
 		// Are they allowed to view the template manager?
-		if ( ! $this->auth->logged_in('manage_templates'))
-		{
-			throw new HTTP_Exception_403;
-		}
+		$this->_authorization('manage_templates');
 	}
 
 	/**

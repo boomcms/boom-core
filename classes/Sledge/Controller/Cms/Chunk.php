@@ -32,10 +32,8 @@ class Sledge_Controller_Cms_Chunk extends Sledge_Controller
 
 		$this->page = ORM::factory('Page', $this->request->param('id'));
 
-		if ( ! $this->auth->logged_in('edit_page', $this->page))
-		{
-			throw new HTTP_Exception_403;
-		}
+		// Permissions check
+		$this->_authorization('edit_page', $this->page);
 	}
 
 	/**
