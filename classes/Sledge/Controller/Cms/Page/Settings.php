@@ -241,45 +241,6 @@ class Sledge_Controller_Cms_Page_Settings extends Controller_Cms_Page
 	}
 
 	/**
-	 * Shows information about the page such as who created it, who last edited it.
-	 * Doesn't include any settings which can be changed.
-	 *
-	 * @uses	Sledge_Controller::_authorization()
-	 */
-	public function action_information()
-	{
-		// Permissions check
-		$this->_authorization('edit_page', $this->_page);
-
-		// Get the first version of the page.
-		// This is used to display the author and creation time of the page.
-		$first_version = $this->_page
-			->first_version();
-
-		// Get a count of the number of versions for this page.
-		// Only count the versions which have been published.
-		$version_count = $this->_page
-			->versions
-			->where('stashed', '=', FALSE)
-			->where('published', '=', TRUE)
-			->where('embargoed_until', '<=', $this->editor->live_time())
-			->count_all();
-
-		// Get the current version of the page to report when the page was last modified and by whom.
-		$current_version = $this->_page
-			->version();
-
-		// Add the data to the view
-		$this->template = View::factory("$this->_view_directory/information", array(
-			'created_by'		=>	$first_version->person->name,
-			'created_time'		=>	$first_version->edited_time,
-			'last_modified_by'	=>	$current_version->person->name,
-			'last_modified_time'	=>	$current_version->edited_time,
-			'version_count'		=>	$version_count,
-		));
-	}
-
-	/**
 	 * **Edit page navigation settings.**
 	 *
 	 * Settings in this group:
