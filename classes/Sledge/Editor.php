@@ -28,7 +28,7 @@ abstract class Sledge_Editor
 	public static $instance;
 
 	/**
-	 * Session cache for Editor::live_time() to avoid repeatedly checking the session data.
+	 * Session cache for $this->editor->live_time() to avoid repeatedly checking the session data.
 	 *
 	 * @var	integer
 	 */
@@ -63,7 +63,7 @@ abstract class Sledge_Editor
 	{
 		if (Editor::$instance === NULL)
 		{
-			Editor::$instance = new Editor(Auth::instance(), Sesssion::instance());
+			Editor::$instance = new Editor(Auth::instance(), Session::instance());
 		}
 
 		// Return the editor instance.

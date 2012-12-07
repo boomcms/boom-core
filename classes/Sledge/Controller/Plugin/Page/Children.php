@@ -184,7 +184,7 @@ class Sledge_Controller_Plugin_Page_Children extends Sledge_Controller
 		// This is done individually in each action because different output formats needs different columns
 		$results = $query
 			->select('pages.id', 'title', 'page_links.location')
-			->select(array(DB::expr("visible_from <= " . Editor::live_time() . " and (visible_to >= " . Editor::live_time() . " or visible_to = 0)"), 'visible'))
+			->select(array(DB::expr("visible_from <= " . $this->editor->live_time() . " and (visible_to >= " . $this->editor->live_time() . " or visible_to = 0)"), 'visible'))
 			->select(array(
 				DB::select(DB::expr('1'))
 					->from('page_mptt')
@@ -340,7 +340,7 @@ class Sledge_Controller_Plugin_Page_Children extends Sledge_Controller
 				->join(array(
 					DB::select(array(DB::expr('max(id)'), 'id'))
 						->from('page_versions')
-						->where('embargoed_until', '<=', Editor::live_time())
+						->where('embargoed_until', '<=', $this->editor->live_time())
 						->where('stashed', '=', FALSE)
 						->where('published', '=', TRUE)
 						->group_by('page_id'),
@@ -348,9 +348,9 @@ class Sledge_Controller_Plugin_Page_Children extends Sledge_Controller
 				))
 				->on('page_versions.id', '=', 'current_version.id')
 				->where('page_versions.page_deleted', '=', FALSE)
-				->where('visible_from', '<=', Editor::live_time())
+				->where('visible_from', '<=', $this->editor->live_time())
 				->and_where_open()
-					->where('visible_to', '>=', Editor::live_time())
+					->where('visible_to', '>=', $this->editor->live_time())
 					->or_where('visible_to', '=', 0)
 				->and_where_close();
 

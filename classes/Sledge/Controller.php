@@ -61,7 +61,7 @@ class Sledge_Controller extends Controller
 		$this->actual_person = $this->auth->get_real_user();
 
 		// Get an editor instance
-		$this->editor = Edtior::instance();
+		$this->editor = Editor::instance();
 	}
 
 	/**
