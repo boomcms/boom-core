@@ -324,7 +324,7 @@ class Sledge_Controller_Cms_Assets extends Sledge_Controller
 				->execute();
 
 			// Put everthing in the views.
-			$this->template = View::factory('sledge/assets/list', array(
+			$this->template = View::factory("$this->_view_directory/list", array(
 				'assets'		=>	$assets,
 				'tag'			=>	$tag,
 				'total_size'	=>	$size,
