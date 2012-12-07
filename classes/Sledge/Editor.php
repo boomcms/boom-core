@@ -1,26 +1,74 @@
 <?php defined('SYSPATH') OR die('No direct script access.');
 
+/**
+ * Class for the CMS editor
+ *
+ * @package	Sledge
+ * @author	Rob Taylor
+ * @copyright	Hoop Associates
+ */
 abstract class Sledge_Editor
 {
 	const EDIT = 1;
 
 	const DISABLED = 2;
 
-	const PREVIEW_ALL = 3;
+	const PREVIEW = 3;
+
+	/**
+	 *
+	 * @var	Auth
+	 */
+	protected $_auth;
+
+	/**
+	 *
+	 * @var	Editor
+	 */
+	public static $instance;
 
 	/**
 	 * Session cache for Editor::live_time() to avoid repeatedly checking the session data.
 	 *
 	 * @var	integer
 	 */
-	protected static $_live_time;
+	protected $_live_time;
+
+	/**
+	 *
+	 * @var	Session
+	 */
+	protected $_session;
 
 	/**
 	 * Session cache for Editor::state() to avoid the need to check the session data each time Editor::state() is called.
 	 *
 	 * @var	integer
 	 */
-	protected static $_state;
+	protected $_state;
+
+	public function __construct(Auth $auth, Session $session)
+	{
+		// Store the Auth and Session with the object.
+		$this->_auth = $auth;
+		$this->_session = $session;
+	}
+
+	/**
+	 * Singleton pattern
+	 *
+	 * @return Editor
+	 */
+	public static function instance()
+	{
+		if (Editor::$instance === NULL)
+		{
+			Editor::$instance = new Editor(Auth::instance(), Sesssion::instance());
+		}
+
+		// Return the editor instance.
+		return Editor::$instance;
+	}
 
 	/**
 	 * Helper method to set / get the 'state' of the CMS editor.
@@ -33,7 +81,7 @@ abstract class Sledge_Editor
 	 * @param	integer	$state
 	 * @return	mixed
 	 */
-	public static function state($state = NULL)
+	public function state($state = NULL)
 	{
 		// Name of the session data key where the state is stored.
 		$session_key = 'editor_state';
@@ -43,29 +91,29 @@ abstract class Sledge_Editor
 			// Act as a getter.
 
 			// Check the value of Editor::$_state to avoid repeatedly checking the session data.
-			if (Editor::$_state === NULL)
+			if ($this->_state === NULL)
 			{
 				// Determine the default value to pass to Session::get()
 				// If the user is logged in then the default is EDIT, if they're not logged in then it should be disabled.
-				$default = (Auth::instance()->logged_in())? Editor::EDIT : Editor::DISABLED;
+				$default = ($this->_auth->logged_in())? Editor::EDIT : Editor::DISABLED;
 
 				// Editor::$_state hasn't been set so get the value from the session data.
-				Editor::$_state = Session::instance()
+				$this->_state = $this->_session
 					->get($session_key, $default);
 			}
 
 			// Return the value of Editor::$_state;
-			return Editor::$_state;
+			return $this->_state;
 		}
 		else
 		{
 			// Act as a setter.
 
 			// Set the new value in Editor::$_state
-			Editor::$_state = $state;
+			$this->_state = $state;
 
 			// Save the value to the session data.
-			return Session::instance()
+			return $this->_session
 				->set($session_key, $state);
 		}
 	}
@@ -81,7 +129,7 @@ abstract class Sledge_Editor
 	 * @param	integer	$time	Used to set the live time, should be a unix timestamp.
 	 * @return	mixed
 	 */
-	public static function live_time($time = NULL)
+	public function live_time($time = NULL)
 	{
 		// The name of the session data key where the live time is stored.
 		$session_key = 'editor_live_time';
@@ -91,25 +139,25 @@ abstract class Sledge_Editor
 			// Act as a getter.
 
 			// Has Editor::$_live_time been set?
-			if (Editor::$_live_time === NULL)
+			if ($this->_live_time === NULL)
 			{
 				// Get the value from the session data.
-				Editor::$_live_time = Session::instance()
+				$this->_live_time = Session::instance()
 					->get($session_key, $_SERVER['REQUEST_TIME']);
 			}
 
 			// Return the value
-			return Editor::$_live_time;
+			return $this->_live_time;
 		}
 		else
 		{
 			// Set the time that should be used for viewing pages.
 
 			// Set the value in Editor::$_live_time
-			Editor::$_live_time = $time;
+			$this->_live_time = $time;
 
 			// Store the value in the session data.
-			return Session::instance()
+			return $this->_session
 				->set($session_key, $time);
 		}
 	}

@@ -314,7 +314,7 @@ class Sledge_Controller_Plugin_Page_Children extends Sledge_Controller
 		}
 
 		// Logged in view?
-		if (Editor::state() === Editor::EDIT)
+		if ($this->editor->state() === Editor::EDIT)
 		{
 			// Get the most recent version for each page.
 			$query

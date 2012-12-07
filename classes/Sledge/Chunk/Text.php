@@ -39,7 +39,7 @@ class Sledge_Chunk_Text extends Chunk
 		$text = Chunk_Text::unmunge($text);
 
 		// Embed youtube videos when in site view.
-		if (Editor::state() != Editor::EDIT)
+		if (Editor::instance()->state() != Editor::EDIT)
 		{
 			// This mammoth regular expression matches a URL
 			//  Rob didn't write this, I'm not smart enough for this.

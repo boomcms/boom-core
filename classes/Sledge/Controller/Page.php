@@ -42,7 +42,7 @@ class Sledge_Controller_Page extends Sledge_Controller
 		$this->_page = $this->request->param('page');
 
 		// Should the editor be enabled?
-		if (Editor::state() == Editor::EDIT AND $this->auth->logged_in('edit_page', $this->_page))
+		if ($this->editor->state() == Editor::EDIT AND $this->auth->logged_in('edit_page', $this->_page))
 		{
 			$this->_editable = TRUE;
 		}
@@ -50,7 +50,7 @@ class Sledge_Controller_Page extends Sledge_Controller
 		// If the page shouldn't be editable then check that it's visible.
 		if ( ! $this->_editable)
 		{
-			if ( ! $this->_page->is_visible() OR (Editor::state() === Editor::DISABLED AND ! $this->_page->is_published()))
+			if ( ! $this->_page->is_visible() OR ($this->editor->state() === Editor::DISABLED AND ! $this->_page->is_published()))
 			{
 				throw new HTTP_Exception_404;
 			}

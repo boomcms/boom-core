@@ -134,7 +134,7 @@ abstract class Sledge_Chunk
 				{
 					$html = HTML::chunk_classes($html, $this->_type, $this->_chunk->slotname, $this->target(), $this->_template, $this->_page->id, $this->has_content());
 				}
-				elseif (Editor::state() == Editor::DISABLED)
+				elseif (Editor::instance()->state() == Editor::DISABLED)
 				{
 					// Save to cache when in site view.
 					// Originally the chunk code was designed to be able to generate the cache for the site view when browsing a page in the CMS.
@@ -198,7 +198,7 @@ abstract class Sledge_Chunk
 		 *
 		 * @todo Chunk::factory() will be called multiple times to display a single page - need to remove duplicate calles to Auth::instance()->logged_in()
 		 */
-		$editable = (Editor::state() == Editor::EDIT AND Auth::instance()->logged_in("edit_page_content", $page));
+		$editable = (Editor::instance()->state() == Editor::EDIT AND Auth::instance()->logged_in("edit_page_content", $page));
 
 		return new $class($page->version(), $chunk, $editable);
 	}

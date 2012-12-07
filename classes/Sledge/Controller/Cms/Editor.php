@@ -90,7 +90,7 @@ class Sledge_Controller_Cms_Editor extends Sledge_Controller
 	 * ---------------|-----------------|---------------
 	 * state		|	string 	|	Either disabled, preview-all, or edit.
 	 *
-	 * @uses	Editor::state()
+	 * @uses	$this->editor->state()
 	 */
 	public function action_state()
 	{
@@ -109,7 +109,7 @@ class Sledge_Controller_Cms_Editor extends Sledge_Controller
 		}
 
 		// Save the state to the session data.
-		Editor::state($numeric_state);
+		$this->editor->state($numeric_state);
 	}
 
 	/**

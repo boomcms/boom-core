@@ -36,6 +36,13 @@ class Sledge_Controller extends Controller
 	 */
 	protected $auth;
 
+	/**
+	 * Holds the editor instance
+	 *
+	 * @var	Editor
+	 */
+	protected $editor;
+
 	protected $template;
 
 	public function before()
@@ -52,6 +59,9 @@ class Sledge_Controller extends Controller
 		// Who are we?
 		$this->person = $this->auth->get_user();
 		$this->actual_person = $this->auth->get_real_user();
+
+		// Get an editor instance
+		$this->editor = Edtior::instance();
 	}
 
 	/**
