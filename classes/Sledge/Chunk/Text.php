@@ -10,6 +10,20 @@ class Sledge_Chunk_Text extends Chunk
 {
 	protected $_type = 'text';
 
+	/**
+	 * Embed HTML for a YouTube video.
+	 *
+	 * @var string
+	 */
+	public static $youtube_embed = "<iframe width=\"560\" height=\"315\" src=\"http://www.youtube.com/embed/:video_id\" frameborder=\"0\" allowfullscreen></iframe>";
+
+	/**
+	 * Embed HTML for a Vimeo video.
+	 *
+	 * @var string
+	 */
+	public static $vimeo_embed = "<iframe src='http://player.vimeo.com/video/:video_id' width='500' height='281' frameborder='0' webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>";
+
 	protected function _add_html($text)
 	{
 		switch ($this->_chunk->slotname)
@@ -88,25 +102,41 @@ class Sledge_Chunk_Text extends Chunk
 	 */
 	public static function embed_video($url)
 	{
+		// Check for a scheme at the start of the URL, add it if necessary.
+		if (substr($url, 0, 4) != 'http')
+		{
+			$url = 'http://' . $url;
+		}
 
 		$url = parse_url($url);
 
 		if (strpos($url['host'], 'youtube') !== FALSE AND isset($url['query']))
 		{
-			// Youtube video
+			// Youtube video long format.
 			parse_str($url['query']);
 
 			if (isset($v))
 			{
-				return "<iframe width='560' height='315' src='http://www.youtube.com/embed/$v' frameborder='0' allowfullscreen></iframe>";
+				$video_id = $v;
+				$embed_html = Chunk_Text::$youtube_embed;
 			}
+		}
+		elseif ($url['host'] == 'youtu.be')
+		{
+			// Youtube video short link.
+			$video_id = str_replace("/", "", $url['path']);
+			$embed_html = Chunk_Text::$youtube_embed;
 		}
 		elseif (strpos($url['host'], 'vimeo') !== FALSE AND isset($url['path']))
 		{
 			// Vimeo video
-			$id = str_replace("/", "", $url['path']);
+			$video_id = str_replace("/", "", $url['path']);
+			$embed_html = Chunk_Text::$vimeo_embed;
+		}
 
-			return "<iframe src='http://player.vimeo.com/video/$id' width='500' height='281' frameborder='0' webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>";
+		if (isset($video_id))
+		{
+			return str_replace(':video_id', $video_id, $embed_html);
 		}
 	}
 
