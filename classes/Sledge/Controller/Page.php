@@ -78,11 +78,6 @@ class Sledge_Controller_Page extends Sledge_Controller
 		{
 			throw new HTTP_Exception_404;
 		}
-
-		// Set some view global variables.
-		View::bind_global('page', $this->_page);
-		View::bind_global('auth', $this->auth);
-		View::bind_global('request', $this->request);
 	}
 
 	/**
@@ -94,10 +89,14 @@ class Sledge_Controller_Page extends Sledge_Controller
 	{
 		$template = ($this->request->query('template'))? ORM::factory('Template', $this->request->query('template')) : $this->_page->version()->template;
 
-		// If no template has been set or the template file doesn't exist then use the orange template.
-		$filename = ($template->loaded() AND Kohana::find_file('views', Model_Template::DIRECTORY . $template->filename))? $template->filename : 'orange';
+		// Set some variables which need to be used globally in the views.
+		View::bind_global('page', $this->_page);
+		View::bind_global('auth', $this->auth);
+		View::bind_global('request', $this->request);
+		View::bind_global('editor', $this->editor);
 
-		$html = View::factory(Model_Template::DIRECTORY . $filename)->render();
+		$html = View::factory(Model_Template::DIRECTORY . $template->filename)
+			->render();
 
 		// If we're in the CMS then add the sledge editor the the page.
 		if ($this->auth->logged_in())

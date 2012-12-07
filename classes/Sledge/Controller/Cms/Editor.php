@@ -150,6 +150,8 @@ class Sledge_Controller_Cms_Editor extends Sledge_Controller
 		View::bind_global('page', $page);
 
 		// Show the editor topbar
-		$this->template = View::factory('sledge/editor/toolbar');
+		$this->template = View::factory('sledge/editor/toolbar', array(
+			'editor'	=>	$this->editor,
+		));
 	}
 }
