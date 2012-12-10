@@ -17,7 +17,7 @@ class Sledge_HTTP_Exception_500 extends Kohana_HTTP_Exception_500
 		if (Request::initial()->is_ajax())
 		{
 			// Get a single line representation of the exception.
-			$body = $this->text();
+			$body = $this->getMessage();
 		}
 		else
 		{
