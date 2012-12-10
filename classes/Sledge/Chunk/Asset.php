@@ -14,7 +14,7 @@ class Sledge_Chunk_Asset extends Chunk
 
 	protected $_type = 'asset';
 
-	public function __construct(Model_Page_Version $page, $chunk, $editable = TRUE)
+	public function __construct(Model_Page $page, $chunk, $editable = TRUE)
 	{
 		parent::__construct($page, $chunk, $editable);
 

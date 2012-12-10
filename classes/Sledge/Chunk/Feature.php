@@ -16,7 +16,7 @@ class Sledge_Chunk_Feature extends Chunk
 
 	protected $_type = 'feature';
 
-	public function __construct(Model_Page_Version $page, $chunk, $editable = TRUE)
+	public function __construct(Model_Page $page, $chunk, $editable = TRUE)
 	{
 		parent::__construct($page, $chunk, $editable);
 

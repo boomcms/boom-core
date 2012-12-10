@@ -200,7 +200,7 @@ abstract class Sledge_Chunk
 		 */
 		$editable = (Editor::instance()->state() == Editor::EDIT AND Auth::instance()->logged_in("edit_page_content", $page));
 
-		return new $class($page->version(), $chunk, $editable);
+		return new $class($page, $chunk, $editable);
 	}
 
 	/**

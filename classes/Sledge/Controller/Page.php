@@ -72,10 +72,9 @@ class Sledge_Controller_Page extends Sledge_Controller
 		$template = ($this->request->query('template'))? ORM::factory('Template', $this->request->query('template')) : $this->_page->version()->template;
 
 		// Set some variables which need to be used globally in the views.
-		View::bind_global('page', $this->_page);
 		View::bind_global('auth', $this->auth);
-		View::bind_global('request', $this->request);
 		View::bind_global('editor', $this->editor);
+		View::bind_global('page', $this->_page);
 
 		$html = View::factory(Model_Template::DIRECTORY . $template->filename)
 			->render();
@@ -83,7 +82,7 @@ class Sledge_Controller_Page extends Sledge_Controller
 		// If we're in the CMS then add the sledge editor the the page.
 		if ($this->auth->logged_in())
 		{
-			$html = $this->editor->insert($html, $pgae->id);
+			$html = $this->editor->insert($html, $this->_page->id);
 		}
 
 		$this->response->body($html);
