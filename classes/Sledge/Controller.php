@@ -9,7 +9,7 @@
  * @author	Rob Taylor
  * @copyright	Hoop Associates
  */
-class Sledge_Controller extends Controller
+class Sledge_Controller extends Controller_Csrf
 {
 	/**
 	 * The current user.
@@ -58,7 +58,6 @@ class Sledge_Controller extends Controller
 
 		// Who are we?
 		$this->person = $this->auth->get_user();
-		$this->actual_person = $this->auth->get_real_user();
 
 		// Get an editor instance
 		$this->editor = Editor::instance();
