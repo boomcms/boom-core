@@ -106,8 +106,6 @@ class Sledge_Controller extends Controller
 
 			// Set some variables.
 			View::bind_global('person', $this->person);
-			View::bind_global('actual_person', $this->actual_person);
-			View::bind_global('request', $this->request);
 			View::bind_global('auth', $this->auth);
 
 			// Show the template.
