@@ -14,34 +14,23 @@ class Sledge_Controller extends Controller
 	/**
 	 * The current user.
 	 *
-	 * @access	protected
 	 * @var		Model_Person
 	 */
-	protected $person;
-
-	/**
-	 * The real current user.
-	 * Used for Hoop users to pose as a different user.
-	 *
-	 * @access	protected
-	 * @var		Model_Person
-	 */
-	protected $actual_person;
+	public $person;
 
 	/**
 	 * Holds the auth instance.
 	 *
-	 * @access	protected
 	 * @var		Auth
 	 */
-	protected $auth;
+	public $auth;
 
 	/**
 	 * Holds the editor instance
 	 *
 	 * @var	Editor
 	 */
-	protected $editor;
+	public $editor;
 
 	protected $template;
 

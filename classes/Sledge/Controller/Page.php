@@ -22,13 +22,13 @@ class Sledge_Controller_Page extends Sledge_Controller
 	 *
 	 * @var	boolean
 	 */
-	protected $_editable = FALSE;
+	public $editable = FALSE;
 
 	/**
 	 * @var	Model_Page	Which page is being displayed. Set in Controller_Site::before() from $this->request->param('page')
 	 *
 	 */
-	protected $_page;
+	public $page;
 
 	/**
 	 * Set the page and options properties.
@@ -39,25 +39,25 @@ class Sledge_Controller_Page extends Sledge_Controller
 		parent::before();
 
 		// Assign the page we're viewing to Sledge_Controller_Page::$_page;
-		$this->_page = $this->request->param('page');
+		$this->page = $this->request->param('page');
 
 		// Should the editor be enabled?
 		if ($this->editor->state() == Editor::EDIT AND $this->auth->logged_in('edit_page', $this->_page))
 		{
-			$this->_editable = TRUE;
+			$this->editable = TRUE;
 		}
 
 		// If the page shouldn't be editable then check that it's visible.
-		if ( ! $this->_editable)
+		if ( ! $this->editable)
 		{
-			if ( ! $this->_page->is_visible() OR ($this->editor->state() === Editor::DISABLED AND ! $this->_page->is_published()))
+			if ( ! $this->page->is_visible() OR ($this->editor->state() === Editor::DISABLED AND ! $this->page->is_published()))
 			{
 				throw new HTTP_Exception_404;
 			}
 		}
 
 		// Check that the page hasn't been deleted at this version.
-		if ($this->_page->version()->page_deleted)
+		if ($this->page->version()->page_deleted)
 		{
 			throw new HTTP_Exception_404;
 		}
@@ -69,12 +69,12 @@ class Sledge_Controller_Page extends Sledge_Controller
 	 */
 	public function action_html()
 	{
-		$template = ($this->request->query('template'))? ORM::factory('Template', $this->request->query('template')) : $this->_page->version()->template;
+		$template = ($this->request->query('template'))? ORM::factory('Template', $this->request->query('template')) : $this->page->version()->template;
 
 		// Set some variables which need to be used globally in the views.
 		View::bind_global('auth', $this->auth);
 		View::bind_global('editor', $this->editor);
-		View::bind_global('page', $this->_page);
+		View::bind_global('page', $this->page);
 
 		$html = View::factory(Model_Template::DIRECTORY . $template->filename)
 			->render();
@@ -82,7 +82,7 @@ class Sledge_Controller_Page extends Sledge_Controller
 		// If we're in the CMS then add the sledge editor the the page.
 		if ($this->auth->logged_in())
 		{
-			$html = $this->editor->insert($html, $this->_page->id);
+			$html = $this->editor->insert($html, $this->page->id);
 		}
 
 		$this->response->body($html);
@@ -96,14 +96,14 @@ class Sledge_Controller_Page extends Sledge_Controller
 		$this->response
 			->headers('Content-Type', 'application/json')
 			->body(json_encode(array(
-				'id'			=>	$this->_page->id,
-				'title'			=>	$this->_page->version()->title,
-				'visible'		=>	$this->_page->visible,
-				'visible_to'	=>	$this->_page->visible_to,
-				'visible_from'	=>	$this->_page->visible_from,
-				'parent'		=>	$this->_page->mptt->parent_id,
-				'bodycopy'	=>	Chunk::factory('text', 'bodycopy', $this->_page)->text(),
-				'standfirst'		=>	Chunk::factory('text', 'standfirst', $this->_page)->text(),
+				'id'			=>	$this->page->id,
+				'title'			=>	$this->page->version()->title,
+				'visible'		=>	$this->page->visible,
+				'visible_to'	=>	$this->page->visible_to,
+				'visible_from'	=>	$this->page->visible_from,
+				'parent'		=>	$this->page->mptt->parent_id,
+				'bodycopy'	=>	Chunk::factory('text', 'bodycopy', $this->page)->text(),
+				'standfirst'		=>	Chunk::factory('text', 'standfirst', $this->page)->text(),
 			)));
 	}
 
@@ -118,7 +118,7 @@ class Sledge_Controller_Page extends Sledge_Controller
 		// Use the child page plugin to avoid code duplication.
 		$pages = Request::factory('plugin/page/children.json')
 				->post(array(
-					'parent'	=>	$this->_page,
+					'parent'	=>	$this->page,
 					'order'		=>	'visible_from',
 				))
 				->execute()
@@ -140,8 +140,8 @@ class Sledge_Controller_Page extends Sledge_Controller
 		}
 
 		$feed = Feed::create(array(
-				'title'	=>	$this->_page->title,
-				'link'	=>	$this->_page->link() . ".rss",
+				'title'	=>	$this->page->title,
+				'link'	=>	$this->page->link() . ".rss",
 			),
 			$pages
 		);
