@@ -66,7 +66,6 @@ class Sledge_Controller_Page extends Sledge_Controller
 	/**
 	 * Show a site page
 	 *
-	 *	@todo	This should be in two functions really - one for read-only and one for editable. But how best to do it?
 	 */
 	public function action_html()
 	{
@@ -84,18 +83,7 @@ class Sledge_Controller_Page extends Sledge_Controller
 		// If we're in the CMS then add the sledge editor the the page.
 		if ($this->auth->logged_in())
 		{
-			// Find the body tag in the HTML. We need to take into account that the body may have attributes assigned to it in the HTML.
-			preg_match("|(</head>.*<body[^>]*>)|imsU", $html, $matches);
-
-			if (isset($matches[0]))
-			{
-				$body_tag = $matches[0];
-
-				// Add the editor iframe to just after the <body> tag.
-				$head = View::factory('sledge/editor/head');
-				$head->set('body_tag', $body_tag);
-				$html = str_replace($body_tag, $head->render(), $html);
-			}
+			$html = $this->editor->insert($html, $pgae->id);
 		}
 
 		$this->response->body($html);
