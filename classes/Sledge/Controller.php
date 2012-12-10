@@ -9,7 +9,7 @@
  * @author	Rob Taylor
  * @copyright	Hoop Associates
  */
-class Sledge_Controller extends Controller_Csrf
+class Sledge_Controller extends Controller
 {
 	/**
 	 * The current user.
