@@ -56,23 +56,6 @@ class Sledge_Controller_Page extends Sledge_Controller
 			}
 		}
 
-		// If the editor is enabled and a version ID has been given in the query string display the specified version.
-		// Otherwise show the default version (most recent for editors, most recent published for site).
-		if ($this->_editable AND $this->request->query('version'))
-		{
-			$version = ORM::factory('Page_Version', $this->request->query('version'));
-
-			// Check that this version belongs to the current page.
-			if ($version->page_id != $this->_page->id)
-			{
-				// Page IDs don't match, throw a 500 error.
-				throw new HTTP_Exception_500;
-			}
-
-			// Set the version with the page.
-			$this->_page->version($version);
-		}
-
 		// Check that the page hasn't been deleted at this version.
 		if ($this->_page->version()->page_deleted)
 		{
