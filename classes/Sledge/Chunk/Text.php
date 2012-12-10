@@ -26,19 +26,21 @@ class Sledge_Chunk_Text extends Chunk
 
 	protected function _add_html($text)
 	{
+		$title = " title='".$this->_chunk->title."'";
+
 		switch ($this->_chunk->slotname)
 		{
 			case 'standfirst':
-				return "<h2 class=\"standFirst\">$text</h2>";
+				return "<h2 class=\"standFirst\"$title>$text</h2>";
 				break;
 			case 'bodycopy':
-				return "<div id=\"content\">$text</div>";
+				return "<div id=\"content\"$title>$text</div>";
 				break;
 			case 'bodycopy2':
-				return "<div id=\"content-secondary\">$text</div>";
+				return "<div id=\"content-secondary\"$title>$text</div>";
 				break;
 			default:
-				return "<p>$text</p>";
+				return "<p$title>$text</p>";
 		}
 	}
 
@@ -68,7 +70,7 @@ class Sledge_Chunk_Text extends Chunk
 		}
 		else
 		{
-			return View::factory("site/slots/text/$this->_template", array('text' => $text));
+			return View::factory("site/slots/text/$this->_template", array('text' => $text, 'title' => $this->_chunk->title));
 		}
 	}
 
@@ -89,7 +91,10 @@ class Sledge_Chunk_Text extends Chunk
 		}
 		else
 		{
-			return View::factory("site/slots/text/$this->_template", array('text' => $text));
+			return View::factory("site/slots/text/$this->_template", array(
+				'text'	=>	$text,
+				'title'	=>	$this->_chunk->title,
+			));
 		}
 	}
 
@@ -175,7 +180,7 @@ class Sledge_Chunk_Text extends Chunk
 	public static function unmunge($text)
 	{
 		// Image links in the form hoopdb://image/123
-		$text = preg_replace('|hoopdb://image/(\d+)|/asset/view/$1/400', $text);
+		$text = preg_replace('|hoopdb://image/(\d+)|', '/asset/view/$1/400', $text);
 
 		// Fix internal page links.
 		$text = preg_replace_callback('|hoopdb://page/(\d+)|',
