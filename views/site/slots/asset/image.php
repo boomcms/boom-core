@@ -1,1 +1,1 @@
-<img src="<?= Sledge_Asset::PATH ?><?= $asset->id;?>/430/260" />
+<img src="<?= Route::url('asset', array('id' => $asset->id, 'width' => 430, 'height' => 260)) ?>" />

@@ -32,11 +32,6 @@ abstract class Sledge_Asset_Core
 	const BOTR = 7;
 
 	/**
-	 * The base path for asset URLs.
-	 */
-	const PATH = '/asset/view/';
-
-	/**
 	 * @access	protected
 	 * @var	object	An instance of the asset_Model class which we are providing an interface to.
 	 */

@@ -15,7 +15,7 @@ if (Kohana::$environment === Kohana::DEVELOPMENT)
 Route::set('asset', 'asset/<action>/<id>(/<width>(/<height>(/<quality>(/<crop>))))')
 	->defaults(array(
 		'controller' => 'asset',
-		'action'	 => 'index'
+		'action'	 => 'view'
 	));
 
 /**

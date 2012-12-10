@@ -55,7 +55,7 @@ abstract class Sledge_Chunk
 	*/
 	protected $_type;
 
-	public function __construct(Model_Page_Version $page, $chunk, $editable = TRUE)
+	public function __construct(Model_Page $page, $chunk, $editable = TRUE)
 	{
 		$this->_page = $page;
 

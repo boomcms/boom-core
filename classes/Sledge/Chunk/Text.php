@@ -154,8 +154,7 @@ class Sledge_Chunk_Text extends Chunk
 	 */
 	public static function munge($text)
 	{
-		$text = preg_replace('|<(.*?)src=[\'"]' . Sledge_Asset::PATH . '(\d+)(.*?)[\'"](.*)>|', '<$1 src="hoopdb://image/$2"$4>', $text);
-		return $text;
+		return preg_replace('|<(.*?)src=[\'"]/asset/view(\d+)(.*?)[\'"](.*)>|', '<$1 src="hoopdb://image/$2"$4>', $text);
 	}
 
 	/**
@@ -176,7 +175,7 @@ class Sledge_Chunk_Text extends Chunk
 	public static function unmunge($text)
 	{
 		// Image links in the form hoopdb://image/123
-		$text = preg_replace('|hoopdb://image/(\d+)|', Sledge_Asset::PATH . '$1/400', $text);
+		$text = preg_replace('|hoopdb://image/(\d+)|/asset/view/$1/400', $text);
 
 		// Fix internal page links.
 		$text = preg_replace_callback('|hoopdb://page/(\d+)|',
