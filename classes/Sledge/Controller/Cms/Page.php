@@ -96,10 +96,7 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 			$parent = ORM::factory('Page',  $this->request->post('parent_id'));
 
 			// Check for add permissions on the parent page.
-			if ( ! $this->auth->logged_in('add_page', $parent))
-			{
-				throw new HTTP_Exception_403;
-			}
+			$this->_authorization('add_page', $parent);
 
 			// Create the new page with nav values inherited from the parent.
 			$page = ORM::factory('Page')
@@ -248,11 +245,7 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 	public function action_publish()
 	{
 		// Does the current user have the publish_page role for this page?
-		if ( ! $this->auth->logged_in('publish_page', $this->_page))
-		{
-			// Now, throw a 403.
-			throw new HTTP_Exception_403;
-		}
+		$this->_authorization('publish_page', $this->_page);
 
 		// Log the action.
 		$this->_log("Published page " . $this->_page->version()->title . " (ID: " . $this->_page->page_id . ")");
@@ -277,16 +270,24 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 
 	public function action_tree()
 	{
-		$pages = DB::select( array('pages.id', 'page_id'), 'v.children_ordering_policy', 'pages.visible', 'v.visible_in_nav', 'page_links.location', 'v.title', 'page_mptt.*')
+		$pages = DB::select(array('pages.id', 'page_id'), 'children_ordering_policy', 'pages.visible', 'visible_in_nav', 'page_links.location', 'title', 'page_mptt.*')
 			->from('pages')
+			->join('page_versions', 'inner')
+			->on('pages.id', '=', 'page_versions.page_id')
 			->join('page_mptt')
 			->on('page_mptt.id', '=', 'pages.id')
 			->join('page_links', 'inner')
 			->on('page_links.page_id', '=', 'pages.id')
 			->where('is_primary', '=', TRUE)
-			->where('v.deleted', '=', FALSE)
-			->join( array('page_versions', 'v'), 'inner')
-			->on('pages.active_vid', '=', 'v.id')
+			->where('page_deleted', '=', FALSE)
+			->join(array(
+				DB::select(array(DB::expr('max(id)'), 'id'))
+					->from('page_versions')
+					->where('stashed', '=', FALSE)
+					->group_by('page_id'),
+				'current_version'
+			))
+			->on('page_versions.id', '=', 'current_version.id')
 			->order_by('page_mptt.lft', 'asc')
 			->execute()
 			->as_array();
