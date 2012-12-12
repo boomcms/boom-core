@@ -42,7 +42,7 @@ class Sledge_Controller_Page extends Sledge_Controller
 		$this->page = $this->request->param('page');
 
 		// Should the editor be enabled?
-		if ($this->editor->state() == Editor::EDIT AND $this->auth->logged_in('edit_page', $this->_page))
+		if ($this->editor->state() == Editor::EDIT AND $this->auth->logged_in('edit_page', $this->page))
 		{
 			$this->editable = TRUE;
 		}
@@ -119,7 +119,7 @@ class Sledge_Controller_Page extends Sledge_Controller
 		$pages = Request::factory('plugin/page/children.json')
 				->post(array(
 					'parent'	=>	$this->page,
-					'order'		=>	'visible_from',
+					'order'	=>	'visible_from',
 				))
 				->execute()
 				->body();
