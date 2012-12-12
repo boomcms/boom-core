@@ -5,7 +5,7 @@
 */
 if (Kohana::$environment === Kohana::DEVELOPMENT)
 {
-	Kohana::modules(array_merge(Kohana::modules(), array(MODPATH . 'guide')));
+	Kohana::modules(array_merge(Kohana::modules(), array(MODPATH.'guide')));
 }
 
 /**
