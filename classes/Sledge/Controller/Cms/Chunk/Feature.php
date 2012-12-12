@@ -24,7 +24,7 @@ class Sledge_Controller_Cms_Chunk_Feature extends Sledge_Controller_Cms_Chunk
 				'target_page_id'	=>	$this->request->query('preview_target_rid')
 			));
 
-		$chunk = new Chunk_Feature($this->request->query('slotname'), $this->page, $model);
+		$chunk = new Chunk_Feature($this->page, $model, $this->request->query('slotname'), TRUE);
 		$chunk->template($this->request->query('template'));
 
 		$this->response->body($chunk->execute());
