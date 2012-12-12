@@ -311,151 +311,45 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 	 */
 	public function action_save()
 	{
-		$page = $this->_page;
-
 		// Don't reload the page after save by default.
 		$reload = FALSE;
 
-		/**
-		* Are you allowed to be here?
-		*/
-		if ( ! $this->auth->logged_in('edit_page', $page))
+		// Are you allowed to be here?
+		$this->_authorization('edit_page', $this->_page);
+
+		// Save page form data is json encoded so get and the data and decode it.
+		$post = json_decode($this->request->post('data'));
+
+		// Get the current version of the page.
+		$current_version = $this->_page->version();
+
+		// Create a new version of the page.
+		$new_version = $this->_page->create_version();
+
+		// Has the page title been changed?
+		if ($current_version->title != $post->title)
 		{
-			throw new HTTP_Exception_403;
+			// Update the title of the new version.
+			$new_version->title = $post->title;
+
+			// TODO: update the primary URL of the page the first time a title is saved.
 		}
 
-		/**
-		* Get the new settings and decode them.
-		*/
-		$data = json_decode($this->request->post('data'));
-
-		$page->title = $data->title;
-
-		/**
-		* If the page title has been changed, update the primary URI.
-		*/
-		if ($page->changed('title'))
-		{
-			// Reload the page after save.
-			$reload = TRUE;
-
-			$parent = $page->parent();
-
-			$prefix = ($parent->children_link_prefix)? $parent->children_link_prefix : $parent->primary_link();
-
-			// Does the link already exist?
-			$link = ORM::factory('Page_Link')
-				->where('location', '=', $prefix . '/' . URL::title($page->title))
-				->find();
-
-			if ($link->loaded() OR $link->page_id !== $page->id)
-			{
-				// Link hasn't been used for this page before so create a new one.
-				$link = ORM::factory('Page_Link')
-					->values(array(
-						'page_id'	=>	$page->id,
-						'location'	=>	URL::generate($prefix, $page->title),
-					));
-			}
-
-			// If this the home page then only save the new URI as a secondary uri.
-			if ( ! $page->mptt->is_root())
-			{
-				// Page isn't the homepage so make the link primary.
-				$link->is_primary = TRUE;
-				$link->make_primary();
-			}
-
-			// Saved the link
-			$link->save();
-		}
-
-		/**
-		 * If the version hasn't been changed, force it to create a new page version.
-		 * This allows us to ensure versioning of changes to page slots.
-		 */
-		if ( ! $page->changed())
-		{
-			$values = $page->object();
-
-			$page = ORM::factory('Page')
-				->values($values);
-
-			// Don't copy the value of the published columns.
-			$page->published_from = $page->published_to = NULL;
-		}
-
-		/**
-		* Save the new settings.
-		*/
-		$page->save();
-
-		// Log the action.
-		$this->_log("Saved page $page->title (ID: $page->id)");
-
-		// Change the page's primary URI.
-		if (isset($data->uri) AND $data->uri != $page->primary_link())
-		{
-			// Reload the page after save.
-			$reload = TRUE;
-
-			Request::factory('cms/page/uri/primary/' . $page->pk())->post(array('uri' => $data->uri))->execute();
-		}
+		// Save the new version.
+		$new_version->save();
 
 		// Update slots.
-		foreach (array('asset', 'feature', 'linkset', 'slideshow', 'text') as $slottype)
-		{
-			Request::factory("cms/chunk/$slottype/save")
-				->post(array(
-					'chunks'	=>	(array) $data->slots->$slottype,
-				))
-				->execute();
-		}
 
-		Request::factory('cms/page/save_slots/' . $page->pk())-> post( array('slots' => $data->slots))->execute();
-
-		// Are we publishing this version?
-		if (isset($data->publish))
-		{
-			Request::factory('cms/page/publish/' . $page->pk())->execute();
-		}
-
-		$this->response->body(json_encode(
-			array(
-				'reload'	=>	$reload,
-				'url'		=> $page->link(),
-				'vid'		=> $this->_page->id,
-				'status'	=>	View::factory("$this->_view_directory/status", array('auth' => $this->auth, 'page' => $page))->render(),
-			)
-		));
-	}
-
-	/**
-	 * Update the page's slots.
-	 *
-	 * **Expected POST variables:**
-	 * Name		|	Type	|	Description
-	 * ----------|-----------|---------------
-	 * slots		|	array	| 	Array of stdClass objects containing the slot data for the page.
-	 *
-	 */
-	public function action_save_slots()
-	{
-		$page = $this->_page;
-
-		$slots = $this->request->post('slots');
-
-		// Build an array of slotnames submitted.
+		// Used to build an array of slotnames submitted.
 		$slotnames = array();
 
-		foreach ( (array) $slots as $type => $obj)
+		foreach ( (array) $post->slots as $type => $obj)
 		{
 			foreach (get_object_vars($obj) as $name => $slot_data)
 			{
-				if ($this->auth->logged_in("edit_slot_$name", $page) AND ! isset($obj->delete))
+				if ( ! isset($obj->delete))
 				{
-					$chunk = ORM::factory('Chunk');
-					$chunk->type = $type;
+					$chunk = ORM::factory('Chunk_'.ucfirst($type));
 					$chunk->slotname = $name;
 
 					// Add this slot to the array of slotnames.
@@ -464,15 +358,16 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 					switch ($type)
 					{
 						case 'text':
-							$chunk->data->text = $slot_data;
+							$chunk->text = $slot_data->text;
+							$chunk->title = $slot_data->title;
 							break;
 
 						case 'feature':
-							$chunk->data->target_page_id = $slot_data;
+							$chunk->target_page_id = $slot_data;
 							break;
 
 						case 'asset':
-							$chunk->data->asset_id = $slot_data;
+							$chunk->asset_id = $slot_data;
 							break;
 
 						case 'slideshow':
@@ -491,64 +386,34 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 								}
 							}
 
-							$chunk->data->slides($slot_data->slides);
+							$chunk->slides($slot_data->slides);
 							break;
 
 						case 'linkset':
-							$chunk->data->links($slot_data->links);
+							$chunk->links($slot_data->links);
 							break;
 					}
 
 					if ($chunk->save())
 					{
-						$page->add('chunks', $chunk);
+						$new_version->add('chunks', $chunk);
 					}
 				}
 			}
 		}
 
-		/**
-		 * The code below ensures that any slots which weren't used in the current template
-		 * (and therefore weren't part of the submitted data) are copied over from the previous page version
-		 * to preserve them.
-		 *
-		 * If this code is removed then when a page has it's template changed it will lose any slots which aren't displayed in the new template
-		 */
-		// Get the last version ID for this page.
-		$old_vid = DB::select('page_versions.id')
-			->from('page_versions')
-			->where('page_versions.rid', '=', $page->id)
-			->where('id', '!=', $page->version->id)
-			->order_by('id', 'desc')
-			->limit(1)
-			->execute()
-			->as_array();
+		// Import any chunks which weren't saved from the old version to the new version.
+		$new_version->import_chunks($current_version, $slotnames);
 
-		if ( ! empty($old_vid) AND $old_vid !== $page->version->id)
-		{
-			$old_vid = $old_vid[0]['id'];
-
-			// Copy missed slots from previous version.
-			$subquery = DB::select(DB::expr($page->version->id), 'chunk_id')
-				->from('page_chunk')
-				->join('chunk', 'inner')
-				->on('page_chunks.chunk_id', '=', 'chunks.id')
-				->group_by('slotname')
-				->where('page_chunks.page_vid', '=', $old_vid);
-
-			if ( ! empty($slotnames))
-			{
-				$subquery->where('slotname', 'not in', $slotnames);
-			}
-
-			try
-			{
-				DB::insert('page_chunk', array('page_versions.id', 'chunk_id'))
-					->select($subquery)
-					->execute();
-			}
-			catch (Exception $e) {}
-		}
+		// Set the response.
+		$this->response
+			->body(json_encode(
+				array(
+					'reload'	=>	$reload,
+					'url'		=>	$this->_page->link(),
+					'vid'		=>	$new_version->id,
+				)
+			));
 	}
 
 	/**

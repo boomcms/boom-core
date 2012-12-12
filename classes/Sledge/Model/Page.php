@@ -20,7 +20,6 @@ class Sledge_Model_Page extends ORM_Taggable
 	protected $_has_many = array(
 		'versions'	=> array('model' => 'Page_Version', 'foreign_key' => 'page_id'),
 		'links'	=> array('model' => 'Page_Link', 'foreign_key' => 'page_id'),
-		'chunks'	=> array('through' => 'pages_chunks'),
 	);
 
 	protected $_table_columns = array(

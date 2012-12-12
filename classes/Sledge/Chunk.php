@@ -9,57 +9,67 @@
 abstract class Sledge_Chunk
 {
 	/**
-	* Holds the chunk data retrieved from the database
-	* Object type will depend on slottype, e.g. Model_Chunk_Text for text chunk, Model_Chunk_Feature for feature etc.
-	*/
+	 * Holds the chunk data retrieved from the database
+	 * Object type will depend on slottype, e.g. Model_Chunk_Text for text chunk, Model_Chunk_Feature for feature etc.
+	 */
 	protected $_chunk;
 
 	/**
-	* The name of the default template if no template is set.
-	*/
+	 * The name of the default template if no template is set.
+	 */
 	protected $_default_template = NULL;
 
 	/**
-	* Whether the chunk should be editable.
-	* The initial (default) value of this is set in the constructor depending on whether the current person has the correct permission to edit this chunk.
-	* @access	protected
-	* @var	boolean
-	*/
+	 * Whether the chunk should be editable.
+	 * The initial (default) value of this is set in the constructor depending on whether the current person has the correct permission to edit this chunk.
+	 *
+	 * @var	boolean
+	 */
 	protected $_editable;
 
 	/**
-	* The page that the chunk belongs to.
-	* @access protected
-	* @var Model_Page
-	*/
+	 * The page that the chunk belongs to.
+	 *
+	 * @var Model_Page
+	 */
 	protected $_page;
 
 	/**
-	* An array of parameters which will be passed to the chunk template
-	* @access protected
-	* @var array
-	*/
+	 * An array of parameters which will be passed to the chunk template
+	 *
+	 * @var array
+	 */
 	protected $_params = array();
 
 	/**
-	* The name of the template to display
-	* @access protected
-	* @var string
-	*/
+	 * The slotname used to find the chunk.
+	 * This has to be stored seperately to $this->_chunk so that for default chunks where $this->_chunk isn't loaded we know the slotname where the chunk belongs.
+	 *
+	 * @var string
+	 */
+	protected $_slotname;
+
+	/**
+	 * The name of the template to display
+	 *
+	 * @var string
+	 */
 	protected $_template;
 
 	/**
-	* The type of slot; text, feature, etc.
-	* @access protected
-	* @var string
-	*/
+	 * The type of slot; text, feature, etc.
+	 *
+	 * @var string
+	 */
 	protected $_type;
 
-	public function __construct(Model_Page $page, $chunk, $editable = TRUE)
+	public function __construct(Model_Page $page, $chunk, $slotname, $editable = TRUE)
 	{
 		$this->_page = $page;
 
 		$this->_chunk = $chunk;
+
+		$this->_slotname = $slotname;
 
 		$this->_editable = $editable;
 	}
@@ -117,7 +127,7 @@ abstract class Sledge_Chunk
 			$benchmark = Profiler::start("Chunks", $this->_chunk->slotname);
 		}
 
-		$cache_key = "chunk_data:" . md5($this->_chunk->slotname . $this->_page->id);
+		$cache_key = "chunk_data:" . md5($this->_slotname . $this->_page->id);
 		$cache = Cache::instance();
 
 		if (Auth::instance()->logged_in() OR ($html = $cache->get($cache_key)) === NULL)
@@ -132,7 +142,7 @@ abstract class Sledge_Chunk
 				// Make the content editable.
 				if ($this->_editable === TRUE)
 				{
-					$html = HTML::chunk_classes($html, $this->_type, $this->_chunk->slotname, $this->target(), $this->_template, $this->_page->id, $this->has_content());
+					$html = HTML::chunk_classes($html, $this->_type, $this->_slotname, $this->target(), $this->_template, $this->_page->id, $this->has_content());
 				}
 				elseif (Editor::instance()->state() == Editor::DISABLED)
 				{
@@ -200,7 +210,7 @@ abstract class Sledge_Chunk
 		 */
 		$editable = (Editor::instance()->state() == Editor::EDIT AND Auth::instance()->logged_in("edit_page_content", $page));
 
-		return new $class($page, $chunk, $editable);
+		return new $class($page, $chunk, $slotname, $editable);
 	}
 
 	/**
