@@ -44,6 +44,30 @@ class Sledge_Controller_Cms_Autocomplete extends Sledge_Controller
 		$this->text = $this->request->query('text');
 	}
 
+	/**
+	 * Autocomplete on asset title.
+	 */
+	public function action_assets()
+	{
+		// Build the query.
+		$query = DB::select('title')
+			->from('assets')
+			->where('title', 'like', "%$this->text%")
+			->order_by('title', 'asc')
+			->limit($this->count);
+
+		// Get the results
+		$results = $query
+			->execute()
+			->as_array('title');
+
+		// Get an array of asset titles from the results.
+		$this->results = array_keys($results);
+	}
+
+	/**
+	 * Auto complete on page title
+	 */
 	public function action_pages()
 	{
 		// Build a query to find pages matching title.
