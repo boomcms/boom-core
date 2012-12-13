@@ -36,7 +36,7 @@ class Sledge_Controller_Cms_Auth extends Controller
 				{
 					// Update the person's name.
 					$person->name = $attrs['namePerson'];
-					$person->save();
+					$person->update();
 				}
 
 				Auth::instance()->login($person, " ");

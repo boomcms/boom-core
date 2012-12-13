@@ -147,8 +147,9 @@ class Sledge_Controller_Cms_Groups extends Sledge_Controller
 		$permissions = array_unique($permissions);
 
 		// Update the group table.
-		$this->group->name = $name;
-		$this->group->save();
+		$this->group
+			->set('name', $name)
+			->update();
 
 		// Log the action.
 		$this->_log("Edited group " . $this->group->name . " (ID: " . $this->group->id . ")");

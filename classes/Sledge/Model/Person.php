@@ -26,6 +26,6 @@ class Sledge_Model_Person extends ORM
 			'model'	=> 'Group',
 			'through'	=> 'people_groups',
 		),
-		'activities' => array(),
+		'logs' => array(),
 	);
 }

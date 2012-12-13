@@ -287,27 +287,19 @@ class Sledge_Controller_Cms_People extends Sledge_Controller
 
 	/**
 	 * People manager view person.
-	 * Accepts multiple person IDs in the route's ID parameter, separated by hyphens.
 	 *
-	 * @example http://site.com/cms/people/view/1-2-3
 	 */
 	public function action_view()
 	{
-		$people_ids = (array) explode("-", $this->request->param('id'));
-		$people = array();
+		$person = ORM::factory('Person', $this->request->param('id'));
 
-		foreach ($people_ids as $person_id)
+		if ( ! $person->loaded())
 		{
-			$person = ORM::factory('Person', $person_id);
-
-			if ($person->loaded())
-			{
-				$people[] = $person;
-			}
+			throw new HTTP_Exception_404;
 		}
 
 		$this->template = View::factory($this->_view_directory . "view", array(
-			'people'	=>	$people,
+			'person'	=>	$person,
 		));
 	}
 }
