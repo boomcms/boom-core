@@ -254,6 +254,7 @@ class Sledge_Controller_Cms_Assets extends Sledge_Controller
 		$type		=	Arr::get($query_data, 'type');
 		$sortby		=	Arr::get($query_data, 'sortby');
 		$order		=	Arr::get($query_data, 'order');
+		$title			=	Arr::get($query_data, 'title');
 
 		// Prepare the database query.
 		$query = DB::select()
@@ -269,6 +270,12 @@ class Sledge_Controller_Cms_Assets extends Sledge_Controller
 				->on('tags_applied.tag_id', '=', 'tags.id')
 				->where('tags_applied.object_type', '=', 1)
 				->where('tags.path', 'like', $tag->path . '%');
+		}
+
+		// Filtering by title?
+		if ($title)
+		{
+			$query->where('title', 'like', "%$title%");
 		}
 
 		if (($sortby == 'last_modified' OR $sortby == 'title' OR $sortby == 'filesize') AND ($order == 'desc' OR $order == 'asc'))
