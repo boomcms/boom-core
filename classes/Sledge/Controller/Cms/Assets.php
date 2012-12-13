@@ -262,7 +262,13 @@ class Sledge_Controller_Cms_Assets extends Sledge_Controller
 		// If a valid tag was given then filter the results by tag..
 		if ($tag->loaded())
 		{
-			$query->where('tag', '=', $tag);
+			$query
+				->join('tags_applied', 'inner')
+				->on('tags_applied.object_id', '=', 'assets.id')
+				->join('tags', 'inner')
+				->on('tags_applied.tag_id', '=', 'tags.id')
+				->where('tags_applied.object_type', '=', 1)
+				->where('tags.path', 'like', $tag->path . '%');
 		}
 
 		if (($sortby == 'last_modified' OR $sortby == 'title' OR $sortby == 'filesize') AND ($order == 'desc' OR $order == 'asc'))
@@ -316,6 +322,7 @@ class Sledge_Controller_Cms_Assets extends Sledge_Controller
 		{
 			// Retrieve the results and load Model_Asset classes
 			$assets = $query
+				->select('assets.*')
 				->limit($perpage)
 				->offset(($page - 1) * $perpage)
 				->as_object('Model_Asset')
