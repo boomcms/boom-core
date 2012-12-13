@@ -80,7 +80,7 @@ class Sledge_Controller extends Controller
 			->values(array(
 				'ip'			=>	Request::$client_ip,
 				'activity'		=>	$activity,
-				'person_id'	=>	$this->actual_person->id,
+				'person_id'	=>	$this->auth->get_real_user()->id,
 				'time'		=>	$_SERVER['REQUEST_TIME'],
 			))
 			->create();
