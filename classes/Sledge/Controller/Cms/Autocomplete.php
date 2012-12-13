@@ -44,13 +44,70 @@ class Sledge_Controller_Cms_Autocomplete extends Sledge_Controller
 		$this->text = $this->request->query('text');
 	}
 
+	public function action_pages()
+	{
+		// Build a query to find pages matching title.
+		$query = DB::select('title')
+			->from('pages')
+			->join('page_versions', 'inner')
+			->on('pages.id', '=', 'page_versions.page_id');
+
+		if ($this->editor->state() === Editor::EDIT)
+		{
+			// Get the most recent version for each page.
+			$query
+				->join(array(
+					DB::select(array(DB::expr('max(id)'), 'id'))
+						->from('page_versions')
+						->where('stashed', '=', FALSE)
+						->group_by('page_id'),
+					'current_version'
+				))
+				->on('page_versions.id', '=', 'current_version.id');
+		}
+		else
+		{
+			// Get the most recent published version for each page.
+			$query
+				->join(array(
+					DB::select(array(DB::expr('max(id)'), 'id'))
+						->from('page_versions')
+						->where('embargoed_until', '<=', $this->editor->live_time())
+						->where('stashed', '=', FALSE)
+						->where('published', '=', TRUE)
+						->group_by('page_id'),
+					'current_version'
+				))
+				->on('page_versions.id', '=', 'current_version.id')
+				->where('page_versions.page_deleted', '=', FALSE)
+				->where('visible_from', '<=', $this->editor->live_time())
+				->and_where_open()
+					->where('visible_to', '>=', $this->editor->live_time())
+					->or_where('visible_to', '=', 0)
+				->and_where_close();
+		}
+
+		$query
+			->where('title', 'like', "%$this->text%")
+			->limit($this->count)
+			->order_by('title', 'asc');
+
+		// Get the results
+		$results = $query
+			->execute()
+			->as_array('title');
+
+		// Get an array of page titles.
+		$this->results = array_keys($results);
+	}
+
 	/**
 	 * Suggest tag names based on an infix.
 	 *
 	 */
 	public function action_tags()
 	{
-		// Build a query to find matching tags.
+		// Build a query to find tags matching on path.
 		$query = DB::select('tags.path')
 			->from('tags')
 			->where('path', 'like', "%$this->text%")
