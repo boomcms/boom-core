@@ -16,14 +16,14 @@ class Sledge_Auth_Sledge extends Auth
 		}
 
 		$this->_person = $person;
-		$this->_session->set('person_id', $person->id);
+		$this->_session->set($this->_config['session_key'], $person->id);
 	}
 
 	public function get_user()
 	{
 		if ($this->_person === NULL)
 		{
-			$this->_person = ORM::factory('Person', $this->_session->get('person_id'));
+			$this->_person = ORM::factory('Person', $this->_session->get($this->_config['session_key']));
 		}
 
 		return $this->_person;
