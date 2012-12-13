@@ -337,7 +337,7 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 		}
 
 		// Save the new version.
-		$new_version->save();
+		$new_version->create();
 
 		// Update slots.
 
@@ -395,7 +395,7 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 							break;
 					}
 
-					if ($chunk->save())
+					if ($chunk->create())
 					{
 						$new_version->add('chunks', $chunk);
 					}

@@ -76,10 +76,12 @@ class Sledge_Model_Tag extends ORM
 	{
 		// Set the new path for the current tag.
 		$this->path = $path;
-		$this->save();
+		$this->update();
 
 		// Get the child tags of the current tag.
-		$kids = ORM::factory('Tag')->where('parent_id', '=', $this->id)->find_all();
+		$kids = ORM::factory('Tag')
+			->where('parent_id', '=', $this->id)
+			->find_all();
 
 		// Update the materialised path for all the child tags.
 		foreach ($kids as $tag)

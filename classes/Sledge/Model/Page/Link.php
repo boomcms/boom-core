@@ -95,7 +95,7 @@ class Sledge_Model_Page_Link extends ORM
 		foreach ($page_links as $page_link)
 		{
 			$page_link->is_primary = FALSE;
-			$page_link->save();
+			$page_link->update();
 		}
 
 		return $this;

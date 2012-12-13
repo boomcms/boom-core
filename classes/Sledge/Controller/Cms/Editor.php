@@ -41,7 +41,7 @@ class Sledge_Controller_Cms_Editor extends Sledge_Controller
 			// Update the time that we were last active on this page.
 			// We use to ensure that people who closed their browser and wandered off don't appear as editing the page.
 			$us->last_active = $_SERVER['REQUEST_TIME'];
-			$us->save();
+			$us->update();
 
 			// Get the details of the other people viewing this page who were last active in the past 2 minutes
 			// The JS polls the server every 30 seconds at the moment so two moments allows for a couple of failed requests.

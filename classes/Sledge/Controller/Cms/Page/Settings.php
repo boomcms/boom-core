@@ -97,7 +97,7 @@ class Sledge_Controller_Cms_Page_Settings extends Controller_Cms_Page
 				->values(array(
 					'internal_name'		=>	$this->request->post('internal_name'),
 				))
-				->save();
+				->update();
 		}
 	}
 
@@ -226,7 +226,7 @@ class Sledge_Controller_Cms_Page_Settings extends Controller_Cms_Page
 						}
 
 						// Save the child page.
-						$child->save();
+						$child->update();
 					}
 				}
 
@@ -234,7 +234,7 @@ class Sledge_Controller_Cms_Page_Settings extends Controller_Cms_Page
 				$this->_page
 					->children_ordering_policy($post['children_ordering_policy'], $post['child_ordering_direction'])
 					->set('children_template_id', $post['children_template_id'])
-					->save();
+					->update();
 
 			}
 		}
@@ -320,7 +320,7 @@ class Sledge_Controller_Cms_Page_Settings extends Controller_Cms_Page
 					'visible_in_nav'		=>	$post['visible_in_nav'],
 					'visible_in_nav_cms'	=>	$post['visible_in_nav_cms'],
 				))
-				->save();
+				->update();
 		}
 	}
 
@@ -381,7 +381,7 @@ class Sledge_Controller_Cms_Page_Settings extends Controller_Cms_Page
 
 			// Save the page.
 			$this->_page
-				->save();
+				->update();
 		}
 	}
 
@@ -438,7 +438,7 @@ class Sledge_Controller_Cms_Page_Settings extends Controller_Cms_Page
 
 					$tag->name = $name;
 					$tag->type = 2;
-					$tag->save();
+					$tag->update();
 				}
 
 				// Apply the tag to the page.
@@ -496,7 +496,7 @@ class Sledge_Controller_Cms_Page_Settings extends Controller_Cms_Page
 					'visible_to'	=>	isset($post['visible_to'])? strtotime($post['visible_to']) : NULL,
 					'visible'		=>	$post['visible']
 				))
-				->save();
+				->update();
 		}
 	}
 } // End Sledge_Controller_Cms_Page

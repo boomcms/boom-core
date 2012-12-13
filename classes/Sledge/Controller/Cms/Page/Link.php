@@ -118,7 +118,7 @@ class Sledge_Controller_Cms_Page_Link extends Controller_Cms_Page
 				'page_id'		=>	$this->_page->id,
 				'is_primary'	=>	FALSE,	// Make sure that it's only a secondary link for the this page.
 			))
-			->save();
+			->update();
 		}
 		else
 		{
@@ -155,6 +155,6 @@ class Sledge_Controller_Cms_Page_Link extends Controller_Cms_Page
 			$link->make_primary();
 		}
 
-		$link->save();
+		$link->update();
 	}
 } // End Sledge_Controller_Cms_Page

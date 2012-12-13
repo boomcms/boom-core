@@ -43,10 +43,10 @@ class Sledge_Controller_Cms_Uploadify extends Kohana_Controller
 
 				if ( is_array($_FILES['s-assets-upload-files']['tmp_name']) ) {
 					// HTTP POST, multiple files
-					$newfiles = array(); 
-					    foreach($_FILES as $fieldname => $fieldvalue) 
-					        foreach($fieldvalue as $paramname => $paramvalue) 
-					            foreach((array)$paramvalue as $index => $value) 
+					$newfiles = array();
+					    foreach($_FILES as $fieldname => $fieldvalue)
+					        foreach($fieldvalue as $paramname => $paramvalue)
+					            foreach((array)$paramvalue as $index => $value)
 					                $newfiles[$fieldname][$index][$paramname] = $value;
 				} else {
 					// HTTP POST, single file
@@ -114,7 +114,7 @@ class Sledge_Controller_Cms_Uploadify extends Kohana_Controller
 						$asset->height = $height;
 					}
 
-					$asset->save();
+					$asset->create();
 
 					try
 					{
@@ -170,9 +170,9 @@ class Sledge_Controller_Cms_Uploadify extends Kohana_Controller
 				// }
 			}
 		}
-		
+
 	}
-	
+
 	/**
 	* Get the rids of newly uploaded assets.
 	*

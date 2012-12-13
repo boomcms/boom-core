@@ -63,7 +63,7 @@ class Sledge_Controller_Cms_Video extends Sledge_Controller
 			$asset->duration = round($response['video']['duration']);
 			$asset->encoded = ($response['video']['status'] == 'ready');
 			$asset->views = $response['video']['views'];
-			$asset->save();
+			$asset->update();
 
 			// Save the video thumbnail localy.
 			try
@@ -122,7 +122,7 @@ class Sledge_Controller_Cms_Video extends Sledge_Controller
 			$asset->type = Sledge_Asset::BOTR;
 			$asset->encoded = FALSE;
 			$asset->visible_from = $_SERVER['REQUEST_TIME'];
-			$asset->save();
+			$asset->create();
 
 			$this->redirect("/cms/assets#asset/" . $asset->id);
 		}

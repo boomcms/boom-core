@@ -68,7 +68,7 @@ class Sledge_Controller_Cms_Templates extends Sledge_Controller
 						'filename'	=>	$filename,
 						'visible'	=>	TRUE,
 					))
-					->save();
+					->create();
 
 				// Add teh template to the array of imorted templates.
 				$imported[] = $template->id;
@@ -146,7 +146,7 @@ class Sledge_Controller_Cms_Templates extends Sledge_Controller
 						'description'	=>	$post["description-$template_id"],
 						'visible'		=>	(bool) $post["visible-$template_id"],
 					))
-					->save();
+					->update();
 			}
 			catch (ORM_Validation_Exception $e)
 			{

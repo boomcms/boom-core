@@ -70,7 +70,7 @@ class Sledge_Controller_Cms_Assets extends Sledge_Controller
 				$asset->rubbish = TRUE;
 
 				// Save the changes.
-				$asset->save();
+				$asset->update();
 
 				// Set the message to be added to the CMS log.
 				$log_message = "Moved asset $asset->title (ID: $asset->id) to rubbish bin.";
@@ -405,7 +405,7 @@ class Sledge_Controller_Cms_Assets extends Sledge_Controller
 				'description'	=>	$post['description'],
 				'visible_from'	=>	strtotime($post['visible_from']),
 			))
-			->save();
+			->update();
 
 		// Redirect to the asset's page.
 		$this->redirect('/cms/assets/view/' . $asset->id);
