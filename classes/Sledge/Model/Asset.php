@@ -24,7 +24,6 @@ class Sledge_Model_Asset extends ORM_Taggable
 		'height'			=>	'',
 		'filename'			=>	'',
 		'visible_from'		=>	'',
-		'status'			=>	'',
 		'type'			=>	'',
 		'filesize'			=>	'',
 		'rubbish'			=>	FALSE,
@@ -35,18 +34,6 @@ class Sledge_Model_Asset extends ORM_Taggable
 		'uploaded_time'	=>	'',
 		'last_modified'		=>	'',
 	);
-
-	/**
-	* Value for asset status published.
-	* @var integer
-	*/
-	const STATUS_UNPUBLISHED = 1;
-
-	/**
-	* Value for asset status published.
-	* @var integer
-	*/
-	const STATUS_PUBLISHED = 2;
 
 	/**
 	 *
@@ -100,30 +87,10 @@ class Sledge_Model_Asset extends ORM_Taggable
 	}
 
 	/**
-	* Returns a human readable asset status (currently published or unpublished).
-	*
-	* @return string Asset status
-	*/
-	public function get_status()
-	{
-		switch ($this->status)
-		{
-			case self::STATUS_PUBLISHED:
-				return 'Published';
-				break;
-			case self::STATUS_UNPUBLISHED:
-				return 'Unpublished';
-				break;
-			default:
-				throw new Kohana_Exception('Asset has unknown asset status value: ' . $this->status);
-		}
-	}
-
-	/**
-	* Find the mimetype of the asset file.
-	*
-	* @return string Mimetype string.
-	*/
+	 * Find the mimetype of the asset file.
+	 *
+	 * @return string Mimetype string.
+	 */
 	public function get_mime()
 	{
 		return File::mime(ASSETPATH . $this->id);

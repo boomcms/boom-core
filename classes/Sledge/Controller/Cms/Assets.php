@@ -396,7 +396,6 @@ class Sledge_Controller_Cms_Assets extends Sledge_Controller
 			->values(array(
 				'title'			=>	$post['title'],
 				'description'	=>	$post['description'],
-				'status'		=>	$post['status'],
 				'visible_from'	=>	strtotime($post['visible_from']),
 			))
 			->save();
