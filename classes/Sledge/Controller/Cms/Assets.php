@@ -476,44 +476,29 @@ class Sledge_Controller_Cms_Assets extends Sledge_Controller
 	}
 
 	/**
-	 * Controller to show an asset's detailed view.
-	 * Multiple asset IDs can be given by separating them with a hyphen.
-	 *
-	 * @example http://site.com/cms/assets/view/1-2-3
+	 * Controller to show an asset's view.
 	 *
 	 */
 	public function action_view()
 	{
-		// Get the IDs of the assets we're viewing.
-		$asset_ids = (array) explode("-", $this->request->param('id'));
+		// Load the asset.
+		$asset = ORM::factory('Asset', $this->request->param('id'));
 
-		// Prepare an array for the asset objects.
-		$assets = array();
-
-		// Get the assets from the database.
-		foreach ($asset_ids as $asset_id)
+		// Check that the asset exists
+		if ( ! $asset->loaded())
 		{
-			// Load this asset.
-			$asset = ORM::factory('Asset', $asset_id);
-
-			// Don't include assets which don't exist.
-			if ($asset->loaded())
-			{
-				// If the asset is a BOTR video which isn't marked as encoded then attempt to update the information.
-				if ($asset->type == Sledge_Asset::BOTR AND ! $asset->encoded)
-				{
-					Request::factory('cms/video/sync/' . $asset->id)->execute();
-					$asset->reload();
-				}
-
-				// Add the asset to the array.
-				$assets[] = $asset;
-			}
+			throw new HTTP_Exception_404;
 		}
 
-		// Pop it all in the view.
+		// If the asset is a BOTR video which isn't marked as encoded then attempt to update the information.
+		if ($asset->type == Sledge_Asset::BOTR AND ! $asset->encoded)
+		{
+			Request::factory('cms/video/sync/' . $asset->id)->execute();
+			$asset->reload();
+		}
+
 		$this->template = View::factory("$this->_view_directory/view", array(
-			'assets'	=>	$assets,
+			'asset'	=>	$asset,
 		));
 	}
 }
