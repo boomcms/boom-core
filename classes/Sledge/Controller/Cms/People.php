@@ -66,7 +66,7 @@ class Sledge_Controller_Cms_People extends Sledge_Controller
 
 				foreach ( (array) $groups as $group_id)
 				{
-					Sledge::log("Added person $person->email to group with ID $group_id");
+					$this->_log("Added person $person->email to group with ID $group_id");
 
 					try
 					{
@@ -104,7 +104,6 @@ class Sledge_Controller_Cms_People extends Sledge_Controller
 	 * ---------------|-----------------|---------------
 	 * people		|	array	|	Array of person IDs of the people who are to be deleted.
 	 *
-	 * @todo Change JS to request confirmation rather than depending on templates.
 	 * @uses Model_Person::delete()
 	 */
 	public function action_delete()
@@ -113,7 +112,7 @@ class Sledge_Controller_Cms_People extends Sledge_Controller
 
 		foreach ($people as $person_id)
 		{
-			Sledge::log("Deleted person $person->email");
+			$this->_log("Deleted person $person->email");
 
 			try
 			{
@@ -282,7 +281,7 @@ class Sledge_Controller_Cms_People extends Sledge_Controller
 			}
 		}
 
-		Sledge::log("Added user $person->email (ID: $person->id) to the CMS");
+		$this->_log("Added user $person->email (ID: $person->id) to the CMS");
 		$this->response->body($person->id);
 	}
 

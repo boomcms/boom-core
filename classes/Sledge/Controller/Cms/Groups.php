@@ -73,7 +73,7 @@ class Sledge_Controller_Cms_Groups extends Sledge_Controller
 	 */
 	public function action_delete()
 	{
-		Sledge::log("Deleted group " . $this->group->name);
+		$this->_log("Deleted group " . $this->group->name);
 
 		$this->group->delete();
 	}
@@ -151,7 +151,7 @@ class Sledge_Controller_Cms_Groups extends Sledge_Controller
 		$this->group->save();
 
 		// Log the action.
-		Sledge::log("Edited group " . $this->group->name . " (ID: " . $this->group->id . ")");
+		$this->_log("Edited group " . $this->group->name . " (ID: " . $this->group->id . ")");
 
 		// Get the current permissions for the group.
 		$existing = DB::select('role_id', 'page_id', 'allowed')
