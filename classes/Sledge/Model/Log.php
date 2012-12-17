@@ -19,4 +19,6 @@ class Sledge_Model_Log extends ORM
 		'person_id'	=>	'',
 		'time'		=>	'',
 	);
+
+	protected $_table_name = 'logs';
 }

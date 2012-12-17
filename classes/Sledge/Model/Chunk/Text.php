@@ -18,6 +18,8 @@ class Sledge_Model_Chunk_Text extends ORM
 		'slotname'	=>	'',
 	);
 
+	protected $_table_name = 'chunk_texts';
+
 	/**
 	* Filters for the versioned person columns
 	* @link http://kohanaframework.org/3.2/guide/orm/filters

@@ -14,4 +14,6 @@ class Sledge_Model_Chunk_Text_Asset extends ORM
 		'asset_id'	=>	'',
 		'position'	=>	'',
 	);
+
+	protected $_table_name = 'chunk_text_assets';
 }

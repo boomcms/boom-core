@@ -13,7 +13,7 @@
 class Sledge_Model_Asset extends ORM_Taggable
 {
 	protected $_belongs_to = array(
-		'uploader'	=>	array('model'	=>	'person', 'foreign_key' => 'uploaded_by'),
+		'uploader'	=>	array('model' => 'person', 'foreign_key' => 'uploaded_by'),
 	);
 
 	protected $_table_columns = array(
@@ -34,6 +34,8 @@ class Sledge_Model_Asset extends ORM_Taggable
 		'uploaded_time'	=>	'',
 		'last_modified'		=>	'',
 	);
+
+	protected $_table_name = 'assets';
 
 	/**
 	 *

@@ -63,7 +63,7 @@ abstract class Sledge_Chunk
 	 */
 	protected $_type;
 
-	public function __construct(Model_Page $page, $chunk, $slotname, $editable = TRUE)
+	public function __construct(Model_Page $page, $chunk, $slotname)
 	{
 		$this->_page = $page;
 
@@ -71,7 +71,12 @@ abstract class Sledge_Chunk
 
 		$this->_slotname = $slotname;
 
-		$this->_editable = $editable;
+		/** Should the chunk be editable?
+		 * This can be changed to calling editable(), for instance if we want to make a chunk read only.
+		 *
+		 * @todo Chunk::factory() will be called multiple times to display a single page - need to remove duplicate calles to Auth::instance()->logged_in()
+		 */
+		$this->_editable = (Editor::instance()->state() == Editor::EDIT AND Auth::instance()->logged_in("edit_page_content", $this->_page));
 	}
 
 	/**
@@ -127,38 +132,24 @@ abstract class Sledge_Chunk
 			$benchmark = Profiler::start("Chunks", $this->_chunk->slotname);
 		}
 
-		$cache_key = "chunk_data:" . md5($this->_slotname . $this->_page->id);
-		$cache = Cache::instance();
-
-		if (Auth::instance()->logged_in() OR ($html = $cache->get($cache_key)) === NULL)
+		// Generate the HTML.
+		// Don't allow an error displaying the chunk to bring down the whole page.
+		try
 		{
-			// Generate the HTML.
-			// Don't allow an error displaying the chunk to bring down the whole page.
-			try
-			{
-				// Get the chunk HTML.
-				$html = $this->html();
+			// Get the chunk HTML.
+			$html = $this->html();
 
-				// Make the content editable.
-				if ($this->_editable === TRUE)
-				{
-					$html = HTML::chunk_classes($html, $this->_type, $this->_slotname, $this->target(), $this->_template, $this->_page->id, $this->has_content());
-				}
-				elseif (Editor::instance()->state() == Editor::DISABLED)
-				{
-					// Save to cache when in site view.
-					// Originally the chunk code was designed to be able to generate the cache for the site view when browsing a page in the CMS.
-					// But because we can now have things like child page lists in chunk templates this causes problems.
-					$cache_contents = ($this->has_content())? $html : "";
-					$cache->set($cache_key, (string) $cache_contents);
-				}
-			}
-			catch (Exception $e)
+			// Make the content editable.
+			if ($this->_editable === TRUE)
 			{
-				// Log the error.
-				Kohana_Exception::log($e);
-				return;
+				$html = HTML::chunk_classes($html, $this->_type, $this->_slotname, $this->target(), $this->_template, $this->_page->id, $this->has_content());
 			}
+		}
+		catch (Exception $e)
+		{
+			// Log the error.
+			Kohana_Exception::log($e);
+			return;
 		}
 
 		if (isset($benchmark))
@@ -203,14 +194,7 @@ abstract class Sledge_Chunk
 		// Load the chunk
 		$chunk = Chunk::find($type, $slotname, $page->version(), $inherit);
 
-		/** Should the chunk be editable?
-		 * This can be changed to calling editable(), for instance if we want to make a chunk read only.
-		 *
-		 * @todo Chunk::factory() will be called multiple times to display a single page - need to remove duplicate calles to Auth::instance()->logged_in()
-		 */
-		$editable = (Editor::instance()->state() == Editor::EDIT AND Auth::instance()->logged_in("edit_page_content", $page));
-
-		return new $class($page, $chunk, $slotname, $editable);
+		return new $class($page, $chunk, $slotname);
 	}
 
 	/**
@@ -228,30 +212,13 @@ abstract class Sledge_Chunk
 		// e.g. if type is text we want a chunk_text model
 		$model = (strpos($type, "Chunk_") === 0)? ucfirst($type) : "Chunk_" . ucfirst($type);
 
-		$version_id = $version->id;
-		$version_id = (int) $version_id;
-
-		// Try and get it from the cache
-		$cache_key = $type . "_" . $slotname . "_" . $version_id;
-		$cache = Cache::instance();
-
-		if ($chunk = $cache->get($cache_key))
-		{
-			return $chunk;
-		}
-
-		// Awww, query the database :(
-		$chunk = ORM::factory($model)
+		// Find the chunk in the database.
+		return ORM::factory($model)
 			->join('page_chunks')
 			->on('page_chunks.chunk_id', '=', 'id')
 			->where('slotname', '=', $slotname)
-			->where('page_chunks.page_vid', '=', $version_id)
+			->where('page_chunks.page_vid', '=', $version->id)
 			->find();
-
-		// Cache the result
-		$cache->set($cache_key, $chunk);
-
-		return $chunk;
 	}
 
 	/**
@@ -318,33 +285,21 @@ abstract class Sledge_Chunk
 		$type = strtolower($type);
 		$table_name = Inflector::plural((strpos($type, "chunk_") === 0)? $type : "chunk_$type");
 
-		$cache_key = 'chunk_inerited_from:' . $type . '_' . $slotname . '_' . $page->id;
-
-		if ( ! $page_id = Cache::instance()->get($cache_key))
-		{
-			// Awww, query the database :(
-			$page_id = DB::select('page_versions.page_id')
-				->from($table_name)
-				->join('page_chunks')
-				->on('page_chunks.chunk_id', '=', "$table_name.id")
-				->where('slotname', '=', $slotname)
-				->join('page_versions', 'inner')
-				->on('page_chunks.page_vid', '=', 'page_versions.id')
-				->join('page_mptt', 'inner')
-				->on('page_mptt.id', '=', 'page_versions.page_id')
-				->where('page_mptt.scope', '=', $page->mptt->scope)
-				->where('page_mptt.lft', '<=', $page->mptt->lft)
-				->where('page_mptt.rgt', '>=', $page->mptt->rgt)
-				->order_by('page_mptt.lft', 'desc')
-				->limit(1)
-				->execute();
-
-			$page_id = (isset($page_id[0]))? $page_id[0]['page_id'] : 0;
-
-			Cache::instance()->set($cache_key, $page_id);
-		}
-
-		return ORM::factory('Page', $page_id);
+		return ORM::factory('Page')
+			->join('page_versions', 'inner')
+			->on('page.id', '=', 'page_versions.page_id')
+			->join('page_chunks')
+			->on('page_chunks.page_vid', '=', 'page_versions.id')
+			->join($table_name)
+			->on('page_chunks.chunk_id', '=', "$table_name.id")
+			->join('page_mptt', 'inner')
+			->on('page_mptt.id', '=', 'page.id')
+			->where('slotname', '=', $slotname)
+			->where('page_mptt.scope', '=', $page->mptt->scope)
+			->where('page_mptt.lft', '<=', $page->mptt->lft)
+			->where('page_mptt.rgt', '>=', $page->mptt->rgt)
+			->order_by('page_mptt.lft', 'desc')
+			->find();
 	}
 
 	/**

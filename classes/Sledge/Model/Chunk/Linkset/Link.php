@@ -10,11 +10,11 @@
 *
 */
 class Sledge_Model_Chunk_Linkset_Link extends ORM
-{	
+{
 	protected $_belongs_to = array(
 		'target'	=> array('model' => 'page', 'foreign_key' => 'target_page_id')
 	);
-	
+
 	protected $_table_columns = array(
 		'id'				=>	'',
 		'target_page_id'	=>	'',
@@ -22,7 +22,9 @@ class Sledge_Model_Chunk_Linkset_Link extends ORM
 		'url'				=>	'',
 		'title'				=>	'',
 	);
-	
+
+	protected $_table_name = 'chunk_linkset_links';
+
 	/**
 	* Is the link internal?
 	*
@@ -32,7 +34,7 @@ class Sledge_Model_Chunk_Linkset_Link extends ORM
 	{
 		return (int) $this->target_page_id != 0;
 	}
-	
+
 	/**
 	* Is the link external?
 	* Alias for is_internal()

@@ -18,7 +18,7 @@ class Sledge_Model_Tag extends ORM
 		'type'		=>	'',
 	);
 
-	protected $_cache_columns = array('path');
+	protected $_table_name = 'tags';
 
 	/**
 	* Delete a tag.

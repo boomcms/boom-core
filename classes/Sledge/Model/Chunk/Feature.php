@@ -18,4 +18,6 @@ class Sledge_Model_Chunk_Feature extends ORM
 		'target_page_id'	=>	'',
 		'slotname'			=>	'',
 	);
+
+	protected $_table_name = 'chunk_features';
 }

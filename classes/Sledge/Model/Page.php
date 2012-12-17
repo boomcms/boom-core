@@ -44,7 +44,7 @@ class Sledge_Model_Page extends ORM_Taggable
 		'description'				=>	'',
 	);
 
-	protected $_cache_columns = array('internal_name');
+	protected $_table_name = 'pages';
 
 	/**
 	 * A Model_Page_Version object which should be used with this page.
@@ -376,22 +376,13 @@ class Sledge_Model_Page extends ORM_Taggable
 	{
 		if ($this->_primary_link == NULL)
 		{
-			$cache = Cache::instance();
-			$cache_key = "primary_link_for_page:$this->id";
-			$this->_primary_link = $cache->get($cache_key);
-
-			if ($this->_primary_link === NULL)
-			{
-				$this->_primary_link = DB::select('location')
-					->from('page_links')
-					->where('page_id', '=', $this->id)
-					->where('is_primary', '=', TRUE)
-					->limit(1)
-					->execute()
-					->get('location');
-
-				$cache->set($cache_key, $this->_primary_link);
-			}
+			$this->_primary_link = DB::select('location')
+				->from('page_links')
+				->where('page_id', '=', $this->id)
+				->where('is_primary', '=', TRUE)
+				->limit(1)
+				->execute()
+				->get('location');
 		}
 
 		return $this->_primary_link;
@@ -482,51 +473,33 @@ class Sledge_Model_Page extends ORM_Taggable
 			return $this->_thumbnail;
 		}
 
-		// Try and get it from the cache.
-		// We don't have to worry about updating this cache - when the bodycopy is changed a new page version is created anyway.
-		// So once the thumbnail for a particular page version is cached the cache should never have to be changed.
-		$cache_key = 'thumbnail_for_page_version:' . $this->id;
-		$cache = Cache::instance();
+		// Get the standfirst for this page version.
+		$chunk = Chunk::find('text', 'bodycopy', $this->version());
 
-		if ( ! $asset_id = $cache->get($cache_key))
+		if ( ! $chunk->loaded())
 		{
-			// Get the standfirst for this page version.
-			$chunk = Chunk::find('text', 'bodycopy', $this->version());
-
-			if ( ! $chunk->loaded())
-			{
-				$asset_id = 0;
-			}
-			else
-			{
-				// Find the first image in this chunk.
-				$query = DB::select('chunk_text_assets.asset_id')
-					->from('chunk_text_assets')
-					->join('assets', 'inner')
-					->on('chunk_text_assets.asset_id', '=', 'assets.id')
-					->order_by('position', 'asc')
-					->limit(1)
-					->where('chunk_text_assets.chunk_id', '=', $chunk->id)
-					->where('assets.type', '=', Sledge_Asset::IMAGE);
-
-				// If the current user isn't logged in then make sure it's a published asset.
-				if ( ! Auth::instance()->logged_in())
-				{
-					$query->where('assets.visible_from', '<=', editor::instance()->live_time())
-						->where('status', '=', Model_Asset::STATUS_PUBLISHED);
-				}
-
-				// Run the query and get the result.
-				$result = $query->execute()->as_array();
-				$asset_id = (isset($result[0]))? $result[0]['asset_id'] : 0;
-			}
-
-			// Save it to cache.
-			$cache->set($cache_key, $asset_id);
+			return $this->_thumbnail = new Model_Asset;
 		}
+		else
+		{
+			// Find the first image in this chunk.
+			$query = ORM::factory('Asset')
+				->join('chunk_text_assets')
+				->on('chunk_text_assets.asset_id', '=', 'assets.id')
+				->order_by('position', 'asc')
+				->limit(1)
+				->where('chunk_text_assets.chunk_id', '=', $chunk->id)
+				->where('asset.type', '=', Sledge_Asset::IMAGE);
 
-		// Return a Model_Asset object for this asset ID.
-		return $this->_thumbnail = ORM::factory('Asset', $asset_id);
+			// If the current user isn't logged in then make sure it's a published asset.
+			if ( ! Auth::instance()->logged_in())
+			{
+				$query->where('asset.visible_from', '<=', Editor::instance()->live_time());
+			}
+
+			// Load the result.
+			return $this->_thumbnail = $query->find();
+		}
 	}
 
 	/**

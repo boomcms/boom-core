@@ -29,6 +29,8 @@ class Sledge_Model_Template extends ORM
 		'visible'		=>	'',
 	);
 
+	protected $_table_name = 'templates';
+
 	/**
 	 * Determines whether the template file exists.
 	 *

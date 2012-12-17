@@ -23,4 +23,6 @@ class Sledge_Model_Chunk_Slideshow extends ORM
 		'id'		=>	'',
 		'slotname'	=>	'',
 	);
+
+	protected $_table_name = 'chunk_slideshows';
 }

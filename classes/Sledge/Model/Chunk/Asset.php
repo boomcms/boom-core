@@ -26,4 +26,6 @@ class Sledge_Model_Chunk_Asset extends ORM
 		'url'			=>	'',
 		'slotname'		=>	'',
 	);
+
+	protected $_table_name = 'chunk_assets';
 }

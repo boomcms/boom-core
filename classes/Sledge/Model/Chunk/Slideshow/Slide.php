@@ -3,17 +3,6 @@
 /**
  * Holds a list of images which belong to a slideshow slot.
  *
- * **Table name**: chunk_slideshow_slides
- *
- * Name      	| Type		| Description
- * ---------------|-----------------|------------------------------------------------
- * id			|	integer	|	Primary key, auto increment
- * asset_id	|	integer	|	ID in the asset table of the image.
- * url			|	string	|	URL that the image should link to.
- * chunk_id	|	integer	|	The ID of the slideshow chunk that this slide belongs to.
- * caption		|	string	|	
- * title		|	string	|
- *
  *
  * @package	Sledge
  * @category	Chunks
@@ -38,4 +27,6 @@ class Sledge_Model_Chunk_Slideshow_Slide extends ORM
 		'caption'	=>	'',
 		'title'		=>	'',
 	);
+
+	protected $_table_name = 'chunk_slideshow_slides';
 }

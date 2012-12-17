@@ -17,6 +17,4 @@ class Sledge_Model_Person_Page extends ORM
 		'last_active'		=>	'',
 		'saved'			=>	FALSE,
 	);
-
-	protected $_cache_columns = array('person_id');
 }

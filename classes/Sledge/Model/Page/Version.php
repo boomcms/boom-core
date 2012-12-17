@@ -36,7 +36,7 @@ class Sledge_Model_Page_Version extends ORM
 		'stashed'			=>	'',
 	);
 
-	protected $_cache_columns = array('internal_name');
+	protected $_table_name = 'page_versions';
 
 	/**
 	* Filters for the versioned person columns

@@ -22,4 +22,6 @@ class Sledge_Model_Chunk_Linkset extends ORM
 		'title'		=>	'',
 		'slotname'	=>	'',
 	);
+
+	protected $_table_name = 'chunk_linksets';
 }

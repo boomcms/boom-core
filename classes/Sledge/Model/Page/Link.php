@@ -17,7 +17,7 @@ class Sledge_Model_Page_Link extends ORM
 		'is_primary'	=>	'',
 		'redirect'		=>	'',
 	);
-	protected $_cache_columns = array('location');
+	protected $_table_name = 'page_links';
 
 	/**
 	 * Checks that the URI is unique before saving.
@@ -82,7 +82,7 @@ class Sledge_Model_Page_Link extends ORM
 	public function make_primary()
 	{
 		// Save the primary link in cache
-		Cache::instance()->set('primary_link_for_page:' . $this->page_id, $this->location);
+//		Cache::instance()->set('primary_link_for_page:' . $this->page_id, $this->location);
 
 		// Ensure that this is the only primary link for the page.
 		// We do this through the ORM rather than a DB update query to catch cached links
