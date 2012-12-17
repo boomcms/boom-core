@@ -52,7 +52,7 @@ class Sledge_Controller_Cms_Assets extends Sledge_Controller
 		foreach ($asset_ids as $asset_id)
 		{
 			// Load the asset from the database.
-			$asset = ORM::factory('Asset', $asset_id);
+			$asset = new Model_Asset($asset_id);
 
 			// If the asset isn't marked as rubbish then mark it as so.
 			// If it's already marked as rubbish then delete it for real.
@@ -124,7 +124,7 @@ class Sledge_Controller_Cms_Assets extends Sledge_Controller
 			foreach ($asset_ids as $asset_id)
 			{
 				// Load the asset from the database to check that it exists.
-				$asset = ORM::factory('Asset', $asset_id);
+				$asset = new Model_Asset($asset_id);
 
 				if ($asset->loaded())
 				{
@@ -156,7 +156,7 @@ class Sledge_Controller_Cms_Assets extends Sledge_Controller
 			// Download a single asset.
 
 			// Load the asset from the database to check that it exists.
-			$asset = ORM::factory('Asset', $asset_ids[0]);
+			$asset = new Model_Asset($asset_ids[0]);
 
 			if ($asset->loaded())
 			{
@@ -249,7 +249,7 @@ class Sledge_Controller_Cms_Assets extends Sledge_Controller
 		// Load the query data into variables.
 		$page		=	Arr::get($query_data, 'page', 1);
 		$perpage		=	Arr::get($query_data, 'perpage', 30);
-		$tag			=	ORM::factory('Tag', Arr::get($query_data, 'tag'));
+		$tag			=	new Model_Tag(Arr::get($query_data, 'tag'));
 		$uploaded_by	=	Arr::get($query_data, 'uploaded_by');
 		$type		=	Arr::get($query_data, 'type');
 		$sortby		=	Arr::get($query_data, 'sortby');
@@ -387,7 +387,7 @@ class Sledge_Controller_Cms_Assets extends Sledge_Controller
 	public function action_save()
 	{
 		// Load the asset data.
-		$asset = ORM::factory('Asset', $this->request->param('id'));
+		$asset = new Model_Asset($this->request->param('id'));
 
 		// Does the asset exist?
 		if ( ! $asset->loaded())
@@ -465,7 +465,7 @@ class Sledge_Controller_Cms_Assets extends Sledge_Controller
 	public function action_untag()
 	{
 		// Load the asset data.
-		$asset = ORM::factory('Asset', $this->request->param('id'));
+		$asset = new Model_Asset($this->request->param('id'));
 
 		// Can't remove tags from an asset which doesn't exist.
 		if ($asset->loaded())
@@ -488,7 +488,7 @@ class Sledge_Controller_Cms_Assets extends Sledge_Controller
 	public function action_view()
 	{
 		// Load the asset.
-		$asset = ORM::factory('Asset', $this->request->param('id'));
+		$asset = new Model_Asset($this->request->param('id'));
 
 		// Check that the asset exists
 		if ( ! $asset->loaded())

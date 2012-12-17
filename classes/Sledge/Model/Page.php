@@ -363,7 +363,7 @@ class Sledge_Model_Page extends ORM_Taggable
 	 */
 	public function parent()
 	{
-		return ($this->mptt->is_root())? $this : ORM::factory('Page', $this->mptt->parent_id);
+		return ($this->mptt->is_root())? $this : new Model_Page($this->mptt->parent_id);
 	}
 
 	/**

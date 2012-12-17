@@ -29,22 +29,14 @@ class Sledge_Controller_Cms_Pages extends Sledge_Controller
 	 */
 	public function action_index()
 	{
-		$pages = DB::select('*')
-			->from('page_mptt')
+		$pages = ORM::factory('Page')
+			->join('page_mptt', 'inner')
+			->on('page.id', '=', 'page_mptt.id')
 			->order_by('lft', 'asc')
-			->execute()
-			->as_array();
+			->find_all();
 
-		array_walk($pages, function( & $page)
-			{
-				$page = array(
-					'mptt' => $page,
-					'page' => ORM::factory('Page', $page['id'])
-				);
-			}
-		);
-
-		$this->template = View::factory('sledge/pages/index')
-			->set('pages', $pages);
+		$this->template = View::factory('sledge/pages/index', array(
+			'pages'	=>	$pages,
+		));
 	}
 }

@@ -88,7 +88,7 @@ class Sledge_Controller_Cms_Uploadify extends Kohana_Controller
 					// Are we replacing an existing asset?
 					$asset_id = $this->request->post('asset_id');
 
-					$asset = ORM::factory('Asset', $asset_id);
+					$asset = new Model_Asset($asset_id);
 					$asset->filename = $file['name'];
 
 					if ($asset_id === NULL)

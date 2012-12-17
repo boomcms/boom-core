@@ -19,7 +19,7 @@ class Sledge_Controller_Cms_Tag extends Sledge_Controller
 		// Permissions check.
 		$this->_authorization('manage_tags');
 
-		$this->tag = ORM::factory('Tag', $this->request->param('id'));
+		$this->tag = new Model_Tag($this->request->param('id'));
 	}
 
 	public function action_autocomplete()
@@ -54,7 +54,7 @@ class Sledge_Controller_Cms_Tag extends Sledge_Controller
 
 		if ($parent)
 		{
-			$parent = ORM::factory('Tag', array('path' => $parent));
+			$parent = new Model_Tag(array('path' => $parent));
 		}
 		else
 		{
@@ -64,16 +64,10 @@ class Sledge_Controller_Cms_Tag extends Sledge_Controller
 				->find();
 		}
 
-		$tags = DB::select('tags.id')
-			->from('tags')
+		$tags = ORM::factory('Tag')
 			->where('parent_id', '=', $parent->id)
 			->execute()
 			->as_array();
-
-		foreach ($tags as & $tag)
-		{
-			$tag = ORM::factory('Tag', $tag['id']);
-		}
 
 		$this->template = View::factory('sledge/tags/children', array(
 			'tags'	=>	$tags,
@@ -119,7 +113,7 @@ class Sledge_Controller_Cms_Tag extends Sledge_Controller
 
 		if ($parent)
 		{
-			$parent = ORM::factory('Tag', array('path' => $parent));
+			$parent = new Model_Tag(array('path' => $parent));
 			$query->where('path', 'like', $parent->path . '/%');
 		}
 
@@ -148,7 +142,7 @@ class Sledge_Controller_Cms_Tag extends Sledge_Controller
 
 		if ($this->request->param('id'))
 		{
-			$this->template->current = ORM::factory('Tag', $this->request->param('id'));
+			$this->template->current = new Model_Tag($this->request->param('id'));
 		}
 	}
 
@@ -182,7 +176,7 @@ class Sledge_Controller_Cms_Tag extends Sledge_Controller
 		$this->tag->save();
 
 		// Update the tags materialised path.
-		$parent = ORM::factory('Tag', $parent);
+		$parent = new Model_Tag($parent);
 
 		if ($parent->path)
 		{

@@ -102,7 +102,7 @@ class Sledge_Controller_Cms_Page_Link extends Controller_Cms_Page
 	 */
 	public function action_move()
 	{
-		$link = ORM::factory('Page_Link', array(
+		$link = new Model_Page_Link(array(
 			'location'	=> $this->request->query('link')
 		));
 
@@ -143,7 +143,7 @@ class Sledge_Controller_Cms_Page_Link extends Controller_Cms_Page
 	public function action_save()
 	{
 		// Load the link from the DB by it's primary key.
-		$link = ORM::factory('Page_Link', $this->request->post('link_id'));
+		$link = new Model_Page_Link($this->request->post('link_id'));
 
 		// Update the link details.
 		$link->redirect = $this->request->post('redirect');

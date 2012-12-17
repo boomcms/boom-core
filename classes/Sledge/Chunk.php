@@ -185,7 +185,7 @@ abstract class Sledge_Chunk
 		elseif ($page === 0)
 		{
 			// 0 was given as the page - this signifies a 'global' chunk not assigned to any page.
-			$page = ORM::factory('Page');
+			$page = new Model_Page;
 		}
 
 		// The chunk is being cascaded down the tree so find the page that the chunk is actually assigned to.

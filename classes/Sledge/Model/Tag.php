@@ -61,7 +61,7 @@ class Sledge_Model_Tag extends ORM
 	 */
 	public function parent()
 	{
-		return ORM::factory('Tag', $this->parent_id);
+		return new Model_Tag($this->parent_id);
 	}
 
 	/**

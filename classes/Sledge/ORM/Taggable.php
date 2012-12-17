@@ -99,11 +99,11 @@ class Sledge_ORM_Taggable extends ORM
 		}
 		elseif (ctype_digit($value))
 		{
-			$tag = ORM::factory('Tag', $value);
+			$tag = new Model_Tag($value);
 		}
 		else
 		{
-			$tag = ORM::factory('Tag', array('path' => $value));
+			$tag = new Model_Tag(array('path' => $value));
 		}
 
 		// Get the tag's mptt values.

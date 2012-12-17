@@ -39,7 +39,7 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 		if ($page_id = $this->request->param('id'))
 		{
 			// Yes! Load the page from the database.
-			$this->_page = ORM::factory('Page', $page_id);
+			$this->_page = new Model_Page($page_id);
 		}
 	}
 
@@ -93,7 +93,7 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 		else
 		{
 			// Find the parent page.
-			$parent = ORM::factory('Page',  $this->request->post('parent_id'));
+			$parent = new Model_Page($this->request->post('parent_id'));
 
 			// Check for add permissions on the parent page.
 			$this->_authorization('add_page', $parent);
@@ -294,7 +294,7 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 
 		$this->template = View::factory('sledge/pages/tree', array(
 			'pages'	=>	$pages,
-			'page'	=>	ORM::factory('Page', $this->request->param('id')),
+			'page'	=>	new Model_Page($this->request->param('id')),
 			'state'	=>	'collapsed',
 		));
 	}

@@ -17,7 +17,7 @@ class Sledge_Controller_Asset extends Sledge_Controller
 		parent::before();
 
 		// Load the asset from the database.
-		$this->asset = ORM::factory('Asset', $this->request->param('id'));
+		$this->asset = new Model_Asset($this->request->param('id'));
 
 		// Check that the asset exists.
 		if ( ! $this->asset->loaded() OR ($this->asset->visible_from > $_SERVER['REQUEST_TIME'] AND ! $this->auth->logged_in()))

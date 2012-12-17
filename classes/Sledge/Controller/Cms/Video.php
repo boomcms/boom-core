@@ -36,7 +36,7 @@ class Sledge_Controller_Cms_Video extends Sledge_Controller
 	 */
 	public function action_sync()
 	{
-		$asset = ORM::factory('Asset', $this->request->param('id'));
+		$asset = new Model_Asset($this->request->param('id'));
 
 		// Throw a 404 if the asset doesn't exist.
 		if ( ! $asset->loaded())
@@ -117,12 +117,14 @@ class Sledge_Controller_Cms_Video extends Sledge_Controller
 				throw new Kohana_Exception($response['subject'] . "\n" . $response['message']);
 			}
 
-			$asset = ORM::factory('Asset');
-			$asset->filename = $video_key; // Store the video key in the filename column.
-			$asset->type = Sledge_Asset::BOTR;
-			$asset->encoded = FALSE;
-			$asset->visible_from = $_SERVER['REQUEST_TIME'];
-			$asset->create();
+			$asset = ORM::factory('Asset')
+				->values(array(
+					'filename'		=>	$video_key,		// Store the video key in the filename column.
+					'type'		=>	Sledge_Asset::BOTR,
+					'encoded'		=>	FALSE,
+					'visible_from'	=>	$_SERVER['REQUEST_TIME']
+				))
+				->create();
 
 			$this->redirect("/cms/assets#asset/" . $asset->id);
 		}

@@ -37,7 +37,7 @@ class Sledge_Controller_Cms_Profile extends Sledge_Controller
 		// If the person can view the site as another user then set user mimicking.
 		if ($this->auth->is_mimicking() OR $this->auth->logged_in('manage_people'))
 		{
-			$person = ($this->request->post('switch_user'))? ORM::factory('Person', $this->request->post('switch_user')) : NULL;
+			$person = ($this->request->post('switch_user'))? new Model_Person($this->request->post('switch_user')) : NULL;
 
 			$this->auth->mimick_user($person);
 		}

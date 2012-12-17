@@ -30,7 +30,7 @@ class Sledge_Controller_Cms_Chunk extends Sledge_Controller
 	{
 		parent::before();
 
-		$this->page = ORM::factory('Page', $this->request->param('id'));
+		$this->page = new Model_Page($this->request->param('id'));
 
 		// Permissions check
 		$this->_authorization('edit_page', $this->page);
@@ -90,7 +90,7 @@ class Sledge_Controller_Cms_Chunk extends Sledge_Controller
 				$caption = $slide['caption'];
 				$url = $slide['link'];
 				$asset_id = $slide['asset_rid'];
-				$slide = ORM::factory('Chunk_Slideshow_Slide');
+				$slide = new Model_Chunk_Slideshow_Slide;
 				$slide->asset_id = $asset_id;
 				$slide->caption = $caption;
 

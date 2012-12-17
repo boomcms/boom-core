@@ -35,7 +35,7 @@ Route::set('sledge', '<location>(.<action>)', array(
 	))
 	->filter(function(Route $route, $params, Request $request)
 		{
-			$page_link = ORM::factory('Page_Link', array('location' => $params['location']));
+			$page_link = new Model_Page_Link(array('location' => $params['location']));
 
 			if ( ! $page_link->loaded())
 			{

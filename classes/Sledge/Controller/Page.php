@@ -69,7 +69,7 @@ class Sledge_Controller_Page extends Sledge_Controller
 	 */
 	public function action_html()
 	{
-		$template = ($this->request->query('template'))? ORM::factory('Template', $this->request->query('template')) : $this->page->version()->template;
+		$template = ($this->request->query('template'))? new Model_Template($this->request->query('template')) : $this->page->version()->template;
 
 		// Set some variables which need to be used globally in the views.
 		View::bind_global('auth', $this->auth);
@@ -128,7 +128,7 @@ class Sledge_Controller_Page extends Sledge_Controller
 
 		foreach ($pages as & $page)
 		{
-			$p = ORM::factory('Page', $page->id);
+			$p =new Model_Page($page->id);
 
 			$page = array(
 				'title'			=>	html_entity_decode($p->version()->title),

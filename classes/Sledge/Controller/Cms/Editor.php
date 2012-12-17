@@ -30,7 +30,7 @@ class Sledge_Controller_Cms_Editor extends Sledge_Controller
 		$page_id = $this->request->param('id');
 
 		// Load the record relating to this user and this page from the database.
-		$us = ORM::factory('Person_Page', array(
+		$us = new Model_Person_Page(array(
 			'person_id'	=>	$this->person->id,
 			'page_id'		=>	$page_id,
 		));
@@ -120,14 +120,15 @@ class Sledge_Controller_Cms_Editor extends Sledge_Controller
 	public function action_toolbar()
 	{
 		// Get the page ID from the URL paramaters.
+		// Get this from the request params now and we don't have to call Model_Page::__get to use the page ID later.
 		$page_id = $this->request->param('id');
 
 		// Load the corresponding page.
-		$page = ORM::factory('Page', $page_id);
+		$page = new Modle_Page($page_id);
 
 		// Log the current user as editing this page.
 		// Try and find existing details from db / cache.
-		$person_page = ORM::factory('Person_Page', array(
+		$person_page = new Model_Person_Page(array(
 			'person_id'	=>	$this->person->id,
 			'page_id'		=>	$page_id
 		));

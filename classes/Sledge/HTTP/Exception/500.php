@@ -22,7 +22,7 @@ class Sledge_HTTP_Exception_500 extends Kohana_HTTP_Exception_500
 		else
 		{
 			// Look for a page with '500' as the internal name.
-			$page = ORM::factory('Page', array(
+			$page = new Model_Page(array(
 				'internal_name'	=>	500,
 			));
 

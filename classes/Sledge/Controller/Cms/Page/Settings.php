@@ -196,38 +196,38 @@ class Sledge_Controller_Cms_Page_Settings extends Controller_Cms_Page
 						$child_template = ($this->_page->children_template_id == 0)? $this->_page->version()->template_id : $this->_page->children_template_id;
 					}
 
-					// Get IDs of the child pages.
-					$children = DB::select('page_mptt.id')
-						->from('page_mptt')
-						->where('parent_id', '=', $this->_page->id)
-						->execute();
+					$values = array();
 
-					// Loop through the children, loading them from the database / cache and update the settings.
-					foreach ($children as $child)
+					if ($post['visible_in_nav_cascade'] == 1)
 					{
-						$child = ORM::factory('Page', $child['id']);
-
-						// Cascading the visible_in_nav setting?
-						if ($post['visible_in_nav_cascade'] == 1)
-						{
-							$child->visible_in_nav = $this->_page->children_visible_in_nav;
-						}
-
-						// Cascading the visible_in_nav_cms setting?
-						if ($post['visible_in_nav_cms_cascade'] == 1)
-						{
-							$child->visible_in_nav_cms = $this->_page->children_visible_in_nav_cms;
-						}
-
-						// Cascading the template setting?
-						if ($post['child_template_cascade'] == 1)
-						{
-							$child->template_id = $child_template;
-						}
-
-						// Save the child page.
-						$child->update();
+						$values['visible_in_nav'] = $this->_page->children_visible_in_nav;
 					}
+
+					// Cascading the visible_in_nav setting?
+					if ($post['visible_in_nav_cascade'] == 1)
+					{
+						$values['visible_in_nav'] = $this->_page->children_visible_in_nav;
+					}
+
+					// Cascading the visible_in_nav_cms setting?
+					if ($post['visible_in_nav_cms_cascade'] == 1)
+					{
+						$values['visible_in_nav_cms'] = $this->_page->children_visible_in_nav_cms;
+					}
+
+					// Cascading the template setting?
+					if ($post['child_template_cascade'] == 1)
+					{
+						$values['template_id'] = $child_template;
+					}
+
+					// Run the query
+					DB::update('pages')
+						->join('page_mptt', 'inner')
+						->on('pages.id', '=', 'page_mptt.id')
+						->where('parent_id', '=', $this->_page->id)
+						->set($values)
+						->execute();
 				}
 
 				// Update the basic values and save the page.
@@ -295,7 +295,7 @@ class Sledge_Controller_Cms_Page_Settings extends Controller_Cms_Page
 				if ($parent_id AND $post['parent_id'] != $this->_page->mptt->parent_id AND $post['parent_id'] != $this->_page->id)
 				{
 					// Check that the new parent ID is a valid page.
-					$parent = ORM::factory('page', $post['parent_id']);
+					$parent = new Model_Page($post['parent_id']);
 
 					if ($parent->loaded())
 					{
@@ -404,7 +404,7 @@ class Sledge_Controller_Cms_Page_Settings extends Controller_Cms_Page
 		}
 		elseif ($this->_method === Request::POST)
 		{
-			$tag = ORM::factory('Tag', array('path' => $this->request->post('tag')));
+			$tag = new Model_Tag(array('path' => $this->request->post('tag')));
 			$page = $this->_page;
 			$action = ($this->request->post('action') == 'add')? 'add' : 'remove';
 
@@ -425,19 +425,21 @@ class Sledge_Controller_Cms_Page_Settings extends Controller_Cms_Page
 					$parent = implode("/", $parts);
 
 					// Find the parent tag.
-					$parent = ORM::factory('Tag', array('path' => $parent));
+					$parent = new Model_Tag(array('path' => $parent));
 
 					// Create the tag.
-					$tag = ORM::factory('Tag');
-					$tag->path = $this->request->post('tag');
+					$tag = ORM::factory('Tag')
+						->values(array(
+							'path'	=>	$this->request->post('tag'),
+							'name'	=>	$name,
+							'type'	=>	2,
+						));
 
 					if ($parent->loaded())
 					{
-						$tag->parent_id = $parent->id;
+						$tag->set('parent_id', $parent->id);
 					}
 
-					$tag->name = $name;
-					$tag->type = 2;
 					$tag->update();
 				}
 

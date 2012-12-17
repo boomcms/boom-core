@@ -90,7 +90,7 @@ class Sledge_Controller_Plugin_Page_Children extends Sledge_Controller
 			// Parent may be an object when this is an internal request - no point instantiating a new object when we already have one.
 			if ( ! is_object($this->parent))
 			{
-				$this->parent = ORM::factory('Page', $this->request->post('parent'));
+				$this->parent = new Model_Page($this->request->post('parent'));
 			}
 		}
 		elseif (Request::$current !== Request::$initial)
@@ -134,7 +134,7 @@ class Sledge_Controller_Plugin_Page_Children extends Sledge_Controller
 		if ($tag)
 		{
 			// Try and get the tag from the database. $_POST['tag'] should be a tag path.
-			$tag = ORM::factory('Tag', array('path' => $tag));
+			$tag = new Model_Tag(array('path' => $tag));
 
 			// Only set the tag property if the tag was found.
 			// Then we always know that if $this->tag is set then it's a valid tag.
@@ -214,24 +214,14 @@ class Sledge_Controller_Plugin_Page_Children extends Sledge_Controller
 			list($query, $total) = $this->build_query();
 
 			// Execute the query.
-			$result = $query
-				->select('pages.id')
+			$pages = $query
+				->select('pages.*')
+				->as_object('Model_Page')
 				->execute();
 
 			// Get the number of results returned.
-			$count = $result
+			$count = $pages
 				->count();
-
-			// Get the details of the pages matching the query.
-			$pages = $result
-				->as_array();
-
-			// For HTML page lists get page objects for the template.
-			array_walk($pages, function(&$page)
-				{
-					$page = ORM::factory('Page', $page['id']);
-				}
-			);
 
 			// Only continue if there are child pages.
 			if ($count == 0)

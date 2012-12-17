@@ -35,7 +35,7 @@ class Sledge_Controller_Plugin_Search extends Kohana_Controller
 			$pages = array();
 			foreach ( (array) @$results['matches'] as $result)
 			{
-				$pages[] = ORM::factory('Page', $result['attrs']['page_id']);
+				$pages[] = new Model_Page($result['attrs']['page_id']);
 			}
 
 			// Setup the main template.

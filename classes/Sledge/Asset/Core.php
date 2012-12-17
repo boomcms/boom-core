@@ -73,7 +73,7 @@ abstract class Sledge_Asset_Core
 	{
 		if ( ! is_object($asset))
 		{
-			$asset = ORM::factory('Asset', $asset);
+			$asset = new Model_Asset($asset);
 		}
 
 		switch ($asset->type)
