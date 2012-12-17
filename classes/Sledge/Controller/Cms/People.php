@@ -56,7 +56,7 @@ class Sledge_Controller_Cms_People extends Sledge_Controller
 	 */
 	public function action_add_group()
 	{
-		$person = ORM::factory('Person', $this->request->param('id'));
+		$person = new Model_Person($this->request->param('id'));
 
 		if ($person->loaded())
 		{
@@ -175,7 +175,7 @@ class Sledge_Controller_Cms_People extends Sledge_Controller
 		$group	=	$this->request->query('tag');
 		$order	=	$this->request->query('order');
 
-		$query = ORM::factory('Person');
+		$query =new Model_Person;
 
 		if ($group)
 		{
@@ -204,7 +204,7 @@ class Sledge_Controller_Cms_People extends Sledge_Controller
 
 		$this->template = View::factory('sledge/people/list', array(
 			'people'	=>	$people,
-			'group'	=>	ORM::factory('Group', $group),
+			'group'	=>	new Model_Group($group),
 			'total'	=>	$total,
 			'order'	=>	$order,
 		));
@@ -247,11 +247,11 @@ class Sledge_Controller_Cms_People extends Sledge_Controller
 
 		if ($id)
 		{
-			$person = ORM::factory('Person', $id);
+			$person = new Model_Person($id);
 		}
 		else
 		{
-			$person = ORM::factory('Person', array(
+			$person = new Model_Person(array(
 				'email'	=>	$this->request->post('email')
 			));
 		}
@@ -273,7 +273,7 @@ class Sledge_Controller_Cms_People extends Sledge_Controller
 		// If we're adding a new user then a group ID may be given to add the user to an inital group.
 		if ($this->request->post('group_id') > 0)
 		{
-			$group = ORM::factory('Group', $this->request->post('group_id'));
+			$group = new Model_Group($this->request->post('group_id'));
 
 			if ($group->loaded())
 			{
@@ -291,7 +291,7 @@ class Sledge_Controller_Cms_People extends Sledge_Controller
 	 */
 	public function action_view()
 	{
-		$person = ORM::factory('Person', $this->request->param('id'));
+		$person = new Model_Person($this->request->param('id'));
 
 		if ( ! $person->loaded())
 		{

@@ -26,7 +26,7 @@ class Sledge_Controller_Cms_Groups extends Sledge_Controller
 			throw new HTTP_Exception_403;
 		}
 
-		$this->group = ORM::factory('Group', $this->request->param('id'));
+		$this->group = new Model_Group($this->request->param('id'));
 	}
 
 	/**
@@ -42,7 +42,7 @@ class Sledge_Controller_Cms_Groups extends Sledge_Controller
 
 		if ($page_id = $this->request->query('page') > 0)
 		{
-			$mptt = ORM::factory('Page_mptt', $page_id);
+			$mptt = new Model_Page_Mptt($page_id);
 
 			$current
 				->join('page_mptt', 'left')
@@ -115,7 +115,7 @@ class Sledge_Controller_Cms_Groups extends Sledge_Controller
 	 */
 	public function action_page_permissions()
 	{
-		$mptt = ORM::factory('Page_mptt', $this->request->query('page'));
+		$mptt = new Model_Page_Mptt($this->request->query('page'));
 
 		$permissions = ORM::factory('Group_Role')
 			->with('role')

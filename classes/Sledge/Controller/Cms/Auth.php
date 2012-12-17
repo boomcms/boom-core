@@ -25,7 +25,7 @@ class Sledge_Controller_Cms_Auth extends Controller
 			if ($openid->validate())
 			{
 				$attrs = $openid->getAttributes();
-				$person = ORM::factory('Person', array('email' => $attrs['contact/email']));
+				$person = new Model_Person(array('email' => $attrs['contact/email']));
 
 				if ( ! $person->loaded())
 				{
