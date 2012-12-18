@@ -124,7 +124,7 @@ class Sledge_Controller_Cms_Editor extends Sledge_Controller
 		$page_id = $this->request->param('id');
 
 		// Load the corresponding page.
-		$page = new Modle_Page($page_id);
+		$page = new Model_Page($page_id);
 
 		// Log the current user as editing this page.
 		// Try and find existing details from db / cache.
