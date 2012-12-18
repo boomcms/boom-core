@@ -41,9 +41,6 @@ abstract class Sledge_Plugin
 		// Was there an error?
 		if ($response->status() === 500)
 		{
-			// Log the error.
-			Log::instance()->add(Log::ERROR, $response->body());
-
 			// If the site is in development throw an exception so that the error can be debugged.
 			if (Kohana::$environment === Kohana::DEVELOPMENT)
 			{
