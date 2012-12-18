@@ -115,38 +115,37 @@ class Sledge_Controller_Page extends Sledge_Controller
 	public function action_rss()
 	{
 		// RSS feeds for a page display a list of the child pages so get the children of the current page.
-		// Use the child page plugin to avoid code duplication.
-		$pages = Request::factory('plugin/page/children.json')
-				->post(array(
-					'parent'	=>	$this->page,
-					'order'	=>	'visible_from',
-				))
-				->execute()
-				->body();
+		$pages = ORM::factory('Page')
+			->join('page_mptt', 'inner')
+			->on('page.id', '=', 'page_mptt.id')
+			->with_current_version($this->editor)
+			->where('page_mptt.parent_id', '=', $this->page->id)
+			->order_by('visible_from', 'desc')
+			->find_all();
 
-		$pages = json_decode($pages);
+		// Array of items to be added to the feed.
+		$items = array();
 
-		foreach ($pages as & $page)
+		foreach ($pages as $page)
 		{
-			$p =new Model_Page($page->id);
-
-			$page = array(
-				'title'			=>	html_entity_decode($p->version()->title),
-				'link'			=>	$page->uri,
-				'guid'		=>	$page->uri,
-				'description'	=>	strip_tags(Chunk::factory('text', 'standfirst', $p)->text()),
-				'pubDate'		=>	$p->visible_from,
+			$items[] = array(
+				'title'			=>	html_entity_decode($page->version()->title),
+				'link'			=>	$page->primary_link(),
+				'guid'		=>	$page->primary_link(),
+				'description'	=>	strip_tags(Chunk::factory('text', 'standfirst', $page)->text()),
+				'pubDate'		=>	$page->visible_from,
 			);
 		}
 
+		// Create the feed with the $items array as the content.
 		$feed = Feed::create(array(
-				'title'	=>	$this->page->title,
+				'title'	=>	$this->page->version()->title,
 				'link'	=>	$this->page->link() . ".rss",
 			),
-			$pages
+			$items
 		);
 
-		// Send RSS headers.
+		// Set the output.
 		$this->response
 			->headers('Content-Type', 'application/rss+xml')
 			->body($feed);
