@@ -15,7 +15,10 @@ class Sledge_Model_Page extends ORM_Taggable
 	 */
 	protected $_belongs_to = array(
 		'mptt'		=>	array('model' => 'Page_MPTT', 'foreign_key' => 'id'),
-		'version'		=>	array('model' => 'Model_Page_Version', 'foreign_key' => 'page_id'),
+	);
+
+	protected $_has_one = array(
+		'version'		=>	array('model' => 'Page_Version', 'foreign_key' => 'page_id'),
 	);
 
 	protected $_has_many = array(
@@ -46,13 +49,6 @@ class Sledge_Model_Page extends ORM_Taggable
 	);
 
 	protected $_table_name = 'pages';
-
-	/**
-	 * A Model_Page_Version object which should be used with this page.
-	 *
-	 * @var	Model_Page_Version
-	 */
-	protected $_version;
 
 	/**
 	 * Child ordering policy value for manual
@@ -555,37 +551,17 @@ class Sledge_Model_Page extends ORM_Taggable
 	}
 
 	/**
-	 * Returns the version which should be used for the page.
-	 * For CMS users the most recent version is used.
-	 * For site users the most recent published version is used.
+	 * Returns the current version for the page.
 	 *
-	 * @uses		Model_Page::$_version
 	 * @return	Model_Version_Page
 	 */
-	public function version($version = NULL)
+	public function version()
 	{
-		if ($version !== NULL AND $version instanceof Model_Page_Version)
-		{
-			// Act as a setter.
-
-			// Check that the version belongs to this page.
-			if ($this->id === $version->page_id)
-			{
-				// Set the $_version property for the page.
-				$this->_version = $version;
-
-				// Return the current object.
-				return $this;
-			}
-		}
-
-		// Act as a getter.
-
 		// Has $this->_version been set?
-		if ($this->_version !== NULL)
+		if (isset($this->_related['version']))
 		{
 			// Yes it has, return it.
-			return $this->_version;
+			return $this->_related['version'];
 		}
 
 		// No it hasn't, query the database for the right version to use.
@@ -606,45 +582,13 @@ class Sledge_Model_Page extends ORM_Taggable
 			// Order by ID as well incase there's multiple versions with the same embargoed time.
 			$query
 				->where('published', '=', TRUE)
-				->where('embargoed_until', '<=', editor::instance()->live_time())
+				->where('embargoed_until', '<=', Editor::instance()->live_time())
 				->order_by('embargoed_until', 'desc')
 				->order_by('id', 'desc');
 		}
 
 		// Run the query and return the result.
-		return $this->_version = $query
+		return $this->_related['version'] = $query
 			->find();
-	}
-
-	/**
-	 * Loads a page with the relevant record from the page_versions table.
-	 * Logged in users get the most recent version (highest PK)
-	 * Logged out users get the version with the highest published_from time which is in the past.
-	 *
-	 * @return	Model_Page
-	 */
-	public function with_version()
-	{
-		// Build a subquery to get the ID of the current version.
-		$subquery = DB::select(array(DB::expr('max(id)'), 'id'), 'page_id')
-			->from('page_versions')
-			->group_by('page_id');
-
-		if ( ! Auth::instance()->logged_in())
-		{
-			// If the current user isn't logged in then restrict the results to versions which are currently live.
-			$subquery->where('published_from', '<=', editor::instance()->live_time());
-		}
-
-		// Add the page_version columns to the select and create the necessary joins.
-		$this
-			->select('page_versions.*')
-			->join(array($subquery, 'current_version'))
-			->on($this->_table_name . "." . $this->_primary_key, '=', 'current_version.page_id')
-			->join(array('page_versions', 'version'), 'inner')
-			->on('current_version.id', '=', 'version.id');
-
-		// Return the current object.
-		return $this;
 	}
 }

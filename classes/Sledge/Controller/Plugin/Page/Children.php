@@ -195,8 +195,6 @@ class Sledge_Controller_Plugin_Page_Children extends Sledge_Controller
 			->find_all()
 			->as_array();
 
-var_dump($results);exit;
-
 		$this->response
 			->headers('Content-Type', 'application/json')
 			->body(json_encode($results));
