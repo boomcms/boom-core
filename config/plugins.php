@@ -2,5 +2,4 @@
 
 return array(
 	'child_pages'	=>	'plugin/page/children.html',
-	'search'		=>	'plugin/search',
 );
