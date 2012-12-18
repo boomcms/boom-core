@@ -60,7 +60,7 @@ class Sledge_Chunk_Text extends Chunk
 			// This mammoth regular expression matches a URL
 			//  Rob didn't write this, I'm not smart enough for this.
 			// See http://daringfireball.net/2010/07/improved_regex_for_matching_urls for an explanation if curious.
-			$text = preg_replace_callback('~(?i)\b((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:\'".,<>?«»“”‘’]))~', 'Chunk_Text::embed_video');
+			$text = preg_replace_callback('~(?i)\b((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:\'".,<>?«»“”‘’]))~', 'Chunk_Text::embed_video', $text);
 		}
 
 		// If no template has been set then add the default HTML tags for this slotname.
