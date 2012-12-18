@@ -183,17 +183,19 @@ class Sledge_Controller_Plugin_Page_Children extends Sledge_Controller
 		// Set the select columns.
 		// This is done individually in each action because different output formats needs different columns
 		$results = $query
-			->select('pages.id', 'title', 'page_links.location')
+			->select('page.id', 'title', 'page_links.location')
 			->select(array(DB::expr("visible_from <= " . $this->editor->live_time() . " and (visible_to >= " . $this->editor->live_time() . " or visible_to = 0)"), 'visible'))
 			->select(array(
 				DB::select(DB::expr('1'))
 					->from('page_mptt')
-					->where('parent_id', '=', $this->parent->id)
+					->where('parent_id', '=', 'pages.id')
 					->limit(1),
 				'has_children'
 			))
-			->execute()
+			->find_all()
 			->as_array();
+
+var_dump($results);exit;
 
 		$this->response
 			->headers('Content-Type', 'application/json')
@@ -209,15 +211,13 @@ class Sledge_Controller_Plugin_Page_Children extends Sledge_Controller
 		$hash = md5($this->parent->id . "-" . $this->auth->logged_in() . "-" . serialize($this->request->post()));
 
 		// Try and get it from the cache, unless they're logged in.
-		if ($this->auth->logged_in() OR ! Fragment::load("child_page_list:$hash", 300))
+		if (1==2 OR $this->auth->logged_in() OR ! Fragment::load("child_page_list:$hash", 300))
 		{
 			list($query, $total) = $this->build_query();
 
 			// Execute the query.
 			$pages = $query
-				->select('pages.*')
-				->as_object('Model_Page')
-				->execute();
+				->find_all();
 
 			// Get the number of results returned.
 			$count = $pages
@@ -278,16 +278,13 @@ class Sledge_Controller_Plugin_Page_Children extends Sledge_Controller
 	protected function build_query()
 	{
 		// Build the query.
-		$query = DB::select()
-			->from('pages')
-			->join('page_versions', 'inner')
-			->on('pages.id', '=', 'page_versions.page_id')
-			->join('page_mptt', 'inner')
-			->on('pages.id', '=', 'page_mptt.id')
+		$query = ORM::factory('Page')
+			->with('mptt')
+			->with_current_version($this->editor)
 			->join('page_links', 'inner')
-			->on('pages.id', '=', 'page_links.page_id')
-			->where('page_versions.page_deleted', '=', FALSE)
-			->where('page_mptt.parent_id', '=', $this->parent->id)
+			->on('page.id', '=', 'page_links.page_id')
+			->where('version.page_deleted', '=', FALSE)
+			->where('mptt.parent_id', '=', $this->parent->id)
 			->where('page_links.is_primary', '=', TRUE)
 			->order_by($this->sort_column, $this->sort_direction);
 
@@ -303,63 +300,20 @@ class Sledge_Controller_Plugin_Page_Children extends Sledge_Controller
 			$query->where(DB::expr('month(from_unixtime(visible_from))'), '=', $this->month);
 		}
 
-		// Logged in view?
-		if ($this->editor->state() === Editor::EDIT)
+		// Filtering for navigation?
+		if ($this->nav)
 		{
-			// Get the most recent version for each page.
-			$query
-				->join(array(
-					DB::select(array(DB::expr('max(id)'), 'id'))
-						->from('page_versions')
-						->where('stashed', '=', FALSE)
-						->group_by('page_id'),
-					'current_version'
-				))
-				->on('page_versions.id', '=', 'current_version.id');
+			// Which column to use for navigation visibility
+			$nav_visibility_column = ($this->editor->state() === Editor::EDIT)? 'visible_in_nav_cms' : 'visible_in_nav';
 
-			// Filtering by leftnav visibility?
-			if ($this->nav)
-			{
-				$query->where('visible_in_nav_cms', '=', TRUE);
-			}
-		}
-		else
-		{
-			// Get the most recent published version for each page.
-			$query
-				->join(array(
-					DB::select(array(DB::expr('max(id)'), 'id'))
-						->from('page_versions')
-						->where('embargoed_until', '<=', $this->editor->live_time())
-						->where('stashed', '=', FALSE)
-						->where('published', '=', TRUE)
-						->group_by('page_id'),
-					'current_version'
-				))
-				->on('page_versions.id', '=', 'current_version.id')
-				->where('page_versions.page_deleted', '=', FALSE)
-				->where('visible_from', '<=', $this->editor->live_time())
-				->and_where_open()
-					->where('visible_to', '>=', $this->editor->live_time())
-					->or_where('visible_to', '=', 0)
-				->and_where_close();
-
-			if ($this->nav)
-			{
-				$query->where('visible_in_nav', '=', TRUE);
-			}
+			// Add a where clause on the navigation visibility column
+			$query->where($nav_visibility_column, '=', TRUE);
 		}
 
 		// Filtering by tag?
 		if ($this->tag)
 		{
-			$query
-				->join('tags_applied', 'inner')
-				->on('tags_applied.object_id', '=', 'pages.id')
-				->join('tags', 'inner')
-				->on('tags_applied.tag_id', '=', 'tags.id')
-				->where('tags_applied.object_type', '=', $this->parent->get_object_type_id())
-				->where('tags.path', 'like', $this->tag->path . '%');
+			$query->where('tag', '=', $this->tag);
 		}
 
 		// Pagination
@@ -368,7 +322,7 @@ class Sledge_Controller_Plugin_Page_Children extends Sledge_Controller
 		if ($this->perpage > 0)
 		{
 			$total = clone $query;
-			$total = $total->select(array(DB::expr('COUNT(*)'), 'count'))->execute();
+			$total = $total->count_all();
 			$total = $total[0]['count'];
 
 			$query

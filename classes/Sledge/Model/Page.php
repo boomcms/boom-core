@@ -15,6 +15,7 @@ class Sledge_Model_Page extends ORM_Taggable
 	 */
 	protected $_belongs_to = array(
 		'mptt'		=>	array('model' => 'Page_MPTT', 'foreign_key' => 'id'),
+		'version'		=>	array('model' => 'Model_Page_Version', 'foreign_key' => 'page_id'),
 	);
 
 	protected $_has_many = array(
@@ -143,6 +144,56 @@ class Sledge_Model_Page extends ORM_Taggable
 		$this->mptt->reload();
 
 		// Return the current object.
+		return $this;
+	}
+
+	/**
+	 *
+	 *
+	 * @param	Editor	$editor
+	 * @return	Model_Page
+	 */
+	public function with_current_version(Editor $editor)
+	{
+		$this
+			->join(array('page_versions', 'version'), 'inner')
+			->on('page.id', '=', 'version.page_id');
+
+		// Logged in view?
+		if ($editor->state() === Editor::EDIT)
+		{
+			$this
+				->join(array(
+					DB::select(array(DB::expr('max(id)'), 'id'))
+						->from('page_versions')
+						->where('stashed', '=', FALSE)
+						->group_by('page_id'),
+					'current_version'
+				))
+				->on('version.id', '=', 'current_version.id');
+		}
+		else
+		{
+			// Get the most recent published version for each page.
+			$this
+				->join(array(
+					DB::select(array(DB::expr('max(id)'), 'id'))
+						->from('page_versions')
+						->where('embargoed_until', '<=', $editor->live_time())
+						->where('stashed', '=', FALSE)
+						->where('published', '=', TRUE)
+						->group_by('page_id'),
+					'current_version'
+				))
+				->on('version.id', '=', 'current_version.id')
+				->where('version.page_deleted', '=', FALSE)
+				->where('visible_from', '<=', $editor->live_time())
+				->and_where_open()
+					->where('visible_to', '>=', $editor->live_time())
+					->or_where('visible_to', '=', 0)
+				->and_where_close();
+		}
+
 		return $this;
 	}
 
@@ -371,6 +422,8 @@ class Sledge_Model_Page extends ORM_Taggable
 	 * From the page's available URIs finds the one which is marked as the primary URI.
 	 *
 	 * @return	string	The RELATIVE primary URI of the page.
+	 *
+	 * @todo	Could use ORM relationship for this.
 	 */
 	public function primary_link()
 	{
@@ -387,7 +440,6 @@ class Sledge_Model_Page extends ORM_Taggable
 
 		return $this->_primary_link;
 	}
-
 
 	/**
 	 * Generate a short URI for the page, similar to t.co etc.

@@ -42,7 +42,10 @@ Route::set('sledge', '<location>(.<action>)', array(
 				return FALSE;
 			}
 
-			$page = $page_link->page;
+			$page = ORM::factory('Page')
+				->with_current_version(Editor::instance())
+				->where('page.id', '=', $page_link->page_id)
+				->find();
 
 			if ($page->loaded())
 			{
