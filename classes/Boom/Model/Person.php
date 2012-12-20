@@ -2,7 +2,7 @@
 
 /**
  *
- * @package Sledge
+ * @package Boom
  * @category Models
  *
  */

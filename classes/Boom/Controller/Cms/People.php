@@ -9,13 +9,13 @@
  * @author	Rob Taylor
  * @copyright	Hoop Associates
  */
-class Boom_Controller_Cms_People extends Sledge_Controller
+class Boom_Controller_Cms_People extends Boom_Controller
 {
 	/**
 	 *
 	 * @var	string	Directory where the views which relate to this class are held.
 	 */
-	protected $_view_directory = 'sledge/people/';
+	protected $_view_directory = 'boom/people/';
 
 	/**
 	 * Check that they can manage people.
@@ -87,7 +87,7 @@ class Boom_Controller_Cms_People extends Sledge_Controller
 					->where('deleted', '=', FALSE)
 					->find_all();
 
-				$this->template = View::factory('sledge/people/addgroup', array(
+				$this->template = View::factory('boom/people/addgroup', array(
 					'person'	=>	$person,
 					'groups'	=>	$groups,
 				));
@@ -147,7 +147,7 @@ class Boom_Controller_Cms_People extends Sledge_Controller
 	*/
 	public function action_index()
 	{
-		$this->template = View::factory('sledge/people/index', array(
+		$this->template = View::factory('boom/people/index', array(
 			'groups'	=>	ORM::factory('Group')
 				->where('deleted', '=', FALSE)
 				->order_by('name', 'asc')
@@ -202,7 +202,7 @@ class Boom_Controller_Cms_People extends Sledge_Controller
 			->offset( ($page - 1) * 30)
 			->find_all();
 
-		$this->template = View::factory('sledge/people/list', array(
+		$this->template = View::factory('boom/people/list', array(
 			'people'	=>	$people,
 			'group'	=>	new Model_Group($group),
 			'total'	=>	$total,

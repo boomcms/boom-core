@@ -1,6 +1,6 @@
 <?php defined('SYSPATH') OR die('No direct script access.');
 
-class Boom_Auth_Sledge extends Auth
+class Boom_Auth_Boom extends Auth
 {
 	protected $_person;
 

@@ -9,7 +9,7 @@
  * @author	Rob Taylor
  * @copyright	Hoop Associates
  */
-class Boom_Controller_Cms_Groups extends Sledge_Controller
+class Boom_Controller_Cms_Groups extends Boom_Controller
 {
 	/**
 	 *
@@ -59,7 +59,7 @@ class Boom_Controller_Cms_Groups extends Sledge_Controller
 			->order_by('description', 'asc')
 			->find_all();
 
-		$this->template = View::factory('sledge/groups/permissions/add', array(
+		$this->template = View::factory('boom/groups/permissions/add', array(
 			'roles' => $roles
 		));
 	}
@@ -97,7 +97,7 @@ class Boom_Controller_Cms_Groups extends Sledge_Controller
 			->where('page_id', '!=', 0)
 			->find_all();
 
-		$this->template = View::factory('sledge/groups/edit', array(
+		$this->template = View::factory('boom/groups/edit', array(
 			'general_permissions'	=>	$general,
 			'page_permissions'		=>	$page,
 			'group'				=>	$this->group,
@@ -123,7 +123,7 @@ class Boom_Controller_Cms_Groups extends Sledge_Controller
 			->where('page_id', '!=', 0)
 			->find_all();
 
-		$this->template = View::factory('sledge/groups/permissions/page', array(
+		$this->template = View::factory('boom/groups/permissions/page', array(
 			'permissions'	=>	$permissions,
 			'group'		=>	$this->group,
 		));

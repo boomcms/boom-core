@@ -1,3 +1,3 @@
 <?php defined('SYSPATH') OR die('No direct script access.');
 
-class Model_Person_Role extends Sledge_Model_Person_Role {}
+class Model_Person_Role extends Boom_Model_Person_Role {}
