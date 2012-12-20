@@ -1,0 +1,182 @@
+.overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: #fff;
+	opacity: .6;
+	z-index: 1000;
+}
+[contenteditable] {
+	border: 1px solid #000;
+}
+.toolbar {
+	border-radius: 4px;
+	background: #eee;
+	z-index: 1;
+	background-image: linear-gradient(bottom, rgb(238,238,238) 0%, rgb(255,255,255) 100%);
+	background-image: -o-linear-gradient(bottom, rgb(238,238,238) 0%, rgb(255,255,255) 100%);
+	background-image: -moz-linear-gradient(bottom, rgb(238,238,238) 0%, rgb(255,255,255) 100%);
+	background-image: -webkit-linear-gradient(bottom, rgb(238,238,238) 0%, rgb(255,255,255) 100%);
+	background-image: -ms-linear-gradient(bottom, rgb(238,238,238) 0%, rgb(255,255,255) 100%);
+	box-shadow: 0 0 4px 1px rgba(0, 0, 0, 0.3);
+	color: #000;
+	float: none;
+	position: fixed;
+	z-index: 1010;
+}
+.toolbar ::selection{
+	color: #000;
+}
+#wysihtml5-toolbar {
+	display: block;
+	background: #eee;
+}
+.commands {
+	border-left: 1px solid #ddd;
+	display: inline-block;
+}
+
+[data-wysihtml5-command],
+[data-wysihtml5-action],
+.fore-color,
+.toolbar button {
+	float: none;
+	padding: 0;
+	position: relative;
+	border-right: 1px solid #ddd;
+	border-left: 1px solid #fff;
+	list-style: none;
+	font-size: 12px;
+	display: inline-block;
+	cursor: pointer;
+	height: 40px;
+	width: 68px;
+	background: transparent;
+	color: #000;
+}
+
+[data-wysihtml5-command]:hover,
+[data-wysihtml5-action]:hover,
+.fore-color:hover,
+.toolbar button:hover,
+[data-wysihtml5-command]:focus,
+[data-wysihtml5-action]:focus,
+.fore-color:focus,
+.toolbar button:focus
+ {
+	background-image: linear-gradient(bottom, rgb(229,240,226) 0%, rgb(255,255,255) 100%);
+	background-image: -o-linear-gradient(bottom, rgb(229,240,226) 0%, rgb(255,255,255) 100%);
+	background-image: -moz-linear-gradient(bottom, rgb(229,240,226) 0%, rgb(255,255,255) 100%);
+	background-image: -webkit-linear-gradient(bottom, rgb(229,240,226) 0%, rgb(255,255,255) 100%);
+	background-image: -ms-linear-gradient(bottom, rgb(229,240,226) 0%, rgb(255,255,255) 100%);
+}
+[data-wysihtml5-command-group] {
+	position: relative;
+}
+[data-wysihtml5-command-group] ul {
+	display: none;
+	position: absolute;
+	z-index: 2;
+	top: 40px;
+	border: 1px solid #ccc;
+	border-top: 0;
+	overflow: hidden;
+	list-style: none;
+	text-indent: 0;
+	margin: 0;
+	padding: 0;
+}
+
+.fore-color li::after {
+	display: none;
+}
+
+[data-wysihtml5-command-group]:hover ul, [data-wysihtml5-command-group].wysihtml5-command-active ul {
+	display: block;
+}
+
+.fore-color .wysihtml5-command-active {
+	outline: 1px solid #666;
+	outline-offset: 1px;
+}
+
+.wysihtml5-commands-disabled .fore-color ul {
+	display: none;
+}
+
+.wysihtml5-action-active,
+.wysihtml5-command-active {
+	box-shadow: inset 0 1px 6px rgba(0, 0, 0, 0.2);
+	background: #fff !important;
+}
+
+.wysihtml5-commands-disabled [data-wysihtml5-command],
+.wysihtml5-commands-disabled .fore-color {
+	opacity: 0.4;
+	cursor: default;
+	background-image: none !important;
+}
+
+[data-wysihtml5-dialog] {
+	color: #333;
+	font-size: 14px;
+	text-align: left;
+	border-radius: 4px;
+	-ms-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	border: 1px solid #ccc;
+	padding: 5px 10px;
+	background: #FFFBE0;
+	width: 810px;
+	text-align: center;
+	position: fixed;
+}
+
+[data-wysihtml5-dialog] input {
+	color: #333;
+	border: 1px solid #ccc;
+	padding: 3px;
+	width: 300px;
+}
+
+[data-wysihtml5-dialog] input:focus {
+	outline: 0;
+	border: 1px solid #666;
+}
+
+[data-wysihtml5-dialog-action] {
+	padding: 4px;
+	color: #fff;
+	cursor: pointer;
+}
+
+[data-wysihtml5-dialog-action="save"] {
+	background: #007200;
+}
+
+[data-wysihtml5-dialog-action="cancel"] {
+	background: #999;
+}
+
+// boom CMS styles
+.s-chunk-mouseenter{cursor:pointer!important}.boom-tooltip-container{color:#fff;background:#333;border:1px solid #fff;-moz-border-radius:5px;-webkit-border-radius:5px;border-radius:5px;-moz-box-shadow:0 0 5px #000;-webkit-box-shadow:0 0 5px #000;box-shadow:0 0 5px #000;padding:5px 8px;opacity:.9;position:absolute;display:none;line-height:1.4em;text-align:left;z-index:9999;font-family:Verdana,Arial,Sans-serif;font-size:12px}.s-page-chunk-edit-top,.s-page-chunk-edit-right,.s-page-chunk-edit-bottom,.s-page-chunk-edit-left{z-index:9999!important;position:absolute!important;background:transparent!important;top:0;left:0}.s-page-chunk-edit-top{border-top:1px dashed #888!important;height:1px!important}.s-page-chunk-edit-bottom{border-bottom:1px dashed #888!important;height:1px!important}.s-page-chunk-edit-right{border-right:1px dashed #888!important;width:1px!important}.s-page-chunk-edit-left{border-left:1px dashed #888!important;width:1px!important}.s-page-chunk-edit-icon{position:absolute;left:0;top:0;display:none;background:transparent url(/media/boom/img/cms/chunk_edit_icon.png) no-repeat center center;width:16px;height:16px}.ui-helper-clearfix{display:inline-block}.ui-helper-clearfix:after{content:".";display:block;height:0;clear:both;visibility:hidden}/*\*/* html .ui-helper-clearfix{height:1%}.ui-helper-clearfix{display:block}
+
+// jquery ui
+.ui-tooltip {
+	padding:8px;
+	position:absolute;
+	z-index:9999;
+	-o-box-shadow: 0 0 5px #aaa;
+	-moz-box-shadow: 0 0 5px #aaa;
+	-webkit-box-shadow: 0 0 5px #aaa;
+	box-shadow: 0 0 5px #aaa;
+}
+/* Fades and background-images don't work well together in IE6, drop the image */
+* html .ui-tooltip {
+	background-image: none;
+}
+body .ui-tooltip { border-width:2px; }
