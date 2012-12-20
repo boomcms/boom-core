@@ -15,13 +15,16 @@ class Boom_Themes
 	 *
 	 * @var	string
 	 */
-	public static $default = 'smoothness';
+	public static $default = 'hoop';
 
 	/**
 	 * Returns the theme which is currently in use.
 	 */
 	public static function current()
 	{
+		// There's invalid themes in the database at the moment, quick hack as we only have one theme now.
+		return Themes::$default;
+
 		$auth = Auth::instance();
 
 		if ($auth->logged_in())
