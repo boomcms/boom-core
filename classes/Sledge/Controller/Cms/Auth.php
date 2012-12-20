@@ -1,11 +1,11 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
 /**
- * @package	Sledge/People
+ * @package	BoomCMS/People
  * @category	Controllers
  * @author	Rob Taylor
  */
-class Sledge_Controller_Cms_Auth extends Controller
+class Boom_Controller_Cms_Auth extends Controller
 {
 	public function action_login()
 	{

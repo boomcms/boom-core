@@ -4,12 +4,12 @@
  * People controller
  * Pages for managing people.
  *
- * @package	Sledge
+ * @package	BoomCMS
  * @category	Controllers
  * @author	Rob Taylor
  * @copyright	Hoop Associates
  */
-class Sledge_Controller_Cms_People extends Sledge_Controller
+class Boom_Controller_Cms_People extends Sledge_Controller
 {
 	/**
 	 *

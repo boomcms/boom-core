@@ -3,13 +3,13 @@
 /**
  * Link table for the one-to-many relationship between people and roles.
  *
- * @package	Sledge
+ * @package	BoomCMS
  * @category	Models
  * @author	Rob Taylor
  * @copyright	Hoop Associates
  *
  */
-class Sledge_Model_Person_Role extends ORM
+class Boom_Model_Person_Role extends ORM
 {
 	protected $_db_group = 'default';
 

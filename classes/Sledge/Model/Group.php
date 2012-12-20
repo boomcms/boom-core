@@ -2,13 +2,13 @@
 
 /**
 *
-* @package	Sledge
+* @package	BoomCMS
 * @category	Models
 * @author	Rob Taylor
 * @copyright	Hoop Associates
 *
 */
-class Sledge_Model_Group extends ORM
+class Boom_Model_Group extends ORM
 {
 	protected $_has_many = array('roles' => array('through' => 'group_roles'));
 

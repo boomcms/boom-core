@@ -6,7 +6,7 @@
  * @category Models
  *
  */
-class Sledge_Model_Person extends ORM
+class Boom_Model_Person extends ORM
 {
 	protected $_table_name = 'people';
 
