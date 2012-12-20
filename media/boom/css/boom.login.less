@@ -1,0 +1,76 @@
+/* Login form */
+#boom-login-form {
+	.ui-widget-shadow {
+		display:none;
+		width: 500px;
+		height: 300px;
+		position: absolute;
+		left: 50%;
+		top: 50%;
+		margin-left: -250px;
+		margin-top: -150px;
+		z-index: 1;
+	}
+
+	h1 {
+		border-bottom: 1px solid #ccc;
+	}
+
+	fieldset {
+		padding: 1em 1em 0 1em;
+		margin: 0;
+	}
+
+	label {
+		float: left;
+		width: 8em;
+		padding-top: .4em;
+		font-size: 110%;
+	}
+
+	input {
+		font-size: 110%;
+		width: 20em;
+	}
+
+	button {
+		font-size: 110% !important;
+	}
+
+	.boom-remember-me {
+		width: auto;
+	}
+
+	.boom-remember-me-label {
+		float: none;
+		width: auto;
+		font-size: 100%;
+	}
+
+	.boom-tabs {
+		border:0;
+	}
+
+	.ui-tabs .ui-tabs-panel {
+		padding: 1.5em 0 0 0;
+	}
+
+	.boom-error {
+		.ui-icon, .boom-success .ui-icon {
+			float: left; 
+			margin-right: 0.3em;
+		}
+	}
+}
+
+.boom-login-form {
+	&-content {
+		width: 480px;
+		margin: 5em auto;
+		z-index: 2;
+		left: 50%;
+		-moz-box-shadow: 0 0 4px #888;
+		-webkit-box-shadow: 0 0 4px #888;
+		box-shadow: 0 0 4px #888;
+	}
+}

@@ -1,0 +1,105 @@
+#s-page {
+	/* Container for action buttons, e.g. save, publish... */
+	&-actions {
+		float: left;
+
+		.separator {
+			float: left;
+			margin-right: 6px;
+			margin-top: 4px;
+			display: none;
+			height: 1.5em;
+			width: 1px;
+			border-right: 1px solid #aaa;
+		}
+	}
+
+	&-actions button, &-metadata button {
+		margin-right: 2px;
+		float: left;
+	}
+
+	&-actions .ui-buttonset, &-metadata .ui-buttonset {
+		margin-right: 2px;
+	}
+
+	/* List of child pages which will be affected by a page being deleted */
+	&-delete-children {
+		overflow: auto;
+		max-height: 200px;
+		_height: 200px;
+		margin-bottom: 1em;
+
+		ul {
+			margin-bottom: 0;
+		}
+	}
+
+	/* Styling for the page revisions dialog window */
+	&-revisions {
+		margin-right: 0 !important;
+
+		&-list {
+			max-height: 260px;
+			overflow: auto;
+
+			td {
+				vertical-align: top;
+			}
+		}
+
+		&-options {
+			padding-top: .6em;
+		}
+
+		&-info {
+			margin-top: .5em;
+			font-size: 90%;
+
+			div {
+				margin-bottom: .2em;
+			}
+		}
+
+		label {
+			cursor: pointer;
+		}
+
+		ul {
+			margin-left: 0px;
+
+			ul {
+				margin-left: 2em;
+				margin-top: 1em;
+			}
+		}
+
+		li {
+			margin-left: 0px;
+			margin-bottom: 1em;
+			list-style: none;
+		}
+	}
+
+	&-topbar {
+		width: 100%;
+		background-color: transparent;
+	}
+
+	&settings {
+		&-tags {
+			&-add {
+				&-name {
+					display: none;
+				}
+			}
+		}
+	}
+}
+
+/* No borders for tables in page settings modal windows */
+.s-pagesettings {
+	table, tr, td {
+		border: 0px;
+	}
+}

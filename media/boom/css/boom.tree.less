@@ -1,0 +1,76 @@
+/* Tree plugin */
+
+.boom-tree {
+	margin: 0;
+	width: 100%;
+	overflow: none;
+	border: 1px solid #D3D3D3;
+	border-width: 0 1px 1px 0;
+
+	&-container {
+		padding: 5px;
+		width: 320px;
+	}
+
+	&-hitarea {
+		margin: 1px 0 0 1px;
+		cursor: pointer !important;
+	}
+
+	ul {
+		margin: 0 0 0 1.4em;
+		padding: 0;
+	}
+
+	li {
+		list-style: none;
+		line-height: 1.1;
+		background-position: 50% 50% !important;
+
+		a {
+			display: block;
+			padding: .2em;
+			border: 1px solid #fff;
+			outline: none;
+			line-height: 1.1;
+
+			&:hover {
+				color: #000;
+			}
+
+			&.ui-state-active {
+				border: 1px solid #fff;
+				background: #fff;
+
+				&:hover {
+					color: #212121;
+				}
+			}
+		}
+
+		.ui-icon {
+			float: left;
+			cursor: default;
+			border: 0;
+			margin-right: 3px;
+		}
+
+		.ui-helper-right {
+			float: right;
+			cursor: pointer;
+		}
+
+		.ui-icon-placeholder {
+			background: transparent !important;
+			cursor: auto !important;
+		}
+
+		.boom-tree-hitarea-hover {
+			background-color: #ddd;
+		}
+	}
+
+	.ui-state-default {
+		border-width: 1px 0 0 1px;
+	}
+}

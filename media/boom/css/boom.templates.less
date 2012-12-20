@@ -1,0 +1,37 @@
+/* TEMPLATE MANAGER */
+
+/* Styling for the templates list */
+#s-templates-table {
+	border: 0px;
+	background-color: #ffffff;
+
+	tr:hover {
+		background-color: #E6EEEE;
+	}
+
+	/* Table row for a template where the file doesn't exist in the templates directory */
+	tbody tr.s-templates-nofile {
+		background-color: red;
+	}
+
+	/* Table row for a template which has been found in the templates directory and added to the database. */
+	tbody tr.s-templates-new {
+		background-color: green;
+	}
+
+	td {
+		border: 0px;
+		border-width: 0px;
+	}
+
+	input {
+		border: 0px;
+		width: 100%;
+		background-color: transparent;
+
+		&:hover {
+			border: 1px;
+			border-style: dotted;
+		}
+	}
+}

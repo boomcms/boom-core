@@ -1,0 +1,188 @@
+/* Styles shared by asset and people managers */
+
+.s-items {
+	&-view {
+		table, tr, td {
+			border: 0px;
+		}
+	}
+
+	&-rightpane {
+		overflow: auto;
+		padding: 0 1em;
+
+		.content {
+			padding: 1em 0;
+		}
+
+		.ui-tabs-nav a {
+		}
+	}
+
+	&-thumbs {
+		padding-bottom: .3em;
+
+		div {
+			background-color: transparent;
+			display: block;
+			width: 110px;
+			height: 110px;
+			float: left;
+			margin: 0 14px 14px 0px;
+			position: relative;
+		}
+
+		a {
+			position: relative;
+			top: 5px;
+			left: 5px;
+		}		
+
+		a, img {
+			display: block;
+			position: absolute;
+			width: 100px;
+			height: 100px;
+			cursor: pointer;
+			z-index: 1;
+		}
+
+		input {
+			position: absolute;
+			left: 8px;
+			bottom: 8px;
+			z-index: 5;
+		}
+
+		.caption, .caption-overlay {
+			opacity: 0;
+			filter: Alpha(Opacity=0);
+		}
+
+		.caption {
+			position: absolute;
+			left: 0;
+			top: 0;
+			z-index: 3;
+			height: auto;
+			width: 96px;
+			color: #000;
+			padding: 0 2px 2px 2px;
+			font-size: .9em;
+		}
+
+		.caption-overlay {
+			position: absolute;
+			background: #fff;
+			top: 0;
+			left: 0;
+			width: 100px;
+			z-index: 2;
+		}
+
+		/* Don't show checkboxes in thumb view. */
+		.s-items-select-checkbox {
+			display: none;
+		}
+
+		.ui-state-hover {
+			border-color: #000;
+		}
+
+		.ui-dialog input {
+			z-index: 2000;
+		}
+	}
+
+	&-main {
+		margin-left: -340px;
+		width: 100%;
+		z-index: 1;
+	}
+
+	&-body {
+		margin-left: 310px; 
+		width: auto
+	}
+
+	&-sidebar {
+		padding: 1em 0 1em 1em;
+		z-index: 2;
+		position: relative;
+		width: 290px;
+
+		.boom-box {
+			margin-bottom: 1em;
+
+			select {
+				padding: 0;
+			}
+		}
+	}
+
+	&-box-header {
+		a {
+			font-weight: normal;
+			margin: 4px 6px 0 0;
+			text-decoration: none;
+			font-size: 92%;
+			border: 0;
+			padding: .1em .3em .1em 0;
+
+			&:hover {
+				margin-right: 5px;
+				margin-top: 3px;
+				border: 1px solid #888;
+				-moz-border-radius: 4px;
+				-webkit-border-radius: 4px;
+				border-radius: 4px;
+				-moz-box-shadow: 0 0 2px #666;
+				-webkit-box-shadow: 0 0 2px #666;
+				box-shadow: 0 0 2px #666;
+			}
+		}
+
+		h3 {
+			padding: .4em;
+			cursor: pointer;
+		}	
+	}
+	
+}
+
+#s-items {
+	&-multiactons {
+		border: 0;
+		padding: 0 0 0 6px;
+		float: left;
+
+		.ui-button .ui-button-text {
+			padding: .3em 1em .3em 2.2em;
+		}
+	}
+
+	&-checkactions {
+		border: 0;
+		padding: .3em 0 0 .8em;
+		float: left;
+	}
+
+	&-view-list {
+		img {
+			float: left;
+			margin-right: .5em;
+		}
+
+		table, tr, td {
+			border: 0px;
+		}
+
+		tr.ui-state-hover a {
+			text-decoration: underline;
+		}
+	}
+
+	&-view-list, &-view-thumbs {
+		overflow: auto;
+	}
+}

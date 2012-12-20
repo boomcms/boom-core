@@ -1,0 +1,92 @@
+/* 
+	Styling for the video upload form.
+	This is less-ified version of the example CSS provided by Bits on The Run.
+	The HTML this relates to is in the views/boom/assets/upload_video.php file.
+*/
+body#s-assets-upload-video {
+	padding: 0;
+	margin: 10px;
+	color: #000;
+	background-color: #fff;
+	font: 12px/18px Arial, sans-serif;
+
+	a {
+		color: #1369bf;
+
+		img {
+			border: 1px solid #1369bf;
+		}
+	}
+	fieldset {
+		background-color: #eee;
+		padding: 8px 0 8px 10px;
+		border:0;
+		margin-bottom: 1px;
+
+		p {
+			margin: 0;
+			line-height: 24px;
+			display: block;
+			float: left;
+			width: 50%;
+		}
+
+		img {
+			display: block;
+			float: left;
+		}
+
+		label {
+			line-height: 24px;
+			display: block;
+			float: left;
+			clear: left;
+			width: 120px;
+		}
+
+		small {
+			clear: both;
+			margin-left: 120px;
+			font-style:italic;
+			font-size:12px;
+			color: #333;
+		}
+
+		button {
+			clear: both;
+			margin-left: 120px;
+			width: 240px;
+		}
+	}
+
+	input, select, button, small {
+		margin: 5px 0;
+		display: block;
+		float: left;
+		width: 480px;
+	}
+
+	form {
+		position: relative;
+	}
+	#preview {
+		position: absolute;
+		left: 400px;
+		top: 10px;
+	    background: url(/boom/img/ajax-loader.gif);
+	    width: 120px;
+	    height: 80px;
+
+		a {
+		    display: block;
+		    width: 120px;
+		    height: 80px;
+		    text-indent: -999px;
+		    overflow: hidden;
+		}
+	}
+
+	p { 
+		padding-left: 10px;
+	}
+}
