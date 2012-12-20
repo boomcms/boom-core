@@ -10,7 +10,7 @@
 		<?= Menu::factory('boom') ?>
 
 		<div class="ui-helper-clearfix ui-tabs-panel ui-widget-content ui-corner-bottom">
-			<div id="s-page-actions" class="ui-helper-right">
+			<div id="b-page-actions" class="ui-helper-right">
 				&nbsp;
 			</div>
 		</div>
@@ -23,7 +23,7 @@
 	</div>
 
 	<div id="boom-loader-dialog-overlay" class="ui-widget-overlay"></div>
-	<div id="s-page-edit">
+	<div id="b-page-edit">
 		<div>
 			<table>
 				<tr>

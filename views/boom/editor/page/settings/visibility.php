@@ -1,5 +1,5 @@
 <form id="boom-form-pagesettings-visibility" name="pagesettings-visibility">
-	<div class="s-pagesettings">
+	<div class="b-pagesettings">
 		<table width="100%">
 			<tr>
 				<td><?=__('Visible')?></td>
@@ -23,7 +23,7 @@
 			<tr>
 				<td>
 					<label for="page-visible-to"><?=__('Visible until')?></label>
-					<input id="s-page-toggle-visible" type="checkbox" value="1" name='toggle_visible_to' class="ui-helper-right ui-helper-reset"<?=($page->visible_to) ? ' checked="checked"' : ''; ?> />
+					<input id="b-page-toggle-visible" type="checkbox" value="1" name='toggle_visible_to' class="ui-helper-right ui-helper-reset"<?=($page->visible_to) ? ' checked="checked"' : ''; ?> />
 				</td>
 				<td>
 					<input id="page-visible-to"

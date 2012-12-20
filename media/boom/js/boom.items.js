@@ -45,7 +45,7 @@ $.extend($.boom.items.tag,  {
 	*/
 	buttonManager: {
 		
-		show: [ '#s-assets-upload' ],
+		show: [ '#b-assets-upload' ],
 		hide: [ '#boom-tagmanager-save-all' ]
 	},
 	
@@ -82,7 +82,7 @@ $.extend($.boom.items.tag,  {
 		self.tagmanager.options.url = url;
 		
 			self.tagmanager.elements.rightpane
-			.find('.s-items-content')
+			.find('.b-items-content')
 			.sload( url, function(){
 
 				$.boom.tagmanager.base.item.prototype.get.apply( self );
@@ -113,7 +113,7 @@ $.extend($.boom.items.tag,  {
 
 		$.boom.events.register('tag.clickAfter', 'tagmanager');
 
-		$('.s-items-select-checkbox').change(function(){
+		$('.b-items-select-checkbox').change(function(){
 
 			var view = 
 				this.id.replace(/^[a-z]+-([a-z]+)-[0-9]+$/, "$1") == 'list' ? 'thumb' : 'list', 
@@ -129,7 +129,7 @@ $.extend($.boom.items.tag,  {
 				selector.removeAttr('checked');
 			}
 
-			var amount = $('.s-items-select-checkbox:checked').length;
+			var amount = $('.b-items-select-checkbox:checked').length;
 
 			var buttons = $( '[id|=s-button-multiaction]' );
 
@@ -138,7 +138,7 @@ $.extend($.boom.items.tag,  {
 			$('#boom-tagmanager-amount-checked').html( amount === 0 ? '' : amount / 2 );
 		});
 
-		$('.s-items-list tbody tr, .s-items-thumbs .thumb').hover(
+		$('.b-items-list tbody tr, .b-items-thumbs .thumb').hover(
 			function(){
 				$( this ).addClass( 'ui-state-hover' );
 			},
@@ -147,18 +147,18 @@ $.extend($.boom.items.tag,  {
 			}
 		);
 
-		$('#s-items-view-thumbs').on( 'click', 'a', function(event){
+		$('#b-items-view-thumbs').on( 'click', 'a', function(event){
 			event.preventDefault();
 
 			var container = $(this).parent('div');
-			var checkbox = container.find('.s-items-select-checkbox');
+			var checkbox = container.find('.b-items-select-checkbox');
 
 			container.toggleClass('ui-state-active');
 
 			checkbox.attr('checked', ! checkbox.attr('checked')).change();
 		});
 
-		$('.s-items-thumbs .thumb').captions($.boom.config.captions);
+		$('.b-items-thumbs .thumb').captions($.boom.config.captions);
 		
 	},
 
@@ -247,7 +247,7 @@ $.extend($.boom.items.tag,  {
 					
 					tree_refresh.done( 	function(){
 						$(this)
-							.find( '.s-tags-tree' )
+							.find( '.b-tags-tree' )
 							.tree( treeConfig );
 						if ( selected ) {
 							$( '#' + selected )

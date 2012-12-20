@@ -1,5 +1,5 @@
 <form name="pagesettings-adminsettings" id="boom-form-pagesettings-adminsettings">
-	<div id="s-pagesettings" class="boom-tabs s-pagesettings">
+	<div id="b-pagesettings" class="boom-tabs s-pagesettings">
 		<table width="100%">
 			<tr>
 				<td><?=__('Internal name')?></td>

@@ -1,4 +1,4 @@
-<form id="s-page-add-form">
+<form id="b-page-add-form">
 	<table>
 		<tr>
 			<td>

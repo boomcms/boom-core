@@ -157,10 +157,10 @@ function CMSTagmanager(type){
 			this.tagmanager = self;
 		});
 
-		this.elements.rightpane = $('.s-items-rightpane');
-		this.elements.leftpane = $('.s-items-leftpane');
+		this.elements.rightpane = $('.b-items-rightpane');
+		this.elements.leftpane = $('.b-items-leftpane');
 
-		$('.s-items-sidebar h3').click(function(){
+		$('.b-items-sidebar h3').click(function(){
 
 			$(this).parent().next().toggle();
 		});
@@ -169,7 +169,7 @@ function CMSTagmanager(type){
 			$( '#tag_all' ).removeClass( 'ui-state-active' );
 			
 			$item
-				.parents( '.s-tags-tree' )
+				.parents( '.b-tags-tree' )
 				.find( 'a.ui-state-active' )
 				.removeClass( 'ui-state-active' )
 				.end()
@@ -230,7 +230,7 @@ function CMSTagmanager(type){
 		});
 		
 		$( '.boom-tree' )
-			.not( '.s-tags-tree' )
+			.not( '.b-tags-tree' )
 			.tree( 'destroy' )
 			.tree( treeConfig );
 			
@@ -268,7 +268,7 @@ function CMSTagmanager(type){
 			});
 		}
 		
-		$('.s-tags-tree')
+		$('.b-tags-tree')
 			//.tree( 'destroy' )
 			.tree(editableTreeConfig);
 

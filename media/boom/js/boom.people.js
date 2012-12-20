@@ -59,11 +59,11 @@ $.extend($.boom.people, {
 
 		$.boom.hooks.register('tag.clickAfter', 'tagmanager', function(){
 
-			$('#s-button-multiaction-edit').click(function(){
+			$('#b-button-multiaction-edit').click(function(){
 
 				var ids = [];
 
-				$('.s-items-select-checkbox:checked').each(function(){
+				$('.b-items-select-checkbox:checked').each(function(){
 
 					var id = this.id.replace(/person-(thumb|list)-/, '');
 
@@ -76,7 +76,7 @@ $.extend($.boom.people, {
 				$.boom.history.load('person/' + ids.join('-'));
 			});
 
-			$('#s-button-multiaction-delete').click(function(){
+			$('#b-button-multiaction-delete').click(function(){
 
 				var msg = 'Are you sure you want to send the selected people to the rubbish bin?';
 
@@ -84,7 +84,7 @@ $.extend($.boom.people, {
 
 					var people = [];
 
-					$('.s-items-select-checkbox:checked').each(function(i){
+					$('.b-items-select-checkbox:checked').each(function(i){
 
 						people.push( $( this ).attr( 'id' ).replace(/person-(thumb|list)-/, '') );
 					});
@@ -148,7 +148,7 @@ $.extend($.boom.items.person, {
 		console.debug('before person load');
 
 		self.tagmanager.elements.rightpane
-		.find('.s-items-content')
+		.find('.b-items-content')
 		.sload(url, function(){
 
 			$.boom.tagmanager.base.item.prototype.get.apply( self );
@@ -203,7 +203,7 @@ $.extend($.boom.items.person, {
 			image: $('.boom-asset-preview')
 		});
 
-		$('.s-people-groups-add').click(function(){
+		$('.b-people-groups-add').click(function(){
 			var rid = $( this ).attr( 'rel' );
 
 			var dialog = $.boom.dialog.open({
@@ -232,7 +232,7 @@ $.extend($.boom.items.person, {
 			});
 		});
 
-		$('.s-people-group-delete').click(function(){
+		$('.b-people-group-delete').click(function(){
 			var elem = $( this );
 			var group_id = elem.attr( 'rel' );
 			var person_id = elem.closest( 'div' ).attr( 'rel' );
@@ -246,7 +246,7 @@ $.extend($.boom.items.person, {
 			});
 		});
 
-		$('.s-people-save').bind('save', function( event ){
+		$('.b-people-save').bind('save', function( event ){
 
 			var rid = $( this ).attr( 'rel' );
 			var data = $( this ).closest( 'form' ).serialize();
@@ -265,7 +265,7 @@ $.extend($.boom.items.person, {
 			$( this ).trigger( 'save' );
 		});
 
-		$('.s-people-delete').click(function( event ){
+		$('.b-people-delete').click(function( event ){
 
 			var rid = $( this ).attr( 'rel' );
 			var deleted = new $.Deferred();
@@ -346,7 +346,7 @@ $.extend($.boom.items.group,  {
 
 		self.tagmanager.options.url = url;
 
-		$('.s-items-content')
+		$('.b-items-content')
 			.sload( url, function(){
 
 				$.boom.tagmanager.base.item.prototype.get.apply( self );
@@ -386,7 +386,7 @@ $.extend($.boom.items.group,  {
 
 		$.boom.events.register('tag.clickAfter', 'tagmanager');
 
-		$('.s-items-select-checkbox').change(function(){
+		$('.b-items-select-checkbox').change(function(){
 
 			var view =
 				this.id.replace(/^[a-z]+-([a-z]+)-[0-9]+$/, "$1") == 'list' ? 'thumb' : 'list',
@@ -402,16 +402,16 @@ $.extend($.boom.items.group,  {
 				selector.removeAttr('checked');
 			}
 
-			var amount = $('.s-items-select-checkbox:checked').length;
+			var amount = $('.b-items-select-checkbox:checked').length;
 
-			var buttons = $('#s-button-multiaction-edit, #s-button-multiaction-delete, #s-button-multiaction-download');
+			var buttons = $('#b-button-multiaction-edit, #b-button-multiaction-delete, #b-button-multiaction-download');
 
 			buttons.button( amount > 0 ? 'enable' : 'disable' );
 
 			$('#boom-tagmanager-amount-checked').html( amount === 0 ? '' : amount / 2 );
 		});
 
-		$('.s-items-list tbody tr, .s-items-thumbs .thumb').hover(
+		$('.b-items-list tbody tr, .b-items-thumbs .thumb').hover(
 			function(){
 				$( this ).addClass( 'ui-state-hover' );
 			},
@@ -420,7 +420,7 @@ $.extend($.boom.items.group,  {
 			}
 		);
 
-		$('.s-items-thumbs .thumb').captions($.boom.config.captions);
+		$('.b-items-thumbs .thumb').captions($.boom.config.captions);
 
 	},
 
@@ -578,7 +578,7 @@ $.extend($.boom.items.group,  {
 
 					tree_refresh.done( function( data ){
 
-						$( '.s-tags-tree' )
+						$( '.b-tags-tree' )
 							.tree( 'add_item', '<li><a href="#tag/' + data.group_id + '">' + data.name + '</a></li>' );
 
 						if ( selected ) {
@@ -682,8 +682,8 @@ $.extend($.boom.items.group,  {
 						$.boom.dialog.destroy( dialog );
 					},
 					Add: function(){
-						permission = $('#s-permissions-add-action option:selected');
-						value = $('#s-permissions-add-value option:selected' ).val();
+						permission = $('#b-permissions-add-action option:selected');
+						value = $('#b-permissions-add-value option:selected' ).val();
 
 						picked.resolve( {
 							label : permission.text(),
@@ -774,8 +774,8 @@ $.extend($.boom.items.group,  {
 						$.boom.dialog.destroy( dialog );
 					},
 					Add: function(){
-						var value = $( '#s-permissions-add-value option:selected' ).val();
-						var permission = $( '#s-permissions-add-action option:selected');
+						var value = $( '#b-permissions-add-value option:selected' ).val();
+						var permission = $( '#b-permissions-add-action option:selected');
 						permission.each( function(){
 							permissions.push( {
 								label : $( this ).text(),

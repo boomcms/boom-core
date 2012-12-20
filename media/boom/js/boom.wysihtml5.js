@@ -119,7 +119,7 @@ $.extend($.boom, {
 						
 						self._insert_textarea( element );
 						
-						self.instance = new top.wysihtml5.Editor('s-wh5', { // id of textarea element
+						self.instance = new top.wysihtml5.Editor('b-wh5', { // id of textarea element
 							toolbar:      "wysihtml5-toolbar", // id of toolbar element
 							style: true,
 							parserRules:  top.wysihtml5ParserRules // defined in parser rules set 
@@ -178,7 +178,7 @@ $.extend($.boom, {
 		*/
 		get_content : function(){
 			
-			return top.$( '#s-wh5' ).val();
+			return top.$( '#b-wh5' ).val();
 		},
 
 		/**
@@ -188,7 +188,7 @@ $.extend($.boom, {
 		remove : function( element ){
 
 			$.boom.page.toolbar.show();
-			top.$( '#s-wh5, #wysihtml5-toolbar, iframe.wysihtml5-sandbox' ).remove();
+			top.$( '#b-wh5, #wysihtml5-toolbar, iframe.wysihtml5-sandbox' ).remove();
 			element.removeAttr( 'contenteditable' );
 			self.instance = null;
 		},
@@ -258,14 +258,14 @@ $.extend($.boom, {
 			.done( function( response ) {
 				top.$('body').prepend( response );
 				
-				top.$( '#s-editor-accept').on( 'click', function( event ){
+				top.$( '#b-editor-accept').on( 'click', function( event ){
 
 					event.preventDefault();
 					self.apply( element );
 					return false;
 				});
 				
-				top.$( '#s-editor-cancel').on( 'click', function( event ){
+				top.$( '#b-editor-cancel').on( 'click', function( event ){
 
 					event.preventDefault();
 					self.cancel( element );
@@ -283,7 +283,7 @@ $.extend($.boom, {
 		_insert_textarea : function( element ) {
 			var original_html = element.html();
 			element
-				.html( '<textarea id="s-wh5" style="border: 1px solid #000; overflow: hidden; width: 100%; height: ' + element.innerHeight() + 'px;">' + original_html + '</textarea>');
+				.html( '<textarea id="b-wh5" style="border: 1px solid #000; overflow: hidden; width: 100%; height: ' + element.innerHeight() + 'px;">' + original_html + '</textarea>');
 		},
 		
 		/**

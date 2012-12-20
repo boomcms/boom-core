@@ -1,4 +1,4 @@
-<div class="s-items-box-header ui-helper-reset ui-widget-header ui-panel-header ui-corner-all">
+<div class="b-items-box-header ui-helper-reset ui-widget-header ui-panel-header ui-corner-all">
 	<h3 class="ui-helper-reset">
 		<span class="ui-icon ui-icon-carat-1-e ui-helper-left"></span>
 		<?=__('Filters')?>
@@ -8,7 +8,7 @@
 	<ul class="ui-helper-clearfix boom-tree boom-tree-noborder">
 		<li><a id='tag_all' href='#tag/0'><?=__('All assets')?></a></li>
 		<li>
-			<input type='text' id="s-assets-filter-title" />
+			<input type='text' id="b-assets-filter-title" />
 		</li>
 		<li><a><?=__('Uploaded by')?></a>
 			<ul class="ui-helper-hidden">

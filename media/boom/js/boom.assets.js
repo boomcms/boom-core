@@ -22,11 +22,11 @@ $.extend($.boom.assets, {
 
 		var self = this;
 
-		$('.s-tags-add').click(function(){
+		$('.b-tags-add').click(function(){
 			$.boom.assets.items.tag.add( this );
 		});
 
-		$('#s-assets-upload-video').click(function(){
+		$('#b-assets-upload-video').click(function(){
 			$.boom.dialog.open({
 				url: '/cms/video/upload',
 				title: 'Upload video',
@@ -41,14 +41,14 @@ $.extend($.boom.assets, {
 			});
 		});
 
-		$('#s-assets-filter-title').autocomplete({
+		$('#b-assets-filter-title').autocomplete({
 			delay: 200, // Time to wait after keypress before making the AJAX call.
 			source: function(request, response){
 				$.ajax({
 					url: '/cms/autocomplete/assets',
 					dataType: 'json',
 					data: {
-						text : $('#s-assets-filter-title').val()
+						text : $('#b-assets-filter-title').val()
 					}
 				})
 				.done(function(data) {
@@ -59,13 +59,13 @@ $.extend($.boom.assets, {
 			}
 		});
 
-		$('#s-assets-upload').click(function(){
+		$('#b-assets-upload').click(function(){
 
 			self._upload();
 		});
 
 		$( '#boom-tagmanager' )
-			.on( 'click', '#s-button-multiaction-delete', function(){
+			.on( 'click', '#b-button-multiaction-delete', function(){
 
 				$.boom.log( 'asset delete selected' );
 
@@ -78,7 +78,7 @@ $.extend($.boom.assets, {
 
 						var assets = [];
 
-						$('.s-items-select-checkbox:checked').each(function(i){
+						$('.b-items-select-checkbox:checked').each(function(i){
 
 							assets.push( $( this ).attr('id').replace(/asset-(thumb|list)-/, '') );
 						});
@@ -94,11 +94,11 @@ $.extend($.boom.assets, {
 					}
 				);
 			})
-			.on( 'click', '#s-button-multiaction-edit', function(){
+			.on( 'click', '#b-button-multiaction-edit', function(){
 
 				var ids = [];
 
-				$('.s-items-select-checkbox:checked').each(function(){
+				$('.b-items-select-checkbox:checked').each(function(){
 					var id = this.id.replace(/asset-(thumb|list)-/, '');
 
 					if ( $.inArray(id, ids) === -1 ) {
@@ -109,10 +109,10 @@ $.extend($.boom.assets, {
 
 				$.boom.history.load('asset/' + ids.join('-'));
 			})
-			.on( 'click', '#s-button-multiaction-download', function(){
+			.on( 'click', '#b-button-multiaction-download', function(){
 
 				var ids = [];
-				$('.s-items-select-checkbox:checked').each(function(){
+				$('.b-items-select-checkbox:checked').each(function(){
 
 					ids.push(this.id.replace(/asset-(thumb|list)-/, ''));
 				});
@@ -121,18 +121,18 @@ $.extend($.boom.assets, {
 
 				window.location = url;
 			})
-			.on('click', '#s-button-multiaction-clear', function(){
-				$('.s-items-select-checkbox:checked').each(function(){
+			.on('click', '#b-button-multiaction-clear', function(){
+				$('.b-items-select-checkbox:checked').each(function(){
 					$('.thumb').removeClass('ui-state-active');
 					$(this).removeAttr('checked');
 					$(this).change();
 				});
 
 			})
-			.on( 'click', '#s-button-multiaction-tag', function(){
+			.on( 'click', '#b-button-multiaction-tag', function(){
 
 				var ids = [];
-				$('.s-items-select-checkbox:checked').each(function(){
+				$('.b-items-select-checkbox:checked').each(function(){
 
 					ids.push(this.id.replace(/asset-(thumb|list)-/, ''));
 				});
@@ -267,7 +267,7 @@ $.extend($.boom.assets, {
 
 		var upload_token = $( '#upload_token' ).val();
 
-		$( '#s-assets-upload-form' ).find( 'input' ).hide();
+		$( '#b-assets-upload-form' ).find( 'input' ).hide();
 
 		var upload = function( data ) {
 
@@ -342,16 +342,16 @@ $.extend($.boom.assets, {
 				.done( function( data ){
 					var $data = $( data );
 					var pagination = $data.find( '.boom-pagination' ).html();
-					var list = $data.find( '#s-items-view-list' ).html();
-					var thumbs = $data.find( '#s-items-view-thumbs' ).html();
+					var list = $data.find( '#b-items-view-list' ).html();
+					var thumbs = $data.find( '#b-items-view-thumbs' ).html();
 					$( self.asset_browser )
 						.find( '.boom-pagination' )
 						.html( pagination )
 						.end()
-						.find( '#s-items-view-list' )
+						.find( '#b-items-view-list' )
 						.html( list )
 						.end()
-						.find( '#s-items-view-thumbs' )
+						.find( '#b-items-view-thumbs' )
 						.html( thumbs );
 				});
 
@@ -393,7 +393,7 @@ $.extend($.boom.assets, {
 
 				if( window.FormData ){
 					$( this )
-					.find( '#s-assets-upload-form' )
+					.find( '#b-assets-upload-form' )
 					.on( 'submit', function( event ){
 
 						var formdata = new FormData( this );
@@ -436,7 +436,7 @@ $.extend($.boom.assets, {
 	bindUploadify : function(dialog){
 
 		var
-			formData = $( '#s-assets-upload-form' ).serializeArray(),
+			formData = $( '#b-assets-upload-form' ).serializeArray(),
 			jsonForm = {},
 			totFiles = 0,
 			selectedFiles = {},
@@ -468,7 +468,7 @@ $.extend($.boom.assets, {
 			},
 
 			onSelectOnce: function(event, queueID, fileObj){
-				$('#s-assets-upload-fileUploader').attr('height', 0);
+				$('#b-assets-upload-fileUploader').attr('height', 0);
 
 				$('#boom-asset-upload-info').remove();
 
@@ -545,7 +545,7 @@ $.extend($.boom.assets, {
 			}
 		});
 
-		$('#s-assets-upload-file').hide();
+		$('#b-assets-upload-file').hide();
 
 		$.ajax({
 			type: "GET",
@@ -557,7 +557,7 @@ $.extend($.boom.assets, {
 				uploadifyConfig["formData"] = jsonForm;
 
 				setTimeout(function(){
-					$('input#s-assets-upload-file').uploadify(uploadifyConfig);
+					$('input#b-assets-upload-file').uploadify(uploadifyConfig);
 				}, 40);
 			}
 		});
@@ -576,7 +576,7 @@ $.extend($.boom.items.asset, {
 
 	/** @property */
 	buttonManager: {
-		show: [ '#s-assets-upload, #boom-tagmanager-save-all' ]
+		show: [ '#b-assets-upload, #boom-tagmanager-save-all' ]
 	},
 
 	/** @function */
@@ -600,7 +600,7 @@ $.extend($.boom.items.asset, {
 		url = '/cms/assets/view/' + this.rid;
 
 		self.tagmanager.elements.rightpane
-		.find('.s-items-content')
+		.find('.b-items-content')
 		.sload(url, function(){
 			$.boom.tagmanager.base.item.prototype.get.apply( self );
 
@@ -795,13 +795,13 @@ $.extend($.boom.items.asset, {
 				title: 'Upload file/s',
 				onLoad: function(){
 
-					$( '#s-assets-upload-form' )
+					$( '#b-assets-upload-form' )
 						.append( '<input type="hidden" name="asset_id" value="' + rid + '" />')
 						.append( '<input type="hidden" name="asset_ids" value="' + rids + '" />')
 
 					if( window.FormData ){
 						$( this )
-						.find( '#s-assets-upload-form' )
+						.find( '#b-assets-upload-form' )
 						.on( 'submit', function( event ){
 
 							var formdata = new FormData( this );

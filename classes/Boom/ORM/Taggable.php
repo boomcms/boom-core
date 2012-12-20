@@ -112,7 +112,7 @@ class Boom_ORM_Taggable extends ORM
 		// We should also find that object.
 		$this->join('tags_applied', 'inner')
 			->on('tags_applied.object_id', '=', $this->_table_name . "." . $this->_primary_key)
-			->join('tag', 'inner')
+			->join('tags', 'inner')
 			->on('tags_applied.tag_id', '=', 'tags.id')
 			->where('tags_applied.object_type', '=', $this->get_object_type_id())
 			->where('tags.path', 'like', $tag->path . '%');

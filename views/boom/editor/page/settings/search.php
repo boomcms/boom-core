@@ -1,17 +1,17 @@
 <form id="boom-form-pagesettings-search" name="pagesettings-seo">
-	<div id="s-pagesettings-search" class="boom-tabs s-pagesettings">
+	<div id="b-pagesettings-search" class="boom-tabs s-pagesettings">
 		<ul>
 			<li>
-				<a href="#s-pagesettings-search-basic">Basic</a>
+				<a href="#b-pagesettings-search-basic">Basic</a>
 			</li>
 			<? if ($allow_advanced): ?>
 				<li>
-					<a href="#s-pagesettings-search-advanced">Advanced</a>
+					<a href="#b-pagesettings-search-advanced">Advanced</a>
 				</li>
 			<? endif; ?>
 		</ul>
 
-		<div id="s-pagesettings-search-basic">
+		<div id="b-pagesettings-search-basic">
 			<table width="100%">
 				<tr>
 					<td style="vertical-align:top">
@@ -43,7 +43,7 @@
 		</div>
 
 		<? if ($allow_advanced): ?>
-			<div id="s-pagesettings-search-advanced">
+			<div id="b-pagesettings-search-advanced">
 				<table width="100%">
 					<tr>
 						<td>Allow indexing by search engines</td>

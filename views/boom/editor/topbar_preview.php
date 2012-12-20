@@ -4,13 +4,13 @@
 
 	<div class="ui-helper-clearfix ui-tabs-panel ui-widget-content ui-corner-bottom">
 
-		<div id="s-page-actions">
+		<div id="b-page-actions">
 			
 			<div class="boom-buttonset">
-				<button id="s-page-preview-published" class="boom-button ui-button-text-icon ui-button">
+				<button id="b-page-preview-published" class="boom-button ui-button-text-icon ui-button">
 					<?=__('Published changes')?>
 				</button>
-				<button id="s-page-preview-all" class="boom-button ui-button-text-icon ui-button">
+				<button id="b-page-preview-all" class="boom-button ui-button-text-icon ui-button">
 					<?=__('All changes')?>
 				</button>
 			</div>
@@ -19,7 +19,7 @@
 
 
 		<div class="ui-helper-right">
-			<button id="s-page-editbutton" class="boom-button ui-button-text-icon ui-button">
+			<button id="b-page-editbutton" class="boom-button ui-button-text-icon ui-button">
 				<?=__('Edit')?> <?=__('page')?>
 			</button>
 		</div>

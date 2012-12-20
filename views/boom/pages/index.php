@@ -11,8 +11,8 @@
 	</div>
 
 	<div id="boom-loader-dialog-overlay" class="ui-widget-overlay"></div>
-	<div id="s-page-edit">
-		<div id="s-items-list">
+	<div id="b-page-edit">
+		<div id="b-items-list">
 			<div id="nav" class="boom-tree block">
 				<ul>
 				<?
@@ -93,7 +93,7 @@
 				}
 			});
 
-			$('#s-pages-csv').click(function(){
+			$('#b-pages-csv').click(function(){
 				window.location = '/cms/data/pages';
 			});
 

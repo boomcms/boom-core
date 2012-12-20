@@ -22,7 +22,7 @@ $.extend($.boom, {
 
 			var self = this;
 
-			$('.s-templates-delete').click(function(event){
+			$('.b-templates-delete').click(function(event){
 				var item = $(this).closest( "tr" );
 				$.boom.dialog.confirm(
 					"Please confirm",
@@ -35,9 +35,9 @@ $.extend($.boom, {
 				);
 			});
 
-			$('#s-templates-save').click(function(){
+			$('#b-templates-save').click(function(){
 
-				var data = $('#s-templates form').serialize();
+				var data = $('#b-templates form').serialize();
 
 				$.boom.loader.show();
 

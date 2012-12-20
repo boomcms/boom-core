@@ -5,7 +5,7 @@
 	<link media="all" href="/media/boom/css/cms.css" type="text/css" rel="stylesheet">
 	<script type="text/javascript" src="/media/boom/js/jquery.uploadProgress.js"></script>
 </head>
-<body id="s-assets-upload-video">
+<body id="b-assets-upload-video">
 
 <form id="uploadForm" action="<?=$url?>" method="POST" enctype="multipart/form-data">
 	<fieldset>

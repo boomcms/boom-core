@@ -17,8 +17,8 @@
 		<?= Menu::factory('boom') ?>
 
 		<div class="ui-helper-clearfix ui-tabs-panel ui-widget-content ui-corner-bottom">
-			<div id="s-page-actions" class="ui-helper-right">
-				<button id="s-templates-save" class="boom-button ui-button-text-icon ui-icon-disk">
+			<div id="b-page-actions" class="ui-helper-right">
+				<button id="b-templates-save" class="boom-button ui-button-text-icon ui-icon-disk">
 					Save all
 				</button>
 			</div>
@@ -32,10 +32,10 @@
 	</div>
 
 	<div id="boom-loader-dialog-overlay" class="ui-widget-overlay"></div>
-	<div id="s-templates">
+	<div id="b-templates">
 		<form>
 			<?= Form::hidden('csrf', Security::token()) ?>
-			<table id="s-templates-table" class="tablesorter">
+			<table id="b-templates-table" class="tablesorter">
 				<thead>
 					<tr>
 						<th>&nbsp;</th>
@@ -52,9 +52,9 @@
 						<tr
 						<?
 							if ( ! $t->file_exists()):
-								echo " class='s-templates-nofile'";
+								echo " class='b-templates-nofile'";
 							elseif (in_array($t->pk(), $imported)):
-								echo " class='s-templates-new'";
+								echo " class='b-templates-new'";
 							endif
 						?>
 						>
@@ -94,7 +94,7 @@
 		</form>
 	</div>
 
-	<div id="s-templates-preview" style="display: none;">
+	<div id="b-templates-preview" style="display: none;">
 	  <img src=""/>
 	</div>
 
@@ -118,7 +118,7 @@
 			});
 
 			$.boom.templates.init();
-			$('#s-templates table')
+			$('#b-templates table')
 				.tablesorter({
 					/**
 					Return the value of any form input in a table cell, or the text content of the cell.

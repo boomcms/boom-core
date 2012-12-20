@@ -311,7 +311,7 @@ class Boom_Controller_Plugin_Page_Children extends Boom_Controller
 		// Filtering by tag?
 		if ($this->tag)
 		{
-			$query->where('tag', '=', $this->tag);
+//			$query->where('tag', '=', $this->tag);
 		}
 
 		// Pagination
@@ -321,7 +321,6 @@ class Boom_Controller_Plugin_Page_Children extends Boom_Controller
 		{
 			$total = clone $query;
 			$total = $total->count_all();
-			$total = $total[0]['count'];
 
 			$query
 				->offset(($this->page - 1) * $this->perpage)

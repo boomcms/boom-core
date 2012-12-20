@@ -11,7 +11,7 @@
 		<strong>Warning:</strong>
 		<br />Deleting this page will make it's <?= $count, " ", Inflector::plural("child page", $count); ?> inaccessible:
 	</p>
-	<div id="s-page-delete-children">
+	<div id="b-page-delete-children">
 		<ul>
 			<? foreach ($titles as $title): ?>
 			 	<li>
@@ -21,7 +21,7 @@
 
 		</ul>
 
-		<form id="s-page-delete-form">
+		<form id="b-page-delete-form">
 			<?= Form::checkbox('with_children', 1); ?>
 			Delete <?= $count, " ", Inflector::plural("child page", $count); ?> as well.
 		</form>

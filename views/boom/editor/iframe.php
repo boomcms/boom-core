@@ -2,7 +2,7 @@
 
 <?= $body_tag ?>
 
-<iframe style="position:fixed; z-index: 10000; height: 60px; background: transparent;" id='s-page-topbar' src='/cms/editor/toolbar/<?= $page_id ?>'></iframe>
+<iframe style="position:fixed; z-index: 10000; height: 60px; background: transparent;" id='b-page-topbar' src='/cms/editor/toolbar/<?= $page_id ?>'></iframe>
 
 <div id="boom-dialogs">
 	<div id="boom-dialog-alerts">

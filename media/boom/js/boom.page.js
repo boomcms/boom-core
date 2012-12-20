@@ -9,7 +9,7 @@ $.extend($.boom, {
 		/** @lends $.boom.page */
 
 		/** @property */
-		save_button: $('#s-page-save'),
+		save_button: $('#b-page-save'),
 
 
 
@@ -160,7 +160,7 @@ $.extend($.boom, {
 				});
 			}
 
-			$('#s-page-preview-splitbutton').splitbutton({
+			$('#b-page-preview-splitbutton').splitbutton({
 				items: {
 					'Published pages': function(){
 
@@ -174,14 +174,14 @@ $.extend($.boom, {
 				menuPosition: 'left'
 			});
 
-			$('#s-page-actions').on('click', '#s-page-preview-published', function(){
+			$('#b-page-actions').on('click', '#b-page-preview-published', function(){
 				saveEditorState( 'disabled' );
 			})
-			.on('click', '#s-page-preview-all', function(){
+			.on('click', '#b-page-preview-all', function(){
 				saveEditorState( 'preview' );
 			});
 
-			$('#s-page-editbutton').click(function(){
+			$('#b-page-editbutton').click(function(){
 
 				$.boom.loader.show();
 
@@ -189,7 +189,7 @@ $.extend($.boom, {
 			});
 
 
-			$('#s-page-delete').click(function(){
+			$('#b-page-delete').click(function(){
 
 				$.boom.dialog.open({
 					width: 350,
@@ -197,14 +197,14 @@ $.extend($.boom, {
 					title: 'Please confirm',
 					callback: function(){
 
-						$.post('/cms/page/delete/' + self.config.id, $('#s-page-delete-form').serialize(), function(response){
+						$.post('/cms/page/delete/' + self.config.id, $('#b-page-delete-form').serialize(), function(response){
 							$.boom.growl.show("Page deleted, redirecting to parent.");
 							top.location = response;
 						});
 					}
 				});
 			});
-			$('#s-page-addpage').click(function(){
+			$('#b-page-addpage').click(function(){
 
 				var button = this;
 
@@ -215,7 +215,7 @@ $.extend($.boom, {
 
 						$.boom.loader.show('modal');
 
-						$.post('/cms/page/add', $('#s-page-add-form').serialize(), function(response){
+						$.post('/cms/page/add', $('#b-page-add-form').serialize(), function(response){
 
 							$.boom.loader.hide('modal');
 
@@ -231,11 +231,11 @@ $.extend($.boom, {
 					}
 				});
 			});
-			$('#s-page-save').click(function(){
+			$('#b-page-save').click(function(){
 
 				self.save();
 			});
-			$('#s-page-publish').click(function(){
+			$('#b-page-publish').click(function(){
 				$.boom.loader.show();
 
 				$.get(
@@ -245,7 +245,7 @@ $.extend($.boom, {
 
 					$.boom.loader.hide();
 
-					$('#s-page-publish').hide();
+					$('#b-page-publish').hide();
 					$("#boom-topbar-revisions").html(response);
 
 				});
@@ -291,8 +291,8 @@ $.extend($.boom, {
 			var page =
 				$.boom.page.config,
 				title =
-					this.document.contents().find('#s-page-title').length ?
-					this.document.contents().find('#s-page-title').html().text().safeEscape() :
+					this.document.contents().find('#b-page-title').length ?
+					this.document.contents().find('#b-page-title').html().text().safeEscape() :
 					$('input[name=alttitle]').val();
 
 			data = $.extend(data, {
@@ -306,7 +306,7 @@ $.extend($.boom, {
 
 			$( $.boom.page.slot_edits ).each(function(){
 
-				if ( this.id == 's-page-title' ) return;
+				if ( this.id == 'b-page-title' ) return;
 
 				var
 					slot = this.slot;
@@ -373,7 +373,7 @@ $.extend($.boom, {
 						else
 						{
 							self.config.vid = response.vid;
-							$('#s-page-publish').show();
+							$('#b-page-publish').show();
 							$.boom.growl.show( "Page successfully saved." );
 							$.boom.page.slot_edits = [];
 							$.boom.page.save_button.button( 'disable' ).attr( 'title', 'You have no unsaved changes' );
@@ -452,7 +452,7 @@ $.extend( $.boom.page, {
 			var self = this;
 
 			self.page_dom = $.boom.page.document.contents();
-			self.iframe = self.page_dom.find( '#s-page-topbar' );
+			self.iframe = self.page_dom.find( '#b-page-topbar' );
 
 			self.page_dom
 				.find( 'body' )
@@ -691,7 +691,7 @@ $.extend($.boom.page, {
 				}
 			})
 			.end()
-			.find('#s-page-title').exists(function(){
+			.find('#b-page-title').exists(function(){
 
 				slotBind.call( this );
 			});
@@ -706,7 +706,7 @@ $.extend($.boom.page, {
 
 			if (!self.elements.page_body) return;
 
-			self.elements.page_body.contents().find('#s-page-title, .chunk-slot').each(function(){
+			self.elements.page_body.contents().find('#b-page-title, .chunk-slot').each(function(){
 				$(this).unbind('click mouseleave mouseenter')
 				// FIXME
 				.removeClass('boom-chunk-mouseenter');
@@ -727,7 +727,7 @@ $.extend($.boom.page, {
 			var body = this.elements.page_body.contents().find('body');
 
 			this.elements.hoverOverlay = {
-				icon: $('<span class="s-page-chunk-edit-icon ui-icon ui-icon-wrench" />').appendTo(body)
+				icon: $('<span class="b-page-chunk-edit-icon ui-icon ui-icon-wrench" />').appendTo(body)
 			};
 
 			html_loaded.resolve();
@@ -807,7 +807,7 @@ $.extend($.boom.page, {
 		/** @function */
 		bindMouseEnter : function(page_body){
 
-			$(this).addClass('s-chunk-mouseenter ui-helper-clearfix');
+			$(this).addClass('b-chunk-mouseenter ui-helper-clearfix');
 
 			var data = {
 				width: $(this).outerWidth(),
@@ -823,7 +823,7 @@ $.extend($.boom.page, {
 		/** @function */
 		bindMouseLeave : function(page_body){
 
-			$(this).removeClass('s-chunk-mouseenter');
+			$(this).removeClass('b-chunk-mouseenter');
 
 			$.boom.page.slots.hideEditOverlay();
 		},
@@ -870,7 +870,7 @@ $.extend($.boom.page, {
 
 			$.boom.log('Added new event to undo');
 
-			$('#s-page-undo-splitbutton')
+			$('#b-page-undo-splitbutton')
 			.data('splitbutton')
 			.add(msg, data, function(event, data){
 
@@ -882,19 +882,19 @@ $.extend($.boom.page, {
 
 				if ( !menu.find('li').length ) {
 
-					$('#s-page-undo-splitbutton').find('button').button('disable');
+					$('#b-page-undo-splitbutton').find('button').button('disable');
 				}
 
 				$.boom.page.editor.bind();
 			}, 'top');
 
-			var menu = $('#s-page-undo-splitbutton').splitbutton('getMenu');
+			var menu = $('#b-page-undo-splitbutton').splitbutton('getMenu');
 
 			if (menu.children().length > this.maxAmount ) {
 				menu.find('li:last').remove();
 			}
 
-			$('#s-page-undo-splitbutton')
+			$('#b-page-undo-splitbutton')
 				.find('button')
 				.button('enable');
 		}
@@ -946,7 +946,7 @@ $.extend($.boom.page, {
 
 			};
 
-			$('#s-page-settings-menu').splitbutton({
+			$('#b-page-settings-menu').splitbutton({
 				items: menu_items,
 				itemclick : function(event){
 
@@ -967,7 +967,7 @@ $.extend($.boom.page, {
 			// page settings info has its own button on the toolbar.
 			self.register( 'information' );
 
-			$('#boom-topbar-visibility, .s-page-visiblefrom').click(function(){
+			$('#boom-topbar-visibility, .b-page-visiblefrom').click(function(){
 				event.preventDefault();
 
 				$.boom.dialog.open({
@@ -990,7 +990,7 @@ $.extend($.boom.page, {
 					},
 					open: function(){
 
-						$('#s-page-toggle-visible:checkbox').unbind('change').change(function(){
+						$('#b-page-toggle-visible:checkbox').unbind('change').change(function(){
 
 							if (this.checked) {
 
@@ -1248,18 +1248,18 @@ $.extend($.boom.page, {
 					open: function() {
 						// The add tag input box is hidden when the modal window opens.
 						// Show it and give it focus when the add button is clicked.
-						$('#s-pagesettings-tags-add').click(function(){
-							$('#s-pagesettings-tags-add-name').show().focus();
+						$('#b-pagesettings-tags-add').click(function(){
+							$('#b-pagesettings-tags-add-name').show().focus();
 						});
 
 						// Hide the add tag input box when it loses focus.
-						$('#s-pagesettings-tags-add-name').blur(function(){
-							$('#s-pagesettings-tags-add-name').val('').hide();
+						$('#b-pagesettings-tags-add-name').blur(function(){
+							$('#b-pagesettings-tags-add-name').val('').hide();
 						});
 
 						// When hovering over an existing tag show a button to remove the tag from the page.
 						// Then hide the button again when the mouse moves away.
-						$('.s-tags-list li').mouseenter(function(){
+						$('.b-tags-list li').mouseenter(function(){
 							// If the ui-icon and ui-icon-close clases are added in the HTML then the crosses aren't hidden when the modal opens.
 							// So we only add these classes when we need to show them.
 							$(this)
@@ -1280,7 +1280,7 @@ $.extend($.boom.page, {
 						});
 
 						// Remove a tag from the page.
-						$('.s-tags-remove').click(function(event){
+						$('.b-tags-remove').click(function(event){
 							event.preventDefault();
 
 							$.boom.loader.show();
@@ -1297,14 +1297,14 @@ $.extend($.boom.page, {
 						});
 
 						// Add a tag to the tag.
-						$('#s-pagesettings-tags-add-name').autocomplete({
+						$('#b-pagesettings-tags-add-name').autocomplete({
 							delay: 200, // Time to wait after keypress before making the AJAX call.
 							source: function(request, response){
 								$.ajax({
 									url: '/cms/autocomplete/tags',
 									dataType: 'json',
 									data: {
-										text : $('#s-pagesettings-tags-add-name').val(),
+										text : $('#b-pagesettings-tags-add-name').val(),
 										type : 2 // Restricts the returned tags to page tags.
 									}
 								})
@@ -1320,7 +1320,7 @@ $.extend($.boom.page, {
 							// Add a tag when the enter key is pressed.
 							// This allows us to add a tag which doesn't already exist.
 							if (e.which == 13) {
-								self.add($('#s-pagesettings-tags-add-name').val());
+								self.add($('#b-pagesettings-tags-add-name').val());
 							}
 						});
 					}
@@ -1334,16 +1334,16 @@ $.extend($.boom.page, {
 					{action: 'add', tag : tag}
 					)
 					.done(function(){
-						$('#s-pagesettings-tags ul').append(
+						$('#b-pagesettings-tags ul').append(
 							'<li>' +
 							'<a href="' + tag + '" title="Remove ' + tag +
-							'" class="s-tags-remove"></a><span>' +
+							'" class="b-tags-remove"></a><span>' +
 							tag + '</span></li>'
 						);
 					});
 
 				$.boom.loader.hide();
-				$('#s-pagesettings-tags-add-name').val('').hide();
+				$('#b-pagesettings-tags-add-name').val('').hide();
 			}
 		},
 
@@ -1415,10 +1415,10 @@ $.extend($.boom.page, {
 					open: function(){
 						//  Each link in the list has a radio button whic toggles whether the link is a primary link
 						// and a checkbox to toggle whether a secondary link redirects to the primary link.
-						$('.s-links-primary, s-links-redirect').change(function(){
+						$('.b-links-primary, s-links-redirect').change(function(){
 							link = $(this).closest('li');
-							redirect = $(link).find('s-links-redirect').val();
-							primary = $(link).find('s-links-primary').val();
+							redirect = $(link).find('b-links-redirect').val();
+							primary = $(link).find('b-links-primary').val();
 
 							$.post('/cms/page/link/save/' + $.boom.page.config.id, {
 								link_id :  link.attr('data-id'),
@@ -1466,7 +1466,7 @@ $.extend($.boom.page, {
 											$.post('/cms/page/link/move/' + $.boom.page.config.id + '?link=' + new_link)
 												.done(function(response){
 													$.boom.growl.show('Link added.');
-													$( '#s-pagesettings-links .boom-tree' )
+													$( '#b-pagesettings-links .boom-tree' )
 														.data( 'tree' )
 														.add_item( '<li>' + new_link + '</li>' );
 
@@ -1483,7 +1483,7 @@ $.extend($.boom.page, {
 						{
 							// success
 							$.boom.growl.show('Link added.');
-							$( '#s-pagesettings-links .boom-tree' )
+							$( '#b-pagesettings-links .boom-tree' )
 								.data( 'tree' )
 								.add_item( '<li>' + new_link + '</li>' );
 						}

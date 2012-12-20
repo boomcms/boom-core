@@ -2,48 +2,48 @@
 
 	<?= Menu::factory('boom')->sort('priority') ?>
 
-	<div id="s-page-actions">
+	<div id="b-page-actions">
 		<? if ($auth->logged_in('edit_page', $page)): ?>
-			<button id="s-page-save" class="boom-button" disabled="disabled" title="You have no unsaved changes" data-icon="ui-icon-disk">
+			<button id="b-page-save" class="boom-button" disabled="disabled" title="You have no unsaved changes" data-icon="ui-icon-disk">
 					<?=__('Save')?>
 			</button>
 		<? endif; ?>
 
 		<? if ($auth->logged_in('delete_page', $page) AND ! $page->mptt->is_root()): ?>
-			<button id="s-page-delete" class="boom-button" data-icon="ui-icon-trash">
+			<button id="b-page-delete" class="boom-button" data-icon="ui-icon-trash">
 					<?=__('Delete')?>
 			</button>
 		<? endif; ?>
 
 		<? if ($auth->logged_in('publish_page', $page)): ?>
-			<button id="s-page-publish" class="boom-button"<? if ($page->is_published()): ?> style='display: none'<? endif; ?> data-icon="ui-icon-check">
+			<button id="b-page-publish" class="boom-button"<? if ($page->is_published()): ?> style='display: none'<? endif; ?> data-icon="ui-icon-check">
 					<?=__('Publish')?>
 			</button>
 		<? endif; ?>
 	</div>
 
-	<div id="s-page-metadata" class="ui-helper-right">
+	<div id="b-page-metadata" class="ui-helper-right">
 		<button id="boom-topbar-editors" class="boom-button" style="display: none" data-icon="ui-icon-person">
 			<?=__('Another editor is viewing this page.')?>
 		</button>
 
 		<? if ($auth->logged_in('edit_page', $page)): ?>
-			<div id="s-page-settings-menu">
-				<button id="s-page-settings" class="boom-button" data-icon="ui-icon-wrench" data-icon-secondary="ui-icon-triangle-1-s">
+			<div id="b-page-settings-menu">
+				<button id="b-page-settings" class="boom-button" data-icon="ui-icon-wrench" data-icon-secondary="ui-icon-triangle-1-s">
 						<?=__('Settings')?>
 				</button>
 			</div>
 		<? endif; ?>
 
 		<? if ($auth->logged_in('add_page', $page)): ?>
-			<button id="s-page-addpage" class="boom-button" data-icon="ui-icon-circle-plus">
+			<button id="b-page-addpage" class="boom-button" data-icon="ui-icon-circle-plus">
 					<?=__('Add')?> <?=__('page')?>
 			</button>
 		<? endif; ?>
 
 		<? if ($auth->logged_in('edit_page', $page)): ?>
-			<div id="s-page-preview-splitbutton">
-				<button id="s-page-preview" class="boom-button" data-icon="ui-icon-search"
+			<div id="b-page-preview-splitbutton">
+				<button id="b-page-preview" class="boom-button" data-icon="ui-icon-search"
 					<? if ( ! $page->is_visible() AND ! $page->has_published_version()):?>
 						disabled='disabled' title="A preview of this page is not available because it's invisible and unpublished"
 					<? endif; ?>

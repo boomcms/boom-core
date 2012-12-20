@@ -17,15 +17,15 @@
 		<?= Menu::factory('boom') ?>
 
 		<div class="ui-helper-clearfix ui-tabs-panel ui-widget-content ui-corner-bottom">
-			<div id="s-page-actions" class="ui-helper-right">
-				<button id="s-assets-upload" class="boom-button ui-button-text-icon" data-icon="ui-icon-disk">
+			<div id="b-page-actions" class="ui-helper-right">
+				<button id="b-assets-upload" class="boom-button ui-button-text-icon" data-icon="ui-icon-disk">
 					<?=__('Upload files')?>
 				</button>
 				<button id="boom-tagmanager-save-all" class="boom-button ui-button-text-icon" data-icon="ui-icon-disk">
 					<?=__('Save all')?>
 				</button>
 
-				<button class="boom-button" data-icon="ui-icon-video" id="s-assets-upload-video">Upload video</button>
+				<button class="boom-button" data-icon="ui-icon-video" id="b-assets-upload-video">Upload video</button>
 			</div>
 		</div>
 	</div>
@@ -37,7 +37,7 @@
 	</div>
 
 	<div id="boom-loader-dialog-overlay" class="ui-widget-overlay"></div>
-	<div id="s-page-edit">
+	<div id="b-page-edit">
 		<?= $content ?>
 	</div>
 

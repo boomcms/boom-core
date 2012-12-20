@@ -3,8 +3,8 @@
 ?>
 <div id="wysihtml5-toolbar" class="toolbar">
 	<div class="commands">
-		<button id="s-editor-accept" data-wysihtml5-action class="action">Save</button>
-		<button id="s-editor-cancel" data-wysihtml5-action class="action">Cancel</button>
+		<button id="b-editor-accept" data-wysihtml5-action class="action">Save</button>
+		<button id="b-editor-cancel" data-wysihtml5-action class="action">Cancel</button>
 <?
 	switch ( $mode ) {
 		case 'text' :

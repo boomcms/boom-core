@@ -28,11 +28,11 @@
 		</select>
 	</div>
 	<ul>
-		<li><a href="#s-items-view-thumbs">Thumbnails</a></li>
-		<li><a href="#s-items-view-list">List</a></li>
+		<li><a href="#b-items-view-thumbs">Thumbnails</a></li>
+		<li><a href="#b-items-view-list">List</a></li>
 	</ul>
 
-	<div id="s-items-view-list">
+	<div id="b-items-view-list">
 		<table>
 			<tr>
 				<th class="ui-helper-reset">
@@ -59,7 +59,7 @@
 			<? foreach ($assets as $asset): ?>
 				<tr title='<?= $asset->description ?>'>
 					<td class="ui-helper-reset">
-						<input type="checkbox" class="s-items-select-checkbox ui-helper-reset" id="asset-list-<?=$asset->id?>" />
+						<input type="checkbox" class="b-items-select-checkbox ui-helper-reset" id="asset-list-<?=$asset->id?>" />
 					</td>
 					<td class="ui-helper-center" align="center">
 						<label for="asset-<?=$asset->id?>"><?=date('M-j-Y', $asset->last_modified)?></label>
@@ -90,12 +90,12 @@
 		</table>
 	</div>
 
-	<div id="s-items-view-thumbs" class="s-items-thumbs ui-helper-left">
+	<div id="b-items-view-thumbs" class="b-items-thumbs ui-helper-left">
 		<? foreach ($assets as $asset): ?>
 			<div class="boom-tagmanager-assets s-items-thumbs ui-helper-clearfix">
 				<div class="thumb ui-corner-all">
 
-					<input type="checkbox" class="s-items-select-checkbox ui-helper-reset" id="asset-thumb-<?=$asset->id?>" />
+					<input type="checkbox" class="b-items-select-checkbox ui-helper-reset" id="asset-thumb-<?=$asset->id?>" />
 
 					<a href="#asset/<?=$asset->id?>" class='boom-tagmanager-thumb-link'>
 						<img src="/asset/thumb/<?=$asset->id?>/100/100/85/1" />
@@ -110,23 +110,23 @@
 		<div class="ui-helper-right" style="margin: .5em .5em 0 0">
 			<?=__('Total files')?>: <?= Num::format($total, 0) ?> | <?=__('Total size')?>: <?= Text::bytes($total_size) ?>
 		</div>
-		<div id="s-items-checkactions" class="ui-widget-content">
+		<div id="b-items-checkactions" class="ui-widget-content">
 			With <span id="boom-tagmanager-amount-checked"></span> selected:
 		</div>
-		<div id="s-items-multiactons" class="ui-widget-content">
-			<button id="s-button-multiaction-edit" disabled="disabled" class="boom-button ui-button-text-icon" data-icon="ui-icon-wrench">
+		<div id="b-items-multiactons" class="ui-widget-content">
+			<button id="b-button-multiaction-edit" disabled="disabled" class="boom-button ui-button-text-icon" data-icon="ui-icon-wrench">
 				<?=__('View')?>/<?=__('Edit')?>
 			</button>
-			<button id="s-button-multiaction-delete" disabled="disabled" class="boom-button ui-button-text-icon" data-icon="ui-icon-trash">
+			<button id="b-button-multiaction-delete" disabled="disabled" class="boom-button ui-button-text-icon" data-icon="ui-icon-trash">
 				<?=__('Delete')?>
 			</button>
-			<button id="s-button-multiaction-download" disabled="disabled" class="boom-button ui-button-text-icon" data-icon="ui-icon-arrowreturn-1-s">
+			<button id="b-button-multiaction-download" disabled="disabled" class="boom-button ui-button-text-icon" data-icon="ui-icon-arrowreturn-1-s">
 				<?=__('Download')?>
 			</button>
-			<button id="s-button-multiaction-tag" disabled="disabled" class="boom-button ui-button-text-icon" data-icon="ui-icon-tag">
+			<button id="b-button-multiaction-tag" disabled="disabled" class="boom-button ui-button-text-icon" data-icon="ui-icon-tag">
 				<?=__('Add Tags')?>
 			</button>
-			<button id="s-button-multiaction-clear" disabled="disabled" class="boom-button ui-button-text-icon" data-icon="ui-icon-cancel">
+			<button id="b-button-multiaction-clear" disabled="disabled" class="boom-button ui-button-text-icon" data-icon="ui-icon-cancel">
 				<?=__('Clear Selection')?>
 			</button>
 		</div>

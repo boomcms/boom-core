@@ -1,4 +1,4 @@
-<div id='s-pagesettings-links' class="s-pagesettings">
+<div id='b-pagesettings-links' class="b-pagesettings">
 	<div>
 		<h1>Primary Link</h1>
 		<p>
@@ -11,8 +11,8 @@
 			<? foreach($page->links->find_all() as $link): ?>
 				<li data-link="<?= $link->location ?>" data-id="<?= $link->id ?>">
 					<?= $link->location ?>
-					<?= Form::radio('is_primary', $link->location, (bool) $link->is_primary, array('class' => 's-links-primary')) ?>
-					<?= Form::checkbox("redirect_" . $link->id, 1, (bool) $link->redirect, array('class' => 's-links-redirect')) ?>
+					<?= Form::radio('is_primary', $link->location, (bool) $link->is_primary, array('class' => 'b-links-primary')) ?>
+					<?= Form::checkbox("redirect_" . $link->id, 1, (bool) $link->redirect, array('class' => 'b-links-redirect')) ?>
 				</li>
 			<? endforeach; ?>
 		</ul>
