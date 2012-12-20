@@ -11,7 +11,7 @@
  * @author	Rob Tayor
  *
  */
-class Boom_Controller_Cms_Pages extends Sledge_Controller
+class Boom_Controller_Cms_Pages extends Boom_Controller
 {
 	/**
 	 * Check that they can manage templates.
@@ -35,7 +35,7 @@ class Boom_Controller_Cms_Pages extends Sledge_Controller
 			->order_by('lft', 'asc')
 			->find_all();
 
-		$this->template = View::factory('sledge/pages/index', array(
+		$this->template = View::factory('boom/pages/index', array(
 			'pages'	=>	$pages,
 		));
 	}

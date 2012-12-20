@@ -1,8 +1,8 @@
 <?php defined('SYSPATH') or die('No direct access allowed.');
 
 return array(
-	'sledge'	=>	array(
-		'view_filename'		=>	'menu/sledge',
+	'boom'	=>	array(
+		'view_filename'		=>	'menu/boom',
 		'items'			=>	array(
 			'home'		=>	array(
 				'title'		=>	'Home',

@@ -19,7 +19,7 @@
  * @author	Rob Taylor
  * @copyright	Hoop Associates
 */
-class Boom_Controller_Plugin_Page_Children extends Sledge_Controller
+class Boom_Controller_Plugin_Page_Children extends Boom_Controller
 {
 	/**
 	 *
@@ -229,7 +229,7 @@ class Boom_Controller_Plugin_Page_Children extends Sledge_Controller
 			}
 
 			// Which template to use?
-			$template = ($this->request->post('template'))? $this->request->post('template') : "sledge/plugin/page/children";
+			$template = ($this->request->post('template'))? $this->request->post('template') : "boom/plugin/page/children";
 
 			$view = View::factory($template, array(
 				'page'	=>	$this->parent,

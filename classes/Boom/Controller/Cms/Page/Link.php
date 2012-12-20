@@ -14,7 +14,7 @@ class Boom_Controller_Cms_Page_Link extends Controller_Cms_Page
 	 *
 	 * @var	string	Directory which holds the view files used by the functions in this class.
 	 */
-	protected $_view_directory = "sledge/editor/links";
+	protected $_view_directory = "boom/editor/links";
 
 	/**
 	 * Add a new link to a page.
@@ -157,4 +157,4 @@ class Boom_Controller_Cms_Page_Link extends Controller_Cms_Page
 
 		$link->update();
 	}
-} // End Sledge_Controller_Cms_Page
+} // End Boom_Controller_Cms_Page

@@ -46,7 +46,7 @@ class Boom_Themes
 	*/
 	public static function find()
 	{
-		$files = Kohana::list_files('media/sledge/css/themes');
+		$files = Kohana::list_files('media/boom/css/themes');
 
 		foreach ($files as $dir => $files)
 		{
@@ -61,4 +61,4 @@ class Boom_Themes
 
 		return $themes;
 	}
-} // End Sledge_Themes
+} // End Boom_Themes

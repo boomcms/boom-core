@@ -2,7 +2,7 @@
 /**
 * PDF decorator for assets.
 *
-* @package Sledge
+* @package Boom
 * @category Assets
 * @author Hoop Associates	www.thisishoop.com	mail@hoopassociates.co.uk
 * @copyright 2011, Hoop Associates

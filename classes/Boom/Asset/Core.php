@@ -52,7 +52,7 @@ abstract class Boom_Asset_Core
 	}
 
 	/**
-	 * Getter for Sledge_Asset::$_asset
+	 * Getter for Boom_Asset::$_asset
 	 *
 	 * @return	Model_Asset
 	 */
@@ -78,27 +78,27 @@ abstract class Boom_Asset_Core
 
 		switch ($asset->type)
 		{
-			case Sledge_Asset::IMAGE:
+			case Boom_Asset::IMAGE:
 				return new Asset_Image($asset);
 				break;
 
-			case Sledge_Asset::VIDEO:
+			case Boom_Asset::VIDEO:
 				return new Asset_Video($asset);
 				break;
 
-			case Sledge_Asset::MP3:
+			case Boom_Asset::MP3:
 				return new Asset_MP3($asset);
 				break;
 
-			case Sledge_Asset::PDF:
+			case Boom_Asset::PDF:
 				return new Asset_PDF($asset);
 				break;
 
-			case Sledge_Asset::WORD:
+			case Boom_Asset::WORD:
 				return new Asset_Word($asset);
 				break;
 
-			case Sledge_Asset::BOTR:
+			case Boom_Asset::BOTR:
 				return new Asset_Botr($asset);
 				break;
 
@@ -130,22 +130,22 @@ abstract class Boom_Asset_Core
 	{
 		switch ($type_id)
 		{
-			case Sledge_Asset::IMAGE:
+			case Boom_Asset::IMAGE:
 				return 'image';
 
-			case Sledge_Asset::VIDEO:
+			case Boom_Asset::VIDEO:
 				return 'video';
 
-			case Sledge_Asset::PDF:
+			case Boom_Asset::PDF:
 				return 'pdf';
 
-			case Sledge_Asset::TIFF:
+			case Boom_Asset::TIFF:
 				return 'tiff';
 
-			case Sledge_Asset::WORD:
+			case Boom_Asset::WORD:
 				return "MS Word";
 
-			case Sledge_Asset::BOTR:
+			case Boom_Asset::BOTR:
 				return "video";
 
 			default:
@@ -158,11 +158,11 @@ abstract class Boom_Asset_Core
 	 * Used to check whether a file can be uploaded.
 	 *
 	 * @param	string	$mimetype	The mimetype we're checking.
-	 * @return 	bool	True if the mimetype is supported by the Sledge, FALSE if not.
+	 * @return 	bool	True if the mimetype is supported by the Boom, FALSE if not.
 	 */
 	public static function is_supported($mimetype)
 	{
-		return in_array($mimetype, Sledge_Asset::$allowed_types);
+		return in_array($mimetype, Boom_Asset::$allowed_types);
 	}
 
 	/**
@@ -185,18 +185,18 @@ abstract class Boom_Asset_Core
 	{
 		if (strpos($mime, 'image/') === 0)
 		{
-			return Sledge_Asset::IMAGE;
+			return Boom_Asset::IMAGE;
 		}
 
 		if (strpos($mime, 'video/') === 0)
 		{
-			return Sledge_Asset::VIDEO;
+			return Boom_Asset::VIDEO;
 		}
 
 		// MS Word
 		if (strpos($mime, 'application/msword') === 0 OR strpos($mime, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') === 0)
 		{
-			return Sledge_Asset::WORD;
+			return Boom_Asset::WORD;
 		}
 
 		/**
@@ -205,7 +205,7 @@ abstract class Boom_Asset_Core
 		*/
 		if (strpos($mime, 'pdf') !== FALSE)
 		{
-			return Sledge_Asset::PDF;
+			return Boom_Asset::PDF;
 		}
 
 		return 0;

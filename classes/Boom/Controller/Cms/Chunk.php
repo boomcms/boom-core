@@ -11,7 +11,7 @@
  * @author	Rob Taylor
  * @copyright	Hoop Associates
  */
-class Boom_Controller_Cms_Chunk extends Sledge_Controller
+class Boom_Controller_Cms_Chunk extends Boom_Controller
 {
 	/**
 	 *
@@ -114,6 +114,6 @@ class Boom_Controller_Cms_Chunk extends Sledge_Controller
 	*/
 	public function action_insert_link()
 	{
-		$this->template = View::factory('sledge/editor/slot/insert_link');
+		$this->template = View::factory('boom/editor/slot/insert_link');
 	}
 }

@@ -8,7 +8,7 @@
  * @author	Rob Taylor
  * @copyright	Hoop Associates
  */
-class Boom_Controller_Cms_Tag extends Sledge_Controller
+class Boom_Controller_Cms_Tag extends Boom_Controller
 {
 	protected $tag;
 
@@ -69,7 +69,7 @@ class Boom_Controller_Cms_Tag extends Sledge_Controller
 			->execute()
 			->as_array();
 
-		$this->template = View::factory('sledge/tags/children', array(
+		$this->template = View::factory('boom/tags/children', array(
 			'tags'	=>	$tags,
 		));
 	}
@@ -93,7 +93,7 @@ class Boom_Controller_Cms_Tag extends Sledge_Controller
 	 */
 	public function action_edit()
 	{
-		$this->template = View::factory('sledge/tags/edit', array(
+		$this->template = View::factory('boom/tags/edit', array(
 			'type'	=>	$this->request->query('type'),
 			'tag'		=>	$this->tag,
 		));
@@ -134,7 +134,7 @@ class Boom_Controller_Cms_Tag extends Sledge_Controller
 			$tags[$p][$result['id']] = $result['name'];
 		}
 
-		$this->template = View::factory('sledge/tags/tree', array(
+		$this->template = View::factory('boom/tags/tree', array(
 			'tags'	=>	$tags,
 			'root'		=>	(is_object($parent))? $parent->id : 0,
 			'state'	=>	Arr::get(Request::current()->post(), 'state', 'collapsed'),

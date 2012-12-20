@@ -7,18 +7,18 @@
  * The actions in this class relate to the supported output formats e.g. action_jpeg outputs the page as a jpeg
  * The default format when none is given is html. When displaying a page as HTML the editor will also be loaded for editing the page if the user is logged in.
  *
- * @package 	Sledge
+ * @package 	Boom
  * @category 	Controllers
  * @author 	Rob Taylor
  */
-class Boom_Controller_Page extends Sledge_Controller
+class Boom_Controller_Page extends Boom_Controller
 {
 	/**
 	 * Whether the editor should be enabled
 	 * This is mainly used for rendering the page in HTML format where the editor toolbar will be inserted into the site HTML.
 	 * However it's also used for other formats to allow viewing a previous version of the page.
 	 *
-	 * This property is FALSE by default but will be set to TRUE in Sledge_Controller_Page::before() if the current user is allowed to edit this page and the editor is enabled (i.e. not in preview mode).
+	 * This property is FALSE by default but will be set to TRUE in Boom_Controller_Page::before() if the current user is allowed to edit this page and the editor is enabled (i.e. not in preview mode).
 	 *
 	 * @var	boolean
 	 */
@@ -38,7 +38,7 @@ class Boom_Controller_Page extends Sledge_Controller
 		// Inherit from parent.
 		parent::before();
 
-		// Assign the page we're viewing to Sledge_Controller_Page::$_page;
+		// Assign the page we're viewing to Boom_Controller_Page::$_page;
 		$this->page = $this->request->param('page');
 
 		// Should the editor be enabled?
@@ -79,7 +79,7 @@ class Boom_Controller_Page extends Sledge_Controller
 		$html = View::factory(Model_Template::DIRECTORY . $template->filename)
 			->render();
 
-		// If we're in the CMS then add the sledge editor the the page.
+		// If we're in the CMS then add the boom editor the the page.
 		if ($this->auth->logged_in())
 		{
 			$html = $this->editor->insert($html, $this->page->id);

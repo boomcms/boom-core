@@ -3,7 +3,7 @@
 /**
  * ##Controller to edit page settings.
  *
- * Each function relates to a view in the sledge/editor/page/settings directory.
+ * Each function relates to a view in the boom/editor/page/settings directory.
  *
  * When called as a GET the functions will display the relevant view.
  * When called as a POST request the controller will save the data in that view.
@@ -44,7 +44,7 @@ class Boom_Controller_Cms_Page_Settings extends Controller_Cms_Page
 	 *
 	 * So making the request method available in a class property avoid us calling [Request::method()] twice in each function.
 	 *
-	 * The value of this is set in [Sledge_Controller_Cms_Page_Settings::before()]
+	 * The value of this is set in [Boom_Controller_Cms_Page_Settings::before()]
 	 *
 	 * @var	integer
 	 */
@@ -54,7 +54,7 @@ class Boom_Controller_Cms_Page_Settings extends Controller_Cms_Page
 	 *
 	 * @var	string	Directory where views used by this class are stored.
 	 */
-	protected $_view_directory = 'sledge/editor/page/settings';
+	protected $_view_directory = 'boom/editor/page/settings';
 
 	public function before()
 	{
@@ -72,8 +72,8 @@ class Boom_Controller_Cms_Page_Settings extends Controller_Cms_Page
 	 *  * Internal name
 	 *
 	 *
-	 * @uses	Sledge_Controller::_authorization()
-	 * @uses	Sledge_Controller::_log()
+	 * @uses	Boom_Controller::_authorization()
+	 * @uses	Boom_Controller::_log()
 	 */
 	public function action_admin()
 	{
@@ -115,8 +115,8 @@ class Boom_Controller_Cms_Page_Settings extends Controller_Cms_Page
 	 *    * Default child URL prefix
 	 *    * Default grandchild template
 	 *
-	 * @uses	Sledge_Controller::_authorization()
-	 * @uses	Sledge_Controller::_log()
+	 * @uses	Boom_Controller::_authorization()
+	 * @uses	Boom_Controller::_log()
 	 */
 	public function action_children()
 	{
@@ -259,8 +259,8 @@ class Boom_Controller_Cms_Page_Settings extends Controller_Cms_Page
 	 * *	The new parent ID is not the current page.
 	 * *	The new parent page exists.
 	 *
-	 * @uses	Sledge_Controller::_authorization()
-	 * @uses	Sledge_Controller::_log()
+	 * @uses	Boom_Controller::_authorization()
+	 * @uses	Boom_Controller::_log()
 	 * @uses	Model_Page_MPTT::move_tp_last_child()
 	 * @uses	Model_Page::sort_children()
 	 */
@@ -336,8 +336,8 @@ class Boom_Controller_Cms_Page_Settings extends Controller_Cms_Page
 	 *     * External indexing
 	 *     * Internal indexing
 	 *
-	 * @uses	Sledge_Controller::_authorization()
-	 * @uses	Sledge_Controller::_log()
+	 * @uses	Boom_Controller::_authorization()
+	 * @uses	Boom_Controller::_log()
 	 */
 	public function action_search()
 	{
@@ -388,7 +388,7 @@ class Boom_Controller_Cms_Page_Settings extends Controller_Cms_Page
 	/**
 	 * ** Edit the page tags. **
 	 *
-	 * @uses	Sledge_Controller::_authorization()
+	 * @uses	Boom_Controller::_authorization()
 	 */
 	public function action_tags()
 	{
@@ -466,8 +466,8 @@ class Boom_Controller_Cms_Page_Settings extends Controller_Cms_Page
 	 *  * visible from
 	 *  * visible to
 	 *
-	 * @uses	Sledge_Controller::_log()
-	 * @uses	Sledge_Controller::_authorization();
+	 * @uses	Boom_Controller::_log()
+	 * @uses	Boom_Controller::_authorization();
 	 */
 	public function action_visibility()
 	{
@@ -501,4 +501,4 @@ class Boom_Controller_Cms_Page_Settings extends Controller_Cms_Page
 				->update();
 		}
 	}
-} // End Sledge_Controller_Cms_Page
+} // End Boom_Controller_Cms_Page

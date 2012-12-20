@@ -26,7 +26,7 @@ Route::set('asset', 'asset/<action>/<id>(/<width>(/<height>(/<quality>(/<crop>))
 *
 * This is starting to become quite unwieldy, some rewriting may be required.
 */
-Route::set('sledge', '<location>(.<action>)', array(
+Route::set('boom', '<location>(.<action>)', array(
 		'location'	=>	'.*?',
 	))
 	->defaults(array(

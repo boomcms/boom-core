@@ -9,7 +9,7 @@
  * @author	Rob Taylor
  * @copyright	Hoop Associates
  */
-class Boom_Controller_Cms_Autocomplete extends Sledge_Controller
+class Boom_Controller_Cms_Autocomplete extends Boom_Controller
 {
 	/**
 	 * The number of results to be returned. Default is 10.

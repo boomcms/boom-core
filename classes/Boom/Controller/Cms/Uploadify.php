@@ -5,7 +5,7 @@
 * This is used to receive file uploads from uploadify.
 * This has to be kept separate as uploadify can't authenticate via cookies.
 *
-* @package Sledge
+* @package Boom
 * @category Controllers
 * @author Hoop Associates	www.thisishoop.com	mail@hoopassociates.co.uk
 * @copyright 2011, Hoop Associates
@@ -22,7 +22,7 @@ class Boom_Controller_Cms_Uploadify extends Kohana_Controller
 			$encrypt = Encrypt::instance();
 			$token = $encrypt->encode(microtime( TRUE) . " " . Session::instance()->id() . " " . Auth::instance()->get_user()->pk());
 
-			$v = View::factory('sledge/assets/upload_assets');
+			$v = View::factory('boom/assets/upload_assets');
 			$v->token = $token;
 
 			$this->response->body($v);
@@ -83,7 +83,7 @@ class Boom_Controller_Cms_Uploadify extends Kohana_Controller
 			// Process the files.
 			foreach ($newfiles as $file)
 			{
-				// if (in_array($file['type'], Sledge_Asset::$allowed_types))
+				// if (in_array($file['type'], Boom_Asset::$allowed_types))
 				// {
 					// Are we replacing an existing asset?
 					$asset_id = $this->request->post('asset_id');
@@ -103,10 +103,10 @@ class Boom_Controller_Cms_Uploadify extends Kohana_Controller
 
 					$asset->filesize = $file['size'];
 					$asset->uploaded_by = $this->request->post('person');
-					$asset->type = Sledge_Asset::type_from_mime(File::mime($file['tmp_name']));
+					$asset->type = Boom_Asset::type_from_mime(File::mime($file['tmp_name']));
 					$asset->visible_from = $_SERVER['REQUEST_TIME'];
 
-					if ($asset->type == Sledge_Asset::IMAGE)
+					if ($asset->type == Boom_Asset::IMAGE)
 					{
 						// Set the dimensions of the image.
 						list($width, $height) = getimagesize($file['tmp_name']);

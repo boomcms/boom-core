@@ -9,7 +9,7 @@
  * @author	Rob Taylor
  * @copyright	Hoop Associates
  */
-class Boom_Controller_Cms_Page extends Sledge_Controller
+class Boom_Controller_Cms_Page extends Boom_Controller
 {
 	/**
 	*
@@ -22,7 +22,7 @@ class Boom_Controller_Cms_Page extends Sledge_Controller
 	 *
 	 * @var	string
 	 */
-	protected $_view_directory = 'sledge/editor/page';
+	protected $_view_directory = 'boom/editor/page';
 
 	/**
 	 * Load the current page.
@@ -291,7 +291,7 @@ class Boom_Controller_Cms_Page extends Sledge_Controller
 			->execute()
 			->as_array();
 
-		$this->template = View::factory('sledge/pages/tree', array(
+		$this->template = View::factory('boom/pages/tree', array(
 			'pages'	=>	$pages,
 			'page'	=>	new Model_Page($this->request->param('id')),
 			'state'	=>	'collapsed',
@@ -424,7 +424,7 @@ class Boom_Controller_Cms_Page extends Sledge_Controller
 	{
 
 		$v = View::factory(
- 			'sledge/editor/page/text_toolbar',
+ 			'boom/editor/page/text_toolbar',
  				array( 'mode' => $this->request->query('mode') )
  		);
 
@@ -438,8 +438,8 @@ class Boom_Controller_Cms_Page extends Sledge_Controller
 	public function action_slide_toolbar()
 	{
 
-			$v = View::factory( 'sledge/editor/page/slide_toolbar' );
+			$v = View::factory( 'boom/editor/page/slide_toolbar' );
 
 			$this->response->body($v);
 	}
-} // End Sledge_Controller_Cms_Page
+} // End Boom_Controller_Cms_Page

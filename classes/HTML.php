@@ -3,4 +3,4 @@
 * @package Kohana
 * @category Helpers
 */
-class HTML extends Sledge_HTML {}
+class HTML extends Boom_HTML {}

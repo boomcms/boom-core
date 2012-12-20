@@ -82,7 +82,7 @@ class Boom_Model_Page extends ORM_Taggable
 
 	/**
 	 * Hold the calculated thumbnail for this version.
-	 * @see Model_Version_Sledge_Asset::thumbnail()
+	 * @see Model_Version_Boom_Asset::thumbnail()
 	 * @var Model_Asset
 	 */
 	protected $_thumbnail;
@@ -505,7 +505,7 @@ class Boom_Model_Page extends ORM_Taggable
 	 *
 	 * This function:
 	 * * SHOULD always return an instance of Model_Asset
-	 * * SHOULD return an instance of Model_Asset where the type property = Sledge_Asset::IMAGE (i.e. not return an asset representing a video or pdf)
+	 * * SHOULD return an instance of Model_Asset where the type property = Boom_Asset::IMAGE (i.e. not return an asset representing a video or pdf)
 	 * * SHOULD NOT return an asset which is unpublished when the current user is not logged in.
 	 * * For guest users SHOULD return the first image in the body copy which is published.
 	 * * Where there is no image (or no published image) in the bodycopy SHOULD return an empty Model_Asset
@@ -537,7 +537,7 @@ class Boom_Model_Page extends ORM_Taggable
 				->order_by('position', 'asc')
 				->limit(1)
 				->where('chunk_text_assets.chunk_id', '=', $chunk->id)
-				->where('asset.type', '=', Sledge_Asset::IMAGE);
+				->where('asset.type', '=', Boom_Asset::IMAGE);
 
 			// If the current user isn't logged in then make sure it's a published asset.
 			if ( ! Auth::instance()->logged_in())

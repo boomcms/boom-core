@@ -2,13 +2,13 @@
 /**
 * PDF decorator for assets.
 *
-* @package Sledge
+* @package Boom
 * @category Assets
 * @author Hoop Associates	www.thisishoop.com	mail@hoopassociates.co.uk
 * @copyright 2011, Hoop Associates
 *
 */
-class Boom_Asset_Word extends Sledge_Asset
+class Boom_Asset_Word extends Boom_Asset
 {
 	public function show(Response $response)
 	{
@@ -23,7 +23,7 @@ class Boom_Asset_Word extends Sledge_Asset
 
 	public function preview(Response $response)
 	{
-		$image = Image::factory(MODPATH . 'sledge/static/cms/img/icons/ms_word.jpg');
+		$image = Image::factory(MODPATH . 'boom/static/cms/img/icons/ms_word.jpg');
 		$image->resize( 40, 40);
 
 		$response->headers('Content-type', 'image/jpg');

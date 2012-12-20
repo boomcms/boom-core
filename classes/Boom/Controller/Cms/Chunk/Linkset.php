@@ -8,11 +8,11 @@
  * @author	Rob Taylor
  * @copyright	Hoop Associates
  */
-class Boom_Controller_Cms_Chunk_Linkset extends Sledge_Controller_Cms_Chunk
+class Boom_Controller_Cms_Chunk_Linkset extends Boom_Controller_Cms_Chunk
 {
 	public function action_edit()
 	{
-		$this->template = View::factory('sledge/editor/slot/linkset', array(
+		$this->template = View::factory('boom/editor/slot/linkset', array(
 			'page'	=>	$this->page,
 		));
 	}

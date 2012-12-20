@@ -7,7 +7,7 @@
  * @author	Rob Taylor
  * @copyright	Hoop Associates
  */
-class Boom_Controller_Cms_Editor extends Sledge_Controller
+class Boom_Controller_Cms_Editor extends Boom_Controller
 {
 	/**
 	 * Returns a json encoded array of the people currently viewing the same page as this user in the editor.
@@ -151,7 +151,7 @@ class Boom_Controller_Cms_Editor extends Sledge_Controller
 		View::bind_global('page', $page);
 
 		// Show the editor topbar
-		$this->template = View::factory('sledge/editor/toolbar', array(
+		$this->template = View::factory('boom/editor/toolbar', array(
 			'editor'	=>	$this->editor,
 		));
 	}

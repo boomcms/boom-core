@@ -10,7 +10,7 @@
  * @copyright	Hoop Associates
  *
  */
-class Boom_Asset_Image extends Sledge_Asset
+class Boom_Asset_Image extends Boom_Asset
 {
 	public function show(Response $response, $width = NULL, $height = NULL, $quality = NULL, $crop = FALSE)
 	{

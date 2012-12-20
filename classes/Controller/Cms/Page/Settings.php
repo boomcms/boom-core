@@ -1,3 +1,3 @@
 <?php defined('SYSPATH') OR die('No direct script access.');
 
-class Controller_Cms_Page_Settings extends Sledge_Controller_Cms_Page_Settings {}
+class Controller_Cms_Page_Settings extends Boom_Controller_Cms_Page_Settings {}

@@ -1,10 +1,10 @@
 <?php defined('SYSPATH') OR die('No direct script access.');
 
 /**
- * Class for Sledge template plugins.
+ * Class for Boom template plugins.
  * Plugins are essentially just calls to controllers to add particular content to a template.
  * This class simplifies the calls to these controllers so that a frontend developer doesn't have to remember how to make Kohana internal request calls.
- * Therefore instead of doing Request::factory('sledge/slfjsa/slfajf')->post( array( ...))->execute();
+ * Therefore instead of doing Request::factory('boom/slfjsa/slfajf')->post( array( ...))->execute();
  * The developer can just do Plugin::insert( name, options);
  *
  *

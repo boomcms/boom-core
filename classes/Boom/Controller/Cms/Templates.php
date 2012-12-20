@@ -9,13 +9,13 @@
  * @copyright	Hoop Associates
  *
  */
-class Boom_Controller_Cms_Templates extends Sledge_Controller
+class Boom_Controller_Cms_Templates extends Boom_Controller
 {
 	/**
 	 *
 	 * @var	string	Directory where the views used by this controller are.
 	 */
-	protected $_view_directory = 'sledge/templates';
+	protected $_view_directory = 'boom/templates';
 
 	/**
 	* Check that they can manage templates.

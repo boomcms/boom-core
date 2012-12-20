@@ -58,7 +58,7 @@ class Boom_Model_Asset extends ORM_Taggable
 	*/
 	public function get_type()
 	{
-		return Sledge_Asset::get_type($this->type);
+		return Boom_Asset::get_type($this->type);
 	}
 
 	/**

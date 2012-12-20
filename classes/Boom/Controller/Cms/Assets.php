@@ -10,13 +10,13 @@
   * @author	Rob Taylor
   * @copyright	Hoop Associates
   */
-class Boom_Controller_Cms_Assets extends Sledge_Controller
+class Boom_Controller_Cms_Assets extends Boom_Controller
 {
 	/**
 	 *
 	 * @var	string	Directory where the view files used in this class are stored.
 	 */
-	protected $_view_directory = 'sledge/assets';
+	protected $_view_directory = 'boom/assets';
 
 	/**
 	 * Check that they can manage assets.
@@ -204,7 +204,7 @@ class Boom_Controller_Cms_Assets extends Sledge_Controller
 
 		// Turn the numeric asset types into user friendly strings.
 		$types = Arr::pluck($types, 'type');
-		$types = array_map(array('Sledge_Asset', 'get_type'), $types);
+		$types = array_map(array('Boom_Asset', 'get_type'), $types);
 		$types = array_map('ucfirst', $types);
 
 		// Put it all in a view.
@@ -302,7 +302,7 @@ class Boom_Controller_Cms_Assets extends Sledge_Controller
 		if ($type)
 		{
 			// Filtering by asset type.
-			$query->where('type', '=', constant('Sledge_Asset::' . strtoupper($type)));
+			$query->where('type', '=', constant('Boom_Asset::' . strtoupper($type)));
 		}
 
 		// Filtering by deleted assets?
@@ -497,7 +497,7 @@ class Boom_Controller_Cms_Assets extends Sledge_Controller
 		}
 
 		// If the asset is a BOTR video which isn't marked as encoded then attempt to update the information.
-		if ($asset->type == Sledge_Asset::BOTR AND ! $asset->encoded)
+		if ($asset->type == Boom_Asset::BOTR AND ! $asset->encoded)
 		{
 			Request::factory('cms/video/sync/' . $asset->id)->execute();
 			$asset->reload();

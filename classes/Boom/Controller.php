@@ -1,7 +1,7 @@
 <?php defined('SYSPATH') OR die('No direct script access.');
 
 /**
- * Sledge base controller.
+ * Boom base controller.
  * Contains components common to site and cms and controllers.
  *
  * @package	BoomCMS

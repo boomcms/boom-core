@@ -6,7 +6,7 @@ class Boom_HTTP_Exception_403 extends Kohana_HTTP_Exception_403
 	 * HTTP 403 handling via the CMS.
 	 * If the user isn't logged in then redirect them to the login page.
 	 * If they are logged in look for a page with '403' as the internal name.
-	 * If that page doesn't exist then show the sledge/errors/403 view.
+	 * If that page doesn't exist then show the boom/errors/403 view.
 	 */
 	public function get_response()
 	{
@@ -36,7 +36,7 @@ class Boom_HTTP_Exception_403 extends Kohana_HTTP_Exception_403
 			else
 			{
 				// Show the default 403 view
-				$body = View::factory('sledge/errors/403');
+				$body = View::factory('boom/errors/403');
 			}
 
 			// Set the repsonse body.

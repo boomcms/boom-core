@@ -1,6 +1,6 @@
 <?php defined('SYSPATH') OR die('No direct script access.');
 /**
-* @package Sledge
+* @package Boom
 * @category Helpers
 */
 class Boom_URL extends Kohana_URL

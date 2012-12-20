@@ -5,12 +5,12 @@
  * Contains methods for interacting with Bits on the Run to upload / save videos.
  *
  *
- * @package Sledge
+ * @package Boom
  * @category Assets
  * @category Controllers
  */
 
-class Boom_Controller_Cms_Video extends Sledge_Controller
+class Boom_Controller_Cms_Video extends Boom_Controller
 {
 	/**
 	 * Bits on the Run API object.
@@ -45,7 +45,7 @@ class Boom_Controller_Cms_Video extends Sledge_Controller
 		}
 
 		// Check that the specified asset is a botr hosted video.
-		if ($asset->type == Sledge_Asset::BOTR)
+		if ($asset->type == Boom_Asset::BOTR)
 		{
 			// Try and get the video details from BOTR.
 			$response = $this->botr_api->call('/videos/show', array(
@@ -99,7 +99,7 @@ class Boom_Controller_Cms_Video extends Sledge_Controller
 			$url .= '&redirect_address=' . URL::base($this->request) . $_SERVER["REQUEST_URI"];
 			$url .=  '&token=' . $token;
 
-			$this->template = View::factory('sledge/assets/upload_video', array(
+			$this->template = View::factory('boom/assets/upload_video', array(
 				'url'	=>	$url,
 				'token'	=>	$token,
 			));
@@ -120,7 +120,7 @@ class Boom_Controller_Cms_Video extends Sledge_Controller
 			$asset = ORM::factory('Asset')
 				->values(array(
 					'filename'		=>	$video_key,		// Store the video key in the filename column.
-					'type'		=>	Sledge_Asset::BOTR,
+					'type'		=>	Boom_Asset::BOTR,
 					'encoded'		=>	FALSE,
 					'visible_from'	=>	$_SERVER['REQUEST_TIME']
 				))

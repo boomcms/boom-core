@@ -2,7 +2,7 @@
 /**
  * Asset wrapper for video hosted on Bits on the Run
  *
- * @package Sledge
+ * @package Boom
  * @category Assets
  * @author Hoop Associates	www.thisishoop.com	mail@hoopassociates.co.uk
  * @copyright 2011, Hoop Associates
@@ -35,7 +35,7 @@ class Boom_Asset_BOTR extends Asset
 			}
 			catch (Exception $e)
 			{
-				$thumb = MODPATH . 'sledge/static/cms/img/icons/40x40/mov_icon.gif';
+				$thumb = MODPATH . 'boom/static/cms/img/icons/40x40/mov_icon.gif';
 			}
 		}
 

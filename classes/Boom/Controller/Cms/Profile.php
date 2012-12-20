@@ -1,12 +1,12 @@
 <?php defined('SYSPATH') OR die('No direct script access.');
 
-class Boom_Controller_Cms_Profile extends Sledge_Controller
+class Boom_Controller_Cms_Profile extends Boom_Controller
 {
 	public function action_view()
 	{
 		$real_user = $this->auth->get_real_user();
 
-		$this->template = View::factory('sledge/people/profile', array(
+		$this->template = View::factory('boom/people/profile', array(
 			'person'	=>	$real_user,
 		));
 

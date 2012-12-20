@@ -71,7 +71,7 @@ abstract class Boom_Editor
 			$body_tag = $matches[0];
 
 			// Add the editor iframe to just after the <body> tag.
-			$head = View::factory('sledge/editor/iframe', array(
+			$head = View::factory('boom/editor/iframe', array(
 				'body_tag'	=>	$body_tag,
 				'page_id'	=>	$page_id
 			));

@@ -5,7 +5,7 @@ class Boom_HTTP_Exception_404 extends Kohana_HTTP_Exception_404
 	/**
 	 * Check for a CMS page with the internal name of '404'
 	 * If it exists then display that
-	 * Otherwise show the sledge/error/404 view.
+	 * Otherwise show the boom/error/404 view.
 	 */
 	public function get_response()
 	{
@@ -34,8 +34,8 @@ class Boom_HTTP_Exception_404 extends Kohana_HTTP_Exception_404
 		}
 		else
 		{
-			// Show the sledge/error/404 view.
-			$body = View::factory('sledge/errors/404');
+			// Show the boom/error/404 view.
+			$body = View::factory('boom/errors/404');
 		}
 
 		// Set the response body.

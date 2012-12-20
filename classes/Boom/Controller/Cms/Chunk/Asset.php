@@ -8,7 +8,7 @@
  * @author	Rob Taylor
  * @copyright	Hoop Associates
  */
-class Boom_Controller_Cms_Chunk_Asset extends Sledge_Controller
+class Boom_Controller_Cms_Chunk_Asset extends Boom_Controller
 {
 	public function action_preview()
 	{

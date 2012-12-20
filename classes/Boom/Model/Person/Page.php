@@ -3,7 +3,7 @@
 /**
  * Stores which page a user in the CMS is currently viewing.
  *
- * @package Sledge
+ * @package Boom
  * @category Models
  *
  */

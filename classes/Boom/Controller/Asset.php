@@ -2,13 +2,13 @@
 
 /**
 * Asset controller.
-* @package Sledge
+* @package Boom
 * @category Assets
 * @category Controllers
 * @author Hoop Associates	www.thisishoop.com	mail@hoopassociates.co.uk
 * @copyright 2011, Hoop Associates
 */
-class Boom_Controller_Asset extends Sledge_Controller
+class Boom_Controller_Asset extends Boom_Controller
 {
 	private $asset;
 
@@ -28,7 +28,7 @@ class Boom_Controller_Asset extends Sledge_Controller
 
 	public function action_embed()
 	{
-		$asset = Sledge_Asset::factory($this->asset);
+		$asset = Boom_Asset::factory($this->asset);
 		$this->response->body($asset->embed());
 	}
 
@@ -39,19 +39,19 @@ class Boom_Controller_Asset extends Sledge_Controller
 		// cache by etag.
 		HTTP::check_cache($this->request, $this->response, $this->asset->last_modified);
 
-		$asset = Sledge_Asset::factory($this->asset);
+		$asset = Boom_Asset::factory($this->asset);
 		$asset->show($this->response, $this->request->param('width'), $this->request->param('height'), $this->request->param('quality'), (bool) $this->request->param('crop'));
 	}
 
 	public function action_thumb()
 	{
-		// TODO: this is overloaded in Sledge_Controller::after()
+		// TODO: this is overloaded in Boom_Controller::after()
 		$this->response->headers('Cache-Control', 'public');
 
 		// cache by etag.
 		HTTP::check_cache($this->request, $this->response, $this->asset->last_modified);
 
-		$asset = Sledge_Asset::factory($this->asset);
+		$asset = Boom_Asset::factory($this->asset);
 		$asset->preview($this->response, $this->request->param('width'), $this->request->param('height'), $this->request->param('quality'), (bool) $this->request->param('crop'));
 	}
 }

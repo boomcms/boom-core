@@ -4,4 +4,4 @@
 * @package Kohana
 * @category Helpers
 */
-class URL extends Sledge_URL {}
+class URL extends Boom_URL {}

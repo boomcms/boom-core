@@ -39,7 +39,7 @@ class Boom_Model_Chunk_Text extends ORM
 	 * When creating a text chunk log which assets are linked to from it.
 	 *
 	 * @param	Validation $validation
-	 * @return 	Sledge_Model_Chunk_Text
+	 * @return 	Boom_Model_Chunk_Text
 	 */
 	public function save(Validation $validation = NULL)
 	{
