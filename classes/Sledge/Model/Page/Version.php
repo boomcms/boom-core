@@ -38,6 +38,11 @@ class Sledge_Model_Page_Version extends ORM
 
 	protected $_table_name = 'page_versions';
 
+	protected $_updated_column = array(
+		'column'	=>	'edited_time',
+		'format'	=>	TRUE,
+	);
+
 	/**
 	* Filters for the versioned person columns
 	* @link http://kohanaframework.org/3.2/guide/orm/filters

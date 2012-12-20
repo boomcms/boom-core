@@ -115,7 +115,6 @@ class Sledge_Controller_Cms_Page extends Sledge_Controller
 			ORM::factory('Page_Version')
 				->values(array(
 					'edited_by'	=>	$this->person->id,
-					'edited_time'	=>	time(),
 					'page_id'		=>	$page->id,
 					'template_id'	=>	$this->request->post('template_id'),
 					'title'			=>	$title,

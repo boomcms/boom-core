@@ -81,7 +81,6 @@ class Sledge_Controller extends Controller
 				'ip'			=>	Request::$client_ip,
 				'activity'		=>	$activity,
 				'person_id'	=>	$this->auth->get_real_user()->id,
-				'time'		=>	$_SERVER['REQUEST_TIME'],
 			))
 			->create();
 	}

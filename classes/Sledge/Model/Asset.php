@@ -16,6 +16,11 @@ class Sledge_Model_Asset extends ORM_Taggable
 		'uploader'	=>	array('model' => 'person', 'foreign_key' => 'uploaded_by'),
 	);
 
+	protected $_created_column = array(
+		'column'	=>	'uploaded_by',
+		'format'	=>	TRUE,
+	);
+
 	protected $_table_columns = array(
 		'id'				=>	'',
 		'title'				=>	'',
@@ -36,6 +41,11 @@ class Sledge_Model_Asset extends ORM_Taggable
 	);
 
 	protected $_table_name = 'assets';
+
+	protected $_updated_column = array(
+		'column'	=>	'uploaded_time',
+		'format'	=>	TRUE,
+	);
 
 	/**
 	 *

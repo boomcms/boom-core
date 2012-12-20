@@ -11,6 +11,11 @@
 */
 class Sledge_Model_Log extends ORM
 {
+	protected $_created_column = array(
+		'column'	=>	'time',
+		'format'	=>	TRUE,
+	);
+
 	protected $_table_columns = array(
 		'id'			=>	'',
 		'remotehost'	=>	'',
