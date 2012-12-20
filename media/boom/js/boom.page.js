@@ -160,34 +160,9 @@ $.extend($.boom, {
 				});
 			}
 
-			$('#b-page-preview-splitbutton').splitbutton({
-				items: {
-					'Published pages': function(){
-
-						saveEditorState( 'disabled' );
-					},
-					'All pages': function(){
-
-						saveEditorState( 'preview' );
-					}
-				},
-				menuPosition: 'left'
+			$('.b-button-preview').on('click', function(){
+				saveEditorState( $(this).attr('data-preview').val() );
 			});
-
-			$('#b-page-actions').on('click', '#b-page-preview-published', function(){
-				saveEditorState( 'disabled' );
-			})
-			.on('click', '#b-page-preview-all', function(){
-				saveEditorState( 'preview' );
-			});
-
-			$('#b-page-editbutton').click(function(){
-
-				$.boom.loader.show();
-
-				saveEditorState( 'edit' );
-			});
-
 
 			$('#b-page-delete').click(function(){
 
@@ -967,7 +942,7 @@ $.extend($.boom.page, {
 			// page settings info has its own button on the toolbar.
 			self.register( 'information' );
 
-			$('#boom-topbar-visibility, .b-page-visiblefrom').click(function(){
+			$('#boom-topbar-visibility').click(function(){
 				event.preventDefault();
 
 				$.boom.dialog.open({
