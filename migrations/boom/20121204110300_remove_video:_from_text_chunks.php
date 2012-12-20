@@ -1,6 +1,6 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-class Migration_Sledge_20121204110300 extends Minion_Migration_Base
+class Migration_Boom_20121204110300 extends Minion_Migration_Base
 {
 
 	/**

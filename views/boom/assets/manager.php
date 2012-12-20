@@ -8,7 +8,7 @@
 *
 */
 ?>
-<div id="sledge-tagmanager">
+<div id="boom-tagmanager">
 	<div class="s-items-main ui-helper-right">
 		<div class="s-items-body ui-helper-clearfix">
 			<div class="s-items-rightpane">
@@ -32,7 +32,7 @@
 				<?=__('Tags')?>
 			</h3>	
 		</div>
-		<div id="sledge-tag-tree">
+		<div id="boom-tag-tree">
 			<?= $tags ?>
 		</div>
 	</div>

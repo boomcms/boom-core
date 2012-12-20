@@ -7,7 +7,7 @@
 	</div>
 	<div>
 		<h1>All links</h1>
-		<ul class='sledge-tree'>
+		<ul class='boom-tree'>
 			<? foreach($page->links->find_all() as $link): ?>
 				<li data-link="<?= $link->location ?>" data-id="<?= $link->id ?>">
 					<?= $link->location ?>

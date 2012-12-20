@@ -2,8 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<title>Uploading video</title>
-	<link media="all" href="/media/sledge/css/cms.css" type="text/css" rel="stylesheet">
-	<script type="text/javascript" src="/media/sledge/js/jquery.uploadProgress.js"></script>
+	<link media="all" href="/media/boom/css/cms.css" type="text/css" rel="stylesheet">
+	<script type="text/javascript" src="/media/boom/js/jquery.uploadProgress.js"></script>
 </head>
 <body id="s-assets-upload-video">
 
@@ -24,8 +24,8 @@ $(document).ready(function() {
 	// Attach an uploadProgress instance to the form. This tool will poll the server for progress.
 	$('#uploadForm').uploadProgress({
 		// The javascript paths are needed because uploadProgress builds an iframe that sits on top of the page.
-		jqueryPath: "/media/sledge/js/jquery.js",
-		uploadProgressPath: "/media/sledge/js/jquery.uploadProgress.js",
+		jqueryPath: "/media/boom/js/jquery.js",
+		uploadProgressPath: "/media/boom/js/jquery.uploadProgress.js",
 		// The uploadProgress bar had just been inserted into the form.
 		progressBar: '#uploadProgress',
 		// This is the BOTR callback for upload progress.

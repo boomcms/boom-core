@@ -1,5 +1,5 @@
-<form id="sledge-form-pagesettings-search" name="pagesettings-seo">
-	<div id="s-pagesettings-search" class="sledge-tabs s-pagesettings">
+<form id="boom-form-pagesettings-search" name="pagesettings-seo">
+	<div id="s-pagesettings-search" class="boom-tabs s-pagesettings">
 		<ul>
 			<li>
 				<a href="#s-pagesettings-search-basic">Basic</a>
@@ -19,11 +19,11 @@
 							<span class="ui-helper-left" style="padding-top:2px">
 								Description
 							</span>
-							<span class="ui-icon ui-helper-left ui-icon-help sledge-tooltip" title="A description of the description field."></span>
+							<span class="ui-icon ui-helper-left ui-icon-help boom-tooltip" title="A description of the description field."></span>
 						</label>
 					</td>
 					<td>
-						<textarea id="description" name="description" class="sledge-textarea"><?=$page->description ?></textarea>
+						<textarea id="description" name="description" class="boom-textarea"><?=$page->description ?></textarea>
 					</td>
 				</tr>
 				<tr>
@@ -32,11 +32,11 @@
 							<span class="ui-helper-left" style="padding-top:2px">
 								Keywords
 							</span>
-							<span class="ui-icon ui-icon-help ui-helper-left sledge-tooltip" title="Keywords description: please separate your keywords with a comma."></span>
+							<span class="ui-icon ui-icon-help ui-helper-left boom-tooltip" title="Keywords description: please separate your keywords with a comma."></span>
 						</label>
 					</td>
 					<td>
-						<textarea name="keywords" id="keywords" class="sledge-textarea"><?=$page->keywords ?></textarea>
+						<textarea name="keywords" id="keywords" class="boom-textarea"><?=$page->keywords ?></textarea>
 					</td>
 				</tr>
 			</table>

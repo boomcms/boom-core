@@ -33,9 +33,9 @@
 				<td><label for="theme">CMS theme:</label></td>
 				<td>
 					<? if (isset($mimicking)): ?>
-						<?= Form::select('theme', Themes::find(), Themes::current(), array('id' => 'sledge-theme-switch', 'disabled' => 'disabled')) ?>
+						<?= Form::select('theme', Themes::find(), Themes::current(), array('id' => 'boom-theme-switch', 'disabled' => 'disabled')) ?>
 					<? else: ?>
-						<?= Form::select('theme', Themes::find(), Themes::current(), array('id' => 'sledge-theme-switch')) ?>
+						<?= Form::select('theme', Themes::find(), Themes::current(), array('id' => 'boom-theme-switch')) ?>
 					<? endif; ?>
 				</td>
 			</tr>

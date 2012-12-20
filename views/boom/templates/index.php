@@ -3,35 +3,35 @@
 * This is the main template for the template manager.
 * This template should not be included directly.
 *
-* Rendered by: Sledge_Controller_Cms_Templates::action_index()
+* Rendered by: Boom_Controller_Cms_Templates::action_index()
 */
 ?>
-	<?= View::factory('sledge/header',
+	<?= View::factory('boom/header',
 		array(
 			'title' =>	'Templates',
 		))
 	?>
 
-	<div id="sledge-topbar" class="ui-helper-clearfix ui-tabs ui-widget ui-widget-content ui-corner-all">
+	<div id="boom-topbar" class="ui-helper-clearfix ui-tabs ui-widget ui-widget-content ui-corner-all">
 
-		<?= Menu::factory('sledge') ?>
+		<?= Menu::factory('boom') ?>
 
 		<div class="ui-helper-clearfix ui-tabs-panel ui-widget-content ui-corner-bottom">
 			<div id="s-page-actions" class="ui-helper-right">
-				<button id="s-templates-save" class="sledge-button ui-button-text-icon ui-icon-disk">
+				<button id="s-templates-save" class="boom-button ui-button-text-icon ui-icon-disk">
 					Save all
 				</button>
 			</div>
 		</div>
 	</div>
 
-	<div id="sledge-dialogs">
-		<div id="sledge-dialog-alerts">
+	<div id="boom-dialogs">
+		<div id="boom-dialog-alerts">
 			<p>&nbsp;</p>
 		</div>
 	</div>
 
-	<div id="sledge-loader-dialog-overlay" class="ui-widget-overlay"></div>
+	<div id="boom-loader-dialog-overlay" class="ui-widget-overlay"></div>
 	<div id="s-templates">
 		<form>
 			<?= Form::hidden('csrf', Security::token()) ?>
@@ -81,7 +81,7 @@
 									<? endforeach; ?>
 								</select>
 							</td>
-							<td><?= Form::select("visible-$t->id", array( 1 => 'Yes', 0 => 'No'), (int) $t->visible, array('class' => 'sledge-templates-input')) ?></td>
+							<td><?= Form::select("visible-$t->id", array( 1 => 'Yes', 0 => 'No'), (int) $t->visible, array('class' => 'boom-templates-input')) ?></td>
 							<td>
 								<? $page_count = $t->page_count(); ?>
 								<a href='/cms/templates/pages/<?= $t->pk() ?>' title='View the title and URL of <?= $page_count, " ", Inflector::plural('page', $page_count) ?> which use this template'><?= $page_count ?>
@@ -98,26 +98,26 @@
 	  <img src=""/>
 	</div>
 
-	<?= HTML::script("media/sledge/js/sledge.helpers.js") ?>
-	<?= HTML::script("media/sledge/js/jquery.js") ?>
-	<?= HTML::script("media/sledge/js/sledge.jquery.ui.js") ?>
-	<?= HTML::script("media/sledge/js/sledge.plugins.js") ?>
-	<?= HTML::script("media/sledge/js/sledge.config.js") ?>
-	<?= HTML::script("media/sledge/js/sledge.core.js") ?>
-	<?= HTML::script("media/sledge/js/sledge.helpers.js") ?>
-	<?= HTML::script("media/sledge/js/sledge.templates.js") ?>
+	<?= HTML::script("media/boom/js/boom.helpers.js") ?>
+	<?= HTML::script("media/boom/js/jquery.js") ?>
+	<?= HTML::script("media/boom/js/boom.jquery.ui.js") ?>
+	<?= HTML::script("media/boom/js/boom.plugins.js") ?>
+	<?= HTML::script("media/boom/js/boom.config.js") ?>
+	<?= HTML::script("media/boom/js/boom.core.js") ?>
+	<?= HTML::script("media/boom/js/boom.helpers.js") ?>
+	<?= HTML::script("media/boom/js/boom.templates.js") ?>
 
 	<script type="text/javascript">
 		//<![CDATA[
 		(function($){
-			$.sledge.init('templates', {
+			$.boom.init('templates', {
 				person: {
 					rid: <?= $person->id?>,
 					name: "<?= $person->name?>"
 				}
 			});
 
-			$.sledge.templates.init();
+			$.boom.templates.init();
 			$('#s-templates table')
 				.tablesorter({
 					/**

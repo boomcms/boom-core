@@ -1,9 +1,9 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
 /**
- * Initial sledge core structure.
+ * Initial boom core structure.
  */
-class Migration_Sledge_20121010151000 extends Minion_Migration_Base
+class Migration_Boom_20121010151000 extends Minion_Migration_Base
 {
 
 	/**

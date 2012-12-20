@@ -1,4 +1,4 @@
-<div id="nav" class="sledge-tree block">
+<div id="nav" class="boom-tree block">
 	<ul>
 	<?
 		$level = 1;
@@ -48,7 +48,7 @@
 				}
 				elseif ($node['children_ordering_policy'] & Model_Page::CHILD_ORDER_MANUAL && $node['page_id'] == $page->id)
 				{
-					echo " class='sledge-sortable'";
+					echo " class='boom-sortable'";
 				}
 
 				echo ">";

@@ -11,7 +11,7 @@
 
 	<input id="s-pagesettings-tags-add-name" />
 
-	<button id="s-pagesettings-tags-add" class="sledge-button" data-icon="ui-icon-circle-plus">
+	<button id="s-pagesettings-tags-add" class="boom-button" data-icon="ui-icon-circle-plus">
 			<?=__('Add')?> <?=__('tag')?>
 	</button>
 </div>

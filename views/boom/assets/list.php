@@ -1,26 +1,26 @@
-<div class="sledge-tabs">
+<div class="boom-tabs">
 	<div class="ui-helper-right" style="padding: .4em .6em 0 0;">
 		<?
 			if (isset($pagination)):
-				echo "<div class='sledge-pagination ui-helper-left'>", $pagination, "</div>";
+				echo "<div class='boom-pagination ui-helper-left'>", $pagination, "</div>";
 			endif;
 		?>
 
 		<?
 			/*
 			Hello.
-			The two select boxes below originaly had class="sledge-selectbox ui-helper-left".
+			The two select boxes below originaly had class="boom-selectbox ui-helper-left".
 			This was removed on 2012/03/21 as the javascript broke it found items of this class.
 			*/
 		?>
-		<select id="sledge-tagmanager-sortby-select" class="ui-helper-left" style="width: 98px">
+		<select id="boom-tagmanager-sortby-select" class="ui-helper-left" style="width: 98px">
 			<optgroup label="Sort">
 				<option value="last_modified" <? if ($sortby == 'last_modified') echo "selected='selected'"; ?>>Date</option>
 				<option value="title" <? if ($sortby == 'title') echo "selected='selected'"; ?>>Title</option>
 				<option value="filesize" <? if ($sortby == 'filesize') echo "selected='selected'"; ?>>Filesize</option>
 			</optgroup>
 		</select>
-		<select id="sledge-tagmanager-order-select" class="ui-helper-left" style="width: 130px">
+		<select id="boom-tagmanager-order-select" class="ui-helper-left" style="width: 130px">
 			<optgroup label="Order">
 				<option value="desc" <? if ($order == 'desc') echo "selected='selected'"; ?>>Descending</option>
 				<option value="asc" <? if ($order == 'asc') echo "selected='selected'"; ?>>Ascending</option>
@@ -65,7 +65,7 @@
 						<label for="asset-<?=$asset->id?>"><?=date('M-j-Y', $asset->last_modified)?></label>
 					</td>
 					<td>
-						<a href="#asset/<?=$asset->id?>"><img src="/media/sledge/img/icons/16x16/icon_<?= $asset->get_type() ?>.gif" /> <?=$asset->title?></a>
+						<a href="#asset/<?=$asset->id?>"><img src="/media/boom/img/icons/16x16/icon_<?= $asset->get_type() ?>.gif" /> <?=$asset->title?></a>
 					</td>
 					<td>
 						<?= Text::bytes($asset->filesize) ?>
@@ -92,12 +92,12 @@
 
 	<div id="s-items-view-thumbs" class="s-items-thumbs ui-helper-left">
 		<? foreach ($assets as $asset): ?>
-			<div class="sledge-tagmanager-assets s-items-thumbs ui-helper-clearfix">
+			<div class="boom-tagmanager-assets s-items-thumbs ui-helper-clearfix">
 				<div class="thumb ui-corner-all">
 
 					<input type="checkbox" class="s-items-select-checkbox ui-helper-reset" id="asset-thumb-<?=$asset->id?>" />
 
-					<a href="#asset/<?=$asset->id?>" class='sledge-tagmanager-thumb-link'>
+					<a href="#asset/<?=$asset->id?>" class='boom-tagmanager-thumb-link'>
 						<img src="/asset/thumb/<?=$asset->id?>/100/100/85/1" />
 						<span class="caption"><?=$asset->title?></span>
 						<span class="caption-overlay"></span>
@@ -111,22 +111,22 @@
 			<?=__('Total files')?>: <?= Num::format($total, 0) ?> | <?=__('Total size')?>: <?= Text::bytes($total_size) ?>
 		</div>
 		<div id="s-items-checkactions" class="ui-widget-content">
-			With <span id="sledge-tagmanager-amount-checked"></span> selected:
+			With <span id="boom-tagmanager-amount-checked"></span> selected:
 		</div>
 		<div id="s-items-multiactons" class="ui-widget-content">
-			<button id="s-button-multiaction-edit" disabled="disabled" class="sledge-button ui-button-text-icon" data-icon="ui-icon-wrench">
+			<button id="s-button-multiaction-edit" disabled="disabled" class="boom-button ui-button-text-icon" data-icon="ui-icon-wrench">
 				<?=__('View')?>/<?=__('Edit')?>
 			</button>
-			<button id="s-button-multiaction-delete" disabled="disabled" class="sledge-button ui-button-text-icon" data-icon="ui-icon-trash">
+			<button id="s-button-multiaction-delete" disabled="disabled" class="boom-button ui-button-text-icon" data-icon="ui-icon-trash">
 				<?=__('Delete')?>
 			</button>
-			<button id="s-button-multiaction-download" disabled="disabled" class="sledge-button ui-button-text-icon" data-icon="ui-icon-arrowreturn-1-s">
+			<button id="s-button-multiaction-download" disabled="disabled" class="boom-button ui-button-text-icon" data-icon="ui-icon-arrowreturn-1-s">
 				<?=__('Download')?>
 			</button>
-			<button id="s-button-multiaction-tag" disabled="disabled" class="sledge-button ui-button-text-icon" data-icon="ui-icon-tag">
+			<button id="s-button-multiaction-tag" disabled="disabled" class="boom-button ui-button-text-icon" data-icon="ui-icon-tag">
 				<?=__('Add Tags')?>
 			</button>
-			<button id="s-button-multiaction-clear" disabled="disabled" class="sledge-button ui-button-text-icon" data-icon="ui-icon-cancel">
+			<button id="s-button-multiaction-clear" disabled="disabled" class="boom-button ui-button-text-icon" data-icon="ui-icon-cancel">
 				<?=__('Clear Selection')?>
 			</button>
 		</div>

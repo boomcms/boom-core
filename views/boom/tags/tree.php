@@ -12,8 +12,8 @@
 *
 */
 ?>
-<div class="sledge-box ui-widget ui-corner-all">
-	<ul class="ui-helper-clearfix sledge-tree s-tags-tree sledge-tree-noborder">
+<div class="boom-box ui-widget ui-corner-all">
+	<ul class="ui-helper-clearfix boom-tree s-tags-tree boom-tree-noborder">
 		<?
 			if ( ! empty($tags)):
 				show_tags($tags, $root);

@@ -7,10 +7,10 @@
 		<meta http-equiv="Content-Language" content="en-gb" />
 		<link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon" />
 		<title>Something's not working quite right</title>
-		<link rel="stylesheet" href="/media/sledge/css/site_error_baseline.css" media="screen" />
-		<link rel="stylesheet" href="/media/sledge/css/site_error_main.css" media="screen" />
-		<script type="text/javascript" src="/media/sledge/js/jquery.js"></script>
-		<script type="text/javascript" src="/media/sledge/js/cms_issue_tracker_basic.js"></script>
+		<link rel="stylesheet" href="/media/boom/css/site_error_baseline.css" media="screen" />
+		<link rel="stylesheet" href="/media/boom/css/site_error_main.css" media="screen" />
+		<script type="text/javascript" src="/media/boom/js/jquery.js"></script>
+		<script type="text/javascript" src="/media/boom/js/cms_issue_tracker_basic.js"></script>
 	</head>
 	<body>
 		<div id="broken" class="clearfix">

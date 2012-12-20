@@ -1,19 +1,19 @@
-	<?= View::factory('sledge/header')->set('title', 'Pages') ?>
+	<?= View::factory('boom/header')->set('title', 'Pages') ?>
 
-	<div id="sledge-topbar" class="ui-helper-clearfix ui-tabs ui-widget ui-widget-content ui-corner-all">
-		<?= Menu::factory('sledge') ?>
+	<div id="boom-topbar" class="ui-helper-clearfix ui-tabs ui-widget ui-widget-content ui-corner-all">
+		<?= Menu::factory('boom') ?>
 	</div>
 
-	<div id="sledge-dialogs">
-		<div id="sledge-dialog-alerts">
+	<div id="boom-dialogs">
+		<div id="boom-dialog-alerts">
 			<p>&nbsp;</p>
 		</div>
 	</div>
 
-	<div id="sledge-loader-dialog-overlay" class="ui-widget-overlay"></div>
+	<div id="boom-loader-dialog-overlay" class="ui-widget-overlay"></div>
 	<div id="s-page-edit">
 		<div id="s-items-list">
-			<div id="nav" class="sledge-tree block">
+			<div id="nav" class="boom-tree block">
 				<ul>
 				<?
 					$level = 1;
@@ -38,7 +38,7 @@
 						}
 
 						// Show the page.
-						echo "<li id='p", $node['id'], "'><a class='sledge-tree-item' style='";
+						echo "<li id='p", $node['id'], "'><a class='boom-tree-item' style='";
 
 						if ( ! $page->is_visible())
 						{
@@ -71,22 +71,22 @@
 		</div>
 	</div>
 
-	<div id="sledge-template-preview" style="display: none;">
-	  <img id="sledge-template-preview-image" src=""/>
+	<div id="boom-template-preview" style="display: none;">
+	  <img id="boom-template-preview-image" src=""/>
 	</div>
 
-	<?= HTML::script("media/sledge/js/sledge.helpers.js") ?>
-	<?= HTML::script("media/sledge/js/jquery.js") ?>
-	<?= HTML::script("media/sledge/js/sledge.jquery.ui.js") ?>
-	<?= HTML::script("media/sledge/js/sledge.plugins.js") ?>
-	<?= HTML::script("media/sledge/js/sledge.config.js") ?>
-	<?= HTML::script("media/sledge/js/sledge.core.js") ?>
-	<?= HTML::script("media/sledge/js/sledge.helpers.js") ?>
+	<?= HTML::script("media/boom/js/boom.helpers.js") ?>
+	<?= HTML::script("media/boom/js/jquery.js") ?>
+	<?= HTML::script("media/boom/js/boom.jquery.ui.js") ?>
+	<?= HTML::script("media/boom/js/boom.plugins.js") ?>
+	<?= HTML::script("media/boom/js/boom.config.js") ?>
+	<?= HTML::script("media/boom/js/boom.core.js") ?>
+	<?= HTML::script("media/boom/js/boom.helpers.js") ?>
 
 	<script type="text/javascript">
 		//<![CDATA[
 		(function($){
-			$.sledge.init('templates', {
+			$.boom.init('templates', {
 				person: {
 					rid: <?= $person->id?>,
 					name: "<?= $person->name?>"
@@ -97,7 +97,7 @@
 				window.location = '/cms/data/pages';
 			});
 
-			$('.sledge-tree-item').click(function(){
+			$('.boom-tree-item').click(function(){
 				window.location = $(this).attr('href');
 
 				return false;

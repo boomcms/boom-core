@@ -1,10 +1,10 @@
-<div class="sledge-tabs" id="test">
+<div class="boom-tabs" id="test">
 	<ul>
-		<li><a href="#sledge-chunk-linkset-links">Edit links</a></li>
-		<li><a href="#sledge-chunk-linkset-addlink">Add link</a></li>
+		<li><a href="#boom-chunk-linkset-links">Edit links</a></li>
+		<li><a href="#boom-chunk-linkset-addlink">Add link</a></li>
 	</ul>
-	<div id="sledge-chunk-linkset-links">
-		<div id="sledge-chunk-linkset-urls-valid">
+	<div id="boom-chunk-linkset-links">
+		<div id="boom-chunk-linkset-urls-valid">
 			<div class="ui-widget">
 				<div class="ui-state-highlight ui-corner-all"> 
 					<p style="margin: .5em;">
@@ -14,10 +14,10 @@
 				</div>
 			</div>
 			<br />
-			<ul class="sledge-tree sledge-tree-noborder sledge-sortable sledge-chunk-linkset-links-set">
+			<ul class="boom-tree boom-tree-noborder boom-sortable boom-chunk-linkset-links-set">
 			</ul>
 		</div>
-		<div id="sledge-chunk-linkset-urls-invalid" class="ui-helper-hidden">
+		<div id="boom-chunk-linkset-urls-invalid" class="ui-helper-hidden">
 			<div class="ui-state-highlight ui-corner-all"> 
 				<p style="margin: .5em;">
 					<span style="float: left; margin-right: 0.3em; margin-top:-.2em" class="ui-icon ui-icon-info"></span>
@@ -27,12 +27,12 @@
 		</div>
 			
 	</div>
-	<div id="sledge-chunk-linkset-addlink" class="sledge-tabs">
+	<div id="boom-chunk-linkset-addlink" class="boom-tabs">
 		<ul>
-			<li><a href="#sledge-chunk-linkset-addlink-internal">Internal link</a></li>
-			<li><a href="#sledge-chunk-linkset-addlink-external">External link</a></li>
+			<li><a href="#boom-chunk-linkset-addlink-internal">Internal link</a></li>
+			<li><a href="#boom-chunk-linkset-addlink-external">External link</a></li>
 		</ul>
-		<div id="sledge-chunk-linkset-addlink-internal">
+		<div id="boom-chunk-linkset-addlink-internal">
 			<div class="ui-widget">
 				<div class="ui-state-highlight ui-corner-all"> 
 					<p style="margin: .5em;">
@@ -42,27 +42,27 @@
 				</div>
 			</div>
 			<br />
-			<ul class="sledge-chunk-linkset-internal-links">
+			<ul class="boom-chunk-linkset-internal-links">
 				<?= Request::factory('cms/page/tree')->execute() ?>
 			</ul>
 		</div>
-		<div id="sledge-chunk-linkset-addlink-external">
-			<form id="sledge-chunk-linkset-addlink-external-form" action="#">
+		<div id="boom-chunk-linkset-addlink-external">
+			<form id="boom-chunk-linkset-addlink-external-form" action="#">
 				<table width="100%">
 					<tr>
 						<td>URL</td>
-						<td><input type="text" id="sledge-chunk-linkset-addlink-external-url" class="sledge-input" value="http://" /></td>
+						<td><input type="text" id="boom-chunk-linkset-addlink-external-url" class="boom-input" value="http://" /></td>
 					</tr>
 					<tr>
 						<td>Copy</td>
-						<td><input type="text" id="sledge-chunk-linkset-addlink-external-copy" class="sledge-input"></td>
+						<td><input type="text" id="boom-chunk-linkset-addlink-external-copy" class="boom-input"></td>
 					</tr>
 				</table>
 			</form>
 
 			<br />
 
-			<button id="sledge-chunk-linkset-addlink-external-button" class="sledge-button sledge-button-addlink">
+			<button id="boom-chunk-linkset-addlink-external-button" class="boom-button boom-button-addlink">
 				Add link
 			</button>
 		</div>

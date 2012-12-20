@@ -1,5 +1,5 @@
-<form id="sledge-form-pagesettings-childsettings" name="pagesettings-childsettings">
-	<div id="child-settings" class="sledge-tabs s-pagesettings">
+<form id="boom-form-pagesettings-childsettings" name="pagesettings-childsettings">
+	<div id="child-settings" class="boom-tabs s-pagesettings">
 		<ul>
 			<li>
 				<a href="#child-settings-basic"><?=__('Basic')?></a>

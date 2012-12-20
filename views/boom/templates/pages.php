@@ -3,11 +3,11 @@
 * Displays a list of pages which use a template.
 */
 ?>
-	<?= View::factory('sledge/header')->set('title', 'Templates') ?>
+	<?= View::factory('boom/header')->set('title', 'Templates') ?>
 
-	<div id="sledge-topbar" class="ui-helper-clearfix ui-tabs ui-widget ui-widget-content ui-corner-all">
+	<div id="boom-topbar" class="ui-helper-clearfix ui-tabs ui-widget ui-widget-content ui-corner-all">
 
-		<?= Menu::factory('sledge') ?>
+		<?= Menu::factory('boom') ?>
 
 		<div class="ui-helper-clearfix ui-tabs-panel ui-widget-content ui-corner-bottom">
 			<div id="s-page-actions" class="ui-helper-right">
@@ -16,13 +16,13 @@
 		</div>
 	</div>
 
-	<div id="sledge-dialogs">
-		<div id="sledge-dialog-alerts">
+	<div id="boom-dialogs">
+		<div id="boom-dialog-alerts">
 			<p>&nbsp;</p>
 		</div>
 	</div>
 
-	<div id="sledge-loader-dialog-overlay" class="ui-widget-overlay"></div>
+	<div id="boom-loader-dialog-overlay" class="ui-widget-overlay"></div>
 	<div id="s-page-edit">
 		<div>
 			<table>
@@ -45,12 +45,12 @@
 		</div>
 	</div>
 
-	<?= HTML::script("media/sledge/js/sledge.helpers.js") ?>
-	<?= HTML::script("media/sledge/js/jquery.js") ?>
-	<?= HTML::script("media/sledge/js/sledge.jquery.ui.js") ?>
-	<?= HTML::script("media/sledge/js/sledge.plugins.js") ?>
-	<?= HTML::script("media/sledge/js/sledge.config.js") ?>
-	<?= HTML::script("media/sledge/js/sledge.core.js") ?>
-	<?= HTML::script("media/sledge/js/sledge.helpers.js") ?>
+	<?= HTML::script("media/boom/js/boom.helpers.js") ?>
+	<?= HTML::script("media/boom/js/jquery.js") ?>
+	<?= HTML::script("media/boom/js/boom.jquery.ui.js") ?>
+	<?= HTML::script("media/boom/js/boom.plugins.js") ?>
+	<?= HTML::script("media/boom/js/boom.config.js") ?>
+	<?= HTML::script("media/boom/js/boom.core.js") ?>
+	<?= HTML::script("media/boom/js/boom.helpers.js") ?>
 </body>
 </html>

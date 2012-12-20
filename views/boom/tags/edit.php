@@ -1,7 +1,7 @@
 <form onsubmit='return false;'>
 	<?= Form::hidden('csrf', Security::token()) ?>
 	<?= Form::hidden('type', $type) ?>
-	<div class="sledge-tabs">
+	<div class="boom-tabs">
 		<ul>
 			<li><a href="#edit-folder-basic">Basic</a></li>
 		</ul>
@@ -9,12 +9,12 @@
 			<table width="100%">
 				<tr>
 					<td>Name</td>
-					<td><input type="text" id="sledge-tagmanager-tag-edit-name" class="sledge-input sledge-input-medium" name="name" value="<?=$tag->name?>" /></td>
+					<td><input type="text" id="boom-tagmanager-tag-edit-name" class="boom-input boom-input-medium" name="name" value="<?=$tag->name?>" /></td>
 				</tr>
 				<tr>
 					<td>Parent tag</td>
 					<td>
-						<select id="sledge-tagmanager-tag-edit-parent" name="parent_id">
+						<select id="boom-tagmanager-tag-edit-parent" name="parent_id">
 						<?
 							echo "<option value=''>None</option>";
 

@@ -1,5 +1,5 @@
-<form id="sledge-form-pagesettings-navigation" name="pagesettings-navigation">
-	<div class="sledge-tabs s-pagesettings">
+<form id="boom-form-pagesettings-navigation" name="pagesettings-navigation">
+	<div class="boom-tabs s-pagesettings">
 		<ul>
 			<li>
 				<a href="#navigation-settings-basic"><?=__('Basic')?></a>
@@ -41,7 +41,7 @@
 						<td>Parent page</td>
 						<td>
 							<input type="hidden" name="parent_id" value="<?=$page->mptt->parent_id?>">
-							<div class="sledge-tree">
+							<div class="boom-tree">
 								<ul>
 									<li><a id="page_5" href="/" rel="5">Home</a></li>
 								</ul>

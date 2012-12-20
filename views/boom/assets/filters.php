@@ -4,8 +4,8 @@
 		<?=__('Filters')?>
 	</h3>
 </div>
-<div class="sledge-box ui-widget ui-corner-all">
-	<ul class="ui-helper-clearfix sledge-tree sledge-tree-noborder">
+<div class="boom-box ui-widget ui-corner-all">
+	<ul class="ui-helper-clearfix boom-tree boom-tree-noborder">
 		<li><a id='tag_all' href='#tag/0'><?=__('All assets')?></a></li>
 		<li>
 			<input type='text' id="s-assets-filter-title" />

@@ -1,8 +1,8 @@
-<div id="sledge-chunk-linkset-links">
-	<div id="sledge-chunk-slideshow-assetmanager">
+<div id="boom-chunk-linkset-links">
+	<div id="boom-chunk-slideshow-assetmanager">
 	</div>
-	<div id="sledge-chunk-slideshow-slides">
-		<ul class="sledge-chunk-slideshow-slides-set">
+	<div id="boom-chunk-slideshow-slides">
+		<ul class="boom-chunk-slideshow-slides-set">
 		</ul>
 	</div>
 </div>

@@ -12,7 +12,7 @@
 *
 */
 ?>
-<form id="sledge-form-addlink" name="form-addlink">
+<form id="boom-form-addlink" name="form-addlink">
 	<?= Form::hidden('csrf', Security::token()) ?>
 	<input type='hidden' name='page' value='<?= $page->id ?>' />
 	<input type='text' name='link' id='link' />

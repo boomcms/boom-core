@@ -1,10 +1,10 @@
-<form id="sledge-form-pagesettings-visibility" name="pagesettings-visibility">
+<form id="boom-form-pagesettings-visibility" name="pagesettings-visibility">
 	<div class="s-pagesettings">
 		<table width="100%">
 			<tr>
 				<td><?=__('Visible')?></td>
 				<td>
-					<select id="page-visible" name="visible" class="sledge-input sledge_select">
+					<select id="page-visible" name="visible" class="boom-input boom_select">
 						<option value='1' <? if ($page->visible) echo "selected='selected'"; ?>>Yes</option>
 						<option value='0' <? if ( ! $page->visible) echo "selected='selected'"; ?>>No</option>
 					</select>
@@ -13,7 +13,7 @@
 			<tr>
 				<td><?=__('Visible from')?></td>
 				<td>
-					<input id="page-visible-from" name="visible_from" class="sledge-input sledge-datepicker" value="<?=date("d F Y", $page->visible_from);?>" />
+					<input id="page-visible-from" name="visible_from" class="boom-input boom-datepicker" value="<?=date("d F Y", $page->visible_from);?>" />
 					<select>
 						<option>12:00</option>
 					</select>
@@ -28,7 +28,7 @@
 				<td>
 					<input id="page-visible-to"
 						name="visible_to"
-						class="sledge-input sledge-datepicker"
+						class="boom-input boom-datepicker"
 						value="<?=($page->visible_to) ?	date('Y-m-d H:i:s',$page->visible_to) : 'forever'; ?>"
 						<?=(!$page->visible_to) ? ' disabled="disabled"' : ''; ?>
 					/>

@@ -5,55 +5,55 @@
 	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 	<meta http-equiv="Content-Style-Type" content="text/css" />
 	<base target="_top" />
-	<?= HTML::style("media/sledge/css/cms.css") ?>
-	<?= HTML::style("media/sledge/css/themes/" . Themes::current() . "/jquery-ui.css", array('id' => 'sledge-theme-css')) ?>
+	<?= HTML::style("media/boom/css/cms.css") ?>
+	<?= HTML::style("media/boom/css/themes/" . Themes::current() . "/jquery-ui.css", array('id' => 'boom-theme-css')) ?>
 </head>
 <body>
-	<div id="sledge-wysiwyg-toolbar" class="mceEditor o2k7Skin o2k7SkinSilver"></div>
+	<div id="boom-wysiwyg-toolbar" class="mceEditor o2k7Skin o2k7SkinSilver"></div>
 
 	<?
 		if ($editor->state() == Editor::EDIT):
-			echo View::factory('sledge/editor/topbar');
+			echo View::factory('boom/editor/topbar');
 		else:
-			echo View::factory('sledge/editor/topbar_preview');
+			echo View::factory('boom/editor/topbar_preview');
 		endif;
 	?>
 
-	<div id="sledge-dialogs">
-		<div id="sledge-dialog-alerts">
+	<div id="boom-dialogs">
+		<div id="boom-dialog-alerts">
 			<p>&nbsp;</p>
 		</div>
 	</div>
 
-	<div id="sledge-loader-dialog-overlay" class="ui-widget-overlay"></div>
+	<div id="boom-loader-dialog-overlay" class="ui-widget-overlay"></div>
 
-	<?= HTML::script("media/sledge/js/sledge.helpers.js") ?>
-	<?= HTML::script("media/sledge/js/jquery.js") ?>
-	<?= HTML::script("media/sledge/js/sledge.jquery.ui.js") ?>
-	<?= HTML::script("media/sledge/js/sledge.plugins.js") ?>
-	<?= HTML::script("media/sledge/js/sledge.config.js") ?>
-	<?= HTML::script("media/sledge/js/sledge.core.js") ?>
-	<?= HTML::script("media/sledge/js/sledge.chunk.js") ?>
-	<?= HTML::script("media/sledge/js/sledge.page.js") ?>
-	<?= HTML::script("media/sledge/js/sledge.helpers.js") ?>
-	<?= HTML::script("media/sledge/js/sledge.tagmanager.js") ?>
-	<?= HTML::script("media/sledge/js/sledge.items.js") ?>
-	<?= HTML::script("media/sledge/js/sledge.assets.js") ?>
-	<?= HTML::script("media/sledge/js/sledge.links.js") ?>
+	<?= HTML::script("media/boom/js/boom.helpers.js") ?>
+	<?= HTML::script("media/boom/js/jquery.js") ?>
+	<?= HTML::script("media/boom/js/boom.jquery.ui.js") ?>
+	<?= HTML::script("media/boom/js/boom.plugins.js") ?>
+	<?= HTML::script("media/boom/js/boom.config.js") ?>
+	<?= HTML::script("media/boom/js/boom.core.js") ?>
+	<?= HTML::script("media/boom/js/boom.chunk.js") ?>
+	<?= HTML::script("media/boom/js/boom.page.js") ?>
+	<?= HTML::script("media/boom/js/boom.helpers.js") ?>
+	<?= HTML::script("media/boom/js/boom.tagmanager.js") ?>
+	<?= HTML::script("media/boom/js/boom.items.js") ?>
+	<?= HTML::script("media/boom/js/boom.assets.js") ?>
+	<?= HTML::script("media/boom/js/boom.links.js") ?>
 
 
 	<script type="text/javascript">
 		//<![CDATA[
 		(function($){
 
-			$.sledge.init('sites', {
+			$.boom.init('sites', {
 				person: {
 					rid: <?= $person->id?>,
 					name: "<?= $person->name?>"
 				}
 			});
 
-			$.sledge.page.init({
+			$.boom.page.init({
 				defaultRid: 1,
 				<?
 					if (isset( $page )):
@@ -64,7 +64,7 @@
 			});
 
 			<? if ($editor->state() === Editor::EDIT): ?>
-				$.sledge.page.register({
+				$.boom.page.register({
 					rid: <?=$page->id;?>,
 					vid: <?=$page->id;?>,
 					writable: 1,
