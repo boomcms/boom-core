@@ -292,7 +292,7 @@ class Boom_Controller_Cms_Page_Settings extends Controller_Cms_Page
 			{
 				// Reparenting the page?
 				// Check that the ID of the parent has been changed and the page hasn't been set to be a child of itself.
-				if ($parent_id AND $post['parent_id'] != $this->_page->mptt->parent_id AND $post['parent_id'] != $this->_page->id)
+				if ($post['parent_id'] AND $post['parent_id'] != $this->_page->mptt->parent_id AND $post['parent_id'] != $this->_page->id)
 				{
 					// Check that the new parent ID is a valid page.
 					$parent = new Model_Page($post['parent_id']);
