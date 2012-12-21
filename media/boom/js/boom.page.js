@@ -63,57 +63,6 @@ $.extend($.boom, {
 
 				self.editors = [];
 
-				// Periodically makes a request to get a json encoded array of people who are also viewing the current page.
-				new $.boom.heartbeat({
-					interval: 30000,
-					action: function(){
-						$.getJSON('/cms/editor/active_people/' + self.config.id, null, function(data){
-							if (data.length > 0)
-							{
-								$('#boom-topbar-editors').show();
-							}
-							else
-							{
-								$('#boom-topbar-editors').hide();
-							}
-
-							// Notify of new editors.
-							$.each(data, function(index, person){
-								var found = false;
-
-								$.each(self.editors, function(index, editor){
-									if (editor.id == person.id){
-										found = true;
-									}
-								});
-
-								if (found == false){
-									self.editors.push(person);
-
-									$.boom.growl.show(person.name + " is viewing this page");
-								}
-							});
-
-							// Notify of people no longer editing.
-							$.each(self.editors, function(index, editor){
-								var found = false;
-
-								$.each(data, function(index, person){
-									if (person.id == editor.id){
-										found = true;
-									}
-								});
-
-								if (found == false)
-								{
-									self.editors.splice( $.inArray(editor.id, self.editors), 1 );
-									$.boom.growl.show(editor.name + " has stopped viewing this page");
-								}
-							});
-						});
-					}
-				});
-
 				$.boom.log('Page registered for editing: ' + self.config.rid);
 
 				new $.boom.orm('page', { id: self.config.id }).find(function(){
