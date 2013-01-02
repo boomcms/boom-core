@@ -165,13 +165,14 @@ class Boom_Controller_Cms_Templates extends Boom_Controller
 		$existing = Arr::pluck($existing, 'id');
 
 		// Find the IDs of the templates which are in the database but weren't submitted in the form.
-		$deleted = array_diff($existing, $template_ids);
+		$removed = array_diff($existing, $template_ids);
 
-		// Templates are versioned so we have to instantiate an object and call delete().
-		foreach ($deleted as $d)
+		// Delete any removed templates.
+		if ( ! empty($removed))
 		{
-			ORM::factory('Template', $d)
-				->delete();
+			DB::delete('templates')
+				->where('id', 'IN', $removed)
+				->execute();
 		}
 	}
 }
