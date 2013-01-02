@@ -135,11 +135,8 @@ class Boom_Controller_Cms_Page_Settings extends Controller_Cms_Page
 
 			// Get the id and names of all the templates in the database.
 			// These are used by both the basic and the advanced settings.
-			$templates = DB::select('id', 'name')
-				->from('templates')
-				->order_by('name', 'asc')
-				->execute()
-				->as_array('id', 'name');
+			$templates = ORM::factory('Template')
+				->names();
 
 			// Get the current child ordering policy column and direction.
 			list($child_order_colum, $child_order_direciton) = $this->_page->children_ordering_policy();

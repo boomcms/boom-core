@@ -99,11 +99,8 @@ class Boom_Controller_Cms_Page_Version extends Controller_Cms_Page_Settings
 		{
 			$this->template = View::factory("$this->_view_directory/template", array(
 				'template_id'	=>	$this->old_version->template_id,
-				'templates'	=>	 DB::select('id', 'name')
-					->from('templates')
-					->order_by('name', 'asc')
-					->execute()
-					->as_array('id', 'name')
+				'templates'	=>	 ORM::factory('Template')
+					->names()
 			));
 		}
 		elseif ($this->_method === Request::POST)

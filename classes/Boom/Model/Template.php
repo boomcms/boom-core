@@ -43,6 +43,24 @@ class Boom_Model_Template extends ORM
 	}
 
 	/**
+	 * Returns an array of the ID and name of all templates which exist in the database.
+	 * This is useful for building <select> boxes of available templates, e.g.:
+	 *
+	 *	<?= Form::select('template_id', ORM::factory('Template')->names()) ?>
+	 *
+	 * 
+	 * @return array
+	 */
+	public function names()
+	{
+		return DB::select('id', 'name')
+			->from('templates')
+			->order_by('name', 'asc')
+			->execute($this->_db)
+			->as_array('id', 'name');
+	}
+
+	/**
 	* Returns a count of the number of the pages which use a template.
 	*
 	* @return int

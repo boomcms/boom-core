@@ -76,12 +76,8 @@ class Boom_Controller_Cms_Page extends Boom_Controller
 			}
 
 			// Get all the templates which exist in the DB, ordered alphabetically.
-			$templates = DB::select('id', 'name')
-				->from('templates')
-				->where('visible', '=', TRUE)
-				->order_by('name', 'asc')
-				->execute()
-				->as_array('id', 'name');
+			$templates = ORM::factory('Template')
+				->names();
 
 			// Show the form for selecting the parent page and template.
 			$this->template = View::factory("$this->_view_directory/add", array(
