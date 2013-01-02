@@ -90,7 +90,7 @@
 			</div>
 
 			<div id="b-assets-view-tags<?=$asset->id;?>" class="ui-helper-left">
-				<ul style="width: 290px;" class="boom-tree s-tags-tree boom-tree-noborder">
+				<ul style="width: 290px;" class="boom-tree b-tags-tree boom-tree-noborder">
 				<?
 					foreach($asset->get_tags(NULL, FALSE) as $tag):
 						$name = str_replace("Tags/Assets/Folders/", "", $tag->path);
