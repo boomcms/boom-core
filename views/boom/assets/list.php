@@ -92,7 +92,7 @@
 
 	<div id="b-items-view-thumbs" class="b-items-thumbs ui-helper-left">
 		<? foreach ($assets as $asset): ?>
-			<div class="boom-tagmanager-assets s-items-thumbs ui-helper-clearfix">
+			<div class="boom-tagmanager-assets b-items-thumbs ui-helper-clearfix">
 				<div class="thumb ui-corner-all">
 
 					<input type="checkbox" class="b-items-select-checkbox ui-helper-reset" id="asset-thumb-<?=$asset->id?>" />
