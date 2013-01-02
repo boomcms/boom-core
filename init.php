@@ -19,13 +19,8 @@ Route::set('asset', 'asset/<action>/<id>(/<width>(/<height>(/<quality>(/<crop>))
 	));
 
 /**
-* Any URIs not caught by a previous route will be caught by this.
-* This route directs all requests to the Controller_Site::action_index() controller.
-* The requested page is retrieved from the db and can be accessed from $this->request->param( 'page' ) from within the controller.
-* If the URI isn't matched then a page with URI 'error/404' is used.
-*
-* This is starting to become quite unwieldy, some rewriting may be required.
-*/
+ * Checks for a page with the matching URL in the CMS database.
+ */
 Route::set('boom', '<location>(.<action>)', array(
 		'location'	=>	'.*?',
 	))
