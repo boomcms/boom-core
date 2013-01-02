@@ -19,7 +19,7 @@ class Boom_Auth_Boom extends Auth
 		$this->_session->set($this->_config['session_key'], $person->id);
 	}
 
-	public function get_user()
+	public function get_user($default = NULL)
 	{
 		if ($this->_person === NULL)
 		{
