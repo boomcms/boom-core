@@ -424,8 +424,6 @@ $.extend($.boom, {
 						var command = $( this ).attr( 'data-wysihtml5-command' );
 						var button = $( this );
 						
-						console.log( command );
-						
 						switch( command ) {
 							case 'createLink':
 								var existing_link = self.selected_node;
@@ -482,6 +480,7 @@ $.extend($.boom, {
 			highlight_command : function( node ) {
 				
 				var command = '';
+				
 				switch ( node.nodeName ){
 					case 'A':
 						command = 'createLink';
