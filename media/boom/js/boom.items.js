@@ -131,7 +131,7 @@ $.extend($.boom.items.tag,  {
 
 			var amount = $('.b-items-select-checkbox:checked').length;
 
-			var buttons = $( '[id|=s-button-multiaction]' );
+			var buttons = $( '[id|=b-button-multiaction]' );
 
 			buttons.button( amount > 0 ? 'enable' : 'disable' );
 
