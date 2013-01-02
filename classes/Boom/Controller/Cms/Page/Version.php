@@ -44,7 +44,7 @@ class Boom_Controller_Cms_Page_Version extends Controller_Cms_Page_Settings
 	}
 
 	/**
-	 * Saves 
+	 * Saves
 	 */
 	public function action_content()
 	{
@@ -97,8 +97,13 @@ class Boom_Controller_Cms_Page_Version extends Controller_Cms_Page_Settings
 
 		if ($this->_method === Request::GET)
 		{
-			$this->_template = View::factory("$this->_view_directory/template", array(
+			$this->template = View::factory("$this->_view_directory/template", array(
 				'template_id'	=>	$this->old_version->template_id,
+				'templates'	=>	 DB::select('id', 'name')
+					->from('templates')
+					->order_by('name', 'asc')
+					->execute()
+					->as_array('id', 'name')
 			));
 		}
 		elseif ($this->_method === Request::POST)
