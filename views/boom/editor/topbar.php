@@ -50,7 +50,7 @@
 
 
 		<? if ($auth->logged_in('add_page', $page)): ?>
-			<button id="b-page-add" class="boom-button" data-icon="ui-icon-boom-add">
+			<button id="b-page-addpage" class="boom-button" data-icon="ui-icon-boom-add">
 				<?=__('Add')?>
 			</button>
 		<? endif; ?>
