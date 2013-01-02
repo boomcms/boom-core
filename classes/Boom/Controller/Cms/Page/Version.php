@@ -9,7 +9,7 @@
  * @package	BoomCMS
  * @category	Controllers
  */
-class Boom_Controller_Cms_Page_Options extends Controller_Cms_Page_Settings
+class Boom_Controller_Cms_Page_Version extends Controller_Cms_Page_Settings
 {
 	/**
 	 *
@@ -27,7 +27,7 @@ class Boom_Controller_Cms_Page_Options extends Controller_Cms_Page_Settings
 	 *
 	 * @var	string	Directory where views used by this class are stored.
 	 */
-	protected $_view_directory = 'boom/editor/page/options';
+	protected $_view_directory = 'boom/editor/page/version';
 
 	public function before()
 	{
@@ -43,9 +43,26 @@ class Boom_Controller_Cms_Page_Options extends Controller_Cms_Page_Settings
 		}
 	}
 
-	public function action_embargo()
+	/**
+	 * Saves 
+	 */
+	public function action_content()
 	{
 
+	}
+
+	public function action_embargo()
+	{
+		$this->_authorization('edit_page_content', $this->_page);
+
+		if ($this->_method === Request::GET)
+		{
+
+		}
+		elseif ($this->_method === Request::POST)
+		{
+
+		}
 	}
 
 	/**
@@ -69,12 +86,27 @@ class Boom_Controller_Cms_Page_Options extends Controller_Cms_Page_Settings
 
 			$this->new_version
 				->set('feature_image_id', $this->request->post('feature_image_id'))
-				->save();
+				->save()
+				->import_chunks($this->old_version);
 		}
 	}
 
 	public function action_template()
 	{
+		$this->_authorization('edit_page_template', $this->_page);
 
+		if ($this->_method === Request::GET)
+		{
+			$this->_template = View::factory("$this->_view_directory/template", array(
+				'template_id'	=>	$this->old_version->template_id,
+			));
+		}
+		elseif ($this->_method === Request::POST)
+		{
+			$this->new_version
+				->set('template_id', $this->request->post('template_id'))
+				->save()
+				->import_chunks($this->old_version);
+		}
 	}
 }

@@ -1460,7 +1460,7 @@ $.extend($.boom.page, {
 			edit: function( event ){
 
 				$.boom.dialog.open({
-					url: '/cms/page/settings/feature/' + $.boom.page.config.id + '?vid=' + $.boom.page.config.vid,
+					url: '/cms/page/version/feature/' + $.boom.page.config.id + '?vid=' + $.boom.page.config.vid,
 					event: event,
 					title: 'Page feature image',
 					width: 300,
