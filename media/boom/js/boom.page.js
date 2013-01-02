@@ -599,7 +599,7 @@ $.extend($.boom.page, {
 
 					if (!this.id) {
 
-						this.id = $.boom.util.dom.uniqueId('boom-chunk-');;
+						this.id = $.boom.util.dom.uniqueId('boom-chunk-');
 					}
 
 
