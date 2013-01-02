@@ -6,7 +6,7 @@
 	<meta http-equiv="Content-Style-Type" content="text/css" />
 	<base target="_top" />
 	<?= HTML::style("media/boom/css/cms.css") ?>
-	<?= HTML::style("media/boom/css/themes/" . Themes::current() . "/jquery-ui.css", array('id' => 'boom-theme-css')) ?>
+	<?= HTML::style("media/boom/css/themes/hoop/jquery-ui.css") ?>
 </head>
 <body>
 	<div id="boom-wysiwyg-toolbar" class="mceEditor o2k7Skin o2k7SkinSilver"></div>

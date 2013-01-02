@@ -27,7 +27,7 @@ $.extend({
 					document.execCommand('BackgroundImageCache', false, true);
 				} catch(e) {};
 			}
-			
+
 			// reference boom from the site window too.
 			top.$.boom = $.boom;
 		},
@@ -73,45 +73,6 @@ $.extend({
 
 				$('body').ui();
 			}
-
-			$('#boom-profile').click(function(){
-
-				$.boom.dialog.open({
-					url: '/cms/profile/view',
-					title: 'User Profile',
-					width: 440,
-					buttons: {
-						Okay: function(){
-
-							var form = $('#update-details-form');
-							var data = form.serialize();
-
-							$.boom.loader.show();
-							$.boom.dialog.destroy( this );
-
-							$
-								.post('/cms/profile/save', data )
-								.done( function(response){
-									$.boom.loader.hide();
-									$.boom.growl.show('Profile updated.');
-								});
-						},
-						Cancel: function(){
-							$.boom.dialog.destroy( this );
-						}
-					},
-					open: function(){
-
-						var dialog = $(this);
-
-						$('#boom-theme-switch').change( function(event){
-							$('#boom-theme-css').attr( 'href', "/media/boom/css/themes/" + $(this).val() + "/jquery-ui.css" );
-						});
-					}
-				});
-
-				return false;
-			});
 		}
 	}
 });
@@ -943,7 +904,7 @@ $.extend($.boom, {
 		open : function(opts){
 
 			var self = this;
-			
+
 			$.boom.page && $.boom.page.toolbar.maximise();
 
 			this.options = $.extend({
