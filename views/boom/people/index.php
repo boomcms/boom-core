@@ -50,7 +50,7 @@
 						Groups
 					</h3>
 				</div>
-				<ul class="boom-tree s-tags-tree  boom-tree-noborder">
+				<ul class="boom-tree b-tags-tree  boom-tree-noborder">
 				<?
 					foreach ($groups as $group):
 						echo "<li id='t", $group->id, "'><a rel='", $group->id, "' id='tag_" , $group->id , "' class='' href='#tag/", $group->id;
