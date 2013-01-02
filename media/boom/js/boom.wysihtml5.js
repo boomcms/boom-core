@@ -473,7 +473,6 @@ $.extend($.boom, {
 			
 			select_node : function() {
 				console.log( top.rangy );
-				
 				// expand the selection range to the clicked node.
 				var selection = top.rangy.getSelection();
 				this.selected_node = selection.anchorNode.parentNode;
