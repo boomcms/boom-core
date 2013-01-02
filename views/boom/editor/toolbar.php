@@ -1,79 +1,72 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
-<head>
-	<title><?= $page->version()->title; ?></title>
-	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
-	<meta http-equiv="Content-Style-Type" content="text/css" />
-	<base target="_top" />
-	<?= HTML::style("media/boom/css/cms.css") ?>
-	<?= HTML::style("media/boom/css/jquery-ui.css") ?>
-	<?= HTML::style("media/boom/css/themes/default/jquery.ui.theme.css") ?>
-</head>
-<body>
-	<div id="boom-wysiwyg-toolbar" class="mceEditor o2k7Skin o2k7SkinSilver"></div>
+<?= View::factory('boom/header', array('title' => $page->version()->title)) ?>
 
-	<?
-		if ($editor->state() == Editor::EDIT):
-			echo View::factory('boom/editor/topbar');
-		else:
-			echo View::factory('boom/editor/topbar_preview');
-		endif;
-	?>
+<div id="boom-topbar" class="ui-helper-clearfix ui-tabs ui-widget ui-widget-content ui-corner-all">
 
-	<div id="boom-dialogs">
-		<div id="boom-dialog-alerts">
-			<p>&nbsp;</p>
+	<?= Menu::factory('boom')->sort('priority') ?>
+
+	<? if ($auth->logged_in('edit_page_content', $page)): ?>
+		<div id="b-page-actions">
+			<button id="b-page-save" class="boom-button" disabled="disabled" title="You have no unsaved changes" data-icon="ui-icon-boom-accept">
+					<?=__('Accept')?>
+			</button>
+			<button id="b-page-save" class="boom-button" data-icon="ui-icon-boom-cancel">
+					<?=__('Cancel')?>
+			</button>
 		</div>
-	</div>
 
-	<div id="boom-loader-dialog-overlay" class="ui-widget-overlay"></div>
+		<div>
+			<button class="boom-button b-button-preview" data-icon="ui-icon-boom-preview" data-preview="preview">
+				<?=__('Preview')?>
+			</button>
 
-	<?= HTML::script("media/boom/js/boom.helpers.js") ?>
-	<?= HTML::script("media/boom/js/jquery.js") ?>
-	<?= HTML::script("media/boom/js/boom.jquery.ui.js") ?>
-	<?= HTML::script("media/boom/js/boom.plugins.js") ?>
-	<?= HTML::script("media/boom/js/boom.config.js") ?>
-	<?= HTML::script("media/boom/js/boom.core.js") ?>
-	<?= HTML::script("media/boom/js/boom.chunk.js") ?>
-	<?= HTML::script("media/boom/js/boom.page.js") ?>
-	<?= HTML::script("media/boom/js/boom.helpers.js") ?>
-	<?= HTML::script("media/boom/js/boom.tagmanager.js") ?>
-	<?= HTML::script("media/boom/js/boom.items.js") ?>
-	<?= HTML::script("media/boom/js/boom.assets.js") ?>
-	<?= HTML::script("media/boom/js/boom.links.js") ?>
+			<button id="boom-page-template" class="boom-button">
+				<?= __('Template') ?>
+			</button>
+			<button id="boom-page-embargo" class="boom-button">
+				<?= __('Embargo') ?>
+			</button>
+			<button id="boom-page-feature-image" class="boom-button">
+				<?= __('Feature image') ?>
+			</button>
+		</div>
+	<? endif; ?>
 
+	<? if ($auth->logged_in('edit_page', $page)): ?>
+		<div>
+			<button id="boom-topbar-visibility" class="boom-button" data-icon="ui-icon-boom-visibility">
+				<?= __('Visibility') ?>
+			</button>
+			<button class="boom-button" data-icon="ui-icon-boom-settings">
+				<?= __('Settings') ?>
+			</button>
+			<button class="boom-button" data-icon="ui-icon-boom-history">
+				<?= __('History') ?>
+			</button>
 
-	<script type="text/javascript">
-		//<![CDATA[
-		(function($){
-
-			$.boom.init('sites', {
-				person: {
-					rid: <?= $person->id?>,
-					name: "<?= $person->name?>"
-				}
-			});
-
-			$.boom.page.init({
-				defaultRid: 1,
-				<?
-					if (isset( $page )):
-						echo "id: $page->id,";
-						echo "vid: ", $page->id;
-					endif;
-				?>
-			});
-
-			<? if ($editor->state() === Editor::EDIT): ?>
-				$.boom.page.register({
-					rid: <?=$page->id;?>,
-					vid: <?=$page->id;?>,
-					writable: 1,
-					editorOptions: {}
-				});
+			<? if ($auth->logged_in('delete_page', $page) AND ! $page->mptt->is_root()): ?>
+				<button class="boom-button" data-icon="ui-icon-boom-delete">
+					<?= __('Delete') ?>
+				</button>
 			<? endif; ?>
-		})(jQuery);
-		//]]>
-	</script>
-</body>
-</html>
+		</div>
+
+
+		<? if ($auth->logged_in('add_page', $page)): ?>
+			<button id="b-page-addpage" class="boom-button" data-icon="ui-icon-boom-add">
+				<?=__('Add')?>
+			</button>
+		<? endif; ?>
+
+		<button id="boom-topbar-editlive" class="boom-button">
+			<?=__('Edit live')?>
+		</button>
+
+		<button id="boom-topbar-viewlive" class="boom-button b-button-preview" data-preview="disabled">
+			<?=__('View live')?>
+		</button>
+	<? endif; ?>
+
+	<?= View::factory('boom/breadcrumbs'); ?>
+</div>
+
+<?= View::factory('boom/editor/footer', array('register_page' => TRUE)) ?>

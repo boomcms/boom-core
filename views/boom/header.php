@@ -4,6 +4,7 @@
 	<title><?= $title; ?></title>
 	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 	<meta http-equiv="Content-Style-Type" content="text/css" />
+	<base target="_top" />
 	<?= HTML::style("media/boom/css/jquery-ui.css") ?>
 	<?= HTML::style("media/boom/css/themes/default/jquery.ui.theme.css") ?>
 

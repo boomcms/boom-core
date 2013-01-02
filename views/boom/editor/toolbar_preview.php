@@ -1,11 +1,13 @@
-<div id="boom-topbar" class="ui-helper-clearfix ui-tabs ui-widget ui-widget-content ui-corner-all"> 
-	
+<?= View::factory('boom/header', array('title' => $page->version()->title)) ?>
+
+<div id="boom-topbar" class="ui-helper-clearfix ui-tabs ui-widget ui-widget-content ui-corner-all">
+
 	<?= Menu::factory('boom') ?>
 
 	<div class="ui-helper-clearfix ui-tabs-panel ui-widget-content ui-corner-bottom">
 
 		<div id="b-page-actions">
-			
+
 			<div class="boom-buttonset">
 				<button id="b-page-preview-published" class="boom-button ui-button-text-icon ui-button">
 					<?=__('Published changes')?>
@@ -14,7 +16,7 @@
 					<?=__('All changes')?>
 				</button>
 			</div>
-			
+
 		</div>
 
 
@@ -24,5 +26,7 @@
 			</button>
 		</div>
 	</div>
-	
+
 </div>
+
+<?= View::factory('boom/editor/footer', array('register_page' => FALSE)) ?>
