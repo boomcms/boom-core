@@ -45,12 +45,27 @@ class Boom_URL extends Kohana_URL
 	 * Generate a gravatar URL.
 	 *
 	 * @param	string	$email	Emailaddress of the gravater.
-	 * @param	integer	$size
-	 * @param	string	$default
+	 * @param	array	$options	Options to include in the request
+	 * @param	boolean	$secure	Whether the gravatar request should use HTTPS
 	 * @return	string
 	 */
-	public static function gravatar($email, $size = 80, $default = 'wavatar')
+	public static function gravatar($email, array $options = NULL, $secure = FALSE)
 	{
-		return "http://www.gravatar.com/avatar/" . md5($email) . "?s=$size&d=" . urlencode($default);
+		$url = ($secure)? "https://secure.gravatar.com/avatar/" : "http://www.gravatar.com/avatar/";
+
+		// Add the MD5 email to the URL.
+		$url .= md5($email);
+
+		// Are there any options?
+		if ($options !== NULL AND ! empty($options))
+		{
+			// Turn the options array into a http query string.
+			$query = http_build_query($options);
+
+			// Add the query string to the URL.
+			$url .= "?" . $query;
+		}
+
+		return  $url;
 	}
 }
