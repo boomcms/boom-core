@@ -17,20 +17,15 @@
 				<?=__('Preview')?>
 			</button>
 
-			<div id="b-page-options-splitbutton">
-				<button id="boom-page-template" class="boom-button">
-					<?= __('Template') ?>
-				</button>
-				<button id="boom-page-embargo" class="boom-button">
-					<?= __('Embargo') ?>
-				</button>
-				<button id="boom-page-template" class="boom-button">
-					<?= __('Feature image') ?>
-				</button>
-				<button id="boom-page-template" class="boom-button">
-					<?= __('Log') ?>
-				</button>
-			</div>
+			<button id="boom-page-template" class="boom-button">
+				<?= __('Template') ?>
+			</button>
+			<button id="boom-page-embargo" class="boom-button">
+				<?= __('Embargo') ?>
+			</button>
+			<button id="boom-page-feature-image" class="boom-button">
+				<?= __('Feature image') ?>
+			</button>
 		</div>
 	<? endif; ?>
 
@@ -55,7 +50,7 @@
 
 
 		<? if ($auth->logged_in('add_page', $page)): ?>
-			<button id="b-page-delete" class="boom-button" data-icon="ui-icon-boom-add">
+			<button id="b-page-add" class="boom-button" data-icon="ui-icon-boom-add">
 				<?=__('Add')?>
 			</button>
 		<? endif; ?>
