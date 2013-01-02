@@ -1,5 +1,5 @@
 [submodule "static/cms/js/qunit"]
-	path = media/sledge/js/qunit
+	path = media/boom/js/qunit
 	url = git://github.com/jquery/qunit.git
 [submodule "vendor/createsend"]
 	path = vendor/createsend
