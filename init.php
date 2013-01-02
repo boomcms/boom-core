@@ -75,29 +75,9 @@ Route::set('vanity', '_<link>', array(
 		}
 	);
 
-
-
 /**
-* Defines the route for /cms page settings pages..
-*
-*/
-Route::set('page_settings', 'cms/page/settings/<action>/<id>' )
-	->defaults(array(
-		'controller' => 'cms_page_settings',
-	));
-
-/**
-* Defines the route for /cms page links pages..
-*
-*/
-Route::set('page_links', 'cms/page/link/<action>/<id>' )
-	->defaults(array(
-		'controller' => 'cms_page_link',
-	));
-
-/**
-* Defines the route for plugin controllers.
-*/
+ * Defines the route for plugin controllers.
+ */
 Route::set('plugin', '<directory>/<controller>(/<action>)',
 	array(
 		'directory'	=> 'plugin'
@@ -105,6 +85,12 @@ Route::set('plugin', '<directory>/<controller>(/<action>)',
 	->defaults(array(
 		'controller' => 'default',
 		'action'     => 'index',
+	));
+
+// Route for the child page list plugin.
+Route::set('child_page_plugin', 'plugin/page/children.<action>')
+	->defaults(array(
+		'controller'	=>	'plugin_page_children'
 	));
 
 
@@ -126,12 +112,25 @@ Route::set('cms', '<directory>/<controller>(/<action>(/<id>))',
 		'action'     => 'index',
 	));
 
-Route::set('child_page_plugin', 'plugin/page/children.<action>')
-	->defaults(array(
-		'controller'	=>	'plugin_page_children'
-	));
-
 Route::set('chunks', 'cms/chunk/<controller>/<action>/<page>')
 	->defaults(array(
 		'directory'	=>	'cms_chunk'
+	));
+
+// Route for editing page settings.
+Route::set('page_settings', 'cms/page/settings/<action>/<id>' )
+	->defaults(array(
+		'controller' => 'cms_page_settings',
+	));
+
+// Route for changing versioned properties of a page.
+// TODO: can be combined with route above.
+Route::set('page_settings', 'cms/page/version/<action>/<id>' )
+	->defaults(array(
+		'controller' => 'cms_page_version',
+	));
+
+Route::set('page_links', 'cms/page/link/<action>/<id>' )
+	->defaults(array(
+		'controller' => 'cms_page_link',
 	));
