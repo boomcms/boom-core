@@ -392,8 +392,8 @@ $.extend($.boom, {
 			init : function( element ) {
 				
 				var self = this;
-				self.toolbar = top.$( '#wysihtml5-toolbar');
-				self.rangy = top.rangy;
+				this.toolbar = top.$( '#wysihtml5-toolbar');
+				this.rangy = top.rangy;
 				
 				element
 					.attr( 'contenteditable', 'true' )
@@ -472,9 +472,10 @@ $.extend($.boom, {
 			},
 			
 			select_node : function() {
+				console.log( top.rangy );
 				
 				// expand the selection range to the clicked node.
-				var selection = this.rangy.getSelection();
+				var selection = top.rangy.getSelection();
 				this.selected_node = selection.anchorNode.parentNode;
 				selection.selectAllChildren( this.selected_node );
 				selection.refresh();
