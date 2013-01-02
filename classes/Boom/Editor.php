@@ -22,12 +22,6 @@ abstract class Boom_Editor
 	protected $_auth;
 
 	/**
-	 *
-	 * @var	Editor
-	 */
-	public static $instance;
-
-	/**
 	 * Session cache for $this->editor->live_time() to avoid repeatedly checking the session data.
 	 *
 	 * @var	integer
@@ -46,6 +40,19 @@ abstract class Boom_Editor
 	 * @var	integer
 	 */
 	protected $_state;
+
+	/**
+	 *
+	 * @var	Editor
+	 */
+	public static $instance;
+
+	/**
+	 * Key to use when storing the saved editor state in the session data.
+	 *
+	 * @var	string
+	 */
+	public static $state_persistence_key = 'editor_state';
 
 	public function __construct(Auth $auth, Session $session)
 	{
@@ -111,9 +118,6 @@ abstract class Boom_Editor
 	 */
 	public function state($state = NULL)
 	{
-		// Name of the session data key where the state is stored.
-		$session_key = 'editor_state';
-
 		if ($state === NULL)
 		{
 			// Act as a getter.
@@ -127,7 +131,7 @@ abstract class Boom_Editor
 
 				// Editor::$_state hasn't been set so get the value from the session data.
 				$this->_state = $this->_session
-					->get($session_key, $default);
+					->get(Editor::$state_persistence_key, $default);
 			}
 
 			// Return the value of Editor::$_state;
@@ -142,7 +146,7 @@ abstract class Boom_Editor
 
 			// Save the value to the session data.
 			return $this->_session
-				->set($session_key, $state);
+				->set(Editor::$state_persistence_key, $state);
 		}
 	}
 
