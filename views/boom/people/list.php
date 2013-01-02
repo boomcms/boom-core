@@ -51,7 +51,7 @@
 					<input type="checkbox" class="b-items-select-checkbox ui-helper-reset" id="person-thumb-<?=$person->id?>" />
 
 					<a href="#person/<?=$person->id?>">
-						<img src="<?= URL::gravatar($person->email) ?>" />
+						<img src="<?= URL::gravatar($person->email, array('s' => 80), Request::$initial->secure()) ?>" />
 						<span class="caption"><?=$person->name ?></span>
 						<span class="caption-overlay"></span>
 					</a>
