@@ -46,7 +46,7 @@
 	<div id="b-items-view-thumbs" class="b-items-thumbs ui-helper-left">
 		<? foreach ($people as $person): ?>
 			<div class="boom-tagmanager-people s-items-thumbs ui-helper-clearfix">
-				<div class="thumb ui-state-active ui-corner-all">
+				<div class="thumb ui-corner-all">
 
 					<input type="checkbox" class="b-items-select-checkbox ui-helper-reset" id="person-thumb-<?=$person->id?>" />
 
