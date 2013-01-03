@@ -381,7 +381,12 @@ $.extend($.boom, {
 			})( wh5 );
 		},
 	
+		/**
+		* @class
+		* @name $.boom.editor.inline_editor
+		*/
 		inline_editor : {
+			/** @lends $.boom.editor.inline_editor */
 			
 			rangy : null,
 			
