@@ -349,6 +349,7 @@ class Boom_Controller_Cms_Page_Settings extends Controller_Cms_Page
 			// GET request - show the search settings template.
 			$this->template = View::factory("$this->_view_directory/search", array(
 				'allow_advanced'	=>	$allow_advanced,
+				'page'			=>	$this->_page,
 			));
 		}
 		elseif ($this->_method === Request::POST)
