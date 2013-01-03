@@ -887,17 +887,20 @@ $.extend($.boom.page, {
 				menuPosition: 'right',
 				split: false
 			});
+			
+			var buttons = [
+				'information',
+				'featureimage',
+				'template',
+				'visibility',
+				'history'
+			];
 
-			// page settings info button.
-			self.register( 'information' );
-			// feature image button.
-			self.register( 'featureimage' );
-			// template button.
-			self.register( 'template' );
-			// visibility button.
-			self.register( 'visibility' );
-			// history button.
-			self.register( 'history' );
+			for ( i in buttons ) {
+				
+				self.register( buttons[ i ] );
+				
+			}
 
 		},
 
