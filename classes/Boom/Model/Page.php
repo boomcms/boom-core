@@ -269,27 +269,31 @@ class Boom_Model_Page extends ORM_Taggable
 	 *
 	 * Accepts an optional array of values to apply to the new version.
 	 *
+	 * @param Model_Page_Version $current
 	 * @param array $values
 	 * @return Model_Page_Version
 	 */
-	public function create_version(array $values = NULL)
+	public function create_version($current = NULL, array $values = NULL)
 	{
 		// Get the current version
-		$current = $this->version();
+		if ($current === NULL)
+		{
+			$current = $this->version();
+		}
 
 		// Create a new version with the same values as the current version.
-		$this->_version = ORM::factory('Page_Version')
+		$new_version = ORM::factory('Page_Version')
 			->values($current->object());
 
 		// Update the new version with any update values.
 		if ( ! empty($values))
 		{
-			$this->_version
+			$new_version
 				->values($values);
 		}
 
 		// Return the new version
-		return $this->_version;
+		return $new_version;
 	}
 
 	/**
