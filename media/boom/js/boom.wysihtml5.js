@@ -254,7 +254,7 @@ $.extend($.boom, {
 			var self = this;
 			
 			
-			 return $.get( '/cms/page/text_toolbar?mode=' + self.mode )
+			 return $.get( '/media/boom/toolbars/text.php?mode=' + self.mode )
 			.done( function( response ) {
 				top.$('body').prepend( response );
 				

@@ -760,7 +760,7 @@ $.widget('ui.chunkSlideshow', $.ui.chunk, {
 
 		this.options.slider.pause();
 
-		return $.get( '/cms/page/slide_toolbar' )
+		return $.get( '/media/boom/toolbars/slideshow.php' )
 			.done( function( toolbar ){
 				$.boom.page.toolbar.hide();
 				top.$( 'body' )
