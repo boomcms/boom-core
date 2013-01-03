@@ -891,6 +891,8 @@ $.extend($.boom.page, {
 			self.register( 'information' );
 			// feature image has its own button on the toolbar.
 			self.register( 'featureimage' );
+			// template has its own button on the toolbar.
+			self.register( 'template' );
 
 			$('#boom-topbar-visibility').click(function(){
 				event.preventDefault();
@@ -1459,7 +1461,7 @@ $.extend($.boom.page, {
 
 			/** @function */
 			edit: function( event ){
-				url = '/cms/page/version/feature/' + $.boom.page.config.id;
+				var url = '/cms/page/version/feature/' + $.boom.page.config.id;
 
 				$.boom.dialog.open({
 					url: url + '?vid=' + $.boom.page.config.vid,
@@ -1554,6 +1556,53 @@ $.extend($.boom.page, {
 								}
 							});
 						});
+					}
+				});
+			}
+		},
+		
+		/**
+		* @class
+		* @name $.boom.page.settings.template
+		*/
+		template: {
+			/** @lends $.boom.page.settings.template */
+
+			/**
+			Menu label
+			@property
+			*/
+			label: 'Template',
+
+			/** @function */
+			menu_handler: function() {
+				$( '#boom-topbar-template' ).trigger('boomclick');
+			},
+
+			/** @function */
+			edit: function( event ){
+				
+				var url = '/cms/page/version/template/' + $.boom.page.config.id;
+
+				$.boom.dialog.open({
+					url: url + '?vid=' + $.boom.page.config.vid,
+					event: event,
+					title: 'Page template',
+					width: 300,
+					// cache: true,
+					buttons: {
+						Save: function(){
+
+							$.boom.page.settings.save(
+								url,
+								$("#boom-form-pageversion-template").serialize(),
+								"Page template saved."
+							);
+
+							$.boom.dialog.destroy( this );
+						}
+					},
+					open: function(){
 					}
 				});
 			}
