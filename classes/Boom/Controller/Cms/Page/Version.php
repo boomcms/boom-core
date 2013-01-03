@@ -70,7 +70,7 @@ class Boom_Controller_Cms_Page_Version extends Controller_Cms_Page_Settings
 	 * Requires the edit_feature_image role.
 	 *
 	 */
-	public function action_feature_image()
+	public function action_feature()
 	{
 		$this->_authorization('edit_feature_image', $this->_page);
 
