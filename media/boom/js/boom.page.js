@@ -175,7 +175,7 @@ $.extend($.boom, {
 				});
 			});
 
-			
+
 			self.settings.init();
 
 			self.settings.bind();
@@ -843,7 +843,7 @@ $.extend($.boom.page, {
 
 			var self = this;
 			var i = 0;
-			
+
 			var settings = [
 				'navigation',
 				'links',
@@ -853,7 +853,7 @@ $.extend($.boom.page, {
 				'adminsettings'
 				];
 
-			
+
 
 			$('#b-page-settings-menu').splitbutton({
 				items: self._build_menu( settings ),
@@ -872,7 +872,7 @@ $.extend($.boom.page, {
 				menuPosition: 'right',
 				split: false
 			});
-			
+
 			var template_settings = [
 				'featureimage',
 				'template',
@@ -896,7 +896,7 @@ $.extend($.boom.page, {
 				menuPosition: 'right',
 				split: false
 			});
-			
+
 			var buttons = [
 				'information',
 				'visibility',
@@ -904,9 +904,9 @@ $.extend($.boom.page, {
 			];
 
 			for ( i in buttons ) {
-				
+
 				self.register( buttons[ i ] );
-				
+
 			}
 
 		},
@@ -1055,10 +1055,10 @@ $.extend($.boom.page, {
 				});
 			}
 		},
-		
+
 		/** @function */
 		_build_menu: function ( settings ) {
-			
+
 			var self = this;
 			var menu_items = {};
 
@@ -1076,7 +1076,7 @@ $.extend($.boom.page, {
 				$.boom.log( 'initialising ' + class_name );
 
 			};
-			
+
 			return menu_items;
 		},
 
@@ -1545,7 +1545,7 @@ $.extend($.boom.page, {
 				});
 			}
 		},
-		
+
 		/**
 		* @class
 		* @name $.boom.page.settings.template
@@ -1566,7 +1566,7 @@ $.extend($.boom.page, {
 
 			/** @function */
 			edit: function( event ){
-				
+
 				var url = '/cms/page/version/template/' + $.boom.page.config.id;
 
 				$.boom.dialog.open({
@@ -1580,7 +1580,7 @@ $.extend($.boom.page, {
 
 							$.boom.page.settings.save(
 								url,
-								$("#boom-form-pageversion-template").serialize(),
+								$("#b-form-pageversion-template").serialize(),
 								"Page template saved."
 							);
 
@@ -1592,7 +1592,7 @@ $.extend($.boom.page, {
 				});
 			}
 		},
-		
+
 		/**
 		* @class
 		* @name $.boom.page.settings.embargo
@@ -1613,10 +1613,10 @@ $.extend($.boom.page, {
 
 			/** @function */
 			edit: function( event ){
-				
+
 			}
 		},
-		
+
 		/**
 		* @class
 		* @name $.boom.page.settings.visibility
@@ -1637,7 +1637,7 @@ $.extend($.boom.page, {
 
 			/** @function */
 			edit: function( event ){
-				
+
 				var url = '/cms/page/settings/visibility/' + $.boom.page.config.id;
 
 				$.boom.dialog.open({
@@ -1689,7 +1689,7 @@ $.extend($.boom.page, {
 				});
 			}
 		},
-		
+
 		/**
 		* @class
 		* @name $.boom.page.settings.history
@@ -1711,7 +1711,7 @@ $.extend($.boom.page, {
 			/** @function */
 			edit: function( event ){
 				// TODO: fix this old page versions code.
-				
+
 				var url = '/cms/page/revisions/' + $.boom.page.config.id;
 				$.boom.dialog.open({
 					url:  url + '?vid=' + $.boom.page.config.vid,
