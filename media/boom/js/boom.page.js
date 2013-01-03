@@ -1459,9 +1459,10 @@ $.extend($.boom.page, {
 
 			/** @function */
 			edit: function( event ){
+				url = '/cms/page/version/feature/' + $.boom.page.config.id;
 
 				$.boom.dialog.open({
-					url: '/cms/page/version/feature/' + $.boom.page.config.id + '?vid=' + $.boom.page.config.vid,
+					url: url + '?vid=' + $.boom.page.config.vid,
 					event: event,
 					title: 'Page feature image',
 					width: 300,
@@ -1475,7 +1476,7 @@ $.extend($.boom.page, {
 								function(){
 
 									$.boom.page.settings.save(
-										'/cms/page/settings/feature/' + $.boom.page.config.id,
+										url,
 										{feature_image_id : 0},
 										"Page feature image removed."
 									);
@@ -1487,7 +1488,7 @@ $.extend($.boom.page, {
 						Save: function(){
 
 							$.boom.page.settings.save(
-								'/cms/page/settings/feature/' + $.boom.page.config.id,
+								url,
 								$("#boom-form-pagesettings-featureimage").serialize(),
 								"Page feature image saved."
 							);
