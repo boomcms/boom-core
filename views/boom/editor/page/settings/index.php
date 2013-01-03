@@ -1,27 +1,27 @@
-<button id="boom-topbar-navigation" class="boom-button">
+<button id="boom-page-navigation" class="boom-button">
 	Navigation
 </button>
 
-<button id="boom-topbar-links" class="boom-button">
+<button id="boom-page-links" class="boom-button">
 	Links
 </button>
 
-<button id="boom-topbar-search" class="boom-button">
+<button id="boom-page-search" class="boom-button">
 	Search
 </button>
 
-<button id="boom-topbar-tags" class="boom-button">
+<button id="boom-page-tags" class="boom-button">
 	Tags
 </button>
 
-<button id="boom-topbar-security" class="boom-button">
+<button id="boom-page-security" class="boom-button">
 	Security
 </button>
 
-<button id="boom-topbar-childsettings" class="boom-button">
+<button id="boom-page-childsettings" class="boom-button">
 	Child page settings
 </button>
 
-<button id="boom-topbar-adminsettings" class="boom-button">
+<button id="boom-page-adminsettings" class="boom-button">
 	Admin settings
 </button>

@@ -175,6 +175,7 @@ $.extend($.boom, {
 				});
 			});
 
+			
 			self.settings.init();
 
 			self.settings.bind();
@@ -895,6 +896,8 @@ $.extend($.boom.page, {
 			self.register( 'template' );
 			// visibility button.
 			self.register( 'visibility' );
+			// history button.
+			self.register( 'history' );
 
 		},
 
@@ -903,7 +906,7 @@ $.extend($.boom.page, {
 
 			var self = this;
 
-			$( '#boom-topbar-' + class_name )
+			$( '#boom-page-' + class_name )
 				.bind( 'boomclick', function( event ) {
 
 					self[ class_name ].edit( event );
@@ -1623,6 +1626,76 @@ $.extend($.boom.page, {
 
 								$('#page-visible-to').blur();
 							}
+						});
+					}
+				});
+			}
+		},
+		
+		/**
+		* @class
+		* @name $.boom.page.settings.history
+		*/
+		history: {
+			/** @lends $.boom.page.settings.history */
+
+			/**
+			Menu label
+			@property
+			*/
+			label: 'History',
+
+			/** @function */
+			menu_handler: function() {
+				$( '#boom-topbar-template' ).trigger('boomclick');
+			},
+
+			/** @function */
+			edit: function( event ){
+				// TODO: fix this old page versions code.
+				
+				var url = '/cms/page/revisions/' + $.boom.page.config.id;
+				$.boom.dialog.open({
+					url:  url + '?vid=' + $.boom.page.config.vid,
+					title: 'Page versions',
+					width: 440,
+					buttons: {
+						Cancel : function(){
+							$.boom.dialog.destroy( this );
+						}
+					},
+					open: function(){
+
+						var dialog = this;
+
+						$('#b-page-revisions-list ul ul li').click(function(){
+							$('#b-page-revisions-list ul ul li').removeClass('ui-state-active');
+							$(this).addClass('ui-state-active');
+
+							$('#b-page-revisions-selected').val($(this).attr('data-id'));
+
+							$('#b-button-multiaction-edit').button('enable');
+							$('#b-button-multiaction-publish').button('enable');
+						});
+
+
+						$('#b-button-multiaction-edit').click(function(){
+
+							var vid = $('#b-page-revisions-selected').val();
+
+							top.location = $.boom.util.url.addQueryStringParams({ version: vid }, true);
+						});
+
+						$('#b-button-multiaction-publish').bind('click',function(){
+							var vid = $('#b-page-revisions-selected').val();
+
+							$.boom.loader.show();
+
+							$.get( '/cms/page/publish/' + $.boom.page.config.id, {vid: vid}, function(){
+								$.boom.loader.hide();
+
+								$.boom.dialog.destroy( dialog );
+							});
 						});
 					}
 				});
