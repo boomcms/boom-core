@@ -18,16 +18,12 @@
 			<button class="boom-button b-button-preview" data-icon="ui-icon-boom-preview" data-preview="preview">
 				<?=__('Preview')?>
 			</button>
-
-			<button id="boom-page-template" class="boom-button">
-				<?= __('Template') ?>
-			</button>
-			<button id="boom-page-embargo" class="boom-button">
-				<?= __('Embargo') ?>
-			</button>
-			<button id="boom-page-featureimage" class="boom-button">
-				<?= __('Feature image') ?>
-			</button>
+			
+			<span id="b-page-template-menu">
+				<button id="b-page-template-settings" class="boom-button" data-icon="ui-icon-boom-settings">
+					<?= __('Template settings') ?>
+				</button>
+			</span>
 		</div>
 	<? endif; ?>
 

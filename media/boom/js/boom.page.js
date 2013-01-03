@@ -843,6 +843,28 @@ $.extend($.boom.page, {
 
 			var self = this;
 			var i = 0;
+			
+			var build_menu = function ( settings ) {
+				
+				var menu_items = {};
+
+				for ( i in settings ) {
+
+					var class_name = settings[i];
+					var menu_item = self[ class_name ].label;
+					var menu_handler = self[ class_name ].menu_handler;
+
+					self.register( class_name );
+
+
+					menu_items[ menu_item ] = menu_handler;
+
+					$.boom.log( 'initialising ' + class_name );
+
+				};
+				
+				return menu_items;
+			}
 
 			var settings = [
 				'navigation',
@@ -853,25 +875,34 @@ $.extend($.boom.page, {
 				'adminsettings'
 				];
 
-			var menu_items = {};
-
-			for ( i in settings ) {
-
-				var class_name = settings[i];
-				var menu_item = self[ class_name ].label;
-				var menu_handler = self[ class_name ].menu_handler;
-
-				self.register( class_name );
-
-
-				menu_items[ menu_item ] = menu_handler;
-
-				$.boom.log( 'initialising ' + class_name );
-
-			};
+			
 
 			$('#b-page-settings-menu').splitbutton({
-				items: menu_items,
+				items: build_menu( settings ),
+				itemclick : function(event){
+
+					if (!$.boom.page.config.id) {
+
+						$.boom.loader.hide('modal');
+
+						$.boom.dialog.alert('Error', 'The page is still loading, please try again.');
+
+						return false;
+					}
+				},
+				width: 'auto',
+				menuPosition: 'right',
+				split: false
+			});
+			
+			var template_settings = [
+				'featureimage',
+				'template',
+				'embargo'
+			];
+
+			$('#b-page-template-menu').splitbutton({
+				items: build_menu( template_settings ),
 				itemclick : function(event){
 
 					if (!$.boom.page.config.id) {
@@ -890,8 +921,6 @@ $.extend($.boom.page, {
 			
 			var buttons = [
 				'information',
-				'featureimage',
-				'template',
 				'visibility',
 				'history'
 			];
@@ -956,7 +985,7 @@ $.extend($.boom.page, {
 
 			/** @function */
 			menu_handler: function() {
-				$( '#boom-topbar-navigation' ).trigger('boomclick');
+				$( '#boom-page-navigation' ).trigger('boomclick');
 			},
 
 			/** @function */
@@ -1064,7 +1093,7 @@ $.extend($.boom.page, {
 
 			/** @function */
 			menu_handler: function() {
-				$( '#boom-topbar-search' ).trigger('boomclick');
+				$( '#boom-page-search' ).trigger('boomclick');
 			},
 
 			/** @function */
@@ -1107,7 +1136,7 @@ $.extend($.boom.page, {
 
 			/** @function */
 			menu_handler: function() {
-				$( '#boom-topbar-tags' ).trigger('boomclick');
+				$( '#boom-page-tags' ).trigger('boomclick');
 			},
 
 			/** @function */
@@ -1243,7 +1272,7 @@ $.extend($.boom.page, {
 
 			/** @function */
 			menu_handler: function() {
-				$( '#boom-topbar-links' ).trigger('boomclick');
+				$( '#boom-page-links' ).trigger('boomclick');
 			},
 
 			/** @function */
@@ -1410,7 +1439,7 @@ $.extend($.boom.page, {
 
 			/** @function */
 			menu_handler: function() {
-				$( '#boom-topbar-featureimage' ).trigger('boomclick');
+				$( '#boom-page-featureimage' ).trigger('boomclick');
 			},
 
 			/** @function */
@@ -1530,7 +1559,7 @@ $.extend($.boom.page, {
 
 			/** @function */
 			menu_handler: function() {
-				$( '#boom-topbar-template' ).trigger('boomclick');
+				$( '#boom-page-template' ).trigger('boomclick');
 			},
 
 			/** @function */
@@ -1564,6 +1593,30 @@ $.extend($.boom.page, {
 		
 		/**
 		* @class
+		* @name $.boom.page.settings.embargo
+		*/
+		embargo: {
+			/** @lends $.boom.page.settings.embargo */
+
+			/**
+			Menu label
+			@property
+			*/
+			label: 'Embargo',
+
+			/** @function */
+			menu_handler: function() {
+				$( '#boom-page-embargo' ).trigger('boomclick');
+			},
+
+			/** @function */
+			edit: function( event ){
+				
+			}
+		},
+		
+		/**
+		* @class
 		* @name $.boom.page.settings.visibility
 		*/
 		visibility: {
@@ -1577,7 +1630,7 @@ $.extend($.boom.page, {
 
 			/** @function */
 			menu_handler: function() {
-				$( '#boom-topbar-visibility' ).trigger('boomclick');
+				$( '#boom-page-visibility' ).trigger('boomclick');
 			},
 
 			/** @function */
@@ -1650,7 +1703,7 @@ $.extend($.boom.page, {
 
 			/** @function */
 			menu_handler: function() {
-				$( '#boom-topbar-template' ).trigger('boomclick');
+				$( '#boom-page-history' ).trigger('boomclick');
 			},
 
 			/** @function */
@@ -1720,7 +1773,7 @@ $.extend($.boom.page, {
 
 			/** @function */
 			menu_handler: function() {
-				$( '#boom-topbar-childsettings' ).trigger('boomclick');
+				$( '#boom-page-childsettings' ).trigger('boomclick');
 			},
 
 			/** @function */
@@ -1763,7 +1816,7 @@ $.extend($.boom.page, {
 
 			/** @function */
 			menu_handler: function() {
-				$( '#boom-topbar-adminsettings' ).trigger('boomclick');
+				$( '#boom-page-adminsettings' ).trigger('boomclick');
 			},
 
 			/** @function */

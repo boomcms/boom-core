@@ -25,3 +25,13 @@
 <button id="boom-page-adminsettings" class="boom-button">
 	Admin settings
 </button>
+
+<button id="boom-page-template" class="boom-button">
+	<?= __('Template') ?>
+</button>
+<button id="boom-page-embargo" class="boom-button">
+	<?= __('Embargo') ?>
+</button>
+<button id="boom-page-featureimage" class="boom-button">
+	<?= __('Feature image') ?>
+</button>
