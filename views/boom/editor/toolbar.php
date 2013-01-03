@@ -18,22 +18,18 @@
 			<button class="boom-button b-button-preview" data-icon="ui-icon-boom-preview" data-preview="preview">
 				<?=__('Preview')?>
 			</button>
-
-			<button id="boom-topbar-template" class="boom-button">
-				<?= __('Template') ?>
-			</button>
-			<button id="boom-page-embargo" class="boom-button">
-				<?= __('Embargo') ?>
-			</button>
-			<button id="boom-topbar-featureimage" class="boom-button">
-				<?= __('Feature image') ?>
-			</button>
+			
+			<span id="b-page-template-menu">
+				<button id="b-page-template-settings" class="boom-button" data-icon="ui-icon-boom-settings">
+					<?= __('Template settings') ?>
+				</button>
+			</span>
 		</div>
 	<? endif; ?>
 
 	<? if ($auth->logged_in('edit_page', $page)): ?>
 		<div>
-			<button id="boom-topbar-visibility" class="boom-button" data-icon="ui-icon-boom-visibility">
+			<button id="boom-page-visibility" class="boom-button" data-icon="ui-icon-boom-visibility">
 				<?= __('Visibility') ?>
 			</button>
 			<span id="b-page-settings-menu">
@@ -41,7 +37,7 @@
 					<?= __('Settings') ?>
 				</button>
 			</span>
-			<button class="boom-button" data-icon="ui-icon-boom-history">
+			<button id="boom-page-history" class="boom-button" data-icon="ui-icon-boom-history">
 				<?= __('History') ?>
 			</button>
 

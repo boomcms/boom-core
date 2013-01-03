@@ -175,6 +175,7 @@ $.extend($.boom, {
 				});
 			});
 
+			
 			self.settings.init();
 
 			self.settings.bind();
@@ -842,7 +843,7 @@ $.extend($.boom.page, {
 
 			var self = this;
 			var i = 0;
-
+			
 			var settings = [
 				'navigation',
 				'links',
@@ -852,25 +853,10 @@ $.extend($.boom.page, {
 				'adminsettings'
 				];
 
-			var menu_items = {};
-
-			for ( i in settings ) {
-
-				var class_name = settings[i];
-				var menu_item = self[ class_name ].label;
-				var menu_handler = self[ class_name ].menu_handler;
-
-				self.register( class_name );
-
-
-				menu_items[ menu_item ] = menu_handler;
-
-				$.boom.log( 'initialising ' + class_name );
-
-			};
+			
 
 			$('#b-page-settings-menu').splitbutton({
-				items: menu_items,
+				items: self._build_menu( settings ),
 				itemclick : function(event){
 
 					if (!$.boom.page.config.id) {
@@ -886,67 +872,42 @@ $.extend($.boom.page, {
 				menuPosition: 'right',
 				split: false
 			});
+			
+			var template_settings = [
+				'featureimage',
+				'template',
+				'embargo'
+			];
 
-			// page settings info has its own button on the toolbar.
-			self.register( 'information' );
-			// feature image has its own button on the toolbar.
-			self.register( 'featureimage' );
-			// template has its own button on the toolbar.
-			self.register( 'template' );
+			$('#b-page-template-menu').splitbutton({
+				items: self._build_menu( template_settings ),
+				itemclick : function(event){
 
-			$('#boom-topbar-visibility').click(function(){
-				event.preventDefault();
+					if (!$.boom.page.config.id) {
 
-				$.boom.dialog.open({
-					url: '/cms/page/settings/visibility/' + $.boom.page.config.id + '?vid=' + $.boom.page.config.vid,
-					event: event,
-					// cache: true,
-					title: 'Page visibility',
-					width: 440,
-					buttons: {
-						Save: function(){
+						$.boom.loader.hide('modal');
 
-							self.save(
-								'/cms/page/settings/visibility/' + $.boom.page.config.id,
-								$("#boom-form-pagesettings-visibility").serialize(),
-								"Page visibility settings saved."
-							);
+						$.boom.dialog.alert('Error', 'The page is still loading, please try again.');
 
-							$.boom.dialog.destroy( this );
-						}
-					},
-					open: function(){
-
-						$('#b-page-toggle-visible:checkbox').unbind('change').change(function(){
-
-							if (this.checked) {
-
-								$('#page-visible-to, #page-visible-to-time').removeAttr('disabled');
-
-								if ($('#page-visible-to').val().toLowerCase().trim() == 'forever') {
-
-									$('#page-visible-to').val('');
-								}
-
-								$('#page-visible-to').focus();
-
-							} else {
-
-								$('#page-visible-to, #page-visible-to-time').attr('disabled', 'disabled');
-
-								if (!$('#page-visible-to').val().trim().length) {
-
-									$('#page-visible-to').val('forever');
-								}
-
-								$('#page-visible-to').blur();
-							}
-						});
+						return false;
 					}
-				});
+				},
+				width: 'auto',
+				menuPosition: 'right',
+				split: false
 			});
+			
+			var buttons = [
+				'information',
+				'visibility',
+				'history'
+			];
 
-
+			for ( i in buttons ) {
+				
+				self.register( buttons[ i ] );
+				
+			}
 
 		},
 
@@ -955,7 +916,7 @@ $.extend($.boom.page, {
 
 			var self = this;
 
-			$( '#boom-topbar-' + class_name )
+			$( '#boom-page-' + class_name )
 				.bind( 'boomclick', function( event ) {
 
 					self[ class_name ].edit( event );
@@ -1002,7 +963,7 @@ $.extend($.boom.page, {
 
 			/** @function */
 			menu_handler: function() {
-				$( '#boom-topbar-navigation' ).trigger('boomclick');
+				$( '#boom-page-navigation' ).trigger('boomclick');
 			},
 
 			/** @function */
@@ -1094,6 +1055,30 @@ $.extend($.boom.page, {
 				});
 			}
 		},
+		
+		/** @function */
+		_build_menu: function ( settings ) {
+			
+			var self = this;
+			var menu_items = {};
+
+			for ( i in settings ) {
+
+				var class_name = settings[i];
+				var menu_item = self[ class_name ].label;
+				var menu_handler = self[ class_name ].menu_handler;
+
+				self.register( class_name );
+
+
+				menu_items[ menu_item ] = menu_handler;
+
+				$.boom.log( 'initialising ' + class_name );
+
+			};
+			
+			return menu_items;
+		},
 
 		/**
 		* @class
@@ -1110,7 +1095,7 @@ $.extend($.boom.page, {
 
 			/** @function */
 			menu_handler: function() {
-				$( '#boom-topbar-search' ).trigger('boomclick');
+				$( '#boom-page-search' ).trigger('boomclick');
 			},
 
 			/** @function */
@@ -1153,7 +1138,7 @@ $.extend($.boom.page, {
 
 			/** @function */
 			menu_handler: function() {
-				$( '#boom-topbar-tags' ).trigger('boomclick');
+				$( '#boom-page-tags' ).trigger('boomclick');
 			},
 
 			/** @function */
@@ -1289,7 +1274,7 @@ $.extend($.boom.page, {
 
 			/** @function */
 			menu_handler: function() {
-				$( '#boom-topbar-links' ).trigger('boomclick');
+				$( '#boom-page-links' ).trigger('boomclick');
 			},
 
 			/** @function */
@@ -1456,7 +1441,7 @@ $.extend($.boom.page, {
 
 			/** @function */
 			menu_handler: function() {
-				$( '#boom-topbar-featureimage' ).trigger('boomclick');
+				$( '#boom-page-featureimage' ).trigger('boomclick');
 			},
 
 			/** @function */
@@ -1576,7 +1561,7 @@ $.extend($.boom.page, {
 
 			/** @function */
 			menu_handler: function() {
-				$( '#boom-topbar-template' ).trigger('boomclick');
+				$( '#boom-page-template' ).trigger('boomclick');
 			},
 
 			/** @function */
@@ -1607,6 +1592,173 @@ $.extend($.boom.page, {
 				});
 			}
 		},
+		
+		/**
+		* @class
+		* @name $.boom.page.settings.embargo
+		*/
+		embargo: {
+			/** @lends $.boom.page.settings.embargo */
+
+			/**
+			Menu label
+			@property
+			*/
+			label: 'Embargo',
+
+			/** @function */
+			menu_handler: function() {
+				$( '#boom-page-embargo' ).trigger('boomclick');
+			},
+
+			/** @function */
+			edit: function( event ){
+				
+			}
+		},
+		
+		/**
+		* @class
+		* @name $.boom.page.settings.visibility
+		*/
+		visibility: {
+			/** @lends $.boom.page.settings.visibility */
+
+			/**
+			Menu label
+			@property
+			*/
+			label: 'Visibility',
+
+			/** @function */
+			menu_handler: function() {
+				$( '#boom-page-visibility' ).trigger('boomclick');
+			},
+
+			/** @function */
+			edit: function( event ){
+				
+				var url = '/cms/page/settings/visibility/' + $.boom.page.config.id;
+
+				$.boom.dialog.open({
+					url: url + '?vid=' + $.boom.page.config.vid,
+					event: event,
+					// cache: true,
+					title: 'Page visibility',
+					width: 440,
+					buttons: {
+						Save: function(){
+
+							self.save(
+								url,
+								$("#boom-form-pagesettings-visibility").serialize(),
+								"Page visibility settings saved."
+							);
+
+							$.boom.dialog.destroy( this );
+						}
+					},
+					open: function(){
+
+						$('#b-page-toggle-visible:checkbox').unbind('change').change(function(){
+
+							if (this.checked) {
+
+								$('#page-visible-to, #page-visible-to-time').removeAttr('disabled');
+
+								if ($('#page-visible-to').val().toLowerCase().trim() == 'forever') {
+
+									$('#page-visible-to').val('');
+								}
+
+								$('#page-visible-to').focus();
+
+							} else {
+
+								$('#page-visible-to, #page-visible-to-time').attr('disabled', 'disabled');
+
+								if (!$('#page-visible-to').val().trim().length) {
+
+									$('#page-visible-to').val('forever');
+								}
+
+								$('#page-visible-to').blur();
+							}
+						});
+					}
+				});
+			}
+		},
+		
+		/**
+		* @class
+		* @name $.boom.page.settings.history
+		*/
+		history: {
+			/** @lends $.boom.page.settings.history */
+
+			/**
+			Menu label
+			@property
+			*/
+			label: 'History',
+
+			/** @function */
+			menu_handler: function() {
+				$( '#boom-page-history' ).trigger('boomclick');
+			},
+
+			/** @function */
+			edit: function( event ){
+				// TODO: fix this old page versions code.
+				
+				var url = '/cms/page/revisions/' + $.boom.page.config.id;
+				$.boom.dialog.open({
+					url:  url + '?vid=' + $.boom.page.config.vid,
+					title: 'Page versions',
+					width: 440,
+					buttons: {
+						Cancel : function(){
+							$.boom.dialog.destroy( this );
+						}
+					},
+					open: function(){
+
+						var dialog = this;
+
+						$('#b-page-revisions-list ul ul li').click(function(){
+							$('#b-page-revisions-list ul ul li').removeClass('ui-state-active');
+							$(this).addClass('ui-state-active');
+
+							$('#b-page-revisions-selected').val($(this).attr('data-id'));
+
+							$('#b-button-multiaction-edit').button('enable');
+							$('#b-button-multiaction-publish').button('enable');
+						});
+
+
+						$('#b-button-multiaction-edit').click(function(){
+
+							var vid = $('#b-page-revisions-selected').val();
+
+							top.location = $.boom.util.url.addQueryStringParams({ version: vid }, true);
+						});
+
+						$('#b-button-multiaction-publish').bind('click',function(){
+							var vid = $('#b-page-revisions-selected').val();
+
+							$.boom.loader.show();
+
+							$.get( '/cms/page/publish/' + $.boom.page.config.id, {vid: vid}, function(){
+								$.boom.loader.hide();
+
+								$.boom.dialog.destroy( dialog );
+							});
+						});
+					}
+				});
+			}
+		},
 
 		/**
 		* @class
@@ -1623,7 +1775,7 @@ $.extend($.boom.page, {
 
 			/** @function */
 			menu_handler: function() {
-				$( '#boom-topbar-childsettings' ).trigger('boomclick');
+				$( '#boom-page-childsettings' ).trigger('boomclick');
 			},
 
 			/** @function */
@@ -1666,7 +1818,7 @@ $.extend($.boom.page, {
 
 			/** @function */
 			menu_handler: function() {
-				$( '#boom-topbar-adminsettings' ).trigger('boomclick');
+				$( '#boom-page-adminsettings' ).trigger('boomclick');
 			},
 
 			/** @function */
