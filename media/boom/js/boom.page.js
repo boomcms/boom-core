@@ -891,6 +891,8 @@ $.extend($.boom.page, {
 			self.register( 'information' );
 			// feature image has its own button on the toolbar.
 			self.register( 'featureimage' );
+			// template has its own button on the toolbar.
+			self.register( 'template' );
 
 			$('#boom-topbar-visibility').click(function(){
 				event.preventDefault();
@@ -1554,6 +1556,51 @@ $.extend($.boom.page, {
 								}
 							});
 						});
+					}
+				});
+			}
+		},
+		
+		/**
+		* @class
+		* @name $.boom.page.settings.template
+		*/
+		template: {
+			/** @lends $.boom.page.settings.template */
+
+			/**
+			Menu label
+			@property
+			*/
+			label: 'Template',
+
+			/** @function */
+			menu_handler: function() {
+				$( '#boom-topbar-template' ).trigger('boomclick');
+			},
+
+			/** @function */
+			edit: function( event ){
+
+				$.boom.dialog.open({
+					url: '/cms/page/version/template/' + $.boom.page.config.id + '?vid=' + $.boom.page.config.vid,
+					event: event,
+					title: 'Page template',
+					width: 300,
+					// cache: true,
+					buttons: {
+						Save: function(){
+
+							$.boom.page.settings.save(
+								'/cms/page/settings/template/' + $.boom.page.config.id,
+								$("#boom-form-pageversion-template").serialize(),
+								"Page template saved."
+							);
+
+							$.boom.dialog.destroy( this );
+						}
+					},
+					open: function(){
 					}
 				});
 			}

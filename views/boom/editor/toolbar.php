@@ -19,7 +19,7 @@
 				<?=__('Preview')?>
 			</button>
 
-			<button id="boom-page-template" class="boom-button">
+			<button id="boom-topbar-template" class="boom-button">
 				<?= __('Template') ?>
 			</button>
 			<button id="boom-page-embargo" class="boom-button">
