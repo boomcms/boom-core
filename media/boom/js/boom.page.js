@@ -1581,10 +1581,13 @@ $.extend($.boom.page, {
 							$.boom.page.settings.save(
 								url,
 								$("#b-form-pageversion-template").serialize(),
-								"Page template saved."
+								"Page template saved, reloading page."
 							);
 
 							$.boom.dialog.destroy( this );
+
+							// Reload the page to show the template change.
+							top.location.reload();
 						}
 					},
 					open: function(){
