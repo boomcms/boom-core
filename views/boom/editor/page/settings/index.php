@@ -14,10 +14,6 @@
 	Tags
 </button>
 
-<button id="boom-topbar-featureimage" class="boom-button">
-	Feature image
-</button>
-
 <button id="boom-topbar-security" class="boom-button">
 	Security
 </button>
