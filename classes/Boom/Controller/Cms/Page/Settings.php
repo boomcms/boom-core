@@ -347,7 +347,7 @@ class Boom_Controller_Cms_Page_Settings extends Controller_Cms_Page
 		if ($this->_method === Request::GET)
 		{
 			// GET request - show the search settings template.
-			$this->_template = View::factory("$this->_view_directory/search", array(
+			$this->template = View::factory("$this->_view_directory/search", array(
 				'allow_advanced'	=>	$allow_advanced,
 			));
 		}
@@ -367,7 +367,7 @@ class Boom_Controller_Cms_Page_Settings extends Controller_Cms_Page
 				));
 
 			// If the current user can edit the advanced settings then update the values for those as well.
-			if ($this->auth->logged_in('edit_page_children_advanced'))
+			if ($allow_advanced)
 			{
 				$this->_page
 					->values(array(
