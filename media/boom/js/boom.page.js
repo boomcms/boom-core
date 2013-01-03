@@ -887,66 +887,14 @@ $.extend($.boom.page, {
 				split: false
 			});
 
-			// page settings info has its own button on the toolbar.
+			// page settings info button.
 			self.register( 'information' );
-			// feature image has its own button on the toolbar.
+			// feature image button.
 			self.register( 'featureimage' );
-			// template has its own button on the toolbar.
+			// template button.
 			self.register( 'template' );
-
-			$('#boom-topbar-visibility').click(function(){
-				event.preventDefault();
-
-				$.boom.dialog.open({
-					url: '/cms/page/settings/visibility/' + $.boom.page.config.id + '?vid=' + $.boom.page.config.vid,
-					event: event,
-					// cache: true,
-					title: 'Page visibility',
-					width: 440,
-					buttons: {
-						Save: function(){
-
-							self.save(
-								'/cms/page/settings/visibility/' + $.boom.page.config.id,
-								$("#boom-form-pagesettings-visibility").serialize(),
-								"Page visibility settings saved."
-							);
-
-							$.boom.dialog.destroy( this );
-						}
-					},
-					open: function(){
-
-						$('#b-page-toggle-visible:checkbox').unbind('change').change(function(){
-
-							if (this.checked) {
-
-								$('#page-visible-to, #page-visible-to-time').removeAttr('disabled');
-
-								if ($('#page-visible-to').val().toLowerCase().trim() == 'forever') {
-
-									$('#page-visible-to').val('');
-								}
-
-								$('#page-visible-to').focus();
-
-							} else {
-
-								$('#page-visible-to, #page-visible-to-time').attr('disabled', 'disabled');
-
-								if (!$('#page-visible-to').val().trim().length) {
-
-									$('#page-visible-to').val('forever');
-								}
-
-								$('#page-visible-to').blur();
-							}
-						});
-					}
-				});
-			});
-
-
+			// visibility button.
+			self.register( 'visibility' );
 
 		},
 
@@ -1603,6 +1551,79 @@ $.extend($.boom.page, {
 						}
 					},
 					open: function(){
+					}
+				});
+			}
+		},
+		
+		/**
+		* @class
+		* @name $.boom.page.settings.visibility
+		*/
+		visibility: {
+			/** @lends $.boom.page.settings.visibility */
+
+			/**
+			Menu label
+			@property
+			*/
+			label: 'Visibility',
+
+			/** @function */
+			menu_handler: function() {
+				$( '#boom-topbar-visibility' ).trigger('boomclick');
+			},
+
+			/** @function */
+			edit: function( event ){
+				
+				var url = '/cms/page/settings/visibility/' + $.boom.page.config.id;
+
+				$.boom.dialog.open({
+					url: url + '?vid=' + $.boom.page.config.vid,
+					event: event,
+					// cache: true,
+					title: 'Page visibility',
+					width: 440,
+					buttons: {
+						Save: function(){
+
+							self.save(
+								url,
+								$("#boom-form-pagesettings-visibility").serialize(),
+								"Page visibility settings saved."
+							);
+
+							$.boom.dialog.destroy( this );
+						}
+					},
+					open: function(){
+
+						$('#b-page-toggle-visible:checkbox').unbind('change').change(function(){
+
+							if (this.checked) {
+
+								$('#page-visible-to, #page-visible-to-time').removeAttr('disabled');
+
+								if ($('#page-visible-to').val().toLowerCase().trim() == 'forever') {
+
+									$('#page-visible-to').val('');
+								}
+
+								$('#page-visible-to').focus();
+
+							} else {
+
+								$('#page-visible-to, #page-visible-to-time').attr('disabled', 'disabled');
+
+								if (!$('#page-visible-to').val().trim().length) {
+
+									$('#page-visible-to').val('forever');
+								}
+
+								$('#page-visible-to').blur();
+							}
+						});
 					}
 				});
 			}
