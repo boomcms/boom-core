@@ -381,14 +381,23 @@ $.extend($.boom, {
 			})( wh5 );
 		},
 	
+		/**
+		* @class
+		* @name $.boom.editor.inline_editor
+		*/
 		inline_editor : {
+			/** @lends $.boom.editor.inline_editor */
 			
+			/** @property */
 			rangy : null,
 			
+			/** @property */
 			toolbar : null,
 			
+			/** @property */
 			selected_node : null,
 			
+			/** @function */
 			init : function( element ) {
 				
 				var self = this;
@@ -469,6 +478,7 @@ $.extend($.boom, {
 					});
 			},
 			
+			/** @function */
 			select_node : function() {
 				// expand the selection range to the clicked node.
 				var selection = ( top.getSelection ) ? top.getSelection() : top.rangy.getSelection();
@@ -477,6 +487,7 @@ $.extend($.boom, {
 				
 			},
 			
+			/** @function */
 			highlight_command : function( node ) {
 				
 				var command = '';
@@ -499,6 +510,7 @@ $.extend($.boom, {
 					
 			},
 			
+			/** @function */
 			insert_link : function( link ) {
 				
 				var url = link.url;

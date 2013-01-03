@@ -855,7 +855,7 @@ $.extend($.boom.page, {
 
 
 
-			$('#b-page-settings-menu').splitbutton({
+			$('#boom-page-settings-menu').splitbutton({
 				items: self._build_menu( settings ),
 				itemclick : function(event){
 
@@ -879,7 +879,7 @@ $.extend($.boom.page, {
 				'embargo'
 			];
 
-			$('#b-page-template-menu').splitbutton({
+			$('#boom-page-template-menu').splitbutton({
 				items: self._build_menu( template_settings ),
 				itemclick : function(event){
 
@@ -948,6 +948,30 @@ $.extend($.boom.page, {
 			});
 		},
 
+		/** @function */
+		_build_menu: function ( settings ) {
+
+			var self = this;
+			var menu_items = {};
+
+			for ( i in settings ) {
+
+				var class_name = settings[i];
+				var menu_item = self[ class_name ].label;
+				var menu_handler = self[ class_name ].menu_handler;
+
+				self.register( class_name );
+
+
+				menu_items[ menu_item ] = menu_handler;
+
+				$.boom.log( 'initialising ' + class_name );
+
+			};
+
+			return menu_items;
+		},
+		
 		/**
 		* @class
 		* @name $.boom.page.settings.navigation
@@ -1054,30 +1078,6 @@ $.extend($.boom.page, {
 					}
 				});
 			}
-		},
-
-		/** @function */
-		_build_menu: function ( settings ) {
-
-			var self = this;
-			var menu_items = {};
-
-			for ( i in settings ) {
-
-				var class_name = settings[i];
-				var menu_item = self[ class_name ].label;
-				var menu_handler = self[ class_name ].menu_handler;
-
-				self.register( class_name );
-
-
-				menu_items[ menu_item ] = menu_handler;
-
-				$.boom.log( 'initialising ' + class_name );
-
-			};
-
-			return menu_items;
 		},
 
 		/**
