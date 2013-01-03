@@ -195,11 +195,6 @@ class Boom_Controller_Cms_Page_Settings extends Controller_Cms_Page
 
 					$values = array();
 
-					if ($post['visible_in_nav_cascade'] == 1)
-					{
-						$values['visible_in_nav'] = $this->_page->children_visible_in_nav;
-					}
-
 					// Cascading the visible_in_nav setting?
 					if ($post['visible_in_nav_cascade'] == 1)
 					{
