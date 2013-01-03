@@ -80,7 +80,7 @@ class Boom_Controller extends Controller
 			->values(array(
 				'ip'			=>	Request::$client_ip,
 				'activity'		=>	$activity,
-				'person_id'	=>	$this->auth->get_real_user()->id,
+				'person_id'	=>	$this->auth->get_user()->id,
 			))
 			->create();
 	}
