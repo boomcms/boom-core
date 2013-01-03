@@ -855,7 +855,7 @@ $.extend($.boom.page, {
 
 
 
-			$('#b-page-settings-menu').splitbutton({
+			$('#boom-page-settings-menu').splitbutton({
 				items: self._build_menu( settings ),
 				itemclick : function(event){
 
@@ -879,7 +879,7 @@ $.extend($.boom.page, {
 				'embargo'
 			];
 
-			$('#b-page-template-menu').splitbutton({
+			$('#boom-page-template-menu').splitbutton({
 				items: self._build_menu( template_settings ),
 				itemclick : function(event){
 

@@ -19,8 +19,8 @@
 				<?=__('Preview')?>
 			</button>
 			
-			<span id="b-page-template-menu">
-				<button id="b-page-template-settings" class="boom-button" data-icon="ui-icon-boom-settings">
+			<span id="boom-page-template-menu">
+				<button id="boom-page-template-settings" class="boom-button" data-icon="ui-icon-boom-settings">
 					<?= __('Template settings') ?>
 				</button>
 			</span>
@@ -32,8 +32,8 @@
 			<button id="boom-page-visibility" class="boom-button" data-icon="ui-icon-boom-visibility">
 				<?= __('Visibility') ?>
 			</button>
-			<span id="b-page-settings-menu">
-				<button id="b-page-settings" class="boom-button" data-icon="ui-icon-boom-settings">
+			<span id="boom-page-settings-menu">
+				<button id="boom-page-settings" class="boom-button" data-icon="ui-icon-boom-settings">
 					<?= __('Settings') ?>
 				</button>
 			</span>
