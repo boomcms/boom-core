@@ -93,4 +93,26 @@ class Boom_Model_Page_Version extends ORM
 			),
 	   );
 	}
+
+	/**
+	 * Validation rules
+	 *
+	 * @return	array
+	 */
+	public function rules()
+	{
+		return array(
+			'page_id'	=>	array(
+				array('not_empty'),
+				array('numeric'),
+			),
+			'template_id'	=>	array(
+				array('not_empty'),
+				array('numeric'),
+			),
+			'title'	=>	array(
+				array('not_empty'),
+			),
+		);
+	}
 }
