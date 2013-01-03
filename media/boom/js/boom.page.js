@@ -848,7 +848,6 @@ $.extend($.boom.page, {
 				'links',
 				'search',
 				'tags',
-				'featureimage',
 				'childsettings',
 				'adminsettings'
 				];
@@ -890,6 +889,8 @@ $.extend($.boom.page, {
 
 			// page settings info has its own button on the toolbar.
 			self.register( 'information' );
+			// feature image has its own button on the toolbar.
+			self.register( 'featureimage' );
 
 			$('#boom-topbar-visibility').click(function(){
 				event.preventDefault();
