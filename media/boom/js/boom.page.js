@@ -1461,7 +1461,7 @@ $.extend($.boom.page, {
 
 			/** @function */
 			edit: function( event ){
-				url = '/cms/page/version/feature/' + $.boom.page.config.id;
+				var url = '/cms/page/version/feature/' + $.boom.page.config.id;
 
 				$.boom.dialog.open({
 					url: url + '?vid=' + $.boom.page.config.vid,
@@ -1581,9 +1581,11 @@ $.extend($.boom.page, {
 
 			/** @function */
 			edit: function( event ){
+				
+				var url = '/cms/page/version/template/' + $.boom.page.config.id;
 
 				$.boom.dialog.open({
-					url: '/cms/page/version/template/' + $.boom.page.config.id + '?vid=' + $.boom.page.config.vid,
+					url: url + '?vid=' + $.boom.page.config.vid,
 					event: event,
 					title: 'Page template',
 					width: 300,
@@ -1592,7 +1594,7 @@ $.extend($.boom.page, {
 						Save: function(){
 
 							$.boom.page.settings.save(
-								'/cms/page/settings/template/' + $.boom.page.config.id,
+								url,
 								$("#boom-form-pageversion-template").serialize(),
 								"Page template saved."
 							);
