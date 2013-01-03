@@ -87,7 +87,7 @@ class Boom_Controller_Cms_Page_Version extends Controller_Cms_Page_Settings
 			$this->new_version
 				->set('feature_image_id', $this->request->post('feature_image_id'))
 				->save()
-				->import_chunks($this->old_version);
+				->copy_chunks($this->old_version);
 		}
 	}
 
@@ -108,7 +108,7 @@ class Boom_Controller_Cms_Page_Version extends Controller_Cms_Page_Settings
 			$this->new_version
 				->set('template_id', $this->request->post('template_id'))
 				->save()
-				->import_chunks($this->old_version);
+				->copy_chunks($this->old_version);
 		}
 	}
 }

@@ -44,34 +44,13 @@ class Boom_Model_Page_Version extends ORM
 	);
 
 	/**
-	* Filters for the versioned person columns
-	* @link http://kohanaframework.org/3.2/guide/orm/filters
-	*/
-	public function filters()
-	{
-	    return array(
-			'title' => array(
-				array('html_entity_decode'),
-				array('urldecode'),
-				array('trim'),
-			),
-			'keywords' => array(
-				array('trim'),
-			),
-			'description' => array(
-				array('trim'),
-			),
-	   );
-	}
-
-	/**
-	 * Import the chunks from another version to this version.
+	 * Copies the chunks from another page version to this version.
 	 *
 	 * @param Model_Page_Version $from_version
 	 * @param array $exclude An array of slotnames which shouldn't be copied from the other version.
 	 * @return Model_Page_Version
 	 */
-	public function import_chunks(Model_Page_Version $from_version, array $exclude)
+	public function copy_chunks(Model_Page_Version $from_version, array $exclude = NULL)
 	{
 		foreach (array('asset', 'text', 'feature', 'linkset', 'slideshow') as $type)
 		{
@@ -92,5 +71,26 @@ class Boom_Model_Page_Version extends ORM
 		}
 
 		return $this;
+	}
+
+	/**
+	* Filters for the versioned person columns
+	* @link http://kohanaframework.org/3.2/guide/orm/filters
+	*/
+	public function filters()
+	{
+	    return array(
+			'title' => array(
+				array('html_entity_decode'),
+				array('urldecode'),
+				array('trim'),
+			),
+			'keywords' => array(
+				array('trim'),
+			),
+			'description' => array(
+				array('trim'),
+			),
+	   );
 	}
 }

@@ -399,7 +399,7 @@ class Boom_Controller_Cms_Page extends Boom_Controller
 		}
 
 		// Import any chunks which weren't saved from the old version to the new version.
-		$new_version->import_chunks($current_version, $slotnames);
+		$new_version->copy_chunks($current_version, $slotnames);
 
 		// Set the response.
 		$this->response
