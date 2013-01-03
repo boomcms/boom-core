@@ -128,15 +128,6 @@ class Boom_Model_Page_Version extends ORM
 	 * Returns a thumbnail for the current page version.
 	 * The thumbnail is the first image in the specified chunk.
 	 *
-	 * This function:
-	 * * SHOULD always return an instance of Model_Asset
-	 * * SHOULD return an instance of Model_Asset where the type property = Boom_Asset::IMAGE (i.e. not return an asset representing a video or pdf)
-	 * * SHOULD NOT return an asset which is unpublished when the current user is not logged in.
-	 * * For guest users SHOULD return the first image in the body copy which is published.
-	 * * Where there is no image (or no published image) in the bodycopy SHOULD return an empty Model_Asset
-	 *
-	 * @todo 	Need to write tests for the above.
-	 *
 	 * @param	$slotname		The slotname of the chunk to look for an image in. Default is to look in the bodycopy.
 	 * @return 	Model_Asset
 	 * @uses		Model_Page_Version::$_thumbnails
@@ -144,9 +135,9 @@ class Boom_Model_Page_Version extends ORM
 	public function thumbnail($slotname = 'bodycopy')
 	{
 		// Try and get it from the $_thumbnail property to prevent running the code multiple times
-		if (isset($this->_thumbnail[$slotname]))
+		if (isset($this->_thumbnails[$slotname]))
 		{
-			return $this->_thumbnail[$slotname];
+			return $this->_thumbnails[$slotname];
 		}
 
 		// Get the standfirst for this page version.
@@ -154,7 +145,7 @@ class Boom_Model_Page_Version extends ORM
 
 		if ( ! $chunk->loaded())
 		{
-			return $this->_thumbnail[$slotname] = new Model_Asset;
+			return $this->_thumbnails[$slotname] = new Model_Asset;
 		}
 		else
 		{
@@ -174,7 +165,7 @@ class Boom_Model_Page_Version extends ORM
 			}
 
 			// Load the result.
-			return $this->_thumbnail[$slotname] = $query->find();
+			return $this->_thumbnails[$slotname] = $query->find();
 		}
 	}
 }
