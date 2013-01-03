@@ -86,9 +86,9 @@ class Boom_Model_Page_Version extends ORM
 				$subquery->where('slotname', 'not in', $exclude);
 			}
 
-			$x = DB::insert('page_chunks', array('page_vid', 'chunk_id'))
+			DB::insert('page_chunks', array('page_vid', 'chunk_id'))
 				->select($subquery)
-				->execute();
+				->execute($this->_db);
 		}
 
 		return $this;
