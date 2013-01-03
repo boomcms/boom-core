@@ -1,182 +1,179 @@
-/** 
-global boom config 
+/**
+global boom config
 @namespace
 @name $.boom.config
 */
 
 window.boomConfig = {
-	/** @lends $.boom.config */	
+	/** @lends $.boom.config */
 
 	/** @property */
 	cachePageImages : [
 		'/media/boom/img/ajax_load.gif',
 		'/media/boom/img/cms/chunk_edit_icon.png',
-		'/media/boom/js/tiny_mce/themes/advanced/skins/o2k7/img/button_bg_silver.png',
-		'/media/boom/js/tiny_mce/themes/advanced/skins/o2k7/img/button_bg.png',
-		'/media/boom/js/tiny_mce/themes/advanced/img/icons.gif'
 	],
 
-	/** 
+	/**
 	@static
-	@class 
+	@class
 	*/
-	logs : { 
-		/** 
+	logs : {
+		/**
 		@type boolean
 		@default true
 		*/
 		show: true,
-		/** 
+		/**
 		@type boolean
 		@default true
 		*/
 		showTimes: true,
-		/** 
+		/**
 		@type array
 		@default []
 		*/
 		times: [],
-		/** 
+		/**
 		@type number
 		@default 0
 		*/
 		totalTime: 0
 	},
 
-	/** 
+	/**
 	@static
-	@class 
+	@class
 	*/
 	errors : {
-		/** 
+		/**
 		@type boolean
 		@default true
 		*/
 		report: true
 	},
 
-	/** 
+	/**
 	@static
-	@class 
+	@class
 	*/
 	history : {
-		/** 
+		/**
 		@type number
 		@default 100
 		*/
 		checkInterval: 100
 	},
 
-	/** 
+	/**
 	@static
-	@class 
+	@class
 	*/
 	captions : {
-		/** 
+		/**
 		@type string
 		@default '.caption'
 		*/
 		captionTitleSelector: '.caption',
-		/** 
+		/**
 		@type string
 		@default '.caption-overlay'
 		*/
 	captionOverlaySelector: '.caption-overlay',
-		/** 
+		/**
 		@type number
 		@default 0
 		*/
 		showSpeed: 0,
-		/** 
+		/**
 		@type number
 		@default 0
 		*/
 		hideSpeed: 0,
-		/** 
+		/**
 		@type number
 		@default 0.8
 		*/
 		opacityOverlay: 0.8
 	},
-	
-	/** 
+
+	/**
 	@static
-	@class 
+	@class
 	*/
 	editor : {
-		/** 
+		/**
 		@type string
 		@default '/boom/css/boom.page.edit.css'
 		*/
 		stylesheetURL: '/media/boom/js/xing/editor.css',
-		
-		/** 
+
+		/**
 		@type string
 		@default '/media/boom/js/boom.tinymce.js'
 		*/
 		path : '/media/boom/js/boom.wysihtml5.js'
 	},
 
-	/** 
+	/**
 	@static
-	@class 
+	@class
 	*/
 	dialog : {
-		/** 
+		/**
 		@type string
 		@default 'auto'
 		*/
 		width: 'auto',
-		/** 
+		/**
 		@type number
 		@default 100
 		*/
 		maxWidth: 100,
-		/** 
+		/**
 		@type
 		@default null
 		*/
 		show: null,
-		/** 
+		/**
 		@type
 		@default null
 		*/
 		hide: null,
-		/** 
+		/**
 		@type boolean
 		@default true
 		*/
 		autoOpen: true,
-		/** 
+		/**
 		@type boolean
 		@default true
 		*/
 		modal: true,
-		/** 
+		/**
 		@type boolean
 		@default false
 		*/
 		resizable: false,
-		/** 
+		/**
 		@type array
 		@default ['center', 'center']
 		*/
 		position: ['center', 'center'],
-		/** 
+		/**
 		@type boolean
 		@default true
 		*/
 		draggable: true,
-		/** 
+		/**
 		@type boolean
 		@default true
 		*/
 		closeOnEscape: true
 	},
 
-	/** 
+	/**
 	@static
-	@class 
+	@class
 	*/
 	growl : {
 		/**
@@ -196,9 +193,9 @@ window.boomConfig = {
 		closer: false
 	},
 
-	/** 
+	/**
 	@static
-	@class 
+	@class
 	*/
 	datepicker : {
 		/**
@@ -238,9 +235,9 @@ window.boomConfig = {
 		timePos: 'bottom'
 	},
 
-	/** 
+	/**
 	@static
-	@class 
+	@class
 	*/
 	tabs : {
 		/**
@@ -263,9 +260,9 @@ window.boomConfig = {
 		}
 	},
 
-	/** 
+	/**
 	@static
-	@class 
+	@class
 	*/
 	tooltip : {
 		/**
@@ -281,9 +278,9 @@ window.boomConfig = {
 		}
 	},
 
-	/** 
+	/**
 	@static
-	@class 
+	@class
 	*/
 	selectmenu : {
 		/**
@@ -312,9 +309,9 @@ window.boomConfig = {
 		]
 	},
 
-	/** 
+	/**
 	@static
-	@class 
+	@class
 	*/
 	tree : {
 		/**
@@ -369,9 +366,9 @@ window.boomConfig = {
 		iconHitareaHover: 'boom-tree-hitarea-hover'
 	},
 
-	/** 
+	/**
 	@static
-	@class 
+	@class
 	*/
 	sortable : {
 		/**
@@ -391,9 +388,9 @@ window.boomConfig = {
 		axis: 'y'
 	},
 
-	/** 
+	/**
 	@static
-	@class 
+	@class
 	*/
 	uploadify : {
 		/**
@@ -453,9 +450,9 @@ window.boomConfig = {
 		cancelImg: '/boom/img/cms/cross.png'
 	},
 
-	/** 
+	/**
 	@static
-	@class 
+	@class
 	*/
 	cookie : {
 		/**
@@ -480,9 +477,9 @@ window.boomConfig = {
 		path: '/'
 	},
 
-	/** 
+	/**
 	@static
-	@class 
+	@class
 	*/
 	orm : {
 		/**
@@ -492,12 +489,12 @@ window.boomConfig = {
 		getobjUrl: '/json_orm/get'
 	},
 
-	/** 
+	/**
 	@static
-	@class 
+	@class
 	*/
 	page : {
-		/** 
+		/**
 		@type number
 		@default 1
 		*/
@@ -509,9 +506,9 @@ window.boomConfig = {
 		ajaxed: 0
 	},
 
-	/** 
+	/**
 	@static
-	@class 
+	@class
 	*/
 	ajax : {
 		/**
@@ -521,9 +518,9 @@ window.boomConfig = {
 		viewBasePath: '/_ajax/show_view/boom/editor/'
 	},
 
-	/** 
+	/**
 	@static
-	@class 
+	@class
 	*/
 	person: {
 		/**
