@@ -14,7 +14,7 @@
 			</button>
 		</div>
 
-		<div>
+		
 			<button class="boom-button b-button-preview" data-icon="ui-icon-boom-preview" data-preview="preview">
 				<?=__('Preview')?>
 			</button>
@@ -24,11 +24,11 @@
 					<?= __('Template settings') ?>
 				</button>
 			</span>
-		</div>
+		
 	<? endif; ?>
 
 	<? if ($auth->logged_in('edit_page', $page)): ?>
-		<div>
+		
 			<button id="boom-page-visibility" class="boom-button" data-icon="ui-icon-boom-visibility">
 				<?= __('Visibility') ?>
 			</button>
@@ -46,7 +46,7 @@
 					<?= __('Delete') ?>
 				</button>
 			<? endif; ?>
-		</div>
+		
 
 
 		<? if ($auth->logged_in('add_page', $page)): ?>
