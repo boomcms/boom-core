@@ -25,7 +25,7 @@
 			<button id="boom-page-embargo" class="boom-button">
 				<?= __('Embargo') ?>
 			</button>
-			<button id="boom-page-feature-image" class="boom-button">
+			<button id="boom-topbar-featureimage" class="boom-button">
 				<?= __('Feature image') ?>
 			</button>
 		</div>
