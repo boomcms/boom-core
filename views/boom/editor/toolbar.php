@@ -36,9 +36,11 @@
 			<button id="boom-topbar-visibility" class="boom-button" data-icon="ui-icon-boom-visibility">
 				<?= __('Visibility') ?>
 			</button>
-			<button class="boom-button" data-icon="ui-icon-boom-settings">
-				<?= __('Settings') ?>
-			</button>
+			<span id="b-page-settings-menu">
+				<button id="b-page-settings" class="boom-button" data-icon="ui-icon-boom-settings">
+					<?= __('Settings') ?>
+				</button>
+			</span>
 			<button class="boom-button" data-icon="ui-icon-boom-history">
 				<?= __('History') ?>
 			</button>
@@ -65,6 +67,12 @@
 			<?=__('View live')?>
 		</button>
 	<? endif; ?>
+	
+	<div id="boom-topbar-pagesettings" class="ui-helper-clearfix">
+		<div class="ui-helper-center">
+			<?= View::factory('boom/editor/page/settings/index');?>
+		</div>
+	</div>
 
 	<?= View::factory('boom/breadcrumbs'); ?>
 </div>

@@ -884,7 +884,7 @@ $.extend($.boom.page, {
 					}
 				},
 				width: 'auto',
-				menuPosition: 'left',
+				menuPosition: 'right',
 				split: false
 			});
 
