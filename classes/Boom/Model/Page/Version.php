@@ -38,6 +38,14 @@ class Boom_Model_Page_Version extends ORM
 
 	protected $_table_name = 'page_versions';
 
+	/**
+	 * Hold the calculated thumbnails for this version.
+	 *
+	 * @see Model_Page_Version::thumbnail()
+	 * @var array
+	 */
+	protected $_thumbnails = array();
+
 	protected $_updated_column = array(
 		'column'	=>	'edited_time',
 		'format'	=>	TRUE,
@@ -114,5 +122,59 @@ class Boom_Model_Page_Version extends ORM
 				array('not_empty'),
 			),
 		);
+	}
+
+	/**
+	 * Returns a thumbnail for the current page version.
+	 * The thumbnail is the first image in the specified chunk.
+	 *
+	 * This function:
+	 * * SHOULD always return an instance of Model_Asset
+	 * * SHOULD return an instance of Model_Asset where the type property = Boom_Asset::IMAGE (i.e. not return an asset representing a video or pdf)
+	 * * SHOULD NOT return an asset which is unpublished when the current user is not logged in.
+	 * * For guest users SHOULD return the first image in the body copy which is published.
+	 * * Where there is no image (or no published image) in the bodycopy SHOULD return an empty Model_Asset
+	 *
+	 * @todo 	Need to write tests for the above.
+	 *
+	 * @param	$slotname		The slotname of the chunk to look for an image in. Default is to look in the bodycopy.
+	 * @return 	Model_Asset
+	 * @uses		Model_Page_Version::$_thumbnails
+	 */
+	public function thumbnail($slotname = 'bodycopy')
+	{
+		// Try and get it from the $_thumbnail property to prevent running the code multiple times
+		if (isset($this->_thumbnail[$slotname]))
+		{
+			return $this->_thumbnail[$slotname];
+		}
+
+		// Get the standfirst for this page version.
+		$chunk = Chunk::find('text', $slotname, $this);
+
+		if ( ! $chunk->loaded())
+		{
+			return $this->_thumbnail[$slotname] = new Model_Asset;
+		}
+		else
+		{
+			// Find the first image in this chunk.
+			$query = ORM::factory('Asset')
+				->join('chunk_text_assets')
+				->on('chunk_text_assets.asset_id', '=', 'asset.id')
+				->order_by('position', 'asc')
+				->limit(1)
+				->where('chunk_text_assets.chunk_id', '=', $chunk->id)
+				->where('asset.type', '=', Boom_Asset::IMAGE);
+
+			// If the current user isn't logged in then make sure it's a published asset.
+			if ( ! Auth::instance()->logged_in())
+			{
+				$query->where('asset.visible_from', '<=', Editor::instance()->live_time());
+			}
+
+			// Load the result.
+			return $this->_thumbnail[$slotname] = $query->find();
+		}
 	}
 }

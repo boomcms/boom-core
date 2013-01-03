@@ -81,13 +81,6 @@ class Boom_Model_Page extends ORM_Taggable
 	const CHILD_ORDER_DESC = 16;
 
 	/**
-	 * Hold the calculated thumbnail for this version.
-	 * @see Model_Version_Boom_Asset::thumbnail()
-	 * @var Model_Asset
-	 */
-	protected $_thumbnail;
-
-	/**
 	 * Holds the calculated primary URI
 	 *
 	 * @access	private
@@ -501,57 +494,6 @@ class Boom_Model_Page extends ORM_Taggable
 		}
 
 		return $this;
-	}
-
-	/**
-	 * Returns a thumbnail for the current page.
-	 * The thumbnail is the first image in the bodycopy.
-	 *
-	 * This function:
-	 * * SHOULD always return an instance of Model_Asset
-	 * * SHOULD return an instance of Model_Asset where the type property = Boom_Asset::IMAGE (i.e. not return an asset representing a video or pdf)
-	 * * SHOULD NOT return an asset which is unpublished when the current user is not logged in.
-	 * * For guest users SHOULD return the first image in the body copy which is published.
-	 * * Where there is no image (or no published image) in the bodycopy SHOULD return an empty Model_Asset
-	 *
-	 * @todo 	Need to write tests for the above.
-	 * @return 	Model_Asset
-	 */
-	public function thumbnail()
-	{
-		// Try and get it from the $_thumbnail property to prevent running the code multiple times
-		if ($this->_thumbnail !== NULL)
-		{
-			return $this->_thumbnail;
-		}
-
-		// Get the standfirst for this page version.
-		$chunk = Chunk::find('text', 'bodycopy', $this->version());
-
-		if ( ! $chunk->loaded())
-		{
-			return $this->_thumbnail = new Model_Asset;
-		}
-		else
-		{
-			// Find the first image in this chunk.
-			$query = ORM::factory('Asset')
-				->join('chunk_text_assets')
-				->on('chunk_text_assets.asset_id', '=', 'assets.id')
-				->order_by('position', 'asc')
-				->limit(1)
-				->where('chunk_text_assets.chunk_id', '=', $chunk->id)
-				->where('asset.type', '=', Boom_Asset::IMAGE);
-
-			// If the current user isn't logged in then make sure it's a published asset.
-			if ( ! Auth::instance()->logged_in())
-			{
-				$query->where('asset.visible_from', '<=', Editor::instance()->live_time());
-			}
-
-			// Load the result.
-			return $this->_thumbnail = $query->find();
-		}
 	}
 
 	/**
