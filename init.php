@@ -118,16 +118,11 @@ Route::set('chunks', 'cms/chunk/<controller>/<action>/<page>')
 	));
 
 // Route for editing page settings.
-Route::set('page_settings', 'cms/page/settings/<action>/<id>' )
+Route::set('page_settings', 'cms/page/<controller>/<action>/<id>', array(
+		'controller'	=>	'settings|version',
+	))
 	->defaults(array(
-		'controller' => 'cms_page_settings',
-	));
-
-// Route for changing versioned properties of a page.
-// TODO: can be combined with route above.
-Route::set('page_settings', 'cms/page/version/<action>/<id>' )
-	->defaults(array(
-		'controller' => 'cms_page_version',
+		'directory' => 'cms_page',
 	));
 
 Route::set('page_links', 'cms/page/link/<action>/<id>' )
