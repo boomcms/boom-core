@@ -513,11 +513,14 @@ class Boom_Model_Page extends ORM_Taggable
 
 		// No it hasn't, query the database for the right version to use.
 
+		// Get the editor instance to determine which state the editor is in.
+		$editor = Editor::instance();
+
 		// Start the query.
 		$query = ORM::factory('Page_Version')
 			->where('page_id', '=', $this->id);
 
-		if (Auth::instance()->logged_in())
+		if ($editor->state() === Editor::EDIT OR $editor->state() === Editor::PREVIEW)
 		{
 			// For logged in users get the version with the highest ID.
 			$query
