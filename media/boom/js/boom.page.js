@@ -114,7 +114,9 @@ $.extend($.boom, {
 			});
 			
 			var save_menu = {
-				"Save" : self.save,
+				"Save" : function(){
+					self.save();
+				},
 				"Save and preview" : function(){
 					self.save();
 					saveEditorState( 'preview' );
