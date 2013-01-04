@@ -31,7 +31,7 @@ class Boom_Model_Page extends ORM_Taggable
 		'sequence'					=>	'',
 		'visible'					=>	'',
 		'visible_from'				=>	'',
-		'visible_to'				=>	'',
+		'visible_to'				=>	0,
 		'internal_name'				=>	'',
 		'external_indexing'			=>	'',
 		'internal_indexing'			=>	'',
@@ -176,6 +176,7 @@ class Boom_Model_Page extends ORM_Taggable
 				))
 				->on('version.id', '=', 'current_version.id')
 				->where('version.page_deleted', '=', FALSE)
+				->where('visible', '=', TRUE)
 				->where('visible_from', '<=', $editor->live_time())
 				->and_where_open()
 					->where('visible_to', '>=', $editor->live_time())
