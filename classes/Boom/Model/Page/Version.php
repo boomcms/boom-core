@@ -55,8 +55,11 @@ class Boom_Model_Page_Version extends ORM
 	 * Adds a chunk to the page version.
 	 *
 	 * This should only be called when the page version has been saved and therefore has a version ID.
-	 * When a chunk type and slotname combination which is already in use on the page is used the existing chunk will be updated with the new data.
 	 *
+	 * This function assumes that the specified chunk doesn't already exist for the page version.
+	 * I can't think of a situation where we'd ever be updating a chunk which has already been added to a page version.
+	 * If we want to update a chunk on a page then we would create a new version and add the chunk to the latest version.
+	 * Checking whether a chunk exists and then updating it if necessary would therefore add extra DB queries with little benefit.
 	 *
 	 * **Examples**
 	 *
@@ -75,6 +78,7 @@ class Boom_Model_Page_Version extends ORM
 	 * @return	Model_Page_Version
 	 * @throws	Exception	An exception is thrown when this function is called on a page version which hasn't been saved.
 	 *
+	 * @todo Would it be useful to have a function to add multiple chunks? This would avoid repeated, single, DB::insert() to add relationships.
 	 */
 	public function add_chunk($type, $slotname, array $data)
 	{
@@ -84,6 +88,24 @@ class Boom_Model_Page_Version extends ORM
 		{
 			throw new Exception('You must call Model_Page_Version::save() before calling Model_Page_Version::add_chunk()');
 		}
+
+		// Add the slotname to the data array.
+		// The slotname is just a property of the chunk model like everything else in the $data array
+		// We only require it to be sent as a seperate paramater to improve readability.
+		$data['slotname'] = $slotname;
+
+		// Create the chunk
+		$chunk = ORM::factory('Chunk_' . ucfirst($type))
+			->values($data)
+			->create();
+
+		// Add the relationship between the chunk and this page version.
+		DB::insert('page_chunks')
+			->values(array($this->id, $chunk->id))
+			->execute();
+
+		// Return the current page version object.
+		return $this;
 	}
 
 	/**
