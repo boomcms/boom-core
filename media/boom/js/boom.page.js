@@ -276,13 +276,19 @@ $.extend($.boom, {
 			.done(
 				function(response){
 
-					$.boom.loader.hide();
+					
 
 					$('#b-page-publish').show();
 					$.boom.growl.show( "Page successfully saved." );
 					$.boom.page.slot_edits = [];
 					$.boom.page.save_button.button( 'disable' ).attr( 'title', 'You have no unsaved changes' );
-				});
+				})
+			.fail( function(){
+				$.boom.growl.show( "Unable to save page." );
+			})
+			.always( function(){
+				$.boom.loader.hide();
+			});
 
 			/*
 			/// get the child page order sequences from the left nav
