@@ -59,7 +59,7 @@ class Boom_Model_Chunk_Text extends ORM
 
 			foreach ($assets as $i => $asset_id)
 			{
-				$query->values(array($this->chunk_id, $asset_id, $i));
+				$query->values(array($this->id, $asset_id, $i));
 			}
 
 			try
