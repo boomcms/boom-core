@@ -1045,7 +1045,10 @@ $.extend($.boom, {
 
 							if (status == 'error') {
 
-								$(this).dialog('destroy');
+								if ( $.boom.page && $( '.ui-dialog:visible' ).length == 0 ) {
+
+									$.boom.page.toolbar.minimise();
+								}
 
 								return;
 							}
