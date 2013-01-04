@@ -44,11 +44,79 @@ class Boom_Controller_Cms_Page_Version extends Controller_Cms_Page_Settings
 	}
 
 	/**
-	 * Saves
+	 * Saves the content (title, chunks) for a page version.
+	 *
+	 *
+	 * **Expected POST variables:**
+	 * Name		|	Type	|	Description
+	 * ---------------|-----------|---------------
+	 * data		|	json	|	All the page settings, slot data, tags etc. are sent via a single json encoded variable...
+	 *
 	 */
 	public function action_content()
 	{
+		// Are you allowed to be here?
+		$this->_authorization('edit_page_content', $this->_page);
 
+		// Save page form data is json encoded so get the data and decode it.
+		$post = json_decode($this->request->post('data'));
+
+		// Has the page title been changed?
+		if ($this->old_version->title != $post->title)
+		{
+			// Update the title of the new version.
+			$this->new_version->title = $post->title;
+
+			// TODO: update the primary URL of the page the first time a title is saved.
+		}
+
+		// Save the new version.
+		$this->new_version->create();
+
+		// Update chunks.
+
+		// Used to build an array of slotnames submitted.
+		$slotnames = array();
+
+		foreach ( (array) $post->slots as $type => $obj)
+		{
+			foreach (get_object_vars($obj) as $name => $chunk_data)
+			{
+				// Add this slot to the array of slotnames.
+				// Do this even if the chunk is being deleted so that deleted chunks won't be copied from the old version.
+				$slotnames[] = $name;
+
+				if ( ! isset($obj->delete))
+				{
+					$chunk = $this->new_version
+						->add_chunk($type, $name, (array) $chunk_data);
+
+					if ($type == 'slideshow')
+					{
+						// Add slides to the slideshow chunk.
+						foreach ($chunk_data->slides as & $slide)
+						{
+							$slide = ORM::factory('Chunk_Slideshow_Slide')
+								->values(array(
+									'asset_id'	=>	$slide->asset_rid,
+									'caption'	=>	$slide->caption,
+									'link'		=>	$slide->link,
+									'chunk_id'	=>	$chunk->id,
+								))
+								->create();
+						}
+					}
+					elseif ($type == 'linkset')
+					{
+						// Add links to the linkset chunk.
+						$chunk->links($chunk_data->links);
+					}
+				}
+			}
+		}
+
+		// Import any chunks which weren't saved from the old version to the new version.
+		$this->new_version->copy_chunks($this->old_version, $slotnames);
 	}
 
 	public function action_embargo()

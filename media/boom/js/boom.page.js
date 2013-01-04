@@ -272,47 +272,16 @@ $.extend($.boom, {
 
 			console.debug('POST data debug:', requestdata.data);
 
-			$.post( '/cms/page/save/' + this.config.id, requestdata )
+			$.post( '/cms/page/version/content/' + this.config.id, requestdata )
 			.done(
 				function(response){
 
 					$.boom.loader.hide();
 
-					response = $.parseJSON(response);
-
-					// success
-					if (typeof response == 'object') {
-						console.log( response );
-						// Only reload the page if the URL returned is different to the browser URL.
-						// This will happen when the page title has been changed and the primary link has been updated.
-						if (response.reload && response.reload == true)
-						{
-							$.boom.growl.show( "Page successfully saved, reloading." );
-							$.boom.page.slot_edits = [];
-							$.boom.page.save_button.button( 'disable' ).attr( 'title', 'You have no unsaved changes' );
-
-							setTimeout(function(){
-								top.location = response.url;
-							}, 100);
-						}
-						else
-						{
-							self.config.vid = response.vid;
-							$('#b-page-publish').show();
-							$.boom.growl.show( "Page successfully saved." );
-							$.boom.page.slot_edits = [];
-							$.boom.page.save_button.button( 'disable' ).attr( 'title', 'You have no unsaved changes' );
-						}
-					}
-					else if (response.match(/<html/i)) {
-
-						// FIXME
-						// unexpected app error
-						$.boom.dialog.alert('error', 'Sorry, there was an error trying to save the page.<br/>Please try again.');
-					} else {
-						// managable app error
-						$.boom.dialog.alert('error', response);
-					}
+					$('#b-page-publish').show();
+					$.boom.growl.show( "Page successfully saved." );
+					$.boom.page.slot_edits = [];
+					$.boom.page.save_button.button( 'disable' ).attr( 'title', 'You have no unsaved changes' );
 				});
 
 			/*
@@ -971,7 +940,7 @@ $.extend($.boom.page, {
 
 			return menu_items;
 		},
-		
+
 		/**
 		* @class
 		* @name $.boom.page.settings.navigation
