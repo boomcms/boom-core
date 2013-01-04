@@ -276,7 +276,7 @@ $.extend($.boom, {
 			.done(
 				function(response){
 
-					
+
 
 					$('#b-page-publish').show();
 					$.boom.growl.show( "Page successfully saved." );
@@ -1595,9 +1595,9 @@ $.extend($.boom.page, {
 				var url = '/cms/page/version/embargo/' + $.boom.page.config.id;
 
 				$.boom.dialog.open({
-					url: url + '?vid=' + $.boom.page.config.vid,
+					url: url,
 					event: event,
-					title: 'Page template',
+					title: 'Page embargo',
 					width: 300,
 					// cache: true,
 					buttons: {
@@ -1605,14 +1605,11 @@ $.extend($.boom.page, {
 
 							$.boom.page.settings.save(
 								url,
-								$("#b-form-pageversion-template").serialize(),
-								"Page template saved, reloading page."
+								$("#b-form-pageversion-embargo").serialize(),
+								"Page embargo saved."
 							);
 
 							$.boom.dialog.destroy( this );
-
-							// Reload the page to show the template change.
-							top.location.reload();
 						}
 					},
 					open: function(){

@@ -127,11 +127,30 @@ class Boom_Controller_Cms_Page_Version extends Controller_Cms_Page_Settings
 
 		if ($this->_method === Request::GET)
 		{
-
+			$this->template = View::factory("$this->_view_directory/embargo", array(
+				'version'	=>	$this->old_version,
+			));
 		}
 		elseif ($this->_method === Request::POST)
 		{
+			$embargoed_until = $this->request->post('embargoed_until');
 
+			// If an embargo time hasn't been given, or the embargo has been removed
+			// Use the time of the request
+			// This means that the embargo time is in the past - the version is published.
+			if ( ! ($embargoed_until AND $this->request->post('embargoed')))
+			{
+				$embargoed_until = $_SERVER['REQUEST_TIME'];
+			}
+			else
+			{
+				$embargoed_until = strtotime($embargoed_until);
+			}
+
+			// Updated the embargo time of the version.
+			$this->old_version
+				->set('embargoed_until', $embargoed_until)
+				->update();
 		}
 	}
 
@@ -156,7 +175,7 @@ class Boom_Controller_Cms_Page_Version extends Controller_Cms_Page_Settings
 
 			$this->new_version
 				->set('feature_image_id', $this->request->post('feature_image_id'))
-				->save()
+				->create()
 				->copy_chunks($this->old_version);
 		}
 	}
@@ -177,7 +196,7 @@ class Boom_Controller_Cms_Page_Version extends Controller_Cms_Page_Settings
 		{
 			$this->new_version
 				->set('template_id', $this->request->post('template_id'))
-				->save()
+				->create()
 				->copy_chunks($this->old_version);
 		}
 	}
