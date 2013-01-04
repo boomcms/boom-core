@@ -591,7 +591,7 @@ $.widget('ui.chunkFeature', $.ui.chunk, {
 	*/
 	getData: function(){
 
-		return this.options.slot.rid;
+		return { target_page_rid : this.options.slot.rid };
 	},
 
 	/**
@@ -694,7 +694,9 @@ $.widget('ui.chunkAsset', $.ui.chunk, {
 
 			var rid = this.options.slot.rid;
 
-			return (rid == 0) ? null : rid;
+			rid = (rid == 0) ? null : rid;
+			
+			return { asset_id : rid };
 	},
 
 	/**
