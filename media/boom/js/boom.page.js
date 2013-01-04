@@ -1650,7 +1650,7 @@ $.extend($.boom.page, {
 					buttons: {
 						Save: function(){
 
-							self.save(
+							$.boom.page.settings.save(
 								url,
 								$("#boom-form-pagesettings-visibility").serialize(),
 								"Page visibility settings saved."
