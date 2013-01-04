@@ -147,20 +147,10 @@ class Boom_Controller_Cms_Page_Version extends Controller_Cms_Page_Settings
 				$embargoed_until = strtotime($embargoed_until);
 			}
 
-			// Set any previous embargoed versions to unpublished to ensure that they won't be used.
-			DB::update('page_versions')
-				->set(array(
-					'published'	=>	FALSE,
-				))
-				->where('embargoed_until', '>', $_SERVER['REQUEST_TIME'])
-				->where('page_id', '=', $this->_page->id)
-				->execute();
-
 			// Updated the embargo time of the new version.
 			$this->new_version
-				->set('published', TRUE)
-				->set('embargoed_until', $embargoed_until)
-				->create();
+				->create()
+				->embargo($embargoed_until);
 		}
 	}
 

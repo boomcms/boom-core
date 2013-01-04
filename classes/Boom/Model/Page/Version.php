@@ -139,6 +139,31 @@ class Boom_Model_Page_Version extends ORM
 	}
 
 	/**
+	 * Embargoes the page version until the specified time.
+	 *
+	 * @param int	$time	Unix timestamp
+	 * @return Model_Page_Version
+	 */
+	public function embargo($time)
+	{
+		// Set any previous embargoed versions to unpublished to ensure that they won't be used.
+		DB::update('page_versions')
+			->set(array(
+				'published'	=>	FALSE,
+			))
+			->where('embargoed_until', '>', $_SERVER['REQUEST_TIME'])
+			->where('page_id', '=', $this->page_id)
+			->where('id', '!=', $this->id)
+			->execute($this->_db);
+
+		// Updated the embargo time of the new version.
+		$this
+			->set('published', TRUE)
+			->set('embargoed_until', $time)
+			->save();
+	}
+
+	/**
 	* Filters for the versioned person columns
 	* @link http://kohanaframework.org/3.2/guide/orm/filters
 	*/
