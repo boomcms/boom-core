@@ -110,7 +110,7 @@ $.extend($.boom, {
 			}
 
 			$('.b-button-preview').on('click', function(){
-				saveEditorState( $(this).attr('data-preview').val() );
+				saveEditorState( $(this).attr('data-preview') );
 			});
 
 			$('#b-page-delete').click(function(){
