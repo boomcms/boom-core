@@ -21,30 +21,15 @@ class Boom_Model_Chunk_Text extends ORM
 	protected $_table_name = 'chunk_texts';
 
 	/**
-	* Filters for the versioned person columns
-	* @link http://kohanaframework.org/3.2/guide/orm/filters
-	*/
-	public function filters()
-	{
-	    return array(
-			'text' => array(
-				array('html_entity_decode'),
-				array('urldecode'),
-				array('Chunk_Text::munge'),
-			),
-	   );
-	}
-
-	/**
 	 * When creating a text chunk log which assets are linked to from it.
 	 *
 	 * @param	Validation $validation
 	 * @return 	Boom_Model_Chunk_Text
 	 */
-	public function save(Validation $validation = NULL)
+	public function create(Validation $validation = NULL)
 	{
 		// Create the text chunk.
-		parent::save($validation);
+		parent::create($validation);
 
 		// Find which assets are linked to within the text chunk.
 		preg_match_all('|hoopdb://image/(\d+)|', $this->text, $matches);
@@ -74,5 +59,20 @@ class Boom_Model_Chunk_Text extends ORM
 		}
 
 		return $this;
+	}
+
+	/**
+	* Filters for the versioned person columns
+	* @link http://kohanaframework.org/3.2/guide/orm/filters
+	*/
+	public function filters()
+	{
+	    return array(
+			'text' => array(
+				array('html_entity_decode'),
+				array('urldecode'),
+				array('Chunk_Text::munge'),
+			),
+	   );
 	}
 }
