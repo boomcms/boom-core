@@ -624,6 +624,13 @@ $.widget('ui.chunkAsset', $.ui.chunk, {
 		var self = this;
 		var tagmanager = $.boom.assets;
 		var asset_selected = new $.Deferred();
+		
+		self.asset = {
+			asset_id : self.options.slot.rid,
+			title : null,
+			caption : null,
+			url : null
+		};
 
 		// cleanup code when the dialog closes.
 		asset_selected
@@ -639,13 +646,13 @@ $.widget('ui.chunkAsset', $.ui.chunk, {
 		} )
 		.pipe( function( rid ){
 
-			self.options.slot.rid = rid;
+			self.asset.asset_id = rid;
 			return $.boom.links.picker( {
 				title: 'Add a link'
 			});
 		})
 		.done( function( link ){
-			self.insert( self.options.slot.rid, link );
+			self.insert( self.asset.asset_id, link );
 		})
 		.fail( function() {
 			self.remove();
@@ -663,8 +670,8 @@ $.widget('ui.chunkAsset', $.ui.chunk, {
 		$.boom.log( 'inserting asset' + rid );
 
 		var self = this;
-		self.options.slot.rid = rid;
-		link = ( link ) ? link : {};
+		link = ( link ) ? link : { url : null };
+		self.asset.url = link.url;
 
 		$.boom.loader.show();
 
@@ -692,11 +699,16 @@ $.widget('ui.chunkAsset', $.ui.chunk, {
 	*/
 	getData: function() {
 
-			var rid = this.options.slot.rid;
+			var rid = this.asset.asset_id;
 
 			rid = (rid == 0) ? null : rid;
-
-			return { asset_id : rid };
+			
+			return { 
+				asset_id : rid,
+				title : null,
+				caption : null,
+				url : this.asset.url
+			};
 	},
 
 	/**
