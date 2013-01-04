@@ -112,6 +112,21 @@ $.extend($.boom, {
 			$('.b-button-preview').on('click', function(){
 				saveEditorState( $(this).attr('data-preview') );
 			});
+			
+			var save_menu = {
+				"Save" : self.save,
+				"Save and preview" : function(){
+					self.save();
+					saveEditorState( 'preview' );
+				},
+				"Save and publish" : function(){
+					self.save();
+					$.post( '/cms/page/version/embargo/' + self.config.id );
+				},
+				"Save and request approval" : function(){
+					self.save();
+				}
+			};
 
 			$('#b-page-delete').click(function(){
 
@@ -155,10 +170,13 @@ $.extend($.boom, {
 					}
 				});
 			});
-			$('#b-page-save').click(function(){
-
-				self.save();
-			});
+			$('#boom-page-save-menu')
+				.splitbutton({
+					items: save_menu,
+					width: 'auto',
+					menuPosition: 'right',
+					split: false
+				});
 			$('#b-page-publish').click(function(){
 				$.boom.loader.show();
 
