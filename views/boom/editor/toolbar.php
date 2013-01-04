@@ -15,7 +15,7 @@
 		</div>
 
 		
-			<button class="boom-button b-button-preview" data-icon="ui-icon-boom-preview" data-preview="preview">
+			<button id="boom-page-preview" class="boom-button b-button-preview" data-icon="ui-icon-boom-preview" data-preview="preview">
 				<?=__('Preview')?>
 			</button>
 			
@@ -55,11 +55,11 @@
 			</button>
 		<? endif; ?>
 
-		<button id="boom-topbar-editlive" class="boom-button">
+		<button id="boom-page-editlive" class="boom-button">
 			<?=__('Edit live')?>
 		</button>
 
-		<button id="boom-topbar-viewlive" class="boom-button b-button-preview" data-preview="disabled">
+		<button id="boom-page-viewlive" class="boom-button b-button-preview" data-preview="disabled">
 			<?=__('View live')?>
 		</button>
 	<? endif; ?>

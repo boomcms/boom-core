@@ -110,7 +110,7 @@ $.extend($.boom, {
 			}
 
 			$('.b-button-preview').on('click', function(){
-				saveEditorState( $(this).attr('data-preview').val() );
+				saveEditorState( $(this).attr('data-preview') );
 			});
 
 			$('#b-page-delete').click(function(){
@@ -1617,6 +1617,32 @@ $.extend($.boom.page, {
 			/** @function */
 			edit: function( event ){
 
+				var url = '/cms/page/version/embargo/' + $.boom.page.config.id;
+
+				$.boom.dialog.open({
+					url: url + '?vid=' + $.boom.page.config.vid,
+					event: event,
+					title: 'Page template',
+					width: 300,
+					// cache: true,
+					buttons: {
+						Save: function(){
+
+							$.boom.page.settings.save(
+								url,
+								$("#b-form-pageversion-template").serialize(),
+								"Page template saved, reloading page."
+							);
+
+							$.boom.dialog.destroy( this );
+
+							// Reload the page to show the template change.
+							top.location.reload();
+						}
+					},
+					open: function(){
+					}
+				});
 			}
 		},
 

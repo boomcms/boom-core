@@ -21,7 +21,7 @@
 
 
 		<div class="ui-helper-right">
-			<button id="b-page-editbutton" class="boom-button ui-button-text-icon ui-button">
+			<button id="b-page-editbutton" class="boom-button b-button-preview ui-button-text-icon ui-button" data-preview="edit">
 				<?=__('Edit')?> <?=__('page')?>
 			</button>
 		</div>
