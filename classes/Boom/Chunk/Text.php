@@ -159,7 +159,7 @@ class Boom_Chunk_Text extends Chunk
 	 */
 	public static function munge($text)
 	{
-		return preg_replace('|<(.*?)src=[\'"]/asset/view/(\d+)(.*?)[\'"](.*)>|', '<$1 src="hoopdb://image/$2"$4>', $text);
+		return preg_replace('|<(.*?)src=([\'"])/asset/view/(\d+)([\'"])(.*?)>|', '<$1src=$2hoopdb://image/$3$4$5>', $text);
 	}
 
 	/**
