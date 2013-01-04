@@ -624,7 +624,7 @@ $.widget('ui.chunkAsset', $.ui.chunk, {
 		var self = this;
 		var tagmanager = $.boom.assets;
 		var asset_selected = new $.Deferred();
-		
+
 		self.asset = {
 			asset_id : self.options.slot.rid,
 			title : null,
@@ -702,8 +702,8 @@ $.widget('ui.chunkAsset', $.ui.chunk, {
 			var rid = this.asset.asset_id;
 
 			rid = (rid == 0) ? null : rid;
-			
-			return { 
+
+			return {
 				asset_id : rid,
 				title : null,
 				caption : null,
@@ -1083,7 +1083,7 @@ $.widget('ui.chunkSlideshow', $.ui.chunk, {
 			'&editable=1&remove=0';
 
 		var slides = this.getData();
-		var request = $.get( url, { data : slides } )
+		var request = $.post( url, { data : slides } )
 		.done( function( data ){
 
 			$.boom.loader.hide();
@@ -1201,7 +1201,7 @@ $.widget('ui.chunkSlideshow', $.ui.chunk, {
 
 				slide.caption = $this.find( '.slide-caption' ).text();
 				slide.caption = ( slide.caption == 'Default text' ) ? '' : slide.caption;
-				slide.asset_rid = $this.find( '.slide-asset' ).attr( 'src' ).split( '/' )[3];
+				slide.asset_id = $this.find( '.slide-asset' ).attr( 'src' ).split( '/' )[3];
 				slide.link = $this.find( '.slide-link' ).attr( 'href' );
 
 				slides.push( slide );

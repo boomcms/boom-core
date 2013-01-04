@@ -17,7 +17,8 @@ class Boom_Chunk_Slideshow extends Chunk
 		return View::factory("site/slots/slideshow/$this->_template", array(
 			'chunk'	=>	$this->_chunk,
 			'title'		=>	$this->_chunk->title,
-			'slides'	=>	$this->_chunk->slides->find_all(),
+			'slides'	=>	$this->_chunk->slides(),
+			'editor'	=>	Editor::instance(),
 		));
 	}
 
@@ -28,8 +29,6 @@ class Boom_Chunk_Slideshow extends Chunk
 
 	public function has_content()
 	{
-		return $this->_chunk
-			->slides
-			->count_all() >0;
+		return count($this->_chunk->slides()) > 0;
 	}
 }
