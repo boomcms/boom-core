@@ -17,8 +17,13 @@ class Boom_Controller_Cms_Chunk_Slideshow extends Boom_Controller_Cms_Chunk
 		));
 	}
 
-	public function action_save()
+	public function action_preview()
 	{
-		$slides = $this->request->post('slides');
+		$model = new Model_Chunk_Slideshow;
+
+		$chunk = new Chunk_Slideshow($this->page, $model, $this->request->query('slotname'), TRUE);
+		$chunk->template($this->request->query('template'));
+
+		$this->response->body($chunk->execute());
 	}
 }

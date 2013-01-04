@@ -82,6 +82,8 @@ class Boom_Controller_Cms_Page_Version extends Controller_Cms_Page_Settings
 		{
 			foreach (get_object_vars($obj) as $name => $chunk_data)
 			{
+				$name = trim($name);
+
 				// Add this slot to the array of slotnames.
 				// Do this even if the chunk is being deleted so that deleted chunks won't be copied from the old version.
 				$slotnames[] = $name;
