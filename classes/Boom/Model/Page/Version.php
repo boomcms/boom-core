@@ -52,6 +52,41 @@ class Boom_Model_Page_Version extends ORM
 	);
 
 	/**
+	 * Adds a chunk to the page version.
+	 *
+	 * This should only be called when the page version has been saved and therefore has a version ID.
+	 * When a chunk type and slotname combination which is already in use on the page is used the existing chunk will be updated with the new data.
+	 *
+	 *
+	 * **Examples**
+	 *
+	 * Add a text chunk to a version:
+	 *
+	 *		$version->add_chunk('text', 'standfirst', array('text' => 'Some text'));
+	 *		$version->add_chunk('text', 'standfirst', array('text' => 'Some text', 'title' => 'A text chunk with a title'));
+	 *
+	 * Add a feature chunk to a version:
+	 *
+	 *		$version->add_chunk('feature', 'feature_box_1', array('target_page_id' => 1));
+	 *
+	 * @param	string	$type	The type of chunk to add, e.g. text, feature, etc.
+	 * @param	string	$slotname	The slotname of the chunk
+	 * @param	array	$data	Array of values to assign to the new chunk.
+	 * @return	Model_Page_Version
+	 * @throws	Exception	An exception is thrown when this function is called on a page version which hasn't been saved.
+	 *
+	 */
+	public function add_chunk($type, $slotname, array $data)
+	{
+		// Check that the version has been saved.
+		// This has to be done before adding a chunk to a version as we need the PK to be set to create the relationship in the page_chunks tables.
+		if ( ! $this->_saved)
+		{
+			throw new Exception('You must call Model_Page_Version::save() before calling Model_Page_Version::add_chunk()');
+		}
+	}
+
+	/**
 	 * Copies the chunks from another page version to this version.
 	 *
 	 * @param Model_Page_Version $from_version

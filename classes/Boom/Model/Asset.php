@@ -17,7 +17,7 @@ class Boom_Model_Asset extends ORM_Taggable
 	);
 
 	protected $_created_column = array(
-		'column'	=>	'uploaded_by',
+		'column'	=>	'uploaded_time',
 		'format'	=>	TRUE,
 	);
 
@@ -41,11 +41,6 @@ class Boom_Model_Asset extends ORM_Taggable
 	);
 
 	protected $_table_name = 'assets';
-
-	protected $_updated_column = array(
-		'column'	=>	'uploaded_time',
-		'format'	=>	TRUE,
-	);
 
 	/**
 	 *
