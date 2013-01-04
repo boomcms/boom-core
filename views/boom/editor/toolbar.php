@@ -6,9 +6,11 @@
 
 	<? if ($auth->logged_in('edit_page_content', $page)): ?>
 		<div id="b-page-actions">
-			<button id="b-page-save" class="boom-button" disabled="disabled" title="You have no unsaved changes" data-icon="ui-icon-boom-accept">
+			<span id="boom-page-save-menu">
+				<button id="b-page-save" class="boom-button" disabled="disabled" title="You have no unsaved changes" data-icon="ui-icon-boom-accept">
 					<?=__('Accept')?>
-			</button>
+				</button>
+			</span>
 			<button id="b-page-save" class="boom-button" data-icon="ui-icon-boom-cancel">
 					<?=__('Cancel')?>
 			</button>
