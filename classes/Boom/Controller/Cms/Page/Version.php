@@ -149,6 +149,7 @@ class Boom_Controller_Cms_Page_Version extends Controller_Cms_Page_Settings
 
 			// Updated the embargo time of the version.
 			$this->old_version
+				->set('published', TRUE)
 				->set('embargoed_until', $embargoed_until)
 				->update();
 		}
