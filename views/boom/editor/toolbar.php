@@ -14,21 +14,21 @@
 			</button>
 		</div>
 
-		
+
 			<button id="boom-page-preview" class="boom-button b-button-preview" data-icon="ui-icon-boom-preview" data-preview="preview">
 				<?=__('Preview')?>
 			</button>
-			
+
 			<span id="boom-page-template-menu">
-				<button id="boom-page-template-settings" class="boom-button" data-icon="ui-icon-boom-settings">
+				<button id="boom-page-template-settings" class="boom-button" data-icon="ui-icon-boom-options">
 					<?= __('Template settings') ?>
 				</button>
 			</span>
-		
+
 	<? endif; ?>
 
 	<? if ($auth->logged_in('edit_page', $page)): ?>
-		
+
 			<button id="boom-page-visibility" class="boom-button" data-icon="ui-icon-boom-visibility">
 				<?= __('Visibility') ?>
 			</button>
@@ -46,7 +46,7 @@
 					<?= __('Delete') ?>
 				</button>
 			<? endif; ?>
-		
+
 
 
 		<? if ($auth->logged_in('add_page', $page)): ?>
@@ -55,15 +55,15 @@
 			</button>
 		<? endif; ?>
 
-		<button id="boom-page-editlive" class="boom-button">
+		<button id="boom-page-editlive" class="boom-button" data-icon="ui-icon-boom-edit-live">
 			<?=__('Edit live')?>
 		</button>
 
-		<button id="boom-page-viewlive" class="boom-button b-button-preview" data-preview="disabled">
+		<button id="boom-page-viewlive" class="boom-button b-button-preview" data-icon="ui-icon-boom-view-live" data-preview="disabled">
 			<?=__('View live')?>
 		</button>
 	<? endif; ?>
-	
+
 	<div id="boom-topbar-pagesettings" class="ui-helper-clearfix">
 		<div class="ui-helper-center">
 			<?= View::factory('boom/editor/page/settings/index');?>
