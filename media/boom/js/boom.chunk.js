@@ -146,11 +146,11 @@ $.widget('ui.chunkText', $.ui.chunk, {
 	/**
 	@lends ui.chunkText
 	*/
-	
+
 	title : '',
-	
+
 	content : '',
-	
+
 	/**
 	Create an instance of TinyMCE on the selected element.
 	*/
@@ -210,7 +210,7 @@ $.widget('ui.chunkText', $.ui.chunk, {
 	*/
 	getData : function(){
 		var $content = this.element.find( '.slot-content');
-		
+
 		if ( $content.length ) {
 			this.content = $content.html();
 			this.title = this.element.find( '.slot-title').text();
@@ -218,7 +218,7 @@ $.widget('ui.chunkText', $.ui.chunk, {
 			this.title = null;
 			this.content = this.element.html();
 		}
-		
+
 		return { title : this.title, text : this.content.cleanup().safeEscape() };
 	},
 
@@ -235,12 +235,12 @@ $.widget('ui.chunkText', $.ui.chunk, {
 				.html( replacedata )
 				.show();
 		}
-		
+
 		this.element
 			.find( '[contenteditable]' )
 			.removeAttr( 'contenteditable' )
 			.off( 'click' );
-	
+
 		this._save_slot();
 
 		this.destroy();
@@ -591,7 +591,7 @@ $.widget('ui.chunkFeature', $.ui.chunk, {
 	*/
 	getData: function(){
 
-		return { target_page_rid : this.options.slot.rid };
+		return { target_page_id : this.options.slot.rid };
 	},
 
 	/**
@@ -695,7 +695,7 @@ $.widget('ui.chunkAsset', $.ui.chunk, {
 			var rid = this.options.slot.rid;
 
 			rid = (rid == 0) ? null : rid;
-			
+
 			return { asset_id : rid };
 	},
 
@@ -757,7 +757,7 @@ $.widget('ui.chunkSlideshow', $.ui.chunk, {
 	@function
 	*/
 	_build_ui : function() {
-		
+
 		this._bring_forward();
 
 		this.options.slider.pause();
