@@ -189,7 +189,6 @@ class Boom_Model_Page_Version extends ORM
 				->join('chunk_text_assets')
 				->on('chunk_text_assets.asset_id', '=', 'asset.id')
 				->order_by('position', 'asc')
-				->limit(1)
 				->where('chunk_text_assets.chunk_id', '=', $chunk->id)
 				->where('asset.type', '=', Boom_Asset::IMAGE);
 
