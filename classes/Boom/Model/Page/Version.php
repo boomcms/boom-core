@@ -75,7 +75,7 @@ class Boom_Model_Page_Version extends ORM
 	 * @param	string	$type	The type of chunk to add, e.g. text, feature, etc.
 	 * @param	string	$slotname	The slotname of the chunk
 	 * @param	array	$data	Array of values to assign to the new chunk.
-	 * @return	Model_Page_Version
+	 * @return	Model	Returns the model object for the created chunk
 	 * @throws	Exception	An exception is thrown when this function is called on a page version which hasn't been saved.
 	 *
 	 * @todo Would it be useful to have a function to add multiple chunks? This would avoid repeated, single, DB::insert() to add relationships.
@@ -105,7 +105,7 @@ class Boom_Model_Page_Version extends ORM
 			->execute();
 
 		// Return the current page version object.
-		return $this;
+		return $chunk;
 	}
 
 	/**
