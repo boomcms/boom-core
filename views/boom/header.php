@@ -11,4 +11,3 @@
 	<?= HTML::style('media/boom/css/cms.css', array('media' => 'screen')) ?>
 </head>
 <body>
-	<div id="boom-wysiwyg-toolbar" class="mceEditor o2k7Skin o2k7SkinSilver"></div>
