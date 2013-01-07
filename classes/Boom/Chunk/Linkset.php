@@ -16,7 +16,7 @@ class Boom_Chunk_Linkset extends Chunk
 	{
 		return View::factory("site/slots/linkset/$this->_template", array(
 			'title'		=>	$this->_chunk->title,
-			'links'	=>	$this->_chunk->links->find_all(),
+			'links'	=>	$this->_chunk->links(),
 		));
 	}
 
@@ -27,6 +27,6 @@ class Boom_Chunk_Linkset extends Chunk
 
 	public function has_content()
 	{
-		return $this->_chunk->links->count_all() > 0;
+		return count($this->_chunk->links()) > 0;
 	}
 }

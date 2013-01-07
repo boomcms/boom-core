@@ -29,9 +29,9 @@ class Boom_Model_Chunk_Slideshow extends ORM
 	protected $_table_name = 'chunk_slideshows';
 
 	/**
-	* Sets or gets the slideshows slides
-	*
-	*/
+	 * Sets or gets the slideshows slides
+	 *
+	 */
 	public function slides($slides = NULL)
 	{
 		if ($slides === NULL)
