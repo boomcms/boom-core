@@ -96,22 +96,16 @@ class Boom_Controller_Cms_Page_Version extends Controller_Cms_Page_Settings
 					if ($type == 'slideshow')
 					{
 						// Add slides to the slideshow chunk.
-						foreach ($chunk_data->slides as & $slide)
-						{
-							$slide = ORM::factory('Chunk_Slideshow_Slide')
-								->values(array(
-									'asset_id'	=>	$slide->asset_rid,
-									'caption'	=>	$slide->caption,
-									'link'		=>	$slide->link,
-									'chunk_id'	=>	$chunk->id,
-								))
-								->create();
-						}
+						$chunk
+							->slides($chunk_data->slides)
+							->save_slides();
 					}
 					elseif ($type == 'linkset')
 					{
 						// Add links to the linkset chunk.
-						$chunk->links($chunk_data->links);
+						$chunk
+							->links($chunk_data->links)
+							->update();
 					}
 				}
 			}

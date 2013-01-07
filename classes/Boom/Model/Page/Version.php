@@ -101,7 +101,7 @@ class Boom_Model_Page_Version extends ORM
 
 		// Add the relationship between the chunk and this page version.
 		DB::insert('page_chunks')
-			->values(array($this->id, $chunk->id))
+			->values(array($this->id, $chunk->id, constant('Chunk::' . strtoupper($type))))
 			->execute();
 
 		// Return the current page version object.
@@ -119,10 +119,14 @@ class Boom_Model_Page_Version extends ORM
 	{
 		foreach (array('asset', 'text', 'feature', 'linkset', 'slideshow') as $type)
 		{
-			$subquery = DB::select(DB::expr($this->id), 'chunk_id')
+			// Get a numeric chunk type.
+			$num_type = constant('Chunk::' . strtoupper($type));
+
+			$subquery = DB::select(DB::expr($this->id), 'chunk_id', DB::expr($num_type))
 				->from('page_chunks')
 				->join("chunk_$type"."s")
 				->on('page_chunks.chunk_id', '=', 'id')
+				->where('page_chunks.type', '=', $num_type)
 				->where('page_chunks.page_vid', '=', $from_version->id);
 
 			if ( ! empty($exclude))
@@ -130,7 +134,7 @@ class Boom_Model_Page_Version extends ORM
 				$subquery->where('slotname', 'not in', $exclude);
 			}
 
-			DB::insert('page_chunks', array('page_vid', 'chunk_id'))
+			DB::insert('page_chunks', array('page_vid', 'chunk_id', 'type'))
 				->select($subquery)
 				->execute($this->_db);
 		}

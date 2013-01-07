@@ -24,6 +24,16 @@ class Migration_Boom_20121113120100 extends Minion_Migration_Base
 		$db->query(NULL, "update chunk_linksets inner join chunks on chunks.id = chunk_linksets.id set chunk_linksets.slotname = chunks.slotname");
 		$db->query(NULL, "update chunk_slideshows inner join chunks on chunks.id = chunk_slideshows.id set chunk_slideshows.slotname = chunks.slotname");
 		$db->query(NULL, "update chunk_texts inner join chunks on chunks.id = chunk_texts.id set chunk_texts.slotname = chunks.slotname");
+
+		$db->query(NULL, "alter table page_chunks add type tinyint unsigned");
+		$db->query(NULL, "update page_chunks inner join chunks on page_chunks.chunk_id = chunks.id set page_chunks.type = 1 where chunks.type = 'asset'");
+		$db->query(NULL, "update page_chunks inner join chunks on page_chunks.chunk_id = chunks.id set page_chunks.type = 2 where chunks.type = 'feature'");
+		$db->query(NULL, "update page_chunks inner join chunks on page_chunks.chunk_id = chunks.id set page_chunks.type = 3 where chunks.type = 'linkset'");
+		$db->query(NULL, "update page_chunks inner join chunks on page_chunks.chunk_id = chunks.id set page_chunks.type = 4 where chunks.type = 'slideshow'");
+		$db->query(NULL, "update page_chunks inner join chunks on page_chunks.chunk_id = chunks.id set page_chunks.type = 5 where chunks.type = 'text'");
+
+		$db->query(NULL, "alter table page_chunks drop index chunk_page_page_vid_chunk_id");
+		$db->query(NULL, "create index page_chunks_page_vid_chunk_id_type on page_chunks(page_vid, chunk_id, type)");
 		$db->query(NULL, "drop table chunks");
 	}
 

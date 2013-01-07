@@ -8,6 +8,16 @@
 */
 abstract class Boom_Chunk
 {
+	const ASSET = 1;
+
+	const FEATURE = 2;
+
+	const LINKSET = 3;
+
+	const SLIDESHOW = 4;
+
+	const TEXT = 5;
+
 	/**
 	 * Holds the chunk data retrieved from the database
 	 * Object type will depend on slottype, e.g. Model_Chunk_Text for text chunk, Model_Chunk_Feature for feature etc.

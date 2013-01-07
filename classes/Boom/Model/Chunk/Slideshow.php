@@ -17,7 +17,6 @@ class Boom_Model_Chunk_Slideshow extends ORM
 	protected $_has_many = array(
 		'slides' => array('model' => 'Chunk_Slideshow_Slide', 'foreign_key' => 'chunk_id'),
 	);
-	protected $_load_with = array('slides');
 
 	protected $_slides;
 
@@ -29,24 +28,6 @@ class Boom_Model_Chunk_Slideshow extends ORM
 
 	protected $_table_name = 'chunk_slideshows';
 
-	public function create(Validation $validation = NULL)
-	{
-		parent::create($validation);
-
-		// Remove all existing slides.
-		DB::delete('chunk_slideshow_slides')
-			->where('chunk_id', '=', $this->id)
-			->execute();
-
-		foreach ($this->_slides as $slide)
-		{
-			$slide->chunk_id = $this->chunk_id;
-			$slide->create();
-		}
-
-		return $this;
-	}
-
 	/**
 	* Sets or gets the slideshows slides
 	*
@@ -57,7 +38,10 @@ class Boom_Model_Chunk_Slideshow extends ORM
 		{
 			if ($this->_slides === NULL)
 			{
-				$this->_slides = $this->slides->find_all();
+				$this->_slides = $this
+					->slides
+					->find_all()
+					->as_array();
 			}
 
 			return $this->_slides;
@@ -67,12 +51,36 @@ class Boom_Model_Chunk_Slideshow extends ORM
 			// If the slides are arrays of data then turn them into Chunk_Slideshow_Slides objects.
 			foreach ($slides as & $slide)
 			{
-				$slide = ORM::factory('Chunk_Slideshow_Slide')
-					->values($slide);
+				if ( ! $slide instanceof Model_Chunk_Slideshow_Slide)
+				{
+					$slide = ORM::factory('Chunk_Slideshow_Slide')
+						->values( (array) $slide);
+				}
 			}
 			$this->_slides = $slides;
 
 			return $this;
 		}
+	}
+
+	/**
+	 * Persists slide data to the database.
+	 *
+	 * @return \Boom_Model_Chunk_Slideshow
+	 */
+	public function save_slides()
+	{
+		// Remove all existing slides.
+		DB::delete('chunk_slideshow_slides')
+			->where('chunk_id', '=', $this->id)
+			->execute();
+
+		foreach ( (array) $this->_slides as $slide)
+		{
+			$slide->chunk_id = $this->id;
+			$slide->save();
+		}
+
+		return $this;
 	}
 }
