@@ -112,7 +112,7 @@ $.extend($.boom, {
 			$('.b-button-preview').on('click', function(){
 				saveEditorState( $(this).attr('data-preview') );
 			});
-			
+
 			var save_menu = {
 				"Save" : function(){
 					self.save();
@@ -295,13 +295,18 @@ $.extend($.boom, {
 			$.post( '/cms/page/version/content/' + this.config.id, requestdata )
 			.done(
 				function(response){
-
-
-
-					$('#b-page-publish').show();
 					$.boom.growl.show( "Page successfully saved." );
 					$.boom.page.slot_edits = [];
-					$.boom.page.save_button.button( 'disable' ).attr( 'title', 'You have no unsaved changes' );
+
+					if (response == '')
+					{
+						$('#b-page-publish').show();
+						$.boom.page.save_button.button( 'disable' ).attr( 'title', 'You have no unsaved changes' );
+					}
+					else
+					{
+						top.location = response;
+					}
 				})
 			.fail( function(){
 				$.boom.growl.show( "Unable to save page." );

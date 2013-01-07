@@ -22,19 +22,21 @@ class Boom_URL extends Kohana_URL
 		// If the base URL isn't empty and there's no trailing / then add one.
 		if ($base AND substr($base, -1) != "/")
 		{
-			$base = $base . "/";
+			$base = $base."/";
 		}
 
-		$start_uri = $base . $title;
+		// Only append the base if it's more than just '/'.
+		$start_uri = ($base == '/')? $title : $base.$title;
 		$append = 0;
 
 		// Get a unique URI.
 		do
 		{
-			$uri = ($append > 0)? ($start_uri. $append) : $start_uri;
+			$uri = ($append > 0)? ($start_uri.$append) : $start_uri;
 			$append++;
 
 			$page_uri = new Model_Page_Link(array('location' => $uri));
+
 		}
 		while ($page_uri->loaded() == TRUE);
 
