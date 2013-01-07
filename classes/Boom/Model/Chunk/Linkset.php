@@ -1,18 +1,15 @@
 <?php defined('SYSPATH') OR die('No direct script access.');
 /**
-*
-* @package	BoomCMS
-* @category	Chunks
-* @category	Models
-* @author	Rob Taylor
-* @copyright	Hoop Associates
-*
-*/
+ *
+ * @package	BoomCMS
+ * @category	Chunks
+ * @category	Models
+ * @author	Rob Taylor
+ * @copyright	Hoop Associates
+ *
+ */
 class Boom_Model_Chunk_Linkset extends ORM
 {
-	/**
-	* Properties to create relationships with Kohana's ORM
-	*/
 	protected $_has_many = array(
 		'links' => array('model' => 'Chunk_Linkset_Link', 'foreign_key' => 'chunk_linkset_id'),
 	);
