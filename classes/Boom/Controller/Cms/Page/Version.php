@@ -58,6 +58,9 @@ class Boom_Controller_Cms_Page_Version extends Controller_Cms_Page_Settings
 		// Are you allowed to be here?
 		$this->_authorization('edit_page_content', $this->_page);
 
+		// Start a database transaction.
+		Database::instance()->begin();
+
 		// Save page form data is json encoded so get the data and decode it.
 		$post = json_decode($this->request->post('data'));
 
@@ -113,6 +116,9 @@ class Boom_Controller_Cms_Page_Version extends Controller_Cms_Page_Settings
 
 		// Import any chunks which weren't saved from the old version to the new version.
 		$this->new_version->copy_chunks($this->old_version, $slotnames);
+
+		// Commit the changes.
+		Database::instance()->commit();
 	}
 
 	public function action_embargo()
