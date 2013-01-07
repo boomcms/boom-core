@@ -1,13 +1,5 @@
 <?php
 
-/* Include the userguide module if this isn't a live instance.
-* @link http://kohanaframework.org/3.2/guide/userguide
-*/
-if (Kohana::$environment === Kohana::DEVELOPMENT)
-{
-	Kohana::modules(array_merge(Kohana::modules(), array(MODPATH.'guide')));
-}
-
 /**
 * Route for displaying assets
 *
