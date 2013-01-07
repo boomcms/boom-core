@@ -61,4 +61,29 @@ class Boom_Model_Chunk_Linkset extends ORM
 			return $this;
 		}
 	}
+
+	/**
+	 * Persists link data to the database.
+	 *
+	 * @return \Boom_Model_Chunk_Linkset
+	 */
+	public function save_links()
+	{
+		// Remove all existing link.
+		DB::delete('chunk_linkset_links')
+			->where('chunk_linkset_id', '=', $this->id)
+			->execute();
+
+		// Loop through all the links.
+		foreach ( (array) $this->_links as $link)
+		{
+			// Make the link belong to the current linkset.
+			$link->chunk_linkset_id = $this->id;
+
+			// Save the link.
+			$link->save();
+		}
+
+		return $this;
+	}
 }

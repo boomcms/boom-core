@@ -105,7 +105,7 @@ class Boom_Controller_Cms_Page_Version extends Controller_Cms_Page_Settings
 						// Add links to the linkset chunk.
 						$chunk
 							->links($chunk_data->links)
-							->update();
+							->save_links();
 					}
 				}
 			}
