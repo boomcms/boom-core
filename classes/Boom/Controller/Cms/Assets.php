@@ -204,7 +204,7 @@ class Boom_Controller_Cms_Assets extends Boom_Controller
 
 		// Turn the numeric asset types into user friendly strings.
 		$types = Arr::pluck($types, 'type');
-		$types = array_map(array('Boom_Asset', 'get_type'), $types);
+		$types = array_map(array('Boom_Asset', 'type'), $types);
 		$types = array_map('ucfirst', $types);
 
 		// Put it all in a view.

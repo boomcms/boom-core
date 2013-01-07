@@ -59,7 +59,7 @@
 					<? endif; ?>
 					<tr>
 						<td width="100"><?=__('Type')?></td>
-						<td><?= ucfirst(Boom_Asset::get_type($asset->type));?></td>
+						<td><?= ucfirst(Boom_Asset::type($asset->type));?></td>
 					</tr>
 					<tr>
 						<td><?=__('Filesize')?></td>

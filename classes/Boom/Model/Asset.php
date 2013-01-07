@@ -49,14 +49,6 @@ class Boom_Model_Asset extends ORM_Taggable
 	protected $_old_files = NULL;
 
 	/**
-	* Returns a human readable asset type.
-	*/
-	public function get_type()
-	{
-		return Boom_Asset::get_type($this->type);
-	}
-
-	/**
 	 * Returns an array of old files which have been replaced.
 	 * Where an asset has been replaced the array will contain the names of the backup files for the previous versions.
 	 *
@@ -101,5 +93,15 @@ class Boom_Model_Asset extends ORM_Taggable
 	public function get_mime()
 	{
 		return File::mime(ASSETPATH . $this->id);
+	}
+
+	/**
+	 * Returns the asset's type in a human readable format.
+	 *
+	 * @return 	string
+	 */
+	public function type()
+	{
+		return Boom_Asset::type($this->type);
 	}
 }

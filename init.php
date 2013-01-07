@@ -1,17 +1,36 @@
 <?php
 
-/**
-* Route for displaying assets
-*
-*/
+// Route for displaying assets
 Route::set('asset', 'asset/<action>/<id>(/<width>(/<height>(/<quality>(/<crop>))))')
 	->defaults(array(
-		'controller' => 'asset',
 		'action'	 => 'view'
-	));
+	))
+	->filter(function(Route $route, $params, Request $request)
+		{
+			// Try and get the asset from the database.
+			$asset = new Model_Asset($params['id']);
+
+			// Does the asset exist?
+			if ( ! ($asset->loaded() AND file_exists(ASSETPATH.$asset->id)))
+			{
+				return FALSE;
+			}
+
+			// Put the asset in the request params.
+			$params['asset'] = $asset;
+
+			// Set the controller depending on the asset type.
+			$params['controller'] = 'Asset_'.ucfirst($asset->type());
+
+			// Return the new request params.
+			return $params;
+		}
+	);
 
 /**
  * Checks for a page with the matching URL in the CMS database.
+ *
+ * TODO: change action depending on request headers.
  */
 Route::set('boom', '<location>(.<action>)', array(
 		'location'	=>	'.*?',
