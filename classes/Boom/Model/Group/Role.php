@@ -18,7 +18,6 @@ class Boom_Model_Group_Role extends ORM
 	protected $_belongs_to = array('role' => array());
 
 	protected $_table_columns = array(
-		'id'			=>	'',
 		'group_id'		=>	'',
 		'page_id'		=>	'',
 		'role_id'		=>	'',
