@@ -65,13 +65,6 @@ $.extend($.boom, {
 
 				$.boom.log('Page registered for editing: ' + self.config.rid);
 
-				new $.boom.orm('page', { id: self.config.id }).find(function(){
-
-					//if (this.autosave == 't') {
-						// TODO
-					//}
-				});
-
 				$.getScript( $.boom.config.editor.path, function(){
 					self.loadPageEditor()
 						.done( function(){
