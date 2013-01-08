@@ -303,7 +303,7 @@ class Boom_Model_Page extends ORM_Taggable
 	public function description()
 	{
 		// Return the page's description if one has been set.
-		if ($this->description !== NULL)
+		if ($this->description != NULL)
 		{
 			return $this->description;
 		}

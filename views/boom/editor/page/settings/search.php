@@ -23,7 +23,7 @@
 						</label>
 					</td>
 					<td>
-						<textarea id="description" name="description" class="boom-textarea"><?=$page->description() ?></textarea>
+						<textarea id="description" name="description" class="boom-textarea"><?= $page->description() ?></textarea>
 					</td>
 				</tr>
 				<tr>
