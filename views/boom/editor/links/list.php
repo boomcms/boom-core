@@ -8,7 +8,7 @@
 	<div>
 		<h1>All links</h1>
 		<ul class='boom-tree'>
-			<? foreach($page->links->find_all() as $link): ?>
+			<? foreach($page->links->order_by('location', 'asc')->find_all() as $link): ?>
 				<li data-link="<?= $link->location ?>" data-id="<?= $link->id ?>">
 					<?= $link->location ?>
 					<?= Form::radio('is_primary', $link->location, (bool) $link->is_primary, array('class' => 'b-links-primary')) ?>
