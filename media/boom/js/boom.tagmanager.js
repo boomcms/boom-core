@@ -165,6 +165,10 @@ function CMSTagmanager(type){
 			$(this).parent().next().toggle();
 		});
 		
+		$( '#tag_all' ).on( 'click', function( event ){
+			self.items.tag.get( 0 );
+		})
+		
 		self.items.tag.item_selected = function( $item ){
 			$( '#tag_all' ).removeClass( 'ui-state-active' );
 			
