@@ -663,9 +663,13 @@ $.extend($.boom.page, {
 
 				$.get(this, function(data){
 
-					(/js$/.test(this.url)) && self.elements.page_body.contents().find('head').append('<script type="text/javascript">'+data+'</script>');
+					if (/js$/.test(this.url)) {
+						self.elements.page_body.contents().find('head').append('<script type="text/javascript">'+data+'</script>');
+					} 
 
-					(/css$/.test(this.url)) && self.elements.page_body.contents().find('head').append('<style type="text/css">'+data+'</style>');
+					 if (/css$/.test(this.url)) {
+						self.elements.page_body.contents().find('head').append('<style type="text/css">'+data+'</style>');
+					} 
 
 				});
 			});
