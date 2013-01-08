@@ -173,7 +173,7 @@ function CMSTagmanager(type){
 				$(this)
 				.siblings( '.boom-tree-container' )
 				.find( 'a.ui-state-active' )
-				.removeClass( 'ui-state-active' )
+				.removeClass( 'ui-state-active' );
 			});
 		
 		self.items.tag.item_selected = function( $item ){
