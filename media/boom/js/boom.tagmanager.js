@@ -165,6 +165,17 @@ function CMSTagmanager(type){
 			$(this).parent().next().toggle();
 		});
 		
+		$( '#tag_all' )
+			.on( 'click', function( event ){
+				self.items.tag.filters = {};
+				self.items.tag.get( 0 );
+				
+				$(this)
+				.siblings( '.boom-tree-container' )
+				.find( 'a.ui-state-active' )
+				.removeClass( 'ui-state-active' );
+			});
+		
 		self.items.tag.item_selected = function( $item ){
 			$( '#tag_all' ).removeClass( 'ui-state-active' );
 			
@@ -290,7 +301,7 @@ function CMSTagmanager(type){
 		});
 
 		this.route();
-	}
+	};
 };
 
 $.extend(SiteTagmanager.prototype, $.boom.tagmanager.base.tagmanager);
