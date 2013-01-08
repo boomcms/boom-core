@@ -64,7 +64,7 @@ abstract class Boom_Asset_Core
 				return "video";
 
 			default:
-				return $type_id;
+				return $type;
 		}
 	}
 
