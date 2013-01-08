@@ -298,7 +298,7 @@ function CMSTagmanager(type){
 		});
 
 		this.route();
-	}
+	};
 };
 
 $.extend(SiteTagmanager.prototype, $.boom.tagmanager.base.tagmanager);
