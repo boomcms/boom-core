@@ -1038,7 +1038,7 @@ $.widget('ui.chunkSlideshow', $.ui.chunk, {
 
 				for ( i in slides ) {
 					var slide = slides[ i ];
-					var $li = $( '<li><img src="/asset/thumb/' + slide.asset_rid +'/150/150/85/1" /></li>' )
+					var $li = $( '<li><img src="/asset/thumb/' + slide.asset_id +'/150/150/85/1" /></li>' )
 						.data( 'slide', slide );
 					$list
 						.append( $li );
@@ -1131,7 +1131,7 @@ $.widget('ui.chunkSlideshow', $.ui.chunk, {
 				var $item = $( item );
 				var src = $item.find( '.slide-asset' ).attr( 'src' ).split( '/' );
 
-				src[3] = slide.asset_rid;
+				src[3] = slide.asset_id;
 
 				$item.find( '.slide-asset' ).attr( 'src', src.join( '/' ) );
 				$item.find( '.slide-link' ).attr( 'href', slide.link );
