@@ -114,19 +114,19 @@
 			With <span id="boom-tagmanager-amount-checked"></span> selected:
 		</div>
 		<div id="b-items-multiactons" class="ui-widget-content">
-			<button id="b-button-multiaction-edit" disabled="disabled" class="boom-button ui-button-text-icon" data-icon="ui-icon-wrench">
+			<button id="b-button-multiaction-edit" disabled="disabled" class="boom-button ui-button-text-icon" data-icon="ui-icon-boom-edit">
 				<?=__('View')?>/<?=__('Edit')?>
 			</button>
-			<button id="b-button-multiaction-delete" disabled="disabled" class="boom-button ui-button-text-icon" data-icon="ui-icon-trash">
+			<button id="b-button-multiaction-delete" disabled="disabled" class="boom-button ui-button-text-icon" data-icon="ui-icon-boom-delete">
 				<?=__('Delete')?>
 			</button>
-			<button id="b-button-multiaction-download" disabled="disabled" class="boom-button ui-button-text-icon" data-icon="ui-icon-arrowreturn-1-s">
+			<button id="b-button-multiaction-download" disabled="disabled" class="boom-button ui-button-text-icon" data-icon="ui-icon-boom-download">
 				<?=__('Download')?>
 			</button>
-			<button id="b-button-multiaction-tag" disabled="disabled" class="boom-button ui-button-text-icon" data-icon="ui-icon-tag">
+			<button id="b-button-multiaction-tag" disabled="disabled" class="boom-button ui-button-text-icon" data-icon="ui-icon-boom-tag">
 				<?=__('Add Tags')?>
 			</button>
-			<button id="b-button-multiaction-clear" disabled="disabled" class="boom-button ui-button-text-icon" data-icon="ui-icon-cancel">
+			<button id="b-button-multiaction-clear" disabled="disabled" class="boom-button ui-button-text-icon" data-icon="ui-icon-boom-cancel">
 				<?=__('Clear Selection')?>
 			</button>
 		</div>

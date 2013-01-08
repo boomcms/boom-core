@@ -18,14 +18,14 @@
 
 		<div class="ui-helper-clearfix ui-tabs-panel ui-widget-content ui-corner-bottom">
 			<div id="b-page-actions" class="ui-helper-right">
-				<button id="b-assets-upload" class="boom-button ui-button-text-icon" data-icon="ui-icon-disk">
+				<button id="b-assets-upload" class="boom-button ui-button-text-icon" data-icon="ui-icon-boom-upload">
 					<?=__('Upload files')?>
 				</button>
-				<button id="boom-tagmanager-save-all" class="boom-button ui-button-text-icon" data-icon="ui-icon-disk">
+				<button id="boom-tagmanager-save-all" class="boom-button ui-button-text-icon" data-icon="ui-icon-boom-save">
 					<?=__('Save all')?>
 				</button>
 
-				<button class="boom-button" data-icon="ui-icon-video" id="b-assets-upload-video">Upload video</button>
+				<button class="boom-button" data-icon="ui-icon-boom-upload" id="b-assets-upload-video">Upload video</button>
 			</div>
 		</div>
 	</div>
