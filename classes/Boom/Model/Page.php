@@ -137,57 +137,6 @@ class Boom_Model_Page extends ORM_Taggable
 	}
 
 	/**
-	 *
-	 *
-	 * @param	Editor	$editor
-	 * @return	Model_Page
-	 */
-	public function with_current_version(Editor $editor)
-	{
-		$this
-			->join(array('page_versions', 'version'), 'inner')
-			->on('page.id', '=', 'version.page_id');
-
-		// Logged in view?
-		if ($editor->state() === Editor::EDIT)
-		{
-			$this
-				->join(array(
-					DB::select(array(DB::expr('max(id)'), 'id'))
-						->from('page_versions')
-						->where('stashed', '=', FALSE)
-						->group_by('page_id'),
-					'current_version'
-				))
-				->on('version.id', '=', 'current_version.id');
-		}
-		else
-		{
-			// Get the most recent published version for each page.
-			$this
-				->join(array(
-					DB::select(array(DB::expr('max(id)'), 'id'))
-						->from('page_versions')
-						->where('embargoed_until', '<=', $editor->live_time())
-						->where('stashed', '=', FALSE)
-						->where('published', '=', TRUE)
-						->group_by('page_id'),
-					'current_version'
-				))
-				->on('version.id', '=', 'current_version.id')
-				->where('version.page_deleted', '=', FALSE)
-				->where('visible', '=', TRUE)
-				->where('visible_from', '<=', $editor->live_time())
-				->and_where_open()
-					->where('visible_to', '>=', $editor->live_time())
-					->or_where('visible_to', '=', 0)
-				->and_where_close();
-		}
-
-		return $this;
-	}
-
-	/**
 	 * Getter / setter for the children_ordering_policy column.
 	 * When used as a getter converts the integer stored in the children_ordering_policy column to an array of column and direction which can be used when querying the database.
 	 * When used as a setter converts the column and direction to an integer which can be stored in the children_ordering_policy column.
@@ -341,6 +290,26 @@ class Boom_Model_Page extends ORM_Taggable
 			// Return a cleared page object.
 			return $this->clear();
 		}
+	}
+
+	/**
+	 * Gets the page's description of the page.
+	 *
+	 * When a value is set for the description property this will be returned.
+	 * When the description property is null then the standfirst for the current page version will be returned.
+	 *
+	 * @return string
+	 */
+	public function description()
+	{
+		// Return the page's description if one has been set.
+		if ($this->description !== NULL)
+		{
+			return $this->description;
+		}
+
+		// Return the standfirst for the current version.
+		return Chunk::factory('text', 'standfirst', $this)->text();
 	}
 
 	/**
@@ -520,13 +489,7 @@ class Boom_Model_Page extends ORM_Taggable
 		$query = ORM::factory('Page_Version')
 			->where('page_id', '=', $this->id);
 
-		if ($editor->state() === Editor::EDIT OR $editor->state() === Editor::PREVIEW)
-		{
-			// For logged in users get the version with the highest ID.
-			$query
-				->order_by('id', 'desc');
-		}
-		else
+		if ($editor->state() === Editor::DISABLED)
 		{
 			// For site users get the published version with the embargoed time that's most recent to the current time.
 			// Order by ID as well incase there's multiple versions with the same embargoed time.
@@ -536,9 +499,66 @@ class Boom_Model_Page extends ORM_Taggable
 				->order_by('embargoed_until', 'desc')
 				->order_by('id', 'desc');
 		}
+		else
+		{
+			// For logged in users get the version with the highest ID.
+			$query
+				->order_by('id', 'desc');
+		}
 
 		// Run the query and return the result.
 		return $this->_related['version'] = $query
 			->find();
+	}
+
+	/**
+	 *
+	 *
+	 * @param	Editor	$editor
+	 * @return	Model_Page
+	 */
+	public function with_current_version(Editor $editor)
+	{
+		$this
+			->join(array('page_versions', 'version'), 'inner')
+			->on('page.id', '=', 'version.page_id');
+
+		// Logged in view?
+		if ($editor->state() === Editor::EDIT)
+		{
+			$this
+				->join(array(
+					DB::select(array(DB::expr('max(id)'), 'id'))
+						->from('page_versions')
+						->where('stashed', '=', FALSE)
+						->group_by('page_id'),
+					'current_version'
+				))
+				->on('version.id', '=', 'current_version.id');
+		}
+		else
+		{
+			// Get the most recent published version for each page.
+			$this
+				->join(array(
+					DB::select(array(DB::expr('max(id)'), 'id'))
+						->from('page_versions')
+						->where('embargoed_until', '<=', $editor->live_time())
+						->where('stashed', '=', FALSE)
+						->where('published', '=', TRUE)
+						->group_by('page_id'),
+					'current_version'
+				))
+				->on('version.id', '=', 'current_version.id')
+				->where('version.page_deleted', '=', FALSE)
+				->where('visible', '=', TRUE)
+				->where('visible_from', '<=', $editor->live_time())
+				->and_where_open()
+					->where('visible_to', '>=', $editor->live_time())
+					->or_where('visible_to', '=', 0)
+				->and_where_close();
+		}
+
+		return $this;
 	}
 }
