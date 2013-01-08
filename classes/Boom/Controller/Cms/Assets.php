@@ -295,7 +295,7 @@ class Boom_Controller_Cms_Assets extends Boom_Controller
 		if ($uploaded_by)
 		{
 			// Filtering by uploaded by.
-			$query->where('audit_person', '=', $uploaded_by);
+			$query->where('uploaded_by', '=', $uploaded_by);
 		}
 
 		// Apply an asset type filter.
