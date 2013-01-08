@@ -165,6 +165,8 @@ class Boom_Model_Page_Version extends ORM
 			->set('published', TRUE)
 			->set('embargoed_until', $time)
 			->save();
+
+		return $this;
 	}
 
 	/**
