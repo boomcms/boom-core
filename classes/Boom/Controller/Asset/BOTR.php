@@ -16,6 +16,11 @@ class Boom_Controller_Asset_BOTR extends Controller_Asset
 		return '<script type="text/javascript" src="http://content.bitsontherun.com/players/'.$this->asset->filename.'-skywOW0k.js"></script>';
 	}
 
+	public function action_embed()
+	{
+		$this->response->body($this->embed());
+	}
+
 	public function action_thumb()
 	{
 		// Filename of the video thumbnail.
