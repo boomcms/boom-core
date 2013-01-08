@@ -665,11 +665,11 @@ $.extend($.boom.page, {
 
 					if (/js$/.test(this.url)) {
 						self.elements.page_body.contents().find('head').append('<script type="text/javascript">'+data+'</script>');
-					} 
+					}
 
 					 if (/css$/.test(this.url)) {
 						self.elements.page_body.contents().find('head').append('<style type="text/css">'+data+'</style>');
-					} 
+					}
 
 				});
 			});
@@ -1271,10 +1271,10 @@ $.extend($.boom.page, {
 					open: function(){
 						//  Each link in the list has a radio button whic toggles whether the link is a primary link
 						// and a checkbox to toggle whether a secondary link redirects to the primary link.
-						$('.b-links-primary, s-links-redirect').change(function(){
+						$('.b-links-primary, .b-links-redirect').change(function(){
 							link = $(this).closest('li');
-							redirect = $(link).find('b-links-redirect').val();
-							primary = $(link).find('b-links-primary').val();
+							redirect = $(link).find('.b-links-redirect').is(':checked')? 1: 0;
+							primary = $(link).find('.b-links-primary').is(':checked')? 1 : 0;
 
 							$.post('/cms/page/link/save/' + $.boom.page.config.id, {
 								link_id :  link.attr('data-id'),
