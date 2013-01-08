@@ -1168,5 +1168,5 @@ $.extend($.boom, {
 $.boom.setup();
 
 $.extend($.boom.data, {
-	boomInit: ['cookie', 'history']
+	boomInit: ['history']
 });
