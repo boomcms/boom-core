@@ -311,7 +311,7 @@ class Boom_Controller_Page_Children extends Boom_Controller
 		// Filtering by tag?
 		if ($this->tag)
 		{
-//			$query->where('tag', '=', $this->tag);
+			$query->where('tag', '=', $this->tag);
 		}
 
 		// Pagination
