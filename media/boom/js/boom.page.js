@@ -776,57 +776,6 @@ $.extend($.boom.page, {
 
 	/**
 	* @class
-	* @name $.boom.page.undo
-	*/
-	undo : {
-		/** @lends $.boom.page.undo */
-
-		maxAmount: 5,
-
-		/** @function */
-		register: function(msg, data, callback) {
-
-			var time = new Date(), hours = time.getHours().toString(), minutes = time.getMinutes().toString();
-
-			if (hours.length === 1) hours = '0' + hours;
-			if (minutes.length === 1) minutes = '0' + minutes;
-
-			msg += ' <small>@ ' + hours + ':' + minutes + '</small>';
-
-			$.boom.log('Added new event to undo');
-
-			$('#b-page-undo-splitbutton')
-			.data('splitbutton')
-			.add(msg, data, function(event, data){
-
-				callback(event, data);
-
-				var menu = $(this).parents('ul:first');
-
-				$(this).parent().remove();
-
-				if ( !menu.find('li').length ) {
-
-					$('#b-page-undo-splitbutton').find('button').button('disable');
-				}
-
-				$.boom.page.editor.bind();
-			}, 'top');
-
-			var menu = $('#b-page-undo-splitbutton').splitbutton('getMenu');
-
-			if (menu.children().length > this.maxAmount ) {
-				menu.find('li:last').remove();
-			}
-
-			$('#b-page-undo-splitbutton')
-				.find('button')
-				.button('enable');
-		}
-	},
-
-	/**
-	* @class
 	* @name $.boom.page.settings
 	*/
 	settings: {
