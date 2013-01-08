@@ -99,9 +99,9 @@ Route::set('plugin', '<directory>/<controller>(/<action>)',
 	));
 
 // Route for the child page list plugin.
-Route::set('child_page_plugin', 'plugin/page/children.<action>')
+Route::set('child_page_plugin', 'page/children.<action>')
 	->defaults(array(
-		'controller'	=>	'plugin_page_children'
+		'controller'	=>	'page_children'
 	));
 
 

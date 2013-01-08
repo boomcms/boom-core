@@ -1021,7 +1021,7 @@ $.extend($.boom.page, {
 						var list_ready = $.Deferred();
 						var children = $.ajax( {
 							type: 'POST',
-							url: '/plugin/page/children.json',
+							url: '/page/children.json',
 							data: {parent : event.data.rid, page: 0, perpage: 0},
 							dataType: 'json'
 						} );
