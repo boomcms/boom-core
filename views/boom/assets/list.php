@@ -28,8 +28,8 @@
 		</select>
 	</div>
 	<ul>
-		<li><a href="#b-items-view-thumbs">Thumbnails</a></li>
-		<li><a href="#b-items-view-list">List</a></li>
+		<li><a href="#b-items-view-thumbs" class="boom-button" data-icon="ui-icon-boom-thumbnails">Thumbnails</a></li>
+		<li><a href="#b-items-view-list" class="boom-button" data-icon="ui-icon-boom-list">List</a></li>
 	</ul>
 
 	<div id="b-items-view-list">
