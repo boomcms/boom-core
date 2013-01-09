@@ -71,4 +71,4 @@ $.extend( $.boom, {
 			return complete;
 		}
 	}
-})
+});
