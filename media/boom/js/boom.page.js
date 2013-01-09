@@ -542,7 +542,7 @@ $.extend($.boom.page, {
 						type : $this.attr( 'data-boom-chunk' ),
 						name : $this.attr( 'data-boom-slot-name' ),
 						rid : parseInt( $this.attr( 'data-boom-slot-id' ), 10 ),
-						template: $this.attr( 'data-boom-template' ),
+						template: $this.attr( 'data-boom-slot-template' ),
 						page : $this.attr( 'data-boom-page' )
 					};
 
