@@ -10,7 +10,7 @@ window.boomConfig = {
 	/** @property */
 	cachePageImages : [
 		'/media/boom/img/ajax_load.gif',
-		'/media/boom/img/cms/chunk_edit_icon.png',
+		'/media/boom/img/cms/chunk_edit_icon.png'
 	],
 
 	/**

@@ -179,7 +179,7 @@ boom.plugins.js
 
 					// recursion!
 					self.loadInitialData();
-				})
+				});
 			}
 		},
 
@@ -259,7 +259,7 @@ boom.plugins.js
 		*/
 		_build : function(){
 
-			var self = this
+			var self = this;
 
 			if ( !this.options.items) return;
 
@@ -333,7 +333,7 @@ boom.plugins.js
 
 				$(this).focus();
 				
-				self.open()
+				self.open();
 			})
 			.bind( 'blur', function(){
 
@@ -487,7 +487,7 @@ boom.plugins.js
 					break;
 					case 'tree' :
 						elem.tree($.extend({}, opts.tree, {
-							border: !/tree-noborder/.test(elem[0].className)
+							border: !(/tree-noborder/).test(elem[0].className)
 						}));
 					break;
 					case 'toggleinput' :
@@ -697,7 +697,7 @@ boom.plugins.js
 				.height(this.options.height);
 
 			if (this.options.height != 'auto') {
-				this.elements.container.css({ overflow: 'auto' })
+				this.elements.container.css({ overflow: 'auto' });
 			}
 
 			if (this.options.border) this.elements.container.addClass('ui-state-active ui-corner-all');
@@ -786,8 +786,9 @@ boom.plugins.js
 		_set_edit : function( $item ) {
 			
 			var self = this;
+			var re = /tree-remove/;
 			
-			if (self.options.showEdit === true || (self.options.showEdit === 'auto' && /tree-remove/.test(self.element[0].className)))
+			if (self.options.showEdit === true || (self.options.showEdit === 'auto' && re.test(self.element[0].className)))
 			{
 				$('<span />', {
 					title: 'Edit'
@@ -816,8 +817,9 @@ boom.plugins.js
 		_set_remove : function( $item ) {
 			
 			var self = this;
+			var re = /tree-edit/;
 			
-			if (self.options.showRemove === true || (self.options.showRemove === 'auto' && /tree-edit/.test(self.element[0].className)))
+			if (self.options.showRemove === true || (self.options.showRemove === 'auto' && re.test(self.element[0].className)))
 			{
 				$('<span />', {
 					title: 'Remove'
@@ -964,7 +966,7 @@ boom.plugins.js
 				if ( typeof event == 'undefined' ) event = {};
 				event.data = {
 					rid: id
-				}
+				};
 				children_ready = self.options.onToggle.call(this, event);
 				
 				children_ready.done( function( data ){

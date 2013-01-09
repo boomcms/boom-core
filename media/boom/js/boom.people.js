@@ -216,7 +216,7 @@ $.extend($.boom.items.person, {
 					},
 					Save: function(){
 
-						var dialog = this
+						var dialog = this;
 						var data = $( dialog ).find('form').serialize();
 						$.boom.loader.show();
 
@@ -453,7 +453,7 @@ $.extend($.boom.items.group,  {
 					page_rid : page_id
 				});
 			}
-		}
+		};
 
 		var dialog = $.boom.dialog.open({
 			url: '/cms/groups/edit/' + rid,
@@ -524,7 +524,7 @@ $.extend($.boom.items.group,  {
 					page_rid : page_id
 				});
 			}
-		}
+		};
 
 		var dialog = $.boom.dialog.open({
 			url: '/cms/groups/edit/0',
@@ -747,12 +747,12 @@ $.extend($.boom.items.group,  {
 						.on( 'click', function(){
 							self.page_settings({
 								rid : rid,
-								page_id : page_id,
+								page_id : page_id
 							})
 							.done( function( permissions ){
 								$( permissions ).each( function(){
 									group.update_tree( '#boom-group-permissions-page-list', this );
-								})
+								});
 							});
 						});
 				}
