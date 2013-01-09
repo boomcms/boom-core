@@ -115,7 +115,6 @@ class Boom_Model_Page extends ORM_Taggable
 			->where('page_mptt.parent_id', '=', $this->mptt->id)
 			->where($column, '>', $page->$column)
 			->order_by($column, $direction)
-			->limit(1)
 			->find();
 
 		if ( ! $mptt->loaded())
