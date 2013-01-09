@@ -119,6 +119,21 @@ abstract class Boom_Chunk
 	abstract protected function _show_default();
 
 	/**
+	 * This adds the necessary classes to chunk HTML for them to be picked up by the JS editor.
+	 * i.e. it makes chunks editable.
+	 *
+	 * @param	string	$html		HTML to add classes to.
+	 * @param	string	$type		The type of chunk to identify this as. This is picked up by the JS to determine which kind of editor to run
+	 * @return 	string
+	 */
+	public static function add_attribute($html, $type)
+	{
+		$html = trim( (string) $html);
+
+		return preg_replace("|<(.*?)>|", "<$1 data-boom-chunk='$type'>", $html, 1);
+	}
+
+	/**
 	 * Sets wether the chunk should be editable.
 	 *
 	 * @param bool $value
@@ -152,7 +167,7 @@ abstract class Boom_Chunk
 			// Make the content editable.
 			if ($this->_editable === TRUE)
 			{
-				$html = HTML::chunk_classes($html, $this->_type, $this->_slotname, $this->target(), $this->_template, $this->_page->id, $this->has_content());
+				$html = Chunk::add_attribute($html, $this->_type);
 			}
 		}
 		catch (Exception $e)
