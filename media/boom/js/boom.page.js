@@ -546,14 +546,17 @@ $.extend($.boom.page, {
 						page : $this.attr( 'data-boom-page' )
 					};
 
-					if (!slot[1]) {
-						slot[1] = '';
+					if (!slot.name) {
+						slot.name = '';
 					}
-					if (!slot[2]) {
-						slot[2] = 0;
+					if (!slot.rid) {
+						slot.rid = 0;
 					}
-					if (slot[0] == 'text') {
-						config.toolbar = $.boom.page.config.editorOptions[slot[1]] || [];
+					if (!slot.type) {
+						slot.type = 'text';
+					}
+					if (slot.type == 'text') {
+						config.toolbar = $.boom.page.config.editorOptions[ slot.name ] || [];
 					}
 
 					$.boom.page.slots.edit(event, this, slot, config);
@@ -719,7 +722,7 @@ $.extend($.boom.page, {
 				config = $.extend({
 					slot: slot
 				}, slotconfig),
-				type = 'chunk' + slot[0].ucfirst(),
+				type = 'chunk' + slot.type.ucfirst(),
 				$elem = $( elem );
 
 			$elem[ type ]( config );
