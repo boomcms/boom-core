@@ -70,19 +70,17 @@ class Boom_Model_Template extends ORM
 		}
 
 		// Query the database for the number of pages using this template and return the result.
-		return DB::select(array(DB::expr('count(*)'), 'pages'))
-			->from('page_versions')
+		return ORM::factory('Page_Version')
 			->join(array(
 				DB::select(array(DB::expr('max(id)'), 'id'))
 					->from('page_versions')
 					->group_by('page_id'),
 				'current_version'
 			))
-			->on('page_versions.id', '=', 'current_version.id')
+			->on('page_version.id', '=', 'current_version.id')
 			->where('template_id', '=', $this->id)
 			->where('page_deleted', '=', FALSE)
-			->execute()
-			->get('pages');
+			->count_all();
 	}
 
 	/**
