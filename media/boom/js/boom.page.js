@@ -536,10 +536,16 @@ $.extend($.boom.page, {
 				.one( 'click', function(event){
 
 					//event.target = this;
-
-					var slot =  /\{([^\}]+)\}/.test( this.className ) ?
-						this.className.match(/\{([^\}]+)\}/)[1].split(' ') :
-						[ 'text' ];
+					var $this = $( this );
+					
+					var slot = [
+						$this.attr( 'data-boom-chunk' ),
+						$this.attr( 'data-boom-slot-name' ),
+						$this.attr( 'data-boom-slot-id' ),
+						$this.attr( 'data-boom-template' ),
+						$this.attr( 'data-boom-page' ),
+						$this.attr( 'data-boom-contentflag')
+					];
 
 					if (!slot[1]) {
 						slot[1] = '';
@@ -580,33 +586,31 @@ $.extend($.boom.page, {
 			}
 
 			self.elements.page_body.contents()
-			.find('.chunk-slot')
+			.find('[data-boom-chunk]')
 			.each(function(){
 
-				var chunkExp = /\{([^\}]+)\}/, config = {};
+				var config = {};
+				var $this = $( this );
 
-				if (chunkExp.test(this.className)) {
+				var slotName = $( this ).attr( 'data-boom-slotname' );
 
-					var slotName = this.className.match(chunkExp)[1].split(' ')[1];
+				$( this ).addClass( 'boom-tooltip boom-tooltip-follow' );
 
-					$( this ).addClass( 'boom-tooltip boom-tooltip-follow' );
+				if (!this.id) {
 
-					if (!this.id) {
-
-						this.id = $.boom.util.dom.uniqueId('boom-chunk-');
-					}
-
-
-					$.each( this.className.split(' '), function(i, val){
-
-						if ( /boom-chunk-option-/.test(val) ) {
-
-							config[ val.replace(/boom-chunk-option-/, '') ] = true;
-						}
-					});
-
-					slotBind.call( this, config );
+					this.id = $.boom.util.dom.uniqueId('boom-chunk-');
 				}
+
+
+				$.each( this.className.split(' '), function(i, val){
+
+					if ( /boom-chunk-option-/.test(val) ) {
+
+						config[ val.replace(/boom-chunk-option-/, '') ] = true;
+					}
+				});
+
+				slotBind.call( this, config );
 			})
 			.end()
 			.find('#b-page-title').exists(function(){
