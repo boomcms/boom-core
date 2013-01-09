@@ -29,7 +29,7 @@ $.extend($.boom, {
 					"Are you sure you want to delete this template?",
 					function(){
 						item.fadeOut(600, function(){
-							item.remove()
+							item.remove();
 						});
 					}
 				);
@@ -45,7 +45,7 @@ $.extend($.boom, {
 
 					$.boom.loader.hide();
 
-					$.boom.growl.show('Templates successfully saved.')
+					$.boom.growl.show('Templates successfully saved.');
 				});
 			});
 		}
