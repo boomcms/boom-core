@@ -67,12 +67,12 @@ class Boom_Model_Chunk_Text extends ORM
 	*/
 	public function filters()
 	{
-	    return array(
+		return array(
 			'text' => array(
 				array('html_entity_decode'),
 				array('urldecode'),
 				array('Chunk_Text::munge'),
 			),
-	   );
+		);
 	}
 }
