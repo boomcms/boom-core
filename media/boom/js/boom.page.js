@@ -249,20 +249,16 @@ $.extend($.boom, {
 				var
 					slot = this.slot;
 
-				// Text slots don't get previewed when changed from default, so has_content doesn't get changed.
-				if (slot.has_content == "1" || slot.type == 'text')
+				// Don't submit data for chunks which have been inherited from another page.
+				// slotobj.page will be 0 when the slot has been edited.
+				if (slot.page == self.config.id || slot.page == 0)
 				{
-					// Don't submit data for chunks which have been inherited from another page.
-					// slotobj.page will be 0 when the slot has been edited.
-					if (slot.page == self.config.id || slot.page == 0)
-					{
-						if (!data.slots[slot.type]) {
-							data.slots[slot.type] = {};
-						}
+					if (!data.slots[slot.type]) {
+						data.slots[slot.type] = {};
+					}
 
-						if (slot.type != 'text' || this.data != 'Default text.') {
-							data.slots[slot.type][slot.name] = this.data;
-						}
+					if (slot.type != 'text' || this.data != 'Default text.') {
+						data.slots[slot.type][slot.name] = this.data;
 					}
 				}
 			});
