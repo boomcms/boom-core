@@ -177,7 +177,7 @@ $.extend($.boom.items.tag,  {
 					$.boom.dialog.destroy(this);
 				},
 				Save: function(){
-					var dialog = this
+					var dialog = this;
 					var data = $( dialog ).find('form').serialize();
 					
 					item.find('> a').text( $( '#boom-tagmanager-tag-edit-name' ).val() );
@@ -342,7 +342,7 @@ $.extend($.boom.items.tag,  {
 
 					})(tags);
 
-					$tags.val(tags.join(','))
+					$tags.val(tags.join(','));
 
 				}
 			});
@@ -361,7 +361,7 @@ $.extend($.boom.items.tag,  {
 						var tags = [];
 						
 						$.each( tag_tree.find( '.ui-state-active'), function(){
-							var rid = parseInt( $(this).attr( 'rel' ) );
+							var rid = parseInt( $(this).attr( 'rel' ), 10 );
 							tags.push( rid );
 						});
 						
