@@ -466,7 +466,7 @@ class Boom_Model_Page extends ORM_Taggable
 			// Order by ID as well incase there's multiple versions with the same embargoed time.
 			$query
 				->where('published', '=', TRUE)
-				->where('embargoed_until', '<=', Editor::instance()->live_time())
+				->where('embargoed_until', '<=', $editor->live_time())
 				->order_by('embargoed_until', 'desc')
 				->order_by('id', 'desc');
 		}
