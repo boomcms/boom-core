@@ -153,8 +153,12 @@ class Boom_Controller_Cms_Page_Link extends Controller_Cms_Page
 		if ($link->is_primary AND $link->changed('is_primary'))
 		{
 			$link->make_primary();
+
+			// make_primary() calls update() so no need to go any further.
+			return;
 		}
 
+		// Save the changes.
 		$link->update();
 	}
 } // End Boom_Controller_Cms_Page

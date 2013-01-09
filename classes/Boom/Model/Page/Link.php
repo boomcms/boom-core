@@ -20,24 +20,30 @@ class Boom_Model_Page_Link extends ORM
 	protected $_table_name = 'page_links';
 
 	/**
-	 * Checks that the URI is unique before saving.
-	 * This can't be done by a unique index on the table as the uri column is too long to be indexed.
+	 * Checks that the URL is unique before saving.
+	 * This can't be done by a unique index on the table as the location column is too long to be indexed.
+	 *
+	 * @return boolean
 	 */
-	public function create(Validation $validation = NULL)
+	public function location_available($location)
 	{
-		// Does the URI already exist?
-		$exists = DB::select('id')
+		// Prepare a query to determine when the location is already in use.
+		$query = DB::select('id')
 			->from('page_links')
-			->where('location', '=', $this->location)
-			->limit(1)
-			->execute();
+			->where('location', '=', $location)
+			->limit(1);
 
-		if ($exists->count() > 0)
+		// If the current object has already been saved then make sure we ignore it from the query.
+		if ($this->_saved OR $this->_loaded)
 		{
-			throw new Kohana_Exception("Link :link is already in use", array(':link' => $this->location));
+			$query->where('id', '!=', $this->id);
 		}
 
-		return parent::create($validation);
+		// Run the query.
+		$exists = $query->execute($this->_db);
+
+		// Were there any results?
+		return ($exists->count() == 0);
 	}
 
 	/**
@@ -53,6 +59,7 @@ class Boom_Model_Page_Link extends ORM
 			),
 			'location' => array(
 				array('max_length', array(':value', 2048)),
+				array(array($this, 'location_available')),
 			),
 		);
 	}
@@ -81,22 +88,18 @@ class Boom_Model_Page_Link extends ORM
 	 */
 	public function make_primary()
 	{
-		// Save the primary link in cache
-//		Cache::instance()->set('primary_link_for_page:' . $this->page_id, $this->location);
-
 		// Ensure that this is the only primary link for the page.
-		// We do this through the ORM rather than a DB update query to catch cached links
-		$page_links = ORM::factory('Page_Link')
+		DB::update($this->_table_name)
+			->set(array('is_primary' => FALSE))
 			->where('page_id', '=', $this->page_id)
 			->where('id', '!=', $this->id)
 			->where('is_primary', '=', TRUE)
-			->find_all();
+			->execute($this->_db);
 
-		foreach ($page_links as $page_link)
-		{
-			$page_link->is_primary = FALSE;
-			$page_link->update();
-		}
+		// Set the is_primary property for this URL to true.
+		$this
+			->set('is_primary', TRUE)
+			->update();
 
 		return $this;
 	}
