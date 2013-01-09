@@ -124,13 +124,15 @@ abstract class Boom_Chunk
 	 *
 	 * @param	string	$html		HTML to add classes to.
 	 * @param	string	$type		The type of chunk to identify this as. This is picked up by the JS to determine which kind of editor to run
+	 * @param	mixed	$template		The name of the template used to display this chunk. When editing this chunk this is submitted to the controller to generate a preview of the chunk.
+	 * @param	integer	$page		ID of the page that the chunk belongs to.
 	 * @return 	string
 	 */
-	public static function add_attribute($html, $type)
+	public static function add_attributes($html, $type, $slotname, $template, $page_id)
 	{
 		$html = trim( (string) $html);
 
-		return preg_replace("|<(.*?)>|", "<$1 data-boom-chunk='$type'>", $html, 1);
+		return preg_replace("|<(.*?)>|", "<$1 data-boom-chunk='$type' data-boom-slot-name='$slotname' data-boom-slot-template='$template' data-boom-page='$page_id'>", $html, 1);
 	}
 
 	/**
@@ -167,7 +169,7 @@ abstract class Boom_Chunk
 			// Make the content editable.
 			if ($this->_editable === TRUE)
 			{
-				$html = Chunk::add_attribute($html, $this->_type);
+				$html = Chunk::add_attributes($html, $this->_type, $this->_slotname, $this->_template, $this->_page->id);
 			}
 		}
 		catch (Exception $e)
