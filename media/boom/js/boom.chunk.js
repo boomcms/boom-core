@@ -678,7 +678,8 @@ $.widget('ui.chunkAsset', $.ui.chunk, {
 			self._apply( data );
 		})
 		.fail( function( data ) {
-			$.boom.log( 'asset chunk error ' + data );
+			$.boom.log( 'asset chunk error ' );
+			console.log( data );
 		});
 	},
 
