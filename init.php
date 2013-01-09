@@ -57,8 +57,8 @@ Route::set('boom', '<location>(.<action>)', array(
 			{
 				if ( ! $page_link->is_primary AND $page_link->redirect)
 				{
-					HTTP::redirect($page->link(), 301);
-					return FALSE;
+					header('Location: '.$page->link(), NULL, 301);
+					exit;
 				}
 
 				$params['page'] = $page;
@@ -80,9 +80,10 @@ Route::set('vanity', '_<link>', array(
 		{
 			// Turn the vanity URI into a page ID.
 			$page_id = base_convert($params['link'], 36, 10);
+			$redirect_to = ORM::factory('Page', $page_id)->link();
 
-			HTTP::redirect(ORM::factory('Page', $page_id)->link(), 302);
-			return FALSE;
+			header('Location: '.$redirect_to, NULL, 302);
+			exit;
 		}
 	);
 
