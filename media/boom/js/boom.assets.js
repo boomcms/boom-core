@@ -41,18 +41,21 @@ $.extend($.boom.assets, {
 			});
 		});
 
-		$('#b-assets-filter-title').autocomplete({
+		var title_filter = $('#b-assets-filter-title')
+		.autocomplete({
 			delay: 200, // Time to wait after keypress before making the AJAX call.
 			source: function(request, response){
 				$.ajax({
 					url: '/cms/autocomplete/assets',
 					dataType: 'json',
 					data: {
-						text : $('#b-assets-filter-title').val()
+						text : title_filter.val()
 					}
 				})
 				.done(function(data) {
 					response(data);
+					self.items.tag.filters[ 'title' ] = title_filter.val();
+					self.items.tag.get( 0 );
 				});
 			},
 			select: function(event, ui){
