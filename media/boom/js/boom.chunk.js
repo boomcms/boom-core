@@ -608,14 +608,22 @@ $.widget('ui.chunkAsset', $.ui.chunk, {
 	*/
 	edit: function(){
 
-		$.boom.log('Asset chunk slot edit ' + this.options.slot.rid);
+		
 
 		var self = this;
 		var tagmanager = $.boom.assets;
 		var asset_selected = new $.Deferred();
+		
+		var asset_id = 0;
+		
+		if( this.element[0].src ) {
+			asset_id = this.element[0].src.match( /asset\/(thumb|view)\/([0-9]+)/ )[2];
+		}
+		
+		$.boom.log('Asset chunk slot edit ' + asset_id);
 
 		self.asset = {
-			asset_id : self.options.slot.rid,
+			asset_id : asset_id,
 			title : null,
 			caption : null,
 			url : null
@@ -630,7 +638,7 @@ $.widget('ui.chunkAsset', $.ui.chunk, {
 		;
 
 		tagmanager.picker( {
-			asset_rid : self.options.slot.rid,
+			asset_rid : asset_id,
 			deferred: asset_selected
 		} )
 		.pipe( function( rid ){
