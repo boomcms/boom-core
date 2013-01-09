@@ -151,11 +151,13 @@ $.extend($.boom, {
 									break;
 								case 'insertImage' :
 									var src = top.$( '[data-wysihtml5-dialog-field=src]' ).val();
-									asset_rid = 0;
+									var asset_id = 0;
 									if ( src && src != 'http://' ) {
-										asset_rid = src.match( /asset\/(thumb|view)\/([0-9]+)/ )[2];
+										var match = src.match( /asset\/(thumb|view)\/([0-9]+)/ );
+										
+										asset_id = match ? match[2] : 0;
 									}
-									self._edit_asset( asset_rid );
+									self._edit_asset( asset_id );
 									break;
 							}
 						});
