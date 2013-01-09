@@ -65,7 +65,9 @@ class Boom_Controller_Cms_Page_Version extends Controller_Cms_Page_Settings
 		$post = json_decode($this->request->post('data'));
 
 		// Has the page title been changed?
-		if ($this->old_version->title != $post->title)
+		// Only generate a new URL from the page title when the title has been changed from 'Untitled'
+		// i.e. the page title is being set for the first time.
+		if ($this->old_version->title != $post->title AND $this->old_version->title == 'Untitled')
 		{
 			// Update the title of the new version.
 			$this->new_version->title = $post->title;
