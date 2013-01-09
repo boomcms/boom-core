@@ -81,14 +81,6 @@ class Boom_Model_Page extends ORM_Taggable
 	const CHILD_ORDER_DESC = 16;
 
 	/**
-	 * Holds the calculated primary URI
-	 *
-	 * @access	private
-	 * @var		string
-	 */
-	private $_primary_link;
-
-	/**
 	 * Cached result for self::link()
 	 *
 	 * @access	private
@@ -352,16 +344,17 @@ class Boom_Model_Page extends ORM_Taggable
 	 * Returns the page's absolute link.
 	 * This method uses Kohana's URL::base() method to generate the base URL from the current request (protocol, hostnane etc.) {@link http://kohanaframework.org/3.2/guide/api/URL#base}
 	 *
-	 * @uses	URL::base()
-	 * @uses	Request::Instance()
-	 * @return string The absolute URI.
+	 * @uses	URL::site()
+	 * @return Model_Page_Link
 	 */
 	public function link()
 	{
 		if ($this->_link === NULL)
 		{
-			// Get the base link of the current request.
-			$this->_link = URL::site($this->primary_link());
+			// Get the primary link for this page.
+			$this->_link = $this->links
+				->where('is_primary', '=', TRUE)
+				->find();
 		}
 
 		return $this->_link;
@@ -377,30 +370,6 @@ class Boom_Model_Page extends ORM_Taggable
 	public function parent()
 	{
 		return ($this->mptt->is_root())? $this : new Model_Page($this->mptt->parent_id);
-	}
-
-	/**
-	 * Get the page's primary URI
-	 * From the page's available URIs finds the one which is marked as the primary URI.
-	 *
-	 * @return	string	The RELATIVE primary URI of the page.
-	 *
-	 * @todo	Could use ORM relationship for this.
-	 */
-	public function primary_link()
-	{
-		if ($this->_primary_link == NULL)
-		{
-			$this->_primary_link = DB::select('location')
-				->from('page_links')
-				->where('page_id', '=', $this->id)
-				->where('is_primary', '=', TRUE)
-				->limit(1)
-				->execute()
-				->get('location');
-		}
-
-		return $this->_primary_link;
 	}
 
 	/**

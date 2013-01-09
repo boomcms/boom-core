@@ -20,6 +20,18 @@ class Boom_Model_Page_Link extends ORM
 	protected $_table_name = 'page_links';
 
 	/**
+	 * Convert a Model_Page_Link object to a string
+	 * Returns the location property for the current model
+	 *
+	 * @uses URL::site()
+	 * @return string
+	 */
+	public function __toString()
+	{
+		return URL::site($this->location, Request::$current);
+	}
+
+	/**
 	 * Checks that the URL is unique before saving.
 	 * This can't be done by a unique index on the table as the location column is too long to be indexed.
 	 *
