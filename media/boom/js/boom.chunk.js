@@ -71,8 +71,6 @@ $.widget('ui.chunk', {
 
 	_save_slot : function() {
 
-		this.options.slot.has_content = 1;
-
 		$.boom.page.slot_edits.push( {
 			slot: this.options.slot,
 			data: this.getData()
