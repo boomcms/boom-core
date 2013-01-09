@@ -668,13 +668,17 @@ $.extend($.boom.page, {
 			$.each(scripts, function(){
 
 				$.get(this, function(data){
+					
+					var head = self.elements.page_body
+						.contents()
+						.find('head');
 
 					if (/js$/.test(this.url)) {
-						self.elements.page_body.contents().find('head').append('<script type="text/javascript">'+data+'</script>');
+						head.append('<script type="text/javascript">'+data+'</script>');
 					}
 
 					 if (/css$/.test(this.url)) {
-						self.elements.page_body.contents().find('head').append('<style type="text/css">'+data+'</style>');
+						head.append('<style type="text/css">'+data+'</style>');
 					}
 
 				});
