@@ -24,15 +24,6 @@ $.widget('ui.chunk', {
 
 	_create : function(){
 		$.boom.log( 'CHUNK CREATE' );
-		var slot = this.options.slot;
-		this.options.slot = {
-			type : slot[0],
-			name : slot[1],
-			rid : parseInt( slot[2], 10 ),
-			template: slot[3],
-			page : slot[4],
-			has_content : slot[5]
-		};
 	},
 
 	_init : function(){

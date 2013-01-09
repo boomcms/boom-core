@@ -538,14 +538,13 @@ $.extend($.boom.page, {
 					//event.target = this;
 					var $this = $( this );
 					
-					var slot = [
-						$this.attr( 'data-boom-chunk' ),
-						$this.attr( 'data-boom-slot-name' ),
-						$this.attr( 'data-boom-slot-id' ),
-						$this.attr( 'data-boom-template' ),
-						$this.attr( 'data-boom-page' ),
-						$this.attr( 'data-boom-contentflag')
-					];
+					var slot = {
+						type : $this.attr( 'data-boom-chunk' ),
+						name : $this.attr( 'data-boom-slot-name' ),
+						rid : parseInt( $this.attr( 'data-boom-slot-id' ), 10 ),
+						template: $this.attr( 'data-boom-template' ),
+						page : $this.attr( 'data-boom-page' )
+					};
 
 					if (!slot[1]) {
 						slot[1] = '';
