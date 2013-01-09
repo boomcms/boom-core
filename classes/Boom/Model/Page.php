@@ -167,11 +167,11 @@ class Boom_Model_Page extends ORM_Taggable
 			// Convert the column into an integer.
 			switch ($column)
 			{
-				case 'manual':
+				case ($column == 'manual' OR $column == 'sequence'):
 					$order = Model_Page::CHILD_ORDER_MANUAL;
 					break;
 
-				case 'date':
+				case ($column == 'date' OR $column == 'visible_from'):
 					$order = Model_Page::CHILD_ORDER_DATE;
 					break;
 
@@ -183,11 +183,11 @@ class Boom_Model_Page extends ORM_Taggable
 			switch ($direction)
 			{
 				case 'asc':
-					$order | Model_Page::CHILD_ORDER_ASC;
+					$order = $order | Model_Page::CHILD_ORDER_ASC;
 					break;
 
 				default:
-					$order | Model_Page::CHILD_ORDER_DESC;
+					$order = $order | Model_Page::CHILD_ORDER_DESC;
 			}
 
 			// Set the value of the children_ordering_policy column.
