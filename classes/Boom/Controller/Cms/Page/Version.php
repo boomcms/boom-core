@@ -65,24 +65,27 @@ class Boom_Controller_Cms_Page_Version extends Controller_Cms_Page_Settings
 		$post = json_decode($this->request->post('data'));
 
 		// Has the page title been changed?
-		// Only generate a new URL from the page title when the title has been changed from 'Untitled'
-		// i.e. the page title is being set for the first time.
-		if ($this->old_version->title != $post->title AND $this->old_version->title == 'Untitled')
+		if ($this->old_version->title != $post->title)
 		{
 			// Update the title of the new version.
 			$this->new_version->title = $post->title;
 
-			// Create a new primary link for the page.
-			$link = ORM::factory('Page_Link')
-				->values(array(
-					'location'		=>	URL::generate($this->_page->parent()->link(), $post->title),
-					'page_id'		=>	$this->_page->id,
-					'is_primary'	=>	TRUE,
-				))
-				->create();
+			// Only generate a new URL from the page title when the title has been changed from 'Untitled'
+			// i.e. the page title is being set for the first time.
+			if ($this->old_version->title == 'Untitled')
+			{
+				// Create a new primary link for the page.
+				$link = ORM::factory('Page_Link')
+					->values(array(
+						'location'		=>	URL::generate($this->_page->parent()->link(), $post->title),
+						'page_id'		=>	$this->_page->id,
+						'is_primary'	=>	TRUE,
+					))
+					->create();
 
-			// Put the page's new URL in the response body so that the JS will redirect to the new URL.
-			$this->response->body(URL::site($link->location));
+				// Put the page's new URL in the response body so that the JS will redirect to the new URL.
+				$this->response->body(URL::site($link->location));
+			}
 		}
 
 		// Save the new version.
