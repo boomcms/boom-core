@@ -56,8 +56,8 @@ $.extend($.boom.assets, {
 				});
 			},
 			select: function(event, ui){
-				$.boom.assets.items.tag.filters[ 'title' ] = ui.item.value;
-				$.boom.assets.items.tag.get( 0 );
+				self.items.tag.filters[ 'title' ] = ui.item.value;
+				self.items.tag.get( 0 );
 			}
 		});
 
