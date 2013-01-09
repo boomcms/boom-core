@@ -103,7 +103,7 @@
 					endif;
 				?>
 
-				<button class="boom-button ui-button-text-icon s-people-groups-add" rel='<?= $person->id ?>' data-icon="ui-icon-circle-close">
+				<button class="boom-button ui-button-text-icon s-people-groups-add" rel='<?= $person->id ?>' data-icon="ui-icon-boom-add">
 					Add Group
 				</button>
 			</div>
@@ -115,14 +115,11 @@
 			<br class="ui-helper-clear" />
 
 			<div style="padding: .8em 0 .8em .8em;border-color:#ccc;border-width:1px 0 0 0;" class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
-				<button class="boom-button ui-button-text-icon s-people-save" rel="<?=$person->id?>" id='boom-tagmanager-save-person' data-icon="ui-icon-disk">
+				<button class="boom-button ui-button-text-icon s-people-save" rel="<?=$person->id?>" id='boom-tagmanager-save-person' data-icon="ui-icon-boom-save">
 					Save
 				</button>
-				<button class="boom-button ui-button-text-icon s-people-delete" id="boom-tagmanager-delete-person" rel="<?=$person->id?>" data-icon="ui-icon-trash">
+				<button class="boom-button ui-button-text-icon s-people-delete" id="boom-tagmanager-delete-person" rel="<?=$person->id?>" data-icon="ui-icon-boom-delete">
 					Delete
-				</button>
-				<button class="boom-button ui-button-text-icon boom-person-reset-password" id="boom-person-reset-password" rel="<?=$person->id?>" data-icon="ui-icon-default">
-					Reset password
 				</button>
 			</div>
 		</div>

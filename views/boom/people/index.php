@@ -14,7 +14,7 @@
 
 		<div class="ui-helper-clearfix ui-tabs-panel ui-widget-content ui-corner-bottom">
 			<div id="b-page-actions" class="ui-helper-right">
-				<button id="boom-tagmanager-create-person" class="boom-button ui-button-text-icon" data-icon="ui-icon-person">
+				<button id="boom-tagmanager-create-person" class="boom-button ui-button-text-icon" data-icon="ui-icon-boom-add">
 					New person
 				</button>
 			</div>
