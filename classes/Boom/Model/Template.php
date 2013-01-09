@@ -15,9 +15,6 @@ class Boom_Model_Template extends ORM
 	 */
 	const DIRECTORY = 'site/templates/';
 
-	protected $_has_one = array(
-		'page'	=>	array('model' => 'Page_Versions', 'foreign_key' => 'id'),
-	);
 	protected $_table_columns = array(
 		'id'			=>	'',
 		'name'		=>	'',
@@ -58,7 +55,7 @@ class Boom_Model_Template extends ORM
 	}
 
 	/**
-	 * Returns a count of the number of the pages which use a template.
+	 * Returns a count of the number of the pages which use the current template.
 	 *
 	 * @return int
 	 */
