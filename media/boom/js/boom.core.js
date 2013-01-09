@@ -115,7 +115,7 @@ $.extend($.boom, {
 			$.boom.config.logs.times.push((new Date).getTime());
 			var time = $.boom.config.logs.times[$.boom.config.logs.times.length - 1] - $.boom.config.logs.times[$.boom.config.logs.times.length - 2];
 
-			if (time) $.boom.config.logs.totalTime += parseInt(time);
+			if (time) $.boom.config.logs.totalTime += parseInt( time, 10 );
 			else time = 0;
 
 			msg += ' : ' + time + 'ms : ' + ($.boom.config.logs.totalTime) + 'ms';
@@ -1015,7 +1015,7 @@ $.extend($.boom, {
 
 			var self = this;
 			var cache = $(dialog).dialog( 'option', 'cache' );
-			console.log( 'closing' )
+			console.log( 'closing' );
 
 
 			if ( cache ) {
@@ -1078,7 +1078,7 @@ $.extend($.boom, {
 
 					return false;
 
-				}).html('Report this error')
+				}).html('Report this error');
 
 				container.append(icon).append(anchor).appendTo(div);
 			}
