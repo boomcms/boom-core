@@ -6,7 +6,7 @@
 </div>
 <div class="boom-box ui-widget ui-corner-all">
 	<a class="boom-button" id='tag_all' href='#tag/0'><?=__('All assets')?></a>
-	<input type='text' id="b-assets-filter-title" />
+	<label for="b-assets-filter-title">Search</label> <input type='text' id="b-assets-filter-title" />
 	<ul class="ui-helper-clearfix boom-tree boom-tree-noborder">
 		<li><a><?=__('Uploaded by')?></a>
 			<ul class="ui-helper-hidden">
