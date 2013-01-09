@@ -174,6 +174,8 @@ function CMSTagmanager(type){
 				.siblings( '.boom-tree-container' )
 				.find( 'a.ui-state-active' )
 				.removeClass( 'ui-state-active' );
+				
+				return false;
 			});
 		
 		self.items.tag.item_selected = function( $item ){
@@ -236,6 +238,7 @@ function CMSTagmanager(type){
 				}
 
 				self.items.tag.get( self.items.tag.rid );
+				return false;
 			}
 			
 		});
@@ -260,6 +263,7 @@ function CMSTagmanager(type){
 						[1];
 
 				self.items.tag.get( self.items.tag.rid );
+				return false;
 			}
 		});
 		
@@ -280,7 +284,7 @@ function CMSTagmanager(type){
 		}
 		
 		$('.b-tags-tree')
-			//.tree( 'destroy' )
+			.tree( 'destroy' )
 			.tree(editableTreeConfig);
 
 		$.boom.hooks.register('tag.clickAfter', 'tagmanager', function(){
