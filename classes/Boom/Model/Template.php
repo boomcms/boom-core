@@ -15,9 +15,6 @@ class Boom_Model_Template extends ORM
 	 */
 	const DIRECTORY = 'site/templates/';
 
-	/**
-	* Properties to create relationships with Kohana's ORM
-	*/
 	protected $_has_one = array(
 		'page'	=>	array('model' => 'Page_Versions', 'foreign_key' => 'id'),
 	);
@@ -48,7 +45,7 @@ class Boom_Model_Template extends ORM
 	 *
 	 *	<?= Form::select('template_id', ORM::factory('Template')->names()) ?>
 	 *
-	 * 
+	 *
 	 * @return array
 	 */
 	public function names()
@@ -61,10 +58,10 @@ class Boom_Model_Template extends ORM
 	}
 
 	/**
-	* Returns a count of the number of the pages which use a template.
-	*
-	* @return int
-	*/
+	 * Returns a count of the number of the pages which use a template.
+	 *
+	 * @return int
+	 */
 	public function page_count()
 	{
 		if ( ! $this->loaded())
@@ -89,9 +86,9 @@ class Boom_Model_Template extends ORM
 	}
 
 	/**
-	* ORM Validation rules
-	* @link http://kohanaframework.org/3.2/guide/orm/examples/validation
-	*/
+	 * ORM Validation rules
+	 * @link http://kohanaframework.org/3.2/guide/orm/examples/validation
+	 */
 	public function rules()
 	{
 		return array(
