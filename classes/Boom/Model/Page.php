@@ -223,7 +223,7 @@ class Boom_Model_Page extends ORM_Taggable
 		if ( ! empty($values))
 		{
 			$new_version
-				->values($values);
+				->values($values, array_keys($values));
 		}
 
 		// Return the new version
@@ -271,7 +271,7 @@ class Boom_Model_Page extends ORM_Taggable
 
 			// Flag the page as deleted.
 			$this
-				->create_version(array(
+				->create_version(NULL, array(
 					'page_deleted'		=>	TRUE,	// Flag the new version as deleting the page
 					'embargoed_until'	=>	$_SERVER['REQUEST_TIME'],	// Make the new version live
 					'published'			=>	TRUE
@@ -305,6 +305,8 @@ class Boom_Model_Page extends ORM_Taggable
 
 	/**
 	 * Get the first version of the current page.
+	 *
+	 * @return Model_Page_Version
 	 */
 	public function first_version()
 	{
@@ -321,23 +323,24 @@ class Boom_Model_Page extends ORM_Taggable
 	 */
 	public function has_published_version()
 	{
-		return TRUE;
-		return ! ($this->published_vid == 0);
-	}
+		// Run a query to find the ID of a version which belongs to this page and has been published.
+		// If a result is returned then a published version exists.
+		$query = DB::select('id')
+			->from('page_versions')
+			->where('page_id', '=', $this->id)
+			->where('published', '=', TRUE)
+			->where('stashed', '=', FALSE)
+			->where('embargoed_until', '<=', $_SERVER['REQUEST_TIME'])
+			->limit(1)
+			->execute();
 
-	/**
-	 * Checks that a page is published.
-	 * @return	boolean
-	 */
-	public function is_published()
-	{
-		return TRUE;
-		return ($this->published_from <= editor::instance()->live_time() AND ($this->published_to >= editor::instance()->live_time() OR $this->published_to == 0));
+
+		return ($query->count() == 1);
 	}
 
 	public function is_visible()
 	{
-		return ($this->visible AND $this->visible_from <= editor::instance()->live_time() AND ($this->visible_to >= editor::instance()->live_time() OR $this->visible_to == 0));
+		return ($this->visible AND $this->visible_from <= Editor::instance()->live_time() AND ($this->visible_to >= Editor::instance()->live_time() OR $this->visible_to == 0));
 	}
 
 	/**
@@ -365,7 +368,7 @@ class Boom_Model_Page extends ORM_Taggable
 	 * If the current page is the root node then the current page is returned.
 	 * Otherwise a page object for the parent page is returned.
 	 *
-	 * @return 	Model_Version_Page
+	 * @return 	Model_Page
 	 */
 	public function parent()
 	{
