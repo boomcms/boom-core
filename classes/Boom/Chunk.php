@@ -347,15 +347,6 @@ abstract class Boom_Chunk
 	}
 
 	/**
-	 * Returns the target of the slot.
-	 * Used for adding the cmsclasses.
-	 */
-	public function target()
-	{
-		return "0";
-	}
-
-	/**
 	 * Set the template to display the chunk
 	 *
 	 * @param	string	$template	The name of a view file.
