@@ -170,9 +170,9 @@ class Boom_Model_Page_Version extends ORM
 	}
 
 	/**
-	* Filters for the versioned person columns
-	* @link http://kohanaframework.org/3.2/guide/orm/filters
-	*/
+	 * Filters for the versioned person columns
+	 * @link http://kohanaframework.org/3.2/guide/orm/filters
+	 */
 	public function filters()
 	{
 	    return array(
