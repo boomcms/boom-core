@@ -52,10 +52,12 @@ $.extend($.boom.assets, {
 					}
 				})
 				.done(function(data) {
-					response(data)
+					response(data);
 				});
 			},
 			select: function(event, ui){
+				self.items.tag.filters[ 'title' ] = ui.item.value;
+				self.items.tag.get( 0 );
 			}
 		});
 
@@ -170,7 +172,7 @@ $.extend($.boom.assets, {
 		var cleanup = function(){
 			top.location.hash = '';
 			$.boom.dialog.destroy( self.asset_browser );
-		}
+		};
 
 		var default_options = {
 			url: '/cms/assets/manager/',
@@ -296,7 +298,7 @@ $.extend($.boom.assets, {
 			}, 'json' );
 
 			return complete;
-		}
+		};
 
 		return upload( data )
 		.progress( function( e ){
@@ -329,7 +331,7 @@ $.extend($.boom.assets, {
 			.on( 'click', '.thumb a', function(event){
 
 				var data = $(this).attr('href').split('/');
-				var rid = parseInt( data[1] );
+				var rid = parseInt( data[1], 10 );
 				select_asset.notify( rid );
 
 				return false;
@@ -445,7 +447,7 @@ $.extend($.boom.assets, {
 
 		for (field in formData) {
 
-			jsonForm[formData[field].name] = formData[field].value
+			jsonForm[formData[field].name] = formData[field].value;
 		}
 
 		// see: http://www.uploadify.com/documentation/
@@ -511,7 +513,7 @@ $.extend($.boom.assets, {
 										errorStr += '<li>' + this + '</li>';
 									});
 
-									errorStr += '</ul>'
+									errorStr += '</ul>';
 								});
 
 								errorStr += '</li></ul>';
@@ -537,7 +539,7 @@ $.extend($.boom.assets, {
 				console.log('HTTP error');
 				console.log(errorObj);
 				console.log('File');
-				console.log(fileObj)
+				console.log(fileObj);
 			},
 
 			onUploadError : function(file, errorCode, errorMsg, errorString) {
@@ -797,7 +799,7 @@ $.extend($.boom.items.asset, {
 
 					$( '#b-assets-upload-form' )
 						.append( '<input type="hidden" name="asset_id" value="' + rid + '" />')
-						.append( '<input type="hidden" name="asset_ids" value="' + rids + '" />')
+						.append( '<input type="hidden" name="asset_ids" value="' + rids + '" />');
 
 					if( window.FormData ){
 						$( this )
