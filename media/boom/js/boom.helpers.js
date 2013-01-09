@@ -10,11 +10,12 @@ String.prototype.cleanup = function(node){
 
 	html = html
 	.replace(/ jquery\d+="\d+"/ig, '') // remove jquery junk
-	.replace(/<a href="[a-zA-Z]{4,5}\W{3}[^\/]+\/replace_[0-9]+">([^<]+)<\/a>/, "$1") // remove placeholder anchor elements
+	.replace(/<a href="[a-zA-Z]{4,5}\W{3}[^\/]+\/replace_[0-9]+">([^<]+)<\/a>/, "$1"); // remove placeholder anchor elements
 
 	// fix broken rel attributes #fuckuinternetexplorer
 	var matches = html.match(/rel=(.*?)[\b>]/g);
-	if (matches && matches.length && /"(.*?)"/.test(matches[0])) {
+	var re = /"(.*?)"/;
+	if (matches && matches.length && re.test(matches[0])) {
 		// we're going to assume that all other rel attributes are all good
 	} else {
 		// we're going to assume that all other rel attributes are broken
@@ -118,5 +119,5 @@ String.prototype.ucfirst = function() {
 @function
 */
 String.prototype.toInt = function(){
-	return parseInt(this);
+	return parseInt( this, 10 );
 };
