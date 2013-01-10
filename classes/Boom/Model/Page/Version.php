@@ -218,7 +218,7 @@ class Boom_Model_Page_Version extends ORM
 	 * Status could be:
 	 *
 	 * * 'live' if the version is published.
-	 * *
+	 * * 'embargoed' if the version is published but won't become live until a future time.
 	 * * 'draft' if it's not published.
 	 *
 	 * Other possible values relate to approval requests which aren't yet implemented.
