@@ -164,6 +164,36 @@ $.extend($.boom, {
 			for(var i in ids) ( ids[i] == id ) && ids.splice( i, 1 );
 
 			this._set( name || this.config.name, ids.join( this.config.delimiter ) );
+		},
+		
+		/** @function */
+		toggle : function(id, name){
+
+			if (!id) return;
+
+			var ids = this.get( name || this.config.name ).split( this.config.delimiter );
+
+			if ( $.inArray( id, ids ) !== -1 ) {
+				
+				this.remove( id, name );
+			} else {
+				this.add( id, name );
+			};
+		},
+		
+		/** @function */
+		contains : function(id, name){
+
+			if (!id) return;
+
+			var ids = this.get( name || this.config.name ).split( this.config.delimiter );
+
+			if ( $.inArray( id, ids ) !== -1 ) {
+				
+				return true;
+			} else {
+				return false;
+			};
 		}
 	}
 });

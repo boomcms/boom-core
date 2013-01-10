@@ -202,8 +202,13 @@ $.extend($.boom, {
 					}
 				);
 			});
+			
+			if ( $.boom.cookie.contains( 'navmenu' ) ) {
+				$( '.ui-tabs-nav' ).hide();
+			}
 			$( '#boom-page-menu' ).on( 'click', function(){
 				$( '.ui-tabs-nav' ).toggle();
+				$.boom.cookie.toggle( 'navmenu');
 			});
 
 
