@@ -69,7 +69,7 @@ $.extend($.boom.assets, {
 			self._upload();
 		});
 
-		$( '#boom-tagmanager' )
+		$( '#boom-topbar' )
 			.on( 'click', '#b-button-multiaction-delete', function(){
 
 				$.boom.log( 'asset delete selected' );

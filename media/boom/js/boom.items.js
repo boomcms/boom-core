@@ -14,11 +14,11 @@ $.extend($.boom.tagmanager.base.item.prototype, {
 
 		if ( this.buttonManager ) {
 
-			if ( this.buttonManager.show ) { 
+			if ( this.buttonManager.show ) {
 
 				$( this.buttonManager.show.join(',') ).show();
 			}
-		
+
 			if ( this.buttonManager.hide ) {
 
 				$( this.buttonManager.hide.join(',') ).hide();
@@ -40,47 +40,47 @@ $.boom.items.tag = $.extend(true, {}, $.boom.tagmanager.base.item);
 $.extend($.boom.items.tag,  {
 	/** @lends $.boom.items.tag */
 
-	/** 
+	/**
 	@property
 	*/
 	buttonManager: {
-		
+
 		show: [ '#b-assets-upload' ],
 		hide: [ '#boom-tagmanager-save-all' ]
 	},
-	
+
 	rid: 0,
-	
+
 	filters: {},
 
 	/** @function */
 	get : function( rid ){
-		
+
 		$.boom.log( 'get tag ' + rid );
-		
+
 		var self = this;
 		var options = this.tagmanager.options;
 
 		this.rid = rid;
-	
+
 		$.boom.loader.show();
-	
-		params = 
+
+		params =
 			'tag=' + rid + '&' +
 			'perpage=' + options.perpage + '&' +
 			'sortby=' + options.sortby + '&' +
 			'order='  + options.order;
-			
+
 		for ( filter in self.filters ) {
 			params += '&' + filter + '=' + self.filters[ filter ];
 		}
- 
-		var url = 
-			'/cms/' + options.type + '/list' 
+
+		var url =
+			'/cms/' + options.type + '/list'
 			+ '?' + params;
 
 		self.tagmanager.options.url = url;
-		
+
 			self.tagmanager.elements.rightpane
 			.find('.b-items-content')
 			.sload( url, function(){
@@ -88,13 +88,13 @@ $.extend($.boom.items.tag,  {
 				$.boom.tagmanager.base.item.prototype.get.apply( self );
 
 				$.boom.loader.hide();
-	
+
 				self.bind();
 			});
 
 		$.boom.log('Tag items get');
 	},
-	
+
 	/** @function */
 	bind : function(){
 		$.boom.log( 'items.tag.bind()' );
@@ -102,11 +102,11 @@ $.extend($.boom.items.tag,  {
 		var self = this;
 
 		var tabsConfig = $.extend({}, $.boom.config.tabs, {
-		
+
 			show: function(event, ui){
 			}
-		});	
-			
+		});
+
 		this.tagmanager.elements.rightpane.ui({
 			tabs: tabsConfig
 		});
@@ -115,8 +115,8 @@ $.extend($.boom.items.tag,  {
 
 		$('.b-items-select-checkbox').change(function(){
 
-			var view = 
-				this.id.replace(/^[a-z]+-([a-z]+)-[0-9]+$/, "$1") == 'list' ? 'thumb' : 'list', 
+			var view =
+				this.id.replace(/^[a-z]+-([a-z]+)-[0-9]+$/, "$1") == 'list' ? 'thumb' : 'list',
 				type =	this.id.replace(/^([a-z]+)-.*$/, "$1"),
 				selector = $( '#' + type + '-' + view + '-' + this.id.replace(/[a-z]+-[a-z]+-/, ''));
 
@@ -134,8 +134,6 @@ $.extend($.boom.items.tag,  {
 			var buttons = $( '[id|=b-button-multiaction]' );
 
 			buttons.button( amount > 0 ? 'enable' : 'disable' );
-
-			$('#boom-tagmanager-amount-checked').html( amount === 0 ? '' : amount / 2 );
 		});
 
 		$('.b-items-list tbody tr, .b-items-thumbs .thumb').hover(
@@ -159,7 +157,7 @@ $.extend($.boom.items.tag,  {
 		});
 
 		$('.b-items-thumbs .thumb').captions($.boom.config.captions);
-		
+
 	},
 
 	/** @function */
@@ -179,21 +177,21 @@ $.extend($.boom.items.tag,  {
 				Save: function(){
 					var dialog = this;
 					var data = $( dialog ).find('form').serialize();
-					
+
 					item.find('> a').text( $( '#boom-tagmanager-tag-edit-name' ).val() );
-					
+
 					self.save( rid, data)
 					.done( function(){
 
 						$.boom.dialog.destroy(dialog);
-			
+
 						$.boom.growl.show('Tag successfully saved.');
 					});
 				}
 			}
 		});
 	},
-	
+
 	/** @function */
 	add: function(event){
 
@@ -204,13 +202,13 @@ $.extend($.boom.items.tag,  {
 			title: 'Add tag',
 			buttons: {
 				Cancel: function(){
-	
+
 					$.boom.dialog.destroy(this);
 				},
 				Save: function(){
-					
+
 					var selected = $( '#boom-tag-tree a.ui-state-active').attr( 'id');
-					
+
 					var treeConfig = $.extend({}, $.boom.config.tree, {
 						maxSelected: 1,
 						toggleSelected: false,
@@ -221,7 +219,7 @@ $.extend($.boom.items.tag,  {
 							$this = $(this);
 							self.item_selected( $this );
 
-							self.get( 
+							self.get(
 								$this
 									.attr( 'href' )
 									.split('/')
@@ -239,12 +237,12 @@ $.extend($.boom.items.tag,  {
 					});
 
 					var dialog = this, data = $( dialog ).find('form').serialize();
-					
+
 					var tag_saved = self.save( 0, data );
 					console.log( tag_saved );
-					
+
 					var tree_refresh = $.Deferred();
-					
+
 					tree_refresh.done( 	function(){
 						$(this)
 							.find( '.b-tags-tree' )
@@ -254,20 +252,20 @@ $.extend($.boom.items.tag,  {
 							.addClass( 'ui-state-active' );
 						}
 					});
-					
+
 					tag_saved.done( function(){
 						var name = $('#boom-tagmanager-tag-edit-name').val();
 						var parent = $('#boom-tagmanager-tag-edit-parent').val();
-						
+
 						$.boom.dialog.destroy(dialog);
-						
+
 						$('#boom-tag-tree')
-							.load( 
-								'/cms/tag/tree', 
+							.load(
+								'/cms/tag/tree',
 								{ type : 1 },
-								tree_refresh.resolve 
+								tree_refresh.resolve
 							);
-							
+
 						$.boom.growl.show('Tag successfully saved.');
 					});
 
@@ -284,7 +282,7 @@ $.extend($.boom.items.tag,  {
 		.done( function(response){
 
 			$.boom.loader.hide();
-			
+
 		});
 	},
 
@@ -299,29 +297,29 @@ $.extend($.boom.items.tag,  {
 		$.boom.dialog.confirm('Please confirm', 'Are you sure you want to remove this tag? <br /><br /> This will delete the tag from the database and cannot be undone!', function(){
 
 			$.boom.loader.show();
-		
+
 			$.post('/cms/tag/delete/' + rid)
 			.done( function(){
 
 				$.boom.loader.hide();
-				
+
 				$.boom.growl.show('Tag successfully removed.');
 				item.remove();
 			});
 		});
 	},
-	
+
 	/** @function */
 	picker: function( options ) {
-		
+
 		var options = ( options ) ? optionss : {};
-		
+
 		return tag_tree = $.post(
 			'/cms/tag/tree',
 			{ type: 1 }
 		)
 		.pipe( function( response ){
-			
+
 			var treeConfig = $.extend({}, options.treeConfig, {
 				toggleSelected: true,
 				onClick: function(e) {
@@ -346,9 +344,9 @@ $.extend($.boom.items.tag,  {
 
 				}
 			});
-			
+
 			var tags_edited = new $.Deferred();
-			
+
 			$.boom.dialog.open({
 				msg: response,
 				// cache: true,
@@ -359,12 +357,12 @@ $.extend($.boom.items.tag,  {
 
 						var tag_tree = $(this).find( '.boom-tree' );
 						var tags = [];
-						
+
 						$.each( tag_tree.find( '.ui-state-active'), function(){
 							var rid = parseInt( $(this).attr( 'rel' ), 10 );
 							tags.push( rid );
 						});
-						
+
 						tags_edited.resolve( tags );
 						$( this ).dialog( 'destroy' );
 					}
@@ -376,7 +374,7 @@ $.extend($.boom.items.tag,  {
 					toggleSelected: true
 				}
 			});
-			
+
 			return tags_edited;
 		});
 	}

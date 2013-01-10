@@ -110,25 +110,5 @@
 		<div class="ui-helper-right" style="margin: .5em .5em 0 0">
 			<?=__('Total files')?>: <?= Num::format($total, 0) ?> | <?=__('Total size')?>: <?= Text::bytes($total_size) ?>
 		</div>
-		<div id="b-items-checkactions" class="ui-widget-content">
-			With <span id="boom-tagmanager-amount-checked"></span> selected:
-		</div>
-		<div id="b-items-multiactons" class="ui-widget-content">
-			<button id="b-button-multiaction-edit" disabled="disabled" class="boom-button ui-button-text-icon" data-icon="ui-icon-boom-edit">
-				<?=__('View')?>/<?=__('Edit')?>
-			</button>
-			<button id="b-button-multiaction-delete" disabled="disabled" class="boom-button ui-button-text-icon" data-icon="ui-icon-boom-delete">
-				<?=__('Delete')?>
-			</button>
-			<button id="b-button-multiaction-download" disabled="disabled" class="boom-button ui-button-text-icon" data-icon="ui-icon-boom-download">
-				<?=__('Download')?>
-			</button>
-			<button id="b-button-multiaction-tag" disabled="disabled" class="boom-button ui-button-text-icon" data-icon="ui-icon-boom-tag">
-				<?=__('Add Tags')?>
-			</button>
-			<button id="b-button-multiaction-clear" disabled="disabled" class="boom-button ui-button-text-icon" data-icon="ui-icon-boom-cancel">
-				<?=__('Clear Selection')?>
-			</button>
-		</div>
 	</div>
 </div>
