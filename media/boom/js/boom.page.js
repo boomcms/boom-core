@@ -187,6 +187,21 @@ $.extend($.boom, {
 
 				});
 			});
+			$( '#boom-page-editlive' ).on( 'click', function( event ){
+				$.boom.dialog.confirm(
+					'Edit live',
+					'Stash changes and edit the live page?',
+					function(){
+
+						$.boom.log( 'stashing page edits' );
+
+						$.post( '/cms/page/stash/' + $.boom.page.config.id )
+						.done( function( response ){
+							$.boom.history.refresh();
+						});
+					}
+				);
+			});
 
 
 			self.settings.init();
