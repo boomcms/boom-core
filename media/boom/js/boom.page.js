@@ -384,7 +384,7 @@ $.extend( $.boom.page, {
 		iframe: {},
 
 		/** @property */
-		height: '60px',
+		height: '80px',
 
 		/**
 		* Adds some whitespace to prevent the toolbar sitting over links etc.
