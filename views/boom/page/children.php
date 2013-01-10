@@ -9,7 +9,7 @@
 					echo " style='color: #ff0000'";
 				endif;
 			?>
-			 href="<?= $p->link() ?>"><?= $p->version()->title ?></a>
+			 href="<?= $p->url() ?>"><?= $p->version()->title ?></a>
 		</li>
 	<? endforeach; ?>
 </ul>

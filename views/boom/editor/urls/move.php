@@ -1,18 +1,18 @@
 <p>
-	Would you like to move the link <?= $link->location ?>?
+	Would you like to move the URL <?= $url->location ?>?
 </p>
 
-<? if ($link->is_primary): ?>
+<? if ($url->is_primary): ?>
 	<p>
-		<b>This link is the primary link for its page. If you move this link its current page may become inaccessible.</b>
+		<b>This URL is the primary URL for its page. If you move this URL its current page may become inaccessible.</b>
 	</p>
 <? endif; ?>
 <br />
 <br />
 
-<? if ( ! $current->loaded()): ?>
+<? if ($current->version()->page_deleted): ?>
 	<p>
-		This link is assigned to a page which has been deleted.
+		This URL is assigned to a page which has been deleted.
 	</p>
 <? else: ?>
 	<table>
@@ -26,10 +26,10 @@
 		</tr>
 		<tr>
 			<td>
-				<?= $current->title ?>
+				<?= $current->version()->title ?>
 			</td>
 			<td>
-				<?= $page->title ?>
+				<?= $page->version()->title ?>
 			</td>
 		</tr>
 		<tr>

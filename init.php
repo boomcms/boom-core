@@ -41,23 +41,23 @@ Route::set('boom', '<location>(.<action>)', array(
 	))
 	->filter(function(Route $route, $params, Request $request)
 		{
-			$page_link = new Model_Page_Link(array('location' => $params['location']));
+			$page_url = new Model_Page_URL(array('location' => $params['location']));
 
-			if ( ! $page_link->loaded())
+			if ( ! $page_url->loaded())
 			{
 				return FALSE;
 			}
 
 			$page = ORM::factory('Page')
 				->with_current_version(Editor::instance())
-				->where('page.id', '=', $page_link->page_id)
+				->where('page.id', '=', $page_url->page_id)
 				->find();
 
 			if ($page->loaded())
 			{
-				if ( ! $page_link->is_primary AND $page_link->redirect)
+				if ( ! $page_url->is_primary AND $page_url->redirect)
 				{
-					header('Location: '.$page->link(), NULL, 301);
+					header('Location: '.$page->url(), NULL, 301);
 					exit;
 				}
 
@@ -80,7 +80,7 @@ Route::set('vanity', '_<link>', array(
 		{
 			// Turn the vanity URI into a page ID.
 			$page_id = base_convert($params['link'], 36, 10);
-			$redirect_to = ORM::factory('Page', $page_id)->link();
+			$redirect_to = ORM::factory('Page', $page_id)->url();
 
 			header('Location: '.$redirect_to, NULL, 302);
 			exit;
@@ -137,7 +137,7 @@ Route::set('page_settings', 'cms/page/<controller>/<action>/<id>', array(
 		'directory' => 'cms_page',
 	));
 
-Route::set('page_links', 'cms/page/link/<action>/<id>' )
+Route::set('page_urls', 'cms/page/url/<action>/<id>' )
 	->defaults(array(
-		'controller' => 'cms_page_link',
+		'controller' => 'Cms_Page_URL',
 	));

@@ -2,8 +2,8 @@
 /**
 * Displays a form to add a secondary URI to a page.
 *
-* Rendered by:	Controller_Cms_Page::action_addlink()
-* Submits by:	Controller_Cms_Page::action_addlink()
+* Rendered by:	Controller_Cms_Page::action_addurl()
+* Submits by:	Controller_Cms_Page::action_addurl()
 *
 *********************** Variables **********************
 *	$person	****	Instance of Model_Person	****	The active user.
@@ -12,8 +12,8 @@
 *
 */
 ?>
-<form id="boom-form-addlink" name="form-addlink">
+<form id="boom-form-addurl" name="form-addurl">
 	<?= Form::hidden('csrf', Security::token()) ?>
 	<input type='hidden' name='page' value='<?= $page->id ?>' />
-	<input type='text' name='link' id='link' />
+	<input type='text' name='url' id='url' />
 </form>

@@ -125,13 +125,13 @@ class Boom_Controller_Cms_Page extends Boom_Controller
 
 			// Generate the link for the page.
 			// What is the prefix for the link? If a default default_chinl_link_prefix has been set for the parent then use that, otherwise use the parent's primary link.
-			$prefix = ($parent->children_link_prefix)? $parent->children_link_prefix : $parent->primary_link();
+			$prefix = ($parent->children_link_prefix)? $parent->children_link_prefix : $parent->primary_url();
 
 			// Generate a link from the prefix and the page's title.
 			$link = URL::generate($prefix, $title);
 
 			// Add the link as the primary link for this page.
-			ORM::factory('Page_Link')
+			ORM::factory('Page_URL')
 				->values(array(
 					'location'		=>	$link,
 					'page_id'		=>	$page->id,
@@ -227,7 +227,7 @@ class Boom_Controller_Cms_Page extends Boom_Controller
 			$this->_page->delete($with_children);
 
 			// Redirect to the parent page.
-			$this->response->body($parent->link());
+			$this->response->body($parent->url());
 		}
 	}
 
@@ -265,14 +265,14 @@ class Boom_Controller_Cms_Page extends Boom_Controller
 
 	public function action_tree()
 	{
-		$pages = DB::select(array('pages.id', 'page_id'), 'children_ordering_policy', 'pages.visible', 'visible_in_nav', 'page_links.location', 'title', 'page_mptt.*')
+		$pages = DB::select(array('pages.id', 'page_id'), 'children_ordering_policy', 'pages.visible', 'visible_in_nav', 'page_urls.location', 'title', 'page_mptt.*')
 			->from('pages')
 			->join('page_versions', 'inner')
 			->on('pages.id', '=', 'page_versions.page_id')
 			->join('page_mptt')
 			->on('page_mptt.id', '=', 'pages.id')
-			->join('page_links', 'inner')
-			->on('page_links.page_id', '=', 'pages.id')
+			->join('page_urls', 'inner')
+			->on('page_urls.page_id', '=', 'pages.id')
 			->where('is_primary', '=', TRUE)
 			->where('page_deleted', '=', FALSE)
 			->join(array(

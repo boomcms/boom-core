@@ -130,8 +130,8 @@ class Boom_Controller_Page extends Boom_Controller
 		{
 			$items[] = array(
 				'title'			=>	html_entity_decode($page->version()->title),
-				'link'			=>	$page->primary_link(),
-				'guid'		=>	$page->primary_link(),
+				'link'			=>	$page->primary_url(),
+				'guid'		=>	$page->primary_url(),
 				'description'	=>	strip_tags(Chunk::factory('text', 'standfirst', $page)->text()),
 				'pubDate'		=>	$page->visible_from,
 			);
@@ -140,7 +140,7 @@ class Boom_Controller_Page extends Boom_Controller
 		// Create the feed with the $items array as the content.
 		$feed = Feed::create(array(
 				'title'	=>	$this->page->version()->title,
-				'link'	=>	$this->page->link() . ".rss",
+				'link'	=>	$this->page->url() . ".rss",
 			),
 			$items
 		);

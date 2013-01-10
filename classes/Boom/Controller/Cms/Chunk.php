@@ -112,7 +112,7 @@ class Boom_Controller_Cms_Chunk extends Boom_Controller
 	* Insert an internal link into a text slot.
 	* This controller displays the form to select a page to link to.
 	*/
-	public function action_insert_link()
+	public function action_insert_url()
 	{
 		$this->template = View::factory('boom/editor/slot/insert_link');
 	}

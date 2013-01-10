@@ -49,9 +49,9 @@
 							echo " color: #ff0000;";
 						}
 
-						echo "' id='", $page->id, "' href='/", $page->primary_link(), "' rel='", $page->id, "'>";
+						echo "' id='", $page->id, "' href='/", $page->primary_url(), "' rel='", $page->id, "'>";
 
-							echo "<table style='border: none'><tr><td>", $page->version()->title, "</td><td>", $page->link(), "</td><td>Template: ", $page->version()->template->name, "</td></tr></table>";
+							echo "<table style='border: none'><tr><td>", $page->version()->title, "</td><td>", $page->url(), "</td><td>Template: ", $page->version()->template->name, "</td></tr></table>";
 
 						echo "</a>\n";
 

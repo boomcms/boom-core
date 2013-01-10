@@ -2,8 +2,8 @@
 	Navigation
 </button>
 
-<button id="boom-page-links" class="boom-button">
-	Links
+<button id="boom-page-urls" class="boom-button">
+	URLs
 </button>
 
 <button id="boom-page-search" class="boom-button">

@@ -23,7 +23,7 @@ class Boom_Model_Page extends ORM_Taggable
 
 	protected $_has_many = array(
 		'versions'	=> array('model' => 'Page_Version', 'foreign_key' => 'page_id'),
-		'links'	=> array('model' => 'Page_Link', 'foreign_key' => 'page_id'),
+		'urls'	=> array('model' => 'Page_URL', 'foreign_key' => 'page_id'),
 	);
 
 	protected $_table_columns = array(
@@ -81,12 +81,12 @@ class Boom_Model_Page extends ORM_Taggable
 	const CHILD_ORDER_DESC = 16;
 
 	/**
-	 * Cached result for self::link()
+	 * Cached result for self::url()
 	 *
 	 * @access	private
 	 * @var		string
 	 */
-	private $_link;
+	private $_url;
 
 	/**
 	 * Adds a new child page to this page's MPTT tree.
@@ -344,26 +344,6 @@ class Boom_Model_Page extends ORM_Taggable
 	}
 
 	/**
-	 * Returns the page's absolute link.
-	 * This method uses Kohana's URL::base() method to generate the base URL from the current request (protocol, hostnane etc.) {@link http://kohanaframework.org/3.2/guide/api/URL#base}
-	 *
-	 * @uses	URL::site()
-	 * @return Model_Page_Link
-	 */
-	public function link()
-	{
-		if ($this->_link === NULL)
-		{
-			// Get the primary link for this page.
-			$this->_link = $this->links
-				->where('is_primary', '=', TRUE)
-				->find();
-		}
-
-		return $this->_link;
-	}
-
-	/**
 	 * Get the parent page for the current page.
 	 * If the current page is the root node then the current page is returned.
 	 * Otherwise a page object for the parent page is returned.
@@ -376,13 +356,13 @@ class Boom_Model_Page extends ORM_Taggable
 	}
 
 	/**
-	 * Generate a short URI for the page, similar to t.co etc.
+	 * Generate a short URL for the page, similar to t.co etc.
 	 * Returns the page ID encoded to base-36 prefixed with an underscore.
-	 * We prefix the short URIs to avoid the possibility of conflicts with real URIs
+	 * We prefix the short URLs to avoid the possibility of conflicts with real URLs
 	 *
 	 * @return 	string
 	 */
-	public function short_link()
+	public function short_url()
 	{
 		return "_" . base_convert($this->id, 10, 36);
 	}
@@ -435,6 +415,28 @@ class Boom_Model_Page extends ORM_Taggable
 		}
 
 		return $this;
+	}
+
+	/**
+	 * Returns the page's absolute URL.
+	 * The URL can be displayed by casting the returned object to a string:
+	 *
+	 *		(string) $page->url();
+	 *
+	 *
+	 * @return Model_Page_URL
+	 */
+	public function url()
+	{
+		if ($this->_url === NULL)
+		{
+			// Get the primary URL for this page.
+			$this->_url = $this->urls
+				->where('is_primary', '=', TRUE)
+				->find();
+		}
+
+		return $this->_url;
 	}
 
 	/**

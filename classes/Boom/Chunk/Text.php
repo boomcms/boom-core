@@ -187,7 +187,7 @@ class Boom_Chunk_Text extends Chunk
 			function ($match)
 			{
 				return ORM::factory('Page', $match[1])
-					->link();
+					->url();
 			},
 			$text
 		);

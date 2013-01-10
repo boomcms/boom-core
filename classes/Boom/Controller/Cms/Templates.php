@@ -97,7 +97,7 @@ class Boom_Controller_Cms_Templates extends Boom_Controller
 	{
 		$template_id = $this->request->param('id');
 
-		$pages = DB::select('page_versions.title', 'page_links.location')
+		$pages = DB::select('page_versions.title', 'page_urls.location')
 			->from('page_versions')
 			->join(array(
 				DB::select(array(DB::expr('max(id)'), 'id'))
@@ -106,8 +106,8 @@ class Boom_Controller_Cms_Templates extends Boom_Controller
 				'current_version'
 			))
 			->on('page_versions.id', '=', 'current_version.id')
-			->join('page_links', 'inner')
-			->on('page_versions.page_id', '=', 'page_links.page_id')
+			->join('page_urls', 'inner')
+			->on('page_versions.page_id', '=', 'page_urls.page_id')
 			->where('page_versions.template_id', '=', $template_id)
 			->where('is_primary', '=', TRUE)
 			->where('page_deleted', '=', FALSE)

@@ -35,7 +35,7 @@ class Boom_URL extends Kohana_URL
 			$uri = ($append > 0)? ($start_uri.$append) : $start_uri;
 			$append++;
 
-			$page_uri = new Model_Page_Link(array('location' => $uri));
+			$page_uri = new Model_Page_URL(array('location' => $uri));
 
 		}
 		while ($page_uri->loaded() == TRUE);

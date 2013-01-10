@@ -533,7 +533,7 @@ $.extend($.boom.page, {
 
 					//event.target = this;
 					var $this = $( this );
-					
+
 					var slot = {
 						type : $this.attr( 'data-boom-chunk' ),
 						name : $this.attr( 'data-boom-slot-name' ),
@@ -664,7 +664,7 @@ $.extend($.boom.page, {
 			$.each(scripts, function(){
 
 				$.get(this, function(data){
-					
+
 					var head = self.elements.page_body
 						.contents()
 						.find('head');
@@ -796,7 +796,7 @@ $.extend($.boom.page, {
 
 			var settings = [
 				'navigation',
-				'links',
+				'urls',
 				'search',
 				'tags',
 				'childsettings',
@@ -1131,7 +1131,7 @@ $.extend($.boom.page, {
 								.end()
 								.find('span')
 								.addClass('active');
-		 					// Adding the active class changes the margin-left of the text so that it doesn't shift to the right when then delete link becomes visible.
+		 					// Adding the active class changes the margin-left of the text so that it doesn't shift to the right when then delete url becomes visible.
 						}).mouseleave(function(){
 							$(this)
 								.find('a')
@@ -1211,20 +1211,20 @@ $.extend($.boom.page, {
 
 		/**
 		* @class
-		* @name $.boom.page.settings.links
+		* @name $.boom.page.settings.urls
 		*/
-		links: {
-			/** @lends $.boom.page.settings.links */
+		urls: {
+			/** @lends $.boom.page.settings.urls */
 
 			/**
 			Menu label
 			@property
 			*/
-			label: 'Links',
+			label: 'URLs',
 
 			/** @function */
 			menu_handler: function() {
-				$( '#boom-page-links' ).trigger('boomclick');
+				$( '#boom-page-urls' ).trigger('boomclick');
 			},
 
 			/** @function */
@@ -1245,18 +1245,18 @@ $.extend($.boom.page, {
 				});
 
 				$.boom.dialog.open({
-					url: '/cms/page/link/list/' + $.boom.page.config.id,
+					url: '/cms/page/url/list/' + $.boom.page.config.id,
 					event: event,
 					// cache: true,
-					title: 'Links',
+					title: 'URLs',
 					width: 440,
 					treeConfig: treeConfig,
 					buttons: {
 						Add: function( event ){
 							$.boom.dialog.open({
-								url: '/cms/page/link/add/' + $.boom.page.config.id,
+								url: '/cms/page/url/add/' + $.boom.page.config.id,
 								event: event,
-								title: 'Add Link',
+								title: 'Add URL',
 								width: 300,
 								// cache: true,
 								buttons: {
@@ -1275,20 +1275,20 @@ $.extend($.boom.page, {
 						}
 					},
 					open: function(){
-						//  Each link in the list has a radio button whic toggles whether the link is a primary link
-						// and a checkbox to toggle whether a secondary link redirects to the primary link.
-						$('.b-links-primary, .b-links-redirect').change(function(){
-							link = $(this).closest('li');
-							redirect = $(link).find('.b-links-redirect').is(':checked')? 1: 0;
-							primary = $(link).find('.b-links-primary').is(':checked')? 1 : 0;
+						//  Each url in the list has a radio button whic toggles whether the url is a primary url
+						// and a checkbox to toggle whether a secondary url redirects to the primary url.
+						$('.b-urls-primary, .b-urls-redirect').change(function(){
+							url = $(this).closest('li');
+							redirect = $(url).find('.b-urls-redirect').is(':checked')? 1: 0;
+							primary = $(url).find('.b-urls-primary').is(':checked')? 1 : 0;
 
-							$.post('/cms/page/link/save/' + $.boom.page.config.id, {
-								link_id :  link.attr('data-id'),
+							$.post('/cms/page/url/save/' + $.boom.page.config.id, {
+								url_id :  url.attr('data-id'),
 								redirect : redirect,
 								primary : primary
 							})
 							.done(function(){
-								$.boom.growl.show("Link saved.");
+								$.boom.growl.show("URL saved.");
 							});
 						});
 					}
@@ -1298,25 +1298,25 @@ $.extend($.boom.page, {
 			/** @function */
 			add: function() {
 
-				var form = $('#boom-form-addlink');
-				var new_link = $( 'input[name=link]' ).val();
+				var form = $('#boom-form-addurl');
+				var new_url = $( 'input[name=url]' ).val();
 
 				$.boom.loader.show();
 
 				$
-					.post('/cms/page/link/add/' + $.boom.page.config.id, form.serialize())
+					.post('/cms/page/url/add/' + $.boom.page.config.id, form.serialize())
 					.done( function(response){
 
 						$.boom.loader.hide();
 
-						if (response == 'link in use')
+						if (response == 'url in use')
 						{
-							// Link is being used on another page.
+							// URL is being used on another page.
 							// Ask if they want to move it.
-							$.boom.dialog.confirm("Link in use", "The specified link is already in use on another page. Would you like to move it?", function(){
+							$.boom.dialog.confirm("URL in use", "The specified url is already in use on another page. Would you like to move it?", function(){
 								$.boom.dialog.open({
-									url: '/cms/page/link/move/' + $.boom.page.config.id + '?link=' + new_link,
-									title: 'Move link',
+									url: '/cms/page/url/move/' + $.boom.page.config.id + '?url=' + new_url,
+									title: 'Move url',
 									buttons: {
 										Cancel: function(){
 											$.boom.dialog.destroy(this);
@@ -1325,12 +1325,12 @@ $.extend($.boom.page, {
 											$.boom.loader.show();
 											var move_dialog = this;
 
-											$.post('/cms/page/link/move/' + $.boom.page.config.id + '?link=' + new_link)
+											$.post('/cms/page/url/move/' + $.boom.page.config.id + '?url=' + new_url)
 												.done(function(response){
-													$.boom.growl.show('Link added.');
-													$( '#b-pagesettings-links .boom-tree' )
+													$.boom.growl.show('URL added.');
+													$( '#b-pagesettings-urls .boom-tree' )
 														.data( 'tree' )
-														.add_item( '<li>' + new_link + '</li>' );
+														.add_item( '<li>' + new_url + '</li>' );
 
 													$.boom.dialog.destroy(move_dialog);
 
@@ -1344,10 +1344,10 @@ $.extend($.boom.page, {
 						else
 						{
 							// success
-							$.boom.growl.show('Link added.');
-							$( '#b-pagesettings-links .boom-tree' )
+							$.boom.growl.show('Url added.');
+							$( '#b-pagesettings-urls .boom-tree' )
 								.data( 'tree' )
-								.add_item( '<li>' + new_link + '</li>' );
+								.add_item( '<li>' + new_url + '</li>' );
 						}
 					});
 			},
@@ -1355,15 +1355,15 @@ $.extend($.boom.page, {
 			/** @function */
 			remove: function( item ) {
 
-				$.boom.dialog.confirm('Please confirm', 'Are you sure you want to remove this link? <br /><br /> This will delete the link from the database and cannot be undone!', function(){
+				$.boom.dialog.confirm('Please confirm', 'Are you sure you want to remove this URL? <br /><br /> This will delete the URL from the database and cannot be undone!', function(){
 
 					$.boom.loader.show();
 
 					$
 						.post(
-							'/cms/page/link/delete/' + $.boom.page.config.id,
+							'/cms/page/url/delete/' + $.boom.page.config.id,
 						 	{
-								link: $.trim( item.text() )
+								url: $.trim( item.text() )
 							}
 						)
 						.done( function(){

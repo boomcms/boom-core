@@ -73,9 +73,9 @@ class Boom_Controller_Cms_Page_Version extends Controller_Cms_Page_Settings
 		if ($this->old_version->title != $post->title AND $this->old_version->title == 'Untitled')
 		{
 			// Create a new primary link for the page.
-			$link = ORM::factory('Page_Link')
+			$link = ORM::factory('Page_URL')
 				->values(array(
-					'location'		=>	URL::generate($this->_page->parent()->link(), $post->title),
+					'location'		=>	URL::generate($this->_page->parent()->url(), $post->title),
 					'page_id'		=>	$this->_page->id,
 					'is_primary'	=>	TRUE,
 				))

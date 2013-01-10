@@ -28,7 +28,7 @@ class Boom_HTTP_Exception_404 extends Kohana_HTTP_Exception_404
 		if ($page->loaded())
 		{
 			// The response body will be the result of an internal request to this page.
-			$body = Request::factory($page->link())
+			$body = Request::factory($page->url())
 				->execute()
 				->body();
 		}

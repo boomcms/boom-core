@@ -183,7 +183,7 @@ class Boom_Controller_Page_Children extends Boom_Controller
 		// Set the select columns.
 		// This is done individually in each action because different output formats needs different columns
 		$results = $query
-			->select('page.id', 'title', 'page_links.location')
+			->select('page.id', 'title', 'page_urls.location')
 			->select(array(DB::expr("visible_from <= " . $this->editor->live_time() . " and (visible_to >= " . $this->editor->live_time() . " or visible_to = 0)"), 'visible'))
 			->select(array(
 				DB::select(DB::expr('1'))
@@ -279,11 +279,11 @@ class Boom_Controller_Page_Children extends Boom_Controller
 		$query = ORM::factory('Page')
 			->with('mptt')
 			->with_current_version($this->editor)
-			->join('page_links', 'inner')
-			->on('page.id', '=', 'page_links.page_id')
+			->join('page_urls', 'inner')
+			->on('page.id', '=', 'page_urls.page_id')
 			->where('version.page_deleted', '=', FALSE)
 			->where('mptt.parent_id', '=', $this->parent->id)
-			->where('page_links.is_primary', '=', TRUE)
+			->where('page_urls.is_primary', '=', TRUE)
 			->order_by($this->sort_column, $this->sort_direction);
 
 		// Filtering by date from?

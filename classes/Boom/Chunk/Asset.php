@@ -30,7 +30,7 @@ class Boom_Chunk_Asset extends Chunk
 		{
 			$target = new Model_Page($this->_chunk->url);
 			$v->title = $p->version()->title;
-			$v->url = $target->link();
+			$v->url = $target->url();
 		}
 		else
 		{

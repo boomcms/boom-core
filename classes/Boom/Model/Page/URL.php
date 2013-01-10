@@ -7,7 +7,7 @@
  * @author	Rob Taylor
  * @copyright	Hoop Associates
  */
-class Boom_Model_Page_Link extends ORM
+class Boom_Model_Page_URL extends ORM
 {
 	protected $_belongs_to = array('page' => array('foreign_key' => 'page_id'));
 	protected $_table_columns = array(
@@ -17,10 +17,10 @@ class Boom_Model_Page_Link extends ORM
 		'is_primary'	=>	'',
 		'redirect'		=>	'',
 	);
-	protected $_table_name = 'page_links';
+	protected $_table_name = 'page_urls';
 
 	/**
-	 * Convert a Model_Page_Link object to a string
+	 * Convert a Model_Page_URL object to a string
 	 * Returns the location property for the current model
 	 *
 	 * @uses URL::site()
@@ -41,7 +41,7 @@ class Boom_Model_Page_Link extends ORM
 	{
 		// Prepare a query to determine when the location is already in use.
 		$query = DB::select('id')
-			->from('page_links')
+			->from('page_urls')
 			->where('location', '=', $location)
 			->limit(1);
 
@@ -96,7 +96,7 @@ class Boom_Model_Page_Link extends ORM
 	 * This function will be called when making an existing link the primary link for a page
 	 * Or when the page title is changed and a new link is created which will be made the primary link.
 	 *
-	 * @return	Model_Page_Link
+	 * @return	Model_Page_URL
 	 */
 	public function make_primary()
 	{
