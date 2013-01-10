@@ -17,7 +17,7 @@
 						<?=__('Accept')?>
 					</button>
 				</span>
-				<button id="b-page-save" class="boom-button" data-icon="ui-icon-boom-cancel">
+				<button id="b-page-cancel" class="boom-button" data-icon="ui-icon-boom-cancel">
 						<?=__('Cancel')?>
 				</button>
 
