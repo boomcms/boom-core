@@ -88,6 +88,9 @@ class Boom_Controller_Cms_Page extends Boom_Controller
 		}
 		else
 		{
+			// Start a database transaction.
+			Database::instance()->begin();
+
 			// Find the parent page.
 			$parent = new Model_Page($this->request->post('parent_id'));
 
@@ -141,6 +144,9 @@ class Boom_Controller_Cms_Page extends Boom_Controller
 
 			// Log the action.
 			$this->_log("Added a new page under " . $parent->version()->title, "Page ID: " . $page->id);
+
+			// Commit the changes.
+			Database::instance()->commit();
 
 			// Redirect the user to the new page.
 			$this->response->body(URL::site($link));
