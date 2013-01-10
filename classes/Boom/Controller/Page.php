@@ -128,10 +128,11 @@ class Boom_Controller_Page extends Boom_Controller
 
 		foreach ($pages as $page)
 		{
+			$url = (string) $page->url();
 			$items[] = array(
 				'title'			=>	html_entity_decode($page->version()->title),
-				'link'			=>	$page->primary_url(),
-				'guid'		=>	$page->primary_url(),
+				'link'			=>	$url,
+				'guid'		=>	$url,
 				'description'	=>	strip_tags(Chunk::factory('text', 'standfirst', $page)->text()),
 				'pubDate'		=>	$page->visible_from,
 			);
