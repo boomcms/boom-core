@@ -213,6 +213,38 @@ class Boom_Model_Page_Version extends ORM
 	}
 
 	/**
+	 * Returns the status of the current page version.
+	 *
+	 * Status could be:
+	 *
+	 * * 'live' if the version is published.
+	 * *
+	 * * 'draft' if it's not published.
+	 *
+	 * Other possible values relate to approval requests which aren't yet implemented.
+	 *
+	 * @return string
+	 */
+	public function status()
+	{
+		if ($this->embargoed_until === NULL)
+		{
+			// Version is a draft if an embargo time hasn't been set.
+			return 'draft';
+		}
+		elseif ($this->embargoed_until <= Editor::instance()->live_time())
+		{
+			// Version is live if the embargo time is in the past.
+			return 'live';
+		}
+		elseif ($this->embargoed_until > Editor::instance()->live_time())
+		{
+			// Version is embargoed if the embargo time is in the future.
+			return 'embargoed';
+		}
+	}
+
+	/**
 	 * Returns a thumbnail for the current page version.
 	 * The thumbnail is the first image in the specified chunk.
 	 *
