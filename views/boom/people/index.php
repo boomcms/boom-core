@@ -18,7 +18,17 @@
 					New person
 				</button>
 			</div>
+
+			<div id="b-items-multiactons" class="ui-widget-content">
+				<button id="b-button-multiaction-edit" disabled="disabled" class="boom-button ui-button-text-icon" data-icon="ui-icon-boom-edit">
+					View/Edit
+				</button>
+				<button id="b-button-multiaction-delete" disabled="disabled" class="boom-button ui-button-text-icon" data-icon="ui-icon-boom-delete">
+					Delete
+				</button>
+			</div>
 		</div>
+
 	</div>
 
 	<div id="boom-dialogs">

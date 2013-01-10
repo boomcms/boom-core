@@ -64,16 +64,5 @@
 		<div class="ui-helper-right" style="margin: .5em .5em 0 0">
 			Total people: <?= Num::format($total, 0) ?>
 		</div>
-		<div id="b-items-checkactions" class="ui-widget-content">
-			With <span id="boom-tagmanager-amount-checked"></span> selected:
-		</div>
-		<div id="b-items-multiactons" class="ui-widget-content">
-			<button id="b-button-multiaction-edit" disabled="disabled" class="boom-button ui-button-text-icon" data-icon="ui-icon-wrench">
-				View/Edit
-			</button>
-			<button id="b-button-multiaction-delete" disabled="disabled" class="boom-button ui-button-text-icon" data-icon="ui-icon-trash">
-				Delete
-			</button>
-		</div>
 	</div>
 </div>
