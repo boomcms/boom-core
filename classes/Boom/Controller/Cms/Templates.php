@@ -66,7 +66,6 @@ class Boom_Controller_Cms_Templates extends Boom_Controller
 					->values(array(
 						'name'	=>	ucwords(str_replace("_", " ", $filename)),
 						'filename'	=>	$filename,
-						'visible'	=>	TRUE,
 					))
 					->create();
 
@@ -144,7 +143,6 @@ class Boom_Controller_Cms_Templates extends Boom_Controller
 						'name'		=>	$post["name-$template_id"],
 						'filename'		=>	$post["filename-$template_id"],
 						'description'	=>	$post["description-$template_id"],
-						'visible'		=>	(bool) $post["visible-$template_id"],
 					))
 					->update();
 			}

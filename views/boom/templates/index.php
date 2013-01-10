@@ -42,7 +42,6 @@
 						<th>Name</th>
 						<th>Description</th>
 						<th>Filename</th>
-						<th>Visible</th>
 						<th>Pages</th>
 						<th>&nbsp;</th>
 					</tr>
@@ -81,7 +80,6 @@
 									<? endforeach; ?>
 								</select>
 							</td>
-							<td><?= Form::select("visible-$t->id", array( 1 => 'Yes', 0 => 'No'), (int) $t->visible, array('class' => 'boom-templates-input')) ?></td>
 							<td>
 								<? $page_count = $t->page_count(); ?>
 								<a href='/cms/templates/pages/<?= $t->pk() ?>' title='View the title and URL of <?= $page_count, " ", Inflector::plural('page', $page_count) ?> which use this template'><?= $page_count ?>
@@ -92,10 +90,6 @@
 				</tbody>
 			</table>
 		</form>
-	</div>
-
-	<div id="b-templates-preview" style="display: none;">
-	  <img src=""/>
 	</div>
 
 	<?= HTML::script("media/boom/js/boom.helpers.js") ?>

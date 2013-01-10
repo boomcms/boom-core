@@ -20,7 +20,6 @@ class Boom_Model_Template extends ORM
 		'name'		=>	'',
 		'description'	=>	'',
 		'filename'		=>	'',
-		'visible'		=>	'',
 	);
 
 	protected $_table_name = 'templates';
