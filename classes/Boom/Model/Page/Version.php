@@ -117,7 +117,7 @@ class Boom_Model_Page_Version extends ORM
 	 */
 	public function copy_chunks(Model_Page_Version $from_version, array $exclude = NULL)
 	{
-		foreach (array('asset', 'text', 'feature', 'linkset', 'slideshow') as $type)
+		foreach (Chunk::$types as $type)
 		{
 			// Get a numeric chunk type.
 			$num_type = constant('Chunk::' . strtoupper($type));

@@ -73,6 +73,13 @@ abstract class Boom_Chunk
 	 */
 	protected $_type;
 
+	/**
+	 * Array of available chunk types.
+	 *
+	 * @var array
+	 */
+	public static $types = array('asset', 'text', 'feature', 'linkset', 'slideshow');
+
 	public function __construct(Model_Page $page, $chunk, $slotname)
 	{
 		$this->_page = $page;
