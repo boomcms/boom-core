@@ -676,7 +676,7 @@ $.widget('ui.chunkAsset', $.ui.chunk, {
 			this._preview_url() +
 			'&asset_id=' + rid;
 
-		url += ( link.url && link.url != '' ) ? '&url=' + link.url : '';
+		url += ( link.url && link.url != '' ) ? '&link=' + link.url : '';
 
 		$.get( url )
 		.done( function( data ){
@@ -705,7 +705,7 @@ $.widget('ui.chunkAsset', $.ui.chunk, {
 				asset_id : rid,
 				title : null,
 				caption : null,
-				url : this.asset.url
+				link : this.asset.url
 			};
 	},
 
