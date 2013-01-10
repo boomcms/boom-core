@@ -40,7 +40,7 @@ class Boom_Model_Page extends ORM_Taggable
 		'children_visible_in_nav'		=>	'',
 		'children_visible_in_nav_cms'	=>	'',
 		'children_template_id'		=>	'',
-		'children_link_prefix'			=>	'',
+		'children_url_prefix'			=>	'',
 		'children_ordering_policy'		=>	'',
 		'children_prompt_for_template'	=>	'',
 		'grandchild_template_id'		=>	'',
