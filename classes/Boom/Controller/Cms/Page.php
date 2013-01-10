@@ -125,15 +125,15 @@ class Boom_Controller_Cms_Page extends Boom_Controller
 
 			// Generate the link for the page.
 			// What is the prefix for the link? If a default default_chinl_link_prefix has been set for the parent then use that, otherwise use the parent's primary link.
-			$prefix = ($parent->children_link_prefix)? $parent->children_link_prefix : $parent->primary_url();
+			$prefix = ($parent->children_url_prefix)? $parent->children_url_prefix : $parent->url()->location;
 
 			// Generate a link from the prefix and the page's title.
-			$link = URL::generate($prefix, $title);
+			$url = URL::generate($prefix, $title);
 
 			// Add the link as the primary link for this page.
 			ORM::factory('Page_URL')
 				->values(array(
-					'location'		=>	$link,
+					'location'		=>	$url,
 					'page_id'		=>	$page->id,
 					'is_primary'	=>	TRUE,
 				))
