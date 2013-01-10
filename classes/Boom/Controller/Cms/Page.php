@@ -237,6 +237,17 @@ class Boom_Controller_Cms_Page extends Boom_Controller
 		}
 	}
 
+	/**
+	 * Reverts the current page to the last published version.
+	 *
+	 * @uses	Model_Page::stash()
+	 */
+	public function action_stash()
+	{
+		// Call Model_Page::stash() on the current page.
+		$this->_page->stash();
+	}
+
 	public function action_tree()
 	{
 		$pages = DB::select(array('pages.id', 'page_id'), 'children_ordering_policy', 'pages.visible', 'visible_in_nav', 'page_urls.location', 'title', 'page_mptt.*')

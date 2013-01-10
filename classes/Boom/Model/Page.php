@@ -418,6 +418,35 @@ class Boom_Model_Page extends ORM_Taggable
 	}
 
 	/**
+	 * Restores a page to the last published version.
+	 * Marks all versions which haven't been published since the last published versions as stashed.
+	 *
+	 * This is used for when there are edits to a page in progress which aren't ready to be published but a change needs to be made to the live (published) version (e.g. a typo fix).
+	 *
+	 * Yes, it's named after 'git stash'. The principal is the same.
+	 *
+	 * @return \Boom_Model_Page
+	 */
+	public function stash()
+	{
+		// Execute a DB query to stash unpublished versions.
+		DB::update('page_versions')
+			->set(array('stashed' => TRUE))
+			->where('embargoed_until', '>=', $_SERVER['REQUEST_TIME'])
+			->where('page_id', '=', $this->id)
+			->execute($this->_db);
+
+		// If the local cache for the current version is set then clear it.
+		if (isset($this->_related['version']))
+		{
+			$this->_related['version'] = NULL;
+		}
+
+		// Return the current object.
+		return $this;
+	}
+
+	/**
 	 * Returns the page's absolute URL.
 	 * The URL can be displayed by casting the returned object to a string:
 	 *
