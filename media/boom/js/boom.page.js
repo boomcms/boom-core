@@ -202,6 +202,9 @@ $.extend($.boom, {
 					}
 				);
 			});
+			$( '#boom-page-menu' ).on( 'click', function(){
+				$( '.ui-tabs-nav' ).toggle();
+			});
 
 
 			self.settings.init();

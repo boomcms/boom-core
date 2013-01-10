@@ -6,7 +6,7 @@
 	</ul>
 </div>
 
-<ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all" style="float:left;">
+<ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
 
 	<? foreach ($menu_items as $item): ?>
 		<li class='ui-corner-top'>

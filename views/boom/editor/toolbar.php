@@ -3,31 +3,38 @@
 <div id="boom-topbar" class="ui-helper-clearfix ui-tabs ui-widget ui-widget-content ui-corner-all">
 
 	<?= Menu::factory('boom')->sort('priority') ?>
+	
+	<div id="b-page-actions">
+	
+		<button id="boom-page-menu" class="boom-button" data-icon="ui-icon-boom-menu">
+				<?=__('Menu')?>
+		</button>
 
-	<? if ($auth->logged_in('edit_page_content', $page)): ?>
-		<div id="b-page-actions">
-			<span id="boom-page-save-menu">
-				<button id="b-page-save" class="boom-button" disabled="disabled" title="You have no unsaved changes" data-icon="ui-icon-boom-accept">
-					<?=__('Accept')?>
+		<? if ($auth->logged_in('edit_page_content', $page)): ?>
+		
+				<span id="boom-page-save-menu">
+					<button id="b-page-save" class="boom-button" disabled="disabled" title="You have no unsaved changes" data-icon="ui-icon-boom-accept">
+						<?=__('Accept')?>
+					</button>
+				</span>
+				<button id="b-page-save" class="boom-button" data-icon="ui-icon-boom-cancel">
+						<?=__('Cancel')?>
 				</button>
-			</span>
-			<button id="b-page-save" class="boom-button" data-icon="ui-icon-boom-cancel">
-					<?=__('Cancel')?>
-			</button>
-		</div>
 
 
-			<button id="boom-page-preview" class="boom-button b-button-preview" data-icon="ui-icon-boom-preview" data-preview="preview">
-				<?=__('Preview')?>
-			</button>
-
-			<span id="boom-page-template-menu">
-				<button id="boom-page-template-settings" class="boom-button" data-icon="ui-icon-boom-options">
-					<?= __('Template settings') ?>
+				<button id="boom-page-preview" class="boom-button b-button-preview" data-icon="ui-icon-boom-preview" data-preview="preview">
+					<?=__('Preview')?>
 				</button>
-			</span>
 
-	<? endif; ?>
+				<span id="boom-page-template-menu">
+					<button id="boom-page-template-settings" class="boom-button" data-icon="ui-icon-boom-options">
+						<?= __('Template settings') ?>
+					</button>
+				</span>
+
+		<? endif; ?>
+	
+	</div>
 
 	<? if ($auth->logged_in('edit_page', $page)): ?>
 
