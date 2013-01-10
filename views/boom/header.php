@@ -10,4 +10,4 @@
 
 	<?= HTML::style('media/boom/css/cms.css', array('media' => 'screen')) ?>
 </head>
-<body style="background: transparent;">
+<body>
