@@ -403,7 +403,10 @@ $.extend( $.boom.page, {
 				.find( 'body' )
 				.css( 'margin-top', this.height );
 
-			self.iframe.css( 'margin-top', '-' + this.height );
+			self.iframe.css( {
+				'margin-top' : '-' + this.height,
+				'height' : this.height
+			});
 		},
 
 		/**
