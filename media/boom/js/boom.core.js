@@ -91,6 +91,83 @@ $.extend($.boom, {
 	}
 });
 
+$.extend($.boom, {
+	/** @lends $.boom */
+
+	/**
+	Boom cookie management.
+	@class
+	*/
+	cookie : {
+
+		/** @function */
+		init : function(){
+
+			$.boom.log('Init cookie');
+
+			this.config = $.boom.config.cookie;
+		},
+
+		/** @function */
+		_set : function(name, val, expiredays){
+
+			expiredays = expiredays || this.config.expiredays;
+
+			var expiredate = new Date();
+
+			expiredate.setDate(expiredate.getDate() + expiredays);
+
+			document.cookie = name + '=' + escape(val) + ((expiredays == null) ? '' : ';expires=' + expiredate.toGMTString()) + ';path=' + this.config.path;
+
+			$.boom.log('Set cookie var: ' + name + ' => ' + val);
+		},
+
+		/** @function */
+		get : function(name){
+
+			if (document.cookie.length){
+
+				var start = document.cookie.indexOf(name + '=');
+
+				if (start === -1) return '';
+
+				start = start + name.length + 1;
+
+				var end = document.cookie.indexOf(';', start);
+
+				if (end === -1) end = document.cookie.length;
+
+				return unescape(document.cookie.substring(start, end));
+			}
+			return '';
+		},
+
+		/** @function */
+		add : function(id, name){
+
+			var ids = this.get( name || this.config.name ).split( this.config.delimiter );
+
+			if ( $.inArray( id, ids ) !== -1 ) return;
+
+			ids.push(id);
+
+			this._set( name || this.config.name, ids.join( this.config.delimiter ) );
+		},
+
+		/** @function */
+		remove : function(id, name){
+
+			if (!id) return;
+
+			var ids = this.get( name || this.config.name ).split( this.config.delimiter );
+
+			for(var i in ids) ( ids[i] == id ) && ids.splice( i, 1 );
+
+			this._set( name || this.config.name, ids.join( this.config.delimiter ) );
+		}
+	}
+});
+
 (!window.console) && function(){
 	window.console = { log: function(){}, debug: function(){}, error: function(){}, warning: function(){}, info: function(){} };
 }();
@@ -1168,5 +1245,5 @@ $.extend($.boom, {
 $.boom.setup();
 
 $.extend($.boom.data, {
-	boomInit: ['history']
+	boomInit: ['cookie', 'history']
 });
