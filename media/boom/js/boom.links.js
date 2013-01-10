@@ -15,8 +15,8 @@ $.extend( $.boom, {
 			
 			var link_manager_url =
 				( opts.page_rid && typeof opts.page_rid == 'undefined' ) ? 
-				'/cms/chunk/insert_link' : 
-				'/cms/chunk/insert_link/' + opts.page_rid;
+				'/cms/chunk/insert_url' : 
+				'/cms/chunk/insert_url/' + opts.page_rid;
 			
 			var treeConfig = $.extend({}, $.boom.config.tree, {
 				width: 300,
