@@ -50,16 +50,16 @@ class Boom_Controller_Page extends Boom_Controller
 		// If the page shouldn't be editable then check that it's visible.
 		if ( ! $this->editable)
 		{
-			if ( ! $this->page->is_visible() OR ($this->editor->state() === Editor::DISABLED AND ! $this->page->is_published()))
+			if ( ! $this->page->is_visible() AND $this->editor->state() !== Editor::DISABLED)
 			{
 				throw new HTTP_Exception_404;
 			}
 		}
 
 		// Check that the page hasn't been deleted at this version.
-		if ($this->page->version()->page_deleted)
+		if ( ! $this->page->version()->loaded() OR $this->page->version()->page_deleted)
 		{
-			throw new HTTP_Exception_404;
+			//throw new HTTP_Exception_404;
 		}
 	}
 
