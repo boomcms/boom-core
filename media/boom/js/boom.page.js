@@ -210,6 +210,14 @@ $.extend($.boom, {
 				$( '.ui-tabs-nav' ).toggle();
 				$.boom.cookie.toggle( 'navmenu');
 			});
+			
+			if ( $.boom.cookie.contains( 'breadcrumb' ) ) {
+				$( '#breadcrumbs' ).hide();
+			}
+			$( '#boom-breadcrumb-toggle' ).on( 'click', function(){
+				$( '#breadcrumbs' ).toggle();
+				$.boom.cookie.toggle( 'breadcrumb');
+			});
 
 
 			self.settings.init();
