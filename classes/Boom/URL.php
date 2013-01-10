@@ -6,6 +6,16 @@
 class Boom_URL extends Kohana_URL
 {
 	/**
+	 * Default gravatar options for [URL::gravatar()]
+	 *
+	 * @var array
+	 */
+	public static $gravatar_options = array(
+		's'	=>	80,
+		'd'	=>	'wavatar',
+	);
+
+	/**
 	 * Generate a unique URI
 	 *
 	 * @param	string	$base 	URL base, e.g. /path/to/page
@@ -57,6 +67,9 @@ class Boom_URL extends Kohana_URL
 
 		// Add the MD5 email to the URL.
 		$url .= md5($email);
+
+		// Merge the given options with the default options.
+		$options = array_merge(URL::$gravatar_options, $options);
 
 		// Are there any options?
 		if ($options !== NULL AND ! empty($options))
