@@ -157,6 +157,7 @@ $.extend($.boom, {
 
 			ids.push(id);
 
+			this.ids[ name ] = ids;
 			this._set( name || this.config.name, ids.join( this.config.delimiter ) );
 		},
 
@@ -171,6 +172,7 @@ $.extend($.boom, {
 
 			for(var i in ids) ( ids[i] == id ) && ids.splice( i, 1 );
 
+			this.ids[ name ] = ids;
 			this._set( name || this.config.name, ids.join( this.config.delimiter ) );
 		},
 		
