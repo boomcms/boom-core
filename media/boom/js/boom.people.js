@@ -57,9 +57,8 @@ $.extend($.boom.people, {
 			);
 		});
 
-		$.boom.hooks.register('tag.clickAfter', 'tagmanager', function(){
-
-			$('#b-button-multiaction-edit').click(function(){
+		$('#boom-topbar')
+			.on('click', '#b-button-multiaction-edit', function(){
 
 				var ids = [];
 
@@ -74,9 +73,8 @@ $.extend($.boom.people, {
 				});
 
 				$.boom.history.load('person/' + ids.join('-'));
-			});
-
-			$('#b-button-multiaction-delete').click(function(){
+			})
+			.on('click', '#b-button-multiaction-delete', function(){
 
 				var msg = 'Are you sure you want to send the selected people to the rubbish bin?';
 
@@ -99,7 +97,6 @@ $.extend($.boom.people, {
 					});
 				});
 			});
-		});
 	},
 
 	/** @function */
