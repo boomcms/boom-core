@@ -99,6 +99,9 @@ $.extend($.boom, {
 	@class
 	*/
 	cookie : {
+		
+		/** @property */
+		ids: {},
 
 		/** @function */
 		init : function(){
@@ -106,6 +109,7 @@ $.extend($.boom, {
 			$.boom.log('Init cookie');
 
 			this.config = $.boom.config.cookie;
+			this.ids[ this.config.name ] = this.get( this.config.name ).split( this.config.delimiter );
 		},
 
 		/** @function */
@@ -144,8 +148,10 @@ $.extend($.boom, {
 
 		/** @function */
 		add : function(id, name){
+			
+			var name = name ? name : this.config.name;
 
-			var ids = this.get( name || this.config.name ).split( this.config.delimiter );
+			var ids = ( this.ids[ name ] ) ? this.ids[ name ] : this.get( name ).split( this.config.delimiter );
 
 			if ( $.inArray( id, ids ) !== -1 ) return;
 
@@ -159,7 +165,9 @@ $.extend($.boom, {
 
 			if (!id) return;
 
-			var ids = this.get( name || this.config.name ).split( this.config.delimiter );
+			var name = name ? name : this.config.name;
+
+			var ids = ( this.ids[ name ] ) ? this.ids[ name ] : this.get( name ).split( this.config.delimiter );
 
 			for(var i in ids) ( ids[i] == id ) && ids.splice( i, 1 );
 
@@ -171,7 +179,9 @@ $.extend($.boom, {
 
 			if (!id) return;
 
-			var ids = this.get( name || this.config.name ).split( this.config.delimiter );
+			var name = name ? name : this.config.name;
+
+			var ids = ( this.ids[ name ] ) ? this.ids[ name ] : this.get( name ).split( this.config.delimiter );
 
 			if ( $.inArray( id, ids ) !== -1 ) {
 				
@@ -186,7 +196,9 @@ $.extend($.boom, {
 
 			if (!id) return;
 
-			var ids = this.get( name || this.config.name ).split( this.config.delimiter );
+			var name = name ? name : this.config.name;
+
+			var ids = ( this.ids[ name ] ) ? this.ids[ name ] : this.get( name ).split( this.config.delimiter );
 
 			if ( $.inArray( id, ids ) !== -1 ) {
 				
