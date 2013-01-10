@@ -3,22 +3,22 @@
 <div id="boom-topbar" class="ui-helper-clearfix ui-tabs ui-widget ui-widget-content ui-corner-all">
 
 	<?= Menu::factory('boom')->sort('priority') ?>
-	
+
 	<div id="boom-topbar-useractions">
 		<ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all" style="border:0;margin-top:1px;">
 				<li class="ui-corner-top"><img src="<?= URL::gravatar($person->email, array('s' => 18), Request::$initial->secure()) ?>" alt="You are logged in as <?= $person->name ?>" title="You are logged in as <?= $person->name ?>" /></li>
 			<li class="ui-corner-top"><a href="/cms/logout">Log out</a></li>
 		</ul>
 	</div>
-	
+
 	<div id="b-page-actions">
-	
+
 		<button id="boom-page-menu" class="boom-button" data-icon="ui-icon-boom-menu">
 				<?=__('Menu')?>
 		</button>
 
 		<? if ($auth->logged_in('edit_page_content', $page)): ?>
-		
+
 				<span id="boom-page-save-menu">
 					<button id="b-page-save" class="boom-button" disabled="disabled" title="You have no unsaved changes" data-icon="ui-icon-boom-accept">
 						<?=__('Accept')?>
@@ -28,6 +28,9 @@
 						<?=__('Cancel')?>
 				</button>
 
+				<button id="b-page-version-status" class="boom-button">
+					<?= __($page->version()->status()) ?>
+				</button>
 
 				<button id="boom-page-preview" class="boom-button b-button-preview" data-icon="ui-icon-boom-preview" data-preview="preview">
 					<?=__('Preview')?>
@@ -40,7 +43,7 @@
 				</span>
 
 		<? endif; ?>
-	
+
 	</div>
 
 	<? if ($auth->logged_in('edit_page', $page)): ?>
