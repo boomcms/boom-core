@@ -237,38 +237,6 @@ class Boom_Controller_Cms_Page extends Boom_Controller
 		}
 	}
 
-	/**
-	 * Mark a particular page version as published.
-	 * Performs a permissions check to check that the user can perform a page publish.
-	 * With no version ID the current version is published.
-	 * Or a version ID can be sent via $_GET['vid'] to make that version publishd.
-	 */
-	public function action_publish()
-	{
-		// Does the current user have the publish_page role for this page?
-		$this->_authorization('publish_page', $this->_page);
-
-		// Log the action.
-		$this->_log("Published page " . $this->_page->version()->title . " (ID: " . $this->_page->page_id . ")");
-
-		// Update the page version to make it published.
-		// Can't do this via the ORM as we don't want a new version to be created.
-		DB::update('page_versions')
-			->set(array(
-				'published_from' => $_SERVER['REQUEST_TIME'],
-			))
-			->where('id', '=', $this->_page->id)
-			->execute();
-
-		// Since we've just edited this version object directly we need to reload it to get the current data in the cache.
-		$this->_page->reload();
-
-		// Show the page status.
-		$this->template = View::factory("$this->_view_directory/status", array(
-			'page' => $this->_page
-		));
-	}
-
 	public function action_tree()
 	{
 		$pages = DB::select(array('pages.id', 'page_id'), 'children_ordering_policy', 'pages.visible', 'visible_in_nav', 'page_urls.location', 'title', 'page_mptt.*')
@@ -298,34 +266,5 @@ class Boom_Controller_Cms_Page extends Boom_Controller
 			'page'	=>	new Model_Page($this->request->param('id')),
 			'state'	=>	'collapsed',
 		));
-	}
-
-
-
-	/**
-	* WYSIWYG toolbar.
-	*
-	*/
-	public function action_text_toolbar()
-	{
-
-		$v = View::factory(
- 			'boom/editor/page/text_toolbar',
- 				array( 'mode' => $this->request->query('mode') )
- 		);
-
-		$this->response->body($v);
-	}
-
-	/**
-	* slideshow toolbar.
-	*
-	*/
-	public function action_slide_toolbar()
-	{
-
-			$v = View::factory( 'boom/editor/page/slide_toolbar' );
-
-			$this->response->body($v);
 	}
 } // End Boom_Controller_Cms_Page
