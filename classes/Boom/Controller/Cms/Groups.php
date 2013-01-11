@@ -42,7 +42,7 @@ class Boom_Controller_Cms_Groups extends Boom_Controller
 
 		if ($page_id = $this->request->query('page') > 0)
 		{
-			$mptt = new Model_Page_Mptt($page_id);
+			$mptt = new Model_Page_MPTT($page_id);
 
 			$current
 				->join('page_mptt', 'left')
@@ -52,7 +52,7 @@ class Boom_Controller_Cms_Groups extends Boom_Controller
 				->where('scope', '=', $mptt->scope);
 		}
 
-		$roles = ORM::factory('role')
+		$roles = ORM::factory('Role')
 			->join(array($current, 'group_roles'), 'left')
 			->on('group_roles.role_id', '=', 'role.id')
 			->where('group_roles.role_id', '=', NULL)
@@ -115,10 +115,16 @@ class Boom_Controller_Cms_Groups extends Boom_Controller
 	 */
 	public function action_page_permissions()
 	{
+		// Get the mptt values for this point in the tree.
 		$mptt = new Model_Page_MPTT($this->request->query('page'));
 
 		$permissions = ORM::factory('Group_Role')
 			->with('role')
+			->join('page_mptt', 'inner')
+			->on('page_id', '=', 'page_mptt.id')
+			->where('page_mptt.scope', '=', $mptt->scope)
+			->where('page_mptt.lft', '<=', $mptt->lft)
+			->where('page_mptt.rgt', '>=', $mptt->rgt)
 			->where('group_id', '=', $this->group->id)
 			->where('page_id', '!=', 0)
 			->find_all();
@@ -177,28 +183,8 @@ class Boom_Controller_Cms_Groups extends Boom_Controller
 		{
 			list($role_id, $page_id, $enabled) = explode(" ", $a);
 
-			// Insert it into the group_roles table.
-			DB::insert('group_roles', array('group_id', 'role_id', 'page_id', 'allowed'))
-				->values(array(
-					$this->group->id,
-					$role_id,
-					$page_id,
-					$enabled
-				))
-				->execute();
-
-			// Update the permissions for the people in this group.
-			DB::insert('people_roles', array('person_id', 'group_id', 'role_id', 'page_id', 'allowed'))
-				->values(array(
-					DB::select('person_id')
-						->from('people_groups')
-						->where('group_id', '=', $this->group->id),
-					$this->group->id,
-					$role_id,
-					$page_id,
-					$enabled
-				))
-				->execute();
+			// Add the role to the group.
+			$group->add_role($role_id, $enabled, $page_id);
 		}
 
 		// Delete removed permissions.

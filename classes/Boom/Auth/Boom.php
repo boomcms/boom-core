@@ -37,37 +37,9 @@ class Boom_Auth_Boom extends Auth
 		}
 		else
 		{
-			$person = $this->get_user();
-
-			$query = DB::select(array(DB::expr('bit_and(allowed)'), 'allowed'))
-				->from('people_roles')
-				->join('roles', 'inner')
-				->on('roles.id', '=', 'people_roles.role_id')
-				->where('person_id', '=', $person->id)
-				->where('roles.name', '=', $role);
-
-			if ($page !== NULL)
-			{
-				$query
-					->join('page_mptt', 'left')
-					->on('people_roles.page_id', '=', 'page_mptt.id')
-					->and_where_open()
-						->where('lft', '<=', $page->mptt->lft)
-						->where('rgt', '>=', $page->mptt->rgt)
-						->where('scope', '=', $page->mptt->scope)
-						->or_where_open()
-							->where('people_roles.page_id', '=', 0)
-						->or_where_close()
-					->and_where_close();
-			}
-
-			$result = $query
-				->execute()
-				->as_array();
-
-			$result =  (! empty($result) AND (boolean) $result[0]['allowed']);
-
-			return $result;
+			// Does the person have the role at the specified page?
+			return $this->get_user()
+				->is_allowed($role, $page);
 		}
 	}
 

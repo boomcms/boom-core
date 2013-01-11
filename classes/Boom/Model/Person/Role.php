@@ -17,7 +17,6 @@ class Boom_Model_Person_Role extends ORM
 		'id'			=>	'',
 		'person_id'	=>	'',
 		'role_id'		=>	'',
-		'group_id'		=>	'',
 		'page_id'		=>	'',
 		'allowed'		=>	'',
 	);
