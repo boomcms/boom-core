@@ -26,66 +26,43 @@
 			</div>
 
 			<div id="b-assets-view-attributes<?=$asset->id;?>" class="ui-helper-left">
-				<table>
-					<tr>
-						<td><label for="title"><?=__('Title')?></label></td>
-						<td>
-							<input type="text" id="title" name="title" class="boom-input" value="<?= $asset->title?>" />
-						</td>
-					</tr>
-					<tr>
-						<td style="vertical-align: top"><label for="description"><?=__('Description')?></label></td>
-						<td>
-							<textarea id="description" name="description" class="boom-textarea"><?= $asset->description?></textarea>
-						</td>
-					</tr>
-					<tr>
-						<td><label for="visible_from"><?=__('Visible from')?></label></td>
-						<td>
-							<input type="text" id="visible_from" name="visible_from" class="boom-datepicker boom-input" value="<?= date('d F Y', $asset->visible_from);?>" />
-						</td>
-					</tr>
-				</table>
+				<label for="title"><?=__('Title')?></label>
+				<input type="text" id="title" name="title" class="boom-input" value="<?= $asset->title?>" />
+				<label for="description"><?=__('Description')?></label></td>
+				<textarea id="description" name="description" class="boom-textarea"><?= $asset->description?></textarea>
+				<input type="text" id="visible_from" name="visible_from" class="boom-datepicker boom-input" value="<?= date('d F Y', $asset->visible_from);?>" />
 			</div>
 
 			<div id="b-assets-view-info<?=$asset->id;?>" class="ui-helper-left">
 
-				<table width="100%">
 					<? if ($asset->type == Boom_Asset::BOTR AND ! $asset->encoded): ?>
-						<tr>
-							<td width="100"><?=__('Video encoding')?></td>
-							<td>&nbsp;</td>
-						</tr>
+					<?=__('Video encoding')?>
 					<? endif; ?>
-					<tr>
-						<td width="100"><?=__('Type')?></td>
-						<td><?= ucfirst(Boom_Asset::type($asset->type));?></td>
-					</tr>
-					<tr>
-						<td><?=__('Filesize')?></td>
-						<td><?= Text::bytes($asset->filesize) ?></td>
-					</tr>
+					<?=__('Type')?>
+					<?= ucfirst(Boom_Asset::type($asset->type));?>
+					
+					<?=__('Filesize')?>
+					<?= Text::bytes($asset->filesize) ?>
+					
 					<? if ($asset->type == Boom_Asset::BOTR): ?>
-						<tr>
-							<td><?=__('Duration')?></td>
-							<td><?= gmdate("i:s", $asset->duration) ?></td>
-						</tr>
+						
+						<?=__('Duration')?>
+						<?= gmdate("i:s", $asset->duration) ?>
+						
 					<? endif; ?>
 					<? if ($asset->type == Boom_Asset::IMAGE): ?>
-						<tr>
-							<td><?=__('Dimensions')?></td>
-							<td><?=$asset->width?> x <?=$asset->height?></td>
-						</tr>
+						
+						<?=__('Dimensions')?>
+						<?=$asset->width?> x <?=$asset->height?>
+						
 					<? endif; ?>
-					<tr>
-						<td><?=__('Uploaded by')?></td>
-						<td><?= $asset->uploader->name ?></td>
-					</tr>
-					<tr>
-						<td><?=__('Uploaded on')?></td>
-						<td><?= date('d F Y h:i:s', $asset->uploaded_time)?></td>
-					</tr>
-				</table>
+					
+					<?=__('Uploaded by')?>
+					<?= $asset->uploader->name ?>
+					
+					
+					<?=__('Uploaded on')?>
+					<?= date('d F Y h:i:s', $asset->uploaded_time)?>
 
 			</div>
 
