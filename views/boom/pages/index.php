@@ -51,7 +51,7 @@
 
 						echo "' id='", $page->id, "' href='/", $page->primary_url(), "' rel='", $page->id, "'>";
 
-							echo "<table style='border: none'><tr><td>", $page->version()->title, "</td><td>", $page->url(), "</td><td>Template: ", $page->version()->template->name, "</td></tr></table>";
+							echo " ", $page->version()->title, " ", $page->url(), " Template: ", $page->version()->template->name, " ";
 
 						echo "</a>\n";
 
