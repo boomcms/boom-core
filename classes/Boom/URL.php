@@ -69,7 +69,7 @@ class Boom_URL extends Kohana_URL
 		$url .= md5($email);
 
 		// Merge the given options with the default options.
-		$options = array_merge(URL::$gravatar_options, $options);
+		$options = array_merge(URL::$gravatar_options, (array) $options);
 
 		// Are there any options?
 		if ($options !== NULL AND ! empty($options))

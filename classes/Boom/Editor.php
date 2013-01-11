@@ -42,6 +42,13 @@ abstract class Boom_Editor
 	protected $_state;
 
 	/**
+	 * Default state of the editor for logged in users.
+	 *
+	 * @var integer
+	 */
+	public static $default = Editor::PREVIEW;
+
+	/**
 	 *
 	 * @var	Editor
 	 */
@@ -127,7 +134,7 @@ abstract class Boom_Editor
 			{
 				// Determine the default value to pass to Session::get()
 				// If the user is logged in then the default is preview, if they're not logged in then it should be disabled.
-				$default = ($this->_auth->logged_in())? Editor::PREVIEW : Editor::DISABLED;
+				$default = ($this->_auth->logged_in())? Editor::$default : Editor::DISABLED;
 
 				// Editor::$_state hasn't been set so get the value from the session data.
 				$this->_state = $this->_session
