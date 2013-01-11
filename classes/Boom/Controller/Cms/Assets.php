@@ -129,7 +129,7 @@ class Boom_Controller_Cms_Assets extends Boom_Controller
 				if ($asset->loaded())
 				{
 					// Asset exists add it to the archive.
-					$zip->addFile(ASSETPATH . $asset->id, $asset->filename);
+					$zip->addFile(Boom_Asset::$path . $asset->id, $asset->filename);
 				}
 			}
 
@@ -169,7 +169,7 @@ class Boom_Controller_Cms_Assets extends Boom_Controller
 						"Expires" => "0"
 					))
 					->body(
-						readfile(ASSETPATH . $asset->id)
+						readfile(Boom_Asset::$path . $asset->id)
 					);
 			}
 		}

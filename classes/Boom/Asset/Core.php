@@ -36,6 +36,13 @@ abstract class Boom_Asset_Core
 	public static $allowed_extensions = array('jpeg', 'gif', 'jpg', 'png');
 
 	/**
+	 * Directory where asset files are stored.
+	 *
+	 * @var string
+	 */
+	public static $path;
+
+	/**
 	 * Converts a numeric asset type ID into a human readable type.
 	 *
 	 * @param	integer	$type_id	Numeric asset type.

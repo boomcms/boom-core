@@ -15,13 +15,13 @@ class Boom_Controller_Asset_Word extends Controller_Asset
 	{
 		$this->response
 			->headers(array(
-				'Content-Type'				=>	File::mime(ASSETPATH . $this->asset->id),
+				'Content-Type'				=>	File::mime(Boom_Asset::$path . $this->asset->id),
 				'Content-Disposition'			=>	'inline; filename="'.$this->asset->filename.'"',
 				'Content-Transfer-Encoding'	=>	'binary',
 				'Content-Length'			=>	$this->asset->filesize,
 				'Accept-Ranges'				=>	'bytes',
 			))
-			->body(readfile(ASSETPATH.$this->asset->id));
+			->body(readfile(Boom_Asset::$path.$this->asset->id));
 	}
 
 	public function action_thumb()

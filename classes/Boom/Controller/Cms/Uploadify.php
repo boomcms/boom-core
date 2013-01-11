@@ -123,10 +123,10 @@ class Boom_Controller_Cms_Uploadify extends Kohana_Controller
 							// We're replacing an existing asset so move the old file to prevent overwriting it.
 							// Backup asset files with the curretn version ID (the version at which they were replaced).
 							// This is so that we can easily get the version details from the db to report who replaced the asset.
-							@rename(ASSETPATH . $asset->id, ASSETPATH . $asset->id . "." . $asset->version->id . ".bak");
+							@rename(Boom_Asset::$path . $asset->id, Boom_Asset::$path . $asset->id . "." . $asset->version->id . ".bak");
 						}
 
-						Upload::save($file, $asset->id, ASSETPATH);
+						Upload::save($file, $asset->id, Boom_Asset::$path);
 					}
 					catch (Exception $e)
 					{
@@ -138,9 +138,9 @@ class Boom_Controller_Cms_Uploadify extends Kohana_Controller
 						else
 						{
 							// Move the old file back.
-							if ( ! file_exists(ASSETPATH . $asset->id))
+							if ( ! file_exists(Boom_Asset::$path . $asset->id))
 							{
-								rename(ASSETPATH . $asset->id . "." . $asset->version->id . ".bak", ASSETPATH . $asset->id);
+								rename(Boom_Asset::$path . $asset->id . "." . $asset->version->id . ".bak", Boom_Asset::$path . $asset->id);
 							}
 						}
 
@@ -157,7 +157,7 @@ class Boom_Controller_Cms_Uploadify extends Kohana_Controller
 					 *
 					 * @todo Cache files should sit in their own cache/ directory to avoid having to search a big asset directory for cache files.
 					 */
-					foreach (glob(ASSETPATH . $asset_id . "_*.cache") as $cached)
+					foreach (glob(Boom_Asset::$path . $asset_id . "_*.cache") as $cached)
 					{
 						unlink($cached);
 					}

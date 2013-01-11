@@ -19,7 +19,7 @@ class Boom_Controller_Asset_PDF extends Controller_Asset
 	public function thumbnail()
 	{
 		// The filename of the asset.
-		$filename = ASSETPATH.$this->asset->id;
+		$filename = Boom_Asset::$path.$this->asset->id;
 
 		// The filename of the asset thumbnail.
 		$thumb = $filename.".thumb";
@@ -49,7 +49,7 @@ class Boom_Controller_Asset_PDF extends Controller_Asset
 				'Content-Length'			=>	$this->asset->filesize,
 				'Accept-Ranges'				=>	'bytes',
 			))
-			->body(readfile(ASSETPATH . $this->asset->id));
+			->body(readfile(Boom_Asset::$path . $this->asset->id));
 	}
 
 	public function action_thumb()
