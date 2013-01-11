@@ -10,12 +10,8 @@
 	</div>
 	<div id="boom-chunk-linkset-addlink-external">
 		<form id="boom-chunk-linkset-addlink-external-form" action="#">
-			<table width="100%">
-				<tr>
-					<td>URL</td>
-					<td><input type="text" id="boom-chunk-linkset-addlink-external-url" class="boom-input" value="http://" /></td>
-				</tr>
-			</table>
+			URL
+			<input type="text" id="boom-chunk-linkset-addlink-external-url" class="boom-input" value="http://" />
 		</form>
 	</div>
 </div>
