@@ -118,7 +118,7 @@
 				<button class="boom-button ui-button-text-icon s-people-save" rel="<?=$person->id?>" id='boom-tagmanager-save-person' data-icon="ui-icon-boom-save">
 					Save
 				</button>
-				<button class="boom-button ui-button-text-icon s-people-delete" id="boom-tagmanager-delete-person" rel="<?=$person->id?>" data-icon="ui-icon-boom-delete">
+				<button class="boom-button ui-button-text-icon" id="b-delete-person" rel="<?=$person->id?>" data-icon="ui-icon-boom-delete">
 					Delete
 				</button>
 			</div>

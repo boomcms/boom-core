@@ -112,12 +112,13 @@ class Boom_Controller_Cms_People extends Boom_Controller
 
 		foreach ($people as $person_id)
 		{
+			$person = ORM::factory('Person', $person_id);
+
 			$this->_log("Deleted person $person->email");
 
 			try
 			{
-				ORM::factory('Person', $person_id)
-					->delete();
+				$person->delete();
 			}
 			catch (Exception $e) {}
 		}
