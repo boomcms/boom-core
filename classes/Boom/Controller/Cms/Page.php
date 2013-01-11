@@ -149,7 +149,7 @@ class Boom_Controller_Cms_Page extends Boom_Controller
 			Database::instance()->commit();
 
 			// Redirect the user to the new page.
-			$this->response->body(URL::site($link));
+			$this->response->body(URL::site($url));
 		}
 	}
 
