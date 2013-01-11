@@ -21,8 +21,7 @@ $.extend($.boom.people, {
 		});
 
 		$('#boom-tagmanager-create-person').click(function(){
-
-		var dialog = $.boom.dialog.open({
+			var dialog = $.boom.dialog.open({
 				url: '/cms/people/add',
 				title: 'Create new person',
 				onLoad: function(){
@@ -42,19 +41,6 @@ $.extend($.boom.people, {
 					}
 				}
 			});
-		});
-
-		$('#boom-tagmanager-delete-person').click(function(){
-			$.boom.dialog.confirm(
-				'Confirm deletion',
-				'Are you sure you want to delete this person?',
-				function(){
-					$.post('/cms/people/delete', "people=" + $( this ).attr('id').replace(/asset-(thumb|list)-/, ''))
-					.done( function(response){
-						window.location = '/cms/people/';
-					});
-				}
-			);
 		});
 
 		$('#boom-topbar')
@@ -262,7 +248,7 @@ $.extend($.boom.items.person, {
 			$( this ).trigger( 'save' );
 		});
 
-		$('.b-people-delete').click(function( event ){
+		$('#b-delete-person').click(function( event ){
 
 			var rid = $( this ).attr( 'rel' );
 			var deleted = new $.Deferred();
