@@ -115,7 +115,7 @@ class Boom_Controller_Cms_Groups extends Boom_Controller
 	 */
 	public function action_page_permissions()
 	{
-		$mptt = new Model_Page_Mptt($this->request->query('page'));
+		$mptt = new Model_Page_MPTT($this->request->query('page'));
 
 		$permissions = ORM::factory('Group_Role')
 			->with('role')
