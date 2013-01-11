@@ -129,24 +129,6 @@ test('obj.search() : should find multiple partial values in an object.', functio
 	);
 });
 
-module('Benchmark');
-test('stop() : should return the correct time to complete a task', function(){
-
-	stop();
-
-	$.boom.benchmark.start('test');
-
-	setTimeout(function(){
-
-		start();
-		$.boom.benchmark.stop('test');
-		equal(
-			($.boom.benchmark.getResults('test') < 50 + 10), // it could take possibly longer than 10 milliseconds to get the time
-			true
-		);
-	}, 50);
-});
-
 module("History");  
 test("getHash() : should return the current location hash", function(){
 	

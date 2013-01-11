@@ -390,42 +390,6 @@ $.extend($.boom, {
 	/**
 	* @class
 	*/
-	benchmark : {
-
-		/** @function */
-		start : function(name){
-
-			name = name || 'default';
-
-			if (!$.boom.data.benchmarks[name]) $.boom.data.benchmarks[name] = {};
-
-			$.boom.data.benchmarks[name].time_start = (new Date).getTime();
-		},
-
-		/** @function */
-		stop : function(name){
-
-			name = name || 'default';
-
-			$.boom.data.benchmarks[name].time_end = (new Date).getTime();
-		},
-
-		/** @function */
-		getResults : function(name){
-
-			name = name || 'default';
-
-			return $.boom.data.benchmarks[name].time_end - $.boom.data.benchmarks[name].time_start;
-		}
-	}
-});
-
-$.extend($.boom, {
-	/** @lends $.boom */
-
-	/**
-	* @class
-	*/
 	events : {
 
 		callbacks : {},
