@@ -31,6 +31,23 @@ class Boom_Model_Person extends ORM
 	);
 
 	/**
+	 * Put the current person in a group.
+	 *
+	 * When a person is added to a group the person's are updated in two ways:
+	 *
+	 * * Any roles which are allowed for the new group which haven't been disallowed by another group that the person is a member of will be allowed for the person.
+	 * * Any roles which are disallowed for the new group will be disallowed for the person, regardless of other group membership.
+	 *
+	 *
+	 * @param Model_Group $group
+	 * @return \Boom_Model_Person
+	 */
+	public function add_group(Model_Group $group)
+	{
+		return $this;
+	}
+
+	/**
 	 * Returns whether the current person is allowed to perform the specified role.
 	 *
 	 * @param Model_Role $role
@@ -65,5 +82,22 @@ class Boom_Model_Person extends ORM
 			->as_array();
 
 		return  ( ! empty($result) AND (boolean) $result[0]['allowed']);
+	}
+
+	/**
+	 * Removes a person from a group.
+	 *
+	 * When a person is removed from a group the person's roles are updated in the following ways:
+	 *
+	 *  * Any roles which are disallowed by the group but which have been allowed by another group which the person is a member of will become allowed.
+	 *  * Any roles which the group allows which haven't been allowed by any other groups which the person is a member of will be removed from the person.
+	 *
+	 * 
+	 * @param Model_Group $group
+	 * @return \Boom_Model_Person
+	 */
+	public function remove_group(Model_Group $group)
+	{
+		return $this;
 	}
 }
