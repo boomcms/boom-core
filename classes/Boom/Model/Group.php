@@ -53,6 +53,11 @@ class Boom_Model_Group extends ORM
 		return $this;
 	}
 
+	public function names()
+	{
+
+	}
+
 	/**
 	 * Remove a role from a group.
 	 *
