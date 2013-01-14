@@ -18,6 +18,12 @@ class Boom_Controller_Cms_People extends Boom_Controller
 	protected $_view_directory = 'boom/people/';
 
 	/**
+	 *
+	 * @var Model_Person
+	 */
+	public $person;
+
+	/**
 	 * Checks that the current user can access the people manager.
 	 * Also instantiates a Model_Person object and assigns it to [Boom_Controller_Cms_People::$person]
 	 *
@@ -31,21 +37,6 @@ class Boom_Controller_Cms_People extends Boom_Controller
 
 		// Check that we're allowed to be here.
 		$this->_authorization('manage_people');
-	}
-
-	/**
-	 * Add person controller.
-	 * Displays the form to enter the new user's details.
-	 *
-	 */
-	public function action_add()
-	{
-		$this->template = View::factory($this->_view_directory . "new", array(
-			'groups'	=>	ORM::factory('Group')
-				->where('deleted', '=', FALSE)
-				->order_by('name', 'asc')
-				->find_all(),
-		));
 	}
 
 	/**
@@ -191,6 +182,36 @@ class Boom_Controller_Cms_People extends Boom_Controller
 			));
 
 			$this->template->set('pagination', $pagination);
+		}
+	}
+
+	/**
+	 * Adds a new person to the CMS.
+	 *
+	 * @uses Boom_Controller::_log()
+	 * @uses Model_Person::values()
+	 * @uses Model_Person::create()
+	 */
+	public function action_new()
+	{
+		if ($this->request->method() === Request::POST)
+		{
+			// POST request - add a person to the CMS.
+			$this->person
+				->set('email', $this->request->post('email'))
+				->create()
+				->add_group($this->request->post('group_id'));
+		}
+		else
+		{
+			// Not a POST request.
+			// Display a view to enter the person's email address and select an initial group for the person.
+			$this->template = View::factory($this->_view_directory . "new", array(
+				'groups'	=>	ORM::factory('Group')
+					->where('deleted', '=', FALSE)
+					->order_by('name', 'asc')
+					->find_all(),
+			));
 		}
 	}
 
