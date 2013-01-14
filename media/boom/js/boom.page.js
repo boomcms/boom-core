@@ -50,7 +50,7 @@ $.extend($.boom, {
 
 			var self = this;
 
-			$(function(){
+			top.$(function(){
 
 				$.boom.loader.show();
 
@@ -202,6 +202,22 @@ $.extend($.boom, {
 					}
 				);
 			});
+			
+			var user_menu = {
+				"Profile" : function(){
+				},
+				"Logout" : function(){
+					top.location = '/cms/logout';
+				}
+			};
+			
+			$('#boom-page-user-menu')
+				.splitbutton({
+					items: user_menu,
+					width: 'auto',
+					menuPosition: 'left',
+					split: false
+				});
 			
 			if ( $.boom.cookie.contains( 'navmenu' ) ) {
 				$( '#boom-nav' ).hide();
@@ -615,7 +631,7 @@ $.extend($.boom.page, {
 						//}));
 					}
 				});
-			}
+			};
 
 			self.elements.page_body.contents()
 			.find('[data-boom-chunk]')
@@ -624,7 +640,9 @@ $.extend($.boom.page, {
 				var config = {};
 				var $this = $( this );
 
-				var slotName = $( this ).attr( 'data-boom-slotname' );
+				var slotName = $( this ).attr( 'data-boom-slot-name' );
+				
+				console.log( slotName );
 
 				$( this ).addClass( 'boom-tooltip boom-tooltip-follow' );
 
