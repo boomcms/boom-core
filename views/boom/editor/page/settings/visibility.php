@@ -1,12 +1,12 @@
 <form id="boom-form-pagesettings-visibility" name="pagesettings-visibility">
 	<div class="b-pagesettings">
-		<?=__('Visible')?><
+		<label for="page-visible"><?=__('Visible')?></label>
 		<select id="page-visible" name="visible" class="boom-input boom_select">
 			<option value='1' <? if ($page->visible) echo "selected='selected'"; ?>>Yes</option>
 			<option value='0' <? if ( ! $page->visible) echo "selected='selected'"; ?>>No</option>
 		</select>
 		
-		<?=__('Visible from')?>
+		<label for="page-visible-from"><?=__('Visible from')?></label>
 		
 		<input id="page-visible-from" name="visible_from" class="boom-input boom-datepicker" value="<?=date("d F Y", $page->visible_from);?>" />
 		<select>
