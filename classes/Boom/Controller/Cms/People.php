@@ -206,7 +206,7 @@ class Boom_Controller_Cms_People extends Boom_Controller
 		{
 			// Not a POST request.
 			// Display a view to enter the person's email address and select an initial group for the person.
-			$this->template = View::factory($this->_view_directory . "new", array(
+			$this->template = View::factory($this->_view_directory."new", array(
 				'groups'	=>	ORM::factory('Group')
 					->where('deleted', '=', FALSE)
 					->order_by('name', 'asc')
@@ -266,7 +266,7 @@ class Boom_Controller_Cms_People extends Boom_Controller
 		}
 
 		// Show the person's details.
-		$this->template = View::factory($this->_view_directory . "view", array(
+		$this->template = View::factory($this->_view_directory."view", array(
 			'person'	=>	$person,
 		));
 	}
