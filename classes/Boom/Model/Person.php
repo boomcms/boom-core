@@ -42,7 +42,7 @@ class Boom_Model_Person extends ORM
 	 * @param integer $group_id
 	 * @return \Boom_Model_Person
 	 */
-	public function add_group(Model_Group $group)
+	public function add_group($group_id)
 	{
 		return $this;
 	}

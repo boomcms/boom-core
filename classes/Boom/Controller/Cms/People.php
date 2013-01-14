@@ -18,7 +18,12 @@ class Boom_Controller_Cms_People extends Boom_Controller
 	protected $_view_directory = 'boom/people/';
 
 	/**
-	 * Check that they can manage people.
+	 * Checks that the current user can access the people manager.
+	 * Also instantiates a Model_Person object and assigns it to [Boom_Controller_Cms_People::$person]
+	 *
+	 * @uses Boom_Controller::before()
+	 * @uses Boom_Controller::_authorization()
+	 * @uses Boom_Controller_Cms_People::$person
 	 */
 	public function before()
 	{
@@ -44,90 +49,72 @@ class Boom_Controller_Cms_People extends Boom_Controller
 	}
 
 	/**
-	 * Add the user into a group.
-	 * Dual function controller. If the request method is POST then the user is added into the given groups, otherwise a template listing the groups which the user is not a member of is shown.
+	 * Add the user to a group.
 	 *
-	 * **Accepted POST variables:**
-	 * Name		|	Type		|	Description
-	 * ---------------|-----------------|---------------
-	 * groups		|	array 	|	Array of group IDs to add the user into.
+	 * If the request method is POST then the user is added into the given group.
+	 * Otherwise a view listing the groups which the user is not a member of is shown.
+	 *
+	 * @uses Model_Person::add_group()
+	 * @uses Boom_Controller::_log()
 	 */
 	public function action_add_group()
 	{
-		$person = new Model_Person($this->request->param('id'));
-
-		if ($person->loaded())
+		if ($this->request->method() === Request::POST)
 		{
-			if ($this->request->method() === Request::POST)
-			{
-				$groups = $this->request->post('groups');
+			// POST request - add the person to a group.
 
-				foreach ( (array) $groups as $group_id)
-				{
-					$this->_log("Added person $person->email to group with ID $group_id");
+			// Get the ID of the group we're adding the person to.
+			$group_id = $this->request->post('group_id');
 
-					try
-					{
-						$person->add('groups', $group_id);
-					}
-					catch (Database_Exception $e) {}
-				}
-			}
-			else
-			{
-				// Find the groups that this person isn't already a member of.
-				$groups = ORM::factory('Group')
-					->where('group.id', 'NOT IN',
-						DB::Select('group_id')
-							->from('people_groups')
-							->where('person_id', '=', $person->id)
-					)
-					->where('deleted', '=', FALSE)
-					->find_all();
+			// Log the action
+			$this->_log("Added person $this->person->email to group with ID $group_id");
 
-				$this->template = View::factory('boom/people/addgroup', array(
-					'person'	=>	$person,
-					'groups'	=>	$groups,
-				));
-			}
+			// Add the person to the given group.
+			$this->person->add_group($group_id);
+		}
+		else
+		{
+			// Non-POST request, show a view.
+
+			// Find the groups that this person isn't already a member of.
+			$groups = ORM::factory('Group')
+				->where('group.id', 'NOT IN',
+					DB::Select('group_id')
+						->from('people_groups')
+						->where('person_id', '=', $this->person->id)
+				)
+				->where('deleted', '=', FALSE)
+				->find_all();
+
+			// Set the response template.
+			$this->template = View::factory("$this->_view_directory/addgroup", array(
+				'person'	=>	$this->person,
+				'groups'	=>	$groups,
+			));
 		}
 	}
 
 	/**
-	 * Delete people.
-	 * Dual function controller, but it doesn't need to be!
+	 * Delete a person.
 	 *
-	 * **Accepted POST variables:**
-	 * Name		|	Type		|	Description
-	 * ---------------|-----------------|---------------
-	 * people		|	array	|	Array of person IDs of the people who are to be deleted.
-	 *
+	 * @uses Boom_Controller_Cms_People::_log()
 	 * @uses Model_Person::delete()
 	 */
 	public function action_delete()
 	{
-		$people = (array) $this->request->post('people');
+		// Log the action.
+		$this->_log("Deleted person with email address: ".$this->person->email);
 
-		foreach ($people as $person_id)
-		{
-			$person = ORM::factory('Person', $person_id);
-
-			$this->_log("Deleted person $person->email");
-
-			try
-			{
-				$person->delete();
-			}
-			catch (Exception $e) {}
-		}
+		// Delete the person.
+		$this->person->delete();
 	}
 
 	/**
-	* Display the people manager.
-	*/
+	 * Display the people manager.
+	 */
 	public function action_index()
 	{
-		$this->template = View::factory('boom/people/index', array(
+		$this->template = View::factory("$this->_view_directory/index", array(
 			'groups'	=>	ORM::factory('Group')
 				->where('deleted', '=', FALSE)
 				->order_by('name', 'asc')
@@ -137,6 +124,7 @@ class Boom_Controller_Cms_People extends Boom_Controller
 
 	/**
 	 * List the people matching certain filters.
+	 *
 	 * Used to provide the main content for the people manager.
 	 *
 	 * **Accepted GET variables:**
@@ -207,96 +195,56 @@ class Boom_Controller_Cms_People extends Boom_Controller
 	}
 
 	/**
-	 * Removes a user from a group
+	 * Removes a person from a group
 	 *
-	 * **Accepted POST variables:**
-	 * Name		|	Type	|	Description
-	 * ---------------|-----------|---------------
-	 * groups		|
-	 *
+	 * @uses Boom_Controller::_log()
+	 * @uses Model_Person::remove_group()
 	 */
 	public function action_remove_group()
 	{
-//		try
-//		{
-			ORM::factory('Person', $this->request->param('id'))
-				->remove('groups', $this->request->post('groups'));
-//		}
-//		catch (Exception $e) {}
+		// Log the action.
+		$this->_log("Edited the groups for person ".$this->person->email);
+
+		// Remove the person from the group given in the POST data.
+		$this->person->remove_group($this->request->post('group_id'));
 	}
 
 	/**
-	 * Save changes to a person's details.
-	 * Used to edit the details of an existing user and save the details for a new user.
+	 * Save changes to an existing person.
 	 *
-	 * **Accepted POST variables:**
-	 * Name			|	Type		|	Description
-	 * ---------------------|-----------------|---------------
-	 * emailaddress		|	string	|	Email address of the new user. Required.
-	 * name§			|	string	|	User's name.
-	 * password		|	string	|	User's password.
-	 * group_id		|	int		|	ID of a group to add the user to.
-	 *
-	 * If any of the required POST parameters are missing then an ORM_Validation_Exception is thrown.
-	 *
+	 * @uses Boom_Controller::_log()
+	 * @uses Model_Person::values()
+	 * @uses Model_Person::update()
 	 */
 	public function action_save()
 	{
-		$id = $this->request->param('id');
+		// Log the action.
+		$this->_log("Edited user $this->person->email (ID: $this->person->id) to the CMS");
 
-		if ($id)
-		{
-			$person = new Model_Person($id);
-		}
-		else
-		{
-			$person = new Model_Person(array(
-				'email'	=>	$this->request->post('email')
-			));
-		}
-
-		if ( ! $person->loaded())
-		{
-			// If the person wasn't loaded then we're creating a new person so allow the email address to be set.
-			$person->email = $this->request->post('email');
-		}
-
-		// Set the person details.
-		$person
+		// Update the person's details.
+		$this->person
 			->values(array(
 				'name'		=>	$this->request->post('name'),
-				'enabled'		=>	$this->request->post('status')
+				'enabled'		=>	$this->request->post('enabled')
 			))
-			->save();
-
-		// If we're adding a new user then a group ID may be given to add the user to an inital group.
-		if ($this->request->post('group_id') > 0)
-		{
-			$group = new Model_Group($this->request->post('group_id'));
-
-			if ($group->loaded())
-			{
-				$person->add('groups', $group);
-			}
-		}
-
-		$this->_log("Added user $person->email (ID: $person->id) to the CMS");
-		$this->response->body($person->id);
+			->update();
 	}
 
 	/**
 	 * People manager view person.
 	 *
+	 * @throws HTTP_Exception_404
 	 */
 	public function action_view()
 	{
-		$person = new Model_Person($this->request->param('id'));
-
-		if ( ! $person->loaded())
+		// Check that the person exists.
+		if ( ! $this->person->loaded())
 		{
+			// No they don't, throw an exception.
 			throw new HTTP_Exception_404;
 		}
 
+		// Show the person's details.
 		$this->template = View::factory($this->_view_directory . "view", array(
 			'person'	=>	$person,
 		));
