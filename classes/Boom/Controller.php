@@ -32,7 +32,11 @@ class Boom_Controller extends Controller
 	 */
 	public $editor;
 
-	protected $template;
+	/**
+	 *
+	 * @var View
+	 */
+	public $template;
 
 	public function before()
 	{
