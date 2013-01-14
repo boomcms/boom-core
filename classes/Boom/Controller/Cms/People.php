@@ -24,10 +24,8 @@ class Boom_Controller_Cms_People extends Boom_Controller
 	{
 		parent::before();
 
-		if ( ! $this->auth->logged_in('manage_people'))
-		{
-			throw new HTTP_Exception_403;
-		}
+		// Check that we're allowed to be here.
+		$this->_authorization('manage_people');
 	}
 
 	/**

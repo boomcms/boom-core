@@ -18,6 +18,8 @@ class Boom_Model_Group extends ORM
 		'deleted'		=>	'',
 	);
 
+	protected $_table_name = 'groups';
+
 	/**
 	 * ORM Validation rules
 	 * @link http://kohanaframework.org/3.2/guide/orm/examples/validation
@@ -47,31 +49,6 @@ class Boom_Model_Group extends ORM
 	 */
 	public function add_role($role_id, $allowed, $page_id = NULL)
 	{
-		// Check that the group doesn't already have the role.
-		$existing = ORM::factory('Group_Role', array(
-			'group_id'	=>	$this->id,
-			'role_id'	=>	$role_id,
-			'page_id'	=>	$page_id,
-		));
-
-		// Code taken from controller:
-//				DB::insert('group_roles', array('group_id', 'role_id', 'page_id', 'allowed'))
-//					->values(array(
-//						$this->group->id,
-//						$role_id,
-//						$page_id,
-//						$enabled
-//					))
-//					->execute();
-//
-//				// Update the permissions for the people in this group.
-//				DB::insert('people_roles', array('person_id', 'group_id', 'role_id', 'page_id', 'allowed'))
-//					->select(
-//						DB::select('person_id', DB::expr($this->group->id), DB::expr($role_id), DB::expr($page_id), DB::expr($enabled))
-//							->from('people_groups')
-//							->where('group_id', '=', $this->group->id)
-//					)
-//					->execute();
 
 		return $this;
 	}
@@ -81,10 +58,10 @@ class Boom_Model_Group extends ORM
 	 *
 	 * After removing the role from the group the permissions for the people the group are updated.
 	 *
-	 * @param Model_Role $role
+	 * @param integer $role_id
 	 * @return \Boom_Model_Group
 	 */
-	public function remove_role(Model_Role $role)
+	public function remove_role($role_id)
 	{
 		return $this;
 	}
