@@ -6,7 +6,7 @@
 
 	<div id="boom-topbar-useractions">
 		<span id="boom-page-user-menu">
-			<button id="b-page-user" class="boom-button" data-icon="ui-icon-boom-profile">
+			<button id="b-page-user" class="boom-button" data-icon="ui-icon-boom-person">
 				<?=__('Profile')?>
 			</button>
 		</span>
