@@ -27,7 +27,7 @@
 						<input type="checkbox" class="b-items-select-checkbox ui-helper-reset" id="person-list-<?=$person->id?>" />
 					</td>
 					<td>
-						<a href="#person/<?=$person->id?>"><img src="/boom/img/icons/16x16/icon_user.gif" /> <?= $person->name ?></a>
+						<a href="#person/<?=$person->id?>"><img src="<?= URL::gravatar($person->emailaddress, array('s' => 16)) ?>" /> <?= $person->name ?></a>
 					</td>
 					<td>
 						<span class='tags'>
