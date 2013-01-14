@@ -14,10 +14,11 @@ class Boom_Model_Person_Role extends ORM
 	protected $_db_group = 'default';
 
 	protected $_table_columns = array(
-		'id'			=>	'',
 		'person_id'	=>	'',
 		'role_id'		=>	'',
 		'page_id'		=>	'',
 		'allowed'		=>	'',
 	);
+
+	protected $_table_name = 'people_roles';
 }

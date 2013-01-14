@@ -59,7 +59,7 @@ class Boom_Model_Person extends ORM
 	{
 		$query = DB::select('allowed')
 			->from('people_roles')
-			->where('person_id', '=', $person->id)
+			->where('person_id', '=', $this->id)
 			->where('role_id', '=', $role->id);
 
 		if ($page !== NULL)
@@ -92,7 +92,7 @@ class Boom_Model_Person extends ORM
 	 *  * Any roles which are disallowed by the group but which have been allowed by another group which the person is a member of will become allowed.
 	 *  * Any roles which the group allows which haven't been allowed by any other groups which the person is a member of will be removed from the person.
 	 *
-	 * 
+	 *
 	 * @param Model_Group $group
 	 * @return \Boom_Model_Person
 	 */

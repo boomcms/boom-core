@@ -75,4 +75,17 @@ class Boom_Model_Group extends ORM
 
 		return $this;
 	}
+
+	/**
+	 * Remove a role from a group.
+	 *
+	 * After removing the role from the group the permissions for the people the group are updated.
+	 *
+	 * @param Model_Role $role
+	 * @return \Boom_Model_Group
+	 */
+	public function remove_role(Model_Role $role)
+	{
+		return $this;
+	}
 }
