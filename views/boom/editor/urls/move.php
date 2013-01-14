@@ -42,10 +42,10 @@
 		</tr>
 		<tr>
 			<td>
-				<?= ($current->is_published())? 'Published' : 'Unpublished'; ?>
+				<?= ($current->has_published_version())? 'Published' : 'Unpublished'; ?>
 			</td>
 			<td>
-				<?= ($page->is_published())? 'Published' : 'Unpublished'; ?>
+				<?= ($page->has_published_version())? 'Published' : 'Unpublished'; ?>
 			</td>
 		</tr>
 	</table>
