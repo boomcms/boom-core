@@ -53,9 +53,42 @@ class Boom_Model_Group extends ORM
 		return $this;
 	}
 
-	public function names()
+	/**
+	 * Returns an array of the ID and name of all groups.
+	 * The returned array is sorted alphabetically by name, A - Z.
+	 *
+	 * This function can be used to build a select box of groups, e.g.:
+	 *
+	 *	<?= Form::select('group_id', ORM::factory('Group')->names()) ?>
+	 *
+	 *
+	 * Optionally an array of group names can be given to exclude those groups from the results.
+	 * This could be used to get the names of all groups that a person is not already a member of.
+	 *
+	 *	<?= Form::select('group_id', ORM::factory('Group')->names(array('Group name'))) ?>
+	 *
+	 *
+	 * @param array $exclude
+	 * @return array
+	 */
+	public function names(array $exclude = NULL)
 	{
+		// Prepare the query
+		$query = DB::select('id', 'name')
+			->from($this->_table_name)
+			->order_by('name', 'asc');
 
+		// Are we excluding any groups?
+		if ( ! ($exclude === NULL AND empty($exclude)))
+		{
+			// Exclude these groups from the results.
+			$query->where('name', 'NOT IN', $exclude);
+		}
+
+		// Run the query and return the results.
+		return $query
+			->execute($this->_db)
+			->as_array('id', 'name');
 	}
 
 	/**
