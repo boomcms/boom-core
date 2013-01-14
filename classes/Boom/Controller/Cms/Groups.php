@@ -15,7 +15,7 @@ class Boom_Controller_Cms_Groups extends Boom_Controller
 	 *
 	 * @var Model_Group	ORM object for the gorup we're editing.
 	 */
-	protected $group;
+	public $group;
 
 	public function before()
 	{
@@ -27,6 +27,15 @@ class Boom_Controller_Cms_Groups extends Boom_Controller
 		}
 
 		$this->group = new Model_Group($this->request->param('id'));
+	}
+
+	/**
+	 * Adds a role to the current group.
+	 *
+	 */
+	public function action_add_role()
+	{
+
 	}
 
 	/**
@@ -105,6 +114,15 @@ class Boom_Controller_Cms_Groups extends Boom_Controller
 	}
 
 	/**
+	 * Create a new group.
+	 * 
+	 */
+	public function action_new()
+	{
+
+	}
+
+	/**
 	 * Edit the group's permissions for a point in the page tree.
 	 *
 	 * **Accepted GET variables:**
@@ -135,6 +153,14 @@ class Boom_Controller_Cms_Groups extends Boom_Controller
 		));
 	}
 
+	/**
+	 * Removes a role from the current group.
+	 *
+	 */
+	public function action_remove_role()
+	{
+
+	}
 
 	/**
 	 * Save group details.

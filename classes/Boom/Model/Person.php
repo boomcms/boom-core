@@ -39,7 +39,7 @@ class Boom_Model_Person extends ORM
 	 * * Any roles which are disallowed for the new group will be disallowed for the person, regardless of other group membership.
 	 *
 	 *
-	 * @param Model_Group $group
+	 * @param integer $group_id
 	 * @return \Boom_Model_Person
 	 */
 	public function add_group(Model_Group $group)
@@ -93,10 +93,10 @@ class Boom_Model_Person extends ORM
 	 *  * Any roles which the group allows which haven't been allowed by any other groups which the person is a member of will be removed from the person.
 	 *
 	 *
-	 * @param Model_Group $group
+	 * @param integer $group_id
 	 * @return \Boom_Model_Person
 	 */
-	public function remove_group(Model_Group $group)
+	public function remove_group($group_id)
 	{
 		return $this;
 	}

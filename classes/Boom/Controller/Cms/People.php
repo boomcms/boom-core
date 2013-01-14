@@ -125,25 +125,6 @@ class Boom_Controller_Cms_People extends Boom_Controller
 	}
 
 	/**
-	 * Removes a user from a group
-	 *
-	 * **Accepted POST variables:**
-	 * Name		|	Type	|	Description
-	 * ---------------|-----------|---------------
-	 * groups		|
-	 *
-	 */
-	public function action_delete_group()
-	{
-//		try
-//		{
-			ORM::factory('Person', $this->request->param('id'))
-				->remove('groups', $this->request->post('groups'));
-//		}
-//		catch (Exception $e) {}
-	}
-
-	/**
 	* Display the people manager.
 	*/
 	public function action_index()
@@ -225,6 +206,25 @@ class Boom_Controller_Cms_People extends Boom_Controller
 
 			$this->template->set('pagination', $pagination);
 		}
+	}
+
+	/**
+	 * Removes a user from a group
+	 *
+	 * **Accepted POST variables:**
+	 * Name		|	Type	|	Description
+	 * ---------------|-----------|---------------
+	 * groups		|
+	 *
+	 */
+	public function action_remove_group()
+	{
+//		try
+//		{
+			ORM::factory('Person', $this->request->param('id'))
+				->remove('groups', $this->request->post('groups'));
+//		}
+//		catch (Exception $e) {}
 	}
 
 	/**
