@@ -222,7 +222,7 @@ $.extend($.boom.items.person, {
 
 			$.boom.loader.show();
 
-			$.post( '/cms/people/delete_group/' + person_id, {groups: group_id} )
+			$.post( '/cms/people/remove_group/' + person_id, {groups: group_id} )
 			.done( function(){
 				elem.closest( 'li' ).remove();
 				$.boom.loader.hide();
