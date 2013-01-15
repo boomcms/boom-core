@@ -72,7 +72,7 @@ class Boom_Controller_Cms_People extends Boom_Controller
 	/**
 	 * Add the user to a group.
 	 *
-	 * If the request method is POST then the user is added into the given group.
+	 * If the request method is POST then the user is added into the given groups.
 	 * Otherwise a view listing the groups which the user is not a member of is shown.
 	 *
 	 * @uses Model_Person::add_group()
@@ -84,14 +84,18 @@ class Boom_Controller_Cms_People extends Boom_Controller
 		{
 			// POST request - add the person to a group.
 
-			// Get the ID of the group we're adding the person to.
-			$group_id = $this->request->post('group_id');
+			// Get an array of group IDs from the POST data.
+			$groups = $this->request->post('groups');
 
-			// Log the action
-			$this->_log("Added person $this->person->email to group with ID $group_id");
+			// Loop through the groups.
+			foreach ($groups as $group_id)
+			{
+				// Log the action
+				$this->_log("Added person $this->person->email to group with ID $group_id");
 
-			// Add the person to the given group.
-			$this->person->add_group($group_id);
+				// Add the person to the given group.
+				$this->person->add_group($group_id);
+			}
 		}
 		else
 		{
