@@ -16,7 +16,7 @@ $.extend($.boom.people, {
 
 		this._init( config );
 
-		$('.boom-tagmanager-groups-add').click(function(event){
+		$('.b-people-group-add').click(function(event){
 			$.boom.items.group.add( this );
 		});
 
@@ -487,114 +487,24 @@ $.extend($.boom.items.group,  {
 
 		var self = this;
 
-		var permissions_treeConfig = {
-			showRemove: true,
-			onRemoveClick: function(event){
-				var $this = $( event.target );
-				var item = $this.closest( 'li' );
-				item.remove();
-			},
-			onClick: function(event){
-				console.log( 'CLICK' );
-				var $this = $( this );
-				event.preventDefault();
-
-				var item = $this.closest( 'li' );
-				var page_id = $this.attr( 'rel' );
-
-				var dialog = self.permissions.page_picker( {
-					item_rid : 0,
-					page_rid : page_id
-				});
-			}
-		};
+		var url = '/cms/groups/add';
 
 		var dialog = $.boom.dialog.open({
-			url: '/cms/groups/edit/0',
+			url: url,
 			title: 'Add group',
 			buttons: {
 				Cancel: function(){
 					$.boom.dialog.destroy( dialog );
 				},
 				Save: function(){
-
-					var selected = $( '#boom-tag-tree a.ui-state-active').attr( 'id');
-
-					var dialog = this, data = {};
-					data.name = $('#boom-tagmanager-group-edit-name').val();
-					data.permissions = [];
-
-					$.each($('.boom-group-permission'), function(index, value){
-						data.permissions.push( $(value).data( 'permission' ) );
-					});
-
-					var treeConfig = $.extend({}, $.boom.config.tree, {
-						maxSelected: 1,
-						toggleSelected: false,
-						showRemove: true,
-						showEdit: true,
-						click: false,
-						onClick: function(event){
-							$this = $(this);
-							self.item_selected( $this );
-
-							self.get(
-								$this
-									.attr( 'href' )
-									.split('/')
-									[1]
-							);
-						},
-						onEditClick: function(event){
-
-							self.edit(event);
-						},
-						onRemoveClick: function(event){
-
-							self.remove(event);
-						}
-					});
-
-					var group_saved = self.save( 0, data );
-
-					var tree_refresh = new $.Deferred();
-
-					tree_refresh.done( function( data ){
-
-						$( '.b-tags-tree' )
-							.tree( 'add_item', '<li><a href="#tag/' + data.group_id + '">' + data.name + '</a></li>' );
-
-						if ( selected ) {
-							$( '#' + selected )
-							.addClass( 'ui-state-active' );
-						}
-					});
-
-					group_saved.done( function( response ){
-
-						var parent = $('#boom-tagmanager-tag-edit-parent').val();
-
+					$.post(url, {name: $('#b-people-group-name').val()}, function(response){
 						$.boom.dialog.destroy(dialog);
 
-						tree_refresh.resolve( { name : data.name, group_id : response } );
-
 						$.boom.growl.show('Group successfully saved.');
+
+						top.location.reload();
 					});
 				}
-			},
-			treeConfig: permissions_treeConfig,
-			open: function(){
-				$('#edit-group-permissions-general button')
-					.on( 'click', function(){
-						self.permissions.general_picker({
-							rid : 0
-						})
-						.done( function( permission ){
-
-							self.update_tree( '#boom-group-permissions-general', permission );
-
-						});
-					});
 			}
 		});
 	},
