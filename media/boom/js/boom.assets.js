@@ -22,15 +22,6 @@ $.extend($.boom.assets, {
 
 		var self = this;
 		
-		//FIXME: this is just repeated from boom.page.js
-		if ( $.boom.cookie.contains( 'navmenu' ) ) {
-			$( '#boom-nav' ).hide();
-		}
-		$( '#boom-page-menu' ).on( 'click', function(){
-			$( '#boom-nav' ).toggle();
-			$.boom.cookie.toggle( 'navmenu');
-		});
-		
 		var upload_menu = {
 			'Upoad image' : function( event ) {
 				self._upload();

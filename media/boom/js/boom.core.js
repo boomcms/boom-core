@@ -59,6 +59,31 @@ $.extend({
 
 					$( this ).toggleClass( 'ui-state-hover' );
 				});
+				
+				//FIXME: this is just repeated from boom.page.js
+				if ( $.boom.cookie.contains( 'navmenu' ) ) {
+					$( '#boom-nav' ).hide();
+				}
+				$( '#boom-page-menu' ).on( 'click', function(){
+					$( '#boom-nav' ).toggle();
+					$.boom.cookie.toggle( 'navmenu');
+				});
+				
+				var user_menu = {
+					"Profile" : function(){
+					},
+					"Logout" : function(){
+						top.location = '/cms/logout';
+					}
+				};
+
+				$('#boom-page-user-menu')
+					.splitbutton({
+						items: user_menu,
+						width: 'auto',
+						menuPosition: 'left',
+						split: false
+					});
 			});
 
 			$(window).bind('scroll', function(event){
