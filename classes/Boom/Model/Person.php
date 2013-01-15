@@ -110,6 +110,15 @@ class Boom_Model_Person extends ORM
 	 */
 	public function remove_group($group_id)
 	{
+		// Remove the relationship with the group.
+		$this->remove('groups', $group_id);
+
+		// Remove the permissions which were given by this group.
+		DB::delete('people_roles')
+			->where('group_id', '=', $group_id)
+			->execute($this->_db);
+
+		// Return the person model.
 		return $this;
 	}
 }
