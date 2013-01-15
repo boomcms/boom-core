@@ -69,24 +69,24 @@ class Boom_Model_Person extends ORM
 	 */
 	public function is_allowed(Model_Role $role, Model_Page $page = NULL)
 	{
-		$query = DB::select('allowed')
+		$query = DB::select(array(DB::expr("bit_and(allowed)"), 'allowed'))
 			->from('people_roles')
 			->where('person_id', '=', $this->id)
-			->where('role_id', '=', $role->id);
+			->where('role_id', '=', $role->id)
+			->group_by('person_id');			// Strange results if this isn't here.
 
 		if ($page !== NULL)
 		{
 			$query
 				->join('page_mptt', 'left')
 				->on('people_roles.page_id', '=', 'page_mptt.id')
-				->and_where_open()
-					->where('lft', '<=', $page->mptt->lft)
-					->where('rgt', '>=', $page->mptt->rgt)
-					->where('scope', '=', $page->mptt->scope)
-					->or_where_open()
-						->where('people_roles.page_id', '=', 0)
-					->or_where_close()
-				->and_where_close();
+				->where('lft', '<=', $page->mptt->lft)
+				->where('rgt', '>=', $page->mptt->rgt)
+				->where('scope', '=', $page->mptt->scope);
+		}
+		else
+		{
+			$query->where('people_roles.page_id', '=', 0);
 		}
 
 		$result = $query
