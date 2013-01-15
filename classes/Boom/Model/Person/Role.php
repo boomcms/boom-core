@@ -16,7 +16,7 @@ class Boom_Model_Person_Role extends ORM
 	protected $_table_columns = array(
 		'person_id'	=>	'',
 		'role_id'		=>	'',
-		'role_id'		=>	'',
+		'group_id'		=>	'',
 		'page_id'		=>	'',
 		'allowed'		=>	'',
 	);

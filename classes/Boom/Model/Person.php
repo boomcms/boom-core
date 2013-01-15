@@ -50,7 +50,7 @@ class Boom_Model_Person extends ORM
 		// Inherit any roles assigned to the group.
 		DB::insert('people_roles', array('person_id', 'group_id', 'role_id', 'allowed', 'page_id'))
 			->select(
-				DB::select(DB::expr($this->id), DB::expr('group_id'), 'role_id', 'allowed', 'page_id')
+				DB::select(DB::expr($this->id), DB::expr($group_id), 'role_id', 'allowed', 'page_id')
 					->from('group_roles')
 					->where('group_id', '=', $group_id)
 				)
