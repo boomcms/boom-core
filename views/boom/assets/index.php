@@ -21,14 +21,14 @@
 				<button id="boom-page-menu" class="boom-button" data-icon="ui-icon-boom-menu">
 						<?=__('Menu')?>
 				</button>
-				<button id="b-assets-upload" class="boom-button ui-button-text-icon" data-icon="ui-icon-boom-upload">
-					<?=__('Upload files')?>
-				</button>
+				<span id="boom-assets-upload-menu">
+					<button id="b-assets-upload" class="boom-button ui-button-text-icon" data-icon="ui-icon-boom-upload">
+						<?=__('Upload files')?>
+					</button>
+				</span>
 				<button id="boom-tagmanager-save-all" class="boom-button ui-button-text-icon" data-icon="ui-icon-boom-save">
 					<?=__('Save all')?>
 				</button>
-
-				<button class="boom-button" data-icon="ui-icon-boom-upload" id="b-assets-upload-video">Upload video</button>
 			</div>
 
 			<div id="b-items-multiactons" class="ui-widget-content">

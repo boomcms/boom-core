@@ -366,13 +366,13 @@ boom.plugins.js
 					top: offset.top + hitarea.outerHeight()
 				});
 				
-				$.boom.page.toolbar.maximise();
+				$.boom.page && $.boom.page.toolbar.maximise();
 			})
 			.bind('hide', function(){
 
 				$(this).css({ left: -9999 });
 				
-				$.boom.page.toolbar.minimise();
+				$.boom.page && $.boom.page.toolbar.minimise();
 			});
 		},
 		

@@ -21,24 +21,38 @@ $.extend($.boom.assets, {
 		this._init( config );
 
 		var self = this;
+		
+		var upload_menu = {
+			'Upoad image' : function( event ) {
+				self._upload();
+			},
+			
+			'Upload video' : function( event ) {
+				$.boom.dialog.open({
+					url: '/cms/video/upload',
+					title: 'Upload video',
+					buttons: {
+						Cancel: function(){
+							$.boom.dialog.destroy(this);
+						},
+						Upload: function(){
+							$('#uploadForm').submit();
+						}
+					}
+				});
+			}
+		};
+		
+		$('#boom-assets-upload-menu')
+			.splitbutton({
+				items: upload_menu,
+				width: 'auto',
+				menuPosition: 'right',
+				split: false
+			});
 
 		$('.b-tags-add').click(function(){
 			$.boom.assets.items.tag.add( this );
-		});
-
-		$('#b-assets-upload-video').click(function(){
-			$.boom.dialog.open({
-				url: '/cms/video/upload',
-				title: 'Upload video',
-				buttons: {
-					Cancel: function(){
-						$.boom.dialog.destroy(this);
-					},
-					Upload: function(){
-						$('#uploadForm').submit();
-					}
-				}
-			});
 		});
 
 		var title_filter = $('#b-assets-filter-title')
@@ -62,11 +76,6 @@ $.extend($.boom.assets, {
 				self.items.tag.filters[ 'title' ] = ui.item.value;
 				self.items.tag.get( 0 );
 			}
-		});
-
-		$('#b-assets-upload').click(function(){
-
-			self._upload();
 		});
 
 		$( '#boom-topbar' )
