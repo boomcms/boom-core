@@ -54,7 +54,7 @@
 			</div>
 			<div class="b-items-sidebar ui-helper-left">
 				<div class="b-items-box-header ui-helper-reset ui-widget-header ui-panel-header ui-corner-all">
-					<a href="#" class="boom-tagmanager-groups-add ui-helper-right">
+					<a href="#" class="b-people-group-add ui-helper-right">
 						<span class="ui-icon ui-icon-wrench ui-helper-left"></span>
 						Add
 					</a>

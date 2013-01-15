@@ -47,13 +47,28 @@ class Boom_Controller_Cms_Groups extends Boom_Controller
 	 */
 	public function action_add()
 	{
-		// Create the group.
-		$this->group
-			->set('name', $this->request->post('name'))
-			->create();
+		if ($this->request->method() === Request::POST)
+		{
+			// POST request
+			// Process the data to create the group.
+			$this->group
+				->set('name', $this->request->post('name'))
+				->create();
 
-		// Log the action.
-		$this->_log("Created group: ".$this->group->name);
+			// Log the action.
+			$this->_log("Created group: ".$this->group->name);
+
+			// Put the group ID in the response body.
+			$this->response->body($this->group->id);
+		}
+		else
+		{
+			// Display the 'edit group' view with an empty group model.
+			$this->template = View::factory("boom/groups/edit", array(
+				'group' => new Model_Group,
+			));
+		}
+
 	}
 
 	/**
