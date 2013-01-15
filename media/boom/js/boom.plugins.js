@@ -247,7 +247,7 @@ boom.plugins.js
 
 			this.elements.menu
 				.addClass( this.widgetBaseClass + '-menu ui-widget ui-widget-content ui-corner-all ui-helper-reset')
-				.attr('role', 'listbox');
+				.attr('role', 'menu');
 
 			this._build();
 
