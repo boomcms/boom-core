@@ -44,11 +44,56 @@ class Boom_Model_Group extends ORM
 	 * @param integer $page_id	Make the role active at a particular point in the page tree.
 	 *
 	 * @return \Boom_Model_Group
-	 *
-	 * @todo Implement
 	 */
-	public function add_role($role_id, $allowed, $page_id = NULL)
+	public function add_role($role_id, $allowed, $page_id = 0)
 	{
+		// Check that the group doesn't already have this role before continuing.
+		if ( ! $this->has('roles', $role_id))
+		{
+			// Create a relationship with the role.
+			// Don't use [ORM::add()] because we want to store the value of $allowed as well.
+			DB::insert('group_roles', array('group_id', 'role_id', 'allowed', 'page_id'))
+				->values(array($this->id, $role_id, $allowed, $page_id))
+				->execute($this->_db);
+
+
+			/** If we're disallowing the role
+			 * then update permissions of anyone who has been allowed this role from another group.
+			 *
+			 * We only have to do this if $allowed is false.
+			 * If it's true then the update won't have any effect
+			 * People who've been allowed the role by another group don't need their permissions updated.
+			 * People who've been denied the role by another group wouldn't have their permissions changed because disallows take precendence.
+			 *
+			 * This should be kept before the DB::insert() below.
+			 */
+			if ($allowed === FALSE)
+			{
+				DB::update('people_roles')
+					->join('people_groups', 'inner')
+					->on('people_roles.person_id', '=', 'people_groups.person_id')
+					->set(array('allowed' => FALSE))
+					->where('role_id', '=', $role_id)
+					->where('page_id', '=', $page_id)
+					->where('group_id', '=', $this->id)
+					->execute();
+			}
+
+			// Update the roles of the people in this group.
+			// Insert for people who don't already have the role from another group.
+			DB::insert('people_roles', array('person_id', 'role_id', 'allowed', 'page_id'))
+				->select(
+					DB::select('person_id', DB::expr($role_id), DB::expr($allowed), DB::expr($page_id))
+						->from('people_groups')
+						->where('group_id', '=', $this->id)
+						->where('person_id', 'NOT IN', DB::select('person_id')
+								->from('people_roles')
+								->where('role_id', '=', $role_id)
+								->where('page_id', '=', $page_id)
+						)
+				)
+				->execute();
+		}
 
 		return $this;
 	}
