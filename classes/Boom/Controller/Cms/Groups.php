@@ -37,6 +37,26 @@ class Boom_Controller_Cms_Groups extends Boom_Controller
 	}
 
 	/**
+	 * Create a new group.
+	 *
+	 * A group name should be given in the POST data.
+	 *
+	 * @uses Boom_Controller::_log()
+	 * @uses Model_Group::set()
+	 * @uses Model_Group::create()
+	 */
+	public function action_add()
+	{
+		// Create the group.
+		$this->group
+			->set('name', $this->request->post('name'))
+			->create();
+
+		// Log the action.
+		$this->_log("Created group: ".$this->group->name);
+	}
+
+	/**
 	 * Adds a role to the current group.
 	 *
 	 * @uses Boom_Controller::_log()
@@ -69,26 +89,6 @@ class Boom_Controller_Cms_Groups extends Boom_Controller
 
 		// Delete the group.
 		$this->group->delete();
-	}
-
-	/**
-	 * Create a new group.
-	 *
-	 * A group name should be given in the POST data.
-	 *
-	 * @uses Boom_Controller::_log()
-	 * @uses Model_Group::set()
-	 * @uses Model_Group::create()
-	 */
-	public function action_new()
-	{
-		// Create the group.
-		$this->group
-			->set('name', $this->request->post('name'))
-			->create();
-
-		// Log the action.
-		$this->_log("Created group: ".$this->group->name);
 	}
 
 	/**
