@@ -112,13 +112,11 @@ class Boom_Controller_Cms_People extends Boom_Controller
 
 			// Find the groups that this person isn't already a member of.
 			$groups = ORM::factory('Group')
-				->where('group.id', 'NOT IN',
+				->names(
 					DB::Select('group_id')
 						->from('people_groups')
 						->where('person_id', '=', $this->edit_person->id)
-				)
-				->where('deleted', '=', FALSE)
-				->find_all();
+				);
 
 			// Set the response template.
 			$this->template = View::factory("$this->_view_directory/addgroup", array(
