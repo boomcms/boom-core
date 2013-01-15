@@ -37,6 +37,15 @@ class Boom_Auth_Boom extends Auth
 		}
 		else
 		{
+			// [Model_Person::is_allowed()] requires an instance of Model_Role.
+			// But we're called with a string - load the relevant role.
+			if (is_string($role))
+			{
+				$role = new Model_Role(array(
+					'name'	=>	$role,
+				));
+			}
+
 			// Does the person have the role at the specified page?
 			return $this->get_user()
 				->is_allowed($role, $page);
