@@ -59,8 +59,7 @@ $.extend({
 
 					$( this ).toggleClass( 'ui-state-hover' );
 				});
-				
-				//FIXME: this is just repeated from boom.page.js
+
 				if ( $.boom.cookie.contains( 'navmenu' ) ) {
 					$( '#boom-nav' ).hide();
 				}
