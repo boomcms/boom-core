@@ -34,10 +34,14 @@ $.extend($.boom.people, {
 						$.boom.dialog.destroy( dialog );
 					},
 					Save: function(){
-						self.savePerson();
+						self
+							.savePerson()
+							.done( function(){
+								window.location.reload();
+							});
 
 						$.boom.dialog.destroy( dialog );
-						window.location.reload();
+						
 					}
 				}
 			});
@@ -94,7 +98,7 @@ $.extend($.boom.people, {
 
 		$.boom.loader.show();
 
-		$.post('/cms/people/save', data)
+		return $.post('/cms/people/save', data)
 		.done( function(id){
 
 			$.boom.loader.hide();
