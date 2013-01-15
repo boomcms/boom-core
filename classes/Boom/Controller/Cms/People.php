@@ -267,7 +267,8 @@ class Boom_Controller_Cms_People extends Boom_Controller
 
 		// Show the person's details.
 		$this->template = View::factory($this->_view_directory."view", array(
-			'person'	=>	$person,
+			'person'	=>	$this->person,
+			'request'	=>	$this->request,
 		));
 	}
 }
