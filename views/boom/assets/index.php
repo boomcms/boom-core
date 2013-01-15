@@ -15,20 +15,28 @@
 	<div id="boom-topbar" class="ui-helper-clearfix ui-tabs ui-widget ui-widget-content ui-corner-all">
 
 		<?= Menu::factory('boom') ?>
+		
+		<div id="boom-topbar-useractions">
+			<span id="boom-page-user-menu">
+				<button id="b-page-user" class="boom-button" data-icon="ui-icon-boom-person">
+					<?=__('Profile')?>
+				</button>
+			</span>
+		</div>
 
 		<div class="ui-helper-clearfix ui-tabs-panel ui-widget-content ui-corner-bottom">
 			<div id="b-page-actions" class="ui-helper-right">
 				<button id="boom-page-menu" class="boom-button" data-icon="ui-icon-boom-menu">
 						<?=__('Menu')?>
 				</button>
-				<button id="b-assets-upload" class="boom-button ui-button-text-icon" data-icon="ui-icon-boom-upload">
-					<?=__('Upload files')?>
-				</button>
+				<span id="boom-assets-upload-menu">
+					<button id="b-assets-upload" class="boom-button ui-button-text-icon" data-icon="ui-icon-boom-upload">
+						<?=__('Upload files')?>
+					</button>
+				</span>
 				<button id="boom-tagmanager-save-all" class="boom-button ui-button-text-icon" data-icon="ui-icon-boom-save">
 					<?=__('Save all')?>
 				</button>
-
-				<button class="boom-button" data-icon="ui-icon-boom-upload" id="b-assets-upload-video">Upload video</button>
 			</div>
 
 			<div id="b-items-multiactons" class="ui-widget-content">

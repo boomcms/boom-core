@@ -2,7 +2,7 @@
 
 	<div class="b-template">
 		
-		Template:
+		<label for="template_id">Template:</label>
 		
 		<?= Form::select('template_id', $templates, $template_id) ?>
 		

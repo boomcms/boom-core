@@ -247,7 +247,7 @@ boom.plugins.js
 
 			this.elements.menu
 				.addClass( this.widgetBaseClass + '-menu ui-widget ui-widget-content ui-corner-all ui-helper-reset')
-				.attr('role', 'listbox');
+				.attr('role', 'menu');
 
 			this._build();
 
@@ -366,13 +366,13 @@ boom.plugins.js
 					top: offset.top + hitarea.outerHeight()
 				});
 				
-				$.boom.page.toolbar.maximise();
+				$.boom.page && $.boom.page.toolbar.maximise();
 			})
 			.bind('hide', function(){
 
 				$(this).css({ left: -9999 });
 				
-				$.boom.page.toolbar.minimise();
+				$.boom.page && $.boom.page.toolbar.minimise();
 			});
 		},
 		
