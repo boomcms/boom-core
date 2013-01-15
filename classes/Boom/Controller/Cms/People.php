@@ -18,10 +18,16 @@ class Boom_Controller_Cms_People extends Boom_Controller
 	protected $_view_directory = 'boom/people/';
 
 	/**
+	 * Person object to be edited.
+	 *
+	 * **CAUTION**
+	 *
+	 * [Boom_Controller::before()] sets a person property which is the logged in person.
+	 * YOU DON'T WANT TO USE THE WRONG PROPERTY.
 	 *
 	 * @var Model_Person
 	 */
-	public $person;
+	public $edit_person;
 
 	/**
 	 * Checks that the current user can access the people manager.
@@ -29,7 +35,7 @@ class Boom_Controller_Cms_People extends Boom_Controller
 	 *
 	 * @uses Boom_Controller::before()
 	 * @uses Boom_Controller::_authorization()
-	 * @uses Boom_Controller_Cms_People::$person
+	 * @uses Boom_Controller_Cms_People::$edit_person
 	 */
 	public function before()
 	{
@@ -37,6 +43,9 @@ class Boom_Controller_Cms_People extends Boom_Controller
 
 		// Check that we're allowed to be here.
 		$this->_authorization('manage_people');
+
+		// Set the person to be edited.
+		$this->edit_person = new Model_Person($this->request->param('id'));
 	}
 
 	/**
@@ -51,7 +60,7 @@ class Boom_Controller_Cms_People extends Boom_Controller
 		if ($this->request->method() === Request::POST)
 		{
 			// POST request - add a person to the CMS.
-			$this->person
+			$this->edit_person
 				->set('email', $this->request->post('email'))
 				->create()
 				->add_group($this->request->post('group_id'));
@@ -94,7 +103,7 @@ class Boom_Controller_Cms_People extends Boom_Controller
 				$this->_log("Added person $this->person->email to group with ID $group_id");
 
 				// Add the person to the given group.
-				$this->person->add_group($group_id);
+				$this->edit_person->add_group($group_id);
 			}
 		}
 		else
@@ -106,14 +115,14 @@ class Boom_Controller_Cms_People extends Boom_Controller
 				->where('group.id', 'NOT IN',
 					DB::Select('group_id')
 						->from('people_groups')
-						->where('person_id', '=', $this->person->id)
+						->where('person_id', '=', $this->edit_person->id)
 				)
 				->where('deleted', '=', FALSE)
 				->find_all();
 
 			// Set the response template.
 			$this->template = View::factory("$this->_view_directory/addgroup", array(
-				'person'	=>	$this->person,
+				'person'	=>	$this->edit_person,
 				'groups'	=>	$groups,
 			));
 		}
@@ -128,10 +137,10 @@ class Boom_Controller_Cms_People extends Boom_Controller
 	public function action_delete()
 	{
 		// Log the action.
-		$this->_log("Deleted person with email address: ".$this->person->email);
+		$this->_log("Deleted person with email address: ".$this->edit_person->email);
 
 		// Delete the person.
-		$this->person->delete();
+		$this->edit_person->delete();
 	}
 
 	/**
@@ -168,7 +177,7 @@ class Boom_Controller_Cms_People extends Boom_Controller
 		$group	=	$this->request->query('tag');
 		$order	=	$this->request->query('order');
 
-		$query =new Model_Person;
+		$query = new Model_Person;
 
 		if ($group)
 		{
@@ -228,10 +237,10 @@ class Boom_Controller_Cms_People extends Boom_Controller
 	public function action_remove_group()
 	{
 		// Log the action.
-		$this->_log("Edited the groups for person ".$this->person->email);
+		$this->_log("Edited the groups for person ".$this->edit_person->email);
 
 		// Remove the person from the group given in the POST data.
-		$this->person->remove_group($this->request->post('group_id'));
+		$this->edit_person->remove_group($this->request->post('group_id'));
 	}
 
 	/**
@@ -244,10 +253,10 @@ class Boom_Controller_Cms_People extends Boom_Controller
 	public function action_save()
 	{
 		// Log the action.
-		$this->_log("Edited user $this->person->email (ID: $this->person->id) to the CMS");
+		$this->_log("Edited user $this->edit_person->email (ID: $this->edit_person->id) to the CMS");
 
 		// Update the person's details.
-		$this->person
+		$this->edit_person
 			->values(array(
 				'name'		=>	$this->request->post('name'),
 				'enabled'		=>	$this->request->post('enabled')
@@ -263,7 +272,7 @@ class Boom_Controller_Cms_People extends Boom_Controller
 	public function action_view()
 	{
 		// Check that the person exists.
-		if ( ! $this->person->loaded())
+		if ( ! $this->edit_person->loaded())
 		{
 			// No they don't, throw an exception.
 			throw new HTTP_Exception_404;
@@ -271,7 +280,7 @@ class Boom_Controller_Cms_People extends Boom_Controller
 
 		// Show the person's details.
 		$this->template = View::factory($this->_view_directory."view", array(
-			'person'	=>	$this->person,
+			'person'	=>	$this->edit_person,
 			'request'	=>	$this->request,
 		));
 	}
