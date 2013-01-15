@@ -33,10 +33,10 @@ class Boom_Model_Person extends ORM
 	/**
 	 * Put the current person in a group.
 	 *
-	 * When a person is added to a group the person's are updated in two ways:
+	 * When a person is added to a group:
 	 *
-	 * * Any roles which are allowed for the new group which haven't been disallowed by another group that the person is a member of will be allowed for the person.
-	 * * Any roles which are disallowed for the new group will be disallowed for the person, regardless of other group membership.
+	 * * A relationship between the person and the group is created in the person_groups table.
+	 * * The person obtains records for all the roles which the group has in the person_roles table.
 	 *
 	 *
 	 * @param integer $group_id
@@ -44,6 +44,18 @@ class Boom_Model_Person extends ORM
 	 */
 	public function add_group($group_id)
 	{
+		// Create a relationship with the group.
+		$this->add('groups', $group_id);
+
+		// Inherit any roles assigned to the group.
+		DB::insert('people_roles', array('person_id', 'group_id', 'role_id', 'allowed', 'page_id'))
+			->select(
+				DB::select(DB::expr($this->id), DB::expr('group_id'), 'role_id', 'allowed', 'page_id')
+					->from('group_roles')
+					->where('group_id', '=', $group_id)
+				)
+			->execute($this->_db);
+
 		return $this;
 	}
 
