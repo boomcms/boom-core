@@ -78,10 +78,23 @@ class Boom_Model_Group extends ORM
 	 * @param integer $allowed	Whether the group is allowed or prevented from the role.
 	 * @param integer $page_id	Make the role active at a particular point in the page tree.
 	 *
+	 * @throws InvalidArgumentException When called with a role ID which is not in use.
+	 *
 	 * @return \Boom_Model_Group
 	 */
 	public function add_role($role_id, $allowed, $page_id = 0)
 	{
+		// Check that the role is exists.
+		// Attempt to load the role from the database.
+		$role = ORM::factory('Role', $role_id);
+
+		// If the role wasn't found then it's not a valid role ID.
+		if ( ! $role->loaded())
+		{
+			// Throw an exception.
+			throw new InvalidArgumentException("Argument 1 to ".__CLASS__."::".__METHOD__." must be a valid role ID. Called with $role_id which doesn't exist.");
+		}
+
 		// Check that the group doesn't already have this role before continuing.
 		if ( ! $this->has('roles', $role_id))
 		{
