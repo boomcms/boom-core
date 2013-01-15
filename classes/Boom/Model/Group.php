@@ -62,24 +62,33 @@ class Boom_Model_Group extends ORM
 	 *	<?= Form::select('group_id', ORM::factory('Group')->names()) ?>
 	 *
 	 *
-	 * Optionally an array of group names can be given to exclude those groups from the results.
+	 * Optionally an array of group names, or a Database_Query_Builder_Select object, can be given to exclude those groups from the results.
 	 * This could be used to get the names of all groups that a person is not already a member of.
 	 *
 	 *	<?= Form::select('group_id', ORM::factory('Group')->names(array('Group name'))) ?>
 	 *
 	 *
-	 * @param array $exclude
+	 * @param mixed $exclude
 	 * @return array
+	 *
+	 * @throws InvalidArgumentException
 	 */
-	public function names(array $exclude = NULL)
+	public function names($exclude = NULL)
 	{
+		// $exclude should be an array or DB select.
+		if ($exclude !== NULL AND ! (is_array($exclude) OR $exclude instanceof Database_Query_Builder_Select))
+		{
+			// Throw an exception.
+			throw new InvalidArgumentException("Argument 1 for ".__CLASS__."::".__METHOD__." should be an array or instance of Database_Query_Builder_Select, ".tyepof($excluding). "given");
+		}
+
 		// Prepare the query
 		$query = DB::select('id', 'name')
 			->from($this->_table_name)
 			->order_by('name', 'asc');
 
 		// Are we excluding any groups?
-		if ( ! ($exclude === NULL AND empty($exclude)))
+		if ($exclude !== NULL)
 		{
 			// Exclude these groups from the results.
 			$query->where('name', 'NOT IN', $exclude);
