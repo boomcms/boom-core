@@ -15,6 +15,15 @@ $.extend($.boom.people, {
 		var self = this;
 
 		this._init( config );
+		
+		//FIXME: this is just repeated from boom.page.js
+		if ( $.boom.cookie.contains( 'navmenu' ) ) {
+			$( '#boom-nav' ).hide();
+		}
+		$( '#boom-page-menu' ).on( 'click', function(){
+			$( '#boom-nav' ).toggle();
+			$.boom.cookie.toggle( 'navmenu');
+		});
 
 		$('.boom-tagmanager-groups-add').click(function(event){
 			$.boom.items.group.add( this );
