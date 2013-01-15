@@ -662,7 +662,7 @@ $.extend($.boom, {
 
 		/** @function */
 		isIE6 : function(){
-			return ($.browser.msie && $.browser.version.substr(0, 1) < 7);
+			return false;
 		},
 
 		/** @function */
