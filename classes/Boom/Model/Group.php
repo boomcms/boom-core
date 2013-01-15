@@ -137,6 +137,7 @@ class Boom_Model_Group extends ORM
 		// Prepare the query
 		$query = DB::select('id', 'name')
 			->from($this->_table_name)
+			->where('deleted', '=', FALSE)
 			->order_by('name', 'asc');
 
 		// Are we excluding any groups?
@@ -162,6 +163,15 @@ class Boom_Model_Group extends ORM
 	 */
 	public function remove_role($role_id)
 	{
+		// Remove the relationship between this group and the role.
+		$this->remove('roles', $role_id);
+
+		// Remove the role from people in this group.
+		DB::delete('people_roles')
+			->where('group_id', '=', $this->id)
+			->where('role_id', '=', $role_id)
+			->execute($this->_db);
+
 		return $this;
 	}
 }
