@@ -36,7 +36,7 @@ class Boom_Model_Page extends ORM_Taggable
 		'sequence'					=>	'',
 		'visible'					=>	'',
 		'visible_from'				=>	'',
-		'visible_to'				=>	0,
+		'visible_to'				=>	'',
 		'internal_name'				=>	'',
 		'external_indexing'			=>	'',
 		'internal_indexing'			=>	'',
