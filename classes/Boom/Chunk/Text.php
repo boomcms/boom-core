@@ -52,19 +52,18 @@ class Boom_Chunk_Text extends Chunk
 	protected function _show()
 	{
 		$text = $this->_chunk->text;
-		$text = Chunk_Text::unmunge($text);
 
 		// Embed youtube videos when in site view.
 		if (Editor::instance()->state() != Editor::EDIT)
 		{
-			// This mammoth regular expression matches a URL
-			//  Rob didn't write this, I'm not smart enough for this.
-			// See http://daringfireball.net/2010/07/improved_regex_for_matching_urls for an explanation if curious.
-			$text = preg_replace_callback('~(?i)\b((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:\'".,<>?«»“”‘’]))~', function($matches)
+			preg_replace_callback('~\b(?<!href="|">)(?:ht|f)tps?://[^<\s]+(?:/|\b)~i', function($matches)
 				{
-					return Chunk_Text::embed_video($matches[1]);
-				}, $text);
+					return Chunk_Text::embed_video($matches[0]);
+				}, $text
+			);
 		}
+
+		$text = Chunk_Text::unmunge($text);
 
 		// If no template has been set then add the default HTML tags for this slotname.
 		if ($this->_template === NULL)
