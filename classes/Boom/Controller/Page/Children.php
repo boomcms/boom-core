@@ -209,7 +209,7 @@ class Boom_Controller_Page_Children extends Boom_Controller
 		$hash = md5($this->parent->id . "-" . $this->auth->logged_in() . "-" . serialize($this->request->post()));
 
 		// Try and get it from the cache, unless they're logged in.
-		if (1==2 OR $this->auth->logged_in() OR ! Fragment::load("child_page_list:$hash", 300))
+		if ($this->auth->logged_in() OR ! Fragment::load("child_page_list:$hash", 300))
 		{
 			list($query, $total) = $this->build_query();
 
