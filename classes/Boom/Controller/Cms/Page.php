@@ -143,7 +143,7 @@ class Boom_Controller_Cms_Page extends Boom_Controller
 				->create();
 
 			// Log the action.
-			$this->_log("Added a new page under " . $parent->version()->title, "Page ID: " . $page->id);
+			$this->log("Added a new page under " . $parent->version()->title, "Page ID: " . $page->id);
 
 			// Commit the changes.
 			Database::instance()->commit();
@@ -220,7 +220,7 @@ class Boom_Controller_Cms_Page extends Boom_Controller
 			// So delete the page.
 
 			// Log the action.
-			$this->_log("Deleted page " . $this->_page->version()->title . " (ID: " . $this->_page->id . ")");
+			$this->log("Deleted page " . $this->_page->version()->title . " (ID: " . $this->_page->id . ")");
 
 			// Get the parent of the page which is being deleted.
 			// We'll redirect to this after.

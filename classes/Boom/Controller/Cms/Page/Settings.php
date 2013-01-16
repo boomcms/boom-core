@@ -90,7 +90,7 @@ class Boom_Controller_Cms_Page_Settings extends Controller_Cms_Page
 		elseif ($this->_method === Request::POST)
 		{
 			// Log the action.
-			$this->_log("Saved admin settings for page " . $this->_page->version()->title . " (ID: " . $this->_page->id . ")");
+			$this->log("Saved admin settings for page " . $this->_page->version()->title . " (ID: " . $this->_page->id . ")");
 
 			// Set the new page internal name and save the page.
 			$this->_page
@@ -168,7 +168,7 @@ class Boom_Controller_Cms_Page_Settings extends Controller_Cms_Page
 			$post = $this->request->post();
 
 			// Log the action.
-			$this->_log("Saved child page settings for page " . $this->_page->version()->title . " (ID: " . $this->_page->id . ")");
+			$this->log("Saved child page settings for page " . $this->_page->version()->title . " (ID: " . $this->_page->id . ")");
 
 			// Set the new advanced settings, if allowed.
 			if ($allow_advanced)
@@ -304,7 +304,7 @@ class Boom_Controller_Cms_Page_Settings extends Controller_Cms_Page
 			}
 
 			// Log the action.
-			$this->_log("Saved navigation settings for page " . $this->_page->version()->title . " (ID: " . $this->_page->id . ")");
+			$this->log("Saved navigation settings for page " . $this->_page->version()->title . " (ID: " . $this->_page->id . ")");
 
 			// Update the visible_in_nav and visible_in_nav_cms settings.
 			$this->_page
@@ -350,7 +350,7 @@ class Boom_Controller_Cms_Page_Settings extends Controller_Cms_Page
 		elseif ($this->_method === Request::POST)
 		{
 			// Log the action
-			$this->_log("Saved search settings for page " . $this->_page->version()->title . " (ID: " . $this->_page->id . ")");
+			$this->log("Saved search settings for page " . $this->_page->version()->title . " (ID: " . $this->_page->id . ")");
 
 			// Get the POST data.
 			$post = $this->request->post();
@@ -482,7 +482,7 @@ class Boom_Controller_Cms_Page_Settings extends Controller_Cms_Page
 			$post = $this->request->post();
 
 			// Log the action
-			$this->_log("Updated visibility settings for page " . $this->_page->version()->title . " (ID: " . $this->_page->id . ")");
+			$this->log("Updated visibility settings for page " . $this->_page->version()->title . " (ID: " . $this->_page->id . ")");
 
 			// Update the page settings.
 			$this->_page

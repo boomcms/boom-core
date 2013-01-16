@@ -54,7 +54,7 @@ class Boom_Controller_Cms_Page_URL extends Controller_Cms_Page
 					))
 					->create();
 
-				$this->_log("Added secondary url $url to page " . $this->_page->version()->title . "(ID: " . $this->_page->id . ")");
+				$this->log("Added secondary url $url to page " . $this->_page->version()->title . "(ID: " . $this->_page->id . ")");
 			}
 		}
 		else

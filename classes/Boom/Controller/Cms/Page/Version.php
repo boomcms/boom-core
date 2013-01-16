@@ -192,7 +192,7 @@ class Boom_Controller_Cms_Page_Version extends Controller_Cms_Page_Settings
 		}
 		elseif ($this->_method === Request::POST)
 		{
-			$this->_log("Updated the feature image of page " . $this->old_version->title . " (ID: " . $this->_page->id . ")");
+			$this->log("Updated the feature image of page " . $this->old_version->title . " (ID: " . $this->_page->id . ")");
 
 			$this->new_version
 				->set('feature_image_id', $this->request->post('feature_image_id'))

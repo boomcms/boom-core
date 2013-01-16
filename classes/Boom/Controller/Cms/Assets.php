@@ -39,7 +39,7 @@ class Boom_Controller_Cms_Assets extends Boom_Controller
 	 * assets		|  array	 	|	Array of asset IDs to be deleted.
 	 *
 	 * @uses	Model_Asset::delete()
-	 * @uses	$this->_log()
+	 * @uses	$this->log()
 	 */
 	public function action_delete()
 	{
@@ -77,7 +77,7 @@ class Boom_Controller_Cms_Assets extends Boom_Controller
 			}
 
 			// Log the action.
-			$this->_log($log_message);
+			$this->log($log_message);
 		}
 	}
 

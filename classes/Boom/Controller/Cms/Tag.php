@@ -84,7 +84,7 @@ class Boom_Controller_Cms_Tag extends Boom_Controller
 	 */
 	public function action_delete()
 	{
-		$this->_log("Deleted tag " . $this->tag->name . " (ID: " . $this->tag->id . ")");
+		$this->log("Deleted tag " . $this->tag->name . " (ID: " . $this->tag->id . ")");
 		$this->tag->delete();
 	}
 
@@ -187,6 +187,6 @@ class Boom_Controller_Cms_Tag extends Boom_Controller
 			$this->tag->path($this->tag->name);
 		}
 
-		$this->_log("Updated tag " . $this->tag->name . " (ID: " . $this->tag->id . ")");
+		$this->log("Updated tag " . $this->tag->name . " (ID: " . $this->tag->id . ")");
 	}
 }

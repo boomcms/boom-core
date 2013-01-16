@@ -75,16 +75,16 @@ class Boom_Controller extends Controller
 	/**
 	 * Log an action in the CMS log
 	 *
-	 * @param	type	$activity
+	 * @param string $activity
 	 */
-	protected function _log($activity)
+	public function log($activity)
 	{
 		// Add an item to the log table with the relevant details
 		ORM::factory('Log')
 			->values(array(
 				'ip'			=>	Request::$client_ip,
 				'activity'		=>	$activity,
-				'person_id'	=>	$this->auth->get_user()->id,
+				'person_id'	=>	$this->person->id,
 			))
 			->create();
 	}
