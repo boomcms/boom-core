@@ -18,6 +18,11 @@ class Boom_Model_Page_Version extends ORM
 		'person'		=>	array('model' => 'Person', 'foreign_key' => 'edited_by'),
 	);
 
+	protected $_created_column = array(
+		'column'	=>	'edited_time',
+		'format'	=>	TRUE,
+	);
+
 	protected $_has_many = array(
 		'chunks'	=> array('through' => 'page_chunks', 'foreign_key' => 'page_vid'),
 	);
@@ -45,11 +50,6 @@ class Boom_Model_Page_Version extends ORM
 	 * @var array
 	 */
 	protected $_thumbnails = array();
-
-	protected $_updated_column = array(
-		'column'	=>	'edited_time',
-		'format'	=>	TRUE,
-	);
 
 	/**
 	 * Adds a chunk to the page version.
