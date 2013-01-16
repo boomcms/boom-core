@@ -17,6 +17,11 @@ class Boom_Model_Page extends ORM_Taggable
 		'mptt'		=>	array('model' => 'Page_MPTT', 'foreign_key' => 'id'),
 	);
 
+	protected $_created_column = array(
+		'column'	=>	'visible_from',
+		'format'	=>	TRUE,
+	);
+
 	protected $_has_one = array(
 		'version'		=>	array('model' => 'Page_Version', 'foreign_key' => 'page_id'),
 	);
