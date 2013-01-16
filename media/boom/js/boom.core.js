@@ -20,14 +20,6 @@ $.extend({
 
 			$.boom.isMobile = $.boom.util.isMobileDevice();
 
-			$.boom.isIE6 = $.boom.util.isIE6();
-
-			if ($.boom.isIE6) {
-				try {
-					document.execCommand('BackgroundImageCache', false, true);
-				} catch(e) {};
-			}
-
 			// reference boom from the site window too.
 			top.$.boom = $.boom;
 		},
@@ -658,11 +650,6 @@ $.extend($.boom, {
 			});
 
 			return mobile;
-		},
-
-		/** @function */
-		isIE6 : function(){
-			return false;
 		},
 
 		/** @function */
