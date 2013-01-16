@@ -40,6 +40,14 @@ class Boom_Controller_Cms_Page_Version extends Controller_Cms_Page_Settings
 		{
 			// Create a new version of the page.
 			$this->new_version = $this->_page->create_version();
+
+			// If the embargo time of the new version is in the past, set the embargo time to NULL
+			// This means that if the old version was published, the new version will be a draft.
+			// If the embargo time is in the future don't change it.
+			if ($this->new_version->embargoed_until <= $_SERVER['REQUEST_TIME'])
+			{
+				$this->new_version->embargoed_until = NULL;
+			}
 		}
 	}
 
