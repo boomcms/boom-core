@@ -1,8 +1,8 @@
 <form id="b-page-add-form">
 
-	<label for="parent-page">
+	<label for="parent_id">
 		<?=__('Parent page')?>
-	</label>
+	
 
 	<select name="parent_id">
 		<option value="0"><?=__('No parent')?></option>
@@ -18,7 +18,9 @@
 		?>
 		</option>
 	</select>
-<?=__('Template')?>
+	</label>
+	
+<label for="template_id"><?=__('Template')?>
 <?= Form::select('template_id', $templates, $default_template, array('style' => 'width: 24em')); ?>
-
+</label>
 </form>
