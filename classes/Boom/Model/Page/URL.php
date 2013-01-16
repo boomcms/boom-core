@@ -117,7 +117,7 @@ class Boom_Model_Page_URL extends ORM
 
 	/**
 	 * Function to be called when making a link the primary link for a page.
-	 * Updates the page's primary link in the cache and ensures that this will be the only primary link for a page.
+	 * Ensures that this will be the only primary link for a page.
 	 *
 	 * This function will be called when making an existing link the primary link for a page
 	 * Or when the page title is changed and a new link is created which will be made the primary link.
