@@ -526,14 +526,24 @@ class Boom_Model_Page extends ORM_Taggable
 	 */
 	public function with_current_version(Editor $editor)
 	{
+		$current_version = DB::select(array(DB::expr('max(id)'), 'id'), 'page_id')
+			->from('page_versions')
+			->where('stashed', '=', 0)
+			->group_by('page_id');
+
+		if ($editor->state() === Editor::DISABLED)
+		{
+			$current_version
+				->where('embargoed_until', '<=', DB::expr($editor->live_time()))
+				->where('published', '=', DB::expr(1));
+		}
+
 		$this
+			->join(array($current_version, 'v2'), 'inner')
+			->on('page.id', '=', 'v2.page_id')
 			->join(array('page_versions', 'version'), 'inner')
 			->on('page.id', '=', 'version.page_id')
-			->join(array('page_versions', 'v2'), 'left')
-			->on('page.id', '=', 'v2.page_id')
-			->on('version.id', '<', 'v2.id')
-			->on('v2.stashed', '=', DB::expr(0))
-			->where('v2.id', '=', NULL)
+			->on('v2.id', '=', 'version.id')
 			->where('version.page_deleted', '=', FALSE);
 
 		// Logged out view?
@@ -541,10 +551,6 @@ class Boom_Model_Page extends ORM_Taggable
 		{
 			// Get the most recent published version for each page.
 			$this
-				->on('v2.embargoed_until', '<=', DB::expr($editor->live_time()))
-				->on('v2.published', '=', DB::expr(1))
-				->where('version.embargoed_until', '<=', DB::expr($editor->live_time()))
-				->where('version.published', '=', DB::expr(1))
 				->where('visible', '=', TRUE)
 				->where('visible_from', '<=', $editor->live_time())
 				->and_where_open()
