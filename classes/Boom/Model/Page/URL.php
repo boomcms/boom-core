@@ -31,6 +31,32 @@ class Boom_Model_Page_URL extends ORM
 		return URL::site($this->location, Request::$current);
 	}
 
+
+	/**
+	 * Calls [Boom_Model_Page_URL::make_primary()] when a page URL is created which has the is_primary property set to true.
+	 * This removes the need to call is_primary() after creating a URL.
+	 *
+	 * @uses Boom_Model_Page_URL::is_primary()
+	 *
+	 * @param \Validation $validation
+	 * @return \Boom_Model_Page_URL
+	 */
+	public function create(\Validation $validation = NULL)
+	{
+		parent::create($validation);
+
+		// If the is_primary property is true.
+		if ($this->is_primary)
+		{
+			// Call Boom_Model_Page_URL::make_primary()
+			// to ensure that this is the only primary URL for this page.
+			$this->make_primary();
+		}
+
+		// Return the current object.
+		return $this;
+	}
+
 	/**
 	 * Checks that the URL is unique before saving.
 	 * This can't be done by a unique index on the table as the location column is too long to be indexed.
