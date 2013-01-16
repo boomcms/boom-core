@@ -209,7 +209,7 @@ class Boom_Controller_Page_Children extends Boom_Controller
 		$cache_key = "child_page_list:".md5($this->parent->id . "-" . $this->auth->logged_in() . "-" . serialize($this->request->post()));
 
 		// Try and get it from the cache, unless they're logged in.
-		if ($this->auth->logged_in() OR Kohana::cache($cache_key, NULL, 300) === NULL)
+		if ($this->auth->logged_in() OR ($view = Kohana::cache($cache_key, NULL, 300)) === NULL)
 		{
 			list($query, $total) = $this->build_query();
 
@@ -255,8 +255,6 @@ class Boom_Controller_Page_Children extends Boom_Controller
 				$view->set('pagination', $pagination);
 			} // End pagination
 
-			$this->response->body($view);
-
 			// Update the cache.
 			// But only if we're not logged in
 			// Don't want logged in child page lists getting loaded from cache when not logged in.
@@ -265,6 +263,9 @@ class Boom_Controller_Page_Children extends Boom_Controller
 				Kohana::cache($cache_key, $view->render());
 			}
 		}
+
+		// Set the response body.
+		$this->response->body($view);
 	}
 
 	/**
