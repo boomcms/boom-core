@@ -12,19 +12,21 @@
 		</ul>
 
 		<div id="navigation-settings-basic">
-			<label for="visible_in_nav">Visible in navigation?</label>
+			<label for="visible_in_nav">Visible in navigation?
 			
 			<select id="visible_in_nav" name="visible_in_nav">
 				<option <?if ($page->visible_in_nav == true) echo "selected=\"selected\" ";?> value="1">Yes</option>
 				<option <?if ($page->visible_in_nav == false) echo "selected=\"selected\" ";?> value="0">No</option>
 			</select>
+			</label>
 			
-			<label for="visible_in_nav_cms">Visible in CMS navigation?</label>
+			<label for="visible_in_nav_cms">Visible in CMS navigation?
 			
 			<select id="visible_in_nav_cms" name="visible_in_nav_cms">
 				<option <?if ($page->visible_in_nav_cms == true) echo "selected=\"selected\" ";?> value="1">Yes</option>
 				<option <?if ($page->visible_in_nav_cms == false) echo "selected=\"selected\" ";?> value="0">No</option>
 			</select>
+			</label>
 		</div>
 
 		<? if ($allow_advanced): ?>

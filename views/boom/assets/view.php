@@ -26,43 +26,50 @@
 			</div>
 
 			<div id="b-assets-view-attributes<?=$asset->id;?>" class="ui-helper-left">
-				<label for="title"><?=__('Title')?></label>
+				<label for="title"><?=__('Title')?>
 				<input type="text" id="title" name="title" class="boom-input" value="<?= $asset->title?>" />
-				<label for="description"><?=__('Description')?></label></td>
+				</label>
+				
+				<label for="description"><?=__('Description')?>
 				<textarea id="description" name="description" class="boom-textarea"><?= $asset->description?></textarea>
+				</label>
+				
+				<label for="visible_from">Visible from
 				<input type="text" id="visible_from" name="visible_from" class="boom-datepicker boom-input" value="<?= date('d F Y', $asset->visible_from);?>" />
+				</label>
+				
 			</div>
 
 			<div id="b-assets-view-info<?=$asset->id;?>" class="ui-helper-left">
 
 					<? if ($asset->type == Boom_Asset::BOTR AND ! $asset->encoded): ?>
-					<?=__('Video encoding')?>
+					<p><?=__('Video encoding')?></p>
 					<? endif; ?>
-					<?=__('Type')?>
-					<?= ucfirst(Boom_Asset::type($asset->type));?>
+					<p><?=__('Type')?>
+					<?= ucfirst(Boom_Asset::type($asset->type));?></p>
 					
-					<?=__('Filesize')?>
-					<?= Text::bytes($asset->filesize) ?>
+					<p><?=__('Filesize')?>
+					<?= Text::bytes($asset->filesize) ?></p>
 					
 					<? if ($asset->type == Boom_Asset::BOTR): ?>
 						
-						<?=__('Duration')?>
-						<?= gmdate("i:s", $asset->duration) ?>
+						<p><?=__('Duration')?>
+						<?= gmdate("i:s", $asset->duration) ?></p>
 						
 					<? endif; ?>
 					<? if ($asset->type == Boom_Asset::IMAGE): ?>
 						
-						<?=__('Dimensions')?>
-						<?=$asset->width?> x <?=$asset->height?>
+						<p><?=__('Dimensions')?>
+						<?=$asset->width?> x <?=$asset->height?></p>
 						
 					<? endif; ?>
 					
-					<?=__('Uploaded by')?>
-					<?= $asset->uploader->name ?>
+					<p><?=__('Uploaded by')?>
+					<?= $asset->uploader->name ?></p>
 					
 					
-					<?=__('Uploaded on')?>
-					<?= date('d F Y h:i:s', $asset->uploaded_time)?>
+					<p><?=__('Uploaded on')?>
+					<?= date('d F Y h:i:s', $asset->uploaded_time)?></p>
 
 			</div>
 
