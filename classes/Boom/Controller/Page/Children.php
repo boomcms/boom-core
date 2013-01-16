@@ -256,14 +256,14 @@ class Boom_Controller_Page_Children extends Boom_Controller
 			} // End pagination
 
 			$this->response->body($view);
-		}
 
-		// Update the cache.
-		// But only if we're not logged in
-		// Don't want logged in child page lists getting loaded from cache when not logged in.
-		if ( ! $this->auth->logged_in())
-		{
-			Kohana::cache($cache_key, $view);
+			// Update the cache.
+			// But only if we're not logged in
+			// Don't want logged in child page lists getting loaded from cache when not logged in.
+			if ( ! $this->auth->logged_in())
+			{
+				Kohana::cache($cache_key, $view);
+			}
 		}
 	}
 
