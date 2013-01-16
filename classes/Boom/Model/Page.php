@@ -529,7 +529,7 @@ class Boom_Model_Page extends ORM_Taggable
 		$this
 			->join(array('page_versions', 'version'), 'inner')
 			->on('page.id', '=', 'version.page_id')
-			->join(array('page_versions', 'v2'), 'left outer')
+			->join(array('page_versions', 'v2'), 'left')
 			->on('page.id', '=', 'v2.page_id')
 			->on('version.id', '<', 'v2.id')
 			->on('v2.stashed', '=', DB::expr(0))
