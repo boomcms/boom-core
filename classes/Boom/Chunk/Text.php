@@ -112,6 +112,7 @@ class Boom_Chunk_Text extends Chunk
 	{
 		// Check for a scheme at the start of the URL, add it if necessary.
 		$url = (substr($text, 0, 4) != 'http')? 'http://'.$text : $text;
+		$url = parse_url($url);
 
 		if (strpos($url['host'], 'youtube') !== FALSE AND isset($url['query']))
 		{
