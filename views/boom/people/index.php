@@ -1,11 +1,3 @@
-<?php
-/**
-* This is the main template for the people manager.
-* This template should not be included directly.
-*
-* Rendered by: Boom_Controller_Cms_People::action_index()
-*/
-?>
 	<?= View::factory('boom/header')->set('title', 'People') ?>
 
 	<div id="boom-topbar" class="ui-helper-clearfix ui-tabs ui-widget ui-widget-content ui-corner-all">
@@ -65,9 +57,9 @@
 				</div>
 				<ul class="boom-tree b-tags-tree  boom-tree-noborder">
 				<?
-					foreach ($groups as $group):
-						echo "<li id='t", $group->id, "'><a rel='", $group->id, "' id='tag_" , $group->id , "' class='' href='#tag/", $group->id;
-						echo "'>" , $group->name , "</a>\n";
+					foreach ($groups as $id => $name):
+						echo "<li id='t", $id, "'><a rel='", $id, "' id='tag_" , $id , "' class='' href='#tag/", $id;
+						echo "'>" , $name , "</a>\n";
 					endforeach;
 				?>
 				</ul>
