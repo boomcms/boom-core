@@ -56,7 +56,7 @@ class Boom_Controller_Cms_Groups extends Boom_Controller
 				->create();
 
 			// Log the action.
-			$this->_log("Created group: ".$this->group->name);
+			$this->log("Created group: ".$this->group->name);
 
 			// Put the group ID in the response body.
 			$this->response->body($this->group->id);
@@ -80,7 +80,7 @@ class Boom_Controller_Cms_Groups extends Boom_Controller
 	public function action_add_role()
 	{
 		// Log the action.
-		$this->_log("Edited the roles of group ".$this->group->name);
+		$this->log("Edited the roles of group ".$this->group->name);
 
 		// Call [Model_Group::add_role()] with the role ID from the POST data.
 		$this->group->add_role($this->request->post('role_id'), $this->request->post('allowed'));
@@ -100,7 +100,7 @@ class Boom_Controller_Cms_Groups extends Boom_Controller
 	public function action_delete()
 	{
 		// Log the action.
-		$this->_log("Deleted group ".$this->group->name);
+		$this->log("Deleted group ".$this->group->name);
 
 		// Delete the group.
 		$this->group->delete();
@@ -115,7 +115,7 @@ class Boom_Controller_Cms_Groups extends Boom_Controller
 	public function action_remove_role()
 	{
 		// Log the action.
-		$this->_log("Edited the roles of group ".$this->group->name);
+		$this->log("Edited the roles of group ".$this->group->name);
 
 		// Remove the role.
 		$this->group->remove_role($this->request->post('role_id'));
@@ -131,7 +131,7 @@ class Boom_Controller_Cms_Groups extends Boom_Controller
 	public function action_save()
 	{
 		// Log the action.
-		$this->_log("Edited group " . $this->group->name . " (ID: " . $this->group->id . ")");
+		$this->log("Edited group " . $this->group->name . " (ID: " . $this->group->id . ")");
 
 		// Update the group.
 		$this->group

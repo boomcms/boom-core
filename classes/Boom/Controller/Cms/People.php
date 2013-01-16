@@ -97,7 +97,7 @@ class Boom_Controller_Cms_People extends Boom_Controller
 			foreach ($groups as $group_id)
 			{
 				// Log the action
-				$this->_log("Added person $this->person->email to group with ID $group_id");
+				$this->log("Added person $this->person->email to group with ID $group_id");
 
 				// Add the person to the given group.
 				$this->edit_person->add_group($group_id);
@@ -132,7 +132,7 @@ class Boom_Controller_Cms_People extends Boom_Controller
 	public function action_delete()
 	{
 		// Log the action.
-		$this->_log("Deleted person with email address: ".$this->edit_person->email);
+		$this->log("Deleted person with email address: ".$this->edit_person->email);
 
 		// Delete the person.
 		$this->edit_person->delete();
@@ -229,7 +229,7 @@ class Boom_Controller_Cms_People extends Boom_Controller
 	public function action_remove_group()
 	{
 		// Log the action.
-		$this->_log("Edited the groups for person ".$this->edit_person->email);
+		$this->log("Edited the groups for person ".$this->edit_person->email);
 
 		// Remove the person from the group given in the POST data.
 		$this->edit_person->remove_group($this->request->post('group_id'));
@@ -245,7 +245,7 @@ class Boom_Controller_Cms_People extends Boom_Controller
 	public function action_save()
 	{
 		// Log the action.
-		$this->_log("Edited user $this->edit_person->email (ID: $this->edit_person->id) to the CMS");
+		$this->log("Edited user $this->edit_person->email (ID: $this->edit_person->id) to the CMS");
 
 		// Update the person's details.
 		$this->edit_person
