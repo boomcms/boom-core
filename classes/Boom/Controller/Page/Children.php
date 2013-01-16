@@ -206,10 +206,10 @@ class Boom_Controller_Page_Children extends Boom_Controller
 	 */
 	public function action_html()
 	{
-		$hash = md5($this->parent->id . "-" . $this->auth->logged_in() . "-" . serialize($this->request->post()));
+		$cache_key = "child_page_list:".md5($this->parent->id . "-" . $this->auth->logged_in() . "-" . serialize($this->request->post()));
 
 		// Try and get it from the cache, unless they're logged in.
-		if ($this->auth->logged_in() OR ! Fragment::load("child_page_list:$hash", 300))
+		if ($this->auth->logged_in() OR Kohana::cache($cache_key, NULL, 300) === NULL)
 		{
 			list($query, $total) = $this->build_query();
 
@@ -224,7 +224,7 @@ class Boom_Controller_Page_Children extends Boom_Controller
 			// Only continue if there are child pages.
 			if ($count == 0)
 			{
-				Fragment::save();
+				Kohana::cache($cache_key, "");
 				return;
 			}
 
@@ -255,7 +255,7 @@ class Boom_Controller_Page_Children extends Boom_Controller
 				$view->set('pagination', $pagination);
 			} // End pagination
 
-			echo $view;
+			$this->response->body($view);
 		}
 
 		// Update the cache.
@@ -263,7 +263,7 @@ class Boom_Controller_Page_Children extends Boom_Controller
 		// Don't want logged in child page lists getting loaded from cache when not logged in.
 		if ( ! $this->auth->logged_in())
 		{
-			Fragment::save();
+			Kohana::cache($cache_key, $view);
 		}
 	}
 
