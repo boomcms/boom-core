@@ -538,6 +538,8 @@ class Boom_Model_Page extends ORM_Taggable
 			$this
 				->on('v2.embargoed_until', '<=', DB::expr($editor->live_time()))
 				->on('v2.published', '=', DB::expr(1))
+				->where('version.embargoed_until', '<=', DB::expr($editor->live_time()))
+				->where('version.published', '=', DB::expr(1))
 				->where('visible', '=', TRUE)
 				->where('visible_from', '<=', $editor->live_time())
 				->and_where_open()
