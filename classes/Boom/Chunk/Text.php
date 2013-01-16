@@ -60,7 +60,10 @@ class Boom_Chunk_Text extends Chunk
 			// This mammoth regular expression matches a URL
 			//  Rob didn't write this, I'm not smart enough for this.
 			// See http://daringfireball.net/2010/07/improved_regex_for_matching_urls for an explanation if curious.
-			$text = preg_replace_callback('~(?i)\b((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:\'".,<>?«»“”‘’]))~', 'Chunk_Text::embed_video', $text);
+			$text = preg_replace_callback('~(?i)\b((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:\'".,<>?«»“”‘’]))~', function($matches)
+				{
+					return Chunk_Text::embed_video($matches[1]);
+				}, $text);
 		}
 
 		// If no template has been set then add the default HTML tags for this slotname.
@@ -105,15 +108,10 @@ class Boom_Chunk_Text extends Chunk
 	 * @param	string	$text		The URL of a video to turn into an embedded video.
 	 * @return 	string
 	 */
-	public static function embed_video($url)
+	public static function embed_video($text)
 	{
 		// Check for a scheme at the start of the URL, add it if necessary.
-		if (substr($url, 0, 4) != 'http')
-		{
-			$url = 'http://' . $url;
-		}
-
-		$url = parse_url($url);
+		$url = (substr($text, 0, 4) != 'http')? 'http://'.$text : $text;
 
 		if (strpos($url['host'], 'youtube') !== FALSE AND isset($url['query']))
 		{
@@ -143,6 +141,9 @@ class Boom_Chunk_Text extends Chunk
 		{
 			return str_replace(':video_id', $video_id, $embed_html);
 		}
+
+		// Nothing was matched, return the text unaltered.
+		return $text;
 	}
 
 	public function has_content()
