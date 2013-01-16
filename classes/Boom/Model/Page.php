@@ -526,9 +526,10 @@ class Boom_Model_Page extends ORM_Taggable
 			->on('page.id', '=', 'version.page_id')
 			->join(array('page_versions', 'v2'), 'left outer')
 			->on('page.id', '=', 'v2.page_id')
-			->on('version.id', '>', 'v2.id')
+			->on('version.id', '<', 'v2.id')
 			->on('v2.stashed', '=', DB::expr(0))
-			->where('v2.id', '=', NULL);
+			->where('v2.id', '=', NULL)
+			->where('version.page_deleted', '=', FALSE);
 
 		// Logged out view?
 		if ($editor->state() === Editor::DISABLED)
@@ -537,7 +538,6 @@ class Boom_Model_Page extends ORM_Taggable
 			$this
 				->on('v2.embargoed_until', '<=', DB::expr($editor->live_time()))
 				->on('v2.published', '=', DB::expr(1))
-				->where('version.page_deleted', '=', FALSE)
 				->where('visible', '=', TRUE)
 				->where('visible_from', '<=', $editor->live_time())
 				->and_where_open()
