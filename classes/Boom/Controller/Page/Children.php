@@ -282,7 +282,6 @@ class Boom_Controller_Page_Children extends Boom_Controller
 			->with_current_version($this->editor)
 			->join('page_urls', 'inner')
 			->on('page.id', '=', 'page_urls.page_id')
-			->where('version.page_deleted', '=', FALSE)
 			->where('page_mptt.parent_id', '=', $this->parent->id)
 			->where('page_urls.is_primary', '=', TRUE)
 			->order_by($this->sort_column, $this->sort_direction);
