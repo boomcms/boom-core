@@ -18,8 +18,8 @@ class Boom_Model_Log extends ORM
 
 	protected $_table_columns = array(
 		'id'			=>	'',
-		'remotehost'	=>	'',
-		'description'	=>	'',
+		'ip'			=>	'',
+		'activity'		=>	'',
 		'note'		=>	'',
 		'person_id'	=>	'',
 		'time'		=>	'',
