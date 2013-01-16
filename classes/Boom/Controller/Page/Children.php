@@ -111,7 +111,7 @@ class Boom_Controller_Page_Children extends Boom_Controller
 
 		if ($this->request->post('order'))
 		{
-			$this->sort_column = ($this->request->post('order') === 'title')? 'title' : 'visible_from';
+			$this->sort_column = ($this->request->post('order') === 'title')? 'version.title' : 'page.visible_from';
 		}
 		else
 		{
