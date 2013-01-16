@@ -12,17 +12,17 @@
 class Boom_Controller_Cms_Page extends Boom_Controller
 {
 	/**
-	*
-	* @var	Model_Page	Object representing the current page.
-	*/
-	protected $_page;
-
-	/**
 	 * The directory where views used by this class are stored.
 	 *
 	 * @var	string
 	 */
 	protected $_view_directory = 'boom/editor/page';
+
+	/**
+	*
+	* @var	Model_Page	Object representing the current page.
+	*/
+	public $page;
 
 	/**
 	 * Load the current page.
@@ -39,7 +39,7 @@ class Boom_Controller_Cms_Page extends Boom_Controller
 		if ($page_id = $this->request->param('id'))
 		{
 			// Yes! Load the page from the database.
-			$this->_page = new Model_Page($page_id);
+			$this->page = new Model_Page($page_id);
 		}
 	}
 
@@ -65,14 +65,14 @@ class Boom_Controller_Cms_Page extends Boom_Controller
 			// Priority is the parent page's children_template_id
 			// then the grandparent's grandchild_template_id
 			// then the parent page template id.
-			if ($this->_page->children_template_id == 0)
+			if ($this->page->children_template_id == 0)
 			{
-				$grandparent = $this->_page->parent();
-				$default_template = ($grandparent->grandchild_template_id != 0)? $grandparent->grandchild_template_id : $this->_page->version()->template_id;
+				$grandparent = $this->page->parent();
+				$default_template = ($grandparent->grandchild_template_id != 0)? $grandparent->grandchild_template_id : $this->page->version()->template_id;
 			}
 			else
 			{
-				$default_template = $this->_page->children_template_id;
+				$default_template = $this->page->children_template_id;
 			}
 
 			// Get all the templates which exist in the DB, ordered alphabetically.
@@ -82,7 +82,7 @@ class Boom_Controller_Cms_Page extends Boom_Controller
 			// Show the form for selecting the parent page and template.
 			$this->template = View::factory("$this->_view_directory/add", array(
 				'templates'		=>	$templates,
-				'page'			=>	$this->_page,
+				'page'			=>	$this->page,
 				'default_template'	=>	$default_template,
 			));
 		}
@@ -95,7 +95,7 @@ class Boom_Controller_Cms_Page extends Boom_Controller
 			$parent = new Model_Page($this->request->post('parent_id'));
 
 			// Check for add permissions on the parent page.
-			$this->_authorization('add_page', $parent);
+			$this->_authorization('addpage', $parent);
 
 			// Create the new page with nav values inherited from the parent.
 			$page = ORM::factory('Page')
@@ -163,7 +163,7 @@ class Boom_Controller_Cms_Page extends Boom_Controller
 	 */
 	public function action_delete()
 	{
-		if ( ! $this->auth->logged_in('delete_page', $this->_page) OR $this->_page->mptt->is_root())
+		if ( ! $this->auth->logged_in('deletepage', $this->page) OR $this->page->mptt->is_root())
 		{
 			throw new HTTP_Exception_403;
 		}
@@ -174,7 +174,7 @@ class Boom_Controller_Cms_Page extends Boom_Controller
 			// Show a confirmation dialogue warning that child pages will become inaccessible and asking whether to delete the children.
 
 			// Get the page's MPTT values.
-			$mptt = $this->_page->mptt;
+			$mptt = $this->page->mptt;
 
 			// Prepare an array for the descendent page titles.
 			$titles = array();
@@ -210,7 +210,7 @@ class Boom_Controller_Cms_Page extends Boom_Controller
 			$this->template = View::factory("$this->_view_directory/delete", array(
 				'count'	=>	count($titles),
 				'titles'	=>	$titles,
-				'page'	=>	$this->_page,
+				'page'	=>	$this->page,
 			));
 		}
 		else
@@ -220,17 +220,17 @@ class Boom_Controller_Cms_Page extends Boom_Controller
 			// So delete the page.
 
 			// Log the action.
-			$this->log("Deleted page " . $this->_page->version()->title . " (ID: " . $this->_page->id . ")");
+			$this->log("Deleted page " . $this->page->version()->title . " (ID: " . $this->page->id . ")");
 
 			// Get the parent of the page which is being deleted.
 			// We'll redirect to this after.
-			$parent = $this->_page->parent();
+			$parent = $this->page->parent();
 
 			// Are we deleting child pages?
 			$with_children = ($this->request->post('with_children') == 1);
 
 			// Delete the page.
-			$this->_page->delete($with_children);
+			$this->page->delete($with_children);
 
 			// Redirect to the parent page.
 			$this->response->body($parent->url());
@@ -245,7 +245,7 @@ class Boom_Controller_Cms_Page extends Boom_Controller
 	public function action_stash()
 	{
 		// Call Model_Page::stash() on the current page.
-		$this->_page->stash();
+		$this->page->stash();
 	}
 
 	public function action_tree()

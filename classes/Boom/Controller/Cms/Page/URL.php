@@ -37,7 +37,7 @@ class Boom_Controller_Cms_Page_URL extends Controller_Cms_Page
 				->where('location', '=', $url)
 				->find();
 
-			if ($page_url->loaded() AND $page_url->page_id !== $this->_page->id)
+			if ($page_url->loaded() AND $page_url->page_id !== $this->page->id)
 			{
 				// Url is being used for a different page.
 				// Notify that the url is already in use so that the JS can load a prompt to move the url.
@@ -49,19 +49,19 @@ class Boom_Controller_Cms_Page_URL extends Controller_Cms_Page
 				$page_url = ORM::factory('Page_URL')
 					->values(array(
 						'location'		=>	$url,
-						'page_id'		=>	$this->_page->id,
+						'page_id'		=>	$this->page->id,
 						'is_primary'	=>	FALSE,
 					))
 					->create();
 
-				$this->log("Added secondary url $url to page " . $this->_page->version()->title . "(ID: " . $this->_page->id . ")");
+				$this->log("Added secondary url $url to page " . $this->page->version()->title . "(ID: " . $this->page->id . ")");
 			}
 		}
 		else
 		{
 			// Display a list of existing secondary urls
 			$this->template = View::factory("$this->_view_directory/add", array(
-				'page'	=> $this->_page,
+				'page'	=> $this->page,
 			));
 		}
 	}
@@ -75,7 +75,7 @@ class Boom_Controller_Cms_Page_URL extends Controller_Cms_Page
 		// Get the url object.
 		// Don't delete with direct db query or we won't delete the cached version.
 		$url = ORM::factory('Page_URL')
-			->where('page_id', '=', $this->_page->id)
+			->where('page_id', '=', $this->page->id)
 			->where('location', '=', $this->request->post('url'))
 			->where('is_primary', '=', FALSE)
 			->find();
@@ -93,7 +93,7 @@ class Boom_Controller_Cms_Page_URL extends Controller_Cms_Page
 	public function action_list()
 	{
 		$this->template = View::factory("$this->_view_directory/list", array(
-			'page'	=> $this->_page,
+			'page'	=> $this->page,
 		));
 	}
 
@@ -115,7 +115,7 @@ class Boom_Controller_Cms_Page_URL extends Controller_Cms_Page
 		{
 			// Move the url to this page.
 			$url->values(array(
-				'page_id'		=>	$this->_page->id,
+				'page_id'		=>	$this->page->id,
 				'is_primary'	=>	FALSE,	// Make sure that it's only a secondary url for the this page.
 			))
 			->update();
@@ -125,7 +125,7 @@ class Boom_Controller_Cms_Page_URL extends Controller_Cms_Page
 			$this->template = View::factory("$this->_view_directory/move", array(
 				'url'		=>	$url,
 				'current'	=>	$url->page,
-				'page'	=>	$this->_page,
+				'page'	=>	$this->page,
 			));
 		}
 	}

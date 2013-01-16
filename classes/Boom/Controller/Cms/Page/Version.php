@@ -34,12 +34,12 @@ class Boom_Controller_Cms_Page_Version extends Controller_Cms_Page_Settings
 		parent::before();
 
 		// Store the current version of the page.
-		$this->old_version = $this->_page->version();
+		$this->old_version = $this->page->version();
 
 		if ($this->_method === Request::POST)
 		{
 			// Create a new version of the page.
-			$this->new_version = $this->_page->create_version();
+			$this->new_version = $this->page->create_version();
 
 			// If the embargo time of the new version is in the past, set the embargo time to NULL
 			// This means that if the old version was published, the new version will be a draft.
@@ -64,7 +64,7 @@ class Boom_Controller_Cms_Page_Version extends Controller_Cms_Page_Settings
 	public function action_content()
 	{
 		// Are you allowed to be here?
-		$this->_authorization('edit_page_content', $this->_page);
+		$this->_authorization('editpage_content', $this->page);
 
 		// Start a database transaction.
 		Database::instance()->begin();
@@ -83,8 +83,8 @@ class Boom_Controller_Cms_Page_Version extends Controller_Cms_Page_Settings
 			// Create a new primary link for the page.
 			$link = ORM::factory('Page_URL')
 				->values(array(
-					'location'		=>	URL::generate($this->_page->parent()->url(), $post->title),
-					'page_id'		=>	$this->_page->id,
+					'location'		=>	URL::generate($this->page->parent()->url(), $post->title),
+					'page_id'		=>	$this->page->id,
 					'is_primary'	=>	TRUE,
 				))
 				->create();
@@ -143,7 +143,7 @@ class Boom_Controller_Cms_Page_Version extends Controller_Cms_Page_Settings
 
 	public function action_embargo()
 	{
-		$this->_authorization('edit_page_content', $this->_page);
+		$this->_authorization('editpage_content', $this->page);
 
 		if ($this->_method === Request::GET)
 		{
@@ -182,7 +182,7 @@ class Boom_Controller_Cms_Page_Version extends Controller_Cms_Page_Settings
 	 */
 	public function action_feature()
 	{
-		$this->_authorization('edit_feature_image', $this->_page);
+		$this->_authorization('edit_feature_image', $this->page);
 
 		if ($this->_method === Request::GET)
 		{
@@ -192,7 +192,7 @@ class Boom_Controller_Cms_Page_Version extends Controller_Cms_Page_Settings
 		}
 		elseif ($this->_method === Request::POST)
 		{
-			$this->log("Updated the feature image of page " . $this->old_version->title . " (ID: " . $this->_page->id . ")");
+			$this->log("Updated the feature image of page " . $this->old_version->title . " (ID: " . $this->page->id . ")");
 
 			$this->new_version
 				->set('feature_image_id', $this->request->post('feature_image_id'))
@@ -203,7 +203,7 @@ class Boom_Controller_Cms_Page_Version extends Controller_Cms_Page_Settings
 
 	public function action_template()
 	{
-		$this->_authorization('edit_page_template', $this->_page);
+		$this->_authorization('editpage_template', $this->page);
 
 		if ($this->_method === Request::GET)
 		{
