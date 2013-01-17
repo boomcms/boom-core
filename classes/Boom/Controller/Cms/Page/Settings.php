@@ -72,13 +72,13 @@ class Boom_Controller_Cms_Page_Settings extends Controller_Cms_Page
 	 *  * Internal name
 	 *
 	 *
-	 * @uses	Boom_Controller::_authorization()
+	 * @uses	Boom_Controller::authorization()
 	 * @uses	Boom_Controller::_log()
 	 */
 	public function action_admin()
 	{
 		// Permissions check
-		$this->_authorization('edit_page_admin', $this->page);
+		$this->authorization('edit_page_admin', $this->page);
 
 		if ($this->method === Request::GET)
 		{
@@ -115,7 +115,7 @@ class Boom_Controller_Cms_Page_Settings extends Controller_Cms_Page
 	 *    * Default child URL prefix
 	 *    * Default grandchild template
 	 *
-	 * @uses	Boom_Controller::_authorization()
+	 * @uses	Boom_Controller::authorization()
 	 * @uses	Boom_Controller::_log()
 	 */
 	public function action_children()
@@ -124,7 +124,7 @@ class Boom_Controller_Cms_Page_Settings extends Controller_Cms_Page
 		// These settings are divided into basic and advanced.
 		// We only need to check for the basic permissions here
 		// If they can't edit the basic stuff then they shouldn't have the advanced settings either.
-		$this->_authorization('edit_page_children_basic', $this->page);
+		$this->authorization('edit_page_children_basic', $this->page);
 
 		// Is the current user allowed to edit the advanced settings?
 		$allow_advanced = $this->auth->logged_in('edit_page_children_advanced');
@@ -251,7 +251,7 @@ class Boom_Controller_Cms_Page_Settings extends Controller_Cms_Page
 	 * *	The new parent ID is not the current page.
 	 * *	The new parent page exists.
 	 *
-	 * @uses	Boom_Controller::_authorization()
+	 * @uses	Boom_Controller::authorization()
 	 * @uses	Boom_Controller::_log()
 	 * @uses	Model_Page_MPTT::move_tp_last_child()
 	 * @uses	Model_Page::sort_children()
@@ -261,7 +261,7 @@ class Boom_Controller_Cms_Page_Settings extends Controller_Cms_Page
 		// Permissions check
 		// The need to have a minimum of being able to edit the basic navigation settings.
 		// If they can't edit the basic settings they won't be able to edit the advanced settings either.
-		$this->_authorization('edit_page_navigation_basic', $this->page);
+		$this->authorization('edit_page_navigation_basic', $this->page);
 
 		// Is the current user allowed to edit the advanced settings?
 		$allow_advanced = $this->auth->logged_in('edit_page_navigation_advanced');
@@ -328,13 +328,13 @@ class Boom_Controller_Cms_Page_Settings extends Controller_Cms_Page
 	 *     * External indexing
 	 *     * Internal indexing
 	 *
-	 * @uses	Boom_Controller::_authorization()
+	 * @uses	Boom_Controller::authorization()
 	 * @uses	Boom_Controller::_log()
 	 */
 	public function action_search()
 	{
 		// Check permissions
-		$this->_authorization('edit_page_search_basic', $this->page);
+		$this->authorization('edit_page_search_basic', $this->page);
 
 		// Is the current user allowed to edit the advanced settings?
 		$allow_advanced = $this->auth->logged_in('edit_page_search_advanced');
@@ -387,12 +387,12 @@ class Boom_Controller_Cms_Page_Settings extends Controller_Cms_Page
 	 *  * visible to
 	 *
 	 * @uses	Boom_Controller::_log()
-	 * @uses	Boom_Controller::_authorization();
+	 * @uses	Boom_Controller::authorization();
 	 */
 	public function action_visibility()
 	{
 		// Permissions check.
-		$this->_authorization('edit_page', $this->page);
+		$this->authorization('edit_page', $this->page);
 
 		if ($this->method === Request::GET)
 		{

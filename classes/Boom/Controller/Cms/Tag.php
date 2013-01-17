@@ -18,7 +18,7 @@ class Boom_Controller_Cms_Tag extends Boom_Controller
 
 	/**
 	 *
-	 * @uses Boom_Controller::_authorization()
+	 * @uses Boom_Controller::authorization()
 	 */
 	public function before()
 	{
@@ -26,7 +26,7 @@ class Boom_Controller_Cms_Tag extends Boom_Controller
 
 		// Permissions check.
 		// The manage assets permission is required because all these functions are accessed from the asset manager.
-		$this->_authorization('manage_assets');
+		$this->authorization('manage_assets');
 
 		$this->tag = new Model_Tag($this->request->param('id'));
 	}

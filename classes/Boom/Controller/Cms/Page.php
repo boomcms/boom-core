@@ -95,7 +95,7 @@ class Boom_Controller_Cms_Page extends Boom_Controller
 			$parent = new Model_Page($this->request->post('parent_id'));
 
 			// Check for add permissions on the parent page.
-			$this->_authorization('add_page', $parent);
+			$this->authorization('add_page', $parent);
 
 			// Create the new page with nav values inherited from the parent.
 			$page = ORM::factory('Page')

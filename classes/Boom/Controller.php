@@ -58,16 +58,20 @@ class Boom_Controller extends Controller
 
 	/**
 	 * Checks whether the current user is authorized to perform a particular action.
+	 *
 	 * Throws a HTTP_Exception_403 error if the user hasn't been given the required role.
 	 *
-	 * @param	string	$role
-	 * @param	Model_Page	$page
-	 * @throws	HTTP_Exception_403
+	 * @uses	Auth::logged_in()
+	 * @param string $role
+	 * @param Model_Page $page
+	 * @throws HTTP_Exception_403
 	 */
-	protected function _authorization($role, Model_Page $page = NULL)
+	public function authorization($role, Model_Page $page = NULL)
 	{
+		// Can the current user perform the role at the given page?
 		if ( ! $this->auth->logged_in($role, $page))
 		{
+			// No they can't, tell them to leave us alone.
 			throw new HTTP_Exception_403;
 		}
 	}

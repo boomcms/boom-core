@@ -25,7 +25,7 @@ class Boom_Controller_Cms_Templates extends Boom_Controller
 		parent::before();
 
 		// Are they allowed to view the template manager?
-		$this->_authorization('manage_templates');
+		$this->authorization('manage_templates');
 	}
 
 	/**

@@ -15,7 +15,7 @@ class Boom_Controller_Cms_Page_Tags extends Controller_Cms_Page
 		parent::before();
 
 		// Before allowing viewing or editing of page tags check for that the current user has the 'edit_page' role for this page.
-		$this->_authorization('edit_page');
+		$this->authorization('edit_page');
 	}
 
 	/**

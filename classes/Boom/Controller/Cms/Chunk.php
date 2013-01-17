@@ -33,7 +33,7 @@ class Boom_Controller_Cms_Chunk extends Boom_Controller
 		$this->page = new Model_Page($this->request->param('id'));
 
 		// Permissions check
-		$this->_authorization('edit_page', $this->page);
+		$this->authorization('edit_page', $this->page);
 	}
 
 	/**

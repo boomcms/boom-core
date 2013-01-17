@@ -64,7 +64,7 @@ class Boom_Controller_Cms_Page_Version extends Controller_Cms_Page_Settings
 	public function action_content()
 	{
 		// Are you allowed to be here?
-		$this->_authorization('editpage_content', $this->page);
+		$this->authorization('editpage_content', $this->page);
 
 		// Start a database transaction.
 		Database::instance()->begin();
@@ -143,7 +143,7 @@ class Boom_Controller_Cms_Page_Version extends Controller_Cms_Page_Settings
 
 	public function action_embargo()
 	{
-		$this->_authorization('editpage_content', $this->page);
+		$this->authorization('editpage_content', $this->page);
 
 		if ($this->_method === Request::GET)
 		{
@@ -182,7 +182,7 @@ class Boom_Controller_Cms_Page_Version extends Controller_Cms_Page_Settings
 	 */
 	public function action_feature()
 	{
-		$this->_authorization('edit_feature_image', $this->page);
+		$this->authorization('edit_feature_image', $this->page);
 
 		if ($this->_method === Request::GET)
 		{
@@ -203,7 +203,7 @@ class Boom_Controller_Cms_Page_Version extends Controller_Cms_Page_Settings
 
 	public function action_template()
 	{
-		$this->_authorization('editpage_template', $this->page);
+		$this->authorization('editpage_template', $this->page);
 
 		if ($this->_method === Request::GET)
 		{

@@ -21,7 +21,7 @@ class Boom_Controller_Cms_Pages extends Boom_Controller
 		parent::before();
 
 		// Permissions check
-		$this->_authorization('manage_pages');
+		$this->authorization('manage_pages');
 	}
 
 	/**
