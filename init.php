@@ -134,7 +134,7 @@ Route::set('chunks', 'cms/chunk/<controller>/<action>/<page>')
 
 // Route for editing page settings.
 Route::set('page_settings', 'cms/page/<controller>/<action>/<id>', array(
-		'controller'	=>	'settings|version',
+		'controller'	=>	'settings|version|tags',
 	))
 	->defaults(array(
 		'directory' => 'cms_page',

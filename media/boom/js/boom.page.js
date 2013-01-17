@@ -202,7 +202,7 @@ $.extend($.boom, {
 					}
 				);
 			});
-			
+
 			if ( $.boom.cookie.contains( 'breadcrumb' ) ) {
 				$( '#breadcrumbs' ).hide();
 			}
@@ -617,7 +617,7 @@ $.extend($.boom.page, {
 				var $this = $( this );
 
 				var slotName = $( this ).attr( 'data-boom-slot-name' );
-				
+
 				console.log( slotName );
 
 				$( this ).addClass( 'boom-tooltip boom-tooltip-follow' );
@@ -1125,7 +1125,7 @@ $.extend($.boom.page, {
 				var self = this;
 
 				$.boom.dialog.open({
-					url: '/cms/page/settings/tags/' + $.boom.page.config.id + '?vid=' + $.boom.page.config.vid,
+					url: '/cms/page/tags/list/' + $.boom.page.config.id,
 					event: event,
 					// cache: true,
 					title: 'Page tags',
@@ -1177,8 +1177,8 @@ $.extend($.boom.page, {
 
 							tag = $(this).attr('href');
 							$.post(
-								'/cms/page/settings/tags/' + $.boom.page.config.id,
-								{action: 'remove', tag : tag}
+								'/cms/page/tags/remove/' + $.boom.page.config.id,
+								{tag : tag}
 								)
 								.done(function(){
 									$(event.target).closest('li').remove();
@@ -1220,8 +1220,8 @@ $.extend($.boom.page, {
 				$.boom.loader.show();
 
 				$.post(
-					'/cms/page/settings/tags/' + $.boom.page.config.id,
-					{action: 'add', tag : tag}
+					'/cms/page/tags/add/' + $.boom.page.config.id,
+					{tag : tag}
 					)
 					.done(function(){
 						$('#b-pagesettings-tags ul').append(

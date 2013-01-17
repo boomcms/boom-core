@@ -21,11 +21,59 @@ class Boom_Model_Tag extends ORM
 	protected $_table_name = 'tags';
 
 	/**
-	* Delete a tag.
-	* Ensures child tags are deleted and that the tags are deleted from the MPTT tree.
-	*
-	* @return ORM
-	*/
+	 * Creates a tag with a given path.
+	 *
+	 * @param string $path
+	 * @param integer $type
+	 * @return \Boom_Model_Tag
+	 */
+	public function create_from_path($path, $type)
+	{
+		// If the currnent object is loaded then clear it so that we can create a new tag.
+		if ($this->_loaded)
+		{
+			$this->clear();
+		}
+
+		// Split the path into bits so we can find the parent and name of the tag.
+		$parts = explode('/', $path);
+
+		// Name of the tag is the last section of the path.
+		$name = array_pop($parts);
+
+		// Put the remaining parts back together to get the path of the parent tag.
+		$parent_path = implode("/", $parts);
+
+		// Find the parent tag.
+		$parent = new Model_Tag(array('path' => $parent_path, 'type' => $type));
+
+		// Set the tag's values.
+		$this->values(array(
+			'path'	=>	$path,
+			'name'	=>	$name,
+			'type'	=>	$type,
+		));
+
+		// If the parent tag was found then set the parent ID of the current tag.
+		// We don't recursively create tags.
+		if ($parent->loaded())
+		{
+			$this->set('parent_id', $parent->id);
+		}
+
+		// Create the tag.
+		$this->create();
+
+		// Return the current tag.
+		return $this;
+	}
+
+	/**
+	 * Delete a tag.
+	 * Ensures child tags are deleted and that the tags are deleted from the MPTT tree.
+	 *
+	 * @return ORM
+	 */
 	public function delete()
 	{
 		// Delete child tags.

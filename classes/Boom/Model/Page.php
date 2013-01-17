@@ -133,6 +133,44 @@ class Boom_Model_Page extends ORM_Taggable
 	}
 
 	/**
+	 * Adds a tag with a given path to the page.
+	 *
+	 * If the tag doesn't exist then [Model_Tag::create_from_path()] is called to create it.
+	 *
+	 *
+	 * @param string $path
+	 * @return \Boom_Model_Page
+	 *
+	 * @uses Model_Tag::create_from_path()
+	 * @throws Exception
+	 */
+	public function add_tag_with_path($path)
+	{
+		// If the current page isn't loaded then we can't add a tag to it.
+		if ( ! $this->_loaded)
+		{
+			// Throw an exception
+			throw new Exception("Cannot add a tag to an unloaded page");
+		}
+
+		// Attempt to load a tag with the given path.
+		$tag = ORM::factory('Tag', array('path' => $path));
+
+		// If the tag wasn't found then call [Boom_Model_Tag::create_from_path()] to create it.
+		if ( ! $tag->loaded())
+		{
+			// Create the tag.
+			$tag = ORM::factory('Tag')->create_from_path($path, $this->get_object_type_id());
+		}
+
+		// Add the tag to the current page.
+		$this->add('tag', $tag);
+
+		// Return the current page.
+		return $this;
+	}
+
+	/**
 	 * Getter / setter for the children_ordering_policy column.
 	 * When used as a getter converts the integer stored in the children_ordering_policy column to an array of column and direction which can be used when querying the database.
 	 * When used as a setter converts the column and direction to an integer which can be stored in the children_ordering_policy column.
@@ -358,6 +396,40 @@ class Boom_Model_Page extends ORM_Taggable
 	public function parent()
 	{
 		return ($this->mptt->is_root())? $this : new Model_Page($this->mptt->parent_id);
+	}
+
+	/**
+	 * Removes a tag with the given path from a page.
+	 *
+	 * @param string $path
+	 * @return \Boom_Model_Page
+	 * @throws Exception
+	 */
+	public function remove_tag_with_path($path)
+	{
+		// Page has to be loaded to remove a tag from it.
+		if ( ! $this->_loaded)
+		{
+			throw new Exception("A page has to be loaded to remove a tag from it");
+		}
+
+		// Get the tag type ID.
+		$tag_type = $this->get_object_type_id();
+
+		// Remove the tag from the page.
+		DB::delete('tags_applied')
+			->where('object_type', '=', $tag_type)
+			->where('object_id', '=', $this->id)
+			->where('tag_id', '=',
+				DB::select('id')
+					->from('tags')
+					->where('path', '=', $path)
+					->where('type', '=', $tag_type)
+			)
+			->execute($this->_db);
+
+		// Return the current page.
+		return $this;
 	}
 
 	/**
