@@ -309,8 +309,18 @@ class Boom_Model_Page extends ORM_Taggable
 				$this->mptt->reload();
 			}
 
-			// Delete the page from the MPTT tree.
-			$this->mptt->delete();
+			// There's a bug with deleting the root node via ORM_MPTT::delete(), so delete manually if this is the root node.
+			if ($this->mptt->is_root())
+			{
+				DB::delete('page_mptt')
+					->where('id', '=', $this->mptt->id)
+					->execute($this->_db);
+			}
+			else
+			{
+				// Delete the page from the MPTT tree as normal.
+				$this->mptt->delete();
+			}
 
 			// Flag the page as deleted.
 			$this

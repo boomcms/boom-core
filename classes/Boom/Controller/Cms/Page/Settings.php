@@ -73,7 +73,7 @@ class Boom_Controller_Cms_Page_Settings extends Controller_Cms_Page
 	 *
 	 *
 	 * @uses	Boom_Controller::authorization()
-	 * @uses	Boom_Controller::_log()
+	 * @uses	Boom_Controller::log()
 	 */
 	public function action_admin()
 	{
@@ -116,7 +116,7 @@ class Boom_Controller_Cms_Page_Settings extends Controller_Cms_Page
 	 *    * Default grandchild template
 	 *
 	 * @uses	Boom_Controller::authorization()
-	 * @uses	Boom_Controller::_log()
+	 * @uses	Boom_Controller::log()
 	 */
 	public function action_children()
 	{
@@ -252,7 +252,7 @@ class Boom_Controller_Cms_Page_Settings extends Controller_Cms_Page
 	 * *	The new parent page exists.
 	 *
 	 * @uses	Boom_Controller::authorization()
-	 * @uses	Boom_Controller::_log()
+	 * @uses	Boom_Controller::log()
 	 * @uses	Model_Page_MPTT::move_tp_last_child()
 	 * @uses	Model_Page::sort_children()
 	 */
@@ -329,7 +329,7 @@ class Boom_Controller_Cms_Page_Settings extends Controller_Cms_Page
 	 *     * Internal indexing
 	 *
 	 * @uses	Boom_Controller::authorization()
-	 * @uses	Boom_Controller::_log()
+	 * @uses	Boom_Controller::log()
 	 */
 	public function action_search()
 	{
@@ -386,7 +386,7 @@ class Boom_Controller_Cms_Page_Settings extends Controller_Cms_Page
 	 *  * visible from
 	 *  * visible to
 	 *
-	 * @uses	Boom_Controller::_log()
+	 * @uses	Boom_Controller::log()
 	 * @uses	Boom_Controller::authorization();
 	 */
 	public function action_visibility()
