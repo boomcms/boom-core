@@ -177,7 +177,7 @@ class Boom_Controller_Cms_Page_Settings extends Controller_Cms_Page
 					->values($post, array(
 						'children_visible_in_nav',
 						'children_visible_in_nav_cms',
-						'children_link_prefix'	,
+						'children_url_prefix'	,
 						'grandchild_template_id'
 					));
 
