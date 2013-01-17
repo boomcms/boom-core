@@ -34,7 +34,7 @@ class Boom_Controller_Cms_People extends Boom_Controller
 	 * Also instantiates a Model_Person object and assigns it to [Boom_Controller_Cms_People::$person]
 	 *
 	 * @uses Boom_Controller::before()
-	 * @uses Boom_Controller::_authorization()
+	 * @uses Boom_Controller::authorization()
 	 * @uses Boom_Controller_Cms_People::$edit_person
 	 */
 	public function before()
@@ -42,7 +42,7 @@ class Boom_Controller_Cms_People extends Boom_Controller
 		parent::before();
 
 		// Check that we're allowed to be here.
-		$this->_authorization('manage_people');
+		$this->authorization('manage_people');
 
 		// Set the person to be edited.
 		$this->edit_person = new Model_Person($this->request->param('id'));

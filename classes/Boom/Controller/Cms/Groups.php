@@ -22,7 +22,7 @@ class Boom_Controller_Cms_Groups extends Boom_Controller
 	 * Also instantiates a Model_Group instance and assignes it to [Boom_Controller_Cms_Groups::$group]
 	 *
 	 * @uses Boom_Controller::before()
-	 * @uses Boom_Controller::_authorization()
+	 * @uses Boom_Controller::authorization()
 	 * @uses Boom_Controller_Cms_Groups::$group
 	 */
 	public function before()
@@ -30,7 +30,7 @@ class Boom_Controller_Cms_Groups extends Boom_Controller
 		parent::before();
 
 		// Check that we're allowed to be here.
-		$this->_authorization('manage_people');
+		$this->authorization('manage_people');
 
 		// Instantiate a group object.
 		$this->group = new Model_Group($this->request->param('id'));
