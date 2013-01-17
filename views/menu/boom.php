@@ -4,7 +4,7 @@
 
 	<? foreach ($menu_items as $item): ?>
 		<li class='ui-corner-top'>
-			<a href='<?= $item['url'] ?>'><?=__($item['title'])?></a>
+			<a target="_top" href='<?= $item['url'] ?>'><?=__($item['title'])?></a>
 		</li>
 	<? endforeach; ?>
 
