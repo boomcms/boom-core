@@ -30,16 +30,10 @@ class Boom_Controller_Cms_Assets extends Boom_Controller
 	}
 
 	/**
-	 * Delete controller.
-	 * Allows deleting multiple assets.
-	 *
-	 * **Accepted POST parameters:**
-	 * Name		|	Type		|	Description
-	 * ---------------|-----------------|---------------
-	 * assets		|  array	 	|	Array of asset IDs to be deleted.
+	 * Deletes assets
 	 *
 	 * @uses	Model_Asset::delete()
-	 * @uses	$this->log()
+	 * @uses	Boom_Controller::log()
 	 */
 	public function action_delete()
 	{
@@ -54,27 +48,14 @@ class Boom_Controller_Cms_Assets extends Boom_Controller
 			// Load the asset from the database.
 			$asset = new Model_Asset($asset_id);
 
-			// If the asset isn't marked as rubbish then mark it as so.
-			// If it's already marked as rubbish then delete it for real.
-			if ($asset->rubbish)
-			{
-				// Delete the asset.
-				$asset->delete();
+			// Log a different action depending on whether the asset is being completely deleted
+			// or just marked as deleted.
+			$log_message = ($asset->deleted)? "Deleted asset $asset->title (ID: $asset->id)" : "Moved asset $asset->title (ID: $asset->id) to rubbish bin.";
 
-				// Set the message to be added to the CMS log.
-				$log_message = "Deleted asset $asset->title (ID: $asset->id)";
-			}
-			else
-			{
-				// Make the asset as rubbish.
-				$asset->rubbish = TRUE;
-
-				// Save the changes.
-				$asset->update();
-
-				// Set the message to be added to the CMS log.
-				$log_message = "Moved asset $asset->title (ID: $asset->id) to rubbish bin.";
-			}
+			// Call [Model_Asset::delete()]
+			// If the asset isn't marked as deleted then it will be marked it as so.
+			// If it's already marked as deleted then it will be deleted it for real.
+			$asset->delete();
 
 			// Log the action.
 			$this->log($log_message);
@@ -185,7 +166,7 @@ class Boom_Controller_Cms_Assets extends Boom_Controller
 			->from('people')
 			->where('id', 'in', DB::select('uploaded_by')
 				->from('assets')
-				->where('rubbish', '=', FALSE)
+				->where('deleted', '=', FALSE)
 				->distinct(TRUE)
 			)
 			->order_by('name', 'asc')
@@ -197,7 +178,7 @@ class Boom_Controller_Cms_Assets extends Boom_Controller
 		$types = DB::select('type')
 			->distinct(TRUE)
 			->from('assets')
-			->where('rubbish', '=', FALSE)
+			->where('deleted', '=', FALSE)
 			->where('type', '!=', 0)
 			->execute()
 			->as_array();
@@ -306,7 +287,7 @@ class Boom_Controller_Cms_Assets extends Boom_Controller
 		}
 
 		// Filtering by deleted assets?
-		$query->where('rubbish', '=', ($this->request->query('rubbish') == 'rubbish'));
+		$query->where('deleted', '=', ($this->request->query('rubbish') == 'rubbish'));
 
 		// Clone the query to count the number of matching assets and their total size.
 		$query2 = clone $query;

@@ -31,7 +31,7 @@ class Boom_Model_Asset extends ORM_Taggable
 		'visible_from'		=>	'',
 		'type'			=>	'',
 		'filesize'			=>	'',
-		'rubbish'			=>	FALSE,
+		'deleted'			=>	FALSE,
 		'duration'			=>	'',
 		'encoded'			=>	'',
 		'views'			=>	'',
@@ -47,6 +47,33 @@ class Boom_Model_Asset extends ORM_Taggable
 	 * @var	array	Cache variable for [Model_Asset::old_files()]
 	 */
 	protected $_old_files = NULL;
+
+	/**
+	 * Delete an asset.
+	 *
+	 * Assets are deleted in two stages:
+	 *
+	 * * If the deleted property is false then this is changed to true and the asset is merely marked as deleted.
+	 * * If the asset is already marked as deleted then the asset is deleted for real.
+	 *
+	 * @uses ORM::delete()
+	 */
+	public function delete()
+	{
+		if ($this->deleted)
+		{
+			// Asset is already marked as deleted, so delete it for real.
+			return parent::delete();
+		}
+		else
+		{
+			// Asset hasn't been marked as deleted yet
+			// So only pretend that it's deleted for now.
+			return $this
+				->set('deleted', TRUE)
+				->update();
+		}
+	}
 
 	/**
 	 * Returns an array of old files which have been replaced.
