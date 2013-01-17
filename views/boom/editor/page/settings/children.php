@@ -54,9 +54,9 @@
 				<label for="visible_in_nav_cms_cascade">Update existing child pages</label>
 				<?= Form::checkbox('visible_in_nav_cms_cascade', 1, false, array('id' => 'visible_in_nav_cms_cascade')); ?>
 				
-				<label for="children_link_prefix"><?=__('Default child URI prefix')?></label>
+				<label for="children_url_prefix"><?=__('Default child URI prefix')?></label>
 				
-				<?= Form::input('children_link_prefix', $page->children_link_prefix); ?>
+				<?= Form::input('children_url_prefix', $page->children_url_prefix); ?>
 				
 				<label for="grandchild_template_id"><?=__('Default grandchild template')?></label>
 				
