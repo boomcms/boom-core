@@ -95,7 +95,7 @@ class Boom_Controller_Cms_Page extends Boom_Controller
 			$parent = new Model_Page($this->request->post('parent_id'));
 
 			// Check for add permissions on the parent page.
-			$this->_authorization('addpage', $parent);
+			$this->_authorization('add_page', $parent);
 
 			// Create the new page with nav values inherited from the parent.
 			$page = ORM::factory('Page')
@@ -163,7 +163,7 @@ class Boom_Controller_Cms_Page extends Boom_Controller
 	 */
 	public function action_delete()
 	{
-		if ( ! $this->auth->logged_in('deletepage', $this->page) OR $this->page->mptt->is_root())
+		if ( ! $this->auth->logged_in('delete_page', $this->page) OR $this->page->mptt->is_root())
 		{
 			throw new HTTP_Exception_403;
 		}
