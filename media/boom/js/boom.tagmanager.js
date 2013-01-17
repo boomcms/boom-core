@@ -171,6 +171,7 @@ function CMSTagmanager(type){
 				self.items.tag.get( 0 );
 				
 				$(this)
+				.parent()
 				.siblings( '.boom-tree-container' )
 				.find( 'a.ui-state-active' )
 				.removeClass( 'ui-state-active' );
@@ -193,7 +194,7 @@ function CMSTagmanager(type){
 		self.items.tag.multi_select = function( $item ){
 			var tags = [];
 			
-			//$item.toggleClass( 'ui-state-active' );
+			$item.toggleClass( 'ui-state-active' );
 			$item
 				.parents( 'ul:first' )
 				.find( 'a.ui-state-active' )
@@ -217,6 +218,7 @@ function CMSTagmanager(type){
 			toggleSelected: false,
 			click: false,
 			onClick: function(event){
+				console.log( 'FILTER CLICK' );
 				$this = $(this);
 
 				var tags = self.items.tag.multi_select( $this );
@@ -293,7 +295,7 @@ function CMSTagmanager(type){
 
 				self.options.sortby = this.value; 
 						
-				$.boom.history.refresh();
+				//$.boom.history.refresh();
 			});
 		});
 
