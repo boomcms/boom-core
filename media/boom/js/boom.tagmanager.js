@@ -295,13 +295,6 @@ function CMSTagmanager(type){
 						
 				$.boom.history.refresh();
 			});
-
-			$( '#boom-tagmanager-order-select' ).change(function(event){
-
-				self.options.order = this.value;
-						
-				$.boom.history.refresh();
-			});
 		});
 
 		this.route();

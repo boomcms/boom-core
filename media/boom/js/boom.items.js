@@ -68,8 +68,7 @@ $.extend($.boom.items.tag,  {
 		params =
 			'tag=' + rid + '&' +
 			'perpage=' + options.perpage + '&' +
-			'sortby=' + options.sortby + '&' +
-			'order='  + options.order;
+			'sortby=' + options.sortby;
 
 		for ( filter in self.filters ) {
 			params += '&' + filter + '=' + self.filters[ filter ];

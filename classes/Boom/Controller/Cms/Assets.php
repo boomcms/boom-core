@@ -237,8 +237,7 @@ class Boom_Controller_Cms_Assets extends Boom_Controller
 	 * page		|	 int	 	|	The current page to display. Optional, default is 1.
 	 * perpage	|	 int		|	Number of assets to display on each page. Optional, default is 30.
 	 * tag		|	 string	|	A tag to filter assets by. Through the magic of hackery also used to filter assets by filters.
-	 * sortby		|	 string	|	The column to sort results by. Optional, default is title.
-	 * order		|	string	|	The direction to sort assets in. Option, default is ascending.
+	 * sortby		|	 string	|	The column to sort results by and sort order. Optional, default is last_modified-desc.
 	 *
 	 */
 	public function action_list()
@@ -253,7 +252,6 @@ class Boom_Controller_Cms_Assets extends Boom_Controller
 		$uploaded_by	=	Arr::get($query_data, 'uploaded_by');
 		$type		=	Arr::get($query_data, 'type');
 		$sortby		=	Arr::get($query_data, 'sortby');
-		$order		=	Arr::get($query_data, 'order');
 		$title			=	Arr::get($query_data, 'title');
 
 		// Prepare the database query.
@@ -276,6 +274,15 @@ class Boom_Controller_Cms_Assets extends Boom_Controller
 		if ($title)
 		{
 			$query->where('title', 'like', "%$title%");
+		}
+		
+		$sortby = 'last_modified';
+		$order = 'desc';
+		
+		if ( strpos( $sortby, '-' ) > 1 ){
+			$sort_params = explode( '-', $sortby );
+			$sortby = $sort_params[0];
+			$order = $sort_params[1];
 		}
 
 		if (($sortby == 'last_modified' OR $sortby == 'title' OR $sortby == 'filesize') AND ($order == 'desc' OR $order == 'asc'))
