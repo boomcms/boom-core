@@ -12,7 +12,6 @@
 			The two select boxes below originaly had class="boom-selectbox ui-helper-left".
 			This was removed on 2012/03/21 as the javascript broke it found items of this class.
 			*/
-			echo 'sortby ' . $sortby;
 		?>
 		<select id="boom-tagmanager-sortby-select" class="ui-helper-left" style="width: 98px">
 			<option value="last_modified-desc" <? if ($sortby == 'last_modified-desc') echo "selected='selected'"; ?>>Most recent</option>
