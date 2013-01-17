@@ -12,19 +12,15 @@
 			The two select boxes below originaly had class="boom-selectbox ui-helper-left".
 			This was removed on 2012/03/21 as the javascript broke it found items of this class.
 			*/
+			echo 'sortby ' . $sortby;
 		?>
 		<select id="boom-tagmanager-sortby-select" class="ui-helper-left" style="width: 98px">
-			<optgroup label="Sort">
-				<option value="last_modified" <? if ($sortby == 'last_modified') echo "selected='selected'"; ?>>Date</option>
-				<option value="title" <? if ($sortby == 'title') echo "selected='selected'"; ?>>Title</option>
-				<option value="filesize" <? if ($sortby == 'filesize') echo "selected='selected'"; ?>>Filesize</option>
-			</optgroup>
-		</select>
-		<select id="boom-tagmanager-order-select" class="ui-helper-left" style="width: 130px">
-			<optgroup label="Order">
-				<option value="desc" <? if ($order == 'desc') echo "selected='selected'"; ?>>Descending</option>
-				<option value="asc" <? if ($order == 'asc') echo "selected='selected'"; ?>>Ascending</option>
-			</optgroup>
+			<option value="last_modified-desc" <? if ($sortby == 'last_modified-desc') echo "selected='selected'"; ?>>Most recent</option>
+			<option value="last_modified-asc" <? if ($sortby == 'last_modified-asc') echo "selected='selected'"; ?>>Oldest</option>
+			<option value="title-asc" <? if ($sortby == 'title-asc') echo "selected='selected'"; ?>>Title A-Z</option>
+			<option value="title-desc" <? if ($sortby == 'title-desc') echo "selected='selected'"; ?>>Title Z-A</option>
+			<option value="filesize-asc" <? if ($sortby == 'filesize-asc') echo "selected='selected'"; ?>>Size (smallest)</option>
+			<option value="filesize-desc" <? if ($sortby == 'filesize-desc') echo "selected='selected'"; ?>>Size (largest)</option>
 		</select>
 	</div>
 	<ul>
