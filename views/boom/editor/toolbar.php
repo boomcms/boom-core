@@ -62,7 +62,7 @@
 			</button>
 
 			<? if ($auth->logged_in('delete_page', $page) AND ! $page->mptt->is_root()): ?>
-				<button class="boom-button" data-icon="ui-icon-boom-delete">
+				<button class="boom-button" id="b-page-delete" data-icon="ui-icon-boom-delete">
 					<?= __('Delete') ?>
 				</button>
 			<? endif; ?>
