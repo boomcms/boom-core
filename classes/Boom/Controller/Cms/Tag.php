@@ -10,72 +10,30 @@
  */
 class Boom_Controller_Cms_Tag extends Boom_Controller
 {
-	protected $tag;
+	/**
+	 *
+	 * @var Model_Tag
+	 */
+	public $tag;
 
+	/**
+	 *
+	 * @uses Boom_Controller::_authorization()
+	 */
 	public function before()
 	{
 		parent::before();
 
 		// Permissions check.
-		$this->_authorization('manage_tags');
+		// The manage assets permission is required because all these functions are accessed from the asset manager.
+		$this->_authorization('manage_assets');
 
 		$this->tag = new Model_Tag($this->request->param('id'));
 	}
 
-	public function action_autocomplete()
-	{
-		$count	=	($this->request->post('count') > 0)? $this->request->post('count') : 10;
-		$name	=	$this->request->query('name');
-		$type	=	$this->request->query('type');
-
-		$results = DB::select('tags.path')
-			->from('tags')
-			->where('path', 'like', "%$name%")
-			->where('type', '=', $type)
-			->order_by('path', 'asc')
-			->limit($count)
-			->execute()
-			->as_array('path');
-
-		$this->response
-			->headers('content-type', 'application/json')
-			->body(json_encode(array_keys($results)));
-	}
-
-	/**
-	 * Display the child tags of a given tag.
-	 * Very similar to action_tree except that only descendants one level below are displayed.
-	 * This function also uses the parent_id column in the tag table rather than the tag_mptt table.
-	 * This is intended as an eventual replacement to the tag_mptt approach as the tag_mptt table will eventually be removed.
-	 */
-	public function action_children()
-	{
-		$parent = Request::current()->post('parent');
-
-		if ($parent)
-		{
-			$parent = new Model_Tag(array('path' => $parent));
-		}
-		else
-		{
-			$parent = ORM::factory('Tag')
-				->where('parent_id', '=', NULL)
-				->where('deleted', '=', FALSE)
-				->find();
-		}
-
-		$tags = ORM::factory('Tag')
-			->where('parent_id', '=', $parent->id)
-			->execute()
-			->as_array();
-
-		$this->template = View::factory('boom/tags/children', array(
-			'tags'	=>	$tags,
-		));
-	}
-
 	/**
 	 * Delete a tag.
+	 *
 	 * Deletes the current tag identified by the route's ID parameter.
 	 *
 	 * @example	http://site.com/cms/tag/delete/1

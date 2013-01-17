@@ -26,7 +26,7 @@ class Boom_Controller_Cms_Assets extends Boom_Controller
 		parent::before();
 
 		// Permissions check.
-		$this->_authorization('manage assets');
+		$this->_authorization('manage_assets');
 	}
 
 	/**
