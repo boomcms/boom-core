@@ -78,7 +78,7 @@ class Boom_Controller_Cms_Page_Settings extends Controller_Cms_Page
 	public function action_admin()
 	{
 		// Permissions check
-		$this->_authorization('editpage_admin', $this->page);
+		$this->_authorization('edit_page_admin', $this->page);
 
 		if ($this->method === Request::GET)
 		{
@@ -124,10 +124,10 @@ class Boom_Controller_Cms_Page_Settings extends Controller_Cms_Page
 		// These settings are divided into basic and advanced.
 		// We only need to check for the basic permissions here
 		// If they can't edit the basic stuff then they shouldn't have the advanced settings either.
-		$this->_authorization('editpage_children_basic', $this->page);
+		$this->_authorization('edit_page_children_basic', $this->page);
 
 		// Is the current user allowed to edit the advanced settings?
-		$allow_advanced = $this->auth->logged_in('editpage_children_advanced');
+		$allow_advanced = $this->auth->logged_in('edit_page_children_advanced');
 
 		if ($this->method === REQUEST::GET)
 		{
@@ -261,10 +261,10 @@ class Boom_Controller_Cms_Page_Settings extends Controller_Cms_Page
 		// Permissions check
 		// The need to have a minimum of being able to edit the basic navigation settings.
 		// If they can't edit the basic settings they won't be able to edit the advanced settings either.
-		$this->_authorization('editpage_navigation_basic', $this->page);
+		$this->_authorization('edit_page_navigation_basic', $this->page);
 
 		// Is the current user allowed to edit the advanced settings?
-		$allow_advanced = $this->auth->logged_in('editpage_navigation_advanced');
+		$allow_advanced = $this->auth->logged_in('edit_page_navigation_advanced');
 
 		if ($this->method === Request::GET)
 		{
@@ -334,10 +334,10 @@ class Boom_Controller_Cms_Page_Settings extends Controller_Cms_Page
 	public function action_search()
 	{
 		// Check permissions
-		$this->_authorization('editpage_search_basic', $this->page);
+		$this->_authorization('edit_page_search_basic', $this->page);
 
 		// Is the current user allowed to edit the advanced settings?
-		$allow_advanced = $this->auth->logged_in('editpage_search_advanced');
+		$allow_advanced = $this->auth->logged_in('edit_page_search_advanced');
 
 		if ($this->method === Request::GET)
 		{
@@ -386,7 +386,7 @@ class Boom_Controller_Cms_Page_Settings extends Controller_Cms_Page
 	public function action_tags()
 	{
 		// Permissions check
-		$this->_authorization('editpage', $this->page);
+		$this->_authorization('edit_page', $this->page);
 
 		if ($this->method === Request::GET)
 		{
@@ -465,7 +465,7 @@ class Boom_Controller_Cms_Page_Settings extends Controller_Cms_Page
 	public function action_visibility()
 	{
 		// Permissions check.
-		$this->_authorization('editpage', $this->page);
+		$this->_authorization('edit_page', $this->page);
 
 		if ($this->method === Request::GET)
 		{
