@@ -927,8 +927,7 @@ $.extend($.boom, {
 				ui = ui === undefined;
 
 				dialog
-				.dialog(dialogConfig)
-				.render(self.options.data);
+				.dialog(dialogConfig);
 
 				if (ui) {
 					dialog.ui({
