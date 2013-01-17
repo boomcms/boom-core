@@ -168,7 +168,7 @@ $.extend($.boom.items.tag,  {
 		var self = this;
 
 		$.boom.dialog.open({
-			url: '/cms/tag/edit/' + rid + '?type=1',
+			url: '/cms/tags/edit/' + rid + '?type=1',
 			title: 'Edit tag',
 			buttons: {
 				Cancel: function(){
@@ -178,7 +178,7 @@ $.extend($.boom.items.tag,  {
 					var dialog = this;
 					var data = $( dialog ).find('form').serialize();
 
-					item.find('> a').text( $( '#boom-tagmanager-tag-edit-name' ).val() );
+					item.find('> a').text( $( '#b-tag-name' ).val() );
 
 					self.save( rid, data)
 					.done( function(){
@@ -198,7 +198,7 @@ $.extend($.boom.items.tag,  {
 		var self = this;
 
 		$.boom.dialog.open({
-			url: '/cms/tag/edit/0?type=1',
+			url: '/cms/tags/edit/0?type=1',
 			title: 'Add tag',
 			buttons: {
 				Cancel: function(){
@@ -254,14 +254,14 @@ $.extend($.boom.items.tag,  {
 					});
 
 					tag_saved.done( function(){
-						var name = $('#boom-tagmanager-tag-edit-name').val();
-						var parent = $('#boom-tagmanager-tag-edit-parent').val();
+						var name = $('#b-tag-name').val();
+						var parent = $('#b-tag-parent').val();
 
 						$.boom.dialog.destroy(dialog);
 
 						$('#boom-tag-tree')
 							.load(
-								'/cms/tag/tree',
+								'/cms/tags/tree',
 								{ type : 1 },
 								tree_refresh.resolve
 							);
@@ -278,7 +278,7 @@ $.extend($.boom.items.tag,  {
 	save: function( tag_id, data ){
 		$.boom.loader.show();
 
-		return $.post('/cms/tag/save/' + tag_id, data)
+		return $.post('/cms/tags/save/' + tag_id, data)
 		.done( function(response){
 
 			$.boom.loader.hide();
@@ -298,7 +298,7 @@ $.extend($.boom.items.tag,  {
 
 			$.boom.loader.show();
 
-			$.post('/cms/tag/delete/' + rid)
+			$.post('/cms/tags/delete/' + rid)
 			.done( function(){
 
 				$.boom.loader.hide();
@@ -315,7 +315,7 @@ $.extend($.boom.items.tag,  {
 		var options = ( options ) ? optionss : {};
 
 		return tag_tree = $.post(
-			'/cms/tag/tree',
+			'/cms/tags/tree',
 			{ type: 1 }
 		)
 		.pipe( function( response ){

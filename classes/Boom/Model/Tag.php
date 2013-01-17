@@ -70,20 +70,23 @@ class Boom_Model_Tag extends ORM
 
 	/**
 	 * Delete a tag.
-	 * Ensures child tags are deleted and that the tags are deleted from the MPTT tree.
 	 *
-	 * @return ORM
+	 * Ensures that all child tags are also deleted.
+	 *
+	 * @return Model_Tag
 	 */
 	public function delete()
 	{
 		// Delete child tags.
-		foreach (ORM::factory('Tag')->where('parent_id', '=', $this->id)->find_all() as $t)
+		foreach (ORM::factory('Tag')->where('parent_id', '=', $this->id)->find_all() as $tag)
 		{
-			$t->delete();
+			$tag->delete();
 		}
 
 		// Delete any relationships with this tag.
-		DB::delete("delete from tags_applied where tag_id = " . $this->id);
+		DB::delete('tags_applied')
+			->where('tag_id', '=', $this->id)
+			->execute($this->_db);
 
 		// Delete the tag.
 		return parent::delete();
@@ -103,6 +106,24 @@ class Boom_Model_Tag extends ORM
 	}
 
 	/**
+	 * Returns an associative array of tag IDs and names
+	 *
+	 * The returned array can be passed to Form::select();
+	 *
+	 * @param integer $type
+	 * @return array
+	 */
+	public function names($type)
+	{
+		return DB::select('id', 'name')
+			->from('tags')
+			->where('type', '=', $type)
+			->order_by('name', 'asc')
+			->execute($this->_db)
+			->as_array('id', 'name');
+	}
+
+	/**
 	 * Return the parent tag of the current tag.
 	 *
 	 * @return 	Model_Tag
@@ -113,19 +134,15 @@ class Boom_Model_Tag extends ORM
 	}
 
 	/**
-	 * Set the materialised path for a tag.
+	 * Updates the materialized path for child tags.
+	 *
 	 * This function should be called when a tag is reparented or has it's name changed.
 	 * When a tag's path is updated the materialised path for it's children also needs to be updated.
 	 *
-	 * @param 	string	The new materialised path for the tag.
-	 * @return 	Model_Tag
+	 * @return Model_Tag
 	 */
-	public function path($path)
+	public function update_child_paths()
 	{
-		// Set the new path for the current tag.
-		$this->path = $path;
-		$this->update();
-
 		// Get the child tags of the current tag.
 		$kids = ORM::factory('Tag')
 			->where('parent_id', '=', $this->id)
@@ -134,14 +151,17 @@ class Boom_Model_Tag extends ORM
 		// Update the materialised path for all the child tags.
 		foreach ($kids as $tag)
 		{
-			$tag->path($path . "/" . $tag->name);
+			$tag
+				->set('path', $path . "/" . $tag->name)
+				->update();
 		}
 	}
 
 	/**
-	* ORM Validation rules
-	* @link http://kohanaframework.org/3.2/guide/orm/examples/validation
-	*/
+	 * ORM Validation rules
+	 *
+	 * @link http://kohanaframework.org/3.2/guide/orm/examples/validation
+	 */
 	public function rules()
 	{
 		return array(
@@ -149,5 +169,17 @@ class Boom_Model_Tag extends ORM
 				array('not_empty'),
 			),
 		);
+	}
+
+	public function update(\Validation $validation = NULL)
+	{
+		// Save the changes to the current tag.
+		parent::update($validation);
+
+		// Update the materialized path of this tag's child tags.
+		$this->update_child_paths();
+
+		// Return the current object.
+		return $this;
 	}
 }

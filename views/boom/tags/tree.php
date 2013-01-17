@@ -1,42 +1,23 @@
-<?php
-/**
-* Subtemplate for a tag tree.
-* Essentially the same for the page tree but with different formatting and 'page' replaced with 'tag'.
-* Rendered by Controller_Tag::action_tree()
-*
-*********************** Variables **********************
-*	$tags		****	array
-*	$state		****	string		****	collapsed or expanded
-*	$base_uri	****	string		****	URI to use for tag links. Allows changing links for tag manager or asset manager.
-********************************************************
-*
-*/
-?>
 <div class="boom-box ui-widget ui-corner-all">
 	<ul class="ui-helper-clearfix boom-tree b-tags-tree boom-tree-noborder">
-		<?
-			if ( ! empty($tags)):
-				show_tags($tags, $root);
-			endif;
-		?>
+		<? show_tags($tags, 0); ?>
 	</ul>
 </div>
 
 <?
-function show_tags($tags, $parent)
-{
-	global $state;
-
-	foreach ($tags[$parent] as $id => $name)
+	function show_tags($tags, $parent)
 	{
-		echo "<li id='t$id'><a rel='$id' id='tag_" , $id , "' href='#tag/$id";
-		echo "'>$name</a>\n";
-
-		if (isset($tags[$id]))
+		foreach ($tags[$parent] as $id => $name)
 		{
-			echo "<ul  class='ui-helper-hidden'>";
-			show_tags($tags, $id);
-			echo "</ul>";
+			echo "<li id='t$id'><a rel='$id' id='tag_" , $id , "' href='#tag/$id";
+			echo "'>$name</a>\n";
+
+			if (isset($tags[$id]))
+			{
+				echo "<ul  class='ui-helper-hidden'>";
+				show_tags($tags, $id);
+				echo "</ul>";
+			}
 		}
 	}
-}
+?>
