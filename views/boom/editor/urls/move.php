@@ -8,18 +8,18 @@
 	</p>
 <? endif; ?>
 <br />
-<br />
 
 <? if ($current->version()->page_deleted): ?>
 	<p>
-		This URL is assigned to a page which has been deleted.
+		<b>This URL is assigned to a page which has been deleted.</b>
 	</p>
 <? endif ?>
 
+<br />
 <table>
 	<tr>
 		<th>
-			Current Page
+			Current Page<? if ($current->version->page_deleted): ?> (deleted) <? endif; ?>
 		</th>
 		<th>
 			New Page
