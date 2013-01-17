@@ -276,24 +276,25 @@ class Boom_Controller_Cms_Assets extends Boom_Controller
 			$query->where('title', 'like', "%$title%");
 		}
 		
-		$sortby = 'last_modified';
+		$column = 'last_modified';
 		$order = 'desc';
 		
 		if ( strpos( $sortby, '-' ) > 1 ){
 			$sort_params = explode( '-', $sortby );
-			$sortby = $sort_params[0];
+			$column = $sort_params[0];
 			$order = $sort_params[1];
 		}
 
-		if (($sortby == 'last_modified' OR $sortby == 'title' OR $sortby == 'filesize') AND ($order == 'desc' OR $order == 'asc'))
+		if (($column == 'last_modified' OR $column == 'title' OR $column == 'filesize') AND ($order == 'desc' OR $order == 'asc'))
 		{
 			// A valid sort column and direction was given so use them.
-			$query->order_by($sortby, $order);
+			$sortby = $column . '-' . $order;
+			$query->order_by($column, $order);
 		}
 		else
 		{
 			// No sort column or direction was given, or one of them was invalid, sort by title ascending by default.
-			$sortby = 'title';
+			$column = 'title';
 			$order = 'asc';
 			$query->order_by('title', 'asc');
 		}
