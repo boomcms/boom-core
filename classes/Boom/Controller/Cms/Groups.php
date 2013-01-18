@@ -12,6 +12,13 @@
 class Boom_Controller_Cms_Groups extends Boom_Controller
 {
 	/**
+	 * Directory where view files for this controller are stored.
+	 *
+	 * @var string
+	 */
+	protected $_view_directory = 'boom/groups';
+
+	/**
 	 *
 	 * @var Model_Group	ORM object for the gorup we're editing.
 	 */
@@ -41,7 +48,7 @@ class Boom_Controller_Cms_Groups extends Boom_Controller
 	 *
 	 * A group name should be given in the POST data.
 	 *
-	 * @uses Boom_Controller::_log()
+	 * @uses Boom_Controller::log()
 	 * @uses Model_Group::set()
 	 * @uses Model_Group::create()
 	 */
@@ -64,17 +71,16 @@ class Boom_Controller_Cms_Groups extends Boom_Controller
 		else
 		{
 			// Display the 'edit group' view with an empty group model.
-			$this->template = View::factory("boom/groups/edit", array(
+			$this->template = View::factory("$this->_view_directory/add", array(
 				'group' => new Model_Group,
 			));
 		}
-
 	}
 
 	/**
 	 * Adds a role to the current group.
 	 *
-	 * @uses Boom_Controller::_log()
+	 * @uses Boom_Controller::log()
 	 * @uses Model_Group::add_role()
 	 */
 	public function action_add_role()
@@ -94,7 +100,7 @@ class Boom_Controller_Cms_Groups extends Boom_Controller
 	 *	/cms/groups/delete/1
 	 *
 	 *
-	 * @uses Boom_Controller::_log()
+	 * @uses Boom_Controller::log()
 	 * @uses Model_Group::delete()
 	 */
 	public function action_delete()
@@ -107,9 +113,21 @@ class Boom_Controller_Cms_Groups extends Boom_Controller
 	}
 
 	/**
+	 * Display a page to edit a group's details, e.g. name and permissions.
+	 *
+	 */
+	public function action_edit()
+	{
+		// Display the 'edit group' view with an empty group model.
+		$this->template = View::factory("$this->_view_directory/edit", array(
+			'group' => $this->group,
+		));
+	}
+
+	/**
 	 * Removes a role from the current group.
 	 *
-	 * @uses Boom_Controller::_log()
+	 * @uses Boom_Controller::log()
 	 * @uses Model_Group::remove_role()
 	 */
 	public function action_remove_role()
@@ -124,7 +142,7 @@ class Boom_Controller_Cms_Groups extends Boom_Controller
 	/**
 	 * Save group details.
 	 *
-	 * @uses Boom_Controller::_log()
+	 * @uses Boom_Controller::log()
 	 * @uses Model_Group::set()
 	 * @ueses Model_Group::update();
 	 */

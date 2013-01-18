@@ -51,7 +51,7 @@ class Boom_Controller_Cms_People extends Boom_Controller
 	/**
 	 * Adds a new person to the CMS.
 	 *
-	 * @uses Boom_Controller::_log()
+	 * @uses Boom_Controller::log()
 	 * @uses Model_Person::values()
 	 * @uses Model_Person::create()
 	 */
@@ -82,7 +82,7 @@ class Boom_Controller_Cms_People extends Boom_Controller
 	 * Otherwise a view listing the groups which the user is not a member of is shown.
 	 *
 	 * @uses Model_Person::add_group()
-	 * @uses Boom_Controller::_log()
+	 * @uses Boom_Controller::log()
 	 */
 	public function action_add_group()
 	{
@@ -126,7 +126,7 @@ class Boom_Controller_Cms_People extends Boom_Controller
 	/**
 	 * Delete a person.
 	 *
-	 * @uses Boom_Controller_Cms_People::_log()
+	 * @uses Boom_Controller_Cms_People::log()
 	 * @uses Model_Person::delete()
 	 */
 	public function action_delete()
@@ -223,7 +223,7 @@ class Boom_Controller_Cms_People extends Boom_Controller
 	/**
 	 * Removes a person from a group
 	 *
-	 * @uses Boom_Controller::_log()
+	 * @uses Boom_Controller::log()
 	 * @uses Model_Person::remove_group()
 	 */
 	public function action_remove_group()
@@ -238,7 +238,7 @@ class Boom_Controller_Cms_People extends Boom_Controller
 	/**
 	 * Save changes to an existing person.
 	 *
-	 * @uses Boom_Controller::_log()
+	 * @uses Boom_Controller::log()
 	 * @uses Model_Person::values()
 	 * @uses Model_Person::update()
 	 */
