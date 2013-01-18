@@ -132,27 +132,27 @@ Route::set('chunks', 'cms/chunk/<controller>/<action>/<page>')
 		'directory'	=>	'cms_chunk'
 	));
 
-// Route for editing page tags and version settings.
-Route::set('page_tags', 'cms/page/<controller>/<action>/<id>', array(
-		'controller'	=>	'version|tags',
+// Route for editing page settings which are handled by a single class (e.g. tags and urls)
+Route::set('page_settings1', 'cms/page/<controller>/<action>/<id>', array(
+		'controller'	=>	'tags|url',
 	))
 	->defaults(array(
 		'directory' => 'cms_page',
 	));
 
 /**
- * Route for editing page settings
+ * Route for editing page settings where there are different classes depending on request method
  *
  * The request is handled by different controllers depending on the request method.
  * For POST requests we use a controller which saves the page settings.
  * For all other requests we use a controller which shows the relevant settings.
  */
-Route::set('page_settings', 'cms/page/settings/<action>/<id>')
-	->defaults(array(
-		'directory' => 'cms_page_settings',
-	))
+Route::set('page_settings2', 'cms/page/<directory>/<action>/<id>')
 	->filter(function(Route $route, $params, Request $request)
 		{
+			// Set the directory correctly
+			$params['directory'] = 'Cms_Page_'.$params['directory'];
+
 			// Set the controller based on request method.
 			$params['controller'] = ($request->method() === Request::POST)? 'Save' : 'View';
 
@@ -160,8 +160,3 @@ Route::set('page_settings', 'cms/page/settings/<action>/<id>')
 			return $params;
 		}
 	);
-
-Route::set('page_urls', 'cms/page/url/<action>/<id>' )
-	->defaults(array(
-		'controller' => 'Cms_Page_URL',
-	));

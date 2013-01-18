@@ -1,13 +1,13 @@
 <div id="b-pagesettings-featureimage" class="b-pagesettings">
 
-	<? if ($feature_image_id === 0): ?>
+	<? if ( ! $feature_image_id): ?>
 		<p id="boom-featureimage-none">This page currently has no associated feature image.</p>
 		<p>
 			<button class="boom-featureimage-edit boom-button">
 				Add feature image
 			</button>
 
-			<img id='boom-featureimage-img' style="display: none" src='<?= Route::url('asset', array('id' => $feature_image_id)) ?>' />
+			<img id='boom-featureimage-img' style="display: none" />
 		</p>
 	<? else: ?>
 		<div class='boom-featureimage-edit'>
