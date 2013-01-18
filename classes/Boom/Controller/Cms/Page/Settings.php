@@ -26,14 +26,6 @@
 abstract class Boom_Controller_Cms_Page_Settings extends Controller_Cms_Page
 {
 	/**
-	 * Holds the parent page.
-	 * Used for inheriting page settings from the parent.
-	 *
-	 * @var	Model_Page
-	 */
-	protected $_parent;
-
-	/**
 	 * Directory where views used by this class are stored.
 	 *
 	 * @var	string

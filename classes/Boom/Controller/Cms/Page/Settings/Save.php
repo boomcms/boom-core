@@ -103,7 +103,6 @@ class Boom_Controller_Cms_Page_Settings_Save extends Controller_Cms_Page_Setting
 				->children_ordering_policy($post['children_ordering_policy'], $post['child_ordering_direction'])
 				->set('children_template_id', $post['children_template_id'])
 				->update();
-
 		}
 	}
 
