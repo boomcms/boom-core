@@ -75,6 +75,15 @@ class Boom_Model_Asset extends ORM_Taggable
 		}
 	}
 
+	public function filters()
+	{
+		return array(
+			'visible_from' => array(
+				array('strtotime'),
+			),
+		);
+	}
+
 	/**
 	 * Returns an array of old files which have been replaced.
 	 * Where an asset has been replaced the array will contain the names of the backup files for the previous versions.

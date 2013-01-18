@@ -256,10 +256,10 @@ class Boom_Controller_Cms_Assets extends Boom_Controller
 		{
 			$query->where('title', 'like', "%$title%");
 		}
-		
+
 		$column = 'last_modified';
 		$order = 'desc';
-		
+
 		if ( strpos( $sortby, '-' ) > 1 ){
 			$sort_params = explode( '-', $sortby );
 			$column = $sort_params[0];
@@ -384,16 +384,9 @@ class Boom_Controller_Cms_Assets extends Boom_Controller
 			throw new HTTP_Exception_404;
 		}
 
-		// Get the POST data.
-		$post = $this->request->post();
-
-		// Set the asset details.
+		// Update the asset's details.
 		$asset
-			->values(array(
-				'title'			=>	$post['title'],
-				'description'	=>	$post['description'],
-				'visible_from'	=>	strtotime($post['visible_from']),
-			))
+			->values($this->request->post(), array('title','description','visible_from'))
 			->update();
 
 		// Redirect to the asset's page.
