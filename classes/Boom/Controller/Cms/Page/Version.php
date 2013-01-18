@@ -28,7 +28,7 @@
  * @package	BoomCMS
  * @category	Controllers
  */
-abstract class Boom_Controller_Cms_Page_Version extends Controller_Cms_Page_Settings
+abstract class Boom_Controller_Cms_Page_Version extends Controller_Cms_Page
 {
 	/**
 	 *

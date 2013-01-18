@@ -155,7 +155,7 @@ class Boom_Controller_Cms_Page_Version_Save extends Controller_Cms_Page_Version
 		// Call the parent function to check permissions.
 		parent::action_feature();
 
-		$this->log("Updated the feature image of page " . $this->old_version->title . " (ID: " . $this->page->id . ")");
+		$this->log("Updated the feature image of page " . $this->old_version->title . " (ID: " . $this->old_version->page_id . ")");
 
 		$this->new_version
 			->set('feature_image_id', $this->request->post('feature_image_id'))
