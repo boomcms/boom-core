@@ -385,8 +385,8 @@ $.extend($.boom.assets, {
 
 		var self = this;
 
-		//$.boom.history.load( 'asset/' + rid );
-		top.location.hash = '#asset/' + rid;
+		$.boom.history.load( 'asset/' + rid );
+		//top.location.hash = '#asset/' + rid;
 		self.selected_rid = rid;
 
 	},
