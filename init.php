@@ -134,7 +134,7 @@ Route::set('chunks', 'cms/chunk/<controller>/<action>/<page>')
 
 // Route for editing page settings which are handled by a single class (e.g. tags and urls)
 Route::set('page_settings1', 'cms/page/<controller>/<action>/<id>', array(
-		'controller'	=>	'tags|url',
+		'controller'	=>	'tags|urls',
 	))
 	->defaults(array(
 		'directory' => 'cms_page',

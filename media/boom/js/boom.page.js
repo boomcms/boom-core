@@ -1273,7 +1273,7 @@ $.extend($.boom.page, {
 				});
 
 				$.boom.dialog.open({
-					url: '/cms/page/url/list/' + $.boom.page.config.id,
+					url: '/cms/page/urls/list/' + $.boom.page.config.id,
 					event: event,
 					// cache: true,
 					title: 'URLs',
@@ -1282,7 +1282,7 @@ $.extend($.boom.page, {
 					buttons: {
 						Add: function( event ){
 							$.boom.dialog.open({
-								url: '/cms/page/url/add/' + $.boom.page.config.id,
+								url: '/cms/page/urls/add/' + $.boom.page.config.id,
 								event: event,
 								title: 'Add URL',
 								width: 300,
@@ -1310,7 +1310,7 @@ $.extend($.boom.page, {
 							redirect = $(url).find('.b-urls-redirect').is(':checked')? 1: 0;
 							primary = $(url).find('.b-urls-primary').is(':checked')? 1 : 0;
 
-							$.post('/cms/page/url/save/' + $.boom.page.config.id, {
+							$.post('/cms/page/urls/save/' + $.boom.page.config.id, {
 								url_id :  url.attr('data-id'),
 								redirect : redirect,
 								primary : primary
@@ -1332,7 +1332,7 @@ $.extend($.boom.page, {
 				$.boom.loader.show();
 
 				$
-					.post('/cms/page/url/add/' + $.boom.page.config.id, form.serialize())
+					.post('/cms/page/urls/add/' + $.boom.page.config.id, form.serialize())
 					.done( function(response){
 
 						$.boom.loader.hide();
@@ -1343,7 +1343,7 @@ $.extend($.boom.page, {
 							// Ask if they want to move it.
 							$.boom.dialog.confirm("URL in use", "The specified url is already in use on another page. Would you like to move it?", function(){
 								$.boom.dialog.open({
-									url: '/cms/page/url/move/' + $.boom.page.config.id + '?url=' + new_url,
+									url: '/cms/page/urls/move/' + $.boom.page.config.id + '?url=' + new_url,
 									title: 'Move url',
 									buttons: {
 										Cancel: function(){
@@ -1353,7 +1353,7 @@ $.extend($.boom.page, {
 											$.boom.loader.show();
 											var move_dialog = this;
 
-											$.post('/cms/page/url/move/' + $.boom.page.config.id + '?url=' + new_url)
+											$.post('/cms/page/urls/move/' + $.boom.page.config.id + '?url=' + new_url)
 												.done(function(response){
 													$.boom.growl.show('URL added.');
 													$( '#b-pagesettings-urls .boom-tree' )
@@ -1389,7 +1389,7 @@ $.extend($.boom.page, {
 
 					$
 						.post(
-							'/cms/page/url/delete/' + $.boom.page.config.id,
+							'/cms/page/urls/delete/' + $.boom.page.config.id,
 						 	{
 								url: $.trim( item.text() )
 							}

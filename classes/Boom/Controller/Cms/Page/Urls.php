@@ -8,7 +8,7 @@
  * @package	BoomCMS
  * @category	Controllers
  */
-class Boom_Controller_Cms_Page_URL extends Controller_Cms_Page
+class Boom_Controller_Cms_Page_Urls extends Controller_Cms_Page
 {
 	/**
 	 *
