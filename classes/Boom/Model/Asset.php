@@ -140,4 +140,56 @@ class Boom_Model_Asset extends ORM_Taggable
 	{
 		return Boom_Asset::type($this->type);
 	}
+
+	/**
+	 * Returns an array of the type of assets which exist in the database.
+	 *
+	 * Retrieves the numeric asset types which are stored in the database.
+	 * These are then converted to words using [Boom_Asset::type()]
+	 *
+	 * @uses Boom_Asset::type()
+	 * @return array
+	 */
+	public function types()
+	{
+		// Get the available asset types in numeric format.
+		$types = DB::select('type')
+			->distinct(TRUE)
+			->from('assets')
+			->where('deleted', '=', FALSE)
+			->where('type', '!=', 0)
+			->execute($this->_db)
+			->as_array();
+
+		// Turn the numeric asset types into user friendly strings.
+		$types = Arr::pluck($types, 'type');
+		$types = array_map(array('Boom_Asset', 'type'), $types);
+		$types = array_map('ucfirst', $types);
+
+		// Return the results.
+		return $types;
+	}
+
+	/**
+	 * Gets an array of the ID and name of people who have uploaded assets.
+	 *
+	 * The returned array will be an associative array of person ID => name.
+	 *
+	 * People who have uploaded assets, but who's assets are all deleted, will not appear in the returned array.
+	 *
+	 * @return array
+	 */
+	public function uploaders()
+	{
+		return DB::select('id', 'name')
+			->from('people')
+			->where('id', 'in', DB::select('uploaded_by')
+				->from('assets')
+				->where('deleted', '=', FALSE)
+				->distinct(TRUE)
+			)
+			->order_by('name', 'asc')
+			->execute($this->_db)
+			->as_array('id', 'name');
+	}
 }
