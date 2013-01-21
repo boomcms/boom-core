@@ -263,6 +263,8 @@ function CMSTagmanager(type){
 						.attr( 'href' )
 						.split('/')
 						[1];
+				
+				console.log( self.items.tag.rid );
 
 				self.items.tag.get( self.items.tag.rid );
 				return false;
