@@ -42,6 +42,11 @@ class Boom_Model_Asset extends ORM_Taggable
 
 	protected $_table_name = 'assets';
 
+	protected $_updated_column = array(
+		'column'	=>	'last_modified',
+		'format'	=>	TRUE,
+	);
+
 	/**
 	 *
 	 * @var	array	Cache variable for [Model_Asset::old_files()]
