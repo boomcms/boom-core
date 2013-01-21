@@ -1118,6 +1118,8 @@ $.widget('ui.chunkSlideshow', $.ui.chunk, {
 	@function
 	*/
 	_refresh : function( slides ) {
+		
+		console.log( slides );
 
 		var self = this;
 
@@ -1133,7 +1135,7 @@ $.widget('ui.chunkSlideshow', $.ui.chunk, {
 
 				$item.find( '.slide-asset' ).attr( 'src', src.join( '/' ) );
 				$item.find( '.slide-link' ).attr( 'href', slide.link );
-				$item.find( 'slide-caption' ).text( slide.caption );
+				$item.find( '.slide-caption' ).text( slide.caption );
 			});
 
 		$.boom.log( 'slideshow refresh' );
