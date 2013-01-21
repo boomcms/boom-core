@@ -104,7 +104,6 @@ class Boom_Model_Group extends ORM
 				->values(array($this->id, $role_id, $allowed, $page_id))
 				->execute($this->_db);
 
-
 			// Add records in the people_roles table for the members of this group.
 			DB::insert('people_roles', array('person_id', 'group_id', 'role_id', 'allowed', 'page_id'))
 				->select(
