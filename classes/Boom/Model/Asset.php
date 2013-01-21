@@ -49,6 +49,59 @@ class Boom_Model_Asset extends ORM_Taggable
 	protected $_old_files = NULL;
 
 	/**
+	 * Adds multiple tags to a single, or multiple, assets.
+	 *
+	 * If no asset IDs are given in the second argument then the tags will only be added to the current asset.
+	 *
+	 *
+	 * @param array $tag_ids
+	 * @param array $asset_ids
+	 *
+	 * @return \Boom_Model_Asset
+	 */
+	public function add_tags(array $tag_ids, array $asset_ids = array())
+	{
+		// Ensure that the tag and asset IDs are unique.
+		$tag_ids = array_unique($tag_ids);
+		$asset_ids = array_unique($asset_ids);
+
+		// If there's no asset_ids given then add the tags to the current asset.
+		if (empty($asset_ids))
+		{
+			var_dump($this->id);
+			$asset_ids[] = $this->id;
+		}
+
+		// Prepare the insert query object.
+		$query = DB::insert('tags_applied', array('object_id', 'object_type', 'tag_id'));
+
+		foreach ($asset_ids as $asset_id)
+		{
+			foreach ($tag_ids as $tag_id)
+			{
+				// Add the tag and asset ID to the query.
+				$query->values(array(
+					'object_id'		=>	$asset_id,
+					'object_type'	=>	Model_Tag_Applied::OBJECT_TYPE_ASSET,
+					'tag_id'		=>	$tag_id,
+				));
+			}
+		}
+
+		// Execute the query.
+		// Ignore database exceptions incase the person is applying a tag to an asset where it's already applied.
+		try
+		{
+			$query->execute($this->_db);
+		}
+		catch (Database_Exception $e) {}
+
+		// Return the current object.
+		return $this;
+	}
+
+
+	/**
 	 * Delete an asset.
 	 *
 	 * Assets are deleted in two stages:

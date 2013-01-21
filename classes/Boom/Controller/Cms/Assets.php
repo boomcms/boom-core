@@ -35,11 +35,30 @@ class Boom_Controller_Cms_Assets extends Boom_Controller
 		$this->authorization('manage_assets');
 
 		// Instantiate an asset model.
-		$this->asset = new Model_Asset;
+		$this->asset = new Model_Asset($this->request->param('id'));
 	}
 
 	/**
-	 * Deletes assets
+	 * Add tags to a single or multiple assets.
+	 *
+	 * @uses Model_Asset::add_tags()
+	 */
+	public function action_add_tags()
+	{
+		// Get the IDs of the assets the tags are being applied to.
+		$asset_ids = (array) $this->request->post('assets');
+
+		// Get the IDs of the tags which are being added.
+		$tag_ids = (array) $this->request->post('tags');
+
+		// Add the tags to the assets.
+		$this->asset->add_tags($tag_ids, $asset_ids);
+	}
+
+	/**
+	 * Delete multiple assets at a time.
+	 *
+	 * Takes an array if asset IDs and calls [Model_Asset::delete()] on each one.
 	 *
 	 * @uses	Model_Asset::delete()
 	 * @uses	Boom_Controller::log()
@@ -55,16 +74,18 @@ class Boom_Controller_Cms_Assets extends Boom_Controller
 		foreach ($asset_ids as $asset_id)
 		{
 			// Load the asset from the database.
-			$asset = new Model_Asset($asset_id);
+			$this->asset
+				->where('id', '=', $asset_id)
+				->find();
 
 			// Log a different action depending on whether the asset is being completely deleted
 			// or just marked as deleted.
-			$log_message = ($asset->deleted)? "Deleted asset $asset->title (ID: $asset->id)" : "Moved asset $asset->title (ID: $asset->id) to rubbish bin.";
+			$log_message = ($this->asset->deleted)? "Deleted asset $this->asset->title (ID: $this->asset->id)" : "Moved asset $this->asset->title (ID: $this->asset->id) to rubbish bin.";
 
 			// Call [Model_Asset::delete()]
 			// If the asset isn't marked as deleted then it will be marked it as so.
 			// If it's already marked as deleted then it will be deleted it for real.
-			$asset->delete();
+			$this->asset->delete();
 
 			// Log the action.
 			$this->log($log_message);
@@ -100,11 +121,10 @@ class Boom_Controller_Cms_Assets extends Boom_Controller
 			// Multiple asset download - create a zip file of assets.
 
 			// Get the session ID. This is used in a few places within this if block as it's used in the filename for temp zip file.
-			$session_id = Session::instance()
-				->id();
+			$session_id = Session::instance()->id();
 
 			// The name of the temporary file where the zip archive will be created.
-			$tmp_filename = APPPATH . 'cache/cms_assets_' . $session_id . 'file.zip';
+			$tmp_filename = APPPATH.'cache/cms_assets_'.$session_id.'file.zip';
 
 			// Create the zip archive.
 			$zip = new ZipArchive;
@@ -119,7 +139,7 @@ class Boom_Controller_Cms_Assets extends Boom_Controller
 				if ($asset->loaded())
 				{
 					// Asset exists add it to the archive.
-					$zip->addFile(Boom_Asset::$path . $asset->id, $asset->filename);
+					$zip->addFile(Boom_Asset::$path.$asset->id, $asset->filename);
 				}
 			}
 
@@ -343,82 +363,34 @@ class Boom_Controller_Cms_Assets extends Boom_Controller
 
 	/**
 	 * Display the asset manager.
+	 *
 	 * Used by the CMS assets page (/cms/assets) and for editing asset chunks, slideshows, feature images etc.
 	 *
-	 * This just makes internal requests for the filters and tags. This allows the possibility of making those requests asynchronous in future.
 	 */
 	public function action_manager()
 	{
 		$this->template = View::factory("$this->_view_directory/manager", array(
 			'filters'	=>	Request::factory('cms/assets/filters')->execute(),
-			'tags'	=>	Request::factory('cms/tags/tree')->post(array('type' => 1))->execute(),
+			'tags'	=>	Request::factory('cms/tags/tree')->execute(),
 		));
 	}
 
 	/**
-	 * Save an asset.
+	 * Save changes to a single asset.
 	 *
 	 */
 	public function action_save()
 	{
-		// Load the asset data.
-		$asset = new Model_Asset($this->request->param('id'));
-
 		// Does the asset exist?
-		if ( ! $asset->loaded())
+		if ( ! $this->asset->loaded())
 		{
 			throw new HTTP_Exception_404;
 		}
 
 		// Update the asset's details.
-		$asset
+		$this->asset
 			->values($this->request->post(), array('title','description','visible_from'))
 			->update();
-
-		// Redirect to the asset's page.
-		$this->redirect('/cms/assets/view/' . $asset->id);
-	}
-
-	/**
-	 * Add tags to a single or multiple assets.
-	 *
-	 * **Accepted POST parameters:**
-	 * Name		|	Type		|	Description
-	 * ---------------|-----------------|---------------
-	 * tags		|	array	|	Array of tag IDs to be removed from the asset.
-	 *
-	 */
-	public function action_tag()
-	{
-		// Get the IDs of the assets the tags are being applied to.
-		$asset_ids = array_unique(explode("-", $this->request->param('id')));
-
-		// Get the IDs of the tags which are being added.
-		$tag_ids = (array) $this->request->post('tags');
-
-		// Prepare the insert query object.
-		$query = DB::insert('tags_applied');
-
-		foreach ($asset_ids as $asset_id)
-		{
-			foreach ($tag_ids as $tag_id)
-			{
-				// Add the tag and asset ID to the query.
-				$query->values(array(
-					'tag_id'		=>	$tag_id,
-					'asset_id'		=>	$asset_id,
-					'object_type'	=>	Model_Tag_Applied::OBJECT_TYPE_ASSET,
-				));
-			}
-		}
-
-		// Execute the query.
-		// Ignore database exceptions incase the person is applying a tag to an asset where it's already applied.
-		try
-		{
-			$query->execute();
-		}
-		catch (Database_Exception $e) {}
 	}
 
 	/**
@@ -432,11 +404,8 @@ class Boom_Controller_Cms_Assets extends Boom_Controller
 	 */
 	public function action_untag()
 	{
-		// Load the asset data.
-		$asset = new Model_Asset($this->request->param('id'));
-
 		// Can't remove tags from an asset which doesn't exist.
-		if ($asset->loaded())
+		if ($this->asset->loaded())
 		{
 			// Get an array of tag IDs which are being removed.
 			$tag_ids = (array) $this->request->post('tags');
@@ -450,29 +419,26 @@ class Boom_Controller_Cms_Assets extends Boom_Controller
 	}
 
 	/**
-	 * Controller to show an asset's view.
+	 * View details about a single asset.
 	 *
 	 */
 	public function action_view()
 	{
-		// Load the asset.
-		$asset = new Model_Asset($this->request->param('id'));
-
 		// Check that the asset exists
-		if ( ! $asset->loaded())
+		if ( ! $this->asset->loaded())
 		{
 			throw new HTTP_Exception_404;
 		}
 
 		// If the asset is a BOTR video which isn't marked as encoded then attempt to update the information.
-		if ($asset->type == Boom_Asset::BOTR AND ! $asset->encoded)
+		if ($this->asset->type == Boom_Asset::BOTR AND ! $this->asset->encoded)
 		{
 			Request::factory('cms/video/sync/' . $asset->id)->execute();
-			$asset->reload();
+			$this->asset->reload();
 		}
 
 		$this->template = View::factory("$this->_view_directory/view", array(
-			'asset'	=>	$asset,
+			'asset'	=>	$this->asset,
 		));
 	}
 }
