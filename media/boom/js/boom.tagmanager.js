@@ -295,7 +295,7 @@ function CMSTagmanager(type){
 
 				self.options.sortby = this.value; 
 						
-				//$.boom.history.refresh();
+				$.boom.history.refresh();
 			});
 		});
 
