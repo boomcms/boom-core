@@ -718,7 +718,7 @@ $.extend($.boom.items.asset, {
 
 			$.boom.loader.show();
 
-			$.post('/cms/assets/untag/' + $('#asset_id').val(), {tags:  tags})
+			$.post('/cms/assets/remove_tags/' + $('#asset_id').val(), {tags:  tags})
 			.done( function(){
 
 				$.boom.loader.hide();

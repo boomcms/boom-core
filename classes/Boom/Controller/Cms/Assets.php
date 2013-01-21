@@ -134,13 +134,17 @@ class Boom_Controller_Cms_Assets extends Boom_Controller
 			foreach ($asset_ids as $asset_id)
 			{
 				// Load the asset from the database to check that it exists.
-				$asset = new Model_Asset($asset_id);
+				$this->asset
+					->where('id', '=', $asset_id)
+					->find();
 
-				if ($asset->loaded())
+				if ($this->asset->loaded())
 				{
 					// Asset exists add it to the archive.
-					$zip->addFile(Boom_Asset::$path.$asset->id, $asset->filename);
+					$zip->addFile(Boom_Asset::$path.$this->asset->id, $this->asset->filename);
 				}
+
+				$this->asset->clear();
 			}
 
 			// Finished adding files to the archive.
@@ -166,20 +170,22 @@ class Boom_Controller_Cms_Assets extends Boom_Controller
 			// Download a single asset.
 
 			// Load the asset from the database to check that it exists.
-			$asset = new Model_Asset($asset_ids[0]);
+			$this->asset
+				->where('id', '=', $asset_ids[0])
+				->find();
 
-			if ($asset->loaded())
+			if ($this->asset->loaded())
 			{
 				// Asset exists, send the file contents.
 				$this->response
 					->headers(array(
 						"Content-type" => $asset->get_mime(),
-						"Content-Disposition" => "attachment; filename=" . basename($asset->filename),
+						"Content-Disposition" => "attachment; filename=" . basename($this->asset->filename),
 						"Pragma" => "no-cache",
 						"Expires" => "0"
 					))
 					->body(
-						readfile(Boom_Asset::$path . $asset->id)
+						readfile(Boom_Asset::$path . $this->asset->id)
 					);
 			}
 		}
@@ -210,7 +216,8 @@ class Boom_Controller_Cms_Assets extends Boom_Controller
 		$this->template = View::factory("$this->_view_directory/index", array(
 			'content'	=>	Request::factory('cms/assets/manager')
 				->execute()
-				->body()
+				->body(),
+			'person'	=>	$this->person,
 		));
 	}
 
@@ -376,6 +383,24 @@ class Boom_Controller_Cms_Assets extends Boom_Controller
 	}
 
 	/**
+	 * Remove tags from an asset.
+	 *
+	 * **Accepted POST parameters:**
+	 * Name		|	Type		|	Description
+	 * ---------------|-----------------|---------------
+	 * tags		|	array 	|	Array of tag IDs to be removed from the asset.
+	 *
+	 */
+	public function action_remove_tags()
+	{
+		// Get an array of tag IDs which are being removed.
+		$tag_ids = (array) $this->request->post('tags');
+
+		// Remove the tags from the asset.
+		$this->asset->remove_tags($tag_ids);
+	}
+
+	/**
 	 * Save changes to a single asset.
 	 *
 	 */
@@ -391,31 +416,6 @@ class Boom_Controller_Cms_Assets extends Boom_Controller
 		$this->asset
 			->values($this->request->post(), array('title','description','visible_from'))
 			->update();
-	}
-
-	/**
-	 * Remove tags from an asset.
-	 *
-	 * **Accepted POST parameters:**
-	 * Name		|	Type		|	Description
-	 * ---------------|-----------------|---------------
-	 * tags		|	array 	|	Array of tag IDs to be removed from the asset.
-	 *
-	 */
-	public function action_untag()
-	{
-		// Can't remove tags from an asset which doesn't exist.
-		if ($this->asset->loaded())
-		{
-			// Get an array of tag IDs which are being removed.
-			$tag_ids = (array) $this->request->post('tags');
-
-			DB::delete('tags_applied')
-				->where('object_type', '=', $asset->get_object_type_id())
-				->where('object_id', '=', $asset->id)
-				->where('tag_id', 'IN', $tag_ids)
-				->execute();
-		}
 	}
 
 	/**

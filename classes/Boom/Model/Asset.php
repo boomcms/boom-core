@@ -68,7 +68,6 @@ class Boom_Model_Asset extends ORM_Taggable
 		// If there's no asset_ids given then add the tags to the current asset.
 		if (empty($asset_ids))
 		{
-			var_dump($this->id);
 			$asset_ids[] = $this->id;
 		}
 
@@ -182,6 +181,28 @@ class Boom_Model_Asset extends ORM_Taggable
 	public function get_mime()
 	{
 		return File::mime(Boom_Asset::$path . $this->id);
+	}
+
+	/**
+	 * Remove multiple tags from the current asset.
+	 *
+	 * @param array $tag_ids
+	 * @return \Boom_Model_Asset
+	 */
+	public function remove_tags(array $tag_ids)
+	{
+		if ($this->_loaded AND ! empty($tag_ids))
+		{
+			// Remove the tags from the current asset.
+			DB::delete('tags_applied')
+				->where('object_type', '=', Model_Tag_Applied::OBJECT_TYPE_ASSET)
+				->where('object_id', '=', $this->id)
+				->where('tag_id', 'IN', $tag_ids)
+				->execute();
+		}
+
+		// Return the current object.
+		return $this;
 	}
 
 	/**

@@ -100,6 +100,7 @@ class Boom_Controller extends Controller
 			parent::after();
 
 			// Set some variables.
+			// TODO: remove these when sure that they're no longer needed.
 			View::bind_global('person', $this->person);
 			View::bind_global('auth', $this->auth);
 
