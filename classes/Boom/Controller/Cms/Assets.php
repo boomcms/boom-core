@@ -179,7 +179,7 @@ class Boom_Controller_Cms_Assets extends Boom_Controller
 				// Asset exists, send the file contents.
 				$this->response
 					->headers(array(
-						"Content-type" => $asset->get_mime(),
+						"Content-type" => $this->asset->get_mime(),
 						"Content-Disposition" => "attachment; filename=" . basename($this->asset->filename),
 						"Pragma" => "no-cache",
 						"Expires" => "0"
