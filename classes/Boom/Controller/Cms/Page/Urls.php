@@ -17,6 +17,20 @@ class Boom_Controller_Cms_Page_Urls extends Controller_Cms_Page
 	protected $_view_directory = "boom/editor/urls";
 
 	/**
+	 *
+	 * @var Model_Page_URL
+	 */
+	public $page_url;
+
+	public function before()
+	{
+		parent::before();
+
+		// Create a page_url model.
+		$this->page_url = new Model_Page_URL;
+	}
+
+	/**
 	 * Add a new url to a page.
 	 * The url is added as a secondary url.
 	 *
@@ -72,18 +86,17 @@ class Boom_Controller_Cms_Page_Urls extends Controller_Cms_Page
 	*/
 	public function action_delete()
 	{
-		// Get the url object.
-		// Don't delete with direct db query or we won't delete the cached version.
-		$url = ORM::factory('Page_URL')
+		// Get the page URL object
+		$this->page_url
 			->where('page_id', '=', $this->page->id)
-			->where('location', '=', $this->request->post('url'))
-			->where('is_primary', '=', FALSE)
+			->where('location', '=', $this->request->post('location'))
+			->where('is_primary', '=', FALSE)					// Only allow deleting the page URL if it isn't the primary URL
 			->find();
 
 		// Delete the url.
-		if ($url->loaded())
+		if ($this->page_url->loaded())
 		{
-			$url->delete();
+			$this->page_url->delete();
 		}
 	}
 

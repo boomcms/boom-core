@@ -1391,7 +1391,7 @@ $.extend($.boom.page, {
 						.post(
 							'/cms/page/urls/delete/' + $.boom.page.config.id,
 						 	{
-								url: $.trim( item.text() )
+								location: $.trim( item.text() )
 							}
 						)
 						.done( function(){
