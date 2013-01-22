@@ -1,6 +1,5 @@
 <div class="b-items-box-header ui-helper-reset ui-widget-header ui-panel-header ui-corner-all">
 	<h3 class="ui-helper-reset">
-		<span class="ui-icon ui-icon-carat-1-e ui-helper-left"></span>
 		<?=__('Filters')?>
 	</h3>
 </div>
