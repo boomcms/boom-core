@@ -132,9 +132,25 @@ class Boom_Controller_Cms_Groups extends Boom_Controller
 		));
 	}
 
+	/**
+	 * Returns a list of the roles which have been assigned to a group in JSON format.
+	 *
+	 * A page ID can be given in $_GET['page_id'] in order to get the roles set for a group on a particular page.
+	 *
+	 * @uses Model_Group::roles()
+	 */
 	public function action_list_roles()
 	{
-		
+		// Get the roles for the group.
+		$roles = $this->group->roles( (int) $this->request->query('page_id'));
+
+		// JSON encode the roles.
+		$roles = json_encode($roles);
+
+		// Set the response.
+		$this->response
+			->headers('Content-Type', 'application/json')
+			->body($roles);
 	}
 
 	/**
