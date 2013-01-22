@@ -24,15 +24,15 @@ class Boom_Controller_Cms_Page_Settings_Save extends Controller_Cms_Page_Setting
 
 		// Set the new page internal name and save the page.
 		$this->page
-			->values(array(
-				'internal_name'		=>	$this->request->post('internal_name'),
-			))
+			->values($this->request->post(), array('internal_name'))
 			->update();
 	}
 
 	/**
 	 * **Save the child page settings.**
 	 *
+	 * @uses Model_Page::cascade_to_children()
+	 * @uses Model_Page::children_ordering_policy()
 	 * @uses	Boom_Controller::log()
 	 */
 	public function action_children()
@@ -40,69 +40,47 @@ class Boom_Controller_Cms_Page_Settings_Save extends Controller_Cms_Page_Setting
 		// Call the parent function to do the permissions check.
 		parent::action_children();
 
-		// Get the POST data.
+		// Get the POST data so we don't have to call Request::post() multiple times.
 		$post = $this->request->post();
 
 		// Log the action.
-		$this->log("Saved child page settings for page " . $this->page->version()->title . " (ID: " . $this->page->id . ")");
+		$this->log("Saved child page settings for page ".$this->page->version()->title." (ID: ".$this->page->id.")");
+
+		// Which columns to expect for Model_Page::values();
+		$expected = array('children_template_id');
+
+		// Which columns to expect for Model_Page::children_cascade()
+		$cascade_expected = array('template_id');
 
 		// Set the new advanced settings, if allowed.
 		if ($this->allow_advanced)
 		{
-			$this->page
-				->values($post, array(
-					'children_visible_in_nav',
-					'children_visible_in_nav_cms',
-					'children_url_prefix'	,
-					'grandchild_template_id'
-				));
+			// Add the advanced settings to the expected values.
+			$expected = array_merge($expected, array(
+				'children_url_prefix',
+				'children_visible_in_nav',
+				'children_visible_in_nav_cms',
+				'grandchild_template_id'
+			));
 
-			// Updated existing child pages with leftnav visibility or template if required.
-			if ($post['visible_in_nav_cascade'] == 1 OR
-				$post['visible_in_nav_cms_cascase'] == 1 OR
-				$post['child_template_cascade'] == 1
-			)
-			{
-				if ($post['child_template_cascade'] == 1)
-				{
-					// Which template should be cascaded to the children?
-					$child_template = ($this->page->children_template_id == 0)? $this->page->version()->template_id : $this->page->children_template_id;
-				}
+			$cascade_expected = array_merge($cascade_expected, array('visible_in_nav', 'visible_in_nav_cms'));
+		}
 
-				$values = array();
+		// Make the changes to the page.
+		$this->page
+			->values($post, $expected)
+			->update();
 
-				// Cascading the visible_in_nav setting?
-				if ($post['visible_in_nav_cascade'] == 1)
-				{
-					$values['visible_in_nav'] = $this->page->children_visible_in_nav;
-				}
+		// Update the page's child ordering policy, if required.
+		if (isset($post['children_ordering_policy']) AND isset($post['children_ordering_direction']))
+		{
+			$this->page->children_ordering_policy($post['children_ordering_policy'], $post['children_ordering_direction']);
+		}
 
-				// Cascading the visible_in_nav_cms setting?
-				if ($post['visible_in_nav_cms_cascade'] == 1)
-				{
-					$values['visible_in_nav_cms'] = $this->page->children_visible_in_nav_cms;
-				}
-
-				// Cascading the template setting?
-				if ($post['child_template_cascade'] == 1)
-				{
-					$values['template_id'] = $child_template;
-				}
-
-				// Run the query
-				DB::update('pages')
-					->join('page_mptt', 'inner')
-					->on('pages.id', '=', 'page_mptt.id')
-					->where('parent_id', '=', $this->page->id)
-					->set($values)
-					->execute();
-			}
-
-			// Update the basic values and save the page.
-			$this->page
-				->children_ordering_policy($post['children_ordering_policy'], $post['child_ordering_direction'])
-				->set('children_template_id', $post['children_template_id'])
-				->update();
+		// Cascade any settings to the child pages, if required.
+		if (isset($post['cascade']) AND ! empty($post['cascade']))
+		{
+			$this->page->cascade_to_children($post['cascade'], $cascade_expected);
 		}
 	}
 
@@ -151,10 +129,7 @@ class Boom_Controller_Cms_Page_Settings_Save extends Controller_Cms_Page_Setting
 
 		// Update the visible_in_nav and visible_in_nav_cms settings.
 		$this->page
-			->values(array(
-				'visible_in_nav'		=>	$post['visible_in_nav'],
-				'visible_in_nav_cms'	=>	$post['visible_in_nav_cms'],
-			))
+			->values($post, array('visible_in_nav', 'visible_in_nav_cms'))
 			->update();
 	}
 
@@ -171,28 +146,18 @@ class Boom_Controller_Cms_Page_Settings_Save extends Controller_Cms_Page_Setting
 		// Log the action
 		$this->log("Saved search settings for page " . $this->page->version()->title . " (ID: " . $this->page->id . ")");
 
-		// Get the POST data.
-		$post = $this->request->post();
-
 		// Update the basic settings.
-		$this->page
-			->values(array(
-				'description'	=>	$post['description'],
-				'keywords'	=>	$post['keywords']
-			));
+		$expected = array('description', 'keywords');
 
 		// If the current user can edit the advanced settings then update the values for those as well.
 		if ($this->allow_advanced)
 		{
-			$this->page
-				->values(array(
-					'external_indexing'	=>	$post['external_indexing'],
-					'internal_indexing'	=>	$post['internal_indexing']
-				));
+			$expected = array_merge($expected, array('external_indexing', 'internal_indexing'));
 		}
 
 		// Save the page.
 		$this->page
+			->vlaues($this->request->post(), $expected)
 			->update();
 	}
 
