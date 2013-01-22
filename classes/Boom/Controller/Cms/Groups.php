@@ -89,7 +89,7 @@ class Boom_Controller_Cms_Groups extends Boom_Controller
 		$this->log("Edited the roles of group ".$this->group->name);
 
 		// Call [Model_Group::add_role()] with the role ID from the POST data.
-		$this->group->add_role($this->request->post('role_id'), $this->request->post('allowed'));
+		$this->group->add_role($this->request->post('role_id'), $this->request->post('allowed'), (int) $this->request->post('page_id'));
 	}
 
 	/**

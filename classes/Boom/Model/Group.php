@@ -48,8 +48,8 @@ class Boom_Model_Group extends ORM
 		}
 
 		// Check that the group doesn't already have this role before continuing.
-		if ( ! $this->has('roles', $role_id))
-		{
+//		if ( ! $this->has('roles', $role_id))
+//		{
 			// Create a relationship with the role.
 			// Don't use [ORM::add()] because we want to store the value of $allowed as well.
 			DB::insert('group_roles', array('group_id', 'role_id', 'allowed', 'page_id'))
@@ -64,7 +64,7 @@ class Boom_Model_Group extends ORM
 						->where('group_id', '=', $this->id)
 				)
 				->execute($this->_db);
-		}
+//		}
 
 		return $this;
 	}
