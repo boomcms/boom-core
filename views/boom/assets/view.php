@@ -29,15 +29,15 @@
 				<label for="title"><?=__('Title')?>
 				<input type="text" id="title" name="title" class="boom-input" value="<?= $asset->title?>" />
 				</label>
-				
+
 				<label for="description"><?=__('Description')?>
 				<textarea id="description" name="description" class="boom-textarea"><?= $asset->description?></textarea>
 				</label>
-				
+
 				<label for="visible_from">Visible from
 				<input type="text" id="visible_from" name="visible_from" class="boom-datepicker boom-input" value="<?= date('d F Y', $asset->visible_from);?>" />
 				</label>
-				
+
 			</div>
 
 			<div id="b-assets-view-info<?=$asset->id;?>" class="ui-helper-left">
@@ -47,27 +47,27 @@
 					<? endif; ?>
 					<p><?=__('Type')?>
 					<?= ucfirst(Boom_Asset::type($asset->type));?></p>
-					
+
 					<p><?=__('Filesize')?>
 					<?= Text::bytes($asset->filesize) ?></p>
-					
+
 					<? if ($asset->type == Boom_Asset::BOTR): ?>
-						
+
 						<p><?=__('Duration')?>
 						<?= gmdate("i:s", $asset->duration) ?></p>
-						
+
 					<? endif; ?>
 					<? if ($asset->type == Boom_Asset::IMAGE): ?>
-						
+
 						<p><?=__('Dimensions')?>
 						<?=$asset->width?> x <?=$asset->height?></p>
-						
+
 					<? endif; ?>
-					
+
 					<p><?=__('Uploaded by')?>
 					<?= $asset->uploader->name ?></p>
-					
-					
+
+
 					<p><?=__('Uploaded on')?>
 					<?= date('d F Y h:i:s', $asset->uploaded_time)?></p>
 
@@ -112,7 +112,7 @@
 			<br class="ui-helper-clear" />
 
 			<div style="padding: .8em 0 .8em .8em;border-color:#ccc;border-width:1px 0 0 0;" class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
-				<button class="boom-button ui-button-text-icon boom-tagmanager-asset-save" rel="<?=$asset->id?>" data-icon="ui-icon-boom-save">
+				<button class="boom-button ui-button-text-icon boom-tagmanager-asset-save" rel="<?=$asset->id?>" data-icon="ui-icon-boom-accept">
 					<?=__('Save')?>
 				</button>
 				<button class="boom-button ui-button-text-icon boom-tagmanager-asset-delete" rel="<?=$asset->id?>" data-icon="ui-icon-boom-delete">
