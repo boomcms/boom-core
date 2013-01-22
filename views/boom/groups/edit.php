@@ -18,8 +18,9 @@
 						<li data-id="<?= $role->id ?>">
 							<?= $role->description ?>
 
-							A: <?= Form::checkbox($role->id, 1); ?>
-							D: <?= Form::checkbox($role->id, -1); ?>
+							<label for="allow-<?= $role->id ?>">A: <?= Form::radio( $role->id, 1, FALSE, array( 'id' => 'allow-' . $role->id )); ?></label>
+							<label for="deny-<?= $role->id ?>">D: <?= Form::radio( $role->id, -1, FALSE, array( 'id' => 'deny-' . $role->id )); ?></label>
+							<label for="none-<?= $role->id ?>">X: <?= Form::radio( $role->id, 0, TRUE, array( 'id' => 'none-' . $role->id )); ?></label>
 						</li>
 					<? endforeach; ?>
 				</ul>
@@ -34,8 +35,9 @@
 						<li data-id="<?= $role->id ?>">
 							<?= $role->description ?>
 
-							A: <?= Form::checkbox($role->id, 1); ?>
-							D: <?= Form::checkbox($role->id, -1); ?>
+							<label for="allow-<?= $role->id ?>">A: <?= Form::radio( $role->id, 1, FALSE, array( 'id' => 'allow-' . $role->id )); ?></label>
+							<label for="deny-<?= $role->id ?>">D: <?= Form::radio( $role->id, -1, FALSE, array( 'id' => 'deny-' . $role->id )); ?></label>
+							<label for="none-<?= $role->id ?>">X: <?= Form::radio( $role->id, 0, TRUE, array( 'id' => 'none-' . $role->id )); ?></label>
 						</li>
 					<? endforeach; ?>
 				</ul>
