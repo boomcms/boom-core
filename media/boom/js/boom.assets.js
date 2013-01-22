@@ -409,6 +409,8 @@ $.extend($.boom.assets, {
 					$( this )
 					.find( '#b-assets-upload-form' )
 					.on( 'submit', function( event ){
+						
+						console.log( 'WOO' );
 
 						var formdata = new FormData( this );
 						var upload_token = $( '#upload_token' ).val();

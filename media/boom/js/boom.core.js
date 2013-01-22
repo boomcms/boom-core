@@ -919,7 +919,7 @@ $.extend($.boom, {
 				id =	this.options.id ? this.options.id : $.boom.util.dom.uniqueId( 'boom-dialog-' );
 			dialog = $('#' + id).length ?
 					$('#' + id) :
-					$('<div />').attr('id', id).hide().appendTo( $( top.document ).contents().find( 'body' ) );
+					$('<div />').attr('id', id).hide().appendTo( $( document ).contents().find( 'body' ) );
 
 
 			function initDialog(dialog, ui){
