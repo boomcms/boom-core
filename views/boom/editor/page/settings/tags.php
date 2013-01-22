@@ -11,7 +11,7 @@
 
 	<input id="b-pagesettings-tags-add-name" />
 
-	<button id="b-pagesettings-tags-add" class="boom-button" data-icon="ui-icon-circle-plus">
+	<button id="b-pagesettings-tags-add" class="boom-button" data-icon="ui-icon-boom-add">
 			<?=__('Add')?> <?=__('tag')?>
 	</button>
 </div>
