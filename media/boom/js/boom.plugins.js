@@ -243,10 +243,10 @@ boom.plugins.js
 			
 			this.elements.hitarea
 				.attr('role', 'hitarea')
-				.addClass( this.widgetBaseClass + '-hitarea');
+				.addClass( this.widgetFullName + '-hitarea');
 
 			this.elements.menu
-				.addClass( this.widgetBaseClass + '-menu ui-widget ui-widget-content ui-corner-all ui-helper-reset')
+				.addClass( this.widgetFullName + '-menu ui-widget ui-widget-content ui-corner-all ui-helper-reset')
 				.attr('role', 'menu');
 
 			this._build();

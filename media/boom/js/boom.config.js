@@ -273,7 +273,7 @@ window.boomConfig = {
 		*/
 		cache: false,
 		/** @function */
-		select: function(event, ui) {
+		active: function(event, ui) {
 			var url = $.data(ui.tab, 'load.tabs');
 			if (url) {
 				location.href = url;
@@ -282,7 +282,7 @@ window.boomConfig = {
 			return true;
 		},
 		/** @function */
-		show: function(event, ui){
+		activate: function(event, ui){
 			$(ui.tab.href.replace(/^.*?#/, '#')).show();
 		}
 	},
