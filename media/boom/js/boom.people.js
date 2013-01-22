@@ -421,12 +421,6 @@ $.extend($.boom.items.group,  {
 		var selected_page = null;
 
 		var permissions_treeConfig = {
-			showRemove: true,
-			onRemoveClick: function(event){
-				var $this = $( event.target );
-				var item = $this.closest( 'li' );
-				item.remove();
-			},
 			onClick: function(event){
 				console.log( 'CLICK' );
 				var $this = $( this );
@@ -436,6 +430,14 @@ $.extend($.boom.items.group,  {
 				var page_id = $this.attr( 'rel' );
 				selected_page = page_id;
 				console.log( rid );
+				
+				$this
+					.parents( '.boom-tree' )
+					.find( 'a.ui-state-active' )
+					.removeClass( 'ui-state-active' )
+					.end()
+					.end()
+					.addClass( 'ui-state-active' );
 				
 				$.get( '/cms/groups/list_roles/' + rid + '?page_id=' + page_id )
 				.done( function( data ){
