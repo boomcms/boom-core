@@ -41,7 +41,7 @@ $.extend($.boom.people, {
 							});
 
 						$.boom.dialog.destroy( dialog );
-						
+
 					}
 				}
 			});
@@ -441,7 +441,7 @@ $.extend($.boom.items.group,  {
 				});
 			}
 		};
-		
+
 		self.tagmanager.elements.rightpane
 		.find('.b-items-content')
 		.sload( '/cms/groups/edit/' + rid, function(){
@@ -451,6 +451,22 @@ $.extend($.boom.items.group,  {
 			$.boom.loader.hide();
 
 			self.bind();
+
+			/**
+			 * Save button has ID 'b-people-group-save'
+			 * Needs to POST to /cms/groups/save/<group ID>
+			 * With the value of 'b-people-group-name' in $_POST['name']
+			 * /
+
+			/**
+			 * Clicking on a page in the tree.
+			 * Should make a GET call to /cms/groups/list_roles/<group ID>?page_id=<page ID>
+			 *
+			 * This will return a json encoded array of role ID => <value>
+			 * Possible values are 1 if the role is allowed, -1 if the role is disallowed, and 0 if nothing is set.
+			 *
+			 * The role checkboxes should then be updated if the correct values.
+			 */
 		} );
 
 		// var dialog = $.boom.dialog.open({
@@ -465,18 +481,18 @@ $.extend($.boom.items.group,  {
 		// 					var data = {};
 		// 					data.name = $('#boom-tagmanager-group-edit-name').val();
 		// 					data.permissions = [];
-		// 
+		//
 		// 					$.each($('.boom-group-permission'), function(index, value){
 		// 						data.permissions.push( $(value).data( 'permission' ) );
 		// 					});
-		// 
+		//
 		// 					item.find('a').text( $( '#boom-tagmanager-group-edit-name' ).val() );
-		// 
+		//
 		// 					self.save( rid, data)
 		// 					.done( function(){
-		// 
+		//
 		// 						$.boom.dialog.destroy(dialog);
-		// 
+		//
 		// 						$.boom.growl.show('Group successfully saved.');
 		// 					});
 		// 				}
@@ -490,7 +506,7 @@ $.extend($.boom.items.group,  {
 		// 						})
 		// 						.done( function( permission ){
 		// 							self.update_tree( '#boom-group-permissions-general', permission );
-		// 
+		//
 		// 						});
 		// 					});
 		// 			}
