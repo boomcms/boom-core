@@ -132,6 +132,11 @@ class Boom_Controller_Cms_Groups extends Boom_Controller
 		));
 	}
 
+	public function action_list_roles()
+	{
+		
+	}
+
 	/**
 	 * Removes a role from the current group.
 	 *

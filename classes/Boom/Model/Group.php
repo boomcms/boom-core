@@ -175,6 +175,11 @@ class Boom_Model_Group extends ORM
 		return $this;
 	}
 
+	public function roles($page_id = 0)
+	{
+		
+	}
+
 	/**
 	 * ORM Validation rules
 	 * @link http://kohanaframework.org/3.2/guide/orm/examples/validation
