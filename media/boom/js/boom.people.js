@@ -418,6 +418,7 @@ $.extend($.boom.items.group,  {
 		var self = this;
 		var item = $( event.target ).closest( 'li' );
 		var rid = item.find('a').attr( 'rel' );
+		var selected_page = null;
 
 		var permissions_treeConfig = {
 			showRemove: true,
@@ -433,6 +434,7 @@ $.extend($.boom.items.group,  {
 
 				var item = $this.closest( 'li' );
 				var page_id = $this.attr( 'rel' );
+				selected_page = page_id;
 				console.log( rid );
 				
 				$.get( '/cms/groups/list_roles/' + rid + '?page_id=' + page_id )
@@ -454,7 +456,7 @@ $.extend($.boom.items.group,  {
 			.ui({
 				tree: permissions_treeConfig
 			})
-			.on( 'change', 'input[type=radio]', function( event ){
+			.on( 'change', '#b-group-roles-general input[type=radio]', function( event ){
 				
 				var role_id = this.name;
 				var allowed = this.value;
@@ -471,6 +473,33 @@ $.extend($.boom.items.group,  {
 						{ 
 							role_id : role_id,
 							allowed : allowed
+						} 
+					);
+				})
+				.done( function( response ){
+					console.log( response );
+				});
+			})
+			.on( 'change', '#b-group-roles-pages input[type=radio]', function( event ){
+				
+				var role_id = this.name;
+				var allowed = this.value;
+				var page_id = selected_page;
+				
+				$.post(
+					'/cms/groups/remove_role/' + rid,
+					{ 
+						role_id : role_id,
+						page_id : page_id
+					} 
+				)
+				.pipe( function( response ){
+					return $.post(
+						'/cms/groups/add_role/' + rid,
+						{ 
+							role_id : role_id,
+							allowed : allowed,
+							page_id: page_id
 						} 
 					);
 				})
