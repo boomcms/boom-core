@@ -441,49 +441,60 @@ $.extend($.boom.items.group,  {
 				});
 			}
 		};
+		
+		self.tagmanager.elements.rightpane
+		.find('.b-items-content')
+		.sload( '/cms/groups/edit/' + rid, function(){
 
-		var dialog = $.boom.dialog.open({
-			url: '/cms/groups/edit/' + rid,
-			title: 'Edit group',
-			buttons: {
-				Cancel: function(){
-					$.boom.dialog.destroy( dialog );
-				},
-				Save: function(){
-					var dialog = this;
-					var data = {};
-					data.name = $('#boom-tagmanager-group-edit-name').val();
-					data.permissions = [];
+			$.boom.tagmanager.base.item.prototype.get.apply( self );
 
-					$.each($('.boom-group-permission'), function(index, value){
-						data.permissions.push( $(value).data( 'permission' ) );
-					});
+			$.boom.loader.hide();
 
-					item.find('a').text( $( '#boom-tagmanager-group-edit-name' ).val() );
+			self.bind();
+		} );
 
-					self.save( rid, data)
-					.done( function(){
-
-						$.boom.dialog.destroy(dialog);
-
-						$.boom.growl.show('Group successfully saved.');
-					});
-				}
-			},
-			treeConfig: permissions_treeConfig,
-			open: function(){
-				$('#edit-group-permissions-general button')
-					.on( 'click', function(){
-						self.permissions.general_picker({
-							rid : rid
-						})
-						.done( function( permission ){
-							self.update_tree( '#boom-group-permissions-general', permission );
-
-						});
-					});
-			}
-		});
+		// var dialog = $.boom.dialog.open({
+		// 			url: '/cms/groups/edit/' + rid,
+		// 			title: 'Edit group',
+		// 			buttons: {
+		// 				Cancel: function(){
+		// 					$.boom.dialog.destroy( dialog );
+		// 				},
+		// 				Save: function(){
+		// 					var dialog = this;
+		// 					var data = {};
+		// 					data.name = $('#boom-tagmanager-group-edit-name').val();
+		// 					data.permissions = [];
+		// 
+		// 					$.each($('.boom-group-permission'), function(index, value){
+		// 						data.permissions.push( $(value).data( 'permission' ) );
+		// 					});
+		// 
+		// 					item.find('a').text( $( '#boom-tagmanager-group-edit-name' ).val() );
+		// 
+		// 					self.save( rid, data)
+		// 					.done( function(){
+		// 
+		// 						$.boom.dialog.destroy(dialog);
+		// 
+		// 						$.boom.growl.show('Group successfully saved.');
+		// 					});
+		// 				}
+		// 			},
+		// 			treeConfig: permissions_treeConfig,
+		// 			open: function(){
+		// 				$('#edit-group-permissions-general button')
+		// 					.on( 'click', function(){
+		// 						self.permissions.general_picker({
+		// 							rid : rid
+		// 						})
+		// 						.done( function( permission ){
+		// 							self.update_tree( '#boom-group-permissions-general', permission );
+		// 
+		// 						});
+		// 					});
+		// 			}
+		// 		});
 	},
 
 	/** @function */
