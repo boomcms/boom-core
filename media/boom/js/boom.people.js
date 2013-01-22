@@ -463,7 +463,8 @@ $.extend($.boom.items.group,  {
 			 * Should make a GET call to /cms/groups/list_roles/<group ID>?page_id=<page ID>
 			 *
 			 * This will return a json encoded array of role ID => <value>
-			 * Possible values are 1 if the role is allowed, -1 if the role is disallowed, and 0 if nothing is set.
+			 * Possible values are 1 if the role is allowed and 0 if the role is disallowed.
+			 * If nothing is set for a role then that role ID won't be in the returned array.
 			 *
 			 * The role checkboxes should then be updated if the correct values.
 			 */
