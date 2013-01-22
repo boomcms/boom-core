@@ -8,7 +8,7 @@
 			<li><a href="#b-group-roles-pages"><?=__('Pages')?></a></li>
 		</ul>
 
-		<div class="b-group-roles-general ui-tabs-panel ui-widget-content ui-helper-left">
+		<div id="b-group-roles-general" class="ui-tabs-panel ui-widget-content ui-helper-left">
 				<ul>
 					<? foreach ($general_roles as $role): ?>
 						<li data-id="<?= $role->id ?>">
@@ -17,7 +17,7 @@
 					<? endforeach; ?>
 				</ul>
 		</div>
-		<div class="b-group-roles-pages ui-tabs-panel ui-widget-content ui-helper-left">
+		<div id="b-group-roles-pages" class="ui-tabs-panel ui-widget-content ui-helper-left">
 			<div>
 				<?= Request::factory('cms/page/tree')->execute() ?>
 			</div>
