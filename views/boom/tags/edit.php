@@ -5,5 +5,5 @@
 
 	<label for="b-tag-parent">Parent tag
 
-	<?= Form::select('parent_id', $all_tags, array('id' => 'b-tag-parent')) ?></label>
+	<?= Form::select('parent_id', $all_tags, $tag->parent_id, array('id' => 'b-tag-parent')) ?></label>
 </form>
