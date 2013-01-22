@@ -42,11 +42,68 @@ class Boom_Model_Asset extends ORM_Taggable
 
 	protected $_table_name = 'assets';
 
+	protected $_updated_column = array(
+		'column'	=>	'last_modified',
+		'format'	=>	TRUE,
+	);
+
 	/**
 	 *
 	 * @var	array	Cache variable for [Model_Asset::old_files()]
 	 */
 	protected $_old_files = NULL;
+
+	/**
+	 * Adds multiple tags to a single, or multiple, assets.
+	 *
+	 * If no asset IDs are given in the second argument then the tags will only be added to the current asset.
+	 *
+	 *
+	 * @param array $tag_ids
+	 * @param array $asset_ids
+	 *
+	 * @return \Boom_Model_Asset
+	 */
+	public function add_tags(array $tag_ids, array $asset_ids = array())
+	{
+		// Ensure that the tag and asset IDs are unique.
+		$tag_ids = array_unique($tag_ids);
+		$asset_ids = array_unique($asset_ids);
+
+		// If there's no asset_ids given then add the tags to the current asset.
+		if (empty($asset_ids))
+		{
+			$asset_ids[] = $this->id;
+		}
+
+		// Prepare the insert query object.
+		$query = DB::insert('tags_applied', array('object_id', 'object_type', 'tag_id'));
+
+		foreach ($asset_ids as $asset_id)
+		{
+			foreach ($tag_ids as $tag_id)
+			{
+				// Add the tag and asset ID to the query.
+				$query->values(array(
+					'object_id'		=>	$asset_id,
+					'object_type'	=>	Model_Tag_Applied::OBJECT_TYPE_ASSET,
+					'tag_id'		=>	$tag_id,
+				));
+			}
+		}
+
+		// Execute the query.
+		// Ignore database exceptions incase the person is applying a tag to an asset where it's already applied.
+		try
+		{
+			$query->execute($this->_db);
+		}
+		catch (Database_Exception $e) {}
+
+		// Return the current object.
+		return $this;
+	}
+
 
 	/**
 	 * Delete an asset.
@@ -73,6 +130,15 @@ class Boom_Model_Asset extends ORM_Taggable
 				->set('deleted', TRUE)
 				->update();
 		}
+	}
+
+	public function filters()
+	{
+		return array(
+			'visible_from' => array(
+				array('strtotime'),
+			),
+		);
 	}
 
 	/**
@@ -123,6 +189,28 @@ class Boom_Model_Asset extends ORM_Taggable
 	}
 
 	/**
+	 * Remove multiple tags from the current asset.
+	 *
+	 * @param array $tag_ids
+	 * @return \Boom_Model_Asset
+	 */
+	public function remove_tags(array $tag_ids)
+	{
+		if ($this->_loaded AND ! empty($tag_ids))
+		{
+			// Remove the tags from the current asset.
+			DB::delete('tags_applied')
+				->where('object_type', '=', Model_Tag_Applied::OBJECT_TYPE_ASSET)
+				->where('object_id', '=', $this->id)
+				->where('tag_id', 'IN', $tag_ids)
+				->execute();
+		}
+
+		// Return the current object.
+		return $this;
+	}
+
+	/**
 	 * Returns the asset's type in a human readable format.
 	 *
 	 * @return 	string
@@ -130,5 +218,57 @@ class Boom_Model_Asset extends ORM_Taggable
 	public function type()
 	{
 		return Boom_Asset::type($this->type);
+	}
+
+	/**
+	 * Returns an array of the type of assets which exist in the database.
+	 *
+	 * Retrieves the numeric asset types which are stored in the database.
+	 * These are then converted to words using [Boom_Asset::type()]
+	 *
+	 * @uses Boom_Asset::type()
+	 * @return array
+	 */
+	public function types()
+	{
+		// Get the available asset types in numeric format.
+		$types = DB::select('type')
+			->distinct(TRUE)
+			->from('assets')
+			->where('deleted', '=', FALSE)
+			->where('type', '!=', 0)
+			->execute($this->_db)
+			->as_array();
+
+		// Turn the numeric asset types into user friendly strings.
+		$types = Arr::pluck($types, 'type');
+		$types = array_map(array('Boom_Asset', 'type'), $types);
+		$types = array_map('ucfirst', $types);
+
+		// Return the results.
+		return $types;
+	}
+
+	/**
+	 * Gets an array of the ID and name of people who have uploaded assets.
+	 *
+	 * The returned array will be an associative array of person ID => name.
+	 *
+	 * People who have uploaded assets, but who's assets are all deleted, will not appear in the returned array.
+	 *
+	 * @return array
+	 */
+	public function uploaders()
+	{
+		return DB::select('id', 'name')
+			->from('people')
+			->where('id', 'in', DB::select('uploaded_by')
+				->from('assets')
+				->where('deleted', '=', FALSE)
+				->distinct(TRUE)
+			)
+			->order_by('name', 'asc')
+			->execute($this->_db)
+			->as_array('id', 'name');
 	}
 }

@@ -21,12 +21,12 @@ $.extend($.boom.assets, {
 		this._init( config );
 
 		var self = this;
-		
+
 		var upload_menu = {
 			'Upoad image' : function( event ) {
 				self._upload();
 			},
-			
+
 			'Upload video' : function( event ) {
 				$.boom.dialog.open({
 					url: '/cms/video/upload',
@@ -42,7 +42,7 @@ $.extend($.boom.assets, {
 				});
 			}
 		};
-		
+
 		$('#boom-assets-upload-menu')
 			.splitbutton({
 				items: upload_menu,
@@ -158,13 +158,13 @@ $.extend($.boom.assets, {
 						$.boom.loader.show();
 
 						return $.post(
-							'/cms/assets/tag/' + ids.join('-'),
-							{tags:  tags}
+							'/cms/assets/add_tags/',
+							{assets: ids, tags:  tags}
 						);
 					})
 					.then( function( response ){
 						$.boom.loader.hide();
-						$.boom.history.load( 'asset/' + ids.join( '-' ) );
+						$.boom.growl.show( "Asset tags updated." );
 					});
 
 			});
@@ -385,8 +385,8 @@ $.extend($.boom.assets, {
 
 		var self = this;
 
-		//$.boom.history.load( 'asset/' + rid );
-		top.location.hash = '#asset/' + rid;
+		$.boom.history.load( 'asset/' + rid );
+		//top.location.hash = '#asset/' + rid;
 		self.selected_rid = rid;
 
 	},
@@ -690,7 +690,7 @@ $.extend($.boom.items.asset, {
 					$.boom.loader.show();
 
 					return $.post(
-						'/cms/assets/tag/' + $('#asset_id').val(),
+						'/cms/assets/add_tags/' + $('#asset_id').val(),
 						{tags:  tags}
 					);
 				})
@@ -718,7 +718,7 @@ $.extend($.boom.items.asset, {
 
 			$.boom.loader.show();
 
-			$.post('/cms/assets/untag/' + $('#asset_id').val(), {tags:  tags})
+			$.post('/cms/assets/remove_tags/' + $('#asset_id').val(), {tags:  tags})
 			.done( function(){
 
 				$.boom.loader.hide();

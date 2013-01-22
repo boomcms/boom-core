@@ -10,8 +10,8 @@
 	<ul class="ui-helper-clearfix boom-tree boom-tree-noborder">
 		<li><a><?=__('Uploaded by')?></a>
 			<ul class="ui-helper-hidden">
-				<? foreach ($uploaders as $uploader): ?>
-					<li><a href='#uploaded_by/<?= $uploader['id'] ?>'><?= $uploader['name'] ?></a></li>
+				<? foreach ($uploaders as $id => $name): ?>
+					<li><a href='#uploaded_by/<?= $id ?>'><?= $name ?></a></li>
 				<? endforeach ?>
 			</ul>
 		</li>

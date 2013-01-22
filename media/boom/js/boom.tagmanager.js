@@ -263,6 +263,8 @@ function CMSTagmanager(type){
 						.attr( 'href' )
 						.split('/')
 						[1];
+				
+				console.log( self.items.tag.rid );
 
 				self.items.tag.get( self.items.tag.rid );
 				return false;
@@ -295,7 +297,7 @@ function CMSTagmanager(type){
 
 				self.options.sortby = this.value; 
 						
-				//$.boom.history.refresh();
+				$.boom.history.refresh();
 			});
 		});
 
