@@ -118,8 +118,6 @@ class Boom_Controller_Cms_Groups extends Boom_Controller
 	 */
 	public function action_edit()
 	{
-
-
 		// Display the 'edit group' view with an empty group model.
 		$this->template = View::factory("$this->_view_directory/edit", array(
 			'group'		=>	$this->group,
