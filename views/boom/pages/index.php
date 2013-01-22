@@ -1,7 +1,7 @@
 	<?= View::factory('boom/header')->set('title', 'Pages') ?>
 
 	<div id="boom-topbar" class="ui-helper-clearfix ui-tabs ui-widget ui-widget-content ui-corner-all">
-		<?= Menu::factory('boom') ?>
+		<?= Menu::factory('boom')->sort('priority') ?>
 	</div>
 
 	<div id="boom-dialogs">
