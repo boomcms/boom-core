@@ -450,8 +450,33 @@ $.extend($.boom.items.group,  {
 
 			$.boom.loader.hide();
 
-			self.tagmanager.elements.rightpane.ui({
+			self.tagmanager.elements.rightpane
+			.ui({
 				tree: permissions_treeConfig
+			})
+			.on( 'change', 'input[type=radio]', function( event ){
+				
+				var role_id = this.name;
+				var allowed = this.value;
+				
+				$.post(
+					'/cms/groups/remove_role/' + rid,
+					{ 
+						role_id : role_id
+					} 
+				)
+				.pipe( function( response ){
+					return $.post(
+						'/cms/groups/add_role/' + rid,
+						{ 
+							role_id : role_id,
+							allowed : allowed
+						} 
+					);
+				})
+				.done( function( response ){
+					console.log( response );
+				});
 			});
 
 			/**
