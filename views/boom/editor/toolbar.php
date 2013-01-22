@@ -49,7 +49,7 @@
 
 	<? if ($auth->logged_in('edit_page', $page)): ?>
 
-			<button id="boom-page-visibility" class="boom-button" data-icon="ui-icon-boom-visibility">
+			<button id="boom-page-visibility" class="boom-button" data-icon="ui-icon-boom-<? echo ($page->is_visible())? 'visible' : 'invisible' ?>">
 				<?= __('Visibility') ?>
 			</button>
 			<span id="boom-page-settings-menu">
