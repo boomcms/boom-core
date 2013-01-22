@@ -2,6 +2,10 @@
 	<label for="b-people-group-name"><?= __('Name') ?></label>
 	<input type="text" id="b-people-group-name" class="boom-input boom-input-medium" name="name" value="<?=$group->name?>" />
 
+	<button class="boom-button" id="b-people-group-save" data-icon="ui-icon-boom-save">
+		<?= __('Save') ?>
+	</button>
+
 	<div class="boom-tabs ui-helper-clearfix">
 		<ul>
 			<li><a href="#b-group-roles-general"><?=__('CMS')?></a></li>
@@ -13,6 +17,9 @@
 					<? foreach ($general_roles as $role): ?>
 						<li data-id="<?= $role->id ?>">
 							<?= $role->description ?>
+
+							A: <?= Form::checkbox($role->id, 1); ?>
+							D: <?= Form::checkbox($role->id, -1); ?>
 						</li>
 					<? endforeach; ?>
 				</ul>
@@ -26,6 +33,9 @@
 					<? foreach ($page_roles as $role): ?>
 						<li data-id="<?= $role->id ?>">
 							<?= $role->description ?>
+
+							A: <?= Form::checkbox($role->id, 1); ?>
+							D: <?= Form::checkbox($role->id, -1); ?>
 						</li>
 					<? endforeach; ?>
 				</ul>
