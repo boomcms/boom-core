@@ -101,6 +101,19 @@ class Boom_Auth_Boom extends Auth
 		{
 			// A role has been given - check whether the active person is allowed to perform the role.
 
+			/**
+			 * If a page has been given then add 'p_' to the role name.
+			 *
+			 * Roles which are applied to pages are prefixed with 'p_' in the database
+			 * so that we can display them seperately from the general permissions when adding roles to groups in the people manager.
+			 *
+			 * To avoid having to add p_ to the start of role names everywhere in the code we just add the prefix here.
+			 */
+			if ($page !== NULL)
+			{
+				$role = 'p_'.$role;
+			}
+
 			// [Model_Person::is_allowed()] requires an instance of Model_Role.
 			// But we're called with a string - load the relevant role.
 			if (is_string($role))
