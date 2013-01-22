@@ -628,7 +628,7 @@ $.extend($.boom.items.asset, {
 
 			self.bind( this );
 
-			$(this).find('.boom-tabs').tabs('select', 1);
+			$(this).find('.boom-tabs').tabs('option', 'active', 1);
 		});
 	},
 

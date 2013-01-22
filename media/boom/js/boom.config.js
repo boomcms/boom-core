@@ -283,7 +283,8 @@ window.boomConfig = {
 		},
 		/** @function */
 		activate: function(event, ui){
-			$(ui.tab.href.replace(/^.*?#/, '#')).show();
+			//console.log( ui );
+			//$(ui.tab.href.replace(/^.*?#/, '#')).show();
 		}
 	},
 

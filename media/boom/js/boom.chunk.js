@@ -317,7 +317,7 @@ $.widget('ui.chunkLinkset', $.ui.chunk, {
 
 				$.boom.log('Check linkset links');
 
-				self.dialog.find('.boom-tabs:first').tabs('select', 1);
+				self.dialog.find('.boom-tabs:first').tabs('options', 'active', 1);
 			});
 		}
 	},
@@ -399,7 +399,7 @@ $.widget('ui.chunkLinkset', $.ui.chunk, {
 
 		this._refresh();
 
-		this.dialog.find('.boom-tabs:first').tabs('select', 0);
+		this.dialog.find('.boom-tabs:first').tabs('option', 'active', 0);
 
 		link.fadeIn(function(){
 			$(this).removeAttr('style');
