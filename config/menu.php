@@ -5,7 +5,7 @@ return array(
 		'view_filename'		=>	'menu/boom',
 		'items'			=>	array(
 			'home'		=>	array(
-				'title'		=>	'Home',
+				'title'		=>	'Site',
 				'url'		=>	'/',
 				'priority'	=>	1,
 			),
