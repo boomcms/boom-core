@@ -645,6 +645,7 @@ $.widget('ui.chunkAsset', $.ui.chunk, {
 
 			self.asset.asset_id = rid;
 			return $.boom.links.picker( {
+				page_rid: $.boom.page.config.id,
 				title: 'Add a link'
 			});
 		})

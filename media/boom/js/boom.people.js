@@ -434,10 +434,10 @@ $.extend($.boom.items.group,  {
 				var item = $this.closest( 'li' );
 				var page_id = $this.attr( 'rel' );
 				console.log( rid );
-
-				var dialog = self.permissions.page_picker( {
-					item_rid : rid,
-					page_rid : page_id
+				
+				$.get( '/cms/groups/list_roles/' + rid + '?page_id=' + page_id )
+				.done( function( data ){
+					console.log( data );
 				});
 			}
 		};
@@ -450,13 +450,15 @@ $.extend($.boom.items.group,  {
 
 			$.boom.loader.hide();
 
-			self.bind();
+			self.tagmanager.elements.rightpane.ui({
+				tree: permissions_treeConfig
+			});
 
 			/**
 			 * Save button has ID 'b-people-group-save'
 			 * Needs to POST to /cms/groups/save/<group ID>
 			 * With the value of 'b-people-group-name' in $_POST['name']
-			 * /
+			 */
 
 			/**
 			 * Clicking on a page in the tree.
