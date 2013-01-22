@@ -21,54 +21,6 @@ class Boom_Model_Group extends ORM
 	protected $_table_name = 'groups';
 
 	/**
-	 * Delete a group.
-	 *
-	 * Groups are not really deleted.
-	 * Instead the 'deleted' column is set to TRUE.
-	 * When marked as deleted a group will not appear in group lists and it's permissions will not effect the permissions of the people who belong to the group.
-	 *
-	 * We mark groups as deleted rather than deleting them completely so that mistakes can be reverted easily.
-	 * If we actually deleted a group we'd lose the records of:
-	 *
-	 * * Which people belong to the group.
-	 * * Which roles have been assigned to the group.
-	 *
-	 * This could cause a big headache if an important group was mistakenly deleted.
-	 *
-	 * @return \Boom_Model_Group
-	 */
-	public function delete()
-	{
-		// Delete the people_roles records for this group
-		// so that this group doesn't influence people's permissions.
-		DB::delete('people_roles')
-			->where('group_id', '=', $this->id)
-			->execute($this->_db);
-
-		// Make the group as deleted.
-		$this->deleted = TRUE;
-
-		// Save the changes.
-		$this->update();
-
-		// Return a cleared group model.
-		return $this->clear();
-	}
-
-	/**
-	 * ORM Validation rules
-	 * @link http://kohanaframework.org/3.2/guide/orm/examples/validation
-	 */
-	public function rules()
-	{
-		return array(
-			'name' => array(
-				array('not_empty'),
-			),
-		);
-	}
-
-	/**
 	 * Adds a role to the current group.
 	 *
 	 * This will also add the role to all members of the group.
@@ -116,6 +68,42 @@ class Boom_Model_Group extends ORM
 
 		return $this;
 	}
+
+	/**
+	 * Delete a group.
+	 *
+	 * Groups are not really deleted.
+	 * Instead the 'deleted' column is set to TRUE.
+	 * When marked as deleted a group will not appear in group lists and it's permissions will not effect the permissions of the people who belong to the group.
+	 *
+	 * We mark groups as deleted rather than deleting them completely so that mistakes can be reverted easily.
+	 * If we actually deleted a group we'd lose the records of:
+	 *
+	 * * Which people belong to the group.
+	 * * Which roles have been assigned to the group.
+	 *
+	 * This could cause a big headache if an important group was mistakenly deleted.
+	 *
+	 * @return \Boom_Model_Group
+	 */
+	public function delete()
+	{
+		// Delete the people_roles records for this group
+		// so that this group doesn't influence people's permissions.
+		DB::delete('people_roles')
+			->where('group_id', '=', $this->id)
+			->execute($this->_db);
+
+		// Make the group as deleted.
+		$this->deleted = TRUE;
+
+		// Save the changes.
+		$this->update();
+
+		// Return a cleared group model.
+		return $this->clear();
+	}
+
 
 	/**
 	 * Returns an array of the ID and name of all groups.
@@ -185,5 +173,18 @@ class Boom_Model_Group extends ORM
 			->execute($this->_db);
 
 		return $this;
+	}
+
+	/**
+	 * ORM Validation rules
+	 * @link http://kohanaframework.org/3.2/guide/orm/examples/validation
+	 */
+	public function rules()
+	{
+		return array(
+			'name' => array(
+				array('not_empty'),
+			),
+		);
 	}
 }
