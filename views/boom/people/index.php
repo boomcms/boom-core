@@ -18,16 +18,16 @@
 						<?=__('Menu')?>
 				</button>
 				<button id="boom-tagmanager-create-person" class="boom-button ui-button-text-icon" data-icon="ui-icon-boom-add">
-					New person
+					<?= __('New person') ?>
 				</button>
 			</div>
 
 			<div id="b-items-multiactons" class="ui-widget-content">
 				<button id="b-button-multiaction-edit" disabled="disabled" class="boom-button ui-button-text-icon" data-icon="ui-icon-boom-edit">
-					View/Edit
+					<?= __('View') ?>/<?= __('Edit') ?>
 				</button>
 				<button id="b-button-multiaction-delete" disabled="disabled" class="boom-button ui-button-text-icon" data-icon="ui-icon-boom-delete">
-					Delete
+					<?= __('Delete') ?>
 				</button>
 			</div>
 		</div>
@@ -55,12 +55,10 @@
 			<div class="b-items-sidebar ui-helper-left">
 				<div class="b-items-box-header ui-helper-reset ui-widget-header ui-panel-header ui-corner-all">
 					<a href="#" class="b-people-group-add ui-helper-right">
-						<span class="ui-icon ui-icon-wrench ui-helper-left"></span>
-						Add
+						<?= __('Add') ?>
 					</a>
 					<h3 class="ui-helper-reset">
-						<span class="ui-icon ui-icon-carat-1-e ui-helper-left"></span>
-						Groups
+						<?= __('Groups') ?>
 					</h3>
 				</div>
 				<ul class="boom-tree b-tags-tree  boom-tree-noborder">
