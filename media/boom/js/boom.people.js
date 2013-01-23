@@ -35,7 +35,7 @@ $.extend($.boom.people, {
 					},
 					Save: function(){
 						self
-							.savePerson()
+							.savePerson('/cms/people/add')
 							.done( function(){
 								window.location.reload();
 							});
@@ -90,7 +90,7 @@ $.extend($.boom.people, {
 	},
 
 	/** @function */
-	savePerson: function(){
+	savePerson: function(url){
 
 		// TODO: validation
 
@@ -98,7 +98,7 @@ $.extend($.boom.people, {
 
 		$.boom.loader.show();
 
-		return $.post('/cms/people/save', data)
+		return $.post(url, data)
 		.done( function(id){
 
 			$.boom.loader.hide();
@@ -430,7 +430,7 @@ $.extend($.boom.items.group,  {
 				var page_id = $this.attr( 'rel' );
 				selected_page = page_id;
 				console.log( rid );
-				
+
 				$this
 					.parents( '.boom-tree' )
 					.find( 'a.ui-state-active' )
@@ -438,7 +438,7 @@ $.extend($.boom.items.group,  {
 					.end()
 					.end()
 					.addClass( 'ui-state-active' );
-				
+
 				$.get( '/cms/groups/list_roles/' + rid + '?page_id=' + page_id )
 				.done( function( data ){
 					console.log( data );
@@ -459,23 +459,23 @@ $.extend($.boom.items.group,  {
 				tree: permissions_treeConfig
 			})
 			.on( 'change', '#b-group-roles-general input[type=radio]', function( event ){
-				
+
 				var role_id = this.name;
 				var allowed = this.value;
-				
+
 				$.post(
 					'/cms/groups/remove_role/' + rid,
-					{ 
+					{
 						role_id : role_id
-					} 
+					}
 				)
 				.pipe( function( response ){
 					return $.post(
 						'/cms/groups/add_role/' + rid,
-						{ 
+						{
 							role_id : role_id,
 							allowed : allowed
-						} 
+						}
 					);
 				})
 				.done( function( response ){
@@ -483,26 +483,26 @@ $.extend($.boom.items.group,  {
 				});
 			})
 			.on( 'change', '#b-group-roles-pages input[type=radio]', function( event ){
-				
+
 				var role_id = this.name;
 				var allowed = this.value;
 				var page_id = selected_page;
-				
+
 				$.post(
 					'/cms/groups/remove_role/' + rid,
-					{ 
+					{
 						role_id : role_id,
 						page_id : page_id
-					} 
+					}
 				)
 				.pipe( function( response ){
 					return $.post(
 						'/cms/groups/add_role/' + rid,
-						{ 
+						{
 							role_id : role_id,
 							allowed : allowed,
 							page_id: page_id
-						} 
+						}
 					);
 				})
 				.done( function( response ){
