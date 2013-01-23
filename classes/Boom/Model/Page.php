@@ -170,6 +170,15 @@ class Boom_Model_Page extends ORM_Taggable
 		return $this;
 	}
 
+	/**
+	 * Updates a page's children with the same values as the current page.
+	 *
+	 * @param array $columns
+	 * @param array $expected
+	 *
+	 * @return \Boom_Model_Page
+	 * @throws Exception
+	 */
 	public function cascade_to_children(array $columns, array $expected = array())
 	{
 		// Page must be loaded.
