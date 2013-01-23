@@ -306,8 +306,8 @@ input.boom-input-search {
 	-ox-shadow: inset 0 0 0;
 }
 
-#b-group-roles-general, #b-group-roles-pages{
-		input[type=radio] {
+#b-group-roles-general, #b-group-roles-pages, #b-pagesettings-urls{
+		input[type=radio], input[type=checkbox] {
 			position: absolute;
 			left: -9999px;
 		}
@@ -320,6 +320,28 @@ input.boom-input-search {
 			background-color: #333;
 			color: #ccc;
 		}
+}
+#b-pagesettings-urls {
+	label {
+		span.off {
+			background-color: #333;
+			color: #ccc;
+		}
+	}
+	input[type=checkbox]:checked + label {
+		background-color: inherit;
+		color: inherit;
+		span.on {
+			background-color: #333;
+			color: #ccc;
+		}
+		
+		
+		span.off {
+			background-color: inherit;
+			color: inherit;
+		}
+	}
 }
 /** jGrowl plugin */
 
