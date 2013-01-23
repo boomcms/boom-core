@@ -64,7 +64,7 @@ class Boom_Controller_Cms_Tags extends Boom_Controller
 		$all_tags = ORM::factory('Tag')->names(1);
 
 		// Add an element to the start of the array for no parent.
-		$all_tags[''] = 'None';
+		array_unshift($all_tags, array('' => 'No parent'));
 
 		$this->template = View::factory("$this->_view_directory/edit", array(
 			'tag'		=>	$this->tag,

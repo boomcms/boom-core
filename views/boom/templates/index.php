@@ -1,20 +1,8 @@
-<?php
-/**
-* This is the main template for the template manager.
-* This template should not be included directly.
-*
-* Rendered by: Boom_Controller_Cms_Templates::action_index()
-*/
-?>
-	<?= View::factory('boom/header',
-		array(
-			'title' =>	'Templates',
-		))
-	?>
+	<?= View::factory('boom/header', array('title' =>	'Templates'))?>
 
 	<div id="boom-topbar" class="ui-helper-clearfix ui-tabs ui-widget ui-widget-content ui-corner-all">
 
-		<?= Menu::factory('boom') ?>
+		<?= Menu::factory('boom')->sort('priority') ?>
 
 		<div class="ui-helper-clearfix ui-tabs-panel ui-widget-content ui-corner-bottom">
 			<div id="b-page-actions" class="ui-helper-right">

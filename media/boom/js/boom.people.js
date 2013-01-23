@@ -418,14 +418,9 @@ $.extend($.boom.items.group,  {
 		var self = this;
 		var item = $( event.target ).closest( 'li' );
 		var rid = item.find('a').attr( 'rel' );
+		var selected_page = null;
 
 		var permissions_treeConfig = {
-			showRemove: true,
-			onRemoveClick: function(event){
-				var $this = $( event.target );
-				var item = $this.closest( 'li' );
-				item.remove();
-			},
 			onClick: function(event){
 				console.log( 'CLICK' );
 				var $this = $( this );
@@ -433,11 +428,20 @@ $.extend($.boom.items.group,  {
 
 				var item = $this.closest( 'li' );
 				var page_id = $this.attr( 'rel' );
+				selected_page = page_id;
 				console.log( rid );
-
-				var dialog = self.permissions.page_picker( {
-					item_rid : rid,
-					page_rid : page_id
+				
+				$this
+					.parents( '.boom-tree' )
+					.find( 'a.ui-state-active' )
+					.removeClass( 'ui-state-active' )
+					.end()
+					.end()
+					.addClass( 'ui-state-active' );
+				
+				$.get( '/cms/groups/list_roles/' + rid + '?page_id=' + page_id )
+				.done( function( data ){
+					console.log( data );
 				});
 			}
 		};
@@ -450,13 +454,67 @@ $.extend($.boom.items.group,  {
 
 			$.boom.loader.hide();
 
-			self.bind();
+			self.tagmanager.elements.rightpane
+			.ui({
+				tree: permissions_treeConfig
+			})
+			.on( 'change', '#b-group-roles-general input[type=radio]', function( event ){
+				
+				var role_id = this.name;
+				var allowed = this.value;
+				
+				$.post(
+					'/cms/groups/remove_role/' + rid,
+					{ 
+						role_id : role_id
+					} 
+				)
+				.pipe( function( response ){
+					return $.post(
+						'/cms/groups/add_role/' + rid,
+						{ 
+							role_id : role_id,
+							allowed : allowed
+						} 
+					);
+				})
+				.done( function( response ){
+					console.log( response );
+				});
+			})
+			.on( 'change', '#b-group-roles-pages input[type=radio]', function( event ){
+				
+				var role_id = this.name;
+				var allowed = this.value;
+				var page_id = selected_page;
+				
+				$.post(
+					'/cms/groups/remove_role/' + rid,
+					{ 
+						role_id : role_id,
+						page_id : page_id
+					} 
+				)
+				.pipe( function( response ){
+					return $.post(
+						'/cms/groups/add_role/' + rid,
+						{ 
+							role_id : role_id,
+							allowed : allowed,
+							page_id: page_id
+						} 
+					);
+				})
+				.done( function( response ){
+					console.log( response );
+				});
+			});
 
 			/**
 			 * Save button has ID 'b-people-group-save'
 			 * Needs to POST to /cms/groups/save/<group ID>
 			 * With the value of 'b-people-group-name' in $_POST['name']
-			 * /
+			 */
 
 			/**
 			 * Clicking on a page in the tree.

@@ -1,21 +1,9 @@
-<?php
-/**
-* This is the main template for the asset manager.
-* This template should not be included directly.
-*
-* Rendered by: Boom_Controller_Cms_Assets::action_index()
-*/
-?>
-	<?= View::factory('boom/header',
-		array(
-			'title' =>	'Assets',
-		));
-	?>
+	<?= View::factory('boom/header', array('title' =>	'Assets')); ?>
 
 	<div id="boom-topbar" class="ui-helper-clearfix ui-tabs ui-widget ui-widget-content ui-corner-all">
 
-		<?= Menu::factory('boom') ?>
-		
+		<?= Menu::factory('boom')->sort('priority')  ?>
+
 		<div id="boom-topbar-useractions">
 			<span id="boom-page-user-menu">
 				<button id="b-page-user" class="boom-button" data-icon="ui-icon-boom-person">

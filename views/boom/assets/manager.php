@@ -19,18 +19,16 @@
 		</div>
 	</div>
 
-	<div class="b-items-sidebar ui-helper-left">		
+	<div class="b-items-sidebar ui-helper-left">
 		<?= $filters ?>
-		
+
 		<div class="b-items-box-header ui-helper-reset ui-widget-header ui-panel-header ui-corner-all">
 			<a href="#" class="b-tags-add ui-helper-right">
-				<span class="ui-icon ui-icon-wrench ui-helper-left"></span>
 				<?=__('Add')?>
 			</a>
 			<h3 class="ui-helper-reset">
-				<span class="ui-icon ui-icon-carat-1-e ui-helper-left"></span>
 				<?=__('Tags')?>
-			</h3>	
+			</h3>
 		</div>
 		<div id="boom-tag-tree">
 			<?= $tags ?>

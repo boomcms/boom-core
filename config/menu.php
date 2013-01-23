@@ -5,7 +5,7 @@ return array(
 		'view_filename'		=>	'menu/boom',
 		'items'			=>	array(
 			'home'		=>	array(
-				'title'		=>	'Home',
+				'title'		=>	'Site',
 				'url'		=>	'/',
 				'priority'	=>	1,
 			),
@@ -20,11 +20,6 @@ return array(
 				'url'		=>	'/cms/people',
 				'role'		=>	'manage_people',
 				'priority'	=>	4,
-			),
-			'pages'	=>	array(
-				'title'		=>	'Pages',
-				'url'		=>	'/cms/pages',
-				'priority'	=>	2,
 			),
 			'templates'	=>	array(
 				'title'		=>	'Templates',

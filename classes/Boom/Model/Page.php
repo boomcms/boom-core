@@ -171,9 +171,67 @@ class Boom_Model_Page extends ORM_Taggable
 	}
 
 	/**
+	 * Updates a page's children with the same values as the current page.
+	 *
+	 * @param array $columns
+	 * @param array $expected
+	 *
+	 * @return \Boom_Model_Page
+	 * @throws Exception
+	 */
+	public function cascade_to_children(array $columns, array $expected = array())
+	{
+		// Page must be loaded.
+		if ( ! $this->_loaded)
+		{
+			throw new Exception("Cannot call ".__CLASS__."::".__METHOD__." on an unloaded object.");
+		}
+
+		// If no expected columns have been given then use all the columns
+		// Except ID and internal_name which must be unique.
+		if (empty($expected))
+		{
+			$expected = array_diff(array_keys($this->_object), array('id', 'internal_name'));
+		}
+
+		// Don't update any columns which we aren't expecting.
+		$columns = array_intersect($expected, $columns);
+
+		// Get the values from the current object.
+		$values = Arr::extract($this->_object, $columns);
+
+		/**
+		 *  The template_id property is a special case.
+		 *
+		 * If the parent has a child_template_id property set then we should use that.
+		 * Otherwise we should use the parent's template_id property.
+		 */
+		if (isset($values['template_id']))
+		{
+			$values['template_id'] = ($this->_object['children_template_id'] == 0)? $this->version()->template_id : $this->_object['children_template_id'];
+		}
+
+		if ( ! empty($values))
+		{
+			// Run the query to update the children of the current page with their new values.
+			DB::update('pages')
+				->where('id', 'IN', DB::select('id')
+					->from('page_mptt')
+					->where('parent_id', '=', $this->id)
+				)
+				->set($values)
+				->execute($this->_db);
+		}
+
+		return $this;
+	}
+
+	/**
 	 * Getter / setter for the children_ordering_policy column.
+	 *
 	 * When used as a getter converts the integer stored in the children_ordering_policy column to an array of column and direction which can be used when querying the database.
-	 * When used as a setter converts the column and direction to an integer which can be stored in the children_ordering_policy column.
+	 *
+	 *  When used as a setter converts the column and direction to an integer which can be stored in the children_ordering_policy column.
 	 *
 	 * @param	string	$column
 	 * @param	string	$direction
@@ -386,7 +444,6 @@ class Boom_Model_Page extends ORM_Taggable
 			->where('embargoed_until', '<=', $_SERVER['REQUEST_TIME'])
 			->limit(1)
 			->execute();
-
 
 		return ($query->count() == 1);
 	}

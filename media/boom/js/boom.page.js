@@ -205,9 +205,11 @@ $.extend($.boom, {
 
 			if ( $.boom.cookie.contains( 'breadcrumb' ) ) {
 				$( '#breadcrumbs' ).hide();
+				$( '#b-breadcrumb-toggle' ).attr('data-icon', 'ui-icon-triangle-1-e');
 			}
-			$( '#boom-breadcrumb-toggle' ).on( 'click', function(){
+			$( '#b-breadcrumb-toggle' ).on( 'click', function(){
 				$( '#breadcrumbs' ).toggle();
+
 				$.boom.cookie.toggle( 'breadcrumb');
 			});
 

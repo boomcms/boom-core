@@ -3,7 +3,7 @@
 	# Hoop Associates   www.thisishoop.com   mail@hoopassociates.co.uk
 ?>
 <div>
-	<button id="boom-breadcrumb-toggle" class="boom-button">Toggle</button>
+	<button id="b-breadcrumb-toggle" class="boom-button" data-icon="ui-icon-triangle-1-s"></button>
 	<span id="breadcrumbs" class="block">
 		<?
 			$first = TRUE;

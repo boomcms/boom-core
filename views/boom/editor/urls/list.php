@@ -6,8 +6,8 @@
 		</p>
 	</div>
 	<div>
-		<h1>All urls</h1>
-		<ul class='boom-tree'>
+		<h1>All URLs</h1>
+		<ul>
 			<? foreach($page->urls->order_by('location', 'asc')->find_all() as $url): ?>
 				<li data-url="<?= $url->location ?>" data-id="<?= $url->id ?>">
 					<?= $url->location ?>

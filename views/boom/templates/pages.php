@@ -1,13 +1,8 @@
-<?php
-/**
-* Displays a list of pages which use a template.
-*/
-?>
 	<?= View::factory('boom/header')->set('title', 'Templates') ?>
 
 	<div id="boom-topbar" class="ui-helper-clearfix ui-tabs ui-widget ui-widget-content ui-corner-all">
 
-		<?= Menu::factory('boom') ?>
+		<?= Menu::factory('boom')->sort('priority') ?>
 
 		<div class="ui-helper-clearfix ui-tabs-panel ui-widget-content ui-corner-bottom">
 			<div id="b-page-actions" class="ui-helper-right">
