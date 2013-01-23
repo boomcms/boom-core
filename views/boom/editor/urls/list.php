@@ -14,7 +14,7 @@
 					<?= Form::radio('is_primary', $url->location, (bool) $url->is_primary, array('id' => 'is_primary_' . $url->id, 'class' => 'b-urls-primary')) ?>
 					<label for="is_primary_<?= $url->id ?>">√</label>
 					<?= Form::checkbox("redirect_" . $url->id, 1, (bool) $url->redirect, array('id' => 'redirect_' . $url->id,'class' => 'b-urls-redirect')) ?>
-					<label for="redirect__<?= $url->id ?>">R</label>
+					<label for="redirect_<?= $url->id ?>"><span class="on">R</span> <span class="off">V</span></label>
 				</li>
 			<? endforeach; ?>
 		</ul>
