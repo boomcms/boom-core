@@ -21,11 +21,6 @@ return array(
 				'role'		=>	'manage_people',
 				'priority'	=>	4,
 			),
-			'pages'	=>	array(
-				'title'		=>	'Pages',
-				'url'		=>	'/cms/pages',
-				'priority'	=>	2,
-			),
 			'templates'	=>	array(
 				'title'		=>	'Templates',
 				'url'		=>	'/cms/templates',
