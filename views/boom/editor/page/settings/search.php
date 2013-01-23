@@ -1,15 +1,15 @@
 <form id="boom-form-pagesettings-search" name="pagesettings-seo">
 	<div id="b-pagesettings-search" class="boom-tabs s-pagesettings">
-		<ul>
-			<li>
-				<a href="#b-pagesettings-search-basic">Basic</a>
-			</li>
-			<? if ($allow_advanced): ?>
+		<? if ($allow_advanced): ?>
+			<ul>
+				<li>
+					<a href="#b-pagesettings-search-basic">Basic</a>
+				</li>
 				<li>
 					<a href="#b-pagesettings-search-advanced">Advanced</a>
 				</li>
-			<? endif; ?>
-		</ul>
+			</ul>
+		<? endif; ?>
 
 		<div id="b-pagesettings-search-basic">
 			<label for="description" class="ui-helper-clearfix">
@@ -18,9 +18,9 @@
 				</span>
 				<span class="ui-icon ui-helper-left ui-icon-help boom-tooltip" title="A description of the description field."></span>
 			</label>
-			
+
 			<textarea id="description" name="description" class="boom-textarea"><?= $page->description() ?></textarea>
-			
+
 			<label for="keywords" class="ui-helper-clearfix">
 				<span class="ui-helper-left" style="padding-top:2px">
 					Keywords
@@ -37,8 +37,8 @@
 					<option <?if ($page->external_indexing) echo "selected='selected' "; echo "value='1'>Yes</option>"; ?>
 					<option <?if ( ! $page->external_indexing) echo "selected='selected' "; echo "value='0'>No</option>"; ?>
 				</select>
-						
-						
+
+
 				Show in site search results
 				<select name="internal_indexing">
 					<option value="0">No</option>

@@ -1,15 +1,15 @@
 <form id="boom-form-pagesettings-childsettings" name="pagesettings-childsettings">
 	<div id="child-settings" class="boom-tabs s-pagesettings">
-		<ul>
-			<li>
-				<a href="#child-settings-basic"><?=__('Basic')?></a>
-			</li>
-			<? if ($allow_advanced): ?>
+		<? if ($allow_advanced): ?>
+			<ul>
+				<li>
+					<a href="#child-settings-basic"><?=__('Basic')?></a>
+				</li>
 				<li>
 					<a href="#child-settings-advanced"><?=__('Advanced')?></a>
 				</li>
-			<? endif; ?>
-		</ul>
+			</ul>
+		<? endif; ?>
 
 		<div id="child-settings-basic">
 			<label for="children_template_id"><?=__('Default child template')?>
