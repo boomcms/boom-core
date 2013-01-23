@@ -48,8 +48,8 @@ class Boom_Model_Group extends ORM
 		}
 
 		// Check that the group doesn't already have this role before continuing.
-//		if ( ! $this->has('roles', $role_id))
-//		{
+		if ( ! $this->has_role($role_id, $page_id))
+		{
 			// Create a relationship with the role.
 			// Don't use [ORM::add()] because we want to store the value of $allowed as well.
 			DB::insert('group_roles', array('group_id', 'role_id', 'allowed', 'page_id'))
@@ -64,7 +64,7 @@ class Boom_Model_Group extends ORM
 						->where('group_id', '=', $this->id)
 				)
 				->execute($this->_db);
-//		}
+		}
 
 		return $this;
 	}
@@ -104,6 +104,34 @@ class Boom_Model_Group extends ORM
 		return $this->clear();
 	}
 
+	/**
+	 * Determines whether the current group has a specified role allowed / denied.
+	 *
+	 * ORM::has() doesn't work for this since we also have to take into account the page ID, if one is given.
+	 *
+	 * @param integer $role_id
+	 * @param integer $page_id
+	 * @return boolean
+	 */
+	public function has_role($role_id, $page_id = 0)
+	{
+		// If the group isn't loaded then it can't have the role.
+		if ( ! $this->_loaded)
+		{
+			return FALSE;
+		}
+
+		$result = DB::select(DB::expr(1))
+			->from('group_roles')
+			->where('group_id', '=', $this->id)
+			->where('role_id', '=', $role_id)
+			->where('page_id', '=', $page_id)
+			->execute($this->_db)
+			->as_array();
+
+		// The group has the role if a result was returned.
+		return (count($result) > 0);
+	}
 
 	/**
 	 * Returns an array of the ID and name of all groups.
