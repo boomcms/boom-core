@@ -307,11 +307,19 @@ input.boom-input-search {
 }
 
 #b-group-roles-general, #b-group-roles-pages{
-	label {
-		display: inline;
-		clear: none;
-		float: none;
-	}
+		input[type=radio] {
+			position: absolute;
+			left: -9999px;
+		}
+		label {
+			display: inline;
+			clear: none;
+			float: none;
+		}
+		input:checked + label {
+			background-color: #333;
+			color: #ccc;
+		}
 }
 /** jGrowl plugin */
 

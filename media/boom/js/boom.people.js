@@ -429,13 +429,15 @@ $.extend($.boom.items.group,  {
 				var item = $this.closest( 'li' );
 				var page_id = $this.attr( 'rel' );
 				selected_page = page_id;
-
-				console.log( $( '#b-group-roles-pages input[type=radio][value=-1]') );
 				
 				$( '#b-group-roles-pages input[type=radio]')
+					.filter( ':checked' )
 					.prop( 'checked', false )
+					.removeAttr( 'checked' )
+					.end()
 					.filter( '[value="-1"]' )
-					.prop( 'checked', true );
+					.prop( 'checked', true )
+					.attr( 'checked', 'checked' );
 
 				$this
 					.parents( '.boom-tree' )
@@ -449,9 +451,13 @@ $.extend($.boom.items.group,  {
 				.done( function( data ){
 					for ( role in data ) {
 						$( 'input[name=' + role + ']' )
+							.filter( ':checked' )
 							.prop( 'checked', false )
+							.removeAttr( 'checked' )
+							.end()
 							.filter( '[value=' + data[ role ] + ']' )
-							.prop( 'checked', true );
+							.prop( 'checked', true )
+							.attr( 'checked', 'checked' );
 					}
 				});
 			}
