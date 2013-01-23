@@ -115,7 +115,7 @@
 			<br class="ui-helper-clear" />
 
 			<div style="padding: .8em 0 .8em .8em;border-color:#ccc;border-width:1px 0 0 0;" class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
-				<button class="boom-button ui-button-text-icon b-people-save" rel="<?=$person->id?>" id='boom-tagmanager-save-person' data-icon="ui-icon-boom-save">
+				<button class="boom-button ui-button-text-icon b-people-save" rel="<?=$person->id?>" id='boom-tagmanager-save-person' data-icon="ui-icon-boom-accept">
 					Save
 				</button>
 				<button class="boom-button ui-button-text-icon" id="b-delete-person" rel="<?=$person->id?>" data-icon="ui-icon-boom-delete">

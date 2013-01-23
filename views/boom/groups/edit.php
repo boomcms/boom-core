@@ -2,7 +2,7 @@
 	<label for="b-people-group-name"><?= __('Name') ?></label>
 	<input type="text" id="b-people-group-name" class="boom-input boom-input-medium" name="name" value="<?=$group->name?>" />
 
-	<button class="boom-button" id="b-people-group-save" data-icon="ui-icon-boom-save">
+	<button class="boom-button" id="b-people-group-save" data-icon="ui-icon-boom-accept">
 		<?= __('Save') ?>
 	</button>
 
