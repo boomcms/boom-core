@@ -8,6 +8,7 @@ return array(
 				'title'		=>	'Pages',
 				'url'		=>	'/cms/pages',
 				'priority'	=>	2,
+				'role'		=>	'manage_pages',
 			),
 		),
 	),
