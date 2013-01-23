@@ -250,7 +250,19 @@ class Boom_Controller_Cms_Page extends Boom_Controller
 
 	public function action_tree()
 	{
-		$pages = DB::select(array('pages.id', 'page_id'), 'children_ordering_policy', 'pages.visible', 'visible_in_nav', 'page_urls.location', 'title', 'page_mptt.*')
+		$current_version = DB::select(array(DB::expr('max(id)'), 'id'), 'page_id')
+			->from('page_versions')
+			->where('stashed', '=', 0)
+			->group_by('page_id');
+
+		if ($this->editor->state() === Editor::DISABLED)
+		{
+			$current_version
+				->where('embargoed_until', '<=', DB::expr($this->editor->live_time()))
+				->where('published', '=', DB::expr(1));
+		}
+
+		$pages = DB::select(array('pages.id', 'page_id'), 'children_ordering_policy', 'pages.visible', 'visible_in_nav', 'page_urls.location', 'page_versions.title', 'page_mptt.*')
 			->from('pages')
 			->join('page_versions', 'inner')
 			->on('pages.id', '=', 'page_versions.page_id')
@@ -259,15 +271,26 @@ class Boom_Controller_Cms_Page extends Boom_Controller
 			->join('page_urls', 'inner')
 			->on('page_urls.page_id', '=', 'pages.id')
 			->where('is_primary', '=', TRUE)
-			->where('page_deleted', '=', FALSE)
-			->join(array(
-				DB::select(array(DB::expr('max(id)'), 'id'))
-					->from('page_versions')
-					->where('stashed', '=', FALSE)
-					->group_by('page_id'),
-				'current_version'
-			))
-			->on('page_versions.id', '=', 'current_version.id')
+			->join(array($current_version, 'v2'), 'inner')
+			->on('pages.id', '=', 'v2.page_id')
+			->on('v2.id', '=', 'page_versions.id')
+			->where('page_versions.page_deleted', '=', FALSE);
+
+		// Logged out view?
+		if ($this->editor->state() === Editor::DISABLED)
+		{
+			// Get the most recent published version for each page.
+			$pages
+				->where('visible_in_nav', '=', TRUE)
+				->where('visible', '=', TRUE)
+				->where('visible_from', '<=', $this->editor->live_time())
+				->and_where_open()
+					->where('visible_to', '>=', $this->editor->live_time())
+					->or_where('visible_to', '=', 0)
+				->and_where_close();
+		}
+
+		$pages = $pages->on('page_versions.id', '=', 'page_versions.id')
 			->order_by('page_mptt.lft', 'asc')
 			->execute()
 			->as_array();
