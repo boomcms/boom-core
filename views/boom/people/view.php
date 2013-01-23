@@ -69,7 +69,7 @@
 								<?foreach ($person->logs->order_by('time', 'desc')->limit(50)->find_all() as $al):?>
 									<tr class="boom-row-<?if (($i%2)==0) echo 'odd'; else echo 'even';?>">
 										<td><?=date('d F Y H:i:s', $al->time);?></td>
-										<td><?=$al->description;?></td>
+										<td><?=$al->activity;?></td>
 										<td><?=$al->note;?></td>
 									</tr>
 									<?$i++;?>
