@@ -429,7 +429,13 @@ $.extend($.boom.items.group,  {
 				var item = $this.closest( 'li' );
 				var page_id = $this.attr( 'rel' );
 				selected_page = page_id;
-				console.log( rid );
+
+				console.log( $( '#b-group-roles-pages input[type=radio][id|=none]') );
+				
+				$( '#b-group-roles-pages input[type=radio]')
+					.removeAttr( 'checked' )
+					.filter( '[value="-1"]' )
+					.attr( 'checked', 'checked' );
 
 				$this
 					.parents( '.boom-tree' )
@@ -498,6 +504,9 @@ $.extend($.boom.items.group,  {
 					}
 				)
 				.pipe( function( response ){
+					if ( allowed == -1 ){
+						return this.resolve();
+					}
 					return $.post(
 						'/cms/groups/add_role/' + rid,
 						{
