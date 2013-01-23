@@ -2,9 +2,9 @@
 	# Copyright 2009, Hoop Associates Ltd
 	# Hoop Associates   www.thisishoop.com   mail@hoopassociates.co.uk
 ?>
-<div>
+<div id="b-breadcrumbs">
 	<button id="b-breadcrumb-toggle" class="boom-button" data-icon="ui-icon-triangle-1-s"></button>
-	<span id="breadcrumbs" class="block">
+	<ul id="breadcrumbs" class="block">
 		<?
 			$first = TRUE;
 			// Show the parent pages.
@@ -18,7 +18,7 @@
 				{
 					$first = FALSE;
 				}
-				echo "<a href='" , $node->page->url() , "'>" , $node->page->version()->title , "</a>";
+				echo "<li><a href='" , $node->page->url() , "'>" , $node->page->version()->title , "</a></li>";
 			}
 
 			// Show this page.
@@ -26,7 +26,7 @@
 			{
 				echo " &gt; ";
 			}
-			echo "<a href='", $page->url(), "' class='current'>" , $page->version()->title, "</a>";
+			echo "<li><a href='", $page->url(), "' class='current'>" , $page->version()->title, "</a></li>";
 		?>
-	</span>
+	</ul>
 </div>
