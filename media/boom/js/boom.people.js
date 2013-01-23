@@ -441,7 +441,9 @@ $.extend($.boom.items.group,  {
 
 				$.get( '/cms/groups/list_roles/' + rid + '?page_id=' + page_id )
 				.done( function( data ){
-					console.log( data );
+					for ( role in data ) {
+						$( 'input[name=' + role + '][value=' + data[ role ] + ']' ).attr( 'checked', 'checked' );
+					}
 				});
 			}
 		};
@@ -485,7 +487,7 @@ $.extend($.boom.items.group,  {
 			.on( 'change', '#b-group-roles-pages input[type=radio]', function( event ){
 
 				var role_id = this.name;
-				var allowed = this.value;
+				var allowed = parseInt( this.value, 10 );
 				var page_id = selected_page;
 
 				$.post(
