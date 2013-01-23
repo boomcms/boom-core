@@ -80,7 +80,7 @@ abstract class Boom_Controller_Cms_Page_Settings extends Controller_Cms_Page
 		$this->authorization('edit_page_children_basic', $this->page);
 
 		// Is the current user allowed to edit the advanced settings?
-		$this->allow_advanced = $this->auth->logged_in('edit_page_children_advanced');
+		$this->allow_advanced = $this->auth->logged_in('edit_page_children_advanced', $this->page);
 	}
 
 	/**
@@ -104,7 +104,7 @@ abstract class Boom_Controller_Cms_Page_Settings extends Controller_Cms_Page
 		$this->authorization('edit_page_navigation_basic', $this->page);
 
 		// Is the current user allowed to edit the advanced settings?
-		$this->allow_advanced = $this->auth->logged_in('edit_page_navigation_advanced');
+		$this->allow_advanced = $this->auth->logged_in('edit_page_navigation_advanced', $this->page);
 	}
 
 	/**
@@ -127,7 +127,7 @@ abstract class Boom_Controller_Cms_Page_Settings extends Controller_Cms_Page
 		$this->authorization('edit_page_search_basic', $this->page);
 
 		// Is the current user allowed to edit the advanced settings?
-		$this->allow_advanced = $this->auth->logged_in('edit_page_search_advanced');
+		$this->allow_advanced = $this->auth->logged_in('edit_page_search_advanced', $this->page);
 	}
 
 	/**
