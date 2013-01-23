@@ -19,8 +19,8 @@
 							<?= $role->description ?>
 
 							<label for="allow-<?= $role->id ?>">A: <?= Form::radio( $role->id, 1, FALSE, array( 'id' => 'allow-' . $role->id )); ?></label>
-							<label for="deny-<?= $role->id ?>">D: <?= Form::radio( $role->id, -1, FALSE, array( 'id' => 'deny-' . $role->id )); ?></label>
-							<label for="none-<?= $role->id ?>">X: <?= Form::radio( $role->id, 0, TRUE, array( 'id' => 'none-' . $role->id )); ?></label>
+							<label for="deny-<?= $role->id ?>">D: <?= Form::radio( $role->id, 0, FALSE, array( 'id' => 'deny-' . $role->id )); ?></label>
+							<label for="none-<?= $role->id ?>">X: <?= Form::radio( $role->id, -1, TRUE, array( 'id' => 'none-' . $role->id )); ?></label>
 						</li>
 					<? endforeach; ?>
 				</ul>
@@ -36,8 +36,8 @@
 							<?= $role->description ?>
 
 							<label for="allow-<?= $role->id ?>">A: <?= Form::radio( $role->id, 1, FALSE, array( 'id' => 'allow-' . $role->id )); ?></label>
-							<label for="deny-<?= $role->id ?>">D: <?= Form::radio( $role->id, -1, FALSE, array( 'id' => 'deny-' . $role->id )); ?></label>
-							<label for="none-<?= $role->id ?>">X: <?= Form::radio( $role->id, 0, TRUE, array( 'id' => 'none-' . $role->id )); ?></label>
+							<label for="deny-<?= $role->id ?>">D: <?= Form::radio( $role->id, 0, FALSE, array( 'id' => 'deny-' . $role->id )); ?></label>
+							<label for="none-<?= $role->id ?>">X: <?= Form::radio( $role->id, -1, TRUE, array( 'id' => 'none-' . $role->id )); ?></label>
 						</li>
 					<? endforeach; ?>
 				</ul>
