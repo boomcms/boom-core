@@ -14,7 +14,9 @@ class Boom_Controller_Cms_Page_Version_Save extends Controller_Cms_Page_Version
 		parent::before();
 
 		// Create a new version of the page.
-		$this->new_version = $this->page->create_version();
+		$this->new_version = $this->page->create_version(array(
+			'edited_by'	=>	$this->person->id,
+		));
 
 		// If the embargo time of the new version is in the past, set the embargo time to NULL
 		// This means that if the old version was published, the new version will be a draft.
