@@ -64,9 +64,8 @@
 
 					<? endif; ?>
 
-					<p><?=__('Uploaded by')?>
-					<?= $asset->uploader->name ?></p>
-
+					<?/*<p><?=__('Uploaded by')?>
+					<?= $asset->uploader->name ?></p>*/?>
 
 					<p><?=__('Uploaded on')?>
 					<?= date('d F Y h:i:s', $asset->uploaded_time)?></p>
