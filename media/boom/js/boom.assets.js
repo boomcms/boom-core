@@ -855,5 +855,12 @@ $.extend($.boom.items.asset, {
 			});
 
 		});
+
+		$( '.boom-tagmanager-asset-back' ).on( 'click', function( event ){
+			event.preventDefault();
+			var tag = self.tagmanager.items.tag;
+			tag.get( tag.rid );
+			
+		});
 	}
 });
