@@ -18,7 +18,7 @@
 				{
 					$first = FALSE;
 				}
-				echo "<li><a href='" , $node->page->url() , "'>" , $node->page->version()->title , "</a></li>";
+				echo "<li><a target='_top' href='" , $node->page->url() , "'>" , $node->page->version()->title , "</a></li>";
 			}
 
 			// Show this page.
@@ -26,7 +26,7 @@
 			{
 				echo " &gt; ";
 			}
-			echo "<li><a href='", $page->url(), "' class='current'>" , $page->version()->title, "</a></li>";
+			echo "<li><a href='", $page->url(), "' class='current' target='_top'>" , $page->version()->title, "</a></li>";
 		?>
 	</ul>
 </div>
