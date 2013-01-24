@@ -104,7 +104,7 @@ class Boom_Controller_Cms_Uploadify extends Kohana_Controller
 					$asset->filesize = $file['size'];
 					$asset->uploaded_by = $this->request->post('person');
 					$asset->type = Boom_Asset::type_from_mime(File::mime($file['tmp_name']));
-					$asset->visible_from = $_SERVER['REQUEST_TIME'];
+					$asset->visible_from = 'now';
 					$asset->last_modified = $_SERVER['REQUEST_TIME'];
 
 					if ($asset->type == Boom_Asset::IMAGE)
@@ -115,7 +115,7 @@ class Boom_Controller_Cms_Uploadify extends Kohana_Controller
 						$asset->height = $height;
 					}
 
-					$asset->create();
+					$asset->save();
 
 					try
 					{
@@ -124,7 +124,7 @@ class Boom_Controller_Cms_Uploadify extends Kohana_Controller
 							// We're replacing an existing asset so move the old file to prevent overwriting it.
 							// Backup asset files with the curretn version ID (the version at which they were replaced).
 							// This is so that we can easily get the version details from the db to report who replaced the asset.
-							@rename(Boom_Asset::$path . $asset->id, Boom_Asset::$path . $asset->id . "." . $asset->version->id . ".bak");
+							@rename(Boom_Asset::$path.$asset->id, Boom_Asset::$path.$asset->id.".".$_SERVER['REQUEST_TIME'].".bak");
 						}
 
 						Upload::save($file, $asset->id, Boom_Asset::$path);
