@@ -22,7 +22,7 @@ class Boom_Model_Chunk_Text extends ORM
 
 	/**
 	 * Clean the text with HTML Purifier.
-	 * 
+	 *
 	 * @param string $text
 	 * @return string
 	 */
@@ -30,8 +30,14 @@ class Boom_Model_Chunk_Text extends ORM
 	{
 		require_once Kohana::find_file('vendor', 'htmlpurifier/library/HTMLPurifier.auto');
 
+		// Get the HTML Purifier config from a config file.
 		$config = HTMLPurifier_Config::createDefault();
+		$config->loadArray(Kohana::$config->load('htmlpurifier'));
+
+		// Create a purifier object.
 		$purifier = new HTMLPurifier($config);
+
+		// Return the cleaned text.
 		return $purifier->purify($text);
 	}
 
