@@ -15,6 +15,7 @@
 					<label for="is_primary_<?= $url->id ?>">√</label>
 					<?= Form::checkbox("redirect_" . $url->id, 1, (bool) $url->redirect, array('id' => 'redirect_' . $url->id,'class' => 'b-urls-redirect')) ?>
 					<label for="redirect_<?= $url->id ?>"><span class="on">R</span> <span class="off">V</span></label>
+					<button class="boom-button b-urls-remove">X</button>
 				</li>
 			<? endforeach; ?>
 		</ul>

@@ -1321,6 +1321,15 @@ $.extend($.boom.page, {
 								$.boom.growl.show("URL saved.");
 							});
 						});
+						
+						$( '.b-urls-remove' ).on( 'click', function( event ){
+
+							event.preventDefault();
+
+							var item = $( event.target ).closest( 'li' );
+
+							self.remove( item );
+						});
 					}
 				});
 			},
@@ -1393,7 +1402,7 @@ $.extend($.boom.page, {
 						.post(
 							'/cms/page/urls/delete/' + $.boom.page.config.id,
 						 	{
-								location: $.trim( item.text() )
+								location: $.trim( item.attr( 'data-url' ) )
 							}
 						)
 						.done( function(){
