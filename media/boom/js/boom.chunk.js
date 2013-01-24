@@ -77,6 +77,7 @@ $.widget('ui.chunk', {
 		} );
 
 		$.boom.page.save_button.button( 'enable' ).attr( 'title', 'Save page' );
+		$.boom.page.cancel_button.button( 'enable' ).attr( 'title', 'Cancel' );
 	},
 
 	/**

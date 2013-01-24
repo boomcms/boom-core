@@ -10,6 +10,9 @@ $.extend($.boom, {
 
 		/** @property */
 		save_button: $('#b-page-save'),
+		
+		/** @property */
+		cancel_button: $('#b-page-cancel'),
 
 
 
@@ -123,6 +126,9 @@ $.extend($.boom, {
 				}
 			};
 
+			this.cancel_button.on( 'click', function(){
+				top.location.reload();
+			})
 			$('#b-page-delete').click(function(){
 
 				$.boom.dialog.open({
@@ -316,6 +322,7 @@ $.extend($.boom, {
 					{
 						$('#b-page-publish').show();
 						$.boom.page.save_button.button( 'disable' ).attr( 'title', 'You have no unsaved changes' );
+						$.boom.page.cancel_button.button( 'disable' ).attr( 'title', 'You have no unsaved changes' );
 					}
 					else
 					{
