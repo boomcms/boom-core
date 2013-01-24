@@ -112,6 +112,9 @@
 			<br class="ui-helper-clear" />
 
 			<div style="padding: .8em 0 .8em .8em;border-color:#ccc;border-width:1px 0 0 0;" class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+				<a href="#tag/0" class="boom-button ui-button-text-icon boom-tagmanager-asset-back" rel="<?=$asset->id?>" data-icon="ui-icon-boom-back">
+					<?=__('Back')?>
+				</a>
 				<button class="boom-button ui-button-text-icon boom-tagmanager-asset-save" rel="<?=$asset->id?>" data-icon="ui-icon-boom-accept">
 					<?=__('Save')?>
 				</button>
