@@ -1262,18 +1262,6 @@ $.extend($.boom.page, {
 
 				var self = this;
 
-				var treeConfig = $.extend( {}, $.boom.config.tree, {
-					showRemove: true,
-					onRemoveClick: function(event){
-
-						event.preventDefault();
-
-						var item = $( event.target ).closest( 'li' );
-
-						self.remove( item );
-					}
-				});
-
 				$.boom.dialog.open({
 					url: '/cms/page/urls/list/' + $.boom.page.config.id,
 					event: event,
@@ -1305,38 +1293,47 @@ $.extend($.boom.page, {
 						}
 					},
 					open: function(){
-						//  Each url in the list has a radio button whic toggles whether the url is a primary url
-						// and a checkbox to toggle whether a secondary url redirects to the primary url.
-						$('.b-urls-primary, .b-urls-redirect').change(function(){
-							$url = $(this).closest('li');
-							redirect = $url.find('.b-urls-redirect').is(':checked')? 1: 0;
-							primary = $url.find('.b-urls-primary').is(':checked')? 1 : 0;
-
-							$.post('/cms/page/urls/save/' + $.boom.page.config.id, {
-								url_id :  $url.attr('data-id'),
-								redirect : redirect,
-								primary : primary
-							})
-							.done(function(){
-								$.boom.growl.show("URL saved.");
-							});
-						});
-						
-						$( '.b-urls-remove' ).on( 'click', function( event ){
-
-							event.preventDefault();
-
-							var item = $( event.target ).closest( 'li' );
-
-							self.remove( item );
-						});
+						self.bind();
 					}
+				});
+			},
+			
+			/** @function */
+			bind: function() {
+				
+				var self = this;
+				
+				//  Each url in the list has a radio button whic toggles whether the url is a primary url
+				// and a checkbox to toggle whether a secondary url redirects to the primary url.
+				$('.b-urls-primary, .b-urls-redirect').change(function(){
+					$url = $(this).closest('li');
+					redirect = $url.find('.b-urls-redirect').is(':checked')? 1: 0;
+					primary = $url.find('.b-urls-primary').is(':checked')? 1 : 0;
+
+					$.post('/cms/page/urls/save/' + $.boom.page.config.id, {
+						url_id :  $url.attr('data-id'),
+						redirect : redirect,
+						primary : primary
+					})
+					.done(function(){
+						$.boom.growl.show("URL saved.");
+					});
+				});
+				
+				$( '.b-urls-remove' ).on( 'click', function( event ){
+
+					event.preventDefault();
+
+					var item = $( event.target ).closest( 'li' );
+
+					self.remove( item );
 				});
 			},
 
 			/** @function */
 			add: function() {
 
+				var self = this;
 				var form = $('#boom-form-addurl');
 				var new_url = $( 'input[name=url]' ).val();
 
@@ -1384,9 +1381,12 @@ $.extend($.boom.page, {
 						{
 							// success
 							$.boom.growl.show('Url added.');
-							$( '#b-pagesettings-urls .boom-tree' )
-								.data( 'tree' )
-								.add_item( '<li>' + new_url + '</li>' );
+							$( '#b-pagesettings-urls' )
+								.parent()
+								.load( '/cms/page/urls/list/' + $.boom.page.config.id, function(){
+									$(this).ui();
+									self.bind();
+								});
 						}
 					});
 			},
