@@ -1268,7 +1268,6 @@ $.extend($.boom.page, {
 					// cache: true,
 					title: 'URLs',
 					width: 440,
-					treeConfig: treeConfig,
 					buttons: {
 						Add: function( event ){
 							$.boom.dialog.open({
@@ -1316,6 +1315,14 @@ $.extend($.boom.page, {
 						primary : primary
 					})
 					.done(function(){
+						$url
+							.parent()
+							.find( '.ui-state-active' )
+							.removeClass( 'ui-state-active' )
+							.end()
+							.find( '.b-urls-primary:checked' )
+							.parent()
+							.addClass( 'ui-state-active' );
 						$.boom.growl.show("URL saved.");
 					});
 				});
