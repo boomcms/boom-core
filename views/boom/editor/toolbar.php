@@ -5,6 +5,9 @@
 	<?= Menu::factory('boom')->sort('priority') ?>
 
 	<div id="boom-topbar-useractions">
+		<button id="boom-page-menu" class="boom-button" data-icon="ui-icon-boom-menu">
+				<?=__('Menu')?>
+		</button>
 		<span id="boom-page-user-menu">
 			<button id="b-page-user" class="boom-button" data-icon="ui-icon-boom-person">
 				<?=__('Profile')?>
@@ -13,10 +16,6 @@
 	</div>
 
 	<div id="b-page-actions">
-
-		<button id="boom-page-menu" class="boom-button" data-icon="ui-icon-boom-menu">
-				<?=__('Menu')?>
-		</button>
 
 		<? if ($auth->logged_in('edit_page_content', $page)): ?>
 

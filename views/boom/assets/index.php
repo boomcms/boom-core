@@ -5,6 +5,9 @@
 		<?= Menu::factory('boom')->sort('priority')  ?>
 
 		<div id="boom-topbar-useractions">
+			<button id="boom-page-menu" class="boom-button" data-icon="ui-icon-boom-menu">
+					<?=__('Menu')?>
+			</button>
 			<span id="boom-page-user-menu">
 				<button id="b-page-user" class="boom-button" data-icon="ui-icon-boom-person">
 					<?=__('Profile')?>
@@ -14,9 +17,6 @@
 
 		<div class="ui-helper-clearfix ui-tabs-panel ui-widget-content ui-corner-bottom">
 			<div id="b-page-actions" class="ui-helper-right">
-				<button id="boom-page-menu" class="boom-button" data-icon="ui-icon-boom-menu">
-						<?=__('Menu')?>
-				</button>
 				<span id="boom-assets-upload-menu">
 					<button id="b-assets-upload" class="boom-button ui-button-text-icon" data-icon="ui-icon-boom-upload">
 						<?=__('Upload files')?>
