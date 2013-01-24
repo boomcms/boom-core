@@ -85,7 +85,9 @@ class Boom_Controller_Cms_Assets extends Boom_Controller
 			// Call [Model_Asset::delete()]
 			// If the asset isn't marked as deleted then it will be marked it as so.
 			// If it's already marked as deleted then it will be deleted it for real.
-			$this->asset->delete();
+			$this->asset
+				->delete()
+				->clear();
 
 			// Log the action.
 			$this->log($log_message);

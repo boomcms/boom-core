@@ -1,3 +1,6 @@
 [submodule "static/cms/js/qunit"]
 	path = media/boom/js/qunit
 	url = git://github.com/jquery/qunit.git
+[submodule "vendor/htmlpurifier"]
+	path = vendor/htmlpurifier
+	url = git://repo.or.cz/htmlpurifier.git

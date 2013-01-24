@@ -21,6 +21,21 @@ class Boom_Model_Chunk_Text extends ORM
 	protected $_table_name = 'chunk_texts';
 
 	/**
+	 * Clean the text with HTML Purifier.
+	 * 
+	 * @param string $text
+	 * @return string
+	 */
+	public function clean_text($text)
+	{
+		require_once Kohana::find_file('vendor', 'htmlpurifier/library/HTMLPurifier.auto');
+
+		$config = HTMLPurifier_Config::createDefault();
+		$purifier = new HTMLPurifier($config);
+		return $purifier->purify($text);
+	}
+
+	/**
 	 * When creating a text chunk log which assets are linked to from it.
 	 *
 	 * @param	Validation $validation
@@ -69,8 +84,10 @@ class Boom_Model_Chunk_Text extends ORM
 	{
 		return array(
 			'text' => array(
-				array('html_entity_decode'),
 				array('urldecode'),
+				array('html_entity_decode'),
+				array(array($this, 'clean_text')),
+				array('html_entity_decode'),
 				array('Chunk_Text::munge'),
 			),
 		);
