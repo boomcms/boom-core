@@ -409,7 +409,7 @@ $.extend($.boom.assets, {
 					$( this )
 					.find( '#b-assets-upload-form' )
 					.on( 'submit', function( event ){
-						
+
 						console.log( 'WOO' );
 
 						var formdata = new FormData( this );
@@ -423,7 +423,7 @@ $.extend($.boom.assets, {
 							.done( function( data ){
 
 								$.boom.dialog.destroy( upload_dialog );
-								top.location.hash = '#asset/' + data.rids.join('-');
+								top.location = '/cms/assets';
 								tagmanager.selected_rid = data.rids[0];
 							});
 					});
@@ -432,7 +432,7 @@ $.extend($.boom.assets, {
 						.done( function( data ){
 
 							$.boom.dialog.destroy( upload_dialog );
-							top.location.hash = '#asset/' + data.rids.join('-');
+							top.location.hash = '/cms/assets';
 							tagmanager.selected_rid = data.rids[0];
 						});
 				}
@@ -860,7 +860,7 @@ $.extend($.boom.items.asset, {
 			event.preventDefault();
 			var tag = self.tagmanager.items.tag;
 			tag.get( tag.rid );
-			
+
 		});
 	}
 });
