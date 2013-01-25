@@ -1,3 +1,16 @@
+/* Asset manager opening in a dialog */
+/* Stop the 'filters' and 'tags' headers clashing with the dialog background. */
+.ui-dialog {
+	& .b-items-box-header {
+		background: #000000;
+
+		/* Hide the 'add tag' button. */
+		& .b-tags-add {
+			display: none;
+		}
+	}
+}
+
 /* BOOM ASSETS */
 #b-assets {
 	&-view {
