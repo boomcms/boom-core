@@ -41,35 +41,31 @@
 			</div>
 
 			<div id="b-assets-view-info<?=$asset->id;?>" class="ui-helper-left">
+				<dl>
+					<dt><?=__('Type')?></dt>
+					<dd><?= ucfirst(Boom_Asset::type($asset->type));?></dd>
 
-					<? if ($asset->type == Boom_Asset::BOTR AND ! $asset->encoded): ?>
-					<p><?=__('Video encoding')?></p>
-					<? endif; ?>
-					<p><?=__('Type')?>
-					<?= ucfirst(Boom_Asset::type($asset->type));?></p>
-
-					<p><?=__('Filesize')?>
-					<?= Text::bytes($asset->filesize) ?></p>
+					<dt><?=__('Filesize')?></dt>
+					<dd><span id='filesize'><?= Text::bytes($asset->filesize) ?></dd>
 
 					<? if ($asset->type == Boom_Asset::BOTR): ?>
-
-						<p><?=__('Duration')?>
-						<?= gmdate("i:s", $asset->duration) ?></p>
-
+						<dt><?=__('Duration')?></dt>
+						<dd><?= gmdate("i:s", $asset->duration) ?></dd>
 					<? endif; ?>
+
 					<? if ($asset->type == Boom_Asset::IMAGE): ?>
-
-						<p><?=__('Dimensions')?>
-						<?=$asset->width?> x <?=$asset->height?></p>
-
+						<dt><?=__('Dimensions')?></dt>
+						<dd><?=$asset->width?> x <?=$asset->height?></dd>
 					<? endif; ?>
 
-					<?/*<p><?=__('Uploaded by')?>
-					<?= $asset->uploader->name ?></p>*/?>
+					<?/*
+						<dl><?=__('Uploaded by')?></dl>
+						<dt><?= $asset->uploader->name ?></dt>
+					 */?>
 
-					<p><?=__('Uploaded on')?>
-					<?= date('d F Y h:i:s', $asset->uploaded_time)?></p>
-
+					<dt><?=__('Uploaded on')?></dt>
+					<dd><?= date('d F Y h:i:s', $asset->uploaded_time)?></dd>
+				</dl>
 			</div>
 
 			<div id="b-assets-view-tags<?=$asset->id;?>" class="ui-helper-left">
