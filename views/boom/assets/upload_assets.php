@@ -1,11 +1,3 @@
-<?php
-/**
-* Allows uploading new assets.
-*
-* Rendered by: Controller_Cms_Assets::action_upload()
-*
-*/
-?>
 <div>
 	<iframe name="uploadiframe" class="hidden" style="display:none" src="javascript:false"></iframe>
 	<form method="POST" enctype="multipart/form-data" id="b-assets-upload-form" action="/cms/uploadify/asset" target="uploadiframe">
@@ -20,8 +12,9 @@
 				</div>
 			</div>
 			<br />
-				<input type="file" name="b-assets-upload-files[]" id="b-assets-upload-file" multiple min=1 max=5 />
-				<input type="submit" class="boom-button" value="upload">
+
+			<input type="file" name="b-assets-upload-files[]" id="b-assets-upload-file" multiple min="1" max="5" />
+			<input type="submit" class="boom-button" value="upload">
 		</div>
 	</form>
 </div>
