@@ -162,6 +162,8 @@ body .ui-tooltip { border-width:2px; }
 /* Individual button icons */
 .b-accept, .b-accept:hover { background-position: 0 0;}
 .b-cancel, .b-cancel:hover { background-position: -30px 0;}
+.b-delete, .b-delete:hover { background-position: -210px 0;}
+.b-add, .b-add:hover { background-position: -240px 0;}
 .b-paragraph, .b-paragraph:hover { background-position: -180px -30px;}
 .b-h2, .b-h2:hover { background-position: -210px -30px;}
 .b-h3, .b-h3:hover { background-position: -240px -30px;}

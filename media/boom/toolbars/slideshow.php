@@ -1,7 +1,7 @@
 <div class="toolbar">
-	<button class="save" type="button" data-icon="boom-accept">Save</button>
-	<button class="cancel" type="button"data-icon="boom-cancel">Cancel</button>
-	<button class="insert" type="button" data-icon="boom-add">New slide</button>
-	<button class="delete" type="button" data-icon="boom-delete">Delete</button>
-	<button class="sort" type="button" data-icon="boom-sort">Sort</button>
+	<button class="save b-accept" type="button"></button>
+	<button class="cancel b-cancel" type="button"></button>
+	<button class="insert b-add" type="button"></button>
+	<button class="delete b-delete" type="button"></button>
+	<button class="sort b-sort" type="button"></button>
 </div>
