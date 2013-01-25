@@ -1713,11 +1713,9 @@ $.extend($.boom.page, {
 						$( '#page-visible' ).on( 'change', function(){
 							switch( $( this ).val() ) {
 								case '1':
-								console.log( 'woo' );
 									$( '#page-embargo' ).removeAttr( 'disabled' );
 								break;
 								case '0':
-									console.log( 'yay' );
 									$( '#page-embargo' ).attr( 'disabled', 'disabled' );
 								break;
 							}
