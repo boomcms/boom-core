@@ -1,10 +1,11 @@
 <div class="b-items-box-header ui-helper-reset ui-widget-header ui-panel-header ui-corner-all">
+	<a class="ui-helper-right" id='tag_all' href='#tag/0'><?=__('All assets')?></a>
+
 	<h3 class="ui-helper-reset">
 		<?=__('Filters')?>
 	</h3>
 </div>
 <div class="boom-box ui-widget ui-corner-all ui-state-default">
-	<p><a class="boom-button" id='tag_all' href='#tag/0'><?=__('All assets')?></a></p>
 	<p><label for="b-assets-filter-title">Search</label> <input type='text' id="b-assets-filter-title" /></p>
 	<ul class="ui-helper-clearfix boom-tree boom-tree-noborder">
 		<li><a><?=__('Uploaded by')?></a>
