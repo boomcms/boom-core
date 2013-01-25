@@ -1,12 +1,6 @@
 <div id='b-pagesettings-urls' class="b-pagesettings">
 	<div>
-		<h1>Primary URL</h1>
-		<p>
-			<?= $page->url() ?>
-		</p>
-	</div>
-	<div>
-		<h1>All URLs</h1>
+		<h2>URLs</h2>
 		<ul class="boom-tree">
 			<? foreach($page->urls->order_by('location', 'asc')->find_all() as $url): ?>
 				<li data-url="<?= $url->location ?>" data-id="<?= $url->id ?>" <? if ( (bool) $url->is_primary ): echo 'class="ui-state-active"'; endif;?>>
@@ -33,7 +27,13 @@
 		</ul>
 	</div>
 	<div>
-		<h1>Short URL</h1>
+		<h2>Primary URL</h2>
+		<p>
+			<?= $page->url() ?>
+		</p>
+	</div>
+	<div>
+		<h2>Short URL</h2>
 		<p>
 			<?= URL::site($page->short_url()) ?>
 		</p>
