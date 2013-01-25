@@ -134,7 +134,7 @@ $.extend($.boom.items.tag,  {
 
 			buttons.button( amount > 0 ? 'enable' : 'disable' );
 			
-			$( '#b-button-multiaction-edit' ).button( amount > 1 ? 'disable' : 'enable' );
+			$( '#b-button-multiaction-edit' ).button( amount > 2 ? 'disable' : 'enable' );
 		});
 
 		$('.b-items-list tbody tr, .b-items-thumbs .thumb').hover(
