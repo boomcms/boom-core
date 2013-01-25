@@ -619,9 +619,14 @@ $.extend($.boom.page, {
 
 				config = config || {};
 
+				var $this = $( this );
 				var chunk = this;
+				
+				if ( $this.is( 'div' ) && $this.text() == 'Default text.' ) {
+					$this.html( '<p>Default text.</p>');
+				}
 
-				$( this )
+				$this
 				.unbind('click mouseenter mouseleave')
 				.one( 'click', function(event){
 
