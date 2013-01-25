@@ -729,6 +729,8 @@ boom.plugins.js
 			var self = this;
 			var defaultIcon;
 			
+			return;
+			
 			if ( $item.find('> a:first').hasClass( self.options.anchorActive ) && self.options.toggleSelected ) {
 
 				defaultIcon = self.options.iconToggleChecked;
