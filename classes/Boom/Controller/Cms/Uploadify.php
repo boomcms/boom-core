@@ -102,7 +102,7 @@ class Boom_Controller_Cms_Uploadify extends Kohana_Controller
 					}
 
 					$asset->filesize = $file['size'];
-					$asset->uploaded_by = $this->request->post('person');
+					$asset->uploaded_by = $person_id;
 					$asset->type = Boom_Asset::type_from_mime(File::mime($file['tmp_name']));
 					$asset->visible_from = 'now';
 					$asset->last_modified = $_SERVER['REQUEST_TIME'];

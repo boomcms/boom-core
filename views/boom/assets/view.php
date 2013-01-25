@@ -58,10 +58,8 @@
 						<dd><?=$asset->width?> x <?=$asset->height?></dd>
 					<? endif; ?>
 
-					<?/*
-						<dl><?=__('Uploaded by')?></dl>
-						<dt><?= $asset->uploader->name ?></dt>
-					 */?>
+					<dl><?=__('Uploaded by')?></dl>
+					<dt><?= $asset->uploader->name ?></dt>
 
 					<dt><?=__('Uploaded on')?></dt>
 					<dd><?= date('d F Y h:i:s', $asset->uploaded_time)?></dd>
