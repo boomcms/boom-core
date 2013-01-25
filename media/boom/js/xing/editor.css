@@ -41,37 +41,23 @@
 [data-wysihtml5-command],
 [data-wysihtml5-action],
 .fore-color,
-.toolbar button {
+.toolbar button,
+.toolbar button:hover {
 	float: none;
 	padding: 0;
 	position: relative;
-	border-right: 1px solid #ddd;
-	border-left: 1px solid #fff;
+	border: none;
 	list-style: none;
 	font-size: 12px;
 	display: inline-block;
 	cursor: pointer;
-	height: 40px;
-	width: 68px;
-	background: transparent;
+	width: 30px;
+	height: 30px;
+	background-color: rgb(66,75,85);
+	background-image: url('/media/boom/css/themes/default/images/ui-icons_ffffff_300x120.png') !important;
 	color: #000;
 }
 
-[data-wysihtml5-command]:hover,
-[data-wysihtml5-action]:hover,
-.fore-color:hover,
-.toolbar button:hover,
-[data-wysihtml5-command]:focus,
-[data-wysihtml5-action]:focus,
-.fore-color:focus,
-.toolbar button:focus
- {
-	background-image: linear-gradient(bottom, rgb(229,240,226) 0%, rgb(255,255,255) 100%);
-	background-image: -o-linear-gradient(bottom, rgb(229,240,226) 0%, rgb(255,255,255) 100%);
-	background-image: -moz-linear-gradient(bottom, rgb(229,240,226) 0%, rgb(255,255,255) 100%);
-	background-image: -webkit-linear-gradient(bottom, rgb(229,240,226) 0%, rgb(255,255,255) 100%);
-	background-image: -ms-linear-gradient(bottom, rgb(229,240,226) 0%, rgb(255,255,255) 100%);
-}
 [data-wysihtml5-command-group] {
 	position: relative;
 }
@@ -109,14 +95,12 @@
 .wysihtml5-action-active,
 .wysihtml5-command-active {
 	box-shadow: inset 0 1px 6px rgba(0, 0, 0, 0.2);
-	background: #fff !important;
 }
 
 .wysihtml5-commands-disabled [data-wysihtml5-command],
 .wysihtml5-commands-disabled .fore-color {
 	opacity: 0.4;
 	cursor: default;
-	background-image: none !important;
 }
 
 [data-wysihtml5-dialog] {
@@ -154,14 +138,6 @@
 	cursor: pointer;
 }
 
-[data-wysihtml5-dialog-action="save"] {
-	background: #007200;
-}
-
-[data-wysihtml5-dialog-action="cancel"] {
-	background: #999;
-}
-
 // boom CMS styles
 .b-chunk-mouseenter{cursor:pointer!important}.boom-tooltip-container{color:#fff;background:#333;border:1px solid #fff;-moz-border-radius:5px;-webkit-border-radius:5px;border-radius:5px;-moz-box-shadow:0 0 5px #000;-webkit-box-shadow:0 0 5px #000;box-shadow:0 0 5px #000;padding:5px 8px;opacity:.9;position:absolute;display:none;line-height:1.4em;text-align:left;z-index:9999;font-family:Verdana,Arial,Sans-serif;font-size:12px}.b-page-chunk-edit-top,.b-page-chunk-edit-right,.b-page-chunk-edit-bottom,.b-page-chunk-edit-left{z-index:9999!important;position:absolute!important;background:transparent!important;top:0;left:0}.b-page-chunk-edit-top{border-top:1px dashed #888!important;height:1px!important}.b-page-chunk-edit-bottom{border-bottom:1px dashed #888!important;height:1px!important}.b-page-chunk-edit-right{border-right:1px dashed #888!important;width:1px!important}.b-page-chunk-edit-left{border-left:1px dashed #888!important;width:1px!important}.b-page-chunk-edit-icon{position:absolute;left:0;top:0;display:none;background:transparent url(/media/boom/img/cms/chunk_edit_icon.png) no-repeat center center;width:16px;height:16px}.ui-helper-clearfix{display:inline-block}.ui-helper-clearfix:after{content:".";display:block;height:0;clear:both;visibility:hidden}/*\*/* html .ui-helper-clearfix{height:1%}.ui-helper-clearfix{display:block}
 
@@ -180,3 +156,19 @@
 	background-image: none;
 }
 body .ui-tooltip { border-width:2px; }
+
+
+/* Individual button icons */
+.b-accept, .b-accept:hover { background-position: 0 0;}
+.b-cancel, .b-cancel:hover { background-position: -30px 0;}
+.b-h2, .b-h2:hover { background-position: -240px -30px;}
+.b-h3, .b-h3:hover { background-position: -270px -30px;}
+.b-blockquote, .b-blockquote:hover { background-position:	 -300px -30px;}
+.b-list, .b-list:hover { background-position:	 0px -60px;}
+.b-ol, .b-ol:hover { background-position:	 -30px -60px;}
+.b-bold, .b-bold:hover { background-position:	 -60px -60px;}
+.b-italic, .b-italic:hover { background-position:	 -90px -60px;}
+.b-link, .b-link:hover { background-position:	 -120px -60px;}
+.b-asset, .b-asset:hover { background-position:	 -150px -60px;}
+.b-hr, .b-hr:hover { background-position:	 -180px -60px;}
+.b-speech, .b-speech:hover { background-position:	 -210px -60px;}
