@@ -13,7 +13,7 @@
 								<span class="on">R</span> 
 								<span class="off">V</span>
 							</label>
-							<button class="boom-button b-urls-remove">X</button>
+							<button class="b-urls-remove">X</button>
 						
 					</span>
 					
