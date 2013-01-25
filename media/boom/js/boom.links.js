@@ -40,6 +40,13 @@ $.extend( $.boom, {
 				url: link_manager_url,
 				treeConfig: treeConfig,
 				buttons: {
+					Cancel: function(){
+						complete.reject();
+
+						$.boom.dialog.destroy( this );
+						
+						return false;
+					},
 					Okay: function(){
 						
 						if ( link.rid == -1 ) {
