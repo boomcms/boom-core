@@ -28,7 +28,7 @@
 	</ul>
 
 	<div id="b-items-view-list">
-		<table>
+		<table width="100%">
 			<tr>
 				<th class="ui-helper-reset">
 				</th>
