@@ -79,21 +79,15 @@ class Boom_Chunk_Text extends Chunk
 	protected function _show_default()
 	{
 		$text = __(Kohana::message('chunks', 'text'));
+		$template = ($this->_template === NULL)? $this->_slotname : $this->_template;
 
-		// Add a <p> tag around the default text for bodycopies.
-		// This needs to be done a bit better. Perhaps use default temlates instead of _add_htm()?
-		if ($this->_chunk->slotname == 'bodycopy' OR $this->_chunk->slotname == 'bodycopy2')
+		if ( ! Kohana::find_file('views', "site/slots/text/$template"))
 		{
-			$text = "<p>$text</p>";
-		}
-
-		if ($this->_template === NULL)
-		{
-			return $this->_add_html($text);
+			return "<p>$text</p>";
 		}
 		else
 		{
-			return View::factory("site/slots/text/$this->_template", array(
+			return View::factory("site/slots/text/$template", array(
 				'text'	=>	$text,
 				'title'	=>	$this->_chunk->title,
 			));
