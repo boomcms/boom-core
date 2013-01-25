@@ -1710,6 +1710,16 @@ $.extend($.boom.page, {
 						}
 					},
 					open: function(){
+						$( '#page-visible' ).on( 'change', function(){
+							switch( $( this ).val() ) {
+								case '1':
+									$( '#page-embargo' ).removeAttr( 'disabled' );
+								break;
+								case '0':
+									$( '#page-embargo' ).attr( 'disabled', 'disabled' );
+								break;
+							}
+						});
 					}
 				});
 			}
