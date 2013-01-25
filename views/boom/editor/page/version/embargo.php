@@ -5,9 +5,9 @@
 			<option value='1' <? if ($version->embargoed_until > $_SERVER['REQUEST_TIME']) echo "selected='selected'"; ?>>Yes</option>
 			<option value='0' <? if ($version->embargoed_until <= $_SERVER['REQUEST_TIME']) echo "selected='selected'"; ?>>No</option>
 		</select>
-		
+
 		<label for="page-embargo"><?=__('Embargo until')?></label>
-		<input id="page-embargo" name="embargoed_until" class="boom-input boom-datepicker" value="<?=date("d F Y", $version->embargoed_until);?>" />
+		<input id="page-embargo" name="embargoed_until" class="boom-input boom-datepicker" value="<?= ($version->embargoed_until)? date("d F Y", $version->embargoed_until) : date("d F Y", $_SERVER['REQUEST_TIME']); ?>" />
 		<select>
 			<option>12:00</option>
 		</select>
