@@ -31,7 +31,7 @@
 
 		<? if ($allow_advanced): ?>
 			<div id='navigation-settings-advanced'>
-				Parent page
+				<label for="parent_id">Parent page</label>
 
 				<input type="hidden" name="parent_id" value="<?=$page->mptt->parent_id?>">
 				<div class="boom-tree">
