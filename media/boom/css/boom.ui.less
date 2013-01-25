@@ -322,26 +322,56 @@ input.boom-input-search {
 		}
 }
 #b-pagesettings-urls {
-	label {
-		span.off {
-			background-color: #333;
-			color: #ccc;
-		}
-	}
-	input[type=checkbox]:checked + label {
-		background-color: inherit;
-		color: inherit;
-		span.on {
-			background-color: #333;
-			color: #ccc;
+	li {
+		background-color: #fff;
+		color: #000;
+		border-bottom: 1px solid #000;
+		overflow: hidden;
+		
+		&.ui-state-active {
+			background-color: #6F7E8E;
 		}
 		
-		
-		span.off {
-			background-color: inherit;
-			color: inherit;
+		.tools {
+			float :right;
+			
+			button {
+				display: inline-block;
+				width: 15px;
+				height: 15px;
+			}
+			
+			label {
+				display: inline-block;
+				
+				span {
+					display: inline-block;
+					width: 15px;
+					height: 15px;
+				}
+				span.off {
+					background-color: #333;
+					color: #ccc;
+				}
+			}
+			
+			input[type=checkbox]:checked + label {
+				background-color: inherit;
+				color: inherit;
+				span.on {
+					background-color: #333;
+					color: #ccc;
+				}
+
+
+				span.off {
+					background-color: inherit;
+					color: inherit;
+				}
+			}
 		}
 	}
+	
 }
 /** jGrowl plugin */
 
