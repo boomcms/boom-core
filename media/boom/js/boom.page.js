@@ -1145,87 +1145,96 @@ $.extend($.boom.page, {
 						}
 					},
 					open: function() {
-						// The add tag input box is hidden when the modal window opens.
-						// Show it and give it focus when the add button is clicked.
-						$('#b-pagesettings-tags-add').click(function(){
-							$('#b-pagesettings-tags-add-name').show().focus();
-						});
-
-						// Hide the add tag input box when it loses focus.
-						$('#b-pagesettings-tags-add-name').blur(function(){
-							$('#b-pagesettings-tags-add-name').val('').hide();
-						});
-
-						// When hovering over an existing tag show a button to remove the tag from the page.
-						// Then hide the button again when the mouse moves away.
-						$('.b-tags-list li').mouseenter(function(){
-							// If the ui-icon and ui-icon-close clases are added in the HTML then the crosses aren't hidden when the modal opens.
-							// So we only add these classes when we need to show them.
-							$(this)
-								.find('a')
-								.addClass('ui-icon ui-icon-close')
-								.show()
-								.end()
-								.find('span')
-								.addClass('active');
-		 					// Adding the active class changes the margin-left of the text so that it doesn't shift to the right when then delete url becomes visible.
-						}).mouseleave(function(){
-							$(this)
-								.find('a')
-								.hide()
-								.end()
-								.find('span')
-								.removeClass('active');
-						});
-
-						// Remove a tag from the page.
-						$('.b-tags-remove').click(function(event){
-							event.preventDefault();
-
-							$.boom.loader.show();
-
-							tag = $(this).attr('href');
-							$.post(
-								'/cms/page/tags/remove/' + $.boom.page.config.id,
-								{tag : tag}
-								)
-								.done(function(){
-									$(event.target).closest('li').remove();
-									$.boom.loader.hide();
-								});
-						});
-
-						// Add a tag to the tag.
-						$('#b-pagesettings-tags-add-name').autocomplete({
-							delay: 200, // Time to wait after keypress before making the AJAX call.
-							source: function(request, response){
-								$.ajax({
-									url: '/cms/autocomplete/tags',
-									dataType: 'json',
-									data: {
-										text : $('#b-pagesettings-tags-add-name').val(),
-										type : 2 // Restricts the returned tags to page tags.
-									}
-								})
-								.done(function(data) {
-									response(data)
-								});
-							},
-							select: function(event, ui){
-								self.add(ui.item.value);
-							}
-						})
-						.keypress(function(e){
-							// Add a tag when the enter key is pressed.
-							// This allows us to add a tag which doesn't already exist.
-							if (e.which == 13) {
-								self.add($('#b-pagesettings-tags-add-name').val());
-							}
-						});
+						self.bind();
 					}
 				});
 			},
+			bind: function(){
+				var self = this;
+				
+				// The add tag input box is hidden when the modal window opens.
+				// Show it and give it focus when the add button is clicked.
+				$('#b-pagesettings-tags-add').click(function(){
+					$('#b-pagesettings-tags-add-name').show().focus();
+				});
+
+				// Hide the add tag input box when it loses focus.
+				$('#b-pagesettings-tags-add-name').blur(function(){
+					$('#b-pagesettings-tags-add-name').val('').hide();
+				});
+
+				// When hovering over an existing tag show a button to remove the tag from the page.
+				// Then hide the button again when the mouse moves away.
+				$('.b-tags-list li').mouseenter(function(){
+					// If the ui-icon and ui-icon-close clases are added in the HTML then the crosses aren't hidden when the modal opens.
+					// So we only add these classes when we need to show them.
+					$(this)
+						.find('a')
+						.addClass('ui-icon ui-icon-close')
+						.show()
+						.end()
+						.find('span')
+						.addClass('active');
+ 					// Adding the active class changes the margin-left of the text so that it doesn't shift to the right when then delete url becomes visible.
+				}).mouseleave(function(){
+					$(this)
+						.find('a')
+						.hide()
+						.end()
+						.find('span')
+						.removeClass('active');
+				});
+
+				// Remove a tag from the page.
+				$('.b-tags-remove').click(function(event){
+					event.preventDefault();
+
+					$.boom.loader.show();
+
+					tag = $(this).attr('href');
+					$.post(
+						'/cms/page/tags/remove/' + $.boom.page.config.id,
+						{tag : tag}
+						)
+						.done(function(){
+							$(event.target).closest('li').remove();
+							$.boom.loader.hide();
+						});
+				});
+
+				// Add a tag to the tag.
+				$('#b-pagesettings-tags-add-name').autocomplete({
+					delay: 200, // Time to wait after keypress before making the AJAX call.
+					source: function(request, response){
+						$.ajax({
+							url: '/cms/autocomplete/tags',
+							dataType: 'json',
+							data: {
+								text : $('#b-pagesettings-tags-add-name').val(),
+								type : 2 // Restricts the returned tags to page tags.
+							}
+						})
+						.done(function(data) {
+							response(data)
+						});
+					},
+					select: function(event, ui){
+						self.add(ui.item.value);
+					}
+				})
+				.keypress(function(e){
+					// Add a tag when the enter key is pressed.
+					// This allows us to add a tag which doesn't already exist.
+					if (e.which == 13) {
+						self.add($('#b-pagesettings-tags-add-name').val());
+					}
+				});
+				
+			},
+			
 			add: function(tag) {
+				var self = this;
+				
 				$.boom.loader.show();
 
 				$.post(
@@ -1233,12 +1242,13 @@ $.extend($.boom.page, {
 					{tag : tag}
 					)
 					.done(function(){
-						$('#b-pagesettings-tags ul').append(
-							'<li>' +
-							'<a href="' + tag + '" title="Remove ' + tag +
-							'" class="b-tags-remove"></a><span>' +
-							tag + '</span></li>'
-						);
+						$('#b-pagesettings-tags')
+						.parent()
+						.load( '/cms/page/tags/list/' + $.boom.page.config.id, function(){
+							
+							$( this ).ui();
+							self.bind();
+						});
 					});
 
 				$.boom.loader.hide();
