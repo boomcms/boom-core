@@ -56,6 +56,11 @@
 	background-color: rgb(66,75,85);
 	color: #000;
 }
+
+.toolbar button:hover {
+	background-color: #6f7e8e;
+}
+
 .toolbar button span {
 	background-image: url('/media/boom/css/themes/default/images/ui-icons_ffffff_300x120.png') !important;
 	width: 30px;
