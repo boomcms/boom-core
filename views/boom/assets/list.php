@@ -75,7 +75,7 @@
 						<span class='tags'>
 							<?
 								foreach($asset->get_tags(NULL, FALSE) as $tag):
-									echo "<a rel=​'ajax' name='#tag/", $tag->pk(), "' href='#tag/", $tag->pk(), "'>", $tag->name, " &raquo;</a>";
+									echo "<a rel=​'ajax' name='#tag/", $tag->pk(), "' href='#tag/", $tag->pk(), "'>", $tag->name, " <br /></a>";
 								endforeach
 							?>​
 						</span>
