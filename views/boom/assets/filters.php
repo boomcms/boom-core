@@ -1,4 +1,4 @@
-<div class="b-items-box-header ui-helper-reset ui-widget-header ui-panel-header ui-corner-all ui-state-default">
+<div class="b-items-box-header ui-helper-reset ui-widget-header ui-panel-header ui-corner-all">
 	<h3 class="ui-helper-reset">
 		<?=__('Filters')?>
 	</h3>
