@@ -110,9 +110,9 @@
 	display: none;
 }
 
-.wysihtml5-action-active,
-.wysihtml5-command-active {
-	background-color: #468017 !important;
+.toolbar .wysihtml5-action-active,
+.toolbar .wysihtml5-command-active {
+	background-color: #468017;
 }
 
 .wysihtml5-commands-disabled [data-wysihtml5-command],
