@@ -19,7 +19,7 @@
 				<span class="ui-icon ui-helper-left ui-icon-help boom-tooltip" title="A description of the description field."></span>
 			</label>
 
-			<textarea id="description" name="description" class="boom-textarea"><?= $page->description() ?></textarea>
+			<textarea id="description" name="description" class="boom-textarea" rows="5"><?= $page->description() ?></textarea>
 
 			<label for="keywords" class="ui-helper-clearfix">
 				<span class="ui-helper-left" style="padding-top:2px">
@@ -27,7 +27,7 @@
 				</span>
 				<span class="ui-icon ui-icon-help ui-helper-left boom-tooltip" title="Keywords description: please separate your keywords with a comma."></span>
 			</label>
-			<textarea name="keywords" id="keywords" class="boom-textarea"><?=$page->keywords ?></textarea>
+			<textarea name="keywords" id="keywords" class="boom-textarea" rows="5"><?=$page->keywords ?></textarea>
 		</div>
 
 		<? if ($allow_advanced): ?>
