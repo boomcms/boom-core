@@ -147,10 +147,69 @@ $.extend($.boom, {
 			$('#b-page-addpage').click(function(){
 
 				var button = this;
+				
+				/* FIXME: move all the code for the parent tree into a generic method */
+				
+				var item_selected = function( $item ){
+
+					$item
+						.addClass( 'ui-state-active' )
+						.parents( '.boom-tree' )
+						.find( 'a.ui-state-active' )
+						.not( $item )
+						.removeClass( 'ui-state-active' );
+
+				};
+				
+				var parent_treeConfig = $.extend({}, $.boom.config.tree, {
+					toggleSelected: false,
+					onClick: function( event ){
+
+						event.preventDefault();
+
+						item_selected( $(this) );
+
+						$( 'input[name=parent_id]' ).val( event.data.rid );
+					},
+					onToggle: function( event ){
+
+						var list_ready = $.Deferred();
+						$.ajax( {
+							type: 'POST',
+							url: '/page/children.json',
+							data: {parent : event.data.rid, page: 0, perpage: 0},
+							dataType: 'json'
+						} ).done( function( data ) {
+
+							var children = $('<ul></ul>');
+
+							$( data ).each( function( i, item ){
+								var li = $('<li></li>')
+									.data( 'children', parseInt(item.has_children) )
+									.appendTo( children );
+								$('<a></a>')
+									.attr( 'id', 'page_' + item.id )
+									.attr( 'href', item.url )
+									.attr( 'rel', item.id )
+									.text( item.title )
+									.appendTo( li );
+							});
+
+							var parent_id = $( 'input[name=parent_id]' ).val();
+							children.find( '#page_' + parent_id ).addClass( 'ui-state-active' );
+
+
+							list_ready.resolve( { childList: children } );
+						});
+
+						return list_ready;
+					}
+				});
 
 				$.boom.dialog.open({
 					url: '/cms/page/add/' + self.config.id,
 					title: $(this).text(),
+					treeConfig: parent_treeConfig,
 					callback: function(){
 
 						$.boom.loader.show('modal');
