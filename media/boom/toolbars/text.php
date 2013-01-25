@@ -1,7 +1,7 @@
 <?
 	$mode = isset( $_REQUEST[ 'mode' ] ) ? $_REQUEST[ 'mode' ] : 'block';
 ?>
-<div id="wysihtml5-toolbar" class="toolbar">
+<div id="wysihtml5-toolbar" class="toolbar toolbar-text">
 	<div class="commands">
 		<button id="b-editor-accept" data-wysihtml5-action class="action"><span class="b-accept"></span></button>
 		<button id="b-editor-cancel" data-wysihtml5-action class="action"><span class="b-cancel"></span></button>

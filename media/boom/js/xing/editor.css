@@ -13,13 +13,7 @@
 }
 .toolbar {
 	border-radius: 4px;
-	background: #eee;
 	z-index: 1;
-	background-image: linear-gradient(bottom, rgb(238,238,238) 0%, rgb(255,255,255) 100%);
-	background-image: -o-linear-gradient(bottom, rgb(238,238,238) 0%, rgb(255,255,255) 100%);
-	background-image: -moz-linear-gradient(bottom, rgb(238,238,238) 0%, rgb(255,255,255) 100%);
-	background-image: -webkit-linear-gradient(bottom, rgb(238,238,238) 0%, rgb(255,255,255) 100%);
-	background-image: -ms-linear-gradient(bottom, rgb(238,238,238) 0%, rgb(255,255,255) 100%);
 	box-shadow: 0 0 4px 1px rgba(0, 0, 0, 0.3);
 	color: #000;
 	float: none;
@@ -31,8 +25,20 @@
 }
 #wysihtml5-toolbar {
 	display: block;
-	background: #eee;
+	width: 100%;
+	height: 60px;
 }
+
+/* Text editor toolbar */
+#wysihtml5-toolbar.toolbar-text {
+	background-color: #68c4e3;
+}
+
+/* Slideshow editor toolbar */
+#wysihtml5-toolbar.toolbar-slideshow {
+	background-color: #e3ca68;
+}
+
 .commands {
 	border-left: 1px solid #ddd;
 	display: inline-block;
@@ -106,7 +112,7 @@
 
 .wysihtml5-action-active,
 .wysihtml5-command-active {
-	box-shadow: inset 0 1px 6px rgba(0, 0, 0, 0.2);
+	background-color: #468017 !important;
 }
 
 .wysihtml5-commands-disabled [data-wysihtml5-command],
