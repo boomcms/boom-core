@@ -41,8 +41,7 @@
 [data-wysihtml5-command],
 [data-wysihtml5-action],
 .fore-color,
-.toolbar button,
-.toolbar button:hover {
+.toolbar button {
 	float: none;
 	padding: 0;
 	position: relative;
@@ -51,12 +50,19 @@
 	font-size: 12px;
 	display: inline-block;
 	cursor: pointer;
-	width: 30px;
-	height: 30px;
+	width: 50px;
+	height: 50px;
 	margin-right: 5px;
 	background-color: rgb(66,75,85);
-	background-image: url('/media/boom/css/themes/default/images/ui-icons_ffffff_300x120.png') !important;
 	color: #000;
+}
+.toolbar button span {
+	background-image: url('/media/boom/css/themes/default/images/ui-icons_ffffff_300x120.png') !important;
+	width: 30px;
+	height: 30px;
+	top: 10px;
+	left: 10px;
+	display: block;
 }
 
 [data-wysihtml5-command-group] {

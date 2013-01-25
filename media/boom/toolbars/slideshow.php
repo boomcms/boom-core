@@ -1,7 +1,7 @@
 <div class="toolbar">
-	<button class="save b-accept" type="button"></button>
-	<button class="cancel b-cancel" type="button"></button>
-	<button class="insert b-add" type="button"></button>
-	<button class="delete b-delete" type="button"></button>
-	<button class="sort b-sort" type="button"></button>
+	<button class="save" type="button"><span class="b-accept"></span></button>
+	<button class="cancel" type="button"><span class="b-cancel"></span></button>
+	<button class="insert" type="button"><span class="b-add"></span></button>
+	<button class="delete" type="button"><span class="b-delete"></span></button>
+	<button class="sort" type="button"><span class="b-sort"></span></button>
 </div>
