@@ -183,17 +183,21 @@ class Boom_Controller_Page_Children extends Boom_Controller
 		// Set the select columns.
 		// This is done individually in each action because different output formats needs different columns
 		$results = $query
-			->select('page.id', 'title', 'page_urls.location')
-			->select(array(DB::expr("visible_from <= " . $this->editor->live_time() . " and (visible_to >= " . $this->editor->live_time() . " or visible_to = 0)"), 'visible'))
-			->select(array(
-				DB::select(DB::expr('1'))
-					->from('page_mptt')
-					->where('parent_id', '=', 'pages.id')
-					->limit(1),
-				'has_children'
-			))
 			->find_all()
 			->as_array();
+
+		$pages = array();
+
+		foreach ($results as & $result)
+		{
+			$result = array(
+				'id'			=>	$result->id,
+				'title'			=>	$result->version()->title,
+				'url'			=>	(string) $result->url(),
+				'visible'		=>	(int) $result->is_visible(),
+				'has_children'	=>	(int) $result->mptt->has_children(),
+			);
+		}
 
 		$this->response
 			->headers('Content-Type', 'application/json')
