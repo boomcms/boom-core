@@ -330,6 +330,25 @@ input.boom-input-search {
 		
 		&.ui-state-active {
 			background-color: #6F7E8E;
+			
+			.tools {
+				visibility: hidden;
+			}
+		}
+		
+		input:checked + label {
+			background-color: inherit;
+			color: inherit;
+			font-weight: bold;
+		}
+		
+		label {
+			display: inline-block;
+			color: #666;
+			
+			&.primary {
+				float:right;
+			}
 		}
 		
 		.tools {
@@ -337,8 +356,10 @@ input.boom-input-search {
 			
 			button {
 				display: inline-block;
-				width: 15px;
-				height: 15px;
+				border: none;
+				padding: 3px !important;
+				background-color: #666;
+				color: #fff;
 			}
 			
 			label {
@@ -348,10 +369,13 @@ input.boom-input-search {
 					display: inline-block;
 					width: 15px;
 					height: 15px;
+					background-color: #666;
+					color: #fff;
+					padding: 3px;
 				}
 				span.off {
 					background-color: #333;
-					color: #ccc;
+					color: #fff;
 				}
 			}
 			
@@ -360,13 +384,13 @@ input.boom-input-search {
 				color: inherit;
 				span.on {
 					background-color: #333;
-					color: #ccc;
+					color: #fff;
 				}
 
 
 				span.off {
-					background-color: inherit;
-					color: inherit;
+					background-color: #666;
+					color: #fff;
 				}
 			}
 		}
