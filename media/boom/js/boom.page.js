@@ -1424,6 +1424,8 @@ $.extend($.boom.page, {
 				var self = this;
 				var form = $('#boom-form-addurl');
 				var new_url = $( 'input[name=url]' ).val();
+				new_url = new_url.split( ' ' ).join( '-' );
+				$( 'input[name=url]' ).val( new_url );
 
 				$.boom.loader.show();
 
