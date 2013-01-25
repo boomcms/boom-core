@@ -32,7 +32,7 @@
 		<button data-wysihtml5-command="formatBlock" data-wysihtml5-command-value="h3" title="Insert headline 3" class="command b-h3"></button>
 		<button data-wysihtml5-command="indent" title="Insert blockquote" class="command b-blockquote"></button>
 		<button data-wysihtml5-command="insertSpeech" title="Insert speech" class="command b-speech"></button>
-		<button data-wysihtml5-action="change_view" title="Show HTML" class="action"></button>
+<!--		<button data-wysihtml5-action="change_view" title="Show HTML" class="action"></button>-->
 <?
 	}
 ?>

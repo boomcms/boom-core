@@ -53,6 +53,7 @@
 	cursor: pointer;
 	width: 30px;
 	height: 30px;
+	margin-right: 5px;
 	background-color: rgb(66,75,85);
 	background-image: url('/media/boom/css/themes/default/images/ui-icons_ffffff_300x120.png') !important;
 	color: #000;
@@ -161,9 +162,10 @@ body .ui-tooltip { border-width:2px; }
 /* Individual button icons */
 .b-accept, .b-accept:hover { background-position: 0 0;}
 .b-cancel, .b-cancel:hover { background-position: -30px 0;}
-.b-h2, .b-h2:hover { background-position: -240px -30px;}
-.b-h3, .b-h3:hover { background-position: -270px -30px;}
-.b-blockquote, .b-blockquote:hover { background-position:	 -300px -30px;}
+.b-paragraph, .b-paragraph:hover { background-position: -180px -30px;}
+.b-h2, .b-h2:hover { background-position: -210px -30px;}
+.b-h3, .b-h3:hover { background-position: -240px -30px;}
+.b-blockquote, .b-blockquote:hover { background-position:	 -270px -30px;}
 .b-list, .b-list:hover { background-position:	 0px -60px;}
 .b-ol, .b-ol:hover { background-position:	 -30px -60px;}
 .b-bold, .b-bold:hover { background-position:	 -60px -60px;}
