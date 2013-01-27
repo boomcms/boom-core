@@ -23,7 +23,7 @@
 		<?= $filters ?>
 
 		<div class="b-items-box-header ui-helper-reset ui-widget-header ui-panel-header ui-corner-all">
-			<a href="#" class="b-tags-add ui-helper-right">
+			<a href="#" class="b-dialog-hidden ui-helper-right">
 				<?=__('Add')?>
 			</a>
 			<h3 class="ui-helper-reset">
