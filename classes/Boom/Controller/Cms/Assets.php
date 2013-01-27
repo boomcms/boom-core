@@ -306,7 +306,7 @@ class Boom_Controller_Cms_Assets extends Boom_Controller
 		if ($type)
 		{
 			// Filtering by asset type.
-			$query->where('type', '=', constant('Boom_Asset::' . strtoupper($type)));
+			$query->where('assets.type', '=', constant('Boom_Asset::' . strtoupper($type)));
 		}
 
 		// Filtering by deleted assets?
