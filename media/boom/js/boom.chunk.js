@@ -574,7 +574,7 @@ $.widget('ui.chunkFeature', $.ui.chunk, {
 
 		$.boom.loader.show();
 
-		this._preview( rid ).done( function( data ){
+		this._preview( this.getData() ).done( function( data ){
 
 			$.boom.loader.hide();
 
@@ -683,9 +683,7 @@ $.widget('ui.chunkAsset', $.ui.chunk, {
 
 		$.boom.loader.show();
 
-		var data = { asset_id : rid };
-
-		data = ( link.url && link.url != '' ) ? data.link = link.url : data;
+		var data = ( link.url && link.url != '' ) ? { asset_id : rid, link : link.url } : { asset_id : rid };
 
 		self._preview( data )
 		.done( function( data ){
