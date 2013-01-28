@@ -1547,7 +1547,7 @@ $.extend($.boom.page, {
 										"Page feature image removed."
 									);
 
-									dialog.dialog( 'destroy' );
+									$.boom.dialog.destroy( dialog );
 								}
 							);
 						},
