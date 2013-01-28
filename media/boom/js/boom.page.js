@@ -307,20 +307,24 @@ $.extend($.boom, {
 					menuPosition: 'right',
 					split: false
 				});
-			$('#b-page-publish').click(function(){
-				$.boom.loader.show();
+			$('#b-page-version-status').click(function(){
+				
+				$.boom.dialog.confirm(
+					'Publish',
+					'Make this version of the page live?',
+					function(){
 
-				$.get(
-					'/cms/page/publish/' + $.boom.page.config.id + '?vid=' + $.boom.page.config.vid
-				)
-				.done( function(response){
+						$.boom.loader.show();
 
-					$.boom.loader.hide();
+						$.post( '/cms/page/version/embargo/' + self.config.id )
+						.done( function(response){
 
-					$('#b-page-publish').hide();
-					$("#boom-topbar-revisions").html(response);
+							$.boom.loader.hide();
 
-				});
+						});
+					}
+				);
+				
 			});
 			$( '#boom-page-editlive' ).on( 'click', function( event ){
 				$.boom.dialog.confirm(
