@@ -88,9 +88,26 @@ $.widget('ui.chunk', {
 	_preview_url : function() {
 		return this.options.urlPrefix +
 		'/' + this.options.slot.type +
-		 '/preview/' + $.boom.page.config.id +
-		'/?slotname=' + this.options.slot.name +
-		'&template=' + this.options.slot.template;
+		 '/preview/' + $.boom.page.config.id;
+	},
+	
+	/**
+	Get the POST data for a preview request
+	@function
+	@returns {Object} slot data including slotname and template
+	*/
+	_slot_data : function( data ) {
+		return $.extend( 
+				{ data : data },
+				{ 
+					slotname: this.options.slot.name,
+					template: this.options.slot.template
+				 });
+	},
+	
+	_preview : function( data ) {
+		
+		return $.post( this._preview_url(), this._slot_data( data ) );
 	},
 
 	/**
@@ -413,14 +430,12 @@ $.widget('ui.chunkLinkset', $.ui.chunk, {
 	_insert: function(){
 
 		var
-			self = this,
-			url =
-			this._preview_url();
+			self = this;
 
 		var links = this._getData( this.elements.currentLinks );
 
 		// get the preview chunk here
-		var request = $.post(url, { data : links })
+		var request = self._preview( links )
 			.done( function(data) {
 
 				$.boom.loader.hide('dialog');
@@ -559,11 +574,7 @@ $.widget('ui.chunkFeature', $.ui.chunk, {
 
 		$.boom.loader.show();
 
-		var url =
-			this._preview_url() +
-			'&preview_target_rid=' + rid;
-
-		$.get(url, function( data ){
+		this._preview( rid ).done( function( data ){
 
 			$.boom.loader.hide();
 
@@ -672,13 +683,11 @@ $.widget('ui.chunkAsset', $.ui.chunk, {
 
 		$.boom.loader.show();
 
-		var url =
-			this._preview_url() +
-			'&asset_id=' + rid;
+		var data = { asset_id : rid };
 
-		url += ( link.url && link.url != '' ) ? '&link=' + link.url : '';
+		data = ( link.url && link.url != '' ) ? data.link = link.url : data;
 
-		$.get( url )
+		self._preview( data )
 		.done( function( data ){
 
 			$.boom.loader.hide();
@@ -1081,7 +1090,7 @@ $.widget('ui.chunkSlideshow', $.ui.chunk, {
 			'&editable=1&remove=0';
 
 		var slides = this.getData();
-		var request = $.post( url, { data : slides } )
+		var request = self._preview( slides )
 		.done( function( data ){
 
 			$.boom.loader.hide();
