@@ -1565,60 +1565,20 @@ $.extend($.boom.page, {
 					open: function(){
 
 						$('.boom-featureimage-edit').click(function(){
+							
+							$.boom.assets
+								.picker({
+									asset_rid : 0
+								})
+								.done( function( rid ){
 
-							var asset = $.boom.items.asset;
-							var tag = $.boom.items.tag;
+									$('#boom-featureimage-img').attr( 'src', '/asset/view/' + rid + '/250/80').show();
+									$('#boom-featureimage-input').val( rid );
+									$('#boom-featureimage-none').hide();
+									$('#boom-featureimage-edit boom-button').hide();
 
-							$.boom.dialog.open({
-								url: '/cms/assets/manager/',
-								iframe: false,
-								width: 850,
-								height: 500,
-								title: 'Select an asset',
-								destroy: function(){
+								});
 
-									$.boom.dialog.destroy( this );
-								},
-								onLoad: function() {
-
-									var asset_manager = $(this);
-
-									$.boom.assets.init({
-										items: {
-											asset: asset,
-											tag: tag
-										},
-										options: {
-											sortby: 'audit_time',
-											order: 'desc',
-											edition: 'cms',
-											type: 'assets',
-											template: 'thumb',
-											treeConfig: {
-												onClick: function(event){
-													tag.get(this.id);
-												}
-											}
-										}
-									});
-
-									asset_manager
-										.on( 'click', '.thumb a', function(event){
-											var data = $(this).attr('href').split('/');
-
-											$('#boom-featureimage-img').attr( 'src', '/asset/view/' + data[1] + '/250/80').show();
-											$('#boom-featureimage-input').val( data[1] );
-											$('#boom-featureimage-none').hide();
-											$('#boom-featureimage-edit boom-button').hide();
-
-
-											asset_manager.dialog( 'destroy' );
-
-											return false;
-										});
-
-								}
-							});
 						});
 					}
 				});
