@@ -4,7 +4,7 @@
 		<ul class="boom-tree">
 			<? foreach($page->urls->order_by('location', 'asc')->find_all() as $url): ?>
 				<li data-url="<?= $url->location ?>" data-id="<?= $url->id ?>" <? if ( (bool) $url->is_primary ): echo 'class="ui-state-active"'; endif;?>>
-					<?= $url->location ?>
+					/<?= $url->location ?>
 					
 					<span class="tools">
 						
