@@ -111,12 +111,12 @@ $.extend($.boom, {
 
 						list_ready.resolve( { childList: children } );
 					});
-					
-					$element.tree( 'destroy' ).tree( parent_treeConfig );
 
 					return list_ready;
 				}
 			});
+			
+			$element.tree( 'destroy' ).tree( parent_treeConfig );
 
 			return complete;
 		},
@@ -233,6 +233,8 @@ $.extend($.boom, {
 					callback: function(){
 
 						$.boom.loader.show('modal');
+						
+						console.log( $('#b-page-add-form') );
 
 						$.post('/cms/page/add', $('#b-page-add-form').serialize(), function(response){
 
