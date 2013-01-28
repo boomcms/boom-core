@@ -12,14 +12,16 @@ class Boom_Controller_Cms_Chunk_Asset extends Boom_Controller_Cms_Chunk
 {
 	public function action_preview()
 	{
+		$data = $this->request->post();
+		
 		$model = ORM::factory('Chunk_Asset')
 			->values(array(
-				'asset_id'	=>	$this->request->query('asset_id'),
-				'link'		=>	$this->request->query('link'),
+				'asset_id'	=>	$data[ 'asset_id' ],
+				'link'		=>	$data[ 'link' ],
 			));
 
-		$chunk = new Chunk_Asset($this->page, $model, $this->request->query('slotname'), TRUE);
-		$chunk->template($this->request->query('template'));
+		$chunk = new Chunk_Asset($this->page, $model, $data[ 'slotname' ], TRUE);
+		$chunk->template($data[ 'template' ]);
 
 		$this->response->body($chunk->execute());
 	}
