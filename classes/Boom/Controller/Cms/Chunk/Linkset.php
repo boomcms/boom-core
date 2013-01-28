@@ -38,7 +38,7 @@ class Boom_Controller_Cms_Chunk_Linkset extends Boom_Controller_Cms_Chunk
 		}
 
 		// Create a chunk with the linkset model.
-		$chunk = new Chunk_Linkset($this->page, $model, $data['slotname'], TRUE);
+		$chunk = new Chunk_Linkset($this->page, $model, $this->request->query('slotname'), TRUE);
 		$chunk->template($data['template']);
 
 		// Display the chunk.
