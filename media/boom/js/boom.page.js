@@ -1642,7 +1642,7 @@ $.extend($.boom.page, {
 							
 							$.boom.assets
 								.picker({
-									asset_rid : 0
+									asset_rid : $('#boom-featureimage-input').val()
 								})
 								.done( function( rid ){
 
