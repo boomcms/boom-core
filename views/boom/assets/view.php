@@ -8,9 +8,9 @@
 			<ul>
 				<li><a href="#b-assets-view-attributes<?=$asset->id;?>"><?=__('Attributes')?></a></li>
 				<li><a href="#b-assets-view-info<?=$asset->id;?>"><?=__('Info')?></a></li>
-				<li><a href="#b-assets-view-tags<?=$asset->id;?>"><?=__('Tags')?></a></li>
+				<li class="b-dialog-hidden"><a href="#b-assets-view-tags<?=$asset->id;?>"><?=__('Tags')?></a></li>
 				<? if (count($asset->old_files()) > 0): ?>
-					<li><a href="#b-assets-view-files<?=$asset->id;?>"><?=__('Previous Files')?></a></li>
+					<li class="b-dialog-hidden"><a href="#b-assets-view-files<?=$asset->id;?>"><?=__('Previous Files')?></a></li>
 				<? endif; ?>
 			</ul>
 
@@ -58,17 +58,17 @@
 						<dd><?=$asset->width?> x <?=$asset->height?></dd>
 					<? endif; ?>
 
-					<?/*
-						<dl><?=__('Uploaded by')?></dl>
-						<dt><?= $asset->uploader->name ?></dt>
-					 */?>
+					<? if ($asset->uploaded_by): ?>
+						<dt><?=__('Uploaded by')?></dt>
+						<dd><?= $asset->uploader->name ?></dd>
+					<? endif; ?>
 
 					<dt><?=__('Uploaded on')?></dt>
 					<dd><?= date('d F Y h:i:s', $asset->uploaded_time)?></dd>
 				</dl>
 			</div>
 
-			<div id="b-assets-view-tags<?=$asset->id;?>" class="ui-helper-left">
+			<div id="b-assets-view-tags<?=$asset->id;?>" class="b-dialog-hidden ui-helper-left">
 				<ul style="width: 290px;" class="boom-tree b-tags-tree boom-tree-noborder">
 				<?
 					foreach($asset->get_tags(NULL, FALSE) as $tag):
@@ -86,7 +86,7 @@
 			</div>
 
 			<? if (count($asset->old_files()) > 0): ?>
-				<div id="b-assets-view-files<?= $asset->id ?>" class="ui-helper-left">
+				<div id="b-assets-view-files<?= $asset->id ?>" class="b-dialog-hidden ui-helper-left">
 					<p>
 						These files were previously assigned to this asset but were replaced.
 					</p>
@@ -110,16 +110,16 @@
 				<a href="#tag/0" class="boom-button ui-button-text-icon boom-tagmanager-asset-back" rel="<?=$asset->id?>" data-icon="ui-icon-boom-cancel">
 					<?=__('Back')?>
 				</a>
-				<button class="boom-button ui-button-text-icon boom-tagmanager-asset-save" rel="<?=$asset->id?>" data-icon="ui-icon-boom-accept">
+				<button class="b-dialog-hidden boom-button ui-button-text-icon boom-tagmanager-asset-save" rel="<?=$asset->id?>" data-icon="ui-icon-boom-accept">
 					<?=__('Save')?>
 				</button>
-				<button class="boom-button ui-button-text-icon boom-tagmanager-asset-delete" rel="<?=$asset->id?>" data-icon="ui-icon-boom-delete">
+				<button class="b-dialog-hidden boom-button ui-button-text-icon boom-tagmanager-asset-delete" rel="<?=$asset->id?>" data-icon="ui-icon-boom-delete">
 					<?=__('Delete')?>
 				</button>
-				<button class="boom-button ui-button-text-icon boom-tagmanager-asset-download" rel="<?=$asset->id?>" data-icon="ui-icon-boom-download">
+				<button class="b-dialog-hidden boom-button ui-button-text-icon boom-tagmanager-asset-download" rel="<?=$asset->id?>" data-icon="ui-icon-boom-download">
 					<?=__('Download')?>
 				</button>
-				<button class="boom-button ui-button-text-icon boom-tagmanager-asset-replace" rel="<?=$asset->id?>" data-icon="ui-icon-boom-upload">
+				<button class="b-dialog-hidden boom-button ui-button-text-icon boom-tagmanager-asset-replace" rel="<?=$asset->id?>" data-icon="ui-icon-boom-upload">
 					<?=__('Replace')?>
 				</button>
 			</div>

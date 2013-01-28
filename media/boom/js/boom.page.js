@@ -48,6 +48,76 @@ $.extend($.boom, {
 
 		},
 
+		/**
+		Create a tree widget for selecting pages.
+		@function
+		@returns {Promise} promise which notifies a page ID when a page is selected.
+		*/
+		picker : function( opts ){
+
+			var self = this;
+			var complete = new $.Deferred();
+
+			var item_selected = function( $item ){
+
+				$item
+					.addClass( 'ui-state-active' )
+					.parents( '.boom-tree' )
+					.find( 'a.ui-state-active' )
+					.not( $item )
+					.removeClass( 'ui-state-active' );
+
+			};
+
+			var parent_treeConfig = $.extend({}, $.boom.config.tree, {
+				toggleSelected: false,
+				onClick: function( event ){
+
+					event.preventDefault();
+
+					item_selected( $(this) );
+
+					complete.notify( event.data.rid );
+				},
+				onToggle: function( event ){
+
+					var list_ready = $.Deferred();
+					var children = $.ajax( {
+						type: 'POST',
+						url: '/page/children.json',
+						data: {parent : event.data.rid, page: 0, perpage: 0},
+						dataType: 'json'
+					} );
+					children.done( function( data ) {
+
+						var children = $('<ul></ul>');
+
+						$( data ).each( function( i, item ){
+							var li = $('<li></li>')
+								.data( 'children', parseInt(item.has_children) )
+								.appendTo( children );
+							$('<a></a>')
+								.attr( 'id', 'page_' + item.id )
+								.attr( 'href', item.url )
+								.attr( 'rel', item.id )
+								.text( item.title )
+								.appendTo( li );
+						});
+
+						var parent_id = $( 'input[name=parent_id]' ).val();
+						children.find( '#page_' + parent_id ).addClass( 'ui-state-active' );
+
+
+						list_ready.resolve( { childList: children } );
+					});
+
+					return list_ready;
+				}
+			});
+
+			return complete;
+		},
+
 		/** @function */
 		register : function(config){
 
@@ -237,20 +307,24 @@ $.extend($.boom, {
 					menuPosition: 'right',
 					split: false
 				});
-			$('#b-page-publish').click(function(){
-				$.boom.loader.show();
+			$('#b-page-version-status').click(function(){
+				
+				$.boom.dialog.confirm(
+					'Publish',
+					'Make this version of the page live?',
+					function(){
 
-				$.get(
-					'/cms/page/publish/' + $.boom.page.config.id + '?vid=' + $.boom.page.config.vid
-				)
-				.done( function(response){
+						$.boom.loader.show();
 
-					$.boom.loader.hide();
+						$.post( '/cms/page/version/embargo/' + self.config.id )
+						.done( function(response){
 
-					$('#b-page-publish').hide();
-					$("#boom-topbar-revisions").html(response);
+							$.boom.loader.hide();
 
-				});
+						});
+					}
+				);
+				
 			});
 			$( '#boom-page-editlive' ).on( 'click', function( event ){
 				$.boom.dialog.confirm(
@@ -444,7 +518,7 @@ $.extend( $.boom.page, {
 		iframe: {},
 
 		/** @property */
-		height: '130px',
+		height: '90px',
 
 		/**
 		* Adds some whitespace to prevent the toolbar sitting over links etc.
@@ -1424,6 +1498,8 @@ $.extend($.boom.page, {
 				var self = this;
 				var form = $('#boom-form-addurl');
 				var new_url = $( 'input[name=url]' ).val();
+				new_url = new_url.split( ' ' ).join( '-' );
+				$( 'input[name=url]' ).val( new_url );
 
 				$.boom.loader.show();
 
@@ -1545,7 +1621,7 @@ $.extend($.boom.page, {
 										"Page feature image removed."
 									);
 
-									dialog.dialog( 'destroy' );
+									$.boom.dialog.destroy( dialog );
 								}
 							);
 						},
@@ -1563,60 +1639,20 @@ $.extend($.boom.page, {
 					open: function(){
 
 						$('.boom-featureimage-edit').click(function(){
+							
+							$.boom.assets
+								.picker({
+									asset_rid : 0
+								})
+								.done( function( rid ){
 
-							var asset = $.boom.items.asset;
-							var tag = $.boom.items.tag;
+									$('#boom-featureimage-img').attr( 'src', '/asset/view/' + rid + '/250/80').show();
+									$('#boom-featureimage-input').val( rid );
+									$('#boom-featureimage-none').hide();
+									$('#boom-featureimage-edit boom-button').hide();
 
-							$.boom.dialog.open({
-								url: '/cms/assets/manager/',
-								iframe: false,
-								width: 850,
-								height: 500,
-								title: 'Select an asset',
-								destroy: function(){
+								});
 
-									$.boom.dialog.destroy( this );
-								},
-								onLoad: function() {
-
-									var asset_manager = $(this);
-
-									$.boom.assets.init({
-										items: {
-											asset: asset,
-											tag: tag
-										},
-										options: {
-											sortby: 'audit_time',
-											order: 'desc',
-											edition: 'cms',
-											type: 'assets',
-											template: 'thumb',
-											treeConfig: {
-												onClick: function(event){
-													tag.get(this.id);
-												}
-											}
-										}
-									});
-
-									asset_manager
-										.on( 'click', '.thumb a', function(event){
-											var data = $(this).attr('href').split('/');
-
-											$('#boom-featureimage-img').attr( 'src', '/asset/view/' + data[1] + '/250/80').show();
-											$('#boom-featureimage-input').val( data[1] );
-											$('#boom-featureimage-none').hide();
-											$('#boom-featureimage-edit boom-button').hide();
-
-
-											asset_manager.dialog( 'destroy' );
-
-											return false;
-										});
-
-								}
-							});
 						});
 					}
 				});

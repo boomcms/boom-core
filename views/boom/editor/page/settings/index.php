@@ -26,7 +26,7 @@
 	</button>
 <? endif; ?>
 
-<? if ($auth->logged_in('edit_page_admin_basic', $page)): ?>
+<? if ($auth->logged_in('edit_page_admin', $page)): ?>
 	<button id="boom-page-adminsettings" class="boom-button">
 		Admin settings
 	</button>

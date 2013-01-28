@@ -168,7 +168,7 @@ function CMSTagmanager(type){
 		$( '#tag_all' )
 			.on( 'click', function( event ){
 				self.items.tag.filters = {};
-				self.items.tag.get( 0 );
+				$.boom.history.load( 'tag/0' );
 				
 				$(this)
 				.parent()
