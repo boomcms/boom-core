@@ -419,18 +419,16 @@ $.widget('ui.chunkLinkset', $.ui.chunk, {
 
 		var links = this._getData( this.elements.currentLinks );
 
-
-		//url += '&data=' + JSON.stringify( this.getData() );
-
 		// get the preview chunk here
-		var request = $.get(url, { data : links }, function(data) {
+		var request = $.post(url, { data : links })
+			.done( function(data) {
 
-			$.boom.loader.hide('dialog');
+				$.boom.loader.hide('dialog');
 
-			self._apply(data);
+				self._apply(data);
 
-			//self.destroy();
-		});
+				//self.destroy();
+			});
 
 		return request;
 	},
