@@ -226,7 +226,8 @@ $.extend($.boom, {
 					title: $(this).text(),
 					onLoad : function() {
 						self.picker( $( this ).find( '.boom-tree' ) )
-							.done( function( page_id ){
+							.progress( function( page_id ){
+								console.log( page_id );
 								$( 'input[name=parent_id]' ).val( page_id );
 							});
 					},
