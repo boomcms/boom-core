@@ -54,7 +54,6 @@ $.extend($.boom, {
 		@returns {Promise} promise which notifies a page ID when a page is selected.
 		*/
 		picker : function( $element ){
-			console.log( $element );
 
 			var self = this;
 			var complete = new $.Deferred();
@@ -225,11 +224,12 @@ $.extend($.boom, {
 					url: '/cms/page/add/' + self.config.id,
 					title: $(this).text(),
 					onLoad : function() {
+						
 						self.picker( $( this ).find( '.boom-tree' ) )
 							.progress( function( page_id ){
-								console.log( page_id );
 								$( 'input[name=parent_id]' ).val( page_id );
 							});
+					
 					},
 					callback: function(){
 
