@@ -679,7 +679,12 @@ $.widget('ui.chunkAsset', $.ui.chunk, {
 
 		var self = this;
 		link = ( link ) ? link : { url : null };
-		self.asset.url = link.url;
+		self.asset = {
+			asset_id : rid,
+			title : null,
+			caption : null,
+			url : link.url
+		};
 
 		$.boom.loader.show();
 
