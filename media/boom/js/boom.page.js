@@ -124,7 +124,7 @@ $.extend($.boom, {
 				}
 			});
 			
-			$element.tree( parent_treeConfig );
+			$element.tree('destroy').tree( parent_treeConfig );
 
 			return complete;
 		},

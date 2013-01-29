@@ -307,6 +307,8 @@ $.widget('ui.chunkLinkset', $.ui.chunk, {
 
 				self._buildList();
 
+			},
+			onLoad: function(){
 				self._bindEvents();
 			},
 			callback: function(){
