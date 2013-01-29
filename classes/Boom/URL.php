@@ -39,7 +39,7 @@ class Boom_URL extends Kohana_URL
 		$start_uri = ($base == '/')? $title : $base.$title;
 		$append = 0;
 
-		// Get a page URL model.
+		// Get a page URL model which we'll use to call Model_Page_URL::location_available()
 		$page_url = new Model_Page_URL;
 
 		// Get a unique URI.
