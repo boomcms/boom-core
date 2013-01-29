@@ -510,19 +510,6 @@ $.widget('ui.chunkFeature', $.ui.chunk, {
 
 		var self = this;
 
-		var treeConfig = $.extend({}, $.boom.config.tree, {
-			maxHeight: 200,
-			toggleSelected: true,
-			onClick: function(event){
-				console.debug( event.data );
-				self.insert( event.data.rid );
-
-				$.boom.dialog.destroy(self.dialog);
-
-				return false;
-			}
-		});
-
 		this.dialog = $.boom.dialog.open({
 			url: this.options.urlPrefix + '/feature/edit/' + $.boom.page.config.id,
 			width: 400,
