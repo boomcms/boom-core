@@ -346,15 +346,16 @@ $.widget('ui.chunkLinkset', $.ui.chunk, {
 	_bindEvents : function(){
 
 		var self = this;
-
-		this.elements.internalLinks.tree($.extend({}, this.options.treeConfig, {
-			onClick: function(event){
-				event.preventDefault();
-				var anchor = $(this).clone();
-
-				self._add(anchor);
-			}
-		}));
+		
+		$.boom.page.picker( this.elements.internalLinks )
+			.progress( function( page ) {
+				var anchor = 
+					$( '<a>')
+						.attr( 'rel', page.page_id )
+						.attr( 'href', page.url )
+						.text( page.title );
+				self._add( anchor );
+			});
 
 		$('#boom-chunk-linkset-addlink-external-button').click(function(){
 

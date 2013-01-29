@@ -42,9 +42,14 @@
 				</div>
 			</div>
 			<br />
-			<ul class="boom-chunk-linkset-internal-links">
-				<?= Request::factory('cms/page/tree')->execute() ?>
-			</ul>
+
+				<input type="hidden" name="parent_id" value="<?=$page->mptt->parent_id?>">
+				<div class="boom-tree boom-chunk-linkset-internal-links">
+					<ul>
+						<li><a id="page_5" href="/" rel="5">Home</a></li>
+					</ul>
+				</div>
+
 		</div>
 		<div id="boom-chunk-linkset-addlink-external">
 			<form id="boom-chunk-linkset-addlink-external-form" action="#">
