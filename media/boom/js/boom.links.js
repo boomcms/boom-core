@@ -22,9 +22,14 @@ $.extend( $.boom, {
 				title: 'Edit link',
 				url: link_manager_url,
 				onLoad: function(){
+					var self = this;
 					$.boom.page.picker( this.find( '.boom-tree' ) )
 						.progress( function( page ) {
 							link = page;
+							
+							complete.resolve( page );
+
+							$.boom.dialog.destroy( self );
 						});
 				},
 				buttons: {
