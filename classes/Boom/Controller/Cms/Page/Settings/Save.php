@@ -157,7 +157,7 @@ class Boom_Controller_Cms_Page_Settings_Save extends Controller_Cms_Page_Setting
 
 		// Save the page.
 		$this->page
-			->vlaues($this->request->post(), $expected)
+			->values($this->request->post(), $expected)
 			->update();
 	}
 
