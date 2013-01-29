@@ -272,8 +272,10 @@ class Boom_Controller_Cms_People extends Boom_Controller
 
 		// Show the person's details.
 		$this->template = View::factory($this->_view_directory."view", array(
-			'person'	=>	$this->edit_person,
-			'request'	=>	$this->request,
+			'person'		=>	$this->edit_person,
+			'request'		=>	$this->request,
+			'activities'	=>	$this->edit_person->logs->order_by('time', 'desc')->limit(50)->find_all(),
+			'groups'		=>	$this->edit_person->groups->order_by('name', 'asc')->find_all(),	
 		));
 	}
 }

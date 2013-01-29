@@ -56,7 +56,7 @@
 
 			<div id="boom-person-view-activity<?=$person->id;?>" class="ui-helper-left">
 				<?
-					if ($person->logs->count_all() > 0):
+					if (count($activities) > 0):
 						$i = 0;
 						?>
 						<table width="100%">
@@ -66,7 +66,7 @@
 								<th>Note</th>
 							</thead>
 							<tbody>
-								<?foreach ($person->logs->order_by('time', 'desc')->limit(50)->find_all() as $al):?>
+								<?foreach ($activities as $al):?>
 									<tr class="boom-row-<?if (($i%2)==0) echo 'odd'; else echo 'even';?>">
 										<td><?=date('d F Y H:i:s', $al->time);?></td>
 										<td><?=$al->activity;?></td>
@@ -87,14 +87,14 @@
 			<div id="boom-person-view-groups<?=$person->id;?>" rel='<?= $person->id ?>' class="ui-helper-left">
 				<?
 					echo $person->name;
-					if ($person->groups->count_all() == 0):
+					if (count($groups) == 0):
 						echo " is not a member of any groups<br />";
 					else:
 						?>
 							 is a member of these groups:
 							<ul>
 								<?
-									foreach ($person->groups->find_all() as $group):
+									foreach ($groups as $group):
 										echo "<li>", $group->name, "&nbsp;<a rel='", $group->id, "' title='Remove user from group' class='b-people-group-delete' href='#'>x</a></li>";
 									endforeach;
 								?>
