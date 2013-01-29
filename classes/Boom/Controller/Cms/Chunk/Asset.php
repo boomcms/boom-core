@@ -20,7 +20,7 @@ class Boom_Controller_Cms_Chunk_Asset extends Boom_Controller_Cms_Chunk
 				'link'		=>	$data['data']['link'],
 			));
 
-		$chunk = new Chunk_Asset($this->page, $model, $data['slotname'], TRUE);
+		$chunk = new Chunk_Asset($this->page, $model, $data['slotname']);
 		$chunk->template($data['template']);
 
 		$this->response->body($chunk->execute());

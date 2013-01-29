@@ -26,7 +26,7 @@ class Boom_Controller_Cms_Chunk_Feature extends Boom_Controller_Cms_Chunk
 				'target_page_id'	=>	$data['data']['target_page_id']
 			));
 
-		$chunk = new Chunk_Feature($this->page, $model, $data['slotname'], TRUE);
+		$chunk = new Chunk_Feature($this->page, $model, $data['slotname']);
 		$chunk->template($data['template']);
 
 		$this->response->body($chunk->execute());

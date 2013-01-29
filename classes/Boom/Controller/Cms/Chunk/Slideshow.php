@@ -27,7 +27,7 @@ class Boom_Controller_Cms_Chunk_Slideshow extends Boom_Controller_Cms_Chunk
 			$model->slides($data['data']['slides']);
 		}
 
-		$chunk = new Chunk_Slideshow($this->page, $model, $data['slotname'], TRUE);
+		$chunk = new Chunk_Slideshow($this->page, $model, $data['slotname']);
 		$chunk->template($data['template']);
 
 		$this->response->body($chunk->execute());
