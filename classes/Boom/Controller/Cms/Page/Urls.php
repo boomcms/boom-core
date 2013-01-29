@@ -107,6 +107,7 @@ class Boom_Controller_Cms_Page_Urls extends Controller_Cms_Page
 	{
 		$this->template = View::factory("$this->_view_directory/list", array(
 			'page'	=> $this->page,
+			'urls'	=> $this->page->urls->order_by('location', 'asc')->find_all(),
 		));
 	}
 

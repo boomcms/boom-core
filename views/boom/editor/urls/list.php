@@ -2,7 +2,7 @@
 	<div>
 		<h2>URLs</h2>
 		<ul class="boom-tree">
-			<? foreach($page->urls->order_by('location', 'asc')->find_all() as $url): ?>
+			<? foreach($urls as $url): ?>
 				<li data-url="<?= $url->location ?>" data-id="<?= $url->id ?>" <? if ( (bool) $url->is_primary ): echo 'class="ui-state-active"'; endif;?>>
 					/<?= $url->location ?>
 					
