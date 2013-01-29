@@ -529,7 +529,16 @@ $.widget('ui.chunkFeature', $.ui.chunk, {
 			id: self.element[0].id + '-boom-dialog',
 			// cache: true,
 			title: 'Page feature',
-			treeConfig: treeConfig,
+			onLoad : function() {
+				
+				$.boom.page.picker( self.dialog.find( '.boom-tree' ) )
+					.progress( function( page_id ){
+						self.insert( page_id );
+
+						$.boom.dialog.destroy(self.dialog);
+					});
+			
+			},
 			destroy: function(){
 				self.destroy();
 			},
