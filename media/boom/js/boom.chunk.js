@@ -510,26 +510,22 @@ $.widget('ui.chunkFeature', $.ui.chunk, {
 
 		var self = this;
 
-		var treeConfig = $.extend({}, $.boom.config.tree, {
-			maxHeight: 200,
-			toggleSelected: true,
-			onClick: function(event){
-				console.debug( event.data );
-				self.insert( event.data.rid );
-
-				$.boom.dialog.destroy(self.dialog);
-
-				return false;
-			}
-		});
-
 		this.dialog = $.boom.dialog.open({
 			url: this.options.urlPrefix + '/feature/edit/' + $.boom.page.config.id,
 			width: 400,
 			id: self.element[0].id + '-boom-dialog',
 			// cache: true,
 			title: 'Page feature',
-			treeConfig: treeConfig,
+			onLoad : function() {
+				
+				$.boom.page.picker( self.dialog.find( '.boom-tree' ) )
+					.progress( function( page_id ){
+						self.insert( page_id );
+
+						$.boom.dialog.destroy(self.dialog);
+					});
+			
+			},
 			destroy: function(){
 				self.destroy();
 			},

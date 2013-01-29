@@ -690,19 +690,6 @@ boom.plugins.js
 				};
 			});
 
-			this.elements.container = 
-				$('<div />')
-				.addClass('boom-tree-container ui-widget')
-				.width(this.options.width)
-				.height(this.options.height);
-
-			if (this.options.height != 'auto') {
-				this.elements.container.css({ overflow: 'auto' });
-			}
-
-			if (this.options.border) this.elements.container.addClass('ui-state-active ui-corner-all');
-			
-			this.element.wrap(this.elements.container);
 		},
 
 		/**
@@ -719,6 +706,20 @@ boom.plugins.js
 				self._add_item( $( this ) );
 				
 			});
+			
+			var $container = 
+				$('<div />')
+				.addClass('boom-tree-container ui-widget')
+				.width(this.options.width)
+				.height(this.options.height);
+
+			if (this.options.height != 'auto') {
+				$container.css({ overflow: 'auto' });
+			}
+
+			if (this.options.border) $container.addClass('ui-state-active ui-corner-all');
+			
+			this.element.wrap($container);
 		},
 		
 		/**
@@ -1075,6 +1076,8 @@ boom.plugins.js
 		destroy : function(){
 
 			$.Widget.prototype.destroy.apply(this, arguments);
+			
+			console.log( this.element );
 
 			this.element
 				.find('li')
