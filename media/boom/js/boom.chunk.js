@@ -159,7 +159,7 @@ $.widget('ui.chunkText', $.ui.chunk, {
 	content : '',
 
 	/**
-	Create an instance of TinyMCE on the selected element.
+	Make the element editable by invokeing boom.editor.edit() on it.
 	*/
 	edit : function(){
 
