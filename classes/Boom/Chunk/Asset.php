@@ -48,6 +48,17 @@ class Boom_Chunk_Asset extends Chunk
 	{
 		return View::factory("site/slots/default/asset/$this->_template");
 	}
+	
+	/**
+	 * Adds a target asset ID data attribute.
+	 *
+	 */
+	public function add_attributes($html, $type, $slotname, $template, $page_id)
+	{
+		$html = parent::add_attributes($html, $type, $slotname, $template, $page_id);
+
+		return preg_replace("|<(.*?)>|", "<$1 data-boom-target='".$this->target()."'>", $html, 1);
+	}
 
 	public function asset()
 	{
