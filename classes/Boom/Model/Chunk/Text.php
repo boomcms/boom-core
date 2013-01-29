@@ -28,17 +28,26 @@ class Boom_Model_Chunk_Text extends ORM
 	 */
 	public function clean_text($text)
 	{
-		require_once Kohana::find_file('vendor', 'htmlpurifier/library/HTMLPurifier.auto');
+		if ($this->slotname == 'standfirst')
+		{
+			// For standfirsts remove all HTML tags.
+			return strip_tags($text);
+		}
+		else
+		{
+			// For all other text chunks clean the HTML.
+			require_once Kohana::find_file('vendor', 'htmlpurifier/library/HTMLPurifier.auto');
 
-		// Get the HTML Purifier config from a config file.
-		$config = HTMLPurifier_Config::createDefault();
-		$config->loadArray(Kohana::$config->load('htmlpurifier'));
+			// Get the HTML Purifier config from a config file.
+			$config = HTMLPurifier_Config::createDefault();
+			$config->loadArray(Kohana::$config->load('htmlpurifier'));
 
-		// Create a purifier object.
-		$purifier = new HTMLPurifier($config);
+			// Create a purifier object.
+			$purifier = new HTMLPurifier($config);
 
-		// Return the cleaned text.
-		return $purifier->purify($text);
+			// Return the cleaned text.
+			return $purifier->purify($text);
+		}
 	}
 
 	/**
@@ -49,11 +58,16 @@ class Boom_Model_Chunk_Text extends ORM
 	 */
 	public function create(Validation $validation = NULL)
 	{
-		// Create the text chunk.
-		parent::create($validation);
-
 		// Find which assets are linked to within the text chunk.
 		preg_match_all('|hoopdb://image/(\d+)|', $this->text, $matches);
+
+		// Clean the text.
+		// This is done now rather than as a filter as the rules for what is allowed in the text varies with the slotname.
+		// Using a filter we can't be sure that the slotname has been set before the text which could result in the wrong rules being applied.
+		$this->_object['text'] = $this->clean_text($this->_object['text']);
+
+		// Create the text chunk.
+		parent::create($validation);
 
 		// Are there any asset links?
 		if ( ! empty($matches[1]))
@@ -91,8 +105,6 @@ class Boom_Model_Chunk_Text extends ORM
 		return array(
 			'text' => array(
 				array('urldecode'),
-				array('html_entity_decode'),
-				array(array($this, 'clean_text')),
 				array('html_entity_decode'),
 				array('Chunk_Text::munge'),
 			),
