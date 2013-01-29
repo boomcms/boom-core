@@ -44,6 +44,17 @@ class Boom_Chunk_Feature extends Chunk
 	{
 		return View::factory("site/slots/default/feature/$this->_template");
 	}
+	
+	/**
+	 * Adds a target page ID data attribute.
+	 *
+	 */
+	public function add_attributes($html, $type, $slotname, $template, $page_id)
+	{
+		$html = parent::add_attributes($html, $type, $slotname, $template, $page_id);
+
+		return preg_replace("|<(.*?)>|", "<$1 data-boom-target='".$this->target()."'>", $html, 1);
+	}
 
 	public function has_content()
 	{

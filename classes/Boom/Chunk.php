@@ -135,7 +135,7 @@ abstract class Boom_Chunk
 	 * @param	integer	$page		ID of the page that the chunk belongs to.
 	 * @return 	string
 	 */
-	public static function add_attributes($html, $type, $slotname, $template, $page_id)
+	public function add_attributes($html, $type, $slotname, $template, $page_id)
 	{
 		$html = trim( (string) $html);
 
@@ -176,7 +176,7 @@ abstract class Boom_Chunk
 			// Make the content editable.
 			if ($this->_editable === TRUE)
 			{
-				$html = Chunk::add_attributes($html, $this->_type, $this->_slotname, $this->_template, $this->_page->id);
+				$html = $this->add_attributes($html, $this->_type, $this->_slotname, $this->_template, $this->_page->id);
 			}
 		}
 		catch (Exception $e)
