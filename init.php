@@ -127,7 +127,7 @@ Route::set('cms', '<directory>/<controller>(/<action>(/<id>))',
 		'action'     => 'index',
 	));
 
-Route::set('chunks', 'cms/chunk/<controller>/<action>/<page>')
+Route::set('chunks', 'cms/chunk/<controller>/<action>/<page_id>')
 	->defaults(array(
 		'directory'	=>	'cms_chunk'
 	));

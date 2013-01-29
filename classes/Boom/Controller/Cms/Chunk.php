@@ -30,7 +30,7 @@ class Boom_Controller_Cms_Chunk extends Boom_Controller
 	{
 		parent::before();
 
-		$this->page = new Model_Page($this->request->param('id'));
+		$this->page = new Model_Page($this->request->param('page_id'));
 	}
 
 	/**
