@@ -710,7 +710,7 @@ $.extend($.boom.page, {
 					var slot = {
 						type : $this.attr( 'data-boom-chunk' ),
 						name : $this.attr( 'data-boom-slot-name' ),
-						rid : parseInt( $this.attr( 'data-boom-slot-id' ), 10 ),
+						rid : parseInt( $this.attr( 'data-boom-target' ), 10 ),
 						template: $this.attr( 'data-boom-slot-template' ),
 						page : $this.attr( 'data-boom-page' )
 					};
