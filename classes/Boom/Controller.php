@@ -46,7 +46,7 @@ class Boom_Controller extends Controller
 		// Require the user to be logged in if the site isn't live.
 		if ( ! (Kohana::$environment == Kohana::PRODUCTION OR $this->auth->logged_in()))
 		{
-			throw new HTTP_Exception_403;
+			throw new HTTP_Exception_401;
 		}
 
 		// Who are we?
@@ -68,6 +68,12 @@ class Boom_Controller extends Controller
 	 */
 	public function authorization($role, Model_Page $page = NULL)
 	{
+		// Is the current user logged in?
+		if ( ! $this->auth->logged_in())
+		{
+			throw new HTTP_Exception_401;
+		}
+
 		// Can the current user perform the role at the given page?
 		if ( ! $this->auth->logged_in($role, $page))
 		{
