@@ -134,13 +134,24 @@ $.extend($.boom, {
 								.find( 'head' )
 								.append( '<link rel="stylesheet" href="/media/site/css/main.css" />' );
 
-							self.instance.composer.element.addEventListener("keyup", resizeIframe, false);
-							self.instance.composer.element.addEventListener("blur", resizeIframe, false);
-							self.instance.composer.element.addEventListener("focus", resizeIframe, false);
+							
 
 							resizeIframe();
 
 							self.original_html = self.get_content();
+							
+							var el = self.instance.composer.element;
+							
+							if (el.addEventListener) {
+							  	el.addEventListener("blur", resizeIframe, false);
+								el.addEventListener("focus", resizeIframe, false);
+								el.addEventListener("keyup", resizeIframe, false);
+							} else if (el.attachEvent)  {
+								el.attachEvent("onblur", resizeIframe);
+								el.attachEvent("onfocus", resizeIframe);
+								el.attachEvent("onkeyup", resizeIframe);
+							}
+
 						});
 
 						self.instance.on( 'show:dialog', function( options ){
