@@ -182,11 +182,8 @@ $.widget('ui.chunkText', $.ui.chunk, {
 
 			var old_html = self.element.html();
 			
-			console.log( 'XX'+$element.text()+'XX' );
-			
 			if ( $element.text() == 'Default text.' ) {
 				$element.html( '' );
-				console.log( $element.html() );
 			}
 			self._bring_forward();
 
@@ -200,6 +197,9 @@ $.widget('ui.chunkText', $.ui.chunk, {
 					self._apply( html );
 				})
 				.always( function(){
+					if ( $element.text() == '' ) {
+						$element.html( old_html );
+					}
 					self._send_back();
 				});
 
