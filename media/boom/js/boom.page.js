@@ -74,10 +74,19 @@ $.extend($.boom, {
 				onClick: function( event ){
 
 					event.preventDefault();
+					
+					var link = {};
+					var $node = $(this);
+					var uri = $node.attr('href');
+					var page_rid = $node.attr('rel');
+					
+					link.title = $node.text();
+					link.page_id = page_rid;
+					link.url = uri;
 
-					item_selected( $(this) );
+					item_selected( $node );
 
-					complete.notify( event.data.rid );
+					complete.notify( link );
 				},
 				onToggle: function( event ){
 
@@ -115,7 +124,7 @@ $.extend($.boom, {
 				}
 			});
 			
-			$element.tree( 'destroy' ).tree( parent_treeConfig );
+			$element.tree('destroy').tree( parent_treeConfig );
 
 			return complete;
 		},
@@ -226,8 +235,8 @@ $.extend($.boom, {
 					onLoad : function() {
 						
 						self.picker( $( this ).find( '.boom-tree' ) )
-							.progress( function( page_id ){
-								$( 'input[name=parent_id]' ).val( page_id );
+							.progress( function( page ){
+								$( 'input[name=parent_id]' ).val( page.page_id );
 							});
 					
 					},
@@ -1082,8 +1091,8 @@ $.extend($.boom.page, {
 					onLoad : function() {
 						
 						$.boom.page.picker( $( this ).find( '.boom-tree' ) )
-							.progress( function( page_id ){
-								$( 'input[name=parent_id]' ).val( page_id );
+							.progress( function( pag ){
+								$( 'input[name=parent_id]' ).val( page.page_id );
 							});
 					
 					},

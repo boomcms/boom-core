@@ -18,27 +18,20 @@ $.extend( $.boom, {
 				'/cms/chunk/insert_url/' + opts.page_rid : 
 				'/cms/chunk/insert_url';
 			
-			var treeConfig = $.extend({}, $.boom.config.tree, {
-				width: 300,
-				maxHeight: 200,
-				toggleSelected: true,
-				onClick: function(event){
-					var $node = $(this);
-					var uri = $node.attr('href');
-					var page_rid = $node.attr('rel');
-					
-					link.title = $node.text();
-					link.rid = page_rid;
-					link.url = uri;
-
-					return false;
-				}
-			});
-			
 			var default_opts = {
 				title: 'Edit link',
 				url: link_manager_url,
-				treeConfig: treeConfig,
+				onLoad: function(){
+					var self = this;
+					$.boom.page.picker( this.find( '.boom-tree' ) )
+						.progress( function( page ) {
+							link = page;
+							
+							complete.resolve( page );
+
+							$.boom.dialog.destroy( self );
+						});
+				},
 				buttons: {
 					Cancel: function(){
 						complete.reject();
