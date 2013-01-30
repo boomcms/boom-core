@@ -181,6 +181,10 @@ $.widget('ui.chunkText', $.ui.chunk, {
 			$element[0].id = $element[0].id || $.boom.util.dom.uniqueId('boom-dom-wysiwyg-');
 
 			var old_html = self.element.html();
+			
+			if ( $element.text() == 'Default text.' ) {
+				$element.html( '' );
+			}
 			self._bring_forward();
 
 			$.boom.editor
@@ -193,6 +197,9 @@ $.widget('ui.chunkText', $.ui.chunk, {
 					self._apply( html );
 				})
 				.always( function(){
+					if ( $element.text() == '' ) {
+						$element.html( old_html );
+					}
 					self._send_back();
 				});
 
@@ -522,8 +529,8 @@ $.widget('ui.chunkFeature', $.ui.chunk, {
 			onLoad : function() {
 				
 				$.boom.page.picker( self.dialog.find( '.boom-tree' ) )
-					.progress( function( page_id ){
-						self.insert( page_id );
+					.progress( function( page ){
+						self.insert( page.page_id );
 
 						$.boom.dialog.destroy(self.dialog);
 					});
