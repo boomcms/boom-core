@@ -91,13 +91,9 @@
 						These files were previously assigned to this asset but were replaced.
 					</p>
 					<ul>
-						<? foreach ($asset->old_files() as $version_id => $filename): ?>
+						<? foreach ($asset->old_files() as $timestamp => $filename): ?>
 							<li>
-								<img src="<?= Route::url('asset', array('action' => 'thumb', 'id' => $asset->id, 'width' => 160, 'height' => 160, 'quality' => 85, 'crop' => 1)) ?>">
-								<? if ($version_id): ?>
-									 ?version=<?= $version_id ?>
-								<? endif; ?>
-								" />
+								<img src="<?= Route::url('asset', array('action' => 'thumb', 'id' => $asset->id, 'width' => 160, 'height' => 160, 'quality' => 85, 'crop' => 1)) ?><? if ($timestamp): ?>?timestamp=<?= $timestamp ?><? endif; ?>" />
 							</li>
 						<? endforeach; ?>
 					</ul>
