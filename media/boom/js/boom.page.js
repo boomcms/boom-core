@@ -338,8 +338,8 @@ $.extend($.boom, {
 		/** @function */
 		save : function(callback, pagedata, requestdata, config) {
 
-			data = pagedata || {};
-			self = this;
+			var data = pagedata || {};
+			var self = this;
 
 			if ($.boom.page.editor.isOpen()) {
 
@@ -399,13 +399,10 @@ $.extend($.boom, {
 
 			}, true);
 
-			console.debug('POST data debug:', data.slots);
 
 			requestdata = $.extend({
 				data: JSON.stringify(data)
 			}, requestdata);
-
-			console.debug('POST data debug:', requestdata.data);
 
 			$.post( '/cms/page/version/content/' + this.config.id, requestdata )
 			.done(
