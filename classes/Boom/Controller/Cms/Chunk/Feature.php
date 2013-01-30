@@ -20,10 +20,10 @@ class Boom_Controller_Cms_Chunk_Feature extends Boom_Controller_Cms_Chunk
 	public function action_preview()
 	{
 		$data = $this->request->post();
-		
+
 		$model = ORM::factory('Chunk_Feature')
 			->values(array(
-				'target_page_id'	=>	$data['data']['target_page_id']
+				'target_page_id'	=>	$data['data']['target_page_id']['page_id']
 			));
 
 		$chunk = new Chunk_Feature($this->page, $model, $data['slotname']);
