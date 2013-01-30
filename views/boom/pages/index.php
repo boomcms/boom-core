@@ -49,7 +49,7 @@
 							echo " color: #ff0000;";
 						}
 
-						echo "' id='", $page->id, "' href='/", $page->url(), "' rel='", $page->id, "'>";
+						echo "' id='", $page->id, "' href='", $page->url(), "' rel='", $page->id, "'>";
 
 							echo " ", $page->version()->title, " ", $page->url(), " Template: ", $page->version()->template->name, " ";
 
