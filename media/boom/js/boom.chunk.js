@@ -181,6 +181,13 @@ $.widget('ui.chunkText', $.ui.chunk, {
 			$element[0].id = $element[0].id || $.boom.util.dom.uniqueId('boom-dom-wysiwyg-');
 
 			var old_html = self.element.html();
+			
+			console.log( 'XX'+$element.text()+'XX' );
+			
+			if ( $element.text() == 'Default text.' ) {
+				$element.html( '' );
+				console.log( $element.html() );
+			}
 			self._bring_forward();
 
 			$.boom.editor
