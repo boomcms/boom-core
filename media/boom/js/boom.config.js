@@ -49,7 +49,7 @@ window.boomConfig = {
 		@type boolean
 		@default true
 		*/
-		show: true,
+		show: false,
 		/**
 		@type boolean
 		@default true
