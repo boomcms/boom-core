@@ -12,7 +12,7 @@ class Migration_Boom_20130130140100 extends Minion_Migration_Base
 		$db->query(NULL, "alter table pages engine=InnoDB;");
 		$db->query(NULL, "alter table page_versions engine=InnoDB;");
 		$db->query(NULL, "alter table chunk_assets engine=InnoDB;");
-		$db->query(NULL, "alter table chunk_text engine=InnoDB;");
+		$db->query(NULL, "alter table chunk_texts engine=InnoDB;");
 		$db->query(NULL, "alter table page_chunks engine=InnoDB;");
 		$db->query(NULL, "alter table chunk_features engine=InnoDB;");
 		$db->query(NULL, "alter table chunk_linksets engine=InnoDB;");
