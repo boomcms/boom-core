@@ -966,11 +966,8 @@ boom.plugins.js
 			
 			if (!childList.length && self.options.onToggle) {
 				
-				if ( typeof event == 'undefined' ) event = {};
-				event.data = {
-					rid: id
-				};
-				children_ready = self.options.onToggle.call(this, event);
+				//FIXME: hack to pass page IDs around
+				children_ready = self.options.onToggle.call(this, id);
 				
 				children_ready.done( function( data ){
 					$item
