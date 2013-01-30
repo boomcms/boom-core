@@ -35,7 +35,7 @@
 				</label>
 
 				<label for="visible_from">Visible from
-				<input type="text" id="visible_from" name="visible_from" class="boom-datepicker boom-input" value="<?= date('d F Y', $asset->visible_from);?>" />
+				<input type="text" id="visible_from" name="visible_from" class="boom-datepicker boom-input" value="<?= date('d F Y h:m', $asset->visible_from);?>" />
 				</label>
 
 			</div>
