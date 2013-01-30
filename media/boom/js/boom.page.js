@@ -88,13 +88,13 @@ $.extend($.boom, {
 
 					complete.notify( link );
 				},
-				onToggle: function( event ){
+				onToggle: function( page_id ){
 
 					var list_ready = $.Deferred();
 					var children = $.ajax( {
 						type: 'POST',
 						url: '/page/children.json',
-						data: {parent : event.data.rid, page: 0, perpage: 0},
+						data: {parent : page_id, page: 0, perpage: 0},
 						dataType: 'json'
 					} );
 					children.done( function( data ) {

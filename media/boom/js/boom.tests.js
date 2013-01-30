@@ -243,7 +243,7 @@ module("Tree", {
 			onClick: function(){
 				return $(this);
 			},
-			onToggle: function( event ) {
+			onToggle: function( page_id ) {
 				var list_ready = new $.Deferred();
 				
 				var $children = $('<ul><li><a rel="5" href="#">Item 5</a></li><li><a rel="6" href="#">Item 6</a></li></ul>');
@@ -254,11 +254,11 @@ module("Tree", {
 				
 				var $children2 = $('<ul><li><a rel="7" href="#">Item 7</a></li><li><a rel="8" href="#">Item 8</a></li></ul>');
 
-				if (event.data.rid == 3) {
+				if (page_id == 3) {
 					list_ready.resolve( { childList: $children } );
 				}
 				
-				if (event.data.rid == 5) {
+				if (page_id == 5) {
 					setTimeout( function(){
 						list_ready.resolve( { childList: $children2 } );
 					}, 100);
