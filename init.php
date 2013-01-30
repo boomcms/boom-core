@@ -33,7 +33,6 @@ Route::set('asset', 'asset/<action>/<id>(/<width>(/<height>(/<quality>(/<crop>))
 /**
  * Checks for a page with the matching URL in the CMS database.
  *
- * TODO: change action depending on request headers.
  */
 Route::set('boom', '<location>(.<action>)', array(
 		'location'	=>	'.*?',
@@ -69,6 +68,27 @@ Route::set('boom', '<location>(.<action>)', array(
 			}
 
 			return FALSE;
+		}
+	)
+	->filter(function(Route $route, $params, Request $request)
+		{
+			// Change the controller action depending on the request accept header.
+			$accepts = $request->accept_type();
+
+			foreach (array_keys($accepts) as $accept)
+			{
+				switch ($accept)
+				{
+					case 'application/json':
+						$params['action'] = 'json';
+						break;
+					case 'application/rss+xml':
+						$params['action'] = 'rss';
+						break;
+				}
+			}
+
+			return $params;
 		}
 	);
 
