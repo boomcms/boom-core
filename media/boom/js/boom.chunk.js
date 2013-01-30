@@ -529,8 +529,8 @@ $.widget('ui.chunkFeature', $.ui.chunk, {
 			onLoad : function() {
 				
 				$.boom.page.picker( self.dialog.find( '.boom-tree' ) )
-					.progress( function( page_id ){
-						self.insert( page_id );
+					.progress( function( page ){
+						self.insert( page.page_id );
 
 						$.boom.dialog.destroy(self.dialog);
 					});
