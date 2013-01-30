@@ -68,7 +68,8 @@ $.extend($.boom.assets, {
 				})
 				.done(function(data) {
 					response(data);
-					self.items.tag.filters[ 'title' ] = title_filter.val();
+					var title = title_filter.val();
+					if ( title != '' ) self.items.tag.filters[ 'title' ] = title;
 					self.items.tag.get( 0 );
 				});
 			},
