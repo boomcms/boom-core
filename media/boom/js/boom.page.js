@@ -10,7 +10,7 @@ $.extend($.boom, {
 
 		/** @property */
 		save_button: $('#b-page-save'),
-		
+
 		/** @property */
 		cancel_button: $('#b-page-cancel'),
 
@@ -74,12 +74,12 @@ $.extend($.boom, {
 				onClick: function( event ){
 
 					event.preventDefault();
-					
+
 					var link = {};
 					var $node = $(this);
 					var uri = $node.attr('href');
 					var page_rid = $node.attr('rel');
-					
+
 					link.title = $node.text();
 					link.page_id = page_rid;
 					link.url = uri;
@@ -123,7 +123,7 @@ $.extend($.boom, {
 					return list_ready;
 				}
 			});
-			
+
 			$element.tree('destroy').tree( parent_treeConfig );
 
 			return complete;
@@ -233,17 +233,17 @@ $.extend($.boom, {
 					url: '/cms/page/add/' + self.config.id,
 					title: $(this).text(),
 					onLoad : function() {
-						
+
 						self.picker( $( this ).find( '.boom-tree' ) )
 							.progress( function( page ){
 								$( 'input[name=parent_id]' ).val( page.page_id );
 							});
-					
+
 					},
 					callback: function(){
 
 						$.boom.loader.show('modal');
-						
+
 						console.log( $('#b-page-add-form') );
 
 						$.post('/cms/page/add', $('#b-page-add-form').serialize(), function(response){
@@ -270,7 +270,7 @@ $.extend($.boom, {
 					split: false
 				});
 			$('#b-page-version-status').click(function(){
-				
+
 				$.boom.dialog.confirm(
 					'Publish',
 					'Make this version of the page live?',
@@ -286,7 +286,7 @@ $.extend($.boom, {
 						});
 					}
 				);
-				
+
 			});
 			$( '#boom-page-editlive' ).on( 'click', function( event ){
 				$.boom.dialog.confirm(
@@ -303,17 +303,6 @@ $.extend($.boom, {
 					}
 				);
 			});
-
-			if ( $.boom.cookie.contains( 'breadcrumb' ) ) {
-				$( '#breadcrumbs' ).hide();
-				$( '#b-breadcrumb-toggle' ).attr('data-icon', 'ui-icon-triangle-1-e');
-			}
-			$( '#b-breadcrumb-toggle' ).on( 'click', function(){
-				$( '#breadcrumbs' ).toggle();
-
-				$.boom.cookie.toggle( 'breadcrumb');
-			});
-
 
 			self.settings.init();
 
@@ -654,7 +643,7 @@ $.extend($.boom.page, {
 
 				var $this = $( this );
 				var chunk = this;
-				
+
 				if ( $this.is( 'div' ) && $this.text() == 'Default text.' ) {
 					$this.html( '<p>Default text.</p>');
 				}
@@ -1086,12 +1075,12 @@ $.extend($.boom.page, {
 					title: 'Navigation',
 					width: 570,
 					onLoad : function() {
-						
+
 						$.boom.page.picker( $( this ).find( '.boom-tree' ) )
 							.progress( function( pag ){
 								$( 'input[name=parent_id]' ).val( page.page_id );
 							});
-					
+
 					},
 					buttons: {
 						Save: function(){
@@ -1198,7 +1187,7 @@ $.extend($.boom.page, {
 			},
 			bind: function(){
 				var self = this;
-				
+
 				// The add tag input box is hidden when the modal window opens.
 				// Show it and give it focus when the add button is clicked.
 				$('#b-pagesettings-tags-add').click(function(){
@@ -1276,12 +1265,12 @@ $.extend($.boom.page, {
 						self.add($('#b-pagesettings-tags-add-name').val());
 					}
 				});
-				
+
 			},
-			
+
 			add: function(tag) {
 				var self = this;
-				
+
 				$.boom.loader.show();
 
 				$.post(
@@ -1292,7 +1281,7 @@ $.extend($.boom.page, {
 						$('#b-pagesettings-tags')
 						.parent()
 						.load( '/cms/page/tags/list/' + $.boom.page.config.id, function(){
-							
+
 							$( this ).ui();
 							self.bind();
 						});
@@ -1360,12 +1349,12 @@ $.extend($.boom.page, {
 					}
 				});
 			},
-			
+
 			/** @function */
 			bind: function() {
-				
+
 				var self = this;
-				
+
 				//  Each url in the list has a radio button whic toggles whether the url is a primary url
 				// and a checkbox to toggle whether a secondary url redirects to the primary url.
 				$('.b-urls-primary, .b-urls-redirect').change(function(){
@@ -1390,7 +1379,7 @@ $.extend($.boom.page, {
 						$.boom.growl.show("URL saved.");
 					});
 				});
-				
+
 				$( '.b-urls-remove' ).on( 'click', function( event ){
 
 					event.preventDefault();
@@ -1548,7 +1537,7 @@ $.extend($.boom.page, {
 					open: function(){
 
 						$('.boom-featureimage-edit').click(function(){
-							
+
 							$.boom.assets
 								.picker({
 									asset_rid : $('#boom-featureimage-input').val()

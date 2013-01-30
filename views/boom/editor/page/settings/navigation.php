@@ -1,4 +1,12 @@
 <form id="boom-form-pagesettings-navigation" name="pagesettings-navigation">
+	<ul>
+		<? foreach ($parents as $parent): ?>
+			<li>
+				<a href="<?= $parent->url() ?>"><?= $parent->version()->title ?></a>
+			</li>
+		<? endforeach; ?>
+	</ul>
+
 	<div class="boom-tabs s-pagesettings">
 		<? if ($allow_advanced): ?>
 			<ul>

@@ -88,8 +88,6 @@
 			<?= View::factory('boom/editor/page/settings/index');?>
 		</div>
 	</div>
-
-	<?//= View::factory('boom/breadcrumbs'); ?>
 </div>
 
 <?= View::factory('boom/editor/footer', array('register_page' => TRUE)) ?>

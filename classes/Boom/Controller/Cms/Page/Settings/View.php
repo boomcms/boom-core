@@ -70,10 +70,20 @@ class Boom_Controller_Cms_Page_Settings_View extends Controller_Cms_Page_Setting
 		// Call the parent to do a do permissions check
 		parent::action_navigation();
 
+		// Get an array of the this page's antecedent pages to show where the page sits in the page tree.
+		// We'll just call the array $parents because it's easier to spell than antecendents.
+		$parents = array();
+
+		foreach ($this->page->mptt->parents() as $parent)
+		{
+			$parents[] = $parent->page;
+		}
+
 		// Show the navigation settings form.
 		$this->template = View::factory("$this->_view_directory/navigation", array(
 			'page'			=>	$this->page,
 			'allow_advanced'	=>	$this->allow_advanced,
+			'parents'			=>	$parents,
 		));
 	}
 
