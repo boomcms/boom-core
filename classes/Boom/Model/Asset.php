@@ -104,7 +104,6 @@ class Boom_Model_Asset extends ORM_Taggable
 		return $this;
 	}
 
-
 	/**
 	 * Delete an asset.
 	 *

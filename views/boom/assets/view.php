@@ -93,7 +93,10 @@
 					<ul>
 						<? foreach ($asset->old_files() as $timestamp => $filename): ?>
 							<li>
-								<img src="<?= Route::url('asset', array('action' => 'thumb', 'id' => $asset->id, 'width' => 160, 'height' => 160, 'quality' => 85, 'crop' => 1)) ?><? if ($timestamp): ?>?timestamp=<?= $timestamp ?><? endif; ?>" />
+								<a href="/cms/assets/restore/<?= $asset->id ?>?timestamp=<?= $timestamp ?>">
+									<img src="<?= Route::url('asset', array('action' => 'thumb', 'id' => $asset->id, 'width' => 160, 'height' => 160, 'quality' => 85, 'crop' => 1)) ?><? if ($timestamp): ?>?timestamp=<?= $timestamp ?><? endif; ?>" />
+								</a>
+								<?=date("d F Y H:i", $timestamp);?>
 							</li>
 						<? endforeach; ?>
 					</ul>

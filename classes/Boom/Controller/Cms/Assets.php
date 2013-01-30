@@ -402,6 +402,33 @@ class Boom_Controller_Cms_Assets extends Boom_Controller
 		$this->asset->remove_tags($tag_ids);
 	}
 
+	public function action_restore()
+	{
+		$timestamp = $this->request->query('timestamp');
+
+		if (file_exists(Boom_Asset::$path.$this->asset->id.".".$timestamp.".bak"))
+		{
+			// Backup the current active file.
+			@rename(Boom_Asset::$path.$this->asset->id, Boom_Asset::$path.$this->asset->id.".".$_SERVER['REQUEST_TIME'].".bak");
+
+			// Restore the old file.
+			@copy(Boom_Asset::$path.$this->asset->id.".".$timestamp.".bak", Boom_Asset::$path.$this->asset->id);
+		}
+
+		// Delete the cache files.
+		foreach (glob(Boom_Asset::$path.$this->asset->id."_*.cache") as $cached)
+		{
+			unlink($cached);
+		}
+
+		$this->asset
+			->set('last_modified', $_SERVER['REQUEST_TIME'])
+			->update();
+
+		// Go back to viewing the asset.
+		$this->redirect('/cms/assets/#asset/'.$this->asset->id);
+	}
+
 	/**
 	 * Save changes to a single asset.
 	 *
