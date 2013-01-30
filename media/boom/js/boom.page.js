@@ -154,7 +154,7 @@ $.extend($.boom, {
 						.done( function(){
 							self.editor.init();
 						});
-				})
+				});
 
 			});
 		},
@@ -565,7 +565,7 @@ $.extend($.boom.page, {
 
 			this.config = $.boom.config.editor;
 
-			this.config.pageScripts = [ this.config.stylesheetURL ];
+			this.config.pageScripts = [ this.config.stylesheetURL, '/media/boom/css/boom.page.css' ];
 
 			$.boom.page.toolbar.init();
 
