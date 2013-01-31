@@ -272,7 +272,7 @@ module("Tree", {
 		this.tree = $('<ul><li><a rel="1" href="#">Item 1</a><ul><li><a rel="3" href="#">Item 3</a></li><li><a rel="4" href="#">Item 4</a></li></ul></li><li><a rel="2" href="#">Item 2</a></li></ul>').prependTo($('body')).tree( treeConfig );
 	},
 	teardown: function() {
-		this.tree.tree( 'destroy' ).remove();
+		//this.tree.tree( 'destroy' ).remove();
 	}
 });
 test('onClick callback', function(){

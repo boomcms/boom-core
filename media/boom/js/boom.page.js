@@ -153,7 +153,7 @@ $.extend($.boom, {
 					title: $(this).text(),
 					onLoad : function() {
 
-						self.picker( $( this ).find( '.boom-tree' ) )
+						$.boom.util.page_tree( $( this ).find( '.boom-tree' ) )
 							.progress( function( page ){
 								$( 'input[name=parent_id]' ).val( page.page_id );
 							});
