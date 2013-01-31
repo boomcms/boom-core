@@ -76,7 +76,7 @@ class Boom_Controller_Cms_Autocomplete extends Boom_Controller
 			->join('page_versions', 'inner')
 			->on('pages.id', '=', 'page_versions.page_id');
 
-		if ($this->editor->state() === Editor::EDIT)
+		if ($this->editor->state_is(Editor::EDIT))
 		{
 			// Get the most recent version for each page.
 			$query

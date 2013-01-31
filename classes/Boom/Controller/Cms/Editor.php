@@ -53,7 +53,7 @@ class Boom_Controller_Cms_Editor extends Boom_Controller
 		// Set some global variables for the view.
 		View::bind_global('page', $page);
 
-		$toolbar_filename = ($this->editor->state() === Editor::EDIT)? 'toolbar' : 'toolbar_preview';
+		$toolbar_filename = ($this->editor->state_is(Editor::EDIT))? 'toolbar' : 'toolbar_preview';
 
 		// Show the editor topbar
 		$this->template = View::factory("boom/editor/$toolbar_filename");

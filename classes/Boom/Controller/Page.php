@@ -42,7 +42,7 @@ class Boom_Controller_Page extends Boom_Controller
 		$this->page = $this->request->param('page');
 
 		// Should the editor be enabled?
-		if ($this->editor->state() == Editor::EDIT AND $this->auth->logged_in('edit_page', $this->page))
+		if ($this->editor->state_is(Editor::EDIT) AND $this->auth->logged_in('edit_page', $this->page))
 		{
 			$this->editable = TRUE;
 		}
@@ -50,7 +50,7 @@ class Boom_Controller_Page extends Boom_Controller
 		// If the page shouldn't be editable then check that it's visible.
 		if ( ! $this->editable)
 		{
-			if ( ! $this->page->is_visible() AND $this->editor->state() !== Editor::PREVIEW)
+			if ( ! $this->page->is_visible() AND  ! $this->editor->state_is(Editor::PREVIEW))
 			{
 				throw new HTTP_Exception_404;
 			}

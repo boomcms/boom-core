@@ -637,7 +637,7 @@ class Boom_Model_Page extends ORM_Taggable
 		$query = ORM::factory('Page_Version')
 			->where('page_id', '=', $this->id);
 
-		if ($editor->state() === Editor::DISABLED)
+		if ($editor->state_is(Editor::DISABLED))
 		{
 			// For site users get the published version with the embargoed time that's most recent to the current time.
 			// Order by ID as well incase there's multiple versions with the same embargoed time.
@@ -683,7 +683,7 @@ class Boom_Model_Page extends ORM_Taggable
 			->where('stashed', '=', 0)
 			->group_by('page_id');
 
-		if ($editor->state() === Editor::DISABLED)
+		if ($editor->state_is(Editor::DISABLED))
 		{
 			$current_version
 				->where('embargoed_until', '<=', DB::expr($editor->live_time()))
@@ -699,7 +699,7 @@ class Boom_Model_Page extends ORM_Taggable
 			->where('version.page_deleted', '=', FALSE);
 
 		// Logged out view?
-		if ($editor->state() === Editor::DISABLED)
+		if ($editor->state_is(Editor::DISABLED))
 		{
 			// Get the most recent published version for each page.
 			$this

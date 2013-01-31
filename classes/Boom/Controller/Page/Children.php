@@ -307,7 +307,7 @@ class Boom_Controller_Page_Children extends Boom_Controller
 		if ($this->nav)
 		{
 			// Which column to use for navigation visibility
-			$nav_visibility_column = ($this->editor->state() === Editor::EDIT)? 'visible_in_nav_cms' : 'visible_in_nav';
+			$nav_visibility_column = ($this->editor->state_is(Editor::EDIT))? 'visible_in_nav_cms' : 'visible_in_nav';
 
 			// Add a where clause on the navigation visibility column
 			$query->where($nav_visibility_column, '=', TRUE);
