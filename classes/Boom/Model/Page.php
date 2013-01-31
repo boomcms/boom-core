@@ -667,7 +667,7 @@ class Boom_Model_Page extends ORM_Taggable
 	 */
 	public function was_created_by(Model_Person $person)
 	{
-		return ($this->created_by == $person->id);
+		return ($this->created_by AND $this->created_by == $person->id);
 	}
 
 	/**
