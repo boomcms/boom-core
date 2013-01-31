@@ -580,6 +580,9 @@ module("People manager", {
 				}
 			}
 		});
+	},
+	teardown: function(){
+		$( '.b-items-rightpane' ).remove();
 	}
 });
 test('$.boom.type == "people"', function(){
@@ -617,7 +620,7 @@ asyncTest('edit a group opens the "Edit group" panel', function(){
 	// FIXME: group edit has to be triggered from a link inside an li, otherwise the code fails.
 	$('<a href="#tag/13" rel="13">Group</a>')
 		.click(function(e){
-			$.boom.people.items.tag.edit(e)
+			$.boom.people.items.tag.edit(e);
 		})
 		.appendTo(
 			$('<li></li>')
@@ -639,6 +642,6 @@ asyncTest('edit a group opens the "Edit group" panel', function(){
 				'group name verified'
 			);
 			start();
-		}, 100);
+		}, 500);
 
 });
