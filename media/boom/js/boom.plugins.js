@@ -772,7 +772,7 @@ boom.plugins.js
 			$('<span />')
 				.addClass('boom-tree-hitarea ui-icon')
 				.bind('boom-tree.toggle', function(){
-					self.toggle.apply(self, [$item]);
+					self.toggle( $item );
 				})
 				.click(function(event){
 					self._trigger('toggle', event, { hitarea: this });
