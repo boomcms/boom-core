@@ -27,7 +27,12 @@
 		</div>
 		<div id="b-group-roles-pages" class="ui-tabs-panel ui-widget-content ui-helper-left">
 			<div>
-				<?= Request::factory('cms/page/tree')->execute() ?>
+				<input type="hidden" name="parent_id" value="">
+				<div class="boom-tree">
+					<ul>
+						<li><a id="page_5" href="/" rel="5">Home</a></li>
+					</ul>
+				</div>
 			</div>
 			<div>
 				<ul>
