@@ -701,11 +701,22 @@ boom.plugins.js
 
 			this.cookieItems = !this.options.useCookie ? [] : $.boom.cookie.get(this.options.cookieName).split($.boom.config.cookie.delimiter);
 
-			this.element.find('li').each(function(){
-
-				self._add_item( $( this ) );
+			
+			var render_children = function( $ul ){
 				
-			});
+				$ul.children( 'li' ).each( function(){
+					$this = $( this );
+					self._add_item( $this );
+					render_children( $this.children( 'ul' ) );
+				});
+			};
+			
+			if ( this.element.is( 'ul' ) ) {
+				render_children( this.element );
+			} else {
+				render_children( this.element.children( 'ul' ) );
+			}
+			
 			
 			var $container = 
 				$('<div />')
