@@ -17,8 +17,7 @@
 
 	<div id="b-page-actions">
 
-		<? if ($auth->logged_in('edit_page_content', $page)): ?>
-
+		<? if ($page->was_created_by($person) OR $auth->logged_in('edit_page_content', $page)): ?>
 				<span id="boom-page-save-menu">
 					<button id="b-page-save" class="boom-button" disabled="disabled" title="You have no unsaved changes" data-icon="ui-icon-boom-accept">
 						<?=__('Accept')?>

@@ -165,7 +165,7 @@ class Boom_Controller_Cms_Page extends Boom_Controller
 	 */
 	public function action_delete()
 	{
-		if ( ! $this->auth->logged_in('delete_page', $this->page) OR $this->page->mptt->is_root())
+		if ( ! ($this->page->was_created_by($this->person) OR $this->auth->logged_in('delete_page', $this->page)) OR $this->page->mptt->is_root())
 		{
 			throw new HTTP_Exception_403;
 		}

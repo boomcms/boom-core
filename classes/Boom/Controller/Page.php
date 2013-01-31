@@ -42,7 +42,8 @@ class Boom_Controller_Page extends Boom_Controller
 		$this->page = $this->request->param('page');
 
 		// Should the editor be enabled?
-		if ($this->editor->state_is(Editor::EDIT) AND $this->auth->logged_in('edit_page', $this->page))
+		// The current person can edit the page if they have the edit_page permission or they created the page.
+		if ($this->editor->state_is(Editor::EDIT) AND ($this->page->was_created_by($this->person) OR $this->auth->logged_in('edit_page', $this->page)))
 		{
 			$this->editable = TRUE;
 		}

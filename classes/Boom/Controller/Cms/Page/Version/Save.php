@@ -48,7 +48,7 @@ class Boom_Controller_Cms_Page_Version_Save extends Controller_Cms_Page_Version
 	public function action_content()
 	{
 		// Are you allowed to be here?
-		$this->authorization('edit_page_content', $this->page);
+		$this->page->was_created_by($this->person) OR $this->authorization('edit_page_content', $this->page);
 
 		// Save page form data is json encoded so get the data and decode it.
 		$post = json_decode($this->request->post('data'));
