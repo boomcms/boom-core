@@ -562,6 +562,8 @@ module("People manager", {
 		$.boom.init('people', {
 		});
 		
+		$( 'body' ).append( '<div class="b-items-rightpane"><div class="b-items-content">people manager</div></div>');
+		
 		$.boom.people.init({
 			items: {
 				tag: $.boom.items.group,
@@ -610,12 +612,12 @@ asyncTest('Changing the hash changes the person item', function(){
 	
 	
 });
-asyncTest('edit a group opens the "Edit group" dialog', function(){
+asyncTest('edit a group opens the "Edit group" panel', function(){
 	
 	// FIXME: group edit has to be triggered from a link inside an li, otherwise the code fails.
 	$('<a href="#tag/13" rel="13">Group</a>')
 		.click(function(e){
-			$.boom.people.items.tag.edit(e);
+			$.boom.people.items.tag.edit(e)
 		})
 		.appendTo(
 			$('<li></li>')
@@ -627,25 +629,16 @@ asyncTest('edit a group opens the "Edit group" dialog', function(){
 		
 		setTimeout(function(){
 			equal(
-				$( 'div[role=dialog]').length,
+				$( 'div#b-group-roles-general').length,
 				1,
-				'dialog opened'
+				'editor loaded'
 			);
 			equal(
-				$.trim( $('.ui-dialog-title').text() ),
-				'Edit group',
-				'dialog title verified'
+				$.trim( $('#b-people-group-name').val() ),
+				'Blog Editors',
+				'group name verified'
 			);
-			if ( $( '.ui-dialog-buttonset button' ).length > 0 ) {
-				$( '.ui-dialog-buttonset button' )[0].click();
-				equal(
-					$( 'div[role=dialog]').length,
-					0,
-					'dialog closed'
-				);
-			}
-			$.boom.dialog.destroy();
 			start();
-		}, 3000);
+		}, 100);
 
 });
