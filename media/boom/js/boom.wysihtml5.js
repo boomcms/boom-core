@@ -442,7 +442,7 @@ $.extend($.boom, {
 						}
 					});
 				self.toolbar
-					.on( 'click', 'button[data-wysihtml5-command]', function(){
+					.on( 'mousedown', 'button[data-wysihtml5-command]', function(){
 						
 						var command = $( this ).attr( 'data-wysihtml5-command' );
 						var button = $( this );
@@ -495,9 +495,22 @@ $.extend($.boom, {
 			/** @function */
 			select_node : function() {
 				// expand the selection range to the clicked node.
-				var selection = ( top.getSelection ) ? top.getSelection() : top.rangy.getSelection();
-				this.selected_node = selection.anchorNode.parentNode;
-				selection.selectAllChildren( this.selected_node );
+				var selection;
+				if ( top.getSelection ) {
+					selection = top.getSelection();
+				} else if ( top.document.selection ) {
+					selection = top.document.selection.createRange();
+				} else {
+					selection = top.rangy.getSelection();
+				}
+				
+				if ( selection.anchorNode ) {
+					this.selected_node = selection.anchorNode.parentNode;
+					selection.selectAllChildren( this.selected_node );
+				} else {
+					this.selected_node = selection.parentElement();
+					selection.parentElement().focus();
+				}
 				
 			},
 			
@@ -530,14 +543,20 @@ $.extend($.boom, {
 				var url = link.url;
 				var page_rid = link.rid;
 				var existing_link = self.selected_node;
+				console.log( link.url );
 				
 				command = ( url == 'http://' ) ? 'unlink' : 'createLink';
+				
+				if (document.selection ) {
+					document.selection.createRange( self.selected_node );
+				}
 
 				if ( existing_link && existing_link.nodeName == 'A' ) {
 					top.$( existing_link )
 						.attr( 'href', uri )
 						.attr( 'rel', page_rid );
 				} else {
+					console.log( command );
 					top.document.execCommand( command, null, url );
 				}
 				
