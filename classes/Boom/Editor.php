@@ -66,6 +66,13 @@ abstract class Boom_Editor
 		// Store the Auth and Session with the object.
 		$this->_auth = $auth;
 		$this->_session = $session;
+
+		// Determine the default value to pass to Session::get()
+		// If the user is logged in then the default is preview, if they're not logged in then it should be disabled.
+		$default = ($this->_auth->logged_in())? Editor::$default : Editor::DISABLED;
+
+		// Editor::$_state hasn't been set so get the value from the session data.
+		$this->_state = $this->_session->get(Editor::$state_persistence_key, $default);
 	}
 
 	/**
@@ -127,20 +134,6 @@ abstract class Boom_Editor
 	{
 		if ($state === NULL)
 		{
-			// Act as a getter.
-
-			// Check the value of Editor::$_state to avoid repeatedly checking the session data.
-			if ($this->_state === NULL)
-			{
-				// Determine the default value to pass to Session::get()
-				// If the user is logged in then the default is preview, if they're not logged in then it should be disabled.
-				$default = ($this->_auth->logged_in())? Editor::$default : Editor::DISABLED;
-
-				// Editor::$_state hasn't been set so get the value from the session data.
-				$this->_state = $this->_session
-					->get(Editor::$state_persistence_key, $default);
-			}
-
 			// Return the value of Editor::$_state;
 			return $this->_state;
 		}
