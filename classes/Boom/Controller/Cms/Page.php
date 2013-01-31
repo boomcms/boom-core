@@ -189,7 +189,7 @@ class Boom_Controller_Cms_Page extends Boom_Controller
 			$this->log("Deleted page " . $this->page->version()->title . " (ID: " . $this->page->id . ")");
 
 			// Redirect to the parent page after we've finished.
-			$this->response->body($this->page->parent->url());
+			$this->response->body($this->page->parent()->url());
 
 			// Are we deleting child pages?
 			$with_children = ($this->request->post('with_children') == 1);

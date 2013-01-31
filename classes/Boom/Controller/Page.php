@@ -56,12 +56,6 @@ class Boom_Controller_Page extends Boom_Controller
 				throw new HTTP_Exception_404;
 			}
 		}
-
-		// Check that the page hasn't been deleted at this version.
-		if ( ! $this->page->version()->loaded() OR $this->page->version()->page_deleted)
-		{
-			//throw new HTTP_Exception_404;
-		}
 	}
 
 	/**
