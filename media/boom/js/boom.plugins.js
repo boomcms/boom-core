@@ -975,41 +975,36 @@ boom.plugins.js
 			var id = $item.find('> a').attr('rel');
 			var childList = $item.find( '> ul' );
 			
-			if (!childList.length && self.options.onToggle) {
+			if ( childList.length == 0 && self.options.onToggle) {
 				
 				//FIXME: hack to pass page IDs around
-				children_ready = self.options.onToggle.call(this, id);
-				
-				children_ready.done( function( data ){
-					$item
-						.append( data.childList )
-						.find( '.boom-tree-hitarea' )
-						.trigger( 'boom-tree.toggle' );
+				self.options.onToggle
+					.call(this, id)
+					.done( function( data ){
+						$item
+							.append( data.childList )
+							.find( '.boom-tree-hitarea' )
+							.trigger( 'boom-tree.toggle' );
 					
-					data.childList.find( '> li' ).each( function( i, child ){
+						data.childList.find( '> li' ).each( function( i, child ){
 						
-						var $child = $( child );
-						self
-							._set_edit( $child )
-							._set_remove( $child )
-							._set_icon( $child );
-						if ( $child.data( 'children' ) ) {
-							self._set_toggle( $child );
-							$child
-								.find( '.boom-tree-hitarea' )
-								.addClass( self.options.iconHitareaClosed );
-						}
-						self._bind_events( $child );
+							var $child = $( child );
+							self
+								._set_edit( $child )
+								._set_remove( $child )
+								._set_icon( $child );
+							if ( $child.data( 'children' ) ) {
+								self._set_toggle( $child );
+								$child
+									.find( '.boom-tree-hitarea' )
+									.addClass( self.options.iconHitareaClosed );
+							}
+							self._bind_events( $child );
+						});
 					});
-				});
 			} else {
-				
-				children_ready.resolve( { childList: childList } );
+				self._toggle( $item, toggle, childList);
 			}
-			
-			children_ready.done( function( data ) {
-				self._toggle( $item, toggle, data.childList);
-			});
 			
 			
 		},
@@ -1084,8 +1079,6 @@ boom.plugins.js
 		destroy : function(){
 
 			$.Widget.prototype.destroy.apply(this, arguments);
-			
-			console.log( this.element );
 
 			this.element
 				.find('li')

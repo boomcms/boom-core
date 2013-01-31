@@ -248,8 +248,6 @@ module("Tree", {
 				
 				var $children = $('<ul><li><a rel="5" href="#">Item 5</a></li><li><a rel="6" href="#">Item 6</a></li></ul>');
 					$children
-						.find( 'a[rel=5]' )
-						.parent()
 						.data( 'children', 2);
 				
 				var $children2 = $('<ul><li><a rel="7" href="#">Item 7</a></li><li><a rel="8" href="#">Item 8</a></li></ul>');
@@ -261,7 +259,7 @@ module("Tree", {
 				if (page_id == 5) {
 					setTimeout( function(){
 						list_ready.resolve( { childList: $children2 } );
-					}, 100);
+					}, 5000);
 				} 
 				
 				return list_ready;
@@ -272,7 +270,7 @@ module("Tree", {
 		this.tree = $('<ul><li><a rel="1" href="#">Item 1</a><ul><li><a rel="3" href="#">Item 3</a></li><li><a rel="4" href="#">Item 4</a></li></ul></li><li><a rel="2" href="#">Item 2</a></li></ul>').prependTo($('body')).tree( treeConfig );
 	},
 	teardown: function() {
-		//this.tree.tree( 'destroy' ).remove();
+		this.tree.tree( 'destroy' ).remove();
 	}
 });
 test('onClick callback', function(){
@@ -346,7 +344,7 @@ asyncTest('onToggle callback', function(){
 			true
 		);
 		start();
-	}, 500);
+	}, 7000);
 	
 });
 
