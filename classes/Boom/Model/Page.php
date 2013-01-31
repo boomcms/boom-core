@@ -660,6 +660,17 @@ class Boom_Model_Page extends ORM_Taggable
 	}
 
 	/**
+	 * Determines whether the current page was created by a particular person.
+	 *
+	 * @param Model_Person $person
+	 * @return boolean
+	 */
+	public function was_created_by(Model_Person $person)
+	{
+		return ($this->created_by == $person->id);
+	}
+
+	/**
 	 *
 	 *
 	 * @param	Editor	$editor
