@@ -174,44 +174,8 @@ class Boom_Controller_Cms_Page extends Boom_Controller
 		{
 			// Get request
 			// Show a confirmation dialogue warning that child pages will become inaccessible and asking whether to delete the children.
-
-			// Get the page's MPTT values.
-			$mptt = $this->page->mptt;
-
-			// Prepare an array for the descendent page titles.
-			$titles = array();
-
-			// Does the page have children?
-			if ($mptt->has_children())
-			{
-				// Yes, the page has children, so get the titles of the descendent pages from the database.
-				$titles = DB::select('page_versions.title')
-					->from('page_versions')
-					->join(array(
-						DB::select(array(DB::expr('max(id)'), 'id'), 'page_id')
-							->from('page_versions')
-							->group_by('page_id'),
-						'pages'
-					))
-					->on('page_versions.page_id', '=', 'pages.page_id')
-					->on('page_versions.id', '=', 'pages.id')
-					->join('page_mptt', 'inner')
-					->on('page_mptt.id', '=', 'page_versions.page_id')
-					->where('scope', '=', $mptt->scope)
-					->where('lft', '>', $mptt->lft)
-					->where('rgt', '<', $mptt->rgt)
-					->order_by('title', 'asc')
-					->execute()
-					->as_array();
-
-				// Turn the results array into an array containing just the page titles.
-				$titles = Arr::pluck($titles, 'title');
-			}
-
-			// Show the confirmation
 			$this->template = View::factory("$this->_view_directory/delete", array(
-				'count'	=>	count($titles),
-				'titles'	=>	$titles,
+				'count'	=>	$this->page->mptt->count(),
 				'page'	=>	$this->page,
 			));
 		}
@@ -224,18 +188,14 @@ class Boom_Controller_Cms_Page extends Boom_Controller
 			// Log the action.
 			$this->log("Deleted page " . $this->page->version()->title . " (ID: " . $this->page->id . ")");
 
-			// Get the parent of the page which is being deleted.
-			// We'll redirect to this after.
-			$parent = $this->page->parent();
+			// Redirect to the parent page after we've finished.
+			$this->response->body($this->page->parent->url());
 
 			// Are we deleting child pages?
 			$with_children = ($this->request->post('with_children') == 1);
 
 			// Delete the page.
 			$this->page->delete($with_children);
-
-			// Redirect to the parent page.
-			$this->response->body($parent->url());
 		}
 	}
 

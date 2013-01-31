@@ -9,18 +9,9 @@
 <? if ($count > 0):	?>
 	<p>
 		<strong>Warning:</strong>
-		<br />Deleting this page will make it's <?= $count, " ", Inflector::plural("child page", $count); ?> inaccessible:
+		<br />Deleting this page will make it's <?= $count, " ", Inflector::plural("child page", $count); ?> inaccessible.
 	</p>
 	<div id="b-page-delete-children">
-		<ul>
-			<? foreach ($titles as $title): ?>
-			 	<li>
-					<?= $title ?>
-				</li>
-			<? endforeach; ?>
-
-		</ul>
-
 		<form id="b-page-delete-form">
 			<?= Form::checkbox('with_children', 1); ?>
 			Delete <?= $count, " ", Inflector::plural("child page", $count); ?> as well.
