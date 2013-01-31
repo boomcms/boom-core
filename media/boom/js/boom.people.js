@@ -420,49 +420,6 @@ $.extend($.boom.items.group,  {
 		var rid = item.find('a').attr( 'rel' );
 		var selected_page = null;
 
-		var permissions_treeConfig = {
-			onClick: function(event){
-				console.log( 'CLICK' );
-				var $this = $( this );
-				event.preventDefault();
-
-				var item = $this.closest( 'li' );
-				var page_id = $this.attr( 'rel' );
-				selected_page = page_id;
-				
-				$( '#b-group-roles-pages input[type=radio]')
-					.filter( ':checked' )
-					.prop( 'checked', false )
-					.removeAttr( 'checked' )
-					.end()
-					.filter( '[value="-1"]' )
-					.prop( 'checked', true )
-					.attr( 'checked', 'checked' );
-
-				$this
-					.parents( '.boom-tree' )
-					.find( 'a.ui-state-active' )
-					.removeClass( 'ui-state-active' )
-					.end()
-					.end()
-					.addClass( 'ui-state-active' );
-
-				$.get( '/cms/groups/list_roles/' + rid + '?page_id=' + page_id )
-				.done( function( data ){
-					for ( role in data ) {
-						$( 'input[name=' + role + ']' )
-							.filter( ':checked' )
-							.prop( 'checked', false )
-							.removeAttr( 'checked' )
-							.end()
-							.filter( '[value=' + data[ role ] + ']' )
-							.prop( 'checked', true )
-							.attr( 'checked', 'checked' );
-					}
-				});
-			}
-		};
-
 		self.tagmanager.elements.rightpane
 		.find('.b-items-content')
 		.sload( '/cms/groups/edit/' + rid, function(){
@@ -472,9 +429,7 @@ $.extend($.boom.items.group,  {
 			$.boom.loader.hide();
 
 			self.tagmanager.elements.rightpane
-			.ui({
-				tree: permissions_treeConfig
-			})
+			.ui()
 			.on( 'change', '#b-group-roles-general input[type=radio]', function( event ){
 
 				var role_id = this.name;
@@ -530,6 +485,41 @@ $.extend($.boom.items.group,  {
 				});
 			});
 
+			$.boom.util.page_tree( self.tagmanager.elements.rightpane.find( '#b-group-roles-pages .boom-tree' ) )
+				.progress( function( page ) {
+					
+					$( '#b-group-roles-pages input[type=radio]')
+						.filter( ':checked' )
+						.prop( 'checked', false )
+						.removeAttr( 'checked' )
+						.end()
+						.filter( '[value="-1"]' )
+						.prop( 'checked', true )
+						.attr( 'checked', 'checked' );
+
+					$( '#b-group-roles-pages .boom-tree a[rel=' + page.page_id + ']' )
+						.parents( '.boom-tree' )
+						.find( 'a.ui-state-active' )
+						.removeClass( 'ui-state-active' )
+						.end()
+						.end()
+						.addClass( 'ui-state-active' );
+
+					$.get( '/cms/groups/list_roles/' + rid + '?page_id=' + page.page_id )
+					.done( function( data ){
+						for ( role in data ) {
+							$( 'input[name=' + role + ']' )
+								.filter( ':checked' )
+								.prop( 'checked', false )
+								.removeAttr( 'checked' )
+								.end()
+								.filter( '[value=' + data[ role ] + ']' )
+								.prop( 'checked', true )
+								.attr( 'checked', 'checked' );
+						}
+					});
+					
+				});
 			/**
 			 * Save button has ID 'b-people-group-save'
 			 * Needs to POST to /cms/groups/save/<group ID>
