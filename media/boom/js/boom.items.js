@@ -240,7 +240,6 @@ $.extend($.boom.items.tag,  {
 					var dialog = this, data = $( dialog ).find('form').serialize();
 
 					var tag_saved = self.save( 0, data );
-					console.log( tag_saved );
 
 					var tree_refresh = $.Deferred();
 
@@ -293,7 +292,6 @@ $.extend($.boom.items.tag,  {
 		event.preventDefault();
 
 		var item = $( event.target ).closest( 'li' ), rid = item.find('a')[0].rel;
-		console.log( item );
 
 		$.boom.dialog.confirm('Please confirm', 'Are you sure you want to remove this tag? <br /><br /> This will delete the tag from the database and cannot be undone!', function(){
 
