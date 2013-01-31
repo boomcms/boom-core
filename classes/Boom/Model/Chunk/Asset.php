@@ -28,4 +28,16 @@ class Boom_Model_Chunk_Asset extends ORM
 	);
 
 	protected $_table_name = 'chunk_assets';
+
+	public function filters()
+	{
+		return array(
+			'title'	=> array(
+				array('strip_tags'),
+			),
+			'caption'	=> array(
+				array('strip_tags'),
+			),
+		);
+	}
 }

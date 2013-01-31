@@ -28,6 +28,15 @@ class Boom_Model_Chunk_Slideshow extends ORM
 
 	protected $_table_name = 'chunk_slideshows';
 
+	public function filters()
+	{
+		return array(
+			'title'	=> array(
+				array('strip_tags'),
+			)
+		);
+	}
+
 	/**
 	 * Sets or gets the slideshows slides
 	 *

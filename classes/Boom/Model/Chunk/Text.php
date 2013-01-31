@@ -97,9 +97,8 @@ class Boom_Model_Chunk_Text extends ORM
 	}
 
 	/**
-	* Filters for the versioned person columns
-	* @link http://kohanaframework.org/3.2/guide/orm/filters
-	*/
+	 * @link http://kohanaframework.org/3.2/guide/orm/filters
+	 */
 	public function filters()
 	{
 		return array(
@@ -108,6 +107,9 @@ class Boom_Model_Chunk_Text extends ORM
 				array('html_entity_decode'),
 				array('Chunk_Text::munge'),
 			),
+			'title'	=> array(
+				array('strip_tags'),
+			)
 		);
 	}
 }

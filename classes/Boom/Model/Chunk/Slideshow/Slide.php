@@ -29,4 +29,13 @@ class Boom_Model_Chunk_Slideshow_Slide extends ORM
 	);
 
 	protected $_table_name = 'chunk_slideshow_slides';
+
+	public function filters()
+	{
+		return array(
+			'caption'	=> array(
+				array('strip_tags'),
+			),
+		);
+	}
 }
