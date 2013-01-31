@@ -4,6 +4,12 @@ class Boom_Controller_Cms_Page_Version_Save extends Controller_Cms_Page_Version
 {
 	/**
 	 *
+	 * @var Database
+	 */
+	public $db;
+
+	/**
+	 *
 	 * @var	Model_Page_Version
 	 */
 	public $new_version;
@@ -12,6 +18,10 @@ class Boom_Controller_Cms_Page_Version_Save extends Controller_Cms_Page_Version
 	public function before()
 	{
 		parent::before();
+
+		// Start a database transaction.
+		$this->db = Database::instance();
+		$this->db->begin();
 
 		// Create a new version of the page.
 		$this->new_version = $this->page->create_version($this->old_version, array(
@@ -39,9 +49,6 @@ class Boom_Controller_Cms_Page_Version_Save extends Controller_Cms_Page_Version
 	{
 		// Are you allowed to be here?
 		$this->authorization('edit_page_content', $this->page);
-
-		// Start a database transaction.
-		Database::instance()->begin();
 
 		// Save page form data is json encoded so get the data and decode it.
 		$post = json_decode($this->request->post('data'));
@@ -110,9 +117,6 @@ class Boom_Controller_Cms_Page_Version_Save extends Controller_Cms_Page_Version
 
 		// Import any chunks which weren't saved from the old version to the new version.
 		$this->new_version->copy_chunks($this->old_version, $slotnames);
-
-		// Commit the changes.
-		Database::instance()->commit();
 	}
 
 	/**
@@ -179,5 +183,13 @@ class Boom_Controller_Cms_Page_Version_Save extends Controller_Cms_Page_Version
 			->set('template_id', $this->request->post('template_id'))
 			->create()
 			->copy_chunks($this->old_version);
+	}
+
+	public function after()
+	{
+		// Commit the changes.
+		$this->db->commit();
+
+		parent::after();
 	}
 }
