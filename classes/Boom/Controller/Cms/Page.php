@@ -103,7 +103,9 @@ class Boom_Controller_Cms_Page extends Boom_Controller
 					'visible_in_nav'				=>	$parent->children_visible_in_nav,
 					'visible_in_nav_cms'			=>	$parent->children_visible_in_nav_cms,
 					'children_visible_in_nav'		=>	$parent->children_visible_in_nav,
-					'children_visible_in_nav_cms'	=>	$parent->children_visible_in_nav_cms
+					'children_visible_in_nav_cms'	=>	$parent->children_visible_in_nav_cms,
+					'visible_from'				=>	$_SERVER['REQUEST_TIME'],
+					'created_by'				=>	$this->person->id,
 				))
 				->create();
 

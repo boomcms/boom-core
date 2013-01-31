@@ -18,7 +18,7 @@ class Boom_Model_Page extends ORM_Taggable
 	);
 
 	protected $_created_column = array(
-		'column'	=>	'visible_from',
+		'column'	=>	'created_time',
 		'format'	=>	TRUE,
 	);
 
@@ -51,6 +51,8 @@ class Boom_Model_Page extends ORM_Taggable
 		'grandchild_template_id'		=>	'',
 		'keywords'				=>	'',
 		'description'				=>	'',
+		'created_by'				=>	'',
+		'created_time'				=>	'',
 	);
 
 	protected $_table_name = 'pages';
