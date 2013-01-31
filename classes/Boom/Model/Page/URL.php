@@ -107,6 +107,7 @@ class Boom_Model_Page_URL extends ORM
 		return array(
 			'location' => array(
 				array('trim'),
+				array('strtolower'),
 				array('strip_tags'),								// Make sure there's no HTML in there.
 				array('parse_url', array(':value', PHP_URL_PATH)),		// Remove the hostname
 				array('trim', array(':value', '/')),					// Remove '/' from the beginning or end of the link
