@@ -158,6 +158,17 @@ abstract class Boom_Editor
 	}
 
 	/**
+	 * Returns whether the editor has a particular state.
+	 *
+	 * @param integer $state
+	 * @return boolean
+	 */
+	public function state_is($state)
+	{
+		return ($this->_state == $state);
+	}
+
+	/**
 	 * The time to use for viewing live pages.
 	 * This allows for viewing pages as they were at a certain time in the page.
 	 * If no time has been set then the value of $_SERVER['REQUEST_TIME'] is used.
