@@ -502,7 +502,6 @@ boom.plugins.js
 						elem.datetimepicker(opts.datepicker);
 					break;
 					case 'help' :
-						console.log( elem );
 						elem.on( 'click', function( event ){
 							$.boom.dialog.alert(
 								'',
@@ -773,7 +772,6 @@ boom.plugins.js
 			$('<span />')
 				.addClass('boom-tree-hitarea ui-icon')
 				.bind('boom-tree.toggle', function(){
-				
 					self.toggle.apply(self, [$item]);
 				})
 				.click(function(event){

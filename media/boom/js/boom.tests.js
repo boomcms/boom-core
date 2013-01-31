@@ -240,6 +240,7 @@ test('load() : should change location hash and fire callback function', function
 module("Tree", {
 	setup: function(){
 		var treeConfig = {
+			toggleSelected : true,
 			onClick: function(){
 				return $(this);
 			},

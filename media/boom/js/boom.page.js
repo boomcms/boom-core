@@ -163,8 +163,6 @@ $.extend($.boom, {
 
 						$.boom.loader.show('modal');
 
-						console.log( $('#b-page-add-form') );
-
 						$.post('/cms/page/add', $('#b-page-add-form').serialize(), function(response){
 
 							$.boom.loader.hide('modal');
@@ -632,7 +630,6 @@ $.extend($.boom.page, {
 
 				var slotName = $( this ).attr( 'data-boom-slot-name' );
 
-				console.log( slotName );
 
 				$( this ).addClass( 'boom-tooltip boom-tooltip-follow' );
 
@@ -753,7 +750,6 @@ $.extend($.boom.page, {
 			this.hideEditOverlay();
 
 			$.boom.log('Chunk slot edit');
-			console.log( elem );
 
 			$.boom.page.editor.unbind();
 

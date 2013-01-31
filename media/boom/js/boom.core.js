@@ -969,8 +969,6 @@ $.extend($.boom, {
 					'Okay': function() {
 
 						(opts.callback) && opts.callback.call(this);
-						console.log( dialogConfig );
-
 						( dialogConfig.deferred ) && dialogConfig.deferred.resolve( dialogConfig.deferred_args );
 
 						$.boom.dialog.destroy( this, dialogConfig.destroy );
@@ -1191,7 +1189,6 @@ $.extend($.boom, {
 
 			var self = this;
 			var cache = $(dialog).dialog( 'option', 'cache' );
-			console.log( 'closing' );
 
 
 			if ( cache ) {

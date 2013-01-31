@@ -451,7 +451,6 @@ $.extend($.boom.items.group,  {
 					);
 				})
 				.done( function( response ){
-					console.log( response );
 				});
 			})
 			.on( 'change', '#b-group-roles-pages input[type=radio]', function( event ){
@@ -481,7 +480,6 @@ $.extend($.boom.items.group,  {
 					);
 				})
 				.done( function( response ){
-					console.log( response );
 				});
 			});
 
@@ -628,7 +626,6 @@ $.extend($.boom.items.group,  {
 
 		var item = $( event.target ).closest( 'li' );
 		var rid = item.find('a')[0].rel;
-		console.log( item );
 
 		$.boom.dialog.confirm(
 			'Please confirm',
@@ -695,7 +692,6 @@ $.extend($.boom.items.group,  {
 		page_picker : function( opts ) {
 
 			$.boom.log( 'opening permissions editor' );
-			console.log( opts );
 
 			var self = this;
 			var group = $.boom.items.group;
@@ -714,7 +710,6 @@ $.extend($.boom.items.group,  {
 						var dialog = this;
 
 						$('#boom-group-permissions-page-add .boom-group-permissions-page-permission').each( function(){
-							console.log( this );
 							$('#boom-group-permissions-page').append( '<li class=\'boom-group-permission\' data-permission=\'' + $(this).data( 'permission' ) + '\'></li>' );
 						});
 

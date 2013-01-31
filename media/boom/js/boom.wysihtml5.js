@@ -63,8 +63,6 @@ $.extend($.boom, {
 
 							editor_loaded.resolve();
 							
-							console.log( top.wysihtml5 );
-							
 							self._load_extensions( top.wysihtml5 );
 
 							$.boom.log('wysihtml5 loaded');
