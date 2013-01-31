@@ -1002,8 +1002,7 @@ boom.plugins.js
 								.find( '> .boom-tree-hitarea' )
 								.trigger( 'boom-tree.toggle' );
 						}
-						
-						self._toggle( $item, toggle, data.childList);
+						self._toggle( $item, toggle, $item.find( '> ul' ));
 					});
 			} else {
 				self._toggle( $item, toggle, childList);
