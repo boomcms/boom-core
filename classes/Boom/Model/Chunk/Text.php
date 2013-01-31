@@ -28,14 +28,9 @@ class Boom_Model_Chunk_Text extends ORM
 	 */
 	public function clean_text($text)
 	{
-		if ($this->slotname == 'standfirst')
+		if ($this->slotname == 'bodycopy')
 		{
-			// For standfirsts remove all HTML tags.
-			return strip_tags($text);
-		}
-		else
-		{
-			// For all other text chunks clean the HTML.
+			// For the bodycopy clean up the HTML.
 			require_once Kohana::find_file('vendor', 'htmlpurifier/library/HTMLPurifier.auto');
 
 			// Get the HTML Purifier config from a config file.
@@ -47,6 +42,11 @@ class Boom_Model_Chunk_Text extends ORM
 
 			// Return the cleaned text.
 			return $purifier->purify($text);
+		}
+		else
+		{
+			// For all other chunks remove all the HTML.
+			return strip_tags($text);
 		}
 	}
 
