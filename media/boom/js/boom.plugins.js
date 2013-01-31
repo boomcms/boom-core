@@ -999,6 +999,8 @@ boom.plugins.js
 							}
 							self._bind_events( $child );
 						});
+						
+						self._toggle( $item, toggle, data.childList);
 					});
 			} else {
 				self._toggle( $item, toggle, childList);
