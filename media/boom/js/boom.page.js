@@ -48,87 +48,6 @@ $.extend($.boom, {
 
 		},
 
-		/**
-		Create a tree widget for selecting pages.
-		@function
-		@returns {Promise} promise which notifies a page ID when a page is selected.
-		*/
-		picker : function( $element ){
-
-			var self = this;
-			var complete = new $.Deferred();
-
-			var item_selected = function( $item ){
-
-				$item
-					.addClass( 'ui-state-active' )
-					.parents( '.boom-tree' )
-					.find( 'a.ui-state-active' )
-					.not( $item )
-					.removeClass( 'ui-state-active' );
-
-			};
-
-			var parent_treeConfig = $.extend({}, $.boom.config.tree, {
-				toggleSelected: false,
-				onClick: function( event ){
-
-					event.preventDefault();
-
-					var link = {};
-					var $node = $(this);
-					var uri = $node.attr('href');
-					var page_rid = $node.attr('rel');
-
-					link.title = $node.text();
-					link.page_id = page_rid;
-					link.url = uri;
-
-					item_selected( $node );
-
-					complete.notify( link );
-				},
-				onToggle: function( page_id ){
-
-					var list_ready = $.Deferred();
-					var children = $.ajax( {
-						type: 'POST',
-						url: '/page/children.json',
-						data: {parent : page_id, page: 0, perpage: 0},
-						dataType: 'json'
-					} );
-					children.done( function( data ) {
-
-						var children = $('<ul></ul>');
-
-						$( data ).each( function( i, item ){
-							var li = $('<li></li>')
-								.data( 'children', parseInt(item.has_children) )
-								.appendTo( children );
-							$('<a></a>')
-								.attr( 'id', 'page_' + item.id )
-								.attr( 'href', item.url )
-								.attr( 'rel', item.id )
-								.text( item.title )
-								.appendTo( li );
-						});
-
-						var parent_id = $( 'input[name=parent_id]' ).val();
-						children.find( '#page_' + parent_id ).addClass( 'ui-state-active' );
-
-
-						list_ready.resolve( { childList: children } );
-					});
-
-					return list_ready;
-				}
-			});
-
-			$element.tree('destroy').tree( parent_treeConfig );
-
-			return complete;
-		},
-
 		/** @function */
 		register : function(config){
 
@@ -1076,7 +995,7 @@ $.extend($.boom.page, {
 					width: 570,
 					onLoad : function() {
 
-						$.boom.page.picker( $( this ).find( '.boom-tree' ) )
+						$.boom.util.page_tree( $( this ).find( '.boom-tree' ) )
 							.progress( function( pag ){
 								$( 'input[name=parent_id]' ).val( page.page_id );
 							});

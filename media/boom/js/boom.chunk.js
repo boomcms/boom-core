@@ -356,7 +356,7 @@ $.widget('ui.chunkLinkset', $.ui.chunk, {
 
 		var self = this;
 		
-		$.boom.page.picker( this.elements.internalLinks )
+		$.boom.util.page_tree( this.elements.internalLinks )
 			.progress( function( page ) {
 				var anchor = 
 					$( '<a>')
@@ -528,7 +528,7 @@ $.widget('ui.chunkFeature', $.ui.chunk, {
 			title: 'Page feature',
 			onLoad : function() {
 				
-				$.boom.page.picker( self.dialog.find( '.boom-tree' ) )
+				$.boom.util.page_tree( self.dialog.find( '.boom-tree' ) )
 					.progress( function( page ){
 						self.insert( page.page_id );
 
