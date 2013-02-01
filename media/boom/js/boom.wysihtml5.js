@@ -309,7 +309,11 @@ $.extend($.boom, {
 			var self = this;
 			var ed = self.instance.composer;
 			
-			 return $.boom.assets
+			ed.commands.exec( "insertHTML", '<img src="url">' );
+			
+			var img = top.$( ed.element ).find( '[src=url]' )
+			
+			return $.boom.assets
 				.picker({
 					asset_rid : asset_rid
 				})
@@ -317,7 +321,7 @@ $.extend($.boom, {
 					
 					$.post( '/asset/embed/' + rid )
 					.done( function( response ) {
-						ed.commands.exec( "insertHTML", response );
+						img.replaceWith( response );
 					});
 					
 				});
