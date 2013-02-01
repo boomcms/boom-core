@@ -333,6 +333,28 @@ $.extend($.boom, {
 			var ed = self.instance.composer;
 			var existing_link = ed.commands.state( "createLink" )[0];
 			
+			if ( !existing_link ) {
+				ed.commands.exec("createLink", { href: '', rel: ''});
+
+				var selection;
+				if ( top.getSelection ) {
+					selection = top.getSelection();
+				} else if ( top.document.selection ) {
+					selection = top.document.selection.createRange();
+				} else {
+					selection = top.rangy.getSelection();
+				}
+
+				if ( selection.anchorNode ) {
+					existing_link = selection.anchorNode.parentNode;
+					selection.selectAllChildren( existing_link );
+				} else {
+					existing_link = selection.parentElement();
+					selection.parentElement().focus();
+				}
+			}
+			
+			
 			 return $.boom.links
 				.picker({})
 				.done( function( link ){
@@ -345,6 +367,17 @@ $.extend($.boom, {
 							.attr( 'href', uri )
 							.attr( 'rel', page_rid );
 					} else {
+						if ( top.getSelection ) {
+							console.log( selection );
+							new_selection = top.getSelection( selection );
+						} else if ( top.document.selection ) {
+							new_selection = top.document.selection.createRange();
+							console.log( selection );
+							new_selection = new_selection.moveToBookmark( selection );
+						} else {
+							new_selection = top.rangy.getSelection();
+						}
+						
 						ed.commands.exec("createLink", { href: uri, rel: page_rid});
 					}
 					
