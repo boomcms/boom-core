@@ -109,7 +109,12 @@ class Boom_Model_Chunk_Text extends ORM
 		return array(
 			'text' => array(
 				array('urldecode'),
-				array('html_entity_decode'),
+				array(
+					function($text)
+					{
+						return str_replace('&nbsp;', ' ', $text);
+					}
+				),
 				array('Chunk_Text::munge'),
 			),
 			'title'	=> array(
