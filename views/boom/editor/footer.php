@@ -46,7 +46,7 @@
 				$.boom.page.register({
 					rid: <?=$page->id;?>,
 					vid: <?=$page->id;?>,
-					writable: 1,
+					writable: <?= (int) ($auth->logged_in('edit_page_content', $page) OR $page->was_created_by($person)) ?>,
 					editorOptions: {}
 				});
 			<? endif; ?>
