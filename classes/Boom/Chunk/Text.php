@@ -56,7 +56,7 @@ class Boom_Chunk_Text extends Chunk
 		// Embed youtube videos when in site view.
 		if (Editor::instance()->state() != Editor::EDIT)
 		{
-			preg_replace_callback('~\b(?<!href="|">)(?:ht|f)tps?://[^<\s]+(?:/|\b)~i', function($matches)
+			$text = preg_replace_callback('~\b(?<!href="|">)(?:ht|f)tps?://[^<\s]+(?:/|\b)~i', function($matches)
 				{
 					return Chunk_Text::embed_video($matches[0]);
 				}, $text
