@@ -67,6 +67,8 @@ $.extend($.boom, {
 				self.editors = [];
 
 				$.boom.log('Page registered for editing: ' + self.config.rid);
+				
+				if ( !self.config.writable ) return;
 
 				$.getScript( $.boom.config.editor.path, function(){
 					self.loadPageEditor()
