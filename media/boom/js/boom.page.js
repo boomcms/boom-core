@@ -476,7 +476,7 @@ $.extend($.boom.page, {
 
 			this.load()
 				.done( function(){
-					self.bind();
+					if ( $.boom.page.config.writable ) self.bind();
 				});
 
 			return this;
