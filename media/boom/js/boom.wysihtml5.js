@@ -334,24 +334,9 @@ $.extend($.boom, {
 			var existing_link = ed.commands.state( "createLink" )[0];
 			
 			if ( !existing_link ) {
-				ed.commands.exec("createLink", { href: '', rel: ''});
-
-				var selection;
-				if ( top.getSelection ) {
-					selection = top.getSelection();
-				} else if ( top.document.selection ) {
-					selection = top.document.selection.createRange();
-				} else {
-					selection = top.rangy.getSelection();
-				}
-
-				if ( selection.anchorNode ) {
-					existing_link = selection.anchorNode.parentNode;
-					selection.selectAllChildren( existing_link );
-				} else {
-					existing_link = selection.parentElement();
-					selection.parentElement().focus();
-				}
+				ed.commands.exec("createLink", { href: '', rel: 'new-link'});
+				
+				existing_link = top.$( ed.element ).find( '[rel=new-link]' );
 			}
 			
 			
