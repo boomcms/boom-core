@@ -218,7 +218,6 @@ function CMSTagmanager(type){
 			toggleSelected: false,
 			click: false,
 			onClick: function(event){
-				console.log( 'FILTER CLICK' );
 				$this = $(this);
 
 				var tags = self.items.tag.multi_select( $this );
@@ -254,7 +253,6 @@ function CMSTagmanager(type){
 			maxSelected: 1,
 			toggleSelected: false,
 			onClick: function(event){
-				console.log('CLICK');
 				$this = $(this);
 				self.items.tag.item_selected( $this );
 				
@@ -263,8 +261,6 @@ function CMSTagmanager(type){
 						.attr( 'href' )
 						.split('/')
 						[1];
-				
-				console.log( self.items.tag.rid );
 
 				self.items.tag.get( self.items.tag.rid );
 				return false;

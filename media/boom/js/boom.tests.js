@@ -259,7 +259,7 @@ module("Tree", {
 				if (page_id == 5) {
 					setTimeout( function(){
 						list_ready.resolve( { childList: $children2 } );
-					}, 5000);
+					}, 100);
 				} 
 				
 				return list_ready;
@@ -344,7 +344,7 @@ asyncTest('onToggle callback', function(){
 			true
 		);
 		start();
-	}, 7000);
+	}, 500);
 	
 });
 
@@ -562,6 +562,8 @@ module("People manager", {
 		$.boom.init('people', {
 		});
 		
+		$( 'body' ).append( '<div class="b-items-rightpane"><div class="b-items-content">people manager</div></div>');
+		
 		$.boom.people.init({
 			items: {
 				tag: $.boom.items.group,
@@ -578,6 +580,9 @@ module("People manager", {
 				}
 			}
 		});
+	},
+	teardown: function(){
+		$( '.b-items-rightpane' ).remove();
 	}
 });
 test('$.boom.type == "people"', function(){
@@ -610,7 +615,7 @@ asyncTest('Changing the hash changes the person item', function(){
 	
 	
 });
-asyncTest('edit a group opens the "Edit group" dialog', function(){
+asyncTest('edit a group opens the "Edit group" panel', function(){
 	
 	// FIXME: group edit has to be triggered from a link inside an li, otherwise the code fails.
 	$('<a href="#tag/13" rel="13">Group</a>')
@@ -627,25 +632,16 @@ asyncTest('edit a group opens the "Edit group" dialog', function(){
 		
 		setTimeout(function(){
 			equal(
-				$( 'div[role=dialog]').length,
+				$( 'div#b-group-roles-general').length,
 				1,
-				'dialog opened'
+				'editor loaded'
 			);
 			equal(
-				$.trim( $('.ui-dialog-title').text() ),
-				'Edit group',
-				'dialog title verified'
+				$.trim( $('#b-people-group-name').val() ),
+				'Blog Editors',
+				'group name verified'
 			);
-			if ( $( '.ui-dialog-buttonset button' ).length > 0 ) {
-				$( '.ui-dialog-buttonset button' )[0].click();
-				equal(
-					$( 'div[role=dialog]').length,
-					0,
-					'dialog closed'
-				);
-			}
-			$.boom.dialog.destroy();
 			start();
-		}, 3000);
+		}, 500);
 
 });

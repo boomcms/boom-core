@@ -502,7 +502,6 @@ boom.plugins.js
 						elem.datetimepicker(opts.datepicker);
 					break;
 					case 'help' :
-						console.log( elem );
 						elem.on( 'click', function( event ){
 							$.boom.dialog.alert(
 								'',
@@ -773,8 +772,7 @@ boom.plugins.js
 			$('<span />')
 				.addClass('boom-tree-hitarea ui-icon')
 				.bind('boom-tree.toggle', function(){
-				
-					self.toggle.apply(self, [$item]);
+					self.toggle( $item );
 				})
 				.click(function(event){
 					self._trigger('toggle', event, { hitarea: this });
@@ -981,26 +979,30 @@ boom.plugins.js
 				self.options.onToggle
 					.call(this, id)
 					.done( function( data ){
-						$item
-							.append( data.childList )
-							.find( '.boom-tree-hitarea' )
-							.trigger( 'boom-tree.toggle' );
-					
-						data.childList.find( '> li' ).each( function( i, child ){
 						
-							var $child = $( child );
-							self
-								._set_edit( $child )
-								._set_remove( $child )
-								._set_icon( $child );
-							if ( $child.data( 'children' ) ) {
-								self._set_toggle( $child );
-								$child
-									.find( '.boom-tree-hitarea' )
-									.addClass( self.options.iconHitareaClosed );
-							}
-							self._bind_events( $child );
-						});
+						if ( $item.find( '> ul' ).length == 0 ) {
+							$item
+								.append( data.childList )
+								.find( '> ul > li' ).each( function( i, child ){
+
+									var $child = $( child );
+									self
+										._set_edit( $child )
+										._set_remove( $child )
+										._set_icon( $child );
+									if ( $child.data( 'children' ) ) {
+										self._set_toggle( $child );
+										$child
+											.find( '.boom-tree-hitarea' )
+											.addClass( self.options.iconHitareaClosed );
+									}
+									self._bind_events( $child );
+								})
+								.end()
+								.find( '> .boom-tree-hitarea' )
+								.trigger( 'boom-tree.toggle' );
+						}
+						self._toggle( $item, toggle, $item.find( '> ul' ));
 					});
 			} else {
 				self._toggle( $item, toggle, childList);

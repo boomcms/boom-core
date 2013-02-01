@@ -1136,8 +1136,6 @@ $.widget('ui.chunkSlideshow', $.ui.chunk, {
 	@function
 	*/
 	_refresh : function( slides ) {
-		
-		console.log( slides );
 
 		var self = this;
 
