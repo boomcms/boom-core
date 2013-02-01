@@ -308,6 +308,7 @@ $.extend($.boom, {
 			
 			var self = this;
 			var ed = self.instance.composer;
+			var asset_selected = new $.Deferred();
 			
 			var img;
 			if ( asset_rid == 0 ) {
@@ -317,17 +318,35 @@ $.extend($.boom, {
 				img = top.$( ed.element ).find( '[src^="/asset/view/' + asset_rid +'"]' );
 			}
 			
+			// cleanup code when the dialog closes.
+			asset_selected
+			.fail( function() {
+				top.$( ed.element ).find( '[src=url]' ).remove();
+			});
+			
 			return $.boom.assets
 				.picker({
-					asset_rid : asset_rid
+					asset_rid : asset_rid,
+					deferred : asset_selected
 				})
-				.done( function( rid ){
+				.done( function( rid ) {
+					console.log( 'done' );
 					
-					$.post( '/asset/embed/' + rid )
-					.done( function( response ) {
-						img.replaceWith( response );
-					});
+					if ( rid > 0 ) {
+						$.post( '/asset/embed/' + rid )
+						.done( function( response ){
+							img.replaceWith( response );
+						});
+					}
 					
+				})
+				.fail( function(){
+					console.log( 'fail' );
+					img.remove();
+				})
+				.always( function(){
+					console.log( 'always' );
+					asset_selected.reject();
 				});
 		},
 		
