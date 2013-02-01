@@ -34,17 +34,23 @@ class Boom_Chunk_Feature extends Chunk
 			$this->_template = $this->_default_template;
 		}
 
-		$v = View::factory("site/slots/feature/$this->_template");
-		$v->target = $this->target_page();
+		// Get the target page.
+		$page = $this->target_page();
 
-		return $v;
+		// Only show the page feature if the page is visible or the feature box is editable.
+		if ( ! Editor::instance()->state_is(Editor::DISABLED) OR $page->is_visible())
+		{
+			return View::factory("site/slots/feature/$this->_template", array(
+				'target'	=>	$page,
+			));
+		}
 	}
 
 	public function _show_default()
 	{
 		return View::factory("site/slots/default/feature/$this->_template");
 	}
-	
+
 	/**
 	 * Adds a target page ID data attribute.
 	 *
