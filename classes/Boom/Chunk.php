@@ -93,7 +93,7 @@ abstract class Boom_Chunk
 		 *
 		 * @todo Chunk::factory() will be called multiple times to display a single page - need to remove duplicate calles to Auth::instance()->logged_in()
 		 */
-		$this->_editable = (Editor::instance()->state() == Editor::EDIT AND Auth::instance()->logged_in("edit_page_content", $this->_page));
+		$this->_editable = (Editor::instance()->state() == Editor::EDIT AND ($this->_page->was_created_by(Auth::instance()->get_user()) OR Auth::instance()->logged_in("edit_page_content", $this->_page)));
 	}
 
 	/**
