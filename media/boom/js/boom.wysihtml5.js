@@ -472,8 +472,7 @@ $.extend($.boom, {
 								if ( !existing_link ) {
 									top.document.execCommand( command, null, 'url' );
 
-									self.selected_node = element.find( '[href=url]' );
-									console.log( self.selected_node );
+									self.selected_node = element.find( '[href=url]' )[0];
 								}
 								
 								$.boom.links
@@ -569,21 +568,21 @@ $.extend($.boom, {
 				
 				var url = link.url;
 				var page_rid = link.rid;
-				var existing_link = self.selected_node;
-				console.log( link.url );
+				var existing_link = this.selected_node;
 				
 				command = ( url == 'http://' ) ? 'unlink' : 'createLink';
 				
 				if (document.selection ) {
 					document.selection.createRange( self.selected_node );
 				}
+				
+				console.log( existing_link );
 
 				if ( existing_link && existing_link.nodeName == 'A' ) {
 					top.$( existing_link )
-						.attr( 'href', uri )
+						.attr( 'href', url )
 						.attr( 'rel', page_rid );
 				} else {
-					console.log( command );
 					top.document.execCommand( command, null, url );
 				}
 				
