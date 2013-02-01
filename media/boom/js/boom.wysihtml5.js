@@ -333,6 +333,13 @@ $.extend($.boom, {
 			var ed = self.instance.composer;
 			var existing_link = ed.commands.state( "createLink" )[0];
 			
+			if ( !existing_link ) {
+				ed.commands.exec("createLink", { href: '', rel: 'new-link'});
+				
+				existing_link = top.$( ed.element ).find( '[rel=new-link]' );
+			}
+			
+			
 			 return $.boom.links
 				.picker({})
 				.done( function( link ){
@@ -345,6 +352,17 @@ $.extend($.boom, {
 							.attr( 'href', uri )
 							.attr( 'rel', page_rid );
 					} else {
+						if ( top.getSelection ) {
+							console.log( selection );
+							new_selection = top.getSelection( selection );
+						} else if ( top.document.selection ) {
+							new_selection = top.document.selection.createRange();
+							console.log( selection );
+							new_selection = new_selection.moveToBookmark( selection );
+						} else {
+							new_selection = top.rangy.getSelection();
+						}
+						
 						ed.commands.exec("createLink", { href: uri, rel: page_rid});
 					}
 					
@@ -450,6 +468,13 @@ $.extend($.boom, {
 						switch( command ) {
 							case 'createLink':
 								var existing_link = self.selected_node;
+								
+								if ( !existing_link ) {
+									top.document.execCommand( command, null, 'url' );
+
+									self.selected_node = element.find( '[href=url]' )[0];
+								}
+								
 								$.boom.links
 									.picker({})
 									.done( function( link ){
@@ -532,6 +557,7 @@ $.extend($.boom, {
 				}
 				
 				this.select_node();
+				this.selected_node = node;
 				top.$( 'button[data-wysihtml5-command=' + command + ']' )
 					.addClass( 'wysihtml5-command-active' );
 					
@@ -542,21 +568,21 @@ $.extend($.boom, {
 				
 				var url = link.url;
 				var page_rid = link.rid;
-				var existing_link = self.selected_node;
-				console.log( link.url );
+				var existing_link = this.selected_node;
 				
 				command = ( url == 'http://' ) ? 'unlink' : 'createLink';
 				
 				if (document.selection ) {
 					document.selection.createRange( self.selected_node );
 				}
+				
+				console.log( existing_link );
 
 				if ( existing_link && existing_link.nodeName == 'A' ) {
 					top.$( existing_link )
-						.attr( 'href', uri )
+						.attr( 'href', url )
 						.attr( 'rel', page_rid );
 				} else {
-					console.log( command );
 					top.document.execCommand( command, null, url );
 				}
 				
