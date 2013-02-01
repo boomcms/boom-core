@@ -427,6 +427,7 @@ $.extend($.boom.items.group,  {
 			$.boom.tagmanager.base.item.prototype.get.apply( self );
 
 			$.boom.loader.hide();
+			
 
 			self.tagmanager.elements.rightpane
 			.ui()
@@ -483,8 +484,21 @@ $.extend($.boom.items.group,  {
 				});
 			});
 
+			/**
+			 * Clicking on a page in the tree.
+			 * Should make a GET call to /cms/groups/list_roles/<group ID>?page_id=<page ID>
+			 *
+			 * This will return a json encoded array of role ID => <value>
+			 * Possible values are 1 if the role is allowed and 0 if the role is disallowed.
+			 * If nothing is set for a role then that role ID won't be in the returned array.
+			 *
+			 * The role checkboxes should then be updated if the correct values.
+			 */
+			
 			$.boom.util.page_tree( self.tagmanager.elements.rightpane.find( '#b-group-roles-pages .boom-tree' ) )
 				.progress( function( page ) {
+					
+					selected_page = page.page_id;
 					
 					$( '#b-group-roles-pages input[type=radio]')
 						.filter( ':checked' )
@@ -522,17 +536,6 @@ $.extend($.boom.items.group,  {
 			 * Save button has ID 'b-people-group-save'
 			 * Needs to POST to /cms/groups/save/<group ID>
 			 * With the value of 'b-people-group-name' in $_POST['name']
-			 */
-
-			/**
-			 * Clicking on a page in the tree.
-			 * Should make a GET call to /cms/groups/list_roles/<group ID>?page_id=<page ID>
-			 *
-			 * This will return a json encoded array of role ID => <value>
-			 * Possible values are 1 if the role is allowed and 0 if the role is disallowed.
-			 * If nothing is set for a role then that role ID won't be in the returned array.
-			 *
-			 * The role checkboxes should then be updated if the correct values.
 			 */
 		} );
 
