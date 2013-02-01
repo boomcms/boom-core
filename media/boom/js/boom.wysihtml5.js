@@ -468,6 +468,14 @@ $.extend($.boom, {
 						switch( command ) {
 							case 'createLink':
 								var existing_link = self.selected_node;
+								
+								if ( !existing_link ) {
+									top.document.execCommand( command, null, 'url' );
+
+									self.selected_node = element.find( '[href=url]' );
+									console.log( self.selected_node );
+								}
+								
 								$.boom.links
 									.picker({})
 									.done( function( link ){
@@ -550,6 +558,7 @@ $.extend($.boom, {
 				}
 				
 				this.select_node();
+				this.selected_node = node;
 				top.$( 'button[data-wysihtml5-command=' + command + ']' )
 					.addClass( 'wysihtml5-command-active' );
 					
