@@ -85,4 +85,4 @@
 	</div>
 </div>
 
-<?= View::factory('boom/editor/footer', array('register_page' => TRUE)) ?>
+<?= View::factory('boom/editor/footer', array('register_page' => $auth->logged_in('edit_page_content', $page))) ?>
