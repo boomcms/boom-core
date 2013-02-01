@@ -37,7 +37,7 @@
 				<?
 					if (isset( $page )):
 						echo "id: $page->id,";
-						echo "vid: ", $page->id;
+						echo "vid: ", $page->version()->id;
 					endif;
 				?>
 			});
@@ -45,7 +45,7 @@
 			<? if ($register_page): ?>
 				$.boom.page.register({
 					rid: <?=$page->id;?>,
-					vid: <?=$page->id;?>,
+					vid: <?=$page->version()->id;?>,
 					writable: <?= (int) ($auth->logged_in('edit_page_content', $page) OR $page->was_created_by($person)) ?>,
 					editorOptions: {}
 				});
