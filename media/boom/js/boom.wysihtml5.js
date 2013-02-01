@@ -309,9 +309,13 @@ $.extend($.boom, {
 			var self = this;
 			var ed = self.instance.composer;
 			
-			ed.commands.exec( "insertHTML", '<img src="url">' );
-			
-			var img = top.$( ed.element ).find( '[src=url]' )
+			var img;
+			if ( asset_rid == 0 ) {
+				ed.commands.exec( "insertHTML", '<img src="url">' );
+				img = top.$( ed.element ).find( '[src=url]' );
+			} else {
+				img = top.$( ed.element ).find( '[src^="/asset/view/' + asset_rid +'"]' );
+			}
 			
 			return $.boom.assets
 				.picker({
