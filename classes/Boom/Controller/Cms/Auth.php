@@ -77,6 +77,9 @@ class Boom_Controller_Cms_Auth extends Controller
 				// Called [Auth::login()] to complete the login.
 				Auth::instance()->login($person, " ");
 
+				// Write the session data.
+				Session::instance()->write();
+
 				// Login is finished, send them on their merry way.
 				$this->redirect('/');
 			}
