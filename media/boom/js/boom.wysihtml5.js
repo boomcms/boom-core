@@ -369,6 +369,15 @@ $.extend($.boom, {
 			
 			 return $.boom.links
 				.picker({})
+				.fail( function(){
+					var link = top.$( ed.element ).find( '[rel=new-link]' );
+					console.log( link );
+					
+					link
+						.after( link.text() )
+						.remove();
+					
+				})
 				.done( function( link ){
 					
 					var uri = link.url;
@@ -504,6 +513,15 @@ $.extend($.boom, {
 								
 								$.boom.links
 									.picker({})
+									.fail( function(){
+										var link = element.find( '[href=url]' );
+										console.log( link );
+
+										link
+											.after( link.text() )
+											.remove();
+
+									})
 									.done( function( link ){
 
 										var command = self.insert_link( link );
