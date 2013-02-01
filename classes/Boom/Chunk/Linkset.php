@@ -26,7 +26,7 @@ class Boom_Chunk_Linkset extends Chunk
 
 			foreach ($this->_chunk->links() as $link)
 			{
-				if ($link->is_external OR $link->target->is_visible())
+				if ($link->is_external() OR $link->target->is_visible())
 				{
 					$links[] = $link;
 				}
