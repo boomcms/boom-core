@@ -78,7 +78,7 @@ class Boom_Controller_Cms_Assets extends Boom_Controller
 				->where('id', '=', $asset_id)
 				->find();
 
-			if ( ! $asset->loaded())
+			if ( ! $this->asset->loaded())
 			{
 				// Invalid asset ID
 				// Move along, nothing to see here, etc.
