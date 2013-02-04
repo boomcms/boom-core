@@ -287,6 +287,8 @@ $.extend($.boom.assets, {
 		var upload = function( data ) {
 
 			var complete = new $.Deferred();
+			
+			$.boom.log( 'posting file data' );
 
 			$.ajax( {
 				xhr: function(){
@@ -423,7 +425,7 @@ $.extend($.boom.assets, {
 							.done( function( data ){
 
 								$.boom.dialog.destroy( upload_dialog );
-								top.location = '/cms/assets';
+								top.location.hash = 'asset/' + data.rids[0];
 								tagmanager.selected_rid = data.rids[0];
 							});
 					});
@@ -432,7 +434,7 @@ $.extend($.boom.assets, {
 						.done( function( data ){
 
 							$.boom.dialog.destroy( upload_dialog );
-							top.location.hash = '/cms/assets';
+							top.location.hash = 'asset/' + data.rids[0];
 							tagmanager.selected_rid = data.rids[0];
 						});
 				}
