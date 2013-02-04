@@ -44,7 +44,7 @@ class Boom_Controller_Asset_Image extends Controller_Asset
 		// This use used for resizing / cropping the image.
 		$this->width	= $this->request->param('width');
 		$this->height	= $this->request->param('height');
-		$this->quality	= $this->request->param('quality');
+		$this->quality	= ($this->request->param('quality'))? $this->request->param('quality') : 100;
 		$this->crop	= (bool) $this->request->param('crop');
 	}
 
@@ -61,11 +61,11 @@ class Boom_Controller_Asset_Image extends Controller_Asset
 		}
 
 		// Are we going to be resizing the image?
-		if ($this->width OR $this->height)
+		if ($this->width OR $this->height OR $this->quality < 100)
 		{
 			// Add the image dimensions to the filename.
 			// Cast the width and height to int so that if only one is set 0 will be used for the other rather than null
-			$filename .= "_".(int) $this->width."_".(int) $this->height .".cache" ;
+			$filename .= "_".(int) $this->width."_".(int) $this->height ."_".$this->quality.".cache" ;
 		}
 
 		// Does the file exist?
@@ -94,7 +94,7 @@ class Boom_Controller_Asset_Image extends Controller_Asset
 
 			// Save the file.
 			// $image->save() doesn't always work with Imagemagick but this does the job.
-			file_put_contents($filename, $image->render());
+			file_put_contents($filename, $image->render(NULL, $this->quality));
 		}
 		else
 		{
@@ -104,7 +104,8 @@ class Boom_Controller_Asset_Image extends Controller_Asset
 
 		$this->response
 			->headers('Content-type', $image->mime)
-			->body($image->render(NULL, $this->quality));
+			// Use file_get_contents() because it's quicker than [Image::render()]
+			->body(file_get_contents($filename));
 	}
 
 	/**
