@@ -308,18 +308,45 @@ $.extend($.boom, {
 			
 			var self = this;
 			var ed = self.instance.composer;
+			var asset_selected = new $.Deferred();
 			
-			 return $.boom.assets
+			var img;
+			if ( asset_rid == 0 ) {
+				ed.commands.exec( "insertHTML", '<img src="url">' );
+				img = top.$( ed.element ).find( '[src=url]' );
+			} else {
+				img = top.$( ed.element ).find( '[src^="/asset/view/' + asset_rid +'"]' );
+			}
+			
+			// cleanup code when the dialog closes.
+			asset_selected
+			.fail( function() {
+				top.$( ed.element ).find( '[src=url]' ).remove();
+			});
+			
+			return $.boom.assets
 				.picker({
-					asset_rid : asset_rid
+					asset_rid : asset_rid,
+					deferred : asset_selected
 				})
-				.done( function( rid ){
+				.done( function( rid ) {
+					console.log( 'done' );
 					
-					$.post( '/asset/embed/' + rid )
-					.done( function( response ) {
-						ed.commands.exec( "insertHTML", response );
-					});
+					if ( rid > 0 ) {
+						$.post( '/asset/embed/' + rid )
+						.done( function( response ){
+							img.replaceWith( response );
+						});
+					}
 					
+				})
+				.fail( function(){
+					console.log( 'fail' );
+					img.remove();
+				})
+				.always( function(){
+					console.log( 'always' );
+					asset_selected.reject();
 				});
 		},
 		
@@ -342,6 +369,15 @@ $.extend($.boom, {
 			
 			 return $.boom.links
 				.picker({})
+				.fail( function(){
+					var link = top.$( ed.element ).find( '[rel=new-link]' );
+					console.log( link );
+					
+					link
+						.after( link.text() )
+						.remove();
+					
+				})
 				.done( function( link ){
 					
 					var uri = link.url;
@@ -477,6 +513,15 @@ $.extend($.boom, {
 								
 								$.boom.links
 									.picker({})
+									.fail( function(){
+										var link = element.find( '[href=url]' );
+										console.log( link );
+
+										link
+											.after( link.text() )
+											.remove();
+
+									})
 									.done( function( link ){
 
 										var command = self.insert_link( link );
