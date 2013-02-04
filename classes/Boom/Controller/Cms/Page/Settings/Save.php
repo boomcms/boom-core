@@ -89,8 +89,7 @@ class Boom_Controller_Cms_Page_Settings_Save extends Controller_Cms_Page_Setting
 	 *
 	 *
 	 * @uses	Boom_Controller::log()
-	 * @uses	Model_Page_MPTT::move_tp_last_child()
-	 * @uses	Model_Page::sort_children()
+	 * @uses	Model_Page_MPTT::move_to_last_child()
 	 */
 	public function action_navigation()
 	{
@@ -117,9 +116,6 @@ class Boom_Controller_Cms_Page_Settings_Save extends Controller_Cms_Page_Setting
 					$this->page
 						->mptt
 						->move_to_last_child($post['parent_id']);
-
-					// Now sort the parent's children according to it's child ordering policy to move the new page into place.
-					$parent->sort_children();
 				}
 			}
 		}

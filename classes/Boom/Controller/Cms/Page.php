@@ -54,7 +54,6 @@ class Boom_Controller_Cms_Page extends Boom_Controller
 	 * template_id		|	int		|	ID of the template to be used by the new page.
 	 *
 	 * @uses	URL::generate()
-	 * @uses	Model_Page::add_child()
 	 */
 	public function action_add()
 	{
@@ -125,8 +124,8 @@ class Boom_Controller_Cms_Page extends Boom_Controller
 			// Set the ID for the page's record in the mptt table to the page_id
 			$page->mptt->id = $page->id;
 
-			// Add the page to the correct place in the tree according the parent's child ordering policy.
-			$parent->add_child($page);
+			// Add the page to the MPTT tree.
+			$page->mptt->insert_as_last_child($parent->mptt);
 
 			// Generate the link for the page.
 			// What is the prefix for the link? If a default default_chinl_link_prefix has been set for the parent then use that, otherwise use the parent's primary link.

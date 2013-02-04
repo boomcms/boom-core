@@ -96,45 +96,6 @@ class Boom_Model_Page extends ORM_Taggable
 	private $_url;
 
 	/**
-	 * Adds a new child page to this page's MPTT tree.
-	 * Ensures that the child is added in the correct position according to this page's child ordering policy.
-	 *
-	 * @param	Model_Page	$page	The new child page.
-	 * @return	Model_Page
-	 */
-	public function add_child(Model_Page $page)
-	{
-		// Get the child ordering policy column and direction.
-		list($column, $direction) = $this->children_ordering_policy();
-
-		// Find the page_mptt record of the page which comes after this one.
-		$mptt = ORM::factory('page_mptt')
-			->join('pages', 'inner')
-			->on('pages.id', '=', 'page_mptt.id')
-			->where('page_mptt.parent_id', '=', $this->mptt->id)
-			->where($column, '>', $page->$column)
-			->order_by($column, $direction)
-			->find();
-
-		if ( ! $mptt->loaded())
-		{
-			// If a record wasn't loaded then there's no page after this one.
-			// Insert as the last child of the parent.
-			$page->mptt->insert_as_last_child($this->mptt);
-		}
-		else
-		{
-			$page->mptt->insert_as_next_sibling($mptt);
-		}
-
-		// Reload the MPTT values for this page.
-		$this->mptt->reload();
-
-		// Return the current object.
-		return $this;
-	}
-
-	/**
 	 * Adds a tag with a given path to the page.
 	 *
 	 * If the tag doesn't exist then [Model_Tag::create_from_path()] is called to create it.
