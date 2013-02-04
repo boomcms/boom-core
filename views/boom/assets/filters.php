@@ -7,7 +7,7 @@
 </div>
 <div class="boom-box ui-widget ui-corner-all ui-state-default">
 	<input type='text' id="b-assets-filter-title" placeholder="Type name - e.g. logo.png" />
-	<ul class="ui-helper-clearfix boom-tree boom-tree-noborder">
+	<ul class="ui-helper-clearfix boom-filter-tree boom-tree-noborder">
 		<li><a><?=__('Uploaded by')?></a>
 			<ul class="ui-helper-hidden">
 				<? foreach ($uploaders as $id => $name): ?>

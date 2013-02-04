@@ -715,17 +715,22 @@ boom.plugins.js
 		_init : function(){
 
 			var self = this;
+			
+			console.log( this.element );
 
 			this.cookieItems = !this.options.useCookie ? [] : $.boom.cookie.get(this.options.cookieName).split($.boom.config.cookie.delimiter);
 
 			
 			var render_children = function( $ul ){
 				
-				$ul.children( 'li' ).each( function(){
-					$this = $( this );
+				var children = $ul.children( 'li' ).toArray();
+				var i;
+				
+				for ( i in children ) {
+					$this = $( children[i] );
 					self._add_item( $this );
 					render_children( $this.children( 'ul' ) );
-				});
+				}
 			};
 			
 			if ( this.element.is( 'ul' ) ) {
