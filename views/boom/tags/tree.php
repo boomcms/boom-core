@@ -1,5 +1,5 @@
 <div class="boom-box ui-widget ui-corner-all">
-	<ul class="ui-helper-clearfix boom-tree b-tags-tree boom-tree-noborder">
+	<ul class="ui-helper-clearfix b-tags-tree boom-tree-noborder">
 		<? show_tags($tags, 0); ?>
 	</ul>
 </div>

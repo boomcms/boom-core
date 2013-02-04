@@ -244,9 +244,7 @@ function CMSTagmanager(type){
 			
 		});
 		
-		$( '.boom-tree' )
-			.not( '.b-tags-tree' )
-			.tree( 'destroy' )
+		$( '.boom-filter-tree' )
 			.tree( treeConfig );
 			
 		var editableTreeConfig = $.extend({}, treeConfig, {
@@ -284,7 +282,6 @@ function CMSTagmanager(type){
 		}
 		
 		$('.b-tags-tree')
-			.tree( 'destroy' )
 			.tree(editableTreeConfig);
 
 		$.boom.hooks.register('tag.clickAfter', 'tagmanager', function(){
