@@ -992,7 +992,7 @@ $.extend($.boom.page, {
 					onLoad : function() {
 
 						$.boom.util.page_tree( $( this ).find( '.boom-tree' ) )
-							.progress( function( pag ){
+							.progress( function( page ){
 								$( 'input[name=parent_id]' ).val( page.page_id );
 							});
 
