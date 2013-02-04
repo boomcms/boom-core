@@ -531,7 +531,7 @@ class Boom_Model_Page extends ORM_Taggable
 			->join('page_versions', 'inner')
 			->on('pages.id', '=', 'page_versions.page_id')
 			->join(array(
-				DB::select(array('max(id)', 'id'), 'page_id')
+				DB::select(array(DB::expr('max(id)'), 'id'), 'page_id')
 					->from('page_versions')
 					->group_by('page_id'),
 				'current_version'
