@@ -78,6 +78,13 @@ class Boom_Controller_Cms_Assets extends Boom_Controller
 				->where('id', '=', $asset_id)
 				->find();
 
+			if ( ! $asset->loaded())
+			{
+				// Invalid asset ID
+				// Move along, nothing to see here, etc.
+				continue;
+			}
+
 			// Log a different action depending on whether the asset is being completely deleted
 			// or just marked as deleted.
 			$log_message = ($this->asset->deleted)? "Deleted asset $this->asset->title (ID: $this->asset->id)" : "Moved asset $this->asset->title (ID: $this->asset->id) to rubbish bin.";
