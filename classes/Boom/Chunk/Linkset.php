@@ -17,7 +17,7 @@ class Boom_Chunk_Linkset extends Chunk
 		if ( ! Editor::instance()->state_is(Editor::DISABLED))
 		{
 			// Editor is enabled, show all the links.
-			$links = $this->_chunks->links();
+			$links = $this->_chunk->links();
 		}
 		else
 		{
