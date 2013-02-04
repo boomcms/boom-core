@@ -1150,7 +1150,7 @@ $.widget('ui.chunkSlideshow', $.ui.chunk, {
 				src[3] = slide.asset_id;
 
 				$item.find( '.slide-asset' ).attr( 'src', src.join( '/' ) );
-				$item.find( '.slide-link' ).attr( 'href', slide.link );
+				$item.find( '.slide-link' ).attr( 'href', slide.url );
 				$item.find( '.slide-caption' ).text( slide.caption );
 			});
 
@@ -1218,7 +1218,7 @@ $.widget('ui.chunkSlideshow', $.ui.chunk, {
 				slide.caption = $this.find( '.slide-caption' ).text();
 				slide.caption = ( slide.caption == 'Default text' ) ? '' : slide.caption;
 				slide.asset_id = $this.find( '.slide-asset' ).attr( 'src' ).split( '/' )[3];
-				slide.link = $this.find( '.slide-link' ).attr( 'href' );
+				slide.url = $this.find( '.slide-link' ).attr( 'href' );
 
 				slides.push( slide );
 
