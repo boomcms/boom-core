@@ -692,6 +692,8 @@ boom.plugins.js
 		@function
 		*/
 		_create : function(){
+			
+			$.boom.log( 'tree create' );
 
 			if (this.element[0].nodeName != 'UL') return;
 			
@@ -713,6 +715,8 @@ boom.plugins.js
 		@function
 		*/
 		_init : function(){
+			
+			$.boom.log( 'tree init' );
 
 			var self = this;
 			

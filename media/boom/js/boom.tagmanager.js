@@ -260,7 +260,7 @@ function CMSTagmanager(type){
 						.split('/')
 						[1];
 
-				self.items.tag.get( self.items.tag.rid );
+				//self.items.tag.get( self.items.tag.rid );
 				return false;
 			}
 		});
