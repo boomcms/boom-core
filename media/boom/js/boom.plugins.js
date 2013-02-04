@@ -905,7 +905,7 @@ boom.plugins.js
 						tag: (tag !== null) ? tag[1] : ''
 					};
 
-					if (self.options.toggleSelected) {
+					if (self.options.preventDefault) {
 
 						event.preventDefault(); 
 
@@ -923,6 +923,8 @@ boom.plugins.js
 						self.amountChecked--;
 
 						if (self.options.toggleSelected) {
+							
+							$.boom.log( 'removing active class' );
 
 							anchor
 								.removeClass(self.options.anchorActive)

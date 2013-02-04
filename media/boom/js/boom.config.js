@@ -391,7 +391,12 @@ window.boomConfig = {
 		@type string
 		@default 'boom-tree-hitarea-hover'
 		*/
-		iconHitareaHover: 'boom-tree-hitarea-hover'
+		iconHitareaHover: 'boom-tree-hitarea-hover',
+		/**
+		@type boolean
+		@default false
+		*/
+		preventDefault: false
 	},
 
 	/**
