@@ -182,6 +182,7 @@ function CMSTagmanager(type){
 		self.items.tag.item_selected = function( $item ){
 			$( '#tag_all' ).removeClass( 'ui-state-active' );
 			
+			$.boom.log( 'adding active class' );
 			$item
 				.parents( '.b-tags-tree' )
 				.find( 'a.ui-state-active' )
@@ -250,6 +251,7 @@ function CMSTagmanager(type){
 		var editableTreeConfig = $.extend({}, treeConfig, {
 			maxSelected: 1,
 			toggleSelected: false,
+			preventDefault: true,
 			onClick: function(event){
 				$this = $(this);
 				self.items.tag.item_selected( $this );

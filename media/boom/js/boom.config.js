@@ -364,9 +364,9 @@ window.boomConfig = {
 		showRemove: false,
 		/**
 		@type number
-		@default -1
+		@default 1
 		*/
-		maxSelected: -1,
+		maxSelected: 1,
 		/**
 		@type boolean
 		@default false
@@ -391,7 +391,12 @@ window.boomConfig = {
 		@type string
 		@default 'boom-tree-hitarea-hover'
 		*/
-		iconHitareaHover: 'boom-tree-hitarea-hover'
+		iconHitareaHover: 'boom-tree-hitarea-hover',
+		/**
+		@type boolean
+		@default false
+		*/
+		preventDefault: false
 	},
 
 	/**
