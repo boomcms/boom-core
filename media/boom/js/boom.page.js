@@ -1341,9 +1341,12 @@ $.extend($.boom.page, {
 											$.post('/cms/page/urls/move/' + $.boom.page.config.id + '?url=' + new_url)
 												.done(function(response){
 													$.boom.growl.show('URL added.');
-													$( '#b-pagesettings-urls .boom-tree' )
-														.data( 'tree' )
-														.add_item( '<li>' + new_url + '</li>' );
+													$( '#b-pagesettings-urls' )
+														.parent()
+														.load( '/cms/page/urls/list/' + $.boom.page.config.id, function(){
+															$(this).ui();
+															self.bind();
+														});
 
 													$.boom.dialog.destroy(move_dialog);
 
