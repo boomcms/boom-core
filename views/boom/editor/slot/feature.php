@@ -22,9 +22,7 @@
 	<br />
 
 	<input type="hidden" name="parent_id" value="<?=$page->mptt->parent_id?>">
-	<div class="boom-tree">
-		<ul>
+		<ul class="boom-tree">
 			<li><a id="page_5" href="/" rel="5">Home</a></li>
 		</ul>
-	</div>
 </div>

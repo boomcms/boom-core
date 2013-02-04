@@ -160,6 +160,8 @@ $.extend($.boom, {
 
 					},
 					callback: function(){
+						
+						console.log( $('#b-page-add-form').serialize() );
 
 						$.boom.loader.show('modal');
 
