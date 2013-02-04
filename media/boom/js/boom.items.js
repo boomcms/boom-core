@@ -321,6 +321,7 @@ $.extend($.boom.items.tag,  {
 
 			var treeConfig = $.extend({}, options.treeConfig, {
 				toggleSelected: true,
+				preventDefault: true,
 				onClick: function(e) {
 					var $tags = $('input[name=tags]');
 					var tags = $tags.val().split(',');
