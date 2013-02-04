@@ -407,6 +407,7 @@ $.extend($.boom.assets, {
 			onLoad: function(){
 
 				if( window.FormData ){
+					$.boom.log( 'initialising HTML file uploader' );
 					$( this )
 					.find( '#b-assets-upload-form' )
 					.on( 'submit', function( event ){

@@ -708,6 +708,20 @@ boom.plugins.js
 					iconDefault = this.replace(/boom-tree-icon-/, '');
 				};
 			});
+			
+			var $container = 
+				$('<div />')
+				.addClass('boom-tree-container ui-widget')
+				.width(this.options.width)
+				.height(this.options.height);
+
+			if (this.options.height != 'auto') {
+				$container.css({ overflow: 'auto' });
+			}
+
+			if (this.options.border) $container.addClass('ui-state-active ui-corner-all');
+			
+			this.element.wrap($container);
 
 		},
 
@@ -742,21 +756,6 @@ boom.plugins.js
 			} else {
 				render_children( this.element.children( 'ul' ) );
 			}
-			
-			
-			var $container = 
-				$('<div />')
-				.addClass('boom-tree-container ui-widget')
-				.width(this.options.width)
-				.height(this.options.height);
-
-			if (this.options.height != 'auto') {
-				$container.css({ overflow: 'auto' });
-			}
-
-			if (this.options.border) $container.addClass('ui-state-active ui-corner-all');
-			
-			this.element.wrap($container);
 		},
 		
 		/**
