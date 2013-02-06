@@ -125,10 +125,10 @@ class Boom_Controller_Page extends Boom_Controller
 		{
 			$url = (string) $page->url();
 			$items[] = array(
-				'title'			=>	html_entity_decode($page->version()->title),
-				'link'			=>	$url,
-				'guid'		=>	$url,
-				'description'	=>	strip_tags(Chunk::factory('text', 'standfirst', $page)->text()),
+				'title'			=>	htmlentities($page->version()->title),
+				'link'			=>	urlencode($url),
+				'guid'		=>	urlencode($url),
+				'description'	=>	htmlentities(Chunk::factory('text', 'standfirst', $page)->text()),
 				'pubDate'		=>	$page->visible_from,
 			);
 		}
