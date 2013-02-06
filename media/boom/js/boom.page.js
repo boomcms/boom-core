@@ -600,11 +600,11 @@ $.extend($.boom.page, {
 
 					return false;
 				})
-				.bind('mouseenter, focus', function(){
+				.bind('mouseenter focus', function(){
 
 					$.boom.page.slots.bindMouseEnter.call(this, self.elements.page_body);
 				})
-				.bind('mouseleave, blur', function(){
+				.bind('mouseleave blur', function(){
 
 					$.boom.page.slots.bindMouseLeave.call(this, self.elements.page_body);
 				});
