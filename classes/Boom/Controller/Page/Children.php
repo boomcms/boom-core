@@ -235,10 +235,12 @@ class Boom_Controller_Page_Children extends Boom_Controller
 			// Which template to use?
 			$template = ($this->request->post('template'))? $this->request->post('template') : "boom/page/children";
 
-			$view = View::factory($template, array(
+
+			// Include the POST data in the view so that extra paramaters can be passed to the view.
+			$view = View::factory($template, array_merge($this->request->post(), array(
 				'page'	=>	$this->parent,
 				'pages'	=>	$pages,
-			));
+			)));
 
 			// Pagination is disabled when results per page is 0 or there's only one page of results.
 			if ($this->perpage > 0 AND $total > $this->perpage)
