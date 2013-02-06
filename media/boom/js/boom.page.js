@@ -567,6 +567,7 @@ $.extend($.boom.page, {
 				}
 
 				$this
+				.attr( 'tabindex', '0' )
 				.unbind('click mouseenter mouseleave')
 				.one( 'click', function(event){
 
@@ -598,11 +599,11 @@ $.extend($.boom.page, {
 
 					return false;
 				})
-				.bind('mouseenter', function(){
+				.bind('mouseenter, focus', function(){
 
 					$.boom.page.slots.bindMouseEnter.call(this, self.elements.page_body);
 				})
-				.bind('mouseleave', function(){
+				.bind('mouseleave, blur', function(){
 
 					$.boom.page.slots.bindMouseLeave.call(this, self.elements.page_body);
 				});
