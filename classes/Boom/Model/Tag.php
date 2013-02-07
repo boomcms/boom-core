@@ -74,30 +74,6 @@ class Boom_Model_Tag extends ORM
 	}
 
 	/**
-	 * Delete a tag.
-	 *
-	 * Ensures that all child tags are also deleted.
-	 *
-	 * @return Model_Tag
-	 */
-	public function delete()
-	{
-		// Delete child tags.
-		foreach (ORM::factory('Tag')->where('parent_id', '=', $this->id)->find_all() as $tag)
-		{
-			$tag->delete();
-		}
-
-		// Delete any relationships with this tag.
-		DB::delete('tags_applied')
-			->where('tag_id', '=', $this->id)
-			->execute($this->_db);
-
-		// Delete the tag.
-		return parent::delete();
-	}
-
-	/**
 	* Filters for the versioned person columns
 	* @link http://kohanaframework.org/3.2/guide/orm/filters
 	*/

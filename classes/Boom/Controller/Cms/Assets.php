@@ -265,11 +265,10 @@ class Boom_Controller_Cms_Assets extends Boom_Controller
 		if ($tag->loaded())
 		{
 			$query
-				->join('tags_applied', 'inner')
-				->on('tags_applied.object_id', '=', 'assets.id')
+				->join('assets_tags', 'inner')
+				->on('assets_tags.asset_id', '=', 'assets.id')
 				->join('tags', 'inner')
-				->on('tags_applied.tag_id', '=', 'tags.id')
-				->where('tags_applied.object_type', '=', 1)
+				->on('assets_tags.tag_id', '=', 'tags.id')
 				->where('tags.path', 'like', $tag->path . '%');
 		}
 

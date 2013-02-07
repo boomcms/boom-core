@@ -81,7 +81,7 @@ class Boom_Model_Asset extends ORM
 		}
 
 		// Prepare the insert query object.
-		$query = DB::insert('tags_applied', array('object_id', 'object_type', 'tag_id'));
+		$query = DB::insert('assets_tags', array('asset_id', 'tag_id'));
 
 		foreach ($asset_ids as $asset_id)
 		{
@@ -89,8 +89,7 @@ class Boom_Model_Asset extends ORM
 			{
 				// Add the tag and asset ID to the query.
 				$query->values(array(
-					'object_id'		=>	$asset_id,
-					'object_type'	=>	Model_Tag_Applied::OBJECT_TYPE_ASSET,
+					'asset_id'		=>	$asset_id,
 					'tag_id'		=>	$tag_id,
 				));
 			}
