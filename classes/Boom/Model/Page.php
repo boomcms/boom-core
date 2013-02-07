@@ -128,7 +128,7 @@ class Boom_Model_Page extends ORM
 		}
 
 		// Add the tag to the current page.
-		$this->add('tag', $tag);
+		$this->add('tags', $tag);
 
 		// Return the current page.
 		return $this;
