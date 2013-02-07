@@ -626,6 +626,9 @@ $.extend($.boom.items.asset, {
 
 			self.bind( this );
 
+			// Make the tag editor work.
+			$.boom.tags.bind('asset', rid);
+
 			$(this).find('.boom-tabs').tabs('option', 'active', 1);
 		});
 	},
