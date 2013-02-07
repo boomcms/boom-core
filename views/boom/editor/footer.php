@@ -13,13 +13,13 @@
 	<?= HTML::script("media/boom/js/boom.config.js") ?>
 	<?= HTML::script("media/boom/js/boom.core.js") ?>
 	<?= HTML::script("media/boom/js/boom.chunk.js") ?>
-	<?= HTML::script("media/boom/js/boom.page.js") ?>
 	<?= HTML::script("media/boom/js/boom.helpers.js") ?>
 	<?= HTML::script("media/boom/js/boom.tagmanager.js") ?>
 	<?= HTML::script("media/boom/js/boom.items.js") ?>
 	<?= HTML::script("media/boom/js/boom.tags.js") ?>
 	<?= HTML::script("media/boom/js/boom.assets.js") ?>
 	<?= HTML::script("media/boom/js/boom.links.js") ?>
+	<?= HTML::script("media/boom/js/boom.page.js") ?>
 
 
 	<script type="text/javascript">
