@@ -8,7 +8,7 @@
  * @copyright	Hoop Associates
  *
  */
-class Boom_Model_Page extends ORM
+class Boom_Model_Page extends Model_Taggable
 {
 	/**
 	 * Properties to create relationships with Kohana's ORM

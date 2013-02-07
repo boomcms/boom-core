@@ -10,7 +10,7 @@
 * @copyright	Hoop Associates
 *
 */
-class Boom_Model_Asset extends ORM
+class Boom_Model_Asset extends Model_Taggable
 {
 	protected $_belongs_to = array(
 		'uploader'	=>	array('model' => 'person', 'foreign_key' => 'uploaded_by'),

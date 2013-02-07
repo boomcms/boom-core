@@ -473,6 +473,10 @@ class Boom_Controller_Cms_Assets extends Boom_Controller
 
 		$this->template = View::factory("$this->_view_directory/view", array(
 			'asset'	=>	$this->asset,
+			'tags'	=>	$this->asset
+				->tags
+				->order_by('path', 'asc')
+				->find_all()
 		));
 	}
 }

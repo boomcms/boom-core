@@ -69,20 +69,7 @@
 			</div>
 
 			<div id="b-assets-view-tags<?=$asset->id;?>" class="b-dialog-hidden ui-helper-left">
-				<ul style="width: 290px;" class="boom-tree b-tags-tree boom-tree-noborder">
-				<?
-					foreach($asset->tags->find_all() as $tag):
-						$name = str_replace("Tags/Assets/Folders/", "", $tag->path);
-						echo "<li><a href='#tag/", $tag->id, "'>", $name, "</a></li>";
-					endforeach
-				?>
-				</ul>
-				<button id="boom-button-asset-tags-add" class="boom-button ui-button-text-icon" data-icon="ui-icon-boom-add">
-					<?=__('Add Tags')?>
-				</button>
-				<button id="boom-button-asset-tags-delete" class="boom-button ui-button-text-icon" data-icon="ui-icon-boom-delete">
-					<?=__('Delete Selected Tags')?>
-				</button>
+				<?= View::factory('boom/tags/list', array('tags' => $tags)) ?>
 			</div>
 
 			<? if (count($asset->old_files()) > 0): ?>
