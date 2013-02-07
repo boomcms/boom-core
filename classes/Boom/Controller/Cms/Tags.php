@@ -55,34 +55,6 @@ class Boom_Controller_Cms_Tags extends Boom_Controller
 	}
 
 	/**
-	 * Displays a tree of asset tags.
-	 *
-	 */
-	public function action_tree()
-	{
-		// Get the ID, name, and parent ID of all the asset tags.
-		$results = DB::select('tags.id', 'tags.name', 'tags.parent_id')
-			->from('tags')
-			->where('type', '=', 1)
-			->execute()
-			->as_array();
-
-		$tags = array();
-
-		// Turn the tags into a multi-dimensional array associated by parent ID.
-		foreach ($results as $result)
-		{
-			$parent = (int) $result['parent_id'];
-			$tags[$parent][$result['id']] = $result['name'];
-		}
-
-		// Set the response template.
-		$this->template = View::factory("$this->_view_directory/tree", array(
-			'tags'	=>	$tags,
-		));
-	}
-
-	/**
 	 * Save a tag.
 	 *
 	 * Used when editing an existing tag or adding a new tag.
