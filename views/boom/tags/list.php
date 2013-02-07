@@ -1,5 +1,5 @@
 <div id="b-tags">
-	<span class="ui-icon ui-icon-tag" title="Tags"></span>
+	<span class="ui-icon ui-icon-boom-tag" title="Tags"></span>
 
 	<ul class="b-tags-list">
 		<? foreach ($tags as $tag): ?>
