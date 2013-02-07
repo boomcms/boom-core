@@ -386,7 +386,6 @@ class Boom_Controller_Cms_Assets extends Boom_Controller
 	{
 		$this->template = View::factory("$this->_view_directory/manager", array(
 			'filters'	=>	Request::factory('cms/assets/filters')->execute(),
-			'tags'	=>	Request::factory('cms/tags/tree')->execute(),
 		));
 	}
 

@@ -30,8 +30,8 @@
 				<?=__('Tags')?>
 			</h3>
 		</div>
-		<div id="boom-tag-tree" class="ui-state-default">
+		<?/*<div id="boom-tag-tree" class="ui-state-default">
 			<?= $tags ?>
-		</div>
+		</div>*/?>
 	</div>
 </div>
