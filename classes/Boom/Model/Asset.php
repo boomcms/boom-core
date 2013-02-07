@@ -10,7 +10,7 @@
 * @copyright	Hoop Associates
 *
 */
-class Boom_Model_Asset extends ORM_Taggable
+class Boom_Model_Asset extends ORM
 {
 	protected $_belongs_to = array(
 		'uploader'	=>	array('model' => 'person', 'foreign_key' => 'uploaded_by'),
@@ -19,6 +19,10 @@ class Boom_Model_Asset extends ORM_Taggable
 	protected $_created_column = array(
 		'column'	=>	'uploaded_time',
 		'format'	=>	TRUE,
+	);
+
+	protected $_has_many = array(
+		'tags'	=> array('model' => 'Tag', 'through' => 'assets_tags'),
 	);
 
 	protected $_table_columns = array(

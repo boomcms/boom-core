@@ -71,7 +71,7 @@
 			<div id="b-assets-view-tags<?=$asset->id;?>" class="b-dialog-hidden ui-helper-left">
 				<ul style="width: 290px;" class="boom-tree b-tags-tree boom-tree-noborder">
 				<?
-					foreach($asset->get_tags(NULL, FALSE) as $tag):
+					foreach($asset->tags->find_all() as $tag):
 						$name = str_replace("Tags/Assets/Folders/", "", $tag->path);
 						echo "<li><a href='#tag/", $tag->id, "'>", $name, "</a></li>";
 					endforeach

@@ -14,11 +14,16 @@ class Boom_Model_Tag extends ORM
 		'id'			=>	'',
 		'path'		=>	'',
 		'name'		=>	'',
-		'parent_id'	=>	'',
 		'type'		=>	'',
 	);
 
 	protected $_table_name = 'tags';
+
+	// The value for the 'type' property for asset tags.
+	const ASSET = 1;
+
+	// The value for the 'type' property for page tags.
+	const PAGE = 2;
 
 	/**
 	 * Creates a tag with a given path.

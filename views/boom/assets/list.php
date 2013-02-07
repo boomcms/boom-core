@@ -74,7 +74,7 @@
 					<td>
 						<span class='tags'>
 							<?
-								foreach($asset->get_tags(NULL, FALSE) as $tag):
+								foreach($asset->tags->find_all() as $tag):
 									echo "<a rel=​'ajax' name='#tag/", $tag->pk(), "' href='#tag/", $tag->pk(), "'>", $tag->name, " <br /></a>";
 								endforeach
 							?>​

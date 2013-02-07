@@ -8,7 +8,7 @@
  * @copyright	Hoop Associates
  *
  */
-class Boom_Model_Page extends ORM_Taggable
+class Boom_Model_Page extends ORM
 {
 	/**
 	 * Properties to create relationships with Kohana's ORM
@@ -28,7 +28,8 @@ class Boom_Model_Page extends ORM_Taggable
 
 	protected $_has_many = array(
 		'versions'	=> array('model' => 'Page_Version', 'foreign_key' => 'page_id'),
-		'urls'	=> array('model' => 'Page_URL', 'foreign_key' => 'page_id'),
+		'urls'		=> array('model' => 'Page_URL', 'foreign_key' => 'page_id'),
+		'tags'	=> array('model' => 'Tag', 'through' => 'pages_tags'),
 	);
 
 	protected $_table_columns = array(
@@ -123,7 +124,7 @@ class Boom_Model_Page extends ORM_Taggable
 		if ( ! $tag->loaded())
 		{
 			// Create the tag.
-			$tag = ORM::factory('Tag')->create_from_path($path, $this->get_object_type_id());
+			$tag = ORM::factory('Tag')->create_from_path($path, Model_Tag::PAGE);
 		}
 
 		// Add the tag to the current page.
@@ -443,20 +444,8 @@ class Boom_Model_Page extends ORM_Taggable
 			throw new Exception("A page has to be loaded to remove a tag from it");
 		}
 
-		// Get the tag type ID.
-		$tag_type = $this->get_object_type_id();
-
-		// Remove the tag from the page.
-		DB::delete('tags_applied')
-			->where('object_type', '=', $tag_type)
-			->where('object_id', '=', $this->id)
-			->where('tag_id', '=',
-				DB::select('id')
-					->from('tags')
-					->where('path', '=', $path)
-					->where('type', '=', $tag_type)
-			)
-			->execute($this->_db);
+		// Remove the tag.
+		$this->remove('tag', new Model_Tag(array('path' => $path)));
 
 		// Return the current page.
 		return $this;
