@@ -553,6 +553,20 @@ class Boom_Model_Page extends ORM_Taggable
 		return $this;
 	}
 
+	public function status()
+	{
+		if ($this->is_visible())
+		{
+			// The page is visible so return the status of the current version.
+			return $this->version()->status();
+		}
+		else
+		{
+			// The page is invisible - that's it's status.
+			return 'invisible';
+		}
+	}
+
 	/**
 	 * Returns the page's absolute URL.
 	 * The URL can be displayed by casting the returned object to a string:

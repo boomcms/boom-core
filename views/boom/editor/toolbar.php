@@ -27,7 +27,7 @@
 			</button>
 
 			<button id="b-page-version-status" class="boom-button">
-				<?= __($page->version()->status()) ?>
+				<?= __($page->status()) ?>
 			</button>
 
 			<button id="boom-page-preview" class="boom-button b-button-preview" data-icon="ui-icon-boom-preview" data-preview="preview">
