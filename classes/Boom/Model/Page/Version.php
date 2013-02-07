@@ -180,6 +180,12 @@ class Boom_Model_Page_Version extends ORM
 				array('html_entity_decode'),
 				array('urldecode'),
 				array('trim'),
+				array(
+					function($text)
+					{
+						return str_replace('&nbsp;', ' ', $text);
+					}
+				),
 			),
 			'keywords' => array(
 				array('trim'),
