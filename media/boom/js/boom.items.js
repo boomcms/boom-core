@@ -133,7 +133,7 @@ $.extend($.boom.items.tag,  {
 			var buttons = $( '[id|=b-button-multiaction]' );
 
 			buttons.button( amount > 0 ? 'enable' : 'disable' );
-			
+
 			$( '#b-button-multiaction-edit' ).button( amount > 2 ? 'disable' : 'enable' );
 		});
 
@@ -188,87 +188,6 @@ $.extend($.boom.items.tag,  {
 
 						$.boom.growl.show('Tag successfully saved.');
 					});
-				}
-			}
-		});
-	},
-
-	/** @function */
-	add: function(event){
-
-		var self = this;
-
-		$.boom.dialog.open({
-			url: '/cms/tags/edit/0?type=1',
-			title: 'Add tag',
-			buttons: {
-				Cancel: function(){
-
-					$.boom.dialog.destroy(this);
-				},
-				Save: function(){
-
-					var selected = $( '#boom-tag-tree a.ui-state-active').attr( 'id');
-
-					var treeConfig = $.extend({}, $.boom.config.tree, {
-						maxSelected: 1,
-						toggleSelected: false,
-						showRemove: true,
-						showEdit: true,
-						click: false,
-						onClick: function(event){
-							$this = $(this);
-							self.item_selected( $this );
-
-							self.get(
-								$this
-									.attr( 'href' )
-									.split('/')
-									[1]
-							);
-						},
-						onEditClick: function(event){
-
-							self.edit(event);
-						},
-						onRemoveClick: function(event){
-
-							self.remove(event);
-						}
-					});
-
-					var dialog = this, data = $( dialog ).find('form').serialize();
-
-					var tag_saved = self.save( 0, data );
-
-					var tree_refresh = $.Deferred();
-
-					tree_refresh.done( 	function(){
-						$(this)
-							.find( '.b-tags-tree' )
-							.tree( treeConfig );
-						if ( selected ) {
-							$( '#' + selected )
-							.addClass( 'ui-state-active' );
-						}
-					});
-
-					tag_saved.done( function(){
-						var name = $('#b-tag-name').val();
-						var parent = $('#b-tag-parent').val();
-
-						$.boom.dialog.destroy(dialog);
-
-						$('#boom-tag-tree')
-							.load(
-								'/cms/tags/tree',
-								{ type : 1 },
-								tree_refresh.resolve
-							);
-
-						$.boom.growl.show('Tag successfully saved.');
-					});
-
 				}
 			}
 		});

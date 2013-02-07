@@ -51,10 +51,6 @@ $.extend($.boom.assets, {
 				split: false
 			});
 
-		$('.b-tags-add').click(function(){
-			$.boom.assets.items.tag.add( this );
-		});
-
 		var title_filter = $('#b-assets-filter-title')
 		.autocomplete({
 			delay: 200, // Time to wait after keypress before making the AJAX call.
@@ -287,7 +283,7 @@ $.extend($.boom.assets, {
 		var upload = function( data ) {
 
 			var complete = new $.Deferred();
-			
+
 			$.boom.log( 'posting file data' );
 
 			$.ajax( {
