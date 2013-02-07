@@ -8,7 +8,7 @@
  * @author Rob Taylor
  * @copyright	Hoop Associates
  */
-class Boom_Controller_Cms_Page_Tags extends Controller_Cms_Tags
+class Boom_Controller_Cms_Tags_Page extends Controller_Cms_Tags
 {
 	public function before()
 	{

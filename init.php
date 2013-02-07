@@ -153,17 +153,12 @@ Route::set('chunks', 'cms/chunk/<controller>/<action>/<page_id>')
 	));
 
 // Route for add / removing tags from assets and pages.
-Route::set('tags', 'cms/<object_type>/<controller>/<action>/<id>', array(
-		'controller'	=>	'tags',
-		'object_type'	=>	'asset|page',
+Route::set('tags', 'cms/tags/<controller>/<action>/<id>', array(
+		'controller'	=>	'asset|page',
 	))
-	->filter(function(Route $route, $params, Request $request)
-		{
-			$params['directory'] = 'Cms_'.ucfirst($params['object_type']);
-
-			return $params;
-		}
-	);
+	->defaults(array(
+		'directory'		=>	'cms_tags',
+	));
 
 // Route for editing page settings which are handled by a single class (e.g. tags and urls)
 Route::set('page_settings1', 'cms/page/<controller>/<action>/<id>', array(

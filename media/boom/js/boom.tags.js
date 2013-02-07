@@ -3,12 +3,15 @@
 @name $.boom.tags
 */
 $.extend($.boom, {
-
 	/**
 	* @class
 	* @name $.boom.tags
 	*/
 	tags : {
+
+		/** @property */
+		base_url: '/cms/tags/',
+
 		bind : function(type, id) {
 			var self = this, type = type, id = id;
 
@@ -57,7 +60,7 @@ $.extend($.boom, {
 
 				tag = $(this).attr('href');
 				$.post(
-					'/cms/' + type + '/tags/remove/' + id,
+					$.boom.tags.base_url + type + '/remove/' + id,
 					{tag : tag}
 					)
 					.done(function(){
@@ -104,13 +107,13 @@ $.extend($.boom, {
 			$.boom.loader.show();
 
 			$.post(
-				'/cms/' + type + '/tags/add/' + id,
+				$.boom.tags.base_url + type + '/add/' + id,
 				{tag : tag}
 				)
 				.done(function(){
 					$('#b-tags')
 					.parent()
-					.load( '/cms/' + type + '/tags/list/' + id, function(){
+					.load( $.boom.tags.base_url + type + '/list/' + id, function(){
 
 						$( this ).ui();
 						self.bind(type, id);
