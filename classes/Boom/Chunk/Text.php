@@ -51,7 +51,7 @@ class Boom_Chunk_Text extends Chunk
 	 */
 	protected function _show()
 	{
-		$text = $this->_chunk->text;
+		$text = html_entity_decode($this->_chunk->text);
 
 		// Embed youtube videos when in site view.
 		if (Editor::instance()->state() != Editor::EDIT)
