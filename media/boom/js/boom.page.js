@@ -118,8 +118,7 @@ $.extend($.boom, {
 					saveEditorState( 'preview' );
 				},
 				"Save and publish" : function(){
-					self.save();
-					$.post( '/cms/page/version/embargo/' + self.config.id );
+					self.save(null, {'publish' : 1});
 				},
 				"Save and request approval" : function(){
 					self.save();
@@ -160,7 +159,7 @@ $.extend($.boom, {
 
 					},
 					callback: function(){
-						
+
 						console.log( $('#b-page-add-form').serialize() );
 
 						$.boom.loader.show('modal');
@@ -1323,9 +1322,9 @@ $.extend($.boom.page, {
 					.done( function(response){
 
 						$.boom.loader.hide();
-						
+
 						var add_url = new $.Deferred();
-						
+
 						add_url.done( function(){
 							// show a notifcation and refresh the URL list.
 							$.boom.growl.show('Url added.');
@@ -1345,23 +1344,23 @@ $.extend($.boom.page, {
 						}
 						else
 						{
-							
+
 							add_url.resolve();
 						}
 					});
 			},
-			
+
 			/** @function */
 			move: function( new_url ) {
-				
+
 				var move_url = new $.Deferred();
 				var move_dialog;
 				var form_url = '/cms/page/urls/move/' + $.boom.page.config.id + '?url=' + new_url;
-				
+
 				// URL is being used on another page.
 				// Ask if they want to move it.
 				$.boom.dialog.confirm(
-					"URL in use", 
+					"URL in use",
 					"The specified url is already in use on another page. Would you like to move it?",
 					function(){
 						move_dialog = $.boom.dialog.open({
@@ -1371,9 +1370,9 @@ $.extend($.boom.page, {
 						});
 					}
 				);
-					
+
 				return move_url.pipe( function(){
-					
+
 					return $.post( form_url )
 					.done( function( response ) {
 						//$.boom.dialog.destroy( move_dialog );
@@ -1381,7 +1380,7 @@ $.extend($.boom.page, {
 						$.boom.loader.hide();
 					});
 				});
-				
+
 			},
 
 			/** @function */
