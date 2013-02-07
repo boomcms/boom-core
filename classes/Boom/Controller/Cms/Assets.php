@@ -405,7 +405,7 @@ class Boom_Controller_Cms_Assets extends Boom_Controller
 		$tag_ids = (array) $this->request->post('tags');
 
 		// Remove the tags from the asset.
-		$this->asset->remove_tags($tag_ids);
+		$this->asset->remove('tags', $tag_ids);
 	}
 
 	public function action_restore()
