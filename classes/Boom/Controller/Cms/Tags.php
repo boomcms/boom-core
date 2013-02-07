@@ -55,24 +55,6 @@ class Boom_Controller_Cms_Tags extends Boom_Controller
 	}
 
 	/**
-	 * Display the edit tag form.
-	 */
-	public function action_edit()
-	{
-		// Get an array of all tag names for the view to pass to [Form::select()].
-		// This will be used to select a parent tag.
-		$all_tags = ORM::factory('Tag')->names(1);
-
-		// Add an element to the start of the array for no parent.
-		array_unshift($all_tags, array('' => 'No parent'));
-
-		$this->template = View::factory("$this->_view_directory/edit", array(
-			'tag'		=>	$this->tag,
-			'all_tags'	=>	$all_tags,
-		));
-	}
-
-	/**
 	 * Displays a tree of asset tags.
 	 *
 	 */
