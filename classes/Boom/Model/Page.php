@@ -445,7 +445,7 @@ class Boom_Model_Page extends ORM
 		}
 
 		// Remove the tag.
-		$this->remove('tag', new Model_Tag(array('path' => $path)));
+		$this->remove('tags', new Model_Tag(array('path' => $path)));
 
 		// Return the current page.
 		return $this;
