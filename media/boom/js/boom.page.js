@@ -1107,13 +1107,13 @@ $.extend($.boom.page, {
 
 				// The add tag input box is hidden when the modal window opens.
 				// Show it and give it focus when the add button is clicked.
-				$('#b-pagesettings-tags-add').click(function(){
-					$('#b-pagesettings-tags-add-name').show().focus();
+				$('#b-tags-add').click(function(){
+					$('#b-tags-add-name').show().focus();
 				});
 
 				// Hide the add tag input box when it loses focus.
-				$('#b-pagesettings-tags-add-name').blur(function(){
-					$('#b-pagesettings-tags-add-name').val('').hide();
+				$('#b-tags-add-name').blur(function(){
+					$('#b-tags-add-name').val('').hide();
 				});
 
 				// When hovering over an existing tag show a button to remove the tag from the page.
@@ -1156,14 +1156,14 @@ $.extend($.boom.page, {
 				});
 
 				// Add a tag to the tag.
-				$('#b-pagesettings-tags-add-name').autocomplete({
+				$('#b-tags-add-name').autocomplete({
 					delay: 200, // Time to wait after keypress before making the AJAX call.
 					source: function(request, response){
 						$.ajax({
 							url: '/cms/autocomplete/tags',
 							dataType: 'json',
 							data: {
-								text : $('#b-pagesettings-tags-add-name').val(),
+								text : $('#b-tags-add-name').val(),
 								type : 2 // Restricts the returned tags to page tags.
 							}
 						})
@@ -1179,7 +1179,7 @@ $.extend($.boom.page, {
 					// Add a tag when the enter key is pressed.
 					// This allows us to add a tag which doesn't already exist.
 					if (e.which == 13) {
-						self.add($('#b-pagesettings-tags-add-name').val());
+						self.add($('#b-tags-add-name').val());
 					}
 				});
 
@@ -1195,7 +1195,7 @@ $.extend($.boom.page, {
 					{tag : tag}
 					)
 					.done(function(){
-						$('#b-pagesettings-tags')
+						$('#b-tags')
 						.parent()
 						.load( '/cms/page/tags/list/' + $.boom.page.config.id, function(){
 
@@ -1205,7 +1205,7 @@ $.extend($.boom.page, {
 					});
 
 				$.boom.loader.hide();
-				$('#b-pagesettings-tags-add-name').val('').hide();
+				$('#b-tags-add-name').val('').hide();
 			}
 		},
 

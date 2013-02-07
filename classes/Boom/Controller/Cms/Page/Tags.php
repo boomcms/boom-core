@@ -37,8 +37,8 @@ class Boom_Controller_Cms_Page_Tags extends Controller_Cms_Page
 	public function action_list()
 	{
 		// Show the tag editor with the tags current assigned to this page.
-		$this->template = View::factory("boom/editor/page/settings/tags", array(
-			'current_tags'	=>	$this->page->tags->find_all(),
+		$this->template = View::factory("boom/tags/list", array(
+			'tags'	=>	$this->page->tags->find_all(),
 		));
 	}
 
