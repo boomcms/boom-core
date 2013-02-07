@@ -66,16 +66,16 @@ class Boom_Controller_Cms_Page_Settings_Save extends Controller_Cms_Page_Setting
 			$cascade_expected = array_merge($cascade_expected, array('visible_in_nav', 'visible_in_nav_cms'));
 		}
 
-		// Make the changes to the page.
-		$this->page
-			->values($post, $expected)
-			->update();
-
 		// Update the page's child ordering policy, if required.
 		if (isset($post['children_ordering_policy']) AND isset($post['children_ordering_direction']))
 		{
 			$this->page->children_ordering_policy($post['children_ordering_policy'], $post['children_ordering_direction']);
 		}
+
+		// Make the changes to the page.
+		$this->page
+			->values($post, $expected)
+			->update();
 
 		// Cascade any settings to the child pages, if required.
 		if (isset($post['cascade']) AND ! empty($post['cascade']))
