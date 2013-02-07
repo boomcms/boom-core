@@ -569,6 +569,13 @@ $.extend($.boom.page, {
 				$this
 				.attr( 'tabindex', '0' )
 				.unbind('click mouseenter mouseleave')
+				.on( 'keydown', function( event ){
+					switch( event.which ) {
+						case 13:
+						 $this.click();
+						break;
+					}
+				})
 				.one( 'click', function(event){
 
 					//event.target = this;
