@@ -84,7 +84,7 @@ $.extend($.boom, {
 
 			self.picker( $('#b-tags-add-name'), type )
 				.done( function ( tag ) {
-					self.add(type, id, tag);
+					self.add( type, id, tag.label );
 				});
 		},
 
@@ -139,14 +139,15 @@ $.extend($.boom, {
 						});
 					},
 					select: function( event, ui ){
-						complete.resolve( ui.item.label );
+						add_input.val( ui.item.label );
+						complete.resolve( ui.item );
 					}
 				})
 				.on( 'keypress', function( e ){
 					// Add a tag when the enter key is pressed.
 					// This allows us to add a tag which doesn't already exist.
 					if (e.which == 13) {
-						complete.resolve( add_input.val() );
+						complete.resolve( { label: add_input.val(), value: -1 } );
 					}
 				});
 				

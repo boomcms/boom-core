@@ -74,6 +74,11 @@ $.extend($.boom.assets, {
 				self.items.tag.get( 0 );
 			}
 		});
+		
+		$.boom.tags.picker( $('#b-assets-filter-tag'), 'asset' )
+			.done( function ( tag ) {
+				self.items.tag.get( tag.value );
+			});
 
 		$( '#boom-topbar' )
 			.on( 'click', '#b-button-multiaction-delete', function(){
