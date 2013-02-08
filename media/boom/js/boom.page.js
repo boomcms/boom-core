@@ -1105,7 +1105,10 @@ $.extend($.boom.page, {
 						}
 					},
 					open: function() {
-						$.boom.tags.bind('page', $.boom.config.page.id);
+						$.boom.tags.init({
+							type: 'page',
+							id: $.boom.page.config.id
+						});
 					}
 				});
 			}

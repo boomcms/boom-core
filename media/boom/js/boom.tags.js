@@ -82,7 +82,7 @@ $.extend($.boom, {
 					});
 			});
 
-			self.picker( type )
+			self.picker( $('#b-tags-add-name'), type )
 				.done( function ( tag ) {
 					self.add(type, id, tag);
 				});
@@ -111,11 +111,9 @@ $.extend($.boom, {
 			$('#b-tags-add-name').val('').hide();
 		},
 		
-		picker : function( type ){
+		picker : function( add_input, type ){
 
 			var complete = new $.Deferred();
-
-			var add_input = this.container.find('#b-tags-add-name');
 
 			add_input
 				.autocomplete({
