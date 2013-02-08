@@ -1094,7 +1094,7 @@ $.extend($.boom.page, {
 				var self = this;
 
 				$.boom.dialog.open({
-					url: '/cms/page/tags/list/' + $.boom.page.config.id,
+					url: '/cms/tags/page/list/' + $.boom.page.config.id,
 					event: event,
 					// cache: true,
 					title: 'Page tags',
@@ -1105,13 +1105,13 @@ $.extend($.boom.page, {
 						}
 					},
 					open: function() {
-						self.bind();
+						$.boom.tags.init({
+							type: 'page',
+							id: $.boom.page.config.id
+						});
 					}
 				});
-			},
-			bind: $.boom.tags.bind('page', $.boom.config.page.id),
-
-			add: $.boom.tags.add('page', $.boom.config.page.id)
+			}
 		},
 
 		/**

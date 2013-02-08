@@ -627,7 +627,10 @@ $.extend($.boom.items.asset, {
 			self.bind( this );
 
 			// Make the tag editor work.
-			$.boom.tags.bind('asset', rid);
+			$.boom.tags.init({
+				type: 'asset',
+				id: rid
+			});
 
 			$(this).find('.boom-tabs').tabs('option', 'active', 1);
 		});
