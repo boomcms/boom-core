@@ -11,26 +11,40 @@ $.extend($.boom, {
 
 		/** @property */
 		base_url: '/cms/tags/',
+		
+		/** @property */
+		container : null,
+		
+		init : function( opts ) {
+			
+			var default_options = {
+				selector : '#b-tags',
+				type : 'asset',
+				id : null
+			};
+			
+			opts = $.extend( default_options, opts );
+			
+			this.container = $( opts.selector );
+			
+			this.bind( opts.type, opts.id );
+		},
 
 		bind : function(type, id) {
 			var self = this, type = type, id = id;
 
-			var container = $('#b-tags');
-
 			// The add tag input box is hidden when the modal window opens.
 			// Show it and give it focus when the add button is clicked.
-			container.on('click', '#b-tags-add', function(){
+			this.container
+			.on('click', '#b-tags-add', function(){
 				$('#b-tags-add-name').show().focus();
-			});
-
+			})
 			// Hide the add tag input box when it loses focus.
-			container.on('blur', '#b-tags-add-name', function(){
+			.on('blur', '#b-tags-add-name', function(){
 				$('#b-tags-add-name').val('').hide();
-			});
-
+			})
 			// When hovering over an existing tag show a button to remove the tag from the page.
 			// Then hide the button again when the mouse moves away.
-			container
 			.on('mouseenter', '.b-tags-list li', function(){
 				// If the ui-icon and ui-icon-close clases are added in the HTML then the crosses aren't hidden when the modal opens.
 				// So we only add these classes when we need to show them.
@@ -50,10 +64,9 @@ $.extend($.boom, {
 					.end()
 					.find('span')
 					.removeClass('active');
-			});
-
+			})
 			// Remove a tag from the page.
-			container.on('click', '.b-tags-remove', function(event){
+			.on('click', '.b-tags-remove', function(event){
 				event.preventDefault();
 
 				$.boom.loader.show();
@@ -69,35 +82,9 @@ $.extend($.boom, {
 					});
 			});
 
-			// Add a tag to the tag.
-			var add_input = container.find('#b-tags-add-name');
-
-			add_input
-				.autocomplete({
-					delay: 200, // Time to wait after keypress before making the AJAX call.
-					source: function(request, response){
-						$.ajax({
-							url: '/cms/autocomplete/tags',
-							dataType: 'json',
-							data: {
-								text : add_input.val(),
-								type : (type == 'asset')? 1 : 2
-							}
-						})
-						.done(function(data) {
-							response(data)
-						});
-					},
-					select: function(event, ui){
-						self.add(type, id, ui.item.value);
-					}
-				})
-				.keypress(function(e){
-					// Add a tag when the enter key is pressed.
-					// This allows us to add a tag which doesn't already exist.
-					if (e.which == 13) {
-						self.add(type, id, add_input.val());
-					}
+			self.picker( type )
+				.done( function ( tag ) {
+					self.add(type, id, tag);
 				});
 		},
 
@@ -122,6 +109,43 @@ $.extend($.boom, {
 
 			$.boom.loader.hide();
 			$('#b-tags-add-name').val('').hide();
+		},
+		
+		picker : function( type ){
+
+			var complete = new $.Deferred();
+
+			var add_input = this.container.find('#b-tags-add-name');
+
+			add_input
+				.autocomplete({
+					delay: 200, // Time to wait after keypress before making the AJAX call.
+					source: function( request, response ){
+						$.ajax({
+							url: '/cms/autocomplete/tags',
+							dataType: 'json',
+							data: {
+								text : add_input.val(),
+								type : (type == 'asset')? 1 : 2
+							}
+						})
+						.done(function(data) {
+							response(data);
+						});
+					},
+					select: function( event, ui ){
+						complete.resolve( ui.item.value );
+					}
+				})
+				.on( 'keypress', function( e ){
+					// Add a tag when the enter key is pressed.
+					// This allows us to add a tag which doesn't already exist.
+					if (e.which == 13) {
+						self.add(type, id, add_input.val());
+					}
+				});
+				
+			return complete;
 		}
 	}
 });
