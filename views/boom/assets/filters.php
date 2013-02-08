@@ -6,7 +6,7 @@
 	</h3>
 </div>
 <div class="boom-box ui-widget ui-corner-all ui-state-default">
-	<input type='text' id="b-assets-filter-title" placeholder="Type name - e.g. logo.png" />
+	<input type='text' class="b-filter-input" id="b-assets-filter-title" placeholder="Type name - e.g. logo.png" />
 	<ul class="ui-helper-clearfix boom-tree boom-filter-tree boom-tree-noborder">
 		<li><a><?=__('Uploaded by')?></a>
 			<ul class="ui-helper-hidden">
