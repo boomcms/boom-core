@@ -128,11 +128,18 @@ $.extend($.boom, {
 							}
 						})
 						.done(function(data) {
-							response(data);
+							var suggestions = [];
+							for ( name in data ) {
+								suggestions.push({
+									label : name,
+									value : data[ name ]
+								});
+							}
+							response( suggestions );
 						});
 					},
 					select: function( event, ui ){
-						complete.resolve( ui.item.value );
+						complete.resolve( ui.item.label );
 					}
 				})
 				.on( 'keypress', function( e ){
