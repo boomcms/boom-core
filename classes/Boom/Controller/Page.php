@@ -118,32 +118,11 @@ class Boom_Controller_Page extends Boom_Controller
 			->order_by('visible_from', 'desc')
 			->find_all();
 
-		// Array of items to be added to the feed.
-		$items = array();
-
-		foreach ($pages as $page)
-		{
-			$url = (string) $page->url();
-			$items[] = array(
-				'title'			=>	htmlentities($page->version()->title, NULL, NULL, FALSE),
-				'link'			=>	$url,
-				'guid'		=>	$url,
-				'description'	=>	htmlentities(Chunk::factory('text', 'standfirst', $page)->text(), NULL, NULL, FALSE),
-				'pubDate'		=>	$page->visible_from,
-			);
-		}
-
-		// Create the feed with the $items array as the content.
-		$feed = Feed::create(array(
-				'title'	=>	$this->page->version()->title,
-				'link'	=>	$this->page->url() . ".rss",
-			),
-			$items
-		);
-
-		// Set the output.
 		$this->response
 			->headers('Content-Type', 'application/rss+xml')
-			->body($feed);
+			->body(View::factory('feeds/rss', array(
+				'page'	=>	$this->page,
+				'pages'	=>	$pages,
+			)));
 	}
 }
