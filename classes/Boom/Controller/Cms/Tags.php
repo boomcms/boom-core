@@ -17,6 +17,12 @@ abstract class Boom_Controller_Cms_Tags extends Boom_Controller
 	public $model;
 
 	/**
+	 *
+	 * @var integer
+	 */
+	public $type;
+
+	/**
 	 * Add a tag to the current object.
 	 *
 	 * @uses Model_Taggable::add_tag_with_path()
@@ -24,7 +30,7 @@ abstract class Boom_Controller_Cms_Tags extends Boom_Controller
 	public function action_add()
 	{
 		// Call [Model_Page::add_tag_with_path()] with the tag path given in the POST data.
-		$this->model->add_tag_with_path($this->request->post('tag'));
+		$this->model->add_tag_with_path($this->request->post('tag'), $this->type);
 	}
 
 	/**
@@ -51,6 +57,6 @@ abstract class Boom_Controller_Cms_Tags extends Boom_Controller
 	public function action_remove()
 	{
 		// Call [Model_Taggable::remove_tag_with_path()] with the tag path given in the POST data.
-		$this->model->remove_tag_with_path($this->request->post('tag'));
+		$this->model->remove_tag_with_path($this->request->post('tag'), $this->type);
 	}
 } // End Boom_Controller_Cms_Page_Tags
