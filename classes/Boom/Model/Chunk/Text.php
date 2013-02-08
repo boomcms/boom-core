@@ -119,6 +119,12 @@ class Boom_Model_Chunk_Text extends ORM
 			),
 			'title'	=> array(
 				array('strip_tags'),
+				array(
+					function($text)
+					{
+						return str_replace('&nbsp;', ' ', $text);
+					}
+				),
 			)
 		);
 	}
