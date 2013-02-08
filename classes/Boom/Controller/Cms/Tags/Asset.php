@@ -15,7 +15,7 @@ class Boom_Controller_Cms_Tags_Asset extends Controller_Cms_Tags
 		parent::before();
 
 		$this->model = new Model_Asset($this->request->param('id'));
-		$this->type = Model_Taggable::ASSET;
+		$this->type = Model_Tag::ASSET;
 
 		$this->authorization('manage_assets');
 	}
