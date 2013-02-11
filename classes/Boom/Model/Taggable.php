@@ -44,7 +44,11 @@ abstract class Boom_Model_Taggable extends ORM
 		}
 
 		// Add the tag to the current object.
-		$this->add('tags', $tag);
+		try
+		{
+			$this->add('tags', $tag);
+		}
+		catch (Database_Exception $e) {}
 
 		// Return the current object.
 		return $this;
