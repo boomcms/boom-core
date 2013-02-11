@@ -404,9 +404,9 @@ $.extend( $.boom.page, {
 
 			self.page_dom
 				.find( 'body' )
-				.css( 'margin-top', this.height );
+				.animate( {'margin-top' : this.height} );
 
-			self.iframe.css( {
+			self.iframe.animate( {
 				'margin-top' : '-' + this.height,
 				'height' : this.height
 			});
