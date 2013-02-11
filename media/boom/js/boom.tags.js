@@ -123,7 +123,7 @@ $.extend($.boom, {
 					.load( $.boom.tags.base_url + type + '/list/' + id, function(){
 
 						$( this ).ui();
-						self.bind(type, id);
+						self.bind();
 					});
 				});
 
