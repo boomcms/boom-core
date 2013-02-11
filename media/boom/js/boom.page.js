@@ -401,15 +401,24 @@ $.extend( $.boom.page, {
 
 			self.page_dom = $.boom.page.document.contents();
 			self.iframe = self.page_dom.find( '#b-page-topbar' );
+			
+			if ( $( '#boom-topbar' ).length ) {
+				self.iframe.animate( {
+					'margin-top' : '-' + this.height,
+					'height' : this.height
+				});
 
-			self.page_dom
-				.find( 'body' )
-				.animate( {'margin-top' : this.height} );
+				self.page_dom
+					.find( 'body' )
+					.animate( {'margin-top' : this.height} );
+			} else {
+				self.iframe.animate( {
+					'height' : '30px'
+				});
+			}
 
-			self.iframe.animate( {
-				'margin-top' : '-' + this.height,
-				'height' : this.height
-			});
+			
+
 		},
 
 		/**
