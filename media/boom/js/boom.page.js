@@ -403,14 +403,17 @@ $.extend( $.boom.page, {
 			self.iframe = self.page_dom.find( '#b-page-topbar' );
 			
 			if ( $( '#boom-topbar' ).length ) {
-				self.iframe.animate( {
-					'margin-top' : '-' + this.height,
-					'height' : this.height
-				});
-
 				self.page_dom
 					.find( 'body' )
-					.animate( {'margin-top' : this.height} );
+					.css( {'margin-top' : this.height} );
+					
+				self.iframe
+				.css( {
+					'margin-top' : '-' + this.height
+				})
+				.animate( {
+					'height' : this.height
+				});
 			} else {
 				self.iframe.animate( {
 					'height' : '30px'
