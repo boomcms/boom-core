@@ -22,7 +22,7 @@
 			->js('boom.items.js')
 			->js('boom.assets.js')
 			->js('boom.links.js')
-			->js('boom.tags.js'); ?>
+			->js('boom.tags.js');
 	endif; ?>
 
 	<?= $assets ?>
