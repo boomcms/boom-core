@@ -57,9 +57,8 @@ $.extend($.boom, {
 
 				$.boom.loader.show();
 
-				// Bind UI events to the iframe contents.
-			 	// Adds functionality to boom-sortable, boom-tree, etc. elements in the iframe contents.
-			 	$('body').contents().ui();
+				// Bind UI events to the editable page.
+			 	// Adds functionality to boom-sortable, boom-tree, etc. elements in the page.
 				$( self.document ).contents().ui();
 
 				$.extend(self.config, config);
@@ -83,7 +82,11 @@ $.extend($.boom, {
 
 			var self = this;
 
-			this.document = $( top.document )
+			this.document = $( top.document );
+			
+			$.boom.page.toolbar.init();
+			
+			$('body').contents().ui();
 
 			return this;
 		},
@@ -398,15 +401,24 @@ $.extend( $.boom.page, {
 
 			self.page_dom = $.boom.page.document.contents();
 			self.iframe = self.page_dom.find( '#b-page-topbar' );
+			
+			if ( $( '#boom-topbar' ).length ) {
+				self.iframe.animate( {
+					'margin-top' : '-' + this.height,
+					'height' : this.height
+				});
 
-			self.page_dom
-				.find( 'body' )
-				.css( 'margin-top', this.height );
+				self.page_dom
+					.find( 'body' )
+					.animate( {'margin-top' : this.height} );
+			} else {
+				self.iframe.animate( {
+					'height' : '30px'
+				});
+			}
 
-			self.iframe.css( {
-				'margin-top' : '-' + this.height,
-				'height' : this.height
-			});
+			
+
 		},
 
 		/**
@@ -470,8 +482,6 @@ $.extend($.boom.page, {
 			this.config = $.boom.config.editor;
 
 			this.config.pageScripts = [ this.config.stylesheetURL, '/media/boom/css/boom.page.css' ];
-
-			$.boom.page.toolbar.init();
 
 			this.elements.page_body = $.boom.page.document;
 

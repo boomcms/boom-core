@@ -5,11 +5,11 @@
 	<?= Menu::factory('boom')->sort('priority') ?>
 
 	<div id="boom-topbar-useractions">
-		<button id="boom-page-menu" class="boom-button" data-icon="ui-icon-boom-menu">
+		<button id="boom-page-menu" class="ui-button boom-button" data-icon="ui-icon-boom-menu">
 				<?=__('Menu')?>
 		</button>
 		<span id="boom-page-user-menu">
-			<button id="b-page-user" class="boom-button" data-icon="ui-icon-boom-person">
+			<button id="b-page-user" class="ui-button boom-button" data-icon="ui-icon-boom-person">
 				<?=__('Profile')?>
 			</button>
 		</span>
@@ -18,15 +18,15 @@
 	<div id="b-page-actions">
 		<? if ($page->was_created_by($person) OR $auth->logged_in('edit_page_content', $page)): ?>
 			<span id="boom-page-save-menu">
-				<button id="b-page-save" class="boom-button" disabled="disabled" title="You have no unsaved changes" data-icon="ui-icon-boom-accept">
+				<button id="b-page-save" class="ui-button boom-button" disabled="disabled" title="You have no unsaved changes" data-icon="ui-icon-boom-accept">
 					<?=__('Accept')?>
 				</button>
 			</span>
-			<button id="b-page-cancel" class="boom-button" disabled="disabled" data-icon="ui-icon-boom-cancel">
+			<button id="b-page-cancel" class="ui-button boom-button" disabled="disabled" data-icon="ui-icon-boom-cancel">
 					<?=__('Cancel')?>
 			</button>
 
-			<button id="b-page-version-status" class="boom-button">
+			<button id="b-page-version-status" class="ui-button boom-button">
 				<?= __($page->status()) ?>
 			</button>
 
@@ -35,7 +35,7 @@
 			</button>
 
 			<span id="boom-page-template-menu">
-				<button id="boom-page-template-settings" class="boom-button" data-icon="ui-icon-boom-options">
+				<button id="boom-page-template-settings" class="ui-button boom-button" data-icon="ui-icon-boom-options">
 					<?= __('Template settings') ?>
 				</button>
 			</span>
@@ -43,33 +43,33 @@
 	</div>
 
 	<? if ($auth->logged_in('edit_page', $page)): ?>
-		<button id="boom-page-visibility" class="boom-button" data-icon="ui-icon-boom-<? echo ($page->is_visible())? 'visible' : 'invisible' ?>">
+		<button id="boom-page-visibility" class="ui-button boom-button" data-icon="ui-icon-boom-<? echo ($page->is_visible())? 'visible' : 'invisible' ?>">
 			<?= __('Visibility') ?>
 		</button>
 		<span id="boom-page-settings-menu">
-			<button id="boom-page-settings" class="boom-button" data-icon="ui-icon-boom-settings">
+			<button id="boom-page-settings" class="ui-button boom-button" data-icon="ui-icon-boom-settings">
 				<?= __('Settings') ?>
 			</button>
 		</span>
-		<button id="boom-page-history" class="boom-button" data-icon="ui-icon-boom-history">
+		<button id="boom-page-history" class="ui-button boom-button" data-icon="ui-icon-boom-history">
 			<?= __('History') ?>
 		</button>
 	<? endif; ?>
 
 	<? if (($page->was_created_by($person) OR $auth->logged_in('delete_page', $page)) AND ! $page->mptt->is_root()): ?>
-		<button class="boom-button" id="b-page-delete" data-icon="ui-icon-boom-delete">
+		<button class="ui-button boom-button" id="b-page-delete" data-icon="ui-icon-boom-delete">
 			<?= __('Delete') ?>
 		</button>
 	<? endif; ?>
 
 	<? if ($auth->logged_in('add_page', $page)): ?>
-		<button id="b-page-addpage" class="boom-button" data-icon="ui-icon-boom-add">
+		<button id="b-page-addpage" class="ui-button boom-button" data-icon="ui-icon-boom-add">
 			<?=__('Add')?>
 		</button>
 	<? endif; ?>
 
 	<? if ($auth->logged_in('edit_page', $page)): ?>
-		<button id="boom-page-editlive" class="boom-button" data-icon="ui-icon-boom-edit-live">
+		<button id="boom-page-editlive" class="ui-button boom-button" data-icon="ui-icon-boom-edit-live">
 			<?=__('Edit live')?>
 		</button>
 

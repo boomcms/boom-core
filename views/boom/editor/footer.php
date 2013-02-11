@@ -6,21 +6,26 @@
 
 	<div id="boom-loader-dialog-overlay" class="ui-widget-overlay"></div>
 
-	<?= HTML::script("media/boom/js/boom.helpers.js") ?>
-	<?= HTML::script("media/boom/js/jquery.js") ?>
-	<?= HTML::script("media/boom/js/boom.jquery.ui.js") ?>
-	<?= HTML::script("media/boom/js/boom.plugins.js") ?>
-	<?= HTML::script("media/boom/js/boom.config.js") ?>
-	<?= HTML::script("media/boom/js/boom.core.js") ?>
-	<?= HTML::script("media/boom/js/boom.chunk.js") ?>
-	<?= HTML::script("media/boom/js/boom.helpers.js") ?>
-	<?= HTML::script("media/boom/js/boom.tagmanager.js") ?>
-	<?= HTML::script("media/boom/js/boom.items.js") ?>
-	<?= HTML::script("media/boom/js/boom.tags.js") ?>
-	<?= HTML::script("media/boom/js/boom.assets.js") ?>
-	<?= HTML::script("media/boom/js/boom.links.js") ?>
-	<?= HTML::script("media/boom/js/boom.page.js") ?>
+	<? $assets = Assets::factory('boom_js')
+		->js('boom.helpers.js')
+		->js('jquery.js')
+		->js('boom.jquery.ui.js')
+		->js('boom.plugins.js')
+		->js('boom.config.js')
+		->js('boom.core.js')
+		->js('boom.page.js'); ?>
+	<? if ($register_page):
+		$assets
+			->js('boom.chunk.js')
+			->js('boom.helpers.js')
+			->js('boom.tagmanager.js')
+			->js('boom.items.js')
+			->js('boom.assets.js')
+			->js('boom.links.js')
+			->js('boom.tags.js'); ?>
+	endif; ?>
 
+	<?= $assets ?>
 
 	<script type="text/javascript">
 		//<![CDATA[

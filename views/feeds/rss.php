@@ -12,23 +12,11 @@
 
 		<? foreach ($pages as $p): ?>
 			<item>
-				<guid>
-					<?= $p->url() ?>
-				</guid>
-				<title>
-					<![CDATA[ <?= html_entity_decode($p->version()->title, ENT_QUOTES, 'UTF-8') ?> ]]>
-				</title>
-				<link>
-					<?= $p->url() ?>
-				</link>
-				<description>
-					<![CDATA[
-						<?= html_entity_decode(strip_tags(Chunk::factory('text', 'standfirst')->text()), ENT_QUOTES, 'UTF-8') ?>
-					]]>
-				</description>
-				<pubDate>
-					<?= date('r', $p->visible_from) ?>
-				</pubDate>
+				<guid><?= $p->url() ?></guid>
+				<title><?= filter_var(utf8_decode($p->version()->title), FILTER_SANITIZE_SPECIAL_CHARS) ?></title>
+				<link><?= $p->url() ?></link>
+				<description><![CDATA[<?= htmlentities(strip_tags(Chunk::factory('text', 'standfirst')->text()), ENT_QUOTES, 'UTF-8', FALSE) ?>]]></description>
+				<pubDate><?= date('r', $p->visible_from) ?></pubDate>
 			</item>
 		<? endforeach; ?>
 	</channel>
