@@ -62,7 +62,6 @@ $.extend($.boom, {
 			// When hovering over an existing tag show a button to remove the tag from the page.
 			// Then hide the button again when the mouse moves away.
 			.on('mouseenter', '.b-tags-list li', function(){
-				console.log( this );
 				// If the ui-icon and ui-icon-close clases are added in the HTML then the crosses aren't hidden when the modal opens.
 				// So we only add these classes when we need to show them.
 				$(this)
@@ -122,7 +121,7 @@ $.extend($.boom, {
 					
 					$.get( $.boom.tags.base_url + type + '/list/' + id )
 					.done( function( response ){
-						var list = $( 'response' ).find( 'ul' ).ui();
+						var list = $( response ).find( 'ul' ).ui();
 						$( '#b-tags' )
 						.find( 'ul' )
 						.replaceWith( list );
