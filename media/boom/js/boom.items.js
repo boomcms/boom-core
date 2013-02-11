@@ -230,70 +230,39 @@ $.extend($.boom.items.tag,  {
 	/** @function */
 	picker: function( options ) {
 
-		var options = ( options ) ? optionss : {};
+		var options = ( options ) ? options : {};
 
-		return tag_tree = $.post(
-			'/cms/tags/asset/list/0'
-		)
-		.pipe( function( response ){
+		var tags_edited = new $.Deferred();
 
-			var treeConfig = $.extend({}, options.treeConfig, {
-				toggleSelected: true,
-				preventDefault: true,
-				onClick: function(e) {
-					var $tags = $('input[name=tags]');
-					var tags = $tags.val().split(',');
+		$.boom.dialog.open({
+			url: '/cms/tags/asset/list/0',
+			// cache: true,
+			title: 'Asset tags',
+			width: 440,
+			buttons: {
+				Okay: function(){
 
-					tags = (function(tags) {
+					var tag_tree = $(this).find( '.boom-tree' );
+					var tags = [];
 
-						for (var i in tags) {
-							if (tags[i] == e.data.tag) {
-								tags.splice(i,1);
-								return tags;
-							}
-						}
+					$.each( tag_tree.find( '.ui-state-active'), function(){
+						var rid = parseInt( $(this).attr( 'rel' ), 10 );
+						tags.push( rid );
+					});
 
-						tags.push(e.data.tag);
-						return tags;
-
-					})(tags);
-
-					$tags.val(tags.join(','));
-
+					tags_edited.resolve( tags );
+					$( this ).dialog( 'destroy' );
 				}
-			});
-
-			var tags_edited = new $.Deferred();
-
-			$.boom.dialog.open({
-				msg: response,
-				// cache: true,
-				title: 'Asset tags',
-				width: 440,
-				buttons: {
-					Okay: function(){
-
-						var tag_tree = $(this).find( '.boom-tree' );
-						var tags = [];
-
-						$.each( tag_tree.find( '.ui-state-active'), function(){
-							var rid = parseInt( $(this).attr( 'rel' ), 10 );
-							tags.push( rid );
-						});
-
-						tags_edited.resolve( tags );
-						$( this ).dialog( 'destroy' );
-					}
-				},
-				treeConfig: {
-					showEdit: false,
-					width: 'auto',
-					showRemove: false,
-					toggleSelected: true
-				}
-			});
-
-			return tags_edited;
+			},
+			onLoad: function(){
+				// Make the tag editor work.
+				$.boom.tags.init({
+					type: 'asset',
+					id: 0
+				});
+			}
 		});
+
+		return tags_edited;
 	}
 });
