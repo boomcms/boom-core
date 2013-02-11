@@ -235,7 +235,7 @@ $.extend($.boom.items.tag,  {
 		var tags_edited = new $.Deferred();
 
 		$.boom.dialog.open({
-			url: '/cms/tags/asset/list/0',
+			url: '/cms/tags/asset/list/' + options.assets.join( '-' ),
 			// cache: true,
 			title: 'Asset tags',
 			width: 440,
@@ -258,7 +258,7 @@ $.extend($.boom.items.tag,  {
 				// Make the tag editor work.
 				$.boom.tags.init({
 					type: 'asset',
-					id: 0
+					id: options.assets.join( '-' )
 				});
 			}
 		});

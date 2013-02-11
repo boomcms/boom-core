@@ -154,7 +154,9 @@ $.extend($.boom.assets, {
 				});
 
 				$.boom.assets.items.tag
-					.picker()
+					.picker({
+						assets : ids
+					})
 					.done( function( tags ) {
 
 						$.boom.loader.show();
