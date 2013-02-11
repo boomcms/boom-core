@@ -12,14 +12,15 @@
 	<?= HTML::script("media/boom/js/boom.plugins.js") ?>
 	<?= HTML::script("media/boom/js/boom.config.js") ?>
 	<?= HTML::script("media/boom/js/boom.core.js") ?>
-	<?= HTML::script("media/boom/js/boom.chunk.js") ?>
 	<?= HTML::script("media/boom/js/boom.page.js") ?>
+<? if ($register_page): ?>
+	<?= HTML::script("media/boom/js/boom.chunk.js") ?>
 	<?= HTML::script("media/boom/js/boom.helpers.js") ?>
 	<?= HTML::script("media/boom/js/boom.tagmanager.js") ?>
 	<?= HTML::script("media/boom/js/boom.items.js") ?>
 	<?= HTML::script("media/boom/js/boom.assets.js") ?>
 	<?= HTML::script("media/boom/js/boom.links.js") ?>
-
+<? endif; ?>
 
 	<script type="text/javascript">
 		//<![CDATA[
