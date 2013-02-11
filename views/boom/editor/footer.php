@@ -6,20 +6,25 @@
 
 	<div id="boom-loader-dialog-overlay" class="ui-widget-overlay"></div>
 
-	<?= Assets::factory('boom_js')
+	<? $assets = Assets::factory('boom_js')
 		->js('boom.helpers.js')
 		->js('jquery.js')
 		->js('boom.jquery.ui.js')
 		->js('boom.plugins.js')
 		->js('boom.config.js')
 		->js('boom.core.js')
-		->js('boom.chunk.js')
-		->js('boom.page.js')
-		->js('boom.helpers.js')
-		->js('boom.tagmanager.js')
-		->js('boom.items.js')
-		->js('boom.assets.js')
-		->js('boom.links.js') ?>
+		->js('boom.page.js'); ?>
+	<? if ($register_page):
+		$assets
+			->js('boom.chunk.js')
+			->js('boom.helpers.js')
+			->js('boom.tagmanager.js')
+			->js('boom.items.js')
+			->js('boom.assets.js')
+			->js('boom.links.js');
+	endif; ?>
+
+	<?= $assets ?>
 
 	<script type="text/javascript">
 		//<![CDATA[
