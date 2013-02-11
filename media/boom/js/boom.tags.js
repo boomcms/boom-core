@@ -36,20 +36,18 @@ $.extend($.boom, {
 				id : null
 			};
 			
-			opts = $.extend( default_options, opts );
+			this.opts = $.extend( default_options, opts );
 			
-			this.container = $( opts.selector );
+			this.container = $( this.opts.selector );
 			
-			this.bind( opts.type, opts.id );
+			this.bind();
 		},
 
 		/**
 		Bind UI events for adding and listing tags.
-		@param {String} type One of asset/page.
-		@param {Integer} id Database ID of item being tagged.
 		*/
-		bind : function(type, id) {
-			var self = this, type = type, id = id;
+		bind : function() {
+			var self = this, type = this.opts.type, id = this.opts.id;
 
 			// The add tag input box is hidden when the modal window opens.
 			// Show it and give it focus when the add button is clicked.
@@ -102,18 +100,16 @@ $.extend($.boom, {
 
 			self.picker( $('#b-tags-add-name'), type )
 				.done( function ( tag ) {
-					self.add( type, id, tag.label );
+					self.add( tag.label );
 				});
 		},
 
 		/**
 		Add a tag to an item.
-		@param {String} type One of asset/page.
-		@param {Integer} id Database ID of item being tagged.
 		@param {String} tag Tag name
 		*/
-		add : function(type, id, tag) {
-			var self = this;
+		add : function( tag ) {
+			var self = this, type = this.opts.type, id = this.opts.id;
 
 			$.boom.loader.show();
 
