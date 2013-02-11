@@ -83,7 +83,9 @@ $.extend($.boom, {
 
 			var self = this;
 
-			this.document = $( top.document )
+			this.document = $( top.document );
+			
+			$.boom.page.toolbar.init();
 
 			return this;
 		},
@@ -470,8 +472,6 @@ $.extend($.boom.page, {
 			this.config = $.boom.config.editor;
 
 			this.config.pageScripts = [ this.config.stylesheetURL, '/media/boom/css/boom.page.css' ];
-
-			$.boom.page.toolbar.init();
 
 			this.elements.page_body = $.boom.page.document;
 
