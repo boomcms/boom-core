@@ -233,8 +233,7 @@ $.extend($.boom.items.tag,  {
 		var options = ( options ) ? optionss : {};
 
 		return tag_tree = $.post(
-			'/cms/tags/tree',
-			{ type: 1 }
+			'/cms/tags/asset/list/0'
 		)
 		.pipe( function( response ){
 
