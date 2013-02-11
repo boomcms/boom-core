@@ -57,9 +57,8 @@ $.extend($.boom, {
 
 				$.boom.loader.show();
 
-				// Bind UI events to the iframe contents.
-			 	// Adds functionality to boom-sortable, boom-tree, etc. elements in the iframe contents.
-			 	$('body').contents().ui();
+				// Bind UI events to the editable page.
+			 	// Adds functionality to boom-sortable, boom-tree, etc. elements in the page.
 				$( self.document ).contents().ui();
 
 				$.extend(self.config, config);
@@ -86,6 +85,8 @@ $.extend($.boom, {
 			this.document = $( top.document );
 			
 			$.boom.page.toolbar.init();
+			
+			$('body').contents().ui();
 
 			return this;
 		},
