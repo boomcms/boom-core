@@ -1,20 +1,33 @@
-/**
-@class
-@name $.boom.tags
-*/
 $.extend($.boom, {
 	/**
+	@lends $.boom
+	*/
+	/**
+	* User interface for tagging content and searching by tag.
 	* @class
-	* @name $.boom.tags
 	*/
 	tags : {
 
-		/** @property */
+		/**
+		Base URL for the tags controller
+		@property 
+		@type String
+		@default '/cms/tags'
+		*/
 		base_url: '/cms/tags/',
 		
-		/** @property */
+		/**
+		Container element for the tag UI.
+		@property 
+		@type jQuery element
+		@default null
+		*/
 		container : null,
 		
+		/**
+		Intialise the tagging interface.
+		@param {Object} opts Options array.
+		*/
 		init : function( opts ) {
 			
 			var default_options = {
@@ -23,15 +36,18 @@ $.extend($.boom, {
 				id : null
 			};
 			
-			opts = $.extend( default_options, opts );
+			this.opts = $.extend( default_options, opts );
 			
-			this.container = $( opts.selector );
+			this.container = $( this.opts.selector );
 			
-			this.bind( opts.type, opts.id );
+			this.bind();
 		},
 
-		bind : function(type, id) {
-			var self = this, type = type, id = id;
+		/**
+		Bind UI events for adding and listing tags.
+		*/
+		bind : function() {
+			var self = this, type = this.opts.type, id = this.opts.id;
 
 			// The add tag input box is hidden when the modal window opens.
 			// Show it and give it focus when the add button is clicked.
@@ -84,12 +100,16 @@ $.extend($.boom, {
 
 			self.picker( $('#b-tags-add-name'), type )
 				.done( function ( tag ) {
-					self.add( type, id, tag.label );
+					self.add( tag.label );
 				});
 		},
 
-		add : function(type, id, tag) {
-			var self = this;
+		/**
+		Add a tag to an item.
+		@param {String} tag Tag name
+		*/
+		add : function( tag ) {
+			var self = this, type = this.opts.type, id = this.opts.id;
 
 			$.boom.loader.show();
 
@@ -111,6 +131,12 @@ $.extend($.boom, {
 			$('#b-tags-add-name').val('').hide();
 		},
 		
+		/**
+		Autocomplete UI for finding and picking tags.
+		@param {jQuery element} add_input HTML text input for the tag name.
+		@param {String} type one of asset/page.
+		@returns {Deferred} Promise which resolves with the chosen tag as {label : {tag_name}, value : {tag_id} }
+		*/
 		picker : function( add_input, type ){
 
 			var complete = new $.Deferred();
