@@ -49,16 +49,12 @@ abstract class Boom_Controller_Cms_Tags extends Boom_Controller
 	/**
 	 * List the tags current assigned to an asset or page for editing.
 	 *
-	 * @uses Model_Taggable::get_tags()
 	 */
 	public function action_list()
 	{
 		// Show the tag editor with the tags current assigned to this page.
 		$this->template = View::factory("boom/tags/list", array(
-			'tags'	=>	$this->model
-				->tags
-				->order_by('path', 'asc')
-				->find_all(),
+			'tags'	=>	$this->model->list_tags($this->ids),
 		));
 	}
 

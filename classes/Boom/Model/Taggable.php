@@ -73,6 +73,22 @@ abstract class Boom_Model_Taggable extends ORM
 	}
 
 	/**
+	 * Get the tags which are applied to a group of objects.
+	 *
+	 * @param array $object_ids
+	 * @return Database_Result
+	 */
+	public function list_tags(array $object_ids)
+	{
+		return ORM::factory('Tag')
+			->join($this->_object_plural.'_tags', 'inner')
+			->on('tag_id', '=', 'tag.id')
+			->where($this->_object_name.'_id', 'in', $object_ids)
+			->order_by('path', 'asc')
+			->find_all();
+	}
+
+	/**
 	 * Removes a tag with the given path from an object.
 	 *
 	 * @param string $path
