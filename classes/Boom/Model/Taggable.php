@@ -85,6 +85,7 @@ abstract class Boom_Model_Taggable extends ORM
 			->on('tag_id', '=', 'tag.id')
 			->where($this->_object_name.'_id', 'in', $object_ids)
 			->order_by('path', 'asc')
+			->distinct(TRUE)
 			->find_all();
 	}
 
