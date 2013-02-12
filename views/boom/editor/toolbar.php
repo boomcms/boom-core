@@ -15,6 +15,16 @@
 		</span>
 	</div>
 
+	<? if (Kohana::$environment !== Kohana::PRODUCTION): ?>
+		<? $class = new ReflectionClass('Kohana');
+		$constants = $class->getConstants();
+		$constants = array_flip($constants);
+		$environment = $constants[Kohana::$environment]; ?>
+		<div id="b-environment">
+			<p><?= $environment ?> site</p>
+		</div>
+	<? endif; ?>
+
 	<div id="b-page-actions">
 		<? if ($page->was_created_by($person) OR $auth->logged_in('edit_page_content', $page)): ?>
 			<span id="boom-page-save-menu">
