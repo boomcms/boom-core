@@ -39,13 +39,8 @@
 			});
 
 			$.boom.page.init({
-				defaultRid: 1,
-				<?
-					if (isset( $page )):
-						echo "id: $page->id,";
-						echo "vid: ", $page->version()->id;
-					endif;
-				?>
+				id: <?= $page->id ?>,
+				vid: <?= $page->version()->id ?>
 			});
 
 			<? if ($register_page): ?>
