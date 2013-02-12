@@ -32,7 +32,7 @@ abstract class Boom_Controller_Cms_Tags extends Boom_Controller
 	{
 		parent::before();
 
-		$this->ids = explode('-', $this->request->param('id'));
+		$this->ids = array_unique(explode('-', $this->request->param('id')));
 	}
 
 	/**
