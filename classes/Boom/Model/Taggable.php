@@ -24,7 +24,7 @@ abstract class Boom_Model_Taggable extends ORM
 	 * @uses Model_Tag::create_from_path()
 	 * @throws Exception
 	 */
-	public function add_tag_with_path($path, $type)
+	public function add_tag_with_path($path, $type, array $ids = array())
 	{
 		// If the current page isn't loaded then we can't add a tag to it.
 		if ( ! $this->_loaded)
@@ -43,10 +43,28 @@ abstract class Boom_Model_Taggable extends ORM
 			$tag = ORM::factory('Tag')->create_from_path($path, $type);
 		}
 
-		// Add the tag to the current object.
+		// Add the tag to the objects?
 		try
 		{
-			$this->add('tags', $tag);
+			// Were we called with an array of object IDs?
+			if (empty($ids))
+			{
+				// No, add the tag to the current object.
+				$this->add('tags', $tag);
+			}
+			else
+			{
+				// An array of object IDs was given - add the tag to all of the given objects.
+				$query = DB::insert($this->_object_plural.'_tags', array($this->_object_name.'_id', 'tag_id'));
+
+				foreach ($ids as $id)
+				{
+					$query->values($id, $tag->id);
+				}
+
+				// Run the query.
+				$query->execute($this->_db);
+			}
 		}
 		catch (Database_Exception $e) {}
 
@@ -63,7 +81,7 @@ abstract class Boom_Model_Taggable extends ORM
 	 * @return \Boom_Model_Taggable
 	 * @throws Exception
 	 */
-	public function remove_tag_with_path($path, $type)
+	public function remove_tag_with_path($path, $type, array $ids = array())
 	{
 		// Object has to be loaded to remove a tag from it.
 		if ( ! $this->_loaded)
@@ -71,8 +89,29 @@ abstract class Boom_Model_Taggable extends ORM
 			throw new Exception("An object has to be loaded to remove a tag from it");
 		}
 
+		// Get the tag that has the specified path.
+		$tag = new Model_Tag(array('path' => $path, 'type' => $type));
+
+		// If the tag doesn't exist then don't continue.
+		if ( ! $tag->_loaded)
+		{
+			return $this;
+		}
+
 		// Remove the tag.
-		$this->remove('tags', new Model_Tag(array('path' => $path, 'type' => $type)));
+		if (empty($ids))
+		{
+			// Remove the tag from a single object.
+			$this->remove('tags', $tag);
+		}
+		else
+		{
+			// Remove the tag from multiple objects.
+			$query = DB::delete($this->_object_plural.'_tags')
+				->where('tag_id', '=', $tag->id)
+				->where($this->_object_name.'_id', 'in', $ids)
+				->execute($this->_db);
+		}
 
 		// Return the current object.
 		return $this;
