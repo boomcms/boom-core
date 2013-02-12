@@ -59,7 +59,7 @@ abstract class Boom_Model_Taggable extends ORM
 
 				foreach ($ids as $id)
 				{
-					$query->values($id, $tag->id);
+					$query->values(array($id, $tag->id));
 				}
 
 				// Run the query.
