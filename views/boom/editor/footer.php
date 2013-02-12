@@ -6,7 +6,7 @@
 
 	<div id="boom-loader-dialog-overlay" class="ui-widget-overlay"></div>
 
-	<? $assets = Assets::factory('boom_js')
+	<? $assets = Assets::factory('boom_js_'.(string) $register_page)
 		->js('boom.helpers.js')
 		->js('jquery.js')
 		->js('boom.jquery.ui.js')
@@ -14,6 +14,7 @@
 		->js('boom.config.js')
 		->js('boom.core.js')
 		->js('boom.page.js'); ?>
+
 	<? if ($register_page):
 		$assets
 			->js('boom.chunk.js')
