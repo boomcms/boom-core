@@ -156,19 +156,6 @@ $.extend($.boom.assets, {
 				$.boom.assets.items.tag
 					.picker({
 						assets : ids
-					})
-					.done( function( tags ) {
-
-						$.boom.loader.show();
-
-						return $.post(
-							'/cms/assets/add_tags/',
-							{assets: ids, tags:  tags}
-						);
-					})
-					.then( function( response ){
-						$.boom.loader.hide();
-						$.boom.growl.show( "Asset tags updated." );
 					});
 
 			});

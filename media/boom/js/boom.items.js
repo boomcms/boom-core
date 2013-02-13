@@ -240,18 +240,8 @@ $.extend($.boom.items.tag,  {
 			title: 'Asset tags',
 			width: 440,
 			buttons: {
-				Okay: function(){
-
-					var tag_tree = $(this).find( '.boom-tree' );
-					var tags = [];
-
-					$.each( tag_tree.find( '.ui-state-active'), function(){
-						var rid = parseInt( $(this).attr( 'rel' ), 10 );
-						tags.push( rid );
-					});
-
-					tags_edited.resolve( tags );
-					$( this ).dialog( 'destroy' );
+				Close: function(){
+					$.boom.dialog.destroy( this );
 				}
 			},
 			onLoad: function(){
