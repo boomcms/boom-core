@@ -76,7 +76,7 @@ $.extend($.boom.assets, {
 		});
 		
 		$.boom.tags.picker( $('#b-assets-filter-tag'), 'asset' )
-			.done( function ( tag ) {
+			.progress( function ( tag ) {
 				self.items.tag.get( tag.value );
 			});
 
