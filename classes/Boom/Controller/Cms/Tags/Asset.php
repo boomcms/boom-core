@@ -14,7 +14,17 @@ class Boom_Controller_Cms_Tags_Asset extends Controller_Cms_Tags
 	{
 		parent::before();
 
-		$this->model = new Model_Asset($this->request->param('id'));
+		$this->ids = array_unique(explode('-', $this->request->param('id')));
+
+		if (count($this->ids) === 1)
+		{
+			$this->model = new Model_Asset($this->request->param('id'));
+		}
+		else
+		{
+			$this->model = new Model_Asset;
+		}
+
 		$this->type = Model_Tag::ASSET;
 
 		$this->authorization('manage_assets');

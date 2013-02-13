@@ -28,13 +28,6 @@ abstract class Boom_Controller_Cms_Tags extends Boom_Controller
 	 */
 	public $type;
 
-	public function before()
-	{
-		parent::before();
-
-		$this->ids = array_unique(explode('-', $this->request->param('id')));
-	}
-
 	/**
 	 * Add a tag to the current object.
 	 *
