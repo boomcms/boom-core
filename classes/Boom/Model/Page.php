@@ -97,44 +97,6 @@ class Boom_Model_Page extends Model_Taggable
 	private $_url;
 
 	/**
-	 * Adds a tag with a given path to the page.
-	 *
-	 * If the tag doesn't exist then [Model_Tag::create_from_path()] is called to create it.
-	 *
-	 *
-	 * @param string $path
-	 * @return \Boom_Model_Page
-	 *
-	 * @uses Model_Tag::create_from_path()
-	 * @throws Exception
-	 */
-	public function add_tag_with_path($path)
-	{
-		// If the current page isn't loaded then we can't add a tag to it.
-		if ( ! $this->_loaded)
-		{
-			// Throw an exception
-			throw new Exception("Cannot add a tag to an unloaded page");
-		}
-
-		// Attempt to load a tag with the given path.
-		$tag = ORM::factory('Tag', array('path' => $path));
-
-		// If the tag wasn't found then call [Boom_Model_Tag::create_from_path()] to create it.
-		if ( ! $tag->loaded())
-		{
-			// Create the tag.
-			$tag = ORM::factory('Tag')->create_from_path($path, Model_Tag::PAGE);
-		}
-
-		// Add the tag to the current page.
-		$this->add('tags', $tag);
-
-		// Return the current page.
-		return $this;
-	}
-
-	/**
 	 * Updates a page's children with the same values as the current page.
 	 *
 	 * @param array $columns
@@ -430,13 +392,13 @@ class Boom_Model_Page extends Model_Taggable
 	}
 
 	/**
-	 * Removes a tag with the given path from a page.
+	 * Removes a tag with the given name from a page.
 	 *
-	 * @param string $path
+	 * @param string $name
 	 * @return \Boom_Model_Page
 	 * @throws Exception
 	 */
-	public function remove_tag_with_path($path)
+	public function remove_tag_with_name($name)
 	{
 		// Page has to be loaded to remove a tag from it.
 		if ( ! $this->_loaded)
@@ -445,7 +407,7 @@ class Boom_Model_Page extends Model_Taggable
 		}
 
 		// Remove the tag.
-		$this->remove('tags', new Model_Tag(array('path' => $path)));
+		$this->remove('tags', new Model_Tag(array('name' => $name)));
 
 		// Return the current page.
 		return $this;

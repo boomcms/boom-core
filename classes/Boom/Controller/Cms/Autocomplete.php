@@ -132,17 +132,17 @@ class Boom_Controller_Cms_Autocomplete extends Boom_Controller
 	public function action_tags()
 	{
 		// Build a query to find tags matching on path.
-		$query = DB::select('tags.path', 'tags.id')
+		$query = DB::select('tags.name', 'tags.id')
 			->from('tags')
-			->where('path', 'like', "%$this->text%")
+			->where('name', 'like', "%$this->text%")
 			->where('type', '=', $this->request->query('type'))
-			->order_by('path', 'asc')
+			->order_by('name', 'asc')
 			->limit($this->count);
 
 		// Get the query results.
 		$results = $query
 			->execute()
-			->as_array('path', 'id');
+			->as_array('name', 'id');
 
 		// Turn the results into a flat array of tag paths and pop it in $this->results for outputting.
 		$this->results = $results;

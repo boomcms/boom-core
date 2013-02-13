@@ -31,12 +31,12 @@ abstract class Boom_Controller_Cms_Tags extends Boom_Controller
 	/**
 	 * Add a tag to the current object.
 	 *
-	 * @uses Model_Taggable::add_tag_with_path()
+	 * @uses Model_Taggable::add_tag_with_name()
 	 */
 	public function action_add()
 	{
-		// Call [Model_Page::add_tag_with_path()] with the tag path given in the POST data.
-		$this->model->add_tag_with_path($this->request->post('tag'), $this->type, $this->ids);
+		// Call [Model_Page::add_tag_with_name()] with the tag name given in the POST data.
+		$this->model->add_tag_with_name($this->request->post('tag'), $this->ids);
 	}
 
 	/**
@@ -54,11 +54,11 @@ abstract class Boom_Controller_Cms_Tags extends Boom_Controller
 	/**
 	 * Remove a tag from the current object.
 	 *
-	 * @uses Model_Taggable::remove_tag_with_path()
+	 * @uses Model_Taggable::remove_tag_with_name()
 	 */
 	public function action_remove()
 	{
-		// Call [Model_Taggable::remove_tag_with_path()] with the tag path given in the POST data.
-		$this->model->remove_tag_with_path($this->request->post('tag'), $this->type, $this->ids);
+		// Call [Model_Taggable::remove_tag_with_name()] with the tag path given in the POST data.
+		$this->model->remove_tag_with_name($this->request->post('tag'), $this->ids);
 	}
 } // End Boom_Controller_Cms_Page_Tags

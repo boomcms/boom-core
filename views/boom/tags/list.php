@@ -4,7 +4,7 @@
 	<ul class="b-tags-list">
 		<? foreach ($tags as $tag): ?>
 			<li>
-				<a href="<?= $tag->path ?>" title="Remove <?= $tag->path ?>" class="b-tags-remove"></a><span><?= $tag->path ?></span>
+				<a href="<?= $tag->name ?>" title="Remove <?= $tag->name ?>" class="b-tags-remove"></a><span><?= $tag->name ?></span>
 			</li>
 		<? endforeach; ?>
 	</ul>

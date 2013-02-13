@@ -12,7 +12,6 @@ class Boom_Model_Tag extends ORM
 {
 	protected $_table_columns = array(
 		'id'			=>	'',
-		'path'		=>	'',
 		'name'		=>	'',
 		'type'		=>	'',
 	);
@@ -24,54 +23,6 @@ class Boom_Model_Tag extends ORM
 
 	// The value for the 'type' property for page tags.
 	const PAGE = 2;
-
-	/**
-	 * Creates a tag with a given path.
-	 *
-	 * @param string $path
-	 * @param integer $type
-	 * @return \Boom_Model_Tag
-	 */
-	public function create_from_path($path, $type)
-	{
-		// If the currnent object is loaded then clear it so that we can create a new tag.
-		if ($this->_loaded)
-		{
-			$this->clear();
-		}
-
-		// Split the path into bits so we can find the parent and name of the tag.
-		$parts = explode('/', $path);
-
-		// Name of the tag is the last section of the path.
-		$name = array_pop($parts);
-
-		// Put the remaining parts back together to get the path of the parent tag.
-		$parent_path = implode("/", $parts);
-
-		// Find the parent tag.
-		$parent = new Model_Tag(array('path' => $parent_path, 'type' => $type));
-
-		// Set the tag's values.
-		$this->values(array(
-			'path'	=>	$path,
-			'name'	=>	$name,
-			'type'	=>	$type,
-		));
-
-		// If the parent tag was found then set the parent ID of the current tag.
-		// We don't recursively create tags.
-		if ($parent->loaded())
-		{
-			$this->set('parent_id', $parent->id);
-		}
-
-		// Create the tag.
-		$this->create();
-
-		// Return the current tag.
-		return $this;
-	}
 
 	/**
 	* Filters for the versioned person columns
@@ -105,40 +56,6 @@ class Boom_Model_Tag extends ORM
 	}
 
 	/**
-	 * Return the parent tag of the current tag.
-	 *
-	 * @return 	Model_Tag
-	 */
-	public function parent()
-	{
-		return new Model_Tag($this->parent_id);
-	}
-
-	/**
-	 * Updates the materialized path for child tags.
-	 *
-	 * This function should be called when a tag is reparented or has it's name changed.
-	 * When a tag's path is updated the materialised path for it's children also needs to be updated.
-	 *
-	 * @return Model_Tag
-	 */
-	public function update_child_paths()
-	{
-		// Get the child tags of the current tag.
-		$kids = ORM::factory('Tag')
-			->where('parent_id', '=', $this->id)
-			->find_all();
-
-		// Update the materialised path for all the child tags.
-		foreach ($kids as $tag)
-		{
-			$tag
-				->set('path', $path . "/" . $tag->name)
-				->update();
-		}
-	}
-
-	/**
 	 * ORM Validation rules
 	 *
 	 * @link http://kohanaframework.org/3.2/guide/orm/examples/validation
@@ -148,19 +65,8 @@ class Boom_Model_Tag extends ORM
 		return array(
 			'name' => array(
 				array('not_empty'),
+				array('max_length', array(':value', 255)),
 			),
 		);
-	}
-
-	public function update(\Validation $validation = NULL)
-	{
-		// Save the changes to the current tag.
-		parent::update($validation);
-
-		// Update the materialized path of this tag's child tags.
-		$this->update_child_paths();
-
-		// Return the current object.
-		return $this;
 	}
 }

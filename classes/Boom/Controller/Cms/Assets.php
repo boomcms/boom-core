@@ -270,7 +270,7 @@ class Boom_Controller_Cms_Assets extends Boom_Controller
 				->join('tags', 'inner')
 				->on('assets_tags.tag_id', '=', 'tags.id')
 				->distinct(TRUE)
-				->where('tags.path', 'like', $tag->path . '%');
+				->where('tags.name', 'like', $tag->name.'%');
 		}
 
 		// Filtering by title?
@@ -476,7 +476,7 @@ class Boom_Controller_Cms_Assets extends Boom_Controller
 			'asset'	=>	$this->asset,
 			'tags'	=>	$this->asset
 				->tags
-				->order_by('path', 'asc')
+				->order_by('name', 'asc')
 				->find_all()
 		));
 	}
