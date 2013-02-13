@@ -101,7 +101,7 @@ abstract class Boom_Model_Taggable extends ORM
 	public function remove_tag_with_path($path, $type, array $ids = array())
 	{
 		// Object has to be loaded to remove a tag from it.
-		if ( ! $this->_loaded)
+		if ( ! $this->_loaded AND empty($ids))
 		{
 			throw new Exception("An object has to be loaded to remove a tag from it");
 		}
