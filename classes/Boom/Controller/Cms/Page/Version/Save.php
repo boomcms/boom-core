@@ -98,7 +98,9 @@ class Boom_Controller_Cms_Page_Version_Save extends Controller_Cms_Page_Version
 				// Do this even if the chunk is being deleted so that deleted chunks won't be copied from the old version.
 				$slotnames[] = $name;
 
-				if ( ! isset($obj->delete))
+				// Hack: allow deleting a text chunk by deleting it's content.
+				// We need a proper way of deleting chunks.
+				if ( ! isset($obj->delete) AND ($type != 'text' OR $chunk_data == ""))
 				{
 					$chunk = $this->new_version
 						->add_chunk($type, $name, (array) $chunk_data);
