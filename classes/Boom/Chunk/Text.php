@@ -8,6 +8,24 @@
 */
 class Boom_Chunk_Text extends Chunk
 {
+	/**
+	 * The height to use when embedding youtube or vimeo videos.
+	 *
+	 * Can be set by passing a new value to [Chunk_Text::embed_height()]
+	 *
+	 * @var integer
+	 */
+	protected $_embed_height = 315;
+
+	/**
+	 * The width to use when embedding youtube or vimeo videos.
+	 *
+	 * Can be set by passing a new value to [Chunk_Text::embed_width()]
+	 *
+	 * @var integer
+	 */
+	protected $_embed_width = 560;
+
 	protected $_type = 'text';
 
 	/**
@@ -15,14 +33,14 @@ class Boom_Chunk_Text extends Chunk
 	 *
 	 * @var string
 	 */
-	public static $youtube_embed = "<iframe width=\"560\" height=\"315\" src=\"http://www.youtube.com/embed/:video_id\" frameborder=\"0\" allowfullscreen></iframe>";
+	public static $youtube_embed = "<iframe width=\:width\" height=\":height\" src=\"http://www.youtube.com/embed/:video_id\" frameborder=\"0\" allowfullscreen></iframe>";
 
 	/**
 	 * Embed HTML for a Vimeo video.
 	 *
 	 * @var string
 	 */
-	public static $vimeo_embed = "<iframe src='http://player.vimeo.com/video/:video_id' width='500' height='281' frameborder='0' webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>";
+	public static $vimeo_embed = "<iframe width=':width' height=':height' src='http://player.vimeo.com/video/:video_id' frameborder='0' webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>";
 
 	protected function _add_html($text)
 	{
@@ -56,11 +74,7 @@ class Boom_Chunk_Text extends Chunk
 		// Embed youtube videos when in site view.
 		if (Editor::instance()->state() != Editor::EDIT)
 		{
-			$text = preg_replace_callback('~\b(?<!href="|">)(?:ht|f)tps?://[^<\s]+(?:/|\b)~i', function($matches)
-				{
-					return Chunk_Text::embed_video($matches[0]);
-				}, $text
-			);
+			$text = preg_replace_callback('~\b(?<!href="|">)(?:ht|f)tps?://[^<\s]+(?:/|\b)~i', array($this, 'embed_video'), $text);
 		}
 
 		$text = Chunk_Text::unmunge($text);
@@ -95,14 +109,36 @@ class Boom_Chunk_Text extends Chunk
 	}
 
 	/**
+	 * Set the iframe height for embedded flash videos.
+	 *
+	 * @param integer
+	 * @return Chunk_Text
+	 */
+	public function embed_height($height)
+	{
+		// Set the new height.
+		$this->_embed_height = $height;
+
+		// Return the current text chunk.
+		return $this;
+	}
+
+	/**
 	 * Auto-embed a video from a video sharing site.
+	 *
 	 * Turns a link to a youtube (vimeo, etc.) page into an embedded video.
 	 *
 	 * @param	string	$text		The URL of a video to turn into an embedded video.
 	 * @return 	string
 	 */
-	public static function embed_video($text)
+	public function embed_video($text)
 	{
+		// $text will be an array of matches when called from preg_replace_callback
+		if (is_array($text))
+		{
+			$text = $text[0];
+		}
+
 		// Check for a scheme at the start of the URL, add it if necessary.
 		$url = (substr($text, 0, 4) != 'http')? 'http://'.$text : $text;
 		$url = parse_url($url);
@@ -133,11 +169,31 @@ class Boom_Chunk_Text extends Chunk
 
 		if (isset($video_id))
 		{
-			return str_replace(':video_id', $video_id, $embed_html);
+			// Add the video ID to the embed code.
+			$text = str_replace(':video_id', $video_id, $embed_html);
+
+			// Add the iframe width and height to the embed code.
+			$text = str_replace(':width', $this->_embed_width, $text);
+			$text = str_replace(':height', $this->_embed_height, $text);
 		}
 
 		// Nothing was matched, return the text unaltered.
 		return $text;
+	}
+
+	/**
+	 * Set the iframe width for embedded flash videos.
+	 *
+	 * @param integer
+	 * @return Chunk_Text
+	 */
+	public function embed_width($width)
+	{
+		// Set the new width.
+		$this->_embed_width = $width;
+
+		// Return the current text chunk.
+		return $this;
 	}
 
 	public function has_content()
