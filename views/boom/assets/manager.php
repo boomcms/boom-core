@@ -29,6 +29,8 @@
 		</div>
 		<div class="boom-box ui-widget ui-corner-all ui-state-default">
 			<input type='text' class="b-filter-input" id="b-assets-filter-tag" placeholder="Type a tag name" />
+			<ul class="b-tags-list">
+    	</ul>
 		</div>
 		
 		<?/*<div id="boom-tag-tree" class="ui-state-default">
