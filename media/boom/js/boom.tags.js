@@ -116,8 +116,7 @@ $.extend($.boom, {
 			$.post(
 				$.boom.tags.base_url + type + '/add/' + id,
 				{
-					tag : tag,
-					ids : id.split( '-' )
+					tag : tag
 				}
 				)
 				.done(function(){
