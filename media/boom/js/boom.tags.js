@@ -170,7 +170,7 @@ $.extend($.boom, {
 					},
 					select: function( event, ui ){
 						event.preventDefault();
-						add_input.val( ui.item.label );
+						add_input.val( '' );
 						complete.notify( ui.item );
 					}
 				})
