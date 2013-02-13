@@ -225,34 +225,5 @@ $.extend($.boom.items.tag,  {
 				item.remove();
 			});
 		});
-	},
-
-	/** @function */
-	picker: function( options ) {
-
-		var options = ( options ) ? options : {};
-
-		var tags_edited = new $.Deferred();
-
-		$.boom.dialog.open({
-			url: '/cms/tags/asset/list/' + options.assets.join( '-' ),
-			// cache: true,
-			title: 'Asset tags',
-			width: 440,
-			buttons: {
-				Close: function(){
-					$.boom.dialog.destroy( this );
-				}
-			},
-			onLoad: function(){
-				// Make the tag editor work.
-				$.boom.tags.init({
-					type: 'asset',
-					id: options.assets.join( '-' )
-				});
-			}
-		});
-
-		return tags_edited;
 	}
 });

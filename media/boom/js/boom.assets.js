@@ -153,10 +153,24 @@ $.extend($.boom.assets, {
 					ids.push(this.id.replace(/asset-(thumb|list)-/, ''));
 				});
 
-				$.boom.assets.items.tag
-					.picker({
-						assets : ids
-					});
+				$.boom.dialog.open({
+					url: '/cms/tags/asset/list/' + ids.join( '-' ),
+					// cache: true,
+					title: 'Asset tags',
+					width: 440,
+					buttons: {
+						Close: function(){
+							$.boom.dialog.destroy( this );
+						}
+					},
+					onLoad: function(){
+						// Make the tag editor work.
+						$.boom.tags.init({
+							type: 'asset',
+							id: ids.join( '-' )
+						});
+					}
+				});
 
 			});
 	},
