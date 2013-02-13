@@ -58,45 +58,21 @@ $.extend($.boom, {
 			// Hide the add tag input box when it loses focus.
 			.on('blur', '#b-tags-add-name', function(){
 				$('#b-tags-add-name').val('').hide();
-			})
-			// When hovering over an existing tag show a button to remove the tag from the page.
-			// Then hide the button again when the mouse moves away.
-			.on('mouseenter', '.b-tags-list li', function(){
-				// If the ui-icon and ui-icon-close clases are added in the HTML then the crosses aren't hidden when the modal opens.
-				// So we only add these classes when we need to show them.
-				$(this)
-					.find('a')
-					.addClass('ui-icon ui-icon-close')
-					.show()
-					.end()
-					.find('span')
-					.addClass('active');
-				// Adding the active class changes the margin-left of the text so that it doesn't shift to the right when then delete url becomes visible.
-			})
-			.on('mouseleave', '.b-tags-list li', function(){
-				$(this)
-					.find('a')
-					.hide()
-					.end()
-					.find('span')
-					.removeClass('active');
-			})
-			// Remove a tag from the page.
-			.on('click', '.b-tags-remove', function(event){
-				event.preventDefault();
-
-				$.boom.loader.show();
-
-				tag = $(this).attr('href');
-				$.post(
-					$.boom.tags.base_url + type + '/remove/' + id,
-					{tag : tag}
-					)
-					.done(function(){
-						$(event.target).closest('li').remove();
-						$.boom.loader.hide();
-					});
 			});
+			
+			self.bind_tree( this.opts.selector )
+				.progress( function( $link ){
+					
+					$.post(
+						$.boom.tags.base_url + type + '/remove/' + id,
+						{tag : $link.attr( 'href' )}
+						)
+						.done(function(){
+							$link.closest('li').remove();
+							$.boom.loader.hide();
+						});
+						
+				});
 
 			self.picker( $('#b-tags-add-name'), type )
 				.progress( function ( tag ) {
@@ -133,6 +109,53 @@ $.extend($.boom, {
 
 			$.boom.loader.hide();
 			$('#b-tags-add-name').val('').hide();
+		},
+		
+		/**
+		Bind events to the tag list
+		@param {String} selector jQuery selector for the list container
+		@returns {Deferred} sends progress notfications to handle remove callbacks.
+		*/
+		bind_tree : function( selector ) {
+			var remove = new $.Deferred();
+			
+			$( selector )
+				// When hovering over an existing tag show a button to remove the tag from the page.
+				// Then hide the button again when the mouse moves away.
+				.on('mouseenter', '.b-tags-list li', function(){
+					// If the ui-icon and ui-icon-close clases are added in the HTML then the crosses aren't hidden when the modal opens.
+					// So we only add these classes when we need to show them.
+					$(this)
+						.find('a')
+						.addClass('ui-icon ui-icon-close')
+						.show()
+						.end()
+						.find('span')
+						.addClass('active');
+					// Adding the active class changes the margin-left of the text so that it doesn't shift to the right when then delete url becomes visible.
+				})
+				.on('mouseleave', '.b-tags-list li', function(){
+					$(this)
+						.find('a')
+						.hide()
+						.end()
+						.find('span')
+						.removeClass('active');
+				})
+				// Remove a tag from the page.
+				.on('click', '.b-tags-remove', function(event){
+					event.preventDefault();
+
+					$.boom.loader.show();
+					
+					remove.notify( $(this) );
+				});
+				
+				remove.progress( function(){
+					$.boom.loader.hide();
+				});
+				
+				return remove;
 		},
 		
 		/**

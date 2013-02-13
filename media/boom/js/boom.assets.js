@@ -78,45 +78,21 @@ $.extend($.boom.assets, {
 		var selected_tag_ids = [];
 		
 		var tag_filter_list =
-		$( '#b-assets-filter-tag + .b-tags-list' )
-		// When hovering over an existing tag show a button to remove the tag from the page.
-		// Then hide the button again when the mouse moves away.
-		.on('mouseenter', 'li', function(){
-			// If the ui-icon and ui-icon-close clases are added in the HTML then the crosses aren't hidden when the modal opens.
-			// So we only add these classes when we need to show them.
-			$(this)
-				.find('a')
-				.addClass('ui-icon ui-icon-close')
-				.show()
-				.end()
-				.find('span')
-				.addClass('active');
-			// Adding the active class changes the margin-left of the text so that it doesn't shift to the right when then delete url becomes visible.
-		})
-		.on('mouseleave', 'li', function(){
-			$(this)
-				.find('a')
-				.hide()
-				.end()
-				.find('span')
-				.removeClass('active');
-		})
-		// Remove a tag from the page.
-		.on('click', '.b-tags-remove', function(event){
-			event.preventDefault();
-			
-			var $this = $( this );
-			
-			var tag_id = $this.attr( 'data-tag_id' );
-			
-			$this
-				.closest( 'li' )
-				.remove();
+		$( '#b-assets-filter-tag + .b-tags-list' );
+		
+		$.boom.tags.bind_tree( '#b-tags-search' )
+			.progress( function( $link ){
 				
-				selected_tag_ids.splice( selected_tag_ids.indexOf( tag_id ), 1);
-				self.items.tag.get( selected_tag_ids.join( '-' ) );
+				var tag_id = $link.attr( 'data-tag_id' );
 
-		});
+				$link
+					.closest( 'li' )
+					.remove();
+
+					selected_tag_ids.splice( selected_tag_ids.indexOf( tag_id ), 1);
+					self.items.tag.get( selected_tag_ids.join( '-' ) );
+					
+			});
 		
 		$.boom.tags.picker( $('#b-assets-filter-tag'), 'asset', selected_tag_ids )
 			.progress( function ( tag ) {

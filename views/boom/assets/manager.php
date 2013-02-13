@@ -27,7 +27,7 @@
 				<?=__('Tags')?>
 			</h3>
 		</div>
-		<div class="boom-box ui-widget ui-corner-all ui-state-default">
+		<div id='b-tags-search' class="boom-box ui-widget ui-corner-all ui-state-default">
 			<input type='text' class="b-filter-input" id="b-assets-filter-tag" placeholder="Type a tag name" />
 			<ul class="b-tags-list">
     	</ul>
