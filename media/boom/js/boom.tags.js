@@ -154,6 +154,8 @@ $.extend($.boom, {
 				remove.done( function(){
 					$.boom.loader.hide();
 				});
+				
+				return remove;
 		},
 		
 		/**
