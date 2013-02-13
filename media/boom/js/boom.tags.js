@@ -139,11 +139,13 @@ $.extend($.boom, {
 		Autocomplete UI for finding and picking tags.
 		@param {jQuery element} add_input HTML text input for the tag name.
 		@param {String} type one of asset/page.
+		@param {Array} tags optional array of tags to filter the search by
 		@returns {Deferred} Promise which resolves with the chosen tag as {label : {tag_name}, value : {tag_id} }
 		*/
-		picker : function( add_input, type ){
+		picker : function( add_input, type, tags ){
 
 			var complete = new $.Deferred();
+			tags = ( tags ) ? tags : [];
 
 			add_input
 				.autocomplete({
@@ -154,7 +156,8 @@ $.extend($.boom, {
 							dataType: 'json',
 							data: {
 								text : add_input.val(),
-								type : (type == 'asset')? 1 : 2
+								type : (type == 'asset')? 1 : 2,
+								tags : tags
 							}
 						})
 						.done(function(data) {
