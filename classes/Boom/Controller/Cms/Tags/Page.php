@@ -16,6 +16,7 @@ class Boom_Controller_Cms_Tags_Page extends Controller_Cms_Tags
 
 		$this->model = new Model_Page($this->request->param('id'));
 		$this->type = Model_Tag::PAGE;
+		$this->ids = array($this->model->id);
 
 		// Before allowing viewing or editing of page tags check for that the current user has the 'edit_page' role for this page.
 		$this->authorization('edit_page', $this->model);
