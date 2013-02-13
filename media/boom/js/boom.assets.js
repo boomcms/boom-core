@@ -80,7 +80,7 @@ $.extend($.boom.assets, {
 		var tag_filter_list =
 		$( '#b-assets-filter-tag + .b-tags-list' );
 		
-		$.boom.tags.bind_tree( '#b-assets-filter-tag + .b-tags-list' )
+		$.boom.tags.bind_tree( '#b-tags-search' )
 			.progress( function( $link ){
 				
 				var tag_id = $link.attr( 'data-tag_id' );

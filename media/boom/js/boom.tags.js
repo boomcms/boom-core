@@ -60,7 +60,7 @@ $.extend($.boom, {
 				$('#b-tags-add-name').val('').hide();
 			});
 			
-			self.bind_tree( this.opts.selector + ' .b-tags-list' )
+			self.bind_tree( this.opts.selector )
 				.progress( function( $link ){
 					
 					$.post(
@@ -113,7 +113,7 @@ $.extend($.boom, {
 		
 		/**
 		Bind events to the tag list
-		@param {String} selector jQuery selector for the list element
+		@param {String} selector jQuery selector for the list container
 		@returns {Deferred} sends progress notfications to handle remove callbacks.
 		*/
 		bind_tree : function( selector ) {
@@ -122,7 +122,7 @@ $.extend($.boom, {
 			$( selector )
 				// When hovering over an existing tag show a button to remove the tag from the page.
 				// Then hide the button again when the mouse moves away.
-				.on('mouseenter', 'li', function(){
+				.on('mouseenter', '.b-tags-list li', function(){
 					// If the ui-icon and ui-icon-close clases are added in the HTML then the crosses aren't hidden when the modal opens.
 					// So we only add these classes when we need to show them.
 					$(this)
@@ -134,7 +134,7 @@ $.extend($.boom, {
 						.addClass('active');
 					// Adding the active class changes the margin-left of the text so that it doesn't shift to the right when then delete url becomes visible.
 				})
-				.on('mouseleave', 'li', function(){
+				.on('mouseleave', '.b-tags-list li', function(){
 					$(this)
 						.find('a')
 						.hide()
@@ -151,7 +151,7 @@ $.extend($.boom, {
 					remove.notify( $(this) );
 				});
 				
-				remove.done( function(){
+				remove.progress( function(){
 					$.boom.loader.hide();
 				});
 				
