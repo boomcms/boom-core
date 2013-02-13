@@ -99,7 +99,7 @@ $.extend($.boom, {
 			});
 
 			self.picker( $('#b-tags-add-name'), type )
-				.done( function ( tag ) {
+				.progress( function ( tag ) {
 					self.add( tag.label );
 				});
 		},
