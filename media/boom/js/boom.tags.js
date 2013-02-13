@@ -99,7 +99,7 @@ $.extend($.boom, {
 			});
 
 			self.picker( $('#b-tags-add-name'), type )
-				.done( function ( tag ) {
+				.progress( function ( tag ) {
 					self.add( tag.label );
 				});
 		},
@@ -117,7 +117,6 @@ $.extend($.boom, {
 				$.boom.tags.base_url + type + '/add/' + id,
 				{
 					tag : tag
-					ids : id.split( '-' )
 				}
 				)
 				.done(function(){
