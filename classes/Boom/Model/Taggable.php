@@ -27,10 +27,10 @@ abstract class Boom_Model_Taggable extends ORM
 	public function add_tag_with_path($path, $type, array $ids = array())
 	{
 		// If the current page isn't loaded then we can't add a tag to it.
-		if ( ! $this->_loaded)
+		if ( ! $this->_loaded AND empty($ids))
 		{
 			// Throw an exception
-			throw new Exception("Cannot add a tag to an unloaded page");
+			throw new Exception("Cannot add a tag to an unloaded object");
 		}
 
 		// Attempt to load a tag with the given path.
