@@ -269,6 +269,7 @@ class Boom_Controller_Cms_Assets extends Boom_Controller
 				->on('assets.id', '=', 'assets_tags.asset_id')
 				->join('tags', 'inner')
 				->on('assets_tags.tag_id', '=', 'tags.id')
+				->distinct(TRUE)
 				->where('tags.path', 'like', $tag->path . '%');
 		}
 
