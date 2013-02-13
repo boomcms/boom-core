@@ -118,7 +118,7 @@ $.extend($.boom.assets, {
 
 		});
 		
-		$.boom.tags.picker( $('#b-assets-filter-tag'), 'asset' )
+		$.boom.tags.picker( $('#b-assets-filter-tag'), 'asset', selected_tag_ids )
 			.progress( function ( tag ) {
 				selected_tag_ids.push( tag.value );
 				var link = $( '<a>', {
