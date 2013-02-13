@@ -251,7 +251,7 @@ class Boom_Controller_Cms_Assets extends Boom_Controller
 		// Load the query data into variables.
 		$page		=	Arr::get($query_data, 'page', 1);
 		$perpage		=	Arr::get($query_data, 'perpage', 30);
-		$tag			=	new Model_Tag(Arr::get($query_data, 'tag'));
+		$tags		=	explode("-", Arr::get($query_data, 'tag'));
 		$uploaded_by	=	Arr::get($query_data, 'uploaded_by');
 		$type		=	Arr::get($query_data, 'type');
 		$sortby		=	Arr::get($query_data, 'sortby');
@@ -262,15 +262,28 @@ class Boom_Controller_Cms_Assets extends Boom_Controller
 			->from('assets');
 
 		// If a valid tag was given then filter the results by tag..
-		if ($tag->loaded())
+		if ( ! empty($tags))
 		{
 			$query
-				->join('assets_tags', 'inner')
-				->on('assets.id', '=', 'assets_tags.asset_id')
-				->join('tags', 'inner')
-				->on('assets_tags.tag_id', '=', 'tags.id')
-				->distinct(TRUE)
-				->where('tags.name', 'like', $tag->name.'%');
+				->join(array('assets_tags', 't1'), 'inner')
+				->on('assets.id', '=', 't1.asset_id')
+				->distinct(TRUE);
+
+			if (($tag_count = count($tags)) > 1)
+			{
+				// Get assets which are assigned to all of the given tags.
+				$query
+					->join(array('assets_tags', 't2'), 'inner')
+					->on("t1.asset_id", '=', "t2.asset_id")
+					->where('t2.tag_id', 'IN', $tags)
+					->group_by("t1.asset_id")
+					->having(DB::expr('count(distinct t2.tag_id)'), '>=', $tag_count);
+			}
+			else
+			{
+				// Filter by a single tag.
+				$query->where('t1.tag_id', '=', $tags[0]);
+			}
 		}
 
 		// Filtering by title?
@@ -349,7 +362,6 @@ class Boom_Controller_Cms_Assets extends Boom_Controller
 			// Put everthing in the views.
 			$this->template = View::factory("$this->_view_directory/list", array(
 				'assets'		=>	$assets,
-				'tag'			=>	$tag,
 				'total_size'	=>	$size,
 				'total'		=>	$total,
 				'sortby'		=>	$sortby,
