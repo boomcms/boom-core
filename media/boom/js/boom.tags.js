@@ -178,7 +178,7 @@ $.extend($.boom, {
 					// Add a tag when the enter key is pressed.
 					// This allows us to add a tag which doesn't already exist.
 					if (e.which == 13) {
-						complete.resolve( { label: add_input.val(), value: -1 } );
+						complete.notify( { label: add_input.val(), value: -1 } );
 					}
 				});
 				
