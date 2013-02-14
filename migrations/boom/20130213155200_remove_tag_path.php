@@ -9,7 +9,6 @@ class Migration_Boom_20130213155200 extends Minion_Migration_Base
 	 */
 	public function up(Kohana_Database $db)
 	{
-		$db->query(NULL, "update tags set name = path");
 		$db->query(NULL, "alter table tags drop path");
 	}
 
