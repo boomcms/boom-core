@@ -251,7 +251,7 @@ class Boom_Controller_Cms_Assets extends Boom_Controller
 		// Load the query data into variables.
 		$page		=	Arr::get($query_data, 'page', 1);
 		$perpage		=	Arr::get($query_data, 'perpage', 30);
-		$tags		=	explode("-", Arr::get($query_data, 'tag'));
+		$tag		=	Arr::get($query_data, 'tag');
 		$uploaded_by	=	Arr::get($query_data, 'uploaded_by');
 		$type		=	Arr::get($query_data, 'type');
 		$sortby		=	Arr::get($query_data, 'sortby');
@@ -261,8 +261,14 @@ class Boom_Controller_Cms_Assets extends Boom_Controller
 		$query = DB::select()
 			->from('assets');
 
+		// If a tag paramater was given in the query data then turn it into an array of tag IDs.
+		if ($tag)
+		{
+			$tags = explode("-", Arr::get($query_data, 'tag'));
+		}
+
 		// If a valid tag was given then filter the results by tag..
-		if ( ! empty($tags))
+		if (isset($tags) AND ! empty($tags))
 		{
 			$query
 				->join(array('assets_tags', 't1'), 'inner')
