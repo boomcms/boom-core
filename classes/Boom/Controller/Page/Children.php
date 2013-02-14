@@ -144,8 +144,8 @@ class Boom_Controller_Page_Children extends Boom_Controller
 			}
 			else
 			{
-				// Throw a 404 if the tag wasn't loaded.
-				throw new HTTP_Exception_404;
+				// If the tag wasn't found then force no results to be returned.
+				$this->tag = new Model_Tag;
 			}
 		}
 
