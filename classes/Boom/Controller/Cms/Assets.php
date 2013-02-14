@@ -408,24 +408,6 @@ class Boom_Controller_Cms_Assets extends Boom_Controller
 		));
 	}
 
-	/**
-	 * Remove tags from an asset.
-	 *
-	 * **Accepted POST parameters:**
-	 * Name		|	Type		|	Description
-	 * ---------------|-----------------|---------------
-	 * tags		|	array 	|	Array of tag IDs to be removed from the asset.
-	 *
-	 */
-	public function action_remove_tags()
-	{
-		// Get an array of tag IDs which are being removed.
-		$tag_ids = (array) $this->request->post('tags');
-
-		// Remove the tags from the asset.
-		$this->asset->remove('tags', $tag_ids);
-	}
-
 	public function action_restore()
 	{
 		$timestamp = $this->request->query('timestamp');
