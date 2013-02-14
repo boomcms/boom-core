@@ -105,7 +105,7 @@
 				<button class="b-dialog-hidden boom-button ui-button-text-icon boom-tagmanager-asset-download" rel="<?=$asset->id?>" data-icon="ui-icon-boom-download">
 					<?=__('Download')?>
 				</button>
-				<button class="b-dialog-hidden boom-button ui-button-text-icon boom-tagmanager-asset-replace" rel="<?=$asset->id?>" data-icon="ui-icon-boom-upload">
+				<button class="b-dialog-hidden boom-button ui-button-text-icon boom-tagmanager-asset-replace" rel="<?=$asset->id?>" data-icon="ui-icon-boom-replace">
 					<?=__('Replace')?>
 				</button>
 			</div>
