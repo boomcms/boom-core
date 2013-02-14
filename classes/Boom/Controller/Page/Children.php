@@ -142,6 +142,11 @@ class Boom_Controller_Page_Children extends Boom_Controller
 			{
 				$this->tag = $tag;
 			}
+			else
+			{
+				// Throw a 404 if the tag wasn't loaded.
+				throw new HTTP_Exception_404;
+			}
 		}
 
 		// Set the number of results perpage, has to be 0 or more.
