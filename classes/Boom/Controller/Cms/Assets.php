@@ -39,23 +39,6 @@ class Boom_Controller_Cms_Assets extends Boom_Controller
 	}
 
 	/**
-	 * Add tags to a single or multiple assets.
-	 *
-	 * @uses Model_Asset::add_tags()
-	 */
-	public function action_add_tags()
-	{
-		// Get the IDs of the assets the tags are being applied to.
-		$asset_ids = (array) $this->request->post('assets');
-
-		// Get the IDs of the tags which are being added.
-		$tag_ids = (array) $this->request->post('tags');
-
-		// Add the tags to the assets.
-		$this->asset->add_tags($tag_ids, $asset_ids);
-	}
-
-	/**
 	 * Delete multiple assets at a time.
 	 *
 	 * Takes an array if asset IDs and calls [Model_Asset::delete()] on each one.
