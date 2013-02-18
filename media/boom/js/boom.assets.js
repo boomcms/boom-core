@@ -24,7 +24,31 @@ $.extend($.boom.assets, {
 
 		var upload_menu = {
 			'Upoad image' : function( event ) {
-				self._upload();
+				self._upload()
+					.done( function( data ){
+						$.boom.dialog.open({
+							url: '/cms/tags/asset/list/' + data.result.rids.join( '-' ),
+							// cache: true,
+							title: 'Asset tags',
+							width: 440,
+							buttons: {
+								Close: function(){
+									$.boom.dialog.destroy( this );
+								}
+							},
+							onLoad: function(){
+								// Make the tag editor work.
+								for ( i in data.result.rids ){
+									$( 'a[href="#asset/' + data.result.rids[ i ] + '"]' ).click();
+								}
+
+								$.boom.tags.init({
+									type: 'asset',
+									id: data.result.rids.join( '-' ) 
+								});
+							}
+						});
+					});
 			},
 
 			'Upload video' : function( event ) {
@@ -379,6 +403,8 @@ $.extend($.boom.assets, {
 
 		var self = this;
 		var tagmanager = $.boom.assets;
+		var uploaded = new $.Deferred();
+		
 		var default_opts = {
 			url: '/cms/uploadify/asset',
 			dataType: 'json',
@@ -396,29 +422,7 @@ $.extend($.boom.assets, {
 				$.boom.history.refresh();
 				tagmanager.selected_rid = data.result.rids.join( '-' );
 				
-				$.boom.dialog.open({
-					url: '/cms/tags/asset/list/' + tagmanager.selected_rid,
-					// cache: true,
-					title: 'Asset tags',
-					width: 440,
-					buttons: {
-						Close: function(){
-							$.boom.dialog.destroy( this );
-						}
-					},
-					onLoad: function(){
-						// Make the tag editor work.
-						for ( i in data.result.rids ){
-							console.log( $( 'a[href="#asset/' + data.result.rids[ i ] + '"]' ) );
-							$( 'a[href="#asset/' + data.result.rids[ i ] + '"]' ).click();
-						}
-						
-						$.boom.tags.init({
-							type: 'asset',
-							id: tagmanager.selected_rid
-						});
-					}
-				});
+				uploaded.resolve( data );
 				
 			},
 			always: function( e, data ){
@@ -452,6 +456,8 @@ $.extend($.boom.assets, {
 				}
 			}
 		});
+		
+		return uploaded;
 	},
 
 	/** @function */
