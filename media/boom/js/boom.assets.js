@@ -312,64 +312,6 @@ $.extend($.boom.assets, {
 	},
 
 	/**
-	@function
-	*/
-	uploader : function( data ) {
-
-		var upload_token = $( '#upload_token' ).val();
-
-		$( '#b-assets-upload-form' ).find( 'input' ).hide();
-
-		var upload = function( data ) {
-
-			var complete = new $.Deferred();
-
-			$.boom.log( 'posting file data' );
-
-			$.ajax( {
-				xhr: function(){
-					var xhr = $.ajaxSettings.xhr();
-					xhr.upload.addEventListener( 'progress', function( e ){
-						complete.notify( e );
-					});
-					return xhr;
-				},
-				type : 'POST',
-				url : '/cms/uploadify/asset',
-				data : data,
-				success: function( response ) {
-					complete.resolve( response );
-				},
-				error: function() {
-					complete.reject();
-				},
-				cache: false,
-				contentType: false,
-				processData: false
-			}, 'json' );
-
-			return complete;
-		};
-
-		return upload( data )
-		.progress( function( e ){
-			var percent = parseInt( (e.loaded / e.total * 100), 10) + "%";
-
-			$( '#upload-advanced span.message' ).text( 'Uploaded ' + percent );
-		})
-		.pipe( function( data ){
-			return $.post(
-					'/cms/uploadify/get_rids',
-					{ upload_token: upload_token },
-					function(){ console.log( this ); },
-					'json'
-				);
-		});
-
-
-	},
-
-	/**
 	Set up an asset browser
 	@returns {Object} promise which updates via .notify( rid ) when an asset is selected.
 	*/
