@@ -433,10 +433,60 @@ $.extend($.boom.assets, {
 	/**
 	Upload a new asset file.
 	*/
-	_upload: function(){
+	_upload: function( opts ){
 
 		var self = this;
 		var tagmanager = $.boom.assets;
+		var default_opts = {
+			url: '/cms/uploadify/asset',
+			dataType: 'json',
+			singleFileUploads: false,
+			formData: [],
+			progressall: function( e, data ){
+				var percent = parseInt( (data.loaded / data.total * 100), 10) + "%";
+
+				$( '#upload-advanced span.message' ).text( 'Uploaded ' + percent );
+			},
+			done: function( e, data ){
+				$.boom.log( 'file upload complete' );
+				$.boom.dialog.destroy( upload_dialog );
+				top.location.hash = 'tag/0';
+				$.boom.history.refresh();
+				tagmanager.selected_rid = data.result.rids.join( '-' );
+				
+				$.boom.dialog.open({
+					url: '/cms/tags/asset/list/' + tagmanager.selected_rid,
+					// cache: true,
+					title: 'Asset tags',
+					width: 440,
+					buttons: {
+						Close: function(){
+							$.boom.dialog.destroy( this );
+						}
+					},
+					onLoad: function(){
+						// Make the tag editor work.
+						for ( i in data.result.rids ){
+							console.log( $( 'a[href="#asset/' + data.result.rids[ i ] + '"]' ) );
+							$( 'a[href="#asset/' + data.result.rids[ i ] + '"]' ).click();
+						}
+						
+						$.boom.tags.init({
+							type: 'asset',
+							id: tagmanager.selected_rid
+						});
+					}
+				});
+				
+			},
+			always: function( e, data ){
+				$.boom.log( 'file upload finished' );
+			}
+		};
+		
+		opts = $.extend( default_opts, opts );
+		
+		console.log( opts );
 
 		var upload_dialog = $.boom.dialog.open({
 			url:  '/cms/uploadify/form',
@@ -444,52 +494,12 @@ $.extend($.boom.assets, {
 			title: 'Upload file/s',
 			onLoad: function(){
 				
+				var upload_token = $( '#upload_token' ).val();
+				
+				opts.formData.push( { name: 'upload_token', value: upload_token } );
+				
 				$( '#b-assets-upload-form' )
-				.fileupload({
-					url: '/cms/uploadify/asset',
-					dataType: 'json',
-					singleFileUploads: false,
-					progressall: function( e, data ){
-						var percent = parseInt( (data.loaded / data.total * 100), 10) + "%";
-
-						$( '#upload-advanced span.message' ).text( 'Uploaded ' + percent );
-					},
-					done: function( e, data ){
-						$.boom.log( 'file upload complete' );
-						$.boom.dialog.destroy( upload_dialog );
-						top.location.hash = 'tag/0';
-						$.boom.history.refresh();
-						tagmanager.selected_rid = data.result.rids.join( '-' );
-						
-						$.boom.dialog.open({
-							url: '/cms/tags/asset/list/' + tagmanager.selected_rid,
-							// cache: true,
-							title: 'Asset tags',
-							width: 440,
-							buttons: {
-								Close: function(){
-									$.boom.dialog.destroy( this );
-								}
-							},
-							onLoad: function(){
-								// Make the tag editor work.
-								for ( i in data.result.rids ){
-									console.log( $( 'a[href="#asset/' + data.result.rids[ i ] + '"]' ) );
-									$( 'a[href="#asset/' + data.result.rids[ i ] + '"]' ).click();
-								}
-								
-								$.boom.tags.init({
-									type: 'asset',
-									id: tagmanager.selected_rid
-								});
-							}
-						});
-						
-					},
-					always: function( e, data ){
-						$.boom.log( 'file upload finished' );
-					}
-				});
+				.fileupload( opts );
 			},
 			buttons: {
 				Cancel: function(){
@@ -864,55 +874,8 @@ $.extend($.boom.items.asset, {
 		$('.boom-tagmanager-asset-replace').click(function( event ){
 
 			var rid = $( this ).attr( 'rel' );
-
-			var upload_dialog = $.boom.dialog.open({
-				url:  '/cms/uploadify/form',
-				width: 400,
-				title: 'Upload file/s',
-				onLoad: function(){
-
-					$( '#b-assets-upload-form' )
-						.append( '<input type="hidden" name="asset_id" value="' + rid + '" />')
-						.append( '<input type="hidden" name="asset_ids" value="' + rids + '" />');
-
-					if( window.FormData ){
-						$( this )
-						.find( '#b-assets-upload-form' )
-						.on( 'submit', function( event ){
-
-							var formdata = new FormData( this );
-							var upload_token = $( '#upload_token' ).val();
-
-							event.preventDefault();
-
-							formdata.append( 'person_id', $.boom.config.person.rid );
-
-							$.boom.assets.uploader( formdata )
-								.done( function( data ){
-
-									$.boom.dialog.destroy( upload_dialog );
-									top.location.reload( true );
-								});
-						});
-					} else {
-						$.boom.assets.bindUploadify( this )
-							.done( function( data ){
-
-								$.boom.dialog.destroy( upload_dialog );
-								top.location.reload( true );
-							});
-					};
-
-				},
-				buttons: {
-					Cancel: function(){
-
-						// TODO: cancel uploadify uploads
-
-						$.boom.dialog.destroy( this );
-					}
-				}
-			});
+			
+			$.boom.assets._upload( { formData : [ { name: 'asset_id', value: rid } ] } );
 
 		});
 
