@@ -461,14 +461,33 @@ $.extend($.boom.assets, {
 						$.boom.history.refresh();
 						tagmanager.selected_rid = data.result.rids.join( '-' );
 						
+						$.boom.dialog.open({
+							url: '/cms/tags/asset/list/' + tagmanager.selected_rid,
+							// cache: true,
+							title: 'Asset tags',
+							width: 440,
+							buttons: {
+								Close: function(){
+									$.boom.dialog.destroy( this );
+								}
+							},
+							onLoad: function(){
+								// Make the tag editor work.
+								for ( i in data.result.rids ){
+									console.log( $( 'a[href="#asset/' + data.result.rids[ i ] + '"]' ) );
+									$( 'a[href="#asset/' + data.result.rids[ i ] + '"]' ).click();
+								}
+								
+								$.boom.tags.init({
+									type: 'asset',
+									id: tagmanager.selected_rid
+								});
+							}
+						});
+						
 					},
 					always: function( e, data ){
 						$.boom.log( 'file upload finished' );
-						
-						for ( i in data.result.rids ){
-							console.log( $( 'a[href="#asset/' + data.result.rids[ i ] + '"]' ) );
-							$( 'a[href="#asset/' + data.result.rids[ i ] + '"]' ).click();
-						}
 					}
 				});
 			},
