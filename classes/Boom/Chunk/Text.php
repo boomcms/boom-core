@@ -198,7 +198,7 @@ class Boom_Chunk_Text extends Chunk
 
 	public function has_content()
 	{
-		return $this->_chunk->text != NULL;
+		return trim($this->_chunk->text) != NULL;
 	}
 
 	/**
