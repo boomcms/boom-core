@@ -443,37 +443,16 @@ $.extend($.boom.assets, {
 			width: 400,
 			title: 'Upload file/s',
 			onLoad: function(){
-
-				if( window.FormData ){
-					$.boom.log( 'initialising HTML file uploader' );
-					$( this )
-					.find( '#b-assets-upload-form' )
-					.on( 'submit', function( event ){
-
-						var formdata = new FormData( this );
-						var upload_token = $( '#upload_token' ).val();
-
-						event.preventDefault();
-
-						formdata.append( 'person_id', $.boom.config.person.rid );
-
-						self.uploader( formdata )
-							.done( function( data ){
-
-								$.boom.dialog.destroy( upload_dialog );
-								top.location.hash = 'asset/' + data.rids[0];
-								tagmanager.selected_rid = data.rids[0];
-							});
-					});
-				} else {
-					self.bindUploadify( this )
-						.done( function( data ){
-
-							$.boom.dialog.destroy( upload_dialog );
-							top.location.hash = 'asset/' + data.rids[0];
-							tagmanager.selected_rid = data.rids[0];
-						});
-				}
+				
+				$( '#b-assets-upload-form' ).fileupload({
+					url: '/cms/uploadify/asset',
+					done: function( data ){
+						$.boom.log( 'file upload complete' );
+						$.boom.dialog.destroy( upload_dialog );
+						top.location.hash = 'asset/' + data.rids[0];
+						tagmanager.selected_rid = data.rids[0];
+					}
+				});
 			},
 			buttons: {
 				Cancel: function(){
