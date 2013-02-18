@@ -425,6 +425,9 @@ $.extend($.boom.assets, {
 				uploaded.resolve( data );
 				
 			},
+			fail: function( e, data ){
+				$( '#upload-advanced span.message' ).text( "There was an error uploading your file." );
+			},
 			always: function( e, data ){
 				$.boom.log( 'file upload finished' );
 			}
