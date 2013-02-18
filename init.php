@@ -1,7 +1,7 @@
 <?php
 
 // Set the directory where assets are stored.
-Boom_Asset::$path = APPPATH.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR;
+Boom_Asset::$path = APPPATH.'assets'.DIRECTORY_SEPARATOR;
 
 // Route for displaying assets
 Route::set('asset', 'asset/<action>/<id>(/<width>(/<height>(/<quality>(/<crop>))))')
