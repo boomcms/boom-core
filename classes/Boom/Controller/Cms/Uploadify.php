@@ -171,6 +171,11 @@ class Boom_Controller_Cms_Uploadify extends Kohana_Controller
 				// }
 				
 			}
+		
+			if ( ! empty($asset_ids))
+			{
+				$this->response->body( json_encode( array('rids' => $asset_ids, 'errors' => array())));
+			}
 		}
 
 	}

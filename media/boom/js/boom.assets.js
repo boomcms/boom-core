@@ -448,14 +448,27 @@ $.extend($.boom.assets, {
 				.fileupload({
 					url: '/cms/uploadify/asset',
 					dataType: 'json',
+					singleFileUploads: false,
 					progressall: function( e, data ){
 						var percent = parseInt( (data.loaded / data.total * 100), 10) + "%";
 
 						$( '#upload-advanced span.message' ).text( 'Uploaded ' + percent );
 					},
-					done: function( data ){
+					done: function( e, data ){
 						$.boom.log( 'file upload complete' );
-						console.log( data );
+						$.boom.dialog.destroy( upload_dialog );
+						top.location.hash = 'tag/0';
+						$.boom.history.refresh();
+						tagmanager.selected_rid = data.result.rids.join( '-' );
+						
+					},
+					always: function( e, data ){
+						$.boom.log( 'file upload finished' );
+						
+						for ( i in data.result.rids ){
+							console.log( $( 'a[href="#asset/' + data.result.rids[ i ] + '"]' ) );
+							$( 'a[href="#asset/' + data.result.rids[ i ] + '"]' ).click();
+						}
 					}
 				});
 			},
