@@ -444,13 +444,18 @@ $.extend($.boom.assets, {
 			title: 'Upload file/s',
 			onLoad: function(){
 				
-				$( '#b-assets-upload-form' ).fileupload({
+				$( '#b-assets-upload-form' )
+				.fileupload({
 					url: '/cms/uploadify/asset',
+					dataType: 'json',
+					progressall: function( e, data ){
+						var percent = parseInt( (data.loaded / data.total * 100), 10) + "%";
+
+						$( '#upload-advanced span.message' ).text( 'Uploaded ' + percent );
+					},
 					done: function( data ){
 						$.boom.log( 'file upload complete' );
-						$.boom.dialog.destroy( upload_dialog );
-						top.location.hash = 'asset/' + data.rids[0];
-						tagmanager.selected_rid = data.rids[0];
+						console.log( data );
 					}
 				});
 			},

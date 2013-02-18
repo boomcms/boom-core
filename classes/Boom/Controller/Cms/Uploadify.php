@@ -169,6 +169,7 @@ class Boom_Controller_Cms_Uploadify extends Kohana_Controller
 					$asset_ids[] = $asset->pk();
 					Kohana::cache($cache_key, $asset_ids);
 				// }
+				
 			}
 		}
 
