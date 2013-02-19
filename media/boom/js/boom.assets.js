@@ -467,8 +467,6 @@ $.extend($.boom.assets, {
 		};
 		
 		opts = $.extend( default_opts, opts );
-		
-		console.log( opts );
 
 		var upload_dialog = $.boom.dialog.open({
 			url:  '/cms/uploadify/form',
