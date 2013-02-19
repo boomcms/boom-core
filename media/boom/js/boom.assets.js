@@ -491,6 +491,8 @@ $.extend($.boom.assets, {
 					file_data.jqXHR.abort();
 
 					$.boom.dialog.destroy( upload_dialog );
+					
+					$.boom.history.refresh();
 				}
 			}
 		});
