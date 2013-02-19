@@ -24,7 +24,64 @@ $.extend($.boom.assets, {
 
 		var upload_menu = {
 			'Upoad image' : function( event ) {
-				self._upload()
+				var tags = [];
+				var tagged = new $.Deferred();
+				
+				var uploaded = self
+					._upload({
+						add: function( e, data ){
+						
+							$.boom.dialog.open({
+								url: '/cms/tags/asset/list/0',
+								// cache: true,
+								title: 'Asset tags',
+								width: 440,
+								buttons: {
+									Done: function(){
+										$.boom.dialog.destroy( this );
+										tagged.resolve( tags );
+									}
+								},
+								onLoad: function(){
+									// Make the tag editor work.
+									var tag_list = $( '#b-tags .b-tags-list' );
+									
+									$.boom.tags.bind_tree( '#b-tags .b-tags-list' )
+										.progress( function( $link ){
+
+											var tag_id = $link.attr( 'data-tag_id' );
+
+											$link
+												.closest( 'li' )
+												.remove();
+
+												selected_tag_ids.splice( selected_tag_ids.indexOf( tag_id ), 1);
+												self.items.tag.get( selected_tag_ids.join( '-' ) );
+
+										});
+										
+									$.boom.tags.picker( $('#b-tags-add-name'), 'asset' )
+										.progress( function ( tag ) {
+											tags.push( tag.label );
+											
+											var link = $( '<a>', {
+												href : '#',
+												"class" : 'b-tags-remove',
+												"data-tag_id" : tag.value 
+											});
+											var label = $( '<span>').text( tag.label );
+
+											$( '<li>' )
+												.append( link )
+												.append( label )
+												.appendTo( tag_list );
+										});
+								}
+							});
+							
+							data.submit();
+						}
+					})
 					.done( function( data ){
 						self.items.tag.get( 0 )
 						.done( function(){
@@ -33,24 +90,18 @@ $.extend($.boom.assets, {
 								$( 'a[href="#asset/' + data.result.rids[ i ] + '"]' ).click();
 							}
 						});
-						$.boom.dialog.open({
-							url: '/cms/tags/asset/list/' + data.result.rids.join( '-' ),
-							// cache: true,
-							title: 'Asset tags',
-							width: 440,
-							buttons: {
-								Close: function(){
-									$.boom.dialog.destroy( this );
+						
+					});
+					
+					$.when( tagged, uploaded ).done( function( tags, data ){
+						for ( i in tags ) {
+							$.post(
+								$.boom.tags.base_url + 'asset/add/' + data.result.rids.join( '-' ),
+								{
+									tag : tags[i]
 								}
-							},
-							onLoad: function(){
-								// Make the tag editor work.
-								$.boom.tags.init({
-									type: 'asset',
-									id: data.result.rids.join( '-' ) 
-								});
-							}
-						});
+							);
+						}
 					});
 			},
 
