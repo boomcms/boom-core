@@ -484,6 +484,9 @@ $.extend($.boom.assets, {
 				Cancel: function(){
 
 					// TODO: cancel uploadify uploads
+					
+					$( '#b-assets-upload-form' )
+					.fileupload( 'destroy' );
 
 					$.boom.dialog.destroy( upload_dialog );
 				}
