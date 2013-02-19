@@ -46,16 +46,16 @@ $.extend($.boom.assets, {
 									// Make the tag editor work.
 									var tag_list = $( '#b-tags .b-tags-list' );
 									
-									$.boom.tags.bind_tree( '#b-tags .b-tags-list' )
+									$.boom.tags.bind_tree( '#b-tags' )
 										.progress( function( $link ){
 
-											var tag_id = $link.attr( 'data-tag_id' );
+											var tag = $link.find( 'span' ).text();
 
 											$link
 												.closest( 'li' )
 												.remove();
 
-												tags.splice( tags.indexOf( tag_id ), 1);
+												tags.splice( tags.indexOf( tag ), 1);
 
 										});
 										
