@@ -11,7 +11,7 @@
 					</p>
 				</div>
 			</div>
-			<br />
+			<div id="b-upload-progress"></div>
 
 			<input type="file" name="b-assets-upload-files[]" id="b-assets-upload-file" multiple min="1" max="5" />
 			<input type="submit" class="boom-button" value="upload">

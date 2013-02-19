@@ -410,10 +410,13 @@ $.extend($.boom.assets, {
 			dataType: 'json',
 			singleFileUploads: false,
 			formData: [],
+			submit: function( e, data ){
+				$( '#b-upload-progress' ).progressbar();
+			},
 			progressall: function( e, data ){
-				var percent = parseInt( (data.loaded / data.total * 100), 10) + "%";
+				var percent = parseInt( (data.loaded / data.total * 100), 10);
 
-				$( '#upload-advanced span.message' ).text( 'Uploaded ' + percent );
+				$( '#b-upload-progress' ).progressbar( 'value', percent );
 			},
 			done: function( e, data ){
 				$.boom.log( 'file upload complete' );
