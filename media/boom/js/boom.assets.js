@@ -37,11 +37,14 @@ $.extend($.boom.assets, {
 								}
 							},
 							onLoad: function(){
+								self.items.tag.get( 0 )
+								.done( function(){
+									$.boom.log( 'asset list updated' );
+									for ( i in data.result.rids ){
+										$( 'a[href="#asset/' + data.result.rids[ i ] + '"]' ).click();
+									}
+								});
 								// Make the tag editor work.
-								for ( i in data.result.rids ){
-									$( 'a[href="#asset/' + data.result.rids[ i ] + '"]' ).click();
-								}
-
 								$.boom.tags.init({
 									type: 'asset',
 									id: data.result.rids.join( '-' ) 
@@ -421,8 +424,6 @@ $.extend($.boom.assets, {
 			done: function( e, data ){
 				$.boom.log( 'file upload complete' );
 				$.boom.dialog.destroy( upload_dialog );
-				top.location.hash = 'tag/0';
-				$.boom.history.refresh();
 				tagmanager.selected_rid = data.result.rids.join( '-' );
 				
 				uploaded.resolve( data );
@@ -696,7 +697,11 @@ $.extend($.boom.items.asset, {
 
 			var rid = $( this ).attr( 'rel' );
 			
-			$.boom.assets._upload( { formData : [ { name: 'asset_id', value: rid } ] } );
+			$.boom.assets
+				._upload( { formData : [ { name: 'asset_id', value: rid } ] } )
+				.done( function( data ){
+					$.boom.history.refresh();
+				});
 
 		});
 
