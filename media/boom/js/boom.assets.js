@@ -26,6 +26,13 @@ $.extend($.boom.assets, {
 			'Upoad image' : function( event ) {
 				self._upload()
 					.done( function( data ){
+						self.items.tag.get( 0 )
+						.done( function(){
+							$.boom.log( 'asset list updated' );
+							for ( i in data.result.rids ){
+								$( 'a[href="#asset/' + data.result.rids[ i ] + '"]' ).click();
+							}
+						});
 						$.boom.dialog.open({
 							url: '/cms/tags/asset/list/' + data.result.rids.join( '-' ),
 							// cache: true,
@@ -37,13 +44,6 @@ $.extend($.boom.assets, {
 								}
 							},
 							onLoad: function(){
-								self.items.tag.get( 0 )
-								.done( function(){
-									$.boom.log( 'asset list updated' );
-									for ( i in data.result.rids ){
-										$( 'a[href="#asset/' + data.result.rids[ i ] + '"]' ).click();
-									}
-								});
 								// Make the tag editor work.
 								$.boom.tags.init({
 									type: 'asset',
