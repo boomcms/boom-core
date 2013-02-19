@@ -433,6 +433,7 @@ $.extend($.boom.assets, {
 		var self = this;
 		var tagmanager = $.boom.assets;
 		var uploaded = new $.Deferred();
+		var file_data = {};
 		
 		var default_opts = {
 			url: '/cms/uploadify/asset',
@@ -441,6 +442,8 @@ $.extend($.boom.assets, {
 			formData: [],
 			submit: function( e, data ){
 				$( '#b-upload-progress' ).progressbar();
+				
+				file_data = data;
 			},
 			progressall: function( e, data ){
 				var percent = parseInt( (data.loaded / data.total * 100), 10);
@@ -485,8 +488,7 @@ $.extend($.boom.assets, {
 
 					// TODO: cancel uploadify uploads
 					
-					$( '#b-assets-upload-form' )
-					.fileupload( 'destroy' );
+					file_data.jqXHR.abort();
 
 					$.boom.dialog.destroy( upload_dialog );
 				}
