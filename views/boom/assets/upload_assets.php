@@ -5,8 +5,8 @@
 		<div id="upload-advanced">
 			<div class="ui-widget" id="boom-asset-upload-info">
 				<div class="ui-corner-all">
-					<p style="margin: .5em;">
-						<span style="float: left; margin-right: 0.3em; margin-top:-.2em" class="ui-icon ui-icon-info"></span>
+					<p>
+						<span class="ui-icon ui-icon-info"></span>
 						<span class="message">You may upload up to 5 files at a time.  <?=__('Allowed file types')?>: <?= implode(', ', Boom_Asset::$allowed_extensions) ?></span>
 					</p>
 				</div>
