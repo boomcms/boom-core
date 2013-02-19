@@ -492,7 +492,7 @@ $.fn.sload = function(url, successCallback) {
 
 	var self = this;
 
-	$.ajax({
+	return $.ajax({
 		type: 'GET',
 		url: url,
 		success: function(data, status, xhr){
@@ -502,8 +502,6 @@ $.fn.sload = function(url, successCallback) {
 			successCallback.apply(self, [ xhr, status ]);
 		}
 	});
-
-	return this;
 };
 
 $.ajaxSetup({
