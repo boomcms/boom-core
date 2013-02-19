@@ -22,111 +22,87 @@ $.extend($.boom.assets, {
 
 		var self = this;
 
-		var upload_menu = {
-			'Upoad image' : function( event ) {
-				var tags = [];
-				var tagged = new $.Deferred();
-				
-				var uploaded = self
-					._upload({
-						add: function( e, data ){
-						
-							$.boom.dialog.open({
-								url: '/cms/tags/asset/list/0',
-								// cache: true,
-								title: 'Asset tags',
-								width: 440,
-								buttons: {
-									Done: function(){
-										$.boom.dialog.destroy( this );
-										tagged.resolve( tags );
-									}
-								},
-								onLoad: function(){
-									// Make the tag editor work.
-									var tag_list = $( '#b-tags .b-tags-list' );
-									
-									$.boom.tags.bind_tree( '#b-tags' )
-										.progress( function( $link ){
-
-											var tag = $link.find( 'span' ).text();
-
-											$link
-												.closest( 'li' )
-												.remove();
-
-												tags.splice( tags.indexOf( tag ), 1);
-
-										});
-										
-									$.boom.tags.picker( $('#b-tags-add-name'), 'asset' )
-										.progress( function ( tag ) {
-											tags.push( tag.label );
-											
-											var link = $( '<a>', {
-												href : '#',
-												"class" : 'b-tags-remove',
-												"data-tag_id" : tag.value 
-											});
-											var label = $( '<span>').text( tag.label );
-
-											$( '<li>' )
-												.append( link )
-												.append( label )
-												.appendTo( tag_list );
-										});
+		$('#boom-assets-upload-menu')
+		.on( 'click', function( event ) {
+			var tags = [];
+			var tagged = new $.Deferred();
+			
+			var uploaded = self
+				._upload({
+					add: function( e, data ){
+					
+						$.boom.dialog.open({
+							url: '/cms/tags/asset/list/0',
+							// cache: true,
+							title: 'Asset tags',
+							width: 440,
+							buttons: {
+								Done: function(){
+									$.boom.dialog.destroy( this );
+									tagged.resolve( tags );
 								}
-							});
-							
-							data.submit();
-						}
-					})
-					.done( function( data ){
-						self.items.tag.get( 0 )
-						.done( function(){
-							$.boom.log( 'asset list updated' );
-							for ( i in data.result.rids ){
-								$( 'a[href="#asset/' + data.result.rids[ i ] + '"]' ).click();
+							},
+							onLoad: function(){
+								// Make the tag editor work.
+								var tag_list = $( '#b-tags .b-tags-list' );
+								
+								$.boom.tags.bind_tree( '#b-tags' )
+									.progress( function( $link ){
+
+										var tag = $link.find( 'span' ).text();
+
+										$link
+											.closest( 'li' )
+											.remove();
+
+											tags.splice( tags.indexOf( tag ), 1);
+
+									});
+									
+								$.boom.tags.picker( $('#b-tags-add-name'), 'asset' )
+									.progress( function ( tag ) {
+										tags.push( tag.label );
+										
+										var link = $( '<a>', {
+											href : '#',
+											"class" : 'b-tags-remove',
+											"data-tag_id" : tag.value 
+										});
+										var label = $( '<span>').text( tag.label );
+
+										$( '<li>' )
+											.append( link )
+											.append( label )
+											.appendTo( tag_list );
+									});
 							}
 						});
 						
+						data.submit();
+					}
+				})
+				.done( function( data ){
+					self.items.tag.get( 0 )
+					.done( function(){
+						$.boom.log( 'asset list updated' );
+						for ( i in data.result.rids ){
+							$( 'a[href="#asset/' + data.result.rids[ i ] + '"]' ).click();
+						}
 					});
 					
-					$.when( tagged, uploaded ).done( function( tags, data ){
-						for ( i in tags ) {
-							$.post(
-								$.boom.tags.base_url + 'asset/add/' + data.result.rids.join( '-' ),
-								{
-									tag : tags[i]
-								}
-							);
-						}
-					});
-			},
-
-			'Upload video' : function( event ) {
-				$.boom.dialog.open({
-					url: '/cms/video/upload',
-					title: 'Upload video',
-					buttons: {
-						Cancel: function(){
-							$.boom.dialog.destroy(this);
-						},
-						Upload: function(){
-							$('#uploadForm').submit();
-						}
+				});
+				
+				$.when( tagged, uploaded ).done( function( tags, data ){
+					for ( i in tags ) {
+						$.post(
+							$.boom.tags.base_url + 'asset/add/' + data.result.rids.join( '-' ),
+							{
+								tag : tags[i]
+							}
+						);
 					}
 				});
-			}
-		};
-
-		$('#boom-assets-upload-menu')
-			.splitbutton({
-				items: upload_menu,
-				width: 'auto',
-				menuPosition: 'right',
-				split: false
-			});
+		});
 
 		var title_filter = $('#b-assets-filter-title')
 		.autocomplete({
