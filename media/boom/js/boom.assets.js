@@ -224,9 +224,8 @@ $.extend($.boom.assets, {
 			})
 			.on('click', '#b-button-multiaction-clear', function(){
 				$('.b-items-select-checkbox:checked').each(function(){
-					$('.thumb').removeClass('ui-state-active');
-					$(this).removeAttr('checked');
-					$(this).change();
+					$('.thumb.ui-state-active').removeClass('ui-state-active');
+					$(this).removeAttr( 'checked' ).prop( 'checked', false ).change();
 				});
 
 			})

@@ -129,6 +129,8 @@ $.extend($.boom.items.tag,  {
 			}
 
 			var amount = $('.b-items-select-checkbox:checked').length;
+			
+			console.log( amount );
 
 			var buttons = $( '[id|=b-button-multiaction]' );
 
@@ -154,7 +156,7 @@ $.extend($.boom.items.tag,  {
 
 			container.toggleClass('ui-state-active');
 
-			checkbox.attr('checked', ! checkbox.attr('checked')).change();
+			checkbox.click();
 		});
 
 		$('.b-items-thumbs .thumb').captions($.boom.config.captions);
