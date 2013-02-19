@@ -121,11 +121,15 @@ $.extend($.boom.items.tag,  {
 
 			if ( $( this ).is(':checked')) {
 
-				selector.attr('checked', 'checked');
+				selector.attr('checked', 'checked').prop( 'checked', true );
+				
+				 if ( view == 'thumb' ) selector.parent( 'div' ).addClass( 'ui-state-active' );
 
 			} else {
 
-				selector.removeAttr('checked');
+				selector.removeAttr('checked').prop( 'checked', false );
+				
+				if ( view == 'thumb' ) selector.parent( 'div' ).removeClass( 'ui-state-active' );
 			}
 
 			var amount = $('.b-items-select-checkbox:checked').length;
@@ -153,6 +157,7 @@ $.extend($.boom.items.tag,  {
 
 			var container = $(this).parent('div');
 			var checkbox = container.find('.b-items-select-checkbox');
+			console.log( checkbox );
 
 			container.toggleClass('ui-state-active');
 
