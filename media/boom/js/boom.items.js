@@ -80,7 +80,7 @@ $.extend($.boom.items.tag,  {
 
 		self.tagmanager.options.url = url;
 
-			self.tagmanager.elements.rightpane
+		return self.tagmanager.elements.rightpane
 			.find('.b-items-content')
 			.sload( url, function(){
 
@@ -89,9 +89,9 @@ $.extend($.boom.items.tag,  {
 				$.boom.loader.hide();
 
 				self.bind();
+				
+				$.boom.log('Tag items get');
 			});
-
-		$.boom.log('Tag items get');
 	},
 
 	/** @function */
