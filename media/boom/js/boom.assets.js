@@ -55,8 +55,7 @@ $.extend($.boom.assets, {
 												.closest( 'li' )
 												.remove();
 
-												selected_tag_ids.splice( selected_tag_ids.indexOf( tag_id ), 1);
-												self.items.tag.get( selected_tag_ids.join( '-' ) );
+												tags.splice( tags.indexOf( tag_id ), 1);
 
 										});
 										
