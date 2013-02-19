@@ -480,13 +480,15 @@ $.extend($.boom.assets, {
 				
 				$( '#b-assets-upload-form' )
 				.fileupload( opts );
+				
+				$( '#b-assets-upload-file' ).click();
 			},
 			buttons: {
 				Cancel: function(){
 
 					// TODO: cancel uploadify uploads
 					
-					file_data.jqXHR.abort();
+					file_data.jqXHR && file_data.jqXHR.abort();
 
 					$.boom.dialog.destroy( upload_dialog );
 					
