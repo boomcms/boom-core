@@ -1,6 +1,5 @@
 <div>
-	<iframe name="uploadiframe" class="hidden" style="display:none" src="javascript:false"></iframe>
-	<form method="POST" enctype="multipart/form-data" id="b-assets-upload-form" action="/cms/uploadify/asset" target="uploadiframe">
+	<form method="POST" enctype="multipart/form-data" id="b-assets-upload-form" action="/cms/uploadify/asset">
 		<input type="hidden" id="upload_token" name="upload_token" value="<?= $token ?>" />
 		<div id="upload-advanced">
 			<div class="ui-widget" id="boom-asset-upload-info">
@@ -12,9 +11,8 @@
 				</div>
 			</div>
 			<div id="b-upload-progress"></div>
-
-			<input type="file" name="b-assets-upload-files[]" id="b-assets-upload-file" multiple min="1" max="5" />
-			<input type="submit" class="boom-button" value="upload">
+				<input type="file" name="b-assets-upload-files[]" id="b-assets-upload-file" multiple min="1" max="5" />
+				<button class="boom-button" type="button" id="b-upload-add"> Add files </button>
 		</div>
 	</form>
 </div>

@@ -481,7 +481,13 @@ $.extend($.boom.assets, {
 				$( '#b-assets-upload-form' )
 				.fileupload( opts );
 				
-				$( '#b-assets-upload-file' ).click();
+				 $( '#b-assets-upload-file' )
+					.detach()
+					.appendTo( '#b-upload-add' )
+					.css({
+						position: 'absolute',
+						transform: 'translate(-300px, 0) scale(4)'
+					});
 			},
 			buttons: {
 				Cancel: function(){
