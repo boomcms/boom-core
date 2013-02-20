@@ -78,7 +78,7 @@ $.extend($.boom.items.tag,  {
 			'/cms/' + options.type + '/list'
 			+ '?' + params;
 
-		self.tagmanager.options.url = url;
+		options.url = url;
 
 		return self.tagmanager.elements.rightpane
 			.find('.b-items-content')
