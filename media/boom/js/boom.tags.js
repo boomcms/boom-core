@@ -342,7 +342,7 @@ $.widget( 'boom.deferred_tagger', $.boom.tagger, {
 	},
 	
 	/**
-	Add a tag to the search.
+	Add a tag.
 	@param {String} tag Tag name
 	*/
 	add : function( tag ) {
@@ -367,7 +367,7 @@ $.widget( 'boom.deferred_tagger', $.boom.tagger, {
 	},
 	
 	/**
-	Remove a tag from the search.
+	Remove a tag.
 	@param {String} tag Tag name
 	*/
 	remove : function( tag ) {
@@ -376,7 +376,6 @@ $.widget( 'boom.deferred_tagger', $.boom.tagger, {
 			tags = this.options.tags;
 
 			tags.splice( selected_tag_ids.indexOf( tag.value ), 1);
-			self.do_search();
 	}
 	
 });
