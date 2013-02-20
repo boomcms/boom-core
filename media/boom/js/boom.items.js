@@ -87,16 +87,8 @@ $.extend($.boom.items.tag,  {
 				$.boom.tagmanager.base.item.prototype.get.apply( self );
 
 				$.boom.loader.hide();
-				
-				var tabsConfig = $.extend({}, $.boom.config.tabs, {
 
-					show: function(event, ui){
-					}
-				});
-
-				self.tagmanager.elements.rightpane.ui({
-					tabs: tabsConfig
-				});
+				self.tagmanager.elements.rightpane.ui();
 				
 				$.boom.events.register('tag.clickAfter', 'tagmanager');
 				
