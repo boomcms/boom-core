@@ -81,44 +81,6 @@ $.boom.tagmanager = {
 };
 
 /**
-Site view tag manager
-@class
-@constructor
-@name SiteTagmanager
-@extends $.boom.tagmanager.base.tagmanager
-@param type FIXME:?????
-*/
-function SiteTagmanager(type){
-
-	var self = this;
-
-	this.type = type;
-
-	/**
-	Init
-	@function
-	@name _init
-	*/
-	this._init = function(config){
-		
-		$.extend(config.items, {
-			search: $.boom.items.search
-		});
-
-		$.extend(true, this, config);	
-
-		$.each(this.items, function(){
-	
-			// create an attribute reference to the tagmanager
-			this.tagmanager = self;
-		});
-
-		this.route();
-		
-	};
-}
-
-/**
 CMS view tag manager
 @class
 @constructor
@@ -295,7 +257,5 @@ function CMSTagmanager(type){
 		this.route();
 	};
 };
-
-$.extend(SiteTagmanager.prototype, $.boom.tagmanager.base.tagmanager);
 
 $.extend(CMSTagmanager.prototype, $.boom.tagmanager.base.tagmanager);
