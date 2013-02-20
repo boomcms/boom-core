@@ -724,18 +724,27 @@ $.extend($.boom.page, {
 
 			$.each(scripts, function(){
 
-				$.get(this, function(data){
+				$.get( this )
+				.done( function( response ){
 
 					var head = self.elements.page_body
 						.contents()
 						.find('head');
 
 					if (/js$/.test(this.url)) {
-						head.append('<script type="text/javascript">'+data+'</script>');
+						$( '<script>', {
+							type : "text/javascript"
+						} )
+						.text( response )
+						.appendTo( head );
 					}
 
 					 if (/css$/.test(this.url)) {
-						head.append('<style type="text/css">'+data+'</style>');
+						$( '<style>', {
+							type: "text/css"
+						})
+						.text( response )
+						.appendTo( head );
 					}
 
 				});
