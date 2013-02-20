@@ -44,37 +44,7 @@ $.extend($.boom.assets, {
 							},
 							onLoad: function(){
 								// Make the tag editor work.
-								var tag_list = $( '#b-tags .b-tags-list' );
-								
-								$.boom.tags.bind_tree( '#b-tags' )
-									.progress( function( $link ){
-
-										var tag = $link.find( 'span' ).text();
-
-										$link
-											.closest( 'li' )
-											.remove();
-
-											tags.splice( tags.indexOf( tag ), 1);
-
-									});
-									
-								$.boom.tags.picker( $('#b-tags-add-name'), 'asset' )
-									.progress( function ( tag ) {
-										tags.push( tag.label );
-										
-										var link = $( '<a>', {
-											href : '#',
-											"class" : 'b-tags-remove',
-											"data-tag_id" : tag.value 
-										});
-										var label = $( '<span>').text( tag.label );
-
-										$( '<li>' )
-											.append( link )
-											.append( label )
-											.appendTo( tag_list );
-									});
+								$( '#b-tags' ).deferred_tagger( { tags : tags } );
 							}
 						});
 						
@@ -93,6 +63,7 @@ $.extend($.boom.assets, {
 				});
 				
 				$.when( tagged, uploaded ).done( function( tags, data ){
+					console.log( tags );
 					for ( i in tags ) {
 						$.post(
 							$.boom.tags.base_url + 'asset/add/' + data.result.rids.join( '-' ),

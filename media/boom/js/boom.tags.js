@@ -309,6 +309,72 @@ $.widget( 'boom.tag_search', $.boom.tagger, {
 	
 	
 });
+
+/**
+* Deferred tagger for file uploads.
+* @class
+* @name boom.deferred_tagger
+* @extends boom.tagger
+*/
+$.widget( 'boom.deferred_tagger', $.boom.tagger, {
+	/** @lends boom.deferred_tagger */
+	
+	/**
+	default config
+	@property
+	*/
+	options: {
+		/** selected tags */
+		tags : [],
+		/** URL prefix for ajax calls */
+		base_url : '/cms/tags/',
+		/** Type. One of asset|page */
+		type : 'asset'
+	},
+	
+	_bind : function(){
+		
+	},
+	
+	/**
+	Add a tag to the search.
+	@param {String} tag Tag name
+	*/
+	add : function( tag ) {
+		var 
+			self = this,
+			tags = this.options.tags,
+			tag_list = this.element.find( 'ul.b-tags-list' );
+
+			tags.push( tag.label );
+			
+			var link = $( '<a>', {
+				href : '#',
+				"class" : 'b-tags-remove',
+				"data-tag_id" : tag.value 
+			});
+			var label = $( '<span>').text( tag.label );
+
+			$( '<li>' )
+				.append( link )
+				.append( label )
+				.appendTo( tag_list );
+	},
+	
+	/**
+	Remove a tag from the search.
+	@param {String} tag Tag name
+	*/
+	remove : function( tag ) {
+		var 
+			self = this,
+			tags = this.options.tags;
+
+			tags.splice( selected_tag_ids.indexOf( tag.value ), 1);
+			self.do_search();
+	}
+	
+});
 $.extend($.boom, {
 	/**
 	@lends $.boom
