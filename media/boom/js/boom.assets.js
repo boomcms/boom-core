@@ -66,7 +66,7 @@ $.extend($.boom.assets, {
 					console.log( tags );
 					for ( i in tags ) {
 						$.post(
-							$.boom.tags.base_url + 'asset/add/' + data.result.rids.join( '-' ),
+							'/cms/tags/asset/add/' + data.result.rids.join( '-' ),
 							{
 								tag : tags[i]
 							}
