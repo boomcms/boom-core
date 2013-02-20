@@ -303,3 +303,8 @@ function CMSTagmanager(type){
 $.extend(SiteTagmanager.prototype, $.boom.tagmanager.base.tagmanager);
 
 $.extend(CMSTagmanager.prototype, $.boom.tagmanager.base.tagmanager);
+
+/**
+@class
+*/
+$.boom.items = $.extend( true, {}, $.boom.tagmanager.items );

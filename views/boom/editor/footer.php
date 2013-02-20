@@ -20,7 +20,6 @@
 			->js('boom.chunk.js')
 			->js('boom.helpers.js')
 			->js('boom.tagmanager.js')
-			->js('boom.items.js')
 			->js('boom.assets.js')
 			->js('boom.links.js')
 			->js('boom.tags.js');
