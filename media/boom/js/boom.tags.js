@@ -28,6 +28,32 @@ $.widget( 'boom.tagger', {
 			type = this.options.type, 
 			id = this.options.id;
 
+		self._bind();
+				
+		self.bind_tree()
+			.progress( function( $link ){
+				
+				self.remove( $link.attr( 'href' ) );
+				
+				$link.closest('li').remove();
+					
+			});
+
+		self.picker( self.element.find( '.b-filter-input' ), type )
+			.progress( function ( tag ) {
+				self.add( tag );
+			});
+	},
+	
+	_init : function(){
+		
+	},
+	
+	_destroy : function(){
+		
+	},
+	
+	_bind : function(){
 		// The add tag input box is hidden when the modal window opens.
 		// Show it and give it focus when the add button is clicked.
 		this.element
@@ -38,27 +64,6 @@ $.widget( 'boom.tagger', {
 			.on('blur', '#b-tags-add-name', function(){
 				$('#b-tags-add-name').val('').hide();
 			});
-		
-		self.bind_tree()
-			.progress( function( $link ){
-				
-				self.remove( $link.attr( 'href' ) );
-				
-				$link.closest('li').remove();
-					
-			});
-
-		self.picker( $('#b-tags-add-name'), type )
-			.progress( function ( tag ) {
-				self.add( tag.label );
-			});
-	},
-	
-	_init : function(){
-		
-	},
-	
-	_destroy : function(){
 		
 	},
 	
@@ -77,7 +82,7 @@ $.widget( 'boom.tagger', {
 		$.post(
 			self.options.base_url + type + '/add/' + id,
 			{
-				tag : tag
+				tag : tag.label
 			}
 			)
 			.done(function(){
@@ -165,6 +170,8 @@ $.widget( 'boom.tagger', {
 	@returns {Deferred} Promise which resolves with the chosen tag as {label : {tag_name}, value : {tag_id} }
 	*/
 	picker : function( add_input, type, tags ){
+		
+		console.log( add_input );
 
 		var complete = new $.Deferred();
 		tags = ( tags ) ? tags : [];
@@ -209,6 +216,97 @@ $.widget( 'boom.tagger', {
 			
 		return complete;
 	}
+	
+});
+
+/**
+* User interface for searching by tag.
+* @class
+* @name boom.tag_search
+* @extends boom.tagger
+*/
+$.widget( 'boom.tag_search', $.boom.tagger, {
+	/** @lends boom.tag_search */
+	
+	/**
+	default config
+	@property
+	*/
+	options: {
+		/** selected tags for this search */
+		selected_tag_ids : [],
+		/** tagmanager context for search */
+		tagmanager : {}
+	},
+	
+	_bind : function(){
+		
+	},
+	
+	/**
+	Add a tag to the search.
+	@param {String} tag Tag name
+	*/
+	add : function( tag ) {
+		var 
+			self = this,
+			selected_tag_ids = this.options.selected_tag_ids,
+			tag_filter_list = this.element.find( 'ul.b-tags-list' );
+
+		selected_tag_ids.push( tag.value );
+		var link = $( '<a>', {
+			href : '#',
+			"class" : 'b-tags-remove',
+			"data-tag_id" : tag.value 
+		});
+		var label = $( '<span>').text( tag.label );
+		
+		$( '<li>' )
+			.append( link )
+			.append( label )
+			.appendTo( tag_filter_list );
+			
+		self.do_search();
+	},
+	
+	/**
+	Remove a tag from the search.
+	@param {String} tag Tag name
+	*/
+	remove : function( tag ) {
+		var 
+			self = this,
+			selected_tag_ids = this.options.selected_tag_ids;
+
+			selected_tag_ids.splice( selected_tag_ids.indexOf( tag.value ), 1);
+			self.do_search();
+	},
+	
+	/**
+	Autocomplete, filtering by all selected tags
+	*/
+	picker : function( add_input, type ) {
+		var 
+			self = this,
+			selected_tag_ids = this.options.selected_tag_ids;
+			
+		console.log( add_input );
+			
+		return $.boom.tagger.prototype.picker.call( this, add_input, type, selected_tag_ids );
+	},
+	
+	/** Perform a search based on currently selected tags */
+	do_search : function() {
+		var 
+			self = this,
+			selected_tag_ids = this.options.selected_tag_ids,
+			tagmanager = this.options.tagmanager;
+			
+			console.log( selected_tag_ids );
+			
+		tagmanager.items.tag.get( selected_tag_ids.join( '-' ) );
+	}
+	
 	
 });
 $.extend($.boom, {

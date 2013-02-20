@@ -28,7 +28,7 @@
 			</h3>
 		</div>
 		<div id='b-tags-search' class="boom-box ui-widget ui-corner-all ui-state-default">
-			<input type='text' class="b-filter-input" id="b-assets-filter-tag" placeholder="Type a tag name" />
+			<input type='text' class="b-filter-input" id="b-tags-add-name" placeholder="Type a tag name" />
 			<ul class="b-tags-list">
     	</ul>
 		</div>

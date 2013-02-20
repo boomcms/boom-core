@@ -130,40 +130,7 @@ $.extend($.boom.assets, {
 		
 		var selected_tag_ids = [];
 		
-		var tag_filter_list =
-		$( '#b-assets-filter-tag + .b-tags-list' );
-		
-		$.boom.tags.bind_tree( '#b-tags-search' )
-			.progress( function( $link ){
-				
-				var tag_id = $link.attr( 'data-tag_id' );
-
-				$link
-					.closest( 'li' )
-					.remove();
-
-					selected_tag_ids.splice( selected_tag_ids.indexOf( tag_id ), 1);
-					self.items.tag.get( selected_tag_ids.join( '-' ) );
-					
-			});
-		
-		$.boom.tags.picker( $('#b-assets-filter-tag'), 'asset', selected_tag_ids )
-			.progress( function ( tag ) {
-				selected_tag_ids.push( tag.value );
-				var link = $( '<a>', {
-					href : '#',
-					"class" : 'b-tags-remove',
-					"data-tag_id" : tag.value 
-				});
-				var label = $( '<span>').text( tag.label );
-				
-				$( '<li>' )
-					.append( link )
-					.append( label )
-					.appendTo( tag_filter_list );
-					
-				self.items.tag.get( selected_tag_ids.join( '-' ) );
-			});
+		$( '#b-tags-search' ).tag_search( { tagmanager : self } );
 
 		$( '#boom-topbar' )
 			.on( 'click', '#b-button-multiaction-delete', function(){
