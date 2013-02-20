@@ -65,7 +65,7 @@ $.widget( 'boom.tagger', {
 		// Show it and give it focus when the add button is clicked.
 		this.element
 			.on('click', '#b-tags-add', function(){
-				self.find( '.b-filter-input' ).show().focus();
+				self.element.find( '.b-filter-input' ).show().focus();
 			})
 			// Hide the add tag input box when it loses focus.
 			.on('blur', '.b-filter-input', function(){
