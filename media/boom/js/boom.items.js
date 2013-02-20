@@ -90,6 +90,8 @@ $.extend($.boom.items.tag,  {
 
 				self.bind();
 				
+				$('.b-items-thumbs .thumb').captions($.boom.config.captions);
+				
 				$.boom.log('Tag items get');
 			});
 	},
@@ -111,17 +113,6 @@ $.extend($.boom.items.tag,  {
 		});
 
 		$.boom.events.register('tag.clickAfter', 'tagmanager');
-
-		$('.b-items-list tbody tr, .b-items-thumbs .thumb').hover(
-			function(){
-				$( this ).addClass( 'ui-state-hover' );
-			},
-			function(){
-				$( this ).removeClass( 'ui-state-hover' );
-			}
-		);
-
-		$('.b-items-thumbs .thumb').captions($.boom.config.captions);
 
 	},
 

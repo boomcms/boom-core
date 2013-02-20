@@ -301,6 +301,12 @@ $.extend($.boom.assets, {
 				var asset_id = $( this ).attr( 'href' ).split( '/' )[ 1 ];
 				$( '#asset-list-' + asset_id ).click();
 
+			})
+			.on( 'mouseenter focus', '.b-items-list tbody tr, .b-items-thumbs .thumb', function( event ){
+				$( this ).addClass( 'ui-state-hover' );
+			})
+			.on( 'mouseleave blur', '.b-items-list tbody tr, .b-items-thumbs .thumb', function( event ){
+				$( this ).removeClass( 'ui-state-hover' );
 			});
 	},
 
