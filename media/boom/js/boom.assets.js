@@ -480,9 +480,9 @@ $.extend($.boom.assets, {
 /**
 @class
 */
-$.boom.items.asset = $.extend(true, {}, $.boom.tagmanager.base.item);
+$.boom.asset = $.extend(true, {}, $.boom.tagmanager.base.item);
 
-$.extend($.boom.items.asset, {
+$.extend($.boom.asset, {
 	/** @lends $.boom.items.asset */
 
 	/** @property */
@@ -513,7 +513,6 @@ $.extend($.boom.items.asset, {
 		self.tagmanager.elements.rightpane
 		.find('.b-items-content')
 		.sload(url, function(){
-			$.boom.tagmanager.base.item.prototype.get.apply( self );
 
 			$( this ).scrollTop( 0 );
 
@@ -731,10 +730,10 @@ $.extend($.boom.items.asset, {
 /**
 @class
 */
-$.boom.items.tag = $.extend(true, {}, $.boom.tagmanager.base.item);
+$.boom.assets.tag = $.extend(true, {}, $.boom.tagmanager.base.item);
 
-$.extend($.boom.items.tag,  {
-	/** @lends $.boom.items.tag */
+$.extend($.boom.assets.tag,  {
+	/** @lends $.boom.assets.tag */
 
 	srid: 0,
 

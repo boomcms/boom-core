@@ -81,8 +81,8 @@
 
 			$.boom.assets.init({
 				items: {
-					asset: $.boom.items.asset,
-					tag: $.boom.items.tag
+					asset: $.boom.asset,
+					tag: $.boom.assets.tag
 				},
 				options: {
 					sortby: 'last_modified',
