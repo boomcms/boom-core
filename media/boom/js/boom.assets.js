@@ -270,21 +270,21 @@ $.extend($.boom.assets, {
 
 				var selector = '#' + item.join( '-' );
 
-				console.log( selector );
-
 				var checkbox = $( selector );
 
 				if ( $( this ).is(':checked')) {
 
 					checkbox.attr('checked', 'checked').prop( 'checked', true );
 
-					checkbox.parent( 'div' ).addClass( 'ui-state-active' );
+					checkbox.parents( 'div.thumb' ).addClass( 'ui-state-active' );
+					$( this ).parents( 'tr' ).addClass( 'ui-state-active' );
 
 				} else {
 
 					checkbox.removeAttr('checked').prop( 'checked', false );
 
-					checkbox.parent( 'div' ).removeClass( 'ui-state-active' );
+					checkbox.parents( 'div.thumb' ).removeClass( 'ui-state-active' );
+					$( this ).parents( 'tr' ).removeClass( 'ui-state-active' )
 				}
 
 				var amount = $('.b-items-select-checkbox:checked').length;
@@ -302,10 +302,10 @@ $.extend($.boom.assets, {
 				$( '#asset-list-' + asset_id ).click();
 
 			})
-			.on( 'mouseenter focus', '.b-items-list tbody tr, .b-items-thumbs .thumb', function( event ){
+			.on( 'mouseenter focus', '#b-items-view-list tbody tr, #b-items-view-thumbs a', function( event ){
 				$( this ).addClass( 'ui-state-hover' );
 			})
-			.on( 'mouseleave blur', '.b-items-list tbody tr, .b-items-thumbs .thumb', function( event ){
+			.on( 'mouseleave blur', '#b-items-view-list tbody tr, #b-items-view-thumbs a', function( event ){
 				$( this ).removeClass( 'ui-state-hover' );
 			});
 	},
