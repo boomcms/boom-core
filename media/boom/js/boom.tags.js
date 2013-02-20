@@ -35,7 +35,7 @@ $.widget( 'boom.tagger', {
 
 		self._bind();
 				
-		self.bind_tree()
+		self.tag_list()
 			.progress( function( $link ){
 				
 				self.remove( $link.attr( 'href' ) );
@@ -125,11 +125,11 @@ $.widget( 'boom.tagger', {
 	},
 	
 	/**
-	Bind events to the tag list
+	Set up the tag list
 	@param {String} selector jQuery selector for the list container
 	@returns {Deferred} sends progress notfications to handle remove callbacks.
 	*/
-	bind_tree : function() {
+	tag_list : function() {
 		var remove = new $.Deferred();
 		
 		this.element
