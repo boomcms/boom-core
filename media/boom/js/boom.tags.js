@@ -42,14 +42,9 @@ $.widget( 'boom.tagger', {
 		self.bind_tree()
 			.progress( function( $link ){
 				
-				$.post(
-					self.options.base_url + type + '/remove/' + id,
-					{tag : $link.attr( 'href' )}
-					)
-					.done(function(){
-						$link.closest('li').remove();
-						$.boom.loader.hide();
-					});
+				self.remove( $link.attr( 'href' ) );
+				
+				$link.closest('li').remove();
 					
 			});
 
@@ -102,6 +97,22 @@ $.widget( 'boom.tagger', {
 	},
 	
 	/**
+	Remove a tag from an item.
+	@param {String} tag Tag name
+	*/
+	remove : function( tag ) {
+		var 
+			self = this, 
+			type = this.options.type, 
+			id = this.options.id;
+
+			return $.post(
+				self.options.base_url + type + '/remove/' + id,
+				{tag : tag}
+				);
+	},
+	
+	/**
 	Bind events to the tag list
 	@param {String} selector jQuery selector for the list container
 	@returns {Deferred} sends progress notfications to handle remove callbacks.
@@ -135,8 +146,6 @@ $.widget( 'boom.tagger', {
 			// Remove a tag from the page.
 			.on('click', '.b-tags-remove', function(event){
 				event.preventDefault();
-
-				$.boom.loader.show();
 				
 				remove.notify( $(this) );
 			});
