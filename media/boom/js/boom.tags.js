@@ -44,7 +44,7 @@ $.widget( 'boom.tagger', {
 					
 			});
 
-		self.picker( self.element.find( '.b-filter-input' ), type )
+		self.picker()
 			.progress( function ( tag ) {
 				self.add( tag );
 			});
@@ -171,14 +171,14 @@ $.widget( 'boom.tagger', {
 	
 	/**
 	Autocomplete UI for finding and picking tags.
-	@param {jQuery element} add_input HTML text input for the tag name.
-	@param {String} type one of asset/page.
 	@param {Array} tags optional array of tags to filter the search by
 	@returns {Deferred} Promise which resolves with the chosen tag as {label : {tag_name}, value : {tag_id} }
 	*/
-	picker : function( add_input, type, tags ){
+	picker : function( tags ){
 		
-		console.log( add_input );
+		var 
+			type = this.options.type,
+			add_input = this.element.find( '.b-filter-input' );
 
 		var complete = new $.Deferred();
 		tags = ( tags ) ? tags : [];
@@ -292,12 +292,12 @@ $.widget( 'boom.tag_search', $.boom.tagger, {
 	/**
 	Autocomplete, filtering by all selected tags
 	*/
-	picker : function( add_input, type ) {
+	picker : function() {
 		var 
 			self = this,
 			selected_tag_ids = this.options.selected_tag_ids;
 			
-		return $.boom.tagger.prototype.picker.call( this, add_input, type, selected_tag_ids );
+		return $.boom.tagger.prototype.picker.call( this, selected_tag_ids );
 	},
 	
 	/** Perform a search based on currently selected tags */
