@@ -483,7 +483,7 @@ $.extend($.boom.assets, {
 $.boom.asset = $.extend(true, {}, $.boom.tagmanager.base.item);
 
 $.extend($.boom.asset, {
-	/** @lends $.boom.items.asset */
+	/** @lends $.boom.asset */
 
 	/** @property */
 	buttonManager: {
