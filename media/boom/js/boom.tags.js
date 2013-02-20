@@ -297,8 +297,6 @@ $.widget( 'boom.tag_search', $.boom.tagger, {
 			self = this,
 			selected_tag_ids = this.options.selected_tag_ids;
 			
-		console.log( add_input );
-			
 		return $.boom.tagger.prototype.picker.call( this, add_input, type, selected_tag_ids );
 	},
 	
@@ -308,8 +306,6 @@ $.widget( 'boom.tag_search', $.boom.tagger, {
 			self = this,
 			selected_tag_ids = this.options.selected_tag_ids,
 			tagmanager = this.options.tagmanager;
-			
-			console.log( selected_tag_ids );
 			
 		tagmanager.items.tag.get( selected_tag_ids.join( '-' ) );
 	}

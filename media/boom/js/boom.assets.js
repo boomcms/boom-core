@@ -63,7 +63,7 @@ $.extend($.boom.assets, {
 				});
 				
 				$.when( tagged, uploaded ).done( function( tags, data ){
-					console.log( tags );
+					
 					for ( i in tags ) {
 						$.post(
 							'/cms/tags/asset/add/' + data.result.rids.join( '-' ),
