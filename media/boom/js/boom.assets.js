@@ -265,27 +265,10 @@ $.extend($.boom.assets, {
 				var view = item[ 1 ];
 				var type = item[ 0 ];
 				var item_id = item[ 2 ];
+				
+				self.items.asset.select( item_id, $( this ).is(':checked') );
 
-				item[ 1 ] = ( view == 'list' ) ? 'thumb' : 'list';
-
-				var selector = '#' + item.join( '-' );
-
-				var checkbox = $( selector );
-
-				if ( $( this ).is(':checked')) {
-
-					checkbox.attr('checked', 'checked').prop( 'checked', true );
-
-					checkbox.parents( 'div.thumb' ).addClass( 'ui-state-active' );
-					$( this ).parents( 'tr' ).addClass( 'ui-state-active' );
-
-				} else {
-
-					checkbox.removeAttr('checked').prop( 'checked', false );
-
-					checkbox.parents( 'div.thumb' ).removeClass( 'ui-state-active' );
-					$( this ).parents( 'tr' ).removeClass( 'ui-state-active' )
-				}
+				
 
 				var amount = $('.b-items-select-checkbox:checked').length;
 
@@ -611,6 +594,32 @@ $.extend($.boom.items.asset, {
 
 			$(this).find('.boom-tabs').tabs('option', 'active', 1);
 		});
+	},
+	
+	/** @function */
+	select : function( rid, selected ){
+
+		var thumb = '#asset-thumb-' + rid;
+		var list = '#asset-list-' + rid;
+
+		var checkbox = $( thumb );
+		checkbox.prop( 'checked', selected );
+
+		if ( selected ) {
+
+			checkbox.attr('checked', 'checked');
+
+			checkbox.parents( 'div.thumb' ).addClass( 'ui-state-active' );
+			$( list ).parents( 'tr' ).addClass( 'ui-state-active' );
+
+		} else {
+
+			checkbox.removeAttr('checked');
+
+			checkbox.parents( 'div.thumb' ).removeClass( 'ui-state-active' );
+			$( list ).parents( 'tr' ).removeClass( 'ui-state-active' );
+		}
+		
 	},
 
 	/** @function */
