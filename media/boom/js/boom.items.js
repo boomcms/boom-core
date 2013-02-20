@@ -1,31 +1,3 @@
-/**
-@class
-@name $.boom.tagmanager.base.item
-*/
-$.extend($.boom.tagmanager.base.item.prototype, {
-	/** @lends $.boom.tagmanager.base.item */
-
-	/**
-	Get???
-	*/
-	get: function(){
-
-		//this.tagmanager.elements.rightpane.trigger( 'resize.boom' );
-
-		if ( this.buttonManager ) {
-
-			if ( this.buttonManager.show ) {
-
-				$( this.buttonManager.show.join(',') ).show();
-			}
-
-			if ( this.buttonManager.hide ) {
-
-				$( this.buttonManager.hide.join(',') ).hide();
-			}
-		}
-	}
-});
 
 /**
 @class
@@ -40,16 +12,7 @@ $.boom.items.tag = $.extend(true, {}, $.boom.tagmanager.base.item);
 $.extend($.boom.items.tag,  {
 	/** @lends $.boom.items.tag */
 
-	/**
-	@property
-	*/
-	buttonManager: {
-
-		show: [ '#b-assets-upload' ],
-		hide: [ '#boom-tagmanager-save-all' ]
-	},
-
-	rid: 0,
+	srid: 0,
 
 	filters: {},
 
@@ -83,8 +46,6 @@ $.extend($.boom.items.tag,  {
 		return self.tagmanager.elements.rightpane
 			.find('.b-items-content')
 			.sload( url, function(){
-
-				$.boom.tagmanager.base.item.prototype.get.apply( self );
 
 				$.boom.loader.hide();
 
