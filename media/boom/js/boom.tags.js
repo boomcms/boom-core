@@ -1,4 +1,9 @@
 /**
+@namespace
+@name boom
+*/
+
+/**
 * User interface for tagging content.
 * @class
 * @name boom.tagger
