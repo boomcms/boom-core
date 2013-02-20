@@ -130,7 +130,7 @@ $.extend($.boom, {
 
 			this.cancel_button.on( 'click', function(){
 				top.location.reload();
-			})
+			});
 			$('#b-page-delete').click(function(){
 
 				$.boom.dialog.open({
@@ -532,8 +532,10 @@ $.extend($.boom.page, {
 			self.elements.page_body.contents().find('body').unbind('click').click(function(event){
 
 				function isAnchor(target){
+					
+					var internal_link = /#|javascript:/;
 
-					return ( target && target.nodeName == 'A' && !/#|javascript:/.test( target.href ) );
+					return ( target && target.nodeName == 'A' && !internal_link.test( target.href ) );
 				}
 
 				var target = isAnchor(event.target) ? event.target : $( event.target ).parents('a').get(0);
@@ -732,7 +734,7 @@ $.extend($.boom.page, {
 						.find('head');
 
 					if (/js$/.test(this.url)) {
-						$( '<script>', {
+						$( '<script></script>', {
 							type : "text/javascript"
 						} )
 						.text( response )
@@ -740,7 +742,7 @@ $.extend($.boom.page, {
 					}
 
 					 if (/css$/.test(this.url)) {
-						$( '<style>', {
+						$( '<style></style>', {
 							type: "text/css"
 						})
 						.text( response )
