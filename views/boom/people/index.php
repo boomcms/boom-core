@@ -80,7 +80,6 @@
 	<?= HTML::script("media/boom/js/boom.config.js") ?>
 	<?= HTML::script("media/boom/js/boom.core.js") ?>
 	<?= HTML::script("media/boom/js/boom.tagmanager.js") ?>
-	<?= HTML::script("media/boom/js/boom.items.js") ?>
 	<?= HTML::script("media/boom/js/boom.people.js") ?>
 
 	<script type="text/javascript">
@@ -95,8 +94,8 @@
 
 			$.boom.people.init({
 				items: {
-					tag: $.boom.items.group,
-					person: $.boom.items.person
+					tag: $.boom.people.group,
+					person: $.boom.person
 				},
 				options: {
 					sortby: 'name',
