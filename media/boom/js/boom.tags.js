@@ -375,7 +375,7 @@ $.widget( 'boom.deferred_tagger', $.boom.tagger, {
 			self = this,
 			tags = this.options.tags;
 
-			tags.splice( selected_tag_ids.indexOf( tag.value ), 1);
+			tags.splice( tags.indexOf( tag.value ), 1);
 	}
 	
 });
