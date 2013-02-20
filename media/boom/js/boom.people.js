@@ -110,10 +110,10 @@ $.extend($.boom.people, {
 /**
 @class
 */
-$.boom.items.person = $.extend(true, {}, $.boom.tagmanager.base.item);
+$.boom.person = $.extend(true, {}, $.boom.tagmanager.base.item);
 
-$.extend($.boom.items.person, {
-	/** @lends $.boom.items.person */
+$.extend($.boom.person, {
+	/** @lends $.boom.person */
 
 	/** @function */
 	get: function( rid ){
@@ -300,10 +300,10 @@ $.extend($.boom.items.person, {
 /**
 @class
 */
-$.boom.items.group = $.extend(true, {}, $.boom.tagmanager.base.item);
+$.boom.people.group = $.extend(true, {}, $.boom.tagmanager.base.item);
 
-$.extend($.boom.items.group,  {
-	/** @lends $.boom.items.group */
+$.extend($.boom.people.group,  {
+	/** @lends $.boom.people.group */
 
 	/**
 	@property
