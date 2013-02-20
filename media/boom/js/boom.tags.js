@@ -1,5 +1,10 @@
-$.widget( 'boom.tags', {
-/** @lends boom.tags */
+/**
+* User interface for tagging content.
+* @class
+* @name boom.tagger
+*/
+$.widget( 'boom.tagger', {
+/** @lends boom.tagger */
 
 	/**
 	default config

@@ -1118,7 +1118,7 @@ $.extend($.boom.page, {
 						}
 					},
 					open: function() {
-						$('#b-tags').tags({
+						$('#b-tags').tagger({
 							type: 'page',
 							id: $.boom.page.config.id
 						});
