@@ -248,8 +248,7 @@ $.extend($.boom.assets, {
 						}
 					},
 					onLoad: function(){
-						// Make the tag editor work.
-						$.boom.tags.init({
+						$('#b-tags').tags({
 							type: 'asset',
 							id: ids.join( '-' )
 						});
@@ -587,7 +586,7 @@ $.extend($.boom.items.asset, {
 			self.bind( this );
 
 			// Make the tag editor work.
-			$.boom.tags.init({
+			$('#b-tags').tags({
 				type: 'asset',
 				id: rid
 			});
@@ -671,27 +670,6 @@ $.extend($.boom.items.asset, {
 						$( '#link_url' ).val( link.url );
 					});
 			});
-
-
-		$('#boom-button-asset-tags-add').click( function(){
-
-			$.boom.assets.items.tag
-				.picker()
-				.done( function( tags ) {
-
-					$.boom.loader.show();
-
-					return $.post(
-						'/cms/assets/add_tags/' + $('#asset_id').val(),
-						{tags:  tags}
-					);
-				})
-				.then( function( response ){
-					$.boom.loader.hide();
-					$.boom.history.refresh();
-				});
-
-		});
 
 		$('#boom-button-asset-tags-delete').click(function(){
 			var tags = [];

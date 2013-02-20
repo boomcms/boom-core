@@ -16,6 +16,8 @@ $.widget( 'boom.tags', {
 
 	_create : function(){
 		
+		$.boom.log( 'tag widget created' );
+		
 		var 
 			self = this, 
 			type = this.options.type, 
