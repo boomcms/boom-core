@@ -248,7 +248,7 @@ $.extend($.boom.assets, {
 						}
 					},
 					onLoad: function(){
-						$('#b-tags').tags({
+						$('#b-tags').tagger({
 							type: 'asset',
 							id: ids.join( '-' )
 						});
@@ -586,7 +586,7 @@ $.extend($.boom.items.asset, {
 			self.bind( this );
 
 			// Make the tag editor work.
-			$('#b-tags').tags({
+			$('#b-tags').tagger({
 				type: 'asset',
 				id: rid
 			});
