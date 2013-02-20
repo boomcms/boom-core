@@ -510,7 +510,7 @@ $.extend($.boom.asset, {
 		].join('/'),
 		url = '/cms/assets/view/' + this.rid;
 
-		self.tagmanager.elements.rightpane
+		return self.tagmanager.elements.rightpane
 		.find('.b-items-content')
 		.sload(url, function(){
 
