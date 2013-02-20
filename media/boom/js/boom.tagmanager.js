@@ -145,10 +145,6 @@ function CMSTagmanager(type){
 	this._init = function(config){
 		
 		$.boom.log( 'CMS tag manager init' );
-		
-		$.extend(config.items, {
-			search: $.boom.items.search
-		});
 
 		$.extend(true, this, config);
 		
@@ -303,8 +299,3 @@ function CMSTagmanager(type){
 $.extend(SiteTagmanager.prototype, $.boom.tagmanager.base.tagmanager);
 
 $.extend(CMSTagmanager.prototype, $.boom.tagmanager.base.tagmanager);
-
-/**
-@class
-*/
-$.boom.items = $.extend( true, {}, $.boom.tagmanager.items );

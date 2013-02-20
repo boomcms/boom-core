@@ -420,8 +420,6 @@ $.extend($.boom.people.group,  {
 		.find('.b-items-content')
 		.sload( '/cms/groups/edit/' + rid, function(){
 
-			$.boom.tagmanager.base.item.prototype.get.apply( self );
-
 			$.boom.loader.hide();
 			
 
