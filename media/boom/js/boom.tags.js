@@ -59,15 +59,17 @@ $.widget( 'boom.tagger', {
 	},
 	
 	_bind : function(){
+		var self = this;
+		
 		// The add tag input box is hidden when the modal window opens.
 		// Show it and give it focus when the add button is clicked.
 		this.element
 			.on('click', '#b-tags-add', function(){
-				$('#b-tags-add-name').show().focus();
+				self.find( '.b-filter-input' ).show().focus();
 			})
 			// Hide the add tag input box when it loses focus.
-			.on('blur', '#b-tags-add-name', function(){
-				$('#b-tags-add-name').val('').hide();
+			.on('blur', '.b-filter-input', function(){
+				$( this ).val('').hide();
 			});
 		
 	},
