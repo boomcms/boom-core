@@ -257,6 +257,51 @@ $.extend($.boom.assets, {
 				});
 
 			});
+	
+		self.elements.rightpane
+			.on( 'change', '.b-items-select-checkbox', function( event ){
+				// checkbox IDs are of the form type-view-id.
+				var item = this.id.split( '-' );
+				var view = item[ 1 ];
+				var type = item[ 0 ];
+				var item_id = item[ 2 ];
+
+				item[ 1 ] = ( view == 'list' ) ? 'thumb' : 'list';
+
+				var selector = '#' + item.join( '-' );
+
+				console.log( selector );
+
+				var checkbox = $( selector );
+
+				if ( $( this ).is(':checked')) {
+
+					checkbox.attr('checked', 'checked').prop( 'checked', true );
+
+					checkbox.parent( 'div' ).addClass( 'ui-state-active' );
+
+				} else {
+
+					checkbox.removeAttr('checked').prop( 'checked', false );
+
+					checkbox.parent( 'div' ).removeClass( 'ui-state-active' );
+				}
+
+				var amount = $('.b-items-select-checkbox:checked').length;
+
+				var buttons = $( '[id|=b-button-multiaction]' ).not( '#b-button-multiaction-edit' );
+
+				$( '#b-button-multiaction-edit' ).button( (  amount && amount < 3) ? 'enable' : 'disable' );
+
+				buttons.button( amount > 0 ? 'enable' : 'disable' );
+			})
+			.on( 'click', '#b-items-view-thumbs a', function(event){
+				event.preventDefault();
+
+				var asset_id = $( this ).attr( 'href' ).split( '/' )[ 1 ];
+				$( '#asset-list-' + asset_id ).click();
+
+			});
 	},
 
 	/**
