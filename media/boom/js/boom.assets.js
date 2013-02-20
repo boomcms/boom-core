@@ -56,7 +56,7 @@ $.extend($.boom.assets, {
 					.done( function(){
 						$.boom.log( 'asset list updated' );
 						for ( i in data.result.rids ){
-							$( 'a[href="#asset/' + data.result.rids[ i ] + '"]' ).click();
+							$( '#asset-list-' + data.result.rids[ i ] ).click();
 						}
 					});
 					
