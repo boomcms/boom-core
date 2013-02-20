@@ -114,33 +114,42 @@ $.extend($.boom.items.tag,  {
 
 		$('.b-items-select-checkbox').change(function(){
 
-			var view =
-				this.id.replace(/^[a-z]+-([a-z]+)-[0-9]+$/, "$1") == 'list' ? 'thumb' : 'list',
-				type =	this.id.replace(/^([a-z]+)-.*$/, "$1"),
-				selector = $( '#' + type + '-' + view + '-' + this.id.replace(/[a-z]+-[a-z]+-/, ''));
+			// checkbox IDs are of the form type-view-id.
+			var item = this.id.split( '-' );
+			var view = item[ 1 ];
+			var type = item[ 0 ];
+			var item_id = item[ 2 ];
+			
+			item[ 1 ] = ( view == 'list' ) ? 'thumb' : 'list';
+			
+			var selector = '#' + item.join( '-' );
+			
+			console.log( selector );
+			
+			var checkbox = $( selector );
 
 			if ( $( this ).is(':checked')) {
 
-				selector.attr('checked', 'checked').prop( 'checked', true );
+				checkbox.attr('checked', 'checked').prop( 'checked', true );
 				
-				 if ( view == 'thumb' ) selector.parent( 'div' ).addClass( 'ui-state-active' );
+				checkbox.parent( 'div' ).addClass( 'ui-state-active' );
 
 			} else {
 
-				selector.removeAttr('checked').prop( 'checked', false );
+				checkbox.removeAttr('checked').prop( 'checked', false );
 				
-				if ( view == 'thumb' ) selector.parent( 'div' ).removeClass( 'ui-state-active' );
+				checkbox.parent( 'div' ).removeClass( 'ui-state-active' );
 			}
 
 			var amount = $('.b-items-select-checkbox:checked').length;
 			
 			console.log( amount );
 
-			var buttons = $( '[id|=b-button-multiaction]' );
+			var buttons = $( '[id|=b-button-multiaction]' ).not( '#b-button-multiaction-edit' );
 
+			$( '#b-button-multiaction-edit' ).button( (  amount && amount < 3) ? 'enable' : 'disable' );
+			
 			buttons.button( amount > 0 ? 'enable' : 'disable' );
-
-			$( '#b-button-multiaction-edit' ).button( amount > 2 ? 'disable' : 'enable' );
 		});
 
 		$('.b-items-list tbody tr, .b-items-thumbs .thumb').hover(
@@ -154,14 +163,10 @@ $.extend($.boom.items.tag,  {
 
 		$('#b-items-view-thumbs').on( 'click', 'a', function(event){
 			event.preventDefault();
+			
+			var asset_id = $( this ).attr( 'href' ).split( '/' )[ 1 ];
+			$( '#asset-list-' + asset_id ).click();
 
-			var container = $(this).parent('div');
-			var checkbox = container.find('.b-items-select-checkbox');
-			console.log( checkbox );
-
-			container.toggleClass('ui-state-active');
-
-			checkbox.click();
 		});
 
 		$('.b-items-thumbs .thumb').captions($.boom.config.captions);
