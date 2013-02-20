@@ -138,8 +138,6 @@ $.extend($.boom.items.person, {
 		.find('.b-items-content')
 		.sload(url, function(){
 
-			$.boom.tagmanager.base.item.prototype.get.apply( self );
-
 			$( this ).scrollTop( 0 );
 
 			$.boom.events.register('person.clickAfter', 'tagmanager', { rid: rid });
@@ -335,8 +333,6 @@ $.extend($.boom.items.group,  {
 
 		$('.b-items-content')
 			.sload( url, function(){
-
-				$.boom.tagmanager.base.item.prototype.get.apply( self );
 
 				$.boom.loader.hide();
 
