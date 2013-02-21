@@ -39,10 +39,12 @@ $.widget( 'boom.browser', {
 		
 		$.boom.log( 'content browser init' );
 		
-		$.each(this.items, function(){
-		
-			this.browser = self;
-		});
+		this.items.tag.options = {
+			perpage: this.options.perpage,
+			sortby : this.options.sortby,
+			order : this.options.order,
+			type: this.options.type
+		};
 
 		this.main_panel = $('.b-items-rightpane');
 		this.sidebar = $('.b-items-leftpane');
@@ -175,7 +177,7 @@ $.widget( 'boom.browser', {
 			
 		self.main_panel
 			.on( 'change', '#boom-tagmanager-sortby-select', function( event ){
-				self.options.sortby = this.value;
+				self.items.tag.options.sortby = this.value;
 				$.boom.history.refresh();
 			});
 

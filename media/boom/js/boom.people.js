@@ -140,10 +140,7 @@ $.extend($.boom.person, {
 
 		this.rid = rid;
 
-		var segments = [
-			rid
-		].join('/'),
-		url = '/cms/people/view/' + segments;
+		var url = '/cms/people/view/' + rid;
 		
 		return $.get( url );
 
@@ -260,7 +257,7 @@ $.extend($.boom.person, {
 
 				} else {
 
-					self.browser.defaultRoute();
+					//self.browser.defaultRoute();
 				}
 			});
 		});
@@ -283,7 +280,7 @@ $.extend($.boom.people.group,  {
 	/** @function */
 	get : function(rid){
 
-		var self = this, options = this.browser.options;
+		var self = this, options = this.options;
 
 		this.rid = rid;
 
@@ -297,7 +294,7 @@ $.extend($.boom.people.group,  {
 			'/cms/' + options.type + '/list'
 			+ '?' + params;
 
-		self.browser.options.url = url;
+		self.options.url = url;
 		$.boom.log('Group items get' + rid );
 		
 		return $.get( url );
@@ -307,8 +304,6 @@ $.extend($.boom.people.group,  {
 	bind : function(){
 
 		var self = this;
-
-		this.browser.main_panel.ui();
 
 		$('.b-items-select-checkbox').change(function(){
 

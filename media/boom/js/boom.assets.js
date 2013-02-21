@@ -518,7 +518,7 @@ $.extend($.boom.asset, {
 
 		this.rid = rid;
 
-		var url = '/cms/assets/view/' + this.rid;
+		var url = '/cms/assets/view/' + rid;
 		
 		return $.get( url );
 	},
@@ -681,7 +681,7 @@ $.extend($.boom.asset, {
 
 					} else {
 
-						self.browser.defaultRoute();
+						//self.browser.defaultRoute();
 					}
 				});
 			});
@@ -733,7 +733,7 @@ $.extend($.boom.assets.tag,  {
 		$.boom.log( 'get tag ' + rid );
 
 		var self = this;
-		var options = this.browser.options;
+		var options = this.options;
 
 		this.rid = rid;
 
