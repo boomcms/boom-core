@@ -137,7 +137,6 @@ $.extend($.boom.person, {
 	get: function( rid ){
 
 		var self = this;
-		var options = this.tagmanager.options;
 
 		this.rid = rid;
 
@@ -152,7 +151,7 @@ $.extend($.boom.person, {
 
 		console.debug('before person load');
 
-		self.tagmanager.main_panel
+		self.browser.main_panel
 		.find('.b-items-content')
 		.sload(url, function(){
 
@@ -170,37 +169,8 @@ $.extend($.boom.person, {
 	bind: function( elem ){
 
 		var self = this;
-		var options = this.tagmanager.options,
 
-		treeConfig = $.extend({}, options.treeConfig, {
-			toggleSelected: true,
-			onClick: function(e) {
-
-				var $tags = $('input[name=groups]');
-				var tags = $tags.val().split(',');
-
-				tags = (function(tags) {
-
-					for (var i in tags) {
-						if (tags[i] == e.data.tag) {
-							tags.splice(i,1);
-							return tags;
-						}
-					}
-
-					tags.push(e.data.tag);
-					return tags;
-
-				})(tags);
-
-				$tags.val(tags.join(','));
-
-			}
-		});
-
-		$( elem ).ui({
-			tabs: $.boom.config.tabs
-		});
+		$( elem ).ui();
 
 		$.boom.dialog.bind({
 			image: $('.boom-asset-preview')
@@ -331,7 +301,7 @@ $.extend($.boom.people.group,  {
 	/** @function */
 	get : function(rid){
 
-		var self = this, options = this.tagmanager.options;
+		var self = this, options = this.browser.options;
 
 		this.rid = rid;
 
@@ -347,7 +317,7 @@ $.extend($.boom.people.group,  {
 			'/cms/' + options.type + '/list'
 			+ '?' + params;
 
-		self.tagmanager.options.url = url;
+		self.browser.options.url = url;
 
 		$('.b-items-content')
 			.sload( url, function(){
@@ -365,7 +335,7 @@ $.extend($.boom.people.group,  {
 
 		var self = this;
 
-		this.tagmanager.main_panel.ui();
+		this.browser.main_panel.ui();
 
 		$.boom.events.register('tag.clickAfter', 'tagmanager');
 
@@ -416,14 +386,14 @@ $.extend($.boom.people.group,  {
 		var rid = item.find('a').attr( 'rel' );
 		var selected_page = null;
 
-		self.tagmanager.main_panel
+		self.browser.main_panel
 		.find('.b-items-content')
 		.sload( '/cms/groups/edit/' + rid, function(){
 
 			$.boom.loader.hide();
 			
 
-			self.tagmanager.main_panel
+			this
 			.ui()
 			.on( 'change', '#b-group-roles-general input[type=radio]', function( event ){
 
@@ -489,7 +459,7 @@ $.extend($.boom.people.group,  {
 			 * The role checkboxes should then be updated if the correct values.
 			 */
 			
-			$.boom.util.page_tree( self.tagmanager.main_panel.find( '#b-group-roles-pages .boom-tree' ) )
+			$.boom.util.page_tree( this.find( '#b-group-roles-pages .boom-tree' ) )
 				.progress( function( page ) {
 					
 					selected_page = page.page_id;

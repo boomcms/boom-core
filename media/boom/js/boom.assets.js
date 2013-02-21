@@ -243,27 +243,6 @@ $.widget( 'boom.asset_browser', $.boom.browser, {
 			})
 			.on( 'mouseleave blur', '#b-items-view-list tbody tr, #b-items-view-thumbs a', function( event ){
 				$( this ).removeClass( 'ui-state-hover' );
-			});
-		
-	},
-
-	/**
-	Set up an asset browser
-	@returns {Object} promise which updates via .notify( rid ) when an asset is selected.
-	*/
-	browse: function(){
-
-		var self = this;
-		var select_asset = new $.Deferred();
-
-		$( self.main_panel )
-			.on( 'click', '.thumb a', function(event){
-
-				var data = $(this).attr('href').split('/');
-				var rid = parseInt( data[1], 10 );
-				select_asset.notify( rid );
-
-				return false;
 			})
 			.on( 'click', '.boom-pagination a', function( e ){
 				e.preventDefault();
@@ -285,6 +264,27 @@ $.widget( 'boom.asset_browser', $.boom.browser, {
 						.find( '#b-items-view-thumbs' )
 						.html( thumbs );
 				});
+
+				return false;
+			});
+		
+	},
+
+	/**
+	Set up an asset browser
+	@returns {Object} promise which updates via .notify( rid ) when an asset is selected.
+	*/
+	browse: function(){
+
+		var self = this;
+		var select_asset = new $.Deferred();
+
+		$( self.main_panel )
+			.on( 'click', '.thumb a', function(event){
+
+				var data = $(this).attr('href').split('/');
+				var rid = parseInt( data[1], 10 );
+				select_asset.notify( rid );
 
 				return false;
 			});
@@ -521,7 +521,6 @@ $.extend($.boom.asset, {
 		$.boom.log( 'boom.items.asset.get ' + rid );
 
 		var self = this;
-		var options = self.tagmanager.options;
 
 		this.rid = rid;
 
@@ -529,18 +528,11 @@ $.extend($.boom.asset, {
 
 		$.boom.events.register('asset.clickBefore', 'tagmanager', { rid: rid });
 
-		var segments = [
-			options.edition,
-			rid,
-			'asset'
-		].join('/'),
-		url = '/cms/assets/view/' + this.rid;
+		var url = '/cms/assets/view/' + this.rid;
 
-		return self.tagmanager.main_panel
+		return self.browser.main_panel
 		.find('.b-items-content')
 		.sload(url, function(){
-
-			$( this ).scrollTop( 0 );
 
 			$.boom.events.register('asset.clickAfter', 'tagmanager', { rid: rid });
 
@@ -587,7 +579,6 @@ $.extend($.boom.asset, {
 	/** @function */
 	bind : function(elem){
 		var self = this;
-		var options = this.tagmanager.options;
 		var rids = $.boom.history.getHash().split('/')[1].split('-');
 
 		if ( rids.length <= 1 ) {
@@ -601,17 +592,7 @@ $.extend($.boom.asset, {
 			});
 		}
 
-		var tabsConfig = $.extend({}, $.boom.config.tabs, {
-
-			show: function(event, ui){
-
-				var label = $.trim( $(ui.tab).text() ).toLowerCase();
-			}
-		});
-
-		$( elem ).ui({
-			tabs: tabsConfig
-		});
+		$( elem ).ui();
 
 		$.boom.dialog.bind({
 			image: $('.boom-asset-preview')
@@ -746,7 +727,7 @@ $.extend($.boom.asset, {
 
 		$( '.boom-tagmanager-asset-back' ).on( 'click', function( event ){
 			event.preventDefault();
-			var tag = self.tagmanager.items.tag;
+			var tag = self.browser.items.tag;
 			tag.get( tag.rid );
 
 		});
@@ -761,7 +742,7 @@ $.boom.assets.tag = {};
 $.extend($.boom.assets.tag,  {
 	/** @lends $.boom.assets.tag */
 
-	srid: 0,
+	rid: 0,
 
 	filters: {},
 
@@ -771,7 +752,7 @@ $.extend($.boom.assets.tag,  {
 		$.boom.log( 'get tag ' + rid );
 
 		var self = this;
-		var options = this.tagmanager.options;
+		var options = this.browser.options;
 
 		this.rid = rid;
 
@@ -792,13 +773,13 @@ $.extend($.boom.assets.tag,  {
 
 		options.url = url;
 
-		return self.tagmanager.main_panel
+		return self.browser.main_panel
 			.find('.b-items-content')
 			.sload( url, function(){
 
 				$.boom.loader.hide();
 
-				self.tagmanager.main_panel.ui();
+				this.ui();
 				
 				$.boom.events.register('tag.clickAfter', 'tagmanager');
 				
