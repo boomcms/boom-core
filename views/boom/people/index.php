@@ -85,31 +85,9 @@
 	<script type="text/javascript">
 		//<![CDATA[
 		(function($){
-			$.boom.init('people', {
-				person: {
-					rid: <?= $person->id?>,
-					name: "<?= $person->name?>"
-				}
-			});
+			$.boom.init('people');
 
-			$.boom.people.init({
-				items: {
-					tag: $.boom.people.group,
-					person: $.boom.person
-				},
-				options: {
-					sortby: 'name',
-					order: 'asc',
-					basetagRid: 1,
-					defaultTagRid: 0,
-					edition: 'cms',
-					type: 'people',
-					treeConfig : {
-						showEdit: true,
-						showRemove: true
-					}
-				}
-			});
+			$( 'body' ).people_browser();
 		})(jQuery);
 		//]]>
 	</script>
