@@ -152,7 +152,7 @@ $.extend($.boom.person, {
 		var self = this;
 
 		$.boom.dialog.bind({
-			image: $('.boom-asset-preview')
+			image: $('.boom-asset-preview', context )
 		});
 
 		$('.b-people-groups-add', context ).click(function(){

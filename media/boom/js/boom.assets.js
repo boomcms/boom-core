@@ -574,7 +574,7 @@ $.extend($.boom.asset, {
 		$('.boom-tabs', context ).tabs('option', 'active', 1);
 
 		$.boom.dialog.bind({
-			image: $('.boom-asset-preview')
+			image: $('.boom-asset-preview',context)
 		});
 
 		$('#boom-button-asset-link-add', context )
