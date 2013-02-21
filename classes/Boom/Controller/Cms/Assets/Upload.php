@@ -18,24 +18,18 @@ class Boom_Controller_Cms_Assets_Upload extends Controller_Cms_Assets
 	 * This function handles the first step of the asset upload process.
 	 * A form is displayed allowing the user to select which files they wish to upload.
 	 *
-	 * An upload token is also created and added to the form.
-	 * This is so that when it comes time to return the asset IDs of the uploaded assets
-	 * If the user is uploading from two tabs
-	 * We can identify only those assets which were returned in the current tag.
 	 *
 	 */
 	public function action_begin()
 	{
-		$this->template = View::factory("$this->_view_directory/upload", array(
-			'token'	=>	$_SERVER['REQUEST_TIME'],
-		));
+		$this->template = View::factory("$this->_view_directory/upload");
 	}
 
 	/**
 	 * Create assets from a file upload.
 	 *
 	 * @uses Model_Asset::create_from_file()
-	 * 
+	 *
 	 */
 	public function action_process()
 	{
