@@ -172,6 +172,12 @@ $.widget( 'boom.browser', {
 		
 		$('.b-tags-tree')
 			.tree(editableTreeConfig);
+			
+		self.main_panel
+			.on( 'change', '#boom-tagmanager-sortby-select', function( event ){
+				self.options.sortby = this.value;
+				$.boom.history.refresh();
+			});
 
 		this.route();
 	},
