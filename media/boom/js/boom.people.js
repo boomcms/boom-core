@@ -344,7 +344,7 @@ $.extend($.boom.people.group,  {
 	},
 
 	/** @function */
-	edit : function(event){
+	edit : function(event, browser){
 		event.preventDefault();
 
 		var self = this;
@@ -352,7 +352,7 @@ $.extend($.boom.people.group,  {
 		var rid = item.find('a').attr( 'rel' );
 		var selected_page = null;
 
-		self.browser.main_panel
+		browser.main_panel
 		.find('.b-items-content')
 		.sload( '/cms/groups/edit/' + rid, function(){
 

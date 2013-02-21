@@ -163,7 +163,7 @@ $.widget( 'boom.browser', {
 				showEdit: true,
 				onEditClick: function(event){
 					
-					self.items.tag.edit(event);
+					self.items.tag.edit(event, self);
 				},
 				onRemoveClick: function(event){
 
