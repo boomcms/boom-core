@@ -243,27 +243,6 @@ $.widget( 'boom.asset_browser', $.boom.browser, {
 			})
 			.on( 'mouseleave blur', '#b-items-view-list tbody tr, #b-items-view-thumbs a', function( event ){
 				$( this ).removeClass( 'ui-state-hover' );
-			});
-		
-	},
-
-	/**
-	Set up an asset browser
-	@returns {Object} promise which updates via .notify( rid ) when an asset is selected.
-	*/
-	browse: function(){
-
-		var self = this;
-		var select_asset = new $.Deferred();
-
-		$( self.main_panel )
-			.on( 'click', '.thumb a', function(event){
-
-				var data = $(this).attr('href').split('/');
-				var rid = parseInt( data[1], 10 );
-				select_asset.notify( rid );
-
-				return false;
 			})
 			.on( 'click', '.boom-pagination a', function( e ){
 				e.preventDefault();
@@ -285,6 +264,27 @@ $.widget( 'boom.asset_browser', $.boom.browser, {
 						.find( '#b-items-view-thumbs' )
 						.html( thumbs );
 				});
+
+				return false;
+			});
+		
+	},
+
+	/**
+	Set up an asset browser
+	@returns {Object} promise which updates via .notify( rid ) when an asset is selected.
+	*/
+	browse: function(){
+
+		var self = this;
+		var select_asset = new $.Deferred();
+
+		$( self.main_panel )
+			.on( 'click', '.thumb a', function(event){
+
+				var data = $(this).attr('href').split('/');
+				var rid = parseInt( data[1], 10 );
+				select_asset.notify( rid );
 
 				return false;
 			});
