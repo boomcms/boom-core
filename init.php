@@ -31,68 +31,6 @@ Route::set('asset', 'asset/<action>/<id>(/<width>(/<height>(/<quality>(/<crop>))
 	);
 
 /**
- * Checks for a page with the matching URL in the CMS database.
- *
- */
-Route::set('boom', '<location>(.<action>)', array(
-		'location'	=>	'.*?',
-	))
-	->defaults(array(
-		'controller'	=>	'page',
-		'action'		=>	'html',
-	))
-	->filter(function(Route $route, $params, Request $request)
-		{
-			$page_url = new Model_Page_URL(array('location' => $params['location']));
-
-			if ( ! $page_url->loaded())
-			{
-				return FALSE;
-			}
-
-			$page = ORM::factory('Page')
-				->with_current_version(Editor::instance())
-				->where('page.id', '=', $page_url->page_id)
-				->find();
-
-			if ($page->loaded())
-			{
-				if ( ! $page_url->is_primary AND $page_url->redirect)
-				{
-					header('Location: '.$page->url(), NULL, 301);
-					exit;
-				}
-
-				$params['page'] = $page;
-				return $params;
-			}
-
-			return FALSE;
-		}
-	)
-	->filter(function(Route $route, $params, Request $request)
-		{
-			// Change the controller action depending on the request accept header.
-			$accepts = $request->accept_type();
-
-			foreach (array_keys($accepts) as $accept)
-			{
-				switch ($accept)
-				{
-					case 'application/json':
-						$params['action'] = 'json';
-						break;
-					case 'application/rss+xml':
-						$params['action'] = 'rss';
-						break;
-				}
-			}
-
-			return $params;
-		}
-	);
-
-/**
  * Route for vanity URIs. Vanity URIs are the page ID base-36 encoded and prefixed with an underscore.
  * Vanity URIs redirect to the page's primary URI
  */
@@ -109,6 +47,15 @@ Route::set('vanity', '_<link>', array(
 			exit;
 		}
 	);
+
+/**
+ * Checks for a page with the matching URL in the CMS database.
+ *
+ */
+Route::set('boom', '<location>(.<action>)', array(
+		'location'	=>	'.*?',
+	))
+	->filter(array('Boom', 'process_uri'));
 
 /**
  * Defines the route for plugin controllers.
