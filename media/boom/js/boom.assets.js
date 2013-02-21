@@ -492,8 +492,6 @@ $.extend($.boom.assets, {
 					$.boom.log( 'getting asset ' + opts.asset_rid );
 					browser.asset_browser( 'edit', opts.asset_rid );
 				}
-				
-				$( '#boom-tagmanager' ).asset_browser();
 			}
 		};
 

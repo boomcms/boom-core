@@ -21,6 +21,8 @@ $.widget( 'boom.people_browser', $.boom.browser, {
 	
 	_create : function(){
 		
+		$.boom.log( 'people browser init' );
+		
 		var self = this;
 		
 		self.items = {
