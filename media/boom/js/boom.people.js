@@ -1,20 +1,33 @@
 /**
-@class
-@extends CMSTagmanager
+* User interface for browsing and managing people.
+* @class
+* @name boom.people_browser
 */
-$.boom.people = new CMSTagmanager('people');
-
-$.extend($.boom.people, {
-	/** @lends $.boom.people */
-
-	/** @function */
-	init: function(config){
-
-		$.boom.log( 'people init' );
-
+$.widget( 'boom.people_browser', $.boom.browser, {
+	
+	options: {
+		sortby: 'name',
+		order: 'asc',
+		basetagRid: 1,
+		defaultTagRid: 0,
+		edition: 'cms',
+		type: 'people',
+		treeConfig : {
+			showEdit: true,
+			showRemove: true
+		}
+	},
+	
+	_create : function(){
+		
 		var self = this;
-
-		this._init( config );
+		
+		self.items = {
+			person: $.boom.person,
+			tag: $.boom.people.group
+		};
+		
+		$.boom.browser.prototype._create.call( this );
 
 		$('.b-people-group-add').click(function(event){
 			$.boom.items.group.add( this );
@@ -88,7 +101,7 @@ $.extend($.boom.people, {
 				});
 			});
 	},
-
+	
 	/** @function */
 	savePerson: function(url){
 
@@ -107,10 +120,12 @@ $.extend($.boom.people, {
 	}
 });
 
+$.boom.people = {};
+
 /**
 @class
 */
-$.boom.person = $.extend(true, {}, $.boom.tagmanager.base.item);
+$.boom.person = {};
 
 $.extend($.boom.person, {
 	/** @lends $.boom.person */
@@ -134,7 +149,7 @@ $.extend($.boom.person, {
 
 		console.debug('before person load');
 
-		self.tagmanager.elements.rightpane
+		self.tagmanager.main_panel
 		.find('.b-items-content')
 		.sload(url, function(){
 
@@ -300,7 +315,7 @@ $.extend($.boom.person, {
 /**
 @class
 */
-$.boom.people.group = $.extend(true, {}, $.boom.tagmanager.base.item);
+$.boom.people.group = {};
 
 $.extend($.boom.people.group,  {
 	/** @lends $.boom.people.group */
@@ -347,25 +362,7 @@ $.extend($.boom.people.group,  {
 
 		var self = this;
 
-		var tabsConfig = $.extend({}, $.boom.config.tabs, {
-
-			show: function(event, ui){
-
-				$.boom.hooks.register('rightpane.afterResize', 'tagmanager', function(){
-
-					$( ui.panel ).infiniteScroll( 'loadInitialData' );
-
-				}, true);
-
-				self.tagmanager.elements.rightpane.trigger( 'resize.boom' );
-			}
-		});
-
-		this.tagmanager.elements.rightpane.ui({
-			tabs: tabsConfig
-		});
-
-		self.tagmanager.elements.rightpane.trigger( 'resize.boom' );
+		this.tagmanager.main_panel.ui();
 
 		$.boom.events.register('tag.clickAfter', 'tagmanager');
 
@@ -416,14 +413,14 @@ $.extend($.boom.people.group,  {
 		var rid = item.find('a').attr( 'rel' );
 		var selected_page = null;
 
-		self.tagmanager.elements.rightpane
+		self.tagmanager.main_panel
 		.find('.b-items-content')
 		.sload( '/cms/groups/edit/' + rid, function(){
 
 			$.boom.loader.hide();
 			
 
-			self.tagmanager.elements.rightpane
+			self.tagmanager.main_panel
 			.ui()
 			.on( 'change', '#b-group-roles-general input[type=radio]', function( event ){
 

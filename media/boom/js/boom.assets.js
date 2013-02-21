@@ -508,7 +508,7 @@ $.extend($.boom.assets, {
 /**
 @class
 */
-$.boom.asset = $.extend(true, {}, $.boom.tagmanager.base.item);
+$.boom.asset = {};
 
 $.extend($.boom.asset, {
 	/** @lends $.boom.asset */
@@ -758,7 +758,7 @@ $.extend($.boom.asset, {
 /**
 @class
 */
-$.boom.assets.tag = $.extend(true, {}, $.boom.tagmanager.base.item);
+$.boom.assets.tag = {};
 
 $.extend($.boom.assets.tag,  {
 	/** @lends $.boom.assets.tag */
