@@ -1,26 +1,41 @@
 /**
-@class
-@extends CMSTagmanager
+* User interface for browsing and managing assets.
+* @class
+* @name boom.browser
 */
-$.boom.assets = new CMSTagmanager('assets');
+$.widget( 'boom.asset_browser', $.boom.browser, {
+	
+	options: {
+		sortby: 'last_modified',
+		order: 'desc',
+		basetagRid: 1,
+		defaultTagRid: 0,
+		edition: 'cms',
+		type: 'assets',
+		treeConfig : {
+			showEdit: true,
+			showRemove: true,
+			onEditClick: function(event){
 
-$.extend($.boom.assets, {
-	/** @lends $.boom.assets */
+				$.boom.items.group.edit(event);
+			},
+			onRemoveClick: function(event){
 
-	/** @property */
-	selected_rid : 0,
-
-	/** @property */
-	asset_browser: {},
-
-	/** @function */
-	init : function(config){
-
-		//if ( !config || !config.items ) return;
-
-		this._init( config );
-
+				$.boom.items.group.remove(event);
+			}
+		}
+	},
+	
+	_create : function(){
+		
 		var self = this;
+		
+		self.items = {
+			asset: $.boom.asset,
+			tag: $.boom.assets.tag
+		};
+		
+		$.boom.browser.prototype._create.call( this );
 
 		$('#boom-assets-upload-menu')
 		.on( 'click', function( event ) {
@@ -28,7 +43,7 @@ $.extend($.boom.assets, {
 			var tagged = new $.Deferred();
 			
 			var uploaded = self
-				._upload({
+				.upload({
 					add: function( e, data ){
 					
 						$.boom.dialog.open({
@@ -195,7 +210,7 @@ $.extend($.boom.assets, {
 
 			});
 	
-		self.elements.rightpane
+		self.main_panel
 			.on( 'change', '.b-items-select-checkbox', function( event ){
 				// checkbox IDs are of the form type-view-id.
 				var item = this.id.split( '-' );
@@ -228,122 +243,19 @@ $.extend($.boom.assets, {
 			.on( 'mouseleave blur', '#b-items-view-list tbody tr, #b-items-view-thumbs a', function( event ){
 				$( this ).removeClass( 'ui-state-hover' );
 			});
-	},
-
-	/**
-	Open an asset manager in a dialog box.
-	@function
-	@returns {Promise} promise which resolves with an asset RID.
-	*/
-	picker : function( opts ){
-		$.boom.log( 'opening an asset manager' );
-
-		var self = this;
-		var complete = new $.Deferred();
-
-		var cleanup = function(){
-			top.location.hash = '';
-			$.boom.dialog.destroy( self.asset_browser );
-		};
-
-		var default_options = {
-			url: '/cms/assets/manager/',
-			iframe: false,
-			width: 1000,
-			height: 500,
-			title: 'Select an asset',
-			cache: false,
-			buttons: {
-				Cancel: function() {
-					cleanup();
-					( opts.deferred ) && opts.deferred.reject();
-					return false;
-				},
-				'Okay': function() {
-					cleanup();
-					( opts.deferred ) && opts.deferred.resolve();
-					complete.resolve( self.selected_rid );
-					return false;
-				}
-			},
-			open: function(){
-				$.boom.log( 'dialog open' );
-				var button = $('<button />')
-				.addClass('ui-helper-left');
-
-				if ( opts.asset_rid && opts.asset_rid > 0 ) {
-
-					button
-					.text('Remove')
-					.button()
-					.click(function(){
-						complete.reject();
-						cleanup();
-					});
-
-				} else {
-
-					button
-						.text( 'Upload' )
-						.button()
-						.click( function() {
-							self._upload();
-						});
-				}
-				$(this).dialog('widget')
-					.find('.ui-dialog-buttonpane')
-					.prepend( button );
-			},
-			onLoad: function(){
-
-				$.when( self._browse() )
-				.progress( function( rid ){
-					self._edit( rid );
-				});
-
-				// tagmanager.init() pushes a default URL to the history stack.
-				// need to override that if an asset is already selected
-				// by setting a fragment identifier on the parent window.
-				if ( opts.asset_rid && opts.asset_rid > 0 ) {
-					$.boom.log( 'getting asset ' + opts.asset_rid );
-					self._edit( opts.asset_rid );
-				}
-
-				self.init({
-					items: {
-						asset: $.boom.items.asset,
-						tag: $.boom.items.tag
-					},
-					options: {
-						sortby: 'last_modified',
-						order: 'desc',
-						edition: 'site',
-						type: 'assets',
-						allowedUploadTypes:[ 'jpeg', 'gif', 'jpg', 'png' ],
-						template: 'thumb',
-						perpage: 10
-					}
-				});
-			}
-		};
-
-		opts = $.extend( default_options, opts );
-
-		self.asset_browser = $.boom.dialog.open( opts );
-
-		return complete;
+		
 	},
 
 	/**
 	Set up an asset browser
 	@returns {Object} promise which updates via .notify( rid ) when an asset is selected.
 	*/
-	_browse: function(){
+	browse: function(){
 
 		var self = this;
 		var select_asset = new $.Deferred();
 
-		$( self.asset_browser )
+		$( self.main_panel )
 			.on( 'click', '.thumb a', function(event){
 
 				var data = $(this).attr('href').split('/');
@@ -362,7 +274,7 @@ $.extend($.boom.assets, {
 					var pagination = $data.find( '.boom-pagination' ).html();
 					var list = $data.find( '#b-items-view-list' ).html();
 					var thumbs = $data.find( '#b-items-view-thumbs' ).html();
-					$( self.asset_browser )
+					$( self.main_panel )
 						.find( '.boom-pagination' )
 						.html( pagination )
 						.end()
@@ -385,7 +297,7 @@ $.extend($.boom.assets, {
 	@param {Integer} rid RID of the currently selected asset.
 	@returns {Object} promise resolved when the text is set.
 	*/
-	_edit: function( rid ){
+	edit: function( rid ){
 
 		var self = this;
 
@@ -394,11 +306,19 @@ $.extend($.boom.assets, {
 		self.selected_rid = rid;
 
 	},
+	
+	/**
+	Get the currently selected asset ID
+	@returns {Integer} asset ID
+	*/
+	get_asset : function() {
+		return this.selected_rid;
+	},
 
 	/**
 	Upload a new asset file.
 	*/
-	_upload: function( opts ){
+	upload: function( opts ){
 
 		var self = this;
 		var tagmanager = $.boom.assets;
@@ -475,6 +395,114 @@ $.extend($.boom.assets, {
 		
 		return uploaded;
 	}
+	
+});
+
+/**
+@class
+@extends CMSTagmanager
+*/
+$.boom.assets = {};
+
+$.extend($.boom.assets, {
+	/** @lends $.boom.assets */
+
+	/** @property */
+	asset_browser: {},
+
+	/**
+	Open an asset manager in a dialog box.
+	@function
+	@returns {Promise} promise which resolves with an asset RID.
+	*/
+	picker : function( opts ){
+		$.boom.log( 'opening an asset manager' );
+
+		var self = this;
+		var complete = new $.Deferred();
+		var browser;
+
+		var cleanup = function(){
+			top.location.hash = '';
+			$.boom.dialog.destroy( self.asset_browser );
+		};
+
+		var default_options = {
+			url: '/cms/assets/manager/',
+			iframe: false,
+			width: 1000,
+			height: 500,
+			title: 'Select an asset',
+			cache: false,
+			buttons: {
+				Cancel: function() {
+					cleanup();
+					( opts.deferred ) && opts.deferred.reject();
+					return false;
+				},
+				'Okay': function() {
+					var asset_id = browser.asset_browser( 'get_asset' );
+					cleanup();
+					( opts.deferred ) && opts.deferred.resolve();
+					complete.resolve( asset_id );
+					return false;
+				}
+			},
+			open: function(){
+				$.boom.log( 'dialog open' );
+				var button = $('<button />')
+				.addClass('ui-helper-left');
+
+				if ( opts.asset_rid && opts.asset_rid > 0 ) {
+
+					button
+					.text('Remove')
+					.button()
+					.click(function(){
+						complete.reject();
+						cleanup();
+					});
+
+				} else {
+
+					button
+						.text( 'Upload' )
+						.button()
+						.click( function() {
+							browser.asset_browser( 'uplaod' );
+						});
+				}
+				$(this).dialog('widget')
+					.find('.ui-dialog-buttonpane')
+					.prepend( button );
+			},
+			onLoad: function(){
+				
+				browser = $( '#boom-tagmanager' ).asset_browser();
+
+				$.when( browser.asset_browser( 'browse' ) )
+				.progress( function( rid ){
+					browser.asset_browser( 'edit', rid );
+				});
+
+				// tagmanager.init() pushes a default URL to the history stack.
+				// need to override that if an asset is already selected
+				// by setting a fragment identifier on the parent window.
+				if ( opts.asset_rid && opts.asset_rid > 0 ) {
+					$.boom.log( 'getting asset ' + opts.asset_rid );
+					browser.asset_browser( 'edit', opts.asset_rid );
+				}
+				
+				$( '#boom-tagmanager' ).asset_browser();
+			}
+		};
+
+		opts = $.extend( default_options, opts );
+
+		self.asset_browser = $.boom.dialog.open( opts );
+
+		return complete;
+	}
 });
 
 /**
@@ -510,7 +538,7 @@ $.extend($.boom.asset, {
 		].join('/'),
 		url = '/cms/assets/view/' + this.rid;
 
-		return self.tagmanager.elements.rightpane
+		return self.tagmanager.main_panel
 		.find('.b-items-content')
 		.sload(url, function(){
 
@@ -766,13 +794,13 @@ $.extend($.boom.assets.tag,  {
 
 		options.url = url;
 
-		return self.tagmanager.elements.rightpane
+		return self.tagmanager.main_panel
 			.find('.b-items-content')
 			.sload( url, function(){
 
 				$.boom.loader.hide();
 
-				self.tagmanager.elements.rightpane.ui();
+				self.tagmanager.main_panel.ui();
 				
 				$.boom.events.register('tag.clickAfter', 'tagmanager');
 				
