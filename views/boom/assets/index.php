@@ -78,33 +78,9 @@
 					name: "<?= $person->name?>"
 				}
 			});
-
-			$.boom.assets.init({
-				items: {
-					asset: $.boom.asset,
-					tag: $.boom.assets.tag
-				},
-				options: {
-					sortby: 'last_modified',
-					order: 'desc',
-					basetagRid: 1,
-					defaultTagRid: 0,
-					edition: 'cms',
-					type: 'assets',
-					allowedUploadTypes:[ '<?= implode('\', \'', Boom_Asset::$allowed_extensions)?>' ],
-					treeConfig : {
-						showEdit: true,
-						showRemove: true,
-						onEditClick: function(event){
-
-							$.boom.items.group.edit(event);
-						},
-						onRemoveClick: function(event){
-
-							$.boom.items.group.remove(event);
-						}
-					}
-				}
+			
+			$( 'body' ).asset_browser({
+				allowedUploadTypes:[ '<?= implode('\', \'', Boom_Asset::$allowed_extensions)?>' ]
 			});
 		})(jQuery);
 		//]]>

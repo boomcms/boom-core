@@ -1,4 +1,396 @@
 /**
+* User interface for browsing and managing assets.
+* @class
+* @name boom.browser
+*/
+$.widget( 'boom.asset_browser', $.boom.browser, {
+	
+	options: {
+		sortby: 'last_modified',
+		order: 'desc',
+		basetagRid: 1,
+		defaultTagRid: 0,
+		edition: 'cms',
+		type: 'assets',
+		treeConfig : {
+			showEdit: true,
+			showRemove: true,
+			onEditClick: function(event){
+
+				$.boom.items.group.edit(event);
+			},
+			onRemoveClick: function(event){
+
+				$.boom.items.group.remove(event);
+			}
+		}
+	},
+	
+	_create : function(){
+		
+		var self = this;
+		
+		self.items = {
+			asset: $.boom.asset,
+			tag: $.boom.assets.tag
+		};
+		
+		$.boom.browser.prototype._create.call( this );
+
+		$('#boom-assets-upload-menu')
+		.on( 'click', function( event ) {
+			var tags = [];
+			var tagged = new $.Deferred();
+			
+			var uploaded = self
+				._upload({
+					add: function( e, data ){
+					
+						$.boom.dialog.open({
+							url: '/cms/tags/asset/list/0',
+							// cache: true,
+							title: 'Asset tags',
+							width: 440,
+							buttons: {
+								Done: function(){
+									$.boom.dialog.destroy( this );
+									tagged.resolve( tags );
+								}
+							},
+							onLoad: function(){
+								// Make the tag editor work.
+								$( '#b-tags' ).deferred_tagger( { tags : tags } );
+							}
+						});
+						
+						data.submit();
+					}
+				})
+				.done( function( data ){
+					self.items.tag.get( 0 )
+					.done( function(){
+						$.boom.log( 'asset list updated' );
+						for ( i in data.result.rids ){
+							$( '#asset-list-' + data.result.rids[ i ] ).click();
+						}
+					});
+					
+				});
+				
+				$.when( tagged, uploaded ).done( function( tags, data ){
+					
+					for ( i in tags ) {
+						$.post(
+							'/cms/tags/asset/add/' + data.result.rids.join( '-' ),
+							{
+								tag : tags[i]
+							}
+						);
+					}
+				});
+		});
+
+		var title_filter = $('#b-assets-filter-title')
+		.autocomplete({
+			delay: 200, // Time to wait after keypress before making the AJAX call.
+			source: function(request, response){
+				$.ajax({
+					url: '/cms/autocomplete/assets',
+					dataType: 'json',
+					data: {
+						text : title_filter.val()
+					}
+				})
+				.done(function(data) {
+					response(data);
+					var title = title_filter.val();
+					if ( title != '' ) self.items.tag.filters[ 'title' ] = title;
+					self.items.tag.get( 0 );
+				});
+			},
+			select: function(event, ui){
+				self.items.tag.filters[ 'title' ] = ui.item.value;
+				self.items.tag.get( 0 );
+			}
+		});
+		
+		var selected_tag_ids = [];
+		
+		$( '#b-tags-search' ).tag_search( { tagmanager : self } );
+
+		$( '#boom-topbar' )
+			.on( 'click', '#b-button-multiaction-delete', function(){
+
+				$.boom.log( 'asset delete selected' );
+
+				var msg = 'Are you sure you want to send the selected assets to the rubbish bin?';
+
+				$.boom.dialog.confirm(
+					'Confirm deletion',
+					msg,
+					function(){
+
+						var assets = [];
+
+						$('.b-items-select-checkbox:checked').each(function(i){
+
+							assets.push( $( this ).attr('id').replace(/asset-(thumb|list)-/, '') );
+						});
+
+						$.boom.loader.show();
+
+						$.post('/cms/assets/delete', {assets:  assets}, function(){
+
+							$.boom.loader.hide();
+
+							$.boom.history.refresh();
+						});
+					}
+				);
+			})
+			.on( 'click', '#b-button-multiaction-edit', function(){
+
+				var ids = [];
+
+				$('.b-items-select-checkbox:checked').each(function(){
+					var id = this.id.replace(/asset-(thumb|list)-/, '');
+
+					if ( $.inArray(id, ids) === -1 ) {
+
+						ids.push( id );
+					}
+				});
+
+				$.boom.history.load('asset/' + ids.join('-'));
+			})
+			.on( 'click', '#b-button-multiaction-download', function(){
+
+				var ids = [];
+				$('.b-items-select-checkbox:checked').each(function(){
+
+					ids.push(this.id.replace(/asset-(thumb|list)-/, ''));
+				});
+
+				var	url = '/cms/assets/download?assets=' + ids.join(',');
+
+				window.location = url;
+			})
+			.on('click', '#b-button-multiaction-clear', function(){
+				$('.b-items-select-checkbox:checked').each(function(){
+					$('.thumb.ui-state-active').removeClass('ui-state-active');
+					$(this).removeAttr( 'checked' ).prop( 'checked', false ).change();
+				});
+
+			})
+			.on( 'click', '#b-button-multiaction-tag', function(){
+
+				var ids = [];
+				$('.b-items-select-checkbox:checked').each(function(){
+
+					ids.push(this.id.replace(/asset-(thumb|list)-/, ''));
+				});
+
+				$.boom.dialog.open({
+					url: '/cms/tags/asset/list/' + ids.join( '-' ),
+					// cache: true,
+					title: 'Asset tags',
+					width: 440,
+					buttons: {
+						Close: function(){
+							$.boom.dialog.destroy( this );
+						}
+					},
+					onLoad: function(){
+						$('#b-tags').tagger({
+							type: 'asset',
+							id: ids.join( '-' )
+						});
+					}
+				});
+
+			});
+	
+		self.main_panel
+			.on( 'change', '.b-items-select-checkbox', function( event ){
+				// checkbox IDs are of the form type-view-id.
+				var item = this.id.split( '-' );
+				var view = item[ 1 ];
+				var type = item[ 0 ];
+				var item_id = item[ 2 ];
+				
+				self.items.asset.select( item_id, $( this ).is(':checked') );
+
+				
+
+				var amount = $('.b-items-select-checkbox:checked').length;
+
+				var buttons = $( '[id|=b-button-multiaction]' ).not( '#b-button-multiaction-edit' );
+
+				$( '#b-button-multiaction-edit' ).button( (  amount && amount < 3) ? 'enable' : 'disable' );
+
+				buttons.button( amount > 0 ? 'enable' : 'disable' );
+			})
+			.on( 'click', '#b-items-view-thumbs a', function(event){
+				event.preventDefault();
+
+				var asset_id = $( this ).attr( 'href' ).split( '/' )[ 1 ];
+				$( '#asset-list-' + asset_id ).click();
+
+			})
+			.on( 'mouseenter focus', '#b-items-view-list tbody tr, #b-items-view-thumbs a', function( event ){
+				$( this ).addClass( 'ui-state-hover' );
+			})
+			.on( 'mouseleave blur', '#b-items-view-list tbody tr, #b-items-view-thumbs a', function( event ){
+				$( this ).removeClass( 'ui-state-hover' );
+			});
+		
+	},
+
+	/**
+	Set up an asset browser
+	@returns {Object} promise which updates via .notify( rid ) when an asset is selected.
+	*/
+	_browse: function(){
+
+		var self = this;
+		var select_asset = new $.Deferred();
+
+		$( self.main_panel )
+			.on( 'click', '.thumb a', function(event){
+
+				var data = $(this).attr('href').split('/');
+				var rid = parseInt( data[1], 10 );
+				select_asset.notify( rid );
+
+				return false;
+			})
+			.on( 'click', '.boom-pagination a', function( e ){
+				e.preventDefault();
+
+				//$.boom.history.load( '/cms/assets/list?' + $( this ).attr( 'href' ).split( '?' )[ 1 ] );
+				$.get( '/cms/assets/list?' + $( this ).attr( 'href' ).split( '?' )[ 1 ])
+				.done( function( data ){
+					var $data = $( data );
+					var pagination = $data.find( '.boom-pagination' ).html();
+					var list = $data.find( '#b-items-view-list' ).html();
+					var thumbs = $data.find( '#b-items-view-thumbs' ).html();
+					$( self.main_panel )
+						.find( '.boom-pagination' )
+						.html( pagination )
+						.end()
+						.find( '#b-items-view-list' )
+						.html( list )
+						.end()
+						.find( '#b-items-view-thumbs' )
+						.html( thumbs );
+				});
+
+				return false;
+			});
+
+		return select_asset;
+
+	},
+
+	/**
+	Open the asset editing view
+	@param {Integer} rid RID of the currently selected asset.
+	@returns {Object} promise resolved when the text is set.
+	*/
+	_edit: function( rid ){
+
+		var self = this;
+
+		$.boom.history.load( 'asset/' + rid );
+		//top.location.hash = '#asset/' + rid;
+		self.selected_rid = rid;
+
+	},
+
+	/**
+	Upload a new asset file.
+	*/
+	_upload: function( opts ){
+
+		var self = this;
+		var tagmanager = $.boom.assets;
+		var uploaded = new $.Deferred();
+		var file_data = {};
+		
+		var default_opts = {
+			url: '/cms/uploadify/asset',
+			dataType: 'json',
+			singleFileUploads: false,
+			formData: [],
+			submit: function( e, data ){
+				$( '#b-upload-progress' ).progressbar();
+				
+				file_data = data;
+			},
+			progressall: function( e, data ){
+				var percent = parseInt( (data.loaded / data.total * 100), 10);
+
+				$( '#b-upload-progress' ).progressbar( 'value', percent );
+			},
+			done: function( e, data ){
+				$.boom.log( 'file upload complete' );
+				$.boom.dialog.destroy( upload_dialog );
+				tagmanager.selected_rid = data.result.rids.join( '-' );
+				
+				uploaded.resolve( data );
+				
+			},
+			fail: function( e, data ){
+				$( '#upload-advanced span.message' ).text( "There was an error uploading your file." );
+			},
+			always: function( e, data ){
+				$.boom.log( 'file upload finished' );
+			}
+		};
+		
+		opts = $.extend( default_opts, opts );
+
+		var upload_dialog = $.boom.dialog.open({
+			url:  '/cms/uploadify/form',
+			width: 400,
+			title: 'Upload file/s',
+			onLoad: function(){
+				
+				var upload_token = $( '#upload_token' ).val();
+				
+				opts.formData.push( { name: 'upload_token', value: upload_token } );
+				
+				$( '#b-assets-upload-form' )
+				.fileupload( opts );
+				
+				 $( '#b-assets-upload-file' )
+					.detach()
+					.appendTo( '#b-upload-add' )
+					.css({
+						position: 'absolute',
+						transform: 'translate(-300px, 0) scale(4)'
+					});
+			},
+			buttons: {
+				Cancel: function(){
+
+					// TODO: cancel uploadify uploads
+					
+					file_data.jqXHR && file_data.jqXHR.abort();
+
+					$.boom.dialog.destroy( upload_dialog );
+					
+					$.boom.history.refresh();
+				}
+			}
+		});
+		
+		return uploaded;
+	}
+	
+});
+
+/**
 @class
 @extends CMSTagmanager
 */
@@ -766,13 +1158,13 @@ $.extend($.boom.assets.tag,  {
 
 		options.url = url;
 
-		return self.tagmanager.elements.rightpane
+		return self.tagmanager.main_panel
 			.find('.b-items-content')
 			.sload( url, function(){
 
 				$.boom.loader.hide();
 
-				self.tagmanager.elements.rightpane.ui();
+				self.tagmanager.main_panel.ui();
 				
 				$.boom.events.register('tag.clickAfter', 'tagmanager');
 				

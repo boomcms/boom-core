@@ -23,6 +23,11 @@ $.widget( 'boom.tagger', {
 		/** ID of the item being tagged */
 		id : null
 	},
+	
+	/**
+	@property
+	*/
+	items : {},
 
 	_create : function(){
 		
