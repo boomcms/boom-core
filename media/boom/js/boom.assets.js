@@ -1,9 +1,10 @@
 /**
 * User interface for browsing and managing assets.
 * @class
-* @name boom.browser
+* @name boom.asset_browser
 */
 $.widget( 'boom.asset_browser', $.boom.browser, {
+	/** @lends boom.asset_browser */
 	
 	options: {
 		sortby: 'last_modified',

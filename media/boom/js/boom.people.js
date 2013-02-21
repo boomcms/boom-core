@@ -4,6 +4,7 @@
 * @name boom.people_browser
 */
 $.widget( 'boom.people_browser', $.boom.browser, {
+	/** @lends boom.people_browser */
 	
 	options: {
 		sortby: 'name',

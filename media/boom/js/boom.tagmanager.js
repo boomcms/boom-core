@@ -4,6 +4,7 @@
 * @name boom.browser
 */
 $.widget( 'boom.browser', {
+	/** @lends boom.browser */
 	
 	/**
 	default config
