@@ -198,7 +198,7 @@ $.widget( 'boom.browser', {
 		$.boom.history.load('tag/' + this.options.defaultTagRid);
 	},
 
-	/** Route hashes to objects and methods. Typical tagmanager hash: asset/2 would execute $.boom.asset.get(2); */
+	/** Map URL fragment #{item}/{id} to get method call $.boom.{item}.get( id ); */
 	route : function(){
 
 		var self = this;
