@@ -1,5 +1,5 @@
 <div>
-	<form method="POST" enctype="multipart/form-data" id="b-assets-upload-form" action="/cms/uploadify/asset">
+	<form method="POST" enctype="multipart/form-data" id="b-assets-upload-form" action="/cms/assets/upload">
 		<input type="hidden" id="upload_token" name="upload_token" value="<?= $token ?>" />
 		<div id="upload-advanced">
 			<div class="ui-widget" id="boom-asset-upload-info">

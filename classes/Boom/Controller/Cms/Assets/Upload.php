@@ -1,39 +1,37 @@
 <?php defined('SYSPATH') OR die('No direct script access.');
 
 /**
-* Uploadify controller.
-* This is used to receive file uploads from uploadify.
-* This has to be kept separate as uploadify can't authenticate via cookies.
-*
-* @package Boom
-* @category Controllers
-* @author Hoop Associates	www.thisishoop.com	mail@hoopassociates.co.uk
-* @copyright 2011, Hoop Associates
-*/
-class Boom_Controller_Cms_Uploadify extends Kohana_Controller
+ * Asset upload controller
+ *
+ *
+ * @package	BoomCMS
+ * @category	Assets
+ * @category	Controllers
+ * @author	Rob Taylor
+ * @copyright	Hoop Associates
+ */
+class Boom_Controller_Cms_Assets_Upload extends Controller_Cms_Assets
 {
 	/**
-	* Asset upload form.
-	*
-	*/
-	public function action_form()
+	 * Begin asset uploading.
+	 *
+	 * This function handles the first step of the asset upload process.
+	 * A form is displayed allowing the user to select which files they wish to upload.
+	 *
+	 * An upload token is also created and added to the form.
+	 * This is so that when it comes time to return the asset IDs of the uploaded assets
+	 * If the user is uploading from two tabs
+	 * We can identify only those assets which were returned in the current tag.
+	 *
+	 */
+	public function action_begin()
 	{
-			// Encypt the session ID and user ID to create an upload token.
-			$encrypt = Encrypt::instance();
-			$token = $encrypt->encode(microtime( TRUE) . " " . Session::instance()->id() . " " . Auth::instance()->get_user()->pk());
-
-			$v = View::factory('boom/assets/upload_assets');
-			$v->token = $token;
-
-			$this->response->body($v);
+		$this->template = View::factory("$this->_view_directory/upload", array(
+			'token'	=>	$_SERVER['REQUEST_TIME'],
+		));
 	}
 
-	/**
-	* Asset upload controller.
-	* Backend to the uploadify for uploading multiple assets at once.
-	*
-	*/
-	public function action_asset()
+	public function action_process()
 	{
 		if ( ! empty($_FILES))
 		{
@@ -67,19 +65,6 @@ class Boom_Controller_Cms_Uploadify extends Kohana_Controller
 			// Get the token data.
 			$token = $this->request->post('upload_token');
 
-			// Decrypt it.
-			$encrypt = Encrypt::instance();
-			$data = $encrypt->decode($token);
-
-			// Extract the session ID and person ID.
-			list($time, $session_id, $person_id) = explode(" ", $data);
-
-			// No person ID? Fail.
-			if ( ! @$person_id)
-			{
-				throw new HTTP_Exception_401;
-			}
-
 			// Process the files.
 			foreach ($newfiles as $file)
 			{
@@ -102,7 +87,7 @@ class Boom_Controller_Cms_Uploadify extends Kohana_Controller
 					}
 
 					$asset->filesize = $file['size'];
-					$asset->uploaded_by = $person_id;
+					$asset->uploaded_by = $this->person->id;
 					$asset->type = Boom_Asset::type_from_mime(File::mime($file['tmp_name']));
 					$asset->visible_from = 'now';
 					$asset->last_modified = $_SERVER['REQUEST_TIME'];
@@ -169,29 +154,8 @@ class Boom_Controller_Cms_Uploadify extends Kohana_Controller
 					$asset_ids[] = $asset->pk();
 					Kohana::cache($cache_key, $asset_ids);
 				// }
-				
-			}
-		
-			if ( ! empty($asset_ids))
-			{
-				$this->response->body( json_encode( array('rids' => $asset_ids, 'errors' => array())));
-			}
-		}
 
-	}
-
-	/**
-	* Get the rids of newly uploaded assets.
-	*
-	*/
-	public function action_get_rids()
-	{
-		if ($this->request->post('upload_token') !== NULL)
-		{
-			// Return the IDs of all the assets uploaded in this 'batch'.
-			$cache_key = 'asset-upload-ids:' . $this->request->post('upload_token');
-			$asset_ids = Kohana::cache($cache_key);
-			Kohana::cache($cache_key, array(), -1);
+			}
 
 			if ( ! empty($asset_ids))
 			{
@@ -199,5 +163,4 @@ class Boom_Controller_Cms_Uploadify extends Kohana_Controller
 			}
 		}
 	}
-
 }

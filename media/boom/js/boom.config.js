@@ -438,9 +438,9 @@ window.boomConfig = {
 		swf: '/media/boom/flash/uploadify.swf',
 		/**
 		@type string
-		@default '/cms/uploadify/asset'
+		@default '/cms/assets/upload'
 		*/
-		uploader: '/cms/uploadify/asset',
+		uploader: '/cms/assets/upload',
 		/**
 		@type boolean
 		@default false

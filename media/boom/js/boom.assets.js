@@ -327,7 +327,7 @@ $.widget( 'boom.asset_browser', $.boom.browser, {
 		var file_data = {};
 		
 		var default_opts = {
-			url: '/cms/uploadify/asset',
+			url: '/cms/assets/upload',
 			dataType: 'json',
 			singleFileUploads: false,
 			formData: [],
@@ -360,7 +360,7 @@ $.widget( 'boom.asset_browser', $.boom.browser, {
 		opts = $.extend( default_opts, opts );
 
 		var upload_dialog = $.boom.dialog.open({
-			url:  '/cms/uploadify/form',
+			url:  '/cms/assets/upload',
 			width: 400,
 			title: 'Upload file/s',
 			onLoad: function(){

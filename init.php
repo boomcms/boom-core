@@ -82,6 +82,36 @@ Route::set('child_page_plugin', 'page/children.<action>')
  *
  **********************************
  */
+
+/**
+ * Route for uploading assets.
+ *
+ * Each stage of the asset upload process is done via the URL /cms/assets/upload
+ * But the method varies depending on which stage of the upload process we're at (selecting files, recieving files, etc.)
+ *
+ * In future we may also use different classes to get files from different sources (such as Dropbox) in addition to the user's file system.
+ */
+Route::set('asset_upload', 'cms/assets/upload')
+	->defaults(array(
+		'controller'	=>	'cms_assets_upload'
+	))
+	->filter(function(Route $route, $params, Request $request)
+		{
+			if ($request->method() === Request::GET)
+			{
+				// For a GET request we display a form to select which files to upload.
+				$params['action'] = 'begin';
+			}
+			else
+			{
+				// A POST request with files - process the upload.
+				$params['action'] = 'process';
+			}
+
+			return $params;
+		}
+	);
+
 /**
 * Defines the route for /cms pages.
 *
