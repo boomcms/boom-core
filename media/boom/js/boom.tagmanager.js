@@ -211,11 +211,24 @@ $.widget( 'boom.browser', {
 
 				var 
 					item = segments[0], 
-					rid = segments[1], 
-					method = 'get';
+					rid = segments[1];
 				
-				if ( item.length && self.items[ item ] && self.items[ item ][ method ] ) {
-					self.items[ item ][ method ]( rid );
+				if ( item.length && self.items[ item ] ) {
+					
+					$.boom.loader.show();
+					
+					self.items[ item ]
+						.get( rid )
+						.done( function( response ){
+							
+							$.boom.loader.hide();
+							
+							self.main_panel
+								.find( '.b-items-content' )
+								.html( response )
+								.ui();
+							self.items[ item ].bind();
+						});
 				}
 			}, 
 			function(){

@@ -140,37 +140,23 @@ $.extend($.boom.person, {
 
 		this.rid = rid;
 
-		$.boom.loader.show();
-
 		$.boom.events.register('person.clickBefore', 'tagmanager', { rid: rid });
 
 		var segments = [
 			rid
 		].join('/'),
 		url = '/cms/people/view/' + segments;
+		
+		return $.get( url );
 
-		console.debug('before person load');
-
-		self.browser.main_panel
-		.find('.b-items-content')
-		.sload(url, function(){
-
-			$( this ).scrollTop( 0 );
-
-			$.boom.events.register('person.clickAfter', 'tagmanager', { rid: rid });
-
-			$.boom.loader.hide();
-
-			self.bind( this );
-		});
 	},
 
 	/** @function */
-	bind: function( elem ){
+	bind: function(){
 
 		var self = this;
-
-		$( elem ).ui();
+		
+		$.boom.events.register('person.clickAfter', 'tagmanager', { rid: this.rid });
 
 		$.boom.dialog.bind({
 			image: $('.boom-asset-preview')
@@ -318,16 +304,9 @@ $.extend($.boom.people.group,  {
 			+ '?' + params;
 
 		self.browser.options.url = url;
-
-		$('.b-items-content')
-			.sload( url, function(){
-
-				$.boom.loader.hide();
-
-				self.bind();
-			});
-
 		$.boom.log('Group items get');
+		
+		return $.get( url );
 	},
 
 	/** @function */

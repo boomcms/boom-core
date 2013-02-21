@@ -519,30 +519,11 @@ $.extend($.boom.asset, {
 
 		this.rid = rid;
 
-		$.boom.loader.show();
-
 		$.boom.events.register('asset.clickBefore', 'tagmanager', { rid: rid });
 
 		var url = '/cms/assets/view/' + this.rid;
-
-		return self.browser.main_panel
-		.find('.b-items-content')
-		.sload(url, function(){
-
-			$.boom.events.register('asset.clickAfter', 'tagmanager', { rid: rid });
-
-			$.boom.loader.hide();
-
-			self.bind( this );
-
-			// Make the tag editor work.
-			$('#b-tags').tagger({
-				type: 'asset',
-				id: rid
-			});
-
-			$(this).find('.boom-tabs').tabs('option', 'active', 1);
-		});
+		
+		return $.get( url );
 	},
 	
 	/** @function */
@@ -575,6 +556,16 @@ $.extend($.boom.asset, {
 	bind : function(elem){
 		var self = this;
 		var rids = $.boom.history.getHash().split('/')[1].split('-');
+		
+		$.boom.events.register('asset.clickAfter', 'tagmanager', { rid: this.rid });
+		
+		// Make the tag editor work.
+		$('#b-tags').tagger({
+			type: 'asset',
+			id: this.rid
+		});
+
+		$(this).find('.boom-tabs').tabs('option', 'active', 1);
 
 		if ( rids.length <= 1 ) {
 
@@ -723,7 +714,7 @@ $.extend($.boom.asset, {
 		$( '.boom-tagmanager-asset-back' ).on( 'click', function( event ){
 			event.preventDefault();
 			var tag = self.browser.items.tag;
-			tag.get( tag.rid );
+			$.boom.history.load( 'tag/' + tag.rid );
 
 		});
 	}
@@ -751,8 +742,6 @@ $.extend($.boom.assets.tag,  {
 
 		this.rid = rid;
 
-		$.boom.loader.show();
-
 		params =
 			'tag=' + rid + '&' +
 			'perpage=' + options.perpage + '&' +
@@ -767,20 +756,13 @@ $.extend($.boom.assets.tag,  {
 			+ '?' + params;
 
 		options.url = url;
-
-		return self.browser.main_panel
-			.find('.b-items-content')
-			.sload( url, function(){
-
-				$.boom.loader.hide();
-
-				this.ui();
-				
-				$.boom.events.register('tag.clickAfter', 'tagmanager');
-				
-				$('.b-items-thumbs .thumb').captions($.boom.config.captions);
-				
-				$.boom.log('Tag items get');
-			});
+		
+		return $.get( url );
+	},
+	
+	bind : function() {
+		$.boom.events.register('tag.clickAfter', 'tagmanager');
+		
+		$('.b-items-thumbs .thumb').captions($.boom.config.captions);
 	}
 });

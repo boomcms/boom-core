@@ -312,7 +312,7 @@ $.widget( 'boom.tag_search', $.boom.tagger, {
 			selected_tag_ids = this.options.selected_tag_ids,
 			tagmanager = this.options.tagmanager;
 			
-		tagmanager.items.tag.get( selected_tag_ids.join( '-' ) );
+		$.boom.history.load( 'tag/' + selected_tag_ids.join( '-' ) );
 	}
 	
 	
