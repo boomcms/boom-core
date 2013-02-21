@@ -133,20 +133,8 @@ class Boom_Controller_Page_Children extends Boom_Controller
 
 		if ($tag)
 		{
-			// Try and get the tag from the database. $_POST['tag'] should be a tag path.
-			$tag = new Model_Tag(array('name' => $tag));
-
-			// Only set the tag property if the tag was found.
-			// Then we always know that if $this->tag is set then it's a valid tag.
-			if ($tag->loaded())
-			{
-				$this->tag = $tag;
-			}
-			else
-			{
-				// If the tag wasn't found then force no results to be returned.
-				$this->tag = new Model_Tag;
-			}
+			// Try and get the tag from the database and assign the tag model to $this->tag.
+			$this->tag = new Model_Tag(array('name' => $tag));
 		}
 
 		// Set the number of results perpage, has to be 0 or more.
