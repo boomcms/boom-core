@@ -168,6 +168,7 @@ class Boom_Controller_Cms_People extends Boom_Controller
 		$page	=	max(1, $this->request->query('page'));
 		$group	=	$this->request->query('tag');
 		$order	=	$this->request->query('order');
+		$sortby		=	$this->request->query('sortby');
 
 		$query = new Model_Person;
 
@@ -184,6 +185,14 @@ class Boom_Controller_Cms_People extends Boom_Controller
 		{
 			// Sort ascending by default.
 			$order = 'asc';
+		}
+		
+		$column = 'name';
+		
+		if ( strpos( $sortby, '-' ) > 1 ){
+			$sort_params = explode( '-', $sortby );
+			$column = $sort_params[0];
+			$order = $sort_params[1];
 		}
 
 		$query->order_by('name', $order);
