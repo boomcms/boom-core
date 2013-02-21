@@ -130,7 +130,7 @@ $.extend($.boom, {
 
 			this.cancel_button.on( 'click', function(){
 				top.location.reload();
-			})
+			});
 			$('#b-page-delete').click(function(){
 
 				$.boom.dialog.open({
@@ -532,8 +532,10 @@ $.extend($.boom.page, {
 			self.elements.page_body.contents().find('body').unbind('click').click(function(event){
 
 				function isAnchor(target){
+					
+					var internal_link = /#|javascript:/;
 
-					return ( target && target.nodeName == 'A' && !/#|javascript:/.test( target.href ) );
+					return ( target && target.nodeName == 'A' && !internal_link.test( target.href ) );
 				}
 
 				var target = isAnchor(event.target) ? event.target : $( event.target ).parents('a').get(0);
@@ -724,18 +726,27 @@ $.extend($.boom.page, {
 
 			$.each(scripts, function(){
 
-				$.get(this, function(data){
+				$.get( this )
+				.done( function( response ){
 
 					var head = self.elements.page_body
 						.contents()
 						.find('head');
 
 					if (/js$/.test(this.url)) {
-						head.append('<script type="text/javascript">'+data+'</script>');
+						$( '<script></script>', {
+							type : "text/javascript"
+						} )
+						.text( response )
+						.appendTo( head );
 					}
 
 					 if (/css$/.test(this.url)) {
-						head.append('<style type="text/css">'+data+'</style>');
+						$( '<style></style>', {
+							type: "text/css"
+						})
+						.text( response )
+						.appendTo( head );
 					}
 
 				});
@@ -1118,7 +1129,7 @@ $.extend($.boom.page, {
 						}
 					},
 					open: function() {
-						$.boom.tags.init({
+						$('#b-tags').tagger({
 							type: 'page',
 							id: $.boom.page.config.id
 						});

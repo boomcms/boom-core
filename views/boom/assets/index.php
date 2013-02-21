@@ -65,7 +65,6 @@
 	<?= HTML::script("media/boom/js/boom.config.js") ?>
 	<?= HTML::script("media/boom/js/boom.core.js") ?>
 	<?= HTML::script("media/boom/js/boom.tagmanager.js") ?>
-	<?= HTML::script("media/boom/js/boom.items.js") ?>
 	<?= HTML::script("media/boom/js/boom.assets.js") ?>
 	<?= HTML::script("media/boom/js/boom.tags.js") ?>
 	<?= HTML::script("media/boom/js/boom.links.js") ?>
@@ -82,8 +81,8 @@
 
 			$.boom.assets.init({
 				items: {
-					asset: $.boom.items.asset,
-					tag: $.boom.items.tag
+					asset: $.boom.asset,
+					tag: $.boom.assets.tag
 				},
 				options: {
 					sortby: 'last_modified',

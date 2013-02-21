@@ -22,58 +22,58 @@ $.extend($.boom.assets, {
 
 		var self = this;
 
-		var upload_menu = {
-			'Upoad image' : function( event ) {
-				self._upload()
-					.done( function( data ){
+		$('#boom-assets-upload-menu')
+		.on( 'click', function( event ) {
+			var tags = [];
+			var tagged = new $.Deferred();
+			
+			var uploaded = self
+				._upload({
+					add: function( e, data ){
+					
 						$.boom.dialog.open({
-							url: '/cms/tags/asset/list/' + data.result.rids.join( '-' ),
+							url: '/cms/tags/asset/list/0',
 							// cache: true,
 							title: 'Asset tags',
 							width: 440,
 							buttons: {
-								Close: function(){
+								Done: function(){
 									$.boom.dialog.destroy( this );
+									tagged.resolve( tags );
 								}
 							},
 							onLoad: function(){
 								// Make the tag editor work.
-								for ( i in data.result.rids ){
-									$( 'a[href="#asset/' + data.result.rids[ i ] + '"]' ).click();
-								}
-
-								$.boom.tags.init({
-									type: 'asset',
-									id: data.result.rids.join( '-' ) 
-								});
+								$( '#b-tags' ).deferred_tagger( { tags : tags } );
 							}
 						});
-					});
-			},
-
-			'Upload video' : function( event ) {
-				$.boom.dialog.open({
-					url: '/cms/video/upload',
-					title: 'Upload video',
-					buttons: {
-						Cancel: function(){
-							$.boom.dialog.destroy(this);
-						},
-						Upload: function(){
-							$('#uploadForm').submit();
+						
+						data.submit();
+					}
+				})
+				.done( function( data ){
+					self.items.tag.get( 0 )
+					.done( function(){
+						$.boom.log( 'asset list updated' );
+						for ( i in data.result.rids ){
+							$( '#asset-list-' + data.result.rids[ i ] ).click();
 						}
+					});
+					
+				});
+				
+				$.when( tagged, uploaded ).done( function( tags, data ){
+					
+					for ( i in tags ) {
+						$.post(
+							'/cms/tags/asset/add/' + data.result.rids.join( '-' ),
+							{
+								tag : tags[i]
+							}
+						);
 					}
 				});
-			}
-		};
-
-		$('#boom-assets-upload-menu')
-			.splitbutton({
-				items: upload_menu,
-				width: 'auto',
-				menuPosition: 'right',
-				split: false
-			});
+		});
 
 		var title_filter = $('#b-assets-filter-title')
 		.autocomplete({
@@ -101,40 +101,7 @@ $.extend($.boom.assets, {
 		
 		var selected_tag_ids = [];
 		
-		var tag_filter_list =
-		$( '#b-assets-filter-tag + .b-tags-list' );
-		
-		$.boom.tags.bind_tree( '#b-tags-search' )
-			.progress( function( $link ){
-				
-				var tag_id = $link.attr( 'data-tag_id' );
-
-				$link
-					.closest( 'li' )
-					.remove();
-
-					selected_tag_ids.splice( selected_tag_ids.indexOf( tag_id ), 1);
-					self.items.tag.get( selected_tag_ids.join( '-' ) );
-					
-			});
-		
-		$.boom.tags.picker( $('#b-assets-filter-tag'), 'asset', selected_tag_ids )
-			.progress( function ( tag ) {
-				selected_tag_ids.push( tag.value );
-				var link = $( '<a>', {
-					href : '#',
-					"class" : 'b-tags-remove',
-					"data-tag_id" : tag.value 
-				});
-				var label = $( '<span>').text( tag.label );
-				
-				$( '<li>' )
-					.append( link )
-					.append( label )
-					.appendTo( tag_filter_list );
-					
-				self.items.tag.get( selected_tag_ids.join( '-' ) );
-			});
+		$( '#b-tags-search' ).tag_search( { tagmanager : self } );
 
 		$( '#boom-topbar' )
 			.on( 'click', '#b-button-multiaction-delete', function(){
@@ -195,9 +162,8 @@ $.extend($.boom.assets, {
 			})
 			.on('click', '#b-button-multiaction-clear', function(){
 				$('.b-items-select-checkbox:checked').each(function(){
-					$('.thumb').removeClass('ui-state-active');
-					$(this).removeAttr('checked');
-					$(this).change();
+					$('.thumb.ui-state-active').removeClass('ui-state-active');
+					$(this).removeAttr( 'checked' ).prop( 'checked', false ).change();
 				});
 
 			})
@@ -220,14 +186,47 @@ $.extend($.boom.assets, {
 						}
 					},
 					onLoad: function(){
-						// Make the tag editor work.
-						$.boom.tags.init({
+						$('#b-tags').tagger({
 							type: 'asset',
 							id: ids.join( '-' )
 						});
 					}
 				});
 
+			});
+	
+		self.elements.rightpane
+			.on( 'change', '.b-items-select-checkbox', function( event ){
+				// checkbox IDs are of the form type-view-id.
+				var item = this.id.split( '-' );
+				var view = item[ 1 ];
+				var type = item[ 0 ];
+				var item_id = item[ 2 ];
+				
+				self.items.asset.select( item_id, $( this ).is(':checked') );
+
+				
+
+				var amount = $('.b-items-select-checkbox:checked').length;
+
+				var buttons = $( '[id|=b-button-multiaction]' ).not( '#b-button-multiaction-edit' );
+
+				$( '#b-button-multiaction-edit' ).button( (  amount && amount < 3) ? 'enable' : 'disable' );
+
+				buttons.button( amount > 0 ? 'enable' : 'disable' );
+			})
+			.on( 'click', '#b-items-view-thumbs a', function(event){
+				event.preventDefault();
+
+				var asset_id = $( this ).attr( 'href' ).split( '/' )[ 1 ];
+				$( '#asset-list-' + asset_id ).click();
+
+			})
+			.on( 'mouseenter focus', '#b-items-view-list tbody tr, #b-items-view-thumbs a', function( event ){
+				$( this ).addClass( 'ui-state-hover' );
+			})
+			.on( 'mouseleave blur', '#b-items-view-list tbody tr, #b-items-view-thumbs a', function( event ){
+				$( this ).removeClass( 'ui-state-hover' );
 			});
 	},
 
@@ -404,22 +403,26 @@ $.extend($.boom.assets, {
 		var self = this;
 		var tagmanager = $.boom.assets;
 		var uploaded = new $.Deferred();
+		var file_data = {};
 		
 		var default_opts = {
 			url: '/cms/uploadify/asset',
 			dataType: 'json',
 			singleFileUploads: false,
 			formData: [],
+			submit: function( e, data ){
+				$( '#b-upload-progress' ).progressbar();
+				
+				file_data = data;
+			},
 			progressall: function( e, data ){
-				var percent = parseInt( (data.loaded / data.total * 100), 10) + "%";
+				var percent = parseInt( (data.loaded / data.total * 100), 10);
 
-				$( '#upload-advanced span.message' ).text( 'Uploaded ' + percent );
+				$( '#b-upload-progress' ).progressbar( 'value', percent );
 			},
 			done: function( e, data ){
 				$.boom.log( 'file upload complete' );
 				$.boom.dialog.destroy( upload_dialog );
-				top.location.hash = 'tag/0';
-				$.boom.history.refresh();
 				tagmanager.selected_rid = data.result.rids.join( '-' );
 				
 				uploaded.resolve( data );
@@ -434,8 +437,6 @@ $.extend($.boom.assets, {
 		};
 		
 		opts = $.extend( default_opts, opts );
-		
-		console.log( opts );
 
 		var upload_dialog = $.boom.dialog.open({
 			url:  '/cms/uploadify/form',
@@ -449,13 +450,25 @@ $.extend($.boom.assets, {
 				
 				$( '#b-assets-upload-form' )
 				.fileupload( opts );
+				
+				 $( '#b-assets-upload-file' )
+					.detach()
+					.appendTo( '#b-upload-add' )
+					.css({
+						position: 'absolute',
+						transform: 'translate(-300px, 0) scale(4)'
+					});
 			},
 			buttons: {
 				Cancel: function(){
 
 					// TODO: cancel uploadify uploads
+					
+					file_data.jqXHR && file_data.jqXHR.abort();
 
 					$.boom.dialog.destroy( upload_dialog );
+					
+					$.boom.history.refresh();
 				}
 			}
 		});
@@ -467,10 +480,10 @@ $.extend($.boom.assets, {
 /**
 @class
 */
-$.boom.items.asset = $.extend(true, {}, $.boom.tagmanager.base.item);
+$.boom.asset = $.extend(true, {}, $.boom.tagmanager.base.item);
 
-$.extend($.boom.items.asset, {
-	/** @lends $.boom.items.asset */
+$.extend($.boom.asset, {
+	/** @lends $.boom.asset */
 
 	/** @property */
 	buttonManager: {
@@ -497,10 +510,9 @@ $.extend($.boom.items.asset, {
 		].join('/'),
 		url = '/cms/assets/view/' + this.rid;
 
-		self.tagmanager.elements.rightpane
+		return self.tagmanager.elements.rightpane
 		.find('.b-items-content')
 		.sload(url, function(){
-			$.boom.tagmanager.base.item.prototype.get.apply( self );
 
 			$( this ).scrollTop( 0 );
 
@@ -511,13 +523,39 @@ $.extend($.boom.items.asset, {
 			self.bind( this );
 
 			// Make the tag editor work.
-			$.boom.tags.init({
+			$('#b-tags').tagger({
 				type: 'asset',
 				id: rid
 			});
 
 			$(this).find('.boom-tabs').tabs('option', 'active', 1);
 		});
+	},
+	
+	/** @function */
+	select : function( rid, selected ){
+
+		var thumb = '#asset-thumb-' + rid;
+		var list = '#asset-list-' + rid;
+
+		var checkbox = $( thumb );
+		checkbox.prop( 'checked', selected );
+
+		if ( selected ) {
+
+			checkbox.attr('checked', 'checked');
+
+			checkbox.parents( 'div.thumb' ).addClass( 'ui-state-active' );
+			$( list ).parents( 'tr' ).addClass( 'ui-state-active' );
+
+		} else {
+
+			checkbox.removeAttr('checked');
+
+			checkbox.parents( 'div.thumb' ).removeClass( 'ui-state-active' );
+			$( list ).parents( 'tr' ).removeClass( 'ui-state-active' );
+		}
+		
 	},
 
 	/** @function */
@@ -569,27 +607,6 @@ $.extend($.boom.items.asset, {
 						$( '#link_url' ).val( link.url );
 					});
 			});
-
-
-		$('#boom-button-asset-tags-add').click( function(){
-
-			$.boom.assets.items.tag
-				.picker()
-				.done( function( tags ) {
-
-					$.boom.loader.show();
-
-					return $.post(
-						'/cms/assets/add_tags/' + $('#asset_id').val(),
-						{tags:  tags}
-					);
-				})
-				.then( function( response ){
-					$.boom.loader.hide();
-					$.boom.history.refresh();
-				});
-
-		});
 
 		$('#boom-button-asset-tags-delete').click(function(){
 			var tags = [];
@@ -693,7 +710,11 @@ $.extend($.boom.items.asset, {
 
 			var rid = $( this ).attr( 'rel' );
 			
-			$.boom.assets._upload( { formData : [ { name: 'asset_id', value: rid } ] } );
+			$.boom.assets
+				._upload( { formData : [ { name: 'asset_id', value: rid } ] } )
+				.done( function( data ){
+					$.boom.history.refresh();
+				});
 
 		});
 
@@ -703,5 +724,61 @@ $.extend($.boom.items.asset, {
 			tag.get( tag.rid );
 
 		});
+	}
+});
+
+/**
+@class
+*/
+$.boom.assets.tag = $.extend(true, {}, $.boom.tagmanager.base.item);
+
+$.extend($.boom.assets.tag,  {
+	/** @lends $.boom.assets.tag */
+
+	srid: 0,
+
+	filters: {},
+
+	/** @function */
+	get : function( rid ){
+
+		$.boom.log( 'get tag ' + rid );
+
+		var self = this;
+		var options = this.tagmanager.options;
+
+		this.rid = rid;
+
+		$.boom.loader.show();
+
+		params =
+			'tag=' + rid + '&' +
+			'perpage=' + options.perpage + '&' +
+			'sortby=' + options.sortby;
+
+		for ( filter in self.filters ) {
+			params += '&' + filter + '=' + self.filters[ filter ];
+		}
+
+		var url =
+			'/cms/' + options.type + '/list'
+			+ '?' + params;
+
+		options.url = url;
+
+		return self.tagmanager.elements.rightpane
+			.find('.b-items-content')
+			.sload( url, function(){
+
+				$.boom.loader.hide();
+
+				self.tagmanager.elements.rightpane.ui();
+				
+				$.boom.events.register('tag.clickAfter', 'tagmanager');
+				
+				$('.b-items-thumbs .thumb').captions($.boom.config.captions);
+				
+				$.boom.log('Tag items get');
+			});
 	}
 });

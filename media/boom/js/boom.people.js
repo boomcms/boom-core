@@ -110,10 +110,10 @@ $.extend($.boom.people, {
 /**
 @class
 */
-$.boom.items.person = $.extend(true, {}, $.boom.tagmanager.base.item);
+$.boom.person = $.extend(true, {}, $.boom.tagmanager.base.item);
 
-$.extend($.boom.items.person, {
-	/** @lends $.boom.items.person */
+$.extend($.boom.person, {
+	/** @lends $.boom.person */
 
 	/** @function */
 	get: function( rid ){
@@ -137,8 +137,6 @@ $.extend($.boom.items.person, {
 		self.tagmanager.elements.rightpane
 		.find('.b-items-content')
 		.sload(url, function(){
-
-			$.boom.tagmanager.base.item.prototype.get.apply( self );
 
 			$( this ).scrollTop( 0 );
 
@@ -302,10 +300,10 @@ $.extend($.boom.items.person, {
 /**
 @class
 */
-$.boom.items.group = $.extend(true, {}, $.boom.tagmanager.base.item);
+$.boom.people.group = $.extend(true, {}, $.boom.tagmanager.base.item);
 
-$.extend($.boom.items.group,  {
-	/** @lends $.boom.items.group */
+$.extend($.boom.people.group,  {
+	/** @lends $.boom.people.group */
 
 	/**
 	@property
@@ -335,8 +333,6 @@ $.extend($.boom.items.group,  {
 
 		$('.b-items-content')
 			.sload( url, function(){
-
-				$.boom.tagmanager.base.item.prototype.get.apply( self );
 
 				$.boom.loader.hide();
 
@@ -423,8 +419,6 @@ $.extend($.boom.items.group,  {
 		self.tagmanager.elements.rightpane
 		.find('.b-items-content')
 		.sload( '/cms/groups/edit/' + rid, function(){
-
-			$.boom.tagmanager.base.item.prototype.get.apply( self );
 
 			$.boom.loader.hide();
 			
@@ -532,55 +526,7 @@ $.extend($.boom.items.group,  {
 					});
 					
 				});
-			/**
-			 * Save button has ID 'b-people-group-save'
-			 * Needs to POST to /cms/groups/save/<group ID>
-			 * With the value of 'b-people-group-name' in $_POST['name']
-			 */
 		} );
-
-		// var dialog = $.boom.dialog.open({
-		// 			url: '/cms/groups/edit/' + rid,
-		// 			title: 'Edit group',
-		// 			buttons: {
-		// 				Cancel: function(){
-		// 					$.boom.dialog.destroy( dialog );
-		// 				},
-		// 				Save: function(){
-		// 					var dialog = this;
-		// 					var data = {};
-		// 					data.name = $('#boom-tagmanager-group-edit-name').val();
-		// 					data.permissions = [];
-		//
-		// 					$.each($('.boom-group-permission'), function(index, value){
-		// 						data.permissions.push( $(value).data( 'permission' ) );
-		// 					});
-		//
-		// 					item.find('a').text( $( '#boom-tagmanager-group-edit-name' ).val() );
-		//
-		// 					self.save( rid, data)
-		// 					.done( function(){
-		//
-		// 						$.boom.dialog.destroy(dialog);
-		//
-		// 						$.boom.growl.show('Group successfully saved.');
-		// 					});
-		// 				}
-		// 			},
-		// 			treeConfig: permissions_treeConfig,
-		// 			open: function(){
-		// 				$('#edit-group-permissions-general button')
-		// 					.on( 'click', function(){
-		// 						self.permissions.general_picker({
-		// 							rid : rid
-		// 						})
-		// 						.done( function( permission ){
-		// 							self.update_tree( '#boom-group-permissions-general', permission );
-		//
-		// 						});
-		// 					});
-		// 			}
-		// 		});
 	},
 
 	/** @function */
@@ -658,130 +604,5 @@ $.extend($.boom.items.group,  {
 		$( selector )
 		.tree( 'add_item', new_item );
 
-	},
-
-	/** @class */
-	permissions : {
-
-		/** @function */
-		general_picker : function( opts ) {
-			var picked = new $.Deferred();
-
-			var dialog = $.boom.dialog.open({
-				url: '/cms/groups/add_permission/' + opts.rid + '?component=boom/main',
-				title: 'Add general permission',
-				buttons: {
-					Close: function(){
-						$.boom.dialog.destroy( dialog );
-					},
-					Add: function(){
-						permission = $('#b-permissions-add-action option:selected');
-						value = $('#b-permissions-add-value option:selected' ).val();
-
-						picked.resolve( {
-							label : permission.text(),
-							value : permission.val() + ' 1 0 ' + value
-						});
-
-						$.boom.dialog.destroy( dialog );
-					}
-				}
-			});
-
-			return picked;
-		},
-
-		/** @function */
-		page_picker : function( opts ) {
-
-			$.boom.log( 'opening permissions editor' );
-
-			var self = this;
-			var group = $.boom.items.group;
-			var rid = opts.item_rid;
-			var page_id = opts.page_rid;
-
-			return $.boom.dialog.open({
-				url: '/cms/groups/page_permissions/' + rid + '?page=' + page_id,
-				title: 'Page permissions',
-				buttons: {
-					Cancel: function(){
-						var dialog = this;
-						$.boom.dialog.destroy( dialog );
-					},
-					Save: function(){
-						var dialog = this;
-
-						$('#boom-group-permissions-page-add .boom-group-permissions-page-permission').each( function(){
-							$('#boom-group-permissions-page').append( '<li class=\'boom-group-permission\' data-permission=\'' + $(this).data( 'permission' ) + '\'></li>' );
-						});
-
-						$.boom.dialog.destroy( dialog );
-					}
-				},
-				treeConfig: {
-					showRemove: true,
-					onRemoveClick: function(event){
-						var item = $( event.target ).closest( 'li' ), permission = item.data( 'permission' );
-						item.remove();
-
-						$('.boom-group-permission').each( function(){
-							if ($( this ).data( 'permission' ) == permission)
-							{
-								$( this ).remove();
-							}
-						});
-					}
-				},
-				open: function(){
-					$('#edit-group-permissions-page button')
-						.on( 'click', function(){
-							self.page_settings({
-								rid : rid,
-								page_id : page_id
-							})
-							.done( function( permissions ){
-								$( permissions ).each( function(){
-									group.update_tree( '#boom-group-permissions-page-list', this );
-								});
-							});
-						});
-				}
-			});
-		},
-
-		/** @function */
-		page_settings: function( opts ) {
-			$.boom.log( 'page permissions editor opened' );
-
-			var picked = new $.Deferred();
-			var permissions = [];
-
-			var dialog = $.boom.dialog.open({
-				url: '/cms/groups/add_permission/' + opts.rid + '?page=' + opts.page_id,
-				title: 'Add page permission',
-				buttons: {
-					Close: function(){
-						$.boom.dialog.destroy( dialog );
-					},
-					Add: function(){
-						var value = $( '#b-permissions-add-value option:selected' ).val();
-						var permission = $( '#b-permissions-add-action option:selected');
-						permission.each( function(){
-							permissions.push( {
-								label : $( this ).text(),
-								value : $(this).val() + opts.page_id + ' ' + value
-							});
-
-						});
-
-						$.boom.dialog.destroy( dialog );
-						picked.resolve( permissions );
-					}
-				}
-			});
-
-			return picked;
-		}
 	}
 });
