@@ -534,8 +534,6 @@ $.extend($.boom.asset, {
 		.find('.b-items-content')
 		.sload(url, function(){
 
-			$( this ).scrollTop( 0 );
-
 			$.boom.events.register('asset.clickAfter', 'tagmanager', { rid: rid });
 
 			$.boom.loader.hide();
@@ -729,7 +727,7 @@ $.extend($.boom.asset, {
 
 		$( '.boom-tagmanager-asset-back' ).on( 'click', function( event ){
 			event.preventDefault();
-			var tag = self.tagmanager.items.tag;
+			var tag = self.browser.items.tag;
 			tag.get( tag.rid );
 
 		});
@@ -744,7 +742,7 @@ $.boom.assets.tag = {};
 $.extend($.boom.assets.tag,  {
 	/** @lends $.boom.assets.tag */
 
-	srid: 0,
+	rid: 0,
 
 	filters: {},
 
