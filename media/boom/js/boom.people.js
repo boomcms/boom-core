@@ -140,8 +140,6 @@ $.extend($.boom.person, {
 
 		this.rid = rid;
 
-		$.boom.events.register('person.clickBefore', 'browser', { rid: rid });
-
 		var segments = [
 			rid
 		].join('/'),
@@ -155,8 +153,6 @@ $.extend($.boom.person, {
 	bind: function(){
 
 		var self = this;
-		
-		$.boom.events.register('person.clickAfter', 'browser', { rid: this.rid });
 
 		$.boom.dialog.bind({
 			image: $('.boom-asset-preview')

@@ -518,8 +518,6 @@ $.extend($.boom.asset, {
 
 		this.rid = rid;
 
-		$.boom.events.register('asset.clickBefore', 'browser', { rid: rid });
-
 		var url = '/cms/assets/view/' + this.rid;
 		
 		return $.get( url );
@@ -555,8 +553,6 @@ $.extend($.boom.asset, {
 	bind : function(elem){
 		var self = this;
 		var rids = $.boom.history.getHash().split('/')[1].split('-');
-		
-		$.boom.events.register('asset.clickAfter', 'browser', { rid: this.rid });
 		
 		// Make the tag editor work.
 		$('#b-tags').tagger({
@@ -760,7 +756,6 @@ $.extend($.boom.assets.tag,  {
 	},
 	
 	bind : function() {
-		$.boom.events.register('tag.clickAfter', 'browser');
 		
 		$('.b-items-thumbs .thumb').captions($.boom.config.captions);
 	}

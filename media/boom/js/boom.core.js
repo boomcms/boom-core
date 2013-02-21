@@ -468,8 +468,6 @@ $.ajaxSetup({
 
 			$.boom.loader.hide().hide('dialog');
 
-			$.boom.events.register('page.saveError', 'sites');
-
 			if ( showError ) {
 				var errString;
 

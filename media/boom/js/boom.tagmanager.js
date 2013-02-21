@@ -173,16 +173,6 @@ $.widget( 'boom.browser', {
 		$('.b-tags-tree')
 			.tree(editableTreeConfig);
 
-		$.boom.hooks.register('tag.clickAfter', 'browser', function(){
-
-			$( '#boom-tagmanager-sortby-select' ).change(function(event){
-
-				self.options.sortby = this.value; 
-						
-				$.boom.history.refresh();
-			});
-		});
-
 		this.route();
 	},
 	
