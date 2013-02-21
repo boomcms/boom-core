@@ -550,34 +550,34 @@ $.extend($.boom.asset, {
 	},
 
 	/** @function */
-	bind : function(elem){
+	bind : function( context ){
 		var self = this;
 		var rids = $.boom.history.getHash().split('/')[1].split('-');
 		
 		// Make the tag editor work.
-		$('#b-tags').tagger({
+		$('#b-tags', context ).tagger({
 			type: 'asset',
 			id: this.rid
 		});
 
 		if ( rids.length <= 1 ) {
 
-			$( '#boom-tagmanager-save-all' ).hide();
+			$( '#boom-tagmanager-save-all', context ).hide();
 		} else {
 
-			$( '#boom-tagmanager-save-all' ).unbind( 'click' ).click(function(){
+			$( '#boom-tagmanager-save-all', context ).unbind( 'click' ).click(function(){
 
 				$( '.boom-tagmanager-asset-save' ).trigger( 'save' );
 			});
 		}
 
-		$('.boom-tabs').tabs('option', 'active', 1);
+		$('.boom-tabs', context ).tabs('option', 'active', 1);
 
 		$.boom.dialog.bind({
 			image: $('.boom-asset-preview')
 		});
 
-		$('#boom-button-asset-link-add')
+		$('#boom-button-asset-link-add', context )
 			.on( 'click', function(event){
 				event.preventDefault();
 
@@ -594,7 +594,7 @@ $.extend($.boom.asset, {
 					});
 			});
 
-		$('#boom-button-asset-tags-delete').click(function(){
+		$('#boom-button-asset-tags-delete', context ).click(function(){
 			var tags = [];
 
 			$( this )
@@ -621,7 +621,7 @@ $.extend($.boom.asset, {
 			return false;
 		});
 
-		$('.boom-tagmanager-asset-save')
+		$('.boom-tagmanager-asset-save', context )
 			.bind('save', function( event ){
 
 				var rid = $( this ).attr( 'rel' );
@@ -641,14 +641,14 @@ $.extend($.boom.asset, {
 				$( this ).trigger( 'save' );
 			});
 
-		$('.boom-tagmanager-asset-download').click(function( event ){
+		$('.boom-tagmanager-asset-download', context ).click(function( event ){
 
 			var rid = $( this ).attr( 'rel' );
 
 			window.location = '/cms/assets/download?assets=' + rid;
 		});
 
-		$('.boom-tagmanager-asset-delete').click(function( event ){
+		$('.boom-tagmanager-asset-delete', context ).click(function( event ){
 
 			var rid = $( this ).attr( 'rel' );
 			var delete_asset = new $.Deferred();
@@ -692,7 +692,7 @@ $.extend($.boom.asset, {
 			});
 		});
 
-		$('.boom-tagmanager-asset-replace').click(function( event ){
+		$('.boom-tagmanager-asset-replace', context ).click(function( event ){
 
 			var rid = $( this ).attr( 'rel' );
 			
@@ -704,7 +704,7 @@ $.extend($.boom.asset, {
 
 		});
 
-		$( '.boom-tagmanager-asset-back' ).on( 'click', function( event ){
+		$( '.boom-tagmanager-asset-back', context ).on( 'click', function( event ){
 			event.preventDefault();
 			var tag = self.browser.items.tag;
 			$.boom.history.load( 'tag/' + tag.rid );
@@ -753,8 +753,8 @@ $.extend($.boom.assets.tag,  {
 		return $.get( url );
 	},
 	
-	bind : function() {
+	bind : function( context ) {
 		
-		$('.b-items-thumbs .thumb').captions($.boom.config.captions);
+		$('.b-items-thumbs .thumb', context ).captions($.boom.config.captions);
 	}
 });

@@ -225,7 +225,7 @@ $.widget( 'boom.browser', {
 								.find( '.b-items-content' )
 								.html( response )
 								.ui();
-							self.items[ item ].bind();
+							self.items[ item ].bind( self.main_panel );
 						});
 				}
 			}, 

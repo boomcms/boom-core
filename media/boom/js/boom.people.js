@@ -147,7 +147,7 @@ $.extend($.boom.person, {
 	},
 
 	/** @function */
-	bind: function(){
+	bind: function( context){
 
 		var self = this;
 
@@ -155,7 +155,7 @@ $.extend($.boom.person, {
 			image: $('.boom-asset-preview')
 		});
 
-		$('.b-people-groups-add').click(function(){
+		$('.b-people-groups-add', context ).click(function(){
 			var rid = $( this ).attr( 'rel' );
 
 			var dialog = $.boom.dialog.open({
@@ -184,7 +184,7 @@ $.extend($.boom.person, {
 			});
 		});
 
-		$('.b-people-group-delete').click(function(){
+		$('.b-people-group-delete', context ).click(function(){
 			var elem = $( this );
 			var group_id = elem.attr( 'rel' );
 			var person_id = elem.closest( 'div' ).attr( 'rel' );
@@ -198,7 +198,7 @@ $.extend($.boom.person, {
 			});
 		});
 
-		$('.b-people-save').bind('save', function( event ){
+		$('.b-people-save', context ).bind('save', function( event ){
 
 			var rid = $( this ).attr( 'rel' );
 			var data = $( this ).closest( 'form' ).serialize();
@@ -217,7 +217,7 @@ $.extend($.boom.person, {
 			$( this ).trigger( 'save' );
 		});
 
-		$('#b-delete-person').click(function( event ){
+		$('#b-delete-person', context ).click(function( event ){
 
 			var rid = $( this ).attr( 'rel' );
 			var deleted = new $.Deferred();
@@ -301,11 +301,11 @@ $.extend($.boom.people.group,  {
 	},
 
 	/** @function */
-	bind : function(){
+	bind : function( context ){
 
 		var self = this;
 
-		$('.b-items-select-checkbox').change(function(){
+		$('.b-items-select-checkbox', context ).change(function(){
 
 			var view =
 				this.id.replace(/^[a-z]+-([a-z]+)-[0-9]+$/, "$1") == 'list' ? 'thumb' : 'list',
@@ -330,7 +330,7 @@ $.extend($.boom.people.group,  {
 			$('#boom-tagmanager-amount-checked').html( amount === 0 ? '' : amount / 2 );
 		});
 
-		$('.b-items-list tbody tr, .b-items-thumbs .thumb').hover(
+		$('.b-items-list tbody tr, .b-items-thumbs .thumb', context ).hover(
 			function(){
 				$( this ).addClass( 'ui-state-hover' );
 			},
@@ -339,7 +339,7 @@ $.extend($.boom.people.group,  {
 			}
 		);
 
-		$('.b-items-thumbs .thumb').captions($.boom.config.captions);
+		$('.b-items-thumbs .thumb', context ).captions($.boom.config.captions);
 
 	},
 
