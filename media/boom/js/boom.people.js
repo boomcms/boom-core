@@ -489,7 +489,7 @@ $.extend($.boom.people.group,  {
 			 * The role checkboxes should then be updated if the correct values.
 			 */
 			
-			$.boom.util.page_tree( self.tagmanager.elements.rightpane.find( '#b-group-roles-pages .boom-tree' ) )
+			$.boom.util.page_tree( self.tagmanager.main_panel.find( '#b-group-roles-pages .boom-tree' ) )
 				.progress( function( page ) {
 					
 					selected_page = page.page_id;
