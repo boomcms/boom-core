@@ -521,7 +521,6 @@ $.extend($.boom.asset, {
 		$.boom.log( 'boom.items.asset.get ' + rid );
 
 		var self = this;
-		var options = self.tagmanager.options;
 
 		this.rid = rid;
 
@@ -529,14 +528,9 @@ $.extend($.boom.asset, {
 
 		$.boom.events.register('asset.clickBefore', 'tagmanager', { rid: rid });
 
-		var segments = [
-			options.edition,
-			rid,
-			'asset'
-		].join('/'),
-		url = '/cms/assets/view/' + this.rid;
+		var url = '/cms/assets/view/' + this.rid;
 
-		return self.tagmanager.main_panel
+		return self.browser.main_panel
 		.find('.b-items-content')
 		.sload(url, function(){
 
@@ -587,7 +581,6 @@ $.extend($.boom.asset, {
 	/** @function */
 	bind : function(elem){
 		var self = this;
-		var options = this.tagmanager.options;
 		var rids = $.boom.history.getHash().split('/')[1].split('-');
 
 		if ( rids.length <= 1 ) {
@@ -601,17 +594,7 @@ $.extend($.boom.asset, {
 			});
 		}
 
-		var tabsConfig = $.extend({}, $.boom.config.tabs, {
-
-			show: function(event, ui){
-
-				var label = $.trim( $(ui.tab).text() ).toLowerCase();
-			}
-		});
-
-		$( elem ).ui({
-			tabs: tabsConfig
-		});
+		$( elem ).ui();
 
 		$.boom.dialog.bind({
 			image: $('.boom-asset-preview')
@@ -771,7 +754,7 @@ $.extend($.boom.assets.tag,  {
 		$.boom.log( 'get tag ' + rid );
 
 		var self = this;
-		var options = this.tagmanager.options;
+		var options = this.browser.options;
 
 		this.rid = rid;
 
@@ -792,13 +775,13 @@ $.extend($.boom.assets.tag,  {
 
 		options.url = url;
 
-		return self.tagmanager.main_panel
+		return self.browser.main_panel
 			.find('.b-items-content')
 			.sload( url, function(){
 
 				$.boom.loader.hide();
 
-				self.tagmanager.main_panel.ui();
+				this.ui();
 				
 				$.boom.events.register('tag.clickAfter', 'tagmanager');
 				
