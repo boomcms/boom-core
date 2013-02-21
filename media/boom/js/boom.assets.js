@@ -401,7 +401,6 @@ $.widget( 'boom.asset_browser', $.boom.browser, {
 
 /**
 @class
-@extends CMSTagmanager
 */
 $.boom.assets = {};
 
