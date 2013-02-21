@@ -72,12 +72,7 @@
 	<script type="text/javascript">
 		//<![CDATA[
 		(function($){
-			$.boom.init('assets', {
-				person: {
-					rid: <?= $person->id?>,
-					name: "<?= $person->name?>"
-				}
-			});
+			$.boom.init('assets');
 			
 			$( 'body' ).asset_browser({
 				allowedUploadTypes:[ '<?= implode('\', \'', Boom_Asset::$allowed_extensions)?>' ]
