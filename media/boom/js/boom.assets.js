@@ -511,11 +511,6 @@ $.boom.asset = {};
 $.extend($.boom.asset, {
 	/** @lends $.boom.asset */
 
-	/** @property */
-	buttonManager: {
-		show: [ '#b-assets-upload, #boom-tagmanager-save-all' ]
-	},
-
 	/** @function */
 	get : function(rid){
 		$.boom.log( 'boom.items.asset.get ' + rid );
