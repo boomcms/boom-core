@@ -126,7 +126,7 @@ $.widget( 'boom.browser', {
 					}
 				}
 
-				self.items.tag.get( self.items.tag.rid );
+				$.boom.history.load( 'tag/' + self.items.tag.rid );
 				return false;
 			}
 			
@@ -149,7 +149,7 @@ $.widget( 'boom.browser', {
 						.split('/')
 						[1];
 
-				self.items.tag.get( self.items.tag.rid );
+				$.boom.history.load( 'tag/' + self.items.tag.rid );
 				return false;
 			}
 		});

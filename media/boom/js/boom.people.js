@@ -291,8 +291,6 @@ $.extend($.boom.people.group,  {
 
 		this.rid = rid;
 
-		$.boom.loader.show();
-
 		params =
 			'tag=' + rid + '&' +
 			'perpage=' + options.perpage + '&' +
@@ -304,7 +302,7 @@ $.extend($.boom.people.group,  {
 			+ '?' + params;
 
 		self.browser.options.url = url;
-		$.boom.log('Group items get');
+		$.boom.log('Group items get' + rid );
 		
 		return $.get( url );
 	},
