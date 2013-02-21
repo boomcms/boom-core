@@ -400,66 +400,6 @@ $.extend($.boom, {
 	}
 });
 
-$.extend($.boom, {
-	/** @lends $.boom */
-
-	/**
-	* @class
-	*/
-	events : {
-
-		callbacks : {},
-
-		/** @function */
-		register : function(eventname, namespace, vars){
-
-			namespace = namespace || 'default';
-			vars = vars || {};
-
-			var self = this;
-
-			(this.callbacks[eventname] && this.callbacks[eventname][namespace]) &&
-
-				$.each(this.callbacks[eventname][namespace], function(i){
-
-					(this.callback && this.callback.constructor == Function) && this.callback(vars);
-
-					(this.fireonce) && delete self.callbacks[eventname][namespace][i];
-
-				});
-		}
-	}
-});
-
-$.extend($.boom, {
-	/** @lends $.boom */
-
-	/**
-	* @class
-	*/
-	hooks : {
-
-		/** @function */
-		register : function(eventname, namespace, callback, fireonce) {
-
-			namespace = namespace || 'default';
-			fireonce = fireonce || false;
-
-			if (!$.boom.events.callbacks[eventname]) {
-
-				$.boom.events.callbacks[eventname] = [];
-
-				$.boom.events.callbacks[eventname][namespace] = [];
-			}
-
-			$.boom.events.callbacks[eventname][namespace].push({
-				callback: callback,
-				fireonce: fireonce
-			});
-		}
-	}
-});
-
 /**
 @class
 @name $.ajax
@@ -527,8 +467,6 @@ $.ajaxSetup({
 		setTimeout(function(){
 
 			$.boom.loader.hide().hide('dialog');
-
-			$.boom.events.register('page.saveError', 'sites');
 
 			if ( showError ) {
 				var errString;

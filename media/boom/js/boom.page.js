@@ -229,8 +229,6 @@ $.extend($.boom, {
 
 			self.settings.bind();
 
-			$.boom.hooks.register('page.init');
-
 			return this;
 		},
 
@@ -299,15 +297,6 @@ $.extend($.boom, {
 				}
 			});
 
-
-			$.boom.hooks.register('page.saveError', 'sites', function(vars){
-
-				if (window.console) {
-
-					console.debug('POST data debug:', data);
-				}
-
-			}, true);
 
 
 			requestdata = $.extend({

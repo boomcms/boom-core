@@ -246,9 +246,7 @@ $.widget( 'boom.tag_search', $.boom.tagger, {
 	*/
 	options: {
 		/** selected tags for this search */
-		selected_tag_ids : [],
-		/** tagmanager context for search */
-		tagmanager : {}
+		selected_tag_ids : []
 	},
 	
 	_bind : function(){
@@ -309,10 +307,9 @@ $.widget( 'boom.tag_search', $.boom.tagger, {
 	do_search : function() {
 		var 
 			self = this,
-			selected_tag_ids = this.options.selected_tag_ids,
-			tagmanager = this.options.tagmanager;
+			selected_tag_ids = this.options.selected_tag_ids;
 			
-		tagmanager.items.tag.get( selected_tag_ids.join( '-' ) );
+		$.boom.history.load( 'tag/' + selected_tag_ids.join( '-' ) );
 	}
 	
 	

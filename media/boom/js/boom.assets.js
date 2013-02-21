@@ -117,7 +117,7 @@ $.widget( 'boom.asset_browser', $.boom.browser, {
 		
 		var selected_tag_ids = [];
 		
-		$( '#b-tags-search' ).tag_search( { tagmanager : self } );
+		$( '#b-tags-search' ).tag_search();
 
 		$( '#boom-topbar' )
 			.on( 'click', '#b-button-multiaction-delete', function(){
@@ -322,7 +322,6 @@ $.widget( 'boom.asset_browser', $.boom.browser, {
 	upload: function( opts ){
 
 		var self = this;
-		var tagmanager = $.boom.assets;
 		var uploaded = new $.Deferred();
 		var file_data = {};
 		
@@ -344,7 +343,7 @@ $.widget( 'boom.asset_browser', $.boom.browser, {
 			done: function( e, data ){
 				$.boom.log( 'file upload complete' );
 				$.boom.dialog.destroy( upload_dialog );
-				tagmanager.selected_rid = data.result.rids.join( '-' );
+				$.boom.assets.selected_rid = data.result.rids.join( '-' );
 				
 				uploaded.resolve( data );
 				
@@ -485,7 +484,7 @@ $.extend($.boom.assets, {
 					browser.asset_browser( 'edit', rid );
 				});
 
-				// tagmanager.init() pushes a default URL to the history stack.
+				// browser widget pushes a default URL to the history stack.
 				// need to override that if an asset is already selected
 				// by setting a fragment identifier on the parent window.
 				if ( opts.asset_rid && opts.asset_rid > 0 ) {
@@ -511,11 +510,6 @@ $.boom.asset = {};
 $.extend($.boom.asset, {
 	/** @lends $.boom.asset */
 
-	/** @property */
-	buttonManager: {
-		show: [ '#b-assets-upload, #boom-tagmanager-save-all' ]
-	},
-
 	/** @function */
 	get : function(rid){
 		$.boom.log( 'boom.items.asset.get ' + rid );
@@ -524,30 +518,9 @@ $.extend($.boom.asset, {
 
 		this.rid = rid;
 
-		$.boom.loader.show();
-
-		$.boom.events.register('asset.clickBefore', 'tagmanager', { rid: rid });
-
 		var url = '/cms/assets/view/' + this.rid;
-
-		return self.browser.main_panel
-		.find('.b-items-content')
-		.sload(url, function(){
-
-			$.boom.events.register('asset.clickAfter', 'tagmanager', { rid: rid });
-
-			$.boom.loader.hide();
-
-			self.bind( this );
-
-			// Make the tag editor work.
-			$('#b-tags').tagger({
-				type: 'asset',
-				id: rid
-			});
-
-			$(this).find('.boom-tabs').tabs('option', 'active', 1);
-		});
+		
+		return $.get( url );
 	},
 	
 	/** @function */
@@ -580,6 +553,14 @@ $.extend($.boom.asset, {
 	bind : function(elem){
 		var self = this;
 		var rids = $.boom.history.getHash().split('/')[1].split('-');
+		
+		// Make the tag editor work.
+		$('#b-tags').tagger({
+			type: 'asset',
+			id: this.rid
+		});
+
+		$(this).find('.boom-tabs').tabs('option', 'active', 1);
 
 		if ( rids.length <= 1 ) {
 
@@ -700,7 +681,7 @@ $.extend($.boom.asset, {
 
 					} else {
 
-						self.tagmanager.defaultRoute();
+						self.browser.defaultRoute();
 					}
 				});
 			});
@@ -728,7 +709,7 @@ $.extend($.boom.asset, {
 		$( '.boom-tagmanager-asset-back' ).on( 'click', function( event ){
 			event.preventDefault();
 			var tag = self.browser.items.tag;
-			tag.get( tag.rid );
+			$.boom.history.load( 'tag/' + tag.rid );
 
 		});
 	}
@@ -756,8 +737,6 @@ $.extend($.boom.assets.tag,  {
 
 		this.rid = rid;
 
-		$.boom.loader.show();
-
 		params =
 			'tag=' + rid + '&' +
 			'perpage=' + options.perpage + '&' +
@@ -772,20 +751,12 @@ $.extend($.boom.assets.tag,  {
 			+ '?' + params;
 
 		options.url = url;
-
-		return self.browser.main_panel
-			.find('.b-items-content')
-			.sload( url, function(){
-
-				$.boom.loader.hide();
-
-				this.ui();
-				
-				$.boom.events.register('tag.clickAfter', 'tagmanager');
-				
-				$('.b-items-thumbs .thumb').captions($.boom.config.captions);
-				
-				$.boom.log('Tag items get');
-			});
+		
+		return $.get( url );
+	},
+	
+	bind : function() {
+		
+		$('.b-items-thumbs .thumb').captions($.boom.config.captions);
 	}
 });

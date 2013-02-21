@@ -126,7 +126,7 @@ $.widget( 'boom.browser', {
 					}
 				}
 
-				self.items.tag.get( self.items.tag.rid );
+				$.boom.history.load( 'tag/' + self.items.tag.rid );
 				return false;
 			}
 			
@@ -149,7 +149,7 @@ $.widget( 'boom.browser', {
 						.split('/')
 						[1];
 
-				self.items.tag.get( self.items.tag.rid );
+				$.boom.history.load( 'tag/' + self.items.tag.rid );
 				return false;
 			}
 		});
@@ -172,16 +172,12 @@ $.widget( 'boom.browser', {
 		
 		$('.b-tags-tree')
 			.tree(editableTreeConfig);
-
-		$.boom.hooks.register('tag.clickAfter', 'tagmanager', function(){
-
-			$( '#boom-tagmanager-sortby-select' ).change(function(event){
-
-				self.options.sortby = this.value; 
-						
+			
+		self.main_panel
+			.on( 'change', '#boom-tagmanager-sortby-select', function( event ){
+				self.options.sortby = this.value;
 				$.boom.history.refresh();
 			});
-		});
 
 		this.route();
 	},
@@ -211,11 +207,24 @@ $.widget( 'boom.browser', {
 
 				var 
 					item = segments[0], 
-					rid = segments[1], 
-					method = 'get';
+					rid = segments[1];
 				
-				if ( item.length && self.items[ item ] && self.items[ item ][ method ] ) {
-					self.items[ item ][ method ]( rid );
+				if ( item.length && self.items[ item ] ) {
+					
+					$.boom.loader.show();
+					
+					self.items[ item ]
+						.get( rid )
+						.done( function( response ){
+							
+							$.boom.loader.hide();
+							
+							self.main_panel
+								.find( '.b-items-content' )
+								.html( response )
+								.ui();
+							self.items[ item ].bind();
+						});
 				}
 			}, 
 			function(){
