@@ -43,7 +43,7 @@ $.widget( 'boom.asset_browser', $.boom.browser, {
 			var tagged = new $.Deferred();
 			
 			var uploaded = self
-				._upload({
+				.upload({
 					add: function( e, data ){
 					
 						$.boom.dialog.open({
@@ -250,7 +250,7 @@ $.widget( 'boom.asset_browser', $.boom.browser, {
 	Set up an asset browser
 	@returns {Object} promise which updates via .notify( rid ) when an asset is selected.
 	*/
-	_browse: function(){
+	browse: function(){
 
 		var self = this;
 		var select_asset = new $.Deferred();
@@ -297,7 +297,7 @@ $.widget( 'boom.asset_browser', $.boom.browser, {
 	@param {Integer} rid RID of the currently selected asset.
 	@returns {Object} promise resolved when the text is set.
 	*/
-	_edit: function( rid ){
+	edit: function( rid ){
 
 		var self = this;
 
@@ -306,11 +306,19 @@ $.widget( 'boom.asset_browser', $.boom.browser, {
 		self.selected_rid = rid;
 
 	},
+	
+	/**
+	Get the currently selected asset ID
+	@returns {Integer} asset ID
+	*/
+	get_asset : function() {
+		return this.selected_rid;
+	},
 
 	/**
 	Upload a new asset file.
 	*/
-	_upload: function( opts ){
+	upload: function( opts ){
 
 		var self = this;
 		var tagmanager = $.boom.assets;
@@ -400,9 +408,6 @@ $.extend($.boom.assets, {
 	/** @lends $.boom.assets */
 
 	/** @property */
-	selected_rid : 0,
-
-	/** @property */
 	asset_browser: {},
 
 	/**
@@ -415,6 +420,7 @@ $.extend($.boom.assets, {
 
 		var self = this;
 		var complete = new $.Deferred();
+		var browser;
 
 		var cleanup = function(){
 			top.location.hash = '';
@@ -435,9 +441,10 @@ $.extend($.boom.assets, {
 					return false;
 				},
 				'Okay': function() {
+					var asset_id = browser.asset_browser( 'get_asset' );
 					cleanup();
 					( opts.deferred ) && opts.deferred.resolve();
-					complete.resolve( self.selected_rid );
+					complete.resolve( asset_id );
 					return false;
 				}
 			},
@@ -462,7 +469,7 @@ $.extend($.boom.assets, {
 						.text( 'Upload' )
 						.button()
 						.click( function() {
-							self._upload();
+							browser.asset_browser( 'uplaod' );
 						});
 				}
 				$(this).dialog('widget')
@@ -470,10 +477,12 @@ $.extend($.boom.assets, {
 					.prepend( button );
 			},
 			onLoad: function(){
+				
+				browser = $( '#boom-tagmanager' ).asset_browser();
 
-				$.when( self._browse() )
+				$.when( browser.asset_browser( 'browse' ) )
 				.progress( function( rid ){
-					self._edit( rid );
+					browser.asset_browser( 'edit', rid );
 				});
 
 				// tagmanager.init() pushes a default URL to the history stack.
@@ -481,7 +490,7 @@ $.extend($.boom.assets, {
 				// by setting a fragment identifier on the parent window.
 				if ( opts.asset_rid && opts.asset_rid > 0 ) {
 					$.boom.log( 'getting asset ' + opts.asset_rid );
-					self._edit( opts.asset_rid );
+					browser.asset_browser( 'edit', opts.asset_rid );
 				}
 				
 				$( '#boom-tagmanager' ).asset_browser();
@@ -493,148 +502,6 @@ $.extend($.boom.assets, {
 		self.asset_browser = $.boom.dialog.open( opts );
 
 		return complete;
-	},
-
-	/**
-	Set up an asset browser
-	@returns {Object} promise which updates via .notify( rid ) when an asset is selected.
-	*/
-	_browse: function(){
-
-		var self = this;
-		var select_asset = new $.Deferred();
-
-		$( self.asset_browser )
-			.on( 'click', '.thumb a', function(event){
-
-				var data = $(this).attr('href').split('/');
-				var rid = parseInt( data[1], 10 );
-				select_asset.notify( rid );
-
-				return false;
-			})
-			.on( 'click', '.boom-pagination a', function( e ){
-				e.preventDefault();
-
-				//$.boom.history.load( '/cms/assets/list?' + $( this ).attr( 'href' ).split( '?' )[ 1 ] );
-				$.get( '/cms/assets/list?' + $( this ).attr( 'href' ).split( '?' )[ 1 ])
-				.done( function( data ){
-					var $data = $( data );
-					var pagination = $data.find( '.boom-pagination' ).html();
-					var list = $data.find( '#b-items-view-list' ).html();
-					var thumbs = $data.find( '#b-items-view-thumbs' ).html();
-					$( self.asset_browser )
-						.find( '.boom-pagination' )
-						.html( pagination )
-						.end()
-						.find( '#b-items-view-list' )
-						.html( list )
-						.end()
-						.find( '#b-items-view-thumbs' )
-						.html( thumbs );
-				});
-
-				return false;
-			});
-
-		return select_asset;
-
-	},
-
-	/**
-	Open the asset editing view
-	@param {Integer} rid RID of the currently selected asset.
-	@returns {Object} promise resolved when the text is set.
-	*/
-	_edit: function( rid ){
-
-		var self = this;
-
-		$.boom.history.load( 'asset/' + rid );
-		//top.location.hash = '#asset/' + rid;
-		self.selected_rid = rid;
-
-	},
-
-	/**
-	Upload a new asset file.
-	*/
-	_upload: function( opts ){
-
-		var self = this;
-		var tagmanager = $.boom.assets;
-		var uploaded = new $.Deferred();
-		var file_data = {};
-		
-		var default_opts = {
-			url: '/cms/uploadify/asset',
-			dataType: 'json',
-			singleFileUploads: false,
-			formData: [],
-			submit: function( e, data ){
-				$( '#b-upload-progress' ).progressbar();
-				
-				file_data = data;
-			},
-			progressall: function( e, data ){
-				var percent = parseInt( (data.loaded / data.total * 100), 10);
-
-				$( '#b-upload-progress' ).progressbar( 'value', percent );
-			},
-			done: function( e, data ){
-				$.boom.log( 'file upload complete' );
-				$.boom.dialog.destroy( upload_dialog );
-				tagmanager.selected_rid = data.result.rids.join( '-' );
-				
-				uploaded.resolve( data );
-				
-			},
-			fail: function( e, data ){
-				$( '#upload-advanced span.message' ).text( "There was an error uploading your file." );
-			},
-			always: function( e, data ){
-				$.boom.log( 'file upload finished' );
-			}
-		};
-		
-		opts = $.extend( default_opts, opts );
-
-		var upload_dialog = $.boom.dialog.open({
-			url:  '/cms/uploadify/form',
-			width: 400,
-			title: 'Upload file/s',
-			onLoad: function(){
-				
-				var upload_token = $( '#upload_token' ).val();
-				
-				opts.formData.push( { name: 'upload_token', value: upload_token } );
-				
-				$( '#b-assets-upload-form' )
-				.fileupload( opts );
-				
-				 $( '#b-assets-upload-file' )
-					.detach()
-					.appendTo( '#b-upload-add' )
-					.css({
-						position: 'absolute',
-						transform: 'translate(-300px, 0) scale(4)'
-					});
-			},
-			buttons: {
-				Cancel: function(){
-
-					// TODO: cancel uploadify uploads
-					
-					file_data.jqXHR && file_data.jqXHR.abort();
-
-					$.boom.dialog.destroy( upload_dialog );
-					
-					$.boom.history.refresh();
-				}
-			}
-		});
-		
-		return uploaded;
 	}
 });
 
