@@ -363,7 +363,7 @@ class Boom_Controller_Cms_Assets extends Boom_Controller
 			if ($pages > 1)
 			{
 				// More than one page - generate pagination links.
-				$url = '#tag/' . $this->request->query('tag');
+				$url = '';
 				$pagination = View::factory('pagination/query', array(
 					'current_page'		=>	$page,
 					'total_pages'		=>	$pages,

@@ -41,7 +41,7 @@ $.widget( 'boom.browser', {
 		
 		$.each(this.items, function(){
 		
-			this.tagmanager = self;
+			this.browser = self;
 		});
 
 		this.main_panel = $('.b-items-rightpane');
