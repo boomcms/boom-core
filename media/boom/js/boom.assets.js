@@ -560,8 +560,6 @@ $.extend($.boom.asset, {
 			id: this.rid
 		});
 
-		$(this).find('.boom-tabs').tabs('option', 'active', 1);
-
 		if ( rids.length <= 1 ) {
 
 			$( '#boom-tagmanager-save-all' ).hide();
@@ -573,7 +571,7 @@ $.extend($.boom.asset, {
 			});
 		}
 
-		$( elem ).ui();
+		$('.boom-tabs').tabs('option', 'active', 1);
 
 		$.boom.dialog.bind({
 			image: $('.boom-asset-preview')
