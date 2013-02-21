@@ -173,7 +173,7 @@ $.widget( 'boom.browser', {
 		$('.b-tags-tree')
 			.tree(editableTreeConfig);
 
-		$.boom.hooks.register('tag.clickAfter', 'tagmanager', function(){
+		$.boom.hooks.register('tag.clickAfter', 'browser', function(){
 
 			$( '#boom-tagmanager-sortby-select' ).change(function(event){
 

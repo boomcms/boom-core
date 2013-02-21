@@ -627,7 +627,6 @@ $.widget('ui.chunkAsset', $.ui.chunk, {
 		
 
 		var self = this;
-		var tagmanager = $.boom.assets;
 		var asset_selected = new $.Deferred();
 		
 		var asset_id = 0;
@@ -653,7 +652,7 @@ $.widget('ui.chunkAsset', $.ui.chunk, {
 		})
 		;
 
-		tagmanager.picker( {
+		$.boom.assets.picker( {
 			asset_rid : asset_id,
 			deferred: asset_selected
 		} )
@@ -910,7 +909,6 @@ $.widget('ui.chunkSlideshow', $.ui.chunk, {
 		$.boom.log( 'edit slide' );
 		var url_segments = $slide.attr( 'src' ).split( '/' );
 		var rid = url_segments[3];
-		var tagmanager = $.boom.assets;
 		var asset_selected = new $.Deferred();
 
 		// cleanup code when the dialog closes.
@@ -923,7 +921,7 @@ $.widget('ui.chunkSlideshow', $.ui.chunk, {
 		})
 		;
 
-		return tagmanager.picker( {
+		return $.boom.assets.picker( {
 			asset_rid : rid,
 			deferred: asset_selected
 		} )
@@ -957,7 +955,6 @@ $.widget('ui.chunkSlideshow', $.ui.chunk, {
 	*/
 	_insert_slide : function( $li ) {
 		var self = this;
-		var tagmanager = $.boom.assets;
 		var asset_selected = new $.Deferred();
 		var $new_slide = $li
 			.clone()

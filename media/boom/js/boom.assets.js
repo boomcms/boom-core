@@ -117,7 +117,7 @@ $.widget( 'boom.asset_browser', $.boom.browser, {
 		
 		var selected_tag_ids = [];
 		
-		$( '#b-tags-search' ).tag_search( { tagmanager : self } );
+		$( '#b-tags-search' ).tag_search();
 
 		$( '#boom-topbar' )
 			.on( 'click', '#b-button-multiaction-delete', function(){
@@ -322,7 +322,6 @@ $.widget( 'boom.asset_browser', $.boom.browser, {
 	upload: function( opts ){
 
 		var self = this;
-		var tagmanager = $.boom.assets;
 		var uploaded = new $.Deferred();
 		var file_data = {};
 		
@@ -344,7 +343,7 @@ $.widget( 'boom.asset_browser', $.boom.browser, {
 			done: function( e, data ){
 				$.boom.log( 'file upload complete' );
 				$.boom.dialog.destroy( upload_dialog );
-				tagmanager.selected_rid = data.result.rids.join( '-' );
+				$.boom.assets.selected_rid = data.result.rids.join( '-' );
 				
 				uploaded.resolve( data );
 				
@@ -485,7 +484,7 @@ $.extend($.boom.assets, {
 					browser.asset_browser( 'edit', rid );
 				});
 
-				// tagmanager.init() pushes a default URL to the history stack.
+				// browser widget pushes a default URL to the history stack.
 				// need to override that if an asset is already selected
 				// by setting a fragment identifier on the parent window.
 				if ( opts.asset_rid && opts.asset_rid > 0 ) {
@@ -519,7 +518,7 @@ $.extend($.boom.asset, {
 
 		this.rid = rid;
 
-		$.boom.events.register('asset.clickBefore', 'tagmanager', { rid: rid });
+		$.boom.events.register('asset.clickBefore', 'browser', { rid: rid });
 
 		var url = '/cms/assets/view/' + this.rid;
 		
@@ -557,7 +556,7 @@ $.extend($.boom.asset, {
 		var self = this;
 		var rids = $.boom.history.getHash().split('/')[1].split('-');
 		
-		$.boom.events.register('asset.clickAfter', 'tagmanager', { rid: this.rid });
+		$.boom.events.register('asset.clickAfter', 'browser', { rid: this.rid });
 		
 		// Make the tag editor work.
 		$('#b-tags').tagger({
@@ -686,7 +685,7 @@ $.extend($.boom.asset, {
 
 					} else {
 
-						self.tagmanager.defaultRoute();
+						self.browser.defaultRoute();
 					}
 				});
 			});
@@ -761,7 +760,7 @@ $.extend($.boom.assets.tag,  {
 	},
 	
 	bind : function() {
-		$.boom.events.register('tag.clickAfter', 'tagmanager');
+		$.boom.events.register('tag.clickAfter', 'browser');
 		
 		$('.b-items-thumbs .thumb').captions($.boom.config.captions);
 	}

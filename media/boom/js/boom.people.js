@@ -140,7 +140,7 @@ $.extend($.boom.person, {
 
 		this.rid = rid;
 
-		$.boom.events.register('person.clickBefore', 'tagmanager', { rid: rid });
+		$.boom.events.register('person.clickBefore', 'browser', { rid: rid });
 
 		var segments = [
 			rid
@@ -156,7 +156,7 @@ $.extend($.boom.person, {
 
 		var self = this;
 		
-		$.boom.events.register('person.clickAfter', 'tagmanager', { rid: this.rid });
+		$.boom.events.register('person.clickAfter', 'browser', { rid: this.rid });
 
 		$.boom.dialog.bind({
 			image: $('.boom-asset-preview')
@@ -264,7 +264,7 @@ $.extend($.boom.person, {
 
 				} else {
 
-					self.tagmanager.defaultRoute();
+					self.browser.defaultRoute();
 				}
 			});
 		});
@@ -313,8 +313,6 @@ $.extend($.boom.people.group,  {
 		var self = this;
 
 		this.browser.main_panel.ui();
-
-		$.boom.events.register('tag.clickAfter', 'tagmanager');
 
 		$('.b-items-select-checkbox').change(function(){
 
