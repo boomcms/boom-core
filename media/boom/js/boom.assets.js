@@ -706,8 +706,7 @@ $.extend($.boom.asset, {
 
 		$( '.boom-tagmanager-asset-back', context ).on( 'click', function( event ){
 			event.preventDefault();
-			var tag = self.browser.items.tag;
-			$.boom.history.load( 'tag/' + tag.rid );
+			$.boom.history.load( 'tag/' + $.boom.assets.tag.rid );
 
 		});
 	}
