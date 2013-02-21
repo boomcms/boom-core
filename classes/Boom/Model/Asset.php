@@ -58,6 +58,75 @@ class Boom_Model_Asset extends Model_Taggable
 	protected $_old_files = NULL;
 
 	/**
+	 * Updates the current object with data from a given file.
+	 *
+	 * @param string $filepath
+	 * @return \Boom_Model_Asset
+	 */
+	public function get_file_info($filepath)
+	{
+		// Get the filename, filesize, and type and update the corresponding Model_Asset properties.
+		$this->values(array(
+			'filename'		=>	basename($filepath),
+			'filesize'		=>	filesize($filepath),
+			'type'		=>	Boom_Asset::type_from_mime(File::mime($filepath)),
+		));
+
+		// If the asset is an image then set the dimensionis.
+		if ($this->type == Boom_Asset::IMAGE)
+		{
+			// Set the dimensions of the image.
+			list($width, $height) = getimagesize($filepath);
+
+			$this
+				->set('width', $width)
+				->set('height', $height);
+		}
+
+		return $this;
+	}
+
+	/**
+	 * Create an asset model from a file on the filesystem.
+	 *
+	 * @param string $filepath
+	 * @param string $keep_origin
+	 *
+	 * @return \Boom_Model_Asset
+	 *
+	 * @throws Exception
+	 */
+	public function create_from_file($filepath, $keep_original = TRUE)
+	{
+		// Update the model with details about hte file.
+		$this->get_file_info($filepath);
+
+		// Persist the asset data so that we can get an asset ID.
+		$this->create();
+
+		// If we're keeping the original file then copy() the original, otherwise rename() it.
+		$command = ($keep_original)? 'copy' : 'rename';
+
+		try
+		{
+			// Copy / move the file into the assets directory.
+			$command($filepath, Boom_Asset::$path.DIRECTORY_SEPARATOR.$this->id);
+		}
+		catch (Exception $e)
+		{
+			// We couldn't get the asset into the assets directory.
+			// So that we don't end up with an asset that doesn't have a file we'll just delete the asset data.
+			$this->delete(TRUE);
+
+			// Throw the exception, it's someone elses problem now.
+			throw $e;
+		}
+
+		// Return the current model.
+		return $this;
+	}
+
+	/**
 	 * Delete an asset.
 	 *
 	 * Assets are deleted in two stages:
@@ -65,11 +134,16 @@ class Boom_Model_Asset extends Model_Taggable
 	 * * If the deleted property is false then this is changed to true and the asset is merely marked as deleted.
 	 * * If the asset is already marked as deleted then the asset is deleted for real.
 	 *
+	 * An asset which hasn't already been marked as deleted can be deleted entirely by calling with the first paramater set to TRUE.
+	 *
+	 * @param boolean $force
 	 * @uses ORM::delete()
+	 *
+	 * @return \Boom_Model_Asset
 	 */
-	public function delete()
+	public function delete($force = FALSE)
 	{
-		if ($this->deleted)
+		if ($this->deleted OR $force)
 		{
 			// Asset is already marked as deleted, so delete it for real.
 			return parent::delete();

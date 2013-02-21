@@ -31,55 +31,38 @@ class Boom_Controller_Cms_Assets_Upload extends Controller_Cms_Assets
 		));
 	}
 
+	/**
+	 * Create assets from a file upload.
+	 *
+	 * @uses Model_Asset::create_from_file()
+	 * 
+	 */
 	public function action_process()
 	{
-		if (isset($_FILES['b-assets-upload-files']))
+		// An array of IDs of the new assets, which we'll return to the client when the upload has been processed.
+		$asset_ids = array();
+
+		// Values which will be the same for all of the new assets.
+		$common_values = array(
+			'uploaded_by'	=>	$this->person->id,
+			'visible_from'	=>	'now',
+			'last_modified'	=>	$_SERVER['REQUEST_TIME'],
+		);
+
+		// Loop through the file inputs.
+		foreach ( (array) $_FILES as $files)
 		{
-			// An array of IDs of the new assets, which we'll return to the client when the upload has been processed.
-			$asset_ids = array();
-
-			// Allow us to get the file upload info without having to type that mamouth each time...
-			$files = $_FILES['b-assets-upload-files'];
-
-			foreach ( (array) $files['name'] as $i => $filename)
+			// Loop through the files uploaded under this input name.
+			foreach ( (array) $files['tmp_name'] as $i => $filename)
 			{
-				// Set the values for the asset model.
-				$this->asset
-					->values(array(
-						'filename'		=>	$filename,
-						'filesize'		=>	$files['size'][$i],
-						'uploaded_by'	=>	$this->person->id,
-						'type'		=>	Boom_Asset::type_from_mime(File::mime($files['tmp_name'][$i])),
-						'visible_from'	=>	'now',
-						'last_modified'	=>	$_SERVER['REQUEST_TIME']
-					));
+				// Set the common values.
+				$this->asset->values($common_values, array_keys($common_values));
 
-				// If the asset is an image then set the dimensionis.
-				if ($this->asset->type == Boom_Asset::IMAGE)
-				{
-					// Set the dimensions of the image.
-					list($width, $height) = getimagesize($files['tmp_name'][$i]);
+				// Set the title of the asset to the filename without the file extension.
+				$this->asset->title = pathinfo($files['name'][$i], PATHINFO_FILENAME);
 
-					$this->asset
-						->set('width', $width)
-						->set('height', $height);
-				}
-
-				// Create a record for the asset in the database.
-				$this->asset->create();
-
-				try
-				{
-					// Save the uploaded file to the assets directory.
-					Upload::save(array('tmp_name' => $files['tmp_name'][$i]), $this->asset->id, Boom_Asset::$path);
-				}
-				catch (Exception $e)
-				{
-					// There was a problem - delete the database record.
-					$this->asset->delete();
-
-					throw $e;
-				}
+				// Create the asset from the temporary file.
+				$this->asset->create_from_file($filename);
 
 				// Add the asset ID to the array of uploaded assets.
 				$asset_ids[] = $this->asset->id;
