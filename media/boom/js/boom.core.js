@@ -325,6 +325,7 @@ $.extend($.boom, {
 		/**
 		Invoke the hashCallback for the current fragment identifier.
 		@param {String} hash fragment identifier from page URL
+		@returns {Object} returns the hstory callback return value, to allow callback chaining.
 		*/
 		load : function(hash){
 
@@ -332,9 +333,11 @@ $.extend($.boom, {
 
 			this._setHash(this.current_hash);
 
-			this.hashCallback(this.current_hash);
+			var promise = this.hashCallback(this.current_hash);
 
 			this._checkHistory();
+			
+			return promise;
 		},
 
 		/**
