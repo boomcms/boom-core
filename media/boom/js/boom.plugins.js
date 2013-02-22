@@ -223,7 +223,7 @@ boom.plugins.js
 	/**
 	@class
 	@name $.ui.splitbutton
-	@extends ui
+	@extends $.ui
 	*/
 	$.widget('ui.splitbutton', {
 		/** @lends $.ui.splitbutton */
@@ -654,11 +654,11 @@ boom.plugins.js
 
 	/**
 	@class
-	@name ui.tree
-	@extends ui
+	@name $.ui.tree
+	@extends $.ui
 	*/
 	$.widget('ui.tree', {
-		/** @lends ui.tree */
+		/** @lends $.ui.tree */
 		
 		/**
 		@property
