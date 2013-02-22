@@ -74,7 +74,7 @@
 		(function($){
 			$.boom.init('assets');
 			
-			$( 'body' ).asset_browser({
+			$( 'body' ).browser_asset({
 				allowedUploadTypes:[ '<?= implode('\', \'', Boom_Asset::$allowed_extensions)?>' ]
 			});
 		})(jQuery);
