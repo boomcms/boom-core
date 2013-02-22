@@ -20,17 +20,18 @@ abstract class Boom_Core
 			switch ($accept)
 			{
 				case 'application/json':
-					$format = 'json';
-					break;
+					return 'json';
 				case 'application/rss+xml':
-					$format = 'rss';
+					return 'rss';
 					break;
-				default:
-					$format = 'html';
+				case 'text/html':
+					return 'html';
+				case '*/*':
+					return 'html';
 			}
 		}
 
-		return $format;
+		throw new HTTP_Exception_406;
 	}
 
 	public static function process_uri(Route $route, array $params, Request $request)

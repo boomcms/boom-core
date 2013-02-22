@@ -9,41 +9,6 @@ class Boom_HTTP_Exception_500 extends Kohana_HTTP_Exception_500
 	 */
 	public function get_response()
 	{
-		// Prepare a response object.
-		$response = Response::factory()
-			->status(500);
-
-		// If the initial request was an AJAX call then only send a single line body
-		if (Request::initial()->is_ajax())
-		{
-			// Get a single line representation of the exception.
-			$body = $this->getMessage();
-		}
-		else
-		{
-			// Look for a page with '500' as the internal name.
-			$page = new Model_Page(array(
-				'internal_name'	=>	500,
-			));
-
-			if ($page->loaded())
-			{
-				// The response body will be the result of an internal request to this page.
-				$body = Request::factory($page->url())
-					->execute()
-					->body();
-			}
-			else
-			{
-				// Show the boom/error/500 view.
-				$body = View::factory('boom/errors/500');
-			}
-		}
-
-		// Set the response body.
-		$response->body($body);
-
-		// Return the response object.
-		return $response;
+		return $this->boom_response();
 	}
 }
