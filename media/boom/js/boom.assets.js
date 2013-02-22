@@ -625,8 +625,8 @@ $.widget( 'boom.asset_browser', $.boom.browser, {
 
 				var rid = $( this ).attr( 'rel' );
 
-				$.boom.assets
-					._upload( { formData : [ { name: 'asset_id', value: rid } ] } )
+				self.
+					upload( { formData : [ { name: 'asset_id', value: rid } ] } )
 					.done( function( data ){
 						$.boom.history.refresh();
 					});
