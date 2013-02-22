@@ -6,16 +6,25 @@
 $.widget( 'boom.page', {
 
 	/** @lends boom.page */
+	
+	options : {
+		/**
+		@type number
+		@default 1
+		*/
+		homepageRid: 1,
+		/**
+		@type number
+		@default 0
+		*/
+		ajaxed: 0
+	},
 
 	/** @property */
 	save_button: $('#b-page-save'),
 
 	/** @property */
 	cancel_button: $('#b-page-cancel'),
-	
-	_create : function() {
-		this.init( this.options );
-	},
 
 	_init : function() {
 
@@ -26,15 +35,13 @@ $.widget( 'boom.page', {
 	},
 
 	/** @function */
-	init : function(config) {
+	_create : function(config) {
 
 		var self = this;
 		
 		$.boom.page = self;
 		
 		this.slot_edits = [];
-
-		this.config = $.extend({}, $.boom.config.page, config);
 
 		$.boom.util.cacheImages($.boom.config.cachePageImages);
 
@@ -77,7 +84,7 @@ $.widget( 'boom.page', {
 
 			self.editors = [];
 
-			$.boom.log('Page registered for editing: ' + self.config.rid);
+			$.boom.log('Page registered for editing: ' + self.options.rid);
 
 			$.getScript( $.boom.config.editor.path, function(){
 				self.loadPageEditor()
@@ -229,7 +236,7 @@ $.widget( 'boom.page', {
 
 					$.boom.log( 'stashing page edits' );
 
-					$.post( '/cms/page/stash/' + $.boom.page.config.id )
+					$.post( '/cms/page/stash/' + $.boom.page.options.id )
 					.done( function( response ){
 						$.boom.history.refresh();
 					});
@@ -273,7 +280,7 @@ $.widget( 'boom.page', {
 		}
 
 		var page =
-			$.boom.page.config,
+			$.boom.page.options,
 			title =
 				this.document.contents().find('#b-page-title').length ?
 				this.document.contents().find('#b-page-title').html().text().safeEscape() :
@@ -490,7 +497,7 @@ $.widget( 'boom.page', $.boom.page, {
 
 			this.load()
 				.done( function(){
-					if ( $.boom.page.config.writable ) self.bind();
+					if ( $.boom.page.options.writable ) self.bind();
 				});
 
 			return this;
@@ -614,7 +621,7 @@ $.widget( 'boom.page', $.boom.page, {
 						slot.type = 'text';
 					}
 					if (slot.type == 'text') {
-						config.toolbar = $.boom.page.config.editorOptions[ slot.name ] || [];
+						config.toolbar = $.boom.page.options.editorOptions[ slot.name ] || [];
 					}
 
 					$.boom.page.slots.edit(event, this, slot, config);
@@ -880,7 +887,7 @@ $.widget( 'boom.page', $.boom.page, {
 				items: self._build_menu( settings ),
 				itemclick : function(event){
 
-					if (!$.boom.page.config.id) {
+					if (!$.boom.page.options.id) {
 
 						$.boom.loader.hide('modal');
 
@@ -904,7 +911,7 @@ $.widget( 'boom.page', $.boom.page, {
 				items: self._build_menu( template_settings ),
 				itemclick : function(event){
 
-					if (!$.boom.page.config.id) {
+					if (!$.boom.page.options.id) {
 
 						$.boom.loader.hide('modal');
 
@@ -1017,7 +1024,7 @@ $.widget( 'boom.page', $.boom.page, {
 				$.boom.log( 'opening navigation settings' );
 
 				$.boom.dialog.open({
-					url: '/cms/page/settings/navigation/' + $.boom.page.config.id + '?vid=' + $.boom.page.config.vid,
+					url: '/cms/page/settings/navigation/' + $.boom.page.options.id + '?vid=' + $.boom.page.options.vid,
 					event: event,
 					// cache: true,
 					title: 'Navigation',
@@ -1034,7 +1041,7 @@ $.widget( 'boom.page', $.boom.page, {
 						Save: function(){
 
 							$.boom.page.settings.save(
-								'/cms/page/settings/navigation/' + $.boom.page.config.id,
+								'/cms/page/settings/navigation/' + $.boom.page.options.id,
 								$("#boom-form-pagesettings-navigation").serialize(),
 								"Page navigation settings saved."
 							);
@@ -1073,7 +1080,7 @@ $.widget( 'boom.page', $.boom.page, {
 			edit: function( event ) {
 
 				$.boom.dialog.open({
-					url: '/cms/page/settings/search/' + $.boom.page.config.id + '?vid=' + $.boom.page.config.vid,
+					url: '/cms/page/settings/search/' + $.boom.page.options.id + '?vid=' + $.boom.page.options.vid,
 					// cache: true,
 					event: event,
 					title: 'Search Settings',
@@ -1082,7 +1089,7 @@ $.widget( 'boom.page', $.boom.page, {
 						Save: function(){
 
 							$.boom.page.settings.save(
-								'/cms/page/settings/search/' + $.boom.page.config.id,
+								'/cms/page/settings/search/' + $.boom.page.options.id,
 								$("#boom-form-pagesettings-search").serialize(),
 								"Page search settings saved."
 							);
@@ -1118,7 +1125,7 @@ $.widget( 'boom.page', $.boom.page, {
 				var self = this;
 
 				$.boom.dialog.open({
-					url: '/cms/tags/page/list/' + $.boom.page.config.id,
+					url: '/cms/tags/page/list/' + $.boom.page.options.id,
 					event: event,
 					// cache: true,
 					title: 'Page tags',
@@ -1131,7 +1138,7 @@ $.widget( 'boom.page', $.boom.page, {
 					open: function() {
 						$('#b-tags').tagger({
 							type: 'page',
-							id: $.boom.page.config.id
+							id: $.boom.page.options.id
 						});
 					}
 				});
@@ -1162,7 +1169,7 @@ $.widget( 'boom.page', $.boom.page, {
 				var self = this;
 
 				$.boom.dialog.open({
-					url: '/cms/page/urls/list/' + $.boom.page.config.id,
+					url: '/cms/page/urls/list/' + $.boom.page.options.id,
 					event: event,
 					// cache: true,
 					title: 'URLs',
@@ -1170,7 +1177,7 @@ $.widget( 'boom.page', $.boom.page, {
 					buttons: {
 						Add: function( event ){
 							$.boom.dialog.open({
-								url: '/cms/page/urls/add/' + $.boom.page.config.id,
+								url: '/cms/page/urls/add/' + $.boom.page.options.id,
 								event: event,
 								title: 'Add URL',
 								width: 300,
@@ -1208,7 +1215,7 @@ $.widget( 'boom.page', $.boom.page, {
 					redirect = $url.find('.b-urls-redirect').is(':checked')? 1: 0;
 					primary = $url.find('.b-urls-primary').is(':checked')? 1 : 0;
 
-					$.post('/cms/page/urls/save/' + $.boom.page.config.id, {
+					$.post('/cms/page/urls/save/' + $.boom.page.options.id, {
 						url_id :  $url.attr('data-id'),
 						redirect : redirect,
 						primary : primary
@@ -1248,7 +1255,7 @@ $.widget( 'boom.page', $.boom.page, {
 				$.boom.loader.show();
 
 				$
-					.post('/cms/page/urls/add/' + $.boom.page.config.id, form.serialize())
+					.post('/cms/page/urls/add/' + $.boom.page.options.id, form.serialize())
 					.done( function(response){
 
 						$.boom.loader.hide();
@@ -1260,7 +1267,7 @@ $.widget( 'boom.page', $.boom.page, {
 							$.boom.growl.show('Url added.');
 							$( '#b-pagesettings-urls' )
 								.parent()
-								.load( '/cms/page/urls/list/' + $.boom.page.config.id, function(){
+								.load( '/cms/page/urls/list/' + $.boom.page.options.id, function(){
 									$(this).ui();
 									self.bind();
 								});
@@ -1285,7 +1292,7 @@ $.widget( 'boom.page', $.boom.page, {
 
 				var move_url = new $.Deferred();
 				var move_dialog;
-				var form_url = '/cms/page/urls/move/' + $.boom.page.config.id + '?url=' + new_url;
+				var form_url = '/cms/page/urls/move/' + $.boom.page.options.id + '?url=' + new_url;
 
 				// URL is being used on another page.
 				// Ask if they want to move it.
@@ -1322,7 +1329,7 @@ $.widget( 'boom.page', $.boom.page, {
 
 					$
 						.post(
-							'/cms/page/urls/delete/' + $.boom.page.config.id,
+							'/cms/page/urls/delete/' + $.boom.page.options.id,
 						 	{
 								location: $.trim( item.attr( 'data-url' ) )
 							}
@@ -1357,10 +1364,10 @@ $.widget( 'boom.page', $.boom.page, {
 
 			/** @function */
 			edit: function( event ){
-				var url = '/cms/page/version/feature/' + $.boom.page.config.id;
+				var url = '/cms/page/version/feature/' + $.boom.page.options.id;
 
 				$.boom.dialog.open({
-					url: url + '?vid=' + $.boom.page.config.vid,
+					url: url + '?vid=' + $.boom.page.options.vid,
 					event: event,
 					title: 'Page feature image',
 					width: 300,
@@ -1438,10 +1445,10 @@ $.widget( 'boom.page', $.boom.page, {
 			/** @function */
 			edit: function( event ){
 
-				var url = '/cms/page/version/template/' + $.boom.page.config.id;
+				var url = '/cms/page/version/template/' + $.boom.page.options.id;
 
 				$.boom.dialog.open({
-					url: url + '?vid=' + $.boom.page.config.vid,
+					url: url + '?vid=' + $.boom.page.options.vid,
 					event: event,
 					title: 'Page template',
 					width: 300,
@@ -1488,7 +1495,7 @@ $.widget( 'boom.page', $.boom.page, {
 			/** @function */
 			edit: function( event ){
 
-				var url = '/cms/page/version/embargo/' + $.boom.page.config.id;
+				var url = '/cms/page/version/embargo/' + $.boom.page.options.id;
 
 				$.boom.dialog.open({
 					url: url,
@@ -1545,10 +1552,10 @@ $.widget( 'boom.page', $.boom.page, {
 			/** @function */
 			edit: function( event ){
 
-				var url = '/cms/page/settings/visibility/' + $.boom.page.config.id;
+				var url = '/cms/page/settings/visibility/' + $.boom.page.options.id;
 
 				$.boom.dialog.open({
-					url: url + '?vid=' + $.boom.page.config.vid,
+					url: url + '?vid=' + $.boom.page.options.vid,
 					event: event,
 					// cache: true,
 					title: 'Page visibility',
@@ -1619,9 +1626,9 @@ $.widget( 'boom.page', $.boom.page, {
 			edit: function( event ){
 				// TODO: fix this old page versions code.
 
-				var url = '/cms/page/revisions/' + $.boom.page.config.id;
+				var url = '/cms/page/revisions/' + $.boom.page.options.id;
 				$.boom.dialog.open({
-					url:  url + '?vid=' + $.boom.page.config.vid,
+					url:  url + '?vid=' + $.boom.page.options.vid,
 					title: 'Page versions',
 					width: 440,
 					buttons: {
@@ -1656,7 +1663,7 @@ $.widget( 'boom.page', $.boom.page, {
 
 							$.boom.loader.show();
 
-							$.get( '/cms/page/publish/' + $.boom.page.config.id, {vid: vid}, function(){
+							$.get( '/cms/page/publish/' + $.boom.page.options.id, {vid: vid}, function(){
 								$.boom.loader.hide();
 
 								$.boom.dialog.destroy( dialog );
@@ -1689,7 +1696,7 @@ $.widget( 'boom.page', $.boom.page, {
 			edit: function( event ){
 
 				$.boom.dialog.open({
-					url: '/cms/page/settings/children/' + $.boom.page.config.id + '?vid=' + $.boom.page.config.vid,
+					url: '/cms/page/settings/children/' + $.boom.page.options.id + '?vid=' + $.boom.page.options.vid,
 					event: event,
 					// cache: true,
 					title: 'Child page settings',
@@ -1698,7 +1705,7 @@ $.widget( 'boom.page', $.boom.page, {
 						Save: function(){
 
 							$.boom.page.settings.save(
-								'/cms/page/settings/children/' + $.boom.page.config.id,
+								'/cms/page/settings/children/' + $.boom.page.options.id,
 								$("#boom-form-pagesettings-childsettings").serialize(),
 								"Child page settings saved."
 							);
@@ -1732,7 +1739,7 @@ $.widget( 'boom.page', $.boom.page, {
 			edit: function( event ){
 
 				$.boom.dialog.open({
-					url: '/cms/page/settings/admin/' + $.boom.page.config.id + '?vid=' + $.boom.page.config.vid,
+					url: '/cms/page/settings/admin/' + $.boom.page.options.id + '?vid=' + $.boom.page.options.vid,
 					event: event,
 					// cache: true,
 					title: 'Admin settings',
@@ -1741,7 +1748,7 @@ $.widget( 'boom.page', $.boom.page, {
 						Save: function(){
 
 							$.boom.page.settings.save(
-								'/cms/page/settings/admin/' + $.boom.page.config.id,
+								'/cms/page/settings/admin/' + $.boom.page.options.id,
 								$("#boom-form-pagesettings-adminsettings").serialize(),
 								"Page admin settings saved."
 							);

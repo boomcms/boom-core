@@ -88,7 +88,7 @@ $.widget('ui.chunk', {
 	_preview_url : function() {
 		return this.options.urlPrefix +
 		'/' + this.options.slot.type +
-		 '/preview/' + $.boom.page.config.id;
+		 '/preview/' + $.boom.page.options.id;
 	},
 	
 	/**
@@ -298,7 +298,7 @@ $.widget('ui.chunkLinkset', $.ui.chunk, {
 		});
 
 		this.dialog = $.boom.dialog.open({
-			url: this.options.urlPrefix + '/linkset/edit/' + $.boom.page.config.id,
+			url: this.options.urlPrefix + '/linkset/edit/' + $.boom.page.options.id,
 			title: 'Edit linkset',
 			id: self.element[0].id + '-boom-dialog',
 			width: 400,
@@ -521,7 +521,7 @@ $.widget('ui.chunkFeature', $.ui.chunk, {
 		var self = this;
 
 		this.dialog = $.boom.dialog.open({
-			url: this.options.urlPrefix + '/feature/edit/' + $.boom.page.config.id,
+			url: this.options.urlPrefix + '/feature/edit/' + $.boom.page.options.id,
 			width: 400,
 			id: self.element[0].id + '-boom-dialog',
 			// cache: true,
@@ -660,7 +660,7 @@ $.widget('ui.chunkAsset', $.ui.chunk, {
 
 			self.asset.asset_id = rid;
 			return $.boom.links.picker( {
-				page_rid: $.boom.page.config.id,
+				page_rid: $.boom.page.options.id,
 				title: 'Add a link'
 			});
 		})
