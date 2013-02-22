@@ -54,6 +54,7 @@ class Boom_Controller_Cms_Assets_Upload extends Controller_Cms_Assets
 
 				// Set the title of the asset to the filename without the file extension.
 				$this->asset->title = pathinfo($files['name'][$i], PATHINFO_FILENAME);
+				$this->asset->filename = $files['name'][$i];
 
 				// Create the asset from the temporary file.
 				$this->asset->create_from_file($filename);

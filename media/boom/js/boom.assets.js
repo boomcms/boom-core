@@ -123,7 +123,7 @@ $.extend($.boom.asset, {
 
 		this.rid = rid;
 
-		var url = '/cms/assets/view/' + rid;
+		var url = '/cms/asset/view/' + rid;
 		
 		return $.get( url );
 	},

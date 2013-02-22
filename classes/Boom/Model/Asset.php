@@ -65,9 +65,8 @@ class Boom_Model_Asset extends Model_Taggable
 	 */
 	public function get_file_info($filepath)
 	{
-		// Get the filename, filesize, and type and update the corresponding Model_Asset properties.
+		// Get the filesize, and type and update the corresponding Model_Asset properties.
 		$this->values(array(
-			'filename'		=>	basename($filepath),
 			'filesize'		=>	filesize($filepath),
 			'type'		=>	Boom_Asset::type_from_mime(File::mime($filepath)),
 		));
