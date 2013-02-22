@@ -72,7 +72,7 @@
 	<script type="text/javascript">
 		//<![CDATA[
 		(function($){
-			$.boom.init('assets');
+			$.boom.init();
 			
 			$( 'body' ).browser_asset({
 				allowedUploadTypes:[ '<?= implode('\', \'', Boom_Asset::$allowed_extensions)?>' ]

@@ -31,12 +31,7 @@
 		//<![CDATA[
 		(function($){
 
-			$.boom.init('sites', {
-				person: {
-					rid: <?= $person->id?>,
-					name: "<?= $person->name?>"
-				}
-			});
+			$.boom.init();
 
 			$.boom.page.init({
 				id: <?= $page->id ?>,
