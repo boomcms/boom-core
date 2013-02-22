@@ -422,11 +422,11 @@ $.widget( 'boom.asset_browser', $.boom.browser, {
 					}
 				})
 				.done( function( data ){
-					$.boom.assets.tag.get( 0 )
+					$.boom.history.load( self.options.defaultRoute )
 					.done( function(){
 						$.boom.log( 'asset list updated' );
-						for ( i in data.result.rids ){
-							$( '#asset-list-' + data.result.rids[ i ] ).click();
+						for ( i in data.result ){
+							$( '#asset-list-' + data.result[ i ] ).click();
 						}
 					});
 					
@@ -436,7 +436,7 @@ $.widget( 'boom.asset_browser', $.boom.browser, {
 					
 					for ( i in tags ) {
 						$.post(
-							'/cms/tags/asset/add/' + data.result.rids.join( '-' ),
+							'/cms/tags/asset/add/' + data.result.join( '-' ),
 							{
 								tag : tags[i]
 							}

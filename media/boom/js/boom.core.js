@@ -332,9 +332,11 @@ $.extend($.boom, {
 
 			this._setHash(this.current_hash);
 
-			this.hashCallback(this.current_hash);
+			var promise = this.hashCallback(this.current_hash);
 
 			this._checkHistory();
+			
+			return promise;
 		},
 
 		/**

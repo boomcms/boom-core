@@ -214,7 +214,7 @@ $.widget( 'boom.browser', {
 					
 					$.boom.loader.show();
 					
-					self.url_map[ item ]
+					return self.url_map[ item ]
 						.get( rid )
 						.done( function( response ){
 							
