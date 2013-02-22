@@ -351,10 +351,10 @@ $.extend($.boom.assets.tag,  {
 /**
 * User interface for browsing and managing assets.
 * @class
-* @name boom.browser_asset
+* @name $.boom.browser_asset
 */
 $.widget( 'boom.browser_asset', $.boom.browser, {
-	/** @lends boom.browser_asset */
+	/** @lends $.boom.browser_asset */
 	
 	/**
 	map url fragments to objects

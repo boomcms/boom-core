@@ -65,11 +65,11 @@ boom.plugins.js
 
 	/**
 	@class
-	@name ui.infiniteScroll
-	@extends ui
+	@name $.ui.infiniteScroll
+	@extends $.ui
 	*/
 	$.widget('ui.infiniteScroll', {
-		/** @lends ui.infiniteScroll */
+		/** @lends $.ui.infiniteScroll */
 
 		/**
 		@property
@@ -222,11 +222,11 @@ boom.plugins.js
 
 	/**
 	@class
-	@name ui.splitbutton
+	@name $.ui.splitbutton
 	@extends ui
 	*/
 	$.widget('ui.splitbutton', {
-		/** @lends ui.splitbutton */
+		/** @lends $.ui.splitbutton */
 		
 		options: {
 			width: 'auto',

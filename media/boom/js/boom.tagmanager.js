@@ -1,10 +1,10 @@
 /**
 * User interface for browsing and managing content items, eg. assets and people.
 * @class
-* @name boom.browser
+* @name $.boom.browser
 */
 $.widget( 'boom.browser', {
-	/** @lends boom.browser */
+	/** @lends $.boom.browser */
 	
 	/**
 	default config

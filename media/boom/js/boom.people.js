@@ -417,10 +417,10 @@ $.extend($.boom.people.group,  {
 /**
 * User interface for browsing and managing people.
 * @class
-* @name boom.browser_people
+* @name $.boom.browser_people
 */
 $.widget( 'boom.browser_people', $.boom.browser, {
-	/** @lends boom.browser_people */
+	/** @lends $.boom.browser_people */
 	
 	/**
 	map url fragments to objects
