@@ -1,4 +1,364 @@
 /**
+@class
+*/
+$.boom.asset = {};
+
+/**
+@class
+*/
+$.boom.assets = {};
+
+/**
+@class
+*/
+$.boom.assets.tag = {};
+
+$.extend($.boom.assets, {
+	/** @lends $.boom.assets */
+
+	/** @property */
+	asset_browser: {},
+
+	/**
+	Open an asset manager in a dialog box.
+	@function
+	@returns {Promise} promise which resolves with an asset RID.
+	*/
+	picker : function( opts ){
+		$.boom.log( 'opening an asset manager' );
+
+		var self = this;
+		var complete = new $.Deferred();
+		var browser;
+
+		var cleanup = function(){
+			top.location.hash = '';
+			$.boom.dialog.destroy( self.asset_browser );
+		};
+
+		var default_options = {
+			url: '/cms/assets/manager/',
+			iframe: false,
+			width: 1000,
+			height: 500,
+			title: 'Select an asset',
+			cache: false,
+			buttons: {
+				Cancel: function() {
+					cleanup();
+					( opts.deferred ) && opts.deferred.reject();
+					return false;
+				},
+				'Okay': function() {
+					var asset_id = browser.asset_browser( 'get_asset' );
+					cleanup();
+					( opts.deferred ) && opts.deferred.resolve();
+					complete.resolve( asset_id );
+					return false;
+				}
+			},
+			open: function(){
+				$.boom.log( 'dialog open' );
+				var button = $('<button />')
+				.addClass('ui-helper-left');
+
+				if ( opts.asset_rid && opts.asset_rid > 0 ) {
+
+					button
+					.text('Remove')
+					.button()
+					.click(function(){
+						complete.reject();
+						cleanup();
+					});
+
+				} else {
+
+					button
+						.text( 'Upload' )
+						.button()
+						.click( function() {
+							browser.asset_browser( 'uplaod' );
+						});
+				}
+				$(this).dialog('widget')
+					.find('.ui-dialog-buttonpane')
+					.prepend( button );
+			},
+			onLoad: function(){
+				
+				browser = $( '#boom-tagmanager' ).asset_browser();
+
+				$.when( browser.asset_browser( 'browse' ) )
+				.progress( function( rid ){
+					browser.asset_browser( 'edit', rid );
+				});
+
+				// browser widget pushes a default URL to the history stack.
+				// need to override that if an asset is already selected
+				// by setting a fragment identifier on the parent window.
+				if ( opts.asset_rid && opts.asset_rid > 0 ) {
+					$.boom.log( 'getting asset ' + opts.asset_rid );
+					browser.asset_browser( 'edit', opts.asset_rid );
+				}
+			}
+		};
+
+		opts = $.extend( default_options, opts );
+
+		self.asset_browser = $.boom.dialog.open( opts );
+
+		return complete;
+	}
+});
+
+$.extend($.boom.asset, {
+	/** @lends $.boom.asset */
+
+	/** @function */
+	get : function(rid){
+		$.boom.log( 'boom.items.asset.get ' + rid );
+
+		var self = this;
+
+		this.rid = rid;
+
+		var url = '/cms/assets/view/' + rid;
+		
+		return $.get( url );
+	},
+	
+	/** @function */
+	select : function( rid, selected ){
+
+		var thumb = '#asset-thumb-' + rid;
+		var list = '#asset-list-' + rid;
+
+		var checkbox = $( thumb );
+		checkbox.prop( 'checked', selected );
+
+		if ( selected ) {
+
+			checkbox.attr('checked', 'checked');
+
+			checkbox.parents( 'div.thumb' ).addClass( 'ui-state-active' );
+			$( list ).parents( 'tr' ).addClass( 'ui-state-active' );
+
+		} else {
+
+			checkbox.removeAttr('checked');
+
+			checkbox.parents( 'div.thumb' ).removeClass( 'ui-state-active' );
+			$( list ).parents( 'tr' ).removeClass( 'ui-state-active' );
+		}
+		
+	},
+
+	/** @function */
+	bind : function( context ){
+		var self = this;
+		var rids = $.boom.history.getHash().split('/')[1].split('-');
+		
+		// Make the tag editor work.
+		$('#b-tags', context ).tagger({
+			type: 'asset',
+			id: this.rid
+		});
+
+		if ( rids.length <= 1 ) {
+
+			$( '#boom-tagmanager-save-all', context ).hide();
+		} else {
+
+			$( '#boom-tagmanager-save-all', context ).unbind( 'click' ).click(function(){
+
+				$( '.boom-tagmanager-asset-save' ).trigger( 'save' );
+			});
+		}
+
+		$('.boom-tabs', context ).tabs('option', 'active', 1);
+
+		$.boom.dialog.bind({
+			image: $('.boom-asset-preview',context)
+		});
+
+		$('#boom-button-asset-link-add', context )
+			.on( 'click', function(event){
+				event.preventDefault();
+
+				var page_rid = $( '#link_rid' ).val();
+
+				$.boom.links
+					.picker( {
+						page_rid: page_rid
+					})
+					.done( function( link ){
+						$( '#link' ).val( link.url );
+						$( '#link_rid' ).val( link.rid );
+						$( '#link_url' ).val( link.url );
+					});
+			});
+
+		$('#boom-button-asset-tags-delete', context ).click(function(){
+			var tags = [];
+
+			$( this )
+				.parent()
+				.find( '.boom-tree .ui-state-active' )
+				.each( function(i){
+
+					var tag =
+						$( this )
+							.attr('href')
+							.split( '/' );
+					tags.push( tag[1] );
+				});
+
+			$.boom.loader.show();
+
+			$.post('/cms/assets/remove_tags/' + $('#asset_id').val(), {tags:  tags})
+			.done( function(){
+
+				$.boom.loader.hide();
+				$.boom.history.refresh();
+			});
+
+			return false;
+		});
+
+		$('.boom-tagmanager-asset-save', context )
+			.bind('save', function( event ){
+
+				var rid = $( this ).attr( 'rel' );
+				var data = $( this ).closest( 'form' ).serialize();
+
+				$.boom.loader.show();
+
+				$.post('/cms/assets/save/' + rid, data)
+				.done( function(){
+
+					$.boom.loader.hide();
+				});
+
+			})
+			.click(function(){
+
+				$( this ).trigger( 'save' );
+			});
+
+		$('.boom-tagmanager-asset-download', context ).click(function( event ){
+
+			var rid = $( this ).attr( 'rel' );
+
+			window.location = '/cms/assets/download?assets=' + rid;
+		});
+
+		$('.boom-tagmanager-asset-delete', context ).click(function( event ){
+
+			var rid = $( this ).attr( 'rel' );
+			var delete_asset = new $.Deferred();
+
+			delete_asset.done( function(){
+
+				$.boom.loader.show();
+
+				var items = $.boom.history.getHash().split('/')[1].split(',');
+
+				$.post('/cms/assets/delete', { assets: rid })
+				.done( function(){
+
+					$.boom.loader.hide();
+
+					if ( items.length > 1 ){
+
+						var segments =
+							$.boom.history.getHash().split('/')[0] +
+							'/' +
+							$.grep(items, function(val){
+
+								return val != rid;
+
+							}).join('-');
+
+						$.boom.history.load( segments );
+
+					} else {
+
+						//self.browser.defaultRoute();
+					}
+				});
+			});
+
+			$.boom.dialog.open({
+				width: 350,
+				msg: 'Are you sure you want to delete this asset?',
+				title: 'Please confirm',
+				deferred: delete_asset
+			});
+		});
+
+		$('.boom-tagmanager-asset-replace', context ).click(function( event ){
+
+			var rid = $( this ).attr( 'rel' );
+			
+			$.boom.assets
+				._upload( { formData : [ { name: 'asset_id', value: rid } ] } )
+				.done( function( data ){
+					$.boom.history.refresh();
+				});
+
+		});
+
+		$( '.boom-tagmanager-asset-back', context ).on( 'click', function( event ){
+			event.preventDefault();
+			$.boom.history.load( 'tag/' + $.boom.assets.tag.rid );
+
+		});
+	}
+});
+
+$.extend($.boom.assets.tag,  {
+	/** @lends $.boom.assets.tag */
+
+	rid: 0,
+
+	filters: {},
+
+	/** @function */
+	get : function( rid ){
+
+		$.boom.log( 'get tag ' + rid );
+
+		var self = this;
+		var options = this.options;
+
+		this.rid = rid;
+
+		params =
+			'tag=' + rid + '&' +
+			'perpage=' + options.perpage + '&' +
+			'sortby=' + options.sortby;
+
+		for ( filter in self.filters ) {
+			params += '&' + filter + '=' + self.filters[ filter ];
+		}
+
+		var url =
+			'/cms/' + options.type + '/list'
+			+ '?' + params;
+
+		options.url = url;
+		
+		return $.get( url );
+	},
+	
+	bind : function( context ) {
+		
+		$('.b-items-thumbs .thumb', context ).captions($.boom.config.captions);
+	}
+});
+
+/**
 * User interface for browsing and managing assets.
 * @class
 * @name boom.asset_browser
@@ -6,12 +366,18 @@
 $.widget( 'boom.asset_browser', $.boom.browser, {
 	/** @lends boom.asset_browser */
 	
+	/**
+	map url fragments to objects
+	@property
+	*/
+	url_map : {
+		asset: $.boom.asset,
+		tag: $.boom.assets.tag
+	},
+	
 	options: {
 		sortby: 'last_modified',
 		order: 'desc',
-		basetagRid: 1,
-		defaultTagRid: 0,
-		edition: 'cms',
 		type: 'assets',
 		treeConfig : {
 			showEdit: true,
@@ -29,12 +395,11 @@ $.widget( 'boom.asset_browser', $.boom.browser, {
 	
 	_create : function(){
 		
+		$.boom.log( 'asset browser init' );
+		
 		var self = this;
 		
-		self.items = {
-			asset: $.boom.asset,
-			tag: $.boom.assets.tag
-		};
+		this.tag = this.url_map.tag;
 		
 		$.boom.browser.prototype._create.call( this );
 
@@ -396,364 +761,4 @@ $.widget( 'boom.asset_browser', $.boom.browser, {
 		return uploaded;
 	}
 	
-});
-
-/**
-@class
-*/
-$.boom.assets = {};
-
-$.extend($.boom.assets, {
-	/** @lends $.boom.assets */
-
-	/** @property */
-	asset_browser: {},
-
-	/**
-	Open an asset manager in a dialog box.
-	@function
-	@returns {Promise} promise which resolves with an asset RID.
-	*/
-	picker : function( opts ){
-		$.boom.log( 'opening an asset manager' );
-
-		var self = this;
-		var complete = new $.Deferred();
-		var browser;
-
-		var cleanup = function(){
-			top.location.hash = '';
-			$.boom.dialog.destroy( self.asset_browser );
-		};
-
-		var default_options = {
-			url: '/cms/assets/manager/',
-			iframe: false,
-			width: 1000,
-			height: 500,
-			title: 'Select an asset',
-			cache: false,
-			buttons: {
-				Cancel: function() {
-					cleanup();
-					( opts.deferred ) && opts.deferred.reject();
-					return false;
-				},
-				'Okay': function() {
-					var asset_id = browser.asset_browser( 'get_asset' );
-					cleanup();
-					( opts.deferred ) && opts.deferred.resolve();
-					complete.resolve( asset_id );
-					return false;
-				}
-			},
-			open: function(){
-				$.boom.log( 'dialog open' );
-				var button = $('<button />')
-				.addClass('ui-helper-left');
-
-				if ( opts.asset_rid && opts.asset_rid > 0 ) {
-
-					button
-					.text('Remove')
-					.button()
-					.click(function(){
-						complete.reject();
-						cleanup();
-					});
-
-				} else {
-
-					button
-						.text( 'Upload' )
-						.button()
-						.click( function() {
-							browser.asset_browser( 'uplaod' );
-						});
-				}
-				$(this).dialog('widget')
-					.find('.ui-dialog-buttonpane')
-					.prepend( button );
-			},
-			onLoad: function(){
-				
-				browser = $( '#boom-tagmanager' ).asset_browser();
-
-				$.when( browser.asset_browser( 'browse' ) )
-				.progress( function( rid ){
-					browser.asset_browser( 'edit', rid );
-				});
-
-				// browser widget pushes a default URL to the history stack.
-				// need to override that if an asset is already selected
-				// by setting a fragment identifier on the parent window.
-				if ( opts.asset_rid && opts.asset_rid > 0 ) {
-					$.boom.log( 'getting asset ' + opts.asset_rid );
-					browser.asset_browser( 'edit', opts.asset_rid );
-				}
-			}
-		};
-
-		opts = $.extend( default_options, opts );
-
-		self.asset_browser = $.boom.dialog.open( opts );
-
-		return complete;
-	}
-});
-
-/**
-@class
-*/
-$.boom.asset = {};
-
-$.extend($.boom.asset, {
-	/** @lends $.boom.asset */
-
-	/** @function */
-	get : function(rid){
-		$.boom.log( 'boom.items.asset.get ' + rid );
-
-		var self = this;
-
-		this.rid = rid;
-
-		var url = '/cms/assets/view/' + rid;
-		
-		return $.get( url );
-	},
-	
-	/** @function */
-	select : function( rid, selected ){
-
-		var thumb = '#asset-thumb-' + rid;
-		var list = '#asset-list-' + rid;
-
-		var checkbox = $( thumb );
-		checkbox.prop( 'checked', selected );
-
-		if ( selected ) {
-
-			checkbox.attr('checked', 'checked');
-
-			checkbox.parents( 'div.thumb' ).addClass( 'ui-state-active' );
-			$( list ).parents( 'tr' ).addClass( 'ui-state-active' );
-
-		} else {
-
-			checkbox.removeAttr('checked');
-
-			checkbox.parents( 'div.thumb' ).removeClass( 'ui-state-active' );
-			$( list ).parents( 'tr' ).removeClass( 'ui-state-active' );
-		}
-		
-	},
-
-	/** @function */
-	bind : function( context ){
-		var self = this;
-		var rids = $.boom.history.getHash().split('/')[1].split('-');
-		
-		// Make the tag editor work.
-		$('#b-tags', context ).tagger({
-			type: 'asset',
-			id: this.rid
-		});
-
-		if ( rids.length <= 1 ) {
-
-			$( '#boom-tagmanager-save-all', context ).hide();
-		} else {
-
-			$( '#boom-tagmanager-save-all', context ).unbind( 'click' ).click(function(){
-
-				$( '.boom-tagmanager-asset-save' ).trigger( 'save' );
-			});
-		}
-
-		$('.boom-tabs', context ).tabs('option', 'active', 1);
-
-		$.boom.dialog.bind({
-			image: $('.boom-asset-preview',context)
-		});
-
-		$('#boom-button-asset-link-add', context )
-			.on( 'click', function(event){
-				event.preventDefault();
-
-				var page_rid = $( '#link_rid' ).val();
-
-				$.boom.links
-					.picker( {
-						page_rid: page_rid
-					})
-					.done( function( link ){
-						$( '#link' ).val( link.url );
-						$( '#link_rid' ).val( link.rid );
-						$( '#link_url' ).val( link.url );
-					});
-			});
-
-		$('#boom-button-asset-tags-delete', context ).click(function(){
-			var tags = [];
-
-			$( this )
-				.parent()
-				.find( '.boom-tree .ui-state-active' )
-				.each( function(i){
-
-					var tag =
-						$( this )
-							.attr('href')
-							.split( '/' );
-					tags.push( tag[1] );
-				});
-
-			$.boom.loader.show();
-
-			$.post('/cms/assets/remove_tags/' + $('#asset_id').val(), {tags:  tags})
-			.done( function(){
-
-				$.boom.loader.hide();
-				$.boom.history.refresh();
-			});
-
-			return false;
-		});
-
-		$('.boom-tagmanager-asset-save', context )
-			.bind('save', function( event ){
-
-				var rid = $( this ).attr( 'rel' );
-				var data = $( this ).closest( 'form' ).serialize();
-
-				$.boom.loader.show();
-
-				$.post('/cms/assets/save/' + rid, data)
-				.done( function(){
-
-					$.boom.loader.hide();
-				});
-
-			})
-			.click(function(){
-
-				$( this ).trigger( 'save' );
-			});
-
-		$('.boom-tagmanager-asset-download', context ).click(function( event ){
-
-			var rid = $( this ).attr( 'rel' );
-
-			window.location = '/cms/assets/download?assets=' + rid;
-		});
-
-		$('.boom-tagmanager-asset-delete', context ).click(function( event ){
-
-			var rid = $( this ).attr( 'rel' );
-			var delete_asset = new $.Deferred();
-
-			delete_asset.done( function(){
-
-				$.boom.loader.show();
-
-				var items = $.boom.history.getHash().split('/')[1].split(',');
-
-				$.post('/cms/assets/delete', { assets: rid })
-				.done( function(){
-
-					$.boom.loader.hide();
-
-					if ( items.length > 1 ){
-
-						var segments =
-							$.boom.history.getHash().split('/')[0] +
-							'/' +
-							$.grep(items, function(val){
-
-								return val != rid;
-
-							}).join('-');
-
-						$.boom.history.load( segments );
-
-					} else {
-
-						//self.browser.defaultRoute();
-					}
-				});
-			});
-
-			$.boom.dialog.open({
-				width: 350,
-				msg: 'Are you sure you want to delete this asset?',
-				title: 'Please confirm',
-				deferred: delete_asset
-			});
-		});
-
-		$('.boom-tagmanager-asset-replace', context ).click(function( event ){
-
-			var rid = $( this ).attr( 'rel' );
-			
-			$.boom.assets
-				._upload( { formData : [ { name: 'asset_id', value: rid } ] } )
-				.done( function( data ){
-					$.boom.history.refresh();
-				});
-
-		});
-
-		$( '.boom-tagmanager-asset-back', context ).on( 'click', function( event ){
-			event.preventDefault();
-			$.boom.history.load( 'tag/' + $.boom.assets.tag.rid );
-
-		});
-	}
-});
-
-/**
-@class
-*/
-$.boom.assets.tag = {};
-
-$.extend($.boom.assets.tag,  {
-	/** @lends $.boom.assets.tag */
-
-	rid: 0,
-
-	filters: {},
-
-	/** @function */
-	get : function( rid ){
-
-		$.boom.log( 'get tag ' + rid );
-
-		var self = this;
-		var options = this.options;
-
-		this.rid = rid;
-
-		params =
-			'tag=' + rid + '&' +
-			'perpage=' + options.perpage + '&' +
-			'sortby=' + options.sortby;
-
-		for ( filter in self.filters ) {
-			params += '&' + filter + '=' + self.filters[ filter ];
-		}
-
-		var url =
-			'/cms/' + options.type + '/list'
-			+ '?' + params;
-
-		options.url = url;
-		
-		return $.get( url );
-	},
-	
-	bind : function( context ) {
-		
-		$('.b-items-thumbs .thumb', context ).captions($.boom.config.captions);
-	}
 });

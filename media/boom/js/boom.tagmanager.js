@@ -13,11 +13,7 @@ $.widget( 'boom.browser', {
 	options : {
 		sortby: 'audit_time',
 		order: 'desc',
-		withinModal: false,
-		edition: 'cms', 
-		type: 'tag_manager',
-		basetagRid: 0,
-		defaultTagRid: 0, 
+		defaultRoute: 'tag/0', 
 		selected: [],
 		types: [],
 		page: 1,
@@ -39,12 +35,12 @@ $.widget( 'boom.browser', {
 		
 		$.boom.log( 'content browser init' );
 		
-		this.items.tag.options = {
+		self._set_tag_options({
 			perpage: this.options.perpage,
 			sortby : this.options.sortby,
 			order : this.options.order,
 			type: this.options.type
-		};
+		});
 
 		this.main_panel = $('.b-items-rightpane');
 		this.sidebar = $('.b-items-leftpane');
@@ -56,8 +52,8 @@ $.widget( 'boom.browser', {
 		
 		$( '#tag_all' )
 			.on( 'click', function( event ){
-				self.items.tag.filters = {};
-				$.boom.history.load( 'tag/0' );
+				self.tag.filters = {};
+				$.boom.history.load( self.options.defaultRoute );
 				
 				$(this)
 					.parent()
@@ -68,7 +64,7 @@ $.widget( 'boom.browser', {
 				return false;
 			});
 		
-		self.items.tag.item_selected = function( $item ){
+		var item_selected = function( $item ){
 			$( '#tag_all' ).removeClass( 'ui-state-active' );
 			
 			$.boom.log( 'adding active class' );
@@ -81,7 +77,7 @@ $.widget( 'boom.browser', {
 				.addClass( 'ui-state-active' );
 		};
 		
-		self.items.tag.multi_select = function( $item ){
+		var multi_select = function( $item ){
 			var tags = [];
 			
 			$item.toggleClass( 'ui-state-active' );
@@ -110,25 +106,25 @@ $.widget( 'boom.browser', {
 			onClick: function(event){
 				$this = $(this);
 
-				var tags = self.items.tag.multi_select( $this );
+				var tags = multi_select( $this );
 
-				self.items.tag.filters = {};
+				self.tag.filters = {};
 				
 				for ( t in tags ) {
 					var tag = tags[ t ];
 					
 					switch( tag[ 0 ] ) {
 						
-						case '#tag':
-							self.items.tag.rid = tag[ 1 ];
+						case '#tag': case '#group':
+							self.tag.rid = tag[ 1 ];
 							break;
 						default:
 							var name = tag[ 0 ].replace( '#', '' );
-							self.items.tag.filters[ name ] = tag[ 1 ];
+							self.tag.filters[ name ] = tag[ 1 ];
 					}
 				}
 
-				$.boom.history.load( 'tag/' + self.items.tag.rid );
+				$.boom.history.load( 'tag/' + self.tag.rid );
 				return false;
 			}
 			
@@ -140,37 +136,34 @@ $.widget( 'boom.browser', {
 		var editableTreeConfig = $.extend({}, treeConfig, {
 			maxSelected: 1,
 			toggleSelected: false,
-			preventDefault: true,
+			preventDefault: false,
 			onClick: function(event){
 				$this = $(this);
-				self.items.tag.item_selected( $this );
+				item_selected( $this );
 				
-				self.items.tag.rid = 
+				self.tag.rid = 
 					$this
 						.attr( 'href' )
 						.split('/')
 						[1];
 
-				$.boom.history.load( 'tag/' + self.items.tag.rid );
-				return false;
+				//$.boom.history.load( 'tag/' + self.tag.rid );
+				//return false;
 			}
 		});
 		
-		if (self.options.edition == 'cms')
-		{
-			editableTreeConfig = $.extend({}, editableTreeConfig, {
-				showRemove: true,
-				showEdit: true,
-				onEditClick: function(event){
-					
-					self.items.tag.edit(event, self);
-				},
-				onRemoveClick: function(event){
+		editableTreeConfig = $.extend({}, editableTreeConfig, {
+			showRemove: true,
+			showEdit: true,
+			onEditClick: function(event){
+				
+				self.items.tag.edit(event, self);
+			},
+			onRemoveClick: function(event){
 
-					self.items.tag.remove(event);
-				}
-			});
-		}
+				self.items.tag.remove(event);
+			}
+		});
 		
 		$('.b-tags-tree')
 			.tree(editableTreeConfig);
@@ -192,10 +185,14 @@ $.widget( 'boom.browser', {
 		
 	},
 	
+	/** set navigation options. */
+	_set_tag_options : function( options ){
+		this.tag.options = options;
+	},
 	/** Default history routing. */
 	defaultRoute: function(){
 
-		$.boom.history.load('tag/' + this.options.defaultTagRid);
+		$.boom.history.load( this.options.defaultRoute);
 	},
 
 	/** Map URL fragment #{item}/{id} to get method call $.boom.{item}.get( id ); */
@@ -211,11 +208,11 @@ $.widget( 'boom.browser', {
 					item = segments[0], 
 					rid = segments[1];
 				
-				if ( item.length && self.items[ item ] ) {
+				if ( item.length && self.url_map[ item ] ) {
 					
 					$.boom.loader.show();
 					
-					self.items[ item ]
+					self.url_map[ item ]
 						.get( rid )
 						.done( function( response ){
 							
@@ -225,7 +222,7 @@ $.widget( 'boom.browser', {
 								.find( '.b-items-content' )
 								.html( response )
 								.ui();
-							self.items[ item ].bind( self.main_panel );
+							self.url_map[ item ].bind( self.main_panel );
 						});
 				}
 			}, 
