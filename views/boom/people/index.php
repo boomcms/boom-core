@@ -87,7 +87,7 @@
 		(function($){
 			$.boom.init('people');
 
-			$( 'body' ).people_browser();
+			$( 'body' ).browser_people();
 		})(jQuery);
 		//]]>
 	</script>
