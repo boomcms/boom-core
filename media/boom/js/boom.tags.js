@@ -182,6 +182,8 @@ $.widget( 'boom.tagger', {
 
 		var complete = new $.Deferred();
 		tags = ( tags ) ? tags : [];
+		
+		console.log( type );
 
 		add_input
 			.autocomplete({
@@ -243,7 +245,7 @@ $.widget( 'boom.tagger_search', $.boom.tagger, {
 		/** selected tags for this search */
 		selected_tag_ids : [],
 		/** item type for URL fragments */
-		type : 'tag'
+		tag : 'tag'
 	},
 	
 	_bind : function(){
@@ -306,7 +308,7 @@ $.widget( 'boom.tagger_search', $.boom.tagger, {
 			self = this,
 			selected_tag_ids = this.options.selected_tag_ids;
 			
-		$.boom.history.load( self.options.type + '/' + selected_tag_ids.join( '-' ) );
+		$.boom.history.load( self.options.tag + '/' + selected_tag_ids.join( '-' ) );
 	}
 	
 	
