@@ -292,7 +292,7 @@ $.widget( 'boom.page', {
 		});
 
 		if (!data.vid) {
-			data.vid = this.config.vid;
+			data.vid = this.options.vid;
 		}
 
 		$( $.boom.page.slot_edits ).each(function(){
@@ -322,7 +322,7 @@ $.widget( 'boom.page', {
 			data: JSON.stringify(data)
 		}, requestdata);
 
-		$.post( '/cms/page/version/content/' + this.config.id, requestdata )
+		$.post( '/cms/page/version/content/' + this.options.id, requestdata )
 		.done(
 			function(response){
 				$.boom.growl.show( "Page successfully saved." );
