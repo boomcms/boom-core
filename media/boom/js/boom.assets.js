@@ -285,7 +285,7 @@ $.extend($.boom.asset, {
 
 					} else {
 
-						//self.browser.defaultRoute();
+						$.boom.history.load( 'tag/0' );
 					}
 				});
 			});
