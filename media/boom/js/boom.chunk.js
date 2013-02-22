@@ -146,7 +146,7 @@ $.widget('ui.chunk', {
 @class
 @name chunkText
 @extends $.ui.chunk
-@memberOf ui
+@memberOf $.ui
 */
 $.widget('ui.chunkText', $.ui.chunk, {
 
@@ -265,7 +265,7 @@ $.widget('ui.chunkText', $.ui.chunk, {
 @class
 @name chunkLinkset
 @extends $.ui.chunk
-@memberOf ui
+@memberOf $.ui
 */
 $.widget('ui.chunkLinkset', $.ui.chunk, {
 	/**
