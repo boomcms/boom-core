@@ -626,7 +626,10 @@ $.widget( 'boom.asset_browser', $.boom.browser, {
 				var rid = $( this ).attr( 'rel' );
 
 				self.
-					upload( { formData : [ { name: 'asset_id', value: rid } ] } )
+					upload({ 
+						url: '/cms/assets/replace',
+						formData : [ { name: 'asset_id', value: rid } ] 
+					})
 					.done( function( data ){
 						$.boom.history.refresh();
 					});
