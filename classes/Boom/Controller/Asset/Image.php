@@ -51,7 +51,7 @@ class Boom_Controller_Asset_Image extends Controller_Asset
 	public function action_view()
 	{
 		//
-		$filename = Boom_Asset::$path.$this->asset->id;
+		$filename = $this->asset->path();
 
 		// Are we viewing an old version of the asset?
 		if ($timestamp = $this->request->query('timestamp'))
@@ -73,7 +73,7 @@ class Boom_Controller_Asset_Image extends Controller_Asset
 		if ( ! file_exists($filename))
 		{
 			// No - we'll have to generate a cache file.
-			$image = ($timestamp)? Image::factory(Boom_Asset::$path.$this->asset->id . ".$timestamp.bak") : Image::factory(Boom_Asset::$path.$this->asset->id);
+			$image = ($timestamp)? Image::factory($this->asset->path() . ".$timestamp.bak") : Image::factory($this->asset->path());
 
 			// Set the dimensions and quality of the image.
 			$this->height = ($this->height == 0)? $image->height : $this->height;

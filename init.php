@@ -1,8 +1,5 @@
 <?php
 
-// Set the directory where assets are stored.
-Boom_Asset::$path = APPPATH.'assets'.DIRECTORY_SEPARATOR;
-
 // Route for displaying assets
 Route::set('asset', 'asset/<action>/<id>(/<width>(/<height>(/<quality>(/<crop>))))')
 	->defaults(array(
@@ -14,7 +11,7 @@ Route::set('asset', 'asset/<action>/<id>(/<width>(/<height>(/<quality>(/<crop>))
 			$asset = new Model_Asset($params['id']);
 
 			// Does the asset exist?
-			if ( ! ($asset->loaded() AND file_exists(Boom_Asset::$path.$asset->id)))
+			if ( ! ($asset->loaded() AND file_exists($asset->path())))
 			{
 				return FALSE;
 			}

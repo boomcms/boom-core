@@ -58,6 +58,16 @@ class Boom_Model_Asset extends Model_Taggable
 	protected $_old_files = NULL;
 
 	/**
+	 * Returns the directory where asset files are stored.
+	 *
+	 * @return string
+	 */
+	public function directory()
+	{
+		return APPPATH.DIRECTORY_SEPERATOR.'assets';
+	}
+
+	/**
 	 * Updates the current object with data from a given file.
 	 *
 	 * @param string $filepath
@@ -109,7 +119,7 @@ class Boom_Model_Asset extends Model_Taggable
 		try
 		{
 			// Copy / move the file into the assets directory.
-			$command($filepath, Boom_Asset::$path.DIRECTORY_SEPARATOR.$this->id);
+			$command($filepath, $this->directory().$this->id);
 		}
 		catch (Exception $e)
 		{
@@ -184,7 +194,7 @@ class Boom_Model_Asset extends Model_Taggable
 		{
 			// Add files for previous versions of the asset.
 			// Wrap the glob in array_reverse() so that we end up with an array with the most recent first.
-			foreach (array_reverse(glob(Boom_Asset::$path . $this->id . ".*.bak")) as $file)
+			foreach (array_reverse(glob($this->directory().".*.bak")) as $file)
 			{
 				// Get the version ID out of the filename.
 				preg_match('/' . $this->id . '.(\d+).bak$/', $file, $matches);
@@ -210,7 +220,17 @@ class Boom_Model_Asset extends Model_Taggable
 	 */
 	public function get_mime()
 	{
-		return File::mime(Boom_Asset::$path . $this->id);
+		return File::mime($this->directory().$this->id);
+	}
+
+	/**
+	 * Get the path of the asset file on the local file system.
+	 *
+	 * @return string
+	 */
+	public function path()
+	{
+		return $this->directory().$this->id;
 	}
 
 	/**
