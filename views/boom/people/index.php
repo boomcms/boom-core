@@ -64,7 +64,7 @@
 				<ul class="boom-tree b-tags-tree  boom-tree-noborder">
 				<?
 					foreach ($groups as $id => $name):
-						echo "<li id='t", $id, "'><a rel='", $id, "' id='tag_" , $id , "' class='' href='#tag/", $id;
+						echo "<li id='t", $id, "'><a rel='", $id, "' id='tag_" , $id , "' class='' href='#group/", $id;
 						echo "'>" , $name , "</a>\n";
 					endforeach;
 				?>
