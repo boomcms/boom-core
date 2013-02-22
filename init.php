@@ -112,6 +112,20 @@ Route::set('asset_upload', 'cms/assets/upload')
 		}
 	);
 
+// Route for downloading assets.
+Route::set('asset_download', 'cms/assets/download')
+	->defaults(array(
+		'controller'	=>	'cms_assets_download'
+	))
+	->filter(function(Route $route, $params, Request $request)
+		{
+			$params['asset_ids'] = array_unique(explode(",", $request->query('assets')));
+			$params['action'] = (count($params['asset_ids']) == 1) ? 'single' : 'multiple';
+
+			return $params;
+		}
+	);
+
 /**
 * Defines the route for /cms pages.
 *
