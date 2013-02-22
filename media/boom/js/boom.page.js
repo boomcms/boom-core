@@ -13,13 +13,26 @@ $.extend($.boom, {
 
 		/** @property */
 		cancel_button: $('#b-page-cancel'),
+		
+		_create : function() {
+			this.init( this.options );
+		},
 
+		_init : function() {
 
+		},
+
+		_destroy : function() {
+
+		},
 
 		/** @function */
 		init : function(config) {
 
 			var self = this;
+			
+			$.boom.page = self;
+			
 			this.slot_edits = [];
 
 			this.config = $.extend({}, $.boom.config.page, config);
@@ -1744,3 +1757,6 @@ $.extend($.boom.page, {
 
 	}
 });
+
+console.log( $.boom.page );
+$.widget( 'boom.editor', $.Widget, $.boom.page );

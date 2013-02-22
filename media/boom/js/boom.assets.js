@@ -118,13 +118,13 @@ $.extend($.boom.asset, {
 
 	/** @function */
 	get : function(rid){
-		$.boom.log( 'boom.items.asset.get ' + rid );
+		$.boom.log( 'boom.asset.get ' + rid );
 
 		var self = this;
 
 		this.rid = rid;
 
-		var url = '/cms/asset/view/' + rid;
+		var url = '/cms/assets/view/' + rid;
 		
 		return $.get( url );
 	},
@@ -586,13 +586,6 @@ $.widget( 'boom.browser_asset', $.boom.browser, {
 
 				buttons.button( amount > 0 ? 'enable' : 'disable' );
 			})
-			.on( 'click', '#b-items-view-thumbs a', function(event){
-				event.preventDefault();
-
-				var asset_id = $( this ).attr( 'href' ).split( '/' )[ 1 ];
-				$( '#asset-list-' + asset_id ).click();
-
-			})
 			.on( 'mouseenter focus', '#b-items-view-list tbody tr, #b-items-view-thumbs a', function( event ){
 				$( this ).addClass( 'ui-state-hover' );
 			})
@@ -636,6 +629,11 @@ $.widget( 'boom.browser_asset', $.boom.browser, {
 					});
 
 			});
+			
+		$.when( self.browse() )
+			.progress( function( rid ){
+				$( '#asset-list-' + rid ).click();
+			});
 	},
 
 	/**
@@ -648,7 +646,7 @@ $.widget( 'boom.browser_asset', $.boom.browser, {
 		var select_asset = new $.Deferred();
 
 		$( self.main_panel )
-			.on( 'click', '.thumb a', function(event){
+			.on( 'click', '#b-items-view-thumbs a', function(event){
 
 				var data = $(this).attr('href').split('/');
 				var rid = parseInt( data[1], 10 );

@@ -32,14 +32,14 @@
 		(function($){
 
 			$.boom.init();
-
-			$.boom.page.init({
+			
+			$( 'body' ).editor({
 				id: <?= $page->id ?>,
 				vid: <?= $page->version()->id ?>
 			});
 
 			<? if ($register_page): ?>
-				$.boom.page.register({
+				$( 'body' ).editor( 'register', {
 					rid: <?=$page->id;?>,
 					vid: <?=$page->version()->id;?>,
 					writable: <?= (int) ($auth->logged_in('edit_page_content', $page) OR $page->was_created_by($person)) ?>,
