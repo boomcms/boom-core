@@ -44,12 +44,18 @@ abstract class Boom_Core
 		}
 
 		$page = ORM::factory('Page')
-			->with_current_version(Editor::instance())
+			->with_current_version(Editor::instance(), FALSE)
 			->where('page.id', '=', $page_url->page_id)
 			->find();
 
 		if ($page->loaded())
 		{
+			// If the page has been deleted then return 410.
+			if ($page->version()->page_deleted)
+			{
+				throw new HTTP_Exception_410;
+			}
+
 			if ( ! $page_url->is_primary AND $page_url->redirect)
 			{
 				header('Location: '.$page->url(), NULL, 301);
