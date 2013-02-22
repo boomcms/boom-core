@@ -230,7 +230,7 @@ class Boom_Model_Asset extends Model_Taggable
 	 */
 	public function path()
 	{
-		return $this->directory().$this->id;
+		return $this->directory().DIRECTORY_SEPARATOR.$this->id;
 	}
 
 	/**
