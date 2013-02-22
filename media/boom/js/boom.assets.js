@@ -297,17 +297,6 @@ $.extend($.boom.asset, {
 			});
 		});
 
-		$('.boom-tagmanager-asset-replace', context ).click(function( event ){
-
-			var rid = $( this ).attr( 'rel' );
-			
-			$.boom.assets
-				._upload( { formData : [ { name: 'asset_id', value: rid } ] } )
-				.done( function( data ){
-					$.boom.history.refresh();
-				});
-
-		});
 
 		$( '.boom-tagmanager-asset-back', context ).on( 'click', function( event ){
 			event.preventDefault();
@@ -631,8 +620,18 @@ $.widget( 'boom.asset_browser', $.boom.browser, {
 				});
 
 				return false;
+			})
+			.on( 'click', '.boom-tagmanager-asset-replace' ).click(function( event ){
+
+				var rid = $( this ).attr( 'rel' );
+
+				$.boom.assets
+					._upload( { formData : [ { name: 'asset_id', value: rid } ] } )
+					.done( function( data ){
+						$.boom.history.refresh();
+					});
+
 			});
-		
 	},
 
 	/**
