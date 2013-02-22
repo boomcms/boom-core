@@ -472,7 +472,7 @@ $.widget( 'boom.browser_asset', $.boom.browser, {
 		
 		var selected_tag_ids = [];
 		
-		$( '#b-tags-search' ).tag_search();
+		$( '#b-tags-search' ).tagger_search();
 
 		$( '#boom-topbar' )
 			.on( 'click', '#b-button-multiaction-delete', function(){

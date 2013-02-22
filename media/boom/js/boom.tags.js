@@ -234,11 +234,11 @@ $.widget( 'boom.tagger', {
 /**
 * User interface for searching by tag.
 * @class
-* @name boom.tag_search
+* @name boom.tagger_search
 * @extends boom.tagger
 */
-$.widget( 'boom.tag_search', $.boom.tagger, {
-	/** @lends boom.tag_search */
+$.widget( 'boom.tagger_search', $.boom.tagger, {
+	/** @lends boom.tagger_search */
 	
 	/**
 	default config
