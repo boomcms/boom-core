@@ -246,7 +246,9 @@ $.widget( 'boom.tag_search', $.boom.tagger, {
 	*/
 	options: {
 		/** selected tags for this search */
-		selected_tag_ids : []
+		selected_tag_ids : [],
+		/** item type for URL fragments */
+		type : 'tag'
 	},
 	
 	_bind : function(){
@@ -309,7 +311,7 @@ $.widget( 'boom.tag_search', $.boom.tagger, {
 			self = this,
 			selected_tag_ids = this.options.selected_tag_ids;
 			
-		$.boom.history.load( 'tag/' + selected_tag_ids.join( '-' ) );
+		$.boom.history.load( self.options.type + '/' + selected_tag_ids.join( '-' ) );
 	}
 	
 	
