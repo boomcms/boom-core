@@ -573,7 +573,7 @@ $.widget( 'boom.asset_browser', $.boom.browser, {
 				var type = item[ 0 ];
 				var item_id = item[ 2 ];
 				
-				self.items.asset.select( item_id, $( this ).is(':checked') );
+				$.boom.asset.select( item_id, $( this ).is(':checked') );
 
 				
 
