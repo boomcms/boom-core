@@ -68,7 +68,7 @@ $.widget( 'boom.page', {
 	},
 
 	/** @function */
-	register : function(config){
+	register : function( options ){
 
 		var self = this;
 
@@ -80,7 +80,7 @@ $.widget( 'boom.page', {
 		 	// Adds functionality to boom-sortable, boom-tree, etc. elements in the page.
 			$( self.document ).contents().ui();
 
-			$.extend(self.config, config);
+			$.extend(self.options, options);
 
 			self.editors = [];
 
@@ -154,11 +154,11 @@ $.widget( 'boom.page', {
 
 			$.boom.dialog.open({
 				width: 350,
-				url: '/cms/page/delete/' + self.config.id,
+				url: '/cms/page/delete/' + self.options.id,
 				title: 'Please confirm',
 				callback: function(){
 
-					$.post('/cms/page/delete/' + self.config.id, $('#b-page-delete-form').serialize(), function(response){
+					$.post('/cms/page/delete/' + self.options.id, $('#b-page-delete-form').serialize(), function(response){
 						$.boom.growl.show("Page deleted, redirecting to parent.");
 						top.location = response;
 					});
@@ -170,7 +170,7 @@ $.widget( 'boom.page', {
 			var button = this;
 
 			$.boom.dialog.open({
-				url: '/cms/page/add/' + self.config.id,
+				url: '/cms/page/add/' + self.options.id,
 				title: $(this).text(),
 				onLoad : function() {
 
@@ -218,7 +218,7 @@ $.widget( 'boom.page', {
 
 					$.boom.loader.show();
 
-					$.post( '/cms/page/version/embargo/' + self.config.id )
+					$.post( '/cms/page/version/embargo/' + self.options.id )
 					.done( function(response){
 
 						$.boom.loader.hide();
@@ -304,7 +304,7 @@ $.widget( 'boom.page', {
 
 			// Don't submit data for chunks which have been inherited from another page.
 			// slotobj.page will be 0 when the slot has been edited.
-			if (slot.page == self.config.id || slot.page == 0)
+			if (slot.page == self.options.id || slot.page == 0)
 			{
 				if (!data.slots[slot.type]) {
 					data.slots[slot.type] = {};
