@@ -64,7 +64,7 @@ class Boom_Model_Asset extends Model_Taggable
 	 */
 	public function directory()
 	{
-		return APPPATH.DIRECTORY_SEPERATOR.'assets';
+		return APPPATH.DIRECTORY_SEPARATOR.'assets';
 	}
 
 	/**
