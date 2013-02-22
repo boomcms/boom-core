@@ -63,6 +63,8 @@ $.widget( 'boom.browser', {
 				
 				return false;
 			});
+			
+		var tag_name  = self.options.defaultRoute.split( '/' )[ 0 ];
 		
 		var item_selected = function( $item ){
 			$( '#tag_all' ).removeClass( 'ui-state-active' );
@@ -124,7 +126,7 @@ $.widget( 'boom.browser', {
 					}
 				}
 
-				$.boom.history.load( 'tag/' + self.tag.rid );
+				$.boom.history.load( tag_name + '/' + self.tag.rid );
 				return false;
 			}
 			
@@ -136,7 +138,7 @@ $.widget( 'boom.browser', {
 		var editableTreeConfig = $.extend({}, treeConfig, {
 			maxSelected: 1,
 			toggleSelected: false,
-			preventDefault: false,
+			preventDefault: true,
 			onClick: function(event){
 				$this = $(this);
 				item_selected( $this );
@@ -147,8 +149,8 @@ $.widget( 'boom.browser', {
 						.split('/')
 						[1];
 
-				//$.boom.history.load( 'tag/' + self.tag.rid );
-				//return false;
+				$.boom.history.load( tag_name + '/' + self.tag.rid );
+				return false;
 			}
 		});
 		
