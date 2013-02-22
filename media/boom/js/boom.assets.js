@@ -422,7 +422,7 @@ $.widget( 'boom.asset_browser', $.boom.browser, {
 					}
 				})
 				.done( function( data ){
-					self.items.tag.get( 0 )
+					$.boom.assets.tag.get( 0 )
 					.done( function(){
 						$.boom.log( 'asset list updated' );
 						for ( i in data.result.rids ){
@@ -621,7 +621,7 @@ $.widget( 'boom.asset_browser', $.boom.browser, {
 
 				return false;
 			})
-			.on( 'click', '.boom-tagmanager-asset-replace' ).click(function( event ){
+			.on( 'click', '.boom-tagmanager-asset-replace ', function( event ){
 
 				var rid = $( this ).attr( 'rel' );
 
@@ -707,7 +707,7 @@ $.widget( 'boom.asset_browser', $.boom.browser, {
 			done: function( e, data ){
 				$.boom.log( 'file upload complete' );
 				$.boom.dialog.destroy( upload_dialog );
-				$.boom.assets.selected_rid = data.result.rids.join( '-' );
+				$.boom.assets.selected_rid = data.result.join( '-' );
 				
 				uploaded.resolve( data );
 				
