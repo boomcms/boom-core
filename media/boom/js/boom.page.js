@@ -355,17 +355,6 @@ $.widget( 'boom.page', {
 				sequence++;
 			}
 		});
-
-		// if callback function is present, then tell back-end not to save session message
-		if (callback) dataString += "&nosession=1";
-		*/
-		/*
-		// group tags and users (access control)
-		$(".accesscontrol .current").each(function(i){
-			var type = this.id.replace(/[0-9]+/, '');
-			dataString += '&'+type+(i+1)+'='+this.id.replace(/^[^0-9]+/, '');
-			//dataString += '&ac_'+type+(i+1)+'='+this.id.replace(/^[^0-9]+/, '');
-		});
 		*/
 	}
 } );
