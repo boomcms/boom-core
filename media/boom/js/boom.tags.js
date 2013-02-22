@@ -320,11 +320,11 @@ $.widget( 'boom.tag_search', $.boom.tagger, {
 /**
 * Deferred tagger for file uploads.
 * @class
-* @name boom.deferred_tagger
+* @name boom.tagger_deferred
 * @extends boom.tagger
 */
-$.widget( 'boom.deferred_tagger', $.boom.tagger, {
-	/** @lends boom.deferred_tagger */
+$.widget( 'boom.tagger_deferred', $.boom.tagger, {
+	/** @lends boom.tagger_deferred */
 	
 	/**
 	default config

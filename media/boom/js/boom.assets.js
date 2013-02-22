@@ -17,7 +17,7 @@ $.extend($.boom.assets, {
 	/** @lends $.boom.assets */
 
 	/** @property */
-	asset_browser: {},
+	browser_asset: {},
 
 	/**
 	Open an asset manager in a dialog box.
@@ -30,10 +30,11 @@ $.extend($.boom.assets, {
 		var self = this;
 		var complete = new $.Deferred();
 		var browser;
+		var dialog;
 
 		var cleanup = function(){
 			top.location.hash = '';
-			$.boom.dialog.destroy( self.asset_browser );
+			$.boom.dialog.destroy( dialog );
 		};
 
 		var default_options = {
@@ -50,7 +51,7 @@ $.extend($.boom.assets, {
 					return false;
 				},
 				'Okay': function() {
-					var asset_id = browser.asset_browser( 'get_asset' );
+					var asset_id = browser.browser_asset( 'get_asset' );
 					cleanup();
 					( opts.deferred ) && opts.deferred.resolve();
 					complete.resolve( asset_id );
@@ -78,7 +79,7 @@ $.extend($.boom.assets, {
 						.text( 'Upload' )
 						.button()
 						.click( function() {
-							browser.asset_browser( 'uplaod' );
+							browser.browser_asset( 'upload' );
 						});
 				}
 				$(this).dialog('widget')
@@ -87,11 +88,11 @@ $.extend($.boom.assets, {
 			},
 			onLoad: function(){
 				
-				browser = $( '#boom-tagmanager' ).asset_browser();
+				browser = $( '#boom-tagmanager' ).browser_asset();
 
-				$.when( browser.asset_browser( 'browse' ) )
+				$.when( browser.browser_asset( 'browse' ) )
 				.progress( function( rid ){
-					browser.asset_browser( 'edit', rid );
+					browser.browser_asset( 'edit', rid );
 				});
 
 				// browser widget pushes a default URL to the history stack.
@@ -99,14 +100,14 @@ $.extend($.boom.assets, {
 				// by setting a fragment identifier on the parent window.
 				if ( opts.asset_rid && opts.asset_rid > 0 ) {
 					$.boom.log( 'getting asset ' + opts.asset_rid );
-					browser.asset_browser( 'edit', opts.asset_rid );
+					browser.browser_asset( 'edit', opts.asset_rid );
 				}
 			}
 		};
 
 		opts = $.extend( default_options, opts );
 
-		self.asset_browser = $.boom.dialog.open( opts );
+		dialog = $.boom.dialog.open( opts );
 
 		return complete;
 	}
@@ -350,10 +351,10 @@ $.extend($.boom.assets.tag,  {
 /**
 * User interface for browsing and managing assets.
 * @class
-* @name boom.asset_browser
+* @name boom.browser_asset
 */
-$.widget( 'boom.asset_browser', $.boom.browser, {
-	/** @lends boom.asset_browser */
+$.widget( 'boom.browser_asset', $.boom.browser, {
+	/** @lends boom.browser_asset */
 	
 	/**
 	map url fragments to objects
@@ -414,7 +415,7 @@ $.widget( 'boom.asset_browser', $.boom.browser, {
 							},
 							onLoad: function(){
 								// Make the tag editor work.
-								$( '#b-tags' ).deferred_tagger( { tags : tags } );
+								$( '#b-tags' ).tagger_deferred( { tags : tags } );
 							}
 						});
 						

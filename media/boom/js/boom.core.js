@@ -325,6 +325,7 @@ $.extend($.boom, {
 		/**
 		Invoke the hashCallback for the current fragment identifier.
 		@param {String} hash fragment identifier from page URL
+		@returns {Object} returns the hstory callback return value, to allow callback chaining.
 		*/
 		load : function(hash){
 
