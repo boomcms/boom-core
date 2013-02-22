@@ -68,34 +68,6 @@ class Boom_Model_Asset extends Model_Taggable
 	}
 
 	/**
-	 * Updates the current object with data from a given file.
-	 *
-	 * @param string $filepath
-	 * @return \Boom_Model_Asset
-	 */
-	public function get_file_info($filepath)
-	{
-		// Get the filesize, and type and update the corresponding Model_Asset properties.
-		$this->values(array(
-			'filesize'		=>	filesize($filepath),
-			'type'		=>	Boom_Asset::type_from_mime(File::mime($filepath)),
-		));
-
-		// If the asset is an image then set the dimensionis.
-		if ($this->type == Boom_Asset::IMAGE)
-		{
-			// Set the dimensions of the image.
-			list($width, $height) = getimagesize($filepath);
-
-			$this
-				->set('width', $width)
-				->set('height', $height);
-		}
-
-		return $this;
-	}
-
-	/**
 	 * Create an asset model from a file on the filesystem.
 	 *
 	 * @param string $filepath
@@ -177,6 +149,44 @@ class Boom_Model_Asset extends Model_Taggable
 	}
 
 	/**
+	 * Updates the current object with data from a given file.
+	 *
+	 * @param string $filepath
+	 * @return \Boom_Model_Asset
+	 */
+	public function get_file_info($filepath)
+	{
+		// Get the filesize, and type and update the corresponding Model_Asset properties.
+		$this->values(array(
+			'filesize'		=>	filesize($filepath),
+			'type'		=>	Boom_Asset::type_from_mime(File::mime($filepath)),
+		));
+
+		// If the asset is an image then set the dimensionis.
+		if ($this->type == Boom_Asset::IMAGE)
+		{
+			// Set the dimensions of the image.
+			list($width, $height) = getimagesize($filepath);
+
+			$this
+				->set('width', $width)
+				->set('height', $height);
+		}
+
+		return $this;
+	}
+
+	/**
+	 * Find the mimetype of the asset file.
+	 *
+	 * @return string Mimetype string.
+	 */
+	public function get_mime()
+	{
+		return File::mime($this->directory().$this->id);
+	}
+
+	/**
 	 * Returns an array of old files which have been replaced.
 	 * Where an asset has been replaced the array will contain the names of the backup files for the previous versions.
 	 *
@@ -211,16 +221,6 @@ class Boom_Model_Asset extends Model_Taggable
 		}
 
 		return $this->_old_files;
-	}
-
-	/**
-	 * Find the mimetype of the asset file.
-	 *
-	 * @return string Mimetype string.
-	 */
-	public function get_mime()
-	{
-		return File::mime($this->directory().$this->id);
 	}
 
 	/**
