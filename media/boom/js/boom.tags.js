@@ -1,15 +1,10 @@
 /**
-@namespace
-@name boom
-*/
-
-/**
 * User interface for tagging content.
 * @class
-* @name boom.tagger
+* @name $.boom.tagger
 */
 $.widget( 'boom.tagger', {
-/** @lends boom.tagger */
+/** @lends $.boom.tagger */
 
 	/**
 	default config
@@ -234,11 +229,11 @@ $.widget( 'boom.tagger', {
 /**
 * User interface for searching by tag.
 * @class
-* @name boom.tagger_search
-* @extends boom.tagger
+* @name $.boom.tagger_search
+* @extends $.boom.tagger
 */
 $.widget( 'boom.tagger_search', $.boom.tagger, {
-	/** @lends boom.tagger_search */
+	/** @lends $.boom.tagger_search */
 	
 	/**
 	default config
@@ -320,11 +315,11 @@ $.widget( 'boom.tagger_search', $.boom.tagger, {
 /**
 * Deferred tagger for file uploads.
 * @class
-* @name boom.tagger_deferred
-* @extends boom.tagger
+* @name $.boom.tagger_deferred
+* @extends $.boom.tagger
 */
 $.widget( 'boom.tagger_deferred', $.boom.tagger, {
-	/** @lends boom.tagger_deferred */
+	/** @lends $.boom.tagger_deferred */
 	
 	/**
 	default config

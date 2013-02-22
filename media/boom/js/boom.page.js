@@ -1,11 +1,11 @@
 /**
 * Page editor UI.
 * @class
-* @name boom.page
+* @name $.boom.page
 */
 $.widget( 'boom.page', {
 
-	/** @lends boom.page */
+	/** @lends $.boom.page */
 	
 	options : {
 		/**
@@ -364,7 +364,7 @@ $.widget( 'boom.page', $.boom.page, {
 	/**
 	* Common functionality for the embedded CMS toolbar
 	* @class
-	* @name boom.page.toolbar
+	* @name $.boom.page.toolbar
 	*/
 	toolbar: {
 
@@ -465,11 +465,11 @@ $.widget( 'boom.page', $.boom.page, {
 
 	/**
 	* @class
-	* @name boom.page.editor
+	* @name $.boom.page.editor
 	*/
 	editor : {
 
-		/** @lends boom.page.editor */
+		/** @lends $.boom.page.editor */
 
 		elements : {},
 
@@ -766,10 +766,10 @@ $.widget( 'boom.page', $.boom.page, {
 
 	/**
 	* @class
-	* @name boom.page.slots
+	* @name $.boom.page.slots
 	*/
 	slots : {
-		/** @lends boom.page.slots */
+		/** @lends $.boom.page.slots */
 
 		/** @function */
 		edit : function(event, elem, slot, slotconfig){
@@ -844,10 +844,10 @@ $.widget( 'boom.page', $.boom.page, {
 
 	/**
 	* @class
-	* @name boom.page.settings
+	* @name $.boom.page.settings
 	*/
 	settings: {
-		/** @lends boom.page.settings */
+		/** @lends $.boom.page.settings */
 
 		/** @function */
 		init: function() {
@@ -991,10 +991,10 @@ $.widget( 'boom.page', $.boom.page, {
 
 		/**
 		* @class
-		* @name boom.page.settings.navigation
+		* @name $.boom.page.settings.navigation
 		*/
 		navigation: {
-			/** @lends boom.page.settings.navigation */
+			/** @lends $.boom.page.settings.navigation */
 
 			/**
 			Menu label
@@ -1049,10 +1049,10 @@ $.widget( 'boom.page', $.boom.page, {
 
 		/**
 		* @class
-		* @name boom.page.settings.search
+		* @name $.boom.page.settings.search
 		*/
 		search: {
-			/** @lends boom.page.settings.search */
+			/** @lends $.boom.page.settings.search */
 
 			/**
 			Menu label
@@ -1092,10 +1092,10 @@ $.widget( 'boom.page', $.boom.page, {
 
 		/**
 		* @class
-		* @name boom.page.settings.tags
+		* @name $.boom.page.settings.tags
 		*/
 		tags: {
-			/** @lends boom.page.settings.tags */
+			/** @lends $.boom.page.settings.tags */
 
 			/**
 			Menu label
@@ -1136,10 +1136,10 @@ $.widget( 'boom.page', $.boom.page, {
 
 		/**
 		* @class
-		* @name boom.page.settings.urls
+		* @name $.boom.page.settings.urls
 		*/
 		urls: {
-			/** @lends boom.page.settings.urls */
+			/** @lends $.boom.page.settings.urls */
 
 			/**
 			Menu label
@@ -1335,10 +1335,10 @@ $.widget( 'boom.page', $.boom.page, {
 
 		/**
 		* @class
-		* @name boom.page.settings.featureimage
+		* @name $.boom.page.settings.featureimage
 		*/
 		featureimage: {
-			/** @lends boom.page.settings.featureimage */
+			/** @lends $.boom.page.settings.featureimage */
 
 			/**
 			Menu label
@@ -1415,10 +1415,10 @@ $.widget( 'boom.page', $.boom.page, {
 
 		/**
 		* @class
-		* @name boom.page.settings.template
+		* @name $.boom.page.settings.template
 		*/
 		template: {
-			/** @lends boom.page.settings.template */
+			/** @lends $.boom.page.settings.template */
 
 			/**
 			Menu label
@@ -1465,10 +1465,10 @@ $.widget( 'boom.page', $.boom.page, {
 
 		/**
 		* @class
-		* @name boom.page.settings.embargo
+		* @name $.boom.page.settings.embargo
 		*/
 		embargo: {
-			/** @lends boom.page.settings.embargo */
+			/** @lends $.boom.page.settings.embargo */
 
 			/**
 			Menu label
@@ -1522,10 +1522,10 @@ $.widget( 'boom.page', $.boom.page, {
 
 		/**
 		* @class
-		* @name boom.page.settings.visibility
+		* @name $.boom.page.settings.visibility
 		*/
 		visibility: {
-			/** @lends boom.page.settings.visibility */
+			/** @lends $.boom.page.settings.visibility */
 
 			/**
 			Menu label
@@ -1595,10 +1595,10 @@ $.widget( 'boom.page', $.boom.page, {
 
 		/**
 		* @class
-		* @name boom.page.settings.history
+		* @name $.boom.page.settings.history
 		*/
 		history: {
-			/** @lends boom.page.settings.history */
+			/** @lends $.boom.page.settings.history */
 
 			/**
 			Menu label
@@ -1665,10 +1665,10 @@ $.widget( 'boom.page', $.boom.page, {
 
 		/**
 		* @class
-		* @name boom.page.settings.childsettings
+		* @name $.boom.page.settings.childsettings
 		*/
 		childsettings: {
-			/** @lends boom.page.settings.childsettings */
+			/** @lends $.boom.page.settings.childsettings */
 
 			/**
 			Menu label
@@ -1708,10 +1708,10 @@ $.widget( 'boom.page', $.boom.page, {
 
 		/**
 		* @class
-		* @name boom.page.settings.adminsettings
+		* @name $.boom.page.settings.adminsettings
 		*/
 		adminsettings: {
-			/** @lends boom.page.settings.adminsettings */
+			/** @lends $.boom.page.settings.adminsettings */
 
 			/**
 			Menu label

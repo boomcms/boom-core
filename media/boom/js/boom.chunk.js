@@ -1,16 +1,16 @@
 /**
 @namespace
-@name ui
+@name $.ui
 */
 
 /**
 @class
-@name ui.chunk
+@name $.ui.chunk
 */
 $.widget('ui.chunk', {
 
 	/**
-	@lends ui.chunk
+	@lends $.ui.chunk
 	*/
 
 	/**
@@ -145,13 +145,13 @@ $.widget('ui.chunk', {
 /**
 @class
 @name chunkText
-@extends ui.chunk
+@extends $.ui.chunk
 @memberOf ui
 */
 $.widget('ui.chunkText', $.ui.chunk, {
 
 	/**
-	@lends ui.chunkText
+	@lends $.ui.chunkText
 	*/
 
 	title : '',
@@ -264,12 +264,12 @@ $.widget('ui.chunkText', $.ui.chunk, {
 /**
 @class
 @name chunkLinkset
-@extends ui.chunk
+@extends $.ui.chunk
 @memberOf ui
 */
 $.widget('ui.chunkLinkset', $.ui.chunk, {
 	/**
-	@lends ui.chunkLinkset
+	@lends $.ui.chunkLinkset
 	*/
 
 	elements : {},
@@ -502,12 +502,12 @@ $.widget('ui.chunkLinkset', $.ui.chunk, {
 /**
 @class
 @name chunkFeature
-@extends ui.chunk
-@memberOf ui
+@extends $.ui.chunk
+@memberOf $.ui
 */
 $.widget('ui.chunkFeature', $.ui.chunk, {
 	/**
-	@lends ui.chunkFeature
+	@lends $.ui.chunkFeature
 	*/
 
 	/**
@@ -611,12 +611,12 @@ $.widget('ui.chunkFeature', $.ui.chunk, {
 /**
 @class
 @name chunkAsset
-@extends ui.chunk
-@memberOf ui
+@extends $.ui.chunk
+@memberOf $.ui
 */
 $.widget('ui.chunkAsset', $.ui.chunk, {
 	/**
-	@lends ui.chunkAsset
+	@lends $.ui.chunkAsset
 	*/
 
 	/**
@@ -740,12 +740,12 @@ $.widget('ui.chunkAsset', $.ui.chunk, {
 /**
 @class
 @name chunkSlideshow
-@extends ui.chunk
-@memberOf ui
+@extends $.ui.chunk
+@memberOf $.ui
 */
 $.widget('ui.chunkSlideshow', $.ui.chunk, {
 	/**
-	@lends ui.chunkSlideshow
+	@lends $.ui.chunkSlideshow
 	*/
 
 	elements : {},
