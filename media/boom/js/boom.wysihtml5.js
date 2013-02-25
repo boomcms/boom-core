@@ -1,10 +1,11 @@
 /**
 * Interface for the wysihtml5 editor.
 * @class
-* @name $.boom.editor
+* @name $.boom.wysihtml5.editor
+* @extends $.boom.editor
 */
-$.widget('boom.editor', {
-	/** @lends $.boom.editor */
+$.widget('boom.editor', $.boom.editor, {
+	/** @lends $.boom.wysihtml5.editor */
 	
 	/** @property 
 	@type string
@@ -44,7 +45,7 @@ $.widget('boom.editor', {
 		
 		var self = this;
 
-		var editor_loaded = new $.Deferred();
+		var editor_loaded = this._super();
 
 		if (!top.wysihtml5) {
 

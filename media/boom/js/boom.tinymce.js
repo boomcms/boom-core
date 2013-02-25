@@ -1,10 +1,11 @@
 /**
 * Interface for the tinyMCE editor.
 * @class
-* @name $.boom.editor
+* @name $.boom.tinymce.editor
+* @extends $.boom.editor
 */
-$.widget('boom.editor', {
-	/** @lends $.boom.editor */
+$.widget('boom.editor', $.boom.editor, {
+	/** @lends $.boom.tinymce.editor */
 	
 	/** @property 
 	@type string
@@ -69,7 +70,7 @@ $.widget('boom.editor', {
 		
 		var self = this;
 
-		var editor_loaded = new $.Deferred();
+		var editor_loaded = this._super();
 
 		if (!top.tinyMCE) {
 
@@ -175,7 +176,7 @@ $.widget('boom.editor', {
 						.contents()
 						.find( 'body' )
 						.html( editelem );
-				})
+				});
 				//self.tinyMCEAutoResize(ed, config.window);
 			}
 		});
@@ -237,7 +238,7 @@ $.widget('boom.editor', {
 	*/
 	get_content : function(){
 
-		return this.tinymce.tinymce().getContent( {format: 'raw'} )
+		return this.tinymce.tinymce().getContent( {format: 'raw'} );
 	},
 	
 	/**
