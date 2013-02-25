@@ -1,3 +1,8 @@
+/**
+* Interface for the wysihtml5 editor.
+* @class
+* @name $.boom.editor
+*/
 $.widget('boom.editor', {
 	/** @lends $.boom.editor */
 	
