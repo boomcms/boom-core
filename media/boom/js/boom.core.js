@@ -908,7 +908,8 @@ $.extend($.boom, {
 
 							$.boom.dialog.destroy( this, dialogConfig.destroy );
 						},
-						icon : 'boom-accept'
+						icons : { primary: 'ui-icon-boom-accept'},
+						"class" : 'ui-button-icon-only'
 					},
 					{
 						text : 'Cancel',
@@ -918,7 +919,8 @@ $.extend($.boom, {
 
 							$.boom.dialog.destroy( this, dialogConfig.destroy );
 						},
-						icon : 'boom-cancel'
+						icons : { primary : 'ui-icon-boom-cancel'},
+						"class" : 'ui-button-icon-only'
 					}
 				] 
 			});
