@@ -70,7 +70,7 @@ $.widget('boom.editor', $.boom.editor, {
 		
 		var self = this;
 
-		var editor_loaded = new $.Deferred();
+		var editor_loaded = this._super();
 
 		if (!top.tinyMCE) {
 
@@ -176,7 +176,7 @@ $.widget('boom.editor', $.boom.editor, {
 						.contents()
 						.find( 'body' )
 						.html( editelem );
-				})
+				});
 				//self.tinyMCEAutoResize(ed, config.window);
 			}
 		});
@@ -238,7 +238,7 @@ $.widget('boom.editor', $.boom.editor, {
 	*/
 	get_content : function(){
 
-		return this.tinymce.tinymce().getContent( {format: 'raw'} )
+		return this.tinymce.tinymce().getContent( {format: 'raw'} );
 	},
 	
 	/**

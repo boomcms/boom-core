@@ -1772,6 +1772,18 @@ $.widget( 'boom.editor', {
 	},
 	
 	/**
+	Load the wysiwyg javascript files
+	@returns {Deferred} Promise which resolves whenm the editor has loaded.
+	*/
+	load : function() {
+		
+		$.boom.log( 'editor loading ');
+		var loaded = new $.Deferred();
+		
+		return loaded;
+	},
+	
+	/**
 	Apply changes and exit
 	*/
 	apply : function() {

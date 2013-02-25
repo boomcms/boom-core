@@ -45,7 +45,7 @@ $.widget('boom.editor', $.boom.editor, {
 		
 		var self = this;
 
-		var editor_loaded = new $.Deferred();
+		var editor_loaded = this._super();
 
 		if (!top.wysihtml5) {
 
