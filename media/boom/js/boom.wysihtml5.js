@@ -14,7 +14,7 @@ $.widget('wysihtml5.editor', $.boom.editor, {
 	base_url: '/media/boom/js/xing',
 	/** @property 
 	@type string
-	@default 'tiny_mce_src.js'
+	@default '/wysihtml5-0.3.0.js'
 	*/
 	path: '/wysihtml5-0.3.0.js',
 	
