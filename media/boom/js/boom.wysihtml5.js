@@ -1,11 +1,11 @@
 /**
 * Interface for the wysihtml5 editor.
 * @class
-* @name $.boom.wysihtml5.editor
+* @name $.wysihtml5.editor
 * @extends $.boom.editor
 */
-$.widget('boom.editor', $.boom.editor, {
-	/** @lends $.boom.wysihtml5.editor */
+$.widget('wysihtml5.editor', $.boom.editor, {
+	/** @lends $.wysihtml5.editor */
 	
 	/** @property 
 	@type string
