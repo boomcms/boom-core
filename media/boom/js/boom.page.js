@@ -1758,4 +1758,44 @@ Base class for the text editor
 */
 $.widget( 'boom.editor', {
 	
-})
+	_create : function() {
+		
+	},
+	
+	_init : function() {
+		
+	},
+	
+	_destroy : function() {
+		
+	},
+	
+	/**
+	Apply changes and exit
+	*/
+	apply : function() {
+		
+	},
+	
+	/**
+	Cancel changes and exit
+	*/
+	cancel : function() {
+		
+	},
+	
+	/**
+	Edit a slot
+	@param {jQuery element} element DOM element to edit
+	*/
+	edit : function( element ) {
+		
+	},
+	
+	/**
+	Remove the  wysiwyg instance from the DOM
+	*/
+	remove : function() {
+		
+	}
+});
