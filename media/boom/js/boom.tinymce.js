@@ -271,7 +271,7 @@ $.widget('boom.editor', {
 	remove : function(){
 		var self = this;
 
-		tinyMCE.execCommand('mceRemoveControl', false, self.element[0].id);
+		tinyMCE.execCommand('mceRemoveControl', false, self.tinymce[0].id);
 	},
 	
 	/**
