@@ -86,7 +86,7 @@ $.widget( 'boom.page', {
 
 			$.boom.log('Page registered for editing: ' + self.options.rid);
 
-			$.getScript( $.boom.config.editor.path, function(){
+			$.getScript( '/media/boom/js/boom.' + $.boom.config.editor.name + '.js', function(){
 				self.loadPageEditor()
 					.done( function(){
 						self.editor.init();
@@ -1751,3 +1751,11 @@ $.widget( 'boom.page', $.boom.page, {
 
 	}
 });
+/**
+Base class for the text editor
+@class
+@name $.boom.editor
+*/
+$.widget( 'boom.editor', {
+	
+})
