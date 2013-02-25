@@ -453,7 +453,7 @@ $.widget( 'boom.browser_people', $.boom.browser, {
 		$.boom.browser.prototype._create.call( this );
 
 		$('.b-people-group-add').click(function(event){
-			$.boom.items.group.add( this );
+			$.boom.people.group.add( this );
 		});
 
 		$('#boom-tagmanager-create-person').click(function(){

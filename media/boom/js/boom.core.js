@@ -898,21 +898,29 @@ $.extend($.boom, {
 
 					$.boom.dialog.destroy( this, self.options.destroy );
 				},
-				buttons: this.options.buttons || {
-					Cancel: function() {
+				buttons: this.options.buttons || [
+					{
+						text : 'Okay',
+						click : function() {
 
-						( dialogConfig.deferred ) && dialogConfig.deferred.reject( dialogConfig.deferred_args );
+							(opts.callback) && opts.callback.call(this);
+							( dialogConfig.deferred ) && dialogConfig.deferred.resolve( dialogConfig.deferred_args );
 
-						$.boom.dialog.destroy( this, dialogConfig.destroy );
+							$.boom.dialog.destroy( this, dialogConfig.destroy );
+						},
+						icon : 'boom-accept'
 					},
-					'Okay': function() {
+					{
+						text : 'Cancel',
+						click : function() {
 
-						(opts.callback) && opts.callback.call(this);
-						( dialogConfig.deferred ) && dialogConfig.deferred.resolve( dialogConfig.deferred_args );
+							( dialogConfig.deferred ) && dialogConfig.deferred.reject( dialogConfig.deferred_args );
 
-						$.boom.dialog.destroy( this, dialogConfig.destroy );
+							$.boom.dialog.destroy( this, dialogConfig.destroy );
+						},
+						icon : 'boom-cancel'
 					}
-				}
+				] 
 			});
 
 			var tabsConfig = $.extend({}, $.boom.config.tabs, {
