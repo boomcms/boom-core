@@ -900,6 +900,17 @@ $.extend($.boom, {
 				},
 				buttons: this.options.buttons || [
 					{
+						text : 'Cancel',
+						click : function() {
+
+							( dialogConfig.deferred ) && dialogConfig.deferred.reject( dialogConfig.deferred_args );
+
+							$.boom.dialog.destroy( this, dialogConfig.destroy );
+						},
+						icons : { primary : 'ui-icon-boom-cancel'},
+						className : 'ui-button-icon-only'
+					},
+					{
 						text : 'Okay',
 						click : function() {
 
@@ -909,18 +920,7 @@ $.extend($.boom, {
 							$.boom.dialog.destroy( this, dialogConfig.destroy );
 						},
 						icons : { primary: 'ui-icon-boom-accept'},
-						"class" : 'ui-button-icon-only'
-					},
-					{
-						text : 'Cancel',
-						click : function() {
-
-							( dialogConfig.deferred ) && dialogConfig.deferred.reject( dialogConfig.deferred_args );
-
-							$.boom.dialog.destroy( this, dialogConfig.destroy );
-						},
-						icons : { primary : 'ui-icon-boom-cancel'},
-						"class" : 'ui-button-icon-only'
+						className : 'ui-button-icon-only'
 					}
 				] 
 			});
@@ -1277,7 +1277,7 @@ $.extend($.boom, {
 					Cancel: function() {
 						$.boom.dialog.destroy(this);
 					},
-					'Send it': function() {
+					Okay: function() {
 						$.boom.dialog.destroy(this);
 						alert('clicked send!');
 					}

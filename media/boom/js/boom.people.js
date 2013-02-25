@@ -46,7 +46,7 @@ $.extend($.boom.person, {
 
 						$.boom.dialog.destroy( dialog );
 					},
-					Save: function(){
+					Okay: function(){
 
 						var dialog = this;
 						var data = $( dialog ).find('form').serialize();
@@ -350,7 +350,7 @@ $.extend($.boom.people.group,  {
 				Cancel: function(){
 					$.boom.dialog.destroy( dialog );
 				},
-				Save: function(){
+				Okay: function(){
 					$.post(url, {name: $('#b-people-group-name').val()}, function(response){
 						$.boom.dialog.destroy(dialog);
 
@@ -469,7 +469,7 @@ $.widget( 'boom.browser_people', $.boom.browser, {
 
 						$.boom.dialog.destroy( dialog );
 					},
-					Save: function(){
+					Okay: function(){
 						self
 							.savePerson('/cms/people/add')
 							.done( function(){

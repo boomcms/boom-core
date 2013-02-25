@@ -50,7 +50,7 @@ $.extend($.boom.assets, {
 					( opts.deferred ) && opts.deferred.reject();
 					return false;
 				},
-				'Okay': function() {
+				Okay: function() {
 					var asset_id = browser.browser_asset( 'get_asset' );
 					cleanup();
 					( opts.deferred ) && opts.deferred.resolve();
@@ -408,7 +408,7 @@ $.widget( 'boom.browser_asset', $.boom.browser, {
 							title: 'Asset tags',
 							width: 440,
 							buttons: {
-								Done: function(){
+								Okay: function(){
 									$.boom.dialog.destroy( this );
 									tagged.resolve( tags );
 								}
@@ -552,7 +552,7 @@ $.widget( 'boom.browser_asset', $.boom.browser, {
 					title: 'Asset tags',
 					width: 440,
 					buttons: {
-						Close: function(){
+						Okay: function(){
 							$.boom.dialog.destroy( this );
 						}
 					},
