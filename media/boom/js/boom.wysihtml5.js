@@ -9,7 +9,7 @@ $.widget('wysihtml5.editor', $.boom.editor, {
 	
 	/** @property 
 	@type string
-	@default '/boom/js/tiny_mce'
+	@default '/media/boom/js/xing'
 	*/
 	base_url: '/media/boom/js/xing',
 	/** @property 
