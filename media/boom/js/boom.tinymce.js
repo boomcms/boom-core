@@ -232,7 +232,7 @@ $.widget('boom.editor', {
 	*/
 	get_content : function(){
 
-		return this.tinymce.getContent( {format: 'raw'} )
+		return this.tinymce.tinymce().getContent( {format: 'raw'} )
 	},
 	
 	/**
