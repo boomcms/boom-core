@@ -89,10 +89,10 @@ $.widget('boom.editor', {
 	@param {jQuery object} element The element being edited.
 	@returns {Deferred}
 	*/
-	edit : function (){
+	edit : function ( element ){
 		
 		var self = this;
-		var element = this.element;
+		var element;
 		
 		self.mode = element.is( 'div' ) ? 'block' : 'inline';
 		self.mode = element.is( ':header' ) ? 'text' : self.mode;

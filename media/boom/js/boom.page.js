@@ -258,7 +258,7 @@ $.widget( 'boom.page', {
 
 		var self = this;
 
-		return $.boom.editor.load();
+		return $( 'body' ).editor().editor( 'load' );
 
 	},
 
