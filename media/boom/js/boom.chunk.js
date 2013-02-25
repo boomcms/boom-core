@@ -4,6 +4,7 @@
 */
 
 /**
+Common functionality for all editable slots
 @class
 @name $.ui.chunk
 */
@@ -33,7 +34,7 @@ $.widget('ui.chunk', {
 	},
 
 	/**
-	Insert edited chunk content back into the page.
+	update slot HTML and push changes to the stack of page edits.
 	@function
 	*/
 	_apply: function(replacedata){
@@ -46,6 +47,7 @@ $.widget('ui.chunk', {
 	},
 
 	/**
+	Insert edited chunk content back into the page.
 	@function
 	*/
 	_update_html : function( html ) {
@@ -111,6 +113,7 @@ $.widget('ui.chunk', {
 	},
 
 	/**
+	Bring the slot UI forward, above all other page elements.
 	@function
 	*/
 	_bring_forward : function() {
@@ -123,6 +126,7 @@ $.widget('ui.chunk', {
 
 	},
 	/**
+	Drop the slot UI back into its natural place in the page z-index stack.
 	@function
 	*/
 	_send_back : function() {
@@ -143,6 +147,7 @@ $.widget('ui.chunk', {
 	}
 });
 /**
+Editable text slots
 @class
 @name chunkText
 @extends $.ui.chunk
@@ -187,8 +192,8 @@ $.widget('ui.chunkText', $.ui.chunk, {
 			}
 			self._bring_forward();
 
-			$.boom.editor
-				.edit( $element )
+			$element.editor()
+				.edit()
 				.fail( function(){
 					self.element.html( old_html ).show();
 					self.destroy();
