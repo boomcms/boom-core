@@ -1757,6 +1757,7 @@ Base class for the text editor
 @name $.boom.editor
 */
 $.widget( 'boom.editor', {
+	/** @lends $.boom.editor */
 	
 	_create : function() {
 		
