@@ -514,11 +514,15 @@ $.widget('wysihtml5.editor', $.boom.editor, {
 								self.selected_node = element.find( '[href=url]' )[0];
 							} else {
 								var link = {
-									url : existing_link.attr( 'href' ),
-									rid : existing_link.attr( 'rel' ),
-									title : existing_link.text()
+									url : existing_link.href,
+									rid : existing_link.rel,
+									title : ( existing_link.textContent || existinglink.innerText ) 
 								};
+								
+								opts.link = link;
 							}
+							
+							console.log( link );
 							
 							$.boom.links
 								.picker( opts )
