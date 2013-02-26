@@ -50,17 +50,17 @@ $.widget('ui.chunk', {
 	Remove slot from the page
 	@function
 	*/
-	_remove: function(){
+	_remove: function( data ){
 		var self = this;
-		
-		var slot_data = {
-			slot: this.options.slot,
-			data: this.getData()
-		};
-		
-		slot_data.data[ 'delete' ] = true;
-		
-		$.boom.page.slot_edits.push( slot_data );
+
+		this._preview( data )
+			.done( function( response ){
+				self._update_html( response );
+				$.boom.page.slot_edits.push( {
+					slot: this.options.slot,
+					data: data
+				} );
+			});
 
 		$.boom.page.save_button.button( 'enable' ).attr( 'title', 'Save page' );
 		$.boom.page.cancel_button.button( 'enable' ).attr( 'title', 'Cancel' );
@@ -575,7 +575,7 @@ $.widget('ui.chunkFeature', $.ui.chunk, {
 
 						$.boom.dialog.destroy(self.dialog);
 
-						self.remove();
+						self._remove( { target_page_id : 0, "delete" : true } );
 					});
 
 					$(this).dialog('widget')

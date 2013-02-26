@@ -506,14 +506,22 @@ $.widget('wysihtml5.editor', $.boom.editor, {
 						case 'createLink':
 							var existing_link = self.selected_node;
 							
+							var opts = {};
+							
 							if ( !existing_link ) {
 								top.document.execCommand( command, null, 'url' );
 
 								self.selected_node = element.find( '[href=url]' )[0];
+							} else {
+								var link = {
+									url : existing_link.attr( 'href' ),
+									rid : existing_link.attr( 'rel' ),
+									title : existing_link.text()
+								};
 							}
 							
 							$.boom.links
-								.picker({})
+								.picker( opts )
 								.fail( function(){
 									var link = element.find( '[href=url]' );
 									console.log( link );
