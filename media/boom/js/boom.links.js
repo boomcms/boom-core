@@ -54,16 +54,17 @@ $.extend( $.boom, {
 						
 						return false;
 					}
+				},
+				link : {
+					title: '',
+					rid: -1,
+					url: ''
 				}
 			};
 			
 			opts = $.extend( default_opts, opts );
 			
-			var link = {
-				title: '',
-				rid: -1,
-				url: ''
-			};
+			var link = opts.link;
 			var complete = new $.Deferred();
 			
 			$.boom.dialog.open( opts );
