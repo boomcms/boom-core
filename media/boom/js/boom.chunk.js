@@ -218,7 +218,11 @@ $.widget('ui.chunkText', $.ui.chunk, {
 					self.destroy();
 				})
 				.done( function( html ){
-					self._apply( html );
+					if ( html ) {
+						self._apply( html );
+					} else {
+						self._remove();
+					}
 				})
 				.always( function(){
 					if ( $element.text() == '' ) {
