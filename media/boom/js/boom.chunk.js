@@ -91,11 +91,13 @@ $.widget('ui.chunk', {
 	@function
 	*/
 
-	_save_slot : function() {
+	_save_slot : function( data ) {
+		
+		data = ( data ) ? data : this.getData();
 
 		$.boom.page.slot_edits.push( {
 			slot: this.options.slot,
-			data: this.getData()
+			data: data
 		} );
 
 		$.boom.page.save_button.button( 'enable' ).attr( 'title', 'Save page' );
@@ -308,13 +310,7 @@ $.widget('ui.chunkText', $.ui.chunk, {
 			.removeAttr( 'contenteditable' )
 			.off( 'click' );
 
-		$.boom.page.slot_edits.push( {
-			slot: this.options.slot,
-			data: { "delete" : true }
-		} );
-
-		$.boom.page.save_button.button( 'enable' ).attr( 'title', 'Save page' );
-		$.boom.page.cancel_button.button( 'enable' ).attr( 'title', 'Cancel' );
+		this._save_slot( { "delete" : true } );
 
 		this.destroy();
 	}
