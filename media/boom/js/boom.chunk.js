@@ -1177,15 +1177,16 @@ $.widget('ui.chunkSlideshow', $.ui.chunk, {
 	_insert : function(){
 
 		var self = this;
-
-		var request = this._get_preview( this.getData() )
-		.done( function( data ){
-
-			self._apply( data );
-
-		});
-
-		return request;
+		var data = this.getData();
+		
+		if ( data.slides.length == 0 ){
+			return self._remove( data );
+		} else {
+			return this._get_preview( this.getData() )
+			.done( function( data ){
+				self._apply( data );
+			});
+		}
 	},
 
 	/**
