@@ -45,6 +45,20 @@ $.widget('ui.chunk', {
 		this._save_slot();
 
 	},
+	
+	/**
+	Remove slot from the page
+	@function
+	*/
+	_remove: function( data ){
+		var self = this;
+
+		return this._preview( data )
+			.done( function( response ){
+				self._update_html( response );
+				self._save_slot( { "delete" : true } );
+			});
+	},
 
 	/**
 	Insert edited chunk content back into the page.
@@ -71,11 +85,13 @@ $.widget('ui.chunk', {
 	@function
 	*/
 
-	_save_slot : function() {
+	_save_slot : function( data ) {
+		
+		data = ( data ) ? data : this.getData();
 
 		$.boom.page.slot_edits.push( {
 			slot: this.options.slot,
-			data: this.getData()
+			data: data
 		} );
 
 		$.boom.page.save_button.button( 'enable' ).attr( 'title', 'Save page' );
@@ -199,6 +215,10 @@ $.widget('ui.chunkText', $.ui.chunk, {
 				})
 				.done( function( html ){
 					self._apply( html );
+					
+					if ( $element.text() == '' ) {
+						self._remove();
+					}
 				})
 				.always( function(){
 					if ( $element.text() == '' ) {
@@ -260,6 +280,31 @@ $.widget('ui.chunkText', $.ui.chunk, {
 			.off( 'click' );
 
 		this._save_slot();
+
+		this.destroy();
+	},
+	
+	/**
+	Remove the slot from the page.
+	*/
+	_remove: function(){
+
+		if( this.element.is( 'div' ) ) {
+			this.element
+				.html( '<p>Default text.</p>' )
+				.show();
+		} else {
+			this.element
+				.text( 'Default text.' )
+				.show();
+		}
+
+		this.element
+			.find( '[contenteditable]' )
+			.removeAttr( 'contenteditable' )
+			.off( 'click' );
+
+		this._save_slot( { "delete" : true } );
 
 		this.destroy();
 	}
@@ -446,20 +491,20 @@ $.widget('ui.chunkLinkset', $.ui.chunk, {
 		var
 			self = this;
 
-		var links = this._getData( this.elements.currentLinks );
+		var data = this._getData( this.elements.currentLinks );
+		if ( data.links.length == 0 ){
+			return this._remove( data );
+		} else {
+			return self._preview( data )
+				.done( function(data) {
 
-		// get the preview chunk here
-		var request = self._preview( links )
-			.done( function(data) {
+					$.boom.loader.hide('dialog');
 
-				$.boom.loader.hide('dialog');
+					self._apply(data);
 
-				self._apply(data);
-
-				//self.destroy();
-			});
-
-		return request;
+					//self.destroy();
+				});
+		}
 	},
 
 	/**
@@ -532,7 +577,7 @@ $.widget('ui.chunkFeature', $.ui.chunk, {
 			title: 'Page feature',
 			onLoad : function() {
 				
-				$.boom.util.page_tree( self.dialog.find( '.boom-tree' ) )
+				$.boom.util.page_tree( self.dialog.find( '.boom-tree' ), self.options.rid )
 					.progress( function( page ){
 						self.insert( page.page_id );
 
@@ -546,6 +591,8 @@ $.widget('ui.chunkFeature', $.ui.chunk, {
 			open: function(){
 
 				if ( self.options.slot.rid > 0 ) {
+					
+					$( 'input[name=parent_id]' ).val( self.options.slot.rid );
 
 					var button = $('<button />')
 					.addClass('ui-helper-left')
@@ -555,7 +602,7 @@ $.widget('ui.chunkFeature', $.ui.chunk, {
 
 						$.boom.dialog.destroy(self.dialog);
 
-						self.remove();
+						self._remove( { target_page_id : 0 } );
 					});
 
 					$(this).dialog('widget')
@@ -564,7 +611,7 @@ $.widget('ui.chunkFeature', $.ui.chunk, {
 				}
 			},
 			buttons: {
-				Cancel: function(){
+				'✔': function(){
 					$.boom.dialog.destroy(self.dialog);
 
 					self.destroy();
@@ -584,7 +631,7 @@ $.widget('ui.chunkFeature', $.ui.chunk, {
 
 		$.boom.loader.show();
 
-		this._preview( this.getData() ).done( function( data ){
+		return this._preview( this.getData() ).done( function( data ){
 
 			$.boom.loader.hide();
 
@@ -607,8 +654,12 @@ $.widget('ui.chunkFeature', $.ui.chunk, {
 	Remove the current feature from the page.
 	*/
 	remove : function(){
+		var self = this;
 
-		this.insert( 0 );
+		this.insert( 0 )
+			.done( function( response ){
+				self._remove();
+			});
 	}
 });
 
@@ -672,7 +723,7 @@ $.widget('ui.chunkAsset', $.ui.chunk, {
 			self.insert( self.asset.asset_id, link );
 		})
 		.fail( function() {
-			self.remove();
+			self._remove( { asset_id : 0, link : null } );
 		})
 		.always( function(){
 			$.boom.history.load( '' );
@@ -930,17 +981,25 @@ $.widget('ui.chunkSlideshow', $.ui.chunk, {
 			deferred: asset_selected
 		} )
 		.pipe( function( rid ){
+			
+			var link = $slide.closest( 'a.slide-link' );
 
 			url_segments[3] = rid;
 			$slide.attr( 'src', url_segments.join( '/' ) );
 			return $.boom.links.picker( {
-				title: 'Add a link'
+				title: 'Add a link',
+				link : {
+					url : link.attr( 'href' ),
+					rid : link.attr( 'rel' ),
+					title : $slide.attr( 'alt' )
+				}
 			});
 		})
 		.done( function( link ){
 			$slide
 				.closest( 'a.slide-link' )
 				.attr( 'href', link.url );
+			$slide.attr( 'alt', link.title );
 		})
 		.fail( function() {
 
@@ -991,6 +1050,7 @@ $.widget('ui.chunkSlideshow', $.ui.chunk, {
 		$slide
 			.closest( 'li' )
 			.remove();
+		this.options.slider.flexslider( 'next' );
 
 	//	this._refresh();
 		this.options.slider.count--;
@@ -1120,15 +1180,18 @@ $.widget('ui.chunkSlideshow', $.ui.chunk, {
 	_insert : function(){
 
 		var self = this;
-
-		var request = this._get_preview( this.getData() )
-		.done( function( data ){
-
-			self._apply( data );
-
-		});
-
-		return request;
+		var data = this.getData();
+		
+		console.log( data.slides );
+		
+		if ( data.slides.length == 0 ){
+			return self._remove( data );
+		} else {
+			return this._get_preview( this.getData() )
+			.done( function( data ){
+				self._apply( data );
+			});
+		}
 	},
 
 	/**

@@ -898,21 +898,27 @@ $.extend($.boom, {
 
 					$.boom.dialog.destroy( this, self.options.destroy );
 				},
-				buttons: this.options.buttons || {
-					Cancel: function() {
+				buttons: this.options.buttons || [
+					{
+						text : '✕',
+						click : function() {
 
-						( dialogConfig.deferred ) && dialogConfig.deferred.reject( dialogConfig.deferred_args );
+							( dialogConfig.deferred ) && dialogConfig.deferred.reject( dialogConfig.deferred_args );
 
-						$.boom.dialog.destroy( this, dialogConfig.destroy );
+							$.boom.dialog.destroy( this, dialogConfig.destroy );
+						}
 					},
-					'Okay': function() {
+					{
+						text : '✔',
+						click : function() {
 
-						(opts.callback) && opts.callback.call(this);
-						( dialogConfig.deferred ) && dialogConfig.deferred.resolve( dialogConfig.deferred_args );
+							(opts.callback) && opts.callback.call(this);
+							( dialogConfig.deferred ) && dialogConfig.deferred.resolve( dialogConfig.deferred_args );
 
-						$.boom.dialog.destroy( this, dialogConfig.destroy );
+							$.boom.dialog.destroy( this, dialogConfig.destroy );
+						}
 					}
-				}
+				] 
 			});
 
 			var tabsConfig = $.extend({}, $.boom.config.tabs, {
@@ -1200,7 +1206,7 @@ $.extend($.boom, {
 				title: type,
 				width: width || 300,
 				buttons: {
-					Okay: function(event){
+					'✔': function(event){
 
 						self.destroy( $(this) );
 
@@ -1223,11 +1229,11 @@ $.extend($.boom, {
 				title: title,
 				width: 300,
 				buttons: {
-					Cancel: function(event){
+					'✕': function(event){
 						self.destroy(this);
 						confirmed.reject();
 					},
-					Okay: function(event){
+					'✔': function(event){
 						self.destroy($(this));
 						confirmed.resolve();
 						(callback) && callback();
@@ -1264,10 +1270,10 @@ $.extend($.boom, {
 				title: 'Report an error',
 				data: data,
 				buttons: {
-					Cancel: function() {
+					'✕': function() {
 						$.boom.dialog.destroy(this);
 					},
-					'Send it': function() {
+					'✔': function() {
 						$.boom.dialog.destroy(this);
 						alert('clicked send!');
 					}

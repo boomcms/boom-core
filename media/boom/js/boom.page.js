@@ -547,12 +547,12 @@ $.widget( 'boom.page', $.boom.page, {
 							title: 'Save changes',
 							width: 300,
 							buttons: {
-								Discard: function(event){
+								'✕': function(event){
 									$.boom.dialog.destroy(this);
 									$.boom.page.slot_edits = [];
 									top.location = target.href;
 								},
-								Save: function(event){
+								'✔': function(event){
 									$.boom.dialog.destroy(this);
 									$.boom.page.save();
 								}
@@ -1027,7 +1027,7 @@ $.widget( 'boom.page', $.boom.page, {
 
 					},
 					buttons: {
-						Save: function(){
+						'✔': function(){
 
 							$.boom.page.settings.save(
 								'/cms/page/settings/navigation/' + $.boom.page.options.id,
@@ -1075,7 +1075,7 @@ $.widget( 'boom.page', $.boom.page, {
 					title: 'Search Settings',
 					width: 500,
 					buttons: {
-						Save: function(){
+						'✔': function(){
 
 							$.boom.page.settings.save(
 								'/cms/page/settings/search/' + $.boom.page.options.id,
@@ -1120,7 +1120,7 @@ $.widget( 'boom.page', $.boom.page, {
 					title: 'Page tags',
 					width: 440,
 					buttons: {
-						Close: function(){
+						'✔': function(){
 							$.boom.dialog.destroy( this );
 						}
 					},
@@ -1172,7 +1172,7 @@ $.widget( 'boom.page', $.boom.page, {
 								width: 300,
 								// cache: true,
 								buttons: {
-									Okay: function(){
+									'✔': function(){
 
 										self.add();
 
@@ -1182,7 +1182,7 @@ $.widget( 'boom.page', $.boom.page, {
 								}
 							});
 						},
-						Close: function(){
+						'✕': function(){
 							$.boom.dialog.destroy( this );
 						}
 					},
@@ -1379,7 +1379,7 @@ $.widget( 'boom.page', $.boom.page, {
 								}
 							);
 						},
-						Save: function(){
+						'✔': function(){
 
 							$.boom.page.settings.save(
 								url,
@@ -1443,7 +1443,7 @@ $.widget( 'boom.page', $.boom.page, {
 					width: 300,
 					// cache: true,
 					buttons: {
-						Save: function(){
+						'✔': function(){
 
 							$.boom.page.settings.save(
 								url,
@@ -1493,7 +1493,7 @@ $.widget( 'boom.page', $.boom.page, {
 					width: 300,
 					// cache: true,
 					buttons: {
-						Save: function(){
+						'✔': function(){
 
 							$.boom.page.settings.save(
 								url,
@@ -1550,7 +1550,7 @@ $.widget( 'boom.page', $.boom.page, {
 					title: 'Page visibility',
 					width: 440,
 					buttons: {
-						Save: function(){
+						'✔': function(){
 
 							$.boom.page.settings.save(
 								url,
@@ -1621,7 +1621,7 @@ $.widget( 'boom.page', $.boom.page, {
 					title: 'Page versions',
 					width: 440,
 					buttons: {
-						Cancel : function(){
+						'✕' : function(){
 							$.boom.dialog.destroy( this );
 						}
 					},
@@ -1691,7 +1691,7 @@ $.widget( 'boom.page', $.boom.page, {
 					title: 'Child page settings',
 					width: 'auto',
 					buttons: {
-						Save: function(){
+						'✔': function(){
 
 							$.boom.page.settings.save(
 								'/cms/page/settings/children/' + $.boom.page.options.id,
@@ -1734,7 +1734,7 @@ $.widget( 'boom.page', $.boom.page, {
 					title: 'Admin settings',
 					width: 'auto',
 					buttons: {
-						Save: function(){
+						'✔': function(){
 
 							$.boom.page.settings.save(
 								'/cms/page/settings/admin/' + $.boom.page.options.id,

@@ -159,11 +159,11 @@ $.widget( 'boom.browser', {
 			showEdit: true,
 			onEditClick: function(event){
 				
-				self.items.tag.edit(event, self);
+				self.tag.edit(event, self);
 			},
 			onRemoveClick: function(event){
 
-				self.items.tag.remove(event);
+				self.tag.remove(event);
 			}
 		});
 		
@@ -172,7 +172,7 @@ $.widget( 'boom.browser', {
 			
 		self.main_panel
 			.on( 'change', '#boom-tagmanager-sortby-select', function( event ){
-				self.items.tag.options.sortby = this.value;
+				self.tag.options.sortby = this.value;
 				$.boom.history.refresh();
 			});
 

@@ -1,11 +1,11 @@
 /**
 * Interface for the tinyMCE editor.
 * @class
-* @name $.boom.tinymce.editor
+* @name $.tinymce.editor
 * @extends $.boom.editor
 */
-$.widget('boom.editor', $.boom.editor, {
-	/** @lends $.boom.tinymce.editor */
+$.widget('tinymce.editor', $.boom.editor, {
+	/** @lends $.tinymce.editor */
 	
 	/** @property 
 	@type string

@@ -1,20 +1,20 @@
 /**
 * Interface for the wysihtml5 editor.
 * @class
-* @name $.boom.wysihtml5.editor
+* @name $.wysihtml5.editor
 * @extends $.boom.editor
 */
-$.widget('boom.editor', $.boom.editor, {
-	/** @lends $.boom.wysihtml5.editor */
+$.widget('wysihtml5.editor', $.boom.editor, {
+	/** @lends $.wysihtml5.editor */
 	
 	/** @property 
 	@type string
-	@default '/boom/js/tiny_mce'
+	@default '/media/boom/js/xing'
 	*/
 	base_url: '/media/boom/js/xing',
 	/** @property 
 	@type string
-	@default 'tiny_mce_src.js'
+	@default '/wysihtml5-0.3.0.js'
 	*/
 	path: '/wysihtml5-0.3.0.js',
 	
@@ -360,16 +360,25 @@ $.widget('boom.editor', $.boom.editor, {
 		var self = this;
 		var ed = self.instance.composer;
 		var existing_link = ed.commands.state( "createLink" )[0];
+		var opts = {};
 		
 		if ( !existing_link ) {
 			ed.commands.exec("createLink", { href: '', rel: 'new-link'});
 			
 			existing_link = top.$( ed.element ).find( '[rel=new-link]' );
+		} else {
+			var link = {
+				url : existing_link.href,
+				rid : existing_link.rel,
+				title : ( existing_link.textContent || existinglink.innerText ) 
+			};
+			
+			opts.link = link;
 		}
 		
 		
 		 return $.boom.links
-			.picker({})
+			.picker( opts )
 			.fail( function(){
 				var link = top.$( ed.element ).find( '[rel=new-link]' );
 				console.log( link );
@@ -506,14 +515,24 @@ $.widget('boom.editor', $.boom.editor, {
 						case 'createLink':
 							var existing_link = self.selected_node;
 							
+							var opts = {};
+							
 							if ( !existing_link ) {
 								top.document.execCommand( command, null, 'url' );
 
 								self.selected_node = element.find( '[href=url]' )[0];
+							} else {
+								var link = {
+									url : existing_link.href,
+									rid : existing_link.rel,
+									title : ( existing_link.textContent || existinglink.innerText ) 
+								};
+								
+								opts.link = link;
 							}
 							
 							$.boom.links
-								.picker({})
+								.picker( opts )
 								.fail( function(){
 									var link = element.find( '[href=url]' );
 									console.log( link );
