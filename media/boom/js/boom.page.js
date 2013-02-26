@@ -1164,7 +1164,7 @@ $.widget( 'boom.page', $.boom.page, {
 					title: 'URLs',
 					width: 440,
 					buttons: {
-						Add: function( event ){
+						'+': function( event ){
 							$.boom.dialog.open({
 								url: '/cms/page/urls/add/' + $.boom.page.options.id,
 								event: event,
