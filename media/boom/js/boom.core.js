@@ -1206,7 +1206,7 @@ $.extend($.boom, {
 				title: type,
 				width: width || 300,
 				buttons: {
-					Okay: function(event){
+					'✔': function(event){
 
 						self.destroy( $(this) );
 
@@ -1229,11 +1229,11 @@ $.extend($.boom, {
 				title: title,
 				width: 300,
 				buttons: {
-					Cancel: function(event){
+					'✕': function(event){
 						self.destroy(this);
 						confirmed.reject();
 					},
-					Okay: function(event){
+					'✔': function(event){
 						self.destroy($(this));
 						confirmed.resolve();
 						(callback) && callback();
@@ -1270,10 +1270,10 @@ $.extend($.boom, {
 				title: 'Report an error',
 				data: data,
 				buttons: {
-					Cancel: function() {
+					'✕': function() {
 						$.boom.dialog.destroy(this);
 					},
-					Okay: function() {
+					'✔': function() {
 						$.boom.dialog.destroy(this);
 						alert('clicked send!');
 					}

@@ -45,12 +45,12 @@ $.extend($.boom.assets, {
 			title: 'Select an asset',
 			cache: false,
 			buttons: {
-				Cancel: function() {
+				'✕': function() {
 					cleanup();
 					( opts.deferred ) && opts.deferred.reject();
 					return false;
 				},
-				Okay: function() {
+				'✔': function() {
 					var asset_id = browser.browser_asset( 'get_asset' );
 					cleanup();
 					( opts.deferred ) && opts.deferred.resolve();
@@ -408,7 +408,7 @@ $.widget( 'boom.browser_asset', $.boom.browser, {
 							title: 'Asset tags',
 							width: 440,
 							buttons: {
-								Okay: function(){
+								'✔': function(){
 									$.boom.dialog.destroy( this );
 									tagged.resolve( tags );
 								}
@@ -552,7 +552,7 @@ $.widget( 'boom.browser_asset', $.boom.browser, {
 					title: 'Asset tags',
 					width: 440,
 					buttons: {
-						Okay: function(){
+						'✔': function(){
 							$.boom.dialog.destroy( this );
 						}
 					},
@@ -746,7 +746,7 @@ $.widget( 'boom.browser_asset', $.boom.browser, {
 					});
 			},
 			buttons: {
-				Cancel: function(){
+				'✕': function(){
 
 					// TODO: cancel uploadify uploads
 					

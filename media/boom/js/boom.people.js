@@ -42,11 +42,11 @@ $.extend($.boom.person, {
 				url: '/cms/people/add_group/' + rid,
 				title: 'Add group',
 				buttons: {
-					Cancel: function(){
+					'✕': function(){
 
 						$.boom.dialog.destroy( dialog );
 					},
-					Okay: function(){
+					'✔': function(){
 
 						var dialog = this;
 						var data = $( dialog ).find('form').serialize();
@@ -347,10 +347,10 @@ $.extend($.boom.people.group,  {
 			url: url,
 			title: 'Add group',
 			buttons: {
-				Cancel: function(){
+				'✕': function(){
 					$.boom.dialog.destroy( dialog );
 				},
-				Okay: function(){
+				'✔': function(){
 					$.post(url, {name: $('#b-people-group-name').val()}, function(response){
 						$.boom.dialog.destroy(dialog);
 
@@ -465,11 +465,11 @@ $.widget( 'boom.browser_people', $.boom.browser, {
 					$('#boom-tagmanager-create-person-form input[name="name"]').focus();
 				},
 				buttons: {
-					Cancel: function(){
+					'✕': function(){
 
 						$.boom.dialog.destroy( dialog );
 					},
-					Okay: function(){
+					'✔': function(){
 						self
 							.savePerson('/cms/people/add')
 							.done( function(){

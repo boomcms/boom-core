@@ -33,14 +33,14 @@ $.extend( $.boom, {
 						});
 				},
 				buttons: {
-					Cancel: function(){
+					'✕': function(){
 						complete.reject();
 
 						$.boom.dialog.destroy( this );
 						
 						return false;
 					},
-					Okay: function(){
+					'✔': function(){
 						
 						if ( link.rid == -1 ) {
 							var link_text = $( '#boom-chunk-linkset-addlink-external-url' ).val();
