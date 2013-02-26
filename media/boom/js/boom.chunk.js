@@ -467,8 +467,7 @@ $.widget('ui.chunkLinkset', $.ui.chunk, {
 			self = this;
 
 		var data = this._getData( this.elements.currentLinks );
-		
-		if ( data.links == [] ){
+		if ( data.links.length == 0 ){
 			return this._remove( data );
 		} else {
 			return self._preview( data )
