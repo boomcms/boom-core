@@ -611,7 +611,7 @@ $.widget('ui.chunkFeature', $.ui.chunk, {
 				}
 			},
 			buttons: {
-				'✕': function(){
+				'✔': function(){
 					$.boom.dialog.destroy(self.dialog);
 
 					self.destroy();
