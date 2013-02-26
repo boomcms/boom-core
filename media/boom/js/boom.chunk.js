@@ -51,10 +51,16 @@ $.widget('ui.chunk', {
 	@function
 	*/
 	_remove: function(){
-		$.boom.page.slot_edits.push( {
+		var self = this;
+		
+		var slot_data = {
 			slot: this.options.slot,
-			data: { "delete" : true }
-		} );
+			data: this.getData()
+		};
+		
+		slot_data.data[ 'delete' ] = true;
+		
+		$.boom.page.slot_edits.push( slot_data );
 
 		$.boom.page.save_button.button( 'enable' ).attr( 'title', 'Save page' );
 		$.boom.page.cancel_button.button( 'enable' ).attr( 'title', 'Cancel' );
@@ -623,6 +629,7 @@ $.widget('ui.chunkFeature', $.ui.chunk, {
 	remove : function(){
 
 		this.insert( 0 );
+		this._remove();
 	}
 });
 
