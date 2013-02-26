@@ -282,6 +282,37 @@ $.widget('ui.chunkText', $.ui.chunk, {
 		this._save_slot();
 
 		this.destroy();
+	},
+	
+	/**
+	Remove the slot from the page.
+	*/
+	_remove: function(){
+
+		if( this.element.is( 'div' ) ) {
+			this.element
+				.html( '<p>Default text.</p>' )
+				.show();
+		} else {
+			this.element
+				.text( 'Default text.' )
+				.show();
+		}
+
+		this.element
+			.find( '[contenteditable]' )
+			.removeAttr( 'contenteditable' )
+			.off( 'click' );
+
+		$.boom.page.slot_edits.push( {
+			slot: this.options.slot,
+			data: { "delete" : true }
+		} );
+
+		$.boom.page.save_button.button( 'enable' ).attr( 'title', 'Save page' );
+		$.boom.page.cancel_button.button( 'enable' ).attr( 'title', 'Cancel' );
+
+		this.destroy();
 	}
 
 });
