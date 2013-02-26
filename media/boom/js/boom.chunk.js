@@ -954,17 +954,25 @@ $.widget('ui.chunkSlideshow', $.ui.chunk, {
 			deferred: asset_selected
 		} )
 		.pipe( function( rid ){
+			
+			var link = $slide.closest( 'a.slide-link' );
 
 			url_segments[3] = rid;
 			$slide.attr( 'src', url_segments.join( '/' ) );
 			return $.boom.links.picker( {
-				title: 'Add a link'
+				title: 'Add a link',
+				link : {
+					url : link.attr( 'href' ),
+					rid : link.attr( 'rel' ),
+					title : $slide.attr( 'alt' )
+				}
 			});
 		})
 		.done( function( link ){
 			$slide
 				.closest( 'a.slide-link' )
 				.attr( 'href', link.url );
+			$slide.attr( 'alt', link.title );
 		})
 		.fail( function() {
 
