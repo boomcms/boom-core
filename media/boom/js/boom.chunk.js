@@ -604,7 +604,7 @@ $.widget('ui.chunkFeature', $.ui.chunk, {
 
 		$.boom.loader.show();
 
-		this._preview( this.getData() ).done( function( data ){
+		return this._preview( this.getData() ).done( function( data ){
 
 			$.boom.loader.hide();
 
@@ -627,9 +627,12 @@ $.widget('ui.chunkFeature', $.ui.chunk, {
 	Remove the current feature from the page.
 	*/
 	remove : function(){
+		var self = this;
 
-		this.insert( 0 );
-		this._remove();
+		this.insert( 0 )
+			.done( function( response ){
+				self._remove();
+			});
 	}
 });
 
