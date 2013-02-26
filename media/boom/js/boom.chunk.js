@@ -57,7 +57,7 @@ $.widget('ui.chunk', {
 			.done( function( response ){
 				self._update_html( response );
 				$.boom.page.slot_edits.push( {
-					slot: this.options.slot,
+					slot: self.options.slot,
 					data: data
 				} );
 			});
