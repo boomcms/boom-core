@@ -360,16 +360,25 @@ $.widget('wysihtml5.editor', $.boom.editor, {
 		var self = this;
 		var ed = self.instance.composer;
 		var existing_link = ed.commands.state( "createLink" )[0];
+		var opts = {};
 		
 		if ( !existing_link ) {
 			ed.commands.exec("createLink", { href: '', rel: 'new-link'});
 			
 			existing_link = top.$( ed.element ).find( '[rel=new-link]' );
+		} else {
+			var link = {
+				url : existing_link.href,
+				rid : existing_link.rel,
+				title : ( existing_link.textContent || existinglink.innerText ) 
+			};
+			
+			opts.link = link;
 		}
 		
 		
 		 return $.boom.links
-			.picker({})
+			.picker( opts )
 			.fail( function(){
 				var link = top.$( ed.element ).find( '[rel=new-link]' );
 				console.log( link );
@@ -521,8 +530,6 @@ $.widget('wysihtml5.editor', $.boom.editor, {
 								
 								opts.link = link;
 							}
-							
-							console.log( link );
 							
 							$.boom.links
 								.picker( opts )
