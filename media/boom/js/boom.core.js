@@ -900,27 +900,23 @@ $.extend($.boom, {
 				},
 				buttons: this.options.buttons || [
 					{
-						text : 'Cancel',
+						text : '✕',
 						click : function() {
 
 							( dialogConfig.deferred ) && dialogConfig.deferred.reject( dialogConfig.deferred_args );
 
 							$.boom.dialog.destroy( this, dialogConfig.destroy );
-						},
-						icons : { primary : 'ui-icon-boom-cancel'},
-						className : 'ui-button-icon-only'
+						}
 					},
 					{
-						text : 'Okay',
+						text : '✔',
 						click : function() {
 
 							(opts.callback) && opts.callback.call(this);
 							( dialogConfig.deferred ) && dialogConfig.deferred.resolve( dialogConfig.deferred_args );
 
 							$.boom.dialog.destroy( this, dialogConfig.destroy );
-						},
-						icons : { primary: 'ui-icon-boom-accept'},
-						className : 'ui-button-icon-only'
+						}
 					}
 				] 
 			});
