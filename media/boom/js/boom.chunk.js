@@ -214,9 +214,9 @@ $.widget('ui.chunkText', $.ui.chunk, {
 					self.destroy();
 				})
 				.done( function( html ){
-					if ( html ) {
-						self._apply( html );
-					} else {
+					self._apply( html );
+					
+					if ( $element.text() == '' ) {
 						self._remove();
 					}
 				})
