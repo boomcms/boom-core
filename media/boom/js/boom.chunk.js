@@ -696,7 +696,7 @@ $.widget('ui.chunkAsset', $.ui.chunk, {
 			self.insert( self.asset.asset_id, link );
 		})
 		.fail( function() {
-			self.remove();
+			self._remove( { asset_id : 0 } );
 		})
 		.always( function(){
 			$.boom.history.load( '' );
