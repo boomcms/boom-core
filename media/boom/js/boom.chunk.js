@@ -591,6 +591,8 @@ $.widget('ui.chunkFeature', $.ui.chunk, {
 			open: function(){
 
 				if ( self.options.slot.rid > 0 ) {
+					
+					$( 'input[name=parent_id]' ).val( self.options.slot.rid );
 
 					var button = $('<button />')
 					.addClass('ui-helper-left')
