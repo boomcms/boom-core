@@ -98,7 +98,7 @@ class Boom_Controller_Cms_Page_Version_Save extends Controller_Cms_Page_Version
 				// Do this even if the chunk is being deleted so that deleted chunks won't be copied from the old version.
 				$slotnames[] = $name;
 
-				if ( ! isset($obj->delete))
+				if ( ! isset($chunk_data->delete))
 				{
 					$chunk = $this->new_version
 						->add_chunk($type, $name, (array) $chunk_data);

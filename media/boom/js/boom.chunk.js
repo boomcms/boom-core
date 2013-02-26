@@ -1048,6 +1048,7 @@ $.widget('ui.chunkSlideshow', $.ui.chunk, {
 		$slide
 			.closest( 'li' )
 			.remove();
+		this.options.slider.flexslider( 'next' );
 
 	//	this._refresh();
 		this.options.slider.count--;
@@ -1178,6 +1179,8 @@ $.widget('ui.chunkSlideshow', $.ui.chunk, {
 
 		var self = this;
 		var data = this.getData();
+		
+		console.log( data.slides );
 		
 		if ( data.slides.length == 0 ){
 			return self._remove( data );
