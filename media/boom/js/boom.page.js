@@ -1182,7 +1182,7 @@ $.widget( 'boom.page', $.boom.page, {
 								}
 							});
 						},
-						'✔': function(){
+						'✕': function(){
 							$.boom.dialog.destroy( this );
 						}
 					},
