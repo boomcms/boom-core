@@ -53,7 +53,7 @@ $.widget('ui.chunk', {
 	_remove: function( data ){
 		var self = this;
 
-		this._preview( data )
+		return this._preview( data )
 			.done( function( response ){
 				self._update_html( response );
 				$.boom.page.slot_edits.push( {
@@ -466,20 +466,21 @@ $.widget('ui.chunkLinkset', $.ui.chunk, {
 		var
 			self = this;
 
-		var links = this._getData( this.elements.currentLinks );
+		var data = this._getData( this.elements.currentLinks );
+		
+		if ( data.links == [] ){
+			return this._remove( data );
+		} else {
+			return self._preview( data )
+				.done( function(data) {
 
-		// get the preview chunk here
-		var request = self._preview( links )
-			.done( function(data) {
+					$.boom.loader.hide('dialog');
 
-				$.boom.loader.hide('dialog');
+					self._apply(data);
 
-				self._apply(data);
-
-				//self.destroy();
-			});
-
-		return request;
+					//self.destroy();
+				});
+		}
 	},
 
 	/**
