@@ -58,7 +58,7 @@ $.widget('ui.chunk', {
 				self._update_html( response );
 				$.boom.page.slot_edits.push( {
 					slot: self.options.slot,
-					data: data
+					data: { "delete" : true }
 				} );
 			});
 
@@ -575,7 +575,7 @@ $.widget('ui.chunkFeature', $.ui.chunk, {
 
 						$.boom.dialog.destroy(self.dialog);
 
-						self._remove( { target_page_id : 0, "delete" : true } );
+						self._remove( { target_page_id : 0 } );
 					});
 
 					$(this).dialog('widget')
