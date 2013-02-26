@@ -56,14 +56,8 @@ $.widget('ui.chunk', {
 		return this._preview( data )
 			.done( function( response ){
 				self._update_html( response );
-				$.boom.page.slot_edits.push( {
-					slot: self.options.slot,
-					data: { "delete" : true }
-				} );
+				self._save_slot( { "delete" : true } );
 			});
-
-		$.boom.page.save_button.button( 'enable' ).attr( 'title', 'Save page' );
-		$.boom.page.cancel_button.button( 'enable' ).attr( 'title', 'Cancel' );
 	},
 
 	/**
