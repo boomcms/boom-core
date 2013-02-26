@@ -45,6 +45,20 @@ $.widget('ui.chunk', {
 		this._save_slot();
 
 	},
+	
+	/**
+	Remove slot from the page
+	@function
+	*/
+	_remove: function(){
+		$.boom.page.slot_edits.push( {
+			slot: this.options.slot,
+			data: { "delete" : 1 }
+		} );
+
+		$.boom.page.save_button.button( 'enable' ).attr( 'title', 'Save page' );
+		$.boom.page.cancel_button.button( 'enable' ).attr( 'title', 'Cancel' );
+	},
 
 	/**
 	Insert edited chunk content back into the page.
@@ -532,7 +546,7 @@ $.widget('ui.chunkFeature', $.ui.chunk, {
 			title: 'Page feature',
 			onLoad : function() {
 				
-				$.boom.util.page_tree( self.dialog.find( '.boom-tree' ) )
+				$.boom.util.page_tree( self.dialog.find( '.boom-tree' ), self.options.rid )
 					.progress( function( page ){
 						self.insert( page.page_id );
 
