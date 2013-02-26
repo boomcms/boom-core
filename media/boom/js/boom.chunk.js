@@ -53,7 +53,7 @@ $.widget('ui.chunk', {
 	_remove: function(){
 		$.boom.page.slot_edits.push( {
 			slot: this.options.slot,
-			data: { "delete" : 1 }
+			data: { "delete" : true }
 		} );
 
 		$.boom.page.save_button.button( 'enable' ).attr( 'title', 'Save page' );
