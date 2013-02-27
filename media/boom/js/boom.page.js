@@ -57,11 +57,11 @@ $.widget( 'boom.page', {
 				return 'You have unsaved changes.';
 				$.boom.dialog.confirm(
 					'Save changes',
-					'You have unsaved changes to this page. Press OK to save these and continue.',
-					function(){
-						self.save();
-					}
-				);
+					'You have unsaved changes to this page. Press OK to save these and continue.'
+				)
+				.done( function(){
+					self.save();
+				});
 			}
 		};
 
@@ -213,35 +213,35 @@ $.widget( 'boom.page', {
 
 			$.boom.dialog.confirm(
 				'Publish',
-				'Make this version of the page live?',
-				function(){
+				'Make this version of the page live?'
+			)
+			.done( function(){
 
-					$.boom.loader.show();
+				$.boom.loader.show();
 
-					$.post( '/cms/page/version/embargo/' + self.options.id )
-					.done( function(response){
+				$.post( '/cms/page/version/embargo/' + self.options.id )
+				.done( function(response){
 
-						$.boom.loader.hide();
+					$.boom.loader.hide();
 
-					});
-				}
-			);
+				});
+			});
 
 		});
 		$( '#boom-page-editlive' ).on( 'click', function( event ){
 			$.boom.dialog.confirm(
 				'Edit live',
-				'Stash changes and edit the live page?',
-				function(){
+				'Stash changes and edit the live page?'
+			)
+			.done( function(){
 
-					$.boom.log( 'stashing page edits' );
+				$.boom.log( 'stashing page edits' );
 
-					$.post( '/cms/page/stash/' + $.boom.page.options.id )
-					.done( function( response ){
-						$.boom.history.refresh();
-					});
-				}
-			);
+				$.post( '/cms/page/stash/' + $.boom.page.options.id )
+				.done( function( response ){
+					$.boom.history.refresh();
+				});
+			});
 		});
 
 		self.settings.init();
@@ -415,8 +415,6 @@ $.widget( 'boom.page', $.boom.page, {
 					'height' : '30px'
 				});
 			}
-
-			
 
 		},
 
@@ -1009,7 +1007,6 @@ $.widget( 'boom.page', $.boom.page, {
 
 				$.boom.dialog.open({
 					url: '/cms/page/settings/navigation/' + $.boom.page.options.id + '?vid=' + $.boom.page.options.vid,
-					event: event,
 					// cache: true,
 					title: 'Navigation',
 					width: 570,
@@ -1062,7 +1059,6 @@ $.widget( 'boom.page', $.boom.page, {
 				$.boom.dialog.open({
 					url: '/cms/page/settings/search/' + $.boom.page.options.id + '?vid=' + $.boom.page.options.vid,
 					// cache: true,
-					event: event,
 					title: 'Search Settings',
 					width: 500,
 					callback : function(){
@@ -1102,7 +1098,6 @@ $.widget( 'boom.page', $.boom.page, {
 
 				$.boom.dialog.open({
 					url: '/cms/tags/page/list/' + $.boom.page.options.id,
-					event: event,
 					// cache: true,
 					title: 'Page tags',
 					width: 440,
@@ -1143,31 +1138,38 @@ $.widget( 'boom.page', $.boom.page, {
 
 				$.boom.dialog.open({
 					url: '/cms/page/urls/list/' + $.boom.page.options.id,
-					event: event,
 					// cache: true,
 					title: 'URLs',
 					width: 440,
-					buttons: {
-						'+': function( event ){
-							$.boom.dialog.open({
-								url: '/cms/page/urls/add/' + $.boom.page.options.id,
-								event: event,
-								title: 'Add URL',
-								width: 300,
-								// cache: true,
-								callback: function(){
+					buttons: [
+						{
+							text: 'Add',
+							icons: { primary : 'ui-icon-boom-add' },
+							click: function( event ){
+								$.boom.dialog.open({
+									url: '/cms/page/urls/add/' + $.boom.page.options.id,
+									event: event,
+									title: 'Add URL',
+									width: 300,
+									// cache: true,
+									callback: function(){
 
-									self.add();
+										self.add();
 
-									$.boom.dialog.destroy( this );
+										$.boom.dialog.destroy( this );
 
-								}
-							});
+									}
+								});
+							}
 						},
-						'✕': function(){
-							$.boom.dialog.destroy( this );
+						{
+							text: 'Cancel',
+							icons: { primary : 'ui-icon-boom-cancel' },
+							click: function( event ){
+								$.boom.dialog.destroy( this );
+							}
 						}
-					},
+					],
 					open: function(){
 						self.bind();
 					}
@@ -1269,15 +1271,15 @@ $.widget( 'boom.page', $.boom.page, {
 				// Ask if they want to move it.
 				$.boom.dialog.confirm(
 					"URL in use",
-					"The specified url is already in use on another page. Would you like to move it?",
-					function(){
-						move_dialog = $.boom.dialog.open({
-							url: form_url,
-							title: 'Move url',
-							deferred: move_url
-						});
-					}
-				);
+					"The specified url is already in use on another page. Would you like to move it?"
+				)
+				.done( function(){
+					move_dialog = $.boom.dialog.open({
+						url: form_url,
+						title: 'Move url',
+						deferred: move_url
+					});
+				});
 
 				return move_url.pipe( function(){
 
@@ -1294,7 +1296,11 @@ $.widget( 'boom.page', $.boom.page, {
 			/** @function */
 			remove: function( item ) {
 
-				$.boom.dialog.confirm('Please confirm', 'Are you sure you want to remove this URL? <br /><br /> This will delete the URL from the database and cannot be undone!', function(){
+				$.boom.dialog.confirm(
+					'Please confirm', 
+					'Are you sure you want to remove this URL? <br /><br /> This will delete the URL from the database and cannot be undone!'
+				)
+				.done( function(){
 
 					$.boom.loader.show();
 
@@ -1339,57 +1345,79 @@ $.widget( 'boom.page', $.boom.page, {
 
 				$.boom.dialog.open({
 					url: url + '?vid=' + $.boom.page.options.vid,
-					event: event,
 					title: 'Page feature image',
 					width: 300,
 					// cache: true,
-					buttons: {
-						Remove: function(){
-							var dialog = $(this);
-							$.boom.dialog.confirm(
-								'Please confirm',
-								"Are you sure you want to do delete this page's feature image?",
-								function(){
+					buttons: [
+						{
+							text: 'Add',
+							id: 'boom-feature-add',
+							icons: { primary: 'ui-icon-boom-add' },
+							click: function(){
+								$.boom.assets
+									.picker({
+										asset_rid : $('#boom-featureimage-input').val()
+									})
+									.done( function( rid ){
 
-									$.boom.page.settings.save(
-										url,
-										{feature_image_id : 0},
-										"Page feature image removed."
-									);
-
-									$.boom.dialog.destroy( dialog );
-								}
-							);
+										$('#boom-featureimage-img').attr( 'src', '/asset/view/' + rid + '/250/80').show();
+										$('#boom-featureimage-input').val( rid );
+										$( '#boom-feature-remove' ).button( 'enable' );
+										$( '#boom-featureimage-none' ).hide();
+									});
+							}
 						},
-						'✔': function(){
-
-							$.boom.page.settings.save(
-								url,
-								$("#boom-form-pagesettings-featureimage").serialize(),
-								"Page feature image saved."
-							);
-
-							$.boom.dialog.destroy( this );
-						}
-					},
-					open: function(){
-
-						$('.boom-featureimage-edit').click(function(){
-
-							$.boom.assets
-								.picker({
-									asset_rid : $('#boom-featureimage-input').val()
-								})
-								.done( function( rid ){
-
-									$('#boom-featureimage-img').attr( 'src', '/asset/view/' + rid + '/250/80').show();
-									$('#boom-featureimage-input').val( rid );
-									$('#boom-featureimage-none').hide();
-									$('#boom-featureimage-edit boom-button').hide();
-
+						{
+							text: 'Remove',
+							id: 'boom-feature-remove',
+							icons: { primary: 'ui-icon-boom-delete' },
+							click: function(){
+								var dialog = $(this);
+								$.boom.dialog.confirm(
+									'Please confirm',
+									"Are you sure you want to do delete this page's feature image?"
+								)
+								.done( function(){
+									
+									$('#boom-featureimage-img').attr( 'src', '').hide();
+									$('#boom-featureimage-input').val( 0 );
+									$( '#boom-feature-remove' ).button( 'disable' );
+									$( '#boom-featureimage-none' ).show();
 								});
+							}
+						},
+						{
+							text: 'Cancel',
+							icons: { primary: 'ui-icon-boom-cancel' },
+							click: function(){
 
-						});
+								$.boom.dialog.destroy( this );
+							}
+						},
+						{
+							text: 'Okay',
+							icons: { primary: 'ui-icon-boom-accept' },
+							click: function(){
+								$.boom.page.settings.save(
+									url,
+									$("#boom-form-pagesettings-featureimage").serialize(),
+									"Page feature image saved."
+								);
+
+								$.boom.dialog.destroy( this );
+							}
+						}
+					],
+					open: function(){
+						$( '#boom-feature-remove' ).button( 'disable' );
+					},
+					onLoad: function(){
+						var asset_id = $('#boom-featureimage-input').val();
+						
+						if ( asset_id > 0 ) {
+							$( '#boom-featureimage-none' ).hide();
+							$( '#boom-feature-remove' ).button( 'enable' );
+						}
 					}
 				});
 			}
@@ -1420,7 +1448,6 @@ $.widget( 'boom.page', $.boom.page, {
 
 				$.boom.dialog.open({
 					url: url + '?vid=' + $.boom.page.options.vid,
-					event: event,
 					title: 'Page template',
 					width: 300,
 					// cache: true,
@@ -1466,7 +1493,6 @@ $.widget( 'boom.page', $.boom.page, {
 
 				$.boom.dialog.open({
 					url: url,
-					event: event,
 					title: 'Page embargo',
 					width: 300,
 					// cache: true,
@@ -1519,7 +1545,6 @@ $.widget( 'boom.page', $.boom.page, {
 
 				$.boom.dialog.open({
 					url: url + '?vid=' + $.boom.page.options.vid,
-					event: event,
 					// cache: true,
 					title: 'Page visibility',
 					width: 440,
@@ -1651,7 +1676,6 @@ $.widget( 'boom.page', $.boom.page, {
 
 				$.boom.dialog.open({
 					url: '/cms/page/settings/children/' + $.boom.page.options.id + '?vid=' + $.boom.page.options.vid,
-					event: event,
 					// cache: true,
 					title: 'Child page settings',
 					width: 'auto',
@@ -1690,7 +1714,6 @@ $.widget( 'boom.page', $.boom.page, {
 
 				$.boom.dialog.open({
 					url: '/cms/page/settings/admin/' + $.boom.page.options.id + '?vid=' + $.boom.page.options.vid,
-					event: event,
 					// cache: true,
 					title: 'Admin settings',
 					width: 'auto',

@@ -442,7 +442,7 @@ $.fn.sload = function(url, successCallback) {
 
 			self.html( data );
 
-			successCallback.apply(self, [ xhr, status ]);
+			successCallback && successCallback.apply(self, [ xhr, status ]);
 		}
 	});
 };
@@ -868,8 +868,6 @@ $.extend($.boom, {
 
 			var self = this;
 
-			$.boom.page && $.boom.page.toolbar.maximise();
-
 			this.options = $.extend({
 				type: 'modal',
 				selector: '',
@@ -900,7 +898,8 @@ $.extend($.boom, {
 				},
 				buttons: this.options.buttons || [
 					{
-						text : '✕',
+						text : 'Cancel',
+						icons : { primary : 'ui-icon-boom-cancel' },
 						click : function() {
 
 							( dialogConfig.deferred ) && dialogConfig.deferred.reject( dialogConfig.deferred_args );
@@ -909,7 +908,8 @@ $.extend($.boom, {
 						}
 					},
 					{
-						text : '✔',
+						text : 'Okay',
+						icons : { primary : 'ui-icon-boom-accept' },
 						click : function() {
 
 							(opts.callback) && opts.callback.call(this);
@@ -964,6 +964,8 @@ $.extend($.boom, {
 				this.resize(dialog);
 
 				this.dialogs.push(dialog);
+				
+				$.boom.page && $.boom.page.toolbar.maximise();
 
 				$.boom.log('Dialog open');
 			}
@@ -1205,14 +1207,18 @@ $.extend($.boom, {
 				selector: '#boom-dialog-alerts',
 				title: type,
 				width: width || 300,
-				buttons: {
-					'✔': function(event){
+				buttons: [
+					{
+						text : 'Okay',
+						icons : { primary : 'ui-icon-boom-accept' },
+						click : function() {
 
-						self.destroy( $(this) );
+							self.destroy( $(this) );
 
-						(callback) && callback.apply();
+							(callback) && callback.apply();
+						}
 					}
-				}
+				]
 			});
 		},
 
@@ -1228,17 +1234,8 @@ $.extend($.boom, {
 				msg: msg.replace(/\n/g, '<br />'),
 				title: title,
 				width: 300,
-				buttons: {
-					'✕': function(event){
-						self.destroy(this);
-						confirmed.reject();
-					},
-					'✔': function(event){
-						self.destroy($(this));
-						confirmed.resolve();
-						(callback) && callback();
-					}
-				}
+				deferred: confirmed,
+				callback: callback
 			});
 
 			return confirmed;

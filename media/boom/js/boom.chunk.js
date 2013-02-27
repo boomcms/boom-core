@@ -597,7 +597,10 @@ $.widget('ui.chunkFeature', $.ui.chunk, {
 					var button = $('<button />')
 					.addClass('ui-helper-left')
 					.text('Remove')
-					.button()
+					.button({
+						text: false,
+						icons: { primary : 'ui-icon-boom-delete' }
+					})
 					.click(function(){
 
 						$.boom.dialog.destroy(self.dialog);
@@ -920,11 +923,11 @@ $.widget('ui.chunkSlideshow', $.ui.chunk, {
 
 				$.boom.dialog.confirm(
 					'Delete slide',
-					'Delete this slide?',
-					function(){
-						self._remove_slide( $( slide ) );
-					}
-				);
+					'Delete this slide?'
+				)
+				.done( function(){
+					self._remove_slide( $( slide ) );
+				});
 			})
 			.on( 'click', 'button.cancel', function(){
 				self._cancel();
