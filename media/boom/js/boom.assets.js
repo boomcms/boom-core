@@ -71,7 +71,10 @@ $.extend($.boom.assets, {
 
 					button
 						.text( 'Upload' )
-						.button()
+						.button({
+							text: false,
+							icons: { primary : 'ui-icon-boom-upload' }
+						})
 						.click( function() {
 							browser.browser_asset( 'upload' );
 						});
