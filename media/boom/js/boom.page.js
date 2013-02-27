@@ -1386,7 +1386,16 @@ $.widget( 'boom.page', $.boom.page, {
 									$( '#boom-featureimage-none' ).show();
 								});
 							}
-						},{
+						},
+						{
+							text: 'Cancel',
+							icons: { primary: 'ui-icon-boom-cancel' },
+							click: function(){
+
+								$.boom.dialog.destroy( this );
+							}
+						},
+						{
 							text: 'Okay',
 							icons: { primary: 'ui-icon-boom-accept' },
 							click: function(){
