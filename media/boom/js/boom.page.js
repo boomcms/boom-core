@@ -1363,7 +1363,7 @@ $.widget( 'boom.page', $.boom.page, {
 
 										$('#boom-featureimage-img').attr( 'src', '/asset/view/' + rid + '/250/80').show();
 										$('#boom-featureimage-input').val( rid );
-										$( '#boom-feature-remove' ).show();
+										$( '#boom-feature-remove' ).button( 'enable' );
 										$( '#boom-featureimage-none' ).hide();
 									});
 							}
@@ -1382,7 +1382,7 @@ $.widget( 'boom.page', $.boom.page, {
 									
 									$('#boom-featureimage-img').attr( 'src', '').hide();
 									$('#boom-featureimage-input').val( 0 );
-									$( '#boom-feature-remove' ).hide();
+									$( '#boom-feature-remove' ).button( 'disable' );
 									$( '#boom-featureimage-none' ).show();
 								});
 							}
@@ -1410,13 +1410,13 @@ $.widget( 'boom.page', $.boom.page, {
 						}
 					],
 					open: function(){
-						$( '#boom-feature-remove' ).hide();
+						$( '#boom-feature-remove' ).button( 'disable' );
 					},
 					onLoad: function(){
 						var asset_id = $('#boom-featureimage-input').val();
 						
 						if ( asset_id > 0 ) {
-							$( '#boom-featureimage-none' ).hide();
+							$( '#boom-featureimage-none' ).button( 'enable' );
 							$( '#boom-feature-remove' ).show();
 						}
 					}

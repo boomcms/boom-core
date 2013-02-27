@@ -51,12 +51,9 @@ $.extend($.boom.assets, {
 			},
 			open: function(){
 				$.boom.log( 'dialog open' );
-				var button = $('<button />')
-				.addClass('ui-helper-left');
-
-				if ( opts.asset_rid && opts.asset_rid > 0 ) {
-
-					button
+				
+				var remove = $('<button />')
+					.addClass('ui-helper-left')
 					.text('Remove')
 					.button({
 						text: false,
@@ -66,22 +63,32 @@ $.extend($.boom.assets, {
 						complete.reject();
 						cleanup();
 					});
+				var upload = $('<button />')
+					.addClass('ui-helper-left')
+					.text( 'Upload' )
+					.button({
+						text: false,
+						icons: { primary : 'ui-icon-boom-upload' }
+					})
+					.click( function() {
+						browser.browser_asset( 'upload' )
+							.done( function(){
+								$.boom.history.load( 'tag/0' );
+							});
+					});
+
+				if ( opts.asset_rid && opts.asset_rid > 0 ) {
+
+					remove.button( 'enable');
 
 				} else {
 
-					button
-						.text( 'Upload' )
-						.button({
-							text: false,
-							icons: { primary : 'ui-icon-boom-upload' }
-						})
-						.click( function() {
-							browser.browser_asset( 'upload' );
-						});
+					remove.button( 'disable' );
 				}
 				$(this).dialog('widget')
 					.find('.ui-dialog-buttonpane')
-					.prepend( button );
+					.prepend( upload )
+					.prepend( remove );
 			},
 			onLoad: function(){
 				
@@ -734,18 +741,19 @@ $.widget( 'boom.browser_asset', $.boom.browser, {
 						transform: 'translate(-300px, 0) scale(4)'
 					});
 			},
-			buttons: {
-				'✕': function(){
+			buttons: [
+				{
+					text: 'Cancel',
+					icons: { primary : 'ui-icon-boom-cancel' },
+					click: function( event ){
+						file_data.jqXHR && file_data.jqXHR.abort();
 
-					// TODO: cancel uploadify uploads
-					
-					file_data.jqXHR && file_data.jqXHR.abort();
+						$.boom.dialog.destroy( upload_dialog );
 
-					$.boom.dialog.destroy( upload_dialog );
-					
-					$.boom.history.refresh();
+						$.boom.history.refresh();
+					}
 				}
-			}
+			]
 		});
 		
 		return uploaded;
