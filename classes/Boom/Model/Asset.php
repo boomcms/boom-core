@@ -91,7 +91,7 @@ class Boom_Model_Asset extends Model_Taggable
 		try
 		{
 			// Copy / move the file into the assets directory.
-			$command($filepath, $this->directory().$this->id);
+			$command($filepath, $this->directory().DIRECTORY_SEPARATOR.$this->id);
 		}
 		catch (Exception $e)
 		{
