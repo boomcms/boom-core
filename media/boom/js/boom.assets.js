@@ -34,7 +34,6 @@ $.extend($.boom.assets, {
 
 		var cleanup = function(){
 			top.location.hash = '';
-			$.boom.dialog.destroy( dialog );
 		};
 
 		var default_options = {

@@ -1352,6 +1352,7 @@ $.widget( 'boom.page', $.boom.page, {
 					buttons: [
 						{
 							text: 'Add',
+							id: 'boom-feature-add',
 							icons: { primary: 'ui-icon-boom-add' },
 							click: function(){
 								$.boom.assets
@@ -1362,13 +1363,14 @@ $.widget( 'boom.page', $.boom.page, {
 
 										$('#boom-featureimage-img').attr( 'src', '/asset/view/' + rid + '/250/80').show();
 										$('#boom-featureimage-input').val( rid );
-										$('#boom-featureimage-none').hide();
-										$('#boom-featureimage-edit boom-button').hide();
+										$( '#boom-feature-remove' ).show();
+										$( '#boom-featureimage-none' ).hide();
 									});
 							}
 						},
 						{
 							text: 'Remove',
+							id: 'boom-feature-remove',
 							icons: { primary: 'ui-icon-boom-delete' },
 							click: function(){
 								var dialog = $(this);
@@ -1377,14 +1379,11 @@ $.widget( 'boom.page', $.boom.page, {
 									"Are you sure you want to do delete this page's feature image?"
 								)
 								.done( function(){
-									$.boom.page.settings.save(
-										url,
-										{feature_image_id : 0},
-										"Page feature image removed."
-									);
 									
 									$('#boom-featureimage-img').attr( 'src', '').hide();
 									$('#boom-featureimage-input').val( 0 );
+									$( '#boom-feature-remove' ).hide();
+									$( '#boom-featureimage-none' ).show();
 								});
 							}
 						},{
@@ -1402,6 +1401,15 @@ $.widget( 'boom.page', $.boom.page, {
 						}
 					],
 					open: function(){
+						$( '#boom-feature-remove' ).hide();
+					},
+					onLoad: function(){
+						var asset_id = $('#boom-featureimage-input').val();
+						
+						if ( asset_id > 0 ) {
+							$( '#boom-featureimage-none' ).hide();
+							$( '#boom-feature-remove' ).show();
+						}
 					}
 				});
 			}
