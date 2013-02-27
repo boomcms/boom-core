@@ -923,11 +923,11 @@ $.widget('ui.chunkSlideshow', $.ui.chunk, {
 
 				$.boom.dialog.confirm(
 					'Delete slide',
-					'Delete this slide?',
-					function(){
-						self._remove_slide( $( slide ) );
-					}
-				);
+					'Delete this slide?'
+				)
+				.done( function(){
+					self._remove_slide( $( slide ) );
+				});
 			})
 			.on( 'click', 'button.cancel', function(){
 				self._cancel();

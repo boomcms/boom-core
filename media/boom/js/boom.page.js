@@ -57,11 +57,11 @@ $.widget( 'boom.page', {
 				return 'You have unsaved changes.';
 				$.boom.dialog.confirm(
 					'Save changes',
-					'You have unsaved changes to this page. Press OK to save these and continue.',
-					function(){
-						self.save();
-					}
-				);
+					'You have unsaved changes to this page. Press OK to save these and continue.'
+				)
+				.done( function(){
+					self.save();
+				});
 			}
 		};
 
@@ -213,35 +213,35 @@ $.widget( 'boom.page', {
 
 			$.boom.dialog.confirm(
 				'Publish',
-				'Make this version of the page live?',
-				function(){
+				'Make this version of the page live?'
+			)
+			.done( function(){
 
-					$.boom.loader.show();
+				$.boom.loader.show();
 
-					$.post( '/cms/page/version/embargo/' + self.options.id )
-					.done( function(response){
+				$.post( '/cms/page/version/embargo/' + self.options.id )
+				.done( function(response){
 
-						$.boom.loader.hide();
+					$.boom.loader.hide();
 
-					});
-				}
-			);
+				});
+			});
 
 		});
 		$( '#boom-page-editlive' ).on( 'click', function( event ){
 			$.boom.dialog.confirm(
 				'Edit live',
-				'Stash changes and edit the live page?',
-				function(){
+				'Stash changes and edit the live page?'
+			)
+			.done( function(){
 
-					$.boom.log( 'stashing page edits' );
+				$.boom.log( 'stashing page edits' );
 
-					$.post( '/cms/page/stash/' + $.boom.page.options.id )
-					.done( function( response ){
-						$.boom.history.refresh();
-					});
-				}
-			);
+				$.post( '/cms/page/stash/' + $.boom.page.options.id )
+				.done( function( response ){
+					$.boom.history.refresh();
+				});
+			});
 		});
 
 		self.settings.init();
@@ -1275,15 +1275,15 @@ $.widget( 'boom.page', $.boom.page, {
 				// Ask if they want to move it.
 				$.boom.dialog.confirm(
 					"URL in use",
-					"The specified url is already in use on another page. Would you like to move it?",
-					function(){
-						move_dialog = $.boom.dialog.open({
-							url: form_url,
-							title: 'Move url',
-							deferred: move_url
-						});
-					}
-				);
+					"The specified url is already in use on another page. Would you like to move it?"
+				)
+				.done( function(){
+					move_dialog = $.boom.dialog.open({
+						url: form_url,
+						title: 'Move url',
+						deferred: move_url
+					});
+				});
 
 				return move_url.pipe( function(){
 
@@ -1300,7 +1300,11 @@ $.widget( 'boom.page', $.boom.page, {
 			/** @function */
 			remove: function( item ) {
 
-				$.boom.dialog.confirm('Please confirm', 'Are you sure you want to remove this URL? <br /><br /> This will delete the URL from the database and cannot be undone!', function(){
+				$.boom.dialog.confirm(
+					'Please confirm', 
+					'Are you sure you want to remove this URL? <br /><br /> This will delete the URL from the database and cannot be undone!'
+				)
+				.done( function(){
 
 					$.boom.loader.show();
 

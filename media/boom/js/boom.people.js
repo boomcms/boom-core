@@ -372,21 +372,21 @@ $.extend($.boom.people.group,  {
 
 		$.boom.dialog.confirm(
 			'Please confirm',
-			'Are you sure you want to remove this group? <br /><br /> This will delete the group from the database and cannot be undone!',
-			function(){
+			'Are you sure you want to remove this group? <br /><br /> This will delete the group from the database and cannot be undone!'
+		)
+		.done( function(){
 
-				$.boom.loader.show();
+			$.boom.loader.show();
 
-				$.post( '/cms/groups/delete/' + rid )
-				.done( function(){
+			$.post( '/cms/groups/delete/' + rid )
+			.done( function(){
 
-					$.boom.loader.hide();
+				$.boom.loader.hide();
 
-					$.boom.growl.show( 'Group successfully removed.' );
-					item.remove();
-				});
-			}
-		);
+				$.boom.growl.show( 'Group successfully removed.' );
+				item.remove();
+			});
+		});
 	},
 
 	/** @function */
@@ -482,24 +482,26 @@ $.widget( 'boom.browser_people', $.boom.browser, {
 
 				var msg = 'Are you sure you want to send the selected people to the rubbish bin?';
 
-				$.boom.dialog.confirm('Confirm deletion', msg, function(){
+				$.boom.dialog
+					.confirm('Confirm deletion', msg)
+					.done( function(){
 
-					var people = [];
+						var people = [];
 
-					$('.b-items-select-checkbox:checked').each(function(i){
+						$('.b-items-select-checkbox:checked').each(function(i){
 
-						people.push( $( this ).attr( 'id' ).replace(/person-(thumb|list)-/, '') );
+							people.push( $( this ).attr( 'id' ).replace(/person-(thumb|list)-/, '') );
+						});
+
+						$.boom.loader.show();
+
+						$.post('/cms/people/delete', {people: people}, function(){
+
+							$.boom.loader.hide();
+
+							$.boom.history.refresh();
+						});
 					});
-
-					$.boom.loader.show();
-
-					$.post('/cms/people/delete', {people: people}, function(){
-
-						$.boom.loader.hide();
-
-						$.boom.history.refresh();
-					});
-				});
 			});
 	},
 	

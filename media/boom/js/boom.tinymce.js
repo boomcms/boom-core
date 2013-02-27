@@ -252,16 +252,16 @@ $.widget('tinymce.editor', $.boom.editor, {
 
 			$.boom.dialog.confirm(
 				'Cancel changes',
-				'Cancel all changes and exit the editor?',
-				function(){
+				'Cancel all changes and exit the editor?'
+			)
+			.done( function(){
 
-					$.boom.log( 'canceling text edits' );
+				$.boom.log( 'canceling text edits' );
 
-					self.remove();
+				self.remove();
 
-					self.edited.reject();
-				}
-			);
+				self.edited.reject();
+			});
 
 		} else {
 
