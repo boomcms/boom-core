@@ -1234,7 +1234,8 @@ $.extend($.boom, {
 				msg: msg.replace(/\n/g, '<br />'),
 				title: title,
 				width: 300,
-				deferred: confirmed
+				deferred: confirmed,
+				callback: callback
 			});
 
 			return confirmed;
