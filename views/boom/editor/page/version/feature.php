@@ -3,10 +3,6 @@
 	<? if ( ! $feature_image_id): ?>
 		<p id="boom-featureimage-none">This page currently has no associated feature image.</p>
 		<p>
-			<button class="boom-featureimage-edit boom-button">
-				Add feature image
-			</button>
-
 			<img id='boom-featureimage-img' style="display: none" />
 		</p>
 	<? else: ?>

@@ -416,8 +416,6 @@ $.widget( 'boom.page', $.boom.page, {
 				});
 			}
 
-			
-
 		},
 
 		/**
@@ -1353,6 +1351,23 @@ $.widget( 'boom.page', $.boom.page, {
 					// cache: true,
 					buttons: [
 						{
+							text: 'Add',
+							icons: { primary: 'ui-icon-boom-add' },
+							click: function(){
+								$.boom.assets
+									.picker({
+										asset_rid : $('#boom-featureimage-input').val()
+									})
+									.done( function( rid ){
+
+										$('#boom-featureimage-img').attr( 'src', '/asset/view/' + rid + '/250/80').show();
+										$('#boom-featureimage-input').val( rid );
+										$('#boom-featureimage-none').hide();
+										$('#boom-featureimage-edit boom-button').hide();
+									});
+							}
+						},
+						{
 							text: 'Remove',
 							icons: { primary: 'ui-icon-boom-delete' },
 							click: function(){
@@ -1367,6 +1382,9 @@ $.widget( 'boom.page', $.boom.page, {
 										{feature_image_id : 0},
 										"Page feature image removed."
 									);
+									
+									$('#boom-featureimage-img').attr( 'src', '').hide();
+									$('#boom-featureimage-input').val( 0 );
 								});
 							}
 						},{
@@ -1384,23 +1402,6 @@ $.widget( 'boom.page', $.boom.page, {
 						}
 					],
 					open: function(){
-
-						$('.boom-featureimage-edit').click(function(){
-
-							$.boom.assets
-								.picker({
-									asset_rid : $('#boom-featureimage-input').val()
-								})
-								.done( function( rid ){
-
-									$('#boom-featureimage-img').attr( 'src', '/asset/view/' + rid + '/250/80').show();
-									$('#boom-featureimage-input').val( rid );
-									$('#boom-featureimage-none').hide();
-									$('#boom-featureimage-edit boom-button').hide();
-
-								});
-
-						});
 					}
 				});
 			}
