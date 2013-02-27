@@ -609,13 +609,6 @@ $.widget('ui.chunkFeature', $.ui.chunk, {
 						.find('.ui-dialog-buttonpane')
 						.prepend( button );
 				}
-			},
-			buttons: {
-				'✔': function(){
-					$.boom.dialog.destroy(self.dialog);
-
-					self.destroy();
-				}
 			}
 		});
 	},
