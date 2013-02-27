@@ -743,7 +743,7 @@ $.widget( 'boom.browser_asset', $.boom.browser, {
 					.on( 'click', function(){
 						file_data.jqXHR && file_data.jqXHR.abort();
 
-						$.boom.history.refresh();
+						$.boom.history.load( 'tag/' + $.boom.assets.tag.rid );
 					});
 			});
 		

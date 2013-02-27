@@ -12,7 +12,7 @@
 			<div id="b-upload-progress"></div>
 				<input type="file" name="b-assets-upload-files[]" id="b-assets-upload-file" multiple min="1" max="5" />
 				<button class="boom-button" type="button" id="b-upload-add"> Add files </button>
-				<button id="b-assets-upload-cancel" class="boom-button" data-icon="ui-icon-boom-cancel">Cancel</button>
+				<button type="button" id="b-assets-upload-cancel" class="boom-button" data-icon="ui-icon-boom-cancel">Cancel</button>
 		</div>
 	</form>
 </div>
