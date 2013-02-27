@@ -542,21 +542,16 @@ $.widget( 'boom.page', $.boom.page, {
 
 					if ( $.boom.page.slot_edits.length ){
 
-						$.boom.dialog.open({
-							msg: 'You have unsaved changes to this page. Save your changes, or discard them and continue.',
-							title: 'Save changes',
-							width: 300,
-							buttons: {
-								'✕': function(event){
-									$.boom.dialog.destroy(this);
-									$.boom.page.slot_edits = [];
-									top.location = target.href;
-								},
-								'✔': function(event){
-									$.boom.dialog.destroy(this);
-									$.boom.page.save();
-								}
-							}
+						$.boom.dialog.confirm(
+							'Save changes',
+							'You have unsaved changes to this page. Save your changes, or discard them and continue.'
+						)
+						.done( function(){
+							$.boom.page.save();
+						})
+						.fail( function(){
+							$.boom.page.slot_edits = [];
+							top.location = target.href;
 						});
 
 					} else {
