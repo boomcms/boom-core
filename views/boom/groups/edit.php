@@ -20,7 +20,7 @@
 
 							<?= Form::radio( $role->id, 1, FALSE, array( 'id' => 'allow-' . $role->id )); ?><label for="allow-<?= $role->id ?>">A</label> 
 							 <?= Form::radio( $role->id, 0, FALSE, array( 'id' => 'deny-' . $role->id )); ?><label for="deny-<?= $role->id ?>">D</label>
-							<?= Form::radio( $role->id, -1, TRUE, array( 'id' => 'none-' . $role->id )); ?><label for="none-<?= $role->id ?>">X</label>
+							<?= Form::radio( $role->id, -1, TRUE, array( 'id' => 'none-' . $role->id )); ?><label for="none-<?= $role->id ?>">✕</label>
 						</li>
 					<? endforeach; ?>
 				</ul>
