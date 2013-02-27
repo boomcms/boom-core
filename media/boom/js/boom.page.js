@@ -1415,8 +1415,8 @@ $.widget( 'boom.page', $.boom.page, {
 						var asset_id = $('#boom-featureimage-input').val();
 						
 						if ( asset_id > 0 ) {
-							$( '#boom-featureimage-none' ).button( 'enable' );
-							$( '#boom-feature-remove' ).show();
+							$( '#boom-featureimage-none' ).hide();
+							$( '#boom-feature-remove' ).button( 'enable' );
 						}
 					}
 				});
