@@ -900,7 +900,8 @@ $.extend($.boom, {
 				},
 				buttons: this.options.buttons || [
 					{
-						text : '✕',
+						text : 'Cancel',
+						icons : { primary : 'ui-icon-boom-cancel' },
 						click : function() {
 
 							( dialogConfig.deferred ) && dialogConfig.deferred.reject( dialogConfig.deferred_args );
@@ -909,7 +910,8 @@ $.extend($.boom, {
 						}
 					},
 					{
-						text : '✔',
+						text : 'Okay',
+						icons : { primary : 'ui-icon-boom-accept' },
 						click : function() {
 
 							(opts.callback) && opts.callback.call(this);
