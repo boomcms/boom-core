@@ -41,25 +41,17 @@ $.extend($.boom.person, {
 			var dialog = $.boom.dialog.open({
 				url: '/cms/people/add_group/' + rid,
 				title: 'Add group',
-				buttons: {
-					'✕': function(){
+				callback: function(){
 
-						$.boom.dialog.destroy( dialog );
-					},
-					'✔': function(){
+					var dialog = this;
+					var data = $( dialog ).find('form').serialize();
+					$.boom.loader.show();
 
-						var dialog = this;
-						var data = $( dialog ).find('form').serialize();
-						$.boom.loader.show();
+					$.post('/cms/people/add_group/' + rid, data )
+					.done( function(){
 
-						$.post('/cms/people/add_group/' + rid, data )
-						.done( function(){
-
-							$.boom.loader.hide();
-
-							$.boom.dialog.destroy(dialog);
-						});
-					}
+						$.boom.loader.hide();
+					});
 				}
 			});
 		});
@@ -346,19 +338,14 @@ $.extend($.boom.people.group,  {
 		var dialog = $.boom.dialog.open({
 			url: url,
 			title: 'Add group',
-			buttons: {
-				'✕': function(){
-					$.boom.dialog.destroy( dialog );
-				},
-				'✔': function(){
-					$.post(url, {name: $('#b-people-group-name').val()}, function(response){
-						$.boom.dialog.destroy(dialog);
+			callback: function(){
+				$.post(url, {name: $('#b-people-group-name').val()} )
+				.done( function(response){
 
-						$.boom.growl.show('Group successfully saved.');
+					$.boom.growl.show('Group successfully saved.');
 
-						top.location.reload();
-					});
-				}
+					top.location.reload();
+				});
 			}
 		});
 	},
@@ -464,21 +451,12 @@ $.widget( 'boom.browser_people', $.boom.browser, {
 
 					$('#boom-tagmanager-create-person-form input[name="name"]').focus();
 				},
-				buttons: {
-					'✕': function(){
-
-						$.boom.dialog.destroy( dialog );
-					},
-					'✔': function(){
-						self
-							.savePerson('/cms/people/add')
-							.done( function(){
-								window.location.reload();
-							});
-
-						$.boom.dialog.destroy( dialog );
-
-					}
+				callback: function(){
+					self
+						.savePerson('/cms/people/add')
+						.done( function(){
+							window.location.reload();
+						});
 				}
 			});
 		});
