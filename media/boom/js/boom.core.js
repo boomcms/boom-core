@@ -1234,27 +1234,7 @@ $.extend($.boom, {
 				msg: msg.replace(/\n/g, '<br />'),
 				title: title,
 				width: 300,
-				buttons: [
-					{
-						text : 'Cancel',
-						icons : { primary : 'ui-icon-boom-cancel' },
-						click : function() {
-
-							self.destroy(this);
-							confirmed.reject();
-						}
-					},
-					{
-						text : 'Okay',
-						icons : { primary : 'ui-icon-boom-accept' },
-						click : function() {
-
-							self.destroy($(this));
-							confirmed.resolve();
-							(callback) && callback();
-						}
-					}
-				]
+				deferred: confirmed
 			});
 
 			return confirmed;
