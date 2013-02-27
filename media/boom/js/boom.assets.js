@@ -399,11 +399,8 @@ $.widget( 'boom.browser_asset', $.boom.browser, {
 							// cache: true,
 							title: 'Asset tags',
 							width: 440,
-							buttons: {
-								'✔': function(){
-									$.boom.dialog.destroy( this );
-									tagged.resolve( tags );
-								}
+							callback: function(){
+								tagged.resolve( tags );
 							},
 							onLoad: function(){
 								// Make the tag editor work.
