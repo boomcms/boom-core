@@ -442,7 +442,7 @@ $.fn.sload = function(url, successCallback) {
 
 			self.html( data );
 
-			successCallback.apply(self, [ xhr, status ]);
+			successCallback && successCallback.apply(self, [ xhr, status ]);
 		}
 	});
 };

@@ -704,7 +704,6 @@ $.widget( 'boom.browser_asset', $.boom.browser, {
 			},
 			done: function( e, data ){
 				$.boom.log( 'file upload complete' );
-				$.boom.dialog.destroy( upload_dialog );
 				$.boom.assets.selected_rid = data.result.join( '-' );
 				
 				uploaded.resolve( data );
@@ -719,13 +718,12 @@ $.widget( 'boom.browser_asset', $.boom.browser, {
 		};
 		
 		opts = $.extend( default_opts, opts );
-
-		var upload_dialog = $.boom.dialog.open({
-			url:  '/cms/assets/upload',
-			width: 400,
-			title: 'Upload file/s',
-			onLoad: function(){
-				
+		
+		self.main_panel
+			.find( '.b-items-content' )
+			.sload( '/cms/assets/upload' )
+			.done( function(){
+				self.main_panel.ui();
 				var upload_token = $( '#upload_token' ).val();
 				
 				opts.formData.push( { name: 'upload_token', value: upload_token } );
@@ -740,21 +738,14 @@ $.widget( 'boom.browser_asset', $.boom.browser, {
 						position: 'absolute',
 						transform: 'translate(-300px, 0) scale(4)'
 					});
-			},
-			buttons: [
-				{
-					text: 'Cancel',
-					icons: { primary : 'ui-icon-boom-cancel' },
-					click: function( event ){
+				
+				$( '#b-assets-upload-cancel' )
+					.on( 'click', function(){
 						file_data.jqXHR && file_data.jqXHR.abort();
 
-						$.boom.dialog.destroy( upload_dialog );
-
 						$.boom.history.refresh();
-					}
-				}
-			]
-		});
+					});
+			});
 		
 		return uploaded;
 	}
