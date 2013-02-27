@@ -1147,27 +1147,35 @@ $.widget( 'boom.page', $.boom.page, {
 					// cache: true,
 					title: 'URLs',
 					width: 440,
-					buttons: {
-						'+': function( event ){
-							$.boom.dialog.open({
-								url: '/cms/page/urls/add/' + $.boom.page.options.id,
-								event: event,
-								title: 'Add URL',
-								width: 300,
-								// cache: true,
-								callback: function(){
+					buttons: [
+						{
+							text: 'Add',
+							icons: { primary : 'ui-icon-boom-add' },
+							click: function( event ){
+								$.boom.dialog.open({
+									url: '/cms/page/urls/add/' + $.boom.page.options.id,
+									event: event,
+									title: 'Add URL',
+									width: 300,
+									// cache: true,
+									callback: function(){
 
-									self.add();
+										self.add();
 
-									$.boom.dialog.destroy( this );
+										$.boom.dialog.destroy( this );
 
-								}
-							});
+									}
+								});
+							}
 						},
-						'✕': function(){
-							$.boom.dialog.destroy( this );
+						{
+							text: 'Cancel',
+							icons: { primary : 'ui-icon-boom-cancel' },
+							click: function( event ){
+								$.boom.dialog.destroy( this );
+							}
 						}
-					},
+					],
 					open: function(){
 						self.bind();
 					}
