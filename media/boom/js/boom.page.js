@@ -1007,7 +1007,6 @@ $.widget( 'boom.page', $.boom.page, {
 
 				$.boom.dialog.open({
 					url: '/cms/page/settings/navigation/' + $.boom.page.options.id + '?vid=' + $.boom.page.options.vid,
-					event: event,
 					// cache: true,
 					title: 'Navigation',
 					width: 570,
@@ -1060,7 +1059,6 @@ $.widget( 'boom.page', $.boom.page, {
 				$.boom.dialog.open({
 					url: '/cms/page/settings/search/' + $.boom.page.options.id + '?vid=' + $.boom.page.options.vid,
 					// cache: true,
-					event: event,
 					title: 'Search Settings',
 					width: 500,
 					callback : function(){
@@ -1100,7 +1098,6 @@ $.widget( 'boom.page', $.boom.page, {
 
 				$.boom.dialog.open({
 					url: '/cms/tags/page/list/' + $.boom.page.options.id,
-					event: event,
 					// cache: true,
 					title: 'Page tags',
 					width: 440,
@@ -1141,7 +1138,6 @@ $.widget( 'boom.page', $.boom.page, {
 
 				$.boom.dialog.open({
 					url: '/cms/page/urls/list/' + $.boom.page.options.id,
-					event: event,
 					// cache: true,
 					title: 'URLs',
 					width: 440,
@@ -1349,7 +1345,6 @@ $.widget( 'boom.page', $.boom.page, {
 
 				$.boom.dialog.open({
 					url: url + '?vid=' + $.boom.page.options.vid,
-					event: event,
 					title: 'Page feature image',
 					width: 300,
 					// cache: true,
@@ -1453,7 +1448,6 @@ $.widget( 'boom.page', $.boom.page, {
 
 				$.boom.dialog.open({
 					url: url + '?vid=' + $.boom.page.options.vid,
-					event: event,
 					title: 'Page template',
 					width: 300,
 					// cache: true,
@@ -1499,7 +1493,6 @@ $.widget( 'boom.page', $.boom.page, {
 
 				$.boom.dialog.open({
 					url: url,
-					event: event,
 					title: 'Page embargo',
 					width: 300,
 					// cache: true,
@@ -1552,7 +1545,6 @@ $.widget( 'boom.page', $.boom.page, {
 
 				$.boom.dialog.open({
 					url: url + '?vid=' + $.boom.page.options.vid,
-					event: event,
 					// cache: true,
 					title: 'Page visibility',
 					width: 440,
@@ -1684,7 +1676,6 @@ $.widget( 'boom.page', $.boom.page, {
 
 				$.boom.dialog.open({
 					url: '/cms/page/settings/children/' + $.boom.page.options.id + '?vid=' + $.boom.page.options.vid,
-					event: event,
 					// cache: true,
 					title: 'Child page settings',
 					width: 'auto',
@@ -1723,7 +1714,6 @@ $.widget( 'boom.page', $.boom.page, {
 
 				$.boom.dialog.open({
 					url: '/cms/page/settings/admin/' + $.boom.page.options.id + '?vid=' + $.boom.page.options.vid,
-					event: event,
 					// cache: true,
 					title: 'Admin settings',
 					width: 'auto',
