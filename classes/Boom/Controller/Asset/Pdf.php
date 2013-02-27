@@ -29,6 +29,10 @@ class Boom_Controller_Asset_Pdf extends Controller_Asset
 		// The filename of the asset.
 		$filename = $this->asset->path();
 
+		// Thumbnail dimensions.
+		$width = $this->request->param('width');
+		$height = $this->request->param('height');
+
 		// The filename of the asset thumbnail.
 		$thumb = $filename.".thumb";
 
@@ -43,10 +47,17 @@ class Boom_Controller_Asset_Pdf extends Controller_Asset
 			unset($image);
 		}
 
+		$image = Image::factory($thumb);
+
+		if ($width OR $height)
+		{
+			$image->resize($width, $height);
+		}
+
 		// Display the thumbnail
 		$this->response
 			->headers('Content-type', 'image/jpg')
-			->body(file_get_contents($thumb));
+			->body($image->render());
 	}
 
 }
