@@ -484,26 +484,26 @@ $.widget( 'boom.browser_asset', $.boom.browser, {
 
 				$.boom.dialog.confirm(
 					'Confirm deletion',
-					msg,
-					function(){
+					msg
+				)
+				.done( function(){
 
-						var assets = [];
+					var assets = [];
 
-						$('.b-items-select-checkbox:checked').each(function(i){
+					$('.b-items-select-checkbox:checked').each(function(i){
 
-							assets.push( $( this ).attr('id').replace(/asset-(thumb|list)-/, '') );
-						});
+						assets.push( $( this ).attr('id').replace(/asset-(thumb|list)-/, '') );
+					});
 
-						$.boom.loader.show();
+					$.boom.loader.show();
 
-						$.post('/cms/assets/delete', {assets:  assets}, function(){
+					$.post('/cms/assets/delete', {assets:  assets}, function(){
 
-							$.boom.loader.hide();
+						$.boom.loader.hide();
 
-							$.boom.history.refresh();
-						});
-					}
-				);
+						$.boom.history.refresh();
+					});
+				});
 			})
 			.on( 'click', '#b-button-multiaction-edit', function(){
 
