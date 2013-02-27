@@ -1351,35 +1351,41 @@ $.widget( 'boom.page', $.boom.page, {
 					title: 'Page feature image',
 					width: 300,
 					// cache: true,
-					buttons: {
-						Remove: function(){
-							var dialog = $(this);
-							$.boom.dialog.confirm(
-								'Please confirm',
-								"Are you sure you want to do delete this page's feature image?",
-								function(){
+					buttons: [
+						{
+							text: 'Remove',
+							icons: { primary: 'ui-icon-boom-delete' },
+							click: function(){
+								var dialog = $(this);
+								$.boom.dialog.confirm(
+									'Please confirm',
+									"Are you sure you want to do delete this page's feature image?",
+									function(){
 
-									$.boom.page.settings.save(
-										url,
-										{feature_image_id : 0},
-										"Page feature image removed."
-									);
+										$.boom.page.settings.save(
+											url,
+											{feature_image_id : 0},
+											"Page feature image removed."
+										);
 
-									$.boom.dialog.destroy( dialog );
-								}
-							);
-						},
-						'✔': function(){
+										$.boom.dialog.destroy( dialog );
+									}
+								);
+							}
+						},{
+							text: 'Okay',
+							icons: { primary: 'ui-icon-boom-accept' },
+							click: function(){
+								$.boom.page.settings.save(
+									url,
+									$("#boom-form-pagesettings-featureimage").serialize(),
+									"Page feature image saved."
+								);
 
-							$.boom.page.settings.save(
-								url,
-								$("#boom-form-pagesettings-featureimage").serialize(),
-								"Page feature image saved."
-							);
-
-							$.boom.dialog.destroy( this );
+								$.boom.dialog.destroy( this );
+							}
 						}
-					},
+					],
 					open: function(){
 
 						$('.boom-featureimage-edit').click(function(){
