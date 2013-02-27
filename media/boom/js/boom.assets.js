@@ -44,19 +44,11 @@ $.extend($.boom.assets, {
 			height: 500,
 			title: 'Select an asset',
 			cache: false,
-			buttons: {
-				'✕': function() {
-					cleanup();
-					( opts.deferred ) && opts.deferred.reject();
-					return false;
-				},
-				'✔': function() {
-					var asset_id = browser.browser_asset( 'get_asset' );
-					cleanup();
-					( opts.deferred ) && opts.deferred.resolve();
-					complete.resolve( asset_id );
-					return false;
-				}
+			callback: function() {
+				var asset_id = browser.browser_asset( 'get_asset' );
+				cleanup();
+				complete.resolve( asset_id );
+				return false;
 			},
 			open: function(){
 				$.boom.log( 'dialog open' );
@@ -407,11 +399,8 @@ $.widget( 'boom.browser_asset', $.boom.browser, {
 							// cache: true,
 							title: 'Asset tags',
 							width: 440,
-							buttons: {
-								'✔': function(){
-									$.boom.dialog.destroy( this );
-									tagged.resolve( tags );
-								}
+							callback: function(){
+								tagged.resolve( tags );
 							},
 							onLoad: function(){
 								// Make the tag editor work.
@@ -551,11 +540,6 @@ $.widget( 'boom.browser_asset', $.boom.browser, {
 					// cache: true,
 					title: 'Asset tags',
 					width: 440,
-					buttons: {
-						'✔': function(){
-							$.boom.dialog.destroy( this );
-						}
-					},
 					onLoad: function(){
 						$('#b-tags').tagger({
 							type: 'asset',

@@ -1269,14 +1269,8 @@ $.extend($.boom, {
 				url: '/get-error-report.php',
 				title: 'Report an error',
 				data: data,
-				buttons: {
-					'✕': function() {
-						$.boom.dialog.destroy(this);
-					},
-					'✔': function() {
-						$.boom.dialog.destroy(this);
-						alert('clicked send!');
-					}
+				callback: function() {
+					alert('clicked send!');
 				}
 			});
 		}
