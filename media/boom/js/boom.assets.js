@@ -58,7 +58,10 @@ $.extend($.boom.assets, {
 
 					button
 					.text('Remove')
-					.button()
+					.button({
+						text: false,
+						icons: { primary : 'ui-icon-boom-delete' }
+					})
 					.click(function(){
 						complete.reject();
 						cleanup();

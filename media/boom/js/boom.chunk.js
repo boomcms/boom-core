@@ -597,7 +597,10 @@ $.widget('ui.chunkFeature', $.ui.chunk, {
 					var button = $('<button />')
 					.addClass('ui-helper-left')
 					.text('Remove')
-					.button()
+					.button({
+						text: false,
+						icons: { primary : 'ui-icon-boom-delete' }
+					})
 					.click(function(){
 
 						$.boom.dialog.destroy(self.dialog);
