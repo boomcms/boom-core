@@ -868,8 +868,6 @@ $.extend($.boom, {
 
 			var self = this;
 
-			$.boom.page && $.boom.page.toolbar.maximise();
-
 			this.options = $.extend({
 				type: 'modal',
 				selector: '',
@@ -966,6 +964,8 @@ $.extend($.boom, {
 				this.resize(dialog);
 
 				this.dialogs.push(dialog);
+				
+				$.boom.page && $.boom.page.toolbar.maximise();
 
 				$.boom.log('Dialog open');
 			}
