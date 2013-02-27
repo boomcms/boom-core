@@ -1207,14 +1207,18 @@ $.extend($.boom, {
 				selector: '#boom-dialog-alerts',
 				title: type,
 				width: width || 300,
-				buttons: {
-					'✔': function(event){
+				buttons: [
+					{
+						text : 'Okay',
+						icons : { primary : 'ui-icon-boom-accept' },
+						click : function() {
 
-						self.destroy( $(this) );
+							self.destroy( $(this) );
 
-						(callback) && callback.apply();
+							(callback) && callback.apply();
+						}
 					}
-				}
+				]
 			});
 		},
 
@@ -1230,17 +1234,27 @@ $.extend($.boom, {
 				msg: msg.replace(/\n/g, '<br />'),
 				title: title,
 				width: 300,
-				buttons: {
-					'✕': function(event){
-						self.destroy(this);
-						confirmed.reject();
+				buttons: [
+					{
+						text : 'Cancel',
+						icons : { primary : 'ui-icon-boom-cancel' },
+						click : function() {
+
+							self.destroy(this);
+							confirmed.reject();
+						}
 					},
-					'✔': function(event){
-						self.destroy($(this));
-						confirmed.resolve();
-						(callback) && callback();
+					{
+						text : 'Okay',
+						icons : { primary : 'ui-icon-boom-accept' },
+						click : function() {
+
+							self.destroy($(this));
+							confirmed.resolve();
+							(callback) && callback();
+						}
 					}
-				}
+				]
 			});
 
 			return confirmed;

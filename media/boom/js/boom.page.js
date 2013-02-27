@@ -1359,18 +1359,15 @@ $.widget( 'boom.page', $.boom.page, {
 								var dialog = $(this);
 								$.boom.dialog.confirm(
 									'Please confirm',
-									"Are you sure you want to do delete this page's feature image?",
-									function(){
-
-										$.boom.page.settings.save(
-											url,
-											{feature_image_id : 0},
-											"Page feature image removed."
-										);
-
-										$.boom.dialog.destroy( dialog );
-									}
-								);
+									"Are you sure you want to do delete this page's feature image?"
+								)
+								.done( function(){
+									$.boom.page.settings.save(
+										url,
+										{feature_image_id : 0},
+										"Page feature image removed."
+									);
+								});
 							}
 						},{
 							text: 'Okay',
