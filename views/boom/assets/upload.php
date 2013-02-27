@@ -1,4 +1,4 @@
-<div>
+<div class="ui-widget-content">
 	<form method="POST" enctype="multipart/form-data" id="b-assets-upload-form" action="/cms/assets/upload">
 		<div id="upload-advanced">
 			<div class="ui-widget" id="boom-asset-upload-info">
