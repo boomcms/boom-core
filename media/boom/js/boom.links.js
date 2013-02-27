@@ -13,6 +13,8 @@ $.extend( $.boom, {
 			
 			opts = ( opts ) ? opts : {};
 			
+			var complete = new $.Deferred();
+			
 			var link_manager_url =
 				( opts.page_rid && typeof opts.page_rid != 'undefined' ) ?
 				'/cms/chunk/insert_url/' + opts.page_rid : 
@@ -21,6 +23,7 @@ $.extend( $.boom, {
 			var default_opts = {
 				title: 'Edit link',
 				url: link_manager_url,
+				deferred: complete,
 				onLoad: function(){
 					var self = this;
 					$.boom.util.page_tree( this.find( '.boom-tree' ) )
@@ -32,28 +35,15 @@ $.extend( $.boom, {
 							$.boom.dialog.destroy( self );
 						});
 				},
-				buttons: {
-					'✕': function(){
-						complete.reject();
-
-						$.boom.dialog.destroy( this );
-						
-						return false;
-					},
-					'✔': function(){
-						
-						if ( link.rid == -1 ) {
-							var link_text = $( '#boom-chunk-linkset-addlink-external-url' ).val();
-							link.url = link_text;
-							link.title = link_text;
-						}
-						
-						complete.resolve( link );
-
-						$.boom.dialog.destroy( this );
-						
-						return false;
+				callback: function(){
+					
+					if ( link.rid == -1 ) {
+						var link_text = $( '#boom-chunk-linkset-addlink-external-url' ).val();
+						link.url = link_text;
+						link.title = link_text;
 					}
+					
+					complete.resolve( link );
 				},
 				link : {
 					title: '',
@@ -65,7 +55,6 @@ $.extend( $.boom, {
 			opts = $.extend( default_opts, opts );
 			
 			var link = opts.link;
-			var complete = new $.Deferred();
 			
 			$.boom.dialog.open( opts );
 			
