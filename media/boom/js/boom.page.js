@@ -1026,17 +1026,13 @@ $.widget( 'boom.page', $.boom.page, {
 							});
 
 					},
-					buttons: {
-						'✔': function(){
+					callback: function(){
 
-							$.boom.page.settings.save(
-								'/cms/page/settings/navigation/' + $.boom.page.options.id,
-								$("#boom-form-pagesettings-navigation").serialize(),
-								"Page navigation settings saved."
-							);
-
-							$.boom.dialog.destroy( this );
-						}
+						$.boom.page.settings.save(
+							'/cms/page/settings/navigation/' + $.boom.page.options.id,
+							$("#boom-form-pagesettings-navigation").serialize(),
+							"Page navigation settings saved."
+						);
 					},
 					open: function() {
 
@@ -1074,17 +1070,13 @@ $.widget( 'boom.page', $.boom.page, {
 					event: event,
 					title: 'Search Settings',
 					width: 500,
-					buttons: {
-						'✔': function(){
+					callback : function(){
 
-							$.boom.page.settings.save(
-								'/cms/page/settings/search/' + $.boom.page.options.id,
-								$("#boom-form-pagesettings-search").serialize(),
-								"Page search settings saved."
-							);
-
-							$.boom.dialog.destroy( this );
-						}
+						$.boom.page.settings.save(
+							'/cms/page/settings/search/' + $.boom.page.options.id,
+							$("#boom-form-pagesettings-search").serialize(),
+							"Page search settings saved."
+						);
 					}
 				});
 			}
@@ -1119,10 +1111,7 @@ $.widget( 'boom.page', $.boom.page, {
 					// cache: true,
 					title: 'Page tags',
 					width: 440,
-					buttons: {
-						'✔': function(){
-							$.boom.dialog.destroy( this );
-						}
+					callback: function(){
 					},
 					open: function() {
 						$('#b-tags').tagger({
@@ -1171,14 +1160,12 @@ $.widget( 'boom.page', $.boom.page, {
 								title: 'Add URL',
 								width: 300,
 								// cache: true,
-								buttons: {
-									'✔': function(){
+								callback: function(){
 
-										self.add();
+									self.add();
 
-										$.boom.dialog.destroy( this );
+									$.boom.dialog.destroy( this );
 
-									}
 								}
 							});
 						},
@@ -1442,20 +1429,16 @@ $.widget( 'boom.page', $.boom.page, {
 					title: 'Page template',
 					width: 300,
 					// cache: true,
-					buttons: {
-						'✔': function(){
+					callback: function(){
 
-							$.boom.page.settings.save(
-								url,
-								$("#b-form-pageversion-template").serialize(),
-								"Page template saved, reloading page."
-							);
+						$.boom.page.settings.save(
+							url,
+							$("#b-form-pageversion-template").serialize(),
+							"Page template saved, reloading page."
+						);
 
-							$.boom.dialog.destroy( this );
-
-							// Reload the page to show the template change.
-							top.location.reload();
-						}
+						// Reload the page to show the template change.
+						top.location.reload();
 					},
 					open: function(){
 					}
@@ -1492,17 +1475,13 @@ $.widget( 'boom.page', $.boom.page, {
 					title: 'Page embargo',
 					width: 300,
 					// cache: true,
-					buttons: {
-						'✔': function(){
+					callback: function(){
 
-							$.boom.page.settings.save(
-								url,
-								$("#b-form-pageversion-embargo").serialize(),
-								"Page embargo saved."
-							);
-
-							$.boom.dialog.destroy( this );
-						}
+						$.boom.page.settings.save(
+							url,
+							$("#b-form-pageversion-embargo").serialize(),
+							"Page embargo saved."
+						);
 					},
 					open: function(){
 						$( '#page-visible' ).on( 'change', function(){
@@ -1549,17 +1528,13 @@ $.widget( 'boom.page', $.boom.page, {
 					// cache: true,
 					title: 'Page visibility',
 					width: 440,
-					buttons: {
-						'✔': function(){
+					callback: function(){
 
-							$.boom.page.settings.save(
-								url,
-								$("#boom-form-pagesettings-visibility").serialize(),
-								"Page visibility settings saved."
-							);
-
-							$.boom.dialog.destroy( this );
-						}
+						$.boom.page.settings.save(
+							url,
+							$("#boom-form-pagesettings-visibility").serialize(),
+							"Page visibility settings saved."
+						);
 					},
 					open: function(){
 
@@ -1620,11 +1595,6 @@ $.widget( 'boom.page', $.boom.page, {
 					url:  url + '?vid=' + $.boom.page.options.vid,
 					title: 'Page versions',
 					width: 440,
-					buttons: {
-						'✕' : function(){
-							$.boom.dialog.destroy( this );
-						}
-					},
 					open: function(){
 
 						var dialog = this;
@@ -1690,17 +1660,13 @@ $.widget( 'boom.page', $.boom.page, {
 					// cache: true,
 					title: 'Child page settings',
 					width: 'auto',
-					buttons: {
-						'✔': function(){
+					callback: function(){
 
-							$.boom.page.settings.save(
-								'/cms/page/settings/children/' + $.boom.page.options.id,
-								$("#boom-form-pagesettings-childsettings").serialize(),
-								"Child page settings saved."
-							);
-
-							$.boom.dialog.destroy( this );
-						}
+						$.boom.page.settings.save(
+							'/cms/page/settings/children/' + $.boom.page.options.id,
+							$("#boom-form-pagesettings-childsettings").serialize(),
+							"Child page settings saved."
+						);
 					}
 				});
 			}
@@ -1733,17 +1699,14 @@ $.widget( 'boom.page', $.boom.page, {
 					// cache: true,
 					title: 'Admin settings',
 					width: 'auto',
-					buttons: {
-						'✔': function(){
+					callback: function(){
 
-							$.boom.page.settings.save(
-								'/cms/page/settings/admin/' + $.boom.page.options.id,
-								$("#boom-form-pagesettings-adminsettings").serialize(),
-								"Page admin settings saved."
-							);
+						$.boom.page.settings.save(
+							'/cms/page/settings/admin/' + $.boom.page.options.id,
+							$("#boom-form-pagesettings-adminsettings").serialize(),
+							"Page admin settings saved."
+						);
 
-							$.boom.dialog.destroy( this );
-						}
 					}
 				});
 			}
