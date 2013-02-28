@@ -33,14 +33,14 @@ class Boom_Chunk_Text extends Chunk
 	 *
 	 * @var string
 	 */
-	public static $youtube_embed = "<iframe width=\:width\" height=\":height\" src=\"http://www.youtube.com/embed/:video_id\" frameborder=\"0\" allowfullscreen></iframe>";
+	public static $youtube_embed = '<iframe width=":width" height=":height" src="http://www.youtube.com/embed/:video_id" frameborder="0" allowfullscreen></iframe>';
 
 	/**
 	 * Embed HTML for a Vimeo video.
 	 *
 	 * @var string
 	 */
-	public static $vimeo_embed = "<iframe width=':width' height=':height' src='http://player.vimeo.com/video/:video_id' frameborder='0' webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>";
+	public static $vimeo_embed = '<iframe width=":width" height=":height" src="http://player.vimeo.com/video/:video_id" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>';
 
 	protected function _add_html($text)
 	{
