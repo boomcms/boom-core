@@ -34,7 +34,6 @@ $.extend($.boom.assets, {
 
 		var cleanup = function(){
 			top.location.hash = '';
-			$.boom.dialog.destroy( dialog );
 		};
 
 		var default_options = {
@@ -44,47 +43,52 @@ $.extend($.boom.assets, {
 			height: 500,
 			title: 'Select an asset',
 			cache: false,
-			buttons: {
-				Cancel: function() {
-					cleanup();
-					( opts.deferred ) && opts.deferred.reject();
-					return false;
-				},
-				'Okay': function() {
-					var asset_id = browser.browser_asset( 'get_asset' );
-					cleanup();
-					( opts.deferred ) && opts.deferred.resolve();
-					complete.resolve( asset_id );
-					return false;
-				}
+			callback: function() {
+				var asset_id = browser.browser_asset( 'get_asset' );
+				cleanup();
+				complete.resolve( asset_id );
+				return false;
 			},
 			open: function(){
 				$.boom.log( 'dialog open' );
-				var button = $('<button />')
-				.addClass('ui-helper-left');
-
-				if ( opts.asset_rid && opts.asset_rid > 0 ) {
-
-					button
+				
+				var remove = $('<button />')
+					.addClass('ui-helper-left')
 					.text('Remove')
-					.button()
+					.button({
+						text: false,
+						icons: { primary : 'ui-icon-boom-delete' }
+					})
 					.click(function(){
 						complete.reject();
 						cleanup();
 					});
+				var upload = $('<button />')
+					.addClass('ui-helper-left')
+					.text( 'Upload' )
+					.button({
+						text: false,
+						icons: { primary : 'ui-icon-boom-upload' }
+					})
+					.click( function() {
+						browser.browser_asset( 'upload' )
+							.done( function(){
+								$.boom.history.load( 'tag/0' );
+							});
+					});
+
+				if ( opts.asset_rid && opts.asset_rid > 0 ) {
+
+					remove.button( 'enable');
 
 				} else {
 
-					button
-						.text( 'Upload' )
-						.button()
-						.click( function() {
-							browser.browser_asset( 'upload' );
-						});
+					remove.button( 'disable' );
 				}
 				$(this).dialog('widget')
 					.find('.ui-dialog-buttonpane')
-					.prepend( button );
+					.prepend( upload )
+					.prepend( remove );
 			},
 			onLoad: function(){
 				
@@ -285,7 +289,7 @@ $.extend($.boom.asset, {
 
 					} else {
 
-						//self.browser.defaultRoute();
+						$.boom.history.load( 'tag/0' );
 					}
 				});
 			});
@@ -351,10 +355,10 @@ $.extend($.boom.assets.tag,  {
 /**
 * User interface for browsing and managing assets.
 * @class
-* @name boom.browser_asset
+* @name $.boom.browser_asset
 */
 $.widget( 'boom.browser_asset', $.boom.browser, {
-	/** @lends boom.browser_asset */
+	/** @lends $.boom.browser_asset */
 	
 	/**
 	map url fragments to objects
@@ -407,11 +411,8 @@ $.widget( 'boom.browser_asset', $.boom.browser, {
 							// cache: true,
 							title: 'Asset tags',
 							width: 440,
-							buttons: {
-								Done: function(){
-									$.boom.dialog.destroy( this );
-									tagged.resolve( tags );
-								}
+							callback: function(){
+								tagged.resolve( tags );
 							},
 							onLoad: function(){
 								// Make the tag editor work.
@@ -483,26 +484,26 @@ $.widget( 'boom.browser_asset', $.boom.browser, {
 
 				$.boom.dialog.confirm(
 					'Confirm deletion',
-					msg,
-					function(){
+					msg
+				)
+				.done( function(){
 
-						var assets = [];
+					var assets = [];
 
-						$('.b-items-select-checkbox:checked').each(function(i){
+					$('.b-items-select-checkbox:checked').each(function(i){
 
-							assets.push( $( this ).attr('id').replace(/asset-(thumb|list)-/, '') );
-						});
+						assets.push( $( this ).attr('id').replace(/asset-(thumb|list)-/, '') );
+					});
 
-						$.boom.loader.show();
+					$.boom.loader.show();
 
-						$.post('/cms/assets/delete', {assets:  assets}, function(){
+					$.post('/cms/assets/delete', {assets:  assets}, function(){
 
-							$.boom.loader.hide();
+						$.boom.loader.hide();
 
-							$.boom.history.refresh();
-						});
-					}
-				);
+						$.boom.history.refresh();
+					});
+				});
 			})
 			.on( 'click', '#b-button-multiaction-edit', function(){
 
@@ -551,11 +552,6 @@ $.widget( 'boom.browser_asset', $.boom.browser, {
 					// cache: true,
 					title: 'Asset tags',
 					width: 440,
-					buttons: {
-						Close: function(){
-							$.boom.dialog.destroy( this );
-						}
-					},
 					onLoad: function(){
 						$('#b-tags').tagger({
 							type: 'asset',
@@ -708,7 +704,6 @@ $.widget( 'boom.browser_asset', $.boom.browser, {
 			},
 			done: function( e, data ){
 				$.boom.log( 'file upload complete' );
-				$.boom.dialog.destroy( upload_dialog );
 				$.boom.assets.selected_rid = data.result.join( '-' );
 				
 				uploaded.resolve( data );
@@ -723,13 +718,12 @@ $.widget( 'boom.browser_asset', $.boom.browser, {
 		};
 		
 		opts = $.extend( default_opts, opts );
-
-		var upload_dialog = $.boom.dialog.open({
-			url:  '/cms/assets/upload',
-			width: 400,
-			title: 'Upload file/s',
-			onLoad: function(){
-				
+		
+		self.main_panel
+			.find( '.b-items-content' )
+			.sload( '/cms/assets/upload' )
+			.done( function(){
+				self.main_panel.ui();
 				var upload_token = $( '#upload_token' ).val();
 				
 				opts.formData.push( { name: 'upload_token', value: upload_token } );
@@ -744,20 +738,14 @@ $.widget( 'boom.browser_asset', $.boom.browser, {
 						position: 'absolute',
 						transform: 'translate(-300px, 0) scale(4)'
 					});
-			},
-			buttons: {
-				Cancel: function(){
+				
+				$( '#b-assets-upload-cancel' )
+					.on( 'click', function(){
+						file_data.jqXHR && file_data.jqXHR.abort();
 
-					// TODO: cancel uploadify uploads
-					
-					file_data.jqXHR && file_data.jqXHR.abort();
-
-					$.boom.dialog.destroy( upload_dialog );
-					
-					$.boom.history.refresh();
-				}
-			}
-		});
+						$.boom.history.load( 'tag/' + $.boom.assets.tag.rid );
+					});
+			});
 		
 		return uploaded;
 	}

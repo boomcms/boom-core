@@ -58,31 +58,13 @@ class Boom_Model_Asset extends Model_Taggable
 	protected $_old_files = NULL;
 
 	/**
-	 * Updates the current object with data from a given file.
+	 * Returns the directory where asset files are stored.
 	 *
-	 * @param string $filepath
-	 * @return \Boom_Model_Asset
+	 * @return string
 	 */
-	public function get_file_info($filepath)
+	public function directory()
 	{
-		// Get the filesize, and type and update the corresponding Model_Asset properties.
-		$this->values(array(
-			'filesize'		=>	filesize($filepath),
-			'type'		=>	Boom_Asset::type_from_mime(File::mime($filepath)),
-		));
-
-		// If the asset is an image then set the dimensionis.
-		if ($this->type == Boom_Asset::IMAGE)
-		{
-			// Set the dimensions of the image.
-			list($width, $height) = getimagesize($filepath);
-
-			$this
-				->set('width', $width)
-				->set('height', $height);
-		}
-
-		return $this;
+		return APPPATH.DIRECTORY_SEPARATOR.'assets';
 	}
 
 	/**
@@ -109,7 +91,7 @@ class Boom_Model_Asset extends Model_Taggable
 		try
 		{
 			// Copy / move the file into the assets directory.
-			$command($filepath, Boom_Asset::$path.DIRECTORY_SEPARATOR.$this->id);
+			$command($filepath, $this->directory().DIRECTORY_SEPARATOR.$this->id);
 		}
 		catch (Exception $e)
 		{
@@ -167,6 +149,44 @@ class Boom_Model_Asset extends Model_Taggable
 	}
 
 	/**
+	 * Updates the current object with data from a given file.
+	 *
+	 * @param string $filepath
+	 * @return \Boom_Model_Asset
+	 */
+	public function get_file_info($filepath)
+	{
+		// Get the filesize, and type and update the corresponding Model_Asset properties.
+		$this->values(array(
+			'filesize'		=>	filesize($filepath),
+			'type'		=>	Boom_Asset::type_from_mime(File::mime($filepath)),
+		));
+
+		// If the asset is an image then set the dimensionis.
+		if ($this->type == Boom_Asset::IMAGE)
+		{
+			// Set the dimensions of the image.
+			list($width, $height) = getimagesize($filepath);
+
+			$this
+				->set('width', $width)
+				->set('height', $height);
+		}
+
+		return $this;
+	}
+
+	/**
+	 * Find the mimetype of the asset file.
+	 *
+	 * @return string Mimetype string.
+	 */
+	public function get_mime()
+	{
+		return File::mime($this->directory().$this->id);
+	}
+
+	/**
 	 * Returns an array of old files which have been replaced.
 	 * Where an asset has been replaced the array will contain the names of the backup files for the previous versions.
 	 *
@@ -184,7 +204,7 @@ class Boom_Model_Asset extends Model_Taggable
 		{
 			// Add files for previous versions of the asset.
 			// Wrap the glob in array_reverse() so that we end up with an array with the most recent first.
-			foreach (array_reverse(glob(Boom_Asset::$path . $this->id . ".*.bak")) as $file)
+			foreach (array_reverse(glob($this->directory().".*.bak")) as $file)
 			{
 				// Get the version ID out of the filename.
 				preg_match('/' . $this->id . '.(\d+).bak$/', $file, $matches);
@@ -204,13 +224,13 @@ class Boom_Model_Asset extends Model_Taggable
 	}
 
 	/**
-	 * Find the mimetype of the asset file.
+	 * Get the path of the asset file on the local file system.
 	 *
-	 * @return string Mimetype string.
+	 * @return string
 	 */
-	public function get_mime()
+	public function path()
 	{
-		return File::mime(Boom_Asset::$path . $this->id);
+		return $this->directory().DIRECTORY_SEPARATOR.$this->id;
 	}
 
 	/**

@@ -442,7 +442,7 @@ $.fn.sload = function(url, successCallback) {
 
 			self.html( data );
 
-			successCallback.apply(self, [ xhr, status ]);
+			successCallback && successCallback.apply(self, [ xhr, status ]);
 		}
 	});
 };
@@ -868,8 +868,6 @@ $.extend($.boom, {
 
 			var self = this;
 
-			$.boom.page && $.boom.page.toolbar.maximise();
-
 			this.options = $.extend({
 				type: 'modal',
 				selector: '',
@@ -898,21 +896,29 @@ $.extend($.boom, {
 
 					$.boom.dialog.destroy( this, self.options.destroy );
 				},
-				buttons: this.options.buttons || {
-					Cancel: function() {
+				buttons: this.options.buttons || [
+					{
+						text : 'Cancel',
+						icons : { primary : 'ui-icon-boom-cancel' },
+						click : function() {
 
-						( dialogConfig.deferred ) && dialogConfig.deferred.reject( dialogConfig.deferred_args );
+							( dialogConfig.deferred ) && dialogConfig.deferred.reject( dialogConfig.deferred_args );
 
-						$.boom.dialog.destroy( this, dialogConfig.destroy );
+							$.boom.dialog.destroy( this, dialogConfig.destroy );
+						}
 					},
-					'Okay': function() {
+					{
+						text : 'Okay',
+						icons : { primary : 'ui-icon-boom-accept' },
+						click : function() {
 
-						(opts.callback) && opts.callback.call(this);
-						( dialogConfig.deferred ) && dialogConfig.deferred.resolve( dialogConfig.deferred_args );
+							(opts.callback) && opts.callback.call(this);
+							( dialogConfig.deferred ) && dialogConfig.deferred.resolve( dialogConfig.deferred_args );
 
-						$.boom.dialog.destroy( this, dialogConfig.destroy );
+							$.boom.dialog.destroy( this, dialogConfig.destroy );
+						}
 					}
-				}
+				] 
 			});
 
 			var tabsConfig = $.extend({}, $.boom.config.tabs, {
@@ -958,6 +964,8 @@ $.extend($.boom, {
 				this.resize(dialog);
 
 				this.dialogs.push(dialog);
+				
+				$.boom.page && $.boom.page.toolbar.maximise();
 
 				$.boom.log('Dialog open');
 			}
@@ -1199,14 +1207,18 @@ $.extend($.boom, {
 				selector: '#boom-dialog-alerts',
 				title: type,
 				width: width || 300,
-				buttons: {
-					Okay: function(event){
+				buttons: [
+					{
+						text : 'Okay',
+						icons : { primary : 'ui-icon-boom-accept' },
+						click : function() {
 
-						self.destroy( $(this) );
+							self.destroy( $(this) );
 
-						(callback) && callback.apply();
+							(callback) && callback.apply();
+						}
 					}
-				}
+				]
 			});
 		},
 
@@ -1222,17 +1234,8 @@ $.extend($.boom, {
 				msg: msg.replace(/\n/g, '<br />'),
 				title: title,
 				width: 300,
-				buttons: {
-					Cancel: function(event){
-						self.destroy(this);
-						confirmed.reject();
-					},
-					Okay: function(event){
-						self.destroy($(this));
-						confirmed.resolve();
-						(callback) && callback();
-					}
-				}
+				deferred: confirmed,
+				callback: callback
 			});
 
 			return confirmed;
@@ -1263,14 +1266,8 @@ $.extend($.boom, {
 				url: '/get-error-report.php',
 				title: 'Report an error',
 				data: data,
-				buttons: {
-					Cancel: function() {
-						$.boom.dialog.destroy(this);
-					},
-					'Send it': function() {
-						$.boom.dialog.destroy(this);
-						alert('clicked send!');
-					}
+				callback: function() {
+					alert('clicked send!');
 				}
 			});
 		}

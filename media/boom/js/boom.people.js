@@ -41,25 +41,17 @@ $.extend($.boom.person, {
 			var dialog = $.boom.dialog.open({
 				url: '/cms/people/add_group/' + rid,
 				title: 'Add group',
-				buttons: {
-					Cancel: function(){
+				callback: function(){
 
-						$.boom.dialog.destroy( dialog );
-					},
-					Save: function(){
+					var dialog = this;
+					var data = $( dialog ).find('form').serialize();
+					$.boom.loader.show();
 
-						var dialog = this;
-						var data = $( dialog ).find('form').serialize();
-						$.boom.loader.show();
+					$.post('/cms/people/add_group/' + rid, data )
+					.done( function(){
 
-						$.post('/cms/people/add_group/' + rid, data )
-						.done( function(){
-
-							$.boom.loader.hide();
-
-							$.boom.dialog.destroy(dialog);
-						});
-					}
+						$.boom.loader.hide();
+					});
 				}
 			});
 		});
@@ -346,19 +338,14 @@ $.extend($.boom.people.group,  {
 		var dialog = $.boom.dialog.open({
 			url: url,
 			title: 'Add group',
-			buttons: {
-				Cancel: function(){
-					$.boom.dialog.destroy( dialog );
-				},
-				Save: function(){
-					$.post(url, {name: $('#b-people-group-name').val()}, function(response){
-						$.boom.dialog.destroy(dialog);
+			callback: function(){
+				$.post(url, {name: $('#b-people-group-name').val()} )
+				.done( function(response){
 
-						$.boom.growl.show('Group successfully saved.');
+					$.boom.growl.show('Group successfully saved.');
 
-						top.location.reload();
-					});
-				}
+					top.location.reload();
+				});
 			}
 		});
 	},
@@ -385,21 +372,21 @@ $.extend($.boom.people.group,  {
 
 		$.boom.dialog.confirm(
 			'Please confirm',
-			'Are you sure you want to remove this group? <br /><br /> This will delete the group from the database and cannot be undone!',
-			function(){
+			'Are you sure you want to remove this group? <br /><br /> This will delete the group from the database and cannot be undone!'
+		)
+		.done( function(){
 
-				$.boom.loader.show();
+			$.boom.loader.show();
 
-				$.post( '/cms/groups/delete/' + rid )
-				.done( function(){
+			$.post( '/cms/groups/delete/' + rid )
+			.done( function(){
 
-					$.boom.loader.hide();
+				$.boom.loader.hide();
 
-					$.boom.growl.show( 'Group successfully removed.' );
-					item.remove();
-				});
-			}
-		);
+				$.boom.growl.show( 'Group successfully removed.' );
+				item.remove();
+			});
+		});
 	},
 
 	/** @function */
@@ -417,10 +404,10 @@ $.extend($.boom.people.group,  {
 /**
 * User interface for browsing and managing people.
 * @class
-* @name boom.browser_people
+* @name $.boom.browser_people
 */
 $.widget( 'boom.browser_people', $.boom.browser, {
-	/** @lends boom.browser_people */
+	/** @lends $.boom.browser_people */
 	
 	/**
 	map url fragments to objects
@@ -453,7 +440,7 @@ $.widget( 'boom.browser_people', $.boom.browser, {
 		$.boom.browser.prototype._create.call( this );
 
 		$('.b-people-group-add').click(function(event){
-			$.boom.items.group.add( this );
+			$.boom.people.group.add( this );
 		});
 
 		$('#boom-tagmanager-create-person').click(function(){
@@ -464,21 +451,12 @@ $.widget( 'boom.browser_people', $.boom.browser, {
 
 					$('#boom-tagmanager-create-person-form input[name="name"]').focus();
 				},
-				buttons: {
-					Cancel: function(){
-
-						$.boom.dialog.destroy( dialog );
-					},
-					Save: function(){
-						self
-							.savePerson('/cms/people/add')
-							.done( function(){
-								window.location.reload();
-							});
-
-						$.boom.dialog.destroy( dialog );
-
-					}
+				callback: function(){
+					self
+						.savePerson('/cms/people/add')
+						.done( function(){
+							window.location.reload();
+						});
 				}
 			});
 		});
@@ -504,24 +482,26 @@ $.widget( 'boom.browser_people', $.boom.browser, {
 
 				var msg = 'Are you sure you want to send the selected people to the rubbish bin?';
 
-				$.boom.dialog.confirm('Confirm deletion', msg, function(){
+				$.boom.dialog
+					.confirm('Confirm deletion', msg)
+					.done( function(){
 
-					var people = [];
+						var people = [];
 
-					$('.b-items-select-checkbox:checked').each(function(i){
+						$('.b-items-select-checkbox:checked').each(function(i){
 
-						people.push( $( this ).attr( 'id' ).replace(/person-(thumb|list)-/, '') );
+							people.push( $( this ).attr( 'id' ).replace(/person-(thumb|list)-/, '') );
+						});
+
+						$.boom.loader.show();
+
+						$.post('/cms/people/delete', {people: people}, function(){
+
+							$.boom.loader.hide();
+
+							$.boom.history.refresh();
+						});
 					});
-
-					$.boom.loader.show();
-
-					$.post('/cms/people/delete', {people: people}, function(){
-
-						$.boom.loader.hide();
-
-						$.boom.history.refresh();
-					});
-				});
 			});
 	},
 	

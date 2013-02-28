@@ -15,18 +15,18 @@ class Boom_Controller_Asset_Word extends Controller_Asset
 	{
 		$this->response
 			->headers(array(
-				'Content-Type'				=>	File::mime(Boom_Asset::$path . $this->asset->id),
+				'Content-Type'				=>	File::mime($this->asset->path()),
 				'Content-Disposition'			=>	'inline; filename="'.$this->asset->filename.'"',
 				'Content-Transfer-Encoding'	=>	'binary',
 				'Content-Length'			=>	$this->asset->filesize,
 				'Accept-Ranges'				=>	'bytes',
 			))
-			->body(readfile(Boom_Asset::$path.$this->asset->id));
+			->body(readfile($this->asset->path()));
 	}
 
 	public function action_thumb()
 	{
-		$image = Image::factory(MODPATH . 'media/boom/img/icons/ms_word.jpg');
+		$image = Image::factory(MODPATH.'boom/media/boom/img/icons/ms_word.jpg');
 		$image->resize(40, 40);
 
 		$this->response

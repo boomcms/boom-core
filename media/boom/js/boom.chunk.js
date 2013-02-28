@@ -1,16 +1,17 @@
 /**
 @namespace
-@name ui
+@name $.ui
 */
 
 /**
+Common functionality for all editable slots
 @class
-@name ui.chunk
+@name $.ui.chunk
 */
 $.widget('ui.chunk', {
 
 	/**
-	@lends ui.chunk
+	@lends $.ui.chunk
 	*/
 
 	/**
@@ -33,7 +34,7 @@ $.widget('ui.chunk', {
 	},
 
 	/**
-	Insert edited chunk content back into the page.
+	update slot HTML and push changes to the stack of page edits.
 	@function
 	*/
 	_apply: function(replacedata){
@@ -44,8 +45,23 @@ $.widget('ui.chunk', {
 		this._save_slot();
 
 	},
+	
+	/**
+	Remove slot from the page
+	@function
+	*/
+	_remove: function( data ){
+		var self = this;
+
+		return this._preview( data )
+			.done( function( response ){
+				self._update_html( response );
+				self._save_slot( { "delete" : true } );
+			});
+	},
 
 	/**
+	Insert edited chunk content back into the page.
 	@function
 	*/
 	_update_html : function( html ) {
@@ -69,11 +85,13 @@ $.widget('ui.chunk', {
 	@function
 	*/
 
-	_save_slot : function() {
+	_save_slot : function( data ) {
+		
+		data = ( data ) ? data : this.getData();
 
 		$.boom.page.slot_edits.push( {
 			slot: this.options.slot,
-			data: this.getData()
+			data: data
 		} );
 
 		$.boom.page.save_button.button( 'enable' ).attr( 'title', 'Save page' );
@@ -88,7 +106,7 @@ $.widget('ui.chunk', {
 	_preview_url : function() {
 		return this.options.urlPrefix +
 		'/' + this.options.slot.type +
-		 '/preview/' + $.boom.page.config.id;
+		 '/preview/' + $.boom.page.options.id;
 	},
 	
 	/**
@@ -111,6 +129,7 @@ $.widget('ui.chunk', {
 	},
 
 	/**
+	Bring the slot UI forward, above all other page elements.
 	@function
 	*/
 	_bring_forward : function() {
@@ -123,6 +142,7 @@ $.widget('ui.chunk', {
 
 	},
 	/**
+	Drop the slot UI back into its natural place in the page z-index stack.
 	@function
 	*/
 	_send_back : function() {
@@ -143,15 +163,16 @@ $.widget('ui.chunk', {
 	}
 });
 /**
+Editable text slots
 @class
 @name chunkText
-@extends ui.chunk
-@memberOf ui
+@extends $.ui.chunk
+@memberOf $.ui
 */
 $.widget('ui.chunkText', $.ui.chunk, {
 
 	/**
-	@lends ui.chunkText
+	@lends $.ui.chunkText
 	*/
 
 	title : '',
@@ -167,7 +188,7 @@ $.widget('ui.chunkText', $.ui.chunk, {
 
 		$.boom.log('Text chunk slot edit');
 
-		if ( !$.boom.editor.ready() ) {
+		if ( !$( 'body' ).editor( 'ready' ) ) {
 
 			$.boom.dialog.alert('Error', 'The page editor has not been fully downloaded yet, please wait a few seconds before trying again.');
 
@@ -187,14 +208,17 @@ $.widget('ui.chunkText', $.ui.chunk, {
 			}
 			self._bring_forward();
 
-			$.boom.editor
-				.edit( $element )
+			$( 'body' ).editor( 'edit', $element )
 				.fail( function(){
 					self.element.html( old_html ).show();
 					self.destroy();
 				})
 				.done( function( html ){
 					self._apply( html );
+					
+					if ( $element.text() == '' ) {
+						self._remove();
+					}
 				})
 				.always( function(){
 					if ( $element.text() == '' ) {
@@ -258,18 +282,43 @@ $.widget('ui.chunkText', $.ui.chunk, {
 		this._save_slot();
 
 		this.destroy();
+	},
+	
+	/**
+	Remove the slot from the page.
+	*/
+	_remove: function(){
+
+		if( this.element.is( 'div' ) ) {
+			this.element
+				.html( '<p>Default text.</p>' )
+				.show();
+		} else {
+			this.element
+				.text( 'Default text.' )
+				.show();
+		}
+
+		this.element
+			.find( '[contenteditable]' )
+			.removeAttr( 'contenteditable' )
+			.off( 'click' );
+
+		this._save_slot( { "delete" : true } );
+
+		this.destroy();
 	}
 
 });
 /**
 @class
 @name chunkLinkset
-@extends ui.chunk
-@memberOf ui
+@extends $.ui.chunk
+@memberOf $.ui
 */
 $.widget('ui.chunkLinkset', $.ui.chunk, {
 	/**
-	@lends ui.chunkLinkset
+	@lends $.ui.chunkLinkset
 	*/
 
 	elements : {},
@@ -298,7 +347,7 @@ $.widget('ui.chunkLinkset', $.ui.chunk, {
 		});
 
 		this.dialog = $.boom.dialog.open({
-			url: this.options.urlPrefix + '/linkset/edit/' + $.boom.page.config.id,
+			url: this.options.urlPrefix + '/linkset/edit/' + $.boom.page.options.id,
 			title: 'Edit linkset',
 			id: self.element[0].id + '-boom-dialog',
 			width: 400,
@@ -442,20 +491,20 @@ $.widget('ui.chunkLinkset', $.ui.chunk, {
 		var
 			self = this;
 
-		var links = this._getData( this.elements.currentLinks );
+		var data = this._getData( this.elements.currentLinks );
+		if ( data.links.length == 0 ){
+			return this._remove( data );
+		} else {
+			return self._preview( data )
+				.done( function(data) {
 
-		// get the preview chunk here
-		var request = self._preview( links )
-			.done( function(data) {
+					$.boom.loader.hide('dialog');
 
-				$.boom.loader.hide('dialog');
+					self._apply(data);
 
-				self._apply(data);
-
-				//self.destroy();
-			});
-
-		return request;
+					//self.destroy();
+				});
+		}
 	},
 
 	/**
@@ -502,12 +551,12 @@ $.widget('ui.chunkLinkset', $.ui.chunk, {
 /**
 @class
 @name chunkFeature
-@extends ui.chunk
-@memberOf ui
+@extends $.ui.chunk
+@memberOf $.ui
 */
 $.widget('ui.chunkFeature', $.ui.chunk, {
 	/**
-	@lends ui.chunkFeature
+	@lends $.ui.chunkFeature
 	*/
 
 	/**
@@ -521,14 +570,14 @@ $.widget('ui.chunkFeature', $.ui.chunk, {
 		var self = this;
 
 		this.dialog = $.boom.dialog.open({
-			url: this.options.urlPrefix + '/feature/edit/' + $.boom.page.config.id,
+			url: this.options.urlPrefix + '/feature/edit/' + $.boom.page.options.id,
 			width: 400,
 			id: self.element[0].id + '-boom-dialog',
 			// cache: true,
 			title: 'Page feature',
 			onLoad : function() {
 				
-				$.boom.util.page_tree( self.dialog.find( '.boom-tree' ) )
+				$.boom.util.page_tree( self.dialog.find( '.boom-tree' ), self.options.rid )
 					.progress( function( page ){
 						self.insert( page.page_id );
 
@@ -542,28 +591,26 @@ $.widget('ui.chunkFeature', $.ui.chunk, {
 			open: function(){
 
 				if ( self.options.slot.rid > 0 ) {
+					
+					$( 'input[name=parent_id]' ).val( self.options.slot.rid );
 
 					var button = $('<button />')
 					.addClass('ui-helper-left')
 					.text('Remove')
-					.button()
+					.button({
+						text: false,
+						icons: { primary : 'ui-icon-boom-delete' }
+					})
 					.click(function(){
 
 						$.boom.dialog.destroy(self.dialog);
 
-						self.remove();
+						self._remove( { target_page_id : 0 } );
 					});
 
 					$(this).dialog('widget')
 						.find('.ui-dialog-buttonpane')
 						.prepend( button );
-				}
-			},
-			buttons: {
-				Cancel: function(){
-					$.boom.dialog.destroy(self.dialog);
-
-					self.destroy();
 				}
 			}
 		});
@@ -580,7 +627,7 @@ $.widget('ui.chunkFeature', $.ui.chunk, {
 
 		$.boom.loader.show();
 
-		this._preview( this.getData() ).done( function( data ){
+		return this._preview( this.getData() ).done( function( data ){
 
 			$.boom.loader.hide();
 
@@ -603,20 +650,24 @@ $.widget('ui.chunkFeature', $.ui.chunk, {
 	Remove the current feature from the page.
 	*/
 	remove : function(){
+		var self = this;
 
-		this.insert( 0 );
+		this.insert( 0 )
+			.done( function( response ){
+				self._remove();
+			});
 	}
 });
 
 /**
 @class
 @name chunkAsset
-@extends ui.chunk
-@memberOf ui
+@extends $.ui.chunk
+@memberOf $.ui
 */
 $.widget('ui.chunkAsset', $.ui.chunk, {
 	/**
-	@lends ui.chunkAsset
+	@lends $.ui.chunkAsset
 	*/
 
 	/**
@@ -660,7 +711,7 @@ $.widget('ui.chunkAsset', $.ui.chunk, {
 
 			self.asset.asset_id = rid;
 			return $.boom.links.picker( {
-				page_rid: $.boom.page.config.id,
+				page_rid: $.boom.page.options.id,
 				title: 'Add a link'
 			});
 		})
@@ -668,7 +719,7 @@ $.widget('ui.chunkAsset', $.ui.chunk, {
 			self.insert( self.asset.asset_id, link );
 		})
 		.fail( function() {
-			self.remove();
+			self._remove( { asset_id : 0, link : null } );
 		})
 		.always( function(){
 			$.boom.history.load( '' );
@@ -740,12 +791,12 @@ $.widget('ui.chunkAsset', $.ui.chunk, {
 /**
 @class
 @name chunkSlideshow
-@extends ui.chunk
-@memberOf ui
+@extends $.ui.chunk
+@memberOf $.ui
 */
 $.widget('ui.chunkSlideshow', $.ui.chunk, {
 	/**
-	@lends ui.chunkSlideshow
+	@lends $.ui.chunkSlideshow
 	*/
 
 	elements : {},
@@ -872,11 +923,11 @@ $.widget('ui.chunkSlideshow', $.ui.chunk, {
 
 				$.boom.dialog.confirm(
 					'Delete slide',
-					'Delete this slide?',
-					function(){
-						self._remove_slide( $( slide ) );
-					}
-				);
+					'Delete this slide?'
+				)
+				.done( function(){
+					self._remove_slide( $( slide ) );
+				});
 			})
 			.on( 'click', 'button.cancel', function(){
 				self._cancel();
@@ -926,17 +977,25 @@ $.widget('ui.chunkSlideshow', $.ui.chunk, {
 			deferred: asset_selected
 		} )
 		.pipe( function( rid ){
+			
+			var link = $slide.closest( 'a.slide-link' );
 
 			url_segments[3] = rid;
 			$slide.attr( 'src', url_segments.join( '/' ) );
 			return $.boom.links.picker( {
-				title: 'Add a link'
+				title: 'Add a link',
+				link : {
+					url : link.attr( 'href' ),
+					rid : link.attr( 'rel' ),
+					title : $slide.attr( 'alt' )
+				}
 			});
 		})
 		.done( function( link ){
 			$slide
 				.closest( 'a.slide-link' )
 				.attr( 'href', link.url );
+			$slide.attr( 'alt', link.title );
 		})
 		.fail( function() {
 
@@ -987,6 +1046,7 @@ $.widget('ui.chunkSlideshow', $.ui.chunk, {
 		$slide
 			.closest( 'li' )
 			.remove();
+		this.options.slider.flexslider( 'next' );
 
 	//	this._refresh();
 		this.options.slider.count--;
@@ -1116,15 +1176,18 @@ $.widget('ui.chunkSlideshow', $.ui.chunk, {
 	_insert : function(){
 
 		var self = this;
-
-		var request = this._get_preview( this.getData() )
-		.done( function( data ){
-
-			self._apply( data );
-
-		});
-
-		return request;
+		var data = this.getData();
+		
+		console.log( data.slides );
+		
+		if ( data.slides.length == 0 ){
+			return self._remove( data );
+		} else {
+			return this._get_preview( this.getData() )
+			.done( function( data ){
+				self._apply( data );
+			});
+		}
 	},
 
 	/**

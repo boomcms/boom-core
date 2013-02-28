@@ -245,7 +245,7 @@ class Boom_Controller_Page_Children extends Boom_Controller
 					),
 					'total_items'		=>	$total,
 					'items_per_page'	=>	$this->perpage,
-					'view'			=>	'pagination/hoop',
+					'view'			=>	($this->request->post('p_template'))? $this->request->post('p_template') : 'pagination/hoop',
 					'count_in'			=>	1,
 					'count_out'		=>	1,
 				));

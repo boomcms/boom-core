@@ -600,9 +600,10 @@ class Boom_Model_Page extends Model_Taggable
 	 *
 	 *
 	 * @param	Editor	$editor
+	 * @param	boolean	$exclude_deleted
 	 * @return	Model_Page
 	 */
-	public function with_current_version(Editor $editor)
+	public function with_current_version(Editor $editor, $exclude_deleted = TRUE)
 	{
 		$current_version = DB::select(array(DB::expr('max(id)'), 'id'), 'page_id')
 			->from('page_versions')
@@ -621,8 +622,12 @@ class Boom_Model_Page extends Model_Taggable
 			->on('page.id', '=', 'v2.page_id')
 			->join(array('page_versions', 'version'), 'inner')
 			->on('page.id', '=', 'version.page_id')
-			->on('v2.id', '=', 'version.id')
-			->where('version.page_deleted', '=', FALSE);
+			->on('v2.id', '=', 'version.id');
+
+		if ($exclude_deleted)
+		{
+			$this->where('version.page_deleted', '=', FALSE);
+		}
 
 		// Logged out view?
 		if ($editor->state_is(Editor::DISABLED))

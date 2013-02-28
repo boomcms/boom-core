@@ -84,7 +84,7 @@ class Boom_Model_Page_Version extends ORM
 	{
 		// Check that the version has been saved.
 		// This has to be done before adding a chunk to a version as we need the PK to be set to create the relationship in the page_chunks tables.
-		if ( ! $this->_saved)
+		if ( ! ($this->_saved OR $this->_loaded))
 		{
 			throw new Exception('You must call Model_Page_Version::save() before calling Model_Page_Version::add_chunk()');
 		}

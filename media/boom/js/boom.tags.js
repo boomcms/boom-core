@@ -1,15 +1,10 @@
 /**
-@namespace
-@name boom
-*/
-
-/**
 * User interface for tagging content.
 * @class
-* @name boom.tagger
+* @name $.boom.tagger
 */
 $.widget( 'boom.tagger', {
-/** @lends boom.tagger */
+/** @lends $.boom.tagger */
 
 	/**
 	default config
@@ -187,6 +182,8 @@ $.widget( 'boom.tagger', {
 
 		var complete = new $.Deferred();
 		tags = ( tags ) ? tags : [];
+		
+		console.log( type );
 
 		add_input
 			.autocomplete({
@@ -234,11 +231,11 @@ $.widget( 'boom.tagger', {
 /**
 * User interface for searching by tag.
 * @class
-* @name boom.tagger_search
-* @extends boom.tagger
+* @name $.boom.tagger_search
+* @extends $.boom.tagger
 */
 $.widget( 'boom.tagger_search', $.boom.tagger, {
-	/** @lends boom.tagger_search */
+	/** @lends $.boom.tagger_search */
 	
 	/**
 	default config
@@ -248,7 +245,7 @@ $.widget( 'boom.tagger_search', $.boom.tagger, {
 		/** selected tags for this search */
 		selected_tag_ids : [],
 		/** item type for URL fragments */
-		type : 'tag'
+		tag : 'tag'
 	},
 	
 	_bind : function(){
@@ -311,7 +308,7 @@ $.widget( 'boom.tagger_search', $.boom.tagger, {
 			self = this,
 			selected_tag_ids = this.options.selected_tag_ids;
 			
-		$.boom.history.load( self.options.type + '/' + selected_tag_ids.join( '-' ) );
+		$.boom.history.load( self.options.tag + '/' + selected_tag_ids.join( '-' ) );
 	}
 	
 	
@@ -320,11 +317,11 @@ $.widget( 'boom.tagger_search', $.boom.tagger, {
 /**
 * Deferred tagger for file uploads.
 * @class
-* @name boom.tagger_deferred
-* @extends boom.tagger
+* @name $.boom.tagger_deferred
+* @extends $.boom.tagger
 */
 $.widget( 'boom.tagger_deferred', $.boom.tagger, {
-	/** @lends boom.tagger_deferred */
+	/** @lends $.boom.tagger_deferred */
 	
 	/**
 	default config

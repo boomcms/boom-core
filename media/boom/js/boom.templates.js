@@ -26,13 +26,13 @@ $.extend($.boom, {
 				var item = $(this).closest( "tr" );
 				$.boom.dialog.confirm(
 					"Please confirm",
-					"Are you sure you want to delete this template?",
-					function(){
-						item.fadeOut(600, function(){
-							item.remove();
-						});
-					}
-				);
+					"Are you sure you want to delete this template?"
+				)
+				.done( function(){
+					item.fadeOut(600, function(){
+						item.remove();
+					});
+				});
 			});
 
 			$('#b-templates-save').click(function(){

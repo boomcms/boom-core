@@ -135,10 +135,11 @@ window.boomConfig = {
 		stylesheetURL: '/media/boom/js/xing/editor.css',
 
 		/**
+		Wysiwyg editor. One of wysihtml5|tinymce
 		@type string
-		@default '/media/boom/js/boom.tinymce.js'
+		@default 'wysihtml5'
 		*/
-		path : '/media/boom/js/boom.wysihtml5.js'
+		name : 'wysihtml5'
 	},
 
 	/**
@@ -481,23 +482,6 @@ window.boomConfig = {
 		@default '/boom/img/cms/cross.png'
 		*/
 		cancelImg: '/boom/img/cms/cross.png'
-	},
-
-	/**
-	@static
-	@class
-	*/
-	page : {
-		/**
-		@type number
-		@default 1
-		*/
-		homepageRid: 1,
-		/**
-		@type number
-		@default 0
-		*/
-		ajaxed: 0
 	},
 
 	/**
