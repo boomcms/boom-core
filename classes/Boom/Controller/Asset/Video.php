@@ -14,15 +14,15 @@ class Boom_Controller_Asset_Video extends Controller_Asset
 	public function action_view()
 	{
 		$finfo = finfo_open(FILEINFO_MIME_TYPE);
+		$mime = finfo_file($finfo, $this->asset->path());
+		finfo_close($finfo);
 
 		$this->response
-			->headers(array(
-				'Content-Type'		=>	finfo_file($finfo, $this->asset->path()),
-				'Content-Length'	=>	$this->asset->filesize,
-			))
-			->body(readfile($this->asset->path()));
-
-	finfo_close($finfo);
+			->send_file($this->asset->path(), $this->asset->filename, array(
+				'inline'		=>	TRUE,
+				'mime_type'	=>	$mime,
+				'resumable'	=>	TRUE,
+			));
 	}
 
 	public function action_thumb()
