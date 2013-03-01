@@ -63,13 +63,17 @@ class Boom_Model_Chunk_Text extends ORM
 	 */
 	public function create(Validation $validation = NULL)
 	{
-		// Find which assets are linked to within the text chunk.
-		preg_match_all('|hoopdb://image/(\d+)|', $this->text, $matches);
-
 		// Clean the text.
 		// This is done now rather than as a filter as the rules for what is allowed in the text varies with the slotname.
 		// Using a filter we can't be sure that the slotname has been set before the text which could result in the wrong rules being applied.
 		$this->_object['text'] = $this->clean_text($this->_object['text']);
+
+		// Munge links in the text, .e.g. to assets.
+		 // This needs to be done after the text is cleaned by HTML Purifier because HTML purifier strips out invalid images.
+		$this->_object['text'] = Chunk_Text::munge($this->_object['text']);
+
+		// Find which assets are linked to within the text chunk.
+		preg_match_all('|hoopdb://image/(\d+)|', $this->_object['text'], $matches);
 
 		// Create the text chunk.
 		parent::create($validation);
@@ -115,7 +119,6 @@ class Boom_Model_Chunk_Text extends ORM
 						return str_replace('&nbsp;', ' ', $text);
 					}
 				),
-				array('Chunk_Text::munge'),
 			),
 			'title'	=> array(
 				array('strip_tags'),
