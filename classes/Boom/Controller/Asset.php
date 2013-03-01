@@ -11,7 +11,18 @@
  */
 abstract class Boom_Controller_Asset extends Boom_Controller
 {
+	/**
+	 *
+	 * @var Model_Asset
+	 */
 	public $asset;
+
+	/**
+	 * The value to use for the max-age header.
+	 *
+	 * @var integer
+	 */
+	public $max_age = 86400;
 
 	public function before()
 	{
@@ -28,7 +39,7 @@ abstract class Boom_Controller_Asset extends Boom_Controller
 		}
 
 		// Set the cache to public.
-		$this->response->headers('Cache-Control', 'public');
+		$this->response->headers('Cache-Control', 'public, max-age='.$this->max_age);
 
 		// Check the cache.
 		HTTP::check_cache($this->request, $this->response, $this->asset->last_modified);
@@ -47,12 +58,6 @@ abstract class Boom_Controller_Asset extends Boom_Controller
 
 	public function action_thumb()
 	{
-		// TODO: this is overloaded in Boom_Controller::after()
-		$this->response->headers('Cache-Control', 'public');
-
-		// cache by etag.
-		HTTP::check_cache($this->request, $this->response, $this->asset->last_modified);
-
 		$asset = Boom_Asset::factory($this->asset);
 		$asset->preview($this->response, $this->request->param('width'), $this->request->param('height'), $this->request->param('quality'), (bool) $this->request->param('crop'));
 	}
