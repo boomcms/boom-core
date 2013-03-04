@@ -13,7 +13,8 @@
 class Boom_Model_Asset extends Model_Taggable
 {
 	protected $_belongs_to = array(
-		'uploader'	=>	array('model' => 'person', 'foreign_key' => 'uploaded_by'),
+		'uploader'		=>	array('model' => 'Person', 'foreign_key' => 'uploaded_by'),
+		'thumbnail'	=>	array('model' => 'Asset', 'foreign_key' => 'thumbnail_asset_id'),
 	);
 
 	protected $_created_column = array(
@@ -42,6 +43,7 @@ class Boom_Model_Asset extends Model_Taggable
 		'uploaded_by'		=>	'',
 		'uploaded_time'	=>	'',
 		'last_modified'		=>	'',
+		'thumbnail_asset_id'	=>	'',
 	);
 
 	protected $_table_name = 'assets';
