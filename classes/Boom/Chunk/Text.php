@@ -64,7 +64,7 @@ class Boom_Chunk_Text extends Chunk
 
 	/**
 	 *
-	 * @uses Chunk_Text::unmunge()
+	 * @uses Model_Chunk_Text::unmunge()
 	 * @uses Chunk_Text::embed_video()
 	 */
 	protected function _show()
@@ -77,7 +77,7 @@ class Boom_Chunk_Text extends Chunk
 			$text = preg_replace_callback('~\b(?<!href="|">)(?:ht|f)tps?://[^<\s]+(?:/|\b)~i', array($this, 'embed_video'), $text);
 		}
 
-		$text = Chunk_Text::unmunge($text);
+		$text = $this->_chunk->unmunge($text);
 
 		// If no template has been set then add the default HTML tags for this slotname.
 		if ($this->_template === NULL)
@@ -202,47 +202,10 @@ class Boom_Chunk_Text extends Chunk
 	}
 
 	/**
-	 * Munges text chunk contents to be saved in the database.
-	 * e.g. Turns text links, such as <img src='/asset/view/324'> in hoopdb:// links
-	 *
-	 * @param 	string	$text		Text to munge
-	 * @return 	string
-	 */
-	public static function munge($text)
-	{
-		return preg_replace('|<(.*?)src=([\'"])/asset/view/(\d+)([\'"])(.*?)>|', '<$1src=$2hoopdb://image/$3$4$5>', $text);
-	}
-
-	/**
 	 * Returns the text from the chunk.
 	 */
 	public function text()
 	{
 		return $this->_chunk->text;
-	}
-
-	/**
-	 * Turns text chunk contents into HTML.
-	 * e.g. replaces hoopdb:// links to <img> and <a> links
-	 *
-	 * @param	string	$text	Text to decode
-	 * @return 	string
-	 */
-	public static function unmunge($text)
-	{
-		// Image links in the form hoopdb://image/123
-		$text = preg_replace('|hoopdb://image/(\d+)|', '/asset/view/$1/400', $text);
-
-		// Fix internal page links.
-		$text = preg_replace_callback('|hoopdb://page/(\d+)|',
-			function ($match)
-			{
-				return ORM::factory('Page', $match[1])
-					->url();
-			},
-			$text
-		);
-
-		return $text;
 	}
 }
