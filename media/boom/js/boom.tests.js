@@ -485,9 +485,8 @@ asyncTest('Changing the hash changes the asset item', function(){
 	$.boom.history
 		.load('asset/999')
 		.always( function(){
-			console.log( $.boom.asset );
 			equal(
-				$.boom.asset.rid,
+				$( 'body' ).data( 'boom-browser_asset' ).url_map.asset.rid,
 				999
 			);
 			window.location.hash = '';
@@ -526,7 +525,7 @@ asyncTest('Changing the hash changes the person item', function(){
 		.always( function(){
 			console.log( $.boom.person );
 			equal(
-				$.boom.person.rid,
+				$( 'body' ).data( 'boom-browser_people' ).url_map.person.rid,
 				999
 			);
 			start();

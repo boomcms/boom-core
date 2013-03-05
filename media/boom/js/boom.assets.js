@@ -130,6 +130,8 @@ $.extend($.boom.asset, {
 
 		var url = '/cms/assets/view/' + rid;
 		
+		console.log( this );
+		
 		return $.get( url );
 	},
 	
