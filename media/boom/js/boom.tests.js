@@ -453,7 +453,8 @@ asyncTest( "chain done callbacks using a deferred object", function(){
 	$( '.ui-dialog-buttonpane button' )[1].click();
 	equal(
 		$( 'div[role=dialog]').length,
-		0
+		0,
+		'Dialog closed.'
 	);
 	
 	
@@ -478,7 +479,8 @@ asyncTest( "chain fail callbacks using a deferred object", function(){
 	$( '.ui-dialog-buttonpane button' )[0].click();
 	equal(
 		$( 'div[role=dialog]').length,
-		0
+		0,
+		'Dialog closed.'
 	);
 	
 	
@@ -503,7 +505,8 @@ asyncTest( "cancel the action and close the dialog when 'cancel' is clicked", fu
 	);
 	equal(
 		$( 'div[role=dialog]').length,
-		0
+		0,
+		'Dialog closed.'
 	);
 	
 	start();
@@ -534,7 +537,7 @@ asyncTest('Changing the hash changes the asset item', function(){
 	
 	$.boom.history
 		.load('asset/7759')
-		.always( function(){
+		.done( function(){
 			equal(
 				$( 'body' ).data( 'boom-browser_asset' ).url_map.asset.rid,
 				7759
@@ -543,6 +546,16 @@ asyncTest('Changing the hash changes the asset item', function(){
 			start();
 		});
 	
+	
+});
+test('Editing an asset changes the selected asset ID', function(){
+	
+	$( 'body' ).browser_asset( 'edit', 7759 );
+	
+	equal(
+		$( 'body' ).browser_asset( 'get_asset' ),
+		7759
+	);
 	
 });
 module("People manager", {
