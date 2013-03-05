@@ -466,25 +466,10 @@ module("Asset manager", {
 		$.boom.init('assets', {
 		});
 		
-		$.boom.assets.init({
-			items: {
-				asset: $.boom.items.asset,
-				tag: $.boom.items.tag
-			},
-			options: {
-				sortby: 'title',
-				order: 'asc',
-				edition: 'cms', 
-				type: 'assets',
-				template: 'thumb',
-				defaultTagRid: 0,
-				treeConfig: {
-					onClick: function(event){
-						$.boom.items.tag.get(this.id);
-					}
-				}
-			}
-		});
+		$( 'body' ).browser_asset();
+	},
+	teardown: function(){
+		$( 'body' ).browser_asset( 'destroy' );
 	}
 });
 test('$.boom.type == "assets"', function(){
@@ -500,14 +485,14 @@ asyncTest('Changing the hash changes the asset item', function(){
 	$.boom.history.load('asset/999');
 	
 	equal(
-		$.boom.assets.items.asset.rid,
+		parseInt($( 'body' ).browser_asset( 'get_asset' ), 10 ),
 		999
 	);
 	
 	$.boom.history.load('asset/99');
 	
 	equal(
-		$.boom.assets.items.asset.rid,
+		parseInt($( 'body' ).browser_asset( 'get_asset' ), 10 ),
 		99
 	);
 	
@@ -517,71 +502,18 @@ asyncTest('Changing the hash changes the asset item', function(){
 	
 	
 });
-asyncTest('edit a tag opens the "Edit tag" dialog', function(){
-	
-	// FIXME: group edit has to be triggered from a link inside an li, otherwise the code fails.
-	$('<a href="#tag/13" rel="13">Group</a>')
-		.click(function(e){
-			$.boom.assets.items.tag.edit(e);
-		})
-		.appendTo(
-			$('<li></li>')
-			.appendTo(
-				$('<ul></ul')
-			)
-		)
-		.trigger('click');
-		
-		setTimeout(function(){
-			equal(
-				$( 'div[role=dialog]').length,
-				1,
-				'dialog opened'
-			);
-			equal(
-				$.trim( $('.ui-dialog-title').text() ),
-				'Edit tag',
-				'dialog title verified'
-			);
-			if ( $( '.ui-dialog-buttonset button' ).length > 0 ) {
-				$( '.ui-dialog-buttonset button' )[0].click();
-				equal(
-					$( 'div[role=dialog]').length,
-					0,
-					'dialog closed'
-				);
-			}
-			$.boom.dialog.destroy();
-			start();
-		}, 3000);
-
-});
 module("People manager", {
 	setup: function(){
+		
+		$( 'body' ).append( '<div class="b-items-rightpane"><div class="b-items-content">people manager</div></div>');
 		
 		$.boom.init('people', {
 		});
 		
-		$( 'body' ).append( '<div class="b-items-rightpane"><div class="b-items-content">people manager</div></div>');
-		
-		$.boom.people.init({
-			items: {
-				tag: $.boom.items.group,
-				person: $.boom.items.person
-			},
-			options: {
-				basetagRid: 1, 
-				defaultTagRid: 0,
-				edition: 'cms', 
-				type: 'people',
-				treeConfig : {
-					showEdit: true,
-					showRemove: true
-				}
-			}
-		});
+		$( 'body' ).browser_people();
 	},
 	teardown: function(){
+		$( 'body' ).browser_people( 'destroy' );
 		$( '.b-items-rightpane' ).remove();
 	}
 });
@@ -598,14 +530,14 @@ asyncTest('Changing the hash changes the person item', function(){
 	$.boom.history.load('person/999');
 	
 	equal(
-		$.boom.people.items.person.rid,
+		$.boom.person.rid,
 		999
 	);
 	
 	$.boom.history.load('person/99');
 	
 	equal(
-		$.boom.people.items.person.rid,
+		$.boom.person.rid,
 		99
 	);
 	
@@ -620,7 +552,7 @@ asyncTest('edit a group opens the "Edit group" panel', function(){
 	// FIXME: group edit has to be triggered from a link inside an li, otherwise the code fails.
 	$('<a href="#tag/13" rel="13">Group</a>')
 		.click(function(e){
-			$.boom.people.items.tag.edit(e);
+			$.boom.people.group.edit(e);
 		})
 		.appendTo(
 			$('<li></li>')
