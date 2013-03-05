@@ -451,6 +451,10 @@ asyncTest( "chain done callbacks using a deferred object", function(){
 	});
 	
 	$( '.ui-dialog-buttonpane button' )[1].click();
+	equal(
+		$( 'div[role=dialog]').length,
+		0
+	);
 	
 	
 	
@@ -472,6 +476,10 @@ asyncTest( "chain fail callbacks using a deferred object", function(){
 	});
 	
 	$( '.ui-dialog-buttonpane button' )[0].click();
+	equal(
+		$( 'div[role=dialog]').length,
+		0
+	);
 	
 	
 	
