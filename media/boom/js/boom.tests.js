@@ -516,6 +516,8 @@ asyncTest( "cancel the action and close the dialog when 'cancel' is clicked", fu
 module("Asset manager", {
 	setup: function(){
 		
+		$( 'body' ).append( '<div class="b-items-rightpane"><div class="b-items-content">asset manager</div></div>');
+		
 		$.boom.init('assets', {
 		});
 		
@@ -523,6 +525,7 @@ module("Asset manager", {
 	},
 	teardown: function(){
 		$( 'body' ).browser_asset( 'destroy' );
+		$( '.b-items-rightpane' ).remove();
 	}
 });
 test('$.boom.type == "assets"', function(){
@@ -557,6 +560,30 @@ test('Editing an asset changes the selected asset ID', function(){
 		7759
 	);
 	
+});
+asyncTest( 'Clicking an asset returns the asset ID', function(){
+	
+	var $link;
+	var asset_id;
+	
+	$.boom.history
+		.load('tag/0')
+		.done( function(){
+			$link = $( '#b-items-view-thumbs a:first');
+			asset_id = $link.attr( 'href' ).split( '/' )[1];
+			$link.click();
+		});
+		
+	$.when( $( 'body' ).browser_asset( 'browse' ) )
+	.progress( function( rid ){
+		equal(
+			rid,
+			parseInt( asset_id, 10 ),
+			'asset ' + rid + ' selected.'
+		);
+		start();
+	});
+
 });
 module("People manager", {
 	setup: function(){
