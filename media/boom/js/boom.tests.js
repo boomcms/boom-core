@@ -483,11 +483,11 @@ test('$.boom.type == "assets"', function(){
 asyncTest('Changing the hash changes the asset item', function(){
 	
 	$.boom.history
-		.load('asset/999')
+		.load('asset/7759')
 		.always( function(){
 			equal(
 				$( 'body' ).data( 'boom-browser_asset' ).url_map.asset.rid,
-				999
+				7759
 			);
 			window.location.hash = '';
 			start();
@@ -521,23 +521,36 @@ test('$.boom.type == "people"', function(){
 asyncTest('Changing the hash changes the person item', function(){
 	
 	$.boom.history
-		.load('person/999')
+		.load('person/3')
 		.always( function(){
 			console.log( $.boom.person );
 			equal(
 				$( 'body' ).data( 'boom-browser_people' ).url_map.person.rid,
-				999
+				3
 			);
 			start();
 		});
 	
 });
 asyncTest('edit a group opens the "Edit group" panel', function(){
-	console.log( $( 'body' ).data( 'boom-browser_people' ) );
 	// FIXME: group edit has to be triggered from a link inside an li, otherwise the code fails.
 	$('<a href="#tag/13" rel="13">Group</a>')
 		.click(function(e){
-			$.boom.people.group.edit( e, $( 'body' ).data( 'boom-browser_people' ));
+			$.boom.people.group
+				.edit( e, $( 'body' ).data( 'boom-browser_people' ))
+				.done( function(){
+					equal(
+						$( 'div#b-group-roles-general').length,
+						1,
+						'editor loaded'
+					);
+					equal(
+						$.trim( $('#b-people-group-name').val() ),
+						'Blog Editors',
+						'group name verified'
+					);
+					start();
+				});
 		})
 		.appendTo(
 			$('<li></li>')
@@ -546,19 +559,5 @@ asyncTest('edit a group opens the "Edit group" panel', function(){
 			)
 		)
 		.trigger('click');
-		
-		setTimeout(function(){
-			equal(
-				$( 'div#b-group-roles-general').length,
-				1,
-				'editor loaded'
-			);
-			equal(
-				$.trim( $('#b-people-group-name').val() ),
-				'Blog Editors',
-				'group name verified'
-			);
-			start();
-		}, 500);
 
 });
