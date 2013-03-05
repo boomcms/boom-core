@@ -215,7 +215,7 @@ $.extend($.boom.people.group,  {
 		var rid = item.find('a').attr( 'rel' );
 		var selected_page = null;
 
-		browser.main_panel
+		return browser.main_panel
 		.find('.b-items-content')
 		.sload( '/cms/groups/edit/' + rid, function(){
 
