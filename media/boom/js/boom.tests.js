@@ -482,23 +482,17 @@ test('$.boom.type == "assets"', function(){
 });
 asyncTest('Changing the hash changes the asset item', function(){
 	
-	$.boom.history.load('asset/999');
-	
-	equal(
-		parseInt($( 'body' ).browser_asset( 'get_asset' ), 10 ),
-		999
-	);
-	
-	$.boom.history.load('asset/99');
-	
-	equal(
-		parseInt($( 'body' ).browser_asset( 'get_asset' ), 10 ),
-		99
-	);
-	
-	window.location.hash = '';
-	
-	start();
+	$.boom.history
+		.load('asset/999')
+		.always( function(){
+			console.log( $.boom.asset );
+			equal(
+				$.boom.asset.rid,
+				999
+			);
+			window.location.hash = '';
+			start();
+		});
 	
 	
 });
@@ -527,32 +521,24 @@ test('$.boom.type == "people"', function(){
 });
 asyncTest('Changing the hash changes the person item', function(){
 	
-	$.boom.history.load('person/999');
-	
-	equal(
-		$.boom.person.rid,
-		999
-	);
-	
-	$.boom.history.load('person/99');
-	
-	equal(
-		$.boom.person.rid,
-		99
-	);
-	
-	window.location.hash = '';
-	
-	start();
-	
+	$.boom.history
+		.load('person/999')
+		.always( function(){
+			console.log( $.boom.person );
+			equal(
+				$.boom.person.rid,
+				999
+			);
+			start();
+		});
 	
 });
 asyncTest('edit a group opens the "Edit group" panel', function(){
-	
+	console.log( $( 'body' ).data( 'boom-browser_people' ) );
 	// FIXME: group edit has to be triggered from a link inside an li, otherwise the code fails.
 	$('<a href="#tag/13" rel="13">Group</a>')
 		.click(function(e){
-			$.boom.people.group.edit(e);
+			$.boom.people.group.edit( e, $( 'body' ).data( 'boom-browser_people' ));
 		})
 		.appendTo(
 			$('<li></li>')
