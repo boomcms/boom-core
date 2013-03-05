@@ -434,6 +434,48 @@ asyncTest( "fire a callback and close the dialog when 'ok' is clicked", function
 	);
 	
 });
+asyncTest( "chain done callbacks using a deferred object", function(){
+	
+	var test = 0;
+	var promise = new $.Deferred();
+	
+	promise
+	.done( function(){
+		ok( true, 'OK button was clicked');
+		start();
+	});
+	
+	var dialog = $.boom.dialog.open({
+		msg: 'hi there',
+		deferred: promise
+	});
+	
+	$( '.ui-dialog-buttonpane button' )[1].click();
+	
+	
+	
+});
+asyncTest( "chain fail callbacks using a deferred object", function(){
+	
+	var test = 0;
+	var promise = new $.Deferred();
+	
+	promise
+	.fail( function(){
+		ok( true, 'Cancel button was clicked');
+		start();
+	});
+	
+	var dialog = $.boom.dialog.open({
+		msg: 'hi there',
+		deferred: promise
+	});
+	
+	$( '.ui-dialog-buttonpane button' )[0].click();
+	
+	
+	
+});
 asyncTest( "cancel the action and close the dialog when 'cancel' is clicked", function(){
 	
 	var test = 0;
