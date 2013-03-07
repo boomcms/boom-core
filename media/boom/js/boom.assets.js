@@ -463,13 +463,13 @@ $.widget( 'boom.browser_asset', $.boom.browser, {
 				.done(function(data) {
 					response(data);
 					var title = title_filter.val();
-					if ( title != '' ) self.items.tag.filters[ 'title' ] = title;
+					if ( title != '' ) self.url_map.tag.filters[ 'title' ] = title;
 					self.items.tag.get( 0 );
 				});
 			},
 			select: function(event, ui){
-				self.items.tag.filters[ 'title' ] = ui.item.value;
-				self.items.tag.get( 0 );
+				self.url_map.tag.filters[ 'title' ] = ui.item.value;
+				self.url_map.tag.get( 0 );
 			}
 		});
 		
