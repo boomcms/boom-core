@@ -464,12 +464,12 @@ $.widget( 'boom.browser_asset', $.boom.browser, {
 					response(data);
 					var title = title_filter.val();
 					if ( title != '' ) self.url_map.tag.filters[ 'title' ] = title;
-					self.url_map.tag.get( 0 );
+					$.boom.history.load( 'tag/0' );
 				});
 			},
 			select: function(event, ui){
 				self.url_map.tag.filters[ 'title' ] = ui.item.value;
-				self.url_map.tag.get( 0 );
+				$.boom.history.load( 'tag/0' );
 			}
 		});
 		
