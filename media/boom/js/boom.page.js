@@ -1457,10 +1457,12 @@ $.widget( 'boom.page', $.boom.page, {
 							url,
 							$("#b-form-pageversion-template").serialize(),
 							"Page template saved, reloading page."
-						);
+						)
+						.done( function(){
+							// Reload the page to show the template change.
+							top.location.reload();
+						});
 
-						// Reload the page to show the template change.
-						top.location.reload();
 					},
 					open: function(){
 					}
