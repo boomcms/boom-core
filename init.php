@@ -3,7 +3,8 @@
 // Route for displaying assets
 Route::set('asset', 'asset/<action>/<id>(/<width>(/<height>(/<quality>(/<crop>))))')
 	->defaults(array(
-		'action'	 => 'view'
+		'action'	=> 'view',
+		'quality'	=>	85,
 	))
 	->filter(function(Route $route, $params, Request $request)
 		{
