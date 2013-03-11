@@ -530,8 +530,7 @@ class Boom_Model_Page extends Model_Taggable
 		}
 
 		// Run the query and return the result.
-		return $this->_related['version'] = $query
-			->find();
+		return $this->_related['version'] = $query->find();
 	}
 
 	/**
