@@ -483,7 +483,12 @@ class Boom_Model_Page extends Model_Taggable
 		if ($this->_url === NULL)
 		{
 			// Get the primary URL for this page.
-			$this->_url = URL::site($this->primary_uri);
+			$this->_url = ORM::factory('Page_URL')
+				->values(array(
+					'location'		=>	$this->primary_uri,
+					'page_id'		=>	$this->id,
+					'is_primary'	=>	TRUE,
+				));
 		}
 
 		return $this->_url;
