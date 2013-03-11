@@ -45,6 +45,15 @@ class Boom_Controller_Page_Children extends Boom_Controller
 	protected $page;
 
 	/**
+	 * Whether to add pagination links to the result.
+	 *
+	 * The option to set this to false is so to prevent the need to run a count() query when we know that we don't need to generate pagination links.
+	 *
+	 * @var boolean
+	 */
+	protected $pagination = TRUE;
+
+	/**
 	 *
 	 * @var Model_Page		The page model for the page to list children of.
 	 */
@@ -186,6 +195,11 @@ class Boom_Controller_Page_Children extends Boom_Controller
 		{
 			$this->month = $this->request->post('month');
 		}
+
+		if ($this->request->post('pagination'))
+		{
+			$this->pagination = $this->request->post('pagination');
+		}
 	}
 
 	/**
@@ -255,7 +269,7 @@ class Boom_Controller_Page_Children extends Boom_Controller
 			)));
 
 			// Pagination is disabled when results per page is 0 or there's only one page of results.
-			if ($this->perpage > 0 AND $total > $this->perpage)
+			if ($this->perpage > 0 AND $total > $this->perpage AND $this->pagination)
 			{
 				$pagination = Pagination::factory(array(
 					'current_page'	=>	array(
@@ -339,14 +353,17 @@ class Boom_Controller_Page_Children extends Boom_Controller
 		// Pagination
 		$total = NULL;
 
-		if ($this->perpage > 0)
+		if ($this->pagination AND $this->perpage > 0)
 		{
 			$total = clone $query;
 			$total = $total->count_all();
 
-			$query
-				->offset(($this->page - 1) * $this->perpage)
-				->limit($this->perpage);
+			if ($this->perpage > 0)
+			{
+				$query
+					->offset(($this->page - 1) * $this->perpage)
+					->limit($this->perpage);
+			}
 		}
 
 		return array($query, $total);
