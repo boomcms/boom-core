@@ -54,6 +54,7 @@ class Boom_Model_Page extends Model_Taggable
 		'description'				=>	'',
 		'created_by'				=>	'',
 		'created_time'				=>	'',
+		'primary_uri'				=>	'',
 	);
 
 	protected $_table_name = 'pages';
@@ -532,9 +533,7 @@ class Boom_Model_Page extends Model_Taggable
 		if ($this->_url === NULL)
 		{
 			// Get the primary URL for this page.
-			$this->_url = $this->urls
-				->where('is_primary', '=', TRUE)
-				->find();
+			$this->_url = URL::site($this->primary_uri);
 		}
 
 		return $this->_url;

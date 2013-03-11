@@ -140,6 +140,12 @@ class Boom_Model_Page_URL extends ORM
 			->set('is_primary', TRUE)
 			->update();
 
+		// Update the primary uri for the page in the pages table.
+		DB::update('pages')
+			->set(array('primary_uri' => $this->location))
+			->where('id', '=', $this->page_id)
+			->execute($this->_db);
+
 		return $this;
 	}
 }
