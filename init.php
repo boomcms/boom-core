@@ -47,15 +47,6 @@ Route::set('vanity', '_<link>', array(
 	);
 
 /**
- * Checks for a page with the matching URL in the CMS database.
- *
- */
-Route::set('boom', '<location>(.<action>)', array(
-		'location'	=>	'.*?',
-	))
-	->filter(array('Boom', 'process_uri'));
-
-/**
  * Defines the route for plugin controllers.
  */
 Route::set('plugin', '<directory>/<controller>(/<action>)',
@@ -68,11 +59,19 @@ Route::set('plugin', '<directory>/<controller>(/<action>)',
 	));
 
 // Route for the child page list plugin.
-Route::set('child_page_plugin', 'page/children.<action>')
+Route::set('child_page_plugin', 'page/children(.<action>)')
 	->defaults(array(
 		'controller'	=>	'page_children'
 	));
 
+/**
+ * Checks for a page with the matching URL in the CMS database.
+ *
+ */
+Route::set('boom', '<location>(.<action>)', array(
+		'location'	=>	'.*?',
+	))
+	->filter(array('Boom', 'process_uri'));
 
 /**********************************
  *
