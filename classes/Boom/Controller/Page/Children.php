@@ -119,6 +119,7 @@ class Boom_Controller_Page_Children extends Boom_Controller
 		{
 			// Use the page from the initial request.
 			$this->parent = Request::initial()->param('page');
+			$this->parent_id = $this->parent->id;
 		}
 
 		// 404 if we don't have a parent page ID.
