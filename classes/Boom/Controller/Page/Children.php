@@ -313,10 +313,8 @@ class Boom_Controller_Page_Children extends Boom_Controller
 			->join('page_mptt', 'inner')
 			->on('page.id', '=', 'page_mptt.id')
 			->with_current_version($this->editor)
-			->join('page_urls', 'inner')
-			->on('page.id', '=', 'page_urls.page_id')
 			->where('page_mptt.parent_id', '=', $this->parent_id)
-			->where('page_urls.is_primary', '=', TRUE)
+			->where('page.primary_uri', '!=', NULL)
 			->order_by($this->sort_column, $this->sort_direction);
 
 		// Filtering by date from?
