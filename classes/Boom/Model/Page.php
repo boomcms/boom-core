@@ -427,56 +427,6 @@ class Boom_Model_Page extends Model_Taggable
 	}
 
 	/**
-	 * Sort the page's children as specified by the child ordering policy.
-	 * Called when changing a page's child ordering policy.
-	 *
-	 * @return	Model_Page
-	 */
-	public function sort_children()
-	{
-		// Get the column and direction to order by.
-		list($column, $direction) = $this->children_ordering_policy();
-
-		// Find the children, sorting the database results by the column we want the children ordered by.
-		$children = ORM::factory('Page_MPTT')
-			->join('pages', 'inner')
-			->on('page_mptt.id', '=', 'pages.id')
-			->join('page_versions', 'inner')
-			->on('pages.id', '=', 'page_versions.page_id')
-			->join(array(
-				DB::select(array(DB::expr('max(id)'), 'id'), 'page_id')
-					->from('page_versions')
-					->group_by('page_id'),
-				'current_version'
-			))
-			->on('current_version.id', '=', 'page_versions.id')
-			->where('parent_id', '=', $this->id)
-			->order_by($column, $direction)
-			->find_all();
-
-		// Flag to show that loop is on it's first iteration.
-		$first = TRUE;
-
-		// Loop through the children assigning new left and right values.
-		foreach ($children as $child)
-		{
-			if ($first)
-			{
-				// First iteration of the loop so make the page the first child.
-				$child->move_to_first_child($this->id);
-				$first = FALSE;
-			}
-			else
-			{
-				// For all the other children move to the end.
-				$child->move_to_last_child($this->id);
-			}
-		}
-
-		return $this;
-	}
-
-	/**
 	 * Restores a page to the last published version.
 	 * Marks all versions which haven't been published since the last published versions as stashed.
 	 *
