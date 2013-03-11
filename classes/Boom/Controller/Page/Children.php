@@ -46,9 +46,15 @@ class Boom_Controller_Page_Children extends Boom_Controller
 
 	/**
 	 *
-	 * @var Model_Page	The page to list children of. Taken from $this->request->post('parent')
+	 * @var Model_Page		The page model for the page to list children of.
 	 */
 	protected $parent;
+
+	/**
+	 *
+	 * @var integer		The ID of the page to list children of.
+	 */
+	protected $parent_id;
 
 	/**
 	 *
@@ -84,13 +90,20 @@ class Boom_Controller_Page_Children extends Boom_Controller
 		// Get the parent page.
 		if ($this->request->post('parent'))
 		{
-			// Get it from the POST data.
-			$this->parent = $this->request->post('parent');
+			$parent = $this->request->post('parent');
 
-			// Parent may be an object when this is an internal request - no point instantiating a new object when we already have one.
-			if ( ! is_object($this->parent))
+			// The parent may be a Model_Page object when called as an internal request.
+			// So we store it locally incase we need it later.
+			// If only a page ID has been given then we don't bother instantiating an object until we need it.
+			// Because we may not need it.
+			if (is_object($parent))
 			{
-				$this->parent = new Model_Page($this->request->post('parent'));
+				$this->parent = $parent;
+				$this->parent_id = $parent->id;
+			}
+			else
+			{
+				$this->parent_id = $parent;
 			}
 		}
 		elseif (Request::$current !== Request::$initial)
@@ -99,33 +112,42 @@ class Boom_Controller_Page_Children extends Boom_Controller
 			$this->parent = Request::initial()->param('page');
 		}
 
-		// 404 if the parent page doesn't exist.
-		if ( ! $this->parent->loaded())
+		// 404 if we don't have a parent page ID.
+		if ( ! $this->parent_id)
 		{
 			throw new HTTP_Exception_404;
 		}
 
+		$this->sort_column = $this->request->post('order');
+		$this->sort_direction = $this->request->post('direction');
 
 		// If a sort column is given then use it, otherwise use the parent page default child order column
-		list($column, $direction) = $this->parent->children_ordering_policy();
-
-		if ($this->request->post('order'))
+		if ($this->sort_column)
 		{
-			$this->sort_column = ($this->request->post('order') === 'title')? 'version.title' : 'page.visible_from';
+			$this->sort_column = ($this->sort_column === 'title')? 'version.title' : 'page.visible_from';
 		}
 		else
 		{
-			$this->sort_column = $column;
+			// If a order hasn't been given then we need to use the parent page's default child ordering policy.
+			// So if we don't have the parent model loaded we'll need to get that first.
+			if ( ! $this->parent)
+			{
+				$this->parent = new Model_Page($this->parent_id);
+			}
+
+			list($this->sort_column, $this->sort_direction) = $this->parent->children_ordering_policy();
 		}
 
 		// If a direction has been set then use that, overwise use the parent default child order direction
-		if ( ! $this->request->post('direction'))
+		if ( ! $this->sort_direction)
 		{
-			$this->sort_direction = $direction;
+			// A sort column has been given, but no direction.
+			// The default is to sort the title ascending, date descending.
+			$this->sort_direction = ($this->sort_column == 'version.title')? 'asc' : 'desc';
 		}
 		else
 		{
-			$this->sort_direction = ($this->request->post('direction') === 'desc')? 'desc' : 'asc';
+			$this->sort_direction = ($this->sort_direction === 'desc')? 'desc' : 'asc';
 		}
 
 		// Get a tag for filtering pages.
@@ -203,7 +225,7 @@ class Boom_Controller_Page_Children extends Boom_Controller
 	 */
 	public function action_html()
 	{
-		$cache_key = "child_page_list:".md5($this->parent->id . "-" . $this->auth->logged_in() . "-" . serialize($this->request->post()));
+		$cache_key = "child_page_list:".md5($this->parent_id . "-" . $this->auth->logged_in() . "-" . serialize($this->request->post()));
 
 		// Try and get it from the cache, unless they're logged in.
 		if ($this->auth->logged_in() OR ($view = Kohana::cache($cache_key, NULL, 300)) === NULL)
@@ -211,12 +233,10 @@ class Boom_Controller_Page_Children extends Boom_Controller
 			list($query, $total) = $this->build_query();
 
 			// Execute the query.
-			$pages = $query
-				->find_all();
+			$pages = $query->find_all();
 
 			// Get the number of results returned.
-			$count = $pages
-				->count();
+			$count = $pages->count();
 
 			// Only continue if there are child pages.
 			if ($count == 0)
@@ -231,7 +251,6 @@ class Boom_Controller_Page_Children extends Boom_Controller
 
 			// Include the POST data in the view so that extra paramaters can be passed to the view.
 			$view = View::factory($template, array_merge($this->request->post(), array(
-				'page'	=>	$this->parent,
 				'pages'	=>	$pages,
 			)));
 
@@ -282,7 +301,7 @@ class Boom_Controller_Page_Children extends Boom_Controller
 			->with_current_version($this->editor)
 			->join('page_urls', 'inner')
 			->on('page.id', '=', 'page_urls.page_id')
-			->where('page_mptt.parent_id', '=', $this->parent->id)
+			->where('page_mptt.parent_id', '=', $this->parent_id)
 			->where('page_urls.is_primary', '=', TRUE)
 			->order_by($this->sort_column, $this->sort_direction);
 
