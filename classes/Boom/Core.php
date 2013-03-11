@@ -69,7 +69,7 @@ abstract class Boom_Core
 			$params['page'] = $page;
 
 			// Change the page format depending on the request headers.
-			if ( ! isset($params['action']))
+			if ( ! isset($params['action']) OR $params['action'] == 'index')
 			{
 				$params['action'] = Boom::page_format($request);
 			}
