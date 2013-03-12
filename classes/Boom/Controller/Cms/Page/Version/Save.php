@@ -59,7 +59,9 @@ class Boom_Controller_Cms_Page_Version_Save extends Controller_Cms_Page_Version
 		// Are we saving and publishing the new version?
 		if (isset($post->publish))
 		{
-			$this->new_version->set('embargoed_until', $_SERVER['REQUEST_TIME']);
+			$this->new_version
+				->set('embargoed_until', $_SERVER['REQUEST_TIME'])
+				->set('published', TRUE);
 		}
 
 		// Has the page title been changed?
