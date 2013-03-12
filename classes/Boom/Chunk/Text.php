@@ -70,14 +70,19 @@ class Boom_Chunk_Text extends Chunk
 	protected function _show()
 	{
 		$text = html_entity_decode($this->_chunk->text);
+		$text = $this->_chunk->unmunge($text);
 
-		// Embed youtube videos when in site view.
+		// When in site view...
 		if (Editor::instance()->state() != Editor::EDIT)
 		{
+			// Embed youtube videos.
 			$text = preg_replace_callback('~\b(?<!href="|">)(?:ht|f)tps?://[^<\s]+(?:/|\b)~i', array($this, 'embed_video'), $text);
-		}
 
-		$text = $this->_chunk->unmunge($text);
+			// If we're displaying a bodycopy link to the images in the text.
+			// We can then use these links to show the images in an larger popup when the link is clicked.
+			// The regular expression below should match images which aren't inside links.
+			$text = preg_replace('~(?<!href="|">)<img.*?src=["\']/asset/view/(\d+).*?["\'].*?>(?!\<\/a\>)~i', '<a href="/asset/view/${1}">${0}</a>', $text);
+		}
 
 		// If no template has been set then add the default HTML tags for this slotname.
 		if ($this->_template === NULL)
