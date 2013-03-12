@@ -197,7 +197,7 @@ class Boom_Controller_Page_Children extends Boom_Controller
 			$this->month = $this->request->post('month');
 		}
 
-		if ($this->request->post('pagination'))
+		if ($this->request->post('pagination') !== NULL)
 		{
 			$this->pagination = $this->request->post('pagination');
 		}
