@@ -337,17 +337,15 @@ $.widget('wysihtml5.editor', $.boom.editor, {
 					$.post( '/asset/embed/' + rid )
 					.done( function( response ){
 						img.replaceWith( response );
+					})
+					.always( function(){
+						asset_selected.reject();
 					});
 				}
 				
 			})
 			.fail( function(){
-				console.log( 'fail' );
 				img.remove();
-			})
-			.always( function(){
-				console.log( 'always' );
-				asset_selected.reject();
 			});
 	},
 	
