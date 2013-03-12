@@ -356,13 +356,13 @@ class Boom_Controller_Page_Children extends Boom_Controller
 		{
 			$total = clone $query;
 			$total = $total->count_all();
+		}
 
-			if ($this->perpage > 0)
-			{
-				$query
-					->offset(($this->page - 1) * $this->perpage)
-					->limit($this->perpage);
-			}
+		if ($this->perpage > 0)
+		{
+			$query
+				->offset(($this->page - 1) * $this->perpage)
+				->limit($this->perpage);
 		}
 
 		return array($query, $total);
