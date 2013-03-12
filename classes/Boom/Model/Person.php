@@ -116,6 +116,7 @@ class Boom_Model_Person extends ORM
 		// Remove the permissions which were given by this group.
 		DB::delete('people_roles')
 			->where('group_id', '=', $group_id)
+			->where('person_id', '=', $this->id)
 			->execute($this->_db);
 
 		// Return the person model.
