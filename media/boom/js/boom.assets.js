@@ -453,9 +453,12 @@ $.widget( 'boom.browser_asset', $.boom.browser, {
 							{
 								tag : tags[i]
 							}
-						);
+						)
+						.done( function(){
+							$( '#b-tags-search' ).tagger_search( 'do_search' );
+						});
 					}
-					$( '#b-tags-search' ).tagger_search( 'do_search' );
+					
 				});
 		});
 
