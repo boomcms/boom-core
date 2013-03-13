@@ -595,6 +595,15 @@ class Boom_Model_Page extends Model_Taggable
 				->and_where_close();
 		}
 
+		// Add the version columns to the select.
+		$target = ORM::factory($this->_has_one['version']['model']);
+
+		foreach (array_keys($target->_object) as $column)
+		{
+			// Add the prefix so that load_result can determine the relationship
+			$this->select(array("version.$column", "version:$column"));
+		}
+
 		return $this;
 	}
 }
