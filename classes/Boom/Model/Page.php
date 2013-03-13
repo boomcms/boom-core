@@ -415,6 +415,27 @@ class Boom_Model_Page extends Model_Taggable
 	}
 
 	/**
+	 * Add the page version columns to a select query.
+	 *
+	 * @return \Boom_Model_Page
+	 */
+	protected function _select_version()
+	{
+		// Add the version columns to the select.
+
+		$model = "Model_".$this->_has_one['version']['model'];
+		$target = new $model;
+
+		foreach (array_keys($target->_object) as $column)
+		{
+			// Add the prefix so that load_result can determine the relationship
+			$this->select(array("version.$column", "version:$column"));
+		}
+
+		return $this;
+	}
+
+	/**
 	 * Generate a short URL for the page, similar to t.co etc.
 	 * Returns the page ID encoded to base-36 prefixed with an underscore.
 	 * We prefix the short URLs to avoid the possibility of conflicts with real URLs
@@ -595,14 +616,8 @@ class Boom_Model_Page extends Model_Taggable
 				->and_where_close();
 		}
 
-		// Add the version columns to the select.
-		$target = ORM::factory($this->_has_one['version']['model']);
-
-		foreach (array_keys($target->_object) as $column)
-		{
-			// Add the prefix so that load_result can determine the relationship
-			$this->select(array("version.$column", "version:$column"));
-		}
+		// Add the version columns to the query.
+		$this->_select_version();
 
 		return $this;
 	}
