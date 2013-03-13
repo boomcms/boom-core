@@ -404,6 +404,15 @@ $.widget( 'boom.browser_asset', $.boom.browser, {
 			var tags = [];
 			var tagged = new $.Deferred();
 			
+			/* bit of a hack to get current tags */
+			$( '#b-tags-search .b-tags-list li').each( function(){
+				$this = $( this );
+				tags.push( {
+					label: $this.find( 'span' ).text(),
+					value: $this.find( 'a' ).attr( 'data-tag_id')
+				} );
+			});
+			
 			var uploaded = self
 				.upload({
 					add: function( e, data ){
@@ -446,6 +455,7 @@ $.widget( 'boom.browser_asset', $.boom.browser, {
 							}
 						);
 					}
+					$( '#b-tags-search' ).tagger_search( 'do_search' );
 				});
 		});
 
