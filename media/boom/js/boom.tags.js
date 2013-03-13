@@ -308,7 +308,7 @@ $.widget( 'boom.tagger_search', $.boom.tagger, {
 			self = this,
 			selected_tag_ids = this.options.selected_tag_ids;
 			
-		$.boom.history.load( self.options.tag + '/' + selected_tag_ids.join( '-' ) );
+		return $.boom.history.load( self.options.tag + '/' + selected_tag_ids.join( '-' ) );
 	}
 	
 	
@@ -336,6 +336,14 @@ $.widget( 'boom.tagger_deferred', $.boom.tagger, {
 		type : 'asset'
 	},
 	
+	_create: function(){
+		this._super();
+		
+		for ( var i in this.options.tags ) {
+			this.add( this.options.tags[ i ] );
+		}
+	},
+	
 	_bind : function(){
 		
 	},
@@ -345,6 +353,7 @@ $.widget( 'boom.tagger_deferred', $.boom.tagger, {
 	@param {String} tag Tag name
 	*/
 	add : function( tag ) {
+		console.log( tag );
 		var 
 			self = this,
 			tags = this.options.tags,
