@@ -454,8 +454,14 @@ $.widget( 'boom.browser_asset', $.boom.browser, {
 								tag : tags[i]
 							}
 						)
+						.pipe( function(){
+							return $( '#b-tags-search' )
+							.tagger_search( 'do_search' );
+						})
 						.done( function(){
-							$( '#b-tags-search' ).tagger_search( 'do_search' );
+							for ( i in data.result ){
+								$( '#asset-list-' + data.result[ i ] ).click();
+							}
 						});
 					}
 					

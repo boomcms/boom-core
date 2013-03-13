@@ -308,7 +308,7 @@ $.widget( 'boom.tagger_search', $.boom.tagger, {
 			self = this,
 			selected_tag_ids = this.options.selected_tag_ids;
 			
-		$.boom.history.load( self.options.tag + '/' + selected_tag_ids.join( '-' ) );
+		return $.boom.history.load( self.options.tag + '/' + selected_tag_ids.join( '-' ) );
 	}
 	
 	
