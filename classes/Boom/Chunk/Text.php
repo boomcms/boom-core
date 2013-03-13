@@ -80,8 +80,11 @@ class Boom_Chunk_Text extends Chunk
 
 			// If we're displaying a bodycopy link to the images in the text.
 			// We can then use these links to show the images in an larger popup when the link is clicked.
-			// The regular expression below should match images which aren't inside links.
+			// Both the regular expressions below match images which aren't already part of a link.
+			// The first regex matches images from the asset manager and links to the full size image (i.e. excludes width and height from the link).
+			// The second regex matches all other images and links to the image as it appears in the img tag.
 			$text = preg_replace('~(?<!href="|">)<img.*?src=["\']/asset/view/(\d+).*?["\'].*?>(?!\<\/a\>)~i', '<a href="/asset/view/${1}" class="b-image">${0}</a>', $text);
+			$text = preg_replace('~(?<!href="|">)<img.*?src=["\'](.*?)["\'].*?>(?!\<\/a\>)~i', '<a href="${1}" class="b-image">${0}</a>', $text);
 		}
 
 		// If no template has been set then add the default HTML tags for this slotname.
