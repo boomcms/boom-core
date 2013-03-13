@@ -285,7 +285,7 @@ class Boom_Controller_Page_Children extends Boom_Controller
 				));
 
 				// Add pagination values to template.
-				$view->set('pagination', $pagination);
+				$view->set('pagination_links', $pagination);
 			} // End pagination
 
 			// Update the cache.
