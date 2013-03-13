@@ -252,7 +252,7 @@ abstract class Boom_Chunk
 			->on('page_chunks.chunk_id', '=', 'id')
 			->with('target')
 			->where('slotname', '=', $slotname)
-			->where('type', '=', constant('Chunk::'.strtoupper($type)))
+			->where("page_chunks.type", '=', constant('Chunk::'.strtoupper($type)))
 			->where('page_chunks.page_vid', '=', $version->id)
 			->find();
 	}
