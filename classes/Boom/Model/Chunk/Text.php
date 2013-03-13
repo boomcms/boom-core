@@ -112,6 +112,7 @@ class Boom_Model_Chunk_Text extends ORM
 	{
 		return array(
 			'text' => array(
+				array('rawurldecode'),
 				array('urldecode'),
 				array(
 					function($text)
