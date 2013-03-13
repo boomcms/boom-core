@@ -31,11 +31,12 @@ abstract class Boom_Chunk
 
 	/**
 	 * Whether the chunk should be editable.
-	 * The initial (default) value of this is set in the constructor depending on whether the current person has the correct permission to edit this chunk.
+	 *
+	 * This can be changed by calling [Chunk::editable()]
 	 *
 	 * @var	boolean
 	 */
-	protected $_editable;
+	protected $_editable = TRUE;
 
 	/**
 	 * The page that the chunk belongs to.
@@ -87,13 +88,6 @@ abstract class Boom_Chunk
 		$this->_chunk = $chunk;
 
 		$this->_slotname = $slotname;
-
-		/** Should the chunk be editable?
-		 * This can be changed to calling editable(), for instance if we want to make a chunk read only.
-		 *
-		 * @todo Chunk::factory() will be called multiple times to display a single page - need to remove duplicate calles to Auth::instance()->logged_in()
-		 */
-		$this->_editable = (Editor::instance()->state() == Editor::EDIT AND ($this->_page->was_created_by(Auth::instance()->get_user()) OR Auth::instance()->logged_in("edit_page_content", $this->_page)));
 	}
 
 	/**
@@ -173,8 +167,12 @@ abstract class Boom_Chunk
 			// Get the chunk HTML.
 			$html = $this->html();
 
-			// Make the content editable.
-			if ($this->_editable === TRUE)
+			/** Should the chunk be editable?
+			 * This can be changed to calling editable(), for instance if we want to make a chunk read only.
+			 *
+			 * @todo Chunk::factory() will be called multiple times to display a single page - need to remove duplicate calles to Auth::instance()->logged_in()
+			 */
+			if ($this->_editable === TRUE AND Editor::instance()->state_is(Editor::EDIT) AND ($this->_page->was_created_by(Auth::instance()->get_user()) OR Auth::instance()->logged_in("edit_page_content", $this->_page)))
 			{
 				$html = $this->add_attributes($html, $this->_type, $this->_slotname, $this->_template, $this->_page->id);
 			}
