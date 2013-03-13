@@ -27,7 +27,7 @@
 			exec( "cd '$dir'; git branch", $lines );
 			foreach ( $lines as $line ) {
 			    if ( strpos( $line, '*' ) === 0 ) {
-			        $branchname = ltrim( $line, '* ' );
+			        $branchname = '<br>' . ltrim( $line, '* ' );
 			        break;
 			    }
 			}
