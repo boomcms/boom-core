@@ -19,9 +19,23 @@
 		<? $class = new ReflectionClass('Kohana');
 		$constants = $class->getConstants();
 		$constants = array_flip($constants);
-		$environment = $constants[Kohana::$environment]; ?>
+		$environment = $constants[Kohana::$environment];
+		$branchname = ''; 
+		
+		if ( Kohana::$environment == Kohana::DEVELOPMENT ):
+			$dir = DOCROOT;
+			exec( "cd '$dir'; git branch", $lines );
+			foreach ( $lines as $line ) {
+			    if ( strpos( $line, '*' ) === 0 ) {
+			        $branchname = ltrim( $line, '* ' );
+			        break;
+			    }
+			}
+		endif;
+
+		?>
 		<div id="b-environment">
-			<p><?= $environment ?> site</p>
+			<p><?= $environment ?> site <?= $branchname ?></p>
 		</div>
 	<? endif; ?>
 
