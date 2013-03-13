@@ -62,18 +62,36 @@ class Boom_Model_Person extends ORM
 	/**
 	 * Returns whether the current person is allowed to perform the specified role.
 	 *
-	 * @param Model_Role $role
+	 * A role can be given as a name or a Model_Role model.
+	 * It's generally quicker to call this function with a role name than to load a role model (lol) and then call the function with the model.
+	 *
+	 * @param mixed $role
 	 * @param Model_Page $page
 	 *
 	 * @return boolean
 	 */
-	public function is_allowed(Model_Role $role, Model_Page $page = NULL)
+	public function is_allowed($role, Model_Page $page = NULL)
 	{
 		$query = DB::select(array(DB::expr("bit_and(allowed)"), 'allowed'))
 			->from('people_roles')
-			->where('person_id', '=', $this->id)
-			->where('role_id', '=', $role->id)
-			->group_by('person_id');			// Strange results if this isn't here.
+			->where('person_id', '=', $this->id);
+
+		// If the given role is a model then filter by role ID.
+		// Otherwise join the roles table and query by role name.
+
+		if (is_object($role))
+		{
+			$query->where('role_id', '=', $role->id);
+		}
+		else
+		{
+			$query
+				->join('roles', 'inner')
+				->on('people_roles.role_id', '=', 'roles.id')
+				->where('roles.name', '=', $role);
+		}
+
+		$query->group_by('person_id');	// Strange results if this isn't here.
 
 		if ($page !== NULL)
 		{
