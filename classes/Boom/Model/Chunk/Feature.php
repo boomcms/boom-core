@@ -19,5 +19,7 @@ class Boom_Model_Chunk_Feature extends ORM
 		'slotname'			=>	'',
 	);
 
+	protected $_belongs_to = array('target' => array('model' => 'Page', 'foreign_key' => 'target_page_id'));
+
 	protected $_table_name = 'chunk_features';
 }

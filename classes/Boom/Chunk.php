@@ -250,6 +250,7 @@ abstract class Boom_Chunk
 		return ORM::factory($model)
 			->join('page_chunks')
 			->on('page_chunks.chunk_id', '=', 'id')
+			->with('target')
 			->where('slotname', '=', $slotname)
 			->where('type', '=', constant('Chunk::'.strtoupper($type)))
 			->where('page_chunks.page_vid', '=', $version->id)

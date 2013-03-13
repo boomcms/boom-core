@@ -18,7 +18,7 @@ class Boom_Chunk_Asset extends Chunk
 	{
 		parent::__construct($page, $chunk, $editable);
 
-		$this->_asset = $this->_chunk->asset;
+		$this->_asset = $this->_chunk->target;
 	}
 
 	protected function _show()
@@ -48,7 +48,7 @@ class Boom_Chunk_Asset extends Chunk
 	{
 		return View::factory("site/slots/default/asset/$this->_template");
 	}
-	
+
 	/**
 	 * Adds a target asset ID data attribute.
 	 *
