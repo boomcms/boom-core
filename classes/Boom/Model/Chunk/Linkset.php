@@ -45,8 +45,20 @@ class Boom_Model_Chunk_Linkset extends ORM
 
 			if ($this->_links === NULL)
 			{
-				$this->_links = $this
-					->links
+				$page = new Model_Page;
+
+				$query = ORM::factory('Chunk_Linkset_Link')
+					->join(array('pages', 'target'), 'left')
+					->on('target_page_id', '=', 'target.id')
+					->where('chunk_linkset_id', '=', $this->id);
+
+				// Add the page to the select clause.
+				foreach (array_keys($page->_object) as $column)
+				{
+					$query->select(array("target.$column", "target:$column"));
+				}
+
+				$this->_links = $query
 					->find_all()
 					->as_array();
 			}
