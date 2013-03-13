@@ -257,7 +257,7 @@ $.widget('ui.chunkText', $.ui.chunk, {
 			this.content = this.element.html();
 		}
 
-		return { title : this.title, text : this.content.cleanup().safeEscape() };
+		return { title : this.title, text : this.content.cleanup() };
 	},
 
 	/**

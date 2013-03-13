@@ -283,7 +283,7 @@ $.widget( 'boom.page', {
 			$.boom.page.options,
 			title =
 				this.document.contents().find('#b-page-title').length ?
-				this.document.contents().find('#b-page-title').html().text().safeEscape() :
+				this.document.contents().find('#b-page-title').html().text() :
 				$('input[name=alttitle]').val();
 
 		data = $.extend(data, {
