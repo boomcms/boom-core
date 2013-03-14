@@ -1059,6 +1059,7 @@ $.extend($.boom, {
 		@param opts configuration options
 		*/
 		bind : function(opts){
+			var self = this;
 
 			// FIXME: opts.image is expected to be an anchor selector
 
@@ -1079,12 +1080,13 @@ $.extend($.boom, {
 						.load(function(){
 
 							$.boom.loader.hide('dialog');
-
-							var dialogConfig = $.extend({}, $.boom.config.dialog, {
-								title: opts.image.data('title')
-							});
-
-							$( this ).dialog( dialogConfig );
+							
+							self.alert(
+								opts.image.data('title'),
+								'<img src="' + this.src +'" />',
+								function(){},
+								this.width + 30
+							);
 						})
 						.error(function(){
 
