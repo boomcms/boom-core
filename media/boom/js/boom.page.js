@@ -6,7 +6,7 @@
 $.widget( 'boom.page', {
 
 	/** @lends $.boom.page */
-	
+
 	options : {
 		/**
 		@type number
@@ -38,9 +38,9 @@ $.widget( 'boom.page', {
 	_create : function(config) {
 
 		var self = this;
-		
+
 		$.boom.page = self;
-		
+
 		this.slot_edits = [];
 
 		$.boom.util.cacheImages($.boom.config.cachePageImages);
@@ -102,9 +102,9 @@ $.widget( 'boom.page', {
 		var self = this;
 
 		this.document = $( top.document );
-		
+
 		this.toolbar.init();
-		
+
 		$('body').contents().ui();
 
 		return this;
@@ -166,39 +166,17 @@ $.widget( 'boom.page', {
 			});
 		});
 		$('#b-page-addpage').click(function(){
+			$.boom.loader.show();
 
-			var button = this;
+			$.post('/cms/page/add/' + self.options.id, function(response){
+				$.boom.loader.hide();
 
-			$.boom.dialog.open({
-				url: '/cms/page/add/' + self.options.id,
-				title: $(this).text(),
-				onLoad : function() {
+				if ( new RegExp('^' + "\/").test( response ) ) {
 
-					$.boom.util.page_tree( $( this ).find( '.boom-tree' ) )
-						.progress( function( page ){
-							$( 'input[name=parent_id]' ).val( page.page_id );
-						});
+					top.location = response;
+				} else {
 
-				},
-				callback: function(){
-
-					console.log( $('#b-page-add-form').serialize() );
-
-					$.boom.loader.show('modal');
-
-					$.post('/cms/page/add', $('#b-page-add-form').serialize(), function(response){
-
-						$.boom.loader.hide('modal');
-
-						if ( new RegExp('^' + "\/").test( response ) ) {
-
-							top.location = response;
-						} else {
-
-							$.boom.dialog.alert('Error', response);
-						}
-
-					});
+					$.boom.dialog.alert('Error', response);
 				}
 			});
 		});
@@ -397,12 +375,12 @@ $.widget( 'boom.page', $.boom.page, {
 
 			self.page_dom = $.boom.page.document.contents();
 			self.iframe = self.page_dom.find( '#b-page-topbar' );
-			
+
 			if ( $( '#boom-topbar' ).length ) {
 				self.page_dom
 					.find( 'body' )
 					.css( {'margin-top' : this.height} );
-					
+
 				self.iframe
 				.css( {
 					'margin-top' : '-' + this.height
@@ -526,7 +504,7 @@ $.widget( 'boom.page', $.boom.page, {
 			self.elements.page_body.contents().find('body').unbind('click').click(function(event){
 
 				function isAnchor(target){
-					
+
 					var internal_link = /#|javascript:/;
 
 					return ( target && target.nodeName == 'A' && !internal_link.test( target.href ) );
@@ -1297,7 +1275,7 @@ $.widget( 'boom.page', $.boom.page, {
 			remove: function( item ) {
 
 				$.boom.dialog.confirm(
-					'Please confirm', 
+					'Please confirm',
 					'Are you sure you want to remove this URL? <br /><br /> This will delete the URL from the database and cannot be undone!'
 				)
 				.done( function(){
@@ -1378,7 +1356,7 @@ $.widget( 'boom.page', $.boom.page, {
 									"Are you sure you want to do delete this page's feature image?"
 								)
 								.done( function(){
-									
+
 									$('#boom-featureimage-img').attr( 'src', '').hide();
 									$('#boom-featureimage-input').val( 0 );
 									$( '#boom-feature-remove' ).button( 'disable' );
@@ -1413,7 +1391,7 @@ $.widget( 'boom.page', $.boom.page, {
 					},
 					onLoad: function(){
 						var asset_id = $('#boom-featureimage-input').val();
-						
+
 						if ( asset_id > 0 ) {
 							$( '#boom-featureimage-none' ).hide();
 							$( '#boom-feature-remove' ).button( 'enable' );
@@ -1741,57 +1719,57 @@ Base class for the text editor
 */
 $.widget( 'boom.editor', {
 	/** @lends $.boom.editor */
-	
+
 	_create : function() {
-		
+
 	},
-	
+
 	_init : function() {
-		
+
 	},
-	
+
 	_destroy : function() {
-		
+
 	},
-	
+
 	/**
 	Load the wysiwyg javascript files
 	@returns {Deferred} Promise which resolves whenm the editor has loaded.
 	*/
 	load : function() {
-		
+
 		$.boom.log( 'editor loading ');
 		var loaded = new $.Deferred();
-		
+
 		return loaded;
 	},
-	
+
 	/**
 	Apply changes and exit
 	*/
 	apply : function() {
-		
+
 	},
-	
+
 	/**
 	Cancel changes and exit
 	*/
 	cancel : function() {
-		
+
 	},
-	
+
 	/**
 	Edit a slot
 	@param {jQuery element} element DOM element to edit
 	*/
 	edit : function( element ) {
-		
+
 	},
-	
+
 	/**
 	Remove the  wysiwyg instance from the DOM
 	*/
 	remove : function() {
-		
+
 	}
 });
