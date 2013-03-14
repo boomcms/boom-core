@@ -57,8 +57,12 @@ class Boom_Controller_Cms_Page extends Boom_Controller
 	 */
 	public function action_add()
 	{
+		// Get the parent page and template of the new page from the POST data.
+		$parent_id = $this->request->post('parent_id');
+		$template_id = $this->request->post('template_id');
+
 		// If no parent page ID or template ID has been given show a form to selected the parent page and template.
-		if ($this->request->post('parent_id') == NULL OR $this->request->post('template_id') == NULL)
+		if ($parent_id == NULL OR $template_id == NULL)
 		{
 			// Work out which template in the select box should be selected.
 			// Priority is the parent page's children_template_id
@@ -91,7 +95,7 @@ class Boom_Controller_Cms_Page extends Boom_Controller
 			Database::instance()->begin();
 
 			// Find the parent page.
-			$parent = new Model_Page($this->request->post('parent_id'));
+			$parent = new Model_Page($parent_id);
 
 			// Check for add permissions on the parent page.
 			$this->authorization('add_page', $parent);
@@ -116,7 +120,7 @@ class Boom_Controller_Cms_Page extends Boom_Controller
 				->values(array(
 					'edited_by'	=>	$this->person->id,
 					'page_id'		=>	$page->id,
-					'template_id'	=>	$this->request->post('template_id'),
+					'template_id'	=>	$template_id,
 					'title'			=>	$title,
 				))
 				->create();
