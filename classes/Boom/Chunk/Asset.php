@@ -38,7 +38,7 @@ class Boom_Chunk_Asset extends Chunk
 			$v->url = $this->_chunk->url;
 		}
 
-		$v->asset = $this->_chunk->asset;
+		$v->asset = $this->_chunk->target;
 		$v->caption = $this->_chunk->caption;
 
 		return $v;
