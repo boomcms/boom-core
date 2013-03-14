@@ -447,13 +447,20 @@ $.widget( 'boom.browser_asset', $.boom.browser, {
 				
 				$.when( tagged, uploaded ).done( function( tags, data ){
 					
+					var promises = [];
+					
 					for ( i in tags ) {
-						$.post(
+						var request = $.post(
 							'/cms/tags/asset/add/' + data.result.join( '-' ),
 							{
-								tag : tags[i]
+								tag : tags[i].label
 							}
-						)
+						);
+						
+						promises.push( request );
+					}
+					
+					$.when( promises )
 						.pipe( function(){
 							return $( '#b-tags-search' )
 							.tagger_search( 'do_search' );
@@ -463,7 +470,6 @@ $.widget( 'boom.browser_asset', $.boom.browser, {
 								$( '#asset-list-' + data.result[ i ] ).click();
 							}
 						});
-					}
 					
 				});
 		});
