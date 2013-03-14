@@ -164,15 +164,17 @@ abstract class Boom_Chunk
 		// Don't allow an error displaying the chunk to bring down the whole page.
 		try
 		{
-			// Get the chunk HTML.
-			$html = $this->html();
-
 			/** Should the chunk be editable?
 			 * This can be changed to calling editable(), for instance if we want to make a chunk read only.
 			 *
-			 * @todo Chunk::factory() will be called multiple times to display a single page - need to remove duplicate calles to Auth::instance()->logged_in()
+			 * @todo Multiple chunks will be inserted on a single page - need to remove duplicate calles to Auth::instance()->logged_in()
 			 */
-			if ($this->_editable === TRUE AND Editor::instance()->state_is(Editor::EDIT) AND ($this->_page->was_created_by(Auth::instance()->get_user()) OR Auth::instance()->logged_in("edit_page_content", $this->_page)))
+			$this->_editable = ($this->_editable === TRUE AND Editor::instance()->state_is(Editor::EDIT) AND ($this->_page->was_created_by(Auth::instance()->get_user()) OR Auth::instance()->logged_in("edit_page_content", $this->_page)));
+
+			// Get the chunk HTML.
+			$html = $this->html();
+
+			if ($this->_editable === TRUE)
 			{
 				$html = $this->add_attributes($html, $this->_type, $this->_slotname, $this->_template, $this->_page->id);
 			}
