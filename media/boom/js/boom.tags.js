@@ -336,54 +336,55 @@ $.widget( 'boom.tagger_deferred', $.boom.tagger, {
 		type : 'asset'
 	},
 	
-	_create: function(){
-		this._super();
-		
-		for ( var i in this.options.tags ) {
-			this.add( this.options.tags[ i ] );
-		}
-	},
-	
 	_bind : function(){
 		
+		// Build the UI for any existing tags.
+		for ( var i in this.options.tags ) {
+			this._render_tag( this.options.tags[ i ] );
+		}
 	},
 	
 	/**
 	Add a tag.
-	@param {String} tag Tag name
+	@param {Object} tag Tag
 	*/
 	add : function( tag ) {
-		console.log( tag );
-		var 
-			self = this,
-			tags = this.options.tags,
-			tag_list = this.element.find( 'ul.b-tags-list' );
 
-			tags.push( tag.label );
+			this.options.tags.push( tag );
 			
-			var link = $( '<a>', {
-				href : '#',
-				"class" : 'b-tags-remove',
-				"data-tag_id" : tag.value 
-			});
-			var label = $( '<span>').text( tag.label );
-
-			$( '<li>' )
-				.append( link )
-				.append( label )
-				.appendTo( tag_list );
+			this._render_tag( tag );
 	},
 	
 	/**
 	Remove a tag.
-	@param {String} tag Tag name
+	@param {Object} tag Tag
 	*/
 	remove : function( tag ) {
 		var 
 			self = this,
 			tags = this.options.tags;
 
-			tags.splice( tags.indexOf( tag.value ), 1);
+			tags.splice( tags.indexOf( tag ), 1);
+	},
+	
+	/** Show a tag in the UI
+	@param {Object} tag Tag
+	*/
+	_render_tag: function( tag ) {
+		
+		var tag_list = this.element.find( 'ul.b-tags-list' );
+		
+		var link = $( '<a>', {
+			href : '#',
+			"class" : 'b-tags-remove',
+			"data-tag_id" : tag.value 
+		});
+		var label = $( '<span>').text( tag.label );
+
+		$( '<li>' )
+			.append( link )
+			.append( label )
+			.appendTo( tag_list );
 	}
 	
 });
