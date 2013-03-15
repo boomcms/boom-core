@@ -38,4 +38,14 @@ class Boom_Model_Chunk_Slideshow_Slide extends ORM
 			),
 		);
 	}
+
+	/**
+	 * Whether the current slide has a link associated with it.
+	 *
+	 * @return boolean
+	 */
+	public function has_link()
+	{
+		return $this->url AND $this->url != 'http://';
+	}
 }
