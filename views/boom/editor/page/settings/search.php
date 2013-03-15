@@ -33,7 +33,7 @@
 		<? if ($allow_advanced): ?>
 			<div id="b-pagesettings-search-advanced">
 				<label for="indexed">Allow indexing by search engines
-				<select id="indexed" name="indexed">
+				<select id="indexed" name="external_indexing">
 					<option <?if ($page->external_indexing) echo "selected='selected' "; echo "value='1'>Yes</option>"; ?>
 					<option <?if ( ! $page->external_indexing) echo "selected='selected' "; echo "value='0'>No</option>"; ?>
 				</select>
