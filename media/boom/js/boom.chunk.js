@@ -697,11 +697,6 @@ $.widget('ui.chunkAsset', $.ui.chunk, {
 			break;
 		}
 		
-		if( this.element[0].src ) {
-			asset_id = this.element[0].src.match( /asset\/(thumb|view)\/([0-9]+)/ )[2];
-			url = null;
-		}
-		
 		$.boom.log('Asset chunk slot edit ' + asset_id);
 
 		self.asset = {
