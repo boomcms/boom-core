@@ -681,9 +681,25 @@ $.widget('ui.chunkAsset', $.ui.chunk, {
 		var asset_selected = new $.Deferred();
 		
 		var asset_id = 0;
+		var url;
+		
+		switch( this.element[0].nodeName ){
+			case 'A':
+				url = this.element.attr( 'href' );
+				asset_id = this.element
+					.find( 'img' )
+					.attr( 'src' )
+					.match( /asset\/(thumb|view)\/([0-9]+)/ )[2];
+			break;
+			
+			case 'IMG': 
+				asset_id = this.element[0].src.match( /asset\/(thumb|view)\/([0-9]+)/ )[2];
+			break;
+		}
 		
 		if( this.element[0].src ) {
 			asset_id = this.element[0].src.match( /asset\/(thumb|view)\/([0-9]+)/ )[2];
+			url = null;
 		}
 		
 		$.boom.log('Asset chunk slot edit ' + asset_id);
@@ -692,7 +708,7 @@ $.widget('ui.chunkAsset', $.ui.chunk, {
 			asset_id : asset_id,
 			title : null,
 			caption : null,
-			url : null
+			url : url
 		};
 
 		// cleanup code when the dialog closes.
@@ -712,7 +728,12 @@ $.widget('ui.chunkAsset', $.ui.chunk, {
 			self.asset.asset_id = rid;
 			return $.boom.links.picker( {
 				page_rid: $.boom.page.options.id,
-				title: 'Add a link'
+				title: 'Add a link',
+				link: {
+					url: self.asset.url,
+					rid: -1,
+					title: ''
+				}
 			});
 		})
 		.done( function( link ){
@@ -773,7 +794,7 @@ $.widget('ui.chunkAsset', $.ui.chunk, {
 				asset_id : rid,
 				title : null,
 				caption : null,
-				link : this.asset.url
+				url : this.asset.url
 			};
 	},
 

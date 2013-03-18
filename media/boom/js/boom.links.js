@@ -26,6 +26,11 @@ $.extend( $.boom, {
 				deferred: complete,
 				onLoad: function(){
 					var self = this;
+					
+					if ( opts.link.rid == -1 ) {
+						$( '#boom-chunk-linkset-addlink-external-url' ).val( opts.link.url );
+					}
+					
 					$.boom.util.page_tree( this.find( '.boom-tree' ) )
 						.progress( function( page ) {
 							link = page;
