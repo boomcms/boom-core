@@ -240,7 +240,8 @@ $.extend($.boom.people.group,  {
 						'/cms/groups/add_role/' + rid,
 						{
 							role_id : role_id,
-							allowed : allowed
+							allowed : allowed,
+							page_id: 0
 						}
 					);
 				})
