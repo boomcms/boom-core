@@ -105,9 +105,6 @@ class Boom_Model_Chunk_Text extends ORM
 		return $this;
 	}
 
-	/**
-	 * @link http://kohanaframework.org/3.2/guide/orm/filters
-	 */
 	public function filters()
 	{
 		return array(
@@ -150,15 +147,30 @@ class Boom_Model_Chunk_Text extends ORM
 	 * Turns text chunk contents into HTML.
 	 * e.g. replaces hoopdb:// links to <img> and <a> links
 	 *
-	 * @param	string	$text	Text to decode
-	 * @return 	string
+	 * @param string
+	 * @return string
 	 */
 	public function unmunge($text)
 	{
-		// Image links in the form hoopdb://image/123
-		$text = preg_replace('|hoopdb://image/(\d+)|', '/asset/view/$1/400', $text);
+		$text = $this->unmunge_asset_links_which_dont_have_a_dimension_set($text);
+		$text = $this->unmunge_asset_links_which_do_have_a_dimension($text);
+		$text = $this->unmunge_page_links($text);
 
-		// Fix internal page links.
+		return $text;
+	}
+
+	public function unmunge_asset_links_which_dont_have_a_dimension($text)
+	{
+		return preg_replace('|hoopdb://image/(\d+)([\'"])|', '/asset/view/$1/400$2', $text);
+	}
+
+	public function unmunge_asset_links_which_do_have_a_dimension($text)
+	{
+		return preg_replace('|hoopdb://image/(\d+)/|', '/asset/view/$1/', $text);
+	}
+
+	public function unmunge_page_links($text)
+	{
 		$text = preg_replace_callback('|hoopdb://page/(\d+)|',
 			function ($match)
 			{
@@ -166,7 +178,5 @@ class Boom_Model_Chunk_Text extends ORM
 			},
 			$text
 		);
-
-		return $text;
 	}
 }
