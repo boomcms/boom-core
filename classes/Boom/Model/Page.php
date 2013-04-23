@@ -393,28 +393,6 @@ class Boom_Model_Page extends Model_Taggable
 	}
 
 	/**
-	 * Removes a tag with the given name from a page.
-	 *
-	 * @param string $name
-	 * @return \Boom_Model_Page
-	 * @throws Exception
-	 */
-	public function remove_tag_with_name($name)
-	{
-		// Page has to be loaded to remove a tag from it.
-		if ( ! $this->_loaded)
-		{
-			throw new Exception("A page has to be loaded to remove a tag from it");
-		}
-
-		// Remove the tag.
-		$this->remove('tags', new Model_Tag(array('name' => $name)));
-
-		// Return the current page.
-		return $this;
-	}
-
-	/**
 	 * Add the page version columns to a select query.
 	 *
 	 * @return \Boom_Model_Page

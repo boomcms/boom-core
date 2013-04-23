@@ -152,19 +152,19 @@ class Boom_Model_Chunk_Text extends ORM
 	 */
 	public function unmunge($text)
 	{
-		$text = $this->unmunge_asset_links_which_dont_have_a_dimension_set($text);
-		$text = $this->unmunge_asset_links_which_do_have_a_dimension($text);
+		$text = $this->unmunge_asset_links_with_only_asset_id($text);
+		$text = $this->unmunge_asset_links_with_multiple_params($text);
 		$text = $this->unmunge_page_links($text);
 
 		return $text;
 	}
 
-	public function unmunge_asset_links_which_dont_have_a_dimension($text)
+	public function unmunge_asset_links_with_only_asset_id($text)
 	{
 		return preg_replace('|hoopdb://image/(\d+)([\'"])|', '/asset/view/$1/400$2', $text);
 	}
 
-	public function unmunge_asset_links_which_do_have_a_dimension($text)
+	public function unmunge_asset_links_with_multiple_params($text)
 	{
 		return preg_replace('|hoopdb://image/(\d+)/|', '/asset/view/$1/', $text);
 	}
@@ -178,5 +178,7 @@ class Boom_Model_Chunk_Text extends ORM
 			},
 			$text
 		);
+
+		return $text;
 	}
 }
