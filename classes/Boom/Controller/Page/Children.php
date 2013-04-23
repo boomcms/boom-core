@@ -145,7 +145,7 @@ class Boom_Controller_Page_Children extends Boom_Controller
 				$this->parent = new Model_Page($this->parent_id);
 			}
 
-			list($this->sort_column, $this->sort_direction) = $this->parent->children_ordering_policy();
+			list($this->sort_column, $this->sort_direction) = $this->parent->get_child_ordering_policy();
 		}
 
 		// If a direction has been set then use that, overwise use the parent default child order direction

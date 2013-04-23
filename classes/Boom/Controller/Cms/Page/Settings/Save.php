@@ -32,7 +32,7 @@ class Boom_Controller_Cms_Page_Settings_Save extends Controller_Cms_Page_Setting
 	 * **Save the child page settings.**
 	 *
 	 * @uses Model_Page::cascade_to_children()
-	 * @uses Model_Page::children_ordering_policy()
+	 * @uses Model_Page::get_child_ordering_policy()
 	 * @uses	Boom_Controller::log()
 	 */
 	public function action_children()
@@ -69,7 +69,7 @@ class Boom_Controller_Cms_Page_Settings_Save extends Controller_Cms_Page_Setting
 		// Update the page's child ordering policy, if required.
 		if (isset($post['children_ordering_policy']) AND isset($post['children_ordering_direction']))
 		{
-			$this->page->children_ordering_policy($post['children_ordering_policy'], $post['children_ordering_direction']);
+			$this->page->set_child_ordering_policy($post['children_ordering_policy'], $post['children_ordering_direction']);
 		}
 
 		// Make the changes to the page.

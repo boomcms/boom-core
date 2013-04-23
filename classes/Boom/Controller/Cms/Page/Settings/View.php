@@ -38,7 +38,7 @@ class Boom_Controller_Cms_Page_Settings_View extends Controller_Cms_Page_Setting
 			->names();
 
 		// Get the current child ordering policy column and direction.
-		list($child_order_colum, $child_order_direciton) = $this->page->children_ordering_policy();
+		list($child_order_colum, $child_order_direciton) = $this->page->get_child_ordering_policy();
 
 		// Create the main view with the basic settings
 		$this->template = View::factory("$this->_view_directory/children", array(
