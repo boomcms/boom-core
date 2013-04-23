@@ -154,39 +154,44 @@ class Boom_Model_Page extends Model_Taggable
 	}
 
 	/**
-	 * Getter / setter for the children_ordering_policy column.
+	 * Converts the integer stored in the children_ordering_policy column to an array of column and direction which can be used when querying the database.
 	 *
-	 * When used as a getter converts the integer stored in the children_ordering_policy column to an array of column and direction which can be used when querying the database.
+	 */
+	public function get_child_ordering_policy()
+	{
+		// Determine which column to sort by.
+		if ($this->children_ordering_policy & Model_Page::CHILD_ORDER_ALPHABETIC)
+		{
+			$column = 'title';
+		}
+		elseif ($this->children_ordering_policy & Model_Page::CHILD_ORDER_DATE)
+		{
+			$column = 'visible_from';
+		}
+		else
+		{
+			$column = 'sequence';
+		}
+
+		// Determine the direction to sort in.
+		$direction = ($this->children_ordering_policy & Model_Page::CHILD_ORDER_ASC)? 'asc' : 'desc';
+
+		// Return the column and direction as an array.
+		return array($column, $direction);
+	}
+
+	/**
 	 *
-	 *  When used as a setter converts the column and direction to an integer which can be stored in the children_ordering_policy column.
+	 *  Converts the column and direction to an integer which can be stored in the children_ordering_policy column.
 	 *
 	 * @param	string	$column
 	 * @param	string	$direction
 	 */
-	public function children_ordering_policy($column = NULL, $direction = NULL)
+	public function set_child_ordering_policy($column = NULL, $direction = NULL)
 	{
 		if ($column === NULL AND $direction === NULL)
 		{
-			// Act as getter.
-			// Determine which column to sort by.
-			if ($this->children_ordering_policy & Model_Page::CHILD_ORDER_ALPHABETIC)
-			{
-				$column = 'title';
-			}
-			elseif ($this->children_ordering_policy & Model_Page::CHILD_ORDER_DATE)
-			{
-				$column = 'visible_from';
-			}
-			else
-			{
-				$column = 'sequence';
-			}
 
-			// Determine the direction to sort in.
-			$direction = ($this->children_ordering_policy & Model_Page::CHILD_ORDER_ASC)? 'asc' : 'desc';
-
-			// Return the column and direction as an array.
-			return array($column, $direction);
 		}
 		else
 		{
