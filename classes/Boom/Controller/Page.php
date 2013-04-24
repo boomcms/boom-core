@@ -51,7 +51,7 @@ class Boom_Controller_Page extends Boom_Controller
 		// If the page shouldn't be editable then check that it's visible.
 		if ( ! $this->editable)
 		{
-			if ( ! $this->page->is_visible() AND  ! $this->editor->state_is(Editor::PREVIEW))
+			if ($this->request->is_external() AND ( ! $this->page->is_visible() AND ! $this->editor->state_is(Editor::PREVIEW)))
 			{
 				throw new HTTP_Exception_404;
 			}
