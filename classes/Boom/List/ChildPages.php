@@ -19,11 +19,6 @@ class Boom_List_ChildPages
 			->where('pages_tags.tag_id', '=', $tag->id);
 	}
 
-	protected function _get_default_sort_direction($property)
-	{
-
-	}
-
 	protected function _get_navigation_visibility_column()
 	{
 		return (Editor::instance()->state_is(Editor::EDIT))? 'visible_in_nav_cms' : 'visible_in_nav';
@@ -120,19 +115,16 @@ class Boom_List_ChildPages
 		return $this->_query->find_all();
 	}
 
-	public function sorted_by_property($property)
-	{
-		$direction = $this->_get_default_sort_direction($property);
-		$this->_query->order_by($property, $direction);
-
-		return $this;
-	}
-
 	public function sorted_by_property_and_direction($property, $direction)
 	{
 		$this->_query->order_by($property, $direction);
 
 		return $this;
+	}
+
+	public function sorted_by_title()
+	{
+		return $this->sorted_by_property_and_direction('title', 'asc');
 	}
 
 	public function with_the_most_recent_first()
