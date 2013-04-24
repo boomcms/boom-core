@@ -59,7 +59,7 @@ $.extend({
 					$( '#boom-nav' ).toggle();
 					$.boom.cookie.toggle( 'navmenu');
 				});
-				
+
 				var user_menu = {
 					"Profile" : function(){
 					},
@@ -115,7 +115,7 @@ $.extend($.boom, {
 	@class
 	*/
 	cookie : {
-		
+
 		/** @property */
 		ids: {},
 
@@ -164,7 +164,7 @@ $.extend($.boom, {
 
 		/** @function */
 		add : function(id, name){
-			
+
 			var name = name ? name : this.config.name;
 
 			var ids = ( this.ids[ name ] ) ? this.ids[ name ] : this.get( name ).split( this.config.delimiter );
@@ -191,7 +191,7 @@ $.extend($.boom, {
 			this.ids[ name ] = ids;
 			this._set( name || this.config.name, ids.join( this.config.delimiter ) );
 		},
-		
+
 		/** @function */
 		toggle : function(id, name){
 
@@ -202,13 +202,13 @@ $.extend($.boom, {
 			var ids = ( this.ids[ name ] ) ? this.ids[ name ] : this.get( name ).split( this.config.delimiter );
 
 			if ( $.inArray( id, ids ) !== -1 ) {
-				
+
 				this.remove( id, name );
 			} else {
 				this.add( id, name );
 			};
 		},
-		
+
 		/** @function */
 		contains : function(id, name){
 
@@ -219,7 +219,7 @@ $.extend($.boom, {
 			var ids = ( this.ids[ name ] ) ? this.ids[ name ] : this.get( name ).split( this.config.delimiter );
 
 			if ( $.inArray( id, ids ) !== -1 ) {
-				
+
 				return true;
 			} else {
 				return false;
@@ -336,7 +336,7 @@ $.extend($.boom, {
 			var promise = this.hashCallback(this.current_hash);
 
 			this._checkHistory();
-			
+
 			return promise;
 		},
 
@@ -676,7 +676,7 @@ $.extend($.boom, {
 					var children = $.ajax( {
 						type: 'POST',
 						url: '/page/children.json',
-						data: {parent : page_id, page: 0, perpage: 0},
+						data: {parent : page_id},
 						dataType: 'json'
 					} );
 					children.done( function( data ) {
@@ -710,7 +710,7 @@ $.extend($.boom, {
 
 			return complete;
 		},
-		
+
 		/**
 		@class
 		@name $.boom.util.dom
@@ -918,7 +918,7 @@ $.extend($.boom, {
 							$.boom.dialog.destroy( this, dialogConfig.destroy );
 						}
 					}
-				] 
+				]
 			});
 
 			var tabsConfig = $.extend({}, $.boom.config.tabs, {
@@ -964,7 +964,7 @@ $.extend($.boom, {
 				this.resize(dialog);
 
 				this.dialogs.push(dialog);
-				
+
 				$.boom.page && $.boom.page.toolbar.maximise();
 
 				$.boom.log('Dialog open');
@@ -1080,7 +1080,7 @@ $.extend($.boom, {
 						.load(function(){
 
 							$.boom.loader.hide('dialog');
-							
+
 							self.alert(
 								opts.image.data('title'),
 								'<img src="' + this.src +'" />',

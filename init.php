@@ -58,8 +58,10 @@ Route::set('plugin', '<directory>/<controller>(/<action>)',
 		'action'     => 'index',
 	));
 
-// Route for the child page list plugin.
-Route::set('child_page_plugin', 'page/children(.<action>)')
+// Route for a list of child pages in JSON
+Route::set('child_pages', 'page/children(.<action>)', array(
+		'action'	=>	'json'
+	))
 	->defaults(array(
 		'controller'	=>	'page_children'
 	));
