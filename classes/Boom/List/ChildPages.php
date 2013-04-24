@@ -19,6 +19,10 @@ class Boom_List_ChildPages
 			->where('pages_tags.tag_id', '=', $tag->id);
 	}
 
+	/**
+	 *
+	 * TODO: pagination can be moved into a List_ChildPages_Paginated class
+	 */
 	protected function _build_pagination_links($total, $perpage, $view = NULL)
 	{
 		return Pagination::factory(array(
