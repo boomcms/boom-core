@@ -19,6 +19,21 @@ class Boom_List_ChildPages
 			->where('pages_tags.tag_id', '=', $tag->id);
 	}
 
+	protected function _build_pagination_links($total, $perpage, $view = NULL)
+	{
+		return Pagination::factory(array(
+				'current_page'	=>	array(
+					'key'		=>	'page',
+					'source'	=>	'mixed',
+				),
+				'total_items'		=>	$total,
+				'items_per_page'	=>	$perpage,
+				'view'			=>	($view)? $view : 'pagination/hoop',
+				'count_in'			=>	1,
+				'count_out'		=>	1,
+			));
+	}
+
 	protected function _get_navigation_visibility_column()
 	{
 		return (Editor::instance()->state_is(Editor::EDIT))? 'visible_in_nav_cms' : 'visible_in_nav';
@@ -97,12 +112,13 @@ class Boom_List_ChildPages
 		return $this;
 	}
 
-	public function get_paginated_results($perpage, $current_page)
+	public function get_paginated_results($perpage, $current_page, $view = NULL)
 	{
 		$total_matching = $this->count_matching();
 		$this->apply_pagination($perpage, $current_page);
+		$pagination_links = $this->_build_pagination_links($total_matching, $perpage, $view);
 
-		return array($total_matching, $this->get_results());
+		return array($pagination_links, $this->get_results());
 	}
 
 	public function get_results($limit = NULL)
