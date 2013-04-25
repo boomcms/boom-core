@@ -24,6 +24,18 @@ class Boom_Model_Template extends ORM
 
 	protected $_table_name = 'templates';
 
+	public function controller()
+	{
+		$parts = explode('_', $this->filename);
+
+		foreach ($parts as & $part)
+		{
+			$part = ucfirst($part);
+		}
+
+		return implode('_', $parts);
+	}
+
 	/**
 	 * Determines whether the template file exists.
 	 *
@@ -37,7 +49,7 @@ class Boom_Model_Template extends ORM
 
 	/**
 	 * Returns an array of the ID and name of all templates which exist in the database.
-	 * 
+	 *
 	 * This is useful for building <select> boxes of available templates, e.g.:
 	 *
 	 *	<?= Form::select('template_id', ORM::factory('Template')->names()) ?>

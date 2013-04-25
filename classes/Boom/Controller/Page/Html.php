@@ -21,9 +21,14 @@ class Boom_Controller_Page_Html extends Controller_Page
 
 	public function action_show()
 	{
+		$this->_page_content = $this->_render_template();
+	}
+
+	protected function _render_template($template_vars = array())
+	{
 		$template = $this->page->version()->template;
 
-		$this->_page_content = View::factory(Model_Template::DIRECTORY.$template->filename)->render();
+		return View::factory(Model_Template::DIRECTORY.$template->filename, $template_vars)->render();
 	}
 
 	public function after()
