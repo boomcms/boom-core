@@ -62,17 +62,16 @@ abstract class Boom_Core
 				exit;
 			}
 
+			// Change the page format depending on the request headers.
+			$format = (isset($params['format']))? $params['format'] : Boom::page_format($request);
+
 			// The URI matches a page in the CMS so we're going to process it with the Page controller.
-			$params['controller'] = 'Page';
+			$template_controller = 'Page_'.$page->version()->template->filename.'_'.$format;
+			$controller = (class_exists('Controller_'.$template_controller))? $template_controller : 'Page_'.ucfirst($format);
+			$params['controller'] = $controller;
 
 			// Add the page model as a paramater for the controller.
 			$params['page'] = $page;
-
-			// Change the page format depending on the request headers.
-			if ( ! isset($params['action']) OR $params['action'] == 'index')
-			{
-				$params['action'] = Boom::page_format($request);
-			}
 
 			return $params;
 		}

@@ -70,8 +70,11 @@ Route::set('child_pages', 'page/children(.<action>)', array(
  * Checks for a page with the matching URL in the CMS database.
  *
  */
-Route::set('boom', '<location>(.<action>)', array(
+Route::set('boom', '<location>(.<format>)', array(
 		'location'	=>	'.*?',
+	))
+	->defaults(array(
+		'action' => 'show'
 	))
 	->filter(array('Boom', 'process_uri'));
 
