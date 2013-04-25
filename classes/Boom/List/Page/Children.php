@@ -1,6 +1,6 @@
 <?php
 
-class Boom_List_ChildPages
+class Boom_List_Page_Children
 {
 	protected $_parent_id;
 	protected $_query;
@@ -83,7 +83,7 @@ class Boom_List_ChildPages
 	}
 
 	/**
-	 * @return Boom_List_ChildPages
+	 * @return Boom_List_Page_Children
 	 */
 	public static function of_page_by_id($page_id)
 	{
