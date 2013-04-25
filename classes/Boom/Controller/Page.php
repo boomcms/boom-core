@@ -7,8 +7,6 @@
  */
 class Boom_Controller_Page extends Boom_Controller
 {
-	protected $_cache_html;
-
 	/**
 	 * Whether the editor should be enabled
 	 * This is mainly used for rendering the page in HTML format where the editor toolbar will be inserted into the site HTML.
@@ -40,8 +38,6 @@ class Boom_Controller_Page extends Boom_Controller
 		{
 			throw new HTTP_Exception_404;
 		}
-
-		$this->_cache_html = $this->auth->logged_in();
 	}
 
 	protected function _page_should_be_editable()
