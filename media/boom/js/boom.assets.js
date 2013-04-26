@@ -382,12 +382,12 @@ $.widget( 'boom.browser_asset', $.boom.browser, {
 		this.tag = this.url_map.tag;
 		
 		$.boom.browser.prototype._create.call( this );
-		
-		this.bind();
 
 	},
 	
-	bind: function(){
+	_bind: function(){
+		
+		$.boom.browser.prototype._bind.call( this );
 		
 		var self = this;
 		

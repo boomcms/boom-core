@@ -269,6 +269,8 @@ $.widget( 'boom.browser', {
 				return false;
 			});
 	
+		this._bind();
+		
 		this.route();
 	},
 	
@@ -277,6 +279,10 @@ $.widget( 'boom.browser', {
 	},
 	
 	_destroy : function(){
+		
+	},
+	
+	_bind: function(){
 		
 	},
 	
