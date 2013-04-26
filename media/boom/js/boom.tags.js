@@ -262,7 +262,7 @@ $.widget( 'boom.tagger_search', $.boom.tagger, {
 			selected_tag_ids = this.options.selected_tag_ids,
 			tag_filter_list = this.element.find( 'ul.b-tags-list' );
 
-		selected_tag_ids.push( tag.value );
+		selected_tag_ids.push( parseInt( tag.value, 10 ) );
 		var link = $( '<a>', {
 			href : '#',
 			"class" : 'b-tags-remove',
