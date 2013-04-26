@@ -11,7 +11,10 @@ $.boom.people.group = {};
 $.boom.person = {};
 
 $.extend($.boom.person, $.boom.item, {
-	/** @lends $.boom.person */
+	/** 
+	@lends $.boom.person 
+	@extends $.boom.item
+	*/
 	
 	base_url: '/cms/people/view/',
 
@@ -126,7 +129,10 @@ $.extend($.boom.person, $.boom.item, {
 });
 
 $.extend($.boom.people.group, $.boom.filter,  {
-	/** @lends $.boom.people.group */
+	/** 
+	@lends $.boom.people.group
+	@extends $.boom.filter 
+	*/
 
 
 	/** @function */
