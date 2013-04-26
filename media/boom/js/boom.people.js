@@ -161,41 +161,7 @@ $.extend($.boom.people.group, $.boom.filter,  {
 	/** @function */
 	bind : function( context ){
 
-		var self = this;
-
-		$('.b-items-select-checkbox', context ).change(function(){
-
-			var view =
-				this.id.replace(/^[a-z]+-([a-z]+)-[0-9]+$/, "$1") == 'list' ? 'thumb' : 'list',
-				type =	this.id.replace(/^([a-z]+)-.*$/, "$1"),
-				selector = $( '#' + type + '-' + view + '-' + this.id.replace(/[a-z]+-[a-z]+-/, ''));
-
-			if ( $( this ).is(':checked')) {
-
-				selector.attr('checked', 'checked');
-
-			} else {
-
-				selector.removeAttr('checked');
-			}
-
-			var amount = $('.b-items-select-checkbox:checked').length;
-
-			var buttons = $('#b-button-multiaction-edit, #b-button-multiaction-delete, #b-button-multiaction-download');
-
-			buttons.button( amount > 0 ? 'enable' : 'disable' );
-
-			$('#boom-tagmanager-amount-checked').html( amount === 0 ? '' : amount / 2 );
-		});
-
-		$('.b-items-list tbody tr, .b-items-thumbs .thumb', context ).hover(
-			function(){
-				$( this ).addClass( 'ui-state-hover' );
-			},
-			function(){
-				$( this ).removeClass( 'ui-state-hover' );
-			}
-		);
+		
 
 		$('.b-items-thumbs .thumb', context ).captions($.boom.config.captions);
 
