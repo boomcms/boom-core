@@ -344,6 +344,7 @@ $.extend($.boom.assets.tag, $.boom.filter,  {
 * User interface for browsing and managing assets.
 * @class
 * @name $.boom.browser_asset
+* @extends $.boom.browser
 */
 $.widget( 'boom.browser_asset', $.boom.browser, {
 	/** @lends $.boom.browser_asset */

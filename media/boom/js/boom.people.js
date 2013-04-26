@@ -393,6 +393,7 @@ $.extend($.boom.people.group, $.boom.filter,  {
 * User interface for browsing and managing people.
 * @class
 * @name $.boom.browser_people
+* @extends $.boom.browser
 */
 $.widget( 'boom.browser_people', $.boom.browser, {
 	/** @lends $.boom.browser_people */
