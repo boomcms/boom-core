@@ -21,6 +21,32 @@ $.extend($.boom.person, $.boom.item, {
 	*/
 	
 	base_url: '/cms/people/view/',
+	
+	/** @function */
+	select : function( rid, selected ){
+
+		var thumb = '#person-thumb-' + rid;
+		var list = '#person-list-' + rid;
+
+		var checkbox = $( thumb );
+		checkbox.prop( 'checked', selected );
+
+		if ( selected ) {
+
+			checkbox.attr('checked', 'checked');
+
+			checkbox.parents( 'div.thumb' ).addClass( 'ui-state-active' );
+			$( list ).parents( 'tr' ).addClass( 'ui-state-active' );
+
+		} else {
+
+			checkbox.removeAttr('checked');
+
+			checkbox.parents( 'div.thumb' ).removeClass( 'ui-state-active' );
+			$( list ).parents( 'tr' ).removeClass( 'ui-state-active' );
+		}
+		
+	},
 
 	/** @function */
 	bind: function( context){
@@ -465,6 +491,57 @@ $.widget( 'boom.browser_people', $.boom.browser, {
 						});
 					});
 			});
+		
+		self.main_panel
+			.on( 'change', '.b-items-select-checkbox', function( event ){
+				// checkbox IDs are of the form type-view-id.
+				var item = this.id.split( '-' );
+				var view = item[ 1 ];
+				var type = item[ 0 ];
+				var item_id = item[ 2 ];
+
+				$.boom.person.select( item_id, $( this ).is(':checked') );
+
+
+
+				var amount = $('.b-items-select-checkbox:checked').length;
+
+				var buttons = $( '[id|=b-button-multiaction]' ).not( '#b-button-multiaction-edit' );
+
+				$( '#b-button-multiaction-edit' ).button( (  amount && amount < 3) ? 'enable' : 'disable' );
+
+				buttons.button( amount > 0 ? 'enable' : 'disable' );
+			})
+			.on( 'mouseenter focus', '#b-items-view-list tbody tr, #b-items-view-thumbs a', function( event ){
+				$( this ).addClass( 'ui-state-hover' );
+			})
+			.on( 'mouseleave blur', '#b-items-view-list tbody tr, #b-items-view-thumbs a', function( event ){
+				$( this ).removeClass( 'ui-state-hover' );
+			})
+			.on( 'click', '.boom-pagination a', function( e ){
+				e.preventDefault();
+
+				//$.boom.history.load( '/cms/assets/list?' + $( this ).attr( 'href' ).split( '?' )[ 1 ] );
+				$.get( '/cms/people/list?' + $( this ).attr( 'href' ).split( '?' )[ 1 ])
+				.done( function( data ){
+					var $data = $( data );
+					var pagination = $data.find( '.boom-pagination' ).html();
+					var list = $data.find( '#b-items-view-list' ).html();
+					var thumbs = $data.find( '#b-items-view-thumbs' ).html();
+					$( self.main_panel )
+						.find( '.boom-pagination' )
+						.html( pagination )
+						.end()
+						.find( '#b-items-view-list' )
+						.html( list )
+						.end()
+						.find( '#b-items-view-thumbs' )
+						.html( thumbs );
+				});
+
+				return false;
+			});
+		
 	},
 	
 	/** @function */
