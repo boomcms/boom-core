@@ -76,11 +76,9 @@ $.widget( 'boom.browser', {
 	
 	_create : function(){
 		
-		var self = this;
-		
 		$.boom.log( 'content browser init' );
 		
-		self._set_tag_options({
+		this._set_tag_options({
 			perpage: this.options.perpage,
 			sortby : this.options.sortby,
 			order : this.options.order,
@@ -105,6 +103,7 @@ $.widget( 'boom.browser', {
 	},
 	
 	_bind: function(){
+		var self = this;
 		
 		$('.b-items-sidebar h3').click(function(){
 
