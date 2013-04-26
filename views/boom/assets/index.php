@@ -64,7 +64,7 @@
 	<?= HTML::script("media/boom/js/boom.plugins.js") ?>
 	<?= HTML::script("media/boom/js/boom.config.js") ?>
 	<?= HTML::script("media/boom/js/boom.core.js") ?>
-	<?= HTML::script("media/boom/js/boom.tagmanager.js") ?>
+	<?= HTML::script("media/boom/js/boom.browser.js") ?>
 	<?= HTML::script("media/boom/js/boom.assets.js") ?>
 	<?= HTML::script("media/boom/js/boom.tags.js") ?>
 	<?= HTML::script("media/boom/js/boom.links.js") ?>
