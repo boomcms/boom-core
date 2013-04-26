@@ -90,6 +90,22 @@ $.widget( 'boom.browser', {
 		this.main_panel = $('.b-items-rightpane');
 		this.sidebar = $('.b-items-leftpane');
 
+		
+		this._bind();
+		
+		this.route();
+	},
+	
+	_init : function(){
+		
+	},
+	
+	_destroy : function(){
+		
+	},
+	
+	_bind: function(){
+		
 		$('.b-items-sidebar h3').click(function(){
 
 			$(this).parent().next().toggle();
@@ -268,21 +284,6 @@ $.widget( 'boom.browser', {
 
 				return false;
 			});
-	
-		this._bind();
-		
-		this.route();
-	},
-	
-	_init : function(){
-		
-	},
-	
-	_destroy : function(){
-		
-	},
-	
-	_bind: function(){
 		
 	},
 	
