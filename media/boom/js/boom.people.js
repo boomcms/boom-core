@@ -10,21 +10,10 @@ $.boom.people.group = {};
 */
 $.boom.person = {};
 
-$.extend($.boom.person, {
+$.extend($.boom.person, $.boom.item, {
 	/** @lends $.boom.person */
-
-	/** @function */
-	get: function( rid ){
-
-		var self = this;
-
-		this.rid = rid;
-
-		var url = '/cms/people/view/' + rid;
-		
-		return $.get( url );
-
-	},
+	
+	base_url: '/cms/people/view/',
 
 	/** @function */
 	bind: function( context){

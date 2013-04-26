@@ -116,24 +116,13 @@ $.extend($.boom.assets, {
 		return complete;
 	}
 });
-
-$.extend($.boom.asset, {
+/**
+@class
+*/
+$.extend($.boom.asset, $.boom.item, {
 	/** @lends $.boom.asset */
-
-	/** @function */
-	get : function(rid){
-		$.boom.log( 'boom.asset.get ' + rid );
-
-		var self = this;
-
-		this.rid = rid;
-
-		var url = '/cms/assets/view/' + rid;
-		
-		console.log( this );
-		
-		return $.get( url );
-	},
+	
+	base_url: '/cms/assets/view/',
 	
 	/** @function */
 	select : function( rid, selected ){

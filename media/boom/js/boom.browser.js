@@ -1,4 +1,26 @@
 /**
+@class
+*/
+$.boom.item = {};
+
+$.extend($.boom.item, {
+	/** @lends $.boom.item */
+
+	/** @function */
+	get: function( rid ){
+
+		var self = this;
+
+		this.rid = rid;
+
+		var url = this.base_url + rid;
+		
+		return $.get( url );
+
+	}
+
+});
+/**
 * User interface for browsing and managing content items, eg. assets and people.
 * @class
 * @name $.boom.browser
