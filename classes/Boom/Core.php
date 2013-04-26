@@ -70,6 +70,7 @@ abstract class Boom_Core
 
 			$controller = (class_exists('Controller_'.$template_controller))? $template_controller : 'Page_'.ucfirst($format);
 			$params['controller'] = $controller;
+			$params['action'] = 'show';
 
 			// Add the page model as a paramater for the controller.
 			$params['page'] = $page;
