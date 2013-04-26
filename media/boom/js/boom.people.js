@@ -125,31 +125,28 @@ $.extend($.boom.person, $.boom.item, {
 	}
 });
 
-$.extend($.boom.people.group,  {
+$.extend($.boom.people.group, $.boom.filter,  {
 	/** @lends $.boom.people.group */
 
 
 	/** @function */
-	get : function(rid){
+	build_url : function(){
 
-		var self = this, options = this.options;
-
-		this.rid = rid;
+		var self = this;
 
 		params =
-			'tag=' + rid + '&' +
-			'perpage=' + options.perpage + '&' +
-			'sortby=' + options.sortby + '&' +
-			'order='  + options.order;
+			'tag=' + self.rid + '&' +
+			'perpage=' + self.options.perpage + '&' +
+			'sortby=' + self.options.sortby + '&' +
+			'order='  + self.options.order;
 
 		var url =
-			'/cms/' + options.type + '/list'
+			'/cms/' + self.options.type + '/list'
 			+ '?' + params;
-
-		self.options.url = url;
-		$.boom.log('Group items get' + rid );
+			
+		$.boom.log('Group items get' + self.rid );
 		
-		return $.get( url );
+		return url;
 	},
 
 	/** @function */

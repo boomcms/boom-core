@@ -20,6 +20,29 @@ $.extend($.boom.item, {
 	}
 
 });
+
+/**
+@class
+*/
+$.boom.filter = {};
+
+$.extend($.boom.filter, {
+	/** @lends $.boom.filter */
+	
+	/** @function */
+	get : function( rid ){
+
+		var self = this;
+		var options = this.options;
+
+		this.rid = rid;
+
+		options.url = this.build_url();
+		
+		return $.get( options.url );
+	}
+});
+
 /**
 * User interface for browsing and managing content items, eg. assets and people.
 * @class

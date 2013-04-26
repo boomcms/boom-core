@@ -302,7 +302,7 @@ $.extend($.boom.asset, $.boom.item, {
 	}
 });
 
-$.extend($.boom.assets.tag,  {
+$.extend($.boom.assets.tag, $.boom.filter,  {
 	/** @lends $.boom.assets.tag */
 
 	rid: 0,
@@ -310,31 +310,26 @@ $.extend($.boom.assets.tag,  {
 	filters: {},
 
 	/** @function */
-	get : function( rid ){
+	build_url : function(){
 
-		$.boom.log( 'get tag ' + rid );
+		$.boom.log( 'get tag ' + self.rid );
 
 		var self = this;
-		var options = this.options;
-
-		this.rid = rid;
 
 		params =
-			'tag=' + rid + '&' +
-			'perpage=' + options.perpage + '&' +
-			'sortby=' + options.sortby;
+			'tag=' + self.rid + '&' +
+			'perpage=' + self.options.perpage + '&' +
+			'sortby=' + self.options.sortby;
 
 		for ( filter in self.filters ) {
 			params += '&' + filter + '=' + self.filters[ filter ];
 		}
 
 		var url =
-			'/cms/' + options.type + '/list'
+			'/cms/' + self.options.type + '/list'
 			+ '?' + params;
 
-		options.url = url;
-		
-		return $.get( url );
+		return url;
 	},
 	
 	bind : function( context ) {
