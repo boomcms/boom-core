@@ -124,31 +124,7 @@ $.extend($.boom.asset, $.boom.item, {
 	
 	base_url: '/cms/assets/view/',
 	
-	/** @function */
-	select : function( rid, selected ){
-
-		var thumb = '#asset-thumb-' + rid;
-		var list = '#asset-list-' + rid;
-
-		var checkbox = $( thumb );
-		checkbox.prop( 'checked', selected );
-
-		if ( selected ) {
-
-			checkbox.attr('checked', 'checked');
-
-			checkbox.parents( 'div.thumb' ).addClass( 'ui-state-active' );
-			$( list ).parents( 'tr' ).addClass( 'ui-state-active' );
-
-		} else {
-
-			checkbox.removeAttr('checked');
-
-			checkbox.parents( 'div.thumb' ).removeClass( 'ui-state-active' );
-			$( list ).parents( 'tr' ).removeClass( 'ui-state-active' );
-		}
-		
-	},
+	type: 'asset',
 
 	/** @function */
 	bind : function( context ){

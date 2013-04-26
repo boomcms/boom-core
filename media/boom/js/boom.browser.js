@@ -17,6 +17,32 @@ $.extend($.boom.item, {
 		
 		return $.get( url );
 
+	},
+	
+	/** @function */
+	select : function( rid, selected ){
+
+		var thumb = '#' + this.type + '-thumb-' + rid;
+		var list = '#' + this.type + '-list-' + rid;
+
+		var checkbox = $( thumb );
+		checkbox.prop( 'checked', selected );
+
+		if ( selected ) {
+
+			checkbox.attr('checked', 'checked');
+
+			checkbox.parents( 'div.thumb' ).addClass( 'ui-state-active' );
+			$( list ).parents( 'tr' ).addClass( 'ui-state-active' );
+
+		} else {
+
+			checkbox.removeAttr('checked');
+
+			checkbox.parents( 'div.thumb' ).removeClass( 'ui-state-active' );
+			$( list ).parents( 'tr' ).removeClass( 'ui-state-active' );
+		}
+		
 	}
 
 });
