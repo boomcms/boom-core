@@ -11,6 +11,7 @@ $.boom.assets = {};
 
 /**
 @class
+@extends $.boom.filter
 */
 $.boom.assets.tag = {};
 
@@ -303,8 +304,7 @@ $.extend($.boom.asset, $.boom.item, {
 
 $.extend($.boom.assets.tag, $.boom.filter,  {
 	/** 
-	@lends $.boom.assets.tag 
-	@extends $.boom.filter
+	@lends $.boom.assets.tag
 	*/
 
 	rid: 0,

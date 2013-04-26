@@ -1,19 +1,23 @@
+/**
+@class
+*/
 $.boom.people = {};
 
 /**
 @class
+@extends $.boom.filter
 */
 $.boom.people.group = {};
 
 /**
 @class
+@extends $.boom.item
 */
 $.boom.person = {};
 
 $.extend($.boom.person, $.boom.item, {
 	/** 
 	@lends $.boom.person 
-	@extends $.boom.item
 	*/
 	
 	base_url: '/cms/people/view/',
@@ -130,8 +134,7 @@ $.extend($.boom.person, $.boom.item, {
 
 $.extend($.boom.people.group, $.boom.filter,  {
 	/** 
-	@lends $.boom.people.group
-	@extends $.boom.filter 
+	@lends $.boom.people.group 
 	*/
 
 
