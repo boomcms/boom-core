@@ -379,12 +379,19 @@ $.widget( 'boom.browser_asset', $.boom.browser, {
 		
 		$.boom.log( 'asset browser init' );
 		
-		var self = this;
-		
 		this.tag = this.url_map.tag;
 		
 		$.boom.browser.prototype._create.call( this );
 
+		
+		this.bind();
+
+	},
+	
+	bind: function(){
+		
+		var self = this;
+		
 		$('#boom-assets-upload-menu')
 		.on( 'click', function( event ) {
 			var tags = [];
@@ -483,8 +490,6 @@ $.widget( 'boom.browser_asset', $.boom.browser, {
 				$.boom.history.load( 'tag/0' );
 			}
 		});
-		
-		var selected_tag_ids = [];
 		
 		$( '#b-tags-search' ).tagger_search();
 

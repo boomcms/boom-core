@@ -427,6 +427,14 @@ $.widget( 'boom.browser_people', $.boom.browser, {
 		
 		$.boom.browser.prototype._create.call( this );
 
+		this.bind();
+		
+	},
+	
+	bind: function(){
+		
+		var self = this;
+		
 		$('.b-people-group-add').click(function(event){
 			$.boom.people.group.add( this );
 		});
@@ -491,7 +499,6 @@ $.widget( 'boom.browser_people', $.boom.browser, {
 						});
 					});
 			});
-		
 		
 	},
 	
