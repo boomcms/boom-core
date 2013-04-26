@@ -496,7 +496,7 @@ $.widget( 'boom.browser_people', $.boom.browser, {
 	},
 	
 	select: function( rid, selected ){
-		$.boom.asset.select( rid, selected );
+		$.boom.person.select( rid, selected );
 	},
 	
 	/** @function */
