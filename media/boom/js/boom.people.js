@@ -176,7 +176,6 @@ $.extend($.boom.people.group, $.boom.filter,  {
 		var self = this;
 		var item = $( event.target ).closest( 'li' );
 		var rid = item.find('a').attr( 'rel' );
-		var selected_page = null;
 
 		return browser.main_panel
 		.find('.b-items-content')
@@ -185,110 +184,7 @@ $.extend($.boom.people.group, $.boom.filter,  {
 			$.boom.loader.hide();
 			
 
-			this
-			.ui()
-			.on( 'change', '#b-group-roles-general input[type=radio]', function( event ){
-
-				var role_id = this.name;
-				var allowed = this.value;
-
-				$.post(
-					'/cms/groups/remove_role/' + rid,
-					{
-						role_id : role_id
-					}
-				)
-				.pipe( function( response ){
-					return $.post(
-						'/cms/groups/add_role/' + rid,
-						{
-							role_id : role_id,
-							allowed : allowed,
-							page_id: 0
-						}
-					);
-				})
-				.done( function( response ){
-				});
-			})
-			.on( 'change', '#b-group-roles-pages input[type=radio]', function( event ){
-
-				var role_id = this.name;
-				var allowed = parseInt( this.value, 10 );
-				var page_id = selected_page;
-
-				$.post(
-					'/cms/groups/remove_role/' + rid,
-					{
-						role_id : role_id,
-						page_id : page_id
-					}
-				)
-				.pipe( function( response ){
-					if ( allowed == -1 ){
-						return this.resolve();
-					}
-					return $.post(
-						'/cms/groups/add_role/' + rid,
-						{
-							role_id : role_id,
-							allowed : allowed,
-							page_id: page_id
-						}
-					);
-				})
-				.done( function( response ){
-				});
-			});
-
-			/**
-			 * Clicking on a page in the tree.
-			 * Should make a GET call to /cms/groups/list_roles/<group ID>?page_id=<page ID>
-			 *
-			 * This will return a json encoded array of role ID => <value>
-			 * Possible values are 1 if the role is allowed and 0 if the role is disallowed.
-			 * If nothing is set for a role then that role ID won't be in the returned array.
-			 *
-			 * The role checkboxes should then be updated if the correct values.
-			 */
-			
-			$.boom.util.page_tree( this.find( '#b-group-roles-pages .boom-tree' ) )
-				.progress( function( page ) {
-					
-					selected_page = page.page_id;
-					
-					$( '#b-group-roles-pages input[type=radio]')
-						.filter( ':checked' )
-						.prop( 'checked', false )
-						.removeAttr( 'checked' )
-						.end()
-						.filter( '[value="-1"]' )
-						.prop( 'checked', true )
-						.attr( 'checked', 'checked' );
-
-					$( '#b-group-roles-pages .boom-tree a[rel=' + page.page_id + ']' )
-						.parents( '.boom-tree' )
-						.find( 'a.ui-state-active' )
-						.removeClass( 'ui-state-active' )
-						.end()
-						.end()
-						.addClass( 'ui-state-active' );
-
-					$.get( '/cms/groups/list_roles/' + rid + '?page_id=' + page.page_id )
-					.done( function( data ){
-						for ( role in data ) {
-							$( 'input[name=' + role + ']' )
-								.filter( ':checked' )
-								.prop( 'checked', false )
-								.removeAttr( 'checked' )
-								.end()
-								.filter( '[value=' + data[ role ] + ']' )
-								.prop( 'checked', true )
-								.attr( 'checked', 'checked' );
-						}
-					});
-					
-				});
+			this.group_editor( { id: rid } );
 		} );
 	},
 
