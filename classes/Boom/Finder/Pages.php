@@ -2,6 +2,8 @@
 
 class Boom_Finder_Pages extends Finder
 {
+	protected $_parent_id;
+
 	public function __construct()
 	{
 		$this->_query = ORM::factory('Page')
@@ -22,11 +24,18 @@ class Boom_Finder_Pages extends Finder
 		return (Editor::instance()->state_is(Editor::EDIT))? 'visible_in_nav_cms' : 'visible_in_nav';
 	}
 
+	/**
+	 *
+	 * TODO: this and which_are_children_of_the_page_by_id() function probably belong in a Finder_Pages_Children decorator.
+	 */
 	public function apply_default_sort()
 	{
-		$parent = new Model_Page($this->_parent_id);
-		list($sort_column, $sort_direction) = $parent->get_child_ordering_policy();
-		$this->sorted_by_property_and_direction($sort_column, $sort_direction);
+		if ($this->_parent_id)
+		{
+			$parent = new Model_Page($this->_parent_id);
+			list($sort_column, $sort_direction) = $parent->get_child_ordering_policy();
+			$this->sorted_by_property_and_direction($sort_column, $sort_direction);
+		}
 
 		return $this;
 	}
@@ -44,6 +53,8 @@ class Boom_Finder_Pages extends Finder
 
 	public function which_are_children_of_the_page_by_id($page_id)
 	{
+		$this->_parent_id = $page_id;
+
 		$this->_query
 			->join('page_mptt', 'inner')
 			->on('page.id', '=', 'page_mptt.id')
