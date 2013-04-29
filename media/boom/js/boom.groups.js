@@ -36,7 +36,7 @@ $.widget( 'boom.group_editor', {
 			var role_id = this.name;
 			var allowed = this.value;
 
-			this._change_permissions( role_id, allowed, 0 );
+			self._change_permissions( role_id, allowed, 0 );
 			
 		})
 		.on( 'change', '#b-group-roles-pages input[type=radio]', function( event ){
@@ -45,7 +45,7 @@ $.widget( 'boom.group_editor', {
 			var allowed = parseInt( this.value, 10 );
 			var page_id = selected_page;
 
-			this._change_permissions( role_id, allowed, page_id );
+			self._change_permissions( role_id, allowed, page_id );
 			
 		});
 
@@ -60,7 +60,9 @@ $.widget( 'boom.group_editor', {
 		 * The role checkboxes should then be updated if the correct values.
 		 */
 		
-		$.boom.util.page_tree( this.element.find( '#b-group-roles-pages .boom-tree' ) )
+		var page_tree = this.element.find( '#b-group-roles-pages .boom-tree' );
+		
+		$.boom.util.page_tree(  page_tree )
 			.progress( function( page ) {
 				
 				selected_page = page.page_id;
@@ -68,7 +70,8 @@ $.widget( 'boom.group_editor', {
 				self._check_inputs( $( '#b-group-roles-pages input[type=radio]') )
 					.filter( '[value="-1"]' );
 
-				$( '#b-group-roles-pages .boom-tree a[rel=' + page.page_id + ']' )
+				page_tree
+					.find( 'a[rel=' + page.page_id + ']' )
 					.parents( '.boom-tree' )
 					.find( 'a.ui-state-active' )
 					.removeClass( 'ui-state-active' )
