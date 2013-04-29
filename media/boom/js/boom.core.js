@@ -888,7 +888,7 @@ $.extend($.boom, {
 			dialogConfig = $.extend({}, dialogConfig, {
 				maxWidth: this.options.maxWidth ||  600,
 				title: opts.title,
-				position: [ 'center', 100 ],
+				position: { my: 'top', at: 'top+120', of: window },
 				modal: (this.options.type.toString() == 'modal'),
 				close: function(event, ui){
 
