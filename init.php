@@ -46,18 +46,6 @@ Route::set('vanity', '_<link>', array(
 		}
 	);
 
-/**
- * Defines the route for plugin controllers.
- */
-Route::set('plugin', '<directory>/<controller>(/<action>)',
-	array(
-		'directory'	=> 'plugin'
-	))
-	->defaults(array(
-		'controller' => 'default',
-		'action'     => 'index',
-	));
-
 // Route for a list of child pages in JSON
 Route::set('child_pages', 'page/children(.<action>)', array(
 		'action'	=>	'json'
