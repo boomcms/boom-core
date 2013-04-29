@@ -81,6 +81,7 @@
 	<?= HTML::script("media/boom/js/boom.core.js") ?>
 	<?= HTML::script("media/boom/js/boom.browser.js") ?>
 	<?= HTML::script("media/boom/js/boom.people.js") ?>
+	<?= HTML::script("media/boom/js/boom.groups.js") ?>
 
 	<script type="text/javascript">
 		//<![CDATA[
