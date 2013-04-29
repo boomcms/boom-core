@@ -117,7 +117,8 @@ $.widget( 'boom.group_editor', {
 		)
 		.pipe( function( response ){
 			if ( allowed == -1 ){
-				return this.resolve();
+				console.log( this );
+				return this;
 			}
 			return $.post(
 				self.options. base_url + 'add_role/' + self.options.id,
