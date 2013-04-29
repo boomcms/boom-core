@@ -35,7 +35,7 @@ $.widget( 'boom.group_editor', {
 		.on( 'change', '#b-group-roles-general input[type=radio]', function( event ){
 
 			var role_id = this.name;
-			var allowed = this.value;
+			var allowed = parseInt( this.value, 10 );
 
 			self._change_permissions( role_id, allowed, 0 );
 			
