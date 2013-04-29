@@ -952,7 +952,6 @@ $.extend($.boom, {
 				
 				$.boom.page && $.boom.page.toolbar.maximise();
 				
-				console.log( dialogConfig );
 
 				dialog
 				.dialog(dialogConfig);
