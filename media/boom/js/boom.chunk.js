@@ -1119,7 +1119,7 @@ $.widget('ui.chunkSlideshow', $.ui.chunk, {
 			title : 'Sort slides',
 			msg: 'hello',
 			width: 1000,
-			height: 500,
+			height: 400,
 			deferred : edited,
 			open : function() {
 				var $list = $( '<ul class="sort-list"></ul>');
