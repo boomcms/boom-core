@@ -17,7 +17,7 @@ $.widget( 'boom.group_editor', {
 		id : null
 	},
 
-	_create: function() {
+	_init: function() {
 		
 		this._bind();
 	},
@@ -108,7 +108,7 @@ $.widget( 'boom.group_editor', {
 			.prop( 'checked', false )
 			.removeAttr( 'checked' )
 			.end()
-			.filter( '[value=' + data[ role ] + ']' )
+			.filter( '[value=' + value + ']' )
 			.prop( 'checked', true )
 			.attr( 'checked', 'checked' );
 		

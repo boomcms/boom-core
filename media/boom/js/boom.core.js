@@ -888,7 +888,7 @@ $.extend($.boom, {
 			dialogConfig = $.extend({}, dialogConfig, {
 				maxWidth: this.options.maxWidth ||  600,
 				title: opts.title,
-				position: [ 'center', 100 ],
+				position: { my: 'top', at: 'top+120', of: window },
 				modal: (this.options.type.toString() == 'modal'),
 				close: function(event, ui){
 
@@ -949,6 +949,9 @@ $.extend($.boom, {
 			function initDialog(dialog, ui){
 
 				ui = ui === undefined;
+				
+				$.boom.page && $.boom.page.toolbar.maximise();
+				
 
 				dialog
 				.dialog(dialogConfig);
@@ -964,8 +967,6 @@ $.extend($.boom, {
 				this.resize(dialog);
 
 				this.dialogs.push(dialog);
-
-				$.boom.page && $.boom.page.toolbar.maximise();
 
 				$.boom.log('Dialog open');
 			}
