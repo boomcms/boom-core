@@ -21,8 +21,10 @@ class Boom_Controller_Page_Children extends Boom_Controller
 
 	protected function _get_child_pages($parent_id)
 	{
-		return List_Page_Children::of_page_by_id($parent_id)
-			->apply_default_sort_and_get_results();
+		return Finder::pages()
+			->which_are_children_of_the_page_by_id($parent_id)
+			->apply_default_sort()
+			->get_results();
 	}
 
 	protected function _format_pages_as_json($pages)
