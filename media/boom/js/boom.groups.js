@@ -50,13 +50,13 @@ $.widget( 'boom.group_editor', {
 			
 		});
 
-		self._check_inputs( $( '#b-group-roles-general input[type=radio]'), '[value="-1"]' );
+		self._check_inputs( $( '#b-group-roles-general input[type=radio]'), -1 );
 		
 		$.get( self.options.base_url + 'list_roles/' + self.options.id + '?page_id=0' )
 		.done( function( data ){
 			for ( role in data ) {
 				
-				self._check_inputs( $( 'input[name=' + role + ']' ), '[value=' + data[ role ] + ']' );
+				self._check_inputs( $( 'input[name=' + role + ']' ), data[ role ] );
 			}
 		});
 		
@@ -78,7 +78,7 @@ $.widget( 'boom.group_editor', {
 				
 				selected_page = page.page_id;
 				
-				self._check_inputs( $( '#b-group-roles-pages input[type=radio]'), '[value="-1"]' );
+				self._check_inputs( $( '#b-group-roles-pages input[type=radio]'), -1 );
 
 				page_tree
 					.find( 'a[rel=' + page.page_id + ']' )
@@ -93,7 +93,7 @@ $.widget( 'boom.group_editor', {
 				.done( function( data ){
 					for ( role in data ) {
 						
-						self._check_inputs( $( 'input[name=' + role + ']' ), '[value=' + data[ role ] + ']' );
+						self._check_inputs( $( 'input[name=' + role + ']' ), data[ role ] );
 					}
 				});
 				
@@ -101,14 +101,14 @@ $.widget( 'boom.group_editor', {
 		
 	},
 	
-	_check_inputs: function( radio_buttons, filter ) {
+	_check_inputs: function( radio_buttons, value ) {
 		
-		return radio_buttons
+		radio_buttons
 			.filter( ':checked' )
 			.prop( 'checked', false )
 			.removeAttr( 'checked' )
 			.end()
-			.filter( filter )
+			.filter( '[value=' + data[ role ] + ']' )
 			.prop( 'checked', true )
 			.attr( 'checked', 'checked' );
 		
