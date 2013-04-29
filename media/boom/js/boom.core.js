@@ -949,6 +949,10 @@ $.extend($.boom, {
 			function initDialog(dialog, ui){
 
 				ui = ui === undefined;
+				
+				$.boom.page && $.boom.page.toolbar.maximise();
+				
+				console.log( dialogConfig );
 
 				dialog
 				.dialog(dialogConfig);
@@ -964,8 +968,6 @@ $.extend($.boom, {
 				this.resize(dialog);
 
 				this.dialogs.push(dialog);
-
-				$.boom.page && $.boom.page.toolbar.maximise();
 
 				$.boom.log('Dialog open');
 			}
