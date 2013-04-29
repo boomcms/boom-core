@@ -247,17 +247,6 @@ $.extend($.boom.people.group, $.boom.filter,  {
 				item.remove();
 			});
 		});
-	},
-
-	/** @function */
-	update_tree : function( selector, permission ) {
-		$.boom.log( 'updating permissions ' + selector );
-
-		var new_item = '<li class=\'boom-group-permission\' data-permission=\'' + permission.value + '\'>' + permission.label + '</li>';
-
-		$( selector )
-		.tree( 'add_item', new_item );
-
 	}
 });
 
