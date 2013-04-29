@@ -4,6 +4,7 @@
 * @name $.boom.group_editor
 */
 $.widget( 'boom.group_editor', {
+	/** @lends $.boom.group_editor */
 	
 	/**
 	default config
