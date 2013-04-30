@@ -182,27 +182,6 @@ $.extend($.boom.people.group, $.boom.filter,  {
 
 	},
 
-	/** @function */
-	add: function(event){
-
-		var self = this;
-
-		var url = '/cms/groups/add';
-
-		var dialog = $.boom.dialog.open({
-			url: url,
-			title: 'Add group',
-			callback: function(){
-				$.post(url, {name: $('#b-people-group-name').val()} )
-				.done( function(response){
-
-					$.boom.growl.show('Group successfully saved.');
-
-					top.location.reload();
-				});
-			}
-		});
-	},
 
 	/** @function */
 	save: function(group_id, data){
@@ -219,28 +198,7 @@ $.extend($.boom.people.group, $.boom.filter,  {
 	/** @function */
 	remove : function(event){
 
-		event.preventDefault();
-
-		var item = $( event.target ).closest( 'li' );
-		var rid = item.find('a')[0].rel;
-
-		$.boom.dialog.confirm(
-			'Please confirm',
-			'Are you sure you want to remove this group? <br /><br /> This will delete the group from the database and cannot be undone!'
-		)
-		.done( function(){
-
-			$.boom.loader.show();
-
-			$.post( '/cms/groups/delete/' + rid )
-			.done( function(){
-
-				$.boom.loader.hide();
-
-				$.boom.growl.show( 'Group successfully removed.' );
-				item.remove();
-			});
-		});
+		browser.sidebar.group_editor( 'remove', event );
 	}
 });
 

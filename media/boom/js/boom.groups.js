@@ -104,6 +104,35 @@ $.widget( 'boom.group_editor', {
 		});
 	},
 	
+	/** @function */
+	remove : function(event){
+		
+		var self = this;
+
+		event.preventDefault();
+
+		var item = $( event.target ).closest( 'li' );
+		var rid = item.find('a')[0].rel;
+
+		$.boom.dialog.confirm(
+			'Please confirm',
+			'Are you sure you want to remove this group? <br /><br /> This will delete the group from the database and cannot be undone!'
+		)
+		.done( function(){
+
+			$.boom.loader.show();
+
+			$.post( self.options.base_url + 'delete/' + rid )
+			.done( function(){
+
+				$.boom.loader.hide();
+
+				$.boom.growl.show( 'Group successfully removed.' );
+				item.remove();
+			});
+		});
+	},
+	
 	/**
 	Load group details in the main panel for editing 
 	@function 
