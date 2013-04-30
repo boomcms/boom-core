@@ -190,7 +190,7 @@ $.widget( 'boom.browser', {
 			return tags;
 		};
 		
-		var treeConfig = $.extend({}, $.boom.config.tree, {
+		self.treeConfig = $.extend({}, $.boom.config.tree, {
 			toggleSelected: false,
 			click: false,
 			onClick: function(event){
@@ -221,9 +221,9 @@ $.widget( 'boom.browser', {
 		});
 		
 		$( '.boom-filter-tree' )
-			.tree( treeConfig );
+			.tree( self.treeConfig );
 			
-		var editableTreeConfig = $.extend({}, treeConfig, {
+		self.editableTreeConfig = $.extend({}, self.treeConfig, {
 			maxSelected: 1,
 			toggleSelected: false,
 			preventDefault: true,
@@ -241,22 +241,6 @@ $.widget( 'boom.browser', {
 				return false;
 			}
 		});
-		
-		editableTreeConfig = $.extend({}, editableTreeConfig, {
-			showRemove: true,
-			showEdit: true,
-			onEditClick: function(event){
-				
-				self.tag.edit(event, self);
-			},
-			onRemoveClick: function(event){
-
-				self.tag.remove(event, self);
-			}
-		});
-		
-		$('.b-tags-tree')
-			.tree(editableTreeConfig);
 			
 		self.main_panel
 			.on( 'change', '#boom-tagmanager-sortby-select', function( event ){

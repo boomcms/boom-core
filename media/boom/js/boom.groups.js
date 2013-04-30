@@ -14,7 +14,11 @@ $.widget( 'boom.group_editor', {
 		/** URL prefix for ajax calls */
 		base_url : '/cms/groups/',
 		/** ID of the group being edited */
-		id : null
+		id : null,
+		/** base tree config */
+		tree_config: $.boom.config.tree,
+		/** people browser */
+		browser: {}
 	},
 
 	_init: function() {
@@ -29,11 +33,27 @@ $.widget( 'boom.group_editor', {
 		
 		var self = this;
 		
+		var editableTreeConfig = $.extend({}, self.options.tree_config, {
+			showRemove: true,
+			showEdit: true,
+			onEditClick: function(event){
+				
+				self.edit(event);
+			},
+			onRemoveClick: function(event){
+
+				self.remove(event);
+			}
+		});
+		
 		this.element
 			.find('.b-people-group-add')
 			.click(function( event ){
 				self.add();
-			});
+			})
+			.end()
+			.find('.b-tags-tree')
+			.tree( editableTreeConfig );
 	},
 	
 	_check_inputs: function( radio_buttons, value ) {
@@ -149,21 +169,23 @@ $.widget( 'boom.group_editor', {
 	Load group details in the main panel for editing 
 	@function 
 	*/
-	edit : function( browser, group_id){
+	edit : function( event ){
 		
 		var self = this;
+		var item = $( event.target ).closest( 'li' );
+		self.options.id = item.find('a').attr( 'rel' );
+		
+		event.preventDefault();
 		
 		$.boom.loader.show();
 
-		return browser.main_panel
+		return self.options.browser.main_panel
 		.find('.b-items-content')
-		.sload( '/cms/groups/edit/' + group_id, function(){
+		.sload( self.options.base_url + 'edit/' + self.options.id, function(){
 
 			$.boom.loader.hide();
-			console.log( browser.main_panel );
 
-			self.options.id = group_id;
-			self.permissions._bind( self, browser.main_panel );
+			self.permissions._bind( self );
 		} );
 	},
 	
@@ -172,7 +194,7 @@ $.widget( 'boom.group_editor', {
 	*/
 	permissions: {
 		
-		_bind: function( editor, element ) {
+		_bind: function( editor ) {
 
 			var self = this;
 			var selected_page = null;
@@ -180,7 +202,7 @@ $.widget( 'boom.group_editor', {
 			$.boom.loader.hide();
 
 
-			element
+			editor.options.browser.main_panel
 			.ui()
 			.on( 'change', '#b-group-roles-general input[type=radio]', function( event ){
 
@@ -221,7 +243,7 @@ $.widget( 'boom.group_editor', {
 			 * The role checkboxes should then be updated if the correct values.
 			 */
 
-			var page_tree = element.find( '#b-group-roles-pages .boom-tree' );
+			var page_tree = editor.options.browser.main_panel.find( '#b-group-roles-pages .boom-tree' );
 
 			$.boom.util.page_tree(  page_tree )
 				.progress( function( page ) {

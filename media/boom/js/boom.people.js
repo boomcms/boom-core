@@ -167,25 +167,6 @@ $.extend($.boom.people.group, $.boom.filter,  {
 
 		$('.b-items-thumbs .thumb', context ).captions($.boom.config.captions);
 
-	},
-
-	/** @function */
-	edit : function(event, browser){
-		
-		event.preventDefault();
-
-		var self = this;
-		var item = $( event.target ).closest( 'li' );
-		var rid = item.find('a').attr( 'rel' );
-		
-		return browser.sidebar.group_editor( 'edit', browser, rid );
-
-	},
-
-	/** @function */
-	remove : function(event, browser){
-
-		browser.sidebar.group_editor( 'remove', event );
 	}
 });
 
@@ -238,7 +219,10 @@ $.widget( 'boom.browser_people', $.boom.browser, {
 		var self = this;
 		
 		console.log( self.sidebar );
-		self.sidebar.group_editor();
+		self.sidebar.group_editor({
+			tree_config: self.editableTreeConfig,
+			browser: self
+		});
 
 		$('#boom-tagmanager-create-person').click(function(){
 			var dialog = $.boom.dialog.open({
