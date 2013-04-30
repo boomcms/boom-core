@@ -202,12 +202,12 @@ $.widget( 'boom.group_editor', {
 
 			var self = this;
 			var selected_page = null;
-			var browser = this.editor.options.browser;
+			var options = this.editor.options;
 
 			$.boom.loader.hide();
 
 
-			browser.main_panel
+			options.browser.main_panel
 				.ui()
 				.on( 'change', '#b-group-roles-general input[type=radio]', function( event ){
 
@@ -229,7 +229,7 @@ $.widget( 'boom.group_editor', {
 
 				self._check_inputs( $( '#b-group-roles-general input[type=radio]'), -1 );
 
-				$.get( editor.options.base_url + 'list_roles/' + editor.options.id + '?page_id=0' )
+				$.get( options.base_url + 'list_roles/' + options.id + '?page_id=0' )
 				.done( function( data ){
 					for ( role in data ) {
 
@@ -248,7 +248,7 @@ $.widget( 'boom.group_editor', {
 			 * The role checkboxes should then be updated if the correct values.
 			 */
 
-			var page_tree = browser.main_panel.find( '#b-group-roles-pages .boom-tree' );
+			var page_tree = options.browser.main_panel.find( '#b-group-roles-pages .boom-tree' );
 
 			$.boom.util.page_tree(  page_tree )
 				.progress( function( page ) {
@@ -266,7 +266,7 @@ $.widget( 'boom.group_editor', {
 						.end()
 						.addClass( 'ui-state-active' );
 
-					$.get( editor.options.base_url + 'list_roles/' + editor.options.id + '?page_id=' + selected_page )
+					$.get( options.base_url + 'list_roles/' + options.id + '?page_id=' + selected_page )
 					.done( function( data ){
 						for ( role in data ) {
 
