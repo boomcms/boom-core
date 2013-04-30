@@ -72,6 +72,7 @@ $.extend($.boom.person, $.boom.item, {
 		});
 	},
 	
+	/** @function */
 	delete: function(){
 		
 		var self = this;
@@ -117,8 +118,10 @@ $.extend($.boom.person, $.boom.item, {
 		});
 	},
 	
+	/** @class */
 	groups: {
 		
+		/** @function */
 		add: function( person_id ){
 			
 			var dialog = $.boom.dialog.open({
@@ -139,6 +142,7 @@ $.extend($.boom.person, $.boom.item, {
 			});
 		},
 		
+		/** @function */
 		remove: function( person_id, group_id ){
 			
 			$.boom.loader.show();
