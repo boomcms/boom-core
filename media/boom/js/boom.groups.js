@@ -105,6 +105,18 @@ $.widget( 'boom.group_editor', {
 	},
 	
 	/** @function */
+	save: function(group_id, data){
+		$.boom.loader.show();
+
+		return $.post( '/cms/groups/save/' + group_id, data )
+		.done( function(response){
+
+			$.boom.loader.hide();
+
+		});
+	},
+	
+	/** @function */
 	remove : function(event){
 		
 		var self = this;
