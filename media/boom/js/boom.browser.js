@@ -251,7 +251,7 @@ $.widget( 'boom.browser', {
 			},
 			onRemoveClick: function(event){
 
-				self.tag.remove(event);
+				self.tag.remove(event, self);
 			}
 		});
 		

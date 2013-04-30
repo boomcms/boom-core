@@ -183,7 +183,7 @@ $.extend($.boom.people.group, $.boom.filter,  {
 	},
 
 	/** @function */
-	remove : function(event){
+	remove : function(event, browser){
 
 		browser.sidebar.group_editor( 'remove', event );
 	}
