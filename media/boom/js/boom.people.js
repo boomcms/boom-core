@@ -171,21 +171,15 @@ $.extend($.boom.people.group, $.boom.filter,  {
 
 	/** @function */
 	edit : function(event, browser){
+		
 		event.preventDefault();
 
 		var self = this;
 		var item = $( event.target ).closest( 'li' );
 		var rid = item.find('a').attr( 'rel' );
+		
+		return browser.sidebar.group_editor( 'edit', browser, rid );
 
-		return browser.main_panel
-		.find('.b-items-content')
-		.sload( '/cms/groups/edit/' + rid, function(){
-
-			$.boom.loader.hide();
-			
-
-			this.group_editor( { id: rid } );
-		} );
 	},
 
 	/** @function */
@@ -292,14 +286,13 @@ $.widget( 'boom.browser_people', $.boom.browser, {
 	},
 	
 	_bind: function(){
+		$.boom.log( 'people browser bind' );
 		
 		$.boom.browser.prototype._bind.call( this );
 		
 		var self = this;
 		
-		$('.b-people-group-add').click(function(event){
-			$.boom.people.group.add( this );
-		});
+		self.sidebar.group_editor();
 
 		$('#boom-tagmanager-create-person').click(function(){
 			var dialog = $.boom.dialog.open({

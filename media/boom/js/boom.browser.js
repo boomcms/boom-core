@@ -129,6 +129,8 @@ $.widget( 'boom.browser', {
 	},
 	
 	_bind: function(){
+		$.boom.log( 'content browser bind' );
+		
 		var self = this;
 		
 		$('.b-items-sidebar h3').click(function(){
