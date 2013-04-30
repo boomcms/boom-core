@@ -67,46 +67,53 @@ $.extend($.boom.person, $.boom.item, {
 
 		$('#b-delete-person', context ).click(function( event ){
 
-			var deleted = new $.Deferred();
+			self.delete();
+			
+		});
+	},
+	
+	delete: function(){
+		
+		var self = this;
+		var deleted = new $.Deferred();
 
-			$.boom.dialog.open({
-				width: 350,
-				msg: 'Are you sure you want to delete this person?',
-				title: 'Please confirm',
-				deferred: deleted
-			});
+		$.boom.dialog.open({
+			width: 350,
+			msg: 'Are you sure you want to delete this person?',
+			title: 'Please confirm',
+			deferred: deleted
+		});
 
-			deleted
-			.pipe( function( event ){
+		deleted
+		.pipe( function( event ){
 
-				$.boom.loader.show();
+			$.boom.loader.show();
 
-				return $.post( self.base_url + 'delete', { people: self.rid });
-			})
-			.done( function(){
+			return $.post( self.base_url + 'delete/' + self.rid, { people: self.rid });
+		})
+		.done( function(){
 
-				var items = $.boom.history.getHash().split('/')[1].split(',');
+			var items = $.boom.history.getHash().split('/')[1].split(',');
 
-				$.boom.loader.hide();
+			$.boom.loader.hide();
 
-				if ( items.length > 1 ){
+			if ( items.length > 1 ){
 
-					var segments =
-						$.boom.history.getHash().split('/')[0] +
-						'/' +
-						$.grep(items, function(val){
+				var segments =
+					$.boom.history.getHash().split('/')[0] +
+					'/' +
+					$.grep(items, function(val){
 
-							return val != self.rid;
+						return val != self.rid;
 
-						}).join(',');
+					}).join(',');
 
-					$.boom.history.load( segments );
+				$.boom.history.load( segments );
 
-				} else {
+			} else {
 
-					//self.browser.defaultRoute();
-				}
-			});
+				//self.browser.defaultRoute();
+			}
 		});
 	},
 	
