@@ -36,36 +36,17 @@ $.extend($.boom.person, $.boom.item, {
 		$('.b-people-groups-add', context ).click(function(){
 			var rid = $( this ).attr( 'rel' );
 
-			var dialog = $.boom.dialog.open({
-				url: '/cms/people/add_group/' + rid,
-				title: 'Add group',
-				callback: function(){
-
-					var dialog = this;
-					var data = $( dialog ).find('form').serialize();
-					$.boom.loader.show();
-
-					$.post('/cms/people/add_group/' + rid, data )
-					.done( function(){
-
-						$.boom.loader.hide();
-					});
-				}
-			});
+			self.groups.add( rid );
 		});
 
 		$('.b-people-group-delete', context ).click(function(){
 			var elem = $( this );
 			var group_id = elem.attr( 'rel' );
 			var person_id = elem.closest( 'div' ).attr( 'rel' );
+			
+			self.groups.remove( person_id, group_id );
 
-			$.boom.loader.show();
-
-			$.post( '/cms/people/remove_group/' + person_id, {groups: group_id} )
-			.done( function(){
-				elem.closest( 'li' ).remove();
-				$.boom.loader.hide();
-			});
+			
 		});
 
 		$('.b-people-save', context ).bind('save', function( event ){
@@ -131,6 +112,40 @@ $.extend($.boom.person, $.boom.item, {
 				}
 			});
 		});
+	},
+	
+	groups: {
+		
+		add: function( person_id ){
+			
+			var dialog = $.boom.dialog.open({
+				url: '/cms/people/add_group/' + person_id,
+				title: 'Add group',
+				callback: function(){
+
+					var dialog = this;
+					var data = $( dialog ).find('form').serialize();
+					$.boom.loader.show();
+
+					$.post('/cms/people/add_group/' + person_id, data )
+					.done( function(){
+
+						$.boom.loader.hide();
+					});
+				}
+			});
+		},
+		
+		remove: function( person_id, group_id ){
+			
+			$.boom.loader.show();
+
+			$.post( '/cms/people/remove_group/' + person_id, {groups: group_id} )
+			.done( function(){
+				elem.closest( 'li' ).remove();
+				$.boom.loader.hide();
+			});
+		}
 	}
 });
 
