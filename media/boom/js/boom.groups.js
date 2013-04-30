@@ -25,6 +25,8 @@ $.widget( 'boom.group_editor', {
 		$.boom.log( 'init group editor' );
 		
 		this._bind();
+		
+		this.permissions.editor = this;
 	},
 	
 	_bind: function() {
@@ -142,7 +144,7 @@ $.widget( 'boom.group_editor', {
 
 			$.boom.loader.hide();
 
-			self.permissions._bind( self );
+			self.permissions._bind();
 		} );
 	},
 	
@@ -196,44 +198,44 @@ $.widget( 'boom.group_editor', {
 
 		},
 		
-		_bind: function( editor ) {
+		_bind: function() {
 
 			var self = this;
 			var selected_page = null;
+			var browser = this.editor.options.browser;
 
-			self.editor = editor;
 			$.boom.loader.hide();
 
 
-			editor.options.browser.main_panel
-			.ui()
-			.on( 'change', '#b-group-roles-general input[type=radio]', function( event ){
+			browser.main_panel
+				.ui()
+				.on( 'change', '#b-group-roles-general input[type=radio]', function( event ){
 
-				var role_id = this.name;
-				var allowed = parseInt( this.value, 10 );
+					var role_id = this.name;
+					var allowed = parseInt( this.value, 10 );
 
-				self._change( role_id, allowed, 0 );
+					self._change( role_id, allowed, 0 );
 
-			})
-			.on( 'change', '#b-group-roles-pages input[type=radio]', function( event ){
+				})
+				.on( 'change', '#b-group-roles-pages input[type=radio]', function( event ){
 
-				var role_id = this.name;
-				var allowed = parseInt( this.value, 10 );
-				var page_id = selected_page;
+					var role_id = this.name;
+					var allowed = parseInt( this.value, 10 );
+					var page_id = selected_page;
 
-				self._change( role_id, allowed, page_id );
+					self._change( role_id, allowed, page_id );
 
-			});
+				});
 
-			self._check_inputs( $( '#b-group-roles-general input[type=radio]'), -1 );
+				self._check_inputs( $( '#b-group-roles-general input[type=radio]'), -1 );
 
-			$.get( editor.options.base_url + 'list_roles/' + editor.options.id + '?page_id=0' )
-			.done( function( data ){
-				for ( role in data ) {
+				$.get( editor.options.base_url + 'list_roles/' + editor.options.id + '?page_id=0' )
+				.done( function( data ){
+					for ( role in data ) {
 
-					self._check_inputs( $( 'input[name=' + role + ']' ), data[ role ] );
-				}
-			});
+						self._check_inputs( $( 'input[name=' + role + ']' ), data[ role ] );
+					}
+				});
 
 			/**
 			 * Clicking on a page in the tree.
@@ -246,7 +248,7 @@ $.widget( 'boom.group_editor', {
 			 * The role checkboxes should then be updated if the correct values.
 			 */
 
-			var page_tree = editor.options.browser.main_panel.find( '#b-group-roles-pages .boom-tree' );
+			var page_tree = browser.main_panel.find( '#b-group-roles-pages .boom-tree' );
 
 			$.boom.util.page_tree(  page_tree )
 				.progress( function( page ) {
