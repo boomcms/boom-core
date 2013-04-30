@@ -112,7 +112,7 @@ $.widget( 'boom.browser', {
 		});
 
 		this.main_panel = $('.b-items-rightpane');
-		this.sidebar = $('.b-items-leftpane');
+		this.sidebar = $('.b-items-sidebar');
 
 		
 		this._bind();

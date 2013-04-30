@@ -34,8 +34,6 @@ $.widget( 'boom.group_editor', {
 			.click(function( event ){
 				self.add();
 			});
-		
-		self.permissions._bind( this );
 	},
 	
 	_check_inputs: function( radio_buttons, value ) {
@@ -112,17 +110,19 @@ $.widget( 'boom.group_editor', {
 	*/
 	edit : function( browser, group_id){
 		
+		var self = this;
+		
 		$.boom.loader.show();
 
 		return browser.main_panel
 		.find('.b-items-content')
-		.sload( '/cms/groups/edit/' + rid, function(){
+		.sload( '/cms/groups/edit/' + group_id, function(){
 
 			$.boom.loader.hide();
-			
+			console.log( browser.main_panel );
 
-			this.options.id = group_id;
-			this.permissions._bind( this );
+			self.options.id = group_id;
+			self.permissions._bind( self, browser.main_panel );
 		} );
 	},
 	
@@ -131,7 +131,7 @@ $.widget( 'boom.group_editor', {
 	*/
 	permissions: {
 		
-		_bind: function( editor ) {
+		_bind: function( editor, element ) {
 
 			var self = this;
 			var selected_page = null;
@@ -139,7 +139,7 @@ $.widget( 'boom.group_editor', {
 			$.boom.loader.hide();
 
 
-			editor.element
+			element
 			.ui()
 			.on( 'change', '#b-group-roles-general input[type=radio]', function( event ){
 
@@ -180,7 +180,7 @@ $.widget( 'boom.group_editor', {
 			 * The role checkboxes should then be updated if the correct values.
 			 */
 
-			var page_tree = editor.element.find( '#b-group-roles-pages .boom-tree' );
+			var page_tree = element.find( '#b-group-roles-pages .boom-tree' );
 
 			$.boom.util.page_tree(  page_tree )
 				.progress( function( page ) {
