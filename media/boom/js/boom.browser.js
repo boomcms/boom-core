@@ -13,7 +13,7 @@ $.extend($.boom.item, {
 
 		this.rid = rid;
 
-		var url = this.base_url + rid;
+		var url = this.base_url + 'view/' + rid;
 		
 		return $.get( url );
 

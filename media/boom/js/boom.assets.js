@@ -122,7 +122,7 @@ $.extend($.boom.assets, {
 $.extend($.boom.asset, $.boom.item, {
 	/** @lends $.boom.asset */
 	
-	base_url: '/cms/assets/view/',
+	base_url: '/cms/assets/',
 	
 	type: 'asset',
 

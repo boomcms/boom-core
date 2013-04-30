@@ -20,7 +20,7 @@ $.extend($.boom.person, $.boom.item, {
 	@lends $.boom.person 
 	*/
 	
-	base_url: '/cms/people/view/',
+	base_url: '/cms/people/',
 	
 	type: 'person',
 
@@ -53,7 +53,7 @@ $.extend($.boom.person, $.boom.item, {
 
 			$.boom.loader.show();
 
-			$.post('/cms/people/save/' + self.rid, data)
+			$.post( self.base_url + 'save/' + self.rid, data)
 			.done( function(){
 
 				$.boom.loader.hide();
@@ -81,7 +81,7 @@ $.extend($.boom.person, $.boom.item, {
 
 				$.boom.loader.show();
 
-				return $.post('/cms/people/delete', { people: self.rid });
+				return $.post( self.base_url + 'delete', { people: self.rid });
 			})
 			.done( function(){
 
