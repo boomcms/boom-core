@@ -34,29 +34,26 @@ $.extend($.boom.person, $.boom.item, {
 		});
 
 		$('.b-people-groups-add', context ).click(function(){
-			var rid = $( this ).attr( 'rel' );
 
-			self.groups.add( rid );
+			self.groups.add( self.rid );
 		});
 
 		$('.b-people-group-delete', context ).click(function(){
 			var elem = $( this );
 			var group_id = elem.attr( 'rel' );
-			var person_id = elem.closest( 'div' ).attr( 'rel' );
 			
-			self.groups.remove( person_id, group_id );
+			self.groups.remove( self.rid, group_id );
 
 			
 		});
 
 		$('.b-people-save', context ).bind('save', function( event ){
 
-			var rid = $( this ).attr( 'rel' );
 			var data = $( this ).closest( 'form' ).serialize();
 
 			$.boom.loader.show();
 
-			$.post('/cms/people/save/' + rid, data)
+			$.post('/cms/people/save/' + self.rid, data)
 			.done( function(){
 
 				$.boom.loader.hide();
@@ -70,7 +67,6 @@ $.extend($.boom.person, $.boom.item, {
 
 		$('#b-delete-person', context ).click(function( event ){
 
-			var rid = $( this ).attr( 'rel' );
 			var deleted = new $.Deferred();
 
 			$.boom.dialog.open({
@@ -85,7 +81,7 @@ $.extend($.boom.person, $.boom.item, {
 
 				$.boom.loader.show();
 
-				return $.post('/cms/people/delete', { people: rid });
+				return $.post('/cms/people/delete', { people: self.rid });
 			})
 			.done( function(){
 
@@ -100,7 +96,7 @@ $.extend($.boom.person, $.boom.item, {
 						'/' +
 						$.grep(items, function(val){
 
-							return val != rid;
+							return val != self.rid;
 
 						}).join(',');
 
