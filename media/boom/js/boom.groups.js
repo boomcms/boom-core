@@ -56,49 +56,6 @@ $.widget( 'boom.group_editor', {
 			.tree( editableTreeConfig );
 	},
 	
-	_check_inputs: function( radio_buttons, value ) {
-		
-		radio_buttons
-			.filter( ':checked' )
-			.prop( 'checked', false )
-			.removeAttr( 'checked' )
-			.end()
-			.filter( '[value=' + value + ']' )
-			.prop( 'checked', true )
-			.attr( 'checked', 'checked' );
-		
-	},
-	
-	_change_permissions: function( role_id, allowed, page_id ) {
-		
-		var self = this;
-		
-		return $.post(
-			self.options.base_url + 'remove_role/' + self.options.id,
-			{
-				role_id : role_id,
-				page_id : page_id
-			}
-		)
-		.pipe( function( response ){
-			if ( allowed == -1 ){
-				console.log( this );
-				return this;
-			}
-			return $.post(
-				self.options. base_url + 'add_role/' + self.options.id,
-				{
-					role_id : role_id,
-					allowed : allowed,
-					page_id: page_id
-				}
-			);
-		})
-		.done( function( response ){
-		});
-		
-	},
-	
 	/**
 	Add a new group 
 	@function 
@@ -194,11 +151,57 @@ $.widget( 'boom.group_editor', {
 	*/
 	permissions: {
 		
+		editor: null,
+		
+		_check_inputs: function( radio_buttons, value ) {
+
+			radio_buttons
+				.filter( ':checked' )
+				.prop( 'checked', false )
+				.removeAttr( 'checked' )
+				.end()
+				.filter( '[value=' + value + ']' )
+				.prop( 'checked', true )
+				.attr( 'checked', 'checked' );
+
+		},
+		
+		_change: function( role_id, allowed, page_id ) {
+
+			var self = this;
+
+			return $.post(
+				self.editor.options.base_url + 'remove_role/' + self.editor.options.id,
+				{
+					role_id : role_id,
+					page_id : page_id
+				}
+			)
+			.pipe( function( response ){
+				if ( allowed == -1 ){
+					console.log( this );
+					return this;
+				}
+				return $.post(
+					self.editor.options. base_url + 'add_role/' + self.editor.options.id,
+					{
+						role_id : role_id,
+						allowed : allowed,
+						page_id: page_id
+					}
+				);
+			})
+			.done( function( response ){
+			});
+
+		},
+		
 		_bind: function( editor ) {
 
 			var self = this;
 			var selected_page = null;
 
+			self.editor = editor;
 			$.boom.loader.hide();
 
 
@@ -209,7 +212,7 @@ $.widget( 'boom.group_editor', {
 				var role_id = this.name;
 				var allowed = parseInt( this.value, 10 );
 
-				editor._change_permissions( role_id, allowed, 0 );
+				self._change( role_id, allowed, 0 );
 
 			})
 			.on( 'change', '#b-group-roles-pages input[type=radio]', function( event ){
@@ -218,17 +221,17 @@ $.widget( 'boom.group_editor', {
 				var allowed = parseInt( this.value, 10 );
 				var page_id = selected_page;
 
-				editor._change_permissions( role_id, allowed, page_id );
+				self._change( role_id, allowed, page_id );
 
 			});
 
-			editor._check_inputs( $( '#b-group-roles-general input[type=radio]'), -1 );
+			self._check_inputs( $( '#b-group-roles-general input[type=radio]'), -1 );
 
 			$.get( editor.options.base_url + 'list_roles/' + editor.options.id + '?page_id=0' )
 			.done( function( data ){
 				for ( role in data ) {
 
-					editor._check_inputs( $( 'input[name=' + role + ']' ), data[ role ] );
+					self._check_inputs( $( 'input[name=' + role + ']' ), data[ role ] );
 				}
 			});
 
@@ -250,7 +253,7 @@ $.widget( 'boom.group_editor', {
 
 					selected_page = page.page_id;
 
-					editor._check_inputs( $( '#b-group-roles-pages input[type=radio]'), -1 );
+					self._check_inputs( $( '#b-group-roles-pages input[type=radio]'), -1 );
 
 					page_tree
 						.find( 'a[rel=' + page.page_id + ']' )
@@ -265,7 +268,7 @@ $.widget( 'boom.group_editor', {
 					.done( function( data ){
 						for ( role in data ) {
 
-							editor._check_inputs( $( 'input[name=' + role + ']' ), data[ role ] );
+							self._check_inputs( $( 'input[name=' + role + ']' ), data[ role ] );
 						}
 					});
 
