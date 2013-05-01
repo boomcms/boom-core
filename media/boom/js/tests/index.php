@@ -18,6 +18,7 @@
 	<script type='text/javascript' src='/media/boom/js/boom.browser.js'></script>
 	<script type='text/javascript' src='/media/boom/js/boom.tags.js'></script>
 	<script type='text/javascript' src='/media/boom/js/boom.assets.js'></script>
+	<script type='text/javascript' src='/media/boom/js/boom.groups.js'></script>
 	<script type='text/javascript' src='/media/boom/js/boom.people.js'></script>
 	<script type='text/javascript' src='/media/boom/js/boom.tests.js'></script>
 </head>
