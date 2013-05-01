@@ -588,7 +588,7 @@ asyncTest( 'Clicking an asset returns the asset ID', function(){
 module("People manager", {
 	setup: function(){
 		
-		$( 'body' ).append( '<div class="b-items-rightpane"><div class="b-items-content">people manager</div></div>');
+		$( 'body' ).append( '<div class="b-items-sidebar"></div><div class="b-items-rightpane"><div class="b-items-content">people manager</div></div>');
 		
 		$.boom.init('people', {
 		});
@@ -613,7 +613,6 @@ asyncTest('Changing the hash changes the person item', function(){
 	$.boom.history
 		.load('person/3')
 		.always( function(){
-			console.log( $.boom.person );
 			equal(
 				$( 'body' ).data( 'boom-browser_people' ).url_map.person.rid,
 				3
@@ -623,11 +622,13 @@ asyncTest('Changing the hash changes the person item', function(){
 	
 });
 asyncTest('edit a group opens the "Edit group" panel', function(){
+	var browser = $( 'body' ).data( 'boom-browser_people' );
+	console.log( browser.sidebar );
+	
 	// FIXME: group edit has to be triggered from a link inside an li, otherwise the code fails.
 	$('<a href="#tag/13" rel="13">Group</a>')
 		.click(function(e){
-			$.boom.people.group
-				.edit( e, $( 'body' ).data( 'boom-browser_people' ))
+			browser.sidebar.group_editor( 'edit', e )
 				.done( function(){
 					equal(
 						$( 'div#b-group-roles-general').length,
