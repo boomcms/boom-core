@@ -9,7 +9,7 @@
 	<? $assets = Assets::factory('boom_js_'.(string) $register_page)
 		->js('boom.helpers.js')
 		->js('jquery.js')
-		->js('boom.jquery.ui.js')
+		->js('jquery.ui.js')
 		->js('boom.plugins.js')
 		->js('boom.config.js')
 		->js('boom.core.js')

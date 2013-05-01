@@ -623,7 +623,7 @@ asyncTest('Changing the hash changes the person item', function(){
 });
 asyncTest('edit a group opens the "Edit group" panel', function(){
 	var browser = $( 'body' ).data( 'boom-browser_people' );
-	console.log( browser.sidebar );
+	console.log( browser );
 	
 	// FIXME: group edit has to be triggered from a link inside an li, otherwise the code fails.
 	$('<a href="#tag/13" rel="13">Group</a>')
