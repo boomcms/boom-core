@@ -157,6 +157,7 @@ $.widget( 'boom.group_editor', {
 * @name $.boom.group_permissions
 */
 $.widget( 'boom.group_permissions', {
+	/** @lends $.boom.group_permissions */
 	
 	/**
 	default config
