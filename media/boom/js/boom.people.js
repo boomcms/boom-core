@@ -94,10 +94,15 @@ $.extend($.boom.person, $.boom.item, {
 					var data = $( dialog ).find('form').serialize();
 					$.boom.loader.show();
 
-					$.post('/cms/people/add_group/' + self.person_id, data )
+					return $.post('/cms/people/add_group/' + self.person_id, data )
 					.done( function(){
 
 						$.boom.loader.hide();
+						$.boom.history
+							.load( 'person/' + self.person_id )
+							.done( function(){
+								$( '#boom-person-view ul[role=tablist] a:eq(2)' ).click();
+							});
 					});
 				}
 			});
