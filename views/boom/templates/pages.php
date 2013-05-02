@@ -42,7 +42,7 @@
 
 	<?= HTML::script("media/boom/js/boom.helpers.js") ?>
 	<?= HTML::script("media/boom/js/jquery.js") ?>
-	<?= HTML::script("media/boom/js/boom.jquery.ui.js") ?>
+	<?= HTML::script("media/boom/js/jquery.ui.js") ?>
 	<?= HTML::script("media/boom/js/boom.plugins.js") ?>
 	<?= HTML::script("media/boom/js/boom.config.js") ?>
 	<?= HTML::script("media/boom/js/boom.core.js") ?>

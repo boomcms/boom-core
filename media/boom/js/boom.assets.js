@@ -122,7 +122,7 @@ $.extend($.boom.assets, {
 $.extend($.boom.asset, $.boom.item, {
 	/** @lends $.boom.asset */
 	
-	base_url: '/cms/assets/view/',
+	base_url: '/cms/assets/',
 	
 	type: 'asset',
 
@@ -201,16 +201,9 @@ $.extend($.boom.asset, $.boom.item, {
 		$('.boom-tagmanager-asset-save', context )
 			.bind('save', function( event ){
 
-				var rid = $( this ).attr( 'rel' );
 				var data = $( this ).closest( 'form' ).serialize();
-
-				$.boom.loader.show();
-
-				$.post('/cms/assets/save/' + rid, data)
-				.done( function(){
-
-					$.boom.loader.hide();
-				});
+				
+				self.save( data );
 
 			})
 			.click(function(){
@@ -227,46 +220,11 @@ $.extend($.boom.asset, $.boom.item, {
 
 		$('.boom-tagmanager-asset-delete', context ).click(function( event ){
 
-			var rid = $( this ).attr( 'rel' );
-			var delete_asset = new $.Deferred();
-
-			delete_asset.done( function(){
-
-				$.boom.loader.show();
-
-				var items = $.boom.history.getHash().split('/')[1].split(',');
-
-				$.post('/cms/assets/delete', { assets: rid })
+			self.remove()
 				.done( function(){
-
-					$.boom.loader.hide();
-
-					if ( items.length > 1 ){
-
-						var segments =
-							$.boom.history.getHash().split('/')[0] +
-							'/' +
-							$.grep(items, function(val){
-
-								return val != rid;
-
-							}).join('-');
-
-						$.boom.history.load( segments );
-
-					} else {
-
-						$.boom.history.load( 'tag/0' );
-					}
+					$.boom.history.load( 'tag/0' );
 				});
-			});
-
-			$.boom.dialog.open({
-				width: 350,
-				msg: 'Are you sure you want to delete this asset?',
-				title: 'Please confirm',
-				deferred: delete_asset
-			});
+			
 		});
 
 

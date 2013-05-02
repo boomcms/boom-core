@@ -13,10 +13,64 @@ $.extend($.boom.item, {
 
 		this.rid = rid;
 
-		var url = this.base_url + rid;
+		var url = this.base_url + 'view/' + rid;
 		
 		return $.get( url );
 
+	},
+	
+	/** @function */
+	add: function( data ){
+
+		$.boom.loader.show();
+
+		return $.post( this.base_url + 'add/', data)
+		.done( function(id){
+
+			$.boom.loader.hide();
+
+		});
+	},
+	
+	/** @function */
+	save: function( data ){
+
+
+		$.boom.loader.show();
+
+		return $.post( self.base_url + 'save/' + self.rid, data)
+		.done( function(){
+
+			$.boom.loader.hide();
+			$.boom.growl.show( "Person saved." );
+		});
+	},
+	
+	/** @function */
+	remove: function(){
+		
+		var self = this;
+		var deleted = new $.Deferred();
+
+		$.boom.dialog.open({
+			width: 350,
+			msg: 'Are you sure you want to delete this ' + self.type +'?',
+			title: 'Please confirm',
+			deferred: deleted
+		});
+
+		return deleted
+		.pipe( function( event ){
+
+			$.boom.loader.show();
+
+			return $.post( self.base_url + 'delete/' + self.rid );
+		})
+		.done( function(){
+
+			$.boom.loader.hide();
+
+		});
 	},
 	
 	/** @function */
@@ -112,7 +166,7 @@ $.widget( 'boom.browser', {
 		});
 
 		this.main_panel = $('.b-items-rightpane');
-		this.sidebar = $('.b-items-leftpane');
+		this.sidebar = $('.b-items-sidebar');
 
 		
 		this._bind();
@@ -129,6 +183,8 @@ $.widget( 'boom.browser', {
 	},
 	
 	_bind: function(){
+		$.boom.log( 'content browser bind' );
+		
 		var self = this;
 		
 		$('.b-items-sidebar h3').click(function(){
@@ -188,7 +244,7 @@ $.widget( 'boom.browser', {
 			return tags;
 		};
 		
-		var treeConfig = $.extend({}, $.boom.config.tree, {
+		self.treeConfig = $.extend({}, $.boom.config.tree, {
 			toggleSelected: false,
 			click: false,
 			onClick: function(event){
@@ -219,9 +275,9 @@ $.widget( 'boom.browser', {
 		});
 		
 		$( '.boom-filter-tree' )
-			.tree( treeConfig );
+			.tree( self.treeConfig );
 			
-		var editableTreeConfig = $.extend({}, treeConfig, {
+		self.editableTreeConfig = $.extend({}, self.treeConfig, {
 			maxSelected: 1,
 			toggleSelected: false,
 			preventDefault: true,
@@ -239,22 +295,6 @@ $.widget( 'boom.browser', {
 				return false;
 			}
 		});
-		
-		editableTreeConfig = $.extend({}, editableTreeConfig, {
-			showRemove: true,
-			showEdit: true,
-			onEditClick: function(event){
-				
-				self.tag.edit(event, self);
-			},
-			onRemoveClick: function(event){
-
-				self.tag.remove(event);
-			}
-		});
-		
-		$('.b-tags-tree')
-			.tree(editableTreeConfig);
 			
 		self.main_panel
 			.on( 'change', '#boom-tagmanager-sortby-select', function( event ){
