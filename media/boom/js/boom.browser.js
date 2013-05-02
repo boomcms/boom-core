@@ -20,6 +20,60 @@ $.extend($.boom.item, {
 	},
 	
 	/** @function */
+	add: function( data ){
+
+		$.boom.loader.show();
+
+		return $.post( this.base_url + 'add/', data)
+		.done( function(id){
+
+			$.boom.loader.hide();
+
+		});
+	},
+	
+	/** @function */
+	save: function( data ){
+
+
+		$.boom.loader.show();
+
+		return $.post( self.base_url + 'save/' + self.rid, data)
+		.done( function(){
+
+			$.boom.loader.hide();
+			$.boom.growl.show( "Person saved." );
+		});
+	},
+	
+	/** @function */
+	remove: function(){
+		
+		var self = this;
+		var deleted = new $.Deferred();
+
+		$.boom.dialog.open({
+			width: 350,
+			msg: 'Are you sure you want to delete this ' + self.type +'?',
+			title: 'Please confirm',
+			deferred: deleted
+		});
+
+		return deleted
+		.pipe( function( event ){
+
+			$.boom.loader.show();
+
+			return $.post( self.base_url + 'delete/' + self.rid );
+		})
+		.done( function(){
+
+			$.boom.loader.hide();
+
+		});
+	},
+	
+	/** @function */
 	select : function( rid, selected ){
 
 		var thumb = '#' + this.type + '-thumb-' + rid;

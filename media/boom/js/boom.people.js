@@ -48,8 +48,10 @@ $.extend($.boom.person, $.boom.item, {
 		});
 
 		$('.b-people-save', context ).bind('save', function( event ){
+			
+			var data = $( '#boom-person-view > form' ).serialize();
 
-			self.save();
+			self.save( data );
 
 		}).click(function(){
 
@@ -60,36 +62,6 @@ $.extend($.boom.person, $.boom.item, {
 
 			self.remove();
 			
-		});
-	},
-	
-	/** @function */
-	add: function(){
-		
-		var data = $('#boom-tagmanager-create-person-form').serialize();
-
-		$.boom.loader.show();
-
-		return $.post( this.base_url + 'add/', data)
-		.done( function(id){
-
-			$.boom.loader.hide();
-
-		});
-	},
-	
-	/** @function */
-	save: function(){
-		
-		var data = $( '#boom-person-view > form' ).serialize();
-
-		$.boom.loader.show();
-
-		return $.post( self.base_url + 'save/' + self.rid, data)
-		.done( function(){
-
-			$.boom.loader.hide();
-			$.boom.growl.show( "Person saved." );
 		});
 	},
 	
@@ -277,7 +249,9 @@ $.widget( 'boom.browser_people', $.boom.browser, {
 				},
 				callback: function(){
 					
-					$.boom.person.add();
+					var data = $('#boom-tagmanager-create-person-form').serialize();
+					
+					$.boom.person.add( data );
 				}
 			});
 		});

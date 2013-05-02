@@ -48,7 +48,11 @@ class Boom_Controller_Cms_Assets extends Boom_Controller
 	 */
 	public function action_delete()
 	{
-		// Get the asset IDs from the POST data.
+		
+		// delete the loaded asset
+		$this->asset->delete();
+		
+		// Get any asset IDs from the POST data.
 		$asset_ids = (array) $this->request->post('assets');
 
 		// Make sure no assets appear in the array multiple times.
@@ -56,6 +60,7 @@ class Boom_Controller_Cms_Assets extends Boom_Controller
 
 		foreach ($asset_ids as $asset_id)
 		{
+			die( $asset_id );
 			// Load the asset from the database.
 			$this->asset
 				->where('id', '=', $asset_id)
