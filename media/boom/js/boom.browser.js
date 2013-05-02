@@ -5,11 +5,15 @@ $.boom.item = {};
 
 $.extend($.boom.item, {
 	/** @lends $.boom.item */
+	
+	/** @property */
+	rid: null,
 
 	/** @function */
 	get: function( rid ){
 
-		var self = this;
+		console.log( this );
+		console.log( $.boom.person );
 
 		this.rid = rid;
 

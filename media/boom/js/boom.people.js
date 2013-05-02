@@ -28,6 +28,8 @@ $.extend($.boom.person, $.boom.item, {
 	bind: function( context){
 
 		var self = this;
+		
+		this.groups.person_id = this.rid;
 
 		$.boom.dialog.bind({
 			image: $('.boom-asset-preview', context )
@@ -35,14 +37,18 @@ $.extend($.boom.person, $.boom.item, {
 
 		$('.b-people-groups-add', context ).click(function(){
 
-			self.groups.add( self.rid );
+			self.groups.add();
 		});
 
 		$('.b-people-group-delete', context ).click(function(){
-			var elem = $( this );
-			var group_id = elem.attr( 'rel' );
+			var $this = $( this );
+			var $li = $this.closest( 'li' );
+			var group_id = $this.attr( 'rel' );
 			
-			self.groups.remove( self.rid, group_id );
+			self.groups.remove( group_id )
+			.done( function(){
+				$li.remove();
+			});
 
 			
 		});
@@ -71,11 +77,16 @@ $.extend($.boom.person, $.boom.item, {
 	/** @class */
 	groups: {
 		
+		/** @property */
+		person_id: null,
+		
 		/** @function */
-		add: function( person_id ){
+		add: function(){
+			
+			var self = this;
 			
 			var dialog = $.boom.dialog.open({
-				url: '/cms/people/add_group/' + person_id,
+				url: '/cms/people/add_group/' + self.person_id,
 				title: 'Add group',
 				callback: function(){
 
@@ -83,7 +94,7 @@ $.extend($.boom.person, $.boom.item, {
 					var data = $( dialog ).find('form').serialize();
 					$.boom.loader.show();
 
-					$.post('/cms/people/add_group/' + person_id, data )
+					$.post('/cms/people/add_group/' + self.person_id, data )
 					.done( function(){
 
 						$.boom.loader.hide();
@@ -93,15 +104,16 @@ $.extend($.boom.person, $.boom.item, {
 		},
 		
 		/** @function */
-		remove: function( person_id, group_id ){
+		remove: function( group_id ){
+
+			var self = this;
 			
 			$.boom.loader.show();
 
-			$.post( '/cms/people/remove_group/' + person_id, {groups: group_id} )
-			.done( function(){
-				elem.closest( 'li' ).remove();
-				$.boom.loader.hide();
-			});
+			return $.post( '/cms/people/remove_group/' + self.person_id, {groups: group_id} )
+				.done( function(){
+					$.boom.loader.hide();
+				});
 		}
 	}
 });
