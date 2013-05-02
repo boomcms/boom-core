@@ -110,7 +110,7 @@ $.extend($.boom.person, $.boom.item, {
 			
 			$.boom.loader.show();
 
-			return $.post( '/cms/people/remove_group/' + self.person_id, {groups: group_id} )
+			return $.post( '/cms/people/remove_group/' + self.person_id, {group_id: group_id} )
 				.done( function(){
 					$.boom.loader.hide();
 				});
