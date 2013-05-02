@@ -4,10 +4,12 @@ global boom config
 @name $.boom.config
 */
 
-window.boomConfig = {
+window.boomConfig =
 	/** @lends $.boom.config */
-
-	/** @property */
+	{
+	/** 
+	@property cachePageImages
+	*/
 	cachePageImages : [
 		'/media/boom/img/ajax_load.gif',
 		'/media/boom/img/cms/chunk_edit_icon.png'
@@ -158,12 +160,12 @@ window.boomConfig = {
 		*/
 		maxWidth: 100,
 		/**
-		@type
+		@type function
 		@default null
 		*/
 		show: null,
 		/**
-		@type
+		@type function
 		@default null
 		*/
 		hide: null,

@@ -63,171 +63,15 @@ boom.plugins.js
 		}
 	};
 
-	/**
-	@class
-	@name $.ui.infiniteScroll
-	@extends $.ui
-	*/
-	$.widget('ui.infiniteScroll', {
-		/** @lends $.ui.infiniteScroll */
-
-		/**
-		@property
-		*/
-		options: {
-			url: '/get_data/$page',
-			amount: 30,
-			selector: '',
-			pxFromBottom: 50,
-			// callbacks
-			beforeLoad: function( event, data ){},
-			onLoad: function( event, data ){}
-		},
-
-		/**
-		@property
-		*/
-		_scrollTop: 0, 
-		/**
-		@property
-		*/
-		_isLoading: false, 
-		/**
-		@property
-		*/
-		_stopLoading: false, 
-		/**
-		@property
-		*/
-		_curPage: 2,
-		
-		/**
-		@function
-		*/
-		_create : function(){
-
-			var self = this;
-
-			this._getDimensions();
-
-			this.element.bind('scroll.boom', function( event ){
-
-				var scrollTop = $( this ).scrollTop();
-
-				if ( 
-					! self._isLoading && // are we currently retrieving a new data set?
-					scrollTop > self._scrollTop && // are we scrolling down?
-					( self.dimensions.maxHeight - self.dimensions.minHeight - self.options.pxFromBottom ) < scrollTop  // are we at the bottom?
-				) {
-
-					self._load( event );
-				}
-					
-				self._scrollTop = scrollTop;
-
-			}).trigger('scroll.boom');
-		},
-
-		/**
-		@function
-		*/
-		_load: function( event, dataCallback ){
-
-			var self = this;
-					
-			this._isLoading = true;
-					
-			this._trigger( 'beforeLoad' );
-
-			$( '<div></div>' ).load( this.options.url.replace(/\$page/, this._curPage) + ' ' + this.options.selector, function(){
-
-				self._trigger( 'onLoad' , event, {
-					html: $( this ).children() 
-				});
-
-				self._curPage++;
-
-				self._getDimensions();
-
-				self._isLoading = false;
-				
-				if ( ! $( this ).children().size() ) {
-
-					this._stopLoading = true;
-
-				} else if ( $( this ).children().size() && dataCallback ) {
-				
-					dataCallback.apply( this );
-				}
-
-				$( this ).remove();
-			});
-		},
-
-		/**
-		@function
-		*/
-		_getDimensions: function(){
-			
-			this.dimensions = {
-				minHeight: this.element.height()
-			};
-
-			this.element.height( 'auto' );
-
-			this.dimensions.maxHeight = this.element.height();
-
-			this.element.height( this.dimensions.minHeight );
-
-			this.element.scrollTop( this._scrollTop );
-		},
-
-		/**
-		@function
-		*/
-		loadInitialData: function(){
-
-			var self = this;
-
-			this._getDimensions();
-
-			if ( !this._stopLoading && this.dimensions.maxHeight === this.dimensions.minHeight ) {
-
-				this._load(null, function(){
-
-					// recursion!
-					self.loadInitialData();
-				});
-			}
-		},
-
-		/**
-		@function
-		*/
-		getDimensions: function(){
-
-			this._getDimensions();
-		},
-
-		/**
-		@function
-		*/
-		destroy: function(){
-
-			$.Widget.prototype.destroy.apply(this, arguments);
-
-			this.element.unbind('scroll.boom');
-		}
-	});
 
 	/**
 	@class
 	@name $.ui.splitbutton
 	@extends $.ui
 	*/
-	$.widget('ui.splitbutton', {
+	$.widget('ui.splitbutton',
 		/** @lends $.ui.splitbutton */
-		
+		{
 		options: {
 			width: 'auto',
 			split: true,
@@ -657,11 +501,11 @@ boom.plugins.js
 	@name $.ui.tree
 	@extends $.ui
 	*/
-	$.widget('ui.tree', {
+	$.widget('ui.tree',
 		/** @lends $.ui.tree */
-		
+		{
 		/**
-		@property
+		@property options
 		*/
 		options: {
 			maxSelected: -1,

@@ -8,8 +8,9 @@ $.extend({
 	@class
 	@name $.boom
 	*/
-	boom : {
+	boom : 
 		/** @lends $.boom */
+		{
 
 		/**
 		Boom bootstrap/setup. Initialises boom.config and does some browser detection.
@@ -93,9 +94,9 @@ $.extend({
 	}
 });
 
-$.extend($.boom, {
+$.extend($.boom,
 	/** @lends $.boom */
-
+	{
 	/**
 	Boom data storage.
 	@class
@@ -107,16 +108,18 @@ $.extend($.boom, {
 	}
 });
 
-$.extend($.boom, {
+$.extend($.boom,
 	/** @lends $.boom */
-
+	{
 	/**
 	Boom cookie management.
 	@class
 	*/
 	cookie : {
 
-		/** @property */
+		/** 
+		@property ids
+		*/
 		ids: {},
 
 		/** @function */
@@ -232,9 +235,9 @@ $.extend($.boom, {
 	window.console = { log: function(){}, debug: function(){}, error: function(){}, warning: function(){}, info: function(){} };
 }();
 
-$.extend($.boom, {
+$.extend($.boom,
 	/** @lends $.boom */
-
+	{
 	/**
 	Boom logging. Extends console logging.
 	*/
@@ -275,9 +278,9 @@ $.extend($.boom, {
 
 });
 
-$.extend($.boom, {
+$.extend($.boom,
 	/** @lends $.boom */
-
+	{
 	/**
 	Boom history manager. Mostly used by the tag managers.
 	* @class
@@ -407,9 +410,9 @@ $.extend($.boom, {
 @class
 @name $.ajax
 */
-$.extend($.ajax, {
+$.extend($.ajax,
 	/** @lends $.ajax */
-
+	{
 	requestStack : [],
 
 	/** @function */
@@ -491,9 +494,9 @@ $.ajaxSetup({
 	}
 });
 
-$.extend($.boom, {
+$.extend($.boom,
 	/** @lends $.boom */
-
+	{
 	/**
 	* @class
 	*/
@@ -550,16 +553,16 @@ $.extend($.boom, {
 	}
 });
 
-$.extend($.boom, {
+$.extend($.boom,
 	/** @lends $.boom */
-
+	{
 	/**
 	Boom utils.
 	@class
 	*/
-	util : {
+	util : 
 		/** @lends $.boom.util */
-
+		{
 		/** @function */
 		cacheImages : function(images){
 
@@ -715,9 +718,9 @@ $.extend($.boom, {
 		@class
 		@name $.boom.util.dom
 		*/
-		dom : {
+		dom :
 			/** @lends $.boom.util.dom */
-
+			{
 			/**
 			Generate a unique ID for a DOM element
 			@param {String} prefix Optional prefix. Defaults to 'boom-'
@@ -750,9 +753,9 @@ $.extend($.boom, {
 		@class
 		@name $.boom.util.obj
 		*/
-		obj : {
+		obj :
 			/** @lends $.boom.util.obj */
-
+			{
 			/**
 			searches for a value in a given object
 			*/
@@ -789,9 +792,9 @@ $.extend($.boom, {
 		@class
 		@name $.boom.util.url
 		*/
-		url : {
+		url :
 			/** @lends $.boom.util.url */
-
+			{
 			/** @function */
 			addQueryStringParams: function(data, returnURL){
 
@@ -814,9 +817,9 @@ $.extend($.boom, {
 	}
 });
 
-$.extend($.boom, {
+$.extend($.boom,
 	/** @lends $.boom */
-
+	{
 	/**
 	Boom growl notifications.
 	@class
@@ -844,9 +847,9 @@ $.extend($.boom, {
 
 });
 
-$.extend($.boom, {
+$.extend($.boom,
 	/** @lends $.boom */
-
+	{
 	/**
 	Boom dialog widget.
 	@class
@@ -854,7 +857,7 @@ $.extend($.boom, {
 	dialog : {
 
 		/**
-		@property
+		@property dialogs
 		@type array
 		@default []
 		*/
@@ -1246,9 +1249,9 @@ $.extend($.boom, {
 	}
 });
 
-$.extend($.boom, {
+$.extend($.boom,
 	/** @lends $.boom */
-
+	{
 	/**
 	Boom error reporting.
 	@class

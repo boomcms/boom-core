@@ -4,34 +4,35 @@
 * @name $.wysihtml5.editor
 * @extends $.boom.editor
 */
-$.widget('wysihtml5.editor', $.boom.editor, {
+$.widget('wysihtml5.editor', $.boom.editor,
 	/** @lends $.wysihtml5.editor */
+	{
 	
-	/** @property 
+	/** @property base_url
 	@type string
 	@default '/media/boom/js/xing'
 	*/
 	base_url: '/media/boom/js/xing',
-	/** @property 
+	/** @property path
 	@type string
 	@default '/wysihtml5-0.3.0.js'
 	*/
 	path: '/wysihtml5-0.3.0.js',
 	
 	/**
-	@property
+	@property parser_rules
 	@type string
 	*/
 	parser_rules : '/parser_rules/hoop.js',
 	
 	/**
-	@property
+	@property mode
 	@type string
 	*/
 	mode : 'block',
 	
 	/** 
-	@property
+	@property options
 	@type object
 	*/
 	options : {
@@ -92,7 +93,7 @@ $.widget('wysihtml5.editor', $.boom.editor, {
 	
 	/**
 	* @function
-	@param {jQuery object} element The element being edited.
+	@param {Object} element The element being edited.
 	@returns {Deferred}
 	*/
 	edit : function ( element ){
@@ -198,7 +199,7 @@ $.widget('wysihtml5.editor', $.boom.editor, {
 
 	/**
 	* @function
-	@param {jQuery object} element The element being edited.
+	@param {Object} element The element being edited.
 	*/
 	remove : function( element ){
 
@@ -210,7 +211,7 @@ $.widget('wysihtml5.editor', $.boom.editor, {
 	
 	/**
 	* @function
-	@param {jQuery object} element The element being edited.
+	@param {Object} element The element being edited.
 	*/
 	apply : function( element ){
 		
@@ -224,7 +225,7 @@ $.widget('wysihtml5.editor', $.boom.editor, {
 	
 	/**
 	* @function
-	@param {jQuery object} element The element being edited.
+	@param {Object} element The element being edited.
 	*/
 	cancel : function( element ){
 		
@@ -261,7 +262,7 @@ $.widget('wysihtml5.editor', $.boom.editor, {
 	
 	/**
 	@function
-	@param {jQuery object} element The element being edited.
+	@param {Object} element The element being edited.
 	@returns {Deferred}
 	*/
 	_insert_toolbar : function( element ) {
@@ -293,7 +294,7 @@ $.widget('wysihtml5.editor', $.boom.editor, {
 	
 	/**
 	@function
-	@param {jQuery object} element The element being edited.
+	@param {Object} element The element being edited.
 	*/
 	_insert_textarea : function( element ) {
 		var original_html = element.html();
@@ -461,16 +462,16 @@ $.widget('wysihtml5.editor', $.boom.editor, {
 	* @class
 	* @name $.boom.editor.inline_editor
 	*/
-	inline_editor : {
+	inline_editor :
 		/** @lends $.boom.editor.inline_editor */
-		
-		/** @property */
+		{
+		/** @property rangy */
 		rangy : null,
 		
-		/** @property */
+		/** @property toolbar */
 		toolbar : null,
 		
-		/** @property */
+		/** @property selected_node */
 		selected_node : null,
 		
 		/** @function */

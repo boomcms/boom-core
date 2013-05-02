@@ -3,10 +3,13 @@
 */
 $.boom.item = {};
 
-$.extend($.boom.item, {
+$.extend($.boom.item,
 	/** @lends $.boom.item */
+	{
 	
-	/** @property */
+	/** 
+	@property rid
+	*/
 	rid: null,
 
 	/** @function */
@@ -110,8 +113,9 @@ $.extend($.boom.item, {
 */
 $.boom.filter = {};
 
-$.extend($.boom.filter, {
+$.extend($.boom.filter,
 	/** @lends $.boom.filter */
+	{
 	
 	/** @function */
 	get : function( rid ){
@@ -132,12 +136,13 @@ $.extend($.boom.filter, {
 * @class
 * @name $.boom.browser
 */
-$.widget( 'boom.browser', {
+$.widget( 'boom.browser',
 	/** @lends $.boom.browser */
+	{
 	
 	/**
 	default config
-	@property
+	@property options
 	*/
 	options : {
 		sortby: 'audit_time',

@@ -1,7 +1,7 @@
 
-$.extend( $.boom, {
+$.extend( $.boom,
 	/** @lends $.boom */
-	
+	{
 	/**
 	Link manager
 	@class

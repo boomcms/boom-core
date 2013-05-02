@@ -15,10 +15,13 @@ $.boom.assets = {};
 */
 $.boom.assets.tag = {};
 
-$.extend($.boom.assets, {
+$.extend($.boom.assets,
 	/** @lends $.boom.assets */
+	{
 
-	/** @property */
+	/** 
+	@property browser_asset
+	*/
 	browser_asset: {},
 
 	/**
@@ -119,8 +122,9 @@ $.extend($.boom.assets, {
 	}
 });
 
-$.extend($.boom.asset, $.boom.item, {
+$.extend($.boom.asset, $.boom.item,
 	/** @lends $.boom.asset */
+	{
 	
 	base_url: '/cms/assets/',
 	
@@ -236,10 +240,11 @@ $.extend($.boom.asset, $.boom.item, {
 	}
 });
 
-$.extend($.boom.assets.tag, $.boom.filter,  {
+$.extend($.boom.assets.tag, $.boom.filter,
 	/** 
 	@lends $.boom.assets.tag
 	*/
+	{
 
 	rid: 0,
 
@@ -280,12 +285,13 @@ $.extend($.boom.assets.tag, $.boom.filter,  {
 * @name $.boom.browser_asset
 * @extends $.boom.browser
 */
-$.widget( 'boom.browser_asset', $.boom.browser, {
+$.widget( 'boom.browser_asset', $.boom.browser,
 	/** @lends $.boom.browser_asset */
+	{
 	
 	/**
 	map url fragments to objects
-	@property
+	@property url_map
 	*/
 	url_map : {
 		asset: $.boom.asset,
@@ -588,6 +594,7 @@ $.widget( 'boom.browser_asset', $.boom.browser, {
 
 	/**
 	Upload a new asset file.
+	@function
 	*/
 	upload: function( opts ){
 

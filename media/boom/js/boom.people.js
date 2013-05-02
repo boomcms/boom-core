@@ -15,10 +15,11 @@ $.boom.people.group = {};
 */
 $.boom.person = {};
 
-$.extend($.boom.person, $.boom.item, {
+$.extend($.boom.person, $.boom.item,
 	/** 
 	@lends $.boom.person 
 	*/
+	{
 	
 	base_url: '/cms/people/',
 	
@@ -77,7 +78,9 @@ $.extend($.boom.person, $.boom.item, {
 	/** @class */
 	groups: {
 		
-		/** @property */
+		/** 
+		@property person_id 
+		*/
 		person_id: null,
 		
 		/** @function */
@@ -123,10 +126,11 @@ $.extend($.boom.person, $.boom.item, {
 	}
 });
 
-$.extend($.boom.people.group, $.boom.filter,  {
+$.extend($.boom.people.group, $.boom.filter,
 	/** 
 	@lends $.boom.people.group 
 	*/
+	{
 
 
 	/** @function */
@@ -165,12 +169,13 @@ $.extend($.boom.people.group, $.boom.filter,  {
 * @name $.boom.browser_people
 * @extends $.boom.browser
 */
-$.widget( 'boom.browser_people', $.boom.browser, {
+$.widget( 'boom.browser_people', $.boom.browser,
 	/** @lends $.boom.browser_people */
+	{
 	
 	/**
 	map url fragments to objects
-	@property
+	@property url_map
 	*/
 	url_map : {
 		person: $.boom.person,

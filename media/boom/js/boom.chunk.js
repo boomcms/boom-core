@@ -8,15 +8,16 @@ Common functionality for all editable slots
 @class
 @name $.ui.chunk
 */
-$.widget('ui.chunk', {
+$.widget('ui.chunk',
 
 	/**
 	@lends $.ui.chunk
 	*/
+	{
 
 	/**
 	default config
-	@property
+	@property options
 	*/
 	options: {
 		/** URL prefix for ajax calls */
@@ -169,11 +170,12 @@ Editable text slots
 @extends $.ui.chunk
 @memberOf $.ui
 */
-$.widget('ui.chunkText', $.ui.chunk, {
+$.widget('ui.chunkText', $.ui.chunk,
 
 	/**
 	@lends $.ui.chunkText
 	*/
+	{
 
 	title : '',
 
@@ -316,10 +318,11 @@ $.widget('ui.chunkText', $.ui.chunk, {
 @extends $.ui.chunk
 @memberOf $.ui
 */
-$.widget('ui.chunkLinkset', $.ui.chunk, {
+$.widget('ui.chunkLinkset', $.ui.chunk,
 	/**
 	@lends $.ui.chunkLinkset
 	*/
+	{
 
 	elements : {},
 
@@ -518,7 +521,7 @@ $.widget('ui.chunkLinkset', $.ui.chunk, {
 
 	/**
 	Get the linkset data as an object
-	@param {jQuery Object} element Container element for this linkset.
+	@param {Object} element Container element for this linkset.
 	@returns {Object} Simple object containing an array of link objects {links: [ { name: name, uri: uri, target_page_rid: page RID, sequence: sequence }]}
 	*/
 	_getData : function( element ) {
@@ -554,10 +557,11 @@ $.widget('ui.chunkLinkset', $.ui.chunk, {
 @extends $.ui.chunk
 @memberOf $.ui
 */
-$.widget('ui.chunkFeature', $.ui.chunk, {
+$.widget('ui.chunkFeature', $.ui.chunk,
 	/**
 	@lends $.ui.chunkFeature
 	*/
+	{
 
 	/**
 	Open a dialog with a tree control to pick a page for the current feature
@@ -665,10 +669,11 @@ $.widget('ui.chunkFeature', $.ui.chunk, {
 @extends $.ui.chunk
 @memberOf $.ui
 */
-$.widget('ui.chunkAsset', $.ui.chunk, {
+$.widget('ui.chunkAsset', $.ui.chunk,
 	/**
 	@lends $.ui.chunkAsset
 	*/
+	{
 
 	/**
 	Open an asset manager dialog
@@ -810,10 +815,11 @@ $.widget('ui.chunkAsset', $.ui.chunk, {
 @extends $.ui.chunk
 @memberOf $.ui
 */
-$.widget('ui.chunkSlideshow', $.ui.chunk, {
+$.widget('ui.chunkSlideshow', $.ui.chunk,
 	/**
 	@lends $.ui.chunkSlideshow
 	*/
+	{
 
 	elements : {},
 
@@ -967,7 +973,7 @@ $.widget('ui.chunkSlideshow', $.ui.chunk, {
 	/**
 	Edit a slide image and link
 	@function
-	@param {jQuery object} $slide Slide to edit
+	@param {Object} $slide Slide to edit
 	@returns {Deferred}
 	*/
 	_edit_slide : function( $slide ){
@@ -1026,7 +1032,7 @@ $.widget('ui.chunkSlideshow', $.ui.chunk, {
 	/**
 	Insert a slide after an existing slide
 	@function
-	@param {jQuery object} $li Insert the new slide after this item
+	@param {Object} $li Insert the new slide after this item
 	*/
 	_insert_slide : function( $li ) {
 		var self = this;
@@ -1055,7 +1061,7 @@ $.widget('ui.chunkSlideshow', $.ui.chunk, {
 
 	/**
 	@function
-	@param {jQuery object} $slide Slide to remove
+	@param {Object} $slide Slide to remove
 	*/
 	_remove_slide : function( $slide ) {
 
@@ -1071,7 +1077,7 @@ $.widget('ui.chunkSlideshow', $.ui.chunk, {
 
 	/**
 	Edit a caption
-	@param {jQuery object} $caption Caption node
+	@param {Object} $caption Caption node
 	@returns {Deferred}
 	*/
 	_edit_caption : function( $caption ) {

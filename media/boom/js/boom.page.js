@@ -7,6 +7,10 @@ $.widget( 'boom.page', {
 
 	/** @lends $.boom.page */
 
+	/**
+	default config
+	@property options
+	*/
 	options : {
 		/**
 		@type number
@@ -20,10 +24,14 @@ $.widget( 'boom.page', {
 		ajaxed: 0
 	},
 
-	/** @property */
+	/** 
+	@property save_button
+	*/
 	save_button: $('#b-page-save'),
 
-	/** @property */
+	/** 
+	@property cancel_button
+	*/
 	cancel_button: $('#b-page-cancel'),
 
 	_init : function() {
@@ -348,19 +356,21 @@ $.widget( 'boom.page', $.boom.page, {
 
 		/**
 		* Editable page DOM
-		* @property
-		* @type (jQuery Object)
+		* @property page_dom
+		* @type (Object)
 		*/
 		page_dom: {},
 
 		/**
 		* Editor iframe
-		* @property
-		* @type (jQuery Object)
+		* @property iframe
+		* @type (Object)
 		*/
 		iframe: {},
 
-		/** @property */
+		/** 
+		@property height
+		*/
 		height: '90px',
 
 		/**
@@ -443,10 +453,10 @@ $.widget( 'boom.page', $.boom.page, {
 	* @class
 	* @name $.boom.page.editor
 	*/
-	editor : {
+	editor :
 
 		/** @lends $.boom.page.editor */
-
+		{
 		elements : {},
 
 		/** @function */
@@ -739,9 +749,9 @@ $.widget( 'boom.page', $.boom.page, {
 	* @class
 	* @name $.boom.page.slots
 	*/
-	slots : {
+	slots :
 		/** @lends $.boom.page.slots */
-
+		{
 		/** @function */
 		edit : function(event, elem, slot, slotconfig){
 			event.preventDefault();
@@ -817,9 +827,9 @@ $.widget( 'boom.page', $.boom.page, {
 	* @class
 	* @name $.boom.page.settings
 	*/
-	settings: {
+	settings:
 		/** @lends $.boom.page.settings */
-
+		{
 		/** @function */
 		init: function() {
 			// some initialisation code should probably go here.
@@ -964,12 +974,13 @@ $.widget( 'boom.page', $.boom.page, {
 		* @class
 		* @name $.boom.page.settings.navigation
 		*/
-		navigation: {
+		navigation:
 			/** @lends $.boom.page.settings.navigation */
+			{
 
 			/**
 			Menu label
-			@property
+			@property label
 			*/
 			label: 'Navigation',
 
@@ -1017,12 +1028,12 @@ $.widget( 'boom.page', $.boom.page, {
 		* @class
 		* @name $.boom.page.settings.search
 		*/
-		search: {
+		search:
 			/** @lends $.boom.page.settings.search */
-
+			{
 			/**
 			Menu label
-			@property
+			@property label
 			*/
 			label: 'Search',
 
@@ -1055,12 +1066,12 @@ $.widget( 'boom.page', $.boom.page, {
 		* @class
 		* @name $.boom.page.settings.tags
 		*/
-		tags: {
+		tags:
 			/** @lends $.boom.page.settings.tags */
-
+			{
 			/**
 			Menu label
-			@property
+			@property label
 			*/
 			label: 'Page tags',
 
@@ -1095,12 +1106,12 @@ $.widget( 'boom.page', $.boom.page, {
 		* @class
 		* @name $.boom.page.settings.urls
 		*/
-		urls: {
+		urls:
 			/** @lends $.boom.page.settings.urls */
-
+			{
 			/**
 			Menu label
-			@property
+			@property label
 			*/
 			label: 'URLs',
 
@@ -1303,12 +1314,12 @@ $.widget( 'boom.page', $.boom.page, {
 		* @class
 		* @name $.boom.page.settings.featureimage
 		*/
-		featureimage: {
+		featureimage:
 			/** @lends $.boom.page.settings.featureimage */
-
+			{
 			/**
 			Menu label
-			@property
+			@property label
 			*/
 			label: 'Feature image',
 
@@ -1405,12 +1416,12 @@ $.widget( 'boom.page', $.boom.page, {
 		* @class
 		* @name $.boom.page.settings.template
 		*/
-		template: {
+		template:
 			/** @lends $.boom.page.settings.template */
-
+			{
 			/**
 			Menu label
-			@property
+			@property label
 			*/
 			label: 'Template',
 
@@ -1452,12 +1463,12 @@ $.widget( 'boom.page', $.boom.page, {
 		* @class
 		* @name $.boom.page.settings.embargo
 		*/
-		embargo: {
+		embargo:
 			/** @lends $.boom.page.settings.embargo */
-
+			{
 			/**
 			Menu label
-			@property
+			@property label
 			*/
 			label: 'Embargo',
 
@@ -1504,12 +1515,12 @@ $.widget( 'boom.page', $.boom.page, {
 		* @class
 		* @name $.boom.page.settings.visibility
 		*/
-		visibility: {
+		visibility:
 			/** @lends $.boom.page.settings.visibility */
-
+			{
 			/**
 			Menu label
-			@property
+			@property label
 			*/
 			label: 'Visibility',
 
@@ -1572,12 +1583,12 @@ $.widget( 'boom.page', $.boom.page, {
 		* @class
 		* @name $.boom.page.settings.history
 		*/
-		history: {
+		history:
 			/** @lends $.boom.page.settings.history */
-
+			{
 			/**
 			Menu label
-			@property
+			@property label
 			*/
 			label: 'History',
 
@@ -1637,12 +1648,12 @@ $.widget( 'boom.page', $.boom.page, {
 		* @class
 		* @name $.boom.page.settings.childsettings
 		*/
-		childsettings: {
+		childsettings:
 			/** @lends $.boom.page.settings.childsettings */
-
+			{
 			/**
 			Menu label
-			@property
+			@property label
 			*/
 			label: 'Child page settings',
 
@@ -1675,12 +1686,12 @@ $.widget( 'boom.page', $.boom.page, {
 		* @class
 		* @name $.boom.page.settings.adminsettings
 		*/
-		adminsettings: {
+		adminsettings:
 			/** @lends $.boom.page.settings.adminsettings */
-
+			{
 			/**
 			Menu label
-			@property
+			@property label
 			*/
 			label: 'Admin settings',
 
@@ -1717,9 +1728,9 @@ Base class for the text editor
 @class
 @name $.boom.editor
 */
-$.widget( 'boom.editor', {
+$.widget( 'boom.editor', 
 	/** @lends $.boom.editor */
-
+	{
 	_create : function() {
 
 	},
@@ -1760,7 +1771,7 @@ $.widget( 'boom.editor', {
 
 	/**
 	Edit a slot
-	@param {jQuery element} element DOM element to edit
+	@param {Object} element DOM element to edit
 	*/
 	edit : function( element ) {
 

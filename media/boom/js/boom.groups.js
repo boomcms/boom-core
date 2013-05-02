@@ -3,12 +3,12 @@
 * @class
 * @name $.boom.group_editor
 */
-$.widget( 'boom.group_editor', {
+$.widget( 'boom.group_editor',
 	/** @lends $.boom.group_editor */
-	
+	{
 	/**
 	default config
-	@property
+	@property options
 	*/
 	options: {
 		/** URL prefix for ajax calls */
@@ -156,12 +156,12 @@ $.widget( 'boom.group_editor', {
 * @class
 * @name $.boom.group_permissions
 */
-$.widget( 'boom.group_permissions', {
+$.widget( 'boom.group_permissions',
 	/** @lends $.boom.group_permissions */
-	
+	{
 	/**
 	default config
-	@property
+	@property options
 	*/
 	options: {
 		/** URL prefix for ajax calls */
