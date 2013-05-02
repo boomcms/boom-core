@@ -60,54 +60,11 @@ $.extend($.boom.person, $.boom.item, {
 
 		$('#b-delete-person', context ).click(function( event ){
 
-			self.remove();
+			self.remove()
+				.done( function(){
+					$.boom.history.load( 'group/0' );
+				});
 			
-		});
-	},
-	
-	/** @function */
-	remove: function(){
-		
-		var self = this;
-		var deleted = new $.Deferred();
-
-		$.boom.dialog.open({
-			width: 350,
-			msg: 'Are you sure you want to delete this person?',
-			title: 'Please confirm',
-			deferred: deleted
-		});
-
-		deleted
-		.pipe( function( event ){
-
-			$.boom.loader.show();
-
-			return $.post( self.base_url + 'delete/' + self.rid, { people: self.rid });
-		})
-		.done( function(){
-
-			var items = $.boom.history.getHash().split('/')[1].split(',');
-
-			$.boom.loader.hide();
-
-			if ( items.length > 1 ){
-
-				var segments =
-					$.boom.history.getHash().split('/')[0] +
-					'/' +
-					$.grep(items, function(val){
-
-						return val != self.rid;
-
-					}).join(',');
-
-				$.boom.history.load( segments );
-
-			} else {
-
-				//self.browser.defaultRoute();
-			}
 		});
 	},
 	
