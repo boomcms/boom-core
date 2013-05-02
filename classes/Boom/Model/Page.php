@@ -187,48 +187,39 @@ class Boom_Model_Page extends Model_Taggable
 	 * @param	string	$column
 	 * @param	string	$direction
 	 */
-	public function set_child_ordering_policy($column = NULL, $direction = NULL)
+	public function set_child_ordering_policy($column, $direction)
 	{
-		if ($column === NULL AND $direction === NULL)
+		// Convert the column into an integer.
+		switch ($column)
 		{
+			case ($column == 'manual' OR $column == 'sequence'):
+				$order = Model_Page::CHILD_ORDER_MANUAL;
+				break;
 
+			case ($column == 'date' OR $column == 'visible_from'):
+				$order = Model_Page::CHILD_ORDER_DATE;
+				break;
+
+			default:
+				$order = Model_Page::CHILD_ORDER_ALPHABETIC;
 		}
-		else
+
+		// Convert the direction to an integer and apply it to $order
+		switch ($direction)
 		{
-			// Act as setter.
+			case 'asc':
+				$order = $order | Model_Page::CHILD_ORDER_ASC;
+				break;
 
-			// Convert the column into an integer.
-			switch ($column)
-			{
-				case ($column == 'manual' OR $column == 'sequence'):
-					$order = Model_Page::CHILD_ORDER_MANUAL;
-					break;
-
-				case ($column == 'date' OR $column == 'visible_from'):
-					$order = Model_Page::CHILD_ORDER_DATE;
-					break;
-
-				default:
-					$order = Model_Page::CHILD_ORDER_ALPHABETIC;
-			}
-
-			// Convert the direction to an integer and apply it to $order
-			switch ($direction)
-			{
-				case 'asc':
-					$order = $order | Model_Page::CHILD_ORDER_ASC;
-					break;
-
-				default:
-					$order = $order | Model_Page::CHILD_ORDER_DESC;
-			}
-
-			// Set the value of the children_ordering_policy column.
-			$this->children_ordering_policy = $order;
-
-			// Rethrn the current object.
-			return $this;
+			default:
+				$order = $order | Model_Page::CHILD_ORDER_DESC;
 		}
+
+		// Set the value of the children_ordering_policy column.
+		$this->children_ordering_policy = $order;
+
+		// Rethrn the current object.
+		return $this;
 	}
 
 	/**
@@ -357,6 +348,29 @@ class Boom_Model_Page extends Model_Taggable
 			->versions
 			->order_by('id', 'asc')
 			->find();
+	}
+
+	public function get_tags_applied_down_tree($prefix = NULL)
+	{
+		$query = ORM::factory('Tag')
+			->join('pages_tags', 'inner')
+			->on('tag.id', '=', 'pages_tags.tag_id')
+			->join('pages', 'inner')
+			->on('pages_tags.page_id', '=', 'pages.id')
+			->join('page_mptt', 'inner')
+			->on('pages.id', '=', 'page_mptt.id')
+			->where('page_mptt.lft', '>=', $this->mptt->lft)
+			->where('page_mptt.rgt', '<=', $this->mptt->rgt)
+			->where('page_mptt.scope', '=', $this->mptt->scope)
+			->distinct(TRUE)
+			->order_by('tag.name', 'asc');
+
+		if ($prefix)
+		{
+			$query->where('tag.name', 'like', $prefix);
+		}
+
+		return $query->find_all()->as_array();
 	}
 
 	/**
