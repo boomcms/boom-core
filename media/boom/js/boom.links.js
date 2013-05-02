@@ -26,6 +26,7 @@ $.extend( $.boom, {
 				deferred: complete,
 				onLoad: function(){
 					var self = this;
+					console.log( opts.link );
 					
 					if ( opts.link.rid == -1 ) {
 						$( '#boom-chunk-linkset-addlink-external-url' ).val( opts.link.url );

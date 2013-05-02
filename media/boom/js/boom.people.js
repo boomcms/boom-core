@@ -49,16 +49,7 @@ $.extend($.boom.person, $.boom.item, {
 
 		$('.b-people-save', context ).bind('save', function( event ){
 
-			var data = $( this ).closest( 'form' ).serialize();
-
-			$.boom.loader.show();
-
-			$.post( self.base_url + 'save/' + self.rid, data)
-			.done( function(){
-
-				$.boom.loader.hide();
-				$.boom.growl.show( "Person saved." );
-			});
+			self.save();
 
 		}).click(function(){
 
@@ -67,13 +58,43 @@ $.extend($.boom.person, $.boom.item, {
 
 		$('#b-delete-person', context ).click(function( event ){
 
-			self.delete();
+			self.remove();
 			
 		});
 	},
 	
 	/** @function */
-	delete: function(){
+	add: function(){
+		
+		var data = $('#boom-tagmanager-create-person-form').serialize();
+
+		$.boom.loader.show();
+
+		return $.post( this.base_url + 'add/', data)
+		.done( function(id){
+
+			$.boom.loader.hide();
+
+		});
+	},
+	
+	/** @function */
+	save: function(){
+		
+		var data = $( '#boom-person-view > form' ).serialize();
+
+		$.boom.loader.show();
+
+		return $.post( self.base_url + 'save/' + self.rid, data)
+		.done( function(){
+
+			$.boom.loader.hide();
+			$.boom.growl.show( "Person saved." );
+		});
+	},
+	
+	/** @function */
+	remove: function(){
 		
 		var self = this;
 		var deleted = new $.Deferred();
@@ -255,11 +276,8 @@ $.widget( 'boom.browser_people', $.boom.browser, {
 					$('#boom-tagmanager-create-person-form input[name="name"]').focus();
 				},
 				callback: function(){
-					self
-						.savePerson('/cms/people/add')
-						.done( function(){
-							window.location.reload();
-						});
+					
+					$.boom.person.add();
 				}
 			});
 		});
@@ -311,22 +329,5 @@ $.widget( 'boom.browser_people', $.boom.browser, {
 	
 	select: function( rid, selected ){
 		$.boom.person.select( rid, selected );
-	},
-	
-	/** @function */
-	savePerson: function(url){
-
-		// TODO: validation
-
-		var data = $('#boom-tagmanager-create-person-form').serialize();
-
-		$.boom.loader.show();
-
-		return $.post(url, data)
-		.done( function(id){
-
-			$.boom.loader.hide();
-
-		});
 	}
 });
