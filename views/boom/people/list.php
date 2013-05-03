@@ -8,8 +8,8 @@
 
 		<select id="boom-tagmanager-sortby-select" class="ui-helper-left" style="width: 98px">
 			<optgroup label="Direction">
-				<option value="name-asc" <? if ($order == 'name-asc') echo "selected='selected'"; ?>>A - Z</option>
-				<option value="name-desc" <? if ($order == 'name-desc') echo "selected='selected'"; ?>>Z - A</option>
+				<option value="name-asc" <? if ($sortby == 'name-asc') echo "selected='selected'"; ?>>A - Z</option>
+				<option value="name-desc" <? if ($sortby == 'name-desc') echo "selected='selected'"; ?>>Z - A</option>
 			</optgroup>
 		</select>
 		</select>

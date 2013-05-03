@@ -209,6 +209,7 @@ class Boom_Controller_Cms_People extends Boom_Controller
 			'people'	=>	$people,
 			'group'	=>	new Model_Group($group),
 			'total'	=>	$total,
+			'sortby'		=>	$sortby,
 			'order'	=>	$order,
 		));
 
