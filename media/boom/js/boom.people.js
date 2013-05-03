@@ -75,7 +75,11 @@ $.extend($.boom.person, $.boom.item,
 		});
 	},
 	
-	/** @class */
+	/**
+	Handle UI for adding and removing groups from a person
+	@static 
+	@class 
+	*/
 	groups: {
 		
 		/** 
@@ -132,26 +136,6 @@ $.extend($.boom.people.group, $.boom.filter,
 	*/
 	{
 
-
-	/** @function */
-	build_url : function(){
-
-		var self = this;
-
-		params =
-			'tag=' + self.rid + '&' +
-			'perpage=' + self.options.perpage + '&' +
-			'sortby=' + self.options.sortby + '&' +
-			'order='  + self.options.order;
-
-		var url =
-			'/cms/' + self.options.type + '/list'
-			+ '?' + params;
-			
-		$.boom.log('Group items get' + self.rid );
-		
-		return url;
-	},
 
 	/** @function */
 	bind : function( context ){

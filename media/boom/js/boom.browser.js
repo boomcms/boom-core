@@ -116,7 +116,38 @@ $.boom.filter = {};
 $.extend($.boom.filter,
 	/** @lends $.boom.filter */
 	{
+	/** tag ID */
+	rid: 0,
+
+	/** filters */
+	filters: {},	
 	
+	/**
+	Build AJAX request URL to return a filtered list of items 
+	@function 
+	*/
+	build_url : function(){
+
+		$.boom.log( 'get tag ' + this.rid );
+
+		var self = this;
+
+		params =
+			'tag=' + self.rid + '&' +
+			'perpage=' + self.options.perpage + '&' +
+			'sortby=' + self.options.sortby;
+
+		for ( filter in self.filters ) {
+			params += '&' + filter + '=' + self.filters[ filter ];
+		}
+
+		var url =
+			'/cms/' + self.options.type + '/list'
+			+ '?' + params;
+
+		return url;
+	},
+		
 	/** @function */
 	get : function( rid ){
 
