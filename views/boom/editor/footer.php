@@ -10,6 +10,7 @@
 		->js('boom.helpers.js')
 		->js('jquery.js')
 		->js('jquery.ui.js')
+		->js('jquery.plugins.js')
 		->js('boom.plugins.js')
 		->js('boom.config.js')
 		->js('boom.core.js')

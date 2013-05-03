@@ -233,7 +233,7 @@ $.extend($.boom,
 });
 
 (!window.console) && function(){
-	window.console = { log: function(){}, debug: function(){}, error: function(){}, warning: function(){}, info: function(){} };
+	window.console = /** @ignore */ { log: function(){}, debug: function(){}, error: function(){}, warning: function(){}, info: function(){} };
 }();
 
 $.extend($.boom,

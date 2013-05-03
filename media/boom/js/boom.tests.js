@@ -238,11 +238,14 @@ test('load() : should change location hash and fire callback function', function
 });
 
 module("Tree", {
+	/** @ignore */
 	setup: function(){
 		var treeConfig = {
+			/** @ignore */
 			onClick: function(){
 				return $(this);
 			},
+			/** @ignore */
 			onToggle: function( page_id ) {
 				var list_ready = new $.Deferred();
 				
@@ -269,6 +272,7 @@ module("Tree", {
 		treeConfig = $.extend({}, $.boom.config.tree, treeConfig);
 		this.tree = $('<ul><li><a rel="1" href="#">Item 1</a><ul><li><a rel="3" href="#">Item 3</a></li><li><a rel="4" href="#">Item 4</a></li></ul></li><li><a rel="2" href="#">Item 2</a></li></ul>').prependTo($('body')).tree( treeConfig );
 	},
+	/** @ignore */
 	teardown: function() {
 		this.tree.tree( 'destroy' ).remove();
 	}
@@ -514,6 +518,7 @@ asyncTest( "cancel the action and close the dialog when 'cancel' is clicked", fu
 });
 
 module("Asset manager", {
+	/** @ignore */
 	setup: function(){
 		
 		$( 'body' ).append( '<div class="b-items-rightpane"><div class="b-items-content">asset manager</div></div>');
@@ -523,6 +528,7 @@ module("Asset manager", {
 		
 		$( 'body' ).browser_asset();
 	},
+	/** @ignore */
 	teardown: function(){
 		$( 'body' ).browser_asset( 'destroy' );
 		$( '.b-items-rightpane' ).remove();
@@ -586,6 +592,7 @@ asyncTest( 'Clicking an asset returns the asset ID', function(){
 
 });
 module("People manager", {
+	/** @ignore */
 	setup: function(){
 		
 		$( 'body' ).append( '<div class="b-items-sidebar"></div><div class="b-items-rightpane"><div class="b-items-content">people manager</div></div>');
@@ -595,6 +602,7 @@ module("People manager", {
 		
 		$( 'body' ).browser_people();
 	},
+	/** @ignore */
 	teardown: function(){
 		$( 'body' ).browser_people( 'destroy' );
 		$( '.b-items-rightpane' ).remove();

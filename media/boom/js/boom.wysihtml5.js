@@ -425,6 +425,11 @@ $.widget('wysihtml5.editor', $.boom.editor,
 		(function(wysihtml5) {
 			var undef;
 
+			/**
+			Indent command for blockquotes
+			@static
+			@class
+			**/
 			wysihtml5.commands.indent = {
 				exec: function(composer, command) {
 					

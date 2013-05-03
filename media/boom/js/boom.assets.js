@@ -6,6 +6,7 @@ $.boom.asset = {};
 
 /**
 @class
+@static
 */
 $.boom.assets = {};
 
@@ -41,7 +42,8 @@ $.extend($.boom.assets,
 			top.location.hash = '';
 		};
 
-		var default_options = {
+		var default_options = 
+			/** @ignore */ {
 			url: '/cms/assets/manager/',
 			iframe: false,
 			width: 1000,
@@ -271,11 +273,16 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 		tag: $.boom.assets.tag
 	},
 	
+	/**
+	default config
+	@property options
+	*/
 	options: {
 		sortby: 'last_modified',
 		order: 'desc',
 		type: 'assets',
-		treeConfig : {
+		treeConfig : 
+		/** @ignore */ {
 			showEdit: true,
 			showRemove: true,
 			onEditClick: function(event){
@@ -575,7 +582,8 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 		var uploaded = new $.Deferred();
 		var file_data = {};
 		
-		var default_opts = {
+		var default_opts = 
+		/** @ignore */ {
 			url: '/cms/assets/upload',
 			dataType: 'json',
 			singleFileUploads: false,
