@@ -826,6 +826,7 @@ $.widget( 'boom.page', $.boom.page, {
 	/**
 	* @class
 	* @name $.boom.page.settings
+	* @static
 	*/
 	settings:
 		/** @lends $.boom.page.settings */
@@ -973,6 +974,7 @@ $.widget( 'boom.page', $.boom.page, {
 		/**
 		* @class
 		* @name $.boom.page.settings.navigation
+		* @static
 		*/
 		navigation:
 			/** @lends $.boom.page.settings.navigation */
@@ -1027,6 +1029,7 @@ $.widget( 'boom.page', $.boom.page, {
 		/**
 		* @class
 		* @name $.boom.page.settings.search
+		* @static
 		*/
 		search:
 			/** @lends $.boom.page.settings.search */
@@ -1065,6 +1068,7 @@ $.widget( 'boom.page', $.boom.page, {
 		/**
 		* @class
 		* @name $.boom.page.settings.tags
+		* @static
 		*/
 		tags:
 			/** @lends $.boom.page.settings.tags */
@@ -1105,6 +1109,7 @@ $.widget( 'boom.page', $.boom.page, {
 		/**
 		* @class
 		* @name $.boom.page.settings.urls
+		* @static
 		*/
 		urls:
 			/** @lends $.boom.page.settings.urls */
@@ -1313,6 +1318,7 @@ $.widget( 'boom.page', $.boom.page, {
 		/**
 		* @class
 		* @name $.boom.page.settings.featureimage
+		* @static
 		*/
 		featureimage:
 			/** @lends $.boom.page.settings.featureimage */
@@ -1415,6 +1421,7 @@ $.widget( 'boom.page', $.boom.page, {
 		/**
 		* @class
 		* @name $.boom.page.settings.template
+		* @static
 		*/
 		template:
 			/** @lends $.boom.page.settings.template */
@@ -1462,6 +1469,7 @@ $.widget( 'boom.page', $.boom.page, {
 		/**
 		* @class
 		* @name $.boom.page.settings.embargo
+		* @static
 		*/
 		embargo:
 			/** @lends $.boom.page.settings.embargo */
@@ -1514,6 +1522,7 @@ $.widget( 'boom.page', $.boom.page, {
 		/**
 		* @class
 		* @name $.boom.page.settings.visibility
+		* @static
 		*/
 		visibility:
 			/** @lends $.boom.page.settings.visibility */
@@ -1582,6 +1591,7 @@ $.widget( 'boom.page', $.boom.page, {
 		/**
 		* @class
 		* @name $.boom.page.settings.history
+		* @static
 		*/
 		history:
 			/** @lends $.boom.page.settings.history */
@@ -1647,6 +1657,7 @@ $.widget( 'boom.page', $.boom.page, {
 		/**
 		* @class
 		* @name $.boom.page.settings.childsettings
+		* @static
 		*/
 		childsettings:
 			/** @lends $.boom.page.settings.childsettings */
@@ -1685,6 +1696,7 @@ $.widget( 'boom.page', $.boom.page, {
 		/**
 		* @class
 		* @name $.boom.page.settings.adminsettings
+		* @static
 		*/
 		adminsettings:
 			/** @lends $.boom.page.settings.adminsettings */
