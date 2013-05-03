@@ -1,4 +1,7 @@
 /**
+@fileOverview Page editor, toolbar and page settings.
+*/
+/**
 * Page editor UI.
 * @class
 * @name $.boom.page

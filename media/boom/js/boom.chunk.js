@@ -1,4 +1,7 @@
 /**
+@fileOverview jQuery UI widgets for editable slots.
+*/
+/**
 @namespace
 @name $.ui
 */

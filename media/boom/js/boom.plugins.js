@@ -1,4 +1,7 @@
 /**
+@fileOverview jQuery plugins written specifically for Boom.
+*/
+/**
 boom.plugins.js
 @author Hoop Associates
 */

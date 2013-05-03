@@ -1,4 +1,7 @@
 /**
+@fileOverview Generic item browser. Base classes for asset and people managers.
+*/
+/**
 @class
 */
 $.boom.item = {};

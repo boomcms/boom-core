@@ -1,4 +1,7 @@
 /**
+@fileOverview Asset manager UI, including asset tags and asset view.
+*/
+/**
 @class
 @extends $.boom.item
 */

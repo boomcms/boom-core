@@ -1,4 +1,7 @@
 /**
+@fileOverview Boom editor interface for tinyMCE.
+*/
+/**
 * Interface for the tinyMCE editor.
 * @class
 * @name $.tinymce.editor

@@ -1,4 +1,7 @@
 /**
+@fileOverview Boom interface for wysihtml5.
+*/
+/**
 * Interface for the wysihtml5 editor.
 * @class
 * @name $.wysihtml5.editor

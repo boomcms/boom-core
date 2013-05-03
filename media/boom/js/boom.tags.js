@@ -1,4 +1,8 @@
 /**
+@fileOverview jQuery UI widgets for searching tags and applying tags to content.
+*/
+
+/**
 * User interface for tagging content.
 * @class
 * @name $.boom.tagger

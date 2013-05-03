@@ -1,3 +1,6 @@
+/**
+@fileOverview qUnit tests.
+*/
 module('Text helpers');
 test('cleanup() : fix broken HTML', function(){
 	

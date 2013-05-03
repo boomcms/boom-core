@@ -1,4 +1,7 @@
 /**
+@fileOverview CMS config, including default config for all widgets.
+*/
+/**
 global boom config
 @namespace
 @name $.boom.config

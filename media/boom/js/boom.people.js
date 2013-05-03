@@ -1,4 +1,7 @@
 /**
+@fileOverview People manager UI, including groups and person view.
+*/
+/**
 @namespace
 */
 $.boom.people = {};

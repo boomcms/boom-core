@@ -1,3 +1,6 @@
+/**
+@fileOverview Template manager UI.
+*/
 $.extend($.boom, {
 
 	/**

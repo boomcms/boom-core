@@ -1,4 +1,7 @@
 /**
+@fileOverview Core CMS functionality.
+*/
+/**
 @namespace
 @name $
 */

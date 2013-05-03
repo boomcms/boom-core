@@ -1,4 +1,7 @@
 /**
+@fileOverview Helper functions
+*/
+/**
 @function
 */
 String.prototype.cleanup = function(node){

@@ -1,4 +1,7 @@
 /**
+@fileOverview Group editor widget. Used to manage groups in the people manager.
+*/
+/**
 * User interface for managing groups.
 * @class
 * @name $.boom.group_editor

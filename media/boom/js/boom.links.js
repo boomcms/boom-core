@@ -1,4 +1,6 @@
-
+/**
+@fileOverview Link editor dialog
+*/
 $.extend( $.boom,
 	/** @lends $.boom */
 	{
