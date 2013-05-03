@@ -166,16 +166,10 @@ $.widget( 'boom.browser_people', $.boom.browser,
 		group: $.boom.people.group
 	},
 	
-	options: {
-		sortby: 'name',
-		order: 'asc',
-		defaultRoute: 'group/0', 
-		type: 'people',
-		treeConfig : {
-			showEdit: true,
-			showRemove: true
-		}
-	},
+	/**
+	@see $.boom.config.browser_people
+	*/
+	options: $.boom.config.browser_people,
 	
 	_create : function(){
 		

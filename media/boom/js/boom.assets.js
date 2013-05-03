@@ -276,25 +276,10 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 	/**
 	default config
 	@property options
+	@default $.boom.config.browser_asset
+	@see $.boom.config.browser_asset
 	*/
-	options: {
-		sortby: 'last_modified',
-		order: 'desc',
-		type: 'assets',
-		treeConfig : 
-		/** @ignore */ {
-			showEdit: true,
-			showRemove: true,
-			onEditClick: function(event){
-
-				$.boom.items.group.edit(event);
-			},
-			onRemoveClick: function(event){
-
-				$.boom.items.group.remove(event);
-			}
-		}
-	},
+	options: $.boom.config.browser_asset,
 	
 	_create : function(){
 		
@@ -582,36 +567,7 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 		var uploaded = new $.Deferred();
 		var file_data = {};
 		
-		var default_opts = 
-		/** @ignore */ {
-			url: '/cms/assets/upload',
-			dataType: 'json',
-			singleFileUploads: false,
-			formData: [],
-			submit: function( e, data ){
-				$( '#b-upload-progress' ).progressbar();
-				
-				file_data = data;
-			},
-			progressall: function( e, data ){
-				var percent = parseInt( (data.loaded / data.total * 100), 10);
-
-				$( '#b-upload-progress' ).progressbar( 'value', percent );
-			},
-			done: function( e, data ){
-				$.boom.log( 'file upload complete' );
-				$.boom.assets.selected_rid = data.result.join( '-' );
-				
-				uploaded.resolve( data );
-				
-			},
-			fail: function( e, data ){
-				$( '#upload-advanced span.message' ).text( "There was an error uploading your file." );
-			},
-			always: function( e, data ){
-				$.boom.log( 'file upload finished' );
-			}
-		};
+		var default_opts = $.boom.config.upload;
 		
 		opts = $.extend( default_opts, opts );
 		

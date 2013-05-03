@@ -518,6 +518,174 @@ window.boomConfig =
 		@default ''
 		*/
 		lastname: ''
+	},
+	
+	/**
+	@static
+	@class
+	*/
+	browser: {
+		/**
+		@type string
+		@default 'audit_time'
+		*/
+		sortby: 'audit_time',
+		/**
+		@type string
+		@default 'desc'
+		*/
+		order: 'desc',
+		/**
+		@type string
+		@default 'tag/0'
+		*/
+		defaultRoute: 'tag/0',
+		/**
+		@type Array
+		@default []
+		*/ 
+		selected: [],
+		/**
+		@type Array
+		@default []
+		*/
+		types: [],
+		/**
+		@type number
+		@default 1
+		*/
+		page: 1,
+		/**
+		@type number
+		@default 30
+		*/
+		perpage: 30,
+		/**
+		@type number
+		@default 0
+		*/
+		excludeSmartTags: 0,
+		/**
+		@type string
+		@default 'list'
+		*/
+		template: 'list',
+		/**
+		@type Object
+		*/
+		treeConfig: {
+			border: true,
+			height: 'auto',
+			overflow: 'hidden',
+			toggleSelected: false,
+			width: 278
+		}
+	},
+	
+	/**
+	@static
+	@class
+	*/
+	browser_asset: {
+		/**
+		@type string
+		@default 'last_modified'
+		*/
+		sortby: 'last_modified',
+		/**
+		@type string
+		@default 'desc'
+		*/
+		order: 'desc',
+		/**
+		@type string
+		@default 'assets'
+		*/
+		type: 'assets',
+		/**
+		@type Object
+		*/
+		treeConfig : 
+		/** @ignore */ {
+			showEdit: true,
+			showRemove: true,
+			onEditClick: function(event){
+
+				$.boom.items.group.edit(event);
+			},
+			onRemoveClick: function(event){
+
+				$.boom.items.group.remove(event);
+			}
+		}
+	},
+	
+	/**
+	@static
+	@class
+	*/
+	browser_people: {
+		/**
+		@type string
+		@default 'name'
+		*/
+		sortby: 'name',
+		/**
+		@type string
+		@default 'asc'
+		*/
+		order: 'asc',
+		/**
+		@type string
+		@default 'group/0'
+		*/
+		defaultRoute: 'group/0',
+		/**
+		@type string
+		@default 'people'
+		*/ 
+		type: 'people',
+		/**
+		@type Object
+		*/
+		treeConfig : {
+			showEdit: true,
+			showRemove: true
+		}
+	},
+	
+	/**
+	@static
+	@class
+	*/
+	upload: {
+		url: '/cms/assets/upload',
+		dataType: 'json',
+		singleFileUploads: false,
+		formData: [],
+		submit: function( e, data ){
+			$( '#b-upload-progress' ).progressbar();
+			
+			file_data = data;
+		},
+		progressall: function( e, data ){
+			var percent = parseInt( (data.loaded / data.total * 100), 10);
+
+			$( '#b-upload-progress' ).progressbar( 'value', percent );
+		},
+		done: function( e, data ){
+			$.boom.log( 'file upload complete' );
+			$.boom.assets.selected_rid = data.result.join( '-' );
+			
+			uploaded.resolve( data );
+			
+		},
+		fail: function( e, data ){
+			$( '#upload-advanced span.message' ).text( "There was an error uploading your file." );
+		},
+		always: function( e, data ){
+			$.boom.log( 'file upload finished' );
+		}
 	}
 
 };

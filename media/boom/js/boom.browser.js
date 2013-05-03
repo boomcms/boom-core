@@ -174,25 +174,9 @@ $.widget( 'boom.browser',
 	/**
 	default config
 	@property options
+	@see $.boom.config.browser
 	*/
-	options : {
-		sortby: 'audit_time',
-		order: 'desc',
-		defaultRoute: 'tag/0', 
-		selected: [],
-		types: [],
-		page: 1,
-		perpage: 30,
-		excludeSmartTags: 0,
-		template: 'list',
-		treeConfig: {
-			border: true,
-			height: 'auto',
-			overflow: 'hidden',
-			toggleSelected: false,
-			width: 278
-		}
-	},
+	options : $.boom.config.browser,
 	
 	_create : function(){
 		
