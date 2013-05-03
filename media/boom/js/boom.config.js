@@ -657,6 +657,8 @@ window.boomConfig =
 	},
 	
 	/**
+	Default options for file uploads
+	https://github.com/blueimp/jQuery-File-Upload/wiki/Options
 	@static
 	@class
 	*/
