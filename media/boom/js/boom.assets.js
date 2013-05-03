@@ -288,6 +288,8 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 		this.tag = this.url_map.tag;
 		
 		$.boom.browser.prototype._create.call( this );
+		
+		console.log(this.options);
 
 	},
 	

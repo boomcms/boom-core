@@ -585,6 +585,7 @@ window.boomConfig =
 	/**
 	@static
 	@class
+	@extends $.boom.config.browser
 	*/
 	browser_asset: {
 		/**
@@ -623,6 +624,7 @@ window.boomConfig =
 	/**
 	@static
 	@class
+	@extends $.boom.config.browser
 	*/
 	browser_people: {
 		/**
