@@ -5,6 +5,7 @@
 $.extend({
 	/**
 	Namespace for core boom classes and functions.
+	@static
 	@class
 	@name $.boom
 	*/
@@ -284,6 +285,7 @@ $.extend($.boom,
 	/**
 	Boom history manager. Mostly used by the tag managers.
 	* @class
+	@static
 	*/
 	history : {
 
@@ -409,6 +411,7 @@ $.extend($.boom,
 /**
 @class
 @name $.ajax
+@static
 */
 $.extend($.ajax,
 	/** @lends $.ajax */
@@ -499,6 +502,7 @@ $.extend($.boom,
 	{
 	/**
 	* @class
+	@static
 	*/
 	loader : {
 
@@ -559,6 +563,7 @@ $.extend($.boom,
 	/**
 	Boom utils.
 	@class
+	@static
 	*/
 	util : 
 		/** @lends $.boom.util */
@@ -716,6 +721,7 @@ $.extend($.boom,
 
 		/**
 		@class
+		@static
 		@name $.boom.util.dom
 		*/
 		dom :
@@ -751,6 +757,7 @@ $.extend($.boom,
 
 		/**
 		@class
+		@static
 		@name $.boom.util.obj
 		*/
 		obj :
@@ -790,6 +797,7 @@ $.extend($.boom,
 
 		/**
 		@class
+		@static
 		@name $.boom.util.url
 		*/
 		url :
@@ -823,6 +831,7 @@ $.extend($.boom,
 	/**
 	Boom growl notifications.
 	@class
+	@static
 	*/
 	growl : {
 
@@ -853,6 +862,7 @@ $.extend($.boom,
 	/**
 	Boom dialog widget.
 	@class
+	@static
 	*/
 	dialog : {
 
@@ -1255,6 +1265,7 @@ $.extend($.boom,
 	/**
 	Boom error reporting.
 	@class
+	@static
 	*/
 	errors : {
 
