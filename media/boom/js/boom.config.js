@@ -659,9 +659,25 @@ window.boomConfig =
 	@class
 	*/
 	upload: {
+		/**
+		@type string
+		@default '/cms/assets/upload'
+		*/
 		url: '/cms/assets/upload',
+		/**
+		@type string
+		@default 'json'
+		*/
 		dataType: 'json',
+		/**
+		@type boolean
+		@default false
+		*/
 		singleFileUploads: false,
+		/**
+		@type Array
+		@default []
+		*/
 		formData: [],
 		submit: function( e, data ){
 			$( '#b-upload-progress' ).progressbar();
