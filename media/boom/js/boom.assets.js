@@ -246,10 +246,7 @@ $.extend($.boom.assets.tag, $.boom.filter,
 	*/
 	{
 	
-	bind : function( context ) {
-		
-		$('.b-items-thumbs .thumb', context ).captions($.boom.config.captions);
-	}
+	
 });
 
 /**

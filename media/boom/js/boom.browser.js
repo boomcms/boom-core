@@ -126,6 +126,11 @@ $.extend($.boom.filter,
 	/** filters */
 	filters: {},
 	
+	bind : function( context ) {
+		
+		$('.b-items-thumbs .thumb', context ).captions($.boom.config.captions);
+	},
+	
 	/**
 	Set search filters from an array of tags.
 	@param {Array} tags. Array of tags.

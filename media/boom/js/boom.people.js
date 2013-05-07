@@ -140,15 +140,6 @@ $.extend($.boom.people.group, $.boom.filter,
 	*/
 	{
 
-
-	/** @function */
-	bind : function( context ){
-
-		
-
-		$('.b-items-thumbs .thumb', context ).captions($.boom.config.captions);
-
-	}
 });
 
 /**
