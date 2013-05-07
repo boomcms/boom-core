@@ -14,6 +14,7 @@ $.boom.asset = {};
 $.boom.assets = {};
 
 /**
+Filter lists of assets by tag.
 @class
 @extends $.boom.filter
 */

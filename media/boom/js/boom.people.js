@@ -7,6 +7,7 @@
 $.boom.people = {};
 
 /**
+Filter lists of people by group
 @class
 @extends $.boom.filter
 */
