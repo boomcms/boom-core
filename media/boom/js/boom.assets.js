@@ -12,12 +12,6 @@ $.boom.asset = {};
 */
 $.boom.assets = {};
 
-/**
-Filter lists of assets by tag.
-@class
-@extends $.boom.filter
-*/
-$.boom.assets.tag = {};
 
 $.extend($.boom.assets,
 	/** @lends $.boom.assets */
