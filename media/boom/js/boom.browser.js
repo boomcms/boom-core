@@ -112,6 +112,7 @@ $.extend($.boom.item,
 });
 
 /**
+Generate filtered lists of items in the browser.
 @class
 */
 $.boom.filter = {};
@@ -123,7 +124,30 @@ $.extend($.boom.filter,
 	rid: 0,
 
 	/** filters */
-	filters: {},	
+	filters: {},
+	
+	/**
+	Set search filters from an array of tags.
+	@param {Array} tags. Array of tags. Each tag is itself an array [ tag_name, tag_id ].
+	*/
+	set_filters : function( tags ){
+		
+		this.filters = {};
+		
+		for ( t in tags ) {
+			var tag = tags[ t ];
+			
+			switch( tag[ 0 ] ) {
+				
+				case '#tag': case '#group':
+					this.rid = tag[ 1 ];
+					break;
+				default:
+					var name = tag[ 0 ].replace( '#', '' );
+					this.filters[ name ] = tag[ 1 ];
+			}
+		}
+	},
 	
 	/**
 	Build AJAX request URL to return a filtered list of items 
@@ -151,7 +175,10 @@ $.extend($.boom.filter,
 		return url;
 	},
 		
-	/** @function */
+	/** 
+	@function 
+	@returns {Deferred} ajax request returning a set of items.
+	*/
 	get : function( rid ){
 
 		var self = this;
@@ -279,21 +306,7 @@ $.widget( 'boom.browser',
 
 				var tags = multi_select( $this );
 
-				self.tag.filters = {};
-				
-				for ( t in tags ) {
-					var tag = tags[ t ];
-					
-					switch( tag[ 0 ] ) {
-						
-						case '#tag': case '#group':
-							self.tag.rid = tag[ 1 ];
-							break;
-						default:
-							var name = tag[ 0 ].replace( '#', '' );
-							self.tag.filters[ name ] = tag[ 1 ];
-					}
-				}
+				self.tag.set_filters( tags );
 
 				$.boom.history.load( tag_name + '/' + self.tag.rid );
 				return false;
