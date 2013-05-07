@@ -24,11 +24,6 @@ $.extend($.boom.assets,
 	/** @lends $.boom.assets */
 	{
 
-	/** 
-	@property browser_asset
-	*/
-	browser_asset: {},
-
 	/**
 	Open an asset manager in a dialog box.
 	@function
