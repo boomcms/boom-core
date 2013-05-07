@@ -8,8 +8,7 @@
 $.boom.asset = {};
 
 /**
-@class
-@static
+@namespace
 */
 $.boom.assets = {};
 
