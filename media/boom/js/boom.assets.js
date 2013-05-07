@@ -240,15 +240,6 @@ $.extend($.boom.asset, $.boom.item,
 	}
 });
 
-$.extend($.boom.assets.tag, $.boom.filter,
-	/** 
-	@lends $.boom.assets.tag
-	*/
-	{
-	
-	
-});
-
 /**
 * User interface for browsing and managing assets.
 * @class
@@ -265,7 +256,7 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 	*/
 	url_map : {
 		asset: $.boom.asset,
-		tag: $.boom.assets.tag
+		tag: $.boom.filter
 	},
 	
 	/**

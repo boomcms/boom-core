@@ -1,17 +1,6 @@
 /**
 @fileOverview People manager UI, including groups and person view.
 */
-/**
-@namespace
-*/
-$.boom.people = {};
-
-/**
-Filter lists of people by group
-@class
-@extends $.boom.filter
-*/
-$.boom.people.group = {};
 
 /**
 @class
@@ -134,14 +123,6 @@ $.extend($.boom.person, $.boom.item,
 	}
 });
 
-$.extend($.boom.people.group, $.boom.filter,
-	/** 
-	@lends $.boom.people.group 
-	*/
-	{
-
-});
-
 /**
 * User interface for browsing and managing people.
 * @class
@@ -158,7 +139,7 @@ $.widget( 'boom.browser_people', $.boom.browser,
 	*/
 	url_map : {
 		person: $.boom.person,
-		group: $.boom.people.group
+		group: $.boom.filter
 	},
 	
 	/**
