@@ -128,7 +128,7 @@ $.extend($.boom.filter,
 	
 	/**
 	Set search filters from an array of tags.
-	@param {Array} tags. Array of tags. Each tag is itself an array [ tag_name, tag_id ].
+	@param {Array} tags. Array of tags.
 	*/
 	set_filters : function( tags ){
 		
@@ -140,11 +140,11 @@ $.extend($.boom.filter,
 			switch( tag[ 0 ] ) {
 				
 				case '#tag': case '#group':
-					this.rid = tag[ 1 ];
+					this.rid = tag.id;
 					break;
 				default:
-					var name = tag[ 0 ].replace( '#', '' );
-					this.filters[ name ] = tag[ 1 ];
+					var name = tag.type.replace( '#', '' );
+					this.filters[ name ] = tag.id;
 			}
 		}
 	},
@@ -292,7 +292,10 @@ $.widget( 'boom.browser',
 					var tag = $(this)
 						.attr( 'href' )
 						.split( '/' );
-					tags.push( tag );
+					tags.push( {
+						type :	tag[0],
+						id :	tag[1]
+					} );
 				});
 			
 			return tags;
