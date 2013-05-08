@@ -186,10 +186,6 @@ $.widget( 'boom.browser_people', $.boom.browser,
 			var dialog = $.boom.dialog.open({
 				url: '/cms/people/add',
 				title: 'Create new person',
-				onLoad: function(){
-
-					$('#boom-tagmanager-create-person-form input[name="name"]').focus();
-				},
 				callback: function(){
 					
 					var data = $('#boom-tagmanager-create-person-form').serialize();
