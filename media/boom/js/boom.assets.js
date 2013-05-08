@@ -235,6 +235,15 @@ $.extend($.boom.asset, $.boom.item,
 });
 
 /**
+Filter lists of assets by tag.
+@class
+*/
+$.boom.filter_assets = $.extend( {}, $.boom.filter, {
+	
+	base_url: '/cms/assets/'
+});
+
+/**
 * User interface for browsing and managing assets.
 * @class
 * @name $.boom.browser_asset
@@ -250,7 +259,7 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 	*/
 	url_map : {
 		asset: $.boom.asset,
-		tag: $.boom.filter
+		tag: $.boom.filter_assets
 	},
 	
 	/**
@@ -268,8 +277,6 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 		this.tag = this.url_map.tag;
 		
 		$.boom.browser.prototype._create.call( this );
-		
-		console.log(this.options);
 
 	},
 	

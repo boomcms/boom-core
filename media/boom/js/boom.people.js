@@ -124,6 +124,15 @@ $.extend($.boom.person, $.boom.item,
 });
 
 /**
+Filter lists of people by group.
+@class
+*/
+$.boom.filter_people = $.extend( {}, $.boom.filter, {
+	
+	base_url: '/cms/people/'
+});
+
+/**
 * User interface for browsing and managing people.
 * @class
 * @name $.boom.browser_people
@@ -139,7 +148,7 @@ $.widget( 'boom.browser_people', $.boom.browser,
 	*/
 	url_map : {
 		person: $.boom.person,
-		group: $.boom.filter
+		group: $.boom.filter_people
 	},
 	
 	/**

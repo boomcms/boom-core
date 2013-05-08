@@ -132,6 +132,16 @@ $.extend($.boom.filter,
 	},
 	
 	/**
+	Set search options.
+	@param {Object} options.
+	*/
+	set_options : function( options ){
+		
+		this.options = options;
+		
+	},
+	
+	/**
 	Set search filters from an array of tags.
 	@param {Array} tags. Array of tags.
 	*/
@@ -174,7 +184,7 @@ $.extend($.boom.filter,
 		}
 
 		var url =
-			'/cms/' + self.options.type + '/list'
+			self.base_url + '/list'
 			+ '?' + params;
 
 		return url;
@@ -190,10 +200,8 @@ $.extend($.boom.filter,
 		var options = this.options;
 
 		this.rid = rid;
-
-		options.url = this.build_url();
 		
-		return $.get( options.url );
+		return $.get( this.build_url() );
 	}
 });
 
@@ -217,11 +225,12 @@ $.widget( 'boom.browser',
 		
 		$.boom.log( 'content browser init' );
 		
-		this._set_tag_options({
+		console.log( this );
+		
+		this.tag.set_options({
 			perpage: this.options.perpage,
 			sortby : this.options.sortby,
-			order : this.options.order,
-			type: this.options.type
+			order : this.options.order
 		});
 
 		this.main_panel = $('.b-items-rightpane');
@@ -400,10 +409,6 @@ $.widget( 'boom.browser',
 		
 	},
 	
-	/** set navigation options. */
-	_set_tag_options : function( options ){
-		this.tag.options = options;
-	},
 	/** Default history routing. */
 	defaultRoute: function(){
 
