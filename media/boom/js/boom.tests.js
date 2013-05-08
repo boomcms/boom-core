@@ -658,7 +658,7 @@ asyncTest('edit a group opens the "Edit group" panel', function(){
 		.appendTo(
 			$('<li></li>')
 			.appendTo(
-				$('<ul></ul')
+				$('<ul></ul>')
 			)
 		)
 		.trigger('click');
