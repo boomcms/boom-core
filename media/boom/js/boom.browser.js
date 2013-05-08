@@ -415,7 +415,7 @@ $.widget( 'boom.browser',
 		$.boom.history.load( this.options.defaultRoute);
 	},
 
-	/** Map URL fragment #{item}/{id} to get method call $.boom.{item}.get( id ); */
+	/** Map URL fragment #{item}/{id} to get method call this.url_map.{item}.get( id ); */
 	route : function(){
 
 		var self = this;
