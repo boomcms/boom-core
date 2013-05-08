@@ -431,68 +431,6 @@ window.boomConfig =
 	@static
 	@class
 	*/
-	uploadify : {
-		/**
-		@type boolean
-		@default true
-		*/
-		debug: true,
-		/**
-		@type string
-		@default '/boom/flash/uploadify.swf'
-		*/
-		swf: '/media/boom/flash/uploadify.swf',
-		/**
-		@type string
-		@default '/cms/assets/upload'
-		*/
-		uploader: '/cms/assets/upload',
-		/**
-		@type boolean
-		@default false
-		*/
-		auto: true,
-		/**
-		@type boolean
-		@default true
-		*/
-		multi: true,
-		/**
-		@type string
-		@default 'Select files'
-		*/
-		buttonText: 'Select files',
-		/**
-		@type number
-		@default 5
-		*/
-		queueSizeLimit: 5,
-		/**
-		@type number
-		@default 2
-		*/
-		simUploadLimit: 2,
-		/**
-		@type string
-		@default 'Allowed types: jpg, png, gif'
-		*/
-		fileTypeDesc: 'Allowed types: jpg, png, gif',
-		/**
-		@type string
-		@default '*.jpg;*.png;*.gif'
-		*/
-		fileTypeExts: '*.jpeg;*.jpg;*.png;*.gif',
-		/**
-		@type string
-		@default '/boom/img/cms/cross.png'
-		*/
-		cancelImg: '/boom/img/cms/cross.png'
-	},
-
-	/**
-	@static
-	@class
-	*/
 	ajax : {
 		/**
 		@type string
