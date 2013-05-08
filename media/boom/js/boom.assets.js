@@ -228,7 +228,7 @@ $.extend($.boom.asset, $.boom.item,
 
 		$( '.boom-tagmanager-asset-back', context ).on( 'click', function( event ){
 			event.preventDefault();
-			$.boom.history.load( 'tag/' + $.boom.assets.tag.rid );
+			$.boom.history.load( 'tag/' + $.boom.filter_assets.rid );
 
 		});
 	}
