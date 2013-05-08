@@ -144,15 +144,6 @@ $.widget( 'boom.browser_people', $.boom.browser,
 	{
 	
 	/**
-	map url fragments to objects
-	@property url_map
-	*/
-	url_map : {
-		person: $.boom.person,
-		group: $.boom.filter_people
-	},
-	
-	/**
 	@see $.boom.config.browser_people
 	*/
 	options: $.boom.config.browser_people,
@@ -163,7 +154,12 @@ $.widget( 'boom.browser_people', $.boom.browser,
 		
 		var self = this;
 		
-		this.tag = this.url_map.group;
+		self.tag = $.boom.filter_people;
+		
+		self.url_map = {
+			person: $.boom.person,
+			group: self.tag
+		};
 		
 		$.boom.browser.prototype._create.call( this );
 		

@@ -255,15 +255,6 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 	{
 	
 	/**
-	map url fragments to objects
-	@property url_map
-	*/
-	url_map : {
-		asset: $.boom.asset,
-		tag: $.boom.filter_assets
-	},
-	
-	/**
 	default config
 	@property options
 	@default $.boom.config.browser_asset
@@ -273,9 +264,16 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 	
 	_create : function(){
 		
+		var self = this;
+		
 		$.boom.log( 'asset browser init' );
 		
-		this.tag = this.url_map.tag;
+		self.tag = $.boom.filter_assets;
+		
+		self.url_map = {
+			asset: $.boom.asset,
+			tag: self.tag
+		};
 		
 		$.boom.browser.prototype._create.call( this );
 
