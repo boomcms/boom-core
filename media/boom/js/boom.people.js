@@ -126,6 +126,7 @@ $.extend($.boom.person, $.boom.item,
 /**
 Filter lists of people by group.
 @class
+@extends $.boom.filter
 */
 $.boom.filter_people = $.extend( {}, $.boom.filter, {
 	

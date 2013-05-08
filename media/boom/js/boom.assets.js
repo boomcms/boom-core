@@ -237,6 +237,7 @@ $.extend($.boom.asset, $.boom.item,
 /**
 Filter lists of assets by tag.
 @class
+@extends $.boom.filter
 */
 $.boom.filter_assets = $.extend( {}, $.boom.filter, {
 	
