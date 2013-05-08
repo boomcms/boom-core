@@ -628,6 +628,7 @@ asyncTest('Changing the hash changes the person item', function(){
 				$( 'body' ).data( 'boom-browser_people' ).url_map.person.rid,
 				3
 			);
+			window.location.hash = '';
 			start();
 		});
 	
