@@ -580,8 +580,6 @@ boom.plugins.js
 			$.boom.log( 'tree init' );
 
 			var self = this;
-			
-			console.log( this.element );
 
 			this.cookieItems = !this.options.useCookie ? [] : $.boom.cookie.get(this.options.cookieName).split($.boom.config.cookie.delimiter);
 

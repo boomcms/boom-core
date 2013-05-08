@@ -186,8 +186,6 @@ $.widget( 'boom.tagger',
 
 		var complete = new $.Deferred();
 		tags = ( tags ) ? tags : [];
-		
-		console.log( type );
 
 		add_input
 			.autocomplete({

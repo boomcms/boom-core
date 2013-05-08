@@ -18,9 +18,6 @@ $.extend($.boom.item,
 	/** @function */
 	get: function( rid ){
 
-		console.log( this );
-		console.log( $.boom.person );
-
 		this.rid = rid;
 
 		var url = this.base_url + 'view/' + rid;
@@ -224,8 +221,6 @@ $.widget( 'boom.browser',
 	_create : function(){
 		
 		$.boom.log( 'content browser init' );
-		
-		console.log( this );
 		
 		this.tag.set_options({
 			perpage: this.options.perpage,

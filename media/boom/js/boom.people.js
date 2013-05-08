@@ -172,7 +172,6 @@ $.widget( 'boom.browser_people', $.boom.browser,
 		
 		var self = this;
 		
-		console.log( self.sidebar );
 		self.sidebar.group_editor({
 			tree_config: self.editableTreeConfig,
 			browser: self
