@@ -201,7 +201,11 @@ $.extend($.boom.asset, $.boom.item,
 
 				var data = $( this ).closest( 'form' ).serialize();
 				
-				self.save( data );
+				self
+					.save( data )
+					.done( function(){
+						$.boom.growl.show( "Asset saved." );
+					});
 
 			})
 			.click(function(){
@@ -268,10 +272,11 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 		
 		$.boom.log( 'asset browser init' );
 		
+		self.item = $.boom.asset;
 		self.tag = $.boom.filter_assets;
 		
 		self.url_map = {
-			asset: $.boom.asset,
+			asset: self.item,
 			tag: self.tag
 		};
 		

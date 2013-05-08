@@ -45,11 +45,10 @@ $.extend($.boom.item,
 
 		$.boom.loader.show();
 
-		return $.post( self.base_url + 'save/' + self.rid, data)
+		return $.post( this.base_url + 'save/' + this.rid, data)
 		.done( function(){
 
 			$.boom.loader.hide();
-			$.boom.growl.show( "Person saved." );
 		});
 	},
 	

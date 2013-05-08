@@ -51,7 +51,11 @@ $.extend($.boom.person, $.boom.item,
 			
 			var data = $( '#boom-person-view > form' ).serialize();
 
-			self.save( data );
+			self
+				.save( data )
+				.done( function(){
+					$.boom.growl.show( "Person saved." );
+				});
 
 		}).click(function(){
 
@@ -154,10 +158,11 @@ $.widget( 'boom.browser_people', $.boom.browser,
 		
 		var self = this;
 		
+		self.item = $.boom.person;
 		self.tag = $.boom.filter_people;
 		
 		self.url_map = {
-			person: $.boom.person,
+			person: self.item,
 			group: self.tag
 		};
 		
