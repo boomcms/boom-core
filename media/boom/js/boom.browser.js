@@ -425,13 +425,14 @@ $.widget( 'boom.browser',
 
 				var 
 					item = segments[0], 
-					rid = segments[1];
+					rid = segments[1],
+					instance = self.url_map[ item ];
 				
-				if ( item.length && self.url_map[ item ] ) {
+				if ( item.length && instance ) {
 					
 					$.boom.loader.show();
 					
-					return self.url_map[ item ]
+					return instance
 						.get( rid )
 						.done( function( response ){
 							
@@ -441,7 +442,7 @@ $.widget( 'boom.browser',
 								.find( '.b-items-content' )
 								.html( response )
 								.ui();
-							self.url_map[ item ].bind( self.main_panel );
+							instance.bind( self.main_panel );
 						});
 				}
 			}, 
