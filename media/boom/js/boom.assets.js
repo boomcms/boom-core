@@ -245,7 +245,9 @@ Filter lists of assets by tag.
 */
 $.boom.filter_assets = $.extend( {}, $.boom.filter, {
 	
-	base_url: '/cms/assets/'
+	base_url: '/cms/assets/',
+	
+	type : 'tag'
 });
 
 /**
@@ -274,11 +276,6 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 		
 		self.item = $.boom.asset;
 		self.tag = $.boom.filter_assets;
-		
-		self.url_map = {
-			asset: self.item,
-			tag: self.tag
-		};
 		
 		$.boom.browser.prototype._create.call( this );
 
@@ -523,10 +520,6 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 
 	},
 	
-	select: function( rid, selected ){
-		$.boom.asset.select( rid, selected );
-	},
-
 	/**
 	Open the asset editing view
 	@param {Integer} rid RID of the currently selected asset.

@@ -134,7 +134,9 @@ Filter lists of people by group.
 */
 $.boom.filter_people = $.extend( {}, $.boom.filter, {
 	
-	base_url: '/cms/people/'
+	base_url: '/cms/people/',
+	
+	type: 'group' 
 });
 
 /**
@@ -160,11 +162,6 @@ $.widget( 'boom.browser_people', $.boom.browser,
 		
 		self.item = $.boom.person;
 		self.tag = $.boom.filter_people;
-		
-		self.url_map = {
-			person: self.item,
-			group: self.tag
-		};
 		
 		$.boom.browser.prototype._create.call( this );
 		
@@ -238,9 +235,5 @@ $.widget( 'boom.browser_people', $.boom.browser,
 					});
 			});
 		
-	},
-	
-	select: function( rid, selected ){
-		$.boom.person.select( rid, selected );
 	}
 });

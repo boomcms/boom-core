@@ -221,6 +221,11 @@ $.widget( 'boom.browser',
 		
 		$.boom.log( 'content browser init' );
 		
+		this.url_map = {};
+		
+		this.url_map[ this.item.type ] = this.item;
+		this.url_map[ this.tag.type ] = this.tag;
+		
 		this.tag.set_options({
 			perpage: this.options.perpage,
 			sortby : this.options.sortby,
@@ -359,7 +364,7 @@ $.widget( 'boom.browser',
 				var type = item[ 0 ];
 				var item_id = item[ 2 ];
 
-				self.select( item_id, $( this ).is(':checked') );
+				self.item.select( item_id, $( this ).is(':checked') );
 
 
 
