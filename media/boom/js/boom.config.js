@@ -623,30 +623,7 @@ window.boomConfig =
 		@type Array
 		@default []
 		*/
-		formData: [],
-		submit: function( e, data ){
-			$( '#b-upload-progress' ).progressbar();
-			
-			file_data = data;
-		},
-		progressall: function( e, data ){
-			var percent = parseInt( (data.loaded / data.total * 100), 10);
-
-			$( '#b-upload-progress' ).progressbar( 'value', percent );
-		},
-		done: function( e, data ){
-			$.boom.log( 'file upload complete' );
-			$.boom.assets.selected_rid = data.result.join( '-' );
-			
-			uploaded.resolve( data );
-			
-		},
-		fail: function( e, data ){
-			$( '#upload-advanced span.message' ).text( "There was an error uploading your file." );
-		},
-		always: function( e, data ){
-			$.boom.log( 'file upload finished' );
-		}
+		formData: []
 	}
 
 };
