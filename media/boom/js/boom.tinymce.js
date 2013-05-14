@@ -1,41 +1,45 @@
 /**
+@fileOverview Boom editor interface for tinyMCE.
+*/
+/**
 * Interface for the tinyMCE editor.
 * @class
 * @name $.tinymce.editor
 * @extends $.boom.editor
 */
-$.widget('tinymce.editor', $.boom.editor, {
+$.widget('tinymce.editor', $.boom.editor,
 	/** @lends $.tinymce.editor */
+	{
 	
-	/** @property 
+	/** @property base_url 
 	@type string
 	@default '/boom/js/tiny_mce'
 	*/
 	base_url: '/media/boom/js/tiny_mce',
-	/** @property 
+	/** @property path
 	@type string
 	@default 'tiny_mce_src.js'
 	*/
 	path: '/jquery.tinymce.js',
-	/** @property 
+	/** @property tinymce
 	@type Object
 	*/
 	tinymce: {},
 	
 	/**
-	@property
+	@property loaded
 	@type boolean
 	*/
 	loaded: false,
 	
 	/**
-	@property
+	@property inline
 	@type boolean
 	*/
 	inline: false,
 	
 	/** 
-	@property
+	@property options
 	@type object
 	*/
 	options : {

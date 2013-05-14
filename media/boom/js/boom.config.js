@@ -1,13 +1,18 @@
 /**
+@fileOverview CMS config, including default config for all widgets.
+*/
+/**
 global boom config
 @namespace
 @name $.boom.config
 */
 
-window.boomConfig = {
+window.boomConfig =
 	/** @lends $.boom.config */
-
-	/** @property */
+	{
+	/** 
+	@property cachePageImages
+	*/
 	cachePageImages : [
 		'/media/boom/img/ajax_load.gif',
 		'/media/boom/img/cms/chunk_edit_icon.png'
@@ -49,7 +54,7 @@ window.boomConfig = {
 		@type boolean
 		@default true
 		*/
-		show: true,
+		show: false,
 		/**
 		@type boolean
 		@default true
@@ -158,12 +163,12 @@ window.boomConfig = {
 		*/
 		maxWidth: 100,
 		/**
-		@type
+		@type function
 		@default null
 		*/
 		show: null,
 		/**
-		@type
+		@type function
 		@default null
 		*/
 		hide: null,
@@ -426,68 +431,6 @@ window.boomConfig = {
 	@static
 	@class
 	*/
-	uploadify : {
-		/**
-		@type boolean
-		@default true
-		*/
-		debug: true,
-		/**
-		@type string
-		@default '/boom/flash/uploadify.swf'
-		*/
-		swf: '/media/boom/flash/uploadify.swf',
-		/**
-		@type string
-		@default '/cms/assets/upload'
-		*/
-		uploader: '/cms/assets/upload',
-		/**
-		@type boolean
-		@default false
-		*/
-		auto: true,
-		/**
-		@type boolean
-		@default true
-		*/
-		multi: true,
-		/**
-		@type string
-		@default 'Select files'
-		*/
-		buttonText: 'Select files',
-		/**
-		@type number
-		@default 5
-		*/
-		queueSizeLimit: 5,
-		/**
-		@type number
-		@default 2
-		*/
-		simUploadLimit: 2,
-		/**
-		@type string
-		@default 'Allowed types: jpg, png, gif'
-		*/
-		fileTypeDesc: 'Allowed types: jpg, png, gif',
-		/**
-		@type string
-		@default '*.jpg;*.png;*.gif'
-		*/
-		fileTypeExts: '*.jpeg;*.jpg;*.png;*.gif',
-		/**
-		@type string
-		@default '/boom/img/cms/cross.png'
-		*/
-		cancelImg: '/boom/img/cms/cross.png'
-	},
-
-	/**
-	@static
-	@class
-	*/
 	ajax : {
 		/**
 		@type string
@@ -516,6 +459,171 @@ window.boomConfig = {
 		@default ''
 		*/
 		lastname: ''
+	},
+	
+	/**
+	@static
+	@class
+	*/
+	browser: {
+		/**
+		@type string
+		@default 'audit_time'
+		*/
+		sortby: 'audit_time',
+		/**
+		@type string
+		@default 'desc'
+		*/
+		order: 'desc',
+		/**
+		@type string
+		@default 'tag/0'
+		*/
+		defaultRoute: 'tag/0',
+		/**
+		@type Array
+		@default []
+		*/ 
+		selected: [],
+		/**
+		@type Array
+		@default []
+		*/
+		types: [],
+		/**
+		@type number
+		@default 1
+		*/
+		page: 1,
+		/**
+		@type number
+		@default 30
+		*/
+		perpage: 30,
+		/**
+		@type number
+		@default 0
+		*/
+		excludeSmartTags: 0,
+		/**
+		@type string
+		@default 'list'
+		*/
+		template: 'list',
+		/**
+		@type Object
+		*/
+		treeConfig: {
+			border: true,
+			height: 'auto',
+			overflow: 'hidden',
+			toggleSelected: false,
+			width: 278
+		}
+	},
+	
+	/**
+	@static
+	@class
+	@extends $.boom.config.browser
+	*/
+	browser_asset: {
+		/**
+		@type string
+		@default 'last_modified'
+		*/
+		sortby: 'last_modified',
+		/**
+		@type string
+		@default 'desc'
+		*/
+		order: 'desc',
+		/**
+		@type string
+		@default 'assets'
+		*/
+		type: 'assets',
+		/**
+		@type Object
+		*/
+		treeConfig : 
+		/** @ignore */ {
+			showEdit: true,
+			showRemove: true,
+			onEditClick: function(event){
+
+				$.boom.items.group.edit(event);
+			},
+			onRemoveClick: function(event){
+
+				$.boom.items.group.remove(event);
+			}
+		}
+	},
+	
+	/**
+	@static
+	@class
+	@extends $.boom.config.browser
+	*/
+	browser_people: {
+		/**
+		@type string
+		@default 'name'
+		*/
+		sortby: 'name',
+		/**
+		@type string
+		@default 'asc'
+		*/
+		order: 'asc',
+		/**
+		@type string
+		@default 'group/0'
+		*/
+		defaultRoute: 'group/0',
+		/**
+		@type string
+		@default 'people'
+		*/ 
+		type: 'people',
+		/**
+		@type Object
+		*/
+		treeConfig : {
+			showEdit: true,
+			showRemove: true
+		}
+	},
+	
+	/**
+	Default options for file uploads
+	https://github.com/blueimp/jQuery-File-Upload/wiki/Options
+	@static
+	@class
+	*/
+	upload: {
+		/**
+		@type string
+		@default '/cms/assets/upload'
+		*/
+		url: '/cms/assets/upload',
+		/**
+		@type string
+		@default 'json'
+		*/
+		dataType: 'json',
+		/**
+		@type boolean
+		@default false
+		*/
+		singleFileUploads: false,
+		/**
+		@type Array
+		@default []
+		*/
+		formData: []
 	}
 
 };

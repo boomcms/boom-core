@@ -1,13 +1,6 @@
 /**
-@class
+@fileOverview People manager UI, including groups and person view.
 */
-$.boom.people = {};
-
-/**
-@class
-@extends $.boom.filter
-*/
-$.boom.people.group = {};
 
 /**
 @class
@@ -15,10 +8,11 @@ $.boom.people.group = {};
 */
 $.boom.person = {};
 
-$.extend($.boom.person, $.boom.item, {
+$.extend($.boom.person, $.boom.item,
 	/** 
 	@lends $.boom.person 
 	*/
+	{
 	
 	base_url: '/cms/people/',
 	
@@ -28,6 +22,8 @@ $.extend($.boom.person, $.boom.item, {
 	bind: function( context){
 
 		var self = this;
+		
+		this.groups.person_id = this.rid;
 
 		$.boom.dialog.bind({
 			image: $('.boom-asset-preview', context )
@@ -35,14 +31,18 @@ $.extend($.boom.person, $.boom.item, {
 
 		$('.b-people-groups-add', context ).click(function(){
 
-			self.groups.add( self.rid );
+			self.groups.add();
 		});
 
 		$('.b-people-group-delete', context ).click(function(){
-			var elem = $( this );
-			var group_id = elem.attr( 'rel' );
+			var $this = $( this );
+			var $li = $this.closest( 'li' );
+			var group_id = $this.attr( 'rel' );
 			
-			self.groups.remove( self.rid, group_id );
+			self.groups.remove( group_id )
+			.done( function(){
+				$li.remove();
+			});
 
 			
 		});
@@ -51,7 +51,11 @@ $.extend($.boom.person, $.boom.item, {
 			
 			var data = $( '#boom-person-view > form' ).serialize();
 
-			self.save( data );
+			self
+				.save( data )
+				.done( function(){
+					$.boom.growl.show( "Person saved." );
+				});
 
 		}).click(function(){
 
@@ -68,14 +72,25 @@ $.extend($.boom.person, $.boom.item, {
 		});
 	},
 	
-	/** @class */
+	/**
+	Handle UI for adding and removing groups from a person
+	@static 
+	@class 
+	*/
 	groups: {
 		
+		/** 
+		@property person_id 
+		*/
+		person_id: null,
+		
 		/** @function */
-		add: function( person_id ){
+		add: function(){
+			
+			var self = this;
 			
 			var dialog = $.boom.dialog.open({
-				url: '/cms/people/add_group/' + person_id,
+				url: '/cms/people/add_group/' + self.person_id,
 				title: 'Add group',
 				callback: function(){
 
@@ -83,63 +98,45 @@ $.extend($.boom.person, $.boom.item, {
 					var data = $( dialog ).find('form').serialize();
 					$.boom.loader.show();
 
-					$.post('/cms/people/add_group/' + person_id, data )
+					return $.post('/cms/people/add_group/' + self.person_id, data )
 					.done( function(){
 
 						$.boom.loader.hide();
+						$.boom.history
+							.load( 'person/' + self.person_id )
+							.done( function(){
+								$( '#boom-person-view ul[role=tablist] a:eq(2)' ).click();
+							});
 					});
 				}
 			});
 		},
 		
 		/** @function */
-		remove: function( person_id, group_id ){
+		remove: function( group_id ){
+
+			var self = this;
 			
 			$.boom.loader.show();
 
-			$.post( '/cms/people/remove_group/' + person_id, {groups: group_id} )
-			.done( function(){
-				elem.closest( 'li' ).remove();
-				$.boom.loader.hide();
-			});
+			return $.post( '/cms/people/remove_group/' + self.person_id, {group_id: group_id} )
+				.done( function(){
+					$.boom.loader.hide();
+				});
 		}
 	}
 });
 
-$.extend($.boom.people.group, $.boom.filter,  {
-	/** 
-	@lends $.boom.people.group 
-	*/
-
-
-	/** @function */
-	build_url : function(){
-
-		var self = this;
-
-		params =
-			'tag=' + self.rid + '&' +
-			'perpage=' + self.options.perpage + '&' +
-			'sortby=' + self.options.sortby + '&' +
-			'order='  + self.options.order;
-
-		var url =
-			'/cms/' + self.options.type + '/list'
-			+ '?' + params;
-			
-		$.boom.log('Group items get' + self.rid );
-		
-		return url;
-	},
-
-	/** @function */
-	bind : function( context ){
-
-		
-
-		$('.b-items-thumbs .thumb', context ).captions($.boom.config.captions);
-
-	}
+/**
+Filter lists of people by group.
+@class
+@extends $.boom.filter
+*/
+$.boom.filter_people = $.extend( {}, $.boom.filter, {
+	
+	base_url: '/cms/people/',
+	
+	type: 'group' 
 });
 
 /**
@@ -148,28 +145,14 @@ $.extend($.boom.people.group, $.boom.filter,  {
 * @name $.boom.browser_people
 * @extends $.boom.browser
 */
-$.widget( 'boom.browser_people', $.boom.browser, {
+$.widget( 'boom.browser_people', $.boom.browser,
 	/** @lends $.boom.browser_people */
+	{
 	
 	/**
-	map url fragments to objects
-	@property
+	@see $.boom.config.browser_people
 	*/
-	url_map : {
-		person: $.boom.person,
-		group: $.boom.people.group
-	},
-	
-	options: {
-		sortby: 'name',
-		order: 'asc',
-		defaultRoute: 'group/0', 
-		type: 'people',
-		treeConfig : {
-			showEdit: true,
-			showRemove: true
-		}
-	},
+	options: $.boom.config.browser_people,
 	
 	_create : function(){
 		
@@ -177,7 +160,8 @@ $.widget( 'boom.browser_people', $.boom.browser, {
 		
 		var self = this;
 		
-		this.tag = this.url_map.group;
+		self.item = $.boom.person;
+		self.tag = $.boom.filter_people;
 		
 		$.boom.browser.prototype._create.call( this );
 		
@@ -190,7 +174,6 @@ $.widget( 'boom.browser_people', $.boom.browser, {
 		
 		var self = this;
 		
-		console.log( self.sidebar );
 		self.sidebar.group_editor({
 			tree_config: self.editableTreeConfig,
 			browser: self
@@ -200,10 +183,6 @@ $.widget( 'boom.browser_people', $.boom.browser, {
 			var dialog = $.boom.dialog.open({
 				url: '/cms/people/add',
 				title: 'Create new person',
-				onLoad: function(){
-
-					$('#boom-tagmanager-create-person-form input[name="name"]').focus();
-				},
 				callback: function(){
 					
 					var data = $('#boom-tagmanager-create-person-form').serialize();
@@ -256,9 +235,5 @@ $.widget( 'boom.browser_people', $.boom.browser, {
 					});
 			});
 		
-	},
-	
-	select: function( rid, selected ){
-		$.boom.person.select( rid, selected );
 	}
 });

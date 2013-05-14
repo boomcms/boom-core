@@ -1,14 +1,18 @@
 /**
+@fileOverview jQuery UI widgets for searching tags and applying tags to content.
+*/
+
+/**
 * User interface for tagging content.
 * @class
 * @name $.boom.tagger
 */
-$.widget( 'boom.tagger', {
+$.widget( 'boom.tagger',
 /** @lends $.boom.tagger */
-
+	{
 	/**
 	default config
-	@property
+	@property options
 	*/
 	options: {
 		/** URL prefix for ajax calls */
@@ -20,7 +24,7 @@ $.widget( 'boom.tagger', {
 	},
 	
 	/**
-	@property
+	@property items
 	*/
 	items : {},
 
@@ -182,8 +186,6 @@ $.widget( 'boom.tagger', {
 
 		var complete = new $.Deferred();
 		tags = ( tags ) ? tags : [];
-		
-		console.log( type );
 
 		add_input
 			.autocomplete({
@@ -234,12 +236,13 @@ $.widget( 'boom.tagger', {
 * @name $.boom.tagger_search
 * @extends $.boom.tagger
 */
-$.widget( 'boom.tagger_search', $.boom.tagger, {
+$.widget( 'boom.tagger_search', $.boom.tagger,
 	/** @lends $.boom.tagger_search */
+	{
 	
 	/**
 	default config
-	@property
+	@property options
 	*/
 	options: {
 		/** selected tags for this search */
@@ -320,12 +323,13 @@ $.widget( 'boom.tagger_search', $.boom.tagger, {
 * @name $.boom.tagger_deferred
 * @extends $.boom.tagger
 */
-$.widget( 'boom.tagger_deferred', $.boom.tagger, {
+$.widget( 'boom.tagger_deferred', $.boom.tagger,
 	/** @lends $.boom.tagger_deferred */
+	{
 	
 	/**
 	default config
-	@property
+	@property options
 	*/
 	options: {
 		/** selected tags */

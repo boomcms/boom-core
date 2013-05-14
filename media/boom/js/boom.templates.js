@@ -1,11 +1,15 @@
+/**
+@fileOverview Template manager UI.
+*/
 $.extend($.boom, {
 
 	/**
 	* @class
 	* @name $.boom.templates
 	*/
-	templates : {
+	templates :
 		/** @lends $.boom.templates */
+		{
 
 		/** @function */
 		init : function(config) {

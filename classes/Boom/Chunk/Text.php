@@ -49,7 +49,7 @@ class Boom_Chunk_Text extends Chunk
 		switch ($this->_chunk->slotname)
 		{
 			case 'standfirst':
-				return "<h2 class=\"standFirst\"$title>$text</h2>";
+				return "<p class=\"standFirst\"$title>$text</p>";
 				break;
 			case 'bodycopy':
 				return "<div id=\"content\"$title>$text</div>";

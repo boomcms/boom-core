@@ -1,25 +1,21 @@
 /**
+@fileOverview Asset manager UI, including asset tags and asset view.
+*/
+/**
 @class
 @extends $.boom.item
 */
 $.boom.asset = {};
 
 /**
-@class
+@namespace
 */
 $.boom.assets = {};
 
-/**
-@class
-@extends $.boom.filter
-*/
-$.boom.assets.tag = {};
 
-$.extend($.boom.assets, {
+$.extend($.boom.assets,
 	/** @lends $.boom.assets */
-
-	/** @property */
-	browser_asset: {},
+	{
 
 	/**
 	Open an asset manager in a dialog box.
@@ -38,7 +34,8 @@ $.extend($.boom.assets, {
 			top.location.hash = '';
 		};
 
-		var default_options = {
+		var default_options = 
+			/** @ignore */ {
 			url: '/cms/assets/manager/',
 			iframe: false,
 			width: 1000,
@@ -119,8 +116,9 @@ $.extend($.boom.assets, {
 	}
 });
 
-$.extend($.boom.asset, $.boom.item, {
+$.extend($.boom.asset, $.boom.item,
 	/** @lends $.boom.asset */
+	{
 	
 	base_url: '/cms/assets/',
 	
@@ -203,7 +201,11 @@ $.extend($.boom.asset, $.boom.item, {
 
 				var data = $( this ).closest( 'form' ).serialize();
 				
-				self.save( data );
+				self
+					.save( data )
+					.done( function(){
+						$.boom.growl.show( "Asset saved." );
+					});
 
 			})
 			.click(function(){
@@ -230,48 +232,22 @@ $.extend($.boom.asset, $.boom.item, {
 
 		$( '.boom-tagmanager-asset-back', context ).on( 'click', function( event ){
 			event.preventDefault();
-			$.boom.history.load( 'tag/' + $.boom.assets.tag.rid );
+			$.boom.history.load( 'tag/' + $.boom.filter_assets.rid );
 
 		});
 	}
 });
 
-$.extend($.boom.assets.tag, $.boom.filter,  {
-	/** 
-	@lends $.boom.assets.tag
-	*/
-
-	rid: 0,
-
-	filters: {},
-
-	/** @function */
-	build_url : function(){
-
-		$.boom.log( 'get tag ' + this.rid );
-
-		var self = this;
-
-		params =
-			'tag=' + self.rid + '&' +
-			'perpage=' + self.options.perpage + '&' +
-			'sortby=' + self.options.sortby;
-
-		for ( filter in self.filters ) {
-			params += '&' + filter + '=' + self.filters[ filter ];
-		}
-
-		var url =
-			'/cms/' + self.options.type + '/list'
-			+ '?' + params;
-
-		return url;
-	},
+/**
+Filter lists of assets by tag.
+@class
+@extends $.boom.filter
+*/
+$.boom.filter_assets = $.extend( {}, $.boom.filter, {
 	
-	bind : function( context ) {
-		
-		$('.b-items-thumbs .thumb', context ).captions($.boom.config.captions);
-	}
+	base_url: '/cms/assets/',
+	
+	type : 'tag'
 });
 
 /**
@@ -280,41 +256,26 @@ $.extend($.boom.assets.tag, $.boom.filter,  {
 * @name $.boom.browser_asset
 * @extends $.boom.browser
 */
-$.widget( 'boom.browser_asset', $.boom.browser, {
+$.widget( 'boom.browser_asset', $.boom.browser,
 	/** @lends $.boom.browser_asset */
+	{
 	
 	/**
-	map url fragments to objects
-	@property
+	default config
+	@property options
+	@default $.boom.config.browser_asset
+	@see $.boom.config.browser_asset
 	*/
-	url_map : {
-		asset: $.boom.asset,
-		tag: $.boom.assets.tag
-	},
-	
-	options: {
-		sortby: 'last_modified',
-		order: 'desc',
-		type: 'assets',
-		treeConfig : {
-			showEdit: true,
-			showRemove: true,
-			onEditClick: function(event){
-
-				$.boom.items.group.edit(event);
-			},
-			onRemoveClick: function(event){
-
-				$.boom.items.group.remove(event);
-			}
-		}
-	},
+	options: $.boom.config.browser_asset,
 	
 	_create : function(){
 		
+		var self = this;
+		
 		$.boom.log( 'asset browser init' );
 		
-		this.tag = this.url_map.tag;
+		self.item = $.boom.asset;
+		self.tag = $.boom.filter_assets;
 		
 		$.boom.browser.prototype._create.call( this );
 
@@ -559,10 +520,6 @@ $.widget( 'boom.browser_asset', $.boom.browser, {
 
 	},
 	
-	select: function( rid, selected ){
-		$.boom.asset.select( rid, selected );
-	},
-
 	/**
 	Open the asset editing view
 	@param {Integer} rid RID of the currently selected asset.
@@ -588,6 +545,7 @@ $.widget( 'boom.browser_asset', $.boom.browser, {
 
 	/**
 	Upload a new asset file.
+	@function
 	*/
 	upload: function( opts ){
 
@@ -595,14 +553,10 @@ $.widget( 'boom.browser_asset', $.boom.browser, {
 		var uploaded = new $.Deferred();
 		var file_data = {};
 		
-		var default_opts = {
-			url: '/cms/assets/upload',
-			dataType: 'json',
-			singleFileUploads: false,
-			formData: [],
+		var default_opts = $.extend( $.boom.config.upload, {
 			submit: function( e, data ){
 				$( '#b-upload-progress' ).progressbar();
-				
+
 				file_data = data;
 			},
 			progressall: function( e, data ){
@@ -613,9 +567,9 @@ $.widget( 'boom.browser_asset', $.boom.browser, {
 			done: function( e, data ){
 				$.boom.log( 'file upload complete' );
 				$.boom.assets.selected_rid = data.result.join( '-' );
-				
+
 				uploaded.resolve( data );
-				
+
 			},
 			fail: function( e, data ){
 				$( '#upload-advanced span.message' ).text( "There was an error uploading your file." );
@@ -623,7 +577,7 @@ $.widget( 'boom.browser_asset', $.boom.browser, {
 			always: function( e, data ){
 				$.boom.log( 'file upload finished' );
 			}
-		};
+		});
 		
 		opts = $.extend( default_opts, opts );
 		

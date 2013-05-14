@@ -1,15 +1,22 @@
 /**
+@fileOverview Generic item browser. Base classes for asset and people managers.
+*/
+/**
 @class
 */
 $.boom.item = {};
 
-$.extend($.boom.item, {
+$.extend($.boom.item,
 	/** @lends $.boom.item */
+	{
+	
+	/** 
+	@property rid
+	*/
+	rid: null,
 
 	/** @function */
 	get: function( rid ){
-
-		var self = this;
 
 		this.rid = rid;
 
@@ -38,11 +45,10 @@ $.extend($.boom.item, {
 
 		$.boom.loader.show();
 
-		return $.post( self.base_url + 'save/' + self.rid, data)
+		return $.post( this.base_url + 'save/' + this.rid, data)
 		.done( function(){
 
 			$.boom.loader.hide();
-			$.boom.growl.show( "Person saved." );
 		});
 	},
 	
@@ -102,24 +108,96 @@ $.extend($.boom.item, {
 });
 
 /**
+Generate filtered lists of items in the browser.
 @class
 */
 $.boom.filter = {};
 
-$.extend($.boom.filter, {
+$.extend($.boom.filter,
 	/** @lends $.boom.filter */
+	{
+	/** tag ID */
+	rid: 0,
+
+	/** filters */
+	filters: {},
 	
-	/** @function */
+	bind : function( context ) {
+		
+		$('.b-items-thumbs .thumb', context ).captions($.boom.config.captions);
+	},
+	
+	/**
+	Set search options.
+	@param {Object} options.
+	*/
+	set_options : function( options ){
+		
+		this.options = options;
+		
+	},
+	
+	/**
+	Set search filters from an array of tags.
+	@param {Array} tags. Array of tags.
+	*/
+	set_filters : function( tags ){
+		
+		this.filters = {};
+		
+		for ( t in tags ) {
+			var tag = tags[ t ];
+			
+			switch( tag[ 0 ] ) {
+				
+				case '#tag': case '#group':
+					this.rid = tag.id;
+					break;
+				default:
+					var name = tag.type.replace( '#', '' );
+					this.filters[ name ] = tag.id;
+			}
+		}
+	},
+	
+	/**
+	Build AJAX request URL to return a filtered list of items 
+	@function 
+	*/
+	build_url : function(){
+
+		$.boom.log( 'get tag ' + this.rid );
+
+		var self = this;
+
+		params =
+			'tag=' + self.rid + '&' +
+			'perpage=' + self.options.perpage + '&' +
+			'sortby=' + self.options.sortby;
+
+		for ( filter in self.filters ) {
+			params += '&' + filter + '=' + self.filters[ filter ];
+		}
+
+		var url =
+			self.base_url + '/list'
+			+ '?' + params;
+
+		return url;
+	},
+		
+	/** 
+	@function 
+	@returns {Deferred} ajax request returning a set of items.
+	*/
 	get : function( rid ){
 
 		var self = this;
 		var options = this.options;
 
 		this.rid = rid;
-
-		options.url = this.build_url();
 		
-		return $.get( options.url );
+		return $.get( this.build_url() );
 	}
 });
 
@@ -128,41 +206,30 @@ $.extend($.boom.filter, {
 * @class
 * @name $.boom.browser
 */
-$.widget( 'boom.browser', {
+$.widget( 'boom.browser',
 	/** @lends $.boom.browser */
+	{
 	
 	/**
 	default config
-	@property
+	@property options
+	@see $.boom.config.browser
 	*/
-	options : {
-		sortby: 'audit_time',
-		order: 'desc',
-		defaultRoute: 'tag/0', 
-		selected: [],
-		types: [],
-		page: 1,
-		perpage: 30,
-		excludeSmartTags: 0,
-		template: 'list',
-		treeConfig: {
-			border: true,
-			height: 'auto',
-			overflow: 'hidden',
-			toggleSelected: false,
-			width: 278
-		}
-	},
+	options : $.boom.config.browser,
 	
 	_create : function(){
 		
 		$.boom.log( 'content browser init' );
 		
-		this._set_tag_options({
+		this.url_map = {};
+		
+		this.url_map[ this.item.type ] = this.item;
+		this.url_map[ this.tag.type ] = this.tag;
+		
+		this.tag.set_options({
 			perpage: this.options.perpage,
 			sortby : this.options.sortby,
-			order : this.options.order,
-			type: this.options.type
+			order : this.options.order
 		});
 
 		this.main_panel = $('.b-items-rightpane');
@@ -238,7 +305,10 @@ $.widget( 'boom.browser', {
 					var tag = $(this)
 						.attr( 'href' )
 						.split( '/' );
-					tags.push( tag );
+					tags.push( {
+						type :	tag[0],
+						id :	tag[1]
+					} );
 				});
 			
 			return tags;
@@ -252,21 +322,7 @@ $.widget( 'boom.browser', {
 
 				var tags = multi_select( $this );
 
-				self.tag.filters = {};
-				
-				for ( t in tags ) {
-					var tag = tags[ t ];
-					
-					switch( tag[ 0 ] ) {
-						
-						case '#tag': case '#group':
-							self.tag.rid = tag[ 1 ];
-							break;
-						default:
-							var name = tag[ 0 ].replace( '#', '' );
-							self.tag.filters[ name ] = tag[ 1 ];
-					}
-				}
+				self.tag.set_filters( tags );
 
 				$.boom.history.load( tag_name + '/' + self.tag.rid );
 				return false;
@@ -308,7 +364,7 @@ $.widget( 'boom.browser', {
 				var type = item[ 0 ];
 				var item_id = item[ 2 ];
 
-				self.select( item_id, $( this ).is(':checked') );
+				self.item.select( item_id, $( this ).is(':checked') );
 
 
 
@@ -352,17 +408,13 @@ $.widget( 'boom.browser', {
 		
 	},
 	
-	/** set navigation options. */
-	_set_tag_options : function( options ){
-		this.tag.options = options;
-	},
 	/** Default history routing. */
 	defaultRoute: function(){
 
 		$.boom.history.load( this.options.defaultRoute);
 	},
 
-	/** Map URL fragment #{item}/{id} to get method call $.boom.{item}.get( id ); */
+	/** Map URL fragment #{item}/{id} to get method call this.url_map.{item}.get( id ); */
 	route : function(){
 
 		var self = this;
@@ -373,13 +425,14 @@ $.widget( 'boom.browser', {
 
 				var 
 					item = segments[0], 
-					rid = segments[1];
+					rid = segments[1],
+					instance = self.url_map[ item ];
 				
-				if ( item.length && self.url_map[ item ] ) {
+				if ( item.length && instance ) {
 					
 					$.boom.loader.show();
 					
-					return self.url_map[ item ]
+					return instance
 						.get( rid )
 						.done( function( response ){
 							
@@ -389,7 +442,7 @@ $.widget( 'boom.browser', {
 								.find( '.b-items-content' )
 								.html( response )
 								.ui();
-							self.url_map[ item ].bind( self.main_panel );
+							instance.bind( self.main_panel );
 						});
 				}
 			}, 

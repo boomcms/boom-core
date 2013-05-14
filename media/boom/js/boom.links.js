@@ -1,7 +1,9 @@
-
-$.extend( $.boom, {
+/**
+@fileOverview Link editor dialog
+*/
+$.extend( $.boom,
 	/** @lends $.boom */
-	
+	{
 	/**
 	Link manager
 	@class
@@ -20,7 +22,8 @@ $.extend( $.boom, {
 				'/cms/chunk/insert_url/' + opts.page_rid : 
 				'/cms/chunk/insert_url';
 			
-			var default_opts = {
+			var default_opts = 
+			/** @ignore */ {
 				title: 'Edit link',
 				url: link_manager_url,
 				deferred: complete,
