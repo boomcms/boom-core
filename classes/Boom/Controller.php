@@ -44,7 +44,7 @@ class Boom_Controller extends Controller
 		$this->auth = Auth::instance();
 
 		// Require the user to be logged in if the site isn't live.
-		if ( ! (Kohana::$environment == Kohana::PRODUCTION OR $this->auth->logged_in()))
+		if ( ! (Kohana::$environment == Kohana::PRODUCTION OR $this->auth->logged_in() OR ! $this->request->is_external()))
 		{
 			throw new HTTP_Exception_401;
 		}

@@ -70,7 +70,7 @@ class Task_Boom_Testpages extends Minion_Task
 			else
 			{
 				$this->_report_test_failed();
-				$errors[] = array('page' => $page->primary_uri, 'status' => $status);
+				$errors[] = array('page' => $page->primary_uri, 'status' => $result);
 			}
 
 			$this->_report_testsuite_progress($i);
