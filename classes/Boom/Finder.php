@@ -6,7 +6,7 @@ abstract class Boom_Finder
 
 	abstract protected function _apply_tag_filter(Model_Tag $tag);
 	abstract public function sorted_by_title();
-	abstract public function with_the_most_Recent_first();
+	abstract public function with_the_most_recent_first();
 
 	/**
 	 *

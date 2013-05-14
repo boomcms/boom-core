@@ -82,7 +82,7 @@ class Boom_Finder_Paginated extends Finder
 
 	public function with_the_most_Recent_first()
 	{
-		$this->_finder->with_the_most_Recent_first();
+		$this->_finder->with_the_most_recent_first();
 
 		return $this;
 	}
@@ -90,7 +90,6 @@ class Boom_Finder_Paginated extends Finder
 	public function __call($name, $arguments)
 	{
 		call_user_func_array(array($this->_finder, $name), $arguments);
-
 		return $this;
 	}
 }
