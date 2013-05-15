@@ -6,11 +6,26 @@ $.extend( $.boom,
 	{
 	/**
 	Link manager
-	@class
+	@namespace
 	*/
 	links : {
 		
-		/** @function */
+		/** 
+		@function 
+		@example
+		var link = {
+			url : existing_link.href,
+			rid : existing_link.rel,
+			title : ( existing_link.textContent || existinglink.innerText ) 
+		};
+		opts.link = link;
+		$.boom.links
+			.picker( opts )
+			.done( function( link ){
+				existing_link.href = link.url;
+				existing_link.rel = link.rid;
+			});
+		*/
 		picker: function( opts ) {
 			
 			opts = ( opts ) ? opts : {};
