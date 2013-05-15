@@ -131,12 +131,20 @@ class Boom_Controller_Cms_Autocomplete extends Boom_Controller
 	 */
 	public function action_tags()
 	{
+		// Determine whether we're filtering page or assets tags so we know which table to join on.
+		$object_name = ($this->request->query('type') == Model_Tag::ASSET)? 'asset' : 'page';
+		$join_table = Inflector::plural($object_name).'_tags';
+		$object_id_column = $object_name.'_id';
+
 		// Build a query to find tags matching on path.
 		$query = DB::select('tags.name', 'tags.id')
 			->from('tags')
+			->join($join_table, 'inner')
+			->on('tags.id', '=', $join_table.".tag_id")
 			->where('name', 'like', "%$this->text%")
 			->where('type', '=', $this->request->query('type'))
 			->order_by('name', 'asc')
+			->distinct(TRUE)
 			->limit($this->count);
 
 		// If an array of tags has been sent as well then only include tags which are in use with the given tags.
@@ -145,11 +153,6 @@ class Boom_Controller_Cms_Autocomplete extends Boom_Controller
 		if ( ! empty($tags))
 		{
 			$tag_count = count($tags);
-
-			// Determine whether we're filtering page or assets tags so we know which table to join on.
-			$object_name = ($this->request->query('type') == Model_Tag::ASSET)? 'asset' : 'page';
-			$join_table = Inflector::plural($object_name).'_tags';
-			$object_id_column = $object_name.'_id';
 
 			// Only match tags which are in use with the given tags.
 			$query
@@ -160,8 +163,7 @@ class Boom_Controller_Cms_Autocomplete extends Boom_Controller
 				->where('t2.tag_id', 'IN', $tags)
 				->where('t1.tag_id', 'not in', $tags)
 				->group_by("t1.$object_id_column")
-				->having(DB::expr('count(distinct t2.tag_id)'), '>=', $tag_count)
-				->distinct(TRUE);
+				->having(DB::expr('count(distinct t2.tag_id)'), '>=', $tag_count);
 		}
 
 		// Get the query results.
