@@ -29,7 +29,7 @@ class Boom_Chunk_Asset extends Chunk
 		if (preg_match('/^\d+$/D', $this->_chunk->url))
 		{
 			$target = new Model_Page($this->_chunk->url);
-			$v->title = $p->version()->title;
+			$v->title = $target->version()->title;
 			$v->url = $target->url();
 		}
 		else
