@@ -760,6 +760,7 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 		self
 			._edit_caption( caption )
 			.done( function(){
+				self.asset.description = caption.text();
 				self.edited = true;
 			});
 	},
@@ -783,7 +784,7 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 
 		$.boom.loader.show();
 
-		var data = { asset_id : rid, link : link.url } ;
+		var data = { asset_id : rid, link : link.url, description: caption.text() } ;
 
 		self._preview( data )
 		.done( function( data ){
@@ -847,8 +848,9 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 			.on( 'blur', function(){
 				edited.resolve();
 			})
-			.on( 'keyup', function( e ){
+			.on( 'keyup click', function( e ){
 				e.stopPropagation();
+				e.preventDefault();	
 			} );
 
 			if ( $.trim( $caption.text() ) == '' ) {
