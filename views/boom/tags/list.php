@@ -9,7 +9,7 @@
 		<? endforeach; ?>
 	</ul>
 
-	<input class="b-filter-input" />
+	<input class="b-filter-input" id="b-tags-add-name" />
 
 	<button id="b-tags-add" class="boom-button" data-icon="ui-icon-boom-add">
 			<?=__('Add')?> <?=__('tag')?>
