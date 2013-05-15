@@ -21,6 +21,15 @@ $.extend($.boom.assets,
 	Open an asset manager in a dialog box.
 	@function
 	@returns {Promise} promise which resolves with an asset RID.
+	@example
+	var asset_id = selected_asset.id;
+	$.boom.assets
+		.picker({
+			id : asset_id
+		})
+		.done( function( asset_id ){
+			selected_asset.id = asset_id;
+		});
 	*/
 	picker : function( opts ){
 		$.boom.log( 'opening an asset manager' );
