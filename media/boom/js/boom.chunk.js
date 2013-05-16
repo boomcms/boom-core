@@ -707,7 +707,6 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 			
 			default:
 				if( img_src ) asset_id = img_src.match( /asset\/(thumb|view)\/([0-9]+)/ );
-				console.log( asset_id );
 				if ( asset_id != null && asset_id.length ) asset_id = asset_id[ 2 ];
 			break;
 		}
