@@ -689,7 +689,7 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 		var asset_selected = new $.Deferred();
 		
 		var asset_id = 0;
-		var url;
+		var url = this.element.find( '.asset-link' ).attr( 'href' );
 		var caption = this.element.find( '.asset-caption' );
 		
 		switch( this.element[0].nodeName ){
@@ -698,18 +698,22 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 				asset_id = this.element
 					.find( 'img' )
 					.attr( 'src' )
-					.match( /asset\/(thumb|view)\/([0-9]+)/ )[2];
+					.match( /asset\/(thumb|view)\/([0-9]+)/ );
+				if ( asset_id != null && asset_id.length ) asset_id = asset_id[ 2 ];
 			break;
 			
 			case 'IMG': 
-				asset_id = this.element[0].src.match( /asset\/(thumb|view)\/([0-9]+)/ )[2];
+				asset_id = this.element[0].src.match( /asset\/(thumb|view)\/([0-9]+)/ );
+				if ( asset_id != null && asset_id.length ) asset_id = asset_id[ 2 ];
 			break;
 			
 			default:
 				asset_id = this.element
 					.find( 'img' )
 					.attr( 'src' )
-					.match( /asset\/(thumb|view)\/([0-9]+)/ )[2];
+					.match( /asset\/(thumb|view)\/([0-9]+)/ );
+				console.log( asset_id );
+				if ( asset_id != null && asset_id.length ) asset_id = asset_id[ 2 ];
 			break;
 		}
 		
@@ -751,7 +755,9 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 			self.insert( self.asset.asset_id, link );
 		})
 		.fail( function() {
-			self._remove( { asset_id : 0, link : null } );
+			var data = { asset_id : 0, link : self.asset.url, caption: self.asset.description } ;
+			self.asset.asset_id = 0;
+			self._remove( data );
 		})
 		.always( function(){
 			$.boom.history.load( '' );
@@ -813,7 +819,7 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 				asset_id : rid,
 				title : null,
 				caption : this.asset.description,
-				url : this.asset.url
+				link : this.asset.url
 			};
 	},
 
