@@ -725,7 +725,7 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 		asset_selected
 		.fail( function() {
 			$.boom.log( 'asset chunk cancelled' );
-			self.destroy();
+			if ( !caption.length ) self.destroy();
 		})
 		;
 
@@ -764,6 +764,7 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 				self.asset.description = caption.text();
 				self._save_slot();
 				self.edited = true;
+				self.destroy();
 			});
 	},
 
@@ -860,6 +861,21 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 			}
 
 		return edited;
+	},
+	
+	/**
+	Remove editor UI and exit
+	*/
+	_destroy : function() {
+		$.boom.log( 'exiting asset editor' );
+		var self = this;
+
+		this.element
+			.find( '.asset-caption' )
+			.removeAttr( 'contentEditable style' );
+
+		$.ui.chunk.prototype._destroy.call( this );
+
 	}
 
 });
