@@ -690,6 +690,7 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 		
 		var asset_id = 0;
 		var url;
+		var caption = this.element.find( '.asset-caption' );
 		
 		switch( this.element[0].nodeName ){
 			case 'A':
@@ -703,6 +704,13 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 			case 'IMG': 
 				asset_id = this.element[0].src.match( /asset\/(thumb|view)\/([0-9]+)/ )[2];
 			break;
+			
+			default:
+				asset_id = this.element
+					.find( 'img' )
+					.attr( 'src' )
+					.match( /asset\/(thumb|view)\/([0-9]+)/ )[2];
+			break;
 		}
 		
 		$.boom.log('Asset chunk slot edit ' + asset_id);
@@ -710,7 +718,7 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 		self.asset = {
 			asset_id : asset_id,
 			title : null,
-			caption : null,
+			description : caption.text(),
 			url : url
 		};
 
@@ -748,6 +756,13 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 		.always( function(){
 			$.boom.history.load( '' );
 		});
+		
+		self
+			._edit_caption( caption )
+			.done( function(){
+				self.asset.description = caption.text();
+				self.edited = true;
+			});
 	},
 
 	/**
@@ -758,17 +773,18 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 		$.boom.log( 'inserting asset' + rid );
 
 		var self = this;
+		var caption = this.element.find( '.asset-caption' );
 		link = ( link ) ? link : { url : null };
 		self.asset = {
 			asset_id : rid,
 			title : null,
-			caption : null,
+			description : caption.text(),
 			url : link.url
 		};
 
 		$.boom.loader.show();
 
-		var data = { asset_id : rid, link : link.url } ;
+		var data = { asset_id : rid, link : link.url, caption: caption.text() } ;
 
 		self._preview( data )
 		.done( function( data ){
@@ -796,7 +812,7 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 			return {
 				asset_id : rid,
 				title : null,
-				caption : null,
+				caption : this.asset.description,
 				url : this.asset.url
 			};
 	},
@@ -809,6 +825,39 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 		self.rid = 0;
 
 		this.insert( self.rid );
+	},
+	/**
+	Edit a caption
+	@param {Object} $caption Caption node
+	@returns {Deferred}
+	*/
+	_edit_caption : function( $caption ) {
+
+		var edited = new $.Deferred();
+
+		$caption
+			.attr( 'contentEditable', 'true' )
+			.on( 'focus mouseover', function(){
+				$( this )
+					.css( 'border', '1px solid black' );
+			})
+			.on( 'blur mouseout', function(){
+				$( this )
+					.removeAttr( 'style' );
+			})
+			.on( 'blur', function(){
+				edited.resolve();
+			})
+			.on( 'keyup click', function( e ){
+				e.stopPropagation();
+				e.preventDefault();	
+			} );
+
+			if ( $.trim( $caption.text() ) == '' ) {
+				$caption.text( 'Default text' );
+			}
+
+		return edited;
 	}
 
 });
