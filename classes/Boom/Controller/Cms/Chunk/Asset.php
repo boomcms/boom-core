@@ -19,7 +19,6 @@ class Boom_Controller_Cms_Chunk_Asset extends Boom_Controller_Cms_Chunk
 				'asset_id'	=>	$data['data']['asset_id'],
 				'link'		=>	$data['data']['link'],
 				'caption'	=>	$data['data']['caption'],
-				'description'	=>	$data['data']['caption'],
 			));
 
 		$chunk = new Chunk_Asset($this->page, $model, $data['slotname']);
