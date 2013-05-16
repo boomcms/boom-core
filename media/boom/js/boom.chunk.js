@@ -767,6 +767,7 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 			._edit_caption( caption )
 			.done( function(){
 				self.asset.description = caption.text();
+				self._save_slot();
 				self.edited = true;
 			});
 	},
