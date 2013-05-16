@@ -80,7 +80,7 @@ class Boom_Finder_Paginated extends Finder
 		return $this;
 	}
 
-	public function with_the_most_Recent_first()
+	public function with_the_most_recent_first()
 	{
 		$this->_finder->with_the_most_recent_first();
 
