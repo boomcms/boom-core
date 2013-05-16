@@ -784,7 +784,7 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 
 		$.boom.loader.show();
 
-		var data = { asset_id : rid, link : link.url, description: caption.text() } ;
+		var data = { asset_id : rid, link : link.url, caption: caption.text() } ;
 
 		self._preview( data )
 		.done( function( data ){
@@ -812,7 +812,7 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 			return {
 				asset_id : rid,
 				title : null,
-				description : this.asset.description,
+				caption : this.asset.description,
 				url : this.asset.url
 			};
 	},
