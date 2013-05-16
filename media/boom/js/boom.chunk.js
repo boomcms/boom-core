@@ -683,35 +683,30 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 	*/
 	edit: function(){
 
-		
-
 		var self = this;
 		var asset_selected = new $.Deferred();
 		
 		var asset_id = 0;
 		var url = this.element.find( '.asset-link' ).attr( 'href' );
 		var caption = this.element.find( '.asset-caption' );
+		var img_src = this.element.find( 'img' ).attr( 'src' );
 		
 		switch( this.element[0].nodeName ){
+			
 			case 'A':
 				url = this.element.attr( 'href' );
-				asset_id = this.element
-					.find( 'img' )
-					.attr( 'src' )
-					.match( /asset\/(thumb|view)\/([0-9]+)/ );
+				if( img_src ) asset_id = img_src.match( /asset\/(thumb|view)\/([0-9]+)/ );
 				if ( asset_id != null && asset_id.length ) asset_id = asset_id[ 2 ];
 			break;
 			
 			case 'IMG': 
 				asset_id = this.element[0].src.match( /asset\/(thumb|view)\/([0-9]+)/ );
 				if ( asset_id != null && asset_id.length ) asset_id = asset_id[ 2 ];
+				url = '';
 			break;
 			
 			default:
-				asset_id = this.element
-					.find( 'img' )
-					.attr( 'src' )
-					.match( /asset\/(thumb|view)\/([0-9]+)/ );
+				if( img_src ) asset_id = img_src.match( /asset\/(thumb|view)\/([0-9]+)/ );
 				console.log( asset_id );
 				if ( asset_id != null && asset_id.length ) asset_id = asset_id[ 2 ];
 			break;
