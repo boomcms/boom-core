@@ -679,12 +679,63 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 	{
 
 	/**
-	Open an asset manager dialog
+	Initialise the caption and asset editor
 	*/
-	edit: function(){
-
+	_init : function() {
 		var self = this;
-		var asset_selected = new $.Deferred();
+		
+		this.originals = 
+			this.element
+			.children()
+			.clone( true );
+
+		this._build_ui()
+			.done( function(){
+				$.ui.chunk.prototype._init.call( self );
+			});
+
+
+	},
+	
+	/**
+	@function
+	*/
+	_build_ui : function() {
+
+		this._bring_forward();
+
+		return $.get( '/media/boom/toolbars/asset.php' )
+			.done( function( toolbar ){
+				$.boom.page.toolbar.hide();
+				top.$( 'body' )
+					.prepend( toolbar );
+			});
+
+	},
+	
+	/**
+	@function
+	*/
+	_remove_ui : function() {
+
+		this._send_back();
+
+		$.boom.page.toolbar.show();
+
+		this.element
+			.find( '.asset-caption' )
+			.removeAttr( 'contentEditable style' )
+			.end()
+			.off( 'focus mouseover' );
+		top.$( 'body' )
+			.find( 'div.toolbar' )
+			.remove();
+	},
+	
+	/**
+	@function
+	*/
+	_get_asset_details: function(){
 		
 		var asset_id = 0;
 		var url = this.element.find( '.asset-link' ).attr( 'href' );
@@ -711,60 +762,121 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 			break;
 		}
 		
-		$.boom.log('Asset chunk slot edit ' + asset_id);
-
-		self.asset = {
+		var asset = {
 			asset_id : asset_id,
 			title : null,
 			description : caption.text(),
 			url : url
 		};
+		
+		return asset;
+	},
+	
+	/**
+	Cancel changes and exit
+	@function
+	*/
+	_cancel : function() {
+
+		var self = this;
+
+		if (self.edited ) {
+
+			$.boom.dialog.confirm(
+				'Cancel changes',
+				'Cancel changes to this asset?'
+			)
+			.done( function(){
+
+				self.element
+					.children()
+					.remove()
+					.end()
+					.append( self.originals );
+				self.destroy();
+			});
+
+		} else {
+			self.destroy();
+		}
+	},
+		
+	/**
+	Open an asset manager dialog
+	*/
+	edit: function(){
+
+		var self = this;
+		var asset_selected = new $.Deferred();
+
+		self.asset = this._get_asset_details();
+		$.boom.log('Asset chunk slot edit ' + self.asset.asset_id);
+		
+		this.element
+			.on( 'click', function( event ) {
+				event.stopPropagation();
+				event.preventDefault();
+			})
+			.on( 'click', 'a', function( event ) {
+				event.preventDefault();
+				return false;
+			})
+			.on( 'click', 'img', function( event ) {
+				
+				$.boom.assets.picker( {
+					asset_rid : self.asset.asset_id,
+					deferred: asset_selected
+				} )
+				.pipe( function( rid ){
+
+					self.asset.asset_id = rid;
+					return $.boom.links.picker( {
+						page_rid: $.boom.page.options.id,
+						title: 'Add a link',
+						link: {
+							url: self.asset.url,
+							rid: -1,
+							title: ''
+						}
+					});
+				})
+				.done( function( link ){
+					self.insert( self.asset.asset_id, link );
+				})
+				.fail( function() {
+					var data = { asset_id : 0, link : self.asset.url, caption: self.asset.description } ;
+					self.asset.asset_id = 0;
+					self._remove( data );
+				})
+				.always( function(){
+					$.boom.history.load( '' );
+				});
+				
+			})
+			.find( '.asset-caption' )
+			.each( function(){
+				self
+					._edit_caption( $( this ) )
+					.done( function(){
+						self.asset.description = self.element.find( '.asset-caption' ).text();
+						self._save_slot();
+						self.edited = true;
+					});
+			});
+		top.$( 'div.toolbar' )
+			.on( 'click', 'button.cancel', function(){
+				self._cancel();
+			})
+			.on( 'click', 'button.save', function(){
+				self.destroy();
+			});
+		
 
 		// cleanup code when the dialog closes.
 		asset_selected
 		.fail( function() {
 			$.boom.log( 'asset chunk cancelled' );
-			if ( !caption.length ) self.destroy();
-		})
-		;
-
-		$.boom.assets.picker( {
-			asset_rid : asset_id,
-			deferred: asset_selected
-		} )
-		.pipe( function( rid ){
-
-			self.asset.asset_id = rid;
-			return $.boom.links.picker( {
-				page_rid: $.boom.page.options.id,
-				title: 'Add a link',
-				link: {
-					url: self.asset.url,
-					rid: -1,
-					title: ''
-				}
-			});
-		})
-		.done( function( link ){
-			self.insert( self.asset.asset_id, link );
-		})
-		.fail( function() {
-			var data = { asset_id : 0, link : self.asset.url, caption: self.asset.description } ;
-			self.asset.asset_id = 0;
-			self._remove( data );
-		})
-		.always( function(){
-			$.boom.history.load( '' );
 		});
-		
-		self
-			._edit_caption( caption )
-			.done( function(){
-				self.asset.description = caption.text();
-				self._save_slot();
-				self.edited = true;
-				self.destroy();
-			});
 	},
 
 	/**
@@ -869,9 +981,7 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 		$.boom.log( 'exiting asset editor' );
 		var self = this;
 
-		this.element
-			.find( '.asset-caption' )
-			.removeAttr( 'contentEditable style' );
+		this._remove_ui();
 
 		$.ui.chunk.prototype._destroy.call( this );
 
