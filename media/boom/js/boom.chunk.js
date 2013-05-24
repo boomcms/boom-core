@@ -960,6 +960,7 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 			self._edit_asset( self.asset.element )
 				.done( function(){
 					self._save_slot();
+					self.destroy();
 				});
 			
 		}
