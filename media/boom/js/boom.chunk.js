@@ -924,7 +924,6 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 					._edit_caption( $( this ) )
 					.done( function(){
 						self.asset.description = self.element.find( '.asset-caption' ).text();
-						self._save_slot();
 						self.edited = true;
 					});
 			});
@@ -933,6 +932,7 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 				self._cancel();
 			})
 			.on( 'click', 'button.save', function(){
+				self._save_slot();
 				self.destroy();
 			});
 	},
