@@ -904,8 +904,14 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 		.done( function( data ){
 
 			$.boom.loader.hide();
+			
+			var new_asset = $( data ).find( 'img' );
+			
+			self._save_slot();
 
-			self._apply( data );
+			self.element
+				.find( 'img' )
+				.replaceWith( new_asset );
 		})
 		.fail( function( data ) {
 			$.boom.log( 'asset chunk error ' );
