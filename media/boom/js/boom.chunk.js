@@ -964,8 +964,6 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 			$.boom.loader.hide();
 			
 			var new_asset = $( data ).find( 'img' );
-			
-			self._save_slot();
 			self.edited = true;
 
 			self.element
