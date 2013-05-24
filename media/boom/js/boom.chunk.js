@@ -955,7 +955,8 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 				});
 		} else {
 			
-			this.element.on( 'click', function(){
+			this.element
+			.on( 'click', function(){
 				self._edit_asset( self.asset.element );
 			});
 			
