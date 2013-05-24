@@ -733,6 +733,98 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 	},
 	
 	/**
+	Edit the asset
+	@param {Object} $caption Caption node
+	@returns {Deferred}
+	*/
+	_edit_asset : function() {
+		
+		var asset_selected = new $.Deferred();
+		
+		// cleanup code when the dialog closes.
+		asset_selected
+		.fail( function() {
+			$.boom.log( 'asset chunk cancelled' );
+		});
+
+		return $.boom.assets.picker( {
+			asset_rid : self.asset.asset_id,
+			deferred: asset_selected
+		} )
+		.pipe( function( rid ){
+
+			self.asset.asset_id = rid;
+			return $.boom.links.picker( {
+				page_rid: $.boom.page.options.id,
+				title: 'Add a link',
+				link: {
+					url: self.asset.url,
+					rid: -1,
+					title: ''
+				}
+			});
+		})
+		.done( function( link ){
+			self.insert( self.asset.asset_id, link );
+		})
+		.fail( function() {
+			var data = { asset_id : 0, link : self.asset.url, caption: self.asset.description } ;
+			self.asset.asset_id = 0;
+			self._remove( data );
+		})
+		.always( function(){
+			$.boom.history.load( '' );
+		});
+	},
+	
+	/**
+	Edit a caption
+	@param {Object} $caption Caption node
+	@returns {Deferred}
+	*/
+	_edit_caption : function( $caption ) {
+
+		var edited = new $.Deferred();
+
+		$caption
+			.attr( 'contentEditable', 'true' )
+			.on( 'focus mouseover', function(){
+				$( this )
+					.css( 'border', '1px solid black' );
+			})
+			.on( 'blur mouseout', function(){
+				$( this )
+					.removeAttr( 'style' );
+			})
+			.on( 'blur', function(){
+				edited.resolve();
+			})
+			.on( 'keyup click', function( e ){
+				e.stopPropagation();
+				e.preventDefault();	
+			} );
+
+			if ( $.trim( $caption.text() ) == '' ) {
+				$caption.text( 'Default text' );
+			}
+
+		return edited;
+	},
+	
+	/**
+	Remove editor UI and exit
+	*/
+	_destroy : function() {
+		$.boom.log( 'exiting asset editor' );
+		var self = this;
+
+		this._remove_ui();
+
+		$.ui.chunk.prototype._destroy.call( this );
+
+	},
+	
+	/**
 	@function
 	*/
 	_get_asset_details: function(){
@@ -807,7 +899,6 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 	edit: function(){
 
 		var self = this;
-		var asset_selected = new $.Deferred();
 
 		self.asset = this._get_asset_details();
 		$.boom.log('Asset chunk slot edit ' + self.asset.asset_id);
@@ -823,34 +914,7 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 			})
 			.on( 'click', 'img', function( event ) {
 				
-				$.boom.assets.picker( {
-					asset_rid : self.asset.asset_id,
-					deferred: asset_selected
-				} )
-				.pipe( function( rid ){
-
-					self.asset.asset_id = rid;
-					return $.boom.links.picker( {
-						page_rid: $.boom.page.options.id,
-						title: 'Add a link',
-						link: {
-							url: self.asset.url,
-							rid: -1,
-							title: ''
-						}
-					});
-				})
-				.done( function( link ){
-					self.insert( self.asset.asset_id, link );
-				})
-				.fail( function() {
-					var data = { asset_id : 0, link : self.asset.url, caption: self.asset.description } ;
-					self.asset.asset_id = 0;
-					self._remove( data );
-				})
-				.always( function(){
-					$.boom.history.load( '' );
-				});
+				self.edit_asset( $( this ) );
 				
 			})
 			.find( '.asset-caption' )
@@ -870,13 +934,6 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 			.on( 'click', 'button.save', function(){
 				self.destroy();
 			});
-		
-
-		// cleanup code when the dialog closes.
-		asset_selected
-		.fail( function() {
-			$.boom.log( 'asset chunk cancelled' );
-		});
 	},
 
 	/**
@@ -945,53 +1002,8 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 		self.rid = 0;
 
 		this.insert( self.rid );
-	},
-	/**
-	Edit a caption
-	@param {Object} $caption Caption node
-	@returns {Deferred}
-	*/
-	_edit_caption : function( $caption ) {
-
-		var edited = new $.Deferred();
-
-		$caption
-			.attr( 'contentEditable', 'true' )
-			.on( 'focus mouseover', function(){
-				$( this )
-					.css( 'border', '1px solid black' );
-			})
-			.on( 'blur mouseout', function(){
-				$( this )
-					.removeAttr( 'style' );
-			})
-			.on( 'blur', function(){
-				edited.resolve();
-			})
-			.on( 'keyup click', function( e ){
-				e.stopPropagation();
-				e.preventDefault();	
-			} );
-
-			if ( $.trim( $caption.text() ) == '' ) {
-				$caption.text( 'Default text' );
-			}
-
-		return edited;
-	},
-	
-	/**
-	Remove editor UI and exit
-	*/
-	_destroy : function() {
-		$.boom.log( 'exiting asset editor' );
-		var self = this;
-
-		this._remove_ui();
-
-		$.ui.chunk.prototype._destroy.call( this );
-
 	}
+
 
 });
 /**
