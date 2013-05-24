@@ -914,7 +914,7 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 			})
 			.on( 'click', 'img', function( event ) {
 				
-				self.edit_asset( $( this ) );
+				self._edit_asset( $( this ) );
 				
 			})
 			.find( '.asset-caption' )
