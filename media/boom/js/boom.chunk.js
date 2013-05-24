@@ -957,11 +957,6 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 				});
 		} else {
 			
-			this.element
-			.on( 'click', function(){
-				self._edit_asset( self.asset.element );
-			});
-			
 			self._edit_asset( self.asset.element )
 				.done( function(){
 					self._save_slot();
