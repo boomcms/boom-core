@@ -966,6 +966,7 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 			var new_asset = $( data ).find( 'img' );
 			
 			self._save_slot();
+			self.edited = true;
 
 			self.element
 				.find( 'img' )
