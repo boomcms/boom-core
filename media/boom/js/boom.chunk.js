@@ -899,6 +899,7 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 				switch ( self.element[0].nodeName ){
 					case 'IMG':
 						self.element.replaceWith( self.originals );
+						self.destroy();
 					break;
 
 					default:
