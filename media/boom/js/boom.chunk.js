@@ -689,6 +689,7 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 		switch ( self.element[0].nodeName ){
 			case 'IMG':
 				this.originals = self.asset.element.clone( true );
+				$.ui.chunk.prototype._init.call( self );
 			break;
 			
 			default:
@@ -698,13 +699,14 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 					.children()
 					.clone( true );
 				
+				this._build_ui()
+					.done( function(){
+						$.ui.chunk.prototype._init.call( self );
+					});
 			break;
 		}
 
-		this._build_ui()
-			.done( function(){
-				$.ui.chunk.prototype._init.call( self );
-			});
+		
 
 
 	},
@@ -959,6 +961,11 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 			.on( 'click', function(){
 				self._edit_asset( self.asset.element );
 			});
+			
+			self._edit_asset( self.asset.element )
+				.done( function(){
+					self._save_slot();
+				});
 			
 		}
 		
