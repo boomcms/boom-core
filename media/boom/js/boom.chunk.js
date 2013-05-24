@@ -739,6 +739,7 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 	*/
 	_edit_asset : function() {
 		
+		var self = this;
 		var asset_selected = new $.Deferred();
 		
 		// cleanup code when the dialog closes.
