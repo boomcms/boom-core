@@ -679,59 +679,91 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 	{
 
 	/**
-	Open an asset manager dialog
+	Initialise the caption and asset editor
 	*/
-	edit: function(){
-
-		
-
+	_init : function() {
 		var self = this;
-		var asset_selected = new $.Deferred();
 		
-		var asset_id = 0;
-		var url;
-		var caption = this.element.find( '.asset-caption' );
+		self.asset = this._get_asset_details();
 		
-		switch( this.element[0].nodeName ){
-			case 'A':
-				url = this.element.attr( 'href' );
-				asset_id = this.element
-					.find( 'img' )
-					.attr( 'src' )
-					.match( /asset\/(thumb|view)\/([0-9]+)/ )[2];
-			break;
-			
-			case 'IMG': 
-				asset_id = this.element[0].src.match( /asset\/(thumb|view)\/([0-9]+)/ )[2];
+		switch ( self.element[0].nodeName ){
+			case 'IMG':
+				this.originals = self.asset.element.clone( true );
+				$.ui.chunk.prototype._init.call( self );
 			break;
 			
 			default:
-				asset_id = this.element
-					.find( 'img' )
-					.attr( 'src' )
-					.match( /asset\/(thumb|view)\/([0-9]+)/ )[2];
+			
+				this.originals = 
+					this.element
+					.children()
+					.clone( true );
+				
+				this._build_ui()
+					.done( function(){
+						$.ui.chunk.prototype._init.call( self );
+					});
 			break;
 		}
+
 		
-		$.boom.log('Asset chunk slot edit ' + asset_id);
 
-		self.asset = {
-			asset_id : asset_id,
-			title : null,
-			description : caption.text(),
-			url : url
-		};
 
+	},
+	
+	/**
+	@function
+	*/
+	_build_ui : function() {
+
+		this._bring_forward();
+
+		return $.get( '/media/boom/toolbars/asset.php' )
+			.done( function( toolbar ){
+				$.boom.page.toolbar.hide();
+				top.$( 'body' )
+					.prepend( toolbar );
+			});
+
+	},
+	
+	/**
+	@function
+	*/
+	_remove_ui : function() {
+
+		this._send_back();
+
+		$.boom.page.toolbar.show();
+
+		this.element
+			.find( '.asset-caption' )
+			.removeAttr( 'contentEditable style' )
+			.end()
+			.off( 'focus mouseover' );
+		top.$( 'body' )
+			.find( 'div.toolbar' )
+			.remove();
+	},
+	
+	/**
+	Edit the asset
+	@param {Object} $caption Caption node
+	@returns {Deferred}
+	*/
+	_edit_asset : function() {
+		
+		var self = this;
+		var asset_selected = new $.Deferred();
+		
 		// cleanup code when the dialog closes.
 		asset_selected
 		.fail( function() {
 			$.boom.log( 'asset chunk cancelled' );
-			self.destroy();
-		})
-		;
+		});
 
-		$.boom.assets.picker( {
-			asset_rid : asset_id,
+		return $.boom.assets.picker( {
+			asset_rid : self.asset.asset_id,
 			deferred: asset_selected
 		} )
 		.pipe( function( rid ){
@@ -751,81 +783,15 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 			self.insert( self.asset.asset_id, link );
 		})
 		.fail( function() {
-			self._remove( { asset_id : 0, link : null } );
+			var data = { asset_id : 0, link : self.asset.url, caption: self.asset.description } ;
+			self.asset.asset_id = 0;
+			self._remove( data );
 		})
 		.always( function(){
 			$.boom.history.load( '' );
 		});
-		
-		self
-			._edit_caption( caption )
-			.done( function(){
-				self.asset.description = caption.text();
-				self.edited = true;
-			});
 	},
-
-	/**
-	Insert selected asset into the page
-	@param {Int} rid Asset RID
-	*/
-	insert: function(rid, link) {
-		$.boom.log( 'inserting asset' + rid );
-
-		var self = this;
-		var caption = this.element.find( '.asset-caption' );
-		link = ( link ) ? link : { url : null };
-		self.asset = {
-			asset_id : rid,
-			title : null,
-			description : caption.text(),
-			url : link.url
-		};
-
-		$.boom.loader.show();
-
-		var data = { asset_id : rid, link : link.url, caption: caption.text() } ;
-
-		self._preview( data )
-		.done( function( data ){
-
-			$.boom.loader.hide();
-
-			self._apply( data );
-		})
-		.fail( function( data ) {
-			$.boom.log( 'asset chunk error ' );
-			console.log( data );
-		});
-	},
-
-	/**
-	Get the RID for this asset.
-	@returns {Int} Asset RID
-	*/
-	getData: function() {
-
-			var rid = this.asset.asset_id;
-
-			rid = (rid == 0) ? null : rid;
-
-			return {
-				asset_id : rid,
-				title : null,
-				caption : this.asset.description,
-				url : this.asset.url
-			};
-	},
-
-	/**
-	Remove the current asset from the page.
-	*/
-	remove : function(){
-
-		self.rid = 0;
-
-		this.insert( self.rid );
-	},
+	
 	/**
 	Edit a caption
 	@param {Object} $caption Caption node
@@ -858,7 +824,223 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 			}
 
 		return edited;
+	},
+	
+	/**
+	Remove editor UI and exit
+	*/
+	_destroy : function() {
+		$.boom.log( 'exiting asset editor' );
+		var self = this;
+
+		this._remove_ui();
+
+		$.ui.chunk.prototype._destroy.call( this );
+
+	},
+	
+	/**
+	@function
+	*/
+	_get_asset_details: function(){
+		
+		var asset_id = 0;
+		var url = this.element.find( '.asset-link' ).attr( 'href' );
+		var caption = this.element.find( '.asset-caption' );
+		var element = this.element.find( 'img' );
+		var img_src = element.attr( 'src' );
+		
+		switch( this.element[0].nodeName ){
+			
+			case 'A':
+				url = this.element.attr( 'href' );
+				if( img_src ) asset_id = img_src.match( /asset\/(thumb|view)\/([0-9]+)/ );
+				if ( asset_id != null && asset_id.length ) asset_id = asset_id[ 2 ];
+			break;
+			
+			case 'IMG': 
+				element = this.element;
+				asset_id = element[0].src.match( /asset\/(thumb|view)\/([0-9]+)/ );
+				if ( asset_id != null && asset_id.length ) asset_id = asset_id[ 2 ];
+				url = '';
+			break;
+			
+			default:
+				if( img_src ) asset_id = img_src.match( /asset\/(thumb|view)\/([0-9]+)/ );
+				if ( asset_id != null && asset_id.length ) asset_id = asset_id[ 2 ];
+			break;
+		}
+		
+		var asset = {
+			asset_id : asset_id,
+			title : null,
+			description : caption.text(),
+			url : url,
+			element: element
+		};
+		
+		return asset;
+	},
+	
+	/**
+	Cancel changes and exit
+	@function
+	*/
+	_cancel : function() {
+
+		var self = this;
+
+		if (self.edited ) {
+
+			$.boom.dialog.confirm(
+				'Cancel changes',
+				'Cancel changes to this asset?'
+			)
+			.done( function(){
+				
+				switch ( self.element[0].nodeName ){
+					case 'IMG':
+						self.element.attr( 'src', self.originals.attr( 'src' ) );
+						self.destroy();
+					break;
+
+					default:
+						self.element
+							.children()
+							.remove()
+							.end()
+							.append( self.originals );
+						self.destroy();
+					break;
+				}
+			});
+
+		} else {
+			self.destroy();
+		}
+	},
+		
+	/**
+	Asset editor.
+	*/
+	edit: function(){
+
+		var self = this;
+		var caption = this.element.find( '.asset-caption' );
+
+		$.boom.log('Asset chunk slot edit ' + self.asset.asset_id);
+		
+		if ( caption.length > 0 ) {
+			
+			this.element
+				.on( 'click', function( event ) {
+					event.stopPropagation();
+					event.preventDefault();
+				})
+				.on( 'click', 'a', function( event ) {
+					event.preventDefault();
+					return false;
+				})
+				.on( 'click', 'img', function( event ) {
+
+					self._edit_asset( self.asset.element );
+
+				})
+				.find( '.asset-caption' )
+				.each( function(){
+					self
+						._edit_caption( $( this ) )
+						.done( function(){
+							self.asset.description = self.element.find( '.asset-caption' ).text();
+							self.edited = true;
+						});
+				});
+		} else {
+			
+			self._edit_asset( self.asset.element )
+				.done( function(){
+					self._save_slot();
+					self.destroy();
+				});
+			
+		}
+		
+		top.$( 'div.toolbar' )
+			.on( 'click', 'button.cancel', function(){
+				self._cancel();
+			})
+			.on( 'click', 'button.save', function(){
+				self._save_slot();
+				self.destroy();
+			});
+	},
+
+	/**
+	Insert selected asset into the page
+	@param {Int} rid Asset RID
+	*/
+	insert: function(rid, link) {
+		$.boom.log( 'inserting asset' + rid );
+
+		var self = this;
+		var caption = this.element.find( '.asset-caption' );
+		link = ( link ) ? link : { url : null };
+		self.asset = $.extend( self.asset, {
+			asset_id : rid,
+			title : null,
+			description : caption.text(),
+			url : link.url
+		});
+
+		$.boom.loader.show();
+
+		var data = { asset_id : rid, link : link.url, caption: caption.text() } ;
+
+		self._preview( data )
+		.done( function( data ){
+
+			$.boom.loader.hide();
+			
+			var new_asset = $('<div>').append( data ).find( 'img' );
+			self.edited = true;
+
+			self.asset.element
+				.attr( 'src', new_asset.attr( 'src' ) );
+		})
+		.fail( function( data ) {
+			$.boom.log( 'asset chunk error ' );
+			console.log( data );
+		});
+	},
+
+	/**
+	Get the RID for this asset.
+	@returns {Int} Asset RID
+	*/
+	getData: function() {
+
+			var rid = this.asset.asset_id;
+
+			rid = (rid == 0) ? null : rid;
+
+			return {
+				asset_id : rid,
+				title : null,
+				caption : this.asset.description,
+				link : this.asset.url
+			};
+	},
+
+	/**
+	Remove the current asset from the page.
+	*/
+	remove : function(){
+
+		self.rid = 0;
+
+		this.insert( self.rid );
 	}
+
 
 });
 /**
