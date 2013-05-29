@@ -27,15 +27,20 @@ $.widget( 'boom.page', {
 		ajaxed: 0
 	},
 
-	/** 
+	/**
 	@property save_button
 	*/
 	save_button: $('#b-page-save'),
 
-	/** 
+	/**
 	@property cancel_button
 	*/
 	cancel_button: $('#b-page-cancel'),
+
+	/**
+	 @property status
+	 */
+	status: $('#b-page-version-status'),
 
 	_init : function() {
 
@@ -199,7 +204,6 @@ $.widget( 'boom.page', {
 				split: false
 			});
 		$('#b-page-version-status').click(function(){
-
 			$.boom.dialog.confirm(
 				'Publish',
 				'Make this version of the page live?'
@@ -210,7 +214,7 @@ $.widget( 'boom.page', {
 
 				$.post( '/cms/page/version/embargo/' + self.options.id )
 				.done( function(response){
-
+					$.boom.page.status.html("<span class='ui-button-text'>live</span>");
 					$.boom.loader.hide();
 
 				});
@@ -322,6 +326,15 @@ $.widget( 'boom.page', {
 					$('#b-page-publish').show();
 					$.boom.page.save_button.button( 'disable' ).attr( 'title', 'You have no unsaved changes' );
 					$.boom.page.cancel_button.button( 'disable' ).attr( 'title', 'You have no unsaved changes' );
+
+					if (requestdata.publish)
+					{
+						$.boom.page.status.html("<span class='ui-button-text'>live</span>");
+					}
+					else
+					{
+						$.boom.page.status.html("<span class='ui-button-text'>draft</span>");
+					}
 				}
 				else
 				{
@@ -371,7 +384,7 @@ $.widget( 'boom.page', $.boom.page, {
 		*/
 		iframe: {},
 
-		/** 
+		/**
 		@property height
 		*/
 		height: '90px',
@@ -1743,7 +1756,7 @@ Base class for the text editor
 @class
 @name $.boom.editor
 */
-$.widget( 'boom.editor', 
+$.widget( 'boom.editor',
 	/** @lends $.boom.editor */
 	{
 	_create : function() {
