@@ -10,7 +10,7 @@
 $.widget('wysihtml5.editor', $.boom.editor,
 	/** @lends $.wysihtml5.editor */
 	{
-	
+
 	/** @property base_url
 	@type string
 	@default '/media/boom/js/xing'
@@ -21,32 +21,32 @@ $.widget('wysihtml5.editor', $.boom.editor,
 	@default '/wysihtml5-0.3.0.js'
 	*/
 	path: '/wysihtml5-0.3.0.js',
-	
+
 	/**
 	@property parser_rules
 	@type string
 	*/
 	parser_rules : '/parser_rules/hoop.js',
-	
+
 	/**
 	@property mode
 	@type string
 	*/
 	mode : 'block',
-	
-	/** 
+
+	/**
 	@property options
 	@type object
 	*/
 	options : {
 	},
-	
+
 	/**
 	* @function
 	@returns {Deferred}
 	*/
 	load : function() {
-		
+
 		var self = this;
 
 		var editor_loaded = this._super();
@@ -58,7 +58,7 @@ $.widget('wysihtml5.editor', $.boom.editor,
 
 
 					$.boom.log('wysihtml5 loading');
-					
+
 					top.$.getScript( self.base_url + self.parser_rules )
 					.pipe( function(){
 						return top.$.getScript( self.base_url + self.path );
@@ -66,7 +66,7 @@ $.widget('wysihtml5.editor', $.boom.editor,
 					.done( function(response, textStatus){
 
 						editor_loaded.resolve();
-						
+
 						self._load_extensions( top.wysihtml5 );
 
 						$.boom.log('wysihtml5 loaded');
@@ -78,54 +78,54 @@ $.widget('wysihtml5.editor', $.boom.editor,
 
 		return editor_loaded;
 	},
-	
+
 	/**
 	* @function
 	@returns {boolean}
 	*/
 	ready : function() {
-		
+
 		if (!top.wysihtml5) {
 
 
 			return false;
 		}
-		
+
 		return true;
 	},
-	
+
 	/**
 	* @function
 	@param {Object} element The element being edited.
 	@returns {Deferred}
 	*/
 	edit : function ( element ){
-		
+
 		var self = this;
 		var element;
-		
+
 		self.mode = element.is( 'div' ) ? 'block' : 'inline';
-		self.mode = element.is( ':header' ) ? 'text' : self.mode;
+		self.mode = (element.is( ':header' ) ||  element.is( '.standFirst' ))? 'text' : self.mode;
 		self.edited = new $.Deferred();
-		
+
 		self._insert_toolbar( element )
 			.done( function(){
-				
+
 				$.boom.page.toolbar.hide();
-				
+
 				if ( self.mode == 'text' || self.mode == 'inline' ) {
-					
+
 					self.original_html = element.text();
-					
+
 					self.inline_editor.init( element );
 				} else {
-					
+
 					self._insert_textarea( element );
-					
+
 					self.instance = new top.wysihtml5.Editor('b-wh5', { // id of textarea element
 						toolbar:      "wysihtml5-toolbar", // id of toolbar element
 						style: true,
-						parserRules:  top.wysihtml5ParserRules // defined in parser rules set 
+						parserRules:  top.wysihtml5ParserRules // defined in parser rules set
 					});
 
 					self.instance.on( 'load', function(){
@@ -137,14 +137,14 @@ $.widget('wysihtml5.editor', $.boom.editor,
 							.find( 'head' )
 							.append( '<link rel="stylesheet" href="/media/site/css/main.css" />' );
 
-						
+
 
 						resizeIframe();
 
 						self.original_html = self.get_content();
-						
+
 						var el = self.instance.composer.element;
-						
+
 						if (el.addEventListener) {
 						  	el.addEventListener("blur", resizeIframe, false);
 							el.addEventListener("focus", resizeIframe, false);
@@ -171,7 +171,7 @@ $.widget('wysihtml5.editor', $.boom.editor,
 								var asset_id = 0;
 								if ( src && src != 'http://' ) {
 									var match = src.match( /asset\/(thumb|view|get_asset)\/([0-9]+)/ );
-									
+
 									asset_id = match ? match[2] : 0;
 								}
 								self._edit_asset( asset_id );
@@ -186,9 +186,9 @@ $.widget('wysihtml5.editor', $.boom.editor,
 					self.instance.on( 'paste', resizeIframe );
 				}
 			});
-		
+
 		return self.edited;
-		
+
 	},
 
 	/**
@@ -196,7 +196,7 @@ $.widget('wysihtml5.editor', $.boom.editor,
 	@returns {String} HTML content of the editor
 	*/
 	get_content : function(){
-		
+
 		return top.$( '#b-wh5' ).val();
 	},
 
@@ -211,29 +211,29 @@ $.widget('wysihtml5.editor', $.boom.editor,
 		element.removeAttr( 'contenteditable' );
 		self.instance = null;
 	},
-	
+
 	/**
 	* @function
 	@param {Object} element The element being edited.
 	*/
 	apply : function( element ){
-		
+
 		var self = this;
-		
+
 		self.edited.resolve( self.get_content() );
 
 		self.remove( element );
 
 	},
-	
+
 	/**
 	* @function
 	@param {Object} element The element being edited.
 	*/
 	cancel : function( element ){
-		
+
 		var self = this;
-		
+
 		if ( self.mode == 'text' || self.mode == 'inline' ) {
 			var content = element.text();
 		} else {
@@ -262,28 +262,28 @@ $.widget('wysihtml5.editor', $.boom.editor,
 		}
 
 	},
-	
+
 	/**
 	@function
 	@param {Object} element The element being edited.
 	@returns {Deferred}
 	*/
 	_insert_toolbar : function( element ) {
-		
+
 		var self = this;
-		
-		
+
+
 		 return $.get( '/media/boom/toolbars/text.php?mode=' + self.mode )
 		.done( function( response ) {
 			top.$('body').prepend( response );
-			
+
 			top.$( '#b-editor-accept').on( 'click', function( event ){
 
 				event.preventDefault();
 				self.apply( element );
 				return false;
 			});
-			
+
 			top.$( '#b-editor-cancel').on( 'click', function( event ){
 
 				event.preventDefault();
@@ -291,10 +291,10 @@ $.widget('wysihtml5.editor', $.boom.editor,
 				return false;
 			});
 		});
-		
-		
+
+
 	},
-	
+
 	/**
 	@function
 	@param {Object} element The element being edited.
@@ -304,17 +304,17 @@ $.widget('wysihtml5.editor', $.boom.editor,
 		element
 			.html( '<textarea id="b-wh5" style="border: 1px solid #000; overflow: hidden; width: 100%; height: ' + element.innerHeight() + 'px;">' + original_html + '</textarea>');
 	},
-	
+
 	/**
 	@function
 	@returns {Deferred}
 	*/
 	_edit_asset : function( asset_rid ) {
-		
+
 		var self = this;
 		var ed = self.instance.composer;
 		var asset_selected = new $.Deferred();
-		
+
 		var img;
 		if ( asset_rid == 0 ) {
 			ed.commands.exec( "insertHTML", '<img src="url">' );
@@ -322,13 +322,13 @@ $.widget('wysihtml5.editor', $.boom.editor,
 		} else {
 			img = top.$( ed.element ).find( '[src^="/asset/view/' + asset_rid +'"]' );
 		}
-		
+
 		// cleanup code when the dialog closes.
 		asset_selected
 		.fail( function() {
 			top.$( ed.element ).find( '[src=url]' ).remove();
 		});
-		
+
 		return $.boom.assets
 			.picker({
 				asset_rid : asset_rid,
@@ -336,7 +336,7 @@ $.widget('wysihtml5.editor', $.boom.editor,
 			})
 			.done( function( rid ) {
 				console.log( 'done' );
-				
+
 				if ( rid > 0 ) {
 					$.post( '/asset/embed/' + rid )
 					.done( function( response ){
@@ -346,55 +346,55 @@ $.widget('wysihtml5.editor', $.boom.editor,
 						asset_selected.reject();
 					});
 				}
-				
+
 			})
 			.fail( function(){
 				img.remove();
 			});
 	},
-	
+
 	/**
 	@function
 	@returns {Deferred}
 	*/
 	_edit_link : function() {
-		
+
 		var self = this;
 		var ed = self.instance.composer;
 		var existing_link = ed.commands.state( "createLink" )[0];
 		var opts = {};
-		
+
 		if ( !existing_link ) {
 			ed.commands.exec("createLink", { href: '', rel: 'new-link'});
-			
+
 			existing_link = top.$( ed.element ).find( '[rel=new-link]' );
 		} else {
 			var link = {
 				url : existing_link.href,
 				rid : existing_link.rel,
-				title : ( existing_link.textContent || existinglink.innerText ) 
+				title : ( existing_link.textContent || existinglink.innerText )
 			};
-			
+
 			opts.link = link;
 		}
-		
-		
+
+
 		 return $.boom.links
 			.picker( opts )
 			.fail( function(){
 				var link = top.$( ed.element ).find( '[rel=new-link]' );
 				console.log( link );
-				
+
 				link
 					.after( link.text() )
 					.remove();
-				
+
 			})
 			.done( function( link ){
-				
+
 				var uri = link.url;
 				var page_rid = link.rid;
-				
+
 				if ( existing_link ) {
 					top.$( existing_link )
 						.attr( 'href', uri )
@@ -410,14 +410,14 @@ $.widget('wysihtml5.editor', $.boom.editor,
 					} else {
 						new_selection = top.rangy.getSelection();
 					}
-					
+
 					ed.commands.exec("createLink", { href: uri, rel: page_rid});
 				}
-				
+
 			});
-			
+
 	},
-	
+
 	/**
 	@function
 	@param {Object} wh5 Instance of wysihtml5
@@ -435,15 +435,15 @@ $.widget('wysihtml5.editor', $.boom.editor,
 			**/
 			wysihtml5.commands.indent = {
 				exec: function(composer, command) {
-					
+
 					command = this.state( composer ) ? 'outdent' : 'indent';
-					
-					/* 
+
+					/*
 					TODO: what happens if a browser doesn't support indent/outdent?
 					*/
 					if (composer.commands.support(command)) {
 						composer.doc.execCommand(command, false, null);
-						
+
 						/* clean inline styles left by webkit */
 						var blockquote = this.state( composer );
 						if ( blockquote ) {
@@ -475,20 +475,20 @@ $.widget('wysihtml5.editor', $.boom.editor,
 		{
 		/** @property rangy */
 		rangy : null,
-		
+
 		/** @property toolbar */
 		toolbar : null,
-		
+
 		/** @property selected_node */
 		selected_node : null,
-		
+
 		/** @function */
 		init : function( element ) {
-			
+
 			var self = this;
 			this.toolbar = top.$( '#wysihtml5-toolbar');
 			this.rangy = top.rangy;
-			
+
 			element
 				.attr( 'contenteditable', 'true' )
 				.on( 'click', 'a, b, strong, i, em', function( event ){
@@ -504,7 +504,7 @@ $.widget('wysihtml5.editor', $.boom.editor,
 				} )
 				.on( 'keydown', function( event ){
 					switch( event.which ) {
-						
+
 						case 13:
 							top.document.execCommand( 'insertHTML', null, '<br>' );
 
@@ -514,16 +514,16 @@ $.widget('wysihtml5.editor', $.boom.editor,
 				});
 			self.toolbar
 				.on( 'mousedown', 'button[data-wysihtml5-command]', function(){
-					
+
 					var command = $( this ).attr( 'data-wysihtml5-command' );
 					var button = $( this );
-					
+
 					switch( command ) {
 						case 'createLink':
 							var existing_link = self.selected_node;
-							
+
 							var opts = {};
-							
+
 							if ( !existing_link ) {
 								top.document.execCommand( command, null, 'url' );
 
@@ -532,12 +532,12 @@ $.widget('wysihtml5.editor', $.boom.editor,
 								var link = {
 									url : existing_link.href,
 									rid : existing_link.rel,
-									title : ( existing_link.textContent || existinglink.innerText ) 
+									title : ( existing_link.textContent || existinglink.innerText )
 								};
-								
+
 								opts.link = link;
 							}
-							
+
 							$.boom.links
 								.picker( opts )
 								.fail( function(){
@@ -552,7 +552,7 @@ $.widget('wysihtml5.editor', $.boom.editor,
 								.done( function( link ){
 
 									var command = self.insert_link( link );
-									
+
 									switch( command ) {
 										case 'unlink':
 											button.removeClass( 'wysihtml5-command-active' );
@@ -564,7 +564,7 @@ $.widget('wysihtml5.editor', $.boom.editor,
 
 								});
 						break;
-						
+
 						case 'insertImage':
 							var asset_rid = 0;
 							$.boom.assets
@@ -580,15 +580,15 @@ $.widget('wysihtml5.editor', $.boom.editor,
 
 								});
 						break;
-						
+
 						default:
 							top.document.execCommand( command, null, null );
 							$( this ).toggleClass( 'wysihtml5-command-active' );
 					}
-					
+
 				});
 		},
-		
+
 		/** @function */
 		select_node : function() {
 			// expand the selection range to the clicked node.
@@ -600,7 +600,7 @@ $.widget('wysihtml5.editor', $.boom.editor,
 			} else {
 				selection = top.rangy.getSelection();
 			}
-			
+
 			if ( selection.anchorNode ) {
 				this.selected_node = selection.anchorNode.parentNode;
 				selection.selectAllChildren( this.selected_node );
@@ -608,14 +608,14 @@ $.widget('wysihtml5.editor', $.boom.editor,
 				this.selected_node = selection.parentElement();
 				selection.parentElement().focus();
 			}
-			
+
 		},
-		
+
 		/** @function */
 		highlight_command : function( node ) {
-			
+
 			var command = '';
-			
+
 			switch ( node.nodeName ){
 				case 'A':
 					command = 'createLink';
@@ -627,27 +627,27 @@ $.widget('wysihtml5.editor', $.boom.editor,
 					command = 'bold';
 				break;
 			}
-			
+
 			this.select_node();
 			this.selected_node = node;
 			top.$( 'button[data-wysihtml5-command=' + command + ']' )
 				.addClass( 'wysihtml5-command-active' );
-				
+
 		},
-		
+
 		/** @function */
 		insert_link : function( link ) {
-			
+
 			var url = link.url;
 			var page_rid = link.rid;
 			var existing_link = this.selected_node;
-			
+
 			command = ( url == 'http://' ) ? 'unlink' : 'createLink';
-			
+
 			if (document.selection ) {
 				document.selection.createRange( self.selected_node );
 			}
-			
+
 			console.log( existing_link );
 
 			if ( existing_link && existing_link.nodeName == 'A' ) {
@@ -657,7 +657,7 @@ $.widget('wysihtml5.editor', $.boom.editor,
 			} else {
 				top.document.execCommand( command, null, url );
 			}
-			
+
 			return command;
 		}
 	}
