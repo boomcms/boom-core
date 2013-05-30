@@ -235,6 +235,17 @@ class Boom_Model_Asset extends Model_Taggable
 		return $this->directory().DIRECTORY_SEPARATOR.$this->id;
 	}
 
+	public function replace_with_file($filename)
+	{
+		$this->get_file_info($filename);
+
+		$path = $this->path();
+		@copy($path, "{$path}.{$this->last_modified}.bak");
+		copy($filename, $this->path());
+
+		return $this;
+	}
+
 	/**
 	 * Returns the asset's type in a human readable format.
 	 *

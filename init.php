@@ -94,8 +94,15 @@ Route::set('asset_upload', 'cms/assets/upload')
 			}
 			else
 			{
-				// A POST request with files - process the upload.
-				$params['action'] = 'process';
+				if ($request->post('asset_id'))
+				{
+					$params['action'] = 'replace';
+				}
+				else
+				{
+					// A POST request with files - process the upload.
+					$params['action'] = 'process';
+				}
 			}
 
 			return $params;

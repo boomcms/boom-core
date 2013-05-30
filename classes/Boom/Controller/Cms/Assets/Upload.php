@@ -73,4 +73,18 @@ class Boom_Controller_Cms_Assets_Upload extends Controller_Cms_Assets
 				->body(json_encode($asset_ids));
 		}
 	}
+
+	public function action_replace()
+	{
+		$asset = new Model_Asset($this->request->post('asset_id'));
+
+		$filename = Arr::pluck($_FILES, 'tmp_name');
+		$filename = $filename[0][0];
+
+		$asset->replace_with_file($filename);
+
+		$this->response
+			->headers('Content-Type', 'application/json')
+			->body(json_encode(array($asset->id)));
+	}
 }

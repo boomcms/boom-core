@@ -43,7 +43,7 @@ $.extend($.boom.assets,
 			top.location.hash = '';
 		};
 
-		var default_options = 
+		var default_options =
 			/** @ignore */ {
 			url: '/cms/assets/manager/',
 			iframe: false,
@@ -59,7 +59,7 @@ $.extend($.boom.assets,
 			},
 			open: function(){
 				$.boom.log( 'dialog open' );
-				
+
 				var remove = $('<button />')
 					.addClass('ui-helper-left')
 					.text('Remove')
@@ -99,7 +99,7 @@ $.extend($.boom.assets,
 					.prepend( remove );
 			},
 			onLoad: function(){
-				
+
 				browser = $( '#boom-tagmanager' ).browser_asset();
 
 				$.when( browser.browser_asset( 'browse' ) )
@@ -128,16 +128,16 @@ $.extend($.boom.assets,
 $.extend($.boom.asset, $.boom.item,
 	/** @lends $.boom.asset */
 	{
-	
+
 	base_url: '/cms/assets/',
-	
+
 	type: 'asset',
 
 	/** @function */
 	bind : function( context ){
 		var self = this;
 		var rids = $.boom.history.getHash().split('/')[1].split('-');
-		
+
 		// Make the tag editor work.
 		$('#b-tags', context ).tagger({
 			type: 'asset',
@@ -209,7 +209,7 @@ $.extend($.boom.asset, $.boom.item,
 			.bind('save', function( event ){
 
 				var data = $( this ).closest( 'form' ).serialize();
-				
+
 				self
 					.save( data )
 					.done( function(){
@@ -235,7 +235,7 @@ $.extend($.boom.asset, $.boom.item,
 				.done( function(){
 					$.boom.history.load( 'tag/0' );
 				});
-			
+
 		});
 
 
@@ -253,9 +253,9 @@ Filter lists of assets by tag.
 @extends $.boom.filter
 */
 $.boom.filter_assets = $.extend( {}, $.boom.filter, {
-	
+
 	base_url: '/cms/assets/',
-	
+
 	type : 'tag'
 });
 
@@ -268,7 +268,7 @@ $.boom.filter_assets = $.extend( {}, $.boom.filter, {
 $.widget( 'boom.browser_asset', $.boom.browser,
 	/** @lends $.boom.browser_asset */
 	{
-	
+
 	/**
 	default config
 	@property options
@@ -276,31 +276,31 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 	@see $.boom.config.browser_asset
 	*/
 	options: $.boom.config.browser_asset,
-	
+
 	_create : function(){
-		
+
 		var self = this;
-		
+
 		$.boom.log( 'asset browser init' );
-		
+
 		self.item = $.boom.asset;
 		self.tag = $.boom.filter_assets;
-		
+
 		$.boom.browser.prototype._create.call( this );
 
 	},
-	
+
 	_bind: function(){
-		
+
 		$.boom.browser.prototype._bind.call( this );
-		
+
 		var self = this;
-		
+
 		$('#boom-assets-upload-menu')
 		.on( 'click', function( event ) {
 			var tags = [];
 			var tagged = new $.Deferred();
-			
+
 			/* bit of a hack to get current tags */
 			$( '#b-tags-search .b-tags-list li').each( function(){
 				$this = $( this );
@@ -309,11 +309,11 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 					value: $this.find( 'a' ).attr( 'data-tag_id')
 				} );
 			});
-			
+
 			var uploaded = self
 				.upload({
 					add: function( e, data ){
-					
+
 						$.boom.dialog.open({
 							url: '/cms/tags/asset/list/0',
 							// cache: true,
@@ -327,7 +327,7 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 								$( '#b-tags' ).tagger_deferred( { tags : tags } );
 							}
 						});
-						
+
 						data.submit();
 					}
 				})
@@ -339,13 +339,13 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 							$( '#asset-list-' + data.result[ i ] ).click();
 						}
 					});
-					
+
 				});
-				
+
 				$.when( tagged, uploaded ).done( function( tags, data ){
-					
+
 					var promises = [];
-					
+
 					for ( i in tags ) {
 						var request = $.post(
 							'/cms/tags/asset/add/' + data.result.join( '-' ),
@@ -353,10 +353,10 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 								tag : tags[i].label
 							}
 						);
-						
+
 						promises.push( request );
 					}
-					
+
 					$.when( promises )
 						.pipe( function(){
 							return $( '#b-tags-search' )
@@ -367,7 +367,7 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 								$( '#asset-list-' + data.result[ i ] ).click();
 							}
 						});
-					
+
 				});
 		});
 
@@ -394,7 +394,7 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 				$.boom.history.load( 'tag/0' );
 			}
 		});
-		
+
 		$( '#b-tags-search' ).tagger_search();
 
 		$( '#boom-topbar' )
@@ -483,23 +483,23 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 				});
 
 			});
-	
+
 		self.main_panel
 			.on( 'click', '.boom-tagmanager-asset-replace ', function( event ){
 
 				var rid = $( this ).attr( 'rel' );
 
 				self.
-					upload({ 
-						url: '/cms/assets/replace',
-						formData : [ { name: 'asset_id', value: rid } ] 
+					upload({
+						url: '/cms/assets/upload',
+						formData : [ { name: 'asset_id', value: rid } ]
 					})
 					.done( function( data ){
 						$.boom.history.refresh();
 					});
 
 			});
-			
+
 		$.when( self.browse() )
 			.progress( function( rid ){
 				$( '#asset-list-' + rid ).click();
@@ -528,7 +528,7 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 		return select_asset;
 
 	},
-	
+
 	/**
 	Open the asset editing view
 	@param {Integer} rid RID of the currently selected asset.
@@ -543,7 +543,7 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 		self.selected_rid = rid;
 
 	},
-	
+
 	/**
 	Get the currently selected asset ID
 	@returns {Integer} asset ID
@@ -561,7 +561,7 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 		var self = this;
 		var uploaded = new $.Deferred();
 		var file_data = {};
-		
+
 		var default_opts = $.extend( $.boom.config.upload, {
 			submit: function( e, data ){
 				$( '#b-upload-progress' ).progressbar();
@@ -587,21 +587,21 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 				$.boom.log( 'file upload finished' );
 			}
 		});
-		
+
 		opts = $.extend( default_opts, opts );
-		
+
 		self.main_panel
 			.find( '.b-items-content' )
 			.sload( '/cms/assets/upload' )
 			.done( function(){
 				self.main_panel.ui();
 				var upload_token = $( '#upload_token' ).val();
-				
+
 				opts.formData.push( { name: 'upload_token', value: upload_token } );
-				
+
 				$( '#b-assets-upload-form' )
 				.fileupload( opts );
-				
+
 				 $( '#b-assets-upload-file' )
 					.detach()
 					.appendTo( '#b-upload-add' )
@@ -609,7 +609,7 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 						position: 'absolute',
 						transform: 'translate(-300px, 0) scale(4)'
 					});
-				
+
 				$( '#b-assets-upload-cancel' )
 					.on( 'click', function(){
 						file_data.jqXHR && file_data.jqXHR.abort();
@@ -617,8 +617,8 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 						$.boom.history.load( 'tag/' + $.boom.assets.tag.rid );
 					});
 			});
-		
+
 		return uploaded;
 	}
-	
+
 });
