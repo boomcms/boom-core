@@ -240,10 +240,20 @@ class Boom_Model_Asset extends Model_Taggable
 		$this->get_file_info($filename);
 
 		$path = $this->path();
-		@copy($path, "{$path}.{$this->last_modified}.bak");
-		copy($filename, $this->path());
+		@rename($path, "{$path}.{$this->last_modified}.bak");
+		copy($filename, $path);
 
-		return $this;
+		$this->remove_cache_files();
+
+		return $this->update();
+	}
+
+	public function remove_cache_files()
+	{
+		foreach (glob($this->path()."_*.cache") as $file)
+		{
+			unlink($file);
+		}
 	}
 
 	/**
