@@ -206,7 +206,7 @@ class Boom_Model_Asset extends Model_Taggable
 		{
 			// Add files for previous versions of the asset.
 			// Wrap the glob in array_reverse() so that we end up with an array with the most recent first.
-			foreach (array_reverse(glob($this->directory().".*.bak")) as $file)
+			foreach (array_reverse(glob($this->path().".*.bak")) as $file)
 			{
 				// Get the version ID out of the filename.
 				preg_match('/' . $this->id . '.(\d+).bak$/', $file, $matches);
