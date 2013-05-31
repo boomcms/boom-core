@@ -606,7 +606,6 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 					.detach()
 					.appendTo( '#b-upload-add' )
 					.css({
-						position: 'absolute',
 						transform: 'translate(-300px, 0) scale(4)'
 					});
 
