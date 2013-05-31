@@ -60,13 +60,7 @@ class Boom_Controller_Cms_Editor extends Boom_Controller
 
 		if ($this->editor->state_is(Editor::EDIT))
 		{
-			require Kohana::find_file('vendor/text-statistics', 'TextStatistics');
-
-			$text = Chunk::factory('text', 'standfirst', $page)->text()." ".Chunk::factory('text', 'bodycopy', $page)->text();
-
-			$stats = new TextStatistics;
-			$readability = $stats->smog_index($text);
-			$this->template->set('readability', $readability);
+			$this->template->set('readability', $page->readability_score());
 		}
 	}
 }

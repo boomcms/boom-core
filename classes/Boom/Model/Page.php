@@ -411,6 +411,24 @@ class Boom_Model_Page extends Model_Taggable
 		return ($this->mptt->is_root())? $this : new Model_Page($this->mptt->parent_id);
 	}
 
+	public function readability_score()
+	{
+		if ( ! class_exists('TextStatistics'))
+		{
+			require Kohana::find_file('vendor/text-statistics', 'TextStatistics');
+		}
+
+		$bodycopy = Chunk::factory('text', 'bodycopy', $this)->text();
+		$standfirst = Chunk::factory('text', 'standfirst', $this)->text();
+		$text = "$standfirst $bodycopy";
+
+		if (strlen($text) > 100)
+		{
+			$stats = new TextStatistics;
+			return $stats->smog_index($text);
+		}
+	}
+
 	/**
 	 * Add the page version columns to a select query.
 	 *
