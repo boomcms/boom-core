@@ -35,6 +35,10 @@ class Boom_Controller_Page_Html extends Controller_Page
 		{
 			$content = $this->editor->insert((string) $this->template, $this->page->id);
 		}
+		else
+		{
+			$content = (string) $this->template;
+		}
 
 		$this->response->body($content);
 	}
