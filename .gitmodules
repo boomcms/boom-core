@@ -4,3 +4,6 @@
 [submodule "vendor/htmlpurifier"]
 	path = vendor/htmlpurifier
 	url = git://repo.or.cz/htmlpurifier.git
+[submodule "vendor/text-statistics"]
+	path = vendor/text-statistics
+	url = git://github.com/DaveChild/Text-Statistics.git

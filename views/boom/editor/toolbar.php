@@ -95,6 +95,10 @@
 				</button>
 			<? endif; ?>
 		</div>
+
+		<button id="b-page-readability" class="ui-button boom-button">
+			<?= $readability ?>
+		</button>
 	<? endif; ?>
 
 	<? if ($auth->logged_in('edit_page', $page)): ?>

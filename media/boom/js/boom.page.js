@@ -236,6 +236,11 @@ $.widget( 'boom.page', {
 				});
 			});
 		});
+		$('#b-page-readability').on('click', function(event) {
+			$.boom.dialog.open({
+				url: '/media/boom/html/readability.html'
+			});
+		});
 
 		self.settings.init();
 
