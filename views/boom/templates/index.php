@@ -6,7 +6,7 @@
 
 		<div class="ui-helper-clearfix ui-tabs-panel ui-widget-content ui-corner-bottom">
 			<div id="b-page-actions" class="ui-helper-right">
-				<button id="b-templates-save" class="boom-button ui-button-text-icon ui-icon-disk">
+				<button id="b-templates-save" class="boom-button ui-button-text-icon ui-icon-boom-save">
 					Save all
 				</button>
 			</div>
@@ -72,7 +72,7 @@
 								<? $page_count = $t->page_count(); ?>
 								<a href='/cms/templates/pages/<?= $t->pk() ?>' title='View the title and URL of <?= $page_count, " ", Inflector::plural('page', $page_count) ?> which use this template'><?= $page_count ?>
 							</td>
-							<td><a class="ui-button-icon-primary ui-icon ui-icon-trash s-templates-delete" title="Delete the &quot;<?= $t->name ?>&quot; template" href="#">&nbsp;</a>
+							<td><a class="ui-button-icon-primary ui-icon ui-icon-boom-delete s-templates-delete" title="Delete the &quot;<?= $t->name ?>&quot; template" href="#">&nbsp;</a>
 						</tr>
 					<? endforeach; ?>
 				</tbody>
