@@ -44,7 +44,7 @@ class Boom_Model_Template extends ORM
 	 */
 	public function file_exists()
 	{
-		return (bool) Kohana::find_file("views", Model_Template::DIRECTORY . $this->filename);
+		return (bool) Kohana::find_file("views", $this->path());
 	}
 
 	/**
@@ -90,6 +90,11 @@ class Boom_Model_Template extends ORM
 			->where('template_id', '=', $this->id)
 			->where('page_deleted', '=', FALSE)
 			->count_all();
+	}
+
+	public function path()
+	{
+		return static::DIRECTORY.$this->filename;
 	}
 
 	/**

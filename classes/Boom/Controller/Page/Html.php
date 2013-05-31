@@ -7,11 +7,18 @@
  */
 class Boom_Controller_Page_Html extends Controller_Page
 {
-	protected $_page_content;
+	/**
+	 *
+	 * @var View
+	 */
+	public $template;
 
 	public function before()
 	{
 		parent::before();
+
+		$template = $this->page->version()->template;
+		$this->template = View::factory($template->path());
 
 		// Set some variables which need to be used globally in the views.
 		View::bind_global('auth', $this->auth);
@@ -19,26 +26,16 @@ class Boom_Controller_Page_Html extends Controller_Page
 		View::bind_global('page', $this->page);
 	}
 
-	public function action_show()
-	{
-		$this->_page_content = $this->_render_template();
-	}
-
-	protected function _render_template($template_vars = array())
-	{
-		$template = $this->page->version()->template;
-
-		return View::factory(Model_Template::DIRECTORY.$template->filename, $template_vars)->render();
-	}
+	public function action_show() {}
 
 	public function after()
 	{
 		// If we're in the CMS then add the boom editor the the page.
 		if ($this->auth->logged_in())
 		{
-			$this->_page_content = $this->editor->insert($this->_page_content, $this->page->id);
+			$content = $this->editor->insert((string) $this->template, $this->page->id);
 		}
 
-		$this->response->body($this->_page_content);
+		$this->response->body($content);
 	}
 }
