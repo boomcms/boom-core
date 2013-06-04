@@ -19,10 +19,9 @@ class Boom_Finder_Paginated extends Finder
 		return $this;
 	}
 
-	public function set_pagination_view($view_filename)
+	public function set_pagination_view($view)
 	{
-		$this->_pagination_view = $view_filename;
-
+		$this->_pagination_view = $view;
 		return $this;
 	}
 
@@ -53,17 +52,28 @@ class Boom_Finder_Paginated extends Finder
 
 	protected function _build_pagination_links($total)
 	{
-		return Pagination::factory(array(
-				'current_page'	=>	array(
-					'key'		=>	'page',
-					'source'	=>	'mixed',
-				),
-				'total_items'		=>	$total,
-				'items_per_page'	=>	$this->_results_perpage,
-				'view'			=>	$this->_pagination_view,
-				'count_in'			=>	1,
-				'count_out'		=>	1,
-			));
+		if ( ! $this->_pagination_view instanceof View)
+		{
+			$this->_pagination_view = new View($this->_pagination_view);
+		}
+
+		$this->_pagination_view
+			->set($this->_generate_pagination_vars($total));
+
+		return $this->_pagination_view;
+	}
+
+	protected function _generate_pagination_vars($total)
+	{
+		$vars = array(
+			'current_page' => $this->_current_page,
+			'total_pages' => ceil($total / $this->_results_perpage),
+			'previous_page' => $this->_current_page - 1,
+		);
+
+		$vars['next_page'] = ($this->_current_page < $vars['total_pages'])? $vars['total_pages'] + 1 : 0;
+
+		return $vars;
 	}
 
 	protected function _apply_tag_filter(\Model_Tag $tag)
