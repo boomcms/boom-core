@@ -51,6 +51,11 @@ class Boom_Finder_Pages extends Finder
 		return $this->sorted_by_property_and_direction('title', 'asc');
 	}
 
+	public function sorted_by_manual_order()
+	{
+		return $this->sorted_by_property_and_direction('sequence', 'asc');
+	}
+
 	public function which_are_children_of_the_page_by_id($page_id)
 	{
 		$this->_parent_id = $page_id;
