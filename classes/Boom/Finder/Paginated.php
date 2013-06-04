@@ -5,7 +5,7 @@ class Boom_Finder_Paginated extends Finder
 	protected $_current_page;
 	protected $_finder;
 	protected $_results_perpage;
-	protected $_pagination_view = 'pagination/hoop';
+	protected $_pagination_view = 'pagination/degault';
 
 	public function __construct(Finder $finder)
 	{
