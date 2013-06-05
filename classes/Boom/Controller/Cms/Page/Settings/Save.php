@@ -190,5 +190,7 @@ class Boom_Controller_Cms_Page_Settings_Save extends Controller_Cms_Page_Setting
 				'visible'		=>	$post['visible']
 			))
 			->update();
+
+		$this->response->body( (int) $this->page->is_visible());
 	}
 } // End Boom_Controller_Cms_Page_Settings_Save

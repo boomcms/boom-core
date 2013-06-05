@@ -1578,7 +1578,19 @@ $.widget( 'boom.page', $.boom.page, {
 							url,
 							$("#boom-form-pagesettings-visibility").serialize(),
 							"Page visibility settings saved."
-						);
+						).done(function(response) {
+							var icons = {
+								1 : 'ui-icon-boom-visible',
+								0 : 'ui-icon-boom-invisible'
+							};
+
+							$('#boom-page-visibility')
+								.attr('data-icon', icons[response])
+								.find('span.ui-icon')
+								.removeClass(icons[0])
+								.removeClass(icons[1])
+								.addClass(icons[response]);
+						});
 					},
 					open: function(){
 
