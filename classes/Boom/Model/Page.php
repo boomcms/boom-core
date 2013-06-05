@@ -532,9 +532,9 @@ class Boom_Model_Page extends Model_Taggable
 			// Only update the sequence of pages which are children of this page.
 			if ($mptt->scope == $this->mptt->scope AND $mptt->parent_id == $this->id)
 			{
-				DB::update('pages')
+				DB::update($this->_table_name)
 					->set(array('sequence' => $sequence))
-					->where('pages.id', '=', $page_id)
+					->where('id', '=', $page_id)
 					->execute($this->_db);
 			}
 		}

@@ -961,7 +961,10 @@ $.widget( 'boom.page', $.boom.page, {
 			})
 			.done( function(response){
 				// success
-				$.boom.growl.show( message );
+				if (message)
+				{
+					$.boom.growl.show( message );
+				}
 			})
 			.fail( function( response ){
 				$.boom.dialog.alert('error', response);
@@ -1703,25 +1706,47 @@ $.widget( 'boom.page', $.boom.page, {
 					title: 'Child page settings',
 					width: 'auto',
 					open: function() {
-						$('#child-settings-reorder-children').on('click', function() {
+						$('select[name="children_ordering_policy"]').on('change', function(){
+							var reorder_link = $('#b-page-settings-children-reorder');
+
+							if ($(this).val() == 'sequence')
+							{
+								reorder_link.removeClass('ui-helper-hidden');
+							}
+							else
+							{
+								reorder_link.addClass('ui-helper-hidden');
+							}
+						});
+
+						$('#b-page-settings-children-reorder').on('click', function() {
 							var url = '/cms/page/settings/sort_children/' + $.boom.page.options.id;
 							$.boom.dialog.open({
 								url:  url,
 								title: 'Reorder child pages',
 								width: 'auto',
 								open: function() {
-									$('#b-page-childen-sort').sortable();
+									$('#b-page-settings-children-sort').sortable();
 								},
 								callback: function(){
-									var sequences = $('#b-page-childen-sort li').map(function(){
+									var sequences = $('#b-page-settings-children-sort li').map(function(){
 										return $(this).attr('data-id');
 									}).get();
 
 									$.boom.page.settings.save(
-										url,
-										{sequences: sequences},
-										"Child page ordering saved."
-									);
+										'/cms/page/settings/children/' + $.boom.page.options.id,
+										$("#boom-form-pagesettings-childsettings").serialize()
+									).done(function() {
+										$.boom.page.settings.save(
+											url,
+											{sequences: sequences},
+											"Child page ordering saved, reloading page."
+										).done(function(){
+											setTimeout(function() {
+												top.location.reload();
+											}, 1000);
+										});
+									});
 								}
 							})
 						});

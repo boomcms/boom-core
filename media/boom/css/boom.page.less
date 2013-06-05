@@ -40,11 +40,26 @@
 		background-color: transparent;
 	}
 
-	&settings {
+	&-settings {
 		&-tags {
 			&-add {
 				&-name {
 					display: none;
+				}
+			}
+		}
+
+		&-children-reorder {
+			float: right;
+		}
+
+		&-children-sort {
+			list-style-image:url('/media/boom/img/sort.png');
+			& li {
+				padding: 3px;
+				&:hover {
+					cursor: hand;
+					cursor: pointer;
 				}
 			}
 		}
@@ -60,11 +75,10 @@
 		display: inline;
 		margin-left: 10%;
 	}
-}
 
-/* No borders for tables in page settings modal windows */
-.b-pagesettings {
-	table, tr, td {
-		border: 0px;
+	&-settings {
+		label {
+			margin-bottom: 0.5em;
+		}
 	}
 }

@@ -1,5 +1,5 @@
 <form id="boom-form-pagesettings-navigation" name="pagesettings-navigation">
-	<div class="boom-tabs s-pagesettings">
+	<div class="boom-tabs b-page-settings">
 		<? if ($allow_advanced): ?>
 			<ul>
 				<li>

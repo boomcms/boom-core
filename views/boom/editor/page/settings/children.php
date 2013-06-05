@@ -1,5 +1,5 @@
 <form id="boom-form-pagesettings-childsettings" name="pagesettings-childsettings">
-	<div id="child-settings" class="boom-tabs s-pagesettings">
+	<div id="child-settings" class="boom-tabs b-page-settings">
 		<? if ($allow_advanced): ?>
 			<ul>
 				<li>
@@ -33,7 +33,7 @@
 					), $child_order_direction);
 				?>
 			</label>
-			<a href="#" id="child-settings-reorder-children">Reorder</a>
+			<a href="#" id="b-page-settings-children-reorder"<? if ($child_order_column != 'sequence'): ?> class="ui-helper-hidden"<? endif ?>>Reorder</a>
 		</div>
 		<? if ($allow_advanced): ?>
 			<div id="child-settings-advanced">

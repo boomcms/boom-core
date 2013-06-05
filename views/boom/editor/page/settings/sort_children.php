@@ -1,7 +1,7 @@
-<ul id="b-page-childen-sort" class="sort_list">
+<ul id="b-page-settings-children-sort">
 	<? foreach ($children as $p): ?>
 		<li data-id="<?= $p->id ?>">
-			<span><?= $p->version()->title ?></span>
+			<span class="title"><?= $p->version()->title ?></span>
 		</li>
 	<? endforeach ?>
 </ul>

@@ -1,5 +1,5 @@
 <form id="boom-form-pagesettings-search" name="pagesettings-seo">
-	<div id="b-pagesettings-search" class="boom-tabs s-pagesettings">
+	<div id="b-pagesettings-search" class="boom-tabs b-page-settings">
 		<? if ($allow_advanced): ?>
 			<ul>
 				<li>
