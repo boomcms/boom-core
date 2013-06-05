@@ -72,4 +72,9 @@ class Boom_Finder_Pages extends Finder
 	{
 		return $this->sorted_by_property_and_direction('visible_from', 'desc');
 	}
+
+	public function with_the_most_recently_edited_first()
+	{
+		return $this->sorted_by_property_and_direction('edited_time', 'desc');
+	}
 }
