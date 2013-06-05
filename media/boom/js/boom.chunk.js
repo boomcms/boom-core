@@ -771,15 +771,19 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 		.pipe( function( rid ){
 
 			self.asset.asset_id = rid;
-			return $.boom.links.picker( {
-				page_rid: $.boom.page.options.id,
-				title: 'Add a link',
-				link: {
-					url: self.asset.url,
-					rid: -1,
-					title: ''
-				}
-			});
+
+			if ( ! self.asset.url.match( /asset\/(thumb|view)\/([0-9]+)/ ))
+			{
+				return $.boom.links.picker( {
+					page_rid: $.boom.page.options.id,
+					title: 'Add a link',
+					link: {
+						url: self.asset.url,
+						rid: -1,
+						title: ''
+					}
+				});
+			}
 		})
 		.done( function( link ){
 			self.insert( self.asset.asset_id, link );
