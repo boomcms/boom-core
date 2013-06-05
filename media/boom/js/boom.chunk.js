@@ -690,6 +690,12 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 			case 'IMG':
 				this.originals = self.asset.element.clone( true );
 				$.ui.chunk.prototype._init.call( self );
+			case 'A':
+				if (self.element[0].hasAttribute('data-boom-target'))
+				{
+					this.originals = self.asset.element.clone( true );
+					$.ui.chunk.prototype._init.call( self );
+				}
 			break;
 
 			default:
