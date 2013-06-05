@@ -18,7 +18,7 @@
 		<li><a><?=__('Type')?></a>
 			<ul class="ui-helper-hidden">
 				<? foreach ($types as $type): ?>
-					<li><a href='#type/<?= $type ?>'><?= $type ?></a></li>
+					<li><a href='#type/<?= str_replace(' ', '', $type) ?>'><?= $type ?></a></li>
 				<? endforeach ?>
 			</ul>
 		</li>

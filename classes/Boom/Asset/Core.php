@@ -19,7 +19,7 @@ abstract class Boom_Asset_Core
 
 	const MP3 = 5;
 
-	const WORD = 6;
+	const MSWORD = 6;
 
 	/**
 	 * Asset type for Bits on the Run hosted video.
@@ -52,22 +52,22 @@ abstract class Boom_Asset_Core
 	{
 		switch ($type)
 		{
-			case Boom_Asset::IMAGE:
+			case static::IMAGE:
 				return 'image';
 
-			case Boom_Asset::VIDEO:
+			case static::VIDEO:
 				return 'video';
 
-			case Boom_Asset::PDF:
+			case static::PDF:
 				return 'pdf';
 
-			case Boom_Asset::TIFF:
+			case static::TIFF:
 				return 'tiff';
 
-			case Boom_Asset::WORD:
-				return "MS Word";
+			case static::MSWORD:
+				return "MSWord";
 
-			case Boom_Asset::BOTR:
+			case static::BOTR:
 				return "video";
 
 			default:
