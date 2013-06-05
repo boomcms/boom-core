@@ -153,6 +153,24 @@ class Boom_Model_Page extends Model_Taggable
 		return $this;
 	}
 
+	public function get_author_names_as_string()
+	{
+		$authors = $this->get_tags_with_name_like('Author/%');
+
+		if ( ! empty($authors))
+		{
+			foreach ($authors as & $author)
+			{
+				$author = htmlentities(str_replace('Author/', '', $author->name), ENT_QUOTES);
+			}
+
+			$authors = implode(", ", $authors);
+			return $authors;
+		}
+
+		return "";
+	}
+
 	/**
 	 * Converts the integer stored in the children_ordering_policy column to an array of column and direction which can be used when querying the database.
 	 *
