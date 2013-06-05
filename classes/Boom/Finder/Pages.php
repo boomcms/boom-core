@@ -4,6 +4,8 @@ class Boom_Finder_Pages extends Finder
 {
 	protected $_parent_id;
 
+	protected $_sort_applied = FALSE;
+
 	public function __construct()
 	{
 		$this->_query = ORM::factory('Page')
@@ -44,6 +46,16 @@ class Boom_Finder_Pages extends Finder
 	{
 		$this->_query->where($this->_get_navigation_visibility_column(), '=', TRUE);
 		return $this;
+	}
+
+	public function get_results($limit)
+	{
+		if ( ! $this->_sort_applied)
+		{
+			$this->apply_default_sort();
+		}
+
+		return parent::get_results($limit);
 	}
 
 	public function sorted_by_title()
