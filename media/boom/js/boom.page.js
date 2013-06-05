@@ -1702,6 +1702,30 @@ $.widget( 'boom.page', $.boom.page, {
 					// cache: true,
 					title: 'Child page settings',
 					width: 'auto',
+					open: function() {
+						$('#child-settings-reorder-children').on('click', function() {
+							var url = '/cms/page/settings/sort_children/' + $.boom.page.options.id;
+							$.boom.dialog.open({
+								url:  url,
+								title: 'Reorder child pages',
+								width: 'auto',
+								open: function() {
+									$('#b-page-childen-sort').sortable();
+								},
+								callback: function(){
+									var sequences = $('#b-page-childen-sort li').map(function(){
+										return $(this).attr('data-id');
+									}).get();
+
+									$.boom.page.settings.save(
+										url,
+										{sequences: sequences},
+										"Child page ordering saved."
+									);
+								}
+							})
+						});
+					},
 					callback: function(){
 
 						$.boom.page.settings.save(

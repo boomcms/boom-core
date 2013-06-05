@@ -157,6 +157,15 @@ class Boom_Controller_Cms_Page_Settings_Save extends Controller_Cms_Page_Setting
 			->update();
 	}
 
+	public function action_sort_children()
+	{
+		parent::action_children();
+
+		Database::instance()->begin();
+		$this->page->update_child_sequences($this->request->post('sequences'));
+		Database::instance()->commit();
+	}
+
 	/**
 	 * ** Save page visibility settings. **
 	 *

@@ -33,6 +33,7 @@
 					), $child_order_direction);
 				?>
 			</label>
+			<a href="#" id="child-settings-reorder-children">Reorder</a>
 		</div>
 		<? if ($allow_advanced): ?>
 			<div id="child-settings-advanced">

@@ -523,6 +523,25 @@ class Boom_Model_Page extends Model_Taggable
 		}
 	}
 
+	public function update_child_sequences(array $sequences)
+	{
+		foreach ($sequences as $sequence => $page_id)
+		{
+			$mptt = new Model_Page_Mptt($page_id);
+
+			// Only update the sequence of pages which are children of this page.
+			if ($mptt->scope == $this->mptt->scope AND $mptt->parent_id == $this->id)
+			{
+				DB::update('pages')
+					->set(array('sequence' => $sequence))
+					->where('pages.id', '=', $page_id)
+					->execute($this->_db);
+			}
+		}
+
+		return $this;
+	}
+
 	/**
 	 * Returns the page's absolute URL.
 	 * The URL can be displayed by casting the returned object to a string:

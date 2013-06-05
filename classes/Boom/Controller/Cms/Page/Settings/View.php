@@ -93,6 +93,20 @@ class Boom_Controller_Cms_Page_Settings_View extends Controller_Cms_Page_Setting
 		));
 	}
 
+	public function action_sort_children()
+	{
+		parent::action_children();
+
+		$children = Finder::pages()
+			->which_are_children_of_the_page_by_id($this->page->id)
+			->sorted_by_manual_order()
+			->get_results(50);
+
+		$this->template = View::factory("$this->_view_directory/sort_children", array(
+			'children' => $children
+		));
+	}
+
 	/**
 	 * ** View the page visibility settings. **
 	 *
