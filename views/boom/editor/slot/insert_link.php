@@ -5,8 +5,8 @@
 	</ul>
 	<div id="boom-chunk-linkset-addlink-internal">
 		<input type="hidden" name="parent_id" value="">
-		<div class="boom-chunk-linkset-internal-links boom-tree">
-			<ul>
+		<div class="boom-chunk-linkset-internal-links">
+			<ul class="boom-tree">
 				<li><a id="page_5" href="/" rel="5">Home</a></li>
 			</ul>
 		</div>
