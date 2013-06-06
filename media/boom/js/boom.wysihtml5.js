@@ -617,8 +617,6 @@ $.widget('wysihtml5.editor', $.boom.editor,
 
 		/** @function */
 		highlight_command : function( node ) {
-console.log('highlight_command');
-console.log(node);
 			var command = '';
 			switch ( node.nodeName ){
 				case 'A':
