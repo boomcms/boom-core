@@ -182,7 +182,15 @@ class Boom_Model_Chunk_Text extends ORM
 
 				if ($asset->loaded())
 				{
-					return "<img src='/asset/thumb/{$asset->id}/16/16/85' /><a href='/asset/view/{$asset->id}'>Download {$asset->title}</a> (".Text::bytes($asset->filesize)." ".ucfirst(Boom_Asset::type($asset->type)).")";
+					$text = "<p class='inline-asset'><a class='download ".Boom_Asset::type($asset->type)."' href='/asset/view/{$asset->id}'>Download {$asset->title}</a>";
+
+					if (Editor::instance()->state_is(Editor::DISABLED))
+					{
+						$text .= " (".Text::bytes($asset->filesize)." ".ucfirst(Boom_Asset::type($asset->type)).")";
+					}
+
+					$text .= "</p>";
+					return $text;
 				}
 			}, $text);
 	}
