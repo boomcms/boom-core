@@ -141,7 +141,7 @@ class Boom_Model_Chunk_Text extends ORM
 	public function munge($text)
 	{
 		$text = preg_replace('|<(.*?)src=([\'"])/asset/view/(.*?)([\'"])(.*?)>|', '<$1src=$2hoopdb://image/$3$4$5>', $text);
-		$text = preg_replace('|<(.*?)href=([\'"])/asset/view/(\d+)/?.*?([\'"])(.*?)>|', '<$1src=$2hoopdb://asset/$3$4$5>', $text);
+		$text = preg_replace('|<(.*?)href=([\'"])/asset/view/(\d+)/?.*?([\'"])(.*?)>|', '<$1href=$2hoopdb://asset/$3$4$5>', $text);
 
 		return $text;
 	}
@@ -175,14 +175,14 @@ class Boom_Model_Chunk_Text extends ORM
 
 	public function unmunge_non_image_asset_links($text)
 	{
-		return preg_replace_callback('|(?<=\<a)href=([\'\"]hoopdb://asset/(\d+))?(?=\</a>)|', function($matches)
+		return preg_replace_callback('|<a.*?href=[\'\"]hoopdb://asset/(\d+).*?</a>|', function($matches)
 			{
 				$asset_id = $matches[1];
 				$asset = new Model_Asset($asset_id);
 
 				if ($asset->loaded())
 				{
-					return "<a href='/asset/view/{$asset->id}'>Download {$asset->title}</a> ({$asset->filesize})";
+					return "<a href='/asset/view/{$asset->id}'>Download {$asset->title}</a> (".Text::bytes($asset->filesize)." ".ucfirst(Boom_Asset::type($asset->type)).")";
 				}
 			}, $text);
 	}
