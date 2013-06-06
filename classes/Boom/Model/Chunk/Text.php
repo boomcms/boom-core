@@ -73,7 +73,7 @@ class Boom_Model_Chunk_Text extends ORM
 		$this->_object['text'] = $this->munge($this->_object['text']);
 
 		// Find which assets are linked to within the text chunk.
-		preg_match_all('|hoopdb://image|asset/(\d+)|', $this->_object['text'], $matches);
+		preg_match_all('~hoopdb://image|asset/(\d+)~', $this->_object['text'], $matches);
 
 		// Create the text chunk.
 		parent::create($validation);
