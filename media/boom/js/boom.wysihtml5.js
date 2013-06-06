@@ -380,9 +380,6 @@ $.widget('wysihtml5.editor', $.boom.editor,
 			};
 
 			opts.link = link;
-
-			console.log(opts);
-			console.log(opts.link);
 		}
 
 
@@ -390,8 +387,6 @@ $.widget('wysihtml5.editor', $.boom.editor,
 			.picker( opts )
 			.fail( function(){
 				var link = top.$( ed.element ).find( '[rel=new-link]' );
-				console.log(opts);
-				console.log( link );
 
 				link
 					.after( link.text() )
