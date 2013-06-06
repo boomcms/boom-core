@@ -73,7 +73,7 @@ class Boom_Model_Chunk_Text extends ORM
 		$this->_object['text'] = $this->munge($this->_object['text']);
 
 		// Find which assets are linked to within the text chunk.
-		preg_match_all('|hoopdb://image/(\d+)|', $this->_object['text'], $matches);
+		preg_match_all('~hoopdb://image|asset/(\d+)~', $this->_object['text'], $matches);
 
 		// Create the text chunk.
 		parent::create($validation);
@@ -141,7 +141,7 @@ class Boom_Model_Chunk_Text extends ORM
 	public function munge($text)
 	{
 		$text = preg_replace('|<(.*?)src=([\'"])/asset/view/(.*?)([\'"])(.*?)>|', '<$1src=$2hoopdb://image/$3$4$5>', $text);
-		$text = preg_replace('|<(.*?)href=([\'"])/asset/view/(\d+)([\'"])(.*?)>|', '<$1src=$2hoopdb://asset/$3$4$5>', $text);
+		$text = preg_replace('|<(.*?)href=([\'"])/asset/view/(\d+)/?.*?([\'"])(.*?)>|', '<$1href=$2hoopdb://asset/$3$4$5>', $text);
 
 		return $text;
 	}
@@ -175,7 +175,16 @@ class Boom_Model_Chunk_Text extends ORM
 
 	public function unmunge_non_image_asset_links($text)
 	{
-		return preg_replace('|hoopdb://asset/(\d+)/|', '/asset/view/$1/', $text);
+		return preg_replace_callback('|<a.*?href=[\'\"]hoopdb://asset/(\d+).*?</a>|', function($matches)
+			{
+				$asset_id = $matches[1];
+				$asset = new Model_Asset($asset_id);
+
+				if ($asset->loaded())
+				{
+					return "<img src='/asset/thumb/{$asset->id}/16/16/85' /><a href='/asset/view/{$asset->id}'>Download {$asset->title}</a> (".Text::bytes($asset->filesize)." ".ucfirst(Boom_Asset::type($asset->type)).")";
+				}
+			}, $text);
 	}
 
 	public function unmunge_page_links($text)
