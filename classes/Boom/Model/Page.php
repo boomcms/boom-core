@@ -511,16 +511,7 @@ class Boom_Model_Page extends Model_Taggable
 
 	public function status()
 	{
-		if ($this->is_visible())
-		{
-			// The page is visible so return the status of the current version.
-			return $this->version()->status();
-		}
-		else
-		{
-			// The page is invisible - that's it's status.
-			return 'invisible';
-		}
+		return $this->version()->status();
 	}
 
 	public function update_child_sequences(array $sequences)
