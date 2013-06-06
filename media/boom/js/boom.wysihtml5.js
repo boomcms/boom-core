@@ -158,7 +158,7 @@ $.widget('wysihtml5.editor', $.boom.editor,
 					});
 
 					self.instance.on( 'show:dialog', function( options ){
-
+console.log(options.node);
 						switch( options.command ) {
 							case 'createLink' :
 								var href = top.$( '[data-wysihtml5-dialog-field=href]' ).val();
@@ -320,14 +320,18 @@ $.widget('wysihtml5.editor', $.boom.editor,
 		if ( asset_rid == 0 ) {
 			ed.commands.exec( "insertHTML", '<img src="url">' );
 			img = top.$( ed.element ).find( '[src=url]' );
+			if ( ! img.length)
+				img = top.$( ed.element ).find( '[href=url]' )
 		} else {
 			img = top.$( ed.element ).find( '[src^="/asset/view/' + asset_rid +'"]' );
+			if ( ! img.length)
+				img = top.$( ed.element ).find( '[href^="/asset/view/' + asset_rid +'"]' );
 		}
 
 		// cleanup code when the dialog closes.
 		asset_selected
 		.fail( function() {
-			top.$( ed.element ).find( '[src=url]' ).remove();
+			top.$( ed.element ).find( '[src=url]' ).remove() || top.$( ed.element ).find( '[href=url]' ).remove()
 		});
 
 		return $.boom.assets
@@ -614,12 +618,15 @@ $.widget('wysihtml5.editor', $.boom.editor,
 
 		/** @function */
 		highlight_command : function( node ) {
-
+console.log('highlight_command');
+console.log(node);
 			var command = '';
-
 			switch ( node.nodeName ){
 				case 'A':
-					command = 'createLink';
+					if ( node.attr('href').match( /asset\/(thumb|view|get_asset)\/([0-9]+)/ ) )
+						command = 'insertImage';
+					else
+						command = 'createLink';
 				break;
 				case 'I': case 'EM':
 					command = 'italic';
