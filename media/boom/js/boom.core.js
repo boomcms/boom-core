@@ -12,7 +12,7 @@ $.extend({
 	@class
 	@name $.boom
 	*/
-	boom : 
+	boom :
 		/** @lends $.boom */
 		{
 
@@ -121,7 +121,7 @@ $.extend($.boom,
 	*/
 	cookie : {
 
-		/** 
+		/**
 		@property ids
 		*/
 		ids: {},
@@ -568,7 +568,7 @@ $.extend($.boom,
 	@class
 	@static
 	*/
-	util : 
+	util :
 		/** @lends $.boom.util */
 		{
 		/** @function */
@@ -965,9 +965,9 @@ $.extend($.boom,
 			function initDialog(dialog, ui){
 
 				ui = ui === undefined;
-				
+
 				$.boom.page && $.boom.page.toolbar.maximise();
-				
+
 
 				dialog
 				.dialog(dialogConfig);

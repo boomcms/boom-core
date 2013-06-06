@@ -178,7 +178,7 @@ var wysihtml5ParserRules = {
         },
         "a": {
             "check_attributes": {
-                "href": "url2"
+                "href": "href",
             }
         },
         "img": {

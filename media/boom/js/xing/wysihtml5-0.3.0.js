@@ -5064,10 +5064,9 @@ console.log( node.src );
       };
     })(),
 
-    url2: (function() {
-      var REG_EXP = /^https?:\/\/|mailto:|tel:/i;
+    href: (function() {
+      var REG_EXP = /^(\/|https?:\/\/|mailto:|tel:)/i;
       return function(attributeValue) {
-	return attributeValue;
         if (!attributeValue || !attributeValue.match(REG_EXP)) {
           return null;
         }
