@@ -165,6 +165,7 @@ $.widget('wysihtml5.editor', $.boom.editor,
 							 	var match = href.match( /asset\/(thumb|view|get_asset)\/([0-9]+)/ );
 								var asset_id = match ? match[2] : 0;
 								if ( asset_id == 0 ) self._edit_link();
+								else self._edit_asset( asset_id );
 								break;
 							case 'insertImage' :
 								var src = top.$( '[data-wysihtml5-dialog-field=src]' ).val();
