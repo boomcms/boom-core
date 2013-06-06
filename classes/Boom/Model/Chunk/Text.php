@@ -140,7 +140,10 @@ class Boom_Model_Chunk_Text extends ORM
 	 */
 	public function munge($text)
 	{
-		return preg_replace('|<(.*?)src=([\'"])/asset/view/(.*?)([\'"])(.*?)>|', '<$1src=$2hoopdb://image/$3$4$5>', $text);
+		$text = preg_replace('|<(.*?)src=([\'"])/asset/view/(.*?)([\'"])(.*?)>|', '<$1src=$2hoopdb://image/$3$4$5>', $text);
+		$text = preg_replace('|<(.*?)href=([\'"])/asset/view/(\d+)([\'"])(.*?)>|', '<$1src=$2hoopdb://asset/$3$4$5>', $text);
+
+		return $text;
 	}
 
 	/**
@@ -152,21 +155,27 @@ class Boom_Model_Chunk_Text extends ORM
 	 */
 	public function unmunge($text)
 	{
-		$text = $this->unmunge_asset_links_with_only_asset_id($text);
-		$text = $this->unmunge_asset_links_with_multiple_params($text);
+		$text = $this->unmunge_image_links_with_only_asset_id($text);
+		$text = $this->unmunge_image_links_with_multiple_params($text);
+		$text = $this->unmunge_non_image_asset_links($text);
 		$text = $this->unmunge_page_links($text);
 
 		return $text;
 	}
 
-	public function unmunge_asset_links_with_only_asset_id($text)
+	public function unmunge_image_links_with_only_asset_id($text)
 	{
 		return preg_replace('|hoopdb://image/(\d+)([\'"])|', '/asset/view/$1/400$2', $text);
 	}
 
-	public function unmunge_asset_links_with_multiple_params($text)
+	public function unmunge_image_links_with_multiple_params($text)
 	{
 		return preg_replace('|hoopdb://image/(\d+)/|', '/asset/view/$1/', $text);
+	}
+
+	public function unmunge_non_image_asset_links($text)
+	{
+		return preg_replace('|hoopdb://asset/(\d+)/|', '/asset/view/$1/', $text);
 	}
 
 	public function unmunge_page_links($text)
