@@ -85,7 +85,7 @@ var wysihtml5ParserRules = {
      *                          - clear_br:    converts clear attribute values left/right/all/both to their corresponding css class "wysiwyg-clear-*"
      *                            <br clear="all"> ... becomes ... <br class="wysiwyg-clear-both">
      *                          - align_img:    converts align attribute values (right/left) on <img> to their corresponding css class "wysiwyg-float-*"
-     *                          
+     *
      *    - remove:             removes the element and it's content
      *
      *    - rename_tag:         renames the element to the given tag
@@ -178,7 +178,7 @@ var wysihtml5ParserRules = {
         },
         "a": {
             "check_attributes": {
-                "href": "url"
+                "href": "url2"
             }
         },
         "img": {
