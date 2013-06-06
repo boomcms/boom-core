@@ -158,7 +158,6 @@ $.widget('wysihtml5.editor', $.boom.editor,
 					});
 
 					self.instance.on( 'show:dialog', function( options ){
-console.log(options.node);
 						switch( options.command ) {
 							case 'createLink' :
 								var href = top.$( '[data-wysihtml5-dialog-field=href]' ).val();
