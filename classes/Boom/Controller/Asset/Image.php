@@ -108,6 +108,11 @@ class Boom_Controller_Asset_Image extends Controller_Asset
 			->body(file_get_contents($filename));
 	}
 
+	public function action_embed()
+	{
+		$this->response->body(HTML::image('asset/view/'.$this->asset->id.'/400'));
+	}
+
 	/**
 	 * Show a thumbnail of the asset.
 	 * For images a thumbnail is just showing an image with different dimensions.
