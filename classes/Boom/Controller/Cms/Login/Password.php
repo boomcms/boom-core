@@ -1,6 +1,6 @@
 <?php
 
-class Boom_Controller_Cms_Auth_Password extends Controller_Cms_Auth
+class Boom_Controller_Cms_Login_Password extends Controller_Cms_Login
 {
 	public $method = 'password';
 

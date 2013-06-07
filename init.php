@@ -29,7 +29,7 @@ Route::set('profile', 'cms/profile')
 
 Route::set('login', 'cms/login(/<controller>)')
 	->defaults(array(
-		'directory' => 'Cms_Auth',
+		'directory' => 'Cms_Login',
 		'controller' => ucfirst(Kohana::$config->load('auth')->get('default_method')),
 		'action' => 'begin',
 	))
