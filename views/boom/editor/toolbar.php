@@ -9,7 +9,7 @@
 				<?=__('Menu')?>
 		</button>
 		<span id="boom-page-user-menu">
-			<button id="b-page-user" class="ui-button boom-button" data-icon="ui-icon-boom-person">
+			<button id="boom-page-user" class="ui-button boom-button" data-icon="ui-icon-boom-person">
 				<?=__('Profile')?>
 			</button>
 		</span>

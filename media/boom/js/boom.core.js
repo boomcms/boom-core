@@ -67,6 +67,12 @@ $.extend({
 
 				var user_menu = {
 					"Profile" : function(){
+						$.boom.dialog.open({
+							url: '/cms/account/profile',
+							open: function() {
+
+							}
+						});
 					},
 					"Logout" : function(){
 						top.location = '/cms/logout';
