@@ -61,7 +61,7 @@ class Boom_Controller_Cms_People extends Boom_Controller
 		{
 			// POST request - add a person to the CMS.
 			$this->edit_person
-				->set('email', $this->request->post('email'))
+				->values($this->request->post(), array('name', 'email'))
 				->create()
 				->add_group($this->request->post('group_id'));
 		}
