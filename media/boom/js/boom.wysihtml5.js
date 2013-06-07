@@ -131,13 +131,14 @@ $.widget('wysihtml5.editor', $.boom.editor,
 					self.instance.on( 'load', function(){
 
 						var frame =  self.instance.composer.iframe;
+
+//						top
+//							.$("link[type='text/css']")
+//							.clone()
+//							.appendTo($(frame).contents().find("head"));
+
 						$( frame )
-							.css( 'border', '1px solid #333')
-							.contents()
-							.find( 'head' )
-							.append( '<link rel="stylesheet" href="/media/site/css/main.css" />' );
-
-
+							.css( 'border', '1px solid #333');
 
 						resizeIframe();
 
