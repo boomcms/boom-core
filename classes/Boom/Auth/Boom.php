@@ -82,6 +82,11 @@ class Boom_Auth_Boom extends Auth
 		return $this->_person;
 	}
 
+	public function is_disabled()
+	{
+		return Arr::get($this->_config, 'disabled', FALSE);
+	}
+
 	/**
 	 * Determines whether the current user is logged in, or has permission to perform a particular role.
 	 *
@@ -110,6 +115,11 @@ class Boom_Auth_Boom extends Auth
 	 */
 	public function logged_in($role = NULL, $page = NULL)
 	{
+		if ($this->is_disabled())
+		{
+			return TRUE;
+		}
+
 		// Get the logged in person.
 		$person = $this->get_user();
 
