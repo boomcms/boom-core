@@ -73,14 +73,6 @@ Route::set('boom', '<location>(.<format>)', array(
  **********************************
  */
 
-// Redirect /cms to /cms/login
-Route::set('cms_redirect', 'cms')
-	->filter(function(){
-		header("HTTP/1.1 301 Moved Permanently");
-		header("Location: /cms/login");
-		exit;
-	});
-
 /**
  * Route for uploading assets.
  *
