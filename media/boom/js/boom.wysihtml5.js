@@ -132,11 +132,6 @@ $.widget('wysihtml5.editor', $.boom.editor,
 
 						var frame =  self.instance.composer.iframe;
 
-//						top
-//							.$("link[type='text/css']")
-//							.clone()
-//							.appendTo($(frame).contents().find("head"));
-
 						$( frame )
 							.css( 'border', '1px solid #333');
 
