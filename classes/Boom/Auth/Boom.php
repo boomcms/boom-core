@@ -34,7 +34,7 @@ class Boom_Auth_Boom extends Auth
 		 * Although it's slower, we the check password first before checking that the account is valid and not locked.
 		 * It shouldn't cause too much of a time waste for genuine users but may slow down hack attempts.
 		 */
-		if ($this->check_password($password) AND $this->_person->loaded() AND ! $this->_person->is_locked())
+		if ($this->check_password($password) AND $this->_person->loaded() AND $this->_person->enabled AND ! $this->_person->is_locked())
 		{
 			$this->complete_login();
 			return TRUE;
