@@ -175,7 +175,7 @@ class Boom_Auth_Boom extends Auth
 
 	public function login_method_available($method)
 	{
-		return Arr::get($this->login_methods(), $method) !== NULL;
+		return in_array($method, $this->login_methods());
 	}
 
 	/**
