@@ -53,6 +53,12 @@
 		</div>
 		<div id="boom-chunk-linkset-addlink-external">
 			<form id="boom-chunk-linkset-addlink-external-form" action="#">
+				<select id="b-chunk-linkset-addlink-external-type">
+					<option value="http" selected="selected">Website</option>
+					<option value="mailto">Email</option>
+					<option value="tel">Phone number</option>
+				</select>
+				<br />
 				URL
 				<input type="text" id="boom-chunk-linkset-addlink-external-url" class="boom-input" value="http://" />
 
