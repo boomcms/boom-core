@@ -59,7 +59,7 @@ class Boom_Controller_Cms_People extends Boom_Controller
 	{
 		if ($this->request->method() === Request::POST)
 		{
-			if (in_array('password', Kohana::$config->load('auth')->get('login_methods'))
+			if (in_array('password', Kohana::$config->load('auth')->get('login_methods')))
 			{
 				$password = Text::random(NULL, 15);
 				$enc_password = $this->auth->hash_password($password);
