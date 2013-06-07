@@ -4,15 +4,6 @@ class Boom_Controller_Cms_Login_Password extends Controller_Cms_Login
 {
 	public $method = 'password';
 
-	public function before()
-	{
-		parent::before();
-
-		if ($this->auth->logged_in())
-		{
-			$this->redirect('/');
-		}
-	}
 	public function action_begin()
 	{
 		$this->response->body(View::factory('boom/account/login'));
@@ -36,7 +27,5 @@ class Boom_Controller_Cms_Login_Password extends Controller_Cms_Login
 				}
 			}
 		}
-
-		return;
 	}
 }

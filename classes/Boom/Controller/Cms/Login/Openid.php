@@ -41,7 +41,7 @@ class Boom_Controller_Cms_Login_Openid extends Controller_Cms_Login
 			$person = new Model_Person(array('email' => $attrs['contact/email']));
 
 			// Does the person exist?
-			if ( ! $person->loaded() AND $person->enabled)
+			if ( ! $person->loaded() OR ! $person->enabled)
 			{
 				// No, the given email address isn't allowed to login to this CMS.
 				// TODO: Make a nice 'go away' page.
