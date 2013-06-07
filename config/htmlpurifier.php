@@ -11,6 +11,8 @@ return array
 	'URI.AllowedSchemes'					=>	array (
 		'http'		=> TRUE,
 		'https'	=> TRUE,
+		'mailto'	=> TRUE,
+		'tel'		=> TRUE,
 		'hoopdb'	=> TRUE,
 		'ftp'		=> TRUE,
 	),
