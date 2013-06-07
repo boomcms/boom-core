@@ -9,6 +9,8 @@
  */
 class Boom_Model_Person extends ORM
 {
+	const LOCK_WAIT = 600;
+
 	protected $_table_name = 'people';
 
 	protected $_table_columns = array(
@@ -60,6 +62,19 @@ class Boom_Model_Person extends ORM
 			->execute($this->_db);
 
 		return $this;
+	}
+
+	public function complete_login()
+	{
+		return $this
+			->set('failed_logins', 0)
+			->set('locked_until', 0)
+			->update();
+	}
+
+	public function is_locked()
+	{
+		return $this->locked_until AND ($this->locked_until >$_SERVER['REQUEST_TIME']);
 	}
 
 	/**
@@ -115,6 +130,18 @@ class Boom_Model_Person extends ORM
 			->as_array();
 
 		return  ( ! empty($result) AND (boolean) $result[0]['allowed']);
+	}
+
+	public function login_failed()
+	{
+		$this->set('failed_logins', ++$this->failed_logins);
+
+		if ($this->failed_logins > 3)
+		{
+			$this->set('locked_until', $_SERVER['REQUEST_TIME'] + static::LOCK_WAIT);
+		}
+
+		return $this->update();
 	}
 
 	/**

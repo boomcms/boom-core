@@ -19,6 +19,13 @@ class Boom_Controller_Cms_Auth extends Controller
 			{
 				$this->redirect('/');
 			}
+			else
+			{
+				if ($person->is_locked())
+				{
+					die("account locked");
+				}
+			}
 		}
 		$this->response->body(View::factory('boom/account/login'));
 		return;

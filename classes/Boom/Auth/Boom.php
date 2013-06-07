@@ -30,17 +30,20 @@ class Boom_Auth_Boom extends Auth
 
 		$this->_person = $person;
 
-		require Kohana::find_file('vendor', 'PasswordHash');
-		$hasher = new PasswordHash(8, false);
-
-		if ($hasher->CheckPassword($password, $this->_person->password))
+		/**
+		 * Although it's slower, we the check password first before checking that the account is valid and not locked.
+		 * It shouldn't cause too much of a time waste for genuine users but may slow down hack attempts.
+		 */
+		if ($this->check_password($password) AND ! $this->_person->loaded() AND ! $this->_person->is_locked())
 		{
 			// Store the person ID in the session data.
-			$this->_session->set($this->_config['session_key'], $person->id);
+			$this->_session->set($this->_config['session_key'], $this->_person->id);
+			$this->_person->complete_login();
 			return TRUE;
 		}
 		else
 		{
+			$this->_person->login_failed();
 			return FALSE;
 		}
 	}
@@ -146,9 +149,17 @@ class Boom_Auth_Boom extends Auth
 	 */
 	public function password($username) {}
 
-	/**
-	 * Required by [Auth] but we don't use because password validation is done by OpenID.
-	 *
-	 */
-	public function check_password($username) {}
+	public function check_password($password)
+	{
+		require Kohana::find_file('vendor', 'PasswordHash');
+		$hasher = new PasswordHash(8, false);
+
+		/*
+		 * Create a dummy password to compare against if the user doesn't exist.
+		 * This wastes CPU time to protect against probing for valid usernames.
+		 */
+		$password = ($this->_person->loaded())? $this->_person->password : '$2a$08$1234567890123456789012';
+
+		return $hasher->CheckPassword($password, $this->_person->password) AND $this->_person->loaded();
+	}
 }
