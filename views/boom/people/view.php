@@ -10,7 +10,6 @@
 				<li><a href="#boom-person-view-information<?=$person->id;?>">Information</a></li>
 				<li><a href="#boom-person-view-activity<?=$person->id;?>">Activity</a></li>
 				<li><a href="#boom-person-view-groups<?=$person->id;?>">Groups</a></li>
-				<li><a href="#boom-person-view-permissions<?=$person->id;?>">Permissions</a></li>
 			</ul>
 
 			<div class="ui-tabs-panel ui-widget-content ui-helper-left">
@@ -106,10 +105,6 @@
 				<button class="boom-button ui-button-text-icon b-people-groups-add" rel='<?= $person->id ?>' data-icon="ui-icon-boom-add">
 					Add Group
 				</button>
-			</div>
-
-			<div id="boom-person-view-permissions<?=$person->id;?>" class="ui-helper-left">
-
 			</div>
 
 			<br class="ui-helper-clear" />
