@@ -24,7 +24,7 @@ class Boom_Controller_Cms_Auth_Password extends Controller_Cms_Auth
 		{
 			$person = new Model_Person(array('email' => $this->request->post('email')));
 
-			if (Auth::instance()->login($person, $this->request->post('password')))
+			if ($this->auth->login($person, $this->request->post('password')))
 			{
 				$this->redirect('/');
 			}
