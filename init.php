@@ -15,7 +15,7 @@ Route::set('auth', 'cms/<action>',
 Route::set('login', 'cms/login(/<controller>)')
 	->defaults(array(
 		'directory' => 'Cms_Auth',
-		'controller' => ucfirst(Kohana::$config->load('auth')->get('login_method')),
+		'controller' => ucfirst(Kohana::$config->load('auth')->get('default_method')),
 		'action' => 'begin',
 	))
 	->filter(function(Route $route, $params, Request $request)

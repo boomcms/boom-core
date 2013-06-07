@@ -170,7 +170,7 @@ class Boom_Auth_Boom extends Auth
 		 * Create a dummy password to compare against if the user doesn't exist.
 		 * This wastes CPU time to protect against probing for valid usernames.
 		 */
-		$hash = ($this->_person->loaded())? $this->_person->password : '$2a$08$1234567890123456789012';
+		$hash = ($this->_person->password)? $this->_person->password : '$2a$08$1234567890123456789012';
 
 		return $hasher->CheckPassword($password, $hash) AND $this->_person->loaded();
 	}

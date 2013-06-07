@@ -3,6 +3,7 @@
 class Boom_Controller_Cms_Auth_Openid extends Controller_Cms_Auth
 {
 	public $openid;
+	public $method = 'openid';
 
 	public function before()
 	{

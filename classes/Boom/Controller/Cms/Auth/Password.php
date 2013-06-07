@@ -2,6 +2,8 @@
 
 class Boom_Controller_Cms_Auth_Password extends Controller_Cms_Auth
 {
+	public $method = 'password';
+
 	public function before()
 	{
 		parent::before();
