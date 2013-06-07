@@ -11,15 +11,17 @@
 			<?= Form::input('name', $person->name, array('size' => 35)) ?>
 		</label>
 
-		<label>
-			Current password
-			<?= Form::password('current_password','', array('size' => 35)) ?>
-		</label>
+		<? if ($auth->login_method_available('password')): ?>
+			<label>
+				Current password
+				<?= Form::password('current_password','', array('size' => 35)) ?>
+			</label>
 
-		<label>
-			New password
-			<?= Form::password('new_password','', array('size' => 35)) ?>
-		</label>
+			<label>
+				New password
+				<?= Form::password('new_password','', array('size' => 35)) ?>
+			</label>
+		<? endif; ?>
 
 		<?= Form::submit('submit', 'Submit') ?>
 	</form>

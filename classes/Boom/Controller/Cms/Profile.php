@@ -5,7 +5,8 @@ class Boom_Controller_Cms_Profile extends Boom_Controller
 	public function action_view()
 	{
 		$v = new View('boom/account/profile', array(
-			'person' => $this->person
+			'person' => $this->person,
+			'auth' => $this->auth,
 		));
 
 		$this->response->body($v);
