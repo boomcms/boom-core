@@ -186,9 +186,9 @@ class Boom_Controller_Cms_People extends Boom_Controller
 			// Sort ascending by default.
 			$order = 'asc';
 		}
-		
+
 		$column = 'name';
-		
+
 		if ( strpos( $sortby, '-' ) > 1 ){
 			$sort_params = explode( '-', $sortby );
 			$column = $sort_params[0];
@@ -217,7 +217,7 @@ class Boom_Controller_Cms_People extends Boom_Controller
 
 		if ($pages > 1)
 		{
-			$url = '#tag/' . Arr::get($get, 'tag', 0);
+			$url = '#tag/' . $this->request->query('tag');
 			$pagination = View::factory('pagination/query', array(
 				'current_page'	=>	$page,
 				'total_pages'	=>	$pages,
@@ -285,7 +285,7 @@ class Boom_Controller_Cms_People extends Boom_Controller
 			'person'		=>	$this->edit_person,
 			'request'		=>	$this->request,
 			'activities'	=>	$this->edit_person->logs->order_by('time', 'desc')->limit(50)->find_all(),
-			'groups'		=>	$this->edit_person->groups->order_by('name', 'asc')->find_all(),	
+			'groups'		=>	$this->edit_person->groups->order_by('name', 'asc')->find_all(),
 		));
 	}
 }
