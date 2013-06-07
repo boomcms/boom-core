@@ -28,11 +28,21 @@ class Boom_Auth_Boom extends Auth
 			$person = new Model_Person(array('email' => $person));
 		}
 
-		// Cache the person object locally.
 		$this->_person = $person;
 
-		// Store the person ID in the session data.
-		$this->_session->set($this->_config['session_key'], $person->id);
+		require Kohana::find_file('vendor', 'PasswordHash');
+		$hasher = new PasswordHash(8, false);
+
+		if ($hasher->CheckPassword($password, $this->_person->password))
+		{
+			// Store the person ID in the session data.
+			$this->_session->set($this->_config['session_key'], $person->id);
+			return TRUE;
+		}
+		else
+		{
+			return FALSE;
+		}
 	}
 
 	public function hash_password($password)

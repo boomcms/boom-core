@@ -11,6 +11,17 @@ class Boom_Controller_Cms_Auth extends Controller
 {
 	public function action_login()
 	{
+		if ($this->request->method() == Request::POST)
+		{
+			$person = new Model_Person(array('email' => $this->request->post('email')));
+
+			if (Auth::instance()->login($person, $this->request->post('password')))
+			{
+				$this->redirect('/');
+			}
+		}
+		$this->response->body(View::factory('boom/account/login'));
+		return;
 		// Load the OpenID library.
 		require Kohana::find_file('vendor/openid', 'openid');
 
@@ -69,7 +80,7 @@ class Boom_Controller_Cms_Auth extends Controller
 				}
 
 				// Called [Auth::login()] to complete the login.
-				Auth::instance()->login($person, " ");
+				Auth::instance()->force_login($person);
 
 				// Write the session data.
 				Session::instance()->write();
