@@ -67,10 +67,19 @@ $.extend({
 
 				var user_menu = {
 					"Profile" : function(){
-						$.boom.dialog.open({
-							url: '/cms/account/profile',
-							open: function() {
+						var url = '/cms/profile';
 
+						$.boom.dialog.open({
+							'url': url,
+							'title': 'User profile',
+							callback: function() {
+								$.post(url, $('#b-people-profile').serialize())
+									.done(function() {
+
+									})
+									.fail(function() {
+
+									});
 							}
 						});
 					},
@@ -492,7 +501,12 @@ $.ajaxSetup({
 				try
 				{
 					var error = $.parseJSON( xhr.responseText );
-					errString = error.type + ' : ' + error.message;
+					var errString;
+
+					if (error.type) {
+						errString = error.type + ' : ';
+					}
+					errString = errorString + error.message;
 				}
 				catch (e) {}
 
