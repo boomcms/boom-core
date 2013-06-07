@@ -35,6 +35,17 @@ class Boom_Auth_Boom extends Auth
 		$this->_session->set($this->_config['session_key'], $person->id);
 	}
 
+	public function hash_password($password)
+	{
+		if ( ! class_exists('HashPassword'))
+		{
+			require Kohana::find_file('vendor', 'PasswordHash');
+		}
+
+		$hasher = new PasswordHash(8, false);
+		return $hasher->HashPassword($password);
+	}
+
 	/**
 	 * Implements [Auth::get_user()]
 	 *

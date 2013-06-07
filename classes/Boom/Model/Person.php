@@ -17,6 +17,7 @@ class Boom_Model_Person extends ORM
 		'email'		=>	'',
 		'enabled'		=>	'',
 		'theme'		=>	'',
+//		'password'		=>	'',
 	);
 
 	/**
