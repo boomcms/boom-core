@@ -18,7 +18,6 @@ class Boom_Model_Person extends ORM
 		'name'		=>	'',
 		'email'		=>	'',
 		'enabled'		=>	'',
-		'theme'		=>	'',
 		'password'		=>	'',
 		'failed_logins'	=>	'',
 		'locked_until'	=>	'',
