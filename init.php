@@ -127,11 +127,12 @@ Route::set('asset_download', 'cms/assets/download')
 * Defines the route for /cms pages.
 *
 */
-Route::set('cms', '<directory>/<controller>(/<action>(/<id>))',
+Route::set('cms', '<directory>(/<controller>(/<action>(/<id>)))',
 	array(
 		'directory'	=> 'cms'
 	))
 	->defaults(array(
+		'controller' => 'default',
 		'action'     => 'index',
 	));
 
