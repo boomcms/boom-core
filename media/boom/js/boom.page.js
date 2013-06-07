@@ -17,11 +17,6 @@ $.widget( 'boom.page', {
 	options : {
 		/**
 		@type number
-		@default 1
-		*/
-		homepageRid: 1,
-		/**
-		@type number
 		@default 0
 		*/
 		ajaxed: 0
