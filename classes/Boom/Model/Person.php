@@ -19,7 +19,7 @@ class Boom_Model_Person extends ORM
 		'theme'		=>	'',
 		'password'		=>	'',
 		'failed_logins'	=>	'',
-		'locked'		=>	'',
+		'locked_until'	=>	'',
 	);
 
 	/**
