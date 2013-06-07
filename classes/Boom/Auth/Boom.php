@@ -34,14 +34,14 @@ class Boom_Auth_Boom extends Auth
 		 * Although it's slower, we the check password first before checking that the account is valid and not locked.
 		 * It shouldn't cause too much of a time waste for genuine users but may slow down hack attempts.
 		 */
-		if ($this->check_password($password) AND ! $this->_person->loaded() AND ! $this->_person->is_locked())
+		if ($this->check_password($password) AND $this->_person->loaded() AND ! $this->_person->is_locked())
 		{
 			// Store the person ID in the session data.
 			$this->_session->set($this->_config['session_key'], $this->_person->id);
 			$this->_person->complete_login();
 			return TRUE;
 		}
-		else
+		elseif ( ! $this->_person->is_locked())
 		{
 			$this->_person->login_failed();
 			return FALSE;
@@ -158,8 +158,8 @@ class Boom_Auth_Boom extends Auth
 		 * Create a dummy password to compare against if the user doesn't exist.
 		 * This wastes CPU time to protect against probing for valid usernames.
 		 */
-		$password = ($this->_person->loaded())? $this->_person->password : '$2a$08$1234567890123456789012';
+		$hash = ($this->_person->loaded())? $this->_person->password : '$2a$08$1234567890123456789012';
 
-		return $hasher->CheckPassword($password, $this->_person->password) AND $this->_person->loaded();
+		return $hasher->CheckPassword($password, $hash) AND $this->_person->loaded();
 	}
 }
