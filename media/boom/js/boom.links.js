@@ -44,11 +44,11 @@ $.extend( $.boom,
 				deferred: complete,
 				onLoad: function(){
 					var self = this;
+					var type_selector = $('#b-chunk-linkset-addlink-external-type');
+					var external_url = $( '#boom-chunk-linkset-addlink-external-url' );
 
 					if ( opts.link.rid == -1 || opts.link.rid == "" ) {
 						var url = opts.link.url;
-
-						var type_selector = $('#b-chunk-linkset-addlink-external-type');
 
 						if (url.substring(0,7) =='http://' || url.substring(0,8) =='https://' || url.substring(0,1) == '/') {
 							console.log('http link');
@@ -67,11 +67,17 @@ $.extend( $.boom,
 						}
 
 						if (url != "") {
-							$( '#boom-chunk-linkset-addlink-external-url' ).val( url );
+							external_url.val( url );
 							$( 'a[href=#boom-chunk-linkset-addlink-external]' ).trigger('click');
 						}
 
 					}
+
+					type_selector.on('change', function() {
+						if (external_url.val() == 'http://') {
+							external_url.val('');
+						}
+					});
 
 					$.boom.util.page_tree( this.find( '.boom-tree' ) )
 						.progress( function( page ) {
@@ -84,10 +90,28 @@ $.extend( $.boom,
 				},
 				callback: function(){
 
-					if ( link.rid == -1 ) {
-						var link_text = $( '#boom-chunk-linkset-addlink-external-url' ).val();
+					if ( link.rid == -1 || link.rid == "") {
+						var url = link_text = $( '#boom-chunk-linkset-addlink-external-url' ).val();
 
-						link.url = link_text;
+						switch($('#b-chunk-linkset-addlink-external-type').val()) {
+							case 'http':
+								if (url.substring(0,7) !='http://' && url.substring(0,8) !='https://' && url.substring(0,1) != '/') {
+									url = 'http://' + url;
+								}
+								break;
+							case 'mailto':
+								if (url.substring(0,6) != 'mailto:') {
+									url = 'mailto:' + url;
+								}
+								break;
+							case 'tel':
+								if (url.substring(0,3)) {
+									url = 'tel:' + url;
+								}
+								break;
+						}
+
+						link.url = url;
 						link.title = link_text;
 					}
 
