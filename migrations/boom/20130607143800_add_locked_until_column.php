@@ -1,6 +1,6 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-class Migration_Boom_20130607133800 extends Minion_Migration_Base
+class Migration_Boom_20130607143800 extends Minion_Migration_Base
 {
 	/**
 	 * Run queries needed to apply this migration
@@ -10,8 +10,7 @@ class Migration_Boom_20130607133800 extends Minion_Migration_Base
 	public function up(Kohana_Database $db)
 	{
 		$db->query(NULL, "alter table people drop locked");
-		$db->query(NULL, "alter table poeple add(locked_until int(10) unsigned default 0)");
-
+		$db->query(NULL, "alter table people add(locked_until int(10) unsigned default 0)");
 	}
 
 	/**
