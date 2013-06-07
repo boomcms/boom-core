@@ -71,6 +71,11 @@ class Boom_Model_Person extends ORM
 			->update();
 	}
 
+	public function get_icon_url($s = 16)
+	{
+		return URL::gravatar($this->email, array('s' => $s));
+	}
+
 	public function is_locked()
 	{
 		return $this->locked_until AND ($this->locked_until >$_SERVER['REQUEST_TIME']);

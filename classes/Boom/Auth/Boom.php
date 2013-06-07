@@ -12,22 +12,8 @@ class Boom_Auth_Boom extends Auth
 	 */
 	protected $_person;
 
-	/**
-	 * The logging in has already been done by openid - just mark the session has logged in to this user.
-	 *
-	 * @param mixed $person An instance of [Model_Person] or a person's email address
-	 * @uses Session::set()
-	 * @uses Auth_Boom::$_person
-	 */
 	protected function _login($person, $password = NULL, $remember = FALSE)
 	{
-		if ( ! is_object($person) AND ! $person instanceof Model_Person)
-		{
-			// If we haven't been called with a person object then assume it's an email address
-			// and get the person from the database.
-			$person = new Model_Person(array('email' => $person));
-		}
-
 		$this->_person = $person;
 
 		/**
@@ -62,7 +48,7 @@ class Boom_Auth_Boom extends Auth
 
 	public function hash_password($password)
 	{
-		if ( ! class_exists('HashPassword'))
+		if ( ! class_exists('PasswordHash'))
 		{
 			require Kohana::find_file('vendor', 'PasswordHash');
 		}
@@ -155,6 +141,23 @@ class Boom_Auth_Boom extends Auth
 		}
 	}
 
+	public function login($person, $password, $remember = FALSE)
+	{
+		if ( ! $password)
+		{
+			return FALSE;
+		}
+
+		if ( ! is_object($person) AND ! $person instanceof Model_Person)
+		{
+			// If we haven't been called with a person object then assume it's an email address
+			// and get the person from the database.
+			$person = new Model_Person(array('email' => $person));
+		}
+
+		return $this->_login($person, $password, $remember);
+	}
+
 	/**
 	 * Required by [Auth] but we don't use because password validation is done by OpenID.
 	 *
@@ -163,7 +166,11 @@ class Boom_Auth_Boom extends Auth
 
 	public function check_password($password)
 	{
-		require Kohana::find_file('vendor', 'PasswordHash');
+		if ( ! class_exists('PasswordHash'))
+		{
+			require Kohana::find_file('vendor', 'PasswordHash');
+		}
+
 		$hasher = new PasswordHash(8, false);
 
 		/*

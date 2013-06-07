@@ -18,7 +18,7 @@ class Boom_Controller_Cms_Auth_Password extends Controller_Cms_Auth
 		$this->response->body(View::factory('boom/account/login'));
 	}
 
-	public function action_login()
+	public function action_process()
 	{
 		if ($this->request->method() == Request::POST)
 		{

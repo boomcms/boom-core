@@ -11,15 +11,16 @@ class Boom_Controller_Cms_Auth extends Controller
 {
 	public $auth;
 	public $login_methods;
+	public $method;
 
 	public function before()
 	{
 		$this->auth = Auth::instance();
 		$this->login_methods = Kohana::$config->load('auth')->get('login_methods');
 
-		if ( ! in_array($this->method, $this->login_methods))
+		if ($this->method AND ! in_array($this->method, $this->login_methods))
 		{
-			throw new HTTP_Expection_500;
+			throw new HTTP_Exception_500;
 		}
 	}
 

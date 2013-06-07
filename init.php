@@ -12,6 +12,21 @@ Route::set('auth', 'cms/<action>',
 		'controller' => 'Cms_Auth'
 	));
 
+Route::set('profile', 'cms/profile')
+	->defaults(array(
+		'controller' => 'Cms_Profile',
+		'action' => 'view',
+	))
+	->filter(function(Route $route, $params, Request $request)
+		{
+			if ($request->method() == Request::POST)
+			{
+				$params['action'] = 'save';
+				return $params;
+			}
+		}
+	);
+
 Route::set('login', 'cms/login(/<controller>)')
 	->defaults(array(
 		'directory' => 'Cms_Auth',
