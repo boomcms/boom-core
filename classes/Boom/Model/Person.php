@@ -77,6 +77,14 @@ class Boom_Model_Person extends ORM
 		return URL::gravatar($this->email, array('s' => $s));
 	}
 
+	public function get_lock_wait()
+	{
+		if ($this->is_locked())
+		{
+			return Date::span($this->locked_until);
+		}
+	}
+
 	public function get_recent_account_activity()
 	{
 		return $this
@@ -88,7 +96,7 @@ class Boom_Model_Person extends ORM
 
 	public function is_locked()
 	{
-		return $this->locked_until AND ($this->locked_until >$_SERVER['REQUEST_TIME']);
+		return $this->locked_until AND ($this->locked_until > $_SERVER['REQUEST_TIME']);
 	}
 
 	/**

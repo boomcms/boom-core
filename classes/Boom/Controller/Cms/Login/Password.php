@@ -12,24 +12,22 @@ class Boom_Controller_Cms_Login_Password extends Controller_Cms_Login
 		}
 		else
 		{
-			$this->response->body(View::factory('boom/account/login'));
+			$this->_display_login_form();
 		}
 	}
 
 	public function action_process()
 	{
-		extract($this->request->post());
-
-		if ( ! Security::check($csrf))
+		if ( ! Security::check($this->request->post('csrf')))
 		{
 			throw new HTTP_Exception_500;
 		}
 
 		if ($this->request->method() == Request::POST)
 		{
-			$person = new Model_Person(array('email' => $email));
+			$person = new Model_Person(array('email' => $this->request->post('email')));
 
-			if ($this->auth->login($person, $password, $remember))
+			if ($this->auth->login($person, $this->request->post('password'), $this->request->post('remember')))
 			{
 				$this->_log_login_success();
 				$this->redirect('/');
@@ -37,11 +35,26 @@ class Boom_Controller_Cms_Login_Password extends Controller_Cms_Login
 			else
 			{
 				$this->_log_login_failure();
+
+				$error = ($person->is_locked())? 'locked' : 'invalid';
+				$error_message = Kohana::message('login', "errors.$error");
+
 				if ($person->is_locked())
 				{
-					die("account locked");
+					$lock_wait = $person->get_lock_wait();
+					$lock_wait = $lock_wait['minutes']." ".Inflector::plural('minute', $lock_wait['minutes']);
+					$error_message = str_replace(':lock_wait', $lock_wait, $error_message);
 				}
+
+				$this->_display_login_form(array('login_error' => $error_message));
 			}
 		}
+	}
+
+	protected function _display_login_form($vars = array())
+	{
+		$vars['request'] = $this->request;
+
+		$this->response->body(new View('boom/account/login', $vars));
 	}
 }

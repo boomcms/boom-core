@@ -19,18 +19,16 @@
 				<div id="tab-login" class="ui-tabs-panel">
 					<form id="login-form" name="login-form" action="/cms/login" method="post">
 						<?= Form::hidden('csrf', Security::token()) ?>
-						<fieldset id="b-login-stage1">
-							<center>
-								<img src="/media/b/img/ajax_load.gif" id="b-login-loader" style="display: none" />
-							</center>
+						<fieldset>
 							<br />
-							<p class="b-error ui-helper-hidden"></p>
-							<p class="b-success ui-helper-hidden"></p>
+							<? if (isset($login_error)): ?>
+								<p class="b-error"><?= $login_error ?></p>
+							<? endif ?>
 							<p>
 								<label for="email">
 									<?= __('Email address') ?>
 								</label>
-								<input type="text" name="email" class="b-input" id="email" value="<?= Request::current()->query('email') ?>" />
+								<input type="text" name="email" class="b-input" id="email" value="<?= $request->query('email') ?>" />
 							</p>
 							<p>
 								<label for="password">
@@ -59,8 +57,8 @@
 					<form id="reset-form" name="reset-form" action="/cms/auth/reset" method="post">
 						<? if (isset($token)): ?>
 							<fieldset>
-								<input type="hidden" name="email" value="<?= Request::current()->query('email') ?>" />
-								<input type="hidden" name="token" value="<?= Request::current()->query('token') ?>" />
+								<input type="hidden" name="email" value="<?= $request->query('email') ?>" />
+								<input type="hidden" name="token" value="<?= $request->query('token') ?>" />
 								<p class="b-error ui-helper-hidden"></p>
 								<p class="b-success ui-helper-hidden"></p>
 
@@ -102,7 +100,7 @@
 									<label for="email">
 										<?= __('Email address') ?>
 									</label>
-									<input type="text" name="email" class="b-input" id="reset-email" value="<?= Request::current()->query('email') ?>" />
+									<input type="text" name="email" class="b-input" id="reset-email" value="<?= $request->query('email') ?>" />
 								</p>
 								<p class="ui-helper-clearfix">
 									<button class="boom-button ui-helper-left ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" type="submit">
