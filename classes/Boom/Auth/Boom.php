@@ -46,7 +46,7 @@ class Boom_Auth_Boom extends Auth
 		return $this->complete_login();
 	}
 
-	public function hash_password($password)
+	public function hash($password)
 	{
 		if ( ! class_exists('PasswordHash'))
 		{

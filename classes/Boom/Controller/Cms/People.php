@@ -62,7 +62,7 @@ class Boom_Controller_Cms_People extends Boom_Controller
 			if ($this->auth->login_method_available('password'))
 			{
 				$password = Text::random(NULL, 15);
-				$enc_password = $this->auth->hash_password($password);
+				$enc_password = $this->auth->hash($password);
 			}
 
 			// POST request - add a person to the CMS.
