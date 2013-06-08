@@ -32,6 +32,7 @@ class Boom_Model_Person extends ORM
 			'through'	=> 'people_groups',
 		),
 		'logs' => array(),
+		'auth_logs' => array('model' => 'AuthLog'),
 	);
 
 	/**
@@ -74,6 +75,15 @@ class Boom_Model_Person extends ORM
 	public function get_icon_url($s = 16)
 	{
 		return URL::gravatar($this->email, array('s' => $s));
+	}
+
+	public function get_recent_account_activity()
+	{
+		return $this
+			->auth_logs
+			->order_by('time', 'desc')
+			->limit(10)
+			->find_all();
 	}
 
 	public function is_locked()

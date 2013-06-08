@@ -1,3 +1,3 @@
 <?php
 
-class Model_AuthLog extends Boom_Model_AthLog {}
+class Model_AuthLog extends Boom_Model_AuthLog {}

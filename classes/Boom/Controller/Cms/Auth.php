@@ -1,11 +1,9 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
 /**
- * Authentication controller which uses OpenID
  *
  * @package	BoomCMS/People
  * @category	Controllers
- * @author	Rob Taylor
  */
 class Boom_Controller_Cms_Auth extends Controller
 {
@@ -17,7 +15,7 @@ class Boom_Controller_Cms_Auth extends Controller
 
 	/**
 	 *
-	 * @var int
+	 * @var integer
 	 */
 	public $method;
 
@@ -39,17 +37,17 @@ class Boom_Controller_Cms_Auth extends Controller
 
 	protected function _log_login_success()
 	{
-		$this->_log_action(1);
+		$this->_log_action(Model_AuthLog::LOGIN);
 	}
 
 	protected function _log_login_failure()
 	{
-		$this->_log_action(0);
+		$this->_log_action(Model_AuthLog::FAILURE);
 	}
 
 	protected function _log_logout()
 	{
-		$this->_log_action(-1);
+		$this->_log_action(Model_AuthLog::LOGOUT);
 	}
 
 	private function _log_action($action)
@@ -60,7 +58,7 @@ class Boom_Controller_Cms_Auth extends Controller
 				'action' => $action,
 				'method' => $this->method,
 				'ip' => ip2long(Request::$client_ip),
-				'user_agent' => $this->request->user_agent(),
+				'user_agent' => Request::$user_agent,
 			))
 			->create();
 	}

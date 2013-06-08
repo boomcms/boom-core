@@ -25,4 +25,15 @@
 
 		<?= Form::submit('submit', 'Submit') ?>
 	</form>
+
+	<table id="b-people-profile-authlog">
+		<? foreach ($logs as $log): ?>
+			<tr>
+				<td><?= Date::fuzzy_span($log->time) ?></td>
+				<td><?= $log->get_action() ?></td>
+				<td><?= ucfirst($log->method) ?></td>
+				<td><?= long2ip($log->ip) ?></td>
+			</tr>
+		<? endforeach ?>
+	</table>
 </div>

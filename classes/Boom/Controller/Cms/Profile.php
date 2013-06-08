@@ -7,6 +7,7 @@ class Boom_Controller_Cms_Profile extends Boom_Controller
 		$v = new View('boom/account/profile', array(
 			'person' => $this->person,
 			'auth' => $this->auth,
+			'logs' => $this->person->get_recent_account_activity(),
 		));
 
 		$this->response->body($v);
