@@ -6,7 +6,14 @@ class Boom_Controller_Cms_Login_Password extends Controller_Cms_Login
 
 	public function action_begin()
 	{
-		$this->response->body(View::factory('boom/account/login'));
+		if ($this->auth->auto_login())
+		{
+			$this->redirect('/');
+		}
+		else
+		{
+			$this->response->body(View::factory('boom/account/login'));
+		}
 	}
 
 	public function action_process()
@@ -15,7 +22,7 @@ class Boom_Controller_Cms_Login_Password extends Controller_Cms_Login
 		{
 			$person = new Model_Person(array('email' => $this->request->post('email')));
 
-			if ($this->auth->login($person, $this->request->post('password')))
+			if ($this->auth->login($person, $this->request->post('password'), TRUE))
 			{
 				$this->_log_login_success();
 				$this->redirect('/');

@@ -4,7 +4,7 @@
  * @category	Auth
  * @author	Rob Taylor
  */
-class Boom_Auth_Boom extends Auth
+class Boom_Auth_Boom extends Auth_ORM
 {
 	/**
 	 *
@@ -22,7 +22,7 @@ class Boom_Auth_Boom extends Auth
 		 */
 		if ($this->check_password($password) AND $this->_person->loaded() AND $this->_person->enabled AND ! $this->_person->is_locked())
 		{
-			$this->complete_login();
+			$this->complete_login($this->_person);
 			return TRUE;
 		}
 		elseif ( ! $this->_person->is_locked())
@@ -32,18 +32,18 @@ class Boom_Auth_Boom extends Auth
 		}
 	}
 
-	public function complete_login()
+	public function complete_login(Model_Person $person)
 	{
 		// Store the person ID in the session data.
-		$this->_session->set($this->_config['session_key'], $this->_person->id);
-		$this->_person->complete_login();
+		$this->_session->set($this->_config['session_key'], $person->id);
+		$person->complete_login();
 	}
 
 	public function force_login(Model_Person $person)
 	{
 		$this->_person = $person;
 
-		return $this->complete_login();
+		return $this->complete_login($this->_person);
 	}
 
 	public function hash($password)
