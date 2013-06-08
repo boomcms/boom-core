@@ -24,17 +24,6 @@ class Boom_Controller_Cms_Auth extends Controller
 		$this->auth = Auth::instance();
 	}
 
-	public function action_logout()
-	{
-		// This needs to happen before we log the user out, or we don't be able to log who logged out.
-		$this->_log_logout();
-
-		$this->auth->logout(TRUE);
-
-		// Send the user back to the homepage.
-		$this->redirect('/');
-	}
-
 	protected function _log_login_success()
 	{
 		$this->_log_action(Model_AuthLog::LOGIN);
@@ -61,5 +50,12 @@ class Boom_Controller_Cms_Auth extends Controller
 				'user_agent' => Request::$user_agent,
 			))
 			->create();
+	}
+
+	protected function _display_login_form($vars = array())
+	{
+		$vars['request'] = $this->request;
+
+		$this->response->body(new View('boom/account/login', $vars));
 	}
 }

@@ -31,7 +31,7 @@ class Boom_Auth_Boom extends Auth_ORM
 
 			return TRUE;
 		}
-		elseif ( ! $this->_person->is_locked())
+		elseif ($this->_person->loaded() AND ! $this->_person->is_locked())
 		{
 			$this->_person->login_failed();
 			return FALSE;

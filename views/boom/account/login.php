@@ -54,18 +54,13 @@
 					</form>
 				</div>
 				<div id="tab-reset" class="ui-tabs-panel">
-					<form id="reset-form" name="reset-form" action="/cms/auth/reset" method="post">
+					<form id="reset-form" name="reset-form" action="/cms/recover/<? if (isset($token)): ?>?token=<?= $token->token ?>&email=<?= $email ?><? endif ?>" method="post">
+						<?= Form::hidden('csrf', Security::token()) ?>
+
 						<? if (isset($token)): ?>
 							<fieldset>
-								<input type="hidden" name="email" value="<?= $request->query('email') ?>" />
-								<input type="hidden" name="token" value="<?= $request->query('token') ?>" />
 								<p class="b-error ui-helper-hidden"></p>
-								<p class="b-success ui-helper-hidden"></p>
-
 								<p><?= __('Use this form to reset your password') ?>.</p>
-								<p><?= __('Your new password must be a minimum of six characters') ?>.</p>
-
-								<br/>
 
 								<p>
 									<label for="password1">
@@ -90,25 +85,27 @@
 							</fieldset>
 						<? else: ?>
 							<fieldset>
-								<p class="b-error ui-state-error ui-corner-all<? if ( ! isset($message)): ?> ui-helper-hidden<? endif; ?>"><?if (isset($message)): echo $message; endif; ?></p>
-								<p class="b-success ui-state-highlight ui-corner-all ui-helper-hidden"></p>
+								<? if (isset($error)): ?>
+									<p class="b-error ui-state-error ui-corner-all"><?= $error ?></p>
+								<? elseif (isset($message)): ?>
+									<p class="b-success ui-state-highlight ui-corner-all"><?= $message ?></p>
+								<? else: ?>
+									<p><?= __('After you submit this form you will receive an email with instructions for resetting your password') ?>.</p>
 
-								<p><?= __('After you submit this form you will receive an email with instructions for resetting your password') ?>.</p>
-								<br />
-
-								<p>
-									<label for="email">
-										<?= __('Email address') ?>
-									</label>
-									<input type="text" name="email" class="b-input" id="reset-email" value="<?= $request->query('email') ?>" />
-								</p>
-								<p class="ui-helper-clearfix">
-									<button class="boom-button ui-helper-left ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" type="submit">
-										<span class="ui-button-text">
-											<?= __('Reset password') ?>
-										</span>
-									</button>
-								</p>
+									<p>
+										<label for="email">
+											<?= __('Email address') ?>
+										</label>
+										<input type="text" name="email" class="b-input" id="reset-email" value="<?= $request->query('email') ?>" />
+									</p>
+									<p class="ui-helper-clearfix">
+										<button class="boom-button ui-helper-left ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" type="submit">
+											<span class="ui-button-text">
+												<?= __('Reset password') ?>
+											</span>
+										</button>
+									</p>
+								<? endif ?>
 							</fieldset>
 						<? endif; ?>
 					</form>
@@ -129,6 +126,10 @@
 		//<![CDATA[
 		(function($){
 			$.boom.init();
+
+			<? if (isset($tab)): ?>
+				$("a[href='#tab-<?= $tab ?>']").trigger('click');
+			<? endif ?>
 		})(jQuery);
 		//]]>
 	</script>

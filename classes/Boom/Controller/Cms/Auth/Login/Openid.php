@@ -1,6 +1,6 @@
 <?php
 
-class Boom_Controller_Cms_Login_Openid extends Controller_Cms_Login
+class Boom_Controller_Cms_Auth_Login_Openid extends Controller_Cms_Auth_Login
 {
 	/**
 	 *

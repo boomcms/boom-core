@@ -1,6 +1,6 @@
 <?php
 
-abstract class Boom_Controller_Cms_Login extends Controller_Cms_Auth
+abstract class Boom_Controller_Cms_Auth_Login extends Controller_Cms_Auth
 {
 	public function before()
 	{
