@@ -9,7 +9,16 @@
  */
 class Boom_Controller_Cms_Auth extends Controller
 {
+	/**
+	 *
+	 * @var Auth
+	 */
 	public $auth;
+
+	/**
+	 *
+	 * @var int
+	 */
 	public $method;
 
 	public function before()

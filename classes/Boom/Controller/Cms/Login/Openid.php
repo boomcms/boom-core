@@ -2,7 +2,12 @@
 
 class Boom_Controller_Cms_Login_Openid extends Controller_Cms_Login
 {
+	/**
+	 *
+	 * @var LightOpenID
+	 */
 	public $openid;
+
 	public $method = 'openid';
 
 	public function before()
