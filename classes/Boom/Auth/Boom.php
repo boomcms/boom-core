@@ -23,6 +23,12 @@ class Boom_Auth_Boom extends Auth_ORM
 		if ($this->check_password($password) AND $this->_person->loaded() AND $this->_person->enabled AND ! $this->_person->is_locked())
 		{
 			$this->complete_login($this->_person);
+
+			if ($remember === TRUE)
+			{
+				$this->_remember_login();
+			}
+
 			return TRUE;
 		}
 		elseif ( ! $this->_person->is_locked())
@@ -183,6 +189,24 @@ class Boom_Auth_Boom extends Auth_ORM
 	 *
 	 */
 	public function password($username) {}
+
+	protected function _remember_login()
+	{
+		// Token data
+		$data = array(
+			'user_id'    => $this->_person->id,
+			'expires'    => time() + $this->_config['lifetime'],
+			'user_agent' => sha1(Request::$user_agent),
+		);
+
+		// Create a new autologin token
+		$token = ORM::factory('User_Token')
+			->values($data)
+			->create();
+
+		// Set the autologin cookie
+		Cookie::set('authautologin', $token->token, $this->_config['lifetime']);
+	}
 
 	public function check_password($password)
 	{

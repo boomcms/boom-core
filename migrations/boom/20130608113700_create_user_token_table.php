@@ -22,7 +22,7 @@ class Migration_Boom_20130608113700 extends Minion_Migration_Base
 			KEY `fk_user_id` (`user_id`),
 			KEY `expires` (`expires`),
 			FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
-		  ) DEFAULT CHARSET=utf8");
+		  ) DEFAULT CHARSET=utf8 ENGINE=MyISAM");
 	}
 
 	/**
