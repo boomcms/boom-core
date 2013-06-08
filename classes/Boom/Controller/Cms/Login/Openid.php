@@ -43,6 +43,7 @@ class Boom_Controller_Cms_Login_Openid extends Controller_Cms_Login
 			// Does the person exist?
 			if ( ! $person->loaded() OR ! $person->enabled)
 			{
+				$this->_log_login_failure();
 				// No, the given email address isn't allowed to login to this CMS.
 				// TODO: Make a nice 'go away' page.
 				throw new Exception('Invalid email');
@@ -59,11 +60,9 @@ class Boom_Controller_Cms_Login_Openid extends Controller_Cms_Login
 					->update();
 			}
 
-			// Called [Auth::login()] to complete the login.
 			$this->auth->force_login($person);
-
-			// Write the session data.
 			Session::instance()->write();
+			$this->_log_login_success();
 
 			// Login is finished, send them on their merry way.
 			$this->redirect('/');

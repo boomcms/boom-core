@@ -2,8 +2,6 @@
 
 abstract class Boom_Controller_Cms_Login extends Controller_Cms_Auth
 {
-	public $method;
-
 	public function before()
 	{
 		parent::before();

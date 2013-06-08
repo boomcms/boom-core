@@ -17,10 +17,12 @@ class Boom_Controller_Cms_Login_Password extends Controller_Cms_Login
 
 			if ($this->auth->login($person, $this->request->post('password')))
 			{
+				$this->_log_login_success();
 				$this->redirect('/');
 			}
 			else
 			{
+				$this->_log_login_failure();
 				if ($person->is_locked())
 				{
 					die("account locked");
