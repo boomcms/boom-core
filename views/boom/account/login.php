@@ -50,6 +50,9 @@
 									</span>
 								</button>
 							</p>
+							<p class="ui-helper-left">
+								<a href="/cms/login/openid">Alternative login</a>
+							</p>
 						</fieldset>
 					</form>
 				</div>
