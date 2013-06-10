@@ -690,25 +690,22 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 			case 'IMG':
 				this.originals = self.asset.element.clone( true );
 				$.ui.chunk.prototype._init.call( self );
+				break;
 			case 'A':
 				if (self.element[0].hasAttribute('data-boom-target'))
 				{
 					this.originals = self.asset.element.clone( true );
 					$.ui.chunk.prototype._init.call( self );
+					break;
 				}
-			break;
 
 			default:
 
 				this.originals =
 					this.element
-					.children()
 					.clone( true );
 
-				this._build_ui()
-					.done( function(){
-						$.ui.chunk.prototype._init.call( self );
-					});
+				$.ui.chunk.prototype._init.call( self );
 			break;
 		}
 	},
@@ -772,7 +769,7 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 
 			self.asset.asset_id = rid;
 
-			if ( ! self.asset.url.match( /asset\/(thumb|view)\/([0-9]+)/ ))
+			if (self.asset.url && ! self.asset.url.match( /asset\/(thumb|view)\/([0-9]+)/ ))
 			{
 				return $.boom.links.picker( {
 					page_rid: $.boom.page.options.id,
@@ -1007,11 +1004,8 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 
 			$.boom.loader.hide();
 
-			var new_asset = $('<div>').append( data ).find( 'img' );
 			self.edited = true;
-
-			self.asset.element
-				.attr( 'src', new_asset.attr( 'src' ) );
+			$(self.element[0]).replaceWith(data);
 		})
 		.fail( function( data ) {
 			$.boom.log( 'asset chunk error ' );
