@@ -975,16 +975,18 @@ $.widget( 'boom.page', $.boom.page, {
 			for ( i in settings ) {
 
 				var class_name = settings[i];
-				var menu_item = self[ class_name ].label;
-				var menu_handler = self[ class_name ].menu_handler;
 
-				self.register( class_name );
+				if ($('#boom-page-' + class_name).length) {
+					var menu_item = self[ class_name ].label;
+					var menu_handler = self[ class_name ].menu_handler;
+
+					self.register( class_name );
 
 
-				menu_items[ menu_item ] = menu_handler;
+					menu_items[ menu_item ] = menu_handler;
 
-				$.boom.log( 'initialising ' + class_name );
-
+					$.boom.log( 'initialising ' + class_name );
+				}
 			};
 
 			return menu_items;
