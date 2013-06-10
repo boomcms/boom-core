@@ -700,13 +700,9 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 				}
 
 			default:
-
-				this.originals =
-					this.element
-					.clone( true );
-
+				this.originals = this.element.clone( true );
 				$.ui.chunk.prototype._init.call( self );
-			break;
+				break;
 		}
 	},
 
@@ -1004,8 +1000,8 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 
 			$.boom.loader.hide();
 
-			self.edited = true;
-			$(self.element[0]).replaceWith(data);
+			self.element.replaceWith(data);
+			$.boom.page.editor.bind();
 		})
 		.fail( function( data ) {
 			$.boom.log( 'asset chunk error ' );
@@ -1035,10 +1031,7 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 	Remove the current asset from the page.
 	*/
 	remove : function(){
-
-		self.rid = 0;
-
-		this.insert( self.rid );
+		this.insert( 0 );
 	}
 
 
