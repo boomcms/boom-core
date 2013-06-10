@@ -75,10 +75,7 @@ $.extend({
 							callback: function() {
 								$.post(url, $('#b-people-profile').serialize())
 									.done(function() {
-
-									})
-									.fail(function() {
-
+										$.boom.dialog.show('Profile updated');
 									});
 							}
 						});
