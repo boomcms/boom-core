@@ -83,6 +83,16 @@ abstract class Boom_Finder
 		return $this;
 	}
 
+	public function which_have_the_tag(Model_Tag $tag)
+	{
+		if ($this->_tag_filter_should_be_applied($tag))
+		{
+			$this->_apply_tag_filter($tag);
+		}
+
+		return $this;
+	}
+
 	public function which_have_the_tag_named($tag_name)
 	{
 		$tag = new Model_Tag(array('name' => $tag_name));
