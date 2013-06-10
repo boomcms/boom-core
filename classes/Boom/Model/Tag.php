@@ -14,6 +14,8 @@ class Boom_Model_Tag extends ORM
 		'id'			=>	'',
 		'name'		=>	'',
 		'type'		=>	'',
+		'slug_short'	=>	'',
+		'slug_long'		=>	'',
 	);
 
 	protected $_table_name = 'tags';
@@ -23,6 +25,68 @@ class Boom_Model_Tag extends ORM
 
 	// The value for the 'type' property for page tags.
 	const PAGE = 2;
+
+	public function check_slugs_are_defined()
+	{
+		if ( ! $this->slug_short)
+		{
+			$this->slug_short = $this->create_short_slug($this->name);
+		}
+
+		if ( ! $this->slug_long)
+		{
+			$this->slug_long = $this->create_long_slug($this->name);
+		}
+	}
+
+	public function create(Validation $validation = NULL)
+	{
+		$this->check_slugs_are_defined();
+
+		parent::create($validation);
+	}
+
+	public function create_long_slug($name)
+	{
+		$parts = explode('/', $name);
+
+		if (count($parts) === 1)
+		{
+			return $this->create_short_slug($name);
+		}
+
+		foreach ($parts as & $part)
+		{
+			$part = URL::title($part);
+		}
+
+		$slug = $original = implode('/', $parts);
+		$i = 0;
+
+		while (ORM::factory('tag', array('slug_long' => $slug))->loaded())
+		{
+			$i++;
+			$slug = "$original$i";
+		}
+
+		return $slug;
+	}
+
+	public function create_short_slug($name)
+	{
+		$name = preg_replace('|.*/|', '', $name);
+
+		$slug = $original = URL::title($name);
+		$i = 0;
+
+		while (ORM::factory('tag', array('slug_short' => $slug))->loaded())
+		{
+			$i++;
+			$slug = "$original$i";
+		}
+
+		return $slug;
+	}
 
 	/**
 	* Filters for the versioned person columns
@@ -68,5 +132,12 @@ class Boom_Model_Tag extends ORM
 				array('max_length', array(':value', 255)),
 			),
 		);
+	}
+
+	public function update(Validation $validation = NULL)
+	{
+		$this->check_slugs_are_defined();
+
+		parent::update($validation);
 	}
 }
