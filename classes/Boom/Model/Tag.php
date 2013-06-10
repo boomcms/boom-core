@@ -52,7 +52,7 @@ class Boom_Model_Tag extends ORM
 
 		if (count($parts) === 1)
 		{
-			return $this->create_short_slug($name);
+			array_unshift($parts, 'tag');
 		}
 
 		foreach ($parts as & $part)
