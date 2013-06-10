@@ -215,6 +215,7 @@ class Boom_Model_Page_Version extends ORM
 			),
 			'title'	=>	array(
 				array('not_empty'),
+				array('max_length', array(':value', 70))
 			),
 		);
 	}

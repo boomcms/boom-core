@@ -341,8 +341,20 @@ $.widget( 'boom.page', {
 					top.location = response;
 				}
 			})
-		.fail( function(){
-			$.boom.growl.show( "Unable to save page." );
+		.fail( function(response){
+			var message;
+
+			try {
+				error = JSON.parse(response.responseText);
+			} catch (e) {
+				message = "Unable to save page.";
+			}
+
+			if (message == null) {
+				message = (error.message)? error.message : 'Unable to save page.';
+			}
+
+			$.boom.growl.show( message );
 		})
 		.always( function(){
 			$.boom.loader.hide();

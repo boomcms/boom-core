@@ -83,7 +83,18 @@ class Boom_Controller_Cms_Page_Version_Save extends Controller_Cms_Page_Version
 		}
 
 		// Save the new version.
-		$this->new_version->create();
+		try
+		{
+			$this->new_version->create();
+		}
+		catch (ORM_Validation_Exception $e)
+		{
+			$messages = implode('\n', array_values($e->errors('models')));
+			$this->response
+				->status(500)
+				->body(json_encode(array('message' => $messages)));
+			return;
+		}
 
 		// Update chunks.
 
