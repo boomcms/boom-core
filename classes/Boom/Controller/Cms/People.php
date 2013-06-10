@@ -286,7 +286,7 @@ class Boom_Controller_Cms_People extends Boom_Controller
 		$this->edit_person
 			->values(array(
 				'name'		=>	$this->request->post('name'),
-				'enabled'		=>	$this->request->post('enabled')
+				'enabled'		=>	$this->request->post('status')
 			))
 			->update();
 	}
