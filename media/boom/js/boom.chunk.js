@@ -685,7 +685,8 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 		var self = this;
 
 		self.asset = this._get_asset_details();
-
+console.log(self.element[0].nodeName);
+console.log(self.asset);
 		switch ( self.element[0].nodeName ){
 			case 'IMG':
 				this.originals = self.asset.element.clone( true );
@@ -700,8 +701,12 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 				}
 
 			default:
-				this.originals = this.element.clone( true );
-				$.ui.chunk.prototype._init.call( self );
+				this.originals = self.element.children().clone( true );
+				this._build_ui()
+					.done( function(){
+						$.ui.chunk.prototype._init.call( self );
+					});
+
 				break;
 		}
 	},
@@ -1000,8 +1005,19 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 
 			$.boom.loader.hide();
 
-			self.element.replaceWith(data);
-			$.boom.page.editor.bind();
+			if (top.$('.toolbar-slideshow').length) {
+				var new_asset = $('<div>').append( data ).find( 'img' );
+				self.edited = true;
+
+				self.asset.element
+					.attr( 'src', new_asset.attr( 'src' ) );
+			}
+			else
+			{
+				self._save_slot();
+				self.element.replaceWith(data);
+				$.boom.page.editor.bind();
+			}
 		})
 		.fail( function( data ) {
 			$.boom.log( 'asset chunk error ' );
