@@ -341,6 +341,16 @@ $.widget( 'boom.tagger_deferred', $.boom.tagger,
 	},
 
 	_bind : function(){
+		var self = this;
+
+		this.element
+			.on('click', '#b-tags-add', function(){
+				self.element.find( '.b-filter-input' ).show().focus();
+			})
+			// Hide the add tag input box when it loses focus.
+			.on('blur', '.b-filter-input', function(){
+				$( this ).val('').hide();
+			});
 
 		// Build the UI for any existing tags.
 		for ( var i in this.options.tags ) {

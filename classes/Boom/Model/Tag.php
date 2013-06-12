@@ -43,7 +43,7 @@ class Boom_Model_Tag extends ORM
 	{
 		$this->check_slugs_are_defined();
 
-		parent::create($validation);
+		return parent::create($validation);
 	}
 
 	public function create_long_slug($name)
@@ -138,6 +138,6 @@ class Boom_Model_Tag extends ORM
 	{
 		$this->check_slugs_are_defined();
 
-		parent::update($validation);
+		return parent::update($validation);
 	}
 }

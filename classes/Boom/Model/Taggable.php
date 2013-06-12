@@ -36,7 +36,7 @@ abstract class Boom_Model_Taggable extends ORM
 		}
 
 		// Attempt to load a tag with the given path.
-		$tag = ORM::factory('Tag', array('name' => $name, 'type' => $type));
+		$tag = new Model_Tag(array('name' => $name, 'type' => $type));
 
 		// If the tag wasn't found then call create it.
 		if ( ! $tag->loaded())
@@ -48,6 +48,7 @@ abstract class Boom_Model_Taggable extends ORM
 					'type'	=>	$type,
 				))
 				->create();
+
 		}
 
 		// Add the tag to the objects?
