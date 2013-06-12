@@ -76,7 +76,7 @@ class Boom_Controller_Cms_Auth_Login_Openid extends Controller_Cms_Auth_Login
 		{
 			// OpenId request is invalid.
 			// Redirect the user back here to start the login process again.
-			$this->redirect('/cms/login');
+			$this->redirect('/cms/login/openid');
 		}
 	}
 }
