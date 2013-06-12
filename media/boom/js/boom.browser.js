@@ -9,8 +9,8 @@ $.boom.item = {};
 $.extend($.boom.item,
 	/** @lends $.boom.item */
 	{
-	
-	/** 
+
+	/**
 	@property rid
 	*/
 	rid: null,
@@ -21,24 +21,24 @@ $.extend($.boom.item,
 		this.rid = rid;
 
 		var url = this.base_url + 'view/' + rid;
-		
+
 		return $.get( url );
 
 	},
-	
+
 	/** @function */
 	add: function( data ){
 
 		$.boom.loader.show();
 
-		return $.post( this.base_url + 'add/', data)
+		return $.post( this.base_url + 'add', data)
 		.done( function(id){
 
 			$.boom.loader.hide();
 
 		});
 	},
-	
+
 	/** @function */
 	save: function( data ){
 
@@ -51,10 +51,10 @@ $.extend($.boom.item,
 			$.boom.loader.hide();
 		});
 	},
-	
+
 	/** @function */
 	remove: function(){
-		
+
 		var self = this;
 		var deleted = new $.Deferred();
 
@@ -78,7 +78,7 @@ $.extend($.boom.item,
 
 		});
 	},
-	
+
 	/** @function */
 	select : function( rid, selected ){
 
@@ -102,7 +102,7 @@ $.extend($.boom.item,
 			checkbox.parents( 'div.thumb' ).removeClass( 'ui-state-active' );
 			$( list ).parents( 'tr' ).removeClass( 'ui-state-active' );
 		}
-		
+
 	}
 
 });
@@ -121,35 +121,35 @@ $.extend($.boom.filter,
 
 	/** filters */
 	filters: {},
-	
+
 	bind : function( context ) {
-		
+
 		$('.b-items-thumbs .thumb', context ).captions($.boom.config.captions);
 	},
-	
+
 	/**
 	Set search options.
 	@param {Object} options.
 	*/
 	set_options : function( options ){
-		
+
 		this.options = options;
-		
+
 	},
-	
+
 	/**
 	Set search filters from an array of tags.
 	@param {Array} tags. Array of tags.
 	*/
 	set_filters : function( tags ){
-		
+
 		this.filters = {};
-		
+
 		for ( t in tags ) {
 			var tag = tags[ t ];
-			
+
 			switch( tag[ 0 ] ) {
-				
+
 				case '#tag': case '#group':
 					this.rid = tag.id;
 					break;
@@ -159,10 +159,10 @@ $.extend($.boom.filter,
 			}
 		}
 	},
-	
+
 	/**
-	Build AJAX request URL to return a filtered list of items 
-	@function 
+	Build AJAX request URL to return a filtered list of items
+	@function
 	*/
 	build_url : function(){
 
@@ -185,9 +185,9 @@ $.extend($.boom.filter,
 
 		return url;
 	},
-		
-	/** 
-	@function 
+
+	/**
+	@function
 	@returns {Deferred} ajax request returning a set of items.
 	*/
 	get : function( rid ){
@@ -196,7 +196,7 @@ $.extend($.boom.filter,
 		var options = this.options;
 
 		this.rid = rid;
-		
+
 		return $.get( this.build_url() );
 	}
 });
@@ -209,23 +209,23 @@ $.extend($.boom.filter,
 $.widget( 'boom.browser',
 	/** @lends $.boom.browser */
 	{
-	
+
 	/**
 	default config
 	@property options
 	@see $.boom.config.browser
 	*/
 	options : $.boom.config.browser,
-	
+
 	_create : function(){
-		
+
 		$.boom.log( 'content browser init' );
-		
+
 		this.url_map = {};
-		
+
 		this.url_map[ this.item.type ] = this.item;
 		this.url_map[ this.tag.type ] = this.tag;
-		
+
 		this.tag.set_options({
 			perpage: this.options.perpage,
 			sortby : this.options.sortby,
@@ -235,49 +235,49 @@ $.widget( 'boom.browser',
 		this.main_panel = $('.b-items-rightpane');
 		this.sidebar = $('.b-items-sidebar');
 
-		
+
 		this._bind();
-		
+
 		this.route();
 	},
-	
+
 	_init : function(){
-		
+
 	},
-	
+
 	_destroy : function(){
-		
+
 	},
-	
+
 	_bind: function(){
 		$.boom.log( 'content browser bind' );
-		
+
 		var self = this;
-		
+
 		$('.b-items-sidebar h3').click(function(){
 
 			$(this).parent().next().toggle();
 		});
-		
+
 		$( '#tag_all' )
 			.on( 'click', function( event ){
 				self.tag.filters = {};
 				$.boom.history.load( self.options.defaultRoute );
-				
+
 				$(this)
 					.parent()
 					.siblings( '.boom-tree-container' )
 					.find( 'a.ui-state-active' )
 					.removeClass( 'ui-state-active' );
-				
+
 				return false;
 			});
-			
+
 		var tag_name  = self.options.defaultRoute.split( '/' )[ 0 ];
-		
+
 		var item_selected = function( $item ){
 			$( '#tag_all' ).removeClass( 'ui-state-active' );
-			
+
 			$.boom.log( 'adding active class' );
 			$item
 				.parents( '.b-tags-tree' )
@@ -287,17 +287,17 @@ $.widget( 'boom.browser',
 				.end()
 				.addClass( 'ui-state-active' );
 		};
-		
+
 		var multi_select = function( $item ){
 			var tags = [];
-			
+
 			$item.toggleClass( 'ui-state-active' );
 			$item
 				.parents( 'ul:first' )
 				.find( 'a.ui-state-active' )
 				.not( $item )
 				.removeClass( 'ui-state-active' );
-			
+
 			$item
 				.parents( '.boom-tree' )
 				.find( 'a.ui-state-active' )
@@ -310,10 +310,10 @@ $.widget( 'boom.browser',
 						id :	tag[1]
 					} );
 				});
-			
+
 			return tags;
 		};
-		
+
 		self.treeConfig = $.extend({}, $.boom.config.tree, {
 			toggleSelected: false,
 			click: false,
@@ -327,12 +327,12 @@ $.widget( 'boom.browser',
 				$.boom.history.load( tag_name + '/' + self.tag.rid );
 				return false;
 			}
-			
+
 		});
-		
+
 		$( '.boom-filter-tree' )
 			.tree( self.treeConfig );
-			
+
 		self.editableTreeConfig = $.extend({}, self.treeConfig, {
 			maxSelected: 1,
 			toggleSelected: false,
@@ -340,8 +340,8 @@ $.widget( 'boom.browser',
 			onClick: function(event){
 				$this = $(this);
 				item_selected( $this );
-				
-				self.tag.rid = 
+
+				self.tag.rid =
 					$this
 						.attr( 'href' )
 						.split('/')
@@ -351,7 +351,7 @@ $.widget( 'boom.browser',
 				return false;
 			}
 		});
-			
+
 		self.main_panel
 			.on( 'change', '#boom-tagmanager-sortby-select', function( event ){
 				self.tag.options.sortby = this.value;
@@ -405,9 +405,9 @@ $.widget( 'boom.browser',
 
 				return false;
 			});
-		
+
 	},
-	
+
 	/** Default history routing. */
 	defaultRoute: function(){
 
@@ -418,26 +418,26 @@ $.widget( 'boom.browser',
 	route : function(){
 
 		var self = this;
-	
+
 		$.boom.history.route(
 			function(segments){
 				segments = segments.split('/');
 
-				var 
-					item = segments[0], 
+				var
+					item = segments[0],
 					rid = segments[1],
 					instance = self.url_map[ item ];
-				
+
 				if ( item.length && instance ) {
-					
+
 					$.boom.loader.show();
-					
+
 					return instance
 						.get( rid )
 						.done( function( response ){
-							
+
 							$.boom.loader.hide();
-							
+
 							self.main_panel
 								.find( '.b-items-content' )
 								.html( response )
@@ -445,7 +445,7 @@ $.widget( 'boom.browser',
 							instance.bind( self.main_panel );
 						});
 				}
-			}, 
+			},
 			function(){
 
 				self.defaultRoute();
