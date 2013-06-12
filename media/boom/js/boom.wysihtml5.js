@@ -358,7 +358,7 @@ $.widget('wysihtml5.editor', $.boom.editor,
 	@returns {Deferred}
 	*/
 	_edit_link : function() {
-
+		top.$('[data-wysihtml5-dialog]').hide();
 		var self = this;
 		var ed = self.instance.composer;
 		var existing_link = ed.commands.state( "createLink" )[0];
@@ -624,7 +624,6 @@ $.widget('wysihtml5.editor', $.boom.editor,
 
 		/** @function */
 		insert_link : function( link ) {
-
 			var url = link.url;
 			var page_rid = link.rid;
 			var existing_link = this.selected_node;
@@ -634,8 +633,6 @@ $.widget('wysihtml5.editor', $.boom.editor,
 			if (document.selection ) {
 				document.selection.createRange( self.selected_node );
 			}
-
-			console.log( existing_link );
 
 			if ( existing_link && existing_link.nodeName == 'A' ) {
 				top.$( existing_link )
