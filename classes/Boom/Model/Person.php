@@ -21,6 +21,11 @@ class Boom_Model_Person extends ORM
 		'password'		=>	'',
 		'failed_logins'	=>	'',
 		'locked_until'	=>	'',
+		'avatar_id'	=>	'',
+	);
+
+	protected $_belongs_to = array(
+		'avatar' => array('model' => 'Asset', 'foreign_key' => 'avatar_id'),
 	);
 
 	/**
@@ -72,9 +77,21 @@ class Boom_Model_Person extends ORM
 			->update();
 	}
 
+	public function get_avatar()
+	{
+		return $this->avatar;
+	}
+
 	public function get_icon_url($s = 16)
 	{
-		return URL::gravatar($this->email, array('s' => $s));
+		if ($this->avatar_id)
+		{
+			return Route::url('asset', array('id' => $this->avatar_id, 'width' => $s, 'height' => $s));
+		}
+		else
+		{
+			return URL::gravatar($this->email, array('s' => $s));
+		}
 	}
 
 	public function get_lock_wait()

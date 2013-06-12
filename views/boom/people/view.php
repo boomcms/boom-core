@@ -13,11 +13,8 @@
 			</ul>
 
 			<div class="ui-tabs-panel ui-widget-content ui-helper-left">
-				<a href='<?= URL::gravatar($person->email, array('s' => 80), $request->secure()) ?>'
-					title="<?= $person->name ?>"
-					title="Click for larger view"
-					class="ui-helper-left boom-asset-preview">
-					<img class="ui-state-active ui-corner-all" src="<?= URL::gravatar($person->email, array('s' => 80), $request->secure()) ?>" />
+				<a class="ui-helper-left">
+					<img class="ui-state-active ui-corner-all" src="<?= $person->get_icon_url(80) ?>" />
 				</a>
 			</div>
 

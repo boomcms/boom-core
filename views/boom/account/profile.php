@@ -2,7 +2,9 @@
 	You can use this form to update your account details. If you leave the password fields blank your password will not be changed.
 </p>
 
-<img src="<?= $person->get_icon_url(48) ?>" />
+<a href="#" class="b-people-edit-avatar">
+	<img data-asset-id="<?= $person->get_avatar()->id ?>" src="<?= $person->get_icon_url(60) ?>" />
+</a>
 
 <div style="margin-top: 20px;">
 	<form id="b-people-profile" onsubmit='return false;'>
