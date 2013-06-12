@@ -49,22 +49,25 @@ class Boom_Controller_Cms_Assets_Upload extends Controller_Cms_Assets
 			// Loop through the files uploaded under this input name.
 			foreach ( (array) $files['tmp_name'] as $i => $filename)
 			{
-				// Set the common values.
-				$this->asset->values($common_values, array_keys($common_values));
+				if (in_array($files['type'][$i], Boom_Asset::$allowed_types))
+				{
+					// Set the common values.
+					$this->asset->values($common_values, array_keys($common_values));
 
-				// Set the title of the asset to the filename without the file extension.
-				$this->asset->title = pathinfo($files['name'][$i], PATHINFO_FILENAME);
-				$this->asset->filename = $files['name'][$i];
+					// Set the title of the asset to the filename without the file extension.
+					$this->asset->title = pathinfo($files['name'][$i], PATHINFO_FILENAME);
+					$this->asset->filename = $files['name'][$i];
 
-				// Create the asset from the temporary file.
-				$this->asset->create_from_file($filename);
+					// Create the asset from the temporary file.
+					$this->asset->create_from_file($filename);
 
-				// Add the asset ID to the array of uploaded assets.
-				$asset_ids[] = $this->asset->id;
+					// Add the asset ID to the array of uploaded assets.
+					$asset_ids[] = $this->asset->id;
 
-				// Clear the model so that it can be re-used for the next iteration.
-				// This way we don't have to instantiate an asset model for each loop iteration.
-				$this->asset->clear();
+					// Clear the model so that it can be re-used for the next iteration.
+					// This way we don't have to instantiate an asset model for each loop iteration.
+					$this->asset->clear();
+				}
 			}
 
 			// Give an array of IDs for the new assets in the response body.

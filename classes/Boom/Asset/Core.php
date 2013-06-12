@@ -27,13 +27,20 @@ abstract class Boom_Asset_Core
 	const BOTR = 7;
 
 	/**
-	 * Supported asset types.
-	 * @access	public
 	 * @var	array
 	 */
-	public static $allowed_types = array('image/jpeg', 'image/gif');
+	public static $allowed_types = array(
+		'image/jpeg',
+		'image/gif',
+		'image/png',
+		'image/tiff',
+		'application/msword',
+		'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+		'application/pdf',
+		'video/mp4'
+	);
 
-	public static $allowed_extensions = array('jpeg', 'gif', 'jpg', 'png');
+	public static $allowed_extensions = array('jpeg', 'gif', 'jpg', 'png', 'tiff', 'doc', 'docx', 'pdf', 'mp4');
 
 	/**
 	 * Directory where asset files are stored.

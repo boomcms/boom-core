@@ -10,14 +10,14 @@ global boom config
 window.boomConfig =
 	/** @lends $.boom.config */
 	{
-	/** 
+	/**
 	@property cachePageImages
 	*/
 	cachePageImages : [
 		'/media/boom/img/ajax_load.gif',
 		'/media/boom/img/cms/chunk_edit_icon.png'
 	],
-	
+
 	/**
 	@static
 	@class
@@ -460,7 +460,7 @@ window.boomConfig =
 		*/
 		lastname: ''
 	},
-	
+
 	/**
 	@static
 	@class
@@ -484,7 +484,7 @@ window.boomConfig =
 		/**
 		@type Array
 		@default []
-		*/ 
+		*/
 		selected: [],
 		/**
 		@type Array
@@ -522,7 +522,7 @@ window.boomConfig =
 			width: 278
 		}
 	},
-	
+
 	/**
 	@static
 	@class
@@ -547,7 +547,7 @@ window.boomConfig =
 		/**
 		@type Object
 		*/
-		treeConfig : 
+		treeConfig :
 		/** @ignore */ {
 			showEdit: true,
 			showRemove: true,
@@ -561,7 +561,7 @@ window.boomConfig =
 			}
 		}
 	},
-	
+
 	/**
 	@static
 	@class
@@ -586,7 +586,7 @@ window.boomConfig =
 		/**
 		@type string
 		@default 'people'
-		*/ 
+		*/
 		type: 'people',
 		/**
 		@type Object
@@ -596,7 +596,7 @@ window.boomConfig =
 			showRemove: true
 		}
 	},
-	
+
 	/**
 	Default options for file uploads
 	https://github.com/blueimp/jQuery-File-Upload/wiki/Options
@@ -623,7 +623,9 @@ window.boomConfig =
 		@type Array
 		@default []
 		*/
-		formData: []
+		formData: [],
+		
+		limitMultiFileUploads: 5,
 	}
 
 };
