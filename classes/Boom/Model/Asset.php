@@ -312,6 +312,8 @@ class Boom_Model_Asset extends Model_Taggable
 		{
 			unlink($file);
 		}
+
+		return $this;
 	}
 
 	/**

@@ -48,12 +48,12 @@ class Boom_Controller_Cms_Assets extends Boom_Controller
 	 */
 	public function action_delete()
 	{
-		
+
 		// delete the loaded asset
 		if ( $this->asset->loaded() ) {
 			$this->asset->delete();
 		}
-		
+
 		// Get any asset IDs from the POST data.
 		$asset_ids = (array) $this->request->post('assets');
 
@@ -311,13 +311,8 @@ class Boom_Controller_Cms_Assets extends Boom_Controller
 			@copy($this->asset->get_filename().".".$timestamp.".bak", $this->asset->get_filename());
 		}
 
-		// Delete the cache files.
-		foreach (glob($this->asset->get_filename()."_*.cache") as $cached)
-		{
-			unlink($cached);
-		}
-
 		$this->asset
+			->remove_cache_files()
 			->set('last_modified', $_SERVER['REQUEST_TIME'])
 			->update();
 
@@ -339,7 +334,7 @@ class Boom_Controller_Cms_Assets extends Boom_Controller
 
 		// Update the asset's details.
 		$this->asset
-			->values($this->request->post(), array('title','description','visible_from'))
+			->values($this->request->post(), array('title','description','visible_from', 'thumbnail_asset_id'))
 			->update();
 	}
 
