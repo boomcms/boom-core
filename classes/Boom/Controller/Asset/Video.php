@@ -31,7 +31,7 @@ class Boom_Controller_Asset_Video extends Controller_Asset
 			$this->asset->thumbnail->get_filename() :
 			MODPATH.'boom/media/boom/img/icons/40x40/mov_icon.gif';
 
-		$image = Image::factory($this->asset->thumbnail())
+		$image = Image::factory($filename)
 			->resize($this->request->param('width'), $this->request->param('height'));
 
 		$this->response
