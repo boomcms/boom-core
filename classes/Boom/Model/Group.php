@@ -58,16 +58,26 @@ class Boom_Model_Group extends ORM
 
 			// If the page ID is isn't set the set it to a string with '0' as the contents
 			// otherwise it won't be included in the DB::select()
-			$page_id = ($page_id)? DB::expr($page_id) : DB::expr("'0'");
-
-			// Add records in the people_roles table for the members of this group.
-			DB::insert('people_roles', array('person_id', 'group_id', 'role_id', 'allowed', 'page_id'))
-				->select(
-					DB::select('person_id', DB::expr($this->id), DB::expr($role_id), DB::expr($allowed), $page_id)
-						->from('people_groups')
-						->where('group_id', '=', $this->id)
-				)
-				->execute($this->_db);
+			if ($page_id)
+			{
+				DB::insert('people_roles', array('person_id', 'group_id', 'role_id', 'allowed', 'page_id'))
+					->select(
+						DB::select('person_id', 'group_id', DB::expr($role_id), DB::expr($allowed), $page_id)
+							->from('people_groups')
+							->where('group_id', '=', $this->id)
+					)
+					->execute($this->_db);
+			}
+			else
+			{
+				DB::insert('people_roles', array('person_id', 'group_id', 'role_id', 'allowed'))
+					->select(
+						DB::select('person_id', 'group_id', DB::expr($role_id), DB::expr($allowed))
+							->from('people_groups')
+							->where('group_id', '=', $this->id)
+					)
+					->execute($this->_db);
+			}
 		}
 
 		return $this;
