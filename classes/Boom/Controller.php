@@ -19,18 +19,19 @@ class Boom_Controller extends Controller
 	public $person;
 
 	/**
-	 * Holds the auth instance.
-	 *
 	 * @var		Auth
 	 */
 	public $auth;
 
 	/**
-	 * Holds the editor instance
-	 *
 	 * @var	Editor
 	 */
 	public $editor;
+
+	/**
+	 * @var Session
+	 */
+	public $session;
 
 	/**
 	 *
@@ -40,8 +41,8 @@ class Boom_Controller extends Controller
 
 	public function before()
 	{
-		// Assign the auth instance to a property so that permissions can be checked within the controller without repeatd calles to Auth::instnace()
 		$this->auth = Auth::instance();
+		$this->session = Session::instance();
 
 		// Require the user to be logged in if the site isn't live.
 		if ($this->request->is_initial() AND ! (Kohana::$environment == Kohana::PRODUCTION OR $this->auth->logged_in()))
@@ -71,6 +72,7 @@ class Boom_Controller extends Controller
 		// Is the current user logged in?
 		if ( ! $this->auth->logged_in())
 		{
+			$this->_save_last_url();
 			throw new HTTP_Exception_401;
 		}
 
@@ -121,5 +123,12 @@ class Boom_Controller extends Controller
 			$this->response
 				->headers('Cache-Control', 'private');
 		}
+	}
+
+	protected function _save_last_url()
+	{
+		$this->session
+			->set('last_url', $this->request->url())
+			->write();
 	}
 }
