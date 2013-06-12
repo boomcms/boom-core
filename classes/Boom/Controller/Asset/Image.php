@@ -57,6 +57,9 @@ class Boom_Controller_Asset_Image extends Controller_Asset
 		$crop = (int) $this->request->param('crop');
 		$quality = $this->request->param('quality');
 
+		$height = ($height == 0)? $this->asset->height : $height;
+		$width = ($width == 0)? $this->asset->width : $width;
+
 		if ($width OR $height OR $crop)
 		{
 			$filename = $this->asset->create_cache_filename($width, $height, $crop);

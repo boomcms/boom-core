@@ -66,7 +66,7 @@ class Boom_Model_Asset extends Model_Taggable
 	 */
 	public function directory()
 	{
-		return APPPATH.DIRECTORY_SEPARATOR.'assets';
+		return APPPATH.'assets';
 	}
 
 	/**
@@ -127,9 +127,6 @@ class Boom_Model_Asset extends Model_Taggable
 	public function create_cache_file($width, $height, $crop)
 	{
 		$image = Image::factory($this->get_filename());
-
-		$height = ($height == 0)? $image->height : $height;
-		$width = ($width == 0)? $image->width : $width;
 
 		if ($width OR $height)
 		{
