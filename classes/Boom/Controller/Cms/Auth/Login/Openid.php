@@ -23,13 +23,8 @@ class Boom_Controller_Cms_Auth_Login_Openid extends Controller_Cms_Auth_Login
 
 	public function action_begin()
 	{
-		// Set which OpenID provider to user.
 		$this->openid->identity = Kohana::$config->load('auth')->get('openid_identity');
-
-		// Ask the provider nicely to give use the user's email address and name.
 		$this->openid->required = array('contact/email', 'namePerson');
-
-		// Redirect the user to to the OpenID provider.
 		$this->redirect($this->openid->authUrl());
 	}
 
@@ -67,10 +62,8 @@ class Boom_Controller_Cms_Auth_Login_Openid extends Controller_Cms_Auth_Login
 
 			$this->auth->force_login($person);
 			Session::instance()->write();
-			$this->_log_login_success();
 
-			// Login is finished, send them on their merry way.
-			$this->redirect('/');
+			$this->_login_complete();
 		}
 		else
 		{

@@ -27,8 +27,7 @@ class Boom_Controller_Cms_Auth_Login_Password extends Controller_Cms_Auth_Login
 
 		if ($this->auth->login($person, $this->request->post('password'), $this->request->post('remember')))
 		{
-			$this->_log_login_success();
-			$this->redirect('/');
+			$this->_login_complete();
 		}
 		else
 		{

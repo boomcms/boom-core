@@ -58,4 +58,16 @@ class Boom_Controller_Cms_Auth extends Controller
 
 		$this->response->body(new View('boom/account/login', $vars));
 	}
+
+	protected function _get_redirect_url()
+	{
+		$url = Session::instance()->get('last_url');
+
+		if ( ! $url OR $url == '/cms/logout')
+		{
+			$url = '/';
+		}
+
+		return $url;
+	}
 }

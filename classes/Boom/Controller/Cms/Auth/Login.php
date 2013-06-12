@@ -2,6 +2,11 @@
 
 abstract class Boom_Controller_Cms_Auth_Login extends Controller_Cms_Auth
 {
+	/**
+	 * @var Session
+	 */
+	public $session;
+
 	public function before()
 	{
 		parent::before();
@@ -13,7 +18,15 @@ abstract class Boom_Controller_Cms_Auth_Login extends Controller_Cms_Auth
 
 		if ($this->auth->logged_in())
 		{
-			$this->redirect('/');
+			$this->redirect($this->_get_redirect_url());
 		}
+
+		$this->session = Session::instance();
+	}
+
+	protected function _login_complete()
+	{
+		$this->_log_login_success();
+		$this->redirect($this->_get_redirect_url(), 303);
 	}
 }
