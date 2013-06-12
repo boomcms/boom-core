@@ -364,11 +364,7 @@ $.widget('wysihtml5.editor', $.boom.editor,
 		var existing_link = ed.commands.state( "createLink" )[0];
 		var opts = {};
 
-		if ( !existing_link ) {
-			ed.commands.exec("createLink", { href: '', rel: 'new-link'});
-
-			existing_link = top.$( ed.element ).find( '[rel=new-link]' );
-		} else {
+		if ( existing_link ) {
 			var link = {
 				url : existing_link.href,
 				rid : existing_link.rel,
@@ -395,22 +391,13 @@ $.widget('wysihtml5.editor', $.boom.editor,
 				var page_rid = link.rid;
 
 				if ( existing_link ) {
+					existing_link.textContent = existing_link.textContent.replace(existing_link.href, uri);
+
 					top.$( existing_link )
 						.attr( 'href', uri )
 						.attr( 'rel', page_rid );
 				} else {
-					if ( top.getSelection ) {
-						console.log( selection );
-						new_selection = top.getSelection( selection );
-					} else if ( top.document.selection ) {
-						new_selection = top.document.selection.createRange();
-						console.log( selection );
-						new_selection = new_selection.moveToBookmark( selection );
-					} else {
-						new_selection = top.rangy.getSelection();
-					}
-
-					ed.commands.exec("createLink", { href: uri, rel: page_rid});
+					ed.commands.exec("createLink", { href: uri, rel: page_rid, title: ''});
 				}
 
 			});

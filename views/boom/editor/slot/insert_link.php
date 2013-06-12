@@ -20,7 +20,7 @@
 			</select>
 			<br />
 			URL
-			<input type="text" id="boom-chunk-linkset-addlink-external-url" class="boom-input" value="http://" />
+			<input type="text" id="boom-chunk-linkset-addlink-external-url" class="boom-input" />
 		</form>
 	</div>
 </div>
