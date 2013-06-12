@@ -68,7 +68,7 @@ class Boom_Controller_Cms_Video extends Boom_Controller
 			// Save the video thumbnail localy.
 			try
 			{
-				copy("http://content.bitsontherun.com/thumbs/" . $asset->filename . ".jpg", $asset->path() . ".thumb");
+				copy("http://content.bitsontherun.com/thumbs/" . $asset->filename . ".jpg", $asset->get_filename() . ".thumb");
 			}
 			catch (Exception $e) {}
 		}

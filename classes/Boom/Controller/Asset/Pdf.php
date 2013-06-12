@@ -21,13 +21,13 @@ class Boom_Controller_Asset_Pdf extends Controller_Asset
 				'Content-Length'			=>	$this->asset->filesize,
 				'Accept-Ranges'				=>	'bytes',
 			))
-			->body(readfile($this->asset->path()));
+			->body(readfile($this->asset->get_filename()));
 	}
 
 	public function action_thumb()
 	{
 		// The filename of the asset.
-		$filename = $this->asset->path();
+		$filename = $this->asset->get_filename();
 
 		// Thumbnail dimensions.
 		$width = $this->request->param('width');

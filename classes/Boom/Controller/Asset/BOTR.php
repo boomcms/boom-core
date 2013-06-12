@@ -24,7 +24,7 @@ class Boom_Controller_Asset_BOTR extends Controller_Asset
 	public function action_thumb()
 	{
 		// Filename of the video thumbnail.
-		$thumb = $this->_asset->path() . ".thumb";
+		$thumb = $this->_asset->get_filename() . ".thumb";
 
 		// If the thumbnail file doesn't exist then sync the asset data.
 		if ( ! file_exists($thumb))
@@ -32,7 +32,7 @@ class Boom_Controller_Asset_BOTR extends Controller_Asset
 			// Save the video thumbnail localy.
 			try
 			{
-				copy("http://content.bitsontherun.com/thumbs/".$this->asset->filename.".jpg", $this->asset->path().".thumb");
+				copy("http://content.bitsontherun.com/thumbs/".$this->asset->filename.".jpg", $this->asset->get_filename().".thumb");
 			}
 			catch (Exception $e)
 			{

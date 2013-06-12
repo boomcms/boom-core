@@ -109,6 +109,61 @@ class Boom_Model_Asset extends Model_Taggable
 		return $this;
 	}
 
+	public function create_cache_file_if_it_doesnt_exist($width, $height, $crop)
+	{
+		if ( ! $this->cache_file_exists($width, $height, $crop))
+		{
+			$this->create_cache_file($width, $height, $crop);
+		}
+	}
+
+	public function cache_file_exists($width, $height, $crop)
+	{
+		$filename = $this->create_cache_filename($width, $height, $crop);
+
+		return file_exists($filename);
+	}
+
+	public function create_cache_file($width, $height, $crop)
+	{
+		$image = Image::factory($this->getFilename());
+
+		$height = ($height == 0)? $image->height : $height;
+		$width = ($width == 0)? $image->width : $width;
+
+		if ($width OR $height)
+		{
+			if ($crop)
+			{
+				$image->resize($width, $height, Image::INVERSE);
+				$image->crop($width, $height);
+			}
+			else
+			{
+				// Resize to the smallest dimension.
+				if ($height < $width)
+				{
+					$image->resize(NULL, $height, Image::INVERSE);
+				}
+				else
+				{
+					$image->resize($width, $height, Image::INVERSE);
+				}
+			}
+		}
+
+		$filename = $this->create_cache_filename($width, $height, $crop);
+		file_put_contents($filename, $image->render());
+	}
+
+	public function create_cache_filename($width, $height, $crop)
+	{
+		$filename = $this->getFilename();
+		$filename .= "_" . (int) $width . "_". (int) $height . "_" . (int) $crop. ".cache" ;
+
+		return $filename;
+	}
+
 	/**
 	 * Delete an asset.
 	 *
@@ -139,6 +194,11 @@ class Boom_Model_Asset extends Model_Taggable
 				->set('deleted', TRUE)
 				->update();
 		}
+	}
+
+	public function exists()
+	{
+		return $this->id AND file_exists($this->get_filename());
 	}
 
 	public function filters()
@@ -179,6 +239,14 @@ class Boom_Model_Asset extends Model_Taggable
 	}
 
 	/**
+	 * @return string
+	 */
+	public function get_filename()
+	{
+		return $this->directory().DIRECTORY_SEPARATOR.$this->id;
+	}
+
+	/**
 	 * Find the mimetype of the asset file.
 	 *
 	 * @return string Mimetype string.
@@ -206,7 +274,7 @@ class Boom_Model_Asset extends Model_Taggable
 		{
 			// Add files for previous versions of the asset.
 			// Wrap the glob in array_reverse() so that we end up with an array with the most recent first.
-			foreach (array_reverse(glob($this->path().".*.bak")) as $file)
+			foreach (array_reverse(glob($this->get_filename().".*.bak")) as $file)
 			{
 				// Get the version ID out of the filename.
 				preg_match('/' . $this->id . '.(\d+).bak$/', $file, $matches);
@@ -225,21 +293,11 @@ class Boom_Model_Asset extends Model_Taggable
 		return $this->_old_files;
 	}
 
-	/**
-	 * Get the path of the asset file on the local file system.
-	 *
-	 * @return string
-	 */
-	public function path()
-	{
-		return $this->directory().DIRECTORY_SEPARATOR.$this->id;
-	}
-
 	public function replace_with_file($filename)
 	{
 		$this->get_file_info($filename);
 
-		$path = $this->path();
+		$path = $this->get_filename();
 		@rename($path, "{$path}.{$this->last_modified}.bak");
 		copy($filename, $path);
 
@@ -250,7 +308,7 @@ class Boom_Model_Asset extends Model_Taggable
 
 	public function remove_cache_files()
 	{
-		foreach (glob($this->path()."_*.cache") as $file)
+		foreach (glob($this->get_filename()."_*.cache") as $file)
 		{
 			unlink($file);
 		}

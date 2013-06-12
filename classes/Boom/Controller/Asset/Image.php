@@ -50,62 +50,25 @@ class Boom_Controller_Asset_Image extends Controller_Asset
 
 	public function action_view()
 	{
-		//
-		$filename = $this->asset->path();
+		$filename = $this->asset->getFilename();
 
-		// Are we viewing an old version of the asset?
-		if ($timestamp = $this->request->query('timestamp'))
+		$width = $this->request->param('width');
+		$height = $this->request->param('height');
+		$crop = (int) $this->request->param('crop');
+		$quality = $this->request->param('quality');
+
+		if ($width OR $height OR $crop)
 		{
-			// Update the filename to include the version ID.
-			$filename .= "_".$timestamp."_";
+			$filename = $this->asset->create_cache_filename($width, $height, $crop);
+			$this->asset->create_cache_file_if_it_doesnt_exist($width, $height, $crop);
 		}
 
-		// Are we going to be resizing the image?
-		if ($this->width OR $this->height OR $this->quality < 100)
-		{
-			// Add the image dimensions to the filename.
-			// Cast the width and height to int so that if only one is set 0 will be used for the other rather than null
-			$filename .= "_".(int) $this->width."_".(int) $this->height ."_".$this->quality.".cache" ;
-		}
-
-		// Does the file exist?
-		// It won't if we're resizing the image, or viewing an older version, and the cache file hasn't been generated.
-		if ( ! file_exists($filename))
-		{
-			// No - we'll have to generate a cache file.
-			$image = ($timestamp)? Image::factory($this->asset->path() . ".$timestamp.bak") : Image::factory($this->asset->path());
-
-			// Set the dimensions and quality of the image.
-			$this->height = ($this->height == 0)? $image->height : $this->height;
-			$this->width = ($this->width == 0)? $image->width : $this->width;
-
-			if ($this->width OR $this->height)
-			{
-				if ($this->crop)
-				{
-					$image->resize($this->width, $this->height, Image::INVERSE);
-					$image->crop($this->width, $this->height);
-				}
-				else
-				{
-					$image->resize($this->width, $this->height);
-				}
-			}
-
-			// Save the file.
-			// $image->save() doesn't always work with Imagemagick but this does the job.
-			file_put_contents($filename, $image->render(NULL, $this->quality));
-		}
-		else
-		{
-			// Load the cached file.
-			$image =  Image::factory($filename);
-		}
+		// Load the cached file.
+		$image = Image::factory($filename);
 
 		$this->response
 			->headers('Content-type', $image->mime)
-			// Use file_get_contents() because it's quicker than [Image::render()]
-			->body(file_get_contents($filename));
+			->body($image->render(NULL, $quality));
 	}
 
 	public function action_embed()

@@ -19,7 +19,7 @@ class Boom_Controller_Page_Html extends Controller_Page
 
 		$this->_save_last_url();
 		$template = $this->page->version()->template;
-		$this->template = View::factory($template->path());
+		$this->template = View::factory($template->filename());
 
 		// Set some variables which need to be used globally in the views.
 		View::bind_global('auth', $this->auth);

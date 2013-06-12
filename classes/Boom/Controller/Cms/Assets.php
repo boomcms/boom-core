@@ -302,17 +302,17 @@ class Boom_Controller_Cms_Assets extends Boom_Controller
 	{
 		$timestamp = $this->request->query('timestamp');
 
-		if (file_exists($this->asset->path().".".$timestamp.".bak"))
+		if (file_exists($this->asset->get_filename().".".$timestamp.".bak"))
 		{
 			// Backup the current active file.
-			@rename($this->asset->path(), $this->asset->path().".".$_SERVER['REQUEST_TIME'].".bak");
+			@rename($this->asset->get_filename(), $this->asset->get_filename().".".$_SERVER['REQUEST_TIME'].".bak");
 
 			// Restore the old file.
-			@copy($this->asset->path().".".$timestamp.".bak", $this->asset->path());
+			@copy($this->asset->get_filename().".".$timestamp.".bak", $this->asset->get_filename());
 		}
 
 		// Delete the cache files.
-		foreach (glob($this->asset->path()."_*.cache") as $cached)
+		foreach (glob($this->asset->get_filename()."_*.cache") as $cached)
 		{
 			unlink($cached);
 		}
