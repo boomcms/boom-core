@@ -3,17 +3,14 @@
 class Boom_Controller_Cms_Page_Version_Save extends Controller_Cms_Page_Version
 {
 	/**
-	 *
 	 * @var Database
 	 */
 	public $db;
 
 	/**
-	 *
 	 * @var	Model_Page_Version
 	 */
 	public $new_version;
-
 
 	public function before()
 	{
