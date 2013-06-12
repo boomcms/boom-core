@@ -73,10 +73,28 @@ $.extend({
 							'url': url,
 							'title': 'User profile',
 							callback: function() {
-								$.post(url, $('#b-people-profile').serialize())
+								data = $('#b-people-profile').serialize();
+								data = data + '&avatar_id=' + $('.b-people-edit-avatar img').attr('data-asset-id');
+
+								$.post(url, data)
 									.done(function() {
-										$.boom.dialog.show('Profile updated');
+										$.boom.growl.show('Profile updated');
 									});
+							},
+							open: function() {
+								$('.b-people-edit-avatar').on('click', function() {
+									var avatar = $(this).find('img');
+
+									$.boom.assets
+										.picker({
+											asset_rid : avatar.attr('data-asset-id'),
+										})
+										.done( function( rid ){
+											avatar
+												.attr('data-asset-id', rid)
+												.attr('src', '/asset/view/'+rid+'/80/80');
+										});
+								});
 							}
 						});
 					},
