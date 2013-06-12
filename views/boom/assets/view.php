@@ -37,9 +37,11 @@
 					<input type="text" id="visible_from" name="visible_from" class="boom-datepicker boom-input" value="<?= date('d F Y h:m', $asset->visible_from);?>" />
 				</label>
 
-				<label for="thumbnail">Thumbnail asset ID
-					<input type="text" id="thumbnail" name="thumbnail_asset_id" value="<?= $asset->thumbnail_asset_id ?>" size="4" />
-				</label>
+				<? if ($asset->type != Boom_Asset::IMAGE): ?>
+					<label for="thumbnail">Thumbnail asset ID
+						<input type="text" id="thumbnail" name="thumbnail_asset_id" value="<?= $asset->thumbnail_asset_id ?>" size="4" />
+					</label>
+				<? endif; ?>
 			</div>
 
 			<div id="b-assets-view-info<?=$asset->id;?>" class="ui-helper-left">
