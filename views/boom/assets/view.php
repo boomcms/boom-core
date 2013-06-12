@@ -17,7 +17,6 @@
 			<div class="b-assets-preview ui-tabs-panel ui-widget-content ui-helper-left">
 
 				<a href="<?= Route::url('asset', array('action' => 'thumb', 'id' => $asset->id, 'width' => 600, 'height' => 500)) ?>"
-					title="<?= $asset->title?>"
 					title="Click for larger view"
 					class="ui-helper-left boom-asset-preview">
 					<img class="ui-state-active ui-corner-all" src="<?= Route::url('asset', array('action' => 'thumb', 'id' => $asset->id, 'width' => 160, 'height' => 160, 'quality' => 85, 'crop' => 1)) ?>">
@@ -27,17 +26,16 @@
 
 			<div id="b-assets-view-attributes<?=$asset->id;?>" class="ui-helper-left">
 				<label for="title"><?=__('Title')?>
-				<input type="text" id="title" name="title" class="boom-input" value="<?= $asset->title?>" />
+					<input type="text" id="title" name="title" class="boom-input" value="<?= $asset->title?>" />
 				</label>
 
 				<label for="description"><?=__('Description')?>
-				<textarea id="description" name="description" class="boom-textarea"><?= $asset->description?></textarea>
+					<textarea id="description" name="description" class="boom-textarea"><?= $asset->description?></textarea>
 				</label>
 
 				<label for="visible_from">Visible from
-				<input type="text" id="visible_from" name="visible_from" class="boom-datepicker boom-input" value="<?= date('d F Y h:m', $asset->visible_from);?>" />
+					<input type="text" id="visible_from" name="visible_from" class="boom-datepicker boom-input" value="<?= date('d F Y h:m', $asset->visible_from);?>" />
 				</label>
-
 			</div>
 
 			<div id="b-assets-view-info<?=$asset->id;?>" class="ui-helper-left">
