@@ -126,7 +126,7 @@ class Boom_Model_Asset extends Model_Taggable
 
 	public function create_cache_file($width, $height, $crop)
 	{
-		$image = Image::factory($this->getFilename());
+		$image = Image::factory($this->get_filename());
 
 		$height = ($height == 0)? $image->height : $height;
 		$width = ($width == 0)? $image->width : $width;
@@ -158,7 +158,7 @@ class Boom_Model_Asset extends Model_Taggable
 
 	public function create_cache_filename($width, $height, $crop)
 	{
-		$filename = $this->getFilename();
+		$filename = $this->get_filename();
 		$filename .= "_" . (int) $width . "_". (int) $height . "_" . (int) $crop. ".cache" ;
 
 		return $filename;

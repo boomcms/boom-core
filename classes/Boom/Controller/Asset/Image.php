@@ -50,7 +50,7 @@ class Boom_Controller_Asset_Image extends Controller_Asset
 
 	public function action_view()
 	{
-		$filename = $this->asset->getFilename();
+		$filename = $this->asset->get_filename();
 
 		$width = $this->request->param('width');
 		$height = $this->request->param('height');
