@@ -48,6 +48,28 @@ class Boom_Controller_Cms_People_Save extends Controller_Cms_People
 
 	public function action_delete()
 	{
+		if ($person_ids = $this->request->post('people'))
+		{
+			foreach ($person_ids as $person_id)
+			{
+				$this->edit_person
+					->where('id', '=', $person_id)
+					->find();
+
+				if ($this->edit_person->loaded())
+				{
+					$this->_do_delete();
+				}
+			}
+		}
+		else
+		{
+			$this->_do_delete();
+		}
+	}
+
+	protected function _do_delete()
+	{
 		$this->log("Deleted person with email address: ".$this->edit_person->email);
 		$this->edit_person->delete();
 	}
