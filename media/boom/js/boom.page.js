@@ -32,11 +32,6 @@ $.widget( 'boom.page', {
 	*/
 	cancel_button: $('#b-page-cancel'),
 
-	/**
-	 @property status
-	 */
-	status: $('#b-page-version-status'),
-
 	_init : function() {
 
 	},
@@ -209,7 +204,7 @@ $.widget( 'boom.page', {
 
 				$.post( '/cms/page/version/embargo/' + self.options.id )
 				.done( function(response){
-					$.boom.page.status.html("<span class='ui-button-text'>live</span>");
+					$('#b-page-version-status span').text(response);
 					$.boom.loader.hide();
 
 				});
@@ -317,26 +312,19 @@ $.widget( 'boom.page', {
 
 		$.post( '/cms/page/version/content/' + this.options.id, requestdata )
 		.done(
-			function(response){
+			function(response, textStatus, xhr){
 				$.boom.growl.show( "Page successfully saved." );
 				$.boom.page.slot_edits = [];
 
-				if (response == '')
+				if (xhr.status == 200)
 				{
 					$('#b-page-publish').show();
 					$.boom.page.save_button.button( 'disable' ).attr( 'title', 'You have no unsaved changes' );
 					$.boom.page.cancel_button.button( 'disable' ).attr( 'title', 'You have no unsaved changes' );
 
-					if (requestdata.publish)
-					{
-						$.boom.page.status.html("<span class='ui-button-text'>live</span>");
-					}
-					else
-					{
-						$.boom.page.status.html("<span class='ui-button-text'>draft</span>");
-					}
+					$('#b-page-version-status span').text(response);
 				}
-				else
+				else if (xhr.status == 302)
 				{
 					top.location = response;
 				}
@@ -1430,7 +1418,10 @@ $.widget( 'boom.page', $.boom.page, {
 									url,
 									$("#boom-form-pagesettings-featureimage").serialize(),
 									"Page feature image saved."
-								);
+								)
+								.done(function(response) {
+									$('#b-page-version-status span').text(response);
+								});
 
 								$.boom.dialog.destroy( this );
 							}
@@ -1534,7 +1525,10 @@ $.widget( 'boom.page', $.boom.page, {
 							url,
 							$("#b-form-pageversion-embargo").serialize(),
 							"Page embargo saved."
-						);
+						)
+						.done(function(response) {
+							$('#b-page-version-status span').text(response);
+						});
 					},
 					open: function(){
 						$( '#page-visible' ).on( 'change', function(){
