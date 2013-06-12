@@ -62,7 +62,7 @@ class Boom_Model_Group extends ORM
 			{
 				DB::insert('people_roles', array('person_id', 'group_id', 'role_id', 'allowed', 'page_id'))
 					->select(
-						DB::select('person_id', 'group_id', DB::expr($role_id), DB::expr($allowed), $page_id)
+						DB::select('person_id', 'group_id', DB::expr($role_id), DB::expr($allowed), DB::expr($page_id))
 							->from('people_groups')
 							->where('group_id', '=', $this->id)
 					)
