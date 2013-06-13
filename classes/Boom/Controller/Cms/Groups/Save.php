@@ -1,6 +1,6 @@
 <?php
 
-class Boom_Controller_Cms_Groups_Save extends Controller_Cms_People
+class Boom_Controller_Cms_Groups_Save extends Controller_Cms_Groups
 {
 	public function action_add()
 	{
@@ -12,7 +12,7 @@ class Boom_Controller_Cms_Groups_Save extends Controller_Cms_People
 		$this->response->body($this->group->id);
 	}
 
-	public function add_role()
+	public function action_add_role()
 	{
 		$this->log("Edited the roles of group ".$this->group->name);
 		$this->group->add_role($this->request->post('role_id'), $this->request->post('allowed'), (int) $this->request->post('page_id'));

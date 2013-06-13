@@ -1,6 +1,6 @@
 <?php
 
-class Boom_Controller_Cms_Groups_View extends Controller_Cms_People
+class Boom_Controller_Cms_Groups_View extends Controller_Cms_Groups
 {
 	public function action_add()
 	{
