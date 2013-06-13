@@ -20,7 +20,5 @@ return array(
 		'boom.links.js',
 		'boom.tags.js',
 		'boom.templates.js',
-		'boom.people.js',
-		'boom.groups.js'
 	),
 );
