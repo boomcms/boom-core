@@ -3,7 +3,7 @@
 /**
  * Initial boom core structure.
  */
-class Migration_Boom_20121008111800 extends Minion_Migration_Base
+class Migration_Boom_20130613124200 extends Minion_Migration_Base
 {
 
 	/**
