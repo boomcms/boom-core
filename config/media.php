@@ -4,7 +4,7 @@ return array(
 	'css' => array(
 		'cms.css.less',
 	),
-	'js' => array(
+	'corejs' => array(
 		'boom.helpers.js',
 		'jquery.js',
 		'jquery.ui.js',
@@ -12,6 +12,8 @@ return array(
 		'boom.plugins.js',
 		'boom.config.js',
 		'boom.core.js',
+	),
+	'js' => array(
 		'boom.page.js',
 		'boom.chunk.js',
 		'boom.helpers.js',
@@ -19,6 +21,5 @@ return array(
 		'boom.assets.js',
 		'boom.links.js',
 		'boom.tags.js',
-		'boom.templates.js',
 	),
 );
