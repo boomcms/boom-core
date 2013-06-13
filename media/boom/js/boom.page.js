@@ -312,21 +312,18 @@ $.widget( 'boom.page', {
 
 		$.post( '/cms/page/version/content/' + this.options.id, requestdata )
 		.done(
-			function(response, textStatus, xhr){
+			function(response){
 				$.boom.growl.show( "Page successfully saved." );
 				$.boom.page.slot_edits = [];
 
-				if (xhr.status == 200)
-				{
+				if (response.substring(0, 9) == 'Location:') {
+					top.location = response.replace('Location:', '');
+				} else {
 					$('#b-page-publish').show();
 					$.boom.page.save_button.button( 'disable' ).attr( 'title', 'You have no unsaved changes' );
 					$.boom.page.cancel_button.button( 'disable' ).attr( 'title', 'You have no unsaved changes' );
 
 					$('#b-page-version-status span').text(response);
-				}
-				else if (xhr.status == 302)
-				{
-					top.location = response;
 				}
 			})
 		.fail( function(response){

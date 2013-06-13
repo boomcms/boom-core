@@ -76,9 +76,7 @@ class Boom_Controller_Cms_Page_Version_Save extends Controller_Cms_Page_Version
 				->create();
 
 			// Put the page's new URL in the response body so that the JS will redirect to the new URL.
-			$this->response
-				->status(302)
-				->body(URL::site($link->location));
+			$this->response->body("Location:".URL::site($link->location));
 		}
 
 		// Save the new version.
