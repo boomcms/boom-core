@@ -44,7 +44,7 @@ class Boom_Model_Template extends ORM
 	 */
 	public function file_exists()
 	{
-		return (bool) Kohana::find_file("views", $this->get_filename());
+		return (bool) Kohana::find_file("views", $this->filename());
 	}
 
 	/**
