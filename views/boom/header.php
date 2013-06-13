@@ -5,6 +5,6 @@
 	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 	<meta http-equiv="Content-Style-Type" content="text/css" />
 
-	<?= Assets::factory('boom_css')->css('cms.css.less') ?>
+	<?= Boom::include_css() ?>
 </head>
 <body>

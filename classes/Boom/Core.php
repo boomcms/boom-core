@@ -10,6 +10,32 @@
  */
 abstract class Boom_Core
 {
+	public static function include_css()
+	{
+		$css = Kohana::$config->load('media')->get('css');
+
+		$assets = Assets::factory('cms_css');
+		foreach ($css as $c)
+		{
+			$assets->css($c);
+		}
+
+		return $assets;
+	}
+	public static function include_js()
+	{
+		$js = Kohana::$config->load('media')->get('js');
+
+		$assets = Assets::factory('cms_js');
+
+		foreach ($js as $j)
+		{
+			$assets->js($j);
+		}
+
+		return $assets;
+	}
+
 	public static function page_format(Request $request)
 	{
 		// Change the controller action depending on the request accept header.

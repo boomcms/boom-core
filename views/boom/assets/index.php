@@ -58,23 +58,13 @@
 		<?= $content ?>
 	</div>
 
-	<?= HTML::script("media/boom/js/boom.helpers.js") ?>
-	<?= HTML::script("media/boom/js/jquery.js") ?>
-	<?= HTML::script("media/boom/js/jquery.ui.js") ?>
-	<?= HTML::script("media/boom/js/jquery.plugins.js") ?>
-	<?= HTML::script("media/boom/js/boom.plugins.js") ?>
-	<?= HTML::script("media/boom/js/boom.config.js") ?>
-	<?= HTML::script("media/boom/js/boom.core.js") ?>
-	<?= HTML::script("media/boom/js/boom.browser.js") ?>
-	<?= HTML::script("media/boom/js/boom.assets.js") ?>
-	<?= HTML::script("media/boom/js/boom.tags.js") ?>
-	<?= HTML::script("media/boom/js/boom.links.js") ?>
+	<?= Boom::include_js() ?>
 
 	<script type="text/javascript">
 		//<![CDATA[
 		(function($){
 			$.boom.init();
-			
+
 			$( 'body' ).browser_asset({
 				allowedUploadTypes:[ '<?= implode('\', \'', Boom_Asset::$allowed_extensions)?>' ]
 			});

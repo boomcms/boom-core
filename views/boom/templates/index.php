@@ -80,15 +80,7 @@
 		</form>
 	</div>
 
-	<?= HTML::script("media/boom/js/boom.helpers.js") ?>
-	<?= HTML::script("media/boom/js/jquery.js") ?>
-	<?= HTML::script("media/boom/js/jquery.ui.js") ?>
-	<?= HTML::script("media/boom/js/jquery.plugins.js") ?>
-	<?= HTML::script("media/boom/js/boom.plugins.js") ?>
-	<?= HTML::script("media/boom/js/boom.config.js") ?>
-	<?= HTML::script("media/boom/js/boom.core.js") ?>
-	<?= HTML::script("media/boom/js/boom.helpers.js") ?>
-	<?= HTML::script("media/boom/js/boom.templates.js") ?>
+	<?= Boom::include_js() ?>
 
 	<script type="text/javascript">
 		//<![CDATA[
