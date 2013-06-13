@@ -250,7 +250,7 @@ class Boom_Model_Asset extends Model_Taggable
 	 */
 	public function get_mime()
 	{
-		return File::mime($this->directory().$this->id);
+		return File::mime($this->get_filename());
 	}
 
 	/**
