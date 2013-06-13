@@ -54,6 +54,8 @@ class Migration_Boom_20130613123700 extends Minion_Migration_Base
 			  KEY `assets_tags_asset_id` (`asset_id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 		");
+
+		$db->query(NULL, "insert ignore into roles (name, description) values ('manage_assets', 'View the asset manager')");
 	}
 
 	/**
@@ -63,5 +65,8 @@ class Migration_Boom_20130613123700 extends Minion_Migration_Base
 	 */
 	public function down(Kohana_Database $db)
 	{
+		$db->query(NULL, "drop table assets");
+		$db->query(NULL, "drop table assets_tags");
+		$db->query(NULL, "delete from roles where name = 'manage_assets'");
 	}
 }
