@@ -26,21 +26,21 @@ $.widget( 'boom.group_editor',
 
 	_init: function() {
 		$.boom.log( 'init group editor' );
-		
+
 		this._bind();
 	},
-	
+
 	_bind: function() {
-		
+
 		$.boom.log( 'binding group editor' );
-		
+
 		var self = this;
-		
+
 		var editableTreeConfig = $.extend({}, self.options.tree_config, {
 			showRemove: true,
 			showEdit: true,
 			onEditClick: function(event){
-				
+
 				self.edit(event);
 			},
 			onRemoveClick: function(event){
@@ -48,7 +48,7 @@ $.widget( 'boom.group_editor',
 				self.remove(event);
 			}
 		});
-		
+
 		this.element
 			.find('.b-people-group-add')
 			.click(function( event ){
@@ -58,10 +58,10 @@ $.widget( 'boom.group_editor',
 			.find('.b-tags-tree')
 			.tree( editableTreeConfig );
 	},
-	
+
 	/**
-	Add a new group 
-	@function 
+	Add a new group
+	@function
 	*/
 	add: function(){
 
@@ -83,7 +83,7 @@ $.widget( 'boom.group_editor',
 			}
 		});
 	},
-	
+
 	/** @function */
 	save: function(group_id, data){
 		$.boom.loader.show();
@@ -95,10 +95,10 @@ $.widget( 'boom.group_editor',
 
 		});
 	},
-	
+
 	/** @function */
 	remove : function(event){
-		
+
 		var self = this;
 
 		event.preventDefault();
@@ -124,19 +124,19 @@ $.widget( 'boom.group_editor',
 			});
 		});
 	},
-	
+
 	/**
-	Load group details in the main panel for editing 
-	@function 
+	Load group details in the main panel for editing
+	@function
 	*/
 	edit : function( event ){
-		
+
 		var self = this;
 		var item = $( event.target ).closest( 'li' );
 		self.options.id = item.find('a').attr( 'rel' );
-		
+
 		event.preventDefault();
-		
+
 		$.boom.loader.show();
 
 		return self.options.browser.main_panel
@@ -144,8 +144,8 @@ $.widget( 'boom.group_editor',
 		.sload( self.options.base_url + 'edit/' + self.options.id, function(){
 
 			$.boom.loader.hide();
-			
-			self.options.browser.main_panel.group_permissions({ 
+
+			self.options.browser.main_panel.group_permissions({
 				base_url: self.options.base_url,
 				id: self.options.id
 			});
@@ -172,13 +172,13 @@ $.widget( 'boom.group_permissions',
 		/** ID of the group being edited */
 		id : null
 	},
-	
+
 	_init: function() {
 		$.boom.log( 'init group permissions editor' );
-		
+
 		this._bind();
 	},
-	
+
 	_check_inputs: function( radio_buttons, value ) {
 
 		radio_buttons
@@ -191,7 +191,7 @@ $.widget( 'boom.group_permissions',
 			.attr( 'checked', 'checked' );
 
 	},
-	
+
 	_change: function( role_id, allowed, page_id ) {
 
 		var self = this;
@@ -218,10 +218,11 @@ $.widget( 'boom.group_permissions',
 			);
 		})
 		.done( function( response ){
+			$.boom.growl.show('Permissions updated');
 		});
 
 	},
-	
+
 	_bind: function() {
 
 		var self = this;
