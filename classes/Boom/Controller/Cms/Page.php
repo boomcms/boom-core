@@ -45,21 +45,13 @@ class Boom_Controller_Cms_Page extends Boom_Controller
 
 	/**
 	 * Add a new page to the CMS.
-	 * If no parent ID and template ID are set a template allowing the user to set these values is displayed.
-	 *
-	 * **Accepted POST variables:**
-	 * Name			|	Type		|	Description
-	 * ---------------------|-----------------|---------------
-	 * parent_id		|	int		|	The ID of the page our new page should be created as a child of.
-	 * template_id		|	int		|	ID of the template to be used by the new page.
-	 *
-	 * @uses	URL::generate()
 	 */
 	public function action_add()
 	{
 		// Get the parent page and template of the new page from the POST data.
 		$parent_id = $this->page->id;
 		$template_id = $this->request->post('template_id');
+		$title = ($this->request->post('title'))? $this->request->post('title') : 'Untitled';
 
 		if ($template_id == NULL)
 		{
@@ -98,9 +90,6 @@ class Boom_Controller_Cms_Page extends Boom_Controller
 				'created_by'				=>	$this->person->id,
 			))
 			->create();
-
-		// What the title of the page will be.
-		$title = 'Untitled';
 
 		// Create a version for the page.
 		ORM::factory('Page_Version')
