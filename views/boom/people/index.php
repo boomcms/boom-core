@@ -34,13 +34,6 @@
 
 	</div>
 
-	<div id="boom-dialogs">
-		<div id="boom-dialog-alerts">
-			<p>&nbsp;</p>
-		</div>
-	</div>
-
-	<div id="boom-loader-dialog-overlay" class="ui-widget-overlay"></div>
 	<div id="b-page-edit">
 		<div id="boom-tagmanager">
 			<div class="b-items-main ui-helper-right">
@@ -73,22 +66,12 @@
 		</div>
 	</div>
 
-	<?= HTML::script("media/boom/js/boom.helpers.js") ?>
-	<?= HTML::script("media/boom/js/jquery.js") ?>
-	<?= HTML::script("media/boom/js/jquery.ui.js") ?>
-	<?= HTML::script("media/boom/js/jquery.plugins.js") ?>
-	<?= HTML::script("media/boom/js/boom.plugins.js") ?>
-	<?= HTML::script("media/boom/js/boom.config.js") ?>
-	<?= HTML::script("media/boom/js/boom.core.js") ?>
-	<?= HTML::script("media/boom/js/boom.browser.js") ?>
-	<?= HTML::script("media/boom/js/boom.people.js") ?>
-	<?= HTML::script("media/boom/js/boom.groups.js") ?>
+	<?= Boom::include_js() ?>
 
 	<script type="text/javascript">
 		//<![CDATA[
 		(function($){
 			$.boom.init('people');
-
 			$( 'body' ).browser_people();
 		})(jQuery);
 		//]]>
