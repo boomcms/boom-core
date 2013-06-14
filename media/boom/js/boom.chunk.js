@@ -685,8 +685,7 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 		var self = this;
 
 		self.asset = this._get_asset_details();
-console.log(self.element[0].nodeName);
-console.log(self.asset);
+
 		switch ( self.element[0].nodeName ){
 			case 'IMG':
 				this.originals = self.asset.element.clone( true );
