@@ -18,7 +18,6 @@ return array(
 		'boom.chunk.js',
 		'boom.helpers.js',
 		'boom.browser.js',
-		'boom.assets.js',
 		'boom.links.js',
 		'boom.tags.js',
 	),
