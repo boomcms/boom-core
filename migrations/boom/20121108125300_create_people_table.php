@@ -19,6 +19,7 @@ class Migration_Boom_20121108125300 extends Minion_Migration_Base
 			enabled boolean default true,
 			theme varchar(20))");
 		$db->query(NULL, "create unique index people_email on people(email)");
+		$db->query(NULL, "insert ignore into roles (name, description) values ('manage_people', 'View the people manager')");
 	}
 
 	/**
@@ -29,5 +30,6 @@ class Migration_Boom_20121108125300 extends Minion_Migration_Base
 	public function down(Kohana_Database $db)
 	{
 		$db->query(NULL, "drop table people");
+		$db->query(NULL, "delete from roles where name = 'manage_people'");
 	}
 }
