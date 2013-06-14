@@ -32,7 +32,7 @@
 						<tr>
 							<td><label for='person-status'>Status:</label></td>
 							<td>
-								<?= Form::select('status',
+								<?= Form::select('enabled',
 										array(
 											0	=>	'Disabled',
 											1	=>	'Enabled',

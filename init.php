@@ -40,6 +40,20 @@ Route::set('profile', 'cms/profile')
 		}
 	);
 
+Route::set('people-edit', 'cms/<controller>(/<action>(/<id>))', array(
+		'controller' => 'people|groups',
+		'id' => '\d+'
+	))
+	->defaults(array(
+		'action' => 'index',
+	))
+	->filter(function(Route $route, $params, Request $request) {
+		$params['controller'] = 'Cms_'.ucfirst($params['controller'])."_";
+		$params['controller'] .= ($request->method() == Request::GET)? 'View' : 'Save';
+
+		return $params;
+	});
+
 Route::set('login', 'cms/login(/<controller>)')
 	->defaults(array(
 		'directory' => 'Cms_Auth_Login',
