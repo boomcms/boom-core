@@ -14,6 +14,12 @@ class Boom_Controller_Asset_Image extends Controller_Asset
 {
 	/**
 	 *
+	 * @var boolean
+	 */
+	public $caching_enabled = TRUE;
+
+	/**
+	 *
 	 * @var int
 	 */
 	public $crop;
@@ -46,12 +52,16 @@ class Boom_Controller_Asset_Image extends Controller_Asset
 		$this->height	= $this->request->param('height');
 		$this->quality	= ($this->request->param('quality'))? $this->request->param('quality') : 100;
 		$this->crop	= (bool) $this->request->param('crop');
+
+		if (Kohana::$environment == Kohana::DEVELOPMENT AND ! $this->asset->exists())
+		{
+			$this->caching_enabled = FALSE;
+		}
 	}
 
 	public function action_view()
 	{
-		//
-		$filename = $this->asset->get_filename();
+		$filename = $original_filename = ($this->asset->exists())? $this->asset->get_filename() : MODPATH.'boom-assets/media/boom-assets/img/placeholder.png';
 
 		// Are we viewing an old version of the asset?
 		if ($timestamp = $this->request->query('timestamp'))
@@ -61,7 +71,7 @@ class Boom_Controller_Asset_Image extends Controller_Asset
 		}
 
 		// Are we going to be resizing the image?
-		if ($this->width OR $this->height OR $this->quality < 100)
+		if ($this->caching_enabled AND ($this->width OR $this->height OR $this->quality < 100))
 		{
 			// Add the image dimensions to the filename.
 			// Cast the width and height to int so that if only one is set 0 will be used for the other rather than null
@@ -70,10 +80,10 @@ class Boom_Controller_Asset_Image extends Controller_Asset
 
 		// Does the file exist?
 		// It won't if we're resizing the image, or viewing an older version, and the cache file hasn't been generated.
-		if ( ! file_exists($filename))
+		if ( $this->caching_enabled AND ! file_exists($filename))
 		{
 			// No - we'll have to generate a cache file.
-			$image = ($timestamp)? Image::factory($this->asset->get_filename() . ".$timestamp.bak") : Image::factory($this->asset->get_filename());
+			$image = ($timestamp)? Image::factory($original_filename . ".$timestamp.bak") : Image::factory($original_filename);
 
 			// Set the dimensions and quality of the image.
 			$this->height = ($this->height == 0)? $image->height : $this->height;

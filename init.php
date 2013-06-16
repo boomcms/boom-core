@@ -12,7 +12,7 @@ Route::set('asset', 'asset/<action>/<id>(/<width>(/<height>(/<quality>(/<crop>))
 			$asset = new Model_Asset($params['id']);
 
 			// Does the asset exist?
-			if ( ! ($asset->loaded() AND $asset->exists()))
+			if ( ! $asset->loaded() OR ( Kohana::$environment != Kohana::DEVELOPMENT AND ! $asset->exists()))
 			{
 				return FALSE;
 			}
