@@ -38,14 +38,14 @@ class Boom_Auth_Boom extends Auth_ORM
 		}
 	}
 
-	public function complete_login(Model_Person $person)
+	public function complete_login($person)
 	{
 		// Store the person ID in the session data.
 		$this->_session->set($this->_config['session_key'], $person->id);
 		$person->complete_login();
 	}
 
-	public function force_login(Model_Person $person)
+	public function force_login($person, $mark_as_forced = FALSE)
 	{
 		$this->_person = $person;
 
