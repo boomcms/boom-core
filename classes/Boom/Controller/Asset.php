@@ -51,14 +51,7 @@ abstract class Boom_Controller_Asset extends Boom_Controller
 		$this->response->body(HTML::anchor('asset/view/'.$this->asset->id, "Download {$this->asset->title}"));
 	}
 
-	/**
-	 * View an asset.
-	 */
 	abstract public function action_view();
 
-	public function action_thumb()
-	{
-		$asset = Boom_Asset::factory($this->asset);
-		$asset->preview($this->response, $this->request->param('width'), $this->request->param('height'), $this->request->param('quality'), (bool) $this->request->param('crop'));
-	}
+	abstract public function action_thumb();
 }
