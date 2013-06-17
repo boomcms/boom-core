@@ -1158,7 +1158,9 @@ $.widget( 'boom.page', $.boom.page, {
 					width: 440,
 					buttons: [
 						{
-							text: 'Add',
+							text: 'Add URL',
+							title: 'Add URL',
+							id: 'boom-page-settings-url-add',
 							icons: { primary : 'ui-icon-boom-add' },
 							click: function( event ){
 								$.boom.dialog.open({
@@ -1179,6 +1181,7 @@ $.widget( 'boom.page', $.boom.page, {
 						},
 						{
 							text: 'Close',
+							title: 'Close',
 							icons: { primary : 'ui-icon-boom-cancel' },
 							click: function( event ){
 								$.boom.dialog.destroy( this );
