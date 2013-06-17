@@ -1109,6 +1109,10 @@ $.widget('ui.chunkSlideshow', $.ui.chunk,
 				$.boom.page.toolbar.hide();
 				top.$( 'body' )
 					.prepend( toolbar );
+
+				if ( ! $('a.slide-link').length) {
+					$('button.link').hide();
+				}
 			});
 
 	},
@@ -1208,8 +1212,38 @@ $.widget('ui.chunkSlideshow', $.ui.chunk,
 						self.edited = true;
 						$.boom.log( 'sort finished' );
 					});
+			})
+			.on( 'click', 'button.link', function(){
+				var slideshow = self.options.slider;
+				var slide = slideshow.slides[ slideshow.currentSlide ];
+
+				self._edit_link($(slide))
+					.done( function(){
+						self.edited = true;
+						$.boom.growl.show('Link updated');
+					});
 			});
 
+	},
+
+	_edit_link : function($slide){
+		var self = this;
+
+		$.boom.log( 'edit link' );
+
+		var link = $slide.find( 'a.slide-link' );
+
+		return $.boom.links.picker( {
+			title: 'Add a link',
+			new_link : {
+				url : link.attr( 'href' ),
+				rid : link.attr( 'rel' ),
+			}
+
+		})
+		.pipe(function(new_link) {
+			link.attr( 'href', new_link.url );
+		});
 	},
 
 	/**
@@ -1241,25 +1275,8 @@ $.widget('ui.chunkSlideshow', $.ui.chunk,
 			deferred: asset_selected
 		} )
 		.pipe( function( rid ){
-
-			var link = $slide.closest( 'a.slide-link' );
-
 			url_segments[3] = rid;
 			$slide.attr( 'src', url_segments.join( '/' ) );
-			return $.boom.links.picker( {
-				title: 'Add a link',
-				link : {
-					url : link.attr( 'href' ),
-					rid : link.attr( 'rel' ),
-					title : $slide.attr( 'alt' )
-				}
-			});
-		})
-		.done( function( link ){
-			$slide
-				.closest( 'a.slide-link' )
-				.attr( 'href', link.url );
-			$slide.attr( 'alt', link.title );
 		})
 		.fail( function() {
 

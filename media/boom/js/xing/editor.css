@@ -196,3 +196,8 @@ body .ui-tooltip { border-width:2px; }
 .b-hr, .b-hr:hover { background-position:	 -180px -60px;}
 .b-speech, .b-speech:hover { background-position:	 -210px -60px;}
 .b-sort, .b-sort:hover {background-position: -210px -90px;}}
+
+div.b-button-group {
+	display: inline-block;
+	margin-right: 5%;
+}
