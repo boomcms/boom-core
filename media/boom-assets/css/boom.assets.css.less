@@ -1,16 +1,3 @@
-/* Asset manager opening in a dialog */
-/* Stop the 'filters' and 'tags' headers clashing with the dialog background. */
-.ui-dialog {
-	& .b-items-box-header {
-		background: #000000;
-	}
-
-	/* Hide certain elements when the asset manager is opened in a dialog. */
-	& .b-dialog-hidden {
-		display: none;
-	}
-}
-
 /* BOOM ASSETS */
 /* The filter by name input box */
 .b-filter-input {
@@ -24,7 +11,11 @@
 		/* View asset info list - type, filesize, etc. */
 		dl {min-width: 300px;}
 		dd {margin-left: 150px; }
-		dt {float: left; min-width: 150px;}
+		dt {
+			float: left;
+			min-width: 150px;
+			font-weight: bold;
+		}
 		dd, dt {
 			margin-bottom: 1em;
 		}
@@ -35,6 +26,12 @@
 
 		.ui-tabs .ui-tabs-panel {
 			padding: 1.8em 1.4em;
+		}
+	}
+
+	&-manager {
+		.boom-tagmanager-asset-back {
+			display: none;
 		}
 	}
 
@@ -73,4 +70,23 @@
 
 #b-items-view-thumbs .ui-state-active {
 	background: #d6278e;
+}
+
+.ui-dialog {
+	& .b-items-box-header {
+		background: #000000;
+	}
+
+	/* Hide certain elements when the asset manager is opened in a dialog. */
+	& .b-dialog-hidden {
+		display: none;
+	}
+
+	#b-assets {
+		&-manager {
+			.boom-tagmanager-asset-back {
+				display: block;
+			}
+		}
+	}
 }

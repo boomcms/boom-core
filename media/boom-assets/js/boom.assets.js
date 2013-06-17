@@ -100,7 +100,7 @@ $.extend($.boom.assets,
 			},
 			onLoad: function(){
 
-				browser = $( '#boom-tagmanager' ).browser_asset();
+				browser = $( '#b-assets-manager' ).browser_asset();
 
 				$.when( browser.browser_asset( 'browse' ) )
 				.progress( function( rid ){
