@@ -21,4 +21,12 @@ class Boom_Controller_Cms_Tags_Asset extends Controller_Cms_Tags
 
 		$this->authorization('manage_assets');
 	}
-} // End Boom_Controller_Cms_Asset_Tags
+
+	public function action_list()
+	{
+		parent::action_list();
+
+		$message = (count($this->tags))? 'asset.hastags' : 'asset.notags';
+		$this->template->set('message', Kohana::message('boom', $message));
+	}
+}
