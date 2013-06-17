@@ -312,7 +312,7 @@ class Boom_Controller_Cms_Assets extends Boom_Controller
 		}
 
 		$this->asset
-			->remove_cache_files()
+			->delete_cache_files()
 			->set('last_modified', $_SERVER['REQUEST_TIME'])
 			->update();
 

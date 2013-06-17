@@ -88,6 +88,8 @@ class Boom_Model_Asset extends Model_Taggable
 	{
 		if ($this->deleted OR $force)
 		{
+			$this->delete_files();
+
 			// Asset is already marked as deleted, so delete it for real.
 			return parent::delete();
 		}
@@ -98,6 +100,33 @@ class Boom_Model_Asset extends Model_Taggable
 			return $this
 				->set('deleted', TRUE)
 				->update();
+		}
+	}
+
+	public function delete_cache_files()
+	{
+		foreach (glob($this->get_filename()."_*.cache") as $file)
+		{
+			unlink($file);
+		}
+
+		return $this;
+	}
+
+	public function delete_files()
+	{
+		$this
+			->delete_cache_files()
+			->delete_old_versions();
+
+		unlink($this->get_filename());
+	}
+
+	public function delete_old_versions()
+	{
+		foreach (glob($this->get_filename().".*.bak") as $file)
+		{
+			unlink($file);
 		}
 	}
 
@@ -206,19 +235,9 @@ class Boom_Model_Asset extends Model_Taggable
 		@rename($path, "{$path}.{$this->last_modified}.bak");
 		copy($filename, $path);
 
-		$this->remove_cache_files();
+		$this->delete_cache_files();
 
 		return $this->update();
-	}
-
-	public function remove_cache_files()
-	{
-		foreach (glob($this->get_filename()."_*.cache") as $file)
-		{
-			unlink($file);
-		}
-
-		return $this;
 	}
 
 	/**
