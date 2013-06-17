@@ -1,10 +1,8 @@
 <div id="b-tags">
-	<div>
-		<span class="ui-icon ui-icon-boom-tag" title="Tags"></span>
-		<? if (isset($message)): ?>
-			<span><?= $message ?></span>
-		 <? endif ?>
-	</div>
+	<h2>Existing tags</h2>
+	<? if (isset($message)): ?>
+		<span><?= $message ?></span>
+	 <? endif ?>
 
 	<ul class="b-tags-list">
 		<? foreach ($tags as $tag): ?>
@@ -14,9 +12,7 @@
 		<? endforeach; ?>
 	</ul>
 
-	<input class="b-filter-input" id="b-tags-add-name" />
-
-	<button id="b-tags-add" class="boom-button" data-icon="ui-icon-boom-add">
-			<?=__('Add')?> <?=__('tag')?>
-	</button>
+	<h2>Add tag</h2>
+	<p><?= Kohana::message('boom', 'tags.add') ?></p>
+	<input id="b-tags-add-name" />
 </div>

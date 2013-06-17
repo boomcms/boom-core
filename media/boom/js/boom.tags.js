@@ -63,18 +63,6 @@ $.widget( 'boom.tagger',
 	},
 
 	_bind : function(){
-		var self = this;
-
-		// The add tag input box is hidden when the modal window opens.
-		// Show it and give it focus when the add button is clicked.
-		this.element
-			.on('click', '#b-tags-add', function(){
-				self.element.find( '.b-filter-input' ).show().focus();
-			})
-			// Hide the add tag input box when it loses focus.
-			.on('blur', '.b-filter-input', function(){
-				$( this ).val('').hide();
-			});
 
 	},
 
@@ -182,7 +170,7 @@ $.widget( 'boom.tagger',
 
 		var
 			type = this.options.type,
-			add_input = this.element.find( '.b-filter-input' );
+			add_input = this.element.find( '#b-tags-add-name' );
 
 		var complete = new $.Deferred();
 		tags = ( tags ) ? tags : [];
@@ -342,15 +330,6 @@ $.widget( 'boom.tagger_deferred', $.boom.tagger,
 
 	_bind : function(){
 		var self = this;
-
-		this.element
-			.on('click', '#b-tags-add', function(){
-				self.element.find( '.b-filter-input' ).show().focus();
-			})
-			// Hide the add tag input box when it loses focus.
-			.on('blur', '.b-filter-input', function(){
-				$( this ).val('').hide();
-			});
 
 		// Build the UI for any existing tags.
 		for ( var i in this.options.tags ) {
