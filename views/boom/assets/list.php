@@ -40,9 +40,6 @@
 				<th>
 					<?=__('Uploaded by')?>
 				</th>
-				<th>
-					<?=__('Tags')?>
-				</th>
 			</tr>
 			<? foreach ($assets as $asset): ?>
 				<tr title='<?= $asset->description ?>'>
@@ -63,15 +60,6 @@
 					</td>
 					<td>
 						<?= $asset->uploader->name ?>
-					</td>
-					<td>
-						<span class='tags'>
-							<?
-								foreach($asset->tags->find_all() as $tag):
-									echo "<a rel=​'ajax' name='#tag/", $tag->pk(), "' href='#tag/", $tag->pk(), "'>", $tag->name, " <br /></a>";
-								endforeach
-							?>​
-						</span>
 					</td>
 				</tr>
 			<? endforeach; ?>
