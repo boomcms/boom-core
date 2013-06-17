@@ -1001,7 +1001,7 @@ $.extend($.boom,
 
 				ui = ui === undefined;
 
-				$.boom.page && $.boom.page.toolbar.maximise();
+				$.boom.page && $.boom.page.toolbar && $.boom.page.toolbar.maximise();
 
 
 				dialog
@@ -1067,7 +1067,7 @@ $.extend($.boom,
 
 								if ( $.boom.page && $( '.ui-dialog:visible' ).length == 0 ) {
 
-									$.boom.page.toolbar.minimise();
+									$.boom.page.toolbar && $.boom.page.toolbar.minimise();
 								}
 
 								return;
@@ -1207,7 +1207,7 @@ $.extend($.boom,
 
 			if ( $.boom.page && $( '.ui-dialog:visible' ).length == 0 ) {
 
-				$.boom.page.toolbar.minimise();
+				$.boom.page.toolbar && $.boom.page.toolbar.minimise();
 			}
 		},
 
