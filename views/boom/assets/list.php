@@ -24,6 +24,7 @@
 		<table width="100%">
 			<tr>
 				<th class="ui-helper-reset">
+					<input id="b-assets-toggleall" type="checkbox" title="Select all" />
 				</th>
 				<th class="ui-helper-center" align="center">
 					<?=__('Last edited')?>

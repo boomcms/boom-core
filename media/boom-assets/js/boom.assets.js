@@ -471,7 +471,7 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 					}
 				});
 
-			});
+			})
 
 		self.main_panel
 			.on( 'click', '.boom-tagmanager-asset-replace ', function( event ){
@@ -487,6 +487,13 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 						$.boom.history.refresh();
 					});
 
+			})
+			.on('change', '#b-assets-toggleall', function() {
+				var checked = $(this).is(':checked');
+
+				$('#b-items-view-list input[type=checkbox]').each(function() {
+					$(this).prop('checked', checked);
+				})
 			});
 
 		$.when( self.browse() )
