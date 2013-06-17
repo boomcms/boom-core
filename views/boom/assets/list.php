@@ -5,14 +5,7 @@
 				echo "<div class='boom-pagination ui-helper-left'>", $pagination, "</div>";
 			endif;
 		?>
-
-		<?
-			/*
-			Hello.
-			The two select boxes below originaly had class="boom-selectbox ui-helper-left".
-			This was removed on 2012/03/21 as the javascript broke it found items of this class.
-			*/
-		?>
+		
 		<select id="boom-tagmanager-sortby-select" class="ui-helper-left" style="width: 98px">
 			<option value="last_modified-desc" <? if ($sortby == 'last_modified-desc') echo "selected='selected'"; ?>>Most recent</option>
 			<option value="last_modified-asc" <? if ($sortby == 'last_modified-asc') echo "selected='selected'"; ?>>Oldest</option>
