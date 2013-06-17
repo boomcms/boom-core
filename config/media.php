@@ -7,6 +7,7 @@ return array(
 	),
 	'css' => array(
 		'boom.groups.css.less',
-		'boom.login.css.less'
+		'boom.login.css.less',
+		'boom.people.css.less',
 	)
 );
