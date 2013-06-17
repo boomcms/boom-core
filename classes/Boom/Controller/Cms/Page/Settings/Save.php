@@ -182,14 +182,18 @@ class Boom_Controller_Cms_Page_Settings_Save extends Controller_Cms_Page_Setting
 		// Log the action
 		$this->log("Updated visibility settings for page " . $this->page->version()->title . " (ID: " . $this->page->id . ")");
 
-		// Update the page settings.
-		$this->page
-			->values(array(
-				'visible_from'	=>	strtotime($post['visible_from']),
-				'visible_to'	=>	isset($post['visible_to'])? strtotime($post['visible_to']) : NULL,
-				'visible'		=>	$post['visible']
-			))
-			->update();
+		$this->page->set('visible', $this->request->post('visible'));
+
+		if ($this->page->visible)
+		{
+			$this->page
+				->values(array(
+					'visible_from'	=>	strtotime($this->request->post('visible_from')),
+					'visible_to'	=>	$this->request->post('visible_to')? strtotime($this->request->post('visible_to')) : NULL,
+				));
+		}
+
+		$this->page->update();
 
 		$this->response->body( (int) $this->page->is_visible());
 	}

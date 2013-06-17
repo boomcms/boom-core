@@ -1584,7 +1584,8 @@ $.widget( 'boom.page', $.boom.page, {
 							url,
 							$("#boom-form-pagesettings-visibility").serialize(),
 							"Page visibility settings saved."
-						).done(function(response) {
+						)
+						.done(function(response) {
 							var icons = {
 								1 : 'ui-icon-boom-visible',
 								0 : 'ui-icon-boom-invisible'
@@ -1625,6 +1626,23 @@ $.widget( 'boom.page', $.boom.page, {
 								$('#page-visible-to').blur();
 							}
 						});
+
+						$('#page-visible').on('change', function() {
+							switch( $( this ).val() ) {
+								case '1':
+									$( '#page-visible-from' ).removeAttr( 'disabled' );
+								break;
+								case '0':
+									$( '#page-visible-from' ).attr( 'disabled', 'disabled' );
+									$( '#page-visible-to' ).attr( 'disabled', 'disabled' );
+								break;
+							}
+						});
+
+						if ($('#page-visible').val() == '0') {
+							$( '#page-visible-from' ).attr( 'disabled', 'disabled' );
+							$( '#page-visible-to' ).attr( 'disabled', 'disabled' );
+						}
 					}
 				});
 			}
