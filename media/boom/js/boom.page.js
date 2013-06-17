@@ -1119,7 +1119,16 @@ $.widget( 'boom.page', $.boom.page, {
 							type: 'page',
 							id: $.boom.page.options.id
 						});
-					}
+					},
+					buttons: [
+						{
+							text: 'Close',
+							icons: { primary : 'ui-icon-boom-cancel' },
+							click: function( event ){
+								$.boom.dialog.destroy( this );
+							}
+						}
+					]
 				});
 			}
 		},
@@ -1175,7 +1184,7 @@ $.widget( 'boom.page', $.boom.page, {
 							}
 						},
 						{
-							text: 'Cancel',
+							text: 'Close',
 							icons: { primary : 'ui-icon-boom-cancel' },
 							click: function( event ){
 								$.boom.dialog.destroy( this );
