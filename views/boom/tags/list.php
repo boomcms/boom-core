@@ -1,5 +1,10 @@
 <div id="b-tags">
-	<span class="ui-icon ui-icon-boom-tag" title="Tags"></span>
+	<div>
+		<span class="ui-icon ui-icon-boom-tag" title="Tags"></span>
+		<? if (isset($message)): ?>
+			<span><?= $message ?></span>
+		 <? endif ?>
+	</div>
 
 	<ul class="b-tags-list">
 		<? foreach ($tags as $tag): ?>

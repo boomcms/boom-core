@@ -20,4 +20,12 @@ class Boom_Controller_Cms_Tags_Page extends Controller_Cms_Tags
 		// Before allowing viewing or editing of page tags check for that the current user has the 'edit_page' role for this page.
 		$this->authorization('edit_page', $this->model);
 	}
-} // End Boom_Controller_Cms_Page_Tags
+
+	public function action_list()
+	{
+		parent::action_list();
+
+		$message = (count($this->tags))? 'page.hastags' : 'page.notags';
+		$this->template->set('message', Kohana::message('boom', $message));
+	}
+}
