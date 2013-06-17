@@ -11,7 +11,7 @@
 			<input id="page-visible-from" name="visible_from" class="boom-input boom-datepicker" value="<?=date("d F Y h:m", $page->visible_from);?>" />
 		</label>
 
-		<label for="page-visible-to"><?=__('Visible until')?>
+		<label for="b-page-toggle-visible"><?=__('Visible until')?>
 			<input id="page-visible-to"
 				name="visible_to"
 				class="boom-input boom-datepicker"
@@ -19,6 +19,7 @@
 				<?=(!$page->visible_to) ? ' disabled="disabled"' : ''; ?>
 			/>
 		</label>
+
 		<input id="b-page-toggle-visible" type="checkbox" value="1" name='toggle_visible_to' class="ui-helper-right ui-helper-reset"<?=($page->visible_to) ? ' checked="checked"' : ''; ?>
 	</div>
 </form>
