@@ -186,7 +186,7 @@ class Boom_Model_Group extends ORM
 		if ($exclude !== NULL)
 		{
 			// Exclude these groups from the results.
-			$query->where('name', 'NOT IN', $exclude);
+			$query->where('id', 'NOT IN', $exclude);
 		}
 
 		// Run the query and return the results.
