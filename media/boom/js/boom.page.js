@@ -1259,7 +1259,7 @@ $.widget( 'boom.page', $.boom.page, {
 						add_url.done( function(){
 							// show a notifcation and refresh the URL list.
 							$.boom.growl.show('Url added.');
-							$( '#b-pagesettings-urls' )
+							$( '#b-page-settings-urls' )
 								.parent()
 								.load( '/cms/page/urls/list/' + $.boom.page.options.id, function(){
 									$(this).ui();

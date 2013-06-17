@@ -1,4 +1,4 @@
-<div id='b-pagesettings-urls' class="b-pagesettings">
+<div id='b-page-settings-urls' class="b-pagesettings">
 	<div>
 		<h2>URLs</h2>
 		<ul class="boom-tree">
