@@ -54,14 +54,16 @@
 						<?= __('Groups') ?>
 					</h3>
 				</div>
-				<ul class="boom-tree b-tags-tree  boom-tree-noborder">
-				<?
-					foreach ($groups as $id => $name):
-						echo "<li id='t", $id, "'><a rel='", $id, "' id='tag_" , $id , "' class='' href='#group/", $id;
-						echo "'>" , $name , "</a>\n";
-					endforeach;
-				?>
-				</ul>
+				<div class="boom-box ui-widget ui-corner-all ui-state-default">
+					<ul class="boom-tree b-tags-tree  boom-tree-noborder">
+					<?
+						foreach ($groups as $id => $name):
+							echo "<li id='t", $id, "'><a rel='", $id, "' id='tag_" , $id , "' class='' href='#group/", $id;
+							echo "'>" , $name , "</a>\n";
+						endforeach;
+					?>
+					</ul>
+				</div>
 			</div>
 		</div>
 	</div>
