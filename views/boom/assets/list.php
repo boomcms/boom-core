@@ -5,7 +5,7 @@
 				echo "<div class='boom-pagination ui-helper-left'>", $pagination, "</div>";
 			endif;
 		?>
-		
+
 		<select id="boom-tagmanager-sortby-select" class="ui-helper-left" style="width: 98px">
 			<option value="last_modified-desc" <? if ($sortby == 'last_modified-desc') echo "selected='selected'"; ?>>Most recent</option>
 			<option value="last_modified-asc" <? if ($sortby == 'last_modified-asc') echo "selected='selected'"; ?>>Oldest</option>
@@ -50,7 +50,7 @@
 						<input type="checkbox" class="b-items-select-checkbox ui-helper-reset" id="asset-list-<?=$asset->id?>" />
 					</td>
 					<td class="ui-helper-center" align="center">
-						<label for="asset-<?=$asset->id?>"><?=date('M-j-Y', $asset->last_modified)?></label>
+						<label for="asset-<?=$asset->id?>"><?=date('M j Y', $asset->last_modified)?></label>
 					</td>
 					<td>
 						<a href="#asset/<?=$asset->id?>"><img src="/media/boom/img/icons/16x16/icon_<?= $asset->type() ?>.gif" /> <?=$asset->title?></a>
@@ -59,7 +59,7 @@
 						<?= Text::bytes($asset->filesize) ?>
 					</td>
 					<td>
-						<?=date('M-j-Y', $asset->uploaded_time)?>
+						<?=date('M j Y', $asset->uploaded_time)?>
 					</td>
 					<td>
 						<?= $asset->uploader->name ?>
