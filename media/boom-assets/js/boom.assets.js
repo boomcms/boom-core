@@ -494,6 +494,8 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 				$('#b-items-view-list input[type=checkbox]').each(function() {
 					$(this).prop('checked', checked);
 				})
+
+				$('.b-items-select-checkbox').change();
 			});
 
 		$.when( self.browse() )
