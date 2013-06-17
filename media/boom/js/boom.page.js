@@ -14,13 +14,7 @@ $.widget( 'boom.page', {
 	default config
 	@property options
 	*/
-	options : {
-		/**
-		@type number
-		@default 0
-		*/
-		ajaxed: 0
-	},
+	options : {},
 
 	/**
 	@property save_button
