@@ -410,7 +410,7 @@ $.widget('ui.chunkLinkset', $.ui.chunk,
 	_bindEvents : function(){
 
 		var self = this;
-		$.boom.util.page_tree( this.dialog.find('.boom-tree') )
+		$.boom.util.page_tree( this.dialog.find('.boom-chunk-linkset-internal-links .boom-tree') )
 			.progress( function( page ) {
 				var anchor =
 					$( '<a>')
