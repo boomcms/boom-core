@@ -25,17 +25,14 @@
 			</div>
 
 			<div id="b-assets-view-attributes<?=$asset->id;?>" class="ui-helper-left">
-				<label for="title"><?=__('Title')?>
-					<input type="text" id="title" name="title" class="boom-input" value="<?= $asset->title?>" />
-				</label>
+				<label for="title"><?=__('Title')?></label>
+				<input type="text" id="title" name="title" class="boom-input" value="<?= $asset->title?>" />
 
-				<label for="description"><?=__('Description')?>
-					<textarea id="description" name="description" class="boom-textarea"><?= $asset->description?></textarea>
-				</label>
+				<label for="description"><?=__('Description')?></label>
+				<textarea id="description" name="description" class="boom-textarea"><?= $asset->description?></textarea>
 
-				<label for="visible_from">Visible from
-					<input type="text" id="visible_from" name="visible_from" class="boom-datepicker boom-input" value="<?= date('d F Y h:m', $asset->visible_from);?>" />
-				</label>
+				<label for="visible_from">Visible from</label>
+				<input type="text" id="visible_from" name="visible_from" class="boom-datepicker boom-input" value="<?= date('d F Y h:m', $asset->visible_from);?>" />
 
 				<? if ($asset->type != Boom_Asset::IMAGE): ?>
 					<label for="thumbnail">Thumbnail asset ID

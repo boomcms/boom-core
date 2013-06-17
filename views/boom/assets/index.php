@@ -22,9 +22,6 @@
 						<?=__('Upload files')?>
 					</button>
 				</span>
-				<button id="boom-tagmanager-save-all" class="boom-button ui-button-text-icon" data-icon="ui-icon-boom-accept">
-					<?=__('Save all')?>
-				</button>
 			</div>
 
 			<div id="b-items-multiactons" class="ui-widget-content">

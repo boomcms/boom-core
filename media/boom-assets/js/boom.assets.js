@@ -144,17 +144,6 @@ $.extend($.boom.asset, $.boom.item,
 			id: this.rid
 		});
 
-		if ( rids.length <= 1 ) {
-
-			$( '#boom-tagmanager-save-all', context ).hide();
-		} else {
-
-			$( '#boom-tagmanager-save-all', context ).unbind( 'click' ).click(function(){
-
-				$( '.boom-tagmanager-asset-save' ).trigger( 'save' );
-			});
-		}
-
 		$('.boom-tabs', context ).tabs('option', 'active', 1);
 
 		$.boom.dialog.bind({
