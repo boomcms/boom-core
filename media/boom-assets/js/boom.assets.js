@@ -391,7 +391,7 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 
 				$.boom.log( 'asset delete selected' );
 
-				var msg = 'Are you sure you want to send the selected assets to the rubbish bin?';
+				var msg = 'Are you sure you want to delete the selected assets?';
 
 				$.boom.dialog.confirm(
 					'Confirm deletion',
