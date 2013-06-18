@@ -13,6 +13,7 @@ return array(
 		'boom.config.js',
 		'boom.core.js',
 		'boom.loader.js',
+		'boom.dialog.js',
 	),
 	'js' => array(
 		'boom.page.js',
