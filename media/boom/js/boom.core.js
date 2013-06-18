@@ -23,8 +23,6 @@ $.extend({
 
 			$.extend(this, { config: window.boomConfig });
 
-			$.boom.isMobile = $.boom.util.isMobileDevice();
-
 			// reference boom from the site window too.
 			top.$.boom = $.boom;
 		},
@@ -559,22 +557,6 @@ $.extend($.boom,
 			$.boom.log('Cache images : (' + images.length + ' total)');
 
 			return this;
-		},
-
-		/** @function */
-		isMobileDevice : function(){
-
-			var mobile = false, uagent = window.navigator.userAgent.toLowerCase();
-			var uagentStrings = [ 'iphone', 'ipod', 'android', 'symbian', 'series60', 'series70', 'series80', 'series90', 'windows ce', 'iemobile', 'wm5 pie', 'blackberry', 'vnd.rim', 'palm', 'webos', 'blazer', 'xiino', 'mobile', 'pda' ];
-
-			$.each(uagentStrings, function(){
-				if (new RegExp(this, 'i').test(uagent)){
-					mobile = true;
-					return false; // break
-				}
-			});
-
-			return mobile;
 		},
 
 		/** @function */
