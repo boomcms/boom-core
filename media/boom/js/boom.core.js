@@ -559,45 +559,6 @@ $.extend($.boom,
 			return this;
 		},
 
-		/** @function */
-		isLoaded: function(namespace, classes, callback){
-
-			if (!namespace) return;
-
-			var timers = [];
-
-			$.each(classes, function(i, val){
-
-				if ( !namespace[val] ) {
-
-					timers[i] = setInterval(function(){
-
-						if ( namespace[val] ) {
-
-							clearInterval( timers[i] );
-
-							timers.splice(i, 1);
-						}
-					}, 100);
-				}
-			});
-
-			if (timers.length) {
-
-				var check = setInterval(function(){
-
-					if ( !timers.length ){
-
-						clearInterval( check );
-
-						callback();
-					}
-
-				}, 100);
-
-			} else callback();
-		},
-
 		/**
 		Create a tree widget for selecting pages.
 		@function
