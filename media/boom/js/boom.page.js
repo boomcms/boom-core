@@ -836,16 +836,11 @@ $.widget( 'boom.page', $.boom.page, {
 			var self = this;
 			var i = 0;
 
-			var settings = [
-				'navigation',
-				'urls',
-				'search',
-				'tags',
-				'childsettings',
-				'adminsettings'
-				];
-
-
+			var settings = $('button.b-page-settings')
+				.map(function() {
+					return $(this).attr('data-b-page-setting');
+				})
+				.get();
 
 			$('#boom-page-settings-menu').splitbutton({
 				items: self._build_menu( settings ),
