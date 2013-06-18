@@ -663,17 +663,6 @@ $.extend($.boom,
 
 				return (prefix + id);
 			},
-
-			/** @function */
-			getDocHeight : function(window){
-				window = window || window;
-				return Math.max(
-					$(window.document).height(),
-					$(window).height(),
-					/* For opera: */
-					window.document.documentElement.clientHeight
-				);
-			}
 		},
 
 		/**
