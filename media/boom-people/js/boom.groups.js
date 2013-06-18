@@ -67,7 +67,7 @@ $.widget( 'boom.group_editor',
 
 		var self = this;
 
-		var url = self.options.base_url + 'add/';
+		var url = self.options.base_url + 'add';
 
 		var dialog = $.boom.dialog.open({
 			url: url,
@@ -76,9 +76,11 @@ $.widget( 'boom.group_editor',
 				$.post(url, {name: $('#b-people-group-name').val()} )
 				.done( function(response){
 
-					$.boom.growl.show('Group successfully saved.');
+					$.boom.growl.show('Group successfully saved, reloading.');
 
-					top.location.reload();
+					window.setTimeout(function() {
+						top.location.reload();
+					}, 300);
 				});
 			}
 		});
