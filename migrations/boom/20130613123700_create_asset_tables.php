@@ -55,6 +55,19 @@ class Migration_Boom_20130613123700 extends Minion_Migration_Base
 			) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 		");
 
+		$db->query(NULL, "
+			CREATE TABLE `chunk_assets` (
+			  `asset_id` smallint(5) unsigned DEFAULT NULL,
+			  `caption` varchar(100) DEFAULT NULL,
+			  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+			  `title` varchar(20) DEFAULT NULL,
+			  `url` varchar(255) DEFAULT NULL,
+			  `slotname` varchar(50) DEFAULT NULL,
+			  PRIMARY KEY (`id`),
+			  KEY `asset_id` (`asset_id`)
+			) ENGINE=InnoDB AUTO_INCREMENT=4810 DEFAULT CHARSET=utf8;
+		");
+
 		$db->query(NULL, "insert ignore into roles (name, description) values ('manage_assets', 'View the asset manager')");
 	}
 
@@ -67,6 +80,7 @@ class Migration_Boom_20130613123700 extends Minion_Migration_Base
 	{
 		$db->query(NULL, "drop table assets");
 		$db->query(NULL, "drop table assets_tags");
+		$db->query(NULL, "drop table chunk_assets");
 		$db->query(NULL, "delete from roles where name = 'manage_assets'");
 	}
 }
