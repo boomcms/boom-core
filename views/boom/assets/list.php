@@ -51,7 +51,7 @@
 						<label for="asset-<?=$asset->id?>"><?=date('M j Y', $asset->last_modified)?></label>
 					</td>
 					<td>
-						<a href="#asset/<?=$asset->id?>"><img src="/media/boom/img/icons/16x16/icon_<?= $asset->type() ?>.gif" /> <?=$asset->title?></a>
+						<a href="#asset/<?=$asset->id?>"><img src="/media/boom/img/icons/16x16/icon_<?= strtolower($asset->type()) ?>.gif" /> <?=$asset->title?></a>
 					</td>
 					<td>
 						<?= Text::bytes($asset->filesize) ?>
