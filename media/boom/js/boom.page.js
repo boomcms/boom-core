@@ -335,17 +335,6 @@ $.widget( 'boom.page', {
 		.always( function(){
 			$.boom.loader.hide();
 		});
-
-		/*
-		/// get the child page order sequences from the left nav
-		sequence = 1;
-		$("#navsort > li, .navsort-xy > li").each(function(){
-			if (this.id) {
-				dataString += "&sequence_" + this.id.replace(/^p/, '') + "=" + sequence;
-				sequence++;
-			}
-		});
-		*/
 	}
 } );
 
