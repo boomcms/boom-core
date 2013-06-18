@@ -12,6 +12,7 @@ return array(
 		'boom.plugins.js',
 		'boom.config.js',
 		'boom.core.js',
+		'boom.loader.js',
 	),
 	'js' => array(
 		'boom.page.js',
