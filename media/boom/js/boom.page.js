@@ -86,13 +86,10 @@ $.widget( 'boom.page', {
 
 			$.boom.log('Page registered for editing: ' + self.options.rid);
 
-			$.getScript( '/media/boom/js/boom.' + $.boom.config.editor.name + '.js', function(){
-				self.loadPageEditor()
-					.done( function(){
-						self.editor.init();
-					});
-			});
-
+			self.loadPageEditor()
+				.done( function(){
+					self.editor.init();
+				});
 		});
 	},
 
