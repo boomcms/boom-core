@@ -5,7 +5,7 @@
 	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 	<meta http-equiv="Content-Style-Type" content="text/css" />
 	<meta name="robots" content="noindex, nofollow" />
-	<?= Assets::factory('login_css')->css('cms.css.less') ?>
+	<?= Boom::include_css() ?>
 </head>
 <body>
 	<div id="b-login-form">
@@ -117,14 +117,7 @@
 		</div>
 	</div>
 
-	<?= Assets::factory('boom_login')
-		->js('boom.helpers.js')
-		->js('jquery.js')
-		->js('jquery.ui.js')
-		->js('jquery.plugins.js')
-		->js('boom.plugins.js')
-		->js('boom.config.js')
-		->js('boom.core.js'); ?>
+	<?= Boom::include_js() ?>
 	<script type="text/javascript">
 		//<![CDATA[
 		(function($){
