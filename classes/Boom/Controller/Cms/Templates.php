@@ -51,13 +51,11 @@ class Boom_Controller_Cms_Templates extends Boom_Controller
 		}
 
 		// Find any templates which don't exist in the database.
-		foreach ($filenames as $filename)
+		foreach ($filenames as & $filename)
 		{
 			// Does a template with the specified filename already exist?
 			// i.e. has the template already been added to the database.
-			$template = ORM::factory('Template')
-				->where('filename', '=', $filename)
-				->find();
+			$template = new Model_Template(array('filename' => $filename));
 
 			if ( ! $template->loaded())
 			{
