@@ -1,6 +1,6 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-class Migration_Boom_20130613123700 extends Minion_Migration_Base
+class Migration_Boom_20130624104600 extends Minion_Migration_Base
 {
 	public function up(Kohana_Database $db)
 	{
