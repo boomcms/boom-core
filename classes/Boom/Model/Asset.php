@@ -44,6 +44,7 @@ class Boom_Model_Asset extends Model_Taggable
 		'uploaded_time'	=>	'',
 		'last_modified'		=>	'',
 		'thumbnail_asset_id'	=>	'',
+		'copyright'			=>	'',
 	);
 
 	protected $_table_name = 'assets';

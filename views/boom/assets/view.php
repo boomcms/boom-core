@@ -26,10 +26,13 @@
 
 			<div id="b-assets-view-attributes<?=$asset->id;?>" class="ui-helper-left">
 				<label for="title"><?=__('Title')?></label>
-				<input type="text" id="title" name="title" class="boom-input" value="<?= $asset->title?>" />
+				<input type="text" id="title" name="title" class="boom-input" value="<?= $asset->title ?>" />
 
 				<label for="description"><?=__('Description')?></label>
-				<textarea id="description" name="description" class="boom-textarea"><?= $asset->description?></textarea>
+				<textarea id="description" name="description" class="boom-textarea"><?= $asset->description ?></textarea>
+
+				<label for="copyright"><?=__('Copyright')?></label>
+				<textarea id="copyright" name="copyright" class="boom-textarea"><?= $asset->copyright ?></textarea>
 
 				<label for="visible_from">Visible from</label>
 				<input type="text" id="visible_from" name="visible_from" class="boom-datepicker boom-input" value="<?= date('d F Y h:m', $asset->visible_from);?>" />

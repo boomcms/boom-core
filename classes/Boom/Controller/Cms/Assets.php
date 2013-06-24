@@ -334,7 +334,7 @@ class Boom_Controller_Cms_Assets extends Boom_Controller
 
 		// Update the asset's details.
 		$this->asset
-			->values($this->request->post(), array('title','description','visible_from', 'thumbnail_asset_id'))
+			->values($this->request->post(), array('title','description','visible_from', 'thumbnail_asset_id', 'copyright'))
 			->update();
 	}
 
