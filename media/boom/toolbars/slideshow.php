@@ -5,4 +5,6 @@
 	<button class="insert" type="button" title="Insert slide"><span class="b-add"></span></button>
 	<button class="delete" type="button" title="Delete current slide"><span class="b-delete"></span></button>
 	<button class="sort" type="button" title="Sort slides"><span class="b-sort"></span></button>
+	<button class="prev" type="button" title="Previous slide"><span class="b-prev"></span></button>
+	<button class="next" type="button" title="Next slide"><span class="b-next"></span></button>
 </div>

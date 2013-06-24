@@ -1221,8 +1221,17 @@ $.widget('ui.chunkSlideshow', $.ui.chunk,
 						self.edited = true;
 						$.boom.growl.show('Link updated');
 					});
-			});
+			})
+			.on('click', 'button.prev', function(event) {
+				var slider = self.options.slider;
 
+				slider.flexAnimate(self.options.slider.getTarget('prev'));
+			})
+			.on('click', 'button.next', function(event) {
+				var slider = self.options.slider;
+
+				slider.flexAnimate(self.options.slider.getTarget('next'));
+			});
 	},
 
 	_edit_link : function($slide){
