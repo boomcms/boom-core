@@ -412,6 +412,20 @@ class Boom_Model_Page extends Model_Taggable
 		return ($query->count() == 1);
 	}
 
+	public static function id_by_internal_name($name)
+	{
+		$results = DB::select('id')
+			->from('pages')
+			->where('internal_name', '=', $name)
+			->execute()
+			->as_array();
+
+		if (isset($results[0]))
+		{
+			return $results[0]['id'];
+		}
+	}
+
 	public function is_visible()
 	{
 		return ($this->visible AND $this->visible_from <= Editor::instance()->live_time() AND ($this->visible_to >= Editor::instance()->live_time() OR $this->visible_to == 0));
