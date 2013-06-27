@@ -684,6 +684,16 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 		var self = this;
 
 		self.asset = this._get_asset_details();
+console.log(self.asset);
+
+		self.element.find('a')
+			.on('click', function(event) {
+				event.preventDefault();
+
+				self._edit_asset();
+
+				return false;
+			});
 
 		switch ( self.element[0].nodeName ){
 			case 'IMG':
@@ -846,7 +856,7 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 	*/
 	_get_asset_details: function(){
 
-		var asset_id = 0;
+		var asset_id = this.element.attr('data-boom-target');
 		var url = this.element.find( '.asset-link' ).attr( 'href' );
 		var caption = this.element.find( '.asset-caption' );
 		var element = this.element.find( 'img' );
@@ -855,21 +865,28 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 		switch( this.element[0].nodeName ){
 
 			case 'A':
-				url = this.element.attr( 'href' );
-				if( img_src ) asset_id = img_src.match( /asset\/(thumb|view)\/([0-9]+)/ );
-				if ( asset_id != null && asset_id.length ) asset_id = asset_id[ 2 ];
+				if ( ! url) {
+					url = this.element.attr( 'href' );
+				}
+				if( ! asset_id && img_src ) {
+					asset_id = img_src.match( /asset\/(thumb|view)\/([0-9]+)/ );
+					if ( asset_id != null && asset_id.length ) asset_id = asset_id[ 2 ];
+				}
 			break;
 
 			case 'IMG':
 				element = this.element;
-				asset_id = element[0].src.match( /asset\/(thumb|view)\/([0-9]+)/ );
-				if ( asset_id != null && asset_id.length ) asset_id = asset_id[ 2 ];
-				url = '';
+				if ( ! asset_id) {
+					asset_id = element[0].src.match( /asset\/(thumb|view)\/([0-9]+)/ );
+					if ( asset_id != null && asset_id.length ) asset_id = asset_id[ 2 ];
+				}
 			break;
 
 			default:
-				if( img_src ) asset_id = img_src.match( /asset\/(thumb|view)\/([0-9]+)/ );
-				if ( asset_id != null && asset_id.length ) asset_id = asset_id[ 2 ];
+				if( ! asset_id && img_src ) {
+					asset_id = img_src.match( /asset\/(thumb|view)\/([0-9]+)/ );
+					if ( asset_id != null && asset_id.length ) asset_id = asset_id[ 2 ];
+				}
 			break;
 		}
 
