@@ -76,16 +76,7 @@ class Boom_Model_Tag extends ORM
 	{
 		$name = preg_replace('|.*/|', '', $name);
 
-		$slug = $original = URL::title($name);
-		$i = 0;
-
-		while (ORM::factory('tag', array('slug_short' => $slug))->loaded())
-		{
-			$i++;
-			$slug = "$original$i";
-		}
-
-		return $slug;
+		return URL::title($name);
 	}
 
 	/**
