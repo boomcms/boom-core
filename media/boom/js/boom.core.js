@@ -600,6 +600,7 @@ $.extend($.boom,
 					complete.notify( link );
 				},
 				onToggle: function( page_id ){
+					$.boom.loader.show();
 
 					var list_ready = $.Deferred();
 					var children = $.ajax( {
@@ -627,8 +628,9 @@ $.extend($.boom,
 						var parent_id = $( 'input[name=parent_id]' ).val();
 						children.find( '#page_' + parent_id ).addClass( 'ui-state-active' );
 
-
 						list_ready.resolve( { childList: children } );
+
+						$.boom.loader.hide();
 					});
 
 					return list_ready;
