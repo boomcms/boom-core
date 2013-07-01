@@ -49,7 +49,7 @@ class Boom_Controller_Cms_Assets_Upload extends Controller_Cms_Assets
 			// Loop through the files uploaded under this input name.
 			foreach ( (array) $files['tmp_name'] as $i => $filename)
 			{
-				if (in_array($files['type'][$i], Boom_Asset::$allowed_types))
+				if (Boom_Asset::is_supported($files['type'][$i]))
 				{
 					// Set the common values.
 					$this->asset->values($common_values, array_keys($common_values));
