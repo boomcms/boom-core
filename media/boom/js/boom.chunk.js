@@ -683,39 +683,20 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 	_init : function() {
 		var self = this;
 
+		self.elements = this._get_elements();
 		self.asset = this._get_asset_details();
-console.log(self.asset);
 
-		self.element.find('a')
-			.on('click', function(event) {
-				event.preventDefault();
+		console.log(self.elements);
 
-				self._edit_asset();
-
-				return false;
-			});
-
-		switch ( self.element[0].nodeName ){
-			case 'IMG':
-				this.originals = self.asset.element.clone( true );
-				$.ui.chunk.prototype._init.call( self );
-				break;
-			case 'A':
-				if (self.element[0].hasAttribute('data-boom-target'))
-				{
-					this.originals = self.asset.element.clone( true );
-					$.ui.chunk.prototype._init.call( self );
-					break;
-				}
-
-			default:
-				this.originals = self.element.children().clone( true );
-				this._build_ui()
-					.done( function(){
-						$.ui.chunk.prototype._init.call( self );
-					});
-
-				break;
+		this.originals = this.element.children().clone(true);
+		
+		if (self.elements.caption.length || self.elements.link.length) {
+			this._build_ui()
+				.done(function() {
+					$.ui.chunk.prototype._init.call(self);
+				});
+		} else {
+			self._edit_asset(self.elements.asset);
 		}
 	},
 
@@ -744,11 +725,12 @@ console.log(self.asset);
 
 		$.boom.page.toolbar.show();
 
-		this.element
-			.find( '.asset-caption' )
+		this.elements
+			.caption
 			.removeAttr( 'contentEditable style' )
 			.end()
 			.off( 'focus mouseover' );
+
 		top.$( 'body' )
 			.find( 'div.toolbar' )
 			.remove();
@@ -777,25 +759,12 @@ console.log(self.asset);
 		.pipe( function( rid ){
 
 			self.asset.asset_id = rid;
-
-			if (self.asset.url && ! self.asset.url.match( /asset\/(thumb|view)\/([0-9]+)/ ))
-			{
-				return $.boom.links.picker( {
-					page_rid: $.boom.page.options.id,
-					title: 'Add a link',
-					link: {
-						url: self.asset.url,
-						rid: -1,
-						title: ''
-					}
-				});
-			}
 		})
-		.done( function( link ){
-			self.insert( self.asset.asset_id, link );
+		.done( function(){
+			self.insert();
 		})
 		.fail( function() {
-			var data = { asset_id : 0, link : self.asset.url, caption: self.asset.description } ;
+			var data = { asset_id : 0, link : self.asset.url, caption: self.asset.caption } ;
 			self.asset.asset_id = 0;
 			self._remove( data );
 		})
@@ -852,50 +821,50 @@ console.log(self.asset);
 	},
 
 	/**
+	 @function
+	 */
+	 _get_elements: function() {
+		var asset_id = this.element.attr('data-boom-target');
+		var elements = {};
+
+		var img = this.element.find('img');
+		var a = this.element.find('a');
+
+		var regExp = new RegExp("asset\/(thumb|view)\/" + asset_id);
+
+		elements.asset = this.element.find('.asset-target');
+		elements.link = this.element.find('.asset-link');
+		elements.caption = this.element.find('.asset-caption');
+
+		if (! elements.asset.length) {
+			if (img.length && regExp.test(img.attr('src'))) {
+				elements.asset = img;
+			}
+			else if (a.length && regExp.test(a.attr('href'))) {
+				elements.asset = a;
+			}
+
+			if ( ! elements.asset.length) {
+				elements.asset = this.element;
+			}
+		}
+
+		if ( ! elements.link.length && a.length && elements.asset != a && a.attr('href') && a.attr('href') != '#' && ! regExp.test(a.attr('href'))) {
+			elements.link = a;
+		}
+
+		return elements;
+	 },
+
+	/**
 	@function
 	*/
 	_get_asset_details: function(){
-
-		var asset_id = this.element.attr('data-boom-target');
-		var url = this.element.find( '.asset-link' ).attr( 'href' );
-		var caption = this.element.find( '.asset-caption' );
-		var element = this.element.find( 'img' );
-		var img_src = element.attr( 'src' );
-
-		switch( this.element[0].nodeName ){
-
-			case 'A':
-				if ( ! url) {
-					url = this.element.attr( 'href' );
-				}
-				if( ! asset_id && img_src ) {
-					asset_id = img_src.match( /asset\/(thumb|view)\/([0-9]+)/ );
-					if ( asset_id != null && asset_id.length ) asset_id = asset_id[ 2 ];
-				}
-			break;
-
-			case 'IMG':
-				element = this.element;
-				if ( ! asset_id) {
-					asset_id = element[0].src.match( /asset\/(thumb|view)\/([0-9]+)/ );
-					if ( asset_id != null && asset_id.length ) asset_id = asset_id[ 2 ];
-				}
-			break;
-
-			default:
-				if( ! asset_id && img_src ) {
-					asset_id = img_src.match( /asset\/(thumb|view)\/([0-9]+)/ );
-					if ( asset_id != null && asset_id.length ) asset_id = asset_id[ 2 ];
-				}
-			break;
-		}
-
 		var asset = {
-			asset_id : asset_id,
+			asset_id : this.element.attr('data-boom-target'),
 			title : null,
-			description : caption.text(),
-			url : url,
-			element: element
+			caption : this.elements.caption.text(),
+			url : this.elements.link.attr('href'),
 		};
 
 		return asset;
@@ -916,22 +885,12 @@ console.log(self.asset);
 				'Cancel changes to this asset?'
 			)
 			.done( function(){
-
-				switch ( self.element[0].nodeName ){
-					case 'IMG':
-						self.element.attr( 'src', self.originals.attr( 'src' ) );
-						self.destroy();
-					break;
-
-					default:
-						self.element
-							.children()
-							.remove()
-							.end()
-							.append( self.originals );
-						self.destroy();
-					break;
-				}
+				self.element
+					.children()
+					.remove()
+					.end()
+					.append( self.originals );
+				self.destroy();
 			});
 
 		} else {
@@ -945,44 +904,44 @@ console.log(self.asset);
 	edit: function(){
 
 		var self = this;
-		var caption = this.element.find( '.asset-caption' );
 
 		$.boom.log('Asset chunk slot edit ' + self.asset.asset_id);
 
-		if ( caption.length > 0 ) {
-
-			this.element
-				.on( 'click', function( event ) {
-					event.stopPropagation();
-					event.preventDefault();
-				})
-				.on( 'click', 'a', function( event ) {
-					event.preventDefault();
-					return false;
-				})
-				.on( 'click', 'img', function( event ) {
-
-					self._edit_asset( self.asset.element );
-
-				})
-				.find( '.asset-caption' )
-				.each( function(){
-					self
-						._edit_caption( $( this ) )
-						.done( function(){
-							self.asset.description = self.element.find( '.asset-caption' ).text();
-							self.edited = true;
-						});
-				});
-		} else {
-
-			self._edit_asset( self.asset.element )
-				.done( function(){
-					self._save_slot();
-					self.destroy();
-				});
-
+		if (self.elements.caption.length) {
+			self.elements.caption.each( function() {
+				self
+					._edit_caption( $( this ) )
+					.done( function(){
+						self.asset.caption = self.element.find( '.asset-caption' ).text();
+						self.edited = true;
+					});
+			});
 		}
+
+		self.elements.asset
+			.on( 'click', function(event) {
+				event.preventDefault();
+
+				self._edit_asset(self.elements.asset);
+				return false;
+			});
+
+		if (self.elements.link.length) {
+			self.elements.link
+				.on( 'click', function(event) {
+					event.preventDefault();
+
+					self._edit_link();
+					return false;
+				});
+		}
+
+		this.element.on('click', function(event) {
+			event.preventDefault();
+
+			self._edit_asset(self.elements.asset);
+			return false;
+		});
 
 		top.$( 'div.toolbar' )
 			.on( 'click', 'button.cancel', function(){
@@ -991,31 +950,44 @@ console.log(self.asset);
 			.on( 'click', 'button.save', function(){
 				self._save_slot();
 				self.destroy();
+			})
+			.on( 'click', 'button.link', function() {
+				self._edit_link();
+			})
+			.on( 'click', 'button.asset', function() {
+				self._edit_asset(self.elements.asset);
 			});
+	},
+
+	_edit_link: function() {
+		var self = this;
+		
+		return $.boom.links.picker( {
+			title: 'Add a link',
+			link: {
+				url: (self.asset.url)? self.asset.url : '',
+				rid: -1,
+				title: ''
+			}
+		})
+		.pipe(function(new_link) {
+			self.asset.url = new_link.url;
+		})
+		.done(function() {
+			self.insert();
+		});
 	},
 
 	/**
 	Insert selected asset into the page
-	@param {Int} rid Asset RID
 	*/
-	insert: function(rid, link) {
-		$.boom.log( 'inserting asset' + rid );
-
+	insert: function() {
 		var self = this;
-		var caption = this.element.find( '.asset-caption' );
-		link = ( link ) ? link : { url : null };
-		self.asset = $.extend( self.asset, {
-			asset_id : rid,
-			title : null,
-			description : caption.text(),
-			url : link.url
-		});
 
+		$.boom.log( 'inserting asset' + self.asset.asset_id );
 		$.boom.loader.show();
 
-		var data = { asset_id : rid, link : link.url, caption: caption.text() } ;
-
-		self._preview( data )
+		self._preview( self.getData() )
 		.done( function( data ){
 
 			$.boom.loader.hide();
@@ -1024,8 +996,15 @@ console.log(self.asset);
 				var new_asset = $('<div>').append( data ).find( 'img' );
 				self.edited = true;
 
-				self.asset.element
-					.attr( 'src', new_asset.attr( 'src' ) );
+				if (self.elements.asset.is('a')) {
+					self.elements.asset.attr('href', new_asset.attr('src'));
+				} else {
+					self.elements.asset.attr('src', new_asset.attr('src'));
+				}
+
+				if (self.elements.link.length && self.asset.url) {
+					self.elements.link.attr('href', self.asset.url);
+				}
 			}
 			else
 			{
@@ -1053,8 +1032,8 @@ console.log(self.asset);
 			return {
 				asset_id : rid,
 				title : null,
-				caption : this.asset.description,
-				link : this.asset.url
+				caption : this.asset.caption,
+				url : this.asset.url
 			};
 	},
 

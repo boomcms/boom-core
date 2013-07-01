@@ -15,11 +15,7 @@ class Boom_Controller_Cms_Chunk_Asset extends Boom_Controller_Cms_Chunk
 		$data = $this->request->post();
 		
 		$model = ORM::factory('Chunk_Asset')
-			->values(array(
-				'asset_id'	=>	$data['data']['asset_id'],
-				'link'		=>	$data['data']['link'],
-				'caption'	=>	$data['data']['caption'],
-			));
+			->values($data['data'], array('asset_id', 'url', 'caption'));
 
 		$chunk = new Chunk_Asset($this->page, $model, $data['slotname']);
 		$chunk->template($data['template']);
