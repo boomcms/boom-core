@@ -578,8 +578,16 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 				uploaded.resolve( data );
 
 			},
-			fail: function( e, data ){
-				$( '#upload-advanced span.message' ).text( "There was an error uploading your file." );
+		   fail: function(e, data) {
+				message = "There was an error uploading your file";
+				
+			   if (data.jqXHR.responseText) {
+				   message = message + ': ' + data.jqXHR.responseText;
+			   }
+
+			   message = message + '.';
+
+				$( '#upload-advanced span.message' ).text( message );
 			},
 			always: function( e, data ){
 				$.boom.log( 'file upload finished' );

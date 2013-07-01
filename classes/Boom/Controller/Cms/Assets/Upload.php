@@ -68,6 +68,14 @@ class Boom_Controller_Cms_Assets_Upload extends Controller_Cms_Assets
 					// This way we don't have to instantiate an asset model for each loop iteration.
 					$this->asset->clear();
 				}
+				else
+				{
+					$this->response
+						->status(500)
+						->body("Asset is of an unsuported type: " . $files['type'][$i]);
+
+					return;
+				}
 			}
 
 			// Give an array of IDs for the new assets in the response body.
