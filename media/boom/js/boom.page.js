@@ -162,7 +162,7 @@ $.widget( 'boom.page', {
 		$('#b-page-addpage').click(function(){
 			$.boom.loader.show();
 
-			$.post('/cms/page/add/' + self.options.id, function(response){
+			$.post('/cms/page/add/' + self.options.id, {csrf : $('#b-csrf').val()}, function(response){
 				$.boom.loader.hide();
 
 				if ( new RegExp('^' + "\/").test( response ) ) {

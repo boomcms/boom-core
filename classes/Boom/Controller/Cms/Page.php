@@ -48,6 +48,11 @@ class Boom_Controller_Cms_Page extends Boom_Controller
 	 */
 	public function action_add()
 	{
+		if ( ! Security::check($this->request->post('csrf')))
+		{
+			throw new HTTP_Exception_500;
+		}
+
 		// Get the parent page and template of the new page from the POST data.
 		$parent_id = $this->page->id;
 		$template_id = $this->request->post('template_id');
