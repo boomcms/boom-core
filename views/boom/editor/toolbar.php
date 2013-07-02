@@ -86,9 +86,6 @@
 					<?= __('Settings') ?>
 				</button>
 			</span>
-			<button id="boom-page-history" class="ui-button boom-button" data-icon="ui-icon-boom-history">
-				<?= __('History') ?>
-			</button>
 			<? if (($page->was_created_by($person) OR $auth->logged_in('delete_page', $page)) AND ! $page->mptt->is_root()): ?>
 				<button class="ui-button boom-button" id="b-page-delete" data-icon="ui-icon-boom-delete">
 					<?= __('Delete') ?>
