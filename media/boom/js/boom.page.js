@@ -139,9 +139,6 @@ $.widget( 'boom.page', {
 			"Save and publish" : function(){
 				self.save(null, {'publish' : 1});
 			},
-			"Save and request approval" : function(){
-				self.save();
-			}
 		};
 
 		this.cancel_button.on( 'click', function(){
