@@ -202,7 +202,7 @@ $.widget( 'boom.page', {
 		$( '#boom-page-editlive' ).on( 'click', function( event ){
 			$.boom.dialog.confirm(
 				'Edit live',
-				'Stash changes and edit the live page?'
+				'Discard changes and edit the live page?'
 			)
 			.done( function(){
 
