@@ -1,5 +1,6 @@
 <div class="ui-widget-content">
 	<form method="POST" enctype="multipart/form-data" id="b-assets-upload-form" action="/cms/assets/upload">
+		<?= Form::hidden('csrf', Security::token()) ?>
 		<div id="upload-advanced">
 			<div class="ui-widget" id="boom-asset-upload-info">
 				<div class="ui-corner-all">

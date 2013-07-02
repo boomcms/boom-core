@@ -580,7 +580,7 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 			},
 		   fail: function(e, data) {
 				message = "There was an error uploading your file";
-				
+
 			   if (data.jqXHR.responseText) {
 				   message = message + ': ' + data.jqXHR.responseText;
 			   }
@@ -601,9 +601,8 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 			.sload( '/cms/assets/upload' )
 			.done( function(){
 				self.main_panel.ui();
-				var upload_token = $( '#upload_token' ).val();
-
-				opts.formData.push( { name: 'upload_token', value: upload_token } );
+				
+				opts.formData.push( { name: 'csrf', value: $('input[name=csrf]').val() } );
 
 				$( '#b-assets-upload-form' )
 				.fileupload( opts );

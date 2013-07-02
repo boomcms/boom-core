@@ -33,6 +33,8 @@ class Boom_Controller_Cms_Assets_Upload extends Controller_Cms_Assets
 	 */
 	public function action_process()
 	{
+		$this->_csrf_check();
+
 		// An array of IDs of the new assets, which we'll return to the client when the upload has been processed.
 		$asset_ids = array();
 
