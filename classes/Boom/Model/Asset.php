@@ -60,6 +60,36 @@ class Boom_Model_Asset extends Model_Taggable
 	 */
 	protected $_old_files = NULL;
 
+	public function create_from_file($filepath, $keep_original = TRUE)
+	{
+		// Update the model with details about hte file.
+		$this->get_file_info($filepath);
+
+		// Persist the asset data so that we can get an asset ID.
+		$this->create();
+
+		// If we're keeping the original file then copy() the original, otherwise rename() it.
+		$command = ($keep_original)? 'copy' : 'rename';
+
+		try
+		{
+			// Copy / move the file into the assets directory.
+			$command($filepath, $this->directory().DIRECTORY_SEPARATOR.$this->id);
+		}
+		catch (Exception $e)
+		{
+			// We couldn't get the asset into the assets directory.
+			// So that we don't end up with an asset that doesn't have a file we'll just delete the asset data.
+			$this->delete(TRUE);
+
+			// Throw the exception, it's someone elses problem now.
+			throw $e;
+		}
+
+		// Return the current model.
+		return $this;
+	}
+
 	/**
 	 * Returns the directory where asset files are stored.
 	 *
