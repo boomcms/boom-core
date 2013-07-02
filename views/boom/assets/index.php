@@ -53,7 +53,9 @@
 	<script type="text/javascript">
 		//<![CDATA[
 		(function($){
-			$.boom.init();
+			$.boom.init(null, {
+				csrf: '<?= Security::token() ?>'
+			});
 
 			$( 'body' ).browser_asset({
 				allowedUploadTypes:[ '<?= implode('\', \'', Boom_Asset::$allowed_extensions)?>' ]

@@ -408,7 +408,7 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 
 					$.boom.loader.show();
 
-					$.post('/cms/assets/delete', {assets:  assets}, function(){
+					$.post('/cms/assets/delete', {csrf: $.boom.options.csrf, assets:  assets}, function(){
 
 						$.boom.loader.hide();
 
@@ -481,7 +481,7 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 				self.
 					upload({
 						url: '/cms/assets/upload',
-						formData : [ { name: 'asset_id', value: rid } ]
+						formData : [ { csrf: $.boom.options.csrf,  name: 'asset_id', value: rid } ]
 					})
 					.done( function( data ){
 						$.boom.history.refresh();
@@ -601,7 +601,7 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 			.sload( '/cms/assets/upload' )
 			.done( function(){
 				self.main_panel.ui();
-				
+
 				opts.formData.push( { name: 'csrf', value: $('input[name=csrf]').val() } );
 
 				$( '#b-assets-upload-form' )

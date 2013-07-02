@@ -48,9 +48,10 @@ class Boom_Controller_Cms_Assets extends Boom_Controller
 	 */
 	public function action_delete()
 	{
+		$this->_csrf_check();
 
-		// delete the loaded asset
-		if ( $this->asset->loaded() ) {
+		if ($this->asset->loaded())
+		{
 			$this->asset->delete();
 		}
 
@@ -120,19 +121,6 @@ class Boom_Controller_Cms_Assets extends Boom_Controller
 		));
 	}
 
-	/**
-	 * Display a list of assets matching certain filters.
-	 * This is used for the main content of the asset manager.
-	 *
-	 * **Accepted GET parameters:**
-	 * Name		|	Type		|	Description
-	 * ---------------|-----------------|---------------
-	 * page		|	 int	 	|	The current page to display. Optional, default is 1.
-	 * perpage	|	 int		|	Number of assets to display on each page. Optional, default is 30.
-	 * tag		|	 string	|	A tag to filter assets by. Through the magic of hackery also used to filter assets by filters.
-	 * sortby		|	 string	|	The column to sort results by and sort order. Optional, default is last_modified-desc.
-	 *
-	 */
 	public function action_list()
 	{
 		// Get the query data.
@@ -320,31 +308,22 @@ class Boom_Controller_Cms_Assets extends Boom_Controller
 		$this->redirect('/cms/assets/#asset/'.$this->asset->id);
 	}
 
-	/**
-	 * Save changes to a single asset.
-	 *
-	 */
 	public function action_save()
 	{
-		// Does the asset exist?
+		$this->_csrf_check();
+
 		if ( ! $this->asset->loaded())
 		{
 			throw new HTTP_Exception_404;
 		}
 
-		// Update the asset's details.
 		$this->asset
 			->values($this->request->post(), array('title','description','visible_from', 'thumbnail_asset_id', 'copyright'))
 			->update();
 	}
 
-	/**
-	 * View details about a single asset.
-	 *
-	 */
 	public function action_view()
 	{
-		// Check that the asset exists
 		if ( ! $this->asset->loaded())
 		{
 			throw new HTTP_Exception_404;
