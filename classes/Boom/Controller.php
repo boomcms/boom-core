@@ -131,4 +131,12 @@ class Boom_Controller extends Controller
 			->set('last_url', $this->request->url())
 			->write();
 	}
+
+	protected function _csrf_check()
+	{
+		if ( ! Security::check($this->request->post('csrf')))
+		{
+			throw new HTTP_Exception_500;
+		}
+	}
 }

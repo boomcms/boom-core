@@ -48,10 +48,7 @@ class Boom_Controller_Cms_Page extends Boom_Controller
 	 */
 	public function action_add()
 	{
-		if ( ! Security::check($this->request->post('csrf')))
-		{
-			throw new HTTP_Exception_500;
-		}
+		$this->_csrf_check();
 
 		// Get the parent page and template of the new page from the POST data.
 		$parent_id = $this->page->id;
@@ -164,9 +161,7 @@ class Boom_Controller_Cms_Page extends Boom_Controller
 		}
 		else
 		{
-			// POST request.
-			// The confirmation dialogue has been displayed and the user has clicked the confirm button.
-			// So delete the page.
+			$this->_csrf_check();
 
 			// Log the action.
 			$this->log("Deleted page " . $this->page->version()->title . " (ID: " . $this->page->id . ")");
