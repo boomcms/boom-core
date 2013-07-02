@@ -240,8 +240,8 @@ $.widget( 'boom.page', {
 
 	/** @function */
 	save : function(callback, pagedata, requestdata, config) {
-
 		var data = pagedata || {};
+
 		var self = this;
 
 		if ($.boom.page.editor.isOpen()) {
@@ -295,6 +295,7 @@ $.widget( 'boom.page', {
 
 
 		requestdata = $.extend({
+			csrf: $.boom.options.csrf,
 			data: JSON.stringify(data)
 		}, requestdata);
 
@@ -914,7 +915,6 @@ $.widget( 'boom.page', $.boom.page, {
 
 		/** @function */
 		save: function( url, data, message) {
-
 			$.boom.loader.show();
 
 			return $.post(
@@ -1687,7 +1687,7 @@ $.widget( 'boom.page', $.boom.page, {
 									).done(function() {
 										$.boom.page.settings.save(
 											url,
-											{sequences: sequences},
+											{csrf: $("#boom-form-pagesettings-childsettings").find('input[name=csrf]').val(), sequences: sequences},
 											"Child page ordering saved, reloading page."
 										).done(function(){
 											setTimeout(function() {

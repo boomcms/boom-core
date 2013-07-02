@@ -1,4 +1,5 @@
 <form id="boom-form-pagesettings-visibility" name="pagesettings-visibility">
+	<?= Form::hidden('csrf', Security::token()) ?>
 	<div class="b-pagesettings">
 		<label for="page-visible"><?=__('Visible')?>
 			<select id="page-visible" name="visible" class="boom-input boom_select">

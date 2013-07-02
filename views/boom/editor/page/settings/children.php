@@ -1,4 +1,5 @@
 <form id="boom-form-pagesettings-childsettings" name="pagesettings-childsettings">
+	<?= Form::hidden('csrf', Security::token()) ?>
 	<div id="child-settings" class="boom-tabs b-page-settings">
 		<? if ($allow_advanced): ?>
 			<ul>
