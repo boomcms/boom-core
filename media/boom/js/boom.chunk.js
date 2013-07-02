@@ -684,7 +684,6 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 		var self = this;
 
 		self.asset = this._get_asset_details();
-console.log(self.asset);
 
 		self.element.find('a')
 			.on('click', function(event) {
