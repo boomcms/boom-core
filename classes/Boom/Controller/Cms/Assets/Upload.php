@@ -49,7 +49,7 @@ class Boom_Controller_Cms_Assets_Upload extends Controller_Cms_Assets
 			// Loop through the files uploaded under this input name.
 			foreach ( (array) $files['tmp_name'] as $i => $filename)
 			{
-				if (in_array($files['type'][$i], Boom_Asset::$allowed_types))
+				if (Boom_Asset::is_supported($files['type'][$i]))
 				{
 					// Set the common values.
 					$this->asset->values($common_values, array_keys($common_values));
@@ -67,6 +67,14 @@ class Boom_Controller_Cms_Assets_Upload extends Controller_Cms_Assets
 					// Clear the model so that it can be re-used for the next iteration.
 					// This way we don't have to instantiate an asset model for each loop iteration.
 					$this->asset->clear();
+				}
+				else
+				{
+					$this->response
+						->status(500)
+						->body("Asset is of an unsuported type: " . $files['type'][$i]);
+
+					return;
 				}
 			}
 
