@@ -10,15 +10,10 @@
 abstract class Boom_Asset_Core
 {
 	const IMAGE = 1;
-
 	const PDF = 2;
-
 	const VIDEO = 3;
-
 	const TIFF = 4;
-
 	const MP3 = 5;
-
 	const MSWORD = 6;
 
 	/**
