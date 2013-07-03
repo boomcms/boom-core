@@ -51,7 +51,7 @@ abstract class Boom_Controller_Asset extends Boom_Controller
 
 	public function action_download()
 	{
-		$this->asset->log_download();
+		$this->_log_download();
 		$this->_do_download('download');
 	}
 
@@ -66,5 +66,13 @@ abstract class Boom_Controller_Asset extends Boom_Controller
 				'Accept-Ranges'				=>	'bytes',
 			))
 			->body(readfile($this->asset->get_filename()));
+	}
+
+	protected function _log_download()
+	{
+		if ( ! $this->auth->logged_in())
+		{
+			$this->asset->log_download(Request::$client_ip);
+		}
 	}
 }

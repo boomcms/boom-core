@@ -12,9 +12,10 @@ class Boom_Model_Asset_Download extends ORM
 	);
 
 	protected $_table_columns = array(
-		'id'				=>	'',
-		'asset_id'			=>	'',
-		'time'			=>	'',
+		'id' => '',
+		'asset_id' => '',
+		'time' => '',
+		'ip' => '',
 	);
 
 	protected $_table_name = 'asset_downloads';

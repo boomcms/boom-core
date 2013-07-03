@@ -13,7 +13,7 @@ class Boom_Controller_Asset_Pdf extends Controller_Asset
 {
 	public function action_view()
 	{
-		$this->asset->log_download();
+		$this->_log_download();
 		$this->_do_download();
 	}
 

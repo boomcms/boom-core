@@ -222,19 +222,36 @@ class Boom_Model_Asset extends Model_Taggable
 
 	public function is_visible()
 	{
-		return $this->visible_from > $_SERVER['REQUEST_TIME'];
+		return $this->visible_from < $_SERVER['REQUEST_TIME'];
 	}
 
-	public function log_download()
+	public function log_download($ip)
 	{
-		ORM::factory('Asset_Download')
-			->set('asset_id', $this->id)
-			->create();
+		$ip = ip2long($ip);
 
-		DB::update($this->_table_name)
-			->set(array('downloads' => DB::expr('downloads + 1')))
-			->where('id', '=', $this->id)
-			->execute($this->_db);
+		$logged = DB::select(DB::expr("1"))
+			->from('asset_downloads')
+			->where('ip', '=', $ip)
+			->where('asset_id', '=', $this->id)
+			->where('time', '>=', time() - Date::MINUTE * 10)
+			->limit(1)
+			->execute()
+			->as_array();
+
+		if ( ! count($logged))
+		{
+			ORM::factory('Asset_Download')
+				->values(array(
+					'asset_id' => $this->id,
+					'ip' => $ip,
+				))
+				->create();
+
+			DB::update($this->_table_name)
+				->set(array('downloads' => DB::expr('downloads + 1')))
+				->where('id', '=', $this->id)
+				->execute($this->_db);
+		}
 
 		return $this;
 	}
