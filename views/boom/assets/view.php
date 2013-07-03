@@ -52,11 +52,6 @@
 					<dt><?=__('Filesize')?></dt>
 					<dd><span id='filesize'><?= Text::bytes($asset->filesize) ?></dd>
 
-					<? if ($asset->type == Boom_Asset::BOTR): ?>
-						<dt><?=__('Duration')?></dt>
-						<dd><?= gmdate("i:s", $asset->duration) ?></dd>
-					<? endif; ?>
-
 					<? if ($asset->type == Boom_Asset::IMAGE): ?>
 						<dt><?=__('Dimensions')?></dt>
 						<dd><?=$asset->width?> x <?=$asset->height?></dd>
@@ -118,12 +113,4 @@
 			</div>
 		</div>
 	</form>
-
-	<? if ($asset->type == Boom_Asset::BOTR AND ! $asset->encoded): ?>
-		<script language="JavaScript" type="text/javascript">
-			setInterval(function(){
-				window.location.reload();
-			}, 3000);
-		</script>
-	<? endif; ?>
 </div>
