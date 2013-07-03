@@ -43,6 +43,7 @@ class Boom_Model_Asset extends Model_Taggable
 		'last_modified'		=>	'',
 		'thumbnail_asset_id'	=>	'',
 		'copyright'			=>	'',
+		'downloads'		=>	'',
 	);
 
 	protected $_table_name = 'assets';
@@ -217,6 +218,20 @@ class Boom_Model_Asset extends Model_Taggable
 	public function get_mime()
 	{
 		return File::mime($this->get_filename());
+	}
+
+	public function log_download()
+	{
+		ORM::factory('Asset_Download')
+			->set('asset_id', $this->id)
+			->create();
+
+		DB::update($this->_table_name)
+			->set(array('downloads' => DB::expr('downloads + 1')))
+			->where('id', '=', $this->id)
+			->execute($this->_db);
+
+		return $this;
 	}
 
 	/**

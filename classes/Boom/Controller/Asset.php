@@ -54,4 +54,19 @@ abstract class Boom_Controller_Asset extends Boom_Controller
 	abstract public function action_view();
 
 	abstract public function action_thumb();
+
+	public function action_download()
+	{
+		$this->asset->log_download();
+
+		$this->response
+			->headers(array(
+				'Content-Type'				=>	'application/pdf',
+				'Content-Disposition'			=>	'download; filename="'.$this->asset->filename.'"',
+				'Content-Transfer-Encoding'	=>	'binary',
+				'Content-Length'			=>	$this->asset->filesize,
+				'Accept-Ranges'				=>	'bytes',
+			))
+			->body(readfile($this->asset->get_filename()));
+	}
 }
