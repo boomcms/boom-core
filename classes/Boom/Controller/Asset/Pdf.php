@@ -13,6 +13,8 @@ class Boom_Controller_Asset_Pdf extends Controller_Asset
 {
 	public function action_view()
 	{
+		$this->asset->log_download();
+
 		$this->response
 			->headers(array(
 				'Content-Type'				=>	'application/pdf',
