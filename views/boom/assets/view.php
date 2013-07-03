@@ -69,6 +69,9 @@
 
 					<dt><?=__('Uploaded on')?></dt>
 					<dd><?= date('d F Y h:i:s', $asset->uploaded_time)?></dd>
+
+					<dt><?=__('Downloads')?></dt>
+					<dd><?= $asset->downloads ?></dd>
 				</dl>
 			</div>
 
