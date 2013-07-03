@@ -163,7 +163,7 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 		var img = this.element.find('img');
 		var a = this.element.find('a');
 
-		var regExp = new RegExp("asset\/(thumb|view)\/" + asset_id);
+		var regExp = new RegExp("asset\/(thumb|view|download)\/" + asset_id);
 
 		elements.asset = this.element.find('.asset-target');
 		elements.link = this.element.find('.asset-link');
