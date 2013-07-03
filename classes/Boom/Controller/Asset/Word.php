@@ -14,16 +14,7 @@ class Boom_Controller_Asset_Word extends Controller_Asset
 	public function action_view()
 	{
 		$this->asset->log_download();
-
-		$this->response
-			->headers(array(
-				'Content-Type'				=>	File::mime($this->asset->get_filename()),
-				'Content-Disposition'			=>	'inline; filename="'.$this->asset->filename.'"',
-				'Content-Transfer-Encoding'	=>	'binary',
-				'Content-Length'			=>	$this->asset->filesize,
-				'Accept-Ranges'				=>	'bytes',
-			))
-			->body(readfile($this->asset->get_filename()));
+		$this->_do_download();
 	}
 
 	public function action_thumb()

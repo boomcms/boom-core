@@ -58,11 +58,15 @@ abstract class Boom_Controller_Asset extends Boom_Controller
 	public function action_download()
 	{
 		$this->asset->log_download();
+		$this->_do_download('download');
+	}
 
+	protected function _do_download($method = 'inline')
+	{
 		$this->response
 			->headers(array(
-				'Content-Type'				=>	'application/pdf',
-				'Content-Disposition'			=>	'download; filename="'.$this->asset->filename.'"',
+				'Content-Type'				=>	File::mime($this->asset->get_filename()),
+				'Content-Disposition'			=>	"$method; filename={$this->asset->filename}",
 				'Content-Transfer-Encoding'	=>	'binary',
 				'Content-Length'			=>	$this->asset->filesize,
 				'Accept-Ranges'				=>	'bytes',
