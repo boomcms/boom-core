@@ -16,7 +16,7 @@
 			<input id="page-visible-to"
 				name="visible_to"
 				class="boom-input boom-datepicker"
-				value="<?=($page->visible_to) ?	date('d F Y h:m',$page->visible_to) : 'forever'; ?>"
+				value="<?=($page->visible_to) ?	date('d F Y h:i',$page->visible_to) : 'forever'; ?>"
 				<?=(!$page->visible_to) ? ' disabled="disabled"' : ''; ?>
 			/>
 		</label>
