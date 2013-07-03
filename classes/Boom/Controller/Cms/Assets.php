@@ -329,13 +329,6 @@ class Boom_Controller_Cms_Assets extends Boom_Controller
 			throw new HTTP_Exception_404;
 		}
 
-		// If the asset is a BOTR video which isn't marked as encoded then attempt to update the information.
-		if ($this->asset->type == Boom_Asset::BOTR AND ! $this->asset->encoded)
-		{
-			Request::factory('cms/video/sync/' . $asset->id)->execute();
-			$this->asset->reload();
-		}
-
 		$this->template = View::factory("$this->_view_directory/view", array(
 			'asset'	=>	$this->asset,
 			'tags'	=>	$this->asset

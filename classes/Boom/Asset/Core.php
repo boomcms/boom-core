@@ -17,11 +17,6 @@ abstract class Boom_Asset_Core
 	const MSWORD = 6;
 
 	/**
-	 * Asset type for Bits on the Run hosted video.
-	 */
-	const BOTR = 7;
-
-	/**
 	 * @var	array
 	 */
 	public static $allowed_types = array(
@@ -68,9 +63,6 @@ abstract class Boom_Asset_Core
 
 			case static::MSWORD:
 				return "MSWord";
-
-			case static::BOTR:
-				return "video";
 
 			default:
 				return $type;

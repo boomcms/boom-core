@@ -38,8 +38,6 @@ class Boom_Model_Asset extends Model_Taggable
 		'filesize'			=>	'',
 		'deleted'			=>	FALSE,
 		'duration'			=>	'',
-		'encoded'			=>	'',
-		'views'			=>	'',
 		'uploaded_by'		=>	'',
 		'uploaded_time'	=>	'',
 		'last_modified'		=>	'',
