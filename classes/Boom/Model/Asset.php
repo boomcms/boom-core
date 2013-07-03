@@ -220,6 +220,11 @@ class Boom_Model_Asset extends Model_Taggable
 		return File::mime($this->get_filename());
 	}
 
+	public function is_visible()
+	{
+		return $this->visible_from > $_SERVER['REQUEST_TIME'];
+	}
+
 	public function log_download()
 	{
 		ORM::factory('Asset_Download')
