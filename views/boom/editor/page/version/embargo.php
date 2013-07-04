@@ -1,4 +1,5 @@
 <form id="b-form-pageversion-embargo">
+	<?= Form::hidden('csrf', Security::token()) ?>
 	<div class="b-pagesettings">
 		<label for="page-visible"><?=__('Embargo')?></label>
 		<select id="page-visible" name="embargoed" class="boom-input boom_select">
