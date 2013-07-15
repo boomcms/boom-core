@@ -196,7 +196,7 @@ abstract class Boom_Chunk
 	 * @param	boolean	$inherit		Whether the chunk should be inherited down the page tree.
 	 * @return 	Chunk
 	 */
-	public static function factory($type, $slotname, $page = NULL, $inherit = FALSE)
+	public static function factory($type, $slotname, $page = NULL)
 	{
 		// Set the class name.
 		$class = "Chunk_" . ucfirst($type);
@@ -214,11 +214,8 @@ abstract class Boom_Chunk
 			$page = new Model_Page;
 		}
 
-		// The chunk is being cascaded down the tree so find the page that the chunk is actually assigned to.
-		$page = ($inherit === TRUE)? Chunk::inherit_from($type, $slotname, $page) : $page;
-
 		// Load the chunk
-		$chunk = Chunk::find($type, $slotname, $page->version(), $inherit);
+		$chunk = Chunk::find($type, $slotname, $page->version());
 
 		return new $class($page, $chunk, $slotname);
 	}
@@ -295,39 +292,6 @@ abstract class Boom_Chunk
 		}
 
 		return (string) $return;
-	}
-
-	/**
-	 * Determine which is the nearest page in the tree with a given slot.
-	 * Used when inheriting a chunk to determine which page a chunk should be inherited from.
-	 *
-	 * @param	string		$type		Slottype.
-	 * @param	string		$slotname		Name of the slot.
-	 * @param	Model_Page	$page		The page the chunk is appearing in, i.e. where the in the tree the chunk should be inherited to.
-	 * @return Model_Page
-	 */
-	public static function inherit_from($type, $slotname, Model_Page $page)
-	{
-		// Get the name of the model that we're looking.
-		// e.g. if type is text we want a chunk_text model
-		$type = strtolower($type);
-		$table_name = Inflector::plural((strpos($type, "chunk_") === 0)? $type : "chunk_$type");
-
-		return ORM::factory('Page')
-			->join('page_versions', 'inner')
-			->on('page.id', '=', 'page_versions.page_id')
-			->join('page_chunks')
-			->on('page_chunks.page_vid', '=', 'page_versions.id')
-			->join($table_name)
-			->on('page_chunks.chunk_id', '=', "$table_name.id")
-			->join('page_mptt', 'inner')
-			->on('page_mptt.id', '=', 'page.id')
-			->where('slotname', '=', $slotname)
-			->where('page_mptt.scope', '=', $page->mptt->scope)
-			->where('page_mptt.lft', '<=', $page->mptt->lft)
-			->where('page_mptt.rgt', '>=', $page->mptt->rgt)
-			->order_by('page_mptt.lft', 'desc')
-			->find();
 	}
 
 	/**
