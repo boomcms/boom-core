@@ -84,19 +84,11 @@ abstract class Boom_Chunk
 	public function __construct(Model_Page $page, $chunk, $slotname)
 	{
 		$this->_page = $page;
-
 		$this->_chunk = $chunk;
-
 		$this->_slotname = $slotname;
 	}
 
 	/**
-	 * Allows chunks to be displayed without having to call execute() every time.
-	 *
-	 * e.g.
-	 *	<?= Chunk::factory('text', 'standfirst'); ?>
-	 * Instead of:
-	 *	<?= Chunk::factory('text', 'standfirst')->execute(); ?>
 	 *
 	 * @return string
 	 */
