@@ -1,4 +1,5 @@
 <form id="boom-form-pagesettings-navigation" name="pagesettings-navigation">
+	<?= Form::hidden('csrf', Security::token()) ?>
 	<div class="boom-tabs b-page-settings">
 		<? if ($allow_advanced): ?>
 			<ul>

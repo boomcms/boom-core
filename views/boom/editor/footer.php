@@ -12,7 +12,9 @@
 		//<![CDATA[
 		(function($){
 
-			$.boom.init();
+			$.boom.init(null, {
+				csrf: '<?= Security::token() ?>',
+			});
 
 			$( 'body' ).page({
 				id: <?= $page->id ?>,

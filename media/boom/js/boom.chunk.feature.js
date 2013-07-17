@@ -1,0 +1,111 @@
+/**
+@class
+@name chunkFeature
+@extends $.ui.chunk
+@memberOf $.ui
+*/
+$.widget('ui.chunkFeature', $.ui.chunk,
+	/**
+	@lends $.ui.chunkFeature
+	*/
+	{
+
+	/**
+	Open a dialog with a tree control to pick a page for the current feature
+	and a button to remove any existing page without replacing it.
+	*/
+	edit : function(){
+
+		$.boom.log('Feature chunk slot edit');
+
+		var self = this;
+
+		this.dialog = $.boom.dialog.open({
+			url: this.options.urlPrefix + '/feature/edit/' + $.boom.page.options.id,
+			width: 400,
+			id: self.element[0].id + '-boom-dialog',
+			// cache: true,
+			title: 'Page feature',
+			onLoad : function() {
+
+				$.boom.util.page_tree( self.dialog.find( '.boom-tree' ), self.options.rid )
+					.progress( function( page ){
+						self.insert( page.page_id );
+
+						$.boom.dialog.destroy(self.dialog);
+					});
+
+			},
+			destroy: function(){
+				self.destroy();
+			},
+			open: function(){
+
+				if ( self.options.slot.rid > 0 ) {
+
+					$( 'input[name=parent_id]' ).val( self.options.slot.rid );
+
+					var button = $('<button />')
+					.addClass('ui-helper-left')
+					.text('Remove')
+					.button({
+						text: false,
+						icons: { primary : 'ui-icon-boom-delete' }
+					})
+					.click(function(){
+
+						$.boom.dialog.destroy(self.dialog);
+
+						self._remove( { target_page_id : 0 } );
+					});
+
+					$(this).dialog('widget')
+						.find('.ui-dialog-buttonpane')
+						.prepend( button );
+				}
+			}
+		});
+	},
+
+	/**
+	Insert the selected page into the DOM as a feature box.
+	@param {Int} rid Page RID
+	*/
+	insert : function(rid){
+
+		var self = this;
+		this.options.slot.rid = rid;
+
+		$.boom.loader.show();
+
+		return this._preview( this.getData() ).done( function( data ){
+
+			$.boom.loader.hide();
+
+			self._apply( data );
+
+			//self.destroy();
+		});
+	},
+
+	/**
+	Get the RID for this feature box.
+	@returns {Int} Page RID
+	*/
+	getData: function(){
+
+		return { target_page_id : this.options.slot.rid };
+	},
+
+	/**
+	Remove the current feature from the page.
+	*/
+	remove : function(){
+		var self = this;
+
+		this.insert( 0 )
+			.done( function( response ){
+				self._remove();
+			});
+	}
+});

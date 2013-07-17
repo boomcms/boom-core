@@ -52,15 +52,18 @@ class Boom_Finder_Paginated extends Finder
 
 	protected function _build_pagination_links($total)
 	{
-		if ( ! $this->_pagination_view instanceof View)
+		if ($total > $this->_results_perpage)
 		{
-			$this->_pagination_view = new View($this->_pagination_view);
+			if ( ! $this->_pagination_view instanceof View)
+			{
+				$this->_pagination_view = new View($this->_pagination_view);
+			}
+
+			$this->_pagination_view
+				->set($this->_generate_pagination_vars($total));
+
+			return $this->_pagination_view;
 		}
-
-		$this->_pagination_view
-			->set($this->_generate_pagination_vars($total));
-
-		return $this->_pagination_view;
 	}
 
 	protected function _generate_pagination_vars($total)

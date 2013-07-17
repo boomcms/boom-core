@@ -16,6 +16,8 @@ $.extend({
 		/** @lends $.boom */
 		{
 
+		options: {},
+
 		/**
 		Boom bootstrap/setup. Initialises boom.config and does some browser detection.
 		*/
@@ -37,6 +39,7 @@ $.extend({
 			this.type = type;
 
 			( options ) && $.extend( this.config, options );
+			this.options = options;
 
 			var classes = $.boom.data.boomInit;
 

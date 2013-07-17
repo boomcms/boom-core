@@ -8,4 +8,5 @@ return array(
 	'linkset'	=>	'',
 	'slideshow'	=>	'Insert a slideshow.',
 	'video'		=>	'Insert a video.',
+	'download'	=>	'Select an asset for download.',
 );

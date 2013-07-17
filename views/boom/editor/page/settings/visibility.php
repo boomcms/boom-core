@@ -1,4 +1,5 @@
 <form id="boom-form-pagesettings-visibility" name="pagesettings-visibility">
+	<?= Form::hidden('csrf', Security::token()) ?>
 	<div class="b-pagesettings">
 		<label for="page-visible"><?=__('Visible')?>
 			<select id="page-visible" name="visible" class="boom-input boom_select">
@@ -15,7 +16,7 @@
 			<input id="page-visible-to"
 				name="visible_to"
 				class="boom-input boom-datepicker"
-				value="<?=($page->visible_to) ?	date('d F Y h:m',$page->visible_to) : 'forever'; ?>"
+				value="<?=($page->visible_to) ?	date('d F Y h:i',$page->visible_to) : 'forever'; ?>"
 				<?=(!$page->visible_to) ? ' disabled="disabled"' : ''; ?>
 			/>
 		</label>

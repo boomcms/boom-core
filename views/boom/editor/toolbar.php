@@ -1,7 +1,7 @@
 <?= View::factory('boom/header', array('title' => $page->version()->title)) ?>
 
 <div id="boom-topbar" class="ui-helper-clearfix ui-tabs ui-widget ui-widget-content ui-corner-all">
-
+	<?= Form::hidden('csrf', Security::token(), array('id' => 'b-csrf')) ?>
 	<?= Menu::factory('boom')->sort('priority') ?>
 
 	<div id="boom-topbar-useractions">
@@ -86,9 +86,6 @@
 					<?= __('Settings') ?>
 				</button>
 			</span>
-			<button id="boom-page-history" class="ui-button boom-button" data-icon="ui-icon-boom-history">
-				<?= __('History') ?>
-			</button>
 			<? if (($page->was_created_by($person) OR $auth->logged_in('delete_page', $page)) AND ! $page->mptt->is_root()): ?>
 				<button class="ui-button boom-button" id="b-page-delete" data-icon="ui-icon-boom-delete">
 					<?= __('Delete') ?>

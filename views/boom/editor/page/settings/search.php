@@ -1,4 +1,5 @@
 <form id="boom-form-pagesettings-search" name="pagesettings-seo">
+	<?= Form::hidden('csrf', Security::token()) ?>
 	<div id="b-pagesettings-search" class="boom-tabs b-page-settings">
 		<? if ($allow_advanced): ?>
 			<ul>

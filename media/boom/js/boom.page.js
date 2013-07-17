@@ -139,9 +139,6 @@ $.widget( 'boom.page', {
 			"Save and publish" : function(){
 				self.save(null, {'publish' : 1});
 			},
-			"Save and request approval" : function(){
-				self.save();
-			}
 		};
 
 		this.cancel_button.on( 'click', function(){
@@ -165,7 +162,7 @@ $.widget( 'boom.page', {
 		$('#b-page-addpage').click(function(){
 			$.boom.loader.show();
 
-			$.post('/cms/page/add/' + self.options.id, function(response){
+			$.post('/cms/page/add/' + self.options.id, {csrf : $('#b-csrf').val()}, function(response){
 				$.boom.loader.hide();
 
 				if ( new RegExp('^' + "\/").test( response ) ) {
@@ -205,7 +202,7 @@ $.widget( 'boom.page', {
 		$( '#boom-page-editlive' ).on( 'click', function( event ){
 			$.boom.dialog.confirm(
 				'Edit live',
-				'Stash changes and edit the live page?'
+				'Discard changes and edit the live page?'
 			)
 			.done( function(){
 
@@ -243,8 +240,8 @@ $.widget( 'boom.page', {
 
 	/** @function */
 	save : function(callback, pagedata, requestdata, config) {
-
 		var data = pagedata || {};
+
 		var self = this;
 
 		if ($.boom.page.editor.isOpen()) {
@@ -298,6 +295,7 @@ $.widget( 'boom.page', {
 
 
 		requestdata = $.extend({
+			csrf: $.boom.options.csrf,
 			data: JSON.stringify(data)
 		}, requestdata);
 
@@ -917,7 +915,6 @@ $.widget( 'boom.page', $.boom.page, {
 
 		/** @function */
 		save: function( url, data, message) {
-
 			$.boom.loader.show();
 
 			return $.post(
@@ -1631,72 +1628,6 @@ $.widget( 'boom.page', $.boom.page, {
 
 		/**
 		* @class
-		* @name $.boom.page.settings.history
-		* @static
-		*/
-		history:
-			/** @lends $.boom.page.settings.history */
-			{
-			/**
-			Menu label
-			@property label
-			*/
-			label: 'History',
-
-			/** @function */
-			menu_handler: function() {
-				$( '#boom-page-history' ).trigger('boomclick');
-			},
-
-			/** @function */
-			edit: function( event ){
-				// TODO: fix this old page versions code.
-
-				var url = '/cms/page/revisions/' + $.boom.page.options.id;
-				$.boom.dialog.open({
-					url:  url + '?vid=' + $.boom.page.options.vid,
-					title: 'Page versions',
-					width: 440,
-					open: function(){
-
-						var dialog = this;
-
-						$('#b-page-revisions-list ul ul li').click(function(){
-							$('#b-page-revisions-list ul ul li').removeClass('ui-state-active');
-							$(this).addClass('ui-state-active');
-
-							$('#b-page-revisions-selected').val($(this).attr('data-id'));
-
-							$('#b-button-multiaction-edit').button('enable');
-							$('#b-button-multiaction-publish').button('enable');
-						});
-
-
-						$('#b-button-multiaction-edit').click(function(){
-
-							var vid = $('#b-page-revisions-selected').val();
-
-							top.location = $.boom.util.url.addQueryStringParams({ version: vid }, true);
-						});
-
-						$('#b-button-multiaction-publish').bind('click',function(){
-							var vid = $('#b-page-revisions-selected').val();
-
-							$.boom.loader.show();
-
-							$.get( '/cms/page/publish/' + $.boom.page.options.id, {vid: vid}, function(){
-								$.boom.loader.hide();
-
-								$.boom.dialog.destroy( dialog );
-							});
-						});
-					}
-				});
-			}
-		},
-
-		/**
-		* @class
 		* @name $.boom.page.settings.childsettings
 		* @static
 		*/
@@ -1756,7 +1687,7 @@ $.widget( 'boom.page', $.boom.page, {
 									).done(function() {
 										$.boom.page.settings.save(
 											url,
-											{sequences: sequences},
+											{csrf: $("#boom-form-pagesettings-childsettings").find('input[name=csrf]').val(), sequences: sequences},
 											"Child page ordering saved, reloading page."
 										).done(function(){
 											setTimeout(function() {

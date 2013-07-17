@@ -1,4 +1,5 @@
 <div id="b-pagesettings-featureimage" class="b-pagesettings">
+	<?= Form::hidden('csrf', Security::token()) ?>
 	<p id="boom-featureimage-none">This page currently has no associated feature image.</p>
 	<div class='boom-featureimage-edit'>
 	<? if ( ! $feature_image_id): ?>
