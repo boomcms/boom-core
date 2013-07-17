@@ -4,8 +4,8 @@
 return array(
 	'text' 		=>	'Default text.',
 	'title'		=>	'Default title',
-	'feature'	=>	'Click to feature a page here.',
+	'feature'	=>	'Feature a page here.',
 	'linkset'	=>	'',
-	'slideshow'	=>	'Click to insert a slideshow here.',
-	'video'		=>	'Click here to add a video.',
+	'slideshow'	=>	'Insert a slideshow.',
+	'video'		=>	'Insert a video.',
 );
