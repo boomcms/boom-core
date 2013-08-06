@@ -80,6 +80,18 @@ abstract class Boom_Model_Taggable extends ORM
 		return $this;
 	}
 
+	public function has_tags()
+	{
+		$result = DB::select(DB::expr('1'))
+			->from($this->_object_plural.'_tags')
+			->where($this->_object_name.'_id', '=', $this->id)
+			->limit(1)
+			->execute()
+			->as_array();
+
+		return ! empty($result);
+	}
+
 	public function get_tags_with_name_like($name)
 	{
 		return $this->tags
