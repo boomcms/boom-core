@@ -391,6 +391,11 @@ class Boom_Model_Page extends Model_Taggable
 		return $query->find_all()->as_array();
 	}
 
+	public function has_feature_image()
+	{
+		return $this->version()->feature_image_id != 0;
+	}
+
 	/**
 	 * Determine whether a published version exists for the page.
 	 *
