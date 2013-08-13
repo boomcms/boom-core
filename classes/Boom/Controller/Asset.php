@@ -17,6 +17,8 @@ abstract class Boom_Controller_Asset extends Boom_Controller
 	 */
 	public $asset;
 
+	public $enable_caching = TRUE;
+
 	/**
 	 * The value to use for the max-age header.
 	 *
@@ -35,9 +37,11 @@ abstract class Boom_Controller_Asset extends Boom_Controller
 			throw new HTTP_Exception_404;
 		}
 
-		$this->response->headers('Cache-Control', 'public, max-age='.$this->max_age);
-		HTTP::check_cache($this->request, $this->response, $this->asset->last_modified);
-
+		if ($this->enable_caching)
+		{
+			$this->response->headers('Cache-Control', 'public, max-age='.$this->max_age);
+			HTTP::check_cache($this->request, $this->response, $this->asset->last_modified);
+		}
 	}
 
 	public function action_embed()
