@@ -174,6 +174,11 @@ class Boom_Model_Asset extends Model_Taggable
 		);
 	}
 
+	public function get_extension()
+	{
+		return Boom_Asset::extension_from_mime($this->get_mime());
+	}
+
 	/**
 	 * Updates the current object with data from a given file.
 	 *

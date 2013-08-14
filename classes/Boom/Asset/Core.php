@@ -20,14 +20,14 @@ abstract class Boom_Asset_Core
 	 * @var	array
 	 */
 	public static $allowed_types = array(
-		'image/jpeg',
-		'image/gif',
-		'image/png',
-		'image/tiff',
-		'application/msword',
-		'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-		'application/pdf',
-		'video/mp4'
+		'image/jpeg' => 'jpg',
+		'image/gif' => 'gif',
+		'image/png' => 'png',
+		'image/tiff' => 'tiff',
+		'application/msword' => 'doc',
+		'application/vnd.openxmlformats-officedocument.wordprocessingml.document' => 'docx',
+		'application/pdf' => 'pdf',
+		'video/mp4' => 'mp4'
 	);
 
 	public static $allowed_extensions = array('jpeg', 'gif', 'jpg', 'png', 'tiff', 'doc', 'docx', 'pdf', 'mp4');
@@ -38,6 +38,14 @@ abstract class Boom_Asset_Core
 	 * @var string
 	 */
 	public static $path;
+
+	public static function extension_from_mime($mime)
+	{
+		if (isset(static::$allowed_types[$mime]))
+		{
+			return static::$allowed_types[$mime];
+		}
+	}
 
 	/**
 	 * Converts a numeric asset type ID into a human readable type.
@@ -72,13 +80,11 @@ abstract class Boom_Asset_Core
 	/**
 	 * Determine whether a mimetype is supported.
 	 * Used to check whether a file can be uploaded.
-	 *
-	 * @param	string	$mimetype	The mimetype we're checking.
-	 * @return 	bool	True if the mimetype is supported by the Boom, FALSE if not.
+	 * 
 	 */
 	public static function is_supported($mimetype)
 	{
-		return in_array($mimetype, Boom_Asset::$allowed_types);
+		return array_key_exists($mimetype, Boom_Asset::$allowed_types);
 	}
 
 	/**
