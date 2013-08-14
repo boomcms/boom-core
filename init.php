@@ -1,7 +1,7 @@
 <?php
 
 // Route for displaying assets
-Route::set('asset', 'asset/<action>/<id>(/<width>(/<height>(/<quality>(/<crop>))))')
+Route::set('asset', 'asset/<action>/<id>(.<extension>)(/<width>(/<height>(/<quality>(/<crop>))))')
 	->defaults(array(
 		'action'	=> 'view',
 		'quality'	=>	85,
