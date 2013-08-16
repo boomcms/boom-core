@@ -100,17 +100,15 @@
 		</button>
 	<? endif ?>
 
-	<? if ($auth->logged_in('edit_page', $page)): ?>
-		<div class="b-page-container">
-			<button id="boom-page-editlive" class="ui-button boom-button" data-icon="ui-icon-boom-edit-live">
-				<?=__('Edit live')?>
-			</button>
+	<div class="b-page-container">
+		<?/*<button id="boom-page-editlive" class="ui-button boom-button" data-icon="ui-icon-boom-edit-live">
+			<?=__('Edit live')?>
+		</button>*/?>
 
-			<button id="boom-page-viewlive" class="boom-button b-button-preview" data-icon="ui-icon-boom-view-live" data-preview="disabled">
-				<?=__('View live')?>
-			</button>
-		</div>
-	<? endif; ?>
+		<button id="boom-page-viewlive" class="boom-button b-button-preview" data-icon="ui-icon-boom-view-live" data-preview="disabled">
+			<?=__('View live')?>
+		</button>
+	</div>
 
 	<div id="boom-topbar-pagesettings" class="ui-helper-clearfix">
 		<div class="ui-helper-center">
