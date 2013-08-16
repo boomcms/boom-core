@@ -74,7 +74,7 @@ abstract class Boom_Core
 
 			$page = ORM::factory('Page')
 				->with_current_version(Editor::instance(), FALSE)
-				->where('id', '=', $page_id)
+				->where('page.id', '=', $page_id)
 				->find();
 		}
 		else
