@@ -76,8 +76,8 @@
 		</div>
 	<? endif; ?>
 
-	<? if ($auth->logged_in('edit_page', $page)): ?>
-		<div class="b-page-container">
+	<div class="b-page-container">
+		<? if ($auth->logged_in('edit_page', $page)): ?>
 			<button id="boom-page-visibility" class="ui-button boom-button" data-icon="ui-icon-boom-<? echo ($page->is_visible())? 'visible' : 'invisible' ?>">
 				<?= __('Visibility') ?>
 			</button>
@@ -86,19 +86,19 @@
 					<?= __('Settings') ?>
 				</button>
 			</span>
-			<? if (($page->was_created_by($person) OR $auth->logged_in('delete_page', $page)) AND ! $page->mptt->is_root()): ?>
-				<button class="ui-button boom-button" id="b-page-delete" data-icon="ui-icon-boom-delete">
-					<?= __('Delete') ?>
-				</button>
-			<? endif; ?>
-		</div>
-
-		<? if ($readability): ?>
-			<button id="b-page-readability" class="ui-button boom-button">
-				<?= $readability ?>
-			</button>
 		<? endif ?>
-	<? endif; ?>
+		<? if (($page->was_created_by($person) OR $auth->logged_in('delete_page', $page)) AND ! $page->mptt->is_root()): ?>
+			<button class="ui-button boom-button" id="b-page-delete" data-icon="ui-icon-boom-delete">
+				<?= __('Delete') ?>
+			</button>
+		<? endif; ?>
+	</div>
+
+	<? if ($readability): ?>
+		<button id="b-page-readability" class="ui-button boom-button">
+			<?= $readability ?>
+		</button>
+	<? endif ?>
 
 	<? if ($auth->logged_in('edit_page', $page)): ?>
 		<div class="b-page-container">
