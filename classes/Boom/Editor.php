@@ -39,7 +39,7 @@ abstract class Boom_Editor
 	 *
 	 * @var	integer
 	 */
-	protected $_state;
+	protected $_state = 2;
 
 	/**
 	 * Default state of the editor for logged in users.
