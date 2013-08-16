@@ -65,7 +65,7 @@
 								<? $page_count = $t->page_count(); ?>
 								<a href='/cms/templates/pages/<?= $t->pk() ?>' title='View the title and URL of <?= $page_count, " ", Inflector::plural('page', $page_count) ?> which use this template'><?= $page_count ?>
 							</td>
-							<td><a class="ui-button-icon-primary ui-icon ui-icon-boom-delete s-templates-delete" title="Delete the &quot;<?= $t->name ?>&quot; template" href="#">&nbsp;</a>
+							<td><a class="ui-button-icon-primary ui-icon ui-icon-boom-delete b-templates-delete" title="Delete the &quot;<?= $t->name ?>&quot; template" href="#">&nbsp;</a>
 						</tr>
 					<? endforeach; ?>
 				</tbody>
