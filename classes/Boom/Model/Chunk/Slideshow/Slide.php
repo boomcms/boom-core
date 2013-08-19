@@ -16,8 +16,8 @@ class Boom_Model_Chunk_Slideshow_Slide extends ORM
 	/**
 	* Properties to create relationships with Kohana's ORM
 	*/
-	protected $_has_one = array(
-		'asset'	=>	array('model' => 'Asset', 'foreign_key' => 'id')
+	protected $_belongs_to = array(
+		'asset'	=>	array('model' => 'Asset', 'foreign_key' => 'asset_id')
 	);
 	protected $_table_columns = array(
 		'id'		=>	'',

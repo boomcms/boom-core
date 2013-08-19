@@ -170,7 +170,7 @@ $.widget( 'boom.tagger',
 
 		var
 			type = this.options.type,
-			add_input = this.element.find( '#b-tags-add-name' );
+			add_input = this.element.find( '.b-filter-input, #b-tags-add-name' );
 
 		var complete = new $.Deferred();
 		tags = ( tags ) ? tags : [];

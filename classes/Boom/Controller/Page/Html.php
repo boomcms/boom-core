@@ -25,6 +25,7 @@ class Boom_Controller_Page_Html extends Controller_Page
 		View::bind_global('auth', $this->auth);
 		View::bind_global('editor', $this->editor);
 		View::bind_global('page', $this->page);
+		View::bind_global('request', $this->request);
 	}
 
 	public function action_show() {}

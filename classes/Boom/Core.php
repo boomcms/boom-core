@@ -68,17 +68,29 @@ abstract class Boom_Core
 
 	public static function process_uri(Route $route, array $params, Request $request)
 	{
-		$page_url = new Model_Page_URL(array('location' => $params['location']));
-
-		if ( ! $page_url->loaded())
+		if (substr($params['location'], 0, 1) == '_')
 		{
-			return FALSE;
-		}
+			$page_id = base_convert(substr($params['location'], 1), 36, 10);
 
-		$page = ORM::factory('Page')
-			->with_current_version(Editor::instance(), FALSE)
-			->where('page.id', '=', $page_url->page_id)
-			->find();
+			$page = ORM::factory('Page')
+				->with_current_version(Editor::instance(), FALSE)
+				->where('page.id', '=', $page_id)
+				->find();
+		}
+		else
+		{
+			$page_url = new Model_Page_URL(array('location' => $params['location']));
+
+			if ( ! $page_url->loaded())
+			{
+				return FALSE;
+			}
+
+			$page = ORM::factory('Page')
+				->with_current_version(Editor::instance(), FALSE)
+				->where('page.id', '=', $page_url->page_id)
+				->find();
+		}
 
 		if ($page->loaded())
 		{
@@ -88,7 +100,7 @@ abstract class Boom_Core
 				throw new HTTP_Exception_410;
 			}
 
-			if ( ! $page_url->is_primary AND $page_url->redirect)
+			if ( ! isset($page_url) OR (! $page_url->is_primary AND $page_url->redirect))
 			{
 				header('Location: '.$page->url(), NULL, 301);
 				exit;
