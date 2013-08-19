@@ -9,4 +9,5 @@ return array(
 	'slideshow'	=>	'Insert a slideshow.',
 	'video'		=>	'Insert a video.',
 	'download'	=>	'Select an asset for download.',
+	'asset'		=>	'Insert an asset',
 );
