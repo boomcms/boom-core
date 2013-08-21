@@ -219,10 +219,10 @@ class Migration_Boom_20121008111800 extends Minion_Migration_Base
 			  `slug_short` varchar(255) NOT NULL,
 			  `slug_long` varchar(255) NOT NULL,
 			  PRIMARY KEY (`id`),
-			  KEY `tag_name_type` (`name`,`type`),
+			  UNIQUE KEY `tag_name_type` (`name`,`type`),
 			  KEY `tag_type_path` (`type`),
 			  KEY `tags_slug_short` (`slug_short`),
-			  KEY `tags_slug_long` (`slug_long`)
+			  UNIQUE KEY `tags_slug_long` (`slug_long`)
 			) ENGINE=MyISAM AUTO_INCREMENT=2737 DEFAULT CHARSET=utf8;
 		");
 	}
