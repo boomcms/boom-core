@@ -76,6 +76,11 @@ abstract class Boom_Finder
 		return $this->_query->find_all();
 	}
 
+	public function get_query()
+	{
+		return $this->_query;
+	}
+
 	public function sorted_by_property_and_direction($property, $direction)
 	{
 		$this->_query->order_by($property, $direction);
