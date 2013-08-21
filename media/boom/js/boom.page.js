@@ -190,7 +190,7 @@ $.widget( 'boom.page', {
 
 				$.boom.loader.show();
 
-				$.post( '/cms/page/version/embargo/' + self.options.id )
+				$.post( '/cms/page/version/embargo/' + self.options.id, {csrf : $.boom.options.csrf} )
 				.done( function(response){
 					$('#b-page-version-status span').text(response);
 					$.boom.loader.hide();
