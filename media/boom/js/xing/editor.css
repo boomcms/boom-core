@@ -12,6 +12,7 @@
 [contenteditable] {
 	border: 1px solid #000;
 	background: #fff;
+	min-height: 25px;
 }
 .toolbar {
 	border-radius: 4px;
