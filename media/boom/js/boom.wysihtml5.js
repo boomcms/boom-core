@@ -388,16 +388,20 @@ $.widget('wysihtml5.editor', $.boom.editor,
 			.done( function( link ){
 
 				var uri = link.url;
-				var page_rid = link.rid;
+				var page_id = link.page_id;
+
+				if (page_id) {
+					uri = $('<a/>').attr('href',uri)[0].pathname.replace(/^[^\/]/,'/');
+				}
 
 				if ( existing_link ) {
 					existing_link.textContent = existing_link.textContent.replace(existing_link.href, uri);
 
 					top.$( existing_link )
 						.attr( 'href', uri )
-						.attr( 'rel', page_rid );
+						.attr( 'rel', page_id );
 				} else {
-					ed.commands.exec("createLink", { href: uri, rel: page_rid, title: ''});
+					ed.commands.exec("createLink", { href: uri, rel: page_id, title: ''});
 				}
 
 			});
