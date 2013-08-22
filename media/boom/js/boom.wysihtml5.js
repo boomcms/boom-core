@@ -401,7 +401,11 @@ $.widget('wysihtml5.editor', $.boom.editor,
 						.attr( 'href', uri )
 						.attr( 'rel', page_id );
 				} else {
-					ed.commands.exec("createLink", { href: uri, rel: page_id, title: ''});
+					if (page_id) {
+						ed.commands.exec("createLink", { href: uri, rel: page_id, title: '', text: link.title});
+					} else {
+						ed.commands.exec("createLink", { href: uri, title: ''});
+					}
 				}
 
 			});
