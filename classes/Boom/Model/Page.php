@@ -368,9 +368,9 @@ class Boom_Model_Page extends Model_Taggable
 			->find();
 	}
 
-	public function get_tags_applied_down_tree($prefix = NULL)
+	public function get_tags_applied_down_tree_query()
 	{
-		$query = ORM::factory('Tag')
+		return ORM::factory('Tag')
 			->join('pages_tags', 'inner')
 			->on('tag.id', '=', 'pages_tags.tag_id')
 			->join('pages', 'inner')
@@ -382,6 +382,11 @@ class Boom_Model_Page extends Model_Taggable
 			->where('page_mptt.scope', '=', $this->mptt->scope)
 			->distinct(TRUE)
 			->order_by('tag.name', 'asc');
+	}
+
+	public function get_tags_applied_down_tree($prefix = NULL)
+	{
+		$query = $this->get_tags_applied_down_tree_query();
 
 		if ($prefix)
 		{
