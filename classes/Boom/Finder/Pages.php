@@ -60,7 +60,7 @@ class Boom_Finder_Pages extends Finder
 
 	public function sorted_by_title()
 	{
-		return $this->sorted_by_property_and_direction('title', 'asc');
+		return $this->sorted_by_property_and_direction('version.title', 'asc');
 	}
 
 	public function sorted_by_manual_order()
