@@ -8,6 +8,8 @@ class Boom_Controller_Page_Profile extends Boom_Controller
 		{
 			throw new HTTP_Exception_404;
 		}
+
+		parent::before();
 	}
 
 	public function action_show()
