@@ -2,6 +2,14 @@
 
 class Boom_Controller_Page_Profile extends Boom_Controller
 {
+	public function before()
+	{
+		if (Kohana::$environment != Kohana::DEVELOPMENT)
+		{
+			throw new HTTP_Exception_404;
+		}
+	}
+
 	public function action_show()
 	{
 		Kohana::$profiling = TRUE;
