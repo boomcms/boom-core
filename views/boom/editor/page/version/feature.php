@@ -1,5 +1,4 @@
 <div id="b-pagesettings-featureimage" class="b-pagesettings">
-	<?= Form::hidden('csrf', Security::token()) ?>
 	<p id="boom-featureimage-none">This page currently has no associated feature image.</p>
 	<div class='boom-featureimage-edit'>
 	<? if ( ! $feature_image_id): ?>
@@ -10,5 +9,6 @@
 	</div>
 </div>
 <form id="boom-form-pagesettings-featureimage" name="pagesettings-featureimage">
+	<?= Form::hidden('csrf', Security::token()) ?>
 	<input type='hidden' name='feature_image_id' id='boom-featureimage-input' value='<?= $feature_image_id ?>' />
 </form>
