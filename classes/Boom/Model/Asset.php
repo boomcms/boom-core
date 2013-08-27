@@ -199,6 +199,11 @@ class Boom_Model_Asset extends Model_Taggable
 		);
 	}
 
+	public function get_aspect_ratio()
+	{
+		return ($this->height > 0)? ($this->width / $this->height) : 1;
+	}
+
 	public function get_extension()
 	{
 		return Boom_Asset::extension_from_mime($this->get_mime());

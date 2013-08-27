@@ -276,7 +276,6 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 		self.tag = $.boom.filter_assets;
 
 		$.boom.browser.prototype._create.call( this );
-
 	},
 
 	_bind: function(){
@@ -284,6 +283,10 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 		$.boom.browser.prototype._bind.call( this );
 
 		var self = this;
+
+		self.main_panel.on('load', function() {
+			self.main_panel.find('#b-items-view-thumbs').justifyAssets({});
+		});
 
 		$('#boom-assets-upload-menu')
 		.on( 'click', function( event ) {
@@ -360,6 +363,7 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 				});
 		});
 
+		var self = this;
 		var title_filter = $('#b-assets-filter-title')
 		.autocomplete({
 			delay: 200, // Time to wait after keypress before making the AJAX call.
@@ -376,11 +380,13 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 					var title = title_filter.val();
 					if ( title != '' ) self.url_map.tag.filters[ 'title' ] = title;
 					$.boom.history.load( 'tag/0' );
+					self.main_content.trigger('load');
 				});
 			},
 			select: function(event, ui){
 				self.url_map.tag.filters[ 'title' ] = ui.item.value;
 				$.boom.history.load( 'tag/0' );
+				self.main_content.trigger('load');
 			}
 		});
 
@@ -413,6 +419,7 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 						$.boom.loader.hide();
 
 						$.boom.history.refresh();
+						self.main_content.trigger('load');
 					});
 				});
 			})
@@ -619,6 +626,7 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 						file_data.jqXHR && file_data.jqXHR.abort();
 
 						$.boom.history.load( 'tag/' + $.boom.assets.tag.rid );
+						self.main_content.trigger('load');
 					});
 			});
 
