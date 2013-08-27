@@ -92,11 +92,13 @@ function Row() {
 		if (endOfRowGap > 0) {
 			var increaseBy = Math.floor(endOfRowGap / this.aspectRatioSum);
 
-			$.each(this.elements, function(index, $el) {
-				$el
-					.height('+=' + increaseBy)
-					.width('+=' + Math.floor(increaseBy * $el.attr('data-aspect-ratio')));
-			});
+			if (increaseBy <= endOfRowGap) {
+				$.each(this.elements, function(index, $el) {
+					$el
+						.height('+=' + increaseBy)
+						.width('+=' + Math.floor(increaseBy * $el.attr('data-aspect-ratio')));
+				});
+			}
 		}
 	};
 
