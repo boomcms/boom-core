@@ -159,25 +159,25 @@ class Boom_Model_Page extends Model_Taggable
 	 */
 	public function delete_from_feature_boxes()
 	{
-		DB::delete('pages_chunks')
+		DB::delete('page_chunks')
 			->where('type', '=', Chunk::FEATURE)
 			->where('chunk_id', 'IN',
 				DB::select('id')
 					->from('chunk_features')
 					->where('target_page_id', '=', $this->id)
 			)
-			->execute($this->db);
+			->execute($this->_db);
 
 		DB::delete('chunk_features')
 			->where('target_page_id', '=', $this->id)
-			->execute($this->db);
+			->execute($this->_db);
 	}
 
 	public function delete_from_linksets()
 	{
 		DB::delete('chunk_linkset_links')
 			->where('target_page_id', '=', $this->id)
-			->execute($this->id);
+			->execute($this->_db);
 	}
 
 	public function get_author_names_as_string()
