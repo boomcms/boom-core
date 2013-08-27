@@ -120,6 +120,7 @@ class Boom_Model_Asset extends Model_Taggable
 		{
 			$this->delete_files();
 			$this->delete_from_assets_chunks();
+			$this->delete_from_slideshows();
 
 			// Asset is already marked as deleted, so delete it for real.
 			return parent::delete();
@@ -165,6 +166,13 @@ class Boom_Model_Asset extends Model_Taggable
 			->execute($this->_db);
 
 		DB::delete('chunk_assets')
+			->where('asset_id', '=', $this->id)
+			->execute($this->_db);
+	}
+
+	public function delete_from_slideshows()
+	{
+		DB::delete('chunk_slideshow_slides')
 			->where('asset_id', '=', $this->id)
 			->execute($this->_db);
 	}
