@@ -1145,7 +1145,7 @@ $.widget( 'boom.page', $.boom.page, {
 									url: '/cms/page/urls/add/' + $.boom.page.options.id,
 									event: event,
 									title: 'Add URL',
-									width: 300,
+									width: 500,
 									// cache: true,
 									callback: function(){
 
@@ -1216,7 +1216,7 @@ $.widget( 'boom.page', $.boom.page, {
 			add: function() {
 
 				var self = this;
-				var form = $('#boom-form-addurl');
+				var form = $('#b-form-addurl');
 				var new_url = $( 'input[name=url]' ).val();
 				new_url = new_url.split( ' ' ).join( '-' );
 				$( 'input[name=url]' ).val( new_url );
