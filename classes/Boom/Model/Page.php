@@ -173,6 +173,13 @@ class Boom_Model_Page extends Model_Taggable
 			->execute($this->db);
 	}
 
+	public function delete_from_linksets()
+	{
+		DB::delete('chunk_linkset_links')
+			->where('target_page_id', '=', $this->id)
+			->execute($this->id);
+	}
+
 	public function get_author_names_as_string()
 	{
 		$authors = $this->get_tags_with_name_like('Author/%');
@@ -312,6 +319,7 @@ class Boom_Model_Page extends Model_Taggable
 		if ($this->_loaded)
 		{
 			$this->delete_from_feature_boxes();
+			$this->delete_from_linksets();
 
 			// Delete the child pages as well?
 			if ($with_children === TRUE)
