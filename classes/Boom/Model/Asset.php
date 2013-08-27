@@ -119,6 +119,7 @@ class Boom_Model_Asset extends Model_Taggable
 		if ($this->deleted OR $force)
 		{
 			$this->delete_files();
+			$this->delete_from_assets_chunks();
 
 			// Asset is already marked as deleted, so delete it for real.
 			return parent::delete();
@@ -150,6 +151,22 @@ class Boom_Model_Asset extends Model_Taggable
 			->delete_old_versions();
 
 		unlink($this->get_filename());
+	}
+
+	public function delete_from_asset_chunks()
+	{
+		DB::delete('page_chunks')
+			->where('type', '=', Chunk::ASSET)
+			->where('chunk_id', 'IN',
+				DB::select('id')
+					->from('chunk_assets')
+					->where('asset_id', '=', $this->id)
+			)
+			->execute($this->_db);
+
+		DB::delete('chunk_assets')
+			->where('asset_id', '=', $this->id)
+			->execute($this->_db);
 	}
 
 	public function delete_old_versions()
