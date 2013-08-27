@@ -73,15 +73,15 @@ class Boom_Model_Chunk_Text extends ORM
 		$this->_object['text'] = $this->munge($this->_object['text']);
 
 		// Find which assets are linked to within the text chunk.
-		preg_match_all('~hoopdb://image|asset/(\d+)~', $this->_object['text'], $matches);
+		preg_match_all('~hoopdb://((image)|(asset))/(\d+)~', $this->_object['text'], $matches);
 
 		// Create the text chunk.
 		parent::create($validation);
 
 		// Are there any asset links?
-		if ( ! empty($matches[1]))
+		if ( ! empty($matches[4]))
 		{
-			$assets = array_unique($matches[1]);
+			$assets = array_unique($matches[4]);
 
 			// Log which assets are being referenced with a multi-value insert.
 			$query = DB::insert('chunk_text_assets', array('chunk_id', 'asset_id', 'position'));
