@@ -100,7 +100,13 @@ class Boom_Chunk_Text extends Chunk
 
 	protected function _show_default()
 	{
-		$text = __(Kohana::message('chunks', 'text'));
+		$text = Kohana::message('chunks', $this->_slotname);
+
+		if ( ! $text)
+		{
+			$text = Kohana::message('chunks', 'text');
+		}
+
 		$template = ($this->_template === NULL)? $this->_slotname : $this->_template;
 
 		if ( ! Kohana::find_file('views', "site/slots/text/$template"))

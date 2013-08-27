@@ -2,7 +2,9 @@
 
 // Contains the text for default chunks to highlight that content can be inserted.
 return array(
-	'text' 		=>	'Default text.',
+	'text' 		=>	__('Default text.'),
+	'standfirst'	=>	__('Insert standfirst here. A single sentence of 15 - 20 words introducing the page.'),
+	'bodycopy'	=>	__('Insert the main content of the page here.'),
 	'title'		=>	'Default title',
 	'feature'	=>	'Feature a page here.',
 	'linkset'	=>	'',
