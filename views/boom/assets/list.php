@@ -75,7 +75,7 @@
 					<input type="checkbox" class="b-items-select-checkbox ui-helper-reset" id="asset-thumb-<?=$asset->id?>" />
 
 					<a href="#asset/<?=$asset->id?>" class='boom-tagmanager-thumb-link'>
-						<img src="/asset/thumb/<?=$asset->id?>/200/0/85" />
+						<img src="/asset/thumb/<?=$asset->id?>" />
 						<span class="caption"><?=$asset->title?></span>
 						<span class="caption-overlay"></span>
 					</a>
