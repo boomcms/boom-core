@@ -153,6 +153,26 @@ class Boom_Model_Page extends Model_Taggable
 		return $this;
 	}
 
+	/**
+	 * Delete any feature boxes which have this page as the target.
+	 *
+	 */
+	public function delete_from_feature_boxes()
+	{
+		DB::delete('pages_chunks')
+			->where('type', '=', Chunk::FEATURE)
+			->where('chunk_id', 'IN',
+				DB::select('id')
+					->from('chunk_features')
+					->where('target_page_id', '=', $this->id)
+			)
+			->execute($this->db);
+
+		DB::delete('chunk_features')
+			->where('target_page_id', '=', $this->id)
+			->execute($this->db);
+	}
+
 	public function get_author_names_as_string()
 	{
 		$authors = $this->get_tags_with_name_like('Author/%');
@@ -291,6 +311,8 @@ class Boom_Model_Page extends Model_Taggable
 		// Can't delete a page which doesn't exist.
 		if ($this->_loaded)
 		{
+			$this->delete_from_feature_boxes();
+
 			// Delete the child pages as well?
 			if ($with_children === TRUE)
 			{
