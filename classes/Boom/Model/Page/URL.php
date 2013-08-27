@@ -112,6 +112,7 @@ class Boom_Model_Page_URL extends ORM
 				array('parse_url', array(':value', PHP_URL_PATH)),		// Remove the hostname
 				array('trim', array(':value', '/')),					// Remove '/' from the beginning or end of the link
 				array('preg_replace', array('|/+|', '/', ':value')),		// Remove duplicate forward slashes.
+				array(array('URL', 'title')),
 			),
 		);
 	}
