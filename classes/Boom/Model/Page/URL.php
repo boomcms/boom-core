@@ -31,6 +31,19 @@ class Boom_Model_Page_URL extends ORM
 		return URL::site($this->location, Request::$current);
 	}
 
+	/**
+	 * This is called from Model_Page_URL::create();
+	 *
+	 * This function essentially does the same as ORM::filters().
+	 * However, filters are run when set() is called for a column.
+	 * This causes problems with legacy URLs for Model_Page::url() where a Model_Page_URL object is instantiated, but not saved.
+	 * 
+	 */
+	public function clean_location()
+	{
+		$this->location = preg_replace('![^'.preg_quote('-').'\/\pL\pN\s]+!u', '', $this->location); // Remove all characters that are not the separator, letters, numbers,
+		$this->location = preg_replace('!['.preg_quote('-').'\s]+!u', '-', $this->location); // Replace all separator characters and whitespace by a single separator
+	}
 
 	/**
 	 * Calls [Boom_Model_Page_URL::make_primary()] when a page URL is created which has the is_primary property set to true.
@@ -43,6 +56,8 @@ class Boom_Model_Page_URL extends ORM
 	 */
 	public function create(\Validation $validation = NULL)
 	{
+		$this->clean_location();
+
 		parent::create($validation);
 
 		// If the is_primary property is true.
@@ -112,8 +127,6 @@ class Boom_Model_Page_URL extends ORM
 				array('parse_url', array(':value', PHP_URL_PATH)),		// Remove the hostname
 				array('trim', array(':value', '/')),					// Remove '/' from the beginning or end of the link
 				array('preg_replace', array('|/+|', '/', ':value')),		// Remove duplicate forward slashes.
-				array('preg_replace', array('![^'.preg_quote('-').'\/\pL\pN\s]+!u', '', ':value')),
-				array('preg_replace', array('!['.preg_quote('-').'\s]+!u', '-', ':value')),
 			),
 		);
 	}
