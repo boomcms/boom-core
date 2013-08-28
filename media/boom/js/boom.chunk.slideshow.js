@@ -231,8 +231,12 @@ $.widget('ui.chunkSlideshow', $.ui.chunk,
 			deferred: asset_selected
 		} )
 		.pipe( function( rid ){
-			url_segments[3] = rid;
-			$slide.attr( 'src', url_segments.join( '/' ) );
+			if ($slide.attr( 'src' ).substring(0, 6) == '/asset') {
+				url_segments[3] = rid;
+				$slide.attr( 'src', url_segments.join( '/' ) );
+			} else {
+				$slide.attr( 'src', '/asset/view/' + rid);
+			}
 		})
 		.fail( function() {
 
