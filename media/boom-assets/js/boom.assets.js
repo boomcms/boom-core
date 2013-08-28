@@ -284,8 +284,8 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 
 		var self = this;
 
-		self.main_panel.on('load', function() {
-			self.main_panel.find('#b-items-view-thumbs').justifyAssets({});
+		self.main_panel.on('justify', function() {
+			self.main_panel.find('#b-items-view-thumbs').justifyAssets({}).justifyAssets('justify');
 		});
 
 		$('#boom-assets-upload-menu')
@@ -380,13 +380,13 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 					var title = title_filter.val();
 					if ( title != '' ) self.url_map.tag.filters[ 'title' ] = title;
 					$.boom.history.load( 'tag/0' );
-					self.main_content.trigger('load');
+					self.main_content.trigger('justify');
 				});
 			},
 			select: function(event, ui){
 				self.url_map.tag.filters[ 'title' ] = ui.item.value;
 				$.boom.history.load( 'tag/0' );
-				self.main_content.trigger('load');
+				self.main_content.trigger('justify');
 			}
 		});
 
@@ -419,7 +419,7 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 						$.boom.loader.hide();
 
 						$.boom.history.refresh();
-						self.main_content.trigger('load');
+						self.main_content.trigger('justify');
 					});
 				});
 			})
@@ -626,7 +626,7 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 						file_data.jqXHR && file_data.jqXHR.abort();
 
 						$.boom.history.load( 'tag/' + $.boom.assets.tag.rid );
-						self.main_content.trigger('load');
+						self.main_content.trigger('justify');
 					});
 			});
 

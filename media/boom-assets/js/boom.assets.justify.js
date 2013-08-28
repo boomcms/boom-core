@@ -18,7 +18,7 @@ $.widget('boom.justifyAssets', {
 		this._bind();
 
 		this._setDimensions();
-		this._justify();
+		this.justify();
 	},
 
 	_getOffset : function($el) {
@@ -28,7 +28,7 @@ $.widget('boom.justifyAssets', {
 		return offset;
 	},
 
-	_justify : function() {
+	justify : function() {
 		var currentRow = new Row();
 		var prevRow;
 		var self = this;
