@@ -24,6 +24,7 @@ return array(
 		'boom.chunk.feature.js',
 		'boom.chunk.asset.js',
 		'boom.chunk.slideshow.js',
+		'boom.chunk.timestamp.js',
 		'boom.helpers.js',
 		'boom.browser.js',
 		'boom.links.js',

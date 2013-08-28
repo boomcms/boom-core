@@ -1,22 +1,17 @@
 <?php defined('SYSPATH') OR die('No direct script access.');
+
 /**
-* @package Boom
+* @package BoomCMS
 * @category Chunks
-* @author Hoop Associates	www.thisishoop.com	mail@hoopassociates.co.uk
-* @copyright 2012, Hoop Associates
-*
 */
 abstract class Boom_Chunk
 {
 	const ASSET = 1;
-
 	const FEATURE = 2;
-
 	const LINKSET = 3;
-
 	const SLIDESHOW = 4;
-
 	const TEXT = 5;
+	const TIMESTAMP = 6;
 
 	/**
 	 * Holds the chunk data retrieved from the database
@@ -79,7 +74,7 @@ abstract class Boom_Chunk
 	 *
 	 * @var array
 	 */
-	public static $types = array('asset', 'text', 'feature', 'linkset', 'slideshow');
+	public static $types = array('asset', 'text', 'feature', 'linkset', 'slideshow', 'timestamp');
 
 	public function __construct(Model_Page $page, $chunk, $slotname)
 	{
