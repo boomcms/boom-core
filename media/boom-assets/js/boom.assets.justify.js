@@ -8,7 +8,7 @@ $.widget('boom.justifyAssets', {
 
 		$(window).resize(function() {
 			self._setDimensions();
-			self._justify();
+			self.justify();
 		});
 	},
 
