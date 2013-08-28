@@ -400,7 +400,9 @@ $.widget( 'boom.browser',
 						.html( list )
 						.end()
 						.find( '#b-items-view-thumbs' )
-						.html( thumbs );
+						.html( thumbs )
+						.end()
+						.trigger('justify');
 				});
 
 				return false;
@@ -443,6 +445,8 @@ $.widget( 'boom.browser',
 								.html( response )
 								.ui();
 							instance.bind( self.main_panel );
+
+							self.main_panel.trigger('justify');
 						});
 				}
 			},
