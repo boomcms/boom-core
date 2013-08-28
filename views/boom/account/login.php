@@ -57,7 +57,7 @@
 					</form>
 				</div>
 				<div id="tab-reset" class="ui-tabs-panel">
-					<form id="reset-form" name="reset-form" action="/cms/recover/<? if (isset($token)): ?>?token=<?= $token->token ?>&email=<?= $email ?><? endif ?>" method="post">
+					<form id="reset-form" name="reset-form" action="/cms/recover<? if (isset($token)): ?>?token=<?= $token->token ?>&email=<?= $email ?><? endif ?>" method="post">
 						<?= Form::hidden('csrf', Security::token()) ?>
 
 						<? if (isset($token)): ?>

@@ -35,12 +35,18 @@ class Boom_Controller_Cms_Auth_Recover extends Controller_Cms_Auth
 			))
 			->create();
 
+		$email_body = View::factory('boom/email/recovery', array(
+			'site_name' => Kohana::$config->load('boom')->get('site_name'),
+			'person' => $person,
+			'token' => $token,
+			'request' => $this->request,
+		));
+
 		Email::factory('CMS Password Reset')
 			->to($person->email)
-			->from('support@uxblondon.com')
-			->message(new View('email/recovery', array(
-				'person' => $person,
-				'token' => $token,
+			->from(Kohana::$config->load('boom')->get('support_email'))
+			->message(new View('boom/email', array(
+				'content' => $email_body,
 				'request' => $this->request,
 			)), 'text/html')
 			->send();
