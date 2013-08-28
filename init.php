@@ -17,6 +17,14 @@ Route::set('asset', 'asset/<action>/<id>(.<extension>)(/<width>(/<height>(/<qual
 				return FALSE;
 			}
 
+			if ($params['action'] == 'view' AND $asset->type != Boom_Asset::IMAGE AND substr($request->headers('accept'), 0, 5) == 'image')
+			{
+				// An image response has been requested, but this asset isn't an image.
+				// Show the asset thumbnail instead.
+				$params['action'] = 'thumb';
+			}
+
+
 			// Put the asset in the request params.
 			$params['asset'] = $asset;
 
