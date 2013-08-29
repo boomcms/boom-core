@@ -93,7 +93,7 @@ class Boom_Chunk_Text extends Chunk
 		}
 		else
 		{
-			return View::factory("site/slots/text/$this->_template", array('text' => $text, 'title' => $this->_chunk->title));
+			return View::factory($this->_view_directory."text/$this->_template", array('text' => $text, 'title' => $this->_chunk->title));
 		}
 	}
 
@@ -108,13 +108,13 @@ class Boom_Chunk_Text extends Chunk
 
 		$template = ($this->_template === NULL)? $this->_slotname : $this->_template;
 
-		if ( ! Kohana::find_file('views', "site/slots/text/$template"))
+		if ( ! Kohana::find_file('views', $this->_view_directory."text/$template"))
 		{
 			return "<p>$text</p>";
 		}
 		else
 		{
-			return View::factory("site/slots/text/$template", array(
+			return View::factory($this->_view_directory."text/$template", array(
 				'text'	=>	$text,
 				'title'	=>	$this->_chunk->title,
 			));
