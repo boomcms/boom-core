@@ -1,17 +1,14 @@
 <?php defined('SYSPATH') OR die('No direct script access.');
+
 /**
 * @package	BoomCMS
 * @category	Chunks
-* @author	Rob Taylor
-* @copyright	Hoop Associates
 *
 */
 class Boom_Chunk_Asset extends Chunk
 {
 	protected $_asset;
-
 	protected $_default_template = 'image';
-
 	protected $_type = 'asset';
 
 	public function __construct(Model_Page $page, $chunk, $editable = TRUE)
@@ -49,15 +46,11 @@ class Boom_Chunk_Asset extends Chunk
 		return View::factory("site/slots/default/asset/$this->_template");
 	}
 
-	/**
-	 * Adds a target asset ID data attribute.
-	 *
-	 */
-	public function add_attributes($html, $type, $slotname, $template, $page_id)
+	public function attributes()
 	{
-		$html = parent::add_attributes($html, $type, $slotname, $template, $page_id);
-
-		return preg_replace("|<(.*?)>|", "<$1 data-boom-target='".$this->target()."'>", $html, 1);
+		return array(
+			'data-boom-target' => $this->target(),
+		);
 	}
 
 	public function asset()

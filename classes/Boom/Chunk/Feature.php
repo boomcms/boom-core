@@ -1,9 +1,8 @@
 <?php defined('SYSPATH') OR die('No direct script access.');
+
 /**
 * @package	BoomCMS
 * @category	Chunks
-* @author	Rob Taylor
-* @copyright	Hoop Associates
 *
 */
 class Boom_Chunk_Feature extends Chunk
@@ -51,15 +50,11 @@ class Boom_Chunk_Feature extends Chunk
 		return View::factory("site/slots/default/feature/$this->_template");
 	}
 
-	/**
-	 * Adds a target page ID data attribute.
-	 *
-	 */
-	public function add_attributes($html, $type, $slotname, $template, $page_id)
+	public function attributes()
 	{
-		$html = parent::add_attributes($html, $type, $slotname, $template, $page_id);
-
-		return preg_replace("|<(.*?)>|", "<$1 data-boom-target='".$this->target()."'>", $html, 1);
+		return array(
+			'data-boom-target' => $this->target(),
+		);
 	}
 
 	public function has_content()
@@ -73,10 +68,9 @@ class Boom_Chunk_Feature extends Chunk
 	}
 
 	/**
-	* Returns the target page of the feature.
-	*
-	* @return Model_Page
-	*/
+	 *
+	 * @return Model_Page
+	 */
 	public function target_page()
 	{
 		return $this->_target_page;

@@ -1,11 +1,10 @@
 <?php defined('SYSPATH') OR die('No direct script access.');
+
 /**
-* @package	BoomCMS
-* @category	Chunks
-* @author	Rob Taylor
-* @copyright	Hoop Associates
-*
-*/
+ * @package	BoomCMS
+ * @category	Chunks
+ *
+ */
 class Boom_Chunk_Slideshow extends Chunk
 {
 	protected $_default_template = 'circles';

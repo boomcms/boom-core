@@ -107,20 +107,36 @@ abstract class Boom_Chunk
 	abstract protected function _show_default();
 
 	/**
+	 * Attributes to be added to the chunk HTML. Can be overriden to pass additional info to javascript editor.
+	 *
+	 * @return array()
+	 */
+	public function attributes()
+	{
+		return array();
+	}
+
+	/**
 	 * This adds the necessary classes to chunk HTML for them to be picked up by the JS editor.
 	 * i.e. it makes chunks editable.
 	 *
-	 * @param	string	$html		HTML to add classes to.
-	 * @param	string	$type		The type of chunk to identify this as. This is picked up by the JS to determine which kind of editor to run
-	 * @param	mixed	$template		The name of the template used to display this chunk. When editing this chunk this is submitted to the controller to generate a preview of the chunk.
-	 * @param	integer	$page		ID of the page that the chunk belongs to.
-	 * @return 	string
+	 * @param string $html HTML to add classes to.
+	 * @return string
 	 */
-	public function add_attributes($html, $type, $slotname, $template, $page_id)
+	public function add_attributes($html)
 	{
 		$html = trim( (string) $html);
 
-		return preg_replace("|<(.*?)>|", "<$1 data-boom-chunk='$type' data-boom-slot-name='$slotname' data-boom-slot-template='$template' data-boom-page='$page_id'>", $html, 1);
+		$attributes = array(
+			'data-boom-chunk' => $this->_type,
+			'data-boom-slot-name' => $this->_slotname,
+			'data-boom-slot-template' => $this->_template,
+			'data-boom-page' => $this->_page->id,
+		);
+		$attributes = array_merge($attributes, $this->attributes());
+		$attributes_string = HTML::attributes($attributes);
+
+		return preg_replace("|<(.*?)>|", "<$1 $attributes_string>", $html, 1);
 	}
 
 	/**
@@ -163,7 +179,7 @@ abstract class Boom_Chunk
 
 			if ($this->_editable === TRUE)
 			{
-				$html = $this->add_attributes($html, $this->_type, $this->_slotname, $this->_template, $this->_page->id);
+				$html = $this->add_attributes($html);
 			}
 		}
 		catch (Exception $e)
