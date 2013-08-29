@@ -9,7 +9,14 @@
 	</div>
 	<br />
 
-	<?= Form::select('format', $formats, $format) ?>
+	<label>
+		Format
+		<?= Form::select('format', $formats, $format, array('id' => 'format')) ?>
+	</label>
 
-	<input id="timestamp" name="timestamp" class="boom-input boom-datepicker" value="<?=date("d F Y h:m", $timestamp);?>" />
+	<label>
+		Date / time
+
+		<input id="timestamp" name="timestamp" class="boom-input boom-datepicker" value="<?= date("d F Y h:m", $timestamp) ?>" />
+	</label>
 </div>

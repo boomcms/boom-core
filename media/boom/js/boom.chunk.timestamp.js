@@ -12,10 +12,6 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 	*/
 	{
 
-	format : '',
-
-	timestamp : '',
-
 	/**
 	Make the element editable by invokeing boom.editor.edit() on it.
 	*/
@@ -25,6 +21,8 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 
 		$.boom.log('Timestamp chunk slot edit');
 
+		var data = this.getData();
+
 		this.dialog = $.boom.dialog.open({
 			url: this.options.urlPrefix + '/timestamp/edit/' + $.boom.page.options.id,
 			width: 400,
@@ -32,81 +30,50 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 			// cache: true,
 			title: 'Edit date / time',
 			onLoad : function() {
+				if (self.options.slot.format) {
+					$('#format').val(data.format);
+				}
 
+				var time;
+				if (self.options.slot.timestamp) {
+					time = new Date(data.timestamp * 1000);
+				} else {
+					time = new Date();
+				}
+
+				$( "#timestamp" ).datepicker('setDate', time);
 			},
 			destroy: function(){
 				self.destroy();
 			},
-			open: function(){
+			callback: function(){
+				var format = $('#format').val();
+				var stringDate = $('#timestamp').val();
+				var dateyDate = new Date(stringDate);
+				var timestamp = dateyDate.valueOf() / 1000;
 
+				self
+				._insert(format, timestamp)
+				.done( function(){
+					self.destroy();
+				});
 			}
 		});
 	},
 
-	/**
-	Get the chunk HTML, escaped and cleaned.
-	*/
-	getData : function(){
-		var $content = this.element.find( '.slot-content');
+	_insert : function(format, timestamp) {
+		var self = this;
 
-		if ( $content.length ) {
-			this.content = $content.html();
-			this.title = this.element.find( '.slot-title').text();
-		} else {
-			this.title = null;
-			this.content = this.element.html();
-		}
-
-		return { title : this.title, text : this.content.cleanup() };
+		return $.post(this.options.urlPrefix + '/timestamp/preview/' + $.boom.page.options.id, {slotname : self.options.slot.slotname, format : format, timestamp : timestamp})
+			.done(function(data) {
+				self._apply(data);
+			});
 	},
 
-	/**
-	Update the page with edited HTML from the editor, then remove TinyMCE.
-	@param {String} replacedata HTML to insert into the page.
-	*/
-	_apply: function(replacedata){
-
-		//replacedata = $( replacedata );
-
-		if( replacedata ) {
-			this.element
-				.html( replacedata )
-				.show();
-		}
-
-		this.element
-			.find( '[contenteditable]' )
-			.removeAttr( 'contenteditable' )
-			.off( 'click' );
-
-		this._save_slot();
-
-		this.destroy();
-	},
-
-	/**
-	Remove the slot from the page.
-	*/
-	_remove: function(){
-
-		if( this.element.is( 'div' ) ) {
-			this.element
-				.html( '<p>Default text.</p>' )
-				.show();
-		} else {
-			this.element
-				.text( 'Default text.' )
-				.show();
-		}
-
-		this.element
-			.find( '[contenteditable]' )
-			.removeAttr( 'contenteditable' )
-			.off( 'click' );
-
-		this._save_slot( { "delete" : true } );
-
-		this.destroy();
+	getData: function(){
+		return {
+			format : this.element.attr('data-boom-format'),
+			timestamp: this.element.attr('data-boom-timestamp')
+		};
 	}
-
 });

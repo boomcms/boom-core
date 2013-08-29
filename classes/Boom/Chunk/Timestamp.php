@@ -9,6 +9,13 @@ class Boom_Chunk_Timestamp extends Chunk
 	public static $default_format = 'j F Y';
 	public static $formats = array(
 		'j F Y',
+		'j F Y H:i',
+		'j F Y h:i A',
+		'l j F Y',
+		'l j F Y H:i',
+		'l j F Y h:i A',
+		'H:i',
+		'h:i A',
 	);
 
 	protected $_html_before = "<span class='b-chunk-timestamp'>";
@@ -24,17 +31,12 @@ class Boom_Chunk_Timestamp extends Chunk
 
 	protected function _show()
 	{
-		return $this->_show_timestamp($this->_chunk->format, $this->_chunk->timestamp);
+		return $this->_html_before.date($this->_chunk->format, $this->_chunk->timestamp).$this->_html_after;
 	}
 
 	protected function _show_default()
 	{
-		return $this->_show_timestamp(static::$default_format, time());
-	}
-
-	protected function _show_timestamp($format, $timestamp)
-	{
-		return $this->_html_before.date($format, $timestamp).$this->_html_after;
+		return $this->_html_before.Kohana::message('chunks', 'timestamp').$this->_html_after;
 	}
 
 	public function has_content()

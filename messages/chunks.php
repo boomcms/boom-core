@@ -12,4 +12,5 @@ return array(
 	'video'		=>	'Insert a video.',
 	'download'	=>	'Select an asset for download.',
 	'asset'		=>	'Insert an asset',
+	'timestamp' => 'Select date and / or time.'
 );
