@@ -122,17 +122,13 @@ class Boom_Chunk_Text extends Chunk
 	}
 
 	/**
-	 * Set the iframe height for embedded flash videos.
 	 *
-	 * @param integer
 	 * @return Chunk_Text
 	 */
 	public function embed_height($height)
 	{
-		// Set the new height.
 		$this->_embed_height = $height;
 
-		// Return the current text chunk.
 		return $this;
 	}
 
@@ -197,15 +193,12 @@ class Boom_Chunk_Text extends Chunk
 	/**
 	 * Set the iframe width for embedded flash videos.
 	 *
-	 * @param integer
 	 * @return Chunk_Text
 	 */
 	public function embed_width($width)
 	{
-		// Set the new width.
 		$this->_embed_width = $width;
 
-		// Return the current text chunk.
 		return $this;
 	}
 
@@ -214,9 +207,6 @@ class Boom_Chunk_Text extends Chunk
 		return trim($this->_chunk->text) != NULL;
 	}
 
-	/**
-	 * Returns the text from the chunk.
-	 */
 	public function text()
 	{
 		return $this->_chunk->text;
