@@ -30,7 +30,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 			// cache: true,
 			title: 'Edit date / time',
 			onLoad : function() {
-				if (self.options.slot.format) {
+				if (data.format) {
 					$('#format').val(data.format);
 				}
 
