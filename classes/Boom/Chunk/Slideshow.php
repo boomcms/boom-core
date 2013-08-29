@@ -13,7 +13,7 @@ class Boom_Chunk_Slideshow extends Chunk
 
 	protected function _show()
 	{
-		return View::factory("site/slots/slideshow/$this->_template", array(
+		return View::factory($this->_view_directory."slideshow/$this->_template", array(
 			'chunk'	=>	$this->_chunk,
 			'title'		=>	$this->_chunk->title,
 			'slides'	=>	$this->_chunk->slides(),
@@ -23,7 +23,7 @@ class Boom_Chunk_Slideshow extends Chunk
 
 	public function _show_default()
 	{
-		return View::factory("site/slots/default/slideshow/$this->_template");
+		return View::factory($this->_view_directory."default/slideshow/$this->_template");
 	}
 
 	public function has_content()

@@ -20,7 +20,7 @@ class Boom_Chunk_Asset extends Chunk
 
 	protected function _show()
 	{
-		$v = View::factory("site/slots/asset/$this->_template");
+		$v = View::factory($this->_view_directory."asset/$this->_template");
 
 		// If the URL is just a number then assume it's the page ID for an internal link.
 		if (preg_match('/^\d+$/D', $this->_chunk->url))
@@ -43,13 +43,13 @@ class Boom_Chunk_Asset extends Chunk
 
 	protected function _show_default()
 	{
-		return View::factory("site/slots/default/asset/$this->_template");
+		return View::factory($this->_view_directory."default/asset/$this->_template");
 	}
 
 	public function attributes()
 	{
 		return array(
-			'data-boom-target' => $this->target(),
+			$this->_attribute_prefix.'target' => $this->target(),
 		);
 	}
 

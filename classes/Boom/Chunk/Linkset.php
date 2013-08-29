@@ -32,7 +32,7 @@ class Boom_Chunk_Linkset extends Chunk
 			}
 		}
 
-		return View::factory("site/slots/linkset/$this->_template", array(
+		return View::factory($this->_view_directory."linkset/$this->_template", array(
 			'title'		=>	$this->_chunk->title,
 			'links'	=>	$links,
 		));
@@ -40,7 +40,7 @@ class Boom_Chunk_Linkset extends Chunk
 
 	public function _show_default()
 	{
-		return View::factory("site/slots/default/linkset/$this->_template");
+		return View::factory($this->_view_directory."default/linkset/$this->_template");
 	}
 
 	public function has_content()

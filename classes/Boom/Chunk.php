@@ -13,28 +13,27 @@ abstract class Boom_Chunk
 	const TEXT = 5;
 	const TIMESTAMP = 6;
 
+	protected $_attribute_prefix = 'data-boom-';
+
 	/**
-	 * Holds the chunk data retrieved from the database
-	 * Object type will depend on slottype, e.g. Model_Chunk_Text for text chunk, Model_Chunk_Feature for feature etc.
+	 *
+	 * @var ORM
 	 */
 	protected $_chunk;
 
 	/**
-	 * The name of the default template if no template is set.
+	 *
+	 * @var string
 	 */
 	protected $_default_template = NULL;
 
 	/**
-	 * Whether the chunk should be editable.
 	 *
-	 * This can be changed by calling [Chunk::editable()]
-	 *
-	 * @var	boolean
+	 * @var boolean
 	 */
 	protected $_editable = TRUE;
 
 	/**
-	 * The page that the chunk belongs to.
 	 *
 	 * @var Model_Page
 	 */
@@ -56,18 +55,18 @@ abstract class Boom_Chunk
 	protected $_slotname;
 
 	/**
-	 * The name of the template to display
 	 *
 	 * @var string
 	 */
 	protected $_template;
 
 	/**
-	 * The type of slot; text, feature, etc.
 	 *
 	 * @var string
 	 */
 	protected $_type;
+
+	protected $_view_directory = 'site/slots/';
 
 	/**
 	 * Array of available chunk types.
@@ -128,10 +127,10 @@ abstract class Boom_Chunk
 		$html = trim( (string) $html);
 
 		$attributes = array(
-			'data-boom-chunk' => $this->_type,
-			'data-boom-slot-name' => $this->_slotname,
-			'data-boom-slot-template' => $this->_template,
-			'data-boom-page' => $this->_page->id,
+			$this->_attribute_prefix.'chunk' => $this->_type,
+			$this->_attribute_prefix.'slot-name' => $this->_slotname,
+			$this->_attribute_prefix.'template' => $this->_template,
+			$this->_attribute_prefix.'page' => $this->_page->id,
 		);
 		$attributes = array_merge($attributes, $this->attributes());
 		$attributes_string = HTML::attributes($attributes);

@@ -28,7 +28,7 @@ class Boom_Chunk_Feature extends Chunk
 	public function _show()
 	{
 		// If the template doesn't exist then use a default template.
-		if ( ! Kohana::find_file("views", "site/slots/feature/$this->_template"))
+		if ( ! Kohana::find_file("views", $this->_view_directory."feature/$this->_template"))
 		{
 			$this->_template = $this->_default_template;
 		}
@@ -39,7 +39,7 @@ class Boom_Chunk_Feature extends Chunk
 		// Only show the page feature if the page is visible or the feature box is editable.
 		if ( ! Editor::instance()->state_is(Editor::DISABLED) OR $page->is_visible())
 		{
-			return View::factory("site/slots/feature/$this->_template", array(
+			return View::factory($this->_view_directory."feature/$this->_template", array(
 				'target'	=>	$page,
 			));
 		}
@@ -47,13 +47,13 @@ class Boom_Chunk_Feature extends Chunk
 
 	public function _show_default()
 	{
-		return View::factory("site/slots/default/feature/$this->_template");
+		return View::factory($this->_view_directory."default/feature/$this->_template");
 	}
 
 	public function attributes()
 	{
 		return array(
-			'data-boom-target' => $this->target(),
+			$this->_attribute_prefix.'target' => $this->target(),
 		);
 	}
 
