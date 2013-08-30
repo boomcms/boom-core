@@ -129,7 +129,7 @@ abstract class Boom_Chunk
 		$attributes = array(
 			$this->_attribute_prefix.'chunk' => $this->_type,
 			$this->_attribute_prefix.'slot-name' => $this->_slotname,
-			$this->_attribute_prefix.'template' => $this->_template,
+			$this->_attribute_prefix.'slot-template' => $this->_template,
 			$this->_attribute_prefix.'page' => $this->_page->id,
 		);
 		$attributes = array_merge($attributes, $this->attributes());
