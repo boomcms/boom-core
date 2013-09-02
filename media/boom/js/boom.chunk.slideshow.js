@@ -260,7 +260,8 @@ $.widget('ui.chunkSlideshow', $.ui.chunk,
 			.clone()
 			.insertAfter( $li );
 
-		$new_slide.find('.slide-asset').attr('src', '/media/boom/img/placeholder.png');
+		$new_slide.find('.slide-asset').attr('src', '');
+		$new_slide.find('.slide-caption').html('');
 
 		return self._edit_slide( $new_slide.find( '.slide-asset' ) )
 			.done( function() {
@@ -276,7 +277,6 @@ $.widget('ui.chunkSlideshow', $.ui.chunk,
 				// 					});
 
 				self.options.slider.count++;
-				self.options.slider.flexslider( 'next' );
 			});
 	},
 
