@@ -23,7 +23,7 @@ $.widget('boom.justifyAssets', {
 
 	_getOffset : function($el) {
 		var offset = $el.offset();
-		offset.right = this.windowWidth - (offset.left + $el.outerWidth());
+		offset.right = this.windowWidth - (offset.left + $el.outerWidth(true));
 
 		return offset;
 	},
@@ -53,7 +53,7 @@ $.widget('boom.justifyAssets', {
 
 		var lastRowGap = currentRow.determineGap(this.targetRightOffset);
 
-		if (lastRowGap <= (this.$el.outerWidth() * 0.75)) {
+		if (lastRowGap <= (this.$el.outerWidth(true) * 0.75)) {
 			currentRow.expandTo(self.targetRightOffset);
 		} else {
 			prevRow.merge(currentRow);
@@ -62,7 +62,7 @@ $.widget('boom.justifyAssets', {
 
 	_setDimensions : function() {
 		this.windowWidth = $(window).width();
-		this.targetRightOffset = (this.windowWidth - (this.$el.offset().left + this.$el.outerWidth()));
+		this.targetRightOffset = (this.windowWidth - (this.$el.offset().left + this.$el.outerWidth(true)));
 	}
 });
 
@@ -116,7 +116,7 @@ function Row() {
 		var width = 0;
 
 		$.each(this.elements, function(index, $el) {
-			width += $el.outerWidth();
+			width += $el.outerWidth(true);
 		});
 
 		return width;
