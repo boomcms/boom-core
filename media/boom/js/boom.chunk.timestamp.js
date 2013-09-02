@@ -35,7 +35,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 				}
 
 				var time;
-				if (self.options.slot.timestamp) {
+				if (data.timestamp) {
 					time = new Date(data.timestamp * 1000);
 				} else {
 					time = new Date();
