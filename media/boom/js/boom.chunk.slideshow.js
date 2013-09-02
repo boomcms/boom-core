@@ -260,6 +260,8 @@ $.widget('ui.chunkSlideshow', $.ui.chunk,
 			.clone()
 			.insertAfter( $li );
 
+		$new_slide.find('.slide-asset').attr('src', '/media/boom/img/placeholder.png');
+
 		return self._edit_slide( $new_slide.find( '.slide-asset' ) )
 			.done( function() {
 
