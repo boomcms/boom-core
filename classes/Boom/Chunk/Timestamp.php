@@ -22,11 +22,12 @@ class Boom_Chunk_Timestamp extends Chunk
 	protected $_html_after = "</span>";
 	protected $_type = 'timestamp';
 
-	public function add_attributes($html, $type, $slotname, $template, $page_id)
+	public function attributes()
 	{
-		$html = parent::add_attributes($html, $type, $slotname, $template, $page_id);
-
-		return preg_replace("|<(.*?)>|", "<$1 data-boom-timestamp='".$this->_chunk->timestamp."' data-boom-format='".$this->_chunk->format."'>", $html, 1);
+		return array(
+			$this->_attribute_prefix.'timestamp' => $this->_chunk->timestamp,
+			$this->_attribute_prefix.'format' => $this->_chunk->format,
+		);
 	}
 
 	protected function _show()
