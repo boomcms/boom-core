@@ -26,6 +26,11 @@ $.widget( 'boom.page', {
 	*/
 	cancel_button: $('#b-page-cancel'),
 
+	/**
+	 @property status_button
+	 */
+	status_button: $('#b-page-version-status'),
+
 	_init : function() {
 
 	},
@@ -192,7 +197,7 @@ $.widget( 'boom.page', {
 
 				$.post( '/cms/page/version/embargo/' + self.options.id, {csrf : $.boom.options.csrf} )
 				.done( function(response){
-					$('#b-page-version-status span').text(response);
+					$.boom.page.setStatus(response);
 					$.boom.loader.hide();
 
 				});
@@ -312,7 +317,7 @@ $.widget( 'boom.page', {
 					$.boom.page.save_button.button( 'disable' ).attr( 'title', 'You have no unsaved changes' );
 					$.boom.page.cancel_button.button( 'disable' ).attr( 'title', 'You have no unsaved changes' );
 
-					$('#b-page-version-status span').text(response);
+					$.boom.page.setStatus(response);
 				}
 			})
 		.fail( function(response){
@@ -333,6 +338,21 @@ $.widget( 'boom.page', {
 		.always( function(){
 			$.boom.loader.hide();
 		});
+	},
+
+	setStatus : function(status) {
+		$.boom.page.status_button.find('span').text(status);
+
+		if (status == 'live') {
+			$.boom.page.status_button
+				.button('disable')
+				.addClass('live');
+		} else {
+			$.boom.page.status_button
+				.button('enable')
+				.removeClass('live');
+		}
+
 	}
 } );
 
@@ -1401,7 +1421,7 @@ $.widget( 'boom.page', $.boom.page, {
 									"Page feature image saved."
 								)
 								.done(function(response) {
-									$('#b-page-version-status span').text(response);
+									$.boom.page.setStatus(response);
 								});
 
 								$.boom.dialog.destroy( this );
@@ -1508,7 +1528,7 @@ $.widget( 'boom.page', $.boom.page, {
 							"Page embargo saved."
 						)
 						.done(function(response) {
-							$('#b-page-version-status span').text(response);
+							$.boom.page.setStatus(response);
 						});
 					},
 					open: function(){

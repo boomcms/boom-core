@@ -52,7 +52,7 @@
 		</div>
 
 		<div class="b-page-container">
-			<button id="b-page-version-status" class="ui-button boom-button">
+			<button id="b-page-version-status" class="ui-button boom-button<? if ($page->status() == 'live'): ?> live<? endif ?>"<? if ($page->status() == 'live'): ?>disabled='disabled'<? endif ?>>
 				<?= __($page->status()) ?>
 			</button>
 
