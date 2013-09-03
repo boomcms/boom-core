@@ -60,15 +60,36 @@
 					max-height: 100%;
 				}
 
-				span {
-					top: auto;
-					width: 100%;
-					bottom: 0;
-					height: 4em;
+				.b-asset-details {
 
-					&.caption {
-						width: 95%;
+					max-height: 0;
+					display: none;
+					position: absolute;
+					bottom: 0;
+					left: 0;
+					right: 0;
+					background: #ffd200;
+					z-index: 2;
+					color: black;
+					padding: 5px;
+					font-size: 1.1em;
+					line-height: 1.4em;
+
+					h1 {
 						text-align: center;
+					}
+
+					img.type {
+						width: 16px;
+						height: 16px;
+					}
+				}
+
+				&:hover, &:focus, &:active {
+					.b-asset-details {
+						display: block;
+						font-weight: normal;
+						max-height: 100%;
 					}
 				}
 			}
