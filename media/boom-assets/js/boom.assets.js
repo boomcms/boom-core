@@ -285,7 +285,7 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 		var self = this;
 
 		self.main_panel.on('justify', function() {
-			self.main_panel.find('#b-items-view-thumbs').justifyAssets({}).justifyAssets('justify');
+			self.main_panel.find('#b-assets-view-thumbs').justifyAssets({}).justifyAssets('justify');
 		});
 
 		$('#boom-assets-upload-menu')
@@ -516,7 +516,7 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 		var select_asset = new $.Deferred();
 
 		$( self.main_panel )
-			.on( 'click', '#b-items-view-thumbs a', function(event){
+			.on( 'click', '#b-assets-view-thumbs a', function(event){
 
 				var data = $(this).attr('href').split('/');
 				var rid = parseInt( data[1], 10 );

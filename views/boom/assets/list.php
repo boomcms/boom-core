@@ -16,7 +16,7 @@
 		</select>
 	</div>
 
-	<div id="b-items-view-thumbs" class="b-items-thumbs ui-helper-left">
+	<div id="b-assets-view-thumbs" class="ui-helper-left">
 		<? foreach ($assets as $asset): ?>
 			<div style="height: 160px; width: <?= floor(160 * $asset->get_aspect_ratio()) ?>px" data-aspect-ratio="<?= $asset->get_aspect_ratio() ?>">
 				<div class="thumb">
