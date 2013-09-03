@@ -1,7 +1,7 @@
 <div class="ui-helper-right" style="padding: .4em .6em 0 0;">
 	<?
 		if (isset($pagination)):
-			echo "<div class='boom-pagination ui-helper-left'>", $pagination, "</div>";
+			echo "<div id='b-assets-pagination' class='boom-pagination ui-helper-left'>", $pagination, "</div>";
 		endif;
 	?>
 
