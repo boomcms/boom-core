@@ -15,57 +15,6 @@
 			<option value="filesize-desc" <? if ($sortby == 'filesize-desc') echo "selected='selected'"; ?>>Size (largest)</option>
 		</select>
 	</div>
-	<ul>
-		<li><a href="#b-items-view-thumbs" class="boom-button" data-icon="ui-icon-boom-thumbnails">Thumbnails</a></li>
-		<li><a href="#b-items-view-list" class="boom-button" data-icon="ui-icon-boom-list">List</a></li>
-	</ul>
-
-	<div id="b-items-view-list">
-		<table width="100%">
-			<tr>
-				<th class="ui-helper-reset">
-					<input id="b-assets-toggleall" type="checkbox" title="Select all" />
-				</th>
-				<th class="ui-helper-center" align="center">
-					<?=__('Last edited')?>
-				</th>
-				<th>
-					<?=__('Title')?>
-				</th>
-				<th>
-					<?=__('Filesize')?>
-				</th>
-				<th>
-					<?=__('Uploaded on')?>
-				</th>
-				<th>
-					<?=__('Uploaded by')?>
-				</th>
-			</tr>
-			<? foreach ($assets as $asset): ?>
-				<tr title='<?= $asset->description ?>'>
-					<td class="ui-helper-reset">
-						<input type="checkbox" class="b-items-select-checkbox ui-helper-reset" id="asset-list-<?=$asset->id?>" />
-					</td>
-					<td class="ui-helper-center" align="center">
-						<label for="asset-<?=$asset->id?>"><?=date('M j Y', $asset->last_modified)?></label>
-					</td>
-					<td>
-						<a href="#asset/<?=$asset->id?>"><img src="/media/boom/img/icons/16x16/icon_<?= strtolower($asset->type()) ?>.gif" /> <?=$asset->title?></a>
-					</td>
-					<td>
-						<?= Text::bytes($asset->filesize) ?>
-					</td>
-					<td>
-						<?=date('M j Y', $asset->uploaded_time)?>
-					</td>
-					<td>
-						<?= $asset->uploader->name ?>
-					</td>
-				</tr>
-			<? endforeach; ?>
-		</table>
-	</div>
 
 	<div id="b-items-view-thumbs" class="b-items-thumbs ui-helper-left">
 		<? foreach ($assets as $asset): ?>
