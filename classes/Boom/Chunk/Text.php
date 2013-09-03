@@ -68,23 +68,7 @@ class Boom_Chunk_Text extends Chunk
 	 */
 	protected function _show()
 	{
-		$text = html_entity_decode($this->_chunk->text);
-		$text = $this->_chunk->unmunge($text);
-
-		// When in site view...
-		if (Editor::instance()->state() != Editor::EDIT)
-		{
-			// Embed youtube videos.
-			$text = preg_replace_callback('~(?<!href=)(?:ht|f)tps?://[^<\s]+(?:/|\b)~i', array($this, 'embed_video'), $text);
-
-			// If we're displaying a bodycopy link to the images in the text.
-			// We can then use these links to show the images in an larger popup when the link is clicked.
-			// Both the regular expressions below match images which aren't already part of a link.
-			// The first regex matches images from the asset manager and links to the full size image (i.e. excludes width and height from the link).
-			// The second regex matches all other images and links to the image as it appears in the img tag.
-			$text = preg_replace('~(?<!href="|">)<img.*?src=["\']/asset/view/(\d+).*?["\'].*?>(?!\<\/a\>)~i', '<a href="/asset/view/${1}" class="b-image">${0}</a>', $text);
-			$text = preg_replace('~(?<!href="|">)<img.*?src=["\'](.*?)["\'].*?>(?!\<\/a\>)~i', '<a href="${1}" class="b-image">${0}</a>', $text);
-		}
+		$text = $this->text();
 
 		// If no template has been set then add the default HTML tags for this slotname.
 		if ($this->_template === NULL)
@@ -209,6 +193,26 @@ class Boom_Chunk_Text extends Chunk
 
 	public function text()
 	{
-		return $this->_chunk->text;
+		$text = $this->_chunk->text;
+
+		$text = html_entity_decode($this->_chunk->text);
+		$text = $this->_chunk->unmunge($text);
+
+		// When in site view...
+		if (Editor::instance()->state() != Editor::EDIT)
+		{
+			// Embed youtube videos.
+			$text = preg_replace_callback('~(?<!href=)(?:ht|f)tps?://[^<\s]+(?:/|\b)~i', array($this, 'embed_video'), $text);
+
+			// If we're displaying a bodycopy link to the images in the text.
+			// We can then use these links to show the images in an larger popup when the link is clicked.
+			// Both the regular expressions below match images which aren't already part of a link.
+			// The first regex matches images from the asset manager and links to the full size image (i.e. excludes width and height from the link).
+			// The second regex matches all other images and links to the image as it appears in the img tag.
+			$text = preg_replace('~(?<!href="|">)<img.*?src=["\']/asset/view/(\d+).*?["\'].*?>(?!\<\/a\>)~i', '<a href="/asset/view/${1}" class="b-image">${0}</a>', $text);
+			$text = preg_replace('~(?<!href="|">)<img.*?src=["\'](.*?)["\'].*?>(?!\<\/a\>)~i', '<a href="${1}" class="b-image">${0}</a>', $text);
+		}
+
+		return $text;
 	}
 }
