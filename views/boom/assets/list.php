@@ -18,12 +18,11 @@
 
 	<div id="b-items-view-thumbs" class="b-items-thumbs ui-helper-left">
 		<? foreach ($assets as $asset): ?>
-			<div class="boom-tagmanager-assets b-items-thumbs ui-helper-clearfix" style="height: 160px; width: <?= floor(160 * $asset->get_aspect_ratio()) ?>px" data-aspect-ratio="<?= $asset->get_aspect_ratio() ?>">
+			<div class="b-items-thumbs ui-helper-clearfix" style="height: 160px; width: <?= floor(160 * $asset->get_aspect_ratio()) ?>px" data-aspect-ratio="<?= $asset->get_aspect_ratio() ?>">
 				<div class="thumb ui-corner-all">
-
 					<input type="checkbox" class="b-items-select-checkbox ui-helper-reset" id="asset-thumb-<?=$asset->id?>" />
 
-					<a href="#asset/<?=$asset->id?>" class='boom-tagmanager-thumb-link'>
+					<a href="#asset/<?=$asset->id?>">
 						<img src="/asset/thumb/<?=$asset->id?>/400/0" />
 						<span class="caption"><?=$asset->title?></span>
 						<span class="caption-overlay"></span>
