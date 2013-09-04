@@ -33,7 +33,7 @@ class Boom_Model_Chunk_Text extends ORM
 			// For standfirsts remove all HTML tags.
 			return strip_tags($text);
 		}
-		elseif ($this->slotname == 'bodycopy' OR $this->slotname == 'bodycopy2')
+		elseif (substr($this->slotname, 0, 8) == 'bodycopy')
 		{
 			// For the bodycopy clean the HTML.
 			require_once Kohana::find_file('vendor', 'htmlpurifier/library/HTMLPurifier.auto');
