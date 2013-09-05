@@ -1,6 +1,3 @@
-[submodule "vedor/openid"]
-	path = vedor/openid
-	url = git://gitorious.org/lightopenid/lightopenid.git
 [submodule "vendor/openid"]
 	path = vendor/openid
-	url = git://gitorious.org/lightopenid/lightopenid.git
+	url = git://github.com/boomcms/lightopenid
