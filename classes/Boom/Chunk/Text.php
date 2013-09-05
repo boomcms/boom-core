@@ -101,6 +101,7 @@ class Boom_Chunk_Text extends Chunk
 			return View::factory($this->_view_directory."text/$template", array(
 				'text'	=>	$text,
 				'title'	=>	$this->_chunk->title,
+				'chunk' => $this->_chunk,
 			));
 		}
 	}
