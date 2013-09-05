@@ -31,8 +31,8 @@
 				<label for="description"><?=__('Description')?></label>
 				<textarea id="description" name="description" class="boom-textarea"><?= $asset->description ?></textarea>
 
-				<label for="copyright"><?=__('Copyright')?></label>
-				<textarea id="copyright" name="copyright" class="boom-textarea"><?= $asset->copyright ?></textarea>
+				<label for="credits"><?=__('Credits')?></label>
+				<textarea id="credits" name="credits" class="boom-textarea"><?= $asset->credits ?></textarea>
 
 				<label for="visible_from">Visible from</label>
 				<input type="text" id="visible_from" name="visible_from" class="boom-datepicker boom-input" value="<?= date('d F Y h:m', $asset->visible_from);?>" />
