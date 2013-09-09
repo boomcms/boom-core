@@ -318,7 +318,7 @@ class Boom_Controller_Cms_Assets extends Boom_Controller
 		}
 
 		$this->asset
-			->values($this->request->post(), array('title','description','visible_from', 'thumbnail_asset_id', 'copyright'))
+			->values($this->request->post(), array('title','description','visible_from', 'thumbnail_asset_id', 'credits'))
 			->update();
 	}
 

@@ -36,15 +36,14 @@
 				</label>
 
 				<label>
-					<?=__('Copyright')?>
-					<textarea id="copyright" name="copyright"><?= $asset->copyright ?></textarea>
+					<?=__('Credits')?>
+					<textarea id="credits" name="credits"><?= $asset->credits ?></textarea>
 				</label>
 
 				<label>
 					<?= __('Visible from') ?>
 					<input type="text" id="visible_from" name="visible_from" class="boom-datepicker" value="<?= date('d F Y h:m', $asset->visible_from);?>" />
 				</label>
-
 
 				<? if ($asset->type != Boom_Asset::IMAGE): ?>
 					<label for="thumbnail">Thumbnail asset ID
