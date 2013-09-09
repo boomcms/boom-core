@@ -1,5 +1,5 @@
 <div id="b-assets-view" class="b-items-view">
-	<form onsubmit="return false;">
+	<form onsubmit="return false;" class="b-form">
 		<?= Form::hidden('csrf', Security::token()) ?>
 		<input type="hidden" name="id" id="asset_id" value="<?= $asset->id?>" />
 
