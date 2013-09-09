@@ -24,18 +24,27 @@
 
 			</div>
 
-			<div id="b-assets-view-attributes<?=$asset->id;?>" class="ui-helper-left">
-				<label for="title"><?=__('Title')?></label>
-				<input type="text" id="title" name="title" class="boom-input" value="<?= $asset->title ?>" />
+			<div id="b-assets-view-attributes<?=$asset->id;?>" class="b-assets-view-attributes ui-helper-left">
+				<label>
+					<?=__('Title')?>
+					<input type="text" id="title" name="title" value="<?= $asset->title ?>" />
+				</label>
 
-				<label for="description"><?=__('Description')?></label>
-				<textarea id="description" name="description" class="boom-textarea"><?= $asset->description ?></textarea>
+				<label>
+					<?=__('Description')?>
+					<textarea id="description" name="description"><?= $asset->description ?></textarea>
+				</label>
 
-				<label for="copyright"><?=__('Copyright')?></label>
-				<textarea id="copyright" name="copyright" class="boom-textarea"><?= $asset->copyright ?></textarea>
+				<label>
+					<?=__('Copyright')?>
+					<textarea id="copyright" name="copyright"><?= $asset->copyright ?></textarea>
+				</label>
 
-				<label for="visible_from">Visible from</label>
-				<input type="text" id="visible_from" name="visible_from" class="boom-datepicker boom-input" value="<?= date('d F Y h:m', $asset->visible_from);?>" />
+				<label>
+					<?= __('Visible from') ?>
+					<input type="text" id="visible_from" name="visible_from" class="boom-datepicker" value="<?= date('d F Y h:m', $asset->visible_from);?>" />
+				</label>
+
 
 				<? if ($asset->type != Boom_Asset::IMAGE): ?>
 					<label for="thumbnail">Thumbnail asset ID
