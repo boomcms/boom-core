@@ -648,14 +648,12 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 	showContent : function(content) {
 		var $content = $(content);
 
-		this.main_panel
-			.find( '.b-items-content' )
-			.html($content.get(0))
+		$('#b-assets-content')
+			.replaceWith($content.get(0))
 			.ui();
 
+		$('#b-assets-view-thumbs').justifyAssets();
 		$('#b-assets-pagination').replaceWith($content.get(2));
 		$('#b-assets-stats').replaceWith($content.get(4));
-
-		this.main_panel.trigger('justify');
 	}
 });

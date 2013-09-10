@@ -113,9 +113,7 @@ class Boom_Controller_Cms_Assets extends Boom_Controller
 	public function action_index()
 	{
 		$this->template = View::factory("$this->_view_directory/index", array(
-			'content'	=>	Request::factory('cms/assets/manager')
-				->execute()
-				->body(),
+			'content'	=>	'',
 			'person'	=>	$this->person,
 		));
 	}
@@ -262,19 +260,6 @@ class Boom_Controller_Cms_Assets extends Boom_Controller
 				$this->template->set('pagination', $pagination);
 			}
 		}
-	}
-
-	/**
-	 * Display the asset manager.
-	 *
-	 * Used by the CMS assets page (/cms/assets) and for editing asset chunks, slideshows, feature images etc.
-	 *
-	 */
-	public function action_manager()
-	{
-		$this->template = View::factory("$this->_view_directory/manager", array(
-			'filters'	=>	Request::factory('cms/assets/filters')->execute(),
-		));
 	}
 
 	public function action_restore()

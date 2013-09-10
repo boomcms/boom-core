@@ -5,11 +5,6 @@ $.widget('boom.justifyAssets', {
 
 	_bind : function() {
 		var self = this;
-
-		$(window).resize(function() {
-			self._setDimensions();
-			self.justify();
-		});
 	},
 
 	_create : function() {
@@ -32,7 +27,8 @@ $.widget('boom.justifyAssets', {
 		var currentRow = new Row();
 		var prevRow;
 		var self = this;
-
+console.log(this.$el);
+console.log(this.$el.children());
 		this.$el.children().each(function(index, element) {
 			var $child = $(element);
 			$child.offset = self._getOffset($child);
