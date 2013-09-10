@@ -46,7 +46,7 @@
 
 		<input type='text' class="b-filter-input" id="b-assets-filter-title" placeholder="Search by asset name" />
 
-		<?= Form::select('types', ORM::factory('Asset')->types(), NULL, array('id' => 'b-assets-types')) ?>
+		<?= Form::select('types', array_merge(array('' => 'Filter by type'), ORM::factory('Asset')->types()), NULL, array('id' => 'b-assets-types')) ?>
 
 		<div id='b-tags-search'>
 			<input type='text' class="b-filter-input" placeholder="Type a tag name" />
