@@ -13,13 +13,8 @@
 
 							<p>
 								<strong>Type</strong> <?= ucfirst($asset->type()) ?><br />
-								<strong>Last edited</strong> <?= date('M j Y', $asset->last_modified) ?><br />
+								<strong>Description</strong> <?= ($asset->description)? Text::limit_words($asset->description, 5) : 'None set' ?><br />
 								<strong>Filesize</strong> <?= Text::bytes($asset->filesize) ?><br />
-								<strong>Uploaded on</strong> <?= date('M j Y', $asset->uploaded_time) ?><br />
-
-								<? if ($asset->uploaded_by): ?>
-									<strong>Uploaded by</strong> <?= $asset->uploaded_by ?><br />
-								<? endif ?>
 
 								<? if ($asset->downloads): ?>
 									<strong>Downloads</strong> <?= $asset->downloads ?><br />
