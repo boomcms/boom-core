@@ -396,7 +396,7 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 
 		$( '#b-tags-search' ).tagger_search();
 
-		$( '#boom-topbar' )
+		$( '#b-topbar' )
 			.on( 'click', '#b-button-multiaction-delete', function(){
 
 				$.boom.log( 'asset delete selected' );
