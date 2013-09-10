@@ -199,7 +199,7 @@ $.widget( 'boom.browser_people', $.boom.browser,
 			});
 		});
 
-		$('#boom-topbar')
+		$('#b-topbar')
 			.on('click', '#b-button-multiaction-edit', function(){
 
 				var ids = [];
@@ -242,5 +242,41 @@ $.widget( 'boom.browser_people', $.boom.browser,
 					});
 			});
 
+		self.main_panel
+			.on( 'change', '#boom-tagmanager-sortby-select', function( event ){
+				self.tag.options.sortby = this.value;
+				$.boom.history.refresh();
+			})
+			.on( 'mouseenter focus', '#b-items-view-list tbody tr, #b-items-view-thumbs a', function( event ){
+				$( this ).addClass( 'ui-state-hover' );
+			})
+			.on( 'mouseleave blur', '#b-items-view-list tbody tr, #b-items-view-thumbs a', function( event ){
+				$( this ).removeClass( 'ui-state-hover' );
+			})
+			.on( 'click', '.boom-pagination a', function( e ){
+				e.preventDefault();
+
+				//$.boom.history.load( '/cms/assets/list?' + $( this ).attr( 'href' ).split( '?' )[ 1 ] );
+				$.get( '/cms/assets/list?' + $( this ).attr( 'href' ).split( '?' )[ 1 ])
+				.done( function( data ){
+					var $data = $( data );
+					var pagination = $data.find( '.boom-pagination' ).html();
+					var list = $data.find( '#b-items-view-list' ).html();
+					var thumbs = $data.find( '#b-items-view-thumbs' ).html();
+					$( self.main_panel )
+						.find( '.boom-pagination' )
+						.html( pagination )
+						.end()
+						.find( '#b-items-view-list' )
+						.html( list )
+						.end()
+						.find( '#b-items-view-thumbs' )
+						.html( thumbs )
+						.end()
+						.trigger('justify');
+				});
+
+				return false;
+			});
 	}
 });

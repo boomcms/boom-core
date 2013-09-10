@@ -1,10 +1,10 @@
 	<?= View::factory('boom/header')->set('title', 'People') ?>
 
-	<div id="boom-topbar" class="ui-helper-clearfix ui-tabs ui-widget ui-widget-content ui-corner-all">
+	<div id="b-topbar" class="ui-helper-clearfix ui-tabs ui-widget ui-widget-content ui-corner-all">
 
 		<?= Menu::factory('boom')->sort('priority') ?>
 
-		<div id="boom-topbar-useractions">
+		<div id="b-topbar-useractions">
 			<span id="boom-page-user-menu">
 				<button id="b-page-user" class="boom-button" data-icon="ui-icon-boom-person">
 					<?=__('Profile')?>
