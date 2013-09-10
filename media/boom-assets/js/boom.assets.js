@@ -89,13 +89,12 @@ $.extend($.boom.assets,
 				var stats = $('<div id="b-assets-stats"></div>');
 
 				if ( opts.asset_rid && opts.asset_rid > 0 ) {
-
 					remove.button( 'enable');
 
 				} else {
-
 					remove.button( 'disable' );
 				}
+
 				$(this).dialog('widget')
 					.find('.ui-dialog-buttonpane')
 					.prepend( upload )

@@ -36,7 +36,6 @@ class Boom_Model_Asset extends Model_Taggable
 		'visible_from'		=>	'',
 		'type'			=>	'',
 		'filesize'			=>	'',
-		'deleted'			=>	FALSE,
 		'duration'			=>	'',
 		'uploaded_by'		=>	'',
 		'uploaded_time'	=>	'',
@@ -102,37 +101,15 @@ class Boom_Model_Asset extends Model_Taggable
 	/**
 	 * Delete an asset.
 	 *
-	 * Assets are deleted in two stages:
-	 *
-	 * * If the deleted property is false then this is changed to true and the asset is merely marked as deleted.
-	 * * If the asset is already marked as deleted then the asset is deleted for real.
-	 *
-	 * An asset which hasn't already been marked as deleted can be deleted entirely by calling with the first paramater set to TRUE.
-	 *
-	 * @param boolean $force
-	 * @uses ORM::delete()
-	 *
 	 * @return \Boom_Model_Asset
 	 */
-	public function delete($force = FALSE)
+	public function delete()
 	{
-		if ($this->deleted OR $force)
-		{
-			$this->delete_files();
-			$this->delete_from_assets_chunks();
-			$this->delete_from_slideshows();
+		$this->delete_files();
+		$this->delete_from_assets_chunks();
+		$this->delete_from_slideshows();
 
-			// Asset is already marked as deleted, so delete it for real.
-			return parent::delete();
-		}
-		else
-		{
-			// Asset hasn't been marked as deleted yet
-			// So only pretend that it's deleted for now.
-			return $this
-				->set('deleted', TRUE)
-				->update();
-		}
+		return parent::delete();
 	}
 
 	public function delete_cache_files()
@@ -366,7 +343,6 @@ class Boom_Model_Asset extends Model_Taggable
 		$types = DB::select('type')
 			->distinct(TRUE)
 			->from('assets')
-			->where('deleted', '=', FALSE)
 			->where('type', '!=', 0)
 			->execute($this->_db)
 			->as_array();

@@ -55,39 +55,25 @@ class Boom_Controller_Cms_Assets extends Boom_Controller
 			$this->asset->delete();
 		}
 
-		// Get any asset IDs from the POST data.
-		$asset_ids = (array) $this->request->post('assets');
-
-		// Make sure no assets appear in the array multiple times.
-		$asset_ids = array_unique($asset_ids);
+		$asset_ids = array_unique((array) $this->request->post('assets'));
 
 		foreach ($asset_ids as $asset_id)
 		{
-			// Load the asset from the database.
 			$this->asset
 				->where('id', '=', $asset_id)
 				->find();
 
 			if ( ! $this->asset->loaded())
 			{
-				// Invalid asset ID
-				// Move along, nothing to see here, etc.
+				// Move along, nothing to see here.
 				continue;
 			}
 
-			// Log a different action depending on whether the asset is being completely deleted
-			// or just marked as deleted.
-			$log_message = ($this->asset->deleted)? "Deleted asset $this->asset->title (ID: $this->asset->id)" : "Moved asset $this->asset->title (ID: $this->asset->id) to rubbish bin.";
+			$this->log("Deleted asset $this->asset->title (ID: $this->asset->id)");
 
-			// Call [Model_Asset::delete()]
-			// If the asset isn't marked as deleted then it will be marked it as so.
-			// If it's already marked as deleted then it will be deleted it for real.
 			$this->asset
 				->delete()
 				->clear();
-
-			// Log the action.
-			$this->log($log_message);
 		}
 	}
 
@@ -113,7 +99,7 @@ class Boom_Controller_Cms_Assets extends Boom_Controller
 	public function action_index()
 	{
 		$this->template = View::factory("$this->_view_directory/index", array(
-			'content'	=>	'',
+			'manager'	=>	Request::factory('cms/assets/manager')->execute()->body(),
 			'person'	=>	$this->person,
 		));
 	}
@@ -202,9 +188,6 @@ class Boom_Controller_Cms_Assets extends Boom_Controller
 			$query->where('assets.type', '=', constant('Boom_Asset::' . strtoupper($type)));
 		}
 
-		// Filtering by deleted assets?
-		$query->where('deleted', '=', ($this->request->query('rubbish') == 'rubbish'));
-
 		// Clone the query to count the number of matching assets and their total size.
 		$query2 = clone $query;
 		$result = $query2
@@ -260,6 +243,15 @@ class Boom_Controller_Cms_Assets extends Boom_Controller
 				$this->template->set('pagination', $pagination);
 			}
 		}
+	}
+
+	/**
+	 * Display the asset manager without topbar etc.
+	 *
+	 */
+	public function action_manager()
+	{
+		$this->template = View::factory("$this->_view_directory/manager");
 	}
 
 	public function action_restore()

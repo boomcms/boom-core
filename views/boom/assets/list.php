@@ -14,7 +14,6 @@
 							<p>
 								<strong>Type</strong> <?= ucfirst($asset->type()) ?><br />
 								<strong>Description</strong> <?= ($asset->description)? Text::limit_words($asset->description, 5) : 'None set' ?><br />
-								<strong>Filesize</strong> <?= Text::bytes($asset->filesize) ?><br />
 
 								<? if ($asset->downloads): ?>
 									<strong>Downloads</strong> <?= $asset->downloads ?><br />
