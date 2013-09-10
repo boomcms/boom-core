@@ -273,21 +273,6 @@ $.widget( 'boom.browser',
 				return false;
 			});
 
-		var tag_name  = self.options.defaultRoute.split( '/' )[ 0 ];
-
-		var item_selected = function( $item ){
-			$( '#tag_all' ).removeClass( 'ui-state-active' );
-
-			$.boom.log( 'adding active class' );
-			$item
-				.parents( '.b-tags-tree' )
-				.find( 'a.ui-state-active' )
-				.removeClass( 'ui-state-active' )
-				.end()
-				.end()
-				.addClass( 'ui-state-active' );
-		};
-
 		var multi_select = function( $item ){
 			var tags = [];
 
@@ -313,44 +298,6 @@ $.widget( 'boom.browser',
 
 			return tags;
 		};
-
-		self.treeConfig = $.extend({}, $.boom.config.tree, {
-			toggleSelected: false,
-			click: false,
-			onClick: function(event){
-				$this = $(this);
-
-				var tags = multi_select( $this );
-
-				self.tag.set_filters( tags );
-
-				$.boom.history.load( tag_name + '/' + self.tag.rid );
-				return false;
-			}
-
-		});
-
-		$( '.boom-filter-tree' )
-			.tree( self.treeConfig );
-
-		self.editableTreeConfig = $.extend({}, self.treeConfig, {
-			maxSelected: 1,
-			toggleSelected: false,
-			preventDefault: true,
-			onClick: function(event){
-				$this = $(this);
-				item_selected( $this );
-
-				self.tag.rid =
-					$this
-						.attr( 'href' )
-						.split('/')
-						[1];
-
-				$.boom.history.load( tag_name + '/' + self.tag.rid );
-				return false;
-			}
-		});
 
 		self.main_panel
 			.on( 'change', '.b-items-select-checkbox', function( event ){
