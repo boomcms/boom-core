@@ -1,12 +1,39 @@
-form.b-form {
-	label {
-		width: 100%;
-		font-size: 1.2em;
-		margin-top: 0.3em;
+form {
+	&.b-form {
+		label {
+			width: 100%;
+			font-size: 1.2em;
+			margin-top: 0.3em;
 
-		input, select, textarea {
-			float: right;
-			width: 70%;
+			input, select, textarea {
+				float: right;
+				width: 70%;
+			}
+		}
+	}
+
+	&.b-form-settings {
+		p {
+			width: 100%;
+
+			label, input {
+				display: inline-block;
+			}
+
+			label {
+				width: 15em;
+			}
+
+			textarea {
+				width: 100%;
+				margin-top: 0.5em;
+			}
+		}
+
+		&.narrow {
+			p label {
+				width: 8em;
+			}
 		}
 	}
 }

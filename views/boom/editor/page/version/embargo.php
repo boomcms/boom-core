@@ -1,13 +1,14 @@
-<form id="b-form-pageversion-embargo">
+<form class="b-form-settings narrow">
 	<?= Form::hidden('csrf', Security::token()) ?>
-	<div class="b-pagesettings">
-		<label for="page-visible"><?=__('Embargo')?></label>
-		<select id="page-visible" name="embargoed" class="boom-input boom_select">
-			<option value='1' <? if ($version->embargoed_until > $_SERVER['REQUEST_TIME']) echo "selected='selected'"; ?>>Yes</option>
-			<option value='0' <? if ($version->embargoed_until <= $_SERVER['REQUEST_TIME']) echo "selected='selected'"; ?>>No</option>
-		</select>
+	<div>
+		<p>
+			<label for="page-visible"><?=__('Embargo')?></label>
+			<?= Form::select('embargoed', array(1 => 'Yes', 0 => 'No'), ($version->embargoed_until > $_SERVER['REQUEST_TIME']), array('id' => 'page-visible')) ?>
+		</p>
 
-		<label for="page-embargo"><?=__('Embargo until')?></label>
-		<input <? if ($version->embargoed_until <= $_SERVER['REQUEST_TIME']) echo "disabled='disabled'"; ?> id="page-embargo" name="embargoed_until" class="boom-input boom-datepicker" value="<?= ($version->embargoed_until)? date("d F Y h:i", $version->embargoed_until) : date("d F Y h:i", $_SERVER['REQUEST_TIME']); ?>" />
+		<p>
+			<label for="page-embargo"><?=__('Embargo until')?></label>
+			<?= Form::input('embargoed_until', ($version->embargoed_until)? date("d F Y h:i", $version->embargoed_until) : date("d F Y h:i", $_SERVER['REQUEST_TIME']), array('class' => 'boom-datepicker', 'id' => 'page-embargo')) ?>
+		</p>
 	</div>
 </form>

@@ -1524,7 +1524,7 @@ $.widget( 'boom.page', $.boom.page, {
 
 						$.boom.page.settings.save(
 							url,
-							$("#b-form-pageversion-embargo").serialize(),
+							$(this).find("form").serialize(),
 							"Page embargo saved."
 						)
 						.done(function(response) {
@@ -1672,7 +1672,7 @@ $.widget( 'boom.page', $.boom.page, {
 					url: '/cms/page/settings/children/' + $.boom.page.options.id + '?vid=' + $.boom.page.options.vid,
 					// cache: true,
 					title: 'Child page settings',
-					width: 'auto',
+					width: '510px',
 					open: function() {
 						$('select[name="children_ordering_policy"]').on('change', function(){
 							var reorder_link = $('#b-page-settings-children-reorder');

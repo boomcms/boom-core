@@ -1,4 +1,4 @@
-<form class="b-form-settings">
+<form class="b-form-settings narrow">
 	<?= Form::hidden('csrf', Security::token()) ?>
 
 	<div>
