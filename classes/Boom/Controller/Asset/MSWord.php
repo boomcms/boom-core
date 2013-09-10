@@ -9,7 +9,7 @@
  * @copyright	Hoop Associates
  *
  */
-class Boom_Controller_Asset_Word extends Controller_Asset
+class Boom_Controller_Asset_MSWord extends Controller_Asset
 {
 	public function action_view()
 	{

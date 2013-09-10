@@ -80,7 +80,7 @@ abstract class Boom_Asset_Core
 	/**
 	 * Determine whether a mimetype is supported.
 	 * Used to check whether a file can be uploaded.
-	 * 
+	 *
 	 */
 	public static function is_supported($mimetype)
 	{
@@ -108,7 +108,7 @@ abstract class Boom_Asset_Core
 		// MS Word
 		if (strpos($mime, 'application/msword') === 0 OR strpos($mime, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') === 0)
 		{
-			return Boom_Asset::WORD;
+			return Boom_Asset::MSWORD;
 		}
 
 		/**
