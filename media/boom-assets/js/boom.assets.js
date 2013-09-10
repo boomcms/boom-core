@@ -85,12 +85,8 @@ $.extend($.boom.assets,
 							});
 					});
 
-				var pagination = $('<div id="b-assets-pagination"></div>');
-				var stats = $('<div id="b-assets-stats"></div>');
-
 				if ( opts.asset_rid && opts.asset_rid > 0 ) {
 					remove.button( 'enable');
-
 				} else {
 					remove.button( 'disable' );
 				}
@@ -99,8 +95,8 @@ $.extend($.boom.assets,
 					.find('.ui-dialog-buttonpane')
 					.prepend( upload )
 					.prepend( remove )
-					.append(pagination)
-					.append(stats);
+					.append($('<div id="b-assets-pagination"></div>'))
+					.append($('<div id="b-assets-stats"></div>'));
 			},
 			onLoad: function(){
 
@@ -223,12 +219,10 @@ $.extend($.boom.asset, $.boom.item,
 		});
 
 		$('.boom-tagmanager-asset-delete', context ).click(function( event ){
-
 			self.remove()
 				.done( function(){
 					$.boom.history.load( 'tag/0' );
 				});
-
 		});
 
 
@@ -495,6 +489,9 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 				});
 
 				return false;
+			})
+			.on('change', '#b-assets-types', function(event) {
+				self.filterByType(this.value);
 			});
 
 		self.main_panel
@@ -654,5 +651,10 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 		$('#b-assets-view-thumbs').justifyAssets();
 		$('#b-assets-pagination').replaceWith($content.get(2));
 		$('#b-assets-stats').replaceWith($content.get(4));
-	}
+	},
+
+	filterByType : function(type) {
+		this.tag.set_filters(this.value);
+		$.boom.history.refresh();
+	},
 });
