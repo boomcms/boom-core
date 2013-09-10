@@ -379,27 +379,4 @@ class Boom_Model_Asset extends Model_Taggable
 		// Return the results.
 		return $types;
 	}
-
-	/**
-	 * Gets an array of the ID and name of people who have uploaded assets.
-	 *
-	 * The returned array will be an associative array of person ID => name.
-	 *
-	 * People who have uploaded assets, but who's assets are all deleted, will not appear in the returned array.
-	 *
-	 * @return array
-	 */
-	public function uploaders()
-	{
-		return DB::select('id', 'name')
-			->from('people')
-			->where('id', 'in', DB::select('uploaded_by')
-				->from('assets')
-				->where('deleted', '=', FALSE)
-				->distinct(TRUE)
-			)
-			->order_by('name', 'asc')
-			->execute($this->_db)
-			->as_array('id', 'name');
-	}
 }

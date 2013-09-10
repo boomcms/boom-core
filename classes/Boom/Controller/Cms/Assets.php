@@ -102,7 +102,6 @@ class Boom_Controller_Cms_Assets extends Boom_Controller
 	public function action_filters()
 	{
 		$this->template = View::factory("$this->_view_directory/filters", array(
-			'uploaders'	=>	$this->asset->uploaders(),
 			'types'		=>	$this->asset->types(),
 		));
 	}
@@ -130,7 +129,6 @@ class Boom_Controller_Cms_Assets extends Boom_Controller
 		$page		=	Arr::get($query_data, 'page', 1);
 		$perpage		=	Arr::get($query_data, 'perpage', 30);
 		$tag		=	Arr::get($query_data, 'tag');
-		$uploaded_by	=	Arr::get($query_data, 'uploaded_by');
 		$type		=	Arr::get($query_data, 'type');
 		$sortby		=	Arr::get($query_data, 'sortby');
 		$title			=	Arr::get($query_data, 'title');
@@ -197,13 +195,6 @@ class Boom_Controller_Cms_Assets extends Boom_Controller
 			$column = 'title';
 			$order = 'asc';
 			$query->order_by('title', 'asc');
-		}
-
-		// Apply an uploaded by filter.
-		if ($uploaded_by)
-		{
-			// Filtering by uploaded by.
-			$query->where('uploaded_by', '=', $uploaded_by);
 		}
 
 		// Apply an asset type filter.
