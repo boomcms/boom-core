@@ -1,10 +1,10 @@
 <?= View::factory('boom/header', array('title' => $page->version()->title)) ?>
 
-<div id="boom-topbar" class="ui-helper-clearfix ui-tabs ui-widget ui-widget-content ui-corner-all">
+<div id="b-topbar" class="ui-helper-clearfix ui-tabs ui-widget ui-widget-content ui-corner-all">
 	<?= Form::hidden('csrf', Security::token(), array('id' => 'b-csrf')) ?>
 	<?= Menu::factory('boom')->sort('priority') ?>
 
-	<div id="boom-topbar-useractions">
+	<div id="b-topbar-useractions">
 		<button id="boom-page-menu" class="ui-button boom-button" data-icon="ui-icon-boom-menu">
 				<?=__('Menu')?>
 		</button>
@@ -110,7 +110,7 @@
 		</button>
 	</div>
 
-	<div id="boom-topbar-pagesettings" class="ui-helper-clearfix">
+	<div id="b-topbar-pagesettings" class="ui-helper-clearfix">
 		<div class="ui-helper-center">
 			<?= View::factory('boom/editor/page/settings/index');?>
 		</div>

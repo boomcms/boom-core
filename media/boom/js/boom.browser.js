@@ -353,10 +353,6 @@ $.widget( 'boom.browser',
 		});
 
 		self.main_panel
-			.on( 'change', '#boom-tagmanager-sortby-select', function( event ){
-				self.tag.options.sortby = this.value;
-				$.boom.history.refresh();
-			})
 			.on( 'change', '.b-items-select-checkbox', function( event ){
 				// checkbox IDs are of the form type-view-id.
 				var item = this.id.split( '-' );
@@ -376,38 +372,6 @@ $.widget( 'boom.browser',
 
 				buttons.button( amount > 0 ? 'enable' : 'disable' );
 			})
-			.on( 'mouseenter focus', '#b-items-view-list tbody tr, #b-items-view-thumbs a', function( event ){
-				$( this ).addClass( 'ui-state-hover' );
-			})
-			.on( 'mouseleave blur', '#b-items-view-list tbody tr, #b-items-view-thumbs a', function( event ){
-				$( this ).removeClass( 'ui-state-hover' );
-			})
-			.on( 'click', '.boom-pagination a', function( e ){
-				e.preventDefault();
-
-				//$.boom.history.load( '/cms/assets/list?' + $( this ).attr( 'href' ).split( '?' )[ 1 ] );
-				$.get( '/cms/assets/list?' + $( this ).attr( 'href' ).split( '?' )[ 1 ])
-				.done( function( data ){
-					var $data = $( data );
-					var pagination = $data.find( '.boom-pagination' ).html();
-					var list = $data.find( '#b-items-view-list' ).html();
-					var thumbs = $data.find( '#b-items-view-thumbs' ).html();
-					$( self.main_panel )
-						.find( '.boom-pagination' )
-						.html( pagination )
-						.end()
-						.find( '#b-items-view-list' )
-						.html( list )
-						.end()
-						.find( '#b-items-view-thumbs' )
-						.html( thumbs )
-						.end()
-						.trigger('justify');
-				});
-
-				return false;
-			});
-
 	},
 
 	/** Default history routing. */
@@ -440,13 +404,8 @@ $.widget( 'boom.browser',
 
 							$.boom.loader.hide();
 
-							self.main_panel
-								.find( '.b-items-content' )
-								.html( response )
-								.ui();
+							self.showContent(response);
 							instance.bind( self.main_panel );
-
-							self.main_panel.trigger('justify');
 						});
 				}
 			},
@@ -455,5 +414,14 @@ $.widget( 'boom.browser',
 				self.defaultRoute();
 			}
 		);
+	},
+
+	showContent : function(content) {
+		this.main_panel
+			.find( '.b-items-content' )
+			.html( content )
+			.ui();
+
+		this.main_panel.trigger('justify');
 	}
 });

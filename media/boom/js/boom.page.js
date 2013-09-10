@@ -397,7 +397,7 @@ $.widget( 'boom.page', $.boom.page, {
 			self.page_dom = $.boom.page.document.contents();
 			self.iframe = self.page_dom.find( '#b-page-topbar' );
 
-			if ( $( '#boom-topbar' ).length ) {
+			if ( $( '#b-topbar' ).length ) {
 				self.page_dom
 					.find( 'body' )
 					.css( {'margin-top' : this.height} );

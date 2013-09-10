@@ -14,7 +14,8 @@
 
 		<p>
 			<label for="toggle-visible"><?=__('Visible until')?></label>
-			<?= Form::checkbox('toggle_visible_to', 1, $page->visible_to, array('id' => 'toggle-visible')) ?>
+			<?= Form::checkbox('toggle_visible_to', 1, $page->visible_to != 0, array('id' => 'toggle-visible')) ?>
+			<?= Form::input('visible_to', ($page->visible_to)? date("d F Y h:m", $page->visible_to) : date("d F Y h:m", time()), array('id' => 'visible-to', 'class' => 'boom-datepicker')) ?>
 		</p>
 	</div>
 </form>

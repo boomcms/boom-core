@@ -1,11 +1,15 @@
-#boom-topbar {
+#b-topbar {
 	padding: 0;
 	-moz-box-shadow: 0 0 4px #666;
 	-webkit-box-shadow: 0 0 4px #666;
 	box-shadow: 0 0 4px #666;
-	-moz-border-radius: 0;
-	-webkit-border-radius: 0;
-	border-radius: 0;
+	background: #7f7f7f;
+	overflow: hidden;
+	color: #ffffff;
+
+	a, a:visited, a:hover {
+		color: #ffffff;
+	}
 
 	&-useractions {
 		float: right;
@@ -30,13 +34,13 @@
 	}
 }
 
-#boom-topbar .ui-tabs-nav a {
+#b-topbar .ui-tabs-nav a {
 	padding: .4em 1em;
 }
 
-#boom-topbar-revisions .boom-topbar-autosave {
+#b-topbar-revisions .b-topbar-autosave {
 	padding-right: .5em;
 }
-#boom-topbar-revisions .boom-topbar-status {
+#b-topbar-revisions .b-topbar-status {
 	padding-left: .5em;
 }

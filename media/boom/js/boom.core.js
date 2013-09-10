@@ -51,7 +51,7 @@ $.extend({
 
 			$.boom.loader.init();
 
-			$('#boom-topbar').exists(function(){
+			$('#b-topbar').exists(function(){
 
 				this.find('.ui-tabs-nav li').bind('mouseenter mouseleave', function(){
 
