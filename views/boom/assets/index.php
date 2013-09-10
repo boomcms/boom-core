@@ -41,10 +41,13 @@
 					<?=__('Clear Selection')?>
 				</button>
 			</div>
+
+			<div id="b-assets-pagination"></div>
+			<div id="b-assets-stats"></div>
 		</div>
 	</div>
 
-	<div id="b-page-edit">
+	<div id="content">
 		<?= $content ?>
 	</div>
 

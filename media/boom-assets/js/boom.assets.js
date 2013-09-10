@@ -266,8 +266,10 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 	*/
 	options: $.boom.config.browser_asset,
 
-	_create : function(){
+	pagination : $('#b-assets-pagination'),
+	stats : $('#b-assets-stats'),
 
+	_create : function(){
 		var self = this;
 
 		$.boom.log( 'asset browser init' );
@@ -626,6 +628,22 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 			});
 
 		return uploaded;
-	}
+	},
 
+	showContent : function(content) {
+		var $content = $(content);
+
+		this.main_panel
+			.find( '.b-items-content' )
+			.html($content.get(4))
+			.ui();
+
+		this.pagination
+			.replaceWith($content.get(0));
+
+		this.stats
+			.replaceWith($content.get(2));
+
+		this.main_panel.trigger('justify');
+	}
 });
