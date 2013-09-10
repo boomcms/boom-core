@@ -7,7 +7,7 @@
 </a>
 
 <div style="margin-top: 20px;">
-	<form id="b-people-profile" onsubmit='return false;'>
+	<form id="b-people-profile" onsubmit='return false;' class="b-form">
 		<label>
 			Name
 			<?= Form::input('name', $person->name, array('size' => 35)) ?>
