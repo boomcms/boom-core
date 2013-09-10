@@ -5,7 +5,7 @@
 		endif;
 	?>
 
-	<select id="boom-tagmanager-sortby-select">
+	<select id="b-assets-sortby">
 		<option value="last_modified-desc" <? if ($sortby == 'last_modified-desc') echo "selected='selected'"; ?>>Most recent</option>
 		<option value="last_modified-asc" <? if ($sortby == 'last_modified-asc') echo "selected='selected'"; ?>>Oldest</option>
 		<option value="title-asc" <? if ($sortby == 'title-asc') echo "selected='selected'"; ?>>Title A-Z</option>

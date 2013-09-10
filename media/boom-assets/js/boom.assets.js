@@ -266,9 +266,6 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 	*/
 	options: $.boom.config.browser_asset,
 
-	pagination : $('#b-assets-pagination'),
-	stats : $('#b-assets-stats'),
-
 	_create : function(){
 		var self = this;
 
@@ -479,8 +476,7 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 						});
 					}
 				});
-
-			})
+			});
 
 		self.main_panel
 			.on( 'click', '.boom-tagmanager-asset-replace ', function( event ){
@@ -638,11 +634,8 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 			.html($content.get(4))
 			.ui();
 
-		this.pagination
-			.replaceWith($content.get(0));
-
-		this.stats
-			.replaceWith($content.get(2));
+		$('#b-assets-pagination').replaceWith($content.get(0));
+		$('#b-assets-stats').replaceWith($content.get(2));
 
 		this.main_panel.trigger('justify');
 	}
