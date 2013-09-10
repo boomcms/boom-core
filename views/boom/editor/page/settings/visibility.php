@@ -1,26 +1,20 @@
-<form id="boom-form-pagesettings-visibility" name="pagesettings-visibility">
+<form class="b-form-settings">
 	<?= Form::hidden('csrf', Security::token()) ?>
-	<div class="b-pagesettings">
-		<label for="page-visible"><?=__('Visible')?>
-			<select id="page-visible" name="visible" class="boom-input boom_select">
-				<option value='1' <? if ($page->visible) echo "selected='selected'"; ?>>Yes</option>
-				<option value='0' <? if ( ! $page->visible) echo "selected='selected'"; ?>>No</option>
-			</select>
-		</label>
 
-		<label for="page-visible-from"><?=__('Visible from')?>
-			<input id="page-visible-from" name="visible_from" class="boom-input boom-datepicker" value="<?=date("d F Y h:m", $page->visible_from);?>" />
-		</label>
+	<div>
+		<p>
+			<label for="visible"><?=__('Visible')?></label>
+			<?= Form::select('visible', array(1 => 'Yes', 0 => 'No'), $page->visible, array('id' => 'visible')) ?>
+		</p>
 
-		<label for="b-page-toggle-visible"><?=__('Visible until')?>
-			<input id="page-visible-to"
-				name="visible_to"
-				class="boom-input boom-datepicker"
-				value="<?=($page->visible_to) ?	date('d F Y h:i',$page->visible_to) : 'forever'; ?>"
-				<?=(!$page->visible_to) ? ' disabled="disabled"' : ''; ?>
-			/>
-		</label>
+		<p>
+			<label for="visible-from"><?=__('Visible from')?></label>
+			<?= Form::input('visible_from', date("d F Y h:m", $page->visible_from), array('id' => 'visible-from', 'class' => 'boom-datepicker')) ?>
+		</p>
 
-		<input id="b-page-toggle-visible" type="checkbox" value="1" name='toggle_visible_to' class="ui-helper-right ui-helper-reset"<?=($page->visible_to) ? ' checked="checked"' : ''; ?>
+		<p>
+			<label for="toggle-visible"><?=__('Visible until')?></label>
+			<?= Form::checkbox('toggle_visible_to', 1, $page->visible_to, array('id' => 'toggle-visible')) ?>
+		</p>
 	</div>
 </form>

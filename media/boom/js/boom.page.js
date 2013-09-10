@@ -1023,7 +1023,7 @@ $.widget( 'boom.page', $.boom.page, {
 
 						$.boom.page.settings.save(
 							'/cms/page/settings/navigation/' + $.boom.page.options.id,
-							$("#boom-form-pagesettings-navigation").serialize(),
+							$(this).find('form').serialize(),
 							"Page navigation settings saved."
 						);
 					},
@@ -1067,7 +1067,7 @@ $.widget( 'boom.page', $.boom.page, {
 
 						$.boom.page.settings.save(
 							'/cms/page/settings/search/' + $.boom.page.options.id,
-							$("#boom-form-pagesettings-search").serialize(),
+							$this.find("form").serialize(),
 							"Page search settings saved."
 						);
 					}
@@ -1580,7 +1580,7 @@ $.widget( 'boom.page', $.boom.page, {
 
 						$.boom.page.settings.save(
 							url,
-							$("#boom-form-pagesettings-visibility").serialize(),
+							$(this).find("form").serialize(),
 							"Page visibility settings saved."
 						)
 						.done(function(response) {
@@ -1599,47 +1599,47 @@ $.widget( 'boom.page', $.boom.page, {
 					},
 					open: function(){
 
-						$('#b-page-toggle-visible:checkbox').unbind('change').change(function(){
+						$('#toggle-visible:checkbox').unbind('change').change(function(){
 
 							if (this.checked) {
 
-								$('#page-visible-to, #page-visible-to-time').removeAttr('disabled');
+								$('#visible-to, #visible-to-time').removeAttr('disabled');
 
-								if ($('#page-visible-to').val().toLowerCase().trim() == 'forever') {
+								if ($('#visible-to').val().toLowerCase().trim() == 'forever') {
 
-									$('#page-visible-to').val('');
+									$('#visible-to').val('');
 								}
 
-								$('#page-visible-to').focus();
+								$('#visible-to').focus();
 
 							} else {
 
-								$('#page-visible-to, #page-visible-to-time').attr('disabled', 'disabled');
+								$('#visible-to, #visible-to-time').attr('disabled', 'disabled');
 
-								if (!$('#page-visible-to').val().trim().length) {
+								if (!$('#visible-to').val().trim().length) {
 
-									$('#page-visible-to').val('forever');
+									$('#visible-to').val('forever');
 								}
 
-								$('#page-visible-to').blur();
+								$('#visible-to').blur();
 							}
 						});
 
-						$('#page-visible').on('change', function() {
+						$('#visible').on('change', function() {
 							switch( $( this ).val() ) {
 								case '1':
-									$( '#page-visible-from' ).removeAttr( 'disabled' );
+									$( '#visible-from' ).removeAttr( 'disabled' );
 								break;
 								case '0':
-									$( '#page-visible-from' ).attr( 'disabled', 'disabled' );
-									$( '#page-visible-to' ).attr( 'disabled', 'disabled' );
+									$( '#visible-from' ).attr( 'disabled', 'disabled' );
+									$( '#visible-to' ).attr( 'disabled', 'disabled' );
 								break;
 							}
 						});
 
-						if ($('#page-visible').val() == '0') {
-							$( '#page-visible-from' ).attr( 'disabled', 'disabled' );
-							$( '#page-visible-to' ).attr( 'disabled', 'disabled' );
+						if ($('#visible').val() == '0') {
+							$( '#visible-from' ).attr( 'disabled', 'disabled' );
+							$( '#visible-to' ).attr( 'disabled', 'disabled' );
 						}
 					}
 				});
@@ -1703,11 +1703,11 @@ $.widget( 'boom.page', $.boom.page, {
 
 									$.boom.page.settings.save(
 										'/cms/page/settings/children/' + $.boom.page.options.id,
-										$("#boom-form-pagesettings-childsettings").serialize()
+										$(this).find('form').serialize()
 									).done(function() {
 										$.boom.page.settings.save(
 											url,
-											{csrf: $("#boom-form-pagesettings-childsettings").find('input[name=csrf]').val(), sequences: sequences},
+											{csrf: $("this").find('input[name=csrf]').val(), sequences: sequences},
 											"Child page ordering saved, reloading page."
 										).done(function(){
 											setTimeout(function() {
@@ -1723,7 +1723,7 @@ $.widget( 'boom.page', $.boom.page, {
 
 						$.boom.page.settings.save(
 							'/cms/page/settings/children/' + $.boom.page.options.id,
-							$("#boom-form-pagesettings-childsettings").serialize(),
+							$(this).find("form").serialize(),
 							"Child page settings saved."
 						);
 					}
@@ -1762,7 +1762,7 @@ $.widget( 'boom.page', $.boom.page, {
 
 						$.boom.page.settings.save(
 							'/cms/page/settings/admin/' + $.boom.page.options.id,
-							$("#boom-form-pagesettings-adminsettings").serialize(),
+							$(this).find("form").serialize(),
 							"Page admin settings saved."
 						);
 

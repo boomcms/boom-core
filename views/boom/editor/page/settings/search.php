@@ -1,51 +1,41 @@
-<form id="boom-form-pagesettings-search" name="pagesettings-seo">
+<form class="b-form-settings">
 	<?= Form::hidden('csrf', Security::token()) ?>
-	<div id="b-pagesettings-search" class="boom-tabs b-page-settings">
+
+	<div id="b-pagesettings-search" class="boom-tabs">
 		<? if ($allow_advanced): ?>
 			<ul>
 				<li>
-					<a href="#b-pagesettings-search-basic">Basic</a>
+					<a href="#basic"><?= __('Basic') ?></a>
 				</li>
 				<li>
-					<a href="#b-pagesettings-search-advanced">Advanced</a>
+					<a href="#advanced"><?= __('Advanced') ?></a>
 				</li>
 			</ul>
 		<? endif; ?>
 
-		<div id="b-pagesettings-search-basic">
-			<label for="description" class="ui-helper-clearfix">
-				<span class="ui-helper-left" style="padding-top:2px">
-					Description
-				</span>
-				<span class="ui-icon ui-helper-left ui-icon-help boom-tooltip" title="A description of the description field."></span>
-			</label>
+		<div id="basic">
+			<p>
+				<label for="description"><?= __('Description') ?></label>
+				<textarea id="description" name="description" rows="5"><?= $page->description() ?></textarea>
+			</p>
 
-			<textarea id="description" name="description" class="boom-textarea" rows="5"><?= $page->description() ?></textarea>
-
-			<label for="keywords" class="ui-helper-clearfix">
-				<span class="ui-helper-left" style="padding-top:2px">
-					Keywords
-				</span>
-				<span class="ui-icon ui-icon-help ui-helper-left boom-tooltip" title="Keywords description: please separate your keywords with a comma."></span>
-			</label>
-			<textarea name="keywords" id="keywords" class="boom-textarea" rows="5"><?=$page->keywords ?></textarea>
+			<p>
+				<label for="keywords"><?= __('Keywords') ?></label>
+				<textarea name="keywords" id="keywords" rows="5"><?=$page->keywords ?></textarea>
+			</p>
 		</div>
 
 		<? if ($allow_advanced): ?>
-			<div id="b-pagesettings-search-advanced">
-				<label for="indexed">Allow indexing by search engines
-				<select id="indexed" name="external_indexing">
-					<option <?if ($page->external_indexing) echo "selected='selected' "; echo "value='1'>Yes</option>"; ?>
-					<option <?if ( ! $page->external_indexing) echo "selected='selected' "; echo "value='0'>No</option>"; ?>
-				</select>
-				</label>
+			<div id="advanced">
+				<p>
+					<label for="external_indexing"><?= __('Allow indexing by search engines') ?></label>
+					<?= Form::select('external_indexing', array(1 => 'Yes', 0 => 'No'), $page->external_indexing, array('id' => 'external_indexing')) ?>
+				</p>
 
-
-				<label for="internal_indexing">Show in site search results
-				<select id="internal_indexing" name="internal_indexing">
-					<option value="0">No</option>
-					<option value="1"<?if ($page->internal_indexing):?> selected="selected"<? endif; ?>>Yes</option>
-				</select></label>
+				<p>
+					<label for="internal_indexing"><?= __('Show in site search results') ?></label>
+					<?= Form::select('internal_indexing', array(1 => 'Yes', 0 => 'No'), $page->internal_indexing, array('id' => 'internal_indexing')) ?>
+				</p>
 			</div>
 		<? endif; ?>
 	</div>

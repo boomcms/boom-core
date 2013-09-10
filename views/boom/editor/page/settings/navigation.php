@@ -1,43 +1,38 @@
-<form id="boom-form-pagesettings-navigation" name="pagesettings-navigation">
+<form class="b-form-settings">
 	<?= Form::hidden('csrf', Security::token()) ?>
-	<div class="boom-tabs b-page-settings">
+
+	<div class="boom-tabs">
 		<? if ($allow_advanced): ?>
 			<ul>
 				<li>
-					<a href="#navigation-settings-basic"><?=__('Basic')?></a>
+					<a href="#basic"><?=__('Basic')?></a>
 				</li>
 				<li>
-					<a href="#navigation-settings-advanced"><?=__('Advanced')?></a>
+					<a href="#advanced"><?=__('Advanced')?></a>
 				</li>
 			</ul>
 		<? endif; ?>
 
-		<div id="navigation-settings-basic">
-			<label for="visible_in_nav">Visible in navigation?
+		<div id="basic">
+			<p>
+				<label for="visible_in_nav"><?= __('Visible in navigation') ?>?</label>
+				<?= Form::select('visible_in_nav', array(1 => 'Yes', 0 => 'No'), $page->visible_in_nav, array('id' => 'visible_in_nav')) ?>
+			</p>
 
-			<select id="visible_in_nav" name="visible_in_nav">
-				<option <?if ($page->visible_in_nav == true) echo "selected=\"selected\" ";?> value="1">Yes</option>
-				<option <?if ($page->visible_in_nav == false) echo "selected=\"selected\" ";?> value="0">No</option>
-			</select>
-			</label>
-
-			<label for="visible_in_nav_cms">Visible in CMS navigation?
-
-			<select id="visible_in_nav_cms" name="visible_in_nav_cms">
-				<option <?if ($page->visible_in_nav_cms == true) echo "selected=\"selected\" ";?> value="1">Yes</option>
-				<option <?if ($page->visible_in_nav_cms == false) echo "selected=\"selected\" ";?> value="0">No</option>
-			</select>
-			</label>
+			<p>
+				<label for="visible_in_nav_cms"><?= __('Visible in CMS navigation') ?>?</label>
+				<?= Form::select('visible_in_nav_cms', array(1 => 'Yes', 0 => 'No'), $page->visible_in_nav_cms, array('id' => 'visible_in_nav_cms')) ?>
+			</p>
 		</div>
 
 		<? if ($allow_advanced): ?>
-			<div id='navigation-settings-advanced'>
+			<div id='advanced'>
 				<label for="parent_id">Parent page</label>
 
 				<input type="hidden" name="parent_id" value="<?=$page->mptt->parent_id?>">
-					<ul class="boom-tree">
-						<li><a id="page_5" href="/" rel="5">Home</a></li>
-					</ul>
+				<ul class="boom-tree">
+					<li><a id="page_5" href="/" rel="5">Home</a></li>
+				</ul>
 			</div>
 		<? endif; ?>
 	</div>

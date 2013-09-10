@@ -1,73 +1,86 @@
-<form id="boom-form-pagesettings-childsettings" name="pagesettings-childsettings">
+<form class="b-form-settings">
 	<?= Form::hidden('csrf', Security::token()) ?>
-	<div id="child-settings" class="boom-tabs b-page-settings">
+	<div id="child-settings" class="boom-tabs">
 		<? if ($allow_advanced): ?>
 			<ul>
 				<li>
-					<a href="#child-settings-basic"><?=__('Basic')?></a>
+					<a href="#basic"><?=__('Basic')?></a>
 				</li>
 				<li>
-					<a href="#child-settings-advanced"><?=__('Advanced')?></a>
+					<a href="#advanced"><?=__('Advanced')?></a>
 				</li>
 			</ul>
 		<? endif; ?>
 
-		<div id="child-settings-basic">
-			<label for="children_template_id"><?=__('Default child template')?>
-				<?= Form::select('children_template_id', $templates, $default_child_template) ?>
-			</label>
+		<div id="basic">
+			<p>
+				<label for="children_template_id"><?=__('Default child template')?></label>
+				<?= Form::select('children_template_id', $templates, $default_child_template, array('id' => 'children_template_id')) ?>
+			</p>
 
-			<label for="child_template_cascade">Update existing child pages
+			<p>
+				<label for="child_template_cascade"><?= __('Update existing child pages') ?></label>
 				<?= Form::checkbox('cascade[]', 'template_id', false, array('id' => 'child_template_cascade')); ?>
-			</label>
+			</p>
 
-			<label for="children_ordering_policy"><?=__('Child ordering policy')?>
+			<p>
+				<label for="children_ordering_policy"><?=__('Child ordering policy')?></label>
+
 				<?= Form::select('children_ordering_policy', array(
 						'sequence'		=>	'Manual',
 						'visible_from'	=>	'Date',
 						'title'			=>	'Alphabetic'
-					), $child_order_column);
+					), $child_order_column, array('id' => 'children_ordering_policy'));
 				?>
 				<?= Form::select('children_ordering_direction', array(
 						'asc'		=>	'Ascending',
 						'desc'	=>	'Descending'
 					), $child_order_direction);
 				?>
-			</label>
-			<a href="#" id="b-page-settings-children-reorder"<? if ($child_order_column != 'sequence'): ?> class="ui-helper-hidden"<? endif ?>>Reorder</a>
+
+				<a href="#" id="b-page-settings-children-reorder"<? if ($child_order_column != 'sequence'): ?> class="ui-helper-hidden"<? endif ?>>Reorder</a>
+			</p>
 		</div>
 		<? if ($allow_advanced): ?>
-			<div id="child-settings-advanced">
+			<div id="advanced">
+				<p>
+					<label for="children_visible_in_nav"><?=__('Children visible in nav')?>?</label>
 
-				<label for="children_visible_in_nav"><?=__('Children visible in nav')?>?
 					<?= Form::select('children_visible_in_nav', array(
-								1	=>	'Yes',
-								0	=>	'No',
-							), $page->children_visible_in_nav); ?>
-				</label>
+							1 => 'Yes',
+							0 => 'No',
+						), $page->children_visible_in_nav, array('id' => 'children_visible_in_nav'));
+					?>
+				</p>
 
-				<label for="visible_in_nav_cascade">Update existing child pages
+				<p>
+					<label for="visible_in_nav_cascade"><?= __('Update existing child pages') ?></label>
 					<?= Form::checkbox('cascade[]', 'visible_in_nav', false, array('id' => 'visible_in_nav_cascade')); ?>
-				</label>
+				</p>
 
-				<label for="children_visible_in_nav_cms"><?=__('Children visible in CMS nav')?>?
-					<?= Form::select('children_visible_in_nav_cms', array(
-								1	=>	'Yes',
-								0	=>	'No',
-							), $page->children_visible_in_nav_cms); ?>
-				</label>
+				<p>
+					<label for="children_visible_in_nav_cms"><?=__('Children visible in CMS nav')?>?</label>
 
-				<label for="visible_in_nav_cms_cascade">Update existing child pages
+						<?= Form::select('children_visible_in_nav_cms', array(
+								1 => 'Yes',
+								0 => 'No',
+							), $page->children_visible_in_nav_cms, array('id' => 'children_visible_in_nav_cms')); ?>
+				</p>
+
+				<p>
+					<label for="visible_in_nav_cms_cascade"><?= __('Update existing child pages') ?></label>
 					<?= Form::checkbox('cascade', 'visible_in_nav_cms', false, array('id' => 'visible_in_nav_cms_cascade')); ?>
-				</label>
+				</p>
 
-				<label for="children_url_prefix"><?=__('Default child URI prefix')?>
-					<?= Form::input('children_url_prefix', $page->children_url_prefix); ?>
-				</label>
+				<p>
+					<label for="children_url_prefix"><?=__('Default child URI prefix')?></label>
+					<?= Form::input('children_url_prefix', $page->children_url_prefix, array('id' => 'children_url_prefix')); ?>
+				</p>
 
-				<label for="grandchild_template_id"><?=__('Default grandchild template')?>
-					<?= Form::select('grandchild_template_id', $templates, $default_grandchild_template) ?>
-				</label>
+				<p>
+					<label for="grandchild_template_id"><?=__('Default grandchild template')?></label>
+					<?= Form::select('grandchild_template_id', $templates, $default_grandchild_template, array('id' => 'grandchild_template_id')) ?>
+				</p>
 			</div>
 		<? endif; ?>
 	</div>
