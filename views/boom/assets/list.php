@@ -1,22 +1,3 @@
-<div id="b-assets-pagination">
-	<?
-		if (isset($pagination)):
-			echo "<div class='boom-pagination ui-helper-left'>", $pagination, "</div>";
-		endif;
-	?>
-
-	<select id="b-assets-sortby">
-		<option value="last_modified-desc" <? if ($sortby == 'last_modified-desc') echo "selected='selected'"; ?>>Most recent</option>
-		<option value="last_modified-asc" <? if ($sortby == 'last_modified-asc') echo "selected='selected'"; ?>>Oldest</option>
-		<option value="title-asc" <? if ($sortby == 'title-asc') echo "selected='selected'"; ?>>Title A-Z</option>
-		<option value="title-desc" <? if ($sortby == 'title-desc') echo "selected='selected'"; ?>>Title Z-A</option>
-		<option value="filesize-asc" <? if ($sortby == 'filesize-asc') echo "selected='selected'"; ?>>Size (smallest)</option>
-		<option value="filesize-desc" <? if ($sortby == 'filesize-desc') echo "selected='selected'"; ?>>Size (largest)</option>
-	</select>
-</div>
-<div id="b-assets-stats">
-	<?= Num::format($total, 0) ?> <?= Inflector::plural('file', $total) ?> <?= __('totaling') ?> <?= Text::bytes($total_size) ?>
-</div>
 <div id="b-assets-content">
 	<div id="b-assets-view-thumbs" class="ui-helper-left">
 		<? foreach ($assets as $asset): ?>
@@ -54,4 +35,23 @@
 			</div>
 		<? endforeach; ?>
 	</div>
+</div>
+<div id="b-assets-pagination">
+	<?
+		if (isset($pagination)):
+			echo "<div class='boom-pagination ui-helper-left'>", $pagination, "</div>";
+		endif;
+	?>
+
+	<select id="b-assets-sortby">
+		<option value="last_modified-desc" <? if ($sortby == 'last_modified-desc') echo "selected='selected'"; ?>>Most recent</option>
+		<option value="last_modified-asc" <? if ($sortby == 'last_modified-asc') echo "selected='selected'"; ?>>Oldest</option>
+		<option value="title-asc" <? if ($sortby == 'title-asc') echo "selected='selected'"; ?>>Title A-Z</option>
+		<option value="title-desc" <? if ($sortby == 'title-desc') echo "selected='selected'"; ?>>Title Z-A</option>
+		<option value="filesize-asc" <? if ($sortby == 'filesize-asc') echo "selected='selected'"; ?>>Size (smallest)</option>
+		<option value="filesize-desc" <? if ($sortby == 'filesize-desc') echo "selected='selected'"; ?>>Size (largest)</option>
+	</select>
+</div>
+<div id="b-assets-stats">
+	<?= Num::format($total, 0) ?> <?= Inflector::plural('file', $total) ?> <?= __('totaling') ?> <?= Text::bytes($total_size) ?>
 </div>

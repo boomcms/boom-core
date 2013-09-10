@@ -85,6 +85,9 @@ $.extend($.boom.assets,
 							});
 					});
 
+				var pagination = $('<div id="b-assets-pagination"></div>');
+				var stats = $('<div id="b-assets-stats"></div>');
+
 				if ( opts.asset_rid && opts.asset_rid > 0 ) {
 
 					remove.button( 'enable');
@@ -96,7 +99,9 @@ $.extend($.boom.assets,
 				$(this).dialog('widget')
 					.find('.ui-dialog-buttonpane')
 					.prepend( upload )
-					.prepend( remove );
+					.prepend( remove )
+					.append(pagination)
+					.append(stats);
 			},
 			onLoad: function(){
 
@@ -478,6 +483,21 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 				});
 			});
 
+		$('body').on( 'change', '#b-assets-sortby', function( event ){
+				self.tag.options.sortby = this.value;
+				$.boom.history.refresh();
+			})
+			.on( 'click', '#b-assets-pagination a', function( e ){
+				e.preventDefault();
+
+				$.get( '/cms/assets/list?' + $( this ).attr( 'href' ).split( '?' )[ 1 ])
+				.done( function( data ){
+					self.showContent(data);
+				});
+
+				return false;
+			});
+
 		self.main_panel
 			.on( 'click', '.boom-tagmanager-asset-replace ', function( event ){
 
@@ -509,7 +529,6 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 	@returns {Object} promise which updates via .notify( rid ) when an asset is selected.
 	*/
 	browse: function(){
-
 		var self = this;
 		var select_asset = new $.Deferred();
 
@@ -631,11 +650,11 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 
 		this.main_panel
 			.find( '.b-items-content' )
-			.html($content.get(4))
+			.html($content.get(0))
 			.ui();
 
-		$('#b-assets-pagination').replaceWith($content.get(0));
-		$('#b-assets-stats').replaceWith($content.get(2));
+		$('#b-assets-pagination').replaceWith($content.get(2));
+		$('#b-assets-stats').replaceWith($content.get(4));
 
 		this.main_panel.trigger('justify');
 	}
