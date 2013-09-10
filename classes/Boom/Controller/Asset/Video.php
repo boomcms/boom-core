@@ -6,6 +6,7 @@ class Boom_Controller_Asset_Video extends Controller_Asset
 
 	public function action_view()
 	{
+		$this->_log_download();
 		$finfo = finfo_open(FILEINFO_MIME_TYPE);
 		$mime = finfo_file($finfo, $this->asset->get_filename());
 		finfo_close($finfo);
