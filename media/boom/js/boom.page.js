@@ -367,39 +367,12 @@ $.widget( 'boom.page', $.boom.page, {
 
 			this.elements.page_body = $.boom.page.document;
 
-			this.load()
+			this.loadHtml()
 				.done( function(){
 					if ( $.boom.page.options.writable ) self.bind();
 				});
 
 			return this;
-		},
-
-		/** @function */
-		load : function(){
-
-			var self = this;
-			var promise = new $.Deferred();
-
-			$.boom.loader.show();
-
-			this.loadScripts( this.config.pageScripts )
-				.pipe( function(){
-
-					return self.loadHTML();
-
-				})
-				.done(function(){
-
-					$.boom.loader.hide();
-
-					$.boom.log('Scripts loaded into iFrame');
-
-					promise.resolve();
-				});
-
-
-			return promise;
 		},
 
 		/** @function */
@@ -502,20 +475,6 @@ $.widget( 'boom.page', $.boom.page, {
 				.bind('mouseleave blur', function(){
 
 					$.boom.page.slots.bindMouseLeave.call(this, self.elements.page_body);
-				});
-
-				// now bind other config events eg sortable
-
-				$.each(config, function(key, val){
-
-					if ( key === 'sortable' && val ) {
-
-						// FIXME
-
-						//$( chunk ).sortable($.extend({}, $.boom.config.sortable, {
-						//	axis: 'y'
-						//}));
-					}
 				});
 			};
 
