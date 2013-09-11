@@ -106,7 +106,7 @@ class Boom_Model_Asset extends Model_Taggable
 	public function delete()
 	{
 		$this->delete_files();
-		$this->delete_from_assets_chunks();
+		$this->delete_from_asset_chunks();
 		$this->delete_from_slideshows();
 
 		return parent::delete();

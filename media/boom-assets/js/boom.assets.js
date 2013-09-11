@@ -45,7 +45,7 @@ $.extend($.boom.assets,
 
 		var default_options =
 			/** @ignore */ {
-			url: '/cms/assets/manager/',
+			url: '/cms/assets/manager',
 			iframe: false,
 			width: '80%',
 			height: '700',
@@ -194,43 +194,31 @@ $.extend($.boom.asset, $.boom.item,
 			return false;
 		});
 
-		$('.boom-tagmanager-asset-save', context )
-			.bind('save', function( event ){
-
-				var data = $( this ).closest( 'form' ).serialize();
+		$('#b-assets-content')
+			.on('click', '.b-assets-save', function(event) {
+				var data = $(this).closest( 'form' ).serialize();
 
 				self
-					.save( data )
+					.save(data)
 					.done( function(){
 						$.boom.growl.show( "Asset saved." );
 					});
 
 			})
-			.click(function(){
-
-				$( this ).trigger( 'save' );
+			.on('click', '.b-assets-download', function(event) {
+				var rid = $( this ).attr( 'rel' );
+				window.location = '/cms/assets/download?assets=' + rid;
+			})
+			.on('click', '.b-assets-delete', function(event) {
+				self.remove()
+					.done( function(){
+						$.boom.history.load( 'tag/0' );
+					});
+			})
+			.on('click', '.b-assets-back', function(event) {
+				event.preventDefault();
+				$.boom.history.load( 'tag/' + $.boom.filter_assets.rid );
 			});
-
-		$('.boom-tagmanager-asset-download', context ).click(function( event ){
-
-			var rid = $( this ).attr( 'rel' );
-
-			window.location = '/cms/assets/download?assets=' + rid;
-		});
-
-		$('.boom-tagmanager-asset-delete', context ).click(function( event ){
-			self.remove()
-				.done( function(){
-					$.boom.history.load( 'tag/0' );
-				});
-		});
-
-
-		$( '.b-assets-back').on( 'click', function( event ){
-			event.preventDefault();
-			$.boom.history.load( 'tag/' + $.boom.filter_assets.rid );
-
-		});
 	}
 });
 
@@ -494,7 +482,7 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 				self.filterByType(this.options[this.selectedIndex].innerHTML);
 			});
 
-		self.main_panel
+		$('#b-assets-content')
 			.on( 'click', '.boom-tagmanager-asset-replace ', function( event ){
 
 				var rid = $( this ).attr( 'rel' );

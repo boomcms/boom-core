@@ -108,16 +108,16 @@
 				<a href="#tag/0" class="boom-button ui-button-text-icon b-assets-back" rel="<?=$asset->id?>" data-icon="ui-icon-boom-back">
 					<?=__('Back')?>
 				</a>
-				<button class="b-dialog-hidden boom-button ui-button-text-icon boom-tagmanager-asset-save" rel="<?=$asset->id?>" data-icon="ui-icon-boom-accept">
+				<button class="b-dialog-hidden boom-button ui-button-text-icon b-assets-save" rel="<?=$asset->id?>" data-icon="ui-icon-boom-accept">
 					<?=__('Save')?>
 				</button>
-				<button class="b-dialog-hidden boom-button ui-button-text-icon boom-tagmanager-asset-delete" rel="<?=$asset->id?>" data-icon="ui-icon-boom-delete">
+				<button class="b-dialog-hidden boom-button ui-button-text-icon b-assets-delete" rel="<?=$asset->id?>" data-icon="ui-icon-boom-delete">
 					<?=__('Delete')?>
 				</button>
-				<button class="b-dialog-hidden boom-button ui-button-text-icon boom-tagmanager-asset-download" rel="<?=$asset->id?>" data-icon="ui-icon-boom-download">
+				<button class="b-dialog-hidden boom-button ui-button-text-icon b-assets-download" rel="<?=$asset->id?>" data-icon="ui-icon-boom-download">
 					<?=__('Download')?>
 				</button>
-				<button class="b-dialog-hidden boom-button ui-button-text-icon boom-tagmanager-asset-replace" rel="<?=$asset->id?>" data-icon="ui-icon-boom-replace">
+				<button class="b-dialog-hidden boom-button ui-button-text-icon b-assets-replace" rel="<?=$asset->id?>" data-icon="ui-icon-boom-replace">
 					<?=__('Replace')?>
 				</button>
 			</div>
