@@ -77,23 +77,6 @@ class Boom_Model_Person extends ORM
 			->update();
 	}
 
-	public function get_avatar()
-	{
-		return $this->avatar;
-	}
-
-	public function get_icon_url($s = 16)
-	{
-		if ($this->avatar_id)
-		{
-			return Route::url('asset', array('id' => $this->avatar_id, 'width' => $s, 'height' => $s));
-		}
-		else
-		{
-			return URL::gravatar($this->email, array('s' => $s));
-		}
-	}
-
 	public function get_lock_wait()
 	{
 		if ($this->is_locked())
