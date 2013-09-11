@@ -90,16 +90,13 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 			deferred: asset_selected
 		} )
 		.pipe( function( rid ){
-
 			self.asset.asset_id = rid;
 		})
-		.done( function(){
+		.done(function() {
 			self.insert();
 		})
 		.fail( function() {
-			var data = { asset_id : 0, link : self.asset.url, caption: self.asset.caption } ;
-			self.asset.asset_id = 0;
-			self._remove( data );
+			self.remove();
 		})
 		.always( function(){
 			$.boom.history.load( '' );
