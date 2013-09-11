@@ -1,14 +1,9 @@
 <?php defined('SYSPATH') OR die('No direct script access.');
 
 /**
-  * Asset controller
-  * Contains methods for adding / replacing an asset etc.
-  *
   * @package	BoomCMS
   * @category	Assets
   * @category	Controllers
-  * @author	Rob Taylor
-  * @copyright	Hoop Associates
   */
 class Boom_Controller_Cms_Assets extends Boom_Controller
 {

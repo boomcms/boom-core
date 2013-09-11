@@ -491,7 +491,7 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 				return false;
 			})
 			.on('change', '#b-assets-types', function(event) {
-				self.filterByType(this.value);
+				self.filterByType(this.options[this.selectedIndex].innerHTML);
 			});
 
 		self.main_panel
@@ -654,7 +654,7 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 	},
 
 	filterByType : function(type) {
-		this.tag.set_filters(this.value);
+		this.tag.set_filters([{type : 'type', id: type}]);
 		$.boom.history.refresh();
 	},
 });
