@@ -38,33 +38,6 @@ $.widget('ui.chunk',
 	},
 
 	/**
-	update slot HTML and push changes to the stack of page edits.
-	@function
-	*/
-	_apply: function(replacedata){
-
-		this._update_html( replacedata );
-
-		$.boom.log( 'push changes onto the stack' );
-		this._save_slot();
-
-	},
-
-	/**
-	Remove slot from the page
-	@function
-	*/
-	_remove: function( data ){
-		var self = this;
-
-		return this._preview( data )
-			.done( function( response ){
-				self._update_html( response );
-				self._save_slot( { "delete" : true } );
-			});
-	},
-
-	/**
 	Insert edited chunk content back into the page.
 	@function
 	*/

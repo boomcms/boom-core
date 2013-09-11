@@ -67,6 +67,14 @@ $.widget('ui.chunkFeature', $.ui.chunk,
 	},
 
 	/**
+	Get the RID for this feature box.
+	@returns {Int} Page RID
+	*/
+	getData: function(){
+		return {target_page_id : this.options.slot.rid};
+	},
+
+	/**
 	Insert the selected page into the DOM as a feature box.
 	@param {Int} rid Page RID
 	*/
@@ -74,13 +82,5 @@ $.widget('ui.chunkFeature', $.ui.chunk,
 		this.options.slot.rid = rid;
 
 		return this._save();
-	},
-
-	/**
-	Get the RID for this feature box.
-	@returns {Int} Page RID
-	*/
-	getData: function(){
-		return {target_page_id : this.options.slot.rid};
 	},
 });

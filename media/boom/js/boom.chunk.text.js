@@ -51,10 +51,10 @@ $.widget('ui.chunkText', $.ui.chunk,
 					self.destroy();
 				})
 				.done( function( html ){
-					self._apply( html );
+					self.insert(html);
 
 					if ( $element.text() == '' ) {
-						self._remove();
+						self.remove();
 					}
 				})
 				.always( function(){
@@ -101,49 +101,18 @@ $.widget('ui.chunkText', $.ui.chunk,
 	Update the page with edited HTML from the editor, then remove TinyMCE.
 	@param {String} replacedata HTML to insert into the page.
 	*/
-	_apply: function(replacedata){
-
-		//replacedata = $( replacedata );
-
-		if( replacedata ) {
+	insert : function(replacedata){
+		if (replacedata) {
 			this.element
-				.html( replacedata )
+				.html(replacedata)
 				.show();
 		}
 
 		this.element
-			.find( '[contenteditable]' )
-			.removeAttr( 'contenteditable' )
-			.off( 'click' );
+			.find('[contenteditable]')
+			.removeAttr('contenteditable')
+			.off('click');
 
-		this._save_slot();
-
-		this.destroy();
+		return this._save();
 	},
-
-	/**
-	Remove the slot from the page.
-	*/
-	_remove: function(){
-
-		if( this.element.is( 'div' ) ) {
-			this.element
-				.html( '<p>Default text.</p>' )
-				.show();
-		} else {
-			this.element
-				.text( 'Default text.' )
-				.show();
-		}
-
-		this.element
-			.find( '[contenteditable]' )
-			.removeAttr( 'contenteditable' )
-			.off( 'click' );
-
-		this._save_slot( { "delete" : true } );
-
-		this.destroy();
-	}
-
 });
