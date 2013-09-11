@@ -68,49 +68,33 @@ $.widget('ui.chunk',
 	Insert edited chunk content back into the page.
 	@function
 	*/
-	_update_html : function( html ) {
-		// TODO: rewrite this mess.
+	_update_html : function(html) {
+		top.$( this.element ).replaceWith(html);
 
-		var $el = top.$( this.element );
+		$.boom.page.editor.bind();
+	},
 
-		var replacedata =
-			top.$( html )
-			.insertAfter( $el );
+	remove : function() {
+		var self = this;
 
-		// this line implicitly calls _destroy(), by removing the element.
-		this.element.remove();
+		$.boom.loader.show();
 
-		this.element = replacedata;
-
+		return $.post(this._url('remove'), this._slot_data({}))
+			.done(function(data) {
+				$.boom.loader.hide();
+				self._update_html(data);
+			});
 	},
 
 	/**
-	Push the current state of the slot on to the edits stack
+	Get the base ajax URL for saving / removing the chunk data
 	@function
+	@returns {String} URL for this chunk's HTML
 	*/
-
-	_save_slot : function( data ) {
-
-		data = ( data ) ? data : this.getData();
-
-		$.boom.page.slot_edits.push( {
-			slot: this.options.slot,
-			data: data
-		} );
-
-		$.boom.page.save_button.button( 'enable' ).attr( 'title', 'Save page' );
-		$.boom.page.cancel_button.button( 'enable' ).attr( 'title', 'Cancel' );
-	},
-
-	/**
-	Get the base ajax URL for previewing the slot HTML
-	@function
-	@returns {String} URL for this slot's HTML
-	*/
-	_preview_url : function() {
+	_url : function(action) {
 		return this.options.urlPrefix +
 		'/' + this.options.slot.type +
-		 '/preview/' + $.boom.page.options.id;
+		 '/' + action + '/' + $.boom.page.options.id;
 	},
 
 	/**
@@ -118,18 +102,24 @@ $.widget('ui.chunk',
 	@function
 	@returns {Object} slot data including slotname and template
 	*/
-	_slot_data : function( data ) {
-		return $.extend(
-				{ data : data },
-				{
-					slotname: this.options.slot.name,
-					template: this.options.slot.template
-				 });
+	_slot_data : function(data) {
+		return $.extend(data,
+			{
+				slotname : this.options.slot.name,
+				template : this.options.slot.template
+			});
 	},
 
-	_preview : function( data ) {
+	_save : function() {
+		var self = this;
 
-		return $.post( this._preview_url(), this._slot_data( data ) );
+		$.boom.loader.show();
+
+		return $.post(this._url('save'), this._slot_data(this.getData()))
+			.done(function(data) {
+				$.boom.loader.hide();
+				self._update_html(data);
+			});
 	},
 
 	/**

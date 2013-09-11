@@ -24,7 +24,6 @@ $.widget('ui.chunkFeature', $.ui.chunk,
 			url: this.options.urlPrefix + '/feature/edit/' + $.boom.page.options.id,
 			width: 400,
 			id: self.element[0].id + '-boom-dialog',
-			// cache: true,
 			title: 'Page feature',
 			onLoad : function() {
 
@@ -56,7 +55,7 @@ $.widget('ui.chunkFeature', $.ui.chunk,
 
 						$.boom.dialog.destroy(self.dialog);
 
-						self._remove( { target_page_id : 0 } );
+						self.remove();
 					});
 
 					$(this).dialog('widget')
@@ -72,20 +71,9 @@ $.widget('ui.chunkFeature', $.ui.chunk,
 	@param {Int} rid Page RID
 	*/
 	insert : function(rid){
-
-		var self = this;
 		this.options.slot.rid = rid;
 
-		$.boom.loader.show();
-
-		return this._preview( this.getData() ).done( function( data ){
-
-			$.boom.loader.hide();
-
-			self._apply( data );
-
-			//self.destroy();
-		});
+		return this._save();
 	},
 
 	/**
@@ -93,19 +81,6 @@ $.widget('ui.chunkFeature', $.ui.chunk,
 	@returns {Int} Page RID
 	*/
 	getData: function(){
-
-		return { target_page_id : this.options.slot.rid };
+		return {target_page_id : this.options.slot.rid};
 	},
-
-	/**
-	Remove the current feature from the page.
-	*/
-	remove : function(){
-		var self = this;
-
-		this.insert( 0 )
-			.done( function( response ){
-				self._remove();
-			});
-	}
 });

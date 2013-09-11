@@ -5,11 +5,11 @@
  * @package	BoomCMS
  * @category	Chunks
  * @category	Controllers
- * @author	Rob Taylor
- * @copyright	Hoop Associates
  */
 class Boom_Controller_Cms_Chunk_Feature extends Boom_Controller_Cms_Chunk
 {
+	protected $_type = 'feature';
+
 	public function action_edit()
 	{
 		$this->template = View::factory('boom/editor/slot/feature', array(
@@ -17,17 +17,23 @@ class Boom_Controller_Cms_Chunk_Feature extends Boom_Controller_Cms_Chunk
 		));
 	}
 
-	public function action_preview()
+	protected function _preview_chunk()
 	{
-		$data = $this->request->post();
-
 		$model = ORM::factory('Chunk_Feature')
 			->values(array(
-				'target_page_id'	=>	$data['data']['target_page_id']
+				'target_page_id' => $this->request->post('target_page_id'),
 			));
 
-		$chunk = new Chunk_Feature($this->page, $model, $data['slotname']);
-		$chunk->template($data['template']);
+		$chunk = new Chunk_Feature($this->page, $model, $this->request->post('slotname'));
+		$chunk->template($this->request->post('template'));
+
+		$this->response->body($chunk->execute());
+	}
+
+	protected function _preview_default_chunk()
+	{
+		$chunk = new Chunk_Feature($this->page, new Model_Chunk_Feature, $this->request->post('slotname'));
+		$chunk->template($this->request->post('template'));
 
 		$this->response->body($chunk->execute());
 	}
