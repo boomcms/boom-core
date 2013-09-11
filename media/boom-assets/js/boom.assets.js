@@ -47,8 +47,8 @@ $.extend($.boom.assets,
 			/** @ignore */ {
 			url: '/cms/assets/manager/',
 			iframe: false,
-			width: 1000,
-			height: 500,
+			width: '80%',
+			height: '700',
 			title: 'Select an asset',
 			cache: false,
 			callback: function() {
