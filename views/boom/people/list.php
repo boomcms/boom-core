@@ -22,7 +22,7 @@
 					<input type="checkbox" class="b-items-select-checkbox ui-helper-reset" id="person-list-<?=$person->id?>" />
 				</td>
 				<td>
-					<a href="#person/<?=$person->id?>"><img src="<?= $person->get_icon_url() ?>" /> <?= $person->name ?></a>
+					<a href="#person/<?=$person->id?>"><?= $person->name ?></a>
 				</td>
 				<td>
 					<span class='tags'>
