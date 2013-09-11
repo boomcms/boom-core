@@ -10,7 +10,7 @@
 			</span>
 		</div>
 
-		<div id="b-items-multiactons">
+		<div id="b-assets-buttons">
 			<button id="b-button-multiaction-edit" disabled="disabled" class="boom-button ui-button-text-icon" data-icon="ui-icon-boom-edit">
 				<?=__('View')?>/<?=__('Edit')?>
 			</button>

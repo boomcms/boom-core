@@ -226,7 +226,7 @@ $.extend($.boom.asset, $.boom.item,
 		});
 
 
-		$( '.boom-tagmanager-asset-back', context ).on( 'click', function( event ){
+		$( '.b-assets-back').on( 'click', function( event ){
 			event.preventDefault();
 			$.boom.history.load( 'tag/' + $.boom.filter_assets.rid );
 
@@ -643,10 +643,17 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 
 	showContent : function(content) {
 		var $content = $(content);
+		var id = $($content.get(0)).attr('id');
 
-		$('#b-assets-content')
-			.replaceWith($content.get(0))
-			.ui();
+		if (id == 'b-assets-content') {
+			$('#b-assets-content')
+				.replaceWith($content.get(0))
+				.ui();
+		} else {
+			$('#b-assets-content')
+				.html($content.get(0))
+				.ui();
+		}
 
 		$('#b-assets-view-thumbs').justifyAssets();
 		$('#b-assets-pagination').replaceWith($content.get(2));
