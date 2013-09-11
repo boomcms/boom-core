@@ -464,7 +464,7 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 				});
 			});
 
-		$('body').on( 'change', '#b-assets-sortby', function( event ){
+		$('#b-assets-manager').on( 'change', '#b-assets-sortby', function( event ){
 				self.tag.options.sortby = this.value;
 				$.boom.history.refresh();
 			})
@@ -480,6 +480,9 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 			})
 			.on('change', '#b-assets-types', function(event) {
 				self.filterByType(this.options[this.selectedIndex].innerHTML);
+			})
+			.on('click', '#b-assets-all', function(event) {
+				self.removeFilters();
 			});
 
 		$('#b-assets-content')
@@ -648,8 +651,28 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 		$('#b-assets-stats').replaceWith($content.get(4));
 	},
 
+	removeFilters : function() {
+		$('#b-assets-types').val(0);
+		$('#b-assets-filter-title').val('');
+
+		this.removeTagFilters();
+
+		$.boom.history.load(this.options.defaultRoute );
+	},
+
+	removeTagFilters : function() {
+		this.tag.filters = {};
+
+		$('#b-tags-search')
+			.find('.b-filter-input')
+			.val('')
+			.end()
+			.find('.b-tags-list li')
+			.remove();
+	},
+
 	filterByType : function(type) {
 		this.tag.set_filters([{type : 'type', id: type}]);
 		$.boom.history.refresh();
-	},
+	}
 });
