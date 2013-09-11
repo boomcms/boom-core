@@ -46,6 +46,8 @@ $.widget( 'boom.page', {
 
 		$.boom.page = self;
 
+		this.slot_edits = [];
+
 		$.boom.util.cacheImages($.boom.config.cachePageImages);
 
 		this.build();
@@ -53,6 +55,21 @@ $.widget( 'boom.page', {
 		this.bind();
 
 		$.boom.log('Page init');
+
+		// FIXME
+		window.onbeforeunload = function(){
+			if ( $.boom.page.slot_edits.length ){
+				return 'You have unsaved changes.';
+				$.boom.dialog.confirm(
+					'Save changes',
+					'You have unsaved changes to this page. Press OK to save these and continue.'
+				)
+				.done( function(){
+					self.save();
+				});
+			}
+		};
+
 	},
 
 	/** @function */
@@ -226,6 +243,103 @@ $.widget( 'boom.page', {
 
 	},
 
+	/** @function */
+	save : function(callback, pagedata, requestdata, config) {
+		var data = pagedata || {};
+
+		var self = this;
+
+		if ($.boom.page.editor.isOpen()) {
+
+			$.boom.dialog.alert('Error', 'Please accept or cancel changes in the editor before saving the page.');
+
+			return;
+		}
+
+		if (!config || (config.showloader != undefined && config.showloader)) {
+			$.boom.loader.show();
+		}
+
+		var page =
+			$.boom.page.options,
+			title =
+				this.document.contents().find('#b-page-title').length ?
+				this.document.contents().find('#b-page-title').html().text() :
+				$('input[name=alttitle]').val();
+
+		data = $.extend(data, {
+			title: title || 'Untitled',
+			slots: {}
+		});
+
+		if (!data.vid) {
+			data.vid = this.options.vid;
+		}
+
+		$( $.boom.page.slot_edits ).each(function(){
+
+			if ( this.id == 'b-page-title' ) return;
+
+			var
+				slot = this.slot;
+
+			// Don't submit data for chunks which have been inherited from another page.
+			// slotobj.page will be 0 when the slot has been edited.
+			if (slot.page == self.options.id || slot.page == 0)
+			{
+				if (!data.slots[slot.type]) {
+					data.slots[slot.type] = {};
+				}
+
+				if (slot.type != 'text' || this.data != 'Default text.') {
+					data.slots[slot.type][slot.name] = this.data;
+				}
+			}
+		});
+
+
+
+		requestdata = $.extend({
+			csrf: $.boom.options.csrf,
+			data: JSON.stringify(data)
+		}, requestdata);
+
+		$.post( '/cms/page/version/content/' + this.options.id, requestdata )
+		.done(
+			function(response){
+				$.boom.growl.show( "Page successfully saved." );
+				$.boom.page.slot_edits = [];
+
+				if (response.substring(0, 9) == 'Location:') {
+					top.location = response.replace('Location:', '');
+				} else {
+					$('#b-page-publish').show();
+					$.boom.page.save_button.button( 'disable' ).attr( 'title', 'You have no unsaved changes' );
+					$.boom.page.cancel_button.button( 'disable' ).attr( 'title', 'You have no unsaved changes' );
+
+					$.boom.page.setStatus(response);
+				}
+			})
+		.fail( function(response){
+			var message;
+
+			try {
+				error = JSON.parse(response.responseText);
+			} catch (e) {
+				message = "Unable to save page.";
+			}
+
+			if (message == null) {
+				message = (error.message)? error.message : 'Unable to save page.';
+			}
+
+			$.boom.growl.show( message );
+		})
+		.always( function(){
+			$.boom.loader.hide();
+		});
+	},
+
 	setStatus : function(status) {
 		$.boom.page.status_button.find('span').text(status);
 
@@ -367,12 +481,39 @@ $.widget( 'boom.page', $.boom.page, {
 
 			this.elements.page_body = $.boom.page.document;
 
-			this.loadHtml()
+			this.load()
 				.done( function(){
 					if ( $.boom.page.options.writable ) self.bind();
 				});
 
 			return this;
+		},
+
+		/** @function */
+		load : function(){
+
+			var self = this;
+			var promise = new $.Deferred();
+
+			$.boom.loader.show();
+
+			this.loadScripts( this.config.pageScripts )
+				.pipe( function(){
+
+					return self.loadHTML();
+
+				})
+				.done(function(){
+
+					$.boom.loader.hide();
+
+					$.boom.log('Scripts loaded into iFrame');
+
+					promise.resolve();
+				});
+
+
+			return promise;
 		},
 
 		/** @function */
@@ -476,6 +617,20 @@ $.widget( 'boom.page', $.boom.page, {
 
 					$.boom.page.slots.bindMouseLeave.call(this, self.elements.page_body);
 				});
+
+				// now bind other config events eg sortable
+
+				$.each(config, function(key, val){
+
+					if ( key === 'sortable' && val ) {
+
+						// FIXME
+
+						//$( chunk ).sortable($.extend({}, $.boom.config.sortable, {
+						//	axis: 'y'
+						//}));
+					}
+				});
 			};
 
 			self.elements.page_body.contents()
@@ -549,6 +704,43 @@ $.widget( 'boom.page', $.boom.page, {
 			html_loaded.resolve();
 
 			return html_loaded;
+		},
+
+		/** @function */
+		loadScripts : function( scripts ){
+
+			var self = this;
+			var promise = new $.Deferred();
+
+			$.each(scripts, function(){
+
+				$.get( this )
+				.done( function( response ){
+
+					var head = self.elements.page_body
+						.contents()
+						.find('head');
+
+					if (/js$/.test(this.url)) {
+						$( '<script></script>', {
+							type : "text/javascript"
+						} )
+						.text( response )
+						.appendTo( head );
+					}
+
+					 if (/css$/.test(this.url)) {
+						$( '<style></style>', {
+							type: "text/css"
+						})
+						.text( response )
+						.appendTo( head );
+					}
+
+				});
+			});
+
+			return promise.resolve();
 		},
 
 		//
