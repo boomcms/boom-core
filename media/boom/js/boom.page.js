@@ -551,43 +551,6 @@ $.widget( 'boom.page', $.boom.page, {
 			return html_loaded;
 		},
 
-		/** @function */
-		loadScripts : function( scripts ){
-
-			var self = this;
-			var promise = new $.Deferred();
-
-			$.each(scripts, function(){
-
-				$.get( this )
-				.done( function( response ){
-
-					var head = self.elements.page_body
-						.contents()
-						.find('head');
-
-					if (/js$/.test(this.url)) {
-						$( '<script></script>', {
-							type : "text/javascript"
-						} )
-						.text( response )
-						.appendTo( head );
-					}
-
-					 if (/css$/.test(this.url)) {
-						$( '<style></style>', {
-							type: "text/css"
-						})
-						.text( response )
-						.appendTo( head );
-					}
-
-				});
-			});
-
-			return promise.resolve();
-		},
-
 		//
 		/**
 		TODO
