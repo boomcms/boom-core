@@ -12,12 +12,6 @@
 				<li><a href="#boom-person-view-groups<?=$person->id;?>">Groups</a></li>
 			</ul>
 
-			<div class="ui-tabs-panel ui-widget-content ui-helper-left">
-				<a class="ui-helper-left">
-					<img class="ui-state-active ui-corner-all" src="<?= $person->get_icon_url(80) ?>" />
-				</a>
-			</div>
-
 			<div id="boom-person-view-information<?=$person->id;?>" class="ui-helper-left">
 				<table width="100%">
 					<tbody>
