@@ -350,30 +350,28 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 
 		var self = this;
 		var title_filter = $('#b-assets-filter-title')
-		.autocomplete({
-			delay: 200, // Time to wait after keypress before making the AJAX call.
-			source: function(request, response){
-				$.ajax({
-					url: '/cms/autocomplete/assets',
-					dataType: 'json',
-					data: {
-						text : title_filter.val()
-					}
-				})
-				.done(function(data) {
-					response(data);
-					var title = title_filter.val();
-					if ( title != '' ) self.url_map.tag.filters[ 'title' ] = title;
-					$.boom.history.load( 'tag/0' );
-					self.main_content.trigger('justify');
-				});
-			},
-			select: function(event, ui){
-				self.url_map.tag.filters[ 'title' ] = ui.item.value;
-				$.boom.history.load( 'tag/0' );
-				self.main_content.trigger('justify');
-			}
-		});
+			.autocomplete({
+				delay: 200, // Time to wait after keypress before making the AJAX call.
+				minLength : 0,
+				source: function(request, response){
+					$.ajax({
+						url: '/cms/autocomplete/assets',
+						dataType: 'json',
+						data: {
+							text : title_filter.val()
+						}
+					})
+					.done(function(data) {
+						response(data);
+
+						self.filterByTitle(title_filter.val());
+					});
+				},
+				select: function(event, ui){
+					self.filterByTitle(ui.item.value);
+					$(".ui-menu-item").hide();
+				}
+			});
 
 		$( '#b-tags-search' ).tagger_search();
 
@@ -679,5 +677,10 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 	filterByType : function(type) {
 		this.tag.set_filters([{type : 'type', id: type}]);
 		$.boom.history.refresh();
+	},
+
+	filterByTitle : function(title) {
+		this.url_map.tag.filters[ 'title' ] = title;
+		$.boom.history.load( 'tag/0' );
 	}
 });
