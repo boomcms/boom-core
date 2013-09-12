@@ -364,7 +364,5 @@ $.widget( 'boom.browser',
 			.find( '.b-items-content' )
 			.html( content )
 			.ui();
-
-		this.main_panel.trigger('justify');
 	}
 });

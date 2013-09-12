@@ -311,42 +311,35 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 	/**
 	Insert selected asset into the page
 	*/
-	insert: function() {
+	insert : function() {
 		var self = this;
 
 		$.boom.log( 'inserting asset' + self.asset.asset_id );
 		$.boom.loader.show();
 
-		self._preview( self.getData() )
-		.done( function( data ){
+		self._save(self.getData())
+			.done(function(data) {
+				$.boom.loader.hide();
 
-			$.boom.loader.hide();
+				if (top.$('.toolbar-slideshow').length) {
+					var new_asset = $('<div>').append( data ).find( 'img' );
+					self.edited = true;
 
-			if (top.$('.toolbar-slideshow').length) {
-				var new_asset = $('<div>').append( data ).find( 'img' );
-				self.edited = true;
+					if (self.elements.asset.is('a')) {
+						self.elements.asset.attr('href', new_asset.attr('src'));
+					} else {
+						self.elements.asset.attr('src', new_asset.attr('src'));
+					}
 
-				if (self.elements.asset.is('a')) {
-					self.elements.asset.attr('href', new_asset.attr('src'));
-				} else {
-					self.elements.asset.attr('src', new_asset.attr('src'));
+					if (self.elements.link.length && self.asset.url) {
+						self.elements.link.attr('href', self.asset.url);
+					}
 				}
-
-				if (self.elements.link.length && self.asset.url) {
-					self.elements.link.attr('href', self.asset.url);
-				}
-			}
-			else
-			{
-				self._save_slot();
-				self.element.replaceWith(data);
-				$.boom.page.editor.bind();
-			}
-		})
-		.fail( function( data ) {
-			$.boom.log( 'asset chunk error ' );
-			console.log( data );
-		});
+			})
+			.fail( function( data ) {
+				$.boom.log( 'asset chunk error ' );
+				console.log( data );
+			});
 	},
 
 	/**
@@ -354,23 +347,15 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 	@returns {Int} Asset RID
 	*/
 	getData: function() {
+		var rid = this.asset.asset_id;
 
-			var rid = this.asset.asset_id;
+		rid = (rid == 0) ? null : rid;
 
-			rid = (rid == 0) ? null : rid;
-
-			return {
-				asset_id : rid,
-				title : null,
-				caption : this.asset.caption,
-				url : this.asset.url
-			};
+		return {
+			asset_id : rid,
+			title : null,
+			caption : this.asset.caption,
+			url : this.asset.url
+		};
 	},
-
-	/**
-	Remove the current asset from the page.
-	*/
-	remove : function(){
-		this.insert( 0 );
-	}
 });
