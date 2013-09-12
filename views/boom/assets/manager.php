@@ -54,7 +54,17 @@
 			<ul class="b-tags-list">
 			</ul>
 		</div>
-	</div>
 
+		<?= Form::select('', array(
+			'last_modified-desc' => 'Most recent',
+			'last_modified-asc' => 'Oldest',
+			'title-asc' => 'Title A - Z',
+			'title-desc' => 'Title Z - A',
+			'filesize-asc' => 'Size (smallest)',
+			'filesize-desc' => 'Size (largest)',
+			'downloads-desc' => 'Most downloaded'
+			), 'last_modified-desc', array('id' => 'b-assets-sortby'))
+		?>
+	</div>
 	<div id="b-assets-content"></div>
 </div>

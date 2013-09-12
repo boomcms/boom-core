@@ -149,15 +149,10 @@ class Boom_Controller_Cms_Assets extends Boom_Controller
 
 		if (($column == 'last_modified' OR $column == 'title' OR $column == 'filesize') AND ($order == 'desc' OR $order == 'asc'))
 		{
-			// A valid sort column and direction was given so use them.
-			$sortby = $column . '-' . $order;
 			$query->order_by($column, $order);
 		}
 		else
 		{
-			// No sort column or direction was given, or one of them was invalid, sort by title ascending by default.
-			$column = 'title';
-			$order = 'asc';
 			$query->order_by('title', 'asc');
 		}
 
@@ -200,7 +195,6 @@ class Boom_Controller_Cms_Assets extends Boom_Controller
 				'assets'		=>	$assets,
 				'total_size'	=>	$size,
 				'total'		=>	$total,
-				'sortby'		=>	$sortby,
 				'order'		=>	$order,
 			));
 

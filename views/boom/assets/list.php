@@ -35,17 +35,6 @@
 			echo "<div class='boom-pagination ui-helper-left'>", $pagination, "</div>";
 		endif;
 	?>
-
-	<?= Form::select('', array(
-		'last_modified-desc' => 'Most recent',
-		'last_modified-asc' => 'Oldest',
-		'title-asc' => 'Title A - Z',
-		'title-desc' => 'Title Z - A',
-		'filesize-asc' => 'Size (smallest)',
-		'filesize-desc' => 'Size (largest)',
-		'downloads-desc' => 'Most downloaded'
-		), $sortby, array('id' => 'b-assets-sortby'))
-	?>
 </div>
 <div id="b-assets-stats">
 	<?= Num::format($total, 0) ?> <?= Inflector::plural('file', $total) ?> / <?= Text::bytes($total_size) ?>
