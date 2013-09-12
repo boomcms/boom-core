@@ -59,6 +59,7 @@ $.extend($.boom.assets,
 			},
 			open: function(){
 				$.boom.log( 'dialog open' );
+				var dialog = $(this);
 
 				var remove = $('<button />')
 					.addClass('ui-helper-left')
@@ -70,6 +71,7 @@ $.extend($.boom.assets,
 					.click(function(){
 						complete.reject();
 						cleanup();
+						dialog.dialog('destroy');
 					});
 				var upload = $('<button />')
 					.addClass('ui-helper-left')
