@@ -95,8 +95,7 @@ $.extend($.boom.assets,
 					.find('.ui-dialog-buttonpane')
 					.prepend( upload )
 					.prepend( remove )
-					.append($('<div id="b-assets-pagination"></div>'))
-					.append($('<div id="b-assets-stats"></div>'));
+					.append($('<div class="center"><div id="b-assets-pagination"></div><div id="b-assets-stats"></div></div>'));
 			},
 			onLoad: function(){
 
@@ -637,6 +636,10 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 
 	showContent : function(content) {
 		var $content = $(content);
+
+console.log($content);
+console.log($('#b-assets-pagination'));
+console.log($content.get(2));
 		var id = $($content.get(0)).attr('id');
 
 		if (id == 'b-assets-content') {
@@ -652,6 +655,8 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 		$('#b-assets-view-thumbs').justifyAssets();
 		$('#b-assets-pagination').replaceWith($content.get(2));
 		$('#b-assets-stats').replaceWith($content.get(4));
+
+console.log($('#b-assets-pagination'));
 	},
 
 	removeFilters : function() {
