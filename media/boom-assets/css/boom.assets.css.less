@@ -47,12 +47,14 @@
 			input, select {
 				height: 24px;
 				font-size: 1.2em;
-				vertical-align: middle;
+				vertical-align: top;
 				width: 250px;
+				margin-top: 15px;
 			}
 
 			select {
 				width: 150px;
+				margin-top: 19px;
 			}
 		}
 
@@ -63,14 +65,18 @@
 		#b-tags-search {
 			display: inline-block;
 			margin-left: 40px;
+			vertical-align: top;
+			max-width: 300px;
 
 			ul {
-				display: inline-block;
+				float: left;
+				width: 100%;
 			}
 
-			span {
+			span.ui-icon-boom-tag {
 				display: inline-block;
-				vertical-align: bottom;
+				vertical-align: top;
+				margin-top: 15px;
 			}
 
 			.b-filter-input {
@@ -82,6 +88,7 @@
 
 				li {
 					margin: 0 5px;
+					display: inline-block;
 
 					a {
 						display: inline-block !important;
