@@ -36,14 +36,16 @@
 		endif;
 	?>
 
-	<select id="b-assets-sortby">
-		<option value="last_modified-desc" <? if ($sortby == 'last_modified-desc') echo "selected='selected'"; ?>>Most recent</option>
-		<option value="last_modified-asc" <? if ($sortby == 'last_modified-asc') echo "selected='selected'"; ?>>Oldest</option>
-		<option value="title-asc" <? if ($sortby == 'title-asc') echo "selected='selected'"; ?>>Title A-Z</option>
-		<option value="title-desc" <? if ($sortby == 'title-desc') echo "selected='selected'"; ?>>Title Z-A</option>
-		<option value="filesize-asc" <? if ($sortby == 'filesize-asc') echo "selected='selected'"; ?>>Size (smallest)</option>
-		<option value="filesize-desc" <? if ($sortby == 'filesize-desc') echo "selected='selected'"; ?>>Size (largest)</option>
-	</select>
+	<?= Form::select('', array(
+		'last_modified-desc' => 'Most recent',
+		'last_modified-asc' => 'Oldest',
+		'title-asc' => 'Title A - Z',
+		'title-desc' => 'Title Z - A',
+		'filesize-asc' => 'Size (smallest)',
+		'filesize-desc' => 'Size (largest)',
+		'downloads-desc' => 'Most downloaded'
+		), $sortby, array('id' => 'b-assets-sortby'))
+	?>
 </div>
 <div id="b-assets-stats">
 	<?= Num::format($total, 0) ?> <?= Inflector::plural('file', $total) ?> / <?= Text::bytes($total_size) ?>
