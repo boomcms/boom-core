@@ -483,6 +483,11 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 			})
 			.on('click', '#b-assets-all', function(event) {
 				self.removeFilters();
+			})
+			.on('click', '.thumb a', function(event) {
+				event.preventDefault();
+
+				self.select($(this).attr('href').replace('#asset/'), true);
 			});
 
 		$('#b-assets-content')

@@ -2,30 +2,29 @@
 	<div id="b-assets-view-thumbs" class="ui-helper-left">
 		<? foreach ($assets as $asset): ?>
 			<div style="height: 160px; width: <?= floor(160 * $asset->get_aspect_ratio()) ?>px" data-aspect-ratio="<?= $asset->get_aspect_ratio() ?>">
-				<div class="thumb">
-					<input type="checkbox" class="b-items-select-checkbox" id="asset-thumb-<?=$asset->id?>" />
+				<a href="#asset/<?=$asset->id?>">
+					<label class="thumb">
+						<input type="checkbox" class="b-items-select-checkbox" id="asset-thumb-<?=$asset->id?>" />
+							<img src="/asset/thumb/<?=$asset->id?>/400/0" />
 
-					<a href="#asset/<?=$asset->id?>">
-						<img src="/asset/thumb/<?=$asset->id?>/400/0" />
+							<section class="b-asset-details">
+								<h1><?= $asset->title ?></h1>
 
-						<section class="b-asset-details">
-							<h1><?= $asset->title ?></h1>
+								<p>
+									<strong>Type</strong> <?= ucfirst($asset->type()) ?><br />
+									<strong>Description</strong> <?= ($asset->description)? Text::limit_words($asset->description, 5) : 'None set' ?><br />
 
-							<p>
-								<strong>Type</strong> <?= ucfirst($asset->type()) ?><br />
-								<strong>Description</strong> <?= ($asset->description)? Text::limit_words($asset->description, 5) : 'None set' ?><br />
+									<? if ($asset->downloads): ?>
+										<strong>Downloads</strong> <?= $asset->downloads ?><br />
+									<? endif ?>
 
-								<? if ($asset->downloads): ?>
-									<strong>Downloads</strong> <?= $asset->downloads ?><br />
-								<? endif ?>
-
-								<? if ($asset->width AND $asset->height): ?>
-									<strong>Dimensions</strong> <?= $asset->width ?> x <?= $asset->height ?><br />
-								<? endif ?>
-							</p>
-						</section>
-					</a>
-				</div>
+									<? if ($asset->width AND $asset->height): ?>
+										<strong>Dimensions</strong> <?= $asset->width ?> x <?= $asset->height ?><br />
+									<? endif ?>
+								</p>
+							</section>
+					</label>
+				</a>
 			</div>
 		<? endforeach; ?>
 	</div>
