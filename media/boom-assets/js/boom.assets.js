@@ -268,10 +268,6 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 
 		var self = this;
 
-		self.main_panel.on('justify', function() {
-			self.main_panel.find('#b-assets-view-thumbs').justifyAssets({}).justifyAssets('justify');
-		});
-
 		$('#boom-assets-upload-menu')
 		.on( 'click', function( event ) {
 			var tags = [];
@@ -461,19 +457,21 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 				});
 			});
 
-		$('#b-assets-manager').on( 'change', '#b-assets-sortby', function( event ){
-				self.tag.options.sortby = this.value;
-				$.boom.history.refresh();
-			})
-			.on( 'click', '#b-assets-pagination a', function( e ){
-				e.preventDefault();
+		$('body').delegate('#b-assets-pagination a', 'click', function( e ){
+			e.preventDefault();
 
-				$.get( '/cms/assets/list?' + $( this ).attr( 'href' ).split( '?' )[ 1 ])
+			$.get( '/cms/assets/list?' + $( this ).attr( 'href' ).split( '?' )[ 1 ])
 				.done( function( data ){
 					self.showContent(data);
 				});
 
-				return false;
+			return false;
+		});
+
+		$('#b-assets-manager')
+			.on( 'change', '#b-assets-sortby', function( event ){
+				self.tag.options.sortby = this.value;
+				$.boom.history.refresh();
 			})
 			.on('change', '#b-assets-types', function(event) {
 				self.filterByType(this.options[this.selectedIndex].innerHTML);
@@ -637,9 +635,6 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 	showContent : function(content) {
 		var $content = $(content);
 
-console.log($content);
-console.log($('#b-assets-pagination'));
-console.log($content.get(2));
 		var id = $($content.get(0)).attr('id');
 
 		if (id == 'b-assets-content') {
@@ -655,8 +650,6 @@ console.log($content.get(2));
 		$('#b-assets-view-thumbs').justifyAssets();
 		$('#b-assets-pagination').replaceWith($content.get(2));
 		$('#b-assets-stats').replaceWith($content.get(4));
-
-console.log($('#b-assets-pagination'));
 	},
 
 	removeFilters : function() {
