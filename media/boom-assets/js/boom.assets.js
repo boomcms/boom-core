@@ -478,12 +478,12 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 			})
 			.on('click', '#b-assets-all', function(event) {
 				self.removeFilters();
-			})
-			.on('click', '.thumb a', function(event) {
-				event.preventDefault();
-
-				self.select($(this).attr('href').replace('#asset/'), true);
 			});
+//			.on('click', '.thumb a', function(event) {
+//				event.preventDefault();
+//
+//				self.select($(this).attr('href').replace('#asset/'), true);
+//			});
 
 		$('#b-assets-content')
 			.on( 'click', '.boom-tagmanager-asset-replace ', function( event ){
@@ -519,9 +519,8 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 		var self = this;
 		var select_asset = new $.Deferred();
 
-		$( self.main_panel )
-			.on( 'click', '#b-assets-view-thumbs a', function(event){
-
+		$('#b-assets-manager')
+			.on( 'click', ' .thumb a', function(event){
 				var data = $(this).attr('href').split('/');
 				var rid = parseInt( data[1], 10 );
 				select_asset.notify( rid );
