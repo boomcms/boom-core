@@ -28,7 +28,6 @@ $.extend($.boom.item,
 
 	/** @function */
 	add: function( data ){
-
 		$.boom.loader.show();
 
 		return $.post( this.base_url + 'add', data)
@@ -41,8 +40,6 @@ $.extend($.boom.item,
 
 	/** @function */
 	save: function( data ){
-
-
 		$.boom.loader.show();
 
 		return $.post( this.base_url + 'save/' + this.rid, data)
@@ -70,7 +67,7 @@ $.extend($.boom.item,
 
 			$.boom.loader.show();
 
-			return $.post( self.base_url + 'delete/' + self.rid );
+			return $.post( self.base_url + 'delete/' + self.rid, {csrf : $.boom.options.csrf} );
 		})
 		.done( function(){
 
@@ -234,7 +231,6 @@ $.widget( 'boom.browser',
 
 		this.main_panel = $('.b-items-rightpane');
 		this.sidebar = $('.b-items-sidebar');
-
 
 		this._bind();
 

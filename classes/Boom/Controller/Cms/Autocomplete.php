@@ -53,7 +53,7 @@ class Boom_Controller_Cms_Autocomplete extends Boom_Controller
 		$query = DB::select('title')
 			->from('assets')
 			->where('title', 'like', "%$this->text%")
-			->order_by('title', 'asc')
+			->order_by(DB::expr('length(title)'), 'asc')
 			->limit($this->count);
 
 		// Get the results
@@ -143,7 +143,7 @@ class Boom_Controller_Cms_Autocomplete extends Boom_Controller
 			->on('tags.id', '=', $join_table.".tag_id")
 			->where('name', 'like', "%$this->text%")
 			->where('type', '=', $this->request->query('type'))
-			->order_by('name', 'asc')
+			->order_by(DB::expr('length(tags.name)'), 'asc')
 			->distinct(TRUE)
 			->limit($this->count);
 
