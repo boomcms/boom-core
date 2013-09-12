@@ -657,7 +657,7 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 	},
 
 	removeFilters : function() {
-		$('#b-assets-types').val(0);
+		$('#b-assets-types').val('');
 		$('#b-assets-filter-title').val('');
 
 		this.removeTagFilters();
