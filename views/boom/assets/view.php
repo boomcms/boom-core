@@ -4,7 +4,6 @@
 		<input type="hidden" name="id" id="asset_id" value="<?= $asset->id?>" />
 
 		<div class="boom-tabs ui-helper-clearfix">
-
 			<ul>
 				<li><a href="#b-assets-view-attributes<?=$asset->id;?>"><?=__('Attributes')?></a></li>
 				<li><a href="#b-assets-view-info<?=$asset->id;?>"><?=__('Info')?></a></li>
@@ -15,13 +14,11 @@
 			</ul>
 
 			<div class="b-assets-preview ui-tabs-panel ui-widget-content ui-helper-left">
-
 				<a href="<?= Route::url('asset', array('action' => 'thumb', 'id' => $asset->id, 'width' => 600, 'height' => 500)) ?>"
 					title="Click for larger view"
 					class="ui-helper-left boom-asset-preview">
 					<img class="ui-state-active ui-corner-all" src="<?= Route::url('asset', array('action' => 'thumb', 'id' => $asset->id, 'width' => 160, 'height' => 160, 'quality' => 85, 'crop' => 1)) ?>">
 				</a>
-
 			</div>
 
 			<div id="b-assets-view-attributes<?=$asset->id;?>" class="b-assets-view-attributes ui-helper-left">
