@@ -409,43 +409,6 @@ $.widget( 'boom.page', $.boom.page, {
 
 			var self = this;
 
-			// can we haz link click?
-			self.elements.page_body.contents().find('body').unbind('click').click(function(event){
-
-				function isAnchor(target){
-
-					var internal_link = /#|javascript:/;
-
-					return ( target && target.nodeName == 'A' && !internal_link.test( target.href ) );
-				}
-
-				var target = isAnchor(event.target) ? event.target : $( event.target ).parents('a').get(0);
-
-				if ( isAnchor(target) ) {
-
-					event.preventDefault();
-
-					if ( $.boom.page.slot_edits.length ){
-
-						$.boom.dialog.confirm(
-							'Save changes',
-							'You have unsaved changes to this page. Save your changes, or discard them and continue.'
-						)
-						.done( function(){
-							$.boom.page.save();
-						})
-						.fail( function(){
-							$.boom.page.slot_edits = [];
-							top.location = target.href;
-						});
-
-					} else {
-						top.location = target.href;
-					}
-
-				}
-			});
-
 			function slotBind( config ){
 
 				config = config || {};
