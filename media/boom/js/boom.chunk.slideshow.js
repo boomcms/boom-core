@@ -148,10 +148,13 @@ $.widget('ui.chunkSlideshow', $.ui.chunk,
 				self._cancel();
 			})
 			.on( 'click', 'button.save', function(){
-				self._insert()
-					.done( function(){
-						$.ui.chunk.prototype._destroy.call( this );
-					});
+				self._remove_ui();
+
+				if (self.edited) {
+					self.insert();
+				} else {
+					$.boom.page.editor.bind();
+				}
 			})
 			.on( 'click', 'button.sort', function(){
 				self._sort()
@@ -269,13 +272,6 @@ $.widget('ui.chunkSlideshow', $.ui.chunk,
 				var slides = $.makeArray( self.element.find( 'ul.slides li').not( '.clone' ) );
 				var target = $.inArray( $new_slide[0], slides );
 
-				// self._refresh()
-				// 					.done( function(){
-				// 						$.boom.loader.hide();
-				// 						console.log( 'inserted new slide ' + target );
-				// 						self.options.slider.flexAnimate( target );
-				// 					});
-
 				self.options.slider.count++;
 			});
 	},
@@ -291,7 +287,6 @@ $.widget('ui.chunkSlideshow', $.ui.chunk,
 			.remove();
 		this.options.slider.flexslider( 'next' );
 
-	//	this._refresh();
 		this.options.slider.count--;
 		this.edited = true;
 	},
@@ -384,52 +379,15 @@ $.widget('ui.chunkSlideshow', $.ui.chunk,
 	},
 
 	/**
-	Apply new slide data to the slot template
-	@function
-	@param {Array} slides New slides
-	@returns {String} updated HTML
-	*/
-	_get_preview : function( slides ) {
-
-		var self = this;
-		$.boom.loader.show();
-
-		var url =
-			this._preview_url() +
-			'&editable=1&remove=0';
-
-		var slides = this.getData();
-		var request = self._preview( slides )
-		.done( function( data ){
-
-			$.boom.loader.hide();
-
-		})
-		.fail( function( data ) {
-			$.boom.loader.hide();
-			$.boom.log( 'slideshow error ' + data );
-		});
-
-		return request;
-	},
-
-	/**
 	Apply changes to the HTML
 	*/
-	_insert : function(){
-
-		var self = this;
+	insert : function(){
 		var data = this.getData();
 
-		console.log( data.slides );
-
-		if ( data.slides.length == 0 ){
-			return self._remove( data );
+		if (data.slides.length == 0) {
+			return this.remove();
 		} else {
-			return this._get_preview( this.getData() )
-			.done( function( data ){
-				self._apply( data );
-			});
+			return this._save(data);
 		}
 	},
 

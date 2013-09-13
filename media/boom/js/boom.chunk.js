@@ -90,8 +90,8 @@ $.widget('ui.chunk',
 
 		return $.post(this._url('save'), this._slot_data(this.getData()))
 			.done(function(data) {
-				$.boom.loader.hide();
 				self._update_html(data);
+				$.boom.loader.hide();
 			});
 	},
 
