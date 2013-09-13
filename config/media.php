@@ -17,6 +17,7 @@ return array(
 	),
 	'js' => array(
 		'boom.page.js',
+		'boom.editor.js',
 		'boom.wysihtml5.js',
 		'boom.chunk.js',
 		'boom.chunk.text.js',
