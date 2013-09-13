@@ -4,7 +4,6 @@
 			<div style="height: 160px; width: <?= floor(160 * $asset->get_aspect_ratio()) ?>px" data-aspect-ratio="<?= $asset->get_aspect_ratio() ?>">
 				<div class="thumb">
 					<a href="#asset/<?=$asset->id?>">
-						<input type="checkbox" class="b-items-select-checkbox" id="asset-thumb-<?=$asset->id?>" />
 						<img src="/asset/thumb/<?=$asset->id?>/400/0" />
 
 						<section class="b-asset-details">
