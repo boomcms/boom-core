@@ -5,11 +5,11 @@
  * @package	BoomCMS
  * @category	Chunks
  * @category	Controllers
- * @author	Rob Taylor
- * @copyright	Hoop Associates
  */
 class Boom_Controller_Cms_Chunk_Linkset extends Boom_Controller_Cms_Chunk
 {
+	protected $_type = 'linkset';
+
 	public function action_edit()
 	{
 		$this->template = View::factory('boom/editor/slot/linkset', array(
@@ -17,31 +17,31 @@ class Boom_Controller_Cms_Chunk_Linkset extends Boom_Controller_Cms_Chunk
 		));
 	}
 
-	public function action_preview()
+	protected function _preview_chunk()
 	{
-		// Instantiate a linkset model
+		$model = ORM::factory('Chunk_Linkset')->links($this->request->post('links'));
+
+		$chunk = new Chunk_Linkset($this->page, $model, $this->request->post('slotname'));
+		$chunk->template($this->request->post('template'));
+
+		$this->response->body($chunk->execute());
+	}
+
+	protected function _preview_default_chunk()
+	{
 		$model = new Model_Chunk_Linkset;
 
-		// Get the linkset data from the query string.
-		$data = $this->request->post();
+		$chunk = new Chunk_Linkset($this->page, $model, $this->request->post('slotname'));
+		$chunk->template($this->request->post('template'));
 
-		if (isset($data['data']['links']))
-		{
-			// urldecode() to the link urls
-			foreach ($data['data']['links'] as & $link)
-			{
-				$link['url'] = urldecode($link['url']);
-			}
-
-			// Add the links to the linkset model.
-			$model->links($data['data']['links']);
-		}
-
-		// Create a chunk with the linkset model.
-		$chunk = new Chunk_Linkset($this->page, $model, $data['slotname']);
-		$chunk->template($data['template']);
-
-		// Display the chunk.
 		$this->response->body($chunk->execute());
+	}
+
+	protected function _save_chunk()
+	{
+		$chunk = parent::_save_chunk();
+		$chunk
+			->links($this->request->post('links'))
+			->save_links();
 	}
 }

@@ -563,11 +563,6 @@ class Boom_Model_Page extends Model_Taggable
 		return $this;
 	}
 
-	public function status()
-	{
-		return $this->version()->status();
-	}
-
 	public function update_child_sequences(array $sequences)
 	{
 		foreach ($sequences as $sequence => $page_id)

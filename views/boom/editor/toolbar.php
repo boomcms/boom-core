@@ -41,9 +41,9 @@
 
 	<? if ($page->was_created_by($person) OR $auth->logged_in('edit_page_content', $page)): ?>
 		<div id="b-page-actions" class="b-page-container">
-			<span id="boom-page-save-menu">
-				<button id="b-page-save" class="ui-button boom-button" disabled="disabled" title="You have no unsaved changes" data-icon="ui-icon-boom-accept">
-					<?=__('Accept')?>
+			<span id="b-page-publish-menu">
+				<button id="b-page-version-status" class="ui-button boom-button<?= $page->status() ?>" <? if ($page->version()->status() == 'live'): ?>disabled='disabled'<? endif ?>>
+					<?= __($page->version()->status()) ?>
 				</button>
 			</span>
 			<button id="b-page-cancel" class="ui-button boom-button" disabled="disabled" data-icon="ui-icon-boom-cancel">
@@ -52,10 +52,6 @@
 		</div>
 
 		<div class="b-page-container">
-			<button id="b-page-version-status" class="ui-button boom-button<? if ($page->status() == 'live'): ?> live<? endif ?>"<? if ($page->status() == 'live'): ?>disabled='disabled'<? endif ?>>
-				<?= __($page->status()) ?>
-			</button>
-
 			<button id="boom-page-preview" class="boom-button b-button-preview" data-icon="ui-icon-boom-preview" data-preview="preview">
 				<?=__('Preview')?>
 			</button>

@@ -58,10 +58,10 @@ $.widget('ui.chunkLinkset', $.ui.chunk,
 			},
 			callback: function(){
 				self
-				._insert()
-				.done( function(){
-					self.destroy();
-				});
+					.insert()
+					.done( function(){
+						self.destroy();
+					});
 			}
 		});
 
@@ -171,27 +171,15 @@ $.widget('ui.chunkLinkset', $.ui.chunk,
 		});
 	},
 
-	/**
-	Add a new link to the list in the linkset dialog.
-	*/
-	_insert: function(){
+	insert: function(){
+		var self = this;
 
-		var
-			self = this;
+		var data = this.getData();
 
-		var data = this._getData( this.elements.currentLinks );
-		if ( data.links.length == 0 ){
-			return this._remove( data );
+		if (data.links.length == 0) {
+			return this.remove();
 		} else {
-			return self._preview( data )
-				.done( function(data) {
-
-					$.boom.loader.hide('dialog');
-
-					self._apply(data);
-
-					//self.destroy();
-				});
+			return self._save(data);
 		}
 	},
 
