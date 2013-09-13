@@ -49,6 +49,7 @@ $.extend($.boom.assets,
 			iframe: false,
 			width: '80%',
 			height: '700',
+			dialogClass : 'b-assets-dialog',
 			title: 'Select an asset',
 			cache: false,
 			callback: function() {
