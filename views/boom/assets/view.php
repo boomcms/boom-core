@@ -72,7 +72,7 @@
 
 					<? if ($asset->type != Boom_Asset::IMAGE): ?>
 						<dt><?=__('Downloads')?></dt>
-						<dd><?= $asset->downloads ?></dd>
+						<dd><?= Num::format($asset->downloads) ?></dd>
 					<? endif ?>
 				</dl>
 			</div>
