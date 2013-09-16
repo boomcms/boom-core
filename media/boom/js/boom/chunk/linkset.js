@@ -12,6 +12,14 @@ $.widget('ui.chunkLinkset', $.ui.chunk,
 
 	elements : {},
 
+	links : [],
+
+	_create : function() {
+		this.links = this._getLinks(this.element);
+
+		$.ui.chunk.prototype._create.call(this);
+	},
+
 	/**
 	Open a dialog to edit the slected linkset.
 	*/
@@ -29,6 +37,7 @@ $.widget('ui.chunkLinkset', $.ui.chunk,
 			showEdit: false,
 			showRemove: true,
 			onRemoveClick: function(event){
+				self.edited = true;
 				var item = $( event.target ).closest( 'li' );
 				item.remove();
 			},
@@ -48,20 +57,23 @@ $.widget('ui.chunkLinkset', $.ui.chunk,
 
 				self.elements.currentLinks = $( this ).find('.boom-chunk-linkset-links-set');
 
-				self.elements.internalLinks = $( this ).find('.boom-chunk-linkset-internal-links');
-
 				self._buildList();
-
 			},
 			onLoad: function(){
 				self._bindEvents();
 			},
 			callback: function(){
-				self
-					.insert()
-					.done( function(){
-						self.destroy();
-					});
+				if (self.edited) {
+					self.links = self._getLinks($( this ).find('.boom-chunk-linkset-links-set'));
+
+					self
+						.insert()
+						.done( function(){
+							self.destroy();
+						});
+				} else {
+					self.destroy();
+				}
 			}
 		});
 
@@ -75,16 +87,6 @@ $.widget('ui.chunkLinkset', $.ui.chunk,
 		var self = this, clones = this.element.find('li').not('.boom-chunk-linkset-addlink').clone();
 
 		this.elements.currentLinks.append( clones );
-
-		if ( !this._refresh() ) {
-
-			setTimeout(function(){
-
-				$.boom.log('Check linkset links');
-
-				self.dialog.find('.boom-tabs:first').tabs('options', 'active', 1);
-			});
-		}
 	},
 
 	/**
@@ -133,36 +135,15 @@ $.widget('ui.chunkLinkset', $.ui.chunk,
 	},
 
 	/**
-	FIXME: Not sure what this does.
-	*/
-	_refresh: function(){
-
-		if (!this.elements.currentLinks.children().length) {
-
-			$('#boom-chunk-linkset-urls-valid').hide();
-			$('#boom-chunk-linkset-urls-invalid').show();
-
-			return false;
-		} else {
-
-			$('#boom-chunk-linkset-urls-valid').show();
-			$('#boom-chunk-linkset-urls-invalid').hide();
-
-			return true;
-		}
-	},
-
-	/**
 	Add a new link to the list in the linkset dialog.
 	@param {Object} anchor <a> element for the new link.
 	*/
 	_add: function(anchor) {
+		this.edited = true;
 
 		var link = $('<li />').hide().append(anchor);
 
 		this.elements.currentLinks.append(link).tree(this.options.treeConfig);
-
-		this._refresh();
 
 		this.dialog.find('.boom-tabs:first').tabs('option', 'active', 0);
 
@@ -171,15 +152,11 @@ $.widget('ui.chunkLinkset', $.ui.chunk,
 		});
 	},
 
-	insert: function(){
-		var self = this;
-
-		var data = this.getData();
-
-		if (data.links.length == 0) {
+	insert: function(links){
+		if (this.links.length == 0) {
 			return this.remove();
 		} else {
-			return self._save(data);
+			return this._save();
 		}
 	},
 
@@ -188,8 +165,7 @@ $.widget('ui.chunkLinkset', $.ui.chunk,
 	@returns {Object} Simple object containing an array of link objects {links: [ { name: name, uri: uri, target_page_rid: page RID, sequence: sequence }]}
 	*/
 	getData : function() {
-
-		return this._getData( this.element );
+		return {links : this.links};
 	},
 
 	/**
@@ -197,11 +173,12 @@ $.widget('ui.chunkLinkset', $.ui.chunk,
 	@param {Object} element Container element for this linkset.
 	@returns {Object} Simple object containing an array of link objects {links: [ { name: name, uri: uri, target_page_rid: page RID, sequence: sequence }]}
 	*/
-	_getData : function( element ) {
+	_getLinks : function(element) {
 
 		var links = [];
 
 		element.find('a').each(function(sequence){
+			var $this = $(this);
 
 			// ensure internal links have no domain attached to them
 			var url =
@@ -211,16 +188,16 @@ $.widget('ui.chunkLinkset', $.ui.chunk,
 
 
 			var link = {
-				title: $(this).text(),
+				title: $this.text(),
 				url: url,
-				target_page_id: $(this).attr('rel'),
+				target_page_id: $this.attr('rel'),
 				sequence: sequence
 			};
 
-			links.push( link );
+			links.push(link);
 		});
 
-		return { links: links };
+		return links;
 	}
 
 });

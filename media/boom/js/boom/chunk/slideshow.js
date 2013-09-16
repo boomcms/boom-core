@@ -16,8 +16,6 @@ $.widget('ui.chunkSlideshow', $.ui.chunk,
 	@function
 	*/
 	_create : function() {
-		this.edited = false;
-
 		this.originals = this.element
 			.find( 'ul.slides li' )
 			.clone( true );

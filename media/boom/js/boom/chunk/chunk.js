@@ -18,6 +18,8 @@ $.widget('ui.chunk',
 	*/
 	{
 
+	edited : false,
+
 	/**
 	default config
 	@property options
