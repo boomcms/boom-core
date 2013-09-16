@@ -102,6 +102,26 @@ class Boom_Controller_Cms_Page_Version_Save extends Controller_Cms_Page_Version
 			->copy_chunks($this->old_version);
 	}
 
+	public function action_title()
+	{
+		$this->new_version->set('title', $this->request->post('title'));
+
+		if ($this->new_version->changed('title') AND $this->old_version->title == 'Untitled')
+		{
+			// Create a new primary link for the page.
+			$link = ORM::factory('Page_URL')
+				->values(array(
+					'location'	=>	URL::generate($this->page->parent()->url()->location, urldecode($post->title)),
+					'page_id'	=>	$this->page->id,
+					'is_primary'	=>	TRUE,
+				))
+			->create();
+
+			// Put the page's new URL in the response body so that the JS will redirect to the new URL.
+			$this->response->body("Location:".URL::site($link->location));
+		}
+	}
+
 	public function after()
 	{
 		// Commit the changes.

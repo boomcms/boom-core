@@ -499,10 +499,8 @@ $.widget( 'boom.page', $.boom.page, {
 				slotBind.call( this, config );
 			})
 			.end()
-			.find('#b-page-title').exists(function(){
-
-				slotBind.call( this );
-			});
+			.find('#b-page-title')
+			.pageTitle({});
 
 			$.boom.log('Page editor bind');
 		},
