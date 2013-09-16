@@ -12,6 +12,17 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 	*/
 	{
 
+	format : '',
+
+	timestamp : '',
+
+	_create : function() {
+		this.format = this.element.attr('data-boom-format');
+		this.timestamp = this.element.attr('data-boom-timestamp');
+
+		$.ui.chunk.prototype._create.call(this);
+	},
+
 	/**
 	Make the element editable by invokeing boom.editor.edit() on it.
 	*/
@@ -53,27 +64,25 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 				var timestamp = dateyDate.valueOf() / 1000;
 
 				self
-				._insert(format, timestamp)
-				.done( function(){
-					self.destroy();
-				});
+					.insert(format, timestamp)
+					.done( function(){
+						self.destroy();
+					});
 			}
 		});
 	},
 
-	_insert : function(format, timestamp) {
-		var self = this;
+	insert : function(format, timestamp) {
+		this.format = format;
+		this.timestamp = timestamp;
 
-		return $.post(this.options.urlPrefix + '/timestamp/preview/' + $.boom.page.options.id, {slotname : self.options.slot.slotname, format : format, timestamp : timestamp})
-			.done(function(data) {
-				self._apply(data);
-			});
+		return this._save();
 	},
 
 	getData: function(){
 		return {
-			format : this.element.attr('data-boom-format'),
-			timestamp: this.element.attr('data-boom-timestamp')
+			format : this.format,
+			timestamp: this.timestamp
 		};
 	}
 });

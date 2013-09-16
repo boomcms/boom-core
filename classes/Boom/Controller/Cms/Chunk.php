@@ -40,14 +40,16 @@ abstract class Boom_Controller_Cms_Chunk extends Boom_Controller
 	public function action_remove()
 	{
 		$this->_create_version();
-		$this->_preview_default_chunk();
+
+		$this->_send_response($this->_preview_default_chunk());
 	}
 
 	public function action_save()
 	{
 		$this->_create_version();
 		$this->_save_chunk();
-		$this->_preview_chunk();
+
+		$this->_send_response($this->_preview_chunk());
 	}
 
 	protected function _create_version()
@@ -64,5 +66,13 @@ abstract class Boom_Controller_Cms_Chunk extends Boom_Controller
 	protected function _save_chunk()
 	{
 		return $this->_new_version->add_chunk($this->_type, $this->request->post('slotname'), $this->request->post());
+	}
+
+	protected function _send_response($html)
+	{
+		$this->response->body(json_encode(array(
+			'status' => $this->_new_version->status(),
+			'html' => $html,
+		)));
 	}
 }

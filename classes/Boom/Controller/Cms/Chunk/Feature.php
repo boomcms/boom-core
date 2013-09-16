@@ -24,7 +24,7 @@ class Boom_Controller_Cms_Chunk_Feature extends Boom_Controller_Cms_Chunk
 		$chunk = new Chunk_Feature($this->page, $model, $this->request->post('slotname'));
 		$chunk->template($this->request->post('template'));
 
-		$this->response->body($chunk->execute());
+		return $chunk->execute();
 	}
 
 	protected function _preview_default_chunk()
@@ -32,6 +32,6 @@ class Boom_Controller_Cms_Chunk_Feature extends Boom_Controller_Cms_Chunk
 		$chunk = new Chunk_Feature($this->page, new Model_Chunk_Feature, $this->request->post('slotname'));
 		$chunk->template($this->request->post('template'));
 
-		$this->response->body($chunk->execute());
+		return $chunk->execute();
 	}
 }

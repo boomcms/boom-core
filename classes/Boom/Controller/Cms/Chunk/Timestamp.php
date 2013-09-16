@@ -8,6 +8,8 @@
  */
 class Boom_Controller_Cms_Chunk_Timestamp extends Boom_Controller_Cms_Chunk
 {
+	protected $_type = 'timestamp';
+
 	public function action_edit()
 	{
 		$formats = array();
@@ -23,16 +25,18 @@ class Boom_Controller_Cms_Chunk_Timestamp extends Boom_Controller_Cms_Chunk
 		));
 	}
 
-	public function action_preview()
+	protected function _preview_chunk()
 	{
-		$model = ORM::factory('Chunk_Timestamp')
-			->values(array(
-				'format' => $this->request->post('format'),
-				'timestamp' => $this->request->post('timestamp'),
-			));
-
+		$model = ORM::factory('Chunk_Timestamp')->values($this->request->post());
 		$chunk = new Chunk_Timestamp($this->page, $model, $this->request->post('slotname'));
 
-		$this->response->body($chunk->execute());
+		return $chunk->execute();
+	}
+
+	protected function _preview_default_chunk()
+	{
+		$chunk = new Chunk_Timestamp($this->page, new Model_Chunk_Timestamp, $this->request->post('slotname'));
+
+		return $chunk->execute();
 	}
 }

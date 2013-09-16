@@ -91,8 +91,10 @@ $.widget('ui.chunk',
 		$.boom.loader.show();
 
 		return $.post(this._url('save'), this._slot_data(this.getData()))
-			.done(function(data) {
-				self._update_html(data);
+			.done(function(response) {
+				var data = $.parseJSON(response);
+
+				self._update_html(data.html);
 				$.boom.loader.hide();
 			});
 	},

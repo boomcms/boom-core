@@ -20,7 +20,7 @@ class Boom_Controller_Cms_Chunk_Text extends Boom_Controller_Cms_Chunk
 			$chunk->template($template);
 		}
 
-		$this->response->body($chunk->execute());
+		return $chunk->execute();
 	}
 
 	protected function _preview_default_chunk()
@@ -28,6 +28,6 @@ class Boom_Controller_Cms_Chunk_Text extends Boom_Controller_Cms_Chunk
 		$chunk = new Chunk_Text($this->page, new Model_Chunk_Text, $this->request->post('slotname'));
 		$chunk->template($this->request->post('template'));
 
-		$this->response->body($chunk->execute());
+		return $chunk->execute();
 	}
 }
