@@ -104,10 +104,7 @@ class Boom_Controller_Cms_Page_Version_Save extends Controller_Cms_Page_Version
 
 	public function action_title()
 	{
-		$this
-			->new_version->set('title', $this->request->post('title'))
-			->create()
-			->copy_chunks($this->old_version);
+		$this->new_version->set('title', $this->request->post('title'));
 
 		if ($this->new_version->changed('title') AND $this->old_version->title == 'Untitled')
 		{
@@ -123,6 +120,10 @@ class Boom_Controller_Cms_Page_Version_Save extends Controller_Cms_Page_Version
 			// Put the page's new URL in the response body so that the JS will redirect to the new URL.
 			$this->response->body("Location:".URL::site($link->location));
 		}
+
+		$this->new_version
+			->create()
+			->copy_chunks($this->old_version);
 	}
 
 	public function after()
