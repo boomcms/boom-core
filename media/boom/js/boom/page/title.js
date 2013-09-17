@@ -27,14 +27,20 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 		self._bring_forward();
 		self._unbind();
 
+		if (this.isUntitled()) {
+			this.$el.text('');
+		}
+
 		$('body').editor('edit', self.$el)
 			.fail(function() {
 				self.element.html(old_html).show();
 				self.destroy();
 			})
-			.done(function(html) {
-				if (html != old_html) {
-					self.insert(html);
+			.done(function() {
+				var title = self.$el.text();
+
+				if (title != '' && title != old_html) {
+					self.insert(title);
 				}
 			})
 			.always(function() {
@@ -54,6 +60,10 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 	insert : function(html) {
 		this.$el.html(html);
 		this._save();
+	},
+
+	isUntitled : function() {
+		return this.$el.text() == 'Untitled';
 	},
 
 	_save : function() {
