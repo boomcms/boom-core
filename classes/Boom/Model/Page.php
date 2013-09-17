@@ -506,11 +506,8 @@ class Boom_Model_Page extends Model_Taggable
 		DB::delete('page_versions')
 			->where('page_id', '=', $this->id)
 			->and_where_open()
-				->where('published', '=', FALSE)
-				->or_where_open()
-					->where('published', '=', TRUE)
-					->where('embargoed_until', '>', $_SERVER['REQUEST_TIME'])
-				->or_where_close()
+					->where('embargoed_until', '=', NULL)
+					->or_where('embargoed_until', '>', $_SERVER['REQUEST_TIME'])
 			->and_where_close()
 			->where('stashed', '=', FALSE)
 			->execute($this->_db);
