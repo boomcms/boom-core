@@ -85,6 +85,8 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 				setTimeout(function() {
 					top.location = data.location;
 				}, 1000);
+			} else {
+				$.boom.page.setStatus(data.status);
 			}
 		})
 	},

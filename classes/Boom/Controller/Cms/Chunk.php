@@ -56,7 +56,14 @@ abstract class Boom_Controller_Cms_Chunk extends Boom_Controller
 	{
 		$old_version = $this->page->version();
 
-		$this->_new_version = $this->page->create_version($old_version, array('edited_by' => $this->person->id))
+		$this->_new_version = $this->page->create_version($old_version, array('edited_by' => $this->person->id));
+
+		if ($this->_new_version->embargoed_until <= $_SERVER['REQUEST_TIME'])
+		{
+			$this->_new_version->embargoed_until = NULL;
+		}
+
+		$this->_new_version
 			->create()
 			->copy_chunks($old_version, array($this->request->post('slotname')));
 	}

@@ -95,6 +95,7 @@ $.widget('ui.chunk',
 				var data = $.parseJSON(response);
 
 				self._update_html(data.html);
+				$.boom.page.setStatus(data.status);
 				$.boom.loader.hide();
 			});
 	},

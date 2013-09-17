@@ -17,11 +17,6 @@ $.widget( 'boom.page', {
 	options : {},
 
 	/**
-	@property save_button
-	*/
-	save_button: $('#b-page-save'),
-
-	/**
 	@property cancel_button
 	*/
 	cancel_button: $('#b-page-cancel'),
@@ -29,7 +24,7 @@ $.widget( 'boom.page', {
 	/**
 	 @property status_button
 	 */
-	status_button: $('#b-page-version-status'),
+	status_button: $('#b-page-version-status').pageStatus({}),
 
 	_init : function() {
 
@@ -45,8 +40,6 @@ $.widget( 'boom.page', {
 		var self = this;
 
 		$.boom.page = self;
-
-		this.slot_edits = [];
 
 		$.boom.util.cacheImages($.boom.config.cachePageImages);
 
@@ -118,19 +111,6 @@ $.widget( 'boom.page', {
 			saveEditorState( $(this).attr('data-preview') );
 		});
 
-		var save_menu = {
-			"Save" : function(){
-				self.save();
-			},
-			"Save and preview" : function(){
-				self.save();
-				saveEditorState( 'preview' );
-			},
-			"Save and publish" : function(){
-				self.save(null, {'publish' : 1});
-			},
-		};
-
 		this.cancel_button.on( 'click', function(){
 			top.location.reload();
 		});
@@ -164,31 +144,7 @@ $.widget( 'boom.page', {
 				}
 			});
 		});
-		$('#boom-page-save-menu')
-			.splitbutton({
-				items: save_menu,
-				width: 'auto',
-				menuPosition: 'right',
-				split: false
-			});
-		$('#b-page-version-status').click(function(){
-			$.boom.dialog.confirm(
-				'Publish',
-				'Make this version of the page live?'
-			)
-			.done( function(){
 
-				$.boom.loader.show();
-
-				$.post( '/cms/page/version/embargo/' + self.options.id, {csrf : $.boom.options.csrf} )
-				.done( function(response){
-					$.boom.page.setStatus(response);
-					$.boom.loader.hide();
-
-				});
-			});
-
-		});
 		$( '#boom-page-editlive' ).on( 'click', function( event ){
 			$.boom.dialog.confirm(
 				'Edit live',
@@ -229,18 +185,7 @@ $.widget( 'boom.page', {
 	},
 
 	setStatus : function(status) {
-		$.boom.page.status_button.find('span').text(status);
-
-		if (status == 'live') {
-			$.boom.page.status_button
-				.button('disable')
-				.addClass('live');
-		} else {
-			$.boom.page.status_button
-				.button('enable')
-				.removeClass('live');
-		}
-
+		$.boom.page.status_button.pageStatus('set', status);
 	}
 } );
 
@@ -716,7 +661,6 @@ $.widget( 'boom.page', $.boom.page, {
 			var template_settings = [
 				'featureimage',
 				'template',
-				'embargo'
 			];
 
 			$('#boom-page-template-menu').splitbutton({
@@ -1321,62 +1265,6 @@ $.widget( 'boom.page', $.boom.page, {
 
 					},
 					open: function(){
-					}
-				});
-			}
-		},
-
-		/**
-		* @class
-		* @name $.boom.page.settings.embargo
-		* @static
-		*/
-		embargo:
-			/** @lends $.boom.page.settings.embargo */
-			{
-			/**
-			Menu label
-			@property label
-			*/
-			label: 'Embargo',
-
-			/** @function */
-			menu_handler: function() {
-				$( '#boom-page-embargo' ).trigger('boomclick');
-			},
-
-			/** @function */
-			edit: function( event ){
-
-				var url = '/cms/page/version/embargo/' + $.boom.page.options.id;
-
-				$.boom.dialog.open({
-					url: url,
-					title: 'Page embargo',
-					width: 300,
-					// cache: true,
-					callback: function(){
-
-						$.boom.page.settings.save(
-							url,
-							$(this).find("form").serialize(),
-							"Page embargo saved."
-						)
-						.done(function(response) {
-							$.boom.page.setStatus(response);
-						});
-					},
-					open: function(){
-						$( '#page-visible' ).on( 'change', function(){
-							switch( $( this ).val() ) {
-								case '1':
-									$( '#page-embargo' ).removeAttr( 'disabled' );
-								break;
-								case '0':
-									$( '#page-embargo' ).attr( 'disabled', 'disabled' );
-								break;
-							}
-						});
 					}
 				});
 			}
