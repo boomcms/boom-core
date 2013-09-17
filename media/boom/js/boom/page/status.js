@@ -24,6 +24,9 @@ $.widget('boom.pageStatus', {
 				}
 			});
 		}
+		if (this.element.hasClass('ui-splitbutton-hitarea')) {
+			this.menu.splitbutton('destroy');
+		}
 
 		this.menu
 			.splitbutton({
@@ -88,6 +91,7 @@ $.widget('boom.pageStatus', {
 
 	set : function(status) {
 		this.element.text(status);
+		this.element.attr('data-status', status);
 		this._buildMenu(status);
 
 		if (status == 'live') {

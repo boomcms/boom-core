@@ -152,9 +152,14 @@
 
 	&-version-status {
 		background-color: #d6278e;
+		text-transform: capitalize;
 
-		&.live {
+		&[data-status=live] {
 			background-color: #75d627;
+		}
+
+		&[data-status=embargoed] {
+			background-color: #e3ca68;
 		}
 	}
 }

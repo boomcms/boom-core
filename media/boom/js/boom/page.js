@@ -185,7 +185,7 @@ $.widget( 'boom.page', {
 	},
 
 	setStatus : function(status) {
-		$.boom.page.status_button.pageStatus('set', status);
+		this.status_button.pageStatus('set', status);
 	}
 } );
 

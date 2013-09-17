@@ -42,7 +42,7 @@
 	<? if ($page->was_created_by($person) OR $auth->logged_in('edit_page_content', $page)): ?>
 		<div id="b-page-actions" class="b-page-container">
 			<span id="b-page-publish-menu">
-				<button id="b-page-version-status" class="ui-button boom-button<?= $page->version()->status() ?>" <? if ($page->version()->status() == 'live'): ?>disabled='disabled'<? endif ?>>
+				<button id="b-page-version-status" class="ui-button boom-button" data-status="<?= $page->version()->status() ?>">
 					<?= __($page->version()->status()) ?>
 				</button>
 			</span>
