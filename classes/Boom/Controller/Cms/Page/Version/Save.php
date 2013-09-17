@@ -104,7 +104,10 @@ class Boom_Controller_Cms_Page_Version_Save extends Controller_Cms_Page_Version
 
 	public function action_title()
 	{
-		$this->new_version->set('title', $this->request->post('title'));
+		$this
+			->new_version->set('title', $this->request->post('title'))
+			->create()
+			->copy_chunks($this->old_version);
 
 		if ($this->new_version->changed('title') AND $this->old_version->title == 'Untitled')
 		{

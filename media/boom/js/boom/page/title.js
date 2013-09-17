@@ -16,6 +16,11 @@ $.widget('boom.pageTitle', $.ui.chunkText, {
 		this._bind();
 	},
 
+	insert : function(html) {
+		this.$el.html(html);
+		this._save();
+	},
+
 	_save : function() {
 		$.boom.loader.show();
 
