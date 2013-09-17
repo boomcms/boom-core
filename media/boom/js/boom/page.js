@@ -17,11 +17,6 @@ $.widget( 'boom.page', {
 	options : {},
 
 	/**
-	@property cancel_button
-	*/
-	cancel_button: $('#b-page-cancel'),
-
-	/**
 	 @property status_button
 	 */
 	status_button: $('#b-page-version-status').pageStatus({}),
@@ -111,9 +106,6 @@ $.widget( 'boom.page', {
 			saveEditorState( $(this).attr('data-preview') );
 		});
 
-		this.cancel_button.on( 'click', function(){
-			top.location.reload();
-		});
 		$('#b-page-delete').click(function(){
 
 			$.boom.dialog.open({

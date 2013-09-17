@@ -1,5 +1,7 @@
 $.widget('boom.pageStatus', {
 
+	cancel_button : $('#b-page-cancel').button({}),
+
 	menu : $('#b-page-publish-menu'),
 
 	_buildMenu : function(status) {
@@ -39,6 +41,29 @@ $.widget('boom.pageStatus', {
 
 	_create : function() {
 		this.set(this.element.text().trim());
+
+		var self = this;
+		this.cancel_button.on('click', function() {
+			self.discardChanges();
+		});
+	},
+
+	discardChanges : function() {
+				$.boom.dialog.confirm(
+			'Discard changes',
+			'Are you sure you want to discard any unpublished changes and revert this page to it\'s published state?'
+		)
+		.done( function(){
+			$.boom.loader.show();
+
+			$.post('/cms/page/discard/' + $.boom.page.options.id, {csrf : $.boom.options.csrf})
+				.always(function() {
+					$.boom.loader.hide();
+				})
+				.done(function() {
+					top.location.reload();
+				});
+		});
 	},
 
 	embargo : function() {
@@ -92,12 +117,15 @@ $.widget('boom.pageStatus', {
 	set : function(status) {
 		this.element.text(status);
 		this.element.attr('data-status', status);
+
 		this._buildMenu(status);
 
 		if (status == 'live') {
 			this.element.button('disable');
+			this.cancel_button.button('disable');
 		} else {
 			this.element.button('enable');
+			this.cancel_button.button('enable');
 		}
 	}
 });

@@ -100,6 +100,8 @@ class Boom_Controller_Cms_Page extends Boom_Controller
 				'page_id'		=>	$page->id,
 				'template_id'	=>	$template_id,
 				'title'			=>	$title,
+				'published' => TRUE,
+				'embargoed_until' => $_SERVER['REQUEST_TIME'],
 			))
 			->create();
 
@@ -175,6 +177,11 @@ class Boom_Controller_Cms_Page extends Boom_Controller
 			// Delete the page.
 			$this->page->delete($with_children);
 		}
+	}
+
+	public function action_discard()
+	{
+		$this->page->remove_drafts();
 	}
 
 	/**
