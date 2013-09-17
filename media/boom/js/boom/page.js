@@ -498,9 +498,9 @@ $.widget( 'boom.page', $.boom.page, {
 
 				slotBind.call( this, config );
 			})
-			.end()
-			.find('#b-page-title')
-			.pageTitle({});
+			.end();
+
+			self.elements.page_body.contents().find('#b-page-title').pageTitle({});
 
 			$.boom.log('Page editor bind');
 		},

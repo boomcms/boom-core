@@ -111,14 +111,16 @@ class Boom_Controller_Cms_Page_Version_Save extends Controller_Cms_Page_Version
 			// Create a new primary link for the page.
 			$link = ORM::factory('Page_URL')
 				->values(array(
-					'location'	=>	URL::generate($this->page->parent()->url()->location, urldecode($post->title)),
+					'location'	=>	URL::generate($this->page->parent()->url()->location, $this->request->post('title')),
 					'page_id'	=>	$this->page->id,
 					'is_primary'	=>	TRUE,
 				))
 			->create();
 
 			// Put the page's new URL in the response body so that the JS will redirect to the new URL.
-			$this->response->body("Location:".URL::site($link->location));
+			$this->response->body(json_encode(array(
+				'location' => URL::site($link->location, $this->request),
+			)));
 		}
 
 		$this->new_version

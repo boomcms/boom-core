@@ -1,3 +1,6 @@
+/**
+ * TODO: Tell someone off for trying to blank a page title or writing an essay in the title.
+ */
 $.widget('boom.pageTitle', $.ui.chunk, {
 
 	$el : null,
@@ -44,6 +47,10 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 			});
 	},
 
+	_init : function() {
+
+	},
+
 	insert : function(html) {
 		this.$el.html(html);
 		this._save();
@@ -58,7 +65,18 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 		})
 		.always(function() {
 			$.boom.loader.hide();
-		});
+		})
+		.done(function(response) {
+			var data = $.parseJSON(response);
+
+			if (data.location) {
+				$.boom.growl.show('Page URL changed, redirecting to new URL.');
+
+				setTimeout(function() {
+					top.location = data.location;
+				}, 1000);
+			}
+		})
 	},
 
 	_unbind : function() {
