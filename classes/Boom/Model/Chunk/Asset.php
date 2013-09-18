@@ -1,14 +1,11 @@
 <?php defined('SYSPATH') OR die('No direct script access.');
 /**
-* Model for the asset chunk table.
-*
-* @package	BoomCMS
-* @category	Chunks
-* @category	Models
-* @author	Rob Taylor
-* @copyright	Hoop Associates
-*
-*/
+ *
+ * @package	BoomCMS
+ * @category	Chunks
+ * @category	Models
+ *
+ */
 class Boom_Model_Chunk_Asset extends ORM
 {
 	/**
@@ -25,6 +22,7 @@ class Boom_Model_Chunk_Asset extends ORM
 		'caption'		=>	'',
 		'url'			=>	'',
 		'slotname'		=>	'',
+		'page_vid' => '',
 	);
 
 	protected $_table_name = 'chunk_assets';

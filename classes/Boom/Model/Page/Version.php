@@ -79,7 +79,6 @@ class Boom_Model_Page_Version extends ORM
 	 * @return	Model	Returns the model object for the created chunk
 	 * @throws	Exception	An exception is thrown when this function is called on a page version which hasn't been saved.
 	 *
-	 * @todo Would it be useful to have a function to add multiple chunks? This would avoid repeated, single, DB::insert() to add relationships.
 	 */
 	public function add_chunk($type, $slotname, array $data)
 	{
@@ -90,22 +89,14 @@ class Boom_Model_Page_Version extends ORM
 			throw new Exception('You must call Model_Page_Version::save() before calling Model_Page_Version::add_chunk()');
 		}
 
-		// Add the slotname to the data array.
-		// The slotname is just a property of the chunk model like everything else in the $data array
-		// We only require it to be sent as a seperate paramater to improve readability.
 		$data['slotname'] = $slotname;
+		$data['page_vid'] = $this->id;
 
 		// Create the chunk
 		$chunk = ORM::factory('Chunk_' . ucfirst($type))
 			->values($data)
 			->create();
 
-		// Add the relationship between the chunk and this page version.
-		DB::insert('page_chunks')
-			->values(array($this->id, $chunk->id, constant('Chunk::' . strtoupper($type))))
-			->execute();
-
-		// Return the current page version object.
 		return $chunk;
 	}
 
@@ -120,28 +111,23 @@ class Boom_Model_Page_Version extends ORM
 	{
 		foreach (Chunk::$types as $type)
 		{
-			// Get a numeric chunk type.
-			$num_type = constant('Chunk::' . strtoupper($type));
-
-			$subquery = DB::select(DB::expr($this->id), 'chunk_id', DB::expr($num_type))
-				->from('page_chunks')
-				->join("chunk_$type"."s")
-				->on('page_chunks.chunk_id', '=', 'id')
-				->where('page_chunks.type', '=', $num_type)
-				->where('page_chunks.page_vid', '=', $from_version->id);
+			$model = 'Chunk_'.ucfirst($type);
+			$query = ORM::factory($model)
+				->where('page_vid', '=', $from_version->id);
 
 			if ( ! empty($exclude))
 			{
-				$subquery->where('slotname', 'not in', $exclude);
+				$query->where('slotname', 'not in', $exclude);
 			}
-			
-			$count_query = clone $subquery;
-			
-			if (count($count_query->execute()))
+
+			$chunks = $query->find_all();
+
+			foreach ($chunks as $chunk)
 			{
-				DB::insert('page_chunks', array('page_vid', 'chunk_id', 'type'))
-					->select($subquery)
-					->execute($this->_db);
+				ORM::factory($model)
+					->values($chunk->object())
+					->set('page_vid', $this->id)
+					->create();
 			}
 		}
 

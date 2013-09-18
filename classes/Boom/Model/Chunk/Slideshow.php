@@ -5,8 +5,6 @@
  * @package	BoomCMS
  * @category	Chunks
  * @category	Models
- * @author	Rob Taylor
- * @copyright	Hoop Associates
  *
  */
 class Boom_Model_Chunk_Slideshow extends ORM
@@ -24,6 +22,7 @@ class Boom_Model_Chunk_Slideshow extends ORM
 		'title'		=>	'',
 		'id'		=>	'',
 		'slotname'	=>	'',
+		'page_vid' => '',
 	);
 
 	protected $_table_name = 'chunk_slideshows';

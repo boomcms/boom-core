@@ -6,13 +6,6 @@
 */
 abstract class Boom_Chunk
 {
-	const ASSET = 1;
-	const FEATURE = 2;
-	const LINKSET = 3;
-	const SLIDESHOW = 4;
-	const TEXT = 5;
-	const TIMESTAMP = 6;
-
 	protected $_attribute_prefix = 'data-boom-';
 
 	/**
@@ -245,14 +238,10 @@ abstract class Boom_Chunk
 		// e.g. if type is text we want a chunk_text model
 		$model = (strpos($type, "Chunk_") === 0)? ucfirst($type) : "Chunk_" . ucfirst($type);
 
-		// Find the chunk in the database.
 		return ORM::factory($model)
-			->join('page_chunks')
-			->on('page_chunks.chunk_id', '=', 'id')
 			->with('target')
 			->where('slotname', '=', $slotname)
-			->where("page_chunks.type", '=', constant('Chunk::'.strtoupper($type)))
-			->where('page_chunks.page_vid', '=', $version->id)
+			->where('page_vid', '=', $version->id)
 			->find();
 	}
 

@@ -12,6 +12,7 @@ class Boom_Model_Chunk_Timestamp extends ORM
 		'timestamp' => '',
 		'format' => '',
 		'slotname'	=> '',
+		'page_vid' => '',
 	);
 
 	protected $_table_name = 'chunk_timestamps';

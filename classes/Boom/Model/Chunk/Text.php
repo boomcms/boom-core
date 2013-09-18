@@ -3,7 +3,6 @@
  * @package	BoomCMS
  * @category	Chunks
  * @category	Models
- * @author	Rob Taylor
  *
  */
 class Boom_Model_Chunk_Text extends ORM
@@ -16,6 +15,7 @@ class Boom_Model_Chunk_Text extends ORM
 		'id'		=>	'',
 		'title'		=>	'',
 		'slotname'	=>	'',
+		'page_vid' => '',
 	);
 
 	protected $_table_name = 'chunk_texts';

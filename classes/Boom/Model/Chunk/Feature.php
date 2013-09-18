@@ -1,13 +1,11 @@
 <?php defined('SYSPATH') OR die('No direct script access.');
 /**
-*
-* @package	BoomCMS
-* @category	Chunks
-* @category	Models
-* @author	Rob Taylor
-* @copyright	Hoop Associates
-*
-*/
+ *
+ * @package	BoomCMS
+ * @category	Chunks
+ * @category	Models
+ *
+ */
 class Boom_Model_Chunk_Feature extends ORM
 {
 	/**
@@ -17,6 +15,7 @@ class Boom_Model_Chunk_Feature extends ORM
 		'id'				=>	'',
 		'target_page_id'	=>	'',
 		'slotname'			=>	'',
+		'page_vid' => '',
 	);
 
 	protected $_belongs_to = array('target' => array('model' => 'Page', 'foreign_key' => 'target_page_id'));

@@ -4,8 +4,6 @@
  * @package	BoomCMS
  * @category	Chunks
  * @category	Models
- * @author	Rob Taylor
- * @copyright	Hoop Associates
  *
  */
 class Boom_Model_Chunk_Linkset extends ORM
@@ -20,6 +18,7 @@ class Boom_Model_Chunk_Linkset extends ORM
 		'id'		=>	'',
 		'title'		=>	'',
 		'slotname'	=>	'',
+		'page_vid' => '',
 	);
 
 	protected $_table_name = 'chunk_linksets';
