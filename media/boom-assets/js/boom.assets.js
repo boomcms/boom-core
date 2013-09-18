@@ -528,37 +528,41 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 
 		var default_opts = $.extend( $.boom.config.upload, {
 			submit: function( e, data ){
-				$( '#b-upload-progress' ).progressbar();
+				$('#b-assets-upload-progress').progressbar();
+				$('#b-assets-upload-cancel').css('display', 'block');
 
 				file_data = data;
 			},
 			progressall: function( e, data ){
 				var percent = parseInt( (data.loaded / data.total * 100), 10);
 
-				$( '#b-upload-progress' ).progressbar( 'value', percent );
+				$( '#b-assets-upload-progress' ).progressbar( 'value', percent );
 			},
 			done: function( e, data ){
 				$.boom.log( 'file upload complete' );
+				$('#b-assets-upload-cancel').hide();
+
 				$.boom.assets.selected_rid = data.result.join( '-' );
 
 				uploaded.resolve( data );
-
 			},
-		   fail: function(e, data) {
+			fail: function(e, data) {
 				message = "There was an error uploading your file";
 
-			   if (data.jqXHR.responseText) {
-				   message = message + ': ' + data.jqXHR.responseText;
-			   }
+				if (data.jqXHR.responseText) {
+					message = message + ': ' + data.jqXHR.responseText;
+				}
 
-			   message = message + '.';
+				message = message + '.';
 
-				$( '#upload-advanced span.message' ).text( message );
-			},
-			always: function( e, data ){
-				$.boom.log( 'file upload finished' );
-			}
-		});
+				 $( '#b-assets-upload-container p.message' ).text(message);
+				 $('#b-assets-upload-progress').progressbar('destroy');
+				 $( '#b-assets-upload-cancel' ).hide();
+			 },
+			 always: function( e, data ){
+				 $.boom.log( 'file upload finished' );
+			 }
+		 });
 
 		opts = $.extend( default_opts, opts );
 
@@ -566,24 +570,24 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 			.done(function(response) {
 				self.showContent(response);
 
+				if ($('.ui-dialog-content').length) {
+					$('#b-assets-upload-container').height($('.ui-dialog-content').height() - 30);
+				} else {
+					var height = $(window).height() - $('#b-topbar').height() - 30;
+					$('#b-assets-upload-container').height(height + 'px');
+				}
+
 				opts.formData.push( { name: 'csrf', value: $('input[name=csrf]').val() } );
 
-				$( '#b-assets-upload-form' )
-				.fileupload( opts );
-
-				 $( '#b-assets-upload-file' )
-					.detach()
-					.appendTo( '#b-upload-add' )
-					.css({
-						transform: 'translate(-300px, 0) scale(4)'
-					});
+				$( '#b-assets-upload-form' ).fileupload( opts );
 
 				$( '#b-assets-upload-cancel' )
 					.on( 'click', function(){
 						file_data.jqXHR && file_data.jqXHR.abort();
 
-						$.boom.history.load( 'tag/' + $.boom.assets.tag.rid );
-						self.main_content.trigger('justify');
+						$(this).hide();
+						$('#b-assets-upload-progress').progressbar('destroy');
+						$( '#b-assets-upload-container p.message' ).text('Upload was canceled');
 					});
 			});
 

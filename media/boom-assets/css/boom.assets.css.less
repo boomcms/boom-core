@@ -6,6 +6,8 @@
 	width: 200px;
 }
 
+@import 'boom.assets.upload.less';
+
 #b-assets {
 	&-view {
 		background: #7f7f7f;
@@ -25,7 +27,7 @@
 		}
 
 		.b-assets-preview {
-			margin: 6px 2em 1em 1em;
+			margin: 6px 2em 1em 0.2em;
 
 			&:hover img {
 				border-color: #444;
@@ -73,6 +75,8 @@
 	}
 
 	&-manager {
+		background: #7f7f7f;
+
 		select {
 			margin-left: 40px;
 		}
@@ -275,7 +279,7 @@
 		background: #000000;
 	}
 
-	#b-assets-view {
+	#b-assets-view, #b-assets-manager {
 		background: transparent;
 	}
 
