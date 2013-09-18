@@ -97,6 +97,7 @@ $.widget('ui.chunk',
 				self._update_html(data.html);
 				$.boom.page.setStatus(data.status);
 				$.boom.loader.hide();
+				$.boom.growl.show("Page content saved");
 			});
 	},
 
