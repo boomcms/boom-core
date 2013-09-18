@@ -346,7 +346,6 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 				});
 		});
 
-		var self = this;
 		var title_filter = $('#b-assets-filter-title')
 			.autocomplete({
 				delay: 200, // Time to wait after keypress before making the AJAX call.
@@ -385,76 +384,37 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 					msg
 				)
 				.done( function(){
-
-					var assets = [];
-
-					$('.b-items-select-checkbox:checked').each(function(i){
-
-						assets.push( $( this ).attr('id').replace(/asset-(thumb|list)-/, '') );
-					});
-
 					$.boom.loader.show();
 
-					$.post('/cms/assets/delete', {csrf: $.boom.options.csrf, assets:  assets}, function(){
-
+					$.post('/cms/assets/delete', {csrf: $.boom.options.csrf, assets:  this.selected}, function(){
 						$.boom.loader.hide();
 
 						$.boom.history.refresh();
-						self.main_content.trigger('justify');
 					});
 				});
 			})
 			.on( 'click', '#b-button-multiaction-edit', function(){
-
-				var ids = [];
-
-				$('.b-items-select-checkbox:checked').each(function(){
-					var id = this.id.replace(/asset-(thumb|list)-/, '');
-
-					if ( $.inArray(id, ids) === -1 ) {
-
-						ids.push( id );
-					}
-				});
-
-				$.boom.history.load('asset/' + ids.join('-'));
+				$.boom.history.load('asset/' + self.selected.join('-'));
 			})
 			.on( 'click', '#b-button-multiaction-download', function(){
-
-				var ids = [];
-				$('.b-items-select-checkbox:checked').each(function(){
-
-					ids.push(this.id.replace(/asset-(thumb|list)-/, ''));
-				});
-
-				var	url = '/cms/assets/download?assets=' + ids.join(',');
+				var url = '/cms/assets/download?assets=' + self.selected.join(',');
 
 				window.location = url;
 			})
 			.on('click', '#b-button-multiaction-clear', function(){
-				$('.b-items-select-checkbox:checked').each(function(){
-					$('.thumb.ui-state-active').removeClass('ui-state-active');
-					$(this).removeAttr( 'checked' ).prop( 'checked', false ).change();
-				});
-
+				self.selected = [];
+				self.toggleButtons();
 			})
 			.on( 'click', '#b-button-multiaction-tag', function(){
-
-				var ids = [];
-				$('.b-items-select-checkbox:checked').each(function(){
-
-					ids.push(this.id.replace(/asset-(thumb|list)-/, ''));
-				});
-
 				$.boom.dialog.open({
-					url: '/cms/tags/asset/list/' + ids.join( '-' ),
+					url: '/cms/tags/asset/list/' + self.selected.join( '-' ),
 					// cache: true,
 					title: 'Asset tags',
 					width: 440,
 					onLoad: function(){
 						$('#b-tags').tagger({
 							type: 'asset',
-							id: ids.join( '-' )
+							id: self.selected.join( '-' )
 						});
 					}
 				});
@@ -481,12 +441,15 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 			})
 			.on('click', '#b-assets-all', function(event) {
 				self.removeFilters();
+			})
+			.on('click', '.thumb a', function(event) {
+				event.preventDefault();
+
+				var $this = $(this);
+
+				self.select($this.attr('href').replace('#asset/', ''));
+				$this.parent().parent().toggleClass('selected');
 			});
-//			.on('click', '.thumb a', function(event) {
-//				event.preventDefault();
-//
-//				self.select($(this).attr('href').replace('#asset/'), true);
-//			});
 
 		$('#b-assets-content')
 			.on( 'click', '.boom-tagmanager-asset-replace ', function( event ){
@@ -541,13 +504,8 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 	@returns {Object} promise resolved when the text is set.
 	*/
 	edit: function( rid ){
-
-		var self = this;
-
-		$.boom.history.load( 'asset/' + rid );
-		//top.location.hash = '#asset/' + rid;
-		self.selected_rid = rid;
-
+		$.boom.history.load('asset/' + rid);
+		this.selected_rid = rid;
 	},
 
 	/**

@@ -56,7 +56,7 @@ class Boom_Controller_Cms_Assets_Download extends Controller_Cms_Assets
 		$this->response
 			->headers(array(
 				"Content-type"			=>	$this->asset->get_mime(),
-				"Content-Disposition"	=>	"attachment; filename=".basename($this->asset->filename),
+				"Content-Disposition"	=>	"attachment; filename=".basename($this->asset->get_filename()),
 				"Pragma"				=>	"no-cache",
 				"Expires"				=>	"0"
 			))
@@ -92,7 +92,7 @@ class Boom_Controller_Cms_Assets_Download extends Controller_Cms_Assets
 			if ($this->asset->loaded())
 			{
 				// Asset exists add it to the archive.
-				$zip->addFile($this->asset->get_filename(), $this->asset->filename);
+				$zip->addFile($this->asset->get_filename(), $this->asset->get_filename());
 			}
 
 			$this->asset->clear();
