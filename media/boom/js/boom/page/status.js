@@ -6,9 +6,6 @@ $.widget('boom.pageStatus', {
 		var self = this;
 
 		var options = {
-			"Revert to published version" : function() {
-				self.discardChanges();
-			},
 			"Publish now" : function(){
 				self.publish();
 			}
@@ -27,6 +24,13 @@ $.widget('boom.pageStatus', {
 				}
 			});
 		}
+
+		options = $.extend(options, {
+			"Revert to published version" : function() {
+				self.discardChanges();
+			}
+		});
+
 		if (this.element.hasClass('ui-splitbutton-hitarea')) {
 			this.menu.splitbutton('destroy');
 		}
