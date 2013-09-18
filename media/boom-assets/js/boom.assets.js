@@ -596,6 +596,8 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 		var $content = $(content);
 
 		var id = $($content.get(0)).attr('id');
+		var pagination = $content.get(2);
+		var stats = $content.get(4);
 
 		if (id == 'b-assets-content') {
 			$('#b-assets-content')
@@ -606,10 +608,24 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 				.html($content.get(0))
 				.ui();
 		}
-
 		$('#b-assets-view-thumbs').justifyAssets();
-		$('#b-assets-pagination').replaceWith($content.get(2));
-		$('#b-assets-stats').replaceWith($content.get(4));
+
+
+		if (pagination) {
+			$('#b-assets-pagination').replaceWith(pagination);
+			$('#b-assets-filters').show();
+			$('#b-assets-buttons').show();
+		} else {
+			$('#b-assets-pagination').contents().remove();
+			$('#b-assets-filters').hide();
+			$('#b-assets-buttons').hide();
+		}
+
+		if (stats) {
+			$('#b-assets-stats').replaceWith(stats);
+		} else {
+			$('#b-assets-stats').contents().remove();
+		}
 	},
 
 	removeFilters : function() {
