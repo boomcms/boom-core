@@ -562,11 +562,9 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 
 		opts = $.extend( default_opts, opts );
 
-		self.main_panel
-			.find( '.b-items-content' )
-			.sload( '/cms/assets/upload' )
-			.done( function(){
-				self.main_panel.ui();
+		$.get('/cms/assets/upload')
+			.done(function(response) {
+				self.showContent(response);
 
 				opts.formData.push( { name: 'csrf', value: $('input[name=csrf]').val() } );
 

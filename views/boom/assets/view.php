@@ -1,9 +1,35 @@
-<div id="b-assets-view" class="b-items-view">
+<div id="b-assets-view">
 	<form onsubmit="return false;" class="b-form">
 		<?= Form::hidden('csrf', Security::token()) ?>
-		<input type="hidden" name="id" id="asset_id" value="<?= $asset->id?>" />
+		<?= Form::hidden('id', $asset->id, array('id' => 'asset_id')) ?>
 
-		<div class="boom-tabs ui-helper-clearfix">
+		<div class="b-assets-preview">
+			<a href="<?= Route::url('asset', array('action' => 'thumb', 'id' => $asset->id, 'width' => 600, 'height' => 500)) ?>"
+				title="Click for larger view"
+				class="boom-asset-preview">
+				<img src="<?= Route::url('asset', array('action' => 'thumb', 'id' => $asset->id, 'width' => 0, 'height' => 300, 'quality' => 85, 'crop' => 0)) ?>">
+			</a>
+
+			<div class="ui-dialog-buttonpane">
+				<button class="boom-button ui-button-text-icon b-assets-back" rel="<?=$asset->id?>" data-icon="ui-icon-boom-back">
+					<?=__('Back')?>
+				</button>
+				<button class="b-dialog-hidden boom-button ui-button-text-icon b-assets-save" rel="<?=$asset->id?>" data-icon="ui-icon-boom-accept">
+					<?=__('Save')?>
+				</button>
+				<button class="b-dialog-hidden boom-button ui-button-text-icon b-assets-delete" rel="<?=$asset->id?>" data-icon="ui-icon-boom-delete">
+					<?=__('Delete')?>
+				</button>
+				<button class="b-dialog-hidden boom-button ui-button-text-icon b-assets-download" rel="<?=$asset->id?>" data-icon="ui-icon-boom-download">
+					<?=__('Download')?>
+				</button>
+				<button class="b-dialog-hidden boom-button ui-button-text-icon b-assets-replace" rel="<?=$asset->id?>" data-icon="ui-icon-boom-replace">
+					<?=__('Replace')?>
+				</button>
+			</div>
+		</div>
+
+		<div class="boom-tabs">
 			<ul>
 				<li><a href="#b-assets-view-attributes<?=$asset->id;?>"><?=__('Attributes')?></a></li>
 				<li><a href="#b-assets-view-info<?=$asset->id;?>"><?=__('Info')?></a></li>
@@ -12,14 +38,6 @@
 					<li class="b-dialog-hidden"><a href="#b-assets-view-files<?=$asset->id;?>"><?=__('Previous Files')?></a></li>
 				<? endif; ?>
 			</ul>
-
-			<div class="b-assets-preview ui-tabs-panel ui-widget-content ui-helper-left">
-				<a href="<?= Route::url('asset', array('action' => 'thumb', 'id' => $asset->id, 'width' => 600, 'height' => 500)) ?>"
-					title="Click for larger view"
-					class="ui-helper-left boom-asset-preview">
-					<img class="ui-state-active ui-corner-all" src="<?= Route::url('asset', array('action' => 'thumb', 'id' => $asset->id, 'width' => 160, 'height' => 160, 'quality' => 85, 'crop' => 1)) ?>">
-				</a>
-			</div>
 
 			<div id="b-assets-view-attributes<?=$asset->id;?>" class="b-assets-view-attributes ui-helper-left">
 				<label>
@@ -98,26 +116,6 @@
 					</ul>
 				</div>
 			<? endif; ?>
-
-			<br class="ui-helper-clear" />
-
-			<div style="padding: .8em 0 .8em .8em;border-color:#ccc;border-width:1px 0 0 0;" class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
-				<a href="#tag/0" class="boom-button ui-button-text-icon b-assets-back" rel="<?=$asset->id?>" data-icon="ui-icon-boom-back">
-					<?=__('Back')?>
-				</a>
-				<button class="b-dialog-hidden boom-button ui-button-text-icon b-assets-save" rel="<?=$asset->id?>" data-icon="ui-icon-boom-accept">
-					<?=__('Save')?>
-				</button>
-				<button class="b-dialog-hidden boom-button ui-button-text-icon b-assets-delete" rel="<?=$asset->id?>" data-icon="ui-icon-boom-delete">
-					<?=__('Delete')?>
-				</button>
-				<button class="b-dialog-hidden boom-button ui-button-text-icon b-assets-download" rel="<?=$asset->id?>" data-icon="ui-icon-boom-download">
-					<?=__('Download')?>
-				</button>
-				<button class="b-dialog-hidden boom-button ui-button-text-icon b-assets-replace" rel="<?=$asset->id?>" data-icon="ui-icon-boom-replace">
-					<?=__('Replace')?>
-				</button>
-			</div>
 		</div>
 	</form>
 </div>

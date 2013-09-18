@@ -8,6 +8,36 @@
 
 #b-assets {
 	&-view {
+		background: #7f7f7f;
+		padding-top: 2em;
+
+		.b-assets-preview, .boom-tabs {
+			display: inline-block;
+			vertical-align: top;
+		}
+
+		.boom-tabs {
+			width: 50%;
+
+			div {
+				width: 100%;
+			}
+		}
+
+		.b-assets-preview {
+			margin: 6px 2em 1em 1em;
+
+			&:hover img {
+				border-color: #444;
+			}
+		}
+
+		.ui-dialog-buttonpane {
+			margin: 2em 0 0 0;
+		}
+	}
+
+	&-view {
 		&-thumbs {
 			background: #7f7f7f;
 			width: 100%;
@@ -230,34 +260,6 @@
 	}
 }
 
-.b-assets- {
-	&-preview {
-		width: 170px;
-		float: left;
-		margin: 0 .8em 1em 1em;
-
-		&:hover img {
-			border-color: #444;
-		}
-
-		img {
-			background-color: transparent;
-			display: block;
-			padding: 5px;
-			cursor: pointer;
-			display: block;
-			width: 160px;
-			-moz-box-shadow: 3px 3px 3px #bbb;
-			-webkit-box-shadow: 3px 3px 3px #bbb;
-			box-shadow: 3px 3px 3px #bbb;
-		}
-	}
-
-	&view-attributes {
-		width: 45%;
-	}
-}
-
 #b-assets-view-thumbs .ui-state-active {
 	background: #d6278e;
 }
@@ -273,18 +275,20 @@
 		background: #000000;
 	}
 
+	#b-assets-view {
+		background: transparent;
+	}
+
 	/* Hide certain elements when the asset manager is opened in a dialog. */
-	#b-topbar {
+	#b-topbar, .b-dialog-hidden {
 		display: none;
 	}
 
-	#b-assets {
-		&-manager {
-			.b-assets-back {
-				display: block;
-			}
-		}
+	.b-assets-preview {
+		margin-top: 1px;
+	}
 
+	#b-assets {
 		&-filters, &-view-thumbs {
 			background: none;
 			padding-left: 0;
