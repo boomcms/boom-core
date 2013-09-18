@@ -80,7 +80,6 @@ class Boom_Controller_Cms_Assets_Upload extends Controller_Cms_Assets
 				}
 			}
 
-			// Give an array of IDs for the new assets in the response body.
 			$this->response
 				->headers('Content-Type', 'application/json')
 				->body(json_encode($asset_ids));

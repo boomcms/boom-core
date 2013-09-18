@@ -133,15 +133,6 @@ class Boom_Model_Asset extends Model_Taggable
 
 	public function delete_from_asset_chunks()
 	{
-		DB::delete('page_chunks')
-			->where('type', '=', Chunk::ASSET)
-			->where('chunk_id', 'IN',
-				DB::select('id')
-					->from('chunk_assets')
-					->where('asset_id', '=', $this->id)
-			)
-			->execute($this->_db);
-
 		DB::delete('chunk_assets')
 			->where('asset_id', '=', $this->id)
 			->execute($this->_db);

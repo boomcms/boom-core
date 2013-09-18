@@ -310,26 +310,24 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 					$.boom.history.load( self.options.defaultRoute )
 					.done( function(){
 						$.boom.log( 'asset list updated' );
-						for ( i in data.result ){
-							$( '#asset-list-' + data.result[ i ] ).click();
-						}
+
+						$('.thumb[data-asset=' + i + '] a').click();
 					});
 
 				});
 
-				$.when( tagged, uploaded ).done( function( tags, data ){
-
+				$.when(tagged, uploaded).done(function(tags, data) {
 					var promises = [];
 
-					for ( i in tags ) {
+					for (i in tags) {
 						var request = $.post(
-							'/cms/tags/asset/add/' + data.result.join( '-' ),
+							'/cms/tags/asset/add/' + data.result.join('-'),
 							{
 								tag : tags[i].label
 							}
 						);
 
-						promises.push( request );
+						promises.push(request);
 					}
 
 					$.when( promises )
@@ -337,9 +335,9 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 							return $( '#b-tags-search' )
 							.tagger_search( 'do_search' );
 						})
-						.done( function(){
-							for ( i in data.result ){
-								$( '#asset-list-' + data.result[ i ] ).click();
+						.done(function() {
+							for (i in data.result){
+								$('.thumb[data-asset=' + i + '] a').click();
 							}
 						});
 
@@ -386,7 +384,7 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 				.done( function(){
 					$.boom.loader.show();
 
-					$.post('/cms/assets/delete', {csrf: $.boom.options.csrf, assets:  this.selected}, function(){
+					$.post('/cms/assets/delete', {csrf: $.boom.options.csrf, assets:  self.selected}, function(){
 						$.boom.loader.hide();
 
 						$.boom.history.refresh();
@@ -404,6 +402,8 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 			.on('click', '#b-button-multiaction-clear', function(){
 				self.selected = [];
 				self.toggleButtons();
+
+				$('#b-assets-view-thumbs div').removeClass('selected');
 			})
 			.on( 'click', '#b-button-multiaction-tag', function(){
 				$.boom.dialog.open({
@@ -464,11 +464,6 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 					.done( function( data ){
 						$.boom.history.refresh();
 					});
-			})
-			.on('change', '#b-assets-toggleall', function() {
-				var checked = $(this).is(':checked');
-
-				$('.b-items-select-checkbox').change();
 			});
 
 		$.when( self.browse() )
@@ -540,9 +535,10 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 			},
 			done: function( e, data ){
 				$.boom.log( 'file upload complete' );
-				$('#b-assets-upload-cancel').hide();
 
-				$.boom.assets.selected_rid = data.result.join( '-' );
+				$( '#b-assets-upload-container p.message' ).text("File upload completed");
+				$('#b-assets-upload-progress').progressbar('destroy');
+				$('#b-assets-upload-cancel').hide();
 
 				uploaded.resolve( data );
 			},
