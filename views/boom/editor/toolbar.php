@@ -46,9 +46,7 @@
 					<?= __($page->version()->status()) ?>
 				</button>
 			</span>
-		</div>
 
-		<div class="b-page-container">
 			<button id="boom-page-preview" class="boom-button b-button-preview" data-icon="ui-icon-boom-preview" data-preview="preview">
 				<?=__('Preview')?>
 			</button>
