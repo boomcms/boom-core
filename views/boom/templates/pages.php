@@ -1,6 +1,6 @@
 	<?= View::factory('boom/header')->set('title', 'Templates') ?>
 
-	<div id="boom-topbar" class="ui-helper-clearfix ui-tabs ui-widget ui-widget-content ui-corner-all">
+	<div id="b-topbar" class="ui-helper-clearfix ui-tabs ui-widget ui-widget-content ui-corner-all">
 
 		<?= Menu::factory('boom')->sort('priority') ?>
 
