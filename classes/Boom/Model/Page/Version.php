@@ -167,7 +167,7 @@ class Boom_Model_Page_Version extends ORM
 	 */
 	public function filters()
 	{
-	    return array(
+		return array(
 			'title' => array(
 				array('html_entity_decode'),
 				array('urldecode'),
