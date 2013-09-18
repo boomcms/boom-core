@@ -128,30 +128,29 @@ $.widget('wysihtml5.editor', $.boom.editor,
 						parserRules:  top.wysihtml5ParserRules // defined in parser rules set
 					});
 
-					self.instance.on( 'load', function(){
+					self.instance
+						.on( 'load', function(){
+							var frame =  self.instance.composer.iframe;
 
-						var frame =  self.instance.composer.iframe;
+							$( frame )
+								.css( 'border', '1px solid #333');
 
-						$( frame )
-							.css( 'border', '1px solid #333');
+							resizeIframe();
 
-						resizeIframe();
+							self.original_html = self.get_content();
 
-						self.original_html = self.get_content();
+							var el = self.instance.composer.element;
 
-						var el = self.instance.composer.element;
-
-						if (el.addEventListener) {
-						  	el.addEventListener("blur", resizeIframe, false);
-							el.addEventListener("focus", resizeIframe, false);
-							el.addEventListener("keyup", resizeIframe, false);
-						} else if (el.attachEvent)  {
-							el.attachEvent("onblur", resizeIframe);
-							el.attachEvent("onfocus", resizeIframe);
-							el.attachEvent("onkeyup", resizeIframe);
-						}
-
-					});
+							if (el.addEventListener) {
+								el.addEventListener("blur", resizeIframe, false);
+								el.addEventListener("focus", resizeIframe, false);
+								el.addEventListener("keyup", resizeIframe, false);
+							} else if (el.attachEvent)  {
+								el.attachEvent("onblur", resizeIframe);
+								el.attachEvent("onfocus", resizeIframe);
+								el.attachEvent("onkeyup", resizeIframe);
+							}
+						});
 
 					self.instance.on( 'show:dialog', function( options ){
 						switch( options.command ) {
@@ -159,8 +158,12 @@ $.widget('wysihtml5.editor', $.boom.editor,
 								var href = top.$( '[data-wysihtml5-dialog-field=href]' ).val();
 							 	var match = href.match( /asset\/(thumb|view|get_asset)\/([0-9]+)/ );
 								var asset_id = match ? match[2] : 0;
-								if ( asset_id == 0 ) self._edit_link();
-								else self._edit_asset( asset_id );
+								if (asset_id == 0) {
+									self._edit_link();
+								} else {
+									self._edit_asset(asset_id);
+									resizeIframe
+								}
 								break;
 							case 'insertImage' :
 								var src = top.$( '[data-wysihtml5-dialog-field=src]' ).val();
@@ -170,13 +173,15 @@ $.widget('wysihtml5.editor', $.boom.editor,
 
 									asset_id = match ? match[2] : 0;
 								}
-								self._edit_asset( asset_id );
+
+								self._edit_asset(asset_id);
+
 								break;
 						}
 					});
 
 					var resizeIframe = function() {
-					    self.instance.composer.iframe.style.height = self.instance.composer.element.scrollHeight + "px";
+						self.instance.composer.iframe.style.height = self.instance.composer.element.scrollHeight + "px";
 					};
 
 					self.instance.on( 'paste', resizeIframe );
@@ -335,12 +340,13 @@ $.widget('wysihtml5.editor', $.boom.editor,
 				deferred : asset_selected
 			})
 			.done( function( rid ) {
-				console.log( 'done' );
-
 				if ( rid > 0 ) {
 					$.post( '/asset/embed/' + rid )
 					.done( function( response ){
-						img.replaceWith( response );
+						img.replaceWith(response);
+						$(response).on('load', function() {
+							self.instance.composer.iframe.style.height = self.instance.composer.element.scrollHeight + "px";
+						});
 					})
 					.always( function(){
 						asset_selected.reject();
