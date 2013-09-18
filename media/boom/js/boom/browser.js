@@ -75,33 +75,6 @@ $.extend($.boom.item,
 
 		});
 	},
-
-	/** @function */
-	select : function( rid, selected ){
-
-		var thumb = '#' + this.type + '-thumb-' + rid;
-		var list = '#' + this.type + '-list-' + rid;
-
-		var checkbox = $( thumb );
-		checkbox.prop( 'checked', selected );
-
-		if ( selected ) {
-
-			checkbox.attr('checked', 'checked');
-
-			checkbox.parents( 'div.thumb' ).addClass( 'ui-state-active' );
-			$( list ).parents( 'tr' ).addClass( 'ui-state-active' );
-
-		} else {
-
-			checkbox.removeAttr('checked');
-
-			checkbox.parents( 'div.thumb' ).removeClass( 'ui-state-active' );
-			$( list ).parents( 'tr' ).removeClass( 'ui-state-active' );
-		}
-
-	}
-
 });
 
 /**
@@ -214,6 +187,8 @@ $.widget( 'boom.browser',
 	*/
 	options : $.boom.config.browser,
 
+	selected : [],
+
 	_create : function(){
 
 		$.boom.log( 'content browser init' );
@@ -294,27 +269,6 @@ $.widget( 'boom.browser',
 
 			return tags;
 		};
-
-		self.main_panel
-			.on( 'change', '.b-items-select-checkbox', function( event ){
-				// checkbox IDs are of the form type-view-id.
-				var item = this.id.split( '-' );
-				var view = item[ 1 ];
-				var type = item[ 0 ];
-				var item_id = item[ 2 ];
-
-				self.item.select( item_id, $( this ).is(':checked') );
-
-
-
-				var amount = $('.b-items-select-checkbox:checked').length;
-
-				var buttons = $( '[id|=b-button-multiaction]' ).not( '#b-button-multiaction-edit' );
-
-				$( '#b-button-multiaction-edit' ).button( (  amount && amount < 3) ? 'enable' : 'disable' );
-
-				buttons.button( amount > 0 ? 'enable' : 'disable' );
-			})
 	},
 
 	/** Default history routing. */
@@ -359,10 +313,29 @@ $.widget( 'boom.browser',
 		);
 	},
 
+	/** @function */
+	select : function(id) {
+		var index = this.selected.indexOf(id);
+
+		if (index == -1) {
+			this.selected.push(id);
+		} else {
+			this.selected.splice(index, 1);
+		}
+
+		this.toggleButtons();
+	},
+
 	showContent : function(content) {
 		this.main_panel
 			.find( '.b-items-content' )
 			.html( content )
 			.ui();
+	},
+
+	toggleButtons : function() {
+		var buttons = $('[id|=b-button-multiaction]').not('#b-button-multiaction-edit');
+		$('#b-button-multiaction-edit').button(this.selected.length == 1 ? 'enable' : 'disable');
+		buttons.button(this.selected.length > 0 ? 'enable' : 'disable');
 	}
 });
