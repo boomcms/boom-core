@@ -188,6 +188,11 @@ class Boom_Model_Page_Version extends ORM
 	   );
 	}
 
+	public function is_published()
+	{
+		return $this->embargoed_until AND $this->embargoed_until < $_SERVER['REQUEST_TIME'];
+	}
+
 	/**
 	 * Validation rules
 	 *
