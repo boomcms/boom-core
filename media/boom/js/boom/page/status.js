@@ -21,7 +21,7 @@ $.widget('boom.pageStatus', {
 			});
 		} else {
 			options = $.extend(options, {
-				'Publish at a future time' : function() {
+				'Publish later' : function() {
 					self.embargo();
 				}
 			});
