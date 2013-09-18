@@ -437,7 +437,12 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 				$.boom.history.refresh();
 			})
 			.on('change', '#b-assets-types', function(event) {
-				self.filterByType(this.options[this.selectedIndex].innerHTML);
+				if (this.selectedIndex) {
+					self.filterByType(this.options[this.selectedIndex].innerHTML);
+				} else {
+					self.filterByType();
+				}
+
 			})
 			.on('click', '#b-assets-all', function(event) {
 				self.removeFilters();
@@ -647,7 +652,12 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 	},
 
 	filterByType : function(type) {
-		this.tag.set_filters([{type : 'type', id: type}]);
+		if (type) {
+			this.tag.set_filters([{type : 'type', id: type}]);
+		} else {
+			this.tag.set_filters([]);
+		}
+
 		$.boom.history.refresh();
 	},
 
