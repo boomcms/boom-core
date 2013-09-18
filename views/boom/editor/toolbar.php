@@ -46,9 +46,6 @@
 					<?= __($page->version()->status()) ?>
 				</button>
 			</span>
-			<button id="b-page-cancel" class="ui-button boom-button" disabled="disabled" data-icon="ui-icon-boom-cancel">
-					<?=__('Cancel')?>
-			</button>
 		</div>
 
 		<div class="b-page-container">

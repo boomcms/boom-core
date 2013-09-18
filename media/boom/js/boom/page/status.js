@@ -1,13 +1,14 @@
 $.widget('boom.pageStatus', {
 
-	cancel_button : $('#b-page-cancel').button({}),
-
 	menu : $('#b-page-publish-menu'),
 
 	_buildMenu : function(status) {
 		var self = this;
 
 		var options = {
+			"Revert to published version" : function() {
+				self.discardChanges();
+			},
 			"Publish now" : function(){
 				self.publish();
 			}
@@ -41,11 +42,6 @@ $.widget('boom.pageStatus', {
 
 	_create : function() {
 		this.set(this.element.text().trim());
-
-		var self = this;
-		this.cancel_button.on('click', function() {
-			self.discardChanges();
-		});
 	},
 
 	discardChanges : function() {
@@ -120,12 +116,10 @@ $.widget('boom.pageStatus', {
 
 		this._buildMenu(status);
 
-		if (status == 'live') {
+		if (status == 'published') {
 			this.element.button('disable');
-			this.cancel_button.button('disable');
 		} else {
 			this.element.button('enable');
-			this.cancel_button.button('enable');
 		}
 	}
 });
