@@ -101,13 +101,16 @@ $.extend($.boom.assets,
 					.append($('<div class="center"><div id="b-assets-pagination"></div><div id="b-assets-stats"></div></div>'));
 			},
 			onLoad: function(){
-
 				browser = $( '#b-assets-manager' ).browser_asset();
+				var $self = $(this);
 
-				$.when( browser.browser_asset( 'browse' ) )
-				.progress( function( rid ){
-					browser.browser_asset( 'edit', rid );
-				});
+				$.when(browser.browser_asset('browse'))
+					.progress(function(asset_id) {
+						cleanup();
+						complete.resolve(asset_id);
+						$self.dialog('destroy');
+						$.boom.page.toolbar.minimise();
+					});
 
 				// browser widget pushes a default URL to the history stack.
 				// need to override that if an asset is already selected
