@@ -26,6 +26,12 @@ $.widget( 'boom.pageToolbar', $.boom.page, {
 					url: '/media/boom/html/readability.html'
 				});
 			})
+			.on('click', '#b-page-visibility', function() {
+				self.options.page.settings.visibility.edit();
+			})
+			.on('click', '.b-button-preview', function() {
+				self.boom.editor.state($(this).attr('data-preview'));
+			})
 			.find('#b-page-settings-menu')
 				.splitbutton({
 					items: self._buildSettingsMenu(),
@@ -41,10 +47,7 @@ $.widget( 'boom.pageToolbar', $.boom.page, {
 					menuPosition: 'right',
 					split: false
 				})
-			.end()
-			.on('click', '#b-page-visibility', function() {
-				self.options.page.settings.visibility.edit();
-			});
+			.end();
 	},
 
 	_buildSettingsMenu : function() {

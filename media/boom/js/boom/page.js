@@ -50,8 +50,6 @@ $.widget( 'boom.page', {
 			.contents()
 			.ui();
 
-		this.bind();
-
 		$.boom.log('Page init');
 	},
 
@@ -79,30 +77,6 @@ $.widget( 'boom.page', {
 					self.editor.init();
 				});
 		});
-	},
-
-	/** @function */
-	bind : function(){
-
-		var self = this;
-
-		function saveEditorState( state ) {
-
-			$.boom.loader.show();
-
-			$.post('/cms/editor/state', { state: state }, function(){
-
-				top.location.reload();
-
-				$.boom.loader.hide();
-			});
-		}
-
-		$('.b-button-preview').on('click', function(){
-			saveEditorState( $(this).attr('data-preview') );
-		});
-
-		return this;
 	},
 
 	/** @function */

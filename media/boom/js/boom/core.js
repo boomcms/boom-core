@@ -139,6 +139,24 @@ $.extend($.boom,
 	/** @lends $.boom */
 	{
 	/**
+	@class
+	*/
+	editor: {
+		state : function(state) {
+			$.boom.loader.show();
+
+			$.post('/cms/editor/state', {state: state}, function() {
+				top.location.reload();
+				$.boom.loader.hide();
+			});
+		}
+	}
+});
+
+$.extend($.boom,
+	/** @lends $.boom */
+	{
+	/**
 	Boom cookie management.
 	@class
 	*/
