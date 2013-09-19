@@ -19,7 +19,7 @@ return array(
 		'boom/page/status.js',
 		'boom/page.js',
 		'boom/page/toolbar.js',
-		'boom/editor.js',
+		'boom/textEditor.js',
 		'boom/wysihtml5.js',
 		'boom/chunk/chunk.js',
 		'boom/chunk/text.js',

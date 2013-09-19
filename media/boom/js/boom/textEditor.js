@@ -3,7 +3,7 @@ Base class for the text editor
 @class
 @name $.boom.editor
 */
-$.widget( 'boom.editor',
+$.widget( 'boom.textEditor',
 	/** @lends $.boom.editor */
 	{
 	_create : function() {

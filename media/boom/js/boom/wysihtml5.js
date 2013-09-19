@@ -7,7 +7,7 @@
 * @name $.wysihtml5.editor
 * @extends $.boom.editor
 */
-$.widget('wysihtml5.editor', $.boom.editor,
+$.widget('wysihtml5.editor', $.boom.textEditor,
 	/** @lends $.wysihtml5.editor */
 	{
 
