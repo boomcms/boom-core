@@ -88,6 +88,13 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 		})
 	},
 
+	/**
+	@function
+	*/
+	_destroy : function(){
+		this._unbind();
+	},
+
 	_unbind : function() {
 		this.element
 			.unbind('click')

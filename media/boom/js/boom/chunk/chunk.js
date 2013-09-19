@@ -119,16 +119,14 @@ $.widget('ui.chunk',
 	@function
 	*/
 	_send_back : function() {
-
 		this.element.removeAttr( 'style' );
 		top.$( 'div.overlay' ).remove();
-
 	},
 
 	/**
 	@function
 	*/
 	_destroy : function(){
-		this._unbind();
+		$.boom.page.editor.bind();
 	}
 });
