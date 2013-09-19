@@ -77,8 +77,7 @@ $.widget( 'boom.page', {
 		var self = this;
 
 		this.document = $( top.document );
-
-		this.toolbar.init();
+		this.toolbar = this.document.find('#b-page-topbar').pageToolbar({}).data('boomPageToolbar');
 
 		$('body').contents().ui();
 
@@ -180,108 +179,6 @@ $.widget( 'boom.page', {
 		this.status_button.pageStatus('set', status);
 	}
 } );
-
-$.widget( 'boom.page', $.boom.page, {
-
-	/**
-	* Common functionality for the embedded CMS toolbar
-	* @class
-	* @name $.boom.page.toolbar
-	*/
-	toolbar: {
-
-		/**
-		* Editable page DOM
-		* @property page_dom
-		* @type (Object)
-		*/
-		page_dom: {},
-
-		/**
-		* Editor iframe
-		* @property iframe
-		* @type (Object)
-		*/
-		iframe: {},
-
-		/**
-		@property height
-		*/
-		height: '90px',
-
-		/**
-		* Adds some whitespace to prevent the toolbar sitting over links etc.
-		* Initialises some useful properties
-		* @function
-		*/
-		init : function() {
-			$.boom.log( 'init CMS toolbar' );
-
-			var self = this;
-
-			self.page_dom = $.boom.page.document.contents();
-			self.iframe = self.page_dom.find( '#b-page-topbar' );
-
-			if ( $( '#b-topbar' ).length ) {
-				self.page_dom
-					.find( 'body' )
-					.css( {'margin-top' : this.height} );
-
-				self.iframe
-				.css( {
-					'margin-top' : '-' + this.height
-				})
-				.animate( {
-					'height' : this.height
-				});
-			} else {
-				self.iframe.animate( {
-					'height' : '30px'
-				});
-			}
-
-		},
-
-		/**
-		* extend the toolbar to cover the entire window
-		* @function
-		*/
-		maximise : function() {
-			$.boom.log( 'maximise iframe' );
-			this.iframe.show();
-			this.iframe.css && this.iframe.css( 'height', '120%' );
-		},
-
-		/**
-		* minimise the toolbar to allow clicking on the underlying page
-		* @function
-		*/
-		minimise : function() {
-			$.boom.log( 'minimise iframe' );
-			this.iframe.css && this.iframe.css( 'height', this.height );
-		},
-
-		/**
-		@function
-		*/
-		hide : function() {
-			this.iframe.slideUp().hide();
-			this.page_dom
-				.find( 'body' )
-				.css( 'margin-top', 0 );
-		},
-
-		/**
-		@function
-		*/
-		show : function() {
-			this.iframe.show().slideDown();
-			this.page_dom
-				.find( 'body' )
-				.css( 'margin-top', this.height );
-		}
-	}
-});
 
 $.widget( 'boom.page', $.boom.page, {
 
