@@ -26,8 +26,10 @@ $.widget( 'boom.pageToolbar', {
 	*/
 	maximise : function() {
 		$.boom.log('maximise iframe');
-		this.element.show();
-		this.element.css && this.element.css('height', '120%');
+
+		this.element
+			.show()
+			.css('height', '120%');
 	},
 
 	/**
@@ -35,7 +37,7 @@ $.widget( 'boom.pageToolbar', {
 	* @function
 	*/
 	minimise : function() {
-		$.boom.log( 'minimise iframe' );
+		$.boom.log('minimise iframe');
 		this.element.css && this.element.css('height', this.options.height);
 	},
 
@@ -43,9 +45,12 @@ $.widget( 'boom.pageToolbar', {
 	@function
 	*/
 	hide : function() {
-		this.element.slideUp().hide();
+		this.element
+			.slideUp()
+			.hide();
+
 		this.document
-			.find( 'body' )
+			.find('body')
 			.css('margin-top', 0);
 	},
 
@@ -53,9 +58,12 @@ $.widget( 'boom.pageToolbar', {
 	@function
 	*/
 	show : function() {
-		this.element.show().slideDown();
+		this.element
+			.show()
+			.slideDown();
+
 		this.document
-			.find( 'body' )
+			.find('body')
 			.css('margin-top', this.options.height);
 	}
 });
