@@ -83,7 +83,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 					top.location = data.location;
 				}, 1000);
 			} else {
-				$.boom.page.setStatus(data.status);
+				$.boom.page.status.set(data.status);
 			}
 		})
 	},

@@ -19,7 +19,7 @@ $.widget( 'boom.page', {
 	/**
 	 @property status_button
 	 */
-	status_button: $('#b-page-version-status').pageStatus({}),
+	status: $('#b-page-version-status').pageStatus({}).data('boomPageStatus'),
 
 	_init : function() {
 
@@ -173,10 +173,6 @@ $.widget( 'boom.page', {
 
 		return $( 'body' ).editor().editor( 'load' );
 
-	},
-
-	setStatus : function(status) {
-		this.status_button.pageStatus('set', status);
 	}
 } );
 
