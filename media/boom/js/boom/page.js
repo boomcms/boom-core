@@ -32,11 +32,8 @@ $.widget( 'boom.page', {
 	},
 
 	/** @function */
-	_create : function(config) {
-
-		var self = this;
-
-		$.boom.page = self;
+	_create : function() {
+		$.boom.page = this;
 
 		$.boom.util.cacheImages($.boom.config.cachePageImages);
 
