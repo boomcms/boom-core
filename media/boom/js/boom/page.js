@@ -10,6 +10,8 @@ $.widget( 'boom.page', {
 
 	/** @lends $.boom.page */
 
+	boom : $.boom,
+
 	/**
 	default config
 	@property options
@@ -38,7 +40,10 @@ $.widget( 'boom.page', {
 
 		$.boom.util.cacheImages($.boom.config.cachePageImages);
 
-		this.build();
+		this.document = $(top.document);
+
+		this.toolbar = this.document.find('#b-page-topbar').pageToolbar({}).data('boomPageToolbar');
+		this.document.find('body').contents().ui();
 
 		this.bind();
 
@@ -72,19 +77,6 @@ $.widget( 'boom.page', {
 	},
 
 	/** @function */
-	build : function(){
-
-		var self = this;
-
-		this.document = $( top.document );
-		this.toolbar = this.document.find('#b-page-topbar').pageToolbar({}).data('boomPageToolbar');
-
-		$('body').contents().ui();
-
-		return this;
-	},
-
-	/** @function */
 	bind : function(){
 
 		var self = this;
@@ -103,58 +95,6 @@ $.widget( 'boom.page', {
 
 		$('.b-button-preview').on('click', function(){
 			saveEditorState( $(this).attr('data-preview') );
-		});
-
-		$('#b-page-delete').click(function(){
-
-			$.boom.dialog.open({
-				width: 350,
-				url: '/cms/page/delete/' + self.options.id,
-				title: 'Please confirm',
-				callback: function(){
-
-					$.post('/cms/page/delete/' + self.options.id, $('#b-page-delete-form').serialize(), function(response){
-						$.boom.growl.show("Page deleted, redirecting to parent.");
-						top.location = response;
-					});
-				}
-			});
-		});
-		$('#b-page-addpage').click(function(){
-			$.boom.loader.show();
-
-			$.post('/cms/page/add/' + self.options.id, {csrf : $('#b-csrf').val()}, function(response){
-				$.boom.loader.hide();
-
-				if ( new RegExp('^' + "\/").test( response ) ) {
-
-					top.location = response;
-				} else {
-
-					$.boom.dialog.alert('Error', response);
-				}
-			});
-		});
-
-		$( '#boom-page-editlive' ).on( 'click', function( event ){
-			$.boom.dialog.confirm(
-				'Edit live',
-				'Discard changes and edit the live page?'
-			)
-			.done( function(){
-
-				$.boom.log( 'stashing page edits' );
-
-				$.post( '/cms/page/stash/' + $.boom.page.options.id )
-				.done( function( response ){
-					$.boom.history.refresh();
-				});
-			});
-		});
-		$('#b-page-readability').on('click', function(event) {
-			$.boom.dialog.open({
-				url: '/media/boom/html/readability.html'
-			});
 		});
 
 		self.settings.init();
