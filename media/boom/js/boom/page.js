@@ -39,8 +39,14 @@ $.widget( 'boom.page', {
 
 		this.document = $(top.document);
 
-		this.toolbar = this.document.find('#b-page-topbar').pageToolbar({}).data('boomPageToolbar');
-		this.document.find('body').contents().ui();
+		this.toolbar = this.document
+			.find('#b-page-topbar')
+			.pageToolbar({})
+			.data('boomPageToolbar');
+
+		this.document.find('body')
+			.contents()
+			.ui();
 
 		this.bind();
 
