@@ -32,6 +32,8 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 			.fail(function() {
 				self.element.html(old_html).show();
 				self.destroy();
+
+				$.boom.page.editor.bind();
 			})
 			.done(function() {
 				var title = self.element.text();
