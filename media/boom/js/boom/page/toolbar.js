@@ -38,6 +38,7 @@ $.widget( 'boom.pageToolbar', {
 	*/
 	minimise : function() {
 		$.boom.log('minimise iframe');
+
 		this.element.css && this.element.css('height', this.options.height);
 	},
 

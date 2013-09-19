@@ -49,7 +49,7 @@ $.widget('boom.pageStatus', {
 	},
 
 	discardChanges : function() {
-				$.boom.dialog.confirm(
+		$.boom.dialog.confirm(
 			'Discard changes',
 			'Are you sure you want to discard any unpublished changes and revert this page to it\'s published state?'
 		)
