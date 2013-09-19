@@ -13,45 +13,13 @@ $.widget( 'boom.pageToolbar', $.boom.page, {
 
 		this.element.contents()
 			.on('click', '#b-page-delete', function() {
-				self.boom.dialog.open({
-					width: 350,
-					url: '/cms/page/delete/' + $.boom.page.options.id,
-					title: 'Please confirm',
-					callback: function(){
-
-						$.post('/cms/page/delete/' + $.boom.page.options.id, $(this).find('form').serialize(), function(response){
-							self.boom.growl.show("Page deleted, redirecting to parent.");
-							top.location = response;
-						});
-					}
-				});
+				self.options.page.delete();
 			})
 			.on('click', '#b-page-addpage', function() {
-				self.boom.loader.show();
-
-				$.post('/cms/page/add/' + $.boom.page.options.id, {csrf : $('#b-csrf').val()}, function(response){
-					self.boom.loader.hide();
-
-					if (new RegExp('^' + "\/").test( response)) {
-						top.location = response;
-					} else {
-						self.boom.dialog.alert('Error', response);
-					}
-				});
+				self.options.page.add();
 			})
 			.on('click', '#boom-page-editlive', function() {
-				self.boom.dialog.confirm(
-					'Edit live',
-					'Discard changes and edit the live page?'
-				)
-				.done(function(){
-					self.boom.log('stashing page edits');
-
-					$.post('/cms/page/stash/' + $.boom.page.options.id)
-						.done(function(response) {
-							self.boom.history.refresh();
-						});
-				});
+				self.options.page.stash();
 			})
 			.on('click', '#b-page-readability', function() {
 				self.boom.dialog.open({
