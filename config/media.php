@@ -17,8 +17,8 @@ return array(
 	),
 	'js' => array(
 		'boom/page/status.js',
-		'boom/page/toolbar.js',
 		'boom/page.js',
+		'boom/page/toolbar.js',
 		'boom/editor.js',
 		'boom/wysihtml5.js',
 		'boom/chunk/chunk.js',

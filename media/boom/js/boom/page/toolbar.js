@@ -3,7 +3,7 @@
 * @class
 * @name $.boom.page.toolbar
 */
-$.widget( 'boom.pageToolbar', {
+$.widget( 'boom.pageToolbar', $.boom.page, {
 	options : {
 		height : '90px'
 	},
