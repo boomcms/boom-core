@@ -113,14 +113,6 @@ $.extend({
 					});
 			});
 
-			$(window).bind('scroll', function(event){
-
-				//$(this).scrollTop(0);
-
-				return false;
-
-			}).trigger('scroll');
-
 			if ( options === undefined || options.ui === undefined || options.ui ) {
 
 				$('body').ui();
