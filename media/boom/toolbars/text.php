@@ -37,17 +37,21 @@
 	}
 ?>
 	</div>
-	<div data-wysihtml5-dialog="createLink" style="display: none;">
+	<div data-wysihtml5-dialog="createLink" style="display: none">
 		<label>
 			Link:
-			<input data-wysihtml5-dialog-field="href" value="http://">
+			<input data-wysihtml5-dialog-field="href" value="http://" disabled="disabled">
 		</label>
+
+		<button id="b-editor-link"><span class="b-edit"></span></button>
 	</div>
 
-	<div data-wysihtml5-dialog="insertImage" style="display: none;">
+	<div data-wysihtml5-dialog="insertImage" style="display: none">
 		<label>
-			Image:
-			<input data-wysihtml5-dialog-field="src" value="http://">
+			Asset:
+			<input data-wysihtml5-dialog-field="src" value="http://" disabled="disabled">
 		</label>
+
+		<button id="b-editor-asset"><span class="b-edit"></span></button>
 	</div>
 </div>

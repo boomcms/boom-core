@@ -152,11 +152,11 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 							}
 						});
 
-					self.instance.on( 'show:dialog', function( options ){
-						switch( options.command ) {
-							case 'createLink' :
+						top.$('#wysihtml5-toolbar')
+							.on('click', '#b-editor-link', function(e) {
+								e.preventDefault();
 								var href = top.$( '[data-wysihtml5-dialog-field=href]' ).val();
-							 	var match = href.match( /asset\/(thumb|view|get_asset)\/([0-9]+)/ );
+								var match = href.match( /asset\/(thumb|view|get_asset)\/([0-9]+)/ );
 								var asset_id = match ? match[2] : 0;
 								if (asset_id == 0) {
 									self._edit_link();
@@ -164,8 +164,9 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 									self._edit_asset(asset_id);
 									resizeIframe
 								}
-								break;
-							case 'insertImage' :
+							})
+							.on('click', '#b-editor-asset', function(e) {
+								e.preventDefault();
 								var src = top.$( '[data-wysihtml5-dialog-field=src]' ).val();
 								var asset_id = 0;
 								if ( src && src != 'http://' ) {
@@ -175,10 +176,7 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 								}
 
 								self._edit_asset(asset_id);
-
-								break;
-						}
-					});
+							});
 
 					var resizeIframe = function() {
 						self.instance.composer.iframe.style.height = self.instance.composer.element.scrollHeight + "px";
@@ -364,7 +362,6 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 	@returns {Deferred}
 	*/
 	_edit_link : function() {
-		top.$('[data-wysihtml5-dialog]').hide();
 		var self = this;
 		var ed = self.instance.composer;
 		var existing_link = ed.commands.state( "createLink" )[0];
@@ -403,9 +400,10 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 				if ( existing_link ) {
 					existing_link.textContent = existing_link.textContent.replace(existing_link.href, uri);
 
-					top.$( existing_link )
-						.attr( 'href', uri )
-						.attr( 'rel', page_id );
+					top.$(existing_link)
+						.attr('href', uri)
+						.attr('title', '')
+						.attr('rel', page_id);
 				} else {
 					if (page_id) {
 						ed.commands.exec("createLink", { href: uri, rel: page_id, title: '', text: link.title});

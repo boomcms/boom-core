@@ -6,7 +6,7 @@
  * @category	Chunks
  * @category	Controllers
  */
-abstract class Boom_Controller_Cms_Chunk extends Boom_Controller
+class Boom_Controller_Cms_Chunk extends Boom_Controller
 {
 	/**
  	 * @var Model_Page
@@ -28,8 +28,6 @@ abstract class Boom_Controller_Cms_Chunk extends Boom_Controller
 		parent::before();
 
 		$this->page = new Model_Page($this->request->param('page_id'));
-
-		$this->page->was_created_by($this->person) OR $this->authorization('edit_page_content', $this->page);
 	}
 
 	public function action_insert_url()
@@ -39,6 +37,7 @@ abstract class Boom_Controller_Cms_Chunk extends Boom_Controller
 
 	public function action_remove()
 	{
+		$this->authorization();
 		$this->_create_version();
 
 		$this->_send_response($this->_preview_default_chunk());
@@ -46,10 +45,16 @@ abstract class Boom_Controller_Cms_Chunk extends Boom_Controller
 
 	public function action_save()
 	{
+		$this->authorization();
 		$this->_create_version();
 		$this->_save_chunk();
 
 		$this->_send_response($this->_preview_chunk());
+	}
+
+	public function authorization()
+	{
+		$this->page->was_created_by($this->person) OR parent::authorization('edit_page_content', $this->page);
 	}
 
 	protected function _create_version()
@@ -68,7 +73,7 @@ abstract class Boom_Controller_Cms_Chunk extends Boom_Controller
 			->copy_chunks($old_version, array($this->request->post('slotname')));
 	}
 
-	abstract protected function _preview_chunk();
+	protected function _preview_chunk() {}
 
 	protected function _save_chunk()
 	{
