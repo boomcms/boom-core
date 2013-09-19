@@ -102,10 +102,6 @@ $.widget( 'boom.page', {
 			saveEditorState( $(this).attr('data-preview') );
 		});
 
-		self.settings.init();
-
-		self.settings.bind();
-
 		return this;
 	},
 
