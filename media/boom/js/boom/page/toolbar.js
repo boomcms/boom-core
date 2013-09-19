@@ -25,7 +25,57 @@ $.widget( 'boom.pageToolbar', $.boom.page, {
 				self.boom.dialog.open({
 					url: '/media/boom/html/readability.html'
 				});
+			})
+			.find('#b-page-settings-menu')
+				.splitbutton({
+					items: self._buildSettingsMenu(),
+					width: 'auto',
+					menuPosition: 'right',
+					split: false
+				})
+			.end()
+			.find('#b-page-version-menu')
+				.splitbutton({
+					items: self._buildVersionMenu(),
+					width: 'auto',
+					menuPosition: 'right',
+					split: false
+				})
+			.end()
+			.on('click', '#b-page-visibility', function() {
+				self.options.page.settings.visibility.edit();
 			});
+	},
+
+	_buildSettingsMenu : function() {
+		var menu_items = {};
+		var self = this;
+
+		this.element.contents().find('button.b-page-settings').each(function(index, value) {
+			var $this = $(this);
+			var setting = $this.attr('data-b-page-setting');
+			var item = [];
+
+			item[$this.text()] =  function() {
+				self.options.page.settings[setting].edit();
+			}
+			menu_items = $.extend(menu_items, item);
+		});
+
+		return menu_items;
+	},
+
+	_buildVersionMenu : function() {
+		var self = this;
+
+		return {
+			'Feature image' : function() {
+				self.options.page.settings.featureimage.edit();
+			},
+			'Template' : function() {
+				self.options.page.settings.template.edit();
+			}
+		};
 	},
 
 	_create : function() {

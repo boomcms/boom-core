@@ -51,7 +51,7 @@
 				<?=__('Preview')?>
 			</button>
 
-			<span id="boom-page-template-menu">
+			<span id="b-page-version-menu">
 				<button id="boom-page-template-settings" class="ui-button boom-button" data-icon="ui-icon-boom-options">
 					<?= __('Version settings') ?>
 				</button>
@@ -69,10 +69,10 @@
 
 	<div class="b-page-container">
 		<? if ($auth->logged_in('edit_page', $page)): ?>
-			<button id="boom-page-visibility" class="ui-button boom-button" data-icon="ui-icon-boom-<? echo ($page->is_visible())? 'visible' : 'invisible' ?>">
+			<button id="b-page-visibility" class="ui-button boom-button" data-icon="ui-icon-boom-<? echo ($page->is_visible())? 'visible' : 'invisible' ?>">
 				<?= __('Visibility') ?>
 			</button>
-			<span id="boom-page-settings-menu">
+			<span id="b-page-settings-menu">
 				<button id="boom-page-settings" class="ui-button boom-button" data-icon="ui-icon-boom-settings">
 					<?= __('Settings') ?>
 				</button>

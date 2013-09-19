@@ -18,6 +18,7 @@ return array(
 	'js' => array(
 		'boom/page/status.js',
 		'boom/page.js',
+		'boom/page/settings.js',
 		'boom/page/toolbar.js',
 		'boom/textEditor.js',
 		'boom/wysihtml5.js',
