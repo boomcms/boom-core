@@ -9,7 +9,8 @@
 	}
 
 	.b-editable {
-		border: 2px solid transparent;
+		box-sizing: border-box !important;
+		border: 2px solid transparent !important;
 	}
 </style>
 
