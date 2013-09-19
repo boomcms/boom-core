@@ -4,10 +4,6 @@
 * @name self.boom.page.toolbar
 */
 $.widget( 'boom.pageToolbar', $.boom.page, {
-	options : {
-		height : '90px'
-	},
-
 	_bindButtonEvents : function() {
 		var self = this;
 
@@ -83,6 +79,8 @@ $.widget( 'boom.pageToolbar', $.boom.page, {
 
 	_create : function() {
 		this.boom.log( 'init CMS toolbar' );
+
+		this.options.height = this.options.height || this.element.contents().find('body').height() + 'px';
 
 		this.document
 			.find('body')
