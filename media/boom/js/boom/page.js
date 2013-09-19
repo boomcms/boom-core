@@ -504,15 +504,6 @@ $.widget( 'boom.page', $.boom.page, {
 			});
 
 			return promise.resolve();
-		},
-
-		//
-		/**
-		TODO
-		@function
-		*/
-		isOpen : function(){
-			return false;
 		}
 	}
 });
