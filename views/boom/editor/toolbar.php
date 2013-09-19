@@ -1,6 +1,6 @@
 <?= View::factory('boom/header', array('title' => $page->version()->title)) ?>
 
-<div id="b-topbar" class="ui-helper-clearfix ui-tabs ui-widget ui-widget-content ui-corner-all">
+<div id="b-topbar">
 	<?= Form::hidden('csrf', Security::token(), array('id' => 'b-csrf')) ?>
 	<?= Menu::factory('boom')->sort('priority') ?>
 
