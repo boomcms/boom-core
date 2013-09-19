@@ -15,7 +15,6 @@ window.boomConfig =
 	*/
 	cachePageImages : [
 		'/media/boom/img/ajax_load.gif',
-		'/media/boom/img/cms/chunk_edit_icon.png'
 	],
 
 	/**
@@ -624,7 +623,7 @@ window.boomConfig =
 		@default []
 		*/
 		formData: [],
-		
+
 		limitMultiFileUploads: 5,
 	}
 

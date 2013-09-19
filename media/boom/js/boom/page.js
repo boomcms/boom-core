@@ -359,7 +359,7 @@ $.widget( 'boom.page', $.boom.page, {
 
 				$this
 				.attr( 'tabindex', '0' )
-				.unbind('click mouseenter mouseleave')
+				.unbind('click')
 				.on( 'keydown', function( event ){
 					switch( event.which ) {
 						case 13:
@@ -396,14 +396,6 @@ $.widget( 'boom.page', $.boom.page, {
 					$.boom.page.slots.edit(event, this, slot, config);
 
 					return false;
-				})
-				.bind('mouseenter focus', function(){
-
-					$.boom.page.slots.bindMouseEnter.call(this, self.elements.page_body);
-				})
-				.bind('mouseleave blur', function(){
-
-					$.boom.page.slots.bindMouseLeave.call(this, self.elements.page_body);
 				});
 			};
 
@@ -417,7 +409,7 @@ $.widget( 'boom.page', $.boom.page, {
 				var slotName = $( this ).attr( 'data-boom-slot-name' );
 
 
-				$( this ).addClass( 'boom-tooltip boom-tooltip-follow' );
+				$( this ).addClass( 'b-editable' );
 
 				if (!this.id) {
 
@@ -444,20 +436,19 @@ $.widget( 'boom.page', $.boom.page, {
 
 		/** @function */
 		unbind : function(){
+			if ( ! this.elements.page_body) {
+				return;
+			}
 
-			var self = this;
+			var $contents = this.elements.page_body.contents();
 
-			if (!self.elements.page_body) return;
-
-			self.elements.page_body.contents().find('#b-page-title, .chunk-slot').each(function(){
-				$(this).unbind('click mouseleave mouseenter')
-				// FIXME
-				.removeClass('boom-chunk-mouseenter');
+			$contents.find('.chunk-slot').each(function() {
+				$(this)
+					.unbind('click')
+					.removeClass('b-editable');
 			});
 
-			self.elements.page_body.contents().find('.sortable').each(function(){
-				$(this).sortable('destroy');
-			});
+			$contents.find('#b-page-title').pageTitle('destroy');
 
 			$.boom.log('Page editor unbind');
 		},
@@ -540,13 +531,11 @@ $.widget( 'boom.page', $.boom.page, {
 			event.preventDefault();
 			event.stopPropagation();
 
-			this.hideEditOverlay();
+			$(elem).removeClass('b-editable');
 
 			$.boom.log('Chunk slot edit');
 
 			$.boom.page.editor.unbind();
-
-			$.boom.data.slotClicked = true;
 
 			var
 				node = elem.nodeName.toLowerCase(),
@@ -560,47 +549,6 @@ $.widget( 'boom.page', $.boom.page, {
 
 			return false;
 		},
-
-		/** @function */
-		bindMouseEnter : function(page_body){
-
-			$(this).addClass('b-chunk-mouseenter ui-helper-clearfix');
-
-			var data = {
-				width: $(this).outerWidth(),
-				height: $(this).outerHeight(),
-				offset: $(this).offset()
-			};
-
-			$(this).removeClass('ui-helper-clearfix');
-
-			$.boom.page.slots.showEditOverlay(data);
-		},
-
-		/** @function */
-		bindMouseLeave : function(page_body){
-
-			$(this).removeClass('b-chunk-mouseenter');
-
-			$.boom.page.slots.hideEditOverlay();
-		},
-
-		/** @function */
-		showEditOverlay : function(data) {
-
-			$.boom.page.editor.elements.hoverOverlay.icon
-				.css({
-					top: data.offset.top - 10,
-					left: data.offset.left - 10
-				})
-				.show();
-		},
-
-		/** @function */
-		hideEditOverlay : function(){
-
-			$.boom.page.editor.elements.hoverOverlay.icon.hide();
-		}
 	}
 });
 

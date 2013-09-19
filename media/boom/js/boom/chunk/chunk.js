@@ -126,12 +126,9 @@ $.widget('ui.chunk',
 	},
 
 	/**
-	Remove widget from the DOM and clean up.
 	@function
 	*/
 	_destroy : function(){
-		$.boom.log( 'rebinding page chunks' );
-
-		$.boom.page.editor.bind();
+		this._unbind();
 	}
 });

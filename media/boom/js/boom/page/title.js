@@ -3,49 +3,46 @@
  */
 $.widget('boom.pageTitle', $.ui.chunk, {
 
-	$el : null,
-
 	_bind : function() {
 		var self = this;
 
-		this.$el
+		this.element
 			.on('click', function(event) {
 				self.edit();
-			});
+			})
+			.addClass('b-editable');
 	},
 
 	_create : function() {
-		this.$el = $(this.element);
-
 		this._bind();
 	},
 
 	edit : function() {
 		var self = this;
-		var old_html = this.$el.html();
+		var old_html = this.element.html();
 
 		self._bring_forward();
 		self._unbind();
 
 		if (this.isUntitled()) {
-			this.$el.text('');
+			this.element.text('');
 		}
 
-		$('body').editor('edit', self.$el)
+		$('body').editor('edit', self.element)
 			.fail(function() {
 				self.element.html(old_html).show();
 				self.destroy();
 			})
 			.done(function() {
-				var title = self.$el.text();
+				var title = self.element.text();
 
 				if (title != '' && title != old_html) {
 					self.insert(title);
 				}
 			})
 			.always(function() {
-				if (self.$el.text() == '' ) {
-					self.$el.html(old_html);
+				if (self.element.text() == '' ) {
+					self.element.html(old_html);
 				}
 
 				self._send_back();
@@ -58,12 +55,12 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 	},
 
 	insert : function(html) {
-		this.$el.html(html);
+		this.element.html(html);
 		this._save();
 	},
 
 	isUntitled : function() {
-		return this.$el.text() == 'Untitled';
+		return this.element.text() == 'Untitled';
 	},
 
 	_save : function() {
@@ -71,7 +68,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 
 		$.post('/cms/page/version/title/' + $.boom.page.options.id, {
 			csrf : $.boom.options.csrf,
-			title : this.$el.html()
+			title : this.element.html()
 		})
 		.always(function() {
 			$.boom.loader.hide();
@@ -92,6 +89,8 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 	},
 
 	_unbind : function() {
-		this.$el.unbind('click');
+		this.element
+			.unbind('click')
+			.removeClass('b-editable');
 	}
 });
