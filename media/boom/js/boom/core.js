@@ -446,33 +446,6 @@ $.extend($.boom,
 	}
 });
 
-/**
-@class
-@name $.ajax
-@static
-*/
-$.extend($.ajax,
-	/** @lends $.ajax */
-	{
-	requestStack : [],
-
-	/** @function */
-	abortRequests : function(){
-
-		$.each(this.requestStack, function(){
-
-			if (this.readyState === 1) {
-
-				this.requestStack[i].abort();
-
-				delete this.requestStack[i];
-
-				this.requestStack.splice(i, 1);
-			}
-		});
-	}
-});
-
 $.fn.sload = function(url, successCallback) {
 
 	if (!this.length) return this;
