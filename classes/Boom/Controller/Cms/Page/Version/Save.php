@@ -47,21 +47,9 @@ class Boom_Controller_Cms_Page_Version_Save extends Controller_Cms_Page_Version
 		// Call the parent function to check permissions.
 		parent::action_embargo();
 
-		$embargoed_until = $this->request->post('embargoed_until');
+		// If no embargo time was given use the current time which will make this version published.
+		$embargoed_until = $this->request->post('embargoed')? strtotime($this->request->post('embargoed_until')) : $_SERVER['REQUEST_TIME'];
 
-		// If an embargo time hasn't been given, or the embargo has been removed
-		// Use the time of the request
-		// This means that the embargo time is in the past - the version is published.
-		if ( ! ($embargoed_until AND $this->request->post('embargoed')))
-		{
-			$embargoed_until = $_SERVER['REQUEST_TIME'];
-		}
-		else
-		{
-			$embargoed_until = strtotime($embargoed_until);
-		}
-
-		// Updated the embargo time of the new version.
 		$this->new_version
 			->create()
 			->embargo($embargoed_until)

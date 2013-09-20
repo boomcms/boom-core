@@ -73,8 +73,7 @@ $.widget('boom.pageStatus', {
 		$.boom.dialog.open({
 			url: url,
 			title: 'Page embargo',
-			width: 300,
-			// cache: true,
+			width: 440,
 			callback: function(){
 				$.boom.page.settings.save(
 					url,
@@ -83,18 +82,6 @@ $.widget('boom.pageStatus', {
 				)
 				.done(function(response) {
 					self.set(response);
-				});
-			},
-			open: function(){
-				$( '#page-visible' ).on( 'change', function(){
-					switch( $( this ).val() ) {
-						case '1':
-							$( '#page-embargo' ).removeAttr( 'disabled' );
-						break;
-						case '0':
-							$( '#page-embargo' ).attr( 'disabled', 'disabled' );
-						break;
-					}
 				});
 			}
 		});
