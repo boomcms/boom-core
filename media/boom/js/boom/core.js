@@ -650,46 +650,6 @@ $.extend($.boom,
 		/**
 		@class
 		@static
-		@name $.boom.util.obj
-		*/
-		obj :
-			/** @lends $.boom.util.obj */
-			{
-			/**
-			searches for a value in a given object
-			*/
-			search : function(obj, val, exactMatch, p, r) {
-
-				exactMatch = exactMatch === undefined ? true : exactMatch;
-
-				var results = r || [];
-				var parents = p || '';
-				this.recursion_count = this.recursion_count || 0;
-				this.recursion_count++;
-
-				if (this.recursion_count > 20) {
-					$.boom.log('error', 'too much recursion in $.boom.util.obj.search');
-					return this.results;
-				}
-
-				for (var i in obj) {
-
-					if (exactMatch) (obj[i] === val) && results.push(parents + i);
-					else (new RegExp(val).test(obj[i])) && results.push(parents + i);
-
-					// recursion
-					if (typeof obj[i] == 'object') {
-						results = $.boom.util.obj.search(obj[i], val, exactMatch, i + '.', results);
-					}
-				}
-
-				return results;
-			}
-		},
-
-		/**
-		@class
-		@static
 		@name $.boom.util.url
 		*/
 		url :
