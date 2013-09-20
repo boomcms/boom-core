@@ -680,38 +680,6 @@ $.extend($.boom,
 
 });
 
-$.extend($.boom,
-	/** @lends $.boom */
-	{
-	/**
-	Boom error reporting.
-	@class
-	@static
-	*/
-	errors : {
-
-		/** @function */
-		report : function(msg){
-
-			var data = {
-				location: window.location,
-				browser: navigator.appName + ' ' + navigator.appVersion + ' ' + navigator.platform,
-				useragent: navigator.userAgent,
-				type: '404'
-			};
-
-			$.boom.dialog.open({
-				url: '/get-error-report.php',
-				title: 'Report an error',
-				data: data,
-				callback: function() {
-					alert('clicked send!');
-				}
-			});
-		}
-	}
-});
-
 $.boom.setup();
 
 $.extend($.boom.data, {
