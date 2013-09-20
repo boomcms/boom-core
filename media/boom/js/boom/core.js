@@ -645,34 +645,6 @@ $.extend($.boom,
 
 				return (prefix + id);
 			},
-		},
-
-		/**
-		@class
-		@static
-		@name $.boom.util.url
-		*/
-		url :
-			/** @lends $.boom.util.url */
-			{
-			/** @function */
-			addQueryStringParams: function(data, returnURL){
-
-				returnURL = returnURL || true;
-
-				var match, params = {}, querystring = window.location.search.substring(1), queryparam = /([^&=]+)=([^&]+)/g;
-
-				while (match = queryparam.exec(querystring)) {
-					params[ decodeURIComponent( match[1] ) ] = match[2];
-				}
-
-				$.each(data, function(key, val){
-
-					params[ key ] = val;
-				});
-
-				return !returnURL ? $.param( params ) : top.location.protocol + '//' + top.location.host + top.location.pathname + '?' + $.param( params );
-			}
 		}
 	}
 });
