@@ -164,7 +164,7 @@ $.widget('boom.page', $.boom.page, {
 						{
 							text: 'Add URL',
 							title: 'Add URL',
-							id: 'boom-page-settings-url-add',
+							id: 'b-page-settings-url-add',
 							icons: { primary : 'ui-icon-boom-add' },
 							click: function( event ){
 								$.boom.dialog.open({
