@@ -52,12 +52,6 @@ $.extend({
 			$.boom.loader.init();
 
 			$('#b-topbar').exists(function(){
-
-				this.find('.ui-tabs-nav li').bind('mouseenter mouseleave', function(){
-
-					$( this ).toggleClass( 'ui-state-hover' );
-				});
-
 				if ( $.boom.cookie.contains( 'navmenu' ) ) {
 					$( '#boom-nav' ).hide();
 				}
