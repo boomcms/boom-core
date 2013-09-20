@@ -4,7 +4,7 @@
 return array(
 	'text' 		=>	__('Default text.'),
 	'standfirst'	=>	__('Insert standfirst here. A single sentence of around 15 words introducing the page.'),
-	'bodycopy'	=>	__('Insert the main content of the page here.'),
+	'bodycopy'	=>	"<p>".__('Insert the main content of the page here.')."</p>",
 	'title'		=>	'Default title',
 	'feature'	=>	'Feature a page here.',
 	'linkset'	=>	'',
