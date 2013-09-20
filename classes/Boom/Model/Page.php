@@ -357,7 +357,7 @@ class Boom_Model_Page extends Model_Taggable
 	}
 
 	/**
-	 * Gets the page's description of the page.
+	 * Gets the description of the page.
 	 *
 	 * When a value is set for the description property this will be returned.
 	 * When the description property is null then the standfirst for the current page version will be returned.
@@ -366,13 +366,11 @@ class Boom_Model_Page extends Model_Taggable
 	 */
 	public function description()
 	{
-		// Return the page's description if one has been set.
 		if ($this->description != NULL)
 		{
 			return $this->description;
 		}
 
-		// Return the standfirst for the current version.
 		return Chunk::factory('text', 'standfirst', $this)->text();
 	}
 

@@ -82,8 +82,6 @@ class Boom_Model_Page_Version extends ORM
 	 */
 	public function add_chunk($type, $slotname, array $data)
 	{
-		// Check that the version has been saved.
-		// This has to be done before adding a chunk to a version as we need the PK to be set to create the relationship in the page_chunks tables.
 		if ( ! ($this->_saved OR $this->_loaded))
 		{
 			throw new Exception('You must call Model_Page_Version::save() before calling Model_Page_Version::add_chunk()');
@@ -92,7 +90,6 @@ class Boom_Model_Page_Version extends ORM
 		$data['slotname'] = $slotname;
 		$data['page_vid'] = $this->id;
 
-		// Create the chunk
 		$chunk = ORM::factory('Chunk_' . ucfirst($type))
 			->values($data)
 			->create();
