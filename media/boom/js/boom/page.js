@@ -46,10 +46,6 @@ $.widget( 'boom.page', {
 			})
 			.data('boomPageToolbar');
 
-		this.document.find('body')
-			.contents()
-			.ui();
-
 		$.boom.log('Page init');
 	},
 
