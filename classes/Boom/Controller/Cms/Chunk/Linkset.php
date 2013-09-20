@@ -19,9 +19,7 @@ class Boom_Controller_Cms_Chunk_Linkset extends Boom_Controller_Cms_Chunk
 
 	protected function _preview_chunk()
 	{
-		$model = ORM::factory('Chunk_Linkset')->links($this->request->post('links'));
-
-		$chunk = new Chunk_Linkset($this->page, $model, $this->request->post('slotname'));
+		$chunk = new Chunk_Linkset($this->page, $this->_model, $this->request->post('slotname'));
 		$chunk->template($this->request->post('template'));
 
 		return $chunk->execute();

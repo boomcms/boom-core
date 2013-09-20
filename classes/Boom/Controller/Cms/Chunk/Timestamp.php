@@ -27,8 +27,7 @@ class Boom_Controller_Cms_Chunk_Timestamp extends Boom_Controller_Cms_Chunk
 
 	protected function _preview_chunk()
 	{
-		$model = ORM::factory('Chunk_Timestamp')->values($this->request->post());
-		$chunk = new Chunk_Timestamp($this->page, $model, $this->request->post('slotname'));
+		$chunk = new Chunk_Timestamp($this->page, $this->_model, $this->request->post('slotname'));
 
 		return $chunk->execute();
 	}

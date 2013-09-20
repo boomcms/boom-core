@@ -2,6 +2,7 @@
 
 return array
 (
+	'AutoFormat.AutoParagraph'				=>	TRUE,
 	'AutoFormat.RemoveEmpty.RemoveNbsp'		=>	TRUE,
 	'AutoFormat.RemoveEmpty'				=>	TRUE,
 	'AutoFormat.RemoveSpansWithoutAttributes'	=>	TRUE,

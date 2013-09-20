@@ -12,8 +12,7 @@ class Boom_Controller_Cms_Chunk_Text extends Boom_Controller_Cms_Chunk
 
 	protected function _preview_chunk()
 	{
-		$model = ORM::factory('Chunk_Text')->values($this->request->post());
-		$chunk = new Chunk_Text($this->page, $model, $this->request->post('slotname'));
+		$chunk = new Chunk_Text($this->page, $this->_model, $this->request->post('slotname'));
 
 		if ($template = $this->request->post('template'))
 		{

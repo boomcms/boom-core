@@ -9,6 +9,11 @@
 class Boom_Controller_Cms_Chunk extends Boom_Controller
 {
 	/**
+	 * @var ORM
+	 */
+	protected $_model;
+
+	/**
  	 * @var Model_Page
 	 */
 	protected $page;
@@ -77,7 +82,7 @@ class Boom_Controller_Cms_Chunk extends Boom_Controller
 
 	protected function _save_chunk()
 	{
-		return $this->_new_version->add_chunk($this->_type, $this->request->post('slotname'), $this->request->post());
+		return $this->_model = $this->_new_version->add_chunk($this->_type, $this->request->post('slotname'), $this->request->post());
 	}
 
 	protected function _send_response($html)
