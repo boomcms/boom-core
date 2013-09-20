@@ -34,7 +34,6 @@ class Boom_Controller_Cms_Page_Settings_Save extends Controller_Cms_Page_Setting
 		$this->log("Saved child page settings for page ".$this->page->version()->title." (ID: ".$this->page->id.")");
 
 		$expected = array('children_template_id');
-		$cascade_expected = array('template_id');
 
 		if ($this->allow_advanced)
 		{
@@ -45,10 +44,7 @@ class Boom_Controller_Cms_Page_Settings_Save extends Controller_Cms_Page_Setting
 				'grandchild_template_id'
 			));
 
-			$cascade_expected = array_merge($cascade_expected, array(
-				'visible_in_nav',
-				'visible_in_nav_cms'
-			));
+			$cascade_expected = array('visible_in_nav', 'visible_in_nav_cms');
 		}
 
 		if (isset($post['children_ordering_policy']) AND isset($post['children_ordering_direction']))
@@ -63,6 +59,11 @@ class Boom_Controller_Cms_Page_Settings_Save extends Controller_Cms_Page_Setting
 		if (isset($post['cascade']) AND ! empty($post['cascade']))
 		{
 			$this->page->cascade_to_children($post['cascade'], $cascade_expected);
+		}
+
+		if (isset($post['cascade_template']))
+		{
+			$this->page->set_template_of_children($this->page->children_template_id);
 		}
 	}
 

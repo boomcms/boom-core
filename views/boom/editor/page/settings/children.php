@@ -20,7 +20,7 @@
 
 			<p>
 				<label for="child_template_cascade"><?= __('Update existing child pages') ?></label>
-				<?= Form::checkbox('cascade[]', 'template_id', false, array('id' => 'child_template_cascade')); ?>
+				<?= Form::checkbox('cascade_template', '1', false, array('id' => 'child_template_cascade')); ?>
 			</p>
 
 			<p>

@@ -127,17 +127,6 @@ class Boom_Model_Page extends Model_Taggable
 		// Get the values from the current object.
 		$values = Arr::extract($this->_object, $columns);
 
-		/**
-		 *  The template_id property is a special case.
-		 *
-		 * If the parent has a child_template_id property set then we should use that.
-		 * Otherwise we should use the parent's template_id property.
-		 */
-		if (isset($values['template_id']))
-		{
-			$values['template_id'] = ($this->_object['children_template_id'] == 0)? $this->version()->template_id : $this->_object['children_template_id'];
-		}
-
 		if ( ! empty($values))
 		{
 			// Run the query to update the children of the current page with their new values.
@@ -256,6 +245,30 @@ class Boom_Model_Page extends Model_Taggable
 
 		// Rethrn the current object.
 		return $this;
+	}
+
+	public function set_template_of_children($template_id)
+	{
+		$versions = DB::select(array(DB::expr('max(page_versions.id)'), 'id'))
+			->from('page_versions')
+			->join('page_mptt', 'inner')
+			->on('page_mptt.id', '=', 'page_versions.page_id')
+			->where('page_mptt.scope', '=', $this->mptt->scope)
+			->where('page_mptt.lft', '>', $this->mptt->lft)
+			->where('page_mptt.rgt', '<', $this->mptt->rgt)
+			->group_by('page_versions.page_id')
+			->execute($this->_db)
+			->as_array();
+
+		$versions = Arr::pluck($versions, 'id');
+
+		if ( ! empty($versions))
+		{
+			DB::update('page_versions')
+				->set(array('template_id' => $template_id))
+				->where('id', 'IN', $versions)
+				->execute($this->_db);
+		}
 	}
 
 	/**
