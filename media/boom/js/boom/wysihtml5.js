@@ -178,6 +178,31 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 								self._edit_asset(asset_id);
 							});
 
+					self.instance.on( 'show:dialog', function( options ){
+						switch( options.command ) {
+							case 'createLink' :
+								var href = top.$( '[data-wysihtml5-dialog-field=href]' ).val();
+
+								if ( ! href || href == 'http://') {
+									self._edit_link();
+								}
+								break;
+							case 'insertImage' :
+								var src = top.$( '[data-wysihtml5-dialog-field=src]' ).val();
+								var asset_id = 0;
+								if ( src && src != 'http://' ) {
+									var match = src.match( /asset\/(thumb|view|get_asset)\/([0-9]+)/ );
+
+									asset_id = match ? match[2] : 0;
+								}
+
+								if ( ! asset_id) {
+									self._edit_asset(asset_id);
+								}
+								break;
+						}
+					});
+
 					var resizeIframe = function() {
 						self.instance.composer.iframe.style.height = self.instance.composer.element.scrollHeight + "px";
 					};
