@@ -121,8 +121,8 @@ class Boom_Model_Page_Version extends ORM
 
 			foreach ($chunks as $chunk)
 			{
-				ORM::factory($model)
-					->values($chunk->object())
+				$chunk
+					->copy()
 					->set('page_vid', $this->id)
 					->create();
 			}

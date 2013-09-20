@@ -6,7 +6,7 @@
  * @category	Models
  *
  */
-class Boom_Model_Chunk_Feature extends ORM
+class Boom_Model_Chunk_Feature extends Model_Chunk
 {
 	/**
 	* Properties to create relationships with Kohana's ORM

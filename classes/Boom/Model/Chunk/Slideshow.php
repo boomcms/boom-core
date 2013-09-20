@@ -7,7 +7,7 @@
  * @category	Models
  *
  */
-class Boom_Model_Chunk_Slideshow extends ORM
+class Boom_Model_Chunk_Slideshow extends Model_Chunk
 {
 	/**
 	* Properties to create relationships with Kohana's ORM
@@ -26,6 +26,21 @@ class Boom_Model_Chunk_Slideshow extends ORM
 	);
 
 	protected $_table_name = 'chunk_slideshows';
+
+	public function copy()
+	{
+		$new = parent::copy();
+
+		return $new->slides($this->slides());
+	}
+
+	public function create(Validation $validation = NULL)
+	{
+		parent::create($validation);
+
+		$this->save_slides();
+		return $this;
+	}
 
 	public function filters()
 	{

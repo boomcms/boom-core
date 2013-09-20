@@ -6,7 +6,7 @@
  * @category	Models
  *
  */
-class Boom_Model_Chunk_Linkset extends ORM
+class Boom_Model_Chunk_Linkset extends Model_Chunk
 {
 	protected $_has_many = array(
 		'links' => array('model' => 'Chunk_Linkset_Link', 'foreign_key' => 'chunk_linkset_id'),
@@ -22,6 +22,21 @@ class Boom_Model_Chunk_Linkset extends ORM
 	);
 
 	protected $_table_name = 'chunk_linksets';
+
+	public function copy()
+	{
+		$new = parent::copy();
+
+		return $new->links($this->links());
+	}
+
+	public function create(Validation $validation = NULL)
+	{
+		parent::create($validation);
+
+		$this->save_links();
+		return $this;
+	}
 
 	public function filters()
 	{
