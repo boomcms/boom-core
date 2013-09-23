@@ -203,7 +203,7 @@ class Boom_Chunk_Text extends Chunk
 		if (Editor::instance()->state() != Editor::EDIT)
 		{
 			// Embed youtube videos.
-			$text = preg_replace_callback('~(?<!href=)(?:ht|f)tps?://[^<\s]+(?:/|\b)~i', array($this, 'embed_video'), $text);
+			$text = preg_replace_callback('~(?<!href=[\'\"])(?:ht|f)tps?://[^<\s]+(?:/|\b)~i', array($this, 'embed_video'), $text);
 
 			// If we're displaying a bodycopy link to the images in the text.
 			// We can then use these links to show the images in an larger popup when the link is clicked.
