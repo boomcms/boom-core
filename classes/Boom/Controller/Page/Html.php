@@ -63,6 +63,7 @@ class Boom_Controller_Page_Html extends Controller_Page
 			$models = ORM::factory($class)
 				->where('page_vid', '=', $this->page->version->id)
 				->where('slotname', 'in', $slotnames)
+				->with('target')
 				->find_all();
 
 			$found = array();
