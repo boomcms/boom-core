@@ -109,8 +109,6 @@ class Boom_Model_Chunk_Text extends Model_Chunk
 	{
 		return array(
 			'text' => array(
-				array('rawurldecode'),
-				array('urldecode'),
 				array(
 					function($text)
 					{
