@@ -28,6 +28,6 @@ class Boom_Chunk_Slideshow extends Chunk
 
 	public function has_content()
 	{
-		return count($this->_chunk->slides()) > 0;
+		return $this->_chunk->loaded() AND count($this->_chunk->slides()) > 0;
 	}
 }

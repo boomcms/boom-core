@@ -59,7 +59,7 @@ class Boom_Chunk_Feature extends Chunk
 
 	public function has_content()
 	{
-		return $this->_target_page->loaded();
+		return $this->_chunk->loaded() AND $this->_target_page->loaded();
 	}
 
 	public function target()
