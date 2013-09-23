@@ -7,6 +7,8 @@
  */
 class Boom_Controller_Page_Html extends Controller_Page
 {
+	protected $_chunks = array();
+
 	/**
 	 *
 	 * @var View
@@ -21,11 +23,9 @@ class Boom_Controller_Page_Html extends Controller_Page
 		$template = $this->page->version()->template;
 		$this->template = View::factory($template->filename());
 
-		// Set some variables which need to be used globally in the views.
-		View::bind_global('auth', $this->auth);
-		View::bind_global('editor', $this->editor);
-		View::bind_global('page', $this->page);
-		View::bind_global('request', $this->request);
+		$this->_chunks = $this->_load_chunks($this->_chunks);
+
+		$this->_bind_view_globals();
 	}
 
 	public function action_show() {}
@@ -43,5 +43,35 @@ class Boom_Controller_Page_Html extends Controller_Page
 		}
 
 		$this->response->body($content);
+	}
+
+	protected function _bind_view_globals()
+	{
+		View::bind_global('auth', $this->auth);
+		View::bind_global('cunks', $this->_chunks);
+		View::bind_global('editor', $this->editor);
+		View::bind_global('page', $this->page);
+		View::bind_global('request', $this->request);
+	}
+
+	protected function _load_chunks(array $chunks)
+	{
+		foreach ($chunks as $type => $slotnames)
+		{
+			$type = ucfirst($type);
+			$class = "Chunk_$type";
+
+			$cs = ORM::factory($class)
+				->where('page_vid', '=', $this->page->version->id)
+				->where('slotname', 'in', $slotnames)
+				->find_all();
+
+			foreach ($cs as & $c)
+			{
+				$c = new $class($this->page, $cs, $cs->slotname);
+			}
+		}
+
+		return $chunks;
 	}
 }
