@@ -29,7 +29,7 @@ $.widget('ui.chunkSlideshow', $.ui.chunk,
 	_init : function() {
 		var self = this;
 		//FIXME: slideshows are tied to flexslider
-		var slider = top.$( this.element ).find( '.flexslider' ).data( 'flexslider' );
+		var slider = top.$(this.element).hasClass('flexslider')? top.$(this.element).data( 'flexslider' ) : top.$( this.element ).find( '.flexslider' ).data( 'flexslider' );
 		this.options.slider = slider;
 
 		this._build_ui()
