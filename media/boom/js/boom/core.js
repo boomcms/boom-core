@@ -297,24 +297,6 @@ $.extend($.boom,
 	}
 });
 
-$.fn.sload = function(url, successCallback) {
-
-	if (!this.length) return this;
-
-	var self = this;
-
-	return $.ajax({
-		type: 'GET',
-		url: url,
-		success: function(data, status, xhr){
-
-			self.html( data );
-
-			successCallback && successCallback.apply(self, [ xhr, status ]);
-		}
-	});
-};
-
 $.ajaxSetup({
 
 	/**
