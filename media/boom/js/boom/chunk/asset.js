@@ -19,8 +19,6 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 		self.elements = this._get_elements();
 		self.asset = this._get_asset_details();
 
-		console.log(self.elements);
-
 		this.originals = this.element.children().clone(true);
 
 		if (self.elements.caption.length || self.elements.link.length) {
