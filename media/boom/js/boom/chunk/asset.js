@@ -190,7 +190,7 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 			asset_id : this.element.attr('data-boom-target'),
 			title : null,
 			caption : this.elements.caption.text(),
-			url : this.elements.link.attr('href'),
+			url : this.elements.link.attr('href')
 		};
 
 		return asset;
