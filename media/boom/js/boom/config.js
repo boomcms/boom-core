@@ -323,28 +323,6 @@ window.boomConfig =
 	@static
 	@class
 	*/
-	person: {
-		/**
-		@type number
-		@default 0
-		*/
-		rid: 0,
-		/**
-		@type string
-		@default 'Default'
-		*/
-		firstname: 'Default',
-		/**
-		@type string
-		@default ''
-		*/
-		lastname: ''
-	},
-
-	/**
-	@static
-	@class
-	*/
 	browser: {
 		/**
 		@type string
