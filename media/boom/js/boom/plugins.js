@@ -300,14 +300,13 @@ boom.plugins.js
 		opts = $.extend({
 			tabs: $.boom.config.tabs,
 			button: $.boom.config.button,
-			selectmenu: $.boom.config.selectmenu,
 			tooltip: $.boom.config.tooltip,
 			tree: $.boom.config.tree,
 			sortable: $.boom.config.sortable,
 			datepicker: $.boom.config.datepicker
 		}, opts);
 
-		var elems = '.boom-button, .boom-buttonset, .boom-tabs, .boom-selectmenu, .boom-tooltip, .boom-tree, .boom-sortable, .boom-datepicker, .boom-toggleinput, .boom-splitbutton, .boom-help';
+		var elems = '.boom-button, .boom-buttonset, .boom-tabs, .boom-tooltip, .boom-tree, .boom-sortable, .boom-datepicker, .boom-toggleinput, .boom-splitbutton, .boom-help';
 
 		$.boom.log('Start bind UI events');
 
@@ -343,9 +342,6 @@ boom.plugins.js
 					break;
 					case 'tabs' :
 						elem.tabs(opts.tabs);
-					break;
-					case 'selectmenu' :
-						elem.selectmenu(opts.selectmenu);
 					break;
 					case 'tooltip' : //FIXME: Disalbed because it was breaking the JS. (Rob 2012/03/27).
 						elem.tooltip(opts.tooltip);

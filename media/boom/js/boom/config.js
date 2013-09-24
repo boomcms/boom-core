@@ -244,37 +244,6 @@ window.boomConfig =
 	@static
 	@class
 	*/
-	selectmenu : {
-		/**
-		@type number
-		@default 200
-		*/
-		maxHeight: 200,
-		/**
-		@type string
-		@default 'dropdown'
-		*/
-		style: 'dropdown',
-		/**
-		@type boolean
-		@default true
-		*/
-		transferClasses: true,
-		/**
-		@type array
-		@default [
-			{ find: '.boom-selectmenu-page', icon: 'ui-icon-document' }
-		]
-		*/
-		icons: [
-			{ find: '.boom-selectmenu-page', icon: 'ui-icon-document' }
-		]
-	},
-
-	/**
-	@static
-	@class
-	*/
 	tree : {
 		/**
 		@type boolean
