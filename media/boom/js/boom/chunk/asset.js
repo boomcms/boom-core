@@ -278,7 +278,7 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 				self._cancel();
 			})
 			.on( 'click', 'button.save', function(){
-				self._save_slot();
+				self.insert();
 				self.destroy();
 			})
 			.on( 'click', 'button.link', function() {
