@@ -92,11 +92,6 @@ $.extend($.boom.filter,
 	/** filters */
 	filters: {},
 
-	bind : function( context ) {
-
-		$('.b-items-thumbs .thumb', context ).captions($.boom.config.captions);
-	},
-
 	/**
 	Set search options.
 	@param {Object} options.

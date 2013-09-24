@@ -60,38 +60,6 @@ window.boomConfig =
 	@static
 	@class
 	*/
-	captions : {
-		/**
-		@type string
-		@default '.caption'
-		*/
-		captionTitleSelector: '.caption',
-		/**
-		@type string
-		@default '.caption-overlay'
-		*/
-	captionOverlaySelector: '.caption-overlay',
-		/**
-		@type number
-		@default 0
-		*/
-		showSpeed: 0,
-		/**
-		@type number
-		@default 0
-		*/
-		hideSpeed: 0,
-		/**
-		@type number
-		@default 0.8
-		*/
-		opacityOverlay: 0.8
-	},
-
-	/**
-	@static
-	@class
-	*/
 	editor : {
 		/**
 		@type string
