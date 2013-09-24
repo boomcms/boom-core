@@ -2,21 +2,6 @@
 @fileOverview Helper functions
 */
 /**
-convert html characters to their HTML entities
-@function
-*/
-String.prototype.encodeHTML = function(){
-	return this
-	.replace(/\r\n/g, "<br>")
-	.replace(/\n/g, "<br>")
-	.replace(/\r/g, "<br>")
-	.replace(/<br(\s)?\/?>/g, "<br>")
-	.replace(/(<br>){2,}\s*?(<br>){2,}/g, '<br><br>')
-	.replace(/</g, "&lt;")
-	.replace(/>/g, "&gt;");
-};
-
-/**
 strip all tags, return plain text
 @function
 */
