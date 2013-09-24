@@ -101,7 +101,8 @@ $.extend($.boom.assets,
 					.append($('<div class="center"><div id="b-assets-pagination"></div><div id="b-assets-stats"></div></div>'));
 			},
 			onLoad: function(){
-				browser = $( '#b-assets-manager' ).browser_asset();
+				browser = $('#b-assets-manager').browser_asset();
+
 				var $self = $(this);
 
 				$.when(browser.browser_asset('browse'))
@@ -109,6 +110,8 @@ $.extend($.boom.assets,
 						cleanup();
 						complete.resolve(asset_id);
 						$self.dialog('destroy');
+						browser.remove();
+						
 						$.boom.page.toolbar.minimise();
 					});
 
