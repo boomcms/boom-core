@@ -469,7 +469,7 @@ $.extend($.boom,
 			*/
 			uniqueId : function(prefix){
 
-				prefix = prefix || 'boom-';
+				prefix = prefix || 'b-';
 				var id;
 
 				do {
