@@ -268,6 +268,8 @@ $.widget('ui.chunkSlideshow', $.ui.chunk,
 				var target = $.inArray( $new_slide[0], slides );
 
 				self.options.slider.count++;
+				self.options.slider.update();
+				self.options.slider.flexslider( 'next' );
 			});
 	},
 
@@ -280,9 +282,11 @@ $.widget('ui.chunkSlideshow', $.ui.chunk,
 		$slide
 			.closest( 'li' )
 			.remove();
-		this.options.slider.flexslider( 'next' );
 
+		this.options.slider.flexslider( 'next' );
 		this.options.slider.count--;
+		this.options.slider.update();
+
 		this.edited = true;
 	},
 
