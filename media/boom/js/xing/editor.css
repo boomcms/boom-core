@@ -13,6 +13,7 @@
 	border: 1px solid #000;
 	background: #fff;
 	min-height: 25px;
+	color: black !important;
 }
 span[contenteditable] {
 	display: inline-block;
