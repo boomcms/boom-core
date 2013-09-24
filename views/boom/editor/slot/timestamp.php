@@ -1,4 +1,4 @@
-<div style="margin-bottom: .6em">
+<form style="margin-bottom: .6em" class="b-form-settings narrow">
 	<div class="ui-widget">
 		<div class="ui-state-highlight ui-corner-all">
 			<p style="margin: .5em;">
@@ -9,14 +9,13 @@
 	</div>
 	<br />
 
-	<label>
-		Format
+	<p>
+		<label for="format">Format</label>
 		<?= Form::select('format', $formats, $format, array('id' => 'format')) ?>
-	</label>
+	</p>
 
-	<label>
-		Date / time
-
+	<p>
+		<label for="timestamp">Date / time</label>
 		<input id="timestamp" name="timestamp" class="boom-input boom-datepicker" value="<?= date("d F Y h:m", $timestamp) ?>" />
-	</label>
-</div>
+	</p>
+</form>
