@@ -1,21 +1,6 @@
 /**
 @fileOverview Helper functions
 */
-// String.prototype.trim = function(chars){
-// 	var txt;
-//
-// 	txt = $.trim(this).replace(/&nbsp;/ig, ' ');
-// 	if (chars) {
-// 		while (txt.substr(txt.length-chars.length, chars.length).toLowerCase() == chars.toLowerCase()) { // rtrim
-// 			txt = $.trim(txt.substr(0, (txt.length - chars.length)));
-// 		}
-// 		while(txt.substr(0, chars.length).toLowerCase() == chars.toLowerCase()) { // ltrim
-// 			txt = $.trim(txt.substr(chars.length));
-// 		}
-// 	}
-// 	return $.trim(txt);
-// };
-
 /**
 @function
 */
