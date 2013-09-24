@@ -1,36 +1,9 @@
 /**
 @fileOverview Helper functions
 */
-/**
-@function
-*/
-String.prototype.cleanup = function(node){
-
-	var html = this;
-
-	// remove jquery junk
-	$.removeData(html);
-
-	html = html
-	.replace(/ jquery\d+="\d+"/ig, '') // remove jquery junk
-	.replace(/<a href="[a-zA-Z]{4,5}\W{3}[^\/]+\/replace_[0-9]+">([^<]+)<\/a>/, "$1"); // remove placeholder anchor elements
-
-	// fix broken rel attributes #fuckuinternetexplorer
-	var matches = html.match(/rel=(.*?)[\b>]/g);
-	var re = /"(.*?)"/;
-	if (matches && matches.length && re.test(matches[0])) {
-		// we're going to assume that all other rel attributes are all good
-	} else {
-		// we're going to assume that all other rel attributes are broken
-		html = html.replace(/rel=(.*?)([\b>])/g, 'rel="$1"$2');
-	}
-	
-	return html;
-};
-
 // String.prototype.trim = function(chars){
 // 	var txt;
-// 	
+//
 // 	txt = $.trim(this).replace(/&nbsp;/ig, ' ');
 // 	if (chars) {
 // 		while (txt.substr(txt.length-chars.length, chars.length).toLowerCase() == chars.toLowerCase()) { // rtrim
@@ -100,12 +73,12 @@ convert 8 bit characters to their 7 bit equivalent
 String.prototype.safeEscape = function(){
 	var str = $.trim(this),
 	replacements = {
-		"\xa0": " ", "\xb7": "*", "\u2018": "'", "\u2019": "'",	"\u2026": "...", "\u2002": " ", "\u2003": " ", "\u2009": " ", "\u2012": "-", "\u2013": "-", "\u2014": "-", "\u2015": "-", 
+		"\xa0": " ", "\xb7": "*", "\u2018": "'", "\u2019": "'",	"\u2026": "...", "\u2002": " ", "\u2003": " ", "\u2009": " ", "\u2012": "-", "\u2013": "-", "\u2014": "-", "\u2015": "-",
 		"\u201c": '"',	// smart quote
 		"\u201d": '"'	// smart quote
 	};
 
-	for (key in replacements) 
+	for (key in replacements)
 		str = str.replace(new RegExp(key, 'g'), replacements[key]);
 
 	return encodeURIComponent(str).replace(/%20/g, '+').toString();
