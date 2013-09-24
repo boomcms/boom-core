@@ -21,33 +21,6 @@ window.boomConfig =
 	@static
 	@class
 	*/
-	cookie : {
-		/**
-		@type string
-		@default 'boomcookie'
-		*/
-		name: 'boomcookie',
-		/**
-		@type string
-		@default ','
-		*/
-		delimiter: ',',
-		/**
-		@type number
-		@default 1
-		*/
-		expiredays: 1,
-		/**
-		@type string
-		@default '/'
-		*/
-		path: '/'
-	},
-
-	/**
-	@static
-	@class
-	*/
 	logs : {
 		/**
 		@type boolean
