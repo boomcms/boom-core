@@ -392,6 +392,7 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 			})
 			.on( 'click', '#b-button-multiaction-edit', function(){
 				$.boom.history.load('asset/' + self.selected.join('-'));
+				$.boom.asset.bind();
 			})
 			.on( 'click', '#b-button-multiaction-download', function(){
 				var url = '/cms/assets/download?assets=' + self.selected.join(',');
