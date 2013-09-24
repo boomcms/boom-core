@@ -41,15 +41,11 @@ $.extend({
 			( options ) && $.extend( this.config, options );
 			this.options = options;
 
-			var classes = $.boom.data.boomInit;
+			var classes = ['history', 'loader'];
 
-			if ( $.isArray(classes) ) {
-				$.each(classes, function(){
-					$.boom[this].init();
-				});
-			}
-
-			$.boom.loader.init();
+			$.each(classes, function(){
+				$.boom[this].init();
+			});
 
 			$('#b-topbar').exists(function(){
 				var user_menu = {
@@ -550,7 +546,3 @@ $.extend($.boom,
 });
 
 $.boom.setup();
-
-$.extend($.boom.data, {
-	boomInit: ['cookie', 'history']
-});
