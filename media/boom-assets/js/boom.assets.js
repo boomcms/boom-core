@@ -141,7 +141,8 @@ $.extend($.boom.asset, $.boom.item,
 	/** @function */
 	bind : function( context ){
 		var self = this;
-		var rids = $.boom.history.getHash().split('/')[1].split('-');
+
+		var rids = ($.boom.history.getHash())? $.boom.history.getHash().split('/')[1].split('-') : [];
 
 		// Make the tag editor work.
 		$('#b-tags', context ).tagger({
