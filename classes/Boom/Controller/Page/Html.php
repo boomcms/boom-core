@@ -73,7 +73,7 @@ class Boom_Controller_Page_Html extends Controller_Page
 				$chunks[$type][$model->slotname] = new $class($this->page, $model, $model->slotname);
 			}
 
-			$not_found = array_diff($chunks[$type], $found);
+			$not_found = array_diff(array_keys($chunks[$type]), $found);
 
 			foreach ($not_found as $slotname)
 			{
