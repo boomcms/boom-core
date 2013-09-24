@@ -140,12 +140,10 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 	*/
 	_destroy : function() {
 		$.boom.log( 'exiting asset editor' );
-		var self = this;
 
 		this._remove_ui();
 
 		$.ui.chunk.prototype._destroy.call( this );
-
 	},
 
 	/**
