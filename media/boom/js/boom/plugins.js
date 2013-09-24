@@ -18,11 +18,11 @@ boom.plugins.js
 	*/
 	$.fn.exists = function( func ){
 
-		return 	( this.length && func && func.apply( this ) ) ? 
-			this : 
+		return 	( this.length && func && func.apply( this ) ) ?
+			this :
 			( !func ? this.length : this );
 	};
-	
+
 	/**
 	@function
 	*/
@@ -45,7 +45,7 @@ boom.plugins.js
 	@function
 	*/
 	$.size = function(obj){
-		
+
 		if ( typeof obj === 'object' ) {
 
 			var size = 0, key;
@@ -81,7 +81,7 @@ boom.plugins.js
 			menuPosition: 'right',
 			menuStack: 'bottom'
 		},
-		
+
 		/**
 		@function
 		*/
@@ -91,8 +91,8 @@ boom.plugins.js
 
 			this.elements = {
 				button: this.element.find( 'button:eq(0)' ).addClass('ui-button-text-icon').button(),
-				hitarea: !this.options.split ? 
-					this.element.find( 'button:eq(0)' ) : 
+				hitarea: !this.options.split ?
+					this.element.find( 'button:eq(0)' ) :
 					this.element.find( 'button:eq(1)' ).button({
 						text: false,
 						icons: {
@@ -105,7 +105,7 @@ boom.plugins.js
 			this.element
 				.addClass( this.widgetBaseClass )
 				.buttonset();
-			
+
 			this.elements.hitarea
 				.attr('role', 'hitarea')
 				.addClass( this.widgetFullName + '-hitarea');
@@ -141,27 +141,27 @@ boom.plugins.js
 		*/
 		_addItem: function( label, data, callback, menustack ) {
 
-			var self = this, 
+			var self = this,
 
-			anchor = 
+			anchor =
 				$( '<a />')
 				.attr('href', '#')
 				.bind('itemclick', function(event){
-	
+
 					self.elements.hitarea.removeClass('ui-state-hover').blur();
-					
+
 					self.elements.button.removeClass('ui-state-hover').blur();
-					
+
 					( callback ) && callback.apply( this, [ event, data ] );
-	
+
 					self._trigger('itemclick', event);
 				})
 				.bind( 'mousedown click', function(){
-	
+
 					$(this).trigger('itemclick');
 				})
 				.bind('mouseenter mouseleave', function(){
-	
+
 					$(this).toggleClass('ui-state-hover');
 				})
 				.addClass('ui-corner-all')
@@ -173,7 +173,7 @@ boom.plugins.js
 				.addClass( 'ui-helper-reset' )
 				[ menustack == 'bottom' ? 'appendTo' : 'prependTo' ]( this.elements.menu );
 		},
-		
+
 		/**
 		@function
 		*/
@@ -188,16 +188,16 @@ boom.plugins.js
 
 					self.elements.menu.find('a:first').trigger('itemclick');
 				} else {
-				
+
 					self._trigger('buttonclick', event);
 				}
 			});
-			
+
 			this.elements.hitarea
 			.bind( 'click', function(){
 
 				$(this).focus();
-				
+
 				self.open();
 			})
 			.bind( 'blur', function(){
@@ -208,7 +208,7 @@ boom.plugins.js
 			this.elements.menu
 			.bind('show', function(){
 
-				var hitarea = self.elements.hitarea, menu = self.elements.menu, 
+				var hitarea = self.elements.hitarea, menu = self.elements.menu,
 					offset = hitarea.offset(), width = self.options.width, position = self.options.menuPosition;
 
 				if ( width == 'inherit' ) {
@@ -221,7 +221,7 @@ boom.plugins.js
 				}
 
 				var left = ( position == 'right' ) ?
-						self.elements.button.offset().left : 
+						self.elements.button.offset().left :
 						( offset.left + hitarea.outerWidth() ) - menu.outerWidth();
 
 				menu
@@ -230,22 +230,22 @@ boom.plugins.js
 					left: left,
 					top: offset.top + hitarea.outerHeight()
 				});
-				
+
 				$.boom.page && $.boom.page.toolbar.maximise();
 			})
 			.bind('hide', function(){
 
 				$(this).css({ left: -9999 });
-				
+
 				$.boom.page && $.boom.page.toolbar.minimise();
 			});
 		},
-		
+
 		/**
 		@function
 		*/
 		open : function(){
-			
+
 			this.elements.menu.trigger('show');
 
 			this._trigger('open');
@@ -255,7 +255,7 @@ boom.plugins.js
 		@function
 		*/
 		close : function(){
-			
+
 			this.elements.menu.trigger('hide');
 
 			this._trigger('close');
@@ -275,7 +275,7 @@ boom.plugins.js
 		@function
 		*/
 		items: function(){
-			
+
 			return this.elements.menu.children();
 		},
 
@@ -296,7 +296,7 @@ boom.plugins.js
 	@function
 	*/
 	$.fn.ui = function(opts){
-		
+
 		opts = $.extend({
 			tabs: $.boom.config.tabs,
 			button: $.boom.config.button,
@@ -304,7 +304,7 @@ boom.plugins.js
 			tooltip: $.boom.config.tooltip,
 			tree: $.boom.config.tree,
 			sortable: $.boom.config.sortable,
-			datepicker: $.boom.config.datepicker	
+			datepicker: $.boom.config.datepicker
 		}, opts);
 
 		var elems = '.boom-button, .boom-buttonset, .boom-tabs, .boom-selectmenu, .boom-tooltip, .boom-tree, .boom-sortable, .boom-datepicker, .boom-toggleinput, .boom-splitbutton, .boom-help';
@@ -318,7 +318,7 @@ boom.plugins.js
 			$.each(this.className.split(' '), function(){
 
 				if (/boom/.test(this)) {
-					
+
 					types.push(this.replace(/boom-/, ''));
 				}
 			});
@@ -328,10 +328,10 @@ boom.plugins.js
 					case 'button' :
 						var primary = elem.attr( 'data-icon' );
 						var secondary = elem.attr( 'data-icon-secondary' );
-						opts.button = $.extend( opts.button, { 
+						opts.button = $.extend( opts.button, {
 							icons: { primary: primary, secondary: secondary },
 							text: false,
-							label: $.trim( elem.text() ) 
+							label: $.trim( elem.text() )
 						});
 						elem.button(opts.button);
 					break;
@@ -358,7 +358,7 @@ boom.plugins.js
 					case 'toggleinput' :
 						elem.toggleField();
 					break;
-					case 'sortable' : 
+					case 'sortable' :
 						elem.sortable($.extend({}, opts.sortable, {
 							axis: (/sortable-y/.test(elem[0].className) ? 'y' : 'x')
 						}));
@@ -415,7 +415,7 @@ boom.plugins.js
 				}
 			});
 		});
-	}; 
+	};
 
 	/**
 	@function
@@ -426,7 +426,7 @@ boom.plugins.js
 
 			if (this.nodeName != 'INPUT') return true;
 
-			var $field = 
+			var $field =
 				$(this)
 				.data('val', this.value)
 				.focus(function(){
@@ -442,13 +442,13 @@ boom.plugins.js
 	@function
 	*/
 	$.fn.pageSortable = function(opts){
-	
+
 		return this.each(function(){
 
 			var config = $.extend({}, $.boom.config.sortable, {
 				axis: (/sortable-y/.test(this.className) ? 'y' : 'x')
 			});
-						
+
 			$(this).sortable(config);
 		});
 	};
@@ -539,13 +539,13 @@ boom.plugins.js
 		@function
 		*/
 		_create : function(){
-			
+
 			$.boom.log( 'tree create' );
 
 			if (this.element[0].nodeName != 'UL') return;
-			
+
 			var self = this;
-			
+
 			this.amountChecked = 0;
 
 			this.elements = {};
@@ -555,8 +555,8 @@ boom.plugins.js
 					iconDefault = this.replace(/boom-tree-icon-/, '');
 				};
 			});
-			
-			var $container = 
+
+			var $container =
 				$('<div />')
 				.addClass('boom-tree-container ui-widget')
 				.width(this.options.width)
@@ -567,7 +567,7 @@ boom.plugins.js
 			}
 
 			if (this.options.border) $container.addClass('ui-state-active ui-corner-all');
-			
+
 			this.element.wrap($container);
 
 		},
@@ -576,43 +576,40 @@ boom.plugins.js
 		@function
 		*/
 		_init : function(){
-			
+
 			$.boom.log( 'tree init' );
 
 			var self = this;
 
-			this.cookieItems = !this.options.useCookie ? [] : $.boom.cookie.get(this.options.cookieName).split($.boom.config.cookie.delimiter);
-
-			
 			var render_children = function( $ul ){
-				
+
 				var children = $ul.children( 'li' ).toArray();
 				var i;
-				
+
 				for ( i in children ) {
 					$this = $( children[i] );
 					self._add_item( $this );
 					render_children( $this.children( 'ul' ) );
 				}
 			};
-			
+
 			if ( this.element.is( 'ul' ) ) {
 				render_children( this.element );
 			} else {
 				render_children( this.element.children( 'ul' ) );
 			}
 		},
-		
+
 		/**
 		@function
 		*/
 		_set_icon : function( $item ) {
-			
+
 			var self = this;
 			var defaultIcon;
-			
+
 			return;
-			
+
 			if ( $item.find('> a:first').hasClass( self.options.anchorActive ) && self.options.toggleSelected ) {
 
 				defaultIcon = self.options.iconToggleChecked;
@@ -629,17 +626,17 @@ boom.plugins.js
 					.addClass('ui-icon ' + defaultIcon)
 					.prependTo( $item );
 			}
-			
+
 			return self;
 		},
-		
+
 		/**
 		@function
 		*/
 		_set_toggle : function( $item ) {
-			
+
 			var self = this;
-			
+
 			$('<span />')
 				.addClass('boom-tree-hitarea ui-icon')
 				.bind('boom-tree.toggle', function(){
@@ -647,7 +644,7 @@ boom.plugins.js
 				})
 				.click(function(event){
 					self._trigger('toggle', event, { hitarea: this });
-	
+
 					$( this ).trigger( 'boom-tree.toggle' );
 				})
 				.hover(
@@ -659,18 +656,18 @@ boom.plugins.js
 					}
 				)
 				.prependTo( $item );
-				
+
 				return self;
 		},
-		
+
 		/**
 		@function
 		*/
 		_set_edit : function( $item ) {
-			
+
 			var self = this;
 			var re = /tree-remove/;
-			
+
 			if (self.options.showEdit === true || (self.options.showEdit === 'auto' && re.test(self.element[0].className)))
 			{
 				$('<span />', {
@@ -690,18 +687,18 @@ boom.plugins.js
 					})
 					.prependTo( $item );
 			}
-			
+
 			return self;
 		},
-		
+
 		/**
 		@function
 		*/
 		_set_remove : function( $item ) {
-			
+
 			var self = this;
 			var re = /tree-edit/;
-			
+
 			if (self.options.showRemove === true || (self.options.showRemove === 'auto' && re.test(self.element[0].className)))
 			{
 				$('<span />', {
@@ -723,24 +720,24 @@ boom.plugins.js
 					})
 					.prependTo( $item );
 			}
-			
+
 			return self;
-		}, 
-		
+		},
+
 		/**
 		@function
 		*/
 		_bind_events : function( $item ) {
-			
+
 			var self = this;
-			
-			var anchor = 
+
+			var anchor =
 			$item
 				.addClass('ui-helper-clearfix ui-state-default')
 				.find('> a')
 				.off('click hover')
 				.on( 'click', function(event){
-				
+
 					var tag = this.href.match(/\/([0-9]+)$/);
 
 					event.data = {
@@ -751,12 +748,12 @@ boom.plugins.js
 
 					if (self.options.preventDefault) {
 
-						event.preventDefault(); 
+						event.preventDefault();
 
 					}
 
 					if (self.options.onClick) {
-						
+
 						self.options.onClick.call(this, event);
 					}
 
@@ -767,7 +764,7 @@ boom.plugins.js
 						self.amountChecked--;
 
 						if (self.options.toggleSelected) {
-							
+
 							$.boom.log( 'removing active class' );
 
 							anchor
@@ -803,15 +800,15 @@ boom.plugins.js
 						$(this).removeClass('ui-state-hover');
 					}
 				);
-			
+
 			return self;
 		},
-		
+
 		/**
 		@function
 		*/
 		_add_item : function( $item ) {
-			
+
 			var self = this;
 
 			self._set_icon( $item );
@@ -819,12 +816,12 @@ boom.plugins.js
 			if ( !$item.find( '.boom-tree-hitarea' ).length) {
 
 				self._set_toggle( $item );
-				
+
 			}
 
 			if (!$item.find('.' + self.options.iconRemove).length) {
 
-				self._set_edit( $item ); 
+				self._set_edit( $item );
 				self._set_remove( $item );
 
 			}
@@ -832,27 +829,27 @@ boom.plugins.js
 			self._bind_events( $item );
 
 			self.toggle($item, false);
-			
+
 			return self;
 		},
-		
+
 		/**
 		@function
 		*/
 		toggle: function( $item, toggle ) {
-			
+
 			var self = this;
 			var children_ready = $.Deferred();
 			var id = $item.find('> a').attr('rel');
 			var childList = $item.find( '> ul' );
-			
+
 			if ( childList.length == 0 && self.options.onToggle) {
-				
+
 				//FIXME: hack to pass page IDs around
 				self.options.onToggle
 					.call(this, id)
 					.done( function( data ){
-						
+
 						if ( $item.find( '> ul' ).length == 0 ) {
 							$item
 								.append( data.childList )
@@ -880,8 +877,8 @@ boom.plugins.js
 			} else {
 				self._toggle( $item, toggle, childList);
 			}
-			
-			
+
+
 		},
 
 		/**
@@ -890,21 +887,11 @@ boom.plugins.js
 		_toggle : function( $item, toggle, childList ){
 			toggle = (toggle === undefined) ? true : false;
 
-			var hitarea = $item.find('> .boom-tree-hitarea'); 
+			var hitarea = $item.find('> .boom-tree-hitarea');
 			var id = $item.find('> a').attr('rel');
 
 			if (toggle) {
-
 				childList.toggle();
-
-			} else if (this.options.useCookie) {
-
-				var rel = $item.find('> a').attr('rel');
-
-				if (rel && $.inArray(rel, this.cookieItems) !== -1) {
-
-					childList.show();
-				}
 			}
 
 			if (!childList.length) {
@@ -912,23 +899,11 @@ boom.plugins.js
 				hitarea.addClass(this.options.iconHitareaPlaceholder);
 
 			} else if (childList.is(':hidden')) {
-
-				if (this.options.useCookie) {
-
-					$.boom.cookie.remove(id, this.options.cookieName);
-				}
-
 				hitarea
 					.addClass(this.options.iconHitareaClosed)
 					.removeClass(this.options.iconHitareaOpen);
-				
+
 			} else {
-
-				if (this.options.useCookie) {
-
-					$.boom.cookie.add(id, this.options.cookieName);
-				}
-
 				hitarea
 					.addClass(this.options.iconHitareaOpen)
 					.removeClass(this.options.iconHitareaClosed);
@@ -939,15 +914,15 @@ boom.plugins.js
 		@function
 		*/
 		add_item : function( item, parent ){
-			
+
 			var self = this;
-			
+
 			parent = (parent === undefined) ? self.element : parent;
-			
+
 			self._add_item( $( item ).appendTo( parent ) );
-			
+
 		},
-		
+
 		/**
 		@function
 		*/

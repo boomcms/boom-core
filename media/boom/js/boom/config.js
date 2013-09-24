@@ -374,11 +374,6 @@ window.boomConfig =
 		maxSelected: -1,
 		/**
 		@type boolean
-		@default false
-		*/
-		useCookie: false,
-		/**
-		@type boolean
 		@default true
 		*/
 		toggleSelected: true,
