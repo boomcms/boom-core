@@ -111,7 +111,7 @@ $.extend($.boom.assets,
 						complete.resolve(asset_id);
 						$self.dialog('destroy');
 						browser.remove();
-						
+
 						$.boom.page.toolbar.minimise();
 					});
 
@@ -444,6 +444,7 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 					})
 					.done(function(data) {
 						$.boom.history.refresh();
+						$.boom.growl.show('Asset updated');
 					});
 			});
 
