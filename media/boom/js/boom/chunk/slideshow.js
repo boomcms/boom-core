@@ -224,8 +224,7 @@ $.widget('ui.chunkSlideshow', $.ui.chunk,
 		})
 		.always( function() {
 			$.boom.log( 'slide asset cleanup' );
-		})
-		;
+		});
 
 		return $.boom.assets.picker( {
 			asset_rid : rid,
@@ -240,9 +239,7 @@ $.widget('ui.chunkSlideshow', $.ui.chunk,
 			}
 		})
 		.fail( function() {
-
 			self._remove_slide( $slide );
-
 		})
 		.always( function(){
 			$.boom.history.load( '' );
