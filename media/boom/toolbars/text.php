@@ -43,7 +43,7 @@
 			<input data-wysihtml5-dialog-field="href" value="http://" disabled="disabled">
 		</label>
 
-		<button id="b-editor-link"><span class="b-edit"></span></button>
+		<a href="#" id="b-editor-link">edit</a>
 	</div>
 
 	<div data-wysihtml5-dialog="insertImage" style="display: none">
@@ -52,6 +52,6 @@
 			<input data-wysihtml5-dialog-field="src" value="http://" disabled="disabled">
 		</label>
 
-		<button id="b-editor-asset"><span class="b-edit"></span></button>
+		<a href="#" id="b-editor-asset">edit</a>
 	</div>
 </div>
