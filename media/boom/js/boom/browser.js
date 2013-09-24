@@ -297,7 +297,6 @@ $.widget( 'boom.browser',
 							$.boom.loader.hide();
 
 							self.showContent(response);
-							instance.bind( self.main_panel );
 						});
 				}
 			},
