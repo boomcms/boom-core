@@ -2,17 +2,6 @@
 @fileOverview Helper functions
 */
 /**
-strip all tags, return plain text
-@function
-*/
-String.prototype.text = function(){
-	var str = this;
-	try { str = decodeURIComponent(str); } catch(e) {}
-	str = str && str.length ? $.trim(str.replace(/<\S[^><]*>/g, '')) : '';
-	return str;
-};
-
-/**
 convert 8 bit characters to their 7 bit equivalent
 @function
 */
