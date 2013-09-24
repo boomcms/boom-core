@@ -48,18 +48,6 @@ window.boomConfig =
 	@static
 	@class
 	*/
-	errors : {
-		/**
-		@type boolean
-		@default true
-		*/
-		report: true
-	},
-
-	/**
-	@static
-	@class
-	*/
 	history : {
 		/**
 		@type number
