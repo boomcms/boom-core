@@ -107,20 +107,6 @@ $.extend($.boom,
 	/** @lends $.boom */
 	{
 	/**
-	Boom data storage.
-	@class
-	*/
-	data: {
-		benchmarks: {
-			boom_setup_before_classes_load: (new Date).getTime()
-		}
-	}
-});
-
-$.extend($.boom,
-	/** @lends $.boom */
-	{
-	/**
 	@class
 	*/
 	editor: {
