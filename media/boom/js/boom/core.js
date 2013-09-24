@@ -43,9 +43,9 @@ $.extend({
 
 			var classes = ['history', 'loader'];
 
-			$.each(classes, function(){
-				$.boom[this].init();
-			});
+			for (i in classes) {
+				$.boom[classes[i]].init();
+			}
 
 			$('#b-topbar').exists(function(){
 				var user_menu = {
