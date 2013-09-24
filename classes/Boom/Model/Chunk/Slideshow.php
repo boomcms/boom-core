@@ -63,6 +63,7 @@ class Boom_Model_Chunk_Slideshow extends Model_Chunk
 			{
 				$this->_slides = $this
 					->slides
+					->with('asset')
 					->find_all()
 					->as_array();
 			}
