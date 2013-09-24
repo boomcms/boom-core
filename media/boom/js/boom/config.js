@@ -485,5 +485,4 @@ window.boomConfig =
 
 		limitMultiFileUploads: 5,
 	}
-
 };
