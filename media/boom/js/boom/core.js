@@ -52,14 +52,6 @@ $.extend({
 			$.boom.loader.init();
 
 			$('#b-topbar').exists(function(){
-				if ( $.boom.cookie.contains( 'navmenu' ) ) {
-					$( '#boom-nav' ).hide();
-				}
-				$( '#boom-page-menu' ).on( 'click', function(){
-					$( '#boom-nav' ).toggle();
-					$.boom.cookie.toggle( 'navmenu');
-				});
-
 				var user_menu = {
 					"Profile" : function(){
 						var url = '/cms/profile';

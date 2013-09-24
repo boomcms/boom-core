@@ -5,9 +5,6 @@
 	<?= Menu::factory('boom')->sort('priority') ?>
 
 	<div id="b-topbar-useractions">
-		<button id="boom-page-menu" class="ui-button boom-button" data-icon="ui-icon-boom-menu">
-				<?=__('Menu')?>
-		</button>
 		<span id="boom-page-user-menu">
 			<button id="boom-page-user" class="ui-button boom-button" data-icon="ui-icon-boom-person">
 				<?=__('Profile')?>
