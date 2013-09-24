@@ -4,18 +4,6 @@
 /**
 @function
 */
-String.prototype.addslashes = function(){
-	var str = this;
-	str = str.replace(/\'/g,'\\\'');
-	str = str.replace(/\"/g,'\\"');
-	str = str.replace(/\\/g,'\\\\');
-	str = str.replace(/\0/g,'\\0');
-	return str;
-};
-
-/**
-@function
-*/
 String.prototype.stripslashes = function(){
 	var str = this;
 	str = str.replace(/\\'/g,'\'');
