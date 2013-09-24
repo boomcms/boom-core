@@ -254,12 +254,10 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 	options: $.boom.config.browser_asset,
 
 	_create : function(){
-		var self = this;
-
 		$.boom.log( 'asset browser init' );
 
-		self.item = $.boom.asset;
-		self.tag = $.boom.filter_assets;
+		this.item = $.boom.asset;
+		this.tag = $.boom.filter_assets;
 
 		$.boom.browser.prototype._create.call( this );
 	},
