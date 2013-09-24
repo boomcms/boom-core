@@ -204,7 +204,7 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 
 		var self = this;
 
-		if (self.edited ) {
+		if (self.edited) {
 
 			$.boom.dialog.confirm(
 				'Cancel changes',
