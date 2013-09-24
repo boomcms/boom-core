@@ -430,6 +430,18 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 			.delegate('.b-assets-back', 'click', function(event) {
 				event.preventDefault();
 				$.boom.history.load( 'tag/' + $.boom.filter_assets.rid );
+			})
+			.delegate('.b-assets-replace', 'click', function( event ){
+				var rid = $(this).attr('rel');
+
+				self.
+					upload({
+						url: '/cms/assets/upload',
+						formData : [ { csrf: $.boom.options.csrf,  name: 'asset_id', value: rid } ]
+					})
+					.done(function(data) {
+						$.boom.history.refresh();
+					});
 			});
 
 		$('#b-assets-manager')
@@ -455,21 +467,6 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 
 				self.select($this.attr('href').replace('#asset/', ''));
 				$this.parent().parent().toggleClass('selected');
-			});
-
-		$('#b-assets-content')
-			.on( 'click', '.boom-tagmanager-asset-replace ', function( event ){
-
-				var rid = $( this ).attr( 'rel' );
-
-				self.
-					upload({
-						url: '/cms/assets/upload',
-						formData : [ { csrf: $.boom.options.csrf,  name: 'asset_id', value: rid } ]
-					})
-					.done( function( data ){
-						$.boom.history.refresh();
-					});
 			});
 
 		$.when( self.browse() )
