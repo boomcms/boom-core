@@ -259,6 +259,8 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 		this.item = $.boom.asset;
 		this.tag = $.boom.filter_assets;
 
+		this.item.bind();
+
 		$.boom.browser.prototype._create.call( this );
 	},
 
