@@ -323,18 +323,6 @@ window.boomConfig =
 	@static
 	@class
 	*/
-	ajax : {
-		/**
-		@type string
-		@default '/_ajax/show_view/boom/editor/'
-		*/
-		viewBasePath: '/_ajax/show_view/boom/editor/'
-	},
-
-	/**
-	@static
-	@class
-	*/
 	person: {
 		/**
 		@type number
