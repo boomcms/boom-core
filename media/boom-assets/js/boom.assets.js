@@ -219,10 +219,6 @@ $.extend($.boom.asset, $.boom.item,
 					.done( function(){
 						$.boom.history.load( 'tag/0' );
 					});
-			})
-			.on('click', '.b-assets-back', function(event) {
-				event.preventDefault();
-				$.boom.history.load( 'tag/' + $.boom.filter_assets.rid );
 			});
 	}
 });
@@ -423,16 +419,21 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 				});
 			});
 
-		$('body').delegate('#b-assets-pagination a', 'click', function( e ){
-			e.preventDefault();
+		$('body')
+			.delegate('#b-assets-pagination a', 'click', function( e ){
+				e.preventDefault();
 
-			$.get( '/cms/assets/list?' + $( this ).attr( 'href' ).split( '?' )[ 1 ])
-				.done( function( data ){
-					self.showContent(data);
-				});
+				$.get( '/cms/assets/list?' + $( this ).attr( 'href' ).split( '?' )[ 1 ])
+					.done( function( data ){
+						self.showContent(data);
+					});
 
-			return false;
-		});
+				return false;
+			})
+			.delegate('.b-assets-back', 'click', function(event) {
+				event.preventDefault();
+				$.boom.history.load( 'tag/' + $.boom.filter_assets.rid );
+			});
 
 		$('#b-assets-manager')
 			.on( 'change', '#b-assets-sortby', function( event ){
