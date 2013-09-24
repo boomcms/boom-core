@@ -151,10 +151,6 @@ $.extend($.boom.asset, $.boom.item,
 
 		$('.boom-tabs', context ).tabs('option', 'active', 1);
 
-		$.boom.dialog.bind({
-			image: $('.boom-asset-preview',context)
-		});
-
 		$('#boom-button-asset-link-add', context )
 			.on( 'click', function(event){
 				event.preventDefault();
