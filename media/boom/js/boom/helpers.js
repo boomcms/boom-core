@@ -2,18 +2,6 @@
 @fileOverview Helper functions
 */
 /**
-@function
-*/
-String.prototype.stripslashes = function(){
-	var str = this;
-	str = str.replace(/\\'/g,'\'');
-	str = str.replace(/\\"/g,'"');
-	str = str.replace(/\\\\/g,'\\');
-	str = str.replace(/\\0/g,'\0');
-	return str;
-};
-
-/**
 convert html characters to their HTML entities
 @function
 */
