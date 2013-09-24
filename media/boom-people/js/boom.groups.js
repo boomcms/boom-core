@@ -141,37 +141,39 @@ $.widget( 'boom.group_editor',
 
 		$.boom.loader.show();
 
-		return self.options.browser.main_panel
-		.find('.b-items-content')
-		.sload( self.options.base_url + 'edit/' + self.options.id, function(){
+		return $.get(self.options.base_url + 'edit/' + self.options.id)
+			.done(function(data) {
+				self.options.browser.main_panel
+					.find('.b-items-content')
+					.html(data);
 
-			$.boom.loader.hide();
+				$('#b-people-group-save').on('click', function() {
+					$.boom.loader.show();
 
-			$('#b-people-group-save').on('click', function() {
-				$.boom.loader.show();
+					$.post('/cms/groups/save/' + self.options.id, {name : $('#b-people-group-name').val()})
+						.done(function() {
+							$.boom.growl.show('Group successfully saved, reloading.');
 
-				$.post('/cms/groups/save/' + self.options.id, {name : $('#b-people-group-name').val()})
-					.done(function() {
-						$.boom.growl.show('Group successfully saved, reloading.');
+							window.setTimeout(function() {
+								top.location.reload();
+							}, 300);
+						})
+						.fail(function() {
+							$.boom.growl.show('Sorry, an error occurred.');
+						})
+						.always(function() {
+							$.boom.loader.hide();
+						});
+				});
 
-						window.setTimeout(function() {
-							top.location.reload();
-						}, 300);
-					})
-					.fail(function() {
-						$.boom.growl.show('Sorry, an error occurred.');
-					})
-					.always(function() {
-						$.boom.loader.hide();
-					});
+				self.options.browser.main_panel.group_permissions({
+					base_url: self.options.base_url,
+					id: self.options.id
+				});
+			})
+			.always(function() {
+				$.boom.loader.hide();
 			});
-
-			self.options.browser.main_panel.group_permissions({
-				base_url: self.options.base_url,
-				id: self.options.id
-			});
-
-		} );
 	}
 });
 
