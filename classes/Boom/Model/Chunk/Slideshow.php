@@ -102,7 +102,12 @@ class Boom_Model_Chunk_Slideshow extends Model_Chunk
 		foreach ( (array) $this->_slides as $slide)
 		{
 			$slide->chunk_id = $this->id;
-			$slide->save();
+
+			try
+			{
+				$slide->save();
+			}
+			catch (Exception $e) {}
 		}
 
 		return $this;
