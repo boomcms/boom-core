@@ -57,7 +57,7 @@ $.widget('boom.justifyAssets', {
 
 	_setDimensions : function() {
 		this.windowWidth = $(window).width();
-		this.targetRightOffset = (this.windowWidth - (this.$el.offset().left + this.$el.outerWidth(true)));
+		this.targetRightOffset = (this.windowWidth - (this.$el.offset().left + this.$el.innerWidth()));
 	}
 });
 
@@ -86,13 +86,30 @@ function Row() {
 
 		if (endOfRowGap > 0) {
 			var increaseBy = Math.floor(endOfRowGap / this.aspectRatioSum);
+			var remainder = Math.floor(endOfRowGap);
 
 			if (increaseBy <= endOfRowGap) {
 				$.each(this.elements, function(index, $el) {
+					var incWidth = Math.floor(increaseBy * $el.attr('data-aspect-ratio'));
+					remainder -= incWidth;
+
 					$el
 						.height('+=' + increaseBy)
-						.width('+=' + Math.floor(increaseBy * $el.attr('data-aspect-ratio')));
+						.width('+=' + incWidth);
 				});
+			}
+
+			if (remainder > 0) {
+				while (remainder > 0) {
+					$.each(this.elements, function(index, $el) {
+						if (remainder < 1) {
+							return false;
+						}
+
+						$el.css('margin-right', '+=1');
+						remainder -= 1;
+					});
+				}
 			}
 		}
 	};
