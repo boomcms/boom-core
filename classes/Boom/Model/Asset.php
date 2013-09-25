@@ -106,8 +106,6 @@ class Boom_Model_Asset extends Model_Taggable
 	public function delete()
 	{
 		$this->delete_files();
-		$this->delete_from_asset_chunks();
-		$this->delete_from_slideshows();
 
 		return parent::delete();
 	}
@@ -129,20 +127,6 @@ class Boom_Model_Asset extends Model_Taggable
 			->delete_old_versions();
 
 		unlink($this->get_filename());
-	}
-
-	public function delete_from_asset_chunks()
-	{
-		DB::delete('chunk_assets')
-			->where('asset_id', '=', $this->id)
-			->execute($this->_db);
-	}
-
-	public function delete_from_slideshows()
-	{
-		DB::delete('chunk_slideshow_slides')
-			->where('asset_id', '=', $this->id)
-			->execute($this->_db);
 	}
 
 	public function delete_old_versions()
