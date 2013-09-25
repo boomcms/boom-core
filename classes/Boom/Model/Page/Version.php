@@ -183,7 +183,7 @@ class Boom_Model_Page_Version extends ORM
 	{
 	    return array(
 			'title' => array(
-				array('striptags'),
+				array('strip_tags'),
 				array('html_entity_decode'),
 				array('trim'),
 				array(
