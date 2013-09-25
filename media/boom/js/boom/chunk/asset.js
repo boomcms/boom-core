@@ -19,8 +19,6 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 		self.elements = this._get_elements();
 		self.asset = this._get_asset_details();
 
-		console.log(self.elements);
-
 		this.originals = this.element.children().clone(true);
 
 		if (self.elements.caption.length || self.elements.link.length) {
@@ -142,12 +140,10 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 	*/
 	_destroy : function() {
 		$.boom.log( 'exiting asset editor' );
-		var self = this;
 
 		this._remove_ui();
 
 		$.ui.chunk.prototype._destroy.call( this );
-
 	},
 
 	/**
@@ -194,7 +190,7 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 			asset_id : this.element.attr('data-boom-target'),
 			title : null,
 			caption : this.elements.caption.text(),
-			url : this.elements.link.attr('href'),
+			url : this.elements.link.attr('href')
 		};
 
 		return asset;
@@ -208,7 +204,7 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 
 		var self = this;
 
-		if (self.edited ) {
+		if (self.edited) {
 
 			$.boom.dialog.confirm(
 				'Cancel changes',
