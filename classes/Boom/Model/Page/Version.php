@@ -134,9 +134,9 @@ class Boom_Model_Page_Version extends ORM
 			{
 				$subquery->where('slotname', 'not in', $exclude);
 			}
-			
+
 			$count_query = clone $subquery;
-			
+
 			if (count($count_query->execute()))
 			{
 				DB::insert('page_chunks', array('page_vid', 'chunk_id', 'type'))
@@ -183,8 +183,8 @@ class Boom_Model_Page_Version extends ORM
 	{
 	    return array(
 			'title' => array(
+				array('striptags'),
 				array('html_entity_decode'),
-				array('urldecode'),
 				array('trim'),
 				array(
 					function($text)
