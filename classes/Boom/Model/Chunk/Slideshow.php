@@ -31,7 +31,13 @@ class Boom_Model_Chunk_Slideshow extends Model_Chunk
 	{
 		$new = parent::copy();
 
-		return $new->slides($this->slides());
+		$slides = array();
+		foreach ($this->slides() as $s)
+		{
+			$slides[] = $s->object();
+		}
+
+		return $new->slides($slides);
 	}
 
 	public function create(Validation $validation = NULL)

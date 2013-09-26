@@ -27,7 +27,13 @@ class Boom_Model_Chunk_Linkset extends Model_Chunk
 	{
 		$new = parent::copy();
 
-		return $new->links($this->links());
+		$links = array();
+		foreach ($this->links() as $l)
+		{
+			$links[] = $l->object();
+		}
+
+		return $new->links($links);
 	}
 
 	public function create(Validation $validation = NULL)
