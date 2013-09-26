@@ -19,11 +19,11 @@ $.extend($.boom.item,
 	get: function( rid ){
 
 		this.rid = rid;
+		var self = this;
 
 		var url = this.base_url + 'view/' + rid;
 
 		return $.get( url );
-
 	},
 
 	/** @function */
@@ -293,10 +293,10 @@ $.widget( 'boom.browser',
 					return instance
 						.get( rid )
 						.done( function( response ){
-
 							$.boom.loader.hide();
 
 							self.showContent(response);
+							self.item.bind();
 						});
 				}
 			},
