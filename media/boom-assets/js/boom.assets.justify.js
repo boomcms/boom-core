@@ -40,7 +40,7 @@ $.widget('boom.justifyAssets', {
 			prevRow = jQuery.extend({}, currentRow);
 			currentRow.addElementToRow($child);
 
-			if (currentRow.isAtStart() && ! prevRow.isAtStart()) {
+			if (currentRow.isAtStart() && index > 0) {
 				prevRow.expandTo(self.targetRightOffset);
 			}
 
