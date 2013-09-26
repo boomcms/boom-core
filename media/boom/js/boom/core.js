@@ -279,55 +279,6 @@ $.extend($.boom,
 	}
 });
 
-$.ajaxSetup({
-
-	/**
-	Default AJAX error handler.
-	@function
-	*/
-	error: function(xhr, textStatus, error, callback) {
-
-		// data is sent as a serialized string
-
-		var showError = $.boom.config.errors.report, queryvar = /([^&=]+)=([^&]+)/g;
-
-		while (match = queryvar.exec( decodeURIComponent( this.data ) )) {
-
-			if ( match[1] == 'showAjaxError' && match[2] == 0 ) {
-
-				showError = 0;
-			}
-		}
-
-		setTimeout(function(){
-
-			$.boom.loader.hide().hide('dialog');
-
-			if ( showError ) {
-				var errString;
-
-				try
-				{
-					var error = $.parseJSON( xhr.responseText );
-					var errString;
-
-					if (error.type) {
-						errString = error.type + ' : ';
-					}
-					errString = errorString + error.message;
-				}
-				catch (e) {}
-
-				if (errString) {
-					$.boom.dialog.alert('Error', 'Sorry, an unexpected error occured. Please try again.\n\n' + errString );
-				}
-			}
-
-			(callback) && callback.apply();
-		});
-	}
-});
-
 $.extend($.boom,
 	/** @lends $.boom */
 	{
