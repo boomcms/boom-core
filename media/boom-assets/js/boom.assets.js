@@ -555,8 +555,6 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 					message = message + errors[i] + '<br />';
 				}
 
-				console.log(message);
-
 				 $( '#b-assets-upload-container p.message' ).html(message);
 				 $('#b-assets-upload-progress').progressbar('destroy');
 				 $( '#b-assets-upload-cancel' ).hide();
