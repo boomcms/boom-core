@@ -149,33 +149,6 @@ $.extend($.boom.asset, $.boom.item,
 
 		$('.boom-tabs').tabs('option', 'active', 1);
 
-		$('#boom-button-asset-tags-delete').click(function(){
-			var tags = [];
-
-			$( this )
-				.parent()
-				.find( '.boom-tree .ui-state-active' )
-				.each( function(i){
-
-					var tag =
-						$( this )
-							.attr('href')
-							.split( '/' );
-					tags.push( tag[1] );
-				});
-
-			$.boom.loader.show();
-
-			$.post('/cms/assets/remove_tags/' + $('#asset_id').val(), {tags:  tags})
-			.done( function(){
-
-				$.boom.loader.hide();
-				$.boom.history.refresh();
-			});
-
-			return false;
-		});
-
 		$('#b-assets-content')
 			.on('click', '.b-assets-save', function(event) {
 				var data = $(this).closest( 'form' ).serialize();
