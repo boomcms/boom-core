@@ -389,6 +389,9 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 			.on( 'click', '#b-button-multiaction-edit', function(){
 				$.boom.history.load('asset/' + self.selected.join('-'));
 				$.boom.asset.bind();
+
+				self.selected = [];
+				self.toggleButtons();
 			})
 			.on( 'click', '#b-button-multiaction-download', function(){
 				var url = '/cms/assets/download?assets=' + self.selected.join(',');
@@ -502,7 +505,7 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 	@param {Integer} rid RID of the currently selected asset.
 	@returns {Object} promise resolved when the text is set.
 	*/
-	edit: function( rid ){
+	edit: function(rid) {
 		$.boom.history.load('asset/' + rid);
 		this.selected_rid = rid;
 	},
