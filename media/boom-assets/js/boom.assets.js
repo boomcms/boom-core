@@ -286,11 +286,9 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 
 			var uploaded = self
 				.upload({
-					add: function( e, data ){
-
+					start: function(e) {
 						$.boom.dialog.open({
 							url: '/cms/tags/asset/list/0',
-							// cache: true,
 							title: 'Asset tags',
 							width: 440,
 							callback: function(){
@@ -301,8 +299,6 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 								$( '#b-tags' ).tagger_deferred( { tags : tags } );
 							}
 						});
-
-						data.submit();
 					}
 				})
 				.done( function( data ){
