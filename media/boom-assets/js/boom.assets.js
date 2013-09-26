@@ -147,15 +147,9 @@ $.extend($.boom.asset, $.boom.item,
 
 		var rids = ($.boom.history.getHash())? $.boom.history.getHash().split('/')[1].split('-') : [];
 
-		// Make the tag editor work.
-		$('#b-tags', context ).tagger({
-			type: 'asset',
-			id: this.rid
-		});
+		$('.boom-tabs').tabs('option', 'active', 1);
 
-		$('.boom-tabs', context ).tabs('option', 'active', 1);
-
-		$('#boom-button-asset-link-add', context )
+		$('#boom-button-asset-link-add')
 			.on( 'click', function(event){
 				event.preventDefault();
 
@@ -172,7 +166,7 @@ $.extend($.boom.asset, $.boom.item,
 					});
 			});
 
-		$('#boom-button-asset-tags-delete', context ).click(function(){
+		$('#boom-button-asset-tags-delete').click(function(){
 			var tags = [];
 
 			$( this )
@@ -219,6 +213,11 @@ $.extend($.boom.asset, $.boom.item,
 					.done( function(){
 						$.boom.history.load( 'tag/0' );
 					});
+			})
+			.find('#b-tags')
+			.tagger({
+				type: 'asset',
+				id: this.rids
 			});
 	}
 });
@@ -258,8 +257,6 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 
 		this.item = $.boom.asset;
 		this.tag = $.boom.filter_assets;
-
-		this.item.bind();
 
 		$.boom.browser.prototype._create.call( this );
 	},
@@ -387,8 +384,10 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 				});
 			})
 			.on( 'click', '#b-button-multiaction-edit', function(){
-				$.boom.history.load('asset/' + self.selected.join('-'));
-				$.boom.asset.bind();
+				$.boom.history.load('asset/' + self.selected.join('-'))
+					.done(function() {
+						$.boom.asset.bind();
+					});
 
 				self.selected = [];
 				self.toggleButtons();
