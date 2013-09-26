@@ -547,15 +547,17 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 				uploaded.resolve( data );
 			},
 			fail: function(e, data) {
-				message = "There was an error uploading your file";
+				message = 'Errors occurred during file upload:<br />';
 
-				if (data.jqXHR.responseText) {
-					message = message + ': ' + data.jqXHR.responseText;
+				var errors = $.parseJSON(data.jqXHR.responseText);
+
+				for (i in errors) {
+					message = message + errors[i] + '<br />';
 				}
 
-				message = message + '.';
+				console.log(message);
 
-				 $( '#b-assets-upload-container p.message' ).text(message);
+				 $( '#b-assets-upload-container p.message' ).html(message);
 				 $('#b-assets-upload-progress').progressbar('destroy');
 				 $( '#b-assets-upload-cancel' ).hide();
 			 },

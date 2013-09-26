@@ -35,8 +35,9 @@ class Boom_Controller_Cms_Assets_Upload extends Controller_Cms_Assets
 	{
 		$this->_csrf_check();
 
-		// An array of IDs of the new assets, which we'll return to the client when the upload has been processed.
-		$asset_ids = array();
+		$asset_ids = $errors = array();
+
+		$this->response->headers('Content-Type', 'application/json');
 
 		// Values which will be the same for all of the new assets.
 		$common_values = array(
@@ -45,7 +46,6 @@ class Boom_Controller_Cms_Assets_Upload extends Controller_Cms_Assets
 			'last_modified'	=>	$_SERVER['REQUEST_TIME'],
 		);
 
-		// Loop through the file inputs.
 		foreach ( (array) $_FILES as $files)
 		{
 			// Loop through the files uploaded under this input name.
@@ -72,17 +72,21 @@ class Boom_Controller_Cms_Assets_Upload extends Controller_Cms_Assets
 				}
 				else
 				{
-					$this->response
-						->status(500)
-						->body("Asset is of an unsuported type: " . $files['type'][$i]);
-
-					return;
+					$errors[] = "File {$files['name'][$i]} is of an unsuported type: {$files['type'][$i]}";
 				}
 			}
 
-			$this->response
-				->headers('Content-Type', 'application/json')
-				->body(json_encode($asset_ids));
+			if (count($errors))
+			{
+				$this->response
+					->status(500)
+					->body(json_encode($errors));
+			}
+			else
+			{
+				$this->response
+					->body(json_encode($asset_ids));
+			}
 		}
 	}
 
