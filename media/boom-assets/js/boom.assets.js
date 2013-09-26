@@ -149,23 +149,6 @@ $.extend($.boom.asset, $.boom.item,
 
 		$('.boom-tabs').tabs('option', 'active', 1);
 
-		$('#boom-button-asset-link-add')
-			.on( 'click', function(event){
-				event.preventDefault();
-
-				var page_rid = $( '#link_rid' ).val();
-
-				$.boom.links
-					.picker( {
-						page_rid: page_rid
-					})
-					.done( function( link ){
-						$( '#link' ).val( link.url );
-						$( '#link_rid' ).val( link.rid );
-						$( '#link_url' ).val( link.url );
-					});
-			});
-
 		$('#boom-button-asset-tags-delete').click(function(){
 			var tags = [];
 
