@@ -112,9 +112,9 @@ class Boom_Model_Page_Version extends ORM
 			$query = ORM::factory($model)
 				->where('page_vid', '=', $from_version->id);
 
-			if ( ! empty($exclude))
+			if (isset($exclude[$type]) AND ! empty($exclude[$type]))
 			{
-				$query->where('slotname', 'not in', $exclude);
+				$query->where('slotname', 'not in', $exclude[$type]);
 			}
 
 			$chunks = $query->find_all();

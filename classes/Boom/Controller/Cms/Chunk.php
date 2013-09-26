@@ -75,7 +75,7 @@ class Boom_Controller_Cms_Chunk extends Boom_Controller
 
 		$this->_new_version
 			->create()
-			->copy_chunks($old_version, array($this->request->post('slotname')));
+			->copy_chunks($old_version, array($this->_type => array($this->request->post('slotname'))));
 	}
 
 	protected function _preview_chunk() {}
