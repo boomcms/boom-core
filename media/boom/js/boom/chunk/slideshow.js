@@ -283,7 +283,6 @@ $.widget('ui.chunkSlideshow', $.ui.chunk,
 			.closest( 'li' )
 			.remove();
 
-		this.options.slider.flexslider( 'next' );
 		this.options.slider.count--;
 		this.options.slider.update();
 
