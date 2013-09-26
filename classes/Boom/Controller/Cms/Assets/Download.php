@@ -12,13 +12,10 @@
  * @package	BoomCMS
  * @category	Assets
  * @category	Controllers
- * @author	Rob Taylor
- * @copyright	Hoop Associates
  */
 class Boom_Controller_Cms_Assets_Download extends Controller_Cms_Assets
 {
 	/**
-	 * Array of asset IDs to be downloaded.
 	 *
 	 * @var array
 	 */
@@ -31,38 +28,33 @@ class Boom_Controller_Cms_Assets_Download extends Controller_Cms_Assets
 		$this->asset_ids = $this->request->param('asset_ids');
 	}
 
-	/**
-	 * Download a single asset.
-	 *
-	 */
 	public function action_single()
 	{
-		// Get the ID of the asset to download.
-		// When downloading a single asset the asset IDs will still be an array but will only contain one element.
 		$asset_id = $this->asset_ids[0];
 
-		// Load the asset from the database to check that it exists.
 		$this->asset
 			->where('id', '=', $asset_id)
 			->find();
 
-		// If the asset doesn't exist then do a 404.
 		if ( ! $this->asset->loaded())
 		{
 			throw new HTTP_Exception_404;
 		}
 
-		// Asset exists, send the file contents.
 		$this->response
 			->headers(array(
 				"Content-type"			=>	$this->asset->get_mime(),
-				"Content-Disposition"	=>	"attachment; filename=".basename($this->asset->get_filename()),
 				"Pragma"				=>	"no-cache",
 				"Expires"				=>	"0"
 			))
 			->body(
 				readfile($this->asset->get_filename())
 			);
+
+		if ($this->asset->type != Boom_Asset::IMAGE)
+		{
+			$this->response->headers('Content-Disposition', 'attachment; filename='.basename($this->asset->filename));
+		}
 	}
 
 	/**
@@ -92,7 +84,7 @@ class Boom_Controller_Cms_Assets_Download extends Controller_Cms_Assets
 			if ($this->asset->loaded())
 			{
 				// Asset exists add it to the archive.
-				$zip->addFile($this->asset->get_filename(), $this->asset->get_filename());
+				$zip->addFile($this->asset->get_filename(), $this->asset->filename);
 			}
 
 			$this->asset->clear();
@@ -116,4 +108,6 @@ class Boom_Controller_Cms_Assets_Download extends Controller_Cms_Assets
 		// Delete the temporary file.
 		unlink($tmp_filename);
 	}
+
+	public function after() {}
 }
