@@ -31,8 +31,8 @@
 
 		<div class="boom-tabs">
 			<ul>
-				<li><a href="#b-assets-view-attributes<?=$asset->id;?>"><?=__('Attributes')?></a></li>
 				<li><a href="#b-assets-view-info<?=$asset->id;?>"><?=__('Info')?></a></li>
+				<li><a href="#b-assets-view-attributes<?=$asset->id;?>"><?=__('Attributes')?></a></li>
 				<li class="b-dialog-hidden"><a href="#b-assets-view-tags<?=$asset->id;?>"><?=__('Tags')?></a></li>
 				<? if (count($asset->old_files()) > 0): ?>
 					<li class="b-dialog-hidden"><a href="#b-assets-view-files<?=$asset->id;?>"><?=__('Previous Files')?></a></li>

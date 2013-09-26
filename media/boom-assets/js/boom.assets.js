@@ -147,8 +147,6 @@ $.extend($.boom.asset, $.boom.item,
 
 		var rids = ($.boom.history.getHash())? $.boom.history.getHash().split('/')[1].split('-') : [];
 
-		$('.boom-tabs').tabs('option', 'active', 1);
-
 		$('#b-assets-content')
 			.on('click', '.b-assets-save', function(event) {
 				var data = $(this).closest( 'form' ).serialize();
