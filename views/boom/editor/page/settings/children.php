@@ -69,7 +69,7 @@
 
 				<p>
 					<label for="visible_in_nav_cms_cascade"><?= __('Update existing child pages') ?></label>
-					<?= Form::checkbox('cascade', 'visible_in_nav_cms', false, array('id' => 'visible_in_nav_cms_cascade')); ?>
+					<?= Form::checkbox('cascade[]', 'visible_in_nav_cms', false, array('id' => 'visible_in_nav_cms_cascade')); ?>
 				</p>
 
 				<p>
