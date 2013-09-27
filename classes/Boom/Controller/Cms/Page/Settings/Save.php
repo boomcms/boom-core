@@ -58,7 +58,13 @@ class Boom_Controller_Cms_Page_Settings_Save extends Controller_Cms_Page_Setting
 
 		if (isset($post['cascade']) AND ! empty($post['cascade']))
 		{
-			$this->page->cascade_to_children($post['cascade'], $cascade_expected);
+			$cascade = array();
+			foreach ($post['cascade'] as $c)
+			{
+			$cascade[$c] = ($c == 'visible_in_nav' OR $c == 'visible_in_nav_cms')?  $this->page->{"children_$c"} : $this->page->$c;
+			}
+
+			$this->page->cascade_to_children($cascade);
 		}
 
 		if (isset($post['cascade_template']))

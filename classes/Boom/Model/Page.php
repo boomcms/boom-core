@@ -98,15 +98,11 @@ class Boom_Model_Page extends Model_Taggable
 	private $_url;
 
 	/**
-	 * Updates a page's children with the same values as the current page.
-	 *
-	 * @param array $columns
-	 * @param array $expected
 	 *
 	 * @return \Boom_Model_Page
 	 * @throws Exception
 	 */
-	public function cascade_to_children(array $columns, array $expected = array())
+	public function cascade_to_children(array $settings)
 	{
 		// Page must be loaded.
 		if ( ! $this->_loaded)
@@ -114,28 +110,14 @@ class Boom_Model_Page extends Model_Taggable
 			throw new Exception("Cannot call ".__CLASS__."::".__METHOD__." on an unloaded object.");
 		}
 
-		// If no expected columns have been given then use all the columns
-		// Except ID and internal_name which must be unique.
-		if (empty($expected))
+		if ( ! empty($settings))
 		{
-			$expected = array_diff(array_keys($this->_object), array('id', 'internal_name'));
-		}
-
-		// Don't update any columns which we aren't expecting.
-		$columns = array_intersect($expected, $columns);
-
-		// Get the values from the current object.
-		$values = Arr::extract($this->_object, $columns);
-
-		if ( ! empty($values))
-		{
-			// Run the query to update the children of the current page with their new values.
 			DB::update('pages')
 				->where('id', 'IN', DB::select('id')
 					->from('page_mptt')
 					->where('parent_id', '=', $this->id)
 				)
-				->set($values)
+				->set($settings)
 				->execute($this->_db);
 		}
 
