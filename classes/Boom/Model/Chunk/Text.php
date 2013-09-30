@@ -26,33 +26,31 @@ class Boom_Model_Chunk_Text extends Model_Chunk
 	 * @param string $text
 	 * @return string
 	 */
-	public function clean_text($text)
+	public function clean_text()
 	{
 		if ($this->slotname == 'standfirst')
 		{
 			// For standfirsts remove all HTML tags.
-			return strip_tags($text);
+			$this->_object['text'] = strip_tags($this->_object['text']);
 		}
 		elseif (substr($this->slotname, 0, 8) == 'bodycopy')
 		{
 			// For the bodycopy clean the HTML.
 			require_once Kohana::find_file('vendor', 'htmlpurifier/library/HTMLPurifier.auto');
 
-			// Get the HTML Purifier config from a config file.
 			$config = HTMLPurifier_Config::createDefault();
 			$config->loadArray(Kohana::$config->load('htmlpurifier'));
 
-			// Create a purifier object.
 			$purifier = new HTMLPurifier($config);
-
-			// Return the cleaned text.
-			return $purifier->purify($text);
+			$this->_object['text'] = $purifier->purify($this->_object['text']);
 		}
 		else
 		{
 			// For everything else allow b, i , and a tags.
-			return strip_tags($text, '<b><i><a>');
+			$this->_object['text'] = strip_tags($this->_object['text'], '<b><i><a>');
 		}
+
+		return $this;
 	}
 
 	/**
@@ -63,11 +61,6 @@ class Boom_Model_Chunk_Text extends Model_Chunk
 	 */
 	public function create(Validation $validation = NULL)
 	{
-		// Clean the text.
-		// This is done now rather than as a filter as the rules for what is allowed in the text varies with the slotname.
-		// Using a filter we can't be sure that the slotname has been set before the text which could result in the wrong rules being applied.
-		$this->_object['text'] = $this->clean_text($this->_object['text']);
-
 		// Munge links in the text, e.g. to assets.
 		 // This needs to be done after the text is cleaned by HTML Purifier because HTML purifier strips out invalid images.
 		$this->_object['text'] = $this->munge($this->_object['text']);

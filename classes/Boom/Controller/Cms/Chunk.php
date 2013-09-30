@@ -82,7 +82,10 @@ class Boom_Controller_Cms_Chunk extends Boom_Controller
 
 	protected function _save_chunk()
 	{
-		return $this->_model = $this->_new_version->add_chunk($this->_type, $this->request->post('slotname'), $this->request->post());
+		return $this->_model = ORM::factory("Chunk_".ucfirst($this->_type))
+			->values($this->request->post())
+			->set('page_vid', $this->_new_version->id)
+			->create();
 	}
 
 	protected function _send_response($html)
