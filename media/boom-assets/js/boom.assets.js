@@ -103,16 +103,12 @@ $.extend($.boom.assets,
 			onLoad: function(){
 				browser = $('#b-assets-manager').browser_asset();
 
-				var $self = $(this);
-
 				$.when(browser.browser_asset('browse'))
 					.progress(function(asset_id) {
 						cleanup();
 						complete.resolve(asset_id);
-						$self.dialog('destroy');
+						dialog.dialog('destroy');
 						browser.remove();
-
-						$.boom.page.toolbar.minimise();
 					});
 
 				// browser widget pushes a default URL to the history stack.
