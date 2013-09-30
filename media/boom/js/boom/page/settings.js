@@ -372,7 +372,6 @@ $.widget('boom.page', $.boom.page, {
 										asset_rid : $('#boom-featureimage-input').val()
 									})
 									.done( function( rid ){
-
 										$('#boom-featureimage-img').attr( 'src', '/asset/view/' + rid + '/250/80').show();
 										$('#boom-featureimage-input').val( rid );
 										$( '#b-feature-remove' ).button( 'enable' );

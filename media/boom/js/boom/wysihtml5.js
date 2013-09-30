@@ -364,6 +364,8 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 			})
 			.done( function( rid ) {
 				if ( rid > 0 ) {
+					$.boom.page.toolbar.minimise();
+					
 					$.post( '/asset/embed/' + rid )
 					.done( function( response ){
 						img.replaceWith(response);
