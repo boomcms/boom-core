@@ -121,10 +121,13 @@ class Boom_Model_Page_Version extends ORM
 
 			foreach ($chunks as $chunk)
 			{
-				$chunk
+				try
+				{
+					$chunk
 					->copy()
 					->set('page_vid', $this->id)
 					->create();
+				} catch (ORM_Validation_Exception $e) {}
 			}
 		}
 
