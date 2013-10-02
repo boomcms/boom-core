@@ -416,7 +416,7 @@ $.widget('boom.page', $.boom.page, {
 									"Page feature image saved."
 								)
 								.done(function(response) {
-									$.boom.page.setStatus(response);
+									$.boom.page.status.set(response);
 								});
 
 								$.boom.dialog.destroy( this );
