@@ -132,15 +132,12 @@ $.widget('ui.chunkSlideshow', $.ui.chunk,
 					});
 			})
 			.on( 'click', 'button.delete', function( event ) {
-				var slideshow = self.options.slider;
-				var slide = slideshow.slides[ slideshow.currentSlide ];
-
 				$.boom.dialog.confirm(
 					'Delete slide',
 					'Delete this slide?'
 				)
 				.done( function(){
-					self._remove_slide( $( slide ) );
+					self._remove_slide(self.options.slider.currentSlide);
 				});
 			})
 			.on( 'click', 'button.cancel', function(){
@@ -280,13 +277,9 @@ $.widget('ui.chunkSlideshow', $.ui.chunk,
 	@function
 	@param {Object} $slide Slide to remove
 	*/
-	_remove_slide : function( $slide ) {
-
-		$slide
-			.closest( 'li' )
-			.remove();
-
-		this.options.slider.count--;
+	_remove_slide : function(slide) {
+		console.log(slide);
+		this.options.slider.remove(slide);
 		this.options.slider.update();
 
 		this.edited = true;
