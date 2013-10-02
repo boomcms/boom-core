@@ -150,7 +150,7 @@ class Boom_Model_Page extends Model_Taggable
 		{
 			foreach ($authors as & $author)
 			{
-				$author = htmlentities(str_replace('Author/', '', $author->name), ENT_QUOTES);
+				$author = htmlentities(str_ireplace('Author/', '', $author->name), ENT_QUOTES);
 			}
 
 			$authors = implode(", ", $authors);
