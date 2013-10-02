@@ -76,16 +76,18 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 			$.boom.loader.hide();
 		})
 		.done(function(response) {
-			var data = $.parseJSON(response);
+			try {
+				var data = $.parseJSON(response);
+			} catch (e) {};
 
-			if (data.location) {
+			if (typeof data =='object' && data.location) {
 				$.boom.growl.show('Page URL changed, redirecting to new URL.');
 
 				setTimeout(function() {
 					top.location = data.location;
 				}, 1000);
 			} else {
-				$.boom.page.status.set(data.status);
+				$.boom.page.status.set(response);
 			}
 		})
 	},
