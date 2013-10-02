@@ -9,7 +9,7 @@
 		</label>
 
 		<label for="page-visible-from"><?=__('Visible from')?>
-			<input id="page-visible-from" name="visible_from" class="boom-input boom-datepicker" value="<?=date("d F Y H:m", $page->visible_from);?>" />
+			<input id="page-visible-from" name="visible_from" class="boom-input boom-datepicker" value="<?=date("d F Y H:i", $page->visible_from);?>" />
 		</label>
 
 		<label for="b-page-toggle-visible"><?=__('Visible until')?>
