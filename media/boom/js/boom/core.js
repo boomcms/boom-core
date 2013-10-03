@@ -76,11 +76,6 @@ $.extend({
 						split: false
 					});
 			};
-
-			if ( options === undefined || options.ui === undefined || options.ui ) {
-
-				$('body').ui();
-			}
 		}
 	}
 });
