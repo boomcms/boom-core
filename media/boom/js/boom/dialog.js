@@ -345,20 +345,7 @@ $.extend($.boom,
 
 				var icon = $('<span class="ui-icon ui-icon-comment ui-helper-left" />');
 
-				var anchor = $('<a />', {
-					href: '#',
-					title: 'Send a detailed error report to Hoop'
-				})
-				.addClass('boom-tooltip')
-				.click(function(){
-
-					$.boom.errors.report();
-
-					return false;
-
-				}).html('Report this error');
-
-				container.append(icon).append(anchor).appendTo(div);
+				container.append(icon).appendTo(div);
 			}
 
 			this.open({
