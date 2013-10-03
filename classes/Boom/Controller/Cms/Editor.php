@@ -33,15 +33,18 @@ class Boom_Controller_Cms_Editor extends Boom_Controller
 	public function action_toolbar()
 	{
 		$page = new Model_Page($this->request->param('id'));
-		View::bind_global('page', $page);
+		$editable = $this->editor->state_is(Editor::EDIT);
 
-		$toolbar_filename = ($this->editor->state_is(Editor::EDIT))? 'toolbar' : 'toolbar_preview';
+		$this->auth->cache_permissions($page);
 
+		$toolbar_filename = ($editable)? 'toolbar' : 'toolbar_preview';
 		$this->template = View::factory("boom/editor/$toolbar_filename");
 
-		if ($this->editor->state_is(Editor::EDIT))
+		if ($editable)
 		{
 			$this->template->set('readability', $page->readability_score());
 		}
+
+		View::bind_global('page', $page);
 	}
 }

@@ -1,5 +1,3 @@
-<? ob_start() ?>
-
 <?= View::factory('boom/header', array('title' => $page->version()->title)) ?>
 
 <div id="b-topbar">
@@ -108,6 +106,3 @@
 </div>
 
 <?= View::factory('boom/editor/footer', array('register_page' => TRUE)) ?>
-
-<? ob_end_clean(); ?>
-<?= new View('profiler/stats') ?>
