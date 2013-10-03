@@ -31,13 +31,9 @@ $.extend({
 
 		/**
 		Initialise boom classes. Create top bar and UI.
-		@param type FIXME: who knows?
 		@param {Object} options Boom options. Extends and overrides defaults in boom.config.
 		*/
-		init: function( type, options ){
-
-			this.type = type;
-
+		init: function(options) {
 			( options ) && $.extend( this.config, options );
 			this.options = options;
 

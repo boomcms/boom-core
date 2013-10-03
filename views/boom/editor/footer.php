@@ -12,7 +12,7 @@
 		//<![CDATA[
 		(function($){
 
-			$.boom.init(null, {
+			$.boom.init({
 				csrf: '<?= Security::token() ?>',
 			});
 
