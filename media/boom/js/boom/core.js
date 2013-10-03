@@ -47,7 +47,7 @@ $.extend({
 				$.boom[classes[i]].init();
 			}
 
-			$('#b-topbar').exists(function(){
+			if ($('#b-topbar').length) {
 				var user_menu = {
 					"Profile" : function(){
 						var url = '/cms/profile';
@@ -75,7 +75,7 @@ $.extend({
 						menuPosition: 'left',
 						split: false
 					});
-			});
+			};
 
 			if ( options === undefined || options.ui === undefined || options.ui ) {
 

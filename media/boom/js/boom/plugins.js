@@ -12,17 +12,6 @@ boom.plugins.js
 */
 
 (function( $ ){
-
-	/**
-	@function
-	*/
-	$.fn.exists = function( func ){
-
-		return 	( this.length && func && func.apply( this ) ) ?
-			this :
-			( !func ? this.length : this );
-	};
-
 	/**
 	@function
 	*/
