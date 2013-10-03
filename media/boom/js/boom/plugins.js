@@ -770,6 +770,4 @@ boom.plugins.js
 				.unwrap();
 		}
 	});
-
 })( jQuery );
-
