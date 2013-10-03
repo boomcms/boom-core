@@ -78,7 +78,7 @@
 	<script type="text/javascript">
 		//<![CDATA[
 		(function($){
-			$.boom.init('templates', {
+			$.boom.init({
 				person: {
 					rid: <?= $person->id?>,
 					name: "<?= $person->name?>"
