@@ -271,13 +271,12 @@ boom.plugins.js
 		opts = $.extend({
 			tabs: $.boom.config.tabs,
 			button: $.boom.config.button,
-			tooltip: $.boom.config.tooltip,
 			tree: $.boom.config.tree,
 			sortable: $.boom.config.sortable,
 			datepicker: $.boom.config.datepicker
 		}, opts);
 
-		var elems = '.boom-button, .boom-buttonset, .boom-tabs, .boom-tooltip, .boom-tree, .boom-sortable, .boom-datepicker, .boom-toggleinput, .boom-splitbutton, .boom-help';
+		var elems = '.boom-button, .boom-tabs, .boom-tree, .boom-sortable, .boom-datepicker';
 
 		$.boom.log('Start bind UI events');
 
