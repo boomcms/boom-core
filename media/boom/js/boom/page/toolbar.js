@@ -8,6 +8,7 @@ $.widget( 'boom.pageToolbar', $.boom.page, {
 		var self = this;
 
 		this.element.contents()
+			.ui()
 			.on('click', '#b-page-delete', function() {
 				self.options.page.delete();
 			})
