@@ -435,52 +435,6 @@ boom.plugins.js
 	};
 
 	/**
-	@function
-	*/
-	$.fn.captions = function(options){
-
-		options = $.extend({
-			captionTitleSelector: '.caption',
-			captionOverlaySelector: '.caption-overlay',
-			showSpeed: 220,
-			hideSpeed: 220,
-			opacityOverlay: 0.5
-		}, options);
-
-		return this.each(function(){
-			$(this)
-			.find('img')
-				.removeAttr('title')
-				.removeAttr('alt')
-			.end()
-			.bind('mouseenter', function(){
-				$(this)
-				.find(options.captionTitleSelector)
-					.stop()
-					.css({ opacity: 0 })
-					.animate({ 'opacity': 1 }, options.showSpeed)
-				.end()
-				.find(options.captionOverlaySelector)
-					.stop()
-					.css({ opacity: 0, height: $(this).find(options.captionTitleSelector).outerHeight() })
-					.animate({ 'opacity': options.opacityOverlay }, options.showSpeed);
-			})
-			.bind('mouseleave', function(){
-				$(this)
-				.find(options.captionTitleSelector)
-					.stop()
-					.css({ opacity: 1 })
-					.animate({ 'opacity': 0}, options.hideSpeed)
-				.end()
-				.find(options.captionOverlaySelector)
-					.stop()
-					.css({ opacity: options.opacityOverlay })
-					.animate({ 'opacity': 0 }, options.hideSpeed);
-			});
-		});
-	};
-
-	/**
 	@class
 	@name $.ui.tree
 	@extends $.ui
