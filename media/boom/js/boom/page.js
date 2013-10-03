@@ -166,8 +166,6 @@ $.widget( 'boom.page', $.boom.page, {
 
 		/** @function */
 		load : function(){
-
-			var self = this;
 			var promise = new $.Deferred();
 
 			$.boom.loader.show();
@@ -181,7 +179,6 @@ $.widget( 'boom.page', $.boom.page, {
 
 					promise.resolve();
 				});
-
 
 			return promise;
 		},
