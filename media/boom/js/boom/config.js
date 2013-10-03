@@ -226,24 +226,6 @@ window.boomConfig =
 	@static
 	@class
 	*/
-	tooltip : {
-		/**
-		@type object
-		@param {string} my 'right left'
-		@param {string} at 'left left'
-		@param {string} offset '-5 0'
-		*/
-		position: {
-                        my: 'right left',
-			at: 'left left',
-			offset: '-5 0'
-		}
-	},
-
-	/**
-	@static
-	@class
-	*/
 	tree : {
 		/**
 		@type boolean
