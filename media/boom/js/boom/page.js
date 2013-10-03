@@ -184,9 +184,7 @@ $.widget( 'boom.page', $.boom.page, {
 		},
 
 		createChunks : function() {
-			var page_contents = this.elements.page_body.contents();
-
-			page_contents
+			 this.elements.page_body.contents()
 				.find('[data-boom-chunk]')
 				.each(function(){
 					var $this = $(this);
@@ -201,9 +199,8 @@ $.widget( 'boom.page', $.boom.page, {
 						id : $this.attr('data-boom-target')? parseInt($this.attr('data-boom-target'), 10) : 0,
 						page : $this.attr( 'data-boom-page' )
 					});
-				});
-
-			var title = page_contents
+				})
+				.end()
 				.find('#b-page-title')
 				.pageTitle({});
 		},
