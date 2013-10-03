@@ -172,12 +172,7 @@ $.widget( 'boom.page', $.boom.page, {
 
 			$.boom.loader.show();
 
-			this.loadScripts( this.config.pageScripts )
-				.pipe( function(){
-
-					return self.loadHTML();
-
-				})
+			this.loadScripts(this.config.pageScripts)
 				.done(function(){
 
 					$.boom.loader.hide();
@@ -214,22 +209,6 @@ $.widget( 'boom.page', $.boom.page, {
 			var title = page_contents
 				.find('#b-page-title')
 				.pageTitle({});
-		},
-
-		/** @function */
-		loadHTML : function(){
-
-			var html_loaded = new $.Deferred();
-
-			var body = this.elements.page_body.contents().find('body');
-
-			this.elements.hoverOverlay = {
-				icon: $('<span class="b-page-chunk-edit-icon ui-icon ui-icon-wrench" />').appendTo(body)
-			};
-
-			html_loaded.resolve();
-
-			return html_loaded;
 		},
 
 		/** @function */
