@@ -31,7 +31,7 @@ Route::set('child_pages', 'page/children(.<action>)', array(
  *
  */
 Route::set('boom', '<location>(.<format>)', array(
-		'location'	=>	'.*?',
+		'location'	=>	'^(?!cms).*?',
 	))
 	->defaults(array(
 		'action' => 'show'
