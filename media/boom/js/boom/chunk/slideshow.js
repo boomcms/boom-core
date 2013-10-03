@@ -132,12 +132,14 @@ $.widget('ui.chunkSlideshow', $.ui.chunk,
 					});
 			})
 			.on( 'click', 'button.delete', function( event ) {
+				var slideshow = self.options.slider;
+
 				$.boom.dialog.confirm(
 					'Delete slide',
 					'Delete this slide?'
 				)
 				.done( function(){
-					self._remove_slide(self.options.slider.currentSlide);
+					self._remove_slide(slideshow.currentSlide);
 				});
 			})
 			.on( 'click', 'button.cancel', function(){
@@ -275,12 +277,23 @@ $.widget('ui.chunkSlideshow', $.ui.chunk,
 
 	/**
 	@function
-	@param {Object} $slide Slide to remove
+	@param Int slide Slide to remove
 	*/
-	_remove_slide : function(slide) {
-		console.log(slide);
-		this.options.slider.remove(slide);
-		this.options.slider.update();
+	_remove_slide : function( slide ) {
+		var slideshow = this.options.slider;
+		var slides = slideshow.slides;
+
+		if (slide == (slides.length - 1)) {
+			slideshow.flexAnimate(0);
+		} else if (slides.length > 1) {
+			slideshow.flexAnimate(slide + 1);
+		}
+
+		$(slideshow.slides[slide])
+			.closest( 'li' )
+			.remove();
+
+		slideshow.update();
 
 		this.edited = true;
 	},
