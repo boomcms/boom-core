@@ -330,27 +330,6 @@ boom.plugins.js
 	};
 
 	/**
-	@function
-	*/
-	$.fn.toggleField = function(){
-
-		return this.each(function(){
-
-			if (this.nodeName != 'INPUT') return true;
-
-			var $field =
-				$(this)
-				.data('val', this.value)
-				.focus(function(){
-					this.value = ($.trim(this.value) == $field.data('val') ? '' : this.value);
-				})
-				.blur(function(){
-					this.value = ($.trim(this.value) == '' ? $field.data('val') : this.value);
-				});
-		});
-	};
-
-	/**
 	@class
 	@name $.ui.tree
 	@extends $.ui
