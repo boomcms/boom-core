@@ -437,21 +437,6 @@ boom.plugins.js
 	/**
 	@function
 	*/
-	$.fn.pageSortable = function(opts){
-
-		return this.each(function(){
-
-			var config = $.extend({}, $.boom.config.sortable, {
-				axis: (/sortable-y/.test(this.className) ? 'y' : 'x')
-			});
-
-			$(this).sortable(config);
-		});
-	};
-
-	/**
-	@function
-	*/
 	$.fn.captions = function(options){
 
 		options = $.extend({
