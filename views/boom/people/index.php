@@ -70,7 +70,7 @@
 	<script type="text/javascript">
 		//<![CDATA[
 		(function($){
-			$.boom.init('people');
+			$.boom.init();
 			$( 'body' ).browser_people();
 		})(jQuery);
 		//]]>
