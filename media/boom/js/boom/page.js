@@ -246,38 +246,3 @@ $.widget( 'boom.page', $.boom.page, {
 		}
 	}
 });
-
-$.widget( 'boom.page', $.boom.page, {
-
-	/**
-	* @class
-	* @name $.boom.page.slots
-	*/
-	slots :
-		/** @lends $.boom.page.slots */
-		{
-		/** @function */
-		edit : function(event, elem, slot, slotconfig){
-			event.preventDefault();
-			event.stopPropagation();
-
-			$(elem).removeClass('b-editable');
-
-			$.boom.log('Chunk slot edit');
-
-			$.boom.page.editor.unbind();
-
-			var
-				node = elem.nodeName.toLowerCase(),
-				config = $.extend({
-					slot: slot
-				}, slotconfig),
-				type = 'chunk' + slot.type.ucfirst(),
-				$elem = $( elem );
-
-			$elem[ type ]( config );
-
-			return false;
-		},
-	}
-});
