@@ -56,7 +56,7 @@ class Migration_Boom_20130613123700 extends Minion_Migration_Base
 		");
 
 		$db->query(NULL, "
-			CREATE TABLE `chunk_assets` (
+			CREATE TABLE IF NOT EXISTS `chunk_assets` (
 			  `asset_id` smallint(5) unsigned DEFAULT NULL,
 			  `caption` varchar(100) DEFAULT NULL,
 			  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
