@@ -2,27 +2,11 @@
  * TODO: Tell someone off for trying to blank a page title or writing an essay in the title.
  */
 $.widget('boom.pageTitle', $.ui.chunk, {
-
-	_bind : function() {
-		var self = this;
-
-		this.element
-			.on('click', function(event) {
-				self.edit();
-			})
-			.addClass('b-editable');
-	},
-
-	_create : function() {
-		this._bind();
-	},
-
 	edit : function() {
 		var self = this;
 		var old_html = this.element.html();
 
 		self._bring_forward();
-		self._unbind();
 
 		if (this.isUntitled()) {
 			this.element.text('');
@@ -48,12 +32,8 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 				}
 
 				self._send_back();
-				self._bind();
+				self.bind();
 			});
-	},
-
-	_init : function() {
-
 	},
 
 	insert : function(html) {
@@ -90,18 +70,5 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 				$.boom.page.status.set(response);
 			}
 		})
-	},
-
-	/**
-	@function
-	*/
-	_destroy : function(){
-		this._unbind();
-	},
-
-	_unbind : function() {
-		this.element
-			.unbind('click')
-			.removeClass('b-editable');
 	}
 });

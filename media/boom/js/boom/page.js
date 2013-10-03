@@ -58,10 +58,6 @@ $.widget( 'boom.page', {
 
 			$.boom.loader.show();
 
-			// Bind UI events to the editable page.
-		 	// Adds functionality to boom-sortable, boom-tree, etc. elements in the page.
-			$( self.document ).contents().ui();
-
 			$.extend(self.options, options);
 
 			self.editors = [];
@@ -160,7 +156,9 @@ $.widget( 'boom.page', $.boom.page, {
 
 			this.load()
 				.done( function(){
-					if ( $.boom.page.options.writable ) self.bind();
+					if ($.boom.page.options.writable) {
+						self.createChunks();
+					}
 				});
 
 			return this;
@@ -193,116 +191,29 @@ $.widget( 'boom.page', $.boom.page, {
 			return promise;
 		},
 
-		/** @function */
-		bind : function() {
+		createChunks : function() {
+			var page_contents = this.elements.page_body.contents();
 
-			var self = this;
+			page_contents
+				.find('[data-boom-chunk]')
+				.each(function(){
+					var $this = $(this);
 
-			function slotBind( config ){
+					var type = $this.attr('data-boom-chunk');
+					var widgetName = 'chunk' + type.ucfirst();
 
-				config = config || {};
-
-				var $this = $( this );
-				var chunk = this;
-
-				if ( $this.is( 'div' ) && $this.text() == 'Default text.' ) {
-					$this.html( '<p>Default text.</p>');
-				}
-
-				$this
-				.attr( 'tabindex', '0' )
-				.unbind('click')
-				.on( 'keydown', function( event ){
-					switch( event.which ) {
-						case 13:
-						 $this.click();
-						break;
-					}
-				})
-				.one( 'click', function(event){
-
-					//event.target = this;
-					var $this = $( this );
-
-					var slot = {
-						type : $this.attr( 'data-boom-chunk' ),
-						name : $this.attr( 'data-boom-slot-name' ),
-						rid : parseInt( $this.attr( 'data-boom-target' ), 10 ),
-						template: $this.attr( 'data-boom-slot-template' ),
+					$this[widgetName]({
+						type : type,
+						name : $this.attr('data-boom-slot-name'),
+						template : $this.attr('data-boom-template'),
+						id : $this.attr('data-boom-target')? parseInt($this.attr('data-boom-target'), 10) : 0,
 						page : $this.attr( 'data-boom-page' )
-					};
-
-					if (!slot.name) {
-						slot.name = '';
-					}
-					if (!slot.rid) {
-						slot.rid = 0;
-					}
-					if (!slot.type) {
-						slot.type = 'text';
-					}
-					if (slot.type == 'text') {
-						config.toolbar = $.boom.page.options.editorOptions[ slot.name ] || [];
-					}
-
-					$.boom.page.slots.edit(event, this, slot, config);
-
-					return false;
-				});
-			};
-
-			self.elements.page_body.contents()
-			.find('[data-boom-chunk]')
-			.each(function(){
-
-				var config = {};
-				var $this = $( this );
-
-				var slotName = $( this ).attr( 'data-boom-slot-name' );
-
-
-				$( this ).addClass( 'b-editable' );
-
-				if (!this.id) {
-
-					this.id = $.boom.util.dom.uniqueId('boom-chunk-');
-				}
-
-
-				$.each( this.className.split(' '), function(i, val){
-
-					if ( /boom-chunk-option-/.test(val) ) {
-
-						config[ val.replace(/boom-chunk-option-/, '') ] = true;
-					}
+					});
 				});
 
-				slotBind.call( this, config );
-			})
-			.end();
-
-			self.elements.page_body.contents().find('#b-page-title').pageTitle({});
-
-			$.boom.log('Page editor bind');
-		},
-
-		/** @function */
-		unbind : function(){
-			if ( ! this.elements.page_body) {
-				return;
-			}
-
-			var $contents = this.elements.page_body.contents();
-
-			$contents.find('.chunk-slot').each(function() {
-				$(this)
-					.unbind('click')
-					.removeClass('b-editable');
-			});
-
-			$contents.find('#b-page-title').pageTitle('destroy');
-
-			$.boom.log('Page editor unbind');
+			var title = page_contents
+				.find('#b-page-title')
+				.pageTitle({});
 		},
 
 		/** @function */

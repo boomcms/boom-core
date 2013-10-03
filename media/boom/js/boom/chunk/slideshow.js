@@ -26,7 +26,7 @@ $.widget('ui.chunkSlideshow', $.ui.chunk,
 	/**
 	Pause the slideshow on startup
 	*/
-	_init : function() {
+	/*_init : function() {
 		var self = this;
 
 		//FIXME: slideshows are tied to flexslider
@@ -37,9 +37,7 @@ $.widget('ui.chunkSlideshow', $.ui.chunk,
 			.done( function(){
 				$.ui.chunk.prototype._init.call( self );
 			});
-
-
-	},
+	},*/
 
 	/**
 	@function

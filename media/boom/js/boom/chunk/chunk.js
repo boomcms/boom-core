@@ -29,14 +29,39 @@ $.widget('ui.chunk',
 		urlPrefix:  '/cms/chunk'
 	},
 
-	_create : function(){
-		$.boom.log( 'CHUNK CREATE' );
+	bind : function() {
+		var self = this;
+
+		this.element
+			.addClass('b-editable')
+			.unbind('click')
+			.on('click', function(event) {
+				event.preventDefault();
+				event.stopPropagation();
+
+				self.unbind();
+
+				self.edit();
+
+				return false;
+			})
+			.on( 'keydown', function(event) {
+				switch(event.which) {
+					case 13:
+						self.edit()
+					break;
+				}
+			});
 	},
 
-	_init : function(){
-		$.boom.log( 'CHUNK INIT' );
+	_create : function(){
+		$.boom.log( 'CHUNK CREATE' );
 
-		this.edit();
+		this.bind();
+	},
+
+	destroy : function() {
+		this.bind();
 	},
 
 	/**
@@ -44,9 +69,9 @@ $.widget('ui.chunk',
 	@function
 	*/
 	_update_html : function(html) {
-		top.$( this.element ).replaceWith(html);
+		this.element.html($(html).children());
 
-		$.boom.page.editor.bind();
+		this.bind();
 	},
 
 	remove : function() {
@@ -68,7 +93,7 @@ $.widget('ui.chunk',
 	*/
 	_url : function(action) {
 		return this.options.urlPrefix +
-		'/' + this.options.slot.type +
+		'/' + this.options.type +
 		 '/' + action + '/' + $.boom.page.options.id;
 	},
 
@@ -80,8 +105,8 @@ $.widget('ui.chunk',
 	_slot_data : function(data) {
 		return $.extend(data,
 			{
-				slotname : this.options.slot.name,
-				template : this.options.slot.template
+				slotname : this.options.name,
+				template : this.options.template
 			});
 	},
 
@@ -123,10 +148,9 @@ $.widget('ui.chunk',
 		top.$( 'div.overlay' ).remove();
 	},
 
-	/**
-	@function
-	*/
-	_destroy : function(){
-		$.boom.page.editor.bind();
+	unbind : function() {
+		this.element
+			.unbind('click')
+			.removeClass('b-editable');
 	}
 });

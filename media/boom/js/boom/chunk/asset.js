@@ -13,7 +13,7 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 	/**
 	Initialise the caption and asset editor
 	*/
-	_init : function() {
+	/*_init : function() {
 		var self = this;
 
 		self.elements = this._get_elements();
@@ -29,7 +29,7 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 		} else {
 			self._edit_asset(self.elements.asset);
 		}
-	},
+	},*/
 
 	/**
 	@function

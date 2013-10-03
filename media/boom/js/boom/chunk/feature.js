@@ -40,9 +40,9 @@ $.widget('ui.chunkFeature', $.ui.chunk,
 			},
 			open: function(){
 
-				if ( self.options.slot.rid > 0 ) {
+				if ( self.options.id > 0 ) {
 
-					$( 'input[name=parent_id]' ).val( self.options.slot.rid );
+					$( 'input[name=parent_id]' ).val( self.options.id );
 
 					var button = $('<button />')
 					.addClass('ui-helper-left')
@@ -71,7 +71,7 @@ $.widget('ui.chunkFeature', $.ui.chunk,
 	@returns {Int} Page RID
 	*/
 	getData: function(){
-		return {target_page_id : this.options.slot.rid};
+		return {target_page_id : this.options.id};
 	},
 
 	/**
@@ -79,7 +79,7 @@ $.widget('ui.chunkFeature', $.ui.chunk,
 	@param {Int} rid Page RID
 	*/
 	insert : function(rid){
-		this.options.slot.rid = rid;
+		this.options.id = rid;
 
 		return this._save();
 	},
