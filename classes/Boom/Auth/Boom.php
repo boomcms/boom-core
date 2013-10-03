@@ -12,6 +12,8 @@ class Boom_Auth_Boom extends Auth_ORM
 	 */
 	protected $_person;
 
+	protected $_permissions_cache = array();
+
 	protected function _login($person, $password = NULL, $remember = FALSE)
 	{
 		$this->_person = $person;
@@ -36,6 +38,35 @@ class Boom_Auth_Boom extends Auth_ORM
 			$this->_person->login_failed();
 			return FALSE;
 		}
+	}
+
+	public function cache_permissions($page)
+	{
+		$permissions = DB::select('roles.name', array('page_mptt.id', 'page_id'), array(DB::expr("bit_and(allowed)"), 'allowed'))
+			->from('people_roles')
+			->where('person_id', '=', $this->_person->id)
+			->join('roles', 'inner')
+			->on('people_roles.role_id', '=', 'roles.id')
+			->group_by('role_id')
+			->join('page_mptt', 'left')
+			->on('people_roles.page_id', '=', 'page_mptt.id')
+			->or_where_open()
+				->and_where_open()
+					->where('lft', '<=', $page->mptt->lft)
+					->where('rgt', '>=', $page->mptt->rgt)
+					->where('scope', '=', $page->mptt->scope)
+				->and_where_close()
+				->or_where('people_roles.page_id', '=', NULL)
+			->or_where_close()
+			->execute()
+			->as_array();
+
+		foreach ($permissions as $p)
+		{
+			$this->_permissions_cache[md5($p['name']. (int) $p['page_id'])] = $p['allowed'];
+		}
+
+		return $this;
 	}
 
 	public function complete_login($person)
@@ -153,7 +184,9 @@ class Boom_Auth_Boom extends Auth_ORM
 			}
 
 			// Does the person have the role at the specified page?
-			return $person->is_allowed($role, $page);
+			$page_id = ($page)? $page->id : 0;
+			$cache_key = md5($role.$page_id);
+			return isset($this->_permissions_cache[$cache_key])? $this->_permissions_cache[$cache_key] : $this->_permissions_cache[$cache_key] = $person->is_allowed($role, $page);
 		}
 	}
 
