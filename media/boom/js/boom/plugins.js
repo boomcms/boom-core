@@ -304,25 +304,13 @@ boom.plugins.js
 						});
 						elem.button(opts.button);
 					break;
-					case 'splitbutton' :
-						elem.splitbutton(opts.splitbutton);
-					break;
-					case 'buttonset' :
-						elem.buttonset(opts.button);
-					break;
 					case 'tabs' :
 						elem.tabs(opts.tabs);
-					break;
-					case 'tooltip' : //FIXME: Disalbed because it was breaking the JS. (Rob 2012/03/27).
-						elem.tooltip(opts.tooltip);
 					break;
 					case 'tree' :
 						elem.tree($.extend({}, opts.tree, {
 							border: !(/tree-noborder/).test(elem[0].className)
 						}));
-					break;
-					case 'toggleinput' :
-						elem.toggleField();
 					break;
 					case 'sortable' :
 						elem.sortable($.extend({}, opts.sortable, {
@@ -331,14 +319,6 @@ boom.plugins.js
 					break;
 					case 'datepicker' :
 						elem.datetimepicker(opts.datepicker);
-					break;
-					case 'help' :
-						elem.on( 'click', function( event ){
-							$.boom.dialog.alert(
-								'',
-								$( this ).attr( 'data-help')
-							);
-						});
 					break;
 				};
 			});
