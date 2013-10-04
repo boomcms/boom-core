@@ -35,7 +35,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 		var data = this.getData();
 
 		this.dialog = $.boom.dialog.open({
-			url: this.options.urlPrefix + '/timestamp/edit/' + $.boom.page.options.id,
+			url: this.options.urlPrefix + '/timestamp/edit/' + this.options.currentpage.id,
 			width: 400,
 			id: self.element[0].id + '-boom-dialog',
 			// cache: true,

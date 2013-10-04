@@ -7,27 +7,39 @@ $.widget('boom.pageStatus', {
 
 		var options = {
 			"Publish now" : function(){
-				self.publish();
+				self.options.page.publish()
+					.done(function(response) {
+						self.set(response);
+					});
 			}
 		};
 
 		if (status == 'embargoed') {
 			options = $.extend(options, {
 				'View or edit embargo time' : function() {
-					self.embargo();
+					self.options.page.embargo()
+						.done(function(response) {
+							self.set(response);
+						});
 				}
 			});
 		} else {
 			options = $.extend(options, {
 				'Publish later' : function() {
-					self.embargo();
+					self.options.page.embargo()
+						.done(function(response) {
+							self.set(response);
+						});
 				}
 			});
 		}
 
 		options = $.extend(options, {
 			"Revert to published version" : function() {
-				self.discardChanges();
+				self.options.page.revertToPublished()
+					.done(function() {
+						top.location.reload();
+					});
 			}
 		});
 
@@ -46,59 +58,6 @@ $.widget('boom.pageStatus', {
 
 	_create : function() {
 		this.set(this.element.text().trim());
-	},
-
-	discardChanges : function() {
-		$.boom.dialog.confirm(
-			'Discard changes',
-			'Are you sure you want to discard any unpublished changes and revert this page to it\'s published state?'
-		)
-		.done( function(){
-			$.boom.loader.show();
-
-			$.post('/cms/page/discard/' + $.boom.page.options.id, {csrf : $.boom.options.csrf})
-				.always(function() {
-					$.boom.loader.hide();
-				})
-				.done(function() {
-					top.location.reload();
-				});
-		});
-	},
-
-	embargo : function() {
-		var url = '/cms/page/version/embargo/' + $.boom.page.options.id;
-		var self = this;
-
-		$.boom.dialog.open({
-			url: url,
-			title: 'Page embargo',
-			width: 440,
-			callback: function(){
-				$.boom.page.settings.save(
-					url,
-					$(this).find("form").serialize(),
-					"Page embargo saved."
-				)
-				.done(function(response) {
-					self.set(response);
-				});
-			}
-		});
-	},
-
-	publish : function() {
-		var self = this;
-
-		$.boom.loader.show();
-
-		$.post('/cms/page/version/embargo/' + $.boom.page.options.id, {csrf : $.boom.options.csrf})
-			.done(function(response) {
-				self.set(response);
-			})
-			.always(function() {
-				$.boom.loader.hide();
-			});
 	},
 
 	set : function(status) {

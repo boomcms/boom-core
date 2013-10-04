@@ -94,7 +94,7 @@ $.widget('ui.chunk',
 	_url : function(action) {
 		return this.options.urlPrefix +
 		'/' + this.options.type +
-		 '/' + action + '/' + $.boom.page.options.id;
+		 '/' + action + '/' + this.options.currentPage.id;
 	},
 
 	/**
@@ -120,7 +120,7 @@ $.widget('ui.chunk',
 				var data = $.parseJSON(response);
 
 				self._update_html(data.html);
-				$.boom.page.status.set(data.status);
+				$.boom.page.toolbar.status.set(data.status);
 				$.boom.loader.hide();
 				$.boom.growl.show("Page content saved");
 			});

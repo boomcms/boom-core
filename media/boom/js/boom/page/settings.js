@@ -1,4 +1,4 @@
-$.widget('boom.page', $.boom.page, {
+$.widget('boom.page', {
 
 	/**
 	* @class

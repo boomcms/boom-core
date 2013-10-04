@@ -8,16 +8,16 @@ $.widget( 'boom.pageEditor', {
 	_create : function() {
 		var self = this;
 
-		$.boom.page = this;
+		this.page = new boomPage(this.options.page_id);
 
 		$.boom.util.cacheImages($.boom.config.cachePageImages);
 
 		this.document = $(top.document);
 
-		this.toolbar = this.document
+		$.boom.page.toolbar = this.toolbar = this.document
 			.find('#b-page-topbar')
 			.pageToolbar({
-				page : this
+				page : this.page
 			})
 			.data('boomPageToolbar');
 
@@ -47,7 +47,7 @@ $.widget( 'boom.pageEditor', {
 
 		this.config.pageScripts = [ this.config.stylesheetURL, '/media/boom/css/boom.page.css' ];
 
-		this.elements.page_body = $.boom.page.document;
+		this.elements.page_body = this.document;
 
 		this.load()
 			.done( function(){
@@ -89,6 +89,8 @@ $.widget( 'boom.pageEditor', {
 	},
 
 	createChunks : function() {
+		var self = this;
+
 		 this.elements.page_body.contents()
 			.find('[data-boom-chunk]')
 			.each(function(){
@@ -102,7 +104,8 @@ $.widget( 'boom.pageEditor', {
 					name : $this.attr('data-boom-slot-name'),
 					template : $this.attr('data-boom-template'),
 					id : $this.attr('data-boom-target')? parseInt($this.attr('data-boom-target'), 10) : 0,
-					page : $this.attr( 'data-boom-page' )
+					page : $this.attr( 'data-boom-page' ),
+					currentPage : self.page,
 				});
 			})
 			.end()

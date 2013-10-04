@@ -3,7 +3,7 @@
 * @class
 * @name self.boom.page.toolbar
 */
-$.widget( 'boom.pageToolbar', $.boom.page, {
+$.widget( 'boom.pageToolbar', {
 	_bindButtonEvents : function() {
 		var self = this;
 
@@ -79,13 +79,19 @@ $.widget( 'boom.pageToolbar', $.boom.page, {
 	},
 
 	_create : function() {
-		this.boom.log( 'init CMS toolbar' );
+		$.boom.log( 'init CMS toolbar' );
 
 		this.options.height = this.options.height || this.element.contents().find('body').height() + 'px';
 
 		this.document
 			.find('body')
 			.css({'margin-top' : this.options.height});
+
+		this.status = $('#b-page-version-status')
+			.pageStatus({
+				page : this.options.page
+			})
+			.data('boomPageStatus');
 
 		this.element
 			.css({'margin-top' : '-' + this.options.height})
@@ -99,7 +105,7 @@ $.widget( 'boom.pageToolbar', $.boom.page, {
 	* @function
 	*/
 	maximise : function() {
-		this.boom.log('maximise iframe');
+		$.boom.log('maximise iframe');
 
 		this.element
 			.show()
@@ -111,7 +117,7 @@ $.widget( 'boom.pageToolbar', $.boom.page, {
 	* @function
 	*/
 	minimise : function() {
-		this.boom.log('minimise iframe');
+		$.boom.log('minimise iframe');
 
 		this.element.css && this.element.css('height', this.options.height);
 	},

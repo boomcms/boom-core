@@ -31,7 +31,7 @@
 			<? endif;*/ ?>
 
 			$('body').pageEditor({
-				pag_id : <?= $page->id; ?>,
+				page_id : <?= $page->id; ?>,
 				editable : <?= (int) ($auth->logged_in('edit_page_content', $page) OR $page->was_created_by($person)) ?>,
 			});
 		})(jQuery);
