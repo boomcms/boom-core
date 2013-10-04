@@ -43,10 +43,10 @@
 	</tr>
 	<tr>
 		<td>
-			<?= ($current->has_published_version())? 'Published' : 'Unpublished'; ?>
+			<?= ucfirst($current->version()->status()) ?>
 		</td>
 		<td>
-			<?= ($page->has_published_version())? 'Published' : 'Unpublished'; ?>
+			<?= ucfirst($page->version()->status()) ?>
 		</td>
 	</tr>
 </table>

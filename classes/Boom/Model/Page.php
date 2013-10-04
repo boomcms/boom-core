@@ -400,27 +400,6 @@ class Boom_Model_Page extends Model_Taggable
 		return $this->version()->feature_image_id != 0;
 	}
 
-	/**
-	 * Determine whether a published version exists for the page.
-	 *
-	 * @return	bool
-	 */
-	public function has_published_version()
-	{
-		// Run a query to find the ID of a version which belongs to this page and has been published.
-		// If a result is returned then a published version exists.
-		$query = DB::select('id')
-			->from('page_versions')
-			->where('page_id', '=', $this->id)
-			->where('published', '=', TRUE)
-			->where('stashed', '=', FALSE)
-			->where('embargoed_until', '<=', $_SERVER['REQUEST_TIME'])
-			->limit(1)
-			->execute();
-
-		return ($query->count() == 1);
-	}
-
 	public static function id_by_internal_name($name)
 	{
 		$results = DB::select('id')
