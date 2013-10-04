@@ -1,42 +1,21 @@
 /**
-@fileOverview Page editor, toolbar and page settings.
-*/
-/**
-* Page editor UI.
 * @class
 * @name $.boom.page
 */
-$.widget( 'boom.page', {
-
-	/** @lends $.boom.page */
-
-	boom : $.boom,
-
-	/**
-	default config
-	@property options
-	*/
-	options : {},
+$.boom.page = function(page_id) {
+	this.page_id = page_id;
 
 	/**
 	 @property status_button
 	 */
-	status: $('#b-page-version-status').pageStatus({}).data('boomPageStatus'),
+	this.status = $('#b-page-version-status').pageStatus({}).data('boomPageStatus');
 
-	_init : function() {
-
-	},
-
-	_destroy : function() {
-
-	},
-
-	add : function() {
+	$.boom.page.protoptype.add = function() {
 		var self = this;
 
 		self.boom.loader.show();
 
-		$.post('/cms/page/add/' + self.options.id, {csrf : $('#b-csrf').val()}, function(response){
+		$.post('/cms/page/add/' + self.page_id, {csrf : $('#b-csrf').val()}, function(response){
 			if (new RegExp('^' + "\/").test( response)) {
 				top.location = response;
 			} else {
@@ -44,26 +23,26 @@ $.widget( 'boom.page', {
 				self.boom.loader.hide();
 			}
 		});
-	},
+	};
 
-	delete : function() {
+	$.boom.page.protoptype.delete = function() {
 		var self = this;
 
 		self.boom.dialog.open({
 			width: 350,
-			url: '/cms/page/delete/' + self.options.id,
+			url: '/cms/page/delete/' + self.page_id,
 			title: 'Please confirm',
 			callback: function(){
 
-				$.post('/cms/page/delete/' + self.options.id, $(this).find('form').serialize(), function(response){
+				$.post('/cms/page/delete/' + self.page_id, $(this).find('form').serialize(), function(response){
 					self.boom.growl.show("Page deleted, redirecting to parent.");
 					top.location = response;
 				});
 			}
 		});
-	},
+	};
 
-	stash : function() {
+	$.boom.page.protoptype.stash = function() {
 		var self = this;
 
 		self.boom.dialog.confirm(
@@ -73,10 +52,10 @@ $.widget( 'boom.page', {
 		.done(function(){
 			self.boom.log('stashing page edits');
 
-			$.post('/cms/page/stash/' + self.options.id)
+			$.post('/cms/page/stash/' + self.page_id)
 				.done(function(response) {
 					self.boom.history.refresh();
 				});
 		});
-	}
-} );
+	};
+};
