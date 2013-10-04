@@ -16,19 +16,24 @@
 				csrf: '<?= Security::token() ?>',
 			});
 
-			$( 'body' ).page({
+			/*$( 'body' ).page({
 				id: <?= $page->id ?>,
 				vid: <?= $page->version()->id ?>
-			});
+			});*/
 
-			<? if ($register_page): ?>
+			<? /*if ($register_page): ?>
 				$( 'body' ).page( 'register', {
 					rid: <?=$page->id;?>,
 					vid: <?=$page->version()->id;?>,
 					writable: <?= (int) ($auth->logged_in('edit_page_content', $page) OR $page->was_created_by($person)) ?>,
 					editorOptions: {}
 				});
-			<? endif; ?>
+			<? endif;*/ ?>
+
+			$('body').pageEditor({
+				pag_id : <?= $page->id; ?>,
+				editable : <?= (int) ($auth->logged_in('edit_page_content', $page) OR $page->was_created_by($person)) ?>,
+			});
 		})(jQuery);
 		//]]>
 	</script>

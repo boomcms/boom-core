@@ -22,6 +22,7 @@ return array(
 	'js' => array(
 		'boom/page/status.js',
 		'boom/page.js',
+		'boom/page/editor.js',
 		'boom/page/settings.js',
 		'boom/page/toolbar.js',
 		'boom/page/tree.js',
