@@ -354,19 +354,6 @@ class Boom_Model_Page extends Model_Taggable
 		return Chunk::factory('text', 'standfirst', $this)->text();
 	}
 
-	/**
-	 * Get the first version of the current page.
-	 *
-	 * @return Model_Page_Version
-	 */
-	public function first_version()
-	{
-		return $this
-			->versions
-			->order_by('id', 'asc')
-			->find();
-	}
-
 	public function get_tags_applied_down_tree_query()
 	{
 		return ORM::factory('Tag')
