@@ -12,6 +12,7 @@ return array(
 		'boom/plugins.js',
 		'boom/config.js',
 		'boom/core.js',
+		'boom/history.js',
 		'boom/loader.js',
 		'boom/dialog.js',
 	),
