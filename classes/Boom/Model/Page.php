@@ -474,9 +474,12 @@ class Boom_Model_Page extends Model_Taggable
 			require Kohana::find_file('vendor/text-statistics', 'TextStatistics');
 		}
 
-		$bodycopy = Chunk::factory('text', 'bodycopy', $this)->text();
-		$standfirst = Chunk::factory('text', 'standfirst', $this)->text();
-		$text = "$standfirst $bodycopy";
+		$chunks = Chunk::find('text', array('bodycopy', 'standfirst'), $this->version());
+		$text = "";
+		foreach ($chunks as $chunk)
+		{
+			$text .= $chunk->text;
+		}
 
 		if (strlen($text) > 100)
 		{

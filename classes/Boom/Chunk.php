@@ -233,7 +233,7 @@ abstract class Boom_Chunk
 
 		if (is_array($slotname)) {
 			return $query
-				->where('slotname', $operator, $slotname)
+				->where('slotname', 'in', $slotname)
 				->find_all();
 		} else {
 			return $query
