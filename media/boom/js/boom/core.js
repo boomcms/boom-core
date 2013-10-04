@@ -94,10 +94,6 @@ $.extend($.boom,
 	}
 });
 
-(!window.console) && function(){
-	window.console = /** @ignore */ { log: function(){}, debug: function(){}, error: function(){}, warning: function(){}, info: function(){} };
-}();
-
 $.extend($.boom,
 	/** @lends $.boom */
 	{
@@ -106,7 +102,7 @@ $.extend($.boom,
 	*/
 	log : function(type, msg){
 
-		if (!$.boom.config.logs.show) return;
+		if (!$.boom.config.logs.show || ! window.console) return;
 
 		if (msg === undefined) {
 			msg = type;
