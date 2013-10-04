@@ -95,15 +95,16 @@ $.widget('ui.chunkLinkset', $.ui.chunk,
 	_bindEvents : function(){
 
 		var self = this;
-		$.boom.util.page_tree( this.dialog.find('.boom-chunk-linkset-internal-links .boom-tree') )
-			.progress( function( page ) {
+		this.dialog.find('.boom-chunk-linkset-internal-links .boom-tree').pageTree({
+			onPageSelect : function(page) {
 				var anchor =
 					$( '<a>')
 						.attr( 'rel', page.page_id )
 						.attr( 'href', page.url )
 						.text( page.title );
 				self._add( anchor );
-			});
+			}
+		});
 
 		$('#boom-chunk-linkset-addlink-external-button').click(function(){
 

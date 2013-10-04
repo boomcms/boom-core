@@ -49,12 +49,11 @@ $.widget('boom.page', $.boom.page, {
 					title: 'Navigation',
 					width: 570,
 					onLoad : function() {
-
-						$.boom.util.page_tree( $( this ).find( '.boom-tree' ) )
-							.progress( function( page ){
+						$(this).find('.boom-tree').pageTree({
+							onPageSelect : function(page) {
 								$( 'input[name=parent_id]' ).val( page.page_id );
-							});
-
+							}
+						});
 					},
 					callback: function() {
 						$.boom.page.settings.save(

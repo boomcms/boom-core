@@ -20,6 +20,7 @@ return array(
 		'boom/page.js',
 		'boom/page/settings.js',
 		'boom/page/toolbar.js',
+		'boom/page/tree.js',
 		'boom/textEditor.js',
 		'boom/wysihtml5.js',
 		'boom/chunk/chunk.js',

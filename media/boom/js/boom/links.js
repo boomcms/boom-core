@@ -79,14 +79,13 @@ $.extend( $.boom,
 						}
 					});
 
-					$.boom.util.page_tree( this.find( '.boom-tree' ) )
-						.progress( function( page ) {
+					this.find('.boom-tree').pageTree({
+						onPageSelect : function(page) {
 							link = page;
-
 							complete.resolve( page );
-
 							$.boom.dialog.destroy( self );
-						});
+						}
+					});
 				},
 				callback: function(){
 

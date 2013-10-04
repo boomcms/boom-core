@@ -27,12 +27,13 @@ $.widget('ui.chunkFeature', $.ui.chunk,
 			title: 'Page feature',
 			onLoad : function() {
 
-				$.boom.util.page_tree( self.dialog.find( '.boom-tree' ), self.options.rid )
-					.progress( function( page ){
+				self.dialog.find( '.boom-tree' ).pageTree({
+					onPageSelect : function(page) {
 						self.insert( page.page_id );
 
 						$.boom.dialog.destroy(self.dialog);
-					});
+					}
+				});
 
 			},
 			destroy: function(){
