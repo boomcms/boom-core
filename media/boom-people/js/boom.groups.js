@@ -298,9 +298,8 @@ $.widget( 'boom.group_permissions',
 
 		var page_tree = this.element.find( '#b-group-roles-pages .boom-tree' );
 
-		$.boom.util.page_tree(  page_tree )
-			.progress( function( page ) {
-
+		page_tree.pageTree({
+			onPageSelect : function(page) {
 				selected_page = page.page_id;
 
 				self._check_inputs( $( '#b-group-roles-pages input[type=radio]'), -1 );
@@ -321,8 +320,7 @@ $.widget( 'boom.group_permissions',
 						self._check_inputs( $( 'input[name=' + role + ']' ), data[ role ] );
 					}
 				});
-
-			});
-
+			}
+		});
 	}
 } );

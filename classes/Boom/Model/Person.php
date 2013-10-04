@@ -99,61 +99,6 @@ class Boom_Model_Person extends ORM
 		return $this->locked_until AND ($this->locked_until > $_SERVER['REQUEST_TIME']);
 	}
 
-	/**
-	 * Returns whether the current person is allowed to perform the specified role.
-	 *
-	 * A role can be given as a name or a Model_Role model.
-	 * It's generally quicker to call this function with a role name than to load a role model (lol) and then call the function with the model.
-	 *
-	 * @param mixed $role
-	 * @param Model_Page $page
-	 *
-	 * @return boolean
-	 */
-	public function is_allowed($role, Model_Page $page = NULL)
-	{
-		$query = DB::select(array(DB::expr("bit_and(allowed)"), 'allowed'))
-			->from('people_roles')
-			->where('person_id', '=', $this->id);
-
-		// If the given role is a model then filter by role ID.
-		// Otherwise join the roles table and query by role name.
-
-		if (is_object($role))
-		{
-			$query->where('role_id', '=', $role->id);
-		}
-		else
-		{
-			$query
-				->join('roles', 'inner')
-				->on('people_roles.role_id', '=', 'roles.id')
-				->where('roles.name', '=', $role);
-		}
-
-		$query->group_by('person_id');	// Strange results if this isn't here.
-
-		if ($page !== NULL)
-		{
-			$query
-				->join('page_mptt', 'left')
-				->on('people_roles.page_id', '=', 'page_mptt.id')
-				->where('lft', '<=', $page->mptt->lft)
-				->where('rgt', '>=', $page->mptt->rgt)
-				->where('scope', '=', $page->mptt->scope);
-		}
-		else
-		{
-			$query->where('people_roles.page_id', '=', 0);
-		}
-
-		$result = $query
-			->execute()
-			->as_array();
-
-		return  ( ! empty($result) AND (boolean) $result[0]['allowed']);
-	}
-
 	public function login_failed()
 	{
 		$this->set('failed_logins', ++$this->failed_logins);

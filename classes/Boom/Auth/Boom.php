@@ -119,6 +119,35 @@ class Boom_Auth_Boom extends Auth_ORM
 		return $this->_person;
 	}
 
+	public function has_role(Model_Person $person, Model_Role $role, Model_Page $page = NULL)
+	{
+		$query = DB::select(array(DB::expr("bit_and(allowed)"), 'allowed'))
+			->from('people_roles')
+			->where('person_id', '=', $person->id)
+			->where('role_id', '=', $role->id)
+			->group_by('person_id');	// Strange results if this isn't here.
+
+		if ($page !== NULL)
+		{
+			$query
+				->join('page_mptt', 'left')
+				->on('people_roles.page_id', '=', 'page_mptt.id')
+				->where('lft', '<=', $page->mptt->lft)
+				->where('rgt', '>=', $page->mptt->rgt)
+				->where('scope', '=', $page->mptt->scope);
+		}
+		else
+		{
+			$query->where('people_roles.page_id', '=', 0);
+		}
+
+		$result = $query
+			->execute()
+			->as_array();
+
+		return  ( ! empty($result) AND (boolean) $result[0]['allowed']);
+	}
+
 	public function is_disabled()
 	{
 		return Arr::get($this->_config, 'disabled', FALSE);
@@ -144,9 +173,6 @@ class Boom_Auth_Boom extends Auth_ORM
 	 *
 	 * @param mixed $role
 	 * @param Model_Page $page
-	 *
-	 * @uses Auth_Bool::get_user()
-	 * @uses Model_Person::is_allowed()
 	 *
 	 * @return boolean
 	 */
@@ -178,15 +204,19 @@ class Boom_Auth_Boom extends Auth_ORM
 			 *
 			 * To avoid having to add p_ to the start of role names everywhere in the code we just add the prefix here.
 			 */
-			if ($page !== NULL)
+			if ($page !== NULL AND is_string($role))
 			{
 				$role = 'p_'.$role;
+			}
+
+			if (is_string($role)) {
+				$role = new Model_Role(array('name' => $role));
 			}
 
 			// Does the person have the role at the specified page?
 			$page_id = ($page)? $page->id : 0;
 			$cache_key = md5($role.$page_id);
-			return isset($this->_permissions_cache[$cache_key])? $this->_permissions_cache[$cache_key] : $this->_permissions_cache[$cache_key] = $person->is_allowed($role, $page);
+			return isset($this->_permissions_cache[$cache_key])? $this->_permissions_cache[$cache_key] : $this->_permissions_cache[$cache_key] = $this->has_role($person, $role, $page);
 		}
 	}
 
