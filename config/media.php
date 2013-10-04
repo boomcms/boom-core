@@ -8,6 +8,7 @@ return array(
 		'boom/helpers.js',
 		'jquery/jquery.js',
 		'jquery/ui.js',
+		'jquery/ui.splitbutton.js',
 		'jquery/plugins.js',
 		'boom/plugins.js',
 		'boom/config.js',
