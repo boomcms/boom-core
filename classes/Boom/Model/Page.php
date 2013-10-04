@@ -301,54 +301,39 @@ class Boom_Model_Page extends Model_Taggable
 	 */
 	public function delete($with_children = FALSE)
 	{
-		// Can't delete a page which doesn't exist.
-		if ($this->_loaded)
+		if ( ! $this->_loaded)
 		{
-			$this->delete_from_feature_boxes();
-			$this->delete_from_linksets();
-
-			// Delete the child pages as well?
-			if ($with_children === TRUE)
-			{
-				// Get the mptt values of the child pages.
-				foreach ($this->mptt->children() as $mptt)
-				{
-					// Delete the page.
-					ORM::factory('Page', $mptt->id)
-						->delete($with_children);
-				}
-
-				// Reload the MPTT values.
-				// When the MPTT record is deleted the gap is closed in the tree
-				// So if we don't reload the values after deleting children the gap will be closed incorrectly and the tree will get screwed up.
-				$this->mptt->reload();
-			}
-
-			// There's a bug with deleting the root node via ORM_MPTT::delete(), so delete manually if this is the root node.
-			if ($this->mptt->is_root())
-			{
-				DB::delete('page_mptt')
-					->where('id', '=', $this->mptt->id)
-					->execute($this->_db);
-			}
-			else
-			{
-				// Delete the page from the MPTT tree as normal.
-				$this->mptt->delete();
-			}
-
-			// Flag the page as deleted.
-			$this
-				->create_version(NULL, array(
-					'page_deleted'		=>	TRUE,	// Flag the new version as deleting the page
-					'embargoed_until'	=>	$_SERVER['REQUEST_TIME'],	// Make the new version live
-					'published'			=>	TRUE
-				))
-				->create();
-
-			// Return a cleared page object.
-			return $this->clear();
+			return $this;
 		}
+
+		$this->delete_from_feature_boxes();
+		$this->delete_from_linksets();
+
+		$with_children AND $this->delete_children(TRUE);
+
+		$this->mptt->delete();
+
+		// Flag the page as deleted.
+		$this
+			->create_version(NULL, array(
+				'page_deleted'		=>	TRUE,	// Flag the new version as deleting the page
+				'embargoed_until'	=>	$_SERVER['REQUEST_TIME'],	// Make the new version live
+				'published'			=>	TRUE
+			))
+			->create();
+
+		// Return a cleared page object.
+		return $this->clear();
+	}
+
+	public function delete_children($cascade = FALSE)
+	{
+		foreach ($this->mptt->children() as $mptt)
+		{
+			ORM::factory('Page', $mptt->id)->delete($cascade);
+		}
+
+		$this->mptt->reload();
 	}
 
 	/**
