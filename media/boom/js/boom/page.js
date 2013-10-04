@@ -1,6 +1,6 @@
 /**
 * @class
-* @name $.boom.page
+* @name boomPage
 */
 function boomPage(page_id) {
 	this.id = page_id;
