@@ -9,6 +9,7 @@ return array(
 		'jquery/jquery.js',
 		'jquery/ui.js',
 		'jquery/ui.splitbutton.js',
+		'jquery/ui.tree.js',
 		'jquery/plugins.js',
 		'boom/plugins.js',
 		'boom/config.js',

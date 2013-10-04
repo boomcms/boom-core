@@ -1,338 +1,441 @@
-/*
- * jQuery UI Tree
- *
- * @Author Richard Willis
- *
- * @Depends:
- *	jquery.ui.core.js
- *	jquery.ui.widget.js
- *
- */
+/**
+@class
+@name $.ui.tree
+@extends $.ui
+*/
+$.widget('ui.tree',
+	/** @lends $.ui.tree */
+	{
+	/**
+	@property options
+	*/
+	options: {
+		maxSelected: -1,
+		toggleSelected: false,
+		click: true,
+		height: 240,
+		width: 320,
+		useCookie: true,
+		cookieName: 'boom-tree',
+		showRemove: 'auto',
+		showEdit: 'auto',
+		iconHitareaClosed: 'ui-icon-triangle-1-e',
+		iconHitareaOpen: 'ui-icon-triangle-1-s',
+		iconHitareaPlaceholder: 'ui-icon-placeholder',
+		iconHitareaHover: 'ui-icon-hover',
+		iconDefault: 'ui-icon-document',
+		iconToggleChecked: 'ui-icon-check',
+		iconRemove: 'ui-icon-close',
+		iconEdit: 'ui-icon-wrench',
+		anchorActive: 'ui-state-active',
+		onClick: function(event){},
+		onEditClick: function(event){},
+		onRemoveClick: function(event){},
+		onToggle: false
+	},
 
-(function( $ ) {
+	/**
+	@function
+	*/
+	_create : function(){
 
-	$.widget('ui.tree', {
+		$.boom.log( 'tree create' );
 
-		options : {
-			width: 320,
-			theme: 'default',
-			nodeDataURL: '',
-			sortable: false,
-			animateSpeed: 300,
-			checkbox: false,
-			icons: true,
-			parentAsFolder: true
-		},
-		
-		_create : function(){
+		if (this.element[0].nodeName != 'UL') return;
 
-			var self = this;
-			
-			this.theme = this.themes[ this.options.theme ];
+		var self = this;
 
-			this.element
-				.width( this.options.width )
-				.addClass( this.theme.list );
+		this.amountChecked = 0;
 
-			this._bind( this.element );
-		},
+		this.elements = {};
 
-		_bind : function( element ){
+		$.each(this.element[0].className.split(' '), function(){
+			if (/boom-tree-icon/.test(this)) {
+				iconDefault = this.replace(/boom-tree-icon-/, '');
+			};
+		});
 
-			var self = this, theme = this.theme;
-			
-			element
-				.find( 'li' )
-				.addClass( 'ui-helper-clearfix' )
-				.find( 'a' ).each(function(){
+		var $container =
+			$('<div />')
+			.addClass('boom-tree-container ui-widget')
+			.width(this.options.width)
+			.height(this.options.height);
 
-					var list = $( this ).next();
-					
-					list =  ( list.length && list[0].nodeName == 'UL' ) ? list : false;
-					
-					var hitarea = self._buildHitarea( this, list );
+		if (this.options.height != 'auto') {
+			$container.css({ overflow: 'auto' });
+		}
 
-					var icon = self._buildIcon( this, list, hitarea );
+		if (this.options.border) $container.addClass('ui-state-active ui-corner-all');
 
-					var checkbox = self._buildCheckbox( this, list, hitarea, icon );
-			
-					if ( list ) {
+		this.element.wrap($container);
 
-						( !list.children().length ) && list.hide();
+	},
 
-						//  bind custom even to list
-						self._bindList( list, hitarea );
-					}
-					
-					self._bindAnchor( this, list, hitarea );
-				});
-		},
-		
-		_buildHitarea : function( anchor, list ){
+	/**
+	@function
+	*/
+	_init : function(){
 
-			var self = this, theme = this.theme, icon = 'ui-tree-icon-transparent';
+		$.boom.log( 'tree init' );
 
-			if ( list ){
+		var self = this;
 
-				icon = ( list.is(':visible') && list.children().length ) ? 
-					theme.icons.listopen : 
-					theme.icons.listclosed;
+		var render_children = function( $ul ){
+
+			var children = $ul.children( 'li' ).toArray();
+			var i;
+
+			for ( i in children ) {
+				$this = $( children[i] );
+				self._add_item( $this );
+				render_children( $this.children( 'ul' ) );
 			}
+		};
 
-			return $('<span />')
-				.addClass( theme.hitarea + ' ui-icon ' + icon )
-				.data('list', list)
-				.prependTo( anchor );
-		},
+		if ( this.element.is( 'ul' ) ) {
+			render_children( this.element );
+		} else {
+			render_children( this.element.children( 'ul' ) );
+		}
+	},
 
-		_buildIcon : function( anchor, list, hitarea ) {
+	/**
+	@function
+	*/
+	_set_icon : function( $item ) {
 
-			if ( !this.options.icons ) return;
+		var self = this;
+		var defaultIcon;
 
-			var icon = this.theme.icons['default'];
+		return;
 
-			if ( list && this.options.parentAsFolder ){
-				icon = this.theme.folderCollapsed;
-			}
-			
-			var element = 
-				$('<span />')
-				.addClass( 'ui-icon ' + icon );
+		if ( $item.find('> a:first').hasClass( self.options.anchorActive ) && self.options.toggleSelected ) {
 
-			hitarea.after( element );
+			defaultIcon = self.options.iconToggleChecked;
 
-			return element;
-		},
+			self.amountChecked++;
 
-		_buildCheckbox : function( anchor, list, hitarea, icon ){
+		} else {
 
-			if ( !this.options.checkbox ) return false;
+			defaultIcon = self.options.iconDefault;
+		}
 
-			var element = 
-				$('<input type="checkbox" />')
-				.addClass( 'ui-helper-reset' + ' ' + this.theme.checkbox )
-				.attr('id', $( anchor ).attr('rel') );
+		if ( !$item.find( '.' + defaultIcon ).length ) {
+			$('<span />')
+				.addClass('ui-icon ' + defaultIcon)
+				.prependTo( $item );
+		}
 
-			var el = icon || hitarea;
+		return self;
+	},
 
-			el.after( element );
+	/**
+	@function
+	*/
+	_set_toggle : function( $item ) {
 
-			return element;
-		},
+		var self = this;
 
-		_bindList : function( list, hitarea ){
-
-			var self = this;
-
-			$( list )
-			.data('hitarea', hitarea)
-			.bind('toggle', function( event ){
-
-				self._toggle( this, event );
+		$('<span />')
+			.addClass('boom-tree-hitarea ui-icon')
+			.bind('boom-tree.toggle', function(){
+				self.toggle( $item );
 			})
-			.bind('open', function( event ){
+			.click(function(event){
+				self._trigger('toggle', event, { hitarea: this });
 
-				self._open( this, event );
-			})
-			.bind('close', function( event ){
-
-				self._close( this, event );
-			});
-			
-			if ( this.options.sortable && $.isFunction( $.fn.sortable ) ) {
-
-				$([ this.element, this.element.find('ul') ]).sortable({
-					placeholder: 'ui-state-highlight ui-tree-placeholder',
-					connectWith: self.element.find('ul').not( this )
-				}).disableSelection();
-			}
-		},
-
-		_bindAnchor : function( anchor, list ){
-
-			var self = this, theme = this.theme;
-
-			$( anchor )
-			.click(function( event ){
-
-				// hitarea
-				if ( new RegExp( theme.hitarea ).test( event.target.className ) ) {
-
-					self._toggle( list, event );
-
-					return false;
-				}
-
-				// checkbox
-				else if ( new RegExp( theme.checkbox ).test( event.target.className ) ) {
-
-					$( this ).toggleClass( theme.itemselected, $(event.target).is(':checked') );
-
-					return;
-				}
-
-				else {
-
-					$( this ).toggleClass( self.theme.itemselected );
-
-					if ( self.options.checkbox ) {
-				
-						var checkbox = $( this ).find( '.' + theme.checkbox );
-				
-						if ( $( this ).hasClass( theme.itemselected ) ) {
-							checkbox.attr('checked', 'checked');
-						} else {
-							checkbox.removeAttr('checked');
-						}
-					}
-					
-					self._trigger( 'click', event, this );
-
-					return false;
-				}
+				$( this ).trigger( 'boom-tree.toggle' );
 			})
 			.hover(
 				function(){
-
-					$( this ).addClass( 'ui-state-hover ui-corner-all' );
+					$(this).addClass(self.options.iconHitareaHover);
 				},
 				function(){
-
-					$( this ).removeClass( 'ui-state-hover' );
+					$(this).removeClass(self.options.iconHitareaHover);
 				}
 			)
-			.bind('toggle', function( event, tree ){
+			.prependTo( $item );
 
-			});
-		},
+			return self;
+	},
 
-		_open : function( list, event ){
+	/**
+	@function
+	*/
+	_set_edit : function( $item ) {
 
-			list = $( list );
+		var self = this;
+		var re = /tree-remove/;
 
-			var self = this, theme = this.theme, hitarea = list.data('hitarea');
+		if (self.options.showEdit === true || (self.options.showEdit === 'auto' && re.test(self.element[0].className)))
+		{
+			$('<span />', {
+				title: 'Edit'
+			})
+				.css({ margin: 0 })
+				.bind('boom-tree.edit', function(event){
 
-			function open( hitarea ){
+					if (self.options.onEditClick) {
 
-				hitarea.addClass( theme.icons.listopen );
+						self.options.onEditClick(event);
+					}
+				})
+				.addClass('ui-icon ' + self.options.iconEdit + ' ui-helper-right')
+				.click(function(event){
+					$( this ).trigger('boom-tree.edit', event);
+				})
+				.prependTo( $item );
+		}
 
-				list.slideDown( self.options.animateSpeed );
+		return self;
+	},
 
-				self._trigger('open', event, { list: list });
-			}
+	/**
+	@function
+	*/
+	_set_remove : function( $item ) {
 
-			if ( !list.children().length && self.options.nodeDataURL ) {
+		var self = this;
+		var re = /tree-edit/;
 
-				function complete( response, status, xhr ){
+		if (self.options.showRemove === true || (self.options.showRemove === 'auto' && re.test(self.element[0].className)))
+		{
+			$('<span />', {
+				title: 'Remove'
+			})
+				.bind('boom-tree.remove', function(event){
 
-					if ( status == 'error' ) {
+					if (self.options.onRemoveClick) {
+						if (!self.options.onRemoveClick(event)) return;
+					}
 
-						alert('Error loading the request.');
+					$( this ).parent().fadeOut(function(){
+						$( this ).remove();
+					});
+				})
+				.addClass('ui-icon ' + self.options.iconRemove + ' ui-helper-right')
+				.click(function(event){
+					$( this ).trigger('boom-tree.remove', event);
+				})
+				.prependTo( $item );
+		}
+
+		return self;
+	},
+
+	/**
+	@function
+	*/
+	_bind_events : function( $item ) {
+
+		var self = this;
+
+		var anchor =
+		$item
+			.addClass('ui-helper-clearfix ui-state-default')
+			.find('> a')
+			.off('click hover')
+			.on( 'click', function(event){
+
+				var tag = this.href.match(/\/([0-9]+)$/);
+
+				event.data = {
+					//tag: this.href.match(/\/([0-9]+)$/)[1]
+					rid: this.id.replace(/^(tag|page)_/, ''),
+					tag: (tag !== null) ? tag[1] : ''
+				};
+
+				if (self.options.preventDefault) {
+
+					event.preventDefault();
+
+				}
+
+				if (self.options.onClick) {
+
+					self.options.onClick.call(this, event);
+				}
+
+				var anchor = $(this);
+
+				if (anchor.hasClass(self.options.anchorActive) === true){
+
+					self.amountChecked--;
+
+					if (self.options.toggleSelected) {
+
+						$.boom.log( 'removing active class' );
+
+						anchor
+							.removeClass(self.options.anchorActive)
+							.siblings('.' + self.options.iconToggleChecked)
+							.removeClass(self.options.iconToggleChecked)
+							.addClass(self.options.iconDefault);
+					}
+				} else {
+
+					if (self.amountChecked === self.options.maxSelected) {
 
 						return;
 					}
 
-					hitarea.removeClass( 'ui-tree-load' );
+					self.amountChecked++;
 
-					self._bind( list );
-
-					open( hitarea );
+					if (self.options.toggleSelected) {
+						anchor
+						.addClass(self.options.anchorActive)
+						.siblings('.' + self.options.iconDefault)
+						.removeClass(self.options.iconDefault)
+						.addClass(self.options.iconToggleChecked);
+					}
 				}
+			})
+			.removeClass('ui-state-hover')
+			.hover(
+				function(){
+					$(this).addClass('ui-state-hover');
+				},
+				function(){
+					$(this).removeClass('ui-state-hover');
+				}
+			);
 
-				hitarea.addClass( 'ui-tree-load' );
+		return self;
+	},
 
-				list.hide().load( self.options.nodeDataURL, { page: hitarea.parent().attr('rel') || 0 }, complete );
+	/**
+	@function
+	*/
+	_add_item : function( $item ) {
 
-			} else open( hitarea );
-		},
+		var self = this;
 
-		_close : function( list, event ){
+		self._set_icon( $item );
 
-			list = $( list );
+		if ( !$item.find( '.boom-tree-hitarea' ).length) {
 
-			list
-				.slideUp( this.options.animateSpeed )
-				.data('hitarea')
-					.removeClass( this.theme.icons.listopen )
-					.addClass( this.theme.icons.listclosed );
+			self._set_toggle( $item );
 
-			this._trigger('close', event, { list: list });
-		},
-
-		_toggle : function( list, event ){
-
-			list = $( list );
-
-			if ( list.length ){
-
-				list.is(':visible') ? this._close( list, event ) : this._open( list, event );
-			}
-		},
-
-		selected : function(){
-
-			return this.element.find( '.' + this.theme.itemselected );
-		},
-
-		expand : function(){
-	
-			this.element.find( 'ul' ).trigger( 'open' );
-		},
-
-		collapse : function(){
-
-			this.element.find( 'ul' ).trigger( 'close' );
-		},
-
-		destroy : function(){
-
-			this.element
-				.removeClass( this.theme.list )
-				.find( 'li' )
-					.removeClass( 'ui-helper-clearfix' )
-				.find( 'a' )
-					.removeClass( this.theme.itemselected + ' ui-corner-all' )
-					.unbind()
-				.find( '.ui-icon' )
-					.remove()
-					.end()
-				.find( '.' + this.theme.checkbox )
-					.remove();
-
-			$.Widget.prototype.destroy.apply(this, arguments);
 		}
-	});
 
-	$.extend($.ui.tree.prototype, { 
+		if (!$item.find('.' + self.options.iconRemove).length) {
 
-		themes: {
-			'default': { 
-				list: 'ui-helper-reset ui-tree ui-widget ui-widget-content ui-corner ui-corner-all',
-				hitarea: 'ui-tree-hitarea',
-				folderCollapsed: 'ui-icon-folder-collapsed',
-				folderOpen: 'ui-icon-folder-open',
-				itemselected: 'ui-tree-item-active',
-				checkbox: 'ui-tree-checkbox',
-				icons: {
-					'default' : 'ui-icon-document',
-					'listopen': 'ui-icon-triangle-1-s',
-					'listclosed': 'ui-icon-triangle-1-e'
-				}
-			},
-			minimal: {
-				list: 'ui-helper-reset ui-tree ui-widget ui-widget-content ui-corner ui-corner-all',
-				hitarea: 'ui-tree-hitarea',
-				folderCollapsed: 'ui-icon-folder-collapsed',
-				folderOpen: 'ui-icon-folder-open',
-				itemselected: 'ui-tree-item-active',
-				checkbox: 'ui-tree-checkbox',
-				icons: {
-					'default' : 'ui-icon-document',
-					'listopen': 'ui-icon-minus',
-					'listclosed': 'ui-icon-plus'
-				}
-			}
+			self._set_edit( $item );
+			self._set_remove( $item );
+
 		}
-	});
 
-})( jQuery );
+		self._bind_events( $item );
+
+		self.toggle($item, false);
+
+		return self;
+	},
+
+	/**
+	@function
+	*/
+	toggle: function( $item, toggle ) {
+
+		var self = this;
+		var children_ready = $.Deferred();
+		var id = $item.find('> a').attr('rel');
+		var childList = $item.find( '> ul' );
+
+		if ( childList.length == 0 && self.options.onToggle) {
+
+			//FIXME: hack to pass page IDs around
+			self.options.onToggle
+				.call(this, id)
+				.done( function( data ){
+
+					if ( $item.find( '> ul' ).length == 0 ) {
+						$item
+							.append( data.childList )
+							.find( '> ul > li' ).each( function( i, child ){
+
+								var $child = $( child );
+								self
+									._set_edit( $child )
+									._set_remove( $child )
+									._set_icon( $child );
+								if ( $child.data( 'children' ) ) {
+									self._set_toggle( $child );
+									$child
+										.find( '.boom-tree-hitarea' )
+										.addClass( self.options.iconHitareaClosed );
+								}
+								self._bind_events( $child );
+							})
+							.end()
+							.find( '> .boom-tree-hitarea' )
+							.trigger( 'boom-tree.toggle' );
+					}
+					self._toggle( $item, toggle, $item.find( '> ul' ));
+				});
+		} else {
+			self._toggle( $item, toggle, childList);
+		}
+
+
+	},
+
+	/**
+	@function
+	*/
+	_toggle : function( $item, toggle, childList ){
+		toggle = (toggle === undefined) ? true : false;
+
+		var hitarea = $item.find('> .boom-tree-hitarea');
+		var id = $item.find('> a').attr('rel');
+
+		if (toggle) {
+			childList.toggle();
+		}
+
+		if (!childList.length) {
+
+			hitarea.addClass(this.options.iconHitareaPlaceholder);
+
+		} else if (childList.is(':hidden')) {
+			hitarea
+				.addClass(this.options.iconHitareaClosed)
+				.removeClass(this.options.iconHitareaOpen);
+
+		} else {
+			hitarea
+				.addClass(this.options.iconHitareaOpen)
+				.removeClass(this.options.iconHitareaClosed);
+		}
+	},
+
+	/**
+	@function
+	*/
+	add_item : function( item, parent ){
+
+		var self = this;
+
+		parent = (parent === undefined) ? self.element : parent;
+
+		self._add_item( $( item ).appendTo( parent ) );
+
+	},
+
+	/**
+	@function
+	*/
+	destroy : function(){
+
+		$.Widget.prototype.destroy.apply(this, arguments);
+
+		this.element
+			.find('li')
+				.each(function(){
+					$(this).removeClass('ui-helper-clearfix ui-state-default')
+					.find('.ui-icon').remove();
+				})
+			.end()
+			.unwrap();
+	}
+});
