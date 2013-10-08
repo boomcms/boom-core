@@ -366,7 +366,7 @@ class Boom_Model_Page extends Model_Taggable
 			return $this->description;
 		}
 
-		return Chunk::factory('text', 'standfirst', $this)->text();
+		return strip_tags(Chunk::factory('text', 'standfirst', $this)->text());
 	}
 
 	/**
