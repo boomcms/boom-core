@@ -337,8 +337,19 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 	*/
 	_insert_textarea : function( element ) {
 		var original_html = element.html();
-		element
-			.html( '<textarea id="b-wh5" style="border: 1px solid #000; overflow: hidden; width: 100%; height: ' + element.innerHeight() + 'px;">' + original_html + '</textarea>');
+		var offset = element.offset();
+
+		var e = $('<textarea id="b-wh5" style="border: 1px solid #000; overflow: hidden;">' + original_html + '</textarea>');
+		e.css({
+			position : 'absolute',
+			top : offset.top,
+			left : offset.left,
+			'z-index' : 1001,
+			width : element.outerWidth(),
+			height : element.outerHeight()
+		});
+
+		top.$('body').prepend(e);
 	},
 
 	/**
