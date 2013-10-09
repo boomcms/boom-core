@@ -229,10 +229,9 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 	@param {Object} element The element being edited.
 	*/
 	remove : function( element ){
-
 		$.boom.page.toolbar.show();
 		top.$( '#b-wh5, #wysihtml5-toolbar, iframe.wysihtml5-sandbox' ).remove();
-		element.removeAttr( 'contenteditable' );
+
 		self.instance = null;
 	},
 
@@ -241,8 +240,16 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 	@param {Object} element The element being edited.
 	*/
 	apply : function( element ){
-
 		var self = this;
+
+		var e = top.$('#b-editor-inline');
+
+		if (e.length) {
+			element.html(e.html());
+			element.css('visibility', 'none');
+
+			e.remove();
+		}
 
 		self.edited.resolve( self.get_content() );
 
@@ -259,6 +266,11 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 		var self = this;
 
 		if ( self.mode == 'text' || self.mode == 'inline' ) {
+			var e = top.$('#b-editor-inline');
+			if (e.length) {
+				element.css('visibility', 'none');
+				e.remove();
+			}
 			var content = element.text();
 		} else {
 			var content = self.get_content();
@@ -365,7 +377,7 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 			.done( function( rid ) {
 				if ( rid > 0 ) {
 					$.boom.page.toolbar.minimise();
-					
+
 					$.post( '/asset/embed/' + rid )
 					.done( function( response ){
 						img.replaceWith(response);
@@ -508,14 +520,28 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 		selected_node : null,
 
 		/** @function */
-		init : function( element ) {
-
+		init : function( old_element ) {
+			var element = old_element.clone();
+			var offset = old_element.offset();
 			var self = this;
+
 			this.toolbar = top.$( '#wysihtml5-toolbar');
 			this.rangy = top.rangy;
 
+			top.$('body').prepend(element);
+			old_element.css('visibility', 'hidden');
+
 			element
+				.attr('id', 'b-editor-inline')
 				.attr( 'contenteditable', 'true' )
+				.css({
+					position : 'absolute',
+					top : offset.top,
+					left : offset.left,
+					'z-index' : 1001,
+					width : old_element.outerWidth(),
+					height : old_element.outerHeight()
+				})
 				.on( 'click', 'a, b, strong, i, em', function( event ){
 					event.preventDefault();
 					event.stopPropagation();
