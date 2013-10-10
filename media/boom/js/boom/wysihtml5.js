@@ -346,7 +346,7 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 			left : offset.left,
 			'z-index' : 1001,
 			width : element.outerWidth(),
-			height : element.outerHeight()
+			'min-height' : element.outerHeight()
 		});
 
 		top.$('body').prepend(e);
@@ -551,7 +551,7 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 					left : offset.left,
 					'z-index' : 1001,
 					width : old_element.outerWidth(),
-					height : old_element.outerHeight()
+					'min-height' : old_element.outerHeight()
 				})
 				.on( 'click', 'a, b, strong, i, em', function( event ){
 					event.preventDefault();
