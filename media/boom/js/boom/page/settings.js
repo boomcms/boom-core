@@ -612,11 +612,11 @@ $.widget('boom.page', $.boom.page, {
 
 									$.boom.page.settings.save(
 										'/cms/page/settings/children/' + $.boom.page.options.id,
-										$(this).find('form').serialize()
+										$("form.b-form-settings").serialize()
 									).done(function() {
 										$.boom.page.settings.save(
 											url,
-											{csrf: $("this").find('input[name=csrf]').val(), sequences: sequences},
+											{csrf: $("form.b-form-settings").find('input[name=csrf]').val(), sequences: sequences},
 											"Child page ordering saved, reloading page."
 										).done(function(){
 											setTimeout(function() {
