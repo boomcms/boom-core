@@ -229,10 +229,9 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 	@param {Object} element The element being edited.
 	*/
 	remove : function( element ){
-
 		$.boom.page.toolbar.show();
 		top.$( '#b-wh5, #wysihtml5-toolbar, iframe.wysihtml5-sandbox' ).remove();
-		element.removeAttr( 'contenteditable' );
+
 		self.instance = null;
 	},
 
@@ -241,8 +240,16 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 	@param {Object} element The element being edited.
 	*/
 	apply : function( element ){
-
 		var self = this;
+
+		var e = top.$('#b-editor-inline');
+
+		if (e.length) {
+			element.html(e.html());
+			element.css('visibility', 'none');
+
+			e.remove();
+		}
 
 		self.edited.resolve( self.get_content() );
 
@@ -259,6 +266,11 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 		var self = this;
 
 		if ( self.mode == 'text' || self.mode == 'inline' ) {
+			var e = top.$('#b-editor-inline');
+			if (e.length) {
+				element.css('visibility', 'none');
+				e.remove();
+			}
 			var content = element.text();
 		} else {
 			var content = self.get_content();
@@ -325,8 +337,19 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 	*/
 	_insert_textarea : function( element ) {
 		var original_html = element.html();
-		element
-			.html( '<textarea id="b-wh5" style="border: 1px solid #000; overflow: hidden; width: 100%; height: ' + element.innerHeight() + 'px;">' + original_html + '</textarea>');
+		var offset = element.offset();
+
+		var e = $('<textarea id="b-wh5" style="border: 1px solid #000; overflow: hidden;">' + original_html + '</textarea>');
+		e.css({
+			position : 'absolute',
+			top : offset.top,
+			left : offset.left,
+			'z-index' : 1001,
+			width : element.outerWidth(),
+			'min-height' : element.outerHeight()
+		});
+
+		top.$('body').prepend(e);
 	},
 
 	/**
@@ -508,14 +531,28 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 		selected_node : null,
 
 		/** @function */
-		init : function( element ) {
-
+		init : function( old_element ) {
+			var element = old_element.clone();
+			var offset = old_element.offset();
 			var self = this;
+
 			this.toolbar = top.$( '#wysihtml5-toolbar');
 			this.rangy = top.rangy;
 
+			top.$('body').prepend(element);
+			old_element.css('visibility', 'hidden');
+
 			element
+				.attr('id', 'b-editor-inline')
 				.attr( 'contenteditable', 'true' )
+				.css({
+					position : 'absolute',
+					top : offset.top,
+					left : offset.left,
+					'z-index' : 1001,
+					width : old_element.outerWidth(),
+					'min-height' : old_element.outerHeight()
+				})
 				.on( 'click', 'a, b, strong, i, em', function( event ){
 					event.preventDefault();
 					event.stopPropagation();
