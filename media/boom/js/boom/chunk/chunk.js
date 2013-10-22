@@ -57,7 +57,10 @@ $.widget('ui.chunk',
 		return $.post(this._url('remove'), this._slot_data({}))
 			.done(function(data) {
 				$.boom.loader.hide();
-				self._update_html(data);
+				self._update_html(data.html);
+				$.boom.page.status.set(data.status);
+				$.boom.loader.hide();
+				$.boom.growl.show("Page content saved");
 			});
 	},
 
