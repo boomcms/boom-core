@@ -133,7 +133,8 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 							var frame =  self.instance.composer.iframe;
 
 							$( frame )
-								.css( 'border', '1px solid #333');
+								.css('border', '1px solid #333')
+								.css('font-size', '15px');
 
 							resizeIframe();
 
