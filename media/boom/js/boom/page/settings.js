@@ -90,6 +90,7 @@ $.widget('boom.page', $.boom.page, {
 					title: 'Search Settings',
 					width: 500,
 					callback : function(){
+						var $this = $(this);
 
 						$.boom.page.settings.save(
 							'/cms/page/settings/search/' + $.boom.page.options.id,
@@ -206,9 +207,9 @@ $.widget('boom.page', $.boom.page, {
 				//  Each url in the list has a radio button whic toggles whether the url is a primary url
 				// and a checkbox to toggle whether a secondary url redirects to the primary url.
 				$('.b-urls-primary, .b-urls-redirect').change(function(){
-					$url = $(this).closest('li');
-					redirect = $url.find('.b-urls-redirect').is(':checked')? 1: 0;
-					primary = $url.find('.b-urls-primary').is(':checked')? 1 : 0;
+					var $url = $(this).closest('li');
+					var redirect = $url.find('.b-urls-redirect').is(':checked')? 1: 0;
+					var primary = $url.find('.b-urls-primary').is(':checked')? 1 : 0;
 
 					$.post('/cms/page/urls/save/' + $.boom.page.options.id, {
 						url_id :  $url.attr('data-id'),
