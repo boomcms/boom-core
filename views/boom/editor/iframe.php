@@ -2,7 +2,7 @@
 
 <style>
 	.b-editable:hover {
-		background-color: #FFD200;
+		background-color: #FFD200 !important;
 		cursor: url(/media/boom/img/cms/chunk_edit_icon.png), pointer !important;
 		border: 2px dotted black !important;
 		color: black !important;
