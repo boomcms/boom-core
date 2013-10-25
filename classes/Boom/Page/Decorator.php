@@ -17,6 +17,7 @@ class Boom_Page_Decorator
 	public function __construct(Model_Page $page)
 	{
 		$this->_page = $page;
+		$this->_get_chunk_data();
 	}
 
 	public function __call($name, $arguments)
@@ -38,8 +39,7 @@ class Boom_Page_Decorator
 
 		foreach ($chunks as $chunk)
 		{
-			$property = "_{$chunk->slotname}";
-
+			$property = $chunk->slotname;
 			$this->$property = $chunk->text;
 		}
 	}
