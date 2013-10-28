@@ -39,6 +39,17 @@ class Boom_Model_Tag extends ORM
 		}
 	}
 
+	public function count_pages()
+	{
+		$result = DB::select(array(DB::expr('count(*)'), 'c'))
+			->from('pages_tags')
+			->where('tag_id', '=', $this->id)
+			->execute($this->_db)
+			->as_array();
+
+		return $result[0]['c'];
+	}
+
 	public function create(Validation $validation = NULL)
 	{
 		$this->check_slugs_are_defined();
