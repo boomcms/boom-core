@@ -223,16 +223,19 @@ abstract class Boom_Chunk
 		return new $class($page, $chunk, $slotname);
 	}
 
-	/**
-	 * Finds a chunk model depending on the type, slotname, page version.
-	 * This is a helper function which can be called statically anywhere we need to find a chunk.
-	 *
-	 * @param	string		$type		Type of chunk, e.g. text, feature.
-	 * @param	string		$slotname	The name of the slot that the chunk belongs to.
-	 * @param	Model_Page_Version	$page_version	The page version that the chunk belongs to.
-	 * @return 	Chunk
-	 */
 	public static function find($type, $slotname, Model_Page_Version $version)
+	{
+		if (is_array($slotname))
+		{
+			return Chunk::find_multiple($type, $slotname, $version);
+		}
+		else
+		{
+			return Chunk::find_single($type, $slotname, $version);
+		}
+	}
+
+	public static function find_single($type, $slotname, Model_Page_Version $version)
 	{
 		// Get the name of the model that we're looking.
 		// e.g. if type is text we want a chunk_text model
@@ -243,6 +246,19 @@ abstract class Boom_Chunk
 			->where('slotname', '=', $slotname)
 			->where('page_vid', '=', $version->id)
 			->find();
+	}
+
+	public static function find_multiple($type, $slotname, Model_Page_Version $version)
+	{
+		// Get the name of the model that we're looking.
+		// e.g. if type is text we want a chunk_text model
+		$model = (strpos($type, "Chunk_") === 0)? ucfirst($type) : "Chunk_" . ucfirst($type);
+
+		return ORM::factory($model)
+			->with('target')
+			->where('slotname', 'in', $slotname)
+			->where('page_vid', '=', $version->id)
+			->find_all();
 	}
 
 	/**
