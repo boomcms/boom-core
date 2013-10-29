@@ -59,6 +59,7 @@ class Boom_Controller_Page_Html extends Controller_Page
 		foreach ($chunks as $type => $slotnames)
 		{
 			$class = "Chunk_".ucfirst($type);
+			$models = Chunk::find($type, $slotnames, $this->page->version());
 
 			$found = array();
 			foreach ($models as $model)
