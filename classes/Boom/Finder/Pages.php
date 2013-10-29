@@ -48,14 +48,14 @@ class Boom_Finder_Pages extends Finder
 		return $this;
 	}
 
-	public function get_results($limit = NULL)
+	public function get_results($limit = NULL, $offset = NULL)
 	{
 		if ( ! $this->_sort_applied)
 		{
 			$this->apply_default_sort();
 		}
 
-		return parent::get_results($limit);
+		return parent::get_results($limit, $offset);
 	}
 
 	public function sorted_by_title()
