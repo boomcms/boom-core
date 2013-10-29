@@ -258,7 +258,8 @@ abstract class Boom_Chunk
 			->with('target')
 			->where('slotname', 'in', $slotname)
 			->where('page_vid', '=', $version->id)
-			->find_all();
+			->find_all()
+			->as_array();
 	}
 
 	/**
