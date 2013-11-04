@@ -33,6 +33,11 @@ class Boom_Chunk_Slideshow extends Chunk
 
 	public function slides()
 	{
-		return $this->_chunk->slides->find_all();
+		return $this->_chunk->slides();
+	}
+
+	public function thumbnail()
+	{
+		return $this->_chunk->thumbnail();
 	}
 }

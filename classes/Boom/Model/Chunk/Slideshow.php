@@ -118,4 +118,19 @@ class Boom_Model_Chunk_Slideshow extends Model_Chunk
 
 		return $this;
 	}
+
+	public function thumbnail()
+	{
+		if ($this->_slides === NULL)
+		{
+			return $this->slides
+				->with('asset')
+				->find()
+				->asset;
+		}
+		else
+		{
+			return $this->_slides[0]->asset;
+		}
+	}
 }
