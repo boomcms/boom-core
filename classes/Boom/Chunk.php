@@ -131,6 +131,13 @@ abstract class Boom_Chunk
 		return preg_replace("|<(.*?)>|", "<$1 $attributes_string>", $html, 1);
 	}
 
+	public function defaults(array $values)
+	{
+		$this->_chunk->values($values);
+
+		return $this;
+	}
+
 	/**
 	 * Sets wether the chunk should be editable.
 	 *

@@ -8,6 +8,12 @@
 class Boom_Controller_Page_Html extends Controller_Page
 {
 	protected $_chunks = array();
+	protected $_chunk_defaults = array(
+		'text' => array(
+			'bodycopy' => array('is_block' => TRUE),
+			'bodycopy2' => array('is_block' => TRUE),
+		),
+	);
 
 	/**
 	 *
@@ -24,6 +30,7 @@ class Boom_Controller_Page_Html extends Controller_Page
 		$this->template = View::factory($template->filename());
 
 		$this->_chunks = $this->_load_chunks($this->_chunks);
+		$this->_set_chunk_defaults();
 
 		$this->_bind_view_globals();
 	}
@@ -77,5 +84,17 @@ class Boom_Controller_Page_Html extends Controller_Page
 		}
 
 		return $chunks;
+	}
+
+	protected function _set_chunk_defaults()
+	{
+		foreach ($this->_chunk_defaults as $type => $defaults)
+		{
+			$slotnames = array_keys($defaults);
+			foreach ($slotnames as $slotname)
+			{
+				isset($this->_chunks[$type][$slotname]) AND $this->_chunks[$type][$slotname]->defaults($this->_chunk_defaults[$type][$slotname]);
+			}
+		}
 	}
 }

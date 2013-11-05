@@ -94,7 +94,7 @@ $.widget('ui.chunkText', $.ui.chunk,
 			this.content = this.element.html();
 		}
 
-		return { title : this.title, text : this.content };
+		return { title : this.title, text : this.content, is_block : this.element.attr('data-boom-is-block') };
 	},
 
 	/**

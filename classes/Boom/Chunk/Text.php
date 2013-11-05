@@ -61,6 +61,13 @@ class Boom_Chunk_Text extends Chunk
 		}
 	}
 
+	public function attributes()
+	{
+		return array(
+			$this->_attribute_prefix.'is-block' => (int) $this->_chunk->is_block,
+		);
+	}
+
 	/**
 	 *
 	 * @uses Model_Chunk_Text::unmunge()
