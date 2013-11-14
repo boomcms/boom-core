@@ -7,47 +7,38 @@
  */
 class Boom_Model_Chunk_Text extends Model_Chunk
 {
-	/**
-	* Properties to create relationships with Kohana's ORM
-	*/
 	protected $_table_columns = array(
 		'text'		=>	'',
 		'id'		=>	'',
 		'title'		=>	'',
 		'slotname'	=>	'',
 		'page_vid' => '',
+		'is_block'	=>	'',
 	);
 
 	protected $_table_name = 'chunk_texts';
 
 	/**
-	 * Clean the text with HTML Purifier.
 	 *
-	 * @param string $text
 	 * @return string
 	 */
 	public function clean_text()
 	{
-		if ($this->slotname == 'standfirst')
-		{
-			// For standfirsts remove all HTML tags.
-			$this->_object['text'] = strip_tags($this->_object['text']);
-		}
-		elseif (substr($this->slotname, 0, 8) == 'bodycopy')
-		{
-			// For the bodycopy clean the HTML.
-			require_once Kohana::find_file('vendor', 'htmlpurifier/library/HTMLPurifier.auto');
+		$rules = Kohana::$config->load('text')->get('clean');
 
-			$config = HTMLPurifier_Config::createDefault();
-			$config->loadArray(Kohana::$config->load('htmlpurifier'));
-
-			$purifier = new HTMLPurifier($config);
-			$this->_object['text'] = $purifier->purify($this->_object['text']);
-		}
-		else
+		foreach ($rules as $property => $values)
 		{
-			// For everything else allow b, i , and a tags.
-			$this->_object['text'] = strip_tags($this->_object['text'], '<b><i><a>');
+			foreach ($values as $value => $functions)
+			{
+				if ($this->$property == $value)
+				{
+					foreach ($functions as $func)
+					{
+						$this->_object['text'] = call_user_func($func, $this->_object['text']);
+					}
+					
+				}
+			}
 		}
 
 		return $this;
@@ -101,22 +92,8 @@ class Boom_Model_Chunk_Text extends Model_Chunk
 	public function filters()
 	{
 		return array(
-			'text' => array(
-				array(
-					function($text)
-					{
-						return str_replace('&nbsp;', ' ', $text);
-					}
-				),
-			),
 			'title'	=> array(
 				array('strip_tags'),
-				array(
-					function($text)
-					{
-						return str_replace('&nbsp;', ' ', $text);
-					}
-				),
 			)
 		);
 	}

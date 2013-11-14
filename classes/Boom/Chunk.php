@@ -131,6 +131,13 @@ abstract class Boom_Chunk
 		return preg_replace("|<(.*?)>|", "<$1 $attributes_string>", $html, 1);
 	}
 
+	public function defaults(array $values)
+	{
+		$this->_chunk->values($values);
+
+		return $this;
+	}
+
 	/**
 	 * Sets wether the chunk should be editable.
 	 *
@@ -225,6 +232,18 @@ abstract class Boom_Chunk
 
 	public static function find($type, $slotname, Model_Page_Version $version)
 	{
+		if (is_array($slotname))
+		{
+			return Chunk::find_multiple($type, $slotname, $version);
+		}
+		else
+		{
+			return Chunk::find_single($type, $slotname, $version);
+		}
+	}
+
+	public static function find_single($type, $slotname, Model_Page_Version $version)
+	{
 		$model = (strpos($type, "Chunk_") === 0)? ucfirst($type) : "Chunk_" . ucfirst($type);
 
 		$query = ORM::factory($model)
@@ -240,6 +259,20 @@ abstract class Boom_Chunk
 				->where('slotname', '=', $slotname)
 				->find();
 		}
+	}
+
+	public static function find_multiple($type, $slotname, Model_Page_Version $version)
+	{
+		// Get the name of the model that we're looking.
+		// e.g. if type is text we want a chunk_text model
+		$model = (strpos($type, "Chunk_") === 0)? ucfirst($type) : "Chunk_" . ucfirst($type);
+
+		return ORM::factory($model)
+			->with('target')
+			->where('slotname', 'in', $slotname)
+			->where('page_vid', '=', $version->id)
+			->find_all()
+			->as_array();
 	}
 
 	/**

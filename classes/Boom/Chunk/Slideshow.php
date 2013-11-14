@@ -30,4 +30,14 @@ class Boom_Chunk_Slideshow extends Chunk
 	{
 		return $this->_chunk->loaded() AND count($this->_chunk->slides()) > 0;
 	}
+
+	public function slides()
+	{
+		return $this->_chunk->slides();
+	}
+
+	public function thumbnail()
+	{
+		return $this->_chunk->thumbnail();
+	}
 }
