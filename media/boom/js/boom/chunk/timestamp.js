@@ -40,16 +40,9 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 			id: self.element[0].id + '-boom-dialog',
 			title: 'Edit date / time',
 			onLoad : function() {
-				if (data.format) {
-					$('#format').val(data.format);
-				}
-
-				var time;
-				if (data.timestamp) {
-					time = new Date(data.timestamp * 1000);
-				} else {
-					time = new Date();
-				}
+				data.format && $('#format').val(data.format);
+				
+				var time = (data.timestamp)? new Date(data.timestamp * 1000) : new Date();
 
 				$( "#timestamp" ).datepicker('setDate', time);
 			},
@@ -57,10 +50,10 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 				self.destroy();
 			},
 			callback: function(){
-				var format = $('#format').val();
-				var stringDate = $('#timestamp').val();
-				var dateyDate = new Date(stringDate);
-				var timestamp = dateyDate.valueOf() / 1000;
+				var	format = $('#format').val(),
+					stringDate = $('#timestamp').val(),
+					dateyDate = new Date(stringDate),
+					timestamp = dateyDate.valueOf() / 1000;
 
 				self
 					.insert(format, timestamp)
