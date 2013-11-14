@@ -45,7 +45,6 @@ $.widget('boom.page', {
 
 				$.boom.dialog.open({
 					url: '/cms/page/settings/navigation/' + $.boom.page.options.id + '?vid=' + $.boom.page.options.vid,
-					// cache: true,
 					title: 'Navigation',
 					width: 570,
 					onLoad : function() {
@@ -85,7 +84,6 @@ $.widget('boom.page', {
 
 				$.boom.dialog.open({
 					url: '/cms/page/settings/search/' + $.boom.page.options.id + '?vid=' + $.boom.page.options.vid,
-					// cache: true,
 					title: 'Search Settings',
 					width: 500,
 					callback : function(){
@@ -117,7 +115,6 @@ $.widget('boom.page', {
 
 				$.boom.dialog.open({
 					url: '/cms/tags/page/list/' + $.boom.page.options.id,
-					// cache: true,
 					title: 'Page tags',
 					width: 440,
 					callback: function(){
@@ -157,7 +154,6 @@ $.widget('boom.page', {
 
 				$.boom.dialog.open({
 					url: '/cms/page/urls/list/' + $.boom.page.options.id,
-					// cache: true,
 					title: 'URLs',
 					width: 440,
 					buttons: [
@@ -172,7 +168,6 @@ $.widget('boom.page', {
 									event: event,
 									title: 'Add URL',
 									width: 500,
-									// cache: true,
 									callback: function(){
 
 										self.add();
@@ -307,8 +302,6 @@ $.widget('boom.page', {
 
 					return $.post( form_url )
 					.done( function( response ) {
-						//$.boom.dialog.destroy( move_dialog );
-
 						$.boom.loader.hide();
 					});
 				});
@@ -360,7 +353,6 @@ $.widget('boom.page', {
 					url: url + '?vid=' + $.boom.page.options.vid,
 					title: 'Page feature image',
 					width: 300,
-					// cache: true,
 					buttons: [
 						{
 							text: 'Add',
@@ -456,7 +448,6 @@ $.widget('boom.page', {
 					url: url + '?vid=' + $.boom.page.options.vid,
 					title: 'Page template',
 					width: 300,
-					// cache: true,
 					callback: function(){
 
 						$.boom.page.settings.save(
@@ -492,7 +483,6 @@ $.widget('boom.page', {
 
 				$.boom.dialog.open({
 					url: url + '?vid=' + $.boom.page.options.vid,
-					// cache: true,
 					title: 'Page visibility',
 					width: 440,
 					callback: function(){
@@ -579,7 +569,6 @@ $.widget('boom.page', {
 
 				$.boom.dialog.open({
 					url: '/cms/page/settings/children/' + $.boom.page.options.id + '?vid=' + $.boom.page.options.vid,
-					// cache: true,
 					title: 'Child page settings',
 					width: '510px',
 					open: function() {
@@ -654,7 +643,6 @@ $.widget('boom.page', {
 
 				$.boom.dialog.open({
 					url: '/cms/page/settings/admin/' + $.boom.page.options.id + '?vid=' + $.boom.page.options.vid,
-					// cache: true,
 					title: 'Admin settings',
 					width: 'auto',
 					callback: function(){

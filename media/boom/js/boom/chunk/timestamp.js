@@ -38,7 +38,6 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 			url: this.options.urlPrefix + '/timestamp/edit/' + this.options.currentpage.id,
 			width: 400,
 			id: self.element[0].id + '-boom-dialog',
-			// cache: true,
 			title: 'Edit date / time',
 			onLoad : function() {
 				if (data.format) {

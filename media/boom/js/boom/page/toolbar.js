@@ -19,7 +19,7 @@ $.widget( 'boom.pageToolbar', {
 				self.options.page.stash();
 			})
 			.on('click', '#b-page-readability', function() {
-				self.boom.dialog.open({
+				$.boom.dialog.open({
 					url: '/media/boom/html/readability.html'
 				});
 			})
@@ -27,7 +27,7 @@ $.widget( 'boom.pageToolbar', {
 				self.options.page.settings.visibility.edit();
 			})
 			.on('click', '.b-button-preview', function() {
-				self.boom.editor.state($(this).attr('data-preview'));
+				$.boom.editor.state($(this).attr('data-preview'));
 			})
 			.find('#b-page-settings-menu')
 				.splitbutton({
