@@ -76,7 +76,8 @@ function boomPage(page_id) {
 	};
 
 	boomPage.prototype.revertToPublished = function() {
-		var promise = new $.Deferred();
+		var	promise = new $.Deferred(),
+			page = this;
 
 		$.boom.dialog.confirm(
 			'Discard changes',
@@ -85,7 +86,7 @@ function boomPage(page_id) {
 		.done( function(){
 			$.boom.loader.show();
 
-			$.post('/cms/page/discard/' + $.boom.page.options.id, {csrf : $.boom.options.csrf})
+			$.post('/cms/page/discard/' + page.id, {csrf : $.boom.options.csrf})
 				.always(function() {
 					$.boom.loader.hide();
 				})
