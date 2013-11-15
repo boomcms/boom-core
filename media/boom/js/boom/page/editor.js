@@ -39,42 +39,29 @@ $.widget( 'boom.pageEditor', {
 
 	/** @function */
 	init : function(){
-
 		var self = this;
 
 		this.config = $.boom.config.editor;
-
 		this.config.pageScripts = [ this.config.stylesheetURL, '/media/boom/css/boom.page.css' ];
 
 		this.elements.page_body = this.document;
 
-		this.load()
-			.done( function(){
-				if (self.options.editable) {
-					self.createChunks();
-				}
-			});
+		setTimeout(function() {self.load()}, 0);
+		this.options.editable &&  this.createChunks();
 
 		return this;
 	},
 
 	/** @function */
 	load : function(){
-		var promise = new $.Deferred();
-
 		$.boom.loader.show();
 
 		this.loadScripts(this.config.pageScripts)
 			.done(function(){
-
 				$.boom.loader.hide();
 
 				$.boom.log('Scripts loaded into iFrame');
-
-				promise.resolve();
 			});
-
-		return promise;
 	},
 
 	/** @function */
@@ -116,13 +103,19 @@ $.widget( 'boom.pageEditor', {
 
 		for (var i in scripts) {
 			var script = scripts[i];
-
-			if (/css$/.test(script)) {
-				$head.append($("<link/>", {rel: "stylesheet", href: script, type: "text/css" }));
-			}
-			else if (/js$/.test(script)) {
-				$head.append($("<script/>", {src: script, type: "text/javascript" }));
-			}
+			
+			$.ajax({
+				url : script,
+				cache : true
+			})
+			.done(function(response) {
+				if (/css$/.test(script)) {
+					$head.append($("<style/>", {type: "text/css", async : ''}).text(response));
+				}
+				else if (/js$/.test(script)) {
+					$head.append($("<script/>", {type: "text/javascript", async : ''}).text(response));
+				}
+			});
 		};
 
 		return promise.resolve();
