@@ -79,12 +79,9 @@ $.widget( 'boom.pageEditor', {
 
 	/** @function */
 	loadPageEditor : function(){
-
 		$.boom.loader.hide();
 
-		var self = this;
-
-		return $( 'body' ).editor().editor( 'load' );
+		return $('body').editor().editor('load');
 	},
 
 	createChunks : function() {
