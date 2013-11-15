@@ -43,7 +43,11 @@ $.extend({
 				$.boom[classes[i]].init();
 			}
 
-			if ($('#b-topbar').length) {
+			var $topbar = $('#b-topbar');
+
+			if ($topbar.length) {
+				$topbar.ui();
+
 				var user_menu = {
 					"Profile" : function(){
 						var url = '/cms/profile';
