@@ -9,12 +9,16 @@ $.extend($.boom,
 
 		/** initialise loader */
 		init : function(){
+			var img = new Image();
+			img.src = '/media/boom/img/ajax_load.gif';
+
 			this.loaders = 0;
 			this.elements = {
 				loader: $('#boom-loader'),
 				loaderDialogOverlay: $('#boom-loader-dialog-overlay')
 			};
 		},
+
 		/** show loader */
 		show : function(type){
 

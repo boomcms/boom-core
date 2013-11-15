@@ -10,12 +10,6 @@ global boom config
 window.boomConfig =
 	/** @lends $.boom.config */
 	{
-	/**
-	@property cachePageImages
-	*/
-	cachePageImages : [
-		'/media/boom/img/ajax_load.gif',
-	],
 
 	/**
 	@static

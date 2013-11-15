@@ -11,8 +11,6 @@ $.widget( 'boom.pageEditor', {
 		this.page = new boomPage(this.options.page_id);
 		$.boom.page = this.page;
 
-		$.boom.util.cacheImages($.boom.config.cachePageImages);
-
 		this.document = $(top.document);
 
 		this.page.toolbar = this.toolbar = this.document
@@ -121,7 +119,7 @@ $.widget( 'boom.pageEditor', {
 		var promise = new $.Deferred();
 
 		$.each(scripts, function(){
-
+console.log('script: ' + this);
 			$.get( this )
 			.done( function( response ){
 

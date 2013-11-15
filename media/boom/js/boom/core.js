@@ -105,21 +105,6 @@ $.extend($.boom,
 	util :
 		/** @lends $.boom.util */
 		{
-		/** @function */
-		cacheImages : function(images){
-
-			if (!images) return;
-
-			$.each(images, function(i){
-				images[i] = new Image();
-				images[i].src = this;
-			});
-
-			$.boom.log('Cache images : (' + images.length + ' total)');
-
-			return this;
-		},
-
 		/**
 		@class
 		@static
