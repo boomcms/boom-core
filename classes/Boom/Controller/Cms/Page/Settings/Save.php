@@ -20,8 +20,10 @@ class Boom_Controller_Cms_Page_Settings_Save extends Controller_Cms_Page_Setting
 
 		$this->log("Saved admin settings for page " . $this->page->version()->title . " (ID: " . $this->page->id . ")");
 
+		$internal_name = $this->request->post('internal_name')? $this->request->post('internal_name') : NULL;
+		
 		$this->page
-			->values($this->request->post(), array('internal_name'))
+			->set('internal_name', $internal_name)
 			->update();
 	}
 

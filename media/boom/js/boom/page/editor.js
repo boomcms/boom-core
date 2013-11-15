@@ -9,12 +9,13 @@ $.widget( 'boom.pageEditor', {
 		var self = this;
 
 		this.page = new boomPage(this.options.page_id);
+		$.boom.page = this.page;
 
 		$.boom.util.cacheImages($.boom.config.cachePageImages);
 
 		this.document = $(top.document);
 
-		$.boom.page.toolbar = this.toolbar = this.document
+		this.page.toolbar = this.toolbar = this.document
 			.find('#b-page-topbar')
 			.pageToolbar({
 				page : this.page

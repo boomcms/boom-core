@@ -46,7 +46,7 @@ function boomPage(page_id) {
 			title: 'Page embargo',
 			width: 440,
 			callback: function(){
-				$.boom.page.settings.save(
+				savePageSettings(
 					url,
 					$(this).find("form").serialize(),
 					"Page embargo saved."

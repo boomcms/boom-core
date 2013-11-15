@@ -24,7 +24,7 @@ $.widget( 'boom.pageToolbar', {
 				});
 			})
 			.on('click', '#b-page-visibility', function() {
-				self.options.page.settings.visibility.edit();
+				self.options.page.visibility();
 			})
 			.on('click', '.b-button-preview', function() {
 				$.boom.editor.state($(this).attr('data-preview'));
@@ -57,7 +57,7 @@ $.widget( 'boom.pageToolbar', {
 			var item = [];
 
 			item[$this.text()] =  function() {
-				self.options.page.settings[setting].edit();
+				self.options.page[setting]();
 			}
 			menu_items = $.extend(menu_items, item);
 		});
@@ -70,10 +70,10 @@ $.widget( 'boom.pageToolbar', {
 
 		return {
 			'Feature image' : function() {
-				self.options.page.settings.featureimage.edit();
+				self.options.page.featureimage();
 			},
 			'Template' : function() {
-				self.options.page.settings.template.edit();
+				self.options.page.template();
 			}
 		};
 	},
