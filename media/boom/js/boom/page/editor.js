@@ -111,37 +111,19 @@ $.widget( 'boom.pageEditor', {
 
 	/** @function */
 	loadScripts : function( scripts ){
+		var	promise = new $.Deferred(),
+			$head = this.elements.page_body.contents().find('head');
 
-		var self = this;
-		var promise = new $.Deferred();
+		for (var i in scripts) {
+			var script = scripts[i];
 
-		$.each(scripts, function(){
-console.log('script: ' + this);
-			$.get( this )
-			.done( function( response ){
-
-				var head = self.elements.page_body
-					.contents()
-					.find('head');
-
-				if (/js$/.test(this.url)) {
-					$( '<script></script>', {
-						type : "text/javascript"
-					} )
-					.text( response )
-					.appendTo( head );
-				}
-
-				 if (/css$/.test(this.url)) {
-					$( '<style></style>', {
-						type: "text/css"
-					})
-					.text( response )
-					.appendTo( head );
-				}
-
-			});
-		});
+			if (/css$/.test(script)) {
+				$head.append($("<link/>", {rel: "stylesheet", href: script, type: "text/css" }));
+			}
+			else if (/js$/.test(script)) {
+				$head.append($("<script/>", {src: script, type: "text/javascript" }));
+			}
+		};
 
 		return promise.resolve();
 	}
