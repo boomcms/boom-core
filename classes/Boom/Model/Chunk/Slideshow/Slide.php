@@ -33,8 +33,11 @@ class Boom_Model_Chunk_Slideshow_Slide extends ORM
 	public function filters()
 	{
 		return array(
-			'caption'	=> array(
+			'caption' => array(
 				array('strip_tags'),
+			),
+			'url' => array(
+				array(array($this, 'make_link_relative')),
 			),
 		);
 	}
@@ -47,5 +50,10 @@ class Boom_Model_Chunk_Slideshow_Slide extends ORM
 	public function has_link()
 	{
 		return $this->url AND $this->url != 'http://';
+	}
+
+	public function make_link_relative($url)
+	{
+		return ($base = URL::base(Request::current()))? str_replace($base, '/', $url) : $url;
 	}
 }

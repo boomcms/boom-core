@@ -94,8 +94,16 @@ class Boom_Model_Chunk_Text extends Model_Chunk
 		return array(
 			'title'	=> array(
 				array('strip_tags'),
-			)
+			),
+			'text' => array(
+				array(array($this, 'make_links_relative'))
+			),
 		);
+	}
+
+	public function make_links_relative($text)
+	{
+		return ($base = URL::base(Request::current()))? preg_replace("|<(.*?)href=(['\"])".$base."(.*?)(['\"])(.*?)>|", '<$1href=$2/$3$4$5>', $text) : $text;
 	}
 
 	/**
