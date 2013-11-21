@@ -21,23 +21,12 @@ $.widget('ui.chunkSlideshow', $.ui.chunk,
 			.clone( true );
 
 		$.ui.chunk.prototype._create.call( this );
+
+		this.slider = top.$(this.element).hasClass('flexslider')? top.$(this.element).data('flexslider') : top.$(this.element).find('.flexslider').data('flexslider');
+		this.slider.pause();
+
+		this._build_ui();
 	},
-
-	/**
-	Pause the slideshow on startup
-	*/
-	/*_init : function() {
-		var self = this;
-
-		//FIXME: slideshows are tied to flexslider
-		var slider = top.$(this.element).hasClass('flexslider')? top.$(this.element).data( 'flexslider' ) : top.$( this.element ).find( '.flexslider' ).data( 'flexslider' );
-		this.options.slider = slider;
-
-		this._build_ui()
-			.done( function(){
-				$.ui.chunk.prototype._init.call( self );
-			});
-	},*/
 
 	/**
 	@function
@@ -45,8 +34,6 @@ $.widget('ui.chunkSlideshow', $.ui.chunk,
 	_build_ui : function() {
 
 		this._bring_forward();
-
-		this.options.slider.pause();
 
 		return $.get( '/media/boom/toolbars/slideshow.php' )
 			.done( function( toolbar ){
@@ -70,7 +57,7 @@ $.widget('ui.chunkSlideshow', $.ui.chunk,
 
 		$.boom.page.toolbar.show();
 
-		this.options.slider.play();
+		this.slider.play();
 
 		this.element
 			.find( '.slide-caption' )
@@ -92,7 +79,6 @@ $.widget('ui.chunkSlideshow', $.ui.chunk,
 		$.boom.log('Slideshow chunk slot edit');
 
 		var self = this;
-		//$.boom.page.slot_edits.push( 'this is a hack to enable debugging' );
 
 		this.element
 			.on( 'click', function( event ) {
@@ -120,7 +106,7 @@ $.widget('ui.chunkSlideshow', $.ui.chunk,
 			});
 		top.$( 'div.toolbar' )
 			.on( 'click', 'button.insert', function( event ) {
-				var slideshow = self.options.slider;
+				var slideshow = self.slider;
 				var slide = slideshow.slides[ slideshow.currentSlide ];
 
 				self
@@ -130,7 +116,7 @@ $.widget('ui.chunkSlideshow', $.ui.chunk,
 					});
 			})
 			.on( 'click', 'button.delete', function( event ) {
-				var slideshow = self.options.slider;
+				var slideshow = self.slider;
 
 				$.boom.dialog.confirm(
 					'Delete slide',
@@ -160,7 +146,7 @@ $.widget('ui.chunkSlideshow', $.ui.chunk,
 					});
 			})
 			.on( 'click', 'button.link', function(){
-				var slideshow = self.options.slider;
+				var slideshow = self.slider;
 				var slide = slideshow.slides[ slideshow.currentSlide ];
 
 				self._edit_link($(slide))
@@ -170,14 +156,14 @@ $.widget('ui.chunkSlideshow', $.ui.chunk,
 					});
 			})
 			.on('click', 'button.prev', function(event) {
-				var slider = self.options.slider;
+				var slider = self.slider;
 
-				slider.flexAnimate(self.options.slider.getTarget('prev'));
+				slider.flexAnimate(self.slider.getTarget('prev'));
 			})
 			.on('click', 'button.next', function(event) {
-				var slider = self.options.slider;
+				var slider = self.slider;
 
-				slider.flexAnimate(self.options.slider.getTarget('next'));
+				slider.flexAnimate(self.slider.getTarget('next'));
 			});
 	},
 
@@ -267,9 +253,9 @@ $.widget('ui.chunkSlideshow', $.ui.chunk,
 				var slides = $.makeArray( self.element.find( 'ul.slides li').not( '.clone' ) );
 				var target = $.inArray( $new_slide[0], slides );
 
-				self.options.slider.count++;
-				self.options.slider.update();
-				self.options.slider.flexslider( 'next' );
+				self.slider.count++;
+				self.slider.update();
+				self.slider.flexslider( 'next' );
 			});
 	},
 
@@ -278,7 +264,7 @@ $.widget('ui.chunkSlideshow', $.ui.chunk,
 	@param Int slide Slide to remove
 	*/
 	_remove_slide : function( slide ) {
-		var slideshow = this.options.slider;
+		var slideshow = this.slider;
 		var slides = slideshow.slides;
 
 		if (slide == (slides.length - 1)) {
@@ -445,7 +431,7 @@ $.widget('ui.chunkSlideshow', $.ui.chunk,
 					.remove()
 					.end()
 					.append( self.originals );
-				self.options.slider.count = self.originals.size();
+				self.slider.count = self.originals.size();
 				self.destroy();
 			});
 
