@@ -48,7 +48,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 	_save : function() {
 		$.boom.loader.show();
 
-		$.post('/cms/page/version/title/' + $.boom.page.options.id, {
+		$.post('/cms/page/version/title/' + $.boom.page.id, {
 			csrf : $.boom.options.csrf,
 			title : this.element.html()
 		})
@@ -67,7 +67,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 					top.location = data.location;
 				}, 1000);
 			} else {
-				$.boom.page.status.set(response);
+				$.boom.page.toolbar.status.set(response);
 			}
 		})
 	}
