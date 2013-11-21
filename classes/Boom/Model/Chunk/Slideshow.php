@@ -81,7 +81,7 @@ class Boom_Model_Chunk_Slideshow extends Model_Chunk
 			// If the slides are arrays of data then turn them into Chunk_Slideshow_Slides objects.
 			foreach ($slides as & $slide)
 			{
-				if ( ! $slide instanceof Model_Chunk_Slideshow_Slide)
+				if ( ! $slide instanceof Model_Chunk_Slideshow_Slide AND isset($slide['asset_id']) AND $slide['asset_id'] > 0)
 				{
 					$slide = ORM::factory('Chunk_Slideshow_Slide')
 						->values( (array) $slide);
