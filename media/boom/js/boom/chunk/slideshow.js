@@ -23,9 +23,73 @@ $.widget('ui.chunkSlideshow', $.ui.chunk,
 		$.ui.chunk.prototype._create.call( this );
 
 		this.slider = top.$(this.element).hasClass('flexslider')? top.$(this.element).data('flexslider') : top.$(this.element).find('.flexslider').data('flexslider');
-		this.slider.pause();
+	},
 
-		this._build_ui();
+	_bind_toolbar : function() {
+		var self = this;
+
+		top.$( 'div.toolbar' )
+			.on( 'click', 'button.insert', function( event ) {
+				var slideshow = self.slider;
+				var slide = slideshow.slides[ slideshow.currentSlide ];
+
+				self
+					._insert_slide( $( slide ) )
+					.done( function(){
+						self.edited = true;
+					});
+			})
+			.on( 'click', 'button.delete', function( event ) {
+				var slideshow = self.slider;
+
+				$.boom.dialog.confirm(
+					'Delete slide',
+					'Delete this slide?'
+				)
+				.done( function(){
+					self._remove_slide(slideshow.currentSlide);
+				});
+			})
+			.on( 'click', 'button.cancel', function(){
+				self._cancel();
+				self._remove_ui();
+			})
+			.on( 'click', 'button.save', function(){
+				self._remove_ui();
+
+				if (self.edited) {
+					self.insert();
+				} else {
+					self.destroy();
+				}
+			})
+			.on( 'click', 'button.sort', function(){
+				self._sort()
+					.done( function(){
+						self.edited = true;
+						$.boom.log( 'sort finished' );
+					});
+			})
+			.on( 'click', 'button.link', function(){
+				var slideshow = self.slider;
+				var slide = slideshow.slides[ slideshow.currentSlide ];
+
+				self._edit_link($(slide))
+					.done( function(){
+						self.edited = true;
+						$.boom.growl.show('Link updated');
+					});
+			})
+			.on('click', 'button.prev', function(event) {
+				var slider = self.slider;
+
+				slider.flexAnimate(self.slider.getTarget('prev'));
+			})
+			.on('click', 'button.next', function(event) {
+				var slider = self.slider;
+
+				slider.flexAnimate(self.slider.getTarget('next'));
+			});
 	},
 
 	/**
@@ -75,10 +139,16 @@ $.widget('ui.chunkSlideshow', $.ui.chunk,
 	Open a slideshow dialog
 	*/
 	edit: function(){
+		var self = this;
 
 		$.boom.log('Slideshow chunk slot edit');
 
-		var self = this;
+		this.slider.pause();
+		
+		this._build_ui()
+			.done(function() {
+				self._bind_toolbar();
+			});
 
 		this.element
 			.on( 'click', function( event ) {
@@ -103,67 +173,6 @@ $.widget('ui.chunkSlideshow', $.ui.chunk,
 					.done( function(){
 						self.edited = true;
 					});
-			});
-		top.$( 'div.toolbar' )
-			.on( 'click', 'button.insert', function( event ) {
-				var slideshow = self.slider;
-				var slide = slideshow.slides[ slideshow.currentSlide ];
-
-				self
-					._insert_slide( $( slide ) )
-					.done( function(){
-						self.edited = true;
-					});
-			})
-			.on( 'click', 'button.delete', function( event ) {
-				var slideshow = self.slider;
-
-				$.boom.dialog.confirm(
-					'Delete slide',
-					'Delete this slide?'
-				)
-				.done( function(){
-					self._remove_slide(slideshow.currentSlide);
-				});
-			})
-			.on( 'click', 'button.cancel', function(){
-				self._cancel();
-			})
-			.on( 'click', 'button.save', function(){
-				self._remove_ui();
-
-				if (self.edited) {
-					self.insert();
-				} else {
-					$.boom.page.editor.bind();
-				}
-			})
-			.on( 'click', 'button.sort', function(){
-				self._sort()
-					.done( function(){
-						self.edited = true;
-						$.boom.log( 'sort finished' );
-					});
-			})
-			.on( 'click', 'button.link', function(){
-				var slideshow = self.slider;
-				var slide = slideshow.slides[ slideshow.currentSlide ];
-
-				self._edit_link($(slide))
-					.done( function(){
-						self.edited = true;
-						$.boom.growl.show('Link updated');
-					});
-			})
-			.on('click', 'button.prev', function(event) {
-				var slider = self.slider;
-
-				slider.flexAnimate(self.slider.getTarget('prev'));
-			})
-			.on('click', 'button.next', function(event) {
-				var slider = self.slider;
-
-				slider.flexAnimate(self.slider.getTarget('next'));
 			});
 	},
 
