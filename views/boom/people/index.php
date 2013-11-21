@@ -12,17 +12,14 @@
 			</span>
 		</div>
 
-		<div class="ui-helper-clearfix ui-tabs-panel ui-widget-content ui-corner-bottom">
+		<div>
 			<div id="b-page-actions" class="ui-helper-right">
-				<button id="boom-tagmanager-create-person" class="boom-button ui-button-text-icon" data-icon="ui-icon-boom-add">
+				<button id="b-people-create" class="boom-button ui-button-text-icon" data-icon="ui-icon-boom-add">
 					<?= __('New person') ?>
 				</button>
 			</div>
 
-			<div id="b-items-multiactons" class="ui-widget-content">
-				<button id="b-button-multiaction-edit" disabled="disabled" class="boom-button ui-button-text-icon" data-icon="ui-icon-boom-edit">
-					<?= __('View') ?>/<?= __('Edit') ?>
-				</button>
+			<div id="b-items-multiactons">
 				<button id="b-button-multiaction-delete" disabled="disabled" class="boom-button ui-button-text-icon" data-icon="ui-icon-boom-delete">
 					<?= __('Delete') ?>
 				</button>
@@ -31,7 +28,7 @@
 
 	</div>
 
-	<div id="b-page-edit">
+	<div id="b-people-manager">
 		<div id="boom-tagmanager">
 			<div class="b-items-main ui-helper-right">
 				<div class="b-items-body ui-helper-clearfix">

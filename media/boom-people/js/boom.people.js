@@ -232,13 +232,13 @@ $.widget( 'boom.browser_people', $.boom.browser,
 			browser: self
 		});
 
-		$('#boom-tagmanager-create-person').click(function(){
+		$('#b-people-create').click(function(){
 			var dialog = $.boom.dialog.open({
 				url: '/cms/people/add',
 				title: 'Create new person',
 				callback: function(){
 
-					var data = $('#boom-tagmanager-create-person-form').serialize();
+					var data = $('#b-people-create-form').serialize();
 
 					$.boom.person.add( data )
 						.done(function() {
@@ -253,43 +253,23 @@ $.widget( 'boom.browser_people', $.boom.browser,
 		});
 
 		$('#b-topbar')
-			.on('click', '#b-button-multiaction-edit', function(){
-
-				var ids = [];
-
-				$('.b-items-select-checkbox:checked').each(function(){
-
-					var id = this.id.replace(/person-(thumb|list)-/, '');
-
-					if ( $.inArray(id, ids) === -1 ) {
-
-						ids.push( id );
-					}
-				});
-
-				$.boom.history.load('person/' + ids.join('-'));
-			})
 			.on('click', '#b-button-multiaction-delete', function(){
 
-				var msg = 'Are you sure you want to send the selected people to the rubbish bin?';
+				var msg = 'Are you sure you want to remove the selected people?';
 
 				$.boom.dialog
 					.confirm('Confirm deletion', msg)
 					.done( function(){
 
-						var people = [];
-
-						$('.b-items-select-checkbox:checked').each(function(i){
-
-							people.push( $( this ).attr( 'id' ).replace(/person-(thumb|list)-/, '') );
-						});
+						var people = $('.b-people-select:checked').map(function() {
+							return $(this).attr('data-id');
+						}).get();
 
 						$.boom.loader.show();
 
-						$.post('/cms/people/delete', {people: people}, function(){
-
+						$.post('/cms/people/delete', {people: people})
+						.done(function(){
 							$.boom.loader.hide();
-
 							$.boom.history.refresh();
 						});
 					});
@@ -300,12 +280,6 @@ $.widget( 'boom.browser_people', $.boom.browser,
 				self.tag.options.sortby = this.value;
 				$.boom.history.refresh();
 			})
-			.on( 'mouseenter focus', '#b-items-view-list tbody tr, #b-items-view-thumbs a', function( event ){
-				$( this ).addClass( 'ui-state-hover' );
-			})
-			.on( 'mouseleave blur', '#b-items-view-list tbody tr, #b-items-view-thumbs a', function( event ){
-				$( this ).removeClass( 'ui-state-hover' );
-			})
 			.on( 'click', '.boom-pagination a', function( e ){
 				e.preventDefault();
 
@@ -315,21 +289,21 @@ $.widget( 'boom.browser_people', $.boom.browser,
 					var $data = $( data );
 					var pagination = $data.find( '.boom-pagination' ).html();
 					var list = $data.find( '#b-items-view-list' ).html();
-					var thumbs = $data.find( '#b-items-view-thumbs' ).html();
+
 					$( self.main_panel )
 						.find( '.boom-pagination' )
 						.html( pagination )
 						.end()
 						.find( '#b-items-view-list' )
-						.html( list )
-						.end()
-						.find( '#b-items-view-thumbs' )
-						.html( thumbs )
-						.end()
-						.trigger('justify');
+						.html( list );
 				});
 
 				return false;
+			})
+			.on('change', '.b-people-select', function() {
+				var count = self.main_panel.find('.b-people-select:checked').length;
+
+				count? $('#b-items-multiactons button').button('enable') : $('#b-items-multiactons button').button('disable');
 			});
 	}
 });
