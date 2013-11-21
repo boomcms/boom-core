@@ -18,7 +18,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 	},
 
 	_create_length_counter : function() {
-		top.$('body').append('<div id="b-title-length"></div>');
+		top.$('body').append('<div id="b-title-length"><span></span></div>');
 
 		var offset = this.element.offset();
 
@@ -27,12 +27,27 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 				top : (offset.top - 85) + 'px',
 				left : (offset.left - 60) + 'px',
 				position : 'absolute',
-				'z-index' : 10000,
+				'z-index' : 1001,
 				background : '#ffffff',
 				width : '50px',
-				height : '50px',
+				height : '80px',
 				'font-size' : '40px',
 				'text-align' : 'center',
+				overflow : 'hidden'
+			});
+
+		$('<p><a href="#" id="b-title-help">What is this?</a></p>')
+			.appendTo(top.$('#b-title-length'))
+			.css('font-size', '12px')
+			.find('a')
+			.css('color', '#000')
+			.on('click', function(e) {
+				e.preventDefault();
+
+				$.boom.dialog.open({
+					url : '/media/boom/html/help/title_length.html',
+					width : '70%'
+				});
 			});
 
 		this._update_length_counter(this.element.text().length);
@@ -113,7 +128,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 
 	_update_length_counter : function(length) {
 		var counter = top.$('#b-title-length');
-		counter.text(length);
+		counter.find('span').text(length);
 
 		if (length >= this.max_length) {
 			counter.css('background', 'red');
