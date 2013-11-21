@@ -67,6 +67,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 					top.location = data.location;
 				}, 1000);
 			} else {
+				$.boom.growl.show('Page title saved.');
 				$.boom.page.toolbar.status.set(response);
 			}
 		})
