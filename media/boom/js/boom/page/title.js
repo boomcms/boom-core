@@ -2,6 +2,42 @@
  * TODO: Tell someone off for trying to blank a page title or writing an essay in the title.
  */
 $.widget('boom.pageTitle', $.ui.chunk, {
+	max_length : 70,
+
+	bind : function() {
+		$.ui.chunk.prototype.bind.call(this);
+
+		var self = this;
+		this.element.on('keydown change paste', function() {
+			var $el = $(this);
+
+			setTimeout(function() {
+				self._update_length_counter($el.text().length)
+			}, 0);
+		});
+	},
+
+	_create_length_counter : function() {
+		top.$('body').append('<div id="b-title-length"></div>');
+
+		var offset = this.element.offset();
+
+		top.$('#b-title-length')
+			.css({
+				top : (offset.top - 85) + 'px',
+				left : (offset.left - 60) + 'px',
+				position : 'absolute',
+				'z-index' : 10000,
+				background : '#ffffff',
+				width : '50px',
+				height : '50px',
+				'font-size' : '40px',
+				'text-align' : 'center',
+			});
+
+		this._update_length_counter(this.element.text().length);
+	},
+
 	edit : function() {
 		var self = this;
 		var old_html = this.element.html();
@@ -16,8 +52,6 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 			.fail(function() {
 				self.element.html(old_html).show();
 				self.destroy();
-
-				$.boom.page.editor.bind();
 			})
 			.done(function() {
 				var title = self.element.text();
@@ -31,9 +65,13 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 					self.element.html(old_html);
 				}
 
+				top.$('#b-title-length').remove();
+
 				self._send_back();
 				self.bind();
 			});
+
+		this._create_length_counter();
 	},
 
 	insert : function(html) {
@@ -71,5 +109,26 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 				$.boom.page.toolbar.status.set(response);
 			}
 		})
+	},
+
+	_update_length_counter : function(length) {
+		var counter = top.$('#b-title-length');
+		counter.text(length);
+
+		if (length >= this.max_length) {
+			counter.css('background', 'red');
+		} else if (length >= this.max_length * 0.9) {
+			counter.css('background', 'orange');
+		} else if (length >= this.max_length * 0.8) {
+			counter.css('background', 'yellow');
+		} else {
+			counter.css('background', 'green');
+		}
+
+		var disable_accept_button = (length >= this.max_length)? true : false;
+		var opacity = disable_accept_button? '.35' : 1;
+		top.$('#b-editor-accept')
+			.prop('disabled', disable_accept_button)
+			.css('opacity', opacity);
 	}
 });

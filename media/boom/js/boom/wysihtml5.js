@@ -533,7 +533,7 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 
 		/** @function */
 		init : function( old_element ) {
-			var element = old_element.clone();
+			var element = old_element.clone(true);
 			var offset = old_element.offset();
 			var self = this;
 
