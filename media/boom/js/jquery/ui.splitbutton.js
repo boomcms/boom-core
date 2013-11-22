@@ -154,17 +154,17 @@ $.widget('ui.splitbutton',
 			}
 
 			var left = ( position == 'right' ) ?
-					self.elements.button.offset().left :
+					self.elements.button.offset().left + self.elements.button.outerWidth() :
 					( offset.left + hitarea.outerWidth() ) - menu.outerWidth();
 
 			menu
 			.width( width )
 			.css({
 				left: left,
-				top: offset.top + hitarea.outerHeight()
+				top: offset.top
 			});
 
-			$.boom.page && $.boom.page.toolbar.maximise();
+			$.boom.page && $.boom.page.toolbar && $.boom.page.toolbar.maximise();
 		})
 		.bind('hide', function(){
 
