@@ -1,31 +1,15 @@
 	<?= View::factory('boom/header')->set('title', 'People') ?>
 
 	<div id="b-topbar" class="ui-helper-clearfix ui-tabs ui-widget ui-widget-content ui-corner-all">
-
 		<?= Menu::factory('boom')->sort('priority') ?>
 
-		<div id="b-topbar-useractions">
-			<span id="boom-page-user-menu">
-				<button id="b-page-user" class="boom-button" data-icon="ui-icon-boom-person">
-					<?=__('Profile')?>
-				</button>
-			</span>
-		</div>
+		<button id="b-people-create" class="boom-button ui-button-text-icon" data-icon="ui-icon-boom-add">
+			<?= __('New person') ?>
+		</button>
 
-		<div>
-			<div id="b-page-actions" class="ui-helper-right">
-				<button id="b-people-create" class="boom-button ui-button-text-icon" data-icon="ui-icon-boom-add">
-					<?= __('New person') ?>
-				</button>
-			</div>
-
-			<div id="b-items-multiactons">
-				<button id="b-button-multiaction-delete" disabled="disabled" class="boom-button ui-button-text-icon" data-icon="ui-icon-boom-delete">
-					<?= __('Delete') ?>
-				</button>
-			</div>
-		</div>
-
+		<button id="b-button-multiaction-delete" disabled="disabled" class="boom-button ui-button-text-icon" data-icon="ui-icon-boom-delete">
+			<?= __('Delete') ?>
+		</button>
 	</div>
 
 	<div id="b-people-manager">
