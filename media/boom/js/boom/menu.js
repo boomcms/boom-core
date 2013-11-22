@@ -28,7 +28,7 @@ $.widget('boom.boomMenu', {
 			.find('a')
 			.each(function() {
 				var $this = $(this), item = [];
-console.log($this);
+
 				item[$this.text()] = function() {
 					console.log('hello');
 					console.log($this.attr('href'));
