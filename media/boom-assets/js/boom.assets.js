@@ -356,7 +356,6 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 			.on( 'click', '#b-button-multiaction-tag', function(){
 				$.boom.dialog.open({
 					url: '/cms/tags/asset/list/' + self.selected.join( '-' ),
-					// cache: true,
 					title: 'Asset tags',
 					width: 440,
 					onLoad: function(){
