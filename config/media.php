@@ -13,10 +13,10 @@ return array(
 		'jquery/plugins.js',
 		'boom/plugins.js',
 		'boom/config.js',
+		'boom/loader.js',
 		'boom/core.js',
 		'boom/history.js',
 		'boom/log.js',
-		'boom/loader.js',
 		'boom/dialog.js',
 	),
 	'js' => array(

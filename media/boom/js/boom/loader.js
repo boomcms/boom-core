@@ -1,63 +1,32 @@
-$.extend($.boom,
-	/** @lends $.boom */
-	{
-	/**
-	* @class
-	@static
-	*/
-	loader : {
+$.widget('boom.boomLoader', {
+	loaders : 0,
 
-		/** initialise loader */
-		init : function(){
-			var img = new Image();
-			img.src = '/media/boom/img/ajax_load.gif';
+	_create : function(){
+		var img = new Image();
+		img.src = '/media/boom/img/ajax_load.gif';
 
-			this.loaders = 0;
-			this.elements = {
-				loader: $('#boom-loader'),
-				loaderDialogOverlay: $('#boom-loader-dialog-overlay')
-			};
-		},
+		this.loader = $('<div id="b-loader"></div>').appendTo($(top.document).find('body'));
+	},
 
-		/** show loader */
-		show : function(type){
+	show : function() {
+		this.loaders ++;
 
-			if ( !this.elements ) {
-				this.init();
-			}
+		this.loader.show();
 
-			type = type || '';
+		return this.loaders;
+	},
 
-			this.loaders ++;
+	hide : function(force) {
+		force = (force == undefined) ? false : true;
 
-			if ( type == 'dialog' ) {
+		if (force) this.loaders = 0;
 
-				this.elements.loaderDialogOverlay.show();
-			}
+		if (this.loaders > 0) this.loaders --;
 
-			this.elements.loader.show();
-
-			return this.loaders;
-		},
-		/** hide loader */
-		hide : function(force){
-
-			force = (force == undefined) ? false : true;
-
-			if (force) this.loaders = 0;
-
-			if (this.loaders > 0) this.loaders --;
-
-			if (this.loaders === 0) {
-				$.each(this.elements, function(){
-					$(this).hide();
-				});
-			}
-			return this;
-		},
-		/** FIXME: This doesn't seem to do anything. */
-		hideOverlay : function(){
-			//this.elements.loaderOverlay.hide();
+		if (this.loaders === 0) {
+			this.loader.hide();
 		}
+
+		return this;
 	}
 });

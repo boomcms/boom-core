@@ -37,7 +37,7 @@ $.extend({
 			( options ) && $.extend( this.config, options );
 			this.options = options;
 
-			var classes = ['history', 'loader'];
+			var classes = ['history'];
 
 			for (i in classes) {
 				$.boom[classes[i]].init();
@@ -47,8 +47,6 @@ $.extend({
 
 			if ($topbar.length) {
 				$topbar.ui();
-
-				$('#b-menu').boomMenu({});
 
 				var user_menu = {
 					"Profile" : function(){
@@ -78,6 +76,14 @@ $.extend({
 						split: false
 					});
 			};
+
+
+			this._init_widgets();
+		},
+
+		_init_widgets : function() {
+			$('#b-menu').boomMenu({});
+			this.loader = $('body').boomLoader({}).data('boomBoomLoader');
 		}
 	}
 });

@@ -1,10 +1,8 @@
-	<div id="boom-loader"></div>
 	<div id="boom-dialogs">
 		<div id="boom-dialog-alerts">
 			<p>&nbsp;</p>
 		</div>
 	</div>
-	<div id="boom-loader-dialog-overlay" class="ui-widget-overlay"></div>
 
 	<?= Boom::include_js() ?>
 
