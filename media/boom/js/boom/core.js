@@ -43,40 +43,7 @@ $.extend({
 				$.boom[classes[i]].init();
 			}
 
-			var $topbar = $('#b-topbar');
-
-			if ($topbar.length) {
-				$topbar.ui();
-
-				var user_menu = {
-					"Profile" : function(){
-						var url = '/cms/profile';
-
-						$.boom.dialog.open({
-							'url': url,
-							'title': 'User profile',
-							callback: function() {
-								$.post(url, $('#b-people-profile').serialize())
-									.done(function() {
-										$.boom.growl.show('Profile updated');
-									});
-							}
-						});
-					},
-					"Logout" : function(){
-						top.location = '/cms/logout';
-					}
-				};
-
-				$('#boom-page-user-menu')
-					.splitbutton({
-						items: user_menu,
-						width: 'auto',
-						menuPosition: 'left',
-						split: false
-					});
-			};
-
+			$('#b-topbar').ui();
 
 			this._init_widgets();
 		},

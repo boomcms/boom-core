@@ -6,6 +6,26 @@ Common functionality for all editable slots
 $.widget('boom.boomMenu', {
 	_create : function() {
 		this._build_menu();
+		this._bind_profile();
+	},
+
+	_bind_profile : function() {
+		this.element
+			.find('a[href="/cms/profile"]')
+			.on('click', function(e) {
+				e.preventDefault();
+
+				$.boom.dialog.open({
+					'url': '/cms/profile',
+					'title': 'User profile',
+					callback: function() {
+						$.post(url, $('#b-people-profile').serialize())
+							.done(function() {
+								$.boom.growl.show('Profile updated');
+							});
+					}
+				});
+			});
 	},
 
 	_build_menu : function() {

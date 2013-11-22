@@ -4,14 +4,6 @@
 	<?= Form::hidden('csrf', Security::token(), array('id' => 'b-csrf')) ?>
 	<?= Menu::factory('boom')->sort('priority') ?>
 
-	<div id="b-topbar-useractions">
-		<span id="boom-page-user-menu">
-			<button id="boom-page-user" class="ui-button boom-button" data-icon="ui-icon-boom-person">
-				<?=__('Profile')?>
-			</button>
-		</span>
-	</div>
-
 	<? if ($page->was_created_by($person) OR $auth->logged_in('edit_page_content', $page)): ?>
 		<div id="b-page-actions" class="b-page-container">
 			<span id="b-page-publish-menu">

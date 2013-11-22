@@ -9,6 +9,16 @@ return array(
 				'url'		=>	'/',
 				'priority'	=>	1,
 			),
+			'profile'		=>	array(
+				'title'		=>	'Profile',
+				'url'		=>	'/cms/profile',
+				'priority'	=>	99,
+			),
+			'logout'		=>	array(
+				'title'		=>	'Logout',
+				'url'		=>	'/cms/logout',
+				'priority'	=>	100,
+			),
 		),
 	),
 );
