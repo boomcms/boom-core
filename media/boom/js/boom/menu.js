@@ -50,8 +50,6 @@ $.widget('boom.boomMenu', {
 				var $this = $(this), item = [];
 
 				item[$this.text()] = function() {
-					console.log('hello');
-					console.log($this.attr('href'));
 					$this[0].click();
 				};
 				menu_items = $.extend(menu_items, item);
