@@ -24,7 +24,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 
 		top.$('#b-title-length')
 			.css({
-				top : (offset.top - 85) + 'px',
+				top : offset.top + 'px',
 				left : (offset.left - 60) + 'px',
 				position : 'absolute',
 				'z-index' : 1001,
