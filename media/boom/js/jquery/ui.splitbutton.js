@@ -170,7 +170,7 @@ $.widget('ui.splitbutton',
 
 			$(this).css({ left: -9999 });
 
-			$.boom.page && $.boom.page.toolbar.minimise();
+			$.boom.page && $.boom.page.toolbar && $.boom.page.toolbar.minimise();
 		});
 	},
 
