@@ -47,7 +47,7 @@ $.widget( 'boom.pageEditor', {
 		this.elements.page_body = this.document;
 
 		setTimeout(function() {self.load()}, 0);
-		this.options.editable &&  this.createChunks();
+		this.options.editable && this.createChunks();
 
 		return this;
 	},
