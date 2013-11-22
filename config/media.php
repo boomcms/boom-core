@@ -14,6 +14,7 @@ return array(
 		'boom/plugins.js',
 		'boom/config.js',
 		'boom/loader.js',
+		'boom/growl.js',
 		'boom/core.js',
 		'boom/history.js',
 		'boom/log.js',

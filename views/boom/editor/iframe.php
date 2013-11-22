@@ -1,48 +1,5 @@
+<?= Boom::include_css() ?>
 <?= $body_tag ?>
-
-<style>
-	.b-editable:hover {
-		background-color: #FFD200 !important;
-		cursor: url(/media/boom/img/cms/chunk_edit_icon.png), pointer !important;
-		border: 2px dotted black !important;
-		color: black !important;
-	}
-
-	.b-editable {
-		box-sizing: border-box !important;
-		border: 2px solid transparent !important;
-	}
-
-	#b-environment {
-		background-color: rgb(214,39,142);
-		text-transform: uppercase;
-		font-weight: bold;
-		margin-top: 5px;
-		position: fixed;
-		right: 0;
-		bottom: 0;
-		color: white;
-		font-size: 14px;
-		padding: 0.5em;
-		z-index: 100;
-
-		p {
-			padding: 1em;
-		}
-	}
-
-	#b-loader {
-		position: absolute;
-		left: 49%;
-		top: 1.1em;
-		background: transparent url(/media/boom/img/ajax_load.gif) no-repeat 0 0;
-		width: 43px;
-		height: 11px;
-		display: none;
-		z-index: 999999;
-	}
-</style>
-
 <? if (Kohana::$environment !== Kohana::PRODUCTION): ?>
 	<? $class = new ReflectionClass('Kohana');
 	$constants = $class->getConstants();
