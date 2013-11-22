@@ -20,6 +20,7 @@ return array(
 		'boom/dialog.js',
 	),
 	'js' => array(
+		'boom/menu.js',
 		'boom/page/status.js',
 		'boom/page.js',
 		'boom/page/settings.js',

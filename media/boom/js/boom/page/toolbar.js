@@ -80,21 +80,11 @@ $.widget( 'boom.pageToolbar', {
 	_create : function() {
 		$.boom.log( 'init CMS toolbar' );
 
-		this.options.height = this.options.height || this.element.contents().find('body').height() + 'px';
-
-		this.document
-			.find('body')
-			.css({'margin-top' : this.options.height});
-
 		this.status = $('#b-page-version-status')
 			.pageStatus({
 				page : this.options.page
 			})
 			.data('boomPageStatus');
-
-		this.element
-			.css({'margin-top' : '-' + this.options.height})
-			.animate({'height' : this.options.height});
 
 		this._bindButtonEvents();
 	},
@@ -107,8 +97,7 @@ $.widget( 'boom.pageToolbar', {
 		$.boom.log('maximise iframe');
 
 		this.element
-			.show()
-			.css('height', '120%');
+			.css('width', '120%');
 	},
 
 	/**
@@ -118,7 +107,7 @@ $.widget( 'boom.pageToolbar', {
 	minimise : function() {
 		$.boom.log('minimise iframe');
 
-		this.element.css && this.element.css('height', this.options.height);
+		this.element.css && this.element.css('width', '60px');
 	},
 
 	/**

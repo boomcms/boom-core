@@ -1,12 +1,8 @@
 #b-page {
 	/* Container for action buttons, e.g. save, publish... */
 	&-actions {
-		float: left;
-
 		.separator {
-			float: left;
-			margin-right: 6px;
-			margin-top: 4px;
+			margin-top: 6px;
 			display: none;
 			height: 1.5em;
 			width: 1px;
@@ -14,13 +10,8 @@
 		}
 	}
 
-	&-actions button, &-metadata button {
-		margin-right: 2px;
-		float: left;
-	}
-
-	&-actions .ui-buttonset, &-metadata .ui-buttonset {
-		margin-right: 2px;
+	&-actions .ui-buttonset, &-metadata .ui-buttonset, &-metadata button {
+		margin-top: 2px;
 	}
 
 	/* List of child pages which will be affected by a page being deleted */
@@ -38,6 +29,10 @@
 	&-topbar {
 		width: 100%;
 		background-color: transparent;
+	}
+
+	&-readability {
+		width: 50px;
 	}
 
 	&-settings {
@@ -149,6 +144,7 @@
 	&-version-status {
 		background-color: #d6278e;
 		text-transform: capitalize;
+		width: 50px;
 
 		&[data-status=published] {
 			background-color: #75d627;
@@ -162,13 +158,22 @@
 
 .b-page {
 	&-container {
-		display: inline;
-		margin-left: 10%;
+		margin-top: 20px;
 	}
 
 	&-settings {
 		label {
 			margin-bottom: 0.5em;
+		}
+	}
+
+	&-toolbar {
+		width: 60px;
+		height: 100%;
+		padding: 4px;
+
+		.ui-button, button {
+			display: block;
 		}
 	}
 }

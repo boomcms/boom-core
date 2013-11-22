@@ -13,6 +13,8 @@ $.widget('ui.splitbutton',
 		menuStack: 'bottom'
 	},
 
+	isOpen : false,
+
 	/**
 	@function
 	*/
@@ -129,7 +131,7 @@ $.widget('ui.splitbutton',
 
 			$(this).focus();
 
-			self.open();
+			self.isOpen? self.close() : self.open();
 		})
 		.bind( 'blur', function(){
 
@@ -176,9 +178,8 @@ $.widget('ui.splitbutton',
 	@function
 	*/
 	open : function(){
-
+		this.isOpen = true;
 		this.elements.menu.trigger('show');
-
 		this._trigger('open');
 	},
 
@@ -186,7 +187,7 @@ $.widget('ui.splitbutton',
 	@function
 	*/
 	close : function(){
-
+		this.isOpen = false;
 		this.elements.menu.trigger('hide');
 
 		this._trigger('close');

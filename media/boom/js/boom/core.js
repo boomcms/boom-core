@@ -48,6 +48,8 @@ $.extend({
 			if ($topbar.length) {
 				$topbar.ui();
 
+				$('#b-menu').boomMenu({});
+
 				var user_menu = {
 					"Profile" : function(){
 						var url = '/cms/profile';

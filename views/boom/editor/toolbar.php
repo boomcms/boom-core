@@ -1,6 +1,6 @@
 <?= View::factory('boom/header', array('title' => $page->version()->title)) ?>
 
-<div id="b-topbar">
+<div id="b-topbar" class='b-page-toolbar'>
 	<?= Form::hidden('csrf', Security::token(), array('id' => 'b-csrf')) ?>
 	<?= Menu::factory('boom')->sort('priority') ?>
 
@@ -11,30 +11,6 @@
 			</button>
 		</span>
 	</div>
-
-	<? if (Kohana::$environment !== Kohana::PRODUCTION): ?>
-		<? $class = new ReflectionClass('Kohana');
-		$constants = $class->getConstants();
-		$constants = array_flip($constants);
-		$environment = $constants[Kohana::$environment];
-		$branchname = '';
-
-		if ( Kohana::$environment == Kohana::DEVELOPMENT ):
-			$dir = DOCROOT;
-			exec( "cd '$dir'; git branch", $lines );
-			foreach ( $lines as $line ) {
-			    if ( strpos( $line, '*' ) === 0 ) {
-			        $branchname = '<br>' . ltrim( $line, '* ' );
-			        break;
-			    }
-			}
-		endif;
-
-		?>
-		<div id="b-environment">
-			<p><?= $environment ?> site <?= $branchname ?></p>
-		</div>
-	<? endif; ?>
 
 	<? if ($page->was_created_by($person) OR $auth->logged_in('edit_page_content', $page)): ?>
 		<div id="b-page-actions" class="b-page-container">
