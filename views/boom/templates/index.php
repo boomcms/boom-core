@@ -1,16 +1,11 @@
 	<?= View::factory('boom/header', array('title' =>	'Templates'))?>
 
 	<div id="b-topbar" class="ui-helper-clearfix ui-tabs ui-widget ui-widget-content ui-corner-all">
-
 		<?= Menu::factory('boom')->sort('priority') ?>
 
-		<div class="ui-helper-clearfix ui-tabs-panel ui-widget-content ui-corner-bottom">
-			<div id="b-page-actions" class="ui-helper-right">
-				<button id="b-templates-save" class="boom-button ui-button-text-icon ui-icon-boom-save">
-					Save all
-				</button>
-			</div>
-		</div>
+		<button id="b-templates-save" class="boom-button ui-button-text-icon ui-icon-boom-save">
+			Save all
+		</button>
 	</div>
 
 	<div id="b-templates">
