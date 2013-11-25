@@ -15,6 +15,59 @@ $.extend($.boom,
 		*/
 		dialogs : [],
 
+		options : {
+			/**
+			@type string
+			@default 'auto'
+			*/
+			width: 'auto',
+			/**
+			@type number
+			@default 100
+			*/
+			maxWidth: 100,
+			/**
+			@type function
+			@default null
+			*/
+			show: null,
+			/**
+			@type function
+			@default null
+			*/
+			hide: null,
+			/**
+			@type boolean
+			@default true
+			*/
+			autoOpen: true,
+			/**
+			@type boolean
+			@default true
+			*/
+			modal: true,
+			/**
+			@type boolean
+			@default false
+			*/
+			resizable: false,
+			/**
+			@type array
+			@default ['center', 'center']
+			*/
+			position: ['center', 'center'],
+			/**
+			@type boolean
+			@default true
+			*/
+			draggable: true,
+			/**
+			@type boolean
+			@default true
+			*/
+			closeOnEscape: true
+		},
+
 		/**
 		@function
 		@param opts configuration options from $.boom.config.dialog
