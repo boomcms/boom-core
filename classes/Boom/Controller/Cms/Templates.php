@@ -1,76 +1,25 @@
 <?php defined('SYSPATH') OR die('No direct script access.');
 
 /**
- * Controller for doing stuff with templates.
- *
  * @package	BoomCMS
  * @category	Controllers
- * @author	Rob Taylor
- * @copyright	Hoop Associates
  *
  */
 class Boom_Controller_Cms_Templates extends Boom_Controller
 {
-	/**
-	 *
-	 * @var	string	Directory where the views used by this controller are.
-	 */
 	protected $_view_directory = 'boom/templates';
 
-	/**
-	* Check that they can manage templates.
-	*/
 	public function before()
 	{
 		parent::before();
 
-		// Are they allowed to view the template manager?
 		$this->authorization('manage_templates');
 	}
 
-	/**
-	 * Display a list of the CMS templates.
-	 * Automagically adds any templates which appear in the filesystem but not in the database.
-	 */
 	public function action_index()
 	{
-		// Prepare an array to record imported templates.
-		$imported = array();
-
-		// Get the filenames of the available templates.
-		// This will be used to import any new templates and to populate a select box in the template manager of template filenames.
-		$filenames = Kohana::list_files("views/" . Model_Template::DIRECTORY);
-
-		foreach ($filenames as & $filename)
-		{
-			// Remove the directory path so that we're just left with a filename.
-			$filename = str_replace(APPPATH . "views/" . Model_Template::DIRECTORY, "", $filename);
-
-			// Remove the file extension.
-			$filename = str_replace(EXT, "", $filename);
-		}
-
-		// Find any templates which don't exist in the database.
-		foreach ($filenames as & $filename)
-		{
-			// Does a template with the specified filename already exist?
-			// i.e. has the template already been added to the database.
-			$template = new Model_Template(array('filename' => $filename));
-
-			if ( ! $template->loaded())
-			{
-				// The template doesn't exist so create it.
-				$template
-					->values(array(
-						'name'	=>	ucwords(str_replace("_", " ", $filename)),
-						'filename'	=>	$filename,
-					))
-					->create();
-
-				// Add teh template to the array of imorted templates.
-				$imported[] = $template->id;
-			}
-		}
+		$manager = new Template_Manager;
+		$imported = $manager->create_new();
 
 		// Get all the templates which now exist in the database.
 		$templates = ORM::factory('Template')
@@ -80,7 +29,7 @@ class Boom_Controller_Cms_Templates extends Boom_Controller
 		$this->template = View::factory("$this->_view_directory/index", array(
 			'imported'		=>	$imported,		// The IDs of the templates which we've just added.
 			'templates'	=>	$templates,		// All the templates which are in the database.
-			'filenames'	=>	$filenames,		// The filenames of all templates on the filesystem.
+			'filenames'	=>	$manager->get_template_filenames(),
 		));
 	}
 
@@ -116,26 +65,17 @@ class Boom_Controller_Cms_Templates extends Boom_Controller
 		));
 	}
 
-	/**
-	 * Batch save all the templates.
-	 */
 	public function action_save()
 	{
-		// Get the POST data.
 		$post = $this->request->post();
-
-		// Get the template data from the POST array.
 		$template_ids = $post['templates'];
 
-		// Define an array to record any errors as we go along.
 		$errors = array();
 
-		// Save changes to template data.
 		foreach ($template_ids as $template_id)
 		{
 			try
 			{
-				// Update the template.
 				$template = ORM::factory('Template', $template_id)
 					->values(array(
 						'name'		=>	$post["name-$template_id"],
