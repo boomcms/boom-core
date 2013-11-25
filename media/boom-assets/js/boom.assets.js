@@ -217,7 +217,7 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 
 		var self = this;
 
-		$('#boom-assets-upload-menu')
+		$('#b-assets-upload')
 		.on( 'click', function( event ) {
 			var tags = [];
 			var tagged = new $.Deferred();
