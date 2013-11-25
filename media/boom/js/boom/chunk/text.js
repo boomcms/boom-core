@@ -101,13 +101,7 @@ $.widget('ui.chunkText', $.ui.chunk,
 	Update the page with edited HTML from the editor, then remove TinyMCE.
 	@param {String} replacedata HTML to insert into the page.
 	*/
-	insert : function(replacedata){
-		if (replacedata) {
-			this.element
-				.html(replacedata)
-				.show();
-		}
-
+	insert : function(replacedata) {
 		this.element
 			.find('[contenteditable]')
 			.removeAttr('contenteditable')

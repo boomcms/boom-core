@@ -69,7 +69,7 @@ $.widget('ui.chunk',
 	@function
 	*/
 	_update_html : function(html) {
-		this.element.html($(html).children());
+		this.element.html($(html).html());
 
 		this.bind();
 	},
