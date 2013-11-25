@@ -114,25 +114,13 @@ $.widget( 'boom.pageToolbar', {
 	@function
 	*/
 	hide : function() {
-		this.element
-			.slideUp()
-			.hide();
-
-		this.document
-			.find('body')
-			.css('margin-top', 0);
+		this.element.hide();
 	},
 
 	/**
 	@function
 	*/
 	show : function() {
-		this.element
-			.show()
-			.slideDown();
-
-		this.document
-			.find('body')
-			.css('margin-top', this.options.height);
+		this.element.show();
 	}
 });
