@@ -1,26 +1,8 @@
 <?= Boom::include_css() ?>
 <?= $body_tag ?>
 <? if (Kohana::$environment !== Kohana::PRODUCTION): ?>
-	<? $class = new ReflectionClass('Kohana');
-	$constants = $class->getConstants();
-	$constants = array_flip($constants);
-	$environment = $constants[Kohana::$environment];
-	$branchname = '';
-
-	if ( Kohana::$environment == Kohana::DEVELOPMENT ):
-		$dir = DOCROOT;
-		exec( "cd '$dir'; git branch", $lines );
-		foreach ( $lines as $line ) {
-			if ( strpos( $line, '*' ) === 0 ) {
-				$branchname = '<br>' . ltrim( $line, '* ' );
-				break;
-			}
-		}
-	endif;
-
-	?>
 	<div id="b-environment">
-		<p><?= $environment ?> site <?= $branchname ?></p>
+		<p><?= $environment ?> site <? if ($branch): ?><br /><?= $branch ?><? endif ?></p>
 	</div>
 <? endif; ?>
 

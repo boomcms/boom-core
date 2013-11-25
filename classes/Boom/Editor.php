@@ -94,7 +94,9 @@ abstract class Boom_Editor
 			// Add the editor iframe to just after the <body> tag.
 			$head = View::factory('boom/editor/iframe', array(
 				'body_tag'	=>	$body_tag,
-				'page_id'	=>	$page_id
+				'page_id'	=>	$page_id,
+				'environment' => $this->_get_environment(),
+				'branch' => Kohana::$environment == Kohana::DEVELOPMENT? $this->_get_branch() : NULL,
 			));
 
 			$html = str_replace($body_tag, $head->render(), $html);
@@ -202,6 +204,30 @@ abstract class Boom_Editor
 			// Store the value in the session data.
 			return $this->_session
 				->set($session_key, $time);
+		}
+	}
+
+	// TODO: These methods don't really belong in this class.
+	private function _get_environment()
+	{
+		$class = new ReflectionClass('Kohana');
+		$constants = $class->getConstants();
+		$constants = array_flip($constants);
+
+		return $constants[Kohana::$environment];
+	}
+
+	private function _get_branch()
+	{
+		$dir = DOCROOT;
+		exec("cd '$dir'; git branch", $lines);
+
+		foreach ($lines as $line)
+		{
+			if (strpos($line, '*') === 0)
+			{
+				return ltrim($line, '* ');
+			}
 		}
 	}
 }
