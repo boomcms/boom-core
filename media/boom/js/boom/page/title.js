@@ -34,11 +34,17 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 				'font-size' : '40px',
 				'text-align' : 'center',
 				overflow : 'hidden'
-			});
+			})
+			.find('span')
+			.css('line-height', '40px');
 
 		$('<p><a href="#" id="b-title-help">What is this?</a></p>')
 			.appendTo(top.$('#b-title-length'))
-			.css('font-size', '12px')
+			.css({
+				'line-height' : '12px',
+				'margin-top' : '5px',
+				'font-size' : '12px'
+			})
 			.find('a')
 			.css('color', '#000')
 			.on('click', function(e) {
