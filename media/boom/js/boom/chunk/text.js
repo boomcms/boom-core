@@ -45,6 +45,8 @@ $.widget('ui.chunkText', $.ui.chunk,
 			}
 			self._bring_forward();
 
+			$element.unbind('keydown');
+
 			$( 'body' ).editor( 'edit', $element )
 				.fail( function(){
 					self.element.html( old_html ).show();

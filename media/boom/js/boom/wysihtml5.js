@@ -561,7 +561,6 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 				} )
 				.on( 'keydown', function( event ){
 					switch( event.which ) {
-
 						case 13:
 							top.document.execCommand( 'insertHTML', null, '<br>' );
 
