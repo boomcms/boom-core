@@ -114,13 +114,13 @@ $.widget( 'boom.pageToolbar', {
 	@function
 	*/
 	hide : function() {
-		this.element.hide();
+		this.element.css('margin-left', '-60px');
 	},
 
 	/**
 	@function
 	*/
 	show : function() {
-		this.element.show();
+		this.element.css('margin-left', '0');
 	}
 });
