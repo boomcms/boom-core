@@ -130,28 +130,6 @@ window.boomConfig =
 	@static
 	@class
 	*/
-	growl : {
-		/**
-		@type string
-		@default 'default'
-		*/
-		theme: 'default',
-		/**
-		@type number
-		@default 240
-		*/
-		speed: 240,
-		/**
-		@type boolean
-		@default false
-		*/
-		closer: false
-	},
-
-	/**
-	@static
-	@class
-	*/
 	datepicker : {
 		/**
 		@type boolean

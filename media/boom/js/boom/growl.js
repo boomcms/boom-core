@@ -1,4 +1,13 @@
 $.widget('boom.boomGrowl', {
+	options : {
+		theme: 'default',
+		speed: 240,
+		closer: false,
+		open: function(elem, message){
+			$(this).removeClass('ui-state-highlight').addClass('ui-state-default').find('.message').prepend('<span class="ui-icon ui-icon-check ui-helper-left" />');
+		}
+	},
+
 	_create : function() {
 
 	},
@@ -6,12 +15,8 @@ $.widget('boom.boomGrowl', {
 	/** @function */
 	show : function(msg, sticky){
 
-		$.jGrowl(msg, $.extend({}, $.boom.config.growl, {
+		$.jGrowl(msg, $.extend({}, this.options, {
 			sticky: sticky,
-			closer: false,
-			open: function(elem, message){
-				$(this).removeClass('ui-state-highlight').addClass('ui-state-default').find('.message').prepend('<span class="ui-icon ui-icon-check ui-helper-left" />');
-			}
 		}));
 
 		var $jgrowl = $('#jGrowl');
