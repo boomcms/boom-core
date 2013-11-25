@@ -122,6 +122,7 @@
 		//<![CDATA[
 		(function($){
 			$.boom.init();
+			$('#b-login-form').ui();
 
 			<? if (isset($tab)): ?>
 				$("a[href='#tab-<?= $tab ?>']").trigger('click');
