@@ -96,7 +96,10 @@ class Boom_Model_Chunk_Text extends Model_Chunk
 				array('strip_tags'),
 			),
 			'text' => array(
-				array(array($this, 'make_links_relative'))
+				array(array($this, 'make_links_relative')),
+				array(function($text) {
+					return str_replace('&nbsp;', ' ', $text); 
+				}),
 			),
 		);
 	}
