@@ -16,7 +16,7 @@
 
 			$('body').pageEditor({
 				page_id : <?= $page->id; ?>,
-				editable : <?= (int) ($auth->logged_in('edit_page_content', $page) OR $page->was_created_by($person)) ?>,
+				editable : <?= (int) $editor->state_is(Editor::EDIT) AND ($auth->logged_in('edit_page_content', $page) OR $page->was_created_by($person)) ?>,
 			});
 		})(jQuery);
 		//]]>
