@@ -303,7 +303,7 @@ $.widget( 'boom.browser_people', $.boom.browser,
 			.on('change', '.b-people-select', function() {
 				var count = self.main_panel.find('.b-people-select:checked').length;
 
-				count? $('#b-items-multiactons button').button('enable') : $('#b-items-multiactons button').button('disable');
+				count? $('#b-button-multiaction-delete').button('enable') : $('#b-button-multiaction-delete').button('disable');
 			});
 	}
 });
