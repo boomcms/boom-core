@@ -21,7 +21,7 @@ $.widget('ui.chunkFeature', $.ui.chunk,
 		var self = this;
 
 		this.dialog = $.boom.dialog.open({
-			url: this.options.urlPrefix + '/feature/edit/' + this.options.currentpage.id,
+			url: this.options.urlPrefix + '/feature/edit/' + this.options.currentPage.id,
 			width: 400,
 			id: self.element[0].id + '-boom-dialog',
 			title: 'Page feature',
@@ -29,7 +29,7 @@ $.widget('ui.chunkFeature', $.ui.chunk,
 
 				self.dialog.find( '.boom-tree' ).pageTree({
 					onPageSelect : function(page) {
-						self.insert( page.page_id );
+						self.insert( page.page_rid );
 
 						$.boom.dialog.destroy(self.dialog);
 					}

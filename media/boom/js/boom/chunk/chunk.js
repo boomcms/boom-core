@@ -80,7 +80,9 @@ $.widget('ui.chunk',
 		$.boom.loader.show();
 
 		return $.post(this._url('remove'), this._slot_data({}))
-			.done(function(data) {
+			.done(function(response) {
+				var data = $.parseJSON(response);
+
 				$.boom.loader.hide();
 				self._update_html(data.html);
 				$.boom.page.status.set(data.status);

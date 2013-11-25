@@ -85,7 +85,7 @@ $.widget( 'boom.pageEditor', {
 				$this[widgetName]({
 					type : type,
 					name : $this.attr('data-boom-slot-name'),
-					template : $this.attr('data-boom-template'),
+					template : $this.attr('data-boom-slot-template'),
 					id : $this.attr('data-boom-target')? parseInt($this.attr('data-boom-target'), 10) : 0,
 					page : $this.attr( 'data-boom-page' ),
 					currentPage : self.page,
