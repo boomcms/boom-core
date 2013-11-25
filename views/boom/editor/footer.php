@@ -11,12 +11,12 @@
 		(function($){
 
 			$.boom.init({
-				csrf: '<?= Security::token() ?>',
+				csrf: '<?= Security::token() ?>'
 			});
 
 			$('body').pageEditor({
 				page_id : <?= $page->id; ?>,
-				editable : <?= (int) $editor->state_is(Editor::EDIT) AND ($auth->logged_in('edit_page_content', $page) OR $page->was_created_by($person)) ?>,
+				editable : <?= (int) (Editor::instance()->state_is(Editor::EDIT) AND ($auth->logged_in('edit_page_content', $page) OR $page->was_created_by($person))) ?>
 			});
 		})(jQuery);
 		//]]>
