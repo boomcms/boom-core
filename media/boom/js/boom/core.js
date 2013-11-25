@@ -46,7 +46,6 @@ $.extend({
 			$('#b-menu').boomMenu({});
 			this.loader = $('body').boomLoader({}).data('boomBoomLoader');
 			this.growl = $('body').boomGrowl({}).data('boomBoomGrowl');
-			$.boom['history'].init();
 		}
 	}
 });

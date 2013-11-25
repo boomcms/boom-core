@@ -10,16 +10,12 @@ $.extend($.boom,
 
 		_interval: 0,
 
-		hashCallback : function( hash ) {
-
+		options : {
+			checkInterval : 100
 		},
 
-		/**
-		Initialise from boom.config.history
-		*/
-		init : function(){
+		hashCallback : function( hash ) {
 
-			this.options = $.boom.config.history;
 		},
 
 		/**

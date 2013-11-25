@@ -42,18 +42,6 @@ window.boomConfig =
 	@static
 	@class
 	*/
-	history : {
-		/**
-		@type number
-		@default 100
-		*/
-		checkInterval: 100
-	},
-
-	/**
-	@static
-	@class
-	*/
 	editor : {
 		/**
 		@type string
