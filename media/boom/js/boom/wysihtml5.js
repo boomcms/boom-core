@@ -84,14 +84,7 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 	@returns {boolean}
 	*/
 	ready : function() {
-
-		if (!top.wysihtml5) {
-
-
-			return false;
-		}
-
-		return true;
+		return (top.wysihtml5)? true : false;
 	},
 
 	/**
