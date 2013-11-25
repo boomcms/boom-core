@@ -36,29 +36,18 @@ class Boom_Controller_Cms_Page_Version_Save extends Controller_Cms_Page_Version
 		}
 	}
 
-	/**
-	 *
-	 * @uses Boom_Controller::log()
-	 * @uses Model_Page_Version::embargo()
-	 * @uses Model_Page_Version::copy_chunks()
-	 */
 	public function action_embargo()
 	{
-		// Call the parent function to check permissions.
 		parent::action_embargo();
 
-		// If no embargo time was given use the current time which will make this version published.
-		$embargoed_until = $this->request->post('embargoed')? strtotime($this->request->post('embargoed_until')) : $_SERVER['REQUEST_TIME'];
+		$embargoed_until = $this->request->post('embargoed_until')? strtotime($this->request->post('embargoed_until')) : $_SERVER['REQUEST_TIME'];
 
 		$this->new_version
 			->create()
 			->embargo($embargoed_until)
 			->copy_chunks($this->old_version);
 
-		if ($this->new_version->is_published())
-		{
-			$this->page->remove_drafts();
-		}
+		$this->new_version->is_published() AND $this->page->remove_drafts();
 	}
 
 	/**
