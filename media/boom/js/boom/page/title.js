@@ -89,6 +89,18 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 		this._create_length_counter();
 	},
 
+	_get_counter_color_for_length : function(length) {
+		if (length >= this.max_length) {
+			return 'red';
+		} else if (length >= this.max_length * 0.9) {
+			return 'orange';
+		} else if (length >= this.max_length * 0.8) {
+			return 'yellow';
+		}
+
+		return 'green';
+	},
+
 	insert : function(html) {
 		this.element.html(html);
 		this._save();
@@ -127,18 +139,11 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 	},
 
 	_update_length_counter : function(length) {
-		var counter = top.$('#b-title-length');
-		counter.find('span').text(length);
-
-		if (length >= this.max_length) {
-			counter.css('background', 'red');
-		} else if (length >= this.max_length * 0.9) {
-			counter.css('background', 'orange');
-		} else if (length >= this.max_length * 0.8) {
-			counter.css('background', 'yellow');
-		} else {
-			counter.css('background', 'green');
-		}
+		top.$('#b-title-length')
+			.find('span')
+			.text(length)
+			.end()
+			.css('background-color', this._get_counter_color_for_length(length));
 
 		var disable_accept_button = (length >= this.max_length)? true : false;
 		var opacity = disable_accept_button? '.35' : 1;
