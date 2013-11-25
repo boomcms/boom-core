@@ -37,12 +37,6 @@ $.extend({
 			( options ) && $.extend( this.config, options );
 			this.options = options;
 
-			var classes = ['history'];
-
-			for (i in classes) {
-				$.boom[classes[i]].init();
-			}
-
 			$('#b-topbar').ui();
 
 			this._init_widgets();
@@ -52,6 +46,7 @@ $.extend({
 			$('#b-menu').boomMenu({});
 			this.loader = $('body').boomLoader({}).data('boomBoomLoader');
 			this.growl = $('body').boomGrowl({}).data('boomBoomGrowl');
+			$.boom['history'].init();
 		}
 	}
 });
