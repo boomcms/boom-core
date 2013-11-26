@@ -276,7 +276,7 @@ $.widget( 'boom.group_permissions',
 
 		page_tree.pageTree({
 			onPageSelect : function(page) {
-				selected_page = page.page_id;
+				selected_page = page.page_rid;
 
 				self._check_inputs( $( '#b-group-roles-pages input[type=radio]'), -1 );
 
