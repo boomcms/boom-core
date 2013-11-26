@@ -6,31 +6,36 @@ function boomPage(page_id) {
 	this.id = page_id;
 
 	boomPage.prototype.add = function() {
-		var self = this;
-		$.post('/cms/page/add/' + self.id, {csrf : $('#b-csrf').val()}, function(response){
+		var promise = new $.Deferred(),
+			page_id = this.id;
+
+		$.post('/cms/page/add/' + page_id, {csrf : $('#b-csrf').val()}, function(response){
 			if (new RegExp('^' + "\/").test( response)) {
-				top.location = response;
+				promise.resolve(response);
 			} else {
-				self.boom.dialog.alert('Error', response);
+				promise.reject(response);
 			}
 		});
+
+		return promise;
 	};
 
 	boomPage.prototype.delete = function() {
-		var self = this;
+		var promise = new $.Deferred(),
+			page_id = this.id;
 
-		self.boom.dialog.open({
+		$.boom.dialog.open({
 			width: 350,
-			url: '/cms/page/delete/' + self.id,
+			url: '/cms/page/delete/' + page_id,
 			title: 'Please confirm',
 			callback: function(){
-
-				$.post('/cms/page/delete/' + self.id, $(this).find('form').serialize(), function(response){
-					self.boom.growl.show("Page deleted, redirecting to parent.");
-					top.location = response;
+				$.post('/cms/page/delete/' + page_id, $(this).find('form').serialize(), function(response) {
+					promise.resolve(response);
 				});
 			}
 		});
+
+		return promise;
 	};
 
 	boomPage.prototype.embargo = function() {
@@ -87,18 +92,18 @@ function boomPage(page_id) {
 	},
 
 	boomPage.prototype.stash = function() {
-		var self = this;
+		var page_id = this.id;
 
-		self.boom.dialog.confirm(
+		$.boom.dialog.confirm(
 			'Edit live',
 			'Discard changes and edit the live page?'
 		)
 		.done(function(){
-			self.boom.log('stashing page edits');
+			$.boom.log('stashing page edits');
 
-			$.post('/cms/page/stash/' + self.id)
+			$.post('/cms/page/stash/' + page_id)
 				.done(function(response) {
-					self.boom.history.refresh();
+					$.boom.history.refresh();
 				});
 		});
 	};

@@ -9,10 +9,20 @@ $.widget( 'boom.pageToolbar', {
 
 		this.element.contents()
 			.on('click', '#b-page-delete', function() {
-				self.options.page.delete();
+				self.options.page.delete()
+					.done(function(response) {
+						$.boom.growl.show("Page deleted, redirecting to parent.");
+						top.location = response;
+					});
 			})
 			.on('click', '#b-page-addpage', function() {
-				self.options.page.add();
+				self.options.page.add()
+					.done(function(response) {
+						top.location = response;
+					})
+					.fail(function(response) {
+						$.boom.dialog.alert('Error', response);
+					});
 			})
 			.on('click', '#boom-page-editlive', function() {
 				self.options.page.stash();
