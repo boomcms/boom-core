@@ -72,6 +72,12 @@ function boomPage(page_id) {
 		return promise;
 	};
 
+	boomPage.prototype.requestApproval = function() {
+		var url = '/cms/page/version/request_approval/' + this.id;
+
+		return $.post(url, {csrf : $.boom.options.csrf});
+	};
+
 	boomPage.prototype.revertToPublished = function() {
 		var	promise = new $.Deferred(),
 			page = this;

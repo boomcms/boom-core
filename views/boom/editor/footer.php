@@ -15,7 +15,8 @@
 
 			$('body').pageEditor({
 				page_id : <?= $page->id; ?>,
-				editable : <?= (int) (Editor::instance()->state_is(Editor::EDIT) AND ($auth->logged_in('edit_page_content', $page) OR $page->was_created_by($person))) ?>
+				editable : <?= (int) (Editor::instance()->state_is(Editor::EDIT) AND ($auth->logged_in('edit_page_content', $page) OR $page->was_created_by($person))) ?>,
+				publishable : <?= (int) $auth->logged_in('publish_page', $page) ?>
 			});
 		});
 		//]]>

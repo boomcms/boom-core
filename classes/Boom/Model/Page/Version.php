@@ -40,6 +40,7 @@ class Boom_Model_Page_Version extends ORM
 		'published'			=>	'',
 		'embargoed_until'	=>	'',
 		'stashed'			=>	'',
+		'pending_approval'	=>	'',
 	);
 
 	protected $_table_name = 'page_versions';
@@ -229,7 +230,11 @@ class Boom_Model_Page_Version extends ORM
 	 */
 	public function status()
 	{
-		if ($this->embargoed_until === NULL)
+		if ($this->pending_approval)
+		{
+			return 'pending approval';
+		}
+		elseif ($this->embargoed_until === NULL)
 		{
 			// Version is a draft if an embargo time hasn't been set.
 			return 'draft';

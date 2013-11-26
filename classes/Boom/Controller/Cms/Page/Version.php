@@ -74,6 +74,11 @@ abstract class Boom_Controller_Cms_Page_Version extends Controller_Cms_Page
 		$this->authorization('edit_feature_image', $this->page);
 	}
 
+	public function action_request_approval()
+	{
+		$this->authorization('edit_page_content', $this->page);
+	}
+
 	/**
 	 * Edit the page's templates
 	 *

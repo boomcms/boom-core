@@ -92,7 +92,8 @@ $.widget( 'boom.pageToolbar', {
 
 		this.status = $('#b-page-version-status')
 			.pageStatus({
-				page : this.options.page
+				page : this.options.page,
+				publishable : this.options.publishable
 			})
 			.data('boomPageStatus');
 

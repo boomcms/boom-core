@@ -145,6 +145,10 @@
 		background-color: #d6278e;
 		text-transform: capitalize;
 		width: 50px;
+		
+		span {
+			padding: .4em;
+		}
 
 		&[data-status=published] {
 			background-color: #75d627;
@@ -152,6 +156,10 @@
 
 		&[data-status=embargoed] {
 			background-color: #e3ca68;
+		}
+
+		&[data-status='pending approval'] {
+			background-color: #249ac1;
 		}
 	}
 }

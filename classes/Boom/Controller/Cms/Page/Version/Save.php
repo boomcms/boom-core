@@ -43,6 +43,7 @@ class Boom_Controller_Cms_Page_Version_Save extends Controller_Cms_Page_Version
 		$embargoed_until = $this->request->post('embargoed_until')? strtotime($this->request->post('embargoed_until')) : $_SERVER['REQUEST_TIME'];
 
 		$this->new_version
+			->set('pending_approval', FALSE)
 			->create()
 			->embargo($embargoed_until)
 			->copy_chunks($this->old_version);
@@ -64,6 +65,16 @@ class Boom_Controller_Cms_Page_Version_Save extends Controller_Cms_Page_Version
 
 		$this->new_version
 			->set('feature_image_id', $this->request->post('feature_image_id'))
+			->create()
+			->copy_chunks($this->old_version);
+	}
+
+	public function action_request_approval()
+	{
+		parent::action_request_approval();
+
+		$this->new_version
+			->set('pending_approval', TRUE)
 			->create()
 			->copy_chunks($this->old_version);
 	}

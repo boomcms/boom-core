@@ -16,7 +16,8 @@ $.widget( 'boom.pageEditor', {
 		this.page.toolbar = this.toolbar = this.document
 			.find('#b-page-topbar')
 			.pageToolbar({
-				page : this.page
+				page : this.page,
+				publishable : this.options.publishable
 			})
 			.data('boomPageToolbar');
 

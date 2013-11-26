@@ -180,6 +180,7 @@ $.widget('ui.splitbutton',
 	open : function(){
 		this.isOpen = true;
 		this.elements.menu.trigger('show');
+
 		this._trigger('open');
 	},
 
