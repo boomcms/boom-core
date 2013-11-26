@@ -221,7 +221,7 @@ class Boom_Model_Page_Version extends ORM
 	 *
 	 * Status could be:
 	 *
-	 * * 'live' if the version is published.
+	 * * 'published' if the version is published.
 	 * * 'embargoed' if the version is published but won't become live until a future time.
 	 * * 'draft' if it's not published.
 	 *
@@ -231,14 +231,17 @@ class Boom_Model_Page_Version extends ORM
 	{
 		if ($this->embargoed_until === NULL)
 		{
+			// Version is a draft if an embargo time hasn't been set.
 			return 'draft';
 		}
 		elseif ($this->embargoed_until <= Editor::instance()->live_time())
 		{
-			return 'live';
+			// Version is live if the embargo time is in the past.
+			return 'published';
 		}
 		elseif ($this->embargoed_until > Editor::instance()->live_time())
 		{
+			// Version is embargoed if the embargo time is in the future.
 			return 'embargoed';
 		}
 	}

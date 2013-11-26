@@ -67,7 +67,7 @@ $.widget('boom.pageStatus', {
 
 		this._buildMenu(status);
 
-		if (status == 'live') {
+		if (status == 'published') {
 			this.element.button('disable');
 		} else {
 			this.element.button('enable');
