@@ -312,11 +312,9 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 		var self = this;
 
 		$.boom.log( 'inserting asset' + self.asset.asset_id );
-		$.boom.loader.show();
 
 		self._save(self.getData())
 			.done(function(data) {
-				$.boom.loader.hide();
 
 				if (top.$('.toolbar-slideshow').length) {
 					var new_asset = $('<div>').append( data ).find( 'img' );

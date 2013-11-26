@@ -3,14 +3,9 @@ if ( ! $.boom.page) {
 };
 
 function savePageSettings( url, data, message) {
-	$.boom.loader.show();
-
 	return $.post(
 		url, data
 	)
-	.always( function( response ) {
-		$.boom.loader.hide();
-	})
 	.done( function(response){
 		// success
 		if (message)
@@ -192,11 +187,8 @@ boomPage.prototype.urls = function() {
 		new_url = new_url.split( ' ' ).join( '-' );
 		$( 'input[name=url]' ).val( new_url );
 
-		$.boom.loader.show();
-
 		$.post('/cms/page/urls/add/' + page.id, form.serialize())
 			.done( function(response) {
-				$.boom.loader.hide();
 
 				var add_url = new $.Deferred();
 
@@ -248,10 +240,7 @@ boomPage.prototype.urls = function() {
 
 		return move_url.pipe( function(){
 
-			return $.post( form_url )
-			.done( function( response ) {
-				$.boom.loader.hide();
-			});
+			return $.post( form_url );
 		});
 
 	};
@@ -265,13 +254,10 @@ boomPage.prototype.urls = function() {
 		)
 		.done( function(){
 
-			$.boom.loader.show();
-
 			$.post('/cms/page/urls/delete/' + $.boom.page.options.id, {
 					location: $.trim( item.attr( 'data-url' ) )
 			})
 			.done( function() {
-				$.boom.loader.hide();
 				item.remove();
 			});
 		});

@@ -181,15 +181,10 @@ $.extend($.boom,
 
 			if (this.options.iframe) {
 
-				$.boom.loader.show();
-
 				var load = 0;
 
 				var iframe = $('<iframe />', { id: self.options.iframeId || id }).height(this.options.height - 30)
 				.load(function(){
-
-					$.boom.loader.hide();
-
 					if ($.isFunction(self.options.onIframeLoad)) {
 						self.options.onIframeLoad.call(this);
 					}
@@ -214,8 +209,6 @@ $.extend($.boom,
 					dialog.dialog('open');
 				} else {
 
-					$.boom.loader.show('dialog');
-
 					setTimeout(function(){
 
 						dialog.load(self.options.url, function(response, status){
@@ -229,8 +222,6 @@ $.extend($.boom,
 
 								return;
 							}
-
-							$.boom.loader.hide('dialog');
 
 							initDialog.call(self, dialog);
 
@@ -283,12 +274,8 @@ $.extend($.boom,
 
 						event.preventDefault();
 
-						$.boom.loader.show('dialog');
-
 						$('<img />')
 						.load(function(){
-
-							$.boom.loader.hide('dialog');
 
 							self.alert(
 								opts.image.data('title'),
@@ -298,8 +285,6 @@ $.extend($.boom,
 							);
 						})
 						.error(function(){
-
-							$.boom.loader.hide('dialog');
 
 							$.boom.dialog.alert('Error', 'There was an error loading the image.');
 						})

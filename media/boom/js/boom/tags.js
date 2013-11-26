@@ -76,8 +76,6 @@ $.widget( 'boom.tagger',
 			type = this.options.type,
 			id = this.options.id;
 
-		$.boom.loader.show();
-
 		$.post(
 			self.options.base_url + type + '/add/' + id,
 			{
@@ -96,7 +94,6 @@ $.widget( 'boom.tagger',
 				});
 			});
 
-		$.boom.loader.hide();
 		$('#b-tags-add-name').val('');
 	},
 
@@ -152,10 +149,6 @@ $.widget( 'boom.tagger',
 				event.preventDefault();
 
 				remove.notify( $(this) );
-			});
-
-			remove.progress( function(){
-				$.boom.loader.hide();
 			});
 
 			return remove;

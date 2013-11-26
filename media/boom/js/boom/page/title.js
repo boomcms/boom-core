@@ -117,14 +117,9 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 	},
 
 	_save : function() {
-		$.boom.loader.show();
-
 		$.post('/cms/page/version/title/' + $.boom.page.id, {
 			csrf : $.boom.options.csrf,
 			title : this.element.html()
-		})
-		.always(function() {
-			$.boom.loader.hide();
 		})
 		.done(function(response) {
 			try {

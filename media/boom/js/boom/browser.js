@@ -28,25 +28,14 @@ $.extend($.boom.item,
 
 	/** @function */
 	add: function( data ){
-		$.boom.loader.show();
 
-		return $.post( this.base_url + 'add', data)
-		.done( function(id){
-
-			$.boom.loader.hide();
-
-		});
+		return $.post( this.base_url + 'add', data);
 	},
 
 	/** @function */
 	save: function( data ){
-		$.boom.loader.show();
 
-		return $.post( this.base_url + 'save/' + this.rid, data)
-		.done( function(){
-
-			$.boom.loader.hide();
-		});
+		return $.post( this.base_url + 'save/' + this.rid, data);
 	},
 
 	/** @function */
@@ -65,14 +54,7 @@ $.extend($.boom.item,
 		return deleted
 		.pipe( function( event ){
 
-			$.boom.loader.show();
-
 			return $.post( self.base_url + 'delete/' + self.rid, {csrf : $.boom.options.csrf} );
-		})
-		.done( function(){
-
-			$.boom.loader.hide();
-
 		});
 	},
 });
@@ -288,13 +270,9 @@ $.widget( 'boom.browser',
 
 				if ( item.length && instance ) {
 
-					$.boom.loader.show();
-
 					return instance
 						.get( rid )
 						.done( function( response ){
-							$.boom.loader.hide();
-
 							self.showContent(response);
 							self.item.bind();
 						});

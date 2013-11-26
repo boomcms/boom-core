@@ -58,11 +58,9 @@ $.extend($.boom,
 	*/
 	editor: {
 		state : function(state) {
-			$.boom.loader.show();
 
 			$.post('/cms/editor/state', {state: state}, function() {
 				top.location.reload();
-				$.boom.loader.hide();
 			});
 		}
 	}

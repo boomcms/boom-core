@@ -36,7 +36,6 @@ $.widget('boom.pageTree', {
 	},
 
 	getChildren : function(page_id) {
-		$.boom.loader.show();
 
 		var list_ready = $.Deferred();
 		$.ajax({
@@ -65,8 +64,6 @@ $.widget('boom.pageTree', {
 			children.find( '#page_' + parent_id ).addClass( 'ui-state-active' );
 
 			list_ready.resolve( { childList: children } );
-
-			$.boom.loader.hide();
 		});
 
 		return list_ready;

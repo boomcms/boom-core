@@ -7,15 +7,11 @@ function boomPage(page_id) {
 
 	boomPage.prototype.add = function() {
 		var self = this;
-
-		self.boom.loader.show();
-
 		$.post('/cms/page/add/' + self.id, {csrf : $('#b-csrf').val()}, function(response){
 			if (new RegExp('^' + "\/").test( response)) {
 				top.location = response;
 			} else {
 				self.boom.dialog.alert('Error', response);
-				self.boom.loader.hide();
 			}
 		});
 	};
@@ -63,13 +59,9 @@ function boomPage(page_id) {
 	boomPage.prototype.publish = function() {
 		var promise = new $.Deferred();
 
-		$.boom.loader.show();
 		$.post('/cms/page/version/embargo/' + this.id, {csrf : $.boom.options.csrf})
 			.done(function(response) {
 				promise.resolve(response);
-			})
-			.always(function() {
-				$.boom.loader.hide();
 			});
 
 		return promise;
@@ -84,12 +76,8 @@ function boomPage(page_id) {
 			'Are you sure you want to discard any unpublished changes and revert this page to it\'s published state?'
 		)
 		.done( function(){
-			$.boom.loader.show();
 
 			$.post('/cms/page/discard/' + page.id, {csrf : $.boom.options.csrf})
-				.always(function() {
-					$.boom.loader.hide();
-				})
 				.done(function() {
 					promise.resolve();
 				});

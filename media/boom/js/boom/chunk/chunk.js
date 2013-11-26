@@ -77,16 +77,12 @@ $.widget('ui.chunk',
 	remove : function() {
 		var self = this;
 
-		$.boom.loader.show();
-
 		return $.post(this._url('remove'), this._slot_data({}))
 			.done(function(response) {
 				var data = $.parseJSON(response);
 
-				$.boom.loader.hide();
 				self._update_html(data.html);
 				$.boom.page.status.set(data.status);
-				$.boom.loader.hide();
 				$.boom.growl.show("Page content saved");
 			});
 	},
@@ -118,15 +114,12 @@ $.widget('ui.chunk',
 	_save : function() {
 		var self = this;
 
-		$.boom.loader.show();
-
 		return $.post(this._url('save'), this._slot_data(this.getData()))
 			.done(function(response) {
 				var data = $.parseJSON(response);
 
 				self._update_html(data.html);
 				$.boom.page.toolbar.status.set(data.status);
-				$.boom.loader.hide();
 				$.boom.growl.show("Page content saved");
 			});
 	},

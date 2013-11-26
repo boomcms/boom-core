@@ -24,8 +24,6 @@ $.widget( 'boom.pageEditor', {
 
 		top.$(function(){
 
-			$.boom.loader.show();
-
 			self.editors = [];
 
 			$.boom.log('Page registered for editing: ' + self.options.page_id);
@@ -54,20 +52,14 @@ $.widget( 'boom.pageEditor', {
 
 	/** @function */
 	load : function(){
-		$.boom.loader.show();
-
 		this.loadScripts(this.config.pageScripts)
 			.done(function(){
-				$.boom.loader.hide();
-
 				$.boom.log('Scripts loaded into iFrame');
 			});
 	},
 
 	/** @function */
 	loadPageEditor : function(){
-		$.boom.loader.hide();
-
 		return $('body').editor().editor('load');
 	},
 
