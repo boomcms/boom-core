@@ -324,11 +324,8 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 					msg
 				)
 				.done( function(){
-					$.boom.loader.show();
 
 					$.post('/cms/assets/delete', {csrf: $.boom.options.csrf, assets:  self.selected}, function(){
-						$.boom.loader.hide();
-
 						$.boom.history.refresh();
 					});
 				});
