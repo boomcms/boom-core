@@ -96,12 +96,9 @@ $.extend($.boom.person, $.boom.item,
 
 					var dialog = this;
 					var data = $( dialog ).find('form').serialize();
-					$.boom.loader.show();
 
 					return $.post('/cms/people/add_group/' + self.person_id, data )
 					.done( function(){
-
-						$.boom.loader.hide();
 						$.boom.history
 							.load( 'person/' + self.person_id )
 							.done( function(){
@@ -117,12 +114,7 @@ $.extend($.boom.person, $.boom.item,
 
 			var self = this;
 
-			$.boom.loader.show();
-
-			return $.post( '/cms/people/remove_group/' + self.person_id, {group_id: group_id} )
-				.done( function(){
-					$.boom.loader.hide();
-				});
+			return $.post( '/cms/people/remove_group/' + self.person_id, {group_id: group_id} );
 		}
 	}
 });
@@ -265,11 +257,8 @@ $.widget( 'boom.browser_people', $.boom.browser,
 							return $(this).attr('data-id');
 						}).get();
 
-						$.boom.loader.show();
-
 						$.post('/cms/people/delete', {people: people})
 						.done(function(){
-							$.boom.loader.hide();
 							$.boom.history.refresh();
 						});
 					});

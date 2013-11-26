@@ -88,14 +88,8 @@ $.widget( 'boom.group_editor',
 
 	/** @function */
 	save: function(group_id, data){
-		$.boom.loader.show();
 
-		return $.post( '/cms/groups/save/' + group_id, data )
-		.done( function(response){
-
-			$.boom.loader.hide();
-
-		});
+		return $.post( '/cms/groups/save/' + group_id, data );
 	},
 
 	/** @function */
@@ -114,13 +108,8 @@ $.widget( 'boom.group_editor',
 		)
 		.done( function(){
 
-			$.boom.loader.show();
-
 			$.post( self.options.base_url + 'delete/' + rid )
 			.done( function(){
-
-				$.boom.loader.hide();
-
 				$.boom.growl.show( 'Group successfully removed.' );
 				item.remove();
 			});
@@ -139,8 +128,6 @@ $.widget( 'boom.group_editor',
 
 		event.preventDefault();
 
-		$.boom.loader.show();
-
 		return $.get(self.options.base_url + 'edit/' + self.options.id)
 			.done(function(data) {
 				self.options.browser.main_panel
@@ -148,8 +135,6 @@ $.widget( 'boom.group_editor',
 					.html(data);
 
 				$('#b-people-group-save').on('click', function() {
-					$.boom.loader.show();
-
 					$.post('/cms/groups/save/' + self.options.id, {name : $('#b-people-group-name').val()})
 						.done(function() {
 							$.boom.growl.show('Group successfully saved, reloading.');
@@ -160,9 +145,6 @@ $.widget( 'boom.group_editor',
 						})
 						.fail(function() {
 							$.boom.growl.show('Sorry, an error occurred.');
-						})
-						.always(function() {
-							$.boom.loader.hide();
 						});
 				});
 
@@ -170,9 +152,6 @@ $.widget( 'boom.group_editor',
 					base_url: self.options.base_url,
 					id: self.options.id
 				});
-			})
-			.always(function() {
-				$.boom.loader.hide();
 			});
 	}
 });
@@ -251,9 +230,6 @@ $.widget( 'boom.group_permissions',
 		var self = this;
 		var selected_page = null;
 		var options = this.options;
-
-		$.boom.loader.hide();
-
 
 		this.element
 			.ui()
