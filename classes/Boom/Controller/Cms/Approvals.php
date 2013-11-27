@@ -42,6 +42,7 @@ class Boom_Controller_Cms_Approvals extends Boom_Controller
 			->on('mptt1.lft', '>=', 'mptt2.lft')
 			->on('mptt1.rgt', '<=', 'mptt2.rgt')
 			->on('mptt1.scope', '=', 'mptt2.scope')
+			->order_by('version.edited_time', 'desc')
 			->find_all()
 			->as_array();
 	}
