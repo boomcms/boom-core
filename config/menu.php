@@ -9,6 +9,12 @@ return array(
 				'url'		=>	'/',
 				'priority'	=>	1,
 			),
+			'approvals'	=>	array(
+				'title'		=>	'Pages pending approval',
+				'url'		=>	'/cms/approvals',
+				'priority'	=>	10,
+				'role'		=>	'manage_approvals',
+			),
 			'profile'		=>	array(
 				'title'		=>	'Profile',
 				'url'		=>	'/cms/profile',
