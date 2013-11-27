@@ -55,7 +55,7 @@ $.widget('ui.chunkText', $.ui.chunk,
 				.done( function( html ){
 					self.insert(html);
 
-					if ( $element.text() == '' ) {
+					if ($element.text() == '' ) {
 						self.remove();
 					}
 				})
@@ -107,7 +107,9 @@ $.widget('ui.chunkText', $.ui.chunk,
 		this.element
 			.find('[contenteditable]')
 			.removeAttr('contenteditable')
-			.off('click');
+			.off('click')
+			.end()
+			.html(replacedata);
 
 		return this._save();
 	},
