@@ -1,4 +1,6 @@
+<?= $before_closing_head ?>
 <?= Boom::include_css() ?>
+</head>
 <?= $body_tag ?>
 <? if (Kohana::$environment !== Kohana::PRODUCTION): ?>
 	<div id="b-environment">
