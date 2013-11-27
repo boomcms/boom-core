@@ -23,7 +23,7 @@
 						<td><?= $page->version()->person->name ?> (<?= $page->version()->person->email ?>)</td>
 						<td><?= date('d F Y H:i', $page->version()->edited_time) ?></td>
 						<td><a href="#" class="b-approvals-publish">Publish</a></td>
-						<td><a href="#" class="b-approvals-reject">Reject</a></td>
+						<td><a href="#" class="b-approvals-reject">Revert to published version</a></td>
 						<td><a href="<?= $page->url() ?>">View page</a></td>
 					</tr>
 				<? endforeach ?>
