@@ -85,13 +85,13 @@ abstract class Boom_Editor
 	public function insert($html, $page_id)
 	{
 		// Find the body tag in the HTML. We need to take into account that the body may have attributes assigned to it in the HTML.
-		preg_match("|(.*?)(</head>)(.*?<body[^>]*)>|imsU", $html, $matches);
+		preg_match("|(.*?)(</head>)(.*?<body[^>]*>)|imsU", $html, $matches);
 
 		if ( ! empty($matches))
 		{
 			$head = View::factory('boom/editor/iframe', array(
 				'before_closing_head' => $matches[1],
-				'body_tag'	=>	$matches[2],
+				'body_tag'	=>	$matches[3],
 				'page_id'	=>	$page_id,
 				'environment' => $this->_get_environment(),
 				'branch' => Kohana::$environment == Kohana::DEVELOPMENT? $this->_get_branch() : NULL,
