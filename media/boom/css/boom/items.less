@@ -54,12 +54,9 @@
 			z-index: 5;
 		}
 
-		.caption, .caption-overlay {
+		.caption {
 			opacity: 0;
 			filter: Alpha(Opacity=0);
-		}
-
-		.caption {
 			position: absolute;
 			left: 0;
 			top: 0;
@@ -69,15 +66,6 @@
 			color: #000;
 			padding: 0 2px 2px 2px;
 			font-size: .9em;
-		}
-
-		.caption-overlay {
-			position: absolute;
-			background: #fff;
-			top: 0;
-			left: 0;
-			width: 100px;
-			z-index: 2;
 		}
 
 		/* Don't show checkboxes in thumb view. */
@@ -150,17 +138,6 @@
 }
 
 #b-items {
-	&-multiactons {
-		border: 0;
-		padding: 0 0 0 6px;
-		float: left;
-		margin-left: 5%;
-
-		.ui-button .ui-button-text {
-			padding: .3em 1em .3em 2.2em;
-		}
-	}
-
 	&-checkactions {
 		border: 0;
 		padding: .3em 0 0 .8em;
