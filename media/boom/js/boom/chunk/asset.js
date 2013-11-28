@@ -11,27 +11,6 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 	{
 
 	/**
-	Initialise the caption and asset editor
-	*/
-	/*_init : function() {
-		var self = this;
-
-		self.elements = this._get_elements();
-		self.asset = this._get_asset_details();
-
-		this.originals = this.element.children().clone(true);
-
-		if (self.elements.caption.length || self.elements.link.length) {
-			this._build_ui()
-				.done(function() {
-					$.ui.chunk.prototype._init.call(self);
-				});
-		} else {
-			self._edit_asset(self.elements.asset);
-		}
-	},*/
-
-	/**
 	@function
 	*/
 	_build_ui : function() {
