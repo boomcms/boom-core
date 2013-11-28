@@ -47,7 +47,7 @@ $.extend($.boom.assets,
 			/** @ignore */ {
 			url: '/cms/assets/manager',
 			iframe: false,
-			width: '80%',
+			width: '60%',
 			height: '700',
 			dialogClass : 'b-assets-dialog',
 			title: 'Select an asset',
