@@ -11,6 +11,24 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 	{
 
 	/**
+	Initialise the caption and asset editor
+	*/
+	_edit : function() {
+		var self = this;
+
+		self.elements = this._get_elements();
+		self.asset = this._get_asset_details();
+
+		this.originals = this.element.children().clone(true);
+
+		if (self.elements.caption.length || self.elements.link.length) {
+			this._build_ui();
+		} else {
+			self._edit_asset(self.elements.asset);
+		}
+	},
+
+	/**
 	@function
 	*/
 	_build_ui : function() {
@@ -53,20 +71,19 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 	*/
 	_edit_asset : function() {
 
-		var self = this;
-		var asset_selected = new $.Deferred();
+		var self = this, asset_selected = new $.Deferred();
 
-		// cleanup code when the dialog closes.
 		asset_selected
-		.fail( function() {
-			$.boom.log( 'asset chunk cancelled' );
-		});
+			.fail(function() {
+				$.boom.log('asset chunk cancelled');
+				self.destroy();
+			});
 
-		return $.boom.assets.picker( {
+		return $.boom.assets.picker({
 			asset_rid : self.asset.asset_id,
 			deferred: asset_selected
-		} )
-		.pipe( function( rid ){
+		})
+		.pipe(function(rid) {
 			self.asset.asset_id = rid;
 		})
 		.done(function() {
@@ -113,17 +130,6 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 			}
 
 		return edited;
-	},
-
-	/**
-	Remove editor UI and exit
-	*/
-	_destroy : function() {
-		$.boom.log( 'exiting asset editor' );
-
-		this._remove_ui();
-
-		$.ui.chunk.prototype._destroy.call( this );
 	},
 
 	/**
@@ -211,6 +217,8 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 
 		var self = this;
 
+		this._edit();
+
 		$.boom.log('Asset chunk slot edit ' + self.asset.asset_id);
 
 		if (self.elements.caption.length) {
@@ -292,28 +300,7 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 
 		$.boom.log( 'inserting asset' + self.asset.asset_id );
 
-		self._save(self.getData())
-			.done(function(data) {
-
-				if (top.$('.toolbar-slideshow').length) {
-					var new_asset = $('<div>').append( data ).find( 'img' );
-					self.edited = true;
-
-					if (self.elements.asset.is('a')) {
-						self.elements.asset.attr('href', new_asset.attr('src'));
-					} else {
-						self.elements.asset.attr('src', new_asset.attr('src'));
-					}
-
-					if (self.elements.link.length && self.asset.url) {
-						self.elements.link.attr('href', self.asset.url);
-					}
-				}
-			})
-			.fail( function( data ) {
-				$.boom.log( 'asset chunk error ' );
-				console.log( data );
-			});
+		return self._save();
 	},
 
 	/**
@@ -331,5 +318,5 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 			caption : this.asset.caption,
 			url : this.asset.url
 		};
-	},
+	}
 });
