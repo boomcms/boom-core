@@ -42,5 +42,6 @@ return array(
 		'boom/browser.js',
 		'boom/links.js',
 		'boom/tags.js',
+		'jquery/fileupload.js',
 	),
 );
