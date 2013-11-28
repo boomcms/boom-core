@@ -32,7 +32,7 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 	@function
 	*/
 	_build_ui : function() {
-
+		var self = this;
 		this._bring_forward();
 
 		return $.get( '/media/boom/toolbars/asset.php' )
@@ -40,6 +40,21 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 				$.boom.page.toolbar.hide();
 				top.$( 'body' )
 					.prepend( toolbar );
+
+				top.$('div.toolbar')
+					.on( 'click', 'button.cancel', function(){
+						self._cancel();
+					})
+					.on( 'click', 'button.save', function(){
+						self.insert();
+						self.destroy();
+					})
+					.on( 'click', 'button.link', function() {
+						self._edit_link();
+					})
+					.on( 'click', 'button.asset', function() {
+						self._edit_asset(self.elements.asset);
+					});
 			});
 
 	},
@@ -256,21 +271,6 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 			self._edit_asset(self.elements.asset);
 			return false;
 		});
-
-		top.$( 'div.toolbar' )
-			.on( 'click', 'button.cancel', function(){
-				self._cancel();
-			})
-			.on( 'click', 'button.save', function(){
-				self.insert();
-				self.destroy();
-			})
-			.on( 'click', 'button.link', function() {
-				self._edit_link();
-			})
-			.on( 'click', 'button.asset', function() {
-				self._edit_asset(self.elements.asset);
-			});
 	},
 
 	_edit_link: function() {
@@ -318,5 +318,11 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 			caption : this.asset.caption,
 			url : this.asset.url
 		};
+	},
+
+	destroy : function() {
+		this._remove_ui();
+
+		$.ui.chunk.prototype.destroy.call(this);
 	}
 });
