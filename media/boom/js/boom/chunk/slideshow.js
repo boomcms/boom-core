@@ -237,7 +237,7 @@ $.widget('ui.chunkSlideshow', $.ui.chunk,
 		.always( function(){
 			$.boom.history.load( '' );
 
-			$.boom.page.toolbar.hide();
+			$.boom.page.toolbar.minimise();
 		});
 	},
 
