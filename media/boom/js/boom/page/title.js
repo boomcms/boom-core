@@ -26,28 +26,11 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 			.css({
 				top : offset.top + 'px',
 				left : (offset.left - 60) + 'px',
-				position : 'absolute',
-				'z-index' : 1001,
-				background : '#ffffff',
-				width : '50px',
-				height : '80px',
-				'font-size' : '40px',
-				'text-align' : 'center',
-				overflow : 'hidden'
-			})
-			.find('span')
-			.css('line-height', '40px');
+			});
 
 		$('<p><a href="#" id="b-title-help">What is this?</a></p>')
 			.appendTo(top.$('#b-title-length'))
-			.css({
-				'line-height' : '12px',
-				'margin-top' : '5px',
-				'font-size' : '12px'
-			})
-			.find('a')
-			.css('color', '#000')
-			.on('click', function(e) {
+			.on('click', 'a', function(e) {
 				e.preventDefault();
 
 				$.boom.dialog.open({
