@@ -86,7 +86,9 @@ $.widget( 'boom.pageEditor', {
 			})
 			.end()
 			.find('#b-page-title')
-			.pageTitle({});
+			.pageTitle({
+				currentPage : self.page
+			});
 	},
 
 	/** @function */

@@ -117,26 +117,23 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 	},
 
 	_save : function() {
-		$.post('/cms/page/version/title/' + $.boom.page.id, {
-			csrf : $.boom.options.csrf,
-			title : this.element.html()
-		})
-		.done(function(response) {
-			try {
-				var data = $.parseJSON(response);
-			} catch (e) {};
+		this.options.currentPage.setTitle(this.element.html())
+			.done(function(response) {
+				try {
+					var data = $.parseJSON(response);
+				} catch (e) {};
 
-			if (typeof data =='object' && data.location) {
-				$.boom.growl.show('Page URL changed, redirecting to new URL.');
+				if (typeof data =='object' && data.location) {
+					$.boom.growl.show('Page URL changed, redirecting to new URL.');
 
-				setTimeout(function() {
-					top.location = data.location;
-				}, 1000);
-			} else {
-				$.boom.growl.show('Page title saved.');
-				$.boom.page.toolbar.status.set(response);
-			}
-		})
+					setTimeout(function() {
+						top.location = data.location;
+					}, 1000);
+				} else {
+					$.boom.growl.show('Page title saved.');
+					$.boom.page.toolbar.status.set(response);
+				}
+			});
 	},
 
 	_update_length_counter : function(length) {
