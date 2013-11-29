@@ -107,13 +107,16 @@ class Boom_Model_Chunk_Slideshow extends Model_Chunk
 
 		foreach ( (array) $this->_slides as $slide)
 		{
-			$slide->chunk_id = $this->id;
-
-			try
+			if (is_object($slide) AND $slide instanceof Model_Chunk_Slideshow_Slide)
 			{
-				$slide->save();
+				$slide->chunk_id = $this->id;
+
+				try
+				{
+					$slide->save();
+				}
+				catch (Exception $e) {}
 			}
-			catch (Exception $e) {}
 		}
 
 		return $this;
