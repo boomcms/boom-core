@@ -31,7 +31,7 @@ $.widget('ui.chunkSlideshow', $.ui.chunk,
 		top.$( 'div.toolbar' )
 			.on( 'click', 'button.insert', function( event ) {
 				var slideshow = self.slider;
-				var slide = slideshow.slides[ slideshow.currentSlide ];
+				var slide = slideshow? slideshow.slides[ slideshow.currentSlide ] : self.element.find('.slides li');
 
 				self
 					._insert_slide( $( slide ) )
@@ -121,7 +121,7 @@ $.widget('ui.chunkSlideshow', $.ui.chunk,
 
 		$.boom.page.toolbar.show();
 
-		this.slider.play();
+		this.slider && this.slider.play();
 
 		this.element
 			.find( '.slide-caption' )
@@ -143,7 +143,7 @@ $.widget('ui.chunkSlideshow', $.ui.chunk,
 
 		$.boom.log('Slideshow chunk slot edit');
 
-		this.slider.pause();
+		this.slider && this.slider.pause();
 		
 		this._build_ui()
 			.done(function() {
@@ -262,9 +262,11 @@ $.widget('ui.chunkSlideshow', $.ui.chunk,
 				var slides = $.makeArray( self.element.find( 'ul.slides li').not( '.clone' ) );
 				var target = $.inArray( $new_slide[0], slides );
 
-				self.slider.count++;
-				self.slider.update();
-				self.slider.flexslider( 'next' );
+				if (self.slider) {
+					self.slider.count++;
+					self.slider.update();
+					self.slider.flexslider( 'next' );	
+				}
 			});
 	},
 
