@@ -1,7 +1,3 @@
-if ( ! $.boom.page) {
-	$.boom.page = {};
-};
-
 function savePageSettings( url, data, message) {
 	return $.post(
 		url, data
@@ -109,7 +105,7 @@ boomPage.prototype.urls = function() {
 				icons: { primary : 'ui-icon-boom-add' },
 				click: function( event ){
 					$.boom.dialog.open({
-						url: '/cms/page/urls/add/' + $.boom.page.options.id,
+						url: '/cms/page/urls/add/' + page.id,
 						event: event,
 						title: 'Add URL',
 						width: 500,
@@ -150,7 +146,7 @@ boomPage.prototype.urls = function() {
 			var redirect = $url.find('.b-urls-redirect').is(':checked')? 1: 0;
 			var primary = $url.find('.b-urls-primary').is(':checked')? 1 : 0;
 
-			$.post('/cms/page/urls/save/' + $.boom.page.options.id, {
+			$.post('/cms/page/urls/save/' + self.id, {
 				url_id :  $url.attr('data-id'),
 				redirect : redirect,
 				primary : primary
@@ -197,7 +193,7 @@ boomPage.prototype.urls = function() {
 					$.boom.growl.show('Url added.');
 					$( '#b-page-settings-urls' )
 						.parent()
-						.load( '/cms/page/urls/list/' + $.boom.page.options.id, function(){
+						.load( '/cms/page/urls/list/' + self.id, function(){
 							$(this).ui();
 							self.bind();
 						});
@@ -220,9 +216,10 @@ boomPage.prototype.urls = function() {
 	/** @function */
 	boomPage.prototype.urls.move = function( new_url ) {
 
-		var move_url = new $.Deferred();
-		var move_dialog;
-		var form_url = '/cms/page/urls/move/' + $.boom.page.options.id + '?url=' + new_url;
+		var move_url = new $.Deferred(),
+			page = this,
+			move_dialog,
+			form_url = '/cms/page/urls/move/' + page.id + '?url=' + new_url;
 
 		// URL is being used on another page.
 		// Ask if they want to move it.
@@ -247,6 +244,7 @@ boomPage.prototype.urls = function() {
 
 	/** @function */
 	boomPage.prototype.urls.remove = function( item ) {
+		var page = this;
 
 		$.boom.dialog.confirm(
 			'Please confirm',
@@ -254,7 +252,7 @@ boomPage.prototype.urls = function() {
 		)
 		.done( function(){
 
-			$.post('/cms/page/urls/delete/' + $.boom.page.options.id, {
+			$.post('/cms/page/urls/delete/' + page.id, {
 					location: $.trim( item.attr( 'data-url' ) )
 			})
 			.done( function() {
@@ -327,7 +325,7 @@ boomPage.prototype.featureimage = function() {
 						"Page feature image saved."
 					)
 					.done(function(response) {
-						$.boom.page.status.set(response);
+						page.status.set(response);
 					});
 
 					$.boom.dialog.destroy( this );
