@@ -11,13 +11,6 @@
 		</div>
 	</div>
 
-	<div id="boom-dialogs">
-		<div id="boom-dialog-alerts">
-			<p>&nbsp;</p>
-		</div>
-	</div>
-
-	<div id="boom-loader-dialog-overlay" class="ui-widget-overlay"></div>
 	<div id="b-page-edit">
 		<div>
 			<table>
@@ -40,13 +33,14 @@
 		</div>
 	</div>
 
-	<?= HTML::script("media/boom/js/boom.helpers.js") ?>
-	<?= HTML::script("media/boom/js/jquery.js") ?>
-	<?= HTML::script("media/boom/js/jquery.ui.js") ?>
-	<?= HTML::script("media/boom/js/jquery.plugins.js") ?>
-	<?= HTML::script("media/boom/js/boom.plugins.js") ?>
-	<?= HTML::script("media/boom/js/boom.config.js") ?>
-	<?= HTML::script("media/boom/js/boom.core.js") ?>
-	<?= HTML::script("media/boom/js/boom.helpers.js") ?>
+	<?= Boom::include_js() ?>
+
+	<script type="text/javascript">
+		//<![CDATA[
+		(function($){
+			$.boom.init();
+		})(jQuery);
+		//]]>
+	</script>
 </body>
 </html>

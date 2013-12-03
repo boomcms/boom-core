@@ -73,12 +73,7 @@
 	<script type="text/javascript">
 		//<![CDATA[
 		(function($){
-			$.boom.init({
-				person: {
-					rid: <?= $person->id?>,
-					name: "<?= $person->name?>"
-				}
-			});
+			$.boom.init();
 
 			$.boom.templates.init();
 			$('#b-templates table')
