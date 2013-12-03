@@ -111,7 +111,7 @@ boomPage.prototype.urls = function() {
 						width: 500,
 						callback: function(){
 
-							self.add();
+							page.urls.add();
 
 							$.boom.dialog.destroy( this );
 
@@ -129,7 +129,7 @@ boomPage.prototype.urls = function() {
 			}
 		],
 		open: function(){
-			self.bind();
+			page.urls.bind();
 		}
 	});
 
@@ -177,9 +177,10 @@ boomPage.prototype.urls = function() {
 	/** @function */
 	boomPage.prototype.urls.add = function() {
 
-		var self = this;
-		var form = $('#b-form-addurl');
-		var new_url = $( 'input[name=url]' ).val();
+		var self = this,
+			form = $('#b-form-addurl'),
+			new_url = $( 'input[name=url]' ).val();
+
 		new_url = new_url.split( ' ' ).join( '-' );
 		$( 'input[name=url]' ).val( new_url );
 
@@ -193,7 +194,7 @@ boomPage.prototype.urls = function() {
 					$.boom.growl.show('Url added.');
 					$( '#b-page-settings-urls' )
 						.parent()
-						.load( '/cms/page/urls/list/' + self.id, function(){
+						.load( '/cms/page/urls/list/' + page.id, function(){
 							$(this).ui();
 							self.bind();
 						});
@@ -207,7 +208,6 @@ boomPage.prototype.urls = function() {
 				}
 				else
 				{
-
 					add_url.resolve();
 				}
 			});
@@ -217,7 +217,6 @@ boomPage.prototype.urls = function() {
 	boomPage.prototype.urls.move = function( new_url ) {
 
 		var move_url = new $.Deferred(),
-			page = this,
 			move_dialog,
 			form_url = '/cms/page/urls/move/' + page.id + '?url=' + new_url;
 
@@ -244,8 +243,6 @@ boomPage.prototype.urls = function() {
 
 	/** @function */
 	boomPage.prototype.urls.remove = function( item ) {
-		var page = this;
-
 		$.boom.dialog.confirm(
 			'Please confirm',
 			'Are you sure you want to remove this URL? <br /><br /> This will delete the URL from the database and cannot be undone!'
