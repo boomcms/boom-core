@@ -127,9 +127,7 @@ class Boom_Controller extends Controller
 
 	protected function _save_last_url()
 	{
-		$this->session
-			->set('last_url', $this->request->url())
-			->write();
+		$this->session->set('last_url', $this->request->url());
 	}
 
 	protected function _csrf_check()
