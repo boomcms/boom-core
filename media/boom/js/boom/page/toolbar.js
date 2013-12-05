@@ -18,7 +18,7 @@ $.widget( 'boom.pageToolbar', {
 			.on('click', '#b-page-addpage', function() {
 				self.options.page.add()
 					.done(function(response) {
-						top.location = response;
+						top.location = response.url;
 					})
 					.fail(function(response) {
 						$.boom.dialog.alert('Error', response);

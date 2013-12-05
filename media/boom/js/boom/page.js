@@ -9,12 +9,10 @@ function boomPage(page_id) {
 		var promise = new $.Deferred(),
 			page_id = this.id;
 
-		$.post('/cms/page/add/' + page_id, {csrf : $('#b-csrf').val()}, function(response){
-			if (new RegExp('^' + "\/").test( response)) {
-				promise.resolve(response);
-			} else {
-				promise.reject(response);
-			}
+		$.post('/cms/page/add/' + page_id, {csrf : $.boom.options.csrf}, function(response){
+			var json = $.parseJSON(response);
+
+			(typeof json === 'object')? promise.resolve(json) : promise.reject(response);
 		});
 
 		return promise;

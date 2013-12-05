@@ -127,14 +127,14 @@ class Boom_Controller_Cms_Page extends Boom_Controller
 			))
 			->create();
 
-		// Log the action.
 		$this->log("Added a new page under " . $parent->version()->title, "Page ID: " . $page->id);
 
-		// Commit the changes.
 		Database::instance()->commit();
 
-		// Redirect the user to the new page.
-		$this->response->body(URL::site($url));
+		$this->response->body(json_encode(array(
+			'url' => URL::site($url),
+			'id' => $page->id,
+		)));
 	}
 
 	/**
