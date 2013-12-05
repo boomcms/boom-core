@@ -418,27 +418,6 @@ class Boom_Model_Page extends Model_Taggable
 		return ($this->mptt->is_root())? $this : new Model_Page($this->mptt->parent_id);
 	}
 
-	public function readability_score()
-	{
-		if ( ! class_exists('TextStatistics'))
-		{
-			require Kohana::find_file('vendor/text-statistics', 'TextStatistics');
-		}
-
-		$chunks = Chunk::find('text', array('bodycopy', 'standfirst'), $this->version());
-		$text = "";
-		foreach ($chunks as $chunk)
-		{
-			$text .= $chunk->text;
-		}
-
-		if (strlen($text) > 100)
-		{
-			$stats = new TextStatistics;
-			return $stats->smog_index($text);
-		}
-	}
-
 	public function remove_drafts()
 	{
 		DB::delete('page_versions')

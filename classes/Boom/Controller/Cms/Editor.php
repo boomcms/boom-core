@@ -40,11 +40,14 @@ class Boom_Controller_Cms_Editor extends Boom_Controller
 		$toolbar_filename = ($editable)? 'toolbar' : 'toolbar_preview';
 		$this->template = View::factory("boom/editor/$toolbar_filename");
 
-		if ($editable)
-		{
-			$this->template->set('readability', $page->readability_score());
-		}
+		$editable AND $this->_add_readability_score_to_template($page);
 
 		View::bind_global('page', $page);
+	}
+
+	protected function _add_readability_score_to_template(Model_Page $page)
+	{
+		$readability = new Page_ReadabilityScore($page);
+		$this->template->set('readability', $readability->get_smog_score());
 	}
 }
