@@ -20,27 +20,16 @@ class Boom_Controller_Cms_Page extends Boom_Controller
 
 	/**
 	*
-	* @var	Model_Page	Object representing the current page.
+	* @var	Model_Page
 	*/
 	public $page;
 
-	/**
-	 * Load the current page.
-	 * All of these methods should be called with a page ID in the params
-	 * Before the methods are called we find the page so it can be used, clever eh?
-	 *
-	 * @return void
-	 */
+
 	public function before()
 	{
 		parent::before();
 
-		// Has a page ID been given?
-		if ($page_id = $this->request->param('id'))
-		{
-			// Yes! Load the page from the database.
-			$this->page = new Model_Page($page_id);
-		}
+		$this->page = new Model_Page($this->request->param('id'));
 	}
 
 	/**
