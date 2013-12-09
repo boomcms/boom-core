@@ -191,6 +191,14 @@ class Boom_Chunk_Text extends Chunk
 		return $this;
 	}
 
+	public function get_paragraphs($offset = 0, $length = NULL)
+	{
+		preg_match_all('|<p>(.*?)</p>|', $this->_chunk->text, $matches);
+		$paragraphs = $matches[0];
+
+		return array_slice($paragraphs, $offset, $length);
+	}
+
 	public function has_content()
 	{
 		return trim($this->_chunk->text) != NULL;
