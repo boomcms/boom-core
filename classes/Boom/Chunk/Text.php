@@ -49,13 +49,10 @@ class Boom_Chunk_Text extends Chunk
 		{
 			case 'standfirst':
 				return "<p class=\"standFirst\"$title>$text</p>";
-				break;
 			case 'bodycopy':
 				return "<div id=\"content\"$title>$text</div>";
-				break;
 			case 'bodycopy2':
 				return "<div id=\"content-secondary\"$title>$text</div>";
-				break;
 			default:
 				return "<p$title>$text</p>";
 		}
