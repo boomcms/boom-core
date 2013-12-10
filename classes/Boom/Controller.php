@@ -65,21 +65,16 @@ class Boom_Controller extends Controller
 	 * @uses	Auth::logged_in()
 	 * @param string $role
 	 * @param Model_Page $page
-	 * @throws HTTP_Exception_403
 	 */
 	public function authorization($role, Model_Page $page = NULL)
 	{
-		// Is the current user logged in?
 		if ( ! $this->auth->logged_in())
 		{
-			$this->_save_last_url();
 			throw new HTTP_Exception_401;
 		}
 
-		// Can the current user perform the role at the given page?
 		if ( ! $this->auth->logged_in($role, $page))
 		{
-			// No they can't, tell them to leave us alone.
 			throw new HTTP_Exception_403;
 		}
 	}
@@ -123,11 +118,13 @@ class Boom_Controller extends Controller
 			$this->response
 				->headers('Cache-Control', 'private');
 		}
+
+		$this->_save_last_url();
 	}
 
 	protected function _save_last_url()
 	{
-		$this->session->set('last_url', $this->request->url());
+		$this->response->status() === 200 AND $this->session->set('last_url', Request::initial()->url());
 	}
 
 	protected function _csrf_check()
