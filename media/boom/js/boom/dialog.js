@@ -78,6 +78,7 @@ $.extend($.boom,
 
 			this.options = $.extend({
 				type: 'modal',
+				dialogClass : 'b-dialog',
 				selector: '',
 				msg: '',
 				iframe: false,
