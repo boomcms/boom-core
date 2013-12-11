@@ -151,6 +151,8 @@ span[contenteditable] {
 	width: 810px;
 	text-align: center;
 	position: fixed;
+	top: 0;
+	left: 60px;
 }
 
 [data-wysihtml5-dialog] input {
