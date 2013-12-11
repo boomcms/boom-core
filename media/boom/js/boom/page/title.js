@@ -126,7 +126,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 			.end()
 			.css('background-color', this._get_counter_color_for_length(length));
 
-		var disable_accept_button = (length >= this.max_length)? true : false;
+		var disable_accept_button = (length >= this.max_length || length === 0)? true : false;
 		var opacity = disable_accept_button? '.35' : 1;
 		top.$('#b-editor-accept')
 			.prop('disabled', disable_accept_button)
