@@ -6,8 +6,8 @@
 
 	<div id="b-page-edit">
 		<div id="b-items-list">
-			<div id="nav" class="boom-tree block">
-				<ul>
+			<div id="nav" class="boom-tree-container block">
+				<ul class='boom-tree'>
 				<?
 					$level = 1;
 					$count = sizeof($pages);
@@ -64,16 +64,14 @@
 		</div>
 	</div>
 
-	<div id="boom-template-preview" style="display: none;">
-	  <img id="boom-template-preview-image" src=""/>
-	</div>
-
 	<?= Boom::include_js() ?>
 
 	<script type="text/javascript">
 		//<![CDATA[
 		(function($){
 			$.boom.init();
+
+			$(document).ui();
 
 			$('.boom-tree-item').click(function(){
 				window.location = $(this).attr('href');
