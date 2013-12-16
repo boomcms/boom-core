@@ -4,9 +4,7 @@
  *
  * @package	BoomCMS
  * @category	Models
- * @author	Rob Taylor
- * @copyright	Hoop Associates
- *
+ * 
  */
 class Boom_Model_Page extends Model_Taggable
 {
@@ -418,9 +416,6 @@ class Boom_Model_Page extends Model_Taggable
 	}
 
 	/**
-	 * Get the parent page for the current page.
-	 * If the current page is the root node then the current page is returned.
-	 * Otherwise a page object for the parent page is returned.
 	 *
 	 * @return 	Model_Page
 	 */
