@@ -37,20 +37,6 @@ class Boom_Page_Creator
 			->create();
 	}
 
-	protected function _create_primary_url(Model_Page $page)
-	{
-		$prefix = ($this->_parent->children_url_prefix)? $this->_parent->children_url_prefix : $this->_parent->url()->location;
-		$url = URL::generate($prefix, $this->_title);
-
-		ORM::factory('Page_URL')
-			->values(array(
-				'location'		=>	$url,
-				'page_id'		=>	$page->id,
-				'is_primary'	=>	TRUE,
-			))
-			->create();
-	}
-
 	protected function _create_version(Model_Page $page)
 	{
 		return ORM::factory('Page_Version')
@@ -72,7 +58,6 @@ class Boom_Page_Creator
 		$page = $this->_create_page();
 		$this->_create_version($page);
 		$this->_insert_into_tree($page);
-		$this->_create_primary_url($page);
 
 		Database::instance()->commit();
 
