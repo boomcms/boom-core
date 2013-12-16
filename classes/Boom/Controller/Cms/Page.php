@@ -32,96 +32,19 @@ class Boom_Controller_Cms_Page extends Boom_Controller
 		$this->page = new Model_Page($this->request->param('id'));
 	}
 
-	/**
-	 * Add a new page to the CMS.
-	 */
 	public function action_add()
 	{
-		$this->_csrf_check();
+		$this->_csrf_check() AND $this->authorization('add_page', $this->page);
 
-		// Get the parent page and template of the new page from the POST data.
-		$parent_id = $this->page->id;
-		$template_id = $this->request->post('template_id');
-		$title = ($this->request->post('title'))? $this->request->post('title') : 'Untitled';
+		$creator = new Page_Creator($this->page, $this->person);
+		$creator->set_template_id($this->request->post('template_id'));
+		$creator->set_title($this->request->post('title'));
+		$page = $creator->execute();
 
-		if ($template_id == NULL)
-		{
-			// Work out which template to use for the new page.
-			// Priority is the parent page's children_template_id
-			// then the grandparent's grandchild_template_id
-			// then the parent page template id.
-			if ($this->page->children_template_id == 0)
-			{
-				$grandparent = $this->page->parent();
-				$template_id = ($grandparent->grandchild_template_id != 0)? $grandparent->grandchild_template_id : $this->page->version()->template_id;
-			}
-			else
-			{
-				$template_id = $this->page->children_template_id;
-			}
-		}
-
-		// Start a database transaction.
-		Database::instance()->begin();
-
-		// Find the parent page.
-		$parent = $this->page;
-
-		// Check for add permissions on the parent page.
-		$this->authorization('add_page', $parent);
-
-		// Create the new page with nav values inherited from the parent.
-		$page = ORM::factory('Page')
-			->values(array(
-				'visible_in_nav'				=>	$parent->children_visible_in_nav,
-				'visible_in_nav_cms'			=>	$parent->children_visible_in_nav_cms,
-				'children_visible_in_nav'		=>	$parent->children_visible_in_nav,
-				'children_visible_in_nav_cms'	=>	$parent->children_visible_in_nav_cms,
-				'visible_from'				=>	$_SERVER['REQUEST_TIME'],
-				'created_by'				=>	$this->person->id,
-			))
-			->create();
-
-		// Create a version for the page.
-		ORM::factory('Page_Version')
-			->values(array(
-				'edited_by'	=>	$this->person->id,
-				'page_id'		=>	$page->id,
-				'template_id'	=>	$template_id,
-				'title'			=>	$title,
-				'published' => TRUE,
-				'embargoed_until' => $_SERVER['REQUEST_TIME'],
-			))
-			->create();
-
-		// Set the ID for the page's record in the mptt table to the page_id
-		$page->mptt->id = $page->id;
-
-		// Add the page to the MPTT tree.
-		$page->mptt->insert_as_last_child($parent->mptt);
-
-		// Generate the link for the page.
-		// What is the prefix for the link? If a default default_chinl_link_prefix has been set for the parent then use that, otherwise use the parent's primary link.
-		$prefix = ($parent->children_url_prefix)? $parent->children_url_prefix : $parent->url()->location;
-
-		// Generate a link from the prefix and the page's title.
-		$url = URL::generate($prefix, $title);
-
-		// Add the link as the primary link for this page.
-		ORM::factory('Page_URL')
-			->values(array(
-				'location'		=>	$url,
-				'page_id'		=>	$page->id,
-				'is_primary'	=>	TRUE,
-			))
-			->create();
-
-		$this->log("Added a new page under " . $parent->version()->title, "Page ID: " . $page->id);
-
-		Database::instance()->commit();
+		$this->log("Added a new page under " . $this->page->version()->title, "Page ID: " . $page->id);
 
 		$this->response->body(json_encode(array(
-			'url' => URL::site($url),
+			'url' => $page->url(),
 			'id' => $page->id,
 		)));
 	}
