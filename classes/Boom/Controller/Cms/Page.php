@@ -39,27 +39,27 @@ class Boom_Controller_Cms_Page extends Boom_Controller
 		$creator = new Page_Creator($this->page, $this->person);
 		$creator->set_template_id($this->request->post('template_id'));
 		$creator->set_title($this->request->post('title'));
-		$page = $creator->execute();
+		$new_page = $creator->execute();
 
 		// Add a default URL.
 		// This needs to go into a class of some sort, not sure where though.
 		// Don't want it as part of Page_Creator because we sometimes want to create the default URLs in this format.
 		$prefix = ($this->page->children_url_prefix)? $this->page->children_url_prefix : $this->page->url()->location;
-		$url = URL::generate($prefix, $this->_title);
+		$url = URL::generate($prefix, $new_page->version()->title);
 
 		ORM::factory('Page_URL')
 			->values(array(
 				'location'		=>	$url,
-				'page_id'		=>	$page->id,
+				'page_id'		=>	$new_page->id,
 				'is_primary'	=>	TRUE,
 			))
 			->create();
 
-		$this->log("Added a new page under " . $this->page->version()->title, "Page ID: " . $page->id);
+		$this->log("Added a new page under " . $this->page->version()->title, "Page ID: " . $new_page->id);
 
 		$this->response->body(json_encode(array(
-			'url' => $page->url(),
-			'id' => $page->id,
+			'url' => URL::site($url, $this->request),
+			'id' => $new_page->id,
 		)));
 	}
 
