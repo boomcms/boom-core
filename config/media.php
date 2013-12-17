@@ -10,6 +10,7 @@ return array(
 		'jquery/ui.js',
 		'jquery/ui.splitbutton.js',
 		'jquery/ui.tree.js',
+		'jquery/jgrowl.js',
 		'jquery/plugins.js',
 		'boom/plugins.js',
 		'boom/config.js',
