@@ -104,6 +104,7 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 		.done(function() {
 			$.boom.page.toolbar.minimise();
 			self.insert();
+			self.destroy();
 		})
 		.fail( function() {
 			self.remove();
