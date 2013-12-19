@@ -50,7 +50,9 @@ $.widget('boom.boomMenu', {
 				var $this = $(this), item = [];
 
 				item[$this.text()] = function() {
-					$this[0].click();
+					var click_ev = document.createEvent("MouseEvent");
+					click_ev.initEvent("click", true, true);
+					$this[0].dispatchEvent(click_ev);
 				};
 				menu_items = $.extend(menu_items, item);
 			});
