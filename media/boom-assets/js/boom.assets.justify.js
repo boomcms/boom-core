@@ -115,12 +115,18 @@ function Row() {
 	};
 
 	Row.prototype.shrinkBy = function(size) {
-		var perElement = Math.ceil(size / this.elements.length);
+		
+		var total_aspect_ratio = 0;
+		$.each(this.elements, function(index, $el) {
+			total_aspect_ratio += $el.data('aspect-ratio');
+		});
 
 		$.each(this.elements, function(index, $el) {
+			var reduceBy = size * ($el.data('aspect-ratio') / total_aspect_ratio);
+
 			$el
-				.height('-=' + Math.floor(perElement / $el.attr('data-aspect-ratio')))
-				.width('-=' + perElement);
+				.width('-=' + Math.ceil(reduceBy))
+				.height('-=' + Math.ceil(reduceBy / $el.data('aspect-ratio')));
 		});
 	};
 
