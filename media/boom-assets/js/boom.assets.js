@@ -144,6 +144,7 @@ $.extend($.boom.asset, $.boom.item,
 		var rids = ($.boom.history.getHash())? $.boom.history.getHash().split('/')[1].split('-') : [];
 
 		$('#b-assets-content')
+			.unbind('click')
 			.on('click', '.b-assets-save', function(event) {
 				var data = $(this).closest( 'form' ).serialize();
 
@@ -159,10 +160,15 @@ $.extend($.boom.asset, $.boom.item,
 				window.location = '/cms/assets/download?assets=' + rid;
 			})
 			.on('click', '.b-assets-delete', function(event) {
+				event.preventDefault();
+				event.stopPropagation();
+
 				self.remove()
 					.done( function(){
 						$.boom.history.load( 'tag/0' );
 					});
+
+				return false;
 			})
 			.find('#b-tags')
 			.tagger({
@@ -327,6 +333,8 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 
 					$.post('/cms/assets/delete', {csrf: $.boom.options.csrf, assets:  self.selected}, function(){
 						$.boom.history.refresh();
+						self.selected = [];
+						self.toggleButtons();
 					});
 				});
 			})
