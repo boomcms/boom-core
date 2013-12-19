@@ -3,14 +3,8 @@ $.widget('boom.justifyAssets', {
 	targetRightOffset : null,
 	windowWidth : null,
 
-	_bind : function() {
-		var self = this;
-	},
-
 	_create : function() {
 		this.$el = $(this.element);
-
-		this._bind();
 
 		this._setDimensions();
 		this.justify();
