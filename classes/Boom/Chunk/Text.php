@@ -88,11 +88,7 @@ class Boom_Chunk_Text extends Chunk
 	protected function _show_default()
 	{
 		$text = Kohana::message('chunks', $this->_slotname);
-
-		if ( ! $text)
-		{
-			$text = Kohana::message('chunks', 'text');
-		}
+		$text OR $text = Kohana::message('chunks', 'text');
 
 		$template = ($this->_template === NULL)? $this->_slotname : $this->_template;
 
@@ -104,7 +100,7 @@ class Boom_Chunk_Text extends Chunk
 		{
 			return View::factory($this->_view_directory."text/$template", array(
 				'text'	=>	$text,
-				'title'	=>	$this->_chunk->title,
+				'title'	=>	Kohana::message('chunks', 'title'),
 				'chunk' => $this->_chunk,
 			));
 		}
