@@ -69,8 +69,8 @@
 		</button>
 	</div>
 
-	<div id="b-topbar-pagesettings" class="ui-helper-clearfix">
-		<div class="ui-helper-center">
+	<div id="b-topbar-pagesettings">
+		<div>
 			<?= View::factory('boom/editor/page/settings/index');?>
 		</div>
 	</div>
