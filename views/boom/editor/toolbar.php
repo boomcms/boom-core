@@ -13,12 +13,12 @@
 			</span>
 
 			<button id="boom-page-preview" class="boom-button b-button-preview" data-icon="ui-icon-boom-preview" data-preview="preview">
-				<?=__('Preview')?>
+				<?=__('Preview the current version of the page')?>
 			</button>
 
 			<span id="b-page-version-menu">
 				<button id="boom-page-template-settings" class="ui-button boom-button" data-icon="ui-icon-boom-options">
-					<?= __('Version settings') ?>
+					<?= __('Settings for the current version of the page') ?>
 				</button>
 			</span>
 		</div>
@@ -27,25 +27,28 @@
 	<? if ($auth->logged_in('add_page', $page)): ?>
 		<div class="b-page-container">
 			<button id="b-page-addpage" class="ui-button boom-button" data-icon="ui-icon-boom-add">
-				<?=__('Add')?>
+				<?=__('Add a new page as a child of the current page')?>
 			</button>
 		</div>
 	<? endif; ?>
 
 	<div class="b-page-container">
 		<? if ($auth->logged_in('edit_page', $page)): ?>
-			<button id="b-page-visibility" class="ui-button boom-button" data-icon="ui-icon-boom-<? echo ($page->is_visible())? 'visible' : 'invisible' ?>">
-				<?= __('Visibility') ?>
+			<button id='b-page-visible' class="b-page-visibility ui-button boom-button<? if ( ! $page->is_visible()): ?> ui-helper-hidden<? endif ?>" data-icon="ui-icon-boom-visible">
+				<?= __('This page is visible. The content displayed will depend on which version of the page is published') ?>
+			</button>
+			<button id='b-page-invisible' class="b-page-visibility ui-button boom-button<? if ($page->is_visible()): ?> ui-helper-hidden<? endif ?>" data-icon="ui-icon-boom-invisible">
+				<?= __('This page is hidden regardless of whether any version is published') ?>
 			</button>
 			<span id="b-page-settings-menu">
 				<button id="boom-page-settings" class="ui-button boom-button" data-icon="ui-icon-boom-settings">
-					<?= __('Settings') ?>
+					<?= __('Page settings menu') ?>
 				</button>
 			</span>
 		<? endif ?>
 		<? if (($page->was_created_by($person) OR $auth->logged_in('delete_page', $page)) AND ! $page->mptt->is_root()): ?>
 			<button class="ui-button boom-button" id="b-page-delete" data-icon="ui-icon-boom-delete">
-				<?= __('Delete') ?>
+				<?= __('Delete this page') ?>
 			</button>
 		<? endif; ?>
 	</div>
@@ -62,7 +65,7 @@
 		</button>*/?>
 
 		<button id="boom-page-viewlive" class="boom-button b-button-preview" data-icon="ui-icon-boom-view-live" data-preview="disabled">
-			<?=__('View live')?>
+			<?=__('View the page as it appears on the live site')?>
 		</button>
 	</div>
 

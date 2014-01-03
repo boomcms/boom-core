@@ -371,7 +371,8 @@ boomPage.prototype.template = function() {
 
 boomPage.prototype.visibility = function() {
 	var	page = this,
-		url = '/cms/page/settings/visibility/' + page.id;
+		url = '/cms/page/settings/visibility/' + page.id,
+		deferred = new $.Deferred();
 
 	$.boom.dialog.open({
 		url: url,
@@ -385,17 +386,7 @@ boomPage.prototype.visibility = function() {
 				"Page visibility settings saved."
 			)
 			.done(function(response) {
-				var icons = {
-					1 : 'ui-icon-boom-visible',
-					0 : 'ui-icon-boom-invisible'
-				};
-
-				$('#b-page-visibility')
-					.attr('data-icon', icons[response])
-					.find('span.ui-icon')
-					.removeClass(icons[0])
-					.removeClass(icons[1])
-					.addClass(icons[response]);
+				deferred.resolve(response);
 			});
 		},
 		open: function(){
@@ -444,6 +435,8 @@ boomPage.prototype.visibility = function() {
 			}
 		}
 	});
+
+	return deferred;
 };
 
 boomPage.prototype.childsettings = function() {

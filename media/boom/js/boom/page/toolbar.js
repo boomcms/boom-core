@@ -32,8 +32,20 @@ $.widget( 'boom.pageToolbar', {
 					url: '/media/boom/html/readability.html'
 				});
 			})
-			.on('click', '#b-page-visibility', function() {
-				self.options.page.visibility();
+			.on('click', '.b-page-visibility', function() {
+				self.options.page.visibility()
+					.done(function(response) {
+						var $visible = $('#b-page-visible'),
+							$invisible = $('#b-page-invisible');
+
+						if (response == 1) {
+							$visible.show();
+							$invisible.hide();
+						} else {
+							$visible.hide();
+							$invisible.show();
+						}
+					});
 			})
 			.on('click', '.b-button-preview', function() {
 				$.boom.editor.state($(this).attr('data-preview'));
