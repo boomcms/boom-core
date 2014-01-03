@@ -38,7 +38,7 @@
 				<?= __('This page is visible. The content displayed will depend on which version of the page is published') ?>
 			</button>
 			<button id='b-page-invisible' class="b-page-visibility ui-button boom-button<? if ($page->is_visible()): ?> ui-helper-hidden<? endif ?>" data-icon="ui-icon-boom-invisible">
-				<?= __('This page is hidden regardless of whether any version is published') ?>
+				<?= __('This page is hidden regardless of whether there is a published version') ?>
 			</button>
 			<span id="b-page-settings-menu">
 				<button id="boom-page-settings" class="ui-button boom-button" data-icon="ui-icon-boom-settings">
