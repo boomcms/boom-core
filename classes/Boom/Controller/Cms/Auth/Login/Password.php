@@ -25,7 +25,7 @@ class Boom_Controller_Cms_Auth_Login_Password extends Controller_Cms_Auth_Login
 
 		$person = new Model_Person(array('email' => $this->request->post('email')));
 
-		if ($this->auth->login($person, $this->request->post('password'), $this->request->post('remember')))
+		if ($this->auth->login($person, $this->request->post('password'), $this->request->post('remember') == 1))
 		{
 			$this->_login_complete();
 		}

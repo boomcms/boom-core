@@ -38,7 +38,7 @@
 							</p>
 							<p>
 								<label class="b-remember-me-label">
-									<input type="checkbox" name="remember" class="b-remember-me" />
+									<input type="checkbox" name="remember" class="b-remember-me" value='1' />
 									<?= __('Keep me signed in') ?> (<?= __('until you log out') ?>)
 								</label>
 							</p>

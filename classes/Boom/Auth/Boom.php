@@ -25,11 +25,7 @@ class Boom_Auth_Boom extends Auth_ORM
 		if ($this->check_password($password) AND $this->_person->loaded() AND $this->_person->enabled AND ! $this->_person->is_locked())
 		{
 			$this->complete_login($this->_person);
-
-			if ($remember === TRUE)
-			{
-				$this->_remember_login();
-			}
+			$remember === TRUE AND $this->_remember_login();
 
 			return TRUE;
 		}
