@@ -350,12 +350,12 @@ boomPage.prototype.template = function() {
 	$.boom.dialog.open({
 		url: url,
 		title: 'Page template',
-		width: 300,
+		width: 400,
 		callback: function(){
 
 			savePageSettings(
 				url,
-				$("#b-form-pageversion-template").serialize(),
+				$("#b-page-version-template").serialize(),
 				"Page template saved, reloading page."
 			)
 			.done( function(){
@@ -364,9 +364,29 @@ boomPage.prototype.template = function() {
 			});
 
 		},
-		open: function(){
+		open: function() {
+			page.template._show_details();
+
+			$(this).find('select').on('change', function() {
+				page.template._show_details();
+			});
 		}
 	});
+
+	boomPage.prototype.template._show_details = function() {
+		var $template = $('#template'),
+			$description = $('#description'),
+			$count = $('#count'),
+			$selected = $template.find('option:selected'),
+			description_text = $selected.data('description');
+
+		if (description_text) {
+			$description.show().find('p').html($selected.data('description'));
+		} else {
+			$description.hide();
+		}
+		$count.find('p').html($selected.data('count'));
+	};
 };
 
 boomPage.prototype.visibility = function() {
