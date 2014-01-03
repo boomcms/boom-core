@@ -13,7 +13,7 @@
 			</span>
 
 			<button id="boom-page-preview" class="boom-button b-button-preview" data-icon="ui-icon-boom-preview" data-preview="preview">
-				<?=__('Preview the current version of the page')?>
+				<?=__("Preview the current version of the page even if it hasn't been published")?>
 			</button>
 
 			<span id="b-page-version-menu">
