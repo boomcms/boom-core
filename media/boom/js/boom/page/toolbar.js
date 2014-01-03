@@ -36,7 +36,8 @@ $.widget( 'boom.pageToolbar', {
 				self.options.page.visibility()
 					.done(function(response) {
 						var $visible = $('#b-page-visible'),
-							$invisible = $('#b-page-invisible');
+							$invisible = $('#b-page-invisible'),
+							$view_live = $('#boom-page-viewlive');
 
 						if (response == 1) {
 							$visible.show();
@@ -45,6 +46,8 @@ $.widget( 'boom.pageToolbar', {
 							$visible.hide();
 							$invisible.show();
 						}
+
+						self._toggle_view_live_button();
 					});
 			})
 			.on('click', '.b-button-preview', function() {
@@ -102,6 +105,7 @@ $.widget( 'boom.pageToolbar', {
 	_create : function() {
 		$.boom.log( 'init CMS toolbar' );
 
+		this._toggle_view_live_button();
 		this.status = $('#b-page-version-status')
 			.pageStatus({
 				page : this.options.page,
@@ -145,5 +149,20 @@ $.widget( 'boom.pageToolbar', {
 	*/
 	show : function() {
 		this.element.css('margin-left', '0');
+	},
+
+	_toggle_view_live_button : function() {
+		var $visible = $('#b-page-visible'),
+			$view_live = $('#boom-page-viewlive');
+
+		if ($visible.css('display') == 'none') {
+			$view_live
+				.attr('title', 'You cannot view a live version of this page as it is currently hidden from the live site')
+				.button('disable');
+		} else {
+			$view_live
+				.attr('title', 'View the page as it appears on the live site')
+				.button('enable');
+		}
 	}
 });
