@@ -112,6 +112,12 @@ class Boom_Controller extends Controller
 			$this->response->body($this->template);
 		}
 
+		if ($this->response->status() >= 400)
+		{
+			$logger = new RecentUrlLogger($this->session);
+			$logger->remove_url($this->request->url());
+		}
+
 		if ($this->auth->logged_in())
 		{
 			$this->response->headers('Cache-Control', 'private');

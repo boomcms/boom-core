@@ -57,6 +57,14 @@ class Boom_RecentUrlLogger
 		$this->_save_urls();
 	}
 
+	public function remove_url($url)
+	{
+		$remove = array($url);
+
+		$this->_urls = array_diff($this->_urls, $remove);
+		$this->_save_urls();
+	}
+
 	protected function _save_urls()
 	{
 		$this->_session->set($this->_session_key, $this->_urls);
