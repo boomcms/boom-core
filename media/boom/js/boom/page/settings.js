@@ -350,7 +350,7 @@ boomPage.prototype.template = function() {
 	$.boom.dialog.open({
 		url: url,
 		title: 'Page template',
-		width: 400,
+		width: 500,
 		callback: function(){
 
 			savePageSettings(
