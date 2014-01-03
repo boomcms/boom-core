@@ -1,5 +1,7 @@
 <?php
 
+Boom_Exception_Handler::set_exception_handler();
+
 /**
  * Route for vanity URIs. Vanity URIs are the page ID base-36 encoded and prefixed with an underscore.
  * Vanity URIs redirect to the page's primary URI
