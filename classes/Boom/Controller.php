@@ -44,6 +44,8 @@ class Boom_Controller extends Controller
 		$this->auth = Auth::instance();
 		$this->session = Session::instance();
 
+		$this->_save_last_url();
+
 		// Require the user to be logged in if the site isn't live.
 		if ($this->request->is_initial() AND ! (Kohana::$environment == Kohana::PRODUCTION OR $this->auth->logged_in()))
 		{
@@ -107,24 +109,19 @@ class Boom_Controller extends Controller
 			View::bind_global('person', $this->person);
 			View::bind_global('auth', $this->auth);
 
-			// Show the template.
-			$this->response
-				->body($this->template);
+			$this->response->body($this->template);
 		}
 
-		// Make cache private if the user is logged in.
 		if ($this->auth->logged_in())
 		{
-			$this->response
-				->headers('Cache-Control', 'private');
+			$this->response->headers('Cache-Control', 'private');
 		}
-
-		$this->_save_last_url();
 	}
 
 	protected function _save_last_url()
 	{
-		$this->response->status() === 200 AND $this->session->set('last_url', Request::initial()->url());
+		$logger = new RecentUrlLogger($this->session);
+		$logger->add_url(Request::initial()->url());
 	}
 
 	protected function _csrf_check()

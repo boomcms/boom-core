@@ -25,7 +25,6 @@ class Boom_Controller_Page_Html extends Controller_Page
 	{
 		parent::before();
 
-		$this->_save_last_url();
 		$template = $this->page->version()->template;
 		$this->template = View::factory($template->filename());
 
