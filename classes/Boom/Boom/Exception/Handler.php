@@ -25,7 +25,7 @@ abstract class Boom_Boom_Exception_Handler
 	{
 		try
 		{
-			$handler_class = (Kohana::$environment === Kohana::PRODUCTION OR Kohana::$environment === Kohana::STAGING)? 'Boom_Exception_Handler_Private' : 'Boom:Exception_Handler_Public';
+			$handler_class = (Kohana::$environment === Kohana::PRODUCTION OR Kohana::$environment === Kohana::STAGING)? 'Boom_Exception_Handler_Private' : 'Boom_Exception_Handler_Public';
 			$handler = new $handler_class($e);
 
 			$handler->execute();
