@@ -22,7 +22,6 @@ span[contenteditable] {
 .toolbar {
 	border-radius: 4px;
 	z-index: 1;
-	box-shadow: 0 0 4px 1px rgba(0, 0, 0, 0.3);
 	color: #000;
 	float: none;
 	position: fixed;
@@ -48,11 +47,6 @@ span[contenteditable] {
 /* Slideshow editor toolbar */
 #wysihtml5-toolbar.toolbar-slideshow {
 	background-color: #e3ca68;
-}
-
-.commands {
-	border-left: 1px solid #ddd;
-	display: inline-block;
 }
 
 [data-wysihtml5-command],
@@ -94,7 +88,7 @@ span[contenteditable] {
 	width: 30px;
 	height: 30px;
 	top: 10px;
-	margin-left: 10px;
+	margin: auto;
 	display: block;
 }
 
