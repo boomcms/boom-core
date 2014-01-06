@@ -42,7 +42,7 @@
 			</button>
 			<span id="b-page-settings-menu">
 				<button id="boom-page-settings" class="ui-button boom-button" data-icon="ui-icon-boom-settings">
-					<?= __('Page settings menu') ?>
+					<?= __('Page settings which apply whichever version is published') ?>
 				</button>
 			</span>
 		<? endif ?>
