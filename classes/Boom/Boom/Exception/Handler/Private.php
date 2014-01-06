@@ -34,7 +34,8 @@ class Boom_Boom_Exception_Handler_Private extends Boom_Exception_Handler
 		}
 		else
 		{
-			Kohana_Exception::handler($this->_e);
+			echo Kohana_Exception::response($this->_e);
+			exit(1);
 		}
 
 		echo $this->_get_response($body);
