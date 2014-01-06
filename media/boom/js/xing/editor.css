@@ -74,6 +74,13 @@ span[contenteditable] {
 	color: #000;
 }
 
+@media screen and (max-height: 767px) {
+	.toolbar-text button {
+		height: 45px;
+		margin-top: 2px;
+	}
+}
+
 .toolbar button:first-of-type {
 	margin-top: 0;
 }
