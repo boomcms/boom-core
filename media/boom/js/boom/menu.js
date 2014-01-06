@@ -15,9 +15,11 @@ $.widget('boom.boomMenu', {
 			.on('click', function(e) {
 				e.preventDefault();
 
+				var url = '/cms/profile';
 				$.boom.dialog.open({
-					'url': '/cms/profile',
+					'url': url,
 					'title': 'User profile',
+					width : 600,
 					callback: function() {
 						$.post(url, $('#b-people-profile').serialize())
 							.done(function() {
