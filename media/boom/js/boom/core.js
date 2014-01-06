@@ -99,7 +99,7 @@ $.extend($.boom,
 				} while($('#' + prefix + id).length);
 
 				return (prefix + id);
-			},
+			}
 		}
 	}
 });
