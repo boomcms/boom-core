@@ -488,6 +488,11 @@ $.widget('ui.chunkSlideshow', $.ui.chunk,
 			});
 
 		return { slides : slides };
-	}
+	},
 
+	_update_html : function(html) {
+		this.element.load($(html).html());
+
+		this.bind();
+	}
 });

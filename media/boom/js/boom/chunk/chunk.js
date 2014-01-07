@@ -69,7 +69,7 @@ $.widget('ui.chunk',
 	@function
 	*/
 	_update_html : function(html) {
-		this.element.load($(html).html());
+		this.element.html($(html).html());
 
 		this.bind();
 	},
@@ -82,7 +82,7 @@ $.widget('ui.chunk',
 				var data = $.parseJSON(response);
 
 				self._update_html(data.html);
-				$.boom.page.status.set(data.status);
+				$.boom.page.toolbar.status.set(data.status);
 				$.boom.growl.show("Page content saved");
 			});
 	},
