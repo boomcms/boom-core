@@ -587,8 +587,10 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 	},
 
 	removeFilters : function() {
-		$('#b-assets-types').val('');
-		$('#b-assets-filter-title').val('');
+		$('#b-assets-types').val(0);
+
+		var $title = $('#b-assets-filter-title');
+		$title.val($title.attr('placeholder'));
 
 		this.removeTagFilters();
 
@@ -600,7 +602,10 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 
 		$('#b-tags-search')
 			.find('.b-filter-input')
-			.val('')
+			.each(function() {
+				var $this = $(this);
+				$this.val($this.attr('placeholder'));
+			})
 			.end()
 			.find('.b-tags-list li')
 			.remove();
