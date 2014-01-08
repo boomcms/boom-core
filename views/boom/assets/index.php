@@ -10,7 +10,7 @@
 				csrf: '<?= Security::token() ?>'
 			});
 
-			$( 'body' ).browser_asset({
+			$( 'body' ).ui().browser_asset({
 				allowedUploadTypes:[ '<?= implode('\', \'', Boom_Asset::$allowed_extensions)?>' ]
 			});
 		})(jQuery);

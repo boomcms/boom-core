@@ -32,7 +32,7 @@
 
 	<div id="b-assets-filters">
 		<span>
-			<button id="b-assets-all" class="boom-button">
+			<button id="b-assets-all" class="ui-button boom-button">
 				<?=__('All assets')?>
 			</button>
 		</span>
