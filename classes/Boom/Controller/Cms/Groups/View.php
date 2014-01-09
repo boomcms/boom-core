@@ -34,7 +34,7 @@ class Boom_Controller_Cms_Groups_View extends Controller_Cms_Groups
 
 		// Set the response.
 		$this->response
-			->headers('Content-Type', 'application/json')
+			->headers('Content-Type', static::JSON_RESPONSE_MIME)
 			->body($roles);
 	}
 }

@@ -29,7 +29,7 @@ class Boom_Controller_Cms_Profile extends Boom_Controller
 			{
 				$this->response
 					->status(500)
-					->headers('Content-Type', 'application/json')
+					->headers('Content-Type', static::JSON_RESPONSE_MIME)
 					->body(json_encode(array('message' => 'Invalid password')));
 			}
 		}
