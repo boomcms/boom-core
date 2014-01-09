@@ -322,7 +322,7 @@ boomPage.prototype.featureimage = function() {
 						"Page feature image saved."
 					)
 					.done(function(response) {
-						page.status.set(response);
+						page.toolbar.status.set(response);
 					});
 
 					$.boom.dialog.destroy( this );
