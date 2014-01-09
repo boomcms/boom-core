@@ -9,10 +9,14 @@ $.widget('boom.pageStatus', {
 
 		options = $.extend(options, {
 			"Revert to published version" : function() {
-				self.options.page.revertToPublished()
-					.done(function() {
-						top.location.reload();
-					});
+				// The call to setTimout fixes a bug in IE9 where the toolbar call is minimised (because the splitbutton menu has close) after the dialog is opened.
+				// Therefore preventing the dialog from being seen.
+				setTimeout(function() {
+					self.options.page.revertToPublished()
+						.done(function() {
+							top.location.reload();
+						});
+					}, 0);
 			}
 		});
 
