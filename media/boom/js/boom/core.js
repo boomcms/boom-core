@@ -27,6 +27,9 @@ $.extend({
 
 			// reference boom from the site window too.
 			top.$.boom = $.boom;
+
+			// Fix for IE9 - prevent caching of all AJAX requests.
+			$.ajaxSetup({cache: false});
 		},
 
 		/**
