@@ -311,25 +311,6 @@ $.extend($.boom,
 		/**
 		@function
 		*/
-		resizeIframe : function(dialog){
-
-			if (!dialog || !dialog.length) return;
-
-			var iframe = dialog.find('iframe');
-
-			dialog.css({ height: 'auto'}).find('.ui-dialog-content').css({height:'auto'});
-
-			setTimeout(function(){
-
-				iframe.height(iframe.contents().find('.ui-dialog').height());
-
-				dialog.find('.ui-dialog-content').dialog('option', 'position', dialog.dialog('option', 'position'));
-			});
-		},
-
-		/**
-		@function
-		*/
 		destroy : function(dialog, callback){
 
 			var self = this;
