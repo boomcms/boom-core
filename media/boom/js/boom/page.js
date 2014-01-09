@@ -89,8 +89,7 @@ function boomPage(page_id) {
 			'Discard changes',
 			'Are you sure you want to discard any unpublished changes and revert this page to it\'s published state?'
 		)
-		.done( function(){
-
+		.done(function() {
 			$.post('/cms/page/discard/' + page.id, {csrf : $.boom.options.csrf})
 				.done(function() {
 					promise.resolve();
