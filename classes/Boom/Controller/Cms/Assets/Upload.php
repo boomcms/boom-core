@@ -37,7 +37,7 @@ class Boom_Controller_Cms_Assets_Upload extends Controller_Cms_Assets
 
 		$asset_ids = $errors = array();
 
-		$this->response->headers('Content-Type', 'application/json');
+		$this->response->headers('Content-Type', static::JSON_RESPONSE_MIME);
 
 		// Values which will be the same for all of the new assets.
 		$common_values = array(
@@ -100,7 +100,7 @@ class Boom_Controller_Cms_Assets_Upload extends Controller_Cms_Assets
 		$asset->replace_with_file($filename);
 
 		$this->response
-			->headers('Content-Type', 'application/json')
+			->headers('Content-Type', static::JSON_RESPONSE_MIME)
 			->body(json_encode(array($asset->id)));
 	}
 }
