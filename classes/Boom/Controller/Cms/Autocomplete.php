@@ -178,7 +178,7 @@ class Boom_Controller_Cms_Autocomplete extends Boom_Controller
 	public function after()
 	{
 		$this->response
-			->headers('content-type', 'application/json')
+			->headers('content-type', static::JSON_RESPONSE_MIME)
 			->body(json_encode($this->results));
 	}
 }

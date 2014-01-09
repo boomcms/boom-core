@@ -15,7 +15,7 @@ class Boom_Controller_Page_Children extends Boom_Controller
 		$json = $this->_format_pages_as_json($pages);
 
 		$this->response
-			->headers('Content-Type', 'application/json')
+			->headers('Content-Type', static::JSON_RESPONSE_MIME)
 			->body(json_encode($json));
 	}
 

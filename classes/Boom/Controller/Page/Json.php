@@ -26,7 +26,7 @@ class Boom_Controller_Page_Json extends Controller_Page
 	public function after()
 	{
 		$this->response
-			->headers('Content-Type', 'application/json')
+			->headers('Content-Type', static::JSON_RESPONSE_MIME)
 			->body(json_encode($this->_data));
 	}
 }
