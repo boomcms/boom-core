@@ -253,7 +253,7 @@ $.widget( 'boom.group_permissions',
 
 			self._check_inputs( $( '#b-group-roles-general input[type=radio]'), -1 );
 
-			$.get( options.base_url + 'list_roles/' + options.id + '?page_id=0' )
+			$.getJSON( options.base_url + 'list_roles/' + options.id + '?page_id=0' )
 			.done( function( data ){
 				for ( role in data ) {
 
@@ -289,7 +289,7 @@ $.widget( 'boom.group_permissions',
 					.end()
 					.addClass( 'ui-state-active' );
 
-				$.get( options.base_url + 'list_roles/' + options.id + '?page_id=' + selected_page )
+				$.getJSON( options.base_url + 'list_roles/' + options.id + '?page_id=' + selected_page )
 				.done( function( data ){
 					for ( role in data ) {
 
