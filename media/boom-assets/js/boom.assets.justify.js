@@ -72,15 +72,15 @@ function Row() {
 	};
 
 	Row.prototype.determineGap = function(offset) {
-		return this.elements[this.elements.length - 1].offset.right - offset - 1;
+		return this.elements[this.elements.length - 1].offset.right - offset;
 	};
 
 	Row.prototype.expandTo = function(offset) {
-		var endOfRowGap = this.determineGap(offset);
+		var endOfRowGap = this.determineGap(offset) - 1;
 
 		if (endOfRowGap > 0) {
 			var increaseBy = Math.floor(endOfRowGap / this.aspectRatioSum);
-			var remainder = Math.floor(endOfRowGap);
+			var remainder = Math.floor(endOfRowGap) - 1;
 
 			if (increaseBy <= endOfRowGap) {
 				$.each(this.elements, function(index, $el) {
