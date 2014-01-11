@@ -9,7 +9,7 @@
  * @author	Rob Taylor
  * @copyright	Hoop Associates
  */
-class Boom_Controller_Cms_People extends Boom_Controller
+class Boom_Controller_Cms_People extends Controller_Cms
 {
 	/**
 	 *

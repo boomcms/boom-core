@@ -61,8 +61,8 @@ class Boom_Controller_Cms_Auth extends Controller
 
 	protected function _get_redirect_url()
 	{
-		$logger = new RecentUrlLogger(Session::instance());
-		$url = $logger->get_last_url();
+		$logger = new RedirectUrlPersister(Session::instance());
+		$url = $logger->get_url();
 
 		if ( ! $url OR $url == '/cms/logout')
 		{
