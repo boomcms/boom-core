@@ -94,7 +94,7 @@ function Row() {
 			}
 
 			if (remainder > 0) {
-				while (remainder > 1) {
+				while (remainder >= 1) {
 					$.each(this.elements, function(index, $el) {
 						if (remainder <= 1) {
 							return false;
