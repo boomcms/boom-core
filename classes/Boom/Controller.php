@@ -6,16 +6,14 @@
  *
  * @package	BoomCMS
  * @category	Controllers
- * @author	Rob Taylor
- * @copyright	Hoop Associates
  */
 class Boom_Controller extends Controller
 {
 	/**
 	 * The correct content-type header for JSON responses is application/json (http://stackoverflow.com/questions/477816/what-is-the-correct-json-content-type)
-	 * 
+	 *
 	 * Unfortunately though IE exists, and IE9 doesn't recognise the application/json type presenting the user with a download confirmation.
-	 * 
+	 *
 	 * We therefore need to use text/plain for JSON responses until we stop supporting broken browsers (http://stackoverflow.com/questions/13943439/json-response-download-in-ie710)
 	 */
 	const JSON_RESPONSE_MIME = 'text/plain';
@@ -121,12 +119,6 @@ class Boom_Controller extends Controller
 			$this->response->body($this->template);
 		}
 
-		if ($this->response->status() >= 400)
-		{
-			$logger = new RecentUrlLogger($this->session);
-			$logger->remove_url($this->request->url());
-		}
-
 		if ($this->auth->logged_in())
 		{
 			$this->response->headers('Cache-Control', 'private');
@@ -135,8 +127,8 @@ class Boom_Controller extends Controller
 
 	protected function _save_last_url()
 	{
-		$logger = new RecentUrlLogger($this->session);
-		$logger->add_url(Request::initial()->url());
+		$logger = new RedirectUrlPersister($this->session);
+		$logger->set_url(Request::initial()->url());
 	}
 
 	protected function _csrf_check()
