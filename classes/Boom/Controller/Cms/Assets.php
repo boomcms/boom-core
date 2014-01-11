@@ -5,7 +5,7 @@
   * @category	Assets
   * @category	Controllers
   */
-class Boom_Controller_Cms_Assets extends Boom_Controller
+class Boom_Controller_Cms_Assets extends Controller_Cms
 {
 	/**
 	 *
