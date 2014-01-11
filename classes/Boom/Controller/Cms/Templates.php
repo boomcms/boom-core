@@ -5,7 +5,7 @@
  * @category	Controllers
  *
  */
-class Boom_Controller_Cms_Templates extends Boom_Controller
+class Boom_Controller_Cms_Templates extends Controller_Cms
 {
 	protected $_view_directory = 'boom/templates';
 
