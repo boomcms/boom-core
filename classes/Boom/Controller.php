@@ -46,6 +46,8 @@ class Boom_Controller extends Controller
 	 */
 	public $template;
 
+	protected $_save_last_url = FALSE;
+
 	public function before()
 	{
 		$this->auth = Auth::instance();
@@ -127,8 +129,11 @@ class Boom_Controller extends Controller
 
 	protected function _save_last_url()
 	{
-		$logger = new RedirectUrlPersister($this->session);
-		$logger->set_url(Request::initial()->url());
+		if ($this->_save_last_url === TRUE AND ! $this->request->is_ajax())
+		{
+			$logger = new RedirectUrlPersister($this->session);
+			$logger->set_url(Request::initial()->url());
+		}
 	}
 
 	protected function _csrf_check()

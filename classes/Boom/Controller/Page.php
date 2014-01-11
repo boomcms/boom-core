@@ -22,6 +22,8 @@ class Boom_Controller_Page extends Boom_Controller
 	 */
 	public $page;
 
+	protected $_save_last_url = TRUE;
+
 	/**
 	 * Set the page and options properties.
 	 */
