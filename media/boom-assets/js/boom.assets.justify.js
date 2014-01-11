@@ -94,7 +94,7 @@ function Row() {
 			}
 
 			if (remainder > 0) {
-				while (remainder > 0) {
+				while (remainder > 1) {
 					$.each(this.elements, function(index, $el) {
 						if (remainder < 1) {
 							return false;
@@ -109,7 +109,7 @@ function Row() {
 	};
 
 	Row.prototype.shrinkBy = function(size) {
-		
+
 		var total_aspect_ratio = 0;
 		$.each(this.elements, function(index, $el) {
 			total_aspect_ratio += $el.data('aspect-ratio');
