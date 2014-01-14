@@ -7,6 +7,8 @@ class Boom_Boom_Exception_Handler_Private extends Boom_Exception_Handler
 {
 	public function execute()
 	{
+		parent::execute();
+
 		try
 		{
 			$this->_execute();

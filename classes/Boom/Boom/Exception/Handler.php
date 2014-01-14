@@ -21,6 +21,11 @@ abstract class Boom_Boom_Exception_Handler
 		$this->_code = ($e instanceof HTTP_Exception) ? $e->getCode() : 500;
 	}
 
+	public function execute()
+	{
+		$this->_log_exception();
+	}
+
 	public static function handle(Exception $e)
 	{
 		try
@@ -34,6 +39,11 @@ abstract class Boom_Boom_Exception_Handler
 		{
 			Kohana_Exception::handler($e);
 		}
+	}
+
+	protected function _log_exception()
+	{
+		Kohana_Exception::log($this->_e);
 	}
 
 	public static function set_exception_handler()
