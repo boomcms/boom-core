@@ -278,7 +278,7 @@ $.widget('ui.chunkSlideshow', $.ui.chunk,
 		var slideshow = this.slider;
 		var slides = slideshow.slides;
 
-		if (slide == slides.length) {
+		if (slide == (slides.length - 1)) {
 			slideshow.flexAnimate(0);
 		} else if (slides.length > 1) {
 			slideshow.flexAnimate(slide + 1);
