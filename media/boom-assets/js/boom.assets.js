@@ -447,6 +447,20 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 				select_asset.notify( rid );
 
 				return false;
+			})
+			.on('click', '#b-assets-filter-title, #b-tags-search input', function() {
+				var $this = $(this);
+
+				if ($this.val() == $this.attr('placeholder')) {
+					$this.val('');
+				}
+			})
+			.on('blur', '#b-assets-filter-title, #b-tags-search input', function() {
+				var $this = $(this);
+	
+				if ($this.val() == '') {
+					$this.val($this.attr('placeholder'));
+				}
 			});
 
 		return select_asset;
