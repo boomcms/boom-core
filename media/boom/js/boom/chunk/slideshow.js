@@ -47,7 +47,7 @@ $.widget('ui.chunkSlideshow', $.ui.chunk,
 					'Delete this slide?'
 				)
 				.done( function(){
-					self._remove_slide(slideshow.currentSlide);
+					self._remove_slide(slideshow.currentSlide - 1);
 				});
 			})
 			.on( 'click', 'button.cancel', function(){
