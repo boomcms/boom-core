@@ -24,21 +24,8 @@ class Boom_Controller_Cms_People_Save extends Controller_Cms_People
 
 		if (isset($password))
 		{
-			$email_body = View::factory('boom/email/newuser', array(
-				'password' => $password,
-				'person' => $this->edit_person,
-				'request' => $this->request,
-				'site_name' => Kohana::$config->load('boom')->get('site_name'),
-			));
-
-			Email::factory('CMS Account Created')
-				->to($this->edit_person->email)
-				->from(Kohana::$config->load('boom')->get('support_email'))
-				->message(View::factory('boom/email', array(
-					'request' => $this->request,
-					'content' => $email_body,
-				)), 'text/html')
-				->send();
+			$email = new Email_Newuser($this->edit_person, $password, $request);
+			$email->send();
 		}
 	}
 
