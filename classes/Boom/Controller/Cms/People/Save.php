@@ -8,23 +8,18 @@ class Boom_Controller_Cms_People_Save extends Controller_Cms_People
 		{
 			$password = PasswordGenerator::factory()->get_password();
 			$enc_password = $this->auth->hash($password);
-		}
 
-		$this->edit_person
-			->values($this->request->post(), array('name', 'email'));
-
-		if (isset($password))
-		{
 			$this->edit_person->set('password', $enc_password);
 		}
 
 		$this->edit_person
+			->values($this->request->post(), array('name', 'email'))
 			->create()
 			->add_group($this->request->post('group_id'));
 
 		if (isset($password))
 		{
-			$email = new Email_Newuser($this->edit_person, $password, $request);
+			$email = new Email_Newuser($this->edit_person, $password, $this->request);
 			$email->send();
 		}
 	}
