@@ -1,3 +1,6 @@
 [submodule "vendor/openid"]
 	path = vendor/openid
 	url = git://github.com/boomcms/lightopenid
+[submodule "vendor/genphrase"]
+	path = vendor/genphrase
+	url = https://github.com/timoh6/GenPhrase.git

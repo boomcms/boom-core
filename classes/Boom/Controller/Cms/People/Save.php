@@ -6,7 +6,7 @@ class Boom_Controller_Cms_People_Save extends Controller_Cms_People
 	{
 		if ($this->auth->login_method_available('password'))
 		{
-			$password = Text::random(NULL, 15);
+			$password = PasswordGenerator::factory()->get_password();
 			$enc_password = $this->auth->hash($password);
 		}
 
