@@ -10,15 +10,6 @@ abstract class Boom_Finder
 
 	/**
 	 *
-	 * @return Finder_Assets
-	 */
-	public static function assets()
-	{
-		return new Finder_Assets;
-	}
-
-	/**
-	 *
 	 * @return Finder_Pages
 	 */
 	public static function pages()
