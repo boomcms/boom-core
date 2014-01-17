@@ -148,7 +148,7 @@ class Boom_Controller_Cms_Page_Settings_Save extends Controller_Cms_Page_Setting
 			$this->page
 				->values(array(
 					'visible_from'	=>	strtotime($this->request->post('visible_from')),
-					'visible_to'	=>	$this->request->post('visible_to')? strtotime($this->request->post('visible_to')) : NULL,
+					'visible_to'	=>	$this->request->post('toggle_visible_to') == 1? strtotime($this->request->post('visible_to')) : NULL,
 				));
 		}
 
