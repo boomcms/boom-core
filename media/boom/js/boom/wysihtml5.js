@@ -411,6 +411,7 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 		var ed = self.instance.composer;
 		var existing_link = ed.commands.state( "createLink" )[0];
 		var opts = {};
+		var bm = ed.selection.getBookmark();
 
 		if ( existing_link ) {
 			var link = {
@@ -450,10 +451,13 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 						.attr('title', '')
 						.attr('rel', page_id);
 				} else {
+					ed.selection.setBookmark(bm);
+
 					if (page_id) {
 						ed.commands.exec("createLink", { href: uri, rel: page_id, title: '', text: link.title});
 					} else {
 						var text = uri.replace('mailto:', '').replace('tel:', '');
+
 						ed.commands.exec("createLink", { href: uri, title: '', text: text});
 					}
 				}
