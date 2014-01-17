@@ -453,7 +453,8 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 					if (page_id) {
 						ed.commands.exec("createLink", { href: uri, rel: page_id, title: '', text: link.title});
 					} else {
-						ed.commands.exec("createLink", { href: uri, title: ''});
+						var text = uri.replace('mailto:', '').replace('tel:', '');
+						ed.commands.exec("createLink", { href: uri, title: '', text: text});
 					}
 				}
 
