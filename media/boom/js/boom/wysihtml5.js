@@ -157,7 +157,7 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 									self._edit_link();
 								} else {
 									self._edit_asset(asset_id);
-									resizeIframe
+									resizeIframe();
 								}
 							})
 							.on('click', '#b-editor-asset', function(e) {
@@ -362,7 +362,7 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 			ed.commands.exec( "insertHTML", '<img src="url">' );
 			img = top.$( ed.element ).find( '[src=url]' );
 			if ( ! img.length)
-				img = top.$( ed.element ).find( '[href=url]' )
+				img = top.$( ed.element ).find( '[href=url]' );
 		} else {
 			img = top.$( ed.element ).find( '[src^="/asset/view/' + asset_rid +'"]' );
 			if ( ! img.length)
@@ -372,7 +372,7 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 		// cleanup code when the dialog closes.
 		asset_selected
 		.fail( function() {
-			top.$( ed.element ).find( '[src=url]' ).remove() || top.$( ed.element ).find( '[href=url]' ).remove()
+			top.$( ed.element ).find( '[src=url]' ).remove() || top.$( ed.element ).find( '[href=url]' ).remove();
 		});
 
 		return $.boom.assets
