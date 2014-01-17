@@ -37,7 +37,7 @@ abstract class Boom_Controller_Cms_Tags extends Boom_Controller
 
 	public function action_list()
 	{
-		$this->tags = $this->model->list_tags($this->ids);
+		$this->tags = empty($this->ids)? array() : $this->model->list_tags($this->ids);
 
 		$this->template = View::factory("boom/tags/list", array(
 			'tags'	=>	$this->tags,
