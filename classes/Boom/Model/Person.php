@@ -77,6 +77,15 @@ class Boom_Model_Person extends ORM
 			->update();
 	}
 
+	public function filters()
+	{
+		return array(
+			'email' => array(
+				array('strtolower'),
+			)
+		);
+	}
+
 	public function get_lock_wait()
 	{
 		if ($this->is_locked())
