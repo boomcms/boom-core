@@ -48,10 +48,10 @@ $.widget( 'boom.tagger',
 
 			});
 
-		self.picker()
-			.progress( function ( tag ) {
-				self.add( tag );
-			});
+		this.element.find('.b-filter-input, #b-tags-add-name').tagAutocompleter({
+			type : this.options.type,
+			onSelect : self.add
+		});
 	},
 
 	_init : function(){
@@ -152,63 +152,7 @@ $.widget( 'boom.tagger',
 			});
 
 			return remove;
-	},
-
-	/**
-	Autocomplete UI for finding and picking tags.
-	@param {Array} tags optional array of tags to filter the search by
-	@returns {Deferred} Promise which resolves with the chosen tag as {label : {tag_name}, value : {tag_id} }
-	*/
-	picker : function( tags ){
-
-		var
-			type = this.options.type,
-			add_input = this.element.find( '.b-filter-input, #b-tags-add-name' );
-
-		var complete = new $.Deferred();
-		tags = ( tags ) ? tags : [];
-
-		add_input
-			.autocomplete({
-				delay: 200, // Time to wait after keypress before making the AJAX call.
-				source: function( request, response ){
-					$.ajax({
-						url: '/cms/autocomplete/tags',
-						dataType: 'json',
-						data: {
-							text : add_input.val(),
-							type : (type == 'asset')? 1 : 2,
-							tags : tags
-						}
-					})
-					.done(function(data) {
-						var suggestions = [];
-						for ( name in data ) {
-							suggestions.push({
-								label : name,
-								value : data[ name ]
-							});
-						}
-						response( suggestions );
-					});
-				},
-				select: function( event, ui ){
-					event.preventDefault();
-					add_input.val( '' );
-					complete.notify( ui.item );
-				}
-			})
-			.on( 'keypress', function( e ){
-				// Add a tag when the enter key is pressed.
-				// This allows us to add a tag which doesn't already exist.
-				if (e.which == 13) {
-					complete.notify( { label: add_input.val(), value: -1 } );
-				}
-			});
-
-		return complete;
 	}
-
 });
 
 /**
