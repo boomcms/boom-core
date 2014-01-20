@@ -42,7 +42,7 @@ $.widget( 'boom.tagger',
 		self.tag_list()
 			.progress( function( $link ){
 
-				self.remove( $link.attr( 'href' ) );
+				self.remove($link.data('tag_id'));
 
 				$link.closest('li').remove();
 
@@ -50,7 +50,9 @@ $.widget( 'boom.tagger',
 
 		this.element.find('.b-filter-input, #b-tags-add-name').tagAutocompleter({
 			type : this.options.type,
-			onSelect : self.add
+			complete : function(event, data) {
+				self.add(data.name, data.id);
+			}
 		});
 	},
 
@@ -70,7 +72,7 @@ $.widget( 'boom.tagger',
 	Add a tag to an item.
 	@param {String} tag Tag name
 	*/
-	add : function( tag ) {
+	add : function(tag_name, tag_id) {
 		var
 			self = this,
 			type = this.options.type,
@@ -79,7 +81,7 @@ $.widget( 'boom.tagger',
 		$.post(
 			self.options.base_url + type + '/add/' + id,
 			{
-				tag : tag.label
+				tag : tag_name
 			}
 			)
 			.done(function(){
@@ -93,8 +95,6 @@ $.widget( 'boom.tagger',
 
 				});
 			});
-
-		$('#b-tags-add-name').val('');
 	},
 
 	/**
@@ -148,7 +148,7 @@ $.widget( 'boom.tagger',
 			.on('click', '.b-tags-remove', function(event){
 				event.preventDefault();
 
-				remove.notify( $(this) );
+				remove.notify($(this));
 			});
 
 			return remove;
@@ -182,26 +182,27 @@ $.widget( 'boom.tagger_search', $.boom.tagger,
 
 	/**
 	Add a tag to the search.
-	@param {String} tag Tag name
 	*/
-	add : function( tag ) {
+	add : function(name, tag_id) {
 		var
 			self = this,
-			selected_tag_ids = this.options.selected_tag_ids,
 			tag_filter_list = this.element.find( 'ul.b-tags-list' );
 
-		selected_tag_ids.push( parseInt( tag.value, 10 ) );
+		this.options.selected_tag_ids.push(tag_id);
+
 		var link = $( '<a>', {
 			href : '#',
 			"class" : 'b-tags-remove',
-			"data-tag_id" : tag.value
+			"data-tag_id" : tag_id
 		});
-		var label = $( '<span>').text( tag.label );
+		var label = $( '<span>').text(name);
 
 		$( '<li>' )
 			.append( link )
 			.append( label )
 			.appendTo( tag_filter_list );
+
+		this.element.find('.b-filter-input, #b-tags-add-name').tagAutocompleter('setSelectedTags', this.options.selected_tag_ids);
 
 		self.do_search();
 	},
@@ -211,12 +212,10 @@ $.widget( 'boom.tagger_search', $.boom.tagger,
 	@param {String} tag Tag name
 	*/
 	remove : function( tag ) {
-		var
-			self = this,
-			selected_tag_ids = this.options.selected_tag_ids;
+		this.options.selected_tag_ids = this.options.selected_tag_ids.splice(this.options.selected_tag_ids.indexOf(tag.value), 1);
 
-			selected_tag_ids.splice( selected_tag_ids.indexOf( tag.value ), 1);
-			self.do_search();
+		this.element.find('.b-filter-input, #b-tags-add-name').tagAutocompleter('setSelectedTags', this.options.selected_tag_ids);
+		this.do_search();
 	},
 
 	/**
@@ -300,16 +299,16 @@ $.widget( 'boom.tagger_deferred', $.boom.tagger,
 	/** Show a tag in the UI
 	@param {Object} tag Tag
 	*/
-	_render_tag: function( tag ) {
+	_render_tag: function(tag_name, tag_id) {
 
 		var tag_list = this.element.find( 'ul.b-tags-list' );
 
 		var link = $( '<a>', {
 			href : '#',
 			"class" : 'b-tags-remove',
-			"data-tag_id" : tag.value
+			"data-tag_id" : tag_id
 		});
-		var label = $( '<span>').text( tag.label );
+		var label = $( '<span>').text(tag_name);
 
 		$( '<li>' )
 			.append( link )

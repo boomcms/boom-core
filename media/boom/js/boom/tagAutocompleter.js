@@ -1,27 +1,34 @@
 $.widget('boom.tagAutocompleter', {
-	
-	exclude_tags : [],
 
 	onSelect : null,
+
+	selectedTags : [],
 
 	type : null,
 
 	_create : function() {
 		var self = this;
 
-		this.type = this.options.type;
+		this.type = this.options.type == 'asset' || this.options.type == 1? 1 : 2;
 		this.onSelect = this.options.onSelect;
 
 		this.element.autocomplete({
 			delay: 200, // Time to wait after keypress before making the AJAX call.
-			source : this._autocompleteSource(),
-			select : this._autocompleteSelect()
+			source : function(request, response) {
+				self._autocompleteSource(request, response);
+			},
+			select : function(event, ui) {
+				event.preventDefault();
+
+				self.element.val('');
+				self._tagSelected(ui.item.label, ui.item.value);
+			}
 		})
 		.on('keypress', function(e) {
 			// Add a tag when the enter key is pressed.
 			// This allows us to add a tag which doesn't already exist.
 			if (e.which == 13) {
-				self._tagSelected(this.element.val());
+				self._tagSelected(this.element.val(), -1);
 			}
 		});
 	},
@@ -32,8 +39,8 @@ $.widget('boom.tagAutocompleter', {
 			dataType: 'json',
 			data: {
 				text : this.element.val(),
-				type : (this.type == 'asset')? 1 : 2,
-				tags : this.exclude_tags
+				type : this.type,
+				tags : this.selectedTags
 			}
 		})
 		.done(function(data) {
@@ -50,15 +57,11 @@ $.widget('boom.tagAutocompleter', {
 		});
 	},
 
-	_autocompleteSelect : function(event, ui) {
-		event.preventDefault();
-		this.element.val( '' );
-		this._tagSelected(ui.item);
+	setSelectedTags : function(tags) {
+		this.selectedTags = tags;
 	},
 
-	_tagSelected : function(name) {
-		if (typeof this.onSelect == 'function') {
-			this.onSelect(name);
-		}
+	_tagSelected : function(name, id) {
+		this._trigger('complete', null, {name : name, id : id});
 	}
 });
