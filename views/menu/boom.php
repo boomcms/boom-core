@@ -1,8 +1,6 @@
 <div id="b-menu">
 	<span>
-		<button id="b-menu-button" class="ui-button boom-button" data-icon="ui-icon-boom-menu">
-			<?= __('Menu') ?>
-		</button>
+		<?= BoomUI::button('menu', __('Menu'), array('id' => 'b-menu-button')) ?>
 	</span>
 
 	<ul>

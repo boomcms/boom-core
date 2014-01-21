@@ -1,0 +1,80 @@
+html.boom .b-button {
+	font-size: .9em;
+	width: 50px;
+	height: 50px;
+	margin: 5px 0 0 0;
+	background: transparent;
+	position: relative;
+	padding: 0;
+	border: 0;
+	border-right: 1px solid #555;
+	color: #fff;
+
+	&:disabled {
+		opacity: 0.35;
+
+		&:hover, &:focus, &:active {
+			background-color: transparent;
+		}
+	}
+
+	&:hover, &:focus, &:active {
+		background-color: #555;
+	}
+
+	.b-button-text {
+		display: block;
+		padding: 0.4em;
+		text-indent: -9999999px;
+		color: #fff;
+	}
+
+	.b-button-icon {
+		top: 10px;
+		left: 10px;
+		width: 30px;
+		height: 30px;
+		margin: 0;
+		display: block;
+		position: absolute;
+		background-image: url(/media/boom/css/themes/default/images/ui-icons_ffffff_300x120.png);
+	}
+
+	.b-button-icon-{
+		&accept { background-position: 0 0;}
+		&cancel { background-position: -30px 0;}
+		&preview { background-position: -60px 0;}
+		&options { background-position: -90px 0;}
+		&visible { background-position: -120px 0;}
+		&settings { background-position: -150px 0;}
+		&history { background-position: -180px 0;}
+		&delete { background-position: -210px 0;}
+		&add { background-position: -240px 0;}
+		&menu { background-position: -270px 0;}
+		&edit-live { background-position: 0 -30px;}
+		&view-live { background-position: -30px -30px;}
+		&person { background-position: -60px -30px;}
+		&thumbnails { background-position: -90px -30px;}
+		&previous { background-position: -120px -30px;}
+		&next { background-position: -150px -30px;}
+		&previous { background-position: -180px -30px;}
+		&h2 { background-position: -240px -30px;}
+		&h3 { background-position: -270px -30px;}
+		&blockquote { background-position:	 -300px -30px;}
+		&list { background-position:	 0px -60px;}
+		&ol { background-position:	 -30px -60px;}
+		&bold { background-position:	 -60px -60px;}
+		&italic { background-position:	 -90px -60px;}
+		&link { background-position:	 -120px -60px;}
+		&asset { background-position:	 -150px -60px;}
+		&hr { background-position:	 -180px -60px;}
+		&speech { background-position:	 -210px -60px;}
+		&edit {	background-position: -30px -90px;}
+		&tag { background-position: -60px -90px;}
+		&download {	background-position: -90px -90px;}
+		&upload { background-position: -120px -90px;}
+		&invisible { background-position: -150px -90px;}
+		&replace { background-position: -270px -90px;}
+		&back { background-position: -210px -120px;}
+	}
+}

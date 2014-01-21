@@ -109,7 +109,8 @@ $.extend($.boom,
 				buttons: this.options.buttons || [
 					{
 						text : 'Cancel',
-						icons : { primary : 'ui-icon-boom-cancel' },
+						icons : { primary : 'b-button-icon-cancel b-button-icon' },
+						class : 'b-button',
 						click : function() {
 
 							( dialogConfig.deferred ) && dialogConfig.deferred.reject( dialogConfig.deferred_args );
@@ -119,7 +120,8 @@ $.extend($.boom,
 					},
 					{
 						text : 'Okay',
-						icons : { primary : 'ui-icon-boom-accept' },
+						class : 'b-button',
+						icons : { primary : 'b-button-icon-accept b-button-icon' },
 						click : function() {
 
 							(opts.callback) && opts.callback.call(this);

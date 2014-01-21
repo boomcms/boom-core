@@ -81,7 +81,8 @@ boomPage.prototype.tags = function() {
 		buttons: [
 			{
 				text: 'Close',
-				icons: { primary : 'ui-icon-boom-cancel' },
+				class : 'b-button',
+				icons: { primary : 'b-button-icon b-button-icon-cancel' },
 				click: function( event ){
 					$.boom.dialog.destroy( this );
 				}
@@ -102,7 +103,8 @@ boomPage.prototype.urls = function() {
 				text: 'Add URL',
 				title: 'Add URL',
 				id: 'b-page-settings-url-add',
-				icons: { primary : 'ui-icon-boom-add' },
+				class : 'b-button',
+				icons: { primary : 'b-button-icon b-button-icon-add' },
 				click: function( event ){
 					$.boom.dialog.open({
 						url: '/cms/page/urls/add/' + page.id,
@@ -122,7 +124,8 @@ boomPage.prototype.urls = function() {
 			{
 				text: 'Close',
 				title: 'Close',
-				icons: { primary : 'ui-icon-boom-cancel' },
+				class : 'b-button',
+				icons: { primary : 'b-button-icon b-button-icon-cancel' },
 				click: function( event ){
 					$.boom.dialog.destroy( this );
 				}
@@ -271,7 +274,8 @@ boomPage.prototype.featureimage = function() {
 			{
 				text: 'Add',
 				id: 'boom-feature-add',
-				icons: { primary: 'ui-icon-boom-add' },
+				class : 'b-button',
+				icons: { primary: 'b-button-icon b-button-icon-add' },
 				click: function(){
 					$.boom.assets
 						.picker({
@@ -287,8 +291,9 @@ boomPage.prototype.featureimage = function() {
 			},
 			{
 				text: 'Remove',
+				class : 'b-button',
 				id: 'b-feature-remove',
-				icons: { primary: 'ui-icon-boom-delete' },
+				icons: { primary: 'b-button-icon b-button-icon-delete' },
 				click: function(){
 					var dialog = $(this);
 					$.boom.dialog.confirm(
@@ -306,7 +311,8 @@ boomPage.prototype.featureimage = function() {
 			},
 			{
 				text: 'Cancel',
-				icons: { primary: 'ui-icon-boom-cancel' },
+				class : 'b-button',
+				icons: { primary: 'b-button-icon b-button-icon-cancel' },
 				click: function(){
 
 					$.boom.dialog.destroy( this );
@@ -314,7 +320,8 @@ boomPage.prototype.featureimage = function() {
 			},
 			{
 				text: 'Okay',
-				icons: { primary: 'ui-icon-boom-accept' },
+				class : 'b-button',
+				icons: { primary: 'b-button-icon b-button-icon-accept' },
 				click: function(){
 					savePageSettings(
 						url,
