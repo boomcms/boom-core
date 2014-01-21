@@ -1,19 +1,14 @@
 <?php defined('SYSPATH') OR die('No direct script access.');
 
 /**
- * People controller
- * Pages for managing people.
  *
  * @package	BoomCMS
  * @category	Controllers
- * @author	Rob Taylor
- * @copyright	Hoop Associates
  */
 class Boom_Controller_Cms_People extends Controller_Cms
 {
 	/**
-	 *
-	 * @var	string	Directory where the views which relate to this class are held.
+	 * @var string Directory where the views which relate to this class are held.
 	 */
 	protected $_view_directory = 'boom/people/';
 
@@ -35,5 +30,13 @@ class Boom_Controller_Cms_People extends Controller_Cms
 
 		$this->authorization('manage_people');
 		$this->edit_person = new Model_Person($this->request->param('id'));
+	}
+
+	protected function _show(View $view)
+	{
+		$this->template = View::factory("$this->_view_directory/index", array(
+			'groups' => ORM::Factory('Group')->order_by('name', 'asc')->find_all(),
+			'content' => $view,
+		));
 	}
 }

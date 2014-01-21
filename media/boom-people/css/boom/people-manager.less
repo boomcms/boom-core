@@ -1,0 +1,62 @@
+#b-people-manager {
+	padding: 1em;
+
+	> div {
+		display: inline-block;
+		vertical-align: top;
+	}
+
+	#b-people-content {
+		width: 70%;
+		margin-left: 2em;
+	}
+
+	#b-items-view-list {
+		width: 100%;
+
+		table {
+			width: 100%;
+		}
+	}
+
+	#b-groups {
+		width: 25%;
+		color: #fff;
+
+		&-header {
+			background: #222;
+			height: 39px;
+		}
+
+		&-list {
+			padding: 0.5em;
+			margin: 0;
+			list-style-type: none;
+			background: #444;
+			line-height: 30px;
+			font-size: 1.5em;
+
+			li {
+
+				&:hover, &:focus, &:active {
+					background: #555;
+				}
+
+				.ui-icon {
+					display: inline-block;
+					float: right;
+					height: 30px;
+					width: 30px;
+					background-image: url(/media/boom/css/themes/default/images/ui-icons_ffffff_300x120.png);
+				}
+
+				.b-groups-item {
+					color: #fff;
+					text-decoration: none;
+					display: inline-block;
+					width: 70%;
+				}
+			}
+		}
+	}
+}

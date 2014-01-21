@@ -1,13 +1,10 @@
 <?php defined('SYSPATH') OR die('No direct script access.');
 
 /**
- * Group controller
- * Pages for managing groups.
  *
  * @package	BoomCMS
  * @category	Controllers
  * @author	Rob Taylor
- * @copyright	Hoop Associates
  */
 class Boom_Controller_Cms_Groups extends Boom_Controller
 {
@@ -27,5 +24,13 @@ class Boom_Controller_Cms_Groups extends Boom_Controller
 
 		$this->authorization('manage_people');
 		$this->group = new Model_Group($this->request->param('id'));
+	}
+
+	protected function _show(View $view)
+	{
+		$this->template = View::factory("boom/people/index", array(
+			'groups' => ORM::Factory('Group')->order_by('name', 'asc')->find_all(),
+			'content' => $view,
+		));
 	}
 }

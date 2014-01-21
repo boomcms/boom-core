@@ -1,11 +1,10 @@
-<div id="boom-person-view" class="b-items-view">
+<div id="boom-person-view">
 	<form onsubmit="return false;">
 		<?= Form::hidden('csrf', Security::token()) ?>
 		<input type="hidden" name="person_id" id='person_id' value="<?=$person->id;?>" />
 		<input type="hidden" name="groups" value="<?=implode(',', $person->groups->find_all()->as_array())?>" />
 
 		<div class="boom-tabs ui-helper-clearfix">
-
 			<ul>
 				<li><a href="#boom-person-view-information<?=$person->id;?>">Information</a></li>
 				<li><a href="#boom-person-view-activity<?=$person->id;?>">Activity</a></li>
@@ -42,6 +41,11 @@
 						</tr>
 					</tbody>
 				</table>
+
+				<div>
+					<?= BoomUI::button('accept', __('Save'), array('id' => 'boom-tagmanager-save-person', 'class' => 'b-people-save', 'rel' => $person->id)) ?>
+					<?= BoomUI::button('delete', __('Delete'), array('id' => 'b-delete-person', 'rel' => $person->id)) ?>
+				</div>
 			</div>
 
 			<div id="boom-person-view-activity<?=$person->id;?>" class="ui-helper-left">
@@ -94,13 +98,6 @@
 				?>
 
 				<?= BoomUI::button('add', __('Add group'), array('class' => 'b-people-groups-add', 'rel' => $person->id)) ?>
-			</div>
-
-			<br class="ui-helper-clear" />
-
-			<div style="padding: .8em 0 .8em .8em;border-color:#ccc;border-width:1px 0 0 0;" class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
-				<?= BoomUI::button('accept', __('Save'), array('id' => 'boom-tagmanager-save-person', 'class' => 'b-people-save', 'rel' => $person->id)) ?>
-				<?= BoomUI::button('delete', __('Delete'), array('id' => 'b-delete-person', 'rel' => $person->id)) ?>
 			</div>
 		</div>
 	</form>

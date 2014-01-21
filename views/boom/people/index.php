@@ -1,6 +1,6 @@
 	<?= View::factory('boom/header')->set('title', 'People') ?>
 
-	<div id="b-topbar" class="ui-helper-clearfix ui-tabs ui-widget ui-widget-content ui-corner-all">
+	<div id="b-topbar">
 		<?= Menu::factory('boom')->sort('priority') ?>
 
 		<?= BoomUI::button('add', __('New person'), array('id' => 'b-people-create')) ?>
@@ -8,36 +8,30 @@
 	</div>
 
 	<div id="b-people-manager">
-		<div id="boom-tagmanager">
-			<div class="b-items-main ui-helper-right">
-				<div class="b-items-body ui-helper-clearfix">
-					<div class="b-items-rightpane">
-						<div class="b-items-content">
-							&nbsp;
-						</div>
-					</div>
-				</div>
+		<div id="b-groups">
+			<div id="b-groups-header">
+				<a href="#" class="b-people-group-add">
+					<?= __('Add') ?>
+				</a>
+				<h3>
+					<?= __('Groups') ?>
+				</h3>
 			</div>
-			<div class="b-items-sidebar ui-helper-left">
-				<div class="b-items-box-header ui-helper-reset ui-widget-header ui-panel-header ui-corner-all">
-					<a href="#" class="b-people-group-add ui-helper-right">
-						<?= __('Add') ?>
-					</a>
-					<h3 class="ui-helper-reset">
-						<?= __('Groups') ?>
-					</h3>
-				</div>
-				<div class="boom-box ui-widget ui-corner-all ui-state-default">
-					<ul class="boom-tree b-tags-tree  boom-tree-noborder">
-					<?
-						foreach ($groups as $id => $name):
-							echo "<li id='t", $id, "'><a rel='", $id, "' id='tag_" , $id , "' class='' href='#group/", $id;
-							echo "'>" , $name , "</a>\n";
-						endforeach;
-					?>
-					</ul>
-				</div>
-			</div>
+
+			<ul id="b-groups-list">
+				<? foreach ($groups as $group): ?>
+					<li id='t<?= $group->id ?>'>
+						<a class='b-groups-item' rel='<?= $group->id ?>' id='tag_<?= $group->id ?>' href='/cms/people?group=<?= $group->id ?>'><?= $group->name ?></a>
+
+						<a href='<?= Route::url('people-edit', array('controller' => 'groups', 'action' => 'delete', 'id' => $group->id)) ?>' title="Delete" class="ui-icon ui-icon-close"></a>
+						<a href='<?= Route::url('people-edit', array('controller' => 'groups', 'action' => 'edit', 'id' => $group->id)) ?>' title="Edit" class="ui-icon ui-icon-wrench"></a>
+					</li>
+				<? endforeach ?>
+			</ul>
+		</div>
+
+		<div id='b-people-content'>
+			<?= $content ?>
 		</div>
 	</div>
 

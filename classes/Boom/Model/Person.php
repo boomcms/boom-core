@@ -69,6 +69,24 @@ class Boom_Model_Person extends ORM
 		return $this;
 	}
 
+	/**
+	 *
+	 * @param integer $group_id
+	 * @return Model_Person
+	 */
+	public function by_group($group_id)
+	{
+		if ($group_id)
+		{
+			$this
+				->join('people_groups', 'inner')
+				->on('person_id', '=', 'id')
+				->where('group_id', '=', $group_id);
+		}
+
+		return $this;
+	}
+
 	public function complete_login()
 	{
 		return $this

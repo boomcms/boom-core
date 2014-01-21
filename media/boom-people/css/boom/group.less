@@ -1,0 +1,34 @@
+#b-group-roles-general, #b-group-roles-pages, #b-page-settings-urls{
+	input[type=radio], input[type=checkbox] {
+		position: absolute;
+		left: -9999px;
+	}
+	label {
+		display: inline;
+		clear: none;
+		float: none;
+		padding: 5px;
+	}
+	input:checked + label {
+		background-color: #333;
+		color: #ccc;
+	}
+}
+
+.b-group-roles {
+	width: 70%;
+
+	thead {
+		font-size: 1.2em;
+	}
+
+	td:first-of-type {
+		width: 50%;
+	}
+}
+
+#b-group-roles-pages {
+	.b-group-roles {
+		display: none;
+	}
+}

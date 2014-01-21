@@ -6,8 +6,6 @@ return array(
 		'boom.groups.js'
 	),
 	'css' => array(
-		'boom.groups.css.less',
-		'boom.login.css.less',
 		'boom.people.css.less',
 	)
 );
