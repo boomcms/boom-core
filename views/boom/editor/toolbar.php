@@ -52,7 +52,7 @@
 			<?=__('Edit live')?>
 		</button>*/?>
 
-		<?= BoomUI::button('view-live', __('View the page as it appears on the live site'), array('id' => 'boom-page-viewlive')) ?>
+		<?= BoomUI::button('view-live', __('View the page as it appears on the live site'), array('id' => 'boom-page-viewlive', 'class' => 'b-button-preview', 'data-preview' => 'disabled')) ?>
 	</div>
 
 	<div id="b-topbar-pagesettings">
