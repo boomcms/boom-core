@@ -12,7 +12,7 @@
 				</button>
 			</span>
 
-			<?= BoomUI::button('preview', __("Preview the current version of the page even if it hasn't been published"), array('id' => 'boom-page-preview', 'data-preview' => 'preview')) ?>
+			<?= BoomUI::button('preview', __("Preview the current version of the page even if it hasn't been published"), array('id' => 'boom-page-preview', 'class' => 'b-button-preview','data-preview' => 'preview')) ?>
 
 			<span id="b-page-version-menu">
 				<?= BoomUI::button('options', __('Settings for the current version of the page'), array('id' => 'boom-page-template-settings')) ?>
