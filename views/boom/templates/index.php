@@ -2,10 +2,7 @@
 
 	<div id="b-topbar" class="ui-helper-clearfix ui-tabs ui-widget ui-widget-content ui-corner-all">
 		<?= Menu::factory('boom')->sort('priority') ?>
-
-		<button id="b-templates-save" class="boom-button ui-button-text-icon ui-icon-boom-save">
-			Save all
-		</button>
+		<?= BoomUI::button('accept', __('Save all'), array('id' => 'b-templates-save')) ?>
 	</div>
 
 	<div id="b-templates">
