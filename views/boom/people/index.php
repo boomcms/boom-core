@@ -3,13 +3,8 @@
 	<div id="b-topbar" class="ui-helper-clearfix ui-tabs ui-widget ui-widget-content ui-corner-all">
 		<?= Menu::factory('boom')->sort('priority') ?>
 
-		<button id="b-people-create" class="boom-button ui-button-text-icon" data-icon="ui-icon-boom-add">
-			<?= __('New person') ?>
-		</button>
-
-		<button id="b-button-multiaction-delete" disabled="disabled" class="boom-button ui-button-text-icon" data-icon="ui-icon-boom-delete">
-			<?= __('Delete') ?>
-		</button>
+		<?= BoomUI::button('add', __('New person'), array('id' => 'b-people-create')) ?>
+		<?= BoomUI::button('delete', __('Delete'), array('id' => 'b-button-multiaction-delete', 'disabled' => 'disabled')) ?>
 	</div>
 
 	<div id="b-people-manager">

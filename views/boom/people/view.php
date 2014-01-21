@@ -93,20 +93,14 @@
 					endif;
 				?>
 
-				<button class="boom-button ui-button-text-icon b-people-groups-add" rel='<?= $person->id ?>' data-icon="ui-icon-boom-add">
-					Add Group
-				</button>
+				<?= BoomUI::button('add', __('Add group'), array('class' => 'b-people-groups-add', 'rel' => $person->id)) ?>
 			</div>
 
 			<br class="ui-helper-clear" />
 
 			<div style="padding: .8em 0 .8em .8em;border-color:#ccc;border-width:1px 0 0 0;" class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
-				<button class="boom-button ui-button-text-icon b-people-save" rel="<?=$person->id?>" id='boom-tagmanager-save-person' data-icon="ui-icon-boom-accept">
-					Save
-				</button>
-				<button class="boom-button ui-button-text-icon" id="b-delete-person" rel="<?=$person->id?>" data-icon="ui-icon-boom-delete">
-					Delete
-				</button>
+				<?= BoomUI::button('accept', __('Save'), array('id' => 'boom-tagmanager-save-person', 'class' => 'b-people-save', 'rel' => $person->id)) ?>
+				<?= BoomUI::button('delete', __('Delete'), array('id' => 'b-delete-person', 'rel' => $person->id)) ?>
 			</div>
 		</div>
 	</form>
