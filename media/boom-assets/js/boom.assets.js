@@ -245,6 +245,7 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 							title: 'Asset tags',
 							width: 440,
 							callback: function(){
+
 								tagged.resolve( tags );
 							},
 							onLoad: function(){
@@ -255,13 +256,7 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 					}
 				})
 				.done( function( data ){
-					$.boom.history.load( self.options.defaultRoute )
-					.done( function(){
-						$.boom.log( 'asset list updated' );
-
-						$('.thumb[data-asset=' + i + '] a').click();
-					});
-
+					$.boom.history.load( self.options.defaultRoute );
 				});
 
 				$.when(tagged, uploaded).done(function(tags, data) {
@@ -271,7 +266,7 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 						var request = $.post(
 							'/cms/tags/asset/add/' + data.result.join('-'),
 							{
-								tag : tags[i].label
+								tag : tags[i]
 							}
 						);
 
@@ -316,7 +311,19 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 				}
 			});
 
-		$( '#b-tags-search' ).tagger_search();
+
+		var selected_tag_ids = [];
+		$('#b-tags-search')
+			.tagger_search()
+			.find('input')
+			.tagAutocompleter({
+				type : 1,
+				complete : function(event, data) {
+					selected_tag_ids.push(data.id);
+					$(this).tagAutocompleter('setSelectedTags', selected_tag_ids);
+					$('#b-tags-search').tagger_search('add', data.name, data.id);
+				}
+			});
 
 		$( '#b-topbar' )
 			.on( 'click', '#b-button-multiaction-delete', function(){
@@ -608,7 +615,7 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 
 		this.removeTagFilters();
 
-		$.boom.history.load(this.options.defaultRoute );
+		$.boom.history.load(this.options.defaultRoute);
 	},
 
 	removeTagFilters : function() {

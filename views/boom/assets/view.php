@@ -11,21 +11,11 @@
 			</a>
 
 			<div class="ui-dialog-buttonpane">
-				<button class="boom-button ui-button-text-icon b-assets-back" rel="<?=$asset->id?>" data-icon="ui-icon-boom-back">
-					<?=__('Back')?>
-				</button>
-				<button class="b-dialog-hidden boom-button ui-button-text-icon b-assets-save" rel="<?=$asset->id?>" data-icon="ui-icon-boom-accept">
-					<?=__('Save')?>
-				</button>
-				<button class="b-dialog-hidden boom-button ui-button-text-icon b-assets-delete" rel="<?=$asset->id?>" data-icon="ui-icon-boom-delete">
-					<?=__('Delete')?>
-				</button>
-				<button class="b-dialog-hidden boom-button ui-button-text-icon b-assets-download" rel="<?=$asset->id?>" data-icon="ui-icon-boom-download">
-					<?=__('Download')?>
-				</button>
-				<button class="b-dialog-hidden boom-button ui-button-text-icon b-assets-replace" rel="<?=$asset->id?>" data-icon="ui-icon-boom-replace">
-					<?=__('Replace')?>
-				</button>
+				<?= BoomUI::button('back', __('Back'), array('class' => 'b-assets-back', 'rel' => $asset->id)) ?>
+				<?= BoomUI::button('accept', __('Save'), array('class' => 'b-assets-delete', 'rel' => $asset->id)) ?>
+				<?= BoomUI::button('delete', __('Delete'), array('class' => 'b-assets-delete', 'rel' => $asset->id)) ?>
+				<?= BoomUI::button('download', __('Download'), array('class' => 'b-assets-download', 'rel' => $asset->id)) ?>
+				<?= BoomUI::button('replace', __('Replace'), array('class' => 'b-assets-replace', 'rel' => $asset->id)) ?>
 			</div>
 		</div>
 

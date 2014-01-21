@@ -4,25 +4,12 @@
 			<?= Menu::factory('boom')->sort('priority')  ?>
 
 			<div id="b-assets-buttons">
-				<button id="b-assets-upload" class="boom-button ui-button-text-icon" data-icon="ui-icon-boom-upload">
-					<?=__('Upload files')?>
-				</button>
-
-				<button id="b-button-multiaction-edit" disabled="disabled" class="boom-button ui-button-text-icon" data-icon="ui-icon-boom-edit">
-					<?=__('View')?>/<?=__('Edit')?>
-				</button>
-				<button id="b-button-multiaction-delete" disabled="disabled" class="boom-button ui-button-text-icon" data-icon="ui-icon-boom-delete">
-					<?=__('Delete')?>
-				</button>
-				<button id="b-button-multiaction-download" disabled="disabled" class="boom-button ui-button-text-icon" data-icon="ui-icon-boom-download">
-					<?=__('Download')?>
-				</button>
-				<button id="b-button-multiaction-tag" disabled="disabled" class="boom-button ui-button-text-icon" data-icon="ui-icon-boom-tag">
-					<?=__('Add Tags')?>
-				</button>
-				<button id="b-button-multiaction-clear" disabled="disabled" class="boom-button ui-button-text-icon" data-icon="ui-icon-boom-cancel">
-					<?=__('Clear Selection')?>
-				</button>
+				<?= BoomUI::button('upload', __('Upload files'), array('id' => 'b-assets-upload')) ?>
+				<?= BoomUI::button('edit', __('View').' / '.__('Edit'), array('id' => 'b-button-multiaction-edit', 'disabled' => 'disabled')) ?>
+				<?= BoomUI::button('delete', __('Delete'), array('id' => 'b-button-multiaction-delete', 'disabled' => 'disabled')) ?>
+				<?= BoomUI::button('download', __('Download'), array('id' => 'b-button-multiaction-download', 'disabled' => 'disabled')) ?>
+				<?= BoomUI::button('tag', __('Add Tags'), array('id' => 'b-button-multiaction-tag', 'disabled' => 'disabled')) ?>
+				<?= BoomUI::button('clear', __('Clear Selection'), array('id' => 'b-button-multiaction-clear', 'disabled' => 'disabled')) ?>
 			</div>
 
 			<div id="b-assets-pagination"></div>
@@ -32,7 +19,7 @@
 
 	<div id="b-assets-filters">
 		<span>
-			<button id="b-assets-all" class="ui-button boom-button">
+			<button id="b-assets-all" class="b-button">
 				<?=__('All assets')?>
 			</button>
 		</span>
