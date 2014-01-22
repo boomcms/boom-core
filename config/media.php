@@ -2,6 +2,9 @@
 
 return array(
 	'js' => array(
+		'boom/group.js',
+		'boom/peopleManager.js',
+		'boom/groupPermissionsEditor.js',
 		'boom.people.js',
 		'boom.groups.js'
 	),

@@ -41,7 +41,7 @@
 		//<![CDATA[
 		(function($){
 			$.boom.init();
-			$( 'body' ).browser_people();
+			$('body').peopleManager();
 		})(jQuery);
 		//]]>
 	</script>

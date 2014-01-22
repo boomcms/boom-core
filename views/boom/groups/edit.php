@@ -7,6 +7,23 @@
 	</fieldset>
 
 	<div class="boom-tabs">
+		<div class="b-people-help">
+			<p>
+				Here you can edit the CMS and site permissions for this group.
+			</p>
+			<p>
+				BoomCMS uses a role based permissions system. A group can have three options for each role:
+			</p>
+
+			<dl>
+				<dt>Allow</dt>
+				<dd>Members of the group may perform the role unless it's been denied by another group they're a member of (see below).</dd>
+				<dt>Deny</dt>
+				<dd>Members of the group cannot perform the role. Deny takes precedence over allow so if a user is a member of two groups and one allows a role while the other denies it you they won't be able to perform the role. You can therefore be confident that when a group denies a role the members of the group won't have access to that functionality regardless of their membership of other groups.</dd>
+				<dt>Not set</dt>
+				<dd>The group does not allow or deny access to the role. Members of the group would not be able to perform the role but unlike the Deny permission if a user is a member of another group which allows the role they will be able to perform the role. For page permissions if a value is set of a parent page but not a child page then the child will inherit the permissions from the parent.</dd>
+			</dl>
+		</div>
 		<ul>
 			<li><a href="#b-group-roles-general"><?=__('CMS Permissions')?></a></li>
 			<li><a href="#b-group-roles-pages"><?=__('Page Permissions')?></a></li>
@@ -32,3 +49,11 @@
 		</div>
 	</div>
 </form>
+
+<script type='text/javascript'>
+	window.onload = function() {
+		$('body').groupPermissionsEditor({
+			group : new boomGroup(<?= $group->id ?>)
+		});
+	};
+</script>
