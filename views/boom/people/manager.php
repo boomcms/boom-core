@@ -4,7 +4,7 @@
 		<?= Menu::factory('boom')->sort('priority') ?>
 
 		<?= BoomUI::button('add', __('New person'), array('id' => 'b-people-create')) ?>
-		<?= BoomUI::button('delete', __('Delete'), array('id' => 'b-button-multiaction-delete', 'disabled' => 'disabled')) ?>
+		<?= BoomUI::button('delete', __('Delete'), array('id' => 'b-people-multi-delete', 'disabled' => 'disabled')) ?>
 	</div>
 
 	<div id="b-people-manager">
@@ -20,11 +20,11 @@
 
 			<ul id="b-groups-list">
 				<? foreach ($groups as $group): ?>
-					<li id='t<?= $group->id ?>'>
-						<a class='b-groups-item' rel='<?= $group->id ?>' id='tag_<?= $group->id ?>' href='/cms/people?group=<?= $group->id ?>'><?= $group->name ?></a>
+					<li data-group-id="<?= $group->id ?>">
+						<a class='b-groups-item' href='/cms/people?group=<?= $group->id ?>'><?= $group->name ?></a>
 
-						<a href='<?= Route::url('people-edit', array('controller' => 'groups', 'action' => 'delete', 'id' => $group->id)) ?>' title="Delete" class="ui-icon ui-icon-close"></a>
-						<a href='<?= Route::url('people-edit', array('controller' => 'groups', 'action' => 'edit', 'id' => $group->id)) ?>' title="Edit" class="ui-icon ui-icon-wrench"></a>
+						<a href='#' title="Delete" class="ui-icon ui-icon-close b-group-delete"></a>
+						<a href='<?= Route::url('people-edit', array('controller' => 'group', 'action' => 'edit', 'id' => $group->id)) ?>' title="Edit" class="ui-icon ui-icon-wrench"></a>
 					</li>
 				<? endforeach ?>
 			</ul>

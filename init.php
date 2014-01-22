@@ -40,8 +40,14 @@ Route::set('profile', 'cms/profile')
 		}
 	);
 
+Route::set('people-manager', 'cms/people')
+	->defaults(array(
+		'controller' => 'Cms_PeopleManager',
+		'action' => 'index',
+	));
+
 Route::set('people-edit', 'cms/<controller>(/<action>(/<id>))', array(
-		'controller' => 'people|groups',
+		'controller' => 'person|group',
 		'id' => '\d+'
 	))
 	->defaults(array(

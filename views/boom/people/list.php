@@ -10,12 +10,12 @@
 		</thead>
 		<tbody>
 			<? foreach ($people as $person): ?>
-				<tr class="<?= Text::alternate('odd', 'even') ?>">
+				<tr class="<?= Text::alternate('odd', 'even') ?>" data-person-id="<?= $person->id ?>">
 					<td width="10">
-						<input type="checkbox" class="b-people-select" data-id="<?= $person->id ?>" />
+						<input type="checkbox" class="b-people-select" />
 					</td>
 					<td>
-						<a href="<?= Route::url('people-edit', array('controller' => 'people', 'action' => 'view', 'id' => $person->id)) ?>"><?= $person->name ?></a>
+						<a href="<?= Route::url('people-edit', array('controller' => 'person', 'action' => 'view', 'id' => $person->id)) ?>"><?= $person->name ?></a>
 					</td>
 					<td>
 						<?= $person->email ?>

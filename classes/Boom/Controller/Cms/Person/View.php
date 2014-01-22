@@ -1,6 +1,6 @@
 <?php
 
-class Boom_Controller_Cms_People_View extends Controller_Cms_People
+class Boom_Controller_Cms_Person_View extends Controller_Cms_Person
 {
 	public function action_add()
 	{
@@ -25,18 +25,6 @@ class Boom_Controller_Cms_People_View extends Controller_Cms_People
 		));
 	}
 
-	public function action_index()
-	{
-		$people = ORM::factory('Person')
-			->by_group($this->request->query('group'))
-			->order_by('name', 'asc')
-			->find_all();
-
-		$this->template = new View("$this->_view_directory/list", array(
-			'people' => $people
-		));
-	}
-
 	public function action_view()
 	{
 		if ( ! $this->edit_person->loaded())
@@ -50,12 +38,5 @@ class Boom_Controller_Cms_People_View extends Controller_Cms_People
 			'activities'	=>	$this->edit_person->logs->order_by('time', 'desc')->limit(50)->find_all(),
 			'groups'		=>	$this->edit_person->groups->order_by('name', 'asc')->find_all(),
 		));
-	}
-
-	public function after()
-	{
-		$this->_show($this->template);
-
-		parent::after();
 	}
 }

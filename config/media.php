@@ -6,7 +6,6 @@ return array(
 		'boom/person.js',
 		'boom/peopleManager.js',
 		'boom/groupPermissionsEditor.js',
-		'boom/groupEditor.js',
 	),
 	'css' => array(
 		'boom.people.css.less',

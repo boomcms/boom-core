@@ -1,7 +1,7 @@
 function boomGroup(group_id) {
 	this.id = group_id;
 
-	boomGroup.prototype.base_url = '/cms/groups/';
+	boomGroup.prototype.base_url = '/cms/group/';
 
 	boomGroup.prototype.add = function() {
 		var group = this,
@@ -49,18 +49,21 @@ function boomGroup(group_id) {
 	};
 
 	boomGroup.prototype.remove = function() {
-		var group = this;
+		var group = this,
+			deferred = new $.Deferred();
 
 		$.boom.dialog.confirm(
 			'Please confirm',
 			'Are you sure you want to remove this group? <br /><br /> This will delete the group from the database and cannot be undone!'
 		)
 		.done(function() {
-			return $.post(group.base_url + 'delete/' + group.id)
-				.done( function(){
-					$.boom.growl.show('Group successfully removed.');
+			$.post(group.base_url + 'delete/' + group.id)
+				.done(function(response) {
+					deferred.resolve(response);
 				});
 		});
+
+		return deferred;
 	};
 
 	boomGroup.prototype.removeRole = function(role_id, page_id) {

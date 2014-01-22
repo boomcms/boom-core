@@ -1,6 +1,6 @@
 <?php
 
-class Boom_Controller_Cms_Groups_Save extends Controller_Cms_Groups
+class Boom_Controller_Cms_Group_Save extends Controller_Cms_Group
 {
 	public function action_add()
 	{

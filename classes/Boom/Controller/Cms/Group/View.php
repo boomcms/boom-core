@@ -1,6 +1,6 @@
 <?php
 
-class Boom_Controller_Cms_Groups_View extends Controller_Cms_Groups
+class Boom_Controller_Cms_Group_View extends Controller_Cms_Group
 {
 	public function action_add()
 	{
@@ -11,7 +11,7 @@ class Boom_Controller_Cms_Groups_View extends Controller_Cms_Groups
 
 	public function action_edit()
 	{
-		$v = View::factory("$this->_view_directory/edit", array(
+		$this->template = View::factory("$this->_view_directory/edit", array(
 			'group'		=>	$this->group,
 			'general_roles'	=>	ORM::factory('Role')
 				->where('name', 'not like', 'p_%')
@@ -22,8 +22,6 @@ class Boom_Controller_Cms_Groups_View extends Controller_Cms_Groups
 				->order_by('description', 'asc')
 				->find_all(),
 		));
-
-		$this->_show($v);
 	}
 
 	public function action_list_roles()

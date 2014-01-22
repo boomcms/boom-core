@@ -1,6 +1,6 @@
 <?php
 
-class Boom_Controller_Cms_People_Save extends Controller_Cms_People
+class Boom_Controller_Cms_Person_Save extends Controller_Cms_Person
 {
 	public function action_add()
 	{

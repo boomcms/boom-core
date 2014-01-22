@@ -1,10 +1,12 @@
-<form class='ui-widget-content' rel='<?= $group->id ?>' onsubmit='return false;'>
-	<fieldset>
-		<label for="b-people-group-name"><?= __('Name') ?></label>
-		<input type="text" id="b-people-group-name" class="boom-input boom-input-medium" name="name" value="<?=$group->name?>" />
+<div class='ui-widget-content'>
+	<form  id='b-group-edit' data-group-id='<?= $group->id ?>'>
+		<fieldset>
+			<label for="b-people-group-name"><?= __('Name') ?></label>
+			<input type="text" id="b-people-group-name" class="boom-input boom-input-medium" name="name" value="<?=$group->name?>" />
 
-		<?= BoomUI::button('accept', __('Save'), array('id' => 'b-people-group-save')) ?>
-	</fieldset>
+			<?= BoomUI::button('accept', __('Save'), array('id' => 'b-people-group-save')) ?>
+		</fieldset>
+	</form>
 
 	<div class="boom-tabs">
 		<div class="b-people-help">
@@ -48,11 +50,11 @@
 			</div>
 		</div>
 	</div>
-</form>
+</div>
 
 <script type='text/javascript'>
 	window.onload = function() {
-		$('body').groupEditor({
+		$('body').groupPermissionsEditor({
 			group : new boomGroup(<?= $group->id ?>)
 		});
 	};
