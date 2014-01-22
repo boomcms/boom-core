@@ -4,22 +4,21 @@ function boomGroup(group_id) {
 	boomGroup.prototype.base_url = '/cms/groups/';
 
 	boomGroup.prototype.add = function() {
-		var group = this;
+		var group = this,
+			deferred = new $.Deferred();
 
 		$.boom.dialog.open({
 			url: this.base_url + 'add',
 			title: 'Add group',
 			callback: function() {
-				group.addWithName($('#b-people-group-name').val())
-					.done(function() {
-						$.boom.growl.show('Group successfully saved, reloading.');
-
-						window.setTimeout(function() {
-							top.location.reload();
-						}, 300);
+				group.addWithName($(this).find('input[type=text]').val())
+					.done(function(response) {
+						deferred.resolve(response);
 					});
 			}
 		});
+
+		return deferred;
 	};
 
 	boomGroup.prototype.addRole = function(role_id, allowed, page_id) {

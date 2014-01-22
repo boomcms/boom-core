@@ -34,9 +34,12 @@ class Boom_Controller_Cms_People extends Controller_Cms
 
 	protected function _show(View $view)
 	{
-		$this->template = View::factory("$this->_view_directory/index", array(
-			'groups' => ORM::Factory('Group')->order_by('name', 'asc')->find_all(),
-			'content' => $view,
-		));
+		if ( ! $this->request->is_ajax())
+		{
+			$this->template = View::factory("$this->_view_directory/index", array(
+				'groups' => ORM::Factory('Group')->order_by('name', 'asc')->find_all(),
+				'content' => $view,
+			));
+		}
 	}
 }

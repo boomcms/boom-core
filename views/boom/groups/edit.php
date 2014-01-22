@@ -52,7 +52,7 @@
 
 <script type='text/javascript'>
 	window.onload = function() {
-		$('body').groupPermissionsEditor({
+		$('body').groupEditor({
 			group : new boomGroup(<?= $group->id ?>)
 		});
 	};
