@@ -1,4 +1,5 @@
 $.widget('boom.peopleManager', {
+	homeUrl : '/cms/people',
 	selectedPeople : 0,
 
 	bind : function() {
@@ -27,6 +28,22 @@ $.widget('boom.peopleManager', {
 			.on('click', '#b-people-group-save', function(e) {
 				e.preventDefault();
 				peopleManager.saveOpenGroup();
+			})
+			.on('click', '#b-person-save', function(e) {
+				e.preventDefault();
+				peopleManager.currentPersonSave();
+			})
+			.on('click', '#b-person-delete', function(e) {
+				e.preventDefault();
+				peopleManager.currentPersonDelete();
+			})
+			.on('click', '.b-person-addgroups', function(e) {
+				e.preventDefault();
+				peopleManager.currentPersonAddGroups();
+			})
+			.on('click', '.b-person-group-delete', function(e) {
+				e.preventDefault();
+				peopleManager.currentPersonRemoveGroup($(this).parents('li'));
 			});
 	},
 
@@ -63,6 +80,67 @@ $.widget('boom.peopleManager', {
 		this.bind();
 	},
 
+	currentPersonAddGroups : function() {
+		var person_id = this.getCurrentPersonId(),
+			person = new boomPerson(person_id),
+			peopleManager = this,
+			$group_list = this.element.find('#b-person-groups-list');
+
+		person.addGroups()
+			.done(function(new_groups) {
+				if (new_groups.length) {
+					var id, name;
+
+					for (id in new_groups) {
+						name = new_groups[id];
+
+						$group_list.append($("<li data-group-id=" + id +">" + name +"&nbsp;<a title='Remove user from group' class='b-person-group-delete' href='#'>x</a></li>"));
+					}
+
+					$.boom.growl.show('This person has been added to the groups');
+				}
+			});
+	},
+
+	currentPersonDelete : function() {
+		var person_id = this.getCurrentPersonId(),
+			person = new boomPerson(person_id),
+			peopleManager = this;
+
+		person.delete()
+			.done(function() {
+				$.boom.growl.show('This person has been deleted.');
+
+				setTimeout(function() {
+					top.location = peopleManager.homeUrl;
+				}, 300);
+			});
+	},
+
+	currentPersonRemoveGroup : function($group) {
+		var person_id = this.getCurrentPersonId(),
+			person = new boomPerson(person_id),
+			peopleManager = this,
+			group_id = $group.data('group-id');
+
+		person.removeGroup(group_id)
+			.done(function() {
+				$.boom.growl.show('This person has been removed from the group');
+				$group.remove();
+			});
+	},
+
+	currentPersonSave : function() {
+		var person_id = this.getCurrentPersonId(),
+			person = new boomPerson(person_id),
+			peopleManager = this;
+
+		person.save(this.element.find('.b-person-view form').serialize())
+			.done(function() {
+				$.boom.growl.show('The new details for this person have been saved.');
+			});
+	},
+
 	deleteSelectedPeople : function() {
 		var selected = this.getSelectedPeople(),
 			person = new boomPerson(selected.join('-')),
@@ -77,6 +155,10 @@ $.widget('boom.peopleManager', {
 						$.boom.growl.show('The selected people have been deleted.');
 					});
 				});
+	},
+
+	getCurrentPersonId : function() {
+		return this.element.find('.b-person-view').data('person-id');
 	},
 
 	getSelectedPeople : function() {

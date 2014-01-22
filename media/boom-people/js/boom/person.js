@@ -27,11 +27,67 @@ function boomPerson(person_id) {
 		return deferred;
 	};
 
+	boomPerson.prototype.addGroups = function() {
+		var url = this.base_url + 'add_group/' + this.id,
+			deferred = new $.Deferred();
+
+		$.boom.dialog.open({
+			url: url,
+			title: 'Add group',
+			callback: function() {
+				var groups = {},
+					group_ids = [];
+				
+				$(this).find('form select option:selected').each(function(i, el) {
+					var $el = $(el),
+						group_id = $el.val();
+
+					group_ids.push(group_id);
+					groups[group_id] = $el.text();
+				});
+
+				if (group_ids.length) {
+					$.post(url, {'groups[]' : group_ids})
+						.done(function() {
+							deferred.resolve(groups);
+						});
+				} else {
+					deferred.resolve([]);
+				}
+			}
+		});
+
+		return deferred;
+	};
+
 	boomPerson.prototype.addWithData = function(data) {
 		return $.post(this.base_url + 'add', data);
 	};
 
+	boomPerson.prototype.delete = function() {
+		var deferred = new $.Deferred(),
+			person = this;
+
+		$.boom.dialog.confirm('Please confirm', 'Are you sure you want to delete this person?')
+			.done(function() {
+				$.post(person.base_url + 'delete/' + person.id)
+					.done(function() {
+						deferred.resolve();
+					});
+			});
+
+		return deferred;
+	};
+
 	boomPerson.prototype.deleteMultiple = function(people_ids) {
 		return $.post(this.base_url + 'delete', {'people[]' : people_ids});
+	};
+
+	boomPerson.prototype.removeGroup = function(group_id) {
+		return $.post(this.base_url + 'remove_group/' + this.id, {group_id: group_id});
+	};
+
+	boomPerson.prototype.save = function(data) {
+		return $.post(this.base_url + 'save/' + this.id, data);
 	};
 };

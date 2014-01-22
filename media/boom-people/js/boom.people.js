@@ -29,7 +29,7 @@ $.extend($.boom.person, $.boom.item,
 			image: $('.boom-asset-preview', context )
 		});
 
-		$('.b-people-groups-add', context ).click(function(){
+		$('.b-person-addgroups', context ).click(function(){
 
 			self.groups.add();
 		});
@@ -49,7 +49,7 @@ $.extend($.boom.person, $.boom.item,
 
 		$('.b-people-save', context ).bind('save', function( event ){
 
-			var data = $( '#boom-person-view > form' ).serialize();
+			var data = $( '#b-person-view > form' ).serialize();
 
 			self
 				.save( data )
@@ -62,7 +62,7 @@ $.extend($.boom.person, $.boom.item,
 			$( this ).trigger( 'save' );
 		});
 
-		$('#b-delete-person', context ).click(function( event ){
+		$('#b-person-delete', context ).click(function( event ){
 
 			self.remove()
 				.done( function(){
@@ -102,7 +102,7 @@ $.extend($.boom.person, $.boom.item,
 						$.boom.history
 							.load( 'person/' + self.person_id )
 							.done( function(){
-								$( '#boom-person-view ul[role=tablist] a:eq(2)' ).click();
+								$( '#b-person-view ul[role=tablist] a:eq(2)' ).click();
 							});
 					});
 				}
