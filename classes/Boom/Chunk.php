@@ -66,7 +66,7 @@ abstract class Boom_Chunk
 	 *
 	 * @var array
 	 */
-	public static $types = array('asset', 'text', 'feature', 'linkset', 'slideshow', 'timestamp');
+	public static $types = array('asset', 'text', 'feature', 'linkset', 'slideshow', 'timestamp', 'tag');
 
 	public function __construct(Model_Page $page, $chunk, $slotname)
 	{
