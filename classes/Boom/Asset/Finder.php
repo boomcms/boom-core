@@ -106,6 +106,25 @@ class Boom_Asset_Finder
 
 	/**
 	 *
+	 * @param string $text
+	 * @return \Boom_Asset_Finder
+	 */
+	public function by_title_or_description($text)
+	{
+		if ($text)
+		{
+			$this->_query
+				->and_where_open()
+				->where('title', 'like', "%$text%")
+				->or_where('description', 'like', "%$text%")
+				->and_where_close();
+		}
+
+		return $this;
+	}
+
+	/**
+	 *
 	 * @param mixed $type
 	 * @return \Boom_Asset_Finder
 	 */
