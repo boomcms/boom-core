@@ -107,10 +107,10 @@ class Boom_Controller_Cms_Assets extends Controller_Cms
 		$type = $this->request->query('type') AND $finder->by_type($type);
 
 		$count_and_size = $finder->get_count_and_total_size();
-		$total = $count_and_size['total'];
+		$count = $count_and_size['count'];
 		$filesize = $count_and_size['filesize'];
 
-		if ($total === 0)
+		if ($count === 0)
 		{
 			$this->template = View::factory("$this->_view_directory/none_found");
 		}
@@ -123,7 +123,7 @@ class Boom_Controller_Cms_Assets extends Controller_Cms
 			$this->template =new View("$this->_view_directory/list", array(
 				'assets'		=>	$assets,
 				'total_size'	=>	$filesize,
-				'total'		=>	$total,
+				'total'		=>	$count,
 				'order'		=>	$order,
 			));
 
