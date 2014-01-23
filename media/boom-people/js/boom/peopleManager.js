@@ -88,7 +88,7 @@ $.widget('boom.peopleManager', {
 
 		person.addGroups()
 			.done(function(new_groups) {
-				if (new_groups.length) {
+				if (Object.keys(new_groups).length) {
 					var id, name;
 
 					for (id in new_groups) {

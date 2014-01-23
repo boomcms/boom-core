@@ -35,17 +35,14 @@ function boomPerson(person_id) {
 			url: url,
 			title: 'Add group',
 			callback: function() {
-				var groups = {},
-					group_ids = [];
+				var groups = {};
 				
 				$(this).find('form select option:selected').each(function(i, el) {
-					var $el = $(el),
-						group_id = $el.val();
-
-					group_ids.push(group_id);
-					groups[group_id] = $el.text();
+					var $el = $(el);
+					groups[$el.val()] = $el.text();
 				});
 
+				var group_ids = Object.keys(groups);
 				if (group_ids.length) {
 					$.boom.post(url, {'groups[]' : group_ids})
 						.done(function() {
