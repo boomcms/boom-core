@@ -6,7 +6,7 @@ class Boom_Asset_Finder
 	 *
 	 * @var array
 	 */
-	protected $_allowed_order_by_columns = array('last_modified', 'title', 'downloads', 'filesize');
+	protected $_allowed_order_by_columns = array('last_modified', 'title', 'downloads', 'filesize', 'uploaded_time');
 
 	/**
 	 *
