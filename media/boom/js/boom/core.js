@@ -49,6 +49,21 @@ $.extend({
 			$('#b-menu').boomMenu({});
 			this.loader = $('body').boomLoader({}).data('boomBoomLoader');
 			this.growl = $('body').boomGrowl({}).data('boomBoomGrowl');
+		},
+
+		/**
+		 * Makes a POST AJAX call after adding the CSRF token to the POST data.
+		 */
+		post : function() {
+			if (typeof arguments[1] !== 'function') {
+				if (typeof arguments[1] === 'string') {
+					arguments[1] += '&csrf=' + $.boom.options.csrf;
+				} else {
+					arguments[1]['csrf'] = $.boom.options.csrf;
+				}
+			}
+
+			return $.post.apply($, Array.prototype.slice.apply(arguments));
 		}
 	}
 });
