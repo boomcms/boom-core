@@ -153,6 +153,20 @@ class Boom_Asset_Finder
 
 	/**
 	 *
+	 * @return integer
+	 */
+	public function get_count()
+	{
+		$query = clone $this->_query;
+		$result = $query
+			->select(array(DB::expr('count(*)'), 'count'))
+			->execute();
+
+		return $result->get('count');
+	}
+
+	/**
+	 *
 	 * @return array
 	 */
 	public function get_count_and_total_size()
@@ -160,11 +174,11 @@ class Boom_Asset_Finder
 		$query = clone $this->_query;
 		$result = $query
 			->select(array(DB::expr('sum(filesize)'), 'filesize'))
-			->select(array(DB::expr('count(*)'), 'total'))
+			->select(array(DB::expr('count(*)'), 'count'))
 			->execute();
 
 		return array(
-			'total' => $result->get('total'),
+			'count' => $result->get('count'),
 			'filesize' => $result->get('filesize')
 		);
 	}
