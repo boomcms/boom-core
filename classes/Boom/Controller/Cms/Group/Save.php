@@ -2,6 +2,13 @@
 
 class Boom_Controller_Cms_Group_Save extends Controller_Cms_Group
 {
+	public function before()
+	{
+		parent::before();
+
+		$this->_csrf_check();
+	}
+
 	public function action_add()
 	{
 		$this->group

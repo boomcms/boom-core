@@ -40,7 +40,7 @@
 	<script type="text/javascript">
 		//<![CDATA[
 		(function($){
-			$.boom.init();
+			$.boom.init({csrf : '<?= Security::token() ?>'});
 			$('body').peopleManager();
 		})(jQuery);
 		//]]>

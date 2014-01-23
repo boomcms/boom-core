@@ -2,6 +2,13 @@
 
 class Boom_Controller_Cms_Person_Save extends Controller_Cms_Person
 {
+	public function before()
+	{
+		parent::before();
+
+		$this->_csrf_check();
+	}
+
 	public function action_add()
 	{
 		if ($this->auth->login_method_available('password'))
