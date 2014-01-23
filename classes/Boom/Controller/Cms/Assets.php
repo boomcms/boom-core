@@ -86,134 +86,60 @@ class Boom_Controller_Cms_Assets extends Controller_Cms
 
 	public function action_list()
 	{
-		// Get the query data.
-		$query_data = $this->request->query();
-
-		// Load the query data into variables.
-		$page		=	Arr::get($query_data, 'page', 1);
-		$perpage		=	Arr::get($query_data, 'perpage', 30);
-		$tag		=	Arr::get($query_data, 'tag');
-		$type		=	Arr::get($query_data, 'type');
-		$sortby		=	Arr::get($query_data, 'sortby');
-		$title			=	Arr::get($query_data, 'title');
-
-		// Prepare the database query.
-		$query = DB::select()
-			->from('assets');
-
-		// If a tag paramater was given in the query data then turn it into an array of tag IDs.
-		if ($tag)
-		{
-			$tags = explode("-", Arr::get($query_data, 'tag'));
-		}
-
-		// If a valid tag was given then filter the results by tag..
-		if (isset($tags) AND ! empty($tags))
-		{
-			$query
-				->join(array('assets_tags', 't1'), 'inner')
-				->on('assets.id', '=', 't1.asset_id')
-				->distinct(TRUE);
-
-			if (($tag_count = count($tags)) > 1)
-			{
-				// Get assets which are assigned to all of the given tags.
-				$query
-					->join(array('assets_tags', 't2'), 'inner')
-					->on("t1.asset_id", '=', "t2.asset_id")
-					->where('t2.tag_id', 'IN', $tags)
-					->group_by("t1.asset_id")
-					->having(DB::expr('count(distinct t2.tag_id)'), '>=', $tag_count);
-			}
-			else
-			{
-				// Filter by a single tag.
-				$query->where('t1.tag_id', '=', $tags[0]);
-			}
-		}
-
-		// Filtering by title?
-		if ($title)
-		{
-			$query->where('title', 'like', "%$title%");
-		}
+		$finder = new Asset_Finder;
+		$finder
+			->by_tags(explode("-", $this->request->query('tag')))
+			->by_title($this->request->query('title'));
 
 		$column = 'last_modified';
 		$order = 'desc';
 
-		if ( strpos( $sortby, '-' ) > 1 ){
-			$sort_params = explode( '-', $sortby );
-			$column = $sort_params[0];
-			$order = $sort_params[1];
-		}
-
-		if (($column == 'last_modified' OR $column == 'title' OR $column == 'filesize') AND ($order == 'desc' OR $order == 'asc'))
+		if (strpos($this->request->query('sortby'), '-' ) > 1)
 		{
-			$query->order_by($column, $order);
+			list($column, $order) = explode('-', $this->request->query('sortby'));
+			$finder->order_by($column, $order);
 		}
 		else
 		{
-			$query->order_by('title', 'asc');
+			$finder->order_by('last_modified', 'desc');
 		}
 
-		// Apply an asset type filter.
-		if ($type)
-		{
-			// Filtering by asset type.
-			$query->where('assets.type', '=', constant('Boom_Asset::' . strtoupper($type)));
-		}
+		$type = $this->request->query('type') AND $finder->by_type($type);
 
-		// Clone the query to count the number of matching assets and their total size.
-		$query2 = clone $query;
-		$result = $query2
-			->select(array(DB::expr('sum(filesize)'), 'filesize'))
-			->select(array(DB::expr('count(*)'), 'total'))
-			->execute();
+		$count_and_size = $finder->get_count_and_total_size();
+		$total = $count_and_size['total'];
+		$filesize = $count_and_size['filesize'];
 
-		// Get the asset count and total size from the result
-		$size = $result->get('filesize');
-		$total = $result->get('total');
-
-		// Were any assets found?
 		if ($total === 0)
 		{
-			// Nope, show a message explaining that we couldn't find anything.
 			$this->template = View::factory("$this->_view_directory/none_found");
 		}
 		else
 		{
-			// Retrieve the results and load Model_Asset classes
-			$assets = $query
-				->select('assets.*')
-				->limit($perpage)
-				->offset(($page - 1) * $perpage)
-				->as_object('Model_Asset')
-				->execute();
+			$page = max(1, $this->request->query('page'));
+			$perpage = max(30, $this->request->query('perpage'));
+			$assets = $finder->get_assets($perpage, ($page - 1) * $perpage);
 
-			// Put everthing in the views.
-			$this->template = View::factory("$this->_view_directory/list", array(
+			$this->template =new View("$this->_view_directory/list", array(
 				'assets'		=>	$assets,
-				'total_size'	=>	$size,
+				'total_size'	=>	$filesize,
 				'total'		=>	$total,
 				'order'		=>	$order,
 			));
 
-			// How many pages are there?
 			$pages = ceil($total / $perpage);
 
 			if ($pages > 1)
 			{
 				// More than one page - generate pagination links.
-				$url = '';
-				$pagination = View::factory('pagination/query', array(
+				$pagination = new View('pagination/query', array(
 					'current_page'		=>	$page,
 					'total_pages'		=>	$pages,
-					'base_url'			=>	$url,
+					'base_url'			=>	'',
 					'previous_page'		=>	$page - 1,
 					'next_page'		=>	($page == $pages) ? 0 : ($page + 1),
 				));
 
-				// Add the pagination view to the main view.
 				$this->template->set('pagination', $pagination);
 			}
 		}
