@@ -173,7 +173,7 @@ class Boom_Model_Chunk_Text extends Model_Chunk
 
 				if ($asset->loaded())
 				{
-					$text = "<p class='inline-asset'><a class='download ".Boom_Asset::type($asset->type)."' href='/asset/view/{$asset->id}'>Download {$asset->title}</a>";
+					$text = "<p class='inline-asset'><a class='download ".Boom_Asset::type($asset->type)."' href='/asset/view/{$asset->id}.{$asset->get_extension()}'>Download {$asset->title}</a>";
 
 					if (Editor::instance()->state_is(Editor::DISABLED))
 					{
