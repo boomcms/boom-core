@@ -127,7 +127,7 @@ class Boom_Controller_Cms_Assets extends Controller_Cms
 				'order'		=>	$order,
 			));
 
-			$pages = ceil($total / $perpage);
+			$pages = ceil($count / $perpage);
 
 			if ($pages > 1)
 			{
