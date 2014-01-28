@@ -44,7 +44,7 @@ $.widget( 'boom.tagger',
 		self.tag_list()
 			.progress( function( $link ){
 
-				self.remove($link.data('tag_id'));
+				self.remove($link.attr('href'));
 
 				$link.closest('li').remove();
 
