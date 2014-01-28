@@ -43,11 +43,11 @@
 			margin-left: 1em;
 		}
 
-		ul {
+		> ul {
 			background: #444;
 			padding-left: 1em;
 
-			li {
+			> li {
 				background: #ccc;
 
 				&.ui-state-active {
@@ -60,6 +60,7 @@
 			display: none;
 			background: #7f7f7f;
 			padding-left: 2em;
+			overflow: hidden;
 
 			input[type=radio], input[type=checkbox] {
 				position: absolute;
@@ -88,11 +89,21 @@
 					text-align: center;
 					padding-top: 1.25em;
 				}
+				&:hover, &:active, &:focus {
+					&:after {
+						background: #444;
+					}
+				}
 			}
 			input:checked + label {
 				&:after {
 					content: " X ";
 					color: white;
+				}
+				&:hover, &:active, &:focus {
+					&:after {
+						background: initial;
+					}
 				}
 			}
 		}
@@ -122,19 +133,11 @@
 
 	td {
 		position: relative;
-
-		&:active, &:hover, &:focus {
-			background: #444;
-		}
 	}
 
 	td:first-of-type, th:first-of-type {
 		width: 50%;
 		padding-left: 0;
-
-		&:active, &:hover, &:focus {
-			background: initial;
-		}
 	}
 
 	&-help {
@@ -144,15 +147,89 @@
 		padding-left: 1em;
 		border-left: 3px solid white;
 		margin-top: -2em;
+		float: right;
 
 		p:first-of-type {
 			margin-top: 0;
+		}
+
+		> p, dl {
+			padding-bottom: 1em;
+			border-bottom: 1px solid #eee;
+		}
+
+		.summary {
+			overflow: hidden;
+
+			dt, dd {
+				display: inline-block;
+			}
+
+			dt {
+				width: 25%;
+				vertical-align: top;
+				text-transform: uppercase;
+			}
+
+			dd {
+				width: 70%;
+				margin-left: 2%;
+				vertical-align: top;
+				margin-bottom: 1em;
+
+				&:after {
+					content:"\A";
+					white-space:pre;
+				}
+			}
+		}
+
+		.full {
+			border-bottom: 0;
+			margin-top: 0;
+
+			dt {
+				padding-top: 1em;
+				text-transform: uppercase;
+
+				&:first-of-type {
+					padding-top: 0;
+				}
+			}
+
+			dd {
+				margin-top: 1em;
+				border-bottom: 1px solid #eee;
+				margin-left: 0;
+				padding-bottom: 1em;
+
+				&:last-of-type {
+					border-bottom: 0;
+				}
+			}
 		}
 	}
 }
 
 #b-group-roles-pages {
+	> div {
+		display: inline-block;
+
+		&:first-of-type {
+			width: 60%;
+		}
+	}
+
+	.b-group-roles-help {
+		margin-top: 0;
+	}
+
 	.b-group-roles {
 		display: none;
+		width: 100%;
+	}
+
+	.boom-tree > ul {
+		margin: 0;
 	}
 }

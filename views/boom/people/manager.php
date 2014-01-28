@@ -5,6 +5,10 @@
 
 		<?= BoomUI::button('add', __('New person'), array('id' => 'b-people-create')) ?>
 		<?= BoomUI::button('delete', __('Delete'), array('id' => 'b-people-multi-delete', 'disabled' => 'disabled')) ?>
+
+		<button id="b-people-all" class="b-button">
+			<?=__('All people')?>
+		</button>
 	</div>
 
 	<div id="b-people-manager">
@@ -18,7 +22,7 @@
 
 			<ul id="b-groups-list">
 				<? foreach ($groups as $group): ?>
-					<li data-group-id="<?= $group->id ?>">
+					<li data-group-id="<?= $group->id ?>"<? if ($group->id == Request::current()->query('group')): ?> class='current'<? endif ?>>
 						<a class='b-groups-item' href='/cms/people?group=<?= $group->id ?>'><?= $group->name ?></a>
 
 						<a href='#' title="Delete" class="ui-icon ui-icon-close b-group-delete"></a>

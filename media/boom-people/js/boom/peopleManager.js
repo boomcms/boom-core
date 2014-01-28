@@ -44,6 +44,9 @@ $.widget('boom.peopleManager', {
 			.on('click', '.b-person-group-delete', function(e) {
 				e.preventDefault();
 				peopleManager.currentPersonRemoveGroup($(this).parents('li'));
+			})
+			.on('click', '#b-people-all', function() {
+				window.location = peopleManager.homeUrl;
 			});
 	},
 
