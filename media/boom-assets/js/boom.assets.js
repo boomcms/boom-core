@@ -173,7 +173,7 @@ $.extend($.boom.asset, $.boom.item,
 			.find('#b-tags')
 			.tagger({
 				type: 'asset',
-				id: this.rids
+				id: rids
 			});
 	}
 });
