@@ -10,12 +10,10 @@
 	<div id="b-people-manager">
 		<div id="b-groups">
 			<div id="b-groups-header">
-				<a href="#" class="b-people-group-add">
-					<?= __('Add') ?>
-				</a>
-				<h3>
+				<?= BoomUI::button('add', __('Add group'), array('class' => 'b-people-group-add')) ?>
+				<h2>
 					<?= __('Groups') ?>
-				</h3>
+				</h2>
 			</div>
 
 			<ul id="b-groups-list">

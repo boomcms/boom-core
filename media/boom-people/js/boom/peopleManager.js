@@ -78,6 +78,8 @@ $.widget('boom.peopleManager', {
 
 	_create : function() {
 		this.bind();
+
+		this.document.find('body').height(this.window.height());
 	},
 
 	currentPersonAddGroups : function() {
@@ -196,7 +198,7 @@ $.widget('boom.peopleManager', {
 	},
 
 	saveOpenGroup : function() {
-		var $form = this.element.find('#b-group-edit'),
+		var $form = this.element.find('#b-group-edit form'),
 			group_id = $form.data('group-id'),
 			group = new boomGroup(group_id),
 			new_name = $form.find('input[name=name]').val();
