@@ -9,6 +9,8 @@ $.widget('boom.tagAutocompleter', {
 	_create : function() {
 		var self = this;
 
+		this.element.parents().find('.b-dialog').css('overflow', 'visible');
+
 		this.type = this.options.type == 'asset' || this.options.type == 1? 1 : 2;
 		this.onSelect = this.options.onSelect;
 

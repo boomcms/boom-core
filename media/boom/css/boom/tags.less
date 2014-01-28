@@ -78,6 +78,14 @@
 	&-list {
 		list-style: none;
 
+		.b-tags-remove {
+			display: block !important;
+			width: 30px;
+			height: 25px;
+			background-image: url(/media/boom/css/themes/default/images/ui-icons_ffffff_300x120.png);
+			background-position: -120px -120px;
+		}
+
 		li {
 			border-width: 0px;
 			padding: 2px;
@@ -85,11 +93,7 @@
 			line-height: 30px;
 
 			span {
-				margin-left: 32px;
-
-				&.active {
-					margin-left: 2px;
-				}
+				margin-left: 2px;
 			}
 		}
 	}
@@ -111,16 +115,6 @@
 
 	ul {
 		max-height: 300px;
-		overflow-y: scroll;
-	}
-}
-
-.boom-tagmanager {
-	.b-tags-tree-container {
-		float: left;
-	}
-
-	.boom-tree-container {
-		float: left;
+		overflow-y: auto;
 	}
 }

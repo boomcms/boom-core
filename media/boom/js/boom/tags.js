@@ -37,6 +37,8 @@ $.widget( 'boom.tagger',
 			type = this.options.type,
 			id = this.options.id;
 
+		this.element.css('overflow-y', 'visible');
+
 		self._bind();
 
 		self.tag_list()
