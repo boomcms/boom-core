@@ -28,12 +28,13 @@
 		padding: 0;
 	}
 
-	li {
+	li, li.ui-state-default {
 		list-style: none;
 		background-position: 50% 50% !important;
 		border: none;
 		overflow: hidden;
 		min-height: 30px;
+		background-color: #444;
 
 		ul {
 			clear:left;
@@ -44,12 +45,18 @@
 			text-transform: none;
 		}
 
+		span {
+			width: 30px;
+		}
+
 		a {
 			display: block;
 			padding: .2em;
+			padding-bottom: 1em;
 			outline: none;
 			line-height: 1.1;
 			border: 0px;
+			border-bottom: 1px solid #eee;
 
 			&:hover {
 				color: #fff;
