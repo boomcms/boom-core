@@ -9,7 +9,7 @@
 			</div>
 
 			<div id="b-assets-upload-progress"></div>
-			<button type="button" id="b-assets-upload-cancel" class="boom-button" data-icon="ui-icon-boom-cancel"><?= __('Cancel') ?></button>
+			<?= BoomUI::button('cancel', __('Cancel'), array('id' => 'b-assets-upload-cancel')) ?>
 
 			<input type="file" name="b-assets-upload-files[]" id="b-assets-upload-file" multiple min="1" max="5" />
 		</div>
