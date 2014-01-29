@@ -572,6 +572,8 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 	},
 
 	showContent : function(content) {
+		this.selected = [];
+		this.toggleButtons();
 		var $content = $(content);
 
 		var id = $($content.get(0)).attr('id');
