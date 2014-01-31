@@ -41,7 +41,6 @@ $.widget('ui.chunkLinkset', $.ui.chunk,
 				var item = $( event.target ).closest( 'li' );
 				item.remove();
 			},
-			iconRemove: 'ui-icon-close'
 		});
 
 		this.dialog = $.boom.dialog.open({

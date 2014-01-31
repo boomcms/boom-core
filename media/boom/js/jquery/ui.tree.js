@@ -25,7 +25,7 @@ $.widget('ui.tree',
 		iconHitareaHover: 'ui-icon-hover',
 		iconDefault: 'ui-icon-document',
 		iconToggleChecked: 'ui-icon-check',
-		iconRemove: 'ui-icon-close',
+		iconRemove: 'ui-icon-remove',
 		iconEdit: 'ui-icon-wrench',
 		anchorActive: 'ui-state-active',
 		onClick: function(event){},
@@ -197,7 +197,7 @@ $.widget('ui.tree',
 
 		var self = this;
 		var re = /tree-edit/;
-
+console.log(self.options);
 		if (self.options.showRemove === true || (self.options.showRemove === 'auto' && re.test(self.element[0].className)))
 		{
 			$('<span />', {
