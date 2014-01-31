@@ -49,7 +49,7 @@ boom.plugins.js
 
 		$('.b-button').button($.boom.config.button);
 		$('.boom-tabs').tabs($.boom.config.tabs);
-		$('.boom-datepicker').datepicker($.boom.config.datepicker);
+		$('.boom-datepicker').datetimepicker($.boom.config.datepicker);
 
 		var elems = '.boom-tree, .boom-sortable';
 
