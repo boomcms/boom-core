@@ -9,7 +9,7 @@
 				<div class="ui-state-highlight ui-corner-all">
 					<p style="margin: .5em;">
 						<span style="float: left; margin-right: 0.3em; margin-top:-.2em" class="ui-icon ui-icon-info"></span>
-						Drag the links to re-arrange. Click on the X to remove.
+						Drag the links to re-arrange. Click on the delete icon to remove.
 					</p>
 				</div>
 			</div>
