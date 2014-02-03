@@ -204,7 +204,7 @@ class Boom_Model_Asset extends Model_Taggable
 	 */
 	public function get_mime()
 	{
-		return File::mime($this->get_filename());
+		return $this->exists()? File::mime($this->get_filename()) : NULL;
 	}
 
 	public function is_visible()
