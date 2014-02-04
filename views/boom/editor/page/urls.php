@@ -6,9 +6,9 @@
 		</p>
 		<p>
 			The highlighted URL indicates the page's primary URL.
-			<br />You may only have one primary URL for the page which cannot be deleted.
-			<br />All non-primary URLs will redirect to the primary URL.
-			<br />Click on a URL to make it the primary URL for the page.
+			You may only have one primary URL for the page which cannot be deleted.
+			All non-primary URLs will redirect to the primary URL.
+			Click on a URL to make it the primary URL for the page.
 		</p>
 		<ul>
 			<? foreach($urls as $url): ?>
