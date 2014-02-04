@@ -14,4 +14,5 @@ return array(
 	'asset'		=>	'Insert an asset',
 	'timestamp' => 'Select date and / or time.',
 	'tag'	=> __('Select a tag to feature here.'),
+	'linkset' => __('Insert a linkset here.'),
 );

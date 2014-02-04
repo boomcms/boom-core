@@ -98,7 +98,7 @@ $.widget('ui.chunkLinkset', $.ui.chunk,
 			onPageSelect : function(page) {
 				var anchor =
 					$( '<a>')
-						.attr( 'rel', page.page_id )
+						.attr('data-page-id', page.page_rid)
 						.attr( 'href', page.url )
 						.text( page.title );
 				self._add( anchor );
@@ -190,7 +190,7 @@ $.widget('ui.chunkLinkset', $.ui.chunk,
 			var link = {
 				title: $this.text(),
 				url: url,
-				target_page_id: $this.attr('rel'),
+				target_page_id: $this.data('page-id'),
 				sequence: sequence
 			};
 
