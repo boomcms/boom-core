@@ -1,18 +1,14 @@
 <?php defined('SYSPATH') OR die('No direct script access.');
 
 /**
- * Functions to edit page urls.
- *
- * This class extends the Controller_Cms_Page class so that it inherits the $page property and the before() function.
- *
  * @package	BoomCMS
  * @category	Controllers
  */
-class Boom_Controller_Cms_Page_Urls extends Controller_Cms_Page
+class Boom_Controller_Cms_Page_Urls extends Boom_Controller
 {
 	/**
 	 *
-	 * @var	string	Directory which holds the view files used by the functions in this class.
+	 * @var string
 	 */
 	protected $_view_directory = "boom/editor/urls";
 
@@ -26,89 +22,68 @@ class Boom_Controller_Cms_Page_Urls extends Controller_Cms_Page
 	{
 		parent::before();
 
-		// Create a page_url model.
-		$this->page_url = new Model_Page_URL;
+		$this->page_url = new Model_Page_URL($this->request->param('id'));
 	}
 
-	/**
-	 * Add a new url to a page.
-	 * The url is added as a secondary url.
-	 *
-	 * **Accepted POST variables:**
-	 * Name		|	Type		|	Description
-	 * ---------------|-----------------|---------------
-	 * data		|	json		|	json encoded object of containing page ID and url.
-	 *
-	 */
 	public function action_add()
 	{
-		if ($this->request->post('url'))
-		{
-			$url= trim($this->request->post('url'));
+		$page = new Model_Page($this->request->query('page_id'));
 
-			// Check that the url isn't already in use.
-			$page_url = ORM::factory('Page_URL')
-				->where('location', '=', $url)
+		if ($location = $this->request->post('location'))
+		{
+			$location = URL::title(trim($location));
+
+			$this->page_url
+				->where('location', '=', $location)
 				->find();
 
-			if ($page_url->loaded() AND $page_url->page_id !== $this->page->id)
+			if ($this->page_url->loaded() AND $this->page_url->page_id !== $page->id)
 			{
 				// Url is being used for a different page.
 				// Notify that the url is already in use so that the JS can load a prompt to move the url.
-				$this->response->body("url in use");
+				$this->response->body(json_encode(array('existing_url_id' => $this->page_url->id)));
 			}
-			elseif ( ! $page_url->loaded())
+			elseif ( ! $this->page_url->loaded())
 			{
 				//  It's not an old URL, so create a new one.
-				$page_url = ORM::factory('Page_URL')
+				$this->page_url
 					->values(array(
-						'location'		=>	$url,
-						'page_id'		=>	$this->page->id,
+						'location'		=>	$location,
+						'page_id'		=>	$page->id,
 						'is_primary'	=>	FALSE,
-					))
-					->create();
+					));
 
-				$this->log("Added secondary url $url to page " . $this->page->version()->title . "(ID: " . $this->page->id . ")");
+				$this->_security_checks();
+
+				$this->page_url->create();
+				$this->log("Added secondary url $location to page " . $page->version()->title . "(ID: " . $page->id . ")");
 			}
 		}
 		else
 		{
-			// Display a list of existing secondary urls
 			$this->template = View::factory("$this->_view_directory/add", array(
-				'page'	=> $this->page,
+				'page'	=> $page,
 			));
 		}
 	}
 
-	/**
-	* Remove a url from a page.
-	*
-	*/
 	public function action_delete()
 	{
-		// Get the page URL object
-		$this->page_url
-			->where('page_id', '=', $this->page->id)
-			->where('location', '=', $this->request->post('location'))
-			->where('is_primary', '=', FALSE)					// Only allow deleting the page URL if it isn't the primary URL
-			->find();
+		$this->_url_must_exist();
+		$this->_security_checks();
 
-		// Delete the url.
-		if ($this->page_url->loaded())
+		if ( ! $this->page_url->is_primary)
 		{
 			$this->page_url->delete();
 		}
 	}
 
-	/**
-	 * List the urls associated with a page
-	 */
-	public function action_list()
+	public function action_make_primary()
 	{
-		$this->template = View::factory("$this->_view_directory/list", array(
-			'page'	=> $this->page,
-			'urls'	=> $this->page->urls->order_by('location', 'asc')->find_all(),
-		));
+		$this->_url_must_exist();
+		$this->_security_checks();
+
+		$this->page_url->make_primary();
 	}
 
 	/**
@@ -116,63 +91,40 @@ class Boom_Controller_Cms_Page_Urls extends Controller_Cms_Page
 	 */
 	public function action_move()
 	{
-		$url = new Model_Page_URL(array(
-			'location'	=> $this->request->query('url')
-		));
-
-		if ( ! $url->loaded())
-		{
-			throw new HTTP_Exception_404;
-		}
+		$this->_url_must_exist();
 
 		if ($this->request->method() == Request::POST)
 		{
-			// Move the url to this page.
-			$url->values(array(
-				'page_id'		=>	$this->page->id,
-				'is_primary'	=>	FALSE,	// Make sure that it's only a secondary url for the this page.
+			$this->_security_checks();
+
+			$this->page_url->values(array(
+				'page_id'		=>	$this->request->query('page_id'),
+				'is_primary'	=>	FALSE, // Make sure that it's only a secondary url for the this page.
 			))
 			->update();
 		}
 		else
 		{
 			$this->template = View::factory("$this->_view_directory/move", array(
-				'url'		=>	$url,
-				'current'	=>	$url->page,
-				'page'	=>	$this->page,
+				'url'		=>	$this->page_url,
+				'current'	=>	$this->page_url->page,
+				'page'	=>	new Model_Page($this->request->query('page_id')),
 			));
 		}
 	}
 
-	/**
-	 * Save changes to a url.
-	 *
-	 * **Expected POST variables:**
-	 * Name		|	Type		|	Description
-	 * ---------------|-----------------|---------------
-	 * url_id 		|	integer 	|	The primary key of the url being edited.
-	 * redirect		|	boolean	|	Value for redirect column.
-	 * primary		|	boolean	|	Value for the is_primary column.
-	 */
-	public function action_save()
+	protected function _url_must_exist()
 	{
-		// Load the url from the DB by it's primary key.
-		$url = new Model_Page_URL($this->request->post('url_id'));
-
-		// Update the url details.
-		$url->redirect = $this->request->post('redirect');
-		$url->is_primary = $this->request->post('primary');
-
-		// Has this url just become the primary url?
-		if ($url->is_primary AND $url->changed('is_primary'))
+		if ( ! $this->page_url->loaded())
 		{
-			$url->make_primary();
-
-			// make_primary() calls update() so no need to go any further.
-			return;
+			throw new HTTP_Exception_404;
 		}
-
-		// Save the changes.
-		$url->update();
 	}
-} // End Boom_Controller_Cms_Page
+
+	protected function _security_checks()
+	{
+		parent::authorization('edit_page_urls', $this->page_url->page);
+
+		$this->_csrf_check();
+	}
+}

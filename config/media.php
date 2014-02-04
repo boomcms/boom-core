@@ -30,6 +30,8 @@ return array(
 		'boom/page/editor.js',
 		'boom/page/toolbar.js',
 		'boom/page/tree.js',
+		'boom/page/url.js',
+		'boom/UrlEditor.js',
 		'boom/textEditor.js',
 		'boom/wysihtml5.js',
 		'boom/chunk/chunk.js',

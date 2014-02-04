@@ -15,7 +15,6 @@ class Boom_Model_Page_URL extends ORM
 		'page_id'		=>	'',
 		'location'		=>	'',
 		'is_primary'	=>	'',
-		'redirect'		=>	'',
 	);
 	protected $_table_name = 'page_urls';
 

@@ -55,15 +55,23 @@ $.extend({
 		 * Makes a POST AJAX call after adding the CSRF token to the POST data.
 		 */
 		post : function() {
-			if (typeof arguments[1] !== 'function') {
+			var csrf = this.options.csrf,
+				arguments = Array.prototype.slice.apply(arguments);
+
+			if (typeof arguments[1] == 'undefined') {
+				arguments.push({
+					csrf : csrf
+				});
+			}
+			else if (typeof arguments[1] !== 'function') {
 				if (typeof arguments[1] === 'string') {
-					arguments[1] += '&csrf=' + $.boom.options.csrf;
+					arguments[1] += '&csrf=' + csrf;
 				} else {
-					arguments[1]['csrf'] = $.boom.options.csrf;
+					arguments[1]['csrf'] = csrf;
 				}
 			}
 
-			return $.post.apply($, Array.prototype.slice.apply(arguments));
+			return $.post.apply($, arguments);
 		}
 	}
 });

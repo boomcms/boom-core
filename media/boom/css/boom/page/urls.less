@@ -1,0 +1,67 @@
+#b-page-urls {
+	p {
+		line-height: 1.3em;
+
+		&.short-url {
+			margin-top: 2em;
+			font-weight: bold;
+		}
+	}
+
+	> section {
+		display: inline-block;
+		vertical-align: top;
+
+		&:first-of-type {
+			border-right: 1px solid #222;
+			margin-right: 1em;
+			padding-right: 1em;
+			width: 420px;
+		}
+	}
+
+	.b-page-urls-short {
+		width: 315px;
+	}
+
+	ul {
+		padding-left: 0;
+		width: 411px;
+		list-style-type: none;
+		max-height: 300px;
+		overflow: auto;
+	}
+
+	li {
+		background-color: transparent;
+		color: #fff;
+		border-bottom: 1px solid #222;
+		overflow: hidden;
+
+		&.b-page-urls-primary {
+			background-color: #444;
+
+			.b-urls-remove {
+				visibility: hidden;
+			}
+		}
+
+		label {
+			width: 340px;
+			cursor: pointer;
+			padding: 0.7em;
+		}
+
+		.b-urls-remove {
+			float :right;
+			width: 25px;
+			height: 25px;
+			margin-right: 0.7em;
+			cursor: pointer;
+		}
+	}
+
+	&-add {
+		margin-right: 679px;
+	}
+}

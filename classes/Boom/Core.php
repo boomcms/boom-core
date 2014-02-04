@@ -100,7 +100,7 @@ abstract class Boom_Core
 				throw new HTTP_Exception_410;
 			}
 
-			if ( ! isset($page_url) OR (! $page_url->is_primary AND $page_url->redirect))
+			if ( ! isset($page_url) OR ! $page_url->is_primary)
 			{
 				header('Location: '.$page->url(), NULL, 301);
 				exit;

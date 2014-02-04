@@ -52,7 +52,8 @@ Route::set('boom', '<location>(.<format>)', array(
 */
 Route::set('cms', '<directory>(/<controller>(/<action>(/<id>)))',
 	array(
-		'directory'	=> 'cms'
+		'directory'	=> 'cms',
+		'id' => '\d+',
 	))
 	->defaults(array(
 		'controller' => 'default',
@@ -73,7 +74,7 @@ Route::set('tags', 'cms/tags/<controller>/<action>/<id>', array(
 	));
 
 // Route for editing page settings which are handled by a single class (e.g. tags and urls)
-Route::set('page_settings1', 'cms/page/<controller>/<action>/<id>', array(
+Route::set('page_settings1', 'cms/page/<controller>/<action>(/<id>)', array(
 		'controller'	=>	'urls',
 	))
 	->defaults(array(
@@ -87,7 +88,7 @@ Route::set('page_settings1', 'cms/page/<controller>/<action>/<id>', array(
  * For POST requests we use a controller which saves the page settings.
  * For all other requests we use a controller which shows the relevant settings.
  */
-Route::set('page_settings2', 'cms/page/<directory>/<action>/<id>')
+Route::set('page_settings2', 'cms/page/<directory>/<action>(/<id>)')
 	->filter(function(Route $route, $params, Request $request)
 		{
 			// Set the directory correctly
