@@ -1,5 +1,5 @@
 #b-page-urls {
-	p {
+	p, .b-page-urls-help li {
 		line-height: 1.3em;
 
 		&.short-url {
@@ -24,40 +24,58 @@
 		width: 315px;
 	}
 
-	ul {
+	&-list {
 		padding-left: 0;
 		width: 411px;
 		list-style-type: none;
 		max-height: 300px;
 		overflow: auto;
-	}
+		margin-top: 2em;
 
-	li {
-		background-color: transparent;
-		color: #fff;
-		border-bottom: 1px solid #222;
-		overflow: hidden;
+		li {
+			background-color: transparent;
+			color: #fff;
+			border-bottom: 1px solid #222;
+			overflow: hidden;
 
-		&.b-page-urls-primary {
-			background-color: #444;
+			&.b-page-urls-primary {
+				background-color: #444;
+
+				.b-page-urls-primary-indicator {
+					display: inline;
+				}
+
+				label {
+					width: 331px;
+				}
+
+				.b-urls-remove {
+					display: none;
+				}
+			}
+
+			label {
+				width: 340px;
+				cursor: pointer;
+				padding: 0.7em;
+			}
+
+			.b-page-urls-primary-indicator {
+				display: none;
+				text-transform: uppercase;
+				float: right;
+				margin-top: 10px;
+				color: #666;
+			}
 
 			.b-urls-remove {
-				visibility: hidden;
+				float :right;
+				width: 25px;
+				height: 25px;
+				margin-right: 0.7em;
+				cursor: pointer;
+				display: inline;
 			}
-		}
-
-		label {
-			width: 340px;
-			cursor: pointer;
-			padding: 0.7em;
-		}
-
-		.b-urls-remove {
-			float :right;
-			width: 25px;
-			height: 25px;
-			margin-right: 0.7em;
-			cursor: pointer;
 		}
 	}
 
