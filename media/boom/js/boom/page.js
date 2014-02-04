@@ -97,14 +97,14 @@ function boomPage(page_id) {
 		});
 
 		return promise;
-	},
+	};
 
 	boomPage.prototype.setTitle = function(title) {
 		return $.post('/cms/page/version/title/' + this.id, {
 			csrf : $.boom.options.csrf,
 			title : title
 		});
-	},
+	};
 
 	boomPage.prototype.stash = function() {
 		var page_id = this.id;
