@@ -39,8 +39,7 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 	edit : function (element) {
 		var self = this,
 			element;
-console.log(element.html());
-console.log(wysihtml5ParserRules);
+
 		self.mode = element.is('div') ? 'block' : 'inline';
 		self.mode = (element.is(':header') ||  element.is('.standFirst'))? 'text' : self.mode;
 		self.edited = new $.Deferred();
