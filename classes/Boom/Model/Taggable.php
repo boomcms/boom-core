@@ -5,8 +5,6 @@
  *
  * @package	BoomCMS
  * @category	Models
- * @author	Rob Taylor
- * @copyright	Hoop Associates
  *
  */
 abstract class Boom_Model_Taggable extends ORM
@@ -16,32 +14,22 @@ abstract class Boom_Model_Taggable extends ORM
 	 *
 	 * If the tag doesn't exist then it will be created.
 	 *
-	 *
-	 * @param string $name
-	 * @param integer $type
 	 * @return \Boom_Model_Taggable
 	 *
-	 * @throws Exception
 	 */
 	public function add_tag_with_name($name, array $ids = array())
 	{
-		// Determine the type of tag to add.
 		$type = $this->tag_type();
 
-		// If the current page isn't loaded then we can't add a tag to it.
 		if ( ! $this->_loaded AND empty($ids))
 		{
-			// Throw an exception
 			throw new Exception("Cannot add a tag to an unloaded object");
 		}
 
-		// Attempt to load a tag with the given path.
 		$tag = new Model_Tag(array('name' => $name, 'type' => $type));
 
-		// If the tag wasn't found then call create it.
 		if ( ! $tag->loaded())
 		{
-			// Create the tag.
 			$tag = ORM::factory('Tag')
 				->values(array(
 					'name'	=>	$name,
@@ -51,13 +39,10 @@ abstract class Boom_Model_Taggable extends ORM
 
 		}
 
-		// Add the tag to the objects?
 		try
 		{
-			// Were we called with an array of object IDs?
 			if (empty($ids))
 			{
-				// No, add the tag to the current object.
 				$this->add('tags', $tag);
 			}
 			else
@@ -70,13 +55,11 @@ abstract class Boom_Model_Taggable extends ORM
 					$query->values(array($id, $tag->id));
 				}
 
-				// Run the query.
 				$query->execute($this->_db);
 			}
 		}
 		catch (Database_Exception $e) {}
 
-		// Return the current object.
 		return $this;
 	}
 
