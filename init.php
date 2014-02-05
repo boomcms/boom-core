@@ -73,14 +73,6 @@ Route::set('tags', 'cms/tags/<controller>/<action>/<id>', array(
 		'directory'		=>	'cms_tags',
 	));
 
-// Route for editing page settings which are handled by a single class (e.g. tags and urls)
-Route::set('page_settings1', 'cms/page/<controller>/<action>(/<id>)', array(
-		'controller'	=>	'urls',
-	))
-	->defaults(array(
-		'directory' => 'cms_page',
-	));
-
 /**
  * Route for editing page settings where there are different classes depending on request method
  *
