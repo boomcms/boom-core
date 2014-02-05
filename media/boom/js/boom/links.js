@@ -51,17 +51,14 @@ $.extend( $.boom,
 						var url = opts.link.url;
 
 						if (url.substring(0,7) =='http://' || url.substring(0,8) =='https://' || url.substring(0,1) == '/') {
-							console.log('http link');
 							url = url.replace('https://', '').replace('http://', '');
 							type_selector.val('http');
 						}
 						else if (url.substring(0,7) =='mailto:') {
-							console.log('mailto link');
 							url = url.replace('mailto:', '');
 							type_selector.val('mailto');
 						}
 						else if (url.substring(0,4) =='tel:') {
-							console.log('tel link');
 							url = url.replace('tel:', '');
 							type_selector.val('tel');
 						}
