@@ -137,6 +137,16 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 						}
 
 						self._edit_asset(asset_id);
+					})
+					.on('click', '#b-editor-accept', function(event) {
+						event.preventDefault();
+						self.apply(element);
+						return false;
+					})
+					.on( 'click', '#b-editor-cancel', function( event ){
+						event.preventDefault();
+						self.cancel(element);
+						return false;
 					});
 
 				self.instance.on( 'show:dialog', function( options ){
@@ -223,18 +233,7 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 
 		 return $.get('/media/boom/toolbars/text.php?mode=' + self.mode)
 			.done( function(response) {
-				top.$('body')
-					.prepend(response)
-					.on('click', '#b-editor-accept', function(event) {
-						event.preventDefault();
-						self.apply(element);
-						return false;
-					})
-					.on( 'click', '#b-editor-cancel', function( event ){
-						event.preventDefault();
-						self.cancel(element);
-						return false;
-					});
+				top.$('body').prepend(response)
 			});
 	},
 
