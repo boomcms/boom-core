@@ -54,10 +54,7 @@ $.widget('ui.chunkText', $.ui.chunk,
 						self.bind();
 					}
 				})
-				.always( function(){
-					if ( $element.text() == '' ) {
-						$element.html( old_html );
-					}
+				.always(function() {
 					self._send_back();
 				});
 

@@ -37,10 +37,10 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 	@returns {Deferred}
 	*/
 	edit : function (element) {
-
-		var self = this;
-		var element;
-
+		var self = this,
+			element;
+console.log(element.html());
+console.log(wysihtml5ParserRules);
 		self.mode = element.is('div') ? 'block' : 'inline';
 		self.mode = (element.is(':header') ||  element.is('.standFirst'))? 'text' : self.mode;
 		self.edited = new $.Deferred();
@@ -186,22 +186,21 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 	@function
 	@returns {Deferred}
 	*/
-	_edit_asset : function( asset_rid ) {
+	_edit_asset : function(asset_rid) {
+		var self = this,
+			ed = self.instance.composer,
+			asset_selected = new $.Deferred(),
+			img;
 
-		var self = this;
-		var ed = self.instance.composer;
-		var asset_selected = new $.Deferred();
-
-		var img;
-		if ( asset_rid == 0 ) {
-			ed.commands.exec( "insertHTML", '<img src="url">' );
-			img = $( ed.element ).find( '[src=url]' );
+		if (asset_rid == 0) {
+			ed.commands.exec("insertHTML", '<img src="url">');
+			img = $(ed.element).find( '[src=url]' );
 			if ( ! img.length)
-				img = $( ed.element ).find( '[href=url]' );
+				img = $(ed.element).find( '[href=url]' );
 		} else {
-			img = $( ed.element ).find( '[src^="/asset/view/' + asset_rid +'"]' );
+			img = $(ed.element).find( '[src^="/asset/view/' + asset_rid +'"]' );
 			if ( ! img.length)
-				img = $( ed.element ).find( '[href^="/asset/view/' + asset_rid +'"]' );
+				img = $(ed.element).find( '[href^="/asset/view/' + asset_rid +'"]' );
 		}
 
 		// cleanup code when the dialog closes.
