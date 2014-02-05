@@ -42,25 +42,6 @@ window.boomConfig =
 	@static
 	@class
 	*/
-	editor : {
-		/**
-		@type string
-		@default '/boom/css/boom.page.edit.css'
-		*/
-		stylesheetURL: '/media/boom/js/xing/editor.css',
-
-		/**
-		Wysiwyg editor. One of wysihtml5|tinymce
-		@type string
-		@default 'wysihtml5'
-		*/
-		name : 'wysihtml5'
-	},
-
-	/**
-	@static
-	@class
-	*/
 	datepicker : {
 		/**
 		@type boolean
