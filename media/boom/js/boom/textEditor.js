@@ -18,6 +18,10 @@ $.widget( 'boom.textEditor',
 
 	},
 
+	ready : function() {
+
+	},
+
 	/**
 	Load the wysiwyg javascript files
 	@returns {Deferred} Promise which resolves whenm the editor has loaded.

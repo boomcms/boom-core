@@ -49,5 +49,7 @@ return array(
 		'boom/tags.js',
 		'boom/tagAutocompleter.js',
 		'jquery/fileupload.js',
+		'xing/wysihtml5x-0.4.2-toolbar.js',
+		'xing/parser_rules/hoop.js',
 	),
 );
