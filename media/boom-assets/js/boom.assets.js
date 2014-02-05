@@ -330,20 +330,15 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 
 				$.boom.log( 'asset delete selected' );
 
-				var msg = 'Are you sure you want to delete the selected assets?';
+				$.boom.dialog.confirm( 'Confirm deletion', 'Are you sure you want to delete the selected assets?')
+					.done( function(){
 
-				$.boom.dialog.confirm(
-					'Confirm deletion',
-					msg
-				)
-				.done( function(){
-
-					$.post('/cms/assets/delete', {csrf: $.boom.options.csrf, assets:  self.selected}, function(){
-						$.boom.history.refresh();
-						self.selected = [];
-						self.toggleButtons();
+						$.post('/cms/assets/delete', {csrf: $.boom.options.csrf, assets:  self.selected}, function(){
+							$.boom.history.refresh();
+							self.selected = [];
+							self.toggleButtons();
+						});
 					});
-				});
 			})
 			.on( 'click', '#b-button-multiaction-edit', function(){
 				$.boom.history.load('asset/' + self.selected.join('-'))
