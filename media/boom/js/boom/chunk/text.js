@@ -45,11 +45,13 @@ $.widget('ui.chunkText', $.ui.chunk,
 					self.element.html( old_html ).show();
 					self.destroy();
 				})
-				.done( function( html ){
-					self.insert(html);
-
-					if ($element.text() == '' ) {
+				.done(function(html) {
+					if ($element.text() == '') {
 						self.remove();
+					} else if (old_html != html) {
+						self.insert(html);
+					} else {
+						self.bind();
 					}
 				})
 				.always( function(){
@@ -97,13 +99,8 @@ $.widget('ui.chunkText', $.ui.chunk,
 	@param {String} replacedata HTML to insert into the page.
 	*/
 	insert : function(replacedata) {
-		this.element
-			.find('[contenteditable]')
-			.removeAttr('contenteditable')
-			.off('click')
-			.end()
-			.html(replacedata);
+		this.element.html(replacedata);
 
 		return this._save();
-	},
+	}
 });
