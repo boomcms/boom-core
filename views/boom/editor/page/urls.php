@@ -9,6 +9,7 @@
 			<li>You may only have one primary URL for the page which cannot be deleted.</li>
 			<li>All non-primary URLs will redirect to the primary URL.</li>
 			<li>Click on a URL to make it the primary URL for the page.</li>
+			<li>There is no 'edit' URL. Instead of editing a URL you should simply add the new URL. This ensures that the page remains accessible from the existing URL.</li>
 		</ul>
 		<ul id='b-page-urls-list'>
 			<? foreach($urls as $url): ?>
@@ -26,6 +27,7 @@
 		<h1>Short URL</h1>
 		<p>This URL is automatically generated for use where the shortest URL possible is desirable such as when sharing on social media.</p>
 		<p>When used the short URL will redirect to the page's primary URL</p>
+		<p>Short URLs always start with an underscore to avoid conflicting with regular URLs. You should therefore avoid using underscores at the start of regular URLs.</p>
 		<p class='short-url'>
 			<?= URL::site($page->short_url(), Request::current()) ?>
 		</p>
