@@ -7,11 +7,20 @@ function boomPageUrl(id) {
 			dialog;
 
 		dialog = $.boom.dialog.open({
-			url: '/cms/page/urls/add?page_id=' + page_id,
-			title: 'Add URL',
-			width: 500,
-			callback: function() {
-				var location = $(this).find('input[name=url]').val();
+			url : '/cms/page/urls/add?page_id=' + page_id,
+			title : 'Add URL',
+			width : 500,
+			open : function() {
+				dialog.on('keypress', 'input[name=url]', function(e) {
+					if (e.which == 13) {
+						e.preventDefault();
+
+						dialog.dialog('option', 'callback')();
+					}
+				});
+			},
+			callback : function() {
+				var location = dialog.find('input[name=url]').val();
 
 				url.addWithLocation(page_id, location)
 					.done(function() {
