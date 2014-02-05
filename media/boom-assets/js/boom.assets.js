@@ -240,7 +240,7 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 			var uploaded = self
 				.upload({
 					start: function(e) {
-						$.boom.dialog.open({
+						var dialog = $.boom.dialog.open({
 							url: '/cms/tags/asset/list/0',
 							title: 'Asset tags',
 							width: 440,
@@ -251,7 +251,17 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 							onLoad: function(){
 								// Make the tag editor work.
 								$( '#b-tags' ).tagger_deferred( { tags : tags } );
-							}
+							},
+							buttons: [
+								{
+									text: 'Close',
+									class : 'b-button',
+									icons: {primary : 'b-button-icon b-button-icon-accept'},
+									click: function(event) {
+										$.boom.dialog.destroy(dialog);
+									}
+								}
+							]
 						});
 					}
 				})
