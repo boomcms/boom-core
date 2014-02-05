@@ -31,7 +31,7 @@
 		<button data-wysihtml5-command="formatBlock" data-wysihtml5-command-value="h2" title="Insert headline 2" class="command"><span class="b-h2"></span></button>
 		<button data-wysihtml5-command="formatBlock" data-wysihtml5-command-value="h3" title="Insert headline 3" class="command"><span class="b-h3"></span></button>
 		<button data-wysihtml5-command="indent" title="Insert blockquote" class="command"><span class="b-blockquote"></span></button>
-		<button data-wysihtml5-command="insertSpeech" title="Insert speech" class="command"><span class="b-speech"></span></button>
+<!--		<button data-wysihtml5-command="insertSpeech" title="Insert speech" class="command"><span class="b-speech"></span></button> -->
 <!--		<button data-wysihtml5-action="change_view" title="Show HTML" class="action"></button>-->
 <?
 	}
