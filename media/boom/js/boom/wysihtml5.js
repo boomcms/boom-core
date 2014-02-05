@@ -47,18 +47,20 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 
 		self._insert_toolbar(element)
 			.done(function() {
+				$.boom.page.toolbar.hide();
+
 				self.instance = new wysihtml5.Editor(element[0], { // id of textarea element
-					toolbar : 'wysihtml5-toolbar',
+					toolbar : top.$('#wysihtml5-toolbar')[0],
 					style : true,
 					parserRules :  wysihtml5ParserRules, // defined in parser rules set
 					useLineBreaks : false,
 					contentEditableMode : true
 				});
 
-				$('#wysihtml5-toolbar')
+				top.$('body')
 					.on('click', '#b-editor-link', function(e) {
 						e.preventDefault();
-						var href = $( '[data-wysihtml5-dialog-field=href]' ).val();
+						var href = top.$( '[data-wysihtml5-dialog-field=href]' ).val();
 						var match = href.match( /asset\/(thumb|view|get_asset)\/([0-9]+)/ );
 						var asset_id = match ? match[2] : 0;
 						if (asset_id == 0) {
@@ -70,7 +72,7 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 					})
 					.on('click', '#b-editor-asset', function(e) {
 						e.preventDefault();
-						var src = $( '[data-wysihtml5-dialog-field=src]' ).val();
+						var src = top.$( '[data-wysihtml5-dialog-field=src]' ).val();
 						var asset_id = 0;
 						if ( src && src != 'http://' ) {
 							var match = src.match( /asset\/(thumb|view|get_asset)\/([0-9]+)/ );
@@ -79,7 +81,9 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 						}
 
 						self._edit_asset(asset_id);
-					})
+					});
+
+				top.$('#wysihtml5-toolbar')
 					.on('click', '#b-editor-accept', function(event) {
 						event.preventDefault();
 						self.apply(element);
@@ -92,18 +96,19 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 					});
 
 				self.instance.on( 'show:dialog', function( options ){
-					switch( options.command ) {
+					switch(options.command) {
 						case 'createLink' :
-							var href = $( '[data-wysihtml5-dialog-field=href]' ).val();
+							var href = top.$( '[data-wysihtml5-dialog-field=href]' ).val();
 
 							if ( ! href || href == 'http://') {
 								self._edit_link();
 							}
 							break;
 						case 'insertImage' :
-							var src = $( '[data-wysihtml5-dialog-field=src]' ).val();
-							var asset_id = 0;
-							if ( src && src != 'http://' ) {
+							var src = top.$('[data-wysihtml5-dialog-field=src]').val(),
+								asset_id = 0;
+
+							if (src && src != 'http://') {
 								var match = src.match( /asset\/(thumb|view|get_asset)\/([0-9]+)/ );
 
 								asset_id = match ? match[2] : 0;
@@ -125,7 +130,9 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 	* @function
 	*/
 	remove : function(element) {
-		$('#wysihtml5-toolbar').remove();
+		top.$('#wysihtml5-toolbar').remove();
+		$.boom.page.toolbar.show();
+
 		element.blur();
 		element.removeAttr('contenteditable');
 
@@ -177,7 +184,7 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 
 		 return $.get('/media/boom/toolbars/text.php?mode=' + self.mode)
 			.done(function(response) {
-				$('body').prepend(response)
+				top.$('body').prepend(response)
 			});
 	},
 
