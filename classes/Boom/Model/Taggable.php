@@ -78,9 +78,9 @@ abstract class Boom_Model_Taggable extends ORM
 	public function get_tags_with_name_like($name)
 	{
 		return $this->tags
-				->where('name', 'like', $name)
-				->find_all()
-				->as_array();
+			->where('name', 'like', $name)
+			->find_all()
+			->as_array();
 	}
 
 	/**
