@@ -361,7 +361,7 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 				$('#b-assets-view-thumbs div').removeClass('selected');
 			})
 			.on( 'click', '#b-button-multiaction-tag', function(){
-				$.boom.dialog.open({
+				var dialog = $.boom.dialog.open({
 					url: '/cms/tags/asset/list/' + self.selected.join( '-' ),
 					title: 'Asset tags',
 					width: 440,
@@ -370,7 +370,17 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 							type: 'asset',
 							id: self.selected.join( '-' )
 						});
-					}
+					},
+					buttons: [
+						{
+							text: 'Close',
+							class : 'b-button',
+							icons: {primary : 'b-button-icon b-button-icon-accept'},
+							click: function(event) {
+								$.boom.dialog.destroy(dialog);
+							}
+						}
+					]
 				});
 			});
 
