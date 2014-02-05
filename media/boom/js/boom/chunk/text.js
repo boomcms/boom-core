@@ -48,10 +48,8 @@ $.widget('ui.chunkText', $.ui.chunk,
 				.done(function(html) {
 					if ($element.text() == '') {
 						self.remove();
-					} else if (old_html != html) {
-						self.insert(html);
 					} else {
-						self.bind();
+						self.insert(html);
 					}
 				})
 				.always(function() {

@@ -16,6 +16,8 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 	*/
 	mode : 'block',
 
+	hasBeenEdited : false,
+
 	/**
 	@property options
 	@type object
@@ -44,6 +46,11 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 		self.mode = (element.is(':header') ||  element.is('.standFirst'))? 'text' : self.mode;
 		self.edited = new $.Deferred();
 		self.original_html = element.html();
+		self.hasBeenEdited = false;
+
+		element.on('keypress, change, paste', function() {
+			self.hasBeenEdited = true;
+		});
 
 		self._insert_toolbar(element)
 			.done(function() {
@@ -86,7 +93,8 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 				top.$('#wysihtml5-toolbar')
 					.on('click', '#b-editor-accept', function(event) {
 						event.preventDefault();
-						self.apply(element);
+
+						self.hasBeenEdited? self.apply(element) : self.cancel(element);
 						return false;
 					})
 					.on( 'click', '#b-editor-cancel', function( event ){
@@ -159,7 +167,7 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 		var self = this,
 			content = element.html();
 
-		if (content != self.original_html) {
+		if (self.hasBeenEdited) {
 			$.boom.dialog.confirm('Cancel changes', 'Cancel all changes and exit the editor?')
 				.done(function() {
 					$.boom.log( 'canceling text edits' );
