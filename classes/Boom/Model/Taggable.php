@@ -36,29 +36,26 @@ abstract class Boom_Model_Taggable extends ORM
 					'type'	=>	$type,
 				))
 				->create();
-
 		}
 
-		try
+		if (empty($ids))
 		{
-			if (empty($ids))
+			$this->add('tags', $tag);
+		}
+		else
+		{
+			foreach ($ids as $id)
 			{
-				$this->add('tags', $tag);
-			}
-			else
-			{
-				// An array of object IDs was given - add the tag to all of the given objects.
-				$query = DB::insert($this->_object_plural.'_tags', array($this->_object_name.'_id', 'tag_id'));
-
-				foreach ($ids as $id)
+				try
 				{
-					$query->values(array($id, $tag->id));
+					// Have to do this as individual queries rather than a single query with multiple values incase the tag is already applied to some of the objects.
+					DB::insert($this->_object_plural.'_tags', array($this->_object_name.'_id', 'tag_id'))
+						->values(array($id, $tag->id))
+						->execute($this->_db);
 				}
-
-				$query->execute($this->_db);
+				catch (Database_Exception $e) {}
 			}
 		}
-		catch (Database_Exception $e) {}
 
 		return $this;
 	}
@@ -91,11 +88,17 @@ abstract class Boom_Model_Taggable extends ORM
 	 */
 	public function list_tags(array $object_ids)
 	{
+		$join_table = $this->_object_plural.'_tags';
+		$join_table_id_column = $this->_object_name.'_id';
+
 		return ORM::factory('Tag')
-			->join($this->_object_plural.'_tags', 'inner')
-			->on('tag_id', '=', 'tag.id')
-			->where($this->_object_name.'_id', 'in', $object_ids)
-			->order_by('name', 'asc')
+			->join(array($join_table, 't1'), 'inner')
+			->on('t1.tag_id', '=', 'tag.id')
+			->join(array($join_table, 't2'), 'inner')
+			->on('t1.'.$join_table_id_column, '=', 't2.'.$join_table_id_column)
+			->where('t2.'.$join_table_id_column, 'IN', $object_ids)
+			->group_by('tag.id')
+			->having(DB::expr('count(distinct t2.'.$join_table_id_column.')'), '>=', count($object_ids))
 			->distinct(TRUE)
 			->find_all();
 	}
