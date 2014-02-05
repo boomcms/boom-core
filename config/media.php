@@ -50,7 +50,7 @@ return array(
 		'boom/tags.js',
 		'boom/tagAutocompleter.js',
 		'jquery/fileupload.js',
-		'xing/wysihtml5x-0.4.2-toolbar.js',
-		'xing/parser_rules/hoop.js',
+		'wysihtml5/wysihtml5x-0.4.2-toolbar.js',
+		'wysihtml5/parser_rules.js',
 	),
 );
