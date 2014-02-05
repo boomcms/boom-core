@@ -63,11 +63,11 @@ $.extend($.boom.assets,
 				var dialog = $(this);
 
 				var remove = $('<button />')
-					.addClass('ui-helper-left')
+					.addClass('ui-helper-left b-button ui-button')
 					.text('Remove')
 					.button({
 						text: false,
-						icons: { primary : 'ui-icon-boom-delete' }
+						icons: { primary : 'b-button-icon b-button-icon-delete' }
 					})
 					.click(function(){
 						complete.reject();
@@ -75,11 +75,11 @@ $.extend($.boom.assets,
 						dialog.dialog('destroy');
 					});
 				var upload = $('<button />')
-					.addClass('ui-helper-left')
+					.addClass('ui-helper-left b-button ui-button')
 					.text( 'Upload' )
 					.button({
 						text: false,
-						icons: { primary : 'ui-icon-boom-upload' }
+						icons: { primary : 'b-button-icon b-button-icon-upload' }
 					})
 					.click( function() {
 						browser.browser_asset( 'upload' )
