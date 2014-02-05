@@ -10,24 +10,6 @@
 $.widget('wysihtml5.editor', $.boom.textEditor,
 	/** @lends $.wysihtml5.editor */
 	{
-
-	/** @property base_url
-	@type string
-	@default '/media/boom/js/xing'
-	*/
-	base_url: '/media/boom/js/xing',
-	/** @property path
-	@type string
-	@default '/wysihtml5-0.3.0.js'
-	*/
-	path: '/wysihtml5x-0.4.2-toolbar.js',
-
-	/**
-	@property parser_rules
-	@type string
-	*/
-	parser_rules : '/parser_rules/hoop.js',
-
 	/**
 	@property mode
 	@type string
@@ -46,44 +28,7 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 	@returns {Deferred}
 	*/
 	load : function() {
-		var self = this;
-
-		var editor_loaded = this._super();
-
-		if (!top.wysihtml5) {
-
-			$(document)
-				.ready(function(){
-
-
-					$.boom.log('wysihtml5 loading');
-
-					top.$.getScript( self.base_url + self.parser_rules )
-					.pipe( function(){
-						return top.$.getScript( self.base_url + self.path );
-					})
-					.done( function(response, textStatus){
-
-						editor_loaded.resolve();
-
-						self._load_extensions( top.wysihtml5 );
-
-						$.boom.log('wysihtml5 loaded');
-					});
-
-
-				});
-		}
-
-		return editor_loaded;
-	},
-
-	/**
-	* @function
-	@returns {boolean}
-	*/
-	ready : function() {
-		return (top.wysihtml5)? true : false;
+		this._load_extensions(wysihtml5);
 	},
 
 	/**
@@ -91,7 +36,7 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 	@param {Object} element The element being edited.
 	@returns {Deferred}
 	*/
-	edit : function ( element ){
+	edit : function (element) {
 
 		var self = this;
 		var element;
@@ -103,20 +48,18 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 
 		self._insert_toolbar(element)
 			.done(function() {
-				$.boom.page.toolbar.hide();
-
-				self.instance = new top.wysihtml5.Editor(element[0], { // id of textarea element
-					toolbar:      "wysihtml5-toolbar", // id of toolbar element
-					style: true,
-					parserRules:  top.wysihtml5ParserRules, // defined in parser rules set
+				self.instance = new wysihtml5.Editor(element[0], { // id of textarea element
+					toolbar : 'wysihtml5-toolbar',
+					style : true,
+					parserRules :  wysihtml5ParserRules, // defined in parser rules set
 					useLineBreaks : false,
-					contentEditableMode : true,
+					contentEditableMode : true
 				});
 
-				top.$('#wysihtml5-toolbar')
+				$('#wysihtml5-toolbar')
 					.on('click', '#b-editor-link', function(e) {
 						e.preventDefault();
-						var href = top.$( '[data-wysihtml5-dialog-field=href]' ).val();
+						var href = $( '[data-wysihtml5-dialog-field=href]' ).val();
 						var match = href.match( /asset\/(thumb|view|get_asset)\/([0-9]+)/ );
 						var asset_id = match ? match[2] : 0;
 						if (asset_id == 0) {
@@ -128,7 +71,7 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 					})
 					.on('click', '#b-editor-asset', function(e) {
 						e.preventDefault();
-						var src = top.$( '[data-wysihtml5-dialog-field=src]' ).val();
+						var src = $( '[data-wysihtml5-dialog-field=src]' ).val();
 						var asset_id = 0;
 						if ( src && src != 'http://' ) {
 							var match = src.match( /asset\/(thumb|view|get_asset)\/([0-9]+)/ );
@@ -152,14 +95,14 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 				self.instance.on( 'show:dialog', function( options ){
 					switch( options.command ) {
 						case 'createLink' :
-							var href = top.$( '[data-wysihtml5-dialog-field=href]' ).val();
+							var href = $( '[data-wysihtml5-dialog-field=href]' ).val();
 
 							if ( ! href || href == 'http://') {
 								self._edit_link();
 							}
 							break;
 						case 'insertImage' :
-							var src = top.$( '[data-wysihtml5-dialog-field=src]' ).val();
+							var src = $( '[data-wysihtml5-dialog-field=src]' ).val();
 							var asset_id = 0;
 							if ( src && src != 'http://' ) {
 								var match = src.match( /asset\/(thumb|view|get_asset)\/([0-9]+)/ );
@@ -183,8 +126,7 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 	* @function
 	*/
 	remove : function() {
-		$.boom.page.toolbar.show();
-		top.$('#wysihtml5-toolbar').remove();
+		$('#wysihtml5-toolbar').remove();
 
 		this.instance = null;
 	},
@@ -232,8 +174,8 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 		var self = this;
 
 		 return $.get('/media/boom/toolbars/text.php?mode=' + self.mode)
-			.done( function(response) {
-				top.$('body').prepend(response)
+			.done(function(response) {
+				$('body').prepend(response)
 			});
 	},
 
@@ -250,19 +192,19 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 		var img;
 		if ( asset_rid == 0 ) {
 			ed.commands.exec( "insertHTML", '<img src="url">' );
-			img = top.$( ed.element ).find( '[src=url]' );
+			img = $( ed.element ).find( '[src=url]' );
 			if ( ! img.length)
-				img = top.$( ed.element ).find( '[href=url]' );
+				img = $( ed.element ).find( '[href=url]' );
 		} else {
-			img = top.$( ed.element ).find( '[src^="/asset/view/' + asset_rid +'"]' );
+			img = $( ed.element ).find( '[src^="/asset/view/' + asset_rid +'"]' );
 			if ( ! img.length)
-				img = top.$( ed.element ).find( '[href^="/asset/view/' + asset_rid +'"]' );
+				img = $( ed.element ).find( '[href^="/asset/view/' + asset_rid +'"]' );
 		}
 
 		// cleanup code when the dialog closes.
 		asset_selected
 		.fail( function() {
-			top.$( ed.element ).find( '[src=url]' ).remove() || top.$( ed.element ).find( '[href=url]' ).remove();
+			$( ed.element ).find( '[src=url]' ).remove() || $( ed.element ).find( '[href=url]' ).remove();
 		});
 
 		return $.boom.assets
@@ -317,7 +259,7 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 		 return $.boom.links
 			.picker( opts )
 			.fail( function(){
-				var link = top.$( ed.element ).find( '[rel=new-link]' );
+				var link = $( ed.element ).find( '[rel=new-link]' );
 
 				link
 					.after( link.text() )
@@ -336,7 +278,7 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 				if ( existing_link ) {
 					existing_link.textContent = existing_link.textContent.replace(existing_link.href, uri);
 
-					top.$(existing_link)
+					$(existing_link)
 						.attr('href', uri)
 						.attr('title', '')
 						.attr('rel', page_id);

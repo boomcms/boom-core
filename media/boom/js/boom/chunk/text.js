@@ -25,13 +25,6 @@ $.widget('ui.chunkText', $.ui.chunk,
 
 		$.boom.log('Text chunk slot edit');
 
-		if ( !$( 'body' ).editor( 'ready' ) ) {
-
-			$.boom.dialog.alert('Error', 'The page editor has not been fully downloaded yet, please wait a few seconds before trying again.');
-
-			return;
-		}
-
 		var $content = this.element.find( '.slot-content');
 
 		var edit_content = function( $element ) {
@@ -47,7 +40,7 @@ $.widget('ui.chunkText', $.ui.chunk,
 
 			$element.unbind('keydown');
 
-			$( 'body' ).editor( 'edit', $element )
+			$('body').editor('edit', $element)
 				.fail( function(){
 					self.element.html( old_html ).show();
 					self.destroy();

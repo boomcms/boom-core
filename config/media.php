@@ -3,6 +3,7 @@
 return array(
 	'css' => array(
 		'cms.css.less',
+		'editor.css',
 	),
 	'corejs' => array(
 		'boom/helpers.js',

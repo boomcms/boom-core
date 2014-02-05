@@ -33,7 +33,7 @@ span[contenteditable] {
 #wysihtml5-toolbar {
 	display: block;
 	width: 54px;
-	height: auto;
+	height: 100%;
 	left: 0;
 	top: 0;
 	padding: 2px;

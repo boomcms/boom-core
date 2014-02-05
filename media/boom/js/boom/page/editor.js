@@ -21,53 +21,18 @@ $.widget( 'boom.pageEditor', {
 			})
 			.data('boomPageToolbar');
 
-		$.boom.log('Page init');
+		$.boom.log('Page registered for editing: ' + self.options.page_id);
 
-		top.$(function(){
-
-			self.editors = [];
-
-			$.boom.log('Page registered for editing: ' + self.options.page_id);
-
-			self.loadPageEditor()
-				.done( function(){
-					self.init();
-				});
-		});
-	},
-
-	/** @function */
-	init : function(){
-		var self = this;
-
-		this.config = $.boom.config.editor;
-		this.config.pageScripts = [ this.config.stylesheetURL, '/media/boom/css/boom.page.css' ];
-
-		this.elements.page_body = this.document;
-
-		setTimeout(function() {self.load()}, 0);
-		this.options.editable && this.createChunks();
-
-		return this;
-	},
-
-	/** @function */
-	load : function(){
-		this.loadScripts(this.config.pageScripts)
-			.done(function(){
-				$.boom.log('Scripts loaded into iFrame');
-			});
-	},
-
-	/** @function */
-	loadPageEditor : function(){
-		return $('body').editor().editor('load');
+		if (this.options.editable) {
+			$('body').editor().editor('load');
+			this.createChunks();
+		}
 	},
 
 	createChunks : function() {
 		var self = this;
 
-		 this.elements.page_body.contents()
+		this.document.contents()
 			.find('[data-boom-chunk]')
 			.each(function(){
 				var $this = $(this);
@@ -89,30 +54,5 @@ $.widget( 'boom.pageEditor', {
 			.pageTitle({
 				currentPage : self.page
 			});
-	},
-
-	/** @function */
-	loadScripts : function( scripts ){
-		var	promise = new $.Deferred(),
-			$head = this.elements.page_body.contents().find('head');
-
-		for (var i in scripts) {
-			var script = scripts[i];
-			
-			$.ajax({
-				url : script,
-				cache : true
-			})
-			.done(function(response) {
-				if (/css$/.test(script)) {
-					$head.append($("<style/>", {type: "text/css", async : ''}).text(response));
-				}
-				else if (/js$/.test(script)) {
-					$head.append($("<script/>", {type: "text/javascript", async : ''}).text(response));
-				}
-			});
-		};
-
-		return promise.resolve();
 	}
 });
