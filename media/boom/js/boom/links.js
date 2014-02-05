@@ -41,6 +41,7 @@ $.extend( $.boom,
 			/** @ignore */ {
 				title: 'Edit link',
 				url: link_manager_url,
+				width : '385px',
 				deferred: complete,
 				onLoad: function(){
 					var self = this;
