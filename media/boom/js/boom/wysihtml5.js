@@ -96,13 +96,13 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 		var self = this;
 		var element;
 
-		self.mode = element.is( 'div' ) ? 'block' : 'inline';
-		self.mode = (element.is( ':header' ) ||  element.is( '.standFirst' ))? 'text' : self.mode;
+		self.mode = element.is('div') ? 'block' : 'inline';
+		self.mode = (element.is(':header') ||  element.is('.standFirst'))? 'text' : self.mode;
 		self.edited = new $.Deferred();
+		self.original_html = element.html();
 
-		self._insert_toolbar( element )
-			.done( function(){
-
+		self._insert_toolbar(element)
+			.done(function() {
 				$.boom.page.toolbar.hide();
 
 				self.instance = new top.wysihtml5.Editor(element[0], { // id of textarea element
@@ -176,7 +176,7 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 		$.boom.page.toolbar.show();
 		top.$('#wysihtml5-toolbar').remove();
 
-		self.instance = null;
+		this.instance = null;
 	},
 
 	/**
@@ -195,13 +195,8 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 	@param {Object} element The element being edited.
 	*/
 	cancel : function(element) {
-		var self = this;
-
-		if (self.mode == 'text' || self.mode == 'inline') {
-			var content = element.text();
-		} else {
-			var content = element.html();
-		}
+		var self = this,
+			content = element.html();
 
 		if (content != self.original_html) {
 			$.boom.dialog.confirm('Cancel changes', 'Cancel all changes and exit the editor?')

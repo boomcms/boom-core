@@ -24,10 +24,15 @@ $.widget( 'boom.pageEditor', {
 		$.boom.log('Page init');
 
 		top.$(function(){
+
+			self.editors = [];
+
 			$.boom.log('Page registered for editing: ' + self.options.page_id);
 
-			$('body').editor().editor('load');
-			self.init();
+			self.loadPageEditor()
+				.done( function(){
+					self.init();
+				});
 		});
 	},
 
@@ -40,9 +45,23 @@ $.widget( 'boom.pageEditor', {
 
 		this.elements.page_body = this.document;
 
+		setTimeout(function() {self.load()}, 0);
 		this.options.editable && this.createChunks();
 
 		return this;
+	},
+
+	/** @function */
+	load : function(){
+		this.loadScripts(this.config.pageScripts)
+			.done(function(){
+				$.boom.log('Scripts loaded into iFrame');
+			});
+	},
+
+	/** @function */
+	loadPageEditor : function(){
+		return $('body').editor().editor('load');
 	},
 
 	createChunks : function() {
