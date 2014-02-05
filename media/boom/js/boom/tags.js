@@ -124,28 +124,6 @@ $.widget( 'boom.tagger',
 		var remove = new $.Deferred();
 
 		this.element
-			// When hovering over an existing tag show a button to remove the tag from the page.
-			// Then hide the button again when the mouse moves away.
-			.on('mouseenter', '.b-tags-list li', function(){
-				// If the ui-icon and ui-icon-close clases are added in the HTML then the crosses aren't hidden when the modal opens.
-				// So we only add these classes when we need to show them.
-				$(this)
-					.find('a')
-					.addClass('ui-icon ui-icon-close')
-					.show()
-					.end()
-					.find('span')
-					.addClass('active');
-				// Adding the active class changes the margin-left of the text so that it doesn't shift to the right when then delete url becomes visible.
-			})
-			.on('mouseleave', '.b-tags-list li', function(){
-				$(this)
-					.find('a')
-					.hide()
-					.end()
-					.find('span')
-					.removeClass('active');
-			})
 			// Remove a tag from the page.
 			.on('click', '.b-tags-remove', function(event){
 				event.preventDefault();
