@@ -46,11 +46,11 @@ $.widget('ui.chunkFeature', $.ui.chunk,
 					$( 'input[name=parent_id]' ).val( self.options.id );
 
 					var button = $('<button />')
-					.addClass('ui-helper-left')
+					.addClass('b-button ui-helper-left')
 					.text('Remove')
 					.button({
 						text: false,
-						icons: { primary : 'ui-icon-boom-delete' }
+						icons: { primary : 'b-button-icon b-button-icon-delete' }
 					})
 					.click(function(){
 
