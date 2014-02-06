@@ -26,7 +26,7 @@ $.widget('ui.chunkText', $.ui.chunk,
 				element.focus();
 			})
 			.on('blur', function() {
-				$('body').editor('apply', element);
+				$('body').editor('blur', element);
 			});
 	},
 

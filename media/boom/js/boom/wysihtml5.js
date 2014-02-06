@@ -46,6 +46,7 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 		self.mode = (element.is(':header') ||  element.is('.standFirst'))? 'text' : self.mode;
 		self.edited = new $.Deferred();
 		self.original_html = element.html();
+		self.dialogOpen = false;
 
 		self._insert_toolbar(element)
 			.done(function() {
@@ -109,6 +110,7 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 							var href = top.$( '[data-wysihtml5-dialog-field=href]' ).val();
 
 							if ( ! href || href == 'http://') {
+								self.dialogOpen = true;
 								self._edit_link();
 							}
 							break;
@@ -123,6 +125,7 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 							}
 
 							if ( ! asset_id) {
+								self.dialogOpen = true;
 								self._edit_asset(asset_id);
 							}
 							break;
@@ -151,6 +154,12 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 	apply : function(element) {
 		this.edited.resolve(element.html());
 		this.remove(element);
+	},
+
+	blur : function(element) {
+		if ( ! this.dialogOpen) {
+			this.apply(element);
+		}
 	},
 
 	/**
@@ -241,6 +250,9 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 			})
 			.fail( function(){
 				img.remove();
+			})
+			.always(function() {
+				self.dialogOpen = false;
 			});
 	},
 
@@ -304,8 +316,10 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 					}
 				}
 
+			})
+			.always(function() {
+				self.dialogOpen = false;
 			});
-
 	},
 
 	/**
