@@ -7,14 +7,23 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 	bind : function() {
 		$.ui.chunk.prototype.bind.call(this);
 
-		var self = this;
-		this.element.on('keydown change paste', function() {
-			var $el = $(this);
+		var self = this,
+			element = this.element;
 
-			setTimeout(function() {
-				self._update_length_counter($el.text().length)
-			}, 0);
-		});
+		this.element
+			.on('keydown change paste', function() {
+				setTimeout(function() {
+					self._update_length_counter(element.text().length)
+				}, 0);
+			})
+			.on('click', function() {
+				setTimeout(function() {
+					element.focus();
+				}, 0);
+			})
+			.on('blur', function() {
+				$('body').editor('apply', element);
+			});
 	},
 
 	_create_length_counter : function() {
@@ -46,8 +55,6 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 		var self = this;
 		var old_html = this.element.html();
 
-		self._bring_forward();
-
 		if (this.isUntitled()) {
 			this.element.text('');
 		}
@@ -71,7 +78,6 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 
 				top.$('#b-title-length').remove();
 
-				self._send_back();
 				self.bind();
 			});
 
