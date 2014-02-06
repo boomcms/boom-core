@@ -58,7 +58,9 @@ $.widget('ui.chunkText', $.ui.chunk,
 					self.element.html( old_html ).show();
 					self.destroy();
 				})
-				.done(function(edited) {
+				.done(function() {
+					var edited = old_html != $element.html();
+
 					if ($element.text() == '') {
 						self.remove();
 					} else if (edited == true) {

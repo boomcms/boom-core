@@ -46,18 +46,12 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 		self.mode = (element.is(':header') ||  element.is('.standFirst'))? 'text' : self.mode;
 		self.edited = new $.Deferred();
 		self.original_html = element.html();
-		self.hasBeenEdited = false;
-
-		element.on('keypress, change, paste', function() {
-			self.hasBeenEdited = true;
-		});
 
 		self._insert_toolbar(element)
 			.done(function() {
 				$.boom.page.toolbar.hide();
 
 				setTimeout(function() {
-					console.log('give element focus');
 					element.focus();
 				}, 10);
 
@@ -100,7 +94,7 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 					.on('click', '#b-editor-accept', function(event) {
 						event.preventDefault();
 
-						self.hasBeenEdited? self.apply(element) : self.cancel(element);
+						self.apply(element);
 						return false;
 					})
 					.on( 'click', '#b-editor-cancel', function( event ){
@@ -110,8 +104,6 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 					});
 
 				self.instance.on( 'show:dialog', function(options) {
-					self.hasBeenEdited = true;
-
 					switch(options.command) {
 						case 'createLink' :
 							var href = top.$( '[data-wysihtml5-dialog-field=href]' ).val();
@@ -157,7 +149,7 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 	@param {Object} element The element being edited.
 	*/
 	apply : function(element) {
-		this.edited.resolve(element.html(), this.hasBeenEdited);
+		this.edited.resolve(element.html());
 		this.remove(element);
 	},
 
