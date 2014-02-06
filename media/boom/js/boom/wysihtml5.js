@@ -56,7 +56,10 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 			.done(function() {
 				$.boom.page.toolbar.hide();
 
-				element.focus();
+				setTimeout(function() {
+					console.log('give element focus');
+					element.focus();
+				}, 10);
 
 				self.instance = new wysihtml5.Editor(element[0], { // id of textarea element
 					toolbar : top.$('#wysihtml5-toolbar')[0],
