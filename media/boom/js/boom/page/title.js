@@ -17,9 +17,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 				}, 0);
 			})
 			.on('click', function() {
-				setTimeout(function() {
-					element.focus();
-				}, 0);
+				element.focus();
 			})
 			.on('blur', function() {
 				$('body').editor('apply', element);

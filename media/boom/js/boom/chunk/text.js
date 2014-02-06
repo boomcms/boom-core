@@ -23,7 +23,7 @@ $.widget('ui.chunkText', $.ui.chunk,
 
 		this.element
 			.on('click', function() {
-				element.foucs();
+				element.focus();
 			})
 			.on('blur', function() {
 				$('body').editor('apply', element);
