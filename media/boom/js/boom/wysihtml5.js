@@ -228,17 +228,17 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 				asset_rid : asset_rid,
 				deferred : asset_selected
 			})
-			.done( function( rid ) {
-				if ( rid > 0 ) {
+			.done(function(rid) {
+				if (rid > 0) {
 					$.boom.page.toolbar.minimise();
 
-					$.post( '/asset/embed/' + rid )
-					.done( function( response ){
-						img.replaceWith(response);
-					})
-					.always( function(){
-						asset_selected.reject();
-					});
+					$.post('/asset/embed/' + rid)
+						.done(function(response) {
+							img.replaceWith(response);
+						})
+						.always(function() {
+							asset_selected.reject();
+						});
 				}
 
 			})
