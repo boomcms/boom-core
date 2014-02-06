@@ -144,9 +144,6 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 		top.$('#wysihtml5-toolbar').remove();
 		$.boom.page.toolbar.show();
 
-		element.blur();
-		element.removeAttr('contenteditable');
-
 		this.instance = null;
 	},
 
@@ -155,10 +152,7 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 	@param {Object} element The element being edited.
 	*/
 	apply : function(element) {
-		element.blur();
-		element.removeAttr('contenteditable');
-		this.edited.resolve(element.html());
-
+		this.edited.resolve(element.html(), this.hasBeenEdited);
 		this.remove(element);
 	},
 

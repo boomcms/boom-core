@@ -16,6 +16,16 @@ $.widget('ui.chunkText', $.ui.chunk,
 
 	content : '',
 
+	bind : function() {
+		var element = this.element;
+
+		$.ui.chunk.prototype.bind.call(this);
+
+		this.element.on('blur', function() {
+			$('body').editor('apply', element);
+		});
+	},
+
 	/**
 	Make the element editable by invokeing boom.editor.edit() on it.
 	*/
@@ -24,6 +34,8 @@ $.widget('ui.chunkText', $.ui.chunk,
 		var self = this;
 
 		$.boom.log('Text chunk slot edit');
+
+		this.element.focus();
 
 		var $content = this.element.find( '.slot-content');
 
@@ -36,7 +48,6 @@ $.widget('ui.chunkText', $.ui.chunk,
 			if ( $element.text() == 'Default text.' ) {
 				$element.html( '' );
 			}
-			self._bring_forward();
 
 			$element.unbind('keydown');
 
@@ -45,17 +56,15 @@ $.widget('ui.chunkText', $.ui.chunk,
 					self.element.html( old_html ).show();
 					self.destroy();
 				})
-				.done(function(html) {
+				.done(function(edited) {
 					if ($element.text() == '') {
 						self.remove();
+					} else if (edited == true) {
+						self._save();
 					} else {
-						self.insert(html);
+						self.bind();
 					}
-				})
-				.always(function() {
-					self._send_back();
 				});
-
 		};
 
 		if ( $content.length ) {
@@ -87,15 +96,5 @@ $.widget('ui.chunkText', $.ui.chunk,
 		}
 
 		return { title : this.title, text : this.content, is_block : this.element.attr('data-boom-is-block') };
-	},
-
-	/**
-	Update the page with edited HTML from the editor, then remove TinyMCE.
-	@param {String} replacedata HTML to insert into the page.
-	*/
-	insert : function(replacedata) {
-		this.element.html(replacedata);
-
-		return this._save();
 	}
 });
