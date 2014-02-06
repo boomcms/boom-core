@@ -253,6 +253,7 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 			})
 			.always(function() {
 				self.dialogOpen = false;
+				self.element.focus();
 			});
 	},
 
@@ -319,6 +320,7 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 			})
 			.always(function() {
 				self.dialogOpen = false;
+				self.element.focus();
 			});
 	},
 
