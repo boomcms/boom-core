@@ -52,7 +52,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 	edit : function() {
 		var self = this;
 		var old_html = this.element.html();
-
+					
 		if (this.isUntitled()) {
 			this.element.text('');
 		}
@@ -111,11 +111,10 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 				} catch (e) {};
 
 				if (typeof data =='object' && data.location) {
-					$.boom.growl.show('Page URL changed, redirecting to new URL.');
-
-					setTimeout(function() {
-						top.location = data.location;
-					}, 1000);
+					$.boom.dialog.confirm('Page URL changed', "Because you've set a page title for the first time the URL of this page has been updated to reflect the new title.<br /><br />Would you like to reload the page using the new URL?<br /><br />You can continue editing the page without reloading.")
+						.done(function() {
+							top.location = data.location;
+						});
 				} else {
 					$.boom.growl.show('Page title saved.');
 					$.boom.page.toolbar.status.set(response);
