@@ -187,10 +187,13 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 	_insert_toolbar : function(element) {
 		var self = this;
 
-		 return $.get('/cms/toolbar/text?mode=' + self.mode)
-			.done(function(response) {
-				top.$('body').prepend(response)
-			});
+		 return $.ajax({
+			 url : '/cms/toolbar/text?mode=' + self.mode,
+			 cache : true,
+		 })
+		.done(function(response) {
+			top.$('body').prepend(response)
+		});
 	},
 
 	/**
