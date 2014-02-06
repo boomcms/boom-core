@@ -21,9 +21,13 @@ $.widget('ui.chunkText', $.ui.chunk,
 
 		$.ui.chunk.prototype.bind.call(this);
 
-		this.element.on('blur', function() {
-			$('body').editor('apply', element);
-		});
+		this.element
+			.on('click', function() {
+				element.foucs();
+			})
+			.on('blur', function() {
+				$('body').editor('apply', element);
+			});
 	},
 
 	/**
@@ -34,8 +38,6 @@ $.widget('ui.chunkText', $.ui.chunk,
 		var self = this;
 
 		$.boom.log('Text chunk slot edit');
-
-		this.element.focus();
 
 		var $content = this.element.find( '.slot-content');
 
