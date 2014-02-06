@@ -35,24 +35,24 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 		var self = this;
 		this._bring_forward();
 
-		return $.get( '/media/boom/toolbars/asset.php' )
+		return $.get('/cms/toolbar/asset')
 			.done( function( toolbar ){
 				$.boom.page.toolbar.hide();
 				top.$( 'body' )
 					.prepend( toolbar );
 
-				top.$('div.toolbar')
-					.on( 'click', 'button.cancel', function(){
+				top.$('.b-toolbar-asset')
+					.on( 'click', '.b-cancel', function(){
 						self._cancel();
 					})
-					.on( 'click', 'button.save', function(){
+					.on( 'click', '.b-accept', function(){
 						self.insert();
 						self.destroy();
 					})
-					.on( 'click', 'button.link', function() {
+					.on( 'click', '.b-link', function() {
 						self._edit_link();
 					})
-					.on( 'click', 'button.asset', function() {
+					.on( 'click', '.b-asset', function() {
 						self._edit_asset(self.elements.asset);
 					});
 			});
@@ -75,7 +75,7 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 			.off( 'focus mouseover' );
 
 		top.$( 'body' )
-			.find( 'div.toolbar' )
+			.find('.b-toolbar-asset')
 			.remove();
 	},
 

@@ -1,0 +1,35 @@
+html.boom .b-toolbar, .b-toolbar {
+	background: #222;
+	overflow: hidden;
+	color: #ffffff;
+	position: fixed;
+	top: 0;
+	left: 0;
+	height: 100%;
+	z-index: 10000;
+	width: 60px;
+	overflow: hidden;
+
+	a, a:visited, a:hover {
+		color: #ffffff;
+	}
+
+	.b-button {
+		border-right: 0;
+		border-bottom: 1px solid #555;
+		margin-right: 6px;
+	}
+}
+
+.b-page-toolbar-preview {
+	height: 34px;
+	width: 100%;
+	padding: 0;
+}
+
+@media screen and (max-height: 767px) {
+	.b-toolbar-text .b-button {
+		height: 45px;
+		margin-top: 2px;
+	}
+}

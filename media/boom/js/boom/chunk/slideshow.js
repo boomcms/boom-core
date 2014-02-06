@@ -28,8 +28,8 @@ $.widget('ui.chunkSlideshow', $.ui.chunk,
 	_bind_toolbar : function() {
 		var self = this;
 
-		top.$( 'div.toolbar' )
-			.on( 'click', 'button.insert', function( event ) {
+		top.$('.b-toolbar-slideshow')
+			.on('click', '.b-add', function(event) {
 				var slideshow = self.slider;
 				var slide = slideshow? slideshow.slides[ slideshow.currentSlide ] : self.element.find('.slides li');
 
@@ -39,7 +39,7 @@ $.widget('ui.chunkSlideshow', $.ui.chunk,
 						self.edited = true;
 					});
 			})
-			.on( 'click', 'button.delete', function( event ) {
+			.on('click', '.b-delete', function(event) {
 				var slideshow = self.slider;
 
 				$.boom.dialog.confirm(
@@ -50,11 +50,11 @@ $.widget('ui.chunkSlideshow', $.ui.chunk,
 					self._remove_slide(slideshow.currentSlide);
 				});
 			})
-			.on( 'click', 'button.cancel', function(){
+			.on('click', '.b-cancel', function() {
 				self._cancel();
 				self._remove_ui();
 			})
-			.on( 'click', 'button.save', function(){
+			.on('click', '.b-accept', function() {
 				self._remove_ui();
 
 				if (self.edited) {
@@ -63,14 +63,14 @@ $.widget('ui.chunkSlideshow', $.ui.chunk,
 					self.destroy();
 				}
 			})
-			.on( 'click', 'button.sort', function(){
+			.on('click', '.b-sort', function() {
 				self._sort()
 					.done( function(){
 						self.edited = true;
 						$.boom.log( 'sort finished' );
 					});
 			})
-			.on( 'click', 'button.link', function(){
+			.on('click', '.b-link', function() {
 				var slideshow = self.slider;
 				var slide = slideshow.slides[ slideshow.currentSlide ];
 
@@ -80,12 +80,12 @@ $.widget('ui.chunkSlideshow', $.ui.chunk,
 						$.boom.growl.show('Link updated');
 					});
 			})
-			.on('click', 'button.prev', function(event) {
+			.on('click', '.b-prev', function(event) {
 				var slider = self.slider;
 
 				slider.flexAnimate(self.slider.getTarget('prev'));
 			})
-			.on('click', 'button.next', function(event) {
+			.on('click', '.b-next', function(event) {
 				var slider = self.slider;
 
 				slider.flexAnimate(self.slider.getTarget('next'));
@@ -99,7 +99,7 @@ $.widget('ui.chunkSlideshow', $.ui.chunk,
 
 		this._bring_forward();
 
-		return $.get( '/media/boom/toolbars/slideshow.php' )
+		return $.get('/cms/toolbar/slideshow')
 			.done( function( toolbar ){
 				$.boom.page.toolbar.hide();
 				top.$( 'body' )
@@ -131,7 +131,7 @@ $.widget('ui.chunkSlideshow', $.ui.chunk,
 			.off( 'focus mouseover' )
 			.end();
 		top.$( 'body' )
-			.find( 'div.toolbar' )
+			.find('.b-toolbar-slideshow')
 			.remove();
 	},
 

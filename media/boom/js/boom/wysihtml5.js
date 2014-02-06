@@ -190,7 +190,7 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 	_insert_toolbar : function(element) {
 		var self = this;
 
-		 return $.get('/media/boom/toolbars/text.php?mode=' + self.mode)
+		 return $.get('/cms/toolbar/text?mode=' + self.mode)
 			.done(function(response) {
 				top.$('body').prepend(response)
 			});

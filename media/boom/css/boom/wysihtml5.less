@@ -1,0 +1,64 @@
+[contenteditable] {
+	border: 1px solid #000;
+	background: #fff;
+	min-height: 25px;
+	color: black !important;
+}
+span[contenteditable] {
+	display: inline-block;
+	min-width: 100px;
+}
+
+[data-wysihtml5-dialog] {
+	color: #fff;
+	font-size: 14px;
+	text-align: left;
+	padding: 5px 10px;
+	background: #222;
+	width: 810px;
+	text-align: center;
+	position: fixed;
+	top: 0;
+	left: 60px;
+	
+	input {
+		color: #333;
+		border: 1px solid #ccc;
+		padding: 3px;
+		width: 600px;
+		background: #ccc;
+
+		&:focus {
+			outline: 0;
+			border: 1px solid #666;
+		}
+	}
+
+	label {
+		color: #fff;
+	}
+
+	label, label button {
+		display: inline-block;
+	}
+
+	a {
+		padding: 1em;
+		font-size: 1.2em;
+		text-transform: uppercase;
+	}
+}
+
+[data-wysihtml5-dialog-action] {
+	padding: 4px;
+	color: #fff;
+	cursor: pointer;
+}
+
+.b-button.wysihtml5-command-active {
+	background: #468017;
+
+	&:hover, &:focus, &:active {
+		background: #468017;
+	}
+}

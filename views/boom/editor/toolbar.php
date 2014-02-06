@@ -1,6 +1,6 @@
 <?= View::factory('boom/header', array('title' => $page->version()->title)) ?>
 
-<div id="b-topbar" class='b-page-toolbar'>
+<div id="b-topbar" class='b-page-toolbar b-toolbar'>
 	<?= Form::hidden('csrf', Security::token(), array('id' => 'b-csrf')) ?>
 	<?= Menu::factory('boom')->sort('priority') ?>
 
