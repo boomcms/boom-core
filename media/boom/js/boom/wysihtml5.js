@@ -61,7 +61,8 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 					style : true,
 					parserRules :  (self.mode == 'block')? wysihtml5ParserRules : wysihtml5ParserRulesInline, // defined in parser rules set
 					useLineBreaks : false,
-					contentEditableMode : true
+					contentEditableMode : true,
+					autoLink : false
 				});
 
 				top.$('body')
