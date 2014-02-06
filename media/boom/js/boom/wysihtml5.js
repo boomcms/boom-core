@@ -104,6 +104,8 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 					});
 
 				self.instance.on( 'show:dialog', function(options) {
+					self.hasBeenEdited = true;
+
 					switch(options.command) {
 						case 'createLink' :
 							var href = top.$( '[data-wysihtml5-dialog-field=href]' ).val();
