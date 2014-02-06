@@ -235,9 +235,6 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 					$.post( '/asset/embed/' + rid )
 					.done( function( response ){
 						img.replaceWith(response);
-						$(response).on('load', function() {
-							self.instance.composer.editableArea.style.height = self.instance.composer.element.scrollHeight + "px";
-						});
 					})
 					.always( function(){
 						asset_selected.reject();
