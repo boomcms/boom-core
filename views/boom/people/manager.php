@@ -1,6 +1,6 @@
 	<?= View::factory('boom/header')->set('title', 'People') ?>
 
-	<div id="b-topbar">
+	<div id="b-topbar" class="b-toolbar">
 		<?= Menu::factory('boom')->sort('priority') ?>
 
 		<?= BoomUI::button('add', __('New person'), array('id' => 'b-people-create')) ?>
