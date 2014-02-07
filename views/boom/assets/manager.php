@@ -1,6 +1,6 @@
 <div id="b-assets-manager">
 	<? if ( ! Request::current()->is_ajax()): ?>
-		<div id="b-topbar" class="b-asset-manager">
+		<div id="b-topbar" class="b-asset-manager b-toolbar">
 			<?= Menu::factory('boom')->sort('priority')  ?>
 
 			<div id="b-assets-buttons">
