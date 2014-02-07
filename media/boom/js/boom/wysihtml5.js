@@ -70,7 +70,11 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 						return false;
 					});
 
-				top.$('#b-editor-link').on('click', function() {
+				top.$('#b-editor-link')
+					.on('mousedown', function() {
+						self.dialogOpen = true;
+					})
+					.on('click', function() {
 						wysihtml5.commands.createBoomLink.edit(self.instance.composer);
 					});
 
