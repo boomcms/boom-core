@@ -16,7 +16,7 @@
 			<?= BoomUI::button('link', __('Insert a link'), array('data-wysihtml5-command' => 'createLink', 'class' => 'command')) ?>
 
 			<? if ($mode == 'block'): ?>
-				<?= BoomUI::button('asset', __('Insert an asset'), array('data-wysihtml5-command' => 'insertImage', 'class' => 'command')) ?>
+				<?= BoomUI::button('asset', __('Insert an asset'), array('data-wysihtml5-command' => 'insertBoomAsset', 'class' => 'command')) ?>
 				<?= BoomUI::button('paragraph', __('Insert paragraph'), array('data-wysihtml5-command' => 'formatBlock', 'data-wysihtml5-command-value' => 'p', 'class' => 'command')) ?>
 				<?= BoomUI::button('h2', __('Insert headline 2'), array('data-wysihtml5-command' => 'formatBlock', 'data-wysihtml5-command-value' => 'h2', 'class' => 'command')) ?>
 				<?= BoomUI::button('h3', __('Insert headline 3'), array('data-wysihtml5-command' => 'formatBlock', 'data-wysihtml5-command-value' => 'h3', 'class' => 'command')) ?>
@@ -32,14 +32,5 @@
 		</label>
 
 		<a href="#" id="b-editor-link">edit</a>
-	</div>
-
-	<div data-wysihtml5-dialog="insertImage" style="display: none">
-		<label>
-			Asset:
-			<input data-wysihtml5-dialog-field="src" value="http://" disabled="disabled">
-		</label>
-
-		<a href="#" id="b-editor-asset">edit</a>
 	</div>
 </div>

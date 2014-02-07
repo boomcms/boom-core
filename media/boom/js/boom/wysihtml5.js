@@ -96,6 +96,14 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 						return false;
 					});
 
+				$(self.instance.composer)
+					.on('before:boomdialog', function() {
+						self.dialogOpen = true;
+					})
+					.on('after:boomdialog', function() {
+						self.dialogOpen = false;
+						element.focus();
+					});
 				self.instance.on( 'show:dialog', function(options) {
 					switch(options.command) {
 						case 'createLink' :
@@ -104,21 +112,6 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 							if ( ! href || href == 'http://') {
 								self.dialogOpen = true;
 								self._edit_link();
-							}
-							break;
-						case 'insertImage' :
-							var src = top.$('[data-wysihtml5-dialog-field=src]').val(),
-								asset_id = 0;
-
-							if (src && src != 'http://') {
-								var match = src.match( /asset\/(thumb|view|get_asset)\/([0-9]+)/ );
-
-								asset_id = match ? match[2] : 0;
-							}
-
-							if ( ! asset_id) {
-								self.dialogOpen = true;
-								self._edit_asset(asset_id);
 							}
 							break;
 					}
@@ -194,61 +187,6 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 		.done(function(response) {
 			top.$('body').prepend(response)
 		});
-	},
-
-	/**
-	@function
-	@returns {Deferred}
-	*/
-	_edit_asset : function(asset_rid) {
-		var self = this,
-			ed = self.instance.composer,
-			asset_selected = new $.Deferred(),
-			img;
-
-		if (asset_rid == 0) {
-			ed.commands.exec("insertHTML", '<img src="url">');
-			img = $(ed.element).find( '[src=url]' );
-			if ( ! img.length)
-				img = $(ed.element).find( '[href=url]' );
-		} else {
-			img = $(ed.element).find( '[src^="/asset/view/' + asset_rid +'"]' );
-			if ( ! img.length)
-				img = $(ed.element).find( '[href^="/asset/view/' + asset_rid +'"]' );
-		}
-
-		// cleanup code when the dialog closes.
-		asset_selected
-		.fail( function() {
-			$( ed.element ).find( '[src=url]' ).remove() || $( ed.element ).find( '[href=url]' ).remove();
-		});
-
-		return $.boom.assets
-			.picker({
-				asset_rid : asset_rid,
-				deferred : asset_selected
-			})
-			.done(function(rid) {
-				if (rid > 0) {
-					$.boom.page.toolbar.minimise();
-
-					$.post('/asset/embed/' + rid)
-						.done(function(response) {
-							img.replaceWith(response);
-						})
-						.always(function() {
-							asset_selected.reject();
-						});
-				}
-
-			})
-			.fail( function(){
-				img.remove();
-			})
-			.always(function() {
-				self.dialogOpen = false;
-				self.element.focus();
-			});
 	},
 
 	/**
