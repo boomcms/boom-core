@@ -27,14 +27,6 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 
 	/**
 	* @function
-	@returns {Deferred}
-	*/
-	load : function() {
-		this._load_extensions(wysihtml5);
-	},
-
-	/**
-	* @function
 	@param {Object} element The element being edited.
 	@returns {Deferred}
 	*/
@@ -324,53 +316,5 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 				self.dialogOpen = false;
 				self.element.focus();
 			});
-	},
-
-	/**
-	@function
-	@param {Object} wh5 Instance of wysihtml5
-	*/
-	_load_extensions : function( wh5 ) {
-
-		/** blockquote command */
-		(function(wysihtml5) {
-			var undef;
-
-			/**
-			Indent command for blockquotes
-			@static
-			@class
-			**/
-			wysihtml5.commands.indent = {
-				exec: function(composer, command) {
-
-					command = this.state( composer ) ? 'outdent' : 'indent';
-
-					/*
-					TODO: what happens if a browser doesn't support indent/outdent?
-					*/
-					if (composer.commands.support(command)) {
-						composer.doc.execCommand(command, false, null);
-
-						/* clean inline styles left by webkit */
-						var blockquote = this.state( composer );
-						if ( blockquote ) {
-							blockquote.removeAttribute( 'class' );
-							blockquote.removeAttribute( 'style' );
-						}
-						return;
-					}
-				},
-
-				state: function(composer) {
-					var selectedNode = composer.selection.getSelectedNode();
-					return wysihtml5.dom.getParentElement(selectedNode, { nodeName: "BLOCKQUOTE" });
-				},
-
-				value: function() {
-					return undef;
-				}
-			};
-		})( wh5 );
 	}
 });

@@ -20,7 +20,7 @@
 				<?= BoomUI::button('paragraph', __('Insert paragraph'), array('data-wysihtml5-command' => 'formatBlock', 'data-wysihtml5-command-value' => 'p', 'class' => 'command')) ?>
 				<?= BoomUI::button('h2', __('Insert headline 2'), array('data-wysihtml5-command' => 'formatBlock', 'data-wysihtml5-command-value' => 'h2', 'class' => 'command')) ?>
 				<?= BoomUI::button('h3', __('Insert headline 3'), array('data-wysihtml5-command' => 'formatBlock', 'data-wysihtml5-command-value' => 'h3', 'class' => 'command')) ?>
-				<?= BoomUI::button('blockquote', __('Insert blockquote'), array('data-wysihtml5-command' => 'indent', 'class' => 'command')) ?>
+				<?= BoomUI::button('blockquote', __('Insert blockquote'), array('data-wysihtml5-command' => 'formatBlock', 'data-wysihtml5-command-value' => 'blockquote', 'class' => 'command')) ?>
 			<? endif ?>
 		<? endif ?>
 	</div>
