@@ -57,32 +57,6 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 					autoLink : false
 				});
 
-				top.$('body')
-					.on('click', '#b-editor-link', function(e) {
-						e.preventDefault();
-						var href = top.$( '[data-wysihtml5-dialog-field=href]' ).val();
-						var match = href.match( /asset\/(thumb|view|get_asset)\/([0-9]+)/ );
-						var asset_id = match ? match[2] : 0;
-						if (asset_id == 0) {
-							self._edit_link();
-						} else {
-							self._edit_asset(asset_id);
-							resizeIframe();
-						}
-					})
-					.on('click', '#b-editor-asset', function(e) {
-						e.preventDefault();
-						var src = top.$( '[data-wysihtml5-dialog-field=src]' ).val();
-						var asset_id = 0;
-						if ( src && src != 'http://' ) {
-							var match = src.match( /asset\/(thumb|view|get_asset)\/([0-9]+)/ );
-
-							asset_id = match ? match[2] : 0;
-						}
-
-						self._edit_asset(asset_id);
-					});
-
 				top.$('#wysihtml5-toolbar')
 					.on('click', '#b-editor-accept', function(event) {
 						event.preventDefault();
@@ -96,6 +70,10 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 						return false;
 					});
 
+				top.$('#b-editor-link').on('click', function() {
+						wysihtml5.commands.createBoomLink.edit(self.instance.composer);
+					});
+
 				$(self.instance.composer)
 					.on('before:boomdialog', function() {
 						self.dialogOpen = true;
@@ -104,18 +82,15 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 						self.dialogOpen = false;
 						element.focus();
 					});
-				self.instance.on( 'show:dialog', function(options) {
-					switch(options.command) {
-						case 'createLink' :
-							var href = top.$( '[data-wysihtml5-dialog-field=href]' ).val();
 
-							if ( ! href || href == 'http://') {
-								self.dialogOpen = true;
-								self._edit_link();
+				self.instance
+					.on('show:dialog', function(options) {
+						if (options.command == 'createBoomLink') {
+							if ( ! wysihtml5.commands.createBoomLink.state(self.instance.composer)) {
+								wysihtml5.commands.createBoomLink.exec(self.instance.composer);
 							}
-							break;
-					}
-				});
+						}
+					});
 			});
 
 		return self.edited;
@@ -187,72 +162,5 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 		.done(function(response) {
 			top.$('body').prepend(response)
 		});
-	},
-
-	/**
-	@function
-	@returns {Deferred}
-	*/
-	_edit_link : function() {
-		var self = this;
-		var ed = self.instance.composer;
-		var existing_link = ed.commands.state( "createLink" )[0];
-		var opts = {};
-		var bm = ed.selection.getBookmark();
-
-		if ( existing_link ) {
-			var link = {
-				url : existing_link.href,
-				rid : existing_link.rel,
-				title : ( existing_link.textContent || existinglink.innerText )
-			};
-
-			opts.link = link;
-		}
-
-
-		 return $.boom.links
-			.picker( opts )
-			.fail( function(){
-				var link = $( ed.element ).find( '[rel=new-link]' );
-
-				link
-					.after( link.text() )
-					.remove();
-
-			})
-			.done( function( link ){
-
-				var uri = link.url;
-				var page_id = link.page_id;
-
-				if (page_id) {
-					uri = $('<a/>').attr('href',uri)[0].pathname.replace(/^[^\/]/,'/');
-				}
-
-				if ( existing_link ) {
-					existing_link.textContent = existing_link.textContent.replace(existing_link.href, uri);
-
-					$(existing_link)
-						.attr('href', uri)
-						.attr('title', '')
-						.attr('rel', page_id);
-				} else {
-					ed.selection.setBookmark(bm);
-
-					if (page_id) {
-						ed.commands.exec("createLink", { href: uri, rel: page_id, title: '', text: link.title});
-					} else {
-						var text = uri.replace('mailto:', '').replace('tel:', '');
-
-						ed.commands.exec("createLink", { href: uri, title: '', text: text});
-					}
-				}
-
-			})
-			.always(function() {
-				self.dialogOpen = false;
-				self.element.focus();
-			});
 	}
 });

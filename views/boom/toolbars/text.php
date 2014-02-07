@@ -13,7 +13,7 @@
 				<?= BoomUI::button('hr', __('Insert horizontal rule'), array('data-wysihtml5-command' => 'insertHorizontalRule', 'class' => 'command')) ?>
 			<? endif ?>
 
-			<?= BoomUI::button('link', __('Insert a link'), array('data-wysihtml5-command' => 'createLink', 'class' => 'command')) ?>
+			<?= BoomUI::button('link', __('Insert a link'), array('data-wysihtml5-command' => 'createBoomLink', 'class' => 'command')) ?>
 
 			<? if ($mode == 'block'): ?>
 				<?= BoomUI::button('asset', __('Insert an asset'), array('data-wysihtml5-command' => 'insertBoomAsset', 'class' => 'command')) ?>
@@ -25,12 +25,5 @@
 		<? endif ?>
 	</div>
 
-	<div data-wysihtml5-dialog="createLink" style="display: none">
-		<label>
-			Link:
-			<input data-wysihtml5-dialog-field="href" value="http://" disabled="disabled">
-		</label>
-
-		<a href="#" id="b-editor-link">edit</a>
-	</div>
+	<?= BoomUI::button('edit', __('Edit link'), array('id' => 'b-editor-link', 'data-wysihtml5-dialog' => 'createBoomLink', 'style' => 'display:none')) ?>
 </div>

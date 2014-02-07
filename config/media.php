@@ -53,6 +53,6 @@ return array(
 		'wysihtml5/parser_rules/full.js',
 		'wysihtml5/parser_rules/inline.js',
 		'wysihtml5/commands/insertBoomAsset.js',
-		'wysihtml5/commands/insertBoomLink.js',
+		'wysihtml5/commands/createBoomLink.js',
 	),
 );
