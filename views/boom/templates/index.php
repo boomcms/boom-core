@@ -1,6 +1,6 @@
 	<?= View::factory('boom/header', array('title' =>	'Templates'))?>
 
-	<div id="b-topbar" class="ui-helper-clearfix ui-tabs ui-widget ui-widget-content ui-corner-all">
+	<div id="b-topbar" class="b-toolbar">
 		<?= Menu::factory('boom')->sort('priority') ?>
 		<?= BoomUI::button('accept', __('Save all'), array('id' => 'b-templates-save')) ?>
 	</div>
