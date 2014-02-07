@@ -1,4 +1,4 @@
-<div id="wysihtml5-toolbar" class="b-toolbar b-toolbar-slideshow">
+<div id="wysihtml5-toolbar" class="b-toolbar b-toolbar-vertical b-toolbar-slideshow">
 	<?= BoomUI::button('accept', __('Accept changes'), array('class' => 'b-accept')) ?>
 	<?= BoomUI::button('cancel', __('Discard changes'), array('class' => 'b-cancel')) ?>
 	<?= BoomUI::button('link', __('Edit slide link'), array('class' => 'b-link')) ?>

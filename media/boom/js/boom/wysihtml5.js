@@ -43,7 +43,7 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 			element;
 
 		self.mode = element.is('div') ? 'block' : 'inline';
-		self.mode = (element.is(':header') ||  element.is('.standFirst'))? 'text' : self.mode;
+		self.mode = (element.is(':header') ||  element.is('.standFirst') || element.is('.standfirst'))? 'text' : self.mode;
 		self.edited = new $.Deferred();
 		self.original_html = element.html();
 		self.dialogOpen = false;
@@ -143,6 +143,8 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 	remove : function(element) {
 		top.$('#wysihtml5-toolbar').remove();
 		$.boom.page.toolbar.show();
+
+		element.removeAttr('contenteditable');
 
 		this.instance = null;
 	},

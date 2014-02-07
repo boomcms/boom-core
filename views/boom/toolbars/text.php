@@ -1,4 +1,4 @@
-<div id="wysihtml5-toolbar" class="b-toolbar b-toolbar-text">
+<div id="wysihtml5-toolbar" class="b-toolbar b-toolbar-vertical b-toolbar-text">
 	<div class="commands">
 		<?= BoomUI::button('accept', __('Accept changes'), array('data-wysihtml5-action' => '', 'class' => 'action', 'id' => 'b-editor-accept')) ?>
 		<?= BoomUI::button('cancel', __('Discard changes'), array('data-wysihtml5-action' => '', 'class' => 'action', 'id' => 'b-editor-cancel')) ?>

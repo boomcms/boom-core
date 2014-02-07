@@ -4,6 +4,21 @@
 $.widget('boom.pageTitle', $.ui.chunk, {
 	max_length : 70,
 
+	saveOnBlur : false,
+
+	addBlurEvent : function() {
+		var element = this.element,
+			title = this;
+
+		this.saveOnBlur = true;
+
+		element.on('blur', function() {
+			if (title.saveOnBlur) {
+				$('body').editor('apply', element);
+			}
+		});
+	},
+
 	bind : function() {
 		$.ui.chunk.prototype.bind.call(this);
 
@@ -18,16 +33,16 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 			})
 			.on('click', function() {
 				element.focus();
-			})
-			.on('blur', function() {
-				$('body').editor('apply', element);
 			});
+
+		this.addBlurEvent();
 	},
 
 	_create_length_counter : function() {
 		top.$('body').append('<div id="b-title-length"><span></span></div>');
 
-		var offset = this.element.offset();
+		var offset = this.element.offset(),
+			title = this;
 
 		top.$('#b-title-length')
 			.css({
@@ -37,13 +52,21 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 
 		$('<p><a href="#" id="b-title-help">What is this?</a></p>')
 			.appendTo(top.$('#b-title-length'))
-			.on('click', 'a', function(e) {
+			.on('mousedown', 'a', function(e) {
 				e.preventDefault();
 
-				$.boom.dialog.open({
-					url : '/media/boom/html/help/title_length.html',
-					width : '70%'
-				});
+				title.toggleBlurEvent();
+			})
+			.on('keydown', function(e) {
+				if (e.which == 13) {
+					title.toggleBlurEvent();
+					title.openHelp();
+				}
+			})
+			.on('click', function(e) {
+				e.preventDefault();
+
+				title.openHelp();
 			});
 
 		this._update_length_counter(this.element.text().length);
@@ -103,6 +126,19 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 		return this.element.text() == 'Untitled';
 	},
 
+	openHelp : function() {
+		var title = this;
+
+		$.boom.dialog.open({
+			url : '/media/boom/html/help/title_length.html',
+			width : '600px',
+			destroy : function() {
+				title.toggleBlurEvent();
+				title.element.focus();
+			}
+		});
+	},
+
 	_save : function() {
 		this.options.currentPage.setTitle(this.element.html())
 			.done(function(response) {
@@ -120,6 +156,16 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 					$.boom.page.toolbar.status.set(response);
 				}
 			});
+	},
+
+	toggleBlurEvent : function() {
+		if (this.saveOnBlur) {
+			this.saveOnBlur = false;
+
+			this.element.unbind('blur');
+		} else {
+			this.addBlurEvent();
+		}
 	},
 
 	_update_length_counter : function(length) {
