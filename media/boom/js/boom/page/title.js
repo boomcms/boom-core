@@ -140,17 +140,27 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 	},
 
 	_save : function() {
-		this.options.currentPage.setTitle(this.element.html())
+		var title = this.element.text();
+
+		this.options.currentPage.setTitle(title)
 			.done(function(response) {
 				try {
 					var data = $.parseJSON(response);
 				} catch (e) {};
 
-				if (typeof data =='object' && data.location) {
-					$.boom.dialog.confirm('Page URL changed', "Because you've set a page title for the first time the URL of this page has been updated to reflect the new title.<br /><br />Would you like to reload the page using the new URL?<br /><br />You can continue editing the page without reloading.")
-						.done(function() {
-							top.location = data.location;
-						});
+				if (typeof data == 'object' && data.location) {
+					var history = new boomHistory();
+
+					if (history.isSupported()) {
+						history.replaceState({}, title, data.location);
+						$.boom.growl.show('Page title saved.');
+						$.boom.page.toolbar.status.set(response);
+					} else {
+						$.boom.dialog.confirm('Page URL changed', "Because you've set a page title for the first time the URL of this page has been updated to reflect the new title.<br /><br />Would you like to reload the page using the new URL?<br /><br />You can continue editing the page without reloading.")
+							.done(function() {
+								top.location = data.location;
+							});
+					}
 				} else {
 					$.boom.growl.show('Page title saved.');
 					$.boom.page.toolbar.status.set(response);
