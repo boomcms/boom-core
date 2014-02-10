@@ -25,6 +25,9 @@ function boomUrlEditor(page) {
 
 				if (is_primary) {
 					urlEditor.makePrimary($url);
+
+					var history = new boomHistory();
+					history.replaceState({}, top.window.document.title, $url.find('label').text());
 				}
 			})
 			.on('click', '.b-urls-remove', function(e) {

@@ -19,6 +19,7 @@ return array(
 		'boom/growl.js',
 		'boom/core.js',
 		'boom/history.js',
+		'boom/history2.js',
 		'boom/log.js',
 		'boom/dialog.js',
 	),
