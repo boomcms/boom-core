@@ -20,15 +20,6 @@ $.widget('ui.chunk',
 
 	edited : false,
 
-	/**
-	default config
-	@property options
-	*/
-	options: {
-		/** URL prefix for ajax calls */
-		urlPrefix:  '/cms/chunk'
-	},
-
 	bind : function() {
 		var self = this;
 
@@ -75,9 +66,10 @@ $.widget('ui.chunk',
 	},
 
 	remove : function() {
-		var self = this;
+		var self = this,
+			chunk = new boomChunk(this.options.currentPage.id, this.options.type, this.options.name);
 
-		return $.post(this._url('remove'), this._slot_data({}))
+		return chunk.delete()
 			.done(function(response) {
 				var data = $.parseJSON(response);
 
@@ -87,34 +79,14 @@ $.widget('ui.chunk',
 			});
 	},
 
-	/**
-	Get the base ajax URL for saving / removing the chunk data
-	@function
-	@returns {String} URL for this chunk's HTML
-	*/
-	_url : function(action) {
-		return this.options.urlPrefix +
-		'/' + this.options.type +
-		 '/' + action + '/' + this.options.currentPage.id;
-	},
-
-	/**
-	Get the POST data for a preview request
-	@function
-	@returns {Object} slot data including slotname and template
-	*/
-	_slot_data : function(data) {
-		return $.extend(data,
-			{
-				slotname : this.options.name,
-				template : this.options.template
-			});
-	},
-
 	_save : function() {
-		var self = this;
+		var self = this,
+			chunk = new boomChunk(this.options.currentPage.id, this.options.type, this.options.name),
+			data = this.getData();
 
-		return $.post(this._url('save'), this._slot_data(this.getData()))
+		data.template = this.options.template;
+
+		return chunk.save(this.getData())
 			.done(function(response) {
 				var data = $.parseJSON(response);
 

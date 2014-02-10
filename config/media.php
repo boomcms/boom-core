@@ -35,6 +35,7 @@ return array(
 		'boom/urlEditor.js',
 		'boom/textEditor.js',
 		'boom/wysihtml5.js',
+		'boom/chunk.js',
 		'boom/chunk/chunk.js',
 		'boom/chunk/text.js',
 		'boom/chunk/linkset.js',
