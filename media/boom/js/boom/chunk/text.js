@@ -16,6 +16,13 @@ $.widget('ui.chunkText', $.ui.chunk,
 
 	content : '',
 
+	_create : function() {
+		var element = this.element.find('.chunk-text');
+		this.element = (element.length)? $(element[0]) : this.element;
+
+		$.ui.chunk.prototype._create.call(this);
+	},
+
 	bind : function() {
 		var element = this.element;
 
