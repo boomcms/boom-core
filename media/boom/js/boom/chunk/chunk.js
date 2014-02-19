@@ -86,7 +86,7 @@ $.widget('ui.chunk',
 
 		data.template = this.options.template;
 
-		return chunk.save(this.getData())
+		return chunk.save(data)
 			.done(function(response) {
 				var data = $.parseJSON(response);
 
