@@ -11,7 +11,7 @@ $.widget('ui.chunkTag', $.ui.chunk,
 	{
 
 	_create : function() {
-		this.tag_id = this.element.attr('data-boom-tag_id');
+		this.tag_id = this.element.attr('data-boom-tag_id')? this.element.attr('data-boom-tag_id') : 0;
 
 		$.ui.chunk.prototype._create.call(this);
 	},
@@ -28,7 +28,7 @@ $.widget('ui.chunkTag', $.ui.chunk,
 			tag_id;
 
 		this.dialog = $.boom.dialog.open({
-			url: this.options.urlPrefix + '/tag/edit/' + this.options.currentPage.id + '?tag_id=' + this.tag_id,
+			url: '/cms/chunk/tag/edit/' + this.options.currentPage.id + '?tag_id=' + this.tag_id,
 			width: 400,
 			id: self.element[0].id + '-boom-dialog',
 			title: 'Select tag',
