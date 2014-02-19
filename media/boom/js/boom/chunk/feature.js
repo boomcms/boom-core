@@ -21,7 +21,7 @@ $.widget('ui.chunkFeature', $.ui.chunk,
 		var self = this;
 
 		this.dialog = $.boom.dialog.open({
-			url: this.options.urlPrefix + '/feature/edit/' + this.options.currentPage.id,
+			url: '/cms/chunk/feature/edit/' + this.options.currentPage.id,
 			width: 400,
 			id: self.element[0].id + '-boom-dialog',
 			title: 'Page feature',
