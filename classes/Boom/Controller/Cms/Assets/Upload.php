@@ -51,19 +51,15 @@ class Boom_Controller_Cms_Assets_Upload extends Controller_Cms_Assets
 			// Loop through the files uploaded under this input name.
 			foreach ( (array) $files['tmp_name'] as $i => $filename)
 			{
-				if (Boom_Asset::is_supported($files['type'][$i]))
+				$mime = File::mime($filename);
+				if (Boom_Asset::is_supported($mime))
 				{
-					// Set the common values.
 					$this->asset->values($common_values, array_keys($common_values));
 
-					// Set the title of the asset to the filename without the file extension.
 					$this->asset->title = pathinfo($files['name'][$i], PATHINFO_FILENAME);
 					$this->asset->filename = $files['name'][$i];
-
-					// Create the asset from the temporary file.
 					$this->asset->create_from_file($filename);
 
-					// Add the asset ID to the array of uploaded assets.
 					$asset_ids[] = $this->asset->id;
 
 					// Clear the model so that it can be re-used for the next iteration.
@@ -72,7 +68,7 @@ class Boom_Controller_Cms_Assets_Upload extends Controller_Cms_Assets
 				}
 				else
 				{
-					$errors[] = "File {$files['name'][$i]} is of an unsuported type: {$files['type'][$i]}";
+					$errors[] = "File {$files['name'][$i]} is of an unsuported type: {$mime}";
 				}
 			}
 
