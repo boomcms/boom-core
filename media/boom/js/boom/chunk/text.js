@@ -16,6 +16,13 @@ $.widget('ui.chunkText', $.ui.chunk,
 
 	content : '',
 
+	_create : function() {
+		var element = this.element.find('.chunk-text');
+		this.element = (element.length)? $(element[0]) : this.element;
+
+		$.ui.chunk.prototype._create.call(this);
+	},
+
 	bind : function() {
 		var element = this.element;
 
@@ -38,8 +45,6 @@ $.widget('ui.chunkText', $.ui.chunk,
 		var self = this;
 
 		$.boom.log('Text chunk slot edit');
-
-		var $content = this.element.find( '.slot-content');
 
 		var edit_content = function( $element ) {
 
@@ -71,34 +76,27 @@ $.widget('ui.chunkText', $.ui.chunk,
 				});
 		};
 
-		if ( $content.length ) {
-
-			edit_content( $content );
-			this.element
-				.find( '.slot-title' )
-				.attr( 'contenteditable', 'true' );
-
-		} else {
-
-			edit_content( this.element );
-		}
-
+		edit_content(this.element);
 	},
 
 	/**
 	Get the chunk HTML, escaped and cleaned.
 	*/
 	getData : function(){
-		var $content = this.element.find( '.slot-content');
+		var $content = this.element.find('.slot-content');
 
-		if ( $content.length ) {
+		if ($content.length) {
 			this.content = $content.html();
-			this.title = this.element.find( '.slot-title').text();
+			this.title = this.element.find('.slot-title').text();
 		} else {
 			this.title = null;
 			this.content = this.element.html();
 		}
 
-		return { title : this.title, text : this.content, is_block : this.element.attr('data-boom-is-block') };
+		return {
+			title : this.title,
+			text : this.content,
+			is_block : this.element.attr('data-boom-is-block')
+		};
 	}
 });
