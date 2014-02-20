@@ -38,10 +38,12 @@ class Boom_Model_Page_URL extends ORM
 	 * This causes problems with legacy URLs for Model_Page::url() where a Model_Page_URL object is instantiated, but not saved.
 	 * 
 	 */
-	public function clean_location()
+	public static function clean_location($location)
 	{
-		$this->location = preg_replace('![^'.preg_quote('-').'\/\pL\pN\s]+!u', '', $this->location); // Remove all characters that are not the separator, letters, numbers,
-		$this->location = preg_replace('!['.preg_quote('-').'\s]+!u', '-', $this->location); // Replace all separator characters and whitespace by a single separator
+		$location = preg_replace('![^'.preg_quote('-').'\/\pL\pN\s]+!u', '', $location); // Remove all characters that are not the separator, letters, numbers,
+		$location = preg_replace('!['.preg_quote('-').'\s]+!u', '-', $location); // Replace all separator characters and whitespace by a single separator
+
+		return $location;
 	}
 
 	/**
@@ -55,7 +57,7 @@ class Boom_Model_Page_URL extends ORM
 	 */
 	public function create(\Validation $validation = NULL)
 	{
-		$this->clean_location();
+		$this->location = static::clean_location($this->location);
 
 		parent::create($validation);
 
