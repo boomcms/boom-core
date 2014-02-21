@@ -28,7 +28,6 @@ class Boom_Model_Page_URL extends ORM
 		return URL::site($this->location, Request::$current);
 	}
 
-
 	/**
 	 * Calls [Boom_Model_Page_URL::make_primary()] when a page URL is created which has the is_primary property set to true.
 	 * This removes the need to call is_primary() after creating a URL.
