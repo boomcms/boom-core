@@ -4,8 +4,6 @@
  *
  * @package	BoomCMS
  * @category	Models
- * @author	Rob Taylor
- * @copyright	Hoop Associates
  */
 class Boom_Model_Page_URL extends ORM
 {
@@ -30,72 +28,22 @@ class Boom_Model_Page_URL extends ORM
 		return URL::site($this->location, Request::$current);
 	}
 
-	/**
-	 * This is called from Model_Page_URL::create();
-	 *
-	 * This function essentially does the same as ORM::filters().
-	 * However, filters are run when set() is called for a column.
-	 * This causes problems with legacy URLs for Model_Page::url() where a Model_Page_URL object is instantiated, but not saved.
-	 * 
-	 */
-	public function clean_location()
-	{
-		$this->location = preg_replace('![^'.preg_quote('-').'\/\pL\pN\s]+!u', '', $this->location); // Remove all characters that are not the separator, letters, numbers,
-		$this->location = preg_replace('!['.preg_quote('-').'\s]+!u', '-', $this->location); // Replace all separator characters and whitespace by a single separator
-	}
 
 	/**
 	 * Calls [Boom_Model_Page_URL::make_primary()] when a page URL is created which has the is_primary property set to true.
 	 * This removes the need to call is_primary() after creating a URL.
-	 *
-	 * @uses Boom_Model_Page_URL::is_primary()
 	 *
 	 * @param \Validation $validation
 	 * @return \Boom_Model_Page_URL
 	 */
 	public function create(\Validation $validation = NULL)
 	{
-		$this->clean_location();
-
 		parent::create($validation);
 
-		// If the is_primary property is true.
-		if ($this->is_primary)
-		{
-			// Call Boom_Model_Page_URL::make_primary()
-			// to ensure that this is the only primary URL for this page.
-			$this->make_primary();
-		}
+		// Ensure that this is the only primary URL for this page.
+		$this->is_primary AND $this->make_primary();
 
-		// Return the current object.
 		return $this;
-	}
-
-	/**
-	 * Checks that the URL is unique before saving.
-	 * This can't be done by a unique index on the table as the location column is too long to be indexed.
-	 *
-	 * @return boolean
-	 */
-	public function location_available($location)
-	{
-		// Prepare a query to determine when the location is already in use.
-		$query = DB::select('id')
-			->from('page_urls')
-			->where('location', '=', $location)
-			->limit(1);
-
-		// If the current object has already been saved then make sure we ignore it from the query.
-		if ($this->_saved OR $this->_loaded)
-		{
-			$query->where('id', '!=', $this->id);
-		}
-
-		// Run the query.
-		$exists = $query->execute($this->_db);
-
-		// Were there any results?
-		return ($exists->count() == 0);
 	}
 
 	/**
@@ -111,7 +59,7 @@ class Boom_Model_Page_URL extends ORM
 			),
 			'location' => array(
 				array('max_length', array(':value', 2048)),
-				array(array($this, 'location_available')),
+				array(array('Page_URL', 'is_available')),
 			),
 		);
 	}
@@ -120,12 +68,7 @@ class Boom_Model_Page_URL extends ORM
 	{
 		return array(
 			'location' => array(
-				array('trim'),
-				array('strtolower'),
-				array('strip_tags'),								// Make sure there's no HTML in there.
-				array('parse_url', array(':value', PHP_URL_PATH)),		// Remove the hostname
-				array('trim', array(':value', '/')),					// Remove '/' from the beginning or end of the link
-				array('preg_replace', array('|/+|', '/', ':value')),		// Remove duplicate forward slashes.
+				array(array('Page_URL', 'sanitise'))
 			),
 		);
 	}

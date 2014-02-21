@@ -45,7 +45,7 @@ class Boom_Controller_Cms_Page extends Boom_Controller
 		// This needs to go into a class of some sort, not sure where though.
 		// Don't want it as part of Page_Creator because we sometimes want to create the default URLs in this format.
 		$prefix = ($this->page->children_url_prefix)? $this->page->children_url_prefix : $this->page->url()->location;
-		$url = URL::generate($prefix, $new_page->version()->title);
+		$url = Page_URL::from_title($prefix, $new_page->version()->title);
 
 		ORM::factory('Page_URL')
 			->values(array(
