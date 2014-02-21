@@ -104,7 +104,7 @@ class Boom_Controller_Cms_Page_Version_Save extends Controller_Cms_Page_Version
 			// Create a new primary link for the page.
 			$link = ORM::factory('Page_URL')
 				->values(array(
-					'location'	=>	Page_URL::from_title($this->page->parent()->url()->location, $this->request->post('title')),
+					'location'	=>	Page_URL::from_title($this->page->parent()->url()->location, URL::title($this->request->post('title'))),
 					'page_id'	=>	$this->page->id,
 					'is_primary'	=>	TRUE,
 				))
