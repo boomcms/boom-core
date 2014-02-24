@@ -5,7 +5,7 @@
  * @category	Models
  *
  */
-class Boom_Model_Chunk_Tag extends Model_Chunk
+class Boom_Model_Chunk_Tag extends ORM
 {
 	protected $_belongs_to = array(
 		'target' => array('model' => 'Tag', 'foreign_key' => 'tag_id'),

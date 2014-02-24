@@ -5,7 +5,7 @@
  * @category	Models
  *
  */
-class Boom_Model_Chunk_Text extends Model_Chunk
+class Boom_Model_Chunk_Text extends ORM
 {
 	protected $_table_columns = array(
 		'text'		=>	'',

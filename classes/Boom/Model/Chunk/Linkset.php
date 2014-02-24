@@ -6,7 +6,7 @@
  * @category	Models
  *
  */
-class Boom_Model_Chunk_Linkset extends Model_Chunk
+class Boom_Model_Chunk_Linkset extends ORM
 {
 	protected $_has_many = array(
 		'links' => array('model' => 'Chunk_Linkset_Link', 'foreign_key' => 'chunk_linkset_id'),
@@ -23,17 +23,18 @@ class Boom_Model_Chunk_Linkset extends Model_Chunk
 
 	protected $_table_name = 'chunk_linksets';
 
-	public function copy()
+	public function copy($from_version_id)
 	{
-		$new = parent::copy();
+		$subquery = DB::select(DB::expr($this->id), 'target_page_id', 'url', 'chunk_linkset_links.title')
+			->from('chunk_linkset_links')
+			->join('chunk_linksets', 'inner')
+			->on('chunk_linksets.id', '=', 'chunk_linkset_links.chunk_linkset_id')
+			->where('slotname', '=', $this->slotname)
+			->where('page_vid', '=', $from_version_id);
 
-		$links = array();
-		foreach ($this->links() as $l)
-		{
-			$links[] = $l->object();
-		}
-
-		return $new->links($links);
+		DB::insert('chunk_linkset_links', array('chunk_linkset_id', 'target_page_id', 'url', 'title'))
+			->select($subquery)
+			->execute($this->_db);
 	}
 
 	public function create(Validation $validation = NULL)

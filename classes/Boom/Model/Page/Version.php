@@ -107,30 +107,8 @@ class Boom_Model_Page_Version extends ORM
 	 */
 	public function copy_chunks(Model_Page_Version $from_version, array $exclude = NULL)
 	{
-		foreach (Chunk::$types as $type)
-		{
-			$model = 'Chunk_'.ucfirst($type);
-			$query = ORM::factory($model)
-				->where('page_vid', '=', $from_version->id);
-
-			if (isset($exclude[$type]) AND ! empty($exclude[$type]))
-			{
-				$query->where('slotname', 'not in', $exclude[$type]);
-			}
-
-			$chunks = $query->find_all();
-
-			foreach ($chunks as $chunk)
-			{
-				try
-				{
-					$chunk
-					->copy()
-					->set('page_vid', $this->id)
-					->create();
-				} catch (ORM_Validation_Exception $e) {}
-			}
-		}
+		$copier = new Page_ChunkCopier($from_version, $this, $exclude);
+		$copier->copy_all();
 
 		return $this;
 	}
