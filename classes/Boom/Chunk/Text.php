@@ -221,6 +221,9 @@ class Boom_Chunk_Text extends Chunk
 			// The second regex matches all other images and links to the image as it appears in the img tag.
 			$text = preg_replace('~(?<!href="|">)<img.*?src=["\']/asset/view/(\d+).*?["\'].*?>(?!\<\/a\>)~i', '<a href="/asset/view/${1}" class="b-image">${0}</a>', $text);
 			$text = preg_replace('~(?<!href="|">)<img.*?src=["\'](.*?)["\'].*?>(?!\<\/a\>)~i', '<a href="${1}" class="b-image">${0}</a>', $text);
+
+			// Storify embed.
+			$text = preg_replace("/\<p\>(https?\:\/\/(?:www\.)?storify\.com\/(?:[^\/]+)\/(?:[^\/]+))\/?\<\/p\>/i", '<script type="text/javascript" src="${1}.js"></script>', $text);
 		}
 
 		return $text;
