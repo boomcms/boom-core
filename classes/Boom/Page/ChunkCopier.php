@@ -44,7 +44,8 @@ class Boom_Page_ChunkCopier
 			->copy_linksets()
 			->copy_slideshows()
 			->copy_text()
-			->copy_timestamps();
+			->copy_timestamps()
+			->copy_tags();
 	}
 	
 	public function copy_assets()
@@ -82,6 +83,11 @@ class Boom_Page_ChunkCopier
 		}
 
 		return $this;
+	}
+
+	public function copy_tags()
+	{
+		return $this->_do_simple_copy('tag');
 	}
 
 	public function copy_text()
