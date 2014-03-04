@@ -64,7 +64,7 @@ abstract class Boom_Asset_Core
 				return 'video';
 
 			case static::PDF:
-				return 'pdf';
+				return 'PDF';
 
 			case static::TIFF:
 				return 'tiff';
