@@ -39,7 +39,7 @@ class Boom_Chunk_Text extends Chunk
 	 *
 	 * @var string
 	 */
-	public static $vimeo_embed = '<iframe width=":width" height=":height" src="http://player.vimeo.com/video/:video_id" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>';
+	public static $vimeo_embed = '<iframe width=":width" height=":height" src="//player.vimeo.com/video/:video_id" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>';
 
 	protected function _add_html($text)
 	{
