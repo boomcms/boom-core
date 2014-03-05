@@ -157,12 +157,14 @@ class Boom_Chunk_Text extends Chunk
 		elseif (strpos($url['host'], 'vimeo') !== FALSE AND isset($url['path']))
 		{
 			// Vimeo video
-			$video_id = str_replace("/", "", $url['path']);
+			$video_id = preg_replace("|\D+|", "", $url['path']);
 			$embed_html = Chunk_Text::$vimeo_embed;
 		}
 
 		if (isset($video_id))
 		{
+			$video_id = trim($video_id);
+
 			// Add the video ID to the embed code.
 			$text = str_replace(':video_id', $video_id, $embed_html);
 
