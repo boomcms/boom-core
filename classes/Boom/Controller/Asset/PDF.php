@@ -9,7 +9,7 @@
  * @copyright		Hoop Associates
  *
  */
-class Boom_Controller_Asset_Pdf extends Controller_Asset
+class Boom_Controller_Asset_PDF extends Controller_Asset
 {
 	public function action_view()
 	{
