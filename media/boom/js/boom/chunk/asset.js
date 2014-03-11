@@ -248,13 +248,15 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 			});
 		}
 
-		self.elements.asset
-			.on( 'click', function(event) {
-				event.preventDefault();
+		if (this.element != self.elements.asset) {
+			self.elements.asset
+				.on( 'click', function(event) {
+					event.preventDefault();
 
-				self._edit_asset(self.elements.asset);
-				return false;
-			});
+					self._edit_asset(self.elements.asset);
+					return false;
+				});
+		}
 
 		if (self.elements.link.length) {
 			self.elements.link
