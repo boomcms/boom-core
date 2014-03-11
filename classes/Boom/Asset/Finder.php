@@ -128,14 +128,22 @@ class Boom_Asset_Finder
 	 * @param mixed $type
 	 * @return \Boom_Asset_Finder
 	 */
-	public function by_type($type)
+	public function by_type($types)
 	{
-		if ( ! ctype_digit($type))
+		if ( ! is_array($types))
 		{
-			$type = constant('Boom_Asset::' . strtoupper($type));
+			$types = array($types);
 		}
 
-		$this->_query->where('assets.type', '=', $type);
+		foreach ($types as & $type)
+		{
+			if ( ! ctype_digit($type))
+			{
+				$type = constant('Boom_Asset::' . strtoupper($type));
+			}
+		}
+
+		$this->_query->where('assets.type', 'in', $types);
 
 		return $this;
 	}
