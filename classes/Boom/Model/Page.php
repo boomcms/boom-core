@@ -606,42 +606,8 @@ class Boom_Model_Page extends Model_Taggable
 	 */
 	public function with_current_version(Editor $editor, $exclude_deleted = TRUE)
 	{
-		$current_version = DB::select(array(DB::expr('max(id)'), 'id'), 'page_id')
-			->from('page_versions')
-			->where('stashed', '=', 0)
-			->group_by('page_id');
-
-		if ($editor->state_is(Editor::DISABLED))
-		{
-			$current_version
-				->where('embargoed_until', '<=', DB::expr($editor->live_time()))
-				->where('published', '=', DB::expr(1));
-		}
-
-		$this
-			->join(array($current_version, 'v2'), 'inner')
-			->on('page.id', '=', 'v2.page_id')
-			->join(array('page_versions', 'version'), 'inner')
-			->on('page.id', '=', 'version.page_id')
-			->on('v2.id', '=', 'version.id');
-
-		if ($exclude_deleted)
-		{
-			$this->where('version.page_deleted', '=', FALSE);
-		}
-
-		// Logged out view?
-		if ($editor->state_is(Editor::DISABLED))
-		{
-			// Get the most recent published version for each page.
-			$this
-				->where('visible', '=', TRUE)
-				->where('visible_from', '<=', $editor->live_time())
-				->and_where_open()
-					->where('visible_to', '>=', $editor->live_time())
-					->or_where('visible_to', '=', 0)
-				->and_where_close();
-		}
+		$page_query = new Page_Query($this, $editor);
+		$page_query->execute($exclude_deleted);
 
 		// Add the version columns to the query.
 		$this->_select_version();
