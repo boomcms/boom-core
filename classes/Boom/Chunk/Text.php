@@ -32,7 +32,7 @@ class Boom_Chunk_Text extends Chunk
 	 *
 	 * @var string
 	 */
-	public static $youtube_embed = '<iframe width=":width" height=":height" src="http://www.youtube.com/embed/:video_id" frameborder="0" allowfullscreen></iframe>';
+	public static $youtube_embed = '<iframe width=":width" height=":height" src="http://www.youtube.com/embed/:video_id?rel=0" frameborder="0" allowfullscreen></iframe>';
 
 	/**
 	 * Embed HTML for a Vimeo video.
