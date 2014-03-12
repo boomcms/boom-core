@@ -45,10 +45,6 @@ class Boom_Model_Page_URL extends ORM
 		return $this;
 	}
 
-	/**
-	* ORM Validation rules
-	* @link http://kohanaframework.org/3.2/guide/orm/examples/validation
-	*/
 	public function rules()
 	{
 		return array(
@@ -58,7 +54,7 @@ class Boom_Model_Page_URL extends ORM
 			),
 			'location' => array(
 				array('max_length', array(':value', 2048)),
-				array(array('Page_URL', 'is_available')),
+				array(array('Page_URL', 'is_available'), array(':value', $this->page_id)),
 			),
 		);
 	}

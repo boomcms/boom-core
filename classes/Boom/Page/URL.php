@@ -32,9 +32,13 @@ abstract class Boom_Page_URL
 	 *
 	 * @param string $url
 	 */
-	public static function is_available($url)
+	public static function is_available($url, $ignore_page = NULL)
 	{
-		return ! ORM::factory('Page_URL', array('location' => $url))->loaded();
+		return ! ORM::factory('Page_URL')
+			->where('location', '=', $url)
+			->where('page_id', '!=', $ignore_page)
+			->find()
+			->loaded();
 	}
 
 	/**
