@@ -21,7 +21,7 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 
 		this.originals = this.element.children().clone(true);
 
-		if (self.elements.caption.length || self.elements.link.length) {
+		if (self.elements.caption.length || self.elements.link.length || self.elements.title.length) {
 			this._build_ui();
 		} else {
 			self._edit_asset(self.elements.asset);
@@ -149,6 +149,31 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 	},
 
 	/**
+	Edit a title
+	*/
+	_edit_title : function($title) {
+		var edited = new $.Deferred();
+
+		$title
+			.attr('contentEditable', 'true')
+			.on('focus mouseover', function(){
+				$(this).css('border', '1px solid black');
+			})
+			.on('blur mouseout', function() {
+				$(this).removeAttr( 'style' );
+			})
+			.on('blur', function() {
+				edited.resolve();
+			})
+			.on('keyup click', function(e) {
+				e.stopPropagation();
+				e.preventDefault();
+			});
+
+		return edited;
+	},
+
+	/**
 	 @function
 	 */
 	 _get_elements: function() {
@@ -163,6 +188,7 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 		elements.asset = this.element.find('.asset-target');
 		elements.link = this.element.find('.asset-link');
 		elements.caption = this.element.find('.asset-caption');
+		elements.title = this.element.find('.asset-title');
 
 		if (! elements.asset.length) {
 			if (img.length && regExp.test(img.attr('src'))) {
@@ -190,7 +216,7 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 	_get_asset_details: function(){
 		var asset = {
 			asset_id : this.element.attr('data-boom-target'),
-			title : null,
+			title : this.elements.title.text(),
 			caption : this.elements.caption.text(),
 			url : this.elements.link.attr('href')
 		};
@@ -207,19 +233,15 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 		var self = this;
 
 		if (self.edited) {
-
-			$.boom.dialog.confirm(
-				'Cancel changes',
-				'Cancel changes to this asset?'
-			)
-			.done( function(){
-				self.element
-					.children()
-					.remove()
-					.end()
-					.append( self.originals );
-				self.destroy();
-			});
+			$.boom.dialog.confirm('Cancel changes', 'Cancel changes to this asset?')
+				.done(function() {
+					self.element
+						.children()
+						.remove()
+						.end()
+						.append(self.originals);
+					self.destroy();
+				});
 
 		} else {
 			self.destroy();
@@ -243,6 +265,17 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 					._edit_caption( $( this ) )
 					.done( function(){
 						self.asset.caption = self.element.find( '.asset-caption' ).text();
+						self.edited = true;
+					});
+			});
+		}
+
+		if (self.elements.title.length) {
+			self.elements.title.each(function() {
+				self
+					._edit_title($(this))
+					.done(function() {
+						self.asset.title = self.element.find('.asset-title').text();
 						self.edited = true;
 					});
 			});
@@ -317,7 +350,7 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 
 		return {
 			asset_id : rid,
-			title : null,
+			title : this.asset.title,
 			caption : this.asset.caption,
 			url : this.asset.url
 		};
