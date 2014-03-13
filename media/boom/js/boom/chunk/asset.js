@@ -360,5 +360,13 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 		this._remove_ui();
 
 		$.ui.chunk.prototype.destroy.call(this);
+	},
+
+	remove : function() {
+		this.destroy();
+
+		$.ui.chunk.prototype.remove.call(this);
+
+		$.boom.page.toolbar.minimise();
 	}
 });
