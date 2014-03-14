@@ -144,7 +144,7 @@ class Boom_Model_Chunk_Text extends Model_Chunk
 
 	public function unmunge_image_links_with_only_asset_id($text)
 	{
-		return preg_replace('|hoopdb://image/(\d+)([\'"])|', '/asset/view/$1/400$2', $text);
+		return preg_replace('|hoopdb://image/(\d+)([\'"])|', '/asset/view/$1$2', $text);
 	}
 
 	public function unmunge_image_links_with_multiple_params($text)
