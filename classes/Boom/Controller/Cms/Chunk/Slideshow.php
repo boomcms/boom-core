@@ -12,8 +12,10 @@ class Boom_Controller_Cms_Chunk_Slideshow extends Boom_Controller_Cms_Chunk
 
 	public function action_edit()
 	{
+		$chunk = Chunk::find('slideshow', $this->request->query('slotname'), $this->page->version());
+
 		$this->template = View::factory('boom/editor/slot/slideshow', array(
-			'page'	=>	$this->page,
+			'slides' => $chunk->slides(),
 		));
 	}
 

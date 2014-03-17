@@ -47,6 +47,7 @@ $.widget( 'boom.pageEditor', {
 					id : $this.data('boom-target')? parseInt($this.data('boom-target'), 10) : 0,
 					page : $this.data('boom-page'),
 					currentPage : self.page,
+					chunkId : $this.data('boom-chunk-id')
 				});
 			})
 			.end()

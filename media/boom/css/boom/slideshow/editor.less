@@ -1,0 +1,63 @@
+#b-slideshow-editor {
+	overflow: visible;
+
+	p, li {
+		.text-default;
+	}
+
+	p {
+		margin-bottom: 0;
+	}
+
+	ul {
+		margin: 0;
+	}
+
+	.container {
+		overflow: hidden;
+		width: 100%;
+
+		section {
+			float: left;
+			width: 50%;
+			.box-sizing;
+			padding: 0 1em;
+
+			h1 {
+				margin-top: 0;
+				.text-large;
+			}
+		}
+	}
+
+	&-slides {
+		list-style-type: none;
+		overflow: hidden;
+		padding-left: 0;
+
+		li {
+			float: left;
+			margin: 0.5em;
+			height: 5em;
+			overflow: hidden;
+
+			&:first-of-type {
+				margin-left: 0;
+			}
+
+			img {
+				height: 100%;
+				width: auto;
+			}
+		}
+	}
+
+	&-add {
+		margin-left: 2em;
+	}
+
+	&-buttons {
+		position: absolute;
+		bottom: -4em;
+	}
+}
