@@ -20,8 +20,10 @@ $.widget('ui.chunkSlideshow', $.ui.chunk,
 		editor
 			.open()
 			.done(function(slides) {
-				if (typeof slides === 'undefined') {
+				if ( ! slides || ! slides.length) {
 					chunk.remove();
+				} else {
+					chunk._save(slides);
 				}
 			});
 	},

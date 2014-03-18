@@ -19,14 +19,56 @@
 		width: 100%;
 
 		section {
-			float: left;
-			width: 50%;
 			.box-sizing;
+			display: table-cell;
 			padding: 0 1em;
+			border-collapse: collapse;
+
+			&:first-of-type {
+				width: 41%;
+				border-right: 1px solid @darkest-grey;
+			}
+
+			&:nth-of-type(2) {
+				width: 55%;
+				padding-left: 4%;
+			}
 
 			h1 {
 				margin-top: 0;
 				.text-large;
+			}
+		}
+	}
+
+	&-current {
+		form {
+			display: none;
+
+			img {
+				max-width: 100%;
+				max-height: 200px;
+				margin: 1em 0 2em 0;
+			}
+
+			label {
+				float: none;
+
+				p, input {
+					display: inline-block;
+				}
+
+				p {
+					width: 5em;
+				}
+
+				input {
+					width: 20em;
+				}
+			}
+
+			button {
+				margin-top: 2em;
 			}
 		}
 	}
@@ -55,7 +97,7 @@
 					top: -100%;
 
 					&:checked + img {
-						border: 1px solid red;
+						border: 1px solid @darkest-grey;
 					}
 				}
 
