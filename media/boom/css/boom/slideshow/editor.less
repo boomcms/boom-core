@@ -1,5 +1,6 @@
 #b-slideshow-editor {
 	overflow: visible;
+	padding: 1em 0;
 
 	p, li {
 		.text-default;
@@ -37,17 +38,34 @@
 
 		li {
 			float: left;
-			margin: 0.5em;
-			height: 5em;
+			height: 6em;
 			overflow: hidden;
 
 			&:first-of-type {
 				margin-left: 0;
 			}
 
-			img {
+			label {
 				height: 100%;
 				width: auto;
+				position: relative;
+
+				input[type=radio] {
+					position: absolute;
+					top: -100%;
+
+					&:checked + img {
+						border: 1px solid red;
+					}
+				}
+
+				img {
+					height: 100%;
+					width: auto;
+					padding: 0.5em;
+					border: 1px solid transparent;
+					.box-sizing;
+				}
 			}
 		}
 	}

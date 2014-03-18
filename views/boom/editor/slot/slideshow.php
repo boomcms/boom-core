@@ -13,7 +13,10 @@
 		<ol id="b-slideshow-editor-slides">
 			<? foreach ($slides as $slide): ?>
 				<li>
-					<a href="#" data-slide="<?= $slide->id ?>"><img src="<?= Route::url('asset', array('id' => $slide->asset_id)) ?>" /></a>
+					<label>
+						<input type="radio" value="<?= $slide->id ?>" name="slide" data-title="<?= $slide->title ?>" data-url="<?= $slide->url ?>" data-caption="<?= $slide->caption ?>" />
+						<img src="<?= Route::url('asset', array('id' => $slide->asset_id)) ?>" />
+					</label>
 				</li>
 			<? endforeach ?>
 		</ol>
