@@ -43,7 +43,7 @@
 				<p>Caption</p>
 				<input type="text" name="caption" />
 			</label>
-			
+
 			<label>
 				<p>Link</p>
 				<input type="text" name="url" />
