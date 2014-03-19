@@ -41,10 +41,14 @@ $.widget('ui.chunkSlideshow', $.ui.chunk,
 		return {slides : this.slides};
 	},
 
-	_update_html : function(html) {
-		$.ui.chunk.prototype._update_html.call(this, html);
+	_run_script : function(script) {
+		top.slideshowScript = new Function(script);
+		top.slideshowScript();
+	},
 
-		var slideshowScript = new Function($(html).find('script').text());
-		slideshowScript();
+	_update_html : function(html) {
+		$.boom.dialog.alert('', 'Your changes have been saved and the page will now reload to update the slideshow', function() {
+			top.location.reload();
+		});
 	}
 });

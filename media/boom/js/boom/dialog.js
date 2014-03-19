@@ -378,7 +378,8 @@ $.extend($.boom,
 				buttons: [
 					{
 						text : 'Okay',
-						icons : { primary : 'ui-icon-boom-accept' },
+						icons : { primary : 'b-button-icon-accept b-button-icon' },
+						class : 'b-button',
 						click : function() {
 
 							self.destroy( $(this) );
