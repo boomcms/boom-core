@@ -26,7 +26,7 @@ class Boom_SiteText
 
 	protected function _do_oembed($text)
 	{
-		require Kohana::find_file('vendor', 'embera/Lib/Embera/Autoload');
+		require_once Kohana::find_file('vendor', 'embera/Lib/Embera/Autoload');
 		$embera = new \Embera\Embera();
 		return $embera->autoEmbed($text);
 	}
