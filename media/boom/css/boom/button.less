@@ -22,11 +22,32 @@ html.boom .b-button, .b-button {
 		background-color: #555;
 	}
 
+	&.b-button-withtext {
+		width: auto;
+
+		.b-button-text {
+			text-indent: 0;
+			margin-left: 3em;
+		}
+	}
+
+	&.b-button-textonly {
+		width: auto;
+
+		.b-button-icon {
+			display: none;
+		}
+
+		.b-button-text {
+			text-indent: 0;
+		}
+	}
+
 	.b-button-text {
 		display: block;
 		padding: 0.4em;
 		text-indent: -9999999px;
-		color: #fff;
+		color: @white;
 	}
 
 	.b-button-icon {

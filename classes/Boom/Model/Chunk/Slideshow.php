@@ -7,7 +7,7 @@
  * @category	Models
  *
  */
-class Boom_Model_Chunk_Slideshow extends Model_Chunk
+class Boom_Model_Chunk_Slideshow extends ORM
 {
 	/**
 	* Properties to create relationships with Kohana's ORM
@@ -27,17 +27,18 @@ class Boom_Model_Chunk_Slideshow extends Model_Chunk
 
 	protected $_table_name = 'chunk_slideshows';
 
-	public function copy()
+	public function copy($from_version_id)
 	{
-		$new = parent::copy();
+		$subquery = DB::select(DB::expr($this->id), 'asset_id', 'url', 'caption', 'chunk_slideshow_slides.title')
+			->from('chunk_slideshow_slides')
+			->join('chunk_slideshows', 'inner')
+			->on('chunk_slideshows.id', '=', 'chunk_slideshow_slides.chunk_id')
+			->where('slotname', '=', $this->slotname)
+			->where('page_vid', '=', $from_version_id);
 
-		$slides = array();
-		foreach ($this->slides() as $s)
-		{
-			$slides[] = $s->object();
-		}
-
-		return $new->slides($slides);
+		DB::insert('chunk_slideshow_slides', array('chunk_id', 'asset_id', 'url', 'caption', 'title'))
+			->select($subquery)
+			->execute($this->_db);
 	}
 
 	public function create(Validation $validation = NULL)
@@ -83,6 +84,8 @@ class Boom_Model_Chunk_Slideshow extends Model_Chunk
 			{
 				if ( ! $slide instanceof Model_Chunk_Slideshow_Slide AND isset($slide['asset_id']) AND $slide['asset_id'] > 0)
 				{
+					$slide['url'] = (isset($slide['page']) AND $slide['page'] > 0)? $slide['page'] : $slide['url'];
+
 					$slide = ORM::factory('Chunk_Slideshow_Slide')
 						->values( (array) $slide);
 				}

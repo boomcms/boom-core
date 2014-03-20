@@ -43,6 +43,14 @@ class Boom_Model_Chunk_Slideshow_Slide extends ORM
 	}
 
 	/**
+	 * @return Link
+	 */
+	public function get_link()
+	{
+		return Link::factory($this->url);
+	}
+
+	/**
 	 * Whether the current slide has a link associated with it.
 	 *
 	 * @return boolean

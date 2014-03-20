@@ -5,7 +5,7 @@
  * @category	Models
  *
  */
-class Boom_Model_Chunk_Text extends Model_Chunk
+class Boom_Model_Chunk_Text extends ORM
 {
 	protected $_table_columns = array(
 		'text'		=>	'',
@@ -14,6 +14,7 @@ class Boom_Model_Chunk_Text extends Model_Chunk
 		'slotname'	=>	'',
 		'page_vid' => '',
 		'is_block'	=>	'',
+		'site_text' => '',
 	);
 
 	protected $_table_name = 'chunk_texts';
@@ -58,6 +59,8 @@ class Boom_Model_Chunk_Text extends Model_Chunk
 
 		// Find which assets are linked to within the text chunk.
 		preg_match_all('~hoopdb://((image)|(asset))/(\d+)~', $this->_object['text'], $matches);
+
+		$this->site_text = (string) new SiteText($this->text);
 
 		// Create the text chunk.
 		parent::create($validation);
@@ -161,7 +164,7 @@ class Boom_Model_Chunk_Text extends Model_Chunk
 
 				if ($asset->loaded())
 				{
-					$text = "<p class='inline-asset'><a class='download ".Boom_Asset::type($asset->type)."' href='/asset/view/{$asset->id}.{$asset->get_extension()}'>Download {$asset->title}</a>";
+					$text = "<p class='inline-asset'><a class='download ".strtolower(Boom_Asset::type($asset->type))."' href='/asset/view/{$asset->id}.{$asset->get_extension()}'>Download {$asset->title}</a>";
 
 					if (Editor::instance()->state_is(Editor::DISABLED))
 					{
@@ -185,5 +188,12 @@ class Boom_Model_Chunk_Text extends Model_Chunk
 		);
 
 		return $text;
+	}
+
+	public function update(\Validation $validation = NULL)
+	{
+		$this->site_text = new SiteText($this->text);
+
+		parent::update($validation);
 	}
 }

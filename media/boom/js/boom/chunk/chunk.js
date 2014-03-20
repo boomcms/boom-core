@@ -36,7 +36,7 @@ $.widget('ui.chunk',
 
 				return false;
 			})
-			.on( 'keydown', function(event) {
+			.on('keydown', function(event) {
 				switch(event.which) {
 					case 13:
 						self.edit()
@@ -60,7 +60,18 @@ $.widget('ui.chunk',
 	@function
 	*/
 	_update_html : function(html) {
-		this.element.html($(html).html());
+		var $html = $(html);
+		this.element.html($html.html());
+
+		// Remove existing attributes
+		for (var i = 0, attrs = this.element[0].attributes, l = attrs.length; i < l; i++) {
+			this.element[0].setAttribute(attrs.item(i).nodeName, null);
+		}
+
+		// Copy all the attributes from the new html to the current element
+		for (var i = 0, attrs = $html[0].attributes, l = attrs.length; i < l; i++) {
+			this.element[0].setAttribute(attrs.item(i).nodeName, attrs.item(i).nodeValue);
+		}
 
 		this.bind();
 	},

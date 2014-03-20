@@ -37,16 +37,17 @@ $.widget( 'boom.pageEditor', {
 			.each(function(){
 				var $this = $(this);
 
-				var type = $this.attr('data-boom-chunk');
+				var type = $this.data('boom-chunk');
 				var widgetName = 'chunk' + type.ucfirst();
 
 				$this[widgetName]({
 					type : type,
-					name : $this.attr('data-boom-slot-name'),
-					template : $this.attr('data-boom-slot-template'),
-					id : $this.attr('data-boom-target')? parseInt($this.attr('data-boom-target'), 10) : 0,
-					page : $this.attr( 'data-boom-page' ),
+					name : $this.data('boom-slot-name'),
+					template : $this.data('boom-slot-template'),
+					id : $this.data('boom-target')? parseInt($this.data('boom-target'), 10) : 0,
+					page : $this.data('boom-page'),
 					currentPage : self.page,
+					chunkId : $this.data('boom-chunk-id')
 				});
 			})
 			.end()

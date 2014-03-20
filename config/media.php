@@ -44,6 +44,7 @@ return array(
 		'boom/chunk/slideshow.js',
 		'boom/chunk/timestamp.js',
 		'boom/chunk/tag.js',
+		'boom/chunk/slideshow/editor.js',
 		'boom/page/title.js',
 		'boom/helpers.js',
 		'boom/browser.js',
