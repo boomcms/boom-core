@@ -38,13 +38,16 @@ function boomChunkSlideshowEditor(page_id, slotname) {
 
 				$.boom.links.picker( {
 					title: 'Edit slide link',
-					new_link : {
-						url : currentSlide.data('url')
+					link : {
+						url : $input.val(),
+						rid : currentSlide.data('page')
 					}
 				})
 				.pipe(function(new_link) {
 					var url = new_link.url.replace(window.location.protocol + '//' + window.location.hostname, '')
-					currentSlide.data('url', url);
+					currentSlide
+						.data('url', url)
+						.data('page', new_link.page_rid);
 
 					$input
 						.val(url)
@@ -150,6 +153,7 @@ function boomChunkSlideshowEditor(page_id, slotname) {
 		return {
 			asset_id : $element.siblings('img').attr('src').replace('/asset/view/', ''),
 			url : $element.data('url'),
+			page : $element.data('page'),
 			caption : $element.data('caption'),
 			title : $element.data('title')
 		};
