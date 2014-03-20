@@ -120,7 +120,7 @@ class Boom_Controller_Asset_Image extends Controller_Asset
 
 	public function action_embed()
 	{
-		$this->response->body(HTML::image('asset/view/'.$this->asset->id.'/400'));
+		$this->response->body(HTML::image('asset/view/'.$this->asset->id));
 	}
 
 	/**
