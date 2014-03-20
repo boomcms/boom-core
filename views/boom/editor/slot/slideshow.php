@@ -14,7 +14,7 @@
 			<? foreach ($slides as $slide): ?>
 				<li>
 					<label>
-						<input type="radio" value="<?= $slide->id ?>" name="slide" data-asset="<?= $slide->asset_id ?>" data-title="<?= $slide->title ?>" data-url="<?= $slide->url ?>" data-caption="<?= $slide->caption ?>" />
+						<input type="radio" value="<?= $slide->id ?>" name="slide" data-asset="<?= $slide->asset_id ?>" data-title="<?= $slide->title ?>" data-url="<?= $slide->get_link() ?>" data-caption="<?= $slide->caption ?>" />
 						<img src="<?= Route::url('asset', array('id' => $slide->asset_id)) ?>" />
 					</label>
 				</li>
