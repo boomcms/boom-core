@@ -3,59 +3,13 @@ var wysihtml5ParserRules = {
      * CSS Class white-list
      * Following CSS classes won't be removed when parsed by the wysihtml5 HTML parser
      */
-    "classes": {
-        "wysiwyg-clear-both": 1,
-        "wysiwyg-clear-left": 1,
-        "wysiwyg-clear-right": 1,
-        "wysiwyg-color-aqua": 1,
-        "wysiwyg-color-black": 1,
-        "wysiwyg-color-blue": 1,
-        "wysiwyg-color-fuchsia": 1,
-        "wysiwyg-color-gray": 1,
-        "wysiwyg-color-green": 1,
-        "wysiwyg-color-lime": 1,
-        "wysiwyg-color-maroon": 1,
-        "wysiwyg-color-navy": 1,
-        "wysiwyg-color-olive": 1,
-        "wysiwyg-color-purple": 1,
-        "wysiwyg-color-red": 1,
-        "wysiwyg-color-silver": 1,
-        "wysiwyg-color-teal": 1,
-        "wysiwyg-color-white": 1,
-        "wysiwyg-color-yellow": 1,
-        "wysiwyg-float-left": 1,
-        "wysiwyg-float-right": 1,
-        "wysiwyg-font-size-large": 1,
-        "wysiwyg-font-size-larger": 1,
-        "wysiwyg-font-size-medium": 1,
-        "wysiwyg-font-size-small": 1,
-        "wysiwyg-font-size-smaller": 1,
-        "wysiwyg-font-size-x-large": 1,
-        "wysiwyg-font-size-x-small": 1,
-        "wysiwyg-font-size-xx-large": 1,
-        "wysiwyg-font-size-xx-small": 1,
-        "wysiwyg-text-align-center": 1,
-        "wysiwyg-text-align-justify": 1,
-        "wysiwyg-text-align-left": 1,
-        "wysiwyg-text-align-right": 1
-    },
-
+    "classes": {},
 
     "type_definitions": {
 
         "alignment_object": {
-            "classes": {
-                "wysiwyg-text-align-center": 1,
-                "wysiwyg-text-align-justify": 1,
-                "wysiwyg-text-align-left": 1,
-                "wysiwyg-text-align-right": 1,
-                "wysiwyg-float-left": 1,
-                "wysiwyg-float-right": 1
-            },
-            "styles": {
-                "float": ["left", "right"],
-                "textAlign": ["left", "right", "center"]
-            }
+            "classes": {},
+            "styles": {}
         },
 
         "valid_image_src": {
@@ -78,33 +32,7 @@ var wysihtml5ParserRules = {
         },
 
         "text_formatting_object": {
-            "classes": {
-                "wysiwyg-color-aqua": 1,
-                "wysiwyg-color-black": 1,
-                "wysiwyg-color-blue": 1,
-                "wysiwyg-color-fuchsia": 1,
-                "wysiwyg-color-gray": 1,
-                "wysiwyg-color-green": 1,
-                "wysiwyg-color-lime": 1,
-                "wysiwyg-color-maroon": 1,
-                "wysiwyg-color-navy": 1,
-                "wysiwyg-color-olive": 1,
-                "wysiwyg-color-purple": 1,
-                "wysiwyg-color-red": 1,
-                "wysiwyg-color-silver": 1,
-                "wysiwyg-color-teal": 1,
-                "wysiwyg-color-white": 1,
-                "wysiwyg-color-yellow": 1,
-                "wysiwyg-font-size-large": 1,
-                "wysiwyg-font-size-larger": 1,
-                "wysiwyg-font-size-medium": 1,
-                "wysiwyg-font-size-small": 1,
-                "wysiwyg-font-size-smaller": 1,
-                "wysiwyg-font-size-x-large": 1,
-                "wysiwyg-font-size-x-small": 1,
-                "wysiwyg-font-size-xx-large": 1,
-                "wysiwyg-font-size-xx-small": 1
-            }
+            "classes": {}
         }
     },
 
