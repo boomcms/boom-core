@@ -57,6 +57,5 @@ return array(
 		'wysihtml5/parser_rules/inline.js',
 		'wysihtml5/commands/insertBoomAsset.js',
 		'wysihtml5/commands/createBoomLink.js',
-		'wysihtml5/commands/customClass.js',
 	),
 );
