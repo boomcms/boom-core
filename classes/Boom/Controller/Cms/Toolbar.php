@@ -23,11 +23,6 @@ class Boom_Controller_Cms_Toolbar extends Boom_Controller
 		$this->_toolbar = new View("$this->_view_directory/text", array('mode' => $mode));
 	}
 
-	public function action_slideshow()
-	{
-		$this->_toolbar = new View("$this->_view_directory/slideshow");
-	}
-
 	public function after()
 	{
 		$this->response->body($this->_toolbar);
