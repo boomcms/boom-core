@@ -41,7 +41,7 @@ class Boom_TextEditorToolbar
 		foreach ($this->get_buttons() as $type)
 		{
 			list($text, $attrs) = $this->get_button($type);
-			$buttons .= BoomUI::button($type, $text, $attrs);
+			$buttons .= BoomUI::button($type, $text, (array) $attrs);
 		}
 
 		return $buttons;
