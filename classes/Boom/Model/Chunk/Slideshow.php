@@ -84,7 +84,7 @@ class Boom_Model_Chunk_Slideshow extends ORM
 			{
 				if ( ! $slide instanceof Model_Chunk_Slideshow_Slide AND isset($slide['asset_id']) AND $slide['asset_id'] > 0)
 				{
-					$slide['url'] = (isset($slide['page']) AND $slide['page'] > 0)? $slide['page'] : $slide['url'];
+					$slide['url'] = (isset($slide['page']) AND $slide['page'] > 0)? $slide['page'] : isset($slide['url'])? $slide['url'] : NULL;
 
 					$slide = ORM::factory('Chunk_Slideshow_Slide')
 						->values( (array) $slide);
