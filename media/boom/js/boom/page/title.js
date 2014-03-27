@@ -28,7 +28,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 		this.element
 			.on('keydown change paste', function() {
 				setTimeout(function() {
-					self._update_length_counter(element.text().length)
+					self._update_length_counter(element.text().length);
 				}, 0);
 			})
 			.on('click', function() {
