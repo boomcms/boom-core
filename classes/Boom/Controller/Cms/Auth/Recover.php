@@ -14,10 +14,10 @@ class Boom_Controller_Cms_Auth_Recover extends Controller_Cms_Auth
 
 	public function action_create_token()
 	{
-		if ( ! Security::check($this->request->post('csrf')))
-		{
-			throw new HTTP_Exception_500;
-		}
+//		if ( ! Security::check($this->request->post('csrf')))
+//		{
+//			throw new HTTP_Exception_500;
+//		}
 
 		$person = new Model_Person(array('email' => $this->request->post('email')));
 
