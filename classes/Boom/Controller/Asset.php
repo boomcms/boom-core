@@ -64,7 +64,7 @@ abstract class Boom_Controller_Asset extends Boom_Controller
 		$this->response
 			->headers(array(
 				'Content-Type'				=>	$this->asset->get_mime(),
-				'Content-Disposition'			=>	"$method; filename={$this->asset->filename}",
+				'Content-Disposition'			=>	"$method; filename='{$this->asset->filename}'",
 				'Content-Transfer-Encoding'	=>	'binary',
 				'Content-Length'			=>	$this->asset->filesize,
 				'Accept-Ranges'				=>	'bytes',
