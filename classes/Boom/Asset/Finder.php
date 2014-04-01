@@ -37,6 +37,7 @@ class Boom_Asset_Finder
 	 */
 	public function by_tags(array $tag_ids)
 	{
+		$tag_ids = array_unique($tag_ids);
 		$tag_count = count($tag_ids);
 
 		if ($tag_count === 1)
