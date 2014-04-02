@@ -54,7 +54,7 @@ class Boom_Model_Page_URL extends ORM
 			),
 			'location' => array(
 				array('max_length', array(':value', 2048)),
-				array(array('Page_URL', 'is_available'), array(':value', $this->page_id)),
+				array(array('Page_URL', 'is_available'), array(':value', $this->id)),
 			),
 		);
 	}
