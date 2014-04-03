@@ -29,6 +29,36 @@ class Boom_Template_Manager
 			->create();
 	}
 
+	/**
+	 * Deletes templates where the filename points to an non-existent file.
+	 */
+	public function delete_invalid_templates()
+	{
+		foreach ($this->get_invalid_templates() as $template)
+		{
+			$template->delete();
+		}
+	}
+
+	/**
+	 * Gets templates where the filename points to an non-existent file.
+	 */
+	public function get_invalid_templates()
+	{
+		$invalid = array();
+		$templates = ORM::factory('Template')->order_by('name', 'asc')->find_all();
+
+		foreach ($templates as $template)
+		{
+			if ( ! $template->file_exists())
+			{
+				$invalid[] = $template;
+			}
+		}
+
+		return $invalid;
+	}
+
 	public function get_template_filenames()
 	{
 		if ( ! $this->_template_filenames)
