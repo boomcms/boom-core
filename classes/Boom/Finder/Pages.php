@@ -55,6 +55,11 @@ class Boom_Finder_Pages extends Finder
 		return $this;
 	}
 
+	public function get_query()
+	{
+		return $this->_query;
+	}
+
 	public function get_results($limit = NULL, $offset = NULL)
 	{
 		if ( ! $this->_sort_applied)
