@@ -288,10 +288,6 @@ $.extend($.boom,
 								this.width + 30
 							);
 						})
-						.error(function(){
-
-							$.boom.dialog.alert('Error', 'There was an error loading the image.');
-						})
 						.attr('src', this.href);
 
 					});

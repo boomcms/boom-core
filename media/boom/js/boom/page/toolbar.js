@@ -21,7 +21,7 @@ $.widget( 'boom.pageToolbar', {
 						top.location = response.url;
 					})
 					.fail(function(response) {
-						$.boom.dialog.alert('Error', response);
+						new boomAlert(response);
 					});
 			})
 			.on('click', '#boom-page-editlive', function() {

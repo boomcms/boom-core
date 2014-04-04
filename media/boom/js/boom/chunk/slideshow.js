@@ -47,7 +47,8 @@ $.widget('ui.chunkSlideshow', $.ui.chunk,
 	},
 
 	_update_html : function(html) {
-		$.boom.dialog.alert('', 'Your changes have been saved and the page will now reload to update the slideshow', function() {
+		var alert = new boomAlert('Your changes have been saved and the page will now reload to update the slideshow');
+		alert.done(function() {
 			top.location.reload();
 		});
 	}

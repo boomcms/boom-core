@@ -22,6 +22,7 @@ return array(
 		'boom/history2.js',
 		'boom/log.js',
 		'boom/dialog.js',
+		'boom/alert.js',
 	),
 	'js' => array(
 		'boom/menu.js',
