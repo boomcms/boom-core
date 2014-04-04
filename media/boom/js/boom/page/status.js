@@ -57,7 +57,7 @@ $.widget('boom.pageStatus', {
 			"Request approval" : function(){
 				self.options.page.requestApproval()
 					.done(function(response) {
-						$.boom.growl.show('This version of the page is awaiting approval.');
+						new boomNotification('This version of the page is awaiting approval.');
 						self.set(response);
 					});
 			}
@@ -73,7 +73,7 @@ $.widget('boom.pageStatus', {
 			"Publish now" : function(){
 				self.options.page.publish()
 					.done(function(response) {
-						$.boom.growl.show('This version of the page is now published.');
+						new boomNotification('This version of the page is now published.');
 						self.set(response);
 					});
 			}

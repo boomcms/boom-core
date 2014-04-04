@@ -11,7 +11,7 @@ $.widget( 'boom.pageToolbar', {
 			.on('click', '#b-page-delete', function() {
 				self.options.page.remove()
 					.done(function(response) {
-						$.boom.growl.show("Page deleted, redirecting to parent.");
+						new boomNotification("Page deleted, redirecting to parent.");
 						top.location = response;
 					});
 			})

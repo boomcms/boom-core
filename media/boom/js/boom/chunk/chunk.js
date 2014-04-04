@@ -77,7 +77,7 @@ $.widget('ui.chunk',
 
 				self._update_html(data.html);
 				$.boom.page.toolbar.status.set(data.status);
-				$.boom.growl.show("Page content saved");
+				new boomNotification("Page content saved");
 			});
 	},
 
@@ -94,7 +94,7 @@ $.widget('ui.chunk',
 
 				self._update_html(data.html);
 				$.boom.page.toolbar.status.set(data.status);
-				$.boom.growl.show("Page content saved");
+				new boomNotification("Page content saved");
 			});
 	},
 

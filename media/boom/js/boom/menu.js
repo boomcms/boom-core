@@ -23,7 +23,7 @@ $.widget('boom.boomMenu', {
 					callback: function() {
 						$.post(url, $('#b-people-profile').serialize())
 							.done(function() {
-								$.boom.growl.show('Profile updated');
+								new boomNotification('Profile updated');
 							});
 					}
 				});

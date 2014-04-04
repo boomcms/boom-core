@@ -8,7 +8,7 @@ function boomUrlEditor(page) {
 
 		url.add(this.page.id)
 			.done(function(response) {
-				$.boom.growl.show('Url added.');
+				new boomNotification('Url added.');
 
 				urlEditor.dialog.load(urlEditor.list_url);
 			});
@@ -49,7 +49,7 @@ function boomUrlEditor(page) {
 			.done(function() {
 				$li.remove();
 
-				$.boom.growl.show("The specified URL has been deleted.")
+				new boomNotification("The specified URL has been deleted.")
 			});
 	};
 
@@ -102,7 +102,7 @@ function boomUrlEditor(page) {
 					.parent()
 					.addClass('b-page-urls-primary');
 
-				$.boom.growl.show("The primary URL of the page has been updated.");
+				new boomNotification("The primary URL of the page has been updated.");
 			});
 	};
 };
