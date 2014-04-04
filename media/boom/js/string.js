@@ -1,11 +1,8 @@
 /**
-@fileOverview Helper functions
-*/
-/**
 convert 8 bit characters to their 7 bit equivalent
 @function
 */
-String.prototype.safeEscape = function(){
+String.prototype.safeEscape = function() {
 	var str = $.trim(this),
 	replacements = {
 		"\xa0": " ", "\xb7": "*", "\u2018": "'", "\u2019": "'",	"\u2026": "...", "\u2002": " ", "\u2003": " ", "\u2009": " ", "\u2012": "-", "\u2013": "-", "\u2014": "-", "\u2015": "-",
@@ -29,6 +26,6 @@ String.prototype.ucfirst = function() {
 /**
 @function
 */
-String.prototype.toInt = function(){
-	return parseInt( this, 10 );
+String.prototype.toInt = function() {
+	return parseInt(this, 10);
 };

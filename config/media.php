@@ -48,7 +48,7 @@ return array(
 		'boom/chunk/tag.js',
 		'boom/chunk/slideshow/editor.js',
 		'boom/page/title.js',
-		'boom/helpers.js',
+		'string.js',
 		'boom/browser.js',
 		'boom/links.js',
 		'boom/tags.js',
