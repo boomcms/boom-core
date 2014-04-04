@@ -11,31 +11,7 @@ boom.plugins.js
 @name $.fn
 */
 
-(function( $ ){
-	/**
-	@function
-	*/
-	$.size = function(obj){
-
-		if ( typeof obj === 'object' ) {
-
-			var size = 0, key;
-
-			for (key in obj) {
-
-				if ( obj.hasOwnProperty( key ) ) {
-
-					size++;
-				}
-			}
-
-			return size;
-
-		} else {
-
-			return $( obj ).size();
-		}
-	};
+(function($) {
 
 	/**
 	@function
