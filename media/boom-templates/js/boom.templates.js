@@ -43,7 +43,7 @@ $.extend($.boom, {
 				var data = $('#b-templates form').serialize();
 
 				$.post('/cms/templates/save', data, function(){
-					$.boom.growl.show('Templates successfully saved.');
+					new boomNotification('Templates successfully saved.');
 				});
 			});
 		}
