@@ -111,18 +111,16 @@ boomPage.prototype.featureimage = function() {
 				id: 'b-feature-remove',
 				icons: { primary: 'b-button-icon b-button-icon-delete' },
 				click: function(){
-					var dialog = $(this);
-					$.boom.dialog.confirm(
-						'Please confirm',
-						"Are you sure you want to do delete this page's feature image?"
-					)
-					.done( function(){
+					var dialog = $(this),
+						confirmation = new boomConfirmation('Please confirm', "Are you sure you want to do delete this page's feature image?");
 
-						$('#boom-featureimage-img').attr( 'src', '').hide();
-						$('#boom-featureimage-input').val( 0 );
-						$( '#b-feature-remove' ).button( 'disable' );
-						$( '#boom-featureimage-none' ).show();
-					});
+					confirmation
+						.done(function() {
+							$('#boom-featureimage-img').attr( 'src', '').hide();
+							$('#boom-featureimage-input').val( 0 );
+							$( '#b-feature-remove' ).button( 'disable' );
+							$( '#boom-featureimage-none' ).show();
+						});
 				}
 			},
 			{

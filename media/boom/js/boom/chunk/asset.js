@@ -233,16 +233,15 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 		var self = this;
 
 		if (self.edited) {
-			$.boom.dialog.confirm('Cancel changes', 'Cancel changes to this asset?')
-				.done(function() {
-					self.element
-						.children()
-						.remove()
-						.end()
-						.append(self.originals);
-					self.destroy();
-				});
-
+			var confirmation = new boomConfirmation('Cancel changes', 'Cancel changes to this asset?');
+			confirmation.done(function() {
+				self.element
+					.children()
+					.remove()
+					.end()
+					.append(self.originals);
+				self.destroy();
+			});
 		} else {
 			self.destroy();
 		}

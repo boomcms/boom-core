@@ -156,7 +156,8 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 						$.boom.growl.show('Page title saved.');
 						$.boom.page.toolbar.status.set(response);
 					} else {
-						$.boom.dialog.confirm('Page URL changed', "Because you've set a page title for the first time the URL of this page has been updated to reflect the new title.<br /><br />Would you like to reload the page using the new URL?<br /><br />You can continue editing the page without reloading.")
+						var confirmation = new boomConfirmation('Page URL changed', "Because you've set a page title for the first time the URL of this page has been updated to reflect the new title.<br /><br />Would you like to reload the page using the new URL?<br /><br />You can continue editing the page without reloading.");
+						confirmation
 							.done(function() {
 								top.location = data.location;
 							});

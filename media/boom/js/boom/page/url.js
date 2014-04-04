@@ -58,9 +58,10 @@ function boomPageUrl(id) {
 
 	boomPageUrl.prototype.delete = function() {
 		var url = this,
-			deferred = new $.Deferred();
+			deferred = new $.Deferred(),
+			confirmation = new boomConfirmation('Please confirm', 'Are you sure you want to remove this URL? <br /><br /> This will delete the URL from the database and cannot be undone!');
 
-		$.boom.dialog.confirm('Please confirm', 'Are you sure you want to remove this URL? <br /><br /> This will delete the URL from the database and cannot be undone!')
+			confirmation
 			.done(function() {
 				$.boom.post('/cms/page/urls/delete/' + url.id)
 				.done(function() {

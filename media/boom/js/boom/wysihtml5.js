@@ -137,7 +137,9 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 			content = element.html();
 
 		if (self.hasBeenEdited) {
-			$.boom.dialog.confirm('Cancel changes', 'Cancel all changes and exit the editor?')
+			var confirmation = new boomConfirmation('Cancel changes', 'Cancel all changes and exit the editor?');
+
+			confirmation
 				.done(function() {
 					$.boom.log( 'canceling text edits' );
 

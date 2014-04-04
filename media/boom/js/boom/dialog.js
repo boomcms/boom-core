@@ -345,25 +345,6 @@ $.extend($.boom,
 
 				this.dialog('destroy').remove();
 			});
-		},
-
-		/**
-		@function
-		*/
-		confirm : function(title, msg, callback){
-
-			var self = this;
-			var confirmed = new $.Deferred();
-
-			this.open({
-				msg: msg.replace(/\n/g, '<br />'),
-				title: title,
-				width: 300,
-				deferred: confirmed,
-				callback: callback
-			});
-
-			return confirmed;
 		}
 	}
 });

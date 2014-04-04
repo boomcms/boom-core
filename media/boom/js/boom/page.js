@@ -83,12 +83,12 @@ function boomPage(page_id) {
 
 	boomPage.prototype.revertToPublished = function() {
 		var	promise = new $.Deferred(),
-			page = this;
+			page = this,
+			confirmation = new boomConfirmation
 
-		$.boom.dialog.confirm(
-			'Discard changes',
-			'Are you sure you want to discard any unpublished changes and revert this page to it\'s published state?'
-		)
+		$.boom.dialog.confirm('Discard changes', 'Are you sure you want to discard any unpublished changes and revert this page to it\'s published state?');
+
+		confirmation
 		.done(function() {
 			$.post('/cms/page/discard/' + page.id, {csrf : $.boom.options.csrf})
 				.done(function() {
@@ -107,19 +107,17 @@ function boomPage(page_id) {
 	};
 
 	boomPage.prototype.stash = function() {
-		var page_id = this.id;
+		var page_id = this.id,
+			confirmation = new boomConfirmation('Edit live', 'Discard changes and edit the live page?');
 
-		$.boom.dialog.confirm(
-			'Edit live',
-			'Discard changes and edit the live page?'
-		)
-		.done(function(){
-			$.boom.log('stashing page edits');
+		confirmation
+			.done(function() {
+				$.boom.log('stashing page edits');
 
-			$.post('/cms/page/stash/' + page_id)
-				.done(function(response) {
-					$.boom.history.refresh();
-				});
-		});
+				$.post('/cms/page/stash/' + page_id)
+					.done(function(response) {
+						$.boom.history.refresh();
+					});
+			});
 	};
 };
