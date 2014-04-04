@@ -350,46 +350,6 @@ $.extend($.boom,
 		/**
 		@function
 		*/
-		alert : function(type, msg, callback, width){
-
-			var self = this;
-
-			var div = $('#boom-dialog-alerts').length ? $('#boom-dialog-alerts') : $('<div id="boom-dialog-alerts" />').appendTo('body');
-
-			div.html(msg.replace(/\n/g, '<br />'));
-
-			if (type.toLowerCase().trim() == 'error') {
-
-				var container = $('<div class="boom-error-report" />');
-
-				var icon = $('<span class="ui-icon ui-icon-comment ui-helper-left" />');
-
-				container.append(icon).appendTo(div);
-			}
-
-			this.open({
-				selector: '#boom-dialog-alerts',
-				title: type,
-				width: width || 300,
-				buttons: [
-					{
-						text : 'Okay',
-						icons : { primary : 'b-button-icon-accept b-button-icon' },
-						class : 'b-button',
-						click : function() {
-
-							self.destroy( $(this) );
-
-							(callback) && callback.apply();
-						}
-					}
-				]
-			});
-		},
-
-		/**
-		@function
-		*/
 		confirm : function(title, msg, callback){
 
 			var self = this;
