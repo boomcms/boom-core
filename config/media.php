@@ -23,7 +23,7 @@ return array(
 		'boom/log.js',
 		'boom/dialog.js',
 		'boom/alert.js',
-		'boom/confirmation',
+		'boom/confirmation.js',
 	),
 	'js' => array(
 		'boom/menu.js',

@@ -204,20 +204,14 @@ boomPage.prototype.template = function() {
 boomPage.prototype.visibility = function() {
 	var	page = this,
 		url = '/cms/page/settings/visibility/' + page.id,
-		deferred = new $.Deferred();
+		deferred = new $.Deferred(),
+		dialog;
 
-	$.boom.dialog.open({
+	dialog = new boomDialog({
 		url: url,
 		title: 'Page visibility',
 		width: 440,
-		callback: function(){
-			page.saveSettings(url, $(this).find("form").serialize(), 'Page visibility settings saved')
-				.done(function(response) {
-					deferred.resolve(response);
-				});
-		},
-		open: function(){
-
+		open: function() {
 			$('#toggle-visible:checkbox').unbind('change').change(function(){
 
 				if (this.checked) {
@@ -261,6 +255,13 @@ boomPage.prototype.visibility = function() {
 				$( '#visible-to' ).attr( 'disabled', 'disabled' );
 			}
 		}
+	});
+
+	dialog.done(function() {
+		page.saveSettings(url, $(this).find("form").serialize(), 'Page visibility settings saved')
+			.done(function(response) {
+				deferred.resolve(response);
+			});
 	});
 
 	return deferred;
