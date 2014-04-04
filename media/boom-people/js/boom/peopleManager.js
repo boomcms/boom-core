@@ -55,7 +55,7 @@ $.widget('boom.peopleManager', {
 
 		group.add()
 			.done(function() {
-				$.boom.growl.show('Group successfully saved, reloading.');
+				new boomNotification('Group successfully saved, reloading.');
 
 				window.setTimeout(function() {
 					top.location.reload();
@@ -68,14 +68,14 @@ $.widget('boom.peopleManager', {
 
 		person.add()
 			.done(function() {
-				$.boom.growl.show('Success');
+				new boomNotification('Success');
 
 				setTimeout(function() {
 					top.location.reload();
 				}, 300);
 			})
 			.fail(function() {
-				$.boom.growl.show('Failure');
+				new boomNotification('Failure');
 			});
 	},
 
@@ -102,7 +102,7 @@ $.widget('boom.peopleManager', {
 						$group_list.append($("<li data-group-id=" + id +">" + name +"&nbsp;<a title='Remove user from group' class='b-person-group-delete' href='#'>x</a></li>"));
 					}
 
-					$.boom.growl.show('This person has been added to the groups');
+					new boomNotification('This person has been added to the groups');
 				}
 			});
 	},
@@ -114,7 +114,7 @@ $.widget('boom.peopleManager', {
 
 		person.delete()
 			.done(function() {
-				$.boom.growl.show('This person has been deleted.');
+				new boomNotification('This person has been deleted.');
 
 				setTimeout(function() {
 					top.location = peopleManager.homeUrl;
@@ -130,7 +130,7 @@ $.widget('boom.peopleManager', {
 
 		person.removeGroup(group_id)
 			.done(function() {
-				$.boom.growl.show('This person has been removed from the group');
+				new boomNotification('This person has been removed from the group');
 				$group.remove();
 			});
 	},
@@ -142,7 +142,7 @@ $.widget('boom.peopleManager', {
 
 		person.save(this.element.find('.b-person-view form').serialize())
 			.done(function() {
-				$.boom.growl.show('The new details for this person have been saved.');
+				new boomNotification('The new details for this person have been saved.');
 			});
 	},
 
@@ -158,7 +158,7 @@ $.widget('boom.peopleManager', {
 						.done(function() {
 							peopleManager.removePeopleFromList(selected);
 
-							$.boom.growl.show('The selected people have been deleted.');
+							new boomNotification('The selected people have been deleted.');
 						});
 				});
 	},
@@ -181,7 +181,7 @@ $.widget('boom.peopleManager', {
 		group.remove()
 			.done(function() {
 				$el.remove();
-				$.boom.growl.show('Group successfully removed.');
+				new boomNotification('Group successfully removed.');
 			});
 	},
 
@@ -209,7 +209,7 @@ $.widget('boom.peopleManager', {
 
 		group.save($form.serialize())
 			.done(function() {
-				$.boom.growl.show('Group name updated');
+				new boomNotification('Group name updated');
 				$('#b-groups-list li[data-group-id='+ group_id + '] .b-groups-item').html(new_name);
 			});
 	},
