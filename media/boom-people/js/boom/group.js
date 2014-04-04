@@ -50,18 +50,16 @@ function boomGroup(group_id) {
 
 	boomGroup.prototype.remove = function() {
 		var group = this,
-			deferred = new $.Deferred();
+			deferred = new $.Deferred(),
+			confirmation = new boomConfirmation('Please confirm', 'Are you sure you want to remove this group? <br /><br /> This will delete the group from the database and cannot be undone!');
 
-		$.boom.dialog.confirm(
-			'Please confirm',
-			'Are you sure you want to remove this group? <br /><br /> This will delete the group from the database and cannot be undone!'
-		)
-		.done(function() {
-			$.boom.post(group.base_url + 'delete/' + group.id)
-				.done(function(response) {
-					deferred.resolve(response);
-				});
-		});
+		confirmation
+			.done(function() {
+				$.boom.post(group.base_url + 'delete/' + group.id)
+					.done(function(response) {
+						deferred.resolve(response);
+					});
+			});
 
 		return deferred;
 	};

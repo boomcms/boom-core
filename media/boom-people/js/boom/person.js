@@ -63,15 +63,16 @@ function boomPerson(person_id) {
 
 	boomPerson.prototype.delete = function() {
 		var deferred = new $.Deferred(),
-			person = this;
+			person = this,
+			confirmation = new boomConfirmation('Please confirm', 'Are you sure you want to delete this person?');
 
-		$.boom.dialog.confirm('Please confirm', 'Are you sure you want to delete this person?')
-			.done(function() {
-				$.boom.post(person.base_url + 'delete/' + person.id)
-					.done(function() {
-						deferred.resolve();
-					});
-			});
+			confirmation
+				.done(function() {
+					$.boom.post(person.base_url + 'delete/' + person.id)
+						.done(function() {
+							deferred.resolve();
+						});
+				});
 
 		return deferred;
 	};

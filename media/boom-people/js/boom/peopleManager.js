@@ -149,16 +149,17 @@ $.widget('boom.peopleManager', {
 	deleteSelectedPeople : function() {
 		var selected = this.getSelectedPeople(),
 			person = new boomPerson(selected.join('-')),
-			peopleManager = this;
+			peopleManager = this,
+			confirmation = new boomConfirmation('Confirm deletion', 'Are you sure you want to remove the selected people?');
 
-		$.boom.dialog.confirm('Confirm deletion', 'Are you sure you want to remove the selected people?')
-			.done(function() {
-				person.deleteMultiple(selected)
-					.done(function() {
-						peopleManager.removePeopleFromList(selected);
+			confirmation
+				.done(function() {
+					person.deleteMultiple(selected)
+						.done(function() {
+							peopleManager.removePeopleFromList(selected);
 
-						$.boom.growl.show('The selected people have been deleted.');
-					});
+							$.boom.growl.show('The selected people have been deleted.');
+						});
 				});
 	},
 
