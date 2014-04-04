@@ -151,7 +151,7 @@ $.extend($.boom.asset, $.boom.item,
 				self
 					.save(data)
 					.done( function(){
-						$.boom.growl.show( "Asset saved." );
+						new boomNotification( "Asset saved." );
 					});
 
 			})
@@ -420,7 +420,7 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 					})
 					.done(function(data) {
 						$.boom.history.refresh();
-						$.boom.growl.show('Asset updated');
+						new boomNotification('Asset updated');
 					});
 			});
 
