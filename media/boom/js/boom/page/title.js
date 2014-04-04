@@ -89,7 +89,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 				var title = self.element.text();
 
 				if (title != '' && title != old_html) {
-					self.insert(title);
+					self._save(title, old_html);
 				}
 			})
 			.always(function() {
@@ -117,11 +117,6 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 		return 'green';
 	},
 
-	insert : function(html) {
-		this.element.html(html);
-		this._save();
-	},
-
 	isUntitled : function() {
 		return this.element.text() == 'Untitled';
 	},
@@ -139,9 +134,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 		});
 	},
 
-	_save : function() {
-		var title = this.element.text();
-
+	_save : function(title, old_title) {
 		this.options.currentPage.setTitle(title)
 			.done(function(response) {
 				try {
@@ -166,6 +159,9 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 					new boomNotification('Page title saved.');
 					$.boom.page.toolbar.status.set(response);
 				}
+
+				var page_title = top.$('title').text().replace(old_title, title);
+				top.$('title').text(page_title);
 			});
 	},
 
