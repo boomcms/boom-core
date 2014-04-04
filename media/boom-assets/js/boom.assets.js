@@ -340,9 +340,10 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 
 				$.boom.log( 'asset delete selected' );
 
-				$.boom.dialog.confirm( 'Confirm deletion', 'Are you sure you want to delete the selected assets?')
-					.done( function(){
+				var confirmation = new boomConfirmation('Confirm deletion', 'Are you sure you want to delete the selected assets?');
 
+				confirmation
+					.done(function() {
 						$.post('/cms/assets/delete', {csrf: $.boom.options.csrf, assets:  self.selected}, function(){
 							$.boom.history.refresh();
 							self.selected = [];
