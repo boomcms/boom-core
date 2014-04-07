@@ -7,15 +7,15 @@ function boomGroup(group_id) {
 		var group = this,
 			deferred = new $.Deferred();
 
-		$.boom.dialog.open({
+		new boomDialog({
 			url: this.base_url + 'add',
-			title: 'Add group',
-			callback: function() {
-				group.addWithName($(this).find('input[type=text]').val())
-					.done(function(response) {
-						deferred.resolve(response);
-					});
-			}
+			title: 'Add group'
+		})
+		.done(function() {
+			group.addWithName($(this).find('input[type=text]').val())
+				.done(function(response) {
+					deferred.resolve(response);
+				});
 		});
 
 		return deferred;

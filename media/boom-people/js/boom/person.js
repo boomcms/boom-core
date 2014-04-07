@@ -7,21 +7,21 @@ function boomPerson(person_id) {
 		var deferred = new $.Deferred(),
 			person = this;
 
-		$.boom.dialog.open({
+		new boomDialog({
 			url : this.base_url + 'add',
 			width: 'auto',
-			title : 'Create new person',
-			callback: function() {
-				var data = $(this).find('form').serialize();
+			title : 'Create new person'
+		})
+		.done(function() {
+			var data = $(this).find('form').serialize();
 
-				person.addWithData(data)
-					.done(function() {
-						deferred.resolve();
-					})
-					.fail(function() {
-						deferred.reject();
-					});
-			}
+			person.addWithData(data)
+				.done(function() {
+					deferred.resolve();
+				})
+				.fail(function() {
+					deferred.reject();
+				});
 		});
 
 		return deferred;
@@ -31,26 +31,25 @@ function boomPerson(person_id) {
 		var url = this.base_url + 'add_group/' + this.id,
 			deferred = new $.Deferred();
 
-		$.boom.dialog.open({
+		new boomDialog({
 			url: url,
-			title: 'Add group',
-			callback: function() {
-				var groups = {};
-				
-				$(this).find('form select option:selected').each(function(i, el) {
-					var $el = $(el);
-					groups[$el.val()] = $el.text();
-				});
+			title: 'Add group'
+		}).done(function() {
+			var groups = {};
 
-				var group_ids = Object.keys(groups);
-				if (group_ids.length) {
-					$.boom.post(url, {'groups[]' : group_ids})
-						.done(function() {
-							deferred.resolve(groups);
-						});
-				} else {
-					deferred.resolve([]);
-				}
+			$(this).find('form select option:selected').each(function(i, el) {
+				var $el = $(el);
+				groups[$el.val()] = $el.text();
+			});
+
+			var group_ids = Object.keys(groups);
+			if (group_ids.length) {
+				$.boom.post(url, {'groups[]' : group_ids})
+					.done(function() {
+						deferred.resolve(groups);
+					});
+			} else {
+				deferred.resolve([]);
 			}
 		});
 
