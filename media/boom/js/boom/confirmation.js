@@ -3,16 +3,12 @@ function boomConfirmation(title, message) {
 	this.message = message;
 
 	boomConfirmation.prototype.open = function() {
-		var confirmation = this,
-			dialog;
+		var confirmation = this;
 
 		return new boomDialog({
 			title : confirmation.title,
 			msg : confirmation.message,
-			width : 300,
-			callback : function() {
-				confirmation.deferred.resolve();
-			}
+			width : 300
 		});
 	};
 

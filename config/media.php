@@ -35,6 +35,7 @@ return array(
 		'boom/page/tree.js',
 		'boom/page/url.js',
 		'boom/urlEditor.js',
+		'boom/page/featureEditor.js',
 		'boom/textEditor.js',
 		'boom/wysihtml5.js',
 		'boom/chunk.js',

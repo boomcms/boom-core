@@ -1,54 +1,76 @@
+boomDialog.prototype = {
+ 	cancelButton : {
+		text : 'Cancel',
+		icons : { primary : 'b-button-icon-cancel b-button-icon' },
+		class : 'b-button',
+		click : function() {
+			var boomDialog = $(this).dialog('option', 'boomDialog');
+			boomDialog.cancel();
+		}
+	},
+
+	closeButton : {
+		text : 'Okay',
+		class : 'b-button',
+		icons : { primary : 'b-button-icon-accept b-button-icon' },
+		click : function() {
+			var boomDialog = $(this).dialog('option', 'boomDialog');
+			boomDialog.close();
+		}
+	}
+};
+
 function boomDialog(options) {
+	var self = this;
+
 	this.deferred = new $.Deferred();
 
-	var self = this;
-	this.options = {
+	this.options = $.extend({
 		width: 'auto',
 		autoOpen: true,
 		modal: true,
 		resizable: false,
-		id : 'b-dialog',
 		draggable: true,
 		closeOnEscape: true,
 		position: ['center', 'center'],
 		dialogClass : 'b-dialog',
-		buttons: [
-			{
-				text : 'Cancel',
-				icons : { primary : 'b-button-icon-cancel b-button-icon' },
-				class : 'b-button',
-				click : function() {
-					self.cancel();
-				}
-			},
-			{
-				text : 'Okay',
-				class : 'b-button',
-				icons : { primary : 'b-button-icon-accept b-button-icon' },
-				click : function() {
-					self.close();
-				}
-			}
-		]
-	};
+		buttons: [this.cancelButton, this.closeButton],
+		boomDialog: this
+	}, options);
 
-	this.options = $.extend(options, this.options);
+	boomDialog.prototype.always = function(callback) {
+		this.deferred.always(callback);
+
+		return this;
+	};
 
 	boomDialog.prototype.cancel = function() {
 		this.deferred.rejectWith(this.dialog);
-		this.dialog.dialog('destroy');
+		this.contents.dialog('destroy');
 	};
 
 	boomDialog.prototype.close = function() {
 		this.deferred.resolveWith(this.dialog);
-		this.dialog.dialog('destroy');
+		this.contents.dialog('destroy');
+	};
+
+	boomDialog.prototype.done = function(callback) {
+		this.deferred.done(callback);
+
+		return this;
+	};
+
+	boomDialog.prototype.fail = function(callback) {
+		this.deferred.fail(callback);
+
+		return this;
 	};
 
 	boomDialog.prototype.init = function() {
 		$.boom.page && $.boom.page.toolbar && $.boom.page.toolbar.maximise();
 
 		this
-			.dialog
+			.contents
 			.dialog(this.options)
 			.ui();
 	};
@@ -57,14 +79,14 @@ function boomDialog(options) {
 		var id = this.options.id? this.options.id : $.boom.util.dom.uniqueId('boom-dialog-'),
 			self = this;
 
-		this.dialog = $('#' + id).length? $('#' + id) : $('<div />').attr('id', id).hide().appendTo($(document).contents().find('body'));
+		this.contents = $('#' + id).length? $('#' + id) : $('<div />').attr('id', id).hide().appendTo($(document).contents().find('body'));
 
-		if (this.options.url.length) {
-			if (this.dialog.hasClass('ui-dialog-content')) {
-				this.dialog.dialog('open');
+		if (this.options.url && this.options.url.length) {
+			if (this.contents.hasClass('ui-dialog-content')) {
+				this.contents.dialog('open');
 			} else {
 				setTimeout(function() {
-					self.dialog.load(self.options.url, function(response, status){
+					self.contents.load(self.options.url, function(response, status){
 
 						if (status == 'error') {
 							if ($.boom.page && $( '.ui-dialog:visible' ).length == 0) {
@@ -85,14 +107,11 @@ function boomDialog(options) {
 			}
 
 		} else if (this.options.msg.length) {
-			this.dialog.html(this.options.msg);
+			this.contents.html(this.options.msg);
 
 			this.init();
 		}
-
-		return this.deferred;
 	};
 
-
-	return this.open();
+	this.open();
 };

@@ -83,85 +83,12 @@ boomPage.prototype.urls = function() {
 };
 
 boomPage.prototype.featureimage = function() {
-	var	page = this,
-		url = '/cms/page/version/feature/' + page.id,
-		dialog;
+	var page = this;
 
-	dialog = new boomDialog({
-		url: url,
-		title: 'Page feature image',
-		width: 300,
-		buttons: [
-			{
-				text: 'Add',
-				id: 'boom-feature-add',
-				class : 'b-button',
-				icons: { primary: 'b-button-icon b-button-icon-add' },
-				click: function(){
-					$.boom.assets
-						.picker({
-							asset_rid : $('#boom-featureimage-input').val()
-						})
-						.done( function( rid ){
-							$('#b-featureimage-img').attr( 'src', '/asset/view/' + rid + '/250/80').show();
-							$('#boom-featureimage-input').val( rid );
-							$( '#b-feature-remove' ).button( 'enable' );
-							$( '#b-featureimage-none' ).hide();
-						});
-				}
-			},
-			{
-				text: 'Remove',
-				class : 'b-button',
-				id: 'b-feature-remove',
-				icons: { primary: 'b-button-icon b-button-icon-delete' },
-				click: function(){
-					var dialog = $(this),
-						confirmation = new boomConfirmation('Please confirm', "Are you sure you want to do delete this page's feature image?");
-
-					confirmation
-						.done(function() {
-							$('#b-featureimage-img').attr( 'src', '').hide();
-							$('#boom-featureimage-input').val( 0 );
-							$( '#b-feature-remove' ).button( 'disable' );
-							$( '#b-featureimage-none' ).show();
-						});
-				}
-			},
-			{
-				text: 'Cancel',
-				class : 'b-button',
-				icons: { primary: 'b-button-icon b-button-icon-cancel' },
-				click: function(){
-					dialog.cancel();
-				}
-			},
-			{
-				text: 'Okay',
-				class : 'b-button',
-				icons: { primary: 'b-button-icon b-button-icon-accept' },
-				click: function() {
-					page.saveSettings(url, $("#boom-form-pagesettings-featureimage").serialize(), '"Page feature image saved')
-						.done(function(response) {
-							page.toolbar.status.set(response);
-						});
-
-					dialog.close();
-				}
-			}
-		],
-		open: function(){
-			$( '#b-feature-remove' ).button( 'disable' );
-		},
-		onLoad: function(){
-			var asset_id = $('#boom-featureimage-input').val();
-
-			if ( asset_id > 0 ) {
-				$( '#b-featureimage-none' ).hide();
-				$( '#b-feature-remove' ).button( 'enable' );
-			}
-		}
-	});
+	new boomPageFeatureEditor(this)
+		.done(function(response) {
+			page.toolbar.status.set(response);
+		});
 };
 
 boomPage.prototype.template = function() {

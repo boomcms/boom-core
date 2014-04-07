@@ -1,12 +1,18 @@
 <div id='b-page-feature' class="b-pagesettings">
 	<section>
-		<p id="b-featureimage-none">This page currently has no associated feature image.</p>
-		<div>
-			<? if ( ! $feature_image_id): ?>
-				<img id='b-featureimage-img' style="display: none" />
-			<? else: ?>
-				<img id='b-featureimage-img' src='<?= Route::url('asset', array('id' => $feature_image_id, 'width' => 250, 'height' => 80)) ?>' />
-			<? endif; ?>
+		<h1>Current feature image</h1>
+		<p id="b-page-feature-none">This page has no feature image.</p>
+
+		<? if ( ! $feature_image_id): ?>
+			<img id='b-page-feature-current' src='' />
+		<? else: ?>
+			<img id='b-page-feature-current' src='<?= Route::url('asset', array('id' => $feature_image_id)) ?>' />
+		<? endif; ?>
+
+
+		<div id='b-page-feature-buttons'>
+			<?= BoomUI::button('asset', 'Select an image from the asset manager', array('id' => 'b-page-feature-edit', 'class' => 'b-button-withtext')) ?>
+			<?= BoomUI::button('delete', 'Remove feature image', array('id' => 'b-page-feature-remove', 'class' => 'b-button-withtext')) ?>
 		</div>
 	</section>
 	<section>
@@ -17,7 +23,7 @@
 			<ul>
 				<? foreach ($images_in_page as $image): ?>
 					<li>
-						<a href='#'><img src='<?= Route::url('asset', array('id' => $image->id, 'width' => 210, 'height' => 100, 'crop' => 1)) ?>' alt='<?= $image->title ?>'/></a>
+						<a href='#' class='b-page-feature-set' data-asset-id='<?= $image->id ?>'><img src='<?= Route::url('asset', array('id' => $image->id)) ?>' alt='<?= $image->title ?>'/></a>
 					</li>
 				<? endforeach ?>
 			</ul>
