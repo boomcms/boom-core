@@ -15,10 +15,13 @@ class Boom_Boom_Exception_Handler_Private extends Boom_Exception_Handler
 		}
 		catch (Exception $e)
 		{
-			$response = Response::factory()
+			echo Response::factory()
 				->status($this->_code)
 				->headers('Content-Type', 'text/plain')
+				->send_headers()
 				->body(Kohana_Exception::text($e));
+
+			exit(1);
 		}
 	}
 
@@ -36,11 +39,11 @@ class Boom_Boom_Exception_Handler_Private extends Boom_Exception_Handler
 		}
 		else
 		{
-			echo Kohana_Exception::response($this->_e);
+			echo Kohana_Exception::response($this->_e)->send_headers()->body();
 			exit(1);
 		}
 
-		echo $this->_get_response($body);
+		echo $this->_get_response($body)->send_headers()->body();
 		exit(1);
 	}
 

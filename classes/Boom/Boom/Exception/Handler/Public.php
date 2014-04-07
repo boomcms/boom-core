@@ -9,7 +9,7 @@ class Boom_Boom_Exception_Handler_Public extends Boom_Exception_Handler
 	{
 		parent::execute();
 
-		echo Kohana_Exception::response($this->_e);
+		echo Kohana_Exception::response($this->_e)->send_headers()->body();
 		exit(1);
 	}
 }
