@@ -18,7 +18,7 @@ function boomUrlEditor(page) {
 		var urlEditor = this,
 			page = this.page;
 
-		this.dialog
+		this.dialog.contents
 			.on('change', '.b-urls-primary', function() {
 				var $url = $(this).closest('li'),
 					is_primary = $url.find('.b-urls-primary').is(':checked')? 1 : 0;

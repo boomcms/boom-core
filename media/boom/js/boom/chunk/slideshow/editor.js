@@ -5,7 +5,7 @@ function boomChunkSlideshowEditor(page_id, slotname) {
 	boomChunkSlideshowEditor.prototype.bind = function() {
 		var slideshowEditor = this;
 
-		this.dialog
+		this.dialog.contents
 			.on('click', '#b-slideshow-editor-delete', function() {
 				slideshowEditor.deferred.resolveWith({});
 				$.boom.dialog.destroy(slideshowEditor.dialog);
@@ -113,7 +113,7 @@ function boomChunkSlideshowEditor(page_id, slotname) {
 	};
 
 	boomChunkSlideshowEditor.prototype.editSlide = function(slide) {
-		this.dialog.find('#b-slideshow-editor-current')
+		this.dialog.contents.find('#b-slideshow-editor-current')
 			.find('.default')
 			.hide()
 			.end()
@@ -135,7 +135,7 @@ function boomChunkSlideshowEditor(page_id, slotname) {
 	boomChunkSlideshowEditor.prototype.getAllSlideDetails = function() {
 		var slideshowEditor = this;
 
-		return this.dialog
+		return this.dialog.contents
 			.find('#b-slideshow-editor-slides li')
 			.map(function(index, el) {
 				var $el = $(el);
@@ -146,7 +146,7 @@ function boomChunkSlideshowEditor(page_id, slotname) {
 	};
 
 	boomChunkSlideshowEditor.prototype.getCurrentSlide = function() {
-		return this.dialog.find('#b-slideshow-editor-slides input[type=radio]:checked');
+		return this.dialog.contents.find('#b-slideshow-editor-slides input[type=radio]:checked');
 	};
 
 	boomChunkSlideshowEditor.prototype._getSlideDetails = function($element) {
@@ -163,17 +163,16 @@ function boomChunkSlideshowEditor(page_id, slotname) {
 		var slideshowEditor = this;
 		this.deferred = new $.Deferred();
 
-		this.dialog =new boomDialog({
+		this.dialog = new boomDialog({
 			url : '/cms/chunk/slideshow/edit/' + this.page_id + '?slotname=' + this.slotname,
 			id : 'b-slideshow-editor',
-			deferred : this.deferred,
 			width: 920,
 			open : function() {
 				slideshowEditor.bind();
-			},
-			callback : function() {
-				slideshowEditor.deferred.resolve(slideshowEditor.getAllSlideDetails());
 			}
+		})
+		.done(function() {
+			slideshowEditor.deferred.resolve(slideshowEditor.getAllSlideDetails());
 		});
 
 		return this.deferred;
