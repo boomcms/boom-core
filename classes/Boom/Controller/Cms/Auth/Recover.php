@@ -51,14 +51,19 @@ class Boom_Controller_Cms_Auth_Recover extends Controller_Cms_Auth
 			)), 'text/html')
 			->send();
 
-		$this->_display_form(array('message' => Kohana::message('auth', 'recover.email_sent')));
+		$this->response->body(new View('boom/account/recover/email_sent'));
+	}
+
+	public function action_show_form()
+	{
+		$this->_display_form();
 	}
 
 	public function action_set_password()
 	{
 		$token = new Model_PasswordToken(array('token' => $this->request->query('token')));
 
-		if ( ! $token->loaded() OR $token->is_expired() OR $token->person->email != $this->request->query('email'))
+		if ( ! $token->loaded() OR $token->is_expired())
 		{
 			if ($token->is_expired())
 			{
@@ -103,7 +108,6 @@ class Boom_Controller_Cms_Auth_Recover extends Controller_Cms_Auth
 
 	protected function _display_form($vars = array())
 	{
-		$vars['tab'] = 'reset';
-		$this->_display_login_form($vars);
+		$this->response->body(new View('boom/account/recover/form', $vars));
 	}
 }

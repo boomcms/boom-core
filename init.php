@@ -13,11 +13,16 @@ Route::set('auth', 'cms/logout')
 Route::set('recover', 'cms/recover')
 	->defaults(array(
 		'controller' => 'Cms_Auth_Recover',
-		'action' => 'create_token',
+		'action' => 'show_form',
 	))
 	->filter(function(Route $route, $params, Request $request)
 		{
-			if ($request->query('token') AND $request->query('email'))
+			if ($request->method() === Request::POST AND ! $request->query('token'))
+			{
+				$params['action'] = 'create_token';
+				return $params;
+			}
+			else if ($request->query('token'))
 			{
 				$params['action'] = 'set_password';
 				return $params;
