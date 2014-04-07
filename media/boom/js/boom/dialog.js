@@ -23,7 +23,9 @@ boomDialog.prototype = {
 function boomDialog(options) {
 	var self = this;
 
-	this.deferred = new $.Deferred();
+	this.deferred = new $.Deferred().always(function() {
+		$.boom.page && $.boom.page.toolbar && $.boom.page.toolbar.minimise();
+	});
 
 	this.options = $.extend({
 		width: 'auto',
@@ -67,12 +69,20 @@ function boomDialog(options) {
 	};
 
 	boomDialog.prototype.init = function() {
+		var boomDialog = this;
+
 		$.boom.page && $.boom.page.toolbar && $.boom.page.toolbar.maximise();
 
 		this
 			.contents
 			.dialog(this.options)
 			.ui();
+
+		this.contents.dialog('option', 'position', {my: "center center", at: "center center", of: top});
+
+		this.contents.find('img').load(function() {
+			boomDialog.contents.dialog('option', 'position', {my: "center center", at: "center center", of: top});
+		});
 	};
 
 	boomDialog.prototype.open = function() {
@@ -100,7 +110,6 @@ function boomDialog(options) {
 
 						if ($.isFunction(self.options.onLoad)) {
 							self.options.onLoad.apply(self.dialog);
-
 						}
 					});
 				}, 100);
