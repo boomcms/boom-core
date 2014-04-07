@@ -43,7 +43,7 @@ $.widget('ui.chunkLinkset', $.ui.chunk,
 			},
 		});
 
-		this.dialog = $.boom.dialog.open({
+		this.dialog = new boomDialog({
 			url: '/cms/chunk/linkset/edit/' + this.options.currentPage.id,
 			title: 'Edit linkset',
 			id: self.element[0].id + '-boom-dialog',

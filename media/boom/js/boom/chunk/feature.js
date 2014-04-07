@@ -20,7 +20,7 @@ $.widget('ui.chunkFeature', $.ui.chunk,
 
 		var self = this;
 
-		this.dialog = $.boom.dialog.open({
+		this.dialog = new boomDialog({
 			url: '/cms/chunk/feature/edit/' + this.options.currentPage.id,
 			width: 400,
 			id: self.element[0].id + '-boom-dialog',

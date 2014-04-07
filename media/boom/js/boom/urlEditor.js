@@ -38,7 +38,7 @@ function boomUrlEditor(page) {
 	};
 
 	boomUrlEditor.prototype.close = function() {
-		$.boom.dialog.destroy(this.dialog);
+		this.dialog.close();
 	};
 
 	boomUrlEditor.prototype.delete = function($li) {
@@ -57,7 +57,7 @@ function boomUrlEditor(page) {
 		var urlEditor = this,
 			page = this.page;
 
-		this.dialog = $.boom.dialog.open({
+		this.dialog = new boomDialog({
 			url: this.list_url,
 			title: 'URL Editor',
 			width: 800,

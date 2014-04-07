@@ -125,7 +125,7 @@ $.extend( $.boom,
 
 			var link = opts.link;
 
-			$.boom.dialog.open( opts );
+			new boomDialog(opts);
 
 			return complete;
 		}

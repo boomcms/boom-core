@@ -6,7 +6,7 @@ function boomPageUrl(id) {
 			deferred = new $.Deferred(),
 			dialog;
 
-		dialog = $.boom.dialog.open({
+		dialog = new boomDialog({
 			url : '/cms/page/urls/add?page_id=' + page_id,
 			title : 'Add URL',
 			width : 500,
@@ -18,16 +18,17 @@ function boomPageUrl(id) {
 						dialog.dialog('option', 'callback')();
 					}
 				});
-			},
-			callback : function() {
-				var location = dialog.find('input[name=url]').val();
-
-				url.addWithLocation(page_id, location)
-					.done(function() {
-						deferred.resolve();
-						$.boom.dialog.destroy(dialog);
-					});
 			}
+		});
+
+		dialog.done(function() {
+			var location = dialog.find('input[name=url]').val();
+
+			url.addWithLocation(page_id, location)
+				.done(function() {
+					deferred.resolve();
+					$.boom.dialog.destroy(dialog);
+				});
 		});
 
 		return deferred;
@@ -82,19 +83,17 @@ function boomPageUrl(id) {
 			form_url = '/cms/page/urls/move/' + this.id + '?page_id=' + page_id,
 			dialog;
 
-		dialog = $.boom.dialog.open({
+		dialog = new boomDialog({
 			url : form_url,
 			title : 'Move url',
 			deferred: deferred,
-			width : '500px',
-			callback : function() {
-				$.boom.post(form_url)
-					.done(function(response) {
-						deferred.resolve(response);
-					});
-
-				$.boom.dialog.destroy(dialog);
-			}
+			width : '500px'
+		});
+		dialog.done(function() {
+			$.boom.post(form_url)
+				.done(function(response) {
+					deferred.resolve(response);
+				});
 		});
 
 		return deferred;

@@ -41,19 +41,12 @@ $.extend($.boom.item,
 	/** @function */
 	remove: function(){
 
-		var self = this;
-		var deleted = new $.Deferred();
+		var self = this,
+			deleted = new $.Deferred(),
+			confirmation;
 
-		$.boom.dialog.open({
-			width: 350,
-			msg: 'Are you sure you want to delete this ' + self.type +'?',
-			title: 'Please confirm',
-			deferred: deleted
-		});
-
-		return deleted
-		.pipe( function( event ){
-
+		confirmation = new boomConfirmation('Please confirm', 'Are you sure you want to delete this ' + self.type +'?');
+		confirmation.done(function() {
 			return $.post( self.base_url + 'delete/' + self.rid, {csrf : $.boom.options.csrf} );
 		});
 	},

@@ -16,7 +16,8 @@ $.widget('boom.boomMenu', {
 				e.preventDefault();
 
 				var url = '/cms/profile';
-				$.boom.dialog.open({
+
+				new boomDialog({
 					'url': url,
 					'title': 'User profile',
 					width : 600,

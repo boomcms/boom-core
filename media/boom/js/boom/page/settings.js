@@ -9,9 +9,10 @@ boomPage.prototype.saveSettings = function(url, data, success_message) {
 
 boomPage.prototype.navigation = function() {
 	var page = this,
-		url = '/cms/page/settings/navigation/' + page.id;
+		url = '/cms/page/settings/navigation/' + page.id,
+		dialog;
 
-	$.boom.dialog.open({
+	dialog = new boomDialog({
 		url: url,
 		title: 'Navigation',
 		width: 570,
@@ -22,27 +23,30 @@ boomPage.prototype.navigation = function() {
 				}
 			});
 		},
-		callback: function() {
-			page.saveSettings(url, $(this).find('form').serialize(), 'Page navigation settings saved');
-		},
 		open: function() {
 			var parent_id = $( 'input[name=parent_id]' ).val();
 			$( '#page_' + parent_id ).addClass( 'ui-state-active' );
 		}
 	});
+
+	dialog.done(function() {
+		page.saveSettings(url, $(this).find('form').serialize(), 'Page navigation settings saved');
+	});
 };
 
 boomPage.prototype.search = function() {
 	var page = this,
-		url = '/cms/page/settings/search/' + page.id;
+		url = '/cms/page/settings/search/' + page.id,
+		dialog;
 
-	$.boom.dialog.open({
+	dialog = new boomDialog({
 		url : url,
 		title : 'Search Settings',
-		width : 500,
-		callback : function() {
-			page.saveSettings(url, $(this).find("form").serialize(), 'Page search settings saved');
-		}
+		width : 500
+	});
+
+	dialog.done(function() {
+		page.saveSettings(url, $(this).find("form").serialize(), 'Page search settings saved');
 	});
 };
 
@@ -50,7 +54,7 @@ boomPage.prototype.tags = function() {
 	var page = this,
 		dialog;
 
-	dialog = $.boom.dialog.open({
+	dialog = new boomDialog({
 		url: '/cms/tags/page/list/' + page.id,
 		title: 'Page tags',
 		width: 440,
@@ -66,7 +70,7 @@ boomPage.prototype.tags = function() {
 				class : 'b-button',
 				icons: { primary : 'b-button-icon b-button-icon-accept' },
 				click: function(event) {
-					$.boom.dialog.destroy(dialog);
+					dialog.close();
 				}
 			}
 		]
@@ -80,9 +84,10 @@ boomPage.prototype.urls = function() {
 
 boomPage.prototype.featureimage = function() {
 	var	page = this,
-		url = '/cms/page/version/feature/' + page.id;
+		url = '/cms/page/version/feature/' + page.id,
+		dialog;
 
-	$.boom.dialog.open({
+	dialog = new boomDialog({
 		url: url,
 		title: 'Page feature image',
 		width: 300,
@@ -128,8 +133,7 @@ boomPage.prototype.featureimage = function() {
 				class : 'b-button',
 				icons: { primary: 'b-button-icon b-button-icon-cancel' },
 				click: function(){
-
-					$.boom.dialog.destroy( this );
+					dialog.cancel();
 				}
 			},
 			{
@@ -142,7 +146,7 @@ boomPage.prototype.featureimage = function() {
 							page.toolbar.status.set(response);
 						});
 
-					$.boom.dialog.destroy(this);
+					dialog.close();
 				}
 			}
 		],
@@ -162,20 +166,13 @@ boomPage.prototype.featureimage = function() {
 
 boomPage.prototype.template = function() {
 	var	page = this,
-		url = '/cms/page/version/template/' + page.id;
+		url = '/cms/page/version/template/' + page.id,
+		dialog;
 
-	$.boom.dialog.open({
+	dialog = new boomDialog({
 		url: url,
 		title: 'Page template',
 		width: 500,
-		callback: function() {
-			page.saveSettings(url, $("#b-page-version-template").serialize(), 'Page template saved, reloading page')
-				.done(function() {
-					// Reload the page to show the template change.
-					top.location.reload();
-				});
-
-		},
 		open: function() {
 			page.template._show_details();
 
@@ -183,6 +180,14 @@ boomPage.prototype.template = function() {
 				page.template._show_details();
 			});
 		}
+	});
+
+	dialog.done(function() {
+		page.saveSettings(url, $("#b-page-version-template").serialize(), 'Page template saved, reloading page')
+			.done(function() {
+				// Reload the page to show the template change.
+				top.location.reload();
+			});
 	});
 
 	boomPage.prototype.template._show_details = function() {
@@ -269,9 +274,10 @@ boomPage.prototype.visibility = function() {
 
 boomPage.prototype.childsettings = function() {
 	var page = this,
-		url = '/cms/page/settings/children/' + page.id;
+		url = '/cms/page/settings/children/' + page.id,
+		dialog;
 
-	$.boom.dialog.open({
+	dialog = new boomDialog({
 		url: url,
 		title: 'Child page settings',
 		width: '510px',
@@ -290,43 +296,49 @@ boomPage.prototype.childsettings = function() {
 			});
 
 			$('#b-page-settings-children-reorder').on('click', function() {
-				var sort_url = '/cms/page/settings/sort_children/' + page.id;
-				$.boom.dialog.open({
+				var sort_url = '/cms/page/settings/sort_children/' + page.id,
+					dialog;
+
+				dialog = new boomDialog({
 					url:  sort_url,
 					title: 'Reorder child pages',
 					width: 'auto',
 					open: function() {
 						$('#b-page-settings-children-sort').sortable();
-					},
-					callback: function(){
-						var sequences = $('#b-page-settings-children-sort li').map(function(){
-							return $(this).attr('data-id');
-						}).get();
-
-						page.saveSettings(url, $("form.b-form-settings").serialize())
-							.done(function() {
-								page.saveSettings(url, {sequences : sequences}, 'Child page ordering saved, reloading page');
-							});
 					}
 				});
+
+				dialog.done(function() {
+					var sequences = $('#b-page-settings-children-sort li').map(function(){
+						return $(this).attr('data-id');
+					}).get();
+
+					page.saveSettings(url, $("form.b-form-settings").serialize())
+						.done(function() {
+							page.saveSettings(url, {sequences : sequences}, 'Child page ordering saved, reloading page');
+						});
+				});
 			});
-		},
-		callback: function(){
-			page.saveSettings(url, $(this).find("form").serialize(), 'Child page settings saved');
 		}
+	});
+
+	dialog.done(function() {
+		page.saveSettings(url, $(this).find("form").serialize(), 'Child page settings saved');
 	});
 };
 
 boomPage.prototype.adminsettings = function() {
 	var page = this,
-		url = '/cms/page/settings/admin/' + page.id;
+		url = '/cms/page/settings/admin/' + page.id,
+		dialog;
 
-	$.boom.dialog.open({
+	dialog = new boomDialog({
 		url: url,
 		title: 'Admin settings',
-		width: 'auto',
-		callback: function(){
-			page.saveSettings(url, $(this).find("form").serialize(), 'Page admin settings saved');
-		}
+		width: 'auto'
+	});
+
+	dialog.done(function() {
+		page.saveSettings(url, $(this).find("form").serialize(), 'Page admin settings saved');
 	});
 };

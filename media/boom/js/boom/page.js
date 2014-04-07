@@ -27,15 +27,14 @@ function boomPage(page_id) {
 		var promise = new $.Deferred(),
 			page_id = this.id;
 
-		$.boom.dialog.open({
+		new boomDialog({
 			width: 350,
 			url: '/cms/page/delete/' + page_id,
-			title: 'Please confirm',
-			callback: function(){
-				$.post('/cms/page/delete/' + page_id, $(this).find('form').serialize(), function(response) {
-					promise.resolve(response);
-				});
-			}
+			title: 'Please confirm'
+		}).done(function() {
+			$.post('/cms/page/delete/' + page_id, $(this).find('form').serialize(), function(response) {
+				promise.resolve(response);
+			});
 		});
 
 		return promise;
@@ -45,20 +44,19 @@ function boomPage(page_id) {
 		var url = '/cms/page/version/embargo/' + this.id;
 		var promise = new $.Deferred();
 
-		$.boom.dialog.open({
+		new boomDialog({
 			url: url,
 			title: 'Page embargo',
-			width: 440,
-			callback: function(){
-				savePageSettings(
-					url,
-					$(this).find("form").serialize(),
-					"Page embargo saved."
-				)
-				.done(function(response) {
-					promise.resolve(response);
-				});
-			}
+			width: 440
+		}).done(function() {
+			savePageSettings(
+				url,
+				$(this).find("form").serialize(),
+				"Page embargo saved."
+			)
+			.done(function(response) {
+				promise.resolve(response);
+			});
 		});
 
 		return promise;

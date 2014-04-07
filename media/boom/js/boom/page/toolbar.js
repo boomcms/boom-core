@@ -28,7 +28,7 @@ $.widget( 'boom.pageToolbar', {
 				self.options.page.stash();
 			})
 			.on('click', '#b-page-readability', function() {
-				$.boom.dialog.open({
+				new boomDialog({
 					url: '/media/boom/html/readability.html'
 				});
 			})

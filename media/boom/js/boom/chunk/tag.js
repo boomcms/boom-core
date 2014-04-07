@@ -27,7 +27,7 @@ $.widget('ui.chunkTag', $.ui.chunk,
 		var self = this,
 			tag_id;
 
-		this.dialog = $.boom.dialog.open({
+		this.dialog = new boomDialog({
 			url: '/cms/chunk/tag/edit/' + this.options.currentPage.id + '?tag_id=' + this.tag_id,
 			width: 400,
 			id: self.element[0].id + '-boom-dialog',

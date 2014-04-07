@@ -122,15 +122,16 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 	},
 
 	openHelp : function() {
-		var title = this;
+		var title = this,
+			dialog;
 
-		$.boom.dialog.open({
+		dialog = new boomDialog({
 			url : '/media/boom/html/help/title_length.html',
-			width : '600px',
-			destroy : function() {
-				title.toggleBlurEvent();
-				title.element.focus();
-			}
+			width : '600px'
+		});
+		dialog.always(function() {
+			title.toggleBlurEvent();
+			title.element.focus();
 		});
 	},
 

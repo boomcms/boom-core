@@ -3,9 +3,10 @@ function boomAlert(message) {
 	this.message = message;
 
 	boomAlert.prototype.open = function() {
-		var alert = this;
+		var alert = this,
+			dialog;
 
-		$.boom.dialog.open({
+		dialog = new boomDialog({
 			msg : alert.message,
 			buttons: [
 				{
@@ -13,7 +14,7 @@ function boomAlert(message) {
 					icons : { primary : 'b-button-icon-accept b-button-icon' },
 					class : 'b-button',
 					click : function() {
-						$.boom.dialog.destroy($(this));
+						dialog.close();
 						alert.deferred.resolve();
 					}
 				}

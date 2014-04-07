@@ -1,13 +1,12 @@
 function boomConfirmation(title, message) {
-	this.deferred = new $.Deferred();
-
 	this.title = title;
 	this.message = message;
 
 	boomConfirmation.prototype.open = function() {
-		var confirmation = this;
+		var confirmation = this,
+			dialog;
 
-		$.boom.dialog.open({
+		return new boomDialog({
 			title : confirmation.title,
 			msg : confirmation.message,
 			width : 300,
@@ -15,9 +14,7 @@ function boomConfirmation(title, message) {
 				confirmation.deferred.resolve();
 			}
 		});
-
-		return this.deferred;
-	}
+	};
 
 	return this.open();
 }
