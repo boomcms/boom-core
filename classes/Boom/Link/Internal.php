@@ -10,7 +10,15 @@ class Boom_Link_Internal extends Link
 
 	public function __construct($link)
 	{
-		$this->page = ctype_digit($link)? new Model_Page($link) : ORM::factory('Page_URL', array('location' => $link))->page;
+	    if (ctype_digit($link))
+	    {
+	        $this->page = new Model_Page($link);
+	    }
+	    else
+	    {
+	        $location = ($link === '/')? $link : substr($link, 1);
+	        $this->page = ORM::factory('Page_URL', array('location' => $location))->page;
+	    }
 	}
 
 	public function get_page()
