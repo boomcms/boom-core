@@ -107,7 +107,7 @@ $.extend($.boom.assets,
 					.progress(function(asset_id) {
 						cleanup();
 						complete.resolve(asset_id);
-						dialog.dialog('destroy');
+						dialog.close();
 						browser.remove();
 					});
 
@@ -123,7 +123,7 @@ $.extend($.boom.assets,
 
 		opts = $.extend( default_options, opts );
 
-		dialog = $.boom.dialog.open( opts );
+		dialog = new boomDialog(opts);
 
 		return complete;
 	}
@@ -240,14 +240,10 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 			var uploaded = self
 				.upload({
 					start: function(e) {
-						var dialog = $.boom.dialog.open({
+						var dialog = new boomDialog({
 							url: '/cms/tags/asset/list/0',
 							title: 'Asset tags',
 							width: 440,
-							callback: function(){
-
-								tagged.resolve( tags );
-							},
 							onLoad: function(){
 								// Make the tag editor work.
 								$( '#b-tags' ).tagger_deferred( { tags : tags } );
@@ -258,10 +254,13 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 									class : 'b-button',
 									icons: {primary : 'b-button-icon b-button-icon-accept'},
 									click: function(event) {
-										$.boom.dialog.destroy(dialog);
+										dialog.close();
 									}
 								}
 							]
+						})
+						.done(function() {
+							tagged.resolve( tags );
 						});
 					}
 				})
@@ -372,7 +371,7 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 				$('#b-assets-view-thumbs div').removeClass('selected');
 			})
 			.on( 'click', '#b-button-multiaction-tag', function(){
-				var dialog = $.boom.dialog.open({
+				var dialog = new boomDialog({
 					url: '/cms/tags/asset/list/' + self.selected.join( '-' ),
 					title: 'Asset tags',
 					width: 440,
@@ -388,7 +387,7 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 							class : 'b-button',
 							icons: {primary : 'b-button-icon b-button-icon-accept'},
 							click: function(event) {
-								$.boom.dialog.destroy(dialog);
+								dialog.close();
 							}
 						}
 					]
