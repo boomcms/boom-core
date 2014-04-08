@@ -17,9 +17,6 @@
 				<link><?= $p->url() ?></link>
 				<description><![CDATA[<?= htmlentities(strip_tags(Chunk::factory('text', 'standfirst', $p)->text()), ENT_QUOTES, 'UTF-8', FALSE) ?>]]></description>
 				<pubDate><?= date('r', $p->visible_from) ?></pubDate>
-				<? if ($p->has_feature_image()): ?>
-					<media:thumbnail url="<?= Route::url('asset', array('id' => $p->version()->feature_image_id)) ?>"/>
-				<? endif ?>
 			</item>
 		<? endforeach; ?>
 	</channel>
