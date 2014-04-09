@@ -4,17 +4,18 @@ function boomLinkPicker(title, link) {
 		title : title,
 		url : '/cms/chunk/insert_url',
 		id : 'b-linkpicker',
-		width : 600,
-		link : link? link : {}
+		width : 600
 	};
+
+	this.link = link? link : {};
 
 	boomLinkPicker.prototype._bind = function() {
 		var linkPicker = this,
 			type_selector = this.dialog.contents.find('#b-chunk-linkset-addlink-external-type'),
 			external_url = this.dialog.contents.find('#boom-chunk-linkset-addlink-external-url');
 
-		if (this.options.link.rid == -1 || this.options.link.rid == "") {
-			var url = this.options.link.url;
+		if (this.link.rid == -1 || this.link.rid == "") {
+			var url = this.link.url;
 
 			if (url.substring(0,7) =='http://' || url.substring(0,8) =='https://' || url.substring(0,1) == '/') {
 				url = url.replace('https://', '').replace('http://', '');
@@ -30,8 +31,8 @@ function boomLinkPicker(title, link) {
 			}
 
 			if (url != "") {
-				external_url.val( url );
-				$( 'a[href=#boom-chunk-linkset-addlink-external]' ).trigger('click');
+				external_url.val(url);
+				$('a[href=#boom-chunk-linkset-addlink-external]').trigger('click');
 			}
 
 		}
@@ -44,11 +45,43 @@ function boomLinkPicker(title, link) {
 
 		this.dialog.contents.find('.boom-tree').pageTree({
 			onPageSelect : function(page) {
-				linkPicker.pick({
-					page_id : page.page_rid
-				});
+				linkPicker.link = page;
+				linkPicker.pick();
+				linkPicker.dialog.close();
 			}
 		});
+	};
+
+	boomLinkPicker.prototype.getExternalLink = function() {
+		var url,
+			link_text = url = this.dialog.contents.find('#boom-chunk-linkset-addlink-external-url').val();
+
+		if (url.indexOf(window.location.hostname) == -1) {
+			switch(this.dialog.contents.find('#b-chunk-linkset-addlink-external-type').val()) {
+				case 'http':
+					if (url.substring(0,7) !='http://' && url.substring(0,8) !='https://' && url.substring(0,1) != '/') {
+						url = 'http://' + url;
+					}
+					break;
+				case 'mailto':
+					if (url.substring(0,6) != 'mailto:') {
+						url = 'mailto:' + url;
+					}
+					break;
+				case 'tel':
+					if (url.substring(0,3)) {
+						url = 'tel:' + url;
+					}
+					break;
+			}
+		} else {
+			url.replace(window.location.hostname, '');
+		}
+
+		return {
+			url : url,
+			text : link_text
+		};
 	};
 
 	boomLinkPicker.prototype.open = function() {
@@ -66,33 +99,11 @@ function boomLinkPicker(title, link) {
 	};
 
 	boomLinkPicker.prototype.pick = function() {
-		if (link.rid == -1 || link.rid == "") {
-			var url = link_text = $( '#boom-chunk-linkset-addlink-external-url' ).val();
-
-			switch($('#b-chunk-linkset-addlink-external-type').val()) {
-				case 'http':
-					if (url.substring(0,7) !='http://' && url.substring(0,8) !='https://' && url.substring(0,1) != '/') {
-						url = 'http://' + url;
-					}
-					break;
-				case 'mailto':
-					if (url.substring(0,6) != 'mailto:') {
-						url = 'mailto:' + url;
-					}
-					break;
-				case 'tel':
-					if (url.substring(0,3)) {
-						url = 'tel:' + url;
-					}
-					break;
-			}
-
-			link.url = url;
-			link.title = link_text;
+		if (this.link.page_id == -1 || this.link.page_id == undefined) {
+			this.link = this.getExternalLink();
 		}
 
-		this.deferred.resolve(link);
-		this.dialog.close();
+		this.deferred.resolve(this.link);
 	};
 
 	return this.open();

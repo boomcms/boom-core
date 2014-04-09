@@ -98,7 +98,7 @@ $.widget('ui.chunkLinkset', $.ui.chunk,
 			onPageSelect : function(page) {
 				var anchor =
 					$( '<a>')
-						.attr('data-page-id', page.page_rid)
+						.attr('data-page-id', page.page_id)
 						.attr( 'href', page.url )
 						.text( page.title );
 				self._add( anchor );
@@ -162,7 +162,7 @@ $.widget('ui.chunkLinkset', $.ui.chunk,
 
 	/**
 	Get the linkset data as an object
-	@returns {Object} Simple object containing an array of link objects {links: [ { name: name, uri: uri, target_page_rid: page RID, sequence: sequence }]}
+	@returns {Object} Simple object containing an array of link objects {links: [ { name: name, uri: uri, target_page_id: page RID, sequence: sequence }]}
 	*/
 	getData : function() {
 		return {links : this.links};
@@ -171,7 +171,7 @@ $.widget('ui.chunkLinkset', $.ui.chunk,
 	/**
 	Get the linkset data as an object
 	@param {Object} element Container element for this linkset.
-	@returns {Object} Simple object containing an array of link objects {links: [ { name: name, uri: uri, target_page_rid: page RID, sequence: sequence }]}
+	@returns {Object} Simple object containing an array of link objects {links: [ { name: name, uri: uri, target_page_id: page RID, sequence: sequence }]}
 	*/
 	_getLinks : function(element) {
 

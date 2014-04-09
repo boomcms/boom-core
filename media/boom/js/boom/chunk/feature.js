@@ -29,7 +29,7 @@ $.widget('ui.chunkFeature', $.ui.chunk,
 
 				self.dialog.find( '.boom-tree' ).pageTree({
 					onPageSelect : function(page) {
-						self.insert( page.page_rid );
+						self.insert( page.page_id );
 
 						$.boom.dialog.destroy(self.dialog);
 					}

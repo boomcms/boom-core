@@ -27,7 +27,7 @@ $.widget('boom.pageTree', {
 	itemClick : function($node) {
 		var link = {
 			url : $node.attr('href'),
-			page_rid : $node.attr('rel'),
+			page_id : $node.attr('rel'),
 			title : $node.text()
 		};
 

@@ -44,7 +44,7 @@ function boomChunkSlideshowEditor(page_id, slotname) {
 					var url = new_link.url.replace(window.location.protocol + '//' + window.location.hostname, '')
 					currentSlide
 						.data('url', url)
-						.data('page', new_link.page_rid);
+						.data('page', new_link.page_id);
 
 					$input
 						.val(url)

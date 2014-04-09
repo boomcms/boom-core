@@ -39,7 +39,7 @@
 			 new boomLinkPicker('', link)
 				.done(function(link) {
 					var url = link.url,
-						page_id = link.page_rid;
+						page_id = link.page_id;
 
 					if (page_id) {
 						url = $('<a/>').attr('href',url)[0].pathname.replace(/^[^\/]/,'/');
