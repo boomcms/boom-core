@@ -54,7 +54,7 @@ return array(
 		'boom/tags.js',
 		'boom/tagAutocompleter.js',
 		'jquery/fileupload.js',
-		'wysihtml5/wysihtml5x-0.4.2-toolbar.js',
+		'wysihtml5/wysihtml5x-0.4.4-toolbar.js',
 		'wysihtml5/parser_rules/full.js',
 		'wysihtml5/parser_rules/inline.js',
 		'wysihtml5/commands/insertBoomAsset.js',
