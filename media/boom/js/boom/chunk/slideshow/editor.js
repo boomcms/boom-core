@@ -36,12 +36,9 @@ function boomChunkSlideshowEditor(page_id, slotname) {
 				var $input = $(this),
 					currentSlide = slideshowEditor.getCurrentSlide();
 
-				$.boom.links.picker( {
-					title: 'Edit slide link',
-					link : {
-						url : $input.val(),
-						rid : currentSlide.data('page')
-					}
+				new boomLinkPicker('Edit slide link', {
+					url : $input.val(),
+					rid : currentSlide.data('page')
 				})
 				.pipe(function(new_link) {
 					var url = new_link.url.replace(window.location.protocol + '//' + window.location.hostname, '')

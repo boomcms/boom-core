@@ -36,8 +36,7 @@
 
 			$(composer).trigger('before:boomdialog');
 
-			 $.boom.links
-				.picker(opts)
+			 new boomLinkPicker('', link)
 				.done(function(link) {
 					var url = link.url,
 						page_id = link.page_rid;

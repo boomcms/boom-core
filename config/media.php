@@ -50,7 +50,7 @@ return array(
 		'boom/chunk/slideshow/editor.js',
 		'boom/page/title.js',
 		'boom/browser.js',
-		'boom/links.js',
+		'boom/link_picker.js',
 		'boom/tags.js',
 		'boom/tagAutocompleter.js',
 		'jquery/fileupload.js',

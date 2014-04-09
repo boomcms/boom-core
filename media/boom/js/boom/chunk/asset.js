@@ -311,13 +311,10 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 	_edit_link: function() {
 		var self = this;
 
-		return $.boom.links.picker( {
-			title: 'Add a link',
-			link: {
-				url: (self.asset.url)? self.asset.url : '',
-				rid: -1,
-				title: ''
-			}
+		return new boomLinkPiclker('Add a link', {
+			url: (self.asset.url)? self.asset.url : '',
+			rid: -1,
+			title: ''
 		})
 		.pipe(function(new_link) {
 			self.asset.url = new_link.url;
