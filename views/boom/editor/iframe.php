@@ -10,9 +10,9 @@
 
 <? if (Editor::instance()->state_is(Editor::EDIT)): ?>
 	<script type="text/javascript">
-		$(document).ready(function() {
-			$('body').css('margin-left', '60px');
-		});
+		(function() {
+			document.getElementsByTagName("BODY")[0].style['margin-left'] = "60px";
+		})();
 	</script>
 <? endif ?>
 
