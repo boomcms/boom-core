@@ -306,7 +306,7 @@ boomPage.prototype.childsettings = function() {
 
 						page.saveSettings(url, $("form.b-form-settings").serialize())
 							.done(function() {
-								page.saveSettings(url, {sequences : sequences}, 'Child page ordering saved, reloading page');
+								page.saveSettings('/cms/page/settings/sort_children/' + page.id, {sequences : sequences}, 'Child page ordering saved');
 							});
 					}
 				});
