@@ -37,12 +37,12 @@ $.widget('boom.groupPermissionsEditor', {
 			onPageSelect : function(page) {
 				$('#b-group-roles-pages .b-group-roles').show();
 
-				selected_page = page.page_rid;
+				selected_page = page.page_id;
 
 				self._check_inputs($( '#b-group-roles-pages input[type=radio]'), -1);
 
 				page_tree
-					.find('a[rel=' + page.page_rid + ']')
+					.find('a[rel=' + page.page_id + ']')
 					.parents('.boom-tree')
 					.find('a.ui-state-active')
 					.removeClass('ui-state-active')
