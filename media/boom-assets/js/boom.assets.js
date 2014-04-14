@@ -163,7 +163,7 @@ $.extend($.boom.asset, $.boom.item,
 				event.preventDefault();
 				event.stopPropagation();
 
-				self.remove()
+				new boomAsset(rids).delete()
 					.done( function(){
 						$.boom.history.load( 'tag/0' );
 					});

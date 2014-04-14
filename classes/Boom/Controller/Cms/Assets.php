@@ -33,14 +33,6 @@ class Boom_Controller_Cms_Assets extends Controller_Cms
 		$this->asset = new Model_Asset($this->request->param('id'));
 	}
 
-	/**
-	 * Delete multiple assets at a time.
-	 *
-	 * Takes an array if asset IDs and calls [Model_Asset::delete()] on each one.
-	 *
-	 * @uses	Model_Asset::delete()
-	 * @uses	Boom_Controller::log()
-	 */
 	public function action_delete()
 	{
 		$this->_csrf_check();

@@ -126,7 +126,7 @@ class Boom_Model_Asset extends Model_Taggable
 			->delete_cache_files()
 			->delete_old_versions();
 
-		unlink($this->get_filename());
+		@unlink($this->get_filename());
 	}
 
 	public function delete_old_versions()
