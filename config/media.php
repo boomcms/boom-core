@@ -5,6 +5,7 @@ return array(
 		'boom/models/asset.js',
 		'boom/ui/asset.js',
 		'boom/ui/assetManager.js',
+		'boom/ui/assetPicker.js',
 		'boom.assets.js',
 		'boom.assets.justify.js',
 	),
