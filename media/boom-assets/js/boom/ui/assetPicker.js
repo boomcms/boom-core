@@ -5,77 +5,59 @@ function boomAssetPicker(currentAssetId) {
 	boomAssetPicker.prototype.url = '/cms/assets/manager';
 
 	boomAssetPicker.prototype.open = function() {
-		var assetPicker = this,
-			dialog = new boomDialog({
-				url : this.url,
-				width: '600',
-				height: '700',
-				dialogClass : 'b-dialog b-assets-dialog',
-				title: 'Select an asset',
-				open: function(){
-					$.boom.log( 'dialog open' );
-					var dialog = $(this);
+		var assetPicker = this;
 
-					var remove = $('<button />')
-						.addClass('ui-helper-left b-button ui-button')
-						.text('Remove')
-						.button({
-							text: false,
-							icons: { primary : 'b-button-icon b-button-icon-delete' }
-						})
-						.click(function(){
-							complete.reject();
-							cleanup();
-							dialog.dialog('destroy');
-						});
-					var upload = $('<button />')
-						.addClass('ui-helper-left b-button ui-button')
-						.text( 'Upload' )
-						.button({
-							text: false,
-							icons: { primary : 'b-button-icon b-button-icon-upload' }
-						})
-						.click( function() {
-							browser.browser_asset( 'upload' )
-								.done( function(){
-									$.boom.history.load( 'tag/0' );
-								});
-						});
+		this.dialog = new boomDialog({
+			url : this.url,
+			width: document.documentElement.clientWidth > 1000? '60%' : '900',
+			height: '700',
+			dialogClass : 'b-dialog b-assets-dialog',
+			title: 'Select an asset',
+			open: function() {
+				var dialog = $(this);
 
-					if ( opts.asset_rid && opts.asset_rid > 0 ) {
-						remove.button( 'enable');
-					} else {
-						remove.button( 'disable' );
-					}
+//				var upload = $('<button />')
+//					.addClass('ui-helper-left b-button ui-button')
+//					.text( 'Upload' )
+//					.button({
+//						text: false,
+//						icons: { primary : 'b-button-icon b-button-icon-upload' }
+//					})
+//					.click( function() {
+//						browser.browser_asset( 'upload' )
+//							.done( function(){
+//								$.boom.history.load( 'tag/0' );
+//							});
+//					});
 
-					$(this).dialog('widget')
-						.find('.ui-dialog-buttonpane')
-						.prepend( upload )
-						.prepend( remove )
-						.append($('<div class="center"><div id="b-assets-pagination"></div><div id="b-assets-stats"></div></div>'));
-				},
-				onLoad: function(){
-					browser = $('#b-assets-manager').browser_asset();
+				$(this).dialog('widget')
+					.find('.ui-dialog-buttonpane')
+//					.prepend(upload)
+					.append($('<div class="center"><div id="b-assets-pagination"></div><div id="b-assets-stats"></div></div>'));
+			},
+			onLoad: function() {
+				$(this).assetManager({});
+//				browser = $('#b-assets-manager').browser_asset();
+//
+//				$.when(browser.browser_asset('browse'))
+//					.progress(function(asset_id) {
+//						cleanup();
+//						complete.resolve(asset_id);
+//						dialog.close();
+//						browser.remove();
+//					});
+//
+//				// browser widget pushes a default URL to the history stack.
+//				// need to override that if an asset is already selected
+//				// by setting a fragment identifier on the parent window.
+//				if ( opts.asset_rid && opts.asset_rid > 0 ) {
+//					$.boom.log( 'getting asset ' + opts.asset_rid );
+//					browser.browser_asset( 'edit', opts.asset_rid );
+//				}
+			}
+		});
 
-					$.when(browser.browser_asset('browse'))
-						.progress(function(asset_id) {
-							cleanup();
-							complete.resolve(asset_id);
-							dialog.close();
-							browser.remove();
-						});
-
-					// browser widget pushes a default URL to the history stack.
-					// need to override that if an asset is already selected
-					// by setting a fragment identifier on the parent window.
-					if ( opts.asset_rid && opts.asset_rid > 0 ) {
-						$.boom.log( 'getting asset ' + opts.asset_rid );
-						browser.browser_asset( 'edit', opts.asset_rid );
-					}
-				}
-			});
-
-		dialog
+		this.dialog
 			.done(function() {
 				var asset_id = browser.browser_asset( 'get_asset' );
 				cleanup();
