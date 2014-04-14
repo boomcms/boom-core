@@ -1,42 +1,20 @@
-boomDialog.prototype = {
- 	cancelButton : {
-		text : 'Cancel',
-		icons : { primary : 'b-button-icon-cancel b-button-icon' },
-		class : 'b-button',
-		click : function() {
-			var boomDialog = $(this).dialog('option', 'boomDialog');
-			boomDialog.cancel();
-		}
-	},
-
-	closeButton : {
-		text : 'Okay',
-		class : 'b-button',
-		icons : { primary : 'b-button-icon-accept b-button-icon' },
-		click : function() {
-			var boomDialog = $(this).dialog('option', 'boomDialog');
-			boomDialog.close();
-		}
-	}
-};
-
 function boomDialog(options) {
-	var self = this;
-
 	this.deferred = new $.Deferred().always(function() {
 		$.boom.page && $.boom.page.toolbar && $.boom.page.toolbar.minimise();
 	});
 
 	this.options = $.extend({
 		width: 'auto',
+		cancelButton : true,
+		closeButton : true,
 		autoOpen: true,
 		modal: true,
 		resizable: false,
 		draggable: true,
 		closeOnEscape: true,
 		position: ['center', 'center'],
+		buttons : [],
 		dialogClass : 'b-dialog',
-		buttons: [this.cancelButton, this.closeButton],
 		boomDialog: this
 	}, options);
 
@@ -46,9 +24,29 @@ function boomDialog(options) {
 		return this;
 	};
 
+ 	boomDialog.prototype.cancelButton = {
+		text : 'Cancel',
+		icons : { primary : 'b-button-icon-cancel b-button-icon' },
+		class : 'b-button',
+		click : function() {
+			var boomDialog = $(this).dialog('option', 'boomDialog');
+			boomDialog.cancel();
+		}
+	};
+
 	boomDialog.prototype.cancel = function() {
 		this.deferred.rejectWith(this.dialog);
 		this.contents.dialog('destroy');
+	};
+
+	boomDialog.prototype.closeButton = {
+		text : 'Okay',
+		class : 'b-button',
+		icons : { primary : 'b-button-icon-accept b-button-icon' },
+		click : function() {
+			var boomDialog = $(this).dialog('option', 'boomDialog');
+			boomDialog.close();
+		}
 	};
 
 	boomDialog.prototype.close = function() {
@@ -90,6 +88,9 @@ function boomDialog(options) {
 			self = this;
 
 		this.contents = $('#' + id).length? $('#' + id) : $('<div />').attr('id', id).hide().appendTo($(document).contents().find('body'));
+
+		this.options.cancelButton && this.options.buttons.push(this.cancelButton);
+		this.options.closeButton && this.options.buttons.push(this.closeButton);
 
 		if (this.options.url && this.options.url.length) {
 			if (this.contents.hasClass('ui-dialog-content')) {
