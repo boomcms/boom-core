@@ -94,13 +94,13 @@ $.widget('boom.assetManager', {
 					url: '/cms/tags/asset/list/' + asset.id,
 					title: 'Asset tags',
 					width: 440,
+					cancelButton : false,
 					onLoad: function() {
 						$('#b-tags').tagger({
 							type: 'asset',
 							id: asset.id
 						});
-					},
-					buttons: [boomDialog.closeButton]
+					}
 				});
 			});
 	},

@@ -78,20 +78,11 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 							url: '/cms/tags/asset/list/0',
 							title: 'Asset tags',
 							width: 440,
+							cancelButton : false,
 							onLoad: function(){
 								// Make the tag editor work.
 								$( '#b-tags' ).tagger_deferred( { tags : tags } );
-							},
-							buttons: [
-								{
-									text: 'Close',
-									class : 'b-button',
-									icons: {primary : 'b-button-icon b-button-icon-accept'},
-									click: function(event) {
-										dialog.close();
-									}
-								}
-							]
+							}
 						})
 						.done(function() {
 							tagged.resolve( tags );
