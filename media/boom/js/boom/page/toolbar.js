@@ -4,6 +4,8 @@
 * @name self.boom.page.toolbar
 */
 $.widget( 'boom.pageToolbar', {
+	openDialogs : 0,
+
 	_bindButtonEvents : function() {
 		var self = this;
 
@@ -113,6 +115,8 @@ $.widget( 'boom.pageToolbar', {
 			})
 			.data('boomPageStatus');
 
+		this.watchForDialogs();
+
 		this._bindButtonEvents();
 	},
 
@@ -123,8 +127,7 @@ $.widget( 'boom.pageToolbar', {
 	maximise : function() {
 		$.boom.log('maximise iframe');
 
-		this.element
-			.css('width', '120%');
+		this.element.css('width', '120%');
 	},
 
 	/**
@@ -164,5 +167,29 @@ $.widget( 'boom.pageToolbar', {
 				.attr('title', 'View the page as it appears on the live site')
 				.button('enable');
 		}
+	},
+
+	watchForDialogs : function() {
+		var toolbar = this;
+
+		$(top.window)
+			.on('boom:dialog:open', function() {
+				console.log('dialog open');
+
+				toolbar.openDialogs++;
+
+				if (toolbar.openDialogs === 1) {
+					toolbar.maximise();
+				}
+			})
+			.on('boom:dialog:close', function() {
+				console.log('dialog close');
+	
+				toolbar.openDialogs--;
+
+				if (toolbar.openDialogs === 0) {
+					toolbar.minimise();
+				}
+			});
 	}
 });

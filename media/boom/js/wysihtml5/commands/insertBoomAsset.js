@@ -74,13 +74,10 @@
 
 			$(composer).trigger('before:boomdialog');
 
-			$.boom.assets
-				.picker()
-				.done(function(rid) {
-					if (rid > 0) {
-						$.boom.page.toolbar.minimise();
-
-						$.post('/asset/embed/' + rid)
+			new boomAssetPicker()
+				.done(function(asset_id) {
+					if (asset_id > 0) {
+						$.post('/asset/embed/' + asset_id)
 							.done(function(response) {
 								asset_embed.resolve(response);
 							})

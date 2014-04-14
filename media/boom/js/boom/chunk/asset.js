@@ -98,7 +98,6 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 			.done(function(asset_id) {
 				self.asset.asset_id = asset_id;
 
-				$.boom.page.toolbar.minimise();
 				self.insert();
 				self.destroy();
 			})

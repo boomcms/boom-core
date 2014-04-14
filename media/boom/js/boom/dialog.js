@@ -1,6 +1,6 @@
 function boomDialog(options) {
 	this.deferred = new $.Deferred().always(function() {
-		$.boom.page && $.boom.page.toolbar && $.boom.page.toolbar.minimise();
+		$(top.window).trigger('boom:dialog:close');
 	});
 
 	this.options = $.extend({
@@ -69,7 +69,7 @@ function boomDialog(options) {
 	boomDialog.prototype.init = function() {
 		var boomDialog = this;
 
-		$.boom.page && $.boom.page.toolbar && $.boom.page.toolbar.maximise();
+		$(top.window).trigger('boom:dialog:open');
 
 		this
 			.contents
@@ -97,16 +97,7 @@ function boomDialog(options) {
 				this.contents.dialog('open');
 			} else {
 				setTimeout(function() {
-					self.contents.load(self.options.url, function(response, status){
-
-						if (status == 'error') {
-							if ($.boom.page && $( '.ui-dialog:visible' ).length == 0) {
-								$.boom.page.toolbar && $.boom.page.toolbar.minimise();
-							}
-
-							return;
-						}
-
+					self.contents.load(self.options.url, function(response, status) {
 						self.init();
 
 						if ($.isFunction(self.options.onLoad)) {
