@@ -129,6 +129,8 @@ $.widget('boom.assetManager', {
 		this.bind();
 		this.route();
 
+		this.filters = this.options.filters? this.options.filters : this.filters;
+
 		this.listAssets();
 	},
 
