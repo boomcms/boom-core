@@ -24,7 +24,7 @@ function boomAssetPicker(currentAssetId) {
 
 		this.dialog = new boomDialog({
 			url : this.url,
-			width: document.documentElement.clientWidth > 1000? '60%' : '900',
+			width: document.documentElement.clientWidth > 1000? '70%' : '900',
 			height: '700',
 			dialogClass : 'b-dialog b-assets-dialog',
 			closeButton : false,
