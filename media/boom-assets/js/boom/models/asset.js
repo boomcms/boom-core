@@ -18,4 +18,12 @@ function boomAsset(asset_id) {
 
 		return deleted;
 	};
+
+	boomAsset.prototype.download = function() {
+		window.location = this.base_url + 'download?assets=' + this.id;
+	};
+
+	boomAsset.prototype.save = function(data) {
+		return $.boom.post(this.base_url + 'save/' + this.id, data);
+	};
 };

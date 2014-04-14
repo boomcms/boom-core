@@ -129,55 +129,6 @@ $.extend($.boom.assets,
 	}
 });
 
-$.extend($.boom.asset, $.boom.item,
-	/** @lends $.boom.asset */
-	{
-
-	base_url: '/cms/assets/',
-
-	type: 'asset',
-
-	/** @function */
-	bind : function( context ){
-		var self = this;
-
-		var rids = ($.boom.history.getHash())? $.boom.history.getHash().split('/')[1].split('-') : [];
-
-		$('#b-assets-content')
-			.unbind('click')
-			.on('click', '.b-assets-save', function(event) {
-				var data = $(this).closest( 'form' ).serialize();
-
-				self
-					.save(data)
-					.done( function(){
-						new boomNotification( "Asset saved." );
-					});
-
-			})
-			.on('click', '.b-assets-download', function(event) {
-				var rid = $( this ).attr( 'rel' );
-				window.location = '/cms/assets/download?assets=' + rid;
-			})
-			.on('click', '.b-assets-delete', function(event) {
-				event.preventDefault();
-				event.stopPropagation();
-
-				new boomAsset(rids).delete()
-					.done( function(){
-						$.boom.history.load( 'tag/0' );
-					});
-
-				return false;
-			})
-			.find('#b-tags')
-			.tagger({
-				type: 'asset',
-				id: rids
-			});
-	}
-});
-
 /**
 Filter lists of assets by tag.
 @class
@@ -353,7 +304,11 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 			.on( 'click', '#b-button-multiaction-edit', function(){
 				$.boom.history.load('asset/' + self.selected.join('-'))
 					.done(function() {
-						$.boom.asset.bind();
+						var ids = ($.boom.history.getHash())? $.boom.history.getHash().split('/')[1].split('-') : [];
+
+						$('#b-assets-content').asset({
+							asset_id : ids
+						});
 					});
 
 				self.selected = [];
