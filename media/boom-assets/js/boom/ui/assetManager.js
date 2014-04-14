@@ -30,14 +30,14 @@ $.widget('boom.assetManager', {
 			})
 			.on('change', '#b-assets-types', function(event) {
 				if (this.selectedIndex) {
-					self.filterByType(this.options[this.selectedIndex].innerHTML);
+					assetManager.filterByType(this.options[this.selectedIndex].innerHTML);
 				} else {
-					self.filterByType();
+					assetManager.filterByType();
 				}
 
 			})
 			.on('click', '#b-assets-all', function(event) {
-				self.removeFilters();
+				assetManager.removeFilters();
 			})
 			.on('click', '.thumb a', function(event) {
 				event.preventDefault();
