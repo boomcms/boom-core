@@ -4,6 +4,21 @@ function boomAssetPicker(currentAssetId) {
 
 	boomAssetPicker.prototype.url = '/cms/assets/manager';
 
+	boomAssetPicker.prototype.bind = function() {
+		var assetPicker = this;
+
+		this.dialog.contents
+			.on('click', '.thumb a', function(e) {
+				e.preventDefault();
+
+				var asset_id = $(this).attr('href').replace('#asset/', '');
+
+				assetPicker.pick(asset_id);
+
+				return false;
+			});
+	};
+
 	boomAssetPicker.prototype.open = function() {
 		var assetPicker = this;
 
@@ -57,15 +72,14 @@ function boomAssetPicker(currentAssetId) {
 			}
 		});
 
-		this.dialog
-			.done(function() {
-				var asset_id = browser.browser_asset( 'get_asset' );
-				cleanup();
-				assetPicker.deferred.resolve(asset_id);
-				return false;
-			});
+		this.bind();
 
 		return this.deferred;
+	};
+
+	boomAssetPicker.prototype.pick = function(asset_id) {
+		this.deferred.resolve(asset_id);
+		this.dialog.close();
 	};
 
 	return this.open();
