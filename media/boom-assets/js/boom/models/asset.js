@@ -23,6 +23,10 @@ function boomAsset(asset_id) {
 		window.location = this.base_url + 'download?assets=' + this.id;
 	};
 
+	boomAsset.prototype.get = function() {
+		return $.get(this.base_url + 'view/' + this.id);
+	};
+
 	boomAsset.prototype.save = function(data) {
 		return $.boom.post(this.base_url + 'save/' + this.id, data);
 	};

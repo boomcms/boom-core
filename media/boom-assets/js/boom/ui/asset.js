@@ -28,6 +28,21 @@ $.widget('boom.asset', {
 
 				return false;
 			})
+			.on('.b-assets-replace', 'click', function(event) {
+				self.
+					upload({
+						url: '/cms/assets/upload',
+						formData : [{
+							csrf: $.boom.options.csrf,
+							name: 'asset_id',
+							value: asset.id
+						}]
+					})
+					.done(function(data) {
+						$.boom.history.refresh();
+						new boomNotification('Asset updated');
+					});
+			})
 			.find('#b-tags')
 			.tagger({
 				type: 'asset',
