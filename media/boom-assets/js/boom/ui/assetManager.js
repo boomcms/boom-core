@@ -48,6 +48,20 @@ $.widget('boom.assetManager', {
 
 				assetManager.select($this.attr('href').replace('#asset/', ''));
 				$this.parent().parent().toggleClass('selected');
+			})
+			.on('focus', '#b-assets-filter-title, #b-tags-search input', function() {
+				var $this = $(this);
+
+				if ($this.val() == $this.attr('placeholder')) {
+					$this.val('');
+				}
+			})
+			.on('blur', '#b-assets-filter-title, #b-tags-search input', function() {
+				var $this = $(this);
+
+				if ($this.val() == '') {
+					$this.val($this.attr('placeholder'));
+				}
 			});
 
 		this.titleFilter = this.element.find('#b-assets-filter-title')
@@ -71,6 +85,19 @@ $.widget('boom.assetManager', {
 				select: function(event, ui){
 					assetManager.filterByTitle(ui.item.value);
 					$(".ui-menu-item").hide();
+				}
+			});
+
+		var selected_tag_ids = [];
+		this.element.find('#b-tags-search')
+			.tagger_search()
+			.find('input')
+			.tagAutocompleter({
+				type : 1,
+				complete : function(event, data) {
+					selected_tag_ids.push(data.id);
+					$(this).tagAutocompleter('setSelectedTags', selected_tag_ids);
+					$('#b-tags-search').tagger_search('add', data.name, data.id);
 				}
 			});
 	},

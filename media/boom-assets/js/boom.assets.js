@@ -121,58 +121,10 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 				});
 		});
 
-		var selected_tag_ids = [];
-		$('#b-tags-search')
-			.tagger_search()
-			.find('input')
-			.tagAutocompleter({
-				type : 1,
-				complete : function(event, data) {
-					selected_tag_ids.push(data.id);
-					$(this).tagAutocompleter('setSelectedTags', selected_tag_ids);
-					$('#b-tags-search').tagger_search('add', data.name, data.id);
-				}
-			});
-
 		$.when( self.browse() )
 			.progress( function( rid ){
 				$( '#asset-list-' + rid ).click();
 			});
-	},
-
-	/**
-	Set up an asset browser
-	@returns {Object} promise which updates via .notify( rid ) when an asset is selected.
-	*/
-	browse: function(){
-		var self = this;
-		var select_asset = new $.Deferred();
-
-		$('#b-assets-manager')
-			.on( 'click', ' .thumb a', function(event){
-				var data = $(this).attr('href').split('/');
-				var rid = parseInt( data[1], 10 );
-				select_asset.notify( rid );
-
-				return false;
-			})
-			.on('click', '#b-assets-filter-title, #b-tags-search input', function() {
-				var $this = $(this);
-
-				if ($this.val() == $this.attr('placeholder')) {
-					$this.val('');
-				}
-			})
-			.on('blur', '#b-assets-filter-title, #b-tags-search input', function() {
-				var $this = $(this);
-	
-				if ($this.val() == '') {
-					$this.val($this.attr('placeholder'));
-				}
-			});
-
-		return select_asset;
-
 	},
 
 	/**
