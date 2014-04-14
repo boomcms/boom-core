@@ -37,7 +37,9 @@ $.widget('boom.assetManager', {
 
 			})
 			.on('click', '#b-assets-all', function(event) {
-				assetManager.removeFilters();
+				//assetManager.removeFilters();
+				$.boom.history.load('');
+				assetManager.listAssets();
 			})
 			.on('click', '.thumb a', function(event) {
 				event.preventDefault();
@@ -65,7 +67,7 @@ $.widget('boom.assetManager', {
 			.on('click', '#b-button-multiaction-edit', function() {
 				var asset = new boomAsset(assetManager.selected.join('-'));
 
-				asset.get()
+				$.boom.history.load('asset/' + assetManager.selected.join('-'))
 					.done(function(response) {
 						assetManager.showContent(response);
 
@@ -113,6 +115,7 @@ $.widget('boom.assetManager', {
 	_create : function() {
 		this.menu = this.element.find('#b-topbar');
 		this.bind();
+		this.route();
 
 		this.listAssets();
 	},
@@ -164,6 +167,33 @@ $.widget('boom.assetManager', {
 			.end()
 			.find('.b-tags-list li')
 			.remove();
+	},
+
+	route : function() {
+		var self = this;
+
+		$.boom.history.route(
+			function(segments){
+				segments = segments.split('/');
+
+				var
+					item = segments[0],
+					id = segments[1],
+					asset = new boomAsset(id);
+
+				if (item == 'asset' && id) {
+					return asset
+						.get()
+						.done(function(response) {
+							self.showContent(response);
+						});
+				}
+			},
+			function() {
+
+				self.defaultRoute();
+			}
+		);
 	},
 
 	select : function(asset_id) {
