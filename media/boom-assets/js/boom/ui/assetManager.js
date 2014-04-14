@@ -49,6 +49,30 @@ $.widget('boom.assetManager', {
 				assetManager.select($this.attr('href').replace('#asset/', ''));
 				$this.parent().parent().toggleClass('selected');
 			});
+
+		this.titleFilter = this.element.find('#b-assets-filter-title')
+			.autocomplete({
+				delay: 200, // Time to wait after keypress before making the AJAX call.
+				minLength : 0,
+				source: function(request, response){
+					$.ajax({
+						url: '/cms/autocomplete/assets',
+						dataType: 'json',
+						data: {
+							text : assetManager.titleFilter.val()
+						}
+					})
+					.done(function(data) {
+						response(data);
+
+						assetManager.filterByTitle(assetManager.titleFilter.val());
+					});
+				},
+				select: function(event, ui){
+					assetManager.filterByTitle(ui.item.value);
+					$(".ui-menu-item").hide();
+				}
+			});
 	},
 
 	bindMenuButtons : function() {

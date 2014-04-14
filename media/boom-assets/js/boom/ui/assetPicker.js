@@ -32,19 +32,19 @@ function boomAssetPicker(currentAssetId) {
 			open: function() {
 				var dialog = $(this);
 
-//				var upload = $('<button />')
-//					.addClass('ui-helper-left b-button ui-button')
-//					.text( 'Upload' )
-//					.button({
-//						text: false,
-//						icons: { primary : 'b-button-icon b-button-icon-upload' }
-//					})
-//					.click( function() {
-//						browser.browser_asset( 'upload' )
-//							.done( function(){
-//								$.boom.history.load( 'tag/0' );
-//							});
-//					});
+				var upload = $('<button />')
+					.addClass('ui-helper-left b-button ui-button')
+					.text( 'Upload' )
+					.button({
+						text: false,
+						icons: { primary : 'b-button-icon b-button-icon-upload' }
+					})
+					.click(function() {
+						assetPicker.dialog.contents.assetManager('upload')
+							.done(function() {
+								assetPicker.dialog.contents.assetManager('listAssets');
+							});
+					});
 
 				$(this).dialog('widget')
 					.find('.ui-dialog-buttonpane')
@@ -52,7 +52,7 @@ function boomAssetPicker(currentAssetId) {
 					.append($('<div class="center"><div id="b-assets-pagination"></div><div id="b-assets-stats"></div></div>'));
 			},
 			onLoad: function() {
-				$(this).assetManager({});
+				assetPicker.dialog.contents.assetManager();
 //				browser = $('#b-assets-manager').browser_asset();
 //
 //				$.when(browser.browser_asset('browse'))

@@ -121,31 +121,6 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 				});
 		});
 
-		var title_filter = $('#b-assets-filter-title')
-			.autocomplete({
-				delay: 200, // Time to wait after keypress before making the AJAX call.
-				minLength : 0,
-				source: function(request, response){
-					$.ajax({
-						url: '/cms/autocomplete/assets',
-						dataType: 'json',
-						data: {
-							text : title_filter.val()
-						}
-					})
-					.done(function(data) {
-						response(data);
-
-						self.filterByTitle(title_filter.val());
-					});
-				},
-				select: function(event, ui){
-					self.filterByTitle(ui.item.value);
-					$(".ui-menu-item").hide();
-				}
-			});
-
-
 		var selected_tag_ids = [];
 		$('#b-tags-search')
 			.tagger_search()
