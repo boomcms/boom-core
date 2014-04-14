@@ -63,8 +63,8 @@ function boomChunkSlideshowEditor(page_id, slotname) {
 	boomChunkSlideshowEditor.prototype.addSlide = function() {
 		var slideshowEditor = this;
 
-		$.boom.assets.picker()
-			.pipe(function(asset_id) {
+		new boomAssetPicker()
+			.done(function(asset_id) {
 				var $new_slide = $('<li><label><input type="radio" value="" name="slide" data-asset="' + asset_id + '"  /><img src="/asset/view/' + asset_id + '" /></label></li>');
 
 				slideshowEditor.dialog
@@ -96,17 +96,15 @@ function boomChunkSlideshowEditor(page_id, slotname) {
 	boomChunkSlideshowEditor.prototype.editCurrentSlideAsset = function(currentAssetId) {
 		var slideshowEditor = this;
 
-		$.boom.assets.picker({
-			asset_rid : currentAssetId
-		})
-		.pipe(function(asset_id) {
-			slideshowEditor.dialog
-				.find('#b-slideshow-editor-current img, #b-slideshow-editor-slides input[type=radio]:checked + img')
-				.attr('src', '/asset/view/' + asset_id);
-		})
-		.always(function() {
-			$.boom.history.load( '' );
-		});
+		new boomAssetPicker(currentAssetId)
+			.done(function(asset_id) {
+				slideshowEditor.dialog
+					.find('#b-slideshow-editor-current img, #b-slideshow-editor-slides input[type=radio]:checked + img')
+					.attr('src', '/asset/view/' + asset_id);
+			})
+			.always(function() {
+				$.boom.history.load( '' );
+			});
 	};
 
 	boomChunkSlideshowEditor.prototype.editSlide = function(slide) {

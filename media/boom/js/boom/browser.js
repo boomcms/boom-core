@@ -1,58 +1,4 @@
 /**
-@fileOverview Generic item browser. Base classes for asset and people managers.
-*/
-/**
-@class
-*/
-$.boom.item = {};
-
-$.extend($.boom.item,
-	/** @lends $.boom.item */
-	{
-
-	/**
-	@property rid
-	*/
-	rid: null,
-
-	/** @function */
-	get: function( rid ){
-
-		this.rid = rid;
-		var self = this;
-
-		var url = this.base_url + 'view/' + rid;
-
-		return $.get( url );
-	},
-
-	/** @function */
-	add: function( data ){
-
-		return $.post( this.base_url + 'add', data);
-	},
-
-	/** @function */
-	save: function( data ){
-
-		return $.post( this.base_url + 'save/' + this.rid, data);
-	},
-
-	/** @function */
-	remove: function(){
-
-		var self = this,
-			deleted = new $.Deferred(),
-			confirmation;
-
-		confirmation = new boomConfirmation('Please confirm', 'Are you sure you want to delete this ' + self.type +'?');
-		confirmation.done(function() {
-			return $.post( self.base_url + 'delete/' + self.rid, {csrf : $.boom.options.csrf} );
-		});
-	},
-});
-
-/**
 Generate filtered lists of items in the browser.
 @class
 */
@@ -98,32 +44,6 @@ $.extend($.boom.filter,
 					this.filters[ name ] = tag.id;
 			}
 		}
-	},
-
-	/**
-	Build AJAX request URL to return a filtered list of items
-	@function
-	*/
-	build_url : function(){
-
-		$.boom.log( 'get tag ' + this.rid );
-
-		var self = this;
-
-		params =
-			'tag=' + self.rid + '&' +
-			'perpage=' + self.options.perpage + '&' +
-			'sortby=' + self.options.sortby;
-
-		for ( filter in self.filters ) {
-			params += '&' + filter + '=' + self.filters[ filter ];
-		}
-
-		var url =
-			self.base_url + '/list'
-			+ '?' + params;
-
-		return url;
 	},
 
 	/**
@@ -267,7 +187,9 @@ $.widget( 'boom.browser',
 						.get( rid )
 						.done( function( response ){
 							self.showContent(response);
-							self.item.bind();
+							$('#b-assets-content').asset({
+								asset_id : rid
+							});
 						});
 				}
 			},
@@ -278,29 +200,10 @@ $.widget( 'boom.browser',
 		);
 	},
 
-	/** @function */
-	select : function(id) {
-		var index = this.selected.indexOf(id);
-
-		if (index == -1) {
-			this.selected.push(id);
-		} else {
-			this.selected.splice(index, 1);
-		}
-
-		this.toggleButtons();
-	},
-
 	showContent : function(content) {
 		this.main_panel
 			.find( '.b-items-content' )
 			.html( content )
 			.ui();
-	},
-
-	toggleButtons : function() {
-		var buttons = $('[id|=b-button-multiaction]').not('#b-button-multiaction-edit');
-		$('#b-button-multiaction-edit').button(this.selected.length == 1 ? 'enable' : 'disable');
-		buttons.button(this.selected.length > 0 ? 'enable' : 'disable');
 	}
 });

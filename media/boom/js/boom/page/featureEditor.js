@@ -23,12 +23,10 @@ boomPageFeatureEditor = function(page) {
 				pageFeatureEditor.removeFeature();
 			})
 			.on('click', '#b-page-feature-edit', function() {
-				$.boom.assets.picker({
-					asset_rid : pageFeatureEditor.currentImage
-				})
-				.done(function(asset_id) {
-					pageFeatureEditor.setFeature(asset_id);
-				});
+				new boomAssetPicker(pageFeatureEditor.currentImage)
+					.done(function(asset_id) {
+						pageFeatureEditor.setFeature(asset_id);
+					});
 			});
 
 		if (this.currentImage) {

@@ -94,24 +94,20 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 				self.destroy();
 			});
 
-		return $.boom.assets.picker({
-			asset_rid : self.asset.asset_id,
-			deferred: asset_selected
-		})
-		.pipe(function(rid) {
-			self.asset.asset_id = rid;
-		})
-		.done(function() {
-			$.boom.page.toolbar.minimise();
-			self.insert();
-			self.destroy();
-		})
-		.fail( function() {
-			self.remove();
-		})
-		.always( function(){
-			$.boom.history.load( '' );
-		});
+		new boomAssetPicker(self.asset.asset_id)
+			.done(function(asset_id) {
+				self.asset.asset_id = asset_id;
+
+				$.boom.page.toolbar.minimise();
+				self.insert();
+				self.destroy();
+			})
+			.fail( function() {
+				self.remove();
+			})
+			.always( function(){
+				$.boom.history.load( '' );
+			});
 	},
 
 	/**
