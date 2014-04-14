@@ -52,12 +52,6 @@ $.extend($.boom.assets,
 			dialogClass : 'b-dialog b-assets-dialog',
 			title: 'Select an asset',
 			cache: false,
-			callback: function() {
-				var asset_id = browser.browser_asset( 'get_asset' );
-				cleanup();
-				complete.resolve( asset_id );
-				return false;
-			},
 			open: function(){
 				$.boom.log( 'dialog open' );
 				var dialog = $(this);
@@ -123,7 +117,13 @@ $.extend($.boom.assets,
 
 		opts = $.extend( default_options, opts );
 
-		dialog = new boomDialog(opts);
+		dialog = new boomDialog(opts)
+			.done(function() {
+				var asset_id = browser.browser_asset( 'get_asset' );
+				cleanup();
+				complete.resolve(asset_id);
+				return false;
+			});
 
 		return complete;
 	}
