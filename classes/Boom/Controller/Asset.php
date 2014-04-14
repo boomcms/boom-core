@@ -24,7 +24,7 @@ abstract class Boom_Controller_Asset extends Boom_Controller
 	 *
 	 * @var integer
 	 */
-	public $max_age = 86400;
+	public $max_age = Date::MONTH;
 
 	public function before()
 	{
