@@ -27,6 +27,7 @@ function boomAssetPicker(currentAssetId) {
 			width: document.documentElement.clientWidth > 1000? '60%' : '900',
 			height: '700',
 			dialogClass : 'b-dialog b-assets-dialog',
+			closeButton : false,
 			title: 'Select an asset',
 			open: function() {
 				var dialog = $(this);
