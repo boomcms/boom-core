@@ -58,22 +58,13 @@ boomPage.prototype.tags = function() {
 		url: '/cms/tags/page/list/' + page.id,
 		title: 'Page tags',
 		width: 440,
+		cancelButton : false,
 		open: function() {
 			$('#b-tags').tagger({
 				type: 'page',
 				id: page.id
 			});
-		},
-		buttons: [
-			{
-				text: 'Close',
-				class : 'b-button',
-				icons: { primary : 'b-button-icon b-button-icon-accept' },
-				click: function(event) {
-					dialog.close();
-				}
-			}
-		]
+		}
 	});
 };
 

@@ -37,10 +37,6 @@ function boomUrlEditor(page) {
 			});
 	};
 
-	boomUrlEditor.prototype.close = function() {
-		this.dialog.close();
-	};
-
 	boomUrlEditor.prototype.delete = function($li) {
 		var id = $li.data('id'),
 			url = new boomPageUrl(id);
@@ -61,6 +57,7 @@ function boomUrlEditor(page) {
 			url: this.list_url,
 			title: 'URL Editor',
 			width: 800,
+			cancelButton : false,
 			buttons: [
 				{
 					text : 'Add URL',
@@ -70,15 +67,6 @@ function boomUrlEditor(page) {
 					icons: {primary : 'b-button-icon b-button-icon-add'},
 					click: function() {
 						urlEditor.add();
-					}
-				},
-				{
-					text : 'Close',
-					title : 'Close',
-					class : 'b-button',
-					icons: {primary : 'b-button-icon b-button-icon-accept'},
-					click: function() {
-						urlEditor.close();
 					}
 				}
 			],

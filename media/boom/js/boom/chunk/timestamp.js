@@ -48,19 +48,14 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 			},
 			destroy: function(){
 				self.destroy();
-			},
-			callback: function(){
-				var	format = $('#format').val(),
-					stringDate = $('#timestamp').val(),
-					dateyDate = new Date(stringDate),
-					timestamp = dateyDate.valueOf() / 1000;
-
-				self
-					.insert(format, timestamp)
-					.done( function(){
-						self.destroy();
-					});
 			}
+		}).done(function() {
+			var	format = $('#format').val(),
+				stringDate = $('#timestamp').val(),
+				dateyDate = new Date(stringDate),
+				timestamp = dateyDate.valueOf() / 1000;
+
+			self.insert(format, timestamp);
 		});
 	},
 

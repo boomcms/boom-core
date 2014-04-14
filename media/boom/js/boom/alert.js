@@ -8,17 +8,7 @@ function boomAlert(message) {
 
 		dialog = new boomDialog({
 			msg : alert.message,
-			buttons: [
-				{
-					text : 'Okay',
-					icons : { primary : 'b-button-icon-accept b-button-icon' },
-					class : 'b-button',
-					click : function() {
-						dialog.close();
-						alert.deferred.resolve();
-					}
-				}
-			]
+			cancelButton : false
 		});
 
 		return this.deferred;
