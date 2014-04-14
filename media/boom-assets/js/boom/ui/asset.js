@@ -16,6 +16,10 @@ $.widget('boom.asset', {
 			.on('click', '.b-assets-download', function(event) {
 				asset.download();
 			})
+			.on('click', '.b-assets-back', function(event) {
+				event.preventDefault();
+				$.boom.history.load('');
+			})
 			.on('click', '.b-assets-delete', function(event) {
 				event.preventDefault();
 				event.stopPropagation();
@@ -23,7 +27,7 @@ $.widget('boom.asset', {
 				asset
 					.delete()
 					.done(function() {
-						$.boom.history.load('tag/0');
+						$.boom.history.load('');
 					});
 
 				return false;

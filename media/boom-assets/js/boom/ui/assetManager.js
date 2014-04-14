@@ -1,5 +1,10 @@
 $.widget('boom.assetManager', {
+	baseUrl : '/cms/assets/',
+	filters : {},
 	selected : [],
+
+	tag : 0,
+	sortby : '',
 
 	bind : function() {
 		this.bindContentArea();
@@ -20,13 +25,8 @@ $.widget('boom.assetManager', {
 
 				return false;
 			})
-			.delegate('.b-assets-back', 'click', function(event) {
-				event.preventDefault();
-				$.boom.history.load('tag/' + $.boom.filter_assets.rid);
-			})
 			.on('change', '#b-assets-sortby', function(event) {
-				self.tag.options.sortby = this.value;
-				$.boom.history.refresh();
+				assetManager.sortBy(this.value);
 			})
 			.on('change', '#b-assets-types', function(event) {
 				if (this.selectedIndex) {
@@ -105,6 +105,18 @@ $.widget('boom.assetManager', {
 			});
 	},
 
+	buildUrl : function(){
+		var params = 'tag=' + this.tag_id + '&' +'sortby=' + this.sortby;
+
+		for (var filter in this.filters) {
+			if (this.filters[filter]) {
+				params += '&' + filter + '=' + this.filters[filter];
+			}
+		}
+
+		return this.baseUrl + 'list' + '?' + params;
+	},
+
 	clearSelection : function() {
 		this.selected = [];
 		this.toggleButtons();
@@ -121,24 +133,19 @@ $.widget('boom.assetManager', {
 	},
 
 	filterByType : function(type) {
-		if (type) {
-			this.tag.set_filters([{type : 'type', id: type}]);
-		} else {
-			this.tag.set_filters([]);
-		}
-
-		$.boom.history.refresh();
+		this.filters.type = type;
+		this.listAssets();
 	},
 
 	filterByTitle : function(title) {
-		this.url_map.tag.filters['title'] = title;
-		$.boom.history.load('tag/0');
+		this.filters.title = title;
+		this.listAssets();
 	},
 
 	listAssets : function() {
 		var assetManager = this;
 
-		$.get('/cms/assets/list')
+		$.get(this.buildUrl())
 			.done(function(response) {
 				assetManager.showContent(response);
 			});
@@ -151,8 +158,7 @@ $.widget('boom.assetManager', {
 		$title.val($title.attr('placeholder'));
 
 		this.removeTagFilters();
-
-		$.boom.history.load(this.options.defaultRoute);
+		this.listAssets();
 	},
 
 	removeTagFilters : function() {
@@ -190,8 +196,7 @@ $.widget('boom.assetManager', {
 				}
 			},
 			function() {
-
-				self.defaultRoute();
+				self.listAssets();
 			}
 		);
 	},
@@ -244,6 +249,11 @@ $.widget('boom.assetManager', {
 		} else {
 			$('#b-assets-stats').contents().remove();
 		}
+	},
+
+	sortBy : function(sort) {
+		this.sortby = sort;
+		this.listAssets();
 	},
 
 	toggleButtons : function() {
