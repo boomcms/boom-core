@@ -174,17 +174,13 @@ $.widget( 'boom.pageToolbar', {
 
 		$(top.window)
 			.on('boom:dialog:open', function() {
-				console.log('dialog open');
-
 				toolbar.openDialogs++;
 
 				if (toolbar.openDialogs === 1) {
 					toolbar.maximise();
 				}
 			})
-			.on('boom:dialog:close', function() {
-				console.log('dialog close');
-	
+			.on('boom:dialog:close', function() {	
 				toolbar.openDialogs--;
 
 				if (toolbar.openDialogs === 0) {
