@@ -138,7 +138,7 @@ class Boom_Asset_Finder
 
 		foreach ($types as & $type)
 		{
-			if ( ! is_int($type) AND ! ctype_digit($type))
+			if ( ! is_int($type) && ! ctype_digit($type))
 			{
 				$type = constant('Boom_Asset::' . strtoupper($type));
 			}

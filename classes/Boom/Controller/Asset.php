@@ -32,7 +32,7 @@ abstract class Boom_Controller_Asset extends Boom_Controller
 
 		$this->asset = $this->request->param('asset');
 
-		if ( ! $this->asset->is_visible() AND ! $this->auth->logged_in())
+		if ( ! $this->asset->is_visible() && ! $this->auth->logged_in())
 		{
 			throw new HTTP_Exception_404;
 		}

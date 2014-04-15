@@ -17,7 +17,7 @@
 									<strong>Downloads</strong> <?= $asset->downloads ?><br />
 								<? endif ?>
 
-								<? if ($asset->width AND $asset->height): ?>
+								<? if ($asset->width && $asset->height): ?>
 									<strong>Dimensions</strong> <?= $asset->width ?> x <?= $asset->height ?><br />
 								<? endif ?>
 							</p>

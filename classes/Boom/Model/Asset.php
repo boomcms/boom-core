@@ -139,7 +139,7 @@ class Boom_Model_Asset extends Model_Taggable
 
 	public function exists()
 	{
-		return $this->id AND file_exists($this->get_filename());
+		return $this->id && file_exists($this->get_filename());
 	}
 
 	public function filters()
