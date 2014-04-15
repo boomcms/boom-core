@@ -20,7 +20,7 @@ class Boom_Model_AuthLog extends ORM
 
 	protected $_created_column = array(
 		'column'	=>	'time',
-		'format'	=>	TRUE,
+		'format'	=>	true,
 	);
 
 	public function get_action()

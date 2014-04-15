@@ -15,7 +15,7 @@ class Boom_Model_PasswordToken extends ORM
 
 	protected $_created_column = array(
 		'column'	=>	'created',
-		'format'	=>	TRUE,
+		'format'	=>	true,
 	);
 
 	public function is_expired()

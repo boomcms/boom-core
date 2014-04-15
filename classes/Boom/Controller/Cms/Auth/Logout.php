@@ -8,7 +8,7 @@ class Boom_Controller_Cms_Auth_Logout extends Controller_Cms_Auth
 		$this->_log_logout();
 		$redirect_to = $this->_get_redirect_url();
 
-		$this->auth->logout(TRUE);
+		$this->auth->logout(true);
 
 		// Send the user back to the homepage.
 		$this->redirect($redirect_to, 303);

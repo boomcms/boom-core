@@ -25,9 +25,9 @@ class Boom_Auth_Boom extends Auth_ORM
 		if ($this->check_password($password) AND $this->_person->loaded() AND $this->_person->enabled AND ! $this->_person->is_locked())
 		{
 			$this->complete_login($this->_person);
-			$remember === TRUE AND $this->_remember_login();
+			$remember === true AND $this->_remember_login();
 
-			return TRUE;
+			return true;
 		}
 		elseif ($this->_person->loaded() AND ! $this->_person->is_locked())
 		{
@@ -176,7 +176,7 @@ class Boom_Auth_Boom extends Auth_ORM
 	{
 		if ($this->is_disabled())
 		{
-			return TRUE;
+			return true;
 		}
 
 		// Get the logged in person.
