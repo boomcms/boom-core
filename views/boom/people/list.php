@@ -1,4 +1,4 @@
-<div id="b-items-view-list">
+<div id="b-items-view-list" class="b-table">
 	<table>
 		<thead>
 			<tr>
