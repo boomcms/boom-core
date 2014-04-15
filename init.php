@@ -14,7 +14,7 @@ Route::set('asset', 'asset/<action>/<id>(.<extension>)(/<width>(/<height>(/<qual
 			// Does the asset exist?
 			if ( ! $asset->loaded() OR ( Kohana::$environment != Kohana::DEVELOPMENT AND ! $asset->exists()))
 			{
-				return FALSE;
+				return false;
 			}
 
 			if ($params['action'] == 'view' AND $asset->type != Boom_Asset::IMAGE AND substr($request->headers('accept'), 0, 5) == 'image')

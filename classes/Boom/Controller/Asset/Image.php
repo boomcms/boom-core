@@ -55,7 +55,7 @@ class Boom_Controller_Asset_Image extends Controller_Asset
 
 		if (Kohana::$environment == Kohana::DEVELOPMENT AND ! $this->asset->exists())
 		{
-			$this->caching_enabled = FALSE;
+			$this->caching_enabled = false;
 		}
 	}
 

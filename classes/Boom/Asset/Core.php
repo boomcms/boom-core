@@ -115,7 +115,7 @@ abstract class Boom_Asset_Core
 		 * Although PDF files should be application/pdf it's possible that they may also be application/x-pdf
 		 * To prevent problems just check for 'pdf' in the mimetype.
 		 */
-		if (strpos($mime, 'pdf') !== FALSE)
+		if (strpos($mime, 'pdf') !== false)
 		{
 			return Boom_Asset::PDF;
 		}

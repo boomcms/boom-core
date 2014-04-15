@@ -2,7 +2,7 @@
 
 class Boom_Controller_Asset_Video extends Controller_Asset
 {
-	public $enable_caching = FALSE;
+	public $enable_caching = false;
 
 	public function action_view()
 	{
