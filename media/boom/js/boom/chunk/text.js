@@ -52,7 +52,7 @@ $.widget('ui.chunkText', $.ui.chunk,
 
 			var old_html = self.element.html();
 
-			if ( $element.text() == 'Default text.' ) {
+			if ($element.text() == 'Default text.') {
 				$element.html( '' );
 			}
 
@@ -96,7 +96,11 @@ $.widget('ui.chunkText', $.ui.chunk,
 		return {
 			title : this.title,
 			text : this.content,
-			is_block : this.element.attr('data-boom-is-block')
+			is_block : this.isBlockLevel()? 1 : 0
 		};
+	},
+
+	isBlockLevel : function() {
+		return this.element.is('div');
 	}
 });
