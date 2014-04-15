@@ -197,7 +197,7 @@ class Boom_Asset_Finder
 		$this->_query
 			->join(array('assets_tags', 't1'), 'inner')
 			->on('assets.id', '=', 't1.asset_id')
-			->distinct(TRUE);
+			->distinct(true);
 	}
 
 	/**

@@ -19,7 +19,7 @@ class Boom_Model_Asset extends Model_Taggable
 
 	protected $_created_column = array(
 		'column'	=>	'uploaded_time',
-		'format'	=>	TRUE,
+		'format'	=>	true,
 	);
 
 	protected $_has_many = array(
@@ -49,7 +49,7 @@ class Boom_Model_Asset extends Model_Taggable
 
 	protected $_updated_column = array(
 		'column'	=>	'last_modified',
-		'format'	=>	TRUE,
+		'format'	=>	true,
 	);
 
 	/**
@@ -58,7 +58,7 @@ class Boom_Model_Asset extends Model_Taggable
 	 */
 	protected $_old_files = NULL;
 
-	public function create_from_file($filepath, $keep_original = TRUE)
+	public function create_from_file($filepath, $keep_original = true)
 	{
 		// Update the model with details about hte file.
 		$this->get_file_info($filepath);
@@ -78,7 +78,7 @@ class Boom_Model_Asset extends Model_Taggable
 		{
 			// We couldn't get the asset into the assets directory.
 			// So that we don't end up with an asset that doesn't have a file we'll just delete the asset data.
-			$this->delete(TRUE);
+			$this->delete(true);
 
 			// Throw the exception, it's someone elses problem now.
 			throw $e;
@@ -316,7 +316,7 @@ class Boom_Model_Asset extends Model_Taggable
 	{
 		// Get the available asset types in numeric format.
 		$types = DB::select('type')
-			->distinct(TRUE)
+			->distinct(true)
 			->from('assets')
 			->where('type', '!=', 0)
 			->execute($this->_db)

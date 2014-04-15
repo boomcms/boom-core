@@ -16,7 +16,7 @@ class Boom_Controller_Asset_Image extends Controller_Asset
 	 *
 	 * @var boolean
 	 */
-	public $caching_enabled = TRUE;
+	public $caching_enabled = true;
 
 	/**
 	 *

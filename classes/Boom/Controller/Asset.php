@@ -17,7 +17,7 @@ abstract class Boom_Controller_Asset extends Boom_Controller
 	 */
 	public $asset;
 
-	public $enable_caching = TRUE;
+	public $enable_caching = true;
 
 	/**
 	 * The value to use for the max-age header.

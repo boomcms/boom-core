@@ -13,9 +13,9 @@ class Boom_Controller_Asset_Video extends Controller_Asset
 
 		$this->response
 			->send_file($this->asset->get_filename(), $this->asset->filename, array(
-				'inline'		=>	TRUE,
+				'inline'		=>	true,
 				'mime_type'	=>	$mime,
-				'resumable'	=>	TRUE,
+				'resumable'	=>	true,
 			));
 	}
 

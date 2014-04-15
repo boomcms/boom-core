@@ -8,7 +8,7 @@ class Boom_Model_Asset_Download extends ORM
 
 	protected $_created_column = array(
 		'column'	=>	'time',
-		'format'	=>	TRUE,
+		'format'	=>	true,
 	);
 
 	protected $_table_columns = array(
