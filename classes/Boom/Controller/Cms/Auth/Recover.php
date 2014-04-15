@@ -30,7 +30,7 @@ class Boom_Controller_Cms_Auth_Recover extends Controller_Cms_Auth
 		$token = ORM::factory('PasswordToken')
 			->values(array(
 				'person_id' => $person->id,
-				'token' => sha1(uniqid(NULL, true)),
+				'token' => sha1(uniqid(null, true)),
 				'expres' => $_SERVER['REQUEST_TIME'] + Date::HOUR
 			))
 			->create();

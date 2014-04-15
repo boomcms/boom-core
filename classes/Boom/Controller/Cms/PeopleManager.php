@@ -26,7 +26,7 @@ class Boom_Controller_Cms_PeopleManager extends Controller_Cms
 		));
 	}
 
-	protected function _show(View $view = NULL)
+	protected function _show(View $view = null)
 	{
 		if ( ! $this->request->is_ajax())
 		{

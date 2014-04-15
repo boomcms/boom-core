@@ -4,9 +4,9 @@ abstract class Boom_PasswordGenerator
 {
 	public static $default = 'GenPhrase';
 
-	public static function factory($driver = NULL)
+	public static function factory($driver = null)
 	{
-		$driver === NULL AND $driver = static::$default;
+		$driver === null AND $driver = static::$default;
 
 		$class = "PasswordGenerator_$driver";
 		return new $class;

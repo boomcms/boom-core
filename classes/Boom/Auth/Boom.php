@@ -14,7 +14,7 @@ class Boom_Auth_Boom extends Auth_ORM
 
 	protected $_permissions_cache = array();
 
-	protected function _login($person, $password = NULL, $remember = false)
+	protected function _login($person, $password = null, $remember = false)
 	{
 		$this->_person = $person;
 
@@ -52,7 +52,7 @@ class Boom_Auth_Boom extends Auth_ORM
 					->where('rgt', '>=', $page->mptt->rgt)
 					->where('scope', '=', $page->mptt->scope)
 				->and_where_close()
-				->or_where('people_roles.page_id', '=', NULL)
+				->or_where('people_roles.page_id', '=', null)
 			->or_where_close()
 			->execute()
 			->as_array();
@@ -103,9 +103,9 @@ class Boom_Auth_Boom extends Auth_ORM
 	 *
 	 * @return Model_Person
 	 */
-	public function get_user($default = NULL)
+	public function get_user($default = null)
 	{
-		if ($this->_person === NULL)
+		if ($this->_person === null)
 		{
 			// Store the loaded person model in [Auth_Boom::$_person] to avoid multiple database queries.
 			$this->_person = new Model_Person($this->_session->get($this->_config['session_key']));
@@ -115,7 +115,7 @@ class Boom_Auth_Boom extends Auth_ORM
 		return $this->_person;
 	}
 
-	public function has_role(Model_Person $person, Model_Role $role, Model_Page $page = NULL)
+	public function has_role(Model_Person $person, Model_Role $role, Model_Page $page = null)
 	{
 		$query = DB::select(array(DB::expr("bit_and(allowed)"), 'allowed'))
 			->from('people_roles')
@@ -123,7 +123,7 @@ class Boom_Auth_Boom extends Auth_ORM
 			->where('role_id', '=', $role->id)
 			->group_by('person_id');	// Strange results if this isn't here.
 
-		if ($page !== NULL)
+		if ($page !== null)
 		{
 			$query
 				->join('page_mptt', 'left')
@@ -172,7 +172,7 @@ class Boom_Auth_Boom extends Auth_ORM
 	 *
 	 * @return boolean
 	 */
-	public function logged_in($role = NULL, $page = NULL)
+	public function logged_in($role = null, $page = null)
 	{
 		if ($this->is_disabled())
 		{
@@ -182,7 +182,7 @@ class Boom_Auth_Boom extends Auth_ORM
 		// Get the logged in person.
 		$person = $this->get_user();
 
-		if ($role === NULL)
+		if ($role === null)
 		{
 			// No role has been given, merely verify that the session is authenticated.
 			// This can be done by checking whether the session's person object relates to a valid person.
@@ -200,7 +200,7 @@ class Boom_Auth_Boom extends Auth_ORM
 			 *
 			 * To avoid having to add p_ to the start of role names everywhere in the code we just add the prefix here.
 			 */
-			if ($page !== NULL AND is_string($role))
+			if ($page !== null AND is_string($role))
 			{
 				$role = 'p_'.$role;
 			}

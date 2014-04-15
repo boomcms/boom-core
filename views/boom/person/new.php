@@ -6,5 +6,5 @@
 	<input type="text" id="create-email" name="email" class="boom-input" />
 
 	<label for="create-group">Group</label>
-	<?= Form::select('group_id', $groups, NULL, array('id' => 'create-group')) ?>
+	<?= Form::select('group_id', $groups, null, array('id' => 'create-group')) ?>
 </form>

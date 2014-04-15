@@ -167,10 +167,10 @@ class Boom_Model_Group extends ORM
 	 *
 	 * @throws InvalidArgumentException
 	 */
-	public function names($exclude = NULL)
+	public function names($exclude = null)
 	{
 		// $exclude should be an array or DB select.
-		if ($exclude !== NULL AND ! (is_array($exclude) OR $exclude instanceof Database_Query_Builder_Select))
+		if ($exclude !== null AND ! (is_array($exclude) OR $exclude instanceof Database_Query_Builder_Select))
 		{
 			// Throw an exception.
 			throw new InvalidArgumentException("Argument 1 for ".__CLASS__."::".__METHOD__." should be an array or instance of Database_Query_Builder_Select, ".tyepof($excluding). "given");
@@ -183,7 +183,7 @@ class Boom_Model_Group extends ORM
 			->order_by('name', 'asc');
 
 		// Are we excluding any groups?
-		if ($exclude !== NULL)
+		if ($exclude !== null)
 		{
 			// Exclude these groups from the results.
 			$query->where('id', 'NOT IN', $exclude);
