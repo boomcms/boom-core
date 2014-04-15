@@ -8,7 +8,7 @@
 		<h1>Pages pending approval</h1>
 
 		<? if (count($pages)): ?>
-			<table id="b-items-view-list">
+			<table id="b-items-view-list" class="b-table">
 				<tr>
 					<th>Page title</th>
 					<th>Last edited by</th>
