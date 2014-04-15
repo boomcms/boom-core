@@ -12,8 +12,6 @@ $.widget('ui.chunkText', $.ui.chunk,
 	*/
 	{
 
-	title : '',
-
 	content : '',
 
 	_create : function() {
@@ -85,16 +83,9 @@ $.widget('ui.chunkText', $.ui.chunk,
 	getData : function(){
 		var $content = this.element.find('.slot-content');
 
-		if ($content.length) {
-			this.content = $content.html();
-			this.title = this.element.find('.slot-title').text();
-		} else {
-			this.title = null;
-			this.content = this.element.html();
-		}
+		this.content = ($content.length)? $content.html() : this.element.html();
 
 		return {
-			title : this.title,
 			text : this.content,
 			is_block : this.isBlockLevel()? 1 : 0
 		};
