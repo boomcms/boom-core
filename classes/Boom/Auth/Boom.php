@@ -22,14 +22,14 @@ class Boom_Auth_Boom extends Auth_ORM
 		 * Although it's slower, we the check password first before checking that the account is valid and not locked.
 		 * It shouldn't cause too much of a time waste for genuine users but may slow down hack attempts.
 		 */
-		if ($this->check_password($password) AND $this->_person->loaded() AND $this->_person->enabled AND ! $this->_person->is_locked())
+		if ($this->check_password($password) && $this->_person->loaded() && $this->_person->enabled && ! $this->_person->is_locked())
 		{
 			$this->complete_login($this->_person);
-			$remember === true AND $this->_remember_login();
+			$remember === true && $this->_remember_login();
 
 			return true;
 		}
-		elseif ($this->_person->loaded() AND ! $this->_person->is_locked())
+		elseif ($this->_person->loaded() && ! $this->_person->is_locked())
 		{
 			$this->_person->login_failed();
 			return false;
@@ -141,7 +141,7 @@ class Boom_Auth_Boom extends Auth_ORM
 			->execute()
 			->as_array();
 
-		return  ( ! empty($result) AND (boolean) $result[0]['allowed']);
+		return  ( ! empty($result) && (boolean) $result[0]['allowed']);
 	}
 
 	public function is_disabled()
@@ -200,7 +200,7 @@ class Boom_Auth_Boom extends Auth_ORM
 			 *
 			 * To avoid having to add p_ to the start of role names everywhere in the code we just add the prefix here.
 			 */
-			if ($page !== null AND is_string($role))
+			if ($page !== null && is_string($role))
 			{
 				$role = 'p_'.$role;
 			}
@@ -223,7 +223,7 @@ class Boom_Auth_Boom extends Auth_ORM
 			return false;
 		}
 
-		if ( ! is_object($person) AND ! $person instanceof Model_Person)
+		if ( ! is_object($person) && ! $person instanceof Model_Person)
 		{
 			// If we haven't been called with a person object then assume it's an email address
 			// and get the person from the database.
@@ -282,6 +282,6 @@ class Boom_Auth_Boom extends Auth_ORM
 		 */
 		$hash = ($this->_person->password)? $this->_person->password : '$2a$08$1234567890123456789012';
 
-		return $hasher->CheckPassword($password, $hash) AND $this->_person->loaded();
+		return $hasher->CheckPassword($password, $hash) && $this->_person->loaded();
 	}
 }

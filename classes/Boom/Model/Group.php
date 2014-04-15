@@ -170,7 +170,7 @@ class Boom_Model_Group extends ORM
 	public function names($exclude = null)
 	{
 		// $exclude should be an array or DB select.
-		if ($exclude !== null AND ! (is_array($exclude) OR $exclude instanceof Database_Query_Builder_Select))
+		if ($exclude !== null && ! (is_array($exclude) OR $exclude instanceof Database_Query_Builder_Select))
 		{
 			// Throw an exception.
 			throw new InvalidArgumentException("Argument 1 for ".__CLASS__."::".__METHOD__." should be an array or instance of Database_Query_Builder_Select, ".tyepof($excluding). "given");

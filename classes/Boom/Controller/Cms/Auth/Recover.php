@@ -74,7 +74,7 @@ class Boom_Controller_Cms_Auth_Recover extends Controller_Cms_Auth
 			return;
 		}
 
-		if ($this->request->post('password1') AND $this->request->post('password2'))
+		if ($this->request->post('password1') && $this->request->post('password2'))
 		{
 			if ( ! Security::check($this->request->post('csrf')))
 			{

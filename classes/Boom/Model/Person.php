@@ -123,7 +123,7 @@ class Boom_Model_Person extends ORM
 
 	public function is_locked()
 	{
-		return $this->locked_until AND ($this->locked_until > $_SERVER['REQUEST_TIME']);
+		return $this->locked_until && ($this->locked_until > $_SERVER['REQUEST_TIME']);
 	}
 
 	public function login_failed()

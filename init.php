@@ -17,7 +17,7 @@ Route::set('recover', 'cms/recover')
 	))
 	->filter(function(Route $route, $params, Request $request)
 		{
-			if ($request->method() === Request::POST AND ! $request->query('token'))
+			if ($request->method() === Request::POST && ! $request->query('token'))
 			{
 				$params['action'] = 'create_token';
 				return $params;
@@ -78,7 +78,7 @@ Route::set('login', 'cms/login(/<controller>)')
 				$params['controller'] = 'Openid';
 			}
 
-			if ($request->query('openid_mode') OR ($params['controller'] == 'Password' AND $request->method() == Request::POST))
+			if ($request->query('openid_mode') OR ($params['controller'] == 'Password' && $request->method() == Request::POST))
 			{
 				$params['action'] = 'process';
 			}

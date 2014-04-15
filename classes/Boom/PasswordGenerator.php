@@ -6,7 +6,7 @@ abstract class Boom_PasswordGenerator
 
 	public static function factory($driver = null)
 	{
-		$driver === null AND $driver = static::$default;
+		$driver === null && $driver = static::$default;
 
 		$class = "PasswordGenerator_$driver";
 		return new $class;

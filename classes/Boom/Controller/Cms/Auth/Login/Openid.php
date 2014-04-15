@@ -52,7 +52,7 @@ class Boom_Controller_Cms_Auth_Login_Openid extends Controller_Cms_Auth_Login
 			// If the OpenID provider has been nice enough to tell us the person's name
 			// And their name hasn't been set in the CMS database (it doesn't have to be given to add a person to the database)
 			// Then set the person's name.
-			if (isset($attrs['namePerson']) AND $person->name == null)
+			if (isset($attrs['namePerson']) && $person->name == null)
 			{
 				// Update the person's name.
 				$person
