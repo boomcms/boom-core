@@ -6,7 +6,7 @@ return array
 	'AutoFormat.RemoveEmpty.RemoveNbsp'		=>	true,
 	'AutoFormat.RemoveEmpty'				=>	true,
 	'AutoFormat.RemoveSpansWithoutAttributes'	=>	true,
-	'Core.RemoveInvalidImg'					=>	FALSE,
+	'Core.RemoveInvalidImg'					=>	false,
 	'Cache.SerializerPath'					=>	APPPATH.'cache',
 	'CSS.AllowedProperties'					=>	array(),
 	'URI.AllowedSchemes'					=>	array (

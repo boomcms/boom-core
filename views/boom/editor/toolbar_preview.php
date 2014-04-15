@@ -6,4 +6,4 @@
 	</button>
 </div>
 
-<?= View::factory('boom/editor/footer', array('register_page' => FALSE)) ?>
+<?= View::factory('boom/editor/footer', array('register_page' => false)) ?>

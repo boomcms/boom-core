@@ -28,7 +28,7 @@ class Boom_Controller_Cms_Page_Urls_Save extends Controller_Cms_Page_Urls
 				->values(array(
 					'location'		=>	$location,
 					'page_id'		=>	$this->page->id,
-					'is_primary'	=>	FALSE,
+					'is_primary'	=>	false,
 				))
 				->create();
 
@@ -53,7 +53,7 @@ class Boom_Controller_Cms_Page_Urls_Save extends Controller_Cms_Page_Urls
 	{
 		$this->page_url->values(array(
 			'page_id'		=>	$this->page->id,
-			'is_primary'	=>	FALSE, // Make sure that it's only a secondary url for the this page.
+			'is_primary'	=>	false, // Make sure that it's only a secondary url for the this page.
 		))
 		->update();
 	}

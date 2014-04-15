@@ -15,7 +15,7 @@
 				<guid><?= $p->url() ?></guid>
 				<title><?= filter_var($p->version()->title, FILTER_SANITIZE_SPECIAL_CHARS) ?></title>
 				<link><?= $p->url() ?></link>
-				<description><![CDATA[<?= htmlentities(strip_tags(Chunk::factory('text', 'standfirst', $p)->text()), ENT_QUOTES, 'UTF-8', FALSE) ?>]]></description>
+				<description><![CDATA[<?= htmlentities(strip_tags(Chunk::factory('text', 'standfirst', $p)->text()), ENT_QUOTES, 'UTF-8', false) ?>]]></description>
 				<pubDate><?= date('r', $p->visible_from) ?></pubDate>
 			</item>
 		<? endforeach; ?>

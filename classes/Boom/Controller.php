@@ -46,7 +46,7 @@ class Boom_Controller extends Controller
 	 */
 	public $template;
 
-	protected $_save_last_url = FALSE;
+	protected $_save_last_url = false;
 
 	public function before()
 	{

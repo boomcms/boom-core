@@ -124,7 +124,7 @@ class Boom_Model_Page_Version extends ORM
 		// Set any previous embargoed versions to unpublished to ensure that they won't be used.
 		DB::update('page_versions')
 			->set(array(
-				'published'	=>	FALSE,
+				'published'	=>	false,
 			))
 			->where('embargoed_until', '>', $_SERVER['REQUEST_TIME'])
 			->where('page_id', '=', $this->page_id)

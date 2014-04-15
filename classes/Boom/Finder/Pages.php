@@ -4,7 +4,7 @@ class Boom_Finder_Pages extends Finder
 {
 	protected $_parent_id;
 
-	protected $_sort_applied = FALSE;
+	protected $_sort_applied = false;
 
 	public function __construct()
 	{

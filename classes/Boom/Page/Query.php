@@ -31,7 +31,7 @@ class Boom_Page_Query
 
 		if ($exclude_deleted)
 		{
-			$this->_query->where('version.page_deleted', '=', FALSE);
+			$this->_query->where('version.page_deleted', '=', false);
 		}
 
 		// Logged out view?

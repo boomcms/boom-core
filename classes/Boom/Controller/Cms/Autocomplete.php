@@ -83,7 +83,7 @@ class Boom_Controller_Cms_Autocomplete extends Boom_Controller
 				->join(array(
 					DB::select(array(DB::expr('max(id)'), 'id'))
 						->from('page_versions')
-						->where('stashed', '=', FALSE)
+						->where('stashed', '=', false)
 						->group_by('page_id'),
 					'current_version'
 				))
@@ -97,13 +97,13 @@ class Boom_Controller_Cms_Autocomplete extends Boom_Controller
 					DB::select(array(DB::expr('max(id)'), 'id'))
 						->from('page_versions')
 						->where('embargoed_until', '<=', $this->editor->live_time())
-						->where('stashed', '=', FALSE)
+						->where('stashed', '=', false)
 						->where('published', '=', true)
 						->group_by('page_id'),
 					'current_version'
 				))
 				->on('page_versions.id', '=', 'current_version.id')
-				->where('page_versions.page_deleted', '=', FALSE)
+				->where('page_versions.page_deleted', '=', false)
 				->where('visible_from', '<=', $this->editor->live_time())
 				->and_where_open()
 					->where('visible_to', '>=', $this->editor->live_time())

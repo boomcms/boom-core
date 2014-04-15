@@ -308,7 +308,7 @@ class Boom_Model_Page extends Model_Taggable
 	 * @param	boolean	$with_children	Whether to delete the child pages as well.
 	 * @return	Model_Page
 	 */
-	public function delete($with_children = FALSE)
+	public function delete($with_children = false)
 	{
 		if ( ! $this->_loaded)
 		{
@@ -335,7 +335,7 @@ class Boom_Model_Page extends Model_Taggable
 		return $this->clear();
 	}
 
-	public function delete_children($cascade = FALSE)
+	public function delete_children($cascade = false)
 	{
 		foreach ($this->mptt->children() as $mptt)
 		{
@@ -432,7 +432,7 @@ class Boom_Model_Page extends Model_Taggable
 					->where('embargoed_until', '=', NULL)
 					->or_where('embargoed_until', '>', $_SERVER['REQUEST_TIME'])
 			->and_where_close()
-			->where('stashed', '=', FALSE)
+			->where('stashed', '=', false)
 			->execute($this->_db);
 	}
 

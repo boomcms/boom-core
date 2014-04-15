@@ -81,7 +81,7 @@ class Boom_Model_Page_URL extends ORM
 	{
 		// Ensure that this is the only primary link for the page.
 		DB::update($this->_table_name)
-			->set(array('is_primary' => FALSE))
+			->set(array('is_primary' => false))
 			->where('page_id', '=', $this->page_id)
 			->where('id', '!=', $this->id)
 			->where('is_primary', '=', true)

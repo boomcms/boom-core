@@ -14,7 +14,7 @@ class Boom_Controller_Page extends Boom_Controller
 	 *
 	 * @var	boolean
 	 */
-	public $editable = FALSE;
+	public $editable = false;
 
 	/**
 	 * @var	Model_Page
@@ -54,7 +54,7 @@ class Boom_Controller_Page extends Boom_Controller
 		{
 			if ($this->request->is_external() AND ( ! $this->page->is_visible() AND ! $this->editor->state_is(Editor::PREVIEW)))
 			{
-				return FALSE;
+				return false;
 			}
 		}
 
