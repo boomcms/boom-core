@@ -56,7 +56,7 @@ class Boom_Controller_Cms_Templates extends Controller_Cms
 			->on('page_versions.page_id', '=', 'page_urls.page_id')
 			->where('page_versions.template_id', '=', $template_id)
 			->where('is_primary', '=', true)
-			->where('page_deleted', '=', FALSE)
+			->where('page_deleted', '=', false)
 			->order_by('title', 'asc')
 			->execute();
 

@@ -88,7 +88,7 @@ class Boom_Model_Template extends ORM
 			))
 			->on('page_version.id', '=', 'current_version.id')
 			->where('template_id', '=', $this->id)
-			->where('page_deleted', '=', FALSE)
+			->where('page_deleted', '=', false)
 			->count_all();
 	}
 
