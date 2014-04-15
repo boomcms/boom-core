@@ -13,7 +13,7 @@ Route::set('vanity', '_<link>', array(
 		{
 			// Turn the vanity URI into a page ID.
 			$page_id = base_convert($params['link'], 36, 10);
-			$redirect_to = ||M::factory('Page', $page_id)->url();
+			$redirect_to = ORM::factory('Page', $page_id)->url();
 
 			header('Location: '.$redirect_to, null, 302);
 			exit;

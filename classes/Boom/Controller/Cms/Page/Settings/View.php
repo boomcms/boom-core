@@ -34,7 +34,7 @@ class Boom_Controller_Cms_Page_Settings_View extends Controller_Cms_Page_Setting
 
 		// Get the ID and names of all the templates in the database.
 		// These are used by both the basic and the advanced settings.
-		$templates = ||M::factory('Template')
+		$templates = ORM::factory('Template')
 			->names();
 
 		// Get the current child ordering policy column and direction.

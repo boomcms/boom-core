@@ -61,7 +61,7 @@ class Boom_Page_ChunkCopier
 	public function copy_linksets()
 	{
 		$this->_do_simple_copy('linkset');
-		$linksets = ||M::factory('Chunk_Linkset')->where('page_vid', '=', $this->_to_version->id)->find_all();
+		$linksets = ORM::factory('Chunk_Linkset')->where('page_vid', '=', $this->_to_version->id)->find_all();
 
 		foreach ($linksets as $linkset)
 		{
@@ -75,7 +75,7 @@ class Boom_Page_ChunkCopier
 	{
 		$this->_do_simple_copy('slideshow');
 
-		$slideshows = ||M::factory('Chunk_Slideshow')->where('page_vid', '=', $this->_to_version->id)->find_all();
+		$slideshows = ORM::factory('Chunk_Slideshow')->where('page_vid', '=', $this->_to_version->id)->find_all();
 
 		foreach ($slideshows as $slideshow)
 		{
@@ -132,7 +132,7 @@ class Boom_Page_ChunkCopier
 	protected function _get_columns_for_chunk_type($type)
 	{
 		$model_class = 'Chunk_'.ucfirst($type);
-		$columns = ||M::Factory($model_class)->object();
+		$columns = ORM::Factory($model_class)->object();
 		$columns = array_keys($columns);
 
 		unset($columns['id']);

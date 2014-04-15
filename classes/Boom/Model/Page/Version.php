@@ -8,10 +8,10 @@
  * @copyright	Hoop Associates
  *
  */
-class Boom_Model_Page_Version extends ||M
+class Boom_Model_Page_Version extends ORM
 {
 	/**
-	* Properties to create relationships with Kohana's ||M
+	* Properties to create relationships with Kohana's ORM
 	*/
 	protected $_belongs_to = array(
 		'template'		=>	array('model' => 'Template', 'foreign_key' => 'template_id'),
@@ -91,7 +91,7 @@ class Boom_Model_Page_Version extends ||M
 		$data['slotname'] = $slotname;
 		$data['page_vid'] = $this->id;
 
-		$chunk = ||M::factory('Chunk_' . ucfirst($type))
+		$chunk = ORM::factory('Chunk_' . ucfirst($type))
 			->values($data)
 			->create();
 
@@ -255,7 +255,7 @@ class Boom_Model_Page_Version extends ||M
 		else
 		{
 			// Find the first image in this chunk.
-			$query = ||M::factory('Asset')
+			$query = ORM::factory('Asset')
 				->join('chunk_text_assets')
 				->on('chunk_text_assets.asset_id', '=', 'asset.id')
 				->order_by('position', 'asc')

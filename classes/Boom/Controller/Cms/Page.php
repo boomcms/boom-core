@@ -47,7 +47,7 @@ class Boom_Controller_Cms_Page extends Boom_Controller
 		$prefix = ($this->page->children_url_prefix)? $this->page->children_url_prefix : $this->page->url()->location;
 		$url = Page_URL::from_title($prefix, $new_page->version()->title);
 
-		||M::factory('Page_URL')
+		ORM::factory('Page_URL')
 			->values(array(
 				'location'		=>	$url,
 				'page_id'		=>	$new_page->id,

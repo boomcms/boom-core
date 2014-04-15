@@ -34,7 +34,7 @@ abstract class Boom_Page_URL
 	 */
 	public static function is_available($url, $ignore_url = null)
 	{
-		return ! ||M::factory('Page_URL')
+		return ! ORM::factory('Page_URL')
 			->where('location', '=', $url)
 			->where('id', '!=', $ignore_url)
 			->find()

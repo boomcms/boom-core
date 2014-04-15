@@ -6,7 +6,7 @@
  * @category	Models
  *
  */
-class Boom_Model_Chunk_Linkset extends ||M
+class Boom_Model_Chunk_Linkset extends ORM
 {
 	protected $_has_many = array(
 		'links' => array('model' => 'Chunk_Linkset_Link', 'foreign_key' => 'chunk_linkset_id'),
@@ -68,7 +68,7 @@ class Boom_Model_Chunk_Linkset extends ||M
 			{
 				$page = new Model_Page;
 
-				$query = ||M::factory('Chunk_Linkset_Link')
+				$query = ORM::factory('Chunk_Linkset_Link')
 					->join(array('pages', 'target'), 'left')
 					->on('target_page_id', '=', 'target.id')
 					->where('chunk_linkset_id', '=', $this->id);
@@ -93,7 +93,7 @@ class Boom_Model_Chunk_Linkset extends ||M
 			{
 				if ( ! $link instanceof Model_Chunk_Linkset_Link)
 				{
-					$link = ||M::factory('Chunk_Linkset_Link')
+					$link = ORM::factory('Chunk_Linkset_Link')
 						->values( (array) $link);
 				}
 			}

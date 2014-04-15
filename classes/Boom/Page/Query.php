@@ -10,11 +10,11 @@ class Boom_Page_Query
 
 	/**
 	 *
-	 * @var ||M
+	 * @var ORM
 	 */
 	protected $_query;
 
-	public function __construct(||M $query, Editor $editor = null)
+	public function __construct(ORM $query, Editor $editor = null)
 	{
 		$this->_editor = $editor === null? Editor::instance() : $editor;
 		$this->_query = $query;
@@ -67,7 +67,7 @@ class Boom_Page_Query
 		return $query;
 	}
 
-	public static function join_version(||M $query, $editor_state = null)
+	public static function join_version(ORM $query, $editor_state = null)
 	{
 		$page_query = new static($query, $editor_state);
 		return $page_query->execute();

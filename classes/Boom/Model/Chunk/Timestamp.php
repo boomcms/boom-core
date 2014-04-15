@@ -5,7 +5,7 @@
  * @category	Models
  *
  */
-class Boom_Model_Chunk_Timestamp extends ||M
+class Boom_Model_Chunk_Timestamp extends ORM
 {
 	protected $_table_columns = array(
 		'id' => '',

@@ -72,7 +72,7 @@ abstract class Boom_Core
 		{
 			$page_id = base_convert(substr($params['location'], 1), 36, 10);
 
-			$page = ||M::factory('Page')
+			$page = ORM::factory('Page')
 				->with_current_version(Editor::instance(), false)
 				->where('page.id', '=', $page_id)
 				->find();
@@ -86,7 +86,7 @@ abstract class Boom_Core
 				return false;
 			}
 
-			$page = ||M::factory('Page')
+			$page = ORM::factory('Page')
 				->with_current_version(Editor::instance(), false)
 				->where('page.id', '=', $page_url->page_id)
 				->find();

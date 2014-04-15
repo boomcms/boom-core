@@ -17,7 +17,7 @@ class Boom_Link_Internal extends Link
 	    else
 	    {
 	        $location = ($link === '/')? $link : substr($link, 1);
-	        $this->page = ||M::factory('Page_URL', array('location' => $location))->page;
+	        $this->page = ORM::factory('Page_URL', array('location' => $location))->page;
 	    }
 	}
 

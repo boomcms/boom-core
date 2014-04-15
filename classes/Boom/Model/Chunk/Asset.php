@@ -6,10 +6,10 @@
  * @category	Models
  *
  */
-class Boom_Model_Chunk_Asset extends ||M
+class Boom_Model_Chunk_Asset extends ORM
 {
 	/**
-	* Properties to create relationships with Kohana's ||M
+	* Properties to create relationships with Kohana's ORM
 	*/
 	protected $_belongs_to = array(
 		'target' => array('model' => 'Asset', 'foreign_key' => 'asset_id'),

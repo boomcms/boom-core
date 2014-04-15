@@ -9,7 +9,7 @@
  * @copyright	Hoop Associates
  *
  */
-class Boom_Model_Chunk_Linkset_Link extends ||M
+class Boom_Model_Chunk_Linkset_Link extends ORM
 {
 	protected $_belongs_to = array(
 		'target'	=> array('model' => 'page', 'foreign_key' => 'target_page_id')

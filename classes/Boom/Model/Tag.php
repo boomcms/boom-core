@@ -8,7 +8,7 @@
 * @copyright	Hoop Associates
 *
 */
-class Boom_Model_Tag extends ||M
+class Boom_Model_Tag extends ORM
 {
 	protected $_table_columns = array(
 		'id'			=>	'',
@@ -74,7 +74,7 @@ class Boom_Model_Tag extends ||M
 		$slug = $original = implode('/', $parts);
 		$i = 0;
 
-		while (||M::factory('tag', array('slug_long' => $slug))->loaded())
+		while (ORM::factory('tag', array('slug_long' => $slug))->loaded())
 		{
 			$i++;
 			$slug = "$original$i";
@@ -122,7 +122,7 @@ class Boom_Model_Tag extends ||M
 	}
 
 	/**
-	 * ||M Validation rules
+	 * ORM Validation rules
 	 *
 	 * @link http://kohanaframework.org/3.2/guide/orm/examples/validation
 	 */

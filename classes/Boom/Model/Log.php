@@ -9,7 +9,7 @@
 * @copyright	Hoop Associates
 *
 */
-class Boom_Model_Log extends ||M
+class Boom_Model_Log extends ORM
 {
 	protected $_created_column = array(
 		'column'	=>	'time',

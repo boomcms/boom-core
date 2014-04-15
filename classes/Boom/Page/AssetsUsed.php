@@ -12,12 +12,12 @@ class Boom_Page_AssetsUsed
 	public function __construct(Model_Page_Version $version)
 	{
 		$this->_version = $version;
-		$this->_query = ||M::factory('Asset')->distinct(true)->order_by('asset.id');
+		$this->_query = ORM::factory('Asset')->distinct(true)->order_by('asset.id');
 	}
 
 	public function get_all()
 	{
-		return ||M::factory('Asset')
+		return ORM::factory('Asset')
 
 			// Asset chunks
 			->join('chunk_assets', 'left')
@@ -45,7 +45,7 @@ class Boom_Page_AssetsUsed
 
 	public function get_asset_chunks()
 	{
-		return ||M::factory('Asset')
+		return ORM::factory('Asset')
 			->join('chunk_assets', 'inner')
 			->on('asset.id', '=', 'chunk_assets.asset_id')
 			->where('chunk_assets.page_vid', '=', $this->_page->version()->id)
@@ -55,7 +55,7 @@ class Boom_Page_AssetsUsed
 
 	public function get_text_chunks()
 	{
-		return ||M::factory('Asset')
+		return ORM::factory('Asset')
 			->join('chunk_text_assets', 'inner')
 			->on('asset.id', '=', 'chunk_text_assets.asset_id')
 			->join('chunk_texts', 'inner')
@@ -67,7 +67,7 @@ class Boom_Page_AssetsUsed
 
 	public function get_slideshows()
 	{
-		return ||M::factory('Asset')
+		return ORM::factory('Asset')
 			->join('chunk_slideshow_slides', 'inner')
 			->on('asset.id', '=', 'chunk_slideshow_slides.asset_id')
 			->join('chunk_slideshows', 'inner')

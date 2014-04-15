@@ -7,7 +7,7 @@
  * @category	Models
  *
  */
-abstract class Boom_Model_Taggable extends ||M
+abstract class Boom_Model_Taggable extends ORM
 {
 	/**
 	 * Adds a tag with a given name to the object.
@@ -30,7 +30,7 @@ abstract class Boom_Model_Taggable extends ||M
 
 		if ( ! $tag->loaded())
 		{
-			$tag = ||M::factory('Tag')
+			$tag = ORM::factory('Tag')
 				->values(array(
 					'name'	=>	$name,
 					'type'	=>	$type,
@@ -91,7 +91,7 @@ abstract class Boom_Model_Taggable extends ||M
 		$join_table = $this->_object_plural.'_tags';
 		$join_table_id_column = $this->_object_name.'_id';
 
-		return ||M::factory('Tag')
+		return ORM::factory('Tag')
 			->join(array($join_table, 't1'), 'inner')
 			->on('t1.tag_id', '=', 'tag.id')
 			->join(array($join_table, 't2'), 'inner')

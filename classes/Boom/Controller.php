@@ -98,7 +98,7 @@ class Boom_Controller extends Controller
 	public function log($activity)
 	{
 		// Add an item to the log table with the relevant details
-		||M::factory('Log')
+		ORM::factory('Log')
 			->values(array(
 				'ip'			=>	Request::$client_ip,
 				'activity'		=>	$activity,

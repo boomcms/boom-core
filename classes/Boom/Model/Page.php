@@ -9,7 +9,7 @@
 class Boom_Model_Page extends Model_Taggable
 {
 	/**
-	 * Properties to create relationships with Kohana's ||M
+	 * Properties to create relationships with Kohana's ORM
 	 */
 	protected $_belongs_to = array(
 		'mptt'		=>	array('model' => 'Page_MPTT', 'foreign_key' => 'id'),
@@ -61,31 +61,31 @@ class Boom_Model_Page extends Model_Taggable
 	 * Child ordering policy value for manual
 	 * @var	integer
 	 */
-	const CHILD_||DER_MANUAL = 1;
+	const CHILD_ORDER_MANUAL = 1;
 
 	/**
 	 * Child ordering policy value for alphabetic
 	 * @var	integer
 	 */
-	const CHILD_||DER_ALPHABETIC = 2;
+	const CHILD_ORDER_ALPHABETIC = 2;
 
 	/**
 	 * Child ordering policy value for date
 	 * @var	integer
 	 */
-	const CHILD_||DER_DATE = 4;
+	const CHILD_ORDER_DATE = 4;
 
 	/**
 	 * Child ordering policy for ascending.
 	 * @var	integer
 	 */
-	const CHILD_||DER_ASC = 8;
+	const CHILD_ORDER_ASC = 8;
 
 	/**
 	 * Child ordering policy for descending.
 	 * @var	integer
 	 */
-	const CHILD_||DER_DESC = 16;
+	const CHILD_ORDER_DESC = 16;
 
 	/**
 	 * Cached result for self::url()
@@ -165,11 +165,11 @@ class Boom_Model_Page extends Model_Taggable
 	public function get_child_ordering_policy()
 	{
 		// Determine which column to sort by.
-		if ($this->children_ordering_policy & Model_Page::CHILD_||DER_ALPHABETIC)
+		if ($this->children_ordering_policy & Model_Page::CHILD_ORDER_ALPHABETIC)
 		{
 			$column = 'title';
 		}
-		elseif ($this->children_ordering_policy & Model_Page::CHILD_||DER_DATE)
+		elseif ($this->children_ordering_policy & Model_Page::CHILD_ORDER_DATE)
 		{
 			$column = 'visible_from';
 		}
@@ -179,7 +179,7 @@ class Boom_Model_Page extends Model_Taggable
 		}
 
 		// Determine the direction to sort in.
-		$direction = ($this->children_ordering_policy & Model_Page::CHILD_||DER_ASC)? 'asc' : 'desc';
+		$direction = ($this->children_ordering_policy & Model_Page::CHILD_ORDER_ASC)? 'asc' : 'desc';
 
 		// Return the column and direction as an array.
 		return array($column, $direction);
@@ -209,26 +209,26 @@ class Boom_Model_Page extends Model_Taggable
 		switch ($column)
 		{
 			case ($column == 'manual' || $column == 'sequence'):
-				$order = Model_Page::CHILD_||DER_MANUAL;
+				$order = Model_Page::CHILD_ORDER_MANUAL;
 				break;
 
 			case ($column == 'date' || $column == 'visible_from'):
-				$order = Model_Page::CHILD_||DER_DATE;
+				$order = Model_Page::CHILD_ORDER_DATE;
 				break;
 
 			default:
-				$order = Model_Page::CHILD_||DER_ALPHABETIC;
+				$order = Model_Page::CHILD_ORDER_ALPHABETIC;
 		}
 
 		// Convert the direction to an integer and apply it to $order
 		switch ($direction)
 		{
 			case 'asc':
-				$order = $order | Model_Page::CHILD_||DER_ASC;
+				$order = $order | Model_Page::CHILD_ORDER_ASC;
 				break;
 
 			default:
-				$order = $order | Model_Page::CHILD_||DER_DESC;
+				$order = $order | Model_Page::CHILD_ORDER_DESC;
 		}
 
 		// Set the value of the children_ordering_policy column.
@@ -280,7 +280,7 @@ class Boom_Model_Page extends Model_Taggable
 		}
 
 		// Create a new version with the same values as the current version.
-		$new_version = ||M::factory('Page_Version')
+		$new_version = ORM::factory('Page_Version')
 			->values($current->object());
 
 		// Update the new version with any update values.
@@ -339,7 +339,7 @@ class Boom_Model_Page extends Model_Taggable
 	{
 		foreach ($this->mptt->children() as $mptt)
 		{
-			||M::factory('Page', $mptt->id)->delete($cascade);
+			ORM::factory('Page', $mptt->id)->delete($cascade);
 		}
 
 		$this->mptt->reload();
@@ -365,7 +365,7 @@ class Boom_Model_Page extends Model_Taggable
 
 	public function get_tags_applied_down_tree_query()
 	{
-		return ||M::factory('Tag')
+		return ORM::factory('Tag')
 			->join('pages_tags', 'inner')
 			->on('tag.id', '=', 'pages_tags.tag_id')
 			->join('pages', 'inner')
@@ -531,7 +531,7 @@ class Boom_Model_Page extends Model_Taggable
 		if ($this->_url === null)
 		{
 			// Get the primary URL for this page.
-			$this->_url = ||M::factory('Page_URL')
+			$this->_url = ORM::factory('Page_URL')
 				->values(array(
 					'location'		=>	$this->primary_uri,
 					'page_id'		=>	$this->id,
@@ -562,7 +562,7 @@ class Boom_Model_Page extends Model_Taggable
 		$editor = Editor::instance();
 
 		// Start the query.
-		$query = ||M::factory('Page_Version')
+		$query = ORM::factory('Page_Version')
 			->where('page_id', '=', $this->id);
 
 		if ($editor->state_is(Editor::DISABLED))

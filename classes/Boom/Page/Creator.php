@@ -25,7 +25,7 @@ class Boom_Page_Creator
 
 	protected function _create_page()
 	{
-		return ||M::factory('Page')
+		return ORM::factory('Page')
 			->values(array(
 				'visible_in_nav'				=>	$this->_parent->children_visible_in_nav,
 				'visible_in_nav_cms'			=>	$this->_parent->children_visible_in_nav_cms,
@@ -39,7 +39,7 @@ class Boom_Page_Creator
 
 	protected function _create_version(Model_Page $page)
 	{
-		return ||M::factory('Page_Version')
+		return ORM::factory('Page_Version')
 			->values(array(
 				'edited_by'	=>	$this->_creator->id,
 				'page_id'		=>	$page->id,

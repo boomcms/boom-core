@@ -10,7 +10,7 @@ abstract class Boom_Chunk
 
 	/**
 	 *
-	 * @var ||M
+	 * @var ORM
 	 */
 	protected $_chunk;
 
@@ -247,7 +247,7 @@ abstract class Boom_Chunk
 	{
 		$model = (strpos($type, "Chunk_") === 0)? ucfirst($type) : "Chunk_" . ucfirst($type);
 
-		$query = ||M::factory($model)
+		$query = ORM::factory($model)
 			->with('target')
 			->where('page_vid', '=', $version->id);
 
@@ -268,7 +268,7 @@ abstract class Boom_Chunk
 		// e.g. if type is text we want a chunk_text model
 		$model = (strpos($type, "Chunk_") === 0)? ucfirst($type) : "Chunk_" . ucfirst($type);
 
-		return ||M::factory($model)
+		return ORM::factory($model)
 			->with('target')
 			->where('slotname', 'in', $slotname)
 			->where('page_vid', '=', $version->id)

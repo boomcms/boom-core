@@ -78,7 +78,7 @@ class Boom_Controller_Page_Html extends Controller_Page
 
 			foreach ($not_found as $slotname)
 			{
-				$chunks[$type][$slotname] = new $class($this->page, ||M::factory($class), $slotname);
+				$chunks[$type][$slotname] = new $class($this->page, ORM::factory($class), $slotname);
 			}
 		}
 
