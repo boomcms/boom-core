@@ -54,7 +54,7 @@ $.widget('ui.chunkLinkset', $.ui.chunk,
 			treeConfig: this.options.treeConfig,
 			open: function(){
 
-				self.elements.currentLinks = $( this ).find('.boom-chunk-linkset-links-set');
+				self.elements.currentLinks = $( this ).find('.boom-chunk-linkset-links-set').sortable();
 
 				self._buildList();
 			},

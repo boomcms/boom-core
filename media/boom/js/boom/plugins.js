@@ -27,7 +27,7 @@ boom.plugins.js
 		$('.boom-tabs').tabs($.boom.config.tabs);
 		$('.boom-datepicker').datetimepicker($.boom.config.datepicker);
 
-		var elems = '.boom-tree, .boom-sortable';
+		var elems = '.boom-tree';
 
 		$.boom.log('Start bind UI events');
 
@@ -48,11 +48,6 @@ boom.plugins.js
 					case 'tree' :
 						elem.tree($.extend({}, opts.tree, {
 							border: !(/tree-noborder/).test(elem[0].className)
-						}));
-					break;
-					case 'sortable' :
-						elem.sortable($.extend({}, opts.sortable, {
-							axis: (/sortable-y/.test(elem[0].className) ? 'y' : 'x')
 						}));
 					break;
 				};

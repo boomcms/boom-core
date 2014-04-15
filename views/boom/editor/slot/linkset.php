@@ -10,7 +10,7 @@
 				</div>
 			</div>
 			<br />
-			<ul class="boom-tree boom-tree-noborder boom-sortable boom-chunk-linkset-links-set">
+			<ul class="boom-tree boom-tree-noborder boom-chunk-linkset-links-set">
 			</ul>
 		</div>
 		<div id="boom-chunk-linkset-urls-invalid" class="ui-helper-hidden">
