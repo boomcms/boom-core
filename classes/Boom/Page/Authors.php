@@ -22,19 +22,23 @@ class Boom_Page_Authors
 		$this->_authors = $page->get_tags_with_name_like($this->_authorTagPrefix . "%");
 	}
 
-	public function __toString()
+	public function getNames()
 	{
+		$authors = array();
+
 		if ( ! empty($this->_authors))
 		{
-			foreach ($this->_authors as & $author)
+			foreach ($this->_authors as $author)
 			{
-				$author = htmlentities(str_ireplace($this->_authorTagPrefix, '', $author->name), ENT_QUOTES);
+				$authors[] = htmlentities(str_ireplace($this->_authorTagPrefix, '', $author->name), ENT_QUOTES);
 			}
-
-			$authors = implode(", ", $authors);
-			return $authors;
 		}
 
-		return "";
+		return $authors;
+	}
+
+	public function __toString()
+	{
+		return implode(', ', $this->getNames());
 	}
 }
