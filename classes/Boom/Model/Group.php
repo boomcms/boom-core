@@ -132,7 +132,7 @@ class Boom_Model_Group extends ORM
 		// If the group isn't loaded then it can't have the role.
 		if ( ! $this->_loaded)
 		{
-			return FALSE;
+			return false;
 		}
 
 		$result = DB::select(DB::expr(1))
@@ -179,7 +179,7 @@ class Boom_Model_Group extends ORM
 		// Prepare the query
 		$query = DB::select('id', 'name')
 			->from($this->_table_name)
-			->where('deleted', '=', FALSE)
+			->where('deleted', '=', false)
 			->order_by('name', 'asc');
 
 		// Are we excluding any groups?

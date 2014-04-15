@@ -14,7 +14,7 @@ class Boom_Auth_Boom extends Auth_ORM
 
 	protected $_permissions_cache = array();
 
-	protected function _login($person, $password = NULL, $remember = FALSE)
+	protected function _login($person, $password = NULL, $remember = false)
 	{
 		$this->_person = $person;
 
@@ -32,7 +32,7 @@ class Boom_Auth_Boom extends Auth_ORM
 		elseif ($this->_person->loaded() AND ! $this->_person->is_locked())
 		{
 			$this->_person->login_failed();
-			return FALSE;
+			return false;
 		}
 	}
 
@@ -72,7 +72,7 @@ class Boom_Auth_Boom extends Auth_ORM
 		$person->complete_login();
 	}
 
-	public function force_login($person, $mark_as_forced = FALSE)
+	public function force_login($person, $mark_as_forced = false)
 	{
 		$this->_person = $person;
 
@@ -146,7 +146,7 @@ class Boom_Auth_Boom extends Auth_ORM
 
 	public function is_disabled()
 	{
-		return Arr::get($this->_config, 'disabled', FALSE);
+		return Arr::get($this->_config, 'disabled', false);
 	}
 
 	/**
@@ -216,11 +216,11 @@ class Boom_Auth_Boom extends Auth_ORM
 		}
 	}
 
-	public function login($person, $password, $remember = FALSE)
+	public function login($person, $password, $remember = false)
 	{
 		if ( ! $password)
 		{
-			return FALSE;
+			return false;
 		}
 
 		if ( ! is_object($person) AND ! $person instanceof Model_Person)

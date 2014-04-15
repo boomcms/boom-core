@@ -31,7 +31,7 @@ class Boom_Controller_Cms_PeopleManager extends Controller_Cms
 		if ( ! $this->request->is_ajax())
 		{
 			$this->template = View::factory("boom/people/manager", array(
-				'groups' => ORM::Factory('Group')->where('deleted', '=', FALSE)->order_by('name', 'asc')->find_all(),
+				'groups' => ORM::Factory('Group')->where('deleted', '=', false)->order_by('name', 'asc')->find_all(),
 				'content' => $view,
 			));
 		}
