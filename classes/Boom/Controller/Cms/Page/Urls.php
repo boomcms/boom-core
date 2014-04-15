@@ -31,12 +31,12 @@ class Boom_Controller_Cms_Page_Urls extends Boom_Controller
 		$this->page_url = new Model_Page_URL($this->request->param('id'));
 		$this->page = new Model_Page($this->request->query('page_id'));
 
-		if ($this->request->param('id') AND ! $this->page_url->loaded())
+		if ($this->request->param('id') && ! $this->page_url->loaded())
 		{
 			throw new HTTP_Exception_404;
 		}
 
-		if ($this->request->query('page_id') AND ! $this->page->loaded())
+		if ($this->request->query('page_id') && ! $this->page->loaded())
 		{
 			throw new HTTP_Exception_404;
 		}

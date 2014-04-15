@@ -40,7 +40,7 @@ class Boom_Model_Page_URL extends ORM
 		parent::create($validation);
 
 		// Ensure that this is the only primary URL for this page.
-		$this->is_primary AND $this->make_primary();
+		$this->is_primary && $this->make_primary();
 
 		return $this;
 	}

@@ -44,7 +44,7 @@ class Boom_Controller_Page extends Boom_Controller
 
 	protected function _page_should_be_editable()
 	{
-		return ($this->editor->state_is(Editor::EDIT) AND ($this->page->was_created_by($this->person) OR $this->auth->logged_in('edit_page', $this->page)));
+		return ($this->editor->state_is(Editor::EDIT) && ($this->page->was_created_by($this->person) OR $this->auth->logged_in('edit_page', $this->page)));
 	}
 
 	protected function _page_isnt_visible_to_current_user()
@@ -52,7 +52,7 @@ class Boom_Controller_Page extends Boom_Controller
 		// If the page shouldn't be editable then check that it's visible.
 		if ( ! $this->editable)
 		{
-			if ($this->request->is_external() AND ( ! $this->page->is_visible() AND ! $this->editor->state_is(Editor::PREVIEW)))
+			if ($this->request->is_external() && ( ! $this->page->is_visible() && ! $this->editor->state_is(Editor::PREVIEW)))
 			{
 				return false;
 			}

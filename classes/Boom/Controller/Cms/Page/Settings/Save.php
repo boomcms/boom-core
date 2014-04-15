@@ -49,7 +49,7 @@ class Boom_Controller_Cms_Page_Settings_Save extends Controller_Cms_Page_Setting
 			$cascade_expected = array('visible_in_nav', 'visible_in_nav_cms');
 		}
 
-		if (isset($post['children_ordering_policy']) AND isset($post['children_ordering_direction']))
+		if (isset($post['children_ordering_policy']) && isset($post['children_ordering_direction']))
 		{
 			$this->page->set_child_ordering_policy($post['children_ordering_policy'], $post['children_ordering_direction']);
 		}
@@ -58,7 +58,7 @@ class Boom_Controller_Cms_Page_Settings_Save extends Controller_Cms_Page_Setting
 			->values($post, $expected)
 			->update();
 
-		if (isset($post['cascade']) AND ! empty($post['cascade']))
+		if (isset($post['cascade']) && ! empty($post['cascade']))
 		{
 			$cascade = array();
 			foreach ($post['cascade'] as $c)
@@ -85,7 +85,7 @@ class Boom_Controller_Cms_Page_Settings_Save extends Controller_Cms_Page_Setting
 		{
 			// Reparenting the page?
 			// Check that the ID of the parent has been changed and the page hasn't been set to be a child of itself.
-			if ($post['parent_id'] AND $post['parent_id'] != $this->page->mptt->parent_id AND $post['parent_id'] != $this->page->id)
+			if ($post['parent_id'] && $post['parent_id'] != $this->page->mptt->parent_id && $post['parent_id'] != $this->page->id)
 			{
 				// Check that the new parent ID is a valid page.
 				$parent = new Model_Page($post['parent_id']);

@@ -17,7 +17,7 @@ abstract class Boom_Page_URL
 		$url = static::sanitise($title);
 
 		// If the base URL isn't empty and there's no trailing / then add one.
-		if ($base AND substr($base, -1) != "/")
+		if ($base && substr($base, -1) != "/")
 		{
 			$base = $base."/";
 		}

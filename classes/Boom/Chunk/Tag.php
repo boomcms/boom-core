@@ -49,6 +49,6 @@ class Boom_Chunk_Tag extends Chunk
 
 	public function has_content()
 	{
-		return $this->_chunk->loaded() AND $this->get_tag()->loaded();
+		return $this->_chunk->loaded() && $this->get_tag()->loaded();
 	}
 }

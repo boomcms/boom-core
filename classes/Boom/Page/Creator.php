@@ -82,14 +82,14 @@ class Boom_Page_Creator
 
 	public function set_template_id($template_id)
 	{
-		$template_id AND $this->_template_id = $template_id;
+		$template_id && $this->_template_id = $template_id;
 
 		return $this;
 	}
 
 	public function set_title($title)
 	{
-		$title AND $this->_title = $title;
+		$title && $this->_title = $title;
 
 		return $this;
 	}

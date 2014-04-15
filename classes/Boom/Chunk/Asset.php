@@ -60,7 +60,7 @@ class Boom_Chunk_Asset extends Chunk
 
 	public function has_content()
 	{
-		return $this->_chunk->loaded() AND $this->_asset->loaded();
+		return $this->_chunk->loaded() && $this->_asset->loaded();
 	}
 
 	public function target()

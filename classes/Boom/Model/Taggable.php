@@ -21,7 +21,7 @@ abstract class Boom_Model_Taggable extends ORM
 	{
 		$type = $this->tag_type();
 
-		if ( ! $this->_loaded AND empty($ids))
+		if ( ! $this->_loaded && empty($ids))
 		{
 			throw new Exception("Cannot add a tag to an unloaded object");
 		}
@@ -118,7 +118,7 @@ abstract class Boom_Model_Taggable extends ORM
 		$type = $this->tag_type();
 
 		// Object has to be loaded to remove a tag from it.
-		if ( ! $this->_loaded AND empty($ids))
+		if ( ! $this->_loaded && empty($ids))
 		{
 			throw new Exception("An object has to be loaded to remove a tag from it");
 		}

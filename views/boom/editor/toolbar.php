@@ -36,7 +36,7 @@
 			</span>
 		<? endif ?>
 
-		<? if (($page->was_created_by($person) OR $auth->logged_in('delete_page', $page)) AND ! $page->mptt->is_root()): ?>
+		<? if (($page->was_created_by($person) OR $auth->logged_in('delete_page', $page)) && ! $page->mptt->is_root()): ?>
 			<?= BoomUI::button('delete', __('Delete this page'), array('id' => 'b-page-delete')) ?>
 		<? endif; ?>
 	</div>

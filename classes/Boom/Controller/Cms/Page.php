@@ -34,7 +34,7 @@ class Boom_Controller_Cms_Page extends Boom_Controller
 
 	public function action_add()
 	{
-		$this->_csrf_check() AND $this->authorization('add_page', $this->page);
+		$this->_csrf_check() && $this->authorization('add_page', $this->page);
 
 		$creator = new Page_Creator($this->page, $this->person);
 		$creator->set_template_id($this->request->post('template_id'));

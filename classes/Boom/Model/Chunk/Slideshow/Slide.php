@@ -57,7 +57,7 @@ class Boom_Model_Chunk_Slideshow_Slide extends ORM
 	 */
 	public function has_link()
 	{
-		return $this->url AND $this->url != 'http://';
+		return $this->url && $this->url != 'http://';
 	}
 
 	public function make_link_relative($url)

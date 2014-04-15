@@ -56,7 +56,7 @@ class Boom_Controller extends Controller
 		$this->_save_last_url();
 
 		// Require the user to be logged in if the site isn't live.
-		if ($this->request->is_initial() AND ! (Kohana::$environment == Kohana::PRODUCTION OR $this->auth->logged_in()))
+		if ($this->request->is_initial() && ! (Kohana::$environment == Kohana::PRODUCTION OR $this->auth->logged_in()))
 		{
 			throw new HTTP_Exception_401;
 		}
@@ -109,7 +109,7 @@ class Boom_Controller extends Controller
 
 	public function after()
 	{
-		if ($this->template instanceof View AND ! $this->response->body())
+		if ($this->template instanceof View && ! $this->response->body())
 		{
 			parent::after();
 
@@ -129,7 +129,7 @@ class Boom_Controller extends Controller
 
 	protected function _save_last_url()
 	{
-		if ($this->_save_last_url === true AND ! $this->request->is_ajax())
+		if ($this->_save_last_url === true && ! $this->request->is_ajax())
 		{
 			$logger = new RedirectUrlPersister($this->session);
 			$logger->set_url(Request::initial()->url());

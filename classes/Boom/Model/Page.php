@@ -318,7 +318,7 @@ class Boom_Model_Page extends Model_Taggable
 		$this->delete_from_feature_boxes();
 		$this->delete_from_linksets();
 
-		$with_children AND $this->delete_children(true);
+		$with_children && $this->delete_children(true);
 
 		$this->mptt->delete();
 
@@ -412,7 +412,7 @@ class Boom_Model_Page extends Model_Taggable
 
 	public function is_visible()
 	{
-		return ($this->visible AND $this->visible_from <= Editor::instance()->live_time() AND ($this->visible_to >= Editor::instance()->live_time() OR $this->visible_to == 0));
+		return ($this->visible && $this->visible_from <= Editor::instance()->live_time() && ($this->visible_to >= Editor::instance()->live_time() OR $this->visible_to == 0));
 	}
 
 	/**
@@ -505,7 +505,7 @@ class Boom_Model_Page extends Model_Taggable
 			$mptt = new Model_Page_Mptt($page_id);
 
 			// Only update the sequence of pages which are children of this page.
-			if ($mptt->scope == $this->mptt->scope AND $mptt->parent_id == $this->id)
+			if ($mptt->scope == $this->mptt->scope && $mptt->parent_id == $this->id)
 			{
 				DB::update($this->_table_name)
 					->set(array('sequence' => $sequence))
@@ -594,7 +594,7 @@ class Boom_Model_Page extends Model_Taggable
 	 */
 	public function was_created_by(Model_Person $person)
 	{
-		return ($this->created_by AND $this->created_by == $person->id);
+		return ($this->created_by && $this->created_by == $person->id);
 	}
 
 	/**

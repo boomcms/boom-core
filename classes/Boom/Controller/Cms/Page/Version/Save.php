@@ -48,7 +48,7 @@ class Boom_Controller_Cms_Page_Version_Save extends Controller_Cms_Page_Version
 			->embargo($embargoed_until)
 			->copy_chunks($this->old_version);
 
-		$this->new_version->is_published() AND $this->page->remove_drafts();
+		$this->new_version->is_published() && $this->page->remove_drafts();
 	}
 
 	/**
@@ -99,7 +99,7 @@ class Boom_Controller_Cms_Page_Version_Save extends Controller_Cms_Page_Version
 	{
 		$this->new_version->set('title', $this->request->post('title'));
 
-		if ($this->new_version->changed('title') AND $this->old_version->title == 'Untitled' AND ! $this->page->mptt->is_root())
+		if ($this->new_version->changed('title') && $this->old_version->title == 'Untitled' && ! $this->page->mptt->is_root())
 		{
 			// Create a new primary link for the page.
 			$link = ORM::factory('Page_URL')

@@ -92,7 +92,7 @@ class Boom_Controller_Page_Html extends Controller_Page
 			$slotnames = array_keys($defaults);
 			foreach ($slotnames as $slotname)
 			{
-				isset($this->_chunks[$type][$slotname]) AND $this->_chunks[$type][$slotname]->defaults($this->_chunk_defaults[$type][$slotname]);
+				isset($this->_chunks[$type][$slotname]) && $this->_chunks[$type][$slotname]->defaults($this->_chunk_defaults[$type][$slotname]);
 			}
 		}
 	}

@@ -10,7 +10,7 @@ class Boom_TextEditorToolbar
 
 	public function __construct($button_set = null)
 	{
-		$button_set AND $this->_button_set = $button_set;
+		$button_set && $this->_button_set = $button_set;
 		$this->_config = Kohana::$config->load('text_editor_toolbar');
 	}
 

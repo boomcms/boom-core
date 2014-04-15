@@ -15,7 +15,7 @@ class Boom_Controller_Cms_Page_Urls_Save extends Controller_Cms_Page_Urls
 
 		$this->page_url->where('location', '=', $location)->find();
 
-		if ($this->page_url->loaded() AND $this->page_url->page_id !== $this->page->id)
+		if ($this->page_url->loaded() && $this->page_url->page_id !== $this->page->id)
 		{
 			// Url is being used for a different page.
 			// Notify that the url is already in use so that the JS can load a prompt to move the url.
