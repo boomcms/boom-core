@@ -14,7 +14,7 @@ abstract class Boom_Asset_Core
 	const VIDEO = 3;
 	const TIFF = 4;
 	const MP3 = 5;
-	const MSW||D = 6;
+	const MSWORD = 6;
 
 	/**
 	 * @var	array
@@ -69,7 +69,7 @@ abstract class Boom_Asset_Core
 			case static::TIFF:
 				return 'tiff';
 
-			case static::MSW||D:
+			case static::MSWORD:
 				return "MSWord";
 
 			default:
@@ -108,7 +108,7 @@ abstract class Boom_Asset_Core
 		// MS Word
 		if (strpos($mime, 'application/msword') === 0 || strpos($mime, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') === 0)
 		{
-			return Boom_Asset::MSW||D;
+			return Boom_Asset::MSWORD;
 		}
 
 		/**
