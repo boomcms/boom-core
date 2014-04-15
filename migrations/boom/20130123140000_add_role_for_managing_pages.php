@@ -12,7 +12,7 @@ class Migration_Boom_20130123140000 extends Minion_Migration_Base
 	 */
 	public function up(Kohana_Database $db)
 	{
-		$db->query(NULL, "insert into roles (name, description) values ('manage_pages', 'Page manager - view and edit')");
+		$db->query(null, "insert into roles (name, description) values ('manage_pages', 'Page manager - view and edit')");
 	}
 
 	public function down(Kohana_Database $db) {}
