@@ -17,7 +17,10 @@ class Boom_Page_ReadabilityScore
 
 	protected function _get_page_text()
 	{
-		$chunks = Chunk::find('text', array('bodycopy', 'standfirst'), $this->_page->version());
+		$chunks = ORM::factory('Chunk_Text')
+			->where('is_block', '=', true)
+			->where('page_vid', '=', $this->_page->version()->id)
+			->find_all();
 
 		$text = "";
 		foreach ($chunks as $chunk)
