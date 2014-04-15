@@ -24,7 +24,7 @@ function boomAssetPicker(currentAssetId) {
 
 		this.dialog = new boomDialog({
 			url : this.url,
-			width: document.documentElement.clientWidth > 1000? '70%' : '900',
+			width: top.document.documentElement.clientWidth > 1000? '70%' : '900',
 			height: '700',
 			dialogClass : 'b-dialog b-assets-dialog',
 			closeButton : false,
@@ -34,21 +34,22 @@ function boomAssetPicker(currentAssetId) {
 
 				var upload = $('<button />')
 					.addClass('ui-helper-left b-button ui-button')
-					.text( 'Upload' )
+					.text('Upload')
 					.button({
 						text: false,
-						icons: { primary : 'b-button-icon b-button-icon-upload' }
+						icons: {primary : 'b-button-icon b-button-icon-upload'}
 					})
 					.click(function() {
-						assetPicker.dialog.contents.assetManager('upload')
-							.done(function() {
+						assetPicker.dialog.contents.assetManager('openUploader')
+							.done(function(e, data) {
+								console.log(data);
 								assetPicker.dialog.contents.assetManager('listAssets');
 							});
 					});
 
 				$(this).dialog('widget')
 					.find('.ui-dialog-buttonpane')
-//					.prepend(upload)
+					.prepend(upload)
 					.append($('<div class="center"><div id="b-assets-pagination"></div><div id="b-assets-stats"></div></div>'));
 			},
 			onLoad: function() {

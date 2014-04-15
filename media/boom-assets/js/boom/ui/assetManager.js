@@ -208,15 +208,15 @@ $.widget('boom.assetManager', {
 	},
 
 	openUploader : function() {
-		var assetManager = this;
+		var assetManager = this,
+			uploaded = new $.Deferred();
 
 		$.get(this.baseUrl + 'upload')
 			.done(function(response) {
 				assetManager.showContent(response);
 
 				var tags = [],
-					tagged = new $.Deferred(),
-					uploaded = new $.Deferred();
+					tagged = new $.Deferred();
 
 				/* bit of a hack to get current tags */
 				$( '#b-tags-search .b-tags-list li').each( function(){
@@ -272,6 +272,8 @@ $.widget('boom.assetManager', {
 						});
 				});
 			});
+
+		return uploaded;
 	},
 
 	removeFilters : function() {
