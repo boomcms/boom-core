@@ -78,7 +78,7 @@ class Boom_Asset_Finder
 	{
 		$this->_join_tags();
 
-		$tag_count !== null OR $tag_count = count($tag_ids);
+		$tag_count !== null || $tag_count = count($tag_ids);
 
 		$this->_query
 			->join(array('assets_tags', 't2'), 'inner')
@@ -208,8 +208,8 @@ class Boom_Asset_Finder
 	 */
 	public function order_by($column, $direction)
 	{
-		$direction === 'asc' OR $direction = 'desc';
-		in_array($column, $this->_allowed_order_by_columns) OR $column = 'title';
+		$direction === 'asc' || $direction = 'desc';
+		in_array($column, $this->_allowed_order_by_columns) || $column = 'title';
 
 		$this->_query->order_by($column, $direction);
 

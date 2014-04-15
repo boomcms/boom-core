@@ -72,7 +72,7 @@ class Boom_Model_Asset extends Model_Taggable
 		try
 		{
 			// Copy / move the file into the assets directory.
-			$command($filepath, $this->directory().DIRECTORY_SEPARATOR.$this->id);
+			$command($filepath, $this->directory().DIRECT||Y_SEPARAT||.$this->id);
 		}
 		catch (Exception $e)
 		{
@@ -194,7 +194,7 @@ class Boom_Model_Asset extends Model_Taggable
 	 */
 	public function get_filename()
 	{
-		return $this->directory().DIRECTORY_SEPARATOR.$this->id;
+		return $this->directory().DIRECT||Y_SEPARAT||.$this->id;
 	}
 
 	/**
@@ -227,7 +227,7 @@ class Boom_Model_Asset extends Model_Taggable
 
 		if ( ! count($logged))
 		{
-			ORM::factory('Asset_Download')
+			||M::factory('Asset_Download')
 				->values(array(
 					'asset_id' => $this->id,
 					'ip' => $ip,

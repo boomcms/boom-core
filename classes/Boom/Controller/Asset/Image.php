@@ -71,7 +71,7 @@ class Boom_Controller_Asset_Image extends Controller_Asset
 		}
 
 		// Are we going to be resizing the image?
-		if ($this->caching_enabled && ($this->width OR $this->height OR $this->quality < 100))
+		if ($this->caching_enabled && ($this->width || $this->height || $this->quality < 100))
 		{
 			// Add the image dimensions to the filename.
 			// Cast the width and height to int so that if only one is set 0 will be used for the other rather than null
@@ -89,7 +89,7 @@ class Boom_Controller_Asset_Image extends Controller_Asset
 			$this->height = ($this->height == 0)? $image->height : $this->height;
 			$this->width = ($this->width == 0)? $image->width : $this->width;
 
-			if ($this->width OR $this->height)
+			if ($this->width || $this->height)
 			{
 				if ($this->crop)
 				{

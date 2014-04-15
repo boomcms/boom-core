@@ -42,7 +42,7 @@ class Boom_Controller_Asset_PDF extends Controller_Asset
 
 		$image = Image::factory($thumb);
 
-		if ($width OR $height)
+		if ($width || $height)
 		{
 			$image->resize($width, $height);
 		}
