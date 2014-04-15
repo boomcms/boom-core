@@ -21,13 +21,13 @@ class Boom_Controller_Cms_Auth_Recover extends Controller_Cms_Auth
 
 		$person = new Model_Person(array('email' => $this->request->post('email')));
 
-		if ( ! $person->loaded() OR ! $person->enabled)
+		if ( ! $person->loaded() || ! $person->enabled)
 		{
 			$this->_display_form(array('error' => Kohana::message('auth', 'recover.errors.invalid_email')));
 			return;
 		}
 
-		$token = ORM::factory('PasswordToken')
+		$token = ||M::factory('PasswordToken')
 			->values(array(
 				'person_id' => $person->id,
 				'token' => sha1(uniqid(null, true)),
@@ -63,7 +63,7 @@ class Boom_Controller_Cms_Auth_Recover extends Controller_Cms_Auth
 	{
 		$token = new Model_PasswordToken(array('token' => $this->request->query('token')));
 
-		if ( ! $token->loaded() OR $token->is_expired())
+		if ( ! $token->loaded() || $token->is_expired())
 		{
 			if ($token->is_expired())
 			{

@@ -7,7 +7,7 @@
  * @author	Rob Taylor
  * @copyright	Hoop Associates
  */
-class Boom_Model_Person extends ORM
+class Boom_Model_Person extends ||M
 {
 	const LOCK_WAIT = 600;
 
@@ -29,7 +29,7 @@ class Boom_Model_Person extends ORM
 	);
 
 	/**
-	 * Properties to create relationships with Kohana's ORM
+	 * Properties to create relationships with Kohana's ||M
 	 */
 	protected $_has_many = array(
 		'groups'		=> array(

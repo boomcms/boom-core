@@ -5,13 +5,13 @@ class Boom_Controller_Cms_Person_View extends Controller_Cms_Person
 	public function action_add()
 	{
 		$this->template = View::factory($this->_view_directory."new", array(
-			'groups'	=>	ORM::factory('Group')->names(),
+			'groups'	=>	||M::factory('Group')->names(),
 		));
 	}
 
 	public function action_add_group()
 	{
-		$groups = ORM::factory('Group')
+		$groups = ||M::factory('Group')
 			->names(
 				DB::Select('group_id')
 					->from('people_groups')

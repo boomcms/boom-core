@@ -8,7 +8,7 @@
  * @copyright	Hoop Associates
  *
  */
-class Boom_Model_Group extends ORM
+class Boom_Model_Group extends ||M
 {
 	protected $_has_many = array('roles' => array('through' => 'group_roles'));
 
@@ -38,7 +38,7 @@ class Boom_Model_Group extends ORM
 	{
 		// Check that the role is exists.
 		// Attempt to load the role from the database.
-		$role = ORM::factory('Role', $role_id);
+		$role = ||M::factory('Role', $role_id);
 
 		// If the role wasn't found then it's not a valid role ID.
 		if ( ! $role->loaded())
@@ -51,7 +51,7 @@ class Boom_Model_Group extends ORM
 		if ( ! $this->has_role($role_id, $page_id))
 		{
 			// Create a relationship with the role.
-			// Don't use [ORM::add()] because we want to store the value of $allowed as well.
+			// Don't use [||M::add()] because we want to store the value of $allowed as well.
 			DB::insert('group_roles', array('group_id', 'role_id', 'allowed', 'page_id'))
 				->values(array($this->id, $role_id, $allowed, $page_id))
 				->execute($this->_db);
@@ -121,7 +121,7 @@ class Boom_Model_Group extends ORM
 	/**
 	 * Determines whether the current group has a specified role allowed / denied.
 	 *
-	 * ORM::has() doesn't work for this since we also have to take into account the page ID, if one is given.
+	 * ||M::has() doesn't work for this since we also have to take into account the page ID, if one is given.
 	 *
 	 * @param integer $role_id
 	 * @param integer $page_id
@@ -153,13 +153,13 @@ class Boom_Model_Group extends ORM
 	 *
 	 * This function can be used to build a select box of groups, e.g.:
 	 *
-	 *	<?= Form::select('group_id', ORM::factory('Group')->names()) ?>
+	 *	<?= Form::select('group_id', ||M::factory('Group')->names()) ?>
 	 *
 	 *
 	 * Optionally an array of group names, or a Database_Query_Builder_Select object, can be given to exclude those groups from the results.
 	 * This could be used to get the names of all groups that a person is not already a member of.
 	 *
-	 *	<?= Form::select('group_id', ORM::factory('Group')->names(array('Group name'))) ?>
+	 *	<?= Form::select('group_id', ||M::factory('Group')->names(array('Group name'))) ?>
 	 *
 	 *
 	 * @param mixed $exclude
@@ -170,7 +170,7 @@ class Boom_Model_Group extends ORM
 	public function names($exclude = null)
 	{
 		// $exclude should be an array or DB select.
-		if ($exclude !== null && ! (is_array($exclude) OR $exclude instanceof Database_Query_Builder_Select))
+		if ($exclude !== null && ! (is_array($exclude) || $exclude instanceof Database_Query_Builder_Select))
 		{
 			// Throw an exception.
 			throw new InvalidArgumentException("Argument 1 for ".__CLASS__."::".__METHOD__." should be an array or instance of Database_Query_Builder_Select, ".tyepof($excluding). "given");
@@ -236,7 +236,7 @@ class Boom_Model_Group extends ORM
 	}
 
 	/**
-	 * ORM Validation rules
+	 * ||M Validation rules
 	 * @link http://kohanaframework.org/3.2/guide/orm/examples/validation
 	 */
 	public function rules()

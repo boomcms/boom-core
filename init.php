@@ -78,7 +78,7 @@ Route::set('login', 'cms/login(/<controller>)')
 				$params['controller'] = 'Openid';
 			}
 
-			if ($request->query('openid_mode') OR ($params['controller'] == 'Password' && $request->method() == Request::POST))
+			if ($request->query('openid_mode') || ($params['controller'] == 'Password' && $request->method() == Request::POST))
 			{
 				$params['action'] = 'process';
 			}

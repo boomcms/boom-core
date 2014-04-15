@@ -4,7 +4,7 @@
  * @category	Auth
  * @author	Rob Taylor
  */
-class Boom_Auth_Boom extends Auth_ORM
+class Boom_Auth_Boom extends Auth_||M
 {
 	/**
 	 *
@@ -163,7 +163,7 @@ class Boom_Auth_Boom extends Auth_ORM
 	 *
 	 *		// Can also be called as:
 	 *		Auth::instance()->logged_in(
-	 *			ORM::factory('Role', array('name' => 'do_stuff'))
+	 *			||M::factory('Role', array('name' => 'do_stuff'))
 	 *		);
 	 *
 	 *
@@ -259,7 +259,7 @@ class Boom_Auth_Boom extends Auth_ORM
 		);
 
 		// Create a new autologin token
-		$token = ORM::factory('User_Token')
+		$token = ||M::factory('User_Token')
 			->values($data)
 			->create();
 

@@ -1,6 +1,6 @@
 <?php
 
-class Boom_Model_PasswordToken extends ORM
+class Boom_Model_PasswordToken extends ||M
 {
 	protected $_belongs_to = array('person' => array());
 	protected $_table_name = 'password_tokens';

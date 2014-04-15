@@ -21,7 +21,7 @@ class Boom_Controller_Cms_Profile extends Boom_Controller
 
 		if ($new_password && $new_password != $current_password)
 		{
-			if ( ! $this->person->password OR $this->auth->check_password($current_password))
+			if ( ! $this->person->password || $this->auth->check_password($current_password))
 			{
 				$this->person->set('password', $this->auth->hash($new_password));
 			}

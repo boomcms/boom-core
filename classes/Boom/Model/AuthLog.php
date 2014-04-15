@@ -1,6 +1,6 @@
 <?php
 
-class Boom_Model_AuthLog extends ORM
+class Boom_Model_AuthLog extends ||M
 {
 	const LOGOUT = -1;
 	const FAILURE = 0;

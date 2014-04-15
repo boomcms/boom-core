@@ -16,7 +16,7 @@ class Boom_Controller_Cms_PeopleManager extends Controller_Cms
 
 	public function action_index()
 	{
-		$people = ORM::factory('Person')
+		$people = ||M::factory('Person')
 			->by_group($this->request->query('group'))
 			->order_by('name', 'asc')
 			->find_all();
@@ -31,7 +31,7 @@ class Boom_Controller_Cms_PeopleManager extends Controller_Cms
 		if ( ! $this->request->is_ajax())
 		{
 			$this->template = View::factory("boom/people/manager", array(
-				'groups' => ORM::Factory('Group')->where('deleted', '=', false)->order_by('name', 'asc')->find_all(),
+				'groups' => ||M::Factory('Group')->where('deleted', '=', false)->order_by('name', 'asc')->find_all(),
 				'content' => $view,
 			));
 		}
