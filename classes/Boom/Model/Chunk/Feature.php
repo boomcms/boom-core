@@ -6,10 +6,10 @@
  * @category	Models
  *
  */
-class Boom_Model_Chunk_Feature extends ORM
+class Boom_Model_Chunk_Feature extends ||M
 {
 	/**
-	* Properties to create relationships with Kohana's ORM
+	* Properties to create relationships with Kohana's ||M
 	*/
 	protected $_table_columns = array(
 		'id'				=>	'',

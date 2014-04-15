@@ -7,10 +7,10 @@
  * @category	Models
  *
  */
-class Boom_Model_Chunk_Slideshow extends ORM
+class Boom_Model_Chunk_Slideshow extends ||M
 {
 	/**
-	* Properties to create relationships with Kohana's ORM
+	* Properties to create relationships with Kohana's ||M
 	*/
 	protected $_has_many = array(
 		'slides' => array('model' => 'Chunk_Slideshow_Slide', 'foreign_key' => 'chunk_id'),
@@ -86,7 +86,7 @@ class Boom_Model_Chunk_Slideshow extends ORM
 				{
 					$slide['url'] = (isset($slide['page']) && $slide['page'] > 0)? $slide['page'] : isset($slide['url'])? $slide['url'] : null;
 
-					$slide = ORM::factory('Chunk_Slideshow_Slide')
+					$slide = ||M::factory('Chunk_Slideshow_Slide')
 						->values( (array) $slide);
 				}
 			}

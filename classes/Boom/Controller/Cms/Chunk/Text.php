@@ -32,7 +32,7 @@ class Boom_Controller_Cms_Chunk_Text extends Boom_Controller_Cms_Chunk
 
 	protected function _save_chunk()
 	{
-		return $this->_model = ORM::factory("Chunk_".ucfirst($this->_type))
+		return $this->_model = ||M::factory("Chunk_".ucfirst($this->_type))
 			->values($this->request->post())
 			->clean_text()
 			->set('page_vid', $this->_new_version->id)

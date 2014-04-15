@@ -17,7 +17,7 @@ abstract class Boom_BoomUI
 	public static function button($type, $text, array $attrs = array())
 	{
 		// Add the important b-button class to the button attributes which has all the CSS rules targeted at it.
-		isset($attrs['class']) OR $attrs['class'] = '';
+		isset($attrs['class']) || $attrs['class'] = '';
 		$attrs['class'] = trim($attrs['class'] . ' b-button');
 
 		// Make the button text the title of the button.

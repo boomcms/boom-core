@@ -11,10 +11,10 @@
  * @copyright	Hoop Associates
  *
  */
-class Boom_Model_Chunk_Slideshow_Slide extends ORM
+class Boom_Model_Chunk_Slideshow_Slide extends ||M
 {
 	/**
-	* Properties to create relationships with Kohana's ORM
+	* Properties to create relationships with Kohana's ||M
 	*/
 	protected $_belongs_to = array(
 		'asset'	=>	array('model' => 'Asset', 'foreign_key' => 'asset_id')

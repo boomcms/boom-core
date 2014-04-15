@@ -7,7 +7,7 @@
 * @author	Rob Taylor
 * @copyright	Hoop Associates
 */
-class Boom_Model_Role extends ORM
+class Boom_Model_Role extends ||M
 {
 	protected $_table_columns = array(
 		'id'			=>	'',

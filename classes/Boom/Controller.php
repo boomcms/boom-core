@@ -56,7 +56,7 @@ class Boom_Controller extends Controller
 		$this->_save_last_url();
 
 		// Require the user to be logged in if the site isn't live.
-		if ($this->request->is_initial() && ! (Kohana::$environment == Kohana::PRODUCTION OR $this->auth->logged_in()))
+		if ($this->request->is_initial() && ! (Kohana::$environment == Kohana::PRODUCTION || $this->auth->logged_in()))
 		{
 			throw new HTTP_Exception_401;
 		}
@@ -98,7 +98,7 @@ class Boom_Controller extends Controller
 	public function log($activity)
 	{
 		// Add an item to the log table with the relevant details
-		ORM::factory('Log')
+		||M::factory('Log')
 			->values(array(
 				'ip'			=>	Request::$client_ip,
 				'activity'		=>	$activity,

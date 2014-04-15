@@ -32,7 +32,7 @@ class Boom_Page_Decorator
 
 	protected function _get_chunk_data()
 	{
-		$chunks = ORM::factory('Chunk_Text')
+		$chunks = ||M::factory('Chunk_Text')
 			->where('page_vid', '=', $this->_page->version()->id)
 			->where('slotname', 'in', $this->_text_chunks_to_properties)
 			->find_all();

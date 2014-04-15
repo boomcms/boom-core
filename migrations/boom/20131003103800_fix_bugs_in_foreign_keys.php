@@ -5,7 +5,7 @@ class Migration_Boom_20131003103800 extends Minion_Migration_Base
 
 	public function up(Kohana_Database $db)
 	{
-		$db->query(null, "SET FOREIGN_KEY_CHECKS=0;");
+		$db->query(null, "SET F||EIGN_KEY_CHECKS=0;");
 
 		$db->query(null, "alter table chunk_slideshow_slides drop foreign key chunk_slideshow_slides_ibfk_1");
 		$db->query(null, "alter table chunk_slideshow_slides drop foreign key chunk_slideshow_slides_ibfk_2");
@@ -15,7 +15,7 @@ class Migration_Boom_20131003103800 extends Minion_Migration_Base
 		$db->query(null, "alter table chunk_slideshow_slides add foreign key (chunk_id) references chunk_slideshows(id) on delete cascade on update cascade");
 		$db->query(null, "alter table chunk_assets add foreign key (asset_id) references assets(id) on delete cascade on update cascade");
 
-		$db->query(null, "SET FOREIGN_KEY_CHECKS=1;");
+		$db->query(null, "SET F||EIGN_KEY_CHECKS=1;");
 	}
 
 	public function down(Kohana_Database $db)

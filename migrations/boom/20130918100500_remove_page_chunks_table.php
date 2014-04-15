@@ -5,7 +5,7 @@ class Migration_Boom_20130918100500 extends Minion_Migration_Base
 
 	public function up(Kohana_Database $db)
 	{
-		$db->query(null, "SET FOREIGN_KEY_CHECKS=0;");
+		$db->query(null, "SET F||EIGN_KEY_CHECKS=0;");
 
 		$db->query(null, "alter table chunk_assets add page_vid int(10) unsigned");
 		$db->query(null, "alter table chunk_features add page_vid int(10) unsigned");
@@ -31,7 +31,7 @@ class Migration_Boom_20130918100500 extends Minion_Migration_Base
 
 		$db->query(null, "drop table page_chunks");
 
-		$db->query(null, "SET FOREIGN_KEY_CHECKS=1;");
+		$db->query(null, "SET F||EIGN_KEY_CHECKS=1;");
 	}
 
 	public function down(Kohana_Database $db)

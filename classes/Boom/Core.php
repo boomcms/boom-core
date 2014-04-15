@@ -72,7 +72,7 @@ abstract class Boom_Core
 		{
 			$page_id = base_convert(substr($params['location'], 1), 36, 10);
 
-			$page = ORM::factory('Page')
+			$page = ||M::factory('Page')
 				->with_current_version(Editor::instance(), false)
 				->where('page.id', '=', $page_id)
 				->find();
@@ -86,7 +86,7 @@ abstract class Boom_Core
 				return false;
 			}
 
-			$page = ORM::factory('Page')
+			$page = ||M::factory('Page')
 				->with_current_version(Editor::instance(), false)
 				->where('page.id', '=', $page_url->page_id)
 				->find();
@@ -100,7 +100,7 @@ abstract class Boom_Core
 				throw new HTTP_Exception_410;
 			}
 
-			if ( ! isset($page_url) OR ! $page_url->is_primary)
+			if ( ! isset($page_url) || ! $page_url->is_primary)
 			{
 				header('Location: '.$page->url(), null, 301);
 				exit;

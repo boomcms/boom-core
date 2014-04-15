@@ -20,7 +20,7 @@ class Boom_Chunk_Tag extends Chunk
 
 	protected function _show()
 	{
-		if ( ! $this->_template OR ! Kohana::find_file("views", $this->_view_directory."tag/$this->_template"))
+		if ( ! $this->_template || ! Kohana::find_file("views", $this->_view_directory."tag/$this->_template"))
 		{
 			$this->_template = $this->_default_template;
 		}

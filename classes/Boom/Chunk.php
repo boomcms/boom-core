@@ -10,7 +10,7 @@ abstract class Boom_Chunk
 
 	/**
 	 *
-	 * @var ORM
+	 * @var ||M
 	 */
 	protected $_chunk;
 
@@ -172,7 +172,7 @@ abstract class Boom_Chunk
 			 *
 			 * @todo Multiple chunks will be inserted on a single page - need to remove duplicate calles to Auth::instance()->logged_in()
 			 */
-			$this->_editable = ($this->_editable === true && Editor::instance()->state_is(Editor::EDIT) && ($this->_page->was_created_by(Auth::instance()->get_user()) OR Auth::instance()->logged_in("edit_page_content", $this->_page)));
+			$this->_editable = ($this->_editable === true && Editor::instance()->state_is(Editor::EDIT) && ($this->_page->was_created_by(Auth::instance()->get_user()) || Auth::instance()->logged_in("edit_page_content", $this->_page)));
 
 			// Get the chunk HTML.
 			$html = $this->html();
@@ -247,7 +247,7 @@ abstract class Boom_Chunk
 	{
 		$model = (strpos($type, "Chunk_") === 0)? ucfirst($type) : "Chunk_" . ucfirst($type);
 
-		$query = ORM::factory($model)
+		$query = ||M::factory($model)
 			->with('target')
 			->where('page_vid', '=', $version->id);
 
@@ -268,7 +268,7 @@ abstract class Boom_Chunk
 		// e.g. if type is text we want a chunk_text model
 		$model = (strpos($type, "Chunk_") === 0)? ucfirst($type) : "Chunk_" . ucfirst($type);
 
-		return ORM::factory($model)
+		return ||M::factory($model)
 			->with('target')
 			->where('slotname', 'in', $slotname)
 			->where('page_vid', '=', $version->id)

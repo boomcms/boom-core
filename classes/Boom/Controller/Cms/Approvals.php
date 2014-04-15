@@ -33,7 +33,7 @@ class Boom_Controller_Cms_Approvals extends Boom_Controller
 			->group_by('mptt.id');
 
 
-		return ORM::factory('Page')
+		return ||M::factory('Page')
 			->with_current_version(Editor::instance())
 			->where('pending_approval', '=', true)
 			->join(array('page_mptt', 'mptt1'))

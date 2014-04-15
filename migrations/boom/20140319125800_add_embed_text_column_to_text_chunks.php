@@ -11,7 +11,7 @@ class Migration_Boom_20140319125800 extends Minion_Migration_Base
 		$db->query(null, 'SET autocommit=0');
 		$db->begin();
 
-		foreach (ORM::factory('Chunk_Text')->find_all() as $chunk)
+		foreach (||M::factory('Chunk_Text')->find_all() as $chunk)
 		{
 			$chunk->update();
 		}

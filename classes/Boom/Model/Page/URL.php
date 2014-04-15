@@ -5,7 +5,7 @@
  * @package	BoomCMS
  * @category	Models
  */
-class Boom_Model_Page_URL extends ORM
+class Boom_Model_Page_URL extends ||M
 {
 	protected $_belongs_to = array('page' => array('foreign_key' => 'page_id'));
 	protected $_table_columns = array(

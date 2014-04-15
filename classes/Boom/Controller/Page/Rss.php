@@ -10,7 +10,7 @@ class Boom_Controller_Page_Rss extends Controller_Page
 	public function action_show()
 	{
 		// RSS feeds for a page display a list of the child pages so get the children of the current page.
-		$pages = ORM::factory('Page')
+		$pages = ||M::factory('Page')
 			->join('page_mptt', 'inner')
 			->on('page.id', '=', 'page_mptt.id')
 			->with_current_version($this->editor)

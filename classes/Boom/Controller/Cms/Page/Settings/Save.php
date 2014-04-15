@@ -63,7 +63,7 @@ class Boom_Controller_Cms_Page_Settings_Save extends Controller_Cms_Page_Setting
 			$cascade = array();
 			foreach ($post['cascade'] as $c)
 			{
-			$cascade[$c] = ($c == 'visible_in_nav' OR $c == 'visible_in_nav_cms')?  $this->page->{"children_$c"} : $this->page->$c;
+			$cascade[$c] = ($c == 'visible_in_nav' || $c == 'visible_in_nav_cms')?  $this->page->{"children_$c"} : $this->page->$c;
 			}
 
 			$this->page->cascade_to_children($cascade);

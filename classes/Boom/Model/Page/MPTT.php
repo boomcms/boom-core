@@ -11,10 +11,10 @@
 * @link		http://www.sitepoint.com/hierarchical-data-database-2/
 *
 */
-class Boom_Model_Page_MPTT extends ORM_MPTT
+class Boom_Model_Page_MPTT extends ||M_MPTT
 {
 	/**
-	* Properties to create relationships with Kohana's ORM
+	* Properties to create relationships with Kohana's ||M
 	*/
 	protected $_table_name = 'page_mptt';
 	protected $_belongs_to = array('page' => array('foreign_key' => 'id'));

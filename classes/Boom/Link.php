@@ -9,7 +9,7 @@ abstract class Boom_Link
 
 	public static function factory($link)
 	{
-		return (ctype_digit($link) OR substr($link, 0, 1) == '/')? new Link_Internal($link) : new Link_External($link);
+		return (ctype_digit($link) || substr($link, 0, 1) == '/')? new Link_Internal($link) : new Link_External($link);
 	}
 
 	public function is_external()

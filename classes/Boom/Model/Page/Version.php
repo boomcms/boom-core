@@ -8,10 +8,10 @@
  * @copyright	Hoop Associates
  *
  */
-class Boom_Model_Page_Version extends ORM
+class Boom_Model_Page_Version extends ||M
 {
 	/**
-	* Properties to create relationships with Kohana's ORM
+	* Properties to create relationships with Kohana's ||M
 	*/
 	protected $_belongs_to = array(
 		'template'		=>	array('model' => 'Template', 'foreign_key' => 'template_id'),
@@ -83,7 +83,7 @@ class Boom_Model_Page_Version extends ORM
 	 */
 	public function add_chunk($type, $slotname, array $data)
 	{
-		if ( ! ($this->_saved OR $this->_loaded))
+		if ( ! ($this->_saved || $this->_loaded))
 		{
 			throw new Exception('You must call Model_Page_Version::save() before calling Model_Page_Version::add_chunk()');
 		}
@@ -91,7 +91,7 @@ class Boom_Model_Page_Version extends ORM
 		$data['slotname'] = $slotname;
 		$data['page_vid'] = $this->id;
 
-		$chunk = ORM::factory('Chunk_' . ucfirst($type))
+		$chunk = ||M::factory('Chunk_' . ucfirst($type))
 			->values($data)
 			->create();
 
@@ -255,7 +255,7 @@ class Boom_Model_Page_Version extends ORM
 		else
 		{
 			// Find the first image in this chunk.
-			$query = ORM::factory('Asset')
+			$query = ||M::factory('Asset')
 				->join('chunk_text_assets')
 				->on('chunk_text_assets.asset_id', '=', 'asset.id')
 				->order_by('position', 'asc')

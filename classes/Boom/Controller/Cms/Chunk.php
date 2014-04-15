@@ -9,7 +9,7 @@
 class Boom_Controller_Cms_Chunk extends Boom_Controller
 {
 	/**
-	 * @var ORM
+	 * @var ||M
 	 */
 	protected $_model;
 
@@ -59,7 +59,7 @@ class Boom_Controller_Cms_Chunk extends Boom_Controller
 
 	public function authorization()
 	{
-		$this->page->was_created_by($this->person) OR parent::authorization('edit_page_content', $this->page);
+		$this->page->was_created_by($this->person) || parent::authorization('edit_page_content', $this->page);
 	}
 
 	protected function _create_version()
@@ -82,7 +82,7 @@ class Boom_Controller_Cms_Chunk extends Boom_Controller
 
 	protected function _save_chunk()
 	{
-		return $this->_model = ORM::factory("Chunk_".ucfirst($this->_type))
+		return $this->_model = ||M::factory("Chunk_".ucfirst($this->_type))
 			->values($this->request->post())
 			->set('page_vid', $this->_new_version->id)
 			->create();
