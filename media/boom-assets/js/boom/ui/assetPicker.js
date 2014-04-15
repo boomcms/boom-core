@@ -54,23 +54,6 @@ function boomAssetPicker(currentAssetId) {
 			},
 			onLoad: function() {
 				assetPicker.dialog.contents.assetManager();
-//				browser = $('#b-assets-manager').browser_asset();
-//
-//				$.when(browser.browser_asset('browse'))
-//					.progress(function(asset_id) {
-//						cleanup();
-//						complete.resolve(asset_id);
-//						dialog.close();
-//						browser.remove();
-//					});
-//
-//				// browser widget pushes a default URL to the history stack.
-//				// need to override that if an asset is already selected
-//				// by setting a fragment identifier on the parent window.
-//				if ( opts.asset_rid && opts.asset_rid > 0 ) {
-//					$.boom.log( 'getting asset ' + opts.asset_rid );
-//					browser.browser_asset( 'edit', opts.asset_rid );
-//				}
 			}
 		});
 
