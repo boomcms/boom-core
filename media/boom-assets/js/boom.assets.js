@@ -62,15 +62,6 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 			var tags = [];
 			var tagged = new $.Deferred();
 
-			/* bit of a hack to get current tags */
-			$( '#b-tags-search .b-tags-list li').each( function(){
-				$this = $( this );
-				tags.push( {
-					label: $this.find( 'span' ).text(),
-					value: $this.find( 'a' ).attr( 'data-tag_id')
-				} );
-			});
-
 			var uploaded = self
 				.upload({
 					start: function(e) {
@@ -91,33 +82,6 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 				})
 				.done( function( data ){
 					$.boom.history.load( self.options.defaultRoute );
-				});
-
-				$.when(tagged, uploaded).done(function(tags, data) {
-					var promises = [];
-
-					for (i in tags) {
-						var request = $.post(
-							'/cms/tags/asset/add/' + data.result.join('-'),
-							{
-								tag : tags[i]
-							}
-						);
-
-						promises.push(request);
-					}
-
-					$.when( promises )
-						.pipe( function(){
-							return $( '#b-tags-search' )
-							.tagger_search( 'do_search' );
-						})
-						.done(function() {
-							for (i in data.result){
-								$('.thumb[data-asset=' + i + '] a').click();
-							}
-						});
-
 				});
 		});
 
@@ -199,13 +163,6 @@ $.widget( 'boom.browser_asset', $.boom.browser,
 		$.get('/cms/assets/upload')
 			.done(function(response) {
 				self.showContent(response);
-
-				if ($('.ui-dialog-content').length) {
-					$('#b-assets-upload-container').height($('.ui-dialog-content').height() - 30);
-				} else {
-					var height = $(window).height() - $('#b-topbar').height() - 30;
-					$('#b-assets-upload-container').height(height + 'px');
-				}
 
 				opts.formData.push( { name: 'csrf', value: $('input[name=csrf]').val() } );
 

@@ -18,7 +18,7 @@ $.widget('boom.assetManager', {
 			.delegate('#b-assets-pagination a', 'click', function(e) {
 				e.preventDefault();
 
-				$.get('/cms/assets/list?' + $(this).attr('href').split('?')[ 1 ])
+				$.get(assetManager.baseUrl + 'list?' + $(this).attr('href').split('?')[ 1 ])
 					.done(function(data) {
 						assetManager.showContent(data);
 					});
@@ -153,6 +153,9 @@ $.widget('boom.assetManager', {
 						});
 					}
 				});
+			})
+			.on('click', '#b-assets-upload', function() {
+				assetManager.openUploader();
 			});
 	},
 
@@ -201,6 +204,73 @@ $.widget('boom.assetManager', {
 		$.get(this.buildUrl())
 			.done(function(response) {
 				assetManager.showContent(response);
+			});
+	},
+
+	openUploader : function() {
+		var assetManager = this;
+
+		$.get(this.baseUrl + 'upload')
+			.done(function(response) {
+				assetManager.showContent(response);
+
+				var tags = [],
+					tagged = new $.Deferred(),
+					uploaded = new $.Deferred();
+
+				/* bit of a hack to get current tags */
+				$( '#b-tags-search .b-tags-list li').each( function(){
+					$this = $( this );
+					tags.push( {
+						label: $this.find( 'span' ).text(),
+						value: $this.find( 'a' ).attr( 'data-tag_id')
+					} );
+				});
+
+				assetManager.element.find('#b-assets-content').assetUploader({
+					start: function(e) {
+						var dialog = new boomDialog({
+							url: '/cms/tags/asset/list/0',
+							title: 'Asset tags',
+							width: 440,
+							cancelButton : false,
+							onLoad: function(){
+								// Make the tag editor work.
+								$( '#b-tags' ).tagger_deferred( { tags : tags } );
+							}
+						})
+						.done(function() {
+							tagged.resolve(tags);
+						});
+					},
+					done : function(e, data) {
+						assetManager.listAssets();
+						uploaded.resolve(data);
+					}
+				});
+
+				$.when(tagged, uploaded).done(function(tags, data) {
+					var promises = [],
+						i;
+
+					for (i in tags) {
+						var request = $.post('/cms/tags/asset/add/' + data.result.join('-'), {
+							tag : tags[i]
+						});
+
+						promises.push(request);
+					}
+
+					$.when(promises)
+						.pipe(function() {
+							return $('#b-tags-search').tagger_search('do_search');
+						})
+						.done(function() {
+							for (i in data.result){
+								$('.thumb[data-asset=' + i + '] a').click();
+							}
+						});
+				});
 			});
 	},
 

@@ -6,7 +6,7 @@ return array(
 		'boom/ui/asset.js',
 		'boom/ui/assetManager.js',
 		'boom/ui/assetPicker.js',
-		'boom.assets.js',
+		'boom/ui/assetUploader.js',
 		'boom.assets.justify.js',
 	),
 	'css' => array(
