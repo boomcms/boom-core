@@ -41,7 +41,7 @@ class Boom_Controller_Cms_Auth extends Controller
 
 	private function _log_action($action)
 	{
-		||M::factory('AuthLog')
+		ORM::factory('AuthLog')
 			->values(array(
 				'person_id' => $this->auth->get_user()->id,
 				'action' => $action,
