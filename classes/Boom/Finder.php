@@ -57,7 +57,7 @@ abstract class Boom_Finder
 		return $this;
 	}
 
-	public function get_results($limit = NULL, $offset = NULL)
+	public function get_results($limit = null, $offset = null)
 	{
 		$offset && $this->_query->offset($offset);
 		$limit && $this->_query->limit($limit);

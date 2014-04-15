@@ -18,7 +18,7 @@ class Boom_RedirectUrlPersister
 	public function __construct(Session $session)
 	{
 		$this->_session = $session;
-		$this->_url = $this->_session->get($this->_session_key, NULL);
+		$this->_url = $this->_session->get($this->_session_key, null);
 	}
 
 	public function set_url($url)

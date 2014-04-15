@@ -271,10 +271,10 @@ class Boom_Model_Page extends Model_Taggable
 	 * @param array $values
 	 * @return Model_Page_Version
 	 */
-	public function create_version($current = NULL, array $values = NULL)
+	public function create_version($current = null, array $values = null)
 	{
 		// Get the current version
-		if ($current === NULL)
+		if ($current === null)
 		{
 			$current = $this->version();
 		}
@@ -324,7 +324,7 @@ class Boom_Model_Page extends Model_Taggable
 
 		// Flag the page as deleted.
 		$this
-			->create_version(NULL, array(
+			->create_version(null, array(
 				'page_deleted'		=>	true,	// Flag the new version as deleting the page
 				'embargoed_until'	=>	$_SERVER['REQUEST_TIME'],	// Make the new version live
 				'published'			=>	true
@@ -355,7 +355,7 @@ class Boom_Model_Page extends Model_Taggable
 	 */
 	public function description()
 	{
-		if ($this->description != NULL)
+		if ($this->description != null)
 		{
 			return $this->description;
 		}
@@ -379,7 +379,7 @@ class Boom_Model_Page extends Model_Taggable
 			->order_by('tag.name', 'asc');
 	}
 
-	public function get_tags_applied_down_tree($prefix = NULL)
+	public function get_tags_applied_down_tree($prefix = null)
 	{
 		$query = $this->get_tags_applied_down_tree_query();
 
@@ -429,7 +429,7 @@ class Boom_Model_Page extends Model_Taggable
 		DB::delete('page_versions')
 			->where('page_id', '=', $this->id)
 			->and_where_open()
-					->where('embargoed_until', '=', NULL)
+					->where('embargoed_until', '=', null)
 					->or_where('embargoed_until', '>', $_SERVER['REQUEST_TIME'])
 			->and_where_close()
 			->where('stashed', '=', false)
@@ -491,7 +491,7 @@ class Boom_Model_Page extends Model_Taggable
 		// If the local cache for the current version is set then clear it.
 		if (isset($this->_related['version']))
 		{
-			$this->_related['version'] = NULL;
+			$this->_related['version'] = null;
 		}
 
 		// Return the current object.
@@ -528,7 +528,7 @@ class Boom_Model_Page extends Model_Taggable
 	 */
 	public function url()
 	{
-		if ($this->_url === NULL)
+		if ($this->_url === null)
 		{
 			// Get the primary URL for this page.
 			$this->_url = ORM::factory('Page_URL')

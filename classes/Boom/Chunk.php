@@ -18,7 +18,7 @@ abstract class Boom_Chunk
 	 *
 	 * @var string
 	 */
-	protected $_default_template = NULL;
+	protected $_default_template = null;
 
 	/**
 	 *
@@ -207,14 +207,14 @@ abstract class Boom_Chunk
 	 * @param	boolean	$inherit		Whether the chunk should be inherited down the page tree.
 	 * @return 	Chunk
 	 */
-	public static function factory($type, $slotname, $page = NULL)
+	public static function factory($type, $slotname, $page = null)
 	{
 		// Set the class name.
 		$class = "Chunk_" . ucfirst($type);
 
 		// Set the page that the chunk belongs to.
 		// This is used for permissions check, and quite importantly, for finding the chunk.
-		if ($page === NULL)
+		if ($page === null)
 		{
 			// No page was given so use the page from the current request.
 			$page = Request::current()->param('page');
@@ -290,7 +290,7 @@ abstract class Boom_Chunk
 	 */
 	public function html()
 	{
-		if ($this->_template === NULL)
+		if ($this->_template === null)
 		{
 			$this->_template = $this->_default_template;
 		}
@@ -327,9 +327,9 @@ abstract class Boom_Chunk
 	/**
 	 * Getter / setter method for template parameters.
 	 */
-	public function params($params = NULL)
+	public function params($params = null)
 	{
-		if ($params === NULL)
+		if ($params === null)
 		{
 			return $this->_params;
 		}
@@ -346,7 +346,7 @@ abstract class Boom_Chunk
 	 * @param	string	$template	The name of a view file.
 	 * @return	Chunk
 	 */
-	public function template($template = NULL)
+	public function template($template = null)
 	{
 		// Set the template filename.
 		$this->_template = $template;

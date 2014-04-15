@@ -51,7 +51,7 @@ class Boom_Model_Chunk_Text extends ORM
 	 * @param	Validation $validation
 	 * @return 	Boom_Model_Chunk_Text
 	 */
-	public function create(Validation $validation = NULL)
+	public function create(Validation $validation = null)
 	{
 		// Munge links in the text, e.g. to assets.
 		 // This needs to be done after the text is cleaned by HTML Purifier because HTML purifier strips out invalid images.
@@ -190,7 +190,7 @@ class Boom_Model_Chunk_Text extends ORM
 		return $text;
 	}
 
-	public function update(\Validation $validation = NULL)
+	public function update(\Validation $validation = null)
 	{
 		$this->site_text = new SiteText($this->text);
 

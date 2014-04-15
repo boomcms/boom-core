@@ -102,7 +102,7 @@ abstract class Boom_Core
 
 			if ( ! isset($page_url) OR ! $page_url->is_primary)
 			{
-				header('Location: '.$page->url(), NULL, 301);
+				header('Location: '.$page->url(), null, 301);
 				exit;
 			}
 

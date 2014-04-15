@@ -41,7 +41,7 @@ class Boom_Model_Chunk_Slideshow extends ORM
 			->execute($this->_db);
 	}
 
-	public function create(Validation $validation = NULL)
+	public function create(Validation $validation = null)
 	{
 		parent::create($validation);
 
@@ -62,11 +62,11 @@ class Boom_Model_Chunk_Slideshow extends ORM
 	 * Sets or gets the slideshows slides
 	 *
 	 */
-	public function slides($slides = NULL)
+	public function slides($slides = null)
 	{
-		if ($slides === NULL)
+		if ($slides === null)
 		{
-			if ($this->_slides === NULL)
+			if ($this->_slides === null)
 			{
 				$this->_slides = $this
 					->slides
@@ -84,7 +84,7 @@ class Boom_Model_Chunk_Slideshow extends ORM
 			{
 				if ( ! $slide instanceof Model_Chunk_Slideshow_Slide AND isset($slide['asset_id']) AND $slide['asset_id'] > 0)
 				{
-					$slide['url'] = (isset($slide['page']) AND $slide['page'] > 0)? $slide['page'] : isset($slide['url'])? $slide['url'] : NULL;
+					$slide['url'] = (isset($slide['page']) AND $slide['page'] > 0)? $slide['page'] : isset($slide['url'])? $slide['url'] : null;
 
 					$slide = ORM::factory('Chunk_Slideshow_Slide')
 						->values( (array) $slide);
@@ -127,7 +127,7 @@ class Boom_Model_Chunk_Slideshow extends ORM
 
 	public function thumbnail()
 	{
-		if ($this->_slides === NULL)
+		if ($this->_slides === null)
 		{
 			return $this->slides
 				->with('asset')

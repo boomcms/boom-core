@@ -50,7 +50,7 @@ class Boom_Model_Tag extends ORM
 		return $result[0]['c'];
 	}
 
-	public function create(Validation $validation = NULL)
+	public function create(Validation $validation = null)
 	{
 		$this->check_slugs_are_defined();
 
@@ -136,7 +136,7 @@ class Boom_Model_Tag extends ORM
 		);
 	}
 
-	public function update(Validation $validation = NULL)
+	public function update(Validation $validation = null)
 	{
 		$this->check_slugs_are_defined();
 

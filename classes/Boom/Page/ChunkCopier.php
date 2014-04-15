@@ -29,7 +29,7 @@ class Boom_Page_ChunkCopier
 	 */
 	protected $_to_version;
 
-	public function __construct(Model_Page_Version $from_version, Model_Page_Version $to_version, array $exclude = NULL)
+	public function __construct(Model_Page_Version $from_version, Model_Page_Version $to_version, array $exclude = null)
 	{
 		$this->_from_version = $from_version;
 		$this->_to_version = $to_version;

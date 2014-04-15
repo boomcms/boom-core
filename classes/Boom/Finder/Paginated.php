@@ -32,7 +32,7 @@ class Boom_Finder_Paginated extends Finder
 		return $this;
 	}
 
-	public function get_results($limit = NULL)
+	public function get_results($limit = null)
 	{
 		$total_matching = $this->_finder->count_matching();
 		$this->_apply_pagination();

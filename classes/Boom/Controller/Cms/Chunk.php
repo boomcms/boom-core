@@ -70,7 +70,7 @@ class Boom_Controller_Cms_Chunk extends Boom_Controller
 
 		if ($this->_new_version->embargoed_until <= $_SERVER['REQUEST_TIME'])
 		{
-			$this->_new_version->embargoed_until = NULL;
+			$this->_new_version->embargoed_until = null;
 		}
 
 		$this->_new_version

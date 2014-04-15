@@ -10,7 +10,7 @@ class Boom_Finder_Pages extends Finder
 	{
 		$this->_query = ORM::factory('Page')
 			->with_current_version(Editor::instance())
-			->where('page.primary_uri', '!=', NULL);
+			->where('page.primary_uri', '!=', null);
 	}
 
 	protected function _apply_tag_filter(Model_Tag $tag)
@@ -60,7 +60,7 @@ class Boom_Finder_Pages extends Finder
 		return $this->_query;
 	}
 
-	public function get_results($limit = NULL, $offset = NULL)
+	public function get_results($limit = null, $offset = null)
 	{
 		if ( ! $this->_sort_applied)
 		{

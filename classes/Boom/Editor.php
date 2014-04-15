@@ -94,7 +94,7 @@ abstract class Boom_Editor
 				'body_tag'	=>	$matches[3],
 				'page_id'	=>	$page_id,
 				'environment' => $this->_get_environment(),
-				'branch' => Kohana::$environment == Kohana::DEVELOPMENT? $this->_get_branch() : NULL,
+				'branch' => Kohana::$environment == Kohana::DEVELOPMENT? $this->_get_branch() : null,
 			));
 
 			$html = str_replace($matches[0], $head->render(), $html);
@@ -110,7 +110,7 @@ abstract class Boom_Editor
 	 */
 	public static function instance()
 	{
-		if (Editor::$instance === NULL)
+		if (Editor::$instance === null)
 		{
 			Editor::$instance = new Editor(Auth::instance(), Session::instance());
 		}
@@ -130,9 +130,9 @@ abstract class Boom_Editor
 	 * @param	integer	$state
 	 * @return	mixed
 	 */
-	public function state($state = NULL)
+	public function state($state = null)
 	{
-		if ($state === NULL)
+		if ($state === null)
 		{
 			// Return the value of Editor::$_state;
 			return $this->_state;
@@ -172,17 +172,17 @@ abstract class Boom_Editor
 	 * @param	integer	$time	Used to set the live time, should be a unix timestamp.
 	 * @return	mixed
 	 */
-	public function live_time($time = NULL)
+	public function live_time($time = null)
 	{
 		// The name of the session data key where the live time is stored.
 		$session_key = 'editor_live_time';
 
-		if ($time === NULL)
+		if ($time === null)
 		{
 			// Act as a getter.
 
 			// Has Editor::$_live_time been set?
-			if ($this->_live_time === NULL)
+			if ($this->_live_time === null)
 			{
 				// Get the value from the session data.
 				$this->_live_time = Session::instance()

@@ -15,7 +15,7 @@ Route::set('vanity', '_<link>', array(
 			$page_id = base_convert($params['link'], 36, 10);
 			$redirect_to = ORM::factory('Page', $page_id)->url();
 
-			header('Location: '.$redirect_to, NULL, 302);
+			header('Location: '.$redirect_to, null, 302);
 			exit;
 		}
 	);

@@ -7,7 +7,7 @@
  */
 class Boom_Model_Chunk_Text_Asset extends ORM
 {
-	protected $_primary_key = NULL;
+	protected $_primary_key = null;
 	protected $_belongs_to = array('asset' => array());
 	protected $_table_columns = array(
 		'chunk_id'	=>	'',

@@ -15,7 +15,7 @@ class Boom_Controller_Cms_Editor extends Boom_Controller
 		$state = $this->request->post('state');
 		$numeric_state = constant("Editor::" . strtoupper($state));
 
-		if ($numeric_state === NULL)
+		if ($numeric_state === null)
 		{
 			throw new Kohana_Exception("Invalid editor state: :state", array(
 				':state'	=>	$state,

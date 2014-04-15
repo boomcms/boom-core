@@ -105,7 +105,7 @@ class Boom_Model_Page_Version extends ORM
 	 * @param array $exclude An array of slotnames which shouldn't be copied from the other version.
 	 * @return Model_Page_Version
 	 */
-	public function copy_chunks(Model_Page_Version $from_version, array $exclude = NULL)
+	public function copy_chunks(Model_Page_Version $from_version, array $exclude = null)
 	{
 		$copier = new Page_ChunkCopier($from_version, $this, $exclude);
 		$copier->copy_all();
@@ -212,7 +212,7 @@ class Boom_Model_Page_Version extends ORM
 		{
 			return 'pending approval';
 		}
-		elseif ($this->embargoed_until === NULL)
+		elseif ($this->embargoed_until === null)
 		{
 			// Version is a draft if an embargo time hasn't been set.
 			return 'draft';

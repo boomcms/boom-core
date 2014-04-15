@@ -35,7 +35,7 @@ class Boom_Model_Page_URL extends ORM
 	 * @param \Validation $validation
 	 * @return \Boom_Model_Page_URL
 	 */
-	public function create(\Validation $validation = NULL)
+	public function create(\Validation $validation = null)
 	{
 		parent::create($validation);
 

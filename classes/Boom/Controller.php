@@ -77,7 +77,7 @@ class Boom_Controller extends Controller
 	 * @param string $role
 	 * @param Model_Page $page
 	 */
-	public function authorization($role, Model_Page $page = NULL)
+	public function authorization($role, Model_Page $page = null)
 	{
 		if ( ! $this->auth->logged_in())
 		{

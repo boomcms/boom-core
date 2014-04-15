@@ -37,7 +37,7 @@ class Boom_Model_Chunk_Linkset extends ORM
 			->execute($this->_db);
 	}
 
-	public function create(Validation $validation = NULL)
+	public function create(Validation $validation = null)
 	{
 		parent::create($validation);
 
@@ -58,13 +58,13 @@ class Boom_Model_Chunk_Linkset extends ORM
 	 * Sets or gets the linkset's links
 	 *
 	 */
-	public function links($links = NULL)
+	public function links($links = null)
 	{
-		if ($links === NULL)
+		if ($links === null)
 		{
 			// Act as getter.
 
-			if ($this->_links === NULL)
+			if ($this->_links === null)
 			{
 				$page = new Model_Page;
 

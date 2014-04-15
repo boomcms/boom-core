@@ -7,7 +7,7 @@
 class Task_Boom_Createrootpage extends Minion_Task
 {
 	protected $_options = array(
-		'template' => NULL,
+		'template' => null,
 		'uri' => '/',
 	);
 	/**

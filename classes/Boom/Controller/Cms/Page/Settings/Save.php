@@ -20,7 +20,7 @@ class Boom_Controller_Cms_Page_Settings_Save extends Controller_Cms_Page_Setting
 
 		$this->log("Saved admin settings for page " . $this->page->version()->title . " (ID: " . $this->page->id . ")");
 
-		$internal_name = $this->request->post('internal_name')? $this->request->post('internal_name') : NULL;
+		$internal_name = $this->request->post('internal_name')? $this->request->post('internal_name') : null;
 		
 		$this->page
 			->set('internal_name', $internal_name)
@@ -148,7 +148,7 @@ class Boom_Controller_Cms_Page_Settings_Save extends Controller_Cms_Page_Setting
 			$this->page
 				->values(array(
 					'visible_from'	=>	strtotime($this->request->post('visible_from')),
-					'visible_to'	=>	$this->request->post('toggle_visible_to') == 1? strtotime($this->request->post('visible_to')) : NULL,
+					'visible_to'	=>	$this->request->post('toggle_visible_to') == 1? strtotime($this->request->post('visible_to')) : null,
 				));
 		}
 

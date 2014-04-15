@@ -3,7 +3,7 @@
 class Task_Db_Dump extends Minion_Task
 {
 	protected $_options = array(
-		'outfile' => NULL,
+		'outfile' => null,
 	);
 
 	/**

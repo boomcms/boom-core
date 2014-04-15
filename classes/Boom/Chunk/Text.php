@@ -43,7 +43,7 @@ class Boom_Chunk_Text extends Chunk
 		$text = $this->text();
 
 		// If no template has been set then add the default HTML tags for this slotname.
-		if ($this->_template === NULL)
+		if ($this->_template === null)
 		{
 			return $this->_add_html($text);
 		}
@@ -58,7 +58,7 @@ class Boom_Chunk_Text extends Chunk
 		$text = Kohana::message('chunks', $this->_slotname);
 		$text OR $text = Kohana::message('chunks', 'text');
 
-		$template = ($this->_template === NULL)? $this->_slotname : $this->_template;
+		$template = ($this->_template === null)? $this->_slotname : $this->_template;
 
 		if ( ! Kohana::find_file('views', $this->_view_directory."text/$template"))
 		{
@@ -74,7 +74,7 @@ class Boom_Chunk_Text extends Chunk
 		}
 	}
 
-	public function get_paragraphs($offset = 0, $length = NULL)
+	public function get_paragraphs($offset = 0, $length = null)
 	{
 		preg_match_all('|<p>(.*?)</p>|', $this->_chunk->text, $matches);
 		$paragraphs = $matches[0];
@@ -84,7 +84,7 @@ class Boom_Chunk_Text extends Chunk
 
 	public function has_content()
 	{
-		return trim($this->_chunk->text) != NULL;
+		return trim($this->_chunk->text) != null;
 	}
 
 	public function text()
