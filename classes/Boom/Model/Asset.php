@@ -56,7 +56,7 @@ class Boom_Model_Asset extends Model_Taggable
 	 *
 	 * @var	array	Cache variable for [Model_Asset::old_files()]
 	 */
-	protected $_old_files = NULL;
+	protected $_old_files = null;
 
 	public function create_from_file($filepath, $keep_original = true)
 	{
@@ -204,7 +204,7 @@ class Boom_Model_Asset extends Model_Taggable
 	 */
 	public function get_mime()
 	{
-		return $this->exists()? File::mime($this->get_filename()) : NULL;
+		return $this->exists()? File::mime($this->get_filename()) : null;
 	}
 
 	public function is_visible()
@@ -257,7 +257,7 @@ class Boom_Model_Asset extends Model_Taggable
 			return array();
 		}
 
-		if ($this->_old_files === NULL)
+		if ($this->_old_files === null)
 		{
 			// Add files for previous versions of the asset.
 			// Wrap the glob in array_reverse() so that we end up with an array with the most recent first.

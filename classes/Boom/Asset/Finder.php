@@ -74,11 +74,11 @@ class Boom_Asset_Finder
 	 * @param integer $tag_count
 	 * @return \Boom_Asset_Finder
 	 */
-	public function by_tags_multiple(array $tag_ids, $tag_count = NULL)
+	public function by_tags_multiple(array $tag_ids, $tag_count = null)
 	{
 		$this->_join_tags();
 
-		$tag_count !== NULL OR $tag_count = count($tag_ids);
+		$tag_count !== null OR $tag_count = count($tag_ids);
 
 		$this->_query
 			->join(array('assets_tags', 't2'), 'inner')
@@ -150,7 +150,7 @@ class Boom_Asset_Finder
 	}
 
 
-	public function get_assets($limit = NULL, $offset = NULL)
+	public function get_assets($limit = null, $offset = null)
 	{
 		return $this->_query
 			->select('assets.*')

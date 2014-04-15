@@ -104,7 +104,7 @@ class Boom_Controller_Asset_Image extends Controller_Asset
 
 			// Save the file.
 			// $image->save() doesn't always work with Imagemagick but this does the job.
-			file_put_contents($filename, $image->render(NULL, $this->quality));
+			file_put_contents($filename, $image->render(null, $this->quality));
 		}
 		else
 		{
