@@ -39,7 +39,7 @@ class Boom_Controller_Cms_Pages extends Boom_Controller
 			{
 				$page = array(
 					'mptt' => $page,
-					'page' => ORM::factory('Page', $page['id'])
+					'page' => ||M::factory('Page', $page['id'])
 				);
 			}
 		);
