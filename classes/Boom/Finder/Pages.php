@@ -51,7 +51,7 @@ class Boom_Finder_Pages extends Finder
 
 	public function exclude_pages_invisible_in_navigation()
 	{
-		$this->_query->where($this->_get_navigation_visibility_column(), '=', TRUE);
+		$this->_query->where($this->_get_navigation_visibility_column(), '=', true);
 		return $this;
 	}
 

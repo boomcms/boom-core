@@ -17,7 +17,7 @@ class Boom_Model_Page extends Model_Taggable
 
 	protected $_created_column = array(
 		'column'	=>	'created_time',
-		'format'	=>	TRUE,
+		'format'	=>	true,
 	);
 
 	protected $_has_one = array(
@@ -300,7 +300,7 @@ class Boom_Model_Page extends Model_Taggable
 	 * Deleting a page involves a number of steps:
 	 *
 	 * *	Create a new version of the page.
-	 * *	Sets the deleted flag of the new version to TRUE.
+	 * *	Sets the deleted flag of the new version to true.
 	 * *	Publish the new, deleted version.
 	 * *	Delete the page from the MPTT tree.
 	 * *	If $with_children is true calls itself recursively to delete child pages
@@ -318,16 +318,16 @@ class Boom_Model_Page extends Model_Taggable
 		$this->delete_from_feature_boxes();
 		$this->delete_from_linksets();
 
-		$with_children AND $this->delete_children(TRUE);
+		$with_children AND $this->delete_children(true);
 
 		$this->mptt->delete();
 
 		// Flag the page as deleted.
 		$this
 			->create_version(NULL, array(
-				'page_deleted'		=>	TRUE,	// Flag the new version as deleting the page
+				'page_deleted'		=>	true,	// Flag the new version as deleting the page
 				'embargoed_until'	=>	$_SERVER['REQUEST_TIME'],	// Make the new version live
-				'published'			=>	TRUE
+				'published'			=>	true
 			))
 			->create();
 
@@ -375,7 +375,7 @@ class Boom_Model_Page extends Model_Taggable
 			->where('page_mptt.lft', '>=', $this->mptt->lft)
 			->where('page_mptt.rgt', '<=', $this->mptt->rgt)
 			->where('page_mptt.scope', '=', $this->mptt->scope)
-			->distinct(TRUE)
+			->distinct(true)
 			->order_by('tag.name', 'asc');
 	}
 
@@ -483,7 +483,7 @@ class Boom_Model_Page extends Model_Taggable
 	{
 		// Execute a DB query to stash unpublished versions.
 		DB::update('page_versions')
-			->set(array('stashed' => TRUE))
+			->set(array('stashed' => true))
 			->where('embargoed_until', '>=', $_SERVER['REQUEST_TIME'])
 			->where('page_id', '=', $this->id)
 			->execute($this->_db);
@@ -535,7 +535,7 @@ class Boom_Model_Page extends Model_Taggable
 				->values(array(
 					'location'		=>	$this->primary_uri,
 					'page_id'		=>	$this->id,
-					'is_primary'	=>	TRUE,
+					'is_primary'	=>	true,
 				));
 		}
 
@@ -570,7 +570,7 @@ class Boom_Model_Page extends Model_Taggable
 			// For site users get the published version with the embargoed time that's most recent to the current time.
 			// Order by ID as well incase there's multiple versions with the same embargoed time.
 			$query
-				->where('published', '=', TRUE)
+				->where('published', '=', true)
 				->where('embargoed_until', '<=', $editor->live_time())
 				->order_by('embargoed_until', 'desc')
 				->order_by('id', 'desc');
@@ -604,7 +604,7 @@ class Boom_Model_Page extends Model_Taggable
 	 * @param	boolean	$exclude_deleted
 	 * @return	Model_Page
 	 */
-	public function with_current_version(Editor $editor, $exclude_deleted = TRUE)
+	public function with_current_version(Editor $editor, $exclude_deleted = true)
 	{
 		$page_query = new Page_Query($this, $editor);
 		$page_query->execute($exclude_deleted);

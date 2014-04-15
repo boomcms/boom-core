@@ -26,5 +26,5 @@ class Boom_Model_Page_MPTT extends ORM_MPTT
 		'lvl'			=>	'',
 		'scope'		=>	'',
 	);
-	protected $_reload_on_wakeup = TRUE;
+	protected $_reload_on_wakeup = true;
 }

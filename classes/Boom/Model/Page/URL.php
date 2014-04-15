@@ -84,12 +84,12 @@ class Boom_Model_Page_URL extends ORM
 			->set(array('is_primary' => FALSE))
 			->where('page_id', '=', $this->page_id)
 			->where('id', '!=', $this->id)
-			->where('is_primary', '=', TRUE)
+			->where('is_primary', '=', true)
 			->execute($this->_db);
 
 		// Set the is_primary property for this URL to true.
 		$this
-			->set('is_primary', TRUE)
+			->set('is_primary', true)
 			->update();
 
 		// Update the primary uri for the page in the pages table.

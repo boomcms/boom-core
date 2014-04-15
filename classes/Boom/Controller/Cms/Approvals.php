@@ -35,7 +35,7 @@ class Boom_Controller_Cms_Approvals extends Boom_Controller
 
 		return ORM::factory('Page')
 			->with_current_version(Editor::instance())
-			->where('pending_approval', '=', TRUE)
+			->where('pending_approval', '=', true)
 			->join(array('page_mptt', 'mptt1'))
 			->on('page.id', '=', 'mptt1.id')
 			->join(array($can_publish, 'mptt2'), 'inner')

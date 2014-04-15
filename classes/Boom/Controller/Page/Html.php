@@ -10,8 +10,8 @@ class Boom_Controller_Page_Html extends Controller_Page
 	protected $_chunks = array();
 	protected $_chunk_defaults = array(
 		'text' => array(
-			'bodycopy' => array('is_block' => TRUE),
-			'bodycopy2' => array('is_block' => TRUE),
+			'bodycopy' => array('is_block' => true),
+			'bodycopy2' => array('is_block' => true),
 		),
 	);
 

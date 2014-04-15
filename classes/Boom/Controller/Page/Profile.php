@@ -14,7 +14,7 @@ class Boom_Controller_Page_Profile extends Boom_Controller
 
 	public function action_show()
 	{
-		Kohana::$profiling = TRUE;
+		Kohana::$profiling = true;
 
 		$original_state = $this->editor->state();
 		$this->editor->state(Editor::DISABLED);

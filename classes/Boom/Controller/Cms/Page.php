@@ -51,7 +51,7 @@ class Boom_Controller_Cms_Page extends Boom_Controller
 			->values(array(
 				'location'		=>	$url,
 				'page_id'		=>	$new_page->id,
-				'is_primary'	=>	TRUE,
+				'is_primary'	=>	true,
 			))
 			->create();
 

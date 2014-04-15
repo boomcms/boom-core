@@ -24,7 +24,7 @@ abstract class Boom_Chunk
 	 *
 	 * @var boolean
 	 */
-	protected $_editable = TRUE;
+	protected $_editable = true;
 
 	/**
 	 *
@@ -158,7 +158,7 @@ abstract class Boom_Chunk
 	public function execute()
 	{
 		// If profiling is enabled then record how long it takes to generate this chunk.
-		if (Kohana::$profiling === TRUE)
+		if (Kohana::$profiling === true)
 		{
 			$benchmark = Profiler::start("Chunks", $this->_chunk->slotname);
 		}
@@ -172,12 +172,12 @@ abstract class Boom_Chunk
 			 *
 			 * @todo Multiple chunks will be inserted on a single page - need to remove duplicate calles to Auth::instance()->logged_in()
 			 */
-			$this->_editable = ($this->_editable === TRUE AND Editor::instance()->state_is(Editor::EDIT) AND ($this->_page->was_created_by(Auth::instance()->get_user()) OR Auth::instance()->logged_in("edit_page_content", $this->_page)));
+			$this->_editable = ($this->_editable === true AND Editor::instance()->state_is(Editor::EDIT) AND ($this->_page->was_created_by(Auth::instance()->get_user()) OR Auth::instance()->logged_in("edit_page_content", $this->_page)));
 
 			// Get the chunk HTML.
 			$html = $this->html();
 
-			if ($this->_editable === TRUE)
+			if ($this->_editable === true)
 			{
 				$html = $this->add_attributes($html);
 			}
@@ -300,7 +300,7 @@ abstract class Boom_Chunk
 			// Display the chunk.
 			$return = $this->_show();
 		}
-		elseif ($this->_editable === TRUE)
+		elseif ($this->_editable === true)
 		{
 			// Show the defult chunk.
 			$return = $this->_show_default();

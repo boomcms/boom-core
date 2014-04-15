@@ -99,7 +99,7 @@ abstract class Boom_Model_Taggable extends ORM
 			->where('t2.'.$join_table_id_column, 'IN', $object_ids)
 			->group_by('tag.id')
 			->having(DB::expr('count(distinct t2.'.$join_table_id_column.')'), '>=', count($object_ids))
-			->distinct(TRUE)
+			->distinct(true)
 			->find_all();
 	}
 

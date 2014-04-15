@@ -182,7 +182,7 @@ class Boom_Model_Chunk_Text extends ORM
 		$text = preg_replace_callback('|hoopdb://page/(\d+)|',
 			function ($match)
 			{
-				return new Model_Page_URL(array('page_id' => $match[1], 'is_primary' => TRUE));
+				return new Model_Page_URL(array('page_id' => $match[1], 'is_primary' => true));
 			},
 			$text
 		);

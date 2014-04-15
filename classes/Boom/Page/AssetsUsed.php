@@ -12,7 +12,7 @@ class Boom_Page_AssetsUsed
 	public function __construct(Model_Page_Version $version)
 	{
 		$this->_version = $version;
-		$this->_query = ORM::factory('Asset')->distinct(TRUE)->order_by('asset.id');
+		$this->_query = ORM::factory('Asset')->distinct(true)->order_by('asset.id');
 	}
 
 	public function get_all()
@@ -38,7 +38,7 @@ class Boom_Page_AssetsUsed
 			->on('chunk_slideshow_slides.chunk_id', '=', 'chunk_slideshows.id')
 			->or_where('chunk_slideshows.page_vid', '=', $this->_version->id)
 
-			->distinct(TRUE)
+			->distinct(true)
 			->order_by('asset.id')
 			->find_all();
 	}

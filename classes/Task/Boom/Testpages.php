@@ -21,7 +21,7 @@ class Task_Boom_Testpages extends Minion_Task
 		// Calling URL::site() when Kohana is running from CLI crashes because the server name isn't set.
 		$_SERVER['SERVER_NAME'] = '';
 
-		$start_time = microtime(TRUE);
+		$start_time = microtime(true);
 
 		$this->_page_count = $this->_how_many_pages_are_being_tested();
 		$pages = $this->_get_testable_pages();
@@ -32,7 +32,7 @@ class Task_Boom_Testpages extends Minion_Task
 			$this->_report_errors($errors);
 		}
 
-		$run_time = microtime(TRUE) - $start_time;
+		$run_time = microtime(true) - $start_time;
 
 		echo "\n\n".$this->_page_count." tests completed in ".round($run_time, 2)."s\n";
 		echo "Mean test run time: ".round(array_sum($this->_test_run_times) / $this->_page_count, 2)."s";
@@ -83,7 +83,7 @@ class Task_Boom_Testpages extends Minion_Task
 
 	protected function _test_single_page($page)
 	{
-		$start_time = microtime(TRUE);
+		$start_time = microtime(true);
 
 		try
 		{
@@ -97,7 +97,7 @@ class Task_Boom_Testpages extends Minion_Task
 			$status = ($e instanceof HTTP_Exception)? $e->getCode() : '500';
 		}
 
-		$run_time = microtime(TRUE) - $start_time;
+		$run_time = microtime(true) - $start_time;
 		$this->_test_run_times[] = $run_time;
 
 		return $status;

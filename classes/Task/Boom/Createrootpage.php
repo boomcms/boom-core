@@ -52,7 +52,7 @@ class Task_Boom_Createrootpage extends Minion_Task
 			->values(array(
 				'location'		=>	$uri,
 				'page_id'		=>	$page->id,
-				'is_primary'	=>	TRUE,
+				'is_primary'	=>	true,
 			))
 			->create();		
 			

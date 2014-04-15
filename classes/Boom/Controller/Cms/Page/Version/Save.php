@@ -74,7 +74,7 @@ class Boom_Controller_Cms_Page_Version_Save extends Controller_Cms_Page_Version
 		parent::action_request_approval();
 
 		$this->new_version
-			->set('pending_approval', TRUE)
+			->set('pending_approval', true)
 			->create()
 			->copy_chunks($this->old_version);
 	}
@@ -106,7 +106,7 @@ class Boom_Controller_Cms_Page_Version_Save extends Controller_Cms_Page_Version
 				->values(array(
 					'location'	=>	Page_URL::from_title($this->page->parent()->url()->location, URL::title($this->request->post('title'))),
 					'page_id'	=>	$this->page->id,
-					'is_primary'	=>	TRUE,
+					'is_primary'	=>	true,
 				))
 				->create();
 

@@ -98,7 +98,7 @@ class Boom_Controller_Cms_Autocomplete extends Boom_Controller
 						->from('page_versions')
 						->where('embargoed_until', '<=', $this->editor->live_time())
 						->where('stashed', '=', FALSE)
-						->where('published', '=', TRUE)
+						->where('published', '=', true)
 						->group_by('page_id'),
 					'current_version'
 				))
@@ -144,7 +144,7 @@ class Boom_Controller_Cms_Autocomplete extends Boom_Controller
 			->where('name', 'like', "%$this->text%")
 			->where('type', '=', $this->request->query('type'))
 			->order_by(DB::expr('length(tags.name)'), 'asc')
-			->distinct(TRUE)
+			->distinct(true)
 			->limit($this->count);
 
 		// If an array of tags has been sent as well then only include tags which are in use with the given tags.

@@ -22,7 +22,7 @@ class Boom_Controller_Page extends Boom_Controller
 	 */
 	public $page;
 
-	protected $_save_last_url = TRUE;
+	protected $_save_last_url = true;
 
 	/**
 	 * Set the page and options properties.
@@ -58,6 +58,6 @@ class Boom_Controller_Page extends Boom_Controller
 			}
 		}
 
-		return TRUE;
+		return true;
 	}
 }

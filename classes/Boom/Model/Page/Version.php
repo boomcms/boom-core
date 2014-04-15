@@ -21,7 +21,7 @@ class Boom_Model_Page_Version extends ORM
 
 	protected $_created_column = array(
 		'column'	=>	'edited_time',
-		'format'	=>	TRUE,
+		'format'	=>	true,
 	);
 
 	protected $_has_many = array(
@@ -133,7 +133,7 @@ class Boom_Model_Page_Version extends ORM
 
 		// Updated the embargo time of the new version.
 		$this
-			->set('published', TRUE)
+			->set('published', true)
 			->set('embargoed_until', $time)
 			->save();
 

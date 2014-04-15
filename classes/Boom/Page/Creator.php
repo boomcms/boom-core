@@ -45,7 +45,7 @@ class Boom_Page_Creator
 				'page_id'		=>	$page->id,
 				'template_id'	=>	$this->_get_template_id(),
 				'title'			=>	$this->_title,
-				'published' => TRUE,
+				'published' => true,
 				'embargoed_until' => time(),
 			))
 			->create();

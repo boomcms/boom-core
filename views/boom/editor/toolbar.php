@@ -62,4 +62,4 @@
 	</div>
 </div>
 
-<?= View::factory('boom/editor/footer', array('register_page' => TRUE)) ?>
+<?= View::factory('boom/editor/footer', array('register_page' => true)) ?>

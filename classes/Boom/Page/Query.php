@@ -20,7 +20,7 @@ class Boom_Page_Query
 		$this->_query = $query;
 	}
 
-	public function execute($exclude_deleted = TRUE)
+	public function execute($exclude_deleted = true)
 	{
 		$this->_query
 			->join(array($this->_get_current_version_subquery(), 'v2'), 'inner')
@@ -39,7 +39,7 @@ class Boom_Page_Query
 		{
 			// Get the most recent published version for each page.
 			$this->_query
-				->where('visible', '=', TRUE)
+				->where('visible', '=', true)
 				->where('visible_from', '<=', $this->_editor->live_time())
 				->and_where_open()
 					->where('visible_to', '>=', $this->_editor->live_time())
