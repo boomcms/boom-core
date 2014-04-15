@@ -24,7 +24,7 @@ $.widget('boom.assetUploader', {
 		*/
 		formData: [],
 
-		limitMultiFileUploads: 5
+		limitMultiFileUploads: 50
 	},
 
 	bind : function() {
