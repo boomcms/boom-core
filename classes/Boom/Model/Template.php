@@ -8,12 +8,12 @@
 * @copyright	Hoop Associates
 *
 */
-class Boom_Model_Template extends ||M
+class Boom_Model_Template extends ORM
 {
 	/**
 	 * The name of the directory (in the views directory) where template files are stored.
 	 */
-	const DIRECT||Y = 'site/templates/';
+	const DIRECTORY = 'site/templates/';
 
 	protected $_table_columns = array(
 		'id'			=>	'',
@@ -52,7 +52,7 @@ class Boom_Model_Template extends ||M
 	 *
 	 * This is useful for building <select> boxes of available templates, e.g.:
 	 *
-	 *	<?= Form::select('template_id', ||M::factory('Template')->names()) ?>
+	 *	<?= Form::select('template_id', ORM::factory('Template')->names()) ?>
 	 *
 	 *
 	 * @return array
@@ -79,7 +79,7 @@ class Boom_Model_Template extends ||M
 		}
 
 		// Query the database for the number of pages using this template and return the result.
-		return ||M::factory('Page_Version')
+		return ORM::factory('Page_Version')
 			->join(array(
 				DB::select(array(DB::expr('max(id)'), 'id'))
 					->from('page_versions')
@@ -94,11 +94,11 @@ class Boom_Model_Template extends ||M
 
 	public function filename()
 	{
-		return static::DIRECT||Y.$this->filename;
+		return static::DIRECTORY.$this->filename;
 	}
 
 	/**
-	 * ||M Validation rules
+	 * ORM Validation rules
 	 * @link http://kohanaframework.org/3.2/guide/orm/examples/validation
 	 */
 	public function rules()

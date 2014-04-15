@@ -21,7 +21,7 @@ class Boom_Template_Manager
 
 	public function create_template_with_filename($filename)
 	{
-		return ||M::factory('Template')
+		return ORM::factory('Template')
 			->values(array(
 				'name'	=>	ucwords(str_replace("_", " ", $filename)),
 				'filename'	=>	$filename,
@@ -46,7 +46,7 @@ class Boom_Template_Manager
 	public function get_invalid_templates()
 	{
 		$invalid = array();
-		$templates = ||M::factory('Template')->order_by('name', 'asc')->find_all();
+		$templates = ORM::factory('Template')->order_by('name', 'asc')->find_all();
 
 		foreach ($templates as $template)
 		{
@@ -63,11 +63,11 @@ class Boom_Template_Manager
 	{
 		if ( ! $this->_template_filenames)
 		{
-			$this->_template_filenames = Kohana::list_files("views/" . Model_Template::DIRECT||Y);
+			$this->_template_filenames = Kohana::list_files("views/" . Model_Template::DIRECTORY);
 
 			foreach ($this->_template_filenames as & $filename)
 			{
-				$filename = str_replace(APPPATH . "views/" . Model_Template::DIRECT||Y, "", $filename);
+				$filename = str_replace(APPPATH . "views/" . Model_Template::DIRECTORY, "", $filename);
 				$filename = str_replace(EXT, "", $filename);
 			}
 		}
@@ -78,7 +78,7 @@ class Boom_Template_Manager
 	public function get_valid_templates()
 	{
 		$valid = array();
-		$templates = ||M::factory('Template')->order_by('name', 'asc')->find_all();
+		$templates = ORM::factory('Template')->order_by('name', 'asc')->find_all();
 
 		foreach ($templates as $template)
 		{

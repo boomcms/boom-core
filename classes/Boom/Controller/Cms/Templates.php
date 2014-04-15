@@ -22,7 +22,7 @@ class Boom_Controller_Cms_Templates extends Controller_Cms
 		$imported = $manager->create_new();
 
 		// Get all the templates which now exist in the database.
-		$templates = ||M::factory('Template')
+		$templates = ORM::factory('Template')
 			->order_by('name', 'asc')
 			->find_all();
 
@@ -76,7 +76,7 @@ class Boom_Controller_Cms_Templates extends Controller_Cms
 		{
 			try
 			{
-				$template = ||M::factory('Template', $template_id)
+				$template = ORM::factory('Template', $template_id)
 					->values(array(
 						'name'		=>	$post["name-$template_id"],
 						'filename'		=>	$post["filename-$template_id"],
@@ -84,7 +84,7 @@ class Boom_Controller_Cms_Templates extends Controller_Cms
 					))
 					->update();
 			}
-			catch (||M_Validation_Exception $e)
+			catch (ORM_Validation_Exception $e)
 			{
 				$errors[] = $e->errors('models');
 			}
