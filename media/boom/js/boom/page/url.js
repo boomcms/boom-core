@@ -9,25 +9,13 @@ function boomPageUrl(id) {
 		dialog = new boomDialog({
 			url : '/cms/page/urls/add?page_id=' + page_id,
 			title : 'Add URL',
-			width : 500,
-			open : function() {
-				dialog.on('keypress', 'input[name=url]', function(e) {
-					if (e.which == 13) {
-						e.preventDefault();
-
-						dialog.dialog('option', 'callback')();
-					}
-				});
-			}
-		});
-
-		dialog.done(function() {
-			var location = dialog.find('input[name=url]').val();
+			width : 500
+		}).done(function() {
+			var location = dialog.contents.find('input[name=url]').val();
 
 			url.addWithLocation(page_id, location)
 				.done(function() {
 					deferred.resolve();
-					$.boom.dialog.destroy(dialog);
 				});
 		});
 

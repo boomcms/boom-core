@@ -10,7 +10,7 @@ function boomUrlEditor(page) {
 			.done(function(response) {
 				new boomNotification('Url added.');
 
-				urlEditor.dialog.load(urlEditor.list_url);
+				urlEditor.dialog.contents.load(urlEditor.list_url);
 			});
 	};
 
