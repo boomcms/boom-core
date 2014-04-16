@@ -45,7 +45,7 @@ function boomUrlEditor(page) {
 			.done(function() {
 				$li.remove();
 
-				new boomNotification("The specified URL has been deleted.")
+				new boomNotification("The specified URL has been deleted.");
 			});
 	};
 
