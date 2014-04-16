@@ -63,7 +63,7 @@ function boomUrlEditor(page) {
 					text : 'Add URL',
 					title : 'Add URL',
 					id : 'b-page-urls-add',
-					class : 'b-button',
+					class : 'b-button b-button-withtext',
 					icons: {primary : 'b-button-icon b-button-icon-add'},
 					click: function() {
 						urlEditor.add();
