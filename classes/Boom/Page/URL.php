@@ -6,6 +6,17 @@
  */
 abstract class Boom_Page_URL
 {
+	public static function create_primary($location, $page_id)
+	{
+		return ORM::factory('Page_URL')
+			->values(array(
+				'location'		=>	$location,
+				'page_id'		=>	$page_id,
+				'is_primary'	=>	true,
+			))
+			->create();
+	}
+
 	/**
 	 * Generate a unique URL from a page title
 	 *
