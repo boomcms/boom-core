@@ -67,7 +67,7 @@
 		(function($){
 			$.boom.init();
 
-			$(document).ui();
+			$('body').ui();
 
 			$('.boom-tree-item').click(function(){
 				window.location = $(this).attr('href');
