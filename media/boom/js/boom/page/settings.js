@@ -36,25 +36,21 @@ boomPage.prototype.navigation = function() {
 
 boomPage.prototype.search = function() {
 	var page = this,
-		url = '/cms/page/settings/search/' + page.id,
-		dialog;
+		url = '/cms/page/settings/search/' + page.id;
 
-	dialog = new boomDialog({
+	new boomDialog({
 		url : url,
 		title : 'Search Settings',
 		width : 500
-	});
-
-	dialog.done(function() {
+	}).done(function() {
 		page.saveSettings(url, $(this).find("form").serialize(), 'Page search settings saved');
 	});
 };
 
 boomPage.prototype.tags = function() {
-	var page = this,
-		dialog;
+	var page = this;
 
-	dialog = new boomDialog({
+	new boomDialog({
 		url: '/cms/tags/page/list/' + page.id,
 		title: 'Page tags',
 		width: 440,
@@ -125,6 +121,8 @@ boomPage.prototype.template = function() {
 };
 
 boomPage.prototype.visibility = function() {
+	new boomPageVisibilityEditor(this);
+
 	var	page = this,
 		url = '/cms/page/settings/visibility/' + page.id,
 		deferred = new $.Deferred(),

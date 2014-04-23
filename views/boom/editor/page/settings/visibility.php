@@ -4,7 +4,7 @@
 	<div>
 		<p>
 			<label for="visible"><?=__('Visible')?></label>
-			<?= Form::select('visible', array(1 => 'Yes', 0 => 'No'), $page->visible, array('id' => 'visible')) ?>
+			<?= BoomUI::toggle('visible', array(1 => 'Yes', 0 => 'No'), (int) $page->visible, array('id' => 'visible')) ?>
 		</p>
 		<p>
 			<label for="visible-from"><?=__('Visible from')?></label>

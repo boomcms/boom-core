@@ -28,4 +28,16 @@ abstract class Boom_BoomUI
 
 		return "<button $attrs_string><span class='b-button-icon $type'></span><span class='b-button-text'>$text</span></button>";
 	}
+
+	public static function toggle($name, array $options, $default = null, $attrs = array())
+	{
+		$output = '';
+
+		foreach ($options as $value => $option)
+		{
+			$output .= "<p class='b-toggle'>" . Form::radio($name, $value, $value === $default, Arr::merge($attrs, array('id' => "$name-$value"))) . "<label for='$name-$value'>$option</label></p>";
+		}
+
+		return $output;
+	}
 }
