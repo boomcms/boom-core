@@ -4,6 +4,8 @@
 * @name self.boom.page.toolbar
 */
 $.widget( 'boom.pageToolbar', {
+	buttons : {},
+
 	_bindButtonEvents : function() {
 		var self = this;
 
@@ -38,16 +40,12 @@ $.widget( 'boom.pageToolbar', {
 			.on('click', '.b-page-visibility', function() {
 				self.options.page.visibility()
 					.done(function(response) {
-						var $visible = $('#b-page-visible'),
-							$invisible = $('#b-page-invisible'),
-							$view_live = $('#boom-page-viewlive');
-
 						if (response == 1) {
-							$visible.show();
-							$invisible.hide();
+							self.buttons.visible.show();
+							self.buttons.hide();
 						} else {
-							$visible.hide();
-							$invisible.show();
+							self.buttons.hide();
+							self.buttons.show();
 						}
 
 						self._toggle_view_live_button();
@@ -108,6 +106,8 @@ $.widget( 'boom.pageToolbar', {
 	_create : function() {
 		$.boom.log( 'init CMS toolbar' );
 
+		this.findButtons();
+
 		this._toggle_view_live_button();
 		this.status = $('#b-page-version-status')
 			.pageStatus({
@@ -117,6 +117,14 @@ $.widget( 'boom.pageToolbar', {
 			.data('boomPageStatus');
 
 		this._bindButtonEvents();
+	},
+
+	findButtons : function() {
+		this.buttons = {
+			visible : this.element.find('#b-page-visible'),
+			invisible : this.element.find('#b-page-invisible'),
+			viewLive : this.element.find('#boom-page-viewlive')
+		};
 	},
 
 	/**
@@ -154,15 +162,12 @@ $.widget( 'boom.pageToolbar', {
 	},
 
 	_toggle_view_live_button : function() {
-		var $visible = $('#b-page-visible'),
-			$view_live = $('#boom-page-viewlive');
-
-		if ($visible.css('display') == 'none') {
-			$view_live
+		if (this.buttons.visible.css('display') == 'none') {
+			this.buttons.viewLive
 				.attr('title', 'You cannot view a live version of this page as it is currently hidden from the live site')
 				.button('disable');
 		} else {
-			$view_live
+			this.buttons.viewLive
 				.attr('title', 'View the page as it appears on the live site')
 				.button('enable');
 		}
