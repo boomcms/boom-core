@@ -79,7 +79,7 @@ function boomDialog(options) {
 		this.contents.dialog('option', 'position', this.options.position);
 
 		this.contents.find('img').load(function() {
-			boomDialog.contents.dialog('option', 'position', this.options.position);
+			boomDialog.contents.dialog('option', 'position', boomDialog.options.position);
 		});
 	};
 
