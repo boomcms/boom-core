@@ -54,13 +54,16 @@ $.widget('ui.chunkFeature', $.ui.chunk,
 					}
 				}
 			]
+		})
+		.fail(function() {
+			featureEditor.bind();
 		});
 	},
 
 	editTarget : function() {
-		$.boom.log('Feature chunk slot edit');
+		var featureEditor = this;
 
-		var self = this;
+		$.boom.log('Feature chunk slot edit');
 
 		this.dialog = new boomDialog({
 			url: '/cms/chunk/feature/edit/' + this.options.currentPage.id,
@@ -69,18 +72,21 @@ $.widget('ui.chunkFeature', $.ui.chunk,
 			position : {my: "bottom", at: "center", of: window},
 			title: 'Page feature',
 			onLoad : function() {
-				self.confirmation && self.confirmation.close();
+				featureEditor.confirmation && featureEditor.confirmation.close();
 
-				self.dialog.contents.find('.boom-tree').pageTree({
+				featureEditor.dialog.contents.find('.boom-tree').pageTree({
 					onPageSelect : function(page) {
-						self.insert(page.page_id);
-						self.dialog.close();
+						featureEditor.insert(page.page_id);
+						featureEditor.dialog.close();
 					}
 				});
 			},
 			open: function() {
-				self._bind();
+				featureEditor._bind();
 			}
+		})
+		.fail(function() {
+			featureEditor.bind();
 		});
 	},
 
