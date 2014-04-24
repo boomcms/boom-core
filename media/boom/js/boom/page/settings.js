@@ -121,71 +121,66 @@ boomPage.prototype.template = function() {
 };
 
 boomPage.prototype.visibility = function() {
-	new boomPageVisibilityEditor(this);
+	return new boomPageVisibilityEditor(this);
 
-	var	page = this,
-		url = '/cms/page/settings/visibility/' + page.id,
-		deferred = new $.Deferred(),
-		dialog;
+//	dialog = new boomDialog({
+//		url: url,
+//		title: 'Page visibility',
+//		width: 440,
+//		open: function() {
+//			$('#toggle-visible:checkbox').unbind('change').change(function(){
+//
+//				if (this.checked) {
+//
+//					$('#visible-to, #visible-to-time').removeAttr('disabled');
+//
+//					if ($('#visible-to').val().toLowerCase().trim() == 'forever') {
+//
+//						$('#visible-to').val('');
+//					}
+//
+//					$('#visible-to').focus();
+//
+//				} else {
+//
+//					$('#visible-to, #visible-to-time').attr('disabled', 'disabled');
+//
+//					if (!$('#visible-to').val().trim().length) {
+//
+//						$('#visible-to').val('forever');
+//					}
+//
+//					$('#visible-to').blur();
+//				}
+//			});
+//
+//			$('#visible').on('change', function() {
+//				switch( $( this ).val() ) {
+//					case '1':
+//						$( '#visible-from' ).removeAttr( 'disabled' );
+//					break;
+//					case '0':
+//						$( '#visible-from' ).attr( 'disabled', 'disabled' );
+//						$( '#visible-to' ).attr( 'disabled', 'disabled' );
+//					break;
+//				}
+//			});
+//
+//			if ($('#visible').val() == '0') {
+//				$( '#visible-from' ).attr( 'disabled', 'disabled' );
+//				$( '#visible-to' ).attr( 'disabled', 'disabled' );
+//			}
+//		}
+//	});
+//
+//	dialog.done(function() {
+//		page.saveSettings(url, $(this).find("form").serialize(), 'Page visibility settings saved')
+//			.done(function(response) {
+//				deferred.resolve(response);
+//			});
+//	});
 
-	dialog = new boomDialog({
-		url: url,
-		title: 'Page visibility',
-		width: 440,
-		open: function() {
-			$('#toggle-visible:checkbox').unbind('change').change(function(){
-
-				if (this.checked) {
-
-					$('#visible-to, #visible-to-time').removeAttr('disabled');
-
-					if ($('#visible-to').val().toLowerCase().trim() == 'forever') {
-
-						$('#visible-to').val('');
-					}
-
-					$('#visible-to').focus();
-
-				} else {
-
-					$('#visible-to, #visible-to-time').attr('disabled', 'disabled');
-
-					if (!$('#visible-to').val().trim().length) {
-
-						$('#visible-to').val('forever');
-					}
-
-					$('#visible-to').blur();
-				}
-			});
-
-			$('#visible').on('change', function() {
-				switch( $( this ).val() ) {
-					case '1':
-						$( '#visible-from' ).removeAttr( 'disabled' );
-					break;
-					case '0':
-						$( '#visible-from' ).attr( 'disabled', 'disabled' );
-						$( '#visible-to' ).attr( 'disabled', 'disabled' );
-					break;
-				}
-			});
-
-			if ($('#visible').val() == '0') {
-				$( '#visible-from' ).attr( 'disabled', 'disabled' );
-				$( '#visible-to' ).attr( 'disabled', 'disabled' );
-			}
-		}
-	});
-
-	dialog.done(function() {
-		page.saveSettings(url, $(this).find("form").serialize(), 'Page visibility settings saved')
-			.done(function(response) {
-				deferred.resolve(response);
-			});
-	});
-
-	return deferred;
+//	return deferred;
 };
 
 boomPage.prototype.childsettings = function() {

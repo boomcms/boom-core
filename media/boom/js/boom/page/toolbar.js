@@ -42,10 +42,10 @@ $.widget( 'boom.pageToolbar', {
 					.done(function(response) {
 						if (response == 1) {
 							self.buttons.visible.show();
-							self.buttons.hide();
+							self.buttons.invisible.hide();
 						} else {
-							self.buttons.hide();
-							self.buttons.show();
+							self.buttons.visible.hide();
+							self.buttons.invisible.show();
 						}
 
 						self._toggle_view_live_button();
@@ -121,9 +121,9 @@ $.widget( 'boom.pageToolbar', {
 
 	findButtons : function() {
 		this.buttons = {
-			visible : this.element.find('#b-page-visible'),
-			invisible : this.element.find('#b-page-invisible'),
-			viewLive : this.element.find('#boom-page-viewlive')
+			visible : this.element.contents().find('#b-page-visible'),
+			invisible : this.element.contents().find('#b-page-invisible'),
+			viewLive : this.element.contents().find('#boom-page-viewlive')
 		};
 	},
 
