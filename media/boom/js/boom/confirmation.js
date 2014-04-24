@@ -7,7 +7,7 @@ function boomConfirmation(title, message) {
 
 		return new boomDialog({
 			title : confirmation.title,
-			msg : confirmation.message,
+			msg : '<p>' + confirmation.message + '</p>',
 			width : 300
 		});
 	};
