@@ -10,12 +10,54 @@ $.widget('ui.chunkFeature', $.ui.chunk,
 	*/
 	{
 
-	/**
-	Open a dialog with a tree control to pick a page for the current feature
-	and a button to remove any existing page without replacing it.
-	*/
-	edit : function(){
+	_bind : function() {
+		if (this.options.id > 0) {
+			this.dialog.contents.find('input[name=parent_id]').val(this.options.id);
 
+			var button = $('<button />')
+				.addClass('b-button ui-helper-left')
+				.text('Remove')
+				.button({
+					icons: {primary : 'b-button-icon b-button-icon-delete'}
+				})
+				.click(function() {
+					this.remove();
+					this.dialog.close();
+				});
+
+			this.dialog.contents.dialog('widget')
+				.find('.ui-dialog-buttonpane')
+				.prepend(button);
+		}
+	},
+
+	edit : function() {
+		var featureEditor = this;
+
+		this.confirmation = new boomDialog({
+			title : 'Edit feature?',
+			msg : '<p>You clicked on a feature box.</p><p>Do you want to visit the featured page or edit the feature?</p>',
+			closeButton : false,
+			buttons : [
+				{
+					text : 'Visit page',
+					class : 'b-button b-button-textonly',
+					click : function() {
+						featureEditor.viewTarget();
+					}
+				},
+				{
+					text : 'Edit feature',
+					class : 'b-button b-button-textonly',
+					click : function() {
+						featureEditor.editTarget();
+					}
+				}
+			]
+		});
+	},
+
+	editTarget : function() {
 		$.boom.log('Feature chunk slot edit');
 
 		var self = this;
@@ -27,6 +69,8 @@ $.widget('ui.chunkFeature', $.ui.chunk,
 			position : {my: "bottom", at: "center", of: window},
 			title: 'Page feature',
 			onLoad : function() {
+				self.confirmation && self.confirmation.close();
+
 				self.dialog.contents.find('.boom-tree').pageTree({
 					onPageSelect : function(page) {
 						self.insert(page.page_id);
@@ -34,27 +78,8 @@ $.widget('ui.chunkFeature', $.ui.chunk,
 					}
 				});
 			},
-			open: function(){
-
-				if (self.options.id > 0) {
-					$('input[name=parent_id]').val(self.options.id);
-
-					var button = $('<button />')
-					.addClass('b-button ui-helper-left')
-					.text('Remove')
-					.button({
-						text: false,
-						icons: { primary : 'b-button-icon b-button-icon-delete' }
-					})
-					.click(function(){
-						self.remove();
-						self.dialog.close();
-					});
-
-					$(this).dialog('widget')
-						.find('.ui-dialog-buttonpane')
-						.prepend(button);
-				}
+			open: function() {
+				self._bind();
 			}
 		});
 	},
@@ -67,6 +92,10 @@ $.widget('ui.chunkFeature', $.ui.chunk,
 		return {target_page_id : this.options.id};
 	},
 
+	getTargetUrl : function() {
+		return this.element.is('a')? this.element.attr('href') : this.element.find('a').attr('href');
+	},
+
 	/**
 	Insert the selected page into the DOM as a feature box.
 	@param {Int} rid Page RID
@@ -75,5 +104,9 @@ $.widget('ui.chunkFeature', $.ui.chunk,
 		this.options.id = rid;
 
 		return this._save();
+	},
+
+	viewTarget : function() {
+		top.window.location = this.getTargetUrl();
 	}
 });
