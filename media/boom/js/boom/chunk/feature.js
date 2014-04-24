@@ -34,30 +34,34 @@ $.widget('ui.chunkFeature', $.ui.chunk,
 	edit : function() {
 		var featureEditor = this;
 
-		this.confirmation = new boomDialog({
-			title : 'Edit feature?',
-			msg : '<p>You clicked on a feature box.</p><p>Do you want to visit the featured page or edit the feature?</p>',
-			closeButton : false,
-			buttons : [
-				{
-					text : 'Visit page',
-					class : 'b-button b-button-textonly',
-					click : function() {
-						featureEditor.viewTarget();
+		if (this.getTargetUrl()) {
+			this.confirmation = new boomDialog({
+				title : 'Edit feature?',
+				msg : '<p>You clicked on a feature box.</p><p>Do you want to visit the featured page or edit the feature?</p>',
+				closeButton : false,
+				buttons : [
+					{
+						text : 'Visit page',
+						class : 'b-button b-button-textonly',
+						click : function() {
+							featureEditor.viewTarget();
+						}
+					},
+					{
+						text : 'Edit feature',
+						class : 'b-button b-button-textonly',
+						click : function() {
+							featureEditor.editTarget();
+						}
 					}
-				},
-				{
-					text : 'Edit feature',
-					class : 'b-button b-button-textonly',
-					click : function() {
-						featureEditor.editTarget();
-					}
-				}
-			]
-		})
-		.fail(function() {
-			featureEditor.bind();
-		});
+				]
+			})
+			.fail(function() {
+				featureEditor.bind();
+			});
+		} else {
+			this.editTarget();
+		}
 	},
 
 	editTarget : function() {
