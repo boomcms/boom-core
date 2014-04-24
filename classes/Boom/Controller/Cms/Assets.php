@@ -96,7 +96,7 @@ class Boom_Controller_Cms_Assets extends Controller_Cms
 			$finder->order_by('last_modified', 'desc');
 		}
 
-		$type = $this->request->query('type') && $finder->by_type($type);
+		($type = $this->request->query('type')) && $finder->by_type($type);
 
 		$count_and_size = $finder->get_count_and_total_size();
 		$count = $count_and_size['count'];
