@@ -23,27 +23,20 @@ $.widget('ui.chunkFeature', $.ui.chunk,
 		this.dialog = new boomDialog({
 			url: '/cms/chunk/feature/edit/' + this.options.currentPage.id,
 			width: 400,
-			id: self.element[0].id + '-boom-dialog',
+			position : {my: "bottom", at: "center", of: window},
 			title: 'Page feature',
 			onLoad : function() {
-
-				self.dialog.find( '.boom-tree' ).pageTree({
+				self.dialog.contents.find('.boom-tree').pageTree({
 					onPageSelect : function(page) {
-						self.insert( page.page_id );
-
-						$.boom.dialog.destroy(self.dialog);
+						self.insert(page.page_id);
+						self.dialog.close();
 					}
 				});
-
-			},
-			destroy: function(){
-				self.destroy();
 			},
 			open: function(){
 
-				if ( self.options.id > 0 ) {
-
-					$( 'input[name=parent_id]' ).val( self.options.id );
+				if (self.options.id > 0) {
+					$('input[name=parent_id]').val(self.options.id);
 
 					var button = $('<button />')
 					.addClass('b-button ui-helper-left')
@@ -53,15 +46,13 @@ $.widget('ui.chunkFeature', $.ui.chunk,
 						icons: { primary : 'b-button-icon b-button-icon-delete' }
 					})
 					.click(function(){
-
-						$.boom.dialog.destroy(self.dialog);
-
 						self.remove();
+						self.dialog.close();
 					});
 
 					$(this).dialog('widget')
 						.find('.ui-dialog-buttonpane')
-						.prepend( button );
+						.prepend(button);
 				}
 			}
 		});
@@ -83,5 +74,5 @@ $.widget('ui.chunkFeature', $.ui.chunk,
 		this.options.id = rid;
 
 		return this._save();
-	},
+	}
 });
