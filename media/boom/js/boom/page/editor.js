@@ -1,6 +1,8 @@
 $.widget( 'boom.pageEditor', {
 	elements : {},
 
+	openDialogs : 0,
+
 	options : {
 		editable : false
 	},
@@ -26,6 +28,7 @@ $.widget( 'boom.pageEditor', {
 		if (this.options.editable) {
 			$('body').editor();
 			this.createChunks();
+			this.watchForDialogs();
 		}
 	},
 
@@ -54,6 +57,27 @@ $.widget( 'boom.pageEditor', {
 			.find('#b-page-title')
 			.pageTitle({
 				currentPage : self.page
+			});
+	},
+
+	watchForDialogs : function() {
+		var editor = this,
+			toolbar = this.page.toolbar;
+
+		$(top.window)
+			.on('boom:dialog:open', function() {
+				editor.openDialogs++;
+
+				if (editor.openDialogs === 1) {
+					toolbar.maximise();
+				}
+			})
+			.on('boom:dialog:close', function() {
+				editor.openDialogs--;
+
+				if (editor.openDialogs === 0) {
+					toolbar.minimise();
+				}
 			});
 	}
 });
