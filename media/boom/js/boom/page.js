@@ -81,18 +81,15 @@ function boomPage(page_id) {
 
 	boomPage.prototype.revertToPublished = function() {
 		var	promise = new $.Deferred(),
-			page = this,
-			confirmation = new boomConfirmation
+			page = this;
 
-		$.boom.dialog.confirm('Discard changes', 'Are you sure you want to discard any unpublished changes and revert this page to it\'s published state?');
-
-		confirmation
-		.done(function() {
-			$.post('/cms/page/discard/' + page.id, {csrf : $.boom.options.csrf})
-				.done(function() {
-					promise.resolve();
-				});
-		});
+		new boomConfirmation('Discard changes', 'Are you sure you want to discard any unpublished changes and revert this page to it\'s published state?')
+			.done(function() {
+				$.post('/cms/page/discard/' + page.id, {csrf : $.boom.options.csrf})
+					.done(function() {
+						promise.resolve();
+					});
+			});
 
 		return promise;
 	};
