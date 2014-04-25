@@ -498,6 +498,16 @@ class Boom_Model_Page extends Model_Taggable
 		return $this;
 	}
 
+	public function rules()
+	{
+		return array(
+			'template_id'	=>	array(
+				array('not_empty'),
+				array('numeric'),
+			),
+		);
+	}
+
 	/**
 	 * Returns the page's absolute URL.
 	 * The URL can be displayed by casting the returned object to a string:

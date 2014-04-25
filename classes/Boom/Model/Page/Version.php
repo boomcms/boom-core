@@ -181,10 +181,6 @@ class Boom_Model_Page_Version extends ORM
 				array('not_empty'),
 				array('numeric'),
 			),
-			'template_id'	=>	array(
-				array('not_empty'),
-				array('numeric'),
-			),
 			'title'	=>	array(
 				array('not_empty'),
 				array('max_length', array(':value', 70))
