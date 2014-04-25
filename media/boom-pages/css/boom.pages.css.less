@@ -13,20 +13,29 @@
 
 		li {
 			background: #7f7f7f;
+			border-bottom: 1px solid #eee;
+
+			> div, > a {
+				display: inline-block;
+				border: 0;
+			}
+			
+			> a {
+				width: 70%;
+			}
+
+			> div {
+				float: right;
+				width: 19%;
+
+				a {
+					border: 0;
+				}
+			}
 
 			a:hover {
 				background: #222;
 			}
 		}
-	}
-
-	.template {
-		float: right;
-		margin-right: 1em;
-	}
-
-	.url {
-		margin-left: 2em;
-		font-style: italic;
 	}
 }

@@ -22,13 +22,7 @@
 			});
 
 			$('body').ui();
-			$('.boom-tree').pageTree();
-
-			$('.boom-tree-item').click(function(){
-				window.location = $(this).attr('href');
-
-				return false;
-			});
+			$('.boom-tree').pageManager();
 		})(jQuery);
 		//]]>
 	</script>
