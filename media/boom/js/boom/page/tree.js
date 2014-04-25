@@ -51,9 +51,12 @@ $.widget('boom.pageTree', {
 
 			$( data ).each( function( i, item ){
 				var li = $('<li></li>')
-					.data( 'children', parseInt(item.has_children, 10) )
-					.data('page-id', item.id)
+					.data({
+						children : parseInt(item.has_children, 10),
+						'page-id' : item.id
+					})
 					.appendTo( children );
+
 				$('<a></a>')
 					.attr( 'id', 'page_' + item.id )
 					.attr( 'href', item.url )
@@ -62,7 +65,10 @@ $.widget('boom.pageTree', {
 					.appendTo( li );
 			});
 
-			pageTree._trigger('load', null, {elements : children.find('li')});
+			pageTree._trigger('load', null, {
+				elements : children.find('li'),
+				children : data
+			});
 
 			var parent_id = $( 'input[name=parent_id]' ).val();
 			children.find( '#page_' + parent_id ).addClass( 'ui-state-active' );
