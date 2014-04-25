@@ -1,13 +1,5 @@
 <?php defined('SYSPATH') OR die('No direct script access.');
 
-/**
- *
-* @package	BoomCMS
-* @category	Models
-* @author	Rob Taylor
-* @copyright	Hoop Associates
-*
-*/
 class Boom_Model_Template extends ORM
 {
 	/**
@@ -79,16 +71,9 @@ class Boom_Model_Template extends ORM
 		}
 
 		// Query the database for the number of pages using this template and return the result.
-		return ORM::factory('Page_Version')
-			->join(array(
-				DB::select(array(DB::expr('max(id)'), 'id'))
-					->from('page_versions')
-					->group_by('page_id'),
-				'current_version'
-			))
-			->on('page_version.id', '=', 'current_version.id')
+		return ORM::factory('Page')
 			->where('template_id', '=', $this->id)
-			->where('page_deleted', '=', false)
+			->where('deleted', '=', false)
 			->count_all();
 	}
 
