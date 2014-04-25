@@ -8,7 +8,6 @@ return array(
 		'italic' => array('Make text italic (CTRL + I)', array('data-wysihtml5-command' => 'italic', 'class' => 'action')),
 		'list' => array('Insert an unordered list', array('data-wysihtml5-command' => 'insertUnorderedList', 'class' => 'command')),
 		'ol' => array('Insert an ordered list', array('data-wysihtml5-command' => 'insertOrderedList', 'class' => 'command')),
-		'hr' => array('Insert horizontal rule', array('data-wysihtml5-command' => 'insertHorizontalRule', 'class' => 'command')),
 		'link' => array('Insert a link', array('data-wysihtml5-command' => 'createBoomLink', 'class' => 'command')),
 		'asset' => array('Insert an asset', array('data-wysihtml5-command' => 'insertBoomAsset', 'class' => 'command')),
 		'paragraph' => array('Insert paragraph', array('data-wysihtml5-command' => 'formatBlock', 'data-wysihtml5-command-value' => 'p', 'class' => 'command')),
@@ -20,6 +19,6 @@ return array(
 	'button_sets' => array(
 		'text' => array('accept', 'cancel'),
 		'inline' => array('accept', 'cancel', 'bold', 'italic', 'link',' edit'),
-		'block' => array('accept', 'cancel', 'bold', 'italic', 'list', 'ol', 'hr', 'link', 'asset', 'paragraph', 'h2', 'h3', 'blockquote', 'edit'),
+		'block' => array('accept', 'cancel', 'bold', 'italic', 'list', 'ol', 'link', 'asset', 'paragraph', 'h2', 'h3', 'blockquote', 'edit'),
 	),
 );
