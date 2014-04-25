@@ -36,8 +36,9 @@ $.widget('boom.pageTree', {
 	},
 
 	getChildren : function(page_id) {
+		var list_ready = $.Deferred(),
+			pageTree = this;
 
-		var list_ready = $.Deferred();
 		$.ajax({
 			type: 'POST',
 			url: '/page/children.json',
@@ -51,6 +52,7 @@ $.widget('boom.pageTree', {
 			$( data ).each( function( i, item ){
 				var li = $('<li></li>')
 					.data( 'children', parseInt(item.has_children, 10) )
+					.data('page-id', item.id)
 					.appendTo( children );
 				$('<a></a>')
 					.attr( 'id', 'page_' + item.id )
@@ -59,6 +61,8 @@ $.widget('boom.pageTree', {
 					.text( item.title )
 					.appendTo( li );
 			});
+
+			pageTree._trigger('load', null, {elements : children.find('li')});
 
 			var parent_id = $( 'input[name=parent_id]' ).val();
 			children.find( '#page_' + parent_id ).addClass( 'ui-state-active' );
