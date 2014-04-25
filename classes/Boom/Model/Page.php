@@ -55,6 +55,7 @@ class Boom_Model_Page extends Model_Taggable
 		'created_time'				=>	'',
 		'primary_uri'				=>	'',
 		'template_id'				=>	'',
+		'deleted'					=>	'',
 	);
 
 	protected $_table_name = 'pages';
@@ -308,12 +309,8 @@ class Boom_Model_Page extends Model_Taggable
 
 		// Flag the page as deleted.
 		$this
-			->create_version(null, array(
-				'page_deleted'		=>	true,	// Flag the new version as deleting the page
-				'embargoed_until'	=>	$_SERVER['REQUEST_TIME'],	// Make the new version live
-				'published'			=>	true
-			))
-			->create();
+			->set('deleted', true)
+			->update();
 
 		// Return a cleared page object.
 		return $this->clear();
@@ -588,10 +585,10 @@ class Boom_Model_Page extends Model_Taggable
 	 * @param	boolean	$exclude_deleted
 	 * @return	Model_Page
 	 */
-	public function with_current_version(Editor $editor, $exclude_deleted = true)
+	public function with_current_version(Editor $editor)
 	{
 		$page_query = new Page_Query($this, $editor);
-		$page_query->execute($exclude_deleted);
+		$page_query->execute();
 
 		// Add the version columns to the query.
 		$this->_select_version();

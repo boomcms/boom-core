@@ -33,7 +33,6 @@ class Boom_Model_Page_Version extends ORM
 		'title'				=>	'',
 		'edited_by'		=>	'',
 		'edited_time'		=>	'',
-		'page_deleted'		=>	'',
 		'feature_image_id'	=>	'',
 		'published'			=>	'',
 		'embargoed_until'	=>	'',

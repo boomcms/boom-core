@@ -9,6 +9,7 @@ class Boom_Finder_Pages extends Finder
 	public function __construct()
 	{
 		$this->_query = ORM::factory('Page')
+			->where('deleted', '=', false)
 			->with_current_version(Editor::instance())
 			->where('page.primary_uri', '!=', null);
 	}

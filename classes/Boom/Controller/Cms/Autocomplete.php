@@ -73,6 +73,7 @@ class Boom_Controller_Cms_Autocomplete extends Boom_Controller
 		// Build a query to find pages matching title.
 		$query = DB::select('title')
 			->from('pages')
+			->where('deleted', '=', false)
 			->join('page_versions', 'inner')
 			->on('pages.id', '=', 'page_versions.page_id');
 
@@ -103,7 +104,6 @@ class Boom_Controller_Cms_Autocomplete extends Boom_Controller
 					'current_version'
 				))
 				->on('page_versions.id', '=', 'current_version.id')
-				->where('page_versions.page_deleted', '=', false)
 				->where('visible_from', '<=', $this->editor->live_time())
 				->and_where_open()
 					->where('visible_to', '>=', $this->editor->live_time())

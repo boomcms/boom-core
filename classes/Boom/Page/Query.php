@@ -20,7 +20,7 @@ class Boom_Page_Query
 		$this->_query = $query;
 	}
 
-	public function execute($exclude_deleted = true)
+	public function execute()
 	{
 		$this->_query
 			->join(array($this->_get_current_version_subquery(), 'v2'), 'inner')
@@ -28,11 +28,6 @@ class Boom_Page_Query
 			->join(array('page_versions', 'version'), 'inner')
 			->on('page.id', '=', 'version.page_id')
 			->on('v2.id', '=', 'version.id');
-
-		if ($exclude_deleted)
-		{
-			$this->_query->where('version.page_deleted', '=', false);
-		}
 
 		// Logged out view?
 		if ($this->_editor->state_is(Editor::DISABLED))

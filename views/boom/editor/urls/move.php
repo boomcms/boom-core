@@ -2,14 +2,14 @@
 	Would you like to move the URL <?= $url->location ?>?
 </p>
 
-<? if ($url->is_primary && ! $current->version()->page_deleted): ?>
+<? if ($url->is_primary && ! $current->deleted): ?>
 	<p>
 		<b>This URL is the primary URL for its page. If you move this URL its current page may become inaccessible.</b>
 	</p>
 <? endif; ?>
 <br />
 
-<? if ($current->version()->page_deleted): ?>
+<? if ($current->deleted): ?>
 	<p>
 		<b>This URL is assigned to a page which has been deleted.</b>
 	</p>
@@ -19,7 +19,7 @@
 <table>
 	<tr>
 		<th>
-			Current Page<? if ($current->version->page_deleted): ?> (deleted) <? endif; ?>
+			Current Page<? if ($current->deleted): ?> (deleted) <? endif; ?>
 		</th>
 		<th>
 			New Page

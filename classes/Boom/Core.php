@@ -87,7 +87,7 @@ abstract class Boom_Core
 			}
 
 			$page = ORM::factory('Page')
-				->with_current_version(Editor::instance(), false)
+				->with_current_version(Editor::instance())
 				->where('page.id', '=', $page_url->page_id)
 				->find();
 		}
@@ -95,7 +95,7 @@ abstract class Boom_Core
 		if ($page->loaded())
 		{
 			// If the page has been deleted then return 410.
-			if ($page->version()->page_deleted)
+			if ($page->deleted)
 			{
 				throw new HTTP_Exception_410;
 			}
