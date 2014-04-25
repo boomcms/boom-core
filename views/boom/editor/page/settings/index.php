@@ -41,9 +41,3 @@
 <button id="boom-page-embargo" class="boom-button">
 	<?= __('Embargo') ?>
 </button>
-
-<? if ($auth->logged_in('edit_feature_image', $page)): ?>
-	<button id="boom-page-featureimage" class="boom-button">
-		<?= __('Feature image') ?>
-	</button>
-<? endif; ?>

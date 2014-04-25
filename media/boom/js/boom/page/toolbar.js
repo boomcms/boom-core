@@ -37,6 +37,9 @@ $.widget( 'boom.pageToolbar', {
 					cancelButton : false
 				});
 			})
+			.on('click', '#b-page-feature', function() {
+				self.options.page.featureimage();
+			})
 			.on('click', '.b-page-visibility', function() {
 				self.options.page.visibility()
 					.done(function(response) {
@@ -60,16 +63,7 @@ $.widget( 'boom.pageToolbar', {
 					width: 'auto',
 					menuPosition: 'right',
 					split: false
-				})
-			.end()
-			.find('#b-page-version-menu')
-				.splitbutton({
-					items: self._buildVersionMenu(),
-					width: 'auto',
-					menuPosition: 'right',
-					split: false
-				})
-			.end();
+				});
 	},
 
 	_buildSettingsMenu : function() {
@@ -88,16 +82,6 @@ $.widget( 'boom.pageToolbar', {
 		});
 
 		return menu_items;
-	},
-
-	_buildVersionMenu : function() {
-		var self = this;
-
-		return {
-			'Feature image' : function() {
-				self.options.page.featureimage();
-			}
-		};
 	},
 
 	_create : function() {
