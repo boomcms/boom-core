@@ -42,7 +42,7 @@
 
 				echo "' id='", $page->id, "' href='", $page->url(), "' rel='", $page->id, "'>";
 
-					echo " ", $page->version()->title, " <span class='url'>(", $page->url(), ")</span> <span class='template'>Template: ", $page->version()->template->name, "</span> ";
+					echo " ", $page->version()->title, " <span class='url'>(", $page->url(), ")</span> <span class='template'>Template: ", $page->template->name, "</span> ";
 
 				echo "</a>\n";
 
