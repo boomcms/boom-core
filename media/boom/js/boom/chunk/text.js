@@ -93,5 +93,13 @@ $.widget('ui.chunkText', $.ui.chunk,
 
 	isBlockLevel : function() {
 		return this.element.is('div');
+	},
+
+	_update_html : function() {
+		this.bind();
+	},
+
+	unbind : function() {
+		this.element.unbind('click');
 	}
 });
