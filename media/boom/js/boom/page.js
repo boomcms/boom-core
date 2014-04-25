@@ -32,7 +32,7 @@ function boomPage(page_id) {
 			url: '/cms/page/delete/' + page_id,
 			title: 'Please confirm'
 		}).done(function() {
-			$.post('/cms/page/delete/' + page_id, $(this).find('form').serialize(), function(response) {
+			$.boom.post('/cms/page/delete/' + page_id, {}, function(response) {
 				promise.resolve(response);
 			});
 		});
