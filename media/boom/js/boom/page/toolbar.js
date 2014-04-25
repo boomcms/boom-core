@@ -96,9 +96,6 @@ $.widget( 'boom.pageToolbar', {
 		return {
 			'Feature image' : function() {
 				self.options.page.featureimage();
-			},
-			'Template' : function() {
-				self.options.page.template();
 			}
 		};
 	},

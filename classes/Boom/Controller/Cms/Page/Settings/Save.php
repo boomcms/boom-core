@@ -133,6 +133,15 @@ class Boom_Controller_Cms_Page_Settings_Save extends Controller_Cms_Page_Setting
 		Database::instance()->commit();
 	}
 
+	public function action_template()
+	{
+		parent::action_template();
+
+		$this->page
+			->set('template_id', $this->request->post('template_id'))
+			->update();
+	}
+
 	public function action_visibility()
 	{
 		parent::action_visibility();

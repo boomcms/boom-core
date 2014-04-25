@@ -12,6 +12,7 @@ class Boom_Model_Page extends Model_Taggable
 	 * Properties to create relationships with Kohana's ORM
 	 */
 	protected $_belongs_to = array(
+		'template'		=>	array('model' => 'Template', 'foreign_key' => 'template_id'),
 		'mptt'		=>	array('model' => 'Page_MPTT', 'foreign_key' => 'id'),
 	);
 
@@ -53,6 +54,7 @@ class Boom_Model_Page extends Model_Taggable
 		'created_by'				=>	'',
 		'created_time'				=>	'',
 		'primary_uri'				=>	'',
+		'template_id'				=>	'',
 	);
 
 	protected $_table_name = 'pages';
@@ -175,7 +177,7 @@ class Boom_Model_Page extends Model_Taggable
 		}
 
 		$parent = $this->parent();
-		return ($parent->grandchild_template_id != 0)? $parent->grandchild_template_id : $this->version()->template_id;
+		return ($parent->grandchild_template_id != 0)? $parent->grandchild_template_id : $this->template_id;
 	}
 
 	/**

@@ -33,7 +33,7 @@
 <? endif; ?>
 
 <? if ($auth->logged_in('edit_page_template', $page)): ?>
-	<button id="boom-page-template" class="boom-button">
+	<button id="boom-page-template" class="boom-button b-page-settings" data-b-page-setting='template'>
 		<?= __('Template') ?>
 	</button>
 <? endif; ?>
