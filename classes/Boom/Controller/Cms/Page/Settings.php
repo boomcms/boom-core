@@ -46,8 +46,6 @@ abstract class Boom_Controller_Cms_Page_Settings extends Controller_Cms_Page
 	 *
 	 *  * Internal name
 	 *
-	 *
-	 * @uses	Boom_Controller::authorization()
 	 */
 	public function action_admin()
 	{
@@ -69,7 +67,6 @@ abstract class Boom_Controller_Cms_Page_Settings extends Controller_Cms_Page
 	 *    * Default child URL prefix
 	 *    * Default grandchild template
 	 *
-	 * @uses	Boom_Controller::authorization()
 	 */
 	public function action_children()
 	{
@@ -94,7 +91,6 @@ abstract class Boom_Controller_Cms_Page_Settings extends Controller_Cms_Page
 	 *  * Advanced:
 	 *    * Parent page
 	 *
-	 * @uses	Boom_Controller::authorization()
 	 */
 	public function action_navigation()
 	{
@@ -119,7 +115,6 @@ abstract class Boom_Controller_Cms_Page_Settings extends Controller_Cms_Page
 	 *     * External indexing
 	 *     * Internal indexing
 	 *
-	 * @uses	Boom_Controller::authorization()
 	 */
 	public function action_search()
 	{
@@ -143,11 +138,18 @@ abstract class Boom_Controller_Cms_Page_Settings extends Controller_Cms_Page
 	 *  * visible from
 	 *  * visible to
 	 *
-	 * @uses	Boom_Controller::authorization();
 	 */
 	public function action_visibility()
 	{
 		// Permissions check.
 		$this->authorization('edit_page', $this->page);
 	}
-} // End Boom_Controller_Cms_Page_Settings
+
+	public function authorization($role, \Model_Page $page)
+	{
+		if ( ! $this->auth->logged_in('manage_pages'))
+		{
+			parent::authorization($role, $page);
+		}
+	}
+}
