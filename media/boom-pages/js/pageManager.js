@@ -6,7 +6,7 @@ $.widget( 'boom.pageManager', {
 		$elements.each(function() {
 			var $el = $(this);
 
-			$el.append("<div><a href='#' class='b-pages-delete'>Delete page</a></div>");
+			$el.append("<div><a href='#' class='b-pages-delete'>Delete page</a><a href='#' class='b-pages-urls'>URLs</a></div>");
 			elementsById[$el.data('page-id')] = $el;
 		});
 
@@ -40,9 +40,13 @@ $.widget( 'boom.pageManager', {
 			});
 	},
 
+	editURLs : function($el) {
+		var page = new boomPage($el.data('page-id'));
+
+		page.urls();
+	},
+
 	editVisibility : function($el) {
-		console.log($el);
-		console.log($el.data());
 		var page = new boomPage($el.data('page-id'));
 
 		page.visibility()
@@ -65,6 +69,11 @@ $.widget( 'boom.pageManager', {
 				e.preventDefault();
 
 				pageManager.deletePage($(this).closest('li'));
+			})
+			.on('click', '.b-pages-urls', function(e) {
+				e.preventDefault();
+
+				pageManager.editURLs($(this).closest('li'));
 			})
 			.on('click', '.b-pages-visibility', function(e) {
 				e.preventDefault();
