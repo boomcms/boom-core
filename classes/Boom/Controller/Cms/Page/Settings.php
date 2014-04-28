@@ -130,11 +130,6 @@ abstract class Boom_Controller_Cms_Page_Settings extends Controller_Cms_Page
 		$this->allow_advanced = $this->auth->logged_in('edit_page_search_advanced', $this->page);
 	}
 
-	public function action_template()
-	{
-		$this->authorization('edit_page_template', $this->page);
-	}
-
 	/**
 	 * ** Edit page visibility settings. **
 	 *

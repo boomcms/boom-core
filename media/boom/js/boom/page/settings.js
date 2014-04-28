@@ -80,7 +80,7 @@ boomPage.prototype.featureimage = function() {
 
 boomPage.prototype.template = function() {
 	var	page = this,
-		url = '/cms/page/settings/template/' + page.id,
+		url = '/cms/page/version/template/' + page.id,
 		dialog;
 
 	dialog = new boomDialog({

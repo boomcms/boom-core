@@ -84,6 +84,19 @@ $.widget( 'boom.pageToolbar', {
 		return menu_items;
 	},
 
+	_buildVersionMenu : function() {
+		var self = this;
+
+		return {
+			'Feature image' : function() {
+				self.options.page.featureimage();
+			},
+			'Template' : function() {
+				self.options.page.template();
+			}
+		};
+	},
+
 	_create : function() {
 		$.boom.log( 'init CMS toolbar' );
 

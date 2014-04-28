@@ -42,7 +42,7 @@ class Boom_Controller_Cms_Page_Settings_View extends Controller_Cms_Page_Setting
 
 		// Create the main view with the basic settings
 		$this->template = View::factory("$this->_view_directory/children", array(
-			'default_child_template'	=>	($this->page->children_template_id != 0)? $this->page->children_template_id : $this->page->template_id,
+			'default_child_template'	=>	($this->page->children_template_id != 0)? $this->page->children_template_id : $this->page->version()->template_id,
 			'templates'			=>	$templates,
 			'child_order_column'		=>	$child_order_colum,
 			'child_order_direction'	=>	$child_order_direciton,
@@ -54,7 +54,7 @@ class Boom_Controller_Cms_Page_Settings_View extends Controller_Cms_Page_Setting
 		{
 			// Add the view for the advanced settings to the main view.
 			$this->template->set(array(
-				'default_grandchild_template'	=>	($this->page->grandchild_template_id != 0)? $this->page->grandchild_template_id : $this->page->template_id,
+				'default_grandchild_template'	=>	($this->page->grandchild_template_id != 0)? $this->page->grandchild_template_id : $this->page->version()->template_id,
 				'page'					=>	$this->page,
 				'templates'				=>	$templates,
 			));
@@ -104,20 +104,6 @@ class Boom_Controller_Cms_Page_Settings_View extends Controller_Cms_Page_Setting
 
 		$this->template = View::factory("$this->_view_directory/sort_children", array(
 			'children' => $children
-		));
-	}
-
-	public function action_template()
-	{
-		parent::action_template();
-
-		$manager = new Template_Manager;
-		$manager->create_new();
-		$templates = $manager->get_valid_templates();
-
-		$this->template = View::factory("$this->_view_directory/template", array(
-			'template_id'	=>	$this->page->template_id,
-			'templates'	=>	 $templates
 		));
 	}
 
