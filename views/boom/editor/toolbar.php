@@ -14,9 +14,9 @@
 
 			<?= BoomUI::button('preview', __("Preview the current version of the page even if it hasn't been published"), array('id' => 'boom-page-preview', 'class' => 'b-button-preview','data-preview' => 'preview')) ?>
 
-			<? if ($auth->logged_in('edit_feature_image', $page)): ?>
-				<?= BoomUI::button('asset', __("Edit the page's feature image"), array('id' => 'b-page-feature')) ?>
-			<? endif ?>
+			<span id="b-page-version-menu">
+				<?= BoomUI::button('options', __('Settings for the current version of the page'), array('id' => 'boom-page-template-settings')) ?>
+			</span>
 		</div>
 	<? endif; ?>
 

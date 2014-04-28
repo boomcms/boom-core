@@ -110,7 +110,7 @@ abstract class Boom_Core
 			$format = (isset($params['format']))? $params['format'] : Boom::page_format($request);
 
 			// The URI matches a page in the CMS so we're going to process it with the Page controller.
-			$template_controller = 'Page_'.ucfirst($format).'_'.$page->template->controller();
+			$template_controller = 'Page_'.ucfirst($format).'_'.$page->version()->template->controller();
 
 			$controller = (class_exists('Controller_'.$template_controller))? $template_controller : 'Page_'.ucfirst($format);
 			$params['controller'] = $controller;

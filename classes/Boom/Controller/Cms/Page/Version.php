@@ -78,4 +78,16 @@ abstract class Boom_Controller_Cms_Page_Version extends Controller_Cms_Page
 	{
 		$this->authorization('edit_page_content', $this->page);
 	}
+
+	/**
+	 * Edit the page's templates
+	 *
+	 * Requires the 'edit_feature_image'edit_page_template' role.
+	 *
+	 * @uses Boom_Controller::authorization()
+	 */
+	public function action_template()
+	{
+		$this->authorization('edit_page_template', $this->page);
+	}
 }
