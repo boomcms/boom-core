@@ -33,7 +33,6 @@ class Boom_Page_Creator
 				'children_visible_in_nav_cms'	=>	$this->_parent->children_visible_in_nav_cms,
 				'visible_from'				=>	time(),
 				'created_by'				=>	$this->_creator->id,
-				'template_id'				=>	$this->_get_template_id(),
 			))
 			->create();
 	}
@@ -44,6 +43,7 @@ class Boom_Page_Creator
 			->values(array(
 				'edited_by'	=>	$this->_creator->id,
 				'page_id'		=>	$page->id,
+				'template_id'	=>	$this->_get_template_id(),
 				'title'			=>	$this->_title,
 				'published' => true,
 				'embargoed_until' => time(),
