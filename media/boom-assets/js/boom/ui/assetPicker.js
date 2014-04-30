@@ -2,12 +2,12 @@ function boomAssetPicker(currentAssetId) {
 	this.currentAssetId = currentAssetId;
 	this.deferred = new $.Deferred();
 
-	boomAssetPicker.prototype.url = '/cms/assets/manager';
+	boomAssetPicker.prototype.url = '/cms/assets/list';
 
 	boomAssetPicker.prototype.bind = function() {
 		var assetPicker = this;
 
-		this.dialog.contents
+		this.picker
 			.on('click', '.thumb a', function(e) {
 				e.preventDefault();
 
@@ -19,52 +19,26 @@ function boomAssetPicker(currentAssetId) {
 			});
 	};
 
-	boomAssetPicker.prototype.open = function() {
+	boomAssetPicker.prototype.loadPicker = function() {
 		var assetPicker = this;
 
-		this.dialog = new boomDialog({
-			url : this.url,
-			width: top.document.documentElement.clientWidth > 1000? '70%' : '900',
-			height: '700',
-			dialogClass : 'b-dialog b-assets-dialog',
-			closeButton : false,
-			title: 'Select an asset',
-			open: function() {
-				var dialog = $(this);
-
-				var upload = $('<button />')
-					.addClass('ui-helper-left b-button ui-button')
-					.text('Upload')
-					.button({
-						text: false,
-						icons: {primary : 'b-button-icon b-button-icon-upload'}
-					})
-					.click(function() {
-						assetPicker.dialog.contents.assetManager('openUploader')
-							.done(function(e, data) {
-								console.log(data);
-								assetPicker.dialog.contents.assetManager('listAssets');
-							});
-					});
-
-				$(this).dialog('widget')
-					.find('.ui-dialog-buttonpane')
-					.prepend(upload)
-					.append($('<div class="center"><div id="b-assets-pagination"></div><div id="b-assets-stats"></div></div>'));
-			},
-			onLoad: function() {
-				assetPicker.dialog.contents.assetManager();
-			}
+		this.picker = $("<div id='b-assets-picker'></div>");
+		this.picker.load(this.url, function() {
+			assetPicker.bind();
 		});
 
-		this.bind();
+		$(top.document).find('body').append(this.picker);
+	};
+
+	boomAssetPicker.prototype.open = function() {
+		this.loadPicker();
 
 		return this.deferred;
 	};
 
 	boomAssetPicker.prototype.pick = function(asset_id) {
 		this.deferred.resolve(asset_id);
-		this.dialog.close();
+		//this.dialog.close();
 	};
 
 	return this.open();
