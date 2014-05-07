@@ -41,10 +41,6 @@
 					var url = link.url,
 						page_id = link.page_id;
 
-					if (page_id) {
-						url = $('<a/>').attr('href',url)[0].pathname.replace(/^[^\/]/,'/');
-					}
-
 					if (existing_link) {
 						$(existing_link)
 							.attr('href', url)
