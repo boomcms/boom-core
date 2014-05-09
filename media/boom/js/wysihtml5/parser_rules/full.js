@@ -64,9 +64,7 @@ var wysihtml5ParserRules = {
      */
     "tags": {
         "tr": {
-            "add_class": {
-                "align": "align_text"
-            }
+              unwrap : 1
         },
         "strike": {
             "unwrap": 1
@@ -188,9 +186,7 @@ var wysihtml5ParserRules = {
             "unwrap": 1
         },
         "tbody": {
-            "add_class": {
-                "align": "align_text"
-            }
+            "unwrap": 1
         },
         "dd": {
             "unwrap": 1
@@ -200,15 +196,7 @@ var wysihtml5ParserRules = {
         },
         "li": {},
         "td": {
-            "check_attributes": {
-                "rowspan": "numbers",
-                "colspan": "numbers",
-                "valign": "any",
-                "align": "any"
-            },
-            "add_class": {
-                "align": "align_text"
-            }
+            unwrap : 1
         },
         "object": {
             "remove": 1
@@ -256,7 +244,9 @@ var wysihtml5ParserRules = {
         "input": {
             "remove": 1
         },
-        "table": {},
+        "table": {
+            "unwrap": 1
+	},
         "keygen": {
             "remove": 1
         },
@@ -279,9 +269,7 @@ var wysihtml5ParserRules = {
            "unwrap": 1
         },
         "tfoot": {
-            "add_class": {
-                "align": "align_text"
-            }
+            "unwrap": 1
         },
         "base": {
             "remove": 1
