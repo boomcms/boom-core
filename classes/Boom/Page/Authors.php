@@ -2,6 +2,8 @@
 
 namespace Boom\Page;
 
+use \Boom\Page as Page;
+
 class Authors
 {
 	protected $_authorTagPrefix = 'Author/';
@@ -14,11 +16,11 @@ class Authors
 
 	/**
 	 *
-	 * @var \Model_Page
+	 * @var \Page
 	 */
 	protected $_page;
 
-	public function __construct(\Model_Page $page)
+	public function __construct(Page $page)
 	{
 		$this->_page = $page;
 		$this->_authors = $page->get_tags_with_name_like($this->_authorTagPrefix . "%");
