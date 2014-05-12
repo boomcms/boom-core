@@ -3,8 +3,8 @@
 	<div id="b-topbar" class="b-toolbar">
 		<?= Menu::factory('boom')->sort('priority') ?>
 
-		<?= BoomUI::button('add', __('New person'), array('id' => 'b-people-create')) ?>
-		<?= BoomUI::button('delete', __('Delete'), array('id' => 'b-people-multi-delete', 'disabled' => 'disabled')) ?>
+		<?= \Boom\UI::button('add', __('New person'), array('id' => 'b-people-create')) ?>
+		<?= \Boom\UI::button('delete', __('Delete'), array('id' => 'b-people-multi-delete', 'disabled' => 'disabled')) ?>
 
 		<button id="b-people-all" class="b-button">
 			<?=__('All people')?>
@@ -14,7 +14,7 @@
 	<div id="b-people-manager">
 		<div id="b-groups">
 			<div id="b-groups-header">
-				<?= BoomUI::button('add', __('Add group'), array('class' => 'b-people-group-add')) ?>
+				<?= \Boom\UI::button('add', __('Add group'), array('class' => 'b-people-group-add')) ?>
 				<h2>
 					<?= __('Groups') ?>
 				</h2>
