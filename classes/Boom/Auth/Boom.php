@@ -115,7 +115,7 @@ class Boom_Auth_Boom extends Auth_ORM
 		return $this->_person;
 	}
 
-	public function has_role(Model_Person $person, Model_Role $role, Model_Page $page = null)
+	public function has_role(Model_Person $person, Model_Role $role, \Boom\Page $page = null)
 	{
 		$query = DB::select(array(DB::expr("bit_and(allowed)"), 'allowed'))
 			->from('people_roles')
