@@ -17,7 +17,7 @@ class Boom_Controller_Cms_Toolbar extends Boom_Controller
 
 	public function action_text()
 	{
-		$this->_toolbar = new TextEditorToolbar($this->request->query('mode'));
+		$this->_toolbar = new \Boom\TextEditorToolbar($this->request->query('mode'));
 		$this->_toolbar->render();
 	}
 
