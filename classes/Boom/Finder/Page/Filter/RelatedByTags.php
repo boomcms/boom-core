@@ -27,13 +27,13 @@ class RelatedByTags extends Finder\Filter
 	public function execute(\ORM $query)
 	{
 		return $query
-			->select(array(DB::expr('count(pages_tags.tag_id)'), 'tag_count'))
+			->select(array(\DB::expr('count(pages_tags.tag_id)'), 'tag_count'))
 			->join('pages_tags', 'inner')
 			->on('page.id', '=', 'pages_tags.page_id')
-			->where('tag_id', 'in', $tag_ids)
+			->where('tag_id', 'in', $this->_tagIds)
 			->where('page.id', '!=', $this->_page->id)
 			->order_by('tag_count', 'desc')
-			->order_by(DB::expr('rand()'))
+			->order_by(\DB::expr('rand()'))
 			->group_by('page.id');
 	}
 
