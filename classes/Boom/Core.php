@@ -70,8 +70,7 @@ abstract class Boom_Core
 	{
 		if (substr($params['location'], 0, 1) == '_')
 		{
-			$page_id = base_convert(substr($params['location'], 1), 36, 10);
-			$page = \Boom\Finder\Page::byId($page_id);
+			$page = \Boom\Page\ShortURL::pageFromUrl($params['location']);
 		}
 		else
 		{
