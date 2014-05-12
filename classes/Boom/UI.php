@@ -1,10 +1,12 @@
 <?php
 
+namespace Boom;
+
 /**
  * Helper class with static methods for creating UI elements.
  *
  */
-abstract class Boom_BoomUI
+abstract class UI
 {
 	/**
 	 * Returns the HTML for a styled button
@@ -23,7 +25,7 @@ abstract class Boom_BoomUI
 		// Make the button text the title of the button.
 		$attrs['title'] = $text;
 
-		$attrs_string = HTML::attributes($attrs);
+		$attrs_string = \HTML::attributes($attrs);
 		$type = $type? " b-button-icon-$type" : '';
 
 		return "<button $attrs_string><span class='b-button-icon $type'></span><span class='b-button-text'>$text</span></button>";

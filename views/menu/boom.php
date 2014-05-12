@@ -1,6 +1,6 @@
 <div id="b-menu">
 	<span>
-		<?= BoomUI::button('menu', __('Menu'), array('id' => 'b-menu-button')) ?>
+		<?= \Boom\UI::button('menu', __('Menu'), array('id' => 'b-menu-button')) ?>
 	</span>
 
 	<ul>

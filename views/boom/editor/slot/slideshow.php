@@ -50,12 +50,12 @@
 				<input type="text" name="url" />
 			</label>
 
-			<?= BoomUI::button('delete', 'Delete this slide', array('id' => 'b-slideshow-editor-current-delete', 'class' => 'b-button-withtext')) ?>
+			<?= \Boom\UI::button('delete', 'Delete this slide', array('id' => 'b-slideshow-editor-current-delete', 'class' => 'b-button-withtext')) ?>
 		</form>
 	</section>
 </div>
 
 <div id="b-slideshow-editor-buttons">
-	<?= BoomUI::button('delete', __('Delete slideshow'), array('id' => 'b-slideshow-editor-delete', 'class' => 'b-button-textonly')) ?>
-	<?= BoomUI::button('add', __('Add slide'), array('id' => 'b-slideshow-editor-add', 'class' => 'b-button-withtext')) ?>
+	<?= \Boom\UI::button('delete', __('Delete slideshow'), array('id' => 'b-slideshow-editor-delete', 'class' => 'b-button-textonly')) ?>
+	<?= \Boom\UI::button('add', __('Add slide'), array('id' => 'b-slideshow-editor-add', 'class' => 'b-button-withtext')) ?>
 </div>
