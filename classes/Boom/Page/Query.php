@@ -1,10 +1,14 @@
 <?php
 
-class Boom_Page_Query
+namespace Boom\Page;
+
+use Boom\Editor as Editor;
+
+class Query
 {
 	/**
 	 *
-	 * @var \Boom\Editor
+	 * @var Editor
 	 */
 	protected $_editor;
 
@@ -14,16 +18,16 @@ class Boom_Page_Query
 	 */
 	protected $_query;
 
-	public function __construct(ORM $query, \Boom\Editor $editor = null)
+	public function __construct(\ORM $query, Editor $editor = null)
 	{
-		$this->_editor = $editor === null? \Boom\Editor::instance() : $editor;
+		$this->_editor = $editor === null? Editor::instance() : $editor;
 		$this->_query = $query;
 	}
 
 	public function execute()
 	{
 		$this->_query
-			->join(array($this->_get_current_version_subquery(), 'v2'), 'inner')
+			->join(array($this->_getCurrentVersionSubquery(), 'v2'), 'inner')
 			->on('page.id', '=', 'v2.page_id')
 			->join(array('page_versions', 'version'), 'inner')
 			->on('page.id', '=', 'version.page_id')
@@ -45,9 +49,9 @@ class Boom_Page_Query
 		return $this->_query;
 	}
 
-	protected function _get_current_version_subquery()
+	protected function _getCurrentVersionSubquery()
 	{
-		$query = DB::select(array(DB::expr('max(id)'), 'id'), 'page_id')
+		$query = \DB::select(array(\DB::expr('max(id)'), 'id'), 'page_id')
 			->from('page_versions')
 			->where('stashed', '=', 0)
 			->group_by('page_id');
@@ -55,14 +59,14 @@ class Boom_Page_Query
 		if ($this->_editor->isDisabled())
 		{
 			$query
-				->where('embargoed_until', '<=', DB::expr(time()))
-				->where('published', '=', DB::expr(1));
+				->where('embargoed_until', '<=', \DB::expr(time()))
+				->where('published', '=', \DB::expr(1));
 		}
 
 		return $query;
 	}
 
-	public static function join_version(ORM $query, $editor_state = null)
+	public static function joinVersion(ORM $query, $editor_state = null)
 	{
 		$page_query = new static($query, $editor_state);
 		return $page_query->execute();

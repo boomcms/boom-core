@@ -585,7 +585,7 @@ class Boom_Model_Page extends Model_Taggable
 	 */
 	public function with_current_version(\Boom\Editor $editor)
 	{
-		$page_query = new Page_Query($this, $editor);
+		$page_query = new \Boom\Page\Query($this, $editor);
 		$page_query->execute();
 
 		// Add the version columns to the query.
