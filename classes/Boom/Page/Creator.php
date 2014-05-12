@@ -80,7 +80,7 @@ class Creator
 			return $this->_templateId;
 		}
 
-		return $this->_parent->get_default_child_template_id();
+		return $this->_parent->getDefaultChildTemplateId();
 	}
 
 	public function setTemplateId($template_id)

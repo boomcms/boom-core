@@ -24,6 +24,17 @@ class Page extends \Boom\Model\Page
 		return \strip_tags($description);
 	}
 
+	public function getDefaultChildTemplateId()
+	{
+		if ($this->children_template_id)
+		{
+			return $this->children_template_id;
+		}
+
+		$parent = $this->parent();
+		return ($parent->grandchild_template_id != 0)? $parent->grandchild_template_id : $this->version()->template_id;
+	}
+
 	/**
 	 * Returns the Model_Page_URL object for the page's primary URI
 	 *

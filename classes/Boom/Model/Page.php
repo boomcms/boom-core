@@ -168,17 +168,6 @@ class Boom_Model_Page extends Model_Taggable
 		return array($column, $direction);
 	}
 
-	public function get_default_child_template_id()
-	{
-		if ($this->children_template_id)
-		{
-			return $this->children_template_id;
-		}
-
-		$parent = $this->parent();
-		return ($parent->grandchild_template_id != 0)? $parent->grandchild_template_id : $this->version()->template_id;
-	}
-
 	/**
 	 *
 	 *  Converts the column and direction to an integer which can be stored in the children_ordering_policy column.
