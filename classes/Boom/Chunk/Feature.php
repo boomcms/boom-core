@@ -19,7 +19,7 @@ class Boom_Chunk_Feature extends Chunk
 	{
 		parent::__construct($page, $chunk, $editable);
 
-		$this->_target_page = $this->_chunk->target;
+		$this->_target_page = \Boom\Finder\Page::byId($this->_chunk->target_page_id);
 	}
 
 	/**

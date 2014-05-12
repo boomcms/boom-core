@@ -59,36 +59,6 @@ class Boom_Model_Page extends Model_Taggable
 	protected $_table_name = 'pages';
 
 	/**
-	 * Child ordering policy value for manual
-	 * @var	integer
-	 */
-	const CHILD_ORDER_MANUAL = 1;
-
-	/**
-	 * Child ordering policy value for alphabetic
-	 * @var	integer
-	 */
-	const CHILD_ORDER_ALPHABETIC = 2;
-
-	/**
-	 * Child ordering policy value for date
-	 * @var	integer
-	 */
-	const CHILD_ORDER_DATE = 4;
-
-	/**
-	 * Child ordering policy for ascending.
-	 * @var	integer
-	 */
-	const CHILD_ORDER_ASC = 8;
-
-	/**
-	 * Child ordering policy for descending.
-	 * @var	integer
-	 */
-	const CHILD_ORDER_DESC = 16;
-
-	/**
 	 * Cached result for self::url()
 	 *
 	 * @access	private
@@ -139,75 +109,6 @@ class Boom_Model_Page extends Model_Taggable
 		DB::delete('chunk_linkset_links')
 			->where('target_page_id', '=', $this->id)
 			->execute($this->_db);
-	}
-
-	/**
-	 * Converts the integer stored in the children_ordering_policy column to an array of column and direction which can be used when querying the database.
-	 *
-	 */
-	public function get_child_ordering_policy()
-	{
-		// Determine which column to sort by.
-		if ($this->children_ordering_policy & Model_Page::CHILD_ORDER_ALPHABETIC)
-		{
-			$column = 'title';
-		}
-		elseif ($this->children_ordering_policy & Model_Page::CHILD_ORDER_DATE)
-		{
-			$column = 'visible_from';
-		}
-		else
-		{
-			$column = 'sequence';
-		}
-
-		// Determine the direction to sort in.
-		$direction = ($this->children_ordering_policy & Model_Page::CHILD_ORDER_ASC)? 'asc' : 'desc';
-
-		// Return the column and direction as an array.
-		return array($column, $direction);
-	}
-
-	/**
-	 *
-	 *  Converts the column and direction to an integer which can be stored in the children_ordering_policy column.
-	 *
-	 * @param	string	$column
-	 * @param	string	$direction
-	 */
-	public function set_child_ordering_policy($column, $direction)
-	{
-		// Convert the column into an integer.
-		switch ($column)
-		{
-			case ($column == 'manual' || $column == 'sequence'):
-				$order = Model_Page::CHILD_ORDER_MANUAL;
-				break;
-
-			case ($column == 'date' || $column == 'visible_from'):
-				$order = Model_Page::CHILD_ORDER_DATE;
-				break;
-
-			default:
-				$order = Model_Page::CHILD_ORDER_ALPHABETIC;
-		}
-
-		// Convert the direction to an integer and apply it to $order
-		switch ($direction)
-		{
-			case 'asc':
-				$order = $order | Model_Page::CHILD_ORDER_ASC;
-				break;
-
-			default:
-				$order = $order | Model_Page::CHILD_ORDER_DESC;
-		}
-
-		// Set the value of the children_ordering_policy column.
-		$this->children_ordering_policy = $order;
-
-		// Rethrn the current object.
-		return $this;
 	}
 
 	public function set_template_of_children($template_id)

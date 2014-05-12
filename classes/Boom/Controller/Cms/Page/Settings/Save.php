@@ -51,7 +51,7 @@ class Boom_Controller_Cms_Page_Settings_Save extends Controller_Cms_Page_Setting
 
 		if (isset($post['children_ordering_policy']) && isset($post['children_ordering_direction']))
 		{
-			$this->page->set_child_ordering_policy($post['children_ordering_policy'], $post['children_ordering_direction']);
+			$this->page->setChildOrderingPolicy($post['children_ordering_policy'], $post['children_ordering_direction']);
 		}
 
 		$this->page

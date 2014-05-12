@@ -34,18 +34,16 @@ class Boom_Controller_Cms_Page_Settings_View extends Controller_Cms_Page_Setting
 
 		// Get the ID and names of all the templates in the database.
 		// These are used by both the basic and the advanced settings.
-		$templates = ORM::factory('Template')
-			->names();
+		$templates = ORM::factory('Template')->names();
 
-		// Get the current child ordering policy column and direction.
-		list($child_order_colum, $child_order_direciton) = $this->page->get_child_ordering_policy();
+		$childOrderingPolicy = $this->page->getChildORderingPolicy();
 
 		// Create the main view with the basic settings
 		$this->template = View::factory("$this->_view_directory/children", array(
 			'default_child_template'	=>	($this->page->children_template_id != 0)? $this->page->children_template_id : $this->page->version()->template_id,
 			'templates'			=>	$templates,
-			'child_order_column'		=>	$child_order_colum,
-			'child_order_direction'	=>	$child_order_direciton,
+			'child_order_column'		=>	$childOrderingPolicy->getColumn(),
+			'child_order_direction'	=>	$childOrderingPolicy->getDirection(),
 			'allow_advanced'		=>	$this->allow_advanced,
 		));
 

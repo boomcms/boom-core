@@ -2,13 +2,18 @@
 
 namespace Boom;
 
-class Page extends \Boom\Model\Page
+class Page extends \Model_Page
 {
 	/**
 	 *
 	 * @var \Model_Page_URL
 	 */
 	protected $_url;
+
+	public function getChildOrderingPolicy()
+	{
+		return new Page\ChildOrderingPolicy($this->children_ordering_policy);
+	}
 
 	/**
 	 * Get a description for the page.
@@ -19,7 +24,7 @@ class Page extends \Boom\Model\Page
 	 */
 	public function getDescription()
 	{
-		$description = ($this->description != null)? $this->description : Chunk::factory('text', 'standfirst', $this)->text();
+		$description = ($this->description != null)? $this->description : \Chunk::factory('text', 'standfirst', $this)->text();
 
 		return \strip_tags($description);
 	}
@@ -36,6 +41,19 @@ class Page extends \Boom\Model\Page
 	}
 
 	/**
+	 *
+	 * @param	string	$column
+	 * @param	string	$direction
+	 */
+	public function setChildOrderingPolicy($column, $direction)
+	{
+		$ordering_policy = new \Boom\Page\ChildOrderingPolicy($column, $direction);
+		$this->children_ordering_policy = $ordering_policy->asInt();
+
+		return $this;
+	}
+
+	/**
 	 * Returns the Model_Page_URL object for the page's primary URI
 	 *
 	 * The URL can be displayed by casting the returned object to a string:
@@ -49,8 +67,7 @@ class Page extends \Boom\Model\Page
 	{
 		if ($this->_url === null)
 		{
-			// Get the primary URL for this page.
-			$this->_url = ORM::factory('Page_URL')
+			$this->_url = \ORM::factory('Page_URL')
 				->values(array(
 					'location'		=>	$this->primary_uri,
 					'page_id'		=>	$this->id,

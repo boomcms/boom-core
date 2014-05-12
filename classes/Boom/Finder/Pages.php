@@ -27,17 +27,14 @@ class Boom_Finder_Pages extends Finder
 		return (\Boom\Editor::instance()->isEnabled())? 'visible_in_nav_cms' : 'visible_in_nav';
 	}
 
-	/**
-	 *
-	 * TODO: this and which_are_children_of_the_page_by_id() function probably belong in a Finder_Pages_Children decorator.
-	 */
 	public function apply_default_sort()
 	{
 		if ($this->_parent_id)
 		{
 			$parent = \Boom\Finder\Page::byId($this->_parent_id);
-			list($sort_column, $sort_direction) = $parent->get_child_ordering_policy();
-			$this->sorted_by_property_and_direction($sort_column, $sort_direction);
+
+			$childOrderingPolicy = $parent->getChildOrderingPolicy();
+			$this->sorted_by_property_and_direction($childOrderingPolicy->getColumn(), $childOrderingPolicy->getDirection());
 		}
 
 		return $this;
@@ -68,7 +65,7 @@ class Boom_Finder_Pages extends Finder
 			$this->apply_default_sort();
 		}
 
-		return parent::get_results($limit, $offset);
+		return parent::get_results($limit, $offset);;
 	}
 
 	public function sorted_by_title()
