@@ -32,7 +32,7 @@ class Boom_Controller_Cms_Editor extends Boom_Controller
 	 */
 	public function action_toolbar()
 	{
-		$page = new Model_Page($this->request->param('id'));
+		$page =  \Boom\Finder\Page::byId($this->request->param('id'));
 		$editable = $this->editor->isEnabled();
 
 		$this->auth->cache_permissions($page);

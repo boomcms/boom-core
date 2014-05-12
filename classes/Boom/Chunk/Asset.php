@@ -25,7 +25,7 @@ class Boom_Chunk_Asset extends Chunk
 		// If the URL is just a number then assume it's the page ID for an internal link.
 		if (preg_match('/^\d+$/D', $this->_chunk->url))
 		{
-			$target = new Model_Page($this->_chunk->url);
+			$target =  \Boom\Finder\Page::byId($this->_chunk->url);
 			$v->title = $target->version()->title;
 			$v->url = $target->url();
 		}

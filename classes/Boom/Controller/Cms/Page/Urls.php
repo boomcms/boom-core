@@ -29,7 +29,7 @@ class Boom_Controller_Cms_Page_Urls extends Boom_Controller
 		parent::before();
 
 		$this->page_url = new Model_Page_URL($this->request->param('id'));
-		$this->page = new Model_Page($this->request->query('page_id'));
+		$this->page = \Boom\Finder\Page::byId($this->request->query('page_id'));
 
 		if ($this->request->param('id') && ! $this->page_url->loaded())
 		{

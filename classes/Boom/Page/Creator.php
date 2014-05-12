@@ -27,7 +27,9 @@ class Creator
 
 	protected function _createPage()
 	{
-		return \ORM::factory('Page')
+		$model = new \Model_Page;
+
+		return $model
 			->values(array(
 				'visible_in_nav'				=>	$this->_parent->children_visible_in_nav,
 				'visible_in_nav_cms'			=>	$this->_parent->children_visible_in_nav_cms,

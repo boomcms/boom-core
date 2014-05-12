@@ -71,11 +71,7 @@ abstract class Boom_Core
 		if (substr($params['location'], 0, 1) == '_')
 		{
 			$page_id = base_convert(substr($params['location'], 1), 36, 10);
-
-			$page = ORM::factory('Page')
-				->with_current_version(\Boom\Editor::instance(), false)
-				->where('page.id', '=', $page_id)
-				->find();
+			$page = \Boom\Finder\Page::byId($page_id);
 		}
 		else
 		{
@@ -86,10 +82,7 @@ abstract class Boom_Core
 				return false;
 			}
 
-			$page = ORM::factory('Page')
-				->with_current_version(\Boom\Editor::instance())
-				->where('page.id', '=', $page_url->page_id)
-				->find();
+			$page = \Boom\Finder\Page::byId($page_url->page_id);
 		}
 
 		if ($page->loaded())

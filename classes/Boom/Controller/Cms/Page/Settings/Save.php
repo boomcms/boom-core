@@ -88,7 +88,7 @@ class Boom_Controller_Cms_Page_Settings_Save extends Controller_Cms_Page_Setting
 			if ($post['parent_id'] && $post['parent_id'] != $this->page->mptt->parent_id && $post['parent_id'] != $this->page->id)
 			{
 				// Check that the new parent ID is a valid page.
-				$parent = new Model_Page($post['parent_id']);
+				$parent = \Boom\Finder\Page::byId($post['parent_id']);
 
 				if ($parent->loaded())
 				{

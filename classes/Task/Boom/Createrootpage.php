@@ -29,7 +29,7 @@ class Task_Boom_Createrootpage extends Minion_Task
 		}
 		
 		Database::instance()->begin();
-		
+
 		$page = ORM::factory('Page')
 			->values(array(
 				'visible_from'				=>	time(),

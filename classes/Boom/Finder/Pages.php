@@ -35,7 +35,7 @@ class Boom_Finder_Pages extends Finder
 	{
 		if ($this->_parent_id)
 		{
-			$parent = new Model_Page($this->_parent_id);
+			$parent = \Boom\Finder\Page::byId($this->_parent_id);
 			list($sort_column, $sort_direction) = $parent->get_child_ordering_policy();
 			$this->sorted_by_property_and_direction($sort_column, $sort_direction);
 		}

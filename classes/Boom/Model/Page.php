@@ -318,7 +318,8 @@ class Boom_Model_Page extends Model_Taggable
 	{
 		foreach ($this->mptt->children() as $mptt)
 		{
-			ORM::factory('Page', $mptt->id)->delete($cascade);
+			$page = \Boom\Page\Finder::byId($mptt->id);
+			$page->delete($cascade);
 		}
 
 		$this->mptt->reload();
@@ -400,7 +401,7 @@ class Boom_Model_Page extends Model_Taggable
 	 */
 	public function parent()
 	{
-		return ($this->mptt->is_root())? $this : new Model_Page($this->mptt->parent_id);
+		return ($this->mptt->is_root())? $this : \Boom\Finder\Page::byId($this->mptt->parent_id);
 	}
 
 	public function remove_drafts()

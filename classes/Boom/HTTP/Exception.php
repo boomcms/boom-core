@@ -21,8 +21,7 @@ class Boom_HTTP_Exception extends Kohana_HTTP_Exception
 			return $response;
 		}
 
-		// Look for a page an internal name which matches the status code.
-		$page = new Model_Page(array('internal_name' => $this->_code));
+		$page = \Boom\Finder\Page::byInternalName($this->_code);
 
 		if ($page->loaded())
 		{
