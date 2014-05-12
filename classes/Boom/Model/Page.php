@@ -267,15 +267,6 @@ class Boom_Model_Page extends Model_Taggable
 		return ($this->visible && $this->visible_from <= \Boom\Editor::instance()->getLiveTime() && ($this->visible_to >= \Boom\Editor::instance()->getLiveTime() || $this->visible_to == 0));
 	}
 
-	/**
-	 *
-	 * @return 	Model_Page
-	 */
-	public function parent()
-	{
-		return ($this->mptt->is_root())? $this : \Boom\Finder\Page::byId($this->mptt->parent_id);
-	}
-
 	public function remove_drafts()
 	{
 		DB::delete('page_versions')

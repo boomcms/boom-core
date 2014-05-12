@@ -103,4 +103,13 @@ class Page
 
 		return $this->_url;
 	}
+
+	/**
+	 *
+	 * @return \Boom\Page
+	 */
+	public function parent()
+	{
+		return ($this->mptt->is_root())? $this : \Boom\Finder\Page::byId($this->_model->mptt->parent_id);
+	}
 }
