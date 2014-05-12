@@ -11,6 +11,20 @@ class Page extends \Boom\Model\Page
 	protected $_url;
 
 	/**
+	 * Get a description for the page.
+	 *
+	 * If no description property is set then the standfirst is used instead.
+	 *
+	 * @return string
+	 */
+	public function getDescription()
+	{
+		$description = ($this->description != null)? $this->description : Chunk::factory('text', 'standfirst', $this)->text();
+
+		return \strip_tags($description);
+	}
+
+	/**
 	 * Returns the Model_Page_URL object for the page's primary URI
 	 *
 	 * The URL can be displayed by casting the returned object to a string:

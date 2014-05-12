@@ -16,7 +16,7 @@
 		<div id="basic">
 			<p>
 				<label for="description"><?= __('Description') ?></label>
-				<textarea id="description" name="description" rows="5"><?= $page->description() ?></textarea>
+				<textarea id="description" name="description" rows="5"><?= $page->getDescription() ?></textarea>
 			</p>
 
 			<p>
