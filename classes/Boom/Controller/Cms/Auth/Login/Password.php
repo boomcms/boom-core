@@ -18,10 +18,10 @@ class Boom_Controller_Cms_Auth_Login_Password extends Controller_Cms_Auth_Login
 
 	public function action_process()
 	{
-		if ( ! Security::check($this->request->post('csrf')))
-		{
-			throw new HTTP_Exception_500;
-		}
+//		if ( ! Security::check($this->request->post('csrf')))
+//		{
+//			throw new HTTP_Exception_500;
+//		}
 
 		$person = new Model_Person(array('email' => $this->request->post('email')));
 
