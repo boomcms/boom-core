@@ -60,7 +60,7 @@ class Boom_Model_Chunk_Text extends ORM
 		// Find which assets are linked to within the text chunk.
 		preg_match_all('~hoopdb://((image)|(asset))/(\d+)~', $this->_object['text'], $matches);
 
-		$this->site_text = (string) new SiteText($this->text);
+		$this->site_text = (string) new \Boom\SiteText($this->text);
 
 		// Create the text chunk.
 		parent::create($validation);
@@ -192,7 +192,7 @@ class Boom_Model_Chunk_Text extends ORM
 
 	public function update(\Validation $validation = null)
 	{
-		$this->site_text = new SiteText($this->text);
+		$this->site_text = new \Boom\SiteText($this->text);
 
 		parent::update($validation);
 	}
