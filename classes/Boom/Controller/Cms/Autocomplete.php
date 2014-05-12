@@ -77,7 +77,7 @@ class Boom_Controller_Cms_Autocomplete extends Boom_Controller
 			->join('page_versions', 'inner')
 			->on('pages.id', '=', 'page_versions.page_id');
 
-		if ($this->editor->state_is(Editor::EDIT))
+		if ($this->editor->isEnabled())
 		{
 			// Get the most recent version for each page.
 			$query
@@ -97,16 +97,16 @@ class Boom_Controller_Cms_Autocomplete extends Boom_Controller
 				->join(array(
 					DB::select(array(DB::expr('max(id)'), 'id'))
 						->from('page_versions')
-						->where('embargoed_until', '<=', $this->editor->live_time())
+						->where('embargoed_until', '<=', $this->editor->getLiveTime())
 						->where('stashed', '=', false)
 						->where('published', '=', true)
 						->group_by('page_id'),
 					'current_version'
 				))
 				->on('page_versions.id', '=', 'current_version.id')
-				->where('visible_from', '<=', $this->editor->live_time())
+				->where('visible_from', '<=', $this->editor->getLiveTime())
 				->and_where_open()
-					->where('visible_to', '>=', $this->editor->live_time())
+					->where('visible_to', '>=', $this->editor->getLiveTime())
 					->or_where('visible_to', '=', 0)
 				->and_where_close();
 		}

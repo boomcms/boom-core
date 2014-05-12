@@ -17,7 +17,7 @@ class Boom_Chunk_Slideshow extends Chunk
 			'chunk'	=>	$this->_chunk,
 			'title'		=>	$this->_chunk->title,
 			'slides'	=>	$this->_chunk->slides(),
-			'editor'	=>	Editor::instance(),
+			'editor'	=>	\Boom\Editor::instance(),
 		));
 	}
 

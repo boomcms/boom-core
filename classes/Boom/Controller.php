@@ -31,7 +31,7 @@ class Boom_Controller extends Controller
 	public $auth;
 
 	/**
-	 * @var	Editor
+	 * @var	\Boom\Editor
 	 */
 	public $editor;
 
@@ -61,11 +61,8 @@ class Boom_Controller extends Controller
 			throw new HTTP_Exception_401;
 		}
 
-		// Who are we?
 		$this->person = $this->auth->get_user();
-
-		// Get an editor instance
-		$this->editor = Editor::instance();
+		$this->editor = \Boom\Editor::instance();
 	}
 
 	/**

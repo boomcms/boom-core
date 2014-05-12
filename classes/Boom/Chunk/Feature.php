@@ -37,7 +37,7 @@ class Boom_Chunk_Feature extends Chunk
 		$page = $this->target_page();
 
 		// Only show the page feature if the page is visible or the feature box is editable.
-		if ( ! Editor::instance()->state_is(Editor::DISABLED) || $page->is_visible())
+		if ( ! \Boom\Editor::instance()->isDisabled() || $page->is_visible())
 		{
 			return View::factory($this->_view_directory."feature/$this->_template", array(
 				'target'	=>	$page,

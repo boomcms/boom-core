@@ -216,12 +216,12 @@ class Boom_Model_Page_Version extends ORM
 			// Version is a draft if an embargo time hasn't been set.
 			return 'draft';
 		}
-		elseif ($this->embargoed_until <= Editor::instance()->live_time())
+		elseif ($this->embargoed_until <= \Boom\Editor::instance()->getLiveTime())
 		{
 			// Version is live if the embargo time is in the past.
 			return 'published';
 		}
-		elseif ($this->embargoed_until > Editor::instance()->live_time())
+		elseif ($this->embargoed_until > \Boom\Editor::instance()->getLiveTime())
 		{
 			// Version is embargoed if the embargo time is in the future.
 			return 'embargoed';
@@ -264,7 +264,7 @@ class Boom_Model_Page_Version extends ORM
 			// If the current user isn't logged in then make sure it's a published asset.
 			if ( ! Auth::instance()->logged_in())
 			{
-				$query->where('asset.visible_from', '<=', Editor::instance()->live_time());
+				$query->where('asset.visible_from', '<=', \Boom\Editor::instance()->getLiveTime());
 			}
 
 			// Load the result.

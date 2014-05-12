@@ -13,7 +13,7 @@ class Boom_Chunk_Linkset extends Chunk
 
 	protected function _show()
 	{
-		if ( ! Editor::instance()->state_is(Editor::DISABLED))
+		if ( ! \Boom\Editor::instance()->isDisabled())
 		{
 			// Editor is enabled, show all the links.
 			$links = $this->_chunk->links();

@@ -10,7 +10,7 @@ class Boom_Finder_Pages extends Finder
 	{
 		$this->_query = ORM::factory('Page')
 			->where('deleted', '=', false)
-			->with_current_version(Editor::instance())
+			->with_current_version(\Boom\Editor::instance())
 			->where('page.primary_uri', '!=', null);
 	}
 
@@ -24,7 +24,7 @@ class Boom_Finder_Pages extends Finder
 
 	protected function _get_navigation_visibility_column()
 	{
-		return (Editor::instance()->state_is(Editor::EDIT))? 'visible_in_nav_cms' : 'visible_in_nav';
+		return (\Boom\Editor::instance()->isEnabled())? 'visible_in_nav_cms' : 'visible_in_nav';
 	}
 
 	/**

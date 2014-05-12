@@ -391,7 +391,7 @@ class Boom_Model_Page extends Model_Taggable
 
 	public function is_visible()
 	{
-		return ($this->visible && $this->visible_from <= Editor::instance()->live_time() && ($this->visible_to >= Editor::instance()->live_time() || $this->visible_to == 0));
+		return ($this->visible && $this->visible_from <= \Boom\Editor::instance()->getLiveTime() && ($this->visible_to >= \Boom\Editor::instance()->getLiveTime() || $this->visible_to == 0));
 	}
 
 	/**
@@ -538,19 +538,19 @@ class Boom_Model_Page extends Model_Taggable
 		// No it hasn't, query the database for the right version to use.
 
 		// Get the editor instance to determine which state the editor is in.
-		$editor = Editor::instance();
+		$editor = \Boom\Editor::instance();
 
 		// Start the query.
 		$query = ORM::factory('Page_Version')
 			->where('page_id', '=', $this->id);
 
-		if ($editor->state_is(Editor::DISABLED))
+		if ($editor->isDisabled())
 		{
 			// For site users get the published version with the embargoed time that's most recent to the current time.
 			// Order by ID as well incase there's multiple versions with the same embargoed time.
 			$query
 				->where('published', '=', true)
-				->where('embargoed_until', '<=', $editor->live_time())
+				->where('embargoed_until', '<=', $editor->getLiveTime())
 				->order_by('embargoed_until', 'desc')
 				->order_by('id', 'desc');
 		}
@@ -579,11 +579,11 @@ class Boom_Model_Page extends Model_Taggable
 	/**
 	 *
 	 *
-	 * @param	Editor	$editor
+	 * @param	\Boom\Editor	$editor
 	 * @param	boolean	$exclude_deleted
 	 * @return	Model_Page
 	 */
-	public function with_current_version(Editor $editor)
+	public function with_current_version(\Boom\Editor $editor)
 	{
 		$page_query = new Page_Query($this, $editor);
 		$page_query->execute();

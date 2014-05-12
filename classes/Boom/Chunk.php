@@ -172,7 +172,7 @@ abstract class Boom_Chunk
 			 *
 			 * @todo Multiple chunks will be inserted on a single page - need to remove duplicate calles to Auth::instance()->logged_in()
 			 */
-			$this->_editable = ($this->_editable === true && Editor::instance()->state_is(Editor::EDIT) && ($this->_page->was_created_by(Auth::instance()->get_user()) || Auth::instance()->logged_in("edit_page_content", $this->_page)));
+			$this->_editable = ($this->_editable === true && \Boom\Editor::instance()->isEnabled() && ($this->_page->was_created_by(Auth::instance()->get_user()) || Auth::instance()->logged_in("edit_page_content", $this->_page)));
 
 			// Get the chunk HTML.
 			$html = $this->html();

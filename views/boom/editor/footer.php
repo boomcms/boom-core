@@ -15,7 +15,7 @@
 
 			$('body').pageEditor({
 				page_id : <?= $page->id; ?>,
-				editable : <?= (int) (Editor::instance()->state_is(Editor::EDIT) && ($auth->logged_in('edit_page_content', $page) || $page->was_created_by($person))) ?>,
+				editable : <?= (int) (\Boom\Editor::instance()->isEnabled() && ($auth->logged_in('edit_page_content', $page) || $page->was_created_by($person))) ?>,
 				publishable : <?= (int) $auth->logged_in('publish_page', $page) ?>
 			});
 		});

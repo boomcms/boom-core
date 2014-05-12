@@ -166,7 +166,7 @@ class Boom_Model_Chunk_Text extends ORM
 				{
 					$text = "<p class='inline-asset'><a class='download ".strtolower(Boom_Asset::type($asset->type))."' href='/asset/view/{$asset->id}.{$asset->get_extension()}'>Download {$asset->title}</a>";
 
-					if (Editor::instance()->state_is(Editor::DISABLED))
+					if (\Boom\Editor::instance()->isDisabled())
 					{
 						$text .= " (".Text::bytes($asset->filesize)." ".ucfirst(Boom_Asset::type($asset->type)).")";
 					}

@@ -43,14 +43,14 @@ class Task_Boom_Testpages extends Minion_Task
 	{
 		return ORM::factory('Page')
 			->where('primary_uri', '!=', null)
-			->with_current_version(Editor::instance())
+			->with_current_version(\Boom\Editor::instance())
 			->find_all();
 	}
 
 	protected function _how_many_pages_are_being_tested()
 	{
 		return ORM::factory('Page')
-			->with_current_version(Editor::instance())
+			->with_current_version(\Boom\Editor::instance())
 			->where('primary_uri', '!=', null)
 			->count_all();
 	}

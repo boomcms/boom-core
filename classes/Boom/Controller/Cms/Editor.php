@@ -13,7 +13,7 @@ class Boom_Controller_Cms_Editor extends Boom_Controller
 	public function action_state()
 	{
 		$state = $this->request->post('state');
-		$numeric_state = constant("Editor::" . strtoupper($state));
+		$numeric_state = constant("\Boom\Editor::" . strtoupper($state));
 
 		if ($numeric_state === null)
 		{
@@ -22,7 +22,7 @@ class Boom_Controller_Cms_Editor extends Boom_Controller
 			));
 		}
 
-		$this->editor->state($numeric_state);
+		$this->editor->setState($numeric_state);
 	}
 
 	/**
@@ -33,7 +33,7 @@ class Boom_Controller_Cms_Editor extends Boom_Controller
 	public function action_toolbar()
 	{
 		$page = new Model_Page($this->request->param('id'));
-		$editable = $this->editor->state_is(Editor::EDIT);
+		$editable = $this->editor->isEnabled();
 
 		$this->auth->cache_permissions($page);
 

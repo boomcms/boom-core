@@ -82,7 +82,7 @@ class Boom_Chunk_Text extends Chunk
 
 	public function text()
 	{
-		$text = Editor::instance()->state() === Editor::EDIT? $this->_chunk->text : $this->_chunk->site_text;
+		$text = \Boom\Editor::instance()->isEnabled()? $this->_chunk->text : $this->_chunk->site_text;
 
 		$text = html_entity_decode($text);
 		$text = $this->_chunk->unmunge($text);

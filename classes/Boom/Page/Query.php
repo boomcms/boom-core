@@ -4,7 +4,7 @@ class Boom_Page_Query
 {
 	/**
 	 *
-	 * @var Editor
+	 * @var \Boom\Editor
 	 */
 	protected $_editor;
 
@@ -14,9 +14,9 @@ class Boom_Page_Query
 	 */
 	protected $_query;
 
-	public function __construct(ORM $query, Editor $editor = null)
+	public function __construct(ORM $query, \Boom\Editor $editor = null)
 	{
-		$this->_editor = $editor === null? Editor::instance() : $editor;
+		$this->_editor = $editor === null? \Boom\Editor::instance() : $editor;
 		$this->_query = $query;
 	}
 
@@ -30,14 +30,14 @@ class Boom_Page_Query
 			->on('v2.id', '=', 'version.id');
 
 		// Logged out view?
-		if ($this->_editor->state_is(Editor::DISABLED))
+		if ($this->_editor->isDisabled())
 		{
 			// Get the most recent published version for each page.
 			$this->_query
 				->where('visible', '=', true)
-				->where('visible_from', '<=', $this->_editor->live_time())
+				->where('visible_from', '<=', $this->_editor->getLiveTime())
 				->and_where_open()
-					->where('visible_to', '>=', $this->_editor->live_time())
+					->where('visible_to', '>=', $this->_editor->getLiveTime())
 					->or_where('visible_to', '=', 0)
 				->and_where_close();
 		}
@@ -52,7 +52,7 @@ class Boom_Page_Query
 			->where('stashed', '=', 0)
 			->group_by('page_id');
 
-		if ($this->_editor->state_is(Editor::DISABLED))
+		if ($this->_editor->isDisabled())
 		{
 			$query
 				->where('embargoed_until', '<=', DB::expr(time()))
