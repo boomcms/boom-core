@@ -2,6 +2,8 @@
 
 namespace Boom\Page;
 
+use Boom\Page as Page;
+
 class ReadabilityScore
 {
 	/**
@@ -10,7 +12,7 @@ class ReadabilityScore
 	 */
 	protected $_page;
 
-	public function __construct(\Model_Page $page)
+	public function __construct(Page $page)
 	{
 		$this->_page = $page;
 		$this->_loadDependencies();

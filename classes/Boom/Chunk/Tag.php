@@ -11,7 +11,7 @@ class Boom_Chunk_Tag extends Chunk
 	protected $_tag;
 	protected $_type = 'tag';
 
-	public function __construct(Model_Page $page, $chunk, $editable = true)
+	public function __construct(\Boom\Page $page, $chunk, $editable = true)
 	{
 		parent::__construct($page, $chunk, $editable);
 

@@ -11,7 +11,7 @@ class Boom_Chunk_Asset extends Chunk
 	protected $_default_template = 'image';
 	protected $_type = 'asset';
 
-	public function __construct(Model_Page $page, $chunk, $editable = true)
+	public function __construct(\Boom\Page $page, $chunk, $editable = true)
 	{
 		parent::__construct($page, $chunk, $editable);
 

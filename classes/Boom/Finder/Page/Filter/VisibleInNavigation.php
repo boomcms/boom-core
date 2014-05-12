@@ -1,0 +1,28 @@
+<?php
+
+namespace Boom\Finder\Page\Filter;
+
+use \Boom\Finder as Finder;
+
+class VisibleInNavigation extends Finder\Filter
+{
+	/**
+	 *
+	 * @var Editor
+	 */
+	protected $_editor;
+
+	public function __construct(Editor $editor = null) {
+		$this->_editor = $editor ?: Editor::instance();
+	}
+
+	protected function _getNavigationVisibilityColumn()
+	{
+		return ($this->_editor->isEnabled())? 'visible_in_nav_cms' : 'visible_in_nav';
+	}
+
+	public function execute(\ORM $query)
+	{
+		$query->where($this->_getNavigationVisibilityColumn(), '=', true);
+	}
+}

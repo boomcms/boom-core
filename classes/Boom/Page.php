@@ -2,17 +2,43 @@
 
 namespace Boom;
 
-class Page extends \Model_Page
+class Page
 {
+	/**
+	 *
+	 * @var \Model_Page
+	 */
+	protected $_model;
+
 	/**
 	 *
 	 * @var \Model_Page_URL
 	 */
 	protected $_url;
 
+	public function __construct(\Model_Page $model)
+	{
+		$this->_model = $model;
+	}
+
+	public function __get($name)
+	{
+		return $this->_model->$name;
+	}
+
+	public function __set($name, $value)
+	{
+		return $this->_model->$name = $value;
+	}
+
+	public function __call($name, $arguments)
+	{
+		return call_user_func_array(array($this->_model, $name), $arguments);
+	}
+
 	public function getChildOrderingPolicy()
 	{
-		return new Page\ChildOrderingPolicy($this->children_ordering_policy);
+		return new Page\ChildOrderingPolicy($this->_model->children_ordering_policy);
 	}
 
 	/**
@@ -24,20 +50,20 @@ class Page extends \Model_Page
 	 */
 	public function getDescription()
 	{
-		$description = ($this->description != null)? $this->description : \Chunk::factory('text', 'standfirst', $this)->text();
+		$description = ($this->_model->description != null)? $this->_model->description : \Chunk::factory('text', 'standfirst', $this)->text();
 
 		return \strip_tags($description);
 	}
 
 	public function getDefaultChildTemplateId()
 	{
-		if ($this->children_template_id)
+		if ($this->_model->children_template_id)
 		{
-			return $this->children_template_id;
+			return $this->_model->children_template_id;
 		}
 
-		$parent = $this->parent();
-		return ($parent->grandchild_template_id != 0)? $parent->grandchild_template_id : $this->version()->template_id;
+		$parent = $this->_model->parent();
+		return ($parent->grandchild_template_id != 0)? $parent->grandchild_template_id : $this->_model->version()->template_id;
 	}
 
 	/**
@@ -48,7 +74,7 @@ class Page extends \Model_Page
 	public function setChildOrderingPolicy($column, $direction)
 	{
 		$ordering_policy = new \Boom\Page\ChildOrderingPolicy($column, $direction);
-		$this->children_ordering_policy = $ordering_policy->asInt();
+		$this->_model->children_ordering_policy = $ordering_policy->asInt();
 
 		return $this;
 	}
@@ -69,8 +95,8 @@ class Page extends \Model_Page
 		{
 			$this->_url = \ORM::factory('Page_URL')
 				->values(array(
-					'location'		=>	$this->primary_uri,
-					'page_id'		=>	$this->id,
+					'location'		=>	$this->_model->primary_uri,
+					'page_id'		=>	$this->_model->id,
 					'is_primary'	=>	true,
 				));
 		}

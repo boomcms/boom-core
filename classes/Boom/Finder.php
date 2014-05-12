@@ -1,100 +1,66 @@
-<?php defined('SYSPATH') OR die('No direct script access.');
+<?php
 
-abstract class Boom_Finder
+namespace Boom;
+
+abstract class Finder
 {
+	const ASC = 'asc';
+	const DESC = 'desc';
+
+	protected $_filters = array();
+	protected $_filtersApplied = false;
 	protected $_query;
 
-	abstract protected function _apply_tag_filter(Model_Tag $tag);
-	abstract public function sorted_by_title();
-	abstract public function with_the_most_recent_first();
-
-	/**
-	 *
-	 * @return Finder_Pages
-	 */
-	public static function pages()
+	public function addFilter(Finder\Filter $filter)
 	{
-		return new Finder_Pages;
-	}
-
-	/**
-	 *
-	 * @return Finder_Paginated
-	 */
-	public static function paginated(Finder $finder)
-	{
-		return new Finder_Paginated($finder);
-	}
-
-	protected function _tag_filter_should_be_applied(Model_Tag $tag)
-	{
-		return $tag->loaded();
-	}
-
-	public function count_matching()
-	{
-		$count_query = clone $this->_query;
-		return $count_query->count_all();
-	}
-
-	public function filtered_by_month($month)
-	{
-		if ($month > 0)
-		{
-			$this->_query->where(DB::expr('month(from_unixtime(visible_from))'), '=', $month);
-		}
+		$this->_filters[] = $filter;
 
 		return $this;
 	}
 
-	public function filtered_by_year($year)
+	protected function _applyFilters(\ORM $query)
 	{
-		if ($year > 0)
-		{
-			$this->_query->where(DB::expr('year(from_unixtime(visible_from))'), '=', $year);
+		$this->_filtersApplied = true;
+
+		foreach ($this->_filters as $filter) {
+			$filter->execute($query);
 		}
 
-		return $this;
+		return $query;
 	}
 
-	public function get_results($limit = null, $offset = null)
+	public function count()
 	{
-		$offset && $this->_query->offset($offset);
-		$limit && $this->_query->limit($limit);
+		if ( ! $this->_filtersApplied) {
+			$this->_query = $this->_applyFilters($this->_query);
+		}
 
+		$countQuery = clone $this->_query;
+		return $countQuery->count_all();
+	}
+
+	public function find()
+	{
 		return $this->_query->find_all();
 	}
 
-	public function get_query()
+	public function setLimit($limit)
 	{
-		return $this->_query;
-	}
-
-	public function sorted_by_property_and_direction($property, $direction)
-	{
-		$this->_query->order_by($property, $direction);
+		$this->_query->limit($limit);
 
 		return $this;
 	}
 
-	public function which_have_the_tag(Model_Tag $tag)
+	public function setOffset($offset)
 	{
-		if ($this->_tag_filter_should_be_applied($tag))
-		{
-			$this->_apply_tag_filter($tag);
-		}
+		$this->_query($offset);
 
 		return $this;
 	}
 
-	public function which_have_the_tag_named($tag_name)
+	public function setOrderBy($field, $direction = null)
 	{
-		$tag = new Model_Tag(array('name' => $tag_name));
-
-		if ($this->_tag_filter_should_be_applied($tag))
-		{
-			$this->_apply_tag_filter($tag);
-		}
+		$this->_query->order_by($field, $direction);
 
 		return $this;
 	}

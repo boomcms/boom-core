@@ -45,7 +45,7 @@ class Boom_Controller_Cms_Editor extends Boom_Controller
 		View::bind_global('page', $page);
 	}
 
-	protected function _add_readability_score_to_template(Model_Page $page)
+	protected function _add_readability_score_to_template(\Boom\Page $page)
 	{
 		$readability = new \Boom\Page\ReadabilityScore($page);
 		$this->template->set('readability', $readability->getSmogScore());

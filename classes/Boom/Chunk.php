@@ -68,7 +68,7 @@ abstract class Boom_Chunk
 	 */
 	public static $types = array('asset', 'text', 'feature', 'linkset', 'slideshow', 'timestamp', 'tag');
 
-	public function __construct(Model_Page $page, $chunk, $slotname)
+	public function __construct(\Boom\Page $page, $chunk, $slotname)
 	{
 		$this->_page = $page;
 		$this->_chunk = $chunk;

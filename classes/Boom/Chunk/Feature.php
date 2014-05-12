@@ -15,7 +15,7 @@ class Boom_Chunk_Feature extends Chunk
 
 	protected $_type = 'feature';
 
-	public function __construct(Model_Page $page, $chunk, $editable = true)
+	public function __construct(\Boom\Page $page, $chunk, $editable = true)
 	{
 		parent::__construct($page, $chunk, $editable);
 

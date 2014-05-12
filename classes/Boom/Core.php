@@ -1,13 +1,5 @@
 <?php defined('SYSPATH') OR die('No direct script access.');
 
-/**
- *
- * @package	BoomCMS
- * @category	Plugins
- * @author	Rob Taylor
- * @copyright	Hoop Associates
- *
- */
 abstract class Boom_Core
 {
 	public static function include_css()
