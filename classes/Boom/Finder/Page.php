@@ -3,7 +3,6 @@
 namespace Boom\Finder;
 
 use Boom\Editor as Editor;
-use Boom\Page\ChildOrderingPolicy as ChildOrderingPolicy;
 
 class Page extends \Boom\Finder
 {
