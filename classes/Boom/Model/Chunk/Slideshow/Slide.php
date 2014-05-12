@@ -47,7 +47,7 @@ class Boom_Model_Chunk_Slideshow_Slide extends ORM
 	 */
 	public function get_link()
 	{
-		return Link::factory($this->url);
+		return \Boom\Link::factory($this->url);
 	}
 
 	/**

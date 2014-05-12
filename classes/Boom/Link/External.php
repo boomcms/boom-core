@@ -1,6 +1,8 @@
 <?php
 
-class Boom_Link_External extends Link
+namespace Boom\Link;
+
+class External extends \Boom\Link
 {
 	protected $_link;
 

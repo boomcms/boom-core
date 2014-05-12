@@ -1,16 +1,10 @@
-<?php defined('SYSPATH') OR die('No direct script access.');
+<?php
 
-/**
- *
- * @package	BoomCMS
- * @category	Chunks
- * @category	Models
- * @author	Rob Taylor
- * @copyright	Hoop Associates
- *
- */
+
 class Boom_Model_Chunk_Linkset_Link extends ORM
 {
+	protected $_link;
+
 	protected $_belongs_to = array(
 		'target'	=> array('model' => 'page', 'foreign_key' => 'target_page_id')
 	);
@@ -25,22 +19,24 @@ class Boom_Model_Chunk_Linkset_Link extends ORM
 
 	protected $_table_name = 'chunk_linkset_links';
 
-	/**
-	 * Is the link internal?
-	 *
-	 * @return boolean
-	 */
-	public function is_internal()
+	public function getLink()
 	{
-		return (int) $this->target_page_id != 0;
+		if ($this->_link === null) {
+			// TODO: store internal links in url property and let \Boom\Link do all the work.
+			$url = $this->_target_page_id > 0? $this->_target_page_id : $this->_url;
+			$this->_link = \Boom\Link::factory($url);
+		}
+
+		return $this->_link;
 	}
 
-	/**
-	 * Is the link external?
-	 * Alias for is_internal()
-	 */
-	public function is_external()
+	public function isInternal()
 	{
-		return ! $this->is_internal();
+		return $this->getLink()->isInternal();
+	}
+
+	public function isExternal()
+	{
+		return ! $this->isInternal();
 	}
 }

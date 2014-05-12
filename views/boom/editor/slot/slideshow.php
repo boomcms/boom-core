@@ -15,7 +15,7 @@
 				<? $link = $slide->get_link() ?>
 				<li>
 					<label>
-						<input type="radio" value="<?= $slide->id ?>" name="slide" data-asset="<?= $slide->asset_id ?>" data-title="<?= $slide->title ?>" data-url="<?= $link->url() ?>" data-page="<?= $link->is_internal()? $link->get_page()->id : 0 ?>" data-caption="<?= $slide->caption ?>" />
+						<input type="radio" value="<?= $slide->id ?>" name="slide" data-asset="<?= $slide->asset_id ?>" data-title="<?= $slide->title ?>" data-url="<?= $link->url() ?>" data-page="<?= $link->isInternal()? $link->getPage()->id : 0 ?>" data-caption="<?= $slide->caption ?>" />
 						<img src="<?= Route::url('asset', array('id' => $slide->asset_id)) ?>" />
 					</label>
 				</li>
