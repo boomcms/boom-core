@@ -36,9 +36,9 @@ class Boom_Controller_Cms_Page extends Boom_Controller
 	{
 		$this->_csrf_check() && $this->authorization('add_page', $this->page);
 
-		$creator = new Page_Creator($this->page, $this->person);
-		$creator->set_template_id($this->request->post('template_id'));
-		$creator->set_title($this->request->post('title'));
+		$creator = new \Boom\Page\Creator($this->page, $this->person);
+		$creator->setTemplateId($this->request->post('template_id'));
+		$creator->setTitle($this->request->post('title'));
 		$new_page = $creator->execute();
 
 		// Add a default URL.
