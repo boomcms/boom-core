@@ -19,7 +19,7 @@ class YearAndMonth extends Finder\Filter
 
 	public function execute(\ORM $query)
 	{
-		$query
+		return $query
 			->where(DB::expr('year(from_unixtime(visible_from))'), '=', $this->_year)
 			->where(DB::expr('month(from_unixtime(visible_from))'), '=', $this->_month);
 	}

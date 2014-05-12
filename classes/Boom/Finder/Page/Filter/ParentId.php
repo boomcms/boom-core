@@ -15,7 +15,7 @@ class ParentId extends Finder\Filter
 
 	public function execute(\ORM $query)
 	{
-		$query
+		return $query
 			->join('page_mptt', 'inner')
 			->on('page.id', '=', 'page_mptt.id')
 			->where('page_mptt.parent_id', '=', $this->_parentId);

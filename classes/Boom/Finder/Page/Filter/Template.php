@@ -19,6 +19,6 @@ class Template extends Finder\Filter
 
 	public function execute(\ORM $query)
 	{
-		$query->where('template_id', '=', $this->_template->id);
+		return $query->where('template_id', '=', $this->_template->id);
 	}
 }

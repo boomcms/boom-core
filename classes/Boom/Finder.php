@@ -24,7 +24,7 @@ abstract class Finder
 
 		foreach ($this->_filters as $filter) {
 			if ($filter->shouldBeApplied()) {
-				$filter->execute($query);
+				$query = $filter->execute($query);
 			}
 		}
 

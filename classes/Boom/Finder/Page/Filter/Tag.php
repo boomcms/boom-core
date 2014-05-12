@@ -19,7 +19,7 @@ class Tag extends Finder\Filter
 
 	public function execute(\ORM $query)
 	{
-		$query
+		return $query
 			->join('pages_tags', 'inner')
 			->on('page.id', '=', 'pages_tags.page_id')
 			->where('pages_tags.tag_id', '=', $this->_tag->id);

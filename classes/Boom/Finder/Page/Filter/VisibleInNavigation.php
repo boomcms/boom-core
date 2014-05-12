@@ -23,6 +23,6 @@ class VisibleInNavigation extends Finder\Filter
 
 	public function execute(\ORM $query)
 	{
-		$query->where($this->_getNavigationVisibilityColumn(), '=', true);
+		return $query->where($this->_getNavigationVisibilityColumn(), '=', true);
 	}
 }

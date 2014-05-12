@@ -19,7 +19,7 @@ class NextPageBySequence extends Finder\Filter
 
 	public function execute(\ORM $query)
 	{
-		$query
+		return $query
 			->where('sequence', '>', $this->currentPage->sequence)
 			->order_by('sequence', 'asc');
 	}

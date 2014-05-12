@@ -17,7 +17,7 @@ class ParentPage extends Finder\Filter
 	{
 		$order = $this->_parent->getChildOrderingPolcy();
 
-		$query
+		return $query
 			->join('page_mptt', 'inner')
 			->on('page.id', '=', 'page_mptt.id')
 			->where('page_mptt.parent_id', '=', $this->_parent->id)
