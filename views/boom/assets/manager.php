@@ -4,12 +4,12 @@
 			<?= Menu::factory('boom')->sort('priority')  ?>
 
 			<div id="b-assets-buttons">
-				<?= BoomUI::button('upload', __('Upload files'), array('id' => 'b-assets-upload')) ?>
-				<?= BoomUI::button('edit', __('View').' / '.__('Edit'), array('id' => 'b-button-multiaction-edit', 'disabled' => 'disabled')) ?>
-				<?= BoomUI::button('delete', __('Delete'), array('id' => 'b-button-multiaction-delete', 'disabled' => 'disabled')) ?>
-				<?= BoomUI::button('download', __('Download'), array('id' => 'b-button-multiaction-download', 'disabled' => 'disabled')) ?>
-				<?= BoomUI::button('tag', __('Add Tags'), array('id' => 'b-button-multiaction-tag', 'disabled' => 'disabled')) ?>
-				<?= BoomUI::button('cancel', __('Clear Selection'), array('id' => 'b-button-multiaction-clear', 'disabled' => 'disabled')) ?>
+				<?= \Boom\UI::button('upload', __('Upload files'), array('id' => 'b-assets-upload')) ?>
+				<?= \Boom\UI::button('edit', __('View').' / '.__('Edit'), array('id' => 'b-button-multiaction-edit', 'disabled' => 'disabled')) ?>
+				<?= \Boom\UI::button('delete', __('Delete'), array('id' => 'b-button-multiaction-delete', 'disabled' => 'disabled')) ?>
+				<?= \Boom\UI::button('download', __('Download'), array('id' => 'b-button-multiaction-download', 'disabled' => 'disabled')) ?>
+				<?= \Boom\UI::button('tag', __('Add Tags'), array('id' => 'b-button-multiaction-tag', 'disabled' => 'disabled')) ?>
+				<?= \Boom\UI::button('cancel', __('Clear Selection'), array('id' => 'b-button-multiaction-clear', 'disabled' => 'disabled')) ?>
 			</div>
 
 			<div id="b-assets-pagination"></div>

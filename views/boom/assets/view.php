@@ -11,10 +11,10 @@
 			</a>
 
 			<div class="ui-dialog-buttonpane">
-				<?= BoomUI::button('back', __('Back'), array('class' => 'b-assets-back', 'rel' => $asset->id)) ?>
-				<?= BoomUI::button('delete', __('Delete'), array('class' => 'b-assets-delete', 'rel' => $asset->id)) ?>
-				<?= BoomUI::button('download', __('Download'), array('class' => 'b-assets-download', 'rel' => $asset->id)) ?>
-				<?= BoomUI::button('replace', __('Replace'), array('class' => 'b-assets-replace', 'rel' => $asset->id)) ?>
+				<?= \Boom\UI::button('back', __('Back'), array('class' => 'b-assets-back', 'rel' => $asset->id)) ?>
+				<?= \Boom\UI::button('delete', __('Delete'), array('class' => 'b-assets-delete', 'rel' => $asset->id)) ?>
+				<?= \Boom\UI::button('download', __('Download'), array('class' => 'b-assets-download', 'rel' => $asset->id)) ?>
+				<?= \Boom\UI::button('replace', __('Replace'), array('class' => 'b-assets-replace', 'rel' => $asset->id)) ?>
 			</div>
 		</div>
 
@@ -55,7 +55,7 @@
 					</label>
 				<? endif; ?>
 
-				<?= BoomUI::button('accept', __('Save'), array('class' => 'b-assets-save b-button-withtext', 'rel' => $asset->id)) ?>
+				<?= \Boom\UI::button('accept', __('Save'), array('class' => 'b-assets-save b-button-withtext', 'rel' => $asset->id)) ?>
 			</div>
 
 			<div id="b-assets-view-info<?=$asset->id;?>" class="ui-helper-left">
