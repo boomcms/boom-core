@@ -47,7 +47,7 @@ class Boom_Controller_Cms_Editor extends Boom_Controller
 
 	protected function _add_readability_score_to_template(Model_Page $page)
 	{
-		$readability = new Page_ReadabilityScore($page);
-		$this->template->set('readability', $readability->get_smog_score());
+		$readability = new \Boom\Page\ReadabilityScore($page);
+		$this->template->set('readability', $readability->getSmogScore());
 	}
 }
