@@ -438,18 +438,6 @@ class Boom_Model_Page extends Model_Taggable
 	}
 
 	/**
-	 * Generate a short URL for the page, similar to t.co etc.
-	 * Returns the page ID encoded to base-36 prefixed with an underscore.
-	 * We prefix the short URLs to avoid the possibility of conflicts with real URLs
-	 *
-	 * @return 	string
-	 */
-	public function short_url()
-	{
-		return "_" . base_convert($this->id, 10, 36);
-	}
-
-	/**
 	 * Restores a page to the last published version.
 	 * Marks all versions which haven't been published since the last published versions as stashed.
 	 *

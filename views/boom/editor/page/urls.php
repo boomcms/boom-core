@@ -29,7 +29,7 @@
 		<p>When used the short URL will redirect to the page's primary URL</p>
 		<p>Short URLs always start with an underscore to avoid conflicting with regular URLs. You should therefore avoid using underscores at the start of regular URLs.</p>
 		<p class='short-url'>
-			<?= URL::site($page->short_url(), Request::current()) ?>
+			<?= URL::site($page->shortUrl(), Request::current()) ?>
 		</p>
 	</section>
 </div>
