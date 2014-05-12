@@ -19,12 +19,10 @@ class Tag extends Finder\Filter
 
 	public function execute(\ORM $query)
 	{
-		if ($this->shouldBeApplied()) {
-			$query
-				->join('pages_tags', 'inner')
-				->on('page.id', '=', 'pages_tags.page_id')
-				->where('pages_tags.tag_id', '=', $this->_tag->id);
-		}
+		$query
+			->join('pages_tags', 'inner')
+			->on('page.id', '=', 'pages_tags.page_id')
+			->where('pages_tags.tag_id', '=', $this->_tag->id);
 	}
 
 	public function shouldBeApplied()
