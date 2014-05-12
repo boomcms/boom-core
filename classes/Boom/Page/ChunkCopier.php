@@ -1,10 +1,12 @@
 <?php
 
+namespace Boom\Page;
+
 /**
  * Class to copy chunks from one page version to another.
  * 
  */
-class Boom_Page_ChunkCopier
+class ChunkCopier
 {
 	/**
 	 * Associative array of slotnames to exclude from copy. e.g.:
@@ -19,109 +21,106 @@ class Boom_Page_ChunkCopier
 
 	/**
 	 *
-	 * @var Model_Page_Version
+	 * @var \Model_Page_Version
 	 */
-	protected $_from_version;
+	protected $_fromVersion;
 
 	/**
 	 *
-	 * @var Model_Page_Version
+	 * @var \Model_Page_Version
 	 */
-	protected $_to_version;
+	protected $_toVersion;
 
-	public function __construct(Model_Page_Version $from_version, Model_Page_Version $to_version, array $exclude = null)
+	public function __construct(\Model_Page_Version $fromVersion, \Model_Page_Version $toVersion, array $exclude = null)
 	{
-		$this->_from_version = $from_version;
-		$this->_to_version = $to_version;
+		$this->_fromVersion = $fromVersion;
+		$this->_toVersion = $toVersion;
 		$this->_exclude = $exclude;
 	}
 
-	public function copy_all()
+	public function copyAll()
 	{
 		return $this
-			->copy_assets()
-			->copy_features()
-			->copy_linksets()
-			->copy_slideshows()
-			->copy_text()
-			->copy_timestamps()
-			->copy_tags();
+			->copyAssets()
+			->copyFeatures()
+			->copyLinksets()
+			->copySlideshows()
+			->copyText()
+			->copyTimestamps()
+			->copyTags();
 	}
 	
-	public function copy_assets()
+	public function copyAssets()
 	{
-		return $this->_do_simple_copy('asset');
+		return $this->_doSimpleCopy('asset');
 	}
 
-	public function copy_features()
+	public function copyFeatures()
 	{
-		return $this->_do_simple_copy('feature');
+		return $this->_doSimpleCopy('feature');
 	}
 
-	public function copy_linksets()
+	public function copyLinksets()
 	{
-		$this->_do_simple_copy('linkset');
-		$linksets = ORM::factory('Chunk_Linkset')->where('page_vid', '=', $this->_to_version->id)->find_all();
+		$this->_doSimpleCopy('linkset');
+		$linksets = \ORM::factory('Chunk_Linkset')->where('page_vid', '=', $this->_toVersion->id)->find_all();
 
-		foreach ($linksets as $linkset)
-		{
-			$linkset->copy($this->_from_version->id);
+		foreach ($linksets as $linkset) {
+			$linkset->copy($this->_fromVersion->id);
 		}
 
 		return $this;
 	}
 
-	public function copy_slideshows()
+	public function copySlideshows()
 	{
-		$this->_do_simple_copy('slideshow');
+		$this->_doSimpleCopy('slideshow');
 
-		$slideshows = ORM::factory('Chunk_Slideshow')->where('page_vid', '=', $this->_to_version->id)->find_all();
+		$slideshows = \ORM::factory('Chunk_Slideshow')->where('page_vid', '=', $this->_toVersion->id)->find_all();
 
 		foreach ($slideshows as $slideshow)
 		{
-			$slideshow->copy($this->_from_version->id);
+			$slideshow->copy($this->_fromVersion->id);
 		}
 
 		return $this;
 	}
 
-	public function copy_tags()
+	public function copyTags()
 	{
-		return $this->_do_simple_copy('tag');
+		return $this->_doSimpleCopy('tag');
 	}
 
-	public function copy_text()
+	public function copyText()
 	{
-		return $this->_do_simple_copy('text');
+		return $this->_doSimpleCopy('text');
 	}
 
-	public function copy_timestamps()
+	public function copyTimestamps()
 	{
-		return $this->_do_simple_copy('timestamp');
+		return $this->_doSimpleCopy('timestamp');
 	}
 
-	protected function _do_simple_copy($type)
+	protected function _doSimpleCopy($type)
 	{
 		$table = "chunk_$type".'s';
-		$columns = $values = $this->_get_columns_for_chunk_type($type);
-		array_unshift($columns, 'page_vid');
-		array_unshift($values, DB::expr($this->_to_version->id));
+		$columns = $values = $this->_getColumnsForChunkType($type);
+		\array_unshift($columns, 'page_vid');
+		\array_unshift($values, \DB::expr($this->_toVersion->id));
 
-		$subquery = call_user_func_array(array('DB', 'select'), $values);
+		$subquery = \call_user_func_array(array('DB', 'select'), $values);
 		$subquery
 			->from($table)
-			->where('page_vid', '=', $this->_from_version->id);
+			->where('page_vid', '=', $this->_fromVersion->id);
 
-		if ( ! empty($this->_exclude[$type]))
-		{
+		if ( ! empty($this->_exclude[$type])) {
 			$subquery->where('slotname', 'not in', $this->_exclude[$type]);
 		}
 
 		$count_query = clone $subquery;
 
-		if (count($count_query->execute()))
-		{
-			DB::insert($table, $columns)
+		if (count($count_query->execute())) {
+			\DB::insert($table, $columns)
 				->select($subquery)
 				->execute();
 		}
@@ -129,19 +128,17 @@ class Boom_Page_ChunkCopier
 		return $this;
 	}
 
-	protected function _get_columns_for_chunk_type($type)
+	protected function _getColumnsForChunkType($type)
 	{
 		$model_class = 'Chunk_'.ucfirst($type);
-		$columns = ORM::Factory($model_class)->object();
-		$columns = array_keys($columns);
+		$columns = \ORM::Factory($model_class)->object();
+		$columns = \array_keys($columns);
 
 		unset($columns['id']);
 		unset($columns['page_vid']);
 
-		foreach (array('id', 'page_vid') as $remove)
-		{
-			if (($key = array_search($remove, $columns)) !== false)
-			{
+		foreach (array('id', 'page_vid') as $remove) {
+			if (($key = \array_search($remove, $columns)) !== false) {
 				unset($columns[$key]);
 			}
 		}

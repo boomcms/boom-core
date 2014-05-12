@@ -106,8 +106,8 @@ class Boom_Model_Page_Version extends ORM
 	 */
 	public function copy_chunks(Model_Page_Version $from_version, array $exclude = null)
 	{
-		$copier = new Page_ChunkCopier($from_version, $this, $exclude);
-		$copier->copy_all();
+		$copier = new \Boom\Page\ChunkCopier($from_version, $this, $exclude);
+		$copier->copyAll();
 
 		return $this;
 	}
