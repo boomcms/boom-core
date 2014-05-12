@@ -486,31 +486,6 @@ class Boom_Model_Page extends Model_Taggable
 	}
 
 	/**
-	 * Returns the page's absolute URL.
-	 * The URL can be displayed by casting the returned object to a string:
-	 *
-	 *		(string) $page->url();
-	 *
-	 *
-	 * @return Model_Page_URL
-	 */
-	public function url()
-	{
-		if ($this->_url === null)
-		{
-			// Get the primary URL for this page.
-			$this->_url = ORM::factory('Page_URL')
-				->values(array(
-					'location'		=>	$this->primary_uri,
-					'page_id'		=>	$this->id,
-					'is_primary'	=>	true,
-				));
-		}
-
-		return $this->_url;
-	}
-
-	/**
 	 * Returns the current version for the page.
 	 *
 	 * @return	Model_Version_Page
