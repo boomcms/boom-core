@@ -1,23 +1,25 @@
 <?php
 
+namespace Boom\Page;
+
 /**
  * Retrive an array of the assets which are used in a particular page version in asset chunks, slideshows, and inline in text chunks.
  *
  */
-class Boom_Page_AssetsUsed
+class AssetsUsed
 {
 	protected $_version;
 	protected $_query;
 
-	public function __construct(Model_Page_Version $version)
+	public function __construct(\Model_Page_Version $version)
 	{
 		$this->_version = $version;
-		$this->_query = ORM::factory('Asset')->distinct(true)->order_by('asset.id');
+		$this->_query = \ORM::factory('Asset')->distinct(true)->order_by('asset.id');
 	}
 
-	public function get_all()
+	public function getAll()
 	{
-		return ORM::factory('Asset')
+		return \ORM::factory('Asset')
 
 			// Asset chunks
 			->join('chunk_assets', 'left')
@@ -43,9 +45,9 @@ class Boom_Page_AssetsUsed
 			->find_all();
 	}
 
-	public function get_asset_chunks()
+	public function getAssetChunks()
 	{
-		return ORM::factory('Asset')
+		return \ORM::factory('Asset')
 			->join('chunk_assets', 'inner')
 			->on('asset.id', '=', 'chunk_assets.asset_id')
 			->where('chunk_assets.page_vid', '=', $this->_page->version()->id)
@@ -53,9 +55,9 @@ class Boom_Page_AssetsUsed
 			->find_all();
 	}
 
-	public function get_text_chunks()
+	public function getTextChunks()
 	{
-		return ORM::factory('Asset')
+		return \ORM::factory('Asset')
 			->join('chunk_text_assets', 'inner')
 			->on('asset.id', '=', 'chunk_text_assets.asset_id')
 			->join('chunk_texts', 'inner')
@@ -65,9 +67,9 @@ class Boom_Page_AssetsUsed
 			->find_all();
 	}
 
-	public function get_slideshows()
+	public function getSlideshows()
 	{
-		return ORM::factory('Asset')
+		return \ORM::factory('Asset')
 			->join('chunk_slideshow_slides', 'inner')
 			->on('asset.id', '=', 'chunk_slideshow_slides.asset_id')
 			->join('chunk_slideshows', 'inner')
@@ -84,7 +86,7 @@ class Boom_Page_AssetsUsed
 	 *
 	 * @param int $type
 	 */
-	public function set_type($type)
+	public function setType($type)
 	{
 		$this->_query->where('asset.type', '=', $type);
 

@@ -16,12 +16,12 @@ class Boom_Controller_Cms_Page_Version_View extends Controller_Cms_Page_Version
 	{
 		parent::action_feature();
 
-		$images_in_page = new Page_AssetsUsed($this->old_version);
-		$images_in_page->set_type(Boom_Asset::IMAGE);
+		$images_in_page = new \Boom\Page\AssetsUsed($this->old_version);
+		$images_in_page->setType(Boom_Asset::IMAGE);
 
 		$this->template = View::factory("$this->_view_directory/feature", array(
 			'feature_image_id' => $this->old_version->feature_image_id,
-			'images_in_page' => $images_in_page->get_all(),
+			'images_in_page' => $images_in_page->getAll(),
 		));
 	}
 
