@@ -95,10 +95,12 @@ class Boom_Controller_Cms_Page_Settings_View extends Controller_Cms_Page_Setting
 	{
 		parent::action_children();
 
-		$children = Finder::pages()
-			->which_are_children_of_the_page_by_id($this->page->id)
-			->sorted_by_manual_order()
-			->get_results(50);
+		$finder = new \Boom\Finder\Page;
+
+		$children = $finder
+			->addFilter(\Boom\Finder\Page\Filter\ParentPage($this->page))
+			->setLimit(50)
+			->find();
 
 		$this->template = View::factory("$this->_view_directory/sort_children", array(
 			'children' => $children

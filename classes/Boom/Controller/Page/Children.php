@@ -9,9 +9,9 @@ class Boom_Controller_Page_Children extends Boom_Controller
 {
 	public function action_json()
 	{
-		$parent_id = $this->request->post('parent');
+		$parent = \Boom\Finder\Page::byId($this->request->post('parent'));
 
-		$pages = $this->_get_child_pages($parent_id);
+		$pages = $this->_get_child_pages($parent);
 		$json = $this->_format_pages_as_json($pages);
 
 		$this->response
@@ -19,12 +19,13 @@ class Boom_Controller_Page_Children extends Boom_Controller
 			->body(json_encode($json));
 	}
 
-	protected function _get_child_pages($parent_id)
+	protected function _get_child_pages($parent)
 	{
-		return Finder::pages()
-			->which_are_children_of_the_page_by_id($parent_id)
-			->apply_default_sort()
-			->get_results();
+		$finder = new \Boom\Page\Finder;
+
+		return $finder
+			->addFilter(new \Boom\Finder\Page\Filter\ParentPage($parent))
+			->find();
 	}
 
 	protected function _format_pages_as_json($pages)
