@@ -2,7 +2,7 @@
 
 	<div id="b-topbar" class="b-toolbar">
 		<?= Menu::factory('boom')->sort('priority') ?>
-		<?= BoomUI::button('accept', __('Save all'), array('id' => 'b-templates-save')) ?>
+		<?= \Boom\UI::button('accept', __('Save all'), array('id' => 'b-templates-save')) ?>
 	</div>
 
 	<div id="b-templates">
