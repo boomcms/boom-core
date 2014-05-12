@@ -1,14 +1,16 @@
 <?php
 
+namespace Boom\Page;
+
 /**
  * Helper functions for page URLs
  *
  */
-abstract class Boom_Page_URL
+abstract class URL
 {
-	public static function create_primary($location, $page_id)
+	public static function createPrimary($location, $page_id)
 	{
-		return ORM::factory('Page_URL')
+		return \ORM::factory('Page_URL')
 			->values(array(
 				'location'		=>	$location,
 				'page_id'		=>	$page_id,
@@ -23,19 +25,18 @@ abstract class Boom_Page_URL
 	 * @param string $base
 	 * @param string $title
 	 */
-	public static function from_title($base, $title)
+	public static function fromTitle($base, $title)
 	{
 		$url = static::sanitise($title);
 
 		// If the base URL isn't empty and there's no trailing / then add one.
-		if ($base && substr($base, -1) != "/")
-		{
+		if ($base && substr($base, -1) != "/") {
 			$base = $base."/";
 		}
 
 		$url = ($base == '/')? $url : $base.$url;
 
-		return static::make_unique($url);
+		return static::makeUnique($url);
 	}
 
 	/**
@@ -43,9 +44,9 @@ abstract class Boom_Page_URL
 	 *
 	 * @param string $url
 	 */
-	public static function is_available($url, $ignore_url = null)
+	public static function isAvailable($url, $ignore_url = null)
 	{
-		return ! ORM::factory('Page_URL')
+		return ! \ORM::factory('Page_URL')
 			->where('location', '=', $url)
 			->where('id', '!=', $ignore_url)
 			->find()
@@ -57,17 +58,16 @@ abstract class Boom_Page_URL
 	 *
 	 * @param string $url
 	 */
-	public static function make_unique($url)
+	public static function makeUnique($url)
 	{
 		$append = 0;
 		$start_url = $url;
 
-		do
-		{
+		do {
 			$url = ($append > 0)? ($start_url.$append) : $start_url;
 			$append++;
 		}
-		while ( ! static::is_available($url));
+		while ( ! static::isAvailable($url));
 
 		return $url;
 	}

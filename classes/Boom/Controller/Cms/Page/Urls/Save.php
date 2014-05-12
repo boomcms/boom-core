@@ -11,7 +11,7 @@ class Boom_Controller_Cms_Page_Urls_Save extends Controller_Cms_Page_Urls
 
 	public function action_add()
 	{
-		$location = Page_URL::sanitise($this->request->post('location'));
+		$location = \Boom\Page\URL::sanitise($this->request->post('location'));
 
 		$this->page_url->where('location', '=', $location)->find();
 
