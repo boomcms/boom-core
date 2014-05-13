@@ -6,7 +6,7 @@ namespace Boom\TextFilter\Filter;
  * Turns links to assets such as <img src='/asset/view/324'> into munged hoopdb:// links to.
  * 
  */
-class MungeAssetLinks implements \Boom\TextFilter\Filter
+class MungeAssetEmbeds implements \Boom\TextFilter\Filter
 {
 	public function filterText($text)
 	{

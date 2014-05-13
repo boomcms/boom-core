@@ -1,5 +1,9 @@
 <?php defined('SYSPATH') OR die('No direct script access.');
 
+use Boom\Editor as Editor;
+use Boom\TextFilter\Dispatcher as TextFilter;
+use Boom\TextFilter\Filter as Filter;
+
 /**
  * @package	BoomCMS
  * @category	Chunks
@@ -79,10 +83,16 @@ class Boom_Chunk_Text extends Chunk
 
 	public function text()
 	{
-		$text = \Boom\Editor::instance()->isEnabled()? $this->_chunk->text : $this->_chunk->site_text;
-
-		$text = html_entity_decode($text);
-		$text = $this->_chunk->unmunge($text);
+		if (Editor::instance()->isEnabled()) {
+			$dispatcher = new TextFilter;
+			$dispatcher
+				->addFilter(new Filter\UnmungeAssetEmbeds)
+				->addFilter(new Filter\UnmungeInternalLinks);
+			
+			$text = $dispatcher->filterText($this->_chunk->text);
+		} else {
+			$text = $this->_chunk->site_text;
+		}
 
 		return $text;
 	}
