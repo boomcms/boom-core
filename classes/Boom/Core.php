@@ -14,6 +14,7 @@ abstract class Boom_Core
 
 		return $assets;
 	}
+
 	public static function include_js()
 	{
 		$core_js = Kohana::$config->load('media')->get('corejs');
