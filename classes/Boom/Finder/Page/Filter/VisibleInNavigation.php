@@ -2,6 +2,7 @@
 
 namespace Boom\Finder\Page\Filter;
 
+use \Boom\Editor as Editor;
 use \Boom\Finder as Finder;
 
 class VisibleInNavigation extends Finder\Filter
