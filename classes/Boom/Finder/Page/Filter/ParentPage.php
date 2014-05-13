@@ -15,7 +15,7 @@ class ParentPage extends Finder\Filter
 
 	public function execute(\ORM $query)
 	{
-		$order = $this->_parent->getChildOrderingPolcy();
+		$order = $this->_parent->getChildOrderingPolicy();
 
 		return $query
 			->join('page_mptt', 'inner')
