@@ -84,6 +84,11 @@ abstract class Boom_Core
 				throw new HTTP_Exception_410;
 			}
 
+			if ( ! $page->is_visible())
+			{
+				return false;
+			}
+
 			if ( ! isset($page_url) || ! $page_url->is_primary)
 			{
 				header('Location: '.$page->url(), null, 301);
