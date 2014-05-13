@@ -11,18 +11,16 @@ class Boom_Chunk_Text extends Chunk
 
 	protected function _add_html($text)
 	{
-		$title = " title='".$this->_chunk->title."'";
-
 		switch ($this->_chunk->slotname)
 		{
 			case 'standfirst':
-				return "<p class=\"standFirst\"$title>$text</p>";
+				return "<p class=\"standFirst\">$text</p>";
 			case 'bodycopy':
-				return "<div id=\"content\"$title>$text</div>";
+				return "<div id=\"content\">$text</div>";
 			case 'bodycopy2':
-				return "<div id=\"content-secondary\"$title>$text</div>";
+				return "<div id=\"content-secondary\">$text</div>";
 			default:
-				return "<p$title>$text</p>";
+				return "<p>$text</p>";
 		}
 	}
 
@@ -42,7 +40,7 @@ class Boom_Chunk_Text extends Chunk
 		}
 		else
 		{
-			return View::factory($this->_view_directory."text/$this->_template", array('text' => $text, 'title' => $this->_chunk->title, 'chunk' => $this->_chunk));
+			return View::factory($this->_view_directory."text/$this->_template", array('text' => $text, 'chunk' => $this->_chunk));
 		}
 	}
 
@@ -61,7 +59,6 @@ class Boom_Chunk_Text extends Chunk
 		{
 			return View::factory($this->_view_directory."text/$template", array(
 				'text'	=>	$text,
-				'title'	=>	Kohana::message('chunks', 'title'),
 				'chunk' => $this->_chunk,
 			));
 		}

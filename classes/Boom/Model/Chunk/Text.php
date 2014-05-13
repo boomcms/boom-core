@@ -8,7 +8,6 @@ class Boom_Model_Chunk_Text extends ORM
 	protected $_table_columns = array(
 		'text'		=>	'',
 		'id'		=>	'',
-		'title'		=>	'',
 		'slotname'	=>	'',
 		'page_vid' => '',
 		'is_block'	=>	'',
@@ -98,9 +97,6 @@ class Boom_Model_Chunk_Text extends ORM
 	public function filters()
 	{
 		return array(
-			'title'	=> array(
-				array('strip_tags'),
-			),
 			'text' => array(
 				array(function($text) {
 					return str_replace('&nbsp;', ' ', $text);
