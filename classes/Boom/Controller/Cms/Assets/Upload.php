@@ -52,7 +52,7 @@ class Boom_Controller_Cms_Assets_Upload extends Controller_Cms_Assets
 			foreach ( (array) $files['tmp_name'] as $i => $filename)
 			{
 				$mime = File::mime($filename);
-				if (Boom_Asset::is_supported($mime))
+				if (\Boom\Asset::is_supported($mime))
 				{
 					$this->asset->values($common_values, array_keys($common_values));
 

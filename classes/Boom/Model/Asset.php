@@ -158,7 +158,7 @@ class Boom_Model_Asset extends Model_Taggable
 
 	public function get_extension()
 	{
-		return Boom_Asset::extension_from_mime($this->get_mime());
+		return \Boom\Asset::extension_from_mime($this->get_mime());
 	}
 
 	/**
@@ -172,11 +172,11 @@ class Boom_Model_Asset extends Model_Taggable
 		// Get the filesize, and type and update the corresponding Model_Asset properties.
 		$this->values(array(
 			'filesize'		=>	filesize($filepath),
-			'type'		=>	Boom_Asset::type_from_mime(File::mime($filepath)),
+			'type'		=>	\Boom\Asset::type_from_mime(File::mime($filepath)),
 		));
 
 		// If the asset is an image then set the dimensionis.
-		if ($this->type == Boom_Asset::IMAGE)
+		if ($this->type == \Boom\Asset::IMAGE)
 		{
 			// Set the dimensions of the image.
 			list($width, $height) = getimagesize($filepath);
@@ -300,16 +300,16 @@ class Boom_Model_Asset extends Model_Taggable
 	 */
 	public function type()
 	{
-		return Boom_Asset::type($this->type);
+		return \Boom\Asset::type($this->type);
 	}
 
 	/**
 	 * Returns an array of the type of assets which exist in the database.
 	 *
 	 * Retrieves the numeric asset types which are stored in the database.
-	 * These are then converted to words using [Boom_Asset::type()]
+	 * These are then converted to words using [\Boom\Asset::type()]
 	 *
-	 * @uses Boom_Asset::type()
+	 * @uses \Boom\Asset::type()
 	 * @return array
 	 */
 	public function types()
@@ -324,7 +324,7 @@ class Boom_Model_Asset extends Model_Taggable
 
 		// Turn the numeric asset types into user friendly strings.
 		$types = Arr::pluck($types, 'type');
-		$types = array_map(array('Boom_Asset', 'type'), $types);
+		$types = array_map(array('\Boom\Asset', 'type'), $types);
 		$types = array_map('ucfirst', $types);
 
 		// Return the results.

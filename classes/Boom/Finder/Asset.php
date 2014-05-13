@@ -140,7 +140,7 @@ class Boom_Asset_Finder
 		{
 			if ( ! is_int($type) && ! ctype_digit($type))
 			{
-				$type = constant('Boom_Asset::' . strtoupper($type));
+				$type = constant('\Boom\Asset::' . strtoupper($type));
 			}
 		}
 

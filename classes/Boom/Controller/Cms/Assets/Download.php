@@ -51,7 +51,7 @@ class Boom_Controller_Cms_Assets_Download extends Controller_Cms_Assets
 				readfile($this->asset->get_filename())
 			);
 
-		if ($this->asset->type != Boom_Asset::IMAGE)
+		if ($this->asset->type != \Boom\Asset::IMAGE)
 		{
 			$this->response->headers('Content-Disposition', 'attachment; filename='.basename($this->asset->filename));
 		}
