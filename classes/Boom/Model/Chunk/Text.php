@@ -1,10 +1,8 @@
-<?php defined('SYSPATH') OR die('No direct script access.');
-/**
- * @package	BoomCMS
- * @category	Chunks
- * @category	Models
- *
- */
+<?php
+
+use \Boom\TextFilter\Dispatcher as TextFilter;
+use \Boom\TextFilter\Filter;
+
 class Boom_Model_Chunk_Text extends ORM
 {
 	protected $_table_columns = array(
@@ -53,14 +51,19 @@ class Boom_Model_Chunk_Text extends ORM
 	 */
 	public function create(Validation $validation = null)
 	{
-		// Munge links in the text, e.g. to assets.
-		 // This needs to be done after the text is cleaned by HTML Purifier because HTML purifier strips out invalid images.
-		$this->_object['text'] = $this->munge($this->_object['text']);
+		$dispatcher = new TextFilter;
+		$dispatcher->addFilter(new Filter\MungeAssetLinks);
+
+		$this->_object['text'] = $dispatcher->filterText($this->_object['text']);
 
 		// Find which assets are linked to within the text chunk.
 		preg_match_all('~hoopdb://((image)|(asset))/(\d+)~', $this->_object['text'], $matches);
 
-		$this->site_text = (string) new \Boom\SiteText($this->text);
+		$dispatcher
+			->addFilter(new Filter\OEmbed)
+			->addFilter(new Filter\StorifyEmbed);
+
+		$this->site_text = $dispatcher->filterText($this->_object['text']);
 
 		// Create the text chunk.
 		parent::create($validation);
@@ -110,22 +113,6 @@ class Boom_Model_Chunk_Text extends ORM
 	public function make_links_relative($text)
 	{
 		return ($base = URL::base(Request::current()))? preg_replace("|<(.*?)href=(['\"])".$base."(.*?)(['\"])(.*?)>|", '<$1href=$2/$3$4$5>', $text) : $text;
-	}
-
-	/**
-	 * Munges text chunk contents to be saved in the database.
-	 * e.g. Turns text links, such as <img src='/asset/view/324'> in hoopdb:// links
-	 *
-	 * @param 	string	$text		Text to munge
-	 * @return 	string
-	 *
-	 */
-	public function munge($text)
-	{
-		$text = preg_replace('|<(.*?)src=([\'"])/asset/view/(.*?)([\'"])(.*?)>|', '<$1src=$2hoopdb://image/$3$4$5>', $text);
-		$text = preg_replace('|<(.*?)href=([\'"])/asset/view/(\d+)/?.*?([\'"])(.*?)>|', '<$1href=$2hoopdb://asset/$3$4$5>', $text);
-
-		return $text;
 	}
 
 	/**
@@ -188,12 +175,5 @@ class Boom_Model_Chunk_Text extends ORM
 		);
 
 		return $text;
-	}
-
-	public function update(\Validation $validation = null)
-	{
-		$this->site_text = new \Boom\SiteText($this->text);
-
-		parent::update($validation);
 	}
 }
