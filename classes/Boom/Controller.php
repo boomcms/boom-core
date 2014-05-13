@@ -1,5 +1,7 @@
 <?php defined('SYSPATH') OR die('No direct script access.');
 
+use \Boom\Page as Page;
+
 /**
  * Boom base controller.
  * Contains components common to site and cms and controllers.
@@ -74,7 +76,7 @@ class Boom_Controller extends Controller
 	 * @param string $role
 	 * @param Model_Page $page
 	 */
-	public function authorization($role, Model_Page $page = null)
+	public function authorization($role, Page $page = null)
 	{
 		if ( ! $this->auth->logged_in())
 		{
