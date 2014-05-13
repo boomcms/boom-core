@@ -2,6 +2,8 @@
 
 namespace Boom\Page;
 
+use \Boom\Page as Page;
+
 class Creator
 {
 	/**
@@ -19,7 +21,7 @@ class Creator
 	protected $_templateId;
 	protected $_title = 'Untitled';
 
-	public function __construct(\Model_Page $parent, \Model_Person $creator)
+	public function __construct(Page $parent, \Model_Person $creator)
 	{
 		$this->_parent = $parent;
 		$this->_creator = $creator;
