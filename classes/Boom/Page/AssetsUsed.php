@@ -82,7 +82,7 @@ class AssetsUsed
 	/**
 	 * Only retrieve assets of a particular type.
 	 *
-	 * Accepts a numberical asset type, e.g. Boom_Asset::IMAGE
+	 * Accepts a numberical asset type, e.g. \Boom\Asset\Type::IMAGE
 	 *
 	 * @param int $type
 	 */

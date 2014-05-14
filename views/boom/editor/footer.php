@@ -14,7 +14,7 @@
 			});
 
 			$('body').pageEditor({
-				page_id : <?= $page->id; ?>,
+				page_id : <?= $page->getId(); ?>,
 				editable : <?= (int) (\Boom\Editor::instance()->isEnabled() && ($auth->logged_in('edit_page_content', $page) || $page->was_created_by($person))) ?>,
 				publishable : <?= (int) $auth->logged_in('publish_page', $page) ?>
 			});

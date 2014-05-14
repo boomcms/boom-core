@@ -64,7 +64,7 @@ class Boom_Chunk_Feature extends Chunk
 
 	public function target()
 	{
-		return $this->_target_page->id;
+		return $this->_target_page->getId();
 	}
 
 	/**

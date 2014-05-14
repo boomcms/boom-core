@@ -102,7 +102,7 @@ class Boom_Controller_Cms_Page_Version_Save extends Controller_Cms_Page_Version
 		if ($this->new_version->changed('title') && $this->old_version->title == 'Untitled' && ! $this->page->mptt->is_root())
 		{
 			$location = \Boom\Page\URL::fromTitle($this->page->parent()->url()->location, $this->request->post('title'));
-			$url = \Boom\Page\URL::createPrimary($location, $this->page->id);
+			$url = \Boom\Page\URL::createPrimary($location, $this->page->getId());
 
 			// Put the page's new URL in the response body so that the JS will redirect to the new URL.
 			$this->response->body(json_encode(array(

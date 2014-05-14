@@ -12,7 +12,7 @@ class Boom_Controller_Page_Json extends Controller_Page
 	public function action_show()
 	{
 		$this->_data = array(
-			'id'			=>	$this->page->id,
+			'id'			=>	$this->page->getId(),
 			'title'			=>	$this->page->version()->title,
 			'visible'		=>	$this->page->visible,
 			'visible_to'	=>	$this->page->visible_to,

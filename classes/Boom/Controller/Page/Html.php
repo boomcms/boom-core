@@ -34,7 +34,7 @@ class Boom_Controller_Page_Html extends Controller_Page
 		// If we're in the CMS then add the boom editor the the page.
 		if ($this->auth->logged_in())
 		{
-			$content = $this->editor->insert((string) $this->template, $this->page->id);
+			$content = $this->editor->insert((string) $this->template, $this->page->getId());
 		}
 		else
 		{

@@ -15,7 +15,7 @@ class Boom_Controller_Cms_Page_Urls_Save extends Controller_Cms_Page_Urls
 
 		$this->page_url->where('location', '=', $location)->find();
 
-		if ($this->page_url->loaded() && $this->page_url->page_id !== $this->page->id)
+		if ($this->page_url->loaded() && $this->page_url->page_id !== $this->page->getId())
 		{
 			// Url is being used for a different page.
 			// Notify that the url is already in use so that the JS can load a prompt to move the url.
@@ -27,12 +27,12 @@ class Boom_Controller_Cms_Page_Urls_Save extends Controller_Cms_Page_Urls
 			$this->page_url
 				->values(array(
 					'location'		=>	$location,
-					'page_id'		=>	$this->page->id,
+					'page_id'		=>	$this->page->getId(),
 					'is_primary'	=>	false,
 				))
 				->create();
 
-			$this->log("Added secondary url $location to page " . $this->page->version()->title . "(ID: " . $this->page->id . ")");
+			$this->log("Added secondary url $location to page " . $this->page->version()->title . "(ID: " . $this->page->getId() . ")");
 		}
 	}
 
@@ -52,7 +52,7 @@ class Boom_Controller_Cms_Page_Urls_Save extends Controller_Cms_Page_Urls
 	public function action_move()
 	{
 		$this->page_url->values(array(
-			'page_id'		=>	$this->page->id,
+			'page_id'		=>	$this->page->getId(),
 			'is_primary'	=>	false, // Make sure that it's only a secondary url for the this page.
 		))
 		->update();

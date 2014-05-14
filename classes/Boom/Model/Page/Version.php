@@ -259,7 +259,7 @@ class Boom_Model_Page_Version extends ORM
 				->on('chunk_text_assets.asset_id', '=', 'asset.id')
 				->order_by('position', 'asc')
 				->where('chunk_text_assets.chunk_id', '=', $chunk->id)
-				->where('asset.type', '=', Boom_Asset::IMAGE);
+				->where('asset.type', '=', \Boom\Asset\Type::IMAGE);
 
 			// If the current user isn't logged in then make sure it's a published asset.
 			if ( ! Auth::instance()->logged_in())

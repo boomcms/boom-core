@@ -14,7 +14,7 @@ class Boom_Controller_Page_Rss extends Controller_Page
 			->join('page_mptt', 'inner')
 			->on('page.id', '=', 'page_mptt.id')
 			->with_current_version($this->editor)
-			->where('page_mptt.parent_id', '=', $this->page->id)
+			->where('page_mptt.parent_id', '=', $this->page->getId())
 			->order_by('visible_from', 'desc')
 			->find_all();
 

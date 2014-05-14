@@ -66,6 +66,11 @@ class Page
 		return ($parent->grandchild_template_id != 0)? $parent->grandchild_template_id : $this->_model->version()->template_id;
 	}
 
+	public function getId()
+	{
+		return $this->_model->id;
+	}
+
 	public function isVisibleAtTime($unixTimestamp)
 	{
 		return ($this->_model->visible && $this->_model->visible_from <= $unixTimestamp && ($this->_model->visible_to >= $unixTimestamp || $this->_model->visible_to == 0));

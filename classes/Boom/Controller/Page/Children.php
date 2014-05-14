@@ -35,7 +35,7 @@ class Boom_Controller_Page_Children extends Boom_Controller
 		foreach ($pages as $page)
 		{
 			$json_pages[] = array(
-				'id'			=>	$page->id,
+				'id'			=>	$page->getId(),
 				'title'			=>	$page->version()->title,
 				'url'			=>	(string) $page->url(),
 				'visible'		=>	(int) $page->is_visible(),

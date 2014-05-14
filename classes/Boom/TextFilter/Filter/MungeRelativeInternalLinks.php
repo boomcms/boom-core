@@ -29,6 +29,6 @@ class MungeRelativeInternalLinks implements \Boom\TextFilter\Filter
 	protected function _getPageIdForUri($uri)
 	{
 		$page = PageFinder::byPrimaryUri($uri);
-		return $page->id;
+		return $page->getId();
 	}
 }

@@ -33,11 +33,11 @@ class UnmungeAssetEmbeds implements \Boom\TextFilter\Filter
 				$asset = new \Model_Asset($asset_id);
 
 				if ($asset->loaded()) {
-					$text = "<p class='inline-asset'><a class='download ".strtolower(Boom_Asset::type($asset->type))."' href='/asset/view/{$asset->id}.{$asset->get_extension()}'>Download {$asset->title}</a>";
+					$text = "<p class='inline-asset'><a class='download ".strtolower(\Boom\Asset\Type::type($asset->type))."' href='/asset/view/{$asset->id}.{$asset->get_extension()}'>Download {$asset->title}</a>";
 
 					if (Editor::instance()->isDisabled())
 					{
-						$text .= " (".Text::bytes($asset->filesize)." ".ucfirst(Boom_Asset::type($asset->type)).")";
+						$text .= " (".Text::bytes($asset->filesize)." ".ucfirst(\Boom\Asset\Type::type($asset->type)).")";
 					}
 
 					$text .= "</p>";

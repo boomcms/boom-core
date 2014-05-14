@@ -31,7 +31,7 @@ class RelatedByTags extends Finder\Filter
 			->join('pages_tags', 'inner')
 			->on('page.id', '=', 'pages_tags.page_id')
 			->where('tag_id', 'in', $this->_tagIds)
-			->where('page.id', '!=', $this->_page->id)
+			->where('page.id', '!=', $this->_page->getId())
 			->order_by('tag_count', 'desc')
 			->order_by(\DB::expr('rand()'))
 			->group_by('page.id');
@@ -44,7 +44,7 @@ class RelatedByTags extends Finder\Filter
 	{
 		$results = \DB::select('tag_id')
 			->from('pages_tags')
-			->where('page_id', '=', $this->_page->id)
+			->where('page_id', '=', $this->_page->getId())
 			->execute();
 
 		return \Arr::pluck($results, 'tag_id');

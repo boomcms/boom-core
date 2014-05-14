@@ -48,7 +48,7 @@ class Creator
 		return \ORM::factory('Page_Version')
 			->values(array(
 				'edited_by'	=>	$this->_creator->id,
-				'page_id'		=>	$page->id,
+				'page_id'		=>	$page->getId(),
 				'template_id'	=>	$this->_getTemplateId(),
 				'title'			=>	$this->_title,
 				'published' => true,
@@ -72,7 +72,7 @@ class Creator
 
 	protected function _insertIntoTree(\Model_Page $page)
 	{
-		$page->mptt->id = $page->id;
+		$page->mptt->id = $page->getId();
 		$page->mptt->insert_as_last_child($this->_parent->mptt);
 	}
 

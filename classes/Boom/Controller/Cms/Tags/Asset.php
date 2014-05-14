@@ -1,13 +1,7 @@
 <?php defined('SYSPATH') OR die('No direct script access.');
 
-/**
- * Controller for viewing and editing asset tags.
- *
- * @package BoomCMS
- * @category Controllers
- * @author Rob Taylor
- * @copyright	Hoop Associates
- */
+use \Boom\Finder\Asset as AssetFinder;
+
 class Boom_Controller_Cms_Tags_Asset extends Controller_Cms_Tags
 {
 	public function before()
@@ -20,7 +14,7 @@ class Boom_Controller_Cms_Tags_Asset extends Controller_Cms_Tags
 		}
 
 		$asset_id = (count($this->ids) === 1)? $this->request->param('id') : null;
-		$this->model = new Model_Asset($asset_id);
+		$this->model = AssetFinder::byId($asset_id);
 
 		$this->authorization('manage_assets');
 	}
