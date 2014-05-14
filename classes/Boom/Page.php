@@ -107,7 +107,7 @@ class Page
 	 */
 	public function getVisibleFrom()
 	{
-		return new \DateTime($this->_model->visible_from);
+		return new \DateTime('@' . $this->_model->visible_from);
 	}
 
 	/**
@@ -116,7 +116,7 @@ class Page
 	 */
 	public function getVisibleTo()
 	{
-		return new \DateTime($this->_model->visible_to);
+		return new \DateTime('@' . $this->_model->visible_to);
 	}
 
 	/**

@@ -18,7 +18,7 @@ class Boom_Chunk_Asset extends Chunk
 	{
 		parent::__construct($page, $chunk, $editable);
 
-		$this->_asset = $this->_chunk->target;
+		$this->_asset = Asset::factory($this->_chunk->target);
 	}
 
 	protected function _show()
@@ -38,7 +38,7 @@ class Boom_Chunk_Asset extends Chunk
 			$v->url = $this->_chunk->url;
 		}
 
-		$v->asset = Asset::factory($this->_chunk->target);
+		$v->asset = $this->asset();
 		$v->caption = $this->_chunk->caption;
 
 		return $v;
