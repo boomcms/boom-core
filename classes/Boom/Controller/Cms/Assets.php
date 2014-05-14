@@ -29,31 +29,29 @@ class Boom_Controller_Cms_Assets extends Controller_Cms
 	{
 		$this->_csrf_check();
 
-		if ($this->asset->loaded())
-		{
-			$this->asset->delete();
+		if ($this->asset->loaded()) {
+			$this->_deleteAsset($this->asset);
 		}
 
 		$asset_ids = array_unique((array) $this->request->post('assets'));
 
-		foreach ($asset_ids as $asset_id)
-		{
-			$this->asset
-				->where('id', '=', $asset_id)
-				->find();
+		foreach ($asset_ids as $asset_id) {
+			$asset = \Boom\Asset\Finder::byId($asset_id);
+			$this->_deleteAsset($asset);
 
-			if ( ! $this->asset->loaded())
-			{
-				// Move along, nothing to see here.
-				continue;
-			}
-
-			$this->log("Deleted asset $this->asset->title (ID: $this->asset->getId())");
-
-			$this->asset
-				->delete()
-				->clear();
+			$this->log("Deleted asset {$this->asset->getTitle()} (ID: $this->asset->getId())");
 		}
+	}
+
+	protected function _deleteAsset(\Boom\Asset $asset)
+	{
+		$commander = new \Boom\Asset\Commander($asset);
+		$commander
+			->addCommand(new \Boom\Asset\Delete\CacheFiles)
+			->addCommand(new \Boom\Asset\Delete\OldVersions)
+			->addCommand(new \Boom\Asset\Delete\FromDatabase)
+			->addCommand(new \Boom\Asset\Delete\File)
+			->execute();
 	}
 
 	/**

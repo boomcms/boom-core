@@ -1,7 +1,7 @@
 <div id="b-assets-content">
 	<div id="b-assets-view-thumbs" class="ui-helper-left">
 		<? foreach ($assets as $asset): ?>
-			<div style="height: 160px; width: <?= floor(160 * $asset->get_aspect_ratio()) ?>px" data-aspect-ratio="<?= $asset->get_aspect_ratio() ?>">
+			<div style="height: 160px; width: <?= floor(160 * $asset->getAspectRatio()) ?>px" data-aspect-ratio="<?= $asset->getAspectRatio() ?>">
 				<div class="thumb" data-asset="<?= $asset->getId() ?>">
 					<a href="#asset/<?=$asset->getId()?>">
 						<img src="/asset/thumb/<?=$asset->getId()?>/400/0" />

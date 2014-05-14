@@ -85,45 +85,6 @@ class Asset extends Taggable
 		return $this;
 	}
 
-	/**
-	 * Delete an asset.
-	 *
-	 * @return \Boom_Model_Asset
-	 */
-	public function delete()
-	{
-		$this->delete_files();
-
-		return parent::delete();
-	}
-
-	public function delete_cache_files()
-	{
-		foreach (glob($this->getFilename()."_*.cache") as $file)
-		{
-			unlink($file);
-		}
-
-		return $this;
-	}
-
-	public function delete_files()
-	{
-		$this
-			->delete_cache_files()
-			->delete_old_versions();
-
-		@unlink($this->getFilename());
-	}
-
-	public function delete_old_versions()
-	{
-		foreach (glob($this->getFilename().".*.bak") as $file)
-		{
-			unlink($file);
-		}
-	}
-
 	public function filters()
 	{
 		return array(
@@ -131,16 +92,6 @@ class Asset extends Taggable
 				array('strtotime'),
 			),
 		);
-	}
-
-	public function get_aspect_ratio()
-	{
-		return ($this->height > 0)? ($this->width / $this->height) : 1;
-	}
-
-	public function get_extension()
-	{
-		return Asset\Type::extensionFromMime($this->get_mime());
 	}
 
 	/**
@@ -169,21 +120,6 @@ class Asset extends Taggable
 		}
 
 		return $this;
-	}
-
-	/**
-	 * Find the mimetype of the asset file.
-	 *
-	 * @return string Mimetype string.
-	 */
-	public function get_mime()
-	{
-		return $this->exists()? \File::mime($this->getFilename()) : null;
-	}
-
-	public function isVisible()
-	{
-		return $this->visible_from < $_SERVER['REQUEST_TIME'];
 	}
 
 	public function log_download($ip)
@@ -265,16 +201,6 @@ class Asset extends Taggable
 		$this->delete_cache_files();
 
 		return $this->update();
-	}
-
-	/**
-	 * Returns the asset's type in a human readable format.
-	 *
-	 * @return 	string
-	 */
-	public function type()
-	{
-		return Asset\Type::type($this->type);
 	}
 
 	/**

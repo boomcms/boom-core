@@ -15,11 +15,6 @@ abstract class Asset
 		$this->_model = $model;
 	}
 
-	public function __call($name, $arguments)
-	{
-		return call_user_func_array(array($this->_model, $name), $arguments);
-	}
-
 	public static function directory()
 	{
 		return APPPATH . 'assets';
@@ -27,7 +22,7 @@ abstract class Asset
 
 	public function exists()
 	{
-		return $this->_model->id && file_exists($this->getFilename());
+		return $this->loaded() && file_exists($this->getFilename());
 	}
 
 	public static function factory(\Model_Asset $asset)
@@ -37,14 +32,37 @@ abstract class Asset
 		return new $classname($asset);
 	}
 
+	/**
+	 *
+	 * @return string
+	 */
+	public function getExtension()
+	{
+		return $this->getMimetype()->getExtension();
+	}
+
+	/**
+	 *
+	 * @return string
+	 */
+	public function getFilename()
+	{
+		return static::directory() . DIRECTORY_SEPARATOR . $this->getId();
+	}
+
 	public function getId()
 	{
 		return $this->_model->id;
 	}
 
-	public function getFilename()
+	public function getMimetype()
 	{
-		return static::directory() . DIRECTORY_SEPARATOR . $this->getId();
+		return $this->exists()? Asset\Mimetype::factory(\File::mime($this->getFilename())) : null;
+	}
+
+	public function getTitle()
+	{
+		return $this->_model->title;
 	}
 
 	public function getVisibleFrom()
@@ -53,4 +71,14 @@ abstract class Asset
 	}
 
 	abstract public function getType();
+
+	public function isVisible()
+	{
+		return $this->getVisibleFrom()->getTimestamp() < time();
+	}
+
+	public function loaded()
+	{
+		return $this->_model->loaded();
+	}
 }
