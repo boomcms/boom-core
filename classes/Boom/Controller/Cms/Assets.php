@@ -1,36 +1,28 @@
 <?php defined('SYSPATH') OR die('No direct script access.');
 
-/**
-  * @package	BoomCMS
-  * @category	Assets
-  * @category	Controllers
-  */
+use \Boom\Asset as Asset;
+use \Boom\Finder\Asset as AssetFinder;
+
 class Boom_Controller_Cms_Assets extends Controller_Cms
 {
 	/**
 	 *
-	 * @var	string	Directory where the view files used in this class are stored.
+	 * @var	string
 	 */
 	protected $_view_directory = 'boom/assets';
 
 	/**
 	 *
-	 * @var Model_Asset
+	 * @var Asset
 	 */
 	public $asset;
 
-	/**
-	 * Check that they can manage assets.
-	 */
 	public function before()
 	{
 		parent::before();
 
-		// Permissions check.
 		$this->authorization('manage_assets');
-
-		// Instantiate an asset model.
-		$this->asset = new Model_Asset($this->request->param('id'));
+		$this->asset = AssetFinder::byId($this->request->param('id'));
 	}
 
 	public function action_delete()
@@ -150,13 +142,13 @@ class Boom_Controller_Cms_Assets extends Controller_Cms
 	{
 		$timestamp = $this->request->query('timestamp');
 
-		if (file_exists($this->asset->get_filename().".".$timestamp.".bak"))
+		if (file_exists($this->asset->getFilename().".".$timestamp.".bak"))
 		{
 			// Backup the current active file.
-			@rename($this->asset->get_filename(), $this->asset->get_filename().".".$_SERVER['REQUEST_TIME'].".bak");
+			@rename($this->asset->getFilename(), $this->asset->getFilename().".".$_SERVER['REQUEST_TIME'].".bak");
 
 			// Restore the old file.
-			@copy($this->asset->get_filename().".".$timestamp.".bak", $this->asset->get_filename());
+			@copy($this->asset->getFilename().".".$timestamp.".bak", $this->asset->getFilename());
 		}
 
 		$this->asset

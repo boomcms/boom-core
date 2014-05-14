@@ -48,10 +48,10 @@ class Boom_Controller_Cms_Assets_Download extends Controller_Cms_Assets
 				"Expires"				=>	"0"
 			))
 			->body(
-				readfile($this->asset->get_filename())
+				readfile($this->asset->getFilename())
 			);
 
-		if ($this->asset->type != \Boom\Asset::IMAGE)
+		if ($this->asset->type != \Boom\Asset\Type::IMAGE)
 		{
 			$this->response->headers('Content-Disposition', 'attachment; filename='.basename($this->asset->filename));
 		}
@@ -84,7 +84,7 @@ class Boom_Controller_Cms_Assets_Download extends Controller_Cms_Assets
 			if ($this->asset->loaded())
 			{
 				// Asset exists add it to the archive.
-				$zip->addFile($this->asset->get_filename(), $this->asset->filename);
+				$zip->addFile($this->asset->getFilename(), $this->asset->filename);
 			}
 
 			$this->asset->clear();

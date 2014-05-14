@@ -61,7 +61,7 @@ class Boom_Controller_Asset_Image extends Controller_Asset
 
 	public function action_view()
 	{
-		$filename = $original_filename = ($this->asset->exists())? $this->asset->get_filename() : MODPATH.'boom-assets/media/boom-assets/img/placeholder.png';
+		$filename = $original_filename = ($this->asset->exists())? $this->asset->getFilename() : MODPATH.'boom-assets/media/boom-assets/img/placeholder.png';
 
 		// Are we viewing an old version of the asset?
 		if ($timestamp = $this->request->query('timestamp'))

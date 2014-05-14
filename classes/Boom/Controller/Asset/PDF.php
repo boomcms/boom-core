@@ -20,7 +20,7 @@ class Boom_Controller_Asset_PDF extends Controller_Asset
 	public function action_thumb()
 	{
 		// The filename of the asset.
-		$filename = $this->asset->get_filename();
+		$filename = $this->asset->getFilename();
 
 		// Thumbnail dimensions.
 		$width = $this->request->param('width');

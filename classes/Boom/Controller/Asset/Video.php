@@ -8,11 +8,11 @@ class Boom_Controller_Asset_Video extends Controller_Asset
 	{
 		$this->_log_download();
 		$finfo = finfo_open(FILEINFO_MIME_TYPE);
-		$mime = finfo_file($finfo, $this->asset->get_filename());
+		$mime = finfo_file($finfo, $this->asset->getFilename());
 		finfo_close($finfo);
 
 		$this->response
-			->send_file($this->asset->get_filename(), $this->asset->filename, array(
+			->send_file($this->asset->getFilename(), $this->asset->filename, array(
 				'inline'		=>	true,
 				'mime_type'	=>	$mime,
 				'resumable'	=>	true,
@@ -22,7 +22,7 @@ class Boom_Controller_Asset_Video extends Controller_Asset
 	public function action_thumb()
 	{
 		$filename = ($this->asset->thumbnail_asset_id)?
-			$this->asset->thumbnail->get_filename() :
+			$this->asset->thumbnail->getFilename() :
 			MODPATH.'boom/media/boom/img/icons/40x40/mov_icon.gif';
 
 		$image = Image::factory($filename)

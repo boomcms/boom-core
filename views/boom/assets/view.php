@@ -49,7 +49,7 @@
 					<input type="text" id="visible_from" name="visible_from" class="boom-datepicker" value="<?= date('d F Y h:m', $asset->visible_from);?>" />
 				</label>
 
-				<? if ($asset->type != \Boom\Asset::IMAGE): ?>
+				<? if ($asset->type != \Boom\Asset\Type::IMAGE): ?>
 					<label for="thumbnail">Thumbnail asset ID
 						<input type="text" id="thumbnail" name="thumbnail_asset_id" value="<?= $asset->thumbnail_asset_id ?>" size="4" />
 					</label>
@@ -61,12 +61,12 @@
 			<div id="b-assets-view-info<?=$asset->id;?>" class="ui-helper-left">
 				<dl>
 					<dt><?=__('Type')?></dt>
-					<dd><?= ucfirst(\Boom\Asset::type($asset->type));?></dd>
+					<dd><?= ucfirst(\Boom\Asset\Type::type($asset->type));?></dd>
 
 					<dt><?=__('Filesize')?></dt>
 					<dd><span id='filesize'><?= Text::bytes($asset->filesize) ?></dd>
 
-					<? if ($asset->type == \Boom\Asset::IMAGE): ?>
+					<? if ($asset->type == \Boom\Asset\Type::IMAGE): ?>
 						<dt><?=__('Dimensions')?></dt>
 						<dd><?=$asset->width?> x <?=$asset->height?></dd>
 					<? endif; ?>
@@ -79,7 +79,7 @@
 					<dt><?=__('Uploaded on')?></dt>
 					<dd><?= date('d F Y h:i:s', $asset->uploaded_time)?></dd>
 
-					<? if ($asset->type != \Boom\Asset::IMAGE): ?>
+					<? if ($asset->type != \Boom\Asset\Type::IMAGE): ?>
 						<dt><?=__('Downloads')?></dt>
 						<dd><?= Num::format($asset->downloads, 0) ?></dd>
 					<? endif ?>

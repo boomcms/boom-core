@@ -10,7 +10,7 @@
 							<h1><?= $asset->title ?></h1>
 
 							<p>
-								<strong>Type</strong> <?= ucfirst($asset->type()) ?><br />
+								<strong>Type</strong> <?= $asset->getType() ?><br />
 								<strong>Description</strong> <?= ($asset->description)? Text::limit_words($asset->description, 5) : 'None set' ?><br />
 
 								<? if ($asset->downloads): ?>

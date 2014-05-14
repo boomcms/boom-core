@@ -69,7 +69,7 @@ abstract class Boom_Controller_Asset extends Boom_Controller
 				'Content-Length'			=>	$this->asset->filesize,
 				'Accept-Ranges'				=>	'bytes',
 			))
-			->body(readfile($this->asset->get_filename()));
+			->body(readfile($this->asset->getFilename()));
 	}
 
 	protected function _log_download()

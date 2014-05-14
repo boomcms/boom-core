@@ -1,15 +1,5 @@
 <?php defined('SYSPATH') OR die('No direct script access.');
 
-/**
-* Asset Model
-*
-* @package	BoomCMS
-* @category	Assets
-* @category	Models
-* @author	Rob Taylor
-* @copyright	Hoop Associates
-*
-*/
 class Boom_Model_Asset extends Model_Taggable
 {
 	protected $_belongs_to = array(
@@ -112,7 +102,7 @@ class Boom_Model_Asset extends Model_Taggable
 
 	public function delete_cache_files()
 	{
-		foreach (glob($this->get_filename()."_*.cache") as $file)
+		foreach (glob($this->getFilename()."_*.cache") as $file)
 		{
 			unlink($file);
 		}
@@ -126,20 +116,15 @@ class Boom_Model_Asset extends Model_Taggable
 			->delete_cache_files()
 			->delete_old_versions();
 
-		@unlink($this->get_filename());
+		@unlink($this->getFilename());
 	}
 
 	public function delete_old_versions()
 	{
-		foreach (glob($this->get_filename().".*.bak") as $file)
+		foreach (glob($this->getFilename().".*.bak") as $file)
 		{
 			unlink($file);
 		}
-	}
-
-	public function exists()
-	{
-		return $this->id && file_exists($this->get_filename());
 	}
 
 	public function filters()
@@ -158,7 +143,7 @@ class Boom_Model_Asset extends Model_Taggable
 
 	public function get_extension()
 	{
-		return \Boom\Asset::extension_from_mime($this->get_mime());
+		return \Boom\Asset\Type::extensionFromMime($this->get_mime());
 	}
 
 	/**
@@ -172,11 +157,11 @@ class Boom_Model_Asset extends Model_Taggable
 		// Get the filesize, and type and update the corresponding Model_Asset properties.
 		$this->values(array(
 			'filesize'		=>	filesize($filepath),
-			'type'		=>	\Boom\Asset::type_from_mime(File::mime($filepath)),
+			'type'		=>	\Boom\Asset\Type::typeFromMime(File::mime($filepath)),
 		));
 
 		// If the asset is an image then set the dimensionis.
-		if ($this->type == \Boom\Asset::IMAGE)
+		if ($this->type == \Boom\Asset\Type::IMAGE)
 		{
 			// Set the dimensions of the image.
 			list($width, $height) = getimagesize($filepath);
@@ -190,21 +175,13 @@ class Boom_Model_Asset extends Model_Taggable
 	}
 
 	/**
-	 * @return string
-	 */
-	public function get_filename()
-	{
-		return $this->directory().DIRECTORY_SEPARATOR.$this->id;
-	}
-
-	/**
 	 * Find the mimetype of the asset file.
 	 *
 	 * @return string Mimetype string.
 	 */
 	public function get_mime()
 	{
-		return $this->exists()? File::mime($this->get_filename()) : null;
+		return $this->exists()? File::mime($this->getFilename()) : null;
 	}
 
 	public function is_visible()
@@ -261,7 +238,7 @@ class Boom_Model_Asset extends Model_Taggable
 		{
 			// Add files for previous versions of the asset.
 			// Wrap the glob in array_reverse() so that we end up with an array with the most recent first.
-			foreach (array_reverse(glob($this->get_filename().".*.bak")) as $file)
+			foreach (array_reverse(glob($this->getFilename().".*.bak")) as $file)
 			{
 				// Get the version ID out of the filename.
 				preg_match('/' . $this->id . '.(\d+).bak$/', $file, $matches);
@@ -284,7 +261,7 @@ class Boom_Model_Asset extends Model_Taggable
 	{
 		$this->get_file_info($filename);
 
-		$path = $this->get_filename();
+		$path = $this->getFilename();
 		@rename($path, "{$path}.{$this->last_modified}.bak");
 		copy($filename, $path);
 
@@ -300,16 +277,16 @@ class Boom_Model_Asset extends Model_Taggable
 	 */
 	public function type()
 	{
-		return \Boom\Asset::type($this->type);
+		return \Boom\Asset\Type::type($this->type);
 	}
 
 	/**
 	 * Returns an array of the type of assets which exist in the database.
 	 *
 	 * Retrieves the numeric asset types which are stored in the database.
-	 * These are then converted to words using [\Boom\Asset::type()]
+	 * These are then converted to words using [\Boom\Asset\Type::type()]
 	 *
-	 * @uses \Boom\Asset::type()
+	 * @uses \Boom\Asset\Type::type()
 	 * @return array
 	 */
 	public function types()

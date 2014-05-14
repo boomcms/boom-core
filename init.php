@@ -8,8 +8,7 @@ Route::set('asset', 'asset/<action>/<id>(.<extension>)(/<width>(/<height>(/<qual
 	))
 	->filter(function(Route $route, $params, Request $request)
 		{
-			// Try and get the asset from the database.
-			$asset = new Model_Asset($params['id']);
+			$asset = \Boom\Finder\Asset::byId($params['id']);
 
 			// Does the asset exist?
 			if ( ! $asset->loaded() || ( Kohana::$environment != Kohana::DEVELOPMENT && ! $asset->exists()))
@@ -17,21 +16,15 @@ Route::set('asset', 'asset/<action>/<id>(.<extension>)(/<width>(/<height>(/<qual
 				return false;
 			}
 
-			if ($params['action'] == 'view' && $asset->type != \Boom\Asset::IMAGE && substr($request->headers('accept'), 0, 5) == 'image')
+			if ($params['action'] == 'view' && ! $asset instanceof \Boom\Asset\Type\Image && substr($request->headers('accept'), 0, 5) == 'image')
 			{
 				// An image response has been requested, but this asset isn't an image.
 				// Show the asset thumbnail instead.
 				$params['action'] = 'thumb';
 			}
 
-
-			// Put the asset in the request params.
 			$params['asset'] = $asset;
-
-			// Set the controller depending on the asset type.
-			$params['controller'] = 'Asset_'.ucfirst($asset->type());
-
-			// Return the new request params.
+			$params['controller'] = 'Asset_'. \Boom\Asset\Type::numericTypeToClass($asset->type);
 			return $params;
 		}
 	);
