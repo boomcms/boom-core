@@ -19,7 +19,7 @@
 				</tr>
 				<? foreach ($pages as $page): ?>
 					<tr class="<?= Text::alternate('odd', 'even') ?>" data-page-id="<?= $page->getId() ?>">
-						<td><a href="<?= $page->url() ?>"><?= $page->version()->title ?></a></td>
+						<td><a href="<?= $page->url() ?>"><?= $page->getTitle() ?></a></td>
 						<td><?= $page->version()->person->name ?> (<?= $page->version()->person->email ?>)</td>
 						<td><?= date('d F Y H:i', $page->version()->edited_time) ?></td>
 						<td><a href="#" class="b-approvals-publish">Publish</a></td>

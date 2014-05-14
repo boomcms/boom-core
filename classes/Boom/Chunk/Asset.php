@@ -26,7 +26,7 @@ class Boom_Chunk_Asset extends Chunk
 		if (preg_match('/^\d+$/D', $this->_chunk->url))
 		{
 			$target =  \Boom\Finder\Page::byId($this->_chunk->url);
-			$v->title = $target->version()->title;
+			$v->title = $target->getTitle();
 			$v->url = $target->url();
 		}
 		else

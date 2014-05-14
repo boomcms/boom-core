@@ -18,7 +18,7 @@ class Boom_Controller_Cms_Page_Settings_Save extends Controller_Cms_Page_Setting
 	{
 		parent::action_admin();
 
-		$this->log("Saved admin settings for page " . $this->page->version()->title . " (ID: " . $this->page->getId() . ")");
+		$this->log("Saved admin settings for page " . $this->page->getTitle() . " (ID: " . $this->page->getId() . ")");
 
 		$internal_name = $this->request->post('internal_name')? $this->request->post('internal_name') : null;
 		
@@ -33,7 +33,7 @@ class Boom_Controller_Cms_Page_Settings_Save extends Controller_Cms_Page_Setting
 
 		$post = $this->request->post();
 
-		$this->log("Saved child page settings for page ".$this->page->version()->title." (ID: ".$this->page->getId().")");
+		$this->log("Saved child page settings for page ".$this->page->getTitle()." (ID: ".$this->page->getId().")");
 
 		$expected = array('children_template_id');
 
@@ -99,7 +99,7 @@ class Boom_Controller_Cms_Page_Settings_Save extends Controller_Cms_Page_Setting
 			}
 		}
 
-		$this->log("Saved navigation settings for page " . $this->page->version()->title . " (ID: " . $this->page->getId() . ")");
+		$this->log("Saved navigation settings for page " . $this->page->getTitle() . " (ID: " . $this->page->getId() . ")");
 
 		$this->page
 			->values($post, array('visible_in_nav', 'visible_in_nav_cms'))
@@ -110,7 +110,7 @@ class Boom_Controller_Cms_Page_Settings_Save extends Controller_Cms_Page_Setting
 	{
 		parent::action_search();
 
-		$this->log("Saved search settings for page " . $this->page->version()->title . " (ID: " . $this->page->getId() . ")");
+		$this->log("Saved search settings for page " . $this->page->getTitle() . " (ID: " . $this->page->getId() . ")");
 
 		$expected = array('description', 'keywords');
 
@@ -139,7 +139,7 @@ class Boom_Controller_Cms_Page_Settings_Save extends Controller_Cms_Page_Setting
 
 		$post = $this->request->post();
 
-		$this->log("Updated visibility settings for page " . $this->page->version()->title . " (ID: " . $this->page->getId() . ")");
+		$this->log("Updated visibility settings for page " . $this->page->getTitle() . " (ID: " . $this->page->getId() . ")");
 
 		$this->page->set('visible', $this->request->post('visible'));
 

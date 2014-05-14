@@ -27,10 +27,10 @@
 	</tr>
 	<tr>
 		<td>
-			<?= $current->version()->title ?>
+			<?= $current->getTitle() ?>
 		</td>
 		<td>
-			<?= $page->version()->title ?>
+			<?= $page->getTitle() ?>
 		</td>
 	</tr>
 	<tr>

@@ -32,7 +32,7 @@ class Boom_Controller_Cms_Page_Urls_Save extends Controller_Cms_Page_Urls
 				))
 				->create();
 
-			$this->log("Added secondary url $location to page " . $this->page->version()->title . "(ID: " . $this->page->getId() . ")");
+			$this->log("Added secondary url $location to page " . $this->page->getTitle() . "(ID: " . $this->page->getId() . ")");
 		}
 	}
 

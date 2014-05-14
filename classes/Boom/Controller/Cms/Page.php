@@ -45,10 +45,10 @@ class Boom_Controller_Cms_Page extends Boom_Controller
 		// This needs to go into a class of some sort, not sure where though.
 		// Don't want it as part of Page_Creator because we sometimes want to create the default URLs in this format.
 		$prefix = ($this->page->children_url_prefix)? $this->page->children_url_prefix : $this->page->url()->location;
-		$url = \Boom\Page\URL::fromTitle($prefix, $new_page->version()->title);
+		$url = \Boom\Page\URL::fromTitle($prefix, $new_page->getTitle());
 		\Boom\Page\URL::createPrimary($url, $new_page->getId());
 
-		$this->log("Added a new page under " . $this->page->version()->title, "Page ID: " . $new_page->getId());
+		$this->log("Added a new page under " . $this->page->getTitle(), "Page ID: " . $new_page->getId());
 
 		$this->response->body(json_encode(array(
 			'url' => URL::site($url, $this->request),
@@ -85,7 +85,7 @@ class Boom_Controller_Cms_Page extends Boom_Controller
 			$this->_csrf_check();
 
 			// Log the action.
-			$this->log("Deleted page " . $this->page->version()->title . " (ID: " . $this->page->getId() . ")");
+			$this->log("Deleted page " . $this->page->getTitle() . " (ID: " . $this->page->getId() . ")");
 
 			// Redirect to the parent page after we've finished.
 			$this->response->body($this->page->parent()->url());

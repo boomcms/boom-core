@@ -13,7 +13,7 @@ class Boom_Controller_Page_Json extends Controller_Page
 	{
 		$this->_data = array(
 			'id'			=>	$this->page->getId(),
-			'title'			=>	$this->page->version()->title,
+			'title'			=>	$this->page->getTitle(),
 			'visible'		=>	$this->page->visible,
 			'visible_to'	=>	$this->page->getVisibleTo()->getTimestamp(),
 			'visible_from'	=>	$this->page->getVisibleFrom()->getTimestamp(),

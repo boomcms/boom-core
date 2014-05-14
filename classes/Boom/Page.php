@@ -71,6 +71,11 @@ class Page
 		return $this->_model->id;
 	}
 
+	public function getTitle()
+	{
+		return $this->_model->version()->title;
+	}
+
 	/**
 	 *
 	 * @return \DateTimeImmutable
