@@ -71,14 +71,41 @@ class Page
 		return $this->_model->id;
 	}
 
+	/**
+	 *
+	 * @return \DateTimeImmutable
+	 */
+	public function getVisibleFrom()
+	{
+		return new \DateTimeImmutable($this->_model->visible_from);
+	}
+
+	/**
+	 *
+	 * @return \DateTimeImmutable
+	 */
+	public function getVisibleTo()
+	{
+		return new \DateTimeImmutable($this->_model->visible_to);
+	}
+
+	/**
+	 *
+	 * @return boolean
+	 */
 	public function isVisible()
 	{
 		return $this->isVisibleAtTime(\Boom\Editor::instance()->getLiveTime());
 	}
 
+	/**
+	 *
+	 * @param int $unixTimestamp
+	 * @return boolean
+	 */
 	public function isVisibleAtTime($unixTimestamp)
 	{
-		return ($this->_model->visible && $this->_model->visible_from <= $unixTimestamp && ($this->_model->visible_to >= $unixTimestamp || $this->_model->visible_to == 0));
+		return ($this->_model->visible && $this->getVisibleFrom()->getTimestamp() <= $unixTimestamp && ($this->getVisibleTo()->getTimestamp() >= $unixTimestamp || $this->getVisibleTo()->getTimestamp() == 0));
 	}
 
 	/**
