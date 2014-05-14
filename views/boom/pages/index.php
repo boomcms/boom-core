@@ -7,7 +7,7 @@
 	<div id="b-pages">
 		<ul class='boom-tree'>
 			<? foreach ($pages as $p): ?>
-				<li><a href="<?= $p->url() ?>" rel="<?= $p->id ?>"><?= $p->version()->title ?></a></li>
+				<li><a href="<?= $p->url() ?>" rel="<?= $p->id ?>"><?= $p->getTitle() ?></a></li>
 			<? endforeach ?>
 		</ul>
 	</div>
