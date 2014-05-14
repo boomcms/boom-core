@@ -1,3 +1,3 @@
-<?php defined('SYSPATH') OR die('No direct script access.');
+<?php
 
-class Model_Asset_Download extends Boom_Model_Asset_Download {}
+class Model_Asset_Download extends \Boom\Mode\Asset\Download {}

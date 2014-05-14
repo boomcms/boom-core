@@ -1,6 +1,13 @@
-<?php defined('SYSPATH') OR die('No direct script access.');
+<?php
 
-class Boom_Model_Asset extends Model_Taggable
+namespace Boom\Model;
+
+use \Arr as Arr;
+use \Boom\Asset as Asset;
+use \DB as DB;
+use \ORM as ORM;
+
+class Asset extends Taggable
 {
 	protected $_belongs_to = array(
 		'uploader'		=>	array('model' => 'Person', 'foreign_key' => 'uploaded_by'),
@@ -62,7 +69,7 @@ class Boom_Model_Asset extends Model_Taggable
 		try
 		{
 			// Copy / move the file into the assets directory.
-			$command($filepath, $this->directory().DIRECTORY_SEPARATOR.$this->id);
+			$command($filepath, Asset::directory().DIRECTORY_SEPARATOR.$this->id);
 		}
 		catch (Exception $e)
 		{
@@ -76,16 +83,6 @@ class Boom_Model_Asset extends Model_Taggable
 
 		// Return the current model.
 		return $this;
-	}
-
-	/**
-	 * Returns the directory where asset files are stored.
-	 *
-	 * @return string
-	 */
-	public function directory()
-	{
-		return APPPATH.'assets';
 	}
 
 	/**
@@ -143,7 +140,7 @@ class Boom_Model_Asset extends Model_Taggable
 
 	public function get_extension()
 	{
-		return \Boom\Asset\Type::extensionFromMime($this->get_mime());
+		return Asset\Type::extensionFromMime($this->get_mime());
 	}
 
 	/**
@@ -156,12 +153,12 @@ class Boom_Model_Asset extends Model_Taggable
 	{
 		// Get the filesize, and type and update the corresponding Model_Asset properties.
 		$this->values(array(
-			'filesize'		=>	filesize($filepath),
-			'type'		=>	\Boom\Asset\Type::typeFromMime(File::mime($filepath)),
+			'filesize'		=> filesize($filepath),
+			'type'		=> Asset\Mimetype::factory(\File::mime($filepath))->getType(),
 		));
 
 		// If the asset is an image then set the dimensionis.
-		if ($this->type == \Boom\Asset\Type::IMAGE)
+		if ($this->type == Asset\Type::IMAGE)
 		{
 			// Set the dimensions of the image.
 			list($width, $height) = getimagesize($filepath);
@@ -181,7 +178,7 @@ class Boom_Model_Asset extends Model_Taggable
 	 */
 	public function get_mime()
 	{
-		return $this->exists()? File::mime($this->getFilename()) : null;
+		return $this->exists()? \File::mime($this->getFilename()) : null;
 	}
 
 	public function isVisible()
@@ -277,7 +274,7 @@ class Boom_Model_Asset extends Model_Taggable
 	 */
 	public function type()
 	{
-		return \Boom\Asset\Type::type($this->type);
+		return Asset\Type::type($this->type);
 	}
 
 	/**

@@ -1,6 +1,8 @@
-<?php defined('SYSPATH') OR die('No direct script access.');
+<?php
 
-class Boom_Model_Asset_Download extends ORM
+namespace Boom\Model\Asset;
+
+class Download extends \ORM
 {
 	protected $_belongs_to = array(
 		'asset'		=>	array(),
