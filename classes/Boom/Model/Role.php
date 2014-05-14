@@ -1,6 +1,8 @@
 <?php
 
-class Boom_Model_Role extends ORM
+namespace Boom\Model;
+
+class Role extends \ORM
 {
 	protected $_table_columns = array(
 		'id'			=>	'',

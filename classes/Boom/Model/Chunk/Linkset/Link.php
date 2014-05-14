@@ -1,7 +1,11 @@
 <?php
 
+namespace Boom\Model\Chunk\Linkset;
 
-class Boom_Model_Chunk_Linkset_Link extends ORM
+use \Link as Link;
+use \ORM as ORM;
+
+class BLink extends ORM
 {
 	protected $_link;
 
@@ -24,7 +28,7 @@ class Boom_Model_Chunk_Linkset_Link extends ORM
 		if ($this->_link === null) {
 			// TODO: store internal links in url property and let \Boom\Link do all the work.
 			$url = $this->_target_page_id > 0? $this->_target_page_id : $this->_url;
-			$this->_link = \Boom\Link::factory($url);
+			$this->_link = Link::factory($url);
 		}
 
 		return $this->_link;

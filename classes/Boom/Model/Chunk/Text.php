@@ -1,9 +1,14 @@
 <?php
 
+namespace Boom\Model\Chunk;
+
 use Boom\TextFilter\Dispatcher as TextFilter;
 use Boom\TextFilter\Filter as Filter;
+use \Database_Exception as Database_Exception;
+use \DB as DB;
+use \Kohana_Exception as Kohana_Exception;
 
-class Boom_Model_Chunk_Text extends ORM
+class Text extends \ORM
 {
 	protected $_table_columns = array(
 		'text'		=>	'',

@@ -1,3 +1,3 @@
-<?php defined('SYSPATH') OR die('No direct script access.');
+<?php
 
-class Model_Chunk_Tag extends Boom_Model_Chunk_Tag {}
+class Model_Chunk_Tag extends Boom\Model\Chunk\Tag {}

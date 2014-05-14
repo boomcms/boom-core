@@ -1,3 +1,3 @@
-<?php defined('SYSPATH') OR die('No direct script access.');
+<?php
 
-class Model_Page_URL extends Boom_Model_Page_URL {}
+class Model_Page_URL extends Boom\Model\Page\URL {}

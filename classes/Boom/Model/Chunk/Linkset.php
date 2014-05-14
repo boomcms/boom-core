@@ -1,12 +1,12 @@
-<?php defined('SYSPATH') OR die('No direct script access.');
-/**
- *
- * @package	BoomCMS
- * @category	Chunks
- * @category	Models
- *
- */
-class Boom_Model_Chunk_Linkset extends ORM
+<?php
+
+namespace Boom\Model\Chunk;
+
+use \DB as DB;
+use \Boom\Model as Model;
+use \ORM as ORM;
+
+class Linkset extends ORM
 {
 	protected $_has_many = array(
 		'links' => array('model' => 'Chunk_Linkset_Link', 'foreign_key' => 'chunk_linkset_id'),
@@ -66,7 +66,7 @@ class Boom_Model_Chunk_Linkset extends ORM
 
 			if ($this->_links === null)
 			{
-				$page = new Model_Page;
+				$page = new Model\Page;
 
 				$query = ORM::factory('Chunk_Linkset_Link')
 					->join(array('pages', 'target'), 'left')
@@ -91,7 +91,7 @@ class Boom_Model_Chunk_Linkset extends ORM
 			// If the links are arrays of data then turn them into Chunk_Linkset_Links objects.
 			foreach ($links as & $link)
 			{
-				if ( ! $link instanceof Model_Chunk_Linkset_Link)
+				if ( ! $link instanceof Linkset_Link)
 				{
 					$link = ORM::factory('Chunk_Linkset_Link')
 						->values( (array) $link);

@@ -1,11 +1,10 @@
-<?php defined('SYSPATH') OR die('No direct script access.');
-/**
- * @package	BoomCMS
- * @category	Chunks
- * @category	Models
- *
- */
-class Boom_Model_Chunk_Timestamp extends ORM
+<?php
+
+namespace Boom\Model\Chunk;
+
+use \ORM as ORM;
+
+class Timestamp extends ORM
 {
 	protected $_table_columns = array(
 		'id' => '',

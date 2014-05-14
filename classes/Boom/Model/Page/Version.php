@@ -1,18 +1,15 @@
-<?php defined('SYSPATH') OR die('No direct script access.');
+<?php
 
-/**
- *
- * @package	BoomCMS
- * @category	Models
- * @author	Rob Taylor
- * @copyright	Hoop Associates
- *
- */
-class Boom_Model_Page_Version extends ORM
+namespace Boom\Model\Page;
+
+use \Auth as Auth;
+use Boom\Model as Model;
+use \Chunk as Chunk;
+use \DB as DB;
+use \ORM as ORM;
+
+class Version extends ORM
 {
-	/**
-	* Properties to create relationships with Kohana's ORM
-	*/
 	protected $_belongs_to = array(
 		'template'		=>	array('model' => 'Template', 'foreign_key' => 'template_id'),
 		'person'		=>	array('model' => 'Person', 'foreign_key' => 'edited_by'),
@@ -150,12 +147,6 @@ class Boom_Model_Page_Version extends ORM
 				array('strip_tags'),
 				array('html_entity_decode'),
 				array('trim'),
-				array(
-					function($text)
-					{
-						return str_replace('&nbsp;', ' ', $text);
-					}
-				),
 			),
 			'keywords' => array(
 				array('trim'),

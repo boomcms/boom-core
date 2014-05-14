@@ -1,21 +1,11 @@
-<?php defined('SYSPATH') OR die('No direct script access.');
+<?php
 
-/**
- * Holds a list of images which belong to a slideshow slot.
- *
- *
- * @package	BoomCMS
- * @category	Chunks
- * @category	Models
- * @author	Rob Taylor
- * @copyright	Hoop Associates
- *
- */
-class Boom_Model_Chunk_Slideshow_Slide extends ORM
+namespace Boom\Model\Chunk\Slideshow;
+
+use \Boom\Link as Link;
+
+class Slide extends \ORM
 {
-	/**
-	* Properties to create relationships with Kohana's ORM
-	*/
 	protected $_belongs_to = array(
 		'asset'	=>	array('model' => 'Asset', 'foreign_key' => 'asset_id')
 	);
@@ -47,7 +37,7 @@ class Boom_Model_Chunk_Slideshow_Slide extends ORM
 	 */
 	public function get_link()
 	{
-		return \Boom\Link::factory($this->url);
+		return Link::factory($this->url);
 	}
 
 	/**
@@ -62,6 +52,6 @@ class Boom_Model_Chunk_Slideshow_Slide extends ORM
 
 	public function make_link_relative($url)
 	{
-		return ($base = URL::base(Request::current()))? str_replace($base, '/', $url) : $url;
+		return ($base = \URL::base(\Request::current()))? str_replace($base, '/', $url) : $url;
 	}
 }

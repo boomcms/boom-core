@@ -1,3 +1,3 @@
-<?php defined('SYSPATH') OR die('No direct script access.');
+<?php
 
-class Model_Role extends Boom_Model_Role {}
+class Model_Role extends Boom\Model\Role {}

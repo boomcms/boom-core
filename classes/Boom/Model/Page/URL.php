@@ -1,11 +1,11 @@
-<?php defined('SYSPATH') OR die('No direct script access.');
+<?php
 
-/**
- *
- * @package	BoomCMS
- * @category	Models
- */
-class Boom_Model_Page_URL extends ORM
+namespace Boom\Model\Page;
+
+use \DB as DB;
+use \ORM as ORM;
+
+class URL extends ORM
 {
 	protected $_belongs_to = array('page' => array('foreign_key' => 'page_id'));
 	protected $_table_columns = array(
@@ -25,7 +25,7 @@ class Boom_Model_Page_URL extends ORM
 	 */
 	public function __toString()
 	{
-		return URL::site($this->location, Request::$current);
+		return \URL::site($this->location, \Request::$current);
 	}
 
 	/**

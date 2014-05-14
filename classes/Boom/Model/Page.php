@@ -1,6 +1,12 @@
-<?php defined('SYSPATH') OR die('No direct script access.');
+<?php
 
-class Boom_Model_Page extends Model_Taggable
+namespace Boom\Model;
+
+use \DB as DB;
+use \Exception as Exception;
+use \ORM as ORM;
+
+class Page extends Taggable
 {
 	/**
 	 * Properties to create relationships with Kohana's ORM
@@ -317,7 +323,7 @@ class Boom_Model_Page extends Model_Taggable
 	{
 		foreach ($sequences as $sequence => $page_id)
 		{
-			$mptt = new Model_Page_Mptt($page_id);
+			$mptt = new Page_Mptt($page_id);
 
 			// Only update the sequence of pages which are children of this page.
 			if ($mptt->scope == $this->mptt->scope && $mptt->parent_id == $this->id)
@@ -382,7 +388,7 @@ class Boom_Model_Page extends Model_Taggable
 	 * @param Model_Person $person
 	 * @return boolean
 	 */
-	public function was_created_by(Model_Person $person)
+	public function was_created_by(\Model_Person $person)
 	{
 		return ($this->created_by && $this->created_by == $person->id);
 	}

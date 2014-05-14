@@ -1,14 +1,11 @@
-<?php defined('SYSPATH') OR die('No direct script access.');
+<?php
 
-/**
-*
-* @package	BoomCMS
-* @category	Models
-* @author	Rob Taylor
-* @copyright	Hoop Associates
-*
-*/
-class Boom_Model_Tag extends ORM
+namespace Boom\Model;
+
+use \DB as DB;
+use \ORM as ORM;
+
+class Tag extends ORM
 {
 	protected $_table_columns = array(
 		'id'			=>	'',
@@ -87,13 +84,9 @@ class Boom_Model_Tag extends ORM
 	{
 		$name = preg_replace('|.*/|', '', $name);
 
-		return URL::title($name);
+		return \URL::title($name);
 	}
 
-	/**
-	* Filters for the versioned person columns
-	* @link http://kohanaframework.org/3.2/guide/orm/filters
-	*/
 	public function filters()
 	{
 	    return array(

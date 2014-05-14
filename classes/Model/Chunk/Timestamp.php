@@ -1,3 +1,3 @@
-<?php defined('SYSPATH') OR die('No direct script access.');
+<?php
 
-class Model_Chunk_Timestamp extends Boom_Model_Chunk_Timestamp {}
+class Model_Chunk_Timestamp extends Boom\Model\Chunk\Timestamp {}

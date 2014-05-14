@@ -1,3 +1,3 @@
-<?php defined('SYSPATH') OR die('No direct script access.');
+<?php
 
-abstract class Model_Taggable extends Boom_Model_Taggable {}
+abstract class Model_Taggable extends \Boom\Model\Taggable {}

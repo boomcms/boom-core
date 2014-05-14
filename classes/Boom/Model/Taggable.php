@@ -1,13 +1,12 @@
-<?php defined('SYSPATH') OR die('No direct script access.');
+<?php
 
-/**
- * Base model for assets and pages which provides functions for adding / removing tags.
- *
- * @package	BoomCMS
- * @category	Models
- *
- */
-abstract class Boom_Model_Taggable extends ORM
+namespace Boom\Model;
+
+use \DB as DB;
+use \Exception as Exception;
+use \ORM as ORM;
+
+abstract class Taggable extends ORM
 {
 	/**
 	 * Adds a tag with a given name to the object.
@@ -26,7 +25,7 @@ abstract class Boom_Model_Taggable extends ORM
 			throw new Exception("Cannot add a tag to an unloaded object");
 		}
 
-		$tag = new Model_Tag(array('name' => $name, 'type' => $type));
+		$tag = new Tag(array('name' => $name, 'type' => $type));
 
 		if ( ! $tag->loaded())
 		{

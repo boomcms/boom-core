@@ -1,16 +1,9 @@
-<?php defined('SYSPATH') OR die('No direct script access.');
-/**
- *
- * @package	BoomCMS
- * @category	Chunks
- * @category	Models
- *
- */
-class Boom_Model_Chunk_Asset extends ORM
+<?php
+
+namespace Boom\Model\Chunk;
+
+class Asset extends \ORM
 {
-	/**
-	* Properties to create relationships with Kohana's ORM
-	*/
 	protected $_belongs_to = array(
 		'target' => array('model' => 'Asset', 'foreign_key' => 'asset_id'),
 	);

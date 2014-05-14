@@ -1,11 +1,8 @@
-<?php defined('SYSPATH') OR die('No direct script access.');
-/**
- * @package	BoomCMS
- * @category	Chunks
- * @category	Models
- *
- */
-class Boom_Model_Chunk_Tag extends ORM
+<?php
+
+namespace Boom\Model\Chunk;
+
+class Tag extends \ORM
 {
 	protected $_belongs_to = array(
 		'target' => array('model' => 'Tag', 'foreign_key' => 'tag_id'),

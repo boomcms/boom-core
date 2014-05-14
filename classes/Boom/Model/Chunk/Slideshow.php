@@ -1,17 +1,12 @@
-<?php defined('SYSPATH') OR die('No direct script access.');
-/**
- * Slideshow chunk model
- *
- * @package	BoomCMS
- * @category	Chunks
- * @category	Models
- *
- */
-class Boom_Model_Chunk_Slideshow extends ORM
+<?php
+
+namespace Boom\Model\Chunk;
+
+use \DB as DB;
+use \ORM as ORM;
+
+class Slideshow extends ORM
 {
-	/**
-	* Properties to create relationships with Kohana's ORM
-	*/
 	protected $_has_many = array(
 		'slides' => array('model' => 'Chunk_Slideshow_Slide', 'foreign_key' => 'chunk_id'),
 	);
