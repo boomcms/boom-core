@@ -21,7 +21,7 @@
 
 			<p>
 				<label for="keywords"><?= __('Keywords') ?></label>
-				<textarea name="keywords" id="keywords" rows="5"><?=$page->keywords ?></textarea>
+				<textarea name="keywords" id="keywords" rows="5"><?=$page->getKeywords() ?></textarea>
 			</p>
 		</div>
 

@@ -1,12 +1,5 @@
-<?php defined('SYSPATH') OR die('No direct script access.');
-/**
- *
-* @package	BoomCMS
-* @category	Models
-* @category	Permissions
-* @author	Rob Taylor
-* @copyright	Hoop Associates
-*/
+<?php
+
 class Boom_Model_Role extends ORM
 {
 	protected $_table_columns = array(

@@ -66,9 +66,34 @@ class Page
 		return ($parent->grandchild_template_id != 0)? $parent->grandchild_template_id : $this->_model->version()->template_id;
 	}
 
+	public function getFeatureImage()
+	{
+		return \Boom\Asset::factory($this->_model->version()->feature_image);
+	}
+
+	public function getFeatureImageId()
+	{
+		return $this->_model->version()->feature_image_id;
+	}
+
 	public function getId()
 	{
 		return $this->_model->id;
+	}
+
+	/**
+	 *
+	 * @return \Boom\Page\Keywords
+	 */
+	public function getKeywords()
+	{
+		$keywords = explode(',', $this->_model->keywords);
+
+		foreach ($keywords as &$keyword) {
+			$keyword = trim($keyword);
+		}
+
+		return new Page\Keywords($keywords);
 	}
 
 	public function getTitle()
@@ -78,20 +103,29 @@ class Page
 
 	/**
 	 *
-	 * @return \DateTimeImmutable
+	 * @return \DateTime
 	 */
 	public function getVisibleFrom()
 	{
-		return new \DateTimeImmutable($this->_model->visible_from);
+		return new \DateTime($this->_model->visible_from);
 	}
 
 	/**
 	 *
-	 * @return \DateTimeImmutable
+	 * @return \DateTime
 	 */
 	public function getVisibleTo()
 	{
-		return new \DateTimeImmutable($this->_model->visible_to);
+		return new \DateTime($this->_model->visible_to);
+	}
+
+	/**
+	 *
+	 * @return boolean
+	 */
+	public function hasFeatureImage()
+	{
+		return $this->getFeatureImageId() != 0;
 	}
 
 	/**

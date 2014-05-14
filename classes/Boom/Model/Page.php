@@ -1,11 +1,5 @@
 <?php defined('SYSPATH') OR die('No direct script access.');
 
-/**
- *
- * @package	BoomCMS
- * @category	Models
- * 
- */
 class Boom_Model_Page extends Model_Taggable
 {
 	/**
@@ -241,11 +235,6 @@ class Boom_Model_Page extends Model_Taggable
 		}
 
 		return $query->find_all()->as_array();
-	}
-
-	public function has_feature_image()
-	{
-		return $this->version()->feature_image_id != 0;
 	}
 
 	public static function id_by_internal_name($name)
