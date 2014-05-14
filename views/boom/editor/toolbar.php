@@ -28,8 +28,8 @@
 
 	<div class="b-page-container">
 		<? if ($auth->logged_in('edit_page', $page)): ?>
-			<?= \Boom\UI::button('visible', __('This page is visible. The content displayed will depend on which version of the page is published'), array('id' => 'b-page-visible', 'class' => $page->is_visible()? 'b-page-visibility ' : 'b-page-visibility ui-helper-hidden')) ?>
-			<?= \Boom\UI::button('invisible', __('This page is hidden regardless of whether there is a published version'), array('id' => 'b-page-invisible', 'class' => $page->is_visible()? 'b-page-visibility ui-helper-hidden' : 'b-page-visibility')) ?>
+			<?= \Boom\UI::button('visible', __('This page is visible. The content displayed will depend on which version of the page is published'), array('id' => 'b-page-visible', 'class' => $page->isVisible()? 'b-page-visibility ' : 'b-page-visibility ui-helper-hidden')) ?>
+			<?= \Boom\UI::button('invisible', __('This page is hidden regardless of whether there is a published version'), array('id' => 'b-page-invisible', 'class' => $page->isVisible()? 'b-page-visibility ui-helper-hidden' : 'b-page-visibility')) ?>
 
 			<span id="b-page-settings-menu">
 				<?= \Boom\UI::button('settings', __('Page settings which apply whichever version is published'), array('id' => 'boom-page-settings')) ?>

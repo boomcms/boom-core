@@ -85,7 +85,7 @@ abstract class Boom_Core
 				throw new HTTP_Exception_410;
 			}
 
-			if (\Boom\Editor::instance()->isDisabled() && ! $page->is_visible())
+			if (\Boom\Editor::instance()->isDisabled() && ! $page->isVisible())
 			{
 				return false;
 			}

@@ -52,7 +52,7 @@ class Boom_Controller_Page extends Boom_Controller
 		// If the page shouldn't be editable then check that it's visible.
 		if ( ! $this->editable)
 		{
-			if ($this->request->is_external() && ( ! $this->page->is_visible() && ! $this->editor->hasState(\Boom\Editor::PREVIEW)))
+			if ($this->request->is_external() && ( ! $this->page->isVisible() && ! $this->editor->hasState(\Boom\Editor::PREVIEW)))
 			{
 				return false;
 			}

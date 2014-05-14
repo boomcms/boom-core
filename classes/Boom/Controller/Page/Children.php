@@ -38,7 +38,7 @@ class Boom_Controller_Page_Children extends Boom_Controller
 				'id'			=>	$page->getId(),
 				'title'			=>	$page->version()->title,
 				'url'			=>	(string) $page->url(),
-				'visible'		=>	(int) $page->is_visible(),
+				'visible'		=>	(int) $page->isVisible(),
 				'has_children'	=>	(int) $page->mptt->has_children(),
 			);
 		}

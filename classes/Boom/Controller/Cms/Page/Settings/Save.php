@@ -153,6 +153,6 @@ class Boom_Controller_Cms_Page_Settings_Save extends Controller_Cms_Page_Setting
 		}
 
 		$this->page->update();
-		$this->response->body( (int) $this->page->is_visible());
+		$this->response->body( (int) $this->page->isVisible());
 	}
 }

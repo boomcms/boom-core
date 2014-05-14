@@ -71,6 +71,11 @@ class Page
 		return $this->_model->id;
 	}
 
+	public function isVisible()
+	{
+		return $this->isVisibleAtTime(\Boom\Editor::instance()->getLiveTime());
+	}
+
 	public function isVisibleAtTime($unixTimestamp)
 	{
 		return ($this->_model->visible && $this->_model->visible_from <= $unixTimestamp && ($this->_model->visible_to >= $unixTimestamp || $this->_model->visible_to == 0));

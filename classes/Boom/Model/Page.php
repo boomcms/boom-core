@@ -262,11 +262,6 @@ class Boom_Model_Page extends Model_Taggable
 		}
 	}
 
-	public function is_visible()
-	{
-		return ($this->visible && $this->visible_from <= \Boom\Editor::instance()->getLiveTime() && ($this->visible_to >= \Boom\Editor::instance()->getLiveTime() || $this->visible_to == 0));
-	}
-
 	public function remove_drafts()
 	{
 		DB::delete('page_versions')

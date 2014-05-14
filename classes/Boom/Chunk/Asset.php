@@ -65,6 +65,6 @@ class Boom_Chunk_Asset extends Chunk
 
 	public function target()
 	{
-		return $this->_asset->id;
+		return $this->_asset->getId();
 	}
 }
