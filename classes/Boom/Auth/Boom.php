@@ -210,7 +210,7 @@ class Boom_Auth_Boom extends Auth_ORM
 			}
 
 			// Does the person have the role at the specified page?
-			$page_id = ($page)? $page->id : 0;
+			$page_id = ($page)? $page->getId() : 0;
 			$cache_key = md5($role.$page_id);
 			return isset($this->_permissions_cache[$cache_key])? $this->_permissions_cache[$cache_key] : $this->_permissions_cache[$cache_key] = $this->has_role($person, $role, $page);
 		}
