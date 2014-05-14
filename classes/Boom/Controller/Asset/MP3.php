@@ -27,6 +27,6 @@ class Boom_Controller_Asset_MP3 extends Controller_Asset
 				'Content-type'		=>	'audio/mpeg',
 				'Content-Length'	=>	filesize($this->asset->getFilename()),
 			))
-			->body(readfile($this->asset->id));
+			->body(readfile($this->asset->getId()));
 	}
 }

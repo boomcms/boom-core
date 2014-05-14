@@ -48,7 +48,7 @@ class Boom_Controller_Cms_Assets extends Controller_Cms
 				continue;
 			}
 
-			$this->log("Deleted asset $this->asset->title (ID: $this->asset->id)");
+			$this->log("Deleted asset $this->asset->title (ID: $this->asset->getId())");
 
 			$this->asset
 				->delete()
@@ -157,7 +157,7 @@ class Boom_Controller_Cms_Assets extends Controller_Cms
 			->update();
 
 		// Go back to viewing the asset.
-		$this->redirect('/cms/assets/#asset/'.$this->asset->id);
+		$this->redirect('/cms/assets/#asset/'.$this->asset->getId());
 	}
 
 	public function action_save()

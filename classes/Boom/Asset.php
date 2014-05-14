@@ -44,7 +44,12 @@ abstract class Asset
 
 	public function getFilename()
 	{
-		return static::directory() . DIRECTORY_SEPARATOR . $this->_model->id;
+		return static::directory() . DIRECTORY_SEPARATOR . $this->getId();
+	}
+
+	public function getVisibleFrom()
+	{
+		return new \DateTime('@' . $this->_model->visible_from);
 	}
 
 	abstract public function getType();

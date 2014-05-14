@@ -2,9 +2,9 @@
 	<div id="b-assets-view-thumbs" class="ui-helper-left">
 		<? foreach ($assets as $asset): ?>
 			<div style="height: 160px; width: <?= floor(160 * $asset->get_aspect_ratio()) ?>px" data-aspect-ratio="<?= $asset->get_aspect_ratio() ?>">
-				<div class="thumb" data-asset="<?= $asset->id ?>">
-					<a href="#asset/<?=$asset->id?>">
-						<img src="/asset/thumb/<?=$asset->id?>/400/0" />
+				<div class="thumb" data-asset="<?= $asset->getId() ?>">
+					<a href="#asset/<?=$asset->getId()?>">
+						<img src="/asset/thumb/<?=$asset->getId()?>/400/0" />
 
 						<section class="b-asset-details">
 							<h1><?= $asset->title ?></h1>

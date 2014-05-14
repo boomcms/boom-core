@@ -60,7 +60,7 @@ class Boom_Controller_Cms_Assets_Upload extends Controller_Cms_Assets
 					$this->asset->filename = $files['name'][$i];
 					$this->asset->create_from_file($filename);
 
-					$asset_ids[] = $this->asset->id;
+					$asset_ids[] = $this->asset->getId();
 
 					// Clear the model so that it can be re-used for the next iteration.
 					// This way we don't have to instantiate an asset model for each loop iteration.
@@ -97,6 +97,6 @@ class Boom_Controller_Cms_Assets_Upload extends Controller_Cms_Assets
 
 		$this->response
 			->headers('Content-Type', static::JSON_RESPONSE_MIME)
-			->body(json_encode(array($asset->id)));
+			->body(json_encode(array($asset->getId())));
 	}
 }

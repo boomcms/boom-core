@@ -184,7 +184,7 @@ class Boom_Model_Asset extends Model_Taggable
 		return $this->exists()? File::mime($this->getFilename()) : null;
 	}
 
-	public function is_visible()
+	public function isVisible()
 	{
 		return $this->visible_from < $_SERVER['REQUEST_TIME'];
 	}

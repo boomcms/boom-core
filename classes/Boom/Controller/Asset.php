@@ -32,7 +32,7 @@ abstract class Boom_Controller_Asset extends Boom_Controller
 
 		$this->asset = $this->request->param('asset');
 
-		if ( ! $this->asset->is_visible() && ! $this->auth->logged_in())
+		if ( ! $this->asset->isVisible() && ! $this->auth->logged_in())
 		{
 			throw new HTTP_Exception_404;
 		}
@@ -46,7 +46,7 @@ abstract class Boom_Controller_Asset extends Boom_Controller
 
 	public function action_embed()
 	{
-		$this->response->body(HTML::anchor('asset/view/'.$this->asset->id, "Download {$this->asset->title}"));
+		$this->response->body(HTML::anchor('asset/view/'.$this->asset->getId(), "Download {$this->asset->title}"));
 	}
 
 	abstract public function action_view();
