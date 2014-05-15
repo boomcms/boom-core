@@ -22,7 +22,7 @@ class Boom_Controller_Cms_Assets_Upload extends Controller_Cms_Assets
 	 */
 	public function action_begin()
 	{
-		$this->template = View::factory("$this->_view_directory/upload");
+		$this->template = View::factory("$this->viewDirectory/upload");
 	}
 
 	/**

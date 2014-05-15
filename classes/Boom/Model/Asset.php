@@ -3,7 +3,6 @@
 namespace Boom\Model;
 
 use \Arr as Arr;
-use \Boom\Asset as Asset;
 use \DB as DB;
 use \ORM as ORM;
 
@@ -69,7 +68,7 @@ class Asset extends Taggable
 		try
 		{
 			// Copy / move the file into the assets directory.
-			$command($filepath, Asset::directory().DIRECTORY_SEPARATOR.$this->id);
+			$command($filepath, \Boom\Asset::directory().DIRECTORY_SEPARATOR.$this->id);
 		}
 		catch (Exception $e)
 		{
@@ -105,11 +104,11 @@ class Asset extends Taggable
 		// Get the filesize, and type and update the corresponding Model_Asset properties.
 		$this->values(array(
 			'filesize'		=> filesize($filepath),
-			'type'		=> Asset\Mimetype::factory(\File::mime($filepath))->getType(),
+			'type'		=> \Boom\Asset\Mimetype::factory(\File::mime($filepath))->getType(),
 		));
 
 		// If the asset is an image then set the dimensionis.
-		if ($this->type == Asset\Type::IMAGE)
+		if ($this->type == \Boom\Asset\Type::IMAGE)
 		{
 			// Set the dimensions of the image.
 			list($width, $height) = getimagesize($filepath);

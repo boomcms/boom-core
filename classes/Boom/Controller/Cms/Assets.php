@@ -9,7 +9,7 @@ class Boom_Controller_Cms_Assets extends Controller_Cms
 	 *
 	 * @var	string
 	 */
-	protected $_view_directory = 'boom/assets';
+	protected $viewDirectory = 'boom/assets';
 
 	/**
 	 *
@@ -60,7 +60,7 @@ class Boom_Controller_Cms_Assets extends Controller_Cms
 	 */
 	public function action_index()
 	{
-		$this->template = View::factory("$this->_view_directory/index", array(
+		$this->template = View::factory("$this->viewDirectory/index", array(
 			'manager'	=>	Request::factory('cms/assets/manager')->execute()->body(),
 			'person'	=>	$this->person,
 		));
@@ -94,7 +94,7 @@ class Boom_Controller_Cms_Assets extends Controller_Cms
 
 		if ($count === 0)
 		{
-			$this->template = View::factory("$this->_view_directory/none_found");
+			$this->template = View::factory("$this->viewDirectory/none_found");
 		}
 		else
 		{
@@ -102,7 +102,7 @@ class Boom_Controller_Cms_Assets extends Controller_Cms
 			$perpage = max(30, $this->request->query('perpage'));
 			$assets = $finder->get_assets($perpage, ($page - 1) * $perpage);
 
-			$this->template =new View("$this->_view_directory/list", array(
+			$this->template =new View("$this->viewDirectory/list", array(
 				'assets'		=>	$assets,
 				'total_size'	=>	$filesize,
 				'total'		=>	$count,
@@ -133,7 +133,7 @@ class Boom_Controller_Cms_Assets extends Controller_Cms
 	 */
 	public function action_manager()
 	{
-		$this->template = View::factory("$this->_view_directory/manager");
+		$this->template = View::factory("$this->viewDirectory/manager");
 	}
 
 	public function action_restore()
@@ -179,7 +179,7 @@ class Boom_Controller_Cms_Assets extends Controller_Cms
 			throw new HTTP_Exception_404;
 		}
 
-		$this->template = View::factory("$this->_view_directory/view", array(
+		$this->template = View::factory("$this->viewDirectory/view", array(
 			'asset'	=>	$this->asset,
 			'tags'	=>	$this->asset
 				->tags
