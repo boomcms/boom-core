@@ -10,7 +10,7 @@ class Boom_Controller_Cms_Page_Urls extends Boom_Controller
 	 *
 	 * @var string
 	 */
-	protected $_view_directory = "boom/editor/urls";
+	protected $viewDirectory = "boom/editor/urls";
 
 	/**
 	 *

@@ -30,7 +30,7 @@ abstract class Boom_Controller_Cms_Page_Settings extends Controller_Cms_Page
 	 *
 	 * @var	string
 	 */
-	protected $_view_directory = 'boom/editor/page/settings';
+	protected $viewDirectory = 'boom/editor/page/settings';
 
 	/**
 	 * Whether the current user has access to the advanced settings of the permissions group that they're editing.

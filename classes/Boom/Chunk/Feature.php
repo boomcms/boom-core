@@ -1,11 +1,12 @@
-<?php defined('SYSPATH') OR die('No direct script access.');
+<?php
 
-/**
-* @package	BoomCMS
-* @category	Chunks
-*
-*/
-class Boom_Chunk_Feature extends Chunk
+namespace Boom\Chunk;
+
+use \Boom\Editor as Editor;
+use \Kohana as Kohana;
+use \View as View;
+
+class Feature extends \Boom\Chunk
 {
 	/**
 	* holds the page which is being featured.
@@ -28,7 +29,7 @@ class Boom_Chunk_Feature extends Chunk
 	public function _show()
 	{
 		// If the template doesn't exist then use a default template.
-		if ( ! Kohana::find_file("views", $this->_view_directory."feature/$this->_template"))
+		if ( ! Kohana::find_file("views", $this->viewDirectory."feature/$this->_template"))
 		{
 			$this->_template = $this->_default_template;
 		}
@@ -37,9 +38,9 @@ class Boom_Chunk_Feature extends Chunk
 		$page = $this->target_page();
 
 		// Only show the page feature if the page is visible or the feature box is editable.
-		if ( ! \Boom\Editor::instance()->isDisabled() || $page->isVisible())
+		if ( ! Editor::instance()->isDisabled() || $page->isVisible())
 		{
-			return View::factory($this->_view_directory."feature/$this->_template", array(
+			return View::factory($this->viewDirectory."feature/$this->_template", array(
 				'target'	=>	$page,
 			));
 		}
@@ -47,13 +48,13 @@ class Boom_Chunk_Feature extends Chunk
 
 	public function _show_default()
 	{
-		return View::factory($this->_view_directory."default/feature/$this->_template");
+		return View::factory($this->viewDirectory."default/feature/$this->_template");
 	}
 
 	public function attributes()
 	{
 		return array(
-			$this->_attribute_prefix.'target' => $this->target(),
+			$this->attributePrefix.'target' => $this->target(),
 		);
 	}
 

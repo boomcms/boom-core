@@ -18,7 +18,7 @@ class Boom_Controller_Cms_Page_Settings_View extends Controller_Cms_Page_Setting
 		parent::action_admin();
 
 		// Display the admin settings form.
-		$this->template = View::factory("$this->_view_directory/admin", array(
+		$this->template = View::factory("$this->viewDirectory/admin", array(
 			'page'	=>	$this->page,
 		));
 	}
@@ -39,7 +39,7 @@ class Boom_Controller_Cms_Page_Settings_View extends Controller_Cms_Page_Setting
 		$childOrderingPolicy = $this->page->getChildORderingPolicy();
 
 		// Create the main view with the basic settings
-		$this->template = View::factory("$this->_view_directory/children", array(
+		$this->template = View::factory("$this->viewDirectory/children", array(
 			'default_child_template'	=>	($this->page->children_template_id != 0)? $this->page->children_template_id : $this->page->version()->template_id,
 			'templates'			=>	$templates,
 			'child_order_column'		=>	$childOrderingPolicy->getColumn(),
@@ -69,7 +69,7 @@ class Boom_Controller_Cms_Page_Settings_View extends Controller_Cms_Page_Setting
 		parent::action_navigation();
 
 		// Show the navigation settings form.
-		$this->template = View::factory("$this->_view_directory/navigation", array(
+		$this->template = View::factory("$this->viewDirectory/navigation", array(
 			'page'			=>	$this->page,
 			'allow_advanced'	=>	$this->allow_advanced,
 		));
@@ -85,7 +85,7 @@ class Boom_Controller_Cms_Page_Settings_View extends Controller_Cms_Page_Setting
 		parent::action_search();
 
 		// Show the search settings template.
-		$this->template = View::factory("$this->_view_directory/search", array(
+		$this->template = View::factory("$this->viewDirectory/search", array(
 			'allow_advanced'	=>	$this->allow_advanced,
 			'page'			=>	$this->page,
 		));
@@ -102,7 +102,7 @@ class Boom_Controller_Cms_Page_Settings_View extends Controller_Cms_Page_Setting
 			->setLimit(50)
 			->find();
 
-		$this->template = View::factory("$this->_view_directory/sort_children", array(
+		$this->template = View::factory("$this->viewDirectory/sort_children", array(
 			'children' => $children
 		));
 	}
@@ -117,7 +117,7 @@ class Boom_Controller_Cms_Page_Settings_View extends Controller_Cms_Page_Setting
 		parent::action_visibility();
 
 		// GET request - show the visiblity form.
-		$this->template = View::factory("$this->_view_directory/visibility", array(
+		$this->template = View::factory("$this->viewDirectory/visibility", array(
 			'page'	=>	$this->page,
 		));
 	}

@@ -1,15 +1,14 @@
-<?php defined('SYSPATH') OR die('No direct script access.');
+<?php
+
+namespace Boom\Chunk;
 
 use Boom\Editor as Editor;
-use Boom\TextFilter\Dispatcher as TextFilter;
+use Boom\TextFilter\Commander as TextFilter;
 use Boom\TextFilter\Filter as Filter;
+use \Kohana as Kohana;
+use \View as View;
 
-/**
- * @package	BoomCMS
- * @category	Chunks
- *
- */
-class Boom_Chunk_Text extends Chunk
+class Text extends \Boom\Chunk
 {
 	protected $_type = 'text';
 
@@ -38,13 +37,13 @@ class Boom_Chunk_Text extends Chunk
 		$text = $this->text();
 
 		// If no template has been set then add the default HTML tags for this slotname.
-		if ($this->_template === null)
-		{
+		if ($this->_template === null) {
 			return $this->_add_html($text);
-		}
-		else
-		{
-			return View::factory($this->_view_directory."text/$this->_template", array('text' => $text, 'chunk' => $this->_chunk));
+		} else {
+			return new View($this->viewDirectory."text/$this->_template", array(
+				'text' => $text,
+				'chunk' => $this->_chunk
+			));
 		}
 	}
 
@@ -55,13 +54,13 @@ class Boom_Chunk_Text extends Chunk
 
 		$template = ($this->_template === null)? $this->_slotname : $this->_template;
 
-		if ( ! Kohana::find_file('views', $this->_view_directory."text/$template"))
+		if ( ! Kohana::find_file('views', $this->viewDirectory."text/$template"))
 		{
 			return "<p>$text</p>";
 		}
 		else
 		{
-			return View::factory($this->_view_directory."text/$template", array(
+			return new View($this->viewDirectory."text/$template", array(
 				'text'	=>	$text,
 				'chunk' => $this->_chunk,
 			));
@@ -70,10 +69,7 @@ class Boom_Chunk_Text extends Chunk
 
 	public function get_paragraphs($offset = 0, $length = null)
 	{
-		preg_match_all('|<p>(.*?)</p>|', $this->_chunk->text, $matches);
-		$paragraphs = $matches[0];
-
-		return array_slice($paragraphs, $offset, $length);
+		return \Boom\ParagraphIterator::fromText($this->text());
 	}
 
 	public function has_content()
@@ -84,12 +80,12 @@ class Boom_Chunk_Text extends Chunk
 	public function text()
 	{
 		if (Editor::instance()->isEnabled()) {
-			$dispatcher = new TextFilter;
-			$dispatcher
+			$commander = new TextFilter;
+			$commander
 				->addFilter(new Filter\UnmungeAssetEmbeds)
 				->addFilter(new Filter\UnmungeInternalLinks);
 			
-			$text = $dispatcher->filterText($this->_chunk->text);
+			$text = $commander->filterText($this->_chunk->text);
 		} else {
 			$text = $this->_chunk->site_text;
 		}

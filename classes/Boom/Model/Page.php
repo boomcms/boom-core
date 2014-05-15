@@ -93,24 +93,6 @@ class Page extends Taggable
 		return $this;
 	}
 
-	/**
-	 * Delete any feature boxes which have this page as the target.
-	 *
-	 */
-	public function delete_from_feature_boxes()
-	{
-		DB::delete('chunk_features')
-			->where('target_page_id', '=', $this->id)
-			->execute($this->_db);
-	}
-
-	public function delete_from_linksets()
-	{
-		DB::delete('chunk_linkset_links')
-			->where('target_page_id', '=', $this->id)
-			->execute($this->_db);
-	}
-
 	public function set_template_of_children($template_id)
 	{
 		$versions = DB::select(array(DB::expr('max(page_versions.id)'), 'id'))
@@ -165,54 +147,6 @@ class Page extends Taggable
 
 		// Return the new version
 		return $new_version;
-	}
-
-	/**
-	 * **Delete a page.**
-	 *
-	 * Deleting a page involves a number of steps:
-	 *
-	 * *	Create a new version of the page.
-	 * *	Sets the deleted flag of the new version to true.
-	 * *	Publish the new, deleted version.
-	 * *	Delete the page from the MPTT tree.
-	 * *	If $with_children is true calls itself recursively to delete child pages
-	 *
-	 * @param	boolean	$with_children	Whether to delete the child pages as well.
-	 * @return	Model_Page
-	 */
-	public function delete($with_children = false)
-	{
-		if ( ! $this->_loaded)
-		{
-			return $this;
-		}
-
-		$this->delete_from_feature_boxes();
-		$this->delete_from_linksets();
-
-		$with_children && $this->delete_children(true);
-
-		$this->mptt->delete();
-
-		// Flag the page as deleted.
-		$this
-			->set('deleted', true)
-			->update();
-
-		// Return a cleared page object.
-		return $this->clear();
-	}
-
-	public function delete_children($cascade = false)
-	{
-		foreach ($this->mptt->children() as $mptt)
-		{
-			$page = \Boom\Page\Finder::byId($mptt->id);
-			$page->delete($cascade);
-		}
-
-		$this->mptt->reload();
 	}
 
 	public function get_tags_applied_down_tree_query()

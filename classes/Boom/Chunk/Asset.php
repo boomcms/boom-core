@@ -1,14 +1,12 @@
-<?php defined('SYSPATH') OR die('No direct script access.');
+<?php
 
-use \Boom\Asset as Asset;
-use  \Boom\Finder\Page as PageFinder;
+namespace Boom\Chunk;
 
-/**
-* @package	BoomCMS
-* @category	Chunks
-*
-*/
-class Boom_Chunk_Asset extends Chunk
+use \Boom\Finder\Page as PageFinder;
+use \Boom\Link as Link;
+use \View as View;
+
+class Asset extends \Boom\Chunk
 {
 	protected $_asset;
 	protected $_default_template = 'image';
@@ -18,41 +16,42 @@ class Boom_Chunk_Asset extends Chunk
 	{
 		parent::__construct($page, $chunk, $editable);
 
-		$this->_asset = Asset::factory($this->_chunk->target);
+		$this->_asset = \Boom\Asset::factory($this->_chunk->target);
 	}
 
 	protected function _show()
 	{
-		$v = View::factory($this->_view_directory."asset/$this->_template");
+		$v = new View($this->viewDirectory."asset/$this->_template", array(
+			'asset' => $this->asset(),
+			'caption' => $this->_chunk->caption
+		));
 
-		// If the URL is just a number then assume it's the page ID for an internal link.
-		if (preg_match('/^\d+$/D', $this->_chunk->url))
-		{
+		$link = Link::factory($this->_chunk->url);
+		if ($link->isInternal()) {
 			$target = PageFinder::byId($this->_chunk->url);
-			$v->title = $target->getTitle();
-			$v->url = $target->url();
+			$v->set(array(
+				'title' => $target->getTitle(),
+				'url' => $target->url()
+			));
+		} else {
+			$v->set(array(
+				'title' => $this->_chunk->title,
+				'url' => $this->_chunk->url,
+			));
 		}
-		else
-		{
-			$v->title = $this->_chunk->title;
-			$v->url = $this->_chunk->url;
-		}
-
-		$v->asset = $this->asset();
-		$v->caption = $this->_chunk->caption;
 
 		return $v;
 	}
 
 	protected function _show_default()
 	{
-		return View::factory($this->_view_directory."default/asset/$this->_template");
+		return new View($this->viewDirectory."default/asset/$this->_template");
 	}
 
 	public function attributes()
 	{
 		return array(
-			$this->_attribute_prefix.'target' => $this->target(),
+			$this->attributePrefix.'target' => $this->target(),
 		);
 	}
 

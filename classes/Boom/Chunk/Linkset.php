@@ -1,25 +1,21 @@
-<?php defined('SYSPATH') OR die('No direct script access.');
+<?php
 
-/**
- * @package	BoomCMS
- * @category	Chunks
- *
- */
-class Boom_Chunk_Linkset extends Chunk
+namespace Boom\Chunk;
+
+use \Boom\Editor as Editor;
+use \View as View;
+
+class Linkset extends \Boom\Chunk
 {
 	protected $_default_template = 'quicklinks';
-
 	protected $_type = 'linkset';
 
 	protected function _show()
 	{
-		if ( ! \Boom\Editor::instance()->isDisabled())
-		{
+		if ( ! Editor::instance()->isDisabled()) {
 			// Editor is enabled, show all the links.
 			$links = $this->_chunk->links();
-		}
-		else
-		{
+		} else {
 			// Editor is disabled - only show links where the target page is visible
 			$links = array();
 
@@ -32,7 +28,7 @@ class Boom_Chunk_Linkset extends Chunk
 			}
 		}
 
-		return View::factory($this->_view_directory."linkset/$this->_template", array(
+		return new View($this->viewDirectory."linkset/$this->_template", array(
 			'title'		=>	$this->_chunk->title,
 			'links'	=>	$links,
 		));
@@ -40,7 +36,7 @@ class Boom_Chunk_Linkset extends Chunk
 
 	public function _show_default()
 	{
-		return View::factory($this->_view_directory."default/linkset/$this->_template");
+		return new View($this->viewDirectory . "default/linkset/$this->_template");
 	}
 
 	public function has_content()

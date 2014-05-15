@@ -25,8 +25,8 @@ class Boom_Chunk_Timestamp extends Chunk
 	public function attributes()
 	{
 		return array(
-			$this->_attribute_prefix.'timestamp' => $this->_chunk->timestamp,
-			$this->_attribute_prefix.'format' => $this->_chunk->format,
+			$this->attributePrefix.'timestamp' => $this->_chunk->timestamp,
+			$this->attributePrefix.'format' => $this->_chunk->format,
 		);
 	}
 

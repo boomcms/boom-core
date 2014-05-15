@@ -1,11 +1,8 @@
-<?php defined('SYSPATH') OR die('No direct script access.');
+<?php
 
-/**
-* @package	BoomCMS
-* @category	Chunks
-*
-*/
-class Boom_Chunk_Tag extends Chunk
+namespace Boom\Chunk;
+
+class Tag extends \Boom\Chunk
 {
 	protected $_default_template = 'gallery';
 	protected $_tag;
@@ -20,25 +17,25 @@ class Boom_Chunk_Tag extends Chunk
 
 	protected function _show()
 	{
-		if ( ! $this->_template || ! Kohana::find_file("views", $this->_view_directory."tag/$this->_template"))
+		if ( ! $this->_template || ! Kohana::find_file("views", $this->viewDirectory."tag/$this->_template"))
 		{
 			$this->_template = $this->_default_template;
 		}
 
-		return View::factory($this->_view_directory."tag/$this->_template", array(
+		return View::factory($this->viewDirectory."tag/$this->_template", array(
 			'tag' => $this->_tag,
 		));
 	}
 
 	protected function _show_default()
 	{
-		return new View($this->_view_directory."default/tag/$this->_template");
+		return new View($this->viewDirectory."default/tag/$this->_template");
 	}
 
 	public function attributes()
 	{
 		return array(
-			$this->_attribute_prefix.'tag_id' => $this->get_tag()->id,
+			$this->attributePrefix.'tag_id' => $this->get_tag()->id,
 		);
 	}
 

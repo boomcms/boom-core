@@ -2,7 +2,7 @@
 
 namespace Boom\TextFilter;
 
-class Dispatcher implements Filter
+class Commander implements Filter
 {
 	protected $_filters = array();
 

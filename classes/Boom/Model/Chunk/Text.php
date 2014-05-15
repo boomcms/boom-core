@@ -2,7 +2,7 @@
 
 namespace Boom\Model\Chunk;
 
-use Boom\TextFilter\Dispatcher as TextFilter;
+use Boom\TextFilter\Commander as TextFilter;
 use Boom\TextFilter\Filter as Filter;
 use \Database_Exception as Database_Exception;
 use \DB as DB;
@@ -23,21 +23,21 @@ class Text extends \ORM
 
 	public function _cleanText()
 	{
-		$dispatcher = new TextFilter;
+		$Commander = new TextFilter;
 
 		if ($this->slotname === 'standfirst') {
-			$dispatcher->addFilter(new Filter\RemoveAllHTML);
+			$Commander->addFilter(new Filter\RemoveAllHTML);
 		} else if ($this->is_block) {
-			$dispatcher
+			$Commander
 				->addFilter(new Filter\MakeInternalLinksRelative)
 				->addFilter(new Filter\PurifyHTML)
 				->addFilter(new Filter\MungeAssetEmbeds)
 				->addFilter(new Filter\MungeRelativeInternalLinks);
 		} else {
-			$dispatcher->addFilter(new Filter\RemoveHTMLExceptInlineElements);
+			$Commander->addFilter(new Filter\RemoveHTMLExceptInlineElements);
 		}
 
-		$this->text = $dispatcher->filterText($this->text);
+		$this->text = $Commander->filterText($this->text);
 	}
 
 	/**
@@ -52,15 +52,15 @@ class Text extends \ORM
 		// Find which assets are linked to within the text chunk.
 		preg_match_all('~hoopdb://((image)|(asset))/(\d+)~', $this->_object['text'], $matches);
 
-		$dispatcher = new TextFilter;
-		$dispatcher
+		$Commander = new TextFilter;
+		$Commander
 			->addFilter(new Filter\OEmbed)
 			->addFilter(new Filter\StorifyEmbed)
 			->addFilter(new Filter\UnmungeAssetEmbeds)
 			->addFilter(new Filter\RemoveLinksToInvisiblePages)
 			->addFilter(new Filter\UnmungeInternalLinks);
 
-		$this->site_text = $dispatcher->filterText($this->_object['text']);
+		$this->site_text = $Commander->filterText($this->_object['text']);
 
 		// Create the text chunk.
 		parent::create($validation);

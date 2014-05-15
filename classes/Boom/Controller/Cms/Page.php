@@ -1,29 +1,14 @@
-<?php defined('SYSPATH') OR die('No direct script access.');
+<?php 
 
-/**
- * CMS Page controller
- * Contains methods for adding / saving a page etc.
- *
- * @package	BoomCMS
- * @category	Controllers
- * @author	Rob Taylor
- * @copyright	Hoop Associates
- */
 class Boom_Controller_Cms_Page extends Boom_Controller
 {
-	/**
-	 * The directory where views used by this class are stored.
-	 *
-	 * @var	string
-	 */
-	protected $_view_directory = 'boom/editor/page';
+	protected $viewDirectory = 'boom/editor/page';
 
 	/**
 	*
-	* @var	Model_Page
+	* @var \Boom\Page
 	*/
 	public $page;
-
 
 	public function before()
 	{
@@ -56,14 +41,6 @@ class Boom_Controller_Cms_Page extends Boom_Controller
 		)));
 	}
 
-	/**
-	 * Delete page controller.
-	 * This is a dual function controller. If requested via GET a confirmation dialogue is displayed.
-	 * If requested via POST the page is deleted using Model_Page::delete().
-	 *
-	 * @uses	Model_Version_Page::delete()
-	 * @uses	Model_Version_Page::parent();
-	 */
 	public function action_delete()
 	{
 		if ( ! ($this->page->was_created_by($this->person) || $this->auth->logged_in('delete_page', $this->page) || $this->auth->logged_in('manage_pages')) || $this->page->mptt->is_root())
@@ -73,28 +50,34 @@ class Boom_Controller_Cms_Page extends Boom_Controller
 
 		if ($this->request->method() === Request::GET)
 		{
+			$finder = new \Boom\Finder\Page;
+			$finder->addFilter(new \Boom\Finder\Page\Filter\ParentId($this->page->getId()));
+			$children = $finder->count();
+
 			// Get request
 			// Show a confirmation dialogue warning that child pages will become inaccessible and asking whether to delete the children.
-			$this->template = View::factory("$this->_view_directory/delete", array(
-				'count'	=>	$this->page->mptt->count(),
-				'page'	=>	$this->page,
+			$this->template = new View("$this->viewDirectory/delete", array(
+				'count' => $children,
+				'page' =>$this->page,
 			));
 		}
 		else
 		{
 			$this->_csrf_check();
-
-			// Log the action.
 			$this->log("Deleted page " . $this->page->getTitle() . " (ID: " . $this->page->getId() . ")");
 
 			// Redirect to the parent page after we've finished.
 			$this->response->body($this->page->parent()->url());
 
-			// Are we deleting child pages?
-			$with_children = ($this->request->post('with_children') == 1);
+			$commander = new \Boom\Page\Commander($this->page);
+			$commander
+				->addCommand(new \Boom\Page\Delete\FromFeatureBoxes)
+				->addCommand(new \Boom\Page\Delete\FromLinksets);
 
-			// Delete the page.
-			$this->page->delete($with_children);
+			($this->request->post('with_children') == 1) && $commander->addCommand(new \Boom\Page\Delete\Children);
+
+			$commander->addCommand(new \Boom\Page\Delete\FlagDeleted());
+			$commander->execute();
 		}
 	}
 
@@ -116,7 +99,7 @@ class Boom_Controller_Cms_Page extends Boom_Controller
 
 	public function action_urls()
 	{
-		$this->template = View::factory("$this->_view_directory/urls", array(
+		$this->template = View::factory("$this->viewDirectory/urls", array(
 			'page'	=> $this->page,
 			'urls'	=> $this->page->urls->order_by('location', 'asc')->find_all(),
 		));

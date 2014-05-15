@@ -1,12 +1,16 @@
-<?php defined('SYSPATH') OR die('No direct script access.');
+<?php
 
-/**
-* @package BoomCMS
-* @category Chunks
-*/
-abstract class Boom_Chunk
+namespace Boom;
+
+use \Kohana as Kohana;
+use \Model_Page_Version as Model_Page_Version;
+use \ORM as ORM;
+use \Profiler as Profiler;
+use \View as View;
+
+abstract class Chunk
 {
-	protected $_attribute_prefix = 'data-boom-';
+	protected $attributePrefix = 'data-boom-';
 
 	/**
 	 *
@@ -59,7 +63,7 @@ abstract class Boom_Chunk
 	 */
 	protected $_type;
 
-	protected $_view_directory = 'site/slots/';
+	protected $viewDirectory = 'site/slots/';
 
 	/**
 	 * Array of available chunk types.
@@ -120,11 +124,11 @@ abstract class Boom_Chunk
 		$html = trim( (string) $html);
 
 		$attributes = array(
-			$this->_attribute_prefix.'chunk' => $this->_type,
-			$this->_attribute_prefix.'slot-name' => $this->_slotname,
-			$this->_attribute_prefix.'slot-template' => $this->_template,
-			$this->_attribute_prefix.'page' => $this->_page->getId(),
-			$this->_attribute_prefix.'chunk-id' => $this->_chunk->id,
+			$this->attributePrefix.'chunk' => $this->_type,
+			$this->attributePrefix.'slot-name' => $this->_slotname,
+			$this->attributePrefix.'slot-template' => $this->_template,
+			$this->attributePrefix.'page' => $this->_page->getId(),
+			$this->attributePrefix.'chunk-id' => $this->_chunk->id,
 		);
 		$attributes = array_merge($attributes, $this->attributes());
 		$attributes_string = HTML::attributes($attributes);

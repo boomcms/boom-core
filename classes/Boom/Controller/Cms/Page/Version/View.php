@@ -7,7 +7,7 @@ class Boom_Controller_Cms_Page_Version_View extends Controller_Cms_Page_Version
 		// Call the parent function to check permissions.
 		parent::action_embargo();
 
-		$this->template = View::factory("$this->_view_directory/embargo", array(
+		$this->template = View::factory("$this->viewDirectory/embargo", array(
 			'version'	=>	$this->old_version,
 		));
 	}
@@ -19,7 +19,7 @@ class Boom_Controller_Cms_Page_Version_View extends Controller_Cms_Page_Version
 		$images_in_page = new \Boom\Page\AssetsUsed($this->old_version);
 		$images_in_page->setType(\Boom\Asset\Type::IMAGE);
 
-		$this->template = View::factory("$this->_view_directory/feature", array(
+		$this->template = View::factory("$this->viewDirectory/feature", array(
 			'feature_image_id' => $this->old_version->feature_image_id,
 			'images_in_page' => $images_in_page->getAll(),
 		));
@@ -33,7 +33,7 @@ class Boom_Controller_Cms_Page_Version_View extends Controller_Cms_Page_Version
 		$manager->create_new();
 		$templates = $manager->get_valid_templates();
 
-		$this->template = View::factory("$this->_view_directory/template", array(
+		$this->template = View::factory("$this->viewDirectory/template", array(
 			'template_id'	=>	$this->old_version->template_id,
 			'templates'	=>	 $templates
 		));

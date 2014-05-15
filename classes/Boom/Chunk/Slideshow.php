@@ -1,11 +1,11 @@
-<?php defined('SYSPATH') OR die('No direct script access.');
+<?php
 
-/**
- * @package	BoomCMS
- * @category	Chunks
- *
- */
-class Boom_Chunk_Slideshow extends Chunk
+namespace Boom\Chunk;
+
+use \Boom\Editor as Editor;
+use \View as View;
+
+class Slideshow extends \Boom\Chunk
 {
 	protected $_default_template = 'circles';
 
@@ -13,17 +13,17 @@ class Boom_Chunk_Slideshow extends Chunk
 
 	protected function _show()
 	{
-		return View::factory($this->_view_directory."slideshow/$this->_template", array(
+		return new View($this->viewDirectory . "slideshow/$this->_template", array(
 			'chunk'	=>	$this->_chunk,
 			'title'		=>	$this->_chunk->title,
 			'slides'	=>	$this->_chunk->slides(),
-			'editor'	=>	\Boom\Editor::instance(),
+			'editor'	=>	Editor::instance(),
 		));
 	}
 
 	public function _show_default()
 	{
-		return View::factory($this->_view_directory."default/slideshow/$this->_template");
+		return new View($this->viewDirectory."default/slideshow/$this->_template");
 	}
 
 	public function has_content()
