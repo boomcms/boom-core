@@ -1,10 +1,8 @@
-<?php defined('SYSPATH') OR die('No direct script access.');
-/**
-* @package	BoomCMS
-* @category	Chunks
-*
-*/
-class Boom_Chunk_Timestamp extends Chunk
+<?php
+
+namespace Boom\Chunk;
+
+class Timestamp extends \Boom\Chunk
 {
 	public static $default_format = 'j F Y';
 	public static $formats = array(

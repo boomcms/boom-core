@@ -5,6 +5,7 @@ namespace Boom;
 use \Kohana as Kohana;
 use \Model_Page_Version as Model_Page_Version;
 use \ORM as ORM;
+use \Request as Request;
 use \Profiler as Profiler;
 use \View as View;
 
