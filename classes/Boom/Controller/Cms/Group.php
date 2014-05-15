@@ -11,7 +11,7 @@ class Boom_Controller_Cms_Group extends Controller_Cms_PeopleManager
 	/**
 	 * @var string
 	 */
-	protected $_view_directory = 'boom/groups';
+	protected $viewDirectory = 'boom/groups';
 
 	/**
 	 * @var Model_Group

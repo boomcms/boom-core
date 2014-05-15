@@ -4,7 +4,7 @@ class Boom_Controller_Cms_Person_View extends Controller_Cms_Person
 {
 	public function action_add()
 	{
-		$this->template = View::factory($this->_view_directory."new", array(
+		$this->template = View::factory($this->viewDirectory."new", array(
 			'groups'	=>	ORM::factory('Group')->names(),
 		));
 	}
@@ -19,7 +19,7 @@ class Boom_Controller_Cms_Person_View extends Controller_Cms_Person
 			);
 
 		// Set the response template.
-		$this->template = View::factory("$this->_view_directory/addgroup", array(
+		$this->template = View::factory("$this->viewDirectory/addgroup", array(
 			'person'	=>	$this->edit_person,
 			'groups'	=>	$groups,
 		));
@@ -32,7 +32,7 @@ class Boom_Controller_Cms_Person_View extends Controller_Cms_Person
 			throw new HTTP_Exception_404;
 		}
 
-		$this->template = View::factory($this->_view_directory."view", array(
+		$this->template = View::factory($this->viewDirectory."view", array(
 			'person'		=>	$this->edit_person,
 			'request'		=>	$this->request,
 			'activities'	=>	$this->edit_person->logs->order_by('time', 'desc')->limit(50)->find_all(),

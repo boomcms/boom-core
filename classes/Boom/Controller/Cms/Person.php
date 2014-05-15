@@ -5,7 +5,7 @@ class Boom_Controller_Cms_Person extends Controller_Cms_PeopleManager
 	/**
 	 * @var string Directory where the views which relate to this class are held.
 	 */
-	protected $_view_directory = 'boom/person/';
+	protected $viewDirectory = 'boom/person/';
 
 	/**
 	 * Person object to be edited.

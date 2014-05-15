@@ -4,14 +4,14 @@ class Boom_Controller_Cms_Group_View extends Controller_Cms_Group
 {
 	public function action_add()
 	{
-		$this->template = View::factory("$this->_view_directory/add", array(
+		$this->template = View::factory("$this->viewDirectory/add", array(
 			'group' => new Model_Group,
 		));
 	}
 
 	public function action_edit()
 	{
-		$this->template = View::factory("$this->_view_directory/edit", array(
+		$this->template = View::factory("$this->viewDirectory/edit", array(
 			'group'		=>	$this->group,
 			'general_roles'	=>	ORM::factory('Role')
 				->where('name', 'not like', 'p_%')
