@@ -24,7 +24,7 @@ Route::set('asset', 'asset/<action>/<id>(.<extension>)(/<width>(/<height>(/<qual
 			}
 
 			$params['asset'] = $asset;
-			$params['controller'] = 'Asset_'. \Boom\Asset\Type::numericTypeToClass($asset->type);
+			$params['controller'] = 'Asset_'. $asset->getType();
 			return $params;
 		}
 	);

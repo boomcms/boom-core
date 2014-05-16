@@ -2,6 +2,9 @@
 
 namespace Boom;
 
+use \DateTime as DateTime;
+use \File as File;
+
 abstract class Asset
 {
 	/**
@@ -56,9 +59,14 @@ abstract class Asset
 		return $this->_model->id;
 	}
 
+	public function getLastModified()
+	{
+		return new DateTime('@' . $this->_model->last_modified);
+	}
+
 	public function getMimetype()
 	{
-		return $this->exists()? Asset\Mimetype::factory(\File::mime($this->getFilename())) : null;
+		return $this->exists()? Asset\Mimetype::factory(File::mime($this->getFilename())) : null;
 	}
 
 	public function getTitle()

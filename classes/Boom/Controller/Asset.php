@@ -1,14 +1,5 @@
 <?php defined('SYSPATH') OR die('No direct script access.');
 
-/**
- * Asset controller.
- *
- * @package		BoomCMS
- * @category	Assets
- * @category	Controllers
- * @author		Rob Taylor
- * @copyright	Hoop Associates
- */
 abstract class Boom_Controller_Asset extends Boom_Controller
 {
 	/**
@@ -40,7 +31,7 @@ abstract class Boom_Controller_Asset extends Boom_Controller
 		if ($this->enable_caching)
 		{
 			$this->response->headers('Cache-Control', 'public, max-age='.$this->max_age);
-			HTTP::check_cache($this->request, $this->response, $this->asset->last_modified);
+			HTTP::check_cache($this->request, $this->response, $this->asset->getLastModified()->getTimestamp());
 		}
 	}
 
