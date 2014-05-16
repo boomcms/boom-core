@@ -10,11 +10,11 @@ class NextPageBySequence extends Finder\Filter
 	 *
 	 * @var \Boom\Page
 	 */
-	protected $_currentPage;
+	protected $currentPage;
 
 	public function __construct(\Boom\Page $currentPage)
 	{
-		$this->_currentPage = $currentPage;
+		$this->currentPage = $currentPage;
 	}
 
 	public function execute(\ORM $query)
