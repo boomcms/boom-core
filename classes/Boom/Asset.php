@@ -27,7 +27,8 @@ abstract class Asset
 
 	public static function factory(\Model_Asset $asset)
 	{
-		$classname = "\Boom\Asset\\Type\\" . Asset\Type::numericTypeToClass($asset->type);
+		$type = Asset\Type::numericTypeToClass($asset->type)?: 'Invalid';
+		$classname = "\Boom\Asset\\Type\\" . $type;
 
 		return new $classname($asset);
 	}

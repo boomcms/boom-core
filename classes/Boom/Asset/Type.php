@@ -33,9 +33,6 @@ abstract class Type
 
 			case static::MSWORD:
 				return "MSWord";
-
-			default:
-				return $type;
 		}
 	}
 }
