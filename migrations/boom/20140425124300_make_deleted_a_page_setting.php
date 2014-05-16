@@ -18,7 +18,7 @@ class Migration_Boom_20140425124300 extends Minion_Migration_Base
 
 			if (isset($result[0]))
 			{
-				$page->deleted = $result[0]['page_deleted'];
+				$page->isDeleted() = $result[0]['page_deleted'];
 				$page->update();
 			}
 		}

@@ -19,7 +19,7 @@ class Boom_Controller_Page_Html extends Controller_Page
 	{
 		parent::before();
 
-		$template = $this->page->version()->template;
+		$template = $this->page->getTemplate();
 		$this->template = View::factory($template->filename());
 
 		$this->_chunks = $this->_load_chunks($this->_chunks);

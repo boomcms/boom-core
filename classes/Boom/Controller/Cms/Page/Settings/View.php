@@ -40,7 +40,7 @@ class Boom_Controller_Cms_Page_Settings_View extends Controller_Cms_Page_Setting
 
 		// Create the main view with the basic settings
 		$this->template = View::factory("$this->viewDirectory/children", array(
-			'default_child_template'	=>	($this->page->children_template_id != 0)? $this->page->children_template_id : $this->page->version()->template_id,
+			'default_child_template'	=>	($this->page->children_template_id != 0)? $this->page->children_template_id : $this->page->getTemplateId(),
 			'templates'			=>	$templates,
 			'child_order_column'		=>	$childOrderingPolicy->getColumn(),
 			'child_order_direction'	=>	$childOrderingPolicy->getDirection(),
@@ -52,7 +52,7 @@ class Boom_Controller_Cms_Page_Settings_View extends Controller_Cms_Page_Setting
 		{
 			// Add the view for the advanced settings to the main view.
 			$this->template->set(array(
-				'default_grandchild_template'	=>	($this->page->grandchild_template_id != 0)? $this->page->grandchild_template_id : $this->page->version()->template_id,
+				'default_grandchild_template'	=>	($this->page->grandchild_template_id != 0)? $this->page->grandchild_template_id : $this->page->getTemplateId(),
 				'page'					=>	$this->page,
 				'templates'				=>	$templates,
 			));

@@ -48,7 +48,7 @@ class Boom_Controller_Cms_Page_Version_Save extends Controller_Cms_Page_Version
 			->embargo($embargoed_until)
 			->copy_chunks($this->old_version);
 
-		$this->new_version->is_published() && $this->page->remove_drafts();
+		$this->new_version->is_published() && $this->page->deleteDrafts();
 	}
 
 	/**

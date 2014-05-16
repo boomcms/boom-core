@@ -11,29 +11,29 @@ class ChildOrderingPolicy
 	const ASC = 8;
 	const DESC = 16;
 
-	protected $_column;
-	protected $_direction;
-	protected $_int;
+	protected $column;
+	protected $direction;
+	protected $int;
 
 	public function __construct()
 	{
 		$numArgs = func_num_args();
 
 		if ($numArgs === 1) {
-			$this->_int = func_get_arg(0);
+			$this->int = func_get_arg(0);
 
-			$this->_setFromInt($this->_int);
+			$this->_setFromInt($this->int);
 		} else if ($numArgs == 2) {
-			$this->_column = func_get_arg(0);
-			$this->_direction = func_get_arg(1);
+			$this->column = func_get_arg(0);
+			$this->direction = func_get_arg(1);
 
-			$this->__setFromColumnAndDirection($this->_column, $direction);
+			$this->__setFromColumnAndDirection($this->column, $this->direction);
 		}
 	}
 
 	public function asInt()
 	{
-		return (int) $this->_int;
+		return (int) $this->int;
 	}
 
 	public function columnToInt($column)
@@ -58,29 +58,29 @@ class ChildOrderingPolicy
 
 	public function getColumn()
 	{
-		return $this->_column;
+		return $this->column;
 	}
 
 	public function getDirection()
 	{
-		return $this->_direction;
+		return $this->direction;
 	}
 
 	protected function _setFromInt($int)
 	{
 		if ($int & static::ALPHABETIC) {
-			$this->_column = 'title';
+			$this->column = 'title';
 		} elseif ($int & static::DATE) {
-			$this->_column = 'visible_from';
+			$this->column = 'visible_from';
 		} else {
-			$this->_column = 'sequence';
+			$this->column = 'sequence';
 		}
 
-		$this->_direction = ($int & static::ASC)? 'asc' : 'desc';
+		$this->direction = ($int & static::ASC)? 'asc' : 'desc';
 	}
 
 	protected function _setFromColumnAndDirection($column, $direction)
 	{
-		$this->_int = $this->columnToInt($column) | $this->directionToInt($direction);
+		$this->int = $this->columnToInt($column) | $this->directionToInt($direction);
 	}
 }

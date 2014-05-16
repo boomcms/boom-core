@@ -36,6 +36,15 @@ class Page extends \Boom\Finder
 		return new \Boom\Page(new \Model_Page(array('primary_uri' => $uri, 'deleted' => false)));
 	}
 
+	public static function byUri($uri)
+	{
+		$finder = new static;
+
+		return $finder
+			->addFilter(\Boom\Finder\Page\Filter\Uri($uri))
+			->find();
+	}
+
 	public function find()
 	{
 		$pages = parent::find();

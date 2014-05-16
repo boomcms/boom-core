@@ -191,18 +191,6 @@ class Page extends Taggable
 		}
 	}
 
-	public function remove_drafts()
-	{
-		DB::delete('page_versions')
-			->where('page_id', '=', $this->id)
-			->and_where_open()
-					->where('embargoed_until', '=', null)
-					->or_where('embargoed_until', '>', $_SERVER['REQUEST_TIME'])
-			->and_where_close()
-			->where('stashed', '=', false)
-			->execute($this->_db);
-	}
-
 	/**
 	 * Add the page version columns to a select query.
 	 *
@@ -314,17 +302,6 @@ class Page extends Taggable
 
 		// Run the query and return the result.
 		return $this->_related['version'] = $query->find();
-	}
-
-	/**
-	 * Determines whether the current page was created by a particular person.
-	 *
-	 * @param Model_Person $person
-	 * @return boolean
-	 */
-	public function was_created_by(\Model_Person $person)
-	{
-		return ($this->created_by && $this->created_by == $person->id);
 	}
 
 	/**

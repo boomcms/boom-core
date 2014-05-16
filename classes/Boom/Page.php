@@ -21,24 +21,27 @@ class Page
 		$this->_model = $model;
 	}
 
-	public function __get($name)
+	public function deleteDrafts()
 	{
-		return $this->_model->$name;
-	}
-
-	public function __set($name, $value)
-	{
-		return $this->_model->$name = $value;
-	}
-
-	public function __call($name, $arguments)
-	{
-		return call_user_func_array(array($this->_model, $name), $arguments);
+		$commander = new \Boom\Page\Commander($this);
+		return $commander
+			->addCommand(new \Boom\Page\Delete\Drafts)
+			->execute();
 	}
 
 	public function getChildOrderingPolicy()
 	{
 		return new Page\ChildOrderingPolicy($this->_model->children_ordering_policy);
+	}
+
+	public function getCreatedBy()
+	{
+		return $this->_model->created_by;
+	}
+
+	public function getCurrentVersion()
+	{
+		return $this->_model->version();
 	}
 
 	/**
@@ -63,7 +66,7 @@ class Page
 		}
 
 		$parent = $this->_model->parent();
-		return ($parent->grandchild_template_id != 0)? $parent->grandchild_template_id : $this->_model->version()->template_id;
+		return ($parent->grandchild_template_id != 0)? $parent->grandchild_template_id : $this->_model->getTemplateId();
 	}
 
 	public function getFeatureImage()
@@ -94,6 +97,31 @@ class Page
 		}
 
 		return new Page\Keywords($keywords);
+	}
+
+	public function getTemplate()
+	{
+		return $this->_model->version()->template;
+	}
+
+	public function getTemplateId()
+	{
+		return $this->_model->version()->template_id;
+	}
+
+	public function getThumbnail()
+	{
+		
+	}
+
+	public function isDeleted()
+	{
+		return $this->_model->deleted;
+	}
+
+	public function loaded()
+	{
+		return $this->_model->loaded();
 	}
 
 	public function getTitle()
@@ -192,5 +220,10 @@ class Page
 	public function parent()
 	{
 		return ($this->mptt->is_root())? $this : \Boom\Finder\Page::byId($this->_model->mptt->parent_id);
+	}
+
+	public function wasCreatedBy(Model_Person $person)
+	{
+		return $this->getCreatedBy() === $person->id;
 	}
 }
