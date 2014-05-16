@@ -7,7 +7,7 @@
  */
 class Boom_Controller_Cms_Templates extends Controller_Cms
 {
-	protected $_view_directory = 'boom/templates';
+	protected $viewDirectory = 'boom/templates';
 
 	public function before()
 	{
@@ -26,7 +26,7 @@ class Boom_Controller_Cms_Templates extends Controller_Cms
 			->order_by('name', 'asc')
 			->find_all();
 
-		$this->template = View::factory("$this->_view_directory/index", array(
+		$this->template = View::factory("$this->viewDirectory/index", array(
 			'imported'		=>	$imported,		// The IDs of the templates which we've just added.
 			'templates'	=>	$templates,		// All the templates which are in the database.
 			'filenames'	=>	$manager->get_template_filenames(),
@@ -60,7 +60,7 @@ class Boom_Controller_Cms_Templates extends Controller_Cms
 			->order_by('title', 'asc')
 			->execute();
 
-		$this->template = View::factory("$this->_view_directory/pages", array(
+		$this->template = View::factory("$this->viewDirectory/pages", array(
 			'pages'	=>	$pages,
 		));
 	}
