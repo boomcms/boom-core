@@ -59,7 +59,7 @@ class Boom_Controller_Cms_Chunk extends Boom_Controller
 
 	public function authorization()
 	{
-		$this->page->was_created_by($this->person) || parent::authorization('edit_page_content', $this->page);
+		$this->page->wasCreatedBy($this->person) || parent::authorization('edit_page_content', $this->page);
 	}
 
 	protected function _create_version()

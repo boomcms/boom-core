@@ -22,7 +22,7 @@ class ReadabilityScore
 	{
 		$chunks = \ORM::factory('Chunk_Text')
 			->where('is_block', '=', true)
-			->where('page_vid', '=', $this->_page->version()->id)
+			->where('page_vid', '=', $this->_page->getCurrentVersion()->id)
 			->find_all();
 
 		$text = "";

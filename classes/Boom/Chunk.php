@@ -2,6 +2,8 @@
 
 namespace Boom;
 
+use \Auth as Auth;
+use \Html as Html;
 use \Kohana as Kohana;
 use \Model_Page_Version as Model_Page_Version;
 use \ORM as ORM;
@@ -177,7 +179,7 @@ abstract class Chunk
 			 *
 			 * @todo Multiple chunks will be inserted on a single page - need to remove duplicate calles to Auth::instance()->logged_in()
 			 */
-			$this->_editable = ($this->_editable === true && \Boom\Editor::instance()->isEnabled() && ($this->_page->was_created_by(Auth::instance()->get_user()) || Auth::instance()->logged_in("edit_page_content", $this->_page)));
+			$this->_editable = ($this->_editable === true && \Boom\Editor::instance()->isEnabled() && ($this->_page->wasCreatedBy(Auth::instance()->get_user()) || Auth::instance()->logged_in("edit_page_content", $this->_page)));
 
 			// Get the chunk HTML.
 			$html = $this->html();

@@ -4,11 +4,11 @@
 	<?= Form::hidden('csrf', Security::token(), array('id' => 'b-csrf')) ?>
 	<?= Menu::factory('boom')->sort('priority') ?>
 
-	<? if ($page->was_created_by($person) || $auth->logged_in('edit_page_content', $page)): ?>
+	<? if ($page->wasCreatedBy($person) || $auth->logged_in('edit_page_content', $page)): ?>
 		<div id="b-page-actions" class="b-page-container">
 			<span id="b-page-publish-menu">
-				<button id="b-page-version-status" class="b-button" data-status="<?= $page->version()->status() ?>">
-					<?= $page->version()->status() ?>
+				<button id="b-page-version-status" class="b-button" data-status="<?= $page->getCurrentVersion()->status() ?>">
+					<?= $page->getCurrentVersion()->status() ?>
 				</button>
 			</span>
 
@@ -36,7 +36,7 @@
 			</span>
 		<? endif ?>
 
-		<? if (($page->was_created_by($person) || $auth->logged_in('delete_page', $page)) && ! $page->mptt->is_root()): ?>
+		<? if (($page->wasCreatedBy($person) || $auth->logged_in('delete_page', $page)) && ! $page->getMptt()->is_root()): ?>
 			<?= \Boom\UI::button('delete', __('Delete this page'), array('id' => 'b-page-delete')) ?>
 		<? endif; ?>
 	</div>

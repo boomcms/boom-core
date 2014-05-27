@@ -118,6 +118,11 @@ class Page
 		return $this->model->sequence;
 	}
 
+	public function getMptt()
+	{
+		return $this->model->mptt;
+	}
+
 	public function getTemplate()
 	{
 		return new Template($this->model->version()->template);
@@ -241,7 +246,7 @@ class Page
 		return ($this->model->mptt->is_root())? $this : \Boom\Page\Factory::byId($this->model->mptt->parent_id);
 	}
 
-	public function wasCreatedBy(Model_Person $person)
+	public function wasCreatedBy(\Model_Person $person)
 	{
 		return $this->getCreatedBy() === $person->id;
 	}

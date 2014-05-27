@@ -44,7 +44,7 @@ class Boom_Controller_Page extends Boom_Controller
 
 	protected function _page_should_be_editable()
 	{
-		return ($this->editor->isEnabled() && ($this->page->was_created_by($this->person) || $this->auth->logged_in('edit_page', $this->page)));
+		return ($this->editor->isEnabled() && ($this->page->wasCreatedBy($this->person) || $this->auth->logged_in('edit_page', $this->page)));
 	}
 
 	protected function _page_isnt_visible_to_current_user()
