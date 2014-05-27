@@ -21,7 +21,7 @@ class Boom_HTTP_Exception extends Kohana_HTTP_Exception
 			return $response;
 		}
 
-		$page = \Boom\Finder\Page::byInternalName($this->_code);
+		$page = \Boom\Page\Factory::byInternalName($this->_code);
 
 		if ($page->loaded())
 		{

@@ -9,7 +9,7 @@ class Boom_Controller_Page_Children extends Boom_Controller
 {
 	public function action_json()
 	{
-		$parent = \Boom\Finder\Page::byId($this->request->post('parent'));
+		$parent = \Boom\Page\Factory::byId($this->request->post('parent'));
 
 		$pages = $this->_get_child_pages($parent);
 		$json = $this->_format_pages_as_json($pages);

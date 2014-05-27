@@ -8,7 +8,7 @@ class Page
 	 *
 	 * @var \Model_Page
 	 */
-	protected $_model;
+	protected $model;
 
 	/**
 	 *
@@ -18,7 +18,12 @@ class Page
 
 	public function __construct(\Model_Page $model)
 	{
-		$this->_model = $model;
+		$this->model = $model;
+	}
+
+	public function allowsExternalIndexing()
+	{
+		return $this->model->external_indexing;
 	}
 
 	public function deleteDrafts()
@@ -31,17 +36,26 @@ class Page
 
 	public function getChildOrderingPolicy()
 	{
-		return new Page\ChildOrderingPolicy($this->_model->children_ordering_policy);
+		return new Page\ChildOrderingPolicy($this->model->children_ordering_policy);
 	}
 
 	public function getCreatedBy()
 	{
-		return $this->_model->created_by;
+		return $this->model->created_by;
+	}
+
+	/**
+	 *
+	 * @return \DateTime
+	 */
+	public function getCreatedTime()
+	{
+		return new \DateTime('@' . $this->model->created_time);
 	}
 
 	public function getCurrentVersion()
 	{
-		return $this->_model->version();
+		return $this->model->version();
 	}
 
 	/**
@@ -53,35 +67,35 @@ class Page
 	 */
 	public function getDescription()
 	{
-		$description = ($this->_model->description != null)? $this->_model->description : \Chunk::factory('text', 'standfirst', $this)->text();
+		$description = ($this->model->description != null)? $this->model->description : \Chunk::factory('text', 'standfirst', $this)->text();
 
 		return \strip_tags($description);
 	}
 
 	public function getDefaultChildTemplateId()
 	{
-		if ($this->_model->children_template_id)
+		if ($this->model->children_template_id)
 		{
-			return $this->_model->children_template_id;
+			return $this->model->children_template_id;
 		}
 
-		$parent = $this->_model->parent();
-		return ($parent->grandchild_template_id != 0)? $parent->grandchild_template_id : $this->_model->getTemplateId();
+		$parent = $this->model->parent();
+		return ($parent->grandchild_template_id != 0)? $parent->grandchild_template_id : $this->model->getTemplateId();
 	}
 
 	public function getFeatureImage()
 	{
-		return \Boom\Asset::factory($this->_model->version()->feature_image);
+		return \Boom\Asset::factory($this->model->version()->feature_image);
 	}
 
 	public function getFeatureImageId()
 	{
-		return $this->_model->version()->feature_image_id;
+		return $this->model->version()->feature_image_id;
 	}
 
 	public function getId()
 	{
-		return $this->_model->id;
+		return $this->model->id;
 	}
 
 	/**
@@ -90,7 +104,7 @@ class Page
 	 */
 	public function getKeywords()
 	{
-		$keywords = explode(',', $this->_model->keywords);
+		$keywords = explode(',', $this->model->keywords);
 
 		foreach ($keywords as &$keyword) {
 			$keyword = trim($keyword);
@@ -99,14 +113,19 @@ class Page
 		return new Page\Keywords($keywords);
 	}
 
+	public function getManualOrderPosition()
+	{
+		return $this->model->sequence;
+	}
+
 	public function getTemplate()
 	{
-		return $this->_model->version()->template;
+		return new Template($this->model->version()->template);
 	}
 
 	public function getTemplateId()
 	{
-		return $this->_model->version()->template_id;
+		return $this->model->version()->template_id;
 	}
 
 	public function getThumbnail()
@@ -116,17 +135,17 @@ class Page
 
 	public function isDeleted()
 	{
-		return $this->_model->deleted;
+		return $this->model->deleted;
 	}
 
 	public function loaded()
 	{
-		return $this->_model->loaded();
+		return $this->model->loaded();
 	}
 
 	public function getTitle()
 	{
-		return $this->_model->version()->title;
+		return $this->model->version()->title;
 	}
 
 	/**
@@ -135,7 +154,7 @@ class Page
 	 */
 	public function getVisibleFrom()
 	{
-		return new \DateTime('@' . $this->_model->visible_from);
+		return new \DateTime('@' . $this->model->visible_from);
 	}
 
 	/**
@@ -144,7 +163,7 @@ class Page
 	 */
 	public function getVisibleTo()
 	{
-		return new \DateTime('@' . $this->_model->visible_to);
+		return new \DateTime('@' . $this->model->visible_to);
 	}
 
 	/**
@@ -172,7 +191,7 @@ class Page
 	 */
 	public function isVisibleAtTime($unixTimestamp)
 	{
-		return ($this->_model->visible && $this->getVisibleFrom()->getTimestamp() <= $unixTimestamp && ($this->getVisibleTo()->getTimestamp() >= $unixTimestamp || $this->getVisibleTo()->getTimestamp() == 0));
+		return ($this->model->visible && $this->getVisibleFrom()->getTimestamp() <= $unixTimestamp && ($this->getVisibleTo()->getTimestamp() >= $unixTimestamp || $this->getVisibleTo()->getTimestamp() == 0));
 	}
 
 	/**
@@ -183,7 +202,7 @@ class Page
 	public function setChildOrderingPolicy($column, $direction)
 	{
 		$ordering_policy = new \Boom\Page\ChildOrderingPolicy($column, $direction);
-		$this->_model->children_ordering_policy = $ordering_policy->asInt();
+		$this->model->children_ordering_policy = $ordering_policy->asInt();
 
 		return $this;
 	}
@@ -204,8 +223,8 @@ class Page
 		{
 			$this->_url = \ORM::factory('Page_URL')
 				->values(array(
-					'location'		=>	$this->_model->primary_uri,
-					'page_id'		=>	$this->_model->id,
+					'location'		=>	$this->model->primary_uri,
+					'page_id'		=>	$this->model->id,
 					'is_primary'	=>	true,
 				));
 		}
@@ -219,7 +238,7 @@ class Page
 	 */
 	public function parent()
 	{
-		return ($this->mptt->is_root())? $this : \Boom\Finder\Page::byId($this->_model->mptt->parent_id);
+		return ($this->model->mptt->is_root())? $this : \Boom\Page\Factory::byId($this->model->mptt->parent_id);
 	}
 
 	public function wasCreatedBy(Model_Person $person)

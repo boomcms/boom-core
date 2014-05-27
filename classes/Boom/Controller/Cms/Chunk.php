@@ -32,7 +32,7 @@ class Boom_Controller_Cms_Chunk extends Boom_Controller
 	{
 		parent::before();
 
-		$this->page =  \Boom\Finder\Page::byId($this->request->param('page_id'));
+		$this->page =  \Boom\Page\Factory::byId($this->request->param('page_id'));
 	}
 
 	public function action_insert_url()

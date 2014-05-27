@@ -231,7 +231,7 @@ abstract class Chunk
 		}
 
 		// Load the chunk
-		$chunk = Chunk::find($type, $slotname, $page->version());
+		$chunk = Chunk::find($type, $slotname, $page->getCurrentVersion());
 
 		return new $class($page, $chunk, $slotname);
 	}

@@ -49,7 +49,7 @@ class Boom_Boom_Exception_Handler_Private extends Boom_Exception_Handler
 
 	protected function _find_error_page($code)
 	{
-		return n \Boom\Finder\Page::byInternalName($code);
+		return \Boom\Page\Factory::byInternalName($code);
 	}
 
 	protected function _get_default_error($code)

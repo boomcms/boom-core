@@ -1,11 +1,12 @@
-<?php defined('SYSPATH') OR die('No direct script access.');
+<?php
 
-/**
- *
- * @package 	Boom
- * @category 	Controllers
- */
-class Boom_Controller_Page_Html extends Controller_Page
+namespace Boom\Controller\Page;
+
+use \Boom\Chunk as Chunk;
+use \ORM as ORM;
+use \View as View;
+
+class Html extends \Controller_Page
 {
 	protected $_chunks = array();
 
@@ -19,32 +20,26 @@ class Boom_Controller_Page_Html extends Controller_Page
 	{
 		parent::before();
 
-		$template = $this->page->getTemplate();
-		$this->template = View::factory($template->filename());
+		$this->template = $this->page->getTemplate()->getView();
+		$this->_chunks = $this->_loadChunks($this->_chunks);
 
-		$this->_chunks = $this->_load_chunks($this->_chunks);
-
-		$this->_bind_view_globals();
+		$this->_bindViewGlobals();
 	}
 
 	public function action_show() {}
 
 	public function after()
 	{
-		// If we're in the CMS then add the boom editor the the page.
-		if ($this->auth->logged_in())
-		{
-			$content = $this->editor->insert((string) $this->template, $this->page->getId());
-		}
-		else
-		{
+		if ($this->auth->logged_in()) {
+			$content = $this->editor->insert( (string) $this->template, $this->page->getId());
+		} else {
 			$content = (string) $this->template;
 		}
 
 		$this->response->body($content);
 	}
 
-	protected function _bind_view_globals()
+	protected function _bindViewGlobals()
 	{
 		View::bind_global('auth', $this->auth);
 		View::bind_global('chunks', $this->_chunks);
@@ -53,24 +48,21 @@ class Boom_Controller_Page_Html extends Controller_Page
 		View::bind_global('request', $this->request);
 	}
 
-	protected function _load_chunks(array $chunks)
+	protected function _loadChunks(array $chunks)
 	{
-		foreach ($chunks as $type => $slotnames)
-		{
+		foreach ($chunks as $type => $slotnames) {
 			$class = "Chunk_".ucfirst($type);
-			$models = Chunk::find($type, $slotnames, $this->page->version());
+			$models = Chunk::find($type, $slotnames, $this->page->getCurrentVersion());
 
 			$found = array();
-			foreach ($models as $model)
-			{
+			foreach ($models as $model) {
 				$found[] = $model->slotname;
 				$chunks[$type][$model->slotname] = new $class($this->page, $model, $model->slotname);
 			}
 
 			$not_found = array_diff($slotnames, $found);
 
-			foreach ($not_found as $slotname)
-			{
+			foreach ($not_found as $slotname) {
 				$chunks[$type][$slotname] = new $class($this->page, ORM::factory($class), $slotname);
 			}
 		}

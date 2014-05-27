@@ -14,7 +14,7 @@ class Boom_Controller_Cms_Tags_Page extends Controller_Cms_Tags
 	{
 		parent::before();
 
-		$this->model = \Boom\Finder\Page::byId($this->request->param('id'));
+		$this->model = \Boom\Page\Factory::byId($this->request->param('id'));
 		$this->ids = array($this->model->id);
 
 		// Before allowing viewing or editing of page tags check for that the current user has the 'edit_page' role for this page.

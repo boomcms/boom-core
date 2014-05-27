@@ -21,33 +21,15 @@ class Page extends \Boom\Finder
 			->where('page.primary_uri', '!=', null);
 	}
 
-	public static function byId($id)
-	{
-		return new \Boom\Page(new \Model_Page(array('id' => $id, 'deleted' => false)));
-	}
-
-	public static function byInternalName($name)
-	{
-		return new \Boom\Page(new \Model_Page(array('internal_name' => $name, 'deleted' => false)));
-	}
-
-	public static function byPrimaryUri($uri)
-	{
-		return new \Boom\Page(new \Model_Page(array('primary_uri' => $uri, 'deleted' => false)));
-	}
-
-	public static function byUri($uri)
-	{
-		$finder = new static;
-
-		return $finder
-			->addFilter(\Boom\Finder\Page\Filter\Uri($uri))
-			->find();
-	}
-
 	public function find()
 	{
-		$pages = parent::find();
+		$model = parent::find();
+		return new \Boom\Page($model);
+	}
+
+	public function findAll()
+	{
+		$pages = parent::findAll();
 
 		return new Page\Result($pages);
 	}

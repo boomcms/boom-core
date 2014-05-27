@@ -13,7 +13,7 @@ Route::set('vanity', '_<link>', array(
 		{
 			// Turn the vanity URI into a page ID.
 			$page_id = base_convert($params['link'], 36, 10);
-			$page = \Boom\Finder\Page::byId($page_id);
+			$page = \Boom\Page\Factory::byId($page_id);
 			$redirect_to = $page->url();
 
 			header('Location: '.$redirect_to, null, 302);

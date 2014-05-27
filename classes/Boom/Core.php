@@ -74,7 +74,7 @@ abstract class Boom_Core
 				return false;
 			}
 
-			$page = \Boom\Finder\Page::byId($page_url->page_id);
+			$page = \Boom\Page\Factory::byId($page_url->page_id);
 		}
 
 		if ($page->loaded())
@@ -100,7 +100,7 @@ abstract class Boom_Core
 			$format = (isset($params['format']))? $params['format'] : Boom::page_format($request);
 
 			// The URI matches a page in the CMS so we're going to process it with the Page controller.
-			$template_controller = 'Page_'.ucfirst($format).'_'.$page->getTemplate()->controller();
+			$template_controller = 'Page_'.ucfirst($format).'_'.$page->getTemplate()->getControllerName();
 
 			$controller = (class_exists('Controller_'.$template_controller))? $template_controller : 'Page_'.ucfirst($format);
 			$params['controller'] = $controller;

@@ -20,7 +20,7 @@ class PreviousPageBySequence extends Finder\Filter
 	public function execute(\ORM $query)
 	{
 		return $query
-			->where('sequence', '<', $this->currentPage->sequence)
+			->where('sequence', '<', $this->currentPage->getManualOrderPosition())
 			->order_by('sequence', 'desc');
 	}
 }

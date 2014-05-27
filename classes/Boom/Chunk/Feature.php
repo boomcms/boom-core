@@ -20,7 +20,7 @@ class Feature extends \Boom\Chunk
 	{
 		parent::__construct($page, $chunk, $editable);
 
-		$this->_target_page = \Boom\Finder\Page::byId($this->_chunk->target_page_id);
+		$this->_target_page = \Boom\Page\Factory::byId($this->_chunk->target_page_id);
 	}
 
 	/**

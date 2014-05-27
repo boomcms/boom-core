@@ -7,7 +7,7 @@
 		<label for="template_id">Template:</label>
 		<select id='template' name='template_id'>
 			<? foreach ($templates as $t): ?>
-				<option value='<?= $t->id ?>' data-description='<?= $tshortUrl ?>' data-count='<?= $t->page_count() ?>'<? if ($template_id == $t->id): ?> selected='selected'<? endif ?>><?= $t->name ?></option>
+				<option value='<?= $t->id ?>' data-description='<?= $tshortUrl ?>' data-count='<?= $t->countPages() ?>'<? if ($template_id == $t->id): ?> selected='selected'<? endif ?>><?= $t->name ?></option>
 			<? endforeach ?>
 		</select>
 

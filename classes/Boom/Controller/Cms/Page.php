@@ -14,7 +14,7 @@ class Boom_Controller_Cms_Page extends Boom_Controller
 	{
 		parent::before();
 
-		$this->page = \Boom\Finder\Page::byId($this->request->param('id'));
+		$this->page = \Boom\Page\Factory::byId($this->request->param('id'));
 	}
 
 	public function action_add()
