@@ -1,0 +1,20 @@
+{
+	"name":        "boom/core",
+	"description": "Core classess for BoomCMS",
+	"license":     "BSD-3-Clause",
+	"require": {
+		"php":        ">=5.3",
+		"mpratt/embera": "~1.0",
+		"ezyang/htmlpurifier": "dev-master",
+		"kohana/core": "dev-3.3/master",
+		"kohana/database": "dev-3.3/master",
+		"kohana/orm": "dev-3.3/master",
+		"kohana/auth": "dev-3.3/master",
+		"kohana/minion": "dev-3.3/master"		 
+	},
+	"extra": {
+		"branch-alias": {
+			"dev-2.0/develop":  "2.0.x-dev",
+		}
+	}
+}
