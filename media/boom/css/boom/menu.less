@@ -1,7 +1,31 @@
 #b-menu {
-	display: inline-block;
-	
+	position: relative;
+	z-index: 1;
+	background: @darkest-grey;
+	margin-top: -63px;
+
 	ul {
-		display: none;
+		padding-left: 1em;
 	}
+
+	li {
+		list-style-type: none;
+	}
+
+	a {
+		.text-default;
+
+		&:hover, &:focus, &:active {
+			background: @light-grey;
+		}
+	}
+
+	&.pushy-open {
+		left: 60px;
+	}
+}
+
+#b-menu-button {
+	position: relative;
+	z-index: 2;
 }

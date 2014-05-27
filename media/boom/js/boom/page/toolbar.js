@@ -144,7 +144,7 @@ $.widget( 'boom.pageToolbar', {
 	minimise : function() {
 		$.boom.log('minimise iframe');
 
-		this.element.css && this.element.css('width', '60px');
+		this.element.css && this.element.css('width', 'auto');
 	},
 
 	/**

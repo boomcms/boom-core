@@ -26,7 +26,8 @@ return array(
 		'boom/confirmation.js',
 	),
 	'js' => array(
-		'boom/menu.js',
+		'modernizr.js',
+		'jquery/pushy.js',
 		'boom/page/status.js',
 		'boom/page.js',
 		'boom/page/settings.js',

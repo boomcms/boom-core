@@ -46,7 +46,6 @@ $.extend({
 		},
 
 		_init_widgets : function() {
-			$('#b-menu').boomMenu({});
 			this.loader = $('body').boomLoader({}).data('boomBoomLoader');
 		},
 

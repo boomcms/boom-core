@@ -1,8 +1,6 @@
-<div id="b-menu">
-	<span>
-		<?= \Boom\UI::button('menu', __('Menu'), array('id' => 'b-menu-button')) ?>
-	</span>
+<?= \Boom\UI::button('menu', __('Menu'), array('id' => 'b-menu-button', 'class' => 'menu-btn')) ?>
 
+<nav id="b-menu" class="pushy pushy-left">
 	<ul>
 		<? foreach ($menu_items as $item): ?>
 			<li>
@@ -10,4 +8,4 @@
 			</li>
 		<? endforeach; ?>
 	</ul>
-</div>
+</nav>
