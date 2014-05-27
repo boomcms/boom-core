@@ -23,7 +23,7 @@
 					<? foreach ($templates as $t): ?>
 						<tr
 						<?
-							if ( ! $t->file_exists()):
+							if ( ! $t->fileExists()):
 								echo " class='b-templates-nofile'";
 							elseif (in_array($t->pk(), $imported)):
 								echo " class='b-templates-new'";
@@ -54,7 +54,7 @@
 								</select>
 							</td>
 							<td>
-								<? $page_count = $t->page_count(); ?>
+								<? $page_count = $t->countPages(); ?>
 								<a href='/cms/templates/pages/<?= $t->pk() ?>' title='View the title and URL of <?= $page_count, " ", Inflector::plural('page', $page_count) ?> which use this template'><?= $page_count ?>
 							</td>
 							<td><a class="ui-button-icon-primary ui-icon ui-icon-boom-delete b-templates-delete" title="Delete the &quot;<?= $t->name ?>&quot; template" href="#">&nbsp;</a>

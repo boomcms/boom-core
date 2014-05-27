@@ -2,11 +2,6 @@
 
 class Boom_Model_Template extends ORM
 {
-	/**
-	 * The name of the directory (in the views directory) where template files are stored.
-	 */
-	const DIRECTORY = 'site/templates/';
-
 	protected $_table_columns = array(
 		'id'			=>	'',
 		'name'		=>	'',
@@ -15,29 +10,6 @@ class Boom_Model_Template extends ORM
 	);
 
 	protected $_table_name = 'templates';
-
-	public function controller()
-	{
-		$parts = explode('_', $this->filename);
-
-		foreach ($parts as & $part)
-		{
-			$part = ucfirst($part);
-		}
-
-		return implode('_', $parts);
-	}
-
-	/**
-	 * Determines whether the template file exists.
-	 *
-	 * @uses	Kohana::find_file()
-	 * @return boolean
-	 */
-	public function file_exists()
-	{
-		return (bool) Kohana::find_file("views", $this->filename());
-	}
 
 	/**
 	 * Returns an array of the ID and name of all templates which exist in the database.
@@ -58,34 +30,6 @@ class Boom_Model_Template extends ORM
 			->as_array('id', 'name');
 	}
 
-	/**
-	 * Returns a count of the number of the pages which use the current template.
-	 *
-	 * @return int
-	 */
-	public function page_count()
-	{
-		if ( ! $this->loaded())
-		{
-			return 0;
-		}
-
-		// Query the database for the number of pages using this template and return the result.
-		return ORM::factory('Page')
-			->where('template_id', '=', $this->id)
-			->where('deleted', '=', false)
-			->count_all();
-	}
-
-	public function filename()
-	{
-		return static::DIRECTORY.$this->filename;
-	}
-
-	/**
-	 * ORM Validation rules
-	 * @link http://kohanaframework.org/3.2/guide/orm/examples/validation
-	 */
 	public function rules()
 	{
 		return array(

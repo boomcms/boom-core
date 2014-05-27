@@ -50,7 +50,7 @@ class Boom_Template_Manager
 
 		foreach ($templates as $template)
 		{
-			if ( ! $template->file_exists())
+			if ( ! $template->fileExists())
 			{
 				$invalid[] = $template;
 			}
@@ -63,11 +63,11 @@ class Boom_Template_Manager
 	{
 		if ( ! $this->_template_filenames)
 		{
-			$this->_template_filenames = Kohana::list_files("views/" . Model_Template::DIRECTORY);
+			$this->_template_filenames = Kohana::list_files("views/" . \Boom\Template::DIRECTORY);
 
 			foreach ($this->_template_filenames as & $filename)
 			{
-				$filename = str_replace(APPPATH . "views/" . Model_Template::DIRECTORY, "", $filename);
+				$filename = str_replace(APPPATH . "views/" . \Boom\Template::DIRECTORY, "", $filename);
 				$filename = str_replace(EXT, "", $filename);
 			}
 		}
@@ -82,7 +82,7 @@ class Boom_Template_Manager
 
 		foreach ($templates as $template)
 		{
-			if ($template->file_exists())
+			if ($template->fileExists())
 			{
 				$valid[] = $template;
 			}
