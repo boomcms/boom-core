@@ -140,7 +140,7 @@ abstract class Boom_Controller_Cms_Page_Settings extends Controller_Cms_Page
 		$this->authorization('edit_page', $this->page);
 	}
 
-	public function authorization($role, \Model_Page $page)
+	public function authorization($role, \Boom\Page $page)
 	{
 		if ( ! $this->auth->logged_in('manage_pages'))
 		{
