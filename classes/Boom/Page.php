@@ -138,16 +138,6 @@ class Page
 		
 	}
 
-	public function isDeleted()
-	{
-		return $this->model->deleted;
-	}
-
-	public function loaded()
-	{
-		return $this->model->loaded();
-	}
-
 	public function getTitle()
 	{
 		return $this->getCurrentVersion()->title;
@@ -169,6 +159,16 @@ class Page
 	public function getVisibleTo()
 	{
 		return new \DateTime('@' . $this->model->visible_to);
+	}
+
+	public function isDeleted()
+	{
+		return $this->model->deleted;
+	}
+
+	public function loaded()
+	{
+		return $this->model->loaded();
 	}
 
 	/**
