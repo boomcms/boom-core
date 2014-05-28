@@ -223,8 +223,8 @@ class Asset extends Taggable
 
 		// Turn the numeric asset types into user friendly strings.
 		$types = Arr::pluck($types, 'type');
-		$types = array_map(array('\Boom\Asset', 'type'), $types);
-		$types = array_map('ucfirst', $types);
+//		$types = array_map(array('\Boom\Asset', 'type'), $types);
+//		$types = array_map('ucfirst', $types);
 
 		// Return the results.
 		return $types;

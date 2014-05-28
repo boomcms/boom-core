@@ -13,7 +13,7 @@
 			$('body')
 				.ui()
 				.assetManager({
-					allowedUploadTypes:[ '<?= implode('\', \'', \Boom\Asset\Type::$allowedExtensions)?>' ]
+					allowedUploadTypes:[ '<?= implode('\', \'', \Boom\Asset\Mimetype::$allowedExtensions)?>' ]
 				});
 		})(jQuery);
 		//]]>
