@@ -13,7 +13,6 @@ class Version extends ORM
 	protected $_belongs_to = array(
 		'template'		=>	array('model' => 'Template', 'foreign_key' => 'template_id'),
 		'person'		=>	array('model' => 'Person', 'foreign_key' => 'edited_by'),
-		'feature_image' => array('model' => 'Asset', 'foreign_key' => 'feature_image_id')
 	);
 
 	protected $_created_column = array(
@@ -32,7 +31,6 @@ class Version extends ORM
 		'title'				=>	'',
 		'edited_by'		=>	'',
 		'edited_time'		=>	'',
-		'feature_image_id'	=>	'',
 		'published'			=>	'',
 		'embargoed_until'	=>	'',
 		'stashed'			=>	'',

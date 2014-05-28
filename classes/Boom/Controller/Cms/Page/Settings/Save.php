@@ -75,6 +75,18 @@ class Boom_Controller_Cms_Page_Settings_Save extends Controller_Cms_Page_Setting
 		}
 	}
 
+	public function action_feature()
+	{
+		parent::action_feature();
+
+		$this->log("Updated the feature image of page " . $this->old_version->title . " (ID: " . $this->old_version->page_id . ")");
+
+		$this->new_version
+			->set('feature_image_id', $this->request->post('feature_image_id'))
+			->create()
+			->copy_chunks($this->old_version);
+	}
+
 	public function action_navigation()
 	{
 		parent::action_navigation();

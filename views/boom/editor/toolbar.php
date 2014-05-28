@@ -15,10 +15,7 @@
 				</span>
 
 				<?= \Boom\UI::button('preview', __("Preview the current version of the page even if it hasn't been published"), array('id' => 'boom-page-preview', 'class' => 'b-button-preview','data-preview' => 'preview')) ?>
-
-				<span id="b-page-version-menu">
-					<?= \Boom\UI::button('options', __('Settings for the current version of the page'), array('id' => 'boom-page-template-settings')) ?>
-				</span>
+				<?= \Boom\UI::button('options', __("Changed the template used by the page"), array('id' => 'b-page-template')) ?>
 			</div>
 		<? endif; ?>
 

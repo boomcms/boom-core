@@ -81,6 +81,18 @@ abstract class Boom_Controller_Cms_Page_Settings extends Controller_Cms_Page
 	}
 
 	/**
+	 * Edit the page's feature image.
+	 *
+	 * Requires the edit_feature_image role.
+	 *
+	 * @uses Boom_Controller::authorization()
+	 */
+	public function action_feature()
+	{
+		$this->authorization('edit_feature_image', $this->page);
+	}
+
+	/**
 	 * **Edit page navigation settings.**
 	 *
 	 * Settings in this group:

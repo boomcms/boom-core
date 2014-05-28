@@ -51,24 +51,6 @@ class Boom_Controller_Cms_Page_Version_Save extends Controller_Cms_Page_Version
 		$this->new_version->is_published() && $this->page->deleteDrafts();
 	}
 
-	/**
-	 *
-	 * @uses Boom_Controller::log()
-	 * @uses Model_Page_Version::copy_chunks()
-	 */
-	public function action_feature()
-	{
-		// Call the parent function to check permissions.
-		parent::action_feature();
-
-		$this->log("Updated the feature image of page " . $this->old_version->title . " (ID: " . $this->old_version->page_id . ")");
-
-		$this->new_version
-			->set('feature_image_id', $this->request->post('feature_image_id'))
-			->create()
-			->copy_chunks($this->old_version);
-	}
-
 	public function action_request_approval()
 	{
 		parent::action_request_approval();

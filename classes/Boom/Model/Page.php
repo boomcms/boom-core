@@ -13,6 +13,7 @@ class Page extends Taggable
 	 */
 	protected $_belongs_to = array(
 		'mptt'		=>	array('model' => 'Page_MPTT', 'foreign_key' => 'id'),
+		'feature_image' => array('model' => 'Asset', 'foreign_key' => 'feature_image_id')
 	);
 
 	protected $_created_column = array(
@@ -54,6 +55,7 @@ class Page extends Taggable
 		'created_time'				=>	'',
 		'primary_uri'				=>	'',
 		'deleted'					=>	'',
+		'feature_image_id'			=>	'',
 	);
 
 	protected $_table_name = 'pages';

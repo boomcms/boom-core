@@ -2,7 +2,7 @@ boomPageFeatureEditor = function(page) {
 	this.changed = false;
 	this.deferred = new $.Deferred();
 	this.page = page;
-	this.url = '/cms/page/version/feature/' + this.page.id;
+	this.url = '/cms/page/settings/feature/' + this.page.id;
 
 	boomPageFeatureEditor.prototype.done = function(callback) {
 		this.deferred.done(callback);

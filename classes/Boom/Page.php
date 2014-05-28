@@ -85,12 +85,12 @@ class Page
 
 	public function getFeatureImage()
 	{
-		return \Boom\Asset::factory($this->getCurrentVersion()->feature_image);
+		return \Boom\Asset::factory($this->feature_image);
 	}
 
 	public function getFeatureImageId()
 	{
-		return $this->getCurrentVersion()->feature_image_id;
+		return $this->model->feature_image_id;
 	}
 
 	public function getId()

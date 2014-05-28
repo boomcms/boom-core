@@ -43,7 +43,7 @@
 </button>
 
 <? if ($auth->logged_in('edit_feature_image', $page)): ?>
-	<button id="boom-page-featureimage" class="boom-button">
+	<button id="boom-page-featureimage" class="boom-button b-page-settings" data-b-page-setting="featureimage">
 		<?= __('Feature image') ?>
 	</button>
 <? endif; ?>

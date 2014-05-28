@@ -54,22 +54,16 @@ $.widget( 'boom.pageToolbar', {
 			.on('click', '.b-button-preview', function() {
 				$.boom.editor.state($(this).attr('data-preview'));
 			})
+			.on('click', '#b-page-template', function() {
+				self.options.page.template();
+			})
 			.find('#b-page-settings-menu')
-				.splitbutton({
-					items: self._buildSettingsMenu(),
-					width: 'auto',
-					menuPosition: 'right',
-					split: false
-				})
-			.end()
-			.find('#b-page-version-menu')
-				.splitbutton({
-					items: self._buildVersionMenu(),
-					width: 'auto',
-					menuPosition: 'right',
-					split: false
-				})
-			.end();
+			.splitbutton({
+				items: self._buildSettingsMenu(),
+				width: 'auto',
+				menuPosition: 'right',
+				split: false
+			});
 	},
 
 	_buildSettingsMenu : function() {
@@ -88,19 +82,6 @@ $.widget( 'boom.pageToolbar', {
 		});
 
 		return menu_items;
-	},
-
-	_buildVersionMenu : function() {
-		var self = this;
-
-		return {
-			'Feature image' : function() {
-				self.options.page.featureimage();
-			},
-			'Template' : function() {
-				self.options.page.template();
-			}
-		};
 	},
 
 	_create : function() {

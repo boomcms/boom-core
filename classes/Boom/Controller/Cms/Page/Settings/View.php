@@ -59,6 +59,19 @@ class Boom_Controller_Cms_Page_Settings_View extends Controller_Cms_Page_Setting
 		}
 	}
 
+	public function action_feature()
+	{
+		parent::action_feature();
+
+		$images_in_page = new \Boom\Page\AssetsUsed($this->page->getCurrentVersion());
+		$images_in_page->setType(\Boom\Asset\Type::IMAGE);
+
+		$this->template = View::factory("$this->viewDirectory/feature", array(
+			'feature_image_id' => $this->page->getFeatureImageId(),
+			'images_in_page' => $images_in_page->getAll(),
+		));
+	}
+
 	/**
 	 * ** View the page navigation settings.**
 	 *
