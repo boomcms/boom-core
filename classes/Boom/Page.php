@@ -166,6 +166,11 @@ class Page
 		return new \DateTime('@' . $this->model->visible_to);
 	}
 
+	public function hasChildren()
+	{
+		return $this->getMptt()->has_children();
+	}
+
 	public function hasFeatureImage()
 	{
 		return $this->getFeatureImageId() != 0;
@@ -194,6 +199,16 @@ class Page
 	public function isVisibleAtTime($unixTimestamp)
 	{
 		return ($this->model->visible && $this->getVisibleFrom()->getTimestamp() <= $unixTimestamp && ($this->getVisibleTo()->getTimestamp() >= $unixTimestamp || $this->getVisibleTo()->getTimestamp() == 0));
+	}
+	
+	public function isVisibleInCmsNav()
+	{
+		return $this->model->visible_in_nav_cms;
+	}
+
+	public function isVisibleInNav()
+	{
+		return $this->model->visible_in_nav;
 	}
 
 	public function loaded()

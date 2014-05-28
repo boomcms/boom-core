@@ -25,7 +25,7 @@ class Boom_Controller_Page_Children extends Boom_Controller
 
 		return $finder
 			->addFilter(new \Boom\Finder\Page\Filter\ParentPage($parent))
-			->find();
+			->findAll();
 	}
 
 	protected function _format_pages_as_json($pages)
@@ -39,7 +39,7 @@ class Boom_Controller_Page_Children extends Boom_Controller
 				'title'			=>	$page->getTitle(),
 				'url'			=>	(string) $page->url(),
 				'visible'		=>	(int) $page->isVisible(),
-				'has_children'	=>	(int) $page->mptt->has_children(),
+				'has_children'	=>	(int) $page->hasChildren(),
 			);
 		}
 

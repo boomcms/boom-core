@@ -16,12 +16,12 @@
 		<div id="basic">
 			<p>
 				<label for="visible_in_nav"><?= __('Visible in navigation') ?>?</label>
-				<?= Form::select('visible_in_nav', array(1 => 'Yes', 0 => 'No'), $page->visible_in_nav, array('id' => 'visible_in_nav')) ?>
+				<?= Form::select('visible_in_nav', array(1 => 'Yes', 0 => 'No'), $page->isVisibleInNav(), array('id' => 'visible_in_nav')) ?>
 			</p>
 
 			<p>
 				<label for="visible_in_nav_cms"><?= __('Visible in CMS navigation') ?>?</label>
-				<?= Form::select('visible_in_nav_cms', array(1 => 'Yes', 0 => 'No'), $page->visible_in_nav_cms, array('id' => 'visible_in_nav_cms')) ?>
+				<?= Form::select('visible_in_nav_cms', array(1 => 'Yes', 0 => 'No'), $page->isVisibleInCmsNav(), array('id' => 'visible_in_nav_cms')) ?>
 			</p>
 		</div>
 
@@ -29,7 +29,7 @@
 			<div id='advanced'>
 				<label for="parent_id">Parent page</label>
 
-				<input type="hidden" name="parent_id" value="<?=$page->mptt->parent_id?>">
+				<input type="hidden" name="parent_id" value="<?= $page->parent()->getId() ?>">
 				<ul class="boom-tree">
 					<li><a id="page_5" href="/" rel="5">Home</a></li>
 				</ul>
