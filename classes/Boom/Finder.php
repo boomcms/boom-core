@@ -68,7 +68,7 @@ abstract class Finder
 
 	public function setOffset($offset)
 	{
-		$this->_query($offset);
+		$this->_query->offset($offset);
 
 		return $this;
 	}

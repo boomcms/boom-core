@@ -47,7 +47,7 @@ abstract class Boom_Controller_Cms_Page_Version extends Controller_Cms_Page
 		parent::before();
 
 		// Store the current version of the page.
-		$this->old_version = $this->page->version();
+		$this->old_version = $this->page->getCurrentVersion();
 	}
 
 	/**

@@ -50,7 +50,7 @@ class AssetsUsed
 		return \ORM::factory('Asset')
 			->join('chunk_assets', 'inner')
 			->on('asset.id', '=', 'chunk_assets.asset_id')
-			->where('chunk_assets.page_vid', '=', $this->_page->version()->id)
+			->where('chunk_assets.page_vid', '=', $this->_page->getCurrentVersion()->id)
 			->order_by('asset.id')
 			->find_all();
 	}
@@ -62,7 +62,7 @@ class AssetsUsed
 			->on('asset.id', '=', 'chunk_text_assets.asset_id')
 			->join('chunk_texts', 'inner')
 			->on('chunk_text_assets.chunk_id', '=', 'chunk_texts.id')
-			->where('chunk_texts.page_vid', '=', $this->_page->version()->id)
+			->where('chunk_texts.page_vid', '=', $this->_page->getCurrentVersion()->id)
 			->order_by('asset.id')
 			->find_all();
 	}
@@ -74,7 +74,7 @@ class AssetsUsed
 			->on('asset.id', '=', 'chunk_slideshow_slides.asset_id')
 			->join('chunk_slideshows', 'inner')
 			->on('chunk_slideshow_slides.chunk_id', '=', 'chunk_slideshows.id')
-			->where('chunk_slideshows.page_vid', '=', $this->_page->version()->id)
+			->where('chunk_slideshows.page_vid', '=', $this->_page->getCurrentVersion()->id)
 			->order_by('asset.id')
 			->find_all();
 	}

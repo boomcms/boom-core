@@ -131,7 +131,7 @@ class Page extends Taggable
 		// Get the current version
 		if ($current === null)
 		{
-			$current = $this->version();
+			$current = $this->getCurrentVersion();
 		}
 
 		// Create a new version with the same values as the current version.

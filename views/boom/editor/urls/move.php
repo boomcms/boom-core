@@ -43,10 +43,10 @@
 	</tr>
 	<tr>
 		<td>
-			<?= ucfirst($current->version()->status()) ?>
+			<?= ucfirst($current->getCurrentVersion()->status()) ?>
 		</td>
 		<td>
-			<?= ucfirst($page->version()->status()) ?>
+			<?= ucfirst($page->getCurrentVersion()->status()) ?>
 		</td>
 	</tr>
 </table>

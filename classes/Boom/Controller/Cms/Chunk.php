@@ -64,7 +64,7 @@ class Boom_Controller_Cms_Chunk extends Boom_Controller
 
 	protected function _create_version()
 	{
-		$old_version = $this->page->version();
+		$old_version = $this->page->getCurrentVersion();
 
 		$this->_new_version = $this->page->create_version($old_version, array('edited_by' => $this->person->id));
 

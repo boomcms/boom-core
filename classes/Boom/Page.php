@@ -85,12 +85,12 @@ class Page
 
 	public function getFeatureImage()
 	{
-		return \Boom\Asset::factory($this->model->version()->feature_image);
+		return \Boom\Asset::factory($this->getCurrentVersion()->feature_image);
 	}
 
 	public function getFeatureImageId()
 	{
-		return $this->model->version()->feature_image_id;
+		return $this->getCurrentVersion()->feature_image_id;
 	}
 
 	public function getId()
@@ -125,12 +125,12 @@ class Page
 
 	public function getTemplate()
 	{
-		return new Template($this->model->version()->template);
+		return new Template($this->getCurrentVersion()->template);
 	}
 
 	public function getTemplateId()
 	{
-		return $this->model->version()->template_id;
+		return $this->getCurrentVersion()->template_id;
 	}
 
 	public function getThumbnail()
@@ -150,7 +150,7 @@ class Page
 
 	public function getTitle()
 	{
-		return $this->model->version()->title;
+		return $this->getCurrentVersion()->title;
 	}
 
 	/**
