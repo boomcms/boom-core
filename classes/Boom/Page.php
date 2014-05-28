@@ -166,29 +166,16 @@ class Page
 		return new \DateTime('@' . $this->model->visible_to);
 	}
 
-	public function isDeleted()
-	{
-		return $this->model->deleted;
-	}
-
-	public function loaded()
-	{
-		return $this->model->loaded();
-	}
-
-	/**
-	 *
-	 * @return boolean
-	 */
 	public function hasFeatureImage()
 	{
 		return $this->getFeatureImageId() != 0;
 	}
 
-	/**
-	 *
-	 * @return boolean
-	 */
+	public function isDeleted()
+	{
+		return $this->model->deleted;
+	}
+
 	public function isVisible()
 	{
 		return $this->isVisibleAtTime(\Boom\Editor::instance()->getLiveTime());
@@ -202,6 +189,11 @@ class Page
 	public function isVisibleAtTime($unixTimestamp)
 	{
 		return ($this->model->visible && $this->getVisibleFrom()->getTimestamp() <= $unixTimestamp && ($this->getVisibleTo()->getTimestamp() >= $unixTimestamp || $this->getVisibleTo()->getTimestamp() == 0));
+	}
+
+	public function loaded()
+	{
+		return $this->model->loaded();
 	}
 
 	/**
