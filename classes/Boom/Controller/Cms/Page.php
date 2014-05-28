@@ -93,15 +93,14 @@ class Boom_Controller_Cms_Page extends Boom_Controller
 	 */
 	public function action_stash()
 	{
-		// Call Model_Page::stash() on the current page.
 		$this->page->stash();
 	}
 
 	public function action_urls()
 	{
-		$this->template = View::factory("$this->viewDirectory/urls", array(
-			'page'	=> $this->page,
-			'urls'	=> $this->page->urls->order_by('location', 'asc')->find_all(),
+		$this->template = new View("$this->viewDirectory/urls", array(
+			'page' => $this->page,
+			'urls' => $this->page->getUrls(),
 		));
 	}
 }

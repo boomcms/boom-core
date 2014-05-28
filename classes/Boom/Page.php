@@ -143,6 +143,11 @@ class Page
 		return $this->getCurrentVersion()->title;
 	}
 
+	public function getUrls()
+	{
+		return $this->model->urls->order_by('location', 'asc')->find_all();
+	}
+
 	/**
 	 *
 	 * @return \DateTime

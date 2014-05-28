@@ -1,9 +1,5 @@
-<?php defined('SYSPATH') OR die('No direct script access.');
+<?php
 
-/**
- * @package	BoomCMS
- * @category	Controllers
- */
 class Boom_Controller_Cms_Page_Urls extends Boom_Controller
 {
 	/**
@@ -20,7 +16,7 @@ class Boom_Controller_Cms_Page_Urls extends Boom_Controller
 
 	/**
 	 *
-	 * @var Model_Page
+	 * @var \Boom\Page
 	 */
 	public $page;
 

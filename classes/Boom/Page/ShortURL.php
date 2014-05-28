@@ -2,7 +2,7 @@
 
 namespace Boom\Page;
 
-use Boom\Finder as Finder;;
+use Boom\Finder as Finder;
 
 /*
  * Pahe short URLs similar to t.co etc.
@@ -11,7 +11,7 @@ use Boom\Finder as Finder;;
  */
 abstract class ShortURL
 {
-	public static function urlFromPage(Page $page)
+	public static function urlFromPage(\Boom\Page $page)
 	{
 		return "_" . base_convert($page->getId(), 10, 36);
 	}
