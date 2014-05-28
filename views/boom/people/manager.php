@@ -3,6 +3,7 @@
 	<div id="b-topbar" class="b-toolbar">
 		<?= Menu::factory('boom')->sort('priority') ?>
 
+		<?= Boom\UI::menuButton() ?>
 		<?= \Boom\UI::button('add', __('New person'), array('id' => 'b-people-create')) ?>
 		<?= \Boom\UI::button('delete', __('Delete'), array('id' => 'b-people-multi-delete', 'disabled' => 'disabled')) ?>
 
