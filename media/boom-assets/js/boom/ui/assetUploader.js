@@ -91,7 +91,7 @@ $.widget('boom.assetUploader', {
 
 		if ($('.ui-dialog-content').length) {
 			this.dropArea.height($('.ui-dialog-content').height() - 30);
-		} else {
+		} else if ($('#b-topbar').length) {
 			var height = $(window).height() - $('#b-topbar').height() - 30;
 			this.dropArea.height(height + 'px');
 		}

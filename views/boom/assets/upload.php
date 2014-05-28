@@ -5,7 +5,7 @@
 		<div id="b-assets-upload-container">
 			<div id="b-assets-upload-info">
 				<p>Drag and drop files here, or <a id="b-assets-upload-add" href="#"><label for="b-assets-upload-file">select files</label></a> to start uploading.</p>
-				<p class="message"><?=__('Supported file types')?>: <?= implode(', ', \Boom\Asset\Type::$allowedExtensions) ?></p>
+				<p class="message"><?=__('Supported file types')?>: <?= implode(', ', \Boom\Asset\Mimetype::$allowedExtensions) ?></p>
 			</div>
 
 			<div id="b-assets-upload-progress"></div>

@@ -36,6 +36,11 @@ abstract class Asset
 		return new $classname($asset);
 	}
 
+	public function getAspectRatio()
+	{
+		return 1;
+	}
+
 	/**
 	 *
 	 * @return string

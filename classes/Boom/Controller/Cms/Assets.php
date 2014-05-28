@@ -130,7 +130,20 @@ class Boom_Controller_Cms_Assets extends Controller_Cms
 	 */
 	public function action_manager()
 	{
-		$this->template = View::factory("$this->viewDirectory/manager");
+		$this->template = new View("$this->viewDirectory/manager");
+	}
+
+	public function action_picker()
+	{
+		$current = \Boom\Finder\Asset::byId($this->request->query('currentAssetId'));
+
+		$finder = new AssetFinder;
+		$assets = $finder->setLimit(30)->findAll();
+
+		$this->template = new View("$this->viewDirectory/picker", array(
+			'assets' => $assets,
+			'currentAsset' => $current,
+		));
 	}
 
 	public function action_restore()

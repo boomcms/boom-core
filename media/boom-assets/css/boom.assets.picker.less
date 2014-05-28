@@ -5,8 +5,37 @@
 	right: 0;
 	top: 0;
 	z-index: 100002;
+	overflow: auto;
 
-	#b-topbar, #b-assets-filters {
-		display: none;
+	#b-assets-view-thumbs {
+		height: auto;
+		width: auto;
+		margin-right: 28.5em;
+	}
+
+	&-sidebar {
+		position: fixed;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		width: 30em;
+		background: #222;
+		padding-bottom: 75px;
+		.box-sizing;
+		z-index: 2;
+
+		section {
+			h1 {
+				color: #fff;
+			}
+		}
+	}
+
+	&-buttons {
+		position: absolute;
+		left: 0;
+		right: 0;
+		bottom: 25px;
+		height: 50px;
 	}
 }
