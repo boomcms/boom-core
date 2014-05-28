@@ -4,7 +4,7 @@
 	<div>
 		<p>
 			<label for="b-page-visible"><?=__('Visible')?></label>
-			<?= Form::select('visible', array(1 => 'Yes', 0 => 'No'), (int) $page->visible, array('id' => 'b-page-visible')) ?>
+			<?= Form::select('visible', array(1 => 'Yes', 0 => 'No'), (int) $page->isVisibleAtAnyTime(), array('id' => 'b-page-visible')) ?>
 		</p>
 		<p>
 			<label for="visible-from"><?=__('Visible from')?></label>
