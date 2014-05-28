@@ -1,25 +1,15 @@
-<?php defined('SYSPATH') OR die('No direct script access.');
+<?php
 
-/**
- * ##Controller to view the page settings forms.
- *
- * @package	BoomCMS
- * @category	Controllers
- */
+
 class Boom_Controller_Cms_Page_Settings_View extends Controller_Cms_Page_Settings
 {
-	/**
-	 * ** View the page admin settings.**
-	 *
-	 */
+
 	public function action_admin()
 	{
-		// Call the parent function to check permissions.
 		parent::action_admin();
 
-		// Display the admin settings form.
-		$this->template = View::factory("$this->viewDirectory/admin", array(
-			'page'	=>	$this->page,
+		$this->template = new View("$this->viewDirectory/admin", array(
+			'page' => $this->page,
 		));
 	}
 
@@ -66,7 +56,7 @@ class Boom_Controller_Cms_Page_Settings_View extends Controller_Cms_Page_Setting
 		$images_in_page = new \Boom\Page\AssetsUsed($this->page->getCurrentVersion());
 		$images_in_page->setType(\Boom\Asset\Type::IMAGE);
 
-		$this->template = View::factory("$this->viewDirectory/feature", array(
+		$this->template = new View("$this->viewDirectory/feature", array(
 			'feature_image_id' => $this->page->getFeatureImageId(),
 			'images_in_page' => $images_in_page->getAll(),
 		));
@@ -78,29 +68,21 @@ class Boom_Controller_Cms_Page_Settings_View extends Controller_Cms_Page_Setting
 	 */
 	public function action_navigation()
 	{
-		// Call the parent to do a do permissions check
 		parent::action_navigation();
 
-		// Show the navigation settings form.
-		$this->template = View::factory("$this->viewDirectory/navigation", array(
-			'page'			=>	$this->page,
-			'allow_advanced'	=>	$this->allow_advanced,
+		$this->template = new View("$this->viewDirectory/navigation", array(
+			'page' => $this->page,
+			'allow_advanced' => $this->allow_advanced,
 		));
 	}
 
-	/**
-	 * ** View the page search settings. **
-	 *
-	 */
 	public function action_search()
 	{
-		// Call the parent function for permissions check.
 		parent::action_search();
 
-		// Show the search settings template.
-		$this->template = View::factory("$this->viewDirectory/search", array(
-			'allow_advanced'	=>	$this->allow_advanced,
-			'page'			=>	$this->page,
+		$this->template = new View("$this->viewDirectory/search", array(
+			'allow_advanced' => $this->allow_advanced,
+			'page' => $this->page,
 		));
 	}
 
@@ -115,23 +97,17 @@ class Boom_Controller_Cms_Page_Settings_View extends Controller_Cms_Page_Setting
 			->setLimit(50)
 			->find();
 
-		$this->template = View::factory("$this->viewDirectory/sort_children", array(
+		$this->template = new View("$this->viewDirectory/sort_children", array(
 			'children' => $children
 		));
 	}
 
-	/**
-	 * ** View the page visibility settings. **
-	 *
-	 */
 	public function action_visibility()
 	{
-		// Call the parent function to check permissions.
 		parent::action_visibility();
 
-		// GET request - show the visiblity form.
-		$this->template = View::factory("$this->viewDirectory/visibility", array(
-			'page'	=>	$this->page,
+		$this->template = new View("$this->viewDirectory/visibility", array(
+			'page' => $this->page,
 		));
 	}
-} // End Boom_Controller_Cms_Page_Settings_View
+}
