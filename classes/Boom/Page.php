@@ -31,14 +31,6 @@ class Page
 		return (bool) $this->model->internal_indexing;
 	}
 
-	public function deleteDrafts()
-	{
-		$commander = new \Boom\Page\Commander($this);
-		return $commander
-			->addCommand(new \Boom\Page\Delete\Drafts)
-			->execute();
-	}
-
 	public function getChildOrderingPolicy()
 	{
 		return new Page\ChildOrderingPolicy($this->model->children_ordering_policy);
