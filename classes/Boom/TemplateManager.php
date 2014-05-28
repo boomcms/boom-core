@@ -1,17 +1,20 @@
 <?php
 
-class Boom_Template_Manager
+namespace Boom;
+
+use \Kohana as Kohana;
+use \ORM as ORM;
+
+class TemplateManager
 {
 	protected $_template_filenames;
 
-	public function create_new()
+	public function createNew()
 	{
 		$imported = array();
-		foreach ($this->get_template_filenames() as $filename)
-		{
-			if ( ! $this->template_exists_with_filename($filename))
-			{
-				$template = $this->create_template_with_filename($filename);
+		foreach ($this->getTemplateFilenames() as $filename) {
+			if ( ! $this->templateExistsWithFilename($filename)) {
+				$template = $this->createTemplateWithFilename($filename);
 				$imported[] = $template->id;
 			}
 		}
@@ -19,7 +22,7 @@ class Boom_Template_Manager
 		return $imported;
 	}
 
-	public function create_template_with_filename($filename)
+	public function createTemplateWithFilename($filename)
 	{
 		return ORM::factory('Template')
 			->values(array(
@@ -32,10 +35,9 @@ class Boom_Template_Manager
 	/**
 	 * Deletes templates where the filename points to an non-existent file.
 	 */
-	public function delete_invalid_templates()
+	public function deleteInvalidTemplates()
 	{
-		foreach ($this->get_invalid_templates() as $template)
-		{
+		foreach ($this->getInvalidTemplates() as $template) {
 			$template->delete();
 		}
 	}
@@ -43,15 +45,13 @@ class Boom_Template_Manager
 	/**
 	 * Gets templates where the filename points to an non-existent file.
 	 */
-	public function get_invalid_templates()
+	public function getInvalidTemplates()
 	{
 		$invalid = array();
 		$templates = ORM::factory('Template')->order_by('name', 'asc')->find_all();
 
-		foreach ($templates as $template)
-		{
-			if ( ! $template->fileExists())
-			{
+		foreach ($templates as $template) {
+			if ( ! $template->fileExists()) {
 				$invalid[] = $template;
 			}
 		}
@@ -59,14 +59,12 @@ class Boom_Template_Manager
 		return $invalid;
 	}
 
-	public function get_template_filenames()
+	public function getTemplateFilenames()
 	{
-		if ( ! $this->_template_filenames)
-		{
+		if ( ! $this->_template_filenames) {
 			$this->_template_filenames = Kohana::list_files("views/" . \Boom\Template::DIRECTORY);
 
-			foreach ($this->_template_filenames as & $filename)
-			{
+			foreach ($this->_template_filenames as & $filename) {
 				$filename = str_replace(APPPATH . "views/" . \Boom\Template::DIRECTORY, "", $filename);
 				$filename = str_replace(EXT, "", $filename);
 			}
@@ -75,15 +73,13 @@ class Boom_Template_Manager
 		return $this->_template_filenames;
 	}
 
-	public function get_valid_templates()
+	public function getValidTemplates()
 	{
 		$valid = array();
 		$templates = ORM::factory('Template')->order_by('name', 'asc')->find_all();
 
-		foreach ($templates as $template)
-		{
-			if ($template->fileExists())
-			{
+		foreach ($templates as $template) {
+			if ($template->fileExists()) {
 				$valid[] = $template;
 			}
 		}
@@ -91,9 +87,9 @@ class Boom_Template_Manager
 		return $valid;
 	}
 
-	public function template_exists_with_filename($filename)
+	public function templateExistsWithFilename($filename)
 	{
-		$template = new Model_Template(array('filename' => $filename));
+		$template = new Model\Template(array('filename' => $filename));
 
 		return $template->loaded();
 	}

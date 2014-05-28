@@ -1,3 +1,3 @@
-<?php defined('SYSPATH') OR die('No direct script access.');
+<?php
 
-class Model_Template extends Boom_Model_Template {}
+class Model_Template extends \Boom\Model\Template {}

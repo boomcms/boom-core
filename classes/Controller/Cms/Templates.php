@@ -1,3 +1,3 @@
-<?php defined('SYSPATH') OR die('No direct script access.');
+<?php
 
-class Controller_Cms_Templates extends Boom_Controller_Cms_Templates {}
+class Controller_Cms_Templates extends \Boom\Controller\Cms\Templates {}

@@ -1,11 +1,14 @@
-<?php defined('SYSPATH') OR die('No direct script access.');
+<?php
 
-/**
- * @package	BoomCMS
- * @category	Controllers
- *
- */
-class Boom_Controller_Cms_Templates extends Controller_Cms
+namespace Boom\Controller\Cms;
+
+use \Boom\TemplateManager as TemplateManager;
+use \Boom\Finder\Template as TemplateFinder;
+use \ORM as ORM;
+use \DB as DB;
+use \View as View;
+
+class Templates extends \Controller_Cms
 {
 	protected $viewDirectory = 'boom/templates';
 
@@ -18,18 +21,17 @@ class Boom_Controller_Cms_Templates extends Controller_Cms
 
 	public function action_index()
 	{
-		$manager = new Template_Manager;
-		$imported = $manager->create_new();
+		$manager = new TemplateManager;
+		$imported = $manager->createNew();
 
-		// Get all the templates which now exist in the database.
-		$templates = ORM::factory('Template')
-			->order_by('name', 'asc')
-			->find_all();
+		$finder = new TemplateFinder;
+		$templates = $finder
+			->setOrderBy('name', 'asc')
+			->findAll();
 
 		$this->template = View::factory("$this->viewDirectory/index", array(
 			'imported'		=>	$imported,		// The IDs of the templates which we've just added.
 			'templates'	=>	$templates,		// All the templates which are in the database.
-			'filenames'	=>	$manager->get_template_filenames(),
 		));
 	}
 

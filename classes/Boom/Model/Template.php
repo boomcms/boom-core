@@ -1,6 +1,10 @@
-<?php defined('SYSPATH') OR die('No direct script access.');
+<?php
 
-class Boom_Model_Template extends ORM
+namespace Boom\Model;
+
+use \ORM as ORM;
+
+class Template extends ORM
 {
 	protected $_table_columns = array(
 		'id'			=>	'',
