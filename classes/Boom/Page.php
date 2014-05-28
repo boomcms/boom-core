@@ -173,12 +173,17 @@ class Page
 
 	public function isDeleted()
 	{
-		return $this->model->deleted;
+		return (bool) $this->model->deleted;
 	}
 
 	public function isVisible()
 	{
 		return $this->isVisibleAtTime(\Boom\Editor::instance()->getLiveTime());
+	}
+
+	public function isVisibleAtAnyTime()
+	{
+		return (bool) $this->model->visible;
 	}
 
 	/**
