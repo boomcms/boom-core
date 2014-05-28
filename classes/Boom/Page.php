@@ -23,7 +23,12 @@ class Page
 
 	public function allowsExternalIndexing()
 	{
-		return $this->model->external_indexing;
+		return (bool) $this->model->external_indexing;
+	}
+
+	public function allowsInternalIndexing()
+	{
+		return (bool) $this->model->internal_indexing;
 	}
 
 	public function deleteDrafts()

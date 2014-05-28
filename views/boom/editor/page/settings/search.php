@@ -29,12 +29,12 @@
 			<div id="advanced">
 				<p>
 					<label for="external_indexing"><?= __('Allow indexing by search engines') ?></label>
-					<?= Form::select('external_indexing', array(1 => 'Yes', 0 => 'No'), $page->external_indexing, array('id' => 'external_indexing')) ?>
+					<?= Form::select('external_indexing', array(1 => 'Yes', 0 => 'No'), (int) $page->allowsExternalIndexing(), array('id' => 'external_indexing')) ?>
 				</p>
 
 				<p>
 					<label for="internal_indexing"><?= __('Show in site search results') ?></label>
-					<?= Form::select('internal_indexing', array(1 => 'Yes', 0 => 'No'), $page->internal_indexing, array('id' => 'internal_indexing')) ?>
+					<?= Form::select('internal_indexing', array(1 => 'Yes', 0 => 'No'), (int) $page->allowsInternalIndexing(), array('id' => 'internal_indexing')) ?>
 				</p>
 			</div>
 		<? endif; ?>
