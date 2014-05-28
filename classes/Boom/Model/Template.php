@@ -2,6 +2,7 @@
 
 namespace Boom\Model;
 
+use \DB as DB;
 use \ORM as ORM;
 
 class Template extends ORM
