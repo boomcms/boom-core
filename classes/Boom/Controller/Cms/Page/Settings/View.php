@@ -30,7 +30,7 @@ class Boom_Controller_Cms_Page_Settings_View extends Controller_Cms_Page_Setting
 
 		// Create the main view with the basic settings
 		$this->template = View::factory("$this->viewDirectory/children", array(
-			'default_child_template'	=>	($this->page->children_template_id != 0)? $this->page->children_template_id : $this->page->getTemplateId(),
+			'default_child_template'	=>	$this->page->getDefaultChildTemplateId(),
 			'templates'			=>	$templates,
 			'child_order_column'		=>	$childOrderingPolicy->getColumn(),
 			'child_order_direction'	=>	$childOrderingPolicy->getDirection(),

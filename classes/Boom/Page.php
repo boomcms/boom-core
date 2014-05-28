@@ -95,6 +95,11 @@ class Page
 		return $this->model->id;
 	}
 
+	public function getInternalName()
+	{
+		return $this->model->internal_name;
+	}
+
 	/**
 	 *
 	 * @return \Boom\Page\Keywords
@@ -238,8 +243,7 @@ class Page
 	 */
 	public function url()
 	{
-		if ($this->_url === null)
-		{
+		if ($this->_url === null) {
 			$this->_url = \ORM::factory('Page_URL')
 				->values(array(
 					'location'		=>	$this->model->primary_uri,
