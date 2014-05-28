@@ -30,4 +30,9 @@ abstract class UI
 
 		return "<button $attrs_string><span class='b-button-icon $type'></span><span class='b-button-text'>$text</span></button>";
 	}
+
+	public static function menuButton()
+	{
+		return static::button('menu', __('Menu'), array('id' => 'b-menu-button', 'class' => 'menu-btn'));
+	}
 }

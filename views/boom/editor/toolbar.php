@@ -2,7 +2,7 @@
 
 <div id="b-topbar" class='b-page-toolbar b-toolbar b-toolbar-vertical'>
 	<?= Form::hidden('csrf', Security::token(), array('id' => 'b-csrf')) ?>
-	<?= \Boom\UI::button('menu', __('Menu'), array('id' => 'b-menu-button', 'class' => 'menu-btn')) ?>
+	<?= \Boom\UI::menuButton() ?>
 	<?= Menu::factory('boom')->sort('priority') ?>
 
 	<div id="b-topbar-page-buttons">
