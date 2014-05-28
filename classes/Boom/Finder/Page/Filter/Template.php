@@ -8,17 +8,17 @@ class Template extends Finder\Filter
 {
 	/**
 	 *
-	 * @var \Model_Template
+	 * @var \Boom\Template
 	 */
-	protected $_template;
+	protected $template;
 
-	public function __construct(\Model_Template $template)
+	public function __construct(\Boom\Template $template)
 	{
-		$this->_template = $template;
+		$this->template = $template;
 	}
 
 	public function execute(\ORM $query)
 	{
-		return $query->where('template_id', '=', $this->_template->id);
+		return $query->where('template_id', '=', $this->template->getId());
 	}
 }

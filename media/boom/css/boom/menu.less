@@ -1,8 +1,7 @@
 #b-menu {
-	position: relative;
+	position: fixed;
 	z-index: 1;
 	background: @darkest-grey;
-	margin-top: -63px;
 
 	ul {
 		padding-left: 1em;
@@ -21,7 +20,8 @@
 	}
 
 	&.pushy-open {
-		left: 60px;
+		padding-left: 60px;
+		left: 0;
 	}
 }
 
