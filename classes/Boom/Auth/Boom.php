@@ -48,9 +48,9 @@ class Boom_Auth_Boom extends Auth_ORM
 			->on('people_roles.page_id', '=', 'page_mptt.id')
 			->or_where_open()
 				->and_where_open()
-					->where('lft', '<=', $page->mptt->lft)
-					->where('rgt', '>=', $page->mptt->rgt)
-					->where('scope', '=', $page->mptt->scope)
+					->where('lft', '<=', $page->getMptt()->lft)
+					->where('rgt', '>=', $page->getMptt()->rgt)
+					->where('scope', '=', $page->getMptt()->scope)
 				->and_where_close()
 				->or_where('people_roles.page_id', '=', null)
 			->or_where_close()
@@ -128,9 +128,9 @@ class Boom_Auth_Boom extends Auth_ORM
 			$query
 				->join('page_mptt', 'left')
 				->on('people_roles.page_id', '=', 'page_mptt.id')
-				->where('lft', '<=', $page->mptt->lft)
-				->where('rgt', '>=', $page->mptt->rgt)
-				->where('scope', '=', $page->mptt->scope);
+				->where('lft', '<=', $page->getMptt()->lft)
+				->where('rgt', '>=', $page->getMptt()->rgt)
+				->where('scope', '=', $page->getMptt()->scope);
 		}
 		else
 		{
