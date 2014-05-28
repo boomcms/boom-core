@@ -8,7 +8,7 @@ class Invalid extends \Boom\Asset
 
 	public function __construct()
 	{
-		$this->_model = new \Model_Asset;
+		$this->model = new \Model_Asset;
 	}
 
 	public function exists()

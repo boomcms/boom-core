@@ -31,12 +31,12 @@
 			<div id="b-assets-view-attributes<?=$asset->getId();?>" class="b-assets-view-attributes ui-helper-left">
 				<label>
 					<?=__('Title')?>
-					<input type="text" id="title" name="title" value="<?= $asset->title ?>" />
+					<input type="text" id="title" name="title" value="<?= $asset->getTitle() ?>" />
 				</label>
 
 				<label>
 					<?=__('Description')?>
-					<textarea id="description" name="description"><?= $asset->description ?></textarea>
+					<textarea id="description" name="description"><?= $asset->getDescription() ?></textarea>
 				</label>
 
 				<label>
@@ -68,7 +68,7 @@
 
 					<? if ($asset->type == \Boom\Asset\Type::IMAGE): ?>
 						<dt><?=__('Dimensions')?></dt>
-						<dd><?=$asset->width?> x <?=$asset->height?></dd>
+						<dd><?=$asset->getWidth()?> x <?=$asset->getHeight()?></dd>
 					<? endif; ?>
 
 					<? if ($asset->uploaded_by): ?>
@@ -81,7 +81,7 @@
 
 					<? if ($asset->type != \Boom\Asset\Type::IMAGE): ?>
 						<dt><?=__('Downloads')?></dt>
-						<dd><?= Num::format($asset->downloads, 0) ?></dd>
+						<dd><?= Num::format($asset->getDownloads(), 0) ?></dd>
 					<? endif ?>
 				</dl>
 			</div>

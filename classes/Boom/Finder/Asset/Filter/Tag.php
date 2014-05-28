@@ -4,6 +4,7 @@ namespace Boom\Finder\Asset\Filter;
 
 class Tag extends \Boom\Finder\Filter
 {
+	protected $_query;
 	protected $_tags;
 
 	public function __construct($tags = null)
@@ -17,11 +18,15 @@ class Tag extends \Boom\Finder\Filter
 
 	public function execute(\ORM $query)
 	{
+		$this->_query = $query;
+
 		if (is_array($this->_tags)) {
 			(count($this->_tags) > 1)? $this->filterByMultipleTags($query) : $this->filterBySingleTag($query);
 		} else {
 			$this->filterBySingleTag($query);
 		}
+
+		return $this->_query;
 	}
 
 	public function filterByMultipleTags(\ORM $query) {
@@ -42,8 +47,8 @@ class Tag extends \Boom\Finder\Filter
 		}
 	}
 
-	protected function _joinTagsTag(\ORM $query) {
-		$query
+	protected function _joinTagsTable(\ORM $query) {
+		$this->_query
 			->join(array('assets_tags', 't1'), 'inner')
 			->on('assets.id', '=', 't1.asset_id')
 			->distinct(true);

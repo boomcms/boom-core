@@ -56,7 +56,7 @@ class Boom_Controller_Cms_Assets_Upload extends Controller_Cms_Assets
 				{
 					$this->asset->values($common_values, array_keys($common_values));
 
-					$this->asset->title = pathinfo($files['name'][$i], PATHINFO_FILENAME);
+					$this->asset->getTitle() = pathinfo($files['name'][$i], PATHINFO_FILENAME);
 					$this->asset->filename = $files['name'][$i];
 					$this->asset->create_from_file($filename);
 

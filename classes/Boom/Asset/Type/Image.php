@@ -13,7 +13,7 @@ class Image extends Asset
 
 	public function getHeight()
 	{
-		return $this->_model->height;
+		return $this->model->height;
 	}
 
 	public function getType()
@@ -23,6 +23,6 @@ class Image extends Asset
 
 	public function getWidth()
 	{
-		return $this->_model->width;
+		return $this->model->width;
 	}
 }

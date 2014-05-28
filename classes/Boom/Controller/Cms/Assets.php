@@ -68,45 +68,42 @@ class Boom_Controller_Cms_Assets extends Controller_Cms
 
 	public function action_list()
 	{
-		$finder = new Asset_Finder;
-		$finder
-			->by_tags(explode("-", $this->request->query('tag')))
-			->by_title($this->request->query('title'));
+		$finder = new AssetFinder;
+//		$finder
+//			->addFilter(new  \Boom\Finder\Asset\Filter\Tag(explode("-", $this->request->query('tag'))))
+//			->addFilter(new \Boom\Finder\Asset\Filter\TitleContains($this->request->query('title')));
 
 		$column = 'last_modified';
 		$order = 'desc';
 
-		if (strpos($this->request->query('sortby'), '-' ) > 1)
-		{
+		if (strpos($this->request->query('sortby'), '-' ) > 1) {
 			list($column, $order) = explode('-', $this->request->query('sortby'));
-			$finder->order_by($column, $order);
-		}
-		else
-		{
-			$finder->order_by('last_modified', 'desc');
 		}
 
-		($type = $this->request->query('type')) && $finder->by_type($type);
+		$finder->setOrderBy($column, $order);
 
-		$count_and_size = $finder->get_count_and_total_size();
-		$count = $count_and_size['count'];
-		$filesize = $count_and_size['filesize'];
-
-		if ($count === 0)
-		{
-			$this->template = View::factory("$this->viewDirectory/none_found");
+		if ($type = $this->request->query('type')) {
+//			$finder->addFilter(new \Boom\Finder\Asset\Filter\Type($type));
 		}
-		else
-		{
+
+		$count = $finder->count();
+
+		if ($count === 0) {
+			$this->template = new View("$this->viewDirectory/none_found");
+		} else {
 			$page = max(1, $this->request->query('page'));
 			$perpage = max(30, $this->request->query('perpage'));
-			$assets = $finder->get_assets($perpage, ($page - 1) * $perpage);
 
-			$this->template =new View("$this->viewDirectory/list", array(
-				'assets'		=>	$assets,
-				'total_size'	=>	$filesize,
-				'total'		=>	$count,
-				'order'		=>	$order,
+			$assets = $finder
+				->setLimit($perpage)
+				->setOffset(($page - 1) * $perpage)
+				->findAll();
+
+			$this->template = new View("$this->viewDirectory/list", array(
+				'assets' => $assets,
+				'total_size' => 0,//$filesize,
+				'total' => $count,
+				'order' =>	 $order,
 			));
 
 			$pages = ceil($count / $perpage);

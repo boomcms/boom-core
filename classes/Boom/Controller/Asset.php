@@ -37,7 +37,7 @@ abstract class Boom_Controller_Asset extends Boom_Controller
 
 	public function action_embed()
 	{
-		$this->response->body(HTML::anchor('asset/view/'.$this->asset->getId(), "Download {$this->asset->title}"));
+		$this->response->body(HTML::anchor('asset/view/'.$this->asset->getId(), "Download {$this->asset->getTitle()}"));
 	}
 
 	abstract public function action_view();

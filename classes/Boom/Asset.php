@@ -11,11 +11,11 @@ abstract class Asset
 	 *
 	 * @var \Model_Asset
 	 */
-	protected $_model;
+	protected $model;
 
 	public function __construct(\Model_Asset $model)
 	{
-		$this->_model = $model;
+		$this->model = $model;
 	}
 
 	public static function directory()
@@ -54,14 +54,24 @@ abstract class Asset
 		return static::directory() . DIRECTORY_SEPARATOR . $this->getId();
 	}
 
+	public function getDescription()
+	{
+		return $this->model->description;
+	}
+
+	public function getDownloads()
+	{
+		return $this->model->downloads;
+	}
+
 	public function getId()
 	{
-		return $this->_model->id;
+		return $this->model->id;
 	}
 
 	public function getLastModified()
 	{
-		return new DateTime('@' . $this->_model->last_modified);
+		return new DateTime('@' . $this->model->last_modified);
 	}
 
 	public function getMimetype()
@@ -71,12 +81,12 @@ abstract class Asset
 
 	public function getTitle()
 	{
-		return $this->_model->title;
+		return $this->model->title;
 	}
 
 	public function getVisibleFrom()
 	{
-		return new \DateTime('@' . $this->_model->visible_from);
+		return new \DateTime('@' . $this->model->visible_from);
 	}
 
 	abstract public function getType();
@@ -88,6 +98,6 @@ abstract class Asset
 
 	public function loaded()
 	{
-		return $this->_model->loaded();
+		return $this->model->loaded();
 	}
 }
