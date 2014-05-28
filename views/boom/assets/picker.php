@@ -11,6 +11,6 @@
 	</section>
 
 	<section id="b-assets-picker-buttons">
-		<?= Boom\UI::button('cancel', 'Close asset picker', array('class' => 'b-button-withtext')) ?>
+		<?= Boom\UI::button('cancel', 'Close asset picker', array('class' => 'b-button-withtext', 'id' => 'b-asset-picker-close')) ?>
 	</section>
 </section>

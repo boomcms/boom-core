@@ -86,15 +86,7 @@ $.widget('boom.assetUploader', {
 	},
 
 	resizeDropArea : function() {
-		// If a dialog is open then make the drop the area the size of the dialog.
-		// Otherwise make it fill the window excluding the toolbar.
-
-		if ($('.ui-dialog-content').length) {
-			this.dropArea.height($('.ui-dialog-content').height() - 30);
-		} else if ($('#b-topbar').length) {
-			var height = $(window).height() - $('#b-topbar').height() - 30;
-			this.dropArea.height(height + 'px');
-		}
+		this.options.dropAreaHeight && this.dropArea.height(this.options.dropAreaHeight);
 	},
 
 	updateProgressBar : function(e, percentComplete) {

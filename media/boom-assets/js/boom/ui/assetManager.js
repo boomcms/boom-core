@@ -228,6 +228,7 @@ $.widget('boom.assetManager', {
 				});
 
 				assetManager.element.find('#b-assets-content').assetUploader({
+					dropAreaHeight : $(window).height() - $('#b-topbar').height() - 30 + 'px',
 					start: function(e) {
 						var dialog = new boomDialog({
 							url: '/cms/tags/asset/list/0',

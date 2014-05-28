@@ -17,11 +17,24 @@ function boomAssetPicker(currentAssetId) {
 
 				return false;
 			})
+			.on('click', '#b-asset-picker-close', function() {
+				assetPicker.cancel();
+			})
 			.find('#b-assets-upload-form')
 			.assetUploader()
 			.end()
 			.find('#b-assets-view-thumbs')
 			.justifyAssets();
+	};
+
+	boomAssetPicker.prototype.cancel = function() {
+		this.deferred.reject();
+		this.close();
+	}
+
+	boomAssetPicker.prototype.close = function() {
+		$(top.document).find('body').css('overflow', 'auto');
+		this.picker.remove();
 	};
 
 	boomAssetPicker.prototype.loadPicker = function() {
@@ -46,8 +59,7 @@ function boomAssetPicker(currentAssetId) {
 	boomAssetPicker.prototype.pick = function(asset_id) {
 		this.deferred.resolve(asset_id);
 
-		$(top.document).find('body').css('overflow', 'auto');
-		this.picker.remove();
+		this.close();
 	};
 
 	return this.open();
