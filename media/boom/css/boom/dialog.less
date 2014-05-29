@@ -3,10 +3,14 @@
 	max-height: 100%;
 	overflow-y: auto;
 	overflow-x: hidden;
+	border: 0;
+	padding: 0;
 
 	.ui-dialog-titlebar {
 		text-transform: uppercase;
 		background-color: #222;
+		color: @white;
+		border: 0;
 
 		&-close {
 			display: none;
@@ -14,20 +18,25 @@
 	}
 
 	.ui-dialog-buttonpane {
+		margin-top: 0;
 		background-color: #666;
+		border: 0;
 
 		.ui-icon {
 			margin: 0;
 			top: 10px;
 			left: 10px;
 		}
+
 		.ui-button-text {
 			padding: .4em;
 			text-indent: -99999px;
 		}
 	}
+
 	.ui-widget-content {
 		background-color: #666;
+		color: @white;
 
 		&.ui-dialog-content {
 			padding-top: 0;

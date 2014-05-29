@@ -1,59 +1,10 @@
-.ui-widget-overlay {
-	background: #000;
-	opacity: .5;
-	filter: Alpha(Opacity=50);
-}
-
-.ui-helper-left {
-	float: left;
-}
-.ui-helper-right {
-	float: right;
-}
-.ui-helper-center {
-	text-align: center;
-}
-.ui-helper-clear {
-	clear: both;
-}
-
-.ui-tabs .ui-tabs-nav li a {
-	outline: none;
-}
-
-.boom-tabs .ui-helper-right {
-	float: right !important;
+.ui-widget {
+	.text-default;
 }
 
 .ui-state-disabled, .ui-widget-content .ui-state-disabled {
 	opacity: .6;
 	filter: Alpha(Opacity=60);
-}
-
-.ui-splitbutton {
-	float: left;
-}
-.ui-splitbutton-menu {
-	position: absolute;
-	z-index: 9999;
-	left: -9999px;
-	padding: 2px;
-}
-
-.ui-splitbutton-menu li {
-	list-style: none;
-}
-.ui-splitbutton-menu li a {
-	display: block;
-	padding: .3em .5em;
-	text-decoration: none;
-}
-.ui-splitbutton-hitarea {
-	outline: none;
-}
-.ui-splitbutton button {
-	margin-right: 0 !important;
-	float: left !important;
 }
 
 .ui-tree {
@@ -82,4 +33,78 @@
 .ui-tree-placeholder {
 	height: 1.5em;
 	line-height: 1.2em;
+}
+
+.ui-widget-content {
+	border: 0;
+	background: @light-grey;
+	color: @white;
+
+	a {
+		color: @white;
+	}
+}
+
+.ui-widget-header {
+	border: 0;
+	background: @light-grey;
+	color: @white;
+	font-weight: bold;
+
+	a {
+		color: @white;
+	}
+}
+
+/* Interaction states
+----------------------------------*/
+.ui-state-default,
+.ui-widget-content .ui-state-default,
+.ui-widget-header .ui-state-default, .ui-corner-top {
+	border: 0;
+	background: @dark-grey;
+	.button-text(30%);
+
+	a, a:link, a:visited {
+		/* color: #2779aa; */
+		text-decoration: none;
+		color: #ffffff;
+	}
+}
+
+.ui-state-hover,
+.ui-widget-content .ui-state-hover,
+.ui-widget-header .ui-state-hover,
+.ui-state-focus,
+.ui-widget-content .ui-state-focus,
+.ui-widget-header .ui-state-focus {
+	border: 0;
+	background: @lightest-grey;
+	.button-text(30%);
+
+	a, a:hover {
+		color: @white;
+		text-decoration: none;
+	}
+}
+
+.ui-state-active,
+.ui-widget-content .ui-state-active,
+.ui-widget-header .ui-state-active {
+	border: 0;
+	background: @lightest-grey;
+	.button-text;
+
+	a, a:link,  a:visited {
+		color: #ffffff;
+		text-decoration: none;
+	}
+}
+
+.ui-state-disabled,
+.ui-widget-content .ui-state-disabled,
+.ui-widget-header .ui-state-disabled {
+	opacity: .35;
+	filter:Alpha(Opacity=35);
+	background-image: none;
 }
