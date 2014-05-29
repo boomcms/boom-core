@@ -1,10 +1,10 @@
 <?php
 
-namespace Boom\Page\Delete;
+namespace Boom\Page\Command\Delete;
 
 use \Boom\Page as Page;
 
-class Children extends \Boom\Page\Command
+class Children extends Page\Command
 {
 	public function execute(Page $page)
 	{

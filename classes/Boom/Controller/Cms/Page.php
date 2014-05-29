@@ -1,4 +1,6 @@
-<?php 
+<?php
+
+use \Boom\Page\Command\Delete as Delete;
 
 class Boom_Controller_Cms_Page extends Boom_Controller
 {
@@ -71,12 +73,12 @@ class Boom_Controller_Cms_Page extends Boom_Controller
 
 			$commander = new \Boom\Page\Commander($this->page);
 			$commander
-				->addCommand(new \Boom\Page\Delete\FromFeatureBoxes)
-				->addCommand(new \Boom\Page\Delete\FromLinksets);
+				->addCommand(new Delete\FromFeatureBoxes)
+				->addCommand(new Delete\FromLinksets);
 
-			($this->request->post('with_children') == 1) && $commander->addCommand(new \Boom\Page\Delete\Children);
+			($this->request->post('with_children') == 1) && $commander->addCommand(new Delete\Children);
 
-			$commander->addCommand(new \Boom\Page\Delete\FlagDeleted());
+			$commander->addCommand(new Delete\FlagDeleted());
 			$commander->execute();
 		}
 	}

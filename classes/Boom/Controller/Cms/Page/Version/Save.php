@@ -51,7 +51,7 @@ class Boom_Controller_Cms_Page_Version_Save extends Controller_Cms_Page_Version
 		if ($this->new_version->is_published()) {
 			$commander = new \Boom\Page\Commander($this);
 			return $commander
-				->addCommand(new \Boom\Page\Delete\Drafts)
+				->addCommand(new \Boom\Page\Command\Delete\Drafts)
 				->execute();
 		}
 	}

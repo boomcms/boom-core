@@ -1,6 +1,8 @@
 <?php
 
-namespace \Boom\Page\Delete;
+namespace \Boom\Page\Command\Delete;
+
+use \DB as DB;
 
 class Drafts extends \Boom\Page\Command
 {
