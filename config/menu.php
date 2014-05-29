@@ -15,6 +15,12 @@ return array(
 				'priority'	=>	10,
 				'role'		=>	'manage_approvals',
 			),
+			'templates'	=>	array(
+				'title'		=>	'Templates',
+				'url'		=>	'/cms/templates',
+				'role'		=>	'manage_templates',
+				'priority'	=>	5,
+			),
 			'profile'		=>	array(
 				'title'		=>	'Profile',
 				'url'		=>	'/cms/profile',

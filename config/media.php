@@ -2,6 +2,7 @@
 
 return array(
 	'css' => array(
+		'templates.css.less',
 		'cms.css.less',
 	),
 	'corejs' => array(
@@ -54,6 +55,7 @@ return array(
 		'boom/link_picker.js',
 		'boom/tags.js',
 		'boom/tagAutocompleter.js',
+		'boom/templates.js',
 		'jquery/fileupload.js',
 		'wysihtml5/wysihtml5x-0.4.4-toolbar.js',
 		'wysihtml5/parser_rules/full.js',
