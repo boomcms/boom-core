@@ -1,17 +1,10 @@
 #b-page {
-	/* Container for action buttons, e.g. save, publish... */
-	&-actions {
-		.separator {
-			margin-top: 6px;
-			display: none;
-			height: 1.5em;
-			width: 1px;
-			border-right: 1px solid #aaa;
-		}
-	}
+	&-addpage {
+		background: @dark-green;
 
-	&-actions .ui-buttonset, &-metadata .ui-buttonset, &-metadata button {
-		margin-top: 2px;
+		&:hover {
+			background: lighten(@dark-green, 20%);
+		}
 	}
 
 	/* List of child pages which will be affected by a page being deleted */
