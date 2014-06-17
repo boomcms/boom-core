@@ -1,10 +1,10 @@
 <?php
 
-namespace Boom\Finder;
+namespace Boom\Page;
 
 use Boom\Editor as Editor;
 
-class Page extends \Boom\Finder
+class Finder extends \Boom\Finder
 {
 	const TITLE = 'version.title';
 	const MANUAL = 'sequence';
@@ -31,6 +31,6 @@ class Page extends \Boom\Finder
 	{
 		$pages = parent::findAll();
 
-		return new Page\Result($pages);
+		return new Finder\Result($pages);
 	}
 }

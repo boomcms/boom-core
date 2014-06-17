@@ -20,6 +20,6 @@ abstract class ShortURL
 	{
 		$page_id = base_convert(substr($url, 1), 36, 10);
 
-		return Finder\Page::byId($page_id);
+		return Page\Finder::byId($page_id);
 	}
 }

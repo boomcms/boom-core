@@ -1,10 +1,8 @@
 <?php
 
-namespace Boom\Finder\Page\Filter;
+namespace Boom\Page\Finder\Filter;
 
-use \Boom\Finder as Finder;
-
-class YearAndMonth extends Finder\Filter
+class YearAndMonth extends \Boom\Finder\Filter
 {
 	const EPOC_FIRST_YEAR = 1970;
 

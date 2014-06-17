@@ -52,8 +52,8 @@ class Boom_Controller_Cms_Page extends Boom_Controller
 
 		if ($this->request->method() === Request::GET)
 		{
-			$finder = new \Boom\Finder\Page;
-			$finder->addFilter(new \Boom\Finder\Page\Filter\ParentId($this->page->getId()));
+			$finder = new \Boom\Page\Finder;
+			$finder->addFilter(new \Boom\Page\Finder\Filter\ParentId($this->page->getId()));
 			$children = $finder->count();
 
 			// Get request

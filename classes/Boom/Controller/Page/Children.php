@@ -21,10 +21,10 @@ class Boom_Controller_Page_Children extends Boom_Controller
 
 	protected function _get_child_pages($parent)
 	{
-		$finder = new \Boom\Finder\Page;
+		$finder = new \Boom\Page\Finder;
 
 		return $finder
-			->addFilter(new \Boom\Finder\Page\Filter\ParentPage($parent))
+			->addFilter(new \Boom\Page\Finder\Filter\ParentPage($parent))
 			->findAll();
 	}
 

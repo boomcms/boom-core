@@ -1,8 +1,8 @@
 <?php
 
-namespace Boom\Finder\Page\Filter;
+namespace Boom\Page\Finder\Filter;
 
-class Uri extends \Boom\Finder\Page\Filter
+class Uri extends \Boom\Finder\Filter
 {
 	protected $uri;
 

@@ -2,7 +2,7 @@
 
 namespace Boom\TextFilter\Filter;
 
-use \Boom\Finder\Page as PageFinder;
+use \Boom\Page\Finder as PageFinder;
 
 class UnmungeInternalLinks implements \Boom\TextFilter\Filter
 {

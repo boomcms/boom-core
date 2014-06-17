@@ -21,10 +21,10 @@ abstract class Factory
 
 	public static function byUri($uri)
 	{
-		$finder = new \Boom\Finder\Page;
+		$finder = new \Boom\Page\Finder;
 
 		return $finder
-			->addFilter(\Boom\Finder\Page\Filter\Uri($uri))
+			->addFilter(\Boom\Page\Finder\Filter\Uri($uri))
 			->find();
 	}
 }

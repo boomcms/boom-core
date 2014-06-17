@@ -1,6 +1,6 @@
 <?php
 
-namespace Boom\Finder\Tag\Filter;
+namespace Boom\Tag\Finder\Filter;
 
 class Page extends \Boom\Finder\Filter
 {

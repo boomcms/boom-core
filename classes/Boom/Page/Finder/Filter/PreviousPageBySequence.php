@@ -1,10 +1,8 @@
 <?php
 
-namespace Boom\Finder\Page\Filter;
+namespace Boom\Page\Finder\Filter;
 
-use \Boom\Finder as Finder;
-
-class PreviousPageBySequence extends Finder\Filter
+class PreviousPageBySequence extends \Boom\Finder\Filter
 {
 	/**
 	 *

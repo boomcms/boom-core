@@ -1,11 +1,10 @@
 <?php
 
-namespace Boom\Finder\Page\Filter;
+namespace Boom\Page\Finder\Filter;
 
 use \Boom\Editor as Editor;
-use \Boom\Finder as Finder;
 
-class VisibleInNavigation extends Finder\Filter
+class VisibleInNavigation extends \Boom\Finder\Filter
 {
 	/**
 	 *

@@ -2,7 +2,7 @@
 
 namespace Boom\Chunk;
 
-use \Boom\Finder\Page as PageFinder;
+use \Boom\Page\Finder as PageFinder;
 use \Boom\Link as Link;
 use \View as View;
 

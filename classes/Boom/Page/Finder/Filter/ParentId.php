@@ -1,10 +1,8 @@
 <?php
 
-namespace Boom\Finder\Page\Filter;
+namespace Boom\Page\Finder\Filter;
 
-use \Boom\Finder as Finder;
-
-class ParentId extends Finder\Filter
+class ParentId extends \Boom\Finder\Filter
 {
 	protected $_parentId;
 

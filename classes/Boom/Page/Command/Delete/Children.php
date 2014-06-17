@@ -17,8 +17,8 @@ class Children extends Page\Command
 
 	protected function getChildren(Page $page)
 	{
-		$finder = new \Boom\Finder\Page;
-		$finder->addFilter(new \Boom\Finder\Page\Filter\ParentId($page->getId()));
+		$finder = new \Boom\Page\Finder;
+		$finder->addFilter(new \Boom\Page\Finder\Filter\ParentId($page->getId()));
 
 		return $finder->find();
 	}

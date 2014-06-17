@@ -2,7 +2,7 @@
 
 namespace Boom\TextFilter\Filter;
 
-use \Boom\Finder\Page as PageFinder;
+use \Boom\Page\Finder as PageFinder;
 
 /**
  * Munges internal links to hoopdb://page/<pageId>

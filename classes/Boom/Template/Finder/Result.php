@@ -1,6 +1,6 @@
 <?php
 
-namespace Boom\Finder\Page;
+namespace Boom\Template\Finder;
 
 class Result extends \ArrayIterator
 {
@@ -9,7 +9,7 @@ class Result extends \ArrayIterator
 		$results = $results->as_array();
 
 		foreach ($results as &$result) {
-			$result = new \Boom\Page($result);
+			$result = new \Boom\Template($result);
 		}
 
 		parent::__construct($results);

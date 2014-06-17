@@ -1,6 +1,6 @@
 <?php
 
-namespace Boom\Finder\Tag\Filter;
+namespace Boom\Tag\Finder\Filter;
 
 class NameBeginsWith extends \Boom\Finder\Filter
 {

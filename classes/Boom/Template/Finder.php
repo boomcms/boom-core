@@ -1,8 +1,8 @@
 <?php
 
-namespace Boom\Finder;
+namespace Boom\Template;
 
-class Template extends \Boom\Finder
+class Finder extends \Boom\Finder
 {
 	public function __construct()
 	{

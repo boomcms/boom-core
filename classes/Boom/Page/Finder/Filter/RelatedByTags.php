@@ -1,10 +1,8 @@
 <?php
 
-namespace Boom\Finder\Page\Filter;
+namespace Boom\Page\Finder\Filter;
 
-use \Boom\Finder as Finder;
-
-class RelatedByTags extends Finder\Filter
+class RelatedByTags extends \Boom\Finder\Filter
 {
 	/**
 	 *

@@ -27,8 +27,8 @@ class Template
 			return 0;
 		}
 
-		$finder = new Finder\Page;
-		$finder->addFilter(new Finder\Page\Filter\Template($this));
+		$finder = new Page\Finder;
+		$finder->addFilter(new Page\Finder\Filter\Template($this));
 		return $finder->count();
 	}
 

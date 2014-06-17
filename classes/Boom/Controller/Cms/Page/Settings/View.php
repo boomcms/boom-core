@@ -90,10 +90,10 @@ class Boom_Controller_Cms_Page_Settings_View extends Controller_Cms_Page_Setting
 	{
 		parent::action_children();
 
-		$finder = new \Boom\Finder\Page;
+		$finder = new \Boom\Page\Finder;
 
 		$children = $finder
-			->addFilter(\Boom\Finder\Page\Filter\ParentPage($this->page))
+			->addFilter(\Boom\Page\Finder\Filter\ParentPage($this->page))
 			->setLimit(50)
 			->find();
 
