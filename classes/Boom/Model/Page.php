@@ -47,7 +47,6 @@ class Page extends Taggable
 		'children_template_id'		=>	'',
 		'children_url_prefix'			=>	'',
 		'children_ordering_policy'		=>	'',
-		'children_prompt_for_template'	=>	'',
 		'grandchild_template_id'		=>	'',
 		'keywords'				=>	'',
 		'description'				=>	'',
