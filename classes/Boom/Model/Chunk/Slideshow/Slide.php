@@ -27,15 +27,20 @@ class Slide extends \ORM
 				array('strip_tags'),
 			),
 			'url' => array(
-				array(array($this, 'make_link_relative')),
+				array(array($this, 'makeLinkLelative')),
 			),
 		);
+	}
+
+	public function getAsset()
+	{
+		return \Boom\Asset::factory($this->asset);
 	}
 
 	/**
 	 * @return Link
 	 */
-	public function get_link()
+	public function getLink()
 	{
 		return Link::factory($this->url);
 	}
@@ -45,12 +50,12 @@ class Slide extends \ORM
 	 *
 	 * @return boolean
 	 */
-	public function has_link()
+	public function hasLink()
 	{
 		return $this->url && $this->url != 'http://';
 	}
 
-	public function make_link_relative($url)
+	public function makeLinkLelative($url)
 	{
 		return ($base = \URL::base(\Request::current()))? str_replace($base, '/', $url) : $url;
 	}

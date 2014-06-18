@@ -66,14 +66,8 @@ class Boom_Controller_Cms_Page_Version_Save extends Controller_Cms_Page_Version
 			->copy_chunks($this->old_version);
 	}
 
-	/**
-	 *
-	 * @uses Boom_Controller::log()
-	 * @uses Model_Page_Version::copy_chunks()
-	 */
 	public function action_template()
 	{
-		// Call the parent function to check permissions.
 		parent::action_template();
 
 		$this->new_version

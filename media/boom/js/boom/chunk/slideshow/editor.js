@@ -101,9 +101,6 @@ function boomChunkSlideshowEditor(page_id, slotname) {
 				slideshowEditor.dialog
 					.find('#b-slideshow-editor-current img, #b-slideshow-editor-slides input[type=radio]:checked + img')
 					.attr('src', '/asset/view/' + asset_id);
-			})
-			.always(function() {
-				$.boom.history.load( '' );
 			});
 	};
 
