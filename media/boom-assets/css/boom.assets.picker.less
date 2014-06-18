@@ -10,7 +10,17 @@
 	#b-assets-view-thumbs {
 		height: auto;
 		width: auto;
-		margin-right: 28.5em;
+		margin-right: 23.5em;
+	}
+
+	&-current {
+		h1 {
+			margin-top: 0;
+		}
+
+		img {
+			max-width: 100%;
+		}
 	}
 
 	&-sidebar {
@@ -18,13 +28,16 @@
 		top: 0;
 		right: 0;
 		bottom: 0;
-		width: 30em;
+		width: 25em;
 		background: #222;
 		padding: 0.5em 0.5em 75px 0.5em;
 		.box-sizing;
 		z-index: 2;
+		max-width: 100%;
 
 		section {
+			width: 23em;
+
 			h1 {
 				color: #fff;
 			}
@@ -37,5 +50,23 @@
 		right: 0;
 		bottom: 25px;
 		height: 50px;
+	}
+
+	.pagination {
+		border: 0;
+		margin-top: 2em;
+
+		a {
+			width: 1.1em;
+			height: 1.1em;
+			font-size: 2em;
+			line-height: 1em;
+		}
+
+		input {
+			width: 9.8em;
+			font-size: 1.4em;
+			height: 1.6em;
+		}
 	}
 }

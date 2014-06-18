@@ -1,9 +1,11 @@
 function boomAssetPicker(currentAssetId) {
 	this.currentAssetId = currentAssetId? currentAssetId : 0;
+	this.currentPage = 1;
 	this.deferred = new $.Deferred();
 	this.document = $(document);
 
-	boomAssetPicker.prototype.url = '/cms/assets/picker?currentAssetId=' + this.currentAssetId;
+	boomAssetPicker.prototype.url = '/cms/assets/picker';
+	boomAssetPicker.prototype.listUrl = '/cms/assets/list';
 
 	boomAssetPicker.prototype.bind = function() {
 		var assetPicker = this;
@@ -24,8 +26,12 @@ function boomAssetPicker(currentAssetId) {
 			.find('#b-assets-upload-form')
 			.assetUploader()
 			.end()
-			.find('#b-assets-view-thumbs')
-			.justifyAssets();
+			.find('.pagination')
+			.jqPagination({
+				paged: function(page) {
+					assetPicker.getPage(page);
+				}
+			});
 	};
 
 	boomAssetPicker.prototype.cancel = function() {
@@ -38,12 +44,39 @@ function boomAssetPicker(currentAssetId) {
 		$(top.window).trigger('boom:dialog:close');
 	};
 
+	boomAssetPicker.prototype.getPage = function(page) {
+		var assetPicker = this;
+
+		if (this.currentPage !== page) {
+			$.get(this.listUrl, {page : page})
+				.done(function(response) {
+					assetPicker.picker.find('#b-assets-view-thumbs').replaceWith(response);
+					assetPicker.justifyAssets();
+				});
+				
+			this.currentPage = page;
+		}
+	};
+
+	boomAssetPicker.prototype.justifyAssets = function() {
+		this.picker
+			.find('#b-assets-view-thumbs')
+			.justifyAssets();
+	};
+
 	boomAssetPicker.prototype.loadPicker = function() {
 		var assetPicker = this;
 
 		this.picker = $("<div id='b-assets-picker'></div>");
 		this.picker.load(this.url, function() {
 			assetPicker.bind();
+			assetPicker.justifyAssets();
+
+			if (assetPicker.currentAssetId) {
+				assetPicker.picker
+					.find('#b-assets-picker-current img')
+					.attr('src', '/asset/view/' + assetPicker.currentAssetId);
+			}
 		});
 
 		this.document

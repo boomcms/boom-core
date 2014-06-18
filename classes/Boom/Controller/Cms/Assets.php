@@ -5,6 +5,8 @@ use \Boom\Asset\Finder as AssetFinder;
 
 class Boom_Controller_Cms_Assets extends Controller_Cms
 {
+	protected $perpage = 30;
+
 	/**
 	 *
 	 * @var	string
@@ -92,7 +94,7 @@ class Boom_Controller_Cms_Assets extends Controller_Cms
 			$this->template = new View("$this->viewDirectory/none_found");
 		} else {
 			$page = max(1, $this->request->query('page'));
-			$perpage = max(30, $this->request->query('perpage'));
+			$perpage = max($this->perpage, $this->request->query('perpage'));
 
 			$assets = $finder
 				->setLimit($perpage)
@@ -135,14 +137,16 @@ class Boom_Controller_Cms_Assets extends Controller_Cms
 
 	public function action_picker()
 	{
-		$current = \Boom\Asset\Finder::byId($this->request->query('currentAssetId'));
-
 		$finder = new AssetFinder;
-		$assets = $finder->setLimit(30)->findAll();
+		$totalAssets = $finder->count();
+
+		$assets = $finder
+			->setLimit($this->perpage)
+			->findAll();
 
 		$this->template = new View("$this->viewDirectory/picker", array(
 			'assets' => $assets,
-			'currentAsset' => $current,
+			'pages' => ceil($totalAssets / $this->perpage)
 		));
 	}
 

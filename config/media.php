@@ -8,8 +8,10 @@ return array(
 		'boom/ui/assetPicker.js',
 		'boom/ui/assetUploader.js',
 		'boom.assets.justify.js',
+		'jquery/jqpagination.js'
 	),
 	'css' => array(
+		'jqpagination.css',
 		'boom.assets.css.less',
 	)
 );
