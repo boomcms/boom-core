@@ -21,7 +21,7 @@ class Type extends \Boom\Finder\Filter
 			}
 		}
 
-		$query->where('assets.type', 'in', $this->_type);
+		return $query->where('asset.type', 'in', $this->_type);
 	}
 
 	public function shouldBeApplied()

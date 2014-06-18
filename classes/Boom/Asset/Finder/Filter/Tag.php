@@ -21,9 +21,9 @@ class Tag extends \Boom\Finder\Filter
 		$this->_query = $query;
 
 		if (is_array($this->_tags)) {
-			(count($this->_tags) > 1)? $this->filterByMultipleTags($query) : $this->filterBySingleTag($query);
+			(count($this->_tags) > 1)? $this->filterByMultipleTags() : $this->filterBySingleTag();
 		} else {
-			$this->filterBySingleTag($query);
+			$this->filterBySingleTag();
 		}
 
 		return $this->_query;
@@ -40,17 +40,17 @@ class Tag extends \Boom\Finder\Filter
 			->having(DB::expr('count(distinct t2.tag_id)'), '>=', count($this->_tags));
 	}
 
-	public function filterBySingleTag(\ORM $query) {
+	public function filterBySingleTag() {
 		if ($this->_tags > 0) {
-			$this->_joinTagsTable($query);
+			$this->_joinTagsTable();
 			$this->_query->where('t1.tag_id', '=', $this->_tags);
 		}
 	}
 
-	protected function _joinTagsTable(\ORM $query) {
+	protected function _joinTagsTable() {
 		$this->_query
 			->join(array('assets_tags', 't1'), 'inner')
-			->on('assets.id', '=', 't1.asset_id')
+			->on('asset.id', '=', 't1.asset_id')
 			->distinct(true);
 	}
 

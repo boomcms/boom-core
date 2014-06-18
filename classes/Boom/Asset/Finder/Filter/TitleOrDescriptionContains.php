@@ -13,7 +13,7 @@ class TitleOrDescriptionContains extends \Boom\Finder\Filter
 
 	public function execute(\ORM $query)
 	{
-		$query->where('title', 'like', "%{$this->_title}%");
+		return $query->where('title', 'like', "%{$this->_title}%");
 	}
 
 	public function shouldBeApplied()
