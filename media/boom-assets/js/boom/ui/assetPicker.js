@@ -58,6 +58,12 @@ function boomAssetPicker(currentAssetId) {
 		}
 	};
 
+	boomAssetPicker.prototype.hideCurrentAsset = function() {
+		this.picker
+			.find('#b-assets-picker-current')
+			.hide();
+	};
+
 	boomAssetPicker.prototype.justifyAssets = function() {
 		this.picker
 			.find('#b-assets-view-thumbs')
@@ -76,6 +82,8 @@ function boomAssetPicker(currentAssetId) {
 				assetPicker.picker
 					.find('#b-assets-picker-current img')
 					.attr('src', '/asset/view/' + assetPicker.currentAssetId);
+			} else {
+				assetPicker.hideCurrentAsset();
 			}
 		});
 
