@@ -1,11 +1,12 @@
 <?php
 
-namespace Boom;
+namespace Boom\Template;
 
+use \Boom\Template as Template;
 use \Kohana as Kohana;
 use \ORM as ORM;
 
-class TemplateManager
+class Manager
 {
 	protected $_template_filenames;
 
@@ -42,13 +43,22 @@ class TemplateManager
 		}
 	}
 
+	public function getAllTemplates()
+	{
+		$finder = new Template\Finder;
+
+		return $finder
+			->setOrderBy('name', 'asc')
+			->findAll();
+	}
+
 	/**
 	 * Gets templates where the filename points to an non-existent file.
 	 */
 	public function getInvalidTemplates()
 	{
 		$invalid = array();
-		$templates = ORM::factory('Template')->order_by('name', 'asc')->find_all();
+		$templates = $this->getAllTemplates();
 
 		foreach ($templates as $template) {
 			if ( ! $template->fileExists()) {
@@ -76,7 +86,7 @@ class TemplateManager
 	public function getValidTemplates()
 	{
 		$valid = array();
-		$templates = ORM::factory('Template')->order_by('name', 'asc')->find_all();
+		$templates = $this->getAllTemplates();
 
 		foreach ($templates as $template) {
 			if ($template->fileExists()) {
@@ -89,7 +99,7 @@ class TemplateManager
 
 	public function templateExistsWithFilename($filename)
 	{
-		$template = new Model\Template(array('filename' => $filename));
+		$template = new \Boom\Model\Template(array('filename' => $filename));
 
 		return $template->loaded();
 	}

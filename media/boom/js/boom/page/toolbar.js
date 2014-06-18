@@ -115,7 +115,13 @@ $.widget( 'boom.pageToolbar', {
 	maximise : function() {
 		$.boom.log('maximise iframe');
 
-		this.element.css('width', '120%');
+		this.element.css({
+			width : '120%',
+			'margin-left' : 0,
+			'z-index' : 100002
+		});
+
+		this.document.find('body').css('overflow', 'hidden');
 	},
 
 	/**
@@ -125,7 +131,13 @@ $.widget( 'boom.pageToolbar', {
 	minimise : function() {
 		$.boom.log('minimise iframe');
 
-		this.element.css && this.element.css('width', 'auto');
+		this.element.css({
+			width : 'auto',
+			'margin-left' : '-60px',
+			'z-index' : 10000
+		});
+
+		this.document.find('body').css('overflow', 'auto');
 	},
 
 	/**

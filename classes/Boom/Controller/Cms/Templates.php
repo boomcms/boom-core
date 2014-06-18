@@ -2,8 +2,7 @@
 
 namespace Boom\Controller\Cms;
 
-use \Boom\TemplateManager as TemplateManager;
-use \Boom\Finder\Template as TemplateFinder;
+use \Boom\Template as Template;
 use \ORM as ORM;
 use \DB as DB;
 use \View as View;
@@ -21,10 +20,10 @@ class Templates extends \Controller_Cms
 
 	public function action_index()
 	{
-		$manager = new TemplateManager;
+		$manager = new Template\Manager;
 		$imported = $manager->createNew();
 
-		$finder = new TemplateFinder;
+		$finder = new Template\Finder;
 		$templates = $finder
 			->setOrderBy('name', 'asc')
 			->findAll();

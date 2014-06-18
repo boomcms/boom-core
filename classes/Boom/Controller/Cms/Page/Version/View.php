@@ -16,7 +16,7 @@ class Boom_Controller_Cms_Page_Version_View extends Controller_Cms_Page_Version
 	{
 		parent::action_template();
 
-		$manager = new \Boom\TemplateManager;
+		$manager = new \Boom\Template\Manager;
 		$manager->createNew();
 		$templates = $manager->getValidTemplates();
 

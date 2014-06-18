@@ -2,6 +2,9 @@
 
 namespace Boom\Chunk;
 
+use \Kohana as Kohana;
+use \View as View;
+
 class Tag extends \Boom\Chunk
 {
 	protected $_default_template = 'gallery';

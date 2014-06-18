@@ -18,6 +18,6 @@ class Finder extends \Boom\Finder
 	public function findAll()
 	{
 		$templates = parent::findAll();
-		return new Template\Result($templates);
+		return new Finder\Result($templates);
 	}
 }

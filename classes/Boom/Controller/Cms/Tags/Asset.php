@@ -1,6 +1,6 @@
 <?php defined('SYSPATH') OR die('No direct script access.');
 
-use \Boom\Finder\Asset as AssetFinder;
+use \Boom\Asset\Finder as AssetFinder;
 
 class Boom_Controller_Cms_Tags_Asset extends Controller_Cms_Tags
 {
