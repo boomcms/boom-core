@@ -1,6 +1,6 @@
 <?php
 
-namespace Boom\Finder\Asset\Filter;
+namespace Boom\Asset\Finder\Filter;
 
 class TitleContains extends \Boom\Finder\Filter
 {

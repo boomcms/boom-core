@@ -1,7 +1,7 @@
 <?php defined('SYSPATH') OR die('No direct script access.');
 
 use \Boom\Asset as Asset;
-use \Boom\Finder\Asset as AssetFinder;
+use \Boom\Asset\Finder as AssetFinder;
 
 class Boom_Controller_Cms_Assets extends Controller_Cms
 {
@@ -70,8 +70,8 @@ class Boom_Controller_Cms_Assets extends Controller_Cms
 	{
 		$finder = new AssetFinder;
 //		$finder
-//			->addFilter(new  \Boom\Finder\Asset\Filter\Tag(explode("-", $this->request->query('tag'))))
-//			->addFilter(new \Boom\Finder\Asset\Filter\TitleContains($this->request->query('title')));
+//			->addFilter(new  \Boom\Asset\Finder\Filter\Tag(explode("-", $this->request->query('tag'))))
+//			->addFilter(new \Boom\Asset\Finder\Filter\TitleContains($this->request->query('title')));
 
 		$column = 'last_modified';
 		$order = 'desc';
@@ -83,7 +83,7 @@ class Boom_Controller_Cms_Assets extends Controller_Cms
 		$finder->setOrderBy($column, $order);
 
 		if ($type = $this->request->query('type')) {
-//			$finder->addFilter(new \Boom\Finder\Asset\Filter\Type($type));
+//			$finder->addFilter(new \Boom\Asset\Finder\Filter\Type($type));
 		}
 
 		$count = $finder->count();
@@ -135,7 +135,7 @@ class Boom_Controller_Cms_Assets extends Controller_Cms
 
 	public function action_picker()
 	{
-		$current = \Boom\Finder\Asset::byId($this->request->query('currentAssetId'));
+		$current = \Boom\Asset\Finder::byId($this->request->query('currentAssetId'));
 
 		$finder = new AssetFinder;
 		$assets = $finder->setLimit(30)->findAll();

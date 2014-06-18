@@ -1,11 +1,11 @@
 <?php
 
-namespace Boom\Finder;
+namespace Boom\Asset;
 
-use \Boom\Finder as Finder;
+use \Boom\Asset as Asset;
 use \ORM as ORM;
 
-class Asset extends Finder
+class Finder extends \Boom\Finder
 {
 	/**
 	 *
@@ -15,25 +15,25 @@ class Asset extends Finder
 
 	public function __construct()
 	{
-		$this->_query = \ORM::factory('Asset');
+		$this->_query = ORM::factory('Asset');
 	}
 
 	public static function byId($id)
 	{
-		return \Boom\Asset::factory(new \Model_Asset($id));
+		return Asset::factory(new \Model_Asset($id));
 	}
 
 	public function find()
 	{
 		$asset = parent::find();
-		return \Boom\Asset::factory($asset);
+		return Asset::factory($asset);
 	}
 
 	public function findAll()
 	{
 		$assets = parent::findAll();
 
-		return new \Boom\Finder\Asset\Result($assets);
+		return new Finder\Result($assets);
 	}
 
 	/**

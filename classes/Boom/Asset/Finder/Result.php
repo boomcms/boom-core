@@ -1,6 +1,6 @@
 <?php
 
-namespace Boom\Finder\Asset;
+namespace Boom\Asset\Finder;
 
 use Boom\Asset as Asset;
 
