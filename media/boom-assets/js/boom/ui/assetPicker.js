@@ -38,6 +38,11 @@ function boomAssetPicker(currentAssetId) {
 					assetPicker.addFilter('title', ui.item.value);
 					assetPicker.getAssets();
 				}
+			})
+			.end()
+			.on('click', '#b-assets-picker-all', function() {
+				assetPicker.clearFilters();
+				assetPicker.getAssets();
 			});
 
 		this.picker
@@ -53,6 +58,12 @@ function boomAssetPicker(currentAssetId) {
 		this.deferred.reject();
 		this.close();
 	};
+
+	boomAssetPicker.prototype.clearFilters = function() {
+		this.filters = {
+			page : 1
+		};
+	}
 
 	boomAssetPicker.prototype.close = function() {
 		this.picker.remove();

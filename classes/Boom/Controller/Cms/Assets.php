@@ -142,6 +142,7 @@ class Boom_Controller_Cms_Assets extends Controller_Cms
 
 		$assets = $finder
 			->setLimit($this->perpage)
+			->setOrderBy('last_modified', 'desc')
 			->findAll();
 
 		$this->template = new View("$this->viewDirectory/picker", array(
