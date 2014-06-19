@@ -64,29 +64,15 @@ $.widget('boom.assetManager', {
 				}
 			});
 
-		this.titleFilter = this.element.find('#b-assets-filter-title')
-			.autocomplete({
-				delay: 200, // Time to wait after keypress before making the AJAX call.
-				minLength : 0,
-				source: function(request, response){
-					$.ajax({
-						url: '/cms/autocomplete/assets',
-						dataType: 'json',
-						data: {
-							text : assetManager.titleFilter.val()
-						}
-					})
-					.done(function(data) {
-						response(data);
-
-						assetManager.filterByTitle(assetManager.titleFilter.val());
-					});
-				},
-				select: function(event, ui){
+		this.titleFilter = this.element
+			.find('#b-assets-filter-title')
+			.assetTitleFilter({
+				select : function(event, ui) {
 					assetManager.filterByTitle(ui.item.value);
 					$(".ui-menu-item").hide();
 				}
 			});
+
 
 		var selected_tag_ids = [];
 		this.element.find('#b-tags-search')

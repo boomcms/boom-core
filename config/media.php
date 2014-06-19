@@ -7,6 +7,7 @@ return array(
 		'boom/ui/assetManager.js',
 		'boom/ui/assetPicker.js',
 		'boom/ui/assetUploader.js',
+		'boom/ui/assetTitleFilter.js',
 		'boom.assets.justify.js',
 		'jquery/jqpagination.js'
 	),

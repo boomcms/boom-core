@@ -71,9 +71,9 @@ class Boom_Controller_Cms_Assets extends Controller_Cms
 	public function action_list()
 	{
 		$finder = new AssetFinder;
-//		$finder
+		$finder
 //			->addFilter(new  \Boom\Asset\Finder\Filter\Tag(explode("-", $this->request->query('tag'))))
-//			->addFilter(new \Boom\Asset\Finder\Filter\TitleContains($this->request->query('title')));
+			->addFilter(new \Boom\Asset\Finder\Filter\TitleContains($this->request->query('title')));
 
 		$column = 'last_modified';
 		$order = 'desc';

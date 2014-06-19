@@ -1,11 +1,17 @@
 function boomAssetPicker(currentAssetId) {
 	this.currentAssetId = currentAssetId? currentAssetId : 0;
-	this.currentPage = 1;
 	this.deferred = new $.Deferred();
 	this.document = $(document);
+	this.filters = {
+		page : 1
+	};
 
 	boomAssetPicker.prototype.url = '/cms/assets/picker';
 	boomAssetPicker.prototype.listUrl = '/cms/assets/list';
+
+	boomAssetPicker.prototype.addFilter = function(type, value) {
+		this.filters[type] = value;
+	};
 
 	boomAssetPicker.prototype.bind = function() {
 		var assetPicker = this;
@@ -26,6 +32,15 @@ function boomAssetPicker(currentAssetId) {
 			.find('#b-assets-upload-form')
 			.assetUploader()
 			.end()
+			.find('#b-assets-filter-title')
+			.assetTitleFilter({
+				select : function(event, ui) {
+					assetPicker.addFilter('title', ui.item.value);
+					assetPicker.getAssets();
+				}
+			});
+
+		this.picker
 			.find('.pagination')
 			.jqPagination({
 				paged: function(page) {
@@ -44,17 +59,20 @@ function boomAssetPicker(currentAssetId) {
 		$(top.window).trigger('boom:dialog:close');
 	};
 
-	boomAssetPicker.prototype.getPage = function(page) {
+	boomAssetPicker.prototype.getAssets = function() {
 		var assetPicker = this;
 
-		if (this.currentPage !== page) {
-			$.get(this.listUrl, {page : page})
-				.done(function(response) {
-					assetPicker.picker.find('#b-assets-view-thumbs').replaceWith(response);
-					assetPicker.justifyAssets();
-				});
-				
-			this.currentPage = page;
+		$.get(this.listUrl, this.filters)
+			.done(function(response) {
+				assetPicker.picker.find('#b-assets-view-thumbs').replaceWith(response);
+				assetPicker.justifyAssets();
+			});
+	};
+
+	boomAssetPicker.prototype.getPage = function(page) {
+		if (this.filters.page !== page) {
+			this.addFilter('page', page);
+			this.getAssets();
 		}
 	};
 
