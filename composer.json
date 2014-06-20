@@ -1,0 +1,10 @@
+{
+	"name":        "boom/people",
+	"description": "People manager classess for BoomCMS",
+	"license":     "BSD-3-Clause",
+	"extra": {
+		"branch-alias": {
+			"dev-2.0/develop":  "2.0.x-dev"
+		}
+	}
+}
