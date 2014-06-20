@@ -6,11 +6,11 @@
 		"php":        ">=5.3",
 		"mpratt/embera": "~1.0",
 		"ezyang/htmlpurifier": "4.6.*",
-		"kohana/core": "dev-3.3/master",
-		"kohana/database": "dev-3.3/master",
-		"kohana/orm": "dev-3.3/master",
-		"kohana/auth": "dev-3.3/master",
-		"kohana/minion": "dev-3.3/master"		 
+		"kohana/core": "3.3.*",
+		"kohana/database": "3.3.*",
+		"kohana/orm": "3.3.*",
+		"kohana/auth": "3.3.*",
+		"kohana/minion": "3.3.*"		 
 	},
 	"extra": {
 		"branch-alias": {
