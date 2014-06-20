@@ -5,7 +5,7 @@
 	"require": {
 		"php":        ">=5.3",
 		"mpratt/embera": "~1.0",
-		"ezyang/htmlpurifier": "dev-master",
+		"ezyang/htmlpurifier": "4.6.*",
 		"kohana/core": "dev-3.3/master",
 		"kohana/database": "dev-3.3/master",
 		"kohana/orm": "dev-3.3/master",
