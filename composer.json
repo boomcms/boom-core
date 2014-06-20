@@ -10,7 +10,7 @@
 		"kohana/database": "3.3.*",
 		"kohana/orm": "3.3.*",
 		"kohana/auth": "3.3.*",
-		"kohana/minion": "3.3.*"		 
+		"kohana/minion": "3.3.*"
 	},
 	"extra": {
 		"branch-alias": {
