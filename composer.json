@@ -8,7 +8,7 @@
 		}
 	},
 	"require" : {
-		"genphrase/genphrase" : "dev-master",
-		"lightopenid/lightopenid" : "dev-master"
+		"genphrase/genphrase" : "4.0.*",
+		"lightopenid/lightopenid" : "0.7.*"
 	}
 }
