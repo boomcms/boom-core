@@ -8,7 +8,7 @@
 		}
 	},
 	"require" : {
-		"genphrase/genphrase" : "4.0.*",
+		"genphrase/genphrase" : "1.0.*",
 		"lightopenid/lightopenid" : "0.7.*"
 	}
 }
