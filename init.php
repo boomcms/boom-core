@@ -72,7 +72,7 @@ Route::set('asset_download', 'cms/assets/download')
 	))
 	->filter(function(Route $route, $params, Request $request)
 		{
-			$params['asset_ids'] = array_unique(explode(",", $request->query('assets')));
+			$params['asset_ids'] = array_unique(explode("-", $request->query('assets')));
 			$params['action'] = (count($params['asset_ids']) == 1) ? 'single' : 'multiple';
 
 			return $params;

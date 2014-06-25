@@ -9,5 +9,5 @@
 	?>
 </div>
 <div id="b-assets-stats">
-	<?= Num::format($total, 0) ?> <?= Inflector::plural('file', $total) ?> / <?= Text::bytes($total_size) ?>
+	<?= Num::format($total, 0) ?> <?= Inflector::plural('file', $total) ?>
 </div>

@@ -2,6 +2,8 @@
 
 namespace Boom\Asset;
 
+use Boom\Asset\Mimetype as Mimetype;
+
 abstract class Mimetype
 {
 	public static $allowedExtensions = array('jpeg', 'gif', 'jpg', 'png', 'tiff', 'doc', 'docx', 'pdf', 'mp4');
@@ -36,9 +38,9 @@ abstract class Mimetype
 
 	public static function factory($mimetype)
 	{
-		if (static::isSuppported($mimetype)) {
-			$classname = ucfirst(static::$allowedTypes[$mimetype]);
-			return new $classname;
+		if (static::isSupported($mimetype)) {
+			$classname = '\\Boom\\Asset\\Mimetype\\' . ucfirst(static::$allowedTypes[$mimetype]);
+			return new $classname($mimetype);
 
 		} else {
 			throw new Exception\UnsupportedMimeTypeException;

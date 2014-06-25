@@ -23,7 +23,7 @@
 				<li><a href="#b-assets-view-info<?=$asset->getId();?>"><?=__('Info')?></a></li>
 				<li><a href="#b-assets-view-attributes<?=$asset->getId();?>"><?=__('Attributes')?></a></li>
 				<li class="b-dialog-hidden"><a href="#b-assets-view-tags<?=$asset->getId();?>"><?=__('Tags')?></a></li>
-				<? if (count($asset->old_files()) > 0): ?>
+				<? if (count($asset->getOldFiles()) > 0): ?>
 					<li class="b-dialog-hidden"><a href="#b-assets-view-files<?=$asset->getId();?>"><?=__('Previous Files')?></a></li>
 				<? endif; ?>
 			</ul>
@@ -41,7 +41,7 @@
 
 				<label>
 					<?=__('Credits')?>
-					<textarea id="credits" name="credits"><?= $asset->credits ?></textarea>
+					<textarea id="credits" name="credits"><?= $asset->getCredits() ?></textarea>
 				</label>
 
 				<label>
@@ -49,7 +49,7 @@
 					<input type="text" id="visible_from" name="visible_from" class="boom-datepicker" value="<?= $asset->getVisibleFrom()->format('d F Y h:m') ?>" />
 				</label>
 
-				<? if ($asset->type != \Boom\Asset\Type::IMAGE): ?>
+				<? if ( ! $asset instanceof \Boom\Asset\Type\Image): ?>
 					<label for="thumbnail">Thumbnail asset ID
 						<input type="text" id="thumbnail" name="thumbnail_asset_id" value="<?= $asset->thumbnail_asset_id ?>" size="4" />
 					</label>
@@ -61,25 +61,25 @@
 			<div id="b-assets-view-info<?=$asset->getId();?>" class="ui-helper-left">
 				<dl>
 					<dt><?=__('Type')?></dt>
-					<dd><?= ucfirst(\Boom\Asset\Type::type($asset->type));?></dd>
+					<dd><?= $asset->getType() ?></dd>
 
 					<dt><?=__('Filesize')?></dt>
-					<dd><span id='filesize'><?= Text::bytes($asset->filesize) ?></dd>
+					<dd><span id='filesize'><?= Text::bytes($asset->getFilesize()) ?></dd>
 
-					<? if ($asset->type == \Boom\Asset\Type::IMAGE): ?>
+					<? if ($asset instanceof \Boom\Asset\Type\Image): ?>
 						<dt><?=__('Dimensions')?></dt>
 						<dd><?=$asset->getWidth()?> x <?=$asset->getHeight()?></dd>
 					<? endif; ?>
 
-					<? if ($asset->uploaded_by): ?>
+					<? if ($uploader = $asset->getUploadedBy()): ?>
 						<dt><?=__('Uploaded by')?></dt>
-						<dd><?= $asset->uploader->name ?></dd>
+						<dd><?= $uploader->name ?></dd>
 					<? endif; ?>
 
 					<dt><?=__('Uploaded on')?></dt>
-					<dd><?= date('d F Y h:i:s', $asset->uploaded_time)?></dd>
+					<dd><?= $asset->getUploadedTime()->format('d F Y h:i:s') ?></dd>
 
-					<? if ($asset->type != \Boom\Asset\Type::IMAGE): ?>
+					<? if ( ! $asset instanceof \Boom\Asset\Type\Image): ?>
 						<dt><?=__('Downloads')?></dt>
 						<dd><?= Num::format($asset->getDownloads(), 0) ?></dd>
 					<? endif ?>
@@ -90,13 +90,13 @@
 				<?= View::factory('boom/tags/list', array('tags' => $tags)) ?>
 			</div>
 
-			<? if (count($asset->old_files()) > 0): ?>
+			<? if (count($asset->getOldFiles()) > 0): ?>
 				<div id="b-assets-view-files<?= $asset->getId() ?>" class="b-dialog-hidden ui-helper-left">
 					<p>
 						These files were previously assigned to this asset but were replaced.
 					</p>
 					<ul>
-						<? foreach ($asset->old_files() as $timestamp => $filename): ?>
+						<? foreach ($asset->getOldFiles() as $timestamp => $filename): ?>
 							<li>
 								<a href="/cms/assets/restore/<?= $asset->getId() ?>?timestamp=<?= $timestamp ?>">
 									<img src="<?= Route::url('asset', array('action' => 'thumb', 'id' => $asset->getId(), 'width' => 160, 'height' => 160, 'quality' => 85, 'crop' => 1)) ?><? if ($timestamp): ?>?timestamp=<?= $timestamp ?><? endif; ?>" />
