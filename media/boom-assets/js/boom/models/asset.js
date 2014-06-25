@@ -21,7 +21,14 @@ function boomAsset(asset_id) {
 	};
 
 	boomAsset.prototype.download = function() {
-		window.location = this.base_url + 'download?assets=' + this.id;
+		var url = this.base_url + 'download?',
+			assets = this.id.split('-');
+
+		for (var i = 0; i < assets.length; i++) {
+			assets[i] = 'asset[]=' + assets[i];
+		}
+
+		window.location = url + assets.join('&');
 	};
 
 	boomAsset.prototype.get = function() {
