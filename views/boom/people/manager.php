@@ -23,11 +23,11 @@
 
 			<ul id="b-groups-list">
 				<? foreach ($groups as $group): ?>
-					<li data-group-id="<?= $group->id ?>"<? if ($group->id == Request::current()->query('group')): ?> class='current'<? endif ?>>
-						<a class='b-groups-item' href='/cms/people?group=<?= $group->id ?>'><?= $group->name ?></a>
+					<li data-group-id="<?= $group->getId() ?>"<? if ($group->getId() == Request::current()->query('group')): ?> class='current'<? endif ?>>
+						<a class='b-groups-item' href='/cms/people?group=<?= $group->getId() ?>'><?= $group->getName() ?></a>
 
 						<a href='#' title="Delete" class="ui-icon ui-icon-close b-group-delete"></a>
-						<a href='<?= Route::url('people-edit', array('controller' => 'group', 'action' => 'edit', 'id' => $group->id)) ?>' title="Edit" class="ui-icon ui-icon-wrench"></a>
+						<a href='<?= Route::url('people-edit', array('controller' => 'group', 'action' => 'edit', 'id' => $group->getId())) ?>' title="Edit" class="ui-icon ui-icon-wrench"></a>
 					</li>
 				<? endforeach ?>
 			</ul>

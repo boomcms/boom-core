@@ -1,10 +1,8 @@
-<?php defined('SYSPATH') OR die('No direct script access.');
+<?php
 
-/**
- *
- * @package	BoomCMS
- * @category	Controllers
- */
+use \Boom\Person\Finder as PersonFinder;
+use \Boom\Group\Finder as GroupFinder;
+
 class Boom_Controller_Cms_PeopleManager extends Controller_Cms
 {
 	public function before()
@@ -16,13 +14,13 @@ class Boom_Controller_Cms_PeopleManager extends Controller_Cms
 
 	public function action_index()
 	{
-		$people = ORM::factory('Person')
-			->by_group($this->request->query('group'))
-			->order_by('name', 'asc')
-			->find_all();
+		$finder = new PersonFinder;
+		$finder
+			->addFilter(new PersonFinder\Filter\GroupId($this->request->query('group')))
+			->setOrderBy('name', 'asc');
 
 		$this->template = new View("boom/people/list", array(
-			'people' => $people
+			'people' => $finder->findAll()
 		));
 	}
 
@@ -30,8 +28,10 @@ class Boom_Controller_Cms_PeopleManager extends Controller_Cms
 	{
 		if ( ! $this->request->is_ajax())
 		{
+			$finder = new GroupFinder;
+
 			$this->template = View::factory("boom/people/manager", array(
-				'groups' => ORM::Factory('Group')->where('deleted', '=', false)->order_by('name', 'asc')->find_all(),
+				'groups' => $finder->findAll(),
 				'content' => $view,
 			));
 		}

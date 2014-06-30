@@ -10,20 +10,20 @@
 		</thead>
 		<tbody>
 			<? foreach ($people as $person): ?>
-				<tr class="<?= Text::alternate('odd', 'even') ?>" data-person-id="<?= $person->id ?>">
+				<tr class="<?= Text::alternate('odd', 'even') ?>" data-person-id="<?= $person->getId() ?>">
 					<td width="10">
 						<input type="checkbox" class="b-people-select" />
 					</td>
 					<td>
-						<a href="<?= Route::url('people-edit', array('controller' => 'person', 'action' => 'view', 'id' => $person->id)) ?>"><?= $person->name ?></a>
+						<a href="<?= Route::url('people-edit', array('controller' => 'person', 'action' => 'view', 'id' => $person->getId())) ?>"><?= $person->getName() ?></a>
 					</td>
 					<td>
-						<?= $person->email ?>
+						<?= $person->getEmail() ?>
 					</td>
 					<td>
 						<span class='tags'>
-							<? foreach($person->groups->find_all() as $group): ?>
-								<a rel=​'ajax' name='<?= $group->id ?>' href='/cms/people?group=<?= $group->id ?>'><?= $group->name ?> &raquo;</a>
+							<? foreach($person->getGroups() as $group): ?>
+								<a rel=​'ajax' name='<?= $group->getId() ?>' href='/cms/people?group=<?= $group->getId() ?>'><?= $group->getName() ?> &raquo;</a>
 							<? endforeach ?>​
 						</span>
 					</td>

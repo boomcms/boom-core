@@ -1,13 +1,5 @@
-<?php defined('SYSPATH') OR die('No direct script access.');
+<?php
 
-/**
- *
- * @package	BoomCMS
- * @category	Models
- * @author	Rob Taylor
- * @copyright	Hoop Associates
- *
- */
 class Boom_Model_Group extends ORM
 {
 	protected $_has_many = array('roles' => array('through' => 'group_roles'));
@@ -235,10 +227,6 @@ class Boom_Model_Group extends ORM
 			->as_array('role_id', 'allowed');
 	}
 
-	/**
-	 * ORM Validation rules
-	 * @link http://kohanaframework.org/3.2/guide/orm/examples/validation
-	 */
 	public function rules()
 	{
 		return array(

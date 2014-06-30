@@ -1,11 +1,7 @@
-<?php defined('SYSPATH') OR die('No direct script access.');
+<?php
 
-/**
- *
- * @package	BoomCMS
- * @category	Controllers
- * @author	Rob Taylor
- */
+use \Boom\Group as Group;
+
 class Boom_Controller_Cms_Group extends Controller_Cms_PeopleManager
 {
 	/**
@@ -23,6 +19,6 @@ class Boom_Controller_Cms_Group extends Controller_Cms_PeopleManager
 		parent::before();
 
 		$this->authorization('manage_people');
-		$this->group = new Model_Group($this->request->param('id'));
+		$this->group = Group\Factory::byId($this->request->param('id'));
 	}
 }

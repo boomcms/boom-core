@@ -1,3 +1,3 @@
-<?php defined('SYSPATH') OR die('No direct script access.');
+<?php
 
 class Model_Person extends Boom_Model_Person {}

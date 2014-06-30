@@ -1,6 +1,8 @@
 <?php
 
-abstract class Boom_PasswordGenerator
+namespace Boom;
+
+abstract class PasswordGenerator
 {
 	public static $default = 'GenPhrase';
 
@@ -8,7 +10,7 @@ abstract class Boom_PasswordGenerator
 	{
 		$driver === null && $driver = static::$default;
 
-		$class = "PasswordGenerator_$driver";
+		$class = "Boom\\PasswordGenerator\\$driver";
 		return new $class;
 	}
 

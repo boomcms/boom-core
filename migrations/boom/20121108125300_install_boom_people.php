@@ -1,8 +1,5 @@
-<?php defined('SYSPATH') or die('No direct script access.');
+<?php
 
-/**
- * Initial boom core structure.
- */
 class Migration_Boom_20121108125300 extends Minion_Migration_Base
 {
 	/**

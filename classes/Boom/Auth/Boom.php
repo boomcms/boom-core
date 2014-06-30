@@ -1,9 +1,5 @@
-<?php defined('SYSPATH') OR die('No direct script access.');
-/**
- * @package	BoomCMS/People
- * @category	Auth
- * @author	Rob Taylor
- */
+<?php
+
 class Boom_Auth_Boom extends Auth_ORM
 {
 	/**

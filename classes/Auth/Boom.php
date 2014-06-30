@@ -1,3 +1,3 @@
-<?php defined('SYSPATH') OR die('No direct script access.');
+<?php
 
 class Auth_Boom extends Boom_Auth_Boom {}

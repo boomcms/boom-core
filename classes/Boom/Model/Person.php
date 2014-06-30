@@ -1,12 +1,5 @@
-<?php defined('SYSPATH') OR die('No direct script access.');
+<?php
 
-/**
- *
- * @package	BoomCMS
- * @category	Models
- * @author	Rob Taylor
- * @copyright	Hoop Associates
- */
 class Boom_Model_Person extends ORM
 {
 	const LOCK_WAIT = 600;
@@ -28,9 +21,6 @@ class Boom_Model_Person extends ORM
 		'avatar' => array('model' => 'Asset', 'foreign_key' => 'avatar_id'),
 	);
 
-	/**
-	 * Properties to create relationships with Kohana's ORM
-	 */
 	protected $_has_many = array(
 		'groups'		=> array(
 			'model'	=> 'Group',
@@ -65,24 +55,6 @@ class Boom_Model_Person extends ORM
 					->where('group_id', '=', $group_id)
 				)
 			->execute($this->_db);
-
-		return $this;
-	}
-
-	/**
-	 *
-	 * @param integer $group_id
-	 * @return Model_Person
-	 */
-	public function by_group($group_id)
-	{
-		if ($group_id)
-		{
-			$this
-				->join('people_groups', 'inner')
-				->on('person_id', '=', 'id')
-				->where('group_id', '=', $group_id);
-		}
 
 		return $this;
 	}
