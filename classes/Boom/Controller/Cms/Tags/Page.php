@@ -1,13 +1,5 @@
-<?php defined('SYSPATH') OR die('No direct script access.');
+<?php
 
-/**
- * Controller for viewing an editing page tags.
- *
- * @package BoomCMS
- * @category Controllers
- * @author Rob Taylor
- * @copyright	Hoop Associates
- */
 class Boom_Controller_Cms_Tags_Page extends Controller_Cms_Tags
 {
 	public function before()

@@ -1,10 +1,5 @@
-<?php defined('SYSPATH') OR die('No direct script access.');
+<?php
 
-/**
- *
- * @package 	Boom
- * @category 	Controllers
- */
 class Boom_Controller_Page_Rss extends Controller_Page
 {
 	public function action_show()

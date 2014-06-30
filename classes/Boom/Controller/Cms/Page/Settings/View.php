@@ -22,16 +22,12 @@ class Boom_Controller_Cms_Page_Settings_View extends Controller_Cms_Page_Setting
 		// Call the parent function to check permissions.
 		parent::action_children();
 
-		// Get the ID and names of all the templates in the database.
-		// These are used by both the basic and the advanced settings.
-		$templates = ORM::factory('Template')->names();
-
-		$childOrderingPolicy = $this->page->getChildORderingPolicy();
+		$childOrderingPolicy = $this->page->getChildOrderingPolicy();
 
 		// Create the main view with the basic settings
 		$this->template = View::factory("$this->viewDirectory/children", array(
 			'default_child_template'	=>	$this->page->getDefaultChildTemplateId(),
-			'templates'			=>	$templates,
+			'templates'			=>	\Boom\Template\Helpers::names(),
 			'child_order_column'		=>	$childOrderingPolicy->getColumn(),
 			'child_order_direction'	=>	$childOrderingPolicy->getDirection(),
 			'allow_advanced'		=>	$this->allow_advanced,

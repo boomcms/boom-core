@@ -1,10 +1,5 @@
-<?php defined('SYSPATH') OR die('No direct script access.');
+<?php
 
-/**
- *
- * @package	BoomCMS
- * @category	Controllers
- */
 class Boom_Controller_Cms_Editor extends Boom_Controller
 {
 	/**

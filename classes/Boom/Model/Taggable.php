@@ -18,21 +18,18 @@ abstract class Taggable extends ORM
 	 */
 	public function add_tag_with_name($name, array $ids = array())
 	{
-		$type = $this->tag_type();
-
 		if ( ! $this->_loaded && empty($ids))
 		{
 			throw new Exception("Cannot add a tag to an unloaded object");
 		}
 
-		$tag = new Tag(array('name' => $name, 'type' => $type));
+		$tag = new Tag(array('name' => $name));
 
 		if ( ! $tag->loaded())
 		{
 			$tag = ORM::factory('Tag')
 				->values(array(
 					'name'	=>	$name,
-					'type'	=>	$type,
 				))
 				->create();
 		}
@@ -71,14 +68,6 @@ abstract class Taggable extends ORM
 		return ! empty($result);
 	}
 
-	public function get_tags_with_name_like($name)
-	{
-		return $this->tags
-			->where('name', 'like', $name)
-			->find_all()
-			->as_array();
-	}
-
 	/**
 	 * Get the tags which are applied to a group of objects.
 	 *
@@ -113,9 +102,6 @@ abstract class Taggable extends ORM
 	 */
 	public function remove_tag_with_name($name, array $ids = array())
 	{
-		// Determine the type of tag to remove.
-		$type = $this->tag_type();
-
 		// Object has to be loaded to remove a tag from it.
 		if ( ! $this->_loaded && empty($ids))
 		{
@@ -123,7 +109,7 @@ abstract class Taggable extends ORM
 		}
 
 		// Get the tag that has the specified path.
-		$tag = new Model_Tag(array('name' => $name, 'type' => $type));
+		$tag = new Model_Tag(array('name' => $name));
 
 		// If the tag doesn't exist then don't continue.
 		if ( ! $tag->_loaded)
@@ -148,15 +134,5 @@ abstract class Taggable extends ORM
 
 		// Return the current object.
 		return $this;
-	}
-
-	/**
-	 * Return the value for the tag type column so that page and asset tags can be kept seperate.
-	 *
-	 * @return type
-	 */
-	public function tag_type()
-	{
-		return ($this instanceof Model_Asset)? Model_Tag::ASSET : Model_Tag::PAGE;
 	}
 }

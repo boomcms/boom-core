@@ -13,6 +13,6 @@ class NameBeginsWith extends \Boom\Finder\Filter
 
 	public function execute(\ORM $query)
 	{
-
+		return $query->where('name', 'like', $this->string . '%');
 	}
 }

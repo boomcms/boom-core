@@ -1,4 +1,4 @@
-<?php defined('SYSPATH') OR die('No direct script access.');
+<?php
 
 // Contains the text for default chunks to highlight that content can be inserted.
 return array(

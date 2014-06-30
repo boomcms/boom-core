@@ -1,14 +1,5 @@
-<?php defined('SYSPATH') OR die('No direct script access.');
+<?php
 
-/**
- * Autocomplete controller
- * Backend for suggesting tags, assets, or pages via an autocomplete frontend.
- *
- * @package	BoomCMS
- * @category	Controllers
- * @author	Rob Taylor
- * @copyright	Hoop Associates
- */
 class Boom_Controller_Cms_Autocomplete extends Boom_Controller
 {
 	/**
@@ -132,7 +123,7 @@ class Boom_Controller_Cms_Autocomplete extends Boom_Controller
 	public function action_tags()
 	{
 		// Determine whether we're filtering page or assets tags so we know which table to join on.
-		$object_name = ($this->request->query('type') == Model_Tag::ASSET)? 'asset' : 'page';
+		$object_name = ($this->request->query('type') == \Boom\Tag::ASSET)? 'asset' : 'page';
 		$join_table = Inflector::plural($object_name).'_tags';
 		$object_id_column = $object_name.'_id';
 
@@ -142,7 +133,6 @@ class Boom_Controller_Cms_Autocomplete extends Boom_Controller
 			->join($join_table, 'inner')
 			->on('tags.id', '=', $join_table.".tag_id")
 			->where('name', 'like', "%$this->text%")
-			->where('type', '=', $this->request->query('type'))
 			->order_by(DB::expr('length(tags.name)'), 'asc')
 			->distinct(true)
 			->limit($this->count);

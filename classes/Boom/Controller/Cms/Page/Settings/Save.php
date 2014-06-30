@@ -1,10 +1,5 @@
-<?php defined('SYSPATH') OR die('No direct script access.');
+<?php
 
-/**
- *
- * @package	BoomCMS
- * @category	Controllers
- */
 class Boom_Controller_Cms_Page_Settings_Save extends Controller_Cms_Page_Settings
 {
 	public function before()

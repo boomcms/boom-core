@@ -1,9 +1,5 @@
-<?php defined('SYSPATH') or die('No direct script access.');
+<?php
 
-/**
- * Create a root page in the site page tree.
- *
- */
 class Task_Boom_Createrootpage extends Minion_Task
 {
 	protected $_options = array(

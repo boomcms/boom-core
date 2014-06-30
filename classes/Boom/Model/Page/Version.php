@@ -3,7 +3,6 @@
 namespace Boom\Model\Page;
 
 use \Auth as Auth;
-use Boom\Model as Model;
 use \Chunk as Chunk;
 use \DB as DB;
 use \ORM as ORM;

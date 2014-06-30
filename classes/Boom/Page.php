@@ -2,7 +2,7 @@
 
 namespace Boom;
 
-class Page
+class Page implements Taggable
 {
 	/**
 	 *
@@ -19,6 +19,11 @@ class Page
 	public function __construct(\Model_Page $model)
 	{
 		$this->model = $model;
+	}
+
+	public function addTagByName($name)
+	{
+
 	}
 
 	public function allowsExternalIndexing()
@@ -216,6 +221,11 @@ class Page
 	public function loaded()
 	{
 		return $this->model->loaded();
+	}
+
+	public function removeTagByName($name)
+	{
+
 	}
 
 	/**

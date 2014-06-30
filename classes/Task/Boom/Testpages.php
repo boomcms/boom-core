@@ -1,9 +1,8 @@
-<?php defined('SYSPATH') or die('No direct script access.');
+<?php
 
 /**
  * Tests that all pages on the site return a HTTP status code 200.
  *
- * This task takes no config options
  *
  */
 class Task_Boom_Testpages extends Minion_Task

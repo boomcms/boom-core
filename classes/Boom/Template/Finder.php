@@ -17,7 +17,10 @@ class Finder extends \Boom\Finder
 
 	public function findAll()
 	{
-		$templates = parent::findAll();
-		return new Finder\Result($templates);
+		$templates = parent::findAll()->as_array();
+
+		return new \Boom\ArrayCallbackIterator($templates, function($template) {
+			return new \Boom\Template($template);
+		});
 	}
 }

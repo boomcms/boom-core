@@ -2,10 +2,10 @@
 
 namespace Boom\Page;
 
-use Boom\Finder as Finder;
+use Boom\Page\Finder as Finder;
 
 /*
- * Pahe short URLs similar to t.co etc.
+ * Page short URLs similar to t.co etc.
  * A short URLL is the page ID converted to base-36 and prefixed with an underscore.
  * We prefix the short URLs to avoid the possibility of conflicts with real URLs
  */
@@ -20,6 +20,6 @@ abstract class ShortURL
 	{
 		$page_id = base_convert(substr($url, 1), 36, 10);
 
-		return Page\Finder::byId($page_id);
+		return Finder::byId($page_id);
 	}
 }

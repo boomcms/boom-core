@@ -150,48 +150,6 @@ class Page extends Taggable
 		return $new_version;
 	}
 
-	public function get_tags_applied_down_tree_query()
-	{
-		return ORM::factory('Tag')
-			->join('pages_tags', 'inner')
-			->on('tag.id', '=', 'pages_tags.tag_id')
-			->join('pages', 'inner')
-			->on('pages_tags.page_id', '=', 'pages.id')
-			->join('page_mptt', 'inner')
-			->on('pages.id', '=', 'page_mptt.id')
-			->where('page_mptt.lft', '>=', $this->mptt->lft)
-			->where('page_mptt.rgt', '<=', $this->mptt->rgt)
-			->where('page_mptt.scope', '=', $this->mptt->scope)
-			->distinct(true)
-			->order_by('tag.name', 'asc');
-	}
-
-	public function get_tags_applied_down_tree($prefix = null)
-	{
-		$query = $this->get_tags_applied_down_tree_query();
-
-		if ($prefix)
-		{
-			$query->where('tag.name', 'like', $prefix);
-		}
-
-		return $query->find_all()->as_array();
-	}
-
-	public static function id_by_internal_name($name)
-	{
-		$results = DB::select('id')
-			->from('pages')
-			->where('internal_name', '=', $name)
-			->execute()
-			->as_array();
-
-		if (isset($results[0]))
-		{
-			return $results[0]['id'];
-		}
-	}
-
 	/**
 	 * Add the page version columns to a select query.
 	 *

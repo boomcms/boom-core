@@ -29,8 +29,10 @@ class Finder extends \Boom\Finder
 
 	public function findAll()
 	{
-		$pages = parent::findAll();
+		$pages = parent::findAll()->as_array();
 
-		return new Finder\Result($pages);
+		return new \Boom\ArrayCallbackIterator($pages, function($page) {
+			return new \Boom\Page($page);
+		});
 	}
 }

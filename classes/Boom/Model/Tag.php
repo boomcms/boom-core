@@ -10,18 +10,11 @@ class Tag extends ORM
 	protected $_table_columns = array(
 		'id'			=>	'',
 		'name'		=>	'',
-		'type'		=>	'',
 		'slug_short'	=>	'',
 		'slug_long'		=>	'',
 	);
 
 	protected $_table_name = 'tags';
-
-	// The value for the 'type' property for asset tags.
-	const ASSET = 1;
-
-	// The value for the 'type' property for page tags.
-	const PAGE = 2;
 
 	public function check_slugs_are_defined()
 	{
@@ -89,11 +82,11 @@ class Tag extends ORM
 
 	public function filters()
 	{
-	    return array(
+		return array(
 			'name' => array(
 				array('trim'),
 			),
-	   );
+		);
 	}
 
 	/**

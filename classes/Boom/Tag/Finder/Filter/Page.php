@@ -13,6 +13,9 @@ class Page extends \Boom\Finder\Filter
 
 	public function execute(\ORM $query)
 	{
-		
+		return $query
+			->join('pages_tags', 'inner')
+			->on('tag.id', '=', 'pages_tags.tag_id')
+			->where('pages_tags.page_id', '=', $this->page->getId());
 	}
 }

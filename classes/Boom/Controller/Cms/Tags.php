@@ -1,13 +1,5 @@
-<?php defined('SYSPATH') OR die('No direct script access.');
+<?php
 
-/**
- * Base controller for editing page and asset tags.
- *
- * @package BoomCMS
- * @category Controllers
- * @author Rob Taylor
- * @copyright	Hoop Associates
- */
 abstract class Boom_Controller_Cms_Tags extends Boom_Controller
 {
 	/**
