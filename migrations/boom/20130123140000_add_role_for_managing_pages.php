@@ -1,8 +1,5 @@
-<?php defined('SYSPATH') or die('No direct script access.');
+<?php
 
-/**
- * Import people from centralised user database.
- */
 class Migration_Boom_20130123140000 extends Minion_Migration_Base
 {
 	/**

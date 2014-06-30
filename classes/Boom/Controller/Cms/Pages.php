@@ -1,16 +1,5 @@
-<?php defined('SYSPATH') OR die('No direct script access.');
+<?php
 
-/**
- * Controller for the page manager.
- * Allows viewing a list of the pages in the CMS and, in the future, doing stuff with that list.
- *
- * Not to be confused with [Controller_Cms_Page] which is used for editing a single page.
- *
- * @package	BoomCMS
- * @category	Controllers
- * @author	Rob Tayor
- *
- */
 class Boom_Controller_Cms_Pages extends Boom_Controller
 {
 	public function before()
