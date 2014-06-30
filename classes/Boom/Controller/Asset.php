@@ -1,4 +1,4 @@
-<?php defined('SYSPATH') OR die('No direct script access.');
+<?php
 
 abstract class Boom_Controller_Asset extends Boom_Controller
 {

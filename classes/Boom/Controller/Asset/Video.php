@@ -1,4 +1,4 @@
-<?php defined('SYSPATH') OR die('No direct script access.');
+<?php
 
 class Boom_Controller_Asset_Video extends Controller_Asset
 {

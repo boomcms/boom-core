@@ -15,16 +15,6 @@ $.widget('boom.assetManager', {
 		var assetManager = this;
 
 		this.element
-			.delegate('#b-assets-pagination a', 'click', function(e) {
-				e.preventDefault();
-
-				$.get(assetManager.baseUrl + 'list?' + $(this).attr('href').split('?')[ 1 ])
-					.done(function(data) {
-						assetManager.showContent(data);
-					});
-
-				return false;
-			})
 			.on('change', '#b-assets-sortby', function(event) {
 				assetManager.sortBy(this.value);
 			})
@@ -328,7 +318,8 @@ $.widget('boom.assetManager', {
 	showContent : function(content) {
 		this.selected = [];
 		this.toggleButtons();
-		var $content = $(content);
+		var $content = $(content),
+			assetManager = this;
 
 		var id = $($content.get(0)).attr('id');
 		var pagination = $content.get(2);
@@ -348,6 +339,16 @@ $.widget('boom.assetManager', {
 
 		if (pagination) {
 			$('#b-assets-pagination').replaceWith(pagination);
+			$('#b-assets-pagination')
+				.jqPagination({
+					paged: function(page) {
+						$.get(assetManager.baseUrl + 'list?')
+							.done(function(data) {
+								assetManager.showContent(data);
+							});
+					}
+				});
+
 			$('#b-assets-filters').show();
 			$('#b-assets-buttons').show();
 		} else {

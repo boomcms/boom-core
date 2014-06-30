@@ -1,4 +1,4 @@
-<?php defined('SYSPATH') OR die('No direct script access.');
+<?php
 
 use \Boom\Asset as Asset;
 use \Boom\Asset\Finder as AssetFinder;
@@ -95,6 +95,7 @@ class Boom_Controller_Cms_Assets extends Controller_Cms
 		} else {
 			$page = max(1, $this->request->query('page'));
 			$perpage = max($this->perpage, $this->request->query('perpage'));
+			$pages = ceil($count / $perpage);
 
 			$assets = $finder
 				->setLimit($perpage)
@@ -103,26 +104,10 @@ class Boom_Controller_Cms_Assets extends Controller_Cms
 
 			$this->template = new View("$this->viewDirectory/list", array(
 				'assets' => $assets,
-				'total_size' => 0,//$filesize,
 				'total' => $count,
 				'order' =>	 $order,
+				'pages' => $pages
 			));
-
-			$pages = ceil($count / $perpage);
-
-			if ($pages > 1)
-			{
-				// More than one page - generate pagination links.
-				$pagination = new View('pagination/query', array(
-					'current_page'		=>	$page,
-					'total_pages'		=>	$pages,
-					'base_url'			=>	'',
-					'previous_page'		=>	$page - 1,
-					'next_page'		=>	($page == $pages) ? 0 : ($page + 1),
-				));
-
-				$this->template->set('pagination', $pagination);
-			}
 		}
 	}
 

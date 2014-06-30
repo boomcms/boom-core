@@ -1,4 +1,4 @@
-<?php defined('SYSPATH') or die('No direct script access.');
+<?php
 
 class Migration_Boom_20140302172300 extends Minion_Migration_Base
 {

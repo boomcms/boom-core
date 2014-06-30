@@ -28,7 +28,7 @@
 		</div>
 	</section>
 
-	<section class="pagination">
+	<section id="b-assets-pagination" class="pagination">
 		<a href="#" class="first" data-action="first">&laquo;</a>
 		<a href="#" class="previous" data-action="previous">&lsaquo;</a>
 		<input type="text" readonly="readonly" data-max-page="<?= $pages ?>" />

@@ -1,14 +1,5 @@
-<?php defined('SYSPATH') OR die('No direct script access.');
-/**
- * Asset controller for displaying MS Word files.
- *
- * @package		BoomCMS
- * @category	Assets
- * @category	Controllers
- * @author		Rob Taylor
- * @copyright	Hoop Associates
- *
- */
+<?php
+
 class Boom_Controller_Asset_MSWord extends Controller_Asset
 {
 	public function action_view()

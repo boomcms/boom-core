@@ -9,6 +9,7 @@
 @import 'mixins.less';
 @import 'boom.assets.upload.less';
 @import 'boom.assets.picker.less';
+@import 'assets/pagination.less';
 
 #b-assets {
 	&-all {
@@ -260,7 +261,6 @@
 	}
 
 	&-pagination, &-stats {
-		line-height: 64px;
 		display: inline-block;
 		vertical-align: top;
 		float: right;
@@ -268,8 +268,13 @@
 		font-size: 1.3em;
 	}
 
+	&-stats {
+		line-height: 64px;
+	}
+
 	&-pagination {
 		min-width: 370px;
+		border: 0;
 
 		select {
 			margin: 20px 0 0 2em;

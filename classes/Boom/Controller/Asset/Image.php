@@ -1,15 +1,5 @@
-<?php defined('SYSPATH') OR die('No direct script access.');
+<?php
 
-/**
- * Asset controller for display images.
- *
- * @package		BoomCMS
- * @category		Assets
- * @category		Controllers
- * @author		Rob Taylor
- * @copyright		Hoop Associates
- *
- */
 class Boom_Controller_Asset_Image extends Controller_Asset
 {
 	/**
