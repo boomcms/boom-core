@@ -3,7 +3,7 @@
 namespace Boom;
 
 use \Auth as Auth;
-use \Html as Html;
+use \HTML as HTML;
 use \Kohana as Kohana;
 use \Model_Page_Version as Model_Page_Version;
 use \ORM as ORM;

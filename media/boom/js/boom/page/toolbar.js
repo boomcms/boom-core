@@ -116,7 +116,7 @@ $.widget( 'boom.pageToolbar', {
 		$.boom.log('maximise iframe');
 
 		this.element.css({
-			width : '120%',
+			width : '100%',
 			'margin-left' : 0,
 			'z-index' : 100002
 		});

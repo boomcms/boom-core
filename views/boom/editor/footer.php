@@ -1,9 +1,3 @@
-	<div id="boom-dialogs">
-		<div id="boom-dialog-alerts">
-			<p>&nbsp;</p>
-		</div>
-	</div>
-
 	<?= Boom::include_js() ?>
 
 	<script type="text/javascript">
