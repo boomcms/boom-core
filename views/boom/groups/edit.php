@@ -1,9 +1,9 @@
 <div id='b-group-edit'>
 	<div id="b-group-edit-name">
-		<form data-group-id='<?= $group->id ?>'>
+		<form data-group-id='<?= $group->getId() ?>'>
 			<fieldset>
 				<label for="b-people-group-name"><h2><?= __('Edit group name') ?></h2></label>
-				<input type="text" id="b-people-group-name" class="boom-input boom-input-medium" name="name" value="<?=$group->name?>" />
+				<input type="text" id="b-people-group-name" class="boom-input boom-input-medium" name="name" value="<?=$group->getName() ?>" />
 
 				<?= \Boom\UI::button('accept', __('Save group name'), array('id' => 'b-people-group-save')) ?>
 			</fieldset>
@@ -112,7 +112,7 @@
 <script type='text/javascript'>
 	window.onload = function() {
 		$('body').groupPermissionsEditor({
-			group : new boomGroup(<?= $group->id ?>)
+			group : new boomGroup(<?= $group->getId() ?>)
 		});
 	};
 </script>
