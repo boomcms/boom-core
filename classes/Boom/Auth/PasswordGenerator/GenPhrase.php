@@ -1,11 +1,11 @@
 <?php
 
-namespace Boom\PasswordGenerator;
+namespace Boom\Auth\PasswordGenerator;
 
 use \Kohana as Kohana;
 use \GenPhrase as GenPhrase;
 
-class GenPhrase extends Boom\PasswordGenerator
+class GenPhrase extends AbstractPasswordGenerator
 {
 	public function __construct()
 	{
