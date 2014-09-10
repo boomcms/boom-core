@@ -11,7 +11,7 @@ class Controller_Cms_Auth_Login extends Controller_Cms_Auth
 	{
 		parent::before();
 
-		if ($this->auth->logged_in())
+		if ($this->auth->isLoggedIn())
 		{
 			$this->redirect($this->_get_redirect_url());
 		}

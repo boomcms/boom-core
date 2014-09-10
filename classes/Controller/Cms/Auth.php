@@ -1,10 +1,12 @@
 <?php
 
+use Boom\Auth\Auth;
+
 class Controller_Cms_Auth extends Controller
 {
 	/**
 	 *
-	 * @var Auth
+	 * @var Boom\Auth\Auth
 	 */
 	public $auth;
 
@@ -16,7 +18,7 @@ class Controller_Cms_Auth extends Controller
 
 	public function before()
 	{
-		$this->auth = Auth::instance();
+		$this->auth = new Auth(Kohana::$config->load('boom')->get('auth'), Session::instance());
 	}
 
 	protected function _log_login_success()
@@ -38,7 +40,7 @@ class Controller_Cms_Auth extends Controller
 	{
 		ORM::factory('AuthLog')
 			->values(array(
-				'person_id' => $this->auth->get_user()->id,
+				'person_id' => $this->auth->getPerson()->id,
 				'action' => $action,
 				'method' => $this->method,
 				'ip' => ip2long(Request::$client_ip),

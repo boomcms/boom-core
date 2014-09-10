@@ -30,43 +30,6 @@ class Model_Person extends ORM
 		'auth_logs' => array('model' => 'AuthLog'),
 	);
 
-	/**
-	 * Put the current person in a group.
-	 *
-	 * When a person is added to a group:
-	 *
-	 * * A relationship between the person and the group is created in the person_groups table.
-	 * * The person obtains records for all the roles which the group has in the person_roles table.
-	 *
-	 *
-	 * @param integer $group_id
-	 * @return \Boom_Model_Person
-	 */
-	public function add_group($group_id)
-	{
-		// Create a relationship with the group.
-		$this->add('groups', $group_id);
-
-		// Inherit any roles assigned to the group.
-		DB::insert('people_roles', array('person_id', 'group_id', 'role_id', 'allowed', 'page_id'))
-			->select(
-				DB::select(DB::expr($this->id), DB::expr($group_id), 'role_id', 'allowed', 'page_id')
-					->from('group_roles')
-					->where('group_id', '=', $group_id)
-				)
-			->execute($this->_db);
-
-		return $this;
-	}
-
-	public function complete_login()
-	{
-		return $this
-			->set('failed_logins', 0)
-			->set('locked_until', 0)
-			->update();
-	}
-
 	public function filters()
 	{
 		return array(
@@ -93,11 +56,6 @@ class Model_Person extends ORM
 			->find_all();
 	}
 
-	public function is_locked()
-	{
-		return $this->locked_until && ($this->locked_until > $_SERVER['REQUEST_TIME']);
-	}
-
 	public function login_failed()
 	{
 		$this->set('failed_logins', ++$this->failed_logins);
@@ -108,32 +66,5 @@ class Model_Person extends ORM
 		}
 
 		return $this->update();
-	}
-
-	/**
-	 * Removes a person from a group.
-	 *
-	 * When a person is removed from a group the person's roles are updated in the following ways:
-	 *
-	 *  * Any roles which are disallowed by the group but which have been allowed by another group which the person is a member of will become allowed.
-	 *  * Any roles which the group allows which haven't been allowed by any other groups which the person is a member of will be removed from the person.
-	 *
-	 *
-	 * @param integer $group_id
-	 * @return \Boom_Model_Person
-	 */
-	public function remove_group($group_id)
-	{
-		// Remove the relationship with the group.
-		$this->remove('groups', $group_id);
-
-		// Remove the permissions which were given by this group.
-		DB::delete('people_roles')
-			->where('group_id', '=', $group_id)
-			->where('person_id', '=', $this->id)
-			->execute($this->_db);
-
-		// Return the person model.
-		return $this;
 	}
 }
