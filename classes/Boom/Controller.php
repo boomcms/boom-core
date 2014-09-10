@@ -60,7 +60,7 @@ class Controller extends \Controller
 		}
 
 		$this->person = $this->auth->get_user();
-		$this->editor = \Boom\Editor::instance();
+		$this->editor = new Editor\Editor($this->auth, $this->session);
 	}
 
 	/**

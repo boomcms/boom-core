@@ -1,11 +1,9 @@
 <?php
 
-namespace Boom;
+namespace Boom\Editor;
 
-/**
- * Class for the CMS editor
- *
- */
+use Boom\Auth\Auth as Auth;
+
 class Editor
 {
 	const EDIT = 1;
@@ -17,25 +15,25 @@ class Editor
 
 	/**
 	 *
-	 * @var	\Auth
+	 * @var	Auth
 	 */
-	protected $_auth;
+	protected $auth;
 
-	protected $_liveTime;
-	protected $_liveTimePersistenceKey = 'editor_liveTime';
-	protected $_persistentStorage;
-	protected $_state;
-	protected $_statePersistenceKey = 'editor_state';
+	protected $liveTime;
+	protected $liveTimePersistenceKey = 'editor_liveTime';
+	protected $persistentStorage;
+	protected $state;
+	protected $statePersistenceKey = 'editor_state';
 
-	public function __construct(\Auth $auth, \Session $session)
+	public function __construct(Auth $auth, \Session $session)
 	{
-		$this->_auth = $auth;
-		$this->_persistentStorage = $session;
+		$this->auth = $auth;
+		$this->persistentStorage = $session;
 
 		// Determine the default value to pass to Session::get()
 		// If the user is logged in then the default is preview, if they're not logged in then it should be disabled.
-		$default = ($this->_auth->logged_in())? Editor::$default : Editor::DISABLED;
-		$this->_state = $this->_persistentStorage->get($this->_statePersistenceKey, $default);
+		$default = ($this->auth->logged_in())? static::$default : static::DISABLED;
+		$this->state = $this->persistentStorage->get($this->statePersistenceKey, $default);
 	}
 
 	/**
@@ -90,28 +88,28 @@ class Editor
 
 	public function hasState($state)
 	{
-		return ($this->_state == $state);
+		return ($this->state == $state);
 	}
 
 	public function getState()
 	{
-		return $this->_state;
+		return $this->state;
 	}
 
 	public function getLiveTime()
 	{
-		if ($this->_liveTime === null)
+		if ($this->liveTime === null)
 		{
-			$this->_liveTime = $this->_persistentStorage->get($this->_liveTimePersistenceKey, $_SERVER['REQUEST_TIME']);
+			$this->liveTime = $this->persistentStorage->get($this->liveTimePersistenceKey, $_SERVER['REQUEST_TIME']);
 		}
 
-		return $this->_liveTime;
+		return $this->liveTime;
 	}
 
 	public function setState($state)
 	{
-		$this->_state = $state;
-		return $this->_persistentStorage->set($this->_statePersistenceKey, $state);
+		$this->state = $state;
+		return $this->persistentStorage->set($this->statePersistenceKey, $state);
 	}
 
 	/**
@@ -122,6 +120,6 @@ class Editor
 	 */
 	public function setLiveTime($time = null)
 	{
-		return $this->_persistentStorage>set($this->_liveTimePersistenceKey, $time);
+		return $this->persistentStorage>set($this->liveTimePersistenceKey, $time);
 	}
 }
