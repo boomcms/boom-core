@@ -59,7 +59,7 @@ class Controller extends \Controller
 			throw new \HTTP_Exception_401;
 		}
 
-		$this->person = $this->auth->get_user();
+		$this->person = $this->auth->getPerson();
 		$this->editor = new Editor\Editor($this->auth, $this->session);
 	}
 
