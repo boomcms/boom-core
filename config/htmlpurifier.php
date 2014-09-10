@@ -1,4 +1,4 @@
-<?php defined('SYSPATH') || die('No direct access allowed.');
+<?php
 
 return array
 (

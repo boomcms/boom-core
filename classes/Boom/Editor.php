@@ -56,8 +56,6 @@ class Editor
 				'before_closing_head' => $matches[1],
 				'body_tag'	=>	$matches[3],
 				'page_id'	=>	$page_id,
-				'environment' => $this->_get_environment(),
-				'branch' => \Kohana::$environment == \Kohana::DEVELOPMENT? $this->_get_branch() : null,
 			));
 
 			$html = str_replace($matches[0], $head->render(), $html);
@@ -125,29 +123,5 @@ class Editor
 	public function setLiveTime($time = null)
 	{
 		return $this->_persistentStorage>set($this->_liveTimePersistenceKey, $time);
-	}
-
-	// TODO: These methods don't really belong in this class.
-	private function _get_environment()
-	{
-		$class = new \ReflectionClass('Kohana');
-		$constants = $class->getConstants();
-		$constants = array_flip($constants);
-
-		return $constants[\Kohana::$environment];
-	}
-
-	private function _get_branch()
-	{
-		$dir = DOCROOT;
-		exec("cd '$dir'; git branch", $lines);
-
-		foreach ($lines as $line)
-		{
-			if (strpos($line, '*') === 0)
-			{
-				return ltrim($line, '* ');
-			}
-		}
 	}
 }

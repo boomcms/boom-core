@@ -2,11 +2,6 @@
 <?= Boom::include_css() ?>
 </head>
 <?= $body_tag ?>
-<? if (Kohana::$environment !== Kohana::PRODUCTION): ?>
-	<div id="b-environment">
-		<p><?= $environment ?> site <? if ($branch): ?><br /><?= $branch ?><? endif ?></p>
-	</div>
-<? endif; ?>
 
 <? if (\Boom\Editor::instance()->isEnabled()): ?>
 	<script type="text/javascript">
