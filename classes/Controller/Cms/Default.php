@@ -1,3 +1,9 @@
 <?php
 
-class Controller_Cms_Default extends Boom_Controller_Cms_Default {}
+class Controller_Cms_Default extends Boom\Controller
+{
+	public function action_index()
+	{
+		$this->redirect('/');
+	}
+}

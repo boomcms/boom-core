@@ -1,15 +1,12 @@
 <?php
 
+namespace Boom;
+
+use \Auth;
+use \Session;
 use \Boom\Page as Page;
 
-/**
- * Boom base controller.
- * Contains components common to site and cms and controllers.
- *
- * @package	BoomCMS
- * @category	Controllers
- */
-class Boom_Controller extends Controller
+class Controller extends \Controller
 {
 	/**
 	 * The correct content-type header for JSON responses is application/json (http://stackoverflow.com/questions/477816/what-is-the-correct-json-content-type)
@@ -60,7 +57,7 @@ class Boom_Controller extends Controller
 		// Require the user to be logged in if the site isn't live.
 		if ($this->request->is_initial() && ! (Kohana::$environment == Kohana::PRODUCTION || $this->auth->logged_in()))
 		{
-			throw new HTTP_Exception_401;
+			throw new \HTTP_Exception_401;
 		}
 
 		$this->person = $this->auth->get_user();
