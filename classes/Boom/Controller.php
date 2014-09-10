@@ -2,7 +2,6 @@
 
 namespace Boom;
 
-use \Auth;
 use \Session;
 use \Boom\Page as Page;
 
@@ -49,7 +48,7 @@ class Controller extends \Controller
 
 	public function before()
 	{
-		$this->auth = Auth::instance();
+		$this->auth = new Auth\Auth;
 		$this->session = Session::instance();
 
 		$this->_save_last_url();
