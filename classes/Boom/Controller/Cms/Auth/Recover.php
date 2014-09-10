@@ -5,20 +5,10 @@ class Boom_Controller_Cms_Auth_Recover extends Controller_Cms_Auth
 	public function before()
 	{
 		parent::before();
-
-		if ( ! $this->auth->login_method_available('password'))
-		{
-			throw new HTTP_Exception_404;
-		}
 	}
 
 	public function action_create_token()
 	{
-//		if ( ! Security::check($this->request->post('csrf')))
-//		{
-//			throw new HTTP_Exception_500;
-//		}
-
 		$person = new Model_Person(array('email' => $this->request->post('email')));
 
 		if ( ! $person->loaded() || ! $person->enabled)
