@@ -9,7 +9,7 @@
 		<div>
 			<form name="login-form" action="/cms/login" method="post">
 				<?= Form::hidden('csrf', Security::token()) ?>
-				<fieldset class='hasborder'>
+				<fieldset>
 					<? if (isset($login_error)): ?>
 						<p class="b-error"><?= $login_error ?></p>
 					<? endif ?>
@@ -35,10 +35,6 @@
 					<input type='submit' value='<?= __('Login') ?>' />
 					<a id='b-login-recover-link' href='/cms/recover'>I've forgotten my password</a>
 				</fieldset>
-
-				<? if (Auth::instance()->login_method_available('openid')): ?>
-					<a id='b-login-openid' href="/cms/login/openid">OpenID</a>
-				<? endif ?>
 			</form>
 		</div>
 	</body>

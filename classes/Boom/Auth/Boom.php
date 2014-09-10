@@ -229,16 +229,6 @@ class Boom_Auth_Boom extends Auth_ORM
 		return $this->_login($person, $password, $remember);
 	}
 
-	public function login_methods()
-	{
-		return Arr::get($this->_config, 'login_methods');
-	}
-
-	public function login_method_available($method)
-	{
-		return in_array($method, $this->login_methods());
-	}
-
 	/**
 	 * Required by [Auth] but we don't use because password validation is done by OpenID.
 	 *

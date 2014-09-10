@@ -65,21 +65,14 @@ Route::set('people-edit', 'cms/<controller>(/<action>(/<id>))', array(
 		return $params;
 	});
 
-Route::set('login', 'cms/login(/<controller>)')
+Route::set('login', 'cms/login')
 	->defaults(array(
-		'directory' => 'Cms_Auth_Login',
-		'controller' => ucfirst(Kohana::$config->load('auth')->get('default_method')),
+		'controller' => 'Cms_Auth_Login',
 		'action' => 'begin',
 	))
 	->filter(function(Route $route, $params, Request $request)
 		{
-			if ($request->query('openid_mode'))
-			{
-				$params['controller'] = 'Openid';
-			}
-
-			if ($request->query('openid_mode') || ($params['controller'] == 'Password' && $request->method() == Request::POST))
-			{
+			if ($request->method() == Request::POST) {
 				$params['action'] = 'process';
 			}
 
