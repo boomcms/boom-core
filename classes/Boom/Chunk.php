@@ -177,7 +177,7 @@ abstract class Chunk
 			/** Should the chunk be editable?
 			 * This can be changed to calling editable(), for instance if we want to make a chunk read only.
 			 *
-			 * @todo Multiple chunks will be inserted on a single page - need to remove duplicate calles to Auth::instance()->logged_in()
+			 * @todo Multiple chunks will be inserted on a single page - need to remove duplicate calles to Auth::instance()->isLoggedIn()
 			 */
 			$this->_editable = ($this->_editable === true && \Boom\Editor::instance()->isEnabled() && ($this->_page->wasCreatedBy(Auth::instance()->getPerson()) || Auth::instance()->logged_in("edit_page_content", $this->_page)));
 

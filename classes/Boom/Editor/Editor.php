@@ -32,7 +32,7 @@ class Editor
 
 		// Determine the default value to pass to Session::get()
 		// If the user is logged in then the default is preview, if they're not logged in then it should be disabled.
-		$default = ($this->auth->logged_in())? static::$default : static::DISABLED;
+		$default = ($this->auth->isLoggedIn())? static::$default : static::DISABLED;
 		$this->state = $this->persistentStorage->get($this->statePersistenceKey, $default);
 	}
 

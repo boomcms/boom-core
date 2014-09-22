@@ -243,7 +243,7 @@ class Model_Page_Version extends ORM
 				->where('asset.type', '=', \Boom\Asset\Type::IMAGE);
 
 			// If the current user isn't logged in then make sure it's a published asset.
-			if ( ! Auth::instance()->logged_in())
+			if ( ! Auth::instance()->isLoggedIn())
 			{
 				$query->where('asset.visible_from', '<=', \Boom\Editor::instance()->getLiveTime());
 			}

@@ -26,7 +26,7 @@ class Controller_Page_Html extends Controller_Page
 
 	public function after()
 	{
-		if ($this->auth->logged_in()) {
+		if ($this->auth->isLoggedIn()) {
 			$content = $this->editor->insert( (string) $this->template, $this->page->getId());
 		} else {
 			$content = (string) $this->template;

@@ -48,13 +48,13 @@ class Controller extends \Controller
 
 	public function before()
 	{
-		$this->auth = new Auth\Auth;
 		$this->session = Session::instance();
+		$this->auth = new Auth\Auth(Arr::get(Kohana::$config->load('boom')->get('auth')), $this->session);
 
 		$this->_save_last_url();
 
 		// Require the user to be logged in if the site isn't live.
-		if ($this->request->is_initial() && ! (Kohana::$environment == Kohana::PRODUCTION || $this->auth->logged_in()))
+		if ($this->request->is_initial() && ! (Kohana::$environment == Kohana::PRODUCTION || $this->auth->isLoggedIn()))
 		{
 			throw new \HTTP_Exception_401;
 		}
@@ -68,13 +68,13 @@ class Controller extends \Controller
 	 *
 	 * Throws a HTTP_Exception_403 error if the user hasn't been given the required role.
 	 *
-	 * @uses	Auth::logged_in()
+	 * @uses	Auth::isLoggedIn()
 	 * @param string $role
 	 * @param Model_Page $page
 	 */
 	public function authorization($role, Page $page = null)
 	{
-		if ( ! $this->auth->logged_in())
+		if ( ! $this->auth->isLoggedIn())
 		{
 			throw new HTTP_Exception_401;
 		}
@@ -116,7 +116,7 @@ class Controller extends \Controller
 			$this->response->body($this->template);
 		}
 
-		if ($this->auth->logged_in())
+		if ($this->auth->isLoggedIn())
 		{
 			$this->response->headers('Cache-Control', 'private');
 		}
