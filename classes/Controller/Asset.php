@@ -23,7 +23,7 @@ abstract class Controller_Asset extends Boom\Controller
 
 		$this->asset = $this->request->param('asset');
 
-		if ( ! $this->asset->isVisible() && ! $this->auth->logged_in())
+		if ( ! $this->asset->isVisible() && ! $this->auth->isLoggedIn())
 		{
 			throw new HTTP_Exception_404;
 		}
@@ -65,7 +65,7 @@ abstract class Controller_Asset extends Boom\Controller
 
 	protected function _log_download()
 	{
-		if ( ! $this->auth->logged_in())
+		if ( ! $this->auth->isLoggedIn())
 		{
 			$this->asset->log_download(Request::$client_ip);
 		}
