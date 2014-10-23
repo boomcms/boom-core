@@ -12,7 +12,7 @@ class Finder extends \Boom\Finder
 	public function find()
 	{
 		$model = parent::find();
-		return new \Boom\Template($model);
+		return new Template($model);
 	}
 
 	public function findAll()
@@ -20,7 +20,7 @@ class Finder extends \Boom\Finder
 		$templates = parent::findAll()->as_array();
 
 		return new \Boom\ArrayCallbackIterator($templates, function($template) {
-			return new \Boom\Template($template);
+			return new Template($template);
 		});
 	}
 }

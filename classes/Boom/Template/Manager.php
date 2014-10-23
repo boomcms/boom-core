@@ -2,7 +2,6 @@
 
 namespace Boom\Template;
 
-use \Boom\Template as Template;
 use \Kohana as Kohana;
 use \ORM as ORM;
 
@@ -72,10 +71,10 @@ class Manager
 	public function getTemplateFilenames()
 	{
 		if ( ! $this->_template_filenames) {
-			$this->_template_filenames = Kohana::list_files("views/" . \Boom\Template::DIRECTORY);
+			$this->_template_filenames = Kohana::list_files("views/" . Template::DIRECTORY);
 
 			foreach ($this->_template_filenames as & $filename) {
-				$filename = str_replace(APPPATH . "views/" . \Boom\Template::DIRECTORY, "", $filename);
+				$filename = str_replace(APPPATH . "views/" . Template::DIRECTORY, "", $filename);
 				$filename = str_replace(EXT, "", $filename);
 			}
 		}

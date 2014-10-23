@@ -2,6 +2,8 @@
 
 namespace Boom\Page\Finder\Filter;
 
+use \Boom\Template\Template as Template;
+
 class Template extends \Boom\Finder\Filter
 {
 	/**
@@ -10,7 +12,7 @@ class Template extends \Boom\Finder\Filter
 	 */
 	protected $template;
 
-	public function __construct(\Boom\Template $template)
+	public function __construct(Template $template)
 	{
 		$this->template = $template;
 	}

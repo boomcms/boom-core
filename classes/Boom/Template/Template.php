@@ -1,7 +1,8 @@
 <?php
 
-namespace Boom;
+namespace Boom\Template;
 
+use \Boom\Page as Page;
 use \Kohana as Kohana;
 use \Model_Template as Model_Template;
 use \View as View;
