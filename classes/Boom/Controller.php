@@ -5,6 +5,7 @@ namespace Boom;
 use \Session;
 use \Boom\Page as Page;
 use \Kohana as Kohana;
+use \Request as Request;
 
 class Controller extends \Controller
 {

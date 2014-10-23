@@ -3,6 +3,7 @@
 namespace Boom\Controller\Page;
 
 use \Boom\Chunk as Chunk;
+use \View as View;
 
 class Html extends \Boom\Controller\Page
 {
