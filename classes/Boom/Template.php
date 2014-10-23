@@ -16,7 +16,7 @@ class Template
 	 */
 	protected $model;
 
-	public function __construct(Model\Template $model)
+	public function __construct(\Model_Template $model)
 	{
 		$this->model = $model;
 	}
