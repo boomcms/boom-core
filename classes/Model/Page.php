@@ -263,7 +263,7 @@ class Model_Page extends Model_Taggable
 	 * @param	boolean	$exclude_deleted
 	 * @return	Model_Page
 	 */
-	public function with_current_version(\Boom\Editor $editor)
+	public function with_current_version(\Boom\Editor\Editor $editor)
 	{
 		$page_query = new \Boom\Page\Query($this, $editor);
 		$page_query->execute();

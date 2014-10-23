@@ -2,7 +2,7 @@
 
 namespace Boom\Page;
 
-use Boom\Editor as Editor;
+use Boom\Editor\Editor as Editor;
 
 class Query
 {

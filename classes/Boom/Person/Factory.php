@@ -8,4 +8,9 @@ abstract class Factory
 	{
 		return new \Boom\Person(new \Model_Person($id));
 	}
+
+	public static function byEmail($email)
+	{
+		return new \Boom\Person(new \Model_Person(array('email' => $email)));
+	}
 }

@@ -4,6 +4,7 @@ namespace Boom\Auth;
 
 use \PasswordHash;
 use \Session;
+use \Boom\Person as Person;
 
 class Auth
 {
@@ -37,7 +38,39 @@ class Auth
 		$this->session = $session;
 	}
 
-	protected function _login($person, $password = null, $remember = false)
+	public function auto_login()
+	{
+		if ($token = Cookie::get('authautologin'))
+		{
+			// Load the token and user
+			$token = ORM::factory('User_Token', array('token' => $token));
+
+			if ($token->loaded() AND $token->user->loaded())
+			{
+				if ($token->user_agent === sha1(Request::$user_agent))
+				{
+					// Save the token to create a new unique token
+					$token->save();
+
+					// Set the new token
+					Cookie::set('authautologin', $token->token, $token->expires - time());
+
+					// Complete the login with the found data
+					$this->complete_login($token->user);
+
+					// Automatic login was successful
+					return $token->user;
+				}
+
+				// Token is invalid
+				$token->delete();
+			}
+		}
+
+		return FALSE;
+	}
+
+	protected function _login(Person $person, $password = null, $remember = false)
 	{
 		$this->person = $person;
 
@@ -45,16 +78,16 @@ class Auth
 		 * Although it's slower, we the check password first before checking that the account is valid and not locked.
 		 * It shouldn't cause too much of a time waste for genuine users but may slow down hack attempts.
 		 */
-		if ($this->check_password($password) && $this->person->loaded() && $this->person->enabled && ! $this->person->is_locked())
+		if ($this->check_password($password) && $this->person->loaded() && $this->person->enabled && ! $this->person->isLocked())
 		{
 			$this->complete_login($this->person);
 			$remember === true && $this->_remember_login();
 
 			return true;
 		}
-		elseif ($this->person->loaded() && ! $this->person->is_locked())
+		elseif ($this->person->loaded() && ! $this->person->isLocked())
 		{
-			$this->person->login_failed();
+			$this->person->loginFailed();
 			return false;
 		}
 	}
@@ -121,7 +154,7 @@ class Auth
 			if ($personId) {
 				return Person\Factory::byId($personId);
 			} else {
-
+				return new Person\Guest;
 			}
 		}
 	}
@@ -153,14 +186,14 @@ class Auth
 		return isset($this->config['disabled']) && $this->config['disabled'] === true;
 	}
 
-	public function login($person, $password, $remember = false)
+	public function login(Person $person, $password, $remember = false)
 	{
 		if ( ! $password)
 		{
 			return false;
 		}
 
-		if ( ! is_object($person) && ! $person instanceof Model_Person)
+		if ( ! is_object($person) && ! $person instanceof Person)
 		{
 			// If we haven't been called with a person object then assume it's an email address
 			// and get the person from the database.
@@ -201,7 +234,7 @@ class Auth
 		 * Create a dummy password to compare against if the user doesn't exist.
 		 * This wastes CPU time to protect against probing for valid usernames.
 		 */
-		$hash = ($this->person->password)? $this->person->password : '$2a$08$1234567890123456789012';
+		$hash = ($this->person->getPassword())? $this->person->getPassword() : '$2a$08$1234567890123456789012';
 
 		return $hasher->CheckPassword($password, $hash) && $this->person->loaded();
 	}

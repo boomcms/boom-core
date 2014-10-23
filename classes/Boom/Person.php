@@ -63,6 +63,11 @@ class Person
 		return $this->model->name;
 	}
 
+	public function getPassword()
+	{
+		return $this->model->password;
+	}
+
 	public function hasPagePermission(Role $role, Page $page)
 	{
 		$query = DB::select(array(DB::expr("bit_and(allowed)"), 'allowed'))
@@ -102,6 +107,24 @@ class Person
 	public function isLocked()
 	{
 		return $this->getLockedUntil() && ($this->getLockedUntil() > $_SERVER['REQUEST_TIME']);
+	}
+
+	public function loaded()
+	{
+		return $this->model->loaded();
+	}
+
+	public function loginFailed()
+	{
+		$this->model->set('failed_logins', ++$this->model->failed_logins);
+
+		if ($this->model->failed_logins > 3) {
+			$this->model->set('locked_until', time() + static::LOCK_WAIT);
+		}
+
+		$this->model->update();
+
+		return $this;
 	}
 
 	public function removeGroup(Group $group)

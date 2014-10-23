@@ -1,5 +1,7 @@
 <?php
 
+use \Boom\Person as Person;
+
 class Controller_Cms_Auth_Login extends Controller_Cms_Auth
 {
 	/**
@@ -33,7 +35,7 @@ class Controller_Cms_Auth_Login extends Controller_Cms_Auth
 
 	public function action_process()
 	{
-		$person = new Model_Person(array('email' => $this->request->post('email')));
+		$person = Person\Factory::byEmail($this->request->post('email'));
 
 		if ($this->auth->login($person, $this->request->post('password'), $this->request->post('remember') == 1))
 		{
@@ -43,10 +45,10 @@ class Controller_Cms_Auth_Login extends Controller_Cms_Auth
 		{
 			$this->_log_login_failure();
 
-			$error = ($person->is_locked())? 'locked' : 'invalid';
+			$error = ($person->isLocked())? 'locked' : 'invalid';
 			$error_message = Kohana::message('login', "errors.$error");
 
-			if ($person->is_locked())
+			if ($person->isLocked())
 			{
 				$lock_wait = $person->get_lock_wait();
 				$lock_wait = $lock_wait['minutes']." ".Inflector::plural('minute', $lock_wait['minutes']);

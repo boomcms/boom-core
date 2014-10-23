@@ -2,7 +2,7 @@
 
 namespace Boom\Page;
 
-use Boom\Editor as Editor;
+use Boom\Editor\Editor as Editor;
 
 class Finder extends \Boom\Finder
 {
@@ -24,7 +24,7 @@ class Finder extends \Boom\Finder
 	public function find()
 	{
 		$model = parent::find();
-		return new \Boom\Page($model);
+		return new Page($model);
 	}
 
 	public function findAll()
@@ -32,7 +32,7 @@ class Finder extends \Boom\Finder
 		$pages = parent::findAll()->as_array();
 
 		return new \Boom\ArrayCallbackIterator($pages, function($page) {
-			return new \Boom\Page($page);
+			return new Page($page);
 		});
 	}
 }

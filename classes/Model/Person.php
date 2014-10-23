@@ -41,7 +41,7 @@ class Model_Person extends ORM
 
 	public function get_lock_wait()
 	{
-		if ($this->is_locked())
+		if ($this->isLocked())
 		{
 			return Date::span($this->locked_until);
 		}
@@ -54,17 +54,5 @@ class Model_Person extends ORM
 			->order_by('time', 'desc')
 			->limit(10)
 			->find_all();
-	}
-
-	public function login_failed()
-	{
-		$this->set('failed_logins', ++$this->failed_logins);
-
-		if ($this->failed_logins > 3)
-		{
-			$this->set('locked_until', $_SERVER['REQUEST_TIME'] + static::LOCK_WAIT);
-		}
-
-		return $this->update();
 	}
 }
