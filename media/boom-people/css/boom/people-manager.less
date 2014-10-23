@@ -1,0 +1,120 @@
+#b-people-manager {
+	padding: 1em;
+	height: 100%;
+
+	h2 {
+		font-size: 1em;
+		font-weight: normal;
+		margin-top: 0;
+		text-transform: uppercase;
+		display: inline-block;
+	}
+
+	> div {
+		display: inline-block;
+		vertical-align: top;
+	}
+
+	#b-people-content {
+		width: 70%;
+		margin-left: 2em;
+		color: white;
+	}
+
+	#b-items-view-list {
+		width: 100%;
+
+		table {
+			width: 100%;
+
+			thead {
+				background: #7f7f7f;
+
+				tr th {
+					padding: 0.5em;
+					height: 50px;
+					color: white;
+					font-weight: normal;
+					text-transform: uppercase;
+					font-size: 1.3em;
+				}
+			}
+
+			tbody:before {
+				line-height: 0.5em;
+				content: "-";
+				color: white; /* to hide text */
+				background: white;
+				display: block;
+			}
+		}
+	}
+
+	#b-groups {
+		width: 25%;
+		color: #fff;
+		min-height: 90%;
+
+		&-header {
+			background: #7f7f7f;
+			height: 50px;
+			padding: 0.5em;
+			font-size: 1.5em;
+
+			button {
+				float: right;
+				background-color: #222;
+				margin-top: 0;
+
+				&:hover, &:focus, &:active {
+					background-color: #555;
+				}
+			}
+
+			h2 {
+				display: inline-block;
+				margin-top: 0.75em;
+			}
+		}
+
+		&-list {
+			padding: 0.5em;
+			margin: 0;
+			margin-top: 0.5em;
+			list-style-type: none;
+			background: #444;
+			line-height: 30px;
+			font-size: 1.5em;
+			min-height: 90%;
+
+			li {
+				margin: 0;
+				padding: 0.7em 0 0.2em 0;
+				border-bottom: 1px solid #eee;
+
+				&:hover, &:focus, &:active, &.current {
+					background: #7f7f7f;
+				}
+
+				.ui-icon {
+					display: inline-block;
+					float: right;
+					height: 30px;
+					width: 30px;
+					background-image: url(/media/boom/css/themes/default/images/ui-icons_ffffff_300x120.png);
+				}
+
+				.b-group-delete {
+					background-position: -120px -120px;
+				}
+
+				.b-groups-item {
+					color: #fff;
+					text-decoration: none;
+					display: inline-block;
+					width: 70%;
+				}
+			}
+		}
+	}
+}

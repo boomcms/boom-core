@@ -1,0 +1,107 @@
+/* Login form */
+body#b-login {
+	background: #f5f5f5;
+
+	.b-error {
+		text-align: center;
+		color: @red;
+		font-weight: bold;
+	}
+
+	a {
+		.text-default;
+		color: @darkest-grey;
+		text-decoration: none;
+		text-align: center;
+
+		&:visited {
+			color: @darkest-grey;
+		}
+
+		&:hover, &:focus {
+			text-decoration: underline;
+		}
+	}
+
+	#b-login-recover-link {
+		margin-top: 1em;
+		display: block;
+	}
+
+	p, input {
+		.text-default;
+	}
+
+	> div {
+		background: url(/media/boom/img/logo.png) no-repeat top center;
+		width: 700px;
+		max-width: 100%;
+		height: 500px;
+		max-height: 100%;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		margin-top: -250px;
+		margin-left: -350px;
+
+		#b-login-openid {
+			display: block;
+			width: 25%;
+			height: 25px;
+			margin: auto;
+			background: url(/media/boom-people/img/openid-icon.png) no-repeat left center;
+			padding-left: 40px;
+			line-height: 25px;
+		}
+
+		> * {
+			.box-sizing;
+			width: 50%;
+			height: 100%;
+			margin: auto;
+			padding-top: 200px;
+		}
+
+		form {
+			p {
+				overflow: hidden;
+				position: relative;
+
+				label {
+					.box-sizing;
+					width: 100%;
+					position: absolute;
+					top: -200%;
+					line-height: 2em;
+
+					&.b-remember-me-label {
+						width: 100%;
+						line-height: 1em;
+						margin-top: 1em;
+
+						input {
+							width: auto;
+						}
+					}
+				}
+
+				input {
+					.box-sizing;
+					width: 100%;
+				}
+			}
+
+			input[type=submit] {
+				width: auto;
+				min-width: 25%;
+				margin: auto;
+				display: block;
+				.text-default;
+			}
+
+			fieldset {
+				border: 0;
+			}
+		}
+	}
+}

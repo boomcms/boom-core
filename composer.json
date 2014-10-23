@@ -10,8 +10,13 @@
 		"kohana/database": "3.3.*",
 		"kohana/orm": "3.3.*",
 		"kohana/auth": "3.3.*",
-		"kohana/minion": "3.3.*"
+		"kohana/minion": "3.3.*",
+                "genphrase/genphrase" : "1.0.*",
+                "lightopenid/lightopenid" : "0.7.*"
 	},
+	"name":        "boom/people",
+	"description": "People manager classess for BoomCMS",
+	"license":     "BSD-3-Clause",
 	"extra": {
 		"branch-alias": {
 			"dev-2.0/develop":  "2.0.x-dev"

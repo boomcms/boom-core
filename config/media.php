@@ -4,6 +4,7 @@ return array(
 	'css' => array(
 		'templates.css.less',
 		'boom.assets.css.less',
+		'boom.people.css.less',
 		'cms.css.less',
 	),
 	'corejs' => array(
@@ -58,6 +59,10 @@ return array(
 		'boom/tagAutocompleter.js',
 		'boom/templates.js',
 		'boom.assets.js',
+                'boom/group.js',
+                'boom/person.js',
+                'boom/peopleManager.js',
+                'boom/groupPermissionsEditor.js',
 		'jquery/fileupload.js',
 		'wysihtml5/wysihtml5x-0.4.13-toolbar.js',
 		'wysihtml5/parser_rules/full.js',

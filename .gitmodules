@@ -13,3 +13,6 @@
 [submodule "vedor/openid"]
 	path = vedor/openid
 	url = git://gitorious.org/lightopenid/lightopenid.git
+[submodule "vendor/genphrase"]
+	path = vendor/genphrase
+	url = https://github.com/timoh6/GenPhrase.git
