@@ -70,7 +70,7 @@ return array(
                 'boom/peopleManager.js',
                 'boom/groupPermissionsEditor.js',
 		'jquery/fileupload.js',
-		'wysihtml5/wysihtml5x-0.4.13-toolbar.js',
+		'wysihtml5/wysihtml5x-toolbar.js',
 		'wysihtml5/parser_rules/full.js',
 		'wysihtml5/parser_rules/inline.js',
 		'wysihtml5/commands/insertBoomAsset.js',

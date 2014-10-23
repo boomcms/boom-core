@@ -1,4 +1,4 @@
-	<?= Boom::include_js() ?>
+	<?= Boom::include_js()->render() ?>
 
 	<script type="text/javascript">
 		//<![CDATA[
