@@ -1,30 +1,73 @@
-/* Asset manager opening in a dialog */
-/* Stop the 'filters' and 'tags' headers clashing with the dialog background. */
-.ui-dialog {
-	& .b-items-box-header {
-		background: #000000;
-	}
-	
-	/* Hide certain elements when the asset manager is opened in a dialog. */
-	& .b-dialog-hidden {
-		display: none;
-	}
-}
-
 /* BOOM ASSETS */
 /* The filter by name input box */
 .b-filter-input {
-	margin-left: 40px;
+	margin-left: 20px;
 	margin-top: 5px;
 	width: 200px;
 }
 
+@import 'mixins.less';
+@import 'boom.assets.upload.less';
+@import 'boom.assets.picker.less';
+@import 'assets/pagination.less';
+
 #b-assets {
+	&-all {
+		background: #222;
+		width: auto;
+
+		&:hover {
+			background: #555;
+		}
+	}
+
 	&-view {
+		background: #7f7f7f;
+		padding-top: 2em;
+
+		.b-assets-preview, .boom-tabs {
+			display: inline-block;
+			vertical-align: top;
+		}
+
+		.boom-tabs {
+			width: 50%;
+
+			div {
+				width: 100%;
+			}
+		}
+
+		.b-assets-preview {
+			margin: 6px 2em 1em 0.2em;
+
+			&:hover img {
+				border-color: #444;
+			}
+		}
+
+		.ui-dialog-buttonpane {
+			margin: 2em 0 0 0;
+		}
+	}
+
+	&-view {
+		&-thumbs {
+			background: #7f7f7f;
+			width: 100%;
+		}
+
 		/* View asset info list - type, filesize, etc. */
 		dl {min-width: 300px;}
 		dd {margin-left: 150px; }
-		dt {float: left; min-width: 150px;}
+		dt {
+			float: left;
+			min-width: 150px;
+			font-weight: bold;
+		}
+		dd, dt {
+			margin-bottom: 1em;
+		}
 
 		textarea {
 			height: 2.6em;
@@ -35,6 +78,210 @@
 		}
 	}
 
+	&-buttons {
+		display: inline-block;
+		margin-left: 2em;
+	}
+
+	&-content {
+		overflow: hidden;
+
+		img {
+			border: none;
+		}
+	}
+
+	&-manager {
+		background: #7f7f7f;
+
+		select {
+			margin-left: 20px;
+		}
+
+		#b-tags-search {
+			display: inline-block;
+			margin-left: 20px;
+			vertical-align: top;
+			max-width: 300px;
+
+			ul {
+				float: left;
+				width: 100%;
+			}
+
+			span.ui-icon-boom-tag {
+				display: inline-block;
+				vertical-align: top;
+				margin-top: 15px;
+				background-position: -90px -120px;
+			}
+
+			.b-tags-remove {
+				background-position: -60px -120px;
+			}
+
+			.b-filter-input {
+				margin-left: 0;
+			}
+
+			.b-tags-list {
+				margin: 0;
+
+				li {
+					margin: 0 5px;
+					display: inline-block;
+
+					a {
+						display: inline-block !important;
+					}
+
+					span {
+						margin-left: 0;
+					}
+				}
+			}
+		}
+	}
+
+	&-filters {
+		padding-left: 3px;
+
+		input, select {
+			height: 24px;
+			font-size: 1.2em;
+			vertical-align: top;
+			width: 250px;
+			margin-top: 15px;
+		}
+
+		select {
+			width: 150px;
+			margin-top: 19px;
+		}
+	}
+
+	&-view-thumbs {
+		overflow: hidden;
+		padding-left: 3px;
+
+		> div {
+			margin: 0.5em;
+			margin-left: 0;
+			display: inline-block;
+			position: relative;
+			overflow: hidden;
+		}
+
+		.selected .thumb {
+			opacity: 0.3;
+		}
+
+		.thumb {
+			width: 100%;
+			height: 100%;
+			max-height: 100%;
+			position: relative;
+			padding: 0;
+
+			a {
+				display: block;
+			}
+
+			input {
+				z-index: 0;
+				position: absolute;
+				top: 0;
+				left: 0;
+			}
+
+			img {
+				position: relative;
+				z-index: 1;
+			}
+
+			a, img {
+				width: 100%;
+				height: 100%;
+				max-height: 100%;
+			}
+
+			.b-asset-details {
+				max-height: 0px;
+				position: absolute;
+				bottom: 0;
+				left: 0;
+				right: 0;
+				background: #222;
+				opacity: 0.7;
+				color: white;
+				font-size: 1.1em;
+				line-height: 1.4em;
+				height: 100%;
+				z-index: 2;
+				overflow: hidden;
+
+				-webkit-transition: all 1.5s ease-in;
+				-moz-transition: all 1.5s ease-in;
+				-ms-transition: all 1.5s ease-in;
+				-o-transition: all 1.5s ease-in;
+				transition: all 1.5s ease-in;
+
+				h1 {
+					text-align: center;
+				}
+
+				h1, p {
+					padding: 5px;
+				}
+
+				img.type {
+					width: 16px;
+					height: 16px;
+				}
+			}
+
+			&:hover, &:focus, &:active {
+				.b-asset-details {
+					font-weight: normal;
+					max-height: 100%;
+
+					-webkit-transition: all 1.5s ease-out;
+					-moz-transition: all 1.5s ease-out;
+					-ms-transition: all 1.5s ease-out;
+					-o-transition: all 1.5s ease-out;
+					transition: all 1.5s ease-out;
+				}
+			}
+		}
+	}
+
+	&-filters {
+		background: #7f7f7f;
+		color: #ffffff;
+	}
+
+	&-pagination, &-stats {
+		display: inline-block;
+		vertical-align: top;
+		float: right;
+		margin-left: 1.3em;
+		font-size: 1.3em;
+	}
+
+	&-stats {
+		line-height: 64px;
+	}
+
+	&-pagination {
+		min-width: 370px;
+		border: 0;
+
+		select {
+			margin: 20px 0 0 2em;
+			float: right;
+		}
+	}
+
 	/* Styling for the 'no assets found' message when the asset manager returns no assets */
 	&-none {
 		font-weight: bold;
@@ -42,32 +289,75 @@
 		text-align: center;
 		margin-top: 15%;
 	}
+
+	&-upload {
+		margin-right: 2em;
+	}
 }
 
-.b-assets- {
-	&-preview {
-		width: 170px;
-		float: left;
-		margin: 0 .8em 1em 1em;
+#b-assets-view-thumbs .ui-state-active {
+	background: #d6278e;
+}
 
-		&:hover img {
-			border-color: #444;
+#b-topbar.b-asset-manager {
+	#boom-page-user-menu {
+		float: right;
+	}
+}
+
+.b-assets-dialog {
+	& .b-items-box-header {
+		background: #000000;
+	}
+
+	#b-assets-view, #b-assets-manager {
+		background: transparent;
+	}
+
+	/* Hide certain elements when the asset manager is opened in a dialog. */
+	#b-topbar, .b-dialog-hidden {
+		display: none;
+	}
+
+	.b-assets-preview {
+		margin-top: 1px;
+	}
+
+	#b-assets {
+		&-filters, &-view-thumbs {
+			background: none;
+			padding-left: 0;
 		}
+	}
 
-		img {
-			background-color: transparent;
-			display: block;
-			padding: 5px;
-			cursor: pointer;
-			display: block;
-			width: 160px;
-			-moz-box-shadow: 3px 3px 3px #bbb;
-			-webkit-box-shadow: 3px 3px 3px #bbb;
-			box-shadow: 3px 3px 3px #bbb;
+	.ui-dialog-buttonpane {
+		padding: 1em;
+		padding-right: 2em;
+		position: relative;
+
+		button {
+			position: relative;
+			z-index: 1;
+		}
+	}
+
+	.center {
+		position: absolute;
+		left: 0;
+		width: 100%;
+		overflow: hidden;
+		text-align: center;
+
+		#b-assets-pagination, #b-assets-stats {
+			float: none;
 		}
 	}
 }
 
-#b-items-view-thumbs .ui-state-active {
-	background: #d6278e;
+@media screen and (max-width: 10256px) {
+	#b-assets-manager #b-assets-filters {
+		input {
+			width: 200px;
+		}
+	}
 }

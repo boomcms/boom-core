@@ -93,29 +93,30 @@ Route::set('page_settings2', 'cms/page/<directory>/<action>(/<id>)')
 			// Return the request params.
 
 // Route for displaying assets
-Route::set('asset', 'asset/<action>/<id>(/<width>(/<height>(/<quality>(/<crop>))))')
+Route::set('asset', 'asset/<action>/<id>(.<extension>)(/<width>(/<height>(/<quality>(/<crop>))))')
 	->defaults(array(
 		'action'	=> 'view',
 		'quality'	=>	85,
 	))
 	->filter(function(Route $route, $params, Request $request)
 		{
-			// Try and get the asset from the database.
-			$asset = new Model_Asset($params['id']);
+			$asset = \Boom\Asset\Finder::byId($params['id']);
 
 			// Does the asset exist?
-			if ( ! ($asset->loaded() AND $asset->exists()))
+			if ( ! $asset->loaded() || ( Kohana::$environment != Kohana::DEVELOPMENT && ! $asset->exists()))
 			{
-				return FALSE;
+				return false;
 			}
 
-			// Put the asset in the request params.
+			if ($params['action'] == 'view' && ! $asset instanceof \Boom\Asset\Type\Image && substr($request->headers('accept'), 0, 5) == 'image')
+			{
+				// An image response has been requested, but this asset isn't an image.
+				// Show the asset thumbnail instead.
+				$params['action'] = 'thumb';
+			}
+
 			$params['asset'] = $asset;
-
-			// Set the controller depending on the asset type.
-			$params['controller'] = 'Asset_'.ucfirst($asset->type());
-
-			// Return the new request params.
+			$params['controller'] = 'Asset_'. $asset->getType();
 			return $params;
 		}
 	);
@@ -163,7 +164,7 @@ Route::set('asset_download', 'cms/assets/download')
 	))
 	->filter(function(Route $route, $params, Request $request)
 		{
-			$params['asset_ids'] = array_unique(explode(",", $request->query('assets')));
+			$params['asset_ids'] = array_unique($request->query('asset'));
 			$params['action'] = (count($params['asset_ids']) == 1) ? 'single' : 'multiple';
 
 			return $params;

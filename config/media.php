@@ -5,6 +5,7 @@ return array(
 		'templates.css.less',
 		'boom.assets.css.less',
 		'boom.people.css.less',
+		'jqpagination.css',
 		'cms.css.less',
 	),
 	'corejs' => array(
@@ -69,5 +70,13 @@ return array(
 		'wysihtml5/parser_rules/inline.js',
 		'wysihtml5/commands/insertBoomAsset.js',
 		'wysihtml5/commands/createBoomLink.js',
+		'boom/models/asset.js',
+		'boom/ui/asset.js',
+		'boom/ui/assetManager.js',
+		'boom/ui/assetPicker.js',
+		'boom/ui/assetUploader.js',
+		'boom/ui/assetTitleFilter.js',
+		'boom.assets.justify.js',
+		'jquery/jqpagination.js'
 	),
 );
