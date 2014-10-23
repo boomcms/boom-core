@@ -1,6 +1,6 @@
 <?php
 
-use \Boom\Link as Link;
+use \Boom\Link\Link as Link;
 
 class Model_Chunk_Linkset_Link extends ORM
 {

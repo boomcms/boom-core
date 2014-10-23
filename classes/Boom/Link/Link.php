@@ -1,6 +1,6 @@
 <?php
 
-namespace Boom;
+namespace Boom\Link;
 
 abstract class Link
 {
@@ -11,17 +11,17 @@ abstract class Link
 
 	public static function factory($link)
 	{
-		return (ctype_digit($link) || substr($link, 0, 1) == '/')? new Link\Internal($link) : new Link\External($link);
+		return (ctype_digit($link) || substr($link, 0, 1) == '/')? new Internal($link) : new External($link);
 	}
 
 	public function isExternal()
 	{
-		return $this instanceof Link\External;
+		return $this instanceof External;
 	}
 
 	public function isInternal()
 	{
-		return $this instanceof Link\Internal;
+		return $this instanceof Internal;
 	}
 
 	abstract public function url();
