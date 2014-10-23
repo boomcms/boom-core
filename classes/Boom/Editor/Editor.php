@@ -84,7 +84,7 @@ class Editor
 
 	public function isEnabled()
 	{
-		return $this->hasState(static::EDIT);
+		return $this->auth->loggedIn() && $this->hasState(static::EDIT);
 	}
 
 	public function hasState($state)

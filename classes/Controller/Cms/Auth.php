@@ -40,7 +40,7 @@ class Controller_Cms_Auth extends Controller
 	{
 		ORM::factory('AuthLog')
 			->values(array(
-				'person_id' => $this->auth->getPerson()->id,
+				'person_id' => $this->auth->getPerson()->getId(),
 				'action' => $action,
 				'method' => $this->method,
 				'ip' => ip2long(Request::$client_ip),

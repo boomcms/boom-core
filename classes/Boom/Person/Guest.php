@@ -6,6 +6,6 @@ class Guest extends \Boom\Person
 {
 	public function __construct()
 	{
-		$this->person = new \Model_Person;
+		$this->model = new \Model_Person;
 	}
 }

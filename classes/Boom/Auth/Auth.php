@@ -2,6 +2,7 @@
 
 namespace Boom\Auth;
 
+use \Cookie as Cookie;
 use \DB as DB;
 use \PasswordHash;
 use \Session;
@@ -41,6 +42,49 @@ class Auth
 		$this->session = $session;
 	}
 
+	public function logout()
+	{
+		$this->session->delete('auth_forced');
+
+		if ($token = Cookie::get('authautologin'))
+		{
+			// Delete the autologin cookie to prevent re-login
+			Cookie::delete('authautologin');
+
+			// Clear the autologin token from the database
+			$token = ORM::factory('User_Token', array('token' => $token));
+
+			if ($token->loaded() AND $logout_all)
+			{
+				// Delete all user tokens. This isn't the most elegant solution but does the job
+				$tokens = ORM::factory('User_Token')->where('user_id','=',$token->user_id)->find_all();
+
+				foreach ($tokens as $_token)
+				{
+					$_token->delete();
+				}
+			}
+			elseif ($token->loaded())
+			{
+				$token->delete();
+			}
+		}
+
+		// Destroy the session completely
+		$this->session->destroy();
+
+		// Remove the user from the session
+		$this->session->delete($this->sessionKey);
+
+		// Regenerate session_id
+		$this->session->regenerate();
+
+		$this->person = new Person\Guest;
+
+		// Double check
+		return ! $this->isLoggedIn();
+	}
+
 	public function auto_login()
 	{
 		if ($token = Cookie::get('authautologin'))
@@ -75,21 +119,15 @@ class Auth
 
 	public function loggedIn($role = NULL, $page = NULL)
 	{
-		if ($this->isDisabled())
-		{
-			return TRUE;
+		if ($this->isDisabled()) {
+			return true;
 		}
 
 		$person = $this->getPerson();
 
-		if ($role === NULL)
-		{
-			// No role has been given, merely verify that the session is authenticated.
-			// This can be done by checking whether the session's person object relates to a valid person.
-			return ! $person instanceof Person\Guest;
-		}
-		else
-		{
+		if ($role === null) {
+			return $this->isLoggedIn();
+		} else {
 			// A role has been given - check whether the active person is allowed to perform the role.
 
 			/**
@@ -175,8 +213,7 @@ class Auth
 	public function complete_login($person)
 	{
 		// Store the person ID in the session data.
-		$this->_session->set($this->_config['session_key'], $person->id);
-		$person->complete_login();
+		$this->session->set($this->sessionKey, $person->id);
 	}
 
 	public function force_login($person, $mark_as_forced = false)
@@ -223,11 +260,7 @@ class Auth
 			return true;
 		}
 
-		if ($this->person === null) {
-			$this->person = $this->getPerson();
-		}
-
-		return $this->person;
+		return ! $this->getPerson() instanceof Person\Guest;
 	}
 
 	public function isDisabled()
