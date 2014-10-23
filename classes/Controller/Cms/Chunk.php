@@ -36,31 +36,31 @@ class Controller_Cms_Chunk extends Boom\Controller
 
 	public function action_remove()
 	{
-		$this->authorization();
-		$this->_create_version();
+		$this->authCheck();
+		$this->_createVersion();
 
 		$this->_send_response($this->_preview_default_chunk());
 	}
 
 	public function action_save()
 	{
-		$this->authorization();
-		$this->_create_version();
+		$this->authCheck();
+		$this->_createVersion();
 		$this->_save_chunk();
 
 		$this->_send_response($this->_preview_chunk());
 	}
 
-	public function authorization()
+	public function authCheck()
 	{
 		$this->page->wasCreatedBy($this->person) || parent::authorization('edit_page_content', $this->page);
 	}
 
-	protected function _create_version()
+	protected function _createVersion()
 	{
 		$old_version = $this->page->getCurrentVersion();
 
-		$this->_new_version = $this->page->create_version($old_version, array('edited_by' => $this->person->id));
+		$this->_new_version = $this->page->createVersion($old_version, array('edited_by' => $this->person->getId()));
 
 		if ($this->_new_version->embargoed_until <= $_SERVER['REQUEST_TIME'])
 		{

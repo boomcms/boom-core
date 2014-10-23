@@ -2,10 +2,12 @@
 
 namespace Boom\Page;
 
-use Boom\Editor\Editor as Editor;
+use \Boom\Editor\Editor as Editor;
 use \Boom\Taggable as Taggable;
 use \Boom\Template\Template as Template;
 use \Boom\Person as Person;
+
+use \ORM as ORM;
 
 class Page implements Taggable
 {
@@ -39,6 +41,29 @@ class Page implements Taggable
 	public function allowsInternalIndexing()
 	{
 		return (bool) $this->model->internal_indexing;
+	}
+
+	public function createVersion($current = null, array $values = null)
+	{
+		// Get the current version
+		if ($current === null)
+		{
+			$current = $this->getCurrentVersion();
+		}
+
+		// Create a new version with the same values as the current version.
+		$new_version = ORM::factory('Page_Version')
+			->values($current->object());
+
+		// Update the new version with any update values.
+		if ( ! empty($values))
+		{
+			$new_version
+				->values($values, array_keys($values));
+		}
+
+		// Return the new version
+		return $new_version;
 	}
 
 	public function getChildOrderingPolicy()

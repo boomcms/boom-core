@@ -3,8 +3,10 @@
 namespace Boom;
 
 use \Boom\Auth\Auth as Auth;
+use \Boom\Page\Page as Page;
+use \Boom\Editor\Editor as Editor;
+
 use \Session;
-use \Boom\Page as Page;
 use \Kohana as Kohana;
 use \Request as Request;
 use \View as View;
@@ -33,7 +35,7 @@ class Controller extends \Controller
 	public $auth;
 
 	/**
-	 * @var	\Boom\Editor
+	 * @var	Editor
 	 */
 	public $editor;
 
@@ -64,7 +66,7 @@ class Controller extends \Controller
 		}
 
 		$this->person = $this->auth->getPerson();
-		$this->editor = new Editor\Editor($this->auth, $this->session);
+		$this->editor = new Editor($this->auth, $this->session);
 	}
 
 	/**

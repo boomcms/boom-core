@@ -23,7 +23,7 @@ class Controller_Cms_Page_Version_Save extends Controller_Cms_Page_Version
 		$this->db->begin();
 
 		// Create a new version of the page.
-		$this->new_version = $this->page->create_version($this->old_version, array(
+		$this->new_version = $this->page->createVersion($this->old_version, array(
 			'edited_by'	=>	$this->person->id,
 		));
 

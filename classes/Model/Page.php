@@ -115,38 +115,6 @@ class Model_Page extends Model_Taggable
 	}
 
 	/**
-	 * Create a new version of a page.
-	 *
-	 * Accepts an optional array of values to apply to the new version.
-	 *
-	 * @param Model_Page_Version $current
-	 * @param array $values
-	 * @return Model_Page_Version
-	 */
-	public function create_version($current = null, array $values = null)
-	{
-		// Get the current version
-		if ($current === null)
-		{
-			$current = $this->getCurrentVersion();
-		}
-
-		// Create a new version with the same values as the current version.
-		$new_version = ORM::factory('Page_Version')
-			->values($current->object());
-
-		// Update the new version with any update values.
-		if ( ! empty($values))
-		{
-			$new_version
-				->values($values, array_keys($values));
-		}
-
-		// Return the new version
-		return $new_version;
-	}
-
-	/**
 	 * Add the page version columns to a select query.
 	 *
 	 * @return \Boom_Model_Page
