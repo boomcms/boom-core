@@ -30,6 +30,11 @@ return array(
 				'title'		=>	'Logout',
 				'url'		=>	'/cms/logout',
 				'priority'	=>	100,
+			'assets'	=> array(
+				'title'		=>	'Assets',
+				'url'		=>	'/cms/assets',
+				'role'		=>	'manage_assets',
+				'priority'	=>	3,
 			),
 		),
 	),
