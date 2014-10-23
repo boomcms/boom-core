@@ -1,5 +1,7 @@
 <?php
 
+use \Boom\Editor\Editor as Editor;
+
 abstract class Boom_Core
 {
 	public static function include_css()
@@ -85,7 +87,7 @@ abstract class Boom_Core
 				throw new HTTP_Exception_410;
 			}
 
-			if (\Boom\Editor::instance()->isDisabled() && ! $page->isVisible())
+			if (Editor::instance()->isDisabled() && ! $page->isVisible())
 			{
 				return false;
 			}
