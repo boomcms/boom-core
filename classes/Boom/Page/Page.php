@@ -111,7 +111,7 @@ class Page implements Taggable
 
 	/**
 	 *
-	 * @return \Boom\Page\Keywords
+	 * @return Keywords
 	 */
 	public function getKeywords()
 	{
@@ -121,7 +121,7 @@ class Page implements Taggable
 			$keyword = trim($keyword);
 		}
 
-		return new Page\Keywords($keywords);
+		return new Keywords($keywords);
 	}
 
 	public function getManualOrderPosition()
