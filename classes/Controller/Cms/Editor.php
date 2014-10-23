@@ -10,7 +10,7 @@ class Controller_Cms_Editor extends Boom\Controller
 	public function action_state()
 	{
 		$state = $this->request->post('state');
-		$numeric_state = constant("\Boom\Editor::" . strtoupper($state));
+		$numeric_state = constant("\Boom\Editor\Editor::" . strtoupper($state));
 
 		if ($numeric_state === null)
 		{
