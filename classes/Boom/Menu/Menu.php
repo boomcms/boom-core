@@ -29,12 +29,6 @@ class Menu
 	protected $viewFilename;
 
 	/**
-	 *
-	 * @var	string	Default menu group for [Menu::factory()]
-	 */
-	public static $default = 'default';
-
-	/**
 	 * Convert the menu object to a string by calling [Menu::render()]
 	 */
 	public function __toString()
@@ -49,15 +43,9 @@ class Menu
 	 * @param	array	$data	Array of variables to be set in the menu's view.
 	 * @uses		Menu::$default
 	 */
-	public function __construct($group = NULL, array $data = NULL)
+	public function __construct(array $data = NULL)
 	{
-		// If $group isn't specified then use the default from [Menu::$default].
-		if ($group === NULL)
-		{
-			$group = Menu::$default;
-		}
-
-		$config = Kohana::$config->load("boom.menu.$group");
+		$config = Kohana::$config->load('boom')->get("menu");
 		$this->viewFilename = Arr::get($config, 'view_filename');
 		$this->menuItems = (array) Arr::get($config, 'items');
 		$this->viewData = $data;
@@ -85,13 +73,12 @@ class Menu
 	/**
 	 * Generate a menu object
 	 *
-	 * @param	string	$group	The menu group to be generated. The default can be set via [Menu::$default]
 	 * @param	array	$data	Array of variables to be set in the menu's view.
 	 * @return	Menu
 	 */
-	public static function factory($group = NULL, array $data = NULL)
+	public static function factory(array $data = NULL)
 	{
-		return new static($group, $data);
+		return new static($data);
 	}
 
 	/**
@@ -108,6 +95,7 @@ class Menu
 		}
 
 		$this->_filter_items();
+		$this->sort('priority');
 
 		// Check that we've got some items to add to the menu.
 		if ( ! empty($this->menuItems))

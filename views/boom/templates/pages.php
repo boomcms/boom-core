@@ -2,7 +2,7 @@
 
 	<div id="b-topbar" class="ui-helper-clearfix ui-tabs ui-widget ui-widget-content ui-corner-all">
 
-		<?= \Boom\Menu\Menu::factory('boom')->sort('priority') ?>
+		<?= new \Boom\Menu\Menu  ?>
 
 		<div class="ui-helper-clearfix ui-tabs-panel ui-widget-content ui-corner-bottom">
 			<div id="b-page-actions" class="ui-helper-right">
