@@ -2,6 +2,7 @@
 
 namespace Boom\Chunk;
 
+use \Boom\Page\Page as Page;
 use \Kohana as Kohana;
 use \View as View;
 
@@ -11,7 +12,7 @@ class Tag extends \Boom\Chunk
 	protected $_tag;
 	protected $_type = 'tag';
 
-	public function __construct(\Boom\Page $page, $chunk, $editable = true)
+	public function __construct(Page $page, $chunk, $editable = true)
 	{
 		parent::__construct($page, $chunk, $editable);
 

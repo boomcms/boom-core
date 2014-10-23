@@ -10,6 +10,7 @@ use \ORM as ORM;
 use \Request as Request;
 use \Profiler as Profiler;
 use \View as View;
+use \Boom\Page\Page as Page;
 
 abstract class Chunk
 {
@@ -75,7 +76,7 @@ abstract class Chunk
 	 */
 	public static $types = array('asset', 'text', 'feature', 'linkset', 'slideshow', 'timestamp', 'tag');
 
-	public function __construct(\Boom\Page $page, $chunk, $slotname)
+	public function __construct(Page $page, $chunk, $slotname)
 	{
 		$this->_page = $page;
 		$this->_chunk = $chunk;

@@ -1,8 +1,10 @@
 <?php
 
-namespace Boom;
+namespace Boom\Page;
 
 use Boom\Editor\Editor as Editor;
+use \Boom\Taggable as Taggable;
+use \Boom\Template as Template;
 
 class Page implements Taggable
 {
@@ -40,7 +42,7 @@ class Page implements Taggable
 
 	public function getChildOrderingPolicy()
 	{
-		return new Page\ChildOrderingPolicy($this->model->children_ordering_policy);
+		return new ChildOrderingPolicy($this->model->children_ordering_policy);
 	}
 
 	public function getCreatedBy()

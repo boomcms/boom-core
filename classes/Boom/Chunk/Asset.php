@@ -2,7 +2,8 @@
 
 namespace Boom\Chunk;
 
-use \Boom\Page\Finder as PageFinder;
+use \Boom\Page as Page;
+use Page\Finder as PageFinder;
 use \Boom\Link as Link;
 use \View as View;
 
@@ -12,7 +13,7 @@ class Asset extends \Boom\Chunk
 	protected $_default_template = 'image';
 	protected $_type = 'asset';
 
-	public function __construct(\Boom\Page $page, $chunk, $editable = true)
+	public function __construct(Page\Page $page, $chunk, $editable = true)
 	{
 		parent::__construct($page, $chunk, $editable);
 

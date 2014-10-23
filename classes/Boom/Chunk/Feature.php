@@ -2,7 +2,8 @@
 
 namespace Boom\Chunk;
 
-use \Boom\Editor as Editor;
+use \Boom\Page as Page;
+use \Boom\Editor\Editor as Editor;
 use \Kohana as Kohana;
 use \View as View;
 
@@ -16,7 +17,7 @@ class Feature extends \Boom\Chunk
 
 	protected $_type = 'feature';
 
-	public function __construct(\Boom\Page $page, $chunk, $editable = true)
+	public function __construct(Page\Page $page, $chunk, $editable = true)
 	{
 		parent::__construct($page, $chunk, $editable);
 
