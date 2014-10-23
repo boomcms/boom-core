@@ -10,7 +10,9 @@ use \ORM as ORM;
 use \Request as Request;
 use \Profiler as Profiler;
 use \View as View;
+
 use \Boom\Page\Page as Page;
+use \Boom\Editor\Editor as Editor;
 
 abstract class Chunk
 {
@@ -180,7 +182,7 @@ abstract class Chunk
 			 *
 			 * @todo Multiple chunks will be inserted on a single page - need to remove duplicate calles to Auth::instance()->isLoggedIn()
 			 */
-			$this->_editable = ($this->_editable === true && \Boom\Editor::instance()->isEnabled() && ($this->_page->wasCreatedBy(Auth::instance()->getPerson()) || Auth::instance()->logged_in("edit_page_content", $this->_page)));
+			$this->_editable = ($this->_editable === true && Editor::instance()->isEnabled() && ($this->_page->wasCreatedBy(Auth::instance()->getPerson()) || Auth::instance()->logged_in("edit_page_content", $this->_page)));
 
 			// Get the chunk HTML.
 			$html = $this->html();
@@ -218,7 +220,7 @@ abstract class Chunk
 	public static function factory($type, $slotname, $page = null)
 	{
 		// Set the class name.
-		$class = "Chunk_" . ucfirst($type);
+		$class = "\Boom\Chunk\\" . ucfirst($type);
 
 		// Set the page that the chunk belongs to.
 		// This is used for permissions check, and quite importantly, for finding the chunk.

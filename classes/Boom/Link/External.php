@@ -2,7 +2,7 @@
 
 namespace Boom\Link;
 
-class External extends \Boom\Link
+class External extends Link
 {
 	protected $_link;
 

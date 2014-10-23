@@ -2,7 +2,7 @@
 
 namespace Boom\Link;
 
-class Internal extends \Boom\Link
+class Internal extends Link
 {
 	/** 
 	 *

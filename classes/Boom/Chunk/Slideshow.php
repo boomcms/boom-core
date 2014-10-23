@@ -2,7 +2,7 @@
 
 namespace Boom\Chunk;
 
-use \Boom\Editor as Editor;
+use Boom\Editor\Editor as Editor;
 use \View as View;
 
 class Slideshow extends \Boom\Chunk

@@ -2,7 +2,7 @@
 
 namespace Boom\Chunk;
 
-use Boom\Editor as Editor;
+use Boom\Editor\Editor as Editor;
 use Boom\TextFilter\Commander as TextFilter;
 use Boom\TextFilter\Filter as Filter;
 use \Kohana as Kohana;

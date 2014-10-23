@@ -3,6 +3,7 @@
 namespace Boom\Controller\Page;
 
 use \Boom\Chunk as Chunk;
+use \ORM as ORM;
 use \View as View;
 
 class Html extends \Boom\Controller\Page
@@ -50,7 +51,7 @@ class Html extends \Boom\Controller\Page
 	protected function _loadChunks(array $chunks)
 	{
 		foreach ($chunks as $type => $slotnames) {
-			$class = "Chunk_".ucfirst($type);
+			$class = "\Boom\Chunk\\".ucfirst($type);
 			$models = Chunk::find($type, $slotnames, $this->page->getCurrentVersion());
 
 			$found = array();
