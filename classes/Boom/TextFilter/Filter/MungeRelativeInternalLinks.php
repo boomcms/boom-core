@@ -2,7 +2,7 @@
 
 namespace Boom\TextFilter\Filter;
 
-use \Boom\Page\Finder as PageFinder;
+use \Boom\Page\Factory as PageFactory;
 
 /**
  * Munges internal links to hoopdb://page/<pageId>
@@ -28,7 +28,7 @@ class MungeRelativeInternalLinks implements \Boom\TextFilter\Filter
 
 	protected function _getPageIdForUri($uri)
 	{
-		$page = PageFinder::byPrimaryUri($uri);
+		$page = PageFactory::byPrimaryUri($uri);
 		return $page->getId();
 	}
 }
