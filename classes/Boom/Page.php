@@ -2,6 +2,8 @@
 
 namespace Boom;
 
+use Boom\Editor\Editor as Editor;
+
 class Page implements Taggable
 {
 	/**
@@ -190,7 +192,7 @@ class Page implements Taggable
 
 	public function isVisible()
 	{
-		return $this->isVisibleAtTime(\Boom\Editor::instance()->getLiveTime());
+		return $this->isVisibleAtTime(Editor::instance()->getLiveTime());
 	}
 
 	public function isVisibleAtAnyTime()

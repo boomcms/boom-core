@@ -1,5 +1,7 @@
 <?php
 
+use \Boom\Editor\Editor as Editor;
+
 class Model_Page extends Model_Taggable
 {
 	/**
@@ -227,10 +229,7 @@ class Model_Page extends Model_Taggable
 			return $this->_related['version'];
 		}
 
-		// No it hasn't, query the database for the right version to use.
-
-		// Get the editor instance to determine which state the editor is in.
-		$editor = \Boom\Editor::instance();
+		$editor = Editor::instance();
 
 		// Start the query.
 		$query = ORM::factory('Page_Version')
