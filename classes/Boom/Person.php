@@ -3,7 +3,10 @@
 namespace Boom;
 
 use Boom\Group as Group;
-use Boom\Page as Page;
+use Boom\Page\Page as Page;
+
+use \DB as DB;
+use \Model_Role as Role;
 
 class Person
 {

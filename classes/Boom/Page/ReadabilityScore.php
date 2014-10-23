@@ -2,7 +2,7 @@
 
 namespace Boom\Page;
 
-use Boom\Page as Page;
+use Boom\Page\Page as Page;
 
 class ReadabilityScore
 {

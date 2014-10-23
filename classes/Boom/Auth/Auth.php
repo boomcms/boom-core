@@ -2,8 +2,11 @@
 
 namespace Boom\Auth;
 
+use \DB as DB;
 use \PasswordHash;
 use \Session;
+use \Model_Role as Role;
+
 use \Boom\Person as Person;
 
 class Auth
@@ -70,6 +73,54 @@ class Auth
 		return FALSE;
 	}
 
+	public function loggedIn($role = NULL, $page = NULL)
+	{
+		if ($this->isDisabled())
+		{
+			return TRUE;
+		}
+
+		$person = $this->getPerson();
+
+		if ($role === NULL)
+		{
+			// No role has been given, merely verify that the session is authenticated.
+			// This can be done by checking whether the session's person object relates to a valid person.
+			return ! $person instanceof Person\Guest;
+		}
+		else
+		{
+			// A role has been given - check whether the active person is allowed to perform the role.
+
+			/**
+			 * If a page has been given then add 'p_' to the role name.
+			 *
+			 * Roles which are applied to pages are prefixed with 'p_' in the database
+			 * so that we can display them seperately from the general permissions when adding roles to groups in the people manager.
+			 *
+			 * To avoid having to add p_ to the start of role names everywhere in the code we just add the prefix here.
+			 */
+			if ($page !== NULL AND is_string($role))
+			{
+				$role = 'p_'.$role;
+			}
+
+			if (is_string($role)) {
+				$role = new Role(array('name' => $role));
+			}
+
+			// Does the person have the role at the specified page?
+			$page_id = ($page)? $page->getId() : 0;
+			$cache_key = md5($role.$page_id);
+			
+			if ( ! isset($this->_permissions_cache[$cache_key])) {
+				$this->_permissions_cache[$cache_key] = $page? $this->getPerson()->hasPagePermission($role, $page) : $this->getPerson()->hasPermission($role);
+			}
+			
+			return $this->_permissions_cache[$cache_key];
+		}
+	}
+
 	protected function _login(Person $person, $password = null, $remember = false)
 	{
 		$this->person = $person;
@@ -96,7 +147,7 @@ class Auth
 	{
 		$permissions = DB::select('roles.name', array('page_mptt.id', 'page_id'), array(DB::expr("bit_and(allowed)"), 'allowed'))
 			->from('people_roles')
-			->where('person_id', '=', $this->person->id)
+			->where('person_id', '=', $this->getPerson()->getId())
 			->join('roles', 'inner')
 			->on('people_roles.role_id', '=', 'roles.id')
 			->group_by('role_id')
@@ -151,12 +202,10 @@ class Auth
 		if ($this->person === null) {
 			$personId = $this->session->get($this->sessionKey);
 
-			if ($personId) {
-				return Person\Factory::byId($personId);
-			} else {
-				return new Person\Guest;
-			}
+			$this->person = $personId? Person\Factory::byId($personId) : new Person\Guest;
 		}
+
+		return $this->person;
 	}
 
 	public static function instance()

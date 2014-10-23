@@ -6,7 +6,7 @@
 	<?= Menu::factory('boom')->sort('priority') ?>
 
 	<div id="b-topbar-page-buttons">
-		<? if ($page->wasCreatedBy($person) || $auth->logged_in('edit_page_content', $page)): ?>
+		<? if ($page->wasCreatedBy($person) || $auth->loggedIn('edit_page_content', $page)): ?>
 			<div id="b-page-actions" class="b-page-container">
 				<span id="b-page-publish-menu">
 					<button id="b-page-version-status" class="b-button" data-status="<?= $page->getCurrentVersion()->status() ?>">
@@ -19,14 +19,14 @@
 			</div>
 		<? endif; ?>
 
-		<? if ($auth->logged_in('add_page', $page)): ?>
+		<? if ($auth->loggedIn('add_page', $page)): ?>
 			<div class="b-page-container">
 				<?= \Boom\UI::button('add', __('Add a new page as a child of the current page'), array('id' => 'b-page-addpage')) ?>
 			</div>
 		<? endif; ?>
 
 		<div class="b-page-container">
-			<? if ($auth->logged_in('edit_page', $page)): ?>
+			<? if ($auth->loggedIn('edit_page', $page)): ?>
 				<?= \Boom\UI::button('visible', __('This page is visible. The content displayed will depend on which version of the page is published'), array('id' => 'b-page-visible', 'class' => $page->isVisible()? 'b-page-visibility ' : 'b-page-visibility ui-helper-hidden')) ?>
 				<?= \Boom\UI::button('invisible', __('This page is hidden regardless of whether there is a published version'), array('id' => 'b-page-invisible', 'class' => $page->isVisible()? 'b-page-visibility ui-helper-hidden' : 'b-page-visibility')) ?>
 
@@ -35,7 +35,7 @@
 				</span>
 			<? endif ?>
 
-			<? if (($page->wasCreatedBy($person) || $auth->logged_in('delete_page', $page)) && ! $page->getMptt()->is_root()): ?>
+			<? if (($page->wasCreatedBy($person) || $auth->loggedIn('delete_page', $page)) && ! $page->getMptt()->is_root()): ?>
 				<?= \Boom\UI::button('delete', __('Delete this page'), array('id' => 'b-page-delete')) ?>
 			<? endif; ?>
 		</div>

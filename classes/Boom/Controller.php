@@ -81,7 +81,7 @@ class Controller extends \Controller
 			throw new HTTP_Exception_401;
 		}
 
-		if ( ! $this->auth->logged_in($role, $page))
+		if ( ! $this->auth->loggedIn($role, $page))
 		{
 			throw new HTTP_Exception_403;
 		}

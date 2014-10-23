@@ -5,6 +5,7 @@ namespace Boom\Page;
 use Boom\Editor\Editor as Editor;
 use \Boom\Taggable as Taggable;
 use \Boom\Template\Template as Template;
+use \Boom\Person as Person;
 
 class Page implements Taggable
 {
@@ -278,8 +279,8 @@ class Page implements Taggable
 		return ($this->model->mptt->is_root())? $this : \Boom\Page\Factory::byId($this->model->mptt->parent_id);
 	}
 
-	public function wasCreatedBy(\Model_Person $person)
+	public function wasCreatedBy(Person $person)
 	{
-		return $this->getCreatedBy() === $person->id;
+		return $this->getCreatedBy() === $person->getId();
 	}
 }
