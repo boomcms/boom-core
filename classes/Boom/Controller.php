@@ -2,7 +2,6 @@
 
 namespace Boom;
 
-use \Arr as Arr;
 use \Session;
 use \Boom\Page as Page;
 use \Kohana as Kohana;
@@ -51,7 +50,7 @@ class Controller extends \Controller
 	public function before()
 	{
 		$this->session = Session::instance();
-		$this->auth = new Auth\Auth(Arr::get(Kohana::$config->load('boom')->get('auth')), $this->session);
+		$this->auth = new Auth\Auth(Kohana::$config->load('boom')->get('auth'), $this->session);
 
 		$this->_save_last_url();
 
