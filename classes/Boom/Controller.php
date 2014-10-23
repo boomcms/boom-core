@@ -6,6 +6,7 @@ use \Session;
 use \Boom\Page as Page;
 use \Kohana as Kohana;
 use \Request as Request;
+use \View as View;
 
 class Controller extends \Controller
 {

@@ -4,17 +4,20 @@ namespace Boom\Page;
 
 use Boom\Page\Page as Page;
 
+use \Kohana as Kohana;
+use \TextStatistics as TextStatistics;
+
 class ReadabilityScore
 {
 	/**
 	 *
-	 * @var \Model_Page
+	 * @var Page
 	 */
-	protected $_page;
+	protected $page;
 
 	public function __construct(Page $page)
 	{
-		$this->_page = $page;
+		$this->page = $page;
 		$this->_loadDependencies();
 	}
 
@@ -22,7 +25,7 @@ class ReadabilityScore
 	{
 		$chunks = \ORM::factory('Chunk_Text')
 			->where('is_block', '=', true)
-			->where('page_vid', '=', $this->_page->getCurrentVersion()->id)
+			->where('page_vid', '=', $this->page->getCurrentVersion()->id)
 			->find_all();
 
 		$text = "";
@@ -40,7 +43,7 @@ class ReadabilityScore
 
 		if (strlen($text) > 100)
 		{
-			$stats = new \TextStatistics;
+			$stats = new TextStatistics;
 			return $stats->smog_index($text);
 		}
 	}
@@ -49,7 +52,7 @@ class ReadabilityScore
 	{
 		if ( ! class_exists('TextStatistics'))
 		{
-			require \Kohana::find_file('vendor/text-statistics', 'TextStatistics');
+			require Kohana::find_file('vendor/text-statistics', 'TextStatistics');
 		}
 	}
 }
