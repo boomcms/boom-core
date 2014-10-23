@@ -3,7 +3,7 @@
 <div id="b-topbar" class='b-page-toolbar b-toolbar b-toolbar-vertical'>
 	<?= Form::hidden('csrf', Security::token(), array('id' => 'b-csrf')) ?>
 	<?= \Boom\UI::menuButton() ?>
-	<?= Menu::factory('boom')->sort('priority') ?>
+	<?= \Boom\Menu\Menu::factory('boom')->sort('priority') ?>
 
 	<div id="b-topbar-page-buttons">
 		<? if ($page->wasCreatedBy($person) || $auth->loggedIn('edit_page_content', $page)): ?>

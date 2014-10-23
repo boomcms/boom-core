@@ -1,7 +1,7 @@
 	<?= View::factory('boom/header', array('title' =>	'Pending Approvals')) ?>
 
 	<div id="b-topbar" class="b-asset-manager">
-		<?= Menu::factory('boom')->sort('priority')  ?>
+		<?= \Boom\Menu\Menu::factory('boom')->sort('priority')  ?>
 	</div>
 
 	<div id="b-approvals">

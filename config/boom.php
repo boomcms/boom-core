@@ -1,7 +1,7 @@
-<?php defined('SYSPATH') or die('No direct access allowed.');
+<?php
 
 return array(
-	'boom'	=>	array(
+	'menu'	=>	array(
 		'view_filename'		=>	'menu/boom',
 		'items'			=>	array(
 			'home'		=>	array(

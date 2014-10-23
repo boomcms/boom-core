@@ -2,7 +2,7 @@
 	<? if ( ! Request::current()->is_ajax()): ?>
 		<div id="b-topbar" class="b-asset-manager b-toolbar">
 			<?= \Boom\UI::menuButton() ?>
-			<?= Menu::factory('boom')->sort('priority')  ?>
+			<?= \Boom\Menu\Menu::factory('boom')->sort('priority')  ?>
 
 			<div id="b-assets-buttons">
 				<?= \Boom\UI::button('upload', __('Upload files'), array('id' => 'b-assets-upload')) ?>

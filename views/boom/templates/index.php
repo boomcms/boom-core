@@ -1,5 +1,5 @@
 	<?= View::factory('boom/header', array('title' =>	'Templates'))?>
-	<?= Menu::factory('boom')->sort('priority') ?>
+	<?= \Boom\Menu\Menu::factory('boom')->sort('priority') ?>
 
 	<div id="b-topbar" class="b-toolbar">
 		<?= \Boom\UI::menuButton() ?>

@@ -1,24 +1,32 @@
-<?php defined('SYSPATH') OR die('No direct script access.');
+<?php
 
-class Kohana_Menu
+namespace Boom\Menu;
+
+use \Arr as Arr;
+use \View as View;
+use \Kohana as Kohana;
+
+use \Boom\Auth\Auth as Auth;
+
+class Menu
 {
-	/**
-	 *
-	 * @var	array	Array of variables to be set in the view.
-	 */
-	protected $_data = array();
-
 	/**
 	 *
 	 * @var	array	Array of menu items
 	 */
-	protected $_items = array();
+	protected $menuItems = array();
+
+	/**
+	 *
+	 * @var	array	Array of variables to be set in the view.
+	 */
+	protected $viewData = array();
 
 	/**
 	 *
 	 * @var	string	Filename of the view to display the menu.
 	 */
-	protected $_view_filename;
+	protected $viewFilename;
 
 	/**
 	 *
@@ -49,18 +57,10 @@ class Kohana_Menu
 			$group = Menu::$default;
 		}
 
-		// Load the menu config.
-		$config = Kohana::$config->load("menu.$group");
-
-		// Set the view filename
-		$this->_view_filename = Arr::get($config, 'view_filename');
-
-		// Set the menu items.
-		$this->_items = (array) Arr::get($config, 'items');
-
-		// Set the m
-		// Set the view paramaters
-		$this->_data = $data;
+		$config = Kohana::$config->load("boom.menu.$group");
+		$this->viewFilename = Arr::get($config, 'view_filename');
+		$this->menuItems = (array) Arr::get($config, 'items');
+		$this->viewData = $data;
 	}
 
 	/**
@@ -69,21 +69,17 @@ class Kohana_Menu
 	protected function _filter_items()
 	{
 		// Array of items we're going to include for this menu.
-		$items = array();
+		$itemsToInclude = array();
 
-		// Get the Auth object to determine which menu items the current user should see.
 		$auth = Auth::instance();
 
-		foreach ($this->_items as $item)
-		{
-			// Include the item in the menu if a required role isn't given or the current user is logged in to the role.
-			if ( ! isset($item['role']) OR $auth->logged_in($item['role']))
-			{
-				$items[] = $item;
+		foreach ($this->menuItems as $item) {
+			if ( ! isset($item['role']) OR $auth->loggedIn($item['role'])) {
+				$itemsToInclude[] = $item;
 			}
 		}
 
-		$this->_items = $items;
+		$this->menuItems = $itemsToInclude;
 	}
 
 	/**
@@ -95,32 +91,30 @@ class Kohana_Menu
 	 */
 	public static function factory($group = NULL, array $data = NULL)
 	{
-		return new Menu($group, $data);
+		return new static($group, $data);
 	}
 
 	/**
 	 * Display the menu.
 	 *
-	 * @param	string	$view_filename		Set the name of the view to use to display the menu.
+	 * @param	string	$viewFilename		Set the name of the view to use to display the menu.
 	 * @return	string
-	 * @uses		[Auth::logged_in()]
 	 */
-	public function render($view_filename = NULL)
+	public function render($viewFilename = NULL)
 	{
 		// If a view filename has been given then set it.
-		if ($view_filename !== NULL)
-		{
-			$this->_view_filename = $view_filename;
+		if ($viewFilename !== NULL) {
+			$this->viewFilename = $viewFilename;
 		}
 
 		$this->_filter_items();
 
 		// Check that we've got some items to add to the menu.
-		if ( ! empty($this->_items))
+		if ( ! empty($this->menuItems))
 		{
 			// If there's a template for this section then use that, otherwise use a generic template.
-			$view = View::factory($this->_view_filename, $this->_data);
-			$view->menu_items = $this->_items;
+			$view = View::factory($this->viewFilename, $this->viewData);
+			$view->menu_items = $this->menuItems;
 
 			return $view->render();
 		}
@@ -139,12 +133,12 @@ class Kohana_Menu
 		{
 			foreach ($key as $name => $value)
 			{
-				$this->_data[$name] = $value;
+				$this->viewData[$name] = $value;
 			}
 		}
 		else
 		{
-			$this->_data[$key] = $value;
+			$this->viewData[$key] = $value;
 		}
 
 		return $this;
@@ -161,14 +155,14 @@ class Kohana_Menu
 	{
 		if (is_string($key))
 		{
-			$key = usort($this->_items, function($a, $b) use ($key) {
+			$key = usort($this->menuItems, function($a, $b) use ($key) {
 				return $a[$key] - $b[$key];
 			});
 		}
 
 		if (is_callable($key))
 		{
-			call_user_func($key, $this->_items);
+			call_user_func($key, $this->menuItems);
 		}
 
 		return $this;
@@ -186,12 +180,12 @@ class Kohana_Menu
 		if ($view_filename === NULL)
 		{
 			// Act as a getter.
-			return $this->_view_filename;
+			return $this->viewFilename;
 		}
 		else
 		{
 			// Act as a setter.
-			$this->_view_filename = $view_filename;
+			$this->viewFilename = $view_filename;
 
 			return $this;
 		}
