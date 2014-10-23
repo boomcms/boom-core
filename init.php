@@ -91,6 +91,8 @@ Route::set('page_settings2', 'cms/page/<directory>/<action>(/<id>)')
 			$params['controller'] = ($request->method() === Request::POST)? 'Save' : 'View';
 
 			// Return the request params.
+			return $params;
+		});
 
 // Route for displaying assets
 Route::set('asset', 'asset/<action>/<id>(.<extension>)(/<width>(/<height>(/<quality>(/<crop>))))')
