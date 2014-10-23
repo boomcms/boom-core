@@ -2,7 +2,7 @@
 
 namespace Boom\TextFilter\Filter;
 
-use \Boom\Page\Finder as PageFinder;
+use \Boom\Page\Factory as PageFactory;
 
 class UnmungeInternalLinks implements \Boom\TextFilter\Filter
 {
@@ -23,7 +23,7 @@ class UnmungeInternalLinks implements \Boom\TextFilter\Filter
 
 	protected function _updatePageLink($match)
 	{
-		$page = PageFinder::byId($match[2]);
+		$page = PageFactory::byId($match[2]);
 
 		return $page->loaded()? $page->url() : $match[0];
 	}

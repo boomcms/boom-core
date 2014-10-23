@@ -2,7 +2,7 @@
 
 namespace Boom\TextFilter\Filter;
 
-use \Boom\Page\Finder as PageFinder;
+use \Boom\Page\Factory as PageFactory;
 
 class RemoveLinksToInvisiblePages implements \Boom\TextFilter\Filter
 {
@@ -13,7 +13,7 @@ class RemoveLinksToInvisiblePages implements \Boom\TextFilter\Filter
 		preg_match_all($this->_regex, $text, $matches, PREG_SET_ORDER);
 
 		foreach ($matches as $match) {
-			$page = PageFinder::byId($match[2]);
+			$page = PageFactory::byId($match[2]);
 
 			if ( ! $page->isVisibleAtTime(time())) {
 				preg_replace($this->_regex, $match[3], $text);
