@@ -1,5 +1,6 @@
 <?php
 
+use \Boom\Page as Page;
 use \Boom\Page\Command\Delete as Delete;
 
 class Controller_Cms_Page extends Boom\Controller
@@ -85,7 +86,9 @@ class Controller_Cms_Page extends Boom\Controller
 
 	public function action_discard()
 	{
-		$this->page->remove_drafts();
+		$commander = new Page\Commander($this->page);
+		$commander->addCommand(new Page\Command\Delete\Drafts);
+		$commander->execute();
 	}
 
 	/**

@@ -1,12 +1,13 @@
 <?php
 
-namespace \Boom\Page\Command\Delete;
+namespace Boom\Page\Command\Delete;
 
+use \Boom\Page\Page as Page;
 use \DB as DB;
 
 class Drafts extends \Boom\Page\Command
 {
-	public function execute(\Boom\Page $page)
+	public function execute(Page $page)
 	{
 		DB::delete('page_versions')
 			->where('page_id', '=', $page->getId())
@@ -14,6 +15,7 @@ class Drafts extends \Boom\Page\Command
 					->where('embargoed_until', '=', null)
 					->or_where('embargoed_until', '>', time())
 			->and_where_close()
-			->where('stashed', '=', false);
+			->where('stashed', '=', false)
+			->execute();
 	}
 }

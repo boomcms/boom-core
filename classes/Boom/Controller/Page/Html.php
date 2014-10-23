@@ -51,19 +51,21 @@ class Html extends \Boom\Controller\Page
 	protected function _loadChunks(array $chunks)
 	{
 		foreach ($chunks as $type => $slotnames) {
-			$class = "\Boom\Chunk\\".ucfirst($type);
+			$model = ucfirst($type);
+			$class = "\Boom\Chunk\\" . $model;
+
 			$models = Chunk::find($type, $slotnames, $this->page->getCurrentVersion());
 
 			$found = array();
-			foreach ($models as $model) {
-				$found[] = $model->slotname;
-				$chunks[$type][$model->slotname] = new $class($this->page, $model, $model->slotname);
+			foreach ($models as $m) {
+				$found[] = $m->slotname;
+				$chunks[$type][$m->slotname] = new $class($this->page, $m, $m->slotname);
 			}
 
 			$not_found = array_diff($slotnames, $found);
 
 			foreach ($not_found as $slotname) {
-				$chunks[$type][$slotname] = new $class($this->page, ORM::factory($class), $slotname);
+				$chunks[$type][$slotname] = new $class($this->page, ORM::factory("Chunk_$model"), $slotname);
 			}
 		}
 

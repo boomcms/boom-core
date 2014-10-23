@@ -2,8 +2,6 @@
 
 namespace Boom\Page;
 
-use \Boom\Page as Page;
-
 class Commander
 {
 	protected $page;

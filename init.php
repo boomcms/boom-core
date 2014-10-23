@@ -67,18 +67,18 @@ Route::set('tags', 'cms/tags/<controller>/<action>/<id>', array(
  * For POST requests we use a controller which saves the page settings.
  * For all other requests we use a controller which shows the relevant settings.
  */
-Route::set('page_settings2', 'cms/page/<directory>/<action>(/<id>)')
-	->filter(function(Route $route, $params, Request $request)
-		{
-			// Set the directory correctly
-			$params['directory'] = 'Cms_Page_'.$params['directory'];
-
-			// Set the controller based on request method.
-			$params['controller'] = ($request->method() === Request::POST)? 'Save' : 'View';
-
-			// Return the request params.
-			return $params;
-		});
+//Route::set('page_settings2', 'cms/page/<directory>/<action>(/<id>)')
+//	->filter(function(Route $route, $params, Request $request)
+//		{
+//			// Set the directory correctly
+//			$params['directory'] = 'Cms_Page_'.$params['directory'];
+//
+//			// Set the controller based on request method.
+//			$params['controller'] = ($request->method() === Request::POST)? 'Save' : 'View';
+//
+//			// Return the request params.
+//			return $params;
+//		});
 
 // Route for displaying assets
 Route::set('asset', 'asset/<action>/<id>(.<extension>)(/<width>(/<height>(/<quality>(/<crop>))))')
