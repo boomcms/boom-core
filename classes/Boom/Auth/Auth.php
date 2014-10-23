@@ -167,7 +167,7 @@ class Auth
 		 * Although it's slower, we the check password first before checking that the account is valid and not locked.
 		 * It shouldn't cause too much of a time waste for genuine users but may slow down hack attempts.
 		 */
-		if ($this->check_password($password) && $this->person->loaded() && $this->person->enabled && ! $this->person->isLocked())
+		if ($this->check_password($password) && $this->person->loaded() && $this->person->isEnabled() && ! $this->person->isLocked())
 		{
 			$this->complete_login($this->person);
 			$remember === true && $this->_remember_login();
@@ -213,7 +213,7 @@ class Auth
 	public function complete_login($person)
 	{
 		// Store the person ID in the session data.
-		$this->session->set($this->sessionKey, $person->id);
+		$this->session->set($this->sessionKey, $person->getId());
 	}
 
 	public function force_login($person, $mark_as_forced = false)

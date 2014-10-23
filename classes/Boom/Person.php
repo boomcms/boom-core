@@ -107,6 +107,11 @@ class Person
 		return  ( ! empty($result) && (boolean) $result[0]['allowed']);
 	}
 
+	public function isEnabled()
+	{
+		return (bool) $this->model->enabled;
+	}
+
 	public function isLocked()
 	{
 		return $this->getLockedUntil() && ($this->getLockedUntil() > $_SERVER['REQUEST_TIME']);
