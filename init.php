@@ -47,20 +47,6 @@ Route::set('boom', '<location>(.<format>)', array(
  *
  **********************************
  */
-/**
-* Defines the route for /cms pages.
-*
-*/
-Route::set('cms', '<directory>(/<controller>(/<action>(/<id>)))',
-	array(
-		'directory'	=> 'cms',
-		'id' => '\d+',
-	))
-	->defaults(array(
-		'controller' => 'default',
-		'action'     => 'index',
-	));
-
 Route::set('chunks', 'cms/chunk/<controller>/<action>/<page_id>')
 	->defaults(array(
 		'directory'	=>	'cms_chunk'
@@ -251,3 +237,13 @@ Route::set('login', 'cms/login')
 
 			return $params;
 		});
+
+Route::set('cms', '<directory>(/<controller>(/<action>(/<id>)))',
+	array(
+		'directory'	=> 'cms',
+		'id' => '\d+',
+	))
+	->defaults(array(
+		'controller' => 'default',
+		'action'     => 'index',
+	));
