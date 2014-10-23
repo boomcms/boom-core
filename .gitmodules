@@ -10,3 +10,6 @@
 [submodule "vendor/embera"]
 	path = vendor/embera
 	url = https://github.com/mpratt/Embera.git
+[submodule "vedor/openid"]
+	path = vedor/openid
+	url = git://gitorious.org/lightopenid/lightopenid.git
