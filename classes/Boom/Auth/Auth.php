@@ -13,6 +13,8 @@ class Auth
 	 */
 	protected $config;
 
+	protected static $instance;
+
 	/**
 	 *
 	 * @var Boom\Person
@@ -122,6 +124,15 @@ class Auth
 
 			}
 		}
+	}
+
+	public static function instance()
+	{
+		if (static::$instance === null) {
+			static::$instance = new static;
+		}
+
+		return static::$instance;
 	}
 
 	public function isLoggedIn()

@@ -3,6 +3,7 @@
 namespace Boom\Editor;
 
 use Boom\Auth\Auth as Auth;
+use \Session as Session;
 
 class Editor
 {
@@ -25,7 +26,7 @@ class Editor
 	protected $state;
 	protected $statePersistenceKey = 'editor_state';
 
-	public function __construct(Auth $auth, \Session $session)
+	public function __construct(Auth $auth, Session $session)
 	{
 		$this->auth = $auth;
 		$this->persistentStorage = $session;
@@ -70,7 +71,7 @@ class Editor
 	{
 		if (static::$instance === null)
 		{
-			static::$instance = new static(\Auth::instance(), \Session::instance());
+			static::$instance = new static(Auth::instance(), Session::instance());
 		}
 
 		return static::$instance;
