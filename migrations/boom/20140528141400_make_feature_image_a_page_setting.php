@@ -24,6 +24,7 @@ class Migration_Boom_20140528141400 extends Minion_Migration_Base
 		}
 
 		$db->query(null, "alter table page_versions drop feature_image_id");
+		$db->query(null, "update pages left join assets on pages.feature_image_id = assets.id set pages.feature_image_id = null where assets.id is null");
 		$db->query(null, "alter table pages add foreign key pages_feature_image_id (feature_image_id) references assets(id) on update cascade on delete set null");
 	}
 
