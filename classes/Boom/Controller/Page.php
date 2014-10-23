@@ -1,6 +1,8 @@
 <?php
 
-class Controller_Page extends Boom\Controller
+namespace Boom\Controller;
+
+class Page extends \Boom\Controller
 {
 	/**
 	 * Whether the editor should be enabled

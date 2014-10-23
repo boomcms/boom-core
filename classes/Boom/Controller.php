@@ -2,8 +2,10 @@
 
 namespace Boom;
 
+use \Arr as Arr;
 use \Session;
 use \Boom\Page as Page;
+use \Kohana as Kohana;
 
 class Controller extends \Controller
 {

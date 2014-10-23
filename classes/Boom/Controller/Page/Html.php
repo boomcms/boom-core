@@ -1,8 +1,10 @@
 <?php
 
+namespace Boom\Controller\Page;
+
 use \Boom\Chunk as Chunk;
 
-class Controller_Page_Html extends Controller_Page
+class Html extends \Boom\Controller\Page
 {
 	protected $_chunks = array();
 
