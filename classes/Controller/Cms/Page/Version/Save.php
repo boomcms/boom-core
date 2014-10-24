@@ -24,7 +24,7 @@ class Controller_Cms_Page_Version_Save extends Controller_Cms_Page_Version
 
 		// Create a new version of the page.
 		$this->new_version = $this->page->createVersion($this->old_version, array(
-			'edited_by'	=>	$this->person->id,
+			'edited_by'	=>	$this->person->getId(),
 		));
 
 		// If the embargo time of the new version is in the past, set the embargo time to null

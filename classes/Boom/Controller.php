@@ -10,6 +10,8 @@ use \Session;
 use \Kohana as Kohana;
 use \Request as Request;
 use \View as View;
+use \Security as Security;
+use \ORM as ORM;
 
 class Controller extends \Controller
 {
@@ -114,8 +116,6 @@ class Controller extends \Controller
 		{
 			parent::after();
 
-			// Set some variables.
-			// TODO: remove these when sure that they're no longer needed.
 			View::bind_global('person', $this->person);
 			View::bind_global('auth', $this->auth);
 
