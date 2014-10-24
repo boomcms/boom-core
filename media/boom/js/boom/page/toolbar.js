@@ -64,6 +64,8 @@ $.widget( 'boom.pageToolbar', {
 				menuPosition: 'right',
 				split: false
 			});
+
+		this.buttonBar = this.element.contents().find('#b-topbar');
 	},
 
 	_buildSettingsMenu : function() {
@@ -117,10 +119,10 @@ $.widget( 'boom.pageToolbar', {
 
 		this.element.css({
 			width : '100%',
-			'margin-left' : 0,
 			'z-index' : 100002
 		});
 
+		this.buttonBar.hide();
 		this.document.find('body').css('overflow', 'hidden');
 	},
 
@@ -133,10 +135,10 @@ $.widget( 'boom.pageToolbar', {
 
 		this.element.css({
 			width : 'auto',
-			'margin-left' : '-60px',
 			'z-index' : 10000
 		});
 
+		this.buttonBar.show();
 		this.document.find('body').css('overflow', 'auto');
 	},
 
@@ -144,14 +146,14 @@ $.widget( 'boom.pageToolbar', {
 	@function
 	*/
 	hide : function() {
-		this.element.css('margin-left', '-60px');
+		this.buttonBar.hide();
 	},
 
 	/**
 	@function
 	*/
 	show : function() {
-		this.element.css('margin-left', '0');
+		this.buttonBar.show();
 	},
 
 	_toggle_view_live_button : function() {

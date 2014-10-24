@@ -80,8 +80,8 @@ $.widget('ui.chunkFeature', $.ui.chunk,
 
 				featureEditor.dialog.contents.find('.boom-tree').pageTree({
 					onPageSelect : function(page) {
-						featureEditor.insert(page.page_id);
 						featureEditor.dialog.close();
+						featureEditor.insert(page.page_id);
 					}
 				});
 			},
