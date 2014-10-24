@@ -2,6 +2,8 @@
 
 namespace Boom\Tag\Finder;
 
+use \Boom\Tag\Tag as Tag;
+
 class Result extends \ArrayIterator
 {
 	public function __construct(\Database_Result $results)
@@ -9,7 +11,7 @@ class Result extends \ArrayIterator
 		$results = $results->as_array();
 
 		foreach ($results as &$result) {
-			$result = new \Boom\Tag($result);
+			$result = new Tag($result);
 		}
 
 		parent::__construct($results);

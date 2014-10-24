@@ -31,13 +31,13 @@ abstract class Controller_Cms_Tags extends Boom\Controller
 	{
 		$this->tags = empty($this->ids)? array() : $this->model->list_tags($this->ids);
 
-		$this->template = View::factory("boom/tags/list", array(
+		$this->template = new View("boom/tags/list", array(
 			'tags'	=>	$this->tags,
 		));
 	}
 
 	public function action_remove()
 	{
-		$this->model->remove_tag_with_name($this->request->post('tag'), $this->ids);
+		$this->model->removeTagByName($this->request->post('tag'), $this->ids);
 	}
 }

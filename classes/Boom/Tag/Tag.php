@@ -1,6 +1,8 @@
 <?php
 
-namespace Boom;
+namespace Boom\Tag;
+
+use \DB as DB;
 
 class Tag
 {
@@ -23,5 +25,17 @@ class Tag
 	public function getName()
 	{
 		return $this->model->name;
+	}
+
+	public function removeFromPages(array $pageIds)
+	{
+		if ( ! empty($pageIds)) {
+			DB::delete('pages_tags')
+				->where('tag_id', '=', $this->getId())
+				->where('page_id', 'in', $pageIds)
+				->execute();
+		}
+
+		return $this;
 	}
 }

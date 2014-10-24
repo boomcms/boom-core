@@ -12,7 +12,7 @@ class Finder extends \Boom\Finder
 	public function find()
 	{
 		$model = parent::find();
-		return new \Boom\Tag($model);
+		return new Tag($model);
 	}
 
 	public function findAll()

@@ -1,15 +1,15 @@
 <div id="b-tags">
 	<h2>Existing tags</h2>
-	<? if (isset($message)): ?>
+	<?php if (isset($message)): ?>
 		<span><?= $message ?></span>
-	 <? endif ?>
+	 <?php endif ?>
 
 	<ul class="b-tags-list">
-		<? foreach ($tags as $tag): ?>
+		<?php foreach ($tags as $tag): ?>
 			<li>
-				<a href="<?= $tag->name ?>" title="Remove <?= $tag->name ?>" class="b-tags-remove"></a><span><?= $tag->name ?></span>
+				<a href="<?= $tag->getName() ?>" title="Remove <?= $tag->getName() ?>" class="b-tags-remove"></a><span><?= $tag->getName() ?></span>
 			</li>
-		<? endforeach; ?>
+		<?php endforeach ?>
 	</ul>
 
 	<h2>Add tag</h2>
