@@ -2,6 +2,8 @@
 
 namespace Boom\Template;
 
+use \DB as DB;
+
 class Helpers
 {
 	/**
@@ -19,6 +21,7 @@ class Helpers
 		return DB::select('id', 'name')
 			->from('templates')
 			->order_by('name', 'asc')
+			->execute()
 			->as_array('id', 'name');
 	}
 }

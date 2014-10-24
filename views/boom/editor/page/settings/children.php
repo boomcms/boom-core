@@ -49,7 +49,7 @@
 					<?= Form::select('children_visible_in_nav', array(
 							1 => 'Yes',
 							0 => 'No',
-						), $page->children_visible_in_nav, array('id' => 'children_visible_in_nav'));
+						), $page->childrenAreVisibleInNav(), array('id' => 'children_visible_in_nav'));
 					?>
 				</p>
 
@@ -64,7 +64,7 @@
 						<?= Form::select('children_visible_in_nav_cms', array(
 								1 => 'Yes',
 								0 => 'No',
-							), $page->children_visible_in_nav_cms, array('id' => 'children_visible_in_nav_cms')); ?>
+							), $page->childrenAreVisibleInCmsNav(), array('id' => 'children_visible_in_nav_cms')); ?>
 				</p>
 
 				<p>
@@ -74,7 +74,7 @@
 
 				<p>
 					<label for="children_url_prefix"><?=__('Default child URI prefix')?></label>
-					<?= Form::input('children_url_prefix', $page->children_url_prefix, array('id' => 'children_url_prefix')); ?>
+					<?= Form::input('children_url_prefix', $page->getChildPageUrlPrefix(), array('id' => 'children_url_prefix')); ?>
 				</p>
 
 				<p>

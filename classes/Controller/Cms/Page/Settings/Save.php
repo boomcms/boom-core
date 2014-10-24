@@ -30,7 +30,7 @@ class Controller_Cms_Page_Settings_Save extends Controller_Cms_Page_Settings
 
 		$this->log("Saved child page settings for page ".$this->page->getTitle()." (ID: ".$this->page->getId().")");
 
-		$expected = array('children_template_id');
+		$this->page->setChildrenTemplateId($post['children_template_id']);
 
 		if ($this->allowAdvanced)
 		{
@@ -49,16 +49,12 @@ class Controller_Cms_Page_Settings_Save extends Controller_Cms_Page_Settings
 			$this->page->setChildOrderingPolicy($post['children_ordering_policy'], $post['children_ordering_direction']);
 		}
 
-		$this->page
-			->values($post, $expected)
-			->update();
-
 		if (isset($post['cascade']) && ! empty($post['cascade']))
 		{
 			$cascade = array();
 			foreach ($post['cascade'] as $c)
 			{
-			$cascade[$c] = ($c == 'visible_in_nav' || $c == 'visible_in_nav_cms')?  $this->page->{"children_$c"} : $this->page->$c;
+				$cascade[$c] = ($c == 'visible_in_nav' || $c == 'visible_in_nav_cms')?  $this->page->{"children_$c"} : $this->page->$c;
 			}
 
 			$this->page->cascade_to_children($cascade);

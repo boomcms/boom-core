@@ -1,5 +1,8 @@
 <?php
 
+use \Boom\Template as Template;
+use \Boom\Page\Finder as PageFinder;
+
 class Controller_Cms_Page_Settings_View extends Controller_Cms_Page_Settings
 {
 
@@ -37,9 +40,9 @@ class Controller_Cms_Page_Settings_View extends Controller_Cms_Page_Settings
 		{
 			// Add the view for the advanced settings to the main view.
 			$this->template->set(array(
-				'default_grandchild_template'	=>	($this->page->grandchild_template_id != 0)? $this->page->grandchild_template_id : $this->page->getTemplateId(),
-				'page'					=>	$this->page,
-				'templates'				=>	$templates,
+				'default_grandchild_template'	=> ($this->page->getGrandchildTemplateId() != 0)? $this->page->getGrandchildTemplateId() : $this->page->getTemplateId(),
+				'page'					=> $this->page,
+				'templates'				=> Template\Helpers::names(),
 			));
 		}
 	}
@@ -85,10 +88,10 @@ class Controller_Cms_Page_Settings_View extends Controller_Cms_Page_Settings
 	{
 		parent::action_children();
 
-		$finder = new \Boom\Page\Finder;
+		$finder = new PageFinder;
 
 		$children = $finder
-			->addFilter(\Boom\Page\Finder\Filter\ParentPage($this->page))
+			->addFilter(new PageFinder\Filter\ParentPage($this->page))
 			->setLimit(50)
 			->find();
 

@@ -45,6 +45,16 @@ class Page implements Taggable
 		return (bool) $this->model->internal_indexing;
 	}
 
+	public function childrenAreVisibleInNav()
+	{
+		return (bool) $this->model->children_visible_in_nav;
+	}
+
+	public function childrenAreVisibleInCmsNav()
+	{
+		return (bool) $this->model->children_visible_in_nav_cms;
+	}
+
 	public function createVersion($current = null, array $values = null)
 	{
 		// Get the current version
@@ -71,6 +81,11 @@ class Page implements Taggable
 	public function getChildOrderingPolicy()
 	{
 		return new ChildOrderingPolicy($this->model->children_ordering_policy);
+	}
+
+	public function getChildPageUrlPrefix()
+	{
+		return $this->model->children_url_prefix;
 	}
 
 	public function getCreatedBy()
@@ -113,8 +128,8 @@ class Page implements Taggable
 			return $this->model->children_template_id;
 		}
 
-		$parent = $this->model->parent();
-		return ($parent->grandchild_template_id != 0)? $parent->grandchild_template_id : $this->model->getTemplateId();
+		$parent = $this->getParent();
+		return ($parent->getGrandchildTemplateId() != 0)? $parent->getGrandchildTemplateId() : $this->getTemplateId();
 	}
 
 	public function getFeatureImage()
@@ -125,6 +140,11 @@ class Page implements Taggable
 	public function getFeatureImageId()
 	{
 		return $this->model->feature_image_id;
+	}
+
+	public function getGrandchildTemplateId()
+	{
+		return $this->model->grandchild_template_id;
 	}
 
 	public function getId()
@@ -160,6 +180,11 @@ class Page implements Taggable
 	public function getMptt()
 	{
 		return $this->model->mptt;
+	}
+
+	public function getParent()
+	{
+		return Factory::byId($this->getParentId());
 	}
 
 	public function getParentId()
@@ -223,6 +248,11 @@ class Page implements Taggable
 	public function isDeleted()
 	{
 		return (bool) $this->model->deleted;
+	}
+
+	public function isRoot()
+	{
+		return (bool) $this->getMptt()->is_root();
 	}
 
 	public function isVisible()

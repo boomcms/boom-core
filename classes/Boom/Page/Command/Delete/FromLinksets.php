@@ -5,7 +5,7 @@ namespace Boom\Page\Command\Delete;
 use \Boom\Page\Page as Page;
 use \DB as DB;
 
-class FromLinkSets extends \Boom\Page\Command
+class FromLinksets extends \Boom\Page\Command
 {
 	public function execute(Page $page)
 	{
