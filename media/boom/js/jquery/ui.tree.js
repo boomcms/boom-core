@@ -197,7 +197,7 @@ $.widget('ui.tree',
 
 		var self = this;
 		var re = /tree-edit/;
-console.log(self.options);
+
 		if (self.options.showRemove === true || (self.options.showRemove === 'auto' && re.test(self.element[0].className)))
 		{
 			$('<span />', {
