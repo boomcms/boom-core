@@ -2,7 +2,7 @@
 	<?= Form::hidden('csrf', Security::token()) ?>
 
 	<div id="b-pagesettings-search" class="boom-tabs">
-		<? if ($allow_advanced): ?>
+		<? if ($allowAdvanced): ?>
 			<ul>
 				<li>
 					<a href="#basic"><?= __('Basic') ?></a>
@@ -25,7 +25,7 @@
 			</p>
 		</div>
 
-		<? if ($allow_advanced): ?>
+		<? if ($allowAdvanced): ?>
 			<div id="advanced">
 				<p>
 					<label for="external_indexing"><?= __('Allow indexing by search engines') ?></label>

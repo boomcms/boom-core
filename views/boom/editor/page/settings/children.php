@@ -1,7 +1,7 @@
 <form class="b-form-settings">
 	<?= Form::hidden('csrf', Security::token()) ?>
 	<div id="child-settings" class="boom-tabs">
-		<? if ($allow_advanced): ?>
+		<? if ($allowAdvanced): ?>
 			<ul>
 				<li>
 					<a href="#basic"><?=__('Basic')?></a>
@@ -41,7 +41,7 @@
 				<a href="#" id="b-page-settings-children-reorder"<? if ($child_order_column != 'sequence'): ?> class="ui-helper-hidden"<? endif ?>>Reorder</a>
 			</p>
 		</div>
-		<? if ($allow_advanced): ?>
+		<? if ($allowAdvanced): ?>
 			<div id="advanced">
 				<p>
 					<label for="children_visible_in_nav"><?=__('Children visible in nav')?>?</label>

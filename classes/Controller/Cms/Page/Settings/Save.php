@@ -32,7 +32,7 @@ class Controller_Cms_Page_Settings_Save extends Controller_Cms_Page_Settings
 
 		$expected = array('children_template_id');
 
-		if ($this->allow_advanced)
+		if ($this->allowAdvanced)
 		{
 			$expected = array_merge($expected, array(
 				'children_url_prefix',
@@ -88,7 +88,7 @@ class Controller_Cms_Page_Settings_Save extends Controller_Cms_Page_Settings
 
 		$post = $this->request->post();
 
-		if ($this->allow_advanced)
+		if ($this->allowAdvanced)
 		{
 			// Reparenting the page?
 			// Check that the ID of the parent has been changed and the page hasn't been set to be a child of itself.
@@ -121,7 +121,7 @@ class Controller_Cms_Page_Settings_Save extends Controller_Cms_Page_Settings
 
 		$expected = array('description', 'keywords');
 
-		if ($this->allow_advanced)
+		if ($this->allowAdvanced)
 		{
 			$expected = array_merge($expected, array('external_indexing', 'internal_indexing'));
 		}

@@ -39,7 +39,7 @@ abstract class Controller_Cms_Page_Settings extends Controller_Cms_Page
 	 *
 	 * @var boolean
 	 */
-	public $allow_advanced;
+	public $allowAdvanced;
 
 	/**
 	 * **Edit the page admin settings.**
@@ -51,7 +51,6 @@ abstract class Controller_Cms_Page_Settings extends Controller_Cms_Page
 	 */
 	public function action_admin()
 	{
-		// Permissions check
 		$this->authorization('edit_page_admin', $this->page);
 	}
 
@@ -72,14 +71,8 @@ abstract class Controller_Cms_Page_Settings extends Controller_Cms_Page
 	 */
 	public function action_children()
 	{
-		// Permissions check
-		// These settings are divided into basic and advanced.
-		// We only need to check for the basic permissions here
-		// If they can't edit the basic stuff then they shouldn't have the advanced settings either.
 		$this->authorization('edit_page_children_basic', $this->page);
-
-		// Is the current user allowed to edit the advanced settings?
-		$this->allow_advanced = $this->auth->loggedIn('edit_page_children_advanced', $this->page);
+		$this->allowAdvanced = $this->auth->loggedIn('edit_page_children_advanced', $this->page);
 	}
 
 	/**
@@ -108,13 +101,8 @@ abstract class Controller_Cms_Page_Settings extends Controller_Cms_Page
 	 */
 	public function action_navigation()
 	{
-		// Permissions check
-		// The need to have a minimum of being able to edit the basic navigation settings.
-		// If they can't edit the basic settings they won't be able to edit the advanced settings either.
 		$this->authorization('edit_page_navigation_basic', $this->page);
-
-		// Is the current user allowed to edit the advanced settings?
-		$this->allow_advanced = $this->auth->loggedIn('edit_page_navigation_advanced', $this->page);
+		$this->allowAdvanced = $this->auth->loggedIn('edit_page_navigation_advanced', $this->page);
 	}
 
 	/**
@@ -132,11 +120,8 @@ abstract class Controller_Cms_Page_Settings extends Controller_Cms_Page
 	 */
 	public function action_search()
 	{
-		// Check permissions
 		$this->authorization('edit_page_search_basic', $this->page);
-
-		// Is the current user allowed to edit the advanced settings?
-		$this->allow_advanced = $this->auth->loggedIn('edit_page_search_advanced', $this->page);
+		$this->allowAdvanced = $this->auth->loggedIn('edit_page_search_advanced', $this->page);
 	}
 
 	/**
@@ -150,14 +135,12 @@ abstract class Controller_Cms_Page_Settings extends Controller_Cms_Page
 	 */
 	public function action_visibility()
 	{
-		// Permissions check.
 		$this->authorization('edit_page', $this->page);
 	}
 
 	public function authorization($role, Page $page = null)
 	{
-		if ( ! $this->auth->loggedIn('manage_pages'))
-		{
+		if ( ! $this->auth->loggedIn('manage_pages')) {
 			parent::authorization($role, $page);
 		}
 	}

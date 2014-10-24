@@ -2,7 +2,7 @@
 	<?= Form::hidden('csrf', Security::token()) ?>
 
 	<div class="boom-tabs">
-		<? if ($allow_advanced): ?>
+		<? if ($allowAdvanced): ?>
 			<ul>
 				<li>
 					<a href="#basic"><?=__('Basic')?></a>
@@ -25,7 +25,7 @@
 			</p>
 		</div>
 
-		<? if ($allow_advanced): ?>
+		<? if ($allowAdvanced): ?>
 			<div id='advanced'>
 				<label for="parent_id">Parent page</label>
 

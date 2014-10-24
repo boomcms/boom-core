@@ -29,11 +29,11 @@ class Controller_Cms_Page_Settings_View extends Controller_Cms_Page_Settings
 			'templates'			=>	\Boom\Template\Helpers::names(),
 			'child_order_column'		=>	$childOrderingPolicy->getColumn(),
 			'child_order_direction'	=>	$childOrderingPolicy->getDirection(),
-			'allow_advanced'		=>	$this->allow_advanced,
+			'allowAdvanced'		=>	$this->allowAdvanced,
 		));
 
 		// If we're showing the advanced settings then set the neccessary variables.
-		if ($this->allow_advanced)
+		if ($this->allowAdvanced)
 		{
 			// Add the view for the advanced settings to the main view.
 			$this->template->set(array(
@@ -67,7 +67,7 @@ class Controller_Cms_Page_Settings_View extends Controller_Cms_Page_Settings
 
 		$this->template = new View("$this->viewDirectory/navigation", array(
 			'page' => $this->page,
-			'allow_advanced' => $this->allow_advanced,
+			'allowAdvanced' => $this->allowAdvanced,
 		));
 	}
 
@@ -76,7 +76,7 @@ class Controller_Cms_Page_Settings_View extends Controller_Cms_Page_Settings
 		parent::action_search();
 
 		$this->template = new View("$this->viewDirectory/search", array(
-			'allow_advanced' => $this->allow_advanced,
+			'allowAdvanced' => $this->allowAdvanced,
 			'page' => $this->page,
 		));
 	}
