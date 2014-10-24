@@ -287,6 +287,18 @@ class Page implements Taggable
 
 	/**
 	 *
+	 * @param int $parentId
+	 * @return \Boom\Page\Page
+	 */
+	public function setParentPageId($parentId)
+	{
+		$this->model->mptt->move_to_last_child($parentId);
+
+		return $this;
+	}
+
+	/**
+	 *
 	 * @param boolean $visible
 	 * @return \Boom\Page\Page
 	 */

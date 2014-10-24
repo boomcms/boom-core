@@ -88,20 +88,15 @@ class Controller_Cms_Page_Settings_Save extends Controller_Cms_Page_Settings
 
 		$post = $this->request->post();
 
-		if ($this->allowAdvanced)
-		{
+		if ($this->allowAdvanced) {
 			// Reparenting the page?
 			// Check that the ID of the parent has been changed and the page hasn't been set to be a child of itself.
-			if ($post['parent_id'] && $post['parent_id'] != $this->page->getParentId() && $post['parent_id'] != $this->page->getId())
-			{
+			if ($post['parent_id'] && $post['parent_id'] != $this->page->getParentId() && $post['parent_id'] != $this->page->getId()) {
 				// Check that the new parent ID is a valid page.
 				$newParent = \Boom\Page\Factory::byId($post['parent_id']);
 
-				if ($newParent->loaded())
-				{
-					$this->page
-						->mptt
-						->move_to_last_child($post['parent_id']);
+				if ($newParent->loaded()) {
+					$this->page->setParentPageId($post['parent_id']);
 				}
 			}
 		}
