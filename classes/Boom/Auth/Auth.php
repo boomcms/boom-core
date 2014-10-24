@@ -289,7 +289,7 @@ class Auth
 	{
 		// Token data
 		$data = array(
-			'user_id'    => $this->person->id,
+			'user_id'    => $this->getPerson()->getId(),
 			'expires'    => time() + $this->_config['lifetime'],
 			'user_agent' => sha1(Request::$user_agent),
 		);

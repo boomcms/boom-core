@@ -31,7 +31,7 @@ class Controller_Cms_Assets_Upload extends Controller_Cms_Assets
 
 		// Values which will be the same for all of the new assets.
 		$common_values = array(
-			'uploaded_by'	=>	$this->person->id,
+			'uploaded_by'	=>	$this->person->getId(),
 			'visible_from'	=>	'now',
 			'last_modified'	=>	$_SERVER['REQUEST_TIME'],
 		);

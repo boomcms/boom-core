@@ -105,7 +105,7 @@ class Controller extends \Controller
 			->values(array(
 				'ip'			=>	Request::$client_ip,
 				'activity'		=>	$activity,
-				'person_id'	=>	$this->person->id,
+				'person_id'	=>	$this->person->getId(),
 			))
 			->create();
 	}
