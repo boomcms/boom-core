@@ -71,6 +71,7 @@ $.widget( 'boom.pageEditor', {
 				if (editor.openDialogs === 1) {
 					toolbar.maximise();
 					toolbar.hide();
+					editor.document.find('body').css('overflow', 'hidden');
 				}
 			})
 			.on('boom:dialog:close', function() {
@@ -79,6 +80,7 @@ $.widget( 'boom.pageEditor', {
 				if (editor.openDialogs === 0) {
 					toolbar.minimise();
 					toolbar.show();
+					editor.document.find('body').css('overflow', 'auto');
 				}
 			});
 	}

@@ -121,8 +121,6 @@ $.widget( 'boom.pageToolbar', {
 			width : '100%',
 			'z-index' : 100002
 		});
-
-		this.document.find('body').css('overflow', 'hidden');
 	},
 
 	/**
@@ -136,8 +134,6 @@ $.widget( 'boom.pageToolbar', {
 			width : 'auto',
 			'z-index' : 10000
 		});
-
-		this.document.find('body').css('overflow', 'auto');
 	},
 
 	/**
