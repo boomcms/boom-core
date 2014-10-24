@@ -2,24 +2,24 @@
 	Would you like to move the URL <?= $url->location ?>?
 </p>
 
-<? if ($url->is_primary && ! $currentisDeleted()): ?>
+<?php if ($url->is_primary && ! $current->isDeleted()): ?>
 	<p>
 		<b>This URL is the primary URL for its page. If you move this URL its current page may become inaccessible.</b>
 	</p>
-<? endif; ?>
+<?php endif ?>
 <br />
 
-<? if ($currentisDeleted()): ?>
+<?php if ($current->isDeleted()): ?>
 	<p>
 		<b>This URL is assigned to a page which has been deleted.</b>
 	</p>
-<? endif ?>
+<?php endif ?>
 
 <br />
 <table>
 	<tr>
 		<th>
-			Current Page<? if ($currentisDeleted()): ?> (deleted) <? endif; ?>
+			Current Page<?php if ($current->isDeleted()): ?> (deleted) <?php endif ?>
 		</th>
 		<th>
 			New Page

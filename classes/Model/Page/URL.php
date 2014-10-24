@@ -63,6 +63,11 @@ class Model_Page_URL extends ORM
 		);
 	}
 
+	public function getPage()
+	{
+		return \Boom\Page\Factory::byId($this->page_id);
+	}
+
 	/**
 	 * Function to be called when making a link the primary link for a page.
 	 * Ensures that this will be the only primary link for a page.

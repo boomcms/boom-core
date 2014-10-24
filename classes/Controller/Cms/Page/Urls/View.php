@@ -13,7 +13,7 @@ class Controller_Cms_Page_Urls_View extends Controller_Cms_Page_Urls
 	{
 		$this->template = new View("$this->viewDirectory/move", array(
 			'url' => $this->page_url,
-			'current' => $this->page_url->page,
+			'current' => $this->page_url->getPage(),
 			'page' => $this->page,
 		));
 	}

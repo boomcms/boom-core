@@ -2,8 +2,6 @@
 
 namespace Boom\Page;
 
-use Boom\Page\Finder as Finder;
-
 /*
  * Page short URLs similar to t.co etc.
  * A short URLL is the page ID converted to base-36 and prefixed with an underscore.
@@ -11,7 +9,7 @@ use Boom\Page\Finder as Finder;
  */
 abstract class ShortURL
 {
-	public static function urlFromPage(\Boom\Page $page)
+	public static function urlFromPage(Page $page)
 	{
 		return "_" . base_convert($page->getId(), 10, 36);
 	}
