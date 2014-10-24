@@ -1,5 +1,7 @@
 <?php
 
+use \Boom\Page\Page as Page;
+
 /**
  * ##Base controller for editing page settings.
  *
@@ -152,7 +154,7 @@ abstract class Controller_Cms_Page_Settings extends Controller_Cms_Page
 		$this->authorization('edit_page', $this->page);
 	}
 
-	public function authorization($role, \Boom\Page $page)
+	public function authorization($role, Page $page = null)
 	{
 		if ( ! $this->auth->loggedIn('manage_pages'))
 		{
