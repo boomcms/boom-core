@@ -144,22 +144,19 @@ class Controller_Cms_Page_Settings_Save extends Controller_Cms_Page_Settings
 	{
 		parent::action_visibility();
 
-		$post = $this->request->post();
-
 		$this->log("Updated visibility settings for page " . $this->page->getTitle() . " (ID: " . $this->page->getId() . ")");
 
-		$this->page->set('visible', $this->request->post('visible'));
+		$this->page->setVisibleAtAnyTime($this->request->post('visible'));
 
-		if ($this->page->visible)
-		{
+		if ($this->page->isVisibleAtAnyTime()) {
+			$visibleTo = ($this->request->post('toggle_visible_to') == 1)? new DateTime($this->request->post('visible_to')) : null;
+			
 			$this->page
-				->values(array(
-					'visible_from'	=>	strtotime($this->request->post('visible_from')),
-					'visible_to'	=>	$this->request->post('toggle_visible_to') == 1? strtotime($this->request->post('visible_to')) : null,
-				));
+				->setVisibleFrom(new DateTime($this->request->post('visible_from')))
+				->setVisibleTo($visibleTo);
 		}
 
-		$this->page->update();
+		$this->page->save();
 		$this->response->body( (int) $this->page->isVisible());
 	}
 }

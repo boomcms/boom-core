@@ -7,6 +7,8 @@ use \Boom\Taggable as Taggable;
 use \Boom\Template\Template as Template;
 use \Boom\Person as Person;
 
+use \DateTime as DateTime;
+
 use \ORM as ORM;
 
 class Page implements Taggable
@@ -78,11 +80,11 @@ class Page implements Taggable
 
 	/**
 	 *
-	 * @return \DateTime
+	 * @return DateTime
 	 */
 	public function getCreatedTime()
 	{
-		return new \DateTime('@' . $this->model->created_time);
+		return new DateTime('@' . $this->model->created_time);
 	}
 
 	public function getCurrentVersion()
@@ -187,20 +189,20 @@ class Page implements Taggable
 
 	/**
 	 *
-	 * @return \DateTime
+	 * @return DateTime
 	 */
 	public function getVisibleFrom()
 	{
-		return new \DateTime('@' . $this->model->visible_from);
+		return new DateTime('@' . $this->model->visible_from);
 	}
 
 	/**
 	 *
-	 * @return \DateTime
+	 * @return DateTime
 	 */
 	public function getVisibleTo()
 	{
-		return new \DateTime('@' . $this->model->visible_to);
+		return $this->model->visible_to === null? null : new DateTime('@' . $this->model->visible_to);
 	}
 
 	public function hasChildren()
@@ -235,7 +237,7 @@ class Page implements Taggable
 	 */
 	public function isVisibleAtTime($unixTimestamp)
 	{
-		return ($this->model->visible && $this->getVisibleFrom()->getTimestamp() <= $unixTimestamp && ($this->getVisibleTo()->getTimestamp() >= $unixTimestamp || $this->getVisibleTo()->getTimestamp() == 0));
+		return ($this->model->visible && $this->getVisibleFrom()->getTimestamp() <= $unixTimestamp && ($this->getVisibleTo() === null || $this->getVisibleTo()->getTimestamp() >= $unixTimestamp));
 	}
 	
 	public function isVisibleInCmsNav()
@@ -258,6 +260,13 @@ class Page implements Taggable
 
 	}
 
+	public function save()
+	{
+		$this->loaded()? $this->model->update() : $this->model->create();
+
+		return $this;
+	}
+
 	/**
 	 *
 	 * @param	string	$column
@@ -267,6 +276,42 @@ class Page implements Taggable
 	{
 		$ordering_policy = new \Boom\Page\ChildOrderingPolicy($column, $direction);
 		$this->model->children_ordering_policy = $ordering_policy->asInt();
+
+		return $this;
+	}
+
+	/**
+	 *
+	 * @param boolean $visible
+	 * @return \Boom\Page\Page
+	 */
+	public function setVisibleAtAnyTime($visible)
+	{
+		$this->model->visible = $visible;
+
+		return $this;
+	}
+
+	/**
+	 *
+	 * @param DateTime $time
+	 * @return \Boom\Page\Page
+	 */
+	public function setVisibleFrom(DateTime $time)
+	{
+		$this->model->visible_from = $time->getTimestamp();
+
+		return $this;
+	}
+
+	/**
+	 *
+	 * @param DateTime $time
+	 * @return \Boom\Page\Page
+	 */
+	public function setVisibleTo(DateTime $time = null)
+	{
+		$this->model->visible_to = $time? $time->getTimestamp() : null;
 
 		return $this;
 	}
