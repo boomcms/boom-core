@@ -30,7 +30,7 @@ boomPage.prototype.navigation = function() {
 	});
 
 	dialog.done(function() {
-		page.saveSettings(url, $(this).find('form').serialize(), 'Page navigation settings saved');
+		page.saveSettings(url, dialog.contents.find('form').serialize(), 'Page navigation settings saved');
 	});
 };
 

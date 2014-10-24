@@ -162,6 +162,11 @@ class Page implements Taggable
 		return $this->model->mptt;
 	}
 
+	public function getParentId()
+	{
+		return $this->model->mptt->parent_id;
+	}
+
 	public function getTemplate()
 	{
 		return new Template($this->getCurrentVersion()->template);
@@ -300,6 +305,30 @@ class Page implements Taggable
 	public function setVisibleFrom(DateTime $time)
 	{
 		$this->model->visible_from = $time->getTimestamp();
+
+		return $this;
+	}
+	
+	/**
+	 * 
+	 * @param boolean $visible
+	 * @return \Boom\Page\Page
+	 */
+	public function setVisibleInCmsNav($visible)
+	{
+		$this->model->visible_in_nav_cms = $visible;
+
+		return $this;
+	}
+
+	/**
+	 *
+	 * @param boolean $visible
+	 * @return \Boom\Page\Page
+	 */
+	public function setVisibleInNav($visible)
+	{
+		$this->model->visible_in_nav = $visible;
 
 		return $this;
 	}

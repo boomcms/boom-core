@@ -92,12 +92,12 @@ class Controller_Cms_Page_Settings_Save extends Controller_Cms_Page_Settings
 		{
 			// Reparenting the page?
 			// Check that the ID of the parent has been changed and the page hasn't been set to be a child of itself.
-			if ($post['parent_id'] && $post['parent_id'] != $this->page->mptt->parent_id && $post['parent_id'] != $this->page->getId())
+			if ($post['parent_id'] && $post['parent_id'] != $this->page->getParentId() && $post['parent_id'] != $this->page->getId())
 			{
 				// Check that the new parent ID is a valid page.
-				$parent = \Boom\Page\Factory::byId($post['parent_id']);
+				$newParent = \Boom\Page\Factory::byId($post['parent_id']);
 
-				if ($parent->loaded())
+				if ($newParent->loaded())
 				{
 					$this->page
 						->mptt
@@ -109,8 +109,9 @@ class Controller_Cms_Page_Settings_Save extends Controller_Cms_Page_Settings
 		$this->log("Saved navigation settings for page " . $this->page->getTitle() . " (ID: " . $this->page->getId() . ")");
 
 		$this->page
-			->values($post, array('visible_in_nav', 'visible_in_nav_cms'))
-			->update();
+			->setVisibleInNav($post['visible_in_nav'])
+			->setVisibleInCmsNav($post['visible_in_nav_cms'])
+			->save();
 	}
 
 	public function action_search()
