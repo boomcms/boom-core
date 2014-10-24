@@ -6,7 +6,7 @@ class Page extends \Boom\Finder\Filter
 {
 	protected $page;
 
-	public function __construct(\Boom\Page $page)
+	public function __construct(\Boom\Page\Page $page)
 	{
 		$this->page = $page;
 	}

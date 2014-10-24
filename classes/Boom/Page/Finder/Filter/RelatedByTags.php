@@ -2,6 +2,8 @@
 
 namespace Boom\Page\Finder\Filter;
 
+use \Boom\Page\Page as Page;
+
 class RelatedByTags extends \Boom\Finder\Filter
 {
 	/**
@@ -12,11 +14,11 @@ class RelatedByTags extends \Boom\Finder\Filter
 
 	/**
 	 *
-	 * @var \Boom\Page
+	 * @var Page
 	 */
 	protected $_page;
 
-	public function __construct(\Boom\Page $page)
+	public function __construct(Page $page)
 	{
 		$this->_page = $page;
 		$this->_tagIds = $this->_getTagIds();
