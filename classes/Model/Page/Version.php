@@ -233,7 +233,7 @@ class Model_Page_Version extends ORM
 
 		if ( ! $chunk->loaded())
 		{
-			return $this->_thumbnails[$slotname] = new \Boom\Model\Asset;
+			return $this->_thumbnails[$slotname] = new Model_Asset;
 		}
 		else
 		{
