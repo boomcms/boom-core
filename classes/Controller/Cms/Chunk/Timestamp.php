@@ -1,5 +1,7 @@
 <?php
 
+use \Boom\Chunk\Timestamp as ChunkTimestamp;
+
 class Controller_Cms_Chunk_Timestamp extends Controller_Cms_Chunk
 {
 	protected $_type = 'timestamp';
@@ -7,28 +9,28 @@ class Controller_Cms_Chunk_Timestamp extends Controller_Cms_Chunk
 	public function action_edit()
 	{
 		$formats = array();
-		foreach (Chunk_Timestamp::$formats as $format)
+		foreach (ChunkTimestamp::$formats as $format)
 		{
 			$formats[$format] = date($format, $_SERVER['REQUEST_TIME']);
 		}
 
-		$this->template = View::factory('boom/editor/slot/timestamp', array(
+		$this->template = new View('boom/editor/slot/timestamp', array(
 			'timestamp' => 0,
-			'format' => Chunk_Timestamp::$default_format,
+			'format' => ChunkTimestamp::$default_format,
 			'formats' => $formats,
 		));
 	}
 
 	protected function _preview_chunk()
 	{
-		$chunk = new \Boom\Chunk\Timestamp($this->page, $this->_model, $this->request->post('slotname'));
+		$chunk = new ChunkTimestamp($this->page, $this->_model, $this->request->post('slotname'));
 
 		return $chunk->execute();
 	}
 
 	protected function _preview_default_chunk()
 	{
-		$chunk = new \Boom\Chunk\Timestamp($this->page, new Model_Chunk_Timestamp, $this->request->post('slotname'));
+		$chunk = new ChunkTimestamp($this->page, new Model_Chunk_Timestamp, $this->request->post('slotname'));
 
 		return $chunk->execute();
 	}

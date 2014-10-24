@@ -2,11 +2,13 @@
 
 namespace Boom\Template;
 
+use \Model_Template as TemplateModel;
+
 class Finder extends \Boom\Finder
 {
 	public function __construct()
 	{
-		$this->_query = new \Boom\Model\Template;
+		$this->_query = new TemplateModel;
 	}
 
 	public function find()

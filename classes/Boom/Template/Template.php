@@ -78,4 +78,9 @@ class Template
 	{
 		return new View($this->getFullFilename());
 	}
+
+	public function loaded()
+	{
+		return $this->model->loaded();
+	}
 }

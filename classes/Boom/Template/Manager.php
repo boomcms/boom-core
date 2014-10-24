@@ -98,7 +98,7 @@ class Manager
 
 	public function templateExistsWithFilename($filename)
 	{
-		$template = new \Boom\Model\Template(array('filename' => $filename));
+		$template = Factory::byFilename($filename);
 
 		return $template->loaded();
 	}
