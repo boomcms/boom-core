@@ -1,10 +1,16 @@
-.boom-tabs > ul {
-	margin: 0;
-	padding: 0.2em 0.2em 0;
+.boom-tabs {
+	> ul.ui-tabs-nav {
+		margin: 0;
+		padding: 0.5em 0 0 0;
 
-	> li {
-		display: inline-block;
-		list-style: none;
-		float: left;
+		> li {
+			display: inline-block;
+			list-style: none;
+			float: left;
+		}
+	}
+
+	.ui-tabs-panel {
+		border: 1px solid @lightest-grey;
 	}
 }
