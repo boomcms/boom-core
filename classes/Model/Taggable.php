@@ -2,53 +2,6 @@
 
 abstract class Model_Taggable extends ORM
 {
-	/**
-	 * Adds a tag with a given name to the object.
-	 *
-	 * If the tag doesn't exist then it will be created.
-	 *
-	 * @return \Boom_Model_Taggable
-	 *
-	 */
-	public function add_tag_with_name($name, array $ids = array())
-	{
-		if ( ! $this->_loaded && empty($ids))
-		{
-			throw new Exception("Cannot add a tag to an unloaded object");
-		}
-
-		$tag = new Tag(array('name' => $name));
-
-		if ( ! $tag->loaded())
-		{
-			$tag = ORM::factory('Tag')
-				->values(array(
-					'name'	=>	$name,
-				))
-				->create();
-		}
-
-		if (empty($ids))
-		{
-			$this->add('tags', $tag);
-		}
-		else
-		{
-			foreach ($ids as $id)
-			{
-				try
-				{
-					// Have to do this as individual queries rather than a single query with multiple values incase the tag is already applied to some of the objects.
-					DB::insert($this->_object_plural.'_tags', array($this->_object_name.'_id', 'tag_id'))
-						->values(array($id, $tag->id))
-						->execute($this->_db);
-				}
-				catch (Database_Exception $e) {}
-			}
-		}
-
-		return $this;
-	}
 
 	public function has_tags()
 	{

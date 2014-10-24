@@ -1,5 +1,7 @@
 <?php
 
+use \Boom\Tag\Tag as Tag;
+
 class Controller_Cms_Autocomplete extends Boom\Controller
 {
 	/**
@@ -123,7 +125,7 @@ class Controller_Cms_Autocomplete extends Boom\Controller
 	public function action_tags()
 	{
 		// Determine whether we're filtering page or assets tags so we know which table to join on.
-		$object_name = ($this->request->query('type') == \Boom\Tag::ASSET)? 'asset' : 'page';
+		$object_name = ($this->request->query('type') == 1)? 'asset' : 'page';
 		$join_table = Inflector::plural($object_name).'_tags';
 		$object_id_column = $object_name.'_id';
 

@@ -19,6 +19,11 @@ $.widget('boom.tagAutocompleter', {
 			source : function(request, response) {
 				self._autocompleteSource(request, response);
 			},
+			focus : function(event, ui) {
+				event.preventDefault();
+
+				self.element.val(ui.item.label);
+			},
 			select : function(event, ui) {
 				event.preventDefault();
 
@@ -30,7 +35,8 @@ $.widget('boom.tagAutocompleter', {
 			// Add a tag when the enter key is pressed.
 			// This allows us to add a tag which doesn't already exist.
 			if (e.which == 13) {
-				self._tagSelected(self.element.val(), -1);
+				self._tagSelected($(this).val(), -1);
+				$(this).val('');
 			}
 		});
 	},

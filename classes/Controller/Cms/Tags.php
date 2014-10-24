@@ -22,6 +22,8 @@ abstract class Controller_Cms_Tags extends Boom\Controller
 	 */
 	public $type;
 
+	protected $tag;
+
 	public function action_add()
 	{
 		$this->model->add_tag_with_name($this->request->post('tag'), $this->ids);

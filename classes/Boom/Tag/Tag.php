@@ -27,6 +27,18 @@ class Tag
 		return $this->model->name;
 	}
 
+	public function addToPages(array $pageIds)
+	{
+		foreach ($pageIds as $id) {
+			try {
+				// Have to do this as individual queries rather than a single query with multiple values incase the tag is already applied to some of the objects.
+				DB::insert('pages_tags', array('page_id', 'tag_id'))
+					->values(array($id, $this->getId()))
+					->execute();
+			} catch (Database_Exception $e) {}
+		}
+	}
+
 	public function removeFromPages(array $pageIds)
 	{
 		if ( ! empty($pageIds)) {

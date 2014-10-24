@@ -10,4 +10,17 @@ abstract class Factory
 	{
 		return new Tag(new Model_Tag(array('name' => $name)));
 	}
+
+	public static function findOrCreateByName($name)
+	{
+		$model = new Model_Tag(array('name' => $name));
+
+		if ( ! $model->loaded()) {
+			$model
+				->set('name', $name)
+				->create();
+		}
+
+		return new Tag($model);
+	}
 }

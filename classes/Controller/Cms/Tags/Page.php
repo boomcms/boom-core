@@ -16,6 +16,12 @@ class Controller_Cms_Tags_Page extends Controller_Cms_Tags
 		$this->authorization('edit_page', $this->model);
 	}
 
+	public function action_add()
+	{
+		$tag = TagFactory::findOrCreateByName($this->request->post('tag'));
+		$tag->addToPages($this->ids);
+	}
+
 	public function action_list()
 	{
 		$this->tags = array();

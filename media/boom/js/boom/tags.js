@@ -80,21 +80,14 @@ $.widget( 'boom.tagger',
 			type = this.options.type,
 			id = this.options.id;
 
-		$.post(
-			self.options.base_url + type + '/add/' + id,
-			{
-				tag : tag_name
-			}
-			)
-			.done(function(){
-
+		$.post(self.options.base_url + type + '/add/' + id, {tag : tag_name})
+			.done(function() {
 				$.get( self.options.base_url + type + '/list/' + id )
 				.done( function( response ){
 					var list = $( response ).find( 'ul' ).ui();
 					self.element
 					.find( 'ul' )
 					.replaceWith( list );
-
 				});
 			});
 	},
@@ -104,15 +97,11 @@ $.widget( 'boom.tagger',
 	@param {String} tag Tag name
 	*/
 	remove : function( tag ) {
-		var
-			self = this,
+		var self = this,
 			type = this.options.type,
 			id = this.options.id;
 
-			return $.post(
-				self.options.base_url + type + '/remove/' + id,
-				{tag : tag}
-				);
+		return $.post(self.options.base_url + type + '/remove/' + id, {tag : tag});
 	},
 
 	/**
