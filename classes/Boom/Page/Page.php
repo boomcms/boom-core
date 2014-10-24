@@ -287,6 +287,54 @@ class Page implements Taggable
 
 	/**
 	 *
+	 * @param string $description
+	 * @return \Boom\Page\Page
+	 */
+	public function setDescription($description)
+	{
+		$this->model->description = $description;
+
+		return $this;
+	}
+
+	/**
+	 *
+	 * @param boolean $indexing
+	 * @return \Boom\Page\Page
+	 */
+	public function setExternalIndexing($indexing)
+	{
+		$this->model->external_indexing = $indexing;
+
+		return $this;
+	}
+
+	/**
+	 *
+	 * @param boolean $indexing
+	 * @return \Boom\Page\Page
+	 */
+	public function setInternalIndexing($indexing)
+	{
+		$this->model->internal_indexing = $indexing;
+
+		return $this;
+	}
+
+	/**
+	 *
+	 * @param string $keywords
+	 * @return \Boom\Page\Page
+	 */
+	public function setKeywords($keywords)
+	{
+		$this->model->keywords = $keywords;
+
+		return $this;
+	}
+
+	/**
+	 *
 	 * @param int $parentId
 	 * @return \Boom\Page\Page
 	 */

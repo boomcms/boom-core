@@ -115,16 +115,17 @@ class Controller_Cms_Page_Settings_Save extends Controller_Cms_Page_Settings
 
 		$this->log("Saved search settings for page " . $this->page->getTitle() . " (ID: " . $this->page->getId() . ")");
 
-		$expected = array('description', 'keywords');
+		$this->page
+			->setDescription($this->request->post('description'))
+			->setKeywords($this->request->post('keywords'));
 
-		if ($this->allowAdvanced)
-		{
-			$expected = array_merge($expected, array('external_indexing', 'internal_indexing'));
+		if ($this->allowAdvanced) {
+			$this->page
+				->setExternalIndexing($this->request->post('external_indexing'))
+				->setInternalIndexing($this->request->post('internal_indexing'));
 		}
 
-		$this->page
-			->values($this->request->post(), $expected)
-			->update();
+		$this->page->save();
 	}
 
 	public function action_sort_children()

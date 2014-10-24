@@ -36,14 +36,15 @@ boomPage.prototype.navigation = function() {
 
 boomPage.prototype.search = function() {
 	var page = this,
-		url = '/cms/page/settings/search/' + page.id;
+		url = '/cms/page/settings/search/' + page.id,
+		dialog;
 
-	new boomDialog({
+	dialog = new boomDialog({
 		url : url,
 		title : 'Search Settings',
 		width : 500
 	}).done(function() {
-		page.saveSettings(url, $(this).find("form").serialize(), 'Page search settings saved');
+		page.saveSettings(url, dialog.contents.find("form").serialize(), 'Page search settings saved');
 	});
 };
 
@@ -90,7 +91,7 @@ boomPage.prototype.template = function() {
 		open: function() {
 			page.template._show_details();
 
-			$(this).find('select').on('change', function() {
+			dialog.contents().find('select').on('change', function() {
 				page.template._show_details();
 			});
 		}
@@ -122,65 +123,6 @@ boomPage.prototype.template = function() {
 
 boomPage.prototype.visibility = function() {
 	return new boomPageVisibilityEditor(this);
-
-//	dialog = new boomDialog({
-//		url: url,
-//		title: 'Page visibility',
-//		width: 440,
-//		open: function() {
-//			$('#toggle-visible:checkbox').unbind('change').change(function(){
-//
-//				if (this.checked) {
-//
-//					$('#visible-to, #visible-to-time').removeAttr('disabled');
-//
-//					if ($('#visible-to').val().toLowerCase().trim() == 'forever') {
-//
-//						$('#visible-to').val('');
-//					}
-//
-//					$('#visible-to').focus();
-//
-//				} else {
-//
-//					$('#visible-to, #visible-to-time').attr('disabled', 'disabled');
-//
-//					if (!$('#visible-to').val().trim().length) {
-//
-//						$('#visible-to').val('forever');
-//					}
-//
-//					$('#visible-to').blur();
-//				}
-//			});
-//
-//			$('#visible').on('change', function() {
-//				switch( $( this ).val() ) {
-//					case '1':
-//						$( '#visible-from' ).removeAttr( 'disabled' );
-//					break;
-//					case '0':
-//						$( '#visible-from' ).attr( 'disabled', 'disabled' );
-//						$( '#visible-to' ).attr( 'disabled', 'disabled' );
-//					break;
-//				}
-//			});
-//
-//			if ($('#visible').val() == '0') {
-//				$( '#visible-from' ).attr( 'disabled', 'disabled' );
-//				$( '#visible-to' ).attr( 'disabled', 'disabled' );
-//			}
-//		}
-//	});
-//
-//	dialog.done(function() {
-//		page.saveSettings(url, $(this).find("form").serialize(), 'Page visibility settings saved')
-//			.done(function(response) {
-//				deferred.resolve(response);
-//			});
-//	});
-
-//	return deferred;
 };
 
 boomPage.prototype.childsettings = function() {
