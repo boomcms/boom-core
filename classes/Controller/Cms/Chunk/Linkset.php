@@ -13,7 +13,7 @@ class Controller_Cms_Chunk_Linkset extends Controller_Cms_Chunk
 
 	protected function _preview_chunk()
 	{
-		$chunk = new Chunk_Linkset($this->page, $this->_model, $this->request->post('slotname'));
+		$chunk = new \Boom\Chunk\Linkset($this->page, $this->_model, $this->request->post('slotname'));
 		$chunk->template($this->request->post('template'));
 
 		return $chunk->execute();
@@ -23,7 +23,7 @@ class Controller_Cms_Chunk_Linkset extends Controller_Cms_Chunk
 	{
 		$model = new Model_Chunk_Linkset;
 
-		$chunk = new Chunk_Linkset($this->page, $model, $this->request->post('slotname'));
+		$chunk = new \Boom\Chunk\Linkset($this->page, $model, $this->request->post('slotname'));
 		$chunk->template($this->request->post('template'));
 
 		return $chunk->execute();

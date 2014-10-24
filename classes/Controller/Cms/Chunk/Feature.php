@@ -13,7 +13,7 @@ class Controller_Cms_Chunk_Feature extends Controller_Cms_Chunk
 
 	protected function _preview_chunk()
 	{
-		$chunk = new Chunk_Feature($this->page, $this->_model, $this->request->post('slotname'));
+		$chunk = new \Boom\Chunk\Feature($this->page, $this->_model, $this->request->post('slotname'));
 		$chunk->template($this->request->post('template'));
 
 		return $chunk->execute();
@@ -21,7 +21,7 @@ class Controller_Cms_Chunk_Feature extends Controller_Cms_Chunk
 
 	protected function _preview_default_chunk()
 	{
-		$chunk = new Chunk_Feature($this->page, new Model_Chunk_Feature, $this->request->post('slotname'));
+		$chunk = new \Boom\Chunk\Feature($this->page, new Model_Chunk_Feature, $this->request->post('slotname'));
 		$chunk->template($this->request->post('template'));
 
 		return $chunk->execute();

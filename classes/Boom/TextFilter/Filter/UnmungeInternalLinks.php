@@ -18,7 +18,7 @@ class UnmungeInternalLinks implements \Boom\TextFilter\Filter
 
 	protected function _removeInvalidInternalLinks($text)
 	{
-		return preg_replace("|(<a.*href=['\"]{$this->_internalLinkRegex}['\"].*>)(.*)(</a>)|U", "$4", $text);
+		return preg_replace("|(<a.*href=['\"]{$this->_internalLinkRegex}['\"].*>)(.*)(</a>)|U", "$2", $text);
 	}
 
 	protected function _updatePageLink($match)

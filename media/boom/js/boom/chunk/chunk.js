@@ -61,8 +61,7 @@ $.widget('ui.chunk',
 	*/
 	_update_html : function(html) {
 		var $html = $(html);
-		this.element.replaceWith($html);
-		this.element = $($html[0]);
+		this.element.html($html.html());
 
 		this.bind();
 	},

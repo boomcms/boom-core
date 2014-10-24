@@ -21,14 +21,14 @@ class Controller_Cms_Chunk_Timestamp extends Controller_Cms_Chunk
 
 	protected function _preview_chunk()
 	{
-		$chunk = new Chunk_Timestamp($this->page, $this->_model, $this->request->post('slotname'));
+		$chunk = new \Boom\Chunk\Timestamp($this->page, $this->_model, $this->request->post('slotname'));
 
 		return $chunk->execute();
 	}
 
 	protected function _preview_default_chunk()
 	{
-		$chunk = new Chunk_Timestamp($this->page, new Model_Chunk_Timestamp, $this->request->post('slotname'));
+		$chunk = new \Boom\Chunk\Timestamp($this->page, new Model_Chunk_Timestamp, $this->request->post('slotname'));
 
 		return $chunk->execute();
 	}
