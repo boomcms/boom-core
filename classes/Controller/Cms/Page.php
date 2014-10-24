@@ -32,7 +32,7 @@ class Controller_Cms_Page extends Boom\Controller
 		// Add a default URL.
 		// This needs to go into a class of some sort, not sure where though.
 		// Don't want it as part of Page_Creator because we sometimes want to create the default URLs in this format.
-		$prefix = ($this->page->children_url_prefix)? $this->page->children_url_prefix : $this->page->url()->location;
+		$prefix = ($this->page->getChildPageUrlPrefix())? $this->page->getChildPageUrlPrefix() : $this->page->url()->location;
 		$url = \Boom\Page\URL::fromTitle($prefix, $new_page->getTitle());
 		\Boom\Page\URL::createPrimary($url, $new_page->getId());
 

@@ -2,7 +2,8 @@
 
 namespace Boom\Page;
 
-use \Boom\Page as Page;
+use \Boom\Page\Page as Page;
+use \Boom\Person as Person;
 
 class Creator
 {
@@ -21,7 +22,7 @@ class Creator
 	protected $_templateId;
 	protected $_title = 'Untitled';
 
-	public function __construct(Page $parent, \Model_Person $creator)
+	public function __construct(Page $parent, Person $creator)
 	{
 		$this->_parent = $parent;
 		$this->_creator = $creator;
@@ -33,12 +34,12 @@ class Creator
 
 		return $model
 			->values(array(
-				'visible_in_nav'				=>	$this->_parent->children_visible_in_nav,
-				'visible_in_nav_cms'			=>	$this->_parent->children_visible_in_nav_cms,
-				'children_visible_in_nav'		=>	$this->_parent->children_visible_in_nav,
-				'children_visible_in_nav_cms'	=>	$this->_parent->children_visible_in_nav_cms,
+				'visible_in_nav'				=>	$this->_parent->childrenAreVisibleInNav(),
+				'visible_in_nav_cms'			=>	$this->_parent->childrenAreVisibleInCmsNav(),
+				'children_visible_in_nav'		=>	$this->_parent->childrenAreVisibleInNav(),
+				'children_visible_in_nav_cms'	=>	$this->_parent->childrenAreVisibleInCmsNav(),
 				'visible_from'				=>	time(),
-				'created_by'				=>	$this->_creator->id,
+				'created_by'				=>	$this->_creator->getId(),
 			))
 			->create();
 	}
@@ -47,8 +48,8 @@ class Creator
 	{
 		return \ORM::factory('Page_Version')
 			->values(array(
-				'edited_by'	=>	$this->_creator->id,
-				'page_id'		=>	$page->getId(),
+				'edited_by'	=>	$this->_creator->getId(),
+				'page_id'		=>	$page->id,
 				'template_id'	=>	$this->_getTemplateId(),
 				'title'			=>	$this->_title,
 				'published' => true,
@@ -67,13 +68,13 @@ class Creator
 
 		\Database::instance()->commit();
 
-		return $page;
+		return new Page($page);
 	}
 
 	protected function _insertIntoTree(\Model_Page $page)
 	{
-		$page->mptt->id = $page->getId();
-		$page->mptt->insert_as_last_child($this->_parent->mptt);
+		$page->mptt->id = $page->id;
+		$page->mptt->insert_as_last_child($this->_parent->getMptt());
 	}
 
 	protected function _getTemplateId()
