@@ -70,6 +70,7 @@ $.widget( 'boom.pageEditor', {
 
 				if (editor.openDialogs === 1) {
 					toolbar.maximise();
+					toolbar.hide();
 				}
 			})
 			.on('boom:dialog:close', function() {
@@ -77,6 +78,7 @@ $.widget( 'boom.pageEditor', {
 
 				if (editor.openDialogs === 0) {
 					toolbar.minimise();
+					toolbar.show();
 				}
 			});
 	}
