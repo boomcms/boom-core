@@ -2,6 +2,8 @@
 
 namespace Boom\Chunk;
 
+use \Kohana as Kohana;
+
 class Timestamp extends \Boom\Chunk
 {
 	public static $default_format = 'j F Y';
