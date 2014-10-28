@@ -72,19 +72,19 @@ class Controller_Cms_Assets extends Controller_Cms
 	{
 		$finder = new AssetFinder;
 		$finder
-//			->addFilter(new  \Boom\Asset\Finder\Filter\Tag(explode("-", $this->request->query('tag'))))
-			->addFilter(new \Boom\Asset\Finder\Filter\TitleContains($this->request->query('title')));
+			->addFilter(new  \Boom\Asset\Finder\Filter\Tag($this->request->post('tag')))
+			->addFilter(new \Boom\Asset\Finder\Filter\TitleContains($this->request->post('title')));
 
 		$column = 'last_modified';
 		$order = 'desc';
 
-		if (strpos($this->request->query('sortby'), '-' ) > 1) {
-			list($column, $order) = explode('-', $this->request->query('sortby'));
+		if (strpos($this->request->post('sortby'), '-' ) > 1) {
+			list($column, $order) = explode('-', $this->request->post('sortby'));
 		}
 
 		$finder->setOrderBy($column, $order);
 
-		if ($type = $this->request->query('type')) {
+		if ($type = $this->request->post('type')) {
 //			$finder->addFilter(new \Boom\Asset\Finder\Filter\Type($type));
 		}
 
@@ -93,8 +93,8 @@ class Controller_Cms_Assets extends Controller_Cms
 		if ($count === 0) {
 			$this->template = new View("$this->viewDirectory/none_found");
 		} else {
-			$page = max(1, $this->request->query('page'));
-			$perpage = max($this->perpage, $this->request->query('perpage'));
+			$page = max(1, $this->request->post('page'));
+			$perpage = max($this->perpage, $this->request->post('perpage'));
 			$pages = ceil($count / $perpage);
 
 			$assets = $finder

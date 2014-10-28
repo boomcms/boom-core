@@ -44,7 +44,7 @@ $.widget( 'boom.tagger',
 		self.tag_list()
 			.progress( function( $link ){
 
-				self.remove($link.attr('href'));
+				self.remove($link.attr('data-tag_id'));
 
 				$link.closest('li').remove();
 
@@ -142,7 +142,8 @@ $.widget( 'boom.tagger_search', $.boom.tagger,
 		/** selected tags for this search */
 		selected_tag_ids : [],
 		/** item type for URL fragments */
-		tag : 'tag'
+		tag : 'tag',
+		update : function() {}
 	},
 
 	_bind : function(){
@@ -180,8 +181,8 @@ $.widget( 'boom.tagger_search', $.boom.tagger,
 	Remove a tag from the search.
 	@param {String} tag Tag name
 	*/
-	remove : function( tag ) {
-		this.options.selected_tag_ids = this.options.selected_tag_ids.splice(this.options.selected_tag_ids.indexOf(tag.value), 1);
+	remove : function(tagId) {
+		this.options.selected_tag_ids.splice(this.options.selected_tag_ids.indexOf(tagId), 1);
 
 		this.element.find('.b-filter-input, #b-tags-add-name').tagAutocompleter('setSelectedTags', this.options.selected_tag_ids);
 		this.do_search();
@@ -203,6 +204,8 @@ $.widget( 'boom.tagger_search', $.boom.tagger,
 		var
 			self = this,
 			selected_tag_ids = this.options.selected_tag_ids;
+
+		this.options.update(selected_tag_ids);
 	}
 
 

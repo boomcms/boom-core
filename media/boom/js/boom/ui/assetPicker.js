@@ -27,17 +27,14 @@ function boomAssetPicker(currentAssetId) {
 				assetPicker.getAssets();
 			}
 		});
-var selected_tag_ids = [];
+
 		this.tagFilter = this.picker.find('#b-tags-search');
 		this.tagFilter
-			.tagger_search()
-			.find('input')
-			.tagAutocompleter({
-				type : 1,
-				complete : function(event, data) {
-					selected_tag_ids.push(data.id);
-					$(this).tagAutocompleter('setSelectedTags', selected_tag_ids);
-					$('#b-tags-search').tagger_search('add', data.name, data.id);
+			.tagger_search({
+				update : function(tagIds) {
+					console.log(tagIds);
+					assetPicker.addFilter('tag', tagIds);
+					assetPicker.getAssets();
 				}
 			});
 
@@ -92,7 +89,7 @@ var selected_tag_ids = [];
 	boomAssetPicker.prototype.getAssets = function() {
 		var assetPicker = this;
 
-		$.get(this.listUrl, this.filters)
+		$.post(this.listUrl, this.filters)
 			.done(function(response) {
 				assetPicker.picker.find('#b-assets-view-thumbs').replaceWith($(response).find('#b-assets-view-thumbs'));
 				assetPicker.justifyAssets();
