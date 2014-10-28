@@ -14,12 +14,10 @@ class Controller_Cms_Page_Settings_Save extends Controller_Cms_Page_Settings
 		parent::action_admin();
 
 		$this->log("Saved admin settings for page " . $this->page->getTitle() . " (ID: " . $this->page->getId() . ")");
-
-		$internal_name = $this->request->post('internal_name')? $this->request->post('internal_name') : null;
 		
 		$this->page
-			->set('internal_name', $internal_name)
-			->update();
+			->setInternalName($this->request->post('internal_name'))
+			->save();
 	}
 
 	public function action_children()

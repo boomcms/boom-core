@@ -353,6 +353,18 @@ class Page implements Taggable
 
 	/**
 	 *
+	 * @param string $name
+	 * @return \Boom\Page\Page
+	 */
+	public function setInternalName($name)
+	{
+		$this->model->internal_name = $name;
+
+		return $this;
+	}
+
+	/**
+	 *
 	 * @param string $keywords
 	 * @return \Boom\Page\Page
 	 */
