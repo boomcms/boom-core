@@ -28,16 +28,17 @@
 		bottom: 0;
 		width: 25em;
 		background: #222;
-		padding: 0.5em 0.5em 75px 0.5em;
+		padding: 5px;
 		.box-sizing;
 		z-index: 2;
 		max-width: 100%;
+		overflow: hidden;
 
 		section {
-			width: 23em;
+			width: 100%;
 
 			h1 {
-				color: #fff;
+				color: @white;
 			}
 		}
 	}
@@ -70,12 +71,9 @@
 		}
 	}
 
-	&-buttons {
-		position: absolute;
-		left: 0;
-		right: 0;
-		bottom: 25px;
-		height: 50px;
+	&-close {
+		margin-top: 20px;
+		float: right;
 	}
 
 	&-all {
@@ -108,7 +106,7 @@
 		}
 
 		input {
-			width: 9.8em;
+			width: 290px;
 			font-size: 1.4em;
 			height: 1.55em;
 		}

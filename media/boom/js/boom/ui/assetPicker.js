@@ -16,6 +16,31 @@ function boomAssetPicker(currentAssetId) {
 	boomAssetPicker.prototype.bind = function() {
 		var assetPicker = this;
 
+		this.titleFilter = this.picker.find('#b-assets-filter-title');
+		this.titleFilter.assetTitleFilter({
+			search : function(event, ui) {
+				assetPicker.addFilter('title', $(this).val());
+				assetPicker.getAssets();
+			},
+			select : function(event, ui) {
+				assetPicker.addFilter('title', ui.item.value);
+				assetPicker.getAssets();
+			}
+		});
+var selected_tag_ids = [];
+		this.tagFilter = this.picker.find('#b-tags-search');
+		this.tagFilter
+			.tagger_search()
+			.find('input')
+			.tagAutocompleter({
+				type : 1,
+				complete : function(event, data) {
+					selected_tag_ids.push(data.id);
+					$(this).tagAutocompleter('setSelectedTags', selected_tag_ids);
+					$('#b-tags-search').tagger_search('add', data.name, data.id);
+				}
+			});
+
 		this.picker
 			.on('click', '.thumb a', function(e) {
 				e.preventDefault();
@@ -26,19 +51,11 @@ function boomAssetPicker(currentAssetId) {
 
 				return false;
 			})
-			.on('click', '#b-asset-picker-close', function() {
+			.on('click', '#b-assets-picker-close', function() {
 				assetPicker.cancel();
 			})
 			.find('#b-assets-upload-form')
 			.assetUploader()
-			.end()
-			.find('#b-assets-filter-title')
-			.assetTitleFilter({
-				select : function(event, ui) {
-					assetPicker.addFilter('title', ui.item.value);
-					assetPicker.getAssets();
-				}
-			})
 			.end()
 			.on('click', '#b-assets-picker-all', function() {
 				assetPicker.clearFilters();
@@ -63,7 +80,9 @@ function boomAssetPicker(currentAssetId) {
 		this.filters = {
 			page : 1
 		};
-	}
+
+		this.titleFilter.val('');
+	};
 
 	boomAssetPicker.prototype.close = function() {
 		this.picker.remove();
