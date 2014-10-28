@@ -341,6 +341,18 @@ class Page implements Taggable
 
 	/**
 	 *
+	 * @param int $featureImageId
+	 * @return \Boom\Page\Page
+	 */
+	public function setFeatureImageId($featureImageId)
+	{
+		$this->model->feature_image_id = $featureImageId > 0? $featureImageId : null;
+
+		return $this;
+	}
+
+	/**
+	 *
 	 * @param boolean $indexing
 	 * @return \Boom\Page\Page
 	 */

@@ -68,12 +68,11 @@ class Controller_Cms_Page_Settings_Save extends Controller_Cms_Page_Settings
 	{
 		parent::action_feature();
 
-		$this->log("Updated the feature image of page " . $this->old_version->title . " (ID: " . $this->old_version->page_id . ")");
+		$this->log("Updated the feature image of page " . $this->page->getTitle() . " (ID: " . $this->page->getId() . ")");
 
-		$this->new_version
-			->set('feature_image_id', $this->request->post('feature_image_id'))
-			->create()
-			->copy_chunks($this->old_version);
+		$this->page
+			->setFeatureImageId($this->request->post('feature_image_id'))
+			->save();
 	}
 
 	public function action_navigation()

@@ -71,12 +71,7 @@ boomPage.prototype.urls = function() {
 };
 
 boomPage.prototype.featureimage = function() {
-	var page = this;
-
-	new boomPageFeatureEditor(this)
-		.done(function(response) {
-			page.toolbar.status.set(response);
-		});
+	new boomPageFeatureEditor(this);
 };
 
 boomPage.prototype.template = function() {
