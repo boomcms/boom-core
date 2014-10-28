@@ -3,7 +3,7 @@
 return array(
 	'css' => array(
 		'templates.css.less',
-		'boom.assets.css.less',
+		'boom/assets.css.less',
 		'boom.people.css.less',
 		'jqpagination.css',
 		'cms.css.less',

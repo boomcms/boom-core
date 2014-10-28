@@ -16,15 +16,23 @@
 
 		<?= \Boom\UI::button('accept', 'All assets', array('id' => 'b-assets-picker-all', 'class' => 'b-button-textonly')) ?>
 
-		<input type='text' id="b-assets-filter-title" placeholder="Search by asset name" value="Search by asset name" />
+		<div>
+			<h2>Search by asset name</h2>
+			<input type='text' id="b-assets-filter-title" placeholder="Search by asset name" value="Search by asset name" />
+		</div>
 
-		<?= Form::select('types', array_merge(array('0' => 'Filter by type'), ORM::factory('Asset')->types()), null, array('id' => 'b-assets-types')) ?>
+		<div>
+			<h2>Filter by asset type</h2>
+			<?= Form::select('types', array_merge(array('0' => 'Filter by type'), ORM::factory('Asset')->types()), null, array('id' => 'b-assets-types')) ?>
+		</div>
 
-		<div id='b-tags-search'>
-			<span class="ui-icon ui-icon-boom-tag"></span>
-			<input type='text' class="b-filter-input" placeholder="Type a tag name" value="Type a tag name" />
-			<ul class="b-tags-list">
-			</ul>
+		<div>
+			<h2>Filter by tag</h2>
+			<div id='b-tags-search'>
+				<input type='text' class="b-filter-input" placeholder="Type a tag name" value="Type a tag name" />
+				<ul class="b-tags-list">
+				</ul>
+			</div>
 		</div>
 	</section>
 

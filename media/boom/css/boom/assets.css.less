@@ -1,14 +1,8 @@
-/* BOOM ASSETS */
-/* The filter by name input box */
-.b-filter-input {
-	margin-left: 20px;
-	margin-top: 5px;
-	width: 200px;
-}
-
-@import 'mixins.less';
-@import 'boom.assets.upload.less';
-@import 'boom.assets.picker.less';
+@import 'main/mixins.less';
+@import 'main/colors.less';
+@import 'assets/manager.less';
+@import 'assets/upload.less';
+@import 'assets/picker.less';
 @import 'assets/pagination.less';
 
 #b-assets {
@@ -88,58 +82,6 @@
 
 		img {
 			border: none;
-		}
-	}
-
-	&-manager {
-		background: #7f7f7f;
-
-		select {
-			margin-left: 20px;
-		}
-
-		#b-tags-search {
-			display: inline-block;
-			margin-left: 20px;
-			vertical-align: top;
-			max-width: 300px;
-
-			ul {
-				float: left;
-				width: 100%;
-			}
-
-			span.ui-icon-boom-tag {
-				display: inline-block;
-				vertical-align: top;
-				margin-top: 15px;
-				background-position: -90px -120px;
-			}
-
-			.b-tags-remove {
-				background-position: -60px -120px;
-			}
-
-			.b-filter-input {
-				margin-left: 0;
-			}
-
-			.b-tags-list {
-				margin: 0;
-
-				li {
-					margin: 0 5px;
-					display: inline-block;
-
-					a {
-						display: inline-block !important;
-					}
-
-					span {
-						margin-left: 0;
-					}
-				}
-			}
 		}
 	}
 
@@ -260,26 +202,13 @@
 		color: #ffffff;
 	}
 
-	&-pagination, &-stats {
+	&-stats {
 		display: inline-block;
 		vertical-align: top;
 		float: right;
 		margin-left: 1.3em;
 		font-size: 1.3em;
-	}
-
-	&-stats {
 		line-height: 64px;
-	}
-
-	&-pagination {
-		min-width: 370px;
-		border: 0;
-
-		select {
-			margin: 20px 0 0 2em;
-			float: right;
-		}
 	}
 
 	/* Styling for the 'no assets found' message when the asset manager returns no assets */

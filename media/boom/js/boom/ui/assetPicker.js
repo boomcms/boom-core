@@ -75,7 +75,7 @@ function boomAssetPicker(currentAssetId) {
 
 		$.get(this.listUrl, this.filters)
 			.done(function(response) {
-				assetPicker.picker.find('#b-assets-view-thumbs').replaceWith(response);
+				assetPicker.picker.find('#b-assets-view-thumbs').replaceWith($(response).find('#b-assets-view-thumbs'));
 				assetPicker.justifyAssets();
 			});
 	};
