@@ -17,4 +17,10 @@ class ArrayCallbackIterator extends \ArrayIterator
 		$value = parent::current();
 		return call_user_func($this->callback, $value);
 	}
+
+	public function offsetGet($index)
+	{
+		$value = parent::offsetGet($index);
+		return call_user_func($this->callback, $value);
+	}
 }
