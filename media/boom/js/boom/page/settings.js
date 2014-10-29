@@ -86,7 +86,7 @@ boomPage.prototype.template = function() {
 		open: function() {
 			page.template._show_details();
 
-			dialog.contents().find('select').on('change', function() {
+			dialog.contents.on('change', 'select', function() {
 				page.template._show_details();
 			});
 		}

@@ -44,7 +44,7 @@ class Manager
 
 	public function getAllTemplates()
 	{
-		$finder = new Template\Finder;
+		$finder = new Finder;
 
 		return $finder
 			->setOrderBy('name', 'asc')
