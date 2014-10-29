@@ -162,32 +162,4 @@ class Model_Asset extends Model_Taggable
 
 		return $this->update();
 	}
-
-	/**
-	 * Returns an array of the type of assets which exist in the database.
-	 *
-	 * Retrieves the numeric asset types which are stored in the database.
-	 * These are then converted to words using [\Boom\Asset\Type::type()]
-	 *
-	 * @uses \Boom\Asset\Type::type()
-	 * @return array
-	 */
-	public function types()
-	{
-		// Get the available asset types in numeric format.
-		$types = DB::select('type')
-			->distinct(true)
-			->from('assets')
-			->where('type', '!=', 0)
-			->execute($this->_db)
-			->as_array();
-
-		// Turn the numeric asset types into user friendly strings.
-		$types = Arr::pluck($types, 'type');
-//		$types = array_map(array('\Boom\Asset', 'type'), $types);
-//		$types = array_map('ucfirst', $types);
-
-		// Return the results.
-		return $types;
-	}
 }

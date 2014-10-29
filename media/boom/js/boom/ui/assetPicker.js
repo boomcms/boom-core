@@ -16,7 +16,6 @@ function boomAssetPicker(currentAssetId) {
 	boomAssetPicker.prototype.bind = function() {
 		var assetPicker = this;
 
-		this.titleFilter = this.picker.find('#b-assets-filter-title');
 		this.titleFilter.assetTitleFilter({
 			search : function(event, ui) {
 				assetPicker.addFilter('title', $(this).val());
@@ -28,15 +27,18 @@ function boomAssetPicker(currentAssetId) {
 			}
 		});
 
-		this.tagFilter = this.picker.find('#b-tags-search');
 		this.tagFilter
 			.tagger_search({
 				update : function(tagIds) {
-					console.log(tagIds);
 					assetPicker.addFilter('tag', tagIds);
 					assetPicker.getAssets();
 				}
 			});
+
+		this.typeFilter.on('change', function() {
+			assetPicker.addFilter('type', $(this).val());
+			assetPicker.getAssets();
+		});
 
 		this.picker
 			.on('click', '.thumb a', function(e) {
@@ -120,6 +122,10 @@ function boomAssetPicker(currentAssetId) {
 
 		this.picker = $("<div id='b-assets-picker'></div>");
 		this.picker.load(this.url, function() {
+			assetPicker.titleFilter = assetPicker.picker.find('#b-assets-filter-title');
+			assetPicker.tagFilter = assetPicker.picker.find('#b-tags-search');
+			assetPicker.typeFilter = assetPicker.picker.find('#b-assets-types');
+
 			assetPicker.bind();
 			assetPicker.justifyAssets();
 

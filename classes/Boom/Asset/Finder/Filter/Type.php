@@ -13,10 +13,8 @@ class Type extends \Boom\Finder\Filter
 
 	public function execute(\ORM $query)
 	{
-		foreach ($this->_type as & $type)
-		{
-			if ( ! is_int($type) && ! ctype_digit($type))
-			{
+		foreach ($this->_type as & $type) {
+			if ( ! is_int($type) && ! ctype_digit($type)) {
 				$type = constant('\Boom\Asset\Type::' . strtoupper($type));
 			}
 		}

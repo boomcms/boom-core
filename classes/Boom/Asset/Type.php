@@ -2,6 +2,8 @@
 
 namespace Boom\Asset;
 
+use \DB as DB;
+
 abstract class Type
 {
 	const IMAGE = 1;
@@ -34,5 +36,31 @@ abstract class Type
 			case static::MSWORD:
 				return "MSWord";
 		}
+	}
+
+	/**
+	 * Returns an array of the asset types which exist in the database.
+	 *
+	 * @return array
+	 */
+	public static function whichExist()
+	{
+		$typesAsNumbers = DB::select('type')
+			->distinct(true)
+			->from('assets')
+			->execute()
+			->as_array();
+
+		$typesAsStrings = array();
+
+		foreach ($typesAsNumbers as $type) {
+			$type = static::numericTypeToClass($type['type']);
+
+			if ($type) {
+				$typesAsStrings[] = $type;
+			}
+		}
+
+		return $typesAsStrings;
 	}
 }

@@ -73,7 +73,8 @@ class Controller_Cms_Assets extends Controller_Cms
 		$finder = new AssetFinder;
 		$finder
 			->addFilter(new  \Boom\Asset\Finder\Filter\Tag($this->request->post('tag')))
-			->addFilter(new \Boom\Asset\Finder\Filter\TitleContains($this->request->post('title')));
+			->addFilter(new \Boom\Asset\Finder\Filter\TitleContains($this->request->post('title')))
+			->addFilter(new \Boom\Asset\Finder\Filter\Type($this->request->post('type')));
 
 		$column = 'last_modified';
 		$order = 'desc';
@@ -83,10 +84,6 @@ class Controller_Cms_Assets extends Controller_Cms
 		}
 
 		$finder->setOrderBy($column, $order);
-
-		if ($type = $this->request->post('type')) {
-//			$finder->addFilter(new \Boom\Asset\Finder\Filter\Type($type));
-		}
 
 		$count = $finder->count();
 

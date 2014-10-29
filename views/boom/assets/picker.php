@@ -23,7 +23,7 @@
 
 		<div>
 			<h2>Filter by asset type</h2>
-			<?= Form::select('types', array_merge(array('0' => 'Filter by type'), ORM::factory('Asset')->types()), null, array('id' => 'b-assets-types')) ?>
+			<?= Form::select('types', array_merge(array('0' => 'Filter by type'), \Boom\Asset\Type::whichExist()), null, array('id' => 'b-assets-types')) ?>
 		</div>
 
 		<div>
