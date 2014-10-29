@@ -81,6 +81,7 @@ function boomAssetPicker(currentAssetId) {
 		};
 
 		this.titleFilter.val('');
+		this.typeFilter.val('');
 	};
 
 	boomAssetPicker.prototype.close = function() {
