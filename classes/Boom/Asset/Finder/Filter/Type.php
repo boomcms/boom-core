@@ -8,18 +8,30 @@ class Type extends \Boom\Finder\Filter
 
 	public function __construct($types = null)
 	{
-		$this->_type = is_array($types)?: array($types);
+		$types = is_array($types)?: array($types);
+		$this->_type = $this->removeInvalidTypes($types);
 	}
 
 	public function execute(\ORM $query)
 	{
-		foreach ($this->_type as & $type) {
-			if ( ! is_int($type) && ! ctype_digit($type)) {
-				$type = constant('\Boom\Asset\Type::' . strtoupper($type));
+		return $query->where('asset.type', 'in', $this->_type);
+	}
+
+	private function removeInvalidTypes($types)
+	{
+		$validTypes = array();
+
+		foreach ($types as $type) {
+			if ($type) {
+				if ( ! is_int($type) && ! ctype_digit($type)) {
+					$validTypes[] = constant('\Boom\Asset\Type::' . strtoupper($type));
+				} else {
+					$validTypes[] = $type;
+				}
 			}
 		}
 
-		return $query->where('asset.type', 'in', $this->_type);
+		return $validTypes;
 	}
 
 	public function shouldBeApplied()
