@@ -12,6 +12,5 @@
 		"kohana/auth": "3.3.*",
 		"kohana/minion": "3.3.*",
                 "genphrase/genphrase" : "1.0.*",
-                "lightopenid/lightopenid" : "0.7.*"
 	}
 }
