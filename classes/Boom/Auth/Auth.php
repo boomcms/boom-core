@@ -248,7 +248,7 @@ class Auth
 	public static function instance()
 	{
 		if (static::$instance === null) {
-			static::$instance = new static(array(), Session::instance());
+			static::$instance = new static(\Kohana::$config->load('boom')->get('auth'), Session::instance());
 		}
 
 		return static::$instance;

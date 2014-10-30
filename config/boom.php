@@ -1,6 +1,9 @@
 <?php
 
 return array(
+	'auth' => array(
+		'disabled' => Kohana::$environment === Kohana::DEVELOPMENT,
+	),
 	'menu'	=>	array(
 		'view_filename'		=>	'menu/boom',
 		'items'			=>	array(
