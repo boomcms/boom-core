@@ -187,28 +187,6 @@ class Model_Group extends ORM
 			->as_array('id', 'name');
 	}
 
-	/**
-	 * Remove a role from a group.
-	 *
-	 * After removing the role from the group the permissions for the people the group are updated.
-	 *
-	 * @param integer $role_id
-	 * @return \Boom_Model_Group
-	 */
-	public function remove_role($role_id)
-	{
-		// Remove the relationship between this group and the role.
-		$this->remove('roles', $role_id);
-
-		// Remove the role from people in this group.
-		DB::delete('people_roles')
-			->where('group_id', '=', $this->id)
-			->where('role_id', '=', $role_id)
-			->execute($this->_db);
-
-		return $this;
-	}
-
 	public function rules()
 	{
 		return array(

@@ -33,8 +33,8 @@ class Controller_Cms_Group_Save extends Controller_Cms_Group
 
 	public function action_remove_role()
 	{
-		$this->log("Edited the roles of group ".$this->group->name);
-		$this->group->remove_role($this->request->post('role_id'));
+		$this->log("Edited the roles of group ".$this->group->getName());
+		$this->group->removeRole($this->request->post('role_id'));
 	}
 
 	public function action_save()

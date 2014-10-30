@@ -38,6 +38,27 @@ class Group
 	}
 
 	/**
+	 * Remove a role from a group.
+	 *
+	 * After removing the role from the group the permissions for the people the group are updated.
+	 *
+	 * @param integer $roleId
+	 * @return \Boom\Group\Group
+	 */
+	public function removeRole($roleId)
+	{
+		$this->model->remove('roles', $roleId);
+
+		// Remove the role from people in this group.
+		DB::delete('people_roles')
+			->where('group_id', '=', $this->getId())
+			->where('role_id', '=', $roleId)
+			->execute();
+
+		return $this;
+	}
+
+	/**
 	 *
 	 * @return \Boom\Group\Group
 	 */
