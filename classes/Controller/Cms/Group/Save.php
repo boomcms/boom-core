@@ -12,11 +12,11 @@ class Controller_Cms_Group_Save extends Controller_Cms_Group
 	public function action_add()
 	{
 		$this->group
-			->set('name', $this->request->post('name'))
-			->create();
+			->setName($this->request->post('name'))
+			->save();
 
-		$this->log("Created group: ".$this->group->name);
-		$this->response->body($this->group->id);
+		$this->log("Created group: ".$this->group->getName());
+		$this->response->body($this->group->getId());
 	}
 
 	public function action_add_role()

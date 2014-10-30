@@ -12,7 +12,7 @@ class Finder extends \Boom\Finder
 	public function find()
 	{
 		$model = parent::find();
-		return new \Boom\Group($model);
+		return new Group($model);
 	}
 
 	public function findAll()
@@ -20,7 +20,7 @@ class Finder extends \Boom\Finder
 		$groups = parent::findAll()->as_array();
 
 		return new \Boom\ArrayCallbackIterator($groups, function($group) {
-			return new \Boom\Group($group);
+			return new Group($group);
 		});
 	}
 }

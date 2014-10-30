@@ -5,14 +5,15 @@ function boomGroup(group_id) {
 
 	boomGroup.prototype.add = function() {
 		var group = this,
-			deferred = new $.Deferred();
+			deferred = new $.Deferred(),
+			dialog;
 
-		new boomDialog({
+		dialog = new boomDialog({
 			url: this.base_url + 'add',
 			title: 'Add group'
 		})
 		.done(function() {
-			group.addWithName($(this).find('input[type=text]').val())
+			group.addWithName(dialog.contents.find('input[type=text]').val())
 				.done(function(response) {
 					deferred.resolve(response);
 				});
