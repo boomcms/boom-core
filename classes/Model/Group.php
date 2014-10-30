@@ -209,24 +209,6 @@ class Model_Group extends ORM
 		return $this;
 	}
 
-	public function roles($page_id = 0)
-	{
-		// Check that the given page ID is an integer.
-		if ( ! is_int($page_id))
-		{
-			// No it's not, leave us alone.
-			throw new InvalidArgumentException('Argument 1 for '.__CLASS__.'::'.__METHOD__.' must be an integer, '.gettype($page_id).' given');
-		}
-
-		// Run the query and return the results.
-		return DB::select('role_id', 'allowed')
-			->from('group_roles')
-			->where('group_id', '=', $this->id)
-			->where('page_id', '=', $page_id)
-			->execute($this->_db)
-			->as_array('role_id', 'allowed');
-	}
-
 	public function rules()
 	{
 		return array(

@@ -2,6 +2,8 @@
 
 namespace Boom\Group;
 
+use \DB as DB;
+
 class Group
 {
 	/**
@@ -23,6 +25,16 @@ class Group
 	public function getName()
 	{
 		return $this->model->name;
+	}
+
+	public function getRoles($pageId = 0)
+	{
+		return DB::select('role_id', 'allowed')
+			->from('group_roles')
+			->where('group_id', '=', $this->getId())
+			->where('page_id', '=', $pageId)
+			->execute()
+			->as_array('role_id', 'allowed');
 	}
 
 	/**

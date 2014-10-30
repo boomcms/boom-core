@@ -26,8 +26,7 @@ class Controller_Cms_Group_View extends Controller_Cms_Group
 
 	public function action_list_roles()
 	{
-		$roles = $this->group->roles( (int) $this->request->query('page_id'));
-
+		$roles = $this->group->getRoles( (int) $this->request->query('page_id'));
 		$roles = json_encode($roles);
 
 		$this->response
