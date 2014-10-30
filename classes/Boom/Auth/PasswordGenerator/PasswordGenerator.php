@@ -2,7 +2,7 @@
 
 namespace Boom\Auth\PasswordGenerator;
 
-abstract class AbstractPasswordGenerator
+abstract class PasswordGenerator
 {
 	public static $default = 'GenPhrase';
 
@@ -10,7 +10,7 @@ abstract class AbstractPasswordGenerator
 	{
 		$driver === null && $driver = static::$default;
 
-		$class = "PasswordGenerator\\$driver";
+		$class = "\Boom\Auth\PasswordGenerator\\$driver";
 		return new $class;
 	}
 

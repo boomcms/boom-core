@@ -5,18 +5,19 @@ function boomPerson(person_id) {
 
 	boomPerson.prototype.add = function() {
 		var deferred = new $.Deferred(),
-			person = this;
+			person = this,
+			dialog;
 
-		new boomDialog({
+		dialog = new boomDialog({
 			url : this.base_url + 'add',
 			width: 'auto',
 			title : 'Create new person'
 		})
 		.done(function() {
-			var data = $(this).find('form').serialize();
+			var data = dialog.contents.find('form').serialize();
 
 			person.addWithData(data)
-				.done(function() {
+				.done(function(response) {
 					deferred.resolve();
 				})
 				.fail(function() {

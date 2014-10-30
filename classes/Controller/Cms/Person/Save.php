@@ -1,5 +1,9 @@
 <?php
 
+use Boom\Auth\PasswordGenerator\PasswordGenerator;
+use Boom\Group;
+use Boom\Person;
+
 class Controller_Cms_Person_Save extends Controller_Cms_Person
 {
 	public function before()
@@ -12,18 +16,17 @@ class Controller_Cms_Person_Save extends Controller_Cms_Person
 	public function action_add()
 	{
 		$password = PasswordGenerator::factory()->get_password();
-		$enc_password = $this->auth->hash($password);
-
-		$this->edit_person->set('password', $enc_password);
+		$encPassword = $this->auth->hash($password);
 
 		$this->edit_person
-			->values($this->request->post(), array('name', 'email'))
-			->create()
-			->add_group($this->request->post('group_id'));
+			->setName($this->request->post('name'))
+			->setEmail($this->request->post('email'))
+			->setEncryptedPassword($encPassword)
+			->save()
+			->addGroup(Group\Factory::byId($this->request->post('group_id')));
 
-		if (isset($password))
-		{
-			$email = new Email_Newuser($this->edit_person, $password, $this->request);
+		if (isset($password)) {
+			$email = new Boom\Email\Newuser($this->edit_person, $password, $this->request);
 			$email->send();
 		}
 	}
@@ -41,30 +44,12 @@ class Controller_Cms_Person_Save extends Controller_Cms_Person
 
 	public function action_delete()
 	{
-		if ($person_ids = $this->request->post('people'))
-		{
-			foreach ($person_ids as $person_id)
-			{
-				$this->edit_person
-					->where('id', '=', $person_id)
-					->find();
+		foreach ($this->request->post('people') as $personId) {
+			$person = Person\Factory::byId($personId);
 
-				if ($this->edit_person->loaded())
-				{
-					$this->_do_delete();
-				}
-			}
+			$this->log("Deleted person with email address: " . $person->getEmail());
+			$person->delete();
 		}
-		else
-		{
-			$this->_do_delete();
-		}
-	}
-
-	protected function _do_delete()
-	{
-		$this->log("Deleted person with email address: ".$this->edit_person->email);
-		$this->edit_person->delete();
 	}
 
 	public function action_remove_group()

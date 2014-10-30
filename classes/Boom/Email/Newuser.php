@@ -1,52 +1,61 @@
 <?php
 
-class Boom_Email_Newuser
+namespace Boom\Email;
+
+use Arr;
+use Email;
+use Kohana;
+use Request;
+use View;
+use Boom\Person;
+
+class Newuser
 {
 	/**
 	 *
 	 * @var array
 	 */
-	protected $_config;
+	protected $config;
 
 	/**
 	 *
 	 * @var string
 	 */
-	protected $_password;
+	protected $password;
 
 	/**
 	 *
 	 * @var Model_Person
 	 */
-	protected $_person;
+	protected $person;
 
 	/**
 	 *
 	 * @var Request
 	 */
-	protected $_request;
+	protected $request;
 
 	/**
 	 *
 	 * @var string
 	 */
-	protected $_view_filename = 'boom/email/newuser';
+	protected $viewFilename = 'boom/email/newuser';
 
-	public function __construct(Model_Person $person, $password, Request $request)
+	public function __construct(Person $person, $password, Request $request)
 	{
-		$this->_person = $person;
-		$this->_password = $password;
-		$this->_request = $request;
-		$this->_config = Kohana::$config->load('boom')->as_array();
+		$this->person = $person;
+		$this->password = $password;
+		$this->request = $request;
+		$this->config = Kohana::$config->load('boom')->as_array();
 	}
 
 	protected function _get_content()
 	{
-		return View::factory($this->_view_filename, array(
-			'password' => $this->_password,
-			'person' => $this->_person,
-			'request' => $this->_request,
-			'site_name' =>Arr::get($this->_config, 'site_name'),
+		return View::factory($this->viewFilename, array(
+			'password' => $this->password,
+			'person' => $this->person,
+			'request' => $this->request,
+			'site_name' =>Arr::get($this->config, 'site_name'),
 		));
 	}
 
@@ -58,10 +67,10 @@ class Boom_Email_Newuser
 	protected function _send($content)
 	{
 		Email::factory('CMS Account Created')
-			->to($this->_person->email)
-			->from(Arr::get($this->_config, 'support_email'))
+			->to($this->person->getEmail())
+			->from(Arr::get($this->config, 'support_email'))
 			->message(View::factory('boom/email', array(
-				'request' => $this->_request,
+				'request' => $this->request,
 				'content' => $content,
 			)), 'text/html')
 			->send();

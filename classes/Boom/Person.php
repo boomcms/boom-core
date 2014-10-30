@@ -2,10 +2,10 @@
 
 namespace Boom;
 
-use Boom\Group as Group;
-use Boom\Page\Page as Page;
+use Boom\Group;
+use Boom\Page\Page;
 
-use \DB as DB;
+use \DB;
 use \Model_Role as Role;
 
 class Person
@@ -21,7 +21,7 @@ class Person
 		$this->model = $model;
 	}
 
-	public function addGroup(Group $group)
+	public function addGroup(Group\Group $group)
 	{
 		$this->model->add('groups', $group->getId());
 
@@ -33,6 +33,15 @@ class Person
 					->where('group_id', '=', $group->getId())
 				)
 			->execute();
+
+		return $this;
+	}
+
+	public function delete()
+	{
+		if ($this->loaded()) {
+			$this->model->delete();
+		}
 
 		return $this;
 	}
@@ -135,7 +144,7 @@ class Person
 		return $this;
 	}
 
-	public function removeGroup(Group $group)
+	public function removeGroup(Group\Group $group)
 	{
 		$this->model->remove('groups', $group->getId());
 
@@ -143,6 +152,53 @@ class Person
 			->where('group_id', '=', $group->getId())
 			->where('person_id', '=', $this->getId())
 			->execute();
+
+		return $this;
+	}
+
+	/**
+	 *
+	 * @return \Boom\Person
+	 */
+	public function save()
+	{
+		$this->model->loaded()? $this->model->update() : $this->model->create();
+
+		return $this;
+	}
+
+	/**
+	 * 
+	 * @param string $email
+	 * @return \Boom\Person
+	 */
+	public function setEmail($email)
+	{
+		$this->model->email = $email;
+
+		return $this;
+	}
+
+	/**
+	 * 
+	 * @param string $password
+	 * @return \Boom\Person
+	 */
+	public function setEncryptedPassword($password)
+	{
+		$this->model->password = $password;
+
+		return $this;
+	}
+
+	/**
+	 *
+	 * @param string $name
+	 * @return \Boom\Person
+	 */
+	public function setName($name)
+	{
+		$this->model->name = $name;
 
 		return $this;
 	}

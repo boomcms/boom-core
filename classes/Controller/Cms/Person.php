@@ -1,5 +1,7 @@
 <?php
 
+use Boom\Person;
+
 class Controller_Cms_Person extends Controller_Cms_PeopleManager
 {
 	/**
@@ -23,6 +25,6 @@ class Controller_Cms_Person extends Controller_Cms_PeopleManager
 	{
 		parent::before();
 
-		$this->edit_person = new Model_Person($this->request->param('id'));
+		$this->edit_person = Person\Factory::byId($this->request->param('id'));
 	}
 }
