@@ -28,26 +28,26 @@ class Task_Boom_Createrootpage extends Minion_Task
 
 		$page = ORM::factory('Page')
 			->values(array(
-				'visible_from'				=>	time(),
+				'visible_from' => time(),
 			))
 			->set('id', 5)
 			->create();
 		
 		ORM::factory('Page_Version')
 			->values(array(
-				'page_id'		=>	$page->getId(),
+				'page_id'		=>	$page->id,
 				'template_id'	=>	$template->id,
 				'title'			=>	'Untitled',
 			))
 			->create();
 			
-		$page->mptt->id = $page->getId();
+		$page->mptt->id = $page->id;
 		$page->mptt->make_root();
 
 		ORM::factory('Page_URL')
 			->values(array(
 				'location'		=>	$uri,
-				'page_id'		=>	$page->getId(),
+				'page_id'		=>	$page->id,
 				'is_primary'	=>	true,
 			))
 			->create();		
