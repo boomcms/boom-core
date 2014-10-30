@@ -21,13 +21,13 @@ class Controller_Cms_Group_Save extends Controller_Cms_Group
 
 	public function action_add_role()
 	{
-		$this->log("Edited the roles of group ".$this->group->name);
-		$this->group->add_role($this->request->post('role_id'), $this->request->post('allowed'), (int) $this->request->post('page_id'));
+		$this->log("Edited the roles of group ".$this->group->getName());
+		$this->group->addRole($this->request->post('role_id'), $this->request->post('allowed'), (int) $this->request->post('page_id'));
 	}
 
 	public function action_delete()
 	{
-		$this->log("Deleted group ".$this->group->name);
+		$this->log("Deleted group ".$this->group->getName());
 		$this->group->delete();
 	}
 
@@ -39,10 +39,10 @@ class Controller_Cms_Group_Save extends Controller_Cms_Group
 
 	public function action_save()
 	{
-		$this->log("Edited group " . $this->group->name . " (ID: " . $this->group->id . ")");
+		$this->log("Edited group " . $this->group->getName() . " (ID: " . $this->group->getId() . ")");
 
 		$this->group
-			->set('name', $this->request->post('name'))
-			->update();
+			->setName($this->request->post('name'))
+			->save();
 	}
 }

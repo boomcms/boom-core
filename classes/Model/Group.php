@@ -13,69 +13,6 @@ class Model_Group extends ORM
 	protected $_table_name = 'groups';
 
 	/**
-	 * Adds a role to the current group.
-	 *
-	 * This will also add the role to all members of the group.
-	 *
-	 *
-	 * @param integer $role_id	ID of the role to add
-	 * @param integer $allowed	Whether the group is allowed or prevented from the role.
-	 * @param integer $page_id	Make the role active at a particular point in the page tree.
-	 *
-	 * @throws InvalidArgumentException When called with a role ID which is not in use.
-	 *
-	 * @return \Boom_Model_Group
-	 */
-	public function add_role($role_id, $allowed, $page_id = 0)
-	{
-		// Check that the role is exists.
-		// Attempt to load the role from the database.
-		$role = ORM::factory('Role', $role_id);
-
-		// If the role wasn't found then it's not a valid role ID.
-		if ( ! $role->loaded())
-		{
-			// Throw an exception.
-			throw new InvalidArgumentException("Argument 1 to ".__CLASS__."::".__METHOD__." must be a valid role ID. Called with $role_id which doesn't exist.");
-		}
-
-		// Check that the group doesn't already have this role before continuing.
-		if ( ! $this->has_role($role_id, $page_id))
-		{
-			// Create a relationship with the role.
-			// Don't use [ORM::add()] because we want to store the value of $allowed as well.
-			DB::insert('group_roles', array('group_id', 'role_id', 'allowed', 'page_id'))
-				->values(array($this->id, $role_id, $allowed, $page_id))
-				->execute($this->_db);
-
-			// If the page ID is isn't set the set it to a string with '0' as the contents
-			// otherwise it won't be included in the DB::select()
-			if ($page_id)
-			{
-				DB::insert('people_roles', array('person_id', 'group_id', 'role_id', 'allowed', 'page_id'))
-					->select(
-						DB::select('person_id', 'group_id', DB::expr($role_id), DB::expr($allowed), DB::expr($page_id))
-							->from('people_groups')
-							->where('group_id', '=', $this->id)
-					)
-					->execute($this->_db);
-			}
-			else
-			{
-				DB::insert('people_roles', array('person_id', 'group_id', 'role_id', 'allowed'))
-					->select(
-						DB::select('person_id', 'group_id', DB::expr($role_id), DB::expr($allowed))
-							->from('people_groups')
-							->where('group_id', '=', $this->id)
-					)
-					->execute($this->_db);
-			}
-		}
-
-		return $this;
-	}
-
-	/**
 	 * Delete a group.
 	 *
 	 * Groups are not really deleted.
@@ -108,35 +45,6 @@ class Model_Group extends ORM
 
 		// Return a cleared group model.
 		return $this->clear();
-	}
-
-	/**
-	 * Determines whether the current group has a specified role allowed / denied.
-	 *
-	 * ORM::has() doesn't work for this since we also have to take into account the page ID, if one is given.
-	 *
-	 * @param integer $role_id
-	 * @param integer $page_id
-	 * @return boolean
-	 */
-	public function has_role($role_id, $page_id = 0)
-	{
-		// If the group isn't loaded then it can't have the role.
-		if ( ! $this->_loaded)
-		{
-			return false;
-		}
-
-		$result = DB::select(DB::expr(1))
-			->from('group_roles')
-			->where('group_id', '=', $this->id)
-			->where('role_id', '=', $role_id)
-			->where('page_id', '=', $page_id)
-			->execute($this->_db)
-			->as_array();
-
-		// The group has the role if a result was returned.
-		return (count($result) > 0);
 	}
 
 	/**
