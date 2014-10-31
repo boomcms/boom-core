@@ -15,7 +15,6 @@ function boomAssetPicker(currentAssetId) {
 	};
 
 	boomAssetPicker.prototype.assetsUploaded = function(assetIds) {
-		console.log(assetIds);
 		if (assetIds.length === 1) {
 			this.pick(assetIds[0]);
 		} else {

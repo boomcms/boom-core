@@ -1,10 +1,18 @@
 $.widget('boom.assetManager', {
-	baseUrl : '/cms/assets/',
-	filters : {},
+	listUrl : '/cms/assets/list',
+	filters : {
+		page : 1
+	},
+
 	selected : [],
 
 	tag : 0,
 	sortby : '',
+
+	addFilter : function(type, value) {
+		this.filters.page = 1;
+		this.filters[type] = value;
+	},
 
 	bind : function() {
 		this.bindContentArea();
@@ -20,16 +28,16 @@ $.widget('boom.assetManager', {
 			})
 			.on('change', '#b-assets-types', function(event) {
 				if (this.selectedIndex) {
-					assetManager.filterByType(this.options[this.selectedIndex].innerHTML);
+					assetManager.addFilter('type', this.options[this.selectedIndex].innerHTML);
 				} else {
-					assetManager.filterByType();
+					assetManager.addFilter('type', '');
 				}
 
 			})
 			.on('click', '#b-assets-all', function(event) {
 				//assetManager.removeFilters();
 				$.boom.history.load('');
-				assetManager.listAssets();
+				assetManager.getAssets();
 			})
 			.on('click', '.thumb a', function(event) {
 				event.preventDefault();
@@ -58,7 +66,7 @@ $.widget('boom.assetManager', {
 			.find('#b-assets-filter-title')
 			.assetTitleFilter({
 				select : function(event, ui) {
-					assetManager.filterByTitle(ui.item.value);
+					assetManager.addFilter('title', ui.item.value);
 					$(".ui-menu-item").hide();
 				}
 			});
@@ -87,7 +95,7 @@ $.widget('boom.assetManager', {
 
 				asset.delete()
 					.done(function() {
-						assetManager.listAssets();
+						assetManager.getAssets();
 						assetManager.clearSelection();
 				});
 			})
@@ -135,18 +143,6 @@ $.widget('boom.assetManager', {
 			});
 	},
 
-	buildUrl : function(){
-		var params = 'tag=' + this.tag_id + '&' +'sortby=' + this.sortby;
-
-		for (var filter in this.filters) {
-			if (this.filters[filter]) {
-				params += '&' + filter + '=' + this.filters[filter];
-			}
-		}
-
-		return this.baseUrl + 'list' + '?' + params;
-	},
-
 	clearSelection : function() {
 		this.selected = [];
 		this.toggleButtons();
@@ -157,27 +153,14 @@ $.widget('boom.assetManager', {
 	_create : function() {
 		this.menu = this.element.find('#b-topbar');
 		this.bind();
-		this.route();
 
-		this.filters = this.options.filters? this.options.filters : this.filters;
-
-		this.listAssets();
+		this.getAssets();
 	},
 
-	filterByType : function(type) {
-		this.filters.type = type;
-		this.listAssets();
-	},
-
-	filterByTitle : function(title) {
-		this.filters.title = title;
-		this.listAssets();
-	},
-
-	listAssets : function() {
+	getAssets : function() {
 		var assetManager = this;
 
-		$.get(this.buildUrl())
+		$.post(this.listUrl, this.filters)
 			.done(function(response) {
 				assetManager.showContent(response);
 			});
@@ -221,7 +204,7 @@ $.widget('boom.assetManager', {
 						});
 					},
 					done : function(e, data) {
-						assetManager.listAssets();
+						assetManager.getAssets();
 						uploaded.resolve(data);
 					}
 				});
@@ -260,7 +243,7 @@ $.widget('boom.assetManager', {
 		$title.val($title.attr('placeholder'));
 
 		this.removeTagFilters();
-		this.listAssets();
+		this.getAssets();
 	},
 
 	removeTagFilters : function() {
@@ -275,32 +258,6 @@ $.widget('boom.assetManager', {
 			.end()
 			.find('.b-tags-list li')
 			.remove();
-	},
-
-	route : function() {
-		var self = this;
-
-		$.boom.history.route(
-			function(segments){
-				segments = segments.split('/');
-
-				var
-					item = segments[0],
-					id = segments[1],
-					asset = new boomAsset(id);
-
-				if (item == 'asset' && id) {
-					return asset
-						.get()
-						.done(function(response) {
-							self.showContent(response);
-						});
-				}
-			},
-			function() {
-				self.listAssets();
-			}
-		);
 	},
 
 	select : function(asset_id) {
@@ -320,53 +277,24 @@ $.widget('boom.assetManager', {
 		this.toggleButtons();
 		var $content = $(content),
 			assetManager = this;
-
-		var id = $($content.get(0)).attr('id');
-		var pagination = $content.get(2);
-		var stats = $content.get(4);
-
-		if (id == 'b-assets-content') {
-			$('#b-assets-content')
-				.replaceWith($content.get(0))
-				.ui();
-		} else {
-			$('#b-assets-content')
-				.html($content.get(0))
-				.ui();
-		}
+console.log(content);
+		$("#b-assets-view-thumbs").replaceWith($content.find('#b-assets-view-thumbs'));
 		$('#b-assets-view-thumbs').justifyAssets();
-
-
-		if (pagination) {
-			$('#b-assets-pagination').replaceWith(pagination);
-			$('#b-assets-pagination')
-				.jqPagination({
-					paged: function(page) {
-						$.get(assetManager.baseUrl + 'list?')
-							.done(function(data) {
-								assetManager.showContent(data);
-							});
-					}
-				});
-
-			$('#b-assets-filters').show();
-			$('#b-assets-buttons').show();
-		} else {
-			$('#b-assets-pagination').contents().remove();
-			$('#b-assets-filters').hide();
-			$('#b-assets-buttons').hide();
-		}
-
-		if (stats) {
-			$('#b-assets-stats').replaceWith(stats);
-		} else {
-			$('#b-assets-stats').contents().remove();
-		}
+		$('#b-assets-pagination')
+			.replaceWith($content[2])
+			.jqPagination({
+				paged: function(page) {
+					$.get(assetManager.baseUrl + 'list?')
+						.done(function(data) {
+							assetManager.showContent(data);
+						});
+				}
+			});
 	},
 
 	sortBy : function(sort) {
 		this.sortby = sort;
-		this.listAssets();
+		this.getAssets();
 	},
 
 	toggleButtons : function() {
