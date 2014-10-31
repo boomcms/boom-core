@@ -12,7 +12,7 @@
 			<?= \Boom\UI::button('cancel', __('Clear Selection'), array('id' => 'b-button-multiaction-clear', 'disabled' => 'disabled')) ?>
 		</div>
 
-		<div id="b-assets-pagination"></div>
+		<div id="b-assets-pagination" class="pagination"></div>
 	</div>
 
 	<div id="b-assets-filters">
@@ -44,5 +44,7 @@
 			), 'last_modified-desc', array('id' => 'b-assets-sortby'))
 		?>
 	</div>
-	<div id="b-assets-content"></div>
+	<div id="b-assets-content">
+		<div id="b-assets-view-thumbs"></div>
+	</div>
 </div>

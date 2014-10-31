@@ -161,7 +161,33 @@ $.widget('boom.assetManager', {
 
 		$.post(this.listUrl, this.filters)
 			.done(function(response) {
-				assetManager.showContent(response);
+				var $response = $(response);
+
+				assetManager.element
+					.find('#b-assets-view-thumbs')
+					.replaceWith($response.find('#b-assets-view-thumbs'))
+					.justifyAssets();
+
+				assetManager.element.find('.pagination').replaceWith($response[2]);
+				assetManager.initPagination();
+			});
+	},
+
+	getPage : function(page) {
+		if (this.filters.page !== page) {
+			this.addFilter('page', page);
+			this.getAssets();
+		}
+	},
+
+	initPagination : function() {
+		var assetManager = this;
+
+		assetManager.element.find('.pagination')
+			.jqPagination({
+				paged: function(page) {
+					assetManager.getPage(page);
+				}
 			});
 	},
 
