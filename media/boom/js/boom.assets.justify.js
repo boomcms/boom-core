@@ -22,30 +22,32 @@ $.widget('boom.justifyAssets', {
 		var prevRow;
 		var self = this;
 
-		this.$el.children().each(function(index, element) {
-			var $child = $(element);
-			$child.offset = self._getOffset($child);
+		if (this.$el.children().length) {
+			this.$el.children().each(function(index, element) {
+				var $child = $(element);
+				$child.offset = self._getOffset($child);
 
-			if ( ! $child.css('height') || ! $child.attr('data-aspect-ratio')) {
-				$child.remove();
-				return true;
+				if ( ! $child.css('height') || ! $child.attr('data-aspect-ratio')) {
+					$child.remove();
+					return true;
+				}
+
+				prevRow = jQuery.extend({}, currentRow);
+				currentRow.addElementToRow($child);
+
+				if (currentRow.isAtStart() && index > 0) {
+					prevRow.expandTo(self.targetRightOffset);
+				}
+
+			});
+
+			var lastRowGap = currentRow.determineGap(this.targetRightOffset);
+
+			if (lastRowGap <= (this.$el.outerWidth(true) * 0.75)) {
+				currentRow.expandTo(self.targetRightOffset);
+			} else {
+				prevRow.merge(currentRow);
 			}
-
-			prevRow = jQuery.extend({}, currentRow);
-			currentRow.addElementToRow($child);
-
-			if (currentRow.isAtStart() && index > 0) {
-				prevRow.expandTo(self.targetRightOffset);
-			}
-
-		});
-
-		var lastRowGap = currentRow.determineGap(this.targetRightOffset);
-
-		if (lastRowGap <= (this.$el.outerWidth(true) * 0.75)) {
-			currentRow.expandTo(self.targetRightOffset);
-		} else {
-			prevRow.merge(currentRow);
 		}
 	},
 
