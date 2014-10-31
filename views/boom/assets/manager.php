@@ -1,8 +1,8 @@
 <div id="b-assets-manager">
-	<div id="b-topbar" class="b-asset-manager b-toolbar">
-		<?= \Boom\UI::menuButton() ?>
-		<?= new \Boom\Menu\Menu  ?>
+	<?= \Boom\UI::menuButton() ?>
+	<?= new \Boom\Menu\Menu  ?>
 
+	<div id="b-topbar" class="b-asset-manager b-toolbar">
 		<div id="b-assets-buttons">
 			<?= \Boom\UI::button('upload', __('Upload files'), array('id' => 'b-assets-upload')) ?>
 			<?= \Boom\UI::button('edit', __('View').' / '.__('Edit'), array('id' => 'b-button-multiaction-edit', 'disabled' => 'disabled')) ?>
