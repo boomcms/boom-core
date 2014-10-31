@@ -130,6 +130,11 @@ abstract class Asset
 		return $this->model->filename;
 	}
 
+	public function getThumbnailAssetId()
+	{
+		return $this->model->thumbnail_asset_id;
+	}
+
 	public function getTitle()
 	{
 		return $this->model->title;

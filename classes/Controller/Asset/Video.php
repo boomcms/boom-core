@@ -21,7 +21,7 @@ class Controller_Asset_Video extends Controller_Asset
 
 	public function action_thumb()
 	{
-		$filename = ($this->asset->thumbnail_asset_id)?
+		$filename = ($this->asset->getThumbnailAssetId())?
 			$this->asset->thumbnail->getFilename() :
 			MODPATH.'boom/media/boom/img/icons/40x40/mov_icon.gif';
 

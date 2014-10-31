@@ -44,7 +44,7 @@
 
 				<? if ( ! $asset instanceof \Boom\Asset\Type\Image): ?>
 					<label for="thumbnail">Thumbnail asset ID
-						<input type="text" id="thumbnail" name="thumbnail_asset_id" value="<?= $asset->thumbnail_asset_id ?>" size="4" />
+						<input type="text" id="thumbnail" name="thumbnail_asset_id" value="<?= $asset->getThumbnailAssetId() ?>" size="4" />
 					</label>
 				<? endif ?>
 			</div>
