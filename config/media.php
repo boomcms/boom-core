@@ -59,7 +59,6 @@ return array(
 		'boom/tagAutocompleter.js',
 		'boom/templates.js',
 		'boom/models/asset.js',
-		'boom/ui/assetEditor.js',
 		'boom/ui/assetManager.js',
 		'boom/ui/assetPicker.js',
 		'boom/ui/assetTitleFilter.js',

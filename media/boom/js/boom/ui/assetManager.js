@@ -316,6 +316,11 @@ $.widget('boom.assetManager', {
 			.on('click', '.b-assets-download', function(e) {
 				e.preventDefault();
 				asset.download();
-			});
+			})
+			.find('#b-tags')
+			.tagger({
+				type: 'asset',
+				id: asset.id
+			})
 	}
 });
