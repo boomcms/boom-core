@@ -242,7 +242,8 @@ $.widget('boom.assetManager', {
 
 		dialog = new boomDialog({
 			title : 'Edit Asset',
-			url : this.baseUrl + 'view/' + assetId
+			url : this.baseUrl + 'view/' + assetId,
+			width: document.documentElement.clientWidth >= 1000? '1000px' : '100%',
 		})
 		.done(function() {
 			asset
