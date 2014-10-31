@@ -68,10 +68,12 @@ function boomPerson(person_id) {
 
 			confirmation
 				.done(function() {
-					$.boom.post(person.base_url + 'delete/' + person.id)
-						.done(function() {
-							deferred.resolve();
-						});
+					$.boom.post(person.base_url + 'delete', {
+						people : [person.id]
+					})
+					.done(function() {
+						deferred.resolve();
+					});
 				});
 
 		return deferred;

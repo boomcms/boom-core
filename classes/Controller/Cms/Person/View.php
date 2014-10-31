@@ -33,10 +33,10 @@ class Controller_Cms_Person_View extends Controller_Cms_Person
 		}
 
 		$this->template = View::factory($this->viewDirectory."view", array(
-			'person'		=>	$this->edit_person,
-			'request'		=>	$this->request,
-			'activities'	=>	$this->edit_person->logs->order_by('time', 'desc')->limit(50)->find_all(),
-			'groups'		=>	$this->edit_person->groups->order_by('name', 'asc')->find_all(),
+			'person' => $this->edit_person,
+			'request' => $this->request,
+			'groups' => $this->edit_person->getGroups(),
+			'activities' => array(),
 		));
 	}
 }
