@@ -159,8 +159,11 @@ class Controller_Cms_Assets extends Controller_Cms
 		}
 
 		$this->asset
-			->values($this->request->post(), array('title','description','visible_from', 'thumbnail_asset_id', 'credits'))
-			->update();
+			->setTitle($this->request->post('title'))
+			->setDescription($this->request->post('description'))
+			->setVisiblefrom(new DateTime($this->request->post('visible_from')))
+			->setCredits($this->request->post('credits'))
+			->save();
 	}
 
 	public function action_view()

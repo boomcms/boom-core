@@ -175,6 +175,30 @@ abstract class Asset
 
 	/**
 	 *
+	 * @param string $credits
+	 * @return \Boom\Asset
+	 */
+	public function setCredits($credits)
+	{
+		$this->model->credits = $credits;
+
+		return $this;
+	}
+
+	/**
+	 * 
+	 * @param string $description
+	 * @return \Boom\Asset
+	 */
+	public function setDescription($description)
+	{
+		$this->model->description = $description;
+
+		return $this;
+	}
+
+	/**
+	 *
 	 * @param string $filename
 	 * @return \Boom\Asset
 	 */
