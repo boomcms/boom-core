@@ -13,9 +13,6 @@ $.widget('boom.assetEditor', {
 					});
 
 			})
-			.on('click', '.b-assets-download', function(event) {
-				asset.download();
-			})
 			.on('.b-assets-replace', 'click', function(event) {
 				self.
 					upload({

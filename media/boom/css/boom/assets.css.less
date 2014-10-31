@@ -4,6 +4,7 @@
 @import 'assets/upload.less';
 @import 'assets/picker.less';
 @import 'assets/pagination.less';
+@import 'assets/view.less';
 
 #b-assets {
 	&-all {
@@ -12,63 +13,6 @@
 
 		&:hover {
 			background: #555;
-		}
-	}
-
-	&-view {
-		background: #7f7f7f;
-		padding-top: 2em;
-
-		.b-assets-preview, .boom-tabs {
-			display: inline-block;
-			vertical-align: top;
-		}
-
-		.boom-tabs {
-			width: 50%;
-
-			div {
-				width: 100%;
-			}
-		}
-
-		.b-assets-preview {
-			margin: 6px 2em 1em 0.2em;
-
-			&:hover img {
-				border-color: #444;
-			}
-		}
-
-		.ui-dialog-buttonpane {
-			margin: 2em 0 0 0;
-		}
-	}
-
-	&-view {
-		&-thumbs {
-			background: #7f7f7f;
-			width: 100%;
-		}
-
-		/* View asset info list - type, filesize, etc. */
-		dl {min-width: 300px;}
-		dd {margin-left: 150px; }
-		dt {
-			float: left;
-			min-width: 150px;
-			font-weight: bold;
-		}
-		dd, dt {
-			margin-bottom: 1em;
-		}
-
-		textarea {
-			height: 2.6em;
-		}
-
-		.ui-tabs .ui-tabs-panel {
-			padding: 1.8em 1.4em;
 		}
 	}
 

@@ -295,16 +295,27 @@ $.widget('boom.assetManager', {
 		dialog = new boomDialog({
 			title : 'Edit Asset',
 			url : this.baseUrl + 'view/' + assetId
+		})
+		.done(function() {
+			asset
+				.save(dialog.contents.find('form').serialize())
+				.done(function() {
+					new boomNotification("Asset details saved");
+				});
 		});
 
 		dialog.contents
-			.on('click', '.b-assets-delete', function(event) {
+			.on('click', '.b-assets-delete', function() {
 				asset
 					.delete()
 					.done(function() {
 						dialog.close();
 						assetManager.getAssets();
 					});
+			})
+			.on('click', '.b-assets-download', function(e) {
+				e.preventDefault();
+				asset.download();
 			});
 	}
 });
