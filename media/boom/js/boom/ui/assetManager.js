@@ -36,7 +36,6 @@ $.widget('boom.assetManager', {
 			})
 			.on('click', '#b-assets-all', function(event) {
 				//assetManager.removeFilters();
-				$.boom.history.load('');
 				assetManager.getAssets();
 			})
 			.on('click', '.thumb a', function(event) {
@@ -102,14 +101,14 @@ $.widget('boom.assetManager', {
 			.on('click', '#b-button-multiaction-edit', function() {
 				var asset = new boomAsset(assetManager.selected.join('-'));
 
-				$.boom.history.load('asset/' + assetManager.selected.join('-'))
-					.done(function(response) {
-						assetManager.showContent(response);
-
-						$('#b-assets-content').asset({
-							asset_id : asset.id
-						});
-					});
+//				$.boom.history.load('asset/' + assetManager.selected.join('-'))
+//					.done(function(response) {
+//						assetManager.showContent(response);
+//
+//						$('#b-assets-content').asset({
+//							asset_id : asset.id
+//						});
+//					});
 
 				assetManager.clearSelection();
 			})

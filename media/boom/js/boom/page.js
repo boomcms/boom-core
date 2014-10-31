@@ -111,7 +111,7 @@ function boomPage(page_id) {
 
 				$.post('/cms/page/stash/' + page_id)
 					.done(function(response) {
-						$.boom.history.refresh();
+						top.window.reload();
 					});
 			});
 	};

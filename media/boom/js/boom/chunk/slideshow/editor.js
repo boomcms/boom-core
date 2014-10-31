@@ -73,9 +73,6 @@ function boomChunkSlideshowEditor(page_id, slotname) {
 
 				$new_slide.find('input').attr('checked', true);
 				slideshowEditor.editSlide({asset_id : asset_id});
-			})
-			.always(function() {
-				$.boom.history.load( '' );
 			});
 	};
 

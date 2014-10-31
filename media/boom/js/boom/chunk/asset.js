@@ -103,9 +103,6 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 			})
 			.fail( function() {
 				self.remove();
-			})
-			.always( function(){
-				$.boom.history.load( '' );
 			});
 	},
 

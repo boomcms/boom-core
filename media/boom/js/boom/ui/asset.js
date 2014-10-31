@@ -18,17 +18,13 @@ $.widget('boom.asset', {
 			})
 			.on('click', '.b-assets-back', function(event) {
 				event.preventDefault();
-				$.boom.history.load('');
 			})
 			.on('click', '.b-assets-delete', function(event) {
 				event.preventDefault();
 				event.stopPropagation();
 
 				asset
-					.delete()
-					.done(function() {
-						$.boom.history.load('');
-					});
+					.delete();
 
 				return false;
 			})
@@ -43,7 +39,6 @@ $.widget('boom.asset', {
 						}]
 					})
 					.done(function(data) {
-						$.boom.history.refresh();
 						new boomNotification('Asset updated');
 					});
 			})
