@@ -33,9 +33,10 @@ $.widget('boom.assetManager', {
 					assetManager.addFilter('type', '');
 				}
 
+				assetManager.getAssets();
 			})
 			.on('click', '#b-assets-all', function(event) {
-				//assetManager.removeFilters();
+				assetManager.removeFilters();
 				assetManager.getAssets();
 			})
 			.on('click', '.thumb a', function(event) {
@@ -64,23 +65,23 @@ $.widget('boom.assetManager', {
 		this.titleFilter = this.element
 			.find('#b-assets-filter-title')
 			.assetTitleFilter({
+				search : function(event, ui) {
+					assetManager.addFilter('title', $(this).val());
+					assetManager.getAssets();
+				},
 				select : function(event, ui) {
 					assetManager.addFilter('title', ui.item.value);
-					$(".ui-menu-item").hide();
+					assetManager.getAssets();
 				}
 			});
 
 
 		var selected_tag_ids = [];
 		this.element.find('#b-tags-search')
-			.tagger_search()
-			.find('input')
-			.tagAutocompleter({
-				type : 1,
-				complete : function(event, data) {
-					selected_tag_ids.push(data.id);
-					$(this).tagAutocompleter('setSelectedTags', selected_tag_ids);
-					$('#b-tags-search').tagger_search('add', data.name, data.id);
+			.tagger_search({
+				update : function(tagIds) {
+					assetManager.addFilter('tag', tagIds);
+					assetManager.getAssets();
 				}
 			});
 	},
@@ -262,6 +263,10 @@ $.widget('boom.assetManager', {
 	},
 
 	removeFilters : function() {
+		this.filters = {
+			page : 1
+		};
+
 		this.element.find('#b-assets-types').val(0);
 
 		var $title = this.element.find('#b-assets-filter-title');

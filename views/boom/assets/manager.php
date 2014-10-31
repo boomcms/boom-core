@@ -27,7 +27,6 @@
 		<?= Form::select('types', array_merge(array('0' => 'Filter by type'), \Boom\Asset\Type::whichExist()), null, array('id' => 'b-assets-types')) ?>
 
 		<div id='b-tags-search'>
-			<span class="ui-icon ui-icon-boom-tag"></span>
 			<input type='text' class="b-filter-input" placeholder="Type a tag name" value="Type a tag name" />
 			<ul class="b-tags-list">
 			</ul>
