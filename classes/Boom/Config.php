@@ -2,7 +2,7 @@
 
 namespace Boom;
 
-use \Kohana as Kohana;
+use \Kohana;
 
 abstract class Config
 {
@@ -10,6 +10,6 @@ abstract class Config
 
 	public static function get($key)
 	{
-
+		return Kohana::$config->load(static::$configGroup)->get($key);
 	}
 }
