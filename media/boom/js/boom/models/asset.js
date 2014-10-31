@@ -11,10 +11,12 @@ function boomAsset(asset_id) {
 
 		confirmation = new boomConfirmation('Please confirm', message);
 		confirmation.done(function() {
-			$.boom.post(asset.base_url + 'delete/' + asset.id)
-				.done(function() {
-					deleted.resolve();
-				});
+			$.boom.post(asset.base_url + 'delete', {
+				assets : asset.id.split('-')
+			})
+			.done(function() {
+				deleted.resolve();
+			});
 		});
 
 		return deleted;

@@ -75,8 +75,6 @@ $.widget('boom.assetManager', {
 				}
 			});
 
-
-		var selected_tag_ids = [];
 		this.element.find('#b-tags-search')
 			.tagger_search({
 				update : function(tagIds) {
@@ -272,22 +270,7 @@ $.widget('boom.assetManager', {
 		var $title = this.element.find('#b-assets-filter-title');
 		$title.val($title.attr('placeholder'));
 
-		this.removeTagFilters();
 		this.getAssets();
-	},
-
-	removeTagFilters : function() {
-		this.tag.filters = {};
-
-		$('#b-tags-search')
-			.find('.b-filter-input')
-			.each(function() {
-				var $this = $(this);
-				$this.val($this.attr('placeholder'));
-			})
-			.end()
-			.find('.b-tags-list li')
-			.remove();
 	},
 
 	select : function(asset_id) {

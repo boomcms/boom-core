@@ -1,6 +1,6 @@
 <?php
 
-namespace Boom\Assets\Delete;
+namespace Boom\Asset\Delete;
 
 class FromDatabase extends \Boom\Asset\Command
 {

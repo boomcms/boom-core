@@ -31,29 +31,21 @@ class Controller_Cms_Assets extends Controller_Cms
 	{
 		$this->_csrf_check();
 
-		if ($this->asset->loaded()) {
-			$this->_deleteAsset($this->asset);
+		$assetIds = array_unique((array) $this->request->post('assets'));
+
+		foreach ($assetIds as $assetId) {
+			$asset = \Boom\Asset\Finder::byId($assetId);
+
+			$commander = new \Boom\Asset\Commander($asset);
+			$commander
+				->addCommand(new \Boom\Asset\Delete\CacheFiles)
+				->addCommand(new \Boom\Asset\Delete\OldVersions)
+				->addCommand(new \Boom\Asset\Delete\FromDatabase)
+				->addCommand(new \Boom\Asset\Delete\File)
+				->execute();
+
+			$this->log("Deleted asset {$asset->getTitle()} (ID: {$asset->getId()})");
 		}
-
-		$asset_ids = array_unique((array) $this->request->post('assets'));
-
-		foreach ($asset_ids as $asset_id) {
-			$asset = \Boom\Asset\Finder::byId($asset_id);
-			$this->_deleteAsset($asset);
-
-			$this->log("Deleted asset {$this->asset->getTitle()} (ID: $this->asset->getId())");
-		}
-	}
-
-	protected function _deleteAsset(\Boom\Asset $asset)
-	{
-		$commander = new \Boom\Asset\Commander($asset);
-		$commander
-			->addCommand(new \Boom\Asset\Delete\CacheFiles)
-			->addCommand(new \Boom\Asset\Delete\OldVersions)
-			->addCommand(new \Boom\Asset\Delete\FromDatabase)
-			->addCommand(new \Boom\Asset\Delete\File)
-			->execute();
 	}
 
 	/**
