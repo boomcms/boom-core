@@ -1,4 +1,5 @@
 $.widget('boom.assetManager', {
+	baseUrl : '/cms/assets/',
 	listUrl : '/cms/assets/list',
 	filters : {
 		page : 1
@@ -98,17 +99,7 @@ $.widget('boom.assetManager', {
 				});
 			})
 			.on('click', '#b-button-multiaction-edit', function() {
-				var asset = new boomAsset(assetManager.selected.join('-'));
-
-//				$.boom.history.load('asset/' + assetManager.selected.join('-'))
-//					.done(function(response) {
-//						assetManager.showContent(response);
-//
-//						$('#b-assets-content').asset({
-//							asset_id : asset.id
-//						});
-//					});
-
+				assetManager.viewAsset(assetManager.selected.join('-'));
 				assetManager.clearSelection();
 			})
 			.on('click', '#b-button-multiaction-download', function() {
@@ -196,7 +187,7 @@ $.widget('boom.assetManager', {
 
 		$.get(this.baseUrl + 'upload')
 			.done(function(response) {
-				assetManager.showContent(response);
+				//assetManager.showContent(response);
 
 				var tags = [],
 					tagged = new $.Deferred();
@@ -285,26 +276,6 @@ $.widget('boom.assetManager', {
 		this.toggleButtons();
 	},
 
-	showContent : function(content) {
-		this.selected = [];
-		this.toggleButtons();
-		var $content = $(content),
-			assetManager = this;
-console.log(content);
-		$("#b-assets-view-thumbs").replaceWith($content.find('#b-assets-view-thumbs'));
-		$('#b-assets-view-thumbs').justifyAssets();
-		$('#b-assets-pagination')
-			.replaceWith($content[2])
-			.jqPagination({
-				paged: function(page) {
-					$.get(assetManager.baseUrl + 'list?')
-						.done(function(data) {
-							assetManager.showContent(data);
-						});
-				}
-			});
-	},
-
 	sortBy : function(sort) {
 		this.sortby = sort;
 		this.getAssets();
@@ -314,5 +285,26 @@ console.log(content);
 		var buttons = $('[id|=b-button-multiaction]').not('#b-button-multiaction-edit');
 		$('#b-button-multiaction-edit').button(this.selected.length == 1 ? 'enable' : 'disable');
 		buttons.button(this.selected.length > 0 ? 'enable' : 'disable');
+	},
+
+	viewAsset : function(assetId) {
+		var asset = new boomAsset(assetId),
+			assetManager = this,
+			dialog;
+
+		dialog = new boomDialog({
+			title : 'Edit Asset',
+			url : this.baseUrl + 'view/' + assetId
+		});
+
+		dialog.contents
+			.on('click', '.b-assets-delete', function(event) {
+				asset
+					.delete()
+					.done(function() {
+						dialog.close();
+						assetManager.getAssets();
+					});
+			});
 	}
 });

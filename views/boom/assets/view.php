@@ -11,24 +11,23 @@
 			</a>
 
 			<div class="ui-dialog-buttonpane">
-				<?= \Boom\UI::button('back', __('Back'), array('class' => 'b-assets-back', 'rel' => $asset->getId())) ?>
-				<?= \Boom\UI::button('delete', __('Delete'), array('class' => 'b-assets-delete', 'rel' => $asset->getId())) ?>
-				<?= \Boom\UI::button('download', __('Download'), array('class' => 'b-assets-download', 'rel' => $asset->getId())) ?>
-				<?= \Boom\UI::button('replace', __('Replace'), array('class' => 'b-assets-replace', 'rel' => $asset->getId())) ?>
+				<?= \Boom\UI::button('delete', __('Delete'), array('class' => 'b-assets-delete')) ?>
+				<?= \Boom\UI::button('download', __('Download'), array('class' => 'b-assets-download')) ?>
+				<?= \Boom\UI::button('replace', __('Replace'), array('class' => 'b-assets-replace')) ?>
 			</div>
 		</div>
 
 		<div class="boom-tabs">
 			<ul>
-				<li><a href="#b-assets-view-info<?=$asset->getId();?>"><?=__('Info')?></a></li>
-				<li><a href="#b-assets-view-attributes<?=$asset->getId();?>"><?=__('Attributes')?></a></li>
-				<li class="b-dialog-hidden"><a href="#b-assets-view-tags<?=$asset->getId();?>"><?=__('Tags')?></a></li>
+				<li><a href="#b-assets-view-info<?= $asset->getId() ?>"><?=__('Info')?></a></li>
+				<li><a href="#b-assets-view-attributes<?= $asset->getId() ?>"><?=__('Attributes')?></a></li>
+				<li class="b-dialog-hidden"><a href="#b-assets-view-tags<?= $asset->getId() ?>"><?=__('Tags')?></a></li>
 				<? if (count($asset->getOldFiles()) > 0): ?>
-					<li class="b-dialog-hidden"><a href="#b-assets-view-files<?=$asset->getId();?>"><?=__('Previous Files')?></a></li>
+					<li class="b-dialog-hidden"><a href="#b-assets-view-files<?= $asset->getId() ?>"><?=__('Previous Files')?></a></li>
 				<? endif; ?>
 			</ul>
 
-			<div id="b-assets-view-attributes<?=$asset->getId();?>" class="b-assets-view-attributes ui-helper-left">
+			<div id="b-assets-view-attributes<?= $asset->getId() ?>" class="b-assets-view-attributes ui-helper-left">
 				<label>
 					<?=__('Title')?>
 					<input type="text" id="title" name="title" value="<?= $asset->getTitle() ?>" />

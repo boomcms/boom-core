@@ -1,4 +1,4 @@
-$.widget('boom.asset', {
+$.widget('boom.assetEditor', {
 	bind : function() {
 		var asset = this.asset;
 
@@ -15,18 +15,6 @@ $.widget('boom.asset', {
 			})
 			.on('click', '.b-assets-download', function(event) {
 				asset.download();
-			})
-			.on('click', '.b-assets-back', function(event) {
-				event.preventDefault();
-			})
-			.on('click', '.b-assets-delete', function(event) {
-				event.preventDefault();
-				event.stopPropagation();
-
-				asset
-					.delete();
-
-				return false;
 			})
 			.on('.b-assets-replace', 'click', function(event) {
 				self.
@@ -50,7 +38,7 @@ $.widget('boom.asset', {
 	},
 
 	_create : function() {
-		this.asset = new boomAsset(this.options.asset_id);
+		this.asset = new boomAsset(this.options.assetId);
 
 		this.bind();
 	}
