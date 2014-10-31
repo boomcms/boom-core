@@ -163,6 +163,7 @@ class Controller_Cms_Assets extends Controller_Cms
 			->setDescription($this->request->post('description'))
 			->setVisiblefrom(new DateTime($this->request->post('visible_from')))
 			->setCredits($this->request->post('credits'))
+			->setThumbnailAssetId($this->request->post('thumbnail_asset_id'))
 			->save();
 	}
 

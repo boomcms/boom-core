@@ -240,6 +240,18 @@ abstract class Asset
 
 	/**
 	 *
+	 * @param int $assetId
+	 * @return \Boom\Asset
+	 */
+	public function setThumbnailAssetId($assetId)
+	{
+		$this->model->thumbanil_asset_id = $assetId;
+
+		return $this;
+	}
+
+	/**
+	 *
 	 * @param string $title
 	 * @return \Boom\Asset
 	 */

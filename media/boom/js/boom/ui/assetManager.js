@@ -266,10 +266,18 @@ $.widget('boom.assetManager', {
 				e.preventDefault();
 				asset.download();
 			})
+			.on('focus', '#thumbnail', function() {
+				var $this = $(this),
+					picker;
+				picker = new boomAssetPicker($this.val())
+					.done(function(assetId) {
+						$this.val(assetId);
+					});
+			})
 			.find('#b-tags')
 			.tagger({
 				type: 'asset',
 				id: asset.id
-			})
+			});
 	}
 });
