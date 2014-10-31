@@ -6,19 +6,6 @@ use Boom\Exception;
 class Controller_Cms_Assets_Upload extends Controller_Cms_Assets
 {
 	/**
-	 * Begin asset uploading.
-	 *
-	 * This function handles the first step of the asset upload process.
-	 * A form is displayed allowing the user to select which files they wish to upload.
-	 *
-	 *
-	 */
-	public function action_begin()
-	{
-		$this->template = View::factory("$this->viewDirectory/upload");
-	}
-
-	/**
 	 * Create assets from a file upload.
 	 *
 	 * @uses Model_Asset::create_from_file()

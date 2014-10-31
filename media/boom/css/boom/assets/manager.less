@@ -1,5 +1,5 @@
 #b-assets-manager {
-	background: #7f7f7f;
+	background: @lightest-grey;
 
 	select {
 		margin-left: 20px;
@@ -74,6 +74,24 @@
 					margin-left: 0;
 				}
 			}
+		}
+	}
+
+	#b-assets-upload-form {
+		position: fixed;
+		top: 0;
+		left: 0;
+		bottom: 0;
+		right: 0;
+		z-index: 10;
+		background: @lightest-grey;
+		display: none;
+
+		#b-assets-upload-container {
+			.box-sizing;
+			width: 100%;
+			height: 100%;
+			margin: 0;
 		}
 	}
 }
