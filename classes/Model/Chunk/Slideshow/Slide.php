@@ -32,7 +32,7 @@ class Model_Chunk_Slideshow_Slide extends \ORM
 
 	public function getAsset()
 	{
-		return \Boom\Asset::factory($this->asset);
+		return \Boom\Asset\Factory::fromModel($this->asset);
 	}
 
 	/**

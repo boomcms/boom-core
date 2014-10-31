@@ -10,7 +10,18 @@ function boomAssetPicker(currentAssetId) {
 	boomAssetPicker.prototype.listUrl = '/cms/assets/list';
 
 	boomAssetPicker.prototype.addFilter = function(type, value) {
+		this.filters.page = 1;
 		this.filters[type] = value;
+	};
+
+	boomAssetPicker.prototype.assetsUploaded = function(assetIds) {
+		console.log(assetIds);
+		if (assetIds.length === 1) {
+			this.pick(assetIds[0]);
+		} else {
+			this.clearFilters();
+			this.getAssets();
+		}
 	};
 
 	boomAssetPicker.prototype.bind = function() {
@@ -54,19 +65,15 @@ function boomAssetPicker(currentAssetId) {
 				assetPicker.cancel();
 			})
 			.find('#b-assets-upload-form')
-			.assetUploader()
+			.assetUploader({
+				done : function(e, data) {
+					assetPicker.assetsUploaded(data.result);
+				}
+			})
 			.end()
 			.on('click', '#b-assets-picker-all', function() {
 				assetPicker.clearFilters();
 				assetPicker.getAssets();
-			});
-
-		this.picker
-			.find('.pagination')
-			.jqPagination({
-				paged: function(page) {
-					assetPicker.getPage(page);
-				}
 			});
 	};
 
@@ -94,8 +101,13 @@ function boomAssetPicker(currentAssetId) {
 
 		$.post(this.listUrl, this.filters)
 			.done(function(response) {
-				assetPicker.picker.find('#b-assets-view-thumbs').replaceWith($(response).find('#b-assets-view-thumbs'));
+				var $response = $(response);
+
+				assetPicker.picker.find('#b-assets-view-thumbs').replaceWith($response.find('#b-assets-view-thumbs'));
 				assetPicker.justifyAssets();
+
+				assetPicker.picker.find('.pagination').replaceWith($response[2]);
+				assetPicker.initPagination();
 			});
 	};
 
@@ -110,6 +122,17 @@ function boomAssetPicker(currentAssetId) {
 		this.picker
 			.find('#b-assets-picker-current')
 			.hide();
+	};
+
+	boomAssetPicker.prototype.initPagination = function() {
+		var assetPicker = this;
+
+		assetPicker.picker.find('.pagination')
+			.jqPagination({
+				paged: function(page) {
+					assetPicker.getPage(page);
+				}
+			});
 	};
 
 	boomAssetPicker.prototype.justifyAssets = function() {
@@ -129,6 +152,7 @@ function boomAssetPicker(currentAssetId) {
 
 			assetPicker.bind();
 			assetPicker.justifyAssets();
+			assetPicker.initPagination();
 
 			if (assetPicker.currentAssetId) {
 				assetPicker.picker

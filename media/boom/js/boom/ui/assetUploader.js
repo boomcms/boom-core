@@ -31,19 +31,19 @@ $.widget('boom.assetUploader', {
 		var assetUploader = this;
 
 		this.cancelButton.on('click', function() {
-				assetUploader.fileData.jqXHR && assetUploader.fileData.jqXHR.abort();
+			assetUploader.fileData.jqXHR && assetUploader.fileData.jqXHR.abort();
 
-				$(this).hide();
-				assetUploader.progressBar.progressbar('destroy');
-				assetUploader.notify('Upload was canceled');
-			});
+			$(this).hide();
+			assetUploader.progressBar.progressbar('destroy');
+			assetUploader.notify('Upload was canceled');
+		});
 	},
 
 	_create : function() {
 		this.cancelButton = this.element.find('#b-assets-upload-cancel');
 		this.dropArea = this.element.find('#b-assets-upload-container');
 		this.progressBar = this.element.find('#b-assets-upload-progress');
-		this.uploadForm = this.element.find('#b-assets-upload-form');
+		this.uploadForm = this.element;
 
 		this.options = $.extend({}, this.defaultOptions, this.options);
 

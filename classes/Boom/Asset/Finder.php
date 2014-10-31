@@ -20,13 +20,13 @@ class Finder extends \Boom\Finder
 
 	public static function byId($id)
 	{
-		return Asset::factory(new \Model_Asset($id));
+		return Asset\Factory::fromModel(new \Model_Asset($id));
 	}
 
 	public function find()
 	{
 		$asset = parent::find();
-		return Asset::factory($asset);
+		return Asset\Factory::fromModel($asset);
 	}
 
 	public function findAll()

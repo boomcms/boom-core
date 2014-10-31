@@ -11,7 +11,7 @@ class Result extends \ArrayIterator
 		$results = $results->as_array();
 
 		foreach ($results as &$result) {
-			$result = Asset::factory($result);
+			$result = Asset\Factory::fromModel($result);
 		}
 
 		parent::__construct($results);

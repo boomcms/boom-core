@@ -103,7 +103,8 @@ class Controller_Cms_Assets extends Controller_Cms
 				'assets' => $assets,
 				'total' => $count,
 				'order' =>	 $order,
-				'pages' => $pages
+				'pages' => $pages,
+				'page' => $page
 			));
 		}
 	}
@@ -129,7 +130,8 @@ class Controller_Cms_Assets extends Controller_Cms
 
 		$this->template = new View("$this->viewDirectory/picker", array(
 			'assets' => $assets,
-			'pages' => ceil($totalAssets / $this->perpage)
+			'pages' => ceil($totalAssets / $this->perpage),
+			'page' => 1,
 		));
 	}
 

@@ -134,7 +134,7 @@ class Page implements Taggable
 
 	public function getFeatureImage()
 	{
-		return \Boom\Asset::factory($this->feature_image);
+		return \Boom\Asset\Factory::fromModel($this->feature_image);
 	}
 
 	public function getFeatureImageId()

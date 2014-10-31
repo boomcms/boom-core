@@ -2,7 +2,7 @@
 
 namespace Boom\Asset;
 
-use Boom\Asset\Mimetype as Mimetype;
+use Boom\Exception;
 
 abstract class Mimetype
 {
@@ -43,7 +43,7 @@ abstract class Mimetype
 			return new $classname($mimetype);
 
 		} else {
-			throw new Exception\UnsupportedMimeTypeException;
+			throw new Exception\UnsupportedMimeType($mimetype);
 		}
 	}
 

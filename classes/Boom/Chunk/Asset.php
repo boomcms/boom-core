@@ -17,7 +17,7 @@ class Asset extends \Boom\Chunk
 	{
 		parent::__construct($page, $chunk, $editable);
 
-		$this->_asset = \Boom\Asset::factory($this->_chunk->target);
+		$this->_asset = \Boom\Asset\Factory::fromModel($this->_chunk->target);
 	}
 
 	protected function _show()

@@ -1,5 +1,8 @@
 <?php
 
+use \Boom\Asset;
+use Boom\Exception;
+
 class Controller_Cms_Assets_Upload extends Controller_Cms_Assets
 {
 	/**
@@ -26,50 +29,46 @@ class Controller_Cms_Assets_Upload extends Controller_Cms_Assets
 		$this->_csrf_check();
 
 		$asset_ids = $errors = array();
+		$now = new DateTime('now');
 
 		$this->response->headers('Content-Type', static::JSON_RESPONSE_MIME);
 
-		// Values which will be the same for all of the new assets.
-		$common_values = array(
-			'uploaded_by'	=>	$this->person->getId(),
-			'visible_from'	=>	'now',
-			'last_modified'	=>	$_SERVER['REQUEST_TIME'],
-		);
-
-		foreach ( (array) $_FILES as $files)
-		{
-			// Loop through the files uploaded under this input name.
-			foreach ( (array) $files['tmp_name'] as $i => $filename)
-			{
-				$mime = File::mime($filename);
-				if (\Boom\Asset\Mimetype::isSupported($mime))
-				{
-					$this->asset->values($common_values, array_keys($common_values));
-
-					$this->asset->title = pathinfo($files['name'][$i], PATHINFO_FILENAME);
-					$this->asset->filename = $files['name'][$i];
-					$this->asset->create_from_file($filename);
-
-					$asset_ids[] = $this->asset->getId();
-
-					// Clear the model so that it can be re-used for the next iteration.
-					// This way we don't have to instantiate an asset model for each loop iteration.
-					$this->asset->clear();
+		foreach ( (array) $_FILES as $files) {
+			foreach ( (array) $files['tmp_name'] as $i => $filename) {
+				try {
+					$mime = Asset\Mimetype::factory(File::mime($filename));
+				} catch (Exception\UnsupportedMimeType $e) {
+					$errors[] = "File {$files['name'][$i]} is of an unsuported type: {$e->getMimetype()}";
+					continue;
 				}
-				else
-				{
-					$errors[] = "File {$files['name'][$i]} is of an unsuported type: {$mime}";
+
+				$asset = Asset\Factory::createFromType($mime->getType());
+				$asset
+					->setUploadedBy($this->person)
+					->setVisibleFrom($now)
+					->setLastModified($now)
+					->setTitle(pathinfo($files['name'][$i], PATHINFO_FILENAME))
+					->setFilename($files['name'][$i])
+					->setFilesize(filesize($filename));
+
+				if ($asset instanceof Asset\Type\Image) {
+					list($width, $height) = getimagesize($filename);
+
+					$asset
+						->setWidth($width)
+						->setHeight($height);
 				}
+
+				$asset_ids[] = $asset->save()->getId();
+
+				move_uploaded_file($filename, Asset::directory() . DIRECTORY_SEPARATOR . $asset->getId());
 			}
 
-			if (count($errors))
-			{
+			if (count($errors)) {
 				$this->response
 					->status(500)
 					->body(json_encode($errors));
-			}
-			else
-			{
+			} else {
 				$this->response
 					->body(json_encode($asset_ids));
 			}

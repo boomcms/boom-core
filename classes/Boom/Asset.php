@@ -2,8 +2,8 @@
 
 namespace Boom;
 
-use \DateTime as DateTime;
 use \File as File;
+use DateTime;
 
 abstract class Asset
 {
@@ -28,14 +28,6 @@ abstract class Asset
 	public function exists()
 	{
 		return $this->loaded() && file_exists($this->getFilename());
-	}
-
-	public static function factory(\Model_Asset $asset)
-	{
-		$type = Asset\Type::numericTypeToClass($asset->type)?: 'Invalid';
-		$classname = "\Boom\Asset\\Type\\" . $type;
-
-		return new $classname($asset);
 	}
 
 	public function getAspectRatio()
@@ -168,5 +160,83 @@ abstract class Asset
 	public function loaded()
 	{
 		return $this->model->loaded();
+	}
+
+	/**
+	 *
+	 * @return \Boom\Asset
+	 */
+	public function save()
+	{
+		$this->model->loaded()? $this->model->update() : $this->model->create();
+
+		return $this;
+	}
+
+	/**
+	 *
+	 * @param string $filename
+	 * @return \Boom\Asset
+	 */
+	public function setFilename($filename)
+	{
+		$this->model->filename = $filename;
+
+		return $this;
+	}
+
+	/**
+	 *
+	 * @param float $size
+	 * @return \Boom\Asset
+	 */
+	public function setFilesize($size)
+	{
+		$this->model->filesize = $size;
+
+		return $this;
+	}
+	
+	/**
+	 * 
+	 * @param DateTime $time
+	 * @return \Boom\Asset
+	 */
+	public function setLastModified(DateTime $time)
+	{
+		$this->model->last_modified = $time->getTimestamp();
+
+		return $this;
+	}
+
+	/**
+	 *
+	 * @param string $title
+	 * @return \Boom\Asset
+	 */
+	public function setTitle($title)
+	{
+		$this->model->title = $title;
+
+		return $this;
+	}
+
+	/**
+	 *
+	 * @param \Boom\Person $person
+	 * @return \Boom\Asset
+	 */
+	public function setUploadedBy(Person $person)
+	{
+		$this->model->uploaded_by = $person->getId();
+
+		return $this;
+	}
+
+	public function setVisibleFrom(DateTime $time)
+	{
+		$this->model->visible_from = $time->getTimestamp();
+
+		return $this;
 	}
 }
