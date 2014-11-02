@@ -131,7 +131,7 @@ abstract class Asset
 
     public function getThumbnail()
     {
-        return Asset\Factory::byId($this->getThumbnailAssetId());
+        return Factory::byId($this->getThumbnailAssetId());
     }
 
     public function getTitle()

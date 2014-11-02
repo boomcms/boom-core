@@ -88,7 +88,7 @@ $.widget('boom.assetManager', {
 			});
 
 		this.element.find('#b-tags-search')
-			.tagger_search({
+			.tagger({
 				update : function(tagIds) {
 					assetManager.addFilter('tag', tagIds);
 					assetManager.getAssets();
