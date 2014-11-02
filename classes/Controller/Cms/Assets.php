@@ -24,7 +24,7 @@ class Controller_Cms_Assets extends Controller_Cms
 		parent::before();
 
 		$this->authorization('manage_assets');
-		$this->asset = AssetFinder::byId($this->request->param('id'));
+		$this->asset = Asset\Factory::byId($this->request->param('id'));
 	}
 
 	public function action_delete()
@@ -34,7 +34,7 @@ class Controller_Cms_Assets extends Controller_Cms
 		$assetIds = array_unique((array) $this->request->post('assets'));
 
 		foreach ($assetIds as $assetId) {
-			$asset = \Boom\Asset\Finder::byId($assetId);
+			$asset = Asset\Factory::byId($assetId);
 
 			$commander = new \Boom\Asset\Commander($asset);
 			$commander

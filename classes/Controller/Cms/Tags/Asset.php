@@ -1,6 +1,6 @@
 <?php
 
-use \Boom\Asset\Finder as AssetFinder;
+use \Boom\Asset\Factory as AssetFactory;
 
 class Controller_Cms_Tags_Asset extends Controller_Cms_Tags
 {
@@ -14,7 +14,7 @@ class Controller_Cms_Tags_Asset extends Controller_Cms_Tags
 		}
 
 		$asset_id = (count($this->ids) === 1)? $this->request->param('id') : null;
-		$this->model = AssetFinder::byId($asset_id);
+		$this->model = AssetFactory::byId($asset_id);
 
 		$this->authorization('manage_assets');
 	}

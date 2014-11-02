@@ -20,7 +20,7 @@ class Controller_Cms_Assets_Download extends Controller_Cms_Assets
 
 	public function action_single()
 	{
-		$asset = Finder::byId($this->asset_ids[0]);
+		$asset = Factory::byId($this->asset_ids[0]);
 
 		if ( ! $asset->exists()) {
 			throw new HTTP_Exception_404;
@@ -54,7 +54,7 @@ class Controller_Cms_Assets_Download extends Controller_Cms_Assets
 
 		foreach ($this->asset_ids as $assetId)
 		{
-			$zip->addAsset(Finder::byId($assetId));
+			$zip->addAsset(Factory::byId($assetId));
 		}
 
 		$zip->close();

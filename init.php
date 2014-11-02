@@ -88,7 +88,7 @@ Route::set('asset', 'asset/<action>/<id>(.<extension>)(/<width>(/<height>(/<qual
 	))
 	->filter(function(Route $route, $params, Request $request)
 		{
-			$asset = \Boom\Asset\Finder::byId($params['id']);
+			$asset = \Boom\Asset\Factory::byId($params['id']);
 
 			// Does the asset exist?
 			if ( ! $asset->loaded() || ( Kohana::$environment != Kohana::DEVELOPMENT && ! $asset->exists()))

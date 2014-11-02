@@ -18,11 +18,6 @@ class Finder extends \Boom\Finder
         $this->_query = ORM::factory('Asset');
     }
 
-    public static function byId($id)
-    {
-        return Asset\Factory::fromModel(new \Model_Asset($id));
-    }
-
     public function find()
     {
         $asset = parent::find();
