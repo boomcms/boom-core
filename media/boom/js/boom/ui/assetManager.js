@@ -174,9 +174,14 @@ $.widget('boom.assetManager', {
 					.find('#b-assets-view-thumbs')
 					.replaceWith($response.find('#b-assets-view-thumbs'));
 
-				assetManager.element.find('#b-assets-view-thumbs').justifyAssets();
+				assetManager.element
+					.find('#b-assets-view-thumbs')
+					.justifyAssets();
 
-				assetManager.element.find('.pagination').replaceWith($response[2]);
+				assetManager.element
+					.find('.pagination')
+					.replaceWith($response[2]);
+
 				assetManager.initPagination();
 			});
 	},
