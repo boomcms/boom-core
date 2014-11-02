@@ -37,7 +37,7 @@ class Linkset extends \Boom\Chunk
         return new View($this->viewDirectory . "default/linkset/$this->_template");
     }
 
-    public function has_content()
+    public function hasContent()
     {
         return count($this->_chunk->links()) > 0;
     }

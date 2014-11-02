@@ -68,7 +68,7 @@ class Text extends \Boom\Chunk
         return \Boom\ParagraphIterator::fromText($this->text());
     }
 
-    public function has_content()
+    public function hasContent()
     {
         return trim($this->_chunk->text) != null;
     }

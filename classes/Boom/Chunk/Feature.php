@@ -57,7 +57,7 @@ class Feature extends \Boom\Chunk
         );
     }
 
-    public function has_content()
+    public function hasContent()
     {
         return $this->_chunk->loaded() && $this->_target_page->loaded();
     }

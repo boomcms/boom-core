@@ -40,7 +40,7 @@ class Timestamp extends \Boom\Chunk
         return $this->_html_before.Kohana::message('chunks', 'timestamp').$this->_html_after;
     }
 
-    public function has_content()
+    public function hasContent()
     {
         return $this->_chunk->timestamp > 0;
     }
