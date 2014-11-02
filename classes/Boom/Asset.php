@@ -191,7 +191,7 @@ abstract class Asset
 	}
 
 	/**
-	 * 
+	 *
 	 * @param string $description
 	 * @return \Boom\Asset
 	 */
@@ -225,9 +225,9 @@ abstract class Asset
 
 		return $this;
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param DateTime $time
 	 * @return \Boom\Asset
 	 */
@@ -245,7 +245,7 @@ abstract class Asset
 	 */
 	public function setThumbnailAssetId($assetId)
 	{
-		$this->model->thumbanil_asset_id = $assetId;
+		$this->model->thumbnail_asset_id = $assetId;
 
 		return $this;
 	}
