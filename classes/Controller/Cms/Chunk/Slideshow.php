@@ -2,40 +2,40 @@
 
 class Controller_Cms_Chunk_Slideshow extends Controller_Cms_Chunk
 {
-	protected $_type = 'slideshow';
+    protected $_type = 'slideshow';
 
-	public function action_edit()
-	{
-		$chunk = Chunk::find('slideshow', $this->request->query('slotname'), $this->page->getCurrentVersion());
+    public function action_edit()
+    {
+        $chunk = Chunk::find('slideshow', $this->request->query('slotname'), $this->page->getCurrentVersion());
 
-		$this->template = View::factory('boom/editor/slot/slideshow', array(
-			'slides' => $chunk->slides(),
-		));
-	}
+        $this->template = View::factory('boom/editor/slot/slideshow', array(
+            'slides' => $chunk->slides(),
+        ));
+    }
 
-	protected function _preview_chunk()
-	{
-		$chunk = new \Boom\Chunk\Slideshow($this->page, $this->_model, $this->request->post('slotname'));
-		$chunk->template($this->request->post('template'));
+    protected function _preview_chunk()
+    {
+        $chunk = new \Boom\Chunk\Slideshow($this->page, $this->_model, $this->request->post('slotname'));
+        $chunk->template($this->request->post('template'));
 
-		return $chunk->execute();
-	}
+        return $chunk->execute();
+    }
 
-	protected function _preview_default_chunk()
-	{
-		$model = new Model_Chunk_Slideshow;
+    protected function _preview_default_chunk()
+    {
+        $model = new Model_Chunk_Slideshow();
 
-		$chunk = new \Boom\Chunk\Slideshow($this->page, $model, $this->request->post('slotname'));
-		$chunk->template($this->request->post('template'));
+        $chunk = new \Boom\Chunk\Slideshow($this->page, $model, $this->request->post('slotname'));
+        $chunk->template($this->request->post('template'));
 
-		return $chunk->execute();
-	}
+        return $chunk->execute();
+    }
 
-	protected function _save_chunk()
-	{
-		$chunk = parent::_save_chunk();
-		$chunk
-			->slides($this->request->post('slides'))
-			->save_slides();
-	}
+    protected function _save_chunk()
+    {
+        $chunk = parent::_save_chunk();
+        $chunk
+            ->slides($this->request->post('slides'))
+            ->save_slides();
+    }
 }

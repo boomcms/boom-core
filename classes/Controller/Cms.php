@@ -5,5 +5,5 @@
  */
 class Controller_Cms extends Boom\Controller
 {
-	protected $_save_last_url = true;
+    protected $_save_last_url = true;
 }

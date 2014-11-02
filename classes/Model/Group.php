@@ -2,17 +2,17 @@
 
 class Model_Group extends ORM
 {
-	protected $_has_many = array('roles' => array('through' => 'group_roles'));
+    protected $_has_many = array('roles' => array('through' => 'group_roles'));
 
-	protected $_table_columns = array(
-		'id'			=>	'',
-		'name'		=>	'',
-		'deleted'		=>	'',
-	);
+    protected $_table_columns = array(
+        'id'            =>    '',
+        'name'        =>    '',
+        'deleted'        =>    '',
+    );
 
-	protected $_table_name = 'groups';
+    protected $_table_name = 'groups';
 
-	/**
+    /**
 	 * Delete a group.
 	 *
 	 * Groups are not really deleted.
@@ -29,25 +29,25 @@ class Model_Group extends ORM
 	 *
 	 * @return \Boom_Model_Group
 	 */
-	public function delete()
-	{
-		// Delete the people_roles records for this group
-		// so that this group doesn't influence people's permissions.
-		DB::delete('people_roles')
-			->where('group_id', '=', $this->id)
-			->execute($this->_db);
+    public function delete()
+    {
+        // Delete the people_roles records for this group
+        // so that this group doesn't influence people's permissions.
+        DB::delete('people_roles')
+            ->where('group_id', '=', $this->id)
+            ->execute($this->_db);
 
-		// Make the group as deleted.
-		$this->deleted = true;
+        // Make the group as deleted.
+        $this->deleted = true;
 
-		// Save the changes.
-		$this->update();
+        // Save the changes.
+        $this->update();
 
-		// Return a cleared group model.
-		return $this->clear();
-	}
+        // Return a cleared group model.
+        return $this->clear();
+    }
 
-	/**
+    /**
 	 * Returns an array of the ID and name of all groups.
 	 * The returned array is sorted alphabetically by name, A - Z.
 	 *
@@ -67,40 +67,38 @@ class Model_Group extends ORM
 	 *
 	 * @throws InvalidArgumentException
 	 */
-	public function names($exclude = null)
-	{
-		// $exclude should be an array or DB select.
-		if ($exclude !== null && ! (is_array($exclude) || $exclude instanceof Database_Query_Builder_Select))
-		{
-			// Throw an exception.
-			throw new InvalidArgumentException("Argument 1 for ".__CLASS__."::".__METHOD__." should be an array or instance of Database_Query_Builder_Select, ".tyepof($excluding). "given");
-		}
+    public function names($exclude = null)
+    {
+        // $exclude should be an array or DB select.
+        if ($exclude !== null && ! (is_array($exclude) || $exclude instanceof Database_Query_Builder_Select)) {
+            // Throw an exception.
+            throw new InvalidArgumentException("Argument 1 for ".__CLASS__."::".__METHOD__." should be an array or instance of Database_Query_Builder_Select, ".tyepof($excluding). "given");
+        }
 
-		// Prepare the query
-		$query = DB::select('id', 'name')
-			->from($this->_table_name)
-			->where('deleted', '=', false)
-			->order_by('name', 'asc');
+        // Prepare the query
+        $query = DB::select('id', 'name')
+            ->from($this->_table_name)
+            ->where('deleted', '=', false)
+            ->order_by('name', 'asc');
 
-		// Are we excluding any groups?
-		if ($exclude !== null)
-		{
-			// Exclude these groups from the results.
-			$query->where('id', 'NOT IN', $exclude);
-		}
+        // Are we excluding any groups?
+        if ($exclude !== null) {
+            // Exclude these groups from the results.
+            $query->where('id', 'NOT IN', $exclude);
+        }
 
-		// Run the query and return the results.
-		return $query
-			->execute($this->_db)
-			->as_array('id', 'name');
-	}
+        // Run the query and return the results.
+        return $query
+            ->execute($this->_db)
+            ->as_array('id', 'name');
+    }
 
-	public function rules()
-	{
-		return array(
-			'name' => array(
-				array('not_empty'),
-			),
-		);
-	}
+    public function rules()
+    {
+        return array(
+            'name' => array(
+                array('not_empty'),
+            ),
+        );
+    }
 }

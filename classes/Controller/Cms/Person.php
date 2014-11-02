@@ -4,12 +4,12 @@ use Boom\Person;
 
 class Controller_Cms_Person extends Controller_Cms_PeopleManager
 {
-	/**
+    /**
 	 * @var string Directory where the views which relate to this class are held.
 	 */
-	protected $viewDirectory = 'boom/person/';
+    protected $viewDirectory = 'boom/person/';
 
-	/**
+    /**
 	 * Person object to be edited.
 	 *
 	 * **CAUTION**
@@ -19,12 +19,12 @@ class Controller_Cms_Person extends Controller_Cms_PeopleManager
 	 *
 	 * @var Model_Person
 	 */
-	public $edit_person;
+    public $edit_person;
 
-	public function before()
-	{
-		parent::before();
+    public function before()
+    {
+        parent::before();
 
-		$this->edit_person = Person\Factory::byId($this->request->param('id'));
-	}
+        $this->edit_person = Person\Factory::byId($this->request->param('id'));
+    }
 }

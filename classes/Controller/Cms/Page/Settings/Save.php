@@ -2,151 +2,146 @@
 
 class Controller_Cms_Page_Settings_Save extends Controller_Cms_Page_Settings
 {
-	public function before()
-	{
-		parent::before();
+    public function before()
+    {
+        parent::before();
 
-		$this->_csrf_check();
-	}
+        $this->_csrf_check();
+    }
 
-	public function action_admin()
-	{
-		parent::action_admin();
+    public function action_admin()
+    {
+        parent::action_admin();
 
-		$this->log("Saved admin settings for page " . $this->page->getTitle() . " (ID: " . $this->page->getId() . ")");
-		
-		$this->page
-			->setInternalName($this->request->post('internal_name'))
-			->save();
-	}
+        $this->log("Saved admin settings for page " . $this->page->getTitle() . " (ID: " . $this->page->getId() . ")");
 
-	public function action_children()
-	{
-		parent::action_children();
+        $this->page
+            ->setInternalName($this->request->post('internal_name'))
+            ->save();
+    }
 
-		$post = $this->request->post();
+    public function action_children()
+    {
+        parent::action_children();
 
-		$this->log("Saved child page settings for page ".$this->page->getTitle()." (ID: ".$this->page->getId().")");
+        $post = $this->request->post();
 
-		$this->page->setChildrenTemplateId($post['children_template_id']);
+        $this->log("Saved child page settings for page ".$this->page->getTitle()." (ID: ".$this->page->getId().")");
 
-		if ($this->allowAdvanced)
-		{
-			$expected = array_merge($expected, array(
-				'children_url_prefix',
-				'children_visible_in_nav',
-				'children_visible_in_nav_cms',
-				'grandchild_template_id'
-			));
+        $this->page->setChildrenTemplateId($post['children_template_id']);
 
-			$cascade_expected = array('visible_in_nav', 'visible_in_nav_cms');
-		}
+        if ($this->allowAdvanced) {
+            $expected = array_merge($expected, array(
+                'children_url_prefix',
+                'children_visible_in_nav',
+                'children_visible_in_nav_cms',
+                'grandchild_template_id'
+            ));
 
-		if (isset($post['children_ordering_policy']) && isset($post['children_ordering_direction']))
-		{
-			$this->page->setChildOrderingPolicy($post['children_ordering_policy'], $post['children_ordering_direction']);
-		}
+            $cascade_expected = array('visible_in_nav', 'visible_in_nav_cms');
+        }
 
-		if (isset($post['cascade']) && ! empty($post['cascade']))
-		{
-			$cascade = array();
-			foreach ($post['cascade'] as $c)
-			{
-				$cascade[$c] = ($c == 'visible_in_nav' || $c == 'visible_in_nav_cms')?  $this->page->{"children_$c"} : $this->page->$c;
-			}
+        if (isset($post['children_ordering_policy']) && isset($post['children_ordering_direction'])) {
+            $this->page->setChildOrderingPolicy($post['children_ordering_policy'], $post['children_ordering_direction']);
+        }
 
-			$this->page->cascade_to_children($cascade);
-		}
+        if (isset($post['cascade']) && ! empty($post['cascade'])) {
+            $cascade = array();
+            foreach ($post['cascade'] as $c) {
+                $cascade[$c] = ($c == 'visible_in_nav' || $c == 'visible_in_nav_cms') ?  $this->page->{"children_$c"} : $this->page->$c;
+            }
 
-		if (isset($post['cascade_template']))
-		{
-			$this->page->set_template_of_children($this->page->children_template_id);
-		}
-	}
+            $this->page->cascade_to_children($cascade);
+        }
 
-	public function action_feature()
-	{
-		parent::action_feature();
+        if (isset($post['cascade_template'])) {
+            $this->page->set_template_of_children($this->page->children_template_id);
+        }
+    }
 
-		$this->log("Updated the feature image of page " . $this->page->getTitle() . " (ID: " . $this->page->getId() . ")");
+    public function action_feature()
+    {
+        parent::action_feature();
 
-		$this->page
-			->setFeatureImageId($this->request->post('feature_image_id'))
-			->save();
-	}
+        $this->log("Updated the feature image of page " . $this->page->getTitle() . " (ID: " . $this->page->getId() . ")");
 
-	public function action_navigation()
-	{
-		parent::action_navigation();
+        $this->page
+            ->setFeatureImageId($this->request->post('feature_image_id'))
+            ->save();
+    }
 
-		$post = $this->request->post();
+    public function action_navigation()
+    {
+        parent::action_navigation();
 
-		if ($this->allowAdvanced) {
-			// Reparenting the page?
-			// Check that the ID of the parent has been changed and the page hasn't been set to be a child of itself.
-			if ($post['parent_id'] && $post['parent_id'] != $this->page->getParentId() && $post['parent_id'] != $this->page->getId()) {
-				// Check that the new parent ID is a valid page.
-				$newParent = \Boom\Page\Factory::byId($post['parent_id']);
+        $post = $this->request->post();
 
-				if ($newParent->loaded()) {
-					$this->page->setParentPageId($post['parent_id']);
-				}
-			}
-		}
+        if ($this->allowAdvanced) {
+            // Reparenting the page?
+            // Check that the ID of the parent has been changed and the page hasn't been set to be a child of itself.
+            if ($post['parent_id'] && $post['parent_id'] != $this->page->getParentId() && $post['parent_id'] != $this->page->getId()) {
+                // Check that the new parent ID is a valid page.
+                $newParent = \Boom\Page\Factory::byId($post['parent_id']);
 
-		$this->log("Saved navigation settings for page " . $this->page->getTitle() . " (ID: " . $this->page->getId() . ")");
+                if ($newParent->loaded()) {
+                    $this->page->setParentPageId($post['parent_id']);
+                }
+            }
+        }
 
-		$this->page
-			->setVisibleInNav($post['visible_in_nav'])
-			->setVisibleInCmsNav($post['visible_in_nav_cms'])
-			->save();
-	}
+        $this->log("Saved navigation settings for page " . $this->page->getTitle() . " (ID: " . $this->page->getId() . ")");
 
-	public function action_search()
-	{
-		parent::action_search();
+        $this->page
+            ->setVisibleInNav($post['visible_in_nav'])
+            ->setVisibleInCmsNav($post['visible_in_nav_cms'])
+            ->save();
+    }
 
-		$this->log("Saved search settings for page " . $this->page->getTitle() . " (ID: " . $this->page->getId() . ")");
+    public function action_search()
+    {
+        parent::action_search();
 
-		$this->page
-			->setDescription($this->request->post('description'))
-			->setKeywords($this->request->post('keywords'));
+        $this->log("Saved search settings for page " . $this->page->getTitle() . " (ID: " . $this->page->getId() . ")");
 
-		if ($this->allowAdvanced) {
-			$this->page
-				->setExternalIndexing($this->request->post('external_indexing'))
-				->setInternalIndexing($this->request->post('internal_indexing'));
-		}
+        $this->page
+            ->setDescription($this->request->post('description'))
+            ->setKeywords($this->request->post('keywords'));
 
-		$this->page->save();
-	}
+        if ($this->allowAdvanced) {
+            $this->page
+                ->setExternalIndexing($this->request->post('external_indexing'))
+                ->setInternalIndexing($this->request->post('internal_indexing'));
+        }
 
-	public function action_sort_children()
-	{
-		parent::action_children();
+        $this->page->save();
+    }
 
-		Database::instance()->begin();
-		$this->page->update_child_sequences($this->request->post('sequences'));
-		Database::instance()->commit();
-	}
+    public function action_sort_children()
+    {
+        parent::action_children();
 
-	public function action_visibility()
-	{
-		parent::action_visibility();
+        Database::instance()->begin();
+        $this->page->update_child_sequences($this->request->post('sequences'));
+        Database::instance()->commit();
+    }
 
-		$this->log("Updated visibility settings for page " . $this->page->getTitle() . " (ID: " . $this->page->getId() . ")");
+    public function action_visibility()
+    {
+        parent::action_visibility();
 
-		$this->page->setVisibleAtAnyTime($this->request->post('visible'));
+        $this->log("Updated visibility settings for page " . $this->page->getTitle() . " (ID: " . $this->page->getId() . ")");
 
-		if ($this->page->isVisibleAtAnyTime()) {
-			$visibleTo = ($this->request->post('toggle_visible_to') == 1)? new DateTime($this->request->post('visible_to')) : null;
-			
-			$this->page
-				->setVisibleFrom(new DateTime($this->request->post('visible_from')))
-				->setVisibleTo($visibleTo);
-		}
+        $this->page->setVisibleAtAnyTime($this->request->post('visible'));
 
-		$this->page->save();
-		$this->response->body( (int) $this->page->isVisible());
-	}
+        if ($this->page->isVisibleAtAnyTime()) {
+            $visibleTo = ($this->request->post('toggle_visible_to') == 1) ? new DateTime($this->request->post('visible_to')) : null;
+
+            $this->page
+                ->setVisibleFrom(new DateTime($this->request->post('visible_from')))
+                ->setVisibleTo($visibleTo);
+        }
+
+        $this->page->save();
+        $this->response->body( (int) $this->page->isVisible());
+    }
 }

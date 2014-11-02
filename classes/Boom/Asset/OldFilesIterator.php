@@ -2,8 +2,6 @@
 
 namespace Boom\Asset;
 
-use \Boom\Asset\Asset;
-
 class OldFilesIterator extends \FilterIterator
 {
     /**

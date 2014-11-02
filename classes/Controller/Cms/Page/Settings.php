@@ -27,21 +27,21 @@ use \Boom\Page\Page as Page;
  */
 abstract class Controller_Cms_Page_Settings extends Controller_Cms_Page
 {
-	/**
+    /**
 	 * Directory where views used by this class are stored.
 	 *
 	 * @var	string
 	 */
-	protected $viewDirectory = 'boom/editor/page/settings';
+    protected $viewDirectory = 'boom/editor/page/settings';
 
-	/**
+    /**
 	 * Whether the current user has access to the advanced settings of the permissions group that they're editing.
 	 *
 	 * @var boolean
 	 */
-	public $allowAdvanced;
+    public $allowAdvanced;
 
-	/**
+    /**
 	 * **Edit the page admin settings.**
 	 *
 	 * Settings in this group:
@@ -49,12 +49,12 @@ abstract class Controller_Cms_Page_Settings extends Controller_Cms_Page
 	 *  * Internal name
 	 *
 	 */
-	public function action_admin()
-	{
-		$this->authorization('edit_page_admin', $this->page);
-	}
+    public function action_admin()
+    {
+        $this->authorization('edit_page_admin', $this->page);
+    }
 
-	/**
+    /**
 	 * **Edit the child page settings.**
 	 *
 	 * Settings in this group:
@@ -69,25 +69,25 @@ abstract class Controller_Cms_Page_Settings extends Controller_Cms_Page
 	 *    * Default grandchild template
 	 *
 	 */
-	public function action_children()
-	{
-		$this->authorization('edit_page_children_basic', $this->page);
-		$this->allowAdvanced = $this->auth->loggedIn('edit_page_children_advanced', $this->page);
-	}
+    public function action_children()
+    {
+        $this->authorization('edit_page_children_basic', $this->page);
+        $this->allowAdvanced = $this->auth->loggedIn('edit_page_children_advanced', $this->page);
+    }
 
-	/**
+    /**
 	 * Edit the page's feature image.
 	 *
 	 * Requires the edit_feature_image role.
 	 *
 	 * @uses Boom_Controller::authorization()
 	 */
-	public function action_feature()
-	{
-		$this->authorization('edit_feature_image', $this->page);
-	}
+    public function action_feature()
+    {
+        $this->authorization('edit_feature_image', $this->page);
+    }
 
-	/**
+    /**
 	 * **Edit page navigation settings.**
 	 *
 	 * Settings in this group:
@@ -99,13 +99,13 @@ abstract class Controller_Cms_Page_Settings extends Controller_Cms_Page
 	 *    * Parent page
 	 *
 	 */
-	public function action_navigation()
-	{
-		$this->authorization('edit_page_navigation_basic', $this->page);
-		$this->allowAdvanced = $this->auth->loggedIn('edit_page_navigation_advanced', $this->page);
-	}
+    public function action_navigation()
+    {
+        $this->authorization('edit_page_navigation_basic', $this->page);
+        $this->allowAdvanced = $this->auth->loggedIn('edit_page_navigation_advanced', $this->page);
+    }
 
-	/**
+    /**
 	 * ** Edit page search settings. **
 	 *
 	 * Settings in this group:
@@ -118,13 +118,13 @@ abstract class Controller_Cms_Page_Settings extends Controller_Cms_Page
 	 *     * Internal indexing
 	 *
 	 */
-	public function action_search()
-	{
-		$this->authorization('edit_page_search_basic', $this->page);
-		$this->allowAdvanced = $this->auth->loggedIn('edit_page_search_advanced', $this->page);
-	}
+    public function action_search()
+    {
+        $this->authorization('edit_page_search_basic', $this->page);
+        $this->allowAdvanced = $this->auth->loggedIn('edit_page_search_advanced', $this->page);
+    }
 
-	/**
+    /**
 	 * ** Edit page visibility settings. **
 	 *
 	 * Settings in this group:
@@ -133,15 +133,15 @@ abstract class Controller_Cms_Page_Settings extends Controller_Cms_Page
 	 *  * visible to
 	 *
 	 */
-	public function action_visibility()
-	{
-		$this->authorization('edit_page', $this->page);
-	}
+    public function action_visibility()
+    {
+        $this->authorization('edit_page', $this->page);
+    }
 
-	public function authorization($role, Page $page = null)
-	{
-		if ( ! $this->auth->loggedIn('manage_pages')) {
-			parent::authorization($role, $page);
-		}
-	}
+    public function authorization($role, Page $page = null)
+    {
+        if ( ! $this->auth->loggedIn('manage_pages')) {
+            parent::authorization($role, $page);
+        }
+    }
 }

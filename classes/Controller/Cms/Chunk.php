@@ -2,91 +2,90 @@
 
 class Controller_Cms_Chunk extends Boom\Controller
 {
-	/**
+    /**
 	 * @var ORM
 	 */
-	protected $_model;
+    protected $_model;
 
-	/**
+    /**
  	 * @var Model_Page
 	 */
-	protected $page;
+    protected $page;
 
-	/**
+    /**
 	 * @var Model_Page_Version
 	 */
-	protected $_new_version;
+    protected $_new_version;
 
-	/**
+    /**
 	 * @var string
 	 */
-	protected $_type;
+    protected $_type;
 
-	public function before()
-	{
-		parent::before();
+    public function before()
+    {
+        parent::before();
 
-		$this->page =  \Boom\Page\Factory::byId($this->request->param('page_id'));
-	}
+        $this->page =  \Boom\Page\Factory::byId($this->request->param('page_id'));
+    }
 
-	public function action_insert_url()
-	{
-		$this->template = View::factory('boom/editor/slot/insert_link');
-	}
+    public function action_insert_url()
+    {
+        $this->template = View::factory('boom/editor/slot/insert_link');
+    }
 
-	public function action_remove()
-	{
-		$this->authCheck();
-		$this->_createVersion();
+    public function action_remove()
+    {
+        $this->authCheck();
+        $this->_createVersion();
 
-		$this->_send_response($this->_preview_default_chunk());
-	}
+        $this->_send_response($this->_preview_default_chunk());
+    }
 
-	public function action_save()
-	{
-		$this->authCheck();
-		$this->_createVersion();
-		$this->_save_chunk();
+    public function action_save()
+    {
+        $this->authCheck();
+        $this->_createVersion();
+        $this->_save_chunk();
 
-		$this->_send_response($this->_preview_chunk());
-	}
+        $this->_send_response($this->_preview_chunk());
+    }
 
-	public function authCheck()
-	{
-		$this->page->wasCreatedBy($this->person) || parent::authorization('edit_page_content', $this->page);
-	}
+    public function authCheck()
+    {
+        $this->page->wasCreatedBy($this->person) || parent::authorization('edit_page_content', $this->page);
+    }
 
-	protected function _createVersion()
-	{
-		$old_version = $this->page->getCurrentVersion();
+    protected function _createVersion()
+    {
+        $old_version = $this->page->getCurrentVersion();
 
-		$this->_new_version = $this->page->createVersion($old_version, array('edited_by' => $this->person->getId()));
+        $this->_new_version = $this->page->createVersion($old_version, array('edited_by' => $this->person->getId()));
 
-		if ($this->_new_version->embargoed_until <= $_SERVER['REQUEST_TIME'])
-		{
-			$this->_new_version->embargoed_until = null;
-		}
+        if ($this->_new_version->embargoed_until <= $_SERVER['REQUEST_TIME']) {
+            $this->_new_version->embargoed_until = null;
+        }
 
-		$this->_new_version
-			->create()
-			->copy_chunks($old_version, array($this->_type => array($this->request->post('slotname'))));
-	}
+        $this->_new_version
+            ->create()
+            ->copy_chunks($old_version, array($this->_type => array($this->request->post('slotname'))));
+    }
 
-	protected function _preview_chunk() {}
+    protected function _preview_chunk() {}
 
-	protected function _save_chunk()
-	{
-		return $this->_model = ORM::factory("Chunk_".ucfirst($this->_type))
-			->values($this->request->post())
-			->set('page_vid', $this->_new_version->id)
-			->create();
-	}
+    protected function _save_chunk()
+    {
+        return $this->_model = ORM::factory("Chunk_".ucfirst($this->_type))
+            ->values($this->request->post())
+            ->set('page_vid', $this->_new_version->id)
+            ->create();
+    }
 
-	protected function _send_response($html)
-	{
-		$this->response->body(json_encode(array(
-			'status' => $this->_new_version->status(),
-			'html' => $html,
-		)));
-	}
+    protected function _send_response($html)
+    {
+        $this->response->body(json_encode(array(
+            'status' => $this->_new_version->status(),
+            'html' => $html,
+        )));
+    }
 }

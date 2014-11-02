@@ -4,21 +4,21 @@ use \Boom\Group as Group;
 
 class Controller_Cms_Group extends Controller_Cms_PeopleManager
 {
-	/**
+    /**
 	 * @var string
 	 */
-	protected $viewDirectory = 'boom/groups';
+    protected $viewDirectory = 'boom/groups';
 
-	/**
+    /**
 	 * @var Model_Group
 	 */
-	public $group;
+    public $group;
 
-	public function before()
-	{
-		parent::before();
+    public function before()
+    {
+        parent::before();
 
-		$this->authorization('manage_people');
-		$this->group = Group\Factory::byId($this->request->param('id'));
-	}
+        $this->authorization('manage_people');
+        $this->group = Group\Factory::byId($this->request->param('id'));
+    }
 }

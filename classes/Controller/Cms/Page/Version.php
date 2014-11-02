@@ -30,52 +30,52 @@
  */
 abstract class Controller_Cms_Page_Version extends Controller_Cms_Page
 {
-	/**
+    /**
 	 *
 	 * @var	Model_Page_Version
 	 */
-	public $old_version;
+    public $old_version;
 
-	/**
+    /**
 	 *
 	 * @var	string	Directory where views used by this class are stored.
 	 */
-	protected $viewDirectory = 'boom/editor/page/version';
+    protected $viewDirectory = 'boom/editor/page/version';
 
-	public function before()
-	{
-		parent::before();
+    public function before()
+    {
+        parent::before();
 
-		// Store the current version of the page.
-		$this->old_version = $this->page->getCurrentVersion();
-	}
+        // Store the current version of the page.
+        $this->old_version = $this->page->getCurrentVersion();
+    }
 
-	/**
+    /**
 	 * Edit the time when a particular page version becomes live.
 	 *
 	 * Requires the 'edit_page_content' role.
 	 *
 	 * @uses Boom_Controller::authorization()
 	 */
-	public function action_embargo()
-	{
-		$this->authorization('edit_page_content', $this->page);
-	}
+    public function action_embargo()
+    {
+        $this->authorization('edit_page_content', $this->page);
+    }
 
-	public function action_request_approval()
-	{
-		$this->authorization('edit_page_content', $this->page);
-	}
+    public function action_request_approval()
+    {
+        $this->authorization('edit_page_content', $this->page);
+    }
 
-	/**
+    /**
 	 * Edit the page's templates
 	 *
 	 * Requires the 'edit_feature_image'edit_page_template' role.
 	 *
 	 * @uses Boom_Controller::authorization()
 	 */
-	public function action_template()
-	{
-		$this->authorization('edit_page_template', $this->page);
-	}
+    public function action_template()
+    {
+        $this->authorization('edit_page_template', $this->page);
+    }
 }
