@@ -24,7 +24,7 @@ class Asset extends \Boom\Chunk
     {
         $v = new View($this->viewDirectory."asset/$this->_template", array(
             'asset' => $this->asset(),
-            'caption' => $this->_chunk->caption
+            'caption' => $this->getCaption()
         ));
 
         $link = Link::factory($this->_chunk->url);
@@ -59,6 +59,11 @@ class Asset extends \Boom\Chunk
     public function asset()
     {
         return $this->_asset;
+    }
+
+    public function getCaption()
+    {
+        return $this->_chunk->caption;
     }
 
     public function has_content()
