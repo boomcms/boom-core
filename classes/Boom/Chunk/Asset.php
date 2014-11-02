@@ -12,6 +12,7 @@ class Asset extends \Boom\Chunk
     protected $_asset;
     protected $_default_template = 'image';
     protected $_type = 'asset';
+    private $link;
 
     public function __construct(Page\Page $page, $chunk, $editable = true)
     {
@@ -27,7 +28,7 @@ class Asset extends \Boom\Chunk
             'caption' => $this->getCaption()
         ));
 
-        $link = Link::factory($this->_chunk->url);
+        $link = $this->getLink();
         if ($link->isInternal()) {
             $target = PageFinder::byId($this->_chunk->url);
             $v->set(array(
@@ -64,6 +65,15 @@ class Asset extends \Boom\Chunk
     public function getCaption()
     {
         return $this->_chunk->caption;
+    }
+
+    public function getLink()
+    {
+        if ($this->link === null && $this->_chunk->url) {
+            $this->link = Link::factory($this->_chunk->url);
+        }
+
+        return $this->link;
     }
 
     public function has_content()
