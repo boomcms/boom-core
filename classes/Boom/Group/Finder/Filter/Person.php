@@ -2,13 +2,11 @@
 
 namespace Boom\Group\Finder\Filter;
 
-use Boom\Person;
-
 class Person extends \Boom\Finder\Filter
 {
     protected $person;
 
-    public function __construct(Person\Person $person)
+    public function __construct(\Boom\Person\Person $person)
     {
         $this->person = $person;
     }
