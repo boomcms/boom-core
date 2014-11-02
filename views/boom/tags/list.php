@@ -7,7 +7,7 @@
 	<ul class="b-tags-list">
 		<?php foreach ($tags as $tag): ?>
 			<li>
-				<a href="<?= $tag->getName() ?>" title="Remove <?= $tag->getName() ?>" class="b-tags-remove"></a><span><?= $tag->getName() ?></span>
+				<a href="<?= $tag->getName() ?>" title="Remove <?= $tag->getName() ?>" class="b-tags-remove" data-tag_id="<?= $tag->getId() ?>"></a><span><?= $tag->getName() ?></span>
 			</li>
 		<?php endforeach ?>
 	</ul>

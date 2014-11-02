@@ -43,7 +43,7 @@ class Controller_Cms_Tags_Page extends Controller_Cms_Tags
 
     public function action_remove()
     {
-        $tag = TagFactory::byName($this->request->post('tag'));
+        $tag = TagFactory::byId($this->request->post('tag'));
         $tag->removeFromPages($this->ids);
     }
 }

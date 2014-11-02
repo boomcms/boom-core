@@ -44,7 +44,7 @@ class Controller_Cms_Tags_Asset extends Controller_Cms_Tags
 
     public function action_remove()
     {
-        $tag = TagFactory::byName($this->request->post('tag'));
+        $tag = Tag\Factory::byId($this->request->post('tag'));
         $tag->removeFromAssets($this->ids);
     }
 }
