@@ -23,26 +23,14 @@ class Asset extends \Boom\Chunk
 
     protected function _show()
     {
-        $v = new View($this->viewDirectory."asset/$this->_template", array(
-            'asset' => $this->asset(),
-            'caption' => $this->getCaption()
-        ));
-
         $link = $this->getLink();
-        if ($link->isInternal()) {
-            $target = PageFinder::byId($this->_chunk->url);
-            $v->set(array(
-                'title' => $target->getTitle(),
-                'url' => $target->url()
-            ));
-        } else {
-            $v->set(array(
-                'title' => $this->_chunk->title,
-                'url' => $this->_chunk->url,
-            ));
-        }
 
-        return $v;
+        return new View($this->viewDirectory."asset/$this->_template", array(
+            'asset' => $this->asset(),
+            'caption' => $this->getCaption(),
+            'title' => $link->getTitle(),
+            'url' => $link->url()
+        ));
     }
 
     protected function _show_default()
