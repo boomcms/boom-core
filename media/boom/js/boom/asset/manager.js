@@ -88,7 +88,7 @@ $.widget('boom.assetManager', {
 			});
 
 		this.element.find('#b-tags-search')
-			.tagger({
+			.tagger_search({
 				update : function(tagIds) {
 					assetManager.addFilter('tag', tagIds);
 					assetManager.getAssets();
@@ -245,6 +245,14 @@ $.widget('boom.assetManager', {
 			title : 'Edit Asset',
 			url : this.baseUrl + 'view/' + assetId,
 			width: document.documentElement.clientWidth >= 1000? '1000px' : '100%',
+			onLoad : function() {
+				dialog.contents
+					.find('#b-tags')
+					.tagger({
+						type: 'asset',
+						id: asset.id
+					});
+			}
 		})
 		.done(function() {
 			asset
@@ -274,11 +282,6 @@ $.widget('boom.assetManager', {
 					.done(function(assetId) {
 						$this.val(assetId);
 					});
-			})
-			.find('#b-tags')
-			.tagger({
-				type: 'asset',
-				id: asset.id
 			});
 	}
 });

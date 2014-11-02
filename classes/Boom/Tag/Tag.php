@@ -27,6 +27,17 @@ class Tag
         return $this->model->name;
     }
 
+    public function addToAssets(array $assetIds)
+    {
+        foreach ($assetIds as $id) {
+            try {
+                DB::insert('assets_tags', array('asset_id', 'tag_id'))
+                    ->values(array($id, $this->getId()))
+                    ->execute();
+            } catch (Database_Exception $e) {}
+        }
+    }
+
     public function addToPages(array $pageIds)
     {
         foreach ($pageIds as $id) {
