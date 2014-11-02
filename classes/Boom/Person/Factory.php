@@ -6,11 +6,11 @@ abstract class Factory
 {
     public static function byId($id)
     {
-        return new \Boom\Person(new \Model_Person($id));
+        return new Person(new \Model_Person($id));
     }
 
     public static function byEmail($email)
     {
-        return new \Boom\Person(new \Model_Person(array('email' => $email)));
+        return new Person(new \Model_Person(array('email' => $email)));
     }
 }

@@ -9,7 +9,7 @@ class Creator
 {
     /**
 	 *
-	 * @var Model_Person
+	 * @var Person\Person
 	 */
     protected $_creator;
 
@@ -22,7 +22,7 @@ class Creator
     protected $_templateId;
     protected $_title = 'Untitled';
 
-    public function __construct(Page $parent, Person $creator)
+    public function __construct(Page $parent, Person\Person $creator)
     {
         $this->_parent = $parent;
         $this->_creator = $creator;

@@ -479,7 +479,7 @@ class Page
         return ($this->model->mptt->is_root()) ? $this : \Boom\Page\Factory::byId($this->model->mptt->parent_id);
     }
 
-    public function wasCreatedBy(Person $person)
+    public function wasCreatedBy(Person\Person $person)
     {
         return $this->getCreatedBy() === $person->getId();
     }

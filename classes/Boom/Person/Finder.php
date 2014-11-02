@@ -13,7 +13,7 @@ class Finder extends \Boom\Finder
     {
         $model = parent::find();
 
-        return new \Boom\Person($model);
+        return new Person($model);
     }
 
     public function findAll()
@@ -21,7 +21,7 @@ class Finder extends \Boom\Finder
         $people = parent::findAll()->as_array();
 
         return new \Boom\ArrayCallbackIterator($people, function ($person) {
-            return new \Boom\Person($person);
+            return new Person($person);
         });
     }
 }

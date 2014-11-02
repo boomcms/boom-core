@@ -2,7 +2,7 @@
 
 namespace Boom\Person;
 
-class Guest extends \Boom\Person
+class Guest extends Person
 {
     public function __construct()
     {

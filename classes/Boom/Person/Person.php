@@ -1,21 +1,23 @@
 <?php
 
-namespace Boom;
+namespace Boom\Person;
 
+use Boom\Group;
 use Boom\Page\Page;
 
 use \DB;
 use \Model_Role as Role;
+use \Model_Person;
 
 class Person
 {
     /**
 	 *
-	 * @var \Model_Person
+	 * @var Model_Person
 	 */
     protected $model;
 
-    public function __construct(\Model_Person $model)
+    public function __construct(Model_Person $model)
     {
         $this->model = $model;
     }

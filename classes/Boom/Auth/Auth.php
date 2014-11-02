@@ -8,7 +8,7 @@ use \PasswordHash;
 use \Session;
 use \Model_Role as Role;
 
-use \Boom\Person as Person;
+use \Boom\Person;
 
 class Auth
 {
@@ -22,7 +22,7 @@ class Auth
 
     /**
 	 *
-	 * @var Boom\Person
+	 * @var Boom\Person\Person
 	 */
     protected $person;
 
@@ -150,7 +150,7 @@ class Auth
         }
     }
 
-    protected function _login(Person $person, $password = null, $remember = false)
+    protected function _login(Person\Person $person, $password = null, $remember = false)
     {
         $this->person = $person;
 
@@ -256,13 +256,13 @@ class Auth
         return isset($this->config['disabled']) && $this->config['disabled'] === true;
     }
 
-    public function login(Person $person, $password, $remember = false)
+    public function login(Person\Person $person, $password, $remember = false)
     {
         if (! $password) {
             return false;
         }
 
-        if ( ! is_object($person) && ! $person instanceof Person) {
+        if ( ! is_object($person) && ! $person instanceof Person\Person) {
             // If we haven't been called with a person object then assume it's an email address
             // and get the person from the database.
             $person = new Model_Person(array('email' => $person));

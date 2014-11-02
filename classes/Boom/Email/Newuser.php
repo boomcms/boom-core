@@ -41,7 +41,7 @@ class Newuser
 	 */
     protected $viewFilename = 'boom/email/newuser';
 
-    public function __construct(Person $person, $password, Request $request)
+    public function __construct(Person\Person $person, $password, Request $request)
     {
         $this->person = $person;
         $this->password = $password;

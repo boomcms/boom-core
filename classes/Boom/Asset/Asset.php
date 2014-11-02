@@ -2,6 +2,7 @@
 
 namespace Boom\Asset;
 
+use Boom\Person;
 use \File;
 use \DateTime;
 
@@ -263,10 +264,10 @@ abstract class Asset
 
     /**
 	 *
-	 * @param \Boom\Person $person
+	 * @param \Boom\Person\Person $person
 	 * @return \Boom\Asset\Asset
 	 */
-    public function setUploadedBy(Person $person)
+    public function setUploadedBy(Person\Person $person)
     {
         $this->model->uploaded_by = $person->getId();
 
