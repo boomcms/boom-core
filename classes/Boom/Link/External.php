@@ -11,6 +11,11 @@ class External extends Link
         $this->_link = $link;
     }
 
+    public function getTitle()
+    {
+        return $this->url();
+    }
+
     public function url()
     {
         return $this->_link;

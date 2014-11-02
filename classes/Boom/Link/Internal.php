@@ -25,6 +25,11 @@ class Internal extends Link
         return $this->page;
     }
 
+    public function getTitle()
+    {
+        return $this->page->getTitle();
+    }
+
     public function url()
     {
         return $this->page->url();

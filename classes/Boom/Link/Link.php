@@ -25,4 +25,5 @@ abstract class Link
     }
 
     abstract public function url();
+    abstract public function getTitle();
 }
