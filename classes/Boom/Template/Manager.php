@@ -7,99 +7,99 @@ use \ORM as ORM;
 
 class Manager
 {
-	protected $_template_filenames;
+    protected $_template_filenames;
 
-	public function createNew()
-	{
-		$imported = array();
-		foreach ($this->getTemplateFilenames() as $filename) {
-			if ( ! $this->templateExistsWithFilename($filename)) {
-				$template = $this->createTemplateWithFilename($filename);
-				$imported[] = $template->id;
-			}
-		}
+    public function createNew()
+    {
+        $imported = array();
+        foreach ($this->getTemplateFilenames() as $filename) {
+            if ( ! $this->templateExistsWithFilename($filename)) {
+                $template = $this->createTemplateWithFilename($filename);
+                $imported[] = $template->id;
+            }
+        }
 
-		return $imported;
-	}
+        return $imported;
+    }
 
-	public function createTemplateWithFilename($filename)
-	{
-		return ORM::factory('Template')
-			->values(array(
-				'name'	=>	ucwords(str_replace("_", " ", $filename)),
-				'filename'	=>	$filename,
-			))
-			->create();
-	}
+    public function createTemplateWithFilename($filename)
+    {
+        return ORM::factory('Template')
+            ->values(array(
+                'name'    =>    ucwords(str_replace("_", " ", $filename)),
+                'filename'    =>    $filename,
+            ))
+            ->create();
+    }
 
-	/**
+    /**
 	 * Deletes templates where the filename points to an non-existent file.
 	 */
-	public function deleteInvalidTemplates()
-	{
-		foreach ($this->getInvalidTemplates() as $template) {
-			$template->delete();
-		}
-	}
+    public function deleteInvalidTemplates()
+    {
+        foreach ($this->getInvalidTemplates() as $template) {
+            $template->delete();
+        }
+    }
 
-	public function getAllTemplates()
-	{
-		$finder = new Finder;
+    public function getAllTemplates()
+    {
+        $finder = new Finder();
 
-		return $finder
-			->setOrderBy('name', 'asc')
-			->findAll();
-	}
+        return $finder
+            ->setOrderBy('name', 'asc')
+            ->findAll();
+    }
 
-	/**
+    /**
 	 * Gets templates where the filename points to an non-existent file.
 	 */
-	public function getInvalidTemplates()
-	{
-		$invalid = array();
-		$templates = $this->getAllTemplates();
+    public function getInvalidTemplates()
+    {
+        $invalid = array();
+        $templates = $this->getAllTemplates();
 
-		foreach ($templates as $template) {
-			if ( ! $template->fileExists()) {
-				$invalid[] = $template;
-			}
-		}
+        foreach ($templates as $template) {
+            if ( ! $template->fileExists()) {
+                $invalid[] = $template;
+            }
+        }
 
-		return $invalid;
-	}
+        return $invalid;
+    }
 
-	public function getTemplateFilenames()
-	{
-		if ( ! $this->_template_filenames) {
-			$this->_template_filenames = Kohana::list_files("views/" . Template::DIRECTORY);
+    public function getTemplateFilenames()
+    {
+        if (! $this->_template_filenames) {
+            $this->_template_filenames = Kohana::list_files("views/" . Template::DIRECTORY);
 
-			foreach ($this->_template_filenames as & $filename) {
-				$filename = str_replace(APPPATH . "views/" . Template::DIRECTORY, "", $filename);
-				$filename = str_replace(EXT, "", $filename);
-			}
-		}
+            foreach ($this->_template_filenames as & $filename) {
+                $filename = str_replace(APPPATH . "views/" . Template::DIRECTORY, "", $filename);
+                $filename = str_replace(EXT, "", $filename);
+            }
+        }
 
-		return $this->_template_filenames;
-	}
+        return $this->_template_filenames;
+    }
 
-	public function getValidTemplates()
-	{
-		$valid = array();
-		$templates = $this->getAllTemplates();
+    public function getValidTemplates()
+    {
+        $valid = array();
+        $templates = $this->getAllTemplates();
 
-		foreach ($templates as $template) {
-			if ($template->fileExists()) {
-				$valid[] = $template;
-			}
-		}
+        foreach ($templates as $template) {
+            if ($template->fileExists()) {
+                $valid[] = $template;
+            }
+        }
 
-		return $valid;
-	}
+        return $valid;
+    }
 
-	public function templateExistsWithFilename($filename)
-	{
-		$template = Factory::byFilename($filename);
+    public function templateExistsWithFilename($filename)
+    {
+        $template = Factory::byFilename($filename);
 
-		return $template->loaded();
-	}
+        return $template->loaded();
+    }
 }

@@ -6,23 +6,23 @@ use \Boom\Asset as Asset;
 
 class OldFilesIterator extends \FilterIterator
 {
-	/**
+    /**
 	 *
 	 * @var Asset
 	 */
-	protected $asset;
+    protected $asset;
 
-	public function __construct(Asset $asset)
-	{
-		parent::__construct(new \DirectoryIterator(Asset::directory()));
+    public function __construct(Asset $asset)
+    {
+        parent::__construct(new \DirectoryIterator(Asset::directory()));
 
-		$this->asset = $asset;
-	}
+        $this->asset = $asset;
+    }
 
-	public function accept()
-	{
-		$file = $this->getInnerIterator()->current();
+    public function accept()
+    {
+        $file = $this->getInnerIterator()->current();
 
-		return preg_match("|{$this->asset->getId()}\.\d+\.bak|", $file->getFilename());
-	}
+        return preg_match("|{$this->asset->getId()}\.\d+\.bak|", $file->getFilename());
+    }
 }

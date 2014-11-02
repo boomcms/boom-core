@@ -6,8 +6,8 @@ use Boom\Asset as Asset;
 
 class MSWord extends Asset
 {
-	public function getType()
-	{
-		return "Microsoft Word";
-	}
+    public function getType()
+    {
+        return "Microsoft Word";
+    }
 }

@@ -4,5 +4,5 @@ namespace Boom\Page;
 
 abstract class Command
 {
-	abstract public function execute(Page $page);
+    abstract public function execute(Page $page);
 }

@@ -6,5 +6,5 @@ use \Boom\Asset as Asset;
 
 abstract class Command
 {
-	abstract public function execute(Asset $asset);
+    abstract public function execute(Asset $asset);
 }

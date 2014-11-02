@@ -4,15 +4,15 @@ namespace Boom\Link;
 
 class External extends Link
 {
-	protected $_link;
+    protected $_link;
 
-	public function __construct($link)
-	{
-		$this->_link = $link;
-	}
+    public function __construct($link)
+    {
+        $this->_link = $link;
+    }
 
-	public function url()
-	{
-		return $this->_link;
-	}
+    public function url()
+    {
+        return $this->_link;
+    }
 }

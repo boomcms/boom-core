@@ -4,83 +4,82 @@ namespace Boom\Page;
 
 class ChildOrderingPolicy
 {
-	const MANUAL = 1;
-	const ALPHABETIC = 2;
-	const DATE = 4;
+    const MANUAL = 1;
+    const ALPHABETIC = 2;
+    const DATE = 4;
 
-	const ASC = 8;
-	const DESC = 16;
+    const ASC = 8;
+    const DESC = 16;
 
-	protected $column;
-	protected $direction;
-	protected $int;
+    protected $column;
+    protected $direction;
+    protected $int;
 
-	public function __construct()
-	{
-		$numArgs = func_num_args();
+    public function __construct()
+    {
+        $numArgs = func_num_args();
 
-		if ($numArgs === 1) {
-			$this->int = func_get_arg(0);
+        if ($numArgs === 1) {
+            $this->int = func_get_arg(0);
 
-			$this->_setFromInt($this->int);
-		} else if ($numArgs == 2) {
-			$this->column = func_get_arg(0);
-			$this->direction = func_get_arg(1);
+            $this->_setFromInt($this->int);
+        } elseif ($numArgs == 2) {
+            $this->column = func_get_arg(0);
+            $this->direction = func_get_arg(1);
 
-			$this->__setFromColumnAndDirection($this->column, $this->direction);
-		}
-	}
+            $this->__setFromColumnAndDirection($this->column, $this->direction);
+        }
+    }
 
-	public function asInt()
-	{
-		return (int) $this->int;
-	}
+    public function asInt()
+    {
+        return (int) $this->int;
+    }
 
-	public function columnToInt($column)
-	{
-		switch ($column)
-		{
-			case ($column == 'manual' || $column == 'sequence'):
-				return static::MANUAL;
+    public function columnToInt($column)
+    {
+        switch ($column) {
+            case ($column == 'manual' || $column == 'sequence'):
+                return static::MANUAL;
 
-			case ($column == 'date' || $column == 'visible_from'):
-				return static::DATE;
+            case ($column == 'date' || $column == 'visible_from'):
+                return static::DATE;
 
-			default:
-				return static::ALPHABETIC;
-		}
-	}
+            default:
+                return static::ALPHABETIC;
+        }
+    }
 
-	public function directionToInt($direction)
-	{
-		return ($direction === 'asc')? static::ASC : static::DESC;
-	}
+    public function directionToInt($direction)
+    {
+        return ($direction === 'asc') ? static::ASC : static::DESC;
+    }
 
-	public function getColumn()
-	{
-		return $this->column;
-	}
+    public function getColumn()
+    {
+        return $this->column;
+    }
 
-	public function getDirection()
-	{
-		return $this->direction;
-	}
+    public function getDirection()
+    {
+        return $this->direction;
+    }
 
-	protected function _setFromInt($int)
-	{
-		if ($int & static::ALPHABETIC) {
-			$this->column = 'title';
-		} elseif ($int & static::DATE) {
-			$this->column = 'visible_from';
-		} else {
-			$this->column = 'sequence';
-		}
+    protected function _setFromInt($int)
+    {
+        if ($int & static::ALPHABETIC) {
+            $this->column = 'title';
+        } elseif ($int & static::DATE) {
+            $this->column = 'visible_from';
+        } else {
+            $this->column = 'sequence';
+        }
 
-		$this->direction = ($int & static::ASC)? 'asc' : 'desc';
-	}
+        $this->direction = ($int & static::ASC) ? 'asc' : 'desc';
+    }
 
-	protected function _setFromColumnAndDirection($column, $direction)
-	{
-		$this->int = $this->columnToInt($column) | $this->directionToInt($direction);
-	}
+    protected function _setFromColumnAndDirection($column, $direction)
+    {
+        $this->int = $this->columnToInt($column) | $this->directionToInt($direction);
+    }
 }

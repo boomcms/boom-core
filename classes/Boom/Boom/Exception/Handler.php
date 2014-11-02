@@ -2,52 +2,49 @@
 
 abstract class Boom_Boom_Exception_Handler
 {
-	/**
+    /**
 	 * HTTP response code for this type of exception
-	 * 
+	 *
 	 * @var int
 	 */
-	protected $_code;
+    protected $_code;
 
-	/**
+    /**
 	 *
 	 * @var Exception
 	 */
-	protected $_e;
+    protected $_e;
 
-	public function __construct(Exception $e)
-	{
-		$this->_e = $e;
-		$this->_code = ($e instanceof HTTP_Exception) ? $e->getCode() : 500;
-	}
+    public function __construct(Exception $e)
+    {
+        $this->_e = $e;
+        $this->_code = ($e instanceof HTTP_Exception) ? $e->getCode() : 500;
+    }
 
-	public function execute()
-	{
-		$this->_log_exception();
-	}
+    public function execute()
+    {
+        $this->_log_exception();
+    }
 
-	public static function handle(Exception $e)
-	{
-		try
-		{
-			$handler_class = (Kohana::$environment === Kohana::PRODUCTION || Kohana::$environment === Kohana::STAGING)? 'Boom_Exception_Handler_Private' : 'Boom_Exception_Handler_Public';
-			$handler = new $handler_class($e);
+    public static function handle(Exception $e)
+    {
+        try {
+            $handler_class = (Kohana::$environment === Kohana::PRODUCTION || Kohana::$environment === Kohana::STAGING) ? 'Boom_Exception_Handler_Private' : 'Boom_Exception_Handler_Public';
+            $handler = new $handler_class($e);
 
-			$handler->execute();
-		}
-		catch (Exception $e)
-		{
-			Kohana_Exception::handler($e);
-		}
-	}
+            $handler->execute();
+        } catch (Exception $e) {
+            Kohana_Exception::handler($e);
+        }
+    }
 
-	protected function _log_exception()
-	{
-		Kohana_Exception::log($this->_e);
-	}
+    protected function _log_exception()
+    {
+        Kohana_Exception::log($this->_e);
+    }
 
-	public static function set_exception_handler()
-	{
-		set_exception_handler(array('Boom_Exception_Handler', 'handle'));
-	}
+    public static function set_exception_handler()
+    {
+        set_exception_handler(array('Boom_Exception_Handler', 'handle'));
+    }
 }

@@ -8,13 +8,13 @@ use \ORM as ORM;
 
 class FlagDeleted extends \Boom\Page\Command
 {
-	public function execute(Page $page)
-	{
-		DB::update('pages')
-			->set(array('deleted' => true))
-			->where('id', '=', $page->getId())
-			->execute();
+    public function execute(Page $page)
+    {
+        DB::update('pages')
+            ->set(array('deleted' => true))
+            ->where('id', '=', $page->getId())
+            ->execute();
 
-		ORM::factory('Page_MPTT', $page->getId())->delete();
-	}
+        ORM::factory('Page_MPTT', $page->getId())->delete();
+    }
 }

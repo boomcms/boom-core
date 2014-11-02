@@ -4,5 +4,5 @@ namespace Boom\TextFilter;
 
 interface Filter
 {
-	public function filterText($text);
+    public function filterText($text);
 }

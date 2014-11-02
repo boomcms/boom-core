@@ -6,8 +6,8 @@ use Boom\Asset as Asset;
 
 class PDF extends Asset
 {
-	public function getType()
-	{
-		return "PDF";
-	}
+    public function getType()
+    {
+        return "PDF";
+    }
 }

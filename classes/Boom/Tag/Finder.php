@@ -4,21 +4,22 @@ namespace Boom\Tag;
 
 class Finder extends \Boom\Finder
 {
-	public function __construct()
-	{
-		$this->_query = \ORM::factory('Tag');
-	}
+    public function __construct()
+    {
+        $this->_query = \ORM::factory('Tag');
+    }
 
-	public function find()
-	{
-		$model = parent::find();
-		return new Tag($model);
-	}
+    public function find()
+    {
+        $model = parent::find();
 
-	public function findAll()
-	{
-		$tags = parent::findAll();
+        return new Tag($model);
+    }
 
-		return new Finder\Result($tags);
-	}
+    public function findAll()
+    {
+        $tags = parent::findAll();
+
+        return new Finder\Result($tags);
+    }
 }

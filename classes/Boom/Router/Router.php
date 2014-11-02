@@ -4,5 +4,5 @@ namespace Boom\Router;
 
 class Router
 {
-	
+
 }

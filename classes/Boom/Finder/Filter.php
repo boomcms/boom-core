@@ -4,10 +4,10 @@ namespace Boom\Finder;
 
 abstract class Filter
 {
-	abstract public function execute(\ORM $query);
+    abstract public function execute(\ORM $query);
 
-	public function shouldBeApplied()
-	{
-		return true;
-	}
+    public function shouldBeApplied()
+    {
+        return true;
+    }
 }

@@ -9,15 +9,15 @@ namespace Boom\Page;
  */
 abstract class ShortURL
 {
-	public static function urlFromPage(Page $page)
-	{
-		return "_" . base_convert($page->getId(), 10, 36);
-	}
+    public static function urlFromPage(Page $page)
+    {
+        return "_" . base_convert($page->getId(), 10, 36);
+    }
 
-	public static function pageFromUrl($url)
-	{
-		$page_id = base_convert(substr($url, 1), 36, 10);
+    public static function pageFromUrl($url)
+    {
+        $page_id = base_convert(substr($url, 1), 36, 10);
 
-		return Finder::byId($page_id);
-	}
+        return Finder::byId($page_id);
+    }
 }

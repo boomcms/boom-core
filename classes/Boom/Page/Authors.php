@@ -4,5 +4,5 @@ namespace Boom\Page;
 
 class Authors extends TagsByPrefix
 {
-	protected $prefix = 'Author/';
+    protected $prefix = 'Author/';
 }

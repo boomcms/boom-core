@@ -9,78 +9,79 @@ use \View as View;
 
 class Template
 {
-	const DIRECTORY = 'site/templates/';
+    const DIRECTORY = 'site/templates/';
 
-	/**
+    /**
 	 *
 	 * @var Model_Template
 	 */
-	protected $model;
+    protected $model;
 
-	public function __construct(\Model_Template $model)
-	{
-		$this->model = $model;
-	}
+    public function __construct(\Model_Template $model)
+    {
+        $this->model = $model;
+    }
 
-	public function countPages()
-	{
-		if ( ! $this->model->loaded()) {
-			return 0;
-		}
+    public function countPages()
+    {
+        if ( ! $this->model->loaded()) {
+            return 0;
+        }
 
-		$finder = new Page\Finder;
-		$finder->addFilter(new Page\Finder\Filter\Template($this));
-		return $finder->count();
-	}
+        $finder = new Page\Finder();
+        $finder->addFilter(new Page\Finder\Filter\Template($this));
 
-	public function fileExists()
-	{
-		return (bool) Kohana::find_file("views", $this->getFullFilename());
-	}
+        return $finder->count();
+    }
 
-	public function getControllerName()
-	{
-		$parts = explode('_', $this->model->filename);
+    public function fileExists()
+    {
+        return (bool) Kohana::find_file("views", $this->getFullFilename());
+    }
 
-		foreach ($parts as & $part) {
-			$part = ucfirst($part);
-		}
+    public function getControllerName()
+    {
+        $parts = explode('_', $this->model->filename);
 
-		return implode('_', $parts);
-	}
+        foreach ($parts as & $part) {
+            $part = ucfirst($part);
+        }
 
-	public function getDescription()
-	{
-		return $this->model->description;
-	}
+        return implode('_', $parts);
+    }
 
-	public function getFilename()
-	{
-		return $this->model->filename;
-	}
+    public function getDescription()
+    {
+        return $this->model->description;
+    }
 
-	public function getFullFilename()
-	{
-		return static::DIRECTORY.$this->getFilename();
-	}
+    public function getFilename()
+    {
+        return $this->model->filename;
+    }
 
-	public function getId()
-	{
-		return $this->model->id;
-	}
+    public function getFullFilename()
+    {
+        return static::DIRECTORY.$this->getFilename();
+    }
 
-	public function getName()
-	{
-		return $this->model->name;
-	}
+    public function getId()
+    {
+        return $this->model->id;
+    }
 
-	public function getView()
-	{
-		return new View($this->getFullFilename());
-	}
+    public function getName()
+    {
+        return $this->model->name;
+    }
 
-	public function loaded()
-	{
-		return $this->model->loaded();
-	}
+    public function getView()
+    {
+        return new View($this->getFullFilename());
+    }
+
+    public function loaded()
+    {
+        return $this->model->loaded();
+    }
 }

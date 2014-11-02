@@ -4,25 +4,26 @@ namespace Boom\Page;
 
 class Commander
 {
-	protected $page;
+    protected $page;
 
-	public function __construct(Page $page)
-	{
-		$this->page = $page;
-	}
+    public function __construct(Page $page)
+    {
+        $this->page = $page;
+    }
 
-	public function addCommand(\Boom\Page\Command $command)
-	{
-		$this->commands[] = $command;
-		return $this;
-	}
+    public function addCommand(\Boom\Page\Command $command)
+    {
+        $this->commands[] = $command;
 
-	public function execute()
-	{
-		if ($this->page->loaded()) {
-			foreach ($this->commands as $command) {
-				$command->execute($this->page);
-			}
-		}
-	}
+        return $this;
+    }
+
+    public function execute()
+    {
+        if ($this->page->loaded()) {
+            foreach ($this->commands as $command) {
+                $command->execute($this->page);
+            }
+        }
+    }
 }

@@ -7,53 +7,51 @@ use \Boom\Tag\Finder as TagFinder;
 
 class TagsByPrefix
 {
-	protected $prefix = '';
+    protected $prefix = '';
 
-	/**
+    /**
 	 *
 	 * @var array
 	 */
-	protected $tags;
+    protected $tags;
 
-	/**
+    /**
 	 *
 	 * @var \Page
 	 */
-	protected $page;
+    protected $page;
 
-	public function __construct(Page $page)
-	{
-		$this->page = $page;
-		$this->tags = $this->getTags();
-	}
+    public function __construct(Page $page)
+    {
+        $this->page = $page;
+        $this->tags = $this->getTags();
+    }
 
-	public function getNames()
-	{
-		$names = array();
+    public function getNames()
+    {
+        $names = array();
 
-		if ( ! empty($this->tags))
-		{
-			foreach ($this->tags as $tag)
-			{
-				$names[] = htmlentities(str_ireplace($this->prefix, '', $tag->getName()), ENT_QUOTES);
-			}
-		}
+        if ( ! empty($this->tags)) {
+            foreach ($this->tags as $tag) {
+                $names[] = htmlentities(str_ireplace($this->prefix, '', $tag->getName()), ENT_QUOTES);
+            }
+        }
 
-		return $names;
-	}
+        return $names;
+    }
 
-	public function getTags()
-	{
-		$finder = new TagFinder;
+    public function getTags()
+    {
+        $finder = new TagFinder();
 
-		return $finder
-			->addFilter(new TagFinder\Filter\Page($this->page))
-			->addFilter(new TagFinder\Filter\NameBeginsWith($this->prefix))
-			->findAll();
-	}
+        return $finder
+            ->addFilter(new TagFinder\Filter\Page($this->page))
+            ->addFilter(new TagFinder\Filter\NameBeginsWith($this->prefix))
+            ->findAll();
+    }
 
-	public function __toString()
-	{
-		return implode(', ', $this->getNames());
-	}
+    public function __toString()
+    {
+        return implode(', ', $this->getNames());
+    }
 }

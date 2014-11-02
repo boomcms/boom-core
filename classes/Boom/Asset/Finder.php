@@ -7,36 +7,37 @@ use \ORM as ORM;
 
 class Finder extends \Boom\Finder
 {
-	/**
+    /**
 	 *
 	 * @var array
 	 */
-	protected $_allowedOrderByColumns = array('last_modified', 'title', 'downloads', 'filesize', 'uploaded_time');
+    protected $_allowedOrderByColumns = array('last_modified', 'title', 'downloads', 'filesize', 'uploaded_time');
 
-	public function __construct()
-	{
-		$this->_query = ORM::factory('Asset');
-	}
+    public function __construct()
+    {
+        $this->_query = ORM::factory('Asset');
+    }
 
-	public static function byId($id)
-	{
-		return Asset\Factory::fromModel(new \Model_Asset($id));
-	}
+    public static function byId($id)
+    {
+        return Asset\Factory::fromModel(new \Model_Asset($id));
+    }
 
-	public function find()
-	{
-		$asset = parent::find();
-		return Asset\Factory::fromModel($asset);
-	}
+    public function find()
+    {
+        $asset = parent::find();
 
-	public function findAll()
-	{
-		$assets = parent::findAll();
+        return Asset\Factory::fromModel($asset);
+    }
 
-		return new Finder\Result($assets);
-	}
+    public function findAll()
+    {
+        $assets = parent::findAll();
 
-	/**
+        return new Finder\Result($assets);
+    }
+
+    /**
 	 *
 	 * @return array
 	 */
@@ -58,10 +59,10 @@ class Finder extends \Boom\Finder
 //		);
 //	}
 
-	public function setOrderBy($field, $direction = null)
-	{
-		in_array($field, $this->_allowedOrderByColumns) || $field = 'title';
+    public function setOrderBy($field, $direction = null)
+    {
+        in_array($field, $this->_allowedOrderByColumns) || $field = 'title';
 
-		return parent::setOrderBy($field, $direction);
-	}
+        return parent::setOrderBy($field, $direction);
+    }
 }

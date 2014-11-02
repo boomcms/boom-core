@@ -6,7 +6,7 @@ use \DB as DB;
 
 class Helpers
 {
-	/**
+    /**
 	 * Returns an array of the ID and name of all templates which exist in the database.
 	 *
 	 * This is useful for building <select> boxes of available templates, e.g.:
@@ -16,12 +16,12 @@ class Helpers
 	 *
 	 * @return array
 	 */
-	public static function names()
-	{
-		return DB::select('id', 'name')
-			->from('templates')
-			->order_by('name', 'asc')
-			->execute()
-			->as_array('id', 'name');
-	}
+    public static function names()
+    {
+        return DB::select('id', 'name')
+            ->from('templates')
+            ->order_by('name', 'asc')
+            ->execute()
+            ->as_array('id', 'name');
+    }
 }
