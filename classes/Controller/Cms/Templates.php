@@ -1,6 +1,7 @@
 <?php
 
-use \Boom\Template as Template;
+use Boom\Template;
+use Boom\Page;
 
 class Controller_Cms_Templates extends Controller_Cms
 {
@@ -37,27 +38,14 @@ class Controller_Cms_Templates extends Controller_Cms
 	 */
     public function action_pages()
     {
-        $template_id = $this->request->param('id');
+        $template = Template\Factory::byId($this->request->param('id'));
 
-        $pages = DB::select('page_versions.title', 'page_urls.location')
-            ->from('page_versions')
-            ->join(array(
-                DB::select(array(DB::expr('max(id)'), 'id'))
-                    ->from('page_versions')
-                    ->group_by('page_id'),
-                'current_version'
-            ))
-            ->on('page_versions.id', '=', 'current_version.id')
-            ->join('page_urls', 'inner')
-            ->on('page_versions.page_id', '=', 'page_urls.page_id')
-            ->where('page_versions.template_id', '=', $template_id)
-            ->where('is_primary', '=', true)
-            ->where('page_deleted', '=', false)
-            ->order_by('title', 'asc')
-            ->execute();
+        $finder = new Page\Finder;
+        $finder->addFilter(new Page\Finder\Filter\Template($template));
+        $pages = $finder->findAll();
 
-        $this->template = View::factory("$this->viewDirectory/pages", array(
-            'pages'    =>    $pages,
+        $this->template = new View("$this->viewDirectory/pages", array(
+            'pages' => $pages,
         ));
     }
 

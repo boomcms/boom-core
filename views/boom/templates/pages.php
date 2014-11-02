@@ -1,37 +1,24 @@
-	<?= View::factory('boom/header')->set('title', 'Templates') ?>
+	<?= View::factory('boom/header', array('title' =>	'Templates'))?>
+	<?= new \Boom\Menu\Menu  ?>
 
-	<div id="b-topbar" class="ui-helper-clearfix ui-tabs ui-widget ui-widget-content ui-corner-all">
-
-		<?= new \Boom\Menu\Menu ?>
-
-		<div class="ui-helper-clearfix ui-tabs-panel ui-widget-content ui-corner-bottom">
-			<div id="b-page-actions" class="ui-helper-right">
-				&nbsp;
-			</div>
-		</div>
+	<div id="b-topbar" class="b-toolbar">
+		<?= \Boom\UI::menuButton() ?>
 	</div>
 
-	<div id="b-page-edit">
-		<div>
-			<table>
-				<tr>
-					<th>Page title</th>
-					<th>URL</th>
-				</tr>
-				<?
-					foreach ($pages as $p)
-					{
-						?>
-						<tr>
-							<td><?= $p['title'] ?></td>
-							<td><a href='<?= URL::site($p['location']) ?>'><?= $p['location'] ?></a></td>
-						</tr>
-						<?
-					}
-				?>
-			</table>
-		</div>
-	</div>
+    <div>
+        <table>
+            <tr>
+                <th>Page title</th>
+                <th>URL</th>
+            </tr>
+            <? foreach ($pages as $p): ?>
+                    <tr>
+                        <td><?= $p->getTitle() ?></td>
+                        <td><a href='<?= $p->url() ?>'><?= $p->url()->location ?></a></td>
+                    </tr>
+            <? endforeach ?>
+        </table>
+    </div>
 
 	<?= Boom::include_js() ?>
 
