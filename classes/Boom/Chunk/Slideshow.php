@@ -26,7 +26,7 @@ class Slideshow extends \Boom\Chunk
         return new View($this->viewDirectory."default/slideshow/$this->_template");
     }
 
-    public function has_content()
+    public function hasContent()
     {
         return $this->_chunk->loaded() && count($this->_chunk->slides()) > 0;
     }

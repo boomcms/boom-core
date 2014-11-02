@@ -280,7 +280,7 @@ abstract class Chunk
 	 *
 	 * @return	bool
 	 */
-    abstract public function has_content();
+    abstract public function hasContent();
 
     /**
 	 * Generate the HTML to display the chunk
@@ -293,7 +293,7 @@ abstract class Chunk
             $this->_template = $this->_default_template;
         }
 
-        if ($this->has_content()) {
+        if ($this->hasContent()) {
             // Display the chunk.
             $return = $this->_show();
         } elseif ($this->_editable === true) {

@@ -47,7 +47,7 @@ class Tag extends \Boom\Chunk
         return $this->_tag;
     }
 
-    public function has_content()
+    public function hasContent()
     {
         return $this->_chunk->loaded() && $this->get_tag()->loaded();
     }

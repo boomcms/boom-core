@@ -64,7 +64,7 @@ class Asset extends \Boom\Chunk
         return $this->link;
     }
 
-    public function has_content()
+    public function hasContent()
     {
         return $this->_chunk->loaded() && $this->_asset->loaded();
     }
