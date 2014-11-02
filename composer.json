@@ -1,5 +1,5 @@
 {
-	"name":        "boom/core",
+	"name":        "boomcms/boom-core",
 	"description": "Core classess for BoomCMS",
 	"license":     "BSD-3-Clause",
 	"require": {
