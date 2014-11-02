@@ -8,8 +8,9 @@ abstract class Config
 {
     protected static $configGroup = 'boom';
 
-    public static function get($key)
+    public static function get($key = null)
     {
-        return Kohana::$config->load(static::$configGroup)->get($key);
+        $config = Kohana::$config->load(static::$configGroup);
+        return $key? $config->get($key) : $config->as_array();
     }
 }

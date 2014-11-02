@@ -8,6 +8,7 @@ use \PasswordHash;
 use \Session;
 use \Model_Role as Role;
 
+use Boom\Config;
 use \Boom\Person;
 
 class Auth
@@ -236,7 +237,7 @@ class Auth
     public static function instance()
     {
         if (static::$instance === null) {
-            static::$instance = new static(\Kohana::$config->load('boom')->get('auth'), Session::instance());
+            static::$instance = new static(Config::get('auth'), Session::instance());
         }
 
         return static::$instance;

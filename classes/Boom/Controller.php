@@ -57,7 +57,7 @@ class Controller extends \Controller
     public function before()
     {
         $this->session = Session::instance();
-        $this->auth = new Auth(Kohana::$config->load('boom')->get('auth'), $this->session);
+        $this->auth = new Auth(Config::get('auth'), $this->session);
 
         $this->_save_last_url();
 
