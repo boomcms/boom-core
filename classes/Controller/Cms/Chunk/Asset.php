@@ -19,4 +19,13 @@ class Controller_Cms_Chunk_Asset extends Controller_Cms_Chunk
 
         return $chunk->execute();
     }
+
+    public function action_edit()
+    {
+        $chunk = Chunk::factory('asset', $this->request->query('slotname'), $this->page);
+
+        $this->template = new View('boom/editor/slot/asset', array(
+            'chunk' => $chunk,
+        ));
+    }
 }

@@ -22,61 +22,13 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 		this.originals = this.element.children().clone(true);
 
 		if (self.elements.caption.length || self.elements.link.length || self.elements.title.length) {
-			this._build_ui();
+			new boomChunkAssetEditor(this.options.page, this.options.name)
+				.done(function(chunkData) {
+
+				});
 		} else {
 			self._edit_asset(self.elements.asset);
 		}
-	},
-
-	/**
-	@function
-	*/
-	_build_ui : function() {
-		var self = this;
-		this._bring_forward();
-
-		return $.get('/cms/toolbar/asset')
-			.done( function( toolbar ){
-				$.boom.page.toolbar.hide();
-				top.$( 'body' )
-					.prepend( toolbar );
-
-				top.$('.b-toolbar-asset')
-					.on( 'click', '.b-cancel', function(){
-						self._cancel();
-					})
-					.on( 'click', '.b-accept', function(){
-						self.insert();
-						self.destroy();
-					})
-					.on( 'click', '.b-link', function() {
-						self._edit_link();
-					})
-					.on( 'click', '.b-asset', function() {
-						self._edit_asset(self.elements.asset);
-					});
-			});
-
-	},
-
-	/**
-	@function
-	*/
-	_remove_ui : function() {
-
-		this._send_back();
-
-		$.boom.page.toolbar.show();
-
-		this.elements
-			.caption
-			.removeAttr( 'contentEditable style' )
-			.end()
-			.off( 'focus mouseover' );
-
-		top.$( 'body' )
-			.find('.b-toolbar-asset')
-			.remove();
 	},
 
 	/**
@@ -104,65 +56,6 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 			.fail( function() {
 				self.remove();
 			});
-	},
-
-	/**
-	Edit a caption
-	@param {Object} $caption Caption node
-	@returns {Deferred}
-	*/
-	_edit_caption : function( $caption ) {
-
-		var edited = new $.Deferred();
-
-		$caption
-			.attr( 'contentEditable', 'true' )
-			.on( 'focus mouseover', function(){
-				$( this )
-					.css( 'border', '1px solid black' );
-			})
-			.on( 'blur mouseout', function(){
-				$( this )
-					.removeAttr( 'style' );
-			})
-			.on( 'blur', function(){
-				edited.resolve();
-			})
-			.on( 'keyup click', function( e ){
-				e.stopPropagation();
-				e.preventDefault();
-			} );
-
-			if ( $.trim( $caption.text() ) == '' ) {
-				$caption.text( 'Default text' );
-			}
-
-		return edited;
-	},
-
-	/**
-	Edit a title
-	*/
-	_edit_title : function($title) {
-		var edited = new $.Deferred();
-
-		$title
-			.attr('contentEditable', 'true')
-			.on('focus mouseover', function(){
-				$(this).css('border', '1px solid black');
-			})
-			.on('blur mouseout', function() {
-				$(this).removeAttr( 'style' );
-			})
-			.on('blur', function() {
-				edited.resolve();
-			})
-			.on('keyup click', function(e) {
-				e.stopPropagation();
-				e.preventDefault();
-			});
-
-		return edited;
 	},
 
 	/**
@@ -217,32 +110,9 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 	},
 
 	/**
-	Cancel changes and exit
-	@function
-	*/
-	_cancel : function() {
-
-		var self = this;
-
-		if (self.edited) {
-			var confirmation = new boomConfirmation('Cancel changes', 'Cancel changes to this asset?');
-			confirmation.done(function() {
-				self.element
-					.children()
-					.remove()
-					.end()
-					.append(self.originals);
-				self.destroy();
-			});
-		} else {
-			self.destroy();
-		}
-	},
-
-	/**
 	Asset editor.
 	*/
-	edit: function(){
+	edit : function() {
 
 		var self = this;
 
@@ -250,70 +120,23 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 
 		$.boom.log('Asset chunk slot edit ' + self.asset.asset_id);
 
-		if (self.elements.caption.length) {
-			self.elements.caption.each( function() {
-				self
-					._edit_caption( $( this ) )
-					.done( function(){
-						self.asset.caption = self.element.find( '.asset-caption' ).text();
-						self.edited = true;
-					});
-			});
-		}
 
-		if (self.elements.title.length) {
-			self.elements.title.each(function() {
-				self
-					._edit_title($(this))
-					.done(function() {
-						self.asset.title = self.element.find('.asset-title').text();
-						self.edited = true;
-					});
-			});
-		}
+//		if (this.element != self.elements.asset) {
+//			self.elements.asset
+//				.on( 'click', function(event) {
+//					event.preventDefault();
+//
+//					self._edit_asset(self.elements.asset);
+//					return false;
+//				});
+//		}
 
-		if (this.element != self.elements.asset) {
-			self.elements.asset
-				.on( 'click', function(event) {
-					event.preventDefault();
-
-					self._edit_asset(self.elements.asset);
-					return false;
-				});
-		}
-
-		if (self.elements.link.length) {
-			self.elements.link
-				.on( 'click', function(event) {
-					event.preventDefault();
-
-					self._edit_link();
-					return false;
-				});
-		}
-
-		this.element.on('click', function(event) {
-			event.preventDefault();
-
-			self._edit_asset(self.elements.asset);
-			return false;
-		});
-	},
-
-	_edit_link: function() {
-		var self = this;
-
-		return new boomLinkPiclker('Add a link', {
-			url: (self.asset.url)? self.asset.url : '',
-			rid: -1,
-			title: ''
-		})
-		.pipe(function(new_link) {
-			self.asset.url = new_link.url;
-		})
-		.done(function() {
-			self.insert();
-		});
+//		this.element.on('click', function(event) {
+//			event.preventDefault();
+//
+//			self._edit_asset(self.elements.asset);
+//			return false;
+//		});
 	},
 
 	/**
@@ -342,19 +165,5 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 			caption : this.asset.caption,
 			url : this.asset.url
 		};
-	},
-
-	destroy : function() {
-		this._remove_ui();
-
-		$.ui.chunk.prototype.destroy.call(this);
-	},
-
-	remove : function() {
-		this.destroy();
-
-		$.ui.chunk.prototype.remove.call(this);
-
-		$.boom.page.toolbar.minimise();
 	}
 });

@@ -53,6 +53,7 @@ return array(
 		'boom/chunk/timestamp.js',
 		'boom/chunk/tag.js',
 		'boom/chunk/slideshow/editor.js',
+        'boom/chunk/asset/editor.js',
 		'boom/page/title.js',
 		'boom/link_picker.js',
 		'boom/tags.js',

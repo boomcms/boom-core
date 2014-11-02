@@ -10,11 +10,6 @@ class Controller_Cms_Toolbar extends Boom\Controller
 
     protected $viewDirectory = 'boom/toolbars';
 
-    public function action_asset()
-    {
-        $this->_toolbar = new View("$this->viewDirectory/asset");
-    }
-
     public function action_text()
     {
         $this->_toolbar = new \Boom\TextEditorToolbar($this->request->query('mode'));
