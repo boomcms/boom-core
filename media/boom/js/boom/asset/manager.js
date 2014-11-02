@@ -1,7 +1,7 @@
 $.widget('boom.assetManager', {
 	baseUrl : '/cms/assets/',
 	listUrl : '/cms/assets/list',
-	filters : {
+	postData : {
 		page : 1
 	},
 
@@ -11,8 +11,8 @@ $.widget('boom.assetManager', {
 	sortby : '',
 
 	addFilter : function(type, value) {
-		this.filters.page = 1;
-		this.filters[type] = value;
+		this.postData.page = 1;
+		this.postData[type] = value;
 	},
 
 	assetsUploaded : function(assetIds) {
@@ -166,7 +166,7 @@ $.widget('boom.assetManager', {
 	getAssets : function() {
 		var assetManager = this;
 
-		$.post(this.listUrl, this.filters)
+		$.post(this.listUrl, this.postData)
 			.done(function(response) {
 				var $response = $(response);
 
@@ -188,7 +188,7 @@ $.widget('boom.assetManager', {
 	},
 
 	getPage : function(page) {
-		if (this.filters.page !== page) {
+		if (this.postData.page !== page) {
 			this.addFilter('page', page);
 			this.getAssets();
 		}
@@ -206,7 +206,7 @@ $.widget('boom.assetManager', {
 	},
 
 	removeFilters : function() {
-		this.filters = {
+		this.postData = {
 			page : 1
 		};
 
@@ -231,7 +231,7 @@ $.widget('boom.assetManager', {
 	},
 
 	sortBy : function(sort) {
-		this.sortby = sort;
+		this.postData['sortby'] = sort;
 		this.getAssets();
 	},
 
