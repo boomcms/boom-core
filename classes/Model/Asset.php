@@ -3,7 +3,7 @@
 use \DB as DB;
 use \ORM as ORM;
 
-class Model_Asset extends Model_Taggable
+class Model_Asset extends ORM
 {
     protected $_belongs_to = array(
         'uploader'        =>    array('model' => 'Person', 'foreign_key' => 'uploaded_by'),

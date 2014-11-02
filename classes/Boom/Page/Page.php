@@ -3,7 +3,6 @@
 namespace Boom\Page;
 
 use \Boom\Editor\Editor as Editor;
-use \Boom\Taggable as Taggable;
 use \Boom\Template\Template as Template;
 use \Boom\Person as Person;
 
@@ -11,7 +10,7 @@ use \DateTime as DateTime;
 
 use \ORM as ORM;
 
-class Page implements Taggable
+class Page
 {
     /**
 	 *
@@ -28,11 +27,6 @@ class Page implements Taggable
     public function __construct(\Model_Page $model)
     {
         $this->model = $model;
-    }
-
-    public function addTagByName($name)
-    {
-
     }
 
     public function allowsExternalIndexing()
@@ -288,11 +282,6 @@ class Page implements Taggable
         return $this->model->loaded();
     }
 
-    public function removeTagByName($name)
-    {
-
-    }
-
     public function save()
     {
         $this->loaded() ? $this->model->update() : $this->model->create();
@@ -490,7 +479,7 @@ class Page implements Taggable
         return ($this->model->mptt->is_root()) ? $this : \Boom\Page\Factory::byId($this->model->mptt->parent_id);
     }
 
-    public function wasCreatedBy(Person $person)
+    public function wasCreatedBy(Person\Person $person)
     {
         return $this->getCreatedBy() === $person->getId();
     }

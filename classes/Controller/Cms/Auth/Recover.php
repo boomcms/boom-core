@@ -1,5 +1,7 @@
 <?php
 
+use Boom\Config;
+
 class Controller_Cms_Auth_Recover extends Controller_Cms_Auth
 {
     public function action_create_token()
@@ -21,7 +23,7 @@ class Controller_Cms_Auth_Recover extends Controller_Cms_Auth
             ->create();
 
         $email_body = View::factory('boom/email/recovery', array(
-            'site_name' => Kohana::$config->load('boom')->get('site_name'),
+            'site_name' => Config::get('site_name'),
             'person' => $person,
             'token' => $token,
             'request' => $this->request,
@@ -29,7 +31,7 @@ class Controller_Cms_Auth_Recover extends Controller_Cms_Auth
 
         Email::factory('CMS Password Reset')
             ->to($person->email)
-            ->from(Kohana::$config->load('boom')->get('support_email'))
+            ->from(Config::get('support_email'))
             ->message(new View('boom/email', array(
                 'content' => $email_body,
                 'request' => $this->request,

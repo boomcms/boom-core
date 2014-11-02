@@ -2,21 +2,14 @@
 
 namespace Boom\Email;
 
-use Arr;
 use Email;
-use Kohana;
 use Request;
 use View;
 use Boom\Person;
+use Boom\Config;
 
 class Newuser
 {
-    /**
-	 *
-	 * @var array
-	 */
-    protected $config;
-
     /**
 	 *
 	 * @var string
@@ -41,12 +34,11 @@ class Newuser
 	 */
     protected $viewFilename = 'boom/email/newuser';
 
-    public function __construct(Person $person, $password, Request $request)
+    public function __construct(Person\Person $person, $password, Request $request)
     {
         $this->person = $person;
         $this->password = $password;
         $this->request = $request;
-        $this->config = Kohana::$config->load('boom')->as_array();
     }
 
     protected function _get_content()
@@ -55,7 +47,7 @@ class Newuser
             'password' => $this->password,
             'person' => $this->person,
             'request' => $this->request,
-            'site_name' =>Arr::get($this->config, 'site_name'),
+            'site_name' => Config::get('site_name'),
         ));
     }
 
@@ -69,7 +61,7 @@ class Newuser
     {
         Email::factory('CMS Account Created')
             ->to($this->person->getEmail())
-            ->from(Arr::get($this->config, 'support_email'))
+            ->from(Config::get('support_email'))
             ->message(View::factory('boom/email', array(
                 'request' => $this->request,
                 'content' => $content,

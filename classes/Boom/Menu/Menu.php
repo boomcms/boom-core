@@ -4,8 +4,8 @@ namespace Boom\Menu;
 
 use \Arr as Arr;
 use \View as View;
-use \Kohana as Kohana;
 
+use \Boom\Config;
 use \Boom\Auth\Auth as Auth;
 
 class Menu
@@ -45,7 +45,7 @@ class Menu
 	 */
     public function __construct(array $data = null)
     {
-        $config = Kohana::$config->load('boom')->get("menu");
+        $config = Config::get("menu");
         $this->viewFilename = Arr::get($config, 'view_filename');
         $this->menuItems = (array) Arr::get($config, 'items');
         $this->viewData = $data;

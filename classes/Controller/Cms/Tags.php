@@ -8,10 +8,6 @@ abstract class Controller_Cms_Tags extends Boom\Controller
 	 */
     public $ids = array();
 
-    /**
-	 *
-	 * @var Model_Taggable
-	 */
     public $model;
 
     public $tags;

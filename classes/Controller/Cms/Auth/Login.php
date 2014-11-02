@@ -1,6 +1,6 @@
 <?php
 
-use \Boom\Person as Person;
+use \Boom\Person;
 
 class Controller_Cms_Auth_Login extends Controller_Cms_Auth
 {
