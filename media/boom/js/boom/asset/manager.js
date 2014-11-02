@@ -44,12 +44,7 @@ $.widget('boom.assetManager', {
 				assetManager.sortBy(this.value);
 			})
 			.on('change', '#b-assets-types', function(event) {
-				if (this.selectedIndex) {
-					assetManager.addFilter('type', this.options[this.selectedIndex].innerHTML);
-				} else {
-					assetManager.addFilter('type', '');
-				}
-
+				assetManager.addFilter('type', this.selectedIndex? this.options[this.selectedIndex].innerHTML : '');
 				assetManager.getAssets();
 			})
 			.on('click', '#b-assets-all', function(event) {
