@@ -2,7 +2,7 @@
 
 namespace Boom\Asset;
 
-use \Boom\Asset as Asset;
+use \Boom\Asset;
 use \ORM as ORM;
 
 class Finder extends \Boom\Finder

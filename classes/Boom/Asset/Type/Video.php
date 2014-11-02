@@ -2,7 +2,7 @@
 
 namespace Boom\Asset\Type;
 
-use Boom\Asset as Asset;
+use Boom\Asset\Asset;
 
 class Video extends Asset
 {

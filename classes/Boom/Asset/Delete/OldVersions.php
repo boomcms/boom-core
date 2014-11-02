@@ -2,9 +2,12 @@
 
 namespace Boom\Asset\Delete;
 
-class OldVersions extends \Boom\Asset\Command
+use \Boom\Asset\Command;
+use \Boom\Asset\Asset;
+
+class OldVersions extends Command
 {
-    public function execute(\Boom\Asset $asset)
+    public function execute(Asset $asset)
     {
         foreach (glob($asset->getFilename().".*.bak") as $file) {
             unlink($file);

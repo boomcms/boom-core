@@ -2,7 +2,7 @@
 
 namespace Boom\Asset\Archive;
 
-use \Boom\Asset as Asset;
+use \Boom\Asset\Asset;
 use \Boom\Asset\Archive as Archive;
 use \ZipArchive as ZipArchive;
 

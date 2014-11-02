@@ -2,7 +2,9 @@
 
 namespace Boom\Asset\Type;
 
-class Invalid extends \Boom\Asset
+use \Boom\Asset\Asset;
+
+class Invalid extends Asset
 {
     protected $_model;
 

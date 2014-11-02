@@ -2,7 +2,7 @@
 
 namespace Boom\Asset\Mimetype;
 
-use \Boom\Asset as Asset;
+use \Boom\Asset;
 
 class Docx extends Asset\Mimetype
 {

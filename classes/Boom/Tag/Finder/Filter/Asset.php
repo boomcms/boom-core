@@ -6,7 +6,7 @@ class Asset extends \Boom\Finder\Filter
 {
     protected $asset;
 
-    public function __construct(\Boom\Asset $asset)
+    public function __construct(\Boom\Asset\Asset $asset)
     {
         $this->asset = $asset;
     }

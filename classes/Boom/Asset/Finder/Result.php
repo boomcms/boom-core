@@ -2,7 +2,7 @@
 
 namespace Boom\Asset\Finder;
 
-use Boom\Asset as Asset;
+use Boom\Asset;
 
 class Result extends \ArrayIterator
 {

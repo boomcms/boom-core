@@ -2,8 +2,6 @@
 
 namespace Boom\Asset;
 
-use \Boom\Asset as Asset;
-
 class Commander
 {
     protected $asset;
@@ -13,7 +11,7 @@ class Commander
         $this->asset = $asset;
     }
 
-    public function addCommand(\Boom\Asset\Command $command)
+    public function addCommand(Command $command)
     {
         $this->commands[] = $command;
 

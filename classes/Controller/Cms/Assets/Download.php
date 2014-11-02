@@ -1,6 +1,6 @@
 <?php
 
-use Boom\Asset as Asset;
+use Boom\Asset;
 use \Boom\Asset\Finder as Finder;
 
 class Controller_Cms_Assets_Download extends Controller_Cms_Assets
@@ -36,7 +36,7 @@ class Controller_Cms_Assets_Download extends Controller_Cms_Assets
 				readfile($asset->getFilename())
 			);
 
-		if ( ! $asset instanceof \Boom\Asset\Type\Image) {
+		if ( ! $asset instanceof Asset\Type\Image) {
 			$this->response->headers('Content-Disposition', 'attachment; filename='.basename($asset->getOriginalFilename()));
 		}
 	}

@@ -1,9 +1,9 @@
 <?php
 
-namespace Boom;
+namespace Boom\Asset;
 
-use \File as File;
-use DateTime;
+use \File;
+use \DateTime;
 
 abstract class Asset
 {
@@ -85,7 +85,7 @@ abstract class Asset
 
     public function getMimetype()
     {
-        return $this->exists() ? Asset\Mimetype::factory(File::mime($this->getFilename())) : null;
+        return $this->exists() ? Mimetype::factory(File::mime($this->getFilename())) : null;
     }
 
     /**
@@ -104,7 +104,7 @@ abstract class Asset
         if ($this->old_files === null) {
             // Add files for previous versions of the asset.
             // Wrap the glob in array_reverse() so that we end up with an array with the most recent first.
-            foreach (new \Boom\Asset\OldFilesIterator($this) as $file) {
+            foreach (new OldFilesIterator($this) as $file) {
                 // Get the version ID out of the filename.
                 preg_match('/' . $this->id . '.(\d+).bak$/', $file->getFilename(), $matches);
 
@@ -168,7 +168,7 @@ abstract class Asset
 
     /**
 	 *
-	 * @return \Boom\Asset
+	 * @return \Boom\Asset\Asset
 	 */
     public function save()
     {
@@ -180,7 +180,7 @@ abstract class Asset
     /**
 	 *
 	 * @param string $credits
-	 * @return \Boom\Asset
+	 * @return \Boom\Asset\Asset
 	 */
     public function setCredits($credits)
     {
@@ -192,7 +192,7 @@ abstract class Asset
     /**
 	 *
 	 * @param string $description
-	 * @return \Boom\Asset
+	 * @return \Boom\Asset\Asset
 	 */
     public function setDescription($description)
     {
@@ -204,7 +204,7 @@ abstract class Asset
     /**
 	 *
 	 * @param string $filename
-	 * @return \Boom\Asset
+	 * @return \Boom\Asset\Asset
 	 */
     public function setFilename($filename)
     {
@@ -216,7 +216,7 @@ abstract class Asset
     /**
 	 *
 	 * @param float $size
-	 * @return \Boom\Asset
+	 * @return \Boom\Asset\Asset
 	 */
     public function setFilesize($size)
     {
@@ -228,7 +228,7 @@ abstract class Asset
     /**
 	 *
 	 * @param DateTime $time
-	 * @return \Boom\Asset
+	 * @return \Boom\Asset\Asset
 	 */
     public function setLastModified(DateTime $time)
     {
@@ -240,7 +240,7 @@ abstract class Asset
     /**
 	 *
 	 * @param int $assetId
-	 * @return \Boom\Asset
+	 * @return \Boom\Asset\Asset
 	 */
     public function setThumbnailAssetId($assetId)
     {
@@ -252,7 +252,7 @@ abstract class Asset
     /**
 	 *
 	 * @param string $title
-	 * @return \Boom\Asset
+	 * @return \Boom\Asset\Asset
 	 */
     public function setTitle($title)
     {
@@ -264,7 +264,7 @@ abstract class Asset
     /**
 	 *
 	 * @param \Boom\Person $person
-	 * @return \Boom\Asset
+	 * @return \Boom\Asset\Asset
 	 */
     public function setUploadedBy(Person $person)
     {

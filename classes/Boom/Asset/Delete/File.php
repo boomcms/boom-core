@@ -2,9 +2,12 @@
 
 namespace Boom\Asset\Delete;
 
-class File extends \Boom\Asset\Command
+use \Boom\Asset\Command;
+use \Boom\Asset\Asset;
+
+class File extends Command
 {
-    public function execute(\Boom\Asset $asset)
+    public function execute(Asset $asset)
     {
         @unlink($asset->getFilename());
     }
