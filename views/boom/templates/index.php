@@ -28,7 +28,7 @@
 						<? elseif (in_array($t->getId(), $imported)): ?>
 							 <? $class = ' b-templates-new' ?>
 						<? endif ?>
-						<tr class="<?= Text::alternate('odd', 'even') ?><?= $class ?>" data-id="<?= $template->getId() ?>">
+						<tr class="<?= Text::alternate('odd', 'even') ?><?= $class ?>" data-id="<?= $t->getId() ?>">
 							<td><input type='hidden' name='templates[]' value='<?= $t->getId() ?>' /></td>
 							<td><input type='text' name='name-<?= $t->getId() ?>' value="<?= $t->getName() ?>" /></td>
 							<td><input type='text' name='description-<?= $t->getId() ?>' value="<?= $t->getDescription() ?>" /></td>
@@ -50,7 +50,9 @@
 	<script type="text/javascript">
 		//<![CDATA[
 		(function($){
-			$.boom.init();
+			$.boom.init({
+                csrf : '<?= Security::token() ?>'
+             });
 
 			$('#b-templates').templateManager();
 		})(jQuery);

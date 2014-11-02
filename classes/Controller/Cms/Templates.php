@@ -69,25 +69,11 @@ class Controller_Cms_Templates extends Controller_Cms
                 $errors[] = $e->errors('models');
             }
         }
+    }
 
-        // Get the ID of all templates in the database.
-        // Any of these which weren't in the POST array are being deleted.
-        $existing = DB::select('id')
-            ->from('templates')
-            ->execute()
-            ->as_array();
-
-        // Get the IDs from the results array
-        $existing = Arr::pluck($existing, 'id');
-
-        // Find the IDs of the templates which are in the database but weren't submitted in the form.
-        $removed = array_diff($existing, $template_ids);
-
-        // Delete any removed templates.
-        if ( ! empty($removed)) {
-            DB::delete('templates')
-                ->where('id', 'IN', $removed)
-                ->execute();
-        }
+    public function action_delete()
+    {
+        $template = Template\Factory::byId($this->request->param('id'));
+        $template->delete();
     }
 }

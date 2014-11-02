@@ -8,10 +8,13 @@ $.widget('boom.templateManager', {
 					confirmation = new boomConfirmation("Please confirm", "Are you sure you want to delete this template?");
 
 				confirmation
-					.done( function(){
-						item.fadeOut(600, function(){
-							item.remove();
-						});
+					.done(function() {
+						$.boom.post('/cms/templates/delete/' + item.attr('data-id'))
+							.done(function() {
+								item.fadeOut(600, function(){
+									item.remove();
+								});
+							});
 					});
 			})
 			.on('click', '#b-templates-save', function() {

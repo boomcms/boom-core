@@ -34,6 +34,19 @@ class Template
         return $finder->count();
     }
 
+    /**
+     *
+     * @return \Boom\Template\Template
+     */
+    public function delete()
+    {
+        if ($this->loaded()) {
+            $this->model->delete();
+        }
+
+        return $this;
+    }
+
     public function fileExists()
     {
         return (bool) Kohana::find_file("views", $this->getFullFilename());
