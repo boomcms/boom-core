@@ -183,6 +183,7 @@ $.widget('boom.assetManager', {
 					.replaceWith($response[2]);
 
 				assetManager.initPagination();
+				assetManager.clearSelection();
 			});
 	},
 
