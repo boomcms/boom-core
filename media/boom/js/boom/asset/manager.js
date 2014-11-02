@@ -131,7 +131,7 @@ $.widget('boom.assetManager', {
 					width: 440,
 					cancelButton : false,
 					onLoad: function() {
-						$('#b-tags').tagger({
+						dialog.contents.find('#b-tags').tagger({
 							type: 'asset',
 							id: asset.id
 						});

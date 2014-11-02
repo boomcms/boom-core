@@ -7,7 +7,8 @@ class Controller_Cms_Profile extends Boom\Controller
         $v = new View('boom/account/profile', array(
             'person' => $this->person,
             'auth' => $this->auth,
-            'logs' => $this->person->get_recent_account_activity(),
+            'logs' => array(),
+            //'logs' => $this->person->get_recent_account_activity(),
         ));
 
         $this->response->body($v);
@@ -17,11 +18,11 @@ class Controller_Cms_Profile extends Boom\Controller
     {
         extract($this->request->post());
 
-        $name && $this->person->set('name', $name);
+        $name && $this->person->setName($name);
 
         if ($new_password && $new_password != $current_password) {
-            if ( ! $this->person->password || $this->auth->check_password($current_password)) {
-                $this->person->set('password', $this->auth->hash($new_password));
+            if ( ! $this->person->getPasword() || $this->auth->checkPassword($current_password)) {
+                $this->person->setEncryptedPassword($this->auth->hash($new_password));
             } else {
                 $this->response
                     ->status(500)
@@ -30,6 +31,6 @@ class Controller_Cms_Profile extends Boom\Controller
             }
         }
 
-        $this->person->update();
+        $this->person->save();
     }
 }
