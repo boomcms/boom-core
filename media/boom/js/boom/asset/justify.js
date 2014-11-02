@@ -22,7 +22,7 @@ $.widget('boom.justifyAssets', {
 		var prevRow;
 		var self = this;
 
-		if (this.$el.children().length) {
+		if (this.$el.children().length > 1) {
 			this.$el.children().each(function(index, element) {
 				var $child = $(element);
 				$child.offset = self._getOffset($child);
