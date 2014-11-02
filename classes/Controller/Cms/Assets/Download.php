@@ -52,7 +52,7 @@ class Controller_Cms_Assets_Download extends Controller_Cms_Assets
         $zip = new Asset\Archive\Zip();
 
         foreach ($this->asset_ids as $assetId) {
-            $zip->addAsset(Factory::byId($assetId));
+            $zip->addAsset(Asset\Factory::byId($assetId));
         }
 
         $zip->close();
