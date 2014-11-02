@@ -3,7 +3,7 @@
 
 	<div id="b-topbar" class="b-toolbar">
 		<?= \Boom\UI::menuButton() ?>
-		<?= \Boom\UI::button('accept', __('Save all'), array('id' => 'b-templates-save')) ?>
+		<?= \Boom\UI::button('accept', __('Save all'), array('id' => 'b-templates-save', 'class' => 'b-button-withtext')) ?>
 	</div>
 
 	<div id="b-templates">
