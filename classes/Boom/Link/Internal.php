@@ -2,21 +2,23 @@
 
 namespace Boom\Link;
 
+use Boom\Page;
+
 class Internal extends Link
 {
     /**
 	 *
-	 * @var \Model_Page
+	 * @var Page\Page
 	 */
     protected $page;
 
     public function __construct($link)
     {
         if (ctype_digit($link)) {
-            $this->page = new \Model_Page($link);
+            $this->page = Page\Factory::byId($link);
         } else {
             $location = ($link === '/') ? $link : substr($link, 1);
-            $this->page = \ORM::factory('Page_URL', array('location' => $location))->page;
+            $this->page = Page\Factory::byUri($location);
         }
     }
 
