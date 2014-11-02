@@ -6,7 +6,7 @@
 			<div class="ui-dialog-buttonpane">
 				<?= \Boom\UI::button('delete', __('Delete'), array('class' => 'b-assets-delete')) ?>
 				<?= \Boom\UI::button('download', __('Download'), array('class' => 'b-assets-download')) ?>
-				<?= \Boom\UI::button('replace', __('Replace'), array('class' => 'b-assets-replace')) ?>
+				<?//= \Boom\UI::button('replace', __('Replace'), array('class' => 'b-assets-replace')) ?>
 			</div>
 		</div>
 
