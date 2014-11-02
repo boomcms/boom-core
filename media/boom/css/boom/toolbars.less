@@ -1,4 +1,5 @@
 html.boom .b-toolbar, .b-toolbar {
+	.box-sizing;
 	background: #222;
 	overflow: hidden;
 	color: #ffffff;
@@ -8,12 +9,14 @@ html.boom .b-toolbar, .b-toolbar {
 	width: 100%;
 	overflow: hidden;
 	position: relative;
+	padding-left: 80px;
 
 	&.b-toolbar-vertical {
 		width: 60px;
 		height: 100%;
 		z-index: 10000;
 		position: fixed;
+		padding-left: 0;
 
 		.b-button {
 			border-right: 0;
@@ -26,8 +29,6 @@ html.boom .b-toolbar, .b-toolbar {
 	}
 
 	&.b-page-toolbar {
-		width: 50px;
-
 		#b-topbar-page-buttons {
 			position: absolute;
 			top: 60px;
