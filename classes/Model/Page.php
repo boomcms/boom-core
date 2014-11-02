@@ -2,7 +2,7 @@
 
 use \Boom\Editor\Editor as Editor;
 
-class Model_Page extends Model_Taggable
+class Model_Page extends ORM
 {
     /**
 	 * Properties to create relationships with Kohana's ORM
