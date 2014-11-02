@@ -129,6 +129,11 @@ abstract class Asset
         return $this->model->thumbnail_asset_id;
     }
 
+    public function getThumbnail()
+    {
+        return Asset\Factory::byId($this->getThumbnailAssetId());
+    }
+
     public function getTitle()
     {
         return $this->model->title;
