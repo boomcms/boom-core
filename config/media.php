@@ -57,7 +57,7 @@ return array(
 		'boom/link_picker.js',
 		'boom/tags.js',
 		'boom/tagAutocompleter.js',
-		'boom/templates.js',
+		'boom/template/manager.js',
 		'boom/asset/asset.js',
 		'boom/asset/manager.js',
 		'boom/asset/picker.js',
