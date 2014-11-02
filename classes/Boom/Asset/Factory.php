@@ -6,6 +6,11 @@ use \Model_Asset;
 
 class Factory
 {
+    public static function byId($assetId)
+    {
+        return static::fromModel(new Model_Asset($assetId));
+    }
+
     public static function createFromType($type)
     {
         $model = new Model_Asset();
