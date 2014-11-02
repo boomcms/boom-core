@@ -41,4 +41,10 @@ class Controller_Cms_Tags_Asset extends Controller_Cms_Tags
         $message = (count($this->tags)) ? 'asset.hastags' : 'asset.notags';
         $this->template->set('message', Kohana::message('boom', $message));
     }
+
+    public function action_remove()
+    {
+        $tag = TagFactory::byName($this->request->post('tag'));
+        $tag->removeFromAssets($this->ids);
+    }
 }

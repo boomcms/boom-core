@@ -23,9 +23,4 @@ abstract class Controller_Cms_Tags extends Boom\Controller
     public $type;
 
     protected $tag;
-
-    public function action_remove()
-    {
-        $this->model->removeTagByName($this->request->post('tag'), $this->ids);
-    }
 }

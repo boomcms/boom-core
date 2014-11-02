@@ -50,6 +50,18 @@ class Tag
         }
     }
 
+    public function removeFromAssets(array $assetIds)
+    {
+        if ( ! empty($assetIds)) {
+            DB::delete('assets_tags')
+                ->where('tag_id', '=', $this->getId())
+                ->where('asset_id', 'in', $assetIds)
+                ->execute();
+        }
+
+        return $this;
+    }
+
     public function removeFromPages(array $pageIds)
     {
         if ( ! empty($pageIds)) {
