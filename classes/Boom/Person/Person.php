@@ -27,7 +27,7 @@ class Person
      * @param \Boom\Group\Group $group
      * @return \Boom\Person\Person
      */
-    public function addGroup(Group\Group $group)
+    public function addToGroup(Group\Group $group)
     {
         if ($group->loaded()) {
             $this->model->add('groups', $group->getId());
