@@ -4,12 +4,12 @@ namespace Boom\Auth;
 
 use \Cookie as Cookie;
 use \DB as DB;
-use \PasswordHash;
 use \Session;
 use \Model_Role as Role;
 
+use Hautelook\Phpass\PasswordHash;
 use Boom\Config;
-use \Boom\Person;
+use Boom\Person;
 
 class Auth
 {
@@ -214,12 +214,7 @@ class Auth
 
     public function hash($password)
     {
-        if ( ! class_exists('PasswordHash')) {
-            require \Kohana::find_file('vendor', 'PasswordHash');
-        }
-
         $hasher = new PasswordHash(8, false);
-
         return $hasher->HashPassword($password);
     }
 
@@ -292,10 +287,6 @@ class Auth
 
     public function check_password($password)
     {
-        if ( ! class_exists('PasswordHash')) {
-            require \Kohana::find_file('vendor', 'PasswordHash');
-        }
-
         $hasher = new PasswordHash(8, false);
 
         /*
