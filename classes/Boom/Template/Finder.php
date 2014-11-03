@@ -2,9 +2,10 @@
 
 namespace Boom\Template;
 
+use Boom;
 use \Model_Template as TemplateModel;
 
-class Finder extends \Boom\Finder
+class Finder extends Boom\Finder\Finder
 {
     public function __construct()
     {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Boom;
+namespace Boom\Finder;
 
 abstract class Finder
 {
@@ -11,7 +11,7 @@ abstract class Finder
     protected $_filtersApplied = false;
     protected $_query;
 
-    public function addFilter(Finder\Filter $filter)
+    public function addFilter(Filter $filter)
     {
         $this->_filters[] = $filter;
 

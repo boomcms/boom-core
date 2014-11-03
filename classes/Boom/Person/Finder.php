@@ -2,7 +2,9 @@
 
 namespace Boom\Person;
 
-class Finder extends \Boom\Finder
+use Boom;
+
+class Finder extends Boom\Finder\Finder
 {
     public function __construct()
     {

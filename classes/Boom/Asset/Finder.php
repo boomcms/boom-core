@@ -3,9 +3,10 @@
 namespace Boom\Asset;
 
 use \Boom\Asset;
+use Boom;
 use \ORM as ORM;
 
-class Finder extends \Boom\Finder
+class Finder extends Boom\Finder\Finder
 {
     /**
 	 *
