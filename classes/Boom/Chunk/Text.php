@@ -65,7 +65,8 @@ class Text extends \Boom\Chunk
 
     public function get_paragraphs($offset = 0, $length = null)
     {
-        return \Boom\ParagraphIterator::fromText($this->text());
+        preg_match_all('|<p>(.*?)</p>|', $this->_chunk->text, $matches, PREG_PATTERN_ORDER);
+        return  $matches[1];
     }
 
     public function hasContent()
