@@ -36,13 +36,14 @@ class RssFeed
 
     public function render()
     {
-        $feed = Rss::feed('2.0', 'UTF-8');
-
-        $feed->channel(array(
-            'title' => $this->page->getTitle(),
-            'description' => $this->page->getDescription(),
-            'link' => $this->page->url()
-        ));
+        $feed = new Rss;
+        $feed
+            ->feed('2.0', 'UTF-8')
+            ->channel(array(
+                'title' => $this->page->getTitle(),
+                'description' => $this->page->getDescription(),
+                'link' => $this->page->url()
+            ));
 
         foreach ($this->getFeedItems() as $page) {
             $feed->item(array(
@@ -52,6 +53,6 @@ class RssFeed
             ));
         }
 
-        return $feed->render();
+        return (string) $feed;
     }
 }

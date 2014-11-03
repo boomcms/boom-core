@@ -10,6 +10,6 @@ class Controller_Page_Rss extends Boom\Controller\Page
 
         $this->response
             ->headers('Content-Type', 'application/rss+xml')
-            ->body($feed);
+            ->body($feed->render());
     }
 }
