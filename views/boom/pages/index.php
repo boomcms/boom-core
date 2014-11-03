@@ -1,13 +1,14 @@
-	<?= View::factory('boom/header')->set('title', 'Pages') ?>
+	<?= View::factory('boom/header', array('title' => 'Pages'))?>
+	<?= new \Boom\Menu\Menu  ?>
 
-	<div id="b-topbar" class='b-toolbar'>
-		<?= Menu::factory('boom')->sort('priority') ?>
+	<div id="b-topbar" class="b-toolbar">
+		<?= \Boom\UI::menuButton() ?>
 	</div>
 
 	<div id="b-pages">
 		<ul class='boom-tree'>
 			<? foreach ($pages as $p): ?>
-				<li><a href="<?= $p->url() ?>" rel="<?= $p->id ?>"><?= $p->getTitle() ?></a></li>
+				<li><a href="<?= $p->url() ?>" rel="<?= $p->getId() ?>"><?= $p->getTitle() ?></a></li>
 			<? endforeach ?>
 		</ul>
 	</div>
