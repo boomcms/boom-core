@@ -11,6 +11,7 @@
 		"kohana/orm": "3.3.*",
 		"kohana/auth": "3.3.*",
 		"kohana/minion": "3.3.*",
+		"kohana/image" : "3.3.*", 
                 "genphrase/genphrase" : "1.0.*",
 		"davechild/textstatistics": "1.0.*@dev"
 	},
