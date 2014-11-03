@@ -152,7 +152,7 @@ class Person
         return $this;
     }
 
-    public function removeGroup(Group\Group $group)
+    public function removeFromGroup(Group\Group $group)
     {
         $this->model->remove('groups', $group->getId());
 
