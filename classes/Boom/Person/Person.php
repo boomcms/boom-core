@@ -152,6 +152,11 @@ class Person
         return $this;
     }
 
+    /**
+     *
+     * @param \Boom\Group\Group $group
+     * @return \Boom\Person\Person
+     */
     public function removeFromGroup(Group\Group $group)
     {
         if ($group->loaded()) {
