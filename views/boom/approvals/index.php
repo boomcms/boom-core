@@ -37,7 +37,7 @@
 
 	<?= Boom::include_js() ?>
 
-	<?= Assets::factory('boom_approvals')->js('boom/approvals.js') ?>
+	<?= Assets::instance('boom_approvals')->js('boom/approvals.js') ?>
 
 	<script type="text/javascript">
 		//<![CDATA[
