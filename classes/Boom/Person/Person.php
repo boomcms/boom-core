@@ -22,6 +22,11 @@ class Person
         $this->model = $model;
     }
 
+    /**
+     *
+     * @param \Boom\Group\Group $group
+     * @return \Boom\Person\Person
+     */
     public function addGroup(Group\Group $group)
     {
         if ($group->loaded()) {
