@@ -1,5 +1,7 @@
 <?php
 
+use Boom\Group;
+
 class Controller_Cms_Person_View extends Controller_Cms_Person
 {
     public function action_add()
@@ -11,17 +13,14 @@ class Controller_Cms_Person_View extends Controller_Cms_Person
 
     public function action_add_group()
     {
-        $groups = ORM::factory('Group')
-            ->names(
-                DB::Select('group_id')
-                    ->from('people_groups')
-                    ->where('person_id', '=', $this->edit_person->id)
-            );
+        $finder = new Group\Finder;
+        $finder
+            ->addFilter(new Group\Finder\Filter\ExcludingPersonsGroups($this->edit_person))
+            ->setOrderBy('name');
 
-        // Set the response template.
         $this->template = View::factory("$this->viewDirectory/addgroup", array(
-            'person'    =>    $this->edit_person,
-            'groups'    =>    $groups,
+            'person' => $this->edit_person,
+            'groups' => $finder->findAll(),
         ));
     }
 
