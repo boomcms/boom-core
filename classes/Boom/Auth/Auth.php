@@ -215,6 +215,7 @@ class Auth
     public function hash($password)
     {
         $hasher = new PasswordHash(8, false);
+
         return $hasher->HashPassword($password);
     }
 

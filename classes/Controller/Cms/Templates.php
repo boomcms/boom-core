@@ -40,7 +40,7 @@ class Controller_Cms_Templates extends Controller_Cms
     {
         $template = Template\Factory::byId($this->request->param('id'));
 
-        $finder = new Page\Finder;
+        $finder = new Page\Finder();
         $finder->addFilter(new Page\Finder\Filter\Template($template));
         $pages = $finder->findAll();
 

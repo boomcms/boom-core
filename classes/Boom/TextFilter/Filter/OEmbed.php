@@ -9,6 +9,7 @@ class OEmbed implements \Boom\TextFilter\Filter
     public function filterText($text)
     {
         $embera = new Embera();
+
         return $embera->autoEmbed($text);
     }
 }

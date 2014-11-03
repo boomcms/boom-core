@@ -2,10 +2,6 @@
 
 namespace Boom\Page;
 
-use Boom\Page\Page;
-use Kohana;
-use DaveChild\TextStatistics as TS;
-
 class ReadabilityScore
 {
     /**

@@ -3,7 +3,6 @@
 namespace Boom\Chunk;
 
 use \Boom\Page as Page;
-use Page\Finder as PageFinder;
 use \Boom\Link\Link as Link;
 use \View as View;
 
