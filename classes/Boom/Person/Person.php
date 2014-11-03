@@ -154,12 +154,14 @@ class Person
 
     public function removeFromGroup(Group\Group $group)
     {
-        $this->model->remove('groups', $group->getId());
+        if ($group->loaded()) {
+            $this->model->remove('groups', $group->getId());
 
-        DB::delete('people_roles')
-            ->where('group_id', '=', $group->getId())
-            ->where('person_id', '=', $this->getId())
-            ->execute();
+            DB::delete('people_roles')
+                ->where('group_id', '=', $group->getId())
+                ->where('person_id', '=', $this->getId())
+                ->execute();
+        }
 
         return $this;
     }
