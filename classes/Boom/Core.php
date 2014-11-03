@@ -8,7 +8,7 @@ abstract class Boom_Core
     {
         $css = Kohana::$config->load('media')->get('css');
 
-        $assets = Assets::instance('cms_css');
+        $assets = Assets::factory('cms_css');
         foreach ($css as $c) {
             $assets->css($c);
         }
@@ -21,7 +21,7 @@ abstract class Boom_Core
         $core_js = Kohana::$config->load('media')->get('corejs');
         $js = Kohana::$config->load('media')->get('js');
 
-        $assets = Assets::instance('cms_js');
+        $assets = Assets::factory('cms_js');
 
         foreach ($core_js as $j) {
             $assets->js($j);
