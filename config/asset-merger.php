@@ -2,7 +2,7 @@
 
 return array(
 	'load_paths' => array(
-		Assets::JAVASCRIPT => array(MODPATH.'boom/media/boom/js/'),
-		Assets::STYLESHEET => array(MODPATH.'boom/media/boom/css/'),
+		Assets::JAVASCRIPT => array(__DIR__ . '/../media/boom/js/'),
+		Assets::STYLESHEET => array(__DIR__.'/../media/boom/css/'),
 	),
 );
