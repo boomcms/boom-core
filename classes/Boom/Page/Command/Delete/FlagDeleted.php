@@ -11,7 +11,7 @@ class FlagDeleted extends \Boom\Page\Command
     public function execute(Page $page)
     {
         DB::update('pages')
-            ->set(array('deleted' => true))
+            ->set(['deleted' => true])
             ->where('id', '=', $page->getId())
             ->execute();
 

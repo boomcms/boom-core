@@ -8,7 +8,7 @@
 class Task_Boom_Testpages extends Minion_Task
 {
     protected $_page_count;
-    protected $_test_run_times = array();
+    protected $_test_run_times = [];
 
     /**
 	 * Execute the task
@@ -55,7 +55,7 @@ class Task_Boom_Testpages extends Minion_Task
 
     protected function _test_pages($pages)
     {
-        $errors = array();
+        $errors = [];
 
         foreach ($pages as $i => $page) {
             $result = $this->_test_single_page($page);
@@ -64,7 +64,7 @@ class Task_Boom_Testpages extends Minion_Task
                 $this->_report_test_passed();
             } else {
                 $this->_report_test_failed();
-                $errors[] = array('page' => $page->primary_uri, 'status' => $result);
+                $errors[] = ['page' => $page->primary_uri, 'status' => $result];
             }
 
             $this->_report_testsuite_progress($i);

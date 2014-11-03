@@ -61,7 +61,7 @@ abstract class Boom_Core
         if (substr($params['location'], 0, 1) == '_') {
             $page = \Boom\Page\ShortURL::pageFromUrl($params['location']);
         } else {
-            $page_url = new Model_Page_URL(array('location' => $params['location']));
+            $page_url = new Model_Page_URL(['location' => $params['location']]);
 
             if ( ! $page_url->loaded()) {
                 return false;

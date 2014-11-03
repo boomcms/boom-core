@@ -2,13 +2,13 @@
 
 class Model_Group extends ORM
 {
-    protected $_has_many = array('roles' => array('through' => 'group_roles'));
+    protected $_has_many = ['roles' => ['through' => 'group_roles']];
 
-    protected $_table_columns = array(
+    protected $_table_columns = [
         'id'            =>    '',
         'name'        =>    '',
         'deleted'        =>    '',
-    );
+    ];
 
     protected $_table_name = 'groups';
 
@@ -95,10 +95,10 @@ class Model_Group extends ORM
 
     public function rules()
     {
-        return array(
-            'name' => array(
-                array('not_empty'),
-            ),
-        );
+        return [
+            'name' => [
+                ['not_empty'],
+            ],
+        ];
     }
 }

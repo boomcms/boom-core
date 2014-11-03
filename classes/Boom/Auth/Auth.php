@@ -35,9 +35,9 @@ class Auth
 
     protected $sessionKey = 'boomPersonId';
 
-    protected $permissions_cache = array();
+    protected $permissions_cache = [];
 
-    public function __construct($config = array(), Session $session)
+    public function __construct($config = [], Session $session)
     {
         $this->config = $config;
         $this->session = $session;
@@ -52,7 +52,7 @@ class Auth
             Cookie::delete('authautologin');
 
             // Clear the autologin token from the database
-            $token = ORM::factory('User_Token', array('token' => $token));
+            $token = ORM::factory('User_Token', ['token' => $token]);
 
             if ($token->loaded() and $logout_all) {
                 // Delete all user tokens. This isn't the most elegant solution but does the job
@@ -85,7 +85,7 @@ class Auth
     {
         if ($token = Cookie::get('authautologin')) {
             // Load the token and user
-            $token = ORM::factory('User_Token', array('token' => $token));
+            $token = ORM::factory('User_Token', ['token' => $token]);
 
             if ($token->loaded() and $token->user->loaded()) {
                 if ($token->user_agent === sha1(Request::$user_agent)) {
@@ -136,7 +136,7 @@ class Auth
             }
 
             if (is_string($role)) {
-                $role = new Role(array('name' => $role));
+                $role = new Role(['name' => $role]);
             }
 
             // Does the person have the role at the specified page?
@@ -173,7 +173,7 @@ class Auth
 
     public function cache_permissions($page)
     {
-        $permissions = DB::select('roles.name', array('page_mptt.id', 'page_id'), array(DB::expr("bit_and(allowed)"), 'allowed'))
+        $permissions = DB::select('roles.name', ['page_mptt.id', 'page_id'], [DB::expr("bit_and(allowed)"), 'allowed'])
             ->from('people_roles')
             ->where('person_id', '=', $this->getPerson()->getId())
             ->join('roles', 'inner')
@@ -262,7 +262,7 @@ class Auth
         if ( ! is_object($person) && ! $person instanceof Person\Person) {
             // If we haven't been called with a person object then assume it's an email address
             // and get the person from the database.
-            $person = new Model_Person(array('email' => $person));
+            $person = new Model_Person(['email' => $person]);
         }
 
         return $this->_login($person, $password, $remember);
@@ -271,11 +271,11 @@ class Auth
     protected function _remember_login()
     {
         // Token data
-        $data = array(
+        $data = [
             'user_id'    => $this->getPerson()->getId(),
             'expires'    => time() + $this->_config['lifetime'],
             'user_agent' => sha1(Request::$user_agent),
-        );
+        ];
 
         // Create a new autologin token
         $token = ORM::factory('User_Token')

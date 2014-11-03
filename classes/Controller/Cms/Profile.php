@@ -4,12 +4,12 @@ class Controller_Cms_Profile extends Boom\Controller
 {
     public function action_view()
     {
-        $v = new View('boom/account/profile', array(
+        $v = new View('boom/account/profile', [
             'person' => $this->person,
             'auth' => $this->auth,
-            'logs' => array(),
+            'logs' => [],
             //'logs' => $this->person->get_recent_account_activity(),
-        ));
+        ]);
 
         $this->response->body($v);
     }
@@ -27,7 +27,7 @@ class Controller_Cms_Profile extends Boom\Controller
                 $this->response
                     ->status(500)
                     ->headers('Content-Type', static::JSON_RESPONSE_MIME)
-                    ->body(json_encode(array('message' => 'Invalid password')));
+                    ->body(json_encode(['message' => 'Invalid password']));
             }
         }
 

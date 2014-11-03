@@ -8,7 +8,7 @@ class Type extends \Boom\Finder\Filter
 
     public function __construct($types = null)
     {
-        $types = is_array($types) ?: array($types);
+        $types = is_array($types) ?: [$types];
         $this->_type = $this->removeInvalidTypes($types);
     }
 
@@ -19,7 +19,7 @@ class Type extends \Boom\Finder\Filter
 
     private function removeInvalidTypes($types)
     {
-        $validTypes = array();
+        $validTypes = [];
 
         foreach ($types as $type) {
             if ($type) {

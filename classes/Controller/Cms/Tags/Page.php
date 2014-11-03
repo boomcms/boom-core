@@ -11,7 +11,7 @@ class Controller_Cms_Tags_Page extends Controller_Cms_Tags
         parent::before();
 
         $this->model = PageFactory::byId($this->request->param('id'));
-        $this->ids = array($this->model->getId());
+        $this->ids = [$this->model->getId()];
 
         $this->authorization('edit_page', $this->model);
     }
@@ -24,7 +24,7 @@ class Controller_Cms_Tags_Page extends Controller_Cms_Tags
 
     public function action_list()
     {
-        $this->tags = array();
+        $this->tags = [];
 
         if ( ! empty($this->ids)) {
             $finder = new TagFinder();
@@ -33,9 +33,9 @@ class Controller_Cms_Tags_Page extends Controller_Cms_Tags
             $this->tags = $finder->findAll();
         }
 
-        $this->template = new View("boom/tags/list", array(
+        $this->template = new View("boom/tags/list", [
             'tags'    =>    $this->tags,
-        ));
+        ]);
 
         $message = (count($this->tags)) ? 'page.hastags' : 'page.notags';
         $this->template->set('message', Kohana::message('boom', $message));

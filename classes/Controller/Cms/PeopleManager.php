@@ -19,9 +19,9 @@ class Controller_Cms_PeopleManager extends Controller_Cms
             ->addFilter(new PersonFinder\Filter\GroupId($this->request->query('group')))
             ->setOrderBy('name', 'asc');
 
-        $this->template = new View("boom/people/list", array(
+        $this->template = new View("boom/people/list", [
             'people' => $finder->findAll()
-        ));
+        ]);
     }
 
     protected function _show(View $view = null)
@@ -29,10 +29,10 @@ class Controller_Cms_PeopleManager extends Controller_Cms
         if ( ! $this->request->is_ajax()) {
             $finder = new GroupFinder();
 
-            $this->template = View::factory("boom/people/manager", array(
+            $this->template = View::factory("boom/people/manager", [
                 'groups' => $finder->findAll(),
                 'content' => $view,
-            ));
+            ]);
         }
     }
 

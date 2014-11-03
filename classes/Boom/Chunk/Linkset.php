@@ -17,7 +17,7 @@ class Linkset extends \Boom\Chunk
             $links = $this->_chunk->links();
         } else {
             // Editor is disabled - only show links where the target page is visible
-            $links = array();
+            $links = [];
 
             foreach ($this->_chunk->links() as $link) {
                 if ($link->is_external() || $link->target->isVisible()) {
@@ -26,10 +26,10 @@ class Linkset extends \Boom\Chunk
             }
         }
 
-        return new View($this->viewDirectory."linkset/$this->_template", array(
+        return new View($this->viewDirectory."linkset/$this->_template", [
             'title'        =>    $this->_chunk->title,
             'links'    =>    $links,
-        ));
+        ]);
     }
 
     public function _show_default()

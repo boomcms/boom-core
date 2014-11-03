@@ -8,16 +8,16 @@ class Controller_Cms_Chunk_Timestamp extends Controller_Cms_Chunk
 
     public function action_edit()
     {
-        $formats = array();
+        $formats = [];
         foreach (ChunkTimestamp::$formats as $format) {
             $formats[$format] = date($format, $_SERVER['REQUEST_TIME']);
         }
 
-        $this->template = new View('boom/editor/slot/timestamp', array(
+        $this->template = new View('boom/editor/slot/timestamp', [
             'timestamp' => 0,
             'format' => ChunkTimestamp::$default_format,
             'formats' => $formats,
-        ));
+        ]);
     }
 
     protected function _preview_chunk()

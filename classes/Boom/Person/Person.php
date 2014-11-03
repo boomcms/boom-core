@@ -33,7 +33,7 @@ class Person
             $this->model->add('groups', $group->getId());
 
             // Inherit any roles assigned to the group.
-            DB::insert('people_roles', array('person_id', 'group_id', 'role_id', 'allowed', 'page_id'))
+            DB::insert('people_roles', ['person_id', 'group_id', 'role_id', 'allowed', 'page_id'])
                 ->select(
                     DB::select(DB::expr($this->getId()), DB::expr($group->getId()), 'role_id', 'allowed', 'page_id')
                         ->from('group_roles')
@@ -90,7 +90,7 @@ class Person
 
     public function hasPagePermission(Role $role, Page $page)
     {
-        $query = DB::select(array(DB::expr("bit_and(allowed)"), 'allowed'))
+        $query = DB::select([DB::expr("bit_and(allowed)"), 'allowed'])
             ->from('people_roles')
             ->where('person_id', '=', $this->getId())
             ->where('role_id', '=', $role->id)
@@ -110,7 +110,7 @@ class Person
 
     public function hasPermission(Role $role)
     {
-        $query = DB::select(array(DB::expr("bit_and(allowed)"), 'allowed'))
+        $query = DB::select([DB::expr("bit_and(allowed)"), 'allowed'])
             ->from('people_roles')
             ->where('person_id', '=', $this->getId())
             ->where('role_id', '=', $role->id)

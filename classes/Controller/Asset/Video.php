@@ -12,11 +12,11 @@ class Controller_Asset_Video extends Controller_Asset
         finfo_close($finfo);
 
         $this->response
-            ->send_file($this->asset->getFilename(), $this->asset->filename, array(
+            ->send_file($this->asset->getFilename(), $this->asset->filename, [
                 'inline'        =>    true,
                 'mime_type'    =>    $mime,
                 'resumable'    =>    true,
-            ));
+            ]);
     }
 
     public function action_thumb()

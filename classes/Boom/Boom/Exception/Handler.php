@@ -45,6 +45,6 @@ abstract class Boom_Boom_Exception_Handler
 
     public static function set_exception_handler()
     {
-        set_exception_handler(array('Boom_Exception_Handler', 'handle'));
+        set_exception_handler(['Boom_Exception_Handler', 'handle']);
     }
 }

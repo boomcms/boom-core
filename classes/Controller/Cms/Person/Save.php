@@ -64,7 +64,7 @@ class Controller_Cms_Person_Save extends Controller_Cms_Person
         $this->log("Edited user $this->edit_person->email (ID: $this->edit_person->id) to the CMS");
 
         $this->edit_person
-            ->values($this->request->post(), array('name', 'enabled'))
+            ->values($this->request->post(), ['name', 'enabled'])
             ->update();
     }
 }

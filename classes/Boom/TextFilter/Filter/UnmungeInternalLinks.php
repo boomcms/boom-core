@@ -10,7 +10,7 @@ class UnmungeInternalLinks implements \Boom\TextFilter\Filter
 
     public function filterText($text)
     {
-        $text = preg_replace_callback("|{$this->_internalLinkRegex}|", array($this, '_updatePageLink'), $text);
+        $text = preg_replace_callback("|{$this->_internalLinkRegex}|", [$this, '_updatePageLink'], $text);
         $text = $this->_removeInvalidInternalLinks($text);
 
         return $text;

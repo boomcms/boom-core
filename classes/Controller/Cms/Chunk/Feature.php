@@ -6,9 +6,9 @@ class Controller_Cms_Chunk_Feature extends Controller_Cms_Chunk
 
     public function action_edit()
     {
-        $this->template = View::factory('boom/editor/slot/feature', array(
+        $this->template = View::factory('boom/editor/slot/feature', [
             'page'    =>    $this->page,
-        ));
+        ]);
     }
 
     protected function _preview_chunk()

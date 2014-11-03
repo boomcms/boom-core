@@ -29,7 +29,7 @@ class TagsByPrefix
 
     public function getNames()
     {
-        $names = array();
+        $names = [];
 
         if ( ! empty($this->tags)) {
             foreach ($this->tags as $tag) {

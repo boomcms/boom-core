@@ -8,7 +8,7 @@ class Controller_Cms_Assets_Download extends Controller_Cms_Assets
 	 *
 	 * @var array
 	 */
-    public $asset_ids = array();
+    public $asset_ids = [];
 
     public function before()
     {
@@ -26,11 +26,11 @@ class Controller_Cms_Assets_Download extends Controller_Cms_Assets
         }
 
         $this->response
-            ->headers(array(
+            ->headers([
                 "Content-type" => (string) $asset->getMimetype(),
                 "Pragma" => "no-cache",
                 "Expires" => "0"
-            ))
+            ])
             ->body(
                 readfile($asset->getFilename())
             );
@@ -58,12 +58,12 @@ class Controller_Cms_Assets_Download extends Controller_Cms_Assets
         $zip->close();
 
         $this->response
-            ->headers(array(
+            ->headers([
                 "Content-type"            =>    "application/zip",
                 "Content-Disposition"    =>    "attachment; filename=cms_assets.zip",
                 "Pragma"                =>    "no-cache",
                 "Expires"                =>    "0"
-            ))
+            ])
             ->body(readfile($zip->getFilename()));
 
         $zip->delete();

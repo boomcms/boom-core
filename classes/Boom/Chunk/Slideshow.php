@@ -13,12 +13,12 @@ class Slideshow extends \Boom\Chunk
 
     protected function _show()
     {
-        return new View($this->viewDirectory . "slideshow/$this->_template", array(
+        return new View($this->viewDirectory . "slideshow/$this->_template", [
             'chunk'    =>    $this->_chunk,
             'title'        =>    $this->_chunk->title,
             'slides'    =>    $this->_chunk->slides(),
             'editor'    =>    Editor::instance(),
-        ));
+        ]);
     }
 
     public function _show_default()

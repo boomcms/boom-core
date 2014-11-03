@@ -17,8 +17,8 @@ class Controller_Cms_Pages extends Boom\Controller
         $finder->addFilter(new Page\Finder\Filter\ParentId(null));
         $pages = $finder->findAll();
 
-        $this->template = View::factory('boom/pages/index', array(
+        $this->template = View::factory('boom/pages/index', [
             'pages'    =>    $pages,
-        ));
+        ]);
     }
 }

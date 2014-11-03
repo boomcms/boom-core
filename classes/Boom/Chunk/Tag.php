@@ -25,9 +25,9 @@ class Tag extends \Boom\Chunk
             $this->_template = $this->_default_template;
         }
 
-        return View::factory($this->viewDirectory."tag/$this->_template", array(
+        return View::factory($this->viewDirectory."tag/$this->_template", [
             'tag' => $this->_tag,
-        ));
+        ]);
     }
 
     protected function _show_default()
@@ -37,9 +37,9 @@ class Tag extends \Boom\Chunk
 
     public function attributes()
     {
-        return array(
+        return [
             $this->attributePrefix.'tag_id' => $this->get_tag()->id,
-        );
+        ];
     }
 
     public function get_tag()

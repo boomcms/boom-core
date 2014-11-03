@@ -6,9 +6,9 @@ use Boom\Exception;
 
 abstract class Mimetype
 {
-    public static $allowedExtensions = array('jpeg', 'gif', 'jpg', 'png', 'tiff', 'doc', 'docx', 'pdf', 'mp4');
+    public static $allowedExtensions = ['jpeg', 'gif', 'jpg', 'png', 'tiff', 'doc', 'docx', 'pdf', 'mp4'];
 
-    public static $allowedTypes = array(
+    public static $allowedTypes = [
         'image/jpeg' => 'jpg',
         'image/gif' => 'gif',
         'image/png' => 'png',
@@ -17,7 +17,7 @@ abstract class Mimetype
         'application/vnd.openxmlformats-officedocument.wordprocessingml.document' => 'docx',
         'application/pdf' => 'pdf',
         'video/mp4' => 'mp4'
-    );
+    ];
 
     protected $_mimetype;
 

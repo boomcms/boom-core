@@ -40,17 +40,17 @@ class Controller_Cms_Auth extends Controller
     private function _log_action($action)
     {
         ORM::factory('AuthLog')
-            ->values(array(
+            ->values([
                 'person_id' => $this->auth->getPerson()->getId(),
                 'action' => $action,
                 'method' => $this->method,
                 'ip' => ip2long(Request::$client_ip),
                 'user_agent' => Request::$user_agent,
-            ))
+            ])
             ->create();
     }
 
-    protected function _display_login_form($vars = array())
+    protected function _display_login_form($vars = [])
     {
         $vars['request'] = $this->request;
 

@@ -24,7 +24,7 @@ class Controller_Cms_Tags_Asset extends Controller_Cms_Tags
 
     public function action_list()
     {
-        $this->tags = array();
+        $this->tags = [];
         $asset = Asset\Factory::byId($this->request->param('id'));
 
         if ( ! empty($this->ids)) {
@@ -34,9 +34,9 @@ class Controller_Cms_Tags_Asset extends Controller_Cms_Tags
             $this->tags = $finder->findAll();
         }
 
-        $this->template = new View("boom/tags/list", array(
+        $this->template = new View("boom/tags/list", [
             'tags'    =>    $this->tags,
-        ));
+        ]);
 
         $message = (count($this->tags)) ? 'asset.hastags' : 'asset.notags';
         $this->template->set('message', Kohana::message('boom', $message));

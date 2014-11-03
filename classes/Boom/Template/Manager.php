@@ -11,7 +11,7 @@ class Manager
 
     public function createNew()
     {
-        $imported = array();
+        $imported = [];
         foreach ($this->getTemplateFilenames() as $filename) {
             if ( ! $this->templateExistsWithFilename($filename)) {
                 $template = $this->createTemplateWithFilename($filename);
@@ -25,10 +25,10 @@ class Manager
     public function createTemplateWithFilename($filename)
     {
         return ORM::factory('Template')
-            ->values(array(
+            ->values([
                 'name'    =>    ucwords(str_replace("_", " ", $filename)),
                 'filename'    =>    $filename,
-            ))
+            ])
             ->create();
     }
 
@@ -56,7 +56,7 @@ class Manager
 	 */
     public function getInvalidTemplates()
     {
-        $invalid = array();
+        $invalid = [];
         $templates = $this->getAllTemplates();
 
         foreach ($templates as $template) {
@@ -84,7 +84,7 @@ class Manager
 
     public function getValidTemplates()
     {
-        $valid = array();
+        $valid = [];
         $templates = $this->getAllTemplates();
 
         foreach ($templates as $template) {

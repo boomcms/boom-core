@@ -14,13 +14,13 @@ class Menu
 	 *
 	 * @var	array	Array of menu items
 	 */
-    protected $menuItems = array();
+    protected $menuItems = [];
 
     /**
 	 *
 	 * @var	array	Array of variables to be set in the view.
 	 */
-    protected $viewData = array();
+    protected $viewData = [];
 
     /**
 	 *
@@ -57,7 +57,7 @@ class Menu
     protected function _filter_items()
     {
         // Array of items we're going to include for this menu.
-        $itemsToInclude = array();
+        $itemsToInclude = [];
 
         $auth = Auth::instance();
 

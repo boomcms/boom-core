@@ -6,7 +6,7 @@ abstract class Controller_Cms_Tags extends Boom\Controller
 	 *
 	 * @var array
 	 */
-    public $ids = array();
+    public $ids = [];
 
     public $model;
 

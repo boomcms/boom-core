@@ -33,28 +33,28 @@ class Creator
         $model = new \Model_Page();
 
         return $model
-            ->values(array(
+            ->values([
                 'visible_in_nav'                =>    $this->_parent->childrenAreVisibleInNav(),
                 'visible_in_nav_cms'            =>    $this->_parent->childrenAreVisibleInCmsNav(),
                 'children_visible_in_nav'        =>    $this->_parent->childrenAreVisibleInNav(),
                 'children_visible_in_nav_cms'    =>    $this->_parent->childrenAreVisibleInCmsNav(),
                 'visible_from'                =>    time(),
                 'created_by'                =>    $this->_creator->getId(),
-            ))
+            ])
             ->create();
     }
 
     protected function _createVersion(\Model_Page $page)
     {
         return \ORM::factory('Page_Version')
-            ->values(array(
+            ->values([
                 'edited_by'    =>    $this->_creator->getId(),
                 'page_id'        =>    $page->id,
                 'template_id'    =>    $this->_getTemplateId(),
                 'title'            =>    $this->_title,
                 'published' => true,
                 'embargoed_until' => time(),
-            ))
+            ])
             ->create();
     }
 

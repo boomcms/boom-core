@@ -13,12 +13,12 @@ abstract class Factory
 
     public static function byName($name)
     {
-        return new Tag(new Model_Tag(array('name' => $name)));
+        return new Tag(new Model_Tag(['name' => $name]));
     }
 
     public static function findOrCreateByName($name)
     {
-        $model = new Model_Tag(array('name' => $name));
+        $model = new Model_Tag(['name' => $name]);
 
         if ( ! $model->loaded()) {
             $model

@@ -5,21 +5,21 @@ use \ORM as ORM;
 
 class Model_Asset extends ORM
 {
-    protected $_belongs_to = array(
-        'uploader'        =>    array('model' => 'Person', 'foreign_key' => 'uploaded_by'),
-        'thumbnail'    =>    array('model' => 'Asset', 'foreign_key' => 'thumbnail_asset_id'),
-    );
+    protected $_belongs_to = [
+        'uploader'        =>    ['model' => 'Person', 'foreign_key' => 'uploaded_by'],
+        'thumbnail'    =>    ['model' => 'Asset', 'foreign_key' => 'thumbnail_asset_id'],
+    ];
 
-    protected $_created_column = array(
+    protected $_created_column = [
         'column'    =>    'uploaded_time',
         'format'    =>    true,
-    );
+    ];
 
-    protected $_has_many = array(
-        'tags'    => array('model' => 'Tag', 'through' => 'assets_tags'),
-    );
+    protected $_has_many = [
+        'tags'    => ['model' => 'Tag', 'through' => 'assets_tags'],
+    ];
 
-    protected $_table_columns = array(
+    protected $_table_columns = [
         'id'                =>    '',
         'title'                =>    '',
         'description'        =>    '',
@@ -36,14 +36,14 @@ class Model_Asset extends ORM
         'thumbnail_asset_id'    =>    '',
         'credits'            =>    '',
         'downloads'        =>    '',
-    );
+    ];
 
     protected $_table_name = 'assets';
 
-    protected $_updated_column = array(
+    protected $_updated_column = [
         'column'    =>    'last_modified',
         'format'    =>    true,
-    );
+    ];
 
     /**
 	 *
@@ -66,14 +66,14 @@ class Model_Asset extends ORM
 
         if ( ! count($logged)) {
             ORM::factory('Asset_Download')
-                ->values(array(
+                ->values([
                     'asset_id' => $this->id,
                     'ip' => $ip,
-                ))
+                ])
                 ->create();
 
             DB::update($this->_table_name)
-                ->set(array('downloads' => DB::expr('downloads + 1')))
+                ->set(['downloads' => DB::expr('downloads + 1')])
                 ->where('id', '=', $this->id)
                 ->execute($this->_db);
         }

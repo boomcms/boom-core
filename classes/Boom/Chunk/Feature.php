@@ -39,9 +39,9 @@ class Feature extends \Boom\Chunk
 
         // Only show the page feature if the page is visible or the feature box is editable.
         if ( ! Editor::instance()->isDisabled() || $page->isVisible()) {
-            return View::factory($this->viewDirectory."feature/$this->_template", array(
+            return View::factory($this->viewDirectory."feature/$this->_template", [
                 'target'    =>    $page,
-            ));
+            ]);
         }
     }
 
@@ -52,9 +52,9 @@ class Feature extends \Boom\Chunk
 
     public function attributes()
     {
-        return array(
+        return [
             $this->attributePrefix.'target' => $this->target(),
-        );
+        ];
     }
 
     public function hasContent()

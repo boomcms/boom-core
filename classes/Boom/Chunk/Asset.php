@@ -24,16 +24,16 @@ class Asset extends \Boom\Chunk
     {
         $link = $this->getLink();
 
-        $v = new View($this->viewDirectory."asset/$this->_template", array(
+        $v = new View($this->viewDirectory."asset/$this->_template", [
             'asset' => $this->asset(),
             'caption' => $this->getCaption()
-        ));
+        ]);
 
         if ($link) {
-            $v->set(array(
+            $v->set([
                 'title' => $link->getTitle(),
                 'url' => $link->url()
-            ));
+            ]);
         }
 
         return $v;
@@ -46,9 +46,9 @@ class Asset extends \Boom\Chunk
 
     public function attributes()
     {
-        return array(
+        return [
             $this->attributePrefix.'target' => $this->target(),
-        );
+        ];
     }
 
     public function asset()

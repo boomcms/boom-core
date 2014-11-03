@@ -99,11 +99,11 @@ class Controller extends \Controller
     {
         // Add an item to the log table with the relevant details
         ORM::factory('Log')
-            ->values(array(
+            ->values([
                 'ip'            =>    Request::$client_ip,
                 'activity'        =>    $activity,
                 'person_id'    =>    $this->person->getId(),
-            ))
+            ])
             ->create();
     }
 

@@ -2,18 +2,18 @@
 
 class Model_Chunk_Linkset extends ORM
 {
-    protected $_has_many = array(
-        'links' => array('model' => 'Chunk_Linkset_Link', 'foreign_key' => 'chunk_linkset_id'),
-    );
+    protected $_has_many = [
+        'links' => ['model' => 'Chunk_Linkset_Link', 'foreign_key' => 'chunk_linkset_id'],
+    ];
 
     protected $_links;
 
-    protected $_table_columns = array(
+    protected $_table_columns = [
         'id'        =>    '',
         'title'        =>    '',
         'slotname'    =>    '',
         'page_vid' => '',
-    );
+    ];
 
     protected $_table_name = 'chunk_linksets';
 
@@ -26,7 +26,7 @@ class Model_Chunk_Linkset extends ORM
             ->where('slotname', '=', $this->slotname)
             ->where('page_vid', '=', $from_version_id);
 
-        DB::insert('chunk_linkset_links', array('chunk_linkset_id', 'target_page_id', 'url', 'title'))
+        DB::insert('chunk_linkset_links', ['chunk_linkset_id', 'target_page_id', 'url', 'title'])
             ->select($subquery)
             ->execute($this->_db);
     }
@@ -42,11 +42,11 @@ class Model_Chunk_Linkset extends ORM
 
     public function filters()
     {
-        return array(
-            'title'    => array(
-                array('strip_tags'),
-            )
-        );
+        return [
+            'title'    => [
+                ['strip_tags'],
+            ]
+        ];
     }
 
     /**
@@ -62,13 +62,13 @@ class Model_Chunk_Linkset extends ORM
                 $page = new Model\Page();
 
                 $query = ORM::factory('Chunk_Linkset_Link')
-                    ->join(array('pages', 'target'), 'left')
+                    ->join(['pages', 'target'], 'left')
                     ->on('target_page_id', '=', 'target.id')
                     ->where('chunk_linkset_id', '=', $this->id);
 
                 // Add the page to the select clause.
                 foreach (array_keys($page->_object) as $column) {
-                    $query->select(array("target.$column", "target:$column"));
+                    $query->select(["target.$column", "target:$column"]);
                 }
 
                 $this->_links = $query

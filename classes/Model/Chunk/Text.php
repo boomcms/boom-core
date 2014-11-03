@@ -6,14 +6,14 @@ use Boom\TextFilter\Filter as Filter;
 
 class Model_Chunk_Text extends \ORM
 {
-    protected $_table_columns = array(
+    protected $_table_columns = [
         'text'        =>    '',
         'id'        =>    '',
         'slotname'    =>    '',
         'page_vid' => '',
         'is_block'    =>    '',
         'site_text' => '',
-    );
+    ];
 
     protected $_table_name = 'chunk_texts';
 
@@ -66,10 +66,10 @@ class Model_Chunk_Text extends \ORM
             $assets = array_unique($matches[4]);
 
             // Log which assets are being referenced with a multi-value insert.
-            $query = DB::insert('chunk_text_assets', array('chunk_id', 'asset_id', 'position'));
+            $query = DB::insert('chunk_text_assets', ['chunk_id', 'asset_id', 'position']);
 
             foreach ($assets as $i => $asset_id) {
-                $query->values(array($this->id, $asset_id, $i));
+                $query->values([$this->id, $asset_id, $i]);
             }
 
             try {

@@ -6,9 +6,9 @@ class Controller_Cms_Person_View extends Controller_Cms_Person
 {
     public function action_add()
     {
-        $this->template = View::factory($this->viewDirectory."new", array(
+        $this->template = View::factory($this->viewDirectory."new", [
             'groups'    =>    ORM::factory('Group')->names(),
-        ));
+        ]);
     }
 
     public function action_add_group()
@@ -18,10 +18,10 @@ class Controller_Cms_Person_View extends Controller_Cms_Person
             ->addFilter(new Group\Finder\Filter\ExcludingPersonsGroups($this->edit_person))
             ->setOrderBy('name');
 
-        $this->template = View::factory("$this->viewDirectory/addgroup", array(
+        $this->template = View::factory("$this->viewDirectory/addgroup", [
             'person' => $this->edit_person,
             'groups' => $finder->findAll(),
-        ));
+        ]);
     }
 
     public function action_view()
@@ -30,11 +30,11 @@ class Controller_Cms_Person_View extends Controller_Cms_Person
             throw new HTTP_Exception_404();
         }
 
-        $this->template = View::factory($this->viewDirectory."view", array(
+        $this->template = View::factory($this->viewDirectory."view", [
             'person' => $this->edit_person,
             'request' => $this->request,
             'groups' => $this->edit_person->getGroups(),
-            'activities' => array(),
-        ));
+            'activities' => [],
+        ]);
     }
 }

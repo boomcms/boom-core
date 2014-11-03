@@ -7,7 +7,7 @@ abstract class Finder
     const ASC = 'asc';
     const DESC = 'desc';
 
-    protected $_filters = array();
+    protected $_filters = [];
     protected $_filtersApplied = false;
     protected $_query;
 

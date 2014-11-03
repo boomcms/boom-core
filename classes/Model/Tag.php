@@ -2,12 +2,12 @@
 
 class Model_Tag extends ORM
 {
-    protected $_table_columns = array(
+    protected $_table_columns = [
         'id'            =>    '',
         'name'        =>    '',
         'slug_short'    =>    '',
         'slug_long'        =>    '',
-    );
+    ];
 
     protected $_table_name = 'tags';
 
@@ -24,7 +24,7 @@ class Model_Tag extends ORM
 
     public function count_pages()
     {
-        $result = DB::select(array(DB::expr('count(*)'), 'c'))
+        $result = DB::select([DB::expr('count(*)'), 'c'])
             ->from('pages_tags')
             ->where('tag_id', '=', $this->id)
             ->execute($this->_db)
@@ -55,7 +55,7 @@ class Model_Tag extends ORM
         $slug = $original = implode('/', $parts);
         $i = 0;
 
-        while (ORM::factory('tag', array('slug_long' => $slug))->loaded()) {
+        while (ORM::factory('tag', ['slug_long' => $slug])->loaded()) {
             $i++;
             $slug = "$original$i";
         }
@@ -72,11 +72,11 @@ class Model_Tag extends ORM
 
     public function filters()
     {
-        return array(
-            'name' => array(
-                array('trim'),
-            ),
-        );
+        return [
+            'name' => [
+                ['trim'],
+            ],
+        ];
     }
 
     /**
@@ -104,12 +104,12 @@ class Model_Tag extends ORM
 	 */
     public function rules()
     {
-        return array(
-            'name' => array(
-                array('not_empty'),
-                array('max_length', array(':value', 255)),
-            ),
-        );
+        return [
+            'name' => [
+                ['not_empty'],
+                ['max_length', [':value', 255]],
+            ],
+        ];
     }
 
     public function update(Validation $validation = null)

@@ -16,7 +16,7 @@ class Controller_Cms_Autocomplete extends Boom\Controller
 	 *
 	 * @var	array
 	 */
-    public $results = array();
+    public $results = [];
 
     /**
 	 * The text to search for.
@@ -73,26 +73,26 @@ class Controller_Cms_Autocomplete extends Boom\Controller
         if ($this->editor->isEnabled()) {
             // Get the most recent version for each page.
             $query
-                ->join(array(
-                    DB::select(array(DB::expr('max(id)'), 'id'))
+                ->join([
+                    DB::select([DB::expr('max(id)'), 'id'])
                         ->from('page_versions')
                         ->where('stashed', '=', false)
                         ->group_by('page_id'),
                     'current_version'
-                ))
+                ])
                 ->on('page_versions.id', '=', 'current_version.id');
         } else {
             // Get the most recent published version for each page.
             $query
-                ->join(array(
-                    DB::select(array(DB::expr('max(id)'), 'id'))
+                ->join([
+                    DB::select([DB::expr('max(id)'), 'id'])
                         ->from('page_versions')
                         ->where('embargoed_until', '<=', $this->editor->getLiveTime())
                         ->where('stashed', '=', false)
                         ->where('published', '=', true)
                         ->group_by('page_id'),
                     'current_version'
-                ))
+                ])
                 ->on('page_versions.id', '=', 'current_version.id')
                 ->where('visible_from', '<=', $this->editor->getLiveTime())
                 ->and_where_open()
@@ -144,9 +144,9 @@ class Controller_Cms_Autocomplete extends Boom\Controller
 
             // Only match tags which are in use with the given tags.
             $query
-                ->join(array($join_table, 't1'), 'inner')
+                ->join([$join_table, 't1'], 'inner')
                 ->on('tags.id', '=', 't1.tag_id')
-                ->join(array($join_table, 't2'), 'inner')
+                ->join([$join_table, 't2'], 'inner')
                 ->on("t1.$object_id_column", '=', "t2.$object_id_column")
                 ->where('t2.tag_id', 'IN', $tags)
                 ->where('t1.tag_id', 'not in', $tags)

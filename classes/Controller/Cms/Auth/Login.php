@@ -47,7 +47,7 @@ class Controller_Cms_Auth_Login extends Controller_Cms_Auth
                 $error_message = str_replace(':lock_wait', $lock_wait, $error_message);
             }
 
-            $this->_display_login_form(array('login_error' => $error_message));
+            $this->_display_login_form(['login_error' => $error_message]);
         }
     }
 

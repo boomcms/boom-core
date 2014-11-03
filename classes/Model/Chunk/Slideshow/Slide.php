@@ -4,30 +4,30 @@ use \Boom\Link\Link as Link;
 
 class Model_Chunk_Slideshow_Slide extends \ORM
 {
-    protected $_belongs_to = array(
-        'asset'    =>    array('model' => 'Asset', 'foreign_key' => 'asset_id')
-    );
-    protected $_table_columns = array(
+    protected $_belongs_to = [
+        'asset'    =>    ['model' => 'Asset', 'foreign_key' => 'asset_id']
+    ];
+    protected $_table_columns = [
         'id'        =>    '',
         'asset_id'    =>    '',
         'url'        =>    '',
         'chunk_id'    =>    '',
         'caption'    =>    '',
         'title'        =>    '',
-    );
+    ];
 
     protected $_table_name = 'chunk_slideshow_slides';
 
     public function filters()
     {
-        return array(
-            'caption' => array(
-                array('strip_tags'),
-            ),
-            'url' => array(
-                array(array($this, 'makeLinkLelative')),
-            ),
-        );
+        return [
+            'caption' => [
+                ['strip_tags'],
+            ],
+            'url' => [
+                [[$this, 'makeLinkLelative']],
+            ],
+        ];
     }
 
     public function getAsset()

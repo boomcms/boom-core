@@ -4,7 +4,7 @@ namespace Boom\TextFilter;
 
 class Commander implements Filter
 {
-    protected $_filters = array();
+    protected $_filters = [];
 
     public function addFilter(Filter $filter)
     {

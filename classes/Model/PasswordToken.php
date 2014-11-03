@@ -2,21 +2,21 @@
 
 class Model_PasswordToken extends ORM
 {
-    protected $_belongs_to = array('person' => array());
+    protected $_belongs_to = ['person' => []];
     protected $_table_name = 'password_tokens';
 
-    protected $_table_columns = array(
+    protected $_table_columns = [
         'id' => '',
         'person_id' => '',
         'token' => '',
         'created' => '',
         'expires' => '',
-    );
+    ];
 
-    protected $_created_column = array(
+    protected $_created_column = [
         'column'    =>    'created',
         'format'    =>    true,
-    );
+    ];
 
     public function is_expired()
     {

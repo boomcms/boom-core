@@ -107,7 +107,7 @@ class ChunkCopier
         \array_unshift($columns, 'page_vid');
         \array_unshift($values, \DB::expr($this->_toVersion->id));
 
-        $subquery = \call_user_func_array(array('DB', 'select'), $values);
+        $subquery = \call_user_func_array(['DB', 'select'], $values);
         $subquery
             ->from($table)
             ->where('page_vid', '=', $this->_fromVersion->id);
@@ -136,7 +136,7 @@ class ChunkCopier
         unset($columns['id']);
         unset($columns['page_vid']);
 
-        foreach (array('id', 'page_vid') as $remove) {
+        foreach (['id', 'page_vid'] as $remove) {
             if (($key = \array_search($remove, $columns)) !== false) {
                 unset($columns[$key]);
             }

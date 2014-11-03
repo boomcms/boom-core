@@ -39,18 +39,18 @@ class RssFeed
         $feed = new Rss;
         $feed
             ->feed('2.0', 'UTF-8')
-            ->channel(array(
+            ->channel([
                 'title' => $this->page->getTitle(),
                 'description' => $this->page->getDescription(),
                 'link' => $this->page->url()
-            ));
+            ]);
 
         foreach ($this->getFeedItems() as $page) {
-            $feed->item(array(
+            $feed->item([
                 'title' => $page->getTitle(),
                 'description|cdata' => $page->getDescription(),
                 'link' => $page->url(),
-            ));
+            ]);
         }
 
         return (string) $feed;

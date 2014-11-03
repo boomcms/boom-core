@@ -39,10 +39,10 @@ class Text extends \Boom\Chunk
         if ($this->_template === null) {
             return $this->_add_html($text);
         } else {
-            return new View($this->viewDirectory."text/$this->_template", array(
+            return new View($this->viewDirectory."text/$this->_template", [
                 'text' => $text,
                 'chunk' => $this->_chunk
-            ));
+            ]);
         }
     }
 
@@ -56,10 +56,10 @@ class Text extends \Boom\Chunk
         if ( ! Kohana::find_file('views', $this->viewDirectory."text/$template")) {
             return "<p>$text</p>";
         } else {
-            return new View($this->viewDirectory."text/$template", array(
+            return new View($this->viewDirectory."text/$template", [
                 'text'    =>    $text,
                 'chunk' => $this->_chunk,
-            ));
+            ]);
         }
     }
 

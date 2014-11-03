@@ -100,7 +100,7 @@ class Controller_Asset_Image extends Controller_Asset
 
     public function action_embed()
     {
-        $this->response->body(HTML::image('asset/view/'.$this->asset->getId(), array('alt' => $this->asset->getTitle())));
+        $this->response->body(HTML::image('asset/view/'.$this->asset->getId(), ['alt' => $this->asset->getTitle()]));
     }
 
     /**

@@ -18,15 +18,15 @@ class Controller_Cms_Page_Urls_Save extends Controller_Cms_Page_Urls
         if ($this->page_url->loaded() && $this->page_url->page_id !== $this->page->getId()) {
             // Url is being used for a different page.
             // Notify that the url is already in use so that the JS can load a prompt to move the url.
-            $this->response->body(json_encode(array('existing_url_id' => $this->page_url->id)));
+            $this->response->body(json_encode(['existing_url_id' => $this->page_url->id]));
         } elseif ( ! $this->page_url->loaded()) {
             //  It's not an old URL, so create a new one.
             $this->page_url
-                ->values(array(
+                ->values([
                     'location'        =>    $location,
                     'page_id'        =>    $this->page->getId(),
                     'is_primary'    =>    false,
-                ))
+                ])
                 ->create();
 
             $this->log("Added secondary url $location to page " . $this->page->getTitle() . "(ID: " . $this->page->getId() . ")");
@@ -47,10 +47,10 @@ class Controller_Cms_Page_Urls_Save extends Controller_Cms_Page_Urls
 
     public function action_move()
     {
-        $this->page_url->values(array(
+        $this->page_url->values([
             'page_id'        =>    $this->page->getId(),
             'is_primary'    =>    false, // Make sure that it's only a secondary url for the this page.
-        ))
+        ])
         ->update();
     }
 }

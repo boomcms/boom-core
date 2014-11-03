@@ -2,18 +2,18 @@
 
 class Model_Chunk_Slideshow extends ORM
 {
-    protected $_has_many = array(
-        'slides' => array('model' => 'Chunk_Slideshow_Slide', 'foreign_key' => 'chunk_id'),
-    );
+    protected $_has_many = [
+        'slides' => ['model' => 'Chunk_Slideshow_Slide', 'foreign_key' => 'chunk_id'],
+    ];
 
     protected $_slides;
 
-    protected $_table_columns = array(
+    protected $_table_columns = [
         'title'        =>    '',
         'id'        =>    '',
         'slotname'    =>    '',
         'page_vid' => '',
-    );
+    ];
 
     protected $_table_name = 'chunk_slideshows';
 
@@ -26,7 +26,7 @@ class Model_Chunk_Slideshow extends ORM
             ->where('slotname', '=', $this->slotname)
             ->where('page_vid', '=', $from_version_id);
 
-        DB::insert('chunk_slideshow_slides', array('chunk_id', 'asset_id', 'url', 'caption', 'title'))
+        DB::insert('chunk_slideshow_slides', ['chunk_id', 'asset_id', 'url', 'caption', 'title'])
             ->select($subquery)
             ->execute($this->_db);
     }
@@ -42,11 +42,11 @@ class Model_Chunk_Slideshow extends ORM
 
     public function filters()
     {
-        return array(
-            'title'    => array(
-                array('strip_tags'),
-            )
-        );
+        return [
+            'title'    => [
+                ['strip_tags'],
+            ]
+        ];
     }
 
     /**

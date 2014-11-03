@@ -27,9 +27,9 @@ class Query
     public function execute()
     {
         $this->_query
-            ->join(array($this->_getCurrentVersionSubquery(), 'v2'), 'inner')
+            ->join([$this->_getCurrentVersionSubquery(), 'v2'], 'inner')
             ->on('page.id', '=', 'v2.page_id')
-            ->join(array('page_versions', 'version'), 'inner')
+            ->join(['page_versions', 'version'], 'inner')
             ->on('page.id', '=', 'version.page_id')
             ->on('v2.id', '=', 'version.id');
 
@@ -50,7 +50,7 @@ class Query
 
     protected function _getCurrentVersionSubquery()
     {
-        $query = \DB::select(array(\DB::expr('max(id)'), 'id'), 'page_id')
+        $query = \DB::select([\DB::expr('max(id)'), 'id'], 'page_id')
             ->from('page_versions')
             ->where('stashed', '=', 0)
             ->group_by('page_id');
