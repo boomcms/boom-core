@@ -1,0 +1,15 @@
+{
+    "name": "boomcms/boomcms",
+    "description": "BoomCMS basic site",
+    "require": {
+        "boomcms/boom-core": "dev-master"
+    },
+    "license": "BSD-3-Clause",
+    "authors": [
+        {
+            "name": "Rob Taylor",
+            "email": "rob@uxblondon.com"
+        }
+    ],
+    "minimum-stability": "dev"
+}
