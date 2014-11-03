@@ -18,7 +18,8 @@
 		"shadowhand/email" : "3.3.*",
 		"boomcms/orm-mptt" : "3.3.*",
 		"boomcms/asset-merger" : "dev-master",
-		"hautelook/phpass": "dev-master"
+		"hautelook/phpass": "dev-master",
+		"thujohn/rss": "dev-master"
 	},
 	"autoload": {
 		"psr-0": {"Boom\\": "classes/Boom/"}
