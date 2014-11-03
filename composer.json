@@ -12,7 +12,7 @@
 		"kohana/auth": "3.3.*",
 		"kohana/minion": "3.3.*",
                 "genphrase/genphrase" : "1.0.*",
-		"davechild/textstatistics" : "dev-master"
+		"davechild/textstatistics": "1.0.*@dev"
 	},
 	"autoload": {
 		"psr-0": {"Boom\\": "classes/Boom/"}
