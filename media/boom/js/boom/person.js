@@ -30,22 +30,25 @@ function boomPerson(person_id) {
 
 	boomPerson.prototype.addGroups = function() {
 		var url = this.base_url + 'add_group/' + this.id,
-			deferred = new $.Deferred();
+			deferred = new $.Deferred(),
+			dialog;
 
-		new boomDialog({
+		dialog = new boomDialog({
 			url: url,
 			title: 'Add group'
 		}).done(function() {
 			var groups = {};
 
-			$(this).find('form select option:selected').each(function(i, el) {
+			dialog.contents.find('form select option:selected').each(function(i, el) {
 				var $el = $(el);
 				groups[$el.val()] = $el.text();
 			});
 
-			var group_ids = Object.keys(groups);
-			if (group_ids.length) {
-				$.boom.post(url, {'groups[]' : group_ids})
+			var groupIds = Object.keys(groups);
+			console.log(groups);
+			console.log(groupIds);
+			if (groupIds.length) {
+				$.boom.post(url, {'groups[]' : groupIds})
 					.done(function() {
 						deferred.resolve(groups);
 					});

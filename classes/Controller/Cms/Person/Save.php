@@ -33,11 +33,11 @@ class Controller_Cms_Person_Save extends Controller_Cms_Person
 
     public function action_add_group()
     {
-        $groups = $this->request->post('groups');
+        foreach ($this->request->post('groups') as $groupId) {
+            $group = Group\Factory::byId($groupId);
 
-        foreach ($groups as $group_id) {
-            $this->log("Added person $this->person->email to group with ID $group_id");
-            $this->edit_person->add_group($group_id);
+            $this->log("Added person {$this->person->getEmail()} to group with ID {$group->getId()}");
+            $this->edit_person->addGroup($group);
         }
     }
 
