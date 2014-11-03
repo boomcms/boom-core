@@ -1,6 +1,6 @@
 {
 	"name":        "boomcms/boom-core",
-	"description": "Core classess for BoomCMS",
+	"description": "Core classes for BoomCMS",
 	"license":     "BSD-3-Clause",
 	"require": {
 		"php":        ">=5.3",
