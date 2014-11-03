@@ -2,10 +2,9 @@
 
 namespace Boom\Page;
 
-use Boom\Page\Page as Page;
-
-use \Kohana as Kohana;
-use \TextStatistics as TextStatistics;
+use Boom\Page\Page;
+use Kohana;
+use DaveChild\TextStatistics as TS;
 
 class ReadabilityScore
 {
@@ -18,7 +17,6 @@ class ReadabilityScore
     public function __construct(Page $page)
     {
         $this->page = $page;
-        $this->_loadDependencies();
     }
 
     protected function _getPageText()
@@ -38,19 +36,16 @@ class ReadabilityScore
 
     public function getSmogScore()
     {
-        $text = $this->_getPageText();
+        if (class_exists('TextStatistics')) {
+            $text = $this->_getPageText();
 
-        if (strlen($text) > 100) {
-            $stats = new TextStatistics();
+            if (strlen($text) > 100) {
+                $stats = new TextStatistics();
 
-            return $stats->smog_index($text);
+                return $stats->smog_index($text);
+            }
         }
-    }
 
-    protected function _loadDependencies()
-    {
-        if ( ! class_exists('TextStatistics')) {
-            require Kohana::find_file('vendor/text-statistics', 'TextStatistics');
-        }
+        return 0;
     }
 }
