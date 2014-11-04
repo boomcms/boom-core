@@ -12,6 +12,12 @@ return array(
 				'url'		=>	'/',
 				'priority'	=>	1,
 			),
+            'pages' => array(
+                'title' => 'Pages',
+                'url' => '/cms/pages',
+                'priority' => 5,
+                'role' => 'manage_pages',
+            ),
 			'approvals'	=>	array(
 				'title'		=>	'Pages pending approval',
 				'url'		=>	'/cms/approvals',
@@ -22,7 +28,7 @@ return array(
 				'title'		=>	'Templates',
 				'url'		=>	'/cms/templates',
 				'role'		=>	'manage_templates',
-				'priority'	=>	5,
+				'priority'	=>	6,
 			),
 			'profile'		=>	array(
 				'title'		=>	'Profile',
