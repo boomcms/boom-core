@@ -80,10 +80,10 @@ $.widget('ui.chunk',
 			});
 	},
 
-	_save : function() {
+	_save : function(data) {
 		var self = this,
 			chunk = new boomChunk(this.options.currentPage.id, this.options.type, this.options.name),
-			data = this.getData();
+			data = data? data : this.getData();
 
 		data.template = this.options.template;
 

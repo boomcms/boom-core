@@ -1,0 +1,53 @@
+#b-assets-chunk-editor {
+	overflow: hidden;
+
+	section {
+		.box-sizing;
+		display: inline-block;
+		width: 50%;
+		float: left;
+		padding: 1em;
+		max-width: 500px;
+
+		h1 {
+			margin-top: 0;
+			.text-large;
+		}
+
+		img {
+			max-width: 100%;
+		}
+
+		a {
+			&:hover, &:focus {
+				img {
+					opacity: 0.8;
+				}
+			}
+		}
+
+		label {
+			width: 100%;
+			overflow: hidden;
+
+			span {
+				.text-normal;
+				width: 5em;
+				display: inline-block;
+				float: left;
+			}
+
+			div {
+				.box-sizing;
+				padding-left: 5em;
+				width: 100%;
+				display: inline-block;
+				float: right;
+
+				input {
+					width: 100%;
+				}
+			}
+		}
+	}
+}

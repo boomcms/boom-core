@@ -1,35 +1,40 @@
-<div class="container">
-    <section>
-        <h1>Current Asset</h1>
+<section>
+    <h1>Current Asset</h1>
+    <p>Click to select an alternative asset</p>
 
+    <a href="#" data-asset-id="<?= $chunk->target() ?>">
         <? if ($chunk->hasContent()): ?>
-            <a href="#">
-                <img src="<?= Route::url('asset', array('id' => $chunk->target(), 'action' => 'thumb')) ?>" />
-            </a>
+            <img src="<?= Route::url('asset', array('id' => $chunk->target(), 'action' => 'thumb')) ?>" />
         <? else: ?>
-            <p>
-                None set
-            </p>
+            <p>None set</p>
         <? endif ?>
-    </section>
+    </a>
+</section>
 
-    <section>
-        <h1>Attributes</h1>
+<section>
+    <h1>Attributes</h1>
 
-        <? if ($chunk->getCaption()): ?>
-            <label>
-                Caption
-
+        <label class="b-caption">
+            <span>Caption</span>
+            
+            <div>
                 <input type="text" class="caption" value="<?= $chunk->getCaption() ?>" />
-            </label>
-        <? endif ?>
+            </div>
+        </label>
 
-        <? if ($chunk->getLink()): ?>
-            <label>
-                Link
+        <label class="b-link">
+            <span>Link</span>
+            
+            <div>
+                <input type="text" class="link" value="<?= $chunk->getLink() ?>" />
+            </div>
+        </label>
 
-                <input type="text" class="link" value="<?= $chunk->getLink()->getTitle() ?>" />
-            </label>
-        <? endif ?>
-    </section>
-</div>
+        <label class="b-title">
+            <span>Title</span>
+            
+            <div>
+                <input type="text" class="link" value="<?= $chunk->getTitle() ?>" />
+            </div>
+        </label>
+</section>

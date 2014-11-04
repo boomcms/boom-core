@@ -1,6 +1,46 @@
-function boomChunkAssetEditor(pageId, slotname) {
+function boomChunkAssetEditor(pageId, slotname, visibleElements) {
 	this.pageId = pageId;
 	this.slotname = slotname;
+	this.visibleElements = visibleElements;
+
+	boomChunkAssetEditor.prototype.bind = function() {
+		var chunkAssetEditor = this;
+
+		this.asset.on('click', function() {
+			new boomAssetPicker(chunkAssetEditor.asset.attr("data-asset-id"))
+				.done(function(assetId) {
+					chunkAssetEditor.setAsset(assetId);
+				});
+		});
+
+		this.link.on('focus', 'input', function() {
+			var $this = $(this);
+
+			new boomLinkPicker(null, $this.val())
+				.done(function(link) {
+					chunkAssetEditor.setLink(link.url);
+				});
+		});
+	};
+
+	boomChunkAssetEditor.prototype.dialogOpened = function() {
+		this.title = this.dialog.contents.find('.b-title');
+		this.caption = this.dialog.contents.find('.b-caption');
+		this.link = this.dialog.contents.find('.b-link');
+		this.asset = this.dialog.contents.find('a');
+
+		this.bind();
+		this.toggleElements();
+	};
+
+	boomChunkAssetEditor.prototype.getData = function() {
+		return {
+			asset_id : this.asset.attr('data-asset-id'),
+			caption : this.caption.find('input').val(),
+			url : this.link.find('input').val(),
+			title : this.title.find('input').val()
+		};
+	};
 
 	boomChunkAssetEditor.prototype.open = function() {
 		var chunkAssetEditor = this;
@@ -8,13 +48,50 @@ function boomChunkAssetEditor(pageId, slotname) {
 
 		this.dialog = new boomDialog({
 			url : '/cms/chunk/asset/edit/' + this.pageId + '?slotname=' + this.slotname,
-			id : 'b-chunk-asset-editor',
+			id : 'b-assets-chunk-editor',
 			open : function() {
-				chunkAssetEditor.open();
+				chunkAssetEditor.dialogOpened();
 			}
-		});
+		})
+		.done(function() {
+			chunkAssetEditor.deferred.resolve(chunkAssetEditor.getData());
+		 });
 
 		return this.deferred;
+	};
+
+	boomChunkAssetEditor.prototype.setAsset = function(assetId) {
+		this.asset.attr('data-asset-id', assetId);
+
+		var $img = this.asset.find('img');
+
+		if ( ! $img.length) {
+			$img = $('<img />');
+			this.asset.find('p').replaceWith($img);
+		}
+
+		$img.attr('src', '/asset/view/' + assetId);
+	};
+
+	boomChunkAssetEditor.prototype.setLink = function(link) {
+		this.link
+			.find('input')
+			.val(link)
+			.blur();
+	};
+
+	boomChunkAssetEditor.prototype.toggleElements = function() {
+		var elements = ['title', 'caption', 'link'],
+			i,
+			element;
+
+		for (i = 0; i < elements.length; i++) {
+			element = elements[i];
+
+			if ( ! this.visibleElements[element]) {
+				this[element].hide();
+			}
+		}
 	};
 
 	return this.open();

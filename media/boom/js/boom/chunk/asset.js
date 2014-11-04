@@ -1,77 +1,45 @@
-/**
-@class
-@name chunkAsset
-@extends $.ui.chunk
-@memberOf $.ui
-*/
-$.widget('ui.chunkAsset', $.ui.chunk,
-	/**
-	@lends $.ui.chunkAsset
-	*/
-	{
+$.widget('ui.chunkAsset', $.ui.chunk, {
+	editAssetOnly : function() {
+		var chunkAsset = this;
 
-	/**
-	Initialise the caption and asset editor
-	*/
-	_edit : function() {
-		var self = this;
-
-		self.elements = this._get_elements();
-		self.asset = this._get_asset_details();
-
-		this.originals = this.element.children().clone(true);
-
-		if (self.elements.caption.length || self.elements.link.length || self.elements.title.length) {
-			new boomChunkAssetEditor(this.options.page, this.options.name)
-				.done(function(chunkData) {
-
-				});
-		} else {
-			self._edit_asset(self.elements.asset);
-		}
+		new boomAssetPicker(this.asset.assetId)
+		.done(function(assetId) {
+			chunkAsset.save({
+				asset_id : assetId
+			});
+		})
+		.fail(function() {
+			chunkAsset.destory();
+		});
 	},
 
-	/**
-	Edit the asset
-	@param {Object} $caption Caption node
-	@returns {Deferred}
-	*/
-	_edit_asset : function() {
+	editAllElements : function() {
+		var chunkAsset = this;
 
-		var self = this, asset_selected = new $.Deferred();
-
-		asset_selected
-			.fail(function() {
-				$.boom.log('asset chunk cancelled');
-				self.destroy();
-			});
-
-		new boomAssetPicker(self.asset.asset_id)
-			.done(function(asset_id) {
-				self.asset.asset_id = asset_id;
-
-				self.insert();
-				self.destroy();
-			})
-			.fail( function() {
-				self.remove();
-			});
+		new boomChunkAssetEditor(this.options.page, this.options.name, {
+			caption : this.elements.caption.length > 0,
+			link : this.elements.link.length > 0,
+			title : this.elements.title.length
+		})
+		.done(function(chunkData) {
+			chunkAsset.save(chunkData);
+		});
 	},
 
 	/**
 	 @function
 	 */
-	 _get_elements: function() {
-		var asset_id = this.element.attr('data-boom-target');
+	 getElements: function() {
+		var assetId = this.element.attr('data-boom-target');
 		var elements = {};
 
 		var img = this.element.find('img');
 		var a = this.element.find('a');
 
-		var regExp = new RegExp("asset\/(thumb|view|download)\/" + asset_id);
+		var regExp = new RegExp("asset\/(thumb|view|download)\/" + assetId);
 
 		elements.asset = this.element.find('.asset-target');
-		elements.link = this.element.find('.asset-link');
+		elements.link = this.element.hasClass('asset-link')? this.element : this.element.find('.asset-link');
 		elements.caption = this.element.find('.asset-caption');
 		elements.title = this.element.find('.asset-title');
 
@@ -95,75 +63,40 @@ $.widget('ui.chunkAsset', $.ui.chunk,
 		return elements;
 	 },
 
-	/**
-	@function
-	*/
-	_get_asset_details: function(){
-		var asset = {
-			asset_id : this.element.attr('data-boom-target'),
-			title : this.elements.title.text(),
-			caption : this.elements.caption.text(),
-			url : this.elements.link.attr('href')
-		};
-
-		return asset;
-	},
-
-	/**
-	Asset editor.
-	*/
 	edit : function() {
+		this.elements = this.getElements();
 
-		var self = this;
-
-		this._edit();
-
-		$.boom.log('Asset chunk slot edit ' + self.asset.asset_id);
-
-
-//		if (this.element != self.elements.asset) {
-//			self.elements.asset
-//				.on( 'click', function(event) {
-//					event.preventDefault();
-//
-//					self._edit_asset(self.elements.asset);
-//					return false;
-//				});
-//		}
-
-//		this.element.on('click', function(event) {
-//			event.preventDefault();
-//
-//			self._edit_asset(self.elements.asset);
-//			return false;
-//		});
+		if (this.hasMetadata()) {
+			this.editAllElements();
+		} else {
+			this.editAssetOnly();
+		}
 	},
 
-	/**
-	Insert selected asset into the page
-	*/
-	insert : function() {
-		var self = this;
-
-		$.boom.log( 'inserting asset' + self.asset.asset_id );
-
-		return self._save();
+	hasMetadata : function() {
+		return (this.elements.caption.length || this.elements.link.length || this.elements.title.length);
 	},
 
-	/**
-	Get the RID for this asset.
-	@returns {Int} Asset RID
-	*/
-	getData: function() {
-		var rid = this.asset.asset_id;
+	save : function(data) {
+		this._save(data);
+		this.destroy();
+	},
+	
+	_update_html : function(html) {
+		var $html = $(html),
+			$replacement = $($html[0]);
 
-		rid = (rid == 0) ? null : rid;
+		if (this.elements.asset === this.element) {
+			if (this.element.is('img')) {
+				this.element.attr('src', $replacement.attr('src'));
+			} else if ($replacement.css('background-image')) {
+				this.element.css('background-image', $replacement.css('background-image'));
+			} else {
+				this.element.css('background', $replacement.css('background'));
+			}
+		}
 
-		return {
-			asset_id : rid,
-			title : this.asset.title,
-			caption : this.asset.caption,
-			url : this.asset.url
-		};
+		this.element.html($html.html());
+		this.bind();
 	}
 });

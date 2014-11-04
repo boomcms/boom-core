@@ -27,6 +27,13 @@ class Model_Chunk_Asset extends \ORM
             'caption'    => [
                 ['strip_tags'],
             ],
+            'url' => [[
+                function($url) {
+                    $link = Boom\Link\Link::factory($url);
+                    
+                    return $link->isInternal()? $link->getPage()->getId() : $link->url();
+                },
+            ]],
         ];
     }
 }
