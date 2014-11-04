@@ -16,25 +16,16 @@
 
         <label class="b-caption">
             <span>Caption</span>
-            
-            <div>
-                <input type="text" class="caption" value="<?= $chunk->getCaption() ?>" />
-            </div>
+            <input type="text" class="caption" value="<?= $chunk->getCaption() ?>" />
         </label>
 
         <label class="b-link">
             <span>Link</span>
-            
-            <div>
-                <input type="text" class="link" value="<?= $chunk->getLink() ?>" />
-            </div>
+            <input type="text" class="link" value="<?= $chunk->getLink() ?>" />
         </label>
 
         <label class="b-title">
             <span>Title</span>
-            
-            <div>
-                <input type="text" class="link" value="<?= $chunk->getTitle() ?>" />
-            </div>
+            <input type="text" class="link" value="<?= $chunk->getTitle() ?>" />
         </label>
 </section>
