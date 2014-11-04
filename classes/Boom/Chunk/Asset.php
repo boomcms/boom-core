@@ -70,6 +70,11 @@ class Asset extends \Boom\Chunk
         return $this->link;
     }
 
+    public function getTitle()
+    {
+        return $this->_chunk->title;
+    }
+
     public function hasContent()
     {
         return $this->_chunk->loaded() && $this->_asset->loaded();
