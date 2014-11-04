@@ -33,6 +33,10 @@ $.widget('boom.assetManager', {
 				done : function(e, data) {
 					assetManager.assetsUploaded(data.result);
 				}
+			})
+			.on('click', '#b-assets-upload-close', function(e) {
+				e.preventDefault();
+				assetManager.uploader.hide();
 			});
 	},
 
