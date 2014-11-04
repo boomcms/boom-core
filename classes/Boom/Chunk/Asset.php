@@ -28,6 +28,7 @@ class Asset extends \Boom\Chunk
             'asset' => $this->asset(),
             'caption' => $this->getCaption(),
             'title' => $this->getTitle(),
+            'link' => $link
         ]);
 
         if ($link) {
