@@ -13,7 +13,7 @@ class Controller_Cms_Person_View extends Controller_Cms_Person
 
     public function action_add_group()
     {
-        $finder = new Group\Finder;
+        $finder = new Group\Finder();
         $finder
             ->addFilter(new Group\Finder\Filter\ExcludingPersonsGroups($this->edit_person))
             ->setOrderBy('name');

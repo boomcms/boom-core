@@ -24,7 +24,7 @@ class Person
 
     /**
      *
-     * @param \Boom\Group\Group $group
+     * @param  \Boom\Group\Group   $group
      * @return \Boom\Person\Person
      */
     public function addToGroup(Group\Group $group)
@@ -154,7 +154,7 @@ class Person
 
     /**
      *
-     * @param \Boom\Group\Group $group
+     * @param  \Boom\Group\Group   $group
      * @return \Boom\Person\Person
      */
     public function removeFromGroup(Group\Group $group)

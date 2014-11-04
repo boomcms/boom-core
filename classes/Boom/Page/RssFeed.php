@@ -28,7 +28,7 @@ class RssFeed
 
     public function getFeedItems()
     {
-        $finder = new Finder;
+        $finder = new Finder();
         $finder->addFilter(new Finder\Filter\ParentPage($this->page));
 
         return $finder->findAll();
@@ -36,7 +36,7 @@ class RssFeed
 
     public function render()
     {
-        $feed = new Rss;
+        $feed = new Rss();
         $feed
             ->feed('2.0', 'UTF-8')
             ->channel([
