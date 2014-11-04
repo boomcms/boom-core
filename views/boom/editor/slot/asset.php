@@ -13,19 +13,18 @@
 
 <section>
     <h1>Attributes</h1>
+        <label class="b-title">
+            <span>Title</span>
+            <textarea><?= $chunk->getTitle() ?></textarea>
+        </label>
 
         <label class="b-caption">
             <span>Caption</span>
-            <input type="text" class="caption" value="<?= $chunk->getCaption() ?>" />
+            <textarea><?= $chunk->getCaption() ?></textarea>
         </label>
 
         <label class="b-link">
             <span>Link</span>
-            <input type="text" class="link" value="<?= $chunk->getLink() ?>" />
-        </label>
-
-        <label class="b-title">
-            <span>Title</span>
-            <input type="text" class="link" value="<?= $chunk->getTitle() ?>" />
+            <input type="text" value="<?= $chunk->getLink() ?>" />
         </label>
 </section>
