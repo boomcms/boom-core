@@ -1,13 +1,30 @@
 #b-assets-pagination {
-	min-width: 370px;
-	border: 0;
-	display: inline-block;
-	vertical-align: top;
-	float: right;
-	font-size: 10px;
+	position: relative;
 
-	select {
-		margin: 20px 0 0 2em;
-		float: right;
+	input, a {
+		.box-sizing;
+		height: 2em;
+		margin: 0;
+	}
+
+	.next {
+		position: absolute;
+		right: 20px;
+	}
+
+	.last {
+		position: absolute;
+		right: 0;
+	}
+
+	input {
+		.b-input;
+		.box-sizing;
+		padding: 0 40px;
+		position: absolute;
+		width: 100%;
+		left: 0;
+		top: 0;
+		z-index: -1;
 	}
 }

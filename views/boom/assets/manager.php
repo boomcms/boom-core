@@ -11,8 +11,6 @@
 			<?= \Boom\UI::button('tag', __('Add Tags'), array('id' => 'b-button-multiaction-tag', 'disabled' => 'disabled')) ?>
 			<?= \Boom\UI::button('cancel', __('Clear Selection'), array('id' => 'b-button-multiaction-clear', 'disabled' => 'disabled')) ?>
 		</div>
-
-		<div id="b-assets-pagination" class="pagination"></div>
 	</div>
 
 	<div id="b-assets-filters">
@@ -42,6 +40,8 @@
 			'downloads-desc' => 'Most downloaded'
 			), 'last_modified-desc', array('id' => 'b-assets-sortby'))
 		?>
+
+        <div id="b-assets-pagination" class="pagination"></div>
 	</div>
 
 	<div id="b-assets-content">

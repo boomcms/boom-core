@@ -1,11 +1,11 @@
 .text-large {
-	font-family: @font;
+	font-family: Arial, sans-serif;
 	font-size: 1.5em;
 	line-height: 1.4em;
 }
 
 .text-default {
-	font-family: @font;
+	font-family: Arial, sans-serif;
 	font-size: 1em;
 	line-height: 1.4em;
 }
@@ -14,6 +14,16 @@
 	-moz-box-sizing: border-box;
 	-webkit-box-sizing: border-box;
 	box-sizing: border-box;
+}
+
+.b-input {
+	.box-sizing;
+	.text-default;
+	border: 0;
+	-webkit-appearance: none;
+	background: @white;
+	height: 2em;
+	padding: 2px;
 }
 
 .border-radius (@radius: 5px) {
