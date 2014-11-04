@@ -2,7 +2,7 @@
     <section>
         <h1>Current Asset</h1>
 
-        <? if ($chunk->has_content()): ?>
+        <? if ($chunk->hasContent()): ?>
             <a href="#">
                 <img src="<?= Route::url('asset', array('id' => $chunk->target(), 'action' => 'thumb')) ?>" />
             </a>
