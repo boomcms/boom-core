@@ -8,9 +8,9 @@ class Controller_Cms_Chunk_Slideshow extends Controller_Cms_Chunk
     {
         $chunk = Chunk::find('slideshow', $this->request->query('slotname'), $this->page->getCurrentVersion());
 
-        $this->template = View::factory('boom/editor/slot/slideshow', array(
+        $this->template = View::factory('boom/editor/slot/slideshow', [
             'slides' => $chunk->slides(),
-        ));
+        ]);
     }
 
     protected function _preview_chunk()

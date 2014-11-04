@@ -6,7 +6,7 @@ class Model_AuthLog extends ORM
     const FAILURE = 0;
     const LOGIN = 1;
 
-    protected $_table_columns = array(
+    protected $_table_columns = [
         'id'            =>    '',
         'person_id'        =>    '',
         'action'        =>    '',
@@ -14,14 +14,14 @@ class Model_AuthLog extends ORM
         'ip'            =>    '',
         'user_agent'    =>    '',
         'time'            =>    '',
-    );
+    ];
 
     protected $_table_name = 'auth_logs';
 
-    protected $_created_column = array(
+    protected $_created_column = [
         'column'    =>    'time',
         'format'    =>    true,
-    );
+    ];
 
     public function get_action()
     {

@@ -16,7 +16,7 @@ abstract class UI
 	 * @param array $attrs HTML attributes for the button
 	 * @return string
 	 */
-    public static function button($type, $text, array $attrs = array())
+    public static function button($type, $text, array $attrs = [])
     {
         // Add the important b-button class to the button attributes which has all the CSS rules targeted at it.
         isset($attrs['class']) || $attrs['class'] = '';
@@ -33,6 +33,6 @@ abstract class UI
 
     public static function menuButton()
     {
-        return static::button('menu', __('Menu'), array('id' => 'b-menu-button', 'class' => 'menu-btn'));
+        return static::button('menu', __('Menu'), ['id' => 'b-menu-button', 'class' => 'menu-btn']);
     }
 }

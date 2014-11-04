@@ -11,9 +11,9 @@ class Controller_Cms_Approvals extends Boom\Controller
 
     public function action_index()
     {
-        $this->template = new View('boom/approvals/index', array(
+        $this->template = new View('boom/approvals/index', [
             'pages' => $this->_get_pages_awaiting_approval(),
-        ));
+        ]);
     }
 
     /**
@@ -24,7 +24,7 @@ class Controller_Cms_Approvals extends Boom\Controller
     protected function _get_pages_awaiting_approval()
     {
         $can_publish = DB::select('mptt.lft', 'mptt.rgt', 'mptt.scope')
-            ->from(array('page_mptt', 'mptt'))
+            ->from(['page_mptt', 'mptt'])
             ->join('people_roles', 'inner')
             ->on('mptt.id', '=', 'people_roles.page_id')
             ->join('roles', 'inner')
@@ -35,9 +35,9 @@ class Controller_Cms_Approvals extends Boom\Controller
         return ORM::factory('Page')
             ->with_current_version(\Boom\Editor::instance())
             ->where('pending_approval', '=', true)
-            ->join(array('page_mptt', 'mptt1'))
+            ->join(['page_mptt', 'mptt1'])
             ->on('page.id', '=', 'mptt1.id')
-            ->join(array($can_publish, 'mptt2'), 'inner')
+            ->join([$can_publish, 'mptt2'], 'inner')
             ->on('mptt1.lft', '>=', 'mptt2.lft')
             ->on('mptt1.rgt', '<=', 'mptt2.rgt')
             ->on('mptt1.scope', '=', 'mptt2.scope')

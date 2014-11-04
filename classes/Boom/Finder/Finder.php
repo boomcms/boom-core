@@ -1,17 +1,17 @@
 <?php
 
-namespace Boom;
+namespace Boom\Finder;
 
 abstract class Finder
 {
     const ASC = 'asc';
     const DESC = 'desc';
 
-    protected $_filters = array();
+    protected $_filters = [];
     protected $_filtersApplied = false;
     protected $_query;
 
-    public function addFilter(Finder\Filter $filter)
+    public function addFilter(Filter $filter)
     {
         $this->_filters[] = $filter;
 

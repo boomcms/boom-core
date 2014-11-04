@@ -5,21 +5,21 @@ use \Boom\Editor\Editor as Editor;
 
 class Model_Page_Version extends ORM
 {
-    protected $_belongs_to = array(
-        'template'        =>    array('model' => 'Template', 'foreign_key' => 'template_id'),
-        'person'        =>    array('model' => 'Person', 'foreign_key' => 'edited_by'),
-    );
+    protected $_belongs_to = [
+        'template'        =>    ['model' => 'Template', 'foreign_key' => 'template_id'],
+        'person'        =>    ['model' => 'Person', 'foreign_key' => 'edited_by'],
+    ];
 
-    protected $_created_column = array(
+    protected $_created_column = [
         'column'    =>    'edited_time',
         'format'    =>    true,
-    );
+    ];
 
-    protected $_has_many = array(
-        'chunks'    => array('through' => 'page_chunks', 'foreign_key' => 'page_vid'),
-    );
+    protected $_has_many = [
+        'chunks'    => ['through' => 'page_chunks', 'foreign_key' => 'page_vid'],
+    ];
 
-    protected $_table_columns = array(
+    protected $_table_columns = [
         'id'                =>    '',
         'page_id'            =>    '',
         'template_id'        =>    '',
@@ -30,7 +30,7 @@ class Model_Page_Version extends ORM
         'embargoed_until'    =>    '',
         'stashed'            =>    '',
         'pending_approval'    =>    '',
-    );
+    ];
 
     protected $_table_name = 'page_versions';
 
@@ -40,7 +40,7 @@ class Model_Page_Version extends ORM
 	 * @see Model_Page_Version::thumbnail()
 	 * @var array
 	 */
-    protected $_thumbnails = array();
+    protected $_thumbnails = [];
 
     /**
 	 * Adds a chunk to the page version.
@@ -111,9 +111,9 @@ class Model_Page_Version extends ORM
     {
         // Set any previous embargoed versions to unpublished to ensure that they won't be used.
         DB::update('page_versions')
-            ->set(array(
+            ->set([
                 'published'    =>    false,
-            ))
+            ])
             ->where('embargoed_until', '>', $_SERVER['REQUEST_TIME'])
             ->where('page_id', '=', $this->page_id)
             ->where('id', '!=', $this->id)
@@ -134,19 +134,19 @@ class Model_Page_Version extends ORM
 	 */
     public function filters()
     {
-        return array(
-            'title' => array(
-                array('strip_tags'),
-                array('html_entity_decode'),
-                array('trim'),
-            ),
-            'keywords' => array(
-                array('trim'),
-            ),
-            'description' => array(
-                array('trim'),
-            ),
-       );
+        return [
+            'title' => [
+                ['strip_tags'],
+                ['html_entity_decode'],
+                ['trim'],
+            ],
+            'keywords' => [
+                ['trim'],
+            ],
+            'description' => [
+                ['trim'],
+            ],
+       ];
     }
 
     public function is_published()
@@ -161,20 +161,20 @@ class Model_Page_Version extends ORM
 	 */
     public function rules()
     {
-        return array(
-            'page_id'    =>    array(
-                array('not_empty'),
-                array('numeric'),
-            ),
-            'template_id'    =>    array(
-                array('not_empty'),
-                array('numeric'),
-            ),
-            'title'    =>    array(
-                array('not_empty'),
-                array('max_length', array(':value', 70))
-            ),
-        );
+        return [
+            'page_id'    =>    [
+                ['not_empty'],
+                ['numeric'],
+            ],
+            'template_id'    =>    [
+                ['not_empty'],
+                ['numeric'],
+            ],
+            'title'    =>    [
+                ['not_empty'],
+                ['max_length', [':value', 70]]
+            ],
+        ];
     }
 
     /**

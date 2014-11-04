@@ -2,24 +2,24 @@
 
 class Model_Template extends ORM
 {
-    protected $_table_columns = array(
+    protected $_table_columns = [
         'id'            =>    '',
         'name'        =>    '',
         'description'    =>    '',
         'filename'        =>    '',
-    );
+    ];
 
     protected $_table_name = 'templates';
 
     public function rules()
     {
-        return array(
-            'name' => array(
-                array('not_empty'),
-            ),
-            'filename' => array(
-                array('not_empty'),
-            ),
-        );
+        return [
+            'name' => [
+                ['not_empty'],
+            ],
+            'filename' => [
+                ['not_empty'],
+            ],
+        ];
     }
 }

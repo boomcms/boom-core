@@ -38,10 +38,10 @@ class Controller_Cms_Page extends Boom\Controller
 
         $this->log("Added a new page under " . $this->page->getTitle(), "Page ID: " . $new_page->getId());
 
-        $this->response->body(json_encode(array(
+        $this->response->body(json_encode([
             'url' => URL::site($url, $this->request),
             'id' => $new_page->getId(),
-        )));
+        ]));
     }
 
     public function action_delete()
@@ -57,10 +57,10 @@ class Controller_Cms_Page extends Boom\Controller
 
             // Get request
             // Show a confirmation dialogue warning that child pages will become inaccessible and asking whether to delete the children.
-            $this->template = new View("$this->viewDirectory/delete", array(
+            $this->template = new View("$this->viewDirectory/delete", [
                 'count' => $children,
                 'page' =>$this->page,
-            ));
+            ]);
         } else {
             $this->_csrf_check();
             $this->log("Deleted page " . $this->page->getTitle() . " (ID: " . $this->page->getId() . ")");
@@ -99,9 +99,9 @@ class Controller_Cms_Page extends Boom\Controller
 
     public function action_urls()
     {
-        $this->template = new View("$this->viewDirectory/urls", array(
+        $this->template = new View("$this->viewDirectory/urls", [
             'page' => $this->page,
             'urls' => $this->page->getUrls(),
-        ));
+        ]);
     }
 }

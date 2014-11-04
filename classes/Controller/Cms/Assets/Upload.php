@@ -15,7 +15,7 @@ class Controller_Cms_Assets_Upload extends Controller_Cms_Assets
     {
         $this->_csrf_check();
 
-        $asset_ids = $errors = array();
+        $asset_ids = $errors = [];
         $now = new DateTime('now');
 
         $this->response->headers('Content-Type', static::JSON_RESPONSE_MIME);
@@ -73,6 +73,6 @@ class Controller_Cms_Assets_Upload extends Controller_Cms_Assets
 
         $this->response
             ->headers('Content-Type', static::JSON_RESPONSE_MIME)
-            ->body(json_encode(array($asset->getId())));
+            ->body(json_encode([$asset->getId()]));
     }
 }

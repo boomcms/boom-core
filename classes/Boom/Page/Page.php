@@ -460,11 +460,11 @@ class Page
     {
         if ($this->_url === null) {
             $this->_url = \ORM::factory('Page_URL')
-                ->values(array(
+                ->values([
                     'location'        =>    $this->model->primary_uri,
                     'page_id'        =>    $this->model->id,
                     'is_primary'    =>    true,
-                ));
+                ]);
         }
 
         return $this->_url;

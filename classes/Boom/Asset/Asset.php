@@ -14,7 +14,7 @@ abstract class Asset
 	 */
     protected $model;
 
-    protected $old_files = array();
+    protected $old_files = [];
 
     public function __construct(\Model_Asset $model)
     {
@@ -99,7 +99,7 @@ abstract class Asset
     {
         // If the asset doesn't exist return an empty array.
         if ( ! $this->loaded()) {
-            return array();
+            return [];
         }
 
         if ($this->old_files === null) {

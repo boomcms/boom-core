@@ -10,9 +10,9 @@ class Controller_Cms_Page_Settings_View extends Controller_Cms_Page_Settings
     {
         parent::action_admin();
 
-        $this->template = new View("$this->viewDirectory/admin", array(
+        $this->template = new View("$this->viewDirectory/admin", [
             'page' => $this->page,
-        ));
+        ]);
     }
 
     /**
@@ -27,22 +27,22 @@ class Controller_Cms_Page_Settings_View extends Controller_Cms_Page_Settings
         $childOrderingPolicy = $this->page->getChildOrderingPolicy();
 
         // Create the main view with the basic settings
-        $this->template = View::factory("$this->viewDirectory/children", array(
+        $this->template = View::factory("$this->viewDirectory/children", [
             'default_child_template'    =>    $this->page->getDefaultChildTemplateId(),
             'templates'            =>    \Boom\Template\Helpers::names(),
             'child_order_column'        =>    $childOrderingPolicy->getColumn(),
             'child_order_direction'    =>    $childOrderingPolicy->getDirection(),
             'allowAdvanced'        =>    $this->allowAdvanced,
-        ));
+        ]);
 
         // If we're showing the advanced settings then set the neccessary variables.
         if ($this->allowAdvanced) {
             // Add the view for the advanced settings to the main view.
-            $this->template->set(array(
+            $this->template->set([
                 'default_grandchild_template'    => ($this->page->getGrandchildTemplateId() != 0) ? $this->page->getGrandchildTemplateId() : $this->page->getTemplateId(),
                 'page'                    => $this->page,
                 'templates'                => Template\Helpers::names(),
-            ));
+            ]);
         }
     }
 
@@ -53,10 +53,10 @@ class Controller_Cms_Page_Settings_View extends Controller_Cms_Page_Settings
         $images_in_page = new \Boom\Page\AssetsUsed($this->page->getCurrentVersion());
         $images_in_page->setType(\Boom\Asset\Type::IMAGE);
 
-        $this->template = new View("$this->viewDirectory/feature", array(
+        $this->template = new View("$this->viewDirectory/feature", [
             'feature_image_id' => $this->page->getFeatureImageId(),
             'images_in_page' => $images_in_page->getAll(),
-        ));
+        ]);
     }
 
     /**
@@ -67,20 +67,20 @@ class Controller_Cms_Page_Settings_View extends Controller_Cms_Page_Settings
     {
         parent::action_navigation();
 
-        $this->template = new View("$this->viewDirectory/navigation", array(
+        $this->template = new View("$this->viewDirectory/navigation", [
             'page' => $this->page,
             'allowAdvanced' => $this->allowAdvanced,
-        ));
+        ]);
     }
 
     public function action_search()
     {
         parent::action_search();
 
-        $this->template = new View("$this->viewDirectory/search", array(
+        $this->template = new View("$this->viewDirectory/search", [
             'allowAdvanced' => $this->allowAdvanced,
             'page' => $this->page,
-        ));
+        ]);
     }
 
     public function action_sort_children()
@@ -94,17 +94,17 @@ class Controller_Cms_Page_Settings_View extends Controller_Cms_Page_Settings
             ->setLimit(50)
             ->find();
 
-        $this->template = new View("$this->viewDirectory/sort_children", array(
+        $this->template = new View("$this->viewDirectory/sort_children", [
             'children' => $children
-        ));
+        ]);
     }
 
     public function action_visibility()
     {
         parent::action_visibility();
 
-        $this->template = new View("$this->viewDirectory/visibility", array(
+        $this->template = new View("$this->viewDirectory/visibility", [
             'page' => $this->page,
-        ));
+        ]);
     }
 }

@@ -7,7 +7,7 @@ use \Kohana as Kohana;
 class Timestamp extends \Boom\Chunk
 {
     public static $default_format = 'j F Y';
-    public static $formats = array(
+    public static $formats = [
         'j F Y',
         'j F Y H:i',
         'j F Y h:i A',
@@ -16,7 +16,7 @@ class Timestamp extends \Boom\Chunk
         'l j F Y h:i A',
         'H:i',
         'h:i A',
-    );
+    ];
 
     protected $_html_before = "<span class='b-chunk-timestamp'>";
     protected $_html_after = "</span>";
@@ -24,10 +24,10 @@ class Timestamp extends \Boom\Chunk
 
     public function attributes()
     {
-        return array(
+        return [
             $this->attributePrefix.'timestamp' => $this->_chunk->timestamp,
             $this->attributePrefix.'format' => $this->_chunk->format,
-        );
+        ];
     }
 
     protected function _show()

@@ -41,14 +41,14 @@ class Group
 
         // Check that the group doesn't already have this role before continuing.
         if ( ! $this->hasRole($roleId, $pageId)) {
-            DB::insert('group_roles', array('group_id', 'role_id', 'allowed', 'page_id'))
-                ->values(array($this->getId(), $roleId, $allowed, $pageId))
+            DB::insert('group_roles', ['group_id', 'role_id', 'allowed', 'page_id'])
+                ->values([$this->getId(), $roleId, $allowed, $pageId])
                 ->execute();
 
             // If the page ID is isn't set the set it to a string with '0' as the contents
             // otherwise it won't be included in the DB::select()
             if ($pageId) {
-                DB::insert('people_roles', array('person_id', 'group_id', 'role_id', 'allowed', 'page_id'))
+                DB::insert('people_roles', ['person_id', 'group_id', 'role_id', 'allowed', 'page_id'])
                     ->select(
                         DB::select('person_id', 'group_id', DB::expr($roleId), DB::expr($allowed), DB::expr($pageId))
                             ->from('people_groups')
@@ -56,7 +56,7 @@ class Group
                     )
                     ->execute();
             } else {
-                DB::insert('people_roles', array('person_id', 'group_id', 'role_id', 'allowed'))
+                DB::insert('people_roles', ['person_id', 'group_id', 'role_id', 'allowed'])
                     ->select(
                         DB::select('person_id', 'group_id', DB::expr($roleId), DB::expr($allowed))
                             ->from('people_groups')

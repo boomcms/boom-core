@@ -60,7 +60,7 @@ class Controller_Cms_Chunk extends Boom\Controller
     {
         $old_version = $this->page->getCurrentVersion();
 
-        $this->_new_version = $this->page->createVersion($old_version, array('edited_by' => $this->person->getId()));
+        $this->_new_version = $this->page->createVersion($old_version, ['edited_by' => $this->person->getId()]);
 
         if ($this->_new_version->embargoed_until <= $_SERVER['REQUEST_TIME']) {
             $this->_new_version->embargoed_until = null;
@@ -68,7 +68,7 @@ class Controller_Cms_Chunk extends Boom\Controller
 
         $this->_new_version
             ->create()
-            ->copy_chunks($old_version, array($this->_type => array($this->request->post('slotname'))));
+            ->copy_chunks($old_version, [$this->_type => [$this->request->post('slotname')]]);
     }
 
     protected function _preview_chunk() {}
@@ -83,9 +83,9 @@ class Controller_Cms_Chunk extends Boom\Controller
 
     protected function _send_response($html)
     {
-        $this->response->body(json_encode(array(
+        $this->response->body(json_encode([
             'status' => $this->_new_version->status(),
             'html' => $html,
-        )));
+        ]));
     }
 }

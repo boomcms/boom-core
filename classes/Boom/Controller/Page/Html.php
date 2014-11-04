@@ -8,7 +8,7 @@ use \View as View;
 
 class Html extends \Boom\Controller\Page
 {
-    protected $_chunks = array();
+    protected $_chunks = [];
 
     /**
 	 *
@@ -56,7 +56,7 @@ class Html extends \Boom\Controller\Page
 
             $models = Chunk::find($type, $slotnames, $this->page->getCurrentVersion());
 
-            $found = array();
+            $found = [];
             foreach ($models as $m) {
                 $found[] = $m->slotname;
                 $chunks[$type][$m->slotname] = new $class($this->page, $m, $m->slotname);

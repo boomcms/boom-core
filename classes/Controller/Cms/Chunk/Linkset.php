@@ -6,9 +6,9 @@ class Controller_Cms_Chunk_Linkset extends Controller_Cms_Chunk
 
     public function action_edit()
     {
-        $this->template = View::factory('boom/editor/slot/linkset', array(
+        $this->template = View::factory('boom/editor/slot/linkset', [
             'page'    =>    $this->page,
-        ));
+        ]);
     }
 
     protected function _preview_chunk()

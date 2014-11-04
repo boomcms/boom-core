@@ -27,7 +27,7 @@ class RelatedByTags extends \Boom\Finder\Filter
     public function execute(\ORM $query)
     {
         return $query
-            ->select(array(\DB::expr('count(pages_tags.tag_id)'), 'tag_count'))
+            ->select([\DB::expr('count(pages_tags.tag_id)'), 'tag_count'])
             ->join('pages_tags', 'inner')
             ->on('page.id', '=', 'pages_tags.page_id')
             ->where('tag_id', 'in', $this->_tagIds)

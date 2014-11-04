@@ -23,7 +23,7 @@ class Controller_Cms_Person_Save extends Controller_Cms_Person
             ->setEmail($this->request->post('email'))
             ->setEncryptedPassword($encPassword)
             ->save()
-            ->addGroup(Group\Factory::byId($this->request->post('group_id')));
+            ->addToGroup(Group\Factory::byId($this->request->post('group_id')));
 
         if (isset($password)) {
             $email = new Boom\Email\Newuser($this->edit_person, $password, $this->request);
@@ -33,11 +33,11 @@ class Controller_Cms_Person_Save extends Controller_Cms_Person
 
     public function action_add_group()
     {
-        $groups = $this->request->post('groups');
+        foreach ($this->request->post('groups') as $groupId) {
+            $group = Group\Factory::byId($groupId);
 
-        foreach ($groups as $group_id) {
-            $this->log("Added person $this->person->email to group with ID $group_id");
-            $this->edit_person->add_group($group_id);
+            $this->log("Added person {$this->person->getEmail()} to group with ID {$group->getId()}");
+            $this->edit_person->addToGroup($group);
         }
     }
 
@@ -53,8 +53,10 @@ class Controller_Cms_Person_Save extends Controller_Cms_Person
 
     public function action_remove_group()
     {
-        $this->log("Edited the groups for person ".$this->edit_person->email);
-        $this->edit_person->remove_group($this->request->post('group_id'));
+        $group = Group\Factory::byId($this->request->post('group_id'));
+
+        $this->log("Edited the groups for person ".$this->edit_person->getEmail());
+        $this->edit_person->removeFromGroup($group);
     }
 
     public function action_save()
@@ -62,7 +64,7 @@ class Controller_Cms_Person_Save extends Controller_Cms_Person
         $this->log("Edited user $this->edit_person->email (ID: $this->edit_person->id) to the CMS");
 
         $this->edit_person
-            ->values($this->request->post(), array('name', 'enabled'))
+            ->values($this->request->post(), ['name', 'enabled'])
             ->update();
     }
 }

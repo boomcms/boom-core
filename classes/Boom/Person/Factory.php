@@ -11,6 +11,6 @@ abstract class Factory
 
     public static function byEmail($email)
     {
-        return new Person(new \Model_Person(array('email' => $email)));
+        return new Person(new \Model_Person(['email' => $email]));
     }
 }

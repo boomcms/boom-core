@@ -7,27 +7,27 @@ class Model_Page extends ORM
     /**
 	 * Properties to create relationships with Kohana's ORM
 	 */
-    protected $_belongs_to = array(
-        'mptt'        =>    array('model' => 'Page_MPTT', 'foreign_key' => 'id'),
-        'feature_image' => array('model' => 'Asset', 'foreign_key' => 'feature_image_id')
-    );
+    protected $_belongs_to = [
+        'mptt'        =>    ['model' => 'Page_MPTT', 'foreign_key' => 'id'],
+        'feature_image' => ['model' => 'Asset', 'foreign_key' => 'feature_image_id']
+    ];
 
-    protected $_created_column = array(
+    protected $_created_column = [
         'column'    =>    'created_time',
         'format'    =>    true,
-    );
+    ];
 
-    protected $_has_one = array(
-        'version'        =>    array('model' => 'Page_Version', 'foreign_key' => 'page_id'),
-    );
+    protected $_has_one = [
+        'version'        =>    ['model' => 'Page_Version', 'foreign_key' => 'page_id'],
+    ];
 
-    protected $_has_many = array(
-        'versions'    => array('model' => 'Page_Version', 'foreign_key' => 'page_id'),
-        'urls'        => array('model' => 'Page_URL', 'foreign_key' => 'page_id'),
-        'tags'    => array('model' => 'Tag', 'through' => 'pages_tags'),
-    );
+    protected $_has_many = [
+        'versions'    => ['model' => 'Page_Version', 'foreign_key' => 'page_id'],
+        'urls'        => ['model' => 'Page_URL', 'foreign_key' => 'page_id'],
+        'tags'    => ['model' => 'Tag', 'through' => 'pages_tags'],
+    ];
 
-    protected $_table_columns = array(
+    protected $_table_columns = [
         'id'                        =>    '',
         'sequence'                    =>    '',
         'visible'                    =>    '',
@@ -51,7 +51,7 @@ class Model_Page extends ORM
         'primary_uri'                =>    '',
         'deleted'                    =>    '',
         'feature_image_id'            =>    '',
-    );
+    ];
 
     protected $_table_name = 'pages';
 
@@ -90,7 +90,7 @@ class Model_Page extends ORM
 
     public function set_template_of_children($template_id)
     {
-        $versions = DB::select(array(DB::expr('max(page_versions.id)'), 'id'))
+        $versions = DB::select([DB::expr('max(page_versions.id)'), 'id'])
             ->from('page_versions')
             ->join('page_mptt', 'inner')
             ->on('page_mptt.id', '=', 'page_versions.page_id')
@@ -105,7 +105,7 @@ class Model_Page extends ORM
 
         if ( ! empty($versions)) {
             DB::update('page_versions')
-                ->set(array('template_id' => $template_id))
+                ->set(['template_id' => $template_id])
                 ->where('id', 'IN', $versions)
                 ->execute($this->_db);
         }
@@ -125,7 +125,7 @@ class Model_Page extends ORM
 
         foreach (array_keys($target->_object) as $column) {
             // Add the prefix so that load_result can determine the relationship
-            $this->select(array("version.$column", "version:$column"));
+            $this->select(["version.$column", "version:$column"]);
         }
 
         return $this;
@@ -145,7 +145,7 @@ class Model_Page extends ORM
     {
         // Execute a DB query to stash unpublished versions.
         DB::update('page_versions')
-            ->set(array('stashed' => true))
+            ->set(['stashed' => true])
             ->where('embargoed_until', '>=', $_SERVER['REQUEST_TIME'])
             ->where('page_id', '=', $this->id)
             ->execute($this->_db);
@@ -167,7 +167,7 @@ class Model_Page extends ORM
             // Only update the sequence of pages which are children of this page.
             if ($mptt->scope == $this->mptt->scope && $mptt->parent_id == $this->id) {
                 DB::update($this->_table_name)
-                    ->set(array('sequence' => $sequence))
+                    ->set(['sequence' => $sequence])
                     ->where('id', '=', $page_id)
                     ->execute($this->_db);
             }

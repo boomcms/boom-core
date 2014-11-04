@@ -2,11 +2,11 @@
 
 class Controller_Page_Json extends Controller\Page
 {
-    protected $_data = array();
+    protected $_data = [];
 
     public function action_show()
     {
-        $this->_data = array(
+        $this->_data = [
             'id'            =>    $this->page->getId(),
             'title'            =>    $this->page->getTitle(),
             'visible'        =>    $this->page->visible,
@@ -15,7 +15,7 @@ class Controller_Page_Json extends Controller\Page
             'parent'        =>    $this->page->mptt->parent_id,
             'bodycopy'    =>    Chunk::factory('text', 'bodycopy', $this->page)->text(),
             'standfirst'        =>    Chunk::factory('text', 'standfirst', $this->page)->text(),
-        );
+        ];
     }
 
     public function after()

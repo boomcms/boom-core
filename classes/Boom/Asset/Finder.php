@@ -3,15 +3,16 @@
 namespace Boom\Asset;
 
 use \Boom\Asset;
+use Boom;
 use \ORM as ORM;
 
-class Finder extends \Boom\Finder
+class Finder extends Boom\Finder\Finder
 {
     /**
 	 *
 	 * @var array
 	 */
-    protected $_allowedOrderByColumns = array('last_modified', 'title', 'downloads', 'filesize', 'uploaded_time');
+    protected $_allowedOrderByColumns = ['last_modified', 'title', 'downloads', 'filesize', 'uploaded_time'];
 
     public function __construct()
     {

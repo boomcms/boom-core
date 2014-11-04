@@ -31,14 +31,14 @@ class Controller_Cms_Page_Settings_Save extends Controller_Cms_Page_Settings
         $this->page->setChildrenTemplateId($post['children_template_id']);
 
         if ($this->allowAdvanced) {
-            $expected = array_merge($expected, array(
+            $expected = array_merge($expected, [
                 'children_url_prefix',
                 'children_visible_in_nav',
                 'children_visible_in_nav_cms',
                 'grandchild_template_id'
-            ));
+            ]);
 
-            $cascade_expected = array('visible_in_nav', 'visible_in_nav_cms');
+            $cascade_expected = ['visible_in_nav', 'visible_in_nav_cms'];
         }
 
         if (isset($post['children_ordering_policy']) && isset($post['children_ordering_direction'])) {
@@ -46,7 +46,7 @@ class Controller_Cms_Page_Settings_Save extends Controller_Cms_Page_Settings
         }
 
         if (isset($post['cascade']) && ! empty($post['cascade'])) {
-            $cascade = array();
+            $cascade = [];
             foreach ($post['cascade'] as $c) {
                 $cascade[$c] = ($c == 'visible_in_nav' || $c == 'visible_in_nav_cms') ?  $this->page->{"children_$c"} : $this->page->$c;
             }

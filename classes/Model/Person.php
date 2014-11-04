@@ -6,7 +6,7 @@ class Model_Person extends ORM
 
     protected $_table_name = 'people';
 
-    protected $_table_columns = array(
+    protected $_table_columns = [
         'id'            =>    '',
         'name'        =>    '',
         'email'        =>    '',
@@ -15,28 +15,28 @@ class Model_Person extends ORM
         'failed_logins'    =>    '',
         'locked_until'    =>    '',
         'avatar_id'    =>    '',
-    );
+    ];
 
-    protected $_belongs_to = array(
-        'avatar' => array('model' => 'Asset', 'foreign_key' => 'avatar_id'),
-    );
+    protected $_belongs_to = [
+        'avatar' => ['model' => 'Asset', 'foreign_key' => 'avatar_id'],
+    ];
 
-    protected $_has_many = array(
-        'groups'        => array(
+    protected $_has_many = [
+        'groups'        => [
             'model'    => 'Group',
             'through'    => 'people_groups',
-        ),
-        'logs' => array(),
-        'auth_logs' => array('model' => 'AuthLog'),
-    );
+        ],
+        'logs' => [],
+        'auth_logs' => ['model' => 'AuthLog'],
+    ];
 
     public function filters()
     {
-        return array(
-            'email' => array(
-                array('strtolower'),
-            )
-        );
+        return [
+            'email' => [
+                ['strtolower'],
+            ]
+        ];
     }
 
     public function get_lock_wait()

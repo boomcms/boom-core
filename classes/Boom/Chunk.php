@@ -47,7 +47,7 @@ abstract class Chunk
 	 *
 	 * @var array
 	 */
-    protected $_params = array();
+    protected $_params = [];
 
     /**
 	 * The slotname used to find the chunk.
@@ -76,7 +76,7 @@ abstract class Chunk
 	 *
 	 * @var array
 	 */
-    public static $types = array('asset', 'text', 'feature', 'linkset', 'slideshow', 'timestamp', 'tag');
+    public static $types = ['asset', 'text', 'feature', 'linkset', 'slideshow', 'timestamp', 'tag'];
 
     public function __construct(Page $page, $chunk, $slotname)
     {
@@ -115,7 +115,7 @@ abstract class Chunk
 	 */
     public function attributes()
     {
-        return array();
+        return [];
     }
 
     /**
@@ -129,13 +129,13 @@ abstract class Chunk
     {
         $html = trim( (string) $html);
 
-        $attributes = array(
+        $attributes = [
             $this->attributePrefix.'chunk' => $this->_type,
             $this->attributePrefix.'slot-name' => $this->_slotname,
             $this->attributePrefix.'slot-template' => $this->_template,
             $this->attributePrefix.'page' => $this->_page->getId(),
             $this->attributePrefix.'chunk-id' => $this->_chunk->id,
-        );
+        ];
         $attributes = array_merge($attributes, $this->attributes());
         $attributes_string = HTML::attributes($attributes);
 

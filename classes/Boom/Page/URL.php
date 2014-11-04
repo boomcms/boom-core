@@ -11,11 +11,11 @@ abstract class URL
     public static function createPrimary($location, $page_id)
     {
         return \ORM::factory('Page_URL')
-            ->values(array(
+            ->values([
                 'location'        =>    $location,
                 'page_id'        =>    $page_id,
                 'is_primary'    =>    true,
-            ))
+            ])
             ->create();
     }
 

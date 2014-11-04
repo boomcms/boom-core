@@ -43,12 +43,12 @@ class Newuser
 
     protected function _get_content()
     {
-        return View::factory($this->viewFilename, array(
+        return View::factory($this->viewFilename, [
             'password' => $this->password,
             'person' => $this->person,
             'request' => $this->request,
             'site_name' => Config::get('site_name'),
-        ));
+        ]);
     }
 
     public function send()
@@ -62,10 +62,10 @@ class Newuser
         Email::factory('CMS Account Created')
             ->to($this->person->getEmail())
             ->from(Config::get('support_email'))
-            ->message(View::factory('boom/email', array(
+            ->message(View::factory('boom/email', [
                 'request' => $this->request,
                 'content' => $content,
-            )), 'text/html')
+            ]), 'text/html')
             ->send();
     }
 }

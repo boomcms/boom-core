@@ -34,7 +34,7 @@ class Tag extends \Boom\Finder\Filter
         $this->_joinTagsTable($query);
 
         $this->_query
-            ->join(array('assets_tags', 't2'), 'inner')
+            ->join(['assets_tags', 't2'], 'inner')
             ->on("t1.asset_id", '=', "t2.asset_id")
             ->where('t2.tag_id', 'IN', $this->_tags)
             ->group_by("t1.asset_id")
@@ -52,7 +52,7 @@ class Tag extends \Boom\Finder\Filter
     protected function _joinTagsTable()
     {
         $this->_query
-            ->join(array('assets_tags', 't1'), 'inner')
+            ->join(['assets_tags', 't1'], 'inner')
             ->on('asset.id', '=', 't1.asset_id')
             ->distinct(true);
     }

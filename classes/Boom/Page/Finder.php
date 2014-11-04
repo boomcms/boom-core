@@ -2,9 +2,10 @@
 
 namespace Boom\Page;
 
-use Boom\Editor\Editor as Editor;
+use Boom;
+use Boom\Editor\Editor;
 
-class Finder extends \Boom\Finder
+class Finder extends Boom\Finder\Finder
 {
     const TITLE = 'version.title';
     const MANUAL = 'sequence';

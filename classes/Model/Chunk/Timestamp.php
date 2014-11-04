@@ -2,13 +2,13 @@
 
 class Model_Chunk_Timestamp extends ORM
 {
-    protected $_table_columns = array(
+    protected $_table_columns = [
         'id' => '',
         'timestamp' => '',
         'format' => '',
         'slotname'    => '',
         'page_vid' => '',
-    );
+    ];
 
     protected $_table_name = 'chunk_timestamps';
 
@@ -19,19 +19,19 @@ class Model_Chunk_Timestamp extends ORM
 
     public function filters()
     {
-        return array(
-            'timstamp' => array(
-                array('strtotime'),
-            ),
-        );
+        return [
+            'timstamp' => [
+                ['strtotime'],
+            ],
+        ];
     }
 
     public function rules()
     {
-        return array(
-            'timestamp' => array(
-                array(array($this, 'is_valid_format'))
-            ),
-        );
+        return [
+            'timestamp' => [
+                [[$this, 'is_valid_format']]
+            ],
+        ];
     }
 }

@@ -1,6 +1,6 @@
 {
 	"name":        "boomcms/boom-core",
-	"description": "Core classess for BoomCMS",
+	"description": "Core classes for BoomCMS",
 	"license":     "BSD-3-Clause",
 	"require": {
 		"php":        ">=5.3",
@@ -11,9 +11,19 @@
 		"kohana/orm": "3.3.*",
 		"kohana/auth": "3.3.*",
 		"kohana/minion": "3.3.*",
-                "genphrase/genphrase" : "1.0.*"
+		"kohana/image" : "3.3.*", 
+                "genphrase/genphrase" : "1.0.*",
+		"davechild/textstatistics": "1.0.*@dev",
+		"kohana-minion/tasks-migrations" : "3.3.*",
+		"shadowhand/email" : "3.3.*",
+		"boomcms/orm-mptt" : "3.3.*",
+		"boomcms/asset-merger" : "dev-master",
+		"hautelook/phpass": "dev-master",
+		"thujohn/rss": "dev-master"
 	},
 	"autoload": {
 		"psr-0": {"Boom\\": "classes/Boom/"}
-	}
+	},
+	"minimum-stability" : "dev",
+	"prefer-stable": true
 }

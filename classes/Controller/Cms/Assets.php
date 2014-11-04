@@ -54,10 +54,10 @@ class Controller_Cms_Assets extends Controller_Cms
 	 */
     public function action_index()
     {
-        $this->template = View::factory("$this->viewDirectory/index", array(
+        $this->template = View::factory("$this->viewDirectory/index", [
             'manager'    =>    Request::factory('cms/assets/manager')->execute()->body(),
             'person'    =>    $this->person,
-        ));
+        ]);
     }
 
     public function action_list()
@@ -91,13 +91,13 @@ class Controller_Cms_Assets extends Controller_Cms
                 ->setOffset(($page - 1) * $perpage)
                 ->findAll();
 
-            $this->template = new View("$this->viewDirectory/list", array(
+            $this->template = new View("$this->viewDirectory/list", [
                 'assets' => $assets,
                 'total' => $count,
                 'order' =>     $order,
                 'pages' => $pages,
                 'page' => $page
-            ));
+            ]);
         }
     }
 
@@ -120,11 +120,11 @@ class Controller_Cms_Assets extends Controller_Cms
             ->setOrderBy('last_modified', 'desc')
             ->findAll();
 
-        $this->template = new View("$this->viewDirectory/picker", array(
+        $this->template = new View("$this->viewDirectory/picker", [
             'assets' => $assets,
             'pages' => ceil($totalAssets / $this->perpage),
             'page' => 1,
-        ));
+        ]);
     }
 
     public function action_restore()
@@ -177,9 +177,9 @@ class Controller_Cms_Assets extends Controller_Cms
             ->setOrderBy('name', 'asc')
             ->findAll();
 
-        $this->template = View::factory("$this->viewDirectory/view", array(
+        $this->template = View::factory("$this->viewDirectory/view", [
             'asset' => $this->asset,
             'tags' => $tags
-        ));
+        ]);
     }
 }

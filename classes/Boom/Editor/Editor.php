@@ -50,11 +50,11 @@ class Editor
         preg_match("|(.*)(</head>)(.*<body[^>]*>)|imsU", $html, $matches);
 
         if ( ! empty($matches)) {
-            $head = new \View('boom/editor/iframe', array(
+            $head = new \View('boom/editor/iframe', [
                 'before_closing_head' => $matches[1],
                 'body_tag'    =>    $matches[3],
                 'page_id'    =>    $page_id,
-            ));
+            ]);
 
             $html = str_replace($matches[0], $head->render(), $html);
         }

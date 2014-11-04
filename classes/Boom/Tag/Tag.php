@@ -31,8 +31,8 @@ class Tag
     {
         foreach ($assetIds as $id) {
             try {
-                DB::insert('assets_tags', array('asset_id', 'tag_id'))
-                    ->values(array($id, $this->getId()))
+                DB::insert('assets_tags', ['asset_id', 'tag_id'])
+                    ->values([$id, $this->getId()])
                     ->execute();
             } catch (Database_Exception $e) {}
         }
@@ -43,8 +43,8 @@ class Tag
         foreach ($pageIds as $id) {
             try {
                 // Have to do this as individual queries rather than a single query with multiple values incase the tag is already applied to some of the objects.
-                DB::insert('pages_tags', array('page_id', 'tag_id'))
-                    ->values(array($id, $this->getId()))
+                DB::insert('pages_tags', ['page_id', 'tag_id'])
+                    ->values([$id, $this->getId()])
                     ->execute();
             } catch (Database_Exception $e) {}
         }

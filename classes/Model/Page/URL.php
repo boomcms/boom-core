@@ -2,13 +2,13 @@
 
 class Model_Page_URL extends ORM
 {
-    protected $_belongs_to = array('page' => array('foreign_key' => 'page_id'));
-    protected $_table_columns = array(
+    protected $_belongs_to = ['page' => ['foreign_key' => 'page_id']];
+    protected $_table_columns = [
         'id'            =>    '',
         'page_id'        =>    '',
         'location'        =>    '',
         'is_primary'    =>    '',
-    );
+    ];
     protected $_table_name = 'page_urls';
 
     /**
@@ -42,25 +42,25 @@ class Model_Page_URL extends ORM
 
     public function rules()
     {
-        return array(
-            'page_id' => array(
-                array('not_empty'),
-                array('numeric'),
-            ),
-            'location' => array(
-                array('max_length', array(':value', 2048)),
-                array(array('\Boom\Page\URL', 'isAvailable'), array(':value', $this->id)),
-            ),
-        );
+        return [
+            'page_id' => [
+                ['not_empty'],
+                ['numeric'],
+            ],
+            'location' => [
+                ['max_length', [':value', 2048]],
+                [['\Boom\Page\URL', 'isAvailable'], [':value', $this->id]],
+            ],
+        ];
     }
 
     public function filters()
     {
-        return array(
-            'location' => array(
-                array(array('\Boom\Page\URL', 'sanitise'))
-            ),
-        );
+        return [
+            'location' => [
+                [['\Boom\Page\URL', 'sanitise']]
+            ],
+        ];
     }
 
     public function getPage()
@@ -81,7 +81,7 @@ class Model_Page_URL extends ORM
     {
         // Ensure that this is the only primary link for the page.
         DB::update($this->_table_name)
-            ->set(array('is_primary' => false))
+            ->set(['is_primary' => false])
             ->where('page_id', '=', $this->page_id)
             ->where('id', '!=', $this->id)
             ->where('is_primary', '=', true)
@@ -94,7 +94,7 @@ class Model_Page_URL extends ORM
 
         // Update the primary uri for the page in the pages table.
         DB::update('pages')
-            ->set(array('primary_uri' => $this->location))
+            ->set(['primary_uri' => $this->location])
             ->where('id', '=', $this->page_id)
             ->execute($this->_db);
 

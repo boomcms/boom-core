@@ -39,10 +39,10 @@ class Text extends \Boom\Chunk
         if ($this->_template === null) {
             return $this->_add_html($text);
         } else {
-            return new View($this->viewDirectory."text/$this->_template", array(
+            return new View($this->viewDirectory."text/$this->_template", [
                 'text' => $text,
                 'chunk' => $this->_chunk
-            ));
+            ]);
         }
     }
 
@@ -56,16 +56,18 @@ class Text extends \Boom\Chunk
         if ( ! Kohana::find_file('views', $this->viewDirectory."text/$template")) {
             return "<p>$text</p>";
         } else {
-            return new View($this->viewDirectory."text/$template", array(
+            return new View($this->viewDirectory."text/$template", [
                 'text'    =>    $text,
                 'chunk' => $this->_chunk,
-            ));
+            ]);
         }
     }
 
     public function get_paragraphs($offset = 0, $length = null)
     {
-        return \Boom\ParagraphIterator::fromText($this->text());
+        preg_match_all('|<p>(.*?)</p>|', $this->_chunk->text, $matches, PREG_PATTERN_ORDER);
+
+        return  $matches[1];
     }
 
     public function hasContent()

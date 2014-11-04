@@ -51,7 +51,7 @@ abstract class Type
             ->execute()
             ->as_array();
 
-        $typesAsStrings = array();
+        $typesAsStrings = [];
 
         foreach ($typesAsNumbers as $type) {
             $type = static::numericTypeToClass($type['type']);

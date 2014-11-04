@@ -23,9 +23,9 @@ class Controller_Cms_Page_Version_Save extends Controller_Cms_Page_Version
         $this->db->begin();
 
         // Create a new version of the page.
-        $this->new_version = $this->page->createVersion($this->old_version, array(
+        $this->new_version = $this->page->createVersion($this->old_version, [
             'edited_by'    =>    $this->person->getId(),
-        ));
+        ]);
 
         // If the embargo time of the new version is in the past, set the embargo time to null
         // This means that if the old version was published, the new version will be a draft.
@@ -85,9 +85,9 @@ class Controller_Cms_Page_Version_Save extends Controller_Cms_Page_Version
             $url = \Boom\Page\URL::createPrimary($location, $this->page->getId());
 
             // Put the page's new URL in the response body so that the JS will redirect to the new URL.
-            $this->response->body(json_encode(array(
+            $this->response->body(json_encode([
                 'location' => URL::site($url->location, $this->request),
-            )));
+            ]));
         }
 
         $this->new_version

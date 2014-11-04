@@ -51,13 +51,13 @@ abstract class Controller_Asset extends Boom\Controller
     protected function _do_download($method = 'inline')
     {
         $this->response
-            ->headers(array(
+            ->headers([
                 'Content-Type'                =>    (string) $this->asset->getMimetype(),
                 'Content-Disposition'            =>    "$method; filename='{$this->asset->filename}'",
                 'Content-Transfer-Encoding'    =>    'binary',
                 'Content-Length'            =>    $this->asset->filesize,
                 'Accept-Ranges'                =>    'bytes',
-            ))
+            ])
             ->body(readfile($this->asset->getFilename()));
     }
 

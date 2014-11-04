@@ -11,6 +11,7 @@ abstract class Config
     public static function get($key = null)
     {
         $config = Kohana::$config->load(static::$configGroup);
-        return $key? $config->get($key) : $config->as_array();
+
+        return $key ? $config->get($key) : $config->as_array();
     }
 }
