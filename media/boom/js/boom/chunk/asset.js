@@ -2,7 +2,7 @@ $.widget('ui.chunkAsset', $.ui.chunk, {
 	editAssetOnly : function() {
 		var chunkAsset = this;
 
-		new boomAssetPicker(this.asset.assetId)
+		new boomAssetPicker(this.assetId)
 		.done(function(assetId) {
 			chunkAsset.save({
 				asset_id : assetId
@@ -65,6 +65,7 @@ $.widget('ui.chunkAsset', $.ui.chunk, {
 
 	edit : function() {
 		this.elements = this.getElements();
+		this.assetId = this.element.attr('data-boom-asset-id');
 
 		if (this.hasMetadata()) {
 			this.editAllElements();
@@ -81,7 +82,7 @@ $.widget('ui.chunkAsset', $.ui.chunk, {
 		this._save(data);
 		this.destroy();
 	},
-	
+
 	_update_html : function(html) {
 		var $html = $(html),
 			$replacement = $($html[0]);
