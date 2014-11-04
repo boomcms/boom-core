@@ -26,12 +26,12 @@ class Asset extends \Boom\Chunk
 
         $v = new View($this->viewDirectory."asset/$this->_template", [
             'asset' => $this->asset(),
-            'caption' => $this->getCaption()
+            'caption' => $this->getCaption(),
+            'title' => $this->getTitle(),
         ]);
 
         if ($link) {
             $v->set([
-                'title' => $link->getTitle(),
                 'url' => $link->url()
             ]);
         }
