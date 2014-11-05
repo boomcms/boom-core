@@ -15,7 +15,6 @@
                     <label>
                         <?=__('Default child template')?>
                         <?= Form::select('children_template_id', $templates, $default_child_template, array('id' => 'children_template_id')) ?>
-
                     </label>
 
                     <label>
