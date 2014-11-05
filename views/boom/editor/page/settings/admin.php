@@ -1,9 +1,6 @@
-<form class="b-form-settings">
-	<?= Form::hidden('csrf', Security::token()) ?>
-	<div>
-		<p>
-			<label for="internal_name"><?=__('Internal name')?></label>
-			<?= Form::input('internal_name', $page->getInternalName(), array('id' => 'internal_name')); ?>
-		</p>
-	</div>
+<form>
+    <label>
+        Internal name
+        <input type='text' name='internal_name' value='<?= $page->getInternalName() ?>' />
+    </label>
 </form>

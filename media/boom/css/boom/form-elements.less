@@ -39,10 +39,22 @@ html.boom {
 		margin-top: 0.75em;
 		overflow: hidden;
 
-		input, select, textarea {
+		input[type=text], select, textarea {
 			float: right;
 			width: 70%;
 			margin-left: 1em;
+		}
+
+		input {
+			margin-left: 1em;
+		}
+	}
+
+	form.b-form-settings {
+		label {
+			input[type=text], select, textarea {
+				width: 14em;
+			}
 		}
 	}
 }
@@ -60,35 +72,6 @@ form {
 
 		select {
 			display: block;
-		}
-	}
-
-	&.b-form-settings {
-		p {
-			width: 100%;
-
-			label, input {
-				display: inline-block;
-			}
-
-			label {
-				width: 15em;
-			}
-
-			textarea {
-				width: 100%;
-				margin-top: 0.5em;
-			}
-
-			input[type=text] {
-				width: 16.5em;
-			}
-		}
-
-		&.narrow {
-			p label {
-				width: 8em;
-			}
 		}
 	}
 }

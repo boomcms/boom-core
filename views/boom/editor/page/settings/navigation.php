@@ -14,15 +14,15 @@
 		<? endif; ?>
 
 		<div id="basic">
-			<p>
-				<label for="visible_in_nav"><?= __('Visible in navigation') ?>?</label>
-				<?= Form::select('visible_in_nav', array(1 => 'Yes', 0 => 'No'), $page->isVisibleInNav(), array('id' => 'visible_in_nav')) ?>
-			</p>
-
-			<p>
-				<label for="visible_in_nav_cms"><?= __('Visible in CMS navigation') ?>?</label>
-				<?= Form::select('visible_in_nav_cms', array(1 => 'Yes', 0 => 'No'), $page->isVisibleInCmsNav(), array('id' => 'visible_in_nav_cms')) ?>
-			</p>
+                    <label>
+                        <?= __('Visible in navigation') ?>?
+                        <?= Form::select('visible_in_nav', array(1 => 'Yes', 0 => 'No'), $page->isVisibleInNav(), array('id' => 'visible_in_nav')) ?>
+                    </label>
+			
+                    <label>
+                        <?= __('Visible in CMS navigation') ?>?
+                        <?= Form::select('visible_in_nav_cms', array(1 => 'Yes', 0 => 'No'), $page->isVisibleInCmsNav(), array('id' => 'visible_in_nav_cms')) ?>
+                    </label>
 		</div>
 
 		<? if ($allowAdvanced): ?>

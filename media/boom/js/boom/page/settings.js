@@ -42,7 +42,7 @@ boomPage.prototype.search = function() {
 	dialog = new boomDialog({
 		url : url,
 		title : 'Search Settings',
-		width : 500
+		width : 'auto'
 	}).done(function() {
 		page.saveSettings(url, dialog.contents.find("form").serialize(), 'Page search settings saved');
 	});
@@ -128,7 +128,7 @@ boomPage.prototype.childsettings = function() {
 	dialog = new boomDialog({
 		url: url,
 		title: 'Child page settings',
-		width: '510px',
+		width: 'auto',
 		open: function() {
 			$('select[name="children_ordering_policy"]').on('change', function(){
 				var reorder_link = $('#b-page-settings-children-reorder');
@@ -183,7 +183,7 @@ boomPage.prototype.adminsettings = function() {
 	dialog = new boomDialog({
 		url: url,
 		title: 'Admin settings',
-		width: 'auto'
+		width: '500px'
 	});
 
 	dialog.done(function() {

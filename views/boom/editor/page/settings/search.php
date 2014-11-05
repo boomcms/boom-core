@@ -14,28 +14,28 @@
 		<? endif; ?>
 
 		<div id="basic">
-			<p>
-				<label for="description"><?= __('Description') ?></label>
-				<textarea id="description" name="description" rows="5"><?= $page->getDescription() ?></textarea>
-			</p>
-
-			<p>
-				<label for="keywords"><?= __('Keywords') ?></label>
-				<textarea name="keywords" id="keywords" rows="5"><?=$page->getKeywords() ?></textarea>
-			</p>
+                    <label>
+                        <?= __('Description') ?>
+                        <textarea name="description" rows="5"><?= $page->getDescription() ?></textarea>
+                    </label>
+			
+                    <label>
+                        <?= __('Keywords') ?>
+                        <textarea name="keywords" rows="5"><?=$page->getKeywords() ?></textarea>
+                    </label>
 		</div>
 
 		<? if ($allowAdvanced): ?>
 			<div id="advanced">
-				<p>
-					<label for="external_indexing"><?= __('Allow indexing by search engines') ?></label>
-					<?= Form::select('external_indexing', array(1 => 'Yes', 0 => 'No'), (int) $page->allowsExternalIndexing(), array('id' => 'external_indexing')) ?>
-				</p>
-
-				<p>
-					<label for="internal_indexing"><?= __('Show in site search results') ?></label>
-					<?= Form::select('internal_indexing', array(1 => 'Yes', 0 => 'No'), (int) $page->allowsInternalIndexing(), array('id' => 'internal_indexing')) ?>
-				</p>
+                            <label>
+                                <?= __('Allow indexing by search engines') ?>
+                                <?= Form::select('external_indexing', array(1 => 'Yes', 0 => 'No'), (int) $page->allowsExternalIndexing(), array('id' => 'external_indexing')) ?>
+                            </label>
+							
+                            <label>
+                                <?= __('Show in site search results') ?>
+                                <?= Form::select('internal_indexing', array(1 => 'Yes', 0 => 'No'), (int) $page->allowsInternalIndexing(), array('id' => 'internal_indexing')) ?>
+                            </label>
 			</div>
 		<? endif; ?>
 	</div>
