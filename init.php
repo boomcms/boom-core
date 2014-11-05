@@ -70,31 +70,10 @@ Route::set('asset', 'asset/<action>/<id>(.<extension>)(/<width>(/<height>(/<qual
             'action' => 'view|thumb|download|embed'
         ))
 	->defaults(array(
+                'controller' => 'asset',
 		'action'	=> 'view',
 		'quality'	=>	85,
-	))
-	->filter(function(Route $route, $params, Request $request)
-		{
-			$asset = \Boom\Asset\Factory::byId($params['id']);
-
-			// Does the asset exist?
-			if ( ! $asset->loaded() || ( Kohana::$environment != Kohana::DEVELOPMENT && ! $asset->exists()))
-			{
-				return false;
-			}
-
-			if ($params['action'] == 'view' && ! $asset instanceof \Boom\Asset\Type\Image && substr($request->headers('accept'), 0, 5) == 'image')
-			{
-				// An image response has been requested, but this asset isn't an image.
-				// Show the asset thumbnail instead.
-				$params['action'] = 'thumb';
-			}
-
-			$params['asset'] = $asset;
-			$params['controller'] = 'Asset_'. $asset->getType();
-			return $params;
-		}
-	);
+	));
 
 /**
  * Route for uploading assets.
