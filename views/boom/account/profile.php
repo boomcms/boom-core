@@ -10,7 +10,7 @@
         </p>
 
         <div style="margin-top: 20px;">
-            <form method="post" action="/cms/profile" class="b-form">
+            <form method="post" action="/cms/profile">
                 <label>
                     Name
                     <?= Form::input('name', $person->getName(), array('size' => 35)) ?>

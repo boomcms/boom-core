@@ -1,4 +1,4 @@
-<form style="margin-bottom: .6em" class="b-form-settings narrow">
+<form style="margin-bottom: .6em" class="b-form-settings">
 	<div class="ui-widget">
 		<div class="ui-state-highlight ui-corner-all">
 			<p style="margin: .5em;">

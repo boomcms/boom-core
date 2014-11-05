@@ -1,5 +1,5 @@
 <div id="b-assets-view">
-	<form class="b-form">
+	<form>
 		<div class="b-assets-preview">
 			<img src="<?= Route::url('asset', array('action' => 'thumb', 'id' => $asset->getId(), 'width' => 0, 'height' => 300, 'quality' => 85, 'crop' => 0)) ?>">
 
