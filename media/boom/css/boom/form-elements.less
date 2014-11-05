@@ -8,6 +8,11 @@ html.boom {
 		height: 2em;
 		padding: 2px 30px 2px 5px;
 		background: @white url(/media/boom/img/down.png) no-repeat center right;
+
+		&[multiple] {
+			background: @white;
+			height: 8em;
+		}
 	}
 
 	input[type=text], input[type=password], input[type=submit] {
@@ -31,9 +36,13 @@ html.boom {
 
 	label {
 		.text-default;
+		margin-top: 0.75em;
+		overflow: hidden;
 
-		+ label {
-			margin-top: 0.75em;
+		input, select, textarea {
+			float: right;
+			width: 70%;
+			margin-left: 1em;
 		}
 	}
 }

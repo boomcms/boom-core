@@ -10,28 +10,25 @@
 			<form>
 				<?= Form::hidden('csrf', Security::token()) ?>
 
-				<table width="100%">
-					<tbody>
-						<tr>
-							<td><label for="person-name">Name:</label></td>
-							<td><input type="text" id="person-name" name="name" class="boom-input" value="<?= $person->getName() ?>" /></td>
-						</tr>
-						<tr>
-							<td><label for="person-email">Email:</label></td>
-							<td><input type="text" id="person-email" name="email" class="boom-input" disabled="disabled" value="<?= $person->getEmail() ?>" /></td>
-						</tr>
-						<tr>
-							<td><label for='person-status'>Status:</label></td>
-							<td>
-								<?= Form::select('enabled',
-									array(0 => 'Disabled', 1 => 'Enabled'),
-									$person->isEnabled(),
-									array('id' => 'person-status', 'class' => 'boom-input',)
-								) ?>
-							</td>
-						</tr>
-					</tbody>
-				</table>
+				<label>
+                                    Name
+                                    <input type="text" name="name" value="<?= $person->getName() ?>" />
+                                </label>
+
+                                <label for="person-email">
+                                    Email
+                                    <input type="text" name="email" disabled="disabled" value="<?= $person->getEmail() ?>" />
+                                </label>
+				
+                                <label for='person-status'>
+                                    Status
+                                    <?= Form::select('enabled',
+                                        array(0 => 'Disabled', 1 => 'Enabled'),
+                                        $person->isEnabled(),
+                                        array('id' => 'person-status'))
+                                    ?>
+                                </label>
+                
 				<div>
 					<?= \Boom\UI::button('accept', __('Save'), array('id' => 'b-person-save', 'class' => 'b-people-save')) ?>
 					<?= \Boom\UI::button('delete', __('Delete'), array('id' => 'b-person-delete')) ?>
