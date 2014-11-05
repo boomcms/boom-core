@@ -61,7 +61,14 @@ Route::set('tags', 'cms/tags/<controller>/<action>/<id>', array(
 	));
 
 // Route for displaying assets
-Route::set('asset', 'asset/<action>/<id>(.<extension>)(/<width>(/<height>(/<quality>(/<crop>))))')
+Route::set('asset', 'asset/<action>/<id>(.<extension>)(/<width>(/<height>(/<quality>(/<crop>))))', array(
+            'id' => '\d+',
+            'width' => '\d+',
+            'height' => '\d+',
+            'quality' => '\d+',
+            'crop' => '\d',
+            'action' => 'view|thumb|download|embed'
+        ))
 	->defaults(array(
 		'action'	=> 'view',
 		'quality'	=>	85,
