@@ -77,6 +77,6 @@ return array(
         'wysihtml5/commands/insertBoomAsset.js',
         'wysihtml5/commands/createBoomLink.js',
         'jquery/jqpagination.js',
-        'pageManager.js',
+        'boom/pageManager.js',
     ),
 );
