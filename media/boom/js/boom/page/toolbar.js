@@ -140,14 +140,14 @@ $.widget( 'boom.pageToolbar', {
 	@function
 	*/
 	hide : function() {
-		this.buttonBar.hide();
+		this.buttonBar.css('z-index', 1);
 	},
 
 	/**
 	@function
 	*/
 	show : function() {
-		this.buttonBar.show();
+		this.buttonBar.css('z-index', 10000);
 	},
 
 	_toggle_view_live_button : function() {
