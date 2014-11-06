@@ -6,7 +6,7 @@ class Controller_Asset extends Boom\Controller
 {
     /**
      *
-     * @var Asset\Asset 
+     * @var Asset\Asset
      */
     private $asset;
 
@@ -31,9 +31,8 @@ class Controller_Asset extends Boom\Controller
 
         $this->asset = Asset\Factory::byId($this->request->param('id'));
 
-        if ( ! $this->asset->loaded() || (Kohana::$environment !== Kohana::DEVELOPMENT && ! $this->asset->exists()))
-        {
-            throw new HTTP_Exception_404;
+        if ( ! $this->asset->loaded() || (Kohana::$environment !== Kohana::DEVELOPMENT && ! $this->asset->exists())) {
+            throw new HTTP_Exception_404();
         }
 
         if ( ! $this->asset->isVisible() && ! $this->auth->isLoggedIn()) {

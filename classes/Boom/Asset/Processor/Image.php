@@ -28,7 +28,7 @@ class Image extends Processor
     public function crop($width = null, $height = null)
     {
         if ($width || $height) {
-            $image = $this->manager->cache(function($manager) use ($width, $height) {
+            $image = $this->manager->cache(function ($manager) use ($width, $height) {
                 return $manager->make($this->asset->getFilename())->crop($width, $height);
             });
         } else {
@@ -48,8 +48,8 @@ class Image extends Processor
     public function view($width = null, $height = null)
     {
         if ($width || $height) {
-            $image = $this->manager->cache(function($manager) use ($width, $height) {
-                return $manager->make($this->asset->getFilename())->resize($width !== 0?: null, $height !== 0?: null, function ($constraint) {
+            $image = $this->manager->cache(function ($manager) use ($width, $height) {
+                return $manager->make($this->asset->getFilename())->resize($width !== 0 ?: null, $height !== 0 ?: null, function ($constraint) {
                     $constraint->aspectRatio();
                     $constraint->upsize();
                 });

@@ -1,6 +1,5 @@
 <?php
 
-use \DB as DB;
 use \ORM as ORM;
 
 class Model_Asset extends ORM

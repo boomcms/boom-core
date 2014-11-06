@@ -21,7 +21,7 @@ abstract class Processor
 
     /**
      *
-     * @param Asset $asset
+     * @param Asset    $asset
      * @param Response $response
      */
     public function __construct(Asset $asset, Response $response)
