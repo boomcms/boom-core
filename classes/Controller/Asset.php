@@ -57,7 +57,6 @@ class Controller_Asset extends Boom\Controller
     public function action_embed()
     {
         $this->response = $this->processor->embed();
-//        $this->response->body(HTML::anchor('asset/view/'.$this->asset->getId(), "Download {$this->asset->getTitle()}"));
     }
 
     public function action_view()
@@ -67,24 +66,19 @@ class Controller_Asset extends Boom\Controller
 
     public function action_thumb()
     {
-
+        $this->response = $this->processor->thumbnail($this->request->param('width'), $this->request->param('height'));
     }
 
     public function action_download()
     {
         $this->_log_download();
-        $this->_do_download('download');
-    }
-
-    protected function _do_download()
-    {
-        $this->processor->download();
+        $this->response = $this->processor->download();
     }
 
     protected function _log_download()
     {
         if ( ! $this->auth->isLoggedIn()) {
-            $this->asset->log_download(Request::$client_ip);
+            $this->asset->logLownload(Request::$client_ip);
         }
     }
 }

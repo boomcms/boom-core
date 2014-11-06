@@ -167,6 +167,36 @@ abstract class Asset
         return $this->model->loaded();
     }
 
+    public function logDownload($ip)
+    {
+        $ip = ip2long($ip);
+
+        $logged = DB::select(DB::expr("1"))
+            ->from('asset_downloads')
+            ->where('ip', '=', $ip)
+            ->where('asset_id', '=', $this->getId())
+            ->where('time', '>=', time() - Date::MINUTE * 10)
+            ->limit(1)
+            ->execute()
+            ->as_array();
+
+        if ( ! count($logged)) {
+            ORM::factory('Asset_Download')
+                ->values([
+                    'asset_id' => $this->getId(),
+                    'ip' => $ip,
+                ])
+                ->create();
+
+            DB::update('assets')
+                ->set(['downloads' => DB::expr('downloads + 1')])
+                ->where('id', '=', $this->getId())
+                ->execute();
+        }
+
+        return $this;
+    }
+
     /**
 	 *
 	 * @return \Boom\Asset\Asset

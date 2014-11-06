@@ -51,36 +51,6 @@ class Model_Asset extends ORM
 	 */
     protected $_old_files = null;
 
-    public function log_download($ip)
-    {
-        $ip = ip2long($ip);
-
-        $logged = DB::select(DB::expr("1"))
-            ->from('asset_downloads')
-            ->where('ip', '=', $ip)
-            ->where('asset_id', '=', $this->id)
-            ->where('time', '>=', time() - Date::MINUTE * 10)
-            ->limit(1)
-            ->execute()
-            ->as_array();
-
-        if ( ! count($logged)) {
-            ORM::factory('Asset_Download')
-                ->values([
-                    'asset_id' => $this->id,
-                    'ip' => $ip,
-                ])
-                ->create();
-
-            DB::update($this->_table_name)
-                ->set(['downloads' => DB::expr('downloads + 1')])
-                ->where('id', '=', $this->id)
-                ->execute($this->_db);
-        }
-
-        return $this;
-    }
-
     public function replace_with_file($filename)
     {
         $this->get_file_info($filename);

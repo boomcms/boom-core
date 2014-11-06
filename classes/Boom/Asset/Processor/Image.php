@@ -49,7 +49,7 @@ class Image extends Processor
     {
         if ($width || $height) {
             $image = $this->manager->cache(function($manager) use ($width, $height) {
-                return $manager->make($this->asset->getFilename())->resize($width, $height, function ($constraint) {
+                return $manager->make($this->asset->getFilename())->resize($width, $height !== 0?: null, function ($constraint) {
                     $constraint->aspectRatio();
                     $constraint->upsize();
                 });
@@ -61,5 +61,12 @@ class Image extends Processor
         return $this->response
             ->headers('content-type', $this->asset->getMimetype())
             ->body($image);
+    }
+
+    public function embed()
+    {
+       return $this->response
+            ->body("<img src='/asset/view/{$this->asset->getId()}' />");
+
     }
 }
