@@ -20,7 +20,8 @@
 		"boomcms/asset-merger" : "dev-master",
 		"hautelook/phpass": "dev-master",
 		"thujohn/rss": "dev-master",
-		"intervention/imagecache" : "2.0.*"
+		"intervention/imagecache" : "2.0.*",
+		"robbytaylor/htmlpurifier-tel" : "dev-master"
 	},
 	"autoload": {
 		"psr-0": {"Boom\\": "classes/Boom/"}
