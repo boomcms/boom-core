@@ -19,25 +19,16 @@ class Controller_Cms_Assets_Download extends Controller_Cms_Assets
 
     public function action_single()
     {
-        $asset = Factory::byId($this->asset_ids[0]);
+        $asset = Asset\Factory::byId($this->asset_ids[0]);
 
         if ( ! $asset->exists()) {
             throw new HTTP_Exception_404();
         }
 
-        $this->response
-            ->headers([
-                "Content-type" => (string) $asset->getMimetype(),
-                "Pragma" => "no-cache",
-                "Expires" => "0"
-            ])
-            ->body(
-                readfile($asset->getFilename())
-            );
+        $processorClassName = 'Boom\\Asset\\Processor\\' . class_basename($asset);
+        $processor = new $processorClassName($asset, $this->response);
 
-        if (! $asset instanceof Asset\Type\Image) {
-            $this->response->headers('Content-Disposition', 'attachment; filename='.basename($asset->getOriginalFilename()));
-        }
+        $this->response = $processor->download();
     }
 
     /**
