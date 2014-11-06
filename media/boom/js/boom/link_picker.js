@@ -14,6 +14,10 @@ function boomLinkPicker(title, link) {
 			type_selector = this.dialog.contents.find('#b-chunk-linkset-addlink-external-type'),
 			external_url = this.dialog.contents.find('#boom-chunk-linkset-addlink-external-url');
 
+		this.dialog.contents.on('change', '#b-chunk-linkset-addlink-external-type', function() {
+			linkPicker.dialog.contents.find('#boom-chunk-linkset-addlink-external-url').focus();
+		});
+
 		if (this.link.rid == -1 || this.link.rid == "") {
 			var url = this.link.url;
 
