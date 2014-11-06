@@ -67,7 +67,7 @@ Route::set('asset', 'asset/<action>/<id>(.<extension>)(/<width>(/<height>(/<qual
             'height' => '\d+',
             'quality' => '\d+',
             'crop' => '\d',
-            'action' => 'view|thumb|download|embed'
+            'action' => 'view|thumb|download|embed|crop'
         ))
 	->defaults(array(
                 'controller' => 'asset',

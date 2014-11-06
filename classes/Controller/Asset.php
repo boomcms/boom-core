@@ -45,8 +45,13 @@ class Controller_Asset extends Boom\Controller
             HTTP::check_cache($this->request, $this->response, $this->asset->getLastModified()->getTimestamp());
         }
 
-        $processor = 'Asset\\Processor\\' . class_basename($this->asset);
+        $processor = 'Boom\\Asset\\Processor\\' . class_basename($this->asset);
         $this->processor = new $processor($this->asset, $this->response);
+    }
+
+    public function action_crop()
+    {
+        $this->response = $this->processor->crop($this->request->param('width'), $this->request->param('height'));
     }
 
     public function action_embed()
@@ -57,7 +62,7 @@ class Controller_Asset extends Boom\Controller
 
     public function action_view()
     {
-        $this->response = $this->processor->view();
+        $this->response = $this->processor->view($this->request->param('width'), $this->request->param('height'));
     }
 
     public function action_thumb()
@@ -71,17 +76,9 @@ class Controller_Asset extends Boom\Controller
         $this->_do_download('download');
     }
 
-    protected function _do_download($method = 'inline')
+    protected function _do_download()
     {
-        $this->response
-            ->headers([
-                'Content-Type'                =>    (string) $this->asset->getMimetype(),
-                'Content-Disposition'            =>    "$method; filename='{$this->asset->filename}'",
-                'Content-Transfer-Encoding'    =>    'binary',
-                'Content-Length'            =>    $this->asset->filesize,
-                'Accept-Ranges'                =>    'bytes',
-            ])
-            ->body(readfile($this->asset->getFilename()));
+        $this->processor->download();
     }
 
     protected function _log_download()

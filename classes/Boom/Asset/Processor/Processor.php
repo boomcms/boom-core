@@ -2,28 +2,28 @@
 
 namespace Boom\Asset\Processor;
 
-use Boom\Asset\Asset;
 use Response;
+use Boom\Asset\Asset;
 
 abstract class Processor
 {
     /**
-	 *
-	 * @var \Boom\Asset\Asset
-	 */
+     *
+     * @var Asset
+     */
     protected $asset;
 
     /**
-	 *
-	 * @var \Response
-	 */
+     *
+     * @var Response
+     */
     protected $response;
 
     /**
-	 *
-	 * @param \Boom\Asset\Asset $asset
-	 * @param Response $response
-	 */
+     *
+     * @param Asset $asset
+     * @param Response $response
+     */
     public function __construct(Asset $asset, Response $response)
     {
         $this->asset = $asset;
@@ -32,7 +32,14 @@ abstract class Processor
 
     public function download()
     {
-
+        $this->response->headers([
+            'content-type' => $this->asset->getMimetype(),
+            'content-disposition' => 'attachment; filename="' . $this->asset->getOriginalFilename() . '"',
+            'content-transfer-encoding' => 'binary',
+            'Content-Length' => $this->asset->getFilesize(),
+            'Accept-Ranges' => 'bytes',
+        ])
+        ->body(file_get_contents($this->asset->getFilename()));
     }
 
     public function embed()
@@ -40,12 +47,12 @@ abstract class Processor
 
     }
 
-    public function view()
+    public function view($width = null, $height = null)
     {
 
     }
 
-    public function thumbnail()
+    public function thumbnail($width = null, $height = null)
     {
 
     }
