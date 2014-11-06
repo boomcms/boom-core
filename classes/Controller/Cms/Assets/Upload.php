@@ -48,7 +48,7 @@ class Controller_Cms_Assets_Upload extends Controller_Cms_Assets
 
                 $asset_ids[] = $asset->save()->getId();
 
-                move_uploaded_file($filename, Asset::directory() . DIRECTORY_SEPARATOR . $asset->getId());
+                move_uploaded_file($filename, Asset\Asset::directory() . DIRECTORY_SEPARATOR . $asset->getId());
             }
 
             if (count($errors)) {
