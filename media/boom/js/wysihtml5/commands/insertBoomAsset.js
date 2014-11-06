@@ -54,7 +54,9 @@
 			}
 
 			matchingChildren = $selectedNode.find('a').filter(function() {
-				return $(this).attr('href').match(/asset\/(thumb|view|get_asset)\/([0-9]+)/);
+				var href = $(this).attr('href');
+
+				return href && href.match(/asset\/(thumb|view|get_asset)\/([0-9]+)/);
 			}).length;
 
 			if (matchingChildren > 0) {
