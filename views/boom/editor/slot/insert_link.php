@@ -1,4 +1,4 @@
-<div id="boom-chunk-linkset-addlink" class="boom-tabs">
+<div id="boom-chunk-linkset-addlink" class="boom-tabs b-link-editor">
 	<ul>
 		<li><a href="#boom-chunk-linkset-addlink-internal">Internal link</a></li>
 		<li><a href="#boom-chunk-linkset-addlink-external">External link</a></li>
@@ -18,9 +18,8 @@
 				<option value="mailto">Email</option>
 				<option value="tel">Phone number</option>
 			</select>
-			<br />
-			URL
-			<input type="text" id="boom-chunk-linkset-addlink-external-url" class="boom-input" />
+
+			<input type="text" id="boom-chunk-linkset-addlink-external-url" />
 		</form>
 	</div>
 </div>
