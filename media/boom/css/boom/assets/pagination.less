@@ -7,14 +7,25 @@
 		margin: 0;
 	}
 
+	.first {
+		left: 0;
+	}
+
+	.previous {
+		left: 20px;
+	}
+
 	.next {
-		position: absolute;
 		right: 20px;
 	}
 
 	.last {
-		position: absolute;
 		right: 0;
+	}
+
+	a {
+		position: absolute;
+		z-index: 2;
 	}
 
 	input {
@@ -25,6 +36,6 @@
 		width: 100%;
 		left: 0;
 		top: 0;
-		z-index: -1;
+		z-index: 1;
 	}
 }
