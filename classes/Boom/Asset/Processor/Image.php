@@ -49,7 +49,7 @@ class Image extends Processor
     {
         if ($width || $height) {
             $image = $this->manager->cache(function($manager) use ($width, $height) {
-                return $manager->make($this->asset->getFilename())->resize($width, $height !== 0?: null, function ($constraint) {
+                return $manager->make($this->asset->getFilename())->resize($width !== 0?: null, $height !== 0?: null, function ($constraint) {
                     $constraint->aspectRatio();
                     $constraint->upsize();
                 });
