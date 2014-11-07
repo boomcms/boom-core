@@ -1,22 +1,23 @@
 function boomLinkPicker(title, link) {
 	this.deferred = new $.Deferred();
-	this.options = {
-		title : title,
-		url : '/cms/chunk/insert_url',
-		id : 'b-linkpicker',
-		width : 600
-	};
 
 	this.link = link? link : {};
 
-	boomLinkPicker.prototype._bind = function() {
+	boomLinkPicker.prototype.bind = function() {
 		var linkPicker = this,
-			type_selector = this.dialog.contents.find('#b-chunk-linkset-addlink-external-type'),
-			external_url = this.dialog.contents.find('#boom-chunk-linkset-addlink-external-url');
+			internal = this.dialog.contents.find('#b-linkpicker-add-internal'),
+			external = this.dialog.contents.find('#b-linkpicker-add-external'),
+			type_selector = external.find('select'),
+			external_url = external.find('input');
 
-		this.dialog.contents.on('change', '#b-chunk-linkset-addlink-external-type', function() {
-			linkPicker.dialog.contents.find('#boom-chunk-linkset-addlink-external-url').focus();
-		});
+		type_selector
+			.on('change', function() {
+				external_url.focus();
+
+				if (external_url.val() == 'http://') {
+					external_url.val('');
+				}
+			});
 
 		if (this.link.rid == -1 || this.link.rid == "") {
 			var url = this.link.url;
@@ -38,14 +39,7 @@ function boomLinkPicker(title, link) {
 				external_url.val(url);
 				$('a[href=#boom-chunk-linkset-addlink-external]').trigger('click');
 			}
-
 		}
-
-		type_selector.on('change', function() {
-			if (external_url.val() == 'http://') {
-				external_url.val('');
-			}
-		});
 
 		this.dialog.contents.find('.boom-tree').pageTree({
 			onPageSelect : function(page) {
@@ -90,14 +84,19 @@ function boomLinkPicker(title, link) {
 
 	boomLinkPicker.prototype.open = function() {
 		var linkPicker = this;
-
-		this.options.onLoad = function() {
-			linkPicker._bind();
-		};
-		this.dialog = new boomDialog(this.options)
-			.done(function() {
-				linkPicker.pick();
-			});
+console.log(this.link);
+		this.dialog = new boomDialog({
+			title : title,
+			url : '/cms/chunk/insert_url',
+			id : 'b-linkpicker',
+			width : 600,
+			onLoad : function() {
+				linkPicker.bind();
+			}
+		})
+		.done(function(link) {
+			linkPicker.pick(link);
+		});
 
 		return this.deferred;
 	};
