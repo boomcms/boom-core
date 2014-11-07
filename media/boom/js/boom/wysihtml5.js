@@ -53,6 +53,7 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 
 		setTimeout(function() {
 			self.showToolbar();
+			element.focus();
 		}, 0);
 
 		toolbar
