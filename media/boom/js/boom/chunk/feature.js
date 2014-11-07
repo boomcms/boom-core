@@ -15,8 +15,8 @@ $.widget('ui.chunkFeature', $.ui.chunk,
 			this.dialog.contents.find('input[name=parent_id]').val(this.options.id);
 
 			var button = $('<button />')
-				.addClass('b-button ui-helper-left')
-				.text('Remove')
+				.addClass('b-button ui-helper-left b-button-withtext')
+				.text('Remove featured page')
 				.button({
 					icons: {primary : 'b-button-icon b-button-icon-delete'}
 				})
