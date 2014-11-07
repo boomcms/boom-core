@@ -15,6 +15,7 @@ return array(
         'h3' => array('Insert headline 3', array('data-wysihtml5-command' => 'formatBlock', 'data-wysihtml5-command-value' => 'h3', 'class' => 'command')),
         'blockquote' => array('Insert blockquote', array('data-wysihtml5-command' => 'formatBlock', 'data-wysihtml5-command-value' => 'blockquote', 'class' => 'command')),
         'edit' => array('Edit link', array('id' => 'b-editor-link', 'data-wysihtml5-dialog' => 'createBoomLink', 'style' => 'display:none')),
+        'cta' => array('Call to action', array('data-wysihtml5-command' => 'cta')),
     ),
     'button_sets' => array(
         'text' => array('accept', 'cancel'),

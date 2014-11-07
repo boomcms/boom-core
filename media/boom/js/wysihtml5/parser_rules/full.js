@@ -3,7 +3,9 @@ var wysihtml5ParserRules = {
      * CSS Class white-list
      * Following CSS classes won't be removed when parsed by the wysihtml5 HTML parser
      */
-    "classes": {},
+    "classes": {
+		'cta' : true
+	},
 
     "type_definitions": {
 
@@ -27,7 +29,9 @@ var wysihtml5ParserRules = {
         },
 
         "text_formatting_object": {
-            "classes": {}
+            "classes": {
+		'cta' : 1
+	    }
         }
     },
 
