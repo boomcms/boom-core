@@ -184,7 +184,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 
 		var disable_accept_button = (length >= this.max_length || length === 0)? true : false;
 		var opacity = disable_accept_button? '.35' : 1;
-		top.$('#b-editor-accept')
+		top.$('.b-editor-accept')
 			.prop('disabled', disable_accept_button)
 			.css('opacity', opacity);
 	}

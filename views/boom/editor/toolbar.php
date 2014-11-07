@@ -60,6 +60,12 @@
 			</div>
 		</div>
 	</div>
+
+        <div id="wysihtml5-toolbar" class="b-toolbar b-toolbar-vertical b-toolbar-text">
+            <? foreach (Boom\TextEditorToolbar::getAvailableButtonSets() as $set): ?>
+                <?= new Boom\TextEditorToolbar($set) ?>
+            <? endforeach ?>
+        </div>
 </div>
 
 <?= View::factory('boom/editor/footer', array('register_page' => true)) ?>

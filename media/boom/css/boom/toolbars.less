@@ -63,7 +63,22 @@ html.boom body.pushy-active, body.pushy-active {
 }
 
 #wysihtml5-toolbar {
-	z-index: 100001;
+	display: none;
+
+	div {
+		position: absolute;
+		top: 0;
+		left: 5px;
+		display: none;
+	}
+
+	[data-wysihtml5-dialog="createBoomLink"] {
+		display: none;
+	}
+
+	[data-wysihtml5-command="createBoomLink"].wysihtml5-command-active + [data-wysihtml5-dialog="createBoomLink"] {
+		display: block;
+	}
 }
 
 @media screen and (max-height: 767px) {

@@ -40,61 +40,56 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 		self.original_html = element.html();
 		self.dialogOpen = false;
 
-		self._insert_toolbar(element)
-			.done(function() {
-				$.boom.page.toolbar.hide();
+		var toolbar = $('#wysihtml5-toolbar').find('[data-buttonset=' + self.mode  + ']');
 
-				setTimeout(function() {
-					element.focus();
-				}, 10);
+		self.instance = new wysihtml5.Editor(element[0], { // id of textarea element
+			toolbar : toolbar[0],
+			style : true,
+			parserRules :  (self.mode == 'block')? wysihtml5ParserRules : wysihtml5ParserRulesInline, // defined in parser rules set
+			useLineBreaks : false,
+			contentEditableMode : true,
+			autoLink : false
+		});
 
-				self.instance = new wysihtml5.Editor(element[0], { // id of textarea element
-					toolbar : top.$('#wysihtml5-toolbar')[0],
-					style : true,
-					parserRules :  (self.mode == 'block')? wysihtml5ParserRules : wysihtml5ParserRulesInline, // defined in parser rules set
-					useLineBreaks : false,
-					contentEditableMode : true,
-					autoLink : false
-				});
+		setTimeout(function() {
+			self.showToolbar();
+		}, 0);
 
-				top.$('#wysihtml5-toolbar')
-					.on('click', '#b-editor-accept', function(event) {
-						event.preventDefault();
+		toolbar
+			.on('click', '.b-editor-accept', function(event) {
+				event.preventDefault();
 
-						self.apply(element);
-						return false;
-					})
-					.on( 'click', '#b-editor-cancel', function( event ){
-						event.preventDefault();
-						self.cancel(element);
-						return false;
-					});
+				self.apply(element);
+				return false;
+			})
+			.on( 'click', '.b-editor-cancel', function( event ){
+				event.preventDefault();
+				self.cancel(element);
+				return false;
+			})
+			.on('mousedown', '.b-editor-link', function() {
+				self.dialogOpen = true;
+			})
+			.on('click', '.b-editor-link', function() {
+				wysihtml5.commands.createBoomLink.edit(self.instance.composer);
+			});
 
-				top.$('#b-editor-link')
-					.on('mousedown', function() {
-						self.dialogOpen = true;
-					})
-					.on('click', function() {
-						wysihtml5.commands.createBoomLink.edit(self.instance.composer);
-					});
+		$(self.instance.composer)
+			.on('before:boomdialog', function() {
+				self.dialogOpen = true;
+			})
+			.on('after:boomdialog', function() {
+				self.dialogOpen = false;
+				element.focus();
+			});
 
-				$(self.instance.composer)
-					.on('before:boomdialog', function() {
-						self.dialogOpen = true;
-					})
-					.on('after:boomdialog', function() {
-						self.dialogOpen = false;
-						element.focus();
-					});
-
-				self.instance
-					.on('show:dialog', function(options) {
-						if (options.command == 'createBoomLink') {
-							if ( ! wysihtml5.commands.createBoomLink.state(self.instance.composer)) {
-								wysihtml5.commands.createBoomLink.exec(self.instance.composer);
-							}
-						}
-					});
+		self.instance
+			.on('show:dialog', function(options) {
+				if (options.command == 'createBoomLink') {
+					if ( ! wysihtml5.commands.createBoomLink.state(self.instance.composer)) {
+						wysihtml5.commands.createBoomLink.exec(self.instance.composer);
+					}
+				}
 			});
 
 		return self.edited;
@@ -105,8 +100,7 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 	* @function
 	*/
 	remove : function(element) {
-		top.$('#wysihtml5-toolbar').remove();
-		$.boom.page.toolbar.show();
+		this.hideToolbar();
 
 		element.removeAttr('contenteditable');
 
@@ -153,20 +147,11 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 		}
 	},
 
-	/**
-	@function
-	@param {Object} element The element being edited.
-	@returns {Deferred}
-	*/
-	_insert_toolbar : function(element) {
-		var self = this;
+	hideToolbar : function() {
+		$('#wysihtml5-toolbar').hide().children('[data-buttonset=' + this.mode + ']').hide();
+	},
 
-		 return $.ajax({
-			 url : '/cms/toolbar/text?mode=' + self.mode,
-			 cache : true,
-		 })
-		.done(function(response) {
-			top.$('body').prepend(response)
-		});
+	showToolbar : function() {
+		$('#wysihtml5-toolbar').show().find('[data-buttonset=' + this.mode + ']').show();
 	}
 });

@@ -2,8 +2,8 @@
 
 return array(
     'buttons' => array(
-        'accept' => array('Accept changes', array('data-wysihtml5-action' => '', 'class' => 'action', 'id' => 'b-editor-accept')),
-        'cancel' => array('Discard changes', array('data-wysihtml5-action' => '', 'class' => 'action', 'id' => 'b-editor-cancel')),
+        'accept' => array('Accept changes', array('data-wysihtml5-action' => '', 'class' => 'action b-editor-accept')),
+        'cancel' => array('Discard changes', array('data-wysihtml5-action' => '', 'class' => 'action b-editor-cancel')),
         'bold' => array('Make text bold (CTRL + B)', array('data-wysihtml5-command' => 'bold', 'class' => 'action')),
         'italic' => array('Make text italic (CTRL + I)', array('data-wysihtml5-command' => 'italic', 'class' => 'action')),
         'list' => array('Insert an unordered list', array('data-wysihtml5-command' => 'insertUnorderedList', 'class' => 'command')),
@@ -14,12 +14,12 @@ return array(
         'h2' => array('Insert headline 2', array('data-wysihtml5-command' => 'formatBlock', 'data-wysihtml5-command-value' => 'h2', 'class' => 'command')),
         'h3' => array('Insert headline 3', array('data-wysihtml5-command' => 'formatBlock', 'data-wysihtml5-command-value' => 'h3', 'class' => 'command')),
         'blockquote' => array('Insert blockquote', array('data-wysihtml5-command' => 'formatBlock', 'data-wysihtml5-command-value' => 'blockquote', 'class' => 'command')),
-        'edit' => array('Edit link', array('id' => 'b-editor-link', 'data-wysihtml5-dialog' => 'createBoomLink', 'style' => 'display:none')),
+        'edit' => array('Edit link', array('class' => 'b-editor-link', 'data-wysihtml5-dialog' => 'createBoomLink', 'style' => 'display:none')),
         'cta' => array('Call to action', array('data-wysihtml5-command' => 'cta')),
     ),
     'button_sets' => array(
         'text' => array('accept', 'cancel'),
         'inline' => array('accept', 'cancel', 'bold', 'italic', 'link',' edit'),
-        'block' => array('accept', 'cancel', 'bold', 'italic', 'list', 'ol', 'link', 'asset', 'paragraph', 'h2', 'h3', 'blockquote', 'edit'),
+        'block' => array('accept', 'cancel', 'bold', 'italic', 'list', 'ol', 'link', 'edit', 'asset', 'paragraph', 'h2', 'h3', 'blockquote'),
     ),
 );

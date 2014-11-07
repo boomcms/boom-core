@@ -69,6 +69,14 @@ html.boom .b-button, .b-button {
 		background-image: url(/media/boom/img/sprite.png);
 	}
 
+	&.wysihtml5-command-active {
+		background: #468017;
+
+		&:hover, &:focus, &:active {
+			background: #468017;
+		}
+	}
+
 	.b-button-icon-{
 		&accept { background-position: 0 0;}
 		&cancel { background-position: -30px 0;}
@@ -111,7 +119,7 @@ html.boom .b-button, .b-button {
 
 			&:after {
 				content: "!";
-				font-size: 3em;
+				font-size: 30px;
 				color: #fff;
 			}
 		}
