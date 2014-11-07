@@ -71,7 +71,7 @@ $.widget('ui.chunkFeature', $.ui.chunk,
 
 		this.dialog = new boomDialog({
 			url: '/cms/chunk/feature/edit/' + this.options.currentPage.id,
-			width: 400,
+			width: 700,
 			closeButton : false,
 			position : {my: "bottom", at: "center", of: window},
 			title: 'Page feature',
