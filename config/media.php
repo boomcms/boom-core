@@ -56,7 +56,7 @@ return array(
         'boom/chunk/slideshow/editor.js',
         'boom/chunk/asset/editor.js',
         'boom/page/title.js',
-        'boom/link_picker.js',
+        'boom/linkPicker.js',
         'boom/tags.js',
         'boom/tagAutocompleter.js',
         'boom/template/manager.js',

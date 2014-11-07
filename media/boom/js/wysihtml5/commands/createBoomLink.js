@@ -23,7 +23,7 @@
 				 existing_link = this.state(composer),
 				opts = {};
 			var bm = composer.selection.getBookmark();
-
+console.log($(existing_link));
 			if (existing_link) {
 				var link = {
 					url : existing_link.href,
