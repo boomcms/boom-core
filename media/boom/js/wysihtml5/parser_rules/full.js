@@ -162,7 +162,9 @@ var wysihtml5ParserRules = {
         "abbr": {
             "unwrap": 1
         },
-        "u": {},
+        "u": {
+	    "unwrap": 1
+	},
         "bgsound": {
             "remove": 1
         },
