@@ -18,7 +18,7 @@ class MungeRelativeInternalLinks implements \Boom\TextFilter\Filter
 {
     public function filterText($text)
     {
-        return preg_replace_callback('|(<.*href=[\'"])/([-\w/]+\K(?!/asset/.*))([\'"].*>)|U', [$this, '_mungeLink'], $text);
+        return preg_replace_callback('|(<a.*?href=[\'"])/(!(/asset/).*?)([\'"].*?>)|', [$this, '_mungeLink'], $text);
     }
 
     protected function _mungeLink($matches)
