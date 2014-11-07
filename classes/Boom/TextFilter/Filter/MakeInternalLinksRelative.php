@@ -9,7 +9,7 @@ class MakeInternalLinksRelative implements \Boom\TextFilter\Filter
 {
     public function filterText($text)
     {
-        if ($base = $base = URL::base(Request::current())) {
+        if ($base = URL::base(Request::current())) {
             $text = preg_replace("|<(.*?)href=(['\"])".$base."(.*?)(['\"])(.*?)>|", '<$1href=$2/$3$4$5>', $text);
         }
 
