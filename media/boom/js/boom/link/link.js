@@ -1,5 +1,6 @@
-function boomLink(target) {
+function boomLink(target, title) {
 	this.target = target? target : "";
+	this.title = title? title : "";
 
 	boomLink.prototype.isExternal = function() {
 		return this.getTarget() === -1 || this.getTarget() === "";
@@ -11,5 +12,9 @@ function boomLink(target) {
 
 	boomLink.prototype.getTarget = function() {
 		return this.target;
+	};
+
+	boomLink.prototype.getTitle = function() {
+		return this.title;
 	};
 };
