@@ -97,6 +97,10 @@ $.widget('ui.chunkAsset', $.ui.chunk, {
 			}
 		}
 
+		if (this.elements.link === this.element) {
+			this.element.attr('href', $replacement.attr('href'));
+		}
+
 		this.element.html($html.html());
 		this.bind();
 	}
