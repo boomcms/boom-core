@@ -3,10 +3,9 @@ function boomAlert(message) {
 	this.message = message;
 
 	boomAlert.prototype.open = function() {
-		var alert = this,
-			dialog;
+		var alert = this;
 
-		dialog = new boomDialog({
+		new boomDialog({
 			msg : alert.message,
 			cancelButton : false
 		});
