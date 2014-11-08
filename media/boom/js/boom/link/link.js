@@ -1,17 +1,22 @@
-function boomLink(target, title) {
-	this.target = target? target : "";
+function boomLink(url, pageId, title) {
+	this.url = url? url : "";
+	this.pageId = pageId? pageId : 0;
 	this.title = title? title : "";
 
 	boomLink.prototype.isExternal = function() {
-		return this.getTarget() === -1 || this.getTarget() === "";
+		return this.getUrl() !== "";
 	};
 
 	boomLink.prototype.isInternal = function() {
-		return ! isNaN(parseFloat(this.getTarget())) && isFinite(this.getTarget());
+		return this.pageId > 0;
 	};
 
-	boomLink.prototype.getTarget = function() {
-		return this.target;
+	boomLink.prototype.getUrl = function() {
+		return this.url;
+	};
+
+	boomLink.prototype.getPageId = function() {
+		return this.pageId;
 	};
 
 	boomLink.prototype.getTitle = function() {
