@@ -2,6 +2,9 @@
 
 namespace Boom\Page\Finder\Filter;
 
+use Boom\Page\Page;
+use ORM;
+
 class PreviousPageBySequence extends \Boom\Finder\Filter
 {
     /**
@@ -10,12 +13,12 @@ class PreviousPageBySequence extends \Boom\Finder\Filter
 	 */
     protected $currentPage;
 
-    public function __construct(\Boom\Page $currentPage)
+    public function __construct(Page $currentPage)
     {
         $this->currentPage = $currentPage;
     }
 
-    public function execute(\ORM $query)
+    public function execute(ORM $query)
     {
         return $query
             ->where('sequence', '<', $this->currentPage->getManualOrderPosition())
