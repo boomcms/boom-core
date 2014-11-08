@@ -36,20 +36,17 @@ function boomChunkSlideshowEditor(page_id, slotname) {
 				var $input = $(this),
 					currentSlide = slideshowEditor.getCurrentSlide();
 
-				new boomLinkPicker('Edit slide link', {
-					url : $input.val(),
-					rid : currentSlide.data('page')
-				})
-				.pipe(function(new_link) {
-					var url = new_link.url.replace(window.location.protocol + '//' + window.location.hostname, '')
-					currentSlide
-						.data('url', url)
-						.data('page', new_link.page_id);
+				new boomLinkPicker('Edit slide link', new boomLink($input.val(), currentSlide.data('page')))
+					.pipe(function(new_link) {
+						var url = new_link.url.replace(window.location.protocol + '//' + window.location.hostname, '')
+						currentSlide
+							.data('url', url)
+							.data('page', new_link.page_id);
 
-					$input
-						.val(url)
-						.blur();
-				});
+						$input
+							.val(url)
+							.blur();
+					});
 			})
 			.on('click', '#b-slideshow-editor-add', function(e) {
 				e.preventDefault();

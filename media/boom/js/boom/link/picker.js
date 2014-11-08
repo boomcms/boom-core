@@ -1,4 +1,4 @@
-function boomLinkPicker(title, link) {
+function boomLinkPicker(link) {
 	this.deferred = new $.Deferred();
 
 	this.link = link? link : new boomLink();
@@ -91,7 +91,7 @@ function boomLinkPicker(title, link) {
 		var linkPicker = this;
 
 		this.dialog = new boomDialog({
-			title : title,
+			title : 'Edit link',
 			url : '/cms/chunk/insert_url',
 			id : 'b-linkpicker',
 			width : 600,

@@ -23,20 +23,15 @@
 				 existing_link = this.state(composer),
 				opts = {};
 			var bm = composer.selection.getBookmark();
-console.log($(existing_link));
-			if (existing_link) {
-				var link = {
-					url : existing_link.href,
-					rid : existing_link.rel,
-					title : (existing_link.textContent || existing_link.innerText)
-				};
 
+			if (existing_link) {
+				var link = new boomLink(existing_link.href, 0, (existing_link.textContent || existing_link.innerText));
 				opts.link = link;
 			}
 
 			$(composer).trigger('before:boomdialog');
 
-			 new boomLinkPicker('', link)
+			 new boomLinkPicker(new boomLink(link))
 				.done(function(link) {
 					var url = link.url,
 						page_id = link.page_id;
@@ -45,7 +40,6 @@ console.log($(existing_link));
 						$(existing_link)
 							.attr('href', url)
 							.attr('title', '')
-							.attr('rel', page_id)
 							.text($(existing_link).text().replace(existing_link.href, url));
 					} else {
 						composer.selection.setBookmark(bm);
