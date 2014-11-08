@@ -2,8 +2,6 @@
 
 namespace Boom;
 
-use Kohana;
-
 class TextEditorToolbar
 {
     protected $_buttonSet = 'text';
@@ -14,7 +12,7 @@ class TextEditorToolbar
     public function __construct($button_set = null)
     {
         $button_set && $this->_buttonSet = $button_set;
-        $this->_config = Kohana::$config->load('text_editor_toolbar');
+        $this->_config = Config::get('text_editor_toolbar');
     }
 
     public function __toString()
@@ -24,17 +22,18 @@ class TextEditorToolbar
 
     public static function getAvailableButtonSets()
     {
-        return array_keys(Kohana::$config->load('text_editor_toolbar')->get('button_sets'));
+        $config = Config::get('text_editor_toolbar');
+        return array_keys($config['button_sets']);
     }
 
     public function getButton($type)
     {
-        return \Arr::get($this->_config->get('buttons'), $type);
+        return $this->_config['buttons'][$type];
     }
 
     public function getButtons()
     {
-        return \Arr::get($this->_config->get('button_sets'), $this->_buttonSet);
+        return $this->_config['button_sets'][$this->_buttonSet];
     }
 
     public function getHtmlBefore()
