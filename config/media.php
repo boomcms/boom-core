@@ -33,7 +33,7 @@ return array(
         'modernizr.js',
         'jquery/pushy.js',
         'boom/page/status.js',
-        'boom/page.js',
+        'boom/page/page.js',
         'boom/page/settings.js',
         'boom/page/editor.js',
         'boom/page/toolbar.js',
@@ -79,6 +79,6 @@ return array(
         'wysihtml5/commands/createBoomLink.js',
         'wysihtml5/commands/cta.js',
         'jquery/jqpagination.js',
-        'boom/pageManager.js',
+        'boom/page/manager.js',
     ),
 );
