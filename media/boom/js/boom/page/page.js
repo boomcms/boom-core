@@ -18,12 +18,7 @@ function boomPage(page_id) {
 		return promise;
 	};
 
-	/*
-	 * I wanted to call this delete(), but that makes IE8 sad.
-	 * 
-	 * http://stackoverflow.com/a/17526553
-	 */
-	boomPage.prototype.remove = function() {
+	boomPage.prototype.delete = function() {
 		var promise = new $.Deferred(),
 			page_id = this.id;
 

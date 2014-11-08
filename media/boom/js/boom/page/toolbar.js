@@ -11,7 +11,7 @@ $.widget( 'boom.pageToolbar', {
 
 		this.element.contents()
 			.on('click', '#b-page-delete', function() {
-				self.options.page.remove()
+				self.options.page.delete()
 					.done(function(response) {
 						new boomNotification("Page deleted, redirecting to parent.");
 						top.location = response;

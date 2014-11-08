@@ -43,7 +43,7 @@ $.widget( 'boom.pageManager', {
 	deletePage : function($el) {
 		var page = new boomPage($el.data('page-id'));
 
-		page.remove()
+		page.delete()
 			.done(function() {
 				$el.remove();
 			});
