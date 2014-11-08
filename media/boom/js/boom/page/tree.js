@@ -25,14 +25,8 @@ $.widget('boom.pageTree', {
 	},
 
 	itemClick : function($node) {
-		var link = {
-			url : $node.attr('href'),
-			page_id : $node.attr('rel'),
-			title : $node.text()
-		};
-
 		this.highlightItem($node);
-		this.options.onPageSelect(link);
+		this.options.onPageSelect(new boomLink($node.attr('href'), $node.attr('ref'), $node.text()));
 	},
 
 	getChildren : function(page_id) {

@@ -1,6 +1,5 @@
 function boomLinkPicker(link) {
 	this.deferred = new $.Deferred();
-
 	this.link = link? link : new boomLink();
 
 	boomLinkPicker.prototype.bind = function() {
@@ -8,48 +7,30 @@ function boomLinkPicker(link) {
 
 		this.externalTypeSelector
 			.on('change', function() {
-				this.externalUrl.focus();
+				var val = linkPicker.externalUrl.val();
 
-				if (this.externalUrl.val() == 'http://') {
-					this.externalUrl.val('');
+				if (val === 'http://') {
+					linkPicker.externalUrl.val('');
 				}
+
+				linkPicker.externalUrl.focus();
+				linkPicker.externalUrl[0].setSelectionRange(0, val.length);
 			});
 
-		if (this.link.isExternal()) {
-			var url = this.link.url;
-
-			if (url.substring(0,7) =='http://' || url.substring(0,8) =='https://' || url.substring(0,1) == '/') {
-				url = url.replace('https://', '').replace('http://', '');
-				type_selector.val('http');
-			}
-			else if (url.substring(0,7) =='mailto:') {
-				url = url.replace('mailto:', '');
-				type_selector.val('mailto');
-			}
-			else if (url.substring(0,4) =='tel:') {
-				url = url.replace('tel:', '');
-				type_selector.val('tel');
-			}
-
-			if (url != "") {
-				external_url.val(url);
-				$('a[href=#boom-chunk-linkset-addlink-external]').trigger('click');
-			}
-		}
-
 		this.dialog.contents.find('.boom-tree').pageTree({
-			onPageSelect : function(pageId) {
-				linkPicker.pick(new boomLink("", pageId));
+			onPageSelect : function(link) {
+				linkPicker.pick(link);
+				linkPicker.dialog.cancel();
 			}
 		});
 	};
 
 	boomLinkPicker.prototype.getExternalLink = function() {
 		var url,
-			link_text = url = this.dialog.contents.find('#boom-chunk-linkset-addlink-external-url').val();
+			linkText = url = this.externalUrl.val();
 
 		if (url.indexOf(window.location.hostname) == -1) {
-			switch(this.dialog.contents.find('#b-chunk-linkset-addlink-external-type').val()) {
+			switch(this.externalTypeSelector.val()) {
 				case 'http':
 					if (url.substring(0,7) !='http://' && url.substring(0,8) !='https://' && url.substring(0,1) != '/') {
 						url = 'http://' + url;
@@ -70,10 +51,7 @@ function boomLinkPicker(link) {
 			url.replace(window.location.hostname, '');
 		}
 
-		return {
-			url : url,
-			text : link_text
-		};
+		return new boomLink(url, 0, linkText);
 	};
 
 	boomLinkPicker.prototype.onLoad = function() {
@@ -82,6 +60,8 @@ function boomLinkPicker(link) {
 		this.externalTypeSelector = this.external.find('select'),
 		this.externalUrl = this.external.find('input');
 
+		this.setupInternal();
+		this.setupExternalUrl();
 		this.bind();
 	};
 
@@ -98,7 +78,7 @@ function boomLinkPicker(link) {
 			}
 		})
 		.done(function() {
-			linkPicker.pick(this.getExternalLink());
+			linkPicker.pick(linkPicker.getExternalLink());
 		});
 
 		return this.deferred;
@@ -106,6 +86,35 @@ function boomLinkPicker(link) {
 
 	boomLinkPicker.prototype.pick = function(link) {
 		this.deferred.resolve(link);
+	};
+
+	boomLinkPicker.prototype.setupExternalUrl = function() {
+		var url = this.link.url;
+
+		if (this.link.isMailto()) {
+			url = url.replace('mailto:', '');
+			this.externalTypeSelector.val('mailto');
+		} else if (this.link.isTel()) {
+			url = url.replace('tel:', '');
+			this.externalTypeSelector.val('tel');
+		} else {
+			url = this.link.getUrl();
+			this.externalTypeSelector.val('http');
+		}
+
+		this.externalUrl.val(url);
+
+		if (url !== "") {
+			$('a[href=#b-linkpicker-add-external]').click();
+		}
+	};
+
+	boomLinkPicker.prototype.setupInternal = function() {
+		var pageId = this.link.getPageId();
+
+		if (pageId) {
+			this.internal.find('input').val(pageId);
+		}
 	};
 
 	return this.open();

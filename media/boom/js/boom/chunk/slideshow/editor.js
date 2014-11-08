@@ -36,14 +36,14 @@ function boomChunkSlideshowEditor(page_id, slotname) {
 				var $input = $(this),
 					currentSlide = slideshowEditor.getCurrentSlide();
 
-				new boomLinkPicker('Edit slide link', new boomLink($input.val(), currentSlide.data('page')))
-					.pipe(function(link) {
+				new boomLinkPicker(new boomLink($input.val(), currentSlide.data('page')))
+					.done(function(link) {
 						currentSlide
 							.data('url', link.getUrl())
 							.data('page', link.getPageId());
 
 						$input
-							.val(getUrl())
+							.val(link.getUrl())
 							.blur();
 					});
 			})
@@ -114,7 +114,7 @@ function boomChunkSlideshowEditor(page_id, slotname) {
 			.val(slide.caption)
 			.end()
 			.find('input[name=url]')
-			.val(slide.url);
+			.val(new boomLink(slide.url).getUrl());
 	};
 
 	boomChunkSlideshowEditor.prototype.getAllSlideDetails = function() {

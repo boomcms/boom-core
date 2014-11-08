@@ -20,18 +20,21 @@
 
 		_select_link : function(composer) {
 			var self = this,
-				 existing_link = this.state(composer),
-				opts = {};
-			var bm = composer.selection.getBookmark();
+				 existing_link = this.state(composer)[0],
+				opts = {},
+				link,
+				bm = composer.selection.getBookmark();
 
 			if (existing_link) {
 				var link = new boomLink(existing_link.href, 0, (existing_link.textContent || existing_link.innerText));
 				opts.link = link;
+			} else {
+				link = new boomLink();
 			}
 
 			$(composer).trigger('before:boomdialog');
 
-			 new boomLinkPicker(new boomLink(link))
+			new boomLinkPicker(link)
 				.done(function(link) {
 					var url = link.getUrl(),
 						page_id = link.getPageId();
