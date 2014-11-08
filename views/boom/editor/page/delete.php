@@ -1,10 +1,12 @@
-<?php
-/**
-* Delete page confirmation.
-*
-*/
-?>
 <p>Are you sure you want to delete this page? This cannot be recovered.</p>
+
+<p><strong>Please check the following details are what you expected to ensure you don't accidentally delete a different page</strong></p>
+<dl>
+    <dt>Page title</dt>
+    <dd><?= $page->getTitle() ?></dd>
+    <dt>Page URL</dt>
+    <dd><?= $page->url() ?></dd>
+</dl>
 
 <form id="b-page-delete-form">
 	<?= Form::hidden('csrf', Security::token()) ?>
@@ -20,4 +22,4 @@
 	<? endif; ?>
 </form>
 
-<p>Click 'Okay' to delete, or 'Cancel' to keep the page.</p>
+<p>Click the tick to delete, or the cross to keep the page.</p>

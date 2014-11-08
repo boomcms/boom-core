@@ -23,9 +23,10 @@ function boomPage(page_id) {
 			page_id = this.id;
 
 		new boomDialog({
-			width: 350,
+			width: 600,
 			url: '/cms/page/delete/' + page_id,
-			title: 'Please confirm'
+			title: 'Please confirm',
+			id: 'b-page-confirmdelete'
 		}).done(function() {
 			$.boom.post('/cms/page/delete/' + page_id, {}, function(response) {
 				promise.resolve(response);

@@ -1,0 +1,36 @@
+#b-page-confirmdelete {
+	dl {
+		overflow: hidden;
+
+		dd, dt {
+			display: inline-block;
+		}
+
+		dd {
+			.box-sizing;
+			width: 80%;
+			float: right;
+			margin: 0;
+		}
+
+		dt {
+			.box-sizing;
+			width: 20%;
+			font-weight: bold;
+			float: left;
+			margin: 0;
+		}
+	}
+
+	/* List of child pages which will be affected by a page being deleted */
+	&-children {
+		overflow: auto;
+		max-height: 200px;
+		_height: 200px;
+		margin-bottom: 1em;
+
+		ul {
+			margin-bottom: 0;
+		}
+	}
+}
