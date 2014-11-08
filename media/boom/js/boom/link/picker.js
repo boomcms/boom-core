@@ -1,25 +1,21 @@
 function boomLinkPicker(title, link) {
 	this.deferred = new $.Deferred();
 
-	this.link = link? link : {};
+	this.link = link? link : new boomLink();
 
 	boomLinkPicker.prototype.bind = function() {
-		var linkPicker = this,
-			internal = this.dialog.contents.find('#b-linkpicker-add-internal'),
-			external = this.dialog.contents.find('#b-linkpicker-add-external'),
-			type_selector = external.find('select'),
-			external_url = external.find('input');
+		var linkPicker = this;
 
-		type_selector
+		this.externalTypeSelector
 			.on('change', function() {
-				external_url.focus();
+				this.externalUrl.focus();
 
-				if (external_url.val() == 'http://') {
-					external_url.val('');
+				if (this.externalUrl.val() == 'http://') {
+					this.externalUrl.val('');
 				}
 			});
 
-		if (this.link.rid == -1 || this.link.rid == "") {
+		if (this.link.isExternal()) {
 			var url = this.link.url;
 
 			if (url.substring(0,7) =='http://' || url.substring(0,8) =='https://' || url.substring(0,1) == '/') {
@@ -82,16 +78,25 @@ function boomLinkPicker(title, link) {
 		};
 	};
 
+	boomLinkPicker.prototype.onLoad = function() {
+		this.internal = this.dialog.contents.find('#b-linkpicker-add-internal');
+		this.external = this.dialog.contents.find('#b-linkpicker-add-external'),
+		this.externalTypeSelector = this.external.find('select'),
+		this.externalUrl = this.external.find('input');
+
+		this.bind();
+	};
+
 	boomLinkPicker.prototype.open = function() {
 		var linkPicker = this;
-console.log(this.link);
+
 		this.dialog = new boomDialog({
 			title : title,
 			url : '/cms/chunk/insert_url',
 			id : 'b-linkpicker',
 			width : 600,
 			onLoad : function() {
-				linkPicker.bind();
+				linkPicker.onLoad();
 			}
 		})
 		.done(function(link) {
