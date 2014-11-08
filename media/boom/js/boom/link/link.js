@@ -28,7 +28,7 @@ function boomLink(url, pageId, title) {
 	};
 
 	boomLink.prototype.getUrl = function() {
-		return this.url.replace(window.location.protocol + '//' + window.location.hostname, '');
+		return this.makeUrlRelative();
 	};
 
 	boomLink.prototype.getPageId = function() {
@@ -37,5 +37,10 @@ function boomLink(url, pageId, title) {
 
 	boomLink.prototype.getTitle = function() {
 		return this.title;
+	};
+	
+	boomLink.prototype.makeUrlRelative = function() {
+		var url = this.url.replace(window.location.protocol + '//' + window.location.hostname, '');
+		return url.replace(window.location.hostname, '');
 	};
 };
