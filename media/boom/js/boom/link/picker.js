@@ -47,8 +47,6 @@ function boomLinkPicker(link) {
 					}
 					break;
 			}
-		} else {
-			url.replace(window.location.hostname, '');
 		}
 
 		return new boomLink(url, 0, linkText);
