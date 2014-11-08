@@ -23,6 +23,7 @@ class TextEditorToolbar
     public static function getAvailableButtonSets()
     {
         $config = Config::get('text_editor_toolbar');
+
         return array_keys($config['button_sets']);
     }
 
