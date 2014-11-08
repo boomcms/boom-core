@@ -6,7 +6,7 @@ return array(
         'boom/assets.css.less',
         'boom.people.css.less',
         'boom.pages.css.less',
-        'jqpagination.css',
+        'libraries/jqpagination.css',
         'cms.css.less',
     ),
     'corejs' => array(
