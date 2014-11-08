@@ -33,12 +33,12 @@
 
 			 new boomLinkPicker(new boomLink(link))
 				.done(function(link) {
-					var url = link.url,
-						page_id = link.page_id;
+					var url = link.getUrl(),
+						page_id = link.getPageId();
 
 					if (existing_link) {
 						$(existing_link)
-							.attr('href', url)
+							.attr('href', link.getUrl())
 							.attr('title', '')
 							.text($(existing_link).text().replace(existing_link.href, url));
 					} else {

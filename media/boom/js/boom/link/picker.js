@@ -38,10 +38,8 @@ function boomLinkPicker(link) {
 		}
 
 		this.dialog.contents.find('.boom-tree').pageTree({
-			onPageSelect : function(page) {
-				linkPicker.link = page;
-				linkPicker.pick();
-				linkPicker.dialog.close();
+			onPageSelect : function(pageId) {
+				linkPicker.pick(new boomLink("", pageId));
 			}
 		});
 	};
@@ -99,19 +97,15 @@ function boomLinkPicker(link) {
 				linkPicker.onLoad();
 			}
 		})
-		.done(function(link) {
-			linkPicker.pick(link);
+		.done(function() {
+			linkPicker.pick(this.getExternalLink());
 		});
 
 		return this.deferred;
 	};
 
-	boomLinkPicker.prototype.pick = function() {
-		if (this.link.page_id == -1 || this.link.page_id == undefined) {
-			this.link = this.getExternalLink();
-		}
-
-		this.deferred.resolve(this.link);
+	boomLinkPicker.prototype.pick = function(link) {
+		this.deferred.resolve(link);
 	};
 
 	return this.open();

@@ -37,14 +37,13 @@ function boomChunkSlideshowEditor(page_id, slotname) {
 					currentSlide = slideshowEditor.getCurrentSlide();
 
 				new boomLinkPicker('Edit slide link', new boomLink($input.val(), currentSlide.data('page')))
-					.pipe(function(new_link) {
-						var url = new_link.url.replace(window.location.protocol + '//' + window.location.hostname, '')
+					.pipe(function(link) {
 						currentSlide
-							.data('url', url)
-							.data('page', new_link.page_id);
+							.data('url', link.getUrl())
+							.data('page', link.getPageId());
 
 						$input
-							.val(url)
+							.val(getUrl())
 							.blur();
 					});
 			})

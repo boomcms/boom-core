@@ -12,7 +12,7 @@ function boomLink(url, pageId, title) {
 	};
 
 	boomLink.prototype.getUrl = function() {
-		return this.url;
+		return this.url.replace(window.location.protocol + '//' + window.location.hostname, '');
 	};
 
 	boomLink.prototype.getPageId = function() {

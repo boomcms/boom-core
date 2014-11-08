@@ -18,7 +18,7 @@ function boomChunkAssetEditor(pageId, slotname, visibleElements) {
 
 			new boomLinkPicker(new boomLink($this.val()))
 				.done(function(link) {
-					chunkAssetEditor.setLink(link.url);
+					chunkAssetEditor.setLink(link.getUrl());
 				});
 		});
 	};
