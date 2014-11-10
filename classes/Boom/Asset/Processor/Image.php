@@ -47,9 +47,11 @@ class Image extends Processor
 
     public function view($width = null, $height = null)
     {
+        $filename = $this->asset->exists()? $this->asset->getFilename() : __DIR__ . '/../../../../media/boom/img/placeholder.png';
+
         if ($width || $height) {
-            $image = $this->manager->cache(function ($manager) use ($width, $height) {
-                return $manager->make($this->asset->getFilename())->resize($width !== 0 ?: null, $height !== 0 ?: null, function ($constraint) {
+            $image = $this->manager->cache(function ($manager) use ($width, $height, $filename) {
+                return $manager->make($filename)->resize($width !== 0 ?: null, $height !== 0 ?: null, function ($constraint) {
                     $constraint->aspectRatio();
                     $constraint->upsize();
                 });
@@ -59,7 +61,7 @@ class Image extends Processor
         }
 
         return $this->response
-            ->headers('content-type', $this->asset->getMimetype())
+            ->headers('content-type', (string) $this->asset->getMimetype())
             ->body($image);
     }
 
