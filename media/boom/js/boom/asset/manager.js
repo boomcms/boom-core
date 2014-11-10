@@ -94,8 +94,7 @@ $.widget('boom.assetManager', {
 		this.element.find('#b-tags-search')
 			.tagger_search({
 				update : function(tagIds) {
-					assetManager.addFilter('tag', tagIds);
-					assetManager.getAssets();
+					assetManager.updateTagFilters(tagIds);
 				}
 			});
 	},
@@ -238,6 +237,24 @@ $.widget('boom.assetManager', {
 		var buttons = $('[id|=b-button-multiaction]').not('#b-button-multiaction-edit');
 		$('#b-button-multiaction-edit').button(this.selected.length == 1 ? 'enable' : 'disable');
 		buttons.button(this.selected.length > 0 ? 'enable' : 'disable');
+	},
+
+	updateContentAreaMargin : function() {
+		// The filters bar will now be higher so move the content box down.
+		// Filters bar is position: fixed so this won't happen automatically.
+		var $filters = this.element.find('#b-assets-filters');
+		this.element.find('#b-assets-content').css('margin-top', $filters.css('top').toInt() + $filters.outerHeight() + 'px');
+	},
+
+	updateTagFilters : function(tagIds) {
+		var assetManager = this;
+
+		this.addFilter('tag', tagIds);
+		this.getAssets();
+
+		setTimeout(function() {
+			assetManager.updateContentAreaMargin();
+		}, 0);
 	},
 
 	viewAsset : function(assetId) {
