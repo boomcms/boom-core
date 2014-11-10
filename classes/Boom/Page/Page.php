@@ -164,6 +164,15 @@ class Page
         return new Keywords($keywords);
     }
 
+    /**
+     *
+     * @return DateTime
+     */
+    public function getLastModified()
+    {
+        return new DateTime('@' . $this->getCurrentVersion()->edited_time);
+    }
+
     public function getManualOrderPosition()
     {
         return $this->model->sequence;
