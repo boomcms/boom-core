@@ -1,9 +1,17 @@
 <?php
 
+namespace Boom\Exception\Handler;
+
+use Exception;
+use Response;
+use Kohana_Exception;
+use View;
+use Boom\Page;
+
 /**
  * Exception handler which doesn't output any debugging information
  */
-class Boom_Boom_Exception_Handler_Private extends Boom_Exception_Handler
+class Priv extends Handler
 {
     public function execute()
     {
@@ -13,7 +21,7 @@ class Boom_Boom_Exception_Handler_Private extends Boom_Exception_Handler
             $this->_execute();
         } catch (Exception $e) {
             echo Response::factory()
-                ->status($this->_code)
+                ->status($this->code)
                 ->headers('Content-Type', 'text/plain')
                 ->send_headers()
                 ->body(Kohana_Exception::text($e));
@@ -24,42 +32,42 @@ class Boom_Boom_Exception_Handler_Private extends Boom_Exception_Handler
 
     protected function _execute()
     {
-        $page = $this->_find_error_page($this->_code);
+        $page = $this->findErrorPage($this->code);
 
         if ($page->loaded()) {
-            $body = $this->_get_page_content($page);
-        } elseif (Kohana::find_file('views', "boom/errors/$this->_code")) {
-            $body = $this->_get_default_error($this->_code);
+            $body = $this->getPageContent($page);
+        } elseif (Kohana::find_file('views', "boom/errors/$this->code")) {
+            $body = $this->getDefaultError($this->code);
         } else {
-            echo Kohana_Exception::response($this->_e)->send_headers()->body();
+            echo Kohana_Exception::response($this->e)->send_headers()->body();
             exit(1);
         }
 
-        echo $this->_get_response($body)->send_headers()->body();
+        echo $this->getResponse($body)->send_headers()->body();
         exit(1);
     }
 
-    protected function _find_error_page($code)
+    protected function findErrorPage($code)
     {
-        return \Boom\Page\Factory::byInternalName($code);
+        return Page\Factory::byInternalName($code);
     }
 
-    protected function _get_default_error($code)
+    protected function getDefaultError($code)
     {
         return View::factory("boom/errors/$code")->render();
     }
 
-    protected function _get_page_content(Model_Page $page)
+    protected function getPageContent(Model_Page $page)
     {
         return Request::factory($page->url())
             ->execute()
             ->body();
     }
 
-    protected function _get_response($body)
+    protected function getResponse($body)
     {
         return Response::factory()
-            ->status($this->_code)
+            ->status($this->code)
             ->headers('Content-Type', 'text/html')
             ->body($body);
     }

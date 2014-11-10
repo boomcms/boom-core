@@ -1,6 +1,6 @@
 <?php
 
-Boom_Exception_Handler::set_exception_handler();
+Boom\Exception\Handler\Handler::setExceptionHandler();
 
 /**
  * Route for vanity URIs. Vanity URIs are the page ID base-36 encoded and prefixed with an underscore.
