@@ -6,6 +6,7 @@ use Kohana;
 use Kohana_Exception;
 use HTTP_Exception;
 use Exception;
+use Boom\Log\ErrorLogger;
 
 abstract class Handler
 {
@@ -22,16 +23,23 @@ abstract class Handler
 	 */
     protected $e;
 
+    /**
+     *
+     * @var ErrorLogger
+     */
+    private $errorLogger;
+
     public function __construct(Exception $e)
     {
         $this->e = $e;
         $this->code = ($e instanceof HTTP_Exception) ? $e->getCode() : 500;
+        $this->errorLog = new ErrorLogger;
     }
 
     public function execute()
     {
         if ( ! $this->e instanceof HTTP_Exception) {
-            $this->_logException();
+            $this->errorLogger->critrical(Kohana_Exception::text($this->e));
         }
     }
 
@@ -45,11 +53,6 @@ abstract class Handler
         } catch (Exception $e) {
             Kohana_Exception::handler($e);
         }
-    }
-
-    protected function _logException()
-    {
-        Kohana_Exception::log($this->e);
     }
 
     public static function setExceptionHandler()
