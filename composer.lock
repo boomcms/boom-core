@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "c68d3fa54d2a71c926765bd3d8482cc4",
+    "hash": "1e71bad129721cab0e50359fca78bd4a",
     "packages": [
         {
             "name": "boomcms/asset-merger",
@@ -1217,6 +1217,44 @@
             "time": "2014-07-23 18:24:17"
         },
         {
+            "name": "psr/log",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-fig/log.git",
+                "reference": "fe0936ee26643249e916849d48e3a51d5f5e278b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-fig/log/zipball/fe0936ee26643249e916849d48e3a51d5f5e278b",
+                "reference": "fe0936ee26643249e916849d48e3a51d5f5e278b",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Psr\\Log\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "PHP-FIG",
+                    "homepage": "http://www.php-fig.org/"
+                }
+            ],
+            "description": "Common interface for logging libraries",
+            "keywords": [
+                "log",
+                "psr",
+                "psr-3"
+            ],
+            "time": "2012-12-21 11:40:51"
+        },
+        {
             "name": "richthegeek/phpsass",
             "version": "2014-03-20",
             "source": {
@@ -1273,18 +1311,23 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/robbytaylor/htmlpurifier-tel.git",
-                "reference": "57c6095ed3502951bedb8dde588da047ea5d7b02"
+                "reference": "cf5abecd43e3f5a9b563459d29ee90425507e211"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/robbytaylor/htmlpurifier-tel/zipball/57c6095ed3502951bedb8dde588da047ea5d7b02",
-                "reference": "57c6095ed3502951bedb8dde588da047ea5d7b02",
+                "url": "https://api.github.com/repos/robbytaylor/htmlpurifier-tel/zipball/cf5abecd43e3f5a9b563459d29ee90425507e211",
+                "reference": "cf5abecd43e3f5a9b563459d29ee90425507e211",
                 "shasum": ""
             },
             "require": {
                 "ezyang/htmlpurifier": "4.6.*"
             },
             "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "BSD-3-Clause"
@@ -1296,7 +1339,7 @@
                 }
             ],
             "description": "Tel URI scheme for HTMLPurifier",
-            "time": "2014-11-06 20:13:29"
+            "time": "2014-11-06 21:46:02"
         },
         {
             "name": "shadowhand/email",
