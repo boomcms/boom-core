@@ -10,8 +10,21 @@ boomPageFeatureEditor = function(page) {
 		return this;
 	};
 
+	boomPageFeatureEditor.prototype.getImagesInPage = function() {
+		return top.$('body')
+			.find('img[src^="/asset/view/"]')
+			.map(function() {
+				var $this = $(this),
+					assetId,
+					src = $this.attr('src').replace('/asset/view/', '');
+
+				return src.indexOf('/')? src : src.substring(0, src.indexOf('/'));
+			});
+	};
+
 	boomPageFeatureEditor.prototype._open = function() {
-		var pageFeatureEditor = this;
+		var pageFeatureEditor = this,
+			$imagesInPageContainer = this.dialog.contents.find('.images-in-page');
 
 		this.currentImage = this.dialog.contents.find('#b-page-feature-current').attr('src').replace('/asset/view/', '');
 
@@ -29,6 +42,14 @@ boomPageFeatureEditor = function(page) {
 					});
 			});
 
+		if (this.imagesInPage.length) {
+			for (var i = 0; i < this.imagesInPage.length; i++) {
+				$imagesInPageContainer.append("<li><a href='#' data-asset-id='" + this.imagesInPage[i] + "'><img src='/asset/view/" + this.imagesInPage[i] + "' /></a></li>");
+			}
+		} else {
+			$imagesInPageContainer.replaceWith("<p>This page doesn't contain any images.</p>");
+		}
+
 		if (this.currentImage) {
 			this.dialog.contents.find('#b-page-feature-none').hide();
 		} else {
@@ -39,6 +60,7 @@ boomPageFeatureEditor = function(page) {
 
 	boomPageFeatureEditor.prototype.open = function() {
 		var pageFeatureEditor = this;
+		this.imagesInPage = this.getImagesInPage();
 
 		this.dialog = new boomDialog({
 			url: this.url,

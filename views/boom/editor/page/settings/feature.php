@@ -19,16 +19,6 @@
 		<h1>Images used in page</h1>
 		<p>The images which are used in this page are shown below. Click on an image to make it the feature image for the page.</p>
 
-		<? if (count($images_in_page)): ?>
-			<ul>
-				<? foreach ($images_in_page as $image): ?>
-					<li>
-						<a href='#' class='b-page-feature-set' data-asset-id='<?= $image->id ?>'><img src='<?= Route::url('asset', array('id' => $image->id)) ?>' alt='<?= $image->title ?>'/></a>
-					</li>
-				<? endforeach ?>
-			</ul>
-		<? else: ?>
-			<p>This page doesn't contain any images.</p>
-		<? endif ?>
+        <ul class="images-in-page"></ul>
 	</section>
 </div>

@@ -50,12 +50,8 @@ class Controller_Cms_Page_Settings_View extends Controller_Cms_Page_Settings
     {
         parent::action_feature();
 
-        $images_in_page = new \Boom\Page\AssetsUsed($this->page->getCurrentVersion());
-        $images_in_page->setType(\Boom\Asset\Type::IMAGE);
-
         $this->template = new View("$this->viewDirectory/feature", [
             'feature_image_id' => $this->page->getFeatureImageId(),
-            'images_in_page' => $images_in_page->getAll(),
         ]);
     }
 
