@@ -44,5 +44,5 @@
 		<a href="#" class="last" data-action="last">&raquo;</a>
 	</section>
 
-	<?= Boom\UI\Button('cancel', 'Close asset picker', array('class' => 'b-button-withtext', 'id' => 'b-assets-picker-close')) ?>
+	<?= new Boom\UI\Button('cancel', 'Close asset picker', array('class' => 'b-button-withtext', 'id' => 'b-assets-picker-close')) ?>
 </section>
