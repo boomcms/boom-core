@@ -2,7 +2,7 @@
 	<?= new \Boom\Menu\Menu  ?>
 
 	<div id="b-topbar" class="b-toolbar">
-		<?= \Boom\UI::menuButton() ?>
+		<?= new \Boom\UI\MenuButton() ?>
 	</div>
 
     <div>

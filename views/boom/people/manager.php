@@ -3,7 +3,7 @@
 	<div id="b-topbar" class="b-toolbar">
 		<?= new \Boom\Menu\Menu  ?>
 
-		<?= Boom\UI::menuButton() ?>
+		<?= new \Boom\UI\MenuButton() ?>
 		<?= new \Boom\UI\Button('add', __('New person'), array('id' => 'b-people-create')) ?>
 		<?= new \Boom\UI\Button('delete', __('Delete'), array('id' => 'b-people-multi-delete', 'disabled' => 'disabled')) ?>
 

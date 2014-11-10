@@ -2,7 +2,7 @@
 	<?= new \Boom\Menu\Menu  ?>
 
 	<div id="b-topbar" class="b-toolbar">
-		<?= \Boom\UI::menuButton() ?>
+		<?= new \Boom\UI\MenuButton() ?>
 		<?= new \Boom\UI\Button('accept', __('Save all'), array('id' => 'b-templates-save', 'class' => 'b-button-withtext')) ?>
 	</div>
 

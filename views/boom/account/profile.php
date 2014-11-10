@@ -1,6 +1,6 @@
 <?= View::factory('boom/header', array('title' =>	'Assets')); ?>
     <div id="b-topbar" class="b-toolbar">
-        <?= \Boom\UI::menuButton() ?>
+        <?= new \Boom\UI\MenuButton() ?>
         <?= new \Boom\Menu\Menu  ?>
     </div>
 

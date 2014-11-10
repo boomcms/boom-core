@@ -2,7 +2,7 @@
 
 <div id="b-topbar" class='b-page-toolbar b-toolbar b-toolbar-vertical'>
 	<?= Form::hidden('csrf', Security::token(), array('id' => 'b-csrf')) ?>
-	<?= \Boom\UI::menuButton() ?>
+	<?= new \Boom\UI\MenuButton() ?>
 	<?= new \Boom\Menu\Menu  ?>
 
 	<div id="b-topbar-page-buttons">

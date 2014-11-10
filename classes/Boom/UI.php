@@ -9,8 +9,4 @@ namespace Boom;
 abstract class UI
 {
 
-    public static function menuButton()
-    {
-        return new UI\Button('menu', __('Menu'), ['id' => 'b-menu-button', 'class' => 'menu-btn']);
-    }
 }

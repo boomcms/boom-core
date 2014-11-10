@@ -1,5 +1,5 @@
 <div id="b-assets-manager">
-	<?= \Boom\UI::menuButton() ?>
+	<?= new \Boom\UI\MenuButton() ?>
 	<?= new \Boom\Menu\Menu  ?>
 
 	<div id="b-topbar" class="b-asset-manager b-toolbar">
