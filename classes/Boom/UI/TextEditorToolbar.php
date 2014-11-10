@@ -1,6 +1,6 @@
 <?php
 
-namespace Boom;
+namespace Boom\UI;
 
 class TextEditorToolbar
 {
