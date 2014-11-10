@@ -30,7 +30,9 @@ abstract class Handler
 
     public function execute()
     {
-        $this->_logException();
+        if ( ! $this->e instanceof HTTP_Exception) {
+            $this->_logException();
+        }
     }
 
     public static function handle(Exception $e)
