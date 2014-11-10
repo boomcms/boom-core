@@ -44,7 +44,7 @@ boomPageFeatureEditor = function(page) {
 
 		if (this.imagesInPage.length) {
 			for (var i = 0; i < this.imagesInPage.length; i++) {
-				$imagesInPageContainer.append("<li><a href='#' data-asset-id='" + this.imagesInPage[i] + "'><img src='/asset/view/" + this.imagesInPage[i] + "' /></a></li>");
+				$imagesInPageContainer.append("<li><a href='#' class='b-page-feature-set' data-asset-id='" + this.imagesInPage[i] + "'><img src='/asset/view/" + this.imagesInPage[i] + "' /></a></li>");
 			}
 		} else {
 			$imagesInPageContainer.replaceWith("<p>This page doesn't contain any images.</p>");
