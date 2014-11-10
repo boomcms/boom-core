@@ -21,7 +21,8 @@
 		"hautelook/phpass": "dev-master",
 		"thujohn/rss": "dev-master",
 		"intervention/imagecache" : "2.0.*",
-		"robbytaylor/htmlpurifier-tel" : "dev-master"
+		"robbytaylor/htmlpurifier-tel" : "dev-master",
+		"psr/log": "~1.0"
 	},
 	"autoload": {
 		"psr-0": {"Boom\\": "classes/Boom/"}
