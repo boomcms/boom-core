@@ -2,6 +2,8 @@
 
 namespace Boom\UI;
 
+use Boom\Config;
+
 class TextEditorToolbar extends AbstractUIElement
 {
     protected $_buttonSet = 'text';
