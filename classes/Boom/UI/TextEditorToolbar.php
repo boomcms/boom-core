@@ -2,7 +2,7 @@
 
 namespace Boom\UI;
 
-class TextEditorToolbar
+class TextEditorToolbar extends AbstractUIElement
 {
     protected $_buttonSet = 'text';
     protected $_config;
@@ -13,11 +13,6 @@ class TextEditorToolbar
     {
         $button_set && $this->_buttonSet = $button_set;
         $this->_config = Config::get('text_editor_toolbar');
-    }
-
-    public function __toString()
-    {
-        return (string) $this->render();
     }
 
     public static function getAvailableButtonSets()
