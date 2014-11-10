@@ -5,7 +5,7 @@
 				<label for="b-people-group-name"><h2><?= __('Edit group name') ?></h2></label>
 				<input type="text" id="b-people-group-name" class="boom-input boom-input-medium" name="name" value="<?=$group->getName() ?>" />
 
-				<?= \Boom\UI::button('accept', __('Save group name'), array('id' => 'b-people-group-save')) ?>
+				<?= new \Boom\UI\Button('accept', __('Save group name'), array('id' => 'b-people-group-save')) ?>
 			</fieldset>
 		</form>
 	</div>

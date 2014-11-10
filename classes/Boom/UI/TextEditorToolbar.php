@@ -48,7 +48,7 @@ class TextEditorToolbar extends AbstractUIElement
 
         foreach ($this->getButtons() as $type) {
             list($text, $attrs) = $this->getButton($type);
-            $buttons .= UI::button($type, $text, (array) $attrs);
+            $buttons .= new Button($type, $text, (array) $attrs);
         }
 
         return $buttons;

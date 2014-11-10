@@ -4,9 +4,9 @@
 			<img src="<?= Route::url('asset', array('action' => 'thumb', 'id' => $asset->getId(), 'width' => 0, 'height' => 300, 'quality' => 85, 'crop' => 0)) ?>">
 
 			<div class="ui-dialog-buttonpane">
-				<?= \Boom\UI::button('delete', __('Delete'), array('class' => 'b-assets-delete')) ?>
-				<?= \Boom\UI::button('download', __('Download'), array('class' => 'b-assets-download')) ?>
-				<?//= \Boom\UI::button('replace', __('Replace'), array('class' => 'b-assets-replace')) ?>
+				<?= new \Boom\UI\Button('delete', __('Delete'), array('class' => 'b-assets-delete')) ?>
+				<?= new \Boom\UI\Button('download', __('Download'), array('class' => 'b-assets-download')) ?>
+				<?//= \Boom\UI\Button('replace', __('Replace'), array('class' => 'b-assets-replace')) ?>
 			</div>
 		</div>
 

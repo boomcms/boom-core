@@ -3,7 +3,7 @@
 
 	<div id="b-topbar" class="b-toolbar">
 		<?= \Boom\UI::menuButton() ?>
-		<?= \Boom\UI::button('accept', __('Save all'), array('id' => 'b-templates-save', 'class' => 'b-button-withtext')) ?>
+		<?= new \Boom\UI\Button('accept', __('Save all'), array('id' => 'b-templates-save', 'class' => 'b-button-withtext')) ?>
 	</div>
 
 	<div id="b-templates">
@@ -37,7 +37,7 @@
 								<? $page_count = $t->countPages(); ?>
 								<a href='/cms/templates/pages/<?= $t->getId() ?>' title='View the title and URL of <?= $page_count, " ", Inflector::plural('page', $page_count) ?> which use this template'><?= $page_count ?>
 							</td>
-							<td><?= Boom\UI::button('delete', "Delete the &quot;{$t->getName()}&quot; template", array('class' => 'b-templates-delete')) ?>
+							<td><?= Boom\UI\Button('delete', "Delete the &quot;{$t->getName()}&quot; template", array('class' => 'b-templates-delete')) ?>
 						</tr>
 					<? endforeach; ?>
 				</tbody>

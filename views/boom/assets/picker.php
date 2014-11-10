@@ -14,7 +14,7 @@
 	<section id="b-assets-picker-filter" class="ui-front">
 		<h1>Filter Assets</h1>
 
-		<?= \Boom\UI::button('accept', 'All assets', array('id' => 'b-assets-picker-all', 'class' => 'b-button-textonly')) ?>
+		<?= new \Boom\UI\Button('accept', 'All assets', array('id' => 'b-assets-picker-all', 'class' => 'b-button-textonly')) ?>
 
 		<div>
 			<h2>Search by asset name</h2>
@@ -44,5 +44,5 @@
 		<a href="#" class="last" data-action="last">&raquo;</a>
 	</section>
 
-	<?= Boom\UI::button('cancel', 'Close asset picker', array('class' => 'b-button-withtext', 'id' => 'b-assets-picker-close')) ?>
+	<?= Boom\UI\Button('cancel', 'Close asset picker', array('class' => 'b-button-withtext', 'id' => 'b-assets-picker-close')) ?>
 </section>

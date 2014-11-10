@@ -4,12 +4,12 @@
 
 	<div id="b-topbar" class="b-asset-manager b-toolbar">
 		<div id="b-assets-buttons">
-			<?= \Boom\UI::button('upload', __('Upload files'), array('id' => 'b-assets-upload')) ?>
-			<?= \Boom\UI::button('edit', __('View').' / '.__('Edit'), array('id' => 'b-button-multiaction-edit', 'disabled' => 'disabled')) ?>
-			<?= \Boom\UI::button('delete', __('Delete'), array('id' => 'b-button-multiaction-delete', 'disabled' => 'disabled')) ?>
-			<?= \Boom\UI::button('download', __('Download'), array('id' => 'b-button-multiaction-download', 'disabled' => 'disabled')) ?>
-			<?= \Boom\UI::button('tag', __('Add Tags'), array('id' => 'b-button-multiaction-tag', 'disabled' => 'disabled')) ?>
-			<?= \Boom\UI::button('cancel', __('Clear Selection'), array('id' => 'b-button-multiaction-clear', 'disabled' => 'disabled')) ?>
+			<?= new \Boom\UI\Button('upload', __('Upload files'), array('id' => 'b-assets-upload')) ?>
+			<?= new \Boom\UI\Button('edit', __('View').' / '.__('Edit'), array('id' => 'b-button-multiaction-edit', 'disabled' => 'disabled')) ?>
+			<?= new \Boom\UI\Button('delete', __('Delete'), array('id' => 'b-button-multiaction-delete', 'disabled' => 'disabled')) ?>
+			<?= new \Boom\UI\Button('download', __('Download'), array('id' => 'b-button-multiaction-download', 'disabled' => 'disabled')) ?>
+			<?= new \Boom\UI\Button('tag', __('Add Tags'), array('id' => 'b-button-multiaction-tag', 'disabled' => 'disabled')) ?>
+			<?= new \Boom\UI\Button('cancel', __('Clear Selection'), array('id' => 'b-button-multiaction-clear', 'disabled' => 'disabled')) ?>
 		</div>
 	</div>
 
