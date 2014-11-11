@@ -57,6 +57,15 @@ $.widget( 'boom.pageToolbar', {
 			.on('click', '#b-page-template', function() {
 				self.options.page.template();
 			})
+			.on('click', '#b-menu-button', function() {
+				var $body = $('body');
+
+				if ($body.hasClass('pushy-active')) {
+					self.maximise();
+				} else {
+					self.minimise();
+				}
+			})
 			.find('#b-page-settings-menu')
 			.splitbutton({
 				items: self._buildSettingsMenu(),
@@ -131,7 +140,7 @@ $.widget( 'boom.pageToolbar', {
 		$.boom.log('minimise iframe');
 
 		this.element.css({
-			width : 'auto',
+			width : '60px',
 			'z-index' : 10000
 		});
 	},
