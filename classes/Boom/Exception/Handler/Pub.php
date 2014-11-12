@@ -1,9 +1,10 @@
 <?php
 
-/**
- * Exception handler which outputs debugging information
- */
-class Boom_Boom_Exception_Handler_Public extends Boom_Exception_Handler
+namespace Boom\Exception\Handler;
+
+use Kohana_Exception;
+
+class Pub extends Handler
 {
     public function execute()
     {
