@@ -131,7 +131,7 @@ class Controller_Cms_Page_Settings_Save extends Controller_Cms_Page_Settings
 
         $this->log("Updated visibility settings for page " . $this->page->getTitle() . " (ID: " . $this->page->getId() . ")");
 
-        $this->page->setVisibleAtAnyTime($this->request->post('visible'));
+        $this->page->setVisibleAtAnyTime($this->request->post('visible') === 1);
 
         if ($this->page->isVisibleAtAnyTime()) {
             $visibleTo = ($this->request->post('toggle_visible_to') == 1) ? new DateTime($this->request->post('visible_to')) : null;

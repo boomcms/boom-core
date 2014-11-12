@@ -82,11 +82,11 @@ class Controller extends \Controller
     public function authorization($role, Page $page = null)
     {
         if ( ! $this->auth->isLoggedIn()) {
-            throw new HTTP_Exception_401();
+            throw new \HTTP_Exception_401();
         }
 
         if ( ! $this->auth->loggedIn($role, $page)) {
-            throw new HTTP_Exception_403();
+            throw new \HTTP_Exception_403();
         }
     }
 
@@ -134,7 +134,7 @@ class Controller extends \Controller
     protected function _csrf_check()
     {
         if ( ! Security::check($this->request->post('csrf'))) {
-            throw new HTTP_Exception_500();
+            throw new \HTTP_Exception_500();
         }
     }
 }

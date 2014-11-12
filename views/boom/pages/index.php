@@ -8,7 +8,7 @@
 	<div id="b-pages">
 		<ul class='boom-tree'>
 			<? foreach ($pages as $p): ?>
-				<li><a href="<?= $p->url() ?>" rel="<?= $p->getId() ?>"><?= $p->getTitle() ?></a></li>
+                            <li data-page-id="<?= $p->getId() ?>" data-children="<?= (int) $p->getMptt()->has_children() ?>"><a id="page_<?= $p->getId() ?>" href="<?= $p->url() ?>" rel="<?= $p->getId() ?>"><?= $p->getTitle() ?></a></li>
 			<? endforeach ?>
 		</ul>
 	</div>

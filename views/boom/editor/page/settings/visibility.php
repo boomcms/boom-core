@@ -11,7 +11,8 @@
 
         <label>
             <?=__('Visible until')?>
-            <?= Form::checkbox('toggle_visible_to', 1, $page->getVisibleTo()->getTimestamp() != 0, array('id' => 'toggle-visible')) ?>
-            <?= Form::input('visible_to', ($page->getVisibleTo()->getTimestamp())? $page->getVisibleTo()->format('d F Y H:i') : date("d F Y H:i", time()), array('id' => 'visible-to', 'class' => 'boom-datepicker')) ?>
+
+            <?= Form::checkbox('toggle_visible_to', 1, $page->getVisibleTo() != null, array('id' => 'toggle-visible')) ?>
+            <?= Form::input('visible_to', ($page->getVisibleTo() != null)? $page->getVisibleTo()->format('d F Y H:i') : date("d F Y H:i", time()), array('id' => 'visible-to', 'class' => 'boom-datepicker')) ?>
         </label>
 </form>

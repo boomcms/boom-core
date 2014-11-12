@@ -224,7 +224,9 @@ class Page
 	 */
     public function getVisibleFrom()
     {
-        return new DateTime('@' . $this->model->visible_from);
+        $timestamp = $this->model->visible_from?: time();
+
+        return new DateTime('@' . $timestamp);
     }
 
     /**
@@ -233,7 +235,7 @@ class Page
 	 */
     public function getVisibleTo()
     {
-        return $this->model->visible_to === null ? null : new DateTime('@' . $this->model->visible_to);
+        return $this->model->visible_to == 0 ? null : new DateTime('@' . $this->model->visible_to);
     }
 
     public function hasChildren()
