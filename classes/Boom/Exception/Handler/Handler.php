@@ -33,13 +33,13 @@ abstract class Handler
     {
         $this->e = $e;
         $this->code = ($e instanceof HTTP_Exception) ? $e->getCode() : 500;
-        $this->errorLog = new ErrorLogger();
+        $this->errorLogger = new ErrorLogger();
     }
 
     public function execute()
     {
         if (! $this->e instanceof HTTP_Exception) {
-            $this->errorLogger->critrical(Kohana_Exception::text($this->e));
+            $this->errorLogger->critical(Kohana_Exception::text($this->e));
         }
     }
 
@@ -47,7 +47,8 @@ abstract class Handler
     {
         try {
             $handler_class = (Kohana::$environment === Kohana::PRODUCTION || Kohana::$environment === Kohana::STAGING) ? 'Priv' : 'Pub';
-            $handler = new $handler_class($e);
+            $class = "\\Boom\\Exception\\Handler\\$handler_class";
+            $handler = new $class($e);
 
             $handler->execute();
         } catch (Exception $e) {
