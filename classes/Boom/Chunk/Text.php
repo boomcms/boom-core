@@ -48,19 +48,7 @@ class Text extends \Boom\Chunk
 
     protected function _show_default()
     {
-        $text = Kohana::message('chunks', $this->_slotname);
-        $text || $text = Kohana::message('chunks', 'text');
-
-        $template = ($this->_template === null) ? $this->_slotname : $this->_template;
-
-        if ( ! Kohana::find_file('views', $this->viewDirectory."text/$template")) {
-            return "<p>$text</p>";
-        } else {
-            return new View($this->viewDirectory."text/$template", [
-                'text'    =>    $text,
-                'chunk' => $this->_chunk,
-            ]);
-        }
+        return $this->_show();
     }
 
     public function get_paragraphs($offset = 0, $length = null)
@@ -77,6 +65,13 @@ class Text extends \Boom\Chunk
 
     public function text()
     {
+        if ( ! $this->hasContent() && Editor::instance()->isEnabled()) {
+            $text = Kohana::message('chunks', $this->_slotname);
+            $text || $text = Kohana::message('chunks', 'text');
+
+            return $text;
+        }
+
         if (Editor::instance()->isEnabled()) {
             $commander = new TextFilter();
             $commander
