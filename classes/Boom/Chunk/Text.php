@@ -14,7 +14,7 @@ class Text extends \Boom\Chunk
 
     protected function _add_html($text)
     {
-        switch ($this->_chunk->slotname) {
+        switch ($this->_slotname) {
             case 'standfirst':
                 return "<p class=\"standfirst\">$text</p>";
             case 'bodycopy':
