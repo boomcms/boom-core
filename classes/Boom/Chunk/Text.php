@@ -16,7 +16,7 @@ class Text extends \Boom\Chunk
     {
         switch ($this->_chunk->slotname) {
             case 'standfirst':
-                return "<p class=\"standFirst\">$text</p>";
+                return "<p class=\"standfirst\">$text</p>";
             case 'bodycopy':
                 return "<div id=\"content\">$text</div>";
             case 'bodycopy2':
