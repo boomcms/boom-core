@@ -55,7 +55,7 @@ class Text extends \Boom\Chunk
     {
         preg_match_all('|<p>(.*?)</p>|', $this->_chunk->text, $matches, PREG_PATTERN_ORDER);
 
-        return  $matches[1];
+        return $matches[1];
     }
 
     public function hasContent()
