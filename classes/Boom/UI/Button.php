@@ -26,9 +26,9 @@ class Button extends AbstractUIElement
 
     /**
      *
-     * @param string $type The type of button, used to determine the button icon
-     * @param string $text Button text
-     * @param array $attrs HTML attributes for the button
+     * @param string $type  The type of button, used to determine the button icon
+     * @param string $text  Button text
+     * @param array  $attrs HTML attributes for the button
      */
     public function __construct($type, $text, $attrs = [])
     {

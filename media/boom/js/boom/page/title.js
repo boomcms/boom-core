@@ -47,7 +47,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 		top.$('#b-title-length')
 			.css({
 				top : offset.top + 'px',
-				left : (offset.left - 60) + 'px',
+				left : (offset.left - 110) + 'px',
 			});
 
 		$('<p><a href="#" id="b-title-help">What is this?</a></p>')
@@ -75,7 +75,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 	edit : function() {
 		var self = this;
 		var old_html = this.element.html();
-					
+
 		if (this.isUntitled()) {
 			this.element.text('');
 		}

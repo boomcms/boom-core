@@ -33,12 +33,12 @@ abstract class Handler
     {
         $this->e = $e;
         $this->code = ($e instanceof HTTP_Exception) ? $e->getCode() : 500;
-        $this->errorLog = new ErrorLogger;
+        $this->errorLog = new ErrorLogger();
     }
 
     public function execute()
     {
-        if ( ! $this->e instanceof HTTP_Exception) {
+        if (! $this->e instanceof HTTP_Exception) {
             $this->errorLogger->critrical(Kohana_Exception::text($this->e));
         }
     }

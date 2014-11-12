@@ -37,20 +37,18 @@ function boomPage(page_id) {
 	};
 
 	boomPage.prototype.embargo = function() {
-		var url = '/cms/page/version/embargo/' + this.id;
-		var promise = new $.Deferred();
+		var url = '/cms/page/version/embargo/' + this.id,
+			promise = new $.Deferred(),
+			dialog;
 
-		new boomDialog({
+		dialog = new boomDialog({
 			url: url,
 			title: 'Page embargo',
 			width: 440
 		}).done(function() {
-			savePageSettings(
-				url,
-				$(this).find("form").serialize(),
-				"Page embargo saved."
-			)
+			$.boom.post(url, dialog.contents.find('form').serialize())
 			.done(function(response) {
+				new boomNotification("Page embargo saved.");
 				promise.resolve(response);
 			});
 		});
