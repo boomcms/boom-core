@@ -42,9 +42,9 @@ $.widget('ui.chunkSlideshow', $.ui.chunk,
 	},
 
 	_update_html : function(html) {
-		var alert = new boomAlert('Your changes have been saved and the page will now reload to update the slideshow');
-		alert.done(function() {
-			top.location.reload();
-		});
+		new boomAlert('Your changes have been saved and the page will now reload to update the slideshow')
+			.done(function() {
+				top.location.reload();
+			});
 	}
 });
