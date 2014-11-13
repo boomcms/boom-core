@@ -62,7 +62,7 @@ $.widget('ui.chunkText', $.ui.chunk,
 			.done(function() {
 				var edited = old_html != self.element.html();
 
-				if (self.element.html() == '') {
+				if ( ! self.hasContent()) {
 					self.remove();
 				} else if (edited == true) {
 					self._save();
@@ -84,6 +84,10 @@ $.widget('ui.chunkText', $.ui.chunk,
 			text : this.content,
 			is_block : this.isBlockLevel()? 1 : 0
 		};
+	},
+
+	hasContent : function() {
+		return this.element.text() !== '' || this.element.find('img').length > 0;
 	},
 
 	isBlockLevel : function() {
