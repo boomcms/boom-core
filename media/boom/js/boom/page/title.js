@@ -86,7 +86,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 				self.destroy();
 			})
 			.done(function() {
-				var title = self.element.text();
+				var title = self.element.text().trim();
 
 				if (title != '' && title != old_html) {
 					self._save(title, old_html);
