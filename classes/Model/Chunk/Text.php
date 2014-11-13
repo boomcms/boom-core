@@ -87,4 +87,15 @@ class Model_Chunk_Text extends \ORM
 
         return $this;
     }
+
+    public function filters()
+    {
+        return array(
+            'text' => array(
+                array(function($text) {
+                    return str_replace('&nbsp;', ' ', $text);
+                }),
+            ),
+        );
+    }
 }
