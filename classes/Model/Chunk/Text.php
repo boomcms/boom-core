@@ -48,15 +48,20 @@ class Model_Chunk_Text extends \ORM
         // Find which assets are linked to within the text chunk.
         preg_match_all('~hoopdb://((image)|(asset))/(\d+)~', $this->_object['text'], $matches);
 
-        $commander = new TextFilter();
-        $commander
-            ->addFilter(new Filter\OEmbed())
-            ->addFilter(new Filter\StorifyEmbed())
-            ->addFilter(new Filter\UnmungeAssetEmbeds())
-            ->addFilter(new Filter\RemoveLinksToInvisiblePages())
-            ->addFilter(new Filter\UnmungeInternalLinks());
+        if ($this->_object['is_block']) {
+            $commander = new TextFilter();
+            $commander
+                ->addFilter(new Filter\OEmbed())
+                ->addFilter(new Filter\StorifyEmbed())
+                ->addFilter(new Filter\UnmungeAssetEmbeds())
+                ->addFilter(new Filter\RemoveLinksToInvisiblePages())
+                ->addFilter(new Filter\UnmungeInternalLinks());
 
-        $this->site_text = $commander->filterText($this->_object['text']);
+            $this->site_text = $commander->filterText($this->_object['text']);
+        }
+        else {
+            $this->site_text = $this->_object['text'];
+        }
 
         // Create the text chunk.
         parent::create($validation);
