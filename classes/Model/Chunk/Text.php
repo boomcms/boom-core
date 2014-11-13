@@ -19,21 +19,21 @@ class Model_Chunk_Text extends \ORM
 
     public function _cleanText()
     {
-        $Commander = new TextFilter();
+        $commander = new TextFilter();
 
         if ($this->slotname === 'standfirst') {
-            $Commander->addFilter(new Filter\RemoveAllHTML());
+            $commander->addFilter(new Filter\RemoveAllHTML());
         } elseif ($this->is_block) {
-            $Commander
+            $commander
                 ->addFilter(new Filter\MakeInternalLinksRelative())
                 ->addFilter(new Filter\PurifyHTML())
                 ->addFilter(new Filter\MungeAssetEmbeds())
                 ->addFilter(new Filter\MungeRelativeInternalLinks());
         } else {
-            $Commander->addFilter(new Filter\RemoveHTMLExceptInlineElements());
+            $commander->addFilter(new Filter\RemoveHTMLExceptInlineElements());
         }
 
-        $this->text = $Commander->filterText($this->text);
+        $this->text = $commander->filterText($this->text);
     }
 
     /**
