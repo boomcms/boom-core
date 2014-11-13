@@ -41,11 +41,6 @@ $.widget('ui.chunkSlideshow', $.ui.chunk,
 		return {slides : this.slides};
 	},
 
-	_run_script : function(script) {
-		top.slideshowScript = new Function(script);
-		top.slideshowScript();
-	},
-
 	_update_html : function(html) {
 		var alert = new boomAlert('Your changes have been saved and the page will now reload to update the slideshow');
 		alert.done(function() {
