@@ -44,37 +44,32 @@ $.widget('ui.chunkText', $.ui.chunk,
 
 		$.boom.log('Text chunk slot edit');
 
-		var edit_content = function( $element ) {
+		this.element[0].id = this.element[0].id || $.boom.util.dom.uniqueId('boom-dom-wysiwyg-');
 
-			$element[0].id = $element[0].id || $.boom.util.dom.uniqueId('boom-dom-wysiwyg-');
+		var old_html = self.element.html();
 
-			var old_html = self.element.html();
+		if (this.element.text() == 'Default text.') {
+			this.element.html( '' );
+		}
 
-			if ($element.text() == 'Default text.') {
-				$element.html( '' );
-			}
+		this.element.unbind('keydown');
 
-			$element.unbind('keydown');
+		$('body').editor('edit', this.element)
+			.fail(function() {
+				self.element.html( old_html ).show();
+				self.destroy();
+			})
+			.done(function() {
+				var edited = old_html != self.element.html();
 
-			$('body').editor('edit', $element)
-				.fail( function(){
-					self.element.html( old_html ).show();
-					self.destroy();
-				})
-				.done(function() {
-					var edited = old_html != $element.html();
-
-					if ($element.html() == '') {
-						self.remove();
-					} else if (edited == true) {
-						self._save();
-					} else {
-						self.bind();
-					}
-				});
-		};
-
-		edit_content(this.element);
+				if (self.element.html() == '') {
+					self.remove();
+				} else if (edited == true) {
+					self._save();
+				} else {
+					self.bind();
+				}
+			});
 	},
 
 	/**
