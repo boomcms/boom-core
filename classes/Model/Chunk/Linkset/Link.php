@@ -23,12 +23,16 @@ class Model_Chunk_Linkset_Link extends ORM
     public function getLink()
     {
         if ($this->_link === null) {
-            // TODO: store internal links in url property and let \Boom\Link do all the work.
-            $url = $this->_target_page_id > 0 ? $this->_target_page_id : $this->_url;
+            $url = $this->target_page_id > 0 ? $this->target_page_id : $this->url;
             $this->_link = Link::factory($url);
         }
 
         return $this->_link;
+    }
+
+    public function getTitle()
+    {
+        return $this->title;
     }
 
     public function isInternal()

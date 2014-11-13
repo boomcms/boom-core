@@ -26,7 +26,7 @@ $.widget('boom.pageTree', {
 
 	itemClick : function($node) {
 		this.highlightItem($node);
-		this.options.onPageSelect(new boomLink($node.attr('href'), $node.attr('ref'), $node.text()));
+		this.options.onPageSelect(new boomLink($node.attr('href'), $node.attr('rel'), $node.text()));
 	},
 
 	getChildren : function(page_id) {

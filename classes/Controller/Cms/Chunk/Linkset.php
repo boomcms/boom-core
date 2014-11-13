@@ -6,8 +6,11 @@ class Controller_Cms_Chunk_Linkset extends Controller_Cms_Chunk
 
     public function action_edit()
     {
+        $chunk = Chunk::find('linkset', $this->request->query('slotname'), $this->page->getCurrentVersion());
+
         $this->template = View::factory('boom/editor/slot/linkset', [
-            'page'    =>    $this->page,
+            'links' => $chunk->links(),
+            'title' => $chunk->title
         ]);
     }
 
