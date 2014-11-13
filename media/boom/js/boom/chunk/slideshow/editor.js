@@ -63,7 +63,7 @@ function boomChunkSlideshowEditor(page_id, slotname) {
 			.done(function(asset_id) {
 				var $new_slide = $('<li><label><input type="radio" value="" name="slide" data-asset="' + asset_id + '"  /><img src="/asset/view/' + asset_id + '" /></label></li>');
 
-				slideshowEditor.dialog
+				slideshowEditor.dialog.contents
 					.find('#b-slideshow-editor-slides')
 					.append($new_slide);
 
