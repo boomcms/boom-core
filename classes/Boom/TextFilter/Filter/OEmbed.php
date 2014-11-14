@@ -9,7 +9,7 @@ class OEmbed implements \Boom\TextFilter\Filter
 {
     /**
      *
-     * @var Embera 
+     * @var Embera
      */
     private $embera;
 
@@ -22,9 +22,8 @@ class OEmbed implements \Boom\TextFilter\Filter
     public function __construct()
     {
         $this->embera = new Embera();
-        $this->dom = new DOMDocument;
+        $this->dom = new DOMDocument();
     }
-
 
     public function filterText($text)
     {

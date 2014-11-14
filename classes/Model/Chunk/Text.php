@@ -58,8 +58,7 @@ class Model_Chunk_Text extends \ORM
                 ->addFilter(new Filter\UnmungeInternalLinks());
 
             $this->site_text = $commander->filterText($this->_object['text']);
-        }
-        else {
+        } else {
             $this->site_text = $this->_object['text'];
         }
 
@@ -92,7 +91,7 @@ class Model_Chunk_Text extends \ORM
     {
         return array(
             'text' => array(
-                array(function($text) {
+                array(function ($text) {
                     return str_replace('&nbsp;', ' ', $text);
                 }),
             ),

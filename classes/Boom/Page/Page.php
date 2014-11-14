@@ -224,7 +224,7 @@ class Page
 	 */
     public function getVisibleFrom()
     {
-        $timestamp = $this->model->visible_from?: time();
+        $timestamp = $this->model->visible_from ?: time();
 
         return new DateTime('@' . $timestamp);
     }
