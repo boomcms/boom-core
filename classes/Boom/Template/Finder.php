@@ -23,8 +23,10 @@ class Finder extends Boom\Finder\Finder
     {
         $templates = parent::findAll()->as_array();
 
-        return new \Boom\ArrayCallbackIterator($templates, function ($template) {
-            return new Template($template);
+        array_walk($templates, function (&$template) {
+            $template = new Template($template);
         });
+
+        return $templates;
     }
 }

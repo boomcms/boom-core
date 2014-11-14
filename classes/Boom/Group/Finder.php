@@ -22,8 +22,10 @@ class Finder extends Boom\Finder\Finder
     {
         $groups = parent::findAll()->as_array();
 
-        return new \Boom\ArrayCallbackIterator($groups, function ($group) {
-            return new Group($group);
+        array_walk($groups, function(&$group) {
+            $group = new Group($group);
         });
+
+        return $groups;
     }
 }

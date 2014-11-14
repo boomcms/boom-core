@@ -33,8 +33,10 @@ class Finder extends Boom\Finder\Finder
     {
         $pages = parent::findAll()->as_array();
 
-        return new \Boom\ArrayCallbackIterator($pages, function ($page) {
-            return $page instanceof \Boom\Page ? $page : new Page($page);
+        array_walk($pages, function(&$page) {
+           $page = new Page($page);
         });
+
+        return $pages;
     }
 }

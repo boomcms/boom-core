@@ -22,8 +22,10 @@ class Finder extends Boom\Finder\Finder
     {
         $people = parent::findAll()->as_array();
 
-        return new \Boom\ArrayCallbackIterator($people, function ($person) {
-            return new Person($person);
+        array_walk($people, function (&$person) {
+            $person = new Person($person);
         });
+
+        return $people;
     }
 }
