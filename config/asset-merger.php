@@ -5,5 +5,5 @@ return array(
         Assets::JAVASCRIPT => array(__DIR__ . '/../media/boom/js/'),
         Assets::STYLESHEET => array(__DIR__.'/../media/boom/css/'),
     ),
-    'dev' => Boom::instance()->getEnvironment()->isDevelopment(),
+    'dev' => Boom\Boom::instance()->getEnvironment()->isDevelopment(),
 );

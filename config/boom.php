@@ -2,7 +2,7 @@
 
 return array(
     'auth' => array(
-        'disabled' => Boom::instance()->getEnvironment()->isDevelopment(),
+        'disabled' => Boom\Boom::instance()->getEnvironment()->isDevelopment(),
     ),
     'menu'    =>    array(
         'view_filename'        =>    'menu/boom',
