@@ -19,6 +19,10 @@ class Development extends Environment
         return new PublicExceptionHandler($e);
     }
 
+    /**
+     *
+     * @return boolean
+     */
     public function isDevelopment()
     {
         return true;

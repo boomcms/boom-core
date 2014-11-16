@@ -23,21 +23,37 @@ abstract class Environment
         return new PrivateExceptionHandler($e);
     }
 
+    /**
+     *
+     * @return boolean
+     */
     public function isDevelopment()
     {
         return false;
     }
 
+    /**
+     *
+     * @return boolean
+     */
     public function isProduction()
     {
         return false;
     }
 
+    /**
+     *
+     * @return boolean
+     */
     public function isStaging()
     {
         return false;
     }
 
+    /**
+     *
+     * @return boolean
+     */
     public function requiresLogin()
     {
         return $this->requiresLogin;
