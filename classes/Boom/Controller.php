@@ -7,7 +7,6 @@ use \Boom\Page\Page as Page;
 use \Boom\Editor\Editor as Editor;
 
 use \Session;
-use \Kohana as Kohana;
 use \Request as Request;
 use \View as View;
 use \Security as Security;
