@@ -2,11 +2,11 @@
 
 namespace Boom\Exception\Handler;
 
-use Kohana;
 use Kohana_Exception;
 use HTTP_Exception;
 use Exception;
 use Boom\Log\ErrorLogger;
+use Boom\Boom;
 
 abstract class Handler
 {
@@ -46,10 +46,7 @@ abstract class Handler
     public static function handle(Exception $e)
     {
         try {
-            $handler_class = (Kohana::$environment === Kohana::PRODUCTION || Kohana::$environment === Kohana::STAGING) ? 'Priv' : 'Pub';
-            $class = "\\Boom\\Exception\\Handler\\$handler_class";
-            $handler = new $class($e);
-
+            $handler = Boom::instance()->getEnvironment()->getExceptionHandler($e);
             $handler->execute();
         } catch (Exception $e) {
             Kohana_Exception::handler($e);
