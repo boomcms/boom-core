@@ -32,6 +32,24 @@ class Boom
      */
     public function getCacheDir()
     {
-        return $this->cacheDir?: realpath(__DIR__ . '/cache');
+        return $this->cacheDir?: realpath(__DIR__ . '/../../cache/');
+    }
+
+    /**
+     *
+     * @param string $dir
+     * @return \Boom\Boom
+     */
+    public function setCacheDir($dir)
+    {
+        $realDir = realpath($dir);
+
+        if ($realDir === false) {
+            throw new Exception("Cache directory does not exist: " . $dir);
+        }
+
+        $this->cacheDir = realpath($dir);
+
+        return $this;
     }
 }
