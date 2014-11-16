@@ -5,5 +5,5 @@ return array(
         Assets::JAVASCRIPT => array(__DIR__ . '/../media/boom/js/'),
         Assets::STYLESHEET => array(__DIR__.'/../media/boom/css/'),
     ),
-    'dev' => Kohana::$environment === Kohana::DEVELOPMENT,
+    'dev' => Boom::instance()->getEnvironment()->isDevelopment(),
 );

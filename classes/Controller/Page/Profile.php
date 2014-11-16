@@ -4,7 +4,7 @@ class Controller_Page_Profile extends Boom\Controller
 {
     public function before()
     {
-        if (Kohana::$environment != Kohana::DEVELOPMENT) {
+        if ( ! $this->environment->isDevelopment()) {
             throw new HTTP_Exception_404();
         }
 

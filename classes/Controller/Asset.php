@@ -31,7 +31,7 @@ class Controller_Asset extends Boom\Controller
 
         $this->asset = Asset\Factory::byId($this->request->param('id'));
 
-        if ( ! $this->asset->loaded() || (Kohana::$environment !== Kohana::DEVELOPMENT && ! $this->asset->exists())) {
+        if ( ! $this->asset->loaded() || ($this->environment->isDevelopment() && ! $this->asset->exists())) {
             throw new HTTP_Exception_404();
         }
 

@@ -2,7 +2,7 @@
 
 return array(
     'auth' => array(
-        'disabled' => Kohana::$environment === Kohana::DEVELOPMENT,
+        'disabled' => Boom::instance()->getEnvironment()->isDevelopment(),
     ),
     'menu'    =>    array(
         'view_filename'        =>    'menu/boom',
