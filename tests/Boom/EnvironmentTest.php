@@ -7,16 +7,15 @@ class EnvironmentTest extends PHPUnit_Framework_TestCase
     public function testIsMethods()
     {
         foreach($this->environments as $env) {
-            $className = "Boom\\Environment\\" . ucfirst($env);
-            $class = new $className;
+            $class = $this->getEnvClass($env);
 
             foreach($this->environments as $env2) {
                 $method = "is" . ucfirst($env2);
 
                 if ($env === $env2) {
-                    $this->assertTrue($class->$method(), "$className->$method())");
+                    $this->assertTrue($class->$method(), "$env is $env2");
                 } else {
-                    $this->assertFalse($class->$method(), "$className->$method())");
+                    $this->assertFalse($class->$method(), "$env is not $env2");
                 }
             }
         }
@@ -25,13 +24,12 @@ class EnvironmentTest extends PHPUnit_Framework_TestCase
     public function testRequireLoginForDevelopmentOnly()
     {
         foreach($this->environments as $env) {
-            $className = "Boom\\Environment\\" . ucfirst($env);
-            $class = new $className;
+            $class = $this->getEnvClass($env);
 
             if ($env === 'development') {
-                $this->assertTrue($class->requiresLogin(), $className);
+                $this->assertTrue($class->requiresLogin(), "$env requires login");
             } else {
-                $this->assertFalse($class->requiresLogin(), $className);
+                $this->assertFalse($class->requiresLogin(), "$env does not require login");
             }
         }
     }
