@@ -2,6 +2,7 @@
 
 namespace Boom\Asset\Archive;
 
+use Boom;
 use \Boom\Asset\Asset;
 use \Boom\Asset\Archive as Archive;
 use \ZipArchive as ZipArchive;
@@ -42,7 +43,7 @@ class Zip extends Archive
     protected function generateUniqueFilename()
     {
         do {
-            $filename = APPPATH . 'cache/asset_archive_' . time() . rand() . '.zip';
+            $filename = Boom\Boom::instance()->getCacheDir() . 'asset_archive_' . time() . rand() . '.zip';
         } while (file_exists($filename));
 
         return $filename;

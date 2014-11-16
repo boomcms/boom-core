@@ -2,6 +2,7 @@
 
 namespace Boom\Asset\Processor;
 
+use Boom;
 use Boom\Asset\Asset;
 use Response;
 use Intervention\Image\ImageManager;
@@ -20,7 +21,7 @@ class Image extends Processor
 
         $this->manager = new ImageManager([
             'cache' => [
-                'path' => APPPATH . 'cache/assets',
+                'path' => Boom\Boom::instance()->getCacheDir() . 'assets',
             ]
         ]);
     }
