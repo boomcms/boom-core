@@ -1,6 +1,6 @@
 <?php
 
-Boom::instance()
+Boom\Boom::instance()
     ->setCacheDir(APPPATH . 'cache');
 
 Boom\Exception\Handler\Handler::setExceptionHandler();
