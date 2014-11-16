@@ -4,6 +4,8 @@ namespace Boom;
 
 class Boom
 {
+    private $cacheDir;
+
     /**
      *
      * @var Boom
@@ -22,5 +24,14 @@ class Boom
         }
 
         return static::$instance;
+    }
+
+    /**
+     *
+     * @return string
+     */
+    public function getCacheDir()
+    {
+        return $this->cacheDir?: realpath(__DIR__ . '/cache');
     }
 }
