@@ -4,7 +4,17 @@ namespace Boom;
 
 class Boom
 {
+    /**
+     *
+     * @var string
+     */
     private $cacheDir;
+
+    /**
+     *
+     * @var Environment\Environment
+     */
+    private $environment;
 
     /**
      *
@@ -35,6 +45,11 @@ class Boom
         return $this->cacheDir?: realpath(__DIR__ . '/../../cache/');
     }
 
+    public function getEnvironment()
+    {
+        return $this->environment ?: new Environment\Production;
+    }
+
     /**
      *
      * @param string $dir
@@ -49,6 +64,25 @@ class Boom
         }
 
         $this->cacheDir = realpath($dir);
+
+        return $this;
+    }
+
+    /**
+     *
+     * @param string $environment
+     * @return \Boom\Boom
+     * @throws Exception
+     */
+    public function setEnvironment($environment)
+    {
+        $className = 'Boom\\Environment\\' . ucfirst(strtolower($environment));
+
+        if ( ! class_exists($className)) {
+            throw new Exception("Invalid environment: " . $environment);
+        }
+
+        $this->environment = new $className;
 
         return $this;
     }
