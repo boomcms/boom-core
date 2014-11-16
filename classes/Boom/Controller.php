@@ -38,6 +38,12 @@ class Controller extends \Controller
 
     /**
      *
+     * @var Boom\Environment\Environment
+     */
+    public $environment;
+
+    /**
+     *
      * @var Boom
      */
     public $boom;
@@ -63,6 +69,7 @@ class Controller extends \Controller
     public function before()
     {
         $this->boom = Boom::instance();
+        $this->environment = $this->boom->getEnvironment();
         $this->session = Session::instance();
         $this->auth = new Auth(Config::get('auth'), $this->session);
 
