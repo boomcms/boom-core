@@ -28,7 +28,7 @@ class Image extends Processor
 
     public function crop($width = null, $height = null)
     {
-        if ($width || $height) {
+        if ($width && $height) {
             $image = $this->manager->cache(function ($manager) use ($width, $height) {
                 return $manager->make($this->asset->getFilename())->crop($width, $height);
             });
