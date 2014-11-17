@@ -63,7 +63,7 @@ $.extend({
 			}
 			else if (typeof arguments[1] !== 'function') {
 				if (typeof arguments[1] === 'string') {
-					arguments[1] += '&csrf=' + csrf;
+					arguments[1] += '&csrf=' + encodeURIComponent(csrf);
 				} else {
 					arguments[1]['csrf'] = csrf;
 				}
