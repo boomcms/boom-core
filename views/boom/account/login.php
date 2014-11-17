@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="en-gb">
+<html dir="ltr" lang="en-gb" class="boom">
 	<head>
 		<title>BoomCMS | <?= __('Login') ?></title>
 		<meta name="robots" content="noindex, nofollow" />
