@@ -39,7 +39,7 @@ $.widget('ui.chunk',
 			.on('keydown', function(event) {
 				switch(event.which) {
 					case 13:
-						self.edit()
+						self.edit();
 					break;
 				}
 			});
