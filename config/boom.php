@@ -1,9 +1,6 @@
 <?php
 
 return array(
-    'auth' => array(
-        'disabled' => Boom\Boom::instance()->getEnvironment()->isDevelopment(),
-    ),
     'menu'    =>    array(
         'view_filename'        =>    'menu/boom',
         'items'            =>    array(
