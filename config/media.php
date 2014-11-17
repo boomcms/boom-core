@@ -4,7 +4,6 @@ return array(
     'css' => array(
         'templates.css.less',
         'boom/assets.css.less',
-        'boom.people.css.less',
         'boom.pages.css.less',
         'libraries/jqpagination.css',
         'cms.css.less',
