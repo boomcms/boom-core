@@ -27,7 +27,7 @@ class BoomTest extends PHPUnit_Framework_TestCase
         }
 
         $this->boom->setCacheDir($newCacheDir);
-        $this->assertEquals(realpath($newCacheDir), $this->boom->getCacheDir());
+        $this->assertEquals(realpath($newCacheDir) . '/', $this->boom->getCacheDir());
 
         rmdir($newCacheDir);
     }

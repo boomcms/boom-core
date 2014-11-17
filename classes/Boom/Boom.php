@@ -63,7 +63,7 @@ class Boom
             throw new Exception("Cache directory does not exist: " . $dir);
         }
 
-        $this->cacheDir = realpath($dir);
+        $this->cacheDir = realpath($dir) . DIRECTORY_SEPARATOR;
 
         return $this;
     }
