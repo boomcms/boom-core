@@ -12,10 +12,11 @@ $.widget('ui.chunkLinkset', $.ui.chunk, {
 
 	insert : function(links) {
 		if (links.length === 0) {
-			return this.remove();
+			this.remove();
 		} else {
-			return this._save(links);
-			this.destroy();
+			this._save(links);
 		}
+
+		this.bind();
 	}
 });
