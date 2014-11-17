@@ -1,5 +1,12 @@
 <?php
 
+$boom = Boom\Boom::instance()
+    ->setCacheDir(APPPATH . 'cache');
+
+if (isset($_SERVER['KOHANA_ENV'])) {
+    $boom->setEnvironment($_SERVER['KOHANA_ENV']);
+}
+
 Boom\Exception\Handler\Handler::setExceptionHandler();
 
 /**

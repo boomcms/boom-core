@@ -39,7 +39,7 @@ $.widget('ui.chunk',
 			.on('keydown', function(event) {
 				switch(event.which) {
 					case 13:
-						self.edit()
+						self.edit();
 					break;
 				}
 			});
@@ -95,28 +95,6 @@ $.widget('ui.chunk',
 				$.boom.page.toolbar.status.set(data.status);
 				new boomNotification("Page content saved");
 			});
-	},
-
-	/**
-	Bring the slot UI forward, above all other page elements.
-	@function
-	*/
-	_bring_forward : function() {
-
-		this.element.css( {
-			'z-index' : 1000,
-			'position' : 'relative'
-		});
-		top.$( 'body' ).prepend( '<div class="overlay"></div>' );
-
-	},
-	/**
-	Drop the slot UI back into its natural place in the page z-index stack.
-	@function
-	*/
-	_send_back : function() {
-		this.element.removeAttr( 'style' );
-		top.$( 'div.overlay' ).remove();
 	},
 
 	unbind : function() {

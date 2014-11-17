@@ -54,7 +54,7 @@ class Auth
             // Clear the autologin token from the database
             $token = ORM::factory('User_Token', ['token' => $token]);
 
-            if ($token->loaded() and $logout_all) {
+            if ($token->loaded()) {
                 // Delete all user tokens. This isn't the most elegant solution but does the job
                 $tokens = ORM::factory('User_Token')->where('user_id','=',$token->user_id)->find_all();
 
@@ -199,13 +199,13 @@ class Auth
         return $this;
     }
 
-    public function complete_login($person)
+    public function complete_login(Person\Person $person)
     {
         // Store the person ID in the session data.
         $this->session->set($this->sessionKey, $person->getId());
     }
 
-    public function force_login($person, $mark_as_forced = false)
+    public function force_login(Person\Person $person, $mark_as_forced = false)
     {
         $this->person = $person;
 

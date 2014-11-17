@@ -7,7 +7,6 @@ use \Boom\Page\Page as Page;
 use \Boom\Editor\Editor as Editor;
 
 use \Session;
-use \Kohana as Kohana;
 use \Request as Request;
 use \View as View;
 use \Security as Security;
@@ -37,6 +36,18 @@ class Controller extends \Controller
     public $auth;
 
     /**
+     *
+     * @var Boom\Environment\Environment
+     */
+    public $environment;
+
+    /**
+     *
+     * @var Boom
+     */
+    public $boom;
+
+    /**
 	 * @var	Editor
 	 */
     public $editor;
@@ -56,13 +67,15 @@ class Controller extends \Controller
 
     public function before()
     {
+        $this->boom = Boom::instance();
+        $this->environment = $this->boom->getEnvironment();
         $this->session = Session::instance();
         $this->auth = new Auth(Config::get('auth'), $this->session);
 
         $this->_save_last_url();
 
         // Require the user to be logged in if the site isn't live.
-        if ($this->request->is_initial() && ! (Kohana::$environment == Kohana::PRODUCTION || $this->auth->isLoggedIn())) {
+        if ($this->request->is_initial() && ($this->boom->getEnvironment()->requiresLogin() && ! $this->auth->loggedIn())) {
             throw new \HTTP_Exception_401();
         }
 

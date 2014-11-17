@@ -7,14 +7,17 @@ $.widget( 'boom.pageManager', {
 			var $el = $(this);
 
 			$el.append("<div><a href='#' class='b-pages-add'>Add page</a><a href='#' class='b-pages-delete'>Delete page</a><a href='#' class='b-pages-urls'>URLs</a></div>");
-			elementsById[$el.data('page-id')] = $el;
+			elementsById[$el.find('a').attr('rel')] = $el;
 		});
 
 		$(children).each(function(i, child) {
 			var $visibilityButton = $("<a class='b-pages-visibility' href='#'>Visibility</a>");
 
 			child.visible? $visibilityButton.addClass('visible') : $visibilityButton.addClass('invisible');
-			elementsById[child.id].find('div').append($visibilityButton);
+
+			if (elementsById[child.id]) {
+				elementsById[child.id].find('div').append($visibilityButton);
+			}
 		});
 	},
 
@@ -34,6 +37,9 @@ $.widget( 'boom.pageManager', {
 			.pageTree({
 				load : function(e, data) {
 					pageManager.addActionButtons(data.elements, data.children);
+				},
+				onPageSelect : function(link) {
+					top.window.location = link.getUrl();
 				}
 			});
 

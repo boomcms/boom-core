@@ -1,14 +1,15 @@
 <?php
 
 use Boom\Config;
+use Boom\Person;
 
 class Controller_Cms_Auth_Recover extends Controller_Cms_Auth
 {
     public function action_create_token()
     {
-        $person = new Model_Person(['email' => $this->request->post('email')]);
+        $person = Person\Factory::byEmail($this->request->post('email'));
 
-        if ( ! $person->loaded() || ! $person->enabled) {
+        if ( ! $person->loaded() || ! $person->isEnabled()) {
             $this->_display_form(['error' => Kohana::message('auth', 'recover.errors.invalid_email')]);
 
             return;
@@ -16,7 +17,7 @@ class Controller_Cms_Auth_Recover extends Controller_Cms_Auth
 
         $token = ORM::factory('PasswordToken')
             ->values([
-                'person_id' => $person->id,
+                'person_id' => $person->getId(),
                 'token' => sha1(uniqid(null, true)),
                 'expres' => $_SERVER['REQUEST_TIME'] + Date::HOUR
             ])
@@ -30,7 +31,7 @@ class Controller_Cms_Auth_Recover extends Controller_Cms_Auth
         ]);
 
         Email::factory('CMS Password Reset')
-            ->to($person->email)
+            ->to($person->getEmail())
             ->from(Config::get('support_email'))
             ->message(new View('boom/email', [
                 'content' => $email_body,
@@ -78,13 +79,13 @@ class Controller_Cms_Auth_Recover extends Controller_Cms_Auth
                 ->update();
 
             DB::delete('password_tokens')
-                ->where('person_id', '=', $token->person->id)
+                ->where('person_id', '=', $token->getPerson()->getId())
                 ->execute();
 
-            $this->auth->force_login($token->person);
+            $this->auth->force_login($token->getPerson());
             $this->redirect('/');
         } else {
-            $this->_display_form(['token' => $token, 'email' => $token->person->email]);
+            $this->_display_form(['token' => $token, 'email' => $token->getPerson()->getEmail()]);
         }
     }
 

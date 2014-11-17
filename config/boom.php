@@ -1,9 +1,6 @@
 <?php
 
 return array(
-    'auth' => array(
-        'disabled' => Kohana::$environment === Kohana::DEVELOPMENT,
-    ),
     'menu'    =>    array(
         'view_filename'        =>    'menu/boom',
         'items'            =>    array(
@@ -60,7 +57,7 @@ return array(
         'AutoFormat.RemoveEmpty' => true,
         'AutoFormat.RemoveSpansWithoutAttributes' => true,
         'Core.RemoveInvalidImg' => false,
-        'Cache.SerializerPath' => APPPATH.'cache',
+        'Cache.SerializerPath' => \Boom\Boom::instance()->getCacheDir(),
         'CSS.AllowedProperties' => array(),
         'URI.AllowedSchemes' => array (
             'http' => true,

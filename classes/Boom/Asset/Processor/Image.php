@@ -2,6 +2,7 @@
 
 namespace Boom\Asset\Processor;
 
+use Boom;
 use Boom\Asset\Asset;
 use Response;
 use Intervention\Image\ImageManager;
@@ -20,14 +21,14 @@ class Image extends Processor
 
         $this->manager = new ImageManager([
             'cache' => [
-                'path' => APPPATH . 'cache/assets',
+                'path' => Boom\Boom::instance()->getCacheDir() . 'assets',
             ]
         ]);
     }
 
     public function crop($width = null, $height = null)
     {
-        if ($width || $height) {
+        if ($width && $height) {
             $image = $this->manager->cache(function ($manager) use ($width, $height) {
                 return $manager->make($this->asset->getFilename())->crop($width, $height);
             });

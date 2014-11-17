@@ -1,0 +1,50 @@
+#b-linkset-editor {
+	#b-linkset-links {
+		ul {
+			padding-left: 0;
+			margin-top: 0;
+		}
+
+		li {
+			position: relative;
+			list-style-type: none;
+
+			+ li a {
+				margin-top: 1px;
+			}
+
+			a {
+
+				display: block;
+				background: @dark-grey;
+				text-decoration: none;
+				padding: 0.3em;
+
+				&:hover, &:focus {
+					background: @lightest-grey;
+				}
+			}
+
+
+			a.delete {
+				.box-sizing;
+				position: absolute;
+				top: 0;
+				right: 0;
+				bottom: 0;
+				padding: 15px;
+				margin-top: 0;
+				background: transparent url(/media/boom/img/sprite.png) center;
+				background-position: -120px -120px;
+
+				&:hover, &:focus {
+					background-color: @lightest-grey;
+				}
+			}
+		}
+	}
+
+	input[type=text] {
+		width: 100%;
+	}
+}

@@ -1,25 +1,24 @@
-<div id="test">
-	<div id="boom-chunk-linkset-links">
-		<div id="boom-chunk-linkset-urls-valid">
-			<div class="ui-widget">
-				<div class="ui-state-highlight ui-corner-all">
-					<p style="margin: .5em;">
-						<span style="float: left; margin-right: 0.3em; margin-top:-.2em" class="ui-icon ui-icon-info"></span>
-						Drag the links to re-arrange. Click on the delete icon to remove.
-					</p>
-				</div>
-			</div>
-			<br />
-			<ul class="boom-tree boom-tree-noborder boom-chunk-linkset-links-set">
-			</ul>
-		</div>
-		<div id="boom-chunk-linkset-urls-invalid" class="ui-helper-hidden">
-			<div class="ui-state-highlight ui-corner-all">
-				<p style="margin: .5em;">
-					<span style="float: left; margin-right: 0.3em; margin-top:-.2em" class="ui-icon ui-icon-info"></span>
-					You have not added any links yet. Click on 'Add link' to add some links to this set.
-				</p>
-			</div>
-		</div>
-	</div>
+<div class="boom-tabs">
+    <ul>
+        <li><a href="#b-linkset-links">Links</a></li>
+        <li id="b-linkset-title-tab"><a href="#b-linkset-title">Title</a></li>
+    </ul>
+
+    <div id="b-linkset-links">
+        <ul>
+            <?php foreach ($links as $link): ?>
+                <li><a href='#' data-page-id="<?= $link->target_page_id ?>" data-url="<?= $link->url ?>"><?= $link->getLink()->getTitle() ?></a></li>
+            <?php endforeach ?>
+        </ul>
+
+        <?php if (! count($links)): ?>
+            <p class="none">This linkset does not contain any links.</p>
+        <?php endif ?>
+
+        <?= new Boom\UI\Button('add', 'Add link', array('id' => 'b-linkset-add', 'class' => 'b-button-withtext')) ?>
+    </div>
+
+    <div id="b-linkset-title">
+        <input type="text" name="title" value="<?= $title ?>" />
+    </div>
 </div>
