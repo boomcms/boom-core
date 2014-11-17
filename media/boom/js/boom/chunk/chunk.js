@@ -98,19 +98,6 @@ $.widget('ui.chunk',
 	},
 
 	/**
-	Bring the slot UI forward, above all other page elements.
-	@function
-	*/
-	_bring_forward : function() {
-
-		this.element.css( {
-			'z-index' : 1000,
-			'position' : 'relative'
-		});
-		top.$( 'body' ).prepend( '<div class="overlay"></div>' );
-
-	},
-	/**
 	Drop the slot UI back into its natural place in the page z-index stack.
 	@function
 	*/
