@@ -59,7 +59,7 @@ class Model_Chunk_Linkset extends ORM
             // Act as getter.
 
             if ($this->_links === null) {
-                $page = new Model\Page();
+                $page = new Model_Page();
 
                 $query = ORM::factory('Chunk_Linkset_Link')
                     ->join(['pages', 'target'], 'left')
