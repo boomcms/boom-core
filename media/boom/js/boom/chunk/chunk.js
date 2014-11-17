@@ -97,15 +97,6 @@ $.widget('ui.chunk',
 			});
 	},
 
-	/**
-	Drop the slot UI back into its natural place in the page z-index stack.
-	@function
-	*/
-	_send_back : function() {
-		this.element.removeAttr( 'style' );
-		top.$( 'div.overlay' ).remove();
-	},
-
 	unbind : function() {
 		this.element
 			.unbind('click')
