@@ -34,15 +34,15 @@ $.widget('boom.groupPermissionsEditor', {
 		var page_tree = this.element.find('#b-group-roles-pages .boom-tree');
 
 		page_tree.tree().pageTree({
-			onPageSelect : function(page) {
+			onPageSelect : function(link) {
 				$('#b-group-roles-pages .b-group-roles').show();
 
-				selected_page = page.page_id;
+				selected_page = link.getPageId();
 
 				self._check_inputs($( '#b-group-roles-pages input[type=radio]'), -1);
 
 				page_tree
-					.find('a[rel=' + page.page_id + ']')
+					.find('a[rel=' + link.getPageId() + ']')
 					.parents('.boom-tree')
 					.find('a.ui-state-active')
 					.removeClass('ui-state-active')
