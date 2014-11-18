@@ -55,6 +55,9 @@ function boomChunkAssetEditor(pageId, slotname, visibleElements) {
 		})
 		.done(function() {
 			chunkAssetEditor.deferred.resolve(chunkAssetEditor.getData());
+		 })
+		.fail(function() {
+			chunkAssetEditor.deferred.reject();
 		 });
 
 		return this.deferred;

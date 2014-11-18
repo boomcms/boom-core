@@ -23,6 +23,9 @@ $.widget('ui.chunkAsset', $.ui.chunk, {
 		})
 		.done(function(chunkData) {
 			chunkAsset.save(chunkData);
+		})
+		.fail(function() {
+			chunkAsset.destroy();
 		});
 	},
 
