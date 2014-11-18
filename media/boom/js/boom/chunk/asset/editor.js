@@ -70,7 +70,7 @@ function boomChunkAssetEditor(pageId, slotname, visibleElements) {
 			this.asset.find('p').replaceWith($img);
 		}
 
-		$img.attr('src', '/asset/view/' + assetId);
+		$img.attr('src', '/asset/view/' + assetId + '/400');
 	};
 
 	boomChunkAssetEditor.prototype.setLink = function(link) {
