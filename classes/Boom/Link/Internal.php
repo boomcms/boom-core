@@ -17,7 +17,7 @@ class Internal extends Link
         if (ctype_digit($link)) {
             $this->page = Page\Factory::byId($link);
         } else {
-            $location = ($link === '/') ? $link : substr($link, 1);
+            $location = ($link === '/') ? '' : substr($link, 1);
             $this->page = Page\Factory::byUri($location);
         }
     }
