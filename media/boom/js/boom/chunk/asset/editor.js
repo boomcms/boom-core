@@ -36,7 +36,7 @@ function boomChunkAssetEditor(pageId, slotname, visibleElements) {
 	boomChunkAssetEditor.prototype.getData = function() {
 		return {
 			asset_id : this.asset.attr('data-asset-id'),
-			caption : this.caption.find('input').val(),
+			caption : this.caption.find('textarea').val(),
 			url : this.link.find('input').val(),
 			title : this.title.find('input').val()
 		};
