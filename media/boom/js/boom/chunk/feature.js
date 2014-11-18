@@ -28,6 +28,8 @@ $.widget('ui.chunkFeature', $.ui.chunk,
 			this.dialog.contents.dialog('widget')
 				.find('.ui-dialog-buttonpane')
 				.prepend(button);
+		} else {
+			this.dialog.contents.find('input[name=parent_id]').val('');
 		}
 	},
 
@@ -79,9 +81,9 @@ $.widget('ui.chunkFeature', $.ui.chunk,
 				featureEditor.confirmation && featureEditor.confirmation.close();
 
 				featureEditor.dialog.contents.find('.boom-tree').pageTree({
-					onPageSelect : function(page) {
+					onPageSelect : function(link) {
 						featureEditor.dialog.close();
-						featureEditor.insert(page.page_id);
+						featureEditor.insert(link.getPageId());
 					}
 				});
 			},
