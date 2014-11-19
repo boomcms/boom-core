@@ -17,10 +17,10 @@
                         <?= Form::select('children_template_id', $templates, $default_child_template, array('id' => 'children_template_id')) ?>
                     </label>
 
-                    <label>
+                    <?/*label>
                         <?= __('Update existing child pages') ?>
                         <?= Form::checkbox('cascade_template', '1', false, array('id' => 'child_template_cascade')) ?>
-                    </label>
+                    </label*/?>
 				
                     <label>
                         <?=__('Child ordering policy')?>
@@ -52,10 +52,10 @@
                                 ?>
                             </label>
 
-                            <label>
+                            <?/*label>
                                 <?= __('Update existing child pages') ?>
                                 <?= Form::checkbox('cascade[]', 'visible_in_nav', false, array('id' => 'visible_in_nav_cascade')) ?>
-                            </label>
+                            </label*/?>
 					
                             <label>
                                 <?=__('Children visible in CMS nav')?>?
@@ -65,10 +65,10 @@
                                     ), $page->childrenAreVisibleInCmsNav(), array('id' => 'children_visible_in_nav_cms')) ?>
                             </label>
 					
-                            <label>
+                            <?/*label>
                                 <?= __('Update existing child pages') ?>
                                 <?= Form::checkbox('cascade[]', 'visible_in_nav_cms', false, array('id' => 'visible_in_nav_cms_cascade')) ?>
-                            </label>
+                            </label*/?>
                 
                             <label>
                                 <?=__('Default child URI prefix')?>
