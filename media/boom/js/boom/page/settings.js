@@ -145,9 +145,9 @@ boomPage.prototype.childsettings = function() {
 
 			$('#b-page-settings-children-reorder').on('click', function() {
 				var sort_url = '/cms/page/settings/sort_children/' + page.id,
-					dialog;
+					sortDialog;
 
-				dialog = new boomDialog({
+				sortDialog = new boomDialog({
 					url:  sort_url,
 					title: 'Reorder child pages',
 					width: 'auto',
@@ -156,12 +156,12 @@ boomPage.prototype.childsettings = function() {
 					}
 				});
 
-				dialog.done(function() {
+				sortDialog.done(function() {
 					var sequences = $('#b-page-settings-children-sort li').map(function(){
 						return $(this).attr('data-id');
 					}).get();
 
-					page.saveSettings(url, $("form.b-form-settings").serialize())
+					page.saveSettings(url, sortDialog.contents.find('form').serialize())
 						.done(function() {
 							page.saveSettings('/cms/page/settings/sort_children/' + page.id, {sequences : sequences}, 'Child page ordering saved, reloading page');
 						});
@@ -171,7 +171,7 @@ boomPage.prototype.childsettings = function() {
 	});
 
 	dialog.done(function() {
-		page.saveSettings(url, $(this).find("form").serialize(), 'Child page settings saved');
+		page.saveSettings(url, dialog.contents.find("form").serialize(), 'Child page settings saved');
 	});
 };
 

@@ -31,32 +31,33 @@ class Controller_Cms_Page_Settings_Save extends Controller_Cms_Page_Settings
         $this->page->setChildTemplateId($post['children_template_id']);
 
         if ($this->allowAdvanced) {
-            $expected = array_merge($expected, [
-                'children_url_prefix',
-                'children_visible_in_nav',
-                'children_visible_in_nav_cms',
-                'grandchild_template_id'
-            ]);
+            $this->page
+                ->setChildrenUrlPrefix($this->request->post('children_url_prefix'))
+                ->setChildrenVisibleInNav($this->request->post('children_visible_in_nav') == 1)
+                ->setChildrenVisibleInNavCms($this->request->post('children_visible_in_nav_cms') == 1)
+                ->setGrandchildTemplateId($this->request->post('grandchild_template_id'));
 
-            $cascade_expected = ['visible_in_nav', 'visible_in_nav_cms'];
+//            $cascade_expected = ['visible_in_nav', 'visible_in_nav_cms'];
         }
 
         if (isset($post['children_ordering_policy']) && isset($post['children_ordering_direction'])) {
             $this->page->setChildOrderingPolicy($post['children_ordering_policy'], $post['children_ordering_direction']);
         }
 
-        if (isset($post['cascade']) && ! empty($post['cascade'])) {
-            $cascade = [];
-            foreach ($post['cascade'] as $c) {
-                $cascade[$c] = ($c == 'visible_in_nav' || $c == 'visible_in_nav_cms') ?  $this->page->{"children_$c"} : $this->page->$c;
-            }
+//        if (isset($post['cascade']) && ! empty($post['cascade'])) {
+//            $cascade = [];
+//            foreach ($post['cascade'] as $c) {
+//                $cascade[$c] = ($c == 'visible_in_nav' || $c == 'visible_in_nav_cms') ?  $this->page->{"children_$c"} : $this->page->$c;
+//            }
+//
+//            $this->page->cascade_to_children($cascade);
+//        }
 
-            $this->page->cascade_to_children($cascade);
-        }
+//        if (isset($post['cascade_template'])) {
+//            $this->page->set_template_of_children($this->page->children_template_id);
+//        }
 
-        if (isset($post['cascade_template'])) {
-            $this->page->set_template_of_children($this->page->children_template_id);
-        }
+        $this->page->save();
     }
 
     public function action_feature()
