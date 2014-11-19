@@ -321,6 +321,18 @@ class Page
     }
 
     /**
+     *
+     * @param string $prefix
+     * @return \Boom\Page\Page
+     */
+    public function setChildrenUrlPrefix($prefix)
+    {
+        $this->model->children_url_prefix = $prefix;
+
+        return $this;
+    }
+
+    /**
 	 *
 	 * @param string $description
 	 * @return \Boom\Page\Page
