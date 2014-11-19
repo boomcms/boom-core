@@ -393,6 +393,18 @@ class Page
     }
 
     /**
+     *
+     * @param int $templateId
+     * @return \Boom\Page\Page
+     */
+    public function setGrandchildTemplateId($templateId)
+    {
+        $this->model->grandchild_template_id = $templateId;
+
+        return $this;
+    }
+
+    /**
 	 *
 	 * @param boolean $indexing
 	 * @return \Boom\Page\Page
