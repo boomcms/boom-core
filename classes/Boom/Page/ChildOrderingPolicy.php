@@ -22,12 +22,12 @@ class ChildOrderingPolicy
         if ($numArgs === 1) {
             $this->int = func_get_arg(0);
 
-            $this->_setFromInt($this->int);
+            $this->setFromInt($this->int);
         } elseif ($numArgs == 2) {
             $this->column = func_get_arg(0);
             $this->direction = func_get_arg(1);
 
-            $this->__setFromColumnAndDirection($this->column, $this->direction);
+            $this->setFromColumnAndDirection($this->column, $this->direction);
         }
     }
 
@@ -65,7 +65,7 @@ class ChildOrderingPolicy
         return $this->direction;
     }
 
-    protected function _setFromInt($int)
+    protected function setFromInt($int)
     {
         if ($int & static::ALPHABETIC) {
             $this->column = 'title';
@@ -78,7 +78,7 @@ class ChildOrderingPolicy
         $this->direction = ($int & static::ASC) ? 'asc' : 'desc';
     }
 
-    protected function _setFromColumnAndDirection($column, $direction)
+    protected function setFromColumnAndDirection($column, $direction)
     {
         $this->int = $this->columnToInt($column) | $this->directionToInt($direction);
     }
