@@ -345,6 +345,18 @@ class Page
     }
 
     /**
+     *
+     * @param boolean $visible
+     * @return \Boom\Page\Page
+     */
+    public function setChildrenVisibleInNavCMS($visible)
+    {
+        $this->model->children_visible_in_nav_cms = $visible;
+
+        return $this;
+    }
+
+    /**
 	 *
 	 * @param string $description
 	 * @return \Boom\Page\Page
