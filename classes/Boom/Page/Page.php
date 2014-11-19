@@ -300,6 +300,13 @@ class Page
         return $this;
     }
 
+    public function setChildTemplateId($id)
+    {
+        $this->model->children_template_id = $id;
+
+        return $this;
+    }
+
     /**
 	 *
 	 * @param	string	$column

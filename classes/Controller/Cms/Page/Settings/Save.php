@@ -28,7 +28,7 @@ class Controller_Cms_Page_Settings_Save extends Controller_Cms_Page_Settings
 
         $this->log("Saved child page settings for page ".$this->page->getTitle()." (ID: ".$this->page->getId().")");
 
-        $this->page->setChildrenTemplateId($post['children_template_id']);
+        $this->page->setChildTemplateId($post['children_template_id']);
 
         if ($this->allowAdvanced) {
             $expected = array_merge($expected, [
