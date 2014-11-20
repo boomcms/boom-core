@@ -84,32 +84,6 @@ window.boomConfig =
 	@static
 	@class
 	*/
-	tabs : {
-		/**
-		@type boolean
-		@default false
-		*/
-		cache: false,
-		/** @function */
-		active: function(event, ui) {
-			var url = $.data(ui.tab, 'load.tabs');
-			if (url) {
-				location.href = url;
-				return false;
-			}
-			return true;
-		},
-		/** @function */
-		activate: function(event, ui){
-			//console.log( ui );
-			//$(ui.tab.href.replace(/^.*?#/, '#')).show();
-		}
-	},
-
-	/**
-	@static
-	@class
-	*/
 	tree : {
 		/**
 		@type boolean

@@ -24,7 +24,7 @@ boom.plugins.js
 		}, opts);
 
 		$('.b-button').button($.boom.config.button);
-		$('.boom-tabs').tabs($.boom.config.tabs);
+		$('.boom-tabs').tabs();
 		$('.boom-datepicker').datetimepicker($.boom.config.datepicker);
 
 		var elems = '.boom-tree';
