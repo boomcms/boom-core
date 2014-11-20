@@ -28,7 +28,7 @@ function boomAssetPicker(currentAssetId) {
 
 		this.titleFilter.assetTitleFilter({
 			search : function(event, ui) {
-				assetPicker.addFilter('title', $(this).val());
+				assetPicker.addFilter('title', assetPicker.titleFilter.val());
 				assetPicker.getAssets();
 			},
 			select : function(event, ui) {
