@@ -23,17 +23,14 @@ $.widget('boom.assetTitleFilter', {
 		this.element.autocomplete(this.options);
 		this.element
 			.on('focus', function() {
-				var $this = $(this);
 
-				if ($this.val() === $this.attr('placeholder')) {
-					$this.val('');
+				if (element.val() === element.attr('placeholder')) {
+					element.val('');
 				}
 			})
 			.on('blur', function() {
-				var $this = $(this);
-
-				if ($this.val() === '') {
-					$this.val($this.attr('placeholder'));
+				if (element.val() === '') {
+					element.val(element.attr('placeholder'));
 				}
 			});
 	}
