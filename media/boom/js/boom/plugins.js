@@ -17,42 +17,12 @@ boom.plugins.js
 	@function
 	*/
 	$.fn.ui = function(opts){
-
-		opts = $.extend({
-			tree: $.boom.config.tree,
-			sortable: $.boom.config.sortable,
-		}, opts);
-
-		$('.b-button').button($.boom.config.button);
-		$('.boom-tabs').tabs();
-		$('.boom-datepicker').datetimepicker($.boom.config.datepicker);
-
-		var elems = '.boom-tree';
-
 		$.boom.log('Start bind UI events');
 
-		this.find(elems).each(function(){
-
-			var elem = $(this), types = [];
-
-			$.each(this.className.split(' '), function(){
-
-				if (/boom/.test(this)) {
-
-					types.push(this.replace(/boom-/, ''));
-				}
-			});
-
-			$.each(types, function(){
-				switch(this.toString()) {
-					case 'tree' :
-						elem.tree($.extend({}, opts.tree, {
-							border: !(/tree-noborder/).test(elem[0].className)
-						}));
-					break;
-				};
-			});
-		});
+		this.find('.b-button').button($.boom.config.button);
+		this.find('.boom-tabs').tabs();
+		this.find('.boom-datepicker').datetimepicker($.boom.config.datepicker);
+		this.find('.boom-tree').tree($.boom.config.tree);
 
 		$.boom.log('Stop bind UI events');
 
