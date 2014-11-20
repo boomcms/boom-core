@@ -100,7 +100,7 @@ boomPageFeatureEditor = function(page) {
 		this.currentImage = asset_id;
 
 		if (asset_id) {
-			this.dialog.contents.find('#b-page-feature-current').attr('src', '/asset/view/' + asset_id).show();
+			this.dialog.contents.find('#b-page-feature-current').attr('src', '/asset/view/' + asset_id + '/' + '500').show();
 			this.dialog.contents.find('#b-page-feature-remove').button('enable');
 		} else {
 			this.dialog.contents.find('#b-page-feature-current').hide();

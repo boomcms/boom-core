@@ -6,7 +6,7 @@
 		<? if ( ! $feature_image_id): ?>
 			<img id='b-page-feature-current' src='' />
 		<? else: ?>
-			<img id='b-page-feature-current' src='<?= Route::url('asset', array('id' => $feature_image_id)) ?>' />
+			<img id='b-page-feature-current' data-asset-id="<?= $feature_image_id ?>" src='<?= Route::url('asset', array('id' => $feature_image_id, 'width' => 500)) ?>' />
 		<? endif; ?>
 
 
