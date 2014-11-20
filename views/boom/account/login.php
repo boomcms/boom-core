@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="en-gb">
+<html dir="ltr" lang="en-gb" class="boom">
 	<head>
 		<title>BoomCMS | <?= __('Login') ?></title>
 		<meta name="robots" content="noindex, nofollow" />
@@ -17,13 +17,13 @@
 						<label for="email">
 							<?= __('Email address') ?>
 						</label>
-						<input type="email" placeholder='<?= __('Email address') ?>' name="email" required class="b-input" id="email" value="<?= $request->query('email') ?>" />
+						<input type="email" placeholder='<?= __('Email address') ?>' name="email" required id="email" value="<?= $request->query('email') ?>" />
 					</p>
 					<p>
 						<label for="password">
 							<?= __('Password') ?>
 						</label>
-						<input type="password" placeholder='<?= __('Password') ?>' name="password" required class="b-input" id="password" />
+						<input type="password" placeholder='<?= __('Password') ?>' name="password" required id="password" />
 					</p>
 					<p>
 						<label class="b-remember-me-label">
