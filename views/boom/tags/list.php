@@ -1,7 +1,7 @@
 <div id="b-tags">
 	<h2>Existing tags</h2>
 	<?php if (isset($message)): ?>
-		<span><?= $message ?></span>
+		<p class="none"><?= $message ?></p>
 	 <?php endif ?>
 
 	<ul class="b-tags-list">
