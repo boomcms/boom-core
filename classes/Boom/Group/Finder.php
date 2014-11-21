@@ -22,7 +22,7 @@ class Finder extends Boom\Finder\Finder
     {
         $groups = parent::findAll()->as_array();
 
-        array_walk($groups, function(&$group) {
+        array_walk($groups, function (&$group) {
             $group = new Group($group);
         });
 

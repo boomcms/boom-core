@@ -335,7 +335,7 @@ class Page
 
     /**
      *
-     * @param string $prefix
+     * @param  string          $prefix
      * @return \Boom\Page\Page
      */
     public function setChildrenUrlPrefix($prefix)
@@ -347,7 +347,7 @@ class Page
 
     /**
      *
-     * @param boolean $visible
+     * @param  boolean         $visible
      * @return \Boom\Page\Page
      */
     public function setChildrenVisibleInNav($visible)
@@ -359,7 +359,7 @@ class Page
 
     /**
      *
-     * @param boolean $visible
+     * @param  boolean         $visible
      * @return \Boom\Page\Page
      */
     public function setChildrenVisibleInNavCMS($visible)
@@ -407,7 +407,7 @@ class Page
 
     /**
      *
-     * @param int $templateId
+     * @param  int             $templateId
      * @return \Boom\Page\Page
      */
     public function setGrandchildTemplateId($templateId)
