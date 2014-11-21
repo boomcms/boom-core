@@ -38,7 +38,7 @@ function boomChunkAssetEditor(pageId, slotname, visibleElements) {
 			asset_id : this.asset.attr('data-asset-id'),
 			caption : this.caption.find('textarea').val(),
 			url : this.link.find('input').val(),
-			title : this.title.find('input').val()
+			title : this.title.find('textarea').val()
 		};
 	};
 

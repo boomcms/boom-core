@@ -1,7 +1,7 @@
 $.widget('boom.assetTitleFilter', {
 	options : {
 		delay : 200,
-		minLength : 0
+		minLength : 1
 	},
 
 	_create : function() {
