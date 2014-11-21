@@ -14,17 +14,22 @@
 		<div id="basic">
                     <label>
                         <?=__('Default child template')?>
-                        <?= Form::select('children_template_id', $templates, $default_child_template, array('id' => 'children_template_id')) ?>
+
+                        <select name="children_template_id" id="children_template_id">
+                            <?php foreach($templates as $t): ?>
+                              <option value="<?= $t->getId() ?>"<?php if($t->getId() === $default_child_template): ?> selected<?php endif ?>><?= $t->getName() ?></option>
+                            <?php endforeach ?>
+                        </select>
                     </label>
 
                     <?/*label>
                         <?= __('Update existing child pages') ?>
                         <?= Form::checkbox('cascade_template', '1', false, array('id' => 'child_template_cascade')) ?>
                     </label*/?>
-				
+
                     <label>
                         <?=__('Child ordering policy')?>
-    
+
                         <?= Form::select('children_ordering_policy', array(
                                 'sequence'		=>	'Manual',
                                 'visible_from'	=>	'Date',
@@ -44,7 +49,7 @@
 			<div id="advanced">
                             <label>
                                 <?=__('Children visible in nav')?>?
-    
+
                                 <?= Form::select('children_visible_in_nav', array(
                                         1 => 'Yes',
                                         0 => 'No',
@@ -56,7 +61,7 @@
                                 <?= __('Update existing child pages') ?>
                                 <?= Form::checkbox('cascade[]', 'visible_in_nav', false, array('id' => 'visible_in_nav_cascade')) ?>
                             </label*/?>
-					
+
                             <label>
                                 <?=__('Children visible in CMS nav')?>?
                                 <?= Form::select('children_visible_in_nav_cms', array(
@@ -64,20 +69,25 @@
                                         0 => 'No',
                                     ), $page->childrenAreVisibleInCmsNav(), array('id' => 'children_visible_in_nav_cms')) ?>
                             </label>
-					
+
                             <?/*label>
                                 <?= __('Update existing child pages') ?>
                                 <?= Form::checkbox('cascade[]', 'visible_in_nav_cms', false, array('id' => 'visible_in_nav_cms_cascade')) ?>
                             </label*/?>
-                
+
                             <label>
                                 <?=__('Default child URI prefix')?>
                                 <?= Form::input('children_url_prefix', $page->getChildPageUrlPrefix(), array('id' => 'children_url_prefix')) ?>
                             </label>
-			
+
                             <label>
                                 <?=__('Default grandchild template')?>
-                                <?= Form::select('grandchild_template_id', $templates, $default_grandchild_template, array('id' => 'grandchild_template_id')) ?>
+
+                                <select name="grandchild_template_id" id="grandchild_template_id">
+                                    <?php foreach($templates as $t): ?>
+                                        <option value="<?= $t->getId() ?>"<?php if($t->getId() === $default_grandchild_template): ?> selected<?php endif ?>><?= $t->getName() ?></option>
+                                    <?php endforeach ?>
+                                </select>
                             </label>
 			</div>
 		<? endif ?>
