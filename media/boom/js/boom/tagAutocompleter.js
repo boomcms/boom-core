@@ -35,8 +35,8 @@ $.widget('boom.tagAutocompleter', {
 			// Add a tag when the enter key is pressed.
 			// This allows us to add a tag which doesn't already exist.
 			if (e.which == 13) {
-				self._tagSelected($(this).val(), -1);
-				$(this).val('');
+				self._tagSelected(self.element.val(), -1);
+				self.element.val('');
 			}
 		});
 	},
