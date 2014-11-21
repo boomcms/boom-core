@@ -14,5 +14,5 @@
 
 	<h2>Add tag</h2>
 	<p><?= Kohana::message('boom', 'tags.add') ?></p>
-	<input id="b-tags-add-name" />
+	<input type="text" id="b-tags-add-name" />
 </div>
