@@ -18,9 +18,9 @@ class Text extends \Boom\Chunk
             case 'standfirst':
                 return "<p class=\"standfirst\">$text</p>";
             case 'bodycopy':
-                return "<div id=\"content\">$text</div>";
+                return "<div class=\"content\">$text</div>";
             case 'bodycopy2':
-                return "<div id=\"content-secondary\">$text</div>";
+                return "<div class=\"content-secondary\">$text</div>";
             default:
                 return "<p>$text</p>";
         }
