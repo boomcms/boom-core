@@ -37,6 +37,7 @@ $.widget('boom.tagAutocompleter', {
 			if (e.which == 13) {
 				self._tagSelected(self.element.val(), -1);
 				self.element.val('');
+				self.element.autocomplete('close');
 			}
 		});
 	},
