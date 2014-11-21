@@ -1,7 +1,7 @@
 <div id="b-tags">
 	<h2>Existing tags</h2>
 	<?php if (isset($message)): ?>
-		<span><?= $message ?></span>
+		<p class="none"><?= $message ?></p>
 	 <?php endif ?>
 
 	<ul class="b-tags-list">
@@ -14,5 +14,5 @@
 
 	<h2>Add tag</h2>
 	<p><?= Kohana::message('boom', 'tags.add') ?></p>
-	<input id="b-tags-add-name" />
+	<input type="text" id="b-tags-add-name" />
 </div>

@@ -81,7 +81,7 @@ return array(
             'paragraph' => array('Insert paragraph', array('data-wysihtml5-command' => 'formatBlock', 'data-wysihtml5-command-value' => 'p', 'class' => 'command')),
             'h2' => array('Insert headline 2', array('data-wysihtml5-command' => 'formatBlock', 'data-wysihtml5-command-value' => 'h2', 'class' => 'command')),
             'h3' => array('Insert headline 3', array('data-wysihtml5-command' => 'formatBlock', 'data-wysihtml5-command-value' => 'h3', 'class' => 'command')),
-            'blockquote' => array('Insert blockquote', array('data-wysihtml5-command' => 'formatBlock', 'data-wysihtml5-command-value' => 'blockquote', 'class' => 'command')),
+            'blockquote' => array('Insert blockquote', array('data-wysihtml5-command' => 'insertBlockquote', 'class' => 'command')),
             'edit' => array('Edit link', array('class' => 'b-editor-link', 'data-wysihtml5-dialog' => 'createBoomLink', 'style' => 'display:none')),
             'cta' => array('Call to action', array('data-wysihtml5-command' => 'cta')),
         ),

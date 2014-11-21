@@ -33,7 +33,7 @@ class Finder extends Boom\Finder\Finder
     {
         $pages = parent::findAll()->as_array();
 
-        array_walk($pages, function(&$page) {
+        array_walk($pages, function (&$page) {
            $page = new Page($page);
         });
 

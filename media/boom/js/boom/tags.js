@@ -80,6 +80,8 @@ $.widget( 'boom.tagger',
 			type = this.options.type,
 			id = this.options.id;
 
+		self.element.find('.none').hide();
+
 		$.post(self.options.base_url + type + '/add/' + id, {tag : tag_name})
 			.done(function() {
 				$.get( self.options.base_url + type + '/list/' + id )

@@ -15,7 +15,7 @@ abstract class Environment
 
     /**
      *
-     * @param Exception $e
+     * @param  Exception               $e
      * @return PrivateExceptionHandler
      */
     public function getExceptionHandler(Exception $e)

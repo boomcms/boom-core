@@ -30,7 +30,7 @@ class Boom
     public static function instance()
     {
         if (static::$instance === null) {
-            static::$instance = new static;
+            static::$instance = new static();
         }
 
         return static::$instance;
@@ -42,17 +42,17 @@ class Boom
      */
     public function getCacheDir()
     {
-        return $this->cacheDir?: realpath(__DIR__ . '/../../cache/');
+        return $this->cacheDir ?: realpath(__DIR__ . '/../../cache/');
     }
 
     public function getEnvironment()
     {
-        return $this->environment ?: new Environment\Production;
+        return $this->environment ?: new Environment\Production();
     }
 
     /**
      *
-     * @param string $dir
+     * @param  string     $dir
      * @return \Boom\Boom
      */
     public function setCacheDir($dir)
@@ -70,7 +70,7 @@ class Boom
 
     /**
      *
-     * @param string $environment
+     * @param  string     $environment
      * @return \Boom\Boom
      * @throws Exception
      */
@@ -82,7 +82,7 @@ class Boom
             throw new Exception("Invalid environment: " . $environment);
         }
 
-        $this->environment = new $className;
+        $this->environment = new $className();
 
         return $this;
     }

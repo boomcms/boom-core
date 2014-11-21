@@ -26,10 +26,14 @@ class Controller_Cms_Page_Settings_View extends Controller_Cms_Page_Settings
 
         $childOrderingPolicy = $this->page->getChildOrderingPolicy();
 
+        $manager = new \Boom\Template\Manager();
+        $manager->createNew();
+        $templates = $manager->getValidTemplates();
+
         // Create the main view with the basic settings
         $this->template = View::factory("$this->viewDirectory/children", [
             'default_child_template'    =>    $this->page->getDefaultChildTemplateId(),
-            'templates'            =>    \Boom\Template\Helpers::names(),
+            'templates' => $templates,
             'child_order_column'        =>    $childOrderingPolicy->getColumn(),
             'child_order_direction'    =>    $childOrderingPolicy->getDirection(),
             'allowAdvanced'        =>    $this->allowAdvanced,
@@ -41,7 +45,6 @@ class Controller_Cms_Page_Settings_View extends Controller_Cms_Page_Settings
             $this->template->set([
                 'default_grandchild_template'    => ($this->page->getGrandchildTemplateId() != 0) ? $this->page->getGrandchildTemplateId() : $this->page->getTemplateId(),
                 'page'                    => $this->page,
-                'templates'                => Template\Helpers::names(),
             ]);
         }
     }

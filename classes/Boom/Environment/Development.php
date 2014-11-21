@@ -11,7 +11,7 @@ class Development extends Environment
 
     /**
      *
-     * @param Exception $e
+     * @param  Exception              $e
      * @return PublicExceptionHandler
      */
     public function getExceptionHandler(Exception $e)
