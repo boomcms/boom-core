@@ -5,6 +5,7 @@ namespace Boom\Page;
 use \Boom\Editor\Editor as Editor;
 use \Boom\Template\Template as Template;
 use \Boom\Person as Person;
+use Boom\Tag;
 
 use \DateTime as DateTime;
 
@@ -191,6 +192,18 @@ class Page
     public function getParentId()
     {
         return $this->model->mptt->parent_id;
+    }
+
+    /**
+     *
+     * @return array
+     */
+    public function getTags()
+    {
+        $finder = new Tag\Finder();
+        $finder->addFilter(new Tag\Finder\Filter\Page($this));
+
+        return $finder->findAll();
     }
 
     public function getTemplate()
