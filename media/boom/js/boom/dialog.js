@@ -69,7 +69,15 @@ function boomDialog(options) {
 	boomDialog.prototype.init = function() {
 		var boomDialog = this;
 
-		$(top.window).trigger('boom:dialog:open');
+		$(top.window)
+			.trigger('boom:dialog:open')
+			.resize(function() {
+				var timeout = setTimeout(function() {
+					clearTimeout(timeout);
+
+					boomDialog.reposition();
+				}, 100);
+			});
 
 		this
 			.contents
@@ -79,7 +87,7 @@ function boomDialog(options) {
 		this.contents.dialog('option', 'position', this.options.position);
 
 		this.contents.find('img').load(function() {
-			boomDialog.contents.dialog('option', 'position', boomDialog.options.position);
+			boomDialog.reposition();
 		});
 	};
 
@@ -112,6 +120,10 @@ function boomDialog(options) {
 
 			this.init();
 		}
+	};
+
+	boomDialog.prototype.reposition = function() {
+		this.contents.dialog('option', 'position', this.options.position);
 	};
 
 	this.open();
