@@ -34,7 +34,7 @@ $.widget('boom.tagAutocompleter', {
 		.on('keypress', function(e) {
 			// Add a tag when the enter key is pressed.
 			// This allows us to add a tag which doesn't already exist.
-			if (e.which == 13) {
+			if (e.which == 13 && self.element.val()) {
 				self._tagSelected(self.element.val(), -1);
 				self.element.val('');
 				self.element.autocomplete('close');
