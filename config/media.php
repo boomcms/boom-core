@@ -78,6 +78,8 @@ return array(
         'wysihtml5/commands/insertBoomAsset.js',
         'wysihtml5/commands/createBoomLink.js',
         'wysihtml5/commands/cta.js',
+        'wysihtml5/commands/insertSuperscript.js',
+        'wysihtml5/commands/insertSubscript.js',
         'jquery/jqpagination.js',
         'boom/page/manager.js',
     ),

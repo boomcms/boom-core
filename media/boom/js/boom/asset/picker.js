@@ -78,7 +78,7 @@ function boomAssetPicker(currentAssetId) {
 
 	boomAssetPicker.prototype.cancel = function() {
 		this.deferred.reject();
-		this.close();
+		this.dialog.cancel();
 	};
 
 	boomAssetPicker.prototype.clearFilters = function() {
@@ -91,8 +91,7 @@ function boomAssetPicker(currentAssetId) {
 	};
 
 	boomAssetPicker.prototype.close = function() {
-		this.picker.remove();
-		$(top.window).trigger('boom:dialog:close');
+		this.dialog.cancel();
 	};
 
 	boomAssetPicker.prototype.getAssets = function() {
@@ -143,10 +142,10 @@ function boomAssetPicker(currentAssetId) {
 	boomAssetPicker.prototype.loadPicker = function() {
 		var assetPicker = this;
 
-		this.document
-			.find('body')
-			.load(this.url, function() {
-				assetPicker.picker = assetPicker.document.find('#b-assets-picker');
+		this.dialog = new boomDialog({
+			url : this.url,
+			onLoad : function() {
+				assetPicker.picker = assetPicker.dialog.contents.find('#b-assets-picker');
 				assetPicker.titleFilter = assetPicker.picker.find('#b-assets-filter-title');
 				assetPicker.tagFilter = assetPicker.picker.find('#b-tags-search');
 				assetPicker.typeFilter = assetPicker.picker.find('#b-assets-types');
@@ -162,12 +161,12 @@ function boomAssetPicker(currentAssetId) {
 				} else {
 					assetPicker.hideCurrentAsset();
 				}
-			});
+			}
+		});
 	};
 
 	boomAssetPicker.prototype.open = function() {
 		this.loadPicker();
-		$(top.window).trigger('boom:dialog:open');
 
 		return this.deferred;
 	};
