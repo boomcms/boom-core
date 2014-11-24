@@ -39,6 +39,16 @@ $.widget('boom.tagAutocompleter', {
 				self.element.val('');
 				self.element.autocomplete('close');
 			}
+		})
+		.on('focus', function() {
+			if (self.element.val() === self.element.attr('placeholder')) {
+				self.element.val('');
+			}
+		})
+		.on('blur', function() {
+			if (self.element.val() === '') {
+				self.element.val(self.element.attr('placeholder'));
+			}
 		});
 	},
 
