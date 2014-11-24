@@ -62,20 +62,6 @@ $.widget('boom.assetManager', {
 
 				assetManager.select($this.attr('href').replace('#asset/', ''));
 				$this.parent().parent().toggleClass('selected');
-			})
-			.on('focus', '#b-assets-filter-title, #b-tags-search input', function() {
-				var $this = $(this);
-
-				if ($this.val() == $this.attr('placeholder')) {
-					$this.val('');
-				}
-			})
-			.on('blur', '#b-assets-filter-title, #b-tags-search input', function() {
-				var $this = $(this);
-
-				if ($this.val() == '') {
-					$this.val($this.attr('placeholder'));
-				}
 			});
 
 		this.titleFilter = this.element
