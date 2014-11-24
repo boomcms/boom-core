@@ -84,6 +84,8 @@ return array(
             'blockquote' => array('Insert blockquote', array('data-wysihtml5-command' => 'insertBlockquote', 'class' => 'command')),
             'edit' => array('Edit link', array('class' => 'b-editor-link', 'data-wysihtml5-dialog' => 'createBoomLink', 'style' => 'display:none')),
             'cta' => array('Call to action', array('data-wysihtml5-command' => 'cta')),
+            'sup' => array('Superscript', array('data-wysihtml5-command' => 'insertSuperscript', 'class' => 'command')),
+            'sub' => array('Subscript', array('data-wysihtml5-command' => 'insertSubscript', 'class' => 'command')),
         ),
         'button_sets' => array(
             'text' => array('accept', 'cancel'),
