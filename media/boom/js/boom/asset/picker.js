@@ -63,6 +63,9 @@ function boomAssetPicker(currentAssetId) {
 			.on('click', '#b-assets-picker-close', function() {
 				assetPicker.cancel();
 			})
+			.on('click', '#b-assets-picker-current-remove', function() {
+				assetPicker.pick(0);
+			})
 			.find('#b-assets-upload-form')
 			.assetUploader({
 				done : function(e, data) {
@@ -154,7 +157,7 @@ function boomAssetPicker(currentAssetId) {
 				assetPicker.justifyAssets();
 				assetPicker.initPagination();
 
-				if (assetPicker.currentAssetId) {
+				if (assetPicker.currentAssetId > 0) {
 					assetPicker.picker
 						.find('#b-assets-picker-current img')
 						.attr('src', '/asset/view/' + assetPicker.currentAssetId);
