@@ -3,8 +3,9 @@
 namespace Boom\Group;
 
 use \DB as DB;
+use Cartalyst\Sentry\Groups\GroupInterface;
 
-class Group
+class Group implements GroupInterface
 {
     /**
 	 *
@@ -161,4 +162,15 @@ class Group
 
         return $this;
     }
+
+    public function delete()
+    {
+        
+    }
+
+    public function getPermissions()
+    {
+
+    }
+
 }
