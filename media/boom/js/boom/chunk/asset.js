@@ -68,7 +68,7 @@ $.widget('ui.chunkAsset', $.ui.chunk, {
 
 	edit : function() {
 		this.elements = this.getElements();
-		this.assetId = this.element.attr('data-boom-asset-id');
+		this.assetId = this.element.attr('data-boom-target');
 
 		if (this.hasMetadata()) {
 			this.editAllElements();
