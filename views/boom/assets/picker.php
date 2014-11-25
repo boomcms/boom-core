@@ -5,6 +5,8 @@
         <section id="b-assets-picker-current">
             <h1>Current Asset</h1>
             <img src="" />
+
+            <?= new \Boom\UI\Button('delete', 'Remove current asset', array('id' => 'b-assets-picker-current-remove', 'class' => 'b-button-withtext')) ?>
         </section>
 
         <section id="b-assets-picker-upload">
