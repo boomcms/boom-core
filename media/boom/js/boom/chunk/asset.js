@@ -4,9 +4,15 @@ $.widget('ui.chunkAsset', $.ui.chunk, {
 
 		new boomAssetPicker(this.assetId)
 		.done(function(assetId) {
-			chunkAsset.save({
-				asset_id : assetId
-			});
+			chunkAsset.assetId = assetId;
+
+			if (assetId) {
+				chunkAsset.save({
+					asset_id : assetId
+				});
+			} else {
+				chunkAsset.remove();
+			}
 		})
 		.fail(function() {
 			chunkAsset.destroy();
@@ -22,6 +28,7 @@ $.widget('ui.chunkAsset', $.ui.chunk, {
 			title : this.elements.title.length
 		})
 		.done(function(chunkData) {
+			chunkAsset.assetId = chunkData['asset_id'];
 			chunkAsset.save(chunkData);
 		})
 		.fail(function() {
@@ -102,6 +109,8 @@ $.widget('ui.chunkAsset', $.ui.chunk, {
 		if (this.elements.link === this.element) {
 			this.element.attr('href', $replacement.attr('href'));
 		}
+
+		this.element.attr('data-boom-target', this.assetId);
 
 		this.element.html($html.html());
 		this.bind();
