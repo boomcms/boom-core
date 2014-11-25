@@ -9,7 +9,7 @@ $.widget('ui.chunkAsset', $.ui.chunk, {
 			});
 		})
 		.fail(function() {
-			chunkAsset.destory();
+			chunkAsset.destroy();
 		});
 	},
 
