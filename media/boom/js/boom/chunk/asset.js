@@ -33,13 +33,12 @@ $.widget('ui.chunkAsset', $.ui.chunk, {
 	 @function
 	 */
 	 getElements: function() {
-		var assetId = this.element.attr('data-boom-target');
 		var elements = {};
 
 		var img = this.element.find('img');
 		var a = this.element.find('a');
 
-		var regExp = new RegExp("asset\/(thumb|view|download)\/" + assetId);
+		var regExp = new RegExp("asset\/(thumb|view|download)\/" + this.assetId);
 
 		elements.asset = this.element.find('.asset-target');
 		elements.link = this.element.hasClass('asset-link')? this.element : this.element.find('.asset-link');
