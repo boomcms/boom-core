@@ -5,11 +5,14 @@ namespace Boom\Person;
 use Boom\Group;
 use Boom\Page\Page;
 
+use Cartalyst\Sentry\Groups\GroupInterface;
+use Cartalyst\Sentry\Users\UserInterface;
+
 use \DB;
 use \Model_Role as Role;
 use \Model_Person;
 
-class Person
+class Person implements UserInterface
 {
     /**
 	 *
@@ -24,10 +27,10 @@ class Person
 
     /**
      *
-     * @param  \Boom\Group\Group   $group
+     * @param GroupInterface   $group
      * @return \Boom\Person\Person
      */
-    public function addToGroup(Group\Group $group)
+    public function addGroup(GroupInterface $group)
     {
         if ($group->loaded()) {
             $this->model->add('groups', $group->getId());
@@ -45,6 +48,41 @@ class Person
         return $this;
     }
 
+    public function attemptActivation($activationCode)
+    {
+
+    }
+
+    public function attemptResetPassword($resetCode, $newPassword)
+    {
+
+    }
+
+    public function checkPassword($password)
+    {
+
+    }
+
+    /**
+     *
+     * @param type $persistCode
+     * @return boolean
+     */
+    public function checkPersistCode($persistCode)
+    {
+        return $persistCode === $this->getId();
+    }
+
+    public function checkResetPasswordCode($resetCode)
+    {
+
+    }
+
+    public function clearResetPassword()
+    {
+
+    }
+
     public function delete()
     {
         if ($this->loaded()) {
@@ -52,6 +90,11 @@ class Person
         }
 
         return $this;
+    }
+
+    public function getActivationCode()
+    {
+
     }
 
     public function getEmail()
@@ -78,14 +121,34 @@ class Person
         return $this->model->locked_until;
     }
 
+    public function getLogin()
+    {
+        return $this->getEmail();
+    }
+
+    public function getLoginName()
+    {
+        return 'email';
+    }
+
     public function getName()
     {
         return $this->model->name;
     }
 
+    public function getPasswordName()
+    {
+        return 'password';
+    }
+
     public function getPassword()
     {
         return $this->model->password;
+    }
+
+    public function getPersistCode()
+    {
+        return $this->getId();
     }
 
     public function hasPagePermission(Role $role, Page $page)
@@ -124,6 +187,16 @@ class Person
         return  ( ! empty($result) && (boolean) $result[0]['allowed']);
     }
 
+    /**
+     * Always returns true because Boom doesn't require account activation
+     *
+     * @return boolean
+     */
+    public function isActivated()
+    {
+        return true;
+    }
+
     public function isEnabled()
     {
         return (bool) $this->model->enabled;
@@ -132,6 +205,23 @@ class Person
     public function isLocked()
     {
         return $this->getLockedUntil() && ($this->getLockedUntil() > $_SERVER['REQUEST_TIME']);
+    }
+
+    public function inGroup(GroupInterface $group)
+    {
+
+    }
+
+    /**
+     * Always returns false as Boom doesn't currently have the concept of super users.
+     *
+     * This should be impelemented in the future.
+     *
+     * @return boolean
+     */
+    public function isSuperUser()
+    {
+        return false;
     }
 
     public function loaded()
@@ -154,10 +244,10 @@ class Person
 
     /**
      *
-     * @param  \Boom\Group\Group   $group
+     * @param GroupInterface $group
      * @return \Boom\Person\Person
      */
-    public function removeFromGroup(Group\Group $group)
+    public function removeGroup(GroupInterface $group)
     {
         if ($group->loaded()) {
             $this->model->remove('groups', $group->getId());
@@ -216,5 +306,40 @@ class Person
         $this->model->name = $name;
 
         return $this;
+    }
+
+    public function validate()
+    {
+        
+    }
+
+    public function getMergedPermissions()
+    {
+
+    }
+
+    public function getPermissions()
+    {
+
+    }
+
+    public function getResetPasswordCode()
+    {
+        
+    }
+
+    public function hasAccess($permissions, $all = true)
+    {
+
+    }
+
+    public function hasAnyAccess(array $permissions)
+    {
+        
+    }
+
+    public function recordLogin()
+    {
+        
     }
 }

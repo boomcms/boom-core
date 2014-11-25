@@ -23,7 +23,7 @@ class Controller_Cms_Person_Save extends Controller_Cms_Person
             ->setEmail($this->request->post('email'))
             ->setEncryptedPassword($encPassword)
             ->save()
-            ->addToGroup(Group\Factory::byId($this->request->post('group_id')));
+            ->addGroup(Group\Factory::byId($this->request->post('group_id')));
 
         if (isset($password)) {
             $email = new Boom\Email\Newuser($this->edit_person, $password, $this->request);
@@ -37,7 +37,7 @@ class Controller_Cms_Person_Save extends Controller_Cms_Person
             $group = Group\Factory::byId($groupId);
 
             $this->log("Added person {$this->person->getEmail()} to group with ID {$group->getId()}");
-            $this->edit_person->addToGroup($group);
+            $this->edit_person->addGroup($group);
         }
     }
 
@@ -56,7 +56,7 @@ class Controller_Cms_Person_Save extends Controller_Cms_Person
         $group = Group\Factory::byId($this->request->post('group_id'));
 
         $this->log("Edited the groups for person ".$this->edit_person->getEmail());
-        $this->edit_person->removeFromGroup($group);
+        $this->edit_person->removeGroup($group);
     }
 
     public function action_save()
