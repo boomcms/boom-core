@@ -1,7 +1,7 @@
 <?php
 
 use Boom\Auth\Auth;
-use Boom\Config;
+use \Session;
 
 class Controller_Cms_Auth extends Controller
 {
@@ -19,7 +19,7 @@ class Controller_Cms_Auth extends Controller
 
     public function before()
     {
-        $this->auth = new Auth(Config::get('auth'), Session::instance());
+        $this->auth = new Auth(Session::instance());
     }
 
     protected function _log_login_success()

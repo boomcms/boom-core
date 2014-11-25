@@ -165,12 +165,11 @@ class Group implements GroupInterface
 
     public function delete()
     {
-        
+
     }
 
     public function getPermissions()
     {
 
     }
-
 }

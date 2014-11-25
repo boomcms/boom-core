@@ -4,21 +4,17 @@ namespace Boom\Auth;
 
 use \Cookie as Cookie;
 use \DB as DB;
-use \Session;
 use \Model_Role as Role;
 
 use Hautelook\Phpass\PasswordHash;
 use Boom\Config;
 use Boom\Person;
 
+use Cartalyst\Sentry\Users\UserNotFoundException;
+use \Session;
+
 class Auth
 {
-    /**
-	 *
-	 * @var array
-	 */
-    protected $config;
-
     protected static $instance;
 
     /**
@@ -26,6 +22,12 @@ class Auth
 	 * @var Boom\Person\Person
 	 */
     protected $person;
+
+    /**
+     *
+     * @var Person\Provider
+     */
+    private $personProvider;
 
     /**
 	 *
@@ -37,10 +39,24 @@ class Auth
 
     protected $permissions_cache = [];
 
-    public function __construct($config = [], Session $session)
+    public function __construct(Session $session)
     {
-        $this->config = $config;
         $this->session = $session;
+        $this->personProvider = new Person\Provider();
+    }
+
+    public function authenticate($email, $password, $remember = false)
+    {
+        $person = $this->personProvider->findByCredentials([
+            'email' => $email,
+            'password' => $this->hash($password),
+        ]);
+
+        if ( ! $person->isValid()) {
+            throw new UserNotFoundException;
+        }
+
+        $this->login($person, $remember);
     }
 
     public function logout()
@@ -112,10 +128,6 @@ class Auth
 
     public function loggedIn($role = null, $page = null)
     {
-        if ($this->isDisabled()) {
-            return true;
-        }
-
         $person = $this->getPerson();
 
         if ($role === null) {
@@ -151,26 +163,6 @@ class Auth
         }
     }
 
-    protected function _login(Person\Person $person, $password = null, $remember = false)
-    {
-        $this->person = $person;
-
-        /**
-		 * Although it's slower, we the check password first before checking that the account is valid and not locked.
-		 * It shouldn't cause too much of a time waste for genuine users but may slow down hack attempts.
-		 */
-        if ($this->check_password($password) && $this->person->loaded() && $this->person->isEnabled() && ! $this->person->isLocked()) {
-            $this->complete_login($this->person);
-            $remember === true && $this->_remember_login();
-
-            return true;
-        } elseif ($this->person->loaded() && ! $this->person->isLocked()) {
-            $this->person->loginFailed();
-
-            return false;
-        }
-    }
-
     public function cache_permissions($page)
     {
         $permissions = DB::select('roles.name', ['page_mptt.id', 'page_id'], [DB::expr("bit_and(allowed)"), 'allowed'])
@@ -199,17 +191,11 @@ class Auth
         return $this;
     }
 
-    public function complete_login(Person\Person $person)
-    {
-        // Store the person ID in the session data.
-        $this->session->set($this->sessionKey, $person->getId());
-    }
-
-    public function force_login(Person\Person $person, $mark_as_forced = false)
+    public function login(Person\Person $person, $remember = false)
     {
         $this->person = $person;
 
-        return $this->complete_login($this->person);
+        $this->session->set($this->sessionKey, $person->getId());
     }
 
     public function hash($password)
@@ -230,42 +216,9 @@ class Auth
         return $this->person;
     }
 
-    public static function instance()
-    {
-        if (static::$instance === null) {
-            static::$instance = new static(Config::get('auth'), Session::instance());
-        }
-
-        return static::$instance;
-    }
-
     public function isLoggedIn()
     {
-        if ($this->isDisabled()) {
-            return true;
-        }
-
         return ! $this->getPerson() instanceof Person\Guest;
-    }
-
-    public function isDisabled()
-    {
-        return isset($this->config['disabled']) && $this->config['disabled'] === true;
-    }
-
-    public function login(Person\Person $person, $password, $remember = false)
-    {
-        if (! $password) {
-            return false;
-        }
-
-        if ( ! is_object($person) && ! $person instanceof Person\Person) {
-            // If we haven't been called with a person object then assume it's an email address
-            // and get the person from the database.
-            $person = new Model_Person(['email' => $person]);
-        }
-
-        return $this->_login($person, $password, $remember);
     }
 
     protected function _remember_login()
@@ -284,18 +237,5 @@ class Auth
 
         // Set the autologin cookie
         Cookie::set('authautologin', $token->token, $this->_config['lifetime']);
-    }
-
-    public function check_password($password)
-    {
-        $hasher = new PasswordHash(8, false);
-
-        /*
-		 * Create a dummy password to compare against if the user doesn't exist.
-		 * This wastes CPU time to protect against probing for valid usernames.
-		 */
-        $hash = ($this->person->getPassword()) ? $this->person->getPassword() : '$2a$08$1234567890123456789012';
-
-        return $hasher->CheckPassword($password, $hash) && $this->person->loaded();
     }
 }
