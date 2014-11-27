@@ -2,11 +2,13 @@
 
 namespace Boom\Tag\Finder\Filter;
 
+use Boom\Page\Page;
+
 class AppliedToPageDescendants extends \Boom\Finder\Filter
 {
     protected $page;
 
-    public function __construct(\Boom\Page $page)
+    public function __construct(Page $page)
     {
         $this->page = $page;
     }
