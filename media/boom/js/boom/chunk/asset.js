@@ -110,7 +110,9 @@ $.widget('ui.chunkAsset', $.ui.chunk, {
 			this.element.attr('href', $replacement.attr('href'));
 		}
 
-		this.element.attr('data-boom-target', this.assetId);
+		this.element
+			.attr('data-boom-target', this.assetId)
+			.attr('class', $replacement.attr('class'));
 
 		this.element.html($html.html());
 		this.bind();
