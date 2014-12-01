@@ -171,15 +171,8 @@ class Controller_Cms_Assets extends Controller_Cms
             throw new HTTP_Exception_404();
         }
 
-        $finder = new \Boom\Tag\Finder();
-        $tags = $finder
-            ->addFilter(new \Boom\Tag\Finder\Filter\Asset($this->asset))
-            ->setOrderBy('name', 'asc')
-            ->findAll();
-
         $this->template = View::factory("$this->viewDirectory/view", [
             'asset' => $this->asset,
-            'tags' => $tags
         ]);
     }
 }

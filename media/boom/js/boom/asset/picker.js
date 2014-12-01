@@ -38,9 +38,9 @@ function boomAssetPicker(currentAssetId) {
 		});
 
 		this.tagFilter
-			.tagger_search({
-				update : function(tagIds) {
-					assetPicker.addFilter('tag', tagIds);
+			.assetTagSearch({
+				update : function(e, data) {
+					assetPicker.addFilter('tag', data.tags);
 					assetPicker.getAssets();
 				}
 			});

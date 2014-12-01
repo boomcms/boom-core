@@ -3,6 +3,13 @@ function boomAsset(asset_id) {
 
 	boomAsset.prototype.base_url = '/cms/assets/';
 
+	boomAsset.prototype.addTag = function(tag) {
+		$.boom.post(this.base_url + 'tags/add', {
+			assets : this.id.split('-'),
+			tag : tag
+		});
+	};
+
 	boomAsset.prototype.delete = function() {
 		var asset = this,
 			deleted = new $.Deferred(),
@@ -39,6 +46,13 @@ function boomAsset(asset_id) {
 
 	boomAsset.prototype.hasMultipleIds = function() {
 		return this.id.indexOf('-') !== -1;
+	};
+
+	boomAsset.prototype.removeTag = function(tag) {
+		$.boom.post(this.base_url + 'tags/remove', {
+			assets : this.id.split('-'),
+			tag : tag
+		});
 	};
 
 	boomAsset.prototype.save = function(data) {

@@ -2,14 +2,15 @@
 
 namespace Boom\Page;
 
-use \Boom\Editor\Editor as Editor;
-use \Boom\Template\Template as Template;
-use \Boom\Person as Person;
+use \Boom\Editor\Editor;
+use \Boom\Template\Template;
+use \Boom\Person;
 use Boom\Tag;
 
-use \DateTime as DateTime;
+use \DateTime;
 
-use \ORM as ORM;
+use \ORM;
+use \DB;
 
 class Page
 {
@@ -28,6 +29,15 @@ class Page
     public function __construct(\Model_Page $model)
     {
         $this->model = $model;
+    }
+
+    public function addTag(Tag\Tag $tag)
+    {
+        DB::insert('pages_tags', ['page_id', 'tag_id'])
+            ->values([$this->getId(), $tag->getId()])
+            ->execute();
+
+        return $this;
     }
 
     public function allowsExternalIndexing()
@@ -140,6 +150,18 @@ class Page
         return $this->model->grandchild_template_id;
     }
 
+    public function getGroupedTags()
+    {
+        $tags = $this->getTags();
+        $grouped = [];
+
+        foreach ($tags as $tag) {
+            $grouped[$tag->getGroup()][] = $tag;
+        }
+
+        return $grouped;
+    }
+
     public function getId()
     {
         return $this->model->id;
@@ -203,7 +225,7 @@ class Page
         $finder = new Tag\Finder();
         $finder->addFilter(new Tag\Finder\Filter\Page($this));
 
-        return $finder->findAll();
+        return $finder->setOrderBy('name', 'asc')->findAll();
     }
 
     public function getTemplate()
@@ -304,6 +326,16 @@ class Page
     public function loaded()
     {
         return $this->model->loaded();
+    }
+
+    public function removeTag(Tag\Tag $tag)
+    {
+        DB::delete('pages_tags')
+            ->where('page_id', '=', $this->getId())
+            ->where('tag_id', '=', $tag->getId())
+            ->execute();
+
+        return $this;
     }
 
     public function save()

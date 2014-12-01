@@ -6,6 +6,7 @@ use \Boom\Page as Page;
 use \Kohana as Kohana;
 use \Model_Template as Model_Template;
 use \View as View;
+use DB;
 
 class Template
 {
@@ -86,6 +87,25 @@ class Template
     public function getName()
     {
         return $this->model->name;
+    }
+
+    public function getTagGroupSuggestions()
+    {
+        $results = DB::select('group')
+            ->from('tags')
+            ->where('group', '!=', null)
+            ->join('pages_tags', 'inner')
+            ->on('pages_tags.tag_id', '=', 'tags.id')
+            ->join('pages', 'inner')
+            ->on('pages.id', '=', 'pages_tags.page_id')
+            ->join('page_versions', 'inner')
+            ->on('pages.id', '=', 'page_versions.page_id')
+            ->where('page_versions.template_id', '=', $this->getId())
+            ->distinct(true)
+            ->execute()
+            ->as_array('group');
+
+        return array_keys($results);
     }
 
     public function getView()

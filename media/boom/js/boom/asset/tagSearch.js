@@ -1,0 +1,50 @@
+$.widget('boom.assetTagSearch',  {
+	tags : [],
+
+	addTag : function(tag) {
+		this.tags.push(tag);
+
+		$('<li class="b-tag"><span>' + tag + '</span><a href="#" class="b-tag-remove" data-tag="' + tag + '"></a></li>')
+			.insertBefore(this.tagList.children().last());
+
+		this._trigger('addTag', null, tag);
+		this.update();
+	},
+
+	bind : function() {
+		var tagSearch = this;
+
+		this.input
+			.assetTagAutocomplete({
+				complete : function(e, data) {
+					tagSearch.addTag(data.tag);
+				}
+			});
+
+		this.element.on('click', '.b-tag-remove', function() {
+			tagSearch.removeTag($(this));
+		});
+	},
+
+	_create : function() {
+		this.tagList = this.element.find('ul');
+		this.input = this.element.find('input');
+
+		this.bind();
+	},
+
+	removeTag : function($a) {
+		var tag = $a.attr('data-tag');
+
+		$a.parent().remove();
+		this.tags.splice(this.tags.indexOf(tag));
+
+		this._trigger('removeTag', null, tag);
+		this.update();
+	},
+
+	update : function() {
+		this.input.assetTagAutocomplete('setIgnoreTags', this.tags);
+		this._trigger('update', null, {tags : this.tags});
+	}
+});
