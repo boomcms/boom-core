@@ -90,31 +90,5 @@ $.widget('ui.chunkAsset', $.ui.chunk, {
 	save : function(data) {
 		this._save(data);
 		this.destroy();
-	},
-
-	_update_html : function(html) {
-		var $html = $(html),
-			$replacement = $($html[0]);
-
-		if (this.elements.asset === this.element) {
-			if (this.element.is('img')) {
-				this.element.attr('src', $replacement.attr('src'));
-			} else if ($replacement.css('background-image')) {
-				this.element.css('background-image', $replacement.css('background-image'));
-			} else {
-				this.element.css('background', $replacement.css('background'));
-			}
-		}
-
-		if (this.elements.link === this.element) {
-			this.element.attr('href', $replacement.attr('href'));
-		}
-
-		this.element
-			.attr('data-boom-target', this.assetId)
-			.attr('class', $replacement.attr('class'));
-
-		this.element.html($html.html());
-		this.bind();
 	}
 });
