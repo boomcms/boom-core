@@ -33,14 +33,12 @@ class Text extends \Boom\Chunk
 	 */
     protected function _show()
     {
-        $text = $this->text();
-
-        $this->showText($this->text());
+        return $this->showText($this->text());
     }
 
     protected function _show_default()
     {
-        return $this->_showText($this->defaultText());
+        return $this->showText($this->defaultText());
     }
 
     public function defaultText()
