@@ -59,63 +59,6 @@ class Controller_Cms_Autocomplete extends Boom\Controller
     }
 
     /**
-	 * Auto complete on page title
-	 */
-    public function action_pages()
-    {
-        // Build a query to find pages matching title.
-        $query = DB::select('title')
-            ->from('pages')
-            ->where('deleted', '=', false)
-            ->join('page_versions', 'inner')
-            ->on('pages.id', '=', 'page_versions.page_id');
-
-        if ($this->editor->isEnabled()) {
-            // Get the most recent version for each page.
-            $query
-                ->join([
-                    DB::select([DB::expr('max(id)'), 'id'])
-                        ->from('page_versions')
-                        ->where('stashed', '=', false)
-                        ->group_by('page_id'),
-                    'current_version'
-                ])
-                ->on('page_versions.id', '=', 'current_version.id');
-        } else {
-            // Get the most recent published version for each page.
-            $query
-                ->join([
-                    DB::select([DB::expr('max(id)'), 'id'])
-                        ->from('page_versions')
-                        ->where('embargoed_until', '<=', $this->editor->getLiveTime())
-                        ->where('stashed', '=', false)
-                        ->where('published', '=', true)
-                        ->group_by('page_id'),
-                    'current_version'
-                ])
-                ->on('page_versions.id', '=', 'current_version.id')
-                ->where('visible_from', '<=', $this->editor->getLiveTime())
-                ->and_where_open()
-                    ->where('visible_to', '>=', $this->editor->getLiveTime())
-                    ->or_where('visible_to', '=', 0)
-                ->and_where_close();
-        }
-
-        $query
-            ->where('title', 'like', "%$this->text%")
-            ->limit($this->count)
-            ->order_by('title', 'asc');
-
-        // Get the results
-        $results = $query
-            ->execute()
-            ->as_array('title');
-
-        // Get an array of page titles.
-        $this->results = array_keys($results);
-    }
-
-    /**
 	 * Suggest tag names based on an infix.
 	 *
 	 */
