@@ -30,6 +30,11 @@ class Tag
         return $this->model->name;
     }
 
+    public function getSlug()
+    {
+        return $this->model->slug_short;
+    }
+
     public function loaded()
     {
         return $this->model->loaded();
