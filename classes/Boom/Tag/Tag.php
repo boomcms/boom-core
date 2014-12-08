@@ -29,4 +29,9 @@ class Tag
     {
         return $this->model->name;
     }
+
+    public function loaded()
+    {
+        return $this->model->loaded();
+    }
 }
