@@ -11,7 +11,16 @@ $.widget('boom.tagAutocomplete',  {
 				// This allows us to add a tag which doesn't already exist.
 				if (e.which == 13 && self.element.val()) {
 					e.preventDefault();
-					self._tagSelected(self.element.val());
+					
+					var tags, i;
+
+					// If the text entered contains commas then it will be treated as a list of tags with each one 'completed'
+					tags = self.element.val().split(',');
+
+					for (i = 0; i < tags.length; i++) {
+						self._tagSelected(tags[i]);
+					}
+					
 					self.element.val('');
 					self.element.autocomplete('close');
 				}
