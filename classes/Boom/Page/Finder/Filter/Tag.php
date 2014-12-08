@@ -6,11 +6,11 @@ class Tag extends \Boom\Finder\Filter
 {
     /**
 	 *
-	 * @var \Model_Tag
+	 * @var \Boom\Tag\Tag
 	 */
     protected $_tag;
 
-    public function __construct(\Model_Tag $tag)
+    public function __construct(\Boom\Tag\Tag $tag)
     {
         $this->_tag = $tag;
     }
@@ -20,7 +20,7 @@ class Tag extends \Boom\Finder\Filter
         return $query
             ->join('pages_tags', 'inner')
             ->on('page.id', '=', 'pages_tags.page_id')
-            ->where('pages_tags.tag_id', '=', $this->_tag->id);
+            ->where('pages_tags.tag_id', '=', $this->_tag->getId());
     }
 
     public function shouldBeApplied()
