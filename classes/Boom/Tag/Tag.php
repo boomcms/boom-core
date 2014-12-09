@@ -53,4 +53,11 @@ class Tag
 
         return $this;
     }
+
+    public function setSlug($slug)
+    {
+        $this->model->slug_short = $slug;
+
+        return $this;
+    }
 }
