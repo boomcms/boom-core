@@ -9,6 +9,12 @@ use \View;
 use Request;
 use DB;
 
+/**
+ * Base template class.
+ *
+ * Templates should extend this class to provide custom methods for page events (save, delete, etc.) and dispaying pages in different formats.
+ *
+ */
 class Template
 {
     const DIRECTORY = 'site/templates/';
@@ -177,4 +183,32 @@ class Template
     {
         return $this->model->loaded();
     }
+
+    /**
+     * Called after the template is applied to a page.
+     *
+     * @param \Boom\Page\Page $page
+     */
+    public function onApplied(Page\Page $page) {}
+
+    /**
+     * Called after a page is created with this template.
+     *
+     * @param \Boom\Page\Page $page
+     */
+    public function onPageCreate(Page\Page $page) {}
+
+    /**
+     * Called before a page using this template is deleted.
+     *
+     * @param \Boom\Page\Page $page
+     */
+    public function onPageDelete(Page\Page $page) {}
+
+    /**
+     * Called after a page using this template is saved.
+     *
+     * @param \Boom\Page\Page $page
+     */
+    public function onPageSave(Page\Page $page) {}
 }
