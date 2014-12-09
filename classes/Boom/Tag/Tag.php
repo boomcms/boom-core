@@ -39,4 +39,18 @@ class Tag
     {
         return $this->model->loaded();
     }
+    
+    public function save()
+    {
+        $this->model->save();
+        
+        return $this;
+    }
+
+    public function setName($name)
+    {
+        $this->model->name = $name;
+
+        return $this;
+    }
 }
