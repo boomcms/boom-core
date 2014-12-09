@@ -38,6 +38,15 @@ class Template
 	 */
     protected $model;
 
+    /**
+     * An array of tag groups which would usually be applied to pages using this template.
+     *
+     * These groups will appear in the page tag editor even if no tags in the group are applied to the page.
+     *
+     * @var array
+     */
+    protected $suggestedTagGroups = [];
+
     public function __construct(\Model_Template $model)
     {
         $this->model = $model;
@@ -157,21 +166,7 @@ class Template
 
     public function getTagGroupSuggestions()
     {
-        $results = DB::select('group')
-            ->from('tags')
-            ->where('group', '!=', null)
-            ->join('pages_tags', 'inner')
-            ->on('pages_tags.tag_id', '=', 'tags.id')
-            ->join('pages', 'inner')
-            ->on('pages.id', '=', 'pages_tags.page_id')
-            ->join('page_versions', 'inner')
-            ->on('pages.id', '=', 'page_versions.page_id')
-            ->where('page_versions.template_id', '=', $this->getId())
-            ->distinct(true)
-            ->execute()
-            ->as_array('group');
-
-        return array_keys($results);
+        return $this->suggestedTagGroups;
     }
 
     public function getView()
