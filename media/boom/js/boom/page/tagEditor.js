@@ -12,13 +12,15 @@ function boomPageTagEditor(page) {
 	};
 
 	boomPageTagEditor.prototype.addTagGroup = function(name) {
-		var $newGroup = $('<li><p>' + name + '</p><ul class="b-tags-list" data-group="' + name + '"><li class="b-tag"></li></ul></li>');
+		if (name) {
+			var $newGroup = $('<li><p>' + name + '</p><ul class="b-tags-list" data-group="' + name + '"><li class="b-tag"></li></ul></li>');
 
-		$newGroup.find('.b-tag').html(this.dialog.find('.b-tags-add').first().clone());
-		$newGroup.insertBefore(this.dialog.find('.b-tags-grouped').children().last());
-		$newGroup.find('.b-tags-add input[type=text]').focus();
+			$newGroup.find('.b-tag').html(this.dialog.find('.b-tags-add').first().clone());
+			$newGroup.insertBefore(this.dialog.find('.b-tags-grouped').children().last());
+			$newGroup.find('.b-tags-add input[type=text]').focus();
 
-		this.initTagList($newGroup.find('.b-tags-list'));
+			this.initTagList($newGroup.find('.b-tags-list'));
+		}
 	};
 
 	boomPageTagEditor.prototype.bind = function($dialog) {
