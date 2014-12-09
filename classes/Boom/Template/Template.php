@@ -172,7 +172,7 @@ class Template
 
     public function getView()
     {
-        return new View($this->getFullFilename());
+        return ($this->fileExists()) ? new View($this->getFullFilename()) : new View();
     }
 
     public function loaded()
