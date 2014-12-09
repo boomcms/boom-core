@@ -3,7 +3,7 @@
 namespace Boom\Page;
 
 use \Boom\Editor\Editor;
-use \Boom\Template\Template;
+use \Boom\Template;
 use \Boom\Person;
 use Boom\Tag;
 
@@ -230,7 +230,7 @@ class Page
 
     public function getTemplate()
     {
-        return new Template($this->getCurrentVersion()->template);
+        return Template\Factory::fromModel($this->getCurrentVersion()->template);
     }
 
     public function getTemplateId()

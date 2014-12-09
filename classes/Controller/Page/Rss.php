@@ -1,15 +1,11 @@
 <?php
 
-use Boom\Page;
-
 class Controller_Page_Rss extends Boom\Controller\Page
 {
-    public function action_show()
+    public function before()
     {
-        $feed = new Page\RssFeed($this->page);
+        parent::before();
 
-        $this->response
-            ->headers('Content-Type', 'application/rss+xml')
-            ->body($feed->render());
+        $this->response->headers('Content-Type', 'application/rss+xml');
     }
 }

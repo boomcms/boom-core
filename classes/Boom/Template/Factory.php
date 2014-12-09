@@ -15,4 +15,11 @@ abstract class Factory
     {
         return new Template(new Model_Template(['filename' => $filename]));
     }
+
+    public static function fromModel(Model_Template $template)
+    {
+        $className = "Boom\\Template\\" . ucfirst($template->filename);
+
+        return (class_exists($className))? new $className($template) : new Template($template);
+    }
 }
