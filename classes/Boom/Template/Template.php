@@ -42,6 +42,7 @@ class Template
      * An array of tag groups which would usually be applied to pages using this template.
      *
      * These groups will appear in the page tag editor even if no tags in the group are applied to the page.
+     * 
      *
      * @var array
      */
@@ -199,6 +200,15 @@ class Template
      * @param \Boom\Page\Page $page
      */
     public function onPageDelete(Page\Page $page) {}
+
+    /**
+     * Called after a page using this template has its title changed.
+     *
+     * @param \Boom\Page\Page $page
+     * @param string
+     * @param string
+     */
+    public function onPageRename(Page\Page $page, $oldTitle, $newTitle) {}
 
     /**
      * Called after a page using this template is saved.

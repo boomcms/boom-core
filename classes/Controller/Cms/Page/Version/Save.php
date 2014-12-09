@@ -96,7 +96,7 @@ class Controller_Cms_Page_Version_Save extends Controller_Cms_Page_Version
             ->create()
             ->copy_chunks($this->old_version);
 
-        $this->page->getTemplate()->onPageSave($this->page);
+        $this->page->getTemplate()->onPageRename($this->page, $this->old_version->title, $this->new_version->title);
     }
 
     public function after()
