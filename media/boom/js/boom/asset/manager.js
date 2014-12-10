@@ -7,9 +7,6 @@ $.widget('boom.assetManager', {
 
 	selected : [],
 
-	tag : 0,
-	sortby : '',
-
 	addFilter : function(type, value) {
 		this.postData.page = 1;
 		this.postData[type] = value;
@@ -78,9 +75,9 @@ $.widget('boom.assetManager', {
 			});
 
 		this.element.find('#b-tags-search')
-			.tagger_search({
-				update : function(tagIds) {
-					assetManager.updateTagFilters(tagIds);
+			.assetTagSearch({
+				update : function(e, data) {
+					assetManager.updateTagFilters(data.tags);
 				}
 			});
 	},
@@ -111,21 +108,7 @@ $.widget('boom.assetManager', {
 				assetManager.clearSelection();
 			})
 			.on('click', '#b-button-multiaction-tag', function() {
-				var asset = new boomAsset(assetManager.selected.join('-')),
-					dialog;
-
-				dialog = new boomDialog({
-					url: '/cms/tags/asset/list/' + asset.id,
-					title: 'Asset tags',
-					width: 440,
-					cancelButton : false,
-					onLoad: function() {
-						dialog.contents.find('#b-tags').tagger({
-							type: 'asset',
-							id: asset.id
-						});
-					}
-				});
+				assetManager.tagMultiple(assetManager.selected);
 			})
 			.on('click', '#b-assets-upload', function() {
 				assetManager.uploader.show();
@@ -219,6 +202,28 @@ $.widget('boom.assetManager', {
 		this.getAssets();
 	},
 
+	tagMultiple : function(assetIds) {
+		var asset = new boomAsset(assetIds.join('-')),
+			dialog;
+
+		dialog = new boomDialog({
+			url: '/cms/assets/tags/list/' + asset.id,
+			title: 'Asset tags',
+			width: 440,
+			cancelButton : false,
+			onLoad: function() {
+				dialog.contents.find('#b-tags').assetTagSearch({
+					addTag : function(e, tag) {
+						asset.addTag(tag);
+					},
+					removeTag : function(e, tag) {
+						asset.removeTag(tag);
+					}
+				});
+			}
+		});
+	},
+
 	toggleButtons : function() {
 		var buttons = $('[id|=b-button-multiaction]').not('#b-button-multiaction-edit');
 		$('#b-button-multiaction-edit').button(this.selected.length == 1 ? 'enable' : 'disable');
@@ -232,10 +237,10 @@ $.widget('boom.assetManager', {
 		this.element.find('#b-assets-content').css('margin-top', $filters.css('top').toInt() + $filters.outerHeight() + 'px');
 	},
 
-	updateTagFilters : function(tagIds) {
+	updateTagFilters : function(tags) {
 		var assetManager = this;
 
-		this.addFilter('tag', tagIds);
+		this.addFilter('tag', tags);
 		this.getAssets();
 
 		setTimeout(function() {
@@ -255,9 +260,13 @@ $.widget('boom.assetManager', {
 			onLoad : function() {
 				dialog.contents
 					.find('#b-tags')
-					.tagger({
-						type: 'asset',
-						id: asset.id
+					.assetTagSearch({
+						addTag : function(e, tag) {
+							asset.addTag(tag);
+						},
+						removeTag : function(e, tag) {
+							asset.removeTag(tag);
+						}
 					});
 			}
 		})

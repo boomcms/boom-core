@@ -1,39 +1,32 @@
 <?php
 
-namespace Boom\Controller\Page;
+use \Boom\Chunk;
+use \ORM;
+use \View;
 
-use \Boom\Chunk as Chunk;
-use \ORM as ORM;
-use \View as View;
-
-class Html extends \Boom\Controller\Page
+class Controller_Page_Html extends \Boom\Controller\Page
 {
-    protected $_chunks = [];
-
     /**
-	 *
-	 * @var View
-	 */
-    public $template;
+     *
+     * @var array 
+     */
+    private $chunks;
 
     public function before()
     {
         parent::before();
 
-        $this->template = $this->page->getTemplate()->getView();
-        $this->_chunks = $this->_loadChunks($this->_chunks);
+        $this->chunks = $this->loadChunks($this->template->getChunks());
 
         $this->_bindViewGlobals();
     }
 
-    public function action_show() {}
-
     public function after()
     {
         if ($this->auth->isLoggedIn()) {
-            $content = $this->editor->insert( (string) $this->template, $this->page->getId());
+            $content = $this->editor->insert( (string) $this->responseBody, $this->page->getId());
         } else {
-            $content = (string) $this->template;
+            $content = (string) $this->responseBody;
         }
 
         $this->response->body($content);
@@ -42,13 +35,13 @@ class Html extends \Boom\Controller\Page
     protected function _bindViewGlobals()
     {
         View::bind_global('auth', $this->auth);
-        View::bind_global('chunks', $this->_chunks);
+        View::bind_global('chunks', $this->chunks);
         View::bind_global('editor', $this->editor);
         View::bind_global('page', $this->page);
         View::bind_global('request', $this->request);
     }
 
-    protected function _loadChunks(array $chunks)
+    protected function loadChunks(array $chunks)
     {
         foreach ($chunks as $type => $slotnames) {
             $model = ucfirst($type);

@@ -7,6 +7,7 @@ class Model_Tag extends ORM
         'name'        =>    '',
         'slug_short'    =>    '',
         'slug_long'        =>    '',
+        'group' => '',
     ];
 
     protected $_table_name = 'tags';
@@ -20,17 +21,6 @@ class Model_Tag extends ORM
         if (! $this->slug_long) {
             $this->slug_long = $this->create_long_slug($this->name);
         }
-    }
-
-    public function count_pages()
-    {
-        $result = DB::select([DB::expr('count(*)'), 'c'])
-            ->from('pages_tags')
-            ->where('tag_id', '=', $this->id)
-            ->execute($this->_db)
-            ->as_array();
-
-        return $result[0]['c'];
     }
 
     public function create(Validation $validation = null)
@@ -77,24 +67,6 @@ class Model_Tag extends ORM
                 ['trim'],
             ],
         ];
-    }
-
-    /**
-	 * Returns an associative array of tag IDs and names
-	 *
-	 * The returned array can be passed to Form::select();
-	 *
-	 * @param integer $type
-	 * @return array
-	 */
-    public function names($type)
-    {
-        return DB::select('id', 'name')
-            ->from('tags')
-            ->where('type', '=', $type)
-            ->order_by('name', 'asc')
-            ->execute($this->_db)
-            ->as_array('id', 'name');
     }
 
     /**

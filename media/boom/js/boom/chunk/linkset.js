@@ -16,7 +16,5 @@ $.widget('ui.chunkLinkset', $.ui.chunk, {
 		} else {
 			this._save(links);
 		}
-
-		this.bind();
 	}
 });

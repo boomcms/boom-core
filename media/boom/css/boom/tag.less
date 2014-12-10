@@ -1,0 +1,35 @@
+.b-tag {
+	.text-default;
+	display: inline-block;
+	list-style-type: none;
+	position: relative;
+	border: 1px solid @lightest-grey;
+	margin: 0.25em;
+
+	> * {
+		.box-sizing;
+		padding: 0.3em 0.5em;
+	}
+
+	> span {
+		display: block;
+		margin-right: 30px;
+		border-right: 1px solid @lightest-grey;
+	}
+
+	> a {
+		display: block;
+		width: 30px;
+		height: 100%;
+		background-image: url(/media/boom/img/sprite.png);
+		background-position: -60px -120px;
+		position: absolute;
+		right: 0;
+		top: 0;
+		line-height: 100%;
+
+		&:hover, &:focus {
+			background-color: @dark-grey;
+		}
+	}
+}

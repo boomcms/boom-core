@@ -2,8 +2,6 @@
 
 namespace Boom\Tag;
 
-use \DB as DB;
-
 class Tag
 {
     /**
@@ -17,6 +15,11 @@ class Tag
         $this->model = $model;
     }
 
+    public function getGroup()
+    {
+        return $this->model->group;
+    }
+
     public function getId()
     {
         return $this->model->id;
@@ -27,49 +30,33 @@ class Tag
         return $this->model->name;
     }
 
-    public function addToAssets(array $assetIds)
+    public function getSlug()
     {
-        foreach ($assetIds as $id) {
-            try {
-                DB::insert('assets_tags', ['asset_id', 'tag_id'])
-                    ->values([$id, $this->getId()])
-                    ->execute();
-            } catch (Database_Exception $e) {}
-        }
+        return $this->model->slug_short;
     }
 
-    public function addToPages(array $pageIds)
+    public function loaded()
     {
-        foreach ($pageIds as $id) {
-            try {
-                // Have to do this as individual queries rather than a single query with multiple values incase the tag is already applied to some of the objects.
-                DB::insert('pages_tags', ['page_id', 'tag_id'])
-                    ->values([$id, $this->getId()])
-                    ->execute();
-            } catch (Database_Exception $e) {}
-        }
+        return $this->model->loaded();
+    }
+    
+    public function save()
+    {
+        $this->model->save();
+        
+        return $this;
     }
 
-    public function removeFromAssets(array $assetIds)
+    public function setName($name)
     {
-        if ( ! empty($assetIds)) {
-            DB::delete('assets_tags')
-                ->where('tag_id', '=', $this->getId())
-                ->where('asset_id', 'in', $assetIds)
-                ->execute();
-        }
+        $this->model->name = $name;
 
         return $this;
     }
 
-    public function removeFromPages(array $pageIds)
+    public function setSlug($slug)
     {
-        if ( ! empty($pageIds)) {
-            DB::delete('pages_tags')
-                ->where('tag_id', '=', $this->getId())
-                ->where('page_id', 'in', $pageIds)
-                ->execute();
-        }
+        $this->model->slug_short = $slug;
 
         return $this;
     }

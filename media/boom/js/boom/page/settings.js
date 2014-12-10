@@ -49,20 +49,7 @@ boomPage.prototype.search = function() {
 };
 
 boomPage.prototype.tags = function() {
-	var page = this;
-
-	new boomDialog({
-		url: '/cms/tags/page/list/' + page.id,
-		title: 'Page tags',
-		width: 440,
-		cancelButton : false,
-		open: function() {
-			$('#b-tags').tagger({
-				type: 'page',
-				id: page.id
-			});
-		}
-	});
+	new boomPageTagEditor(this);
 };
 
 boomPage.prototype.urls = function() {

@@ -2,11 +2,13 @@
 
 namespace Boom\Tag\Finder\Filter;
 
+use Boom\Page\Page;
+
 class AppliedToPageDescendants extends \Boom\Finder\Filter
 {
     protected $page;
 
-    public function __construct(\Boom\Page $page)
+    public function __construct(Page $page)
     {
         $this->page = $page;
     }
@@ -20,9 +22,9 @@ class AppliedToPageDescendants extends \Boom\Finder\Filter
             ->on('pages_tags.page_id', '=', 'pages.id')
             ->join('page_mptt', 'inner')
             ->on('pages.id', '=', 'page_mptt.id')
-            ->where('page_mptt.lft', '>=', $this->page->mptt->lft)
-            ->where('page_mptt.rgt', '<=', $this->page->mptt->rgt)
-            ->where('page_mptt.scope', '=', $this->page->mptt->scope)
+            ->where('page_mptt.lft', '>=', $this->page->getMptt()->lft)
+            ->where('page_mptt.rgt', '<=', $this->page->getMptt()->rgt)
+            ->where('page_mptt.scope', '=', $this->page->getMptt()->scope)
             ->distinct(true)
             ->order_by('tag.name', 'asc');
     }

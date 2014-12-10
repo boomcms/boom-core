@@ -33,22 +33,20 @@ class Text extends \Boom\Chunk
 	 */
     protected function _show()
     {
-        $text = $this->text();
-
-        // If no template has been set then add the default HTML tags for this slotname.
-        if ($this->_template === null) {
-            return $this->_add_html($text);
-        } else {
-            return new View($this->viewDirectory."text/$this->_template", [
-                'text' => $text,
-                'chunk' => $this->_chunk
-            ]);
-        }
+        return $this->showText($this->text());
     }
 
     protected function _show_default()
     {
-        return $this->_show();
+        return $this->showText($this->defaultText());
+    }
+
+    public function defaultText()
+    {
+        $text = Kohana::message('chunks', $this->_slotname);
+        $text || $text = Kohana::message('chunks', 'text');
+
+        return $text;
     }
 
     public function get_paragraphs($offset = 0, $length = null)
@@ -63,15 +61,21 @@ class Text extends \Boom\Chunk
         return trim($this->_chunk->text) != null;
     }
 
+    private function showText($text)
+    {
+        // If no template has been set then add the default HTML tags for this slotname.
+        if ($this->_template === null) {
+            return $this->_add_html($text);
+        } else {
+            return new View($this->viewDirectory."text/$this->_template", [
+                'text' => $text,
+                'chunk' => $this->_chunk
+            ]);
+        }
+    }
+
     public function text()
     {
-        if ( ! $this->hasContent() && Editor::instance()->isEnabled()) {
-            $text = Kohana::message('chunks', $this->_slotname);
-            $text || $text = Kohana::message('chunks', 'text');
-
-            return $text;
-        }
-
         if (Editor::instance()->isEnabled()) {
             $commander = new TextFilter();
             $commander
