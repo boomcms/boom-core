@@ -15,6 +15,15 @@ class Tag
         $this->model = $model;
     }
 
+    public function delete()
+    {
+        if ($this->loaded()) {
+            $this->model->delete();
+        }
+
+        return $this;
+    }
+
     public function getGroup()
     {
         return $this->model->group;
