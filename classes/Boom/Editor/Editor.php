@@ -69,7 +69,7 @@ class Editor
     public static function instance()
     {
         if (static::$instance === null) {
-            static::$instance = new static(Auth::instance(), Session::instance());
+            static::$instance = new static(new Auth(Session::instance()), Session::instance());
         }
 
         return static::$instance;

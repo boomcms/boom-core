@@ -171,7 +171,7 @@ class Person implements UserInterface
         return  ( ! empty($result) && (boolean) $result[0]['allowed']);
     }
 
-    public function hasPermission(Role $role)
+    public function hasPermission($role, $all = true)
     {
         $query = DB::select([DB::expr("bit_and(allowed)"), 'allowed'])
             ->from('people_roles')
@@ -224,9 +224,18 @@ class Person implements UserInterface
         return false;
     }
 
-    public function loaded()
+    /**
+     *
+     * @return boolean
+     */
+    public function isValid()
     {
         return $this->model->loaded();
+    }
+
+    public function loaded()
+    {
+        return $this->isValid();
     }
 
     public function loginFailed()
@@ -310,7 +319,7 @@ class Person implements UserInterface
 
     public function validate()
     {
-        
+
     }
 
     public function getMergedPermissions()
@@ -325,7 +334,7 @@ class Person implements UserInterface
 
     public function getResetPasswordCode()
     {
-        
+
     }
 
     public function hasAccess($permissions, $all = true)
@@ -335,11 +344,11 @@ class Person implements UserInterface
 
     public function hasAnyAccess(array $permissions)
     {
-        
+
     }
 
     public function recordLogin()
     {
-        
+
     }
 }

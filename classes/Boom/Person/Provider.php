@@ -14,7 +14,7 @@ class Provider implements ProviderInterface
 
     public function findAll()
     {
-        
+
     }
 
     public function findAllInGroup(GroupInterface $group)
@@ -24,7 +24,7 @@ class Provider implements ProviderInterface
 
     public function findAllWithAccess($permissions)
     {
-        
+
     }
 
     public function findAllWithAnyAccess(array $permissions)
@@ -32,24 +32,42 @@ class Provider implements ProviderInterface
 
     }
 
+    /**
+     *
+     * @param array $values
+     * @return \Boom\Person\Person
+     */
+    public function findBy(array $values)
+    {
+        return new Person(new \Model_Person($values));
+    }
+
     public function findByActivationCode($code)
     {
-        
+
     }
 
     public function findByCredentials(array $credentials)
     {
+        if ( ! isset($credentials['email'])) {
+            throw new \InvalidArgumentException("Email address was not provided");
+        }
 
+        if ( ! isset($credentials['password'])) {
+            throw new \InvalidArgumentException("Email address was not provided");
+        }
+
+        return $this->findBy($credentials);
     }
 
     public function findById($id)
     {
-        return new Person(new \Model_Person($id));
+        return $this->findBy(['id' => $id]);
     }
-    
+
     public function findByEmail($email)
     {
-        return new Person(new \Model_Person(['email' => $email]));
+        return $this->findBy(['email' => $email]);
     }
 
     public function findByLogin($login)
@@ -59,7 +77,7 @@ class Provider implements ProviderInterface
 
     public function findByResetPasswordCode($code)
     {
-        
+
     }
 
     /**

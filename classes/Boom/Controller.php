@@ -70,7 +70,7 @@ class Controller extends \Controller
         $this->boom = Boom::instance();
         $this->environment = $this->boom->getEnvironment();
         $this->session = Session::instance();
-        $this->auth = new Auth(Config::get('auth'), $this->session);
+        $this->auth = new Auth($this->session);
 
         $this->_save_last_url();
 

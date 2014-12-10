@@ -16,8 +16,6 @@ class Controller_Cms_Auth_Login extends Controller_Cms_Auth
         if ($this->auth->isLoggedIn()) {
             $this->redirect($this->_get_redirect_url());
         }
-
-        $this->session = Session::instance();
     }
 
     public function action_begin()
@@ -31,8 +29,15 @@ class Controller_Cms_Auth_Login extends Controller_Cms_Auth
 
     public function action_process()
     {
-        $person = Person\Factory::byEmail($this->request->post('email'));
+        $provider = new Person\Provider();
+        $person = $provider->findByEmail($this->request->post('email'));
 
+        try {
+            $this->auth->authenticate($this->request->post('email'), $this->request->post('password'));
+        } catch (Exception $e) {
+            $this->_log_login_success();
+            $this->redirect($this->_get_redirect_url(), 303);
+        }
         if ($this->auth->login($person, $this->request->post('password'), $this->request->post('remember') == 1)) {
             $this->_login_complete();
         } else {
@@ -49,11 +54,5 @@ class Controller_Cms_Auth_Login extends Controller_Cms_Auth
 
             $this->_display_login_form(['login_error' => $error_message]);
         }
-    }
-
-    protected function _login_complete()
-    {
-        $this->_log_login_success();
-        $this->redirect($this->_get_redirect_url(), 303);
     }
 }
