@@ -130,7 +130,9 @@ boomPage.prototype.childsettings = function() {
 				}
 			});
 
-			$('#b-page-settings-children-reorder').on('click', function() {
+			$('#b-page-settings-children-reorder').on('click', function(e) {
+				e.preventDefault();
+
 				var sort_url = '/cms/page/settings/sort_children/' + page.id,
 					sortDialog;
 
