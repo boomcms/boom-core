@@ -1,7 +1,7 @@
 <ul id="b-page-settings-children-sort">
-	<? foreach ($children as $p): ?>
-		<li data-id="<?= $p->id ?>">
+	<?php foreach ($children as $p): ?>
+		<li data-id="<?= $p->getId() ?>">
 			<span class="title"><?= $p->getTitle() ?></span>
 		</li>
-	<? endforeach ?>
+	<?php endforeach ?>
 </ul>

@@ -91,7 +91,7 @@ class Controller_Cms_Page_Settings_View extends Controller_Cms_Page_Settings
         $children = $finder
             ->addFilter(new PageFinder\Filter\ParentPage($this->page))
             ->setLimit(50)
-            ->find();
+            ->findAll();
 
         $this->template = new View("$this->viewDirectory/sort_children", [
             'children' => $children

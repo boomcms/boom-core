@@ -139,19 +139,16 @@ boomPage.prototype.childsettings = function() {
 					title: 'Reorder child pages',
 					width: 'auto',
 					open: function() {
-						$('#b-page-settings-children-sort').sortable();
+						sortDialog.contents.find('#b-page-settings-children-sort').sortable();
 					}
 				});
 
 				sortDialog.done(function() {
-					var sequences = $('#b-page-settings-children-sort li').map(function(){
+					var sequences = sortDialog.contents.find('li').map(function() {
 						return $(this).attr('data-id');
 					}).get();
 
-					page.saveSettings(url, sortDialog.contents.find('form').serialize())
-						.done(function() {
-							page.saveSettings('/cms/page/settings/sort_children/' + page.id, {sequences : sequences}, 'Child page ordering saved, reloading page');
-						});
+					page.saveSettings(sort_url, {sequences: sequences}, 'Child page ordering saved, reloading page');
 				});
 			});
 		}

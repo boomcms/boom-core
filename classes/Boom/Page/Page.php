@@ -557,6 +557,23 @@ class Page
         return $this;
     }
 
+    public function updateChildSequences(array $sequences)
+    {
+        foreach ($sequences as $sequence => $pageId) {
+            $mptt = new \Model_Page_Mptt($pageId);
+
+            // Only update the sequence of pages which are children of this page.
+            if ($mptt->scope == $this->model->mptt->scope && $mptt->parent_id == $this->getId()) {
+                \DB::update('pages')
+                    ->set(['sequence' => $sequence])
+                    ->where('id', '=', $pageId)
+                    ->execute();
+            }
+        }
+
+        return $this;
+    }
+
     /**
 	 * Returns the Model_Page_URL object for the page's primary URI
 	 *

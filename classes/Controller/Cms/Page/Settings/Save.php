@@ -122,7 +122,7 @@ class Controller_Cms_Page_Settings_Save extends Controller_Cms_Page_Settings
         parent::action_children();
 
         Database::instance()->begin();
-        $this->page->update_child_sequences($this->request->post('sequences'));
+        $this->page->updateChildSequences($this->request->post('sequences'));
         Database::instance()->commit();
     }
 
