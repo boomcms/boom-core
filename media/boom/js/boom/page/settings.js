@@ -19,7 +19,7 @@ boomPage.prototype.navigation = function() {
 		onLoad : function() {
 			dialog.contents.find('.boom-tree').pageTree({
 				onPageSelect : function(page) {
-					$( 'input[name=parent_id]' ).val(page.page_id);
+					$( 'input[name=parent_id]' ).val(page.pageId);
 				}
 			});
 		},
