@@ -26,6 +26,16 @@ $.widget('boom.pageTagSearch',  {
 				}
 			});
 
+		this.element.on('click', '.b-button[title="Add tag"]', function(e) {
+			e.preventDefault();
+
+			var $input = $(this).parent().find('input');
+
+			if ($input.val()) {
+				$input.pageTagAutocomplete('tagSelected', $input.val());
+			}
+		});
+
 		this.element.on('click', '.b-tag-remove', function() {
 			tagSearch.removeTag($(this));
 		});

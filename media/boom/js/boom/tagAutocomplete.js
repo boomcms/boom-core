@@ -18,7 +18,7 @@ $.widget('boom.tagAutocomplete',  {
 					tags = self.element.val().split(',');
 
 					for (i = 0; i < tags.length; i++) {
-						self._tagSelected(tags[i]);
+						self.tagSelected(tags[i]);
 					}
 					
 					self.element.val('');
@@ -58,7 +58,7 @@ $.widget('boom.tagAutocomplete',  {
 				event.preventDefault();
 
 				self.element.val('');
-				self._tagSelected(ui.item);
+				self.tagSelected(ui.item);
 			}
 		});
 
@@ -84,7 +84,7 @@ $.widget('boom.tagAutocomplete',  {
 		this.ignoreTags = tags;
 	},
 
-	_tagSelected : function(tag) {
+	tagSelected : function(tag) {
 		this._trigger('complete', null, {tag : tag});
 	}
 });
