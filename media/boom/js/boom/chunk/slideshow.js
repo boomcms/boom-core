@@ -16,10 +16,10 @@ $.widget('ui.chunkSlideshow', $.ui.chunk,
 	edit: function() {
 		var chunk = this,
 			editor = new boomChunkSlideshowEditor(this.options.page, this.options.name, {
-				title : chunk.hasTitle(),
-				caption : chunk.hasCaption(),
-				link : chunk.hasLink(),
-				linkText : chunk.hasLinkText()
+				title : chunk.hasClass('slide-title'),
+				caption : chunk.hasClass('slide-caption'),
+				link : chunk.hasClass('slide-link'),
+				linkText : chunk.hasClass('slide-linktext')
 			});
 
 		editor
@@ -38,20 +38,10 @@ $.widget('ui.chunkSlideshow', $.ui.chunk,
 			});
 	},
 
-	hasLinkText : function() {
-		return this.element.hasClass('slide-linktext') || this.element.find('.slide-linktext').length > 0;
-	},
-	
-	hasCaption : function() {
-		return this.element.hasClass('slide-caption') || this.element.find('.slide-caption').length > 0;
-	},
-	
-	hasLink : function() {
-		return this.element.hasClass('slide-link') || this.element.find('.slide-link').length > 0;
-	},
+	hasClass : function(c) {
+		c = '.' + c;
 
-	hasTitle : function() {
-		return this.element.hasClass('slide-title') || this.element.find('.slide-title').length > 0;
+		return this.element.hasClass(c) || this.element.find(c).length > 0;
 	},
 
 	/**
