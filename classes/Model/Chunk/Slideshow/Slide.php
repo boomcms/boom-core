@@ -15,6 +15,7 @@ class Model_Chunk_Slideshow_Slide extends \ORM
         'chunk_id'    =>    '',
         'caption'    =>    '',
         'title'        =>    '',
+        'linktext' => '',
     ];
 
     protected $_table_name = 'chunk_slideshow_slides';
@@ -29,6 +30,9 @@ class Model_Chunk_Slideshow_Slide extends \ORM
             ],
             'url' => [
                 [[$this, 'makeLinkLelative']],
+            ],
+            'link_text' => [
+                ['strip_tags'],
             ],
         ];
     }

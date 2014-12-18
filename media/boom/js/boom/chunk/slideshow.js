@@ -19,6 +19,7 @@ $.widget('ui.chunkSlideshow', $.ui.chunk,
 				title : chunk.hasTitle(),
 				caption : chunk.hasCaption(),
 				link : chunk.hasLink(),
+				linkText : chunk.hasLinkText()
 			});
 
 		editor
@@ -35,6 +36,10 @@ $.widget('ui.chunkSlideshow', $.ui.chunk,
 			.fail(function() {
 				chunk.bind();
 			});
+	},
+
+	hasLinkText : function() {
+		return this.element.hasClass('slide-linktext') || this.element.find('.slide-linktext').length > 0;
 	},
 	
 	hasCaption : function() {

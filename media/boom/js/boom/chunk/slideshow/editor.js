@@ -18,6 +18,10 @@ function boomChunkSlideshowEditor(page_id, slotname, options) {
 			this.dialog.contents.find('.b-slideshow-link').hide();
 		}
 
+		if ( ! this.options.linkText) {
+			this.dialog.contents.find('.b-slideshow-linktext').hide();
+		}
+
 		this.dialog.contents
 			.on('click', '#b-slideshow-editor-delete', function() {
 				slideshowEditor.deferred.resolveWith({});
@@ -127,7 +131,10 @@ function boomChunkSlideshowEditor(page_id, slotname, options) {
 			.val(slide.caption)
 			.end()
 			.find('input[name=url]')
-			.val(new boomLink(slide.url).getUrl());
+			.val(new boomLink(slide.url).getUrl())
+			.end()
+			.find('input[name=linktext]')
+			.val(slide.linktext);
 	};
 
 	boomChunkSlideshowEditor.prototype.getAllSlideDetails = function() {
@@ -153,7 +160,8 @@ function boomChunkSlideshowEditor(page_id, slotname, options) {
 			url : $element.data('url'),
 			page : $element.data('page'),
 			caption : $element.data('caption'),
-			title : $element.data('title')
+			title : $element.data('title'),
+			linktext : $element.data('linktext')
 		};
 	};
 
