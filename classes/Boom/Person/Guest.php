@@ -9,6 +9,11 @@ class Guest extends Person
         $this->model = new \Model_Person();
     }
 
+    public function isValid()
+    {
+        return false;
+    }
+
     /**
      *
      * @return \Boom\Person\Guest

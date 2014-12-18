@@ -210,7 +210,7 @@ class Auth
         if ($this->person === null) {
             $personId = $this->session->get($this->sessionKey);
 
-            $this->person = $personId ? Person\Factory::byId($personId) : new Person\Guest();
+            $this->person = $personId ? $this->personProvider->findById($personId) : $this->personProvider->getEmptyUser();
         }
 
         return $this->person;
@@ -218,7 +218,7 @@ class Auth
 
     public function isLoggedIn()
     {
-        return ! $this->getPerson() instanceof Person\Guest;
+        return $this->getPerson()->isValid();
     }
 
     protected function _remember_login()
