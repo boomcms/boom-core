@@ -204,7 +204,7 @@ class Person implements UserInterface
 
     public function isLocked()
     {
-        return $this->getLockedUntil() && ($this->getLockedUntil() > $_SERVER['REQUEST_TIME']);
+        return $this->getLockedUntil() && ($this->getLockedUntil() > time());
     }
 
     public function inGroup(GroupInterface $group)

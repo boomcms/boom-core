@@ -77,7 +77,7 @@ class Provider implements ProviderInterface
 
     public function findByResetPasswordCode($code)
     {
-
+        return $this->findBy(['reset_password_code' => $code]);
     }
 
     /**

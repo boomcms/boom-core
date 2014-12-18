@@ -15,6 +15,8 @@ class Model_Person extends ORM
         'failed_logins'    =>    '',
         'locked_until'    =>    '',
         'avatar_id'    =>    '',
+        'reset_password_code' => '',
+        'persist_code' => '',
     ];
 
     protected $_belongs_to = [
