@@ -48,7 +48,7 @@ class Controller_Cms_Chunk extends Boom\Controller
         $this->authCheck();
         $this->_createVersion();
         $this->_save_chunk();
-        $this->page->getTemplate()->onPageSave($this->page);
+        $this->page->getTemplate()->onPageChunkSave($this->page, $this->_model);
 
         $this->_send_response($this->_preview_chunk());
     }

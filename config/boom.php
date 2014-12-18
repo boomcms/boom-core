@@ -86,6 +86,7 @@ return array(
             'cta' => array('Call to action', array('data-wysihtml5-command' => 'cta')),
             'sup' => array('Superscript', array('data-wysihtml5-command' => 'insertSuperscript', 'class' => 'command')),
             'sub' => array('Subscript', array('data-wysihtml5-command' => 'insertSubscript', 'class' => 'command')),
+            'hr' => array('Insert horizontal rule', array('data-wysihtml5-command' => 'insertHorizontalRule', 'class' => 'command')),
         ),
         'button_sets' => array(
             'text' => array('accept', 'cancel'),

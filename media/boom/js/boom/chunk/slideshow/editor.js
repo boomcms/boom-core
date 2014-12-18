@@ -158,6 +158,9 @@ function boomChunkSlideshowEditor(page_id, slotname) {
 		})
 		.done(function() {
 			slideshowEditor.deferred.resolve(slideshowEditor.getAllSlideDetails());
+		})
+		.fail(function() {
+			slideshowEditor.deferred.reject();
 		});
 
 		return this.deferred;

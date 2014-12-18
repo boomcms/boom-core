@@ -42,7 +42,7 @@
                             ), $child_order_direction);
                         ?>
 
-                        <a href="#" id="b-page-settings-children-reorder"<? if ($child_order_column != 'sequence'): ?> class="ui-helper-hidden"<? endif ?>>Reorder</a>
+                        <?= new Boom\UI\Button('', 'Re-order', array('id' => 'b-page-settings-children-reorder', 'class' => 'b-button-textonly')) ?>
                     </label>
 		</div>
 		<? if ($allowAdvanced): ?>

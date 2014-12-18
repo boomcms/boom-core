@@ -211,6 +211,14 @@ class Template
     public function onPageRename(Page\Page $page, $oldTitle, $newTitle) {}
 
     /**
+     * Called after a chunk is saved.
+     * 
+     * @param \Boom\Page\Page $page
+     * @param type $chunk
+     */
+    public function onPageChunkSave(Page\Page $page, $chunk) {}
+
+    /**
      * Called after a page using this template is saved.
      *
      * @param \Boom\Page\Page $page
