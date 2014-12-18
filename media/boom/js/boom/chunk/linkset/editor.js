@@ -96,6 +96,9 @@ function boomChunkLinksetEditor(pageId, slotname, options) {
 		})
 		.done(function() {
 			linksetEditor.deferred.resolve(linksetEditor.getData());
+		})
+		.fail(function() {
+			linksetEditor.deferred.reject();
 		});
 
 		return this.deferred;

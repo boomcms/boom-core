@@ -7,6 +7,9 @@ $.widget('ui.chunkLinkset', $.ui.chunk, {
 			})
 			.done(function(data) {
 				chunkLinkset.insert(data);
+			})
+			.fail(function() {
+				chunkLinkset.destroy();
 			});
 	},
 
