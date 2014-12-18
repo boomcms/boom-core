@@ -1,9 +1,22 @@
-function boomChunkSlideshowEditor(page_id, slotname) {
+function boomChunkSlideshowEditor(page_id, slotname, options) {
 	this.page_id = page_id;
 	this.slotname = slotname;
+	this.options = options;
 
 	boomChunkSlideshowEditor.prototype.bind = function() {
 		var slideshowEditor = this;
+
+		if ( ! this.options.title) {
+			this.dialog.contents.find('.b-slideshow-title').hide();
+		}
+
+		if ( ! this.options.caption) {
+			this.dialog.contents.find('.b-slideshow-caption').hide();
+		}
+
+		if ( ! this.options.link) {
+			this.dialog.contents.find('.b-slideshow-link').hide();
+		}
 
 		this.dialog.contents
 			.on('click', '#b-slideshow-editor-delete', function() {

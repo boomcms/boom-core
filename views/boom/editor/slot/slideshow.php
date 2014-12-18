@@ -33,19 +33,19 @@
 		</p>
 		<form>
 			<p>Click on the slide image to change the image</p>
-			<p>You may set a title, caption, or link for the slide. However, whether or not these will be used in the slideshow will depend on the template in use.</p>
 			<a href="#"><img src="" /></a>
-			<label>
+
+			<label class="b-slideshow-title">
 				<p>Title</p>
 				<input type="text" name="title" />
 			</label>
 
-			<label>
+			<label class="b-slideshow-caption">
 				<p>Caption</p>
 				<input type="text" name="caption" />
 			</label>
 
-			<label>
+			<label class="b-slideshow-link">
 				<p>Link</p>
 				<input type="text" name="url" />
 			</label>
