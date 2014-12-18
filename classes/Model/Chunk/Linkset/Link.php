@@ -16,6 +16,7 @@ class Model_Chunk_Linkset_Link extends ORM
         'chunk_linkset_id'    =>    '',
         'url'                =>    '',
         'title'                =>    '',
+        'asset_id' => '',
     ];
 
     protected $_table_name = 'chunk_linkset_links';
@@ -32,7 +33,7 @@ class Model_Chunk_Linkset_Link extends ORM
 
     public function getTitle()
     {
-        return $this->title;
+        return $this->title?: $this->getLink()->getTitle();
     }
 
     public function isInternal()

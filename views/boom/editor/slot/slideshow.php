@@ -15,7 +15,7 @@
 				<? $link = $slide->getLink() ?>
 				<li>
 					<label>
-						<input type="radio" value="<?= $slide->id ?>" name="slide" data-asset="<?= $slide->asset_id ?>" data-title="<?= $slide->title ?>" data-url="<?= $link->url() ?>" data-page="<?= $link->isInternal()? $link->getPage()->getId() : 0 ?>" data-caption="<?= $slide->caption ?>" />
+						<input type="radio" value="<?= $slide->id ?>" name="slide" data-asset="<?= $slide->asset_id ?>" data-title="<?= $slide->title ?>" data-url="<?= $link->url() ?>" data-page="<?= $link->isInternal()? $link->getPage()->getId() : 0 ?>" data-caption="<?= $slide->caption ?>" data-linktext='<?= $slide->linktext ?>' />
 						<img src="<?= Route::url('asset', array('id' => $slide->asset_id)) ?>" />
 					</label>
 				</li>
@@ -33,21 +33,26 @@
 		</p>
 		<form>
 			<p>Click on the slide image to change the image</p>
-			<p>You may set a title, caption, or link for the slide. However, whether or not these will be used in the slideshow will depend on the template in use.</p>
 			<a href="#"><img src="" /></a>
-			<label>
+
+			<label class="b-slideshow-title">
 				<p>Title</p>
 				<input type="text" name="title" />
 			</label>
 
-			<label>
+			<label class="b-slideshow-caption">
 				<p>Caption</p>
 				<input type="text" name="caption" />
 			</label>
 
-			<label>
+			<label class="b-slideshow-link">
 				<p>Link</p>
 				<input type="text" name="url" />
+			</label>
+
+			<label class="b-slideshow-linktext">
+				<p>Link Text</p>
+				<input type="text" name="linktext" />
 			</label>
 
 			<?= new \Boom\UI\Button('delete', 'Delete this slide', array('id' => 'b-slideshow-editor-current-delete', 'class' => 'b-button-withtext')) ?>
