@@ -7,9 +7,9 @@ use \DB as DB;
 use \Model_Role as Role;
 
 use Hautelook\Phpass\PasswordHash;
-use Boom\Config;
 use Boom\Person;
 
+use Cartalyst\Sentry\Users\ProviderInterface;
 use Cartalyst\Sentry\Users\UserNotFoundException;
 use \Session;
 
@@ -39,10 +39,10 @@ class Auth
 
     protected $permissions_cache = [];
 
-    public function __construct(Session $session)
+    public function __construct(Session $session, ProviderInterface $personProvider = null)
     {
         $this->session = $session;
-        $this->personProvider = new Person\Provider();
+        $this->personProvider = $personProvider?: new Person\Provider();
     }
 
     public function authenticate($email, $password, $remember = false)
