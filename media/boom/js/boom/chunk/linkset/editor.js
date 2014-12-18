@@ -21,12 +21,15 @@ function boomChunkLinksetEditor(pageId, slotname, options) {
 			.done(function(link) {
 				var $a = $('<a href="#"></a>')
 					.attr('data-page-id', link.getPageId())
+					.attr('data-title', link.getTitle())
 					.attr('data-url', link.getUrl())
+					.attr('data-asset', '')
 					.text(link.getTitle());
 
 				linksetEditor.$links.append($('<li></li>').append($a));
-				linksetEditor.dialog.contents.find('.none').hide();
+				linksetEditor.dialog.contents.find('#b-linkset-links .none').hide();
 				linksetEditor.addDeleteButtons();
+				linksetEditor.editLink($a);
 			});
 	};
 
@@ -37,9 +40,18 @@ function boomChunkLinksetEditor(pageId, slotname, options) {
 			this.dialog.contents.find('#b-linkset-title, #b-linkset-title-tab').hide();
 		}
 
+		if ( ! this.options.linkAssets) {
+			this.dialog.contents.find('.b-linkset-asset').hide();
+		}
+
 		this.$links = this.dialog.contents.find('#b-linkset-links ul');
 
 		this.addDeleteButtons();
+
+		this.$links
+			.on('click', '.b-linkset-link', function() {
+				linksetEditor.editLink($(this));
+			});
 
 		this.dialog.contents
 			.on('click', '#b-linkset-add', function() {
@@ -48,8 +60,75 @@ function boomChunkLinksetEditor(pageId, slotname, options) {
 			.on('click', '.delete', function() {
 				linksetEditor.deleteLink($(this).parent());
 			})
+			.on('keyup change', '#b-linkset-current form input[type=text]', function() {
+				var $this = $(this),
+					name = $this.attr('name'),
+					val = $this.val();
+
+				linksetEditor.currentLink.attr('data-' + name, val);
+
+				if (name === 'title') {
+					linksetEditor.currentLink.text(val);
+				}
+			})
+			.on('click', '.b-linkset-target button', function(e) {
+				e.preventDefault();
+
+				linksetEditor.editLinkTarget();
+			})
+			.on('click', '#b-linkset-delete', function() {
+				linksetEditor.deferred.resolveWith({});
+				linksetEditor.dialog.cancel();
+			})
+			.on('click', '.b-linkset-asset a', function() {
+				linksetEditor.editAsset(linksetEditor.currentLink.attr('data-asset'));
+			})
 			.find('ul')
 			.sortable();
+	};
+
+	boomChunkLinksetEditor.prototype.editAsset = function(currentAssetId) {
+		var linksetEditor = this;
+
+		new boomAssetPicker(currentAssetId)
+			.done(function(assetId) {
+				linksetEditor.currentLink.attr('data-asset', assetId);
+				linksetEditor.toggleLinkAsset(assetId);
+			});
+	};
+
+	boomChunkLinksetEditor.prototype.editLink = function($a) {
+		this.currentLink = $a;
+
+		this.dialog.contents
+			.find('#b-linkset-current')
+			.find('.default')
+			.hide()
+			.end()
+			.find('form')
+			.show()
+			.find('.b-linkset-target input[type=text]')
+			.val($a.attr('data-url'))
+			.end()
+			.find('.b-linkset-title input[type=text]')
+			.val($a.attr('data-title'))
+			.end();
+
+		this.toggleLinkAsset($a.attr('data-asset'));
+	};
+
+	boomChunkLinksetEditor.prototype.editLinkTarget = function() {
+		var linksetEditor = this,
+			link = new boomLink(this.currentLink.attr('data-url'), this.currentLink.attr('data-page-id'));
+
+		new boomLinkPicker(link)
+			.done(function(link) {
+				linksetEditor.currentLink
+					.attr('data-page-id', link.getPageId())
+					.attr('data-url', link.getUrl());
+
+				linksetEditor.dialog.contents.find('.b-linkset-target input').val(link.getUrl());
+			});
 	};
 
 	boomChunkLinksetEditor.prototype.deleteLink = function($li) {
@@ -74,7 +153,8 @@ function boomChunkLinksetEditor(pageId, slotname, options) {
 			links.push({
 				target_page_id : $this.attr('data-page-id'),
 				url : $this.attr('data-url'),
-				title : $this.text(),
+				title : $this.attr('data-title'),
+				asset_id : $this.attr('data-asset'),
 				sequence : sequence
 			});
 		});
@@ -89,7 +169,7 @@ function boomChunkLinksetEditor(pageId, slotname, options) {
 			url: '/cms/chunk/linkset/edit/' + this.pageId + '?slotname=' + this.slotname,
 			title: 'Edit linkset',
 			id: 'b-linkset-editor',
-			width: 400,
+			width: 900,
 			onLoad: function() {
 				linksetEditor.bind();
 			}
@@ -102,6 +182,28 @@ function boomChunkLinksetEditor(pageId, slotname, options) {
 		});
 
 		return this.deferred;
+	};
+
+	boomChunkLinksetEditor.prototype.toggleLinkAsset = function(assetId) {
+		var $linksetAsset = this.dialog.contents.find('.b-linkset-asset');
+
+		if (assetId && assetId > 0) {
+			$linksetAsset
+				.find('.none')
+				.hide()
+				.end()
+				.find('.set')
+				.show()
+				.find('img')
+				.attr('src', '/asset/view/' + assetId + '/500');
+		} else {
+			$linksetAsset
+				.find('.none')
+				.show()
+				.end()
+				.find('.set')
+				.hide();
+		}
 	};
 
 	return this.open();

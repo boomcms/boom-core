@@ -33,7 +33,7 @@ class Model_Chunk_Linkset_Link extends ORM
 
     public function getTitle()
     {
-        return $this->title;
+        return $this->title?: $this->getLink()->getTitle();
     }
 
     public function isInternal()
