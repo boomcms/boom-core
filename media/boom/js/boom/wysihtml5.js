@@ -27,23 +27,20 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 
 	/**
 	* @function
-	@param {Object} element The element being edited.
 	@returns {Deferred}
 	*/
-	edit : function (element) {
+	_create : function () {
 		var self = this,
-			element;
+			element = this.element;
 
 		self.mode = element.is('div') ? 'block' : 'inline';
 		self.mode = (element.is(':header') ||  element.is('.standFirst') || element.is('.standfirst'))? 'text' : self.mode;
-		self.edited = new $.Deferred();
 		self.original_html = element.html();
-		self.dialogOpen = false;
 
-		var toolbar = $('#wysihtml5-toolbar').find('[data-buttonset=' + self.mode  + ']');
+		self.toolbar = $('#wysihtml5-toolbar').find('[data-buttonset=' + self.mode  + ']').clone().appendTo('#wysihtml5-toolbar');
 
 		self.instance = new wysihtml5.Editor(element[0], { // id of textarea element
-			toolbar : toolbar[0],
+			toolbar : self.toolbar[0],
 			style : true,
 			parserRules :  (self.mode == 'block')? wysihtml5ParserRules : wysihtml5ParserRulesInline, // defined in parser rules set
 			useLineBreaks : false,
@@ -51,37 +48,26 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 			autoLink : false
 		});
 
-		setTimeout(function() {
-			self.showToolbar();
-			element.focus();
-		}, 0);
+		element
+			.on('focus', function() {
+				if (element.hasClass('b-editable')) {
+					element.removeClass('b-editable');
 
-		toolbar
-			.on('click', '.b-editor-accept', function(event) {
-				event.preventDefault();
-
-				self.apply(element);
-				return false;
-			})
-			.on( 'click', '.b-editor-cancel', function( event ){
-				event.preventDefault();
-				self.cancel(element);
-				return false;
-			})
-			.on('mousedown', '.b-editor-link', function() {
-				self.dialogOpen = true;
-			})
-			.on('click', '.b-editor-link', function() {
-				wysihtml5.commands.createBoomLink.edit(self.instance.composer);
+					setTimeout(function() {
+						self.showToolbar();
+					}, 0);
+				}
 			});
+
+		this.enableAutoSave();
 
 		$(self.instance.composer)
 			.on('before:boomdialog', function() {
-				self.dialogOpen = true;
+				self.disableAutoSave();
 			})
 			.on('after:boomdialog', function() {
-				self.dialogOpen = false;
-				element.focus();
+				self.element.focus();
+				self.enableAutoSave();
 			});
 
 		self.instance
@@ -93,19 +79,22 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 				}
 			});
 
-		return self.edited;
+		this.toolbar
+			.on('click', '.b-editor-accept', function(event) {
+				event.preventDefault();
 
-	},
+				self.apply(self.element);
 
-	/**
-	* @function
-	*/
-	remove : function(element) {
-		this.hideToolbar();
-
-		element.removeAttr('contenteditable');
-
-		this.instance = null;
+				return false;
+			})
+			.on('click', '.b-editor-cancel', function(event) {
+				event.preventDefault();
+				self.cancel(self.element);
+				return false;
+			})
+			.on('click', '.b-editor-link', function() {
+				wysihtml5.commands.createBoomLink.edit(self.instance.composer);
+			});
 	},
 
 	/**
@@ -113,14 +102,13 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 	@param {Object} element The element being edited.
 	*/
 	apply : function(element) {
-		this.edited.resolve(element.html());
-		this.remove(element);
+		this.hideToolbar();
+
+		this._trigger('edit', element.html());
 	},
 
 	blur : function(element) {
-		if ( ! this.dialogOpen) {
-			this.apply(element);
-		}
+		this.apply(element);
 	},
 
 	/**
@@ -131,28 +119,40 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 		var self = this,
 			content = element.html();
 
+		element.blur();
+		self.hideToolbar();
+
 		if (self.hasBeenEdited) {
 			var confirmation = new boomConfirmation('Cancel changes', 'Cancel all changes and exit the editor?');
 
 			confirmation
 				.done(function() {
 					$.boom.log( 'canceling text edits' );
-
-					self.remove(element);
-
-					self.edited.reject();
 				});
-		} else {
-			self.remove(element);
-			self.edited.reject();
 		}
 	},
 
+	disableAutoSave : function() {
+		this.element.unbind('blur');
+	},
+
+	enableAutoSave : function() {
+		var editor = this;
+
+		this.element.on('blur', function() {
+			if ( ! editor.toolbar.children(':focus').length) {
+				editor.apply(editor.element);
+				editor.element.addClass('b-editable');
+			}
+		});
+	},
+
 	hideToolbar : function() {
-		$('#wysihtml5-toolbar').hide().children('[data-buttonset=' + this.mode + ']').hide();
+		$('#wysihtml5-toolbar').hide().children('[data-buttonset]').hide();
 	},
 
 	showToolbar : function() {
-		$('#wysihtml5-toolbar').show().find('[data-buttonset=' + this.mode + ']').show();
+		$('#wysihtml5-toolbar').show().children().hide();
+		this.toolbar.show();
 	}
 });
