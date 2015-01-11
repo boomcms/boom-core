@@ -37,7 +37,7 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 		self.mode = (element.is(':header') ||  element.is('.standFirst') || element.is('.standfirst'))? 'text' : self.mode;
 		self.original_html = element.html();
 
-		self.toolbar = $('#wysihtml5-toolbar').find('[data-buttonset=' + self.mode  + ']').clone().appendTo('#wysihtml5-toolbar');
+		self.toolbar = $('#wysihtml5-toolbar').find('[data-buttonset=' + self.mode  + ']').first().clone().appendTo('#wysihtml5-toolbar');
 
 		self.instance = new wysihtml5.Editor(element[0], { // id of textarea element
 			toolbar : self.toolbar[0],
