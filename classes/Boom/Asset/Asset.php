@@ -3,6 +3,7 @@
 namespace Boom\Asset;
 
 use Boom\Person;
+use \DB;
 use \File;
 use \DateTime;
 
@@ -123,6 +124,17 @@ abstract class Asset
     public function getOriginalFilename()
     {
         return $this->model->filename;
+    }
+
+    public function getTags()
+    {
+        $results = DB::select('tag')
+            ->from('assets_tags')
+            ->where('asset_id', '=', $this->getId())
+            ->execute()
+            ->as_array('tag');
+
+        return array_keys($results);
     }
 
     public function getThumbnailAssetId()

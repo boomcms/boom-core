@@ -26,7 +26,6 @@ $.widget( 'boom.pageEditor', {
 		$.boom.log('Page registered for editing: ' + self.options.page_id);
 
 		if (this.options.editable) {
-			$('body').editor();
 			this.createChunks();
 			this.watchForDialogs();
 		}

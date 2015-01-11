@@ -19,7 +19,7 @@ boomPage.prototype.navigation = function() {
 		onLoad : function() {
 			dialog.contents.find('.boom-tree').pageTree({
 				onPageSelect : function(page) {
-					$( 'input[name=parent_id]' ).val(page.page_id);
+					$( 'input[name=parent_id]' ).val(page.pageId);
 				}
 			});
 		},
@@ -49,20 +49,7 @@ boomPage.prototype.search = function() {
 };
 
 boomPage.prototype.tags = function() {
-	var page = this;
-
-	new boomDialog({
-		url: '/cms/tags/page/list/' + page.id,
-		title: 'Page tags',
-		width: 440,
-		cancelButton : false,
-		open: function() {
-			$('#b-tags').tagger({
-				type: 'page',
-				id: page.id
-			});
-		}
-	});
+	new boomPageTagEditor(this);
 };
 
 boomPage.prototype.urls = function() {
@@ -143,7 +130,9 @@ boomPage.prototype.childsettings = function() {
 				}
 			});
 
-			$('#b-page-settings-children-reorder').on('click', function() {
+			$('#b-page-settings-children-reorder').on('click', function(e) {
+				e.preventDefault();
+
 				var sort_url = '/cms/page/settings/sort_children/' + page.id,
 					sortDialog;
 
@@ -152,19 +141,16 @@ boomPage.prototype.childsettings = function() {
 					title: 'Reorder child pages',
 					width: 'auto',
 					open: function() {
-						$('#b-page-settings-children-sort').sortable();
+						sortDialog.contents.find('#b-page-settings-children-sort').sortable();
 					}
 				});
 
 				sortDialog.done(function() {
-					var sequences = $('#b-page-settings-children-sort li').map(function(){
+					var sequences = sortDialog.contents.find('li').map(function() {
 						return $(this).attr('data-id');
 					}).get();
 
-					page.saveSettings(url, sortDialog.contents.find('form').serialize())
-						.done(function() {
-							page.saveSettings('/cms/page/settings/sort_children/' + page.id, {sequences : sequences}, 'Child page ordering saved, reloading page');
-						});
+					page.saveSettings(sort_url, {sequences: sequences}, 'Child page ordering saved, reloading page');
 				});
 			});
 		}

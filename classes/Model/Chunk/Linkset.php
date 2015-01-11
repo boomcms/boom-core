@@ -19,14 +19,14 @@ class Model_Chunk_Linkset extends ORM
 
     public function copy($from_version_id)
     {
-        $subquery = DB::select(DB::expr($this->id), 'target_page_id', 'url', 'chunk_linkset_links.title')
+        $subquery = DB::select(DB::expr($this->id), 'target_page_id', 'url', 'chunk_linkset_links.title', 'asset_id')
             ->from('chunk_linkset_links')
             ->join('chunk_linksets', 'inner')
             ->on('chunk_linksets.id', '=', 'chunk_linkset_links.chunk_linkset_id')
             ->where('slotname', '=', $this->slotname)
             ->where('page_vid', '=', $from_version_id);
 
-        DB::insert('chunk_linkset_links', ['chunk_linkset_id', 'target_page_id', 'url', 'title'])
+        DB::insert('chunk_linkset_links', ['chunk_linkset_id', 'target_page_id', 'url', 'title', 'asset_id'])
             ->select($subquery)
             ->execute($this->_db);
     }

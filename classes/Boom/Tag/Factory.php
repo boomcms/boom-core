@@ -16,13 +16,22 @@ abstract class Factory
         return new Tag(new Model_Tag(['name' => $name]));
     }
 
-    public static function findOrCreateByName($name)
+    public static function findByNameAndGroup($name, $group= null)
     {
-        $model = new Model_Tag(['name' => $name]);
+        return new Tag(new Model_Tag(['name' => $name, 'group' => $group]));
+    }
+
+    public static function findOrCreateByNameAndGroup($name, $group = null)
+    {
+        // Ensure group is null if an empty string is passed.
+        $group = $group?: null;
+
+        $model = new Model_Tag(['name' => $name, 'group' => $group]);
 
         if ( ! $model->loaded()) {
             $model
                 ->set('name', $name)
+                ->set('group', $group)
                 ->create();
         }
 

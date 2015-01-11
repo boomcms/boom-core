@@ -22,55 +22,27 @@ $.widget('ui.chunkText', $.ui.chunk,
 	},
 
 	bind : function() {
-		var element = this.element;
+		var element = this.element,
+			self = this,
+			old_html = element.html();
 
 		$.ui.chunk.prototype.bind.call(this);
 
-		this.element
-			.on('click', function() {
-				element.focus();
-			})
-			.on('blur', function() {
-				$('body').editor('blur', element);
-			});
-	},
-
-	/**
-	Make the element editable by invokeing boom.editor.edit() on it.
-	*/
-	edit : function(){
-
-		var self = this;
-
-		$.boom.log('Text chunk slot edit');
-
-		this.element[0].id = this.element[0].id || $.boom.util.dom.uniqueId('boom-dom-wysiwyg-');
-
-		var old_html = self.element.html();
-
-		if (this.element.text() == 'Default text.') {
-			this.element.html( '' );
-		}
-
-		this.element.unbind('keydown');
-
-		$('body').editor('edit', this.element)
-			.fail(function() {
-				self.element.html( old_html ).show();
-				self.destroy();
-			})
-			.done(function() {
+		element.editor({
+			edit : function() {
 				var edited = old_html != self.element.html();
 
 				if ( ! self.hasContent()) {
 					self.remove();
+					self.element.text('Default text.');
 				} else if (edited == true) {
 					self._save();
-				} else {
-					self.bind();
 				}
-			});
+			}
+		});
 	},
+
+	edit : function() {},
 
 	/**
 	Get the chunk HTML, escaped and cleaned.
@@ -94,11 +66,9 @@ $.widget('ui.chunkText', $.ui.chunk,
 		return this.element.is('div');
 	},
 
-	_update_html : function() {
-		this.bind();
-	},
-
 	unbind : function() {
 		this.element.unbind('click');
-	}
+	},
+
+	_update_html : function() {}
 });

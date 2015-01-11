@@ -38,9 +38,9 @@ function boomAssetPicker(currentAssetId) {
 		});
 
 		this.tagFilter
-			.tagger_search({
-				update : function(tagIds) {
-					assetPicker.addFilter('tag', tagIds);
+			.assetTagSearch({
+				update : function(e, data) {
+					assetPicker.addFilter('tag', data.tags);
 					assetPicker.getAssets();
 				}
 			});
@@ -63,6 +63,9 @@ function boomAssetPicker(currentAssetId) {
 			.on('click', '#b-assets-picker-close', function() {
 				assetPicker.cancel();
 			})
+			.on('click', '#b-assets-picker-current-remove', function() {
+				assetPicker.pick(0);
+			})
 			.find('#b-assets-upload-form')
 			.assetUploader({
 				done : function(e, data) {
@@ -78,7 +81,7 @@ function boomAssetPicker(currentAssetId) {
 
 	boomAssetPicker.prototype.cancel = function() {
 		this.deferred.reject();
-		this.close();
+		this.dialog.cancel();
 	};
 
 	boomAssetPicker.prototype.clearFilters = function() {
@@ -91,8 +94,7 @@ function boomAssetPicker(currentAssetId) {
 	};
 
 	boomAssetPicker.prototype.close = function() {
-		this.picker.remove();
-		$(top.window).trigger('boom:dialog:close');
+		this.dialog.cancel();
 	};
 
 	boomAssetPicker.prototype.getAssets = function() {
@@ -143,33 +145,31 @@ function boomAssetPicker(currentAssetId) {
 	boomAssetPicker.prototype.loadPicker = function() {
 		var assetPicker = this;
 
-		this.picker = $("<div id='b-assets-picker'></div>");
-		this.picker.load(this.url, function() {
-			assetPicker.titleFilter = assetPicker.picker.find('#b-assets-filter-title');
-			assetPicker.tagFilter = assetPicker.picker.find('#b-tags-search');
-			assetPicker.typeFilter = assetPicker.picker.find('#b-assets-types');
+		this.dialog = new boomDialog({
+			url : this.url,
+			onLoad : function() {
+				assetPicker.picker = assetPicker.dialog.contents.find('#b-assets-picker');
+				assetPicker.titleFilter = assetPicker.picker.find('#b-assets-filter-title');
+				assetPicker.tagFilter = assetPicker.picker.find('#b-tags-search');
+				assetPicker.typeFilter = assetPicker.picker.find('#b-assets-types');
 
-			assetPicker.bind();
-			assetPicker.justifyAssets();
-			assetPicker.initPagination();
+				assetPicker.bind();
+				assetPicker.justifyAssets();
+				assetPicker.initPagination();
 
-			if (assetPicker.currentAssetId) {
-				assetPicker.picker
-					.find('#b-assets-picker-current img')
-					.attr('src', '/asset/view/' + assetPicker.currentAssetId);
-			} else {
-				assetPicker.hideCurrentAsset();
+				if (assetPicker.currentAssetId > 0) {
+					assetPicker.picker
+						.find('#b-assets-picker-current img')
+						.attr('src', '/asset/view/' + assetPicker.currentAssetId);
+				} else {
+					assetPicker.hideCurrentAsset();
+				}
 			}
 		});
-
-		this.document
-			.find('body')
-			.append(this.picker);
 	};
 
 	boomAssetPicker.prototype.open = function() {
 		this.loadPicker();
-		$(top.window).trigger('boom:dialog:open');
 
 		return this.deferred;
 	};

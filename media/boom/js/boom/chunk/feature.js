@@ -11,6 +11,8 @@ $.widget('ui.chunkFeature', $.ui.chunk,
 	{
 
 	_bind : function() {
+		var featureChunk = this;
+
 		if (this.options.id > 0) {
 			this.dialog.contents.find('input[name=parent_id]').val(this.options.id);
 
@@ -21,8 +23,8 @@ $.widget('ui.chunkFeature', $.ui.chunk,
 					icons: {primary : 'b-button-icon b-button-icon-delete'}
 				})
 				.click(function() {
-					this.remove();
-					this.dialog.close();
+					featureChunk.remove();
+					featureChunk.dialog.close();
 				});
 
 			this.dialog.contents.dialog('widget')
@@ -75,7 +77,6 @@ $.widget('ui.chunkFeature', $.ui.chunk,
 			url: '/cms/chunk/feature/edit/' + this.options.currentPage.id,
 			width: 700,
 			closeButton : false,
-			position : {my: "bottom", at: "center", of: window},
 			title: 'Page feature',
 			onLoad : function() {
 				featureEditor.confirmation && featureEditor.confirmation.close();
@@ -96,11 +97,7 @@ $.widget('ui.chunkFeature', $.ui.chunk,
 		});
 	},
 
-	/**
-	Get the RID for this feature box.
-	@returns {Int} Page RID
-	*/
-	getData: function(){
+	getData: function() {
 		return {target_page_id : this.options.id};
 	},
 

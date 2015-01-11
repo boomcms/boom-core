@@ -1,5 +1,53 @@
 #b-linkset-editor {
+	padding-bottom: 0;
+	overflow: visible;
+
+	.container {
+		width: 100%;
+		overflow: hidden;
+		padding: 1em 0 0 0;
+	}
+
+	section {
+		.box-sizing;
+		width: 50%;
+		display: table-cell;
+		vertical-align: top;
+
+		h1 {
+			margin-top: 0;
+		}
+
+		&:first-of-type {
+			padding-right: 1em;
+		}
+
+		&:nth-of-type(2) {
+			padding-left: 1em;
+			border-left: 1px solid @darkest-grey;
+		}
+	}
+
+	#b-linkset-title {
+		margin-top: 0;
+		overflow: hidden;
+		padding-right: 0;
+
+		p {
+			width: 7em;
+			float: left;
+			margin: 5px 0 0 0;
+		}
+
+		input {
+			width: 18em;
+			float: right;
+		}
+	}
+
 	#b-linkset-links {
+		margin-top: 2em;
+
 		ul {
 			padding-left: 0;
 			margin-top: 0;
@@ -44,7 +92,71 @@
 		}
 	}
 
-	input[type=text] {
-		width: 100%;
+	#b-linkset-current {
+		form {
+			display: none;
+
+			label {
+				overflow: hidden;
+				padding-right: 0;
+
+				p {
+					width: 5em;
+					float: left;
+					margin: 5px 0 0 0;
+				}
+
+				input {
+					width: 20em;
+					float: right;
+				}
+			}
+
+			.b-linkset-target {
+				input {
+					background: transparent;
+					color: @white;
+					padding: 0;
+					width: 17em;
+					float: left;
+				}
+
+				button {
+					float: right;
+					margin: 0;
+				}
+			}
+
+			.b-linkset-asset {
+				.set {
+					width: 20em;
+					float: right;
+					display: block;
+					margin-top: 5px;
+
+					&:focus, &:hover {
+						opacity: 0.8;
+					}
+
+					img {
+						width: 100%;
+					}
+				}
+
+				.none {
+					width: 20em;
+					float: right;
+				}
+			}
+		}
+	}
+
+	&-buttons {
+		position: absolute;
+		bottom: -4em;
+
+		button:first-of-type {
+			margin-left: 0;
+		}
 	}
 }

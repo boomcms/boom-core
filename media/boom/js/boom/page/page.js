@@ -18,6 +18,13 @@ function boomPage(page_id) {
 		return promise;
 	};
 
+	boomPage.prototype.addTag = function(group, tag) {
+		return $.boom.post('/cms/page/tags/add/' + this.id, {
+			group : group,
+			tag : tag
+		});
+	};
+
 	boomPage.prototype.delete = function() {
 		var promise = new $.Deferred(),
 			page_id = this.id;
@@ -78,6 +85,12 @@ function boomPage(page_id) {
 		var url = '/cms/page/version/request_approval/' + this.id;
 
 		return $.post(url, {csrf : $.boom.options.csrf});
+	};
+
+	boomPage.prototype.removeTag = function(tagId) {
+		return $.boom.post('/cms/page/tags/remove/' + this.id, {
+			tag : tagId
+		});
 	};
 
 	boomPage.prototype.revertToPublished = function() {

@@ -1,9 +1,26 @@
-function boomChunkSlideshowEditor(page_id, slotname) {
+function boomChunkSlideshowEditor(page_id, slotname, options) {
 	this.page_id = page_id;
 	this.slotname = slotname;
+	this.options = options;
 
 	boomChunkSlideshowEditor.prototype.bind = function() {
 		var slideshowEditor = this;
+
+		if ( ! this.options.title) {
+			this.dialog.contents.find('.b-slideshow-title').hide();
+		}
+
+		if ( ! this.options.caption) {
+			this.dialog.contents.find('.b-slideshow-caption').hide();
+		}
+
+		if ( ! this.options.link) {
+			this.dialog.contents.find('.b-slideshow-link').hide();
+		}
+
+		if ( ! this.options.linkText) {
+			this.dialog.contents.find('.b-slideshow-linktext').hide();
+		}
 
 		this.dialog.contents
 			.on('click', '#b-slideshow-editor-delete', function() {
@@ -114,7 +131,10 @@ function boomChunkSlideshowEditor(page_id, slotname) {
 			.val(slide.caption)
 			.end()
 			.find('input[name=url]')
-			.val(new boomLink(slide.url).getUrl());
+			.val(new boomLink(slide.url).getUrl())
+			.end()
+			.find('input[name=linktext]')
+			.val(slide.linktext);
 	};
 
 	boomChunkSlideshowEditor.prototype.getAllSlideDetails = function() {
@@ -140,7 +160,8 @@ function boomChunkSlideshowEditor(page_id, slotname) {
 			url : $element.data('url'),
 			page : $element.data('page'),
 			caption : $element.data('caption'),
-			title : $element.data('title')
+			title : $element.data('title'),
+			linktext : $element.data('linktext')
 		};
 	};
 
@@ -158,6 +179,9 @@ function boomChunkSlideshowEditor(page_id, slotname) {
 		})
 		.done(function() {
 			slideshowEditor.deferred.resolve(slideshowEditor.getAllSlideDetails());
+		})
+		.fail(function() {
+			slideshowEditor.deferred.reject();
 		});
 
 		return this.deferred;

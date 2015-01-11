@@ -4,12 +4,18 @@ $.widget('ui.chunkAsset', $.ui.chunk, {
 
 		new boomAssetPicker(this.assetId)
 		.done(function(assetId) {
-			chunkAsset.save({
-				asset_id : assetId
-			});
+			chunkAsset.assetId = assetId;
+
+			if (assetId) {
+				chunkAsset.save({
+					asset_id : assetId
+				});
+			} else {
+				chunkAsset.remove();
+			}
 		})
 		.fail(function() {
-			chunkAsset.destory();
+			chunkAsset.destroy();
 		});
 	},
 
@@ -22,6 +28,7 @@ $.widget('ui.chunkAsset', $.ui.chunk, {
 			title : this.elements.title.length
 		})
 		.done(function(chunkData) {
+			chunkAsset.assetId = chunkData['asset_id'];
 			chunkAsset.save(chunkData);
 		})
 		.fail(function() {
@@ -33,13 +40,12 @@ $.widget('ui.chunkAsset', $.ui.chunk, {
 	 @function
 	 */
 	 getElements: function() {
-		var assetId = this.element.attr('data-boom-target');
 		var elements = {};
 
 		var img = this.element.find('img');
 		var a = this.element.find('a');
 
-		var regExp = new RegExp("asset\/(thumb|view|download)\/" + assetId);
+		var regExp = new RegExp("asset\/(thumb|view|download)\/" + this.assetId);
 
 		elements.asset = this.element.find('.asset-target');
 		elements.link = this.element.hasClass('asset-link')? this.element : this.element.find('.asset-link');
@@ -68,7 +74,7 @@ $.widget('ui.chunkAsset', $.ui.chunk, {
 
 	edit : function() {
 		this.elements = this.getElements();
-		this.assetId = this.element.attr('data-boom-asset-id');
+		this.assetId = this.element.attr('data-boom-target');
 
 		if (this.hasMetadata()) {
 			this.editAllElements();
@@ -84,27 +90,5 @@ $.widget('ui.chunkAsset', $.ui.chunk, {
 	save : function(data) {
 		this._save(data);
 		this.destroy();
-	},
-
-	_update_html : function(html) {
-		var $html = $(html),
-			$replacement = $($html[0]);
-
-		if (this.elements.asset === this.element) {
-			if (this.element.is('img')) {
-				this.element.attr('src', $replacement.attr('src'));
-			} else if ($replacement.css('background-image')) {
-				this.element.css('background-image', $replacement.css('background-image'));
-			} else {
-				this.element.css('background', $replacement.css('background'));
-			}
-		}
-
-		if (this.elements.link === this.element) {
-			this.element.attr('href', $replacement.attr('href'));
-		}
-
-		this.element.html($html.html());
-		this.bind();
 	}
 });

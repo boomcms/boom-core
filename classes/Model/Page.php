@@ -159,23 +159,6 @@ class Model_Page extends ORM
         return $this;
     }
 
-    public function update_child_sequences(array $sequences)
-    {
-        foreach ($sequences as $sequence => $page_id) {
-            $mptt = new Page_Mptt($page_id);
-
-            // Only update the sequence of pages which are children of this page.
-            if ($mptt->scope == $this->mptt->scope && $mptt->parent_id == $this->id) {
-                DB::update($this->_table_name)
-                    ->set(['sequence' => $sequence])
-                    ->where('id', '=', $page_id)
-                    ->execute($this->_db);
-            }
-        }
-
-        return $this;
-    }
-
     /**
 	 * Returns the current version for the page.
 	 *

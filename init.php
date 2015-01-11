@@ -59,12 +59,18 @@ Route::set('chunks', 'cms/chunk/<controller>/<action>/<page_id>')
 		'directory'	=>	'cms_chunk'
 	));
 
-// Route for add / removing tags from assets and pages.
+// Route for add / removing tags from assets.
 Route::set('tags', 'cms/tags/<controller>/<action>/<id>', array(
-		'controller'	=>	'asset|page',
+		'controller'	=>	'asset',
 	))
 	->defaults(array(
 		'directory'		=>	'cms_tags',
+	));
+
+Route::set('tags', 'cms/page/tags/<action>/<id>')
+	->defaults(array(
+            'controller' => 'tags',
+            'directory' => 'cms_page',
 	));
 
 // Route for displaying assets
@@ -80,6 +86,11 @@ Route::set('asset', 'asset/<action>/<id>(.<extension>)(/<width>(/<height>(/<qual
                 'controller' => 'asset',
 		'action'	=> 'view',
 		'quality'	=>	85,
+	));
+
+Route::set('asset_tags', 'cms/assets/tags/<action>(/<id>)')
+	->defaults(array(
+		'controller'	=>	'cms_assets_tags'
 	));
 
 /**

@@ -7,6 +7,7 @@ class Model_Chunk_Slideshow_Slide extends \ORM
     protected $_belongs_to = [
         'asset'    =>    ['model' => 'Asset', 'foreign_key' => 'asset_id']
     ];
+
     protected $_table_columns = [
         'id'        =>    '',
         'asset_id'    =>    '',
@@ -14,9 +15,12 @@ class Model_Chunk_Slideshow_Slide extends \ORM
         'chunk_id'    =>    '',
         'caption'    =>    '',
         'title'        =>    '',
+        'linktext' => '',
     ];
 
     protected $_table_name = 'chunk_slideshow_slides';
+
+    private $assetCache;
 
     public function filters()
     {
@@ -27,12 +31,19 @@ class Model_Chunk_Slideshow_Slide extends \ORM
             'url' => [
                 [[$this, 'makeLinkLelative']],
             ],
+            'link_text' => [
+                ['strip_tags'],
+            ],
         ];
     }
 
     public function getAsset()
     {
-        return \Boom\Asset\Factory::fromModel($this->asset);
+        if ($this->assetCache === null) {
+            $this->assetCache = \Boom\Asset\Factory::fromModel($this->asset);
+        }
+
+        return $this->assetCache;
     }
 
     /**

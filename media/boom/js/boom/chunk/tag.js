@@ -34,7 +34,7 @@ $.widget('ui.chunkTag', $.ui.chunk,
 			title: 'Select tag',
 			onLoad : function() {
 				var $dialog = $(this);
-				$('#b-tags-add-name').tagAutocompleter({
+				$dialog.find('#b-tags-add-name').tagAutocompleter({
 					type : 1,
 					complete : function(event, tag) {
 						tag_id = tag.id;

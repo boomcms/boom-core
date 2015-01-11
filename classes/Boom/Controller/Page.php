@@ -5,37 +5,43 @@ namespace Boom\Controller;
 class Page extends \Boom\Controller
 {
     /**
-	 * Whether the editor should be enabled
-	 * This is mainly used for rendering the page in HTML format where the editor toolbar will be inserted into the site HTML.
-	 * However it's also used for other formats to allow viewing a previous version of the page.
-	 *
-	 * @var	boolean
-	 */
-    public $editable = false;
+     *
+     * @var Page\Page
+     */
+    public $page;
 
     /**
-	 * @var	Model_Page
-	 *
-	 */
-    public $page;
+     *
+     * @var string
+     */
+    protected $responseBody;
+
+    /**
+     *
+     * @var Template
+     */
+    public $template;
 
     protected $_save_last_url = true;
 
-    /**
-	 * Set the page and options properties.
-	 */
     public function before()
     {
-        // Inherit from parent.
         parent::before();
 
-        // Assign the page we're viewing to Boom_Controller_Page::$_page;
         $this->page = $this->request->param('page');
+        $this->template = $this->page->getTemplate();
         $this->editable = $this->_page_should_be_editable();
 
         if ( ! $this->_page_isnt_visible_to_current_user()) {
             throw new HTTP_Exception_404();
         }
+    }
+
+    public function action_show()
+    {
+        $method = 'as' . ucfirst(strtolower($this->request->param('format')));
+
+        $this->responseBody = $this->template->$method($this->page, $this->request);
     }
 
     protected function _page_should_be_editable()

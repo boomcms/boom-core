@@ -14,8 +14,13 @@ $.widget('ui.chunkSlideshow', $.ui.chunk,
 	Open a slideshow dialog
 	*/
 	edit: function() {
-		var editor = new boomChunkSlideshowEditor(this.options.page, this.options.name),
-			chunk = this;
+		var chunk = this,
+			editor = new boomChunkSlideshowEditor(this.options.page, this.options.name, {
+				title : chunk.hasClass('slide-title'),
+				caption : chunk.hasClass('slide-caption'),
+				link : chunk.hasClass('slide-link'),
+				linkText : chunk.hasClass('slide-linktext')
+			});
 
 		editor
 			.done(function(slides) {
@@ -31,6 +36,12 @@ $.widget('ui.chunkSlideshow', $.ui.chunk,
 			.fail(function() {
 				chunk.bind();
 			});
+	},
+
+	hasClass : function(c) {
+		c = '.' + c;
+
+		return this.element.hasClass(c) || this.element.find(c).length > 0;
 	},
 
 	/**
