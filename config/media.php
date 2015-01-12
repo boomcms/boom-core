@@ -46,7 +46,6 @@ return array(
         'boom/urlEditor.js',
         'boom/page/featureEditor.js',
         'boom/page/visibilityEditor.js',
-        'boom/textEditor.js',
         'boom/wysihtml5.js',
         'boom/chunk.js',
         'boom/chunk/chunk.js',
