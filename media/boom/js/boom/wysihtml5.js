@@ -50,9 +50,7 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 
 		element
 			.on('focus', function() {
-				if (element.hasClass('b-editable')) {
-					element.removeClass('b-editable');
-
+				if ( ! self.toolbar.is(':visible')) {
 					setTimeout(function() {
 						self.showToolbar();
 					}, 0);
@@ -142,7 +140,6 @@ $.widget('wysihtml5.editor', $.boom.textEditor,
 		this.element.on('blur', function() {
 			if ( ! editor.toolbar.children(':focus').length) {
 				editor.apply(editor.element);
-				editor.element.addClass('b-editable');
 			}
 		});
 	},

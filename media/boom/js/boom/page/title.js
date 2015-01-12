@@ -153,5 +153,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 		$('.b-editor-accept')
 			.prop('disabled', disable_accept_button)
 			.css('opacity', opacity);
-	}
+	},
+
+	unbind : function() {},
 });
