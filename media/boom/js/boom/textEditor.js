@@ -1,61 +1,152 @@
 /**
-Base class for the text editor
-@class
-@name $.boom.editor
+@fileOverview Boom interface for wysihtml5.
 */
-$.widget( 'boom.textEditor',
-	/** @lends $.boom.editor */
-	{
-	_create : function() {
+/**
+* Interface for the wysihtml5 editor.
+* @class
+* @name $.boom.textEditor
+*/
+$.widget('boom.textEditor', {
+	/**
+	@property mode
+	@type string
+	*/
+	mode : 'block',
 
-	},
+	hasBeenEdited : false,
 
-	_init : function() {
-
-	},
-
-	_destroy : function() {
-
+	/**
+	@property options
+	@type object
+	*/
+	options : {
 	},
 
 	/**
-	Load the wysiwyg javascript files
-	@returns {Deferred} Promise which resolves whenm the editor has loaded.
+	* @function
+	@returns {Deferred}
 	*/
-	load : function() {
+	_create : function () {
+		var self = this,
+			element = this.element;
 
-		$.boom.log( 'editor loading ');
-		var loaded = new $.Deferred();
+		self.mode = element.is('div') ? 'block' : 'inline';
+		self.mode = (element.is(':header') ||  element.is('.standFirst') || element.is('.standfirst'))? 'text' : self.mode;
+		self.original_html = element.html();
 
-		return loaded;
+		self.toolbar = $('#wysihtml5-toolbar').find('[data-buttonset=' + self.mode  + ']').first().clone().appendTo('#wysihtml5-toolbar');
+
+		self.instance = new wysihtml5.Editor(element[0], { // id of textarea element
+			toolbar : self.toolbar[0],
+			style : true,
+			parserRules :  (self.mode == 'block')? wysihtml5ParserRules : wysihtml5ParserRulesInline, // defined in parser rules set
+			useLineBreaks : false,
+			contentEditableMode : true,
+			autoLink : false
+		});
+
+		element
+			.on('focus', function() {
+				if ( ! self.toolbar.is(':visible')) {
+					setTimeout(function() {
+						self.showToolbar();
+					}, 0);
+				}
+			});
+
+		this.enableAutoSave();
+
+		$(self.instance.composer)
+			.on('before:boomdialog', function() {
+				self.disableAutoSave();
+			})
+			.on('after:boomdialog', function() {
+				self.element.focus();
+				self.enableAutoSave();
+			});
+
+		self.instance
+			.on('show:dialog', function(options) {
+				if (options.command == 'createBoomLink') {
+					if ( ! wysihtml5.commands.createBoomLink.state(self.instance.composer)) {
+						wysihtml5.commands.createBoomLink.exec(self.instance.composer);
+					}
+				}
+			});
+
+		this.toolbar
+			.on('click', '.b-editor-accept', function(event) {
+				event.preventDefault();
+
+				self.apply(self.element);
+
+				return false;
+			})
+			.on('click', '.b-editor-cancel', function(event) {
+				event.preventDefault();
+				self.cancel(self.element);
+				return false;
+			})
+			.on('click', '.b-editor-link', function() {
+				wysihtml5.commands.createBoomLink.edit(self.instance.composer);
+			});
 	},
 
 	/**
-	Apply changes and exit
+	* @function
+	@param {Object} element The element being edited.
 	*/
-	apply : function() {
+	apply : function(element) {
+		this.hideToolbar();
 
+		this._trigger('edit', element.html());
+	},
+
+	blur : function(element) {
+		this.apply(element);
 	},
 
 	/**
-	Cancel changes and exit
+	* @function
+	@param {Object} element The element being edited.
 	*/
-	cancel : function() {
+	cancel : function(element) {
+		var self = this,
+			content = element.html();
 
+		element.blur();
+		self.hideToolbar();
+
+		if (self.hasBeenEdited) {
+			var confirmation = new boomConfirmation('Cancel changes', 'Cancel all changes and exit the editor?');
+
+			confirmation
+				.done(function() {
+					$.boom.log( 'canceling text edits' );
+				});
+		}
 	},
 
-	/**
-	Edit a slot
-	@param {Object} element DOM element to edit
-	*/
-	edit : function( element ) {
-
+	disableAutoSave : function() {
+		this.element.unbind('blur');
 	},
 
-	/**
-	Remove the  wysiwyg instance from the DOM
-	*/
-	remove : function() {
+	enableAutoSave : function() {
+		var editor = this;
 
+		this.element.on('blur', function() {
+			if ( ! editor.toolbar.children(':focus').length) {
+				editor.apply(editor.element);
+			}
+		});
+	},
+
+	hideToolbar : function() {
+		$('#wysihtml5-toolbar').hide().children('[data-buttonset]').hide();
+	},
+
+	showToolbar : function() {
+		$('#wysihtml5-toolbar').show().children().hide();
+		this.toolbar.show();
 	}
 });

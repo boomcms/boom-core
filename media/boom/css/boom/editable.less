@@ -2,10 +2,14 @@
 	box-sizing: border-box !important;
 	border: 2px solid transparent !important;
 
-	&:hover, &:focus {
+	&:hover:not(:focus) {
 		background-color: #FFD200 !important;
 		cursor: pointer !important;
 		border: 2px dotted black !important;
 		color: black !important;
+	}
+
+	&:focus {
+		border: 2px dotted transparent !important;
 	}
 }
