@@ -28,7 +28,7 @@ $.widget('ui.chunkText', $.ui.chunk,
 
 		$.ui.chunk.prototype.bind.call(this);
 
-		element.editor({
+		element.textEditor({
 			edit : function() {
 				var edited = old_html != self.element.html();
 

@@ -15,7 +15,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 			element = this.element,
 			old_text = element.text();
 
-		this.element.editor({
+		this.element.textEditor({
 			edit : function() {
 				var title = self.element.text().trim();
 
