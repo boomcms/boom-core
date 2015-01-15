@@ -2,8 +2,7 @@
 
 namespace Boom\Asset;
 
-use \Boom\Asset;
-use Boom;
+use \Boom;
 use \ORM as ORM;
 
 class Finder extends Boom\Finder\Finder
@@ -32,28 +31,6 @@ class Finder extends Boom\Finder\Finder
 
         return new Finder\Result($assets);
     }
-
-    /**
-	 *
-	 * @return array
-	 */
-//	public function get_count_and_total_size()
-//	{
-//		$query = clone $this->_query;
-//		$query->reset();
-//
-//		$this->_applyFilters($query);
-//
-//		$result = $query
-//			->select(array(DB::expr('sum(filesize)'), 'filesize'))
-//			->select(array(DB::expr('count(*)'), 'count'))
-//			->find();
-//
-//		return array(
-//			'count' => $result->get('count'),
-//			'filesize' => $result->get('filesize')
-//		);
-//	}
 
     public function setOrderBy($field, $direction = null)
     {

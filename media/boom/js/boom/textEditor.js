@@ -48,9 +48,7 @@ $.widget('boom.textEditor', {
 		element
 			.on('focus', function() {
 				if ( ! self.toolbar.is(':visible')) {
-					setTimeout(function() {
-						self.showToolbar();
-					}, 0);
+					self.showToolbar();
 				}
 			});
 
@@ -146,7 +144,7 @@ $.widget('boom.textEditor', {
 	},
 
 	showToolbar : function() {
-		$('#wysihtml5-toolbar').show().children().hide();
 		this.toolbar.show();
+		$('#wysihtml5-toolbar').show().children().not(this.toolbar).hide();
 	}
 });
