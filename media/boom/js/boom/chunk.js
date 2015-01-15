@@ -4,8 +4,11 @@ function boomChunk(page_id, type, slotname) {
 	this.type = type;
 	this.urlPrefix = '/cms/chunk/' + this.type + '/';
 
-	boomChunk.prototype.delete = function() {
-		return $.boom.post(this.urlPrefix + 'remove/' + this.page_id, {slotname : this.slotname});
+	boomChunk.prototype.delete = function(template) {
+		return $.boom.post(this.urlPrefix + 'remove/' + this.page_id, {
+			slotname : this.slotname,
+			template : template
+		});
 	};
 
 	boomChunk.prototype.save = function(data) {

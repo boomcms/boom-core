@@ -62,8 +62,8 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 
 		$('<p><a href="#" id="b-title-help">What is this?</a></p>')
 			.appendTo(top.$('#b-title-length'))
-			.on('mousedown', function() {
-				title.element.editor('disableAutoSave');
+			.on('mousedown', 'a', function() {
+				title.element.textEditor('disableAutoSave');
 			})
 			.on('keydown', function(e) {
 				if (e.which == 13) {
@@ -105,7 +105,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 			width : '600px',
 			cancelButton: false
 		}).always(function() {
-			title.element.editor('enableAutoSave');
+			title.element.textEditor('enableAutoSave');
 			title.element.focus();
 		});
 	},
