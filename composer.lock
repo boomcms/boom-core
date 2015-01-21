@@ -4,89 +4,8 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "ed80a4a312a2a80a73699821869e9272",
+    "hash": "5ffd91f60814a13c8ce45473af0e7d4d",
     "packages": [
-        {
-            "name": "boomcms/asset-merger",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/boomcms/asset-merger.git",
-                "reference": "65b91ef0e70fc34eff3800f3043cf76b165a7645"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/boomcms/asset-merger/zipball/65b91ef0e70fc34eff3800f3043cf76b165a7645",
-                "reference": "65b91ef0e70fc34eff3800f3043cf76b165a7645",
-                "shasum": ""
-            },
-            "require": {
-                "coffeescript/coffeescript": ">=1.3",
-                "composer/installers": "~1.0",
-                "kohana/core": ">=3.3",
-                "leafo/lessphp": "0.4.0",
-                "mrclay/minify": ">=2.1.7",
-                "php": ">=5.3.3",
-                "richthegeek/phpsass": ">=2014-03-20"
-            },
-            "type": "kohana-module",
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Alessandro Frangioni",
-                    "email": "alessandro.frangioni@gmail.com",
-                    "homepage": "https://github.com/alle",
-                    "role": "developer"
-                },
-                {
-                    "name": "OpenBuildings",
-                    "homepage": "http://www.openbuildings.com/",
-                    "role": "developer"
-                },
-                {
-                    "name": "Florian Rodriguez",
-                    "homepage": "http://www.negative-network.com",
-                    "role": "developer"
-                }
-            ],
-            "description": "Managing and merging assets for Kohana",
-            "homepage": "https://github.com/boomcms/asset-merger",
-            "keywords": [
-                "assets",
-                "kohana"
-            ],
-            "time": "2014-11-17 12:24:31"
-        },
-        {
-            "name": "boomcms/orm-mptt",
-            "version": "v3.3.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/boomcms/orm-mptt.git",
-                "reference": "de3fa158eb715d53003c31ee2b78ccffe87cc999"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/boomcms/orm-mptt/zipball/de3fa158eb715d53003c31ee2b78ccffe87cc999",
-                "reference": "de3fa158eb715d53003c31ee2b78ccffe87cc999",
-                "shasum": ""
-            },
-            "require": {
-                "kohana/orm": "3.3.*"
-            },
-            "type": "library",
-            "notification-url": "https://packagist.org/downloads/",
-            "authors": [
-                {
-                    "name": "Rob Taylor",
-                    "email": "rob@uxblondon.com"
-                }
-            ],
-            "time": "2014-11-03 10:20:44"
-        },
         {
             "name": "cartalyst/sentry",
             "version": "v2.1.4",
@@ -188,27 +107,34 @@
             "time": "2014-07-23 20:35:12"
         },
         {
-            "name": "coffeescript/coffeescript",
-            "version": "1.3.1",
+            "name": "danielstjules/stringy",
+            "version": "1.8.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/alxlit/coffeescript-php.git",
-                "reference": "ef262881d3f1edcca1366f4ddf18293843370da5"
+                "url": "https://github.com/danielstjules/Stringy.git",
+                "reference": "6a7b0391b2baf0bfdca3ec0c8d33ff379c2835ad"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/alxlit/coffeescript-php/zipball/ef262881d3f1edcca1366f4ddf18293843370da5",
-                "reference": "ef262881d3f1edcca1366f4ddf18293843370da5",
+                "url": "https://api.github.com/repos/danielstjules/Stringy/zipball/6a7b0391b2baf0bfdca3ec0c8d33ff379c2835ad",
+                "reference": "6a7b0391b2baf0bfdca3ec0c8d33ff379c2835ad",
                 "shasum": ""
             },
             "require": {
+                "ext-mbstring": "*",
                 "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.0"
             },
             "type": "library",
             "autoload": {
-                "psr-0": {
-                    "CoffeeScript": "src/"
-                }
+                "psr-4": {
+                    "Stringy\\": "src/"
+                },
+                "files": [
+                    "src/Create.php"
+                ]
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -216,113 +142,25 @@
             ],
             "authors": [
                 {
-                    "name": "Alex Little",
-                    "email": "alxlit@gmail.com",
-                    "homepage": "http://alxlit.name"
+                    "name": "Daniel St. Jules",
+                    "email": "danielst.jules@gmail.com",
+                    "homepage": "http://www.danielstjules.com"
                 }
             ],
-            "description": "A port of the CoffeeScript compiler to PHP.",
-            "homepage": "http://github.com/alxlit/coffeescript-php",
+            "description": "A string manipulation library with multibyte support",
+            "homepage": "https://github.com/danielstjules/Stringy",
             "keywords": [
-                "JS",
-                "coffee",
-                "coffeescript",
-                "javascript"
+                "UTF",
+                "helpers",
+                "manipulation",
+                "methods",
+                "multibyte",
+                "string",
+                "utf-8",
+                "utility",
+                "utils"
             ],
-            "time": "2012-08-04 14:44:51"
-        },
-        {
-            "name": "composer/installers",
-            "version": "v1.0.19",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/composer/installers.git",
-                "reference": "89d77bfbee79e16653f7162c86e602cc188471db"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/composer/installers/zipball/89d77bfbee79e16653f7162c86e602cc188471db",
-                "reference": "89d77bfbee79e16653f7162c86e602cc188471db",
-                "shasum": ""
-            },
-            "replace": {
-                "roundcube/plugin-installer": "*",
-                "shama/baton": "*"
-            },
-            "require-dev": {
-                "composer/composer": "1.0.*@dev",
-                "phpunit/phpunit": "4.1.*"
-            },
-            "type": "composer-installer",
-            "extra": {
-                "class": "Composer\\Installers\\Installer",
-                "branch-alias": {
-                    "dev-master": "1.0-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "Composer\\Installers\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Kyle Robinson Young",
-                    "email": "kyle@dontkry.com",
-                    "homepage": "https://github.com/shama"
-                }
-            ],
-            "description": "A multi-framework Composer library installer",
-            "homepage": "http://composer.github.com/installers/",
-            "keywords": [
-                "Craft",
-                "Dolibarr",
-                "Hurad",
-                "MODX Evo",
-                "OXID",
-                "Thelia",
-                "WolfCMS",
-                "agl",
-                "annotatecms",
-                "bitrix",
-                "cakephp",
-                "chef",
-                "codeigniter",
-                "concrete5",
-                "croogo",
-                "dokuwiki",
-                "drupal",
-                "elgg",
-                "fuelphp",
-                "grav",
-                "installer",
-                "joomla",
-                "kohana",
-                "laravel",
-                "lithium",
-                "magento",
-                "mako",
-                "mediawiki",
-                "modulework",
-                "moodle",
-                "phpbb",
-                "piwik",
-                "ppi",
-                "puppet",
-                "roundcube",
-                "shopware",
-                "silverstripe",
-                "symfony",
-                "typo3",
-                "wordpress",
-                "zend",
-                "zikula"
-            ],
-            "time": "2014-11-29 01:29:17"
+            "time": "2015-01-08 15:21:43"
         },
         {
             "name": "davechild/textstatistics",
@@ -445,16 +283,16 @@
         },
         {
             "name": "doctrine/cache",
-            "version": "v1.3.1",
+            "version": "v1.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/cache.git",
-                "reference": "cf483685798a72c93bf4206e3dd6358ea07d64e7"
+                "reference": "2346085d2b027b233ae1d5de59b07440b9f288c8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/cache/zipball/cf483685798a72c93bf4206e3dd6358ea07d64e7",
-                "reference": "cf483685798a72c93bf4206e3dd6358ea07d64e7",
+                "url": "https://api.github.com/repos/doctrine/cache/zipball/2346085d2b027b233ae1d5de59b07440b9f288c8",
+                "reference": "2346085d2b027b233ae1d5de59b07440b9f288c8",
                 "shasum": ""
             },
             "require": {
@@ -465,6 +303,7 @@
             },
             "require-dev": {
                 "phpunit/phpunit": ">=3.7",
+                "predis/predis": "~0.8",
                 "satooshi/php-coveralls": "~0.6"
             },
             "type": "library",
@@ -510,7 +349,7 @@
                 "cache",
                 "caching"
             ],
-            "time": "2014-09-17 14:24:04"
+            "time": "2015-01-15 20:38:55"
         },
         {
             "name": "doctrine/collections",
@@ -788,22 +627,27 @@
         },
         {
             "name": "doctrine/lexer",
-            "version": "v1.0",
+            "version": "v1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/lexer.git",
-                "reference": "2f708a85bb3aab5d99dab8be435abd73e0b18acb"
+                "reference": "83893c552fd2045dd78aef794c31e694c37c0b8c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/lexer/zipball/2f708a85bb3aab5d99dab8be435abd73e0b18acb",
-                "reference": "2f708a85bb3aab5d99dab8be435abd73e0b18acb",
+                "url": "https://api.github.com/repos/doctrine/lexer/zipball/83893c552fd2045dd78aef794c31e694c37c0b8c",
+                "reference": "83893c552fd2045dd78aef794c31e694c37c0b8c",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.2"
             },
             "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
             "autoload": {
                 "psr-0": {
                     "Doctrine\\Common\\Lexer\\": "lib/"
@@ -815,19 +659,16 @@
             ],
             "authors": [
                 {
-                    "name": "Guilherme Blanco",
-                    "email": "guilhermeblanco@gmail.com",
-                    "homepage": "http://www.instaclick.com"
-                },
-                {
                     "name": "Roman Borschel",
                     "email": "roman@code-factory.org"
                 },
                 {
+                    "name": "Guilherme Blanco",
+                    "email": "guilhermeblanco@gmail.com"
+                },
+                {
                     "name": "Johannes Schmitt",
-                    "email": "schmittjoh@gmail.com",
-                    "homepage": "https://github.com/schmittjoh",
-                    "role": "Developer of wrapped JMSSerializerBundle"
+                    "email": "schmittjoh@gmail.com"
                 }
             ],
             "description": "Base library for a lexer that can be used in Top-Down, Recursive Descent Parsers.",
@@ -836,7 +677,7 @@
                 "lexer",
                 "parser"
             ],
-            "time": "2013-01-12 18:59:04"
+            "time": "2014-09-09 13:34:57"
         },
         {
             "name": "doctrine/orm",
@@ -1039,39 +880,38 @@
         },
         {
             "name": "illuminate/cache",
-            "version": "v4.2.16",
-            "target-dir": "Illuminate/Cache",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/cache.git",
-                "reference": "4a4de659df13626aacc0222c90456c27e27e40f4"
+                "reference": "b69a9e0e38de1901153269d520a07504c269a268"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/cache/zipball/4a4de659df13626aacc0222c90456c27e27e40f4",
-                "reference": "4a4de659df13626aacc0222c90456c27e27e40f4",
+                "url": "https://api.github.com/repos/illuminate/cache/zipball/b69a9e0e38de1901153269d520a07504c269a268",
+                "reference": "b69a9e0e38de1901153269d520a07504c269a268",
                 "shasum": ""
             },
             "require": {
-                "illuminate/support": "4.2.*",
+                "illuminate/contracts": "5.0.*",
+                "illuminate/support": "5.0.*",
                 "nesbot/carbon": "~1.0",
                 "php": ">=5.4.0"
             },
             "require-dev": {
-                "illuminate/database": "4.2.*",
-                "illuminate/encryption": "4.2.*",
-                "illuminate/filesystem": "4.2.*",
-                "illuminate/redis": "4.2.*"
+                "illuminate/database": "5.0.*",
+                "illuminate/filesystem": "5.0.*",
+                "illuminate/redis": "5.0.*"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "4.2-dev"
+                    "dev-master": "5.0-dev"
                 }
             },
             "autoload": {
-                "psr-0": {
-                    "Illuminate\\Cache": ""
+                "psr-4": {
+                    "Illuminate\\Cache\\": ""
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -1084,85 +924,131 @@
                     "email": "taylorotwell@gmail.com"
                 }
             ],
-            "time": "2014-12-19 22:32:25"
+            "description": "The Illuminate Cache package.",
+            "time": "2015-01-12 20:31:20"
         },
         {
-            "name": "illuminate/filesystem",
-            "version": "v4.2.16",
-            "target-dir": "Illuminate/Filesystem",
+            "name": "illuminate/contracts",
+            "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/illuminate/filesystem.git",
-                "reference": "bf8e1443b956e2b87dc71f40035380fbc790f612"
+                "url": "https://github.com/illuminate/contracts.git",
+                "reference": "4eb378e1244234d60b596069200d08fa36a6e35c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/filesystem/zipball/bf8e1443b956e2b87dc71f40035380fbc790f612",
-                "reference": "bf8e1443b956e2b87dc71f40035380fbc790f612",
-                "shasum": ""
-            },
-            "require": {
-                "illuminate/support": "4.2.*",
-                "php": ">=5.4.0",
-                "symfony/finder": "2.5.*"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "4.2-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "Illuminate\\Filesystem": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Taylor Otwell",
-                    "email": "taylorotwell@gmail.com"
-                }
-            ],
-            "time": "2014-10-10 14:30:55"
-        },
-        {
-            "name": "illuminate/support",
-            "version": "v4.2.16",
-            "target-dir": "Illuminate/Support",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/illuminate/support.git",
-                "reference": "015f51f4d8cb3d9a29e7fe7932843acf15232941"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/support/zipball/015f51f4d8cb3d9a29e7fe7932843acf15232941",
-                "reference": "015f51f4d8cb3d9a29e7fe7932843acf15232941",
+                "url": "https://api.github.com/repos/illuminate/contracts/zipball/4eb378e1244234d60b596069200d08fa36a6e35c",
+                "reference": "4eb378e1244234d60b596069200d08fa36a6e35c",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.4.0"
             },
-            "require-dev": {
-                "jeremeamia/superclosure": "~1.0.1",
-                "patchwork/utf8": "1.1.*"
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "5.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Illuminate\\Contracts\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Taylor Otwell",
+                    "email": "taylorotwell@gmail.com"
+                }
+            ],
+            "description": "The Illuminate Contracts package.",
+            "time": "2015-01-12 18:55:14"
+        },
+        {
+            "name": "illuminate/filesystem",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/illuminate/filesystem.git",
+                "reference": "0014428c57d63ffba71d31f3de0f8d4c609dcc03"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/illuminate/filesystem/zipball/0014428c57d63ffba71d31f3de0f8d4c609dcc03",
+                "reference": "0014428c57d63ffba71d31f3de0f8d4c609dcc03",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/contracts": "5.0.*",
+                "illuminate/support": "5.0.*",
+                "league/flysystem": "~1.0",
+                "php": ">=5.4.0",
+                "symfony/finder": "2.6.*"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "4.2-dev"
+                    "dev-master": "5.0-dev"
                 }
             },
             "autoload": {
-                "psr-0": {
-                    "Illuminate\\Support": ""
+                "psr-4": {
+                    "Illuminate\\Filesystem\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Taylor Otwell",
+                    "email": "taylorotwell@gmail.com"
+                }
+            ],
+            "description": "The Illuminate Filesystem package.",
+            "time": "2015-01-20 16:09:42"
+        },
+        {
+            "name": "illuminate/support",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/illuminate/support.git",
+                "reference": "04ae516ebd6b1816d4f2d98acd045fc85d63e925"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/illuminate/support/zipball/04ae516ebd6b1816d4f2d98acd045fc85d63e925",
+                "reference": "04ae516ebd6b1816d4f2d98acd045fc85d63e925",
+                "shasum": ""
+            },
+            "require": {
+                "danielstjules/stringy": "~1.5",
+                "doctrine/inflector": "~1.0",
+                "ext-mbstring": "*",
+                "illuminate/contracts": "5.0.*",
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "jeremeamia/superclosure": "~1.0.1"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "5.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Illuminate\\Support\\": ""
                 },
                 "files": [
-                    "Illuminate/Support/helpers.php"
+                    "helpers.php"
                 ]
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -1175,20 +1061,21 @@
                     "email": "taylorotwell@gmail.com"
                 }
             ],
-            "time": "2014-12-19 18:02:33"
+            "description": "The Illuminate Support package.",
+            "time": "2015-01-12 16:27:36"
         },
         {
             "name": "intervention/image",
-            "version": "2.0.16",
+            "version": "2.0.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Intervention/image.git",
-                "reference": "b5350f62f59f8fa24f5d9c1ffbd094a7fd91c0e3"
+                "reference": "b91b0d63488f9a295815af082f987e4773d2843c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Intervention/image/zipball/b5350f62f59f8fa24f5d9c1ffbd094a7fd91c0e3",
-                "reference": "b5350f62f59f8fa24f5d9c1ffbd094a7fd91c0e3",
+                "url": "https://api.github.com/repos/Intervention/image/zipball/b91b0d63488f9a295815af082f987e4773d2843c",
+                "reference": "b91b0d63488f9a295815af082f987e4773d2843c",
                 "shasum": ""
             },
             "require": {
@@ -1231,7 +1118,7 @@
                 "thumbnail",
                 "watermark"
             ],
-            "time": "2014-12-20 14:14:38"
+            "time": "2014-12-29 11:58:35"
         },
         {
             "name": "intervention/imagecache",
@@ -1288,16 +1175,16 @@
         },
         {
             "name": "jeremeamia/SuperClosure",
-            "version": "1.0.1",
+            "version": "1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jeremeamia/super_closure.git",
-                "reference": "d05400085f7d4ae6f20ba30d36550836c0d061e8"
+                "reference": "4d89ca74994feab128ea46d5b3add92e6cb84554"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jeremeamia/super_closure/zipball/d05400085f7d4ae6f20ba30d36550836c0d061e8",
-                "reference": "d05400085f7d4ae6f20ba30d36550836c0d061e8",
+                "url": "https://api.github.com/repos/jeremeamia/super_closure/zipball/4d89ca74994feab128ea46d5b3add92e6cb84554",
+                "reference": "4d89ca74994feab128ea46d5b3add92e6cb84554",
                 "shasum": ""
             },
             "require": {
@@ -1332,342 +1219,89 @@
                 "serialize",
                 "tokenizer"
             ],
-            "time": "2013-10-09 04:20:00"
+            "time": "2015-01-10 01:09:28"
         },
         {
-            "name": "kohana-minion/tasks-migrations",
-            "version": "dev-3.3/develop",
+            "name": "league/flysystem",
+            "version": "1.0.0-alpha1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/kohana-minion/tasks-migrations.git",
-                "reference": "2759cfb9d88cb407e0fd75028fc8ab9c242f8220"
+                "url": "https://github.com/thephpleague/flysystem.git",
+                "reference": "c0afa9513c0e555a607652cb56f81bd991f295f3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kohana-minion/tasks-migrations/zipball/2759cfb9d88cb407e0fd75028fc8ab9c242f8220",
-                "reference": "2759cfb9d88cb407e0fd75028fc8ab9c242f8220",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/c0afa9513c0e555a607652cb56f81bd991f295f3",
+                "reference": "c0afa9513c0e555a607652cb56f81bd991f295f3",
                 "shasum": ""
             },
             "require": {
-                "kohana/core": ">=3.3",
-                "kohana/minion": ">=3.3",
-                "php": ">=5.2.4"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-3.3/develop": "3.3.x-dev"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Lorenzo Pisani",
-                    "email": "zeelot3k@gmail.com",
-                    "homepage": "http://zeelot3k.com",
-                    "role": "developer"
-                },
-                {
-                    "name": "Matt Button",
-                    "email": "matthew@sigswitch.com",
-                    "role": "developer"
-                },
-                {
-                    "name": "Contributors",
-                    "homepage": "https://github.com/kohana-minion/tasks-migrations/graphs/contributors",
-                    "role": "contributor"
-                }
-            ],
-            "description": "Migration tasks for the kohana-minion cli framework",
-            "homepage": "https://github.com/kohana-minion/tasks-migrations",
-            "keywords": [
-                "Tasks",
-                "database",
-                "framework",
-                "kohana",
-                "migrations"
-            ],
-            "time": "2014-04-27 17:45:45"
-        },
-        {
-            "name": "kohana/core",
-            "version": "v3.3.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/kohana/core.git",
-                "reference": "fa66e193b56cbf4bc36aa16caec31feccf31e92a"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/kohana/core/zipball/fa66e193b56cbf4bc36aa16caec31feccf31e92a",
-                "reference": "fa66e193b56cbf4bc36aa16caec31feccf31e92a",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.3"
+                "php": ">=5.4.0"
             },
             "require-dev": {
-                "kohana/koharness": "*@dev",
-                "kohana/unittest": "3.3.*@dev"
+                "ext-fileinfo": "*",
+                "league/phpunit-coverage-listener": "~1.1",
+                "mockery/mockery": "~0.9",
+                "phpspec/phpspec": "~2.0.0",
+                "phpspec/prophecy-phpunit": "~1.0",
+                "phpunit/phpunit": "~4.0",
+                "predis/predis": "~1.0",
+                "tedivm/stash": "~0.12.0"
             },
             "suggest": {
-                "ext-curl": "*",
-                "ext-http": "*",
-                "ext-mcrypt": "*"
-            },
-            "type": "library",
-            "extra": {
-                "installer-paths": {
-                    "vendor/{$vendor}/{$name}": [
-                        "type:kohana-module"
-                    ]
-                },
-                "branch-alias": {
-                    "dev-3.3/develop": "3.3.x-dev",
-                    "dev-3.4/develop": "3.4.x-dev"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Kohana Team",
-                    "email": "team@kohanaframework.org",
-                    "homepage": "http://kohanaframework.org/team",
-                    "role": "developer"
-                }
-            ],
-            "description": "Core system classes for the Kohana application framework",
-            "homepage": "http://kohanaframework.org",
-            "keywords": [
-                "framework",
-                "kohana"
-            ],
-            "time": "2014-12-11 02:17:12"
-        },
-        {
-            "name": "kohana/database",
-            "version": "v3.3.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/kohana/database.git",
-                "reference": "245cc86a5025bbce61dca4732008f4bf8274a2b9"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/kohana/database/zipball/245cc86a5025bbce61dca4732008f4bf8274a2b9",
-                "reference": "245cc86a5025bbce61dca4732008f4bf8274a2b9",
-                "shasum": ""
-            },
-            "require": {
-                "composer/installers": "~1.0",
-                "kohana/core": ">=3.3",
-                "php": ">=5.3.6"
-            },
-            "require-dev": {
-                "kohana/core": "3.3.*@dev",
-                "kohana/koharness": "*@dev",
-                "kohana/unittest": "3.3.*@dev"
-            },
-            "suggest": {
-                "ext-mysql": "*",
-                "ext-pdo": "*"
-            },
-            "type": "kohana-module",
-            "extra": {
-                "branch-alias": {
-                    "dev-3.3/develop": "3.3.x-dev",
-                    "dev-3.4/develop": "3.4.x-dev"
-                },
-                "installer-paths": {
-                    "vendor/{$vendor}/{$name}": [
-                        "type:kohana-module"
-                    ]
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Kohana Team",
-                    "email": "team@kohanaframework.org",
-                    "homepage": "http://kohanaframework.org/team",
-                    "role": "developer"
-                }
-            ],
-            "description": "The official Kohana module for database interactions, building queries, and prepared statements",
-            "homepage": "http://kohanaframework.org",
-            "keywords": [
-                "database",
-                "framework",
-                "kohana"
-            ],
-            "time": "2014-12-11 00:02:51"
-        },
-        {
-            "name": "kohana/minion",
-            "version": "v3.3.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/kohana/minion.git",
-                "reference": "b966320396b401562647ab3f34b2c91a6c413173"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/kohana/minion/zipball/b966320396b401562647ab3f34b2c91a6c413173",
-                "reference": "b966320396b401562647ab3f34b2c91a6c413173",
-                "shasum": ""
-            },
-            "require": {
-                "composer/installers": "~1.0",
-                "kohana/core": ">=3.3",
-                "php": ">=5.3.3"
-            },
-            "require-dev": {
-                "kohana/core": "3.3.*@dev",
-                "kohana/koharness": "*@dev",
-                "kohana/unittest": "3.3.*@dev"
-            },
-            "type": "kohana-module",
-            "extra": {
-                "branch-alias": {
-                    "dev-3.3/develop": "3.3.x-dev",
-                    "dev-3.4/develop": "3.4.x-dev"
-                },
-                "installer-paths": {
-                    "vendor/{$vendor}/{$name}": [
-                        "type:kohana-module"
-                    ]
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Kohana Team",
-                    "email": "team@kohanaframework.org",
-                    "homepage": "http://kohanaframework.org/team",
-                    "role": "developer"
-                }
-            ],
-            "description": "The official kohana module for running tasks via the CLI",
-            "homepage": "http://kohanaframework.org",
-            "keywords": [
-                "framework",
-                "kohana",
-                "task"
-            ],
-            "time": "2014-12-11 00:28:31"
-        },
-        {
-            "name": "kohana/orm",
-            "version": "v3.3.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/kohana/orm.git",
-                "reference": "6e47ece82e44d46972c7af928f561f97a5cf2179"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/kohana/orm/zipball/6e47ece82e44d46972c7af928f561f97a5cf2179",
-                "reference": "6e47ece82e44d46972c7af928f561f97a5cf2179",
-                "shasum": ""
-            },
-            "require": {
-                "composer/installers": "~1.0",
-                "kohana/core": ">=3.3",
-                "kohana/database": ">=3.3",
-                "php": ">=5.3.3"
-            },
-            "require-dev": {
-                "kohana/core": "3.3.*@dev",
-                "kohana/database": "3.3.*@dev",
-                "kohana/koharness": "*@dev",
-                "kohana/unittest": "3.3.*@dev"
-            },
-            "type": "kohana-module",
-            "extra": {
-                "branch-alias": {
-                    "dev-3.3/develop": "3.3.x-dev",
-                    "dev-3.4/develop": "3.4.x-dev"
-                },
-                "installer-paths": {
-                    "vendor/{$vendor}/{$name}": [
-                        "type:kohana-module"
-                    ]
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Kohana Team",
-                    "email": "team@kohanaframework.org",
-                    "homepage": "http://kohanaframework.org/team",
-                    "role": "developer"
-                }
-            ],
-            "description": "The official Kohana ORM module",
-            "homepage": "http://kohanaframework.org",
-            "keywords": [
-                "database",
-                "framework",
-                "kohana",
-                "orm"
-            ],
-            "time": "2014-12-11 00:33:30"
-        },
-        {
-            "name": "leafo/lessphp",
-            "version": "v0.4.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/leafo/lessphp.git",
-                "reference": "51f3f06f0fe78a722dabfd14578444bdd078d9de"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/leafo/lessphp/zipball/51f3f06f0fe78a722dabfd14578444bdd078d9de",
-                "reference": "51f3f06f0fe78a722dabfd14578444bdd078d9de",
-                "shasum": ""
+                "ext-fileinfo": "Required for MimeType",
+                "league/event": "Required for EventableFilesystem",
+                "league/flysystem-aws-s3-v2": "Use S3 storage with AWS SDK v2",
+                "league/flysystem-aws-s3-v3": "Use S3 storage with AWS SDK v3",
+                "league/flysystem-azure": "Allows you to use Windows Azure Blob storage",
+                "league/flysystem-cached-adapter": "Flysystem adapter decorator for metadata caching",
+                "league/flysystem-copy": "Allows you to use Copy.com storage",
+                "league/flysystem-dropbox": "Use Dropbox storage",
+                "league/flysystem-rackspace": "Allows you to use Rackspace Cloud Files",
+                "league/flysystem-sftp": "Allows SFTP server storage via phpseclib",
+                "league/flysystem-webdav": "Allows you to use WebDAV storage",
+                "predis/predis": "Allows you to use Predis for caching"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "0.3-dev"
+                    "dev-master": "1.0-dev"
                 }
             },
             "autoload": {
-                "classmap": [
-                    "lessc.inc.php"
-                ]
+                "psr-4": {
+                    "League\\Flysystem\\": "src/"
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "MIT",
-                "GPL-3.0"
+                "MIT"
             ],
             "authors": [
                 {
-                    "name": "Leaf Corcoran",
-                    "email": "leafot@gmail.com",
-                    "homepage": "http://leafo.net"
+                    "name": "Frank de Jonge",
+                    "email": "info@frenky.net"
                 }
             ],
-            "description": "lessphp is a compiler for LESS written in PHP.",
-            "homepage": "http://leafo.net/lessphp/",
-            "time": "2013-08-09 17:09:19"
+            "description": "Many filesystems, one API.",
+            "keywords": [
+                "Cloud Files",
+                "WebDAV",
+                "aws",
+                "cloud",
+                "copy.com",
+                "dropbox",
+                "file systems",
+                "files",
+                "filesystem",
+                "ftp",
+                "rackspace",
+                "remote",
+                "s3",
+                "sftp",
+                "storage"
+            ],
+            "time": "2015-01-18 00:19:19"
         },
         {
             "name": "mpratt/embera",
@@ -1714,46 +1348,6 @@
                 "youtube"
             ],
             "time": "2014-11-26 16:32:34"
-        },
-        {
-            "name": "mrclay/minify",
-            "version": "2.2.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/mrclay/minify.git",
-                "reference": "d245bca4987dec197d1e6d7dc117614b60ff7494"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/mrclay/minify/zipball/d245bca4987dec197d1e6d7dc117614b60ff7494",
-                "reference": "d245bca4987dec197d1e6d7dc117614b60ff7494",
-                "shasum": ""
-            },
-            "require": {
-                "ext-pcre": "*",
-                "php": ">=5.2.1"
-            },
-            "type": "library",
-            "autoload": {
-                "classmap": [
-                    "min/lib/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Steve Clay",
-                    "email": "steve@mrclay.org",
-                    "homepage": "http://www.mrclay.org/",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Minify is a PHP5 app that helps you follow several rules for client-side performance. It combines multiple CSS or Javascript files, removes unnecessary whitespace and comments, and serves them with gzip encoding and optimal client-side cache headers",
-            "homepage": "http://code.google.com/p/minify/",
-            "time": "2014-03-12 12:54:23"
         },
         {
             "name": "nesbot/carbon",
@@ -1885,57 +1479,6 @@
             "time": "2012-12-21 11:40:51"
         },
         {
-            "name": "richthegeek/phpsass",
-            "version": "2014-03-20",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/richthegeek/phpsass.git",
-                "reference": "22659dc78b070ae7479fada8868d6abdc7896197"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/richthegeek/phpsass/zipball/22659dc78b070ae7479fada8868d6abdc7896197",
-                "reference": "22659dc78b070ae7479fada8868d6abdc7896197",
-                "shasum": ""
-            },
-            "type": "library",
-            "autoload": {
-                "classmap": [
-                    "script/",
-                    "renderers/",
-                    "tree/",
-                    "SassException.php",
-                    "SassFile.php",
-                    "SassParser.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-2-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Richard Lyon",
-                    "homepage": "https://github.com/richthegeek"
-                },
-                {
-                    "name": "Sebastian Siemssen",
-                    "homepage": "https://twitter.com/thefubhy"
-                },
-                {
-                    "name": "Steve Jones",
-                    "homepage": "https://github.com/darthsteven"
-                },
-                {
-                    "name": "Sam Richard",
-                    "homepage": "https://github.com/snugug"
-                }
-            ],
-            "description": "PHPSass is a PHP compiler for SASS, a popular CSS pre-processor language.",
-            "homepage": "http://phpsass.com",
-            "time": "2014-03-20 17:07:47"
-        },
-        {
             "name": "robbytaylor/htmlpurifier-tel",
             "version": "dev-master",
             "source": {
@@ -1972,115 +1515,18 @@
             "time": "2014-11-06 21:46:02"
         },
         {
-            "name": "shadowhand/email",
-            "version": "dev-3.3/master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/shadowhand/email.git",
-                "reference": "a62b631566a99f84168bc9db22ed15675e115b00"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/shadowhand/email/zipball/a62b631566a99f84168bc9db22ed15675e115b00",
-                "reference": "a62b631566a99f84168bc9db22ed15675e115b00",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.2.4",
-                "swiftmailer/swiftmailer": "4.3.*"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-3.3/master": "3.3.x-dev"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Woody Gilk",
-                    "email": "woody.gilk@gmail.com"
-                }
-            ],
-            "description": "Email helper for Kohana, uses Swiftmailer",
-            "homepage": "http://github.com/shadowhand/email",
-            "keywords": [
-                "email",
-                "helper",
-                "kohana",
-                "library",
-                "module",
-                "swiftmailer"
-            ],
-            "time": "2014-11-03 13:51:47"
-        },
-        {
-            "name": "swiftmailer/swiftmailer",
-            "version": "v4.3.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/swiftmailer/swiftmailer.git",
-                "reference": "ae540bed1079c07aa12e9e62d9d8d4fc49bbdff2"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/ae540bed1079c07aa12e9e62d9d8d4fc49bbdff2",
-                "reference": "ae540bed1079c07aa12e9e62d9d8d4fc49bbdff2",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.2.4"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "4.3-dev"
-                }
-            },
-            "autoload": {
-                "files": [
-                    "lib/swift_required.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "LGPL"
-            ],
-            "authors": [
-                {
-                    "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com",
-                    "homepage": "http://fabien.potencier.org",
-                    "role": "Lead Developer"
-                },
-                {
-                    "name": "Chris Corbyn"
-                }
-            ],
-            "description": "Swiftmailer, free feature-rich PHP mailer",
-            "homepage": "http://swiftmailer.org",
-            "keywords": [
-                "mail",
-                "mailer"
-            ],
-            "time": "2013-04-11 10:22:09"
-        },
-        {
             "name": "symfony/console",
-            "version": "v2.6.1",
+            "version": "v2.6.3",
             "target-dir": "Symfony/Component/Console",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Console.git",
-                "reference": "ef825fd9f809d275926547c9e57cbf14968793e8"
+                "reference": "6ac6491ff60c0e5a941db3ccdc75a07adbb61476"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Console/zipball/ef825fd9f809d275926547c9e57cbf14968793e8",
-                "reference": "ef825fd9f809d275926547c9e57cbf14968793e8",
+                "url": "https://api.github.com/repos/symfony/Console/zipball/6ac6491ff60c0e5a941db3ccdc75a07adbb61476",
+                "reference": "6ac6491ff60c0e5a941db3ccdc75a07adbb61476",
                 "shasum": ""
             },
             "require": {
@@ -2123,21 +1569,21 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "http://symfony.com",
-            "time": "2014-12-02 20:19:20"
+            "time": "2015-01-06 17:50:02"
         },
         {
             "name": "symfony/finder",
-            "version": "v2.5.8",
+            "version": "v2.6.3",
             "target-dir": "Symfony/Component/Finder",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Finder.git",
-                "reference": "e5487b9a23adc4be228ac550100d89c50f1ee8d5"
+                "reference": "16513333bca64186c01609961a2bb1b95b5e1355"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Finder/zipball/e5487b9a23adc4be228ac550100d89c50f1ee8d5",
-                "reference": "e5487b9a23adc4be228ac550100d89c50f1ee8d5",
+                "url": "https://api.github.com/repos/symfony/Finder/zipball/16513333bca64186c01609961a2bb1b95b5e1355",
+                "reference": "16513333bca64186c01609961a2bb1b95b5e1355",
                 "shasum": ""
             },
             "require": {
@@ -2146,7 +1592,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.5-dev"
+                    "dev-master": "2.6-dev"
                 }
             },
             "autoload": {
@@ -2170,7 +1616,7 @@
             ],
             "description": "Symfony Finder Component",
             "homepage": "http://symfony.com",
-            "time": "2014-12-02 20:15:53"
+            "time": "2015-01-03 08:01:59"
         },
         {
             "name": "thujohn/rss",
@@ -2272,16 +1718,16 @@
         },
         {
             "name": "phpunit/php-code-coverage",
-            "version": "2.0.13",
+            "version": "2.0.14",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "0e7d2eec5554f869fa7a4ec2d21e4b37af943ea5"
+                "reference": "ca158276c1200cc27f5409a5e338486bc0b4fc94"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/0e7d2eec5554f869fa7a4ec2d21e4b37af943ea5",
-                "reference": "0e7d2eec5554f869fa7a4ec2d21e4b37af943ea5",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/ca158276c1200cc27f5409a5e338486bc0b4fc94",
+                "reference": "ca158276c1200cc27f5409a5e338486bc0b4fc94",
                 "shasum": ""
             },
             "require": {
@@ -2333,7 +1779,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2014-12-03 06:41:44"
+            "time": "2014-12-26 13:28:33"
         },
         {
             "name": "phpunit/php-file-iterator",
@@ -2470,16 +1916,16 @@
         },
         {
             "name": "phpunit/php-token-stream",
-            "version": "1.3.0",
+            "version": "1.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-token-stream.git",
-                "reference": "f8d5d08c56de5cfd592b3340424a81733259a876"
+                "reference": "db32c18eba00b121c145575fcbcd4d4d24e6db74"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-token-stream/zipball/f8d5d08c56de5cfd592b3340424a81733259a876",
-                "reference": "f8d5d08c56de5cfd592b3340424a81733259a876",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-token-stream/zipball/db32c18eba00b121c145575fcbcd4d4d24e6db74",
+                "reference": "db32c18eba00b121c145575fcbcd4d4d24e6db74",
                 "shasum": ""
             },
             "require": {
@@ -2492,7 +1938,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.3-dev"
+                    "dev-master": "1.4-dev"
                 }
             },
             "autoload": {
@@ -2515,7 +1961,7 @@
             "keywords": [
                 "tokenizer"
             ],
-            "time": "2014-08-31 06:12:13"
+            "time": "2015-01-17 09:51:32"
         },
         {
             "name": "phpunit/phpunit",
@@ -2879,16 +2325,16 @@
         },
         {
             "name": "sebastian/version",
-            "version": "1.0.3",
+            "version": "1.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/version.git",
-                "reference": "b6e1f0cf6b9e1ec409a0d3e2f2a5fb0998e36b43"
+                "reference": "a77d9123f8e809db3fbdea15038c27a95da4058b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/version/zipball/b6e1f0cf6b9e1ec409a0d3e2f2a5fb0998e36b43",
-                "reference": "b6e1f0cf6b9e1ec409a0d3e2f2a5fb0998e36b43",
+                "url": "https://api.github.com/repos/sebastianbergmann/version/zipball/a77d9123f8e809db3fbdea15038c27a95da4058b",
+                "reference": "a77d9123f8e809db3fbdea15038c27a95da4058b",
                 "shasum": ""
             },
             "type": "library",
@@ -2910,21 +2356,21 @@
             ],
             "description": "Library that helps with managing the version number of Git-hosted PHP projects",
             "homepage": "https://github.com/sebastianbergmann/version",
-            "time": "2014-03-07 15:35:33"
+            "time": "2014-12-15 14:25:24"
         },
         {
             "name": "symfony/yaml",
-            "version": "v2.6.1",
+            "version": "v2.6.3",
             "target-dir": "Symfony/Component/Yaml",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Yaml.git",
-                "reference": "3346fc090a3eb6b53d408db2903b241af51dcb20"
+                "reference": "82462a90848a52c2533aa6b598b107d68076b018"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Yaml/zipball/3346fc090a3eb6b53d408db2903b241af51dcb20",
-                "reference": "3346fc090a3eb6b53d408db2903b241af51dcb20",
+                "url": "https://api.github.com/repos/symfony/Yaml/zipball/82462a90848a52c2533aa6b598b107d68076b018",
+                "reference": "82462a90848a52c2533aa6b598b107d68076b018",
                 "shasum": ""
             },
             "require": {
@@ -2957,14 +2403,13 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "http://symfony.com",
-            "time": "2014-12-02 20:19:20"
+            "time": "2015-01-03 15:33:07"
         }
     ],
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
         "davechild/textstatistics": 20,
-        "boomcms/asset-merger": 20,
         "hautelook/phpass": 20,
         "thujohn/rss": 20,
         "robbytaylor/htmlpurifier-tel": 20
