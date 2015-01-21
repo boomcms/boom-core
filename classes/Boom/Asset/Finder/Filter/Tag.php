@@ -12,6 +12,10 @@ class Tag extends \Boom\Finder\Filter
     {
         if (is_array($tags)) {
             $tags = array_unique($tags);
+
+            if (count($tags) === 1) {
+                $tags = $tags[0];
+            }
         }
 
         $this->_tags = $tags;

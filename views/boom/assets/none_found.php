@@ -1,7 +1,5 @@
 <div id="b-assets-content">
-	<div id="b-assets-none">
-            <?= __('No assets to show') ?>.
-        </div>
+    <div id="b-assets-none"><p>No assets found</p></div>
 </div>
 
 <div id="b-assets-pagination" class="pagination">

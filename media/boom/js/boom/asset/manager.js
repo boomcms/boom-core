@@ -133,13 +133,13 @@ $.widget('boom.assetManager', {
 	getAssets : function() {
 		var assetManager = this;
 
-		$.post(this.listUrl, this.postData)
+		return $.post(this.listUrl, this.postData)
 			.done(function(response) {
 				var $response = $(response);
 
 				assetManager.element
-					.find('#b-assets-view-thumbs')
-					.replaceWith($response.find('#b-assets-view-thumbs'));
+					.find('#b-assets-content')
+					.html($($response[0]).html());
 
 				assetManager.element
 					.find('#b-assets-view-thumbs')
@@ -151,6 +151,7 @@ $.widget('boom.assetManager', {
 
 				assetManager.initPagination();
 				assetManager.clearSelection();
+				assetManager.updateContentAreaMargin();
 			});
 	},
 
@@ -234,7 +235,7 @@ $.widget('boom.assetManager', {
 		// The filters bar will now be higher so move the content box down.
 		// Filters bar is position: fixed so this won't happen automatically.
 		var $filters = this.element.find('#b-assets-filters');
-		this.element.find('#b-assets-content').css('margin-top', $filters.css('top').toInt() + $filters.outerHeight() + 'px');
+		this.element.find('#b-assets-content').css('padding-top', $filters.css('top').toInt() + $filters.outerHeight() + 'px');
 	},
 
 	updateTagFilters : function(tags) {
@@ -242,10 +243,6 @@ $.widget('boom.assetManager', {
 
 		this.addFilter('tag', tags);
 		this.getAssets();
-
-		setTimeout(function() {
-			assetManager.updateContentAreaMargin();
-		}, 0);
 	},
 
 	viewAsset : function(assetId) {

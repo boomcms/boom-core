@@ -4,8 +4,13 @@ $.widget('boom.assetTagSearch',  {
 	addTag : function(tag) {
 		this.tags.push(tag);
 
-		$('<li class="b-tag"><span>' + tag + '</span><a href="#" class="b-tag-remove" data-tag="' + tag + '"></a></li>')
-			.insertBefore(this.tagList.children().last());
+		var $newTag = $('<li class="b-tag"><span>' + tag + '</span><a href="#" class="b-tag-remove" data-tag="' + tag + '"></a></li>');
+
+		if (this.tagList.children().length) {
+			$newTag.insertBefore(this.tagList.children().last());
+		} else {
+			$newTag.prependTo(this.tagList);
+		}
 
 		this._trigger('addTag', null, tag);
 		this.update();
