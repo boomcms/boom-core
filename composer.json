@@ -28,7 +28,7 @@
 		"phpunit/phpunit": "4.3.*"
 	},
 	"autoload": {
-		"psr-0": {"Boom": "classes/"}
+		"psr-0": {"Boom": "src/classes/"}
 	},
 	"minimum-stability" : "dev",
 	"prefer-stable": true
