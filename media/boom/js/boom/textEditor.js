@@ -13,8 +13,6 @@ $.widget('boom.textEditor', {
 	*/
 	mode : 'block',
 
-	hasBeenEdited : false,
-
 	/**
 	@property options
 	@type object
@@ -108,19 +106,23 @@ $.widget('boom.textEditor', {
 	* @function
 	@param {Object} element The element being edited.
 	*/
-	cancel : function(element) {
-		var self = this,
-			content = element.html();
+	cancel : function() {
+		var textEditor = this;
 
-		element.blur();
-		self.hideToolbar();
+		this.disableAutoSave();
+		this.element.blur();
+		this.hideToolbar();
 
-		if (self.hasBeenEdited) {
-			var confirmation = new boomConfirmation('Cancel changes', 'Cancel all changes and exit the editor?');
-
-			confirmation
+		if (this.hasBeenEdited()) {
+			new boomConfirmation('Cancel changes', 'Cancel all changes and exit the editor?')
 				.done(function() {
-					$.boom.log( 'canceling text edits' );
+					textEditor.element.html(textEditor.original_html);
+				})
+				.fail(function() {
+					textEditor.element.focus();
+				})
+				.always(function() {
+					textEditor.enableAutoSave();
 				});
 		}
 	},
@@ -137,6 +139,10 @@ $.widget('boom.textEditor', {
 				editor.apply(editor.element);
 			}
 		});
+	},
+
+	hasBeenEdited : function() {
+		return this.element.html() !== this.original_html;
 	},
 
 	hideToolbar : function() {
