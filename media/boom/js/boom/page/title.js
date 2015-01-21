@@ -2,28 +2,33 @@
  * TODO: Tell someone off for trying to blank a page title or writing an essay in the title.
  */
 $.widget('boom.pageTitle', $.ui.chunk, {
+	lengthCounterCreated : false,
+
 	max_length : 70,
 
 	saveOnBlur : false,
-
-	addBlurEvent : function() {
-		var element = this.element,
-			title = this;
-
-		this.saveOnBlur = true;
-
-		element.on('blur', function() {
-			if (title.saveOnBlur) {
-				$('body').editor('apply', element);
-			}
-		});
-	},
 
 	bind : function() {
 		$.ui.chunk.prototype.bind.call(this);
 
 		var self = this,
-			element = this.element;
+			element = this.element,
+			old_text = element.text();
+
+		this.element.textEditor({
+			edit : function() {
+				var title = self.element.text().trim();
+
+				if (title != '' && title != old_text) {
+					self._save(title, old_text);
+				}
+
+				old_text = title;
+
+				self.lengthCounterCreated = false;
+				top.$('#b-title-length').remove();
+			}
+		});
 
 		this.element
 			.on('keydown change paste', function() {
@@ -31,11 +36,16 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 					self._update_length_counter(element.text().length);
 				}, 0);
 			})
-			.on('click', function() {
-				element.focus();
-			});
+			.on('focus', function() {
+				if ( ! self.lengthCounterCreated) {
+					self._create_length_counter();
+					self.lengthCounterCreated = true;
+				}
 
-		this.addBlurEvent();
+				if (self.isUntitled()) {
+					self.element.text('');
+				}
+			});
 	},
 
 	_create_length_counter : function() {
@@ -52,14 +62,11 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 
 		$('<p><a href="#" id="b-title-help">What is this?</a></p>')
 			.appendTo(top.$('#b-title-length'))
-			.on('mousedown', 'a', function(e) {
-				e.preventDefault();
-
-				title.toggleBlurEvent();
+			.on('mousedown', 'a', function() {
+				title.element.textEditor('disableAutoSave');
 			})
 			.on('keydown', function(e) {
 				if (e.which == 13) {
-					title.toggleBlurEvent();
 					title.openHelp();
 				}
 			})
@@ -72,38 +79,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 		this._update_length_counter(this.element.text().length);
 	},
 
-	edit : function() {
-		var self = this;
-		var old_html = this.element.html();
-
-		if (this.isUntitled()) {
-			this.element.text('');
-		}
-
-		$('body').editor('edit', self.element)
-			.fail(function() {
-				self.element.html(old_html).show();
-				self.destroy();
-			})
-			.done(function() {
-				var title = self.element.text().trim();
-
-				if (title != '' && title != old_html) {
-					self._save(title, old_html);
-				}
-			})
-			.always(function() {
-				if (self.element.text() == '' ) {
-					self.element.html(old_html);
-				}
-
-				top.$('#b-title-length').remove();
-
-				self.bind();
-			});
-
-		this._create_length_counter();
-	},
+	edit : function() {},
 
 	_get_counter_color_for_length : function(length) {
 		if (length >= this.max_length) {
@@ -129,7 +105,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 			width : '600px',
 			cancelButton: false
 		}).always(function() {
-			title.toggleBlurEvent();
+			title.element.textEditor('enableAutoSave');
 			title.element.focus();
 		});
 	},
@@ -165,16 +141,6 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 			});
 	},
 
-	toggleBlurEvent : function() {
-		if (this.saveOnBlur) {
-			this.saveOnBlur = false;
-
-			this.element.unbind('blur');
-		} else {
-			this.addBlurEvent();
-		}
-	},
-
 	_update_length_counter : function(length) {
 		top.$('#b-title-length')
 			.find('span')
@@ -187,5 +153,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 		$('.b-editor-accept')
 			.prop('disabled', disable_accept_button)
 			.css('opacity', opacity);
-	}
+	},
+
+	unbind : function() {},
 });

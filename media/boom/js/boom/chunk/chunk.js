@@ -62,9 +62,7 @@ $.widget('ui.chunk',
 	_update_html : function(html) {
 		var $html = $(html);
 
-		this.element
-			.replaceWith($html);
-
+		this.element.replaceWith($html);
 		this.element = $html;
 
 		this.bind();
@@ -74,7 +72,7 @@ $.widget('ui.chunk',
 		var self = this,
 			chunk = new boomChunk(this.options.currentPage.id, this.options.type, this.options.name);
 
-		return chunk.delete()
+		return chunk.delete(this.options.template)
 			.done(function(response) {
 				var data = $.parseJSON(response);
 
