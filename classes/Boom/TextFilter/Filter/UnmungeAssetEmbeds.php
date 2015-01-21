@@ -8,11 +8,16 @@ class UnmungeAssetEmbeds implements \Boom\TextFilter\Filter
 {
     public function filterText($text)
     {
+        $text = $this->_unmunge_new_style_image_embeds($text);
         $text = $this->_unmungeImageLinksWithOnlyAssetId($text);
         $text = $this->_unmungeImageLinksWithMultipleParams($text);
         $text = $this->_unmungeNonImageAssetLinks($text);
 
         return $text;
+    }
+
+    protected function _unmunge_new_style_image_embeds($text) {
+        return preg_replace('|{image://(.*?)}|', '<img src="/asset/view/$1" />', $text);
     }
 
     protected function _unmungeImageLinksWithOnlyAssetId($text)
@@ -27,14 +32,12 @@ class UnmungeAssetEmbeds implements \Boom\TextFilter\Filter
 
     protected function _unmungeNonImageAssetLinks($text)
     {
-        return preg_replace_callback('|<a.*href=[\'\"]hoopdb://asset/(\d+?).*</a>|U', function ($matches) {
+        return preg_replace_callback('|{asset://(\d+?)}|', function ($matches) {
                 $assetId = $matches[1];
                 $asset = Asset\Factory::byId($assetId);
 
                 if ($asset->loaded()) {
-                    $text = "<a class='download ".$asset->getType()."' href='/asset/view/{$asset->getId()}.{$asset->getExtension()}'>{$asset->getTitle()}</a>";
-
-                    return $text;
+                    return "<a class='b-asset-embed' href='/asset/view/{$asset->getId()}.{$asset->getExtension()}'>{$asset->getTitle()}</a>";
                 }
             }, $text);
     }

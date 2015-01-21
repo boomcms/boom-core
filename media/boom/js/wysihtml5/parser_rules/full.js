@@ -30,7 +30,8 @@ var wysihtml5ParserRules = {
 
         "text_formatting_object": {
             "classes": {
-		'cta' : 1
+		'cta' : 1,
+		'b-asset-embed' : 1
 	    }
         }
     },

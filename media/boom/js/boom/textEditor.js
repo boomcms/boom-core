@@ -40,7 +40,8 @@ $.widget('boom.textEditor', {
 			parserRules :  (self.mode == 'block')? wysihtml5ParserRules : wysihtml5ParserRulesInline, // defined in parser rules set
 			useLineBreaks : false,
 			contentEditableMode : true,
-			autoLink : false
+			autoLink : false,
+			uneditableContainerClassname : 'b-asset-embed'
 		});
 
 		element

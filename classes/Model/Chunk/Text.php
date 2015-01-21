@@ -51,9 +51,9 @@ class Model_Chunk_Text extends \ORM
         if ($this->_object['is_block']) {
             $commander = new TextFilter();
             $commander
+                ->addFilter(new Filter\UnmungeAssetEmbeds())
                 ->addFilter(new Filter\OEmbed())
                 ->addFilter(new Filter\StorifyEmbed())
-                ->addFilter(new Filter\UnmungeAssetEmbeds())
                 ->addFilter(new Filter\RemoveLinksToInvisiblePages())
                 ->addFilter(new Filter\UnmungeInternalLinks());
 

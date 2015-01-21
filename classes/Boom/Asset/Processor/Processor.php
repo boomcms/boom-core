@@ -45,7 +45,7 @@ abstract class Processor
     public function embed()
     {
         return $this->response
-            ->body("<a href='/asset/view/{$this->asset->getId()}'>Download {$this->asset->getTitle()}</a>");
+            ->body("<a class='download' href='/asset/view/{$this->asset->getId()}'>{$this->asset->getTitle()}</a>");
     }
 
     public function view($width = null, $height = null)

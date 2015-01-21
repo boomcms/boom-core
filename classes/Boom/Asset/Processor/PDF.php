@@ -14,7 +14,11 @@ class PDF extends Processor
         if ( ! $image = Kohana::cache($cacheKey)) {
             $image = new Imagick($this->asset->getFilename() . '[0]');
             $image->setImageFormat('jpg');
-            $image->resizeImage($width, $height, Imagick::FILTER_UNDEFINED, 1);
+
+            if ($width || $height) {
+                $image->resizeImage($width, $height, Imagick::FILTER_UNDEFINED, 1);
+            }
+            
             $image = $image->getImageBlob();
             Kohana::cache($cacheKey, $image);
         }
@@ -22,5 +26,11 @@ class PDF extends Processor
         return $this->response
             ->headers('Content-type', 'image/jpg')
             ->body($image);
+    }
+
+    public function embed()
+    {
+        return $this->response
+            ->body("<a class='b-asset-embed' href='/asset/view/{$this->asset->getId()}'>{$this->asset->getTitle()}</a>");
     }
 }

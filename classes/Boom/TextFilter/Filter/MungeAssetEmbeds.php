@@ -10,8 +10,8 @@ class MungeAssetEmbeds implements \Boom\TextFilter\Filter
 {
     public function filterText($text)
     {
-        $text = preg_replace('|<(.*?)src=([\'"])/asset/view/(.*?)([\'"])(.*?)>|', '<$1src=$2hoopdb://image/$3$4$5>', $text);
-        $text = preg_replace('|<(.*?)href=([\'"])/asset/view/(\d+)/?.*?([\'"])(.*?)>|', '<$1href=$2hoopdb://asset/$3$4$5>', $text);
+        $text = preg_replace('|<img(.*?)src=([\'"])/asset/view/(.*?)([\'"])(.*?)>|', '{image://$3}', $text);
+        $text = preg_replace('|<a(.*?)class=[\'"]b-asset-embed[\'"] href=([\'"])/asset/view/(\d+)(.*?)</a>|', '{asset://$3}', $text);
 
         return $text;
     }
