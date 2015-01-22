@@ -46,7 +46,8 @@ class Model_Chunk_Text extends \ORM
         $this->_cleanText();
 
         // Find which assets are linked to within the text chunk.
-        preg_match_all('~hoopdb://((image)|(asset))/(\d+)~', $this->_object['text'], $matches);
+        preg_match_all('~{(asset|image)://(\d+)}~', $this->_object['text'], $matches);
+        $linkedAssets = $matches[2];
 
         if ($this->_object['is_block']) {
             $commander = new TextFilter();
@@ -66,8 +67,8 @@ class Model_Chunk_Text extends \ORM
         parent::create($validation);
 
         // Are there any asset links?
-        if ( ! empty($matches[4])) {
-            $assets = array_unique($matches[4]);
+        if ( ! empty($linkedAssets)) {
+            $assets = array_unique($linkedAssets);
 
             // Log which assets are being referenced with a multi-value insert.
             $query = DB::insert('chunk_text_assets', ['chunk_id', 'asset_id', 'position']);
