@@ -59,6 +59,7 @@ return array(
         'boom/chunk/linkset/editor.js',
         'boom/chunk/asset/editor.js',
         'boom/chunk/pageTags.js',
+        'boom/chunk/pageVisibility.js',
         'boom/page/title.js',
         'boom/link/link.js',
         'boom/link/picker.js',
