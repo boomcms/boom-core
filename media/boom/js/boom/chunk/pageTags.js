@@ -8,13 +8,16 @@ $.widget('ui.chunkPageTags', {
 
 		this.element
 			.addClass('b-editable')
-			.on('click', function() {
+			.on('click', function(e) {
+				e.preventDefault();
+				e.stopPropagation();
+
 				new boomPageTagEditor(chunkPageTags.options.currentPage)
 					.done(function() {
 
 						// The tag list could be a filtered list or have other logic around it's generation
 						// So to update the list do an AJAX call for the window location and list the element contents.
-						chunkPageTags.element.load(top.location + '  .b-chunk-pagetags');
+						chunkPageTags.element.load(top.location + '  .b-chunk-pagetags > *');
 					});
 			});
 	}
