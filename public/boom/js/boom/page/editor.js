@@ -36,11 +36,10 @@ $.widget( 'boom.pageEditor', {
 
 		this.document.contents()
 			.find('[data-boom-chunk]')
-			.each(function(){
-				var $this = $(this);
-
-				var type = $this.data('boom-chunk');
-				var widgetName = 'chunk' + type.ucfirst();
+			.each(function() {
+				var $this = $(this),
+					type = $this.data('boom-chunk'),
+					widgetName = 'chunk' + type.ucfirst();
 
 				$this[widgetName]({
 					type : type,
@@ -56,6 +55,13 @@ $.widget( 'boom.pageEditor', {
 			.find('#b-page-title')
 			.pageTitle({
 				currentPage : self.page
+			})
+			.end()
+			.find('.b-chunk-pagetags')
+			.each(function() {
+				$(this).chunkPageTags({
+					currentPage : self.page
+				});
 			});
 	},
 
