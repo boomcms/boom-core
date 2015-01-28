@@ -36,7 +36,7 @@ $.widget( 'boom.pageEditor', {
 
 		this.document.contents()
 			.find('[data-boom-chunk]')
-			.each(function(){
+			.each(function() {
 				var $this = $(this);
 
 				var type = $this.data('boom-chunk');
