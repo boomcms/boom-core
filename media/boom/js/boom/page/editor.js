@@ -55,6 +55,13 @@ $.widget( 'boom.pageEditor', {
 			.find('#b-page-title')
 			.pageTitle({
 				currentPage : self.page
+			})
+			.end()
+			.find('.b-chunk-pagetags')
+			.each(function() {
+				$(this).chunkPageTags({
+					currentPage : self.page
+				});
 			});
 	},
 
