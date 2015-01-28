@@ -62,6 +62,13 @@ $.widget( 'boom.pageEditor', {
 				$(this).chunkPageTags({
 					currentPage : self.page
 				});
+			})
+			.end()
+			.find('.b-chunk-pagevisibility')
+			.each(function() {
+				$(this).chunkPageVisibility({
+					currentPage : self.page
+				});
 			});
 	},
 
