@@ -2,7 +2,7 @@ $.widget('ui.chunkAsset', $.ui.chunk, {
 	editAssetOnly : function() {
 		var chunkAsset = this;
 
-		new boomAssetPicker(this.assetId)
+		new boomAssetPicker(this.assetId, this.getPickerFilters())
 		.done(function(assetId) {
 			chunkAsset.assetId = assetId;
 
@@ -82,6 +82,14 @@ $.widget('ui.chunkAsset', $.ui.chunk, {
 			this.editAssetOnly();
 		}
 	},
+
+	 getPickerFilters : function() {
+		 if (this.element.attr('data-boom-filterbytype')) {
+			 return {
+				 type : this.element.attr('data-boom-filterByType')
+			 };
+		 }
+	 },
 
 	hasMetadata : function() {
 		return (this.elements.caption.length || this.elements.link.length || this.elements.title.length);

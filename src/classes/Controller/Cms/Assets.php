@@ -112,19 +112,7 @@ class Controller_Cms_Assets extends Controller_Cms
 
     public function action_picker()
     {
-        $finder = new AssetFinder();
-        $totalAssets = $finder->count();
-
-        $assets = $finder
-            ->setLimit($this->perpage)
-            ->setOrderBy('last_modified', 'desc')
-            ->findAll();
-
-        $this->template = new View("$this->viewDirectory/picker", [
-            'assets' => $assets,
-            'pages' => ceil($totalAssets / $this->perpage),
-            'page' => 1,
-        ]);
+        $this->template = new View("$this->viewDirectory/picker");
     }
 
     public function action_restore()
