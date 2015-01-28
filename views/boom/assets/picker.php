@@ -1,5 +1,5 @@
 <div id="b-assets-picker">
-    <?= new View('boom/assets/thumbs', array('assets' => $assets)) ?>
+    <?= new View('boom/assets/thumbs', array('assets' => [])) ?>
 
     <section id="b-assets-picker-sidebar">
         <section id="b-assets-picker-current">
@@ -42,7 +42,7 @@
         <section id="b-assets-pagination" class="pagination">
             <a href="#" class="first" data-action="first">&laquo;</a>
             <a href="#" class="previous" data-action="previous">&lsaquo;</a>
-            <input type="text" readonly="readonly" data-max-page="<?= $pages ?>" data-current-page="<?= $page ?>" />
+            <input type="text" readonly="readonly" data-max-page="" data-current-page="" />
             <a href="#" class="next" data-action="next">&rsaquo;</a>
             <a href="#" class="last" data-action="last">&raquo;</a>
         </section>

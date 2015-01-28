@@ -11,6 +11,8 @@ class Asset extends \Boom\Chunk
     protected $_asset;
     protected $_default_template = 'image';
     protected $_type = 'asset';
+
+    private $filterByType;
     private $link;
 
     public function __construct(Page\Page $page, $chunk, $editable = true)
@@ -48,7 +50,8 @@ class Asset extends \Boom\Chunk
     public function attributes()
     {
         return [
-            $this->attributePrefix.'target' => $this->target(),
+            $this->attributePrefix . 'target' => $this->target(),
+            $this->attributePrefix . 'filterByType' => $this->filterByType
         ];
     }
 
@@ -79,6 +82,19 @@ class Asset extends \Boom\Chunk
     public function hasContent()
     {
         return $this->_chunk->loaded() && $this->_asset->loaded();
+    }
+
+    /**
+     * Set which type of asset can be put into the chunk.
+     * No validation is done but by default the asset picker will filter by this type.
+     *
+     * @param string $type An asset type. e.g. 'pdf', 'image'.
+     */
+    public function setFilterByType($type)
+    {
+        $this->filterByType = $type;
+
+        return $this;
     }
 
     public function target()

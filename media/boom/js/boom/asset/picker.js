@@ -1,10 +1,8 @@
-function boomAssetPicker(currentAssetId) {
+function boomAssetPicker(currentAssetId, filters) {
 	this.currentAssetId = currentAssetId? currentAssetId : 0;
 	this.deferred = new $.Deferred();
 	this.document = $(document);
-	this.filters = {
-		page : 1
-	};
+	this.filters = filters? filters : {};
 
 	boomAssetPicker.prototype.url = '/cms/assets/picker';
 	boomAssetPicker.prototype.listUrl = '/cms/assets/list';
@@ -153,9 +151,12 @@ function boomAssetPicker(currentAssetId) {
 				assetPicker.tagFilter = assetPicker.picker.find('#b-tags-search');
 				assetPicker.typeFilter = assetPicker.picker.find('#b-assets-types');
 
+				if (typeof(assetPicker.filters.type) !== 'undefined') {
+					assetPicker.showActiveTypeFilter(assetPicker.filters.type);
+				}
+
 				assetPicker.bind();
-				assetPicker.justifyAssets();
-				assetPicker.initPagination();
+				assetPicker.getAssets();
 
 				if (assetPicker.currentAssetId > 0) {
 					assetPicker.picker
@@ -178,6 +179,27 @@ function boomAssetPicker(currentAssetId) {
 		this.deferred.resolve(asset_id);
 
 		this.close();
+	};
+
+	/**
+	 * Selects an option in the type filter select box to show that the type filter is active.
+	 * Used when the asset picker is opened with an active type filter.
+	 *
+	 * @param {string} type
+	 * @returns {boomAssetPicker.prototype}
+	 */
+	boomAssetPicker.prototype.showActiveTypeFilter = function(type) {
+		var assetPicker = this;
+
+		this.typeFilter.find('option').each(function() {
+			var $this = $(this);
+
+			if ($this.text().toLowerCase() === type.toLowerCase()) {
+				assetPicker.typeFilter.val($this.val());
+			}
+		});
+
+		return this;
 	};
 
 	return this.open();
