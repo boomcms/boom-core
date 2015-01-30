@@ -59,6 +59,11 @@ class Model_Chunk_Text extends \ORM
                 ->addFilter(new Filter\UnmungeInternalLinks());
 
             $this->site_text = $commander->filterText($this->_object['text']);
+        } else if ($this->slotname !== 'standfirst') {
+            $commander = new TextFilter();
+            $commander->addFilter(new Filter\OEmbed());
+
+            $this->site_text = $commander->filterText($this->_object['text']);
         } else {
             $this->site_text = $this->_object['text'];
         }
