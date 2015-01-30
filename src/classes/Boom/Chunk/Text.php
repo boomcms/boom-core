@@ -12,6 +12,8 @@ class Text extends \Boom\Chunk
 {
     protected $_type = 'text';
 
+    private $defaultText;
+
     protected function _add_html($text)
     {
         switch ($this->_slotname) {
@@ -43,6 +45,10 @@ class Text extends \Boom\Chunk
 
     public function defaultText()
     {
+        if ($this->defaultText !== null) {
+            return $this->defaultText;
+        }
+
         $text = Kohana::message('chunks', $this->_slotname);
         $text || $text = Kohana::message('chunks', 'text');
 
@@ -59,6 +65,21 @@ class Text extends \Boom\Chunk
     public function hasContent()
     {
         return trim($this->_chunk->text) != null;
+    }
+
+    /**
+     * Sets the default text that should be shown in the editor if the text chunk has no content.
+     *
+     * This is useful as a way of setting some text which describes to editors what the text chunk is intended to be used for.
+     *
+     * @param string $text
+     * @return \Boom\Chunk\Text
+     */
+    public function setDefaultText($text)
+    {
+        $this->defaultText = $text;
+
+        return $this;
     }
 
     private function showText($text)
