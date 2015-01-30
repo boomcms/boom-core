@@ -55,6 +55,16 @@ class Text extends \Boom\Chunk
         return $text;
     }
 
+    /**
+     * Returns the chunk's text without any filters applied
+     *
+     * @return string
+     */
+    public function getUnfilteredText()
+    {
+        return $this->_chunk->text;
+    }
+
     public function get_paragraphs($offset = 0, $length = null)
     {
         preg_match_all('|<p>(.*?)</p>|', $this->_chunk->text, $matches, PREG_PATTERN_ORDER);
