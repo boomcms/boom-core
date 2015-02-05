@@ -12,6 +12,8 @@ class Internal extends Link
      */
     protected $page;
 
+    protected $urlFragment;
+
     /**
      * Holds an optional query string for the link.
      *
@@ -31,8 +33,9 @@ class Internal extends Link
         } else {
             $location = ($link === '/') ? '' : substr($link, 1);
             
-            // Extract the query string, if there is one.
+            // Extract the query string and fragement
             $this->queryString = parse_url($link, PHP_URL_QUERY);
+            $this->urlFragment = parse_url($link, PHP_URL_FRAGMENT);
 
             // Only get the path of the URL to ensure that if there's a query string it's ignored.
             $this->page = Page\Factory::byUri(parse_url($location, PHP_URL_PATH));
@@ -51,7 +54,17 @@ class Internal extends Link
 
     public function url()
     {
-        // Return the URL of the page and append the query string if one was provided.
-        return $this->page->url() . (($this->queryString)? '?' . $this->queryString : '');
+        // Return the URL of the page and append the fragment and query string if provided.
+        $url = $this->page->url();
+
+        if ($this->urlFragment) {
+            $url .= '#' . $this->urlFragment;
+        }
+
+        if ($this->queryString) {
+            $url .= '?' . $this->queryString;
+        }
+
+        return $url;
     }
 }
