@@ -1,0 +1,60 @@
+html.boom {
+	select {
+		.box-sizing;
+		.text-default;
+		.border-radius(0);
+		border: 0;
+		-webkit-appearance: none;
+		height: 2em;
+		padding: 2px 30px 2px 5px;
+		background: @white url(/media/boom/img/down.png) no-repeat center right;
+
+		&[multiple] {
+			background: @white;
+			height: 8em;
+		}
+	}
+
+	input[type=text], input[type=password], input[type=submit], input[type=email] {
+		.box-sizing;
+		.text-default;
+		.border-radius(0);
+		border: 0;
+		-webkit-appearance: none;
+		height: 2em;
+		padding: 2px 5px;
+	}
+
+	textarea {
+		.box-sizing;
+		.text-default;
+		.border-radius(0);
+		border: 0;
+		-webkit-appearance: none;
+		padding: 2px 5px;
+	}
+
+	label {
+		.text-default;
+		margin-top: 0.75em;
+		overflow: hidden;
+
+		input[type=text], select, textarea {
+			float: right;
+			width: 70%;
+			margin-left: 1em;
+		}
+
+		input {
+			margin-left: 1em;
+		}
+	}
+
+	form.b-form-settings {
+		label {
+			input[type=text], select, textarea {
+				width: 14em;
+			}
+		}
+	}
+}
