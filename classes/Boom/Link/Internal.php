@@ -52,6 +52,11 @@ class Internal extends Link
         return $this->page->getTitle();
     }
 
+    public function isValidPage()
+    {
+        return $this->page->loaded();
+    }
+
     public function url()
     {
         // Return the URL of the page and append the fragment and query string if provided.
