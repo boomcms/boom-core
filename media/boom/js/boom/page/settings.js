@@ -170,9 +170,8 @@ boomPage.prototype.adminsettings = function() {
 		url: url,
 		title: 'Admin settings',
 		width: '500px'
-	});
-
-	dialog.done(function() {
-		page.saveSettings(url, $(this).find("form").serialize(), 'Page admin settings saved');
+	})
+	.done(function() {
+		page.saveSettings(url, dialog.contents.find("form").serialize(), 'Page admin settings saved');
 	});
 };
