@@ -11,7 +11,14 @@ abstract class Link
 
     public static function factory($link)
     {
-        return (ctype_digit($link) || substr($link, 0, 1) == '/') ? new Internal($link) : new External($link);
+        if (ctype_digit($link) || substr($link, 0, 1) == '/') {
+            $internal = new Internal($link);
+
+            // If it's not a valid CMS URL then it's a relative URL which isn't CMS managed so treat it as an external URL.
+            return ($internal->isValidPage()) ? $internal : new External($link);
+        } else {
+            return new External($link);
+        }
     }
 
     public function isExternal()
