@@ -1,6 +1,10 @@
 <?php
 
-class Model_Group extends ORM
+namespace Boom\Model;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Group extends Model
 {
     protected $_has_many = ['roles' => ['through' => 'group_roles']];
 
@@ -10,7 +14,7 @@ class Model_Group extends ORM
         'deleted'        =>    '',
     ];
 
-    protected $_table_name = 'groups';
+    protected $table = 'groups';
 
     /**
 	 * Delete a group.

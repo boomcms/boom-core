@@ -1,8 +1,11 @@
 <?php
 
+namespace Boom\Model\Chunk\Slideshow;
+
+use Illuminate\Database\Eloquent\Model;
 use \Boom\Link\Link as Link;
 
-class Model_Chunk_Slideshow_Slide extends \ORM
+class Slide extends Model
 {
     protected $_belongs_to = [
         'asset'    =>    ['model' => 'Asset', 'foreign_key' => 'asset_id']
@@ -18,7 +21,7 @@ class Model_Chunk_Slideshow_Slide extends \ORM
         'linktext' => '',
     ];
 
-    protected $_table_name = 'chunk_slideshow_slides';
+    protected $table = 'chunk_slideshow_slides';
 
     private $assetCache;
 

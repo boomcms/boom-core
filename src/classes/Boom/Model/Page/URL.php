@@ -1,6 +1,10 @@
 <?php
 
-class Model_Page_URL extends ORM
+namespace Boom\Model;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Page_URL extends Model
 {
     protected $_belongs_to = ['page' => ['foreign_key' => 'page_id']];
     protected $_table_columns = [
@@ -9,7 +13,7 @@ class Model_Page_URL extends ORM
         'location'        =>    '',
         'is_primary'    =>    '',
     ];
-    protected $_table_name = 'page_urls';
+    protected $table = 'page_urls';
 
     /**
 	 * Convert a Model_Page_URL object to a string

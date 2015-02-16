@@ -1,6 +1,10 @@
 <?php
 
-class Model_AuthLog extends ORM
+namespace Boom\Model;
+
+use Illuminate\Database\Eloquent\Model;
+
+class AuthLog extends Model
 {
     const LOGOUT = -1;
     const FAILURE = 0;
@@ -16,7 +20,7 @@ class Model_AuthLog extends ORM
         'time'            =>    '',
     ];
 
-    protected $_table_name = 'auth_logs';
+    protected $table = 'auth_logs';
 
     protected $_created_column = [
         'column'    =>    'time',

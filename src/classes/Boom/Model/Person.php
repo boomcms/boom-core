@@ -1,10 +1,14 @@
 <?php
 
-class Model_Person extends ORM
+namespace Boom\Model;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Person extends Model
 {
     const LOCK_WAIT = 600;
 
-    protected $_table_name = 'people';
+    protected $table = 'people';
 
     protected $_table_columns = [
         'id'            =>    '',

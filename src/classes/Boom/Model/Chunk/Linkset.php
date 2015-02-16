@@ -1,6 +1,10 @@
 <?php
 
-class Model_Chunk_Linkset extends ORM
+namespace Boom\Model\Chunk;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Linkset extends Model
 {
     protected $_has_many = [
         'links' => ['model' => 'Chunk_Linkset_Link', 'foreign_key' => 'chunk_linkset_id'],
@@ -15,7 +19,7 @@ class Model_Chunk_Linkset extends ORM
         'page_vid' => '',
     ];
 
-    protected $_table_name = 'chunk_linksets';
+    protected $table = 'chunk_linksets';
 
     public function copy($from_version_id)
     {

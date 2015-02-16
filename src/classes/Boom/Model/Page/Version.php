@@ -1,9 +1,12 @@
 <?php
 
+namespace Boom\Model;
+
+use Illuminate\Database\Eloquent\Model;
 use \Boom\Auth\Auth as Auth;
 use \Boom\Editor\Editor as Editor;
 
-class Model_Page_Version extends ORM
+class Page_Version extends Model
 {
     protected $_belongs_to = [
         'template'        =>    ['model' => 'Template', 'foreign_key' => 'template_id'],
@@ -32,7 +35,7 @@ class Model_Page_Version extends ORM
         'pending_approval'    =>    '',
     ];
 
-    protected $_table_name = 'page_versions';
+    protected $table = 'page_versions';
 
     /**
 	 * Hold the calculated thumbnails for this version.

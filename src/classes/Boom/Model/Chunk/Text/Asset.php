@@ -1,11 +1,15 @@
 <?php
 
+namespace Boom\Model\Chunk;
+
+use Illuminate\Database\Eloquent\Model;
+
 /**
  * Records which assets are being referenced from within text chunks
  * When a text chunk is saved regular expressions are used to find links to CMS assets.
  * Recording these allows us to show in the asset manager where an asset is used.
  */
-class Model_Chunk_Text_Asset extends \ORM
+class Text_Asset extends Model
 {
     protected $_primary_key = null;
     protected $_belongs_to = ['asset' => []];
@@ -15,5 +19,5 @@ class Model_Chunk_Text_Asset extends \ORM
         'position'    =>    '',
     ];
 
-    protected $_table_name = 'chunk_text_assets';
+    protected $table = 'chunk_text_assets';
 }

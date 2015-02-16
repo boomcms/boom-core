@@ -1,6 +1,10 @@
 <?php
 
-class Model_Chunk_Slideshow extends ORM
+namespace Boom\Model\Chunk;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Slideshow extends Model
 {
     protected $_has_many = [
         'slides' => ['model' => 'Chunk_Slideshow_Slide', 'foreign_key' => 'chunk_id'],
@@ -15,7 +19,7 @@ class Model_Chunk_Slideshow extends ORM
         'page_vid' => '',
     ];
 
-    protected $_table_name = 'chunk_slideshows';
+    protected $table = 'chunk_slideshows';
 
     public function copy($from_version_id)
     {

@@ -1,6 +1,10 @@
 <?php
 
-class Model_Role extends \ORM
+namespace Boom\Model;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Role extends Model
 {
     protected $_table_columns = [
         'id'            =>    '',
@@ -8,5 +12,5 @@ class Model_Role extends \ORM
         'description'    =>    '',
     ];
 
-    protected $_table_name = 'roles';
+    protected $table = 'roles';
 }

@@ -1,6 +1,10 @@
 <?php
 
-class Model_Template extends ORM
+namespace Boom\Model;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Template extends Model
 {
     protected $_table_columns = [
         'id'            =>    '',
@@ -9,7 +13,7 @@ class Model_Template extends ORM
         'filename'        =>    '',
     ];
 
-    protected $_table_name = 'templates';
+    protected $table = 'templates';
 
     public function rules()
     {

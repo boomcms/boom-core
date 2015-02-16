@@ -1,6 +1,10 @@
 <?php
 
-class Model_Chunk_Timestamp extends ORM
+namespace Boom\Model\Chunk;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Timestamp extends Model
 {
     protected $_table_columns = [
         'id' => '',
@@ -10,7 +14,7 @@ class Model_Chunk_Timestamp extends ORM
         'page_vid' => '',
     ];
 
-    protected $_table_name = 'chunk_timestamps';
+    protected $table = 'chunk_timestamps';
 
     public function is_valid_format()
     {

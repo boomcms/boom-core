@@ -1,6 +1,10 @@
 <?php
 
-class Model_Asset_Download extends \ORM
+namespace Boom\Model\Asset;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Download extends Model
 {
     protected $_belongs_to = [
         'asset'        =>    [],
@@ -18,5 +22,5 @@ class Model_Asset_Download extends \ORM
         'ip' => '',
     ];
 
-    protected $_table_name = 'asset_downloads';
+    protected $table = 'asset_downloads';
 }

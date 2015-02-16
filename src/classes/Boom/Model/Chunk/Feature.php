@@ -1,6 +1,10 @@
 <?php
 
-class Model_Chunk_Feature extends \ORM
+namespace Boom\Model\Chunk;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Feature extends Model
 {
     protected $_table_columns = [
         'id'                =>    '',
@@ -11,5 +15,5 @@ class Model_Chunk_Feature extends \ORM
 
     protected $_belongs_to = ['target' => ['model' => 'Page', 'foreign_key' => 'target_page_id']];
 
-    protected $_table_name = 'chunk_features';
+    protected $table = 'chunk_features';
 }

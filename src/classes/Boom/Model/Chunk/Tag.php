@@ -1,6 +1,10 @@
 <?php
 
-class Model_Chunk_Tag extends \ORM
+namespace Boom\Model\Chunk;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Tag extends Model
 {
     protected $_belongs_to = [
         'target' => ['model' => 'Tag', 'foreign_key' => 'tag_id'],
@@ -13,5 +17,5 @@ class Model_Chunk_Tag extends \ORM
         'page_vid' => '',
     ];
 
-    protected $_table_name = 'chunk_tags';
+    protected $table = 'chunk_tags';
 }

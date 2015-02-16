@@ -1,8 +1,10 @@
 <?php
 
-use \ORM as ORM;
+namespace Boom\Model;
 
-class Model_Asset extends ORM
+use Illuminate\Database\Eloquent\Model;
+
+class Asset extends Model
 {
     protected $_belongs_to = [
         'uploader'        =>    ['model' => 'Person', 'foreign_key' => 'uploaded_by'],
@@ -37,7 +39,7 @@ class Model_Asset extends ORM
         'downloads'        =>    '',
     ];
 
-    protected $_table_name = 'assets';
+    protected $table = 'assets';
 
     protected $_updated_column = [
         'column'    =>    'last_modified',

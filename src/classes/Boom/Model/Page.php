@@ -1,8 +1,11 @@
 <?php
 
+namespace Boom\Model;
+
+use Illuminate\Database\Eloquent\Model;
 use \Boom\Editor\Editor as Editor;
 
-class Model_Page extends ORM
+class Page extends Model
 {
     /**
 	 * Properties to create relationships with Kohana's ORM
@@ -53,7 +56,7 @@ class Model_Page extends ORM
         'feature_image_id'            =>    '',
     ];
 
-    protected $_table_name = 'pages';
+    protected $table = 'pages';
 
     /**
 	 * Cached result for self::url()

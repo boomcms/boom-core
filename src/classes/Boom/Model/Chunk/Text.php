@@ -1,10 +1,12 @@
 <?php
 
+namespace Boom\Model\Chunk;
 
+use Illuminate\Database\Eloquent\Model;
 use Boom\TextFilter\Commander as TextFilter;
 use Boom\TextFilter\Filter as Filter;
 
-class Model_Chunk_Text extends \ORM
+class Text extends Model
 {
     protected $_table_columns = [
         'text'        =>    '',
@@ -15,7 +17,7 @@ class Model_Chunk_Text extends \ORM
         'site_text' => '',
     ];
 
-    protected $_table_name = 'chunk_texts';
+    protected $table = 'chunk_texts';
 
     public function _cleanText()
     {

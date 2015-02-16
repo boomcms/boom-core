@@ -1,6 +1,10 @@
 <?php
 
-class Model_Chunk_Asset extends \ORM
+namespace Boom\Model\Chunk;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Asset extends Model
 {
     protected $_belongs_to = [
         'target' => ['model' => 'Asset', 'foreign_key' => 'asset_id'],
@@ -16,7 +20,7 @@ class Model_Chunk_Asset extends \ORM
         'page_vid' => '',
     ];
 
-    protected $_table_name = 'chunk_assets';
+    protected $table = 'chunk_assets';
 
     public function filters()
     {

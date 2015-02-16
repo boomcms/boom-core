@@ -8,7 +8,7 @@
 */
 class Model_Page_MPTT extends \ORM_MPTT
 {
-    protected $_table_name = 'page_mptt';
+    protected $table = 'page_mptt';
     protected $_belongs_to = ['page' => ['foreign_key' => 'id']];
     protected $_table_columns = [
         'id'            =>    '',

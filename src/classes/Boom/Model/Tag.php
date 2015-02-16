@@ -1,6 +1,10 @@
 <?php
 
-class Model_Tag extends ORM
+namespace Boom\Model;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Tag extends Model
 {
     protected $_table_columns = [
         'id'            =>    '',
@@ -10,7 +14,7 @@ class Model_Tag extends ORM
         'group' => '',
     ];
 
-    protected $_table_name = 'tags';
+    protected $table = 'tags';
 
     public function check_slugs_are_defined()
     {

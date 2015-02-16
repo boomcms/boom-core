@@ -1,8 +1,11 @@
 <?php
 
+namespace Boom\Model\Chunk\Linkset;
+
+use Illuminate\Database\Eloquent\Model;
 use \Boom\Link\Link as Link;
 
-class Model_Chunk_Linkset_Link extends ORM
+class Link extends Model
 {
     protected $_link;
 
@@ -19,7 +22,7 @@ class Model_Chunk_Linkset_Link extends ORM
         'asset_id' => '',
     ];
 
-    protected $_table_name = 'chunk_linkset_links';
+    protected $table = 'chunk_linkset_links';
 
     public function getLink()
     {

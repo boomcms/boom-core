@@ -1,6 +1,10 @@
 <?php
 
-class Model_Log extends \ORM
+namespace Boom\Model;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Log extends Model
 {
     protected $_created_column = [
         'column'    =>    'time',
@@ -16,5 +20,5 @@ class Model_Log extends \ORM
         'time'        =>    '',
     ];
 
-    protected $_table_name = 'logs';
+    protected $table = 'logs';
 }
