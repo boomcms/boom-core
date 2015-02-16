@@ -21,10 +21,6 @@ class Tag extends Model
         if (! $this->slug_short) {
             $this->slug_short = $this->create_short_slug($this->name);
         }
-
-        if (! $this->slug_long) {
-            $this->slug_long = $this->create_long_slug($this->name);
-        }
     }
 
     public function create(Validation $validation = null)
@@ -32,29 +28,6 @@ class Tag extends Model
         $this->check_slugs_are_defined();
 
         return parent::create($validation);
-    }
-
-    public function create_long_slug($name)
-    {
-        $parts = explode('/', $name);
-
-        if (count($parts) === 1) {
-            array_unshift($parts, 'tag');
-        }
-
-        foreach ($parts as & $part) {
-            $part = URL::title($part);
-        }
-
-        $slug = $original = implode('/', $parts);
-        $i = 0;
-
-        while (ORM::factory('tag', ['slug_long' => $slug])->loaded()) {
-            $i++;
-            $slug = "$original$i";
-        }
-
-        return $slug;
     }
 
     public function create_short_slug($name)
