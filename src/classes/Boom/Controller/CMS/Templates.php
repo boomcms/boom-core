@@ -1,9 +1,11 @@
 <?php
 
+namespace Boom\Controller\CMS;
+
 use Boom\Template;
 use Boom\Page;
 
-class Controller_Cms_Templates extends Controller_Cms
+class Templates extends CMS
 {
     protected $viewDirectory = 'boom/templates';
 

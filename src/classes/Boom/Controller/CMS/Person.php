@@ -1,8 +1,10 @@
 <?php
 
+namespace Boom\Controller\CMS;
+
 use Boom\Person;
 
-class Controller_Cms_Person extends Controller_Cms_PeopleManager
+class Person extends PeopleManager
 {
     /**
 	 * @var string Directory where the views which relate to this class are held.

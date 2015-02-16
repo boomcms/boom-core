@@ -1,6 +1,8 @@
 <?php
 
-class Controller_Cms_Approvals extends Boom\Controller
+namespace Boom\Controller\CMS;
+
+class Approvals extends Boom\Controller
 {
     public function before()
     {

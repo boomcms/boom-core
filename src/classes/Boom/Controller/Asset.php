@@ -1,8 +1,10 @@
 <?php
 
+namespace Boom\Controller;
+
 use Boom\Asset;
 
-class Controller_Asset extends Boom\Controller
+class Asset extends Controller
 {
     /**
      *

@@ -1,9 +1,11 @@
 <?php
 
+namespace Boom\Controller\CMS;
+
 /**
  * Base class for CMS pages (e.g. Asset manager, people manager, template manager).
  */
-class Controller_Cms extends Boom\Controller
+class CMS extends Controller
 {
     protected $_save_last_url = true;
 }

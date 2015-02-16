@@ -1,9 +1,11 @@
 <?php
 
+namespace Boom\Controller\CMS;
+
 use Boom\Auth\Auth;
 use \Session;
 
-class Controller_Cms_Auth extends Controller
+class Auth extends Controller
 {
     /**
 	 *

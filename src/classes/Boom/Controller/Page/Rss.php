@@ -1,6 +1,8 @@
 <?php
 
-class Controller_Page_Rss extends Boom\Controller\Page
+namespace Boom\Controller\Page;
+
+class Rss extends Boom\Controller\Page
 {
     public function before()
     {

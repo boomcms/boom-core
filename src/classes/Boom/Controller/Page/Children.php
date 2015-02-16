@@ -1,6 +1,8 @@
 <?php
 
-class Controller_Page_Children extends Boom\Controller
+namespace Boom\Controller\Page;
+
+class Children extends Boom\Controller
 {
     public function action_json()
     {

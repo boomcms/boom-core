@@ -1,9 +1,11 @@
 <?php
 
+namespace Boom\Controller\CMS;
+
 use \Boom\Person\Finder as PersonFinder;
 use \Boom\Group\Finder as GroupFinder;
 
-class Controller_Cms_PeopleManager extends Controller_Cms
+class PeopleManager extends Cms
 {
     public function before()
     {

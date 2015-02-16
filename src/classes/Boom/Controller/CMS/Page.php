@@ -1,9 +1,11 @@
 <?php
 
+namespace Boom\Controller\CMS;
+
 use \Boom\Page as Page;
 use \Boom\Page\Command\Delete as Delete;
 
-class Controller_Cms_Page extends Boom\Controller
+class Page extends CMS
 {
     protected $viewDirectory = 'boom/editor/page';
 

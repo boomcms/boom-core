@@ -1,8 +1,10 @@
 <?php
 
+namespace Boom\Controller\CMS;
+
 use \Boom\Group as Group;
 
-class Controller_Cms_Group extends Controller_Cms_PeopleManager
+class Group extends PeopleManager
 {
     /**
 	 * @var string

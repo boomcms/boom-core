@@ -1,6 +1,8 @@
 <?php
 
-class Controller_Page_Profile extends Boom\Controller
+namespace Boom\Controllers\Page;
+
+class Profile extends Boom\Controller
 {
     public function before()
     {

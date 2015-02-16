@@ -1,8 +1,10 @@
 <?php
 
+namespace Boom\Controller\CMS;
+
 use Boom\Page;
 
-class Controller_Cms_Pages extends Boom\Controller
+class Pages extends CMS
 {
     public function before()
     {

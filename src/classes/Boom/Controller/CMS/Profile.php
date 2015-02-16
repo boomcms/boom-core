@@ -1,6 +1,8 @@
 <?php
 
-class Controller_Cms_Profile extends Boom\Controller
+namespace Boom\Controller\CMS;
+
+class Profile extends Boom\Controller
 {
     public function action_view()
     {

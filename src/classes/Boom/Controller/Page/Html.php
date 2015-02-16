@@ -1,10 +1,12 @@
 <?php
 
+namespace Boom\Controller\Page;
+
 use \Boom\Chunk;
 use \ORM;
 use \View;
 
-class Controller_Page_Html extends \Boom\Controller\Page
+class Html extends \Boom\Controller\Page
 {
     /**
      *

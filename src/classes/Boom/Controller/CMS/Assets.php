@@ -1,9 +1,11 @@
 <?php
 
+namespace Boom\Controller\CMS;
+
 use \Boom\Asset as Asset;
 use \Boom\Asset\Finder as AssetFinder;
 
-class Controller_Cms_Assets extends Controller_Cms
+class Assets extends CMS
 {
     protected $perpage = 30;
 

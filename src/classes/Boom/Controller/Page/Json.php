@@ -1,6 +1,8 @@
 <?php
 
-class Controller_Page_Json extends Controller\Page
+namespace Boom\Controller\Page;
+
+class Json extends Controller\Page
 {
     public function before()
     {

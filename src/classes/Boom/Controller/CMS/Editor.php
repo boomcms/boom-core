@@ -1,8 +1,10 @@
 <?php
 
+namespace Boom\Controller\CMS;
+
 use \Boom\Page\Page as Page;
 
-class Controller_Cms_Editor extends Boom\Controller
+class Editor extends Boom\Controller
 {
     /**
 	 * Sets the page editor state.

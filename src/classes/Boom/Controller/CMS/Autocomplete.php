@@ -1,8 +1,10 @@
 <?php
 
+namespace Boom\Controller\CMS;
+
 use \Boom\Tag\Tag as Tag;
 
-class Controller_Cms_Autocomplete extends Boom\Controller
+class Autocomplete extends Boom\Controller
 {
     /**
 	 * The number of results to be returned. Default is 10.
