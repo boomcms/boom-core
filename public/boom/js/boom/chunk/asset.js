@@ -49,8 +49,8 @@ $.widget('ui.chunkAsset', $.ui.chunk, {
 
 		elements.asset = this.element.find('.asset-target');
 		elements.link = this.element.hasClass('asset-link')? this.element : this.element.find('.asset-link');
-		elements.caption = this.element.find('.asset-caption');
-		elements.title = this.element.find('.asset-title');
+		elements.caption = this.element.hasClass('asset-caption')? this.element : this.element.find('.asset-caption');
+		elements.title = this.element.hasClass('asset-title')? this.element : this.element.find('.asset-title');
 
 		if (! elements.asset.length) {
 			if (img.length && regExp.test(img.attr('src'))) {
