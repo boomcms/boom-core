@@ -13,7 +13,7 @@ class PDF extends Processor
 
         if ( ! $image = Kohana::cache($cacheKey)) {
             $image = new Imagick($this->asset->getFilename() . '[0]');
-            $image->setImageFormat('jpg');
+            $image->setImageFormat('png');
 
             if ($width || $height) {
                 $image->resizeImage($width, $height, Imagick::FILTER_UNDEFINED, 1);
