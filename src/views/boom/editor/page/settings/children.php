@@ -53,7 +53,7 @@
                                 <?= Form::select('children_visible_in_nav', array(
                                         1 => 'Yes',
                                         0 => 'No',
-                                    ), $page->childrenAreVisibleInNav(), array('id' => 'children_visible_in_nav'));
+                                    ), (int) $page->childrenAreVisibleInNav(), array('id' => 'children_visible_in_nav'));
                                 ?>
                             </label>
 
@@ -67,7 +67,7 @@
                                 <?= Form::select('children_visible_in_nav_cms', array(
                                         1 => 'Yes',
                                         0 => 'No',
-                                    ), $page->childrenAreVisibleInCmsNav(), array('id' => 'children_visible_in_nav_cms')) ?>
+                                    ), (int) $page->childrenAreVisibleInCmsNav(), array('id' => 'children_visible_in_nav_cms')) ?>
                             </label>
 
                             <?/*label>

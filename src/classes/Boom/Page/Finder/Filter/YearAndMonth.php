@@ -2,6 +2,8 @@
 
 namespace Boom\Page\Finder\Filter;
 
+use DB;
+
 class YearAndMonth extends \Boom\Finder\Filter
 {
     const EPOC_FIRST_YEAR = 1970;
