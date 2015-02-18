@@ -71,7 +71,7 @@ class Controller_Asset extends Boom\Controller
     public function action_download()
     {
         if ( ! $this->auth->isLoggedIn()) {
-            $this->asset->logLownload(Request::$client_ip);
+            $this->asset->logDownload(Request::$client_ip);
         }
 
         $this->response = $this->processor->download();
