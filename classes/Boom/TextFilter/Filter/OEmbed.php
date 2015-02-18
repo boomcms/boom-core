@@ -47,6 +47,7 @@ class OEmbed implements \Boom\TextFilter\Filter
             }
         }
 
-        return $this->dom->saveHtml();
+        // See http://php.net/manual/en/domdocument.savehtml.php#85165
+        return preg_replace('/^<!DOCTYPE.+?>/', '', str_replace( array('<html>', '</html>', '<body>', '</body>'), array('', '', '', ''), $this->dom->saveHtml()));
     }
 }
