@@ -40,7 +40,6 @@ function boomLink(url, pageId, title) {
 	};
 	
 	boomLink.prototype.makeUrlRelative = function() {
-		var url = this.url.replace(window.location.protocol + '//' + window.location.hostname, '');
-		return url.replace(window.location.hostname, '');
+		return this.url.replace(/^https?:\/\//, '').replace(window.location.hostname, '');
 	};
 };
