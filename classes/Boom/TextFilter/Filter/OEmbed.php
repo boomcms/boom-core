@@ -2,52 +2,37 @@
 
 namespace Boom\TextFilter\Filter;
 
-use \Embera\Embera;
-use DOMDocument;
+use \Embera\Embera as Embera;
 
 class OEmbed implements \Boom\TextFilter\Filter
 {
     /**
+     * Uses Embera to find any embeddable links within the text.
      *
-     * @var Embera
-     */
-    private $embera;
-
-    /**
+     * Then replaces URLs with embedded content as long as:
+     *      * It doesn't appear within double or single quotes (' or ").
+     *      * Doesn't have a closing anchor tag after it (</a>).
      *
-     * @var DOMDocument
+     * @param string $text
+     * @return string
      */
-    private $dom;
-
-    public function __construct()
-    {
-        $this->embera = new Embera();
-        $this->dom = new DOMDocument();
-    }
-
     public function filterText($text)
     {
-        $this->dom->loadHTML(mb_convert_encoding($text, 'HTML-ENTITIES', 'UTF-8'));
+        $embera = new Embera();
 
-        foreach ($this->dom->getElementsByTagName('p') as $p) {
-            $textContent = preg_replace('|\s|', '', $p->textContent);
-
-            if ($p->getElementsByTagName('a')->length == 0 && filter_var($textContent, FILTER_VALIDATE_URL) !== false) {
-                $embed = $this->embera->autoEmbed($p->textContent);
-
-                if ($embed !== $p->textContent) {
-                    $html = new DOMDocument();
-                    $html->loadHTML($embed);
-
-                    foreach ($html->getElementsByTagName('iframe') as $el) {
-                        $el = $this->dom->importNode($el);
-                        $p->parentNode->replaceChild($el, $p);
-                    }
+        if ($data = $embera->getUrlInfo($text)) {
+            $table = array();
+            foreach ($data as $url => $service) {
+                if ( ! empty($service['html'])) {
+                    $table[$url] = $service['html'];
                 }
+            }
+
+            foreach ($table as $url => $replacement) {
+                $text = preg_replace('~(?<![\'\"])'. preg_quote($url) . '(?![\'\"])(?!\</a\>)~', $replacement, $text);
             }
         }
 
-        // See http://php.net/manual/en/domdocument.savehtml.php#85165
-        return preg_replace('/^<!DOCTYPE.+?>/', '', str_replace( array('<html>', '</html>', '<body>', '</body>'), array('', '', '', ''), $this->dom->saveHtml()));
+        return $text;
     }
 }
