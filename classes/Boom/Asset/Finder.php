@@ -22,7 +22,7 @@ class Finder extends Boom\Finder\Finder
     {
         $asset = parent::find();
 
-        return Asset\Factory::fromModel($asset);
+        return Factory::fromModel($asset);
     }
 
     public function findAll()
