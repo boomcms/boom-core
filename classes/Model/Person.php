@@ -2,8 +2,6 @@
 
 class Model_Person extends ORM
 {
-    const LOCK_WAIT = 600;
-
     protected $_table_name = 'people';
 
     protected $_table_columns = [
@@ -37,13 +35,6 @@ class Model_Person extends ORM
                 ['strtolower'],
             ]
         ];
-    }
-
-    public function get_lock_wait()
-    {
-        if ($this->isLocked()) {
-            return Date::span($this->locked_until);
-        }
     }
 
     public function get_recent_account_activity()

@@ -11,6 +11,8 @@ use \Model_Person;
 
 class Person
 {
+    const LOCK_WAIT = 600;
+
     /**
 	 *
 	 * @var Model_Person
