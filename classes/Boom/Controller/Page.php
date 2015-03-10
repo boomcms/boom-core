@@ -41,7 +41,7 @@ class Page extends \Boom\Controller
     {
         $method = 'as' . ucfirst(strtolower($this->request->param('format')));
 
-        $this->responseBody = $this->template->$method($this->page, $this->request);
+        $this->response = $this->template->$method($this->page, $this->request, $this->response);
     }
 
     protected function _page_should_be_editable()
