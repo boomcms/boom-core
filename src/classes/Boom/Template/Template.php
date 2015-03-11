@@ -61,9 +61,11 @@ class Template
      * @param \Boom\Page\Page $page
      * @param Request $request
      */
-    public function asHtml(Page\Page $page, Request $request)
+    public function asHtml(Page\Page $page, Request $request, \Response $response)
     {
-        return $this->view;
+        $this->response->body($this->view);
+
+        return $this->response;
     }
 
     /**

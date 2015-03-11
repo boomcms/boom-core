@@ -14,6 +14,8 @@ use \Model_Person;
 
 class Person implements UserInterface
 {
+    const LOCK_WAIT = 600;
+
     /**
 	 *
 	 * @var Model_Person

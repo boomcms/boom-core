@@ -26,12 +26,9 @@ class Html extends \Boom\Controller\Page
     public function after()
     {
         if ($this->auth->isLoggedIn()) {
-            $content = $this->editor->insert( (string) $this->responseBody, $this->page->getId());
-        } else {
-            $content = (string) $this->responseBody;
+            $content = $this->editor->insert( (string) $this->response->body(), $this->page->getId());
+            $this->response->body($content);
         }
-
-        $this->response->body($content);
     }
 
     protected function _bindViewGlobals()

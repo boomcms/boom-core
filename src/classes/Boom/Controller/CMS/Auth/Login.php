@@ -47,7 +47,7 @@ class Controller_Cms_Auth_Login extends Controller_Cms_Auth
             $error_message = Kohana::message('login', "errors.$error");
 
             if ($person->isLocked()) {
-                $lock_wait = $person->get_lock_wait();
+                $lock_wait = \Date::span($person->getLockedUntil());
                 $lock_wait = $lock_wait['minutes']." ".Inflector::plural('minute', $lock_wait['minutes']);
                 $error_message = str_replace(':lock_wait', $lock_wait, $error_message);
             }

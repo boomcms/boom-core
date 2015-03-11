@@ -6,8 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Person extends Model
 {
-    const LOCK_WAIT = 600;
-
     protected $table = 'people';
 
     protected $_table_columns = [
@@ -43,13 +41,6 @@ class Person extends Model
                 ['strtolower'],
             ]
         ];
-    }
-
-    public function get_lock_wait()
-    {
-        if ($this->isLocked()) {
-            return Date::span($this->locked_until);
-        }
     }
 
     public function get_recent_account_activity()
