@@ -228,6 +228,15 @@ class Page
         return $finder->setOrderBy('name', 'asc')->findAll();
     }
 
+    public function getTagsInGroup($group = null)
+    {
+        $finder = new Tag\Finder();
+        $finder->addFilter(new Tag\Finder\Filter\Page($this));
+        $finder->addFilter(new Tag\Finder\Filter\Group($group));
+
+        return $finder->setOrderBy('name', 'asc')->findAll();
+    }
+
     public function getTemplate()
     {
         return Template\Factory::fromModel($this->getCurrentVersion()->template);
