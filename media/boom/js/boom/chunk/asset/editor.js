@@ -13,7 +13,7 @@ function boomChunkAssetEditor(pageId, slotname, visibleElements) {
 				});
 		});
 
-		this.link.on('focus', 'input', function() {
+		this.link.on('click', 'button', function() {
 			var $this = $(this);
 
 			new boomLinkPicker(new boomLink($this.val()))
