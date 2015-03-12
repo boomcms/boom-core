@@ -16,7 +16,7 @@ class Tag extends \Boom\Chunk
     {
         parent::__construct($page, $chunk, $editable);
 
-        $this->_tag = $this->_chunk->target;
+        $this->_tag = $this->_chunk->tag;
     }
 
     protected function _show()
@@ -38,17 +38,17 @@ class Tag extends \Boom\Chunk
     public function attributes()
     {
         return [
-            $this->attributePrefix.'tag_id' => $this->get_tag()->id,
+            $this->attributePrefix.'tag' => $this->getTag(),
         ];
     }
 
-    public function get_tag()
+    public function getTag()
     {
         return $this->_tag;
     }
 
     public function hasContent()
     {
-        return $this->_chunk->loaded() && $this->get_tag()->loaded();
+        return $this->_chunk->loaded() && $this->getTag();
     }
 }

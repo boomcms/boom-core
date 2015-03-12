@@ -6,14 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Tag extends Model
 {
-    protected $_belongs_to = [
-        'target' => ['model' => 'Tag', 'foreign_key' => 'tag_id'],
-    ];
-
     protected $_table_columns = [
         'id' => '',
         'slotname'    => '',
-        'tag_id' => '',
+        'tag' => '',
         'page_vid' => '',
     ];
 
