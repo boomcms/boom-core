@@ -30,7 +30,7 @@ class Image extends Processor
     {
         if ($width && $height) {
             $image = $this->manager->cache(function ($manager) use ($width, $height) {
-                return $manager->make($this->asset->getFilename())->crop($width, $height);
+                return $manager->make($this->asset->getFilename())->fit($width, $height);
             });
         } else {
             $image = $this->manager->make($this->asset->getFilename())->encode();
