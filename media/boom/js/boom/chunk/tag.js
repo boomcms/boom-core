@@ -11,7 +11,7 @@ $.widget('ui.chunkTag', $.ui.chunk,
 	{
 
 	_create : function() {
-		this.tag_id = this.element.attr('data-boom-tag_id')? this.element.attr('data-boom-tag_id') : 0;
+		this.tag = this.element.attr('data-boom-tag')? this.element.attr('data-boom-tag') : 0;
 
 		$.ui.chunk.prototype._create.call(this);
 	},
@@ -24,46 +24,39 @@ $.widget('ui.chunkTag', $.ui.chunk,
 	edit : function(){
 		$.boom.log('Tag chunk slot edit');
 
-		var self = this,
-			tag_id;
+		var self = this;
 
 		this.dialog = new boomDialog({
-			url: '/cms/chunk/tag/edit/' + this.options.currentPage.id + '?tag_id=' + this.tag_id,
+			url: '/cms/chunk/tag/edit/' + this.options.currentPage.id + '?tag=' + this.tag,
 			width: 400,
 			id: self.element[0].id + '-boom-dialog',
 			title: 'Select tag',
 			onLoad : function() {
-				var $dialog = $(this);
-				$dialog.find('#b-tags-add-name').tagAutocompleter({
+				self.dialog.contents.find('#b-tags-add-name').assetTagAutocomplete({
 					type : 1,
-					complete : function(event, tag) {
-						tag_id = tag.id;
-
-						$dialog.find('#b-selected p').text(tag.name);
+					complete : function(e, data) {
+						self.tag = data.tag;
+						self.dialog.contents.find('#b-selected p').text(data.tag);
 					}
 				});
-			},
-			callback : function() {
-				self.insert(tag_id);
-			},
-			destroy: function() {
-				self.destroy();
-			},
-			open: function() {
-				
 			}
+		}).done(function() {
+			self.insert(tag);
+		})
+		.always(function() {
+			self.bind();
 		});
 	},
 
 	getData: function() {
-		return {tag_id : this.tag_id};
+		return {tag : this.tag};
 	},
 
 	/**
 	@param {Int} id Tag ID
 	*/
-	insert : function(id) {
-		this.tag_id = id;
+	insert : function(tag) {
+		this.tag = tag;
 
 		return this._save();
 	}

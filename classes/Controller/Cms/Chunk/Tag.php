@@ -7,7 +7,7 @@ class Controller_Cms_Chunk_Tag extends Controller_Cms_Chunk
     public function action_edit()
     {
         $this->template = View::factory('boom/editor/slot/tag', [
-            'current_tag' => new Model_Tag($this->request->query('tag_id')),
+            'current_tag' => new Model_Tag($this->request->query('tag')),
         ]);
     }
 
