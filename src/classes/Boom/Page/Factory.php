@@ -2,24 +2,24 @@
 
 namespace Boom\Page;
 
-abstract class Factory
+class Provider
 {
-    public static function byId($id)
+    public function findById($id)
     {
         return new Page(new \Model_Page(['id' => $id, 'deleted' => false]));
     }
 
-    public static function byInternalName($name)
+    public function findByInternalName($name)
     {
         return new Page(new \Model_Page(['internal_name' => $name, 'deleted' => false]));
     }
 
-    public static function byPrimaryUri($uri)
+    public function findByPrimaryUri($uri)
     {
         return new Page(new \Model_Page(['primary_uri' => $uri, 'deleted' => false]));
     }
 
-    public static function byUri($uri)
+    public function findByUri($uri)
     {
         $finder = new Finder();
 
