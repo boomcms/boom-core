@@ -1,10 +1,12 @@
 <?php
 
-namespace Boom;
+namespace Boom\Controller;
 
 use \Boom\Auth\Auth as Auth;
 use \Boom\Page\Page as Page;
 use \Boom\Editor\Editor as Editor;
+
+use Illuminate\Routing\Controller as BaseController;
 
 use \Session;
 use \Request as Request;
@@ -12,27 +14,27 @@ use \View as View;
 use \Security as Security;
 use \ORM as ORM;
 
-class Controller extends \Controller
+class Controller extends BaseController
 {
     /**
-	 * The correct content-type header for JSON responses is application/json (http://stackoverflow.com/questions/477816/what-is-the-correct-json-content-type)
-	 *
-	 * Unfortunately though IE exists, and IE9 doesn't recognise the application/json type presenting the user with a download confirmation.
-	 *
-	 * We therefore need to use text/plain for JSON responses until we stop supporting broken browsers (http://stackoverflow.com/questions/13943439/json-response-download-in-ie710)
-	 */
+     * The correct content-type header for JSON responses is application/json (http://stackoverflow.com/questions/477816/what-is-the-correct-json-content-type)
+     *
+     * Unfortunately though IE exists, and IE9 doesn't recognise the application/json type presenting the user with a download confirmation.
+     *
+     * We therefore need to use text/plain for JSON responses until we stop supporting broken browsers (http://stackoverflow.com/questions/13943439/json-response-download-in-ie710)
+     */
     const JSON_RESPONSE_MIME = 'text/plain';
 
     /**
-	 * The current user.
-	 *
-	 * @var		Model_Person
-	 */
+     * The current user.
+     *
+     * @var Boom\Person\Person
+     */
     public $person;
 
     /**
-	 * @var		Auth
-	 */
+     * @var		Auth
+     */
     public $auth;
 
     /**
@@ -48,19 +50,19 @@ class Controller extends \Controller
     public $boom;
 
     /**
-	 * @var	Editor
-	 */
+     * @var	Editor
+     */
     public $editor;
 
     /**
-	 * @var Session
-	 */
+     * @var Session
+     */
     public $session;
 
     /**
-	 *
-	 * @var View
-	 */
+     *
+     * @var View
+     */
     public $template;
 
     protected $_save_last_url = false;

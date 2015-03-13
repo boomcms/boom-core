@@ -1,8 +1,11 @@
 <?php
 
+namespace Boom\Controller\CMS\Auth;
+
+use Boom\Controllers;
 use \Boom\Person;
 
-class Controller_Cms_Auth_Login extends Controller_Cms_Auth
+class LoginController extends Controller
 {
     /**
 	 * @var Session
@@ -18,7 +21,7 @@ class Controller_Cms_Auth_Login extends Controller_Cms_Auth
         }
     }
 
-    public function action_begin()
+    public function showLoginForm()
     {
         if ($this->auth->auto_login()) {
             $this->redirect('/');
@@ -27,7 +30,7 @@ class Controller_Cms_Auth_Login extends Controller_Cms_Auth
         }
     }
 
-    public function action_process()
+    public function processLogin()
     {
         $provider = new Person\Provider();
         $person = $provider->findByEmail($this->request->post('email'));

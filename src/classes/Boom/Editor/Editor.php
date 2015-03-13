@@ -3,7 +3,6 @@
 namespace Boom\Editor;
 
 use Boom\Auth\Auth as Auth;
-use \Session as Session;
 
 class Editor
 {
@@ -22,19 +21,19 @@ class Editor
 
     protected $liveTime;
     protected $liveTimePersistenceKey = 'editor_liveTime';
-    protected $persistentStorage;
+    protected $session;
     protected $state;
     protected $statePersistenceKey = 'editor_state';
 
-    public function __construct(Auth $auth, Session $session)
+    public function __construct(Auth $auth, \SessionHandlerInterface $session)
     {
         $this->auth = $auth;
-        $this->persistentStorage = $session;
+        $this->session = $session;
 
         // Determine the default value to pass to Session::get()
         // If the user is logged in then the default is preview, if they're not logged in then it should be disabled.
         $default = ($this->auth->isLoggedIn()) ? static::$default : static::DISABLED;
-        $this->state = $this->persistentStorage->get($this->statePersistenceKey, $default);
+        $this->state = $this->session->read($this->statePersistenceKey, $default);
     }
 
     /**
@@ -98,7 +97,7 @@ class Editor
     public function getLiveTime()
     {
         if ($this->liveTime === null) {
-            $this->liveTime = $this->persistentStorage->get($this->liveTimePersistenceKey, $_SERVER['REQUEST_TIME']);
+            $this->liveTime = $this->session->read($this->liveTimePersistenceKey, time());
         }
 
         return $this->liveTime;
@@ -108,7 +107,7 @@ class Editor
     {
         $this->state = $state;
 
-        return $this->persistentStorage->set($this->statePersistenceKey, $state);
+        return $this->session->write($this->statePersistenceKey, $state);
     }
 
     /**
@@ -119,6 +118,6 @@ class Editor
 	 */
     public function setLiveTime($time = null)
     {
-        return $this->persistentStorage>set($this->liveTimePersistenceKey, $time);
+        return $this->session>write($this->liveTimePersistenceKey, $time);
     }
 }

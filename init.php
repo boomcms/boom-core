@@ -1,13 +1,13 @@
 <?php
 
-$boom = Boom\Boom::instance()
-    ->setCacheDir(APPPATH . 'cache');
-
-if (isset($_SERVER['KOHANA_ENV'])) {
-    $boom->setEnvironment($_SERVER['KOHANA_ENV']);
-}
-
-Boom\Exception\Handler\Handler::setExceptionHandler();
+//$boom = Boom\Boom::instance()
+//    ->setCacheDir(APPPATH . 'cache');
+//
+//if (isset($_SERVER['KOHANA_ENV'])) {
+//    $boom->setEnvironment($_SERVER['KOHANA_ENV']);
+//}
+//
+//Boom\Exception\Handler\Handler::setExceptionHandler();
 
 /**
  * Route for vanity URIs. Vanity URIs are the page ID base-36 encoded and prefixed with an underscore.
@@ -207,20 +207,6 @@ Route::set('people-edit', 'cms/<controller>(/<action>(/<id>))', array(
 
 		return $params;
 	});
-
-Route::set('login', 'cms/login')
-	->defaults(array(
-		'controller' => 'Cms_Auth_Login',
-		'action' => 'begin',
-	))
-	->filter(function(Route $route, $params, Request $request)
-		{
-			if ($request->method() == Request::POST) {
-				$params['action'] = 'process';
-			}
-
-			return $params;
-		});
 
 Route::set('cms', '<directory>(/<controller>(/<action>(/<id>)))',
 	array(

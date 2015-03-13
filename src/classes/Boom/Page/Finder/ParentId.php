@@ -2,20 +2,22 @@
 
 namespace Boom\Page\Finder;
 
+use Boom\Model\Page as Model;
+
 class ParentId extends \Boom\Finder\Filter
 {
-    protected $_parentId;
+    protected $parentId;
 
     public function __construct($parentId)
     {
-        $this->_parentId = $parentId;
+        $this->parentId = $parentId;
     }
 
-    public function execute(\ORM $query)
+    public function execute(Model $query)
     {
         return $query
             ->join('page_mptt', 'inner')
             ->on('page.id', '=', 'page_mptt.id')
-            ->where('page_mptt.parent_id', '=', $this->_parentId);
+            ->where('page_mptt.parent_id', '=', $this->parentId);
     }
 }
