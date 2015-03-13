@@ -1,6 +1,6 @@
 <?php
 
-namespace Boom\Auth;
+namespace BoomCMS\Core\Auth;
 
 use \Cookie as Cookie;
 use \DB as DB;

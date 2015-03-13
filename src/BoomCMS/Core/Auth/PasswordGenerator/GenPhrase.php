@@ -1,6 +1,6 @@
 <?php
 
-namespace Boom\Auth\PasswordGenerator;
+namespace BoomCMS\Core\Auth\PasswordGenerator;
 
 class GenPhrase extends PasswordGenerator
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Boom\Auth\PasswordGenerator;
+namespace BoomCMS\Core\Auth\PasswordGenerator;
 
 abstract class PasswordGenerator
 {
