@@ -1,6 +1,6 @@
 <?php
 
-namespace Boom\Page;
+namespace Boom\Page\Finder;
 
 use Boom;
 use Boom\Editor\Editor;
