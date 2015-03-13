@@ -1,6 +1,6 @@
 <?php
 
-namespace Boom\Page\Finder\Filter;
+namespace Boom\Page\Finder;
 
 class ParentPage extends \Boom\Finder\Filter
 {

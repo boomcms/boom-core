@@ -1,11 +1,11 @@
 <?php
 
-namespace Boom\Page\Finder\Filter;
+namespace Boom\Page\Finder;
 
 use Boom\Page\Page;
 use ORM;
 
-class NextPageBySequence extends \Boom\Finder\Filter
+class PreviousPageBySequence extends \Boom\Finder\Filter
 {
     /**
 	 *
@@ -21,7 +21,7 @@ class NextPageBySequence extends \Boom\Finder\Filter
     public function execute(ORM $query)
     {
         return $query
-            ->where('sequence', '>', $this->currentPage->getManualOrderPosition())
-            ->order_by('sequence', 'asc');
+            ->where('sequence', '<', $this->currentPage->getManualOrderPosition())
+            ->order_by('sequence', 'desc');
     }
 }
