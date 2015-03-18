@@ -97,9 +97,9 @@ class Template
      * @param \Boom\Template\Response $response
      * @return string
      */
-    public function asRss(Page\Page $page, Request $request)
+    public function asRss(Page\Page $page, Request $request, \Response $response)
     {
-        return (new Page\RssFeed($this->page))->render();
+        return $response->body((new Page\RssFeed($page))->render());
     }
 
     public function countPages()
