@@ -6,6 +6,7 @@ use Boom\Person;
 use \DB;
 use \File;
 use \DateTime;
+use Date;
 
 abstract class Asset
 {
