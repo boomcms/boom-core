@@ -69,6 +69,13 @@ class Group
         return $this;
     }
 
+    public function delete()
+    {
+        $this->model->delete();
+
+        return $this;
+    }
+
     public function getId()
     {
         return $this->model->id;

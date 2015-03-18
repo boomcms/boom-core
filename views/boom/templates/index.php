@@ -51,10 +51,10 @@
 		//<![CDATA[
 		(function($){
 			$.boom.init({
-                csrf : '<?= Security::token() ?>'
-             });
+                            csrf : '<?= Security::token() ?>'
+                         });
 
-			$('#b-templates').templateManager();
+			$('body').templateManager();
 		})(jQuery);
 		//]]>
 	</script>

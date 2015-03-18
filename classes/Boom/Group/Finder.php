@@ -8,7 +8,8 @@ class Finder extends Boom\Finder\Finder
 {
     public function __construct()
     {
-        $this->_query = \ORM::factory('Group');
+        $this->_query = \ORM::factory('Group')
+            ->where('deleted', '=', false);
     }
 
     public function find()

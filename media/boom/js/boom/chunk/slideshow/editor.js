@@ -49,8 +49,10 @@ function boomChunkSlideshowEditor(page_id, slotname, options) {
 
 				slideshowEditor.getCurrentSlide().data(name, val);
 			})
-			.on('click', '#b-slideshow-editor-current form input[name=url]', function() {
-				var $input = $(this),
+			.on('click', '#b-slideshow-editor-current .b-slideshow-link button', function(e) {
+				e.preventDefault();
+
+				var $input = $(this).parent().find('input'),
 					currentSlide = slideshowEditor.getCurrentSlide();
 
 				new boomLinkPicker(new boomLink($input.val(), currentSlide.data('page')))

@@ -25,6 +25,7 @@
 
         <label class="b-link">
             <span>Link</span>
-            <input type="text" value="<?= $chunk->getLink() ?>" />
+            <input type="text" disabled value="<?= $chunk->getLink() ?>" />
+            <?= new Boom\UI\Button('edit', 'Edit link', ['class' => 'small']) ?>
         </label>
 </section>
