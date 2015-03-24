@@ -21,16 +21,27 @@ class Controller_Cms_Profile extends Boom\Controller
         $name && $this->person->setName($name);
 
         if ($new_password && $new_password != $current_password) {
-            if ( ! $this->person->getPasword() || $this->auth->checkPassword($current_password)) {
+            if ( ! $this->person->getPassword() || $this->auth->check_password($current_password)) {
                 $this->person->setEncryptedPassword($this->auth->hash($new_password));
+
+                $v = new View('boom/account/profile', [
+                    'person' => $this->person,
+                    'auth' => $this->auth,
+                    'logs' => [],
+                    'message' => 'Password updated'
+                ]);
+
             } else {
-                $this->response
-                    ->status(500)
-                    ->headers('Content-Type', static::JSON_RESPONSE_MIME)
-                    ->body(json_encode(['message' => 'Invalid password']));
+                $v = new View('boom/account/profile', [
+                    'person' => $this->person,
+                    'auth' => $this->auth,
+                    'logs' => [],
+                    'message' => 'Invalid password'
+                ]);
             }
         }
 
         $this->person->save();
+        $this->response->body($v);
     }
 }
