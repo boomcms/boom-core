@@ -26,6 +26,13 @@ $.widget('boom.assetTagSearch',  {
 				}
 			});
 
+		this.element.find('button').on('click', function(e) {
+			e.preventDefault();
+
+			tagSearch.addTag(tagSearch.input.val());
+			tagSearch.input.val('');
+		});
+
 		this.element.on('click', '.b-tag-remove', function() {
 			tagSearch.removeTag($(this));
 		});
