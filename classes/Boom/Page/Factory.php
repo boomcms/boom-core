@@ -21,10 +21,8 @@ abstract class Factory
 
     public static function byUri($uri)
     {
-        $finder = new Finder();
+        $url = new \Model_Page_URL(['location' => $uri]);
 
-        return $finder
-            ->addFilter(new Finder\Filter\Uri($uri))
-            ->find();
+        return static::byId($url->page_id);
     }
 }
