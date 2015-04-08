@@ -58,7 +58,7 @@ class Priv extends Handler
         return View::factory("boom/errors/$code")->render();
     }
 
-    protected function getPageContent(Model_Page $page)
+    protected function getPageContent(Page\Page $page)
     {
         return Request::factory($page->url())
             ->execute()
