@@ -8,6 +8,7 @@ use Kohana_Exception;
 use View;
 use Boom\Page;
 use Kohana;
+use Request;
 
 /**
  * Exception handler which doesn't output any debugging information
