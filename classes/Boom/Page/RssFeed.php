@@ -47,6 +47,7 @@ class RssFeed
 
         foreach ($this->getFeedItems() as $page) {
             $feed->item([
+                'guid' => $page->url(),
                 'title' => $page->getTitle(),
                 'description|cdata' => $page->getDescription(),
                 'link' => $page->url(),
