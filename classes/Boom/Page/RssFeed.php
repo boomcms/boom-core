@@ -26,6 +26,23 @@ class RssFeed
         return $this->render();
     }
 
+    public function addItem(Rss $feed, Page $page) {
+            $authors = $page->getTagsInGroup('Author');
+
+            foreach ($authors as &$author) {
+                $author  = $author->getName();
+            }
+
+            $feed->item([
+                'guid' => $page->url(),
+                'title' => $page->getTitle(),
+                'description|cdata' => $page->getDescription(),
+                'link' => $page->url(),
+                'pubDate' => $page->getVisibleFrom()->format('r'),
+                'author|cdata' => is_array($authors)? implode(',', $authors) : null,
+            ]);
+    }
+
     public function getFeedItems()
     {
         $finder = new Finder();
@@ -46,13 +63,7 @@ class RssFeed
             ]);
 
         foreach ($this->getFeedItems() as $page) {
-            $feed->item([
-                'guid' => $page->url(),
-                'title' => $page->getTitle(),
-                'description|cdata' => $page->getDescription(),
-                'link' => $page->url(),
-                'pubDate' => $page->getVisibleFrom()->format('r')
-            ]);
+            $this->addItem($feed, $page);
         }
 
         return (string) $feed;
