@@ -50,6 +50,7 @@ class RssFeed
                 'title' => $page->getTitle(),
                 'description|cdata' => $page->getDescription(),
                 'link' => $page->url(),
+                'pubDate' => $page->getVisibleFrom()->format('r')
             ]);
         }
 
