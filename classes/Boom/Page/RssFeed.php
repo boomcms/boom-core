@@ -27,7 +27,7 @@ class RssFeed
     }
 
     public function addItem(Rss $feed, Page $page) {
-            $authors = $page->getTagsInGroup('Author');
+            $authors = (array) $page->getTagsInGroup('Author');
 
             foreach ($authors as &$author) {
                 $author  = $author->getName();
@@ -39,7 +39,7 @@ class RssFeed
                 'description|cdata' => $page->getDescription(),
                 'link' => $page->url(),
                 'pubDate' => $page->getVisibleFrom()->format('r'),
-                'author|cdata' => is_array($authors)? implode(',', $authors) : null,
+                'author|cdata' => empty($authors)? null : implode(',', $authors),
             ]);
     }
 
