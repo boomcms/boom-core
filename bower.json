@@ -19,7 +19,6 @@
     "jquery-ui": "~1.11.4",
     "jquery-file-upload": "~9.9.3",
     "jgrowl": "~1.4.2",
-    "jqPagination": "http://github.com/beneverard/jqPagination",
     "pushy": "~0.9.2",
     "tablesorter": "*",
     "wysihtml": "~0.4.17",

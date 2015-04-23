@@ -5,6 +5,6 @@
 	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 	<meta http-equiv="Content-Style-Type" content="text/css" />
 
-	<?= Boom::include_css() ?>
+        <link rel="stylesheet" type="text/css" href="/media/boom/css/cms.css" />
 </head>
 <body>

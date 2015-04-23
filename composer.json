@@ -17,7 +17,6 @@
 		"kohana-minion/tasks-migrations" : "3.3.*",
 		"shadowhand/email" : "3.3.*",
 		"boomcms/orm-mptt" : "3.3.*",
-		"boomcms/asset-merger" : "dev-master",
 		"hautelook/phpass": "dev-master",
 		"thujohn/rss": "dev-master",
 		"intervention/imagecache" : "2.0.*",
@@ -31,5 +30,15 @@
 		"psr-0": {"Boom": "classes/"}
 	},
 	"minimum-stability" : "dev",
-	"prefer-stable": true
+	"prefer-stable": true,
+	"scripts": {
+        	"post-install-cmd": [
+            		"bower install",
+			"grunt dist"
+        	],
+        	"post-update-cmd": [
+            		"bower install",
+			"grunt build"
+        	]
+    	}
 }

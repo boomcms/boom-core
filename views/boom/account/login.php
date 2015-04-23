@@ -3,7 +3,7 @@
 	<head>
 		<title>BoomCMS | <?= __('Login') ?></title>
 		<meta name="robots" content="noindex, nofollow" />
-		<?= Boom::include_css() ?>
+		<link rel="stylesheet" type="text/css" href="/media/boom/css/cms.css" />
 	</head>
 	<body id='b-login'>
 		<div>
