@@ -14,7 +14,7 @@ class Model_Chunk_Timestamp extends ORM
 
     public function is_valid_format()
     {
-        return in_array($this->format, Chunk_Timestamp::$formats);
+        return in_array($this->format, \Boom\Chunk\Timestamp::$formats);
     }
 
     public function filters()
