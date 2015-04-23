@@ -32,7 +32,7 @@ function boomLinkPicker(link) {
 		if (url.indexOf(window.location.hostname) == -1) {
 			switch(this.externalTypeSelector.val()) {
 				case 'http':
-					if (url.substring(0,7) !='http://' && url.substring(0,8) !='https://' && url.substring(0,1) != '/') {
+					if (url.substring(0,7) !='http://' && url.substring(0,8) !='https://' && url.substring(0,1) != '/' && url.substring(0,1) != '#') {
 						url = 'http://' + url;
 					}
 					break;

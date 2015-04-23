@@ -16,7 +16,7 @@ function boomChunkAssetEditor(pageId, slotname, visibleElements) {
 		this.link.on('click', 'button', function() {
 			var $this = $(this);
 
-			new boomLinkPicker(new boomLink($this.val()))
+			new boomLinkPicker(new boomLink($this.parent().find('input').val()))
 				.done(function(link) {
 					chunkAssetEditor.setLink(link.getUrl());
 				});

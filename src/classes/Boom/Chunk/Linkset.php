@@ -10,21 +10,13 @@ class Linkset extends \Boom\Chunk
     protected $_default_template = 'quicklinks';
     protected $_type = 'linkset';
 
+    protected $links;
+
     protected function _show()
     {
-        $links = $this->getLinks();
-
-        if (Editor::instance()->isDisabled()) {
-            foreach ($links as &$link) {
-                if ($link->isInternal() && ! $link->getLink()->getPage()->isVisible()) {
-                    unset($link);
-                }
-            }
-        }
-
         return new View($this->viewDirectory."linkset/$this->_template", [
             'title' => $this->_chunk->title,
-            'links' => $links,
+            'links' => $this->getLinks(),
         ]);
     }
 
@@ -35,7 +27,19 @@ class Linkset extends \Boom\Chunk
 
     public function getLinks()
     {
-        return $this->_chunk->links();
+        if ($this->links === null) {
+            $this->links = $this->_chunk->links();
+
+            if ( ! Editor::instance()->isEnabled()) {
+                foreach ($this->links as $i => $link) {
+                    if ($link->isInternal() && ! $link->getLink()->getPage()->isVisible()) {
+                        unset($this->links[$i]);
+                    }
+                }
+            }
+        }
+
+        return $this->links;
     }
 
     public function hasContent()

@@ -1,4 +1,4 @@
-<?= View::factory('boom/header', array('title' =>	'Assets')); ?>
+<?= View::factory('boom/header', array('title' => 'Profile')) ?>
     <div id="b-topbar" class="b-toolbar">
         <?= new \Boom\UI\MenuButton() ?>
         <?= new \Boom\Menu\Menu  ?>
@@ -10,6 +10,10 @@
         </p>
 
         <div style="margin-top: 20px;">
+            <?php if (isset($message)): ?>
+                <p class="message"><?= $message ?></p>
+            <?php endif ?>
+
             <form method="post" action="/cms/profile">
                 <label>
                     Name
