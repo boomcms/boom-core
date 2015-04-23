@@ -5,3 +5,5 @@ _config/
 nbproject/
 modules/
 vendor/
+node_modules/
+bower_components/
