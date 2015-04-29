@@ -17,14 +17,14 @@ class LoginController extends Controller
         parent::before();
 
         if ($this->auth->isLoggedIn()) {
-            $this->redirect($this->_get_redirect_url());
+            redirect()->back();
         }
     }
 
     public function showLoginForm()
     {
         if ($this->auth->auto_login()) {
-            $this->redirect('/');
+            redirect('/');
         } else {
             $this->_display_login_form();
         }

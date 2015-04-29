@@ -4,8 +4,9 @@ namespace Boom\Controller\CMS;
 
 use \Boom\Person\Finder as PersonFinder;
 use \Boom\Group\Finder as GroupFinder;
+use Boom\Controller\Controller;
 
-class PeopleManager extends Cms
+class PeopleManager extends Controller
 {
     public function before()
     {

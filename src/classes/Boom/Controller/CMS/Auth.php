@@ -58,16 +58,4 @@ class Auth extends Controller
 
         $this->response->body(new View('boom/account/login', $vars));
     }
-
-    protected function _get_redirect_url()
-    {
-        $logger = new \Boom\RedirectUrlPersister(Session::instance());
-        $url = $logger->getUrl();
-
-        if (! $url || $url == '/cms/logout') {
-            $url = '/';
-        }
-
-        return $url;
-    }
 }

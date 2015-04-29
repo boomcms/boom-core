@@ -3,8 +3,9 @@
 namespace Boom\Controller\CMS;
 
 use Boom\Page;
+use Boom\Controller\Controller;
 
-class Pages extends CMS
+class Pages extends Controller
 {
     public function before()
     {

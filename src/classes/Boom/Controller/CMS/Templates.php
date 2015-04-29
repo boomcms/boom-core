@@ -4,8 +4,9 @@ namespace Boom\Controller\CMS;
 
 use Boom\Template;
 use Boom\Page;
+use Boom\Controller\Controller;
 
-class Templates extends CMS
+class Templates extends Controller
 {
     protected $viewDirectory = 'boom/templates';
 

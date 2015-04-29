@@ -138,12 +138,4 @@ class Controller extends BaseController
             $this->response->headers('Cache-Control', 'private');
         }
     }
-
-    protected function _save_last_url()
-    {
-        if ($this->_save_last_url === true && ! $this->request->is_ajax()) {
-            $logger = new \Boom\RedirectUrlPersister($this->session);
-            $logger->setUrl(Request::initial()->url());
-        }
-    }
 }

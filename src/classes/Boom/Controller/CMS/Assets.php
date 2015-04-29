@@ -4,8 +4,9 @@ namespace Boom\Controller\CMS;
 
 use \Boom\Asset as Asset;
 use \Boom\Asset\Finder as AssetFinder;
+use Boom\Controller\Controller;
 
-class Assets extends CMS
+class Assets extends Controller
 {
     protected $perpage = 30;
 
