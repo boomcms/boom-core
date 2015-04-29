@@ -1,5 +1,5 @@
-	<?= Boom::include_js()->render() ?>
-
+	<script type="text/javascript" src="/media/boom/js/cms.js"></script>
+    
 	<script type="text/javascript">
 		//<![CDATA[
 		$(document).ready(function() {

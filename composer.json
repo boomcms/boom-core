@@ -24,5 +24,17 @@
 		"psr-0": {"Boom": "src/classes/"}
 	},
 	"minimum-stability" : "dev",
-	"prefer-stable": true
+	"prefer-stable": true,
+	"scripts": {
+        	"post-install-cmd": [
+			"npm install",
+            		"bower install",
+			"grunt dist"
+        	],
+        	"post-update-cmd": [
+			"npm install",
+            		"bower install",
+			"grunt build"
+        	]
+    	}
 }
