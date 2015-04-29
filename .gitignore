@@ -8,3 +8,5 @@ vendor/
 node_modules/
 npm-debug.log
 bower_components/
+public/boom/css/cms.css
+public/boom/js/cms.js
