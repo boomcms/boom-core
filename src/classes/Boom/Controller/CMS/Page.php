@@ -24,7 +24,7 @@ class Page extends CMS
 
     public function action_add()
     {
-        $this->_csrf_check() && $this->authorization('add_page', $this->page);
+        $this->authorization('add_page', $this->page);
 
         $creator = new \Boom\Page\Creator($this->page, $this->person);
         $creator->setTemplateId($this->request->post('template_id'));
@@ -66,7 +66,6 @@ class Page extends CMS
                 'page' =>$this->page,
             ]);
         } else {
-            $this->_csrf_check();
             $this->log("Deleted page " . $this->page->getTitle() . " (ID: " . $this->page->getId() . ")");
 
             // Redirect to the parent page after we've finished.

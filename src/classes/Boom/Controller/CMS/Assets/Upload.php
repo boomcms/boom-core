@@ -13,8 +13,6 @@ class Controller_Cms_Assets_Upload extends Controller_Cms_Assets
 	 */
     public function action_process()
     {
-        $this->_csrf_check();
-
         $asset_ids = $errors = [];
         $now = new DateTime('now');
 

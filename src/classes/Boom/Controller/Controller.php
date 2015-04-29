@@ -146,11 +146,4 @@ class Controller extends BaseController
             $logger->setUrl(Request::initial()->url());
         }
     }
-
-    protected function _csrf_check()
-    {
-        if ( ! Security::check($this->request->post('csrf'))) {
-            throw new \HTTP_Exception_500();
-        }
-    }
 }

@@ -2,13 +2,6 @@
 
 class Controller_Cms_Page_Settings_Save extends Controller_Cms_Page_Settings
 {
-    public function before()
-    {
-        parent::before();
-
-        $this->_csrf_check();
-    }
-
     public function action_admin()
     {
         parent::action_admin();

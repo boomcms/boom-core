@@ -6,13 +6,6 @@ use Boom\Person;
 
 class Controller_Cms_Person_Save extends Controller_Cms_Person
 {
-    public function before()
-    {
-        parent::before();
-
-        $this->_csrf_check();
-    }
-
     public function action_add()
     {
         $password = PasswordGenerator::factory()->get_password();

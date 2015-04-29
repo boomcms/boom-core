@@ -31,8 +31,6 @@ class Assets extends CMS
 
     public function action_delete()
     {
-        $this->_csrf_check();
-
         $assetIds = array_unique((array) $this->request->post('assets'));
 
         foreach ($assetIds as $assetId) {
@@ -140,8 +138,6 @@ class Assets extends CMS
 
     public function action_save()
     {
-        $this->_csrf_check();
-
         if ( ! $this->asset->loaded()) {
             throw new HTTP_Exception_404();
         }

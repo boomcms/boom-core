@@ -20,16 +20,12 @@ class Controller_Cms_Assets_Tags extends Controller_Cms_Assets
 
     public function action_add()
     {
-        $this->_csrf_check();
-
         $collection = new Asset\Collection($this->request->post('assets'));
         $collection->addTag($this->request->post('tag'));
     }
 
     public function action_remove()
     {
-        $this->_csrf_check();
-
         $collection = new Asset\Collection($this->request->post('assets'));
         $collection->removeTag($this->request->post('tag'));
     }

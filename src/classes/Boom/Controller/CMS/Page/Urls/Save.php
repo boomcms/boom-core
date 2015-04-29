@@ -2,13 +2,6 @@
 
 class Controller_Cms_Page_Urls_Save extends Controller_Cms_Page_Urls
 {
-    public function before()
-    {
-        parent::before();
-
-        $this->_csrf_check();
-    }
-
     public function action_add()
     {
         $location = \Boom\Page\URL::sanitise($this->request->post('location'));

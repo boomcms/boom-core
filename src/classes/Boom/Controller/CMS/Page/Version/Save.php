@@ -16,8 +16,6 @@ class Controller_Cms_Page_Version_Save extends Controller_Cms_Page_Version
     {
         parent::before();
 
-        $this->_csrf_check();
-
         // Start a database transaction.
         $this->db = Database::instance();
         $this->db->begin();
