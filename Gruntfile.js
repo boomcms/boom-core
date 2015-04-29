@@ -12,83 +12,83 @@ module.exports = function(grunt) {
 			dist: {
 	  			src: [
 					'bower_components/modernizr/modernizr.js',
-					'media/boom/js/string.js',
+					'public/boom/js/string.js',
 					'bower_components/jquery/dist/jquery.js',
 					'bower_components/jquery-ui/jquery-ui.js',
-					'media/boom/js/jquery/ui.splitbutton.js',
-					'media/boom/js/jquery/ui.tree.js',
+					'public/boom/js/jquery/ui.splitbutton.js',
+					'public/boom/js/jquery/ui.tree.js',
 					'bower_components/jgrowl/jquery.jgrowl.js',
 					'bower_components/tablesorter/jquery.tablesorter.js',
 					'bower_components/datetimepicker/jquery.datetimepicker.js',
-					'media/boom/js/boom/plugins.js',
-					'media/boom/js/boom/config.js',
-					'media/boom/js/boom/loader.js',
-					'media/boom/js/boom/notification.js',
-					'media/boom/js/boom/core.js',
-					'media/boom/js/boom/history2.js',
-					'media/boom/js/boom/log.js',
-					'media/boom/js/boom/dialog.js',
-					'media/boom/js/boom/alert.js',
-					'media/boom/js/boom/confirmation.js',
+					'public/boom/js/boom/plugins.js',
+					'public/boom/js/boom/config.js',
+					'public/boom/js/boom/loader.js',
+					'public/boom/js/boom/notification.js',
+					'public/boom/js/boom/core.js',
+					'public/boom/js/boom/history2.js',
+					'public/boom/js/boom/log.js',
+					'public/boom/js/boom/dialog.js',
+					'public/boom/js/boom/alert.js',
+					'public/boom/js/boom/confirmation.js',
 					'bower_components/pushy/js/pushy.js',
-					'media/boom/js/boom/tagAutocomplete.js',
-					'media/boom/js/boom/page/status.js',
-					'media/boom/js/boom/page/page.js',
-					'media/boom/js/boom/page/settings.js',
-					'media/boom/js/boom/page/editor.js',
-					'media/boom/js/boom/page/toolbar.js',
-					'media/boom/js/boom/page/tree.js',
-					'media/boom/js/boom/page/url.js',
-					'media/boom/js/boom/page/tagEditor.js',
-					'media/boom/js/boom/page/tagSearch.js',
-					'media/boom/js/boom/page/tagAutocomplete.js',
-					'media/boom/js/boom/urlEditor.js',
-					'media/boom/js/boom/page/featureEditor.js',
-					'media/boom/js/boom/page/visibilityEditor.js',
-					'media/boom/js/boom/textEditor.js',
-					'media/boom/js/boom/chunk.js',
-					'media/boom/js/boom/chunk/chunk.js',
-					'media/boom/js/boom/chunk/text.js',
-					'media/boom/js/boom/chunk/linkset.js',
-					'media/boom/js/boom/chunk/feature.js',
-					'media/boom/js/boom/chunk/asset.js',
-					'media/boom/js/boom/chunk/slideshow.js',
-					'media/boom/js/boom/chunk/timestamp.js',
-					'media/boom/js/boom/chunk/tag.js',
-					'media/boom/js/boom/chunk/slideshow/editor.js',
-					'media/boom/js/boom/chunk/linkset/editor.js',
-					'media/boom/js/boom/chunk/asset/editor.js',
-					'media/boom/js/boom/chunk/pageTags.js',
-					'media/boom/js/boom/chunk/pageVisibility.js',
-					'media/boom/js/boom/page/title.js',
-					'media/boom/js/boom/link/link.js',
-					'media/boom/js/boom/link/picker.js',
-					'media/boom/js/boom/template/manager.js',
-					'media/boom/js/boom/asset/asset.js',
-					'media/boom/js/boom/asset/manager.js',
-					'media/boom/js/boom/asset/picker.js',
-					'media/boom/js/boom/asset/titleFilter.js',
-					'media/boom/js/boom/asset/uploader.js',
-					'media/boom/js/boom/asset/justify.js',
-					'media/boom/js/boom/asset/tagAutocomplete.js',
-					'media/boom/js/boom/asset/tagSearch.js',
-					'media/boom/js/boom/group/group.js',
-					'media/boom/js/boom/group/permissionsEditor.js',
-					'media/boom/js/boom/person.js',
-					'media/boom/js/boom/peopleManager.js',
+					'public/boom/js/boom/tagAutocomplete.js',
+					'public/boom/js/boom/page/status.js',
+					'public/boom/js/boom/page/page.js',
+					'public/boom/js/boom/page/settings.js',
+					'public/boom/js/boom/page/editor.js',
+					'public/boom/js/boom/page/toolbar.js',
+					'public/boom/js/boom/page/tree.js',
+					'public/boom/js/boom/page/url.js',
+					'public/boom/js/boom/page/tagEditor.js',
+					'public/boom/js/boom/page/tagSearch.js',
+					'public/boom/js/boom/page/tagAutocomplete.js',
+					'public/boom/js/boom/urlEditor.js',
+					'public/boom/js/boom/page/featureEditor.js',
+					'public/boom/js/boom/page/visibilityEditor.js',
+					'public/boom/js/boom/textEditor.js',
+					'public/boom/js/boom/chunk.js',
+					'public/boom/js/boom/chunk/chunk.js',
+					'public/boom/js/boom/chunk/text.js',
+					'public/boom/js/boom/chunk/linkset.js',
+					'public/boom/js/boom/chunk/feature.js',
+					'public/boom/js/boom/chunk/asset.js',
+					'public/boom/js/boom/chunk/slideshow.js',
+					'public/boom/js/boom/chunk/timestamp.js',
+					'public/boom/js/boom/chunk/tag.js',
+					'public/boom/js/boom/chunk/slideshow/editor.js',
+					'public/boom/js/boom/chunk/linkset/editor.js',
+					'public/boom/js/boom/chunk/asset/editor.js',
+					'public/boom/js/boom/chunk/pageTags.js',
+					'public/boom/js/boom/chunk/pageVisibility.js',
+					'public/boom/js/boom/page/title.js',
+					'public/boom/js/boom/link/link.js',
+					'public/boom/js/boom/link/picker.js',
+					'public/boom/js/boom/template/manager.js',
+					'public/boom/js/boom/asset/asset.js',
+					'public/boom/js/boom/asset/manager.js',
+					'public/boom/js/boom/asset/picker.js',
+					'public/boom/js/boom/asset/titleFilter.js',
+					'public/boom/js/boom/asset/uploader.js',
+					'public/boom/js/boom/asset/justify.js',
+					'public/boom/js/boom/asset/tagAutocomplete.js',
+					'public/boom/js/boom/asset/tagSearch.js',
+					'public/boom/js/boom/group/group.js',
+					'public/boom/js/boom/group/permissionsEditor.js',
+					'public/boom/js/boom/person.js',
+					'public/boom/js/boom/peopleManager.js',
 					'bower_componenets/jquery-file-upload/js/jquery.fileupload.js',
 					'bower_components/wysihtml/dist/wysihtml5x-toolbar.js',
-					'media/boom/js/wysihtml5/parser_rules/full.js',
-					'media/boom/js/wysihtml5/parser_rules/inline.js',
-					'media/boom/js/wysihtml5/commands/insertBoomAsset.js',
-					'media/boom/js/wysihtml5/commands/createBoomLink.js',
-					'media/boom/js/wysihtml5/commands/cta.js',
-					'media/boom/js/wysihtml5/commands/insertSuperscript.js',
-					'media/boom/js/wysihtml5/commands/insertSubscript.js',
-					'media/boom/js/jquery/jqpagination.js',
-					'media/boom/js/boom/page/manager.js'
+					'public/boom/js/wysihtml5/parser_rules/full.js',
+					'public/boom/js/wysihtml5/parser_rules/inline.js',
+					'public/boom/js/wysihtml5/commands/insertBoomAsset.js',
+					'public/boom/js/wysihtml5/commands/createBoomLink.js',
+					'public/boom/js/wysihtml5/commands/cta.js',
+					'public/boom/js/wysihtml5/commands/insertSuperscript.js',
+					'public/boom/js/wysihtml5/commands/insertSubscript.js',
+					'public/boom/js/jquery/jqpagination.js',
+					'public/boom/js/boom/page/manager.js'
 				],
-				dest: 'media/boom/js/cms.js'
+				dest: 'public/boom/js/cms.js'
 			}
 		},
 		uglify: {
@@ -98,17 +98,17 @@ module.exports = function(grunt) {
 			},
 			build: {
 				files: {
-					'media/boom/js/cms.js': 'media/boom/js/cms.js'
+					'public/boom/js/cms.js': 'public/boom/js/cms.js'
 				}
 			}
 		},
 		less: {
 			production: {
 				options: {
-					paths: ["media/boom/css"]
+					paths: ["public/boom/css"]
 				},
 				files: {
-					"media/boom/css/cms.css": "media/boom/css/cms.less"
+					"public/boom/css/cms.css": "public/boom/css/cms.less"
 				}
 			}
 		},
@@ -119,7 +119,7 @@ module.exports = function(grunt) {
 			},
 			target: {
 				files: {
-					 'media/boom/css/cms.css': [
+					 'public/boom/css/cms.css': [
 						'bower_components/pushy/css/pushy.css',
 						'bower_components/datetimepicker/jquery.datetimepicker.css',
 						'bower_components/jquery-ui/themes/base/autocomplete.css',
@@ -129,8 +129,8 @@ module.exports = function(grunt) {
 						'bower_components/jquery-ui/themes/base/button.css',
 						'bower_components/jquery-ui/themes/base/draggable.css',
 						'bower_components/jquery-ui/themes/base/dialog.css',
-						'media/boom/css/libraries/jqpagination.css',
-						'media/boom/css/cms.css'
+						'public/boom/css/libraries/jqpagination.css',
+						'public/boom/css/cms.css'
 					 ]
 				}
 			}
@@ -141,7 +141,7 @@ module.exports = function(grunt) {
 				tasks: ['build']
 			},
 			js: {
-				files: 'media/boom/js/*.js',
+				files: 'public/boom/js/*.js',
 				tasks: ['build']
 			}
 		}
