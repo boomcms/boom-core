@@ -2,7 +2,7 @@
 
 namespace Boom\Controller\CMS\Auth;
 
-use Boom\Controllers;
+use Boom\Controller;
 use \Boom\Person;
 
 class LoginController extends Controller

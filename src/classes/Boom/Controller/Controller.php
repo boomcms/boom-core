@@ -7,9 +7,9 @@ use \Boom\Page\Page as Page;
 use \Boom\Editor\Editor as Editor;
 
 use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Http\Request;
+use Illuminate\Session\SessionManager as Session;
 
-use \Session;
-use \Request as Request;
 use \View as View;
 use \Security as Security;
 use \ORM as ORM;
@@ -67,11 +67,12 @@ class Controller extends BaseController
 
     protected $_save_last_url = false;
 
-    public function before()
+    public function __construct(Request $request, Session $session)
     {
         $this->boom = Boom::instance();
         $this->environment = $this->boom->getEnvironment();
-        $this->session = Session::instance();
+        $this->session = $session;
+        $this->request = $request;
         $this->auth = new Auth($this->session);
 
         $this->_save_last_url();
