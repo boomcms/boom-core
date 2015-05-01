@@ -1,11 +1,11 @@
 <?php
 
-namespace Boom\Controller\CMS\Auth;
+namespace BoomCMS\Core\Controller\CMS\Auth;
 
-use Boom\Controller;
-use \Boom\Person;
+use BoomCMS\Core\Controller\Controller;
+use BoomCMS\Core\Person;
 
-class LoginController extends Controller
+class Login extends Controller
 {
     /**
 	 * @var Session

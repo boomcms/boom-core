@@ -1,18 +1,16 @@
 <?php
 
-namespace Boom\Controller;
+namespace BoomCMS\Core\Controller;
 
-use \Boom\Auth\Auth as Auth;
-use \Boom\Page\Page as Page;
-use \Boom\Editor\Editor as Editor;
+use Boom\Auth\Auth as Auth;
+use Boom\Page\Page as Page;
+use Boom\Editor\Editor as Editor;
 
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Http\Request;
 use Illuminate\Session\SessionManager as Session;
 
 use \View as View;
-use \Security as Security;
-use \ORM as ORM;
 
 class Controller extends BaseController
 {
