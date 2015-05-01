@@ -1,4 +1,6 @@
-<?php namespace Boomcms\Core;
+<?php
+
+namespace BoomCMS\Core;
 
 use Illuminate\Support\ServiceProvider;
 
@@ -18,7 +20,7 @@ class CoreServiceProvider extends ServiceProvider {
 	 */
 	public function boot()
 	{
-		$this->package('boomcms/core');
+		$this->package('BoomCMS/core');
 	}
 
 	/**
