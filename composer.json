@@ -21,7 +21,7 @@
 		"phpunit/phpunit": "4.3.*"
 	},
 	"autoload": {
-		"psr-0": {"BoomCMS\\Core\\": "src/BoomCMS/Core"}
+		"psr-0": {"BoomCMS\\Core": "src/"}
 	},
 	"minimum-stability" : "dev",
 	"prefer-stable": true,
