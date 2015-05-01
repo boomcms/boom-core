@@ -1,13 +1,12 @@
 <?php
 
-namespace Boom\Person;
+namespace BoomCMS\Core\Person;
 
 class Guest extends Person
 {
-    public function __construct()
-    {
-        $this->model = new \Model_Person();
-    }
+    protected $data = [];
+
+    public function __construct() {}
 
     public function isValid()
     {

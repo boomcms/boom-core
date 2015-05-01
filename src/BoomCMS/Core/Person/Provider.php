@@ -1,6 +1,6 @@
 <?php
 
-namespace Boom\Person;
+namespace BoomCMS\Core\Person;
 
 use Cartalyst\Sentry\Users\ProviderInterface;
 use Cartalyst\Sentry\Groups\GroupInterface;

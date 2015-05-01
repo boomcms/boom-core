@@ -1,6 +1,6 @@
 <?php
 
-namespace Boom\Person;
+namespace BoomCMS\Core\Person;
 
 use Boom\Group;
 use Boom\Page\Page;

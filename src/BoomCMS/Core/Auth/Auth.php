@@ -7,11 +7,11 @@ use \DB as DB;
 use \Model_Role as Role;
 
 use Hautelook\Phpass\PasswordHash;
-use Boom\Person;
+use BoomCMS\Core\Person;
 
 use Cartalyst\Sentry\Users\ProviderInterface;
 use Cartalyst\Sentry\Users\UserNotFoundException;
-use \Session;
+use Illuminate\Session\SessionManager as Session;
 
 class Auth
 {
