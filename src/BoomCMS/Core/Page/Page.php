@@ -16,9 +16,9 @@ class Page
 {
     /**
 	 *
-	 * @var \Model_Page
+	 * @var array
 	 */
-    protected $model;
+    protected $data;
 
     /**
 	 *
@@ -26,9 +26,9 @@ class Page
 	 */
     protected $_url;
 
-    public function __construct(\Model_Page $model)
+    public function __construct(array $data)
     {
-        $this->model = $model;
+        $this->data = $data;
     }
 
     public function addTag(Tag\Tag $tag)
@@ -42,22 +42,25 @@ class Page
 
     public function allowsExternalIndexing()
     {
-        return (bool) $this->model->external_indexing;
+        return isset($this->data['external_indexing'])
+            && $this->data['external_indexing'] == true;
     }
 
     public function allowsInternalIndexing()
     {
-        return (bool) $this->model->internal_indexing;
-    }
+        return isset($this->data['internal_indexing'])
+            && $this->data['internal_indexing'] == true;    }
 
     public function childrenAreVisibleInNav()
     {
-        return (bool) $this->model->children_visible_in_nav;
+        return isset($this->data['children_visible_in_nav'])
+            && $this->data['children_visible_in_nav'] == true;
     }
 
     public function childrenAreVisibleInCmsNav()
     {
-        return (bool) $this->model->children_visible_in_nav_cms;
+        return isset($this->data['children_visible_in_nav_cms'])
+            && $this->data['children_visible_in_nav_cms'] == true;
     }
 
     public function createVersion($current = null, array $values = null)
@@ -178,13 +181,7 @@ class Page
 	 */
     public function getKeywords()
     {
-        $keywords = explode(',', $this->model->keywords);
-
-        foreach ($keywords as &$keyword) {
-            $keyword = trim($keyword);
-        }
-
-        return new Keywords($keywords);
+        return isset($this->data['keywords'])? $this->data['keywords'] : ';';
     }
 
     /**
@@ -347,13 +344,6 @@ class Page
         return $this;
     }
 
-    public function save()
-    {
-        $this->loaded() ? $this->model->update() : $this->model->create();
-
-        return $this;
-    }
-
     public function setChildTemplateId($id)
     {
         $this->model->children_template_id = $id;
@@ -393,7 +383,7 @@ class Page
      */
     public function setChildrenVisibleInNav($visible)
     {
-        $this->model->children_visible_in_nav = $visible;
+        $this->data['children_visible_in_nav'] = $visible;
 
         return $this;
     }
@@ -405,7 +395,7 @@ class Page
      */
     public function setChildrenVisibleInNavCMS($visible)
     {
-        $this->model->children_visible_in_nav_cms = $visible;
+        $this->data['children_visible_in_nav_cms'] = $visible;
 
         return $this;
     }
@@ -417,7 +407,7 @@ class Page
 	 */
     public function setDescription($description)
     {
-        $this->model->description = $description;
+        $this->data['description'] = $description;
 
         return $this;
     }
@@ -429,7 +419,7 @@ class Page
 	 */
     public function setExternalIndexing($indexing)
     {
-        $this->model->external_indexing = $indexing;
+        $this->data['external_indexing'] = $indexing;
 
         return $this;
     }
@@ -441,7 +431,7 @@ class Page
 	 */
     public function setFeatureImageId($featureImageId)
     {
-        $this->model->feature_image_id = $featureImageId > 0 ? $featureImageId : null;
+        $this->data['feature_image_id'] = $featureImageId > 0 ? $featureImageId : null;
 
         return $this;
     }
@@ -453,7 +443,7 @@ class Page
      */
     public function setGrandchildTemplateId($templateId)
     {
-        $this->model->grandchild_template_id = $templateId;
+        $this->data['grandchild_template_id'] = $templateId;
 
         return $this;
     }
@@ -465,7 +455,7 @@ class Page
 	 */
     public function setInternalIndexing($indexing)
     {
-        $this->model->internal_indexing = $indexing;
+        $this->data['internal_indexing'] = $indexing;
 
         return $this;
     }
@@ -477,7 +467,7 @@ class Page
 	 */
     public function setInternalName($name)
     {
-        $this->model->internal_name = $name;
+        $this->data['internal_name'] = $name;
 
         return $this;
     }
@@ -489,7 +479,7 @@ class Page
 	 */
     public function setKeywords($keywords)
     {
-        $this->model->keywords = $keywords;
+        $this->data['keywords'] = $keywords;
 
         return $this;
     }
@@ -513,7 +503,7 @@ class Page
 	 */
     public function setVisibleAtAnyTime($visible)
     {
-        $this->model->visible = $visible;
+        $this->data['visible'] = $visible;
 
         return $this;
     }
@@ -525,7 +515,7 @@ class Page
 	 */
     public function setVisibleFrom(DateTime $time)
     {
-        $this->model->visible_from = $time->getTimestamp();
+        $this->data['visible_from'] = $time->getTimestamp();
 
         return $this;
     }
@@ -537,7 +527,7 @@ class Page
 	 */
     public function setVisibleInCmsNav($visible)
     {
-        $this->model->visible_in_nav_cms = $visible;
+        $this->data['visible_in_nav_cms'] = $visible;
 
         return $this;
     }
@@ -549,7 +539,7 @@ class Page
 	 */
     public function setVisibleInNav($visible)
     {
-        $this->model->visible_in_nav = $visible;
+        $this->data['visible_in_nav'] = $visible;
 
         return $this;
     }
@@ -561,7 +551,7 @@ class Page
 	 */
     public function setVisibleTo(DateTime $time = null)
     {
-        $this->model->visible_to = $time ? $time->getTimestamp() : null;
+        $this->data['visible_to'] = $time ? $time->getTimestamp() : null;
 
         return $this;
     }

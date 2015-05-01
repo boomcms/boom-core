@@ -9,25 +9,38 @@ class Provider
 {
     public function findById($id)
     {
-        return new Page(Model::find($id));
+        return $this->findAndCache(Model::find($id));
     }
 
     public function findByInternalName($name)
     {
-        return new Page(Model::where('internal_name', '=', $name)->get());
+        return $this->findAndCache(Model::where('internal_name', '=', $name)->get());
     }
 
     public function findByPrimaryUri($uri)
     {
-        return new Page(Model::where('primary_uri', '=', $uri)->get());
+        return $this->findAndCache(Model::where('primary_uri', '=', $uri)->get());
     }
 
     public function findByUri($uri)
     {
         $finder = new Finder();
+        $finder->addFilter(new Finder\Filter\Uri($uri));
 
-        return $finder
-            ->addFilter(new Finder\Filter\Uri($uri))
-            ->find();
+        return $this->findAndCache($finder->find());
+    }
+
+    private function findAndCache(Model $model)
+    {
+        if ($model->id) {
+            $this->cache[$model->id] = $model;
+        }
+
+        return new Page($model->toArray());
+    }
+
+    public function save(Page $page)
+    {
+
     }
 }
