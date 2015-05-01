@@ -1,8 +1,9 @@
 <?php
 
-namespace Boom\Editor;
+namespace BoomCMS\Core\Editor;
 
-use Boom\Auth\Auth as Auth;
+use BoomCMS\Core\Auth\Auth;
+use Illuminate\Session\SessionManager as Session;
 
 class Editor
 {
@@ -25,7 +26,7 @@ class Editor
     protected $state;
     protected $statePersistenceKey = 'editor_state';
 
-    public function __construct(Auth $auth, \SessionHandlerInterface $session)
+    public function __construct(Auth $auth, Session $session)
     {
         $this->auth = $auth;
         $this->session = $session;
