@@ -1,6 +1,6 @@
 <?php
 
-namespace Boom;
+namespace BoomCMS\Core;
 
 class Boom
 {

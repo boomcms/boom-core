@@ -22,8 +22,6 @@ class Page extends \Boom\Controller
      */
     public $template;
 
-    protected $_save_last_url = true;
-
     public function before()
     {
         parent::before();

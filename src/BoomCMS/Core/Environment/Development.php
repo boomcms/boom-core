@@ -1,6 +1,6 @@
 <?php
 
-namespace Boom\Environment;
+namespace BoomCMS\Core\Environment;
 
 use Exception;
 use Boom\Exception\Handler\Pub as PublicExceptionHandler;

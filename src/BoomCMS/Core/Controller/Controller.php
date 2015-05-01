@@ -2,9 +2,10 @@
 
 namespace BoomCMS\Core\Controller;
 
-use Boom\Auth\Auth as Auth;
-use Boom\Page\Page as Page;
-use Boom\Editor\Editor as Editor;
+use BoomCMS\Core\Boom as BoomCore;
+use BoomCMS\Core\Auth\Auth;
+use BoomCMS\Core\Page\Page;
+use BoomCMS\Core\Editor\Editor;
 
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Http\Request;
@@ -65,16 +66,14 @@ class Controller extends BaseController
 
     public function __construct(Request $request, Session $session)
     {
-        $this->boom = Boom::instance();
+        $this->boom = BoomCore::instance();
         $this->environment = $this->boom->getEnvironment();
         $this->session = $session;
         $this->request = $request;
         $this->auth = new Auth($this->session);
 
-        $this->_save_last_url();
-
         // Require the user to be logged in if the site isn't live.
-        if ($this->request->is_initial() && ($this->boom->getEnvironment()->requiresLogin() && ! $this->auth->loggedIn())) {
+        if ($this->boom->getEnvironment()->requiresLogin() && ! $this->auth->loggedIn()) {
             throw new \HTTP_Exception_401();
         }
 

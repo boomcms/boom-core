@@ -1,6 +1,6 @@
 <?php
 
-namespace Boom\Environment;
+namespace BoomCMS\Core\Environment;
 
 class Staging extends Environment
 {

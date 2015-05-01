@@ -1,9 +1,9 @@
 <?php
 
-namespace Boom\Environment;
+namespace BoomCMS\Core\Environment;
 
 use Exception;
-use Boom\Exception\Handler\Priv as PrivateExceptionHandler;
+use BoomCMS\Core\Exception\Handler\Priv as PrivateExceptionHandler;
 
 abstract class Environment
 {
