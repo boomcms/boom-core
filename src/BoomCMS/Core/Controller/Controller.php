@@ -63,8 +63,6 @@ class Controller extends BaseController
      */
     public $template;
 
-    protected $_save_last_url = false;
-
     public function __construct(Request $request, Session $session)
     {
         $this->boom = Boom::instance();
