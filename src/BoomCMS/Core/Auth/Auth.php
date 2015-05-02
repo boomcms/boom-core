@@ -39,10 +39,10 @@ class Auth
 
     protected $permissions_cache = [];
 
-    public function __construct(Session $session, ProviderInterface $personProvider = null)
+    public function __construct(Session $session, ProviderInterface $personProvider)
     {
         $this->session = $session;
-        $this->personProvider = $personProvider?: new Person\Provider();
+        $this->personProvider = $personProvider;
     }
 
     public function authenticate($email, $password, $remember = false)
