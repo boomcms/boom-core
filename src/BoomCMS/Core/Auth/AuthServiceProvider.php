@@ -15,7 +15,7 @@ class AuthServiceProvider extends ServiceProvider
 	{
         $this->app->singleton('BoomAuth', function($app)
         {
-            return new Auth($app['session']);
+            return new Auth($app['session'], $app['BoomPersonProvider']);
         });
     }
 
