@@ -6,6 +6,7 @@ use BoomCMS\Core\Boom as BoomCore;
 use BoomCMS\Core\Auth\Auth;
 use BoomCMS\Core\Page\Page;
 use BoomCMS\Core\Editor\Editor;
+use BoomCMS\Core\Environment;
 
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Http\Request;
@@ -32,13 +33,13 @@ class Controller extends BaseController
     public $person;
 
     /**
-     * @var		Auth
+     * @var Auth
      */
     public $auth;
 
     /**
      *
-     * @var Boom\Environment\Environment
+     * @var Environment\Environment
      */
     public $environment;
 
@@ -64,20 +65,13 @@ class Controller extends BaseController
      */
     public $template;
 
-    public function __construct(Request $request, Session $session, Auth $auth, Editor $editor)
+    public function __construct(Request $request, Session $session, Auth $auth, Editor $editor, Environment $environment)
     {
-        $this->boom = BoomCore::instance();
-        $this->environment = $this->boom->getEnvironment();
+        $this->environment = $environment;
         $this->session = $session;
         $this->request = $request;
         $this->auth = $auth;
         $this->editor = $editor;
-
-        // Require the user to be logged in if the site isn't live.
-        if ($this->boom->getEnvironment()->requiresLogin() && ! $this->auth->loggedIn()) {
-            throw new \HTTP_Exception_401();
-        }
-
         $this->person = $this->auth->getPerson();
     }
 
