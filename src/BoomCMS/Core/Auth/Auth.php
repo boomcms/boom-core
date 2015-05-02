@@ -6,10 +6,9 @@ use \Cookie as Cookie;
 use \DB as DB;
 use \Model_Role as Role;
 
-use Hautelook\Phpass\PasswordHash;
 use BoomCMS\Core\Person;
 
-use Cartalyst\Sentry\Users\ProviderInterface;
+use Hautelook\Phpass\PasswordHash;
 use Cartalyst\Sentry\Users\UserNotFoundException;
 use Illuminate\Session\SessionManager as Session;
 
@@ -39,7 +38,7 @@ class Auth
 
     protected $permissions_cache = [];
 
-    public function __construct(Session $session, ProviderInterface $personProvider)
+    public function __construct(Session $session, Person\Provider $personProvider)
     {
         $this->session = $session;
         $this->personProvider = $personProvider;
