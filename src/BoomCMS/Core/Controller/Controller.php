@@ -122,9 +122,5 @@ class Controller extends BaseController
 
             $this->response->body($this->template);
         }
-
-        if ($this->auth->isLoggedIn()) {
-            $this->response->headers('Cache-Control', 'private');
-        }
     }
 }
