@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => [
-    'BoomCMS\Core\Http\Middleware\RequireLoginForDevelopmentSites',
+//    'BoomCMS\Core\Http\Middleware\RequireLoginForDevelopmentSites',
     'BoomCMS\Core\Http\Middleware\DisableHttpCacheIfLoggedIn',
 ]], function() {
     Route::group(['prefix' => 'cms', 'namespace' => 'BoomCMS\Core'], function() {
