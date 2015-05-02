@@ -64,13 +64,14 @@ class Controller extends BaseController
      */
     public $template;
 
-    public function __construct(Request $request, Session $session)
+    public function __construct(Request $request, Session $session, Auth $auth, Editor $editor)
     {
         $this->boom = BoomCore::instance();
         $this->environment = $this->boom->getEnvironment();
         $this->session = $session;
         $this->request = $request;
-        $this->auth = new Auth($this->session);
+        $this->auth = $auth;
+        $this->editor = $editor;
 
         // Require the user to be logged in if the site isn't live.
         if ($this->boom->getEnvironment()->requiresLogin() && ! $this->auth->loggedIn()) {
@@ -78,7 +79,6 @@ class Controller extends BaseController
         }
 
         $this->person = $this->auth->getPerson();
-        $this->editor = new Editor($this->auth, $this->session);
     }
 
     /**

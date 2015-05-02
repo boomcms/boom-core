@@ -4,7 +4,7 @@ namespace BoomCMS\Core;
 
 use Illuminate\Support\ServiceProvider;
 
-class CoreServiceProvider extends ServiceProvider
+class RoutesServiceProvider extends ServiceProvider
 {
 	/**
 	 * Bootstrap any application services.
