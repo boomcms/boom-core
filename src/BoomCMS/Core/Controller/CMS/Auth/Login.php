@@ -12,15 +12,6 @@ class Login extends Controller
 	 */
     public $session;
 
-    public function before()
-    {
-        parent::before();
-
-        if ($this->auth->isLoggedIn()) {
-            redirect()->back();
-        }
-    }
-
     public function showLoginForm()
     {
         if ($this->auth->auto_login()) {
