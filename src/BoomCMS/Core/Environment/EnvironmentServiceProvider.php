@@ -28,7 +28,7 @@ class EnvironmentServiceProvider extends ServiceProvider
             throw new Environment\InvalidEnvironmentException($envName);
         }
 
-        $this->app->singleton('BoomEnvironment', function($app) use ($className)
+        $this->app->singleton('boomcms.environment', function($app) use ($className)
         {
             return new $className;
         });

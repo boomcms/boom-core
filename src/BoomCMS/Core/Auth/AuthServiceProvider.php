@@ -13,9 +13,9 @@ class AuthServiceProvider extends ServiceProvider
 	 */
 	public function boot()
 	{
-        $this->app->singleton('BoomAuth', function($app)
+        $this->app->singleton('boomcms.auth', function($app)
         {
-            return new Auth($app['session'], $app['BoomPersonProvider']);
+            return new Auth($app['session'], $app['boomcms.person.provider']);
         });
     }
 
