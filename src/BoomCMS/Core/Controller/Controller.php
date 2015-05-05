@@ -2,7 +2,6 @@
 
 namespace BoomCMS\Core\Controller;
 
-use BoomCMS\Core\Boom as BoomCore;
 use BoomCMS\Core\Auth\Auth;
 use BoomCMS\Core\Page\Page;
 use BoomCMS\Core\Editor\Editor;
