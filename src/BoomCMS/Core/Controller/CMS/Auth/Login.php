@@ -12,13 +12,12 @@ class Login extends Controller
         if ($this->auth->auto_login()) {
             redirect('/');
         } else {
-            $this->_display_login_form();
+            $this->displayLoginForm();
         }
     }
 
-    public function processLogin()
+    public function processLogin(Person\Provider $provider)
     {
-        $provider = new Person\Provider();
         $person = $provider->findByEmail($this->request->post('email'));
 
         try {
@@ -41,7 +40,12 @@ class Login extends Controller
                 $error_message = str_replace(':lock_wait', $lock_wait, $error_message);
             }
 
-            $this->_display_login_form(['login_error' => $error_message]);
+            $this->displayLoginForm(['login_error' => $error_message]);
         }
+    }
+
+    protected function displayLoginForm()
+    {
+        return view('boom::account.login');
     }
 }
