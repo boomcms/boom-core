@@ -13,18 +13,18 @@ Route::group(['middleware' => [
                 'uses' => 'Controllers\CMS\Auth\Login@showLoginForm'
             ]);
 
-            Route::post('login', 'Cms_Auth_LoginController');
+            Route::post('login', 'Controllers\CMS\Auth\Login@processLogin');
 
-            Route::get('logout', 'Cms_Auth_LogoutController@index');
+            Route::get('logout', 'Controllers\CMS\Auth\Logout@index');
 
-            Route::get('recover', 'Cms_Auth_RecoverController@showForm');
-            Route::get('recover', 'Cms_Auth_RecoverController@createToken');
-            Route::get('recover', 'Cms_Auth_RecoverController@setNewPassword');
+            Route::get('recover', 'Controllers\CMS\Auth\Recover@showForm');
+            Route::get('recover', 'Controllers\CMS\Auth\Recover@createToken');
+            Route::get('recover', 'Controllers\CMS\Auth\Recover@setNewPassword');
         });
 
         Route::group(array('middleware' => ['BoomCMS\Core\Http\Middleware\RequireLogin']), function() {
-            Route::get('profile', 'Cms_Profile@index');
-            Route::post('profile', 'Cms_Profile@save');
+            Route::get('profile', 'Controllers\CMS\Profile@index');
+            Route::post('profile', 'Controllers\CMS\Auth\Profile@save');
         });
     });
 });
