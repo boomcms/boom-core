@@ -1,6 +1,6 @@
 <?php
 
-namespace Boom\Controller\Page;
+namespace BoomCMS\Core\Controllers\Page;
 
 class Json extends Controller\Page
 {

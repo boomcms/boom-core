@@ -1,6 +1,6 @@
 <?php
 
-namespace Boom\Controller\Page;
+namespace BoomCMS\Core\Controllers\Page;
 
 use \Boom\Chunk;
 use \ORM;

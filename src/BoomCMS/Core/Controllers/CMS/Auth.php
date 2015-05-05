@@ -1,6 +1,6 @@
 <?php
 
-namespace Boom\Controller\CMS;
+namespace BoomCMS\Core\Controllers\CMS;
 
 use Boom\Auth\Auth;
 use \Session;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Boom\Controller\Page;
+namespace BoomCMS\Core\Controllers\Page;
 
 class Rss extends Boom\Controller\Page
 {

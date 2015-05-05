@@ -1,6 +1,6 @@
 <?php
 
-namespace Boom\Controller\CMS;
+namespace BoomCMS\Core\Controllers\CMS;
 
 class Profile extends Boom\Controller
 {

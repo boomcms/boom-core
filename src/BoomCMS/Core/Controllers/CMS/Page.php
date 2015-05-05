@@ -1,6 +1,6 @@
 <?php
 
-namespace Boom\Controller\CMS;
+namespace BoomCMS\Core\Controllers\CMS;
 
 use \Boom\Page as Page;
 use \Boom\Page\Command\Delete as Delete;

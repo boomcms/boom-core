@@ -1,6 +1,6 @@
 <?php
 
-namespace Boom\Controller;
+namespace BoomCMS\Core\Controllers;
 
 class Page extends \Boom\Controller
 {
