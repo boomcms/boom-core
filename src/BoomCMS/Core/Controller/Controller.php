@@ -6,7 +6,7 @@ use BoomCMS\Core\Boom as BoomCore;
 use BoomCMS\Core\Auth\Auth;
 use BoomCMS\Core\Page\Page;
 use BoomCMS\Core\Editor\Editor;
-use BoomCMS\Core\Environment;
+use BoomCMS\Core\Environment\Environment;
 
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Http\Request;
