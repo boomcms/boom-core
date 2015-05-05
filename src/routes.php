@@ -10,7 +10,7 @@ Route::group(['middleware' => [
         Route::group(array('middleware' => ['BoomCMS\Core\Http\Middleware\RedirectIfAuthenticated']), function() {
             Route::get('login', [
                 'as' => 'login',
-                'uses' => 'Controller\CMS\Auth\Login@showLoginForm'
+                'uses' => 'Controllers\CMS\Auth\Login@showLoginForm'
             ]);
 
             Route::post('login', 'Cms_Auth_LoginController');
