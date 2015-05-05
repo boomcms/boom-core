@@ -7,11 +7,6 @@ use BoomCMS\Core\Person;
 
 class Login extends Controller
 {
-    /**
-	 * @var Session
-	 */
-    public $session;
-
     public function showLoginForm()
     {
         if ($this->auth->auto_login()) {
