@@ -1,10 +1,8 @@
 <?php
 
-namespace BoomCMS\Core\Controllers\CMS;
+namespace BoomCMS\Core\Controllers\CMS\Assets;
 
-use \Boom\Asset as Asset;
-use \Boom\Asset\Finder as AssetFinder;
-use Boom\Controller\Controller;
+use BoomCMS\Core\Assets\Provider;
 
 class Assets extends Controller
 {
@@ -21,6 +19,15 @@ class Assets extends Controller
 	 * @var Asset
 	 */
     public $asset;
+
+    protected $assetProvider;
+
+    public function __construct(Provider $provider)
+    {
+        parent::__construct();
+
+        $this->assetProvider = $provider;
+    }
 
     public function before()
     {

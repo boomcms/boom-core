@@ -1,6 +1,6 @@
 <?php
 
-namespace Boom\Asset;
+namespace BoomCMS\Core\Asset;
 
 use Boom\Exception;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Boom\Asset;
+namespace BoomCMS\Core\Asset;
 
 use \Boom;
 use \ORM as ORM;
