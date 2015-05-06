@@ -6,7 +6,7 @@
             <h1>Current Asset</h1>
             <img src="" />
 
-            <?= new \Boom\UI\Button('delete', 'Remove current asset', array('id' => 'b-assets-picker-current-remove', 'class' => 'b-button-withtext')) ?>
+            <?= new \BoomCMS\Core\UI\Button('delete', 'Remove current asset', array('id' => 'b-assets-picker-current-remove', 'class' => 'b-button-withtext')) ?>
         </section>
 
         <section id="b-assets-picker-upload">
@@ -17,7 +17,7 @@
         <section id="b-assets-picker-filter" class="ui-front">
             <h1>Filter Assets</h1>
 
-            <?= new \Boom\UI\Button('accept', 'All assets', array('id' => 'b-assets-picker-all', 'class' => 'b-button-textonly')) ?>
+            <?= new \BoomCMS\Core\UI\Button('accept', 'All assets', array('id' => 'b-assets-picker-all', 'class' => 'b-button-textonly')) ?>
 
             <div>
                 <h2>Search by asset name</h2>

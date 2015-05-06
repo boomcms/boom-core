@@ -11,8 +11,8 @@
 
 
 		<div id='b-page-feature-buttons'>
-			<?= new \Boom\UI\Button('asset', 'Select an image from the asset manager', array('id' => 'b-page-feature-edit', 'class' => 'b-button-withtext')) ?>
-			<?= new \Boom\UI\Button('delete', 'Remove feature image', array('id' => 'b-page-feature-remove', 'class' => 'b-button-withtext')) ?>
+			<?= new \BoomCMS\Core\UI\Button('asset', 'Select an image from the asset manager', array('id' => 'b-page-feature-edit', 'class' => 'b-button-withtext')) ?>
+			<?= new \BoomCMS\Core\UI\Button('delete', 'Remove feature image', array('id' => 'b-page-feature-remove', 'class' => 'b-button-withtext')) ?>
 		</div>
 	</section>
 	<section>

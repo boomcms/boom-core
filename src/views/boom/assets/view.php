@@ -3,8 +3,8 @@
         <img src="<?= Route::url('asset', array('action' => 'thumb', 'id' => $asset->getId(), 'width' => 0, 'height' => 300, 'quality' => 85, 'crop' => 0)) ?>">
 
         <div class="ui-dialog-buttonpane">
-            <?= new \Boom\UI\Button('delete', Lang::get('Delete'), array('class' => 'b-assets-delete')) ?>
-            <?= new \Boom\UI\Button('download', Lang::get('Download'), array('class' => 'b-assets-download')) ?>
+            <?= new \BoomCMS\Core\UI\Button('delete', Lang::get('Delete'), array('class' => 'b-assets-delete')) ?>
+            <?= new \BoomCMS\Core\UI\Button('download', Lang::get('Download'), array('class' => 'b-assets-download')) ?>
             <?//= \Boom\UI\Button('replace', Lang::get('Replace'), array('class' => 'b-assets-replace')) ?>
         </div>
     </div>

@@ -4,8 +4,8 @@
 		<?= new \Boom\Menu\Menu  ?>
 
 		<?= new \Boom\UI\MenuButton() ?>
-		<?= new \Boom\UI\Button('add', Lang::get('New person'), array('id' => 'b-people-create')) ?>
-		<?= new \Boom\UI\Button('delete', Lang::get('Delete'), array('id' => 'b-people-multi-delete', 'disabled' => 'disabled')) ?>
+		<?= new \BoomCMS\Core\UI\Button('add', Lang::get('New person'), array('id' => 'b-people-create')) ?>
+		<?= new \BoomCMS\Core\UI\Button('delete', Lang::get('Delete'), array('id' => 'b-people-multi-delete', 'disabled' => 'disabled')) ?>
 
 		<button id="b-people-all" class="b-button">
 			<?=Lang::get('All people')?>
@@ -15,7 +15,7 @@
 	<div id="b-people-manager">
 		<div id="b-groups">
 			<div id="b-groups-header">
-				<?= new \Boom\UI\Button('add', Lang::get('Add group'), array('class' => 'b-people-group-add')) ?>
+				<?= new \BoomCMS\Core\UI\Button('add', Lang::get('Add group'), array('class' => 'b-people-group-add')) ?>
 				<h2>
 					<?= Lang::get('Groups') ?>
 				</h2>

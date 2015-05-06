@@ -56,12 +56,12 @@
                 <input type="text" name="linktext" />
             </label>
 
-            <?= new \Boom\UI\Button('delete', 'Delete this slide', array('id' => 'b-slideshow-editor-current-delete', 'class' => 'b-button-withtext')) ?>
+            <?= new \BoomCMS\Core\UI\Button('delete', 'Delete this slide', array('id' => 'b-slideshow-editor-current-delete', 'class' => 'b-button-withtext')) ?>
         </form>
     </section>
 </div>
 
 <div id="b-slideshow-editor-buttons">
-    <?= new \Boom\UI\Button('delete', Lang::get('Delete slideshow'), array('id' => 'b-slideshow-editor-delete', 'class' => 'b-button-textonly')) ?>
-    <?= new \Boom\UI\Button('add', Lang::get('Add slide'), array('id' => 'b-slideshow-editor-add', 'class' => 'b-button-withtext')) ?>
+    <?= new \BoomCMS\Core\UI\Button('delete', Lang::get('Delete slideshow'), array('id' => 'b-slideshow-editor-delete', 'class' => 'b-button-textonly')) ?>
+    <?= new \BoomCMS\Core\UI\Button('add', Lang::get('Add slide'), array('id' => 'b-slideshow-editor-add', 'class' => 'b-button-withtext')) ?>
 </div>
