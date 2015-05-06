@@ -1,14 +1,11 @@
-	<?= View::make('header', ['title' =>    'Assets']); ?>
+	<?= View::make('boom::header', ['title' =>    'Assets']); ?>
 
 	<?= $manager ?>
 
-	<?= Boom::include_js() ?>
 	<script type="text/javascript">
 		//<![CDATA[
 		(function ($) {
-			$.boom.init({
-				csrf: '<?= Security::token() ?>'
-			});
+			$.boom.init();
 
 			$('body')
 				.ui()

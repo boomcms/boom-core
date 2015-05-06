@@ -47,5 +47,5 @@
 		<div id="b-assets-view-thumbs"></div>
 	</div>
 
-	<?= View::make('boom/assets/upload') ?>
+	<?= View::make('boom::assets.upload') ?>
 </div>
