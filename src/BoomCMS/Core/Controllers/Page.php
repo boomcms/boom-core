@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Core\Controllers;
 
-class Page extends \Boom\Controller
+class Page extends Controller
 {
     /**
      *
@@ -25,6 +25,8 @@ class Page extends \Boom\Controller
     public function before()
     {
         parent::before();
+
+        
 
         $this->page = $this->request->param('page');
         $this->template = $this->page->getTemplate();
