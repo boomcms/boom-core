@@ -1,4 +1,4 @@
-<?= View::factory('boom/errors/header', ['title' => 'Not acceptable']) ?>
+<?= View::make('boom/errors/header', ['title' => 'Not acceptable']) ?>
 	<div id="broken" class="clearfix">
 		<div class="column">
 			<div class="warning">
@@ -7,4 +7,4 @@
 			<p>You've requested a page in a format which we're unable to provide.</p>
 		</div>
 	</div>
-<?= View::factory('boom/errors/footer') ?>
+<?= View::make('boom/errors/footer') ?>

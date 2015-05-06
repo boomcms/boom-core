@@ -1,4 +1,4 @@
-<?= View::factory('boom/header', ['title' => $page->getTitle()]) ?>
+<?= View::make('boom/header', ['title' => $page->getTitle()]) ?>
 
 <div id="b-topbar" class='b-page-toolbar b-toolbar b-toolbar-vertical'>
 	<?= Form::hidden('csrf', Security::token(), ['id' => 'b-csrf']) ?>
@@ -56,7 +56,7 @@
 
 		<div id="b-topbar-pagesettings">
 			<div>
-				<?= View::factory('boom/editor/page/settings/index');?>
+				<?= View::make('boom/editor/page/settings/index');?>
 			</div>
 		</div>
 	</div>
@@ -69,4 +69,4 @@
         </div>
 </div>
 
-<?= View::factory('boom/editor/footer', ['register_page' => true]) ?>
+<?= View::make('boom/editor/footer', ['register_page' => true]) ?>

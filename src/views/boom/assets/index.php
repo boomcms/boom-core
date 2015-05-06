@@ -1,4 +1,4 @@
-	<?= new View('header', ['title' =>    'Assets']); ?>
+	<?= View::make('header', ['title' =>    'Assets']); ?>
 
 	<?= $manager ?>
 

@@ -1,5 +1,5 @@
 <div id="b-assets-picker">
-    <?= new View('boom/assets/thumbs', ['assets' => []]) ?>
+    <?= View::make('boom/assets/thumbs', ['assets' => []]) ?>
 
     <section id="b-assets-picker-sidebar">
         <section id="b-assets-picker-current">
@@ -11,7 +11,7 @@
 
         <section id="b-assets-picker-upload">
             <h1>Upload Asset</h1>
-            <?= new View('boom/assets/upload') ?>
+            <?= View::make('boom/assets/upload') ?>
         </section>
 
         <section id="b-assets-picker-filter" class="ui-front">

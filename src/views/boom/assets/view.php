@@ -78,7 +78,7 @@
             </dl>
         </div>
 
-        <?= new View('boom/assets/tags', ['tags' => $asset->getTags()]) ?>
+        <?= View::make('boom/assets/tags', ['tags' => $asset->getTags()]) ?>
 
         <?php if (count($asset->getOldFiles()) > 0): ?>
             <div id="b-assets-view-files">

@@ -20,7 +20,7 @@
 
 		<div id="b-group-roles-general">
 			<p>Edit permissions related to the CMS as a whole rather than particular pages in the site tree.</p>
-			<?= new View('boom/groups/roles', ['roles' => $general_roles]) ?>
+			<?= View::make('boom/groups/roles', ['roles' => $general_roles]) ?>
 
 			<div class="b-group-roles-help">
 				<p>
@@ -67,7 +67,7 @@
 					</div>
 				</div>
 				<div>
-					<?= new View('boom/groups/roles', ['roles' => $page_roles]) ?>
+					<?= View::make('boom/groups/roles', ['roles' => $page_roles]) ?>
 				</div>
 			</div>
 			<div class="b-group-roles-help">

@@ -1,4 +1,4 @@
-<?= View::factory('boom/errors/header', ['title' => 'Gone']) ?>
+<?= View::make('boom/errors/header', ['title' => 'Gone']) ?>
 	<div id="broken" class="clearfix">
 		<div class="column">
 			<div class="warning">
@@ -7,4 +7,4 @@
 			<p>The page you requested no longer exists.</p>
 		</div>
 	</div>
-<?= View::factory('boom/errors/footer') ?>
+<?= View::make('boom/errors/footer') ?>

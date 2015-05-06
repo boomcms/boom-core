@@ -1,4 +1,4 @@
-	<?= View::factory('boom/header')->set('title', 'People') ?>
+	<?= View::make('boom/header')->set('title', 'People') ?>
 
 	<div id="b-topbar" class="b-toolbar">
 		<?= new \Boom\Menu\Menu  ?>

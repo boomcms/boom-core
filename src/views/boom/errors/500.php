@@ -1,4 +1,4 @@
-<?= View::factory('boom/errors/header', ['title' => 'Error']) ?>
+<?= View::make('boom/errors/header', ['title' => 'Error']) ?>
 	<div id="broken" class="clearfix">
 		<div class="column">
 			<div class="warning">
@@ -7,4 +7,4 @@
 			<p>We've been informed and are looking into it.</p>
 		</div>
 	</div>
-<?= View::factory('boom/errors/footer') ?>
+<?= View::make('boom/errors/footer') ?>

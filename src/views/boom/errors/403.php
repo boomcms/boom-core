@@ -1,4 +1,4 @@
-<?= View::factory('boom/errors/header', ['title' => 'Unauthorised']) ?>
+<?= View::make('boom/errors/header', ['title' => 'Unauthorised']) ?>
 	<div id="broken" class="clearfix">
 		<div class="column">
 			<div class="warning">
@@ -8,4 +8,4 @@
 			<p>This could mean that your login session has timed out, in which case you can log back in by <a href="/cms/login">clicking here</a>.</p>
 		</div>
 	</div>
-<?= View::factory('boom/errors/footer') ?>
+<?= View::make('boom/errors/footer') ?>
