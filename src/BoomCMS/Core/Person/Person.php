@@ -10,21 +10,20 @@ use Cartalyst\Sentry\Users\UserInterface;
 
 use \DB;
 use \Model_Role as Role;
-use \Model_Person;
 
 class Person implements UserInterface
 {
     const LOCK_WAIT = 600;
 
-    /**
-	 *
-	 * @var Model_Person
-	 */
-    protected $model;
+   /**
+    *
+    * @var array
+    */
+    protected $data;
 
-    public function __construct(Model_Person $model)
+    public function __construct(array $data)
     {
-        $this->model = $model;
+        $this->data = $data;
     }
 
     /**
@@ -101,7 +100,7 @@ class Person implements UserInterface
 
     public function getEmail()
     {
-        return $this->model->email;
+        return $this->data['email'];
     }
 
     public function getGroups()
@@ -115,12 +114,12 @@ class Person implements UserInterface
 
     public function getId()
     {
-        return $this->model->id;
+        return $this->data['id'];
     }
 
     public function getLockedUntil()
     {
-        return $this->model->locked_until;
+        return $this->data['locked_until'];
     }
 
     public function getLogin()
@@ -135,7 +134,7 @@ class Person implements UserInterface
 
     public function getName()
     {
-        return $this->model->name;
+        return $this->data['name'];
     }
 
     public function getPasswordName()
@@ -145,7 +144,7 @@ class Person implements UserInterface
 
     public function getPassword()
     {
-        return $this->model->password;
+        return $this->data['password'];
     }
 
     public function getPersistCode()
@@ -201,7 +200,7 @@ class Person implements UserInterface
 
     public function isEnabled()
     {
-        return (bool) $this->model->enabled;
+        return (bool) $this->data['enabled'];
     }
 
     public function isLocked()
@@ -232,7 +231,7 @@ class Person implements UserInterface
      */
     public function isValid()
     {
-        return $this->model->loaded();
+        return $this->getId() > 0;
     }
 
     public function loaded()
@@ -290,7 +289,7 @@ class Person implements UserInterface
 	 */
     public function setEmail($email)
     {
-        $this->model->email = $email;
+        $this->data['email'] = $email;
 
         return $this;
     }
@@ -302,7 +301,7 @@ class Person implements UserInterface
 	 */
     public function setEncryptedPassword($password)
     {
-        $this->model->password = $password;
+        $this->data['password'] = $password;
 
         return $this;
     }
@@ -314,7 +313,7 @@ class Person implements UserInterface
 	 */
     public function setName($name)
     {
-        $this->model->name = $name;
+        $this->data['name'] = $name;
 
         return $this;
     }
