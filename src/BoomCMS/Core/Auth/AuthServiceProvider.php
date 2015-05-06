@@ -3,28 +3,33 @@
 namespace BoomCMS\Core\Auth;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\View;
 
 class AuthServiceProvider extends ServiceProvider
 {
-	/**
-	 * Bootstrap any application services.
-	 *
-	 * @return void
-	 */
-	public function boot()
-	{
-        $this->app->singleton('boomcms.auth', function($app)
+    /**
+     * Bootstrap any application services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        $auth = new Auth($this->app['session'], $this->app['boomcms.person.provider']);
+
+        $this->app->singleton('boomcms.auth', function($app) use ($auth)
         {
-            return new Auth($app['session'], $app['boomcms.person.provider']);
+            return $auth;
         });
+
+        View::share('auth', $auth);
     }
 
-	/**
-	 *
-	 * @return void
-	 */
-	public function register()
-	{
-	}
+    /**
+     *
+     * @return void
+     */
+    public function register()
+    {
+    }
 
 }

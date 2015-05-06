@@ -1,6 +1,6 @@
 <div id="b-assets-manager">
-	<?= new \Boom\UI\MenuButton() ?>
-	<?= new \Boom\Menu\Menu  ?>
+	<?= new \BoomCMS\Core\UI\MenuButton() ?>
+	<?= new \BoomCMS\Core\Menu\Menu($auth)  ?>
 
 	<div id="b-topbar" class="b-asset-manager b-toolbar">
 		<div id="b-assets-buttons">

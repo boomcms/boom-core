@@ -5,6 +5,8 @@ namespace BoomCMS\Core\Controllers\CMS\Assets;
 use BoomCMS\Core\Controllers\Controller;
 use BoomCMS\Core\Asset\Provider;
 
+use Illuminate\Support\Facades\View;
+
 class AssetManager extends Controller
 {
     protected $perpage = 30;
@@ -13,7 +15,7 @@ class AssetManager extends Controller
 	 *
 	 * @var	string
 	 */
-    protected $viewDirectory = 'boom/assets';
+    protected $viewPrefix = 'boom::assets.';
 
     /**
 	 *
@@ -56,9 +58,9 @@ class AssetManager extends Controller
 	 */
     public function index()
     {
-        $this->template = View::factory("$this->viewDirectory/index", [
-            'manager'    =>    Request::factory('cms/assets/manager')->execute()->body(),
-            'person'    =>    $this->person,
+        return View::make($this->viewPrefix . 'index', [
+            'manager' => $this->manager(),
+            'person' => $this->person,
         ]);
     }
 
@@ -104,17 +106,17 @@ class AssetManager extends Controller
     }
 
     /**
-	 * Display the asset manager without topbar etc.
-	 *
-	 */
+    * Display the asset manager without topbar etc.
+    *
+    */
     public function manager()
     {
-        $this->template = new View("$this->viewDirectory/manager");
+        return View::make($this->viewPrefix . 'manager');
     }
 
     public function picker()
     {
-        $this->template = new View("$this->viewDirectory/picker");
+        return View::make($this->viewPrefix . 'picker');
     }
 
     public function restore()

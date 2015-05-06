@@ -1,6 +1,6 @@
 <?php
 
-namespace Boom\UI;
+namespace BoomCMS\Core\UI;
 
 use HTML;
 
@@ -46,7 +46,11 @@ class Button extends AbstractUIElement
         // Make the button text the title of the button.
         $this->attrs['title'] = $this->text;
 
-        $attrs_string = HTML::attributes($this->attrs);
+        $attrs_string = '';
+        foreach ($this->attrs as $key => $value) {
+            $attrs_string .= "$key = \"$value\"";
+        }
+
         $type = $this->type ? " b-button-icon-{$this->type}" : '';
 
         return "<button $attrs_string><span class='b-button-icon $type'></span><span class='b-button-text'>{$this->text}</span></button>";

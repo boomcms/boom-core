@@ -1,12 +1,11 @@
 <?php
 
-namespace Boom\Menu;
+namespace BoomCMS\Core\Menu;
 
-use \Arr as Arr;
-use \View as View;
+use \BoomCMS\Core\Config;
+use \BoomCMS\Core\Auth\Auth as Auth;
 
-use \Boom\Config;
-use \Boom\Auth\Auth as Auth;
+use Illuminate\Support\Facades\View;
 
 class Menu
 {
@@ -43,12 +42,13 @@ class Menu
 	 * @param	array	$data	Array of variables to be set in the menu's view.
 	 * @uses		Menu::$default
 	 */
-    public function __construct(array $data = null)
+    public function __construct(Auth $auth, array $data = null)
     {
         $config = Config::get("menu");
-        $this->viewFilename = Arr::get($config, 'view_filename');
-        $this->menuItems = (array) Arr::get($config, 'items');
+        $this->viewFilename = array_get($config, 'view_filename');
+        $this->menuItems = (array) array_get($config, 'items');
         $this->viewData = $data;
+        $this->auth = $auth;
     }
 
     /**
@@ -59,26 +59,13 @@ class Menu
         // Array of items we're going to include for this menu.
         $itemsToInclude = [];
 
-        $auth = Auth::instance();
-
         foreach ($this->menuItems as $item) {
-            if ( ! isset($item['role']) or $auth->loggedIn($item['role'])) {
+            if ( ! isset($item['role']) or $this->auth->loggedIn($item['role'])) {
                 $itemsToInclude[] = $item;
             }
         }
 
         $this->menuItems = $itemsToInclude;
-    }
-
-    /**
-	 * Generate a menu object
-	 *
-	 * @param	array	$data	Array of variables to be set in the menu's view.
-	 * @return	Menu
-	 */
-    public static function factory(array $data = null)
-    {
-        return new static($data);
     }
 
     /**
@@ -100,7 +87,7 @@ class Menu
         // Check that we've got some items to add to the menu.
         if ( ! empty($this->menuItems)) {
             // If there's a template for this section then use that, otherwise use a generic template.
-            $view = View::factory($this->viewFilename, $this->viewData);
+            $view = View::make($this->viewFilename, $this->viewData);
             $view->menu_items = $this->menuItems;
 
             return $view->render();
