@@ -24,8 +24,8 @@ class Controller_Cms_Chunk_Asset extends Controller_Cms_Chunk
     {
         $chunk = Chunk::factory('asset', $this->request->query('slotname'), $this->page);
 
-        $this->template = new View('boom/editor/slot/asset', array(
+        $this->template = new View('boom/editor/slot/asset', [
             'chunk' => $chunk,
-        ));
+        ]);
     }
 }

@@ -1,97 +1,97 @@
 <?php
 
-return array(
-    'menu'    =>    array(
+return [
+    'menu'    =>    [
         'view_filename'        =>    'boom::menu.boom',
-        'items'            =>    array(
-            'home'        =>    array(
+        'items'            =>    [
+            'home'        =>    [
                 'title'        =>    'Site',
                 'url'        =>    '/',
                 'priority'    =>    1,
-            ),
-            'pages' => array(
+            ],
+            'pages' => [
                 'title' => 'Pages',
                 'url' => '/cms/pages',
                 'priority' => 5,
                 'role' => 'manage_pages',
-            ),
-            'approvals'    =>    array(
+            ],
+            'approvals'    =>    [
                 'title'        =>    'Pages pending approval',
                 'url'        =>    '/cms/approvals',
                 'priority'    =>    10,
                 'role'        =>    'manage_approvals',
-            ),
-            'templates'    =>    array(
+            ],
+            'templates'    =>    [
                 'title'        =>    'Templates',
                 'url'        =>    '/cms/templates',
                 'role'        =>    'manage_templates',
                 'priority'    =>    6,
-            ),
-            'profile'        =>    array(
+            ],
+            'profile'        =>    [
                 'title'        =>    'Profile',
                 'url'        =>    '/cms/profile',
                 'priority'    =>    99,
-            ),
-            'logout'        =>    array(
+            ],
+            'logout'        =>    [
                 'title'        =>    'Logout',
                 'url'        =>    '/cms/logout',
                 'priority'    =>    100,
-            ),
-            'assets'    => array(
+            ],
+            'assets'    => [
                 'title'        =>    'Assets',
                 'url'        =>    '/cms/assets',
                 'role'        =>    'manage_assets',
                 'priority'    =>    3,
-            ),
-            'people'    =>    array(
+            ],
+            'people'    =>    [
                 'title'        =>    'People',
                 'url'        =>    '/cms/people',
                 'role'        =>    'manage_people',
                 'priority'    =>    4,
-            ),
-        ),
-    ),
-    'htmlpurifier' => array(
+            ],
+        ],
+    ],
+    'htmlpurifier' => [
         'AutoFormat.AutoParagraph' => true,
         'AutoFormat.RemoveEmpty.RemoveNbsp' => true,
         'AutoFormat.RemoveEmpty' => true,
         'AutoFormat.RemoveSpansWithoutAttributes' => true,
         'Core.RemoveInvalidImg' => false,
         //'Cache.SerializerPath' => \Boom\Boom::instance()->getCacheDir(),
-        'CSS.AllowedProperties' => array(),
-        'URI.AllowedSchemes' => array (
+        'CSS.AllowedProperties' => [],
+        'URI.AllowedSchemes' =>  [
             'http' => true,
             'https' => true,
             'mailto' => true,
             'tel' => true,
             'hoopdb' => true,
             'ftp' => true,
-        ),
-    ),
-    'text_editor_toolbar' => array(
-        'buttons' => array(
-            'accept' => array('Accept changes', array('data-wysihtml5-action' => '', 'class' => 'action b-editor-accept')),
-            'cancel' => array('Discard changes', array('data-wysihtml5-action' => '', 'class' => 'action b-editor-cancel')),
-            'bold' => array('Make text bold (CTRL + B)', array('data-wysihtml5-command' => 'bold', 'class' => 'action')),
-            'italic' => array('Make text italic (CTRL + I)', array('data-wysihtml5-command' => 'italic', 'class' => 'action')),
-            'list' => array('Insert an unordered list', array('data-wysihtml5-command' => 'insertUnorderedList', 'class' => 'command')),
-            'ol' => array('Insert an ordered list', array('data-wysihtml5-command' => 'insertOrderedList', 'class' => 'command')),
-            'link' => array('Insert a link', array('data-wysihtml5-command' => 'createBoomLink', 'class' => 'command')),
-            'asset' => array('Insert an asset', array('data-wysihtml5-command' => 'insertBoomAsset', 'class' => 'command')),
-            'paragraph' => array('Insert paragraph', array('data-wysihtml5-command' => 'formatBlock', 'data-wysihtml5-command-value' => 'p', 'class' => 'command')),
-            'h2' => array('Insert headline 2', array('data-wysihtml5-command' => 'formatBlock', 'data-wysihtml5-command-value' => 'h2', 'class' => 'command')),
-            'h3' => array('Insert headline 3', array('data-wysihtml5-command' => 'formatBlock', 'data-wysihtml5-command-value' => 'h3', 'class' => 'command')),
-            'blockquote' => array('Insert blockquote', array('data-wysihtml5-command' => 'formatBlock', 'data-wysihtml5-command-value' => 'blockquote', 'class' => 'command')),
-            'edit' => array('Edit link', array('class' => 'b-editor-link', 'data-wysihtml5-dialog' => 'createBoomLink', 'style' => 'display:none')),
-            'cta' => array('Call to action', array('data-wysihtml5-command' => 'cta')),
-            'sup' => array('Superscript', array('data-wysihtml5-command' => 'insertSuperscript', 'class' => 'command')),
-            'sub' => array('Subscript', array('data-wysihtml5-command' => 'insertSubscript', 'class' => 'command')),
-            'hr' => array('Insert horizontal rule', array('data-wysihtml5-command' => 'insertHorizontalRule', 'class' => 'command')),
-        ),
-        'button_sets' => array(
-            'text' => array('accept', 'cancel'),
-            'inline' => array('accept', 'cancel', 'bold', 'italic', 'link','edit'),
-            'block' => array('accept', 'cancel', 'bold', 'italic', 'list', 'ol', 'link', 'edit', 'asset', 'paragraph', 'h2', 'h3', 'blockquote'),
-        ),
-    ),
-);
+        ],
+    ],
+    'text_editor_toolbar' => [
+        'buttons' => [
+            'accept' => ['Accept changes', ['data-wysihtml5-action' => '', 'class' => 'action b-editor-accept']],
+            'cancel' => ['Discard changes', ['data-wysihtml5-action' => '', 'class' => 'action b-editor-cancel']],
+            'bold' => ['Make text bold (CTRL + B)', ['data-wysihtml5-command' => 'bold', 'class' => 'action']],
+            'italic' => ['Make text italic (CTRL + I)', ['data-wysihtml5-command' => 'italic', 'class' => 'action']],
+            'list' => ['Insert an unordered list', ['data-wysihtml5-command' => 'insertUnorderedList', 'class' => 'command']],
+            'ol' => ['Insert an ordered list', ['data-wysihtml5-command' => 'insertOrderedList', 'class' => 'command']],
+            'link' => ['Insert a link', ['data-wysihtml5-command' => 'createBoomLink', 'class' => 'command']],
+            'asset' => ['Insert an asset', ['data-wysihtml5-command' => 'insertBoomAsset', 'class' => 'command']],
+            'paragraph' => ['Insert paragraph', ['data-wysihtml5-command' => 'formatBlock', 'data-wysihtml5-command-value' => 'p', 'class' => 'command']],
+            'h2' => ['Insert headline 2', ['data-wysihtml5-command' => 'formatBlock', 'data-wysihtml5-command-value' => 'h2', 'class' => 'command']],
+            'h3' => ['Insert headline 3', ['data-wysihtml5-command' => 'formatBlock', 'data-wysihtml5-command-value' => 'h3', 'class' => 'command']],
+            'blockquote' => ['Insert blockquote', ['data-wysihtml5-command' => 'formatBlock', 'data-wysihtml5-command-value' => 'blockquote', 'class' => 'command']],
+            'edit' => ['Edit link', ['class' => 'b-editor-link', 'data-wysihtml5-dialog' => 'createBoomLink', 'style' => 'display:none']],
+            'cta' => ['Call to action', ['data-wysihtml5-command' => 'cta']],
+            'sup' => ['Superscript', ['data-wysihtml5-command' => 'insertSuperscript', 'class' => 'command']],
+            'sub' => ['Subscript', ['data-wysihtml5-command' => 'insertSubscript', 'class' => 'command']],
+            'hr' => ['Insert horizontal rule', ['data-wysihtml5-command' => 'insertHorizontalRule', 'class' => 'command']],
+        ],
+        'button_sets' => [
+            'text' => ['accept', 'cancel'],
+            'inline' => ['accept', 'cancel', 'bold', 'italic', 'link','edit'],
+            'block' => ['accept', 'cancel', 'bold', 'italic', 'list', 'ol', 'link', 'edit', 'asset', 'paragraph', 'h2', 'h3', 'blockquote'],
+        ],
+    ],
+];

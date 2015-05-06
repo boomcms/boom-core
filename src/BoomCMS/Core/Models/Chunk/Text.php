@@ -97,12 +97,12 @@ class Text extends Model
 
     public function filters()
     {
-        return array(
-            'text' => array(
-                array(function ($text) {
+        return [
+            'text' => [
+                [function ($text) {
                     return str_replace('&nbsp;', ' ', $text);
-                }),
-            ),
-        );
+                }],
+            ],
+        ];
     }
 }

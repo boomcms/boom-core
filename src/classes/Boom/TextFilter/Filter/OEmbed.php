@@ -21,7 +21,7 @@ class OEmbed implements \Boom\TextFilter\Filter
         $embera = new Embera();
 
         if ($data = $embera->getUrlInfo($text)) {
-            $table = array();
+            $table = [];
             foreach ($data as $url => $service) {
                 if ( ! empty($service['html'])) {
                     $table[$url] = $service['html'];

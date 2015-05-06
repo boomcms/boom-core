@@ -35,7 +35,7 @@ class Collection
         foreach ($this->assetIds as $id) {
             try {
                 DB::insert('assets_tags', ['asset_id', 'tag'])
-                    ->values(array($id, $tag))
+                    ->values([$id, $tag])
                     ->execute();
             } catch (\Database_Exception $e) {}
         }

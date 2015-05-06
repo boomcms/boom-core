@@ -1,7 +1,7 @@
 <?php
 
 // Contains the text for default chunks to highlight that content can be inserted.
-return array(
+return [
     'text'        =>    __('Default text.'),
     'standfirst'    =>    __('Insert standfirst here. A single sentence of around 15 words introducing the page.'),
     'bodycopy'    =>    "<p>".__('Insert the main content of the page here.')."</p>",
@@ -15,4 +15,4 @@ return array(
     'timestamp' => 'Select date and / or time.',
     'tag'    => __('Select a tag to feature here.'),
     'linkset' => __('Insert a linkset here.'),
-);
+];
