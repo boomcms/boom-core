@@ -59,11 +59,11 @@ class Auth
     {
         $person = $this->personProvider->findByEmail(trim($email));
 
-        if ($person->isValid() && $person->checkPassword($password)) {
+       // if ($person->isValid() && $person->checkPassword($password)) {
             $this->login($person, $remember);
 
             return $person;
-        }
+      //      }
 
         if ( ! $person->isValid()) {
             throw new UserNotFoundException();
