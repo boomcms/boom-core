@@ -6,6 +6,6 @@
         <meta http-equiv="Content-Style-Type" content="text/css" />
         <meta name="csrf-token" content="<?= csrf_token() ?>" />
 
-        <link rel="stylesheet" type="text/css" href="/media/boom/css/cms.css" />
+        <link rel="stylesheet" type="text/css" href="/public/boom/css/cms.css" />
     </head>
     <body>

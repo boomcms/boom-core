@@ -48,7 +48,7 @@ class Image extends Processor
 
     public function view($width = null, $height = null)
     {
-        $filename = $this->asset->exists() ? $this->asset->getFilename() : __DIR__ . '/../../../../media/boom/img/placeholder.png';
+        $filename = $this->asset->exists() ? $this->asset->getFilename() : __DIR__ . '/../../../../public/boom/img/placeholder.png';
 
         if ($width || $height) {
             $image = $this->manager->cache(function ($manager) use ($width, $height, $filename) {

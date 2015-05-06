@@ -3,7 +3,7 @@
 	<head>
 		<title>BoomCMS | <?= __('Password reset') ?></title>
 		<meta name="robots" content="noindex, nofollow" />
-		<link rel="stylesheet" type="text/css" href="/media/boom/css/cms.css" />
+		<link rel="stylesheet" type="text/css" href="/public/boom/css/cms.css" />
 	</head>
 	<body id='b-login'>
 		<div>

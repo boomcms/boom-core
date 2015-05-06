@@ -31,7 +31,7 @@ $.widget( 'boom.pageToolbar', {
 			})
 			.on('click', '#b-page-readability', function() {
 				new boomDialog({
-					url : '/media/boom/html/help/readability.html',
+					url : '/public/boom/html/help/readability.html',
 					width : 600,
 					title: 'Readability measure',
 					cancelButton : false

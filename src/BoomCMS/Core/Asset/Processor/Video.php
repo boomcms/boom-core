@@ -8,7 +8,7 @@ class Video extends Processor
     {
         return $this->response
             ->headers('Content-type', 'image/gif')
-            ->body(readfile(__DIR__.'/../../../../media/boom/img/icons/40x40/mov_icon.gif'));
+            ->body(readfile(__DIR__.'/../../../../public/boom/img/icons/40x40/mov_icon.gif'));
     }
 
     public function view($width = null, $height = null)

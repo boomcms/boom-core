@@ -8,6 +8,6 @@ class MSWord extends Processor
     {
         return $this->response
             ->headers('Content-type', 'image/jpg')
-            ->body(readfile(__DIR__.'/../../../../media/boom/img/icons/ms_word.jpg'));
+            ->body(readfile(__DIR__.'/../../../../public/boom/img/icons/ms_word.jpg'));
     }
 }
