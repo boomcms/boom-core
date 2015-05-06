@@ -44,6 +44,14 @@ class Auth
         $this->personProvider = $personProvider;
     }
 
+    /**
+     *
+     * @param type $email
+     * @param type $password
+     * @param type $remember
+     * @return Person\Person
+     * @throws UserNotFoundException
+     */
     public function authenticate($email, $password, $remember = false)
     {
         $person = $this->personProvider->findByCredentials([
@@ -56,6 +64,8 @@ class Auth
         }
 
         $this->login($person, $remember);
+
+        return $person;
     }
 
     public function logout()
