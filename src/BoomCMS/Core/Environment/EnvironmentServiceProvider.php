@@ -21,11 +21,12 @@ class EnvironmentServiceProvider extends ServiceProvider
 	 */
 	public function register()
 	{
-        $envName = ucfirst(strtolower(env('BoomCMS_ENV', 'Production')));
-        $className = 'BoomCMS\Core\Environment\\' . $envName;
+        $envName = ucfirst(strtolower($this->app->environment()));
+        $namespace = 'BoomCMS\Core\Environment\\';
+        $className = $namespace . $envName;
 
         if ( ! class_exists($className)) {
-            throw new Environment\InvalidEnvironmentException($envName);
+            $className =$namespace . 'Development';
         }
 
         $this->app->singleton('boomcms.environment', function($app) use ($className)
