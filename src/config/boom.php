@@ -2,7 +2,7 @@
 
 return array(
     'menu'    =>    array(
-        'view_filename'        =>    'menu/boom',
+        'view_filename'        =>    'boom::menu.boom',
         'items'            =>    array(
             'home'        =>    array(
                 'title'        =>    'Site',

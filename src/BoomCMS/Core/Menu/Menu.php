@@ -42,7 +42,7 @@ class Menu
 	 * @param	array	$data	Array of variables to be set in the menu's view.
 	 * @uses		Menu::$default
 	 */
-    public function __construct(Auth $auth, array $data = null)
+    public function __construct(Auth $auth, array $data = [])
     {
         $config = Config::get("menu");
         $this->viewFilename = array_get($config, 'view_filename');
