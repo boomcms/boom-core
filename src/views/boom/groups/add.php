@@ -2,7 +2,7 @@
 	<p>Please enter a name for the new group.</p>
 
 	<label>
-            <?= __('Name') ?>
+            <?= Lang::get('Name') ?>
             <input type="text" name="name" value="" />
         </label>
 </form>

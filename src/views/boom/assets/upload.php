@@ -3,15 +3,15 @@
 		<div id="b-assets-upload-container">
 			<div id="b-assets-upload-info">
 				<p>Drag and drop files here, or <a id="b-assets-upload-add" href="#"><label for="b-assets-upload-file">select files</label></a> to start uploading.</p>
-				<p class="message"><?=__('Supported file types')?>: <?= implode(', ', \Boom\Asset\Mimetype::$allowedExtensions) ?></p>
+				<p class="message"><?=Lang::get('Supported file types')?>: <?= implode(', ', \Boom\Asset\Mimetype::$allowedExtensions) ?></p>
 			</div>
 
 			<div id="b-assets-upload-progress"></div>
-			<?= new \Boom\UI\Button('cancel', __('Cancel'), array('id' => 'b-assets-upload-cancel')) ?>
+			<?= new \Boom\UI\Button('cancel', Lang::get('Cancel'), array('id' => 'b-assets-upload-cancel')) ?>
 
 			<input type="file" name="b-assets-upload-files[]" id="b-assets-upload-file" multiple min="1" max="5" />
 
-            <?= new \Boom\UI\Button('cancel', __('Close uploader'), ['id' => 'b-assets-upload-close', 'class' => 'b-button-withtext']) ?>
+            <?= new \Boom\UI\Button('cancel', Lang::get('Close uploader'), ['id' => 'b-assets-upload-close', 'class' => 'b-button-withtext']) ?>
         </div>
 	</form>
 </div>

@@ -4,5 +4,5 @@
 ?>
 <li>
 	<h3>News article title</h3>
-	<p class="paragraph"><?= __(Kohana::message('chunks', 'feature')) ?></p>
+	<p class="paragraph"><?= Lang::get(Kohana::message('chunks', 'feature')) ?></p>
 </li>

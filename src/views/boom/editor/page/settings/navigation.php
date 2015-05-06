@@ -5,22 +5,22 @@
 		<? if ($allowAdvanced): ?>
 			<ul>
 				<li>
-					<a href="#basic"><?=__('Basic')?></a>
+					<a href="#basic"><?=Lang::get('Basic')?></a>
 				</li>
 				<li>
-					<a href="#advanced"><?=__('Advanced')?></a>
+					<a href="#advanced"><?=Lang::get('Advanced')?></a>
 				</li>
 			</ul>
 		<? endif; ?>
 
 		<div id="basic">
                     <label>
-                        <?= __('Visible in navigation') ?>?
+                        <?= Lang::get('Visible in navigation') ?>?
                         <?= Form::select('visible_in_nav', array(1 => 'Yes', 0 => 'No'), $page->isVisibleInNav(), array('id' => 'visible_in_nav')) ?>
                     </label>
 			
                     <label>
-                        <?= __('Visible in CMS navigation') ?>?
+                        <?= Lang::get('Visible in CMS navigation') ?>?
                         <?= Form::select('visible_in_nav_cms', array(1 => 'Yes', 0 => 'No'), $page->isVisibleInCmsNav(), array('id' => 'visible_in_nav_cms')) ?>
                     </label>
 		</div>

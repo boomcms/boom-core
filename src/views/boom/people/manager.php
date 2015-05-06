@@ -4,20 +4,20 @@
 		<?= new \Boom\Menu\Menu  ?>
 
 		<?= new \Boom\UI\MenuButton() ?>
-		<?= new \Boom\UI\Button('add', __('New person'), array('id' => 'b-people-create')) ?>
-		<?= new \Boom\UI\Button('delete', __('Delete'), array('id' => 'b-people-multi-delete', 'disabled' => 'disabled')) ?>
+		<?= new \Boom\UI\Button('add', Lang::get('New person'), array('id' => 'b-people-create')) ?>
+		<?= new \Boom\UI\Button('delete', Lang::get('Delete'), array('id' => 'b-people-multi-delete', 'disabled' => 'disabled')) ?>
 
 		<button id="b-people-all" class="b-button">
-			<?=__('All people')?>
+			<?=Lang::get('All people')?>
 		</button>
 	</div>
 
 	<div id="b-people-manager">
 		<div id="b-groups">
 			<div id="b-groups-header">
-				<?= new \Boom\UI\Button('add', __('Add group'), array('class' => 'b-people-group-add')) ?>
+				<?= new \Boom\UI\Button('add', Lang::get('Add group'), array('class' => 'b-people-group-add')) ?>
 				<h2>
-					<?= __('Groups') ?>
+					<?= Lang::get('Groups') ?>
 				</h2>
 			</div>
 

@@ -14,29 +14,29 @@
 					</button>
 				</span>
 
-				<?= new \Boom\UI\Button('preview', __("Preview the current version of the page even if it hasn't been published"), array('id' => 'boom-page-preview', 'class' => 'b-button-preview','data-preview' => 'preview')) ?>
-				<?= new \Boom\UI\Button('options', __("Changed the template used by the page"), array('id' => 'b-page-template')) ?>
+				<?= new \Boom\UI\Button('preview', Lang::get("Preview the current version of the page even if it hasn't been published"), array('id' => 'boom-page-preview', 'class' => 'b-button-preview','data-preview' => 'preview')) ?>
+				<?= new \Boom\UI\Button('options', Lang::get("Changed the template used by the page"), array('id' => 'b-page-template')) ?>
 			</div>
 		<? endif; ?>
 
 		<? if ($auth->loggedIn('add_page', $page)): ?>
 			<div class="b-page-container">
-				<?= new \Boom\UI\Button('add', __('Add a new page as a child of the current page'), array('id' => 'b-page-addpage')) ?>
+				<?= new \Boom\UI\Button('add', Lang::get('Add a new page as a child of the current page'), array('id' => 'b-page-addpage')) ?>
 			</div>
 		<? endif; ?>
 
 		<div class="b-page-container">
 			<? if ($auth->loggedIn('edit_page', $page)): ?>
-				<?= new \Boom\UI\Button('visible', __('This page is visible. The content displayed will depend on which version of the page is published'), array('id' => 'b-page-visible', 'class' => $page->isVisible()? 'b-page-visibility ' : 'b-page-visibility ui-helper-hidden')) ?>
-				<?= new \Boom\UI\Button('invisible', __('This page is hidden regardless of whether there is a published version'), array('id' => 'b-page-invisible', 'class' => $page->isVisible()? 'b-page-visibility ui-helper-hidden' : 'b-page-visibility')) ?>
+				<?= new \Boom\UI\Button('visible', Lang::get('This page is visible. The content displayed will depend on which version of the page is published'), array('id' => 'b-page-visible', 'class' => $page->isVisible()? 'b-page-visibility ' : 'b-page-visibility ui-helper-hidden')) ?>
+				<?= new \Boom\UI\Button('invisible', Lang::get('This page is hidden regardless of whether there is a published version'), array('id' => 'b-page-invisible', 'class' => $page->isVisible()? 'b-page-visibility ui-helper-hidden' : 'b-page-visibility')) ?>
 
 				<span id="b-page-settings-menu">
-					<?= new \Boom\UI\Button('settings', __('Page settings which apply whichever version is published'), array('id' => 'boom-page-settings')) ?>
+					<?= new \Boom\UI\Button('settings', Lang::get('Page settings which apply whichever version is published'), array('id' => 'boom-page-settings')) ?>
 				</span>
 			<? endif ?>
 
 			<? if (($page->wasCreatedBy($person) || $auth->loggedIn('delete_page', $page)) && ! $page->getMptt()->is_root()): ?>
-				<?= new \Boom\UI\Button('delete', __('Delete this page'), array('id' => 'b-page-delete')) ?>
+				<?= new \Boom\UI\Button('delete', Lang::get('Delete this page'), array('id' => 'b-page-delete')) ?>
 			<? endif; ?>
 		</div>
 
@@ -48,10 +48,10 @@
 
 		<div class="b-page-container">
 			<?/*<button id="boom-page-editlive" class="ui-button boom-button" data-icon="ui-icon-boom-edit-live">
-				<?=__('Edit live')?>
+				<?=Lang::get('Edit live')?>
 			</button>*/?>
 
-			<?= new \Boom\UI\Button('view-live', __('View the page as it appears on the live site'), array('id' => 'boom-page-viewlive', 'class' => 'b-button-preview', 'data-preview' => 'disabled')) ?>
+			<?= new \Boom\UI\Button('view-live', Lang::get('View the page as it appears on the live site'), array('id' => 'boom-page-viewlive', 'class' => 'b-button-preview', 'data-preview' => 'disabled')) ?>
 		</div>
 
 		<div id="b-topbar-pagesettings">

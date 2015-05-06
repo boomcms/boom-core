@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html dir="ltr" lang="en-gb">
 	<head>
-		<title>BoomCMS | <?= __('Password reset') ?></title>
+		<title>BoomCMS | <?= Lang::get('Password reset') ?></title>
 		<meta name="robots" content="noindex, nofollow" />
 		<link rel="stylesheet" type="text/css" href="/public/boom/css/cms.css" />
 	</head>
@@ -19,19 +19,19 @@
 
 						<p>
 							<label for="password1">
-								<?= __('Enter a new password') ?>
+								<?= Lang::get('Enter a new password') ?>
 							</label>
-							<input type="password" placeholder='<?= __('Enter a new password') ?>' name="password1" required class="b-input" id="password1" />
+							<input type="password" placeholder='<?= Lang::get('Enter a new password') ?>' name="password1" required class="b-input" id="password1" />
 						</p>
 
 						<p>
 							<label for="password2">
-								<?= __('Re-enter your new password') ?>
+								<?= Lang::get('Re-enter your new password') ?>
 							</label>
-							<input type="password" placeholder='<?= __('Re-enter your new password') ?>' name="password2" required class="b-input" id="password2" />
+							<input type="password" placeholder='<?= Lang::get('Re-enter your new password') ?>' name="password2" required class="b-input" id="password2" />
 						</p>
 
-						<input type='submit' value='<?= __('Update my password') ?>' />
+						<input type='submit' value='<?= Lang::get('Update my password') ?>' />
 					<? else: ?>
 						<p>
 							Please enter your email address.
@@ -41,12 +41,12 @@
 						</p>
 						<p>
 							<label for="email">
-								<?= __('Email address') ?>
+								<?= Lang::get('Email address') ?>
 							</label>
-							<input type="email" placeholder='<?= __('Email address') ?>' name="email" required class="b-input" id="email" />
+							<input type="email" placeholder='<?= Lang::get('Email address') ?>' name="email" required class="b-input" id="email" />
 						</p>
 
-						<input type='submit' value='<?= __('Send me a reset link') ?>' />
+						<input type='submit' value='<?= Lang::get('Send me a reset link') ?>' />
 					<? endif ?>
 				</fieldset>
 			</form>

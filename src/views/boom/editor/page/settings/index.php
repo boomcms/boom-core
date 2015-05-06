@@ -34,16 +34,16 @@
 
 <? if ($auth->loggedIn('edit_page_template', $page)): ?>
 	<button id="boom-page-template" class="boom-button">
-		<?= __('Template') ?>
+		<?= Lang::get('Template') ?>
 	</button>
 <? endif; ?>
 
 <button id="boom-page-embargo" class="boom-button">
-	<?= __('Embargo') ?>
+	<?= Lang::get('Embargo') ?>
 </button>
 
 <? if ($auth->loggedIn('edit_feature_image', $page)): ?>
 	<button id="boom-page-featureimage" class="boom-button b-page-settings" data-b-page-setting="featureimage">
-		<?= __('Feature image') ?>
+		<?= Lang::get('Feature image') ?>
 	</button>
 <? endif; ?>

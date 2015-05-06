@@ -3,17 +3,17 @@
 		<? if ($allowAdvanced): ?>
 			<ul>
 				<li>
-					<a href="#basic"><?=__('Basic')?></a>
+					<a href="#basic"><?=Lang::get('Basic')?></a>
 				</li>
 				<li>
-					<a href="#advanced"><?=__('Advanced')?></a>
+					<a href="#advanced"><?=Lang::get('Advanced')?></a>
 				</li>
 			</ul>
 		<? endif; ?>
 
 		<div id="basic">
                     <label>
-                        <?=__('Default child template')?>
+                        <?=Lang::get('Default child template')?>
 
                         <select name="children_template_id" id="children_template_id">
                             <?php foreach($templates as $t): ?>
@@ -23,12 +23,12 @@
                     </label>
 
                     <?/*label>
-                        <?= __('Update existing child pages') ?>
+                        <?= Lang::get('Update existing child pages') ?>
                         <?= Form::checkbox('cascade_template', '1', false, array('id' => 'child_template_cascade')) ?>
                     </label*/?>
 
                     <label>
-                        <?=__('Child ordering policy')?>
+                        <?=Lang::get('Child ordering policy')?>
 
                         <?= Form::select('children_ordering_policy', array(
                                 'sequence'		=>	'Manual',
@@ -48,7 +48,7 @@
 		<? if ($allowAdvanced): ?>
 			<div id="advanced">
                             <label>
-                                <?=__('Children visible in nav')?>?
+                                <?=Lang::get('Children visible in nav')?>?
 
                                 <?= Form::select('children_visible_in_nav', array(
                                         1 => 'Yes',
@@ -58,12 +58,12 @@
                             </label>
 
                             <?/*label>
-                                <?= __('Update existing child pages') ?>
+                                <?= Lang::get('Update existing child pages') ?>
                                 <?= Form::checkbox('cascade[]', 'visible_in_nav', false, array('id' => 'visible_in_nav_cascade')) ?>
                             </label*/?>
 
                             <label>
-                                <?=__('Children visible in CMS nav')?>?
+                                <?=Lang::get('Children visible in CMS nav')?>?
                                 <?= Form::select('children_visible_in_nav_cms', array(
                                         1 => 'Yes',
                                         0 => 'No',
@@ -71,17 +71,17 @@
                             </label>
 
                             <?/*label>
-                                <?= __('Update existing child pages') ?>
+                                <?= Lang::get('Update existing child pages') ?>
                                 <?= Form::checkbox('cascade[]', 'visible_in_nav_cms', false, array('id' => 'visible_in_nav_cms_cascade')) ?>
                             </label*/?>
 
                             <label>
-                                <?=__('Default child URI prefix')?>
+                                <?=Lang::get('Default child URI prefix')?>
                                 <?= Form::input('children_url_prefix', $page->getChildPageUrlPrefix(), array('id' => 'children_url_prefix')) ?>
                             </label>
 
                             <label>
-                                <?=__('Default grandchild template')?>
+                                <?=Lang::get('Default grandchild template')?>
 
                                 <select name="grandchild_template_id" id="grandchild_template_id">
                                     <?php foreach($templates as $t): ?>

@@ -30,8 +30,8 @@
                                 </label>
                 
 				<div>
-					<?= new \Boom\UI\Button('accept', __('Save'), array('id' => 'b-person-save', 'class' => 'b-people-save')) ?>
-					<?= new \Boom\UI\Button('delete', __('Delete'), array('id' => 'b-person-delete')) ?>
+					<?= new \Boom\UI\Button('accept', Lang::get('Save'), array('id' => 'b-person-save', 'class' => 'b-people-save')) ?>
+					<?= new \Boom\UI\Button('delete', Lang::get('Delete'), array('id' => 'b-person-delete')) ?>
 				</div>
 			</form>
 		</div>
@@ -76,7 +76,7 @@
 				</ul>
 			<? endif ?>
 
-			<?= new \Boom\UI\Button('add', __('Add group'), array('class' => 'b-person-addgroups', 'rel' => $person->getId())) ?>
+			<?= new \Boom\UI\Button('add', Lang::get('Add group'), array('class' => 'b-person-addgroups', 'rel' => $person->getId())) ?>
 		</div>
 	</div>
 </div>

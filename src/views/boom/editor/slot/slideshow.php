@@ -62,6 +62,6 @@
 </div>
 
 <div id="b-slideshow-editor-buttons">
-    <?= new \Boom\UI\Button('delete', __('Delete slideshow'), array('id' => 'b-slideshow-editor-delete', 'class' => 'b-button-textonly')) ?>
-    <?= new \Boom\UI\Button('add', __('Add slide'), array('id' => 'b-slideshow-editor-add', 'class' => 'b-button-withtext')) ?>
+    <?= new \Boom\UI\Button('delete', Lang::get('Delete slideshow'), array('id' => 'b-slideshow-editor-delete', 'class' => 'b-button-textonly')) ?>
+    <?= new \Boom\UI\Button('add', Lang::get('Add slide'), array('id' => 'b-slideshow-editor-add', 'class' => 'b-button-withtext')) ?>
 </div>
