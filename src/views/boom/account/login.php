@@ -1,38 +1,39 @@
 <!DOCTYPE html>
 <html dir="ltr" lang="en-gb" class="boom">
 	<head>
-		<title>BoomCMS | <?= __('Login') ?></title>
+		<title>BoomCMS | <?= Lang::get('Login') ?></title>
 		<meta name="robots" content="noindex, nofollow" />
 		<link rel="stylesheet" type="text/css" href="/media/boom/css/cms.css" />
 	</head>
 	<body id='b-login'>
 		<div>
 			<form name="login-form" action="/cms/login" method="post">
-				<?= Form::hidden('csrf', Security::token()) ?>
 				<fieldset>
 					<? if (isset($login_error)): ?>
 						<p class="b-error"><?= $login_error ?></p>
 					<? endif ?>
 					<p>
 						<label for="email">
-							<?= __('Email address') ?>
+							<?= Lang::get('Email address') ?>
 						</label>
-						<input type="email" placeholder='<?= __('Email address') ?>' name="email" required id="email" value="<?= $request->query('email') ?>" />
+						<input type="email" placeholder='<?= Lang::get('Email address') ?>' name="email" required id="email" value="<?= $request->input('email') ?>" />
 					</p>
+
 					<p>
 						<label for="password">
-							<?= __('Password') ?>
+							<?= Lang::get('Password') ?>
 						</label>
-						<input type="password" placeholder='<?= __('Password') ?>' name="password" required id="password" />
+						<input type="password" placeholder='<?= Lang::get('Password') ?>' name="password" required id="password" />
 					</p>
+
 					<p>
 						<label class="b-remember-me-label">
 							<input type="checkbox" name="remember" class="b-remember-me" value='1' />
-							<?= __('Keep me signed in') ?> (<?= __('until you log out') ?>)
+							<?= Lang::get('Keep me signed in') ?> (<?= Lang::get('until you log out') ?>)
 						</label>
 					</p>
 
-					<input type='submit' value='<?= __('Login') ?>' />
+					<input type='submit' value='<?= Lang::get('Login') ?>' />
 					<a id='b-login-recover-link' href='/cms/recover'>I've forgotten my password</a>
 				</fieldset>
 			</form>

@@ -10,9 +10,9 @@ class Login extends Controller
     public function showLoginForm()
     {
         if ($this->auth->auto_login()) {
-            redirect('/');
+            $this->request->redirect('/');
         } else {
-            $this->displayLoginForm();
+            return $this->displayLoginForm();
         }
     }
 
@@ -46,6 +46,8 @@ class Login extends Controller
 
     protected function displayLoginForm()
     {
-        return view('boom::account.login');
+        return view('boom::account.login', [
+            'request' => $this->request
+        ]);
     }
 }
