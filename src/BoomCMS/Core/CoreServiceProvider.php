@@ -4,7 +4,7 @@ namespace BoomCMS\Core;
 
 use Illuminate\Support\ServiceProvider;
 
-class RoutesServiceProvider extends ServiceProvider
+class CoreServiceProvider extends ServiceProvider
 {
 	/**
 	 * Bootstrap any application services.
@@ -13,7 +13,8 @@ class RoutesServiceProvider extends ServiceProvider
 	 */
 	public function boot()
 	{
-		include __DIR__ . '/../../routes.php';
+            $this->loadViewsFrom(__DIR__ . '/../../views/boom', 'boom');
+            include __DIR__ . '/../../routes.php';
 	}
 
 	/**
