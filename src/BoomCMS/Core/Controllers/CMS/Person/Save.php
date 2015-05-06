@@ -12,11 +12,11 @@ class Controller_Cms_Person_Save extends Controller_Cms_Person
         $encPassword = $this->auth->hash($password);
 
         $this->edit_person
-            ->setName($this->request->post('name'))
-            ->setEmail($this->request->post('email'))
+            ->setName($this->request->input('name'))
+            ->setEmail($this->request->input('email'))
             ->setEncryptedPassword($encPassword)
             ->save()
-            ->addGroup(Group\Factory::byId($this->request->post('group_id')));
+            ->addGroup(Group\Factory::byId($this->request->input('group_id')));
 
         if (isset($password)) {
             $email = new Boom\Email\Newuser($this->edit_person, $password, $this->request);
@@ -26,7 +26,7 @@ class Controller_Cms_Person_Save extends Controller_Cms_Person
 
     public function action_add_group()
     {
-        foreach ($this->request->post('groups') as $groupId) {
+        foreach ($this->request->input('groups') as $groupId) {
             $group = Group\Factory::byId($groupId);
 
             $this->log("Added person {$this->person->getEmail()} to group with ID {$group->getId()}");
@@ -36,7 +36,7 @@ class Controller_Cms_Person_Save extends Controller_Cms_Person
 
     public function action_delete()
     {
-        foreach ($this->request->post('people') as $personId) {
+        foreach ($this->request->input('people') as $personId) {
             $person = Person\Factory::byId($personId);
 
             $this->log("Deleted person with email address: " . $person->getEmail());
@@ -46,7 +46,7 @@ class Controller_Cms_Person_Save extends Controller_Cms_Person
 
     public function action_remove_group()
     {
-        $group = Group\Factory::byId($this->request->post('group_id'));
+        $group = Group\Factory::byId($this->request->input('group_id'));
 
         $this->log("Edited the groups for person ".$this->edit_person->getEmail());
         $this->edit_person->removeGroup($group);
@@ -57,7 +57,7 @@ class Controller_Cms_Person_Save extends Controller_Cms_Person
         $this->log("Edited user $this->edit_person->email (ID: $this->edit_person->id) to the CMS");
 
         $this->edit_person
-            ->values($this->request->post(), ['name', 'enabled'])
+            ->values($this->request->input(), ['name', 'enabled'])
             ->update();
     }
 }

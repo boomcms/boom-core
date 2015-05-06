@@ -11,7 +11,7 @@ class Editor extends Boom\Controller
 	 */
     public function action_state()
     {
-        $state = $this->request->post('state');
+        $state = $this->request->input('state');
         $numeric_state = constant("\Boom\Editor\Editor::" . strtoupper($state));
 
         if ($numeric_state === null) {

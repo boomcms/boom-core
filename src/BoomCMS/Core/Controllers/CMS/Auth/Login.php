@@ -18,15 +18,15 @@ class Login extends Controller
 
     public function processLogin(Person\Provider $provider)
     {
-        $person = $provider->findByEmail($this->request->post('email'));
+        $person = $provider->findByEmail($this->request->input('email'));
 
         try {
-            $this->auth->authenticate($this->request->post('email'), $this->request->post('password'));
+            $this->auth->authenticate($this->request->input('email'), $this->request->input('password'));
         } catch (Exception $e) {
             $this->_log_login_success();
             $this->redirect($this->_get_redirect_url(), 303);
         }
-        if ($this->auth->login($person, $this->request->post('password'), $this->request->post('remember') == 1)) {
+        if ($this->auth->login($person, $this->request->input('password'), $this->request->input('remember') == 1)) {
             $this->_login_complete();
         } else {
             $this->_log_login_failure();

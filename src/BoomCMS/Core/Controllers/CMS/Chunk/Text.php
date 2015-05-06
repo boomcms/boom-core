@@ -11,7 +11,7 @@ class Controller_Cms_Chunk_Text extends Controller_Cms_Chunk
     protected function _save_chunk()
     {
         return $this->_model = ORM::factory("Chunk_".ucfirst($this->_type))
-            ->values($this->request->post())
+            ->values($this->request->input())
             ->set('page_vid', $this->_new_version->id)
             ->create();
     }

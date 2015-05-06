@@ -9,7 +9,7 @@ class Controller_Cms_Page_Settings_Save extends Controller_Cms_Page_Settings
         $this->log("Saved admin settings for page " . $this->page->getTitle() . " (ID: " . $this->page->getId() . ")");
 
         $this->page
-            ->setInternalName($this->request->post('internal_name'))
+            ->setInternalName($this->request->input('internal_name'))
             ->save();
     }
 
@@ -17,7 +17,7 @@ class Controller_Cms_Page_Settings_Save extends Controller_Cms_Page_Settings
     {
         parent::action_children();
 
-        $post = $this->request->post();
+        $post = $this->request->input();
 
         $this->log("Saved child page settings for page ".$this->page->getTitle()." (ID: ".$this->page->getId().")");
 
@@ -25,10 +25,10 @@ class Controller_Cms_Page_Settings_Save extends Controller_Cms_Page_Settings
 
         if ($this->allowAdvanced) {
             $this->page
-                ->setChildrenUrlPrefix($this->request->post('children_url_prefix'))
-                ->setChildrenVisibleInNav($this->request->post('children_visible_in_nav') == 1)
-                ->setChildrenVisibleInNavCms($this->request->post('children_visible_in_nav_cms') == 1)
-                ->setGrandchildTemplateId($this->request->post('grandchild_template_id'));
+                ->setChildrenUrlPrefix($this->request->input('children_url_prefix'))
+                ->setChildrenVisibleInNav($this->request->input('children_visible_in_nav') == 1)
+                ->setChildrenVisibleInNavCms($this->request->input('children_visible_in_nav_cms') == 1)
+                ->setGrandchildTemplateId($this->request->input('grandchild_template_id'));
 
 //            $cascade_expected = ['visible_in_nav', 'visible_in_nav_cms'];
         }
@@ -60,7 +60,7 @@ class Controller_Cms_Page_Settings_Save extends Controller_Cms_Page_Settings
         $this->log("Updated the feature image of page " . $this->page->getTitle() . " (ID: " . $this->page->getId() . ")");
 
         $this->page
-            ->setFeatureImageId($this->request->post('feature_image_id'))
+            ->setFeatureImageId($this->request->input('feature_image_id'))
             ->save();
     }
 
@@ -68,7 +68,7 @@ class Controller_Cms_Page_Settings_Save extends Controller_Cms_Page_Settings
     {
         parent::action_navigation();
 
-        $post = $this->request->post();
+        $post = $this->request->input();
 
         if ($this->allowAdvanced) {
             // Reparenting the page?
@@ -98,13 +98,13 @@ class Controller_Cms_Page_Settings_Save extends Controller_Cms_Page_Settings
         $this->log("Saved search settings for page " . $this->page->getTitle() . " (ID: " . $this->page->getId() . ")");
 
         $this->page
-            ->setDescription($this->request->post('description'))
-            ->setKeywords($this->request->post('keywords'));
+            ->setDescription($this->request->input('description'))
+            ->setKeywords($this->request->input('keywords'));
 
         if ($this->allowAdvanced) {
             $this->page
-                ->setExternalIndexing($this->request->post('external_indexing'))
-                ->setInternalIndexing($this->request->post('internal_indexing'));
+                ->setExternalIndexing($this->request->input('external_indexing'))
+                ->setInternalIndexing($this->request->input('internal_indexing'));
         }
 
         $this->page->save();
@@ -115,7 +115,7 @@ class Controller_Cms_Page_Settings_Save extends Controller_Cms_Page_Settings
         parent::action_children();
 
         Database::instance()->begin();
-        $this->page->updateChildSequences($this->request->post('sequences'));
+        $this->page->updateChildSequences($this->request->input('sequences'));
         Database::instance()->commit();
     }
 
@@ -125,13 +125,13 @@ class Controller_Cms_Page_Settings_Save extends Controller_Cms_Page_Settings
 
         $this->log("Updated visibility settings for page " . $this->page->getTitle() . " (ID: " . $this->page->getId() . ")");
 
-        $this->page->setVisibleAtAnyTime($this->request->post('visible') == 1);
+        $this->page->setVisibleAtAnyTime($this->request->input('visible') == 1);
 
         if ($this->page->isVisibleAtAnyTime()) {
-            $visibleTo = ($this->request->post('toggle_visible_to') == 1) ? new DateTime($this->request->post('visible_to')) : null;
+            $visibleTo = ($this->request->input('toggle_visible_to') == 1) ? new DateTime($this->request->input('visible_to')) : null;
 
             $this->page
-                ->setVisibleFrom(new DateTime($this->request->post('visible_from')))
+                ->setVisibleFrom(new DateTime($this->request->input('visible_from')))
                 ->setVisibleTo($visibleTo);
         }
 

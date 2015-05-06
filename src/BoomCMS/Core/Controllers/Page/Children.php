@@ -6,7 +6,7 @@ class Children extends Boom\Controller
 {
     public function action_json()
     {
-        $parent = \Boom\Page\Factory::byId($this->request->post('parent'));
+        $parent = \Boom\Page\Factory::byId($this->request->input('parent'));
 
         $pages = $this->_get_child_pages($parent);
         $json = $this->_format_pages_as_json($pages);

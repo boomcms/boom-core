@@ -37,7 +37,7 @@ class Controller_Cms_Page_Version_Save extends Controller_Cms_Page_Version
     {
         parent::action_embargo();
 
-        $embargoed_until = $this->request->post('embargoed_until') ? strtotime($this->request->post('embargoed_until')) : $_SERVER['REQUEST_TIME'];
+        $embargoed_until = $this->request->input('embargoed_until') ? strtotime($this->request->input('embargoed_until')) : $_SERVER['REQUEST_TIME'];
 
         $this->new_version
             ->set('pending_approval', false)
@@ -69,7 +69,7 @@ class Controller_Cms_Page_Version_Save extends Controller_Cms_Page_Version
         parent::action_template();
 
         $this->new_version
-            ->set('template_id', $this->request->post('template_id'))
+            ->set('template_id', $this->request->input('template_id'))
             ->create()
             ->copy_chunks($this->old_version);
 
@@ -78,10 +78,10 @@ class Controller_Cms_Page_Version_Save extends Controller_Cms_Page_Version
 
     public function action_title()
     {
-        $this->new_version->set('title', $this->request->post('title'));
+        $this->new_version->set('title', $this->request->input('title'));
 
         if ($this->new_version->changed('title') && $this->old_version->title == 'Untitled' && ! $this->page->getMptt()->is_root()) {
-            $location = \Boom\Page\URL::fromTitle($this->page->parent()->url()->location, $this->request->post('title'));
+            $location = \Boom\Page\URL::fromTitle($this->page->parent()->url()->location, $this->request->input('title'));
             $url = \Boom\Page\URL::createPrimary($location, $this->page->getId());
 
             // Put the page's new URL in the response body so that the JS will redirect to the new URL.

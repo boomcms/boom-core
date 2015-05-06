@@ -54,7 +54,7 @@ class Templates extends Controller
 
     public function action_save()
     {
-        $post = $this->request->post();
+        $post = $this->request->input();
         $template_ids = $post['templates'];
 
         $errors = [];

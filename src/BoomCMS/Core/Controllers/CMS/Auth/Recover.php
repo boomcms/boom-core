@@ -7,7 +7,7 @@ class Controller_Cms_Auth_Recover extends Controller_Cms_Auth
 {
     public function action_create_token()
     {
-        $person = Person\Factory::byEmail($this->request->post('email'));
+        $person = Person\Factory::byEmail($this->request->input('email'));
 
         if ( ! $person->loaded() || ! $person->isEnabled()) {
             $this->_display_form(['error' => Kohana::message('auth', 'recover.errors.invalid_email')]);
@@ -61,18 +61,18 @@ class Controller_Cms_Auth_Recover extends Controller_Cms_Auth
             return;
         }
 
-        if ($this->request->post('password1') && $this->request->post('password2')) {
-            if ( ! Security::check($this->request->post('csrf'))) {
+        if ($this->request->input('password1') && $this->request->input('password2')) {
+            if ( ! Security::check($this->request->input('csrf'))) {
                 throw new HTTP_Exception_500();
             }
 
-            if ($this->request->post('password1') != $this->request->post('password2')) {
+            if ($this->request->input('password1') != $this->request->input('password2')) {
                 $this->_display_form(['error' => Kohana::message('auth', 'recover.errors.password_mismatch')]);
 
                 return;
             }
 
-            $hashed_password = $this->auth->hash($this->request->post('password1'));
+            $hashed_password = $this->auth->hash($this->request->input('password1'));
 
             $token->person
                 ->set('password', $hashed_password)

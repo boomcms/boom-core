@@ -62,7 +62,7 @@ class Controller_Cms_Assets_Upload extends Controller_Cms_Assets
 
     public function action_replace()
     {
-        $asset = new Model_Asset($this->request->post('asset_id'));
+        $asset = new Model_Asset($this->request->input('asset_id'));
 
         $filename = Arr::pluck($_FILES, 'tmp_name');
         $filename = $filename[0][0];

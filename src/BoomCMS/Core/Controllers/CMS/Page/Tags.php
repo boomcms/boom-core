@@ -13,7 +13,7 @@ class Controller_Cms_Page_Tags extends Controller_Cms_Page
 
     public function action_add()
     {
-        $tag = TagFactory::findOrCreateByNameAndGroup($this->request->post('tag'), $this->request->post('group'));
+        $tag = TagFactory::findOrCreateByNameAndGroup($this->request->input('tag'), $this->request->input('group'));
         $this->page->addTag($tag);
     }
 
@@ -36,7 +36,7 @@ class Controller_Cms_Page_Tags extends Controller_Cms_Page
 
     public function action_remove()
     {
-        $tag = TagFactory::byId($this->request->post('tag'));
+        $tag = TagFactory::byId($this->request->input('tag'));
         $this->page->removeTag($tag);
     }
 }

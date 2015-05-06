@@ -18,7 +18,7 @@ class Profile extends Boom\Controller
 
     public function action_save()
     {
-        extract($this->request->post());
+        extract($this->request->input());
 
         $name && $this->person->setName($name);
 

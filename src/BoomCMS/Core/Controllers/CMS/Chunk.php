@@ -70,7 +70,7 @@ class Controller_Cms_Chunk extends Boom\Controller
 
         $this->_new_version
             ->create()
-            ->copy_chunks($old_version, [$this->_type => [$this->request->post('slotname')]]);
+            ->copy_chunks($old_version, [$this->_type => [$this->request->input('slotname')]]);
     }
 
     protected function _preview_chunk() {}
@@ -78,7 +78,7 @@ class Controller_Cms_Chunk extends Boom\Controller
     protected function _save_chunk()
     {
         return $this->_model = ORM::factory("Chunk_".ucfirst($this->_type))
-            ->values($this->request->post())
+            ->values($this->request->input())
             ->set('page_vid', $this->_new_version->id)
             ->create();
     }

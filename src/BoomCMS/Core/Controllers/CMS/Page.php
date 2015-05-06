@@ -27,8 +27,8 @@ class Page extends CMS
         $this->authorization('add_page', $this->page);
 
         $creator = new \Boom\Page\Creator($this->page, $this->person);
-        $creator->setTemplateId($this->request->post('template_id'));
-        $creator->setTitle($this->request->post('title'));
+        $creator->setTemplateId($this->request->input('template_id'));
+        $creator->setTitle($this->request->input('title'));
         $new_page = $creator->execute();
 
         // Add a default URL.
@@ -78,7 +78,7 @@ class Page extends CMS
                 ->addCommand(new Delete\FromFeatureBoxes())
                 ->addCommand(new Delete\FromLinksets());
 
-            ($this->request->post('with_children') == 1) && $commander->addCommand(new Delete\Children());
+            ($this->request->input('with_children') == 1) && $commander->addCommand(new Delete\Children());
 
             $commander->addCommand(new Delete\FlagDeleted());
             $commander->execute();

@@ -39,7 +39,7 @@ class Assets extends Controller
 
     public function action_delete()
     {
-        $assetIds = array_unique((array) $this->request->post('assets'));
+        $assetIds = array_unique((array) $this->request->input('assets'));
 
         foreach ($assetIds as $assetId) {
             $asset = Asset\Factory::byId($assetId);
@@ -72,15 +72,15 @@ class Assets extends Controller
     {
         $finder = new AssetFinder();
         $finder
-            ->addFilter(new \Boom\Asset\Finder\Filter\Tag($this->request->post('tag')))
-            ->addFilter(new \Boom\Asset\Finder\Filter\TitleContains($this->request->post('title')))
-            ->addFilter(new \Boom\Asset\Finder\Filter\Type($this->request->post('type')));
+            ->addFilter(new \Boom\Asset\Finder\Filter\Tag($this->request->input('tag')))
+            ->addFilter(new \Boom\Asset\Finder\Filter\TitleContains($this->request->input('title')))
+            ->addFilter(new \Boom\Asset\Finder\Filter\Type($this->request->input('type')));
 
         $column = 'last_modified';
         $order = 'desc';
 
-        if (strpos($this->request->post('sortby'), '-' ) > 1) {
-            list($column, $order) = explode('-', $this->request->post('sortby'));
+        if (strpos($this->request->input('sortby'), '-' ) > 1) {
+            list($column, $order) = explode('-', $this->request->input('sortby'));
         }
 
         $finder->setOrderBy($column, $order);
@@ -90,8 +90,8 @@ class Assets extends Controller
         if ($count === 0) {
             $this->template = new View("$this->viewDirectory/none_found");
         } else {
-            $page = max(1, $this->request->post('page'));
-            $perpage = max($this->perpage, $this->request->post('perpage'));
+            $page = max(1, $this->request->input('page'));
+            $perpage = max($this->perpage, $this->request->input('perpage'));
             $pages = ceil($count / $perpage);
 
             $assets = $finder
@@ -151,11 +151,11 @@ class Assets extends Controller
         }
 
         $this->asset
-            ->setTitle($this->request->post('title'))
-            ->setDescription($this->request->post('description'))
-            ->setVisiblefrom(new DateTime($this->request->post('visible_from')))
-            ->setCredits($this->request->post('credits'))
-            ->setThumbnailAssetId($this->request->post('thumbnail_asset_id'))
+            ->setTitle($this->request->input('title'))
+            ->setDescription($this->request->input('description'))
+            ->setVisiblefrom(new DateTime($this->request->input('visible_from')))
+            ->setCredits($this->request->input('credits'))
+            ->setThumbnailAssetId($this->request->input('thumbnail_asset_id'))
             ->save();
     }
 

@@ -20,13 +20,13 @@ class Controller_Cms_Assets_Tags extends Controller_Cms_Assets
 
     public function action_add()
     {
-        $collection = new Asset\Collection($this->request->post('assets'));
-        $collection->addTag($this->request->post('tag'));
+        $collection = new Asset\Collection($this->request->input('assets'));
+        $collection->addTag($this->request->input('tag'));
     }
 
     public function action_remove()
     {
-        $collection = new Asset\Collection($this->request->post('assets'));
-        $collection->removeTag($this->request->post('tag'));
+        $collection = new Asset\Collection($this->request->input('assets'));
+        $collection->removeTag($this->request->input('tag'));
     }
 }

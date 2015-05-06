@@ -114,7 +114,7 @@ Route::set('asset_upload', 'cms/assets/upload')
 			}
 			else
 			{
-				if ($request->post('asset_id'))
+				if ($request->input('asset_id'))
 				{
 					$params['action'] = 'replace';
 				}
