@@ -5,6 +5,14 @@ namespace BoomCMS\Core\Page;
 use Boom\Model\Page as Model;
 use Boom\Page\Finder;
 
+/**
+ * TODO: Need to not return deleted / invisible pages by default with option to show a hidden page.
+ *
+ * This should probably be done by providing an editor instance to the consuctor
+ * with a boolean flag to change whether hidden pages are returned.
+ *
+ */
+
 class Provider
 {
     public function findById($id)
