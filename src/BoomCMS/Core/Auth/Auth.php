@@ -3,7 +3,6 @@
 namespace BoomCMS\Core\Auth;
 
 use \Cookie as Cookie;
-use \DB as DB;
 use \Model_Role as Role;
 
 use BoomCMS\Core\Person;
@@ -49,9 +48,9 @@ class Auth
 
     /**
      *
-     * @param type $email
-     * @param type $password
-     * @param type $remember
+     * @param  type                  $email
+     * @param  type                  $password
+     * @param  type                  $remember
      * @return Person\Person
      * @throws UserNotFoundException
      */

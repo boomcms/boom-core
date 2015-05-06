@@ -16,8 +16,7 @@ class AuthServiceProvider extends ServiceProvider
     {
         $auth = new Auth($this->app['session'], $this->app['boomcms.person.provider'], new PermissionsProvider());
 
-        $this->app->singleton('boomcms.auth', function($app) use ($auth)
-        {
+        $this->app->singleton('boomcms.auth', function ($app) use ($auth) {
             return $auth;
         });
 

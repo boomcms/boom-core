@@ -20,6 +20,6 @@ abstract class Factory
     {
         $className = "Boom\\Template\\" . ucfirst($template->filename);
 
-        return (class_exists($className))? new $className($template) : new Template($template);
+        return (class_exists($className)) ? new $className($template) : new Template($template);
     }
 }

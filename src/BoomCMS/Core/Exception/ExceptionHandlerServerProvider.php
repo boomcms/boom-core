@@ -5,7 +5,7 @@ namespace BoomCMS\Core\Exception;
 use BoomCMS\Core\Exception\Handler as ExceptionHandler;
 use Exception;
 
-class ExceptionHandlerServiceProvider
+class ExceptionHandlerServerProvider
 {
     /**
      * Bootstrap any application services.
@@ -17,7 +17,7 @@ class ExceptionHandlerServiceProvider
         $environment = $this->app['boomcms.environment'];
 
         if ($environment->registerExceptionHandler()) {
-            set_exception_handler(function(Exception $e) {
+            set_exception_handler(function (Exception $e) {
                 $handler = new ExceptionHandler();
                 $handler->handle($e);
             });

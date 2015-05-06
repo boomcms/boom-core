@@ -48,11 +48,11 @@ class Tag
     {
         return $this->model->loaded();
     }
-    
+
     public function save()
     {
         $this->model->save();
-        
+
         return $this;
     }
 

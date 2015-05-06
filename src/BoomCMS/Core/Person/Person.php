@@ -3,12 +3,10 @@
 namespace BoomCMS\Core\Person;
 
 use Boom\Group;
-use Boom\Page\Page;
 
 use Hautelook\Phpass\PasswordHash;
 
 use \DB;
-use \Model_Role as Role;
 
 class Person
 {
@@ -27,7 +25,7 @@ class Person
 
     /**
      *
-     * @param GroupInterface   $group
+     * @param  GroupInterface      $group
      * @return \Boom\Person\Person
      */
     public function addGroup(GroupInterface $group)
@@ -57,7 +55,7 @@ class Person
 
     /**
      *
-     * @param type $persistCode
+     * @param  type    $persistCode
      * @return boolean
      */
     public function checkPersistCode($persistCode)
@@ -67,7 +65,7 @@ class Person
 
     public function get($key)
     {
-        return isset($this->data[$key])? $this->data[$key] : null;
+        return isset($this->data[$key]) ? $this->data[$key] : null;
     }
 
     public function getEmail()
@@ -148,7 +146,7 @@ class Person
 
     /**
      *
-     * @param GroupInterface $group
+     * @param  GroupInterface      $group
      * @return \Boom\Person\Person
      */
     public function removeGroup(GroupInterface $group)

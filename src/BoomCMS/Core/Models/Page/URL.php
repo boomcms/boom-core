@@ -4,7 +4,7 @@ namespace BoomCMS\Core\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Page_URL extends Model
+class URL extends Model
 {
     protected $_belongs_to = ['page' => ['foreign_key' => 'page_id']];
     protected $_table_columns = [

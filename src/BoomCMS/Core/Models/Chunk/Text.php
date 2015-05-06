@@ -61,7 +61,7 @@ class Text extends Model
                 ->addFilter(new Filter\UnmungeInternalLinks());
 
             $this->site_text = $commander->filterText($this->_object['text']);
-        } else if ($this->slotname !== 'standfirst') {
+        } elseif ($this->slotname !== 'standfirst') {
             $commander = new TextFilter();
             $commander->addFilter(new Filter\OEmbed());
 

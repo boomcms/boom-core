@@ -23,8 +23,7 @@ class PersonServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton('boomcms.person.provider', function($app)
-        {
+        $this->app->singleton('boomcms.person.provider', function ($app) {
             return new Provider();
         });
     }

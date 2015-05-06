@@ -13,7 +13,7 @@ class OEmbed implements \Boom\TextFilter\Filter
      *      * It doesn't appear within double or single quotes (' or ").
      *      * Doesn't have a closing anchor tag after it (</a>).
      *
-     * @param string $text
+     * @param  string $text
      * @return string
      */
     public function filterText($text)

@@ -24,8 +24,8 @@ class ProcessSiteURL
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+     * @param  \Illuminate\Http\Request $request
+     * @param  \Closure                 $next
      * @return mixed
      */
     public function handle(Request $request, Closure $next)
@@ -34,15 +34,15 @@ class ProcessSiteURL
         $page = $this->pageProvider->findByUri($request->path());
 
          if ( ! $page->loaded()) {
-             throw new NotFoundHttpException;
+             throw new NotFoundHttpException();
          }
 
         if ($page->isDeleted()) {
-            throw new GoneHttpException;
+            throw new GoneHttpException();
         }
 
         if ($this->editor->isDisabled() && ! $page->isVisible()) {
-            throw new NotFoundHttpException;
+            throw new NotFoundHttpException();
         }
 
         if ($page->url()->location !== $request->path) {

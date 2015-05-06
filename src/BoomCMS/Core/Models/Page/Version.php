@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use \Boom\Auth\Auth as Auth;
 use \Boom\Editor\Editor as Editor;
 
-class Page_Version extends Model
+class Version extends Model
 {
     protected $_belongs_to = [
         'template'        =>    ['model' => 'Template', 'foreign_key' => 'template_id'],

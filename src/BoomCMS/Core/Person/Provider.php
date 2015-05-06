@@ -28,7 +28,7 @@ class Provider
     {
         $model = Model::where($key, '=', $value)->first();
 
-        return $model? $this->findAndCache($model) : new Guest();
+        return $model ? $this->findAndCache($model) : new Guest();
     }
 
     public function findByActivationCode($code)
@@ -62,6 +62,6 @@ class Provider
      */
     public function getEmptyUser()
     {
-        return new Guest;
+        return new Guest();
     }
 }

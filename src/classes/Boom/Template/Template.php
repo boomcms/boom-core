@@ -7,7 +7,6 @@ use \Kohana as Kohana;
 use \Model_Template;
 use \View;
 use Request;
-use DB;
 
 /**
  * Base template class.
@@ -30,7 +29,7 @@ class Template
      *
      * @var View
      */
-    protected$view;
+    protected ;
 
     /**
 	 *
@@ -42,7 +41,7 @@ class Template
      * An array of tag groups which would usually be applied to pages using this template.
      *
      * These groups will appear in the page tag editor even if no tags in the group are applied to the page.
-     * 
+     *
      *
      * @var array
      */
@@ -56,10 +55,10 @@ class Template
 
     /**
      * Dispay a page as HTML.
-     * 
+     *
      *
      * @param \Boom\Page\Page $page
-     * @param Request $request
+     * @param Request         $request
      */
     public function asHtml(Page\Page $page, Request $request, \Response $response)
     {
@@ -72,7 +71,7 @@ class Template
      * Dispay a page as JSON
      *
      * @param \Boom\Page\Page $page
-     * @param Request $request
+     * @param Request         $request
      */
     public function asJson(Page\Page $page, Request $request)
     {
@@ -91,10 +90,10 @@ class Template
     /**
      *  Dispay a page as RSS
      *
-     * 
-     * @param \Boom\Page\Page $page
-     * @param Request $request
-     * @param \Boom\Template\Response $response
+     *
+     * @param  \Boom\Page\Page         $page
+     * @param  Request                 $request
+     * @param  \Boom\Template\Response $response
      * @return string
      */
     public function asRss(Page\Page $page, Request $request, \Response $response)
@@ -214,9 +213,9 @@ class Template
 
     /**
      * Called after a chunk is saved.
-     * 
+     *
      * @param \Boom\Page\Page $page
-     * @param type $chunk
+     * @param type            $chunk
      */
     public function onPageChunkSave(Page\Page $page, $chunk) {}
 

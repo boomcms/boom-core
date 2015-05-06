@@ -32,7 +32,7 @@ class Internal extends Link
             $this->page = Page\Factory::byId($link);
         } else {
             $location = ($link === '/') ? '' : substr($link, 1);
-            
+
             // Extract the query string and fragement
             $this->queryString = parse_url($link, PHP_URL_QUERY);
             $this->urlFragment = parse_url($link, PHP_URL_FRAGMENT);

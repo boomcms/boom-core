@@ -82,7 +82,7 @@ class Text extends \Boom\Chunk
      *
      * This is useful as a way of setting some text which describes to editors what the text chunk is intended to be used for.
      *
-     * @param string $text
+     * @param  string           $text
      * @return \Boom\Chunk\Text
      */
     public function setDefaultText($text)

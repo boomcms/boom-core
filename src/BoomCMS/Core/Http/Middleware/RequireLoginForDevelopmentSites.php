@@ -22,14 +22,13 @@ class RequireLoginForDevelopmentSites
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+     * @param  \Illuminate\Http\Request $request
+     * @param  \Closure                 $next
      * @return mixed
      */
     public function handle($request, Closure $next)
     {
-        if ($this->environment->requiresLogin())
-        {
+        if ($this->environment->requiresLogin()) {
             // TODO: check HTTP response code - needs to be 401.
             return new RedirectResponse(route('login'));
         }

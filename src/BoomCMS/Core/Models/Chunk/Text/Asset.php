@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
  * When a text chunk is saved regular expressions are used to find links to CMS assets.
  * Recording these allows us to show in the asset manager where an asset is used.
  */
-class Text_Asset extends Model
+class Asset extends Model
 {
     protected $_primary_key = null;
     protected $_belongs_to = ['asset' => []];

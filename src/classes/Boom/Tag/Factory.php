@@ -24,7 +24,7 @@ abstract class Factory
     public static function findOrCreateByNameAndGroup($name, $group = null)
     {
         // Ensure group is null if an empty string is passed.
-        $group = $group?: null;
+        $group = $group ?: null;
 
         $model = new Model_Tag(['name' => $name, 'group' => $group]);
 

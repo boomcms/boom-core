@@ -12,7 +12,7 @@ abstract class Config
             static::$config = static::load();
         }
 
-        return isset(static::$config[$key])? static::$config[$key] : null;
+        return isset(static::$config[$key]) ? static::$config[$key] : null;
     }
 
     protected static function load()

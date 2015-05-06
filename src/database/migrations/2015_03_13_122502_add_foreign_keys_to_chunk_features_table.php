@@ -3,35 +3,32 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class AddForeignKeysToChunkFeaturesTable extends Migration {
-
-	/**
+class AddForeignKeysToChunkFeaturesTable extends Migration
+{
+    /**
 	 * Run the migrations.
 	 *
 	 * @return void
 	 */
-	public function up()
-	{
-		Schema::table('chunk_features', function(Blueprint $table)
-		{
-			$table->foreign('page_vid', 'chunk_features_ibfk_2')->references('id')->on('page_versions')->onUpdate('CASCADE')->onDelete('CASCADE');
-			$table->foreign('page_vid', 'chunk_features_ibfk_1')->references('id')->on('page_versions')->onUpdate('CASCADE')->onDelete('CASCADE');
-		});
-	}
+    public function up()
+    {
+        Schema::table('chunk_features', function (Blueprint $table) {
+            $table->foreign('page_vid', 'chunk_features_ibfk_2')->references('id')->on('page_versions')->onUpdate('CASCADE')->onDelete('CASCADE');
+            $table->foreign('page_vid', 'chunk_features_ibfk_1')->references('id')->on('page_versions')->onUpdate('CASCADE')->onDelete('CASCADE');
+        });
+    }
 
-
-	/**
+    /**
 	 * Reverse the migrations.
 	 *
 	 * @return void
 	 */
-	public function down()
-	{
-		Schema::table('chunk_features', function(Blueprint $table)
-		{
-			$table->dropForeign('chunk_features_ibfk_2');
-			$table->dropForeign('chunk_features_ibfk_1');
-		});
-	}
+    public function down()
+    {
+        Schema::table('chunk_features', function (Blueprint $table) {
+            $table->dropForeign('chunk_features_ibfk_2');
+            $table->dropForeign('chunk_features_ibfk_1');
+        });
+    }
 
 }

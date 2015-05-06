@@ -4,7 +4,6 @@ namespace BoomCMS\Core\Http\Middleware;
 
 use Closure;
 use BoomCMS\Core\Auth\Auth;
-use Illuminate\Http\RedirectResponse;
 
 class DisableHttpCacheIfLoggedIn
 {
@@ -22,8 +21,8 @@ class DisableHttpCacheIfLoggedIn
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+     * @param  \Illuminate\Http\Request $request
+     * @param  \Closure                 $next
      * @return mixed
      */
     public function handle($request, Closure $next)

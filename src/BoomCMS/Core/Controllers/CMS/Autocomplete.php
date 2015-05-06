@@ -86,7 +86,7 @@ class Autocomplete extends Boom\Controller
 	 */
     public function page_tags()
     {
-        $group = $this->request->query('group')?: null;
+        $group = $this->request->query('group') ?: null;
 
         // Build a query to find tags matching on path.
         $query = DB::select('tags.name', 'tags.id')

@@ -42,7 +42,6 @@ class PermissionsProvider
         return (bool) $result;
     }
 
-
     public function lookupPermission(Person\Person $person, $role)
     {
         return (bool) $this->doLookup($person->getId(), $role, 0);

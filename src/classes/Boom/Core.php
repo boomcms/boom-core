@@ -55,7 +55,7 @@ abstract class Boom_Core
                 exit;
             }
 
-            $params['format'] = isset($params['format'])? $params['format'] : Boom::page_format($request);
+            $params['format'] = isset($params['format']) ? $params['format'] : Boom::page_format($request);
             $params['controller'] = 'Page_' . ucfirst(strtolower($params['format']));
             $params['action'] = 'show';
             $params['page'] = $page;

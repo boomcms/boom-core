@@ -18,7 +18,7 @@ class PDF extends Processor
             if ($width || $height) {
                 $image->resizeImage($width, $height, Imagick::FILTER_UNDEFINED, 1);
             }
-            
+
             $image = $image->getImageBlob();
             Kohana::cache($cacheKey, $image);
         }

@@ -16,7 +16,8 @@ class UnmungeAssetEmbeds implements \Boom\TextFilter\Filter
         return $text;
     }
 
-    protected function _unmunge_new_style_image_embeds($text) {
+    protected function _unmunge_new_style_image_embeds($text)
+    {
         return preg_replace('|{image://(.*?)}|', '<img src="/asset/view/$1" />', $text);
     }
 

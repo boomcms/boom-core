@@ -13,7 +13,7 @@ use Request;
 /**
  * Exception handler which doesn't output any debugging information
  */
-class Priv extends Handler
+class Handler extends Handler
 {
     public function execute()
     {

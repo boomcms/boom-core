@@ -20,7 +20,7 @@ class Controller_Cms_Page_Tags extends Controller_Cms_Page
     public function listTags()
     {
         $tags = $this->page->getGroupedTags();
-        $freeTags = isset($tags[''])? $tags[''] : array();
+        $freeTags = isset($tags['']) ? $tags[''] : array();
         unset($tags['']);
 
         $groupSuggestions = $this->page->getTemplate()->getTagGroupSuggestions();
@@ -29,7 +29,7 @@ class Controller_Cms_Page_Tags extends Controller_Cms_Page
 
         $this->template = new View("boom/editor/page/settings/tags", [
             'tags' => $tags,
-            'freeTags' => isset($freeTags)? $freeTags : array(),
+            'freeTags' => isset($freeTags) ? $freeTags : array(),
             'groups' => $groupSuggestions,
         ]);
     }

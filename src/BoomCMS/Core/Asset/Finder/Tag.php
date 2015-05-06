@@ -23,13 +23,13 @@ class Tag extends \Boom\Finder\Filter
 
     public function execute(\ORM $query)
     {
-        $op = (is_array($this->_tags))? 'IN' : '=';
+        $op = (is_array($this->_tags)) ? 'IN' : '=';
 
         $query
             ->join('assets_tags', 'inner')
             ->on('assets_tags.asset_id', '=', 'asset.id')
             ->where('assets_tags.tag', $op, $this->_tags);
-        
+
         if (is_array($this->_tags)) {
             $query
                 ->group_by("tag")

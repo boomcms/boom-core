@@ -10,7 +10,7 @@ class Html extends \Boom\Controller\Page
 {
     /**
      *
-     * @var array 
+     * @var array
      */
     private $chunks;
 

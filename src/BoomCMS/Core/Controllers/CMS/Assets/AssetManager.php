@@ -3,7 +3,6 @@
 namespace BoomCMS\Core\Controllers\CMS\Assets;
 
 use BoomCMS\Core\Controllers\Controller;
-use BoomCMS\Core\Asset\Provider;
 
 use Illuminate\Support\Facades\View;
 

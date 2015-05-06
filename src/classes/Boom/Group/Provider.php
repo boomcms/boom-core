@@ -8,7 +8,7 @@ class Provider implements ProviderInterface
 {
     public function create(array $attributes)
     {
-        
+
     }
 
     public function findAll()

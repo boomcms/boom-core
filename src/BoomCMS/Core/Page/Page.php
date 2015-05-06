@@ -181,7 +181,7 @@ class Page
 	 */
     public function getKeywords()
     {
-        return isset($this->data['keywords'])? $this->data['keywords'] : ';';
+        return isset($this->data['keywords']) ? $this->data['keywords'] : ';';
     }
 
     /**

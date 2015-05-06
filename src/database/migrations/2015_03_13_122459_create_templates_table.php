@@ -3,33 +3,31 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreateTemplatesTable extends Migration {
-
-	/**
+class CreateTemplatesTable extends Migration
+{
+    /**
 	 * Run the migrations.
 	 *
 	 * @return void
 	 */
-	public function up()
-	{
-		Schema::create('templates', function(Blueprint $table)
-		{
-			$table->boolean('id')->primary();
-			$table->string('name', 100);
-			$table->text('description', 65535)->nullable();
-			$table->string('filename', 25);
-		});
-	}
+    public function up()
+    {
+        Schema::create('templates', function (Blueprint $table) {
+            $table->boolean('id')->primary();
+            $table->string('name', 100);
+            $table->text('description', 65535)->nullable();
+            $table->string('filename', 25);
+        });
+    }
 
-
-	/**
+    /**
 	 * Reverse the migrations.
 	 *
 	 * @return void
 	 */
-	public function down()
-	{
-		Schema::drop('templates');
-	}
+    public function down()
+    {
+        Schema::drop('templates');
+    }
 
 }

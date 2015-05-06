@@ -6,21 +6,21 @@ use Illuminate\Support\ServiceProvider;
 
 class EnvironmentServiceProvider extends ServiceProvider
 {
-	/**
+    /**
 	 * Bootstrap any application services.
 	 *
 	 * @return void
 	 */
-	public function boot()
-	{
+    public function boot()
+    {
     }
 
-	/**
+    /**
 	 *
 	 * @return void
 	 */
-	public function register()
-	{
+    public function register()
+    {
         $envName = ucfirst(strtolower($this->app->environment()));
         $namespace = 'BoomCMS\Core\Environment\\';
         $className = $namespace . $envName;
@@ -29,12 +29,11 @@ class EnvironmentServiceProvider extends ServiceProvider
             $className =$namespace . 'Development';
         }
 
-        $this->app->singleton('boomcms.environment', function($app) use ($className)
-        {
-            return new $className;
+        $this->app->singleton('boomcms.environment', function ($app) use ($className) {
+            return new $className();
         });
 
         $this->app->bind('BoomCMS\Core\Environment\Environment', $className);
-	}
+    }
 
 }

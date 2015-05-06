@@ -26,8 +26,6 @@ class Page extends Controller
     {
         parent::before();
 
-        
-
         $this->page = $this->request->param('page');
         $this->template = $this->page->getTemplate();
         $this->editable = $this->_page_should_be_editable();

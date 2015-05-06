@@ -36,7 +36,7 @@ class Link extends Model
 
     public function getTitle()
     {
-        return $this->title?: $this->getLink()->getTitle();
+        return $this->title ?: $this->getLink()->getTitle();
     }
 
     public function isInternal()
