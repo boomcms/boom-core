@@ -13,7 +13,7 @@ class Profile extends Boom\Controller
         parent::before();
     }
 
-    public function action_show()
+    public function show()
     {
         Kohana::$profiling = true;
 

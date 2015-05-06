@@ -14,7 +14,7 @@ class Pages extends Controller
         $this->authorization('manage_pages');
     }
 
-    public function action_index()
+    public function index()
     {
         $finder = new Page\Finder();
         $finder->addFilter(new Page\Finder\Filter\ParentId(null));

@@ -22,7 +22,7 @@ class Page extends CMS
         $this->page = \Boom\Page\Factory::byId($this->request->param('id'));
     }
 
-    public function action_add()
+    public function add()
     {
         $this->authorization('add_page', $this->page);
 
@@ -48,7 +48,7 @@ class Page extends CMS
         ]));
     }
 
-    public function action_delete()
+    public function delete()
     {
         if ( ! ($this->page->wasCreatedBy($this->person) || $this->auth->loggedIn('delete_page', $this->page) || $this->auth->loggedIn('manage_pages')) || $this->page->isRoot()) {
             throw new HTTP_Exception_403();
@@ -85,7 +85,7 @@ class Page extends CMS
         }
     }
 
-    public function action_discard()
+    public function discard()
     {
         $commander = new Page\Commander($this->page);
         $commander->addCommand(new Page\Command\Delete\Drafts());
@@ -97,12 +97,12 @@ class Page extends CMS
 	 *
 	 * @uses	Model_Page::stash()
 	 */
-    public function action_stash()
+    public function stash()
     {
         $this->page->stash();
     }
 
-    public function action_urls()
+    public function urls()
     {
         $this->template = new View("$this->viewDirectory/urls", [
             'page' => $this->page,

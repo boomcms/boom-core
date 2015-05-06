@@ -17,7 +17,7 @@ class Templates extends Controller
         $this->authorization('manage_templates');
     }
 
-    public function action_index()
+    public function index()
     {
         $manager = new Template\Manager();
         $imported = $manager->createNew();
@@ -39,7 +39,7 @@ class Templates extends Controller
 	 *
 	 * @example	/cms/templates/pages/1
 	 */
-    public function action_pages()
+    public function pages()
     {
         $template = Template\Factory::byId($this->request->param('id'));
 
@@ -52,7 +52,7 @@ class Templates extends Controller
         ]);
     }
 
-    public function action_save()
+    public function save()
     {
         $post = $this->request->input();
         $template_ids = $post['templates'];
@@ -74,7 +74,7 @@ class Templates extends Controller
         }
     }
 
-    public function action_delete()
+    public function delete()
     {
         $template = Template\Factory::byId($this->request->param('id'));
         $template->delete();

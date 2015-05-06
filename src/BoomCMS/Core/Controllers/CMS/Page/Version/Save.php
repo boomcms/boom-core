@@ -33,7 +33,7 @@ class Controller_Cms_Page_Version_Save extends Controller_Cms_Page_Version
         }
     }
 
-    public function action_embargo()
+    public function embargo()
     {
         parent::action_embargo();
 
@@ -54,7 +54,7 @@ class Controller_Cms_Page_Version_Save extends Controller_Cms_Page_Version
         }
     }
 
-    public function action_request_approval()
+    public function request_approval()
     {
         parent::action_request_approval();
 
@@ -64,7 +64,7 @@ class Controller_Cms_Page_Version_Save extends Controller_Cms_Page_Version
             ->copy_chunks($this->old_version);
     }
 
-    public function action_template()
+    public function template()
     {
         parent::action_template();
 
@@ -76,7 +76,7 @@ class Controller_Cms_Page_Version_Save extends Controller_Cms_Page_Version
         $this->page->getTemplate()->onApplied($this->page);
     }
 
-    public function action_title()
+    public function title()
     {
         $this->new_version->set('title', $this->request->input('title'));
 

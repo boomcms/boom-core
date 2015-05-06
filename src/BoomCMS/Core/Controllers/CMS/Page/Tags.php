@@ -11,13 +11,13 @@ class Controller_Cms_Page_Tags extends Controller_Cms_Page
         $this->authorization('edit_page', $this->page);
     }
 
-    public function action_add()
+    public function add()
     {
         $tag = TagFactory::findOrCreateByNameAndGroup($this->request->input('tag'), $this->request->input('group'));
         $this->page->addTag($tag);
     }
 
-    public function action_list()
+    public function listTags()
     {
         $tags = $this->page->getGroupedTags();
         $freeTags = isset($tags[''])? $tags[''] : array();
@@ -34,7 +34,7 @@ class Controller_Cms_Page_Tags extends Controller_Cms_Page
         ]);
     }
 
-    public function action_remove()
+    public function remove()
     {
         $tag = TagFactory::byId($this->request->input('tag'));
         $this->page->removeTag($tag);

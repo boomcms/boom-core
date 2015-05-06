@@ -4,7 +4,7 @@ namespace BoomCMS\Core\Controllers\CMS;
 
 class Profile extends Boom\Controller
 {
-    public function action_view()
+    public function view()
     {
         $v = new View('boom/account/profile', [
             'person' => $this->person,
@@ -16,7 +16,7 @@ class Profile extends Boom\Controller
         $this->response->body($v);
     }
 
-    public function action_save()
+    public function save()
     {
         extract($this->request->input());
 

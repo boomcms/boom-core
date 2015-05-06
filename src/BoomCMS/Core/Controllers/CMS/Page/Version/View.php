@@ -2,7 +2,7 @@
 
 class Controller_Cms_Page_Version_View extends Controller_Cms_Page_Version
 {
-    public function action_embargo()
+    public function embargo()
     {
         // Call the parent function to check permissions.
         parent::action_embargo();
@@ -12,7 +12,7 @@ class Controller_Cms_Page_Version_View extends Controller_Cms_Page_Version
         ]);
     }
 
-    public function action_template()
+    public function template()
     {
         parent::action_template();
 

@@ -9,7 +9,7 @@ class Controller_Cms_Assets_Tags extends Controller_Cms_Assets
         parent::before();
     }
 
-    public function action_list()
+    public function listTags()
     {
         $collection = new Asset\Collection(explode('-', $this->request->param('id')));
 
@@ -18,13 +18,13 @@ class Controller_Cms_Assets_Tags extends Controller_Cms_Assets
         ]);
     }
 
-    public function action_add()
+    public function add()
     {
         $collection = new Asset\Collection($this->request->input('assets'));
         $collection->addTag($this->request->input('tag'));
     }
 
-    public function action_remove()
+    public function remove()
     {
         $collection = new Asset\Collection($this->request->input('assets'));
         $collection->removeTag($this->request->input('tag'));

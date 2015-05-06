@@ -42,7 +42,7 @@ class Autocomplete extends Boom\Controller
     /**
 	 * Autocomplete on asset title.
 	 */
-    public function action_assets()
+    public function assets()
     {
         // Build the query.
         $query = DB::select('title')
@@ -60,7 +60,7 @@ class Autocomplete extends Boom\Controller
         $this->results = array_keys($results);
     }
 
-    public function action_asset_tags()
+    public function asset_tags()
     {
         $query = DB::select('tag')
             ->from('assets_tags')
@@ -84,7 +84,7 @@ class Autocomplete extends Boom\Controller
 	 * Suggest tag names based on an infix.
 	 *
 	 */
-    public function action_page_tags()
+    public function page_tags()
     {
         $group = $this->request->query('group')?: null;
 

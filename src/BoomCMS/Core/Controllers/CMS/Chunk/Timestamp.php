@@ -6,7 +6,7 @@ class Controller_Cms_Chunk_Timestamp extends Controller_Cms_Chunk
 {
     protected $_type = 'timestamp';
 
-    public function action_edit()
+    public function edit()
     {
         $formats = [];
         foreach (ChunkTimestamp::$formats as $format) {

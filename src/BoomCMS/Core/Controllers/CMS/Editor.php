@@ -9,7 +9,7 @@ class Editor extends Boom\Controller
     /**
 	 * Sets the page editor state.
 	 */
-    public function action_state()
+    public function state()
     {
         $state = $this->request->input('state');
         $numeric_state = constant("\Boom\Editor\Editor::" . strtoupper($state));
@@ -28,7 +28,7 @@ class Editor extends Boom\Controller
 	 * Called from an iframe when logged into the CMS.
 	 * The ID of the page which is being viewed is given as a URL paramater (e.g. /cms/editor/toolbar/<page ID>)
 	 */
-    public function action_toolbar()
+    public function toolbar()
     {
         $page =  \Boom\Page\Factory::byId($this->request->param('id'));
         $editable = $this->editor->isEnabled();

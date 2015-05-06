@@ -57,12 +57,12 @@ abstract class Controller_Cms_Page_Version extends Controller_Cms_Page
 	 *
 	 * @uses Boom_Controller::authorization()
 	 */
-    public function action_embargo()
+    public function embargo()
     {
         $this->authorization('edit_page_content', $this->page);
     }
 
-    public function action_request_approval()
+    public function request_approval()
     {
         $this->authorization('edit_page_content', $this->page);
     }
@@ -74,7 +74,7 @@ abstract class Controller_Cms_Page_Version extends Controller_Cms_Page
 	 *
 	 * @uses Boom_Controller::authorization()
 	 */
-    public function action_template()
+    public function template()
     {
         $this->authorization('edit_page_template', $this->page);
     }

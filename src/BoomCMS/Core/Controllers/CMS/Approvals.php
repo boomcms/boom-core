@@ -14,7 +14,7 @@ class Approvals extends Controller
         $this->authorization('manage_approvals');
     }
 
-    public function action_index()
+    public function index()
     {
         $this->template = new View('boom/approvals/index', [
             'pages' => $this->_get_pages_awaiting_approval(),

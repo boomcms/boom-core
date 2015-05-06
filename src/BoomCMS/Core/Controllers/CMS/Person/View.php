@@ -4,14 +4,14 @@ use Boom\Group;
 
 class Controller_Cms_Person_View extends Controller_Cms_Person
 {
-    public function action_add()
+    public function add()
     {
         $this->template = View::factory($this->viewDirectory."new", [
             'groups'    =>    ORM::factory('Group')->names(),
         ]);
     }
 
-    public function action_add_group()
+    public function add_group()
     {
         $finder = new Group\Finder();
         $finder
@@ -24,7 +24,7 @@ class Controller_Cms_Person_View extends Controller_Cms_Person
         ]);
     }
 
-    public function action_view()
+    public function view()
     {
         if ( ! $this->edit_person->loaded()) {
             throw new HTTP_Exception_404();

@@ -50,27 +50,27 @@ class Asset extends Controller
         $this->processor = new $processor($this->asset, $this->response);
     }
 
-    public function action_crop()
+    public function crop()
     {
         $this->response = $this->processor->crop($this->request->param('width'), $this->request->param('height'));
     }
 
-    public function action_embed()
+    public function embed()
     {
         $this->response = $this->processor->embed();
     }
 
-    public function action_view()
+    public function view()
     {
         $this->response = $this->processor->view($this->request->param('width'), $this->request->param('height'));
     }
 
-    public function action_thumb()
+    public function thumb()
     {
         $this->response = $this->processor->thumbnail($this->request->param('width'), $this->request->param('height'));
     }
 
-    public function action_download()
+    public function download()
     {
         if ( ! $this->auth->isLoggedIn()) {
             $this->asset->logDownload(Request::$client_ip);

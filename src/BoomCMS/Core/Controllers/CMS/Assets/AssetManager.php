@@ -31,7 +31,7 @@ class AssetManager extends Controller
         $this->asset = Asset\Factory::byId($this->request->param('id'));
     }
 
-    public function action_delete()
+    public function delete()
     {
         $assetIds = array_unique((array) $this->request->input('assets'));
 
@@ -54,7 +54,7 @@ class AssetManager extends Controller
 	 * Display the asset manager.
 	 *
 	 */
-    public function action_index()
+    public function index()
     {
         $this->template = View::factory("$this->viewDirectory/index", [
             'manager'    =>    Request::factory('cms/assets/manager')->execute()->body(),
@@ -62,7 +62,7 @@ class AssetManager extends Controller
         ]);
     }
 
-    public function action_list()
+    public function listAssets()
     {
         $finder = new AssetFinder();
         $finder
@@ -107,17 +107,17 @@ class AssetManager extends Controller
 	 * Display the asset manager without topbar etc.
 	 *
 	 */
-    public function action_manager()
+    public function manager()
     {
         $this->template = new View("$this->viewDirectory/manager");
     }
 
-    public function action_picker()
+    public function picker()
     {
         $this->template = new View("$this->viewDirectory/picker");
     }
 
-    public function action_restore()
+    public function restore()
     {
         $timestamp = $this->request->query('timestamp');
 
@@ -138,7 +138,7 @@ class AssetManager extends Controller
         $this->redirect('/cms/assets/#asset/'.$this->asset->getId());
     }
 
-    public function action_save()
+    public function save()
     {
         if ( ! $this->asset->loaded()) {
             throw new HTTP_Exception_404();
@@ -153,7 +153,7 @@ class AssetManager extends Controller
             ->save();
     }
 
-    public function action_view()
+    public function view()
     {
         if ( ! $this->asset->loaded()) {
             throw new HTTP_Exception_404();

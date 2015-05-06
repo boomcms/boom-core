@@ -6,7 +6,7 @@ use Boom\Person;
 
 class Controller_Cms_Person_Save extends Controller_Cms_Person
 {
-    public function action_add()
+    public function add()
     {
         $password = PasswordGenerator::factory()->get_password();
         $encPassword = $this->auth->hash($password);
@@ -24,7 +24,7 @@ class Controller_Cms_Person_Save extends Controller_Cms_Person
         }
     }
 
-    public function action_add_group()
+    public function add_group()
     {
         foreach ($this->request->input('groups') as $groupId) {
             $group = Group\Factory::byId($groupId);
@@ -34,7 +34,7 @@ class Controller_Cms_Person_Save extends Controller_Cms_Person
         }
     }
 
-    public function action_delete()
+    public function delete()
     {
         foreach ($this->request->input('people') as $personId) {
             $person = Person\Factory::byId($personId);
@@ -44,7 +44,7 @@ class Controller_Cms_Person_Save extends Controller_Cms_Person
         }
     }
 
-    public function action_remove_group()
+    public function remove_group()
     {
         $group = Group\Factory::byId($this->request->input('group_id'));
 
@@ -52,7 +52,7 @@ class Controller_Cms_Person_Save extends Controller_Cms_Person
         $this->edit_person->removeGroup($group);
     }
 
-    public function action_save()
+    public function save()
     {
         $this->log("Edited user $this->edit_person->email (ID: $this->edit_person->id) to the CMS");
 

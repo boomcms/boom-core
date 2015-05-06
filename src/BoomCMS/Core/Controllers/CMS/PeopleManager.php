@@ -15,7 +15,7 @@ class PeopleManager extends Controller
         $this->authorization('manage_people');
     }
 
-    public function action_index()
+    public function index()
     {
         $finder = new PersonFinder();
         $finder

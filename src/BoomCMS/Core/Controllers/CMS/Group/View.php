@@ -2,14 +2,14 @@
 
 class Controller_Cms_Group_View extends Controller_Cms_Group
 {
-    public function action_add()
+    public function add()
     {
         $this->template = View::factory("$this->viewDirectory/add", [
             'group' => new Model_Group(),
         ]);
     }
 
-    public function action_edit()
+    public function edit()
     {
         $this->template = View::factory("$this->viewDirectory/edit", [
             'group'        =>    $this->group,
@@ -24,7 +24,7 @@ class Controller_Cms_Group_View extends Controller_Cms_Group
         ]);
     }
 
-    public function action_list_roles()
+    public function list_roles()
     {
         $roles = $this->group->getRoles( (int) $this->request->query('page_id'));
         $roles = json_encode($roles);

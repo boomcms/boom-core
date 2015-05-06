@@ -37,7 +37,7 @@ class Page extends Controller
         }
     }
 
-    public function action_show()
+    public function show()
     {
         $method = 'as' . ucfirst(strtolower($this->request->param('format')));
 

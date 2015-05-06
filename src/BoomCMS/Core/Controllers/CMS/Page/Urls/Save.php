@@ -2,7 +2,7 @@
 
 class Controller_Cms_Page_Urls_Save extends Controller_Cms_Page_Urls
 {
-    public function action_add()
+    public function add()
     {
         $location = \Boom\Page\URL::sanitise($this->request->input('location'));
 
@@ -26,19 +26,19 @@ class Controller_Cms_Page_Urls_Save extends Controller_Cms_Page_Urls
         }
     }
 
-    public function action_delete()
+    public function delete()
     {
         if (! $this->page_url->is_primary) {
             $this->page_url->delete();
         }
     }
 
-    public function action_make_primary()
+    public function make_primary()
     {
         $this->page_url->make_primary();
     }
 
-    public function action_move()
+    public function move()
     {
         $this->page_url->values([
             'page_id'        =>    $this->page->getId(),

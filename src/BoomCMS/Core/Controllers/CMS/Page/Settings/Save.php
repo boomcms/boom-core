@@ -2,7 +2,7 @@
 
 class Controller_Cms_Page_Settings_Save extends Controller_Cms_Page_Settings
 {
-    public function action_admin()
+    public function admin()
     {
         parent::action_admin();
 
@@ -13,7 +13,7 @@ class Controller_Cms_Page_Settings_Save extends Controller_Cms_Page_Settings
             ->save();
     }
 
-    public function action_children()
+    public function children()
     {
         parent::action_children();
 
@@ -53,7 +53,7 @@ class Controller_Cms_Page_Settings_Save extends Controller_Cms_Page_Settings
         $this->page->save();
     }
 
-    public function action_feature()
+    public function feature()
     {
         parent::action_feature();
 
@@ -64,7 +64,7 @@ class Controller_Cms_Page_Settings_Save extends Controller_Cms_Page_Settings
             ->save();
     }
 
-    public function action_navigation()
+    public function navigation()
     {
         parent::action_navigation();
 
@@ -91,7 +91,7 @@ class Controller_Cms_Page_Settings_Save extends Controller_Cms_Page_Settings
             ->save();
     }
 
-    public function action_search()
+    public function search()
     {
         parent::action_search();
 
@@ -110,7 +110,7 @@ class Controller_Cms_Page_Settings_Save extends Controller_Cms_Page_Settings
         $this->page->save();
     }
 
-    public function action_sort_children()
+    public function sort_children()
     {
         parent::action_children();
 
@@ -119,7 +119,7 @@ class Controller_Cms_Page_Settings_Save extends Controller_Cms_Page_Settings
         Database::instance()->commit();
     }
 
-    public function action_visibility()
+    public function visibility()
     {
         parent::action_visibility();
 

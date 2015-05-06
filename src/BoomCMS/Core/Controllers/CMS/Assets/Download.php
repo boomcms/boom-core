@@ -17,7 +17,7 @@ class Controller_Cms_Assets_Download extends Controller_Cms_Assets
         $this->asset_ids = $this->request->param('asset_ids');
     }
 
-    public function action_single()
+    public function single()
     {
         $asset = Asset\Factory::byId($this->asset_ids[0]);
 
@@ -38,7 +38,7 @@ class Controller_Cms_Assets_Download extends Controller_Cms_Assets
 	 *
 	 * @uses ZipArchive
 	 */
-    public function action_multiple()
+    public function multiple()
     {
         $zip = new Asset\Archive\Zip();
 

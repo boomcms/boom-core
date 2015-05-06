@@ -4,7 +4,7 @@ namespace BoomCMS\Core\Controllers\Page;
 
 class Children extends Boom\Controller
 {
-    public function action_json()
+    public function json()
     {
         $parent = \Boom\Page\Factory::byId($this->request->input('parent'));
 

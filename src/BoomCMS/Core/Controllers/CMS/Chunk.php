@@ -29,12 +29,12 @@ class Controller_Cms_Chunk extends Boom\Controller
         $this->page =  \Boom\Page\Factory::byId($this->request->param('page_id'));
     }
 
-    public function action_insert_url()
+    public function insert_url()
     {
         $this->template = View::factory('boom/editor/slot/insert_link');
     }
 
-    public function action_remove()
+    public function remove()
     {
         $this->authCheck();
         $this->_createVersion();
@@ -43,7 +43,7 @@ class Controller_Cms_Chunk extends Boom\Controller
         $this->_send_response($this->_preview_default_chunk());
     }
 
-    public function action_save()
+    public function save()
     {
         $this->authCheck();
         $this->_createVersion();

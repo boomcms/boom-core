@@ -11,7 +11,7 @@ class Controller_Cms_Assets_Upload extends Controller_Cms_Assets
 	 * @uses Model_Asset::create_from_file()
 	 *
 	 */
-    public function action_process()
+    public function process()
     {
         $asset_ids = $errors = [];
         $now = new DateTime('now');
@@ -60,7 +60,7 @@ class Controller_Cms_Assets_Upload extends Controller_Cms_Assets
         }
     }
 
-    public function action_replace()
+    public function replace()
     {
         $asset = new Model_Asset($this->request->input('asset_id'));
 

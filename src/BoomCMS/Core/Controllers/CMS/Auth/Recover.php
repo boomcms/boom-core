@@ -5,7 +5,7 @@ use Boom\Person;
 
 class Controller_Cms_Auth_Recover extends Controller_Cms_Auth
 {
-    public function action_create_token()
+    public function create_token()
     {
         $person = Person\Factory::byEmail($this->request->input('email'));
 
@@ -42,12 +42,12 @@ class Controller_Cms_Auth_Recover extends Controller_Cms_Auth
         $this->response->body(new View('boom/account/recover/email_sent'));
     }
 
-    public function action_show_form()
+    public function show_form()
     {
         $this->_display_form();
     }
 
-    public function action_set_password()
+    public function set_password()
     {
         $token = new Model_PasswordToken(['token' => $this->request->query('token')]);
 

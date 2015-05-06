@@ -4,7 +4,7 @@ class Controller_Cms_Chunk_Slideshow extends Controller_Cms_Chunk
 {
     protected $_type = 'slideshow';
 
-    public function action_edit()
+    public function edit()
     {
         $chunk = Chunk::find('slideshow', $this->request->query('slotname'), $this->page->getCurrentVersion());
 

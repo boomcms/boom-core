@@ -49,7 +49,7 @@ abstract class Controller_Cms_Page_Settings extends Controller_Cms_Page
 	 *  * Internal name
 	 *
 	 */
-    public function action_admin()
+    public function admin()
     {
         $this->authorization('edit_page_admin', $this->page);
     }
@@ -69,7 +69,7 @@ abstract class Controller_Cms_Page_Settings extends Controller_Cms_Page
 	 *    * Default grandchild template
 	 *
 	 */
-    public function action_children()
+    public function children()
     {
         $this->authorization('edit_page_children_basic', $this->page);
         $this->allowAdvanced = $this->auth->loggedIn('edit_page_children_advanced', $this->page);
@@ -82,7 +82,7 @@ abstract class Controller_Cms_Page_Settings extends Controller_Cms_Page
 	 *
 	 * @uses Boom_Controller::authorization()
 	 */
-    public function action_feature()
+    public function feature()
     {
         $this->authorization('edit_feature_image', $this->page);
     }
@@ -99,7 +99,7 @@ abstract class Controller_Cms_Page_Settings extends Controller_Cms_Page
 	 *    * Parent page
 	 *
 	 */
-    public function action_navigation()
+    public function navigation()
     {
         $this->authorization('edit_page_navigation_basic', $this->page);
         $this->allowAdvanced = $this->auth->loggedIn('edit_page_navigation_advanced', $this->page);
@@ -118,7 +118,7 @@ abstract class Controller_Cms_Page_Settings extends Controller_Cms_Page
 	 *     * Internal indexing
 	 *
 	 */
-    public function action_search()
+    public function search()
     {
         $this->authorization('edit_page_search_basic', $this->page);
         $this->allowAdvanced = $this->auth->loggedIn('edit_page_search_advanced', $this->page);
@@ -133,7 +133,7 @@ abstract class Controller_Cms_Page_Settings extends Controller_Cms_Page
 	 *  * visible to
 	 *
 	 */
-    public function action_visibility()
+    public function visibility()
     {
         $this->authorization('edit_page', $this->page);
     }
