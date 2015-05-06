@@ -1,4 +1,4 @@
-<?= View::factory('boom/errors/header', array('title' => 'Not found')) ?>
+<?= View::factory('boom/errors/header', ['title' => 'Not found']) ?>
 	<div id="broken" class="clearfix">
 		<div class="column">
 			<div class="warning">

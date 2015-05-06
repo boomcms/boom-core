@@ -23,15 +23,15 @@
                                 <label for='person-status'>
                                     Status
                                     <?= Form::select('enabled',
-                                        array(0 => 'Disabled', 1 => 'Enabled'),
+                                        [0 => 'Disabled', 1 => 'Enabled'],
                                         $person->isEnabled(),
-                                        array('id' => 'person-status'))
+                                        ['id' => 'person-status'])
                                     ?>
                                 </label>
 
 				<div>
-					<?= new \BoomCMS\Core\UI\Button('accept', Lang::get('Save'), array('id' => 'b-person-save', 'class' => 'b-people-save')) ?>
-					<?= new \BoomCMS\Core\UI\Button('delete', Lang::get('Delete'), array('id' => 'b-person-delete')) ?>
+					<?= new \BoomCMS\Core\UI\Button('accept', Lang::get('Save'), ['id' => 'b-person-save', 'class' => 'b-people-save']) ?>
+					<?= new \BoomCMS\Core\UI\Button('delete', Lang::get('Delete'), ['id' => 'b-person-delete']) ?>
 				</div>
 			</form>
 		</div>
@@ -76,7 +76,7 @@
 				</ul>
 			<?php endif ?>
 
-			<?= new \BoomCMS\Core\UI\Button('add', Lang::get('Add group'), array('class' => 'b-person-addgroups', 'rel' => $person->getId())) ?>
+			<?= new \BoomCMS\Core\UI\Button('add', Lang::get('Add group'), ['class' => 'b-person-addgroups', 'rel' => $person->getId()]) ?>
 		</div>
 	</div>
 </div>

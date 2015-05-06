@@ -4,7 +4,7 @@
 
     <a href="#" data-asset-id="<?= $chunk->target() ?>">
         <?php if ($chunk->hasContent()): ?>
-            <img src="<?= Route::url('asset', array('id' => $chunk->target(), 'action' => 'thumb', 'width' => 400)) ?>" />
+            <img src="<?= Route::url('asset', ['id' => $chunk->target(), 'action' => 'thumb', 'width' => 400]) ?>" />
         <?php else: ?>
             <p>None set</p>
         <?php endif ?>

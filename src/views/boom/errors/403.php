@@ -1,4 +1,4 @@
-<?= View::factory('boom/errors/header', array('title' => 'Unauthorised')) ?>
+<?= View::factory('boom/errors/header', ['title' => 'Unauthorised']) ?>
 	<div id="broken" class="clearfix">
 		<div class="column">
 			<div class="warning">

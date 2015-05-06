@@ -7,7 +7,7 @@
 			</div>
 
 			<div id="b-assets-upload-progress"></div>
-			<?= new \BoomCMS\Core\UI\Button('cancel', Lang::get('Cancel'), array('id' => 'b-assets-upload-cancel')) ?>
+			<?= new \BoomCMS\Core\UI\Button('cancel', Lang::get('Cancel'), ['id' => 'b-assets-upload-cancel']) ?>
 
 			<input type="file" name="b-assets-upload-files[]" id="b-assets-upload-file" multiple min="1" max="5" />
 

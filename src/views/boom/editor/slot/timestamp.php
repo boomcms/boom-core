@@ -11,7 +11,7 @@
 
 	<p>
 		<label for="format">Format</label>
-		<?= Form::select('format', $formats, $format, array('id' => 'format')) ?>
+		<?= Form::select('format', $formats, $format, ['id' => 'format']) ?>
 	</p>
 
 	<p>

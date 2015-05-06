@@ -5,7 +5,7 @@
 				<label for="b-people-group-name"><h2><?= Lang::get('Edit group name') ?></h2></label>
 				<input type="text" id="b-people-group-name" class="boom-input boom-input-medium" name="name" value="<?=$group->getName() ?>" />
 
-				<?= new \BoomCMS\Core\UI\Button('accept', Lang::get('Save group name'), array('id' => 'b-people-group-save')) ?>
+				<?= new \BoomCMS\Core\UI\Button('accept', Lang::get('Save group name'), ['id' => 'b-people-group-save']) ?>
 			</fieldset>
 		</form>
 	</div>
@@ -20,7 +20,7 @@
 
 		<div id="b-group-roles-general">
 			<p>Edit permissions related to the CMS as a whole rather than particular pages in the site tree.</p>
-			<?= new View('boom/groups/roles', array('roles' => $general_roles)) ?>
+			<?= new View('boom/groups/roles', ['roles' => $general_roles]) ?>
 
 			<div class="b-group-roles-help">
 				<p>
@@ -67,7 +67,7 @@
 					</div>
 				</div>
 				<div>
-					<?= new View('boom/groups/roles', array('roles' => $page_roles)) ?>
+					<?= new View('boom/groups/roles', ['roles' => $page_roles]) ?>
 				</div>
 			</div>
 			<div class="b-group-roles-help">

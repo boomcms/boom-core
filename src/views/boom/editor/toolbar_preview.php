@@ -1,4 +1,4 @@
-<?= View::factory('boom/header', array('title' => $page->getTitle())) ?>
+<?= View::factory('boom/header', ['title' => $page->getTitle()]) ?>
 
 <div id="b-topbar" class="b-page-toolbar b-page-toolbar-preview b-toolbar">
 	<button id="b-page-editbutton" class="b-button b-button-preview" data-preview="edit">
@@ -6,4 +6,4 @@
 	</button>
 </div>
 
-<?= View::factory('boom/editor/footer', array('register_page' => false)) ?>
+<?= View::factory('boom/editor/footer', ['register_page' => false]) ?>

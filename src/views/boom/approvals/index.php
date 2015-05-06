@@ -1,4 +1,4 @@
-    <?= View::factory('boom/header', array('title' => 'Pending Approvals')) ?>
+    <?= View::factory('boom/header', ['title' => 'Pending Approvals']) ?>
     <?= new \Boom\Menu\Menu  ?>
 
     <div id="b-topbar" class="b-toolbar">

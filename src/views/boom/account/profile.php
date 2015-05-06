@@ -1,4 +1,4 @@
-<?= View::factory('boom/header', array('title' => 'Profile')) ?>
+<?= View::factory('boom/header', ['title' => 'Profile']) ?>
     <div id="b-topbar" class="b-toolbar">
         <?= new \Boom\UI\MenuButton() ?>
         <?= new \Boom\Menu\Menu  ?>
@@ -17,17 +17,17 @@
             <form method="post" action="/cms/profile">
                 <label>
                     Name
-                    <?= Form::input('name', $person->getName(), array('size' => 35)) ?>
+                    <?= Form::input('name', $person->getName(), ['size' => 35]) ?>
                 </label>
 
                 <label>
                     Current password
-                    <?= Form::password('current_password','', array('size' => 35)) ?>
+                    <?= Form::password('current_password','', ['size' => 35]) ?>
                 </label>
 
                 <label>
                     New password
-                    <?= Form::password('new_password','', array('size' => 35)) ?>
+                    <?= Form::password('new_password','', ['size' => 35]) ?>
                 </label>
 
                 <?= Form::submit('submit', 'Submit') ?>

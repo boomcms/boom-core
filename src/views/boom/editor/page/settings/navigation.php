@@ -16,12 +16,12 @@
 		<div id="basic">
                     <label>
                         <?= Lang::get('Visible in navigation') ?>?
-                        <?= Form::select('visible_in_nav', array(1 => 'Yes', 0 => 'No'), $page->isVisibleInNav(), array('id' => 'visible_in_nav')) ?>
+                        <?= Form::select('visible_in_nav', [1 => 'Yes', 0 => 'No'], $page->isVisibleInNav(), ['id' => 'visible_in_nav']) ?>
                     </label>
 
                     <label>
                         <?= Lang::get('Visible in CMS navigation') ?>?
-                        <?= Form::select('visible_in_nav_cms', array(1 => 'Yes', 0 => 'No'), $page->isVisibleInCmsNav(), array('id' => 'visible_in_nav_cms')) ?>
+                        <?= Form::select('visible_in_nav_cms', [1 => 'Yes', 0 => 'No'], $page->isVisibleInCmsNav(), ['id' => 'visible_in_nav_cms']) ?>
                     </label>
 		</div>
 

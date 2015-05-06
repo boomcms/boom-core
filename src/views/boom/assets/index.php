@@ -1,4 +1,4 @@
-	<?= new View('header', array('title' =>    'Assets')); ?>
+	<?= new View('header', ['title' =>    'Assets']); ?>
 
 	<?= $manager ?>
 

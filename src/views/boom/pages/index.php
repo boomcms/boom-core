@@ -1,4 +1,4 @@
-	<?= View::factory('boom/header', array('title' => 'Pages'))?>
+	<?= View::factory('boom/header', ['title' => 'Pages'])?>
 	<?= new \Boom\Menu\Menu  ?>
 
 	<div id="b-topbar" class="b-toolbar">

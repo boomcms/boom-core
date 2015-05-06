@@ -6,13 +6,13 @@
 		<?php if ( ! $feature_image_id): ?>
 			<img id='b-page-feature-current' src='' />
 		<?php else: ?>
-			<img id='b-page-feature-current' data-asset-id="<?= $feature_image_id ?>" src='<?= Route::url('asset', array('id' => $feature_image_id, 'width' => 500)) ?>' />
+			<img id='b-page-feature-current' data-asset-id="<?= $feature_image_id ?>" src='<?= Route::url('asset', ['id' => $feature_image_id, 'width' => 500]) ?>' />
 		<?php endif; ?>
 
 
 		<div id='b-page-feature-buttons'>
-			<?= new \BoomCMS\Core\UI\Button('asset', 'Select an image from the asset manager', array('id' => 'b-page-feature-edit', 'class' => 'b-button-withtext')) ?>
-			<?= new \BoomCMS\Core\UI\Button('delete', 'Remove feature image', array('id' => 'b-page-feature-remove', 'class' => 'b-button-withtext')) ?>
+			<?= new \BoomCMS\Core\UI\Button('asset', 'Select an image from the asset manager', ['id' => 'b-page-feature-edit', 'class' => 'b-button-withtext']) ?>
+			<?= new \BoomCMS\Core\UI\Button('delete', 'Remove feature image', ['id' => 'b-page-feature-remove', 'class' => 'b-button-withtext']) ?>
 		</div>
 	</section>
 	<section>

@@ -1,12 +1,12 @@
 <div id="b-assets-picker">
-    <?= new View('boom/assets/thumbs', array('assets' => [])) ?>
+    <?= new View('boom/assets/thumbs', ['assets' => []]) ?>
 
     <section id="b-assets-picker-sidebar">
         <section id="b-assets-picker-current">
             <h1>Current Asset</h1>
             <img src="" />
 
-            <?= new \BoomCMS\Core\UI\Button('delete', 'Remove current asset', array('id' => 'b-assets-picker-current-remove', 'class' => 'b-button-withtext')) ?>
+            <?= new \BoomCMS\Core\UI\Button('delete', 'Remove current asset', ['id' => 'b-assets-picker-current-remove', 'class' => 'b-button-withtext']) ?>
         </section>
 
         <section id="b-assets-picker-upload">
@@ -17,7 +17,7 @@
         <section id="b-assets-picker-filter" class="ui-front">
             <h1>Filter Assets</h1>
 
-            <?= new \BoomCMS\Core\UI\Button('accept', 'All assets', array('id' => 'b-assets-picker-all', 'class' => 'b-button-textonly')) ?>
+            <?= new \BoomCMS\Core\UI\Button('accept', 'All assets', ['id' => 'b-assets-picker-all', 'class' => 'b-button-textonly']) ?>
 
             <div>
                 <h2>Search by asset name</h2>
@@ -26,7 +26,7 @@
 
             <div>
                 <h2>Filter by asset type</h2>
-                <?= Form::select('types', array_merge(array('0' => 'Filter by type'), \Boom\Asset\Type::whichExist()), null, array('id' => 'b-assets-types')) ?>
+                <?= Form::select('types', array_merge(['0' => 'Filter by type'], \Boom\Asset\Type::whichExist()), null, ['id' => 'b-assets-types']) ?>
             </div>
 
             <div>
@@ -47,6 +47,6 @@
             <a href="#" class="last" data-action="last">&raquo;</a>
         </section>
 
-        <?= new Boom\UI\Button('cancel', 'Close asset picker', array('class' => 'b-button-withtext', 'id' => 'b-assets-picker-close')) ?>
+        <?= new Boom\UI\Button('cancel', 'Close asset picker', ['class' => 'b-button-withtext', 'id' => 'b-assets-picker-close']) ?>
     </section>
 </div>

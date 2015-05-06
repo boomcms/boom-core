@@ -16,7 +16,7 @@
                 <li>
                     <label>
                         <input type="radio" value="<?= $slide->id ?>" name="slide" data-asset="<?= $slide->asset_id ?>" data-title="<?= $slide->title ?>" data-url="<?= $link->url() ?>" data-page="<?= $link->isInternal() ? $link->getPage()->getId() : 0 ?>" data-caption="<?= $slide->caption ?>" data-linktext='<?= $slide->linktext ?>' />
-                        <img src="<?= Route::url('asset', array('id' => $slide->asset_id)) ?>" />
+                        <img src="<?= Route::url('asset', ['id' => $slide->asset_id]) ?>" />
                     </label>
                 </li>
             <?php endforeach ?>
@@ -56,12 +56,12 @@
                 <input type="text" name="linktext" />
             </label>
 
-            <?= new \BoomCMS\Core\UI\Button('delete', 'Delete this slide', array('id' => 'b-slideshow-editor-current-delete', 'class' => 'b-button-withtext')) ?>
+            <?= new \BoomCMS\Core\UI\Button('delete', 'Delete this slide', ['id' => 'b-slideshow-editor-current-delete', 'class' => 'b-button-withtext']) ?>
         </form>
     </section>
 </div>
 
 <div id="b-slideshow-editor-buttons">
-    <?= new \BoomCMS\Core\UI\Button('delete', Lang::get('Delete slideshow'), array('id' => 'b-slideshow-editor-delete', 'class' => 'b-button-textonly')) ?>
-    <?= new \BoomCMS\Core\UI\Button('add', Lang::get('Add slide'), array('id' => 'b-slideshow-editor-add', 'class' => 'b-button-withtext')) ?>
+    <?= new \BoomCMS\Core\UI\Button('delete', Lang::get('Delete slideshow'), ['id' => 'b-slideshow-editor-delete', 'class' => 'b-button-textonly']) ?>
+    <?= new \BoomCMS\Core\UI\Button('add', Lang::get('Add slide'), ['id' => 'b-slideshow-editor-add', 'class' => 'b-button-withtext']) ?>
 </div>

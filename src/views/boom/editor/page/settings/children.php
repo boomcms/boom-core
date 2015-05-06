@@ -24,25 +24,25 @@
 
                     <?/*label>
                         <?= Lang::get('Update existing child pages') ?>
-                        <?= Form::checkbox('cascade_template', '1', false, array('id' => 'child_template_cascade')) ?>
+                        <?= Form::checkbox('cascade_template', '1', false, ['id' => 'child_template_cascade']) ?>
                     </label*/?>
 
                     <label>
                         <?=Lang::get('Child ordering policy')?>
 
-                        <?= Form::select('children_ordering_policy', array(
+                        <?= Form::select('children_ordering_policy', [
                                 'sequence'        =>    'Manual',
                                 'visible_from'    =>    'Date',
                                 'title'            =>    'Alphabetic'
-                            ), $child_order_column, array('id' => 'children_ordering_policy'));
+                            ], $child_order_column, ['id' => 'children_ordering_policy']);
                         ?>
-                        <?= Form::select('children_ordering_direction', array(
+                        <?= Form::select('children_ordering_direction', [
                                 'asc'        =>    'Ascending',
                                 'desc'    =>    'Descending'
-                            ), $child_order_direction);
+                            ], $child_order_direction);
                         ?>
 
-                        <?= new Boom\UI\Button('', 'Re-order', array('id' => 'b-page-settings-children-reorder', 'class' => 'b-button-textonly')) ?>
+                        <?= new Boom\UI\Button('', 'Re-order', ['id' => 'b-page-settings-children-reorder', 'class' => 'b-button-textonly']) ?>
                     </label>
 		</div>
 		<?php if ($allowAdvanced): ?>
@@ -50,34 +50,34 @@
                             <label>
                                 <?=Lang::get('Children visible in nav')?>?
 
-                                <?= Form::select('children_visible_in_nav', array(
+                                <?= Form::select('children_visible_in_nav', [
                                         1 => 'Yes',
                                         0 => 'No',
-                                    ), (int) $page->childrenAreVisibleInNav(), array('id' => 'children_visible_in_nav'));
+                                    ], (int) $page->childrenAreVisibleInNav(), ['id' => 'children_visible_in_nav']);
                                 ?>
                             </label>
 
                             <?/*label>
                                 <?= Lang::get('Update existing child pages') ?>
-                                <?= Form::checkbox('cascade[]', 'visible_in_nav', false, array('id' => 'visible_in_nav_cascade')) ?>
+                                <?= Form::checkbox('cascade[]', 'visible_in_nav', false, ['id' => 'visible_in_nav_cascade']) ?>
                             </label*/?>
 
                             <label>
                                 <?=Lang::get('Children visible in CMS nav')?>?
-                                <?= Form::select('children_visible_in_nav_cms', array(
+                                <?= Form::select('children_visible_in_nav_cms', [
                                         1 => 'Yes',
                                         0 => 'No',
-                                    ), (int) $page->childrenAreVisibleInCmsNav(), array('id' => 'children_visible_in_nav_cms')) ?>
+                                    ], (int) $page->childrenAreVisibleInCmsNav(), ['id' => 'children_visible_in_nav_cms']) ?>
                             </label>
 
                             <?/*label>
                                 <?= Lang::get('Update existing child pages') ?>
-                                <?= Form::checkbox('cascade[]', 'visible_in_nav_cms', false, array('id' => 'visible_in_nav_cms_cascade')) ?>
+                                <?= Form::checkbox('cascade[]', 'visible_in_nav_cms', false, ['id' => 'visible_in_nav_cms_cascade']) ?>
                             </label*/?>
 
                             <label>
                                 <?=Lang::get('Default child URI prefix')?>
-                                <?= Form::input('children_url_prefix', $page->getChildPageUrlPrefix(), array('id' => 'children_url_prefix')) ?>
+                                <?= Form::input('children_url_prefix', $page->getChildPageUrlPrefix(), ['id' => 'children_url_prefix']) ?>
                             </label>
 
                             <label>

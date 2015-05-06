@@ -1,4 +1,4 @@
-<?= View::factory('boom/errors/header', array('title' => 'Not acceptable')) ?>
+<?= View::factory('boom/errors/header', ['title' => 'Not acceptable']) ?>
 	<div id="broken" class="clearfix">
 		<div class="column">
 			<div class="warning">
