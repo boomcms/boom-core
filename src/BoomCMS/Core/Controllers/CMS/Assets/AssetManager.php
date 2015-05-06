@@ -2,9 +2,10 @@
 
 namespace BoomCMS\Core\Controllers\CMS\Assets;
 
-use BoomCMS\Core\Assets\Provider;
+use BoomCMS\Core\Controllers\Controller;
+use BoomCMS\Core\Asset\Provider;
 
-class Assets extends Controller
+class AssetManager extends Controller
 {
     protected $perpage = 30;
 
@@ -21,13 +22,6 @@ class Assets extends Controller
     public $asset;
 
     protected $assetProvider;
-
-    public function __construct(Provider $provider)
-    {
-        parent::__construct();
-
-        $this->assetProvider = $provider;
-    }
 
     public function before()
     {
