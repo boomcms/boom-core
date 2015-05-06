@@ -12,9 +12,9 @@
                                 <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
 
 				<fieldset>
-					<? if (isset($login_error)): ?>
+					<?php if (isset($login_error)): ?>
 						<p class="b-error"><?= $login_error ?></p>
-					<? endif ?>
+					<?php endif ?>
 					<p>
 						<label for="email">
 							<?= Lang::get('Email address') ?>
