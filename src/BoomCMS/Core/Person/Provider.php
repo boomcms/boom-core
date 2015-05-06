@@ -5,6 +5,8 @@ namespace BoomCMS\Core\Person;
 use Cartalyst\Sentry\Users\ProviderInterface;
 use Cartalyst\Sentry\Groups\GroupInterface;
 
+use BoomCMS\Core\Models\Person as Model;
+
 class Provider implements ProviderInterface
 {
     public function create(array $credentials)
@@ -32,14 +34,24 @@ class Provider implements ProviderInterface
 
     }
 
+    public function findAndCache(Model $model)
+    {
+        if ($model->id) {
+            $this->cache[$model->id] = $model;
+        }
+
+        return new Person( (array) $model);
+    }
+
     /**
      *
-     * @param array $values
      * @return \Boom\Person\Person
      */
-    public function findBy(array $values)
+    public function findBy($key, $value)
     {
-        return new Person(new \Model_Person($values));
+        $model = Model::where($key, '=', $value)->first();
+
+        return $model? $this->findAndCache($model) : new Guest();
     }
 
     public function findByActivationCode($code)
@@ -57,17 +69,21 @@ class Provider implements ProviderInterface
             throw new \InvalidArgumentException("Email address was not provided");
         }
 
-        return $this->findBy($credentials);
+        $model = Model::where('email', '=', $credentials['email'])
+                ->where('password', '=', $credentials['password'])
+                ->first();
+
+        return $model? $this->findAndCache($model) : new Guest();
     }
 
     public function findById($id)
     {
-        return $this->findBy(['id' => $id]);
+        return $this->findBy('id', $id);
     }
 
     public function findByEmail($email)
     {
-        return $this->findBy(['email' => $email]);
+        return $this->findBy('email', $email);
     }
 
     public function findByLogin($login)
@@ -77,7 +93,7 @@ class Provider implements ProviderInterface
 
     public function findByResetPasswordCode($code)
     {
-        return $this->findBy(['reset_password_code' => $code]);
+        return $this->findBy('reset_password_code', $code);
     }
 
     /**
