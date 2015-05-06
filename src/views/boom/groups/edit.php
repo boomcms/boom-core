@@ -110,7 +110,7 @@
 </div>
 
 <script type='text/javascript'>
-	window.onload = function() {
+	window.onload = function () {
 		$('body').groupPermissionsEditor({
 			group : new boomGroup(<?= $group->getId() ?>)
 		});

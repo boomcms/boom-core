@@ -6,9 +6,9 @@
 
 <div id="b-selected">
 	<h2>Selected Tag</h2>
-	<? if ($current_tag->loaded()): ?>
+	<?php if ($current_tag->loaded()): ?>
 		<p><?= $current_tag->name ?></p>
-	<? else: ?>
+	<?php else: ?>
 		<p>No tag is currently selected</p>
-	<? endif ?>
+	<?php endif ?>
 </div>

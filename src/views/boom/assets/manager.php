@@ -31,15 +31,15 @@
 		</div>
 
 		<?= Form::select('', array(
-			'last_modified-desc' => 'Most recent',
-			'last_modified-asc' => 'Oldest',
-			'title-asc' => 'Title A - Z',
-			'title-desc' => 'Title Z - A',
-			'filesize-asc' => 'Size (smallest)',
-			'filesize-desc' => 'Size (largest)',
-			'downloads-desc' => 'Most downloaded'
-			), 'last_modified-desc', array('id' => 'b-assets-sortby'))
-		?>
+            'last_modified-desc' => 'Most recent',
+            'last_modified-asc' => 'Oldest',
+            'title-asc' => 'Title A - Z',
+            'title-desc' => 'Title Z - A',
+            'filesize-asc' => 'Size (smallest)',
+            'filesize-desc' => 'Size (largest)',
+            'downloads-desc' => 'Most downloaded'
+            ), 'last_modified-desc', array('id' => 'b-assets-sortby'))
+        ?>
 
         <div id="b-assets-pagination" class="pagination"></div>
 	</div>

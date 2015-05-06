@@ -1,11 +1,11 @@
-	<?= new View('header', array('title' =>	'Assets')); ?>
+	<?= new View('header', array('title' =>    'Assets')); ?>
 
 	<?= $manager ?>
 
 	<?= Boom::include_js() ?>
 	<script type="text/javascript">
 		//<![CDATA[
-		(function($){
+		(function ($) {
 			$.boom.init({
 				csrf: '<?= Security::token() ?>'
 			});

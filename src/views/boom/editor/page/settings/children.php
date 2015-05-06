@@ -1,6 +1,6 @@
 <form class="b-form-settings">
 	<div id="child-settings" class="boom-tabs">
-		<? if ($allowAdvanced): ?>
+		<?php if ($allowAdvanced): ?>
 			<ul>
 				<li>
 					<a href="#basic"><?=Lang::get('Basic')?></a>
@@ -9,7 +9,7 @@
 					<a href="#advanced"><?=Lang::get('Advanced')?></a>
 				</li>
 			</ul>
-		<? endif; ?>
+		<?php endif; ?>
 
 		<div id="basic">
                     <label>
@@ -31,21 +31,21 @@
                         <?=Lang::get('Child ordering policy')?>
 
                         <?= Form::select('children_ordering_policy', array(
-                                'sequence'		=>	'Manual',
-                                'visible_from'	=>	'Date',
-                                'title'			=>	'Alphabetic'
+                                'sequence'        =>    'Manual',
+                                'visible_from'    =>    'Date',
+                                'title'            =>    'Alphabetic'
                             ), $child_order_column, array('id' => 'children_ordering_policy'));
                         ?>
                         <?= Form::select('children_ordering_direction', array(
-                                'asc'		=>	'Ascending',
-                                'desc'	=>	'Descending'
+                                'asc'        =>    'Ascending',
+                                'desc'    =>    'Descending'
                             ), $child_order_direction);
                         ?>
 
                         <?= new Boom\UI\Button('', 'Re-order', array('id' => 'b-page-settings-children-reorder', 'class' => 'b-button-textonly')) ?>
                     </label>
 		</div>
-		<? if ($allowAdvanced): ?>
+		<?php if ($allowAdvanced): ?>
 			<div id="advanced">
                             <label>
                                 <?=Lang::get('Children visible in nav')?>?
@@ -90,6 +90,6 @@
                                 </select>
                             </label>
 			</div>
-		<? endif ?>
+		<?php endif ?>
 	</div>
 </form>

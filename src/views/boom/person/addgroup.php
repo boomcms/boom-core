@@ -3,9 +3,9 @@
 		<p><?= Kohana::message('boom-people', 'addgroup1') ?></p>
 		<p><?= Kohana::message('boom-people', 'addgroup2') ?></p>
         <select name="groups[]" multiple>
-            <? foreach($groups as $group): ?>
+            <?php foreach($groups as $group): ?>
                 <option value="<?= $group->getId() ?>"><?= $group->getName() ?></option>
-            <? endforeach ?>
+            <?php endforeach ?>
         </select>
 	</form>
 </div>

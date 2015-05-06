@@ -19,7 +19,7 @@
                                     Email
                                     <input type="text" name="email" disabled="disabled" value="<?= $person->getEmail() ?>" />
                                 </label>
-				
+
                                 <label for='person-status'>
                                     Status
                                     <?= Form::select('enabled',
@@ -28,7 +28,7 @@
                                         array('id' => 'person-status'))
                                     ?>
                                 </label>
-                
+
 				<div>
 					<?= new \BoomCMS\Core\UI\Button('accept', Lang::get('Save'), array('id' => 'b-person-save', 'class' => 'b-people-save')) ?>
 					<?= new \BoomCMS\Core\UI\Button('delete', Lang::get('Delete'), array('id' => 'b-person-delete')) ?>
@@ -37,7 +37,7 @@
 		</div>
 
 		<div id="b-person-view-activity<?= $person->getId() ?>">
-			<? if (count($activities) > 0): ?>
+			<?php if (count($activities) > 0): ?>
 				<table width="100%">
 					<thead>
 						<th>Time</th>
@@ -45,36 +45,36 @@
 						<th>Note</th>
 					</thead>
 					<tbody>
-						<? foreach ($activities as $al): ?>
+						<?php foreach ($activities as $al): ?>
 							<tr class="boom-row-<?= Text::alternate('odd', 'even') ?>">
 								<td><?= date('d F Y H:i:s', $al->time) ?></td>
 								<td><?= $al->activity ?></td>
 								<td><?= $al->note ?></td>
 							</tr>
-						<? endforeach ?>
+						<?php endforeach ?>
 					</tbody>
 				</table>
-			<? else: ?>
+			<?php else: ?>
 				<p>
 					(No activity logged)
 				</p>
-			<? endif ?>
+			<?php endif ?>
 		</div>
 
 		<div id="b-person-view-groups<?= $person->getId() ?>">
 			<?= $person->getName() ?>
-			<? if (count($groups) == 0): ?>
+			<?php if (count($groups) == 0): ?>
 				is not a member of any groups<br />
-			<? else: ?>
+			<?php else: ?>
 				is a member of these groups:
 				<ul id='b-person-groups-list'>
-					 <? foreach ($groups as $group): ?>
+					 <?php foreach ($groups as $group): ?>
 						 <li data-group-id='<?= $group->getId() ?>'>
 							 <?= $group->getName() ?>&nbsp;<a title='Remove user from group' class='b-person-group-delete' href='#'>x</a>
 						 </li>
-					 <? endforeach ?>
+					 <?php endforeach ?>
 				</ul>
-			<? endif ?>
+			<?php endif ?>
 
 			<?= new \BoomCMS\Core\UI\Button('add', Lang::get('Add group'), array('class' => 'b-person-addgroups', 'rel' => $person->getId())) ?>
 		</div>

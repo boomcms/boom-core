@@ -12,15 +12,15 @@
 			<li>There is no 'edit' URL. Instead of editing a URL you should simply add the new URL. This ensures that the page remains accessible from the existing URL.</li>
 		</ul>
 		<ul id='b-page-urls-list'>
-			<? foreach($urls as $url): ?>
-				<li data-url="<?= $url->location ?>" data-id="<?= $url->id ?>" <? if ( (bool) $url->is_primary ): echo 'class="b-page-urls-primary"'; endif;?>>
+			<?php foreach($urls as $url): ?>
+				<li data-url="<?= $url->location ?>" data-id="<?= $url->id ?>" <?php if ( (bool) $url->is_primary ): echo 'class="b-page-urls-primary"'; endif;?>>
 					<label class="primary" for="is_primary_<?= $url->id ?>">/<?= $url->location ?></label>
 
 					<span class='b-page-urls-primary-indicator'>primary</span>
 					<span title="Remove URL" class="ui-icon ui-icon-remove-small b-urls-remove"></span>
 					<?= Form::radio('is_primary', $url->location, (bool) $url->is_primary, array('id' => 'is_primary_' . $url->id, 'class' => 'ui-helper-hidden b-urls-primary')) ?>
 				</li>
-			<? endforeach; ?>
+			<?php endforeach; ?>
 		</ul>
 	</section>
 	<section class='b-page-urls-short'>

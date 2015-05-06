@@ -1,8 +1,8 @@
 	<script type="text/javascript" src="/public/boom/js/cms.js"></script>
-    
+
 	<script type="text/javascript">
 		//<![CDATA[
-		$(document).ready(function() {
+		$(document).ready(function () {
 			$.boom.init({
 				csrf: '<?= Security::token() ?>'
 			});

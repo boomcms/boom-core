@@ -11,15 +11,15 @@
         </ul>
 
         <ol id="b-slideshow-editor-slides">
-            <? foreach ($slides as $slide): ?>
-                <? $link = $slide->getLink() ?>
+            <?php foreach ($slides as $slide): ?>
+                <?php $link = $slide->getLink() ?>
                 <li>
                     <label>
-                        <input type="radio" value="<?= $slide->id ?>" name="slide" data-asset="<?= $slide->asset_id ?>" data-title="<?= $slide->title ?>" data-url="<?= $link->url() ?>" data-page="<?= $link->isInternal()? $link->getPage()->getId() : 0 ?>" data-caption="<?= $slide->caption ?>" data-linktext='<?= $slide->linktext ?>' />
+                        <input type="radio" value="<?= $slide->id ?>" name="slide" data-asset="<?= $slide->asset_id ?>" data-title="<?= $slide->title ?>" data-url="<?= $link->url() ?>" data-page="<?= $link->isInternal() ? $link->getPage()->getId() : 0 ?>" data-caption="<?= $slide->caption ?>" data-linktext='<?= $slide->linktext ?>' />
                         <img src="<?= Route::url('asset', array('id' => $slide->asset_id)) ?>" />
                     </label>
                 </li>
-            <? endforeach ?>
+            <?php endforeach ?>
         </ol>
     </section>
 

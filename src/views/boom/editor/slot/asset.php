@@ -3,11 +3,11 @@
     <p>Click to select an alternative asset</p>
 
     <a href="#" data-asset-id="<?= $chunk->target() ?>">
-        <? if ($chunk->hasContent()): ?>
+        <?php if ($chunk->hasContent()): ?>
             <img src="<?= Route::url('asset', array('id' => $chunk->target(), 'action' => 'thumb', 'width' => 400)) ?>" />
-        <? else: ?>
+        <?php else: ?>
             <p>None set</p>
-        <? endif ?>
+        <?php endif ?>
     </a>
 </section>
 

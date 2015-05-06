@@ -2,7 +2,7 @@
 	<?= Form::hidden('csrf', Security::token()) ?>
 
 	<div class="boom-tabs">
-		<? if ($allowAdvanced): ?>
+		<?php if ($allowAdvanced): ?>
 			<ul>
 				<li>
 					<a href="#basic"><?=Lang::get('Basic')?></a>
@@ -11,21 +11,21 @@
 					<a href="#advanced"><?=Lang::get('Advanced')?></a>
 				</li>
 			</ul>
-		<? endif; ?>
+		<?php endif; ?>
 
 		<div id="basic">
                     <label>
                         <?= Lang::get('Visible in navigation') ?>?
                         <?= Form::select('visible_in_nav', array(1 => 'Yes', 0 => 'No'), $page->isVisibleInNav(), array('id' => 'visible_in_nav')) ?>
                     </label>
-			
+
                     <label>
                         <?= Lang::get('Visible in CMS navigation') ?>?
                         <?= Form::select('visible_in_nav_cms', array(1 => 'Yes', 0 => 'No'), $page->isVisibleInCmsNav(), array('id' => 'visible_in_nav_cms')) ?>
                     </label>
 		</div>
 
-		<? if ($allowAdvanced): ?>
+		<?php if ($allowAdvanced): ?>
 			<div id='advanced'>
 				<label for="parent_id">Parent page</label>
 
@@ -34,6 +34,6 @@
 					<li><a id="page_5" href="/" rel="5">Home</a></li>
 				</ul>
 			</div>
-		<? endif; ?>
+		<?php endif; ?>
 	</div>
 </form>

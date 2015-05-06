@@ -9,7 +9,7 @@
 			</tr>
 		</thead>
 		<tbody>
-			<? foreach ($people as $person): ?>
+			<?php foreach ($people as $person): ?>
 				<tr class="<?= Text::alternate('odd', 'even') ?>" data-person-id="<?= $person->getId() ?>">
 					<td width="10">
 						<input type="checkbox" class="b-people-select" />
@@ -22,13 +22,13 @@
 					</td>
 					<td>
 						<span class='tags'>
-							<? foreach($person->getGroups() as $group): ?>
+							<?php foreach($person->getGroups() as $group): ?>
 								<a rel=​'ajax' name='<?= $group->getId() ?>' href='/cms/people?group=<?= $group->getId() ?>'><?= $group->getName() ?> &raquo;</a>
-							<? endforeach ?>​
+							<?php endforeach ?>​
 						</span>
 					</td>
 				</tr>
-			<? endforeach ?>
+			<?php endforeach ?>
 		</tbody>
 	</table>
 </div>

@@ -16,7 +16,7 @@
                     <?= new Boom\UI\Button('add', 'Add tag') ?>
                 </form>
             </li>
-	</ul>	
+	</ul>
     </section>
 
     <section id="grouped">

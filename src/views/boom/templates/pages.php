@@ -1,4 +1,4 @@
-	<?= View::factory('boom/header', array('title' =>	'Templates'))?>
+	<?= View::factory('boom/header', array('title' =>    'Templates'))?>
 	<?= new \Boom\Menu\Menu  ?>
 
 	<div id="b-topbar" class="b-toolbar">
@@ -11,12 +11,12 @@
                 <th>Page title</th>
                 <th>URL</th>
             </tr>
-            <? foreach ($pages as $p): ?>
+            <?php foreach ($pages as $p): ?>
                     <tr>
                         <td><?= $p->getTitle() ?></td>
                         <td><a href='<?= $p->url() ?>'><?= $p->url()->location ?></a></td>
                     </tr>
-            <? endforeach ?>
+            <?php endforeach ?>
         </table>
     </div>
 
@@ -24,7 +24,7 @@
 
 	<script type="text/javascript">
 		//<![CDATA[
-		(function($){
+		(function ($) {
 			$.boom.init();
 		})(jQuery);
 		//]]>

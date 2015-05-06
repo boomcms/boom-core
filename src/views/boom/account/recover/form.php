@@ -7,14 +7,14 @@
 	</head>
 	<body id='b-login'>
 		<div>
-			<form name="login-form" action="/cms/recover<? if (isset($token)): ?>?token=<?= $token->token ?><? endif ?>" method="post">
+			<form name="login-form" action="/cms/recover<?php if (isset($token)): ?>?token=<?= $token->token ?><?php endif ?>" method="post">
 				<?= Form::hidden('csrf', Security::token()) ?>
 				<fieldset>
-					<? if (isset($error)): ?>
+					<?php if (isset($error)): ?>
 						<p class="b-error"><?= $error ?></p>
-					<? endif ?>
+					<?php endif ?>
 
-					<? if (isset($token)) : ?>
+					<?php if (isset($token)) : ?>
 						<?= Form::hidden('csrf', Security::token()) ?>
 
 						<p>
@@ -32,7 +32,7 @@
 						</p>
 
 						<input type='submit' value='<?= Lang::get('Update my password') ?>' />
-					<? else: ?>
+					<?php else: ?>
 						<p>
 							Please enter your email address.
 						</p>
@@ -47,7 +47,7 @@
 						</p>
 
 						<input type='submit' value='<?= Lang::get('Send me a reset link') ?>' />
-					<? endif ?>
+					<?php endif ?>
 				</fieldset>
 			</form>
 		</div>

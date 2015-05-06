@@ -15,9 +15,9 @@
             <li><a href="#b-assets-view-attributes"><?=Lang::get('Attributes')?></a></li>
             <li><a href="#b-tags"><?=Lang::get('Tags')?></a></li>
 
-            <? if (count($asset->getOldFiles()) > 0): ?>
+            <?php if (count($asset->getOldFiles()) > 0): ?>
                 <li><a href="#b-assets-view-files"><?=Lang::get('Previous Files')?></a></li>
-            <? endif ?>
+            <?php endif ?>
         </ul>
 
         <div id="b-assets-view-attributes">
@@ -42,11 +42,11 @@
                     <input type="text" id="visible_from" name="visible_from" class="boom-datepicker" value="<?= $asset->getVisibleFrom()->format('d F Y h:m') ?>" />
                 </label>
 
-                <? if ( ! $asset instanceof \Boom\Asset\Type\Image): ?>
+                <?php if ( ! $asset instanceof \Boom\Asset\Type\Image): ?>
                     <label for="thumbnail">Thumbnail
                         <input type="text" id="thumbnail" name="thumbnail_asset_id" value="<?= $asset->getThumbnailAssetId() ?>" size="4" />
                     </label>
-                <? endif ?>
+                <?php endif ?>
             </form>
         </div>
 
@@ -58,44 +58,44 @@
                 <dt><?=Lang::get('Filesize')?></dt>
                 <dd><span id='filesize'><?= Text::bytes($asset->getFilesize()) ?></dd>
 
-                <? if ($asset instanceof \Boom\Asset\Type\Image): ?>
+                <?php if ($asset instanceof \Boom\Asset\Type\Image): ?>
                     <dt><?=Lang::get('Dimensions')?></dt>
                     <dd><?=$asset->getWidth()?> x <?=$asset->getHeight()?></dd>
-                <? endif; ?>
+                <?php endif; ?>
 
-                <? if ($uploader = $asset->getUploadedBy()): ?>
+                <?php if ($uploader = $asset->getUploadedBy()): ?>
                     <dt><?=Lang::get('Uploaded by')?></dt>
                     <dd><?= $uploader->name ?></dd>
-                <? endif; ?>
+                <?php endif; ?>
 
                 <dt><?=Lang::get('Uploaded on')?></dt>
                 <dd><?= $asset->getUploadedTime()->format('d F Y h:i:s') ?></dd>
 
-                <? if ( ! $asset instanceof \Boom\Asset\Type\Image): ?>
+                <?php if ( ! $asset instanceof \Boom\Asset\Type\Image): ?>
                     <dt><?=Lang::get('Downloads')?></dt>
                     <dd><?= Num::format($asset->getDownloads(), 0) ?></dd>
-                <? endif ?>
+                <?php endif ?>
             </dl>
         </div>
 
         <?= new View('boom/assets/tags', ['tags' => $asset->getTags()]) ?>
 
-        <? if (count($asset->getOldFiles()) > 0): ?>
+        <?php if (count($asset->getOldFiles()) > 0): ?>
             <div id="b-assets-view-files">
                 <p>
                     These files were previously assigned to this asset but were replaced.
                 </p>
                 <ul>
-                    <? foreach ($asset->getOldFiles() as $timestamp => $filename): ?>
+                    <?php foreach ($asset->getOldFiles() as $timestamp => $filename): ?>
                         <li>
                             <a href="/cms/assets/restore/<?= $asset->getId() ?>?timestamp=<?= $timestamp ?>">
-                                <img src="<?= Route::url('asset', array('action' => 'thumb', 'id' => $asset->getId(), 'width' => 160, 'height' => 160, 'quality' => 85, 'crop' => 1)) ?><? if ($timestamp): ?>?timestamp=<?= $timestamp ?><? endif; ?>" />
+                                <img src="<?= Route::url('asset', array('action' => 'thumb', 'id' => $asset->getId(), 'width' => 160, 'height' => 160, 'quality' => 85, 'crop' => 1)) ?><?php if ($timestamp): ?>?timestamp=<?= $timestamp ?><?php endif; ?>" />
                             </a>
                             <?=date("d F Y H:i", $timestamp);?>
                         </li>
-                    <? endforeach ?>
+                    <?php endforeach ?>
                 </ul>
             </div>
-        <? endif ?>
+        <?php endif ?>
     </div>
 </div>

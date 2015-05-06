@@ -3,11 +3,11 @@
 		<h1>Current feature image</h1>
 		<p id="b-page-feature-none">This page has no feature image.</p>
 
-		<? if ( ! $feature_image_id): ?>
+		<?php if ( ! $feature_image_id): ?>
 			<img id='b-page-feature-current' src='' />
-		<? else: ?>
+		<?php else: ?>
 			<img id='b-page-feature-current' data-asset-id="<?= $feature_image_id ?>" src='<?= Route::url('asset', array('id' => $feature_image_id, 'width' => 500)) ?>' />
-		<? endif; ?>
+		<?php endif; ?>
 
 
 		<div id='b-page-feature-buttons'>

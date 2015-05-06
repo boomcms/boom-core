@@ -35,10 +35,10 @@
 	</tr>
 	<tr>
 		<td>
-			<?= ($current->isVisible())? 'Visible' : 'Invisible'; ?>
+			<?= ($current->isVisible()) ? 'Visible' : 'Invisible'; ?>
 		</td>
 		<td>
-			<?= ($page->isVisible())? 'Visible' : 'Invisible'; ?>
+			<?= ($page->isVisible()) ? 'Visible' : 'Invisible'; ?>
 		</td>
 	</tr>
 	<tr>

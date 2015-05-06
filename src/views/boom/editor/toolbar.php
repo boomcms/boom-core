@@ -6,7 +6,7 @@
 	<?= new \Boom\Menu\Menu  ?>
 
 	<div id="b-topbar-page-buttons">
-		<? if ($page->wasCreatedBy($person) || $auth->loggedIn('edit_page_content', $page)): ?>
+		<?php if ($page->wasCreatedBy($person) || $auth->loggedIn('edit_page_content', $page)): ?>
 			<div id="b-page-actions" class="b-page-container">
 				<span id="b-page-publish-menu">
 					<button id="b-page-version-status" class="b-button" data-status="<?= $page->getCurrentVersion()->status() ?>">
@@ -17,34 +17,34 @@
 				<?= new \BoomCMS\Core\UI\Button('preview', Lang::get("Preview the current version of the page even if it hasn't been published"), array('id' => 'boom-page-preview', 'class' => 'b-button-preview','data-preview' => 'preview')) ?>
 				<?= new \BoomCMS\Core\UI\Button('options', Lang::get("Changed the template used by the page"), array('id' => 'b-page-template')) ?>
 			</div>
-		<? endif; ?>
+		<?php endif; ?>
 
-		<? if ($auth->loggedIn('add_page', $page)): ?>
+		<?php if ($auth->loggedIn('add_page', $page)): ?>
 			<div class="b-page-container">
 				<?= new \BoomCMS\Core\UI\Button('add', Lang::get('Add a new page as a child of the current page'), array('id' => 'b-page-addpage')) ?>
 			</div>
-		<? endif; ?>
+		<?php endif; ?>
 
 		<div class="b-page-container">
-			<? if ($auth->loggedIn('edit_page', $page)): ?>
-				<?= new \BoomCMS\Core\UI\Button('visible', Lang::get('This page is visible. The content displayed will depend on which version of the page is published'), array('id' => 'b-page-visible', 'class' => $page->isVisible()? 'b-page-visibility ' : 'b-page-visibility ui-helper-hidden')) ?>
-				<?= new \BoomCMS\Core\UI\Button('invisible', Lang::get('This page is hidden regardless of whether there is a published version'), array('id' => 'b-page-invisible', 'class' => $page->isVisible()? 'b-page-visibility ui-helper-hidden' : 'b-page-visibility')) ?>
+			<?php if ($auth->loggedIn('edit_page', $page)): ?>
+				<?= new \BoomCMS\Core\UI\Button('visible', Lang::get('This page is visible. The content displayed will depend on which version of the page is published'), array('id' => 'b-page-visible', 'class' => $page->isVisible() ? 'b-page-visibility ' : 'b-page-visibility ui-helper-hidden')) ?>
+				<?= new \BoomCMS\Core\UI\Button('invisible', Lang::get('This page is hidden regardless of whether there is a published version'), array('id' => 'b-page-invisible', 'class' => $page->isVisible() ? 'b-page-visibility ui-helper-hidden' : 'b-page-visibility')) ?>
 
 				<span id="b-page-settings-menu">
 					<?= new \BoomCMS\Core\UI\Button('settings', Lang::get('Page settings which apply whichever version is published'), array('id' => 'boom-page-settings')) ?>
 				</span>
-			<? endif ?>
+			<?php endif ?>
 
-			<? if (($page->wasCreatedBy($person) || $auth->loggedIn('delete_page', $page)) && ! $page->getMptt()->is_root()): ?>
+			<?php if (($page->wasCreatedBy($person) || $auth->loggedIn('delete_page', $page)) && ! $page->getMptt()->is_root()) : ?>
 				<?= new \BoomCMS\Core\UI\Button('delete', Lang::get('Delete this page'), array('id' => 'b-page-delete')) ?>
-			<? endif; ?>
+			<?php endif; ?>
 		</div>
 
-		<? if ($readability): ?>
+		<?php if ($readability): ?>
 			<button id="b-page-readability" class="b-button">
 				<?= $readability ?>
 			</button>
-		<? endif ?>
+		<?php endif ?>
 
 		<div class="b-page-container">
 			<?/*<button id="boom-page-editlive" class="ui-button boom-button" data-icon="ui-icon-boom-edit-live">
@@ -62,10 +62,10 @@
 	</div>
 
         <div id="wysihtml5-toolbar" class="b-toolbar b-toolbar-vertical b-toolbar-text">
-            <? foreach (Boom\UI\TextEditorToolbar::getAvailableButtonSets() as $set): ?>
+            <?php foreach (Boom\UI\TextEditorToolbar::getAvailableButtonSets() as $set): ?>
 
                 <?= new Boom\UI\TextEditorToolbar($set) ?>
-            <? endforeach ?>
+            <?php endforeach ?>
         </div>
 </div>
 
