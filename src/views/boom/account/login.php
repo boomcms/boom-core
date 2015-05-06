@@ -5,9 +5,12 @@
 		<meta name="robots" content="noindex, nofollow" />
 		<link rel="stylesheet" type="text/css" href="/public/boom/css/cms.css" />
 	</head>
+
 	<body id='b-login'>
 		<div>
 			<form name="login-form" action="/cms/login" method="post">
+                                <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+
 				<fieldset>
 					<? if (isset($login_error)): ?>
 						<p class="b-error"><?= $login_error ?></p>
