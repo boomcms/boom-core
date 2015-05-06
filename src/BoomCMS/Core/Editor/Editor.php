@@ -12,7 +12,6 @@ class Editor
     const PREVIEW = 3;
 
     public static $default = Editor::PREVIEW;
-    public static $instance;
 
     /**
 	 *
@@ -35,19 +34,6 @@ class Editor
         // If the user is logged in then the default is preview, if they're not logged in then it should be disabled.
         $default = ($this->auth->isLoggedIn()) ? static::$default : static::DISABLED;
         $this->state = $this->session->get($this->statePersistenceKey, $default);
-    }
-
-    /**
-	 *
-	 * @return Editor
-	 */
-    public static function instance()
-    {
-        if (static::$instance === null) {
-            static::$instance = new static(new Auth(Session::instance()), Session::instance());
-        }
-
-        return static::$instance;
     }
 
     public function isDisabled()
