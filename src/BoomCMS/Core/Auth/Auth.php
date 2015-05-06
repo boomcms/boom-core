@@ -14,8 +14,6 @@ use Illuminate\Session\SessionManager as Session;
 
 class Auth
 {
-    protected static $instance;
-
     /**
 	 *
 	 * @var Boom\Person\Person
@@ -34,7 +32,7 @@ class Auth
 	 */
     protected $session;
 
-    protected $sessionKey = 'boomPersonId';
+    protected $sessionKey = 'boomcms.person.id';
 
     protected $permissions_cache = [];
 
@@ -54,18 +52,21 @@ class Auth
      */
     public function authenticate($email, $password, $remember = false)
     {
-        $person = $this->personProvider->findByCredentials([
-            'email' => $email,
-            'password' => $this->hash($password),
-        ]);
+        $person = $this->personProvider->findByEmail(trim($email));
 
-        if ( ! $person->isValid()) {
-            throw new UserNotFoundException;
+        if ($person->isValid() && $person->checkPassword($password)) {
+            $this->login($person, $remember);
+
+            return $person;
         }
 
-        $this->login($person, $remember);
+        if ( ! $person->isValid()) {
+            throw new UserNotFoundException();
+        }
 
-        return $person;
+        if ($person->isLocked()) {
+
+        }
     }
 
     public function logout()
@@ -203,7 +204,6 @@ class Auth
     public function login(Person\Person $person, $remember = false)
     {
         $this->person = $person;
-
         $this->session->set($this->sessionKey, $person->getId());
     }
 

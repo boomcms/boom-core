@@ -5,13 +5,12 @@ namespace BoomCMS\Core\Person;
 use Boom\Group;
 use Boom\Page\Page;
 
-use Cartalyst\Sentry\Groups\GroupInterface;
-use Cartalyst\Sentry\Users\UserInterface;
+use Hautelook\Phpass\PasswordHash;
 
 use \DB;
 use \Model_Role as Role;
 
-class Person implements UserInterface
+class Person
 {
     const LOCK_WAIT = 600;
 
@@ -49,19 +48,11 @@ class Person implements UserInterface
         return $this;
     }
 
-    public function attemptActivation($activationCode)
-    {
-
-    }
-
-    public function attemptResetPassword($resetCode, $newPassword)
-    {
-
-    }
-
     public function checkPassword($password)
     {
+        $hasher = new PasswordHash(8, false);
 
+        return $hasher->CheckPassword($password, $this->getPassword());
     }
 
     /**
@@ -74,33 +65,14 @@ class Person implements UserInterface
         return $persistCode === $this->getId();
     }
 
-    public function checkResetPasswordCode($resetCode)
+    public function get($key)
     {
-
-    }
-
-    public function clearResetPassword()
-    {
-
-    }
-
-    public function delete()
-    {
-        if ($this->loaded()) {
-            $this->model->delete();
-        }
-
-        return $this;
-    }
-
-    public function getActivationCode()
-    {
-
+        return isset($this->data[$key])? $this->data[$key] : null;
     }
 
     public function getEmail()
     {
-        return $this->data['email'];
+        return $this->get('email');
     }
 
     public function getGroups()
@@ -114,12 +86,12 @@ class Person implements UserInterface
 
     public function getId()
     {
-        return $this->data['id'];
+        return $this->get('id');
     }
 
     public function getLockedUntil()
     {
-        return $this->data['locked_until'];
+        return $this->get('locked_until');
     }
 
     public function getLogin()
@@ -127,29 +99,14 @@ class Person implements UserInterface
         return $this->getEmail();
     }
 
-    public function getLoginName()
-    {
-        return 'email';
-    }
-
     public function getName()
     {
-        return $this->data['name'];
-    }
-
-    public function getPasswordName()
-    {
-        return 'password';
+        return $this->get('name');
     }
 
     public function getPassword()
     {
-        return $this->data['password'];
-    }
-
-    public function getPersistCode()
-    {
-        return $this->getId();
+        return $this->get('password');
     }
 
     public function hasPagePermission(Role $role, Page $page)
@@ -200,29 +157,12 @@ class Person implements UserInterface
 
     public function isEnabled()
     {
-        return (bool) $this->data['enabled'];
+        return $this->get('enabled') == true;
     }
 
     public function isLocked()
     {
         return $this->getLockedUntil() && ($this->getLockedUntil() > time());
-    }
-
-    public function inGroup(GroupInterface $group)
-    {
-
-    }
-
-    /**
-     * Always returns false as Boom doesn't currently have the concept of super users.
-     *
-     * This should be impelemented in the future.
-     *
-     * @return boolean
-     */
-    public function isSuperUser()
-    {
-        return false;
     }
 
     /**
@@ -316,40 +256,5 @@ class Person implements UserInterface
         $this->data['name'] = $name;
 
         return $this;
-    }
-
-    public function validate()
-    {
-
-    }
-
-    public function getMergedPermissions()
-    {
-
-    }
-
-    public function getPermissions()
-    {
-
-    }
-
-    public function getResetPasswordCode()
-    {
-
-    }
-
-    public function hasAccess($permissions, $all = true)
-    {
-
-    }
-
-    public function hasAnyAccess(array $permissions)
-    {
-
-    }
-
-    public function recordLogin()
-    {
-
     }
 }
