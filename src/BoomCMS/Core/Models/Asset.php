@@ -1,6 +1,6 @@
 <?php
 
-namespace Boom\Model;
+namespace BoomCMS\Core\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
