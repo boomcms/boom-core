@@ -49,7 +49,7 @@ class ProcessSiteURL
             redirect($page->url(), 301);
         }
 
-        // TODO: 2015/04/29 Need a way of passing the page to the controller
+        $request->route()->setParameter('boom.currentPage', $page);
 
         return $next($request);
     }
