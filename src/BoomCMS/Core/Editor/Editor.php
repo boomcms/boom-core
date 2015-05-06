@@ -38,31 +38,6 @@ class Editor
     }
 
     /**
-	 * Insert the editor iframe into a block of HTML
-	 *
-	 * @param	string	$html
-	 * @param	string	$page_id
-	 * @return	string
-	 */
-    public function insert($html, $page_id)
-    {
-        // Find the body tag in the HTML. We need to take into account that the body may have attributes assigned to it in the HTML.
-        preg_match("|(.*)(</head>)(.*<body[^>]*>)|imsU", $html, $matches);
-
-        if ( ! empty($matches)) {
-            $head = new \View('boom/editor/iframe', [
-                'before_closing_head' => $matches[1],
-                'body_tag'    =>    $matches[3],
-                'page_id'    =>    $page_id,
-            ]);
-
-            $html = str_replace($matches[0], $head->render(), $html);
-        }
-
-        return $html;
-    }
-
-    /**
 	 *
 	 * @return Editor
 	 */
