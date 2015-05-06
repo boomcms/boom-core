@@ -109,52 +109,6 @@ class Person
         return $this->get('password');
     }
 
-    public function hasPagePermission(Role $role, Page $page)
-    {
-        $query = DB::select([DB::expr("bit_and(allowed)"), 'allowed'])
-            ->from('people_roles')
-            ->where('person_id', '=', $this->getId())
-            ->where('role_id', '=', $role->id)
-            ->group_by('person_id')    // Strange results if this isn't here.
-            ->join('page_mptt', 'left')
-            ->on('people_roles.page_id', '=', 'page_mptt.id')
-            ->where('lft', '<=', $page->getMptt()->lft)
-            ->where('rgt', '>=', $page->getMptt()->rgt)
-            ->where('scope', '=', $page->getMptt()->scope);
-
-        $result = $query
-            ->execute()
-            ->as_array();
-
-        return  ( ! empty($result) && (boolean) $result[0]['allowed']);
-    }
-
-    public function hasPermission($role, $all = true)
-    {
-        $query = DB::select([DB::expr("bit_and(allowed)"), 'allowed'])
-            ->from('people_roles')
-            ->where('person_id', '=', $this->getId())
-            ->where('role_id', '=', $role->id)
-            ->group_by('person_id')    // Strange results if this isn't here.
-            ->where('people_roles.page_id', '=', 0);
-
-        $result = $query
-            ->execute()
-            ->as_array();
-
-        return  ( ! empty($result) && (boolean) $result[0]['allowed']);
-    }
-
-    /**
-     * Always returns true because Boom doesn't require account activation
-     *
-     * @return boolean
-     */
-    public function isActivated()
-    {
-        return true;
-    }
-
     public function isEnabled()
     {
         return $this->get('enabled') == true;

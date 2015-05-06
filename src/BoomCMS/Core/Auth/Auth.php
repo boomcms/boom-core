@@ -27,6 +27,12 @@ class Auth
     private $personProvider;
 
     /**
+     *
+     * @var PermissionProvider
+     */
+    private $permissionsProvider;
+
+    /**
 	 *
 	 * @var type Session
 	 */
@@ -34,12 +40,11 @@ class Auth
 
     protected $sessionKey = 'boomcms.person.id';
 
-    protected $permissions_cache = [];
-
-    public function __construct(Session $session, Person\Provider $personProvider)
+    public function __construct(Session $session, Person\Provider $personProvider, PermissionsProvider $permissionsProvider)
     {
         $this->session = $session;
         $this->personProvider = $personProvider;
+        $this->permissionsProvider = $permissionsProvider;
     }
 
     /**
@@ -138,67 +143,9 @@ class Auth
 
     public function loggedIn($role = null, $page = null)
     {
-        $person = $this->getPerson();
-
-        if ($role === null) {
-            return $this->isLoggedIn();
-        } else {
-            // A role has been given - check whether the active person is allowed to perform the role.
-
-            /**
-			 * If a page has been given then add 'p_' to the role name.
-			 *
-			 * Roles which are applied to pages are prefixed with 'p_' in the database
-			 * so that we can display them seperately from the general permissions when adding roles to groups in the people manager.
-			 *
-			 * To avoid having to add p_ to the start of role names everywhere in the code we just add the prefix here.
-			 */
-            if ($page !== NULL and is_string($role)) {
-                $role = 'p_'.$role;
-            }
-
-            if (is_string($role)) {
-                $role = new Role(['name' => $role]);
-            }
-
-            // Does the person have the role at the specified page?
-            $page_id = ($page) ? $page->getId() : 0;
-            $cache_key = md5($role.$page_id);
-
-            if ( ! isset($this->_permissions_cache[$cache_key])) {
-                $this->_permissions_cache[$cache_key] = $page ? $this->getPerson()->hasPagePermission($role, $page) : $this->getPerson()->hasPermission($role);
-            }
-
-            return $this->_permissions_cache[$cache_key];
-        }
-    }
-
-    public function cache_permissions($page)
-    {
-        $permissions = DB::select('roles.name', ['page_mptt.id', 'page_id'], [DB::expr("bit_and(allowed)"), 'allowed'])
-            ->from('people_roles')
-            ->where('person_id', '=', $this->getPerson()->getId())
-            ->join('roles', 'inner')
-            ->on('people_roles.role_id', '=', 'roles.id')
-            ->group_by('role_id')
-            ->join('page_mptt', 'left')
-            ->on('people_roles.page_id', '=', 'page_mptt.id')
-            ->or_where_open()
-                ->and_where_open()
-                    ->where('lft', '<=', $page->getMptt()->lft)
-                    ->where('rgt', '>=', $page->getMptt()->rgt)
-                    ->where('scope', '=', $page->getMptt()->scope)
-                ->and_where_close()
-                ->or_where('people_roles.page_id', '=', null)
-            ->or_where_close()
-            ->execute()
-            ->as_array();
-
-        foreach ($permissions as $p) {
-            $this->permissions_cache[md5($p['name']. (int) $p['page_id'])] = $p['allowed'];
-        }
-
-        return $this;
+        return ($role === null)
+            ? $this->isLoggedIn()
+            : $this->isLoggedIn() && $this->permissionsProvider->lookup($this->getPerson(), $role, $page);
     }
 
     public function login(Person\Person $person, $remember = false)
