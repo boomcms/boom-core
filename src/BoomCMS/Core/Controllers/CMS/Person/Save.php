@@ -1,8 +1,8 @@
 <?php
 
-use Boom\Auth\PasswordGenerator\PasswordGenerator;
-use Boom\Group;
-use Boom\Person;
+use BoomCMS\Core\Auth\PasswordGenerator\PasswordGenerator;
+use BoomCMS\Core\Group;
+use BoomCMS\Core\Person;
 
 class Controller_Cms_Person_Save extends Controller_Cms_Person
 {

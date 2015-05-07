@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Core\Tag\Finder\Filter;
 
-use Boom\Page\Page;
+use BoomCMS\Core\Page\Page;
 
 class AppliedToPageDescendants extends \Boom\Finder\Filter
 {

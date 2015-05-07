@@ -4,7 +4,7 @@ namespace BoomCMS\Core\Controllers\CMS;
 
 use \Boom\Person\Finder as PersonFinder;
 use \Boom\Group\Finder as GroupFinder;
-use Boom\Controller\Controller;
+use BoomCMS\Core\Controller\Controller;
 
 class PeopleManager extends Controller
 {

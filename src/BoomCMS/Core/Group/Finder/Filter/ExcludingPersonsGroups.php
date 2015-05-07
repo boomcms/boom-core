@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Core\Group\Finder\Filter;
 
-use Boom\Person;
+use BoomCMS\Core\Person;
 use DB;
 use ORM;
 

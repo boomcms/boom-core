@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Core\Chunk;
 
-use Boom\Editor\Editor as Editor;
+use BoomCMS\Core\Editor\Editor as Editor;
 use \View as View;
 
 class Linkset extends \Boom\Chunk

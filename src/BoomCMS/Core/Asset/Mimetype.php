@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Core\Asset;
 
-use Boom\Exception;
+use BoomCMS\Core\Exception;
 
 abstract class Mimetype
 {

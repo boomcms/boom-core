@@ -3,8 +3,8 @@
 namespace BoomCMS\Core\Page\Finder;
 
 use Boom;
-use Boom\Editor\Editor;
-use Boom\Model\Page as Model;
+use BoomCMS\Core\Editor\Editor;
+use BoomCMS\Core\Model\Page as Model;
 
 class Finder extends Boom\Finder\Finder
 {

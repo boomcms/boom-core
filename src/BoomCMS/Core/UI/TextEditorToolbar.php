@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Core\UI;
 
-use Boom\Config;
+use BoomCMS\Core\Config;
 
 class TextEditorToolbar extends AbstractUIElement
 {

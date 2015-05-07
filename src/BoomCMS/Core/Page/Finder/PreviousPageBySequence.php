@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Core\Page\Finder;
 
-use Boom\Page\Page;
+use BoomCMS\Core\Page\Page;
 use ORM;
 
 class PreviousPageBySequence extends \Boom\Finder\Filter

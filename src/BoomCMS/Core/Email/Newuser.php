@@ -5,8 +5,8 @@ namespace BoomCMS\Core\Email;
 use Email;
 use Request;
 use View;
-use Boom\Person;
-use Boom\Config;
+use BoomCMS\Core\Person;
+use BoomCMS\Core\Config;
 
 class Newuser
 {

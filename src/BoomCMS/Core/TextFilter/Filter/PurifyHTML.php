@@ -4,7 +4,7 @@ namespace BoomCMS\Core\TextFilter\Filter;
 
 use HTMLPurifier;
 use HTMLPurifier_Config;
-use Boom\Config;
+use BoomCMS\Core\Config;
 
 class PurifyHTML implements \Boom\TextFilter\Filter
 {

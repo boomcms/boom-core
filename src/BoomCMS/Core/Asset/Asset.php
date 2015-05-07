@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Core\Asset;
 
-use Boom\Person;
+use BoomCMS\Core\Person;
 use \DB;
 use \File;
 use \DateTime;

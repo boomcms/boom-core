@@ -2,8 +2,8 @@
 
 namespace BoomCMS\Core\Page\Finder;
 
-use Boom\Template\Template;
-use Boom\Model\Page as Model;
+use BoomCMS\Core\Template\Template;
+use BoomCMS\Core\Model\Page as Model;
 
 class Template extends \Boom\Finder\Filter
 {

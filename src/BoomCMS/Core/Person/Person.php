@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Core\Person;
 
-use Boom\Group;
+use BoomCMS\Core\Group;
 
 use Hautelook\Phpass\PasswordHash;
 

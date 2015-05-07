@@ -1,6 +1,6 @@
 <?php
 
-use Boom\Asset;
+use BoomCMS\Core\Asset;
 
 class Controller_Cms_Assets_Tags extends Controller_Cms_Assets
 {

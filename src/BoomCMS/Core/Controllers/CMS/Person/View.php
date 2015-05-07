@@ -1,6 +1,6 @@
 <?php
 
-use Boom\Group;
+use BoomCMS\Core\Group;
 
 class Controller_Cms_Person_View extends Controller_Cms_Person
 {

@@ -2,8 +2,8 @@
 
 namespace BoomCMS\Core\Controllers\CMS;
 
-use Boom\Page;
-use Boom\Controller\Controller;
+use BoomCMS\Core\Page;
+use BoomCMS\Core\Controller\Controller;
 
 class Approvals extends Controller
 {

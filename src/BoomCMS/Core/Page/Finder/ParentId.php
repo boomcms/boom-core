@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Core\Page\Finder;
 
-use Boom\Model\Page as Model;
+use BoomCMS\Core\Model\Page as Model;
 
 class ParentId extends \Boom\Finder\Filter
 {

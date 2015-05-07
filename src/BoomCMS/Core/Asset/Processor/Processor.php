@@ -3,7 +3,7 @@
 namespace BoomCMS\Core\Asset\Processor;
 
 use Response;
-use Boom\Asset\Asset;
+use BoomCMS\Core\Asset\Asset;
 
 abstract class Processor
 {

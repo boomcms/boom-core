@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Core\Asset\Type;
 
-use Boom\Asset\Asset;
+use BoomCMS\Core\Asset\Asset;
 
 class PDF extends Asset
 {

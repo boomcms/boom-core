@@ -3,7 +3,7 @@
 namespace BoomCMS\Core\Asset\Processor;
 
 use Boom;
-use Boom\Asset\Asset;
+use BoomCMS\Core\Asset\Asset;
 use Response;
 use Intervention\Image\ImageManager;
 

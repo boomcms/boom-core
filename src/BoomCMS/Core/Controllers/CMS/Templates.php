@@ -2,9 +2,9 @@
 
 namespace BoomCMS\Core\Controllers\CMS;
 
-use Boom\Template;
-use Boom\Page;
-use Boom\Controller\Controller;
+use BoomCMS\Core\Template;
+use BoomCMS\Core\Page;
+use BoomCMS\Core\Controller\Controller;
 
 class Templates extends Controller
 {

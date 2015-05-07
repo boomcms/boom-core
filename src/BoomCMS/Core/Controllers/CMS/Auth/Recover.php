@@ -1,7 +1,7 @@
 <?php
 
-use Boom\Config;
-use Boom\Person;
+use BoomCMS\Core\Config;
+use BoomCMS\Core\Person;
 
 class Controller_Cms_Auth_Recover extends Controller_Cms_Auth
 {

@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Core\Controllers\CMS;
 
-use Boom\Person;
+use BoomCMS\Core\Person;
 
 class Person extends PeopleManager
 {

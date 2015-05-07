@@ -2,8 +2,8 @@
 
 namespace BoomCMS\Core\Page\Finder;
 
-use Boom\Page\Page;
-use Boom\Model\Page as Model;
+use BoomCMS\Core\Page\Page;
+use BoomCMS\Core\Model\Page as Model;
 
 class NextPageBySequence extends \Boom\Finder\Filter
 {

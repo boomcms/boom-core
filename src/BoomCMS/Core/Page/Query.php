@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Core\Page;
 
-use Boom\Editor\Editor as Editor;
+use BoomCMS\Core\Editor\Editor as Editor;
 
 class Query
 {

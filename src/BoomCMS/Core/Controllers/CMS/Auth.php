@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Core\Controllers\CMS;
 
-use Boom\Auth\Auth;
+use BoomCMS\Core\Auth\Auth;
 use \Session;
 
 class Auth extends Controller

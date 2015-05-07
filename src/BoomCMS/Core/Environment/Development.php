@@ -3,7 +3,7 @@
 namespace BoomCMS\Core\Environment;
 
 use Exception;
-use Boom\Exception\Handler\Pub as PublicExceptionHandler;
+use BoomCMS\Core\Exception\Handler\Pub as PublicExceptionHandler;
 
 class Development extends Environment
 {

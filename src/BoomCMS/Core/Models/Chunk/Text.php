@@ -3,8 +3,8 @@
 namespace BoomCMS\Core\Model\Chunk;
 
 use Illuminate\Database\Eloquent\Model;
-use Boom\TextFilter\Commander as TextFilter;
-use Boom\TextFilter\Filter as Filter;
+use BoomCMS\Core\TextFilter\Commander as TextFilter;
+use BoomCMS\Core\TextFilter\Filter as Filter;
 
 class Text extends Model
 {

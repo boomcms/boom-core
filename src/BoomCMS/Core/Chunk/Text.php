@@ -2,9 +2,9 @@
 
 namespace BoomCMS\Core\Chunk;
 
-use Boom\Editor\Editor as Editor;
-use Boom\TextFilter\Commander as TextFilter;
-use Boom\TextFilter\Filter as Filter;
+use BoomCMS\Core\Editor\Editor as Editor;
+use BoomCMS\Core\TextFilter\Commander as TextFilter;
+use BoomCMS\Core\TextFilter\Filter as Filter;
 use \Kohana as Kohana;
 use \View as View;
 
