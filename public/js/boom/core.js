@@ -51,29 +51,6 @@ $.extend({
 
 		_init_widgets : function() {
 			this.loader = $('body').boomLoader({}).data('boomBoomLoader');
-		},
-
-		/**
-		 * Makes a POST AJAX call after adding the CSRF token to the POST data.
-		 */
-		post : function() {
-			var csrf = this.options.csrf,
-				arguments = Array.prototype.slice.apply(arguments);
-
-			if (typeof arguments[1] == 'undefined') {
-				arguments.push({
-					csrf : csrf
-				});
-			}
-			else if (typeof arguments[1] !== 'function') {
-				if (typeof arguments[1] === 'string') {
-					arguments[1] += '&csrf=' + encodeURIComponent(csrf);
-				} else {
-					arguments[1]['csrf'] = csrf;
-				}
-			}
-
-			return $.post.apply($, arguments);
 		}
 	}
 });

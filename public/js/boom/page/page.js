@@ -19,7 +19,7 @@ function boomPage(page_id) {
 	};
 
 	boomPage.prototype.addTag = function(group, tag) {
-		return $.boom.post('/cms/page/tags/add/' + this.id, {
+		return $.post('/cms/page/tags/add/' + this.id, {
 			group : group,
 			tag : tag
 		});
@@ -35,7 +35,7 @@ function boomPage(page_id) {
 			title: 'Please confirm',
 			id: 'b-page-confirmdelete'
 		}).done(function() {
-			$.boom.post('/cms/page/delete/' + page_id, {}, function(response) {
+			$.post('/cms/page/delete/' + page_id, {}, function(response) {
 				promise.resolve(response);
 			});
 		});
@@ -60,7 +60,7 @@ function boomPage(page_id) {
 				});
 			}
 		}).done(function() {
-			$.boom.post(url, dialog.contents.find('form').serialize())
+			$.post(url, dialog.contents.find('form').serialize())
 			.done(function(response) {
 				new boomNotification("Page embargo saved.");
 				promise.resolve(response);
@@ -88,7 +88,7 @@ function boomPage(page_id) {
 	};
 
 	boomPage.prototype.removeTag = function(tagId) {
-		return $.boom.post('/cms/page/tags/remove/' + this.id, {
+		return $.post('/cms/page/tags/remove/' + this.id, {
 			tag : tagId
 		});
 	};

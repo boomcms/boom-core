@@ -5,7 +5,7 @@ function boomPageTagEditor(page) {
 	boomPageTagEditor.prototype.addTag = function(group, tag) {
 		var tagEditor = this;
 
-		$.boom.post(this.getUrl('add'), {
+		$.post(this.getUrl('add'), {
 			group : group,
 			tag : tag.name
 		});
@@ -71,7 +71,7 @@ function boomPageTagEditor(page) {
 	};
 
 	boomPageTagEditor.prototype.removeTag = function($a) {
-		$.boom.post(this.getUrl('remove'), {
+		$.post(this.getUrl('remove'), {
 			tag : $a.attr('data-tag_id')
 		})
 		.done(function() {

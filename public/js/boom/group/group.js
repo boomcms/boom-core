@@ -28,7 +28,7 @@ function boomGroup(group_id) {
 
 		group.removeRole(role_id, page_id)
 			.done(function() {
-				$.boom.post(group.base_url + 'add_role/' + group.id, {
+				$.post(group.base_url + 'add_role/' + group.id, {
 					role_id : role_id,
 					allowed : allowed,
 					page_id: page_id
@@ -42,7 +42,7 @@ function boomGroup(group_id) {
 	};
 
 	boomGroup.prototype.addWithName = function(name) {
-		return $.boom.post(this.base_url + 'add', {name: name});
+		return $.post(this.base_url + 'add', {name: name});
 	};
 
 	boomGroup.prototype.getRoles = function(page_id) {
@@ -56,7 +56,7 @@ function boomGroup(group_id) {
 
 		confirmation
 			.done(function() {
-				$.boom.post(group.base_url + 'delete/' + group.id)
+				$.post(group.base_url + 'delete/' + group.id)
 					.done(function(response) {
 						deferred.resolve(response);
 					});
@@ -66,13 +66,13 @@ function boomGroup(group_id) {
 	};
 
 	boomGroup.prototype.removeRole = function(role_id, page_id) {
-		return $.boom.post(this.base_url + 'remove_role/' + this.id, {
+		return $.post(this.base_url + 'remove_role/' + this.id, {
 			role_id : role_id,
 			page_id : page_id
 		});
 	},
 
 	boomGroup.prototype.save = function(data) {
-		return $.boom.post(this.base_url + 'save/' + this.id, data);
+		return $.post(this.base_url + 'save/' + this.id, data);
 	};
 };

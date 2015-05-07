@@ -25,7 +25,7 @@ function boomPageUrl(id) {
 	boomPageUrl.prototype.addWithLocation = function(page_id, location) {
 		var deferred = new $.Deferred();
 
-		$.boom.post('/cms/page/urls/add?page_id=' + page_id, {location : location})
+		$.post('/cms/page/urls/add?page_id=' + page_id, {location : location})
 			.done(function(response) {
 				if (response) {
 					response = $.parseJSON(response);
@@ -52,7 +52,7 @@ function boomPageUrl(id) {
 
 			confirmation
 			.done(function() {
-				$.boom.post('/cms/page/urls/delete/' + url.id)
+				$.post('/cms/page/urls/delete/' + url.id)
 				.done(function() {
 					deferred.resolve();
 				});
@@ -62,7 +62,7 @@ function boomPageUrl(id) {
 	};
 
 	boomPageUrl.prototype.makePrimary = function(is_primary) {
-		return $.boom.post('/cms/page/urls/make_primary/' + this.id);
+		return $.post('/cms/page/urls/make_primary/' + this.id);
 	};
 
 	boomPageUrl.prototype.move = function(page_id) {
@@ -78,7 +78,7 @@ function boomPageUrl(id) {
 			width : '500px'
 		});
 		dialog.done(function() {
-			$.boom.post(form_url)
+			$.post(form_url)
 				.done(function(response) {
 					deferred.resolve(response);
 				});

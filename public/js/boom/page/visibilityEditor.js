@@ -60,7 +60,7 @@ boomPageVisibilityEditor = function(page) {
 		var visibilityEditor = this;
 
 		if (this.changed) {
-			$.boom.post(this.url, this.dialog.contents.find('form').serialize())
+			$.post(this.url, this.dialog.contents.find('form').serialize())
 				.done(function(response) {
 					new boomNotification('Page visibility saved');
 					visibilityEditor.deferred.resolve(response);

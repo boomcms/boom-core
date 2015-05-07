@@ -1,5 +1,5 @@
 boomPage.prototype.saveSettings = function(url, data, success_message) {
-	return $.boom.post(url, data)
+	return $.post(url, data)
 		.done(function() {
 			if (success_message) {
 				new boomNotification(success_message);

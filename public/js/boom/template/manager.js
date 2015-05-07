@@ -9,7 +9,7 @@ $.widget('boom.templateManager', {
 
 				confirmation
 					.done(function() {
-						$.boom.post('/cms/templates/delete/' + item.attr('data-id'))
+						$.post('/cms/templates/delete/' + item.attr('data-id'))
 							.done(function() {
 								item.fadeOut(600, function(){
 									item.remove();

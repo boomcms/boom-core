@@ -87,7 +87,7 @@ boomPageFeatureEditor = function(page) {
 		var pageFeatureEditor = this;
 
 		if (this.changed) {
-			$.boom.post(this.url, {feature_image_id : this.currentImage})
+			$.post(this.url, {feature_image_id : this.currentImage})
 				.done(function(response) {
 					new boomNotification('Page feature image saved');
 					pageFeatureEditor.deferred.resolve(response);

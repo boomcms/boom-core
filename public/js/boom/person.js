@@ -48,7 +48,7 @@ function boomPerson(person_id) {
 			console.log(groups);
 			console.log(groupIds);
 			if (groupIds.length) {
-				$.boom.post(url, {'groups[]' : groupIds})
+				$.post(url, {'groups[]' : groupIds})
 					.done(function() {
 						deferred.resolve(groups);
 					});
@@ -61,7 +61,7 @@ function boomPerson(person_id) {
 	};
 
 	boomPerson.prototype.addWithData = function(data) {
-		return $.boom.post(this.base_url + 'add', data);
+		return $.post(this.base_url + 'add', data);
 	};
 
 	boomPerson.prototype.delete = function() {
@@ -71,7 +71,7 @@ function boomPerson(person_id) {
 
 			confirmation
 				.done(function() {
-					$.boom.post(person.base_url + 'delete', {
+					$.post(person.base_url + 'delete', {
 						people : [person.id]
 					})
 					.done(function() {
@@ -83,14 +83,14 @@ function boomPerson(person_id) {
 	};
 
 	boomPerson.prototype.deleteMultiple = function(people_ids) {
-		return $.boom.post(this.base_url + 'delete', {'people[]' : people_ids});
+		return $.post(this.base_url + 'delete', {'people[]' : people_ids});
 	};
 
 	boomPerson.prototype.removeGroup = function(group_id) {
-		return $.boom.post(this.base_url + 'remove_group/' + this.id, {group_id: group_id});
+		return $.post(this.base_url + 'remove_group/' + this.id, {group_id: group_id});
 	};
 
 	boomPerson.prototype.save = function(data) {
-		return $.boom.post(this.base_url + 'save/' + this.id, data);
+		return $.post(this.base_url + 'save/' + this.id, data);
 	};
 };

@@ -4,7 +4,7 @@ function boomAsset(asset_id) {
 	boomAsset.prototype.base_url = '/cms/assets/';
 
 	boomAsset.prototype.addTag = function(tag) {
-		$.boom.post(this.base_url + 'tags/add', {
+		$.post(this.base_url + 'tags/add', {
 			assets : this.id.split('-'),
 			tag : tag
 		});
@@ -18,7 +18,7 @@ function boomAsset(asset_id) {
 
 		confirmation = new boomConfirmation('Please confirm', message);
 		confirmation.done(function() {
-			$.boom.post(asset.base_url + 'delete', {
+			$.post(asset.base_url + 'delete', {
 				assets : asset.id.split('-')
 			})
 			.done(function() {
@@ -49,13 +49,13 @@ function boomAsset(asset_id) {
 	};
 
 	boomAsset.prototype.removeTag = function(tag) {
-		$.boom.post(this.base_url + 'tags/remove', {
+		$.post(this.base_url + 'tags/remove', {
 			assets : this.id.split('-'),
 			tag : tag
 		});
 	};
 
 	boomAsset.prototype.save = function(data) {
-		return $.boom.post(this.base_url + 'save/' + this.id, data);
+		return $.post(this.base_url + 'save/' + this.id, data);
 	};
 };
