@@ -3,6 +3,10 @@
 	z-index: 4;
 	background: @darkest-grey;
 	left: -80px;
+	width: 200px;
+	height: 100%;
+	top: 0;
+	transition: transform .2s cubic-bezier(.16, .68, .43, .99);
 
 	ul {
 		padding-left: 1em;
@@ -23,15 +27,25 @@
 		.text-default;
 		color: @white;
 		padding: 1em;
+		display: block;
+		border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+		border-top: 1px solid rgba(255, 255, 255, 0.1);
+		text-decoration: none;
+		font-weight: bold;
 
 		&:hover, &:focus, &:active {
 			background: @light-grey;
 		}
 	}
 
+	&.pushy-left {
+		transform: translate3d(-200px, 0, 0);
+	}
+
 	&.pushy-open {
 		padding-left: 60px;
 		left: 0;
+		transform: translate3d(0, 0, 0);
 	}
 }
 
