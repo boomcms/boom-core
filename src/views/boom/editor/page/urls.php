@@ -13,7 +13,7 @@
 		</ul>
 		<ul id='b-page-urls-list'>
 			<?php foreach($urls as $url): ?>
-				<li data-url="<?= $url->location ?>" data-id="<?= $url->id ?>" <?php if ( (bool) $url->is_primary ): echo 'class="b-page-urls-primary"'; endif;?>>
+				<li data-url="<?= $url->location ?>" data-id="<?= $url->id ?>" <?php if ( (bool) $url->is_primary ): echo 'class="b-page-urls-primary"'; endif ?>>
 					<label class="primary" for="is_primary_<?= $url->id ?>">/<?= $url->location ?></label>
 
 					<span class='b-page-urls-primary-indicator'>primary</span>

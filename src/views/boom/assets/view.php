@@ -91,7 +91,7 @@
                             <a href="/cms/assets/restore/<?= $asset->getId() ?>?timestamp=<?= $timestamp ?>">
                                 <img src="<?= Route::url('asset', ['action' => 'thumb', 'id' => $asset->getId(), 'width' => 160, 'height' => 160, 'quality' => 85, 'crop' => 1]) ?><?php if ($timestamp): ?>?timestamp=<?= $timestamp ?><?php endif ?>" />
                             </a>
-                            <?=date("d F Y H:i", $timestamp);?>
+                            <?=date("d F Y H:i", $timestamp) ?>
                         </li>
                     <?php endforeach ?>
                 </ul>

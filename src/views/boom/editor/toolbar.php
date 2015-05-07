@@ -55,7 +55,7 @@
 
 		<div id="b-topbar-pagesettings">
 			<div>
-				<?= View::make('boom::editor.page.settings.index');?>
+				<?= View::make('boom::editor.page.settings.index') ?>
 			</div>
 		</div>
 	</div>
