@@ -28,6 +28,10 @@ Route::group(['middleware' => [
 
             Route::group(['prefix' => 'assets', 'namespace' => 'Assets'], function () {
                 Route::get('', 'AssetManager@index');
+                Route::post('get', 'AssetManager@get');
+                Route::any('{action}', function($action = 'index') {
+                    return App::make('BoomCMS\Core\Controllers\CMS\Assets\AssetManager')->$action();
+                });
             });
         });
     });

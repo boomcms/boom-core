@@ -1,8 +1,10 @@
 <?php
 
-namespace BoomCMS\Core\Asset\Finder\Filter;
+namespace BoomCMS\Core\Asset\Finder;
 
-class Type extends \Boom\Finder\Filter
+use BoomCMS\Core\Finder\Filter as BaseFilter;
+
+class Type extends BaseFilter
 {
     protected $_type;
 

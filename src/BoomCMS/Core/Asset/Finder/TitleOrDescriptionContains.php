@@ -1,8 +1,10 @@
 <?php
 
-namespace BoomCMS\Core\Asset\Finder\Filter;
+namespace BoomCMS\Core\Asset\Finder;
 
-class TitleOrDescriptionContains extends \Boom\Finder\Filter
+use BoomCMS\Core\Finder\Filter as BaseFilter;
+
+class TitleOrDescriptionContains extends BaseFilter
 {
     protected $_text;
 

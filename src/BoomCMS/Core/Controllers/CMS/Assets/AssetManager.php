@@ -2,8 +2,12 @@
 
 namespace BoomCMS\Core\Controllers\CMS\Assets;
 
+use BoomCMS\Core\Auth;
+use BoomCMS\Core\Asset;
+use BoomCMS\Core\Asset\Finder;
 use BoomCMS\Core\Controllers\Controller;
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
 
 class AssetManager extends Controller
@@ -16,20 +20,14 @@ class AssetManager extends Controller
 	 */
     protected $viewPrefix = 'boom::assets.';
 
-    /**
-	 *
-	 * @var Asset
-	 */
-    public $asset;
+    protected $provider;
 
-    protected $assetProvider;
-
-    public function before()
+    public function __construct(Auth\Auth $auth, Request $request)
     {
-        parent::before();
+        $this->auth = $auth;
+        $this->request = $request;
 
-        $this->authorization('manage_assets');
-        $this->asset = Asset\Factory::byId($this->request->param('id'));
+        //$this->authorization('manage_assets');
     }
 
     public function delete()
@@ -63,13 +61,12 @@ class AssetManager extends Controller
         ]);
     }
 
-    public function listAssets()
+    public function get(Finder\Finder $finder)
     {
-        $finder = new AssetFinder();
         $finder
-            ->addFilter(new \Boom\Asset\Finder\Filter\Tag($this->request->input('tag')))
-            ->addFilter(new \Boom\Asset\Finder\Filter\TitleContains($this->request->input('title')))
-            ->addFilter(new \Boom\Asset\Finder\Filter\Type($this->request->input('type')));
+            ->addFilter(new Finder\Tag($this->request->input('tag')))
+            ->addFilter(new Finder\TitleContains($this->request->input('title')))
+            ->addFilter(new Finder\Type($this->request->input('type')));
 
         $column = 'last_modified';
         $order = 'desc';
@@ -83,7 +80,7 @@ class AssetManager extends Controller
         $count = $finder->count();
 
         if ($count === 0) {
-            return View::make("$this->viewPrefix/none_found");
+            return View::make($this->viewPrefix . 'none_found');
         } else {
             $page = max(1, $this->request->input('page'));
             $perpage = max($this->perpage, $this->request->input('perpage'));
@@ -94,7 +91,7 @@ class AssetManager extends Controller
                 ->setOffset(($page - 1) * $perpage)
                 ->findAll();
 
-            return View::make("$this->viewPrefix/list", [
+            return View::make($this->viewPrefix . 'list', [
                 'assets' => $assets,
                 'total' => $count,
                 'order' =>     $order,

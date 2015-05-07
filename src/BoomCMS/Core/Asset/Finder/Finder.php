@@ -1,11 +1,11 @@
 <?php
 
-namespace BoomCMS\Core\Asset;
+namespace BoomCMS\Core\Asset\Finder;
 
-use \Boom;
-use \ORM as ORM;
+use BoomCMS\Core\Finder\Finder as BaseFinder;
+use BoomCMS\Core\Models\Asset as Model;
 
-class Finder extends Boom\Finder\Finder
+class Finder extends BaseFinder
 {
     /**
 	 *
@@ -15,7 +15,7 @@ class Finder extends Boom\Finder\Finder
 
     public function __construct()
     {
-        $this->_query = ORM::factory('Asset');
+        $this->query = new Model();
     }
 
     public function find()

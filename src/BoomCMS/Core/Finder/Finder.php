@@ -2,27 +2,29 @@
 
 namespace BoomCMS\Core\Finder;
 
+use Illuminate\Database\Eloquent\Model;
+
 abstract class Finder
 {
     const ASC = 'asc';
     const DESC = 'desc';
 
-    protected $_filters = [];
-    protected $_filtersApplied = false;
-    protected $_query;
+    protected $filters = [];
+    protected $filtersApplied = false;
+    protected $query;
 
     public function addFilter(Filter $filter)
     {
-        $this->_filters[] = $filter;
+        $this->filters[] = $filter;
 
         return $this;
     }
 
-    protected function _applyFilters(\ORM $query)
+    protected function applyFilters(Model $query)
     {
-        $this->_filtersApplied = true;
+        $this->filtersApplied = true;
 
-        foreach ($this->_filters as $filter) {
+        foreach ($this->filters as $filter) {
             if ($filter->shouldBeApplied()) {
                 $query = $filter->execute($query);
             }
@@ -33,50 +35,50 @@ abstract class Finder
 
     public function count()
     {
-        if (! $this->_filtersApplied) {
-            $this->_query = $this->_applyFilters($this->_query);
+        if (! $this->filtersApplied) {
+            $this->query = $this->applyFilters($this->query);
         }
 
-        $countQuery = clone $this->_query;
+        $countQuery = clone $this->query;
 
-        return $countQuery->count_all();
+        return $countQuery->count();
     }
 
     public function find()
     {
-        if (! $this->_filtersApplied) {
-            $this->_query = $this->_applyFilters($this->_query);
+        if (! $this->filtersApplied) {
+            $this->query = $this->applyFilters($this->query);
         }
 
-        return $this->_query->find();
+        return $this->query->find();
     }
 
     public function findAll()
     {
-        if (! $this->_filtersApplied) {
-            $this->_query = $this->_applyFilters($this->_query);
+        if (! $this->filtersApplied) {
+            $this->query = $this->applyFilters($this->query);
         }
 
-        return $this->_query->find_all();
+        return $this->query->find_all();
     }
 
     public function setLimit($limit)
     {
-        $this->_query->limit($limit);
+        $this->query->limit($limit);
 
         return $this;
     }
 
     public function setOffset($offset)
     {
-        $this->_query->offset($offset);
+        $this->query->offset($offset);
 
         return $this;
     }
 
     public function setOrderBy($field, $direction = null)
     {
-        $this->_query->order_by($field, $direction);
+        $this->query->orderBy($field, $direction);
 
         return $this;
     }

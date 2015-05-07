@@ -1,10 +1,11 @@
 <?php
 
-namespace BoomCMS\Core\Asset\Finder\Filter;
+namespace BoomCMS\Core\Asset\Finder;
 
+use BoomCMS\Core\Finder\Filter as BaseFilter;
 use DB;
 
-class Tag extends \Boom\Finder\Filter
+class Tag extends BaseFilter
 {
     protected $_tags;
 
