@@ -36,7 +36,7 @@ class Templates extends Controller
         $imported = $this->provider->createNew();
         $templates = $this->provider->findAll();
 
-        $this->template = View::factory("$this->viewPrefix/index", [
+        return View::make("$this->viewPrefix/index", [
             'imported'        =>    $imported,        // The IDs of the templates which we've just added.
             'templates'    =>    $templates,        // All the templates which are in the database.
         ]);
@@ -56,7 +56,7 @@ class Templates extends Controller
         $finder->addFilter(new Page\Finder\Filter\Template($template));
         $pages = $finder->findAll();
 
-        $this->template = new View("$this->viewPrefix/pages", [
+        return View::make("$this->viewPrefix/pages", [
             'pages' => $pages,
         ]);
     }

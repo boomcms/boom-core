@@ -10,7 +10,7 @@ class Controller_Cms_Page_Settings_View extends Controller_Cms_Page_Settings
     {
         parent::action_admin();
 
-        $this->template = new View("$this->viewDirectory/admin", [
+        return View::make("$this->viewDirectory/admin", [
             'page' => $this->page,
         ]);
     }
@@ -31,7 +31,7 @@ class Controller_Cms_Page_Settings_View extends Controller_Cms_Page_Settings
         $templates = $manager->getValidTemplates();
 
         // Create the main view with the basic settings
-        $this->template = View::factory("$this->viewDirectory/children", [
+        return View::make("$this->viewDirectory/children", [
             'default_child_template'    =>    $this->page->getDefaultChildTemplateId(),
             'templates' => $templates,
             'child_order_column'        =>    $childOrderingPolicy->getColumn(),
@@ -53,7 +53,7 @@ class Controller_Cms_Page_Settings_View extends Controller_Cms_Page_Settings
     {
         parent::action_feature();
 
-        $this->template = new View("$this->viewDirectory/feature", [
+        return View::make("$this->viewDirectory/feature", [
             'feature_image_id' => $this->page->getFeatureImageId(),
         ]);
     }
@@ -66,7 +66,7 @@ class Controller_Cms_Page_Settings_View extends Controller_Cms_Page_Settings
     {
         parent::action_navigation();
 
-        $this->template = new View("$this->viewDirectory/navigation", [
+        return View::make("$this->viewDirectory/navigation", [
             'page' => $this->page,
             'allowAdvanced' => $this->allowAdvanced,
         ]);
@@ -76,7 +76,7 @@ class Controller_Cms_Page_Settings_View extends Controller_Cms_Page_Settings
     {
         parent::action_search();
 
-        $this->template = new View("$this->viewDirectory/search", [
+        return View::make("$this->viewDirectory/search", [
             'allowAdvanced' => $this->allowAdvanced,
             'page' => $this->page,
         ]);
@@ -93,7 +93,7 @@ class Controller_Cms_Page_Settings_View extends Controller_Cms_Page_Settings
             ->setLimit(50)
             ->findAll();
 
-        $this->template = new View("$this->viewDirectory/sort_children", [
+        return View::make("$this->viewDirectory/sort_children", [
             'children' => $children
         ]);
     }
@@ -102,7 +102,7 @@ class Controller_Cms_Page_Settings_View extends Controller_Cms_Page_Settings
     {
         parent::action_visibility();
 
-        $this->template = new View("$this->viewDirectory/visibility", [
+        return View::make("$this->viewDirectory/visibility", [
             'page' => $this->page,
         ]);
     }

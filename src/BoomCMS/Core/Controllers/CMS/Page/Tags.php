@@ -27,7 +27,7 @@ class Controller_Cms_Page_Tags extends Controller_Cms_Page
         $groupSuggestions = array_unique(array_merge(array_keys($tags), $groupSuggestions));
         sort($groupSuggestions);
 
-        $this->template = new View("boom/editor/page/settings/tags", [
+        return View::make("boom/editor/page/settings/tags", [
             'tags' => $tags,
             'freeTags' => isset($freeTags) ? $freeTags : [],
             'groups' => $groupSuggestions,

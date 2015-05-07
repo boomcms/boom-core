@@ -6,7 +6,7 @@ class Controller_Cms_Chunk_Feature extends Controller_Cms_Chunk
 
     public function edit()
     {
-        $this->template = View::factory('boom/editor/slot/feature', [
+        return View::make('boom/editor/slot/feature', [
             'page'    =>    $this->page,
         ]);
     }

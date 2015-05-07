@@ -13,7 +13,7 @@ class Controller_Cms_Assets_Tags extends Controller_Cms_Assets
     {
         $collection = new Asset\Collection(explode('-', $this->request->param('id')));
 
-        $this->template = new View('boom/assets/tags', [
+        return View::make('boom/assets/tags', [
             'tags' => $collection->getTags()
         ]);
     }

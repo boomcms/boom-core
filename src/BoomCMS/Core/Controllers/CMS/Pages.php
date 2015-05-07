@@ -20,7 +20,7 @@ class Pages extends Controller
         $finder->addFilter(new Page\Finder\Filter\ParentId(null));
         $pages = $finder->findAll();
 
-        $this->template = View::factory('boom/pages/index', [
+        return View::make('boom/pages/index', [
             'pages'    =>    $pages,
         ]);
     }

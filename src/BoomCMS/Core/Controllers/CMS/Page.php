@@ -61,7 +61,7 @@ class Page extends CMS
 
             // Get request
             // Show a confirmation dialogue warning that child pages will become inaccessible and asking whether to delete the children.
-            $this->template = new View("$this->viewDirectory/delete", [
+            return View::make("$this->viewDirectory/delete", [
                 'count' => $children,
                 'page' =>$this->page,
             ]);
@@ -104,7 +104,7 @@ class Page extends CMS
 
     public function urls()
     {
-        $this->template = new View("$this->viewDirectory/urls", [
+        return View::make("$this->viewDirectory/urls", [
             'page' => $this->page,
             'urls' => $this->page->getUrls(),
         ]);

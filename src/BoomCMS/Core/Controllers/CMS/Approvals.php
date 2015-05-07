@@ -16,7 +16,7 @@ class Approvals extends Controller
 
     public function index()
     {
-        $this->template = new View('boom/approvals/index', [
+        return View::make('boom/approvals/index', [
             'pages' => $this->_get_pages_awaiting_approval(),
         ]);
     }

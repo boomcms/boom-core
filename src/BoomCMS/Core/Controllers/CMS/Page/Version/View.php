@@ -7,7 +7,7 @@ class Controller_Cms_Page_Version_View extends Controller_Cms_Page_Version
         // Call the parent function to check permissions.
         parent::action_embargo();
 
-        $this->template = View::factory("$this->viewDirectory/embargo", [
+        return View::make("$this->viewDirectory/embargo", [
             'version'    =>    $this->old_version,
         ]);
     }
@@ -20,7 +20,7 @@ class Controller_Cms_Page_Version_View extends Controller_Cms_Page_Version
         $manager->createNew();
         $templates = $manager->getValidTemplates();
 
-        $this->template = View::factory("$this->viewDirectory/template", [
+        return View::make("$this->viewDirectory/template", [
             'template_id'    =>    $this->old_version->template_id,
             'templates'    =>     $templates
         ]);

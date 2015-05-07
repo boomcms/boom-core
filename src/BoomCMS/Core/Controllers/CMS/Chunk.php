@@ -31,7 +31,7 @@ class Controller_Cms_Chunk extends Boom\Controller
 
     public function insert_url()
     {
-        $this->template = View::factory('boom/editor/slot/insert_link');
+        return View::make('boom/editor/slot/insert_link');
     }
 
     public function remove()

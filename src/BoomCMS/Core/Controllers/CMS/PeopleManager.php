@@ -22,7 +22,7 @@ class PeopleManager extends Controller
             ->addFilter(new PersonFinder\Filter\GroupId($this->request->query('group')))
             ->setOrderBy('name', 'asc');
 
-        $this->template = new View("boom/people/list", [
+        return View::make("boom/people/list", [
             'people' => $finder->findAll()
         ]);
     }
@@ -32,7 +32,7 @@ class PeopleManager extends Controller
         if ( ! $this->request->is_ajax()) {
             $finder = new GroupFinder();
 
-            $this->template = View::factory("boom/people/manager", [
+            return View::make("boom/people/manager", [
                 'groups' => $finder->findAll(),
                 'content' => $view,
             ]);

@@ -36,7 +36,7 @@ class Editor extends Boom\Controller
         $this->auth->cache_permissions($page);
 
         $toolbar_filename = ($editable) ? 'toolbar' : 'toolbar_preview';
-        $this->template = View::factory("boom/editor/$toolbar_filename");
+        return View::make("boom/editor/$toolbar_filename");
 
         $editable && $this->_add_readability_score_to_template($page);
 

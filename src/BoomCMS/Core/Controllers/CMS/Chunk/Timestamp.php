@@ -13,7 +13,7 @@ class Controller_Cms_Chunk_Timestamp extends Controller_Cms_Chunk
             $formats[$format] = date($format, $_SERVER['REQUEST_TIME']);
         }
 
-        $this->template = new View('boom/editor/slot/timestamp', [
+        return View::make('boom/editor/slot/timestamp', [
             'timestamp' => 0,
             'format' => ChunkTimestamp::$default_format,
             'formats' => $formats,
