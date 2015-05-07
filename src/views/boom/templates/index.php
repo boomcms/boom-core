@@ -44,8 +44,6 @@
 		</form>
 	</div>
 
-	<?= Boom::include_js() ?>
-
 	<script type="text/javascript">
 		//<![CDATA[
 		(function ($) {

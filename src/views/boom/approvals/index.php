@@ -36,8 +36,6 @@
         <?php endif ?>
     </div>
 
-    <?= Boom::include_js() ?>
-
     <?= Assets::factory('boom_approvals')->js('boom/approvals.js') ?>
 
     <script type="text/javascript">
