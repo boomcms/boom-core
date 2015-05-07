@@ -56,11 +56,6 @@ $.widget('boom.assetUploader', {
 		var assetUploader = this,
 			uploaderOptions;
 
-		this.options.formData.push({
-			name: 'csrf',
-			value: $.boom.options.csrf
-		});
-
 		uploaderOptions = $.extend({}, this.options, {
 			start: function(e, data) {
 				assetUploader.uploadStarted(e, data);
