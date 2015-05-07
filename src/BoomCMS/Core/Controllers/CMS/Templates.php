@@ -2,32 +2,41 @@
 
 namespace BoomCMS\Core\Controllers\CMS;
 
+use BoomCMS\Core\Auth\Auth;
 use BoomCMS\Core\Template;
 use BoomCMS\Core\Page;
 use BoomCMS\Core\Controller\Controller;
 
 class Templates extends Controller
 {
-    protected $viewDirectory = 'boom/templates';
+    /**
+     *
+     * @var Auth
+     */
+    private $auth;
 
-    public function before()
+    /**
+     *
+     * @var Template\Provider
+     */
+    private $provider;
+
+    protected $viewPrefix = 'boom::templates';
+
+    public function __construct(Auth $auth, Template\Provider $provider)
     {
-        parent::before();
+        $this->auth = $auth;
+        $this->provider = $provider;
 
         $this->authorization('manage_templates');
     }
 
     public function index()
     {
-        $manager = new Template\Manager();
-        $imported = $manager->createNew();
+        $imported = $this->provider->createNew();
+        $templates = $this->provider->findAll();
 
-        $finder = new Template\Finder();
-        $templates = $finder
-            ->setOrderBy('name', 'asc')
-            ->findAll();
-
-        $this->template = View::factory("$this->viewDirectory/index", [
+        $this->template = View::factory("$this->viewPrefix/index", [
             'imported'        =>    $imported,        // The IDs of the templates which we've just added.
             'templates'    =>    $templates,        // All the templates which are in the database.
         ]);
@@ -47,7 +56,7 @@ class Templates extends Controller
         $finder->addFilter(new Page\Finder\Filter\Template($template));
         $pages = $finder->findAll();
 
-        $this->template = new View("$this->viewDirectory/pages", [
+        $this->template = new View("$this->viewPrefix/pages", [
             'pages' => $pages,
         ]);
     }

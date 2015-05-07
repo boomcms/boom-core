@@ -2,14 +2,13 @@
 
 namespace BoomCMS\Core\Template;
 
-use Boom;
-use \Model_Template as TemplateModel;
+use BoomCMS\Core\Models\Template as Model;
 
 class Finder extends Boom\Finder\Finder
 {
     public function __construct()
     {
-        $this->_query = new TemplateModel();
+        $this->_query = new Model();
     }
 
     public function find()
@@ -21,10 +20,10 @@ class Finder extends Boom\Finder\Finder
 
     public function findAll()
     {
-        $templates = parent::findAll()->as_array();
+        $templates = parent::findAll();
 
         array_walk($templates, function (&$template) {
-            $template = new Template($template);
+            $template = new Template($template->toArray());
         });
 
         return $templates;

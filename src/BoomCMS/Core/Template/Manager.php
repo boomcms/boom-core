@@ -42,15 +42,6 @@ class Manager
         }
     }
 
-    public function getAllTemplates()
-    {
-        $finder = new Finder();
-
-        return $finder
-            ->setOrderBy('name', 'asc')
-            ->findAll();
-    }
-
     /**
 	 * Gets templates where the filename points to an non-existent file.
 	 */
