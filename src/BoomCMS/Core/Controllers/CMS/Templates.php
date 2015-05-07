@@ -36,27 +36,24 @@ class Templates extends Controller
         $imported = $this->provider->createNew();
         $templates = $this->provider->findAll();
 
-        return View::make("$this->viewPrefix/index", [
-            'imported'        =>    $imported,        // The IDs of the templates which we've just added.
-            'templates'    =>    $templates,        // All the templates which are in the database.
+        return View::make($this->viewPrefix . 'index', [
+            'imported' => $imported,        // The IDs of the templates which we've just added.
+            'templates' => $templates,        // All the templates which are in the database.
         ]);
     }
 
     /**
-	 * Display a list of pages which use a given template.
-	 * A template ID is given via the URL.
-	 *
-	 * @example	/cms/templates/pages/1
-	 */
-    public function pages()
+     * Display a list of pages which use a given template.
+     */
+    public function pages($id)
     {
-        $template = Template\Factory::byId($this->request->param('id'));
+        $template = $this->provider->findById($id);
 
         $finder = new Page\Finder();
         $finder->addFilter(new Page\Finder\Filter\Template($template));
         $pages = $finder->findAll();
 
-        return View::make("$this->viewPrefix/pages", [
+        return View::make($this->viewPrefix . '.pages', [
             'pages' => $pages,
         ]);
     }
@@ -64,28 +61,21 @@ class Templates extends Controller
     public function save()
     {
         $post = $this->request->input();
-        $template_ids = $post['templates'];
+        $templateIds = $post['templates'];
 
-        $errors = [];
+        foreach ($templateIds as $templateId) {
+            $template = $this->provider->findById($templateId);
+            $template
+                ->setName($post["name-$templateId"])
+                ->setFilename($post["filename-$templateId"])
+                ->setDescription($post["description-$templateId"]);
 
-        foreach ($template_ids as $template_id) {
-            try {
-                $template = ORM::factory('Template', $template_id)
-                    ->values([
-                        'name'        =>    $post["name-$template_id"],
-                        'filename'        =>    $post["filename-$template_id"],
-                        'description'    =>    $post["description-$template_id"],
-                    ])
-                    ->update();
-            } catch (ORM_Validation_Exception $e) {
-                $errors[] = $e->errors('models');
-            }
+            $this->provider->save($template);
         }
     }
 
     public function delete()
     {
-        $template = Template\Factory::byId($this->request->param('id'));
-        $template->delete();
+        $this->provider->deleteById($id);
     }
 }

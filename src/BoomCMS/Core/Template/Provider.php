@@ -6,13 +6,21 @@ use BoomCMS\Core\Models\Template as Model;
 
 class Provider
 {
+    public function deleteById($id)
+    {
+
+    }
+
     public function findAll()
     {
-        $finder = new Finder();
+        $models = Model::all();
+        $templates = [];
 
-        return $finder
-            ->setOrderBy('name', 'asc')
-            ->findAll();
+        foreach ($models as $model) {
+            $templates = new Template($model->toArray());
+        }
+
+        return $templates;
     }
 
     public function findById($id)
