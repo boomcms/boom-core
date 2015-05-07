@@ -6,4 +6,4 @@
 	</button>
 </div>
 
-<?= View::make('boom/editor/footer', ['register_page' => false]) ?>
+<?= View::make('boom::editor.footer') ?>

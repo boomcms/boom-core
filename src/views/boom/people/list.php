@@ -10,7 +10,7 @@
 		</thead>
 		<tbody>
 			<?php foreach ($people as $person): ?>
-				<tr class="<?= Text::alternate('odd', 'even') ?>" data-person-id="<?= $person->getId() ?>">
+				<tr data-person-id="<?= $person->getId() ?>">
 					<td width="10">
 						<input type="checkbox" class="b-people-select" />
 					</td>

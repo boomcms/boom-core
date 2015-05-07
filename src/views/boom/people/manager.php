@@ -23,7 +23,7 @@
 
 			<ul id="b-groups-list">
 				<?php foreach ($groups as $group): ?>
-					<li data-group-id="<?= $group->getId() ?>"<?php if ($group->getId() == Request::current()->query('group')): ?> class='current'<?php endif ?>>
+					<li data-group-id="<?= $group->getId() ?>"<?php if ($group->getId() == $request->input('group')): ?> class='current'<?php endif ?>>
 						<a class='b-groups-item' href='/cms/people?group=<?= $group->getId() ?>'><?= $group->getName() ?></a>
 
 						<a href='#' title="Delete" class="ui-icon ui-icon-close b-group-delete"></a>

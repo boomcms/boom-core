@@ -20,11 +20,11 @@
 
                                 <label for='person-status'>
                                     Status
-                                    <?= Form::select('enabled',
-                                        [0 => 'Disabled', 1 => 'Enabled'],
-                                        $person->isEnabled(),
-                                        ['id' => 'person-status'])
-                                    ?>
+
+                                    <select name="enabled" id="person-status">
+                                        <option value="0"<?php if ( ! $person->isEnabled()): ?> selected="selected"<?php endif ?>>Disabled</option>
+                                        <option value="1"<?php if ($person->isEnabled()): ?> selected="selected"<?php endif ?>>Enabled</option>
+                                    </select>
                                 </label>
 
 				<div>
@@ -44,7 +44,7 @@
 					</thead>
 					<tbody>
 						<?php foreach ($activities as $al): ?>
-							<tr class="boom-row-<?= Text::alternate('odd', 'even') ?>">
+							<tr>
 								<td><?= date('d F Y H:i:s', $al->time) ?></td>
 								<td><?= $al->activity ?></td>
 								<td><?= $al->note ?></td>
