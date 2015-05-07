@@ -2,8 +2,8 @@
 
 <div id="b-topbar" class='b-page-toolbar b-toolbar b-toolbar-vertical'>
 	<?= Form::hidden('csrf', Security::token(), ['id' => 'b-csrf']) ?>
-	<?= new \Boom\UI\MenuButton() ?>
-	<?= new \Boom\Menu\Menu  ?>
+	<?= new \BoomCMS\Core\UI\MenuButton() ?>
+	<?= new \BoomCMS\Core\Menu\Menu($auth)  ?>
 
 	<div id="b-topbar-page-buttons">
 		<?php if ($page->wasCreatedBy($person) || $auth->loggedIn('edit_page_content', $page)): ?>

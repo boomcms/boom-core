@@ -1,9 +1,9 @@
 	<?= View::make('boom::header', ['title' => 'People']) ?>
 
 	<div id="b-topbar" class="b-toolbar">
-		<?= new \Boom\Menu\Menu  ?>
+		<?= new \BoomCMS\Core\Menu\Menu($auth)  ?>
 
-		<?= new \Boom\UI\MenuButton() ?>
+		<?= new \BoomCMS\Core\UI\MenuButton() ?>
 		<?= new \BoomCMS\Core\UI\Button('add', Lang::get('New person'), ['id' => 'b-people-create']) ?>
 		<?= new \BoomCMS\Core\UI\Button('delete', Lang::get('Delete'), ['id' => 'b-people-multi-delete', 'disabled' => 'disabled']) ?>
 

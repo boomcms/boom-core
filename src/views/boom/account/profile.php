@@ -1,7 +1,7 @@
 <?= View::make('boom::header', ['title' => 'Profile']) ?>
     <div id="b-topbar" class="b-toolbar">
-        <?= new \Boom\UI\MenuButton() ?>
-        <?= new \Boom\Menu\Menu  ?>
+        <?= new \BoomCMS\Core\UI\MenuButton() ?>
+        <?= new \BoomCMS\Core\Menu\Menu($auth)  ?>
     </div>
 
     <div id="b-account-profile">

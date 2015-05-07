@@ -1,8 +1,8 @@
 	<?= View::make('boom::header', ['title' => 'Templates']) ?>
-	<?= new \Boom\Menu\Menu  ?>
+	<?= new \BoomCMS\Core\Menu\Menu($auth)  ?>
 
 	<div id="b-topbar" class="b-toolbar">
-		<?= new \Boom\UI\MenuButton() ?>
+		<?= new \BoomCMS\Core\UI\MenuButton() ?>
 	</div>
 
     <div>
