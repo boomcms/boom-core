@@ -13,7 +13,7 @@ class Image extends Asset
 
     public function getHeight()
     {
-        return $this->model->height;
+        return $this->get('height');
     }
 
     public function getType()
@@ -23,7 +23,12 @@ class Image extends Asset
 
     public function getWidth()
     {
-        return $this->model->width;
+        return $this->get('width');
+    }
+
+    public function isImage()
+    {
+        return true;
     }
 
     /**
@@ -33,7 +38,7 @@ class Image extends Asset
 	 */
     public function setHeight($height)
     {
-        $this->model->height = $height;
+        $this->attributes['height'] = $height;
 
         return $this;
     }
@@ -45,7 +50,7 @@ class Image extends Asset
 	 */
     public function setWidth($width)
     {
-        $this->model->width = $width;
+        $this->attributes['width'] = $width;
 
         return $this;
     }

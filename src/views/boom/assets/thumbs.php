@@ -10,13 +10,13 @@
 
 						<p>
 							<strong>Type</strong> <?= $asset->getType() ?><br />
-							<strong>Description</strong> <?= ($asset->getDescription()) ? Text::limit_words($asset->getDescription(), 5) : 'None set' ?><br />
+							<strong>Description</strong> <?= ($asset->getDescription()) ?$asset->getDescription() : 'None set' ?><br />
 
 							<?php if ($asset->getDownloads()) : ?>
 								<strong>Downloads</strong> <?= $asset->getDownloads() ?><br />
 							<?php endif ?>
 
-							<?php if ($asset instanceof \Boom\Asset\Type\Image && $asset->getWidth() && $asset->getHeight()): ?>
+							<?php if ($asset->isImage() && $asset->getWidth() && $asset->getHeight()): ?>
 								<strong>Dimensions</strong> <?= $asset->getWidth() ?> x <?= $asset->getHeight() ?><br />
 							<?php endif ?>
 						</p>

@@ -6,11 +6,10 @@ use BoomCMS\Core\Asset\Asset;
 
 class Invalid extends Asset
 {
-    protected $_model;
+    protected $attributes = [];
 
     public function __construct()
     {
-        $this->model = new \Model_Asset();
     }
 
     public function exists()

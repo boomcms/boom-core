@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Core\Finder;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 
 abstract class Finder
 {
@@ -20,7 +20,7 @@ abstract class Finder
         return $this;
     }
 
-    protected function applyFilters(Model $query)
+    protected function applyFilters(Builder $query)
     {
         $this->filtersApplied = true;
 
@@ -39,9 +39,7 @@ abstract class Finder
             $this->query = $this->applyFilters($this->query);
         }
 
-        $countQuery = clone $this->query;
-
-        return $countQuery->count();
+        return $this->query->count();
     }
 
     public function find()
@@ -59,26 +57,26 @@ abstract class Finder
             $this->query = $this->applyFilters($this->query);
         }
 
-        return $this->query->find_all();
+        return $this->query->get();
     }
 
     public function setLimit($limit)
     {
-        $this->query->limit($limit);
+        $this->query = $this->query->take($limit);
 
         return $this;
     }
 
     public function setOffset($offset)
     {
-        $this->query->offset($offset);
+        $this->query = $this->query->skip($offset);
 
         return $this;
     }
 
     public function setOrderBy($field, $direction = null)
     {
-        $this->query->orderBy($field, $direction);
+        $this->query = $this->query->orderBy($field, $direction);
 
         return $this;
     }

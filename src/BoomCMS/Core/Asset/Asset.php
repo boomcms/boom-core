@@ -12,16 +12,16 @@ use ORM;
 abstract class Asset
 {
     /**
-	 *
-	 * @var \Model_Asset
-	 */
-    protected $model;
+     *
+     * @var array
+     */
+    protected $attributes;
 
     protected $old_files = [];
 
-    public function __construct(\Model_Asset $model)
+    public function __construct(array $attributes)
     {
-        $this->model = $model;
+        $this->attributes = $attributes;
     }
 
     public static function directory()
@@ -29,9 +29,22 @@ abstract class Asset
         return APPPATH . 'assets';
     }
 
+    public static function factory(array $attributes)
+    {
+        $type = Type::numericTypeToClass($attributes['type']) ?: 'Invalid';
+        $classname = "BoomCMS\Core\Asset\Type\\" . $type;
+
+        return new $classname($attributes);
+    }
+
     public function exists()
     {
         return $this->loaded() && file_exists($this->getFilename());
+    }
+
+    public function get($key)
+    {
+        return isset($this->attributes[$key]) ? $this->attributes[$key] : null;
     }
 
     public function getAspectRatio()
@@ -41,7 +54,7 @@ abstract class Asset
 
     public function getCredits()
     {
-        return $this->model->credits;
+        return $this->get('credits');
     }
 
     /**
@@ -55,12 +68,12 @@ abstract class Asset
 
     public function getDescription()
     {
-        return $this->model->description;
+        return $this->get('description');
     }
 
     public function getDownloads()
     {
-        return $this->model->downloads;
+        return $this->get('downloads');
     }
 
     /**
@@ -74,17 +87,17 @@ abstract class Asset
 
     public function getFilesize()
     {
-        return $this->model->filesize;
+        return $this->get('filesize');
     }
 
     public function getId()
     {
-        return $this->model->id;
+        return $this->get('id');
     }
 
     public function getLastModified()
     {
-        return new DateTime('@' . $this->model->last_modified);
+        return new DateTime('@' . $this->get('last_modified'));
     }
 
     public function getMimetype()
@@ -125,7 +138,7 @@ abstract class Asset
 
     public function getOriginalFilename()
     {
-        return $this->model->filename;
+        return $this->get('filename');
     }
 
     public function getTags()
@@ -141,7 +154,7 @@ abstract class Asset
 
     public function getThumbnailAssetId()
     {
-        return $this->model->thumbnail_asset_id;
+        return $this->get('thumbnail_asset_id');
     }
 
     public function getThumbnail()
@@ -151,7 +164,7 @@ abstract class Asset
 
     public function getTitle()
     {
-        return $this->model->title;
+        return $this->get('title');
     }
 
     abstract public function getType();
@@ -163,12 +176,17 @@ abstract class Asset
 
     public function getUploadedTime()
     {
-        return new \DateTime('@' . $this->model->uploaded_time);
+        return new \DateTime('@' . $this->get('uploaded_time'));
     }
 
     public function getVisibleFrom()
     {
-        return new \DateTime('@' . $this->model->visible_from);
+        return new \DateTime('@' . $this->get('visible_from'));
+    }
+
+    public function isImage()
+    {
+        return false;
     }
 
     public function isVisible()
@@ -178,7 +196,7 @@ abstract class Asset
 
     public function loaded()
     {
-        return $this->model->loaded();
+        return $this->getId() > 0;
     }
 
     public function logDownload($ip)
@@ -213,23 +231,12 @@ abstract class Asset
 
     /**
 	 *
-	 * @return \Boom\Asset\Asset
-	 */
-    public function save()
-    {
-        $this->model->loaded() ? $this->model->update() : $this->model->create();
-
-        return $this;
-    }
-
-    /**
-	 *
 	 * @param string $credits
 	 * @return \Boom\Asset\Asset
 	 */
     public function setCredits($credits)
     {
-        $this->model->credits = $credits;
+        $this->attributes['credits'] = $credits;
 
         return $this;
     }
@@ -241,7 +248,7 @@ abstract class Asset
 	 */
     public function setDescription($description)
     {
-        $this->model->description = $description;
+        $this->attributes['description'] = $description;
 
         return $this;
     }
@@ -253,7 +260,7 @@ abstract class Asset
 	 */
     public function setFilename($filename)
     {
-        $this->model->filename = $filename;
+        $this->attributes['filename'] = $filename;
 
         return $this;
     }
@@ -265,7 +272,7 @@ abstract class Asset
 	 */
     public function setFilesize($size)
     {
-        $this->model->filesize = $size;
+        $this->attributes['filesize'] = $size;
 
         return $this;
     }
@@ -277,7 +284,7 @@ abstract class Asset
 	 */
     public function setLastModified(DateTime $time)
     {
-        $this->model->last_modified = $time->getTimestamp();
+        $this->attributes['last_modified'] = $time->getTimestamp();
 
         return $this;
     }
@@ -289,7 +296,7 @@ abstract class Asset
 	 */
     public function setThumbnailAssetId($assetId)
     {
-        $this->model->thumbnail_asset_id = $assetId;
+        $this->attributes['thumbnail_asset_id'] = $assetId;
 
         return $this;
     }
@@ -301,7 +308,7 @@ abstract class Asset
 	 */
     public function setTitle($title)
     {
-        $this->model->title = $title;
+        $this->attributes['title'] = $title;
 
         return $this;
     }
@@ -313,14 +320,14 @@ abstract class Asset
 	 */
     public function setUploadedBy(Person\Person $person)
     {
-        $this->model->uploaded_by = $person->getId();
+        $this->attributes['uploaded_by'] = $person->getId();
 
         return $this;
     }
 
     public function setVisibleFrom(DateTime $time)
     {
-        $this->model->visible_from = $time->getTimestamp();
+        $this->attributes['visible_from'] = $time->getTimestamp();
 
         return $this;
     }

@@ -1,5 +1,5 @@
 <div id="b-assets-content">
-	<?= View::make('boom::assets.thumbs', get_defined_vars()) ?>
+	<?= View::make('boom::assets.thumbs', ['assets' => $assets]) ?>
 </div>
 
 <div id="b-assets-pagination" class="pagination">
