@@ -16,9 +16,7 @@
 	<script type="text/javascript">
 		//<![CDATA[
 		(function ($) {
-			$.boom.init({
-				csrf: '<?= Security::token() ?>'
-			});
+			$.boom.init();
 
 			$('body').ui();
 			$('.boom-tree').pageManager();

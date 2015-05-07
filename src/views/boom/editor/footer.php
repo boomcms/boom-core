@@ -3,9 +3,7 @@
 	<script type="text/javascript">
 		//<![CDATA[
 		$(document).ready(function () {
-			$.boom.init({
-				csrf: '<?= Security::token() ?>'
-			});
+			$.boom.init();
 
 			$('body').pageEditor({
 				page_id : <?= $page->getId(); ?>,

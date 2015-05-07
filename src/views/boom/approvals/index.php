@@ -41,9 +41,7 @@
     <script type="text/javascript">
         //<![CDATA[
         (function ($) {
-            $.boom.init({
-                csrf: '<?= Security::token() ?>'
-            });
+            $.boom.init();
         })(jQuery);
         //]]>
     </script>
