@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Core\TextFilter\Filter;
 
-use \Boom\Page\Factory as PageFactory;
+use BoomCMS\Core\Page\Factory as PageFactory;
 
 class UnmungeInternalLinks implements \Boom\TextFilter\Filter
 {

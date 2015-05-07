@@ -83,7 +83,7 @@ class AssetManager extends Controller
         $count = $finder->count();
 
         if ($count === 0) {
-            return View::make("$this->viewDirectory/none_found");
+            return View::make("$this->viewPrefix/none_found");
         } else {
             $page = max(1, $this->request->input('page'));
             $perpage = max($this->perpage, $this->request->input('perpage'));
@@ -94,7 +94,7 @@ class AssetManager extends Controller
                 ->setOffset(($page - 1) * $perpage)
                 ->findAll();
 
-            return View::make("$this->viewDirectory/list", [
+            return View::make("$this->viewPrefix/list", [
                 'assets' => $assets,
                 'total' => $count,
                 'order' =>     $order,
@@ -160,7 +160,7 @@ class AssetManager extends Controller
             throw new HTTP_Exception_404();
         }
 
-        return View::make("$this->viewDirectory/view", [
+        return View::make("$this->viewPrefix/view", [
             'asset' => $this->asset,
         ]);
     }

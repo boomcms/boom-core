@@ -14,7 +14,7 @@ class Linkset extends \Boom\Chunk
 
     protected function _show()
     {
-        return new View($this->viewDirectory."linkset/$this->_template", [
+        return new View($this->viewPrefix."linkset/$this->_template", [
             'title' => $this->_chunk->title,
             'links' => $this->getLinks(),
         ]);
@@ -22,7 +22,7 @@ class Linkset extends \Boom\Chunk
 
     public function _show_default()
     {
-        return new View($this->viewDirectory . "default/linkset/$this->_template");
+        return new View($this->viewPrefix . "default/linkset/$this->_template");
     }
 
     public function getLinks()

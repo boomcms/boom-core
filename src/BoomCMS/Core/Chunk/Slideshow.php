@@ -13,7 +13,7 @@ class Slideshow extends \Boom\Chunk
 
     protected function _show()
     {
-        return new View($this->viewDirectory . "slideshow/$this->_template", [
+        return new View($this->viewPrefix . "slideshow/$this->_template", [
             'chunk'    =>    $this->_chunk,
             'title'        =>    $this->_chunk->title,
             'slides'    =>    $this->_chunk->slides(),
@@ -23,7 +23,7 @@ class Slideshow extends \Boom\Chunk
 
     public function _show_default()
     {
-        return new View($this->viewDirectory."default/slideshow/$this->_template");
+        return new View($this->viewPrefix."default/slideshow/$this->_template");
     }
 
     public function hasContent()

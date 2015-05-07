@@ -1,6 +1,6 @@
 <?php
 
-use \Boom\Editor\Editor as Editor;
+use BoomCMS\Core\Editor\Editor as Editor;
 
 abstract class Boom_Core
 {

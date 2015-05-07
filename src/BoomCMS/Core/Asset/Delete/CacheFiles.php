@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Core\Asset\Delete;
 
-use \Boom\Asset\Asset;
+use BoomCMS\Core\Asset\Asset;
 
 class CacheFiles extends \Boom\Asset\Command
 {

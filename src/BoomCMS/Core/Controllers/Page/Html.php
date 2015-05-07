@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Core\Controllers\Page;
 
-use \Boom\Chunk;
+use BoomCMS\Core\Chunk;
 use \ORM;
 use \View;
 

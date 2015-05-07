@@ -2,8 +2,8 @@
 
 namespace BoomCMS\Core\Asset\Delete;
 
-use \Boom\Asset\Command;
-use \Boom\Asset\Asset;
+use BoomCMS\Core\Asset\Command;
+use BoomCMS\Core\Asset\Asset;
 
 class File extends Command
 {

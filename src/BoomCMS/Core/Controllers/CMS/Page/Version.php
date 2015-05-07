@@ -40,7 +40,7 @@ abstract class Controller_Cms_Page_Version extends Controller_Cms_Page
 	 *
 	 * @var	string	Directory where views used by this class are stored.
 	 */
-    protected $viewDirectory = 'boom/editor/page/version';
+    protected $viewPrefix = 'boom/editor/page/version';
 
     public function before()
     {

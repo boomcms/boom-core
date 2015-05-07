@@ -2,8 +2,8 @@
 
 namespace BoomCMS\Core\Chunk;
 
-use \Boom\Page as Page;
-use \Boom\Link\Link as Link;
+use BoomCMS\Core\Page as Page;
+use BoomCMS\Core\Link\Link as Link;
 use \View as View;
 
 class Asset extends \Boom\Chunk
@@ -26,7 +26,7 @@ class Asset extends \Boom\Chunk
     {
         $link = $this->getLink();
 
-        $v = new View($this->viewDirectory."asset/$this->_template", [
+        return View::make($this->viewPrefix."asset/$this->_template", [
             'asset' => $this->asset(),
             'caption' => $this->getCaption(),
             'title' => $this->getTitle(),
@@ -44,7 +44,7 @@ class Asset extends \Boom\Chunk
 
     protected function _show_default()
     {
-        return new View($this->viewDirectory."default/asset/$this->_template");
+        return new View($this->viewPrefix."default/asset/$this->_template");
     }
 
     public function attributes()

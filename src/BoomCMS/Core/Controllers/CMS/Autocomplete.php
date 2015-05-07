@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Core\Controllers\CMS;
 
-use \Boom\Tag\Tag as Tag;
+use BoomCMS\Core\Tag\Tag as Tag;
 
 class Autocomplete extends Boom\Controller
 {

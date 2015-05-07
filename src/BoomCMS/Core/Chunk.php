@@ -10,9 +10,9 @@ use \Request as Request;
 use \Profiler as Profiler;
 use \View as View;
 
-use \Boom\Auth\Auth as Auth;
-use \Boom\Page\Page as Page;
-use \Boom\Editor\Editor as Editor;
+use BoomCMS\Core\Auth\Auth as Auth;
+use BoomCMS\Core\Page\Page as Page;
+use BoomCMS\Core\Editor\Editor as Editor;
 
 abstract class Chunk
 {
@@ -69,7 +69,7 @@ abstract class Chunk
 	 */
     protected $_type;
 
-    protected $viewDirectory = 'site/slots/';
+    protected $viewPrefix = 'site/slots/';
 
     /**
 	 * Array of available chunk types.

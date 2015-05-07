@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Core\Page\Finder;
 
-use \Boom\Editor\Editor as Editor;
+use BoomCMS\Core\Editor\Editor as Editor;
 
 class VisibleInNavigation extends \Boom\Finder\Filter
 {

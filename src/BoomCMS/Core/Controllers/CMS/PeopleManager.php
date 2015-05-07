@@ -2,27 +2,35 @@
 
 namespace BoomCMS\Core\Controllers\CMS;
 
-use \Boom\Person\Finder as PersonFinder;
-use \Boom\Group\Finder as GroupFinder;
+use BoomCMS\Core\Person\Finder as PersonFinder;
+use BoomCMS\Core\Group\Finder as GroupFinder;
+
+use BoomCMS\Core\Auth;
+use BoomCMS\Core\Person;
 use BoomCMS\Core\Controller\Controller;
+
+use Illuminate\Http\Request;
 
 class PeopleManager extends Controller
 {
-    public function before()
+    protected $viewPrefix = 'boom::people.';
+
+    public function __construct(Request $request, Auth\Auth $auth, Person\Provider $provider)
     {
-        parent::before();
+        $this->auth = $auth;
+        $this->request = $request;
+        $this->provider = $provider;
 
         $this->authorization('manage_people');
     }
 
-    public function index()
+    public function index(Person\Finder $finder)
     {
-        $finder = new PersonFinder();
         $finder
             ->addFilter(new PersonFinder\Filter\GroupId($this->request->query('group')))
             ->setOrderBy('name', 'asc');
 
-        return View::make("boom/people/list", [
+        return View::make($this->viewPrefix . 'list', [
             'people' => $finder->findAll()
         ]);
     }
@@ -32,7 +40,7 @@ class PeopleManager extends Controller
         if ( ! $this->request->is_ajax()) {
             $finder = new GroupFinder();
 
-            return View::make("boom/people/manager", [
+            return View::make("boompeople/manager", [
                 'groups' => $finder->findAll(),
                 'content' => $view,
             ]);

@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Core\Template;
 
-use \Boom\Page;
+use BoomCMS\Core\Page;
 use \Kohana as Kohana;
 use \Model_Template;
 use \View;

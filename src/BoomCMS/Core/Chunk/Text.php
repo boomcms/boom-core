@@ -98,7 +98,7 @@ class Text extends \Boom\Chunk
         if ($this->_template === null) {
             return $this->_add_html($text);
         } else {
-            return new View($this->viewDirectory."text/$this->_template", [
+            return new View($this->viewPrefix."text/$this->_template", [
                 'text' => $text,
                 'chunk' => $this->_chunk
             ]);

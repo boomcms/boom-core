@@ -6,14 +6,12 @@ class Profile extends Boom\Controller
 {
     public function view()
     {
-        $v = new View('boom/account/profile', [
+        return View::make('boom::account.profile', [
             'person' => $this->person,
             'auth' => $this->auth,
             'logs' => [],
             //'logs' => $this->person->get_recent_account_activity(),
         ]);
-
-        $this->response->body($v);
     }
 
     public function save()
@@ -26,7 +24,7 @@ class Profile extends Boom\Controller
             if ( ! $this->person->getPassword() || $this->auth->check_password($current_password)) {
                 $this->person->setEncryptedPassword($this->auth->hash($new_password));
 
-                $v = new View('boom/account/profile', [
+                return View::make('boom::account.profile', [
                     'person' => $this->person,
                     'auth' => $this->auth,
                     'logs' => [],
@@ -34,7 +32,7 @@ class Profile extends Boom\Controller
                 ]);
 
             } else {
-                $v = new View('boom/account/profile', [
+                return View::make('boom::account.profile', [
                     'person' => $this->person,
                     'auth' => $this->auth,
                     'logs' => [],
@@ -44,6 +42,5 @@ class Profile extends Boom\Controller
         }
 
         $this->person->save();
-        $this->response->body($v);
     }
 }

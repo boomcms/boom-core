@@ -4,14 +4,14 @@ class Controller_Cms_Group_View extends Controller_Cms_Group
 {
     public function add()
     {
-        return View::make("$this->viewDirectory/add", [
+        return View::make("$this->viewPrefix/add", [
             'group' => new Model_Group(),
         ]);
     }
 
     public function edit()
     {
-        return View::make("$this->viewDirectory/edit", [
+        return View::make("$this->viewPrefix/edit", [
             'group'        =>    $this->group,
             'general_roles'    =>    ORM::factory('Role')
                 ->where('name', 'not like', 'p_%')

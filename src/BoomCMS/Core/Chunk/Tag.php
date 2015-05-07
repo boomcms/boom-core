@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Core\Chunk;
 
-use \Boom\Page\Page as Page;
+use BoomCMS\Core\Page\Page as Page;
 use \Kohana as Kohana;
 use \View as View;
 
@@ -21,18 +21,18 @@ class Tag extends \Boom\Chunk
 
     protected function _show()
     {
-        if ( ! $this->_template || ! Kohana::find_file("views", $this->viewDirectory."tag/$this->_template")) {
+        if ( ! $this->_template || ! Kohana::find_file("views", $this->viewPrefix."tag/$this->_template")) {
             $this->_template = $this->_default_template;
         }
 
-        return View::factory($this->viewDirectory."tag/$this->_template", [
+        return View::factory($this->viewPrefix."tag/$this->_template", [
             'tag' => $this->_tag,
         ]);
     }
 
     protected function _show_default()
     {
-        return new View($this->viewDirectory."default/tag/$this->_template");
+        return new View($this->viewPrefix."default/tag/$this->_template");
     }
 
     public function attributes()

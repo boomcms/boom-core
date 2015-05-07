@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Core\Controllers\CMS;
 
-use \Boom\Page\Page as Page;
+use BoomCMS\Core\Page;
 
 class Editor extends Boom\Controller
 {
@@ -12,7 +12,7 @@ class Editor extends Boom\Controller
     public function state()
     {
         $state = $this->request->input('state');
-        $numeric_state = constant("\Boom\Editor\Editor::" . strtoupper($state));
+        $numeric_state = constant("\BoomCMS\Core\Editor\Editor::" . strtoupper($state));
 
         if ($numeric_state === null) {
             throw new Kohana_Exception("Invalid editor state: :state", [
@@ -28,9 +28,10 @@ class Editor extends Boom\Controller
 	 * Called from an iframe when logged into the CMS.
 	 * The ID of the page which is being viewed is given as a URL paramater (e.g. /cms/editor/toolbar/<page ID>)
 	 */
-    public function toolbar()
+    public function toolbar(Page\Provider $provider)
     {
-        $page =  \Boom\Page\Factory::byId($this->request->param('id'));
+        $page = $provider->findById($this->request->param('id'));
+
         $editable = $this->editor->isEnabled();
 
         $this->auth->cache_permissions($page);

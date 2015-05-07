@@ -3,8 +3,8 @@
 namespace BoomCMS\Core\Asset\Archive;
 
 use Boom;
-use \Boom\Asset\Asset;
-use \Boom\Asset\Archive as Archive;
+use BoomCMS\Core\Asset\Asset;
+use BoomCMS\Core\Asset\Archive as Archive;
 use \ZipArchive as ZipArchive;
 
 /**

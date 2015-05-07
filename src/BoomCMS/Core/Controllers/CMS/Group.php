@@ -2,25 +2,22 @@
 
 namespace BoomCMS\Core\Controllers\CMS;
 
-use \Boom\Group as Group;
+use BoomCMS\Core\Group;
 
 class Group extends PeopleManager
 {
-    /**
-	 * @var string
-	 */
-    protected $viewDirectory = 'boom/groups';
+    protected $viewPrefix = 'boom::groups.';
 
     /**
-	 * @var Model_Group
-	 */
+     *
+     * @var Group\Group
+     */
     public $group;
 
-    public function before()
+    public function __construct(Group\Povider $provider)
     {
-        parent::before();
-
         $this->authorization('manage_people');
-        $this->group = Group\Factory::byId($this->request->param('id'));
+
+        $this->group = $this->provider->findById($this->request->param('id'));
     }
 }

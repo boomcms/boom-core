@@ -2,24 +2,23 @@
 
 namespace BoomCMS\Core\Controllers\CMS;
 
-use \Boom\Page as Page;
-use \Boom\Page\Command\Delete as Delete;
+use BoomCMS\Core\Page as Page;
+use BoomCMS\Core\Page\Command\Delete as Delete;
 
 class Page extends CMS
 {
-    protected $viewDirectory = 'boom/editor/page';
+    protected $viewPrefix = 'boom::editor.page.';
 
     /**
 	*
 	* @var \Boom\Page
 	*/
     public $page;
-
-    public function before()
+    
+    public function __construct(Page\Provider $provider)
     {
-        parent::before();
-
-        $this->page = \Boom\Page\Factory::byId($this->request->param('id'));
+        $this->provider = $provider;
+        $this->page = $this->provider->findById($this->request->param('id'));
     }
 
     public function add()
@@ -61,7 +60,7 @@ class Page extends CMS
 
             // Get request
             // Show a confirmation dialogue warning that child pages will become inaccessible and asking whether to delete the children.
-            return View::make("$this->viewDirectory/delete", [
+            return View::make($this->viewPrefix . 'delete', [
                 'count' => $children,
                 'page' =>$this->page,
             ]);
@@ -104,7 +103,7 @@ class Page extends CMS
 
     public function urls()
     {
-        return View::make("$this->viewDirectory/urls", [
+        return View::make($this->viewPrefix . 'urls', [
             'page' => $this->page,
             'urls' => $this->page->getUrls(),
         ]);

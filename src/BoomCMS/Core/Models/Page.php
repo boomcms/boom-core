@@ -3,7 +3,7 @@
 namespace BoomCMS\Core\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use \Boom\Editor\Editor as Editor;
+use BoomCMS\Core\Editor\Editor as Editor;
 
 class Page extends Model
 {

@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Core\Asset\Mimetype;
 
-use \Boom\Asset;
+use BoomCMS\Core\Asset;
 
 class Pdf extends Asset\Mimetype
 {

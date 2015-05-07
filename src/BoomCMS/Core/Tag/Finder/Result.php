@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Core\Tag\Finder;
 
-use \Boom\Tag\Tag as Tag;
+use BoomCMS\Core\Tag\Tag as Tag;
 
 class Result extends \ArrayIterator
 {

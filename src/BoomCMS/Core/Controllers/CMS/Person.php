@@ -9,7 +9,7 @@ class Person extends PeopleManager
     /**
 	 * @var string Directory where the views which relate to this class are held.
 	 */
-    protected $viewDirectory = 'boom/person/';
+    protected $viewPrefix = 'boom::person.';
 
     /**
 	 * Person object to be edited.

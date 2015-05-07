@@ -2,9 +2,9 @@
 
 namespace BoomCMS\Core\Page;
 
-use \Boom\Editor\Editor;
-use \Boom\Template;
-use \Boom\Person;
+use BoomCMS\Core\Editor\Editor;
+use BoomCMS\Core\Template;
+use BoomCMS\Core\Person;
 use BoomCMS\Core\Tag;
 
 use \DateTime;

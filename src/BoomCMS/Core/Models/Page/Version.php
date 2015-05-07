@@ -3,8 +3,8 @@
 namespace BoomCMS\Core\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use \Boom\Auth\Auth as Auth;
-use \Boom\Editor\Editor as Editor;
+use BoomCMS\Core\Auth\Auth as Auth;
+use BoomCMS\Core\Editor\Editor as Editor;
 
 class Version extends Model
 {

@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Core\Page\Command\Delete;
 
-use \Boom\Page\Page as Page;
+use BoomCMS\Core\Page\Page as Page;
 
 class Children extends Page\Command
 {

@@ -1,6 +1,6 @@
 <?php
 
-use \Boom\Page\Page as Page;
+use BoomCMS\Core\Page\Page as Page;
 
 /**
  * ##Base controller for editing page settings.
@@ -32,7 +32,7 @@ abstract class Controller_Cms_Page_Settings extends Controller_Cms_Page
 	 *
 	 * @var	string
 	 */
-    protected $viewDirectory = 'boom/editor/page/settings';
+    protected $viewPrefix = 'boom/editor/page/settings';
 
     /**
 	 * Whether the current user has access to the advanced settings of the permissions group that they're editing.

@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Core\Page\Command\Delete;
 
-use \Boom\Page\Page as Page;
+use BoomCMS\Core\Page\Page as Page;
 use \DB as DB;
 
 class FromLinksets extends \Boom\Page\Command

@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Core\Page\Finder;
 
-use \Boom\Page\Page as Page;
+use BoomCMS\Core\Page\Page as Page;
 
 class RelatedByTags extends \Boom\Finder\Filter
 {

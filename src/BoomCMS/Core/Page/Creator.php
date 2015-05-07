@@ -2,8 +2,8 @@
 
 namespace BoomCMS\Core\Page;
 
-use \Boom\Page\Page as Page;
-use \Boom\Person as Person;
+use BoomCMS\Core\Page\Page as Page;
+use BoomCMS\Core\Person as Person;
 
 class Creator
 {

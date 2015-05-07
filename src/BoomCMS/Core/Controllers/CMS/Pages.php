@@ -7,21 +7,18 @@ use BoomCMS\Core\Controller\Controller;
 
 class Pages extends Controller
 {
-    public function before()
+    public function __construct()
     {
-        parent::before();
-
         $this->authorization('manage_pages');
     }
 
-    public function index()
+    public function index(Page\Finder $finder)
     {
-        $finder = new Page\Finder();
         $finder->addFilter(new Page\Finder\Filter\ParentId(null));
         $pages = $finder->findAll();
 
-        return View::make('boom/pages/index', [
-            'pages'    =>    $pages,
+        return View::make('boom::pages.index', [
+            'pages' => $pages,
         ]);
     }
 }

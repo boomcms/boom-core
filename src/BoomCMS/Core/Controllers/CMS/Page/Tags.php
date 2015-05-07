@@ -1,6 +1,6 @@
 <?php
 
-use \Boom\Tag\Factory as TagFactory;
+use BoomCMS\Core\Tag\Factory as TagFactory;
 
 class Controller_Cms_Page_Tags extends Controller_Cms_Page
 {

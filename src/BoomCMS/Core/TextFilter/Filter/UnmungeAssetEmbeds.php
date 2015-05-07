@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Core\TextFilter\Filter;
 
-use \Boom\Asset;
+use BoomCMS\Core\Asset;
 
 class UnmungeAssetEmbeds implements \Boom\TextFilter\Filter
 {

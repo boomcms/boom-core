@@ -6,7 +6,7 @@ class Controller_Cms_Person_View extends Controller_Cms_Person
 {
     public function add()
     {
-        return View::make($this->viewDirectory."new", [
+        return View::make($this->viewPrefix."new", [
             'groups'    =>    ORM::factory('Group')->names(),
         ]);
     }
@@ -18,7 +18,7 @@ class Controller_Cms_Person_View extends Controller_Cms_Person
             ->addFilter(new Group\Finder\Filter\ExcludingPersonsGroups($this->edit_person))
             ->setOrderBy('name');
 
-        return View::make("$this->viewDirectory/addgroup", [
+        return View::make("$this->viewPrefix/addgroup", [
             'person' => $this->edit_person,
             'groups' => $finder->findAll(),
         ]);
@@ -30,7 +30,7 @@ class Controller_Cms_Person_View extends Controller_Cms_Person
             throw new HTTP_Exception_404();
         }
 
-        return View::make($this->viewDirectory."view", [
+        return View::make($this->viewPrefix."view", [
             'person' => $this->edit_person,
             'request' => $this->request,
             'groups' => $this->edit_person->getGroups(),

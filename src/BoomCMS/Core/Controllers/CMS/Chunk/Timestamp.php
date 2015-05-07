@@ -1,6 +1,6 @@
 <?php
 
-use \Boom\Chunk\Timestamp as ChunkTimestamp;
+use BoomCMS\Core\Chunk\Timestamp as ChunkTimestamp;
 
 class Controller_Cms_Chunk_Timestamp extends Controller_Cms_Chunk
 {

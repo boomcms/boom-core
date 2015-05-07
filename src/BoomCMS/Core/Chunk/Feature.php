@@ -2,8 +2,8 @@
 
 namespace BoomCMS\Core\Chunk;
 
-use \Boom\Page as Page;
-use \Boom\Editor\Editor as Editor;
+use BoomCMS\Core\Page as Page;
+use BoomCMS\Core\Editor\Editor as Editor;
 use \Kohana as Kohana;
 use \View as View;
 
@@ -30,7 +30,7 @@ class Feature extends \Boom\Chunk
     public function _show()
     {
         // If the template doesn't exist then use a default template.
-        if ( ! Kohana::find_file("views", $this->viewDirectory."feature/$this->_template")) {
+        if ( ! Kohana::find_file("views", $this->viewPrefix."feature/$this->_template")) {
             $this->_template = $this->_default_template;
         }
 
@@ -39,7 +39,7 @@ class Feature extends \Boom\Chunk
 
         // Only show the page feature if the page is visible or the feature box is editable.
         if ( ! Editor::instance()->isDisabled() || $page->isVisible()) {
-            return View::factory($this->viewDirectory."feature/$this->_template", [
+            return View::factory($this->viewPrefix."feature/$this->_template", [
                 'target'    =>    $page,
             ]);
         }
@@ -47,7 +47,7 @@ class Feature extends \Boom\Chunk
 
     public function _show_default()
     {
-        return View::factory($this->viewDirectory."default/feature/$this->_template");
+        return View::factory($this->viewPrefix."default/feature/$this->_template");
     }
 
     public function attributes()
