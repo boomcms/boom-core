@@ -1,4 +1,4 @@
-	<?= View::make('boom/header', ['title' => 'Pages']) ?>
+	<?= View::make('boom::header', ['title' => 'Pages']) ?>
 	<?= new \Boom\Menu\Menu  ?>
 
 	<div id="b-topbar" class="b-toolbar">

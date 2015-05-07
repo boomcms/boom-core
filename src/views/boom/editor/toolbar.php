@@ -1,4 +1,4 @@
-<?= View::make('boom/header', ['title' => $page->getTitle()]) ?>
+<?= View::make('boom::header', ['title' => $page->getTitle()]) ?>
 
 <div id="b-topbar" class='b-page-toolbar b-toolbar b-toolbar-vertical'>
 	<?= Form::hidden('csrf', Security::token(), ['id' => 'b-csrf']) ?>
