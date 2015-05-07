@@ -2,9 +2,9 @@
 
 namespace BoomCMS\Core\Controllers;
 
-use Boom\Asset;
+use BoomCMS\Core\Asset;
 
-class Asset extends Controller
+class AssetController extends Controller
 {
     /**
      *
@@ -16,10 +16,12 @@ class Asset extends Controller
 
     /**
 	 * The value to use for the max-age header.
+     *
+     * 100800 = 4 weeks.
 	 *
 	 * @var integer
 	 */
-    public $max_age = Date::MONTH;
+    public $max_age = 100800;
 
     /**
      *

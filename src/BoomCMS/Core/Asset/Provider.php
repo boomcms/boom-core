@@ -2,11 +2,13 @@
 
 namespace BoomCMS\Core\Asset;
 
-use BoomCMS\Core\Model\Asset as Model;
+use BoomCMS\Core\Models\Asset as Model;
 
 class Provider
 {
-    public static function byId($id)
+    protected $cache = [];
+
+    public function findById($id)
     {
         return $this->findAndCache(Model::find($id));
     }
@@ -19,8 +21,12 @@ class Provider
         return static::fromModel($model);
     }
 
-    private function findAndCache(Model $model)
+    private function findAndCache(Model $model = null)
     {
+        if ( ! $model) {
+            return;
+        }
+
         if ($model->id) {
             $this->cache[$model->id] = $model;
         }

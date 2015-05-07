@@ -31,4 +31,11 @@ Route::group(['middleware' => [
             });
         });
     });
+
+    Route::get('asset/{action}/{asset}', [
+        'as' => 'asset',
+        'uses' => function($action, $asset = null) {
+            return App::make('BoomCMS\Core\Controllers\AssetController')->$action($asset);
+        }
+    ]);
 });
