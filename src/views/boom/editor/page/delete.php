@@ -9,16 +9,16 @@
 </dl>
 
 <form id="b-page-delete-form">
-	<?php if ($count > 0): ?>
-		<p>
-			<strong>Warning:</strong>
-			<br />Deleting this page will make it's <?= $count, " ", Inflector::plural("child page", $count) ?> inaccessible.
-		</p>
-		<div id="b-page-delete-children">
-			<?= Form::checkbox('with_children', 1) ?>
-			Delete <?= $count, " ", Inflector::plural("child page", $count) ?> as well.
-		</div>
-	<?php endif ?>
+    <?php if ($count > 0): ?>
+        <p>
+            <strong>Warning:</strong>
+            <br />Deleting this page will make it's <?= $count ?> child <?= Lang::choice('boom.page', $count) ?> inaccessible.
+        </p>
+        <div id="b-page-delete-children">
+            <input type="checkbox" name="with_children" value="1" />
+            Delete <?= $count ?> child <?= Lang::choice('boom.page', $count) ?> as well.
+        </div>
+    <?php endif ?>
 </form>
 
 <p>Click the tick to delete, or the cross to keep the page.</p>

@@ -14,13 +14,20 @@
 		<div id="basic">
                     <label>
                         <?= Lang::get('Visible in navigation') ?>?
-                        <?= Form::select('visible_in_nav', [1 => 'Yes', 0 => 'No'], $page->isVisibleInNav(), ['id' => 'visible_in_nav']) ?>
+
+                        <select name="visible_in_nav" id="visible_in_nav">
+                            <option value="1"<?php if ($page->isVisibleInNav()): ?> selected="selected"<?php endif ?>>Yes</option>
+                            <option value="0"<?php if ( ! $page->isVisibleInNav()): ?> selected="selected"<?php endif ?>>No</option>
+                        </select>
                     </label>
 
                     <label>
                         <?= Lang::get('Visible in CMS navigation') ?>?
-                        <?= Form::select('visible_in_nav_cms', [1 => 'Yes', 0 => 'No'], $page->isVisibleInCmsNav(), ['id' => 'visible_in_nav_cms']) ?>
-                    </label>
+
+                        <select name="visible_in_nav_cms" id="visible_in_nav_cms">
+                            <option value="1"<?php if ($page->isVisibleInNavCms()): ?> selected="selected"<?php endif ?>>Yes</option>
+                            <option value="0"<?php if ( ! $page->isVisibleInNavCms()): ?> selected="selected"<?php endif ?>>No</option>
+                        </select>                    </label>
 		</div>
 
 		<?php if ($allowAdvanced): ?>

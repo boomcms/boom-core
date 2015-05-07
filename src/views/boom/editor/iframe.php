@@ -3,7 +3,7 @@
 </head>
 <?= $body_tag ?>
 
-<?php if (\Boom\Editor\Editor::instance()->isEnabled()): ?>
+<?php if ($editor->isEnabled()): ?>
 	<script type="text/javascript">
 		(function () {
 			document.getElementsByTagName("BODY")[0].style['margin-left'] = "60px";
