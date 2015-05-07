@@ -1,6 +1,4 @@
 <form class="b-form-settings">
-	<?= Form::hidden('csrf', Security::token()) ?>
-
         <p>
             Set a time when the draft changes to the page will become live.
         </p>

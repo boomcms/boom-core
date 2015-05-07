@@ -8,15 +8,12 @@
 	<body id='b-login'>
 		<div>
 			<form name="login-form" action="/cms/recover<?php if (isset($token)): ?>?token=<?= $token->token ?><?php endif ?>" method="post">
-				<?= Form::hidden('csrf', Security::token()) ?>
 				<fieldset>
 					<?php if (isset($error)): ?>
 						<p class="b-error"><?= $error ?></p>
 					<?php endif ?>
 
 					<?php if (isset($token)) : ?>
-						<?= Form::hidden('csrf', Security::token()) ?>
-
 						<p>
 							<label for="password1">
 								<?= Lang::get('Enter a new password') ?>

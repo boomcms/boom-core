@@ -1,6 +1,4 @@
 <form class="b-form-settings">
-	<?= Form::hidden('csrf', Security::token()) ?>
-
 	<div id="b-pagesettings-search" class="boom-tabs">
 		<?php if ($allowAdvanced): ?>
 			<ul>

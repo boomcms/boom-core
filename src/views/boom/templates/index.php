@@ -8,7 +8,6 @@
 
 	<div id="b-templates">
 		<form id="b-items-view-list">
-			<?= Form::hidden('csrf', Security::token()) ?>
 			<table id="b-templates-table" class="tablesorter">
 				<thead>
 					<tr>

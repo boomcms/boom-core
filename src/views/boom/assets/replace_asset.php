@@ -9,7 +9,6 @@
 ?>
 <div class="boom-tabs">
 	<form id="boom-tagmanager-replace-form" action='/cms/assets/replace/<?= $asset->getId(); ?>' method='post' enctype="multipart/form-data">
-		<?= Form::hidden('csrf', Security::token()) ?>
 		<input type="hidden" name="upload_token" value="<?=sha1(microtime())?>" />
 		<div id="b-assets-upload-container">
 			<div class="ui-widget" id="b-assets-upload-info">

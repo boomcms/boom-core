@@ -8,8 +8,6 @@
 
 		<div id="b-person-view-information<?=$person->getId();?>">
 			<form>
-				<?= Form::hidden('csrf', Security::token()) ?>
-
 				<label>
                                     Name
                                     <input type="text" name="name" value="<?= $person->getName() ?>" />

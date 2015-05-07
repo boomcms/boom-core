@@ -9,7 +9,6 @@
 </ul>
 
 <form id="b-form-addurl" name="form-addurl">
-	<?= Form::hidden('csrf', Security::token()) ?>
 	<input type='hidden' name='page' value='<?= $page->getId() ?>' />
 
 	<label>New URL

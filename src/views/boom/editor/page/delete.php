@@ -9,7 +9,6 @@
 </dl>
 
 <form id="b-page-delete-form">
-	<?= Form::hidden('csrf', Security::token()) ?>
 	<?php if ($count > 0): ?>
 		<p>
 			<strong>Warning:</strong>
