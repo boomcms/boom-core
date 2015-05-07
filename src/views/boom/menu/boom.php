@@ -3,7 +3,7 @@
 	<ul>
 		<?php foreach ($menu_items as $item): ?>
 			<li>
-				<a target='_top' href='<?= $item['url'] ?>'><?= Lang::get($item['title'])?></a>
+				<a target='_top' href='<?= $item['url'] ?>'><?= Lang::get($item['title']) ?></a>
 			</li>
 		<?php endforeach ?>
 	</ul>

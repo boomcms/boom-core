@@ -16,7 +16,7 @@
 	<div id="b-assets-filters">
 		<span>
 			<button id="b-assets-all" class="b-button">
-				<?= Lang::get('All assets')?>
+				<?= Lang::get('All assets') ?>
 			</button>
 		</span>
 

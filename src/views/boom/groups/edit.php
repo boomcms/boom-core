@@ -14,8 +14,8 @@
 		<h2>Edit permissions</h2>
 
 		<ul>
-			<li><a href="#b-group-roles-general"><?=Lang::get('CMS Permissions')?></a></li>
-			<li><a href="#b-group-roles-pages"><?=Lang::get('Page Permissions')?></a></li>
+			<li><a href="#b-group-roles-general"><?=Lang::get('CMS Permissions') ?></a></li>
+			<li><a href="#b-group-roles-pages"><?=Lang::get('Page Permissions') ?></a></li>
 		</ul>
 
 		<div id="b-group-roles-general">

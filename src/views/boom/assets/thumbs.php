@@ -2,8 +2,8 @@
 	<?php foreach ($assets as $asset): ?>
 		<div style="height: 160px; width: <?= floor(160 * $asset->getAspectRatio()) ?>px" data-aspect-ratio="<?= $asset->getAspectRatio() ?>">
 			<div class="thumb" data-asset="<?= $asset->getId() ?>">
-				<a href="#asset/<?=$asset->getId()?>">
-					<img src="/asset/thumb/<?=$asset->getId()?>/400/0" />
+				<a href="#asset/<?=$asset->getId() ?>">
+					<img src="/asset/thumb/<?=$asset->getId() ?>/400/0" />
 
 					<section class="b-asset-details">
 						<h1><?= $asset->getTitle() ?></h1>
@@ -24,5 +24,5 @@
 				</a>
 			</div>
 		</div>
-	<?php endforeach; ?>
+	<?php endforeach ?>
 </div>

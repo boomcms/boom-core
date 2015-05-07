@@ -9,7 +9,7 @@
 					<a href="#advanced"><?= Lang::get('Advanced') ?></a>
 				</li>
 			</ul>
-		<?php endif; ?>
+		<?php endif ?>
 
 		<div id="basic">
                     <label>
@@ -35,6 +35,6 @@
                                 <?= Form::select('internal_indexing', [1 => 'Yes', 0 => 'No'], (int) $page->allowsInternalIndexing(), ['id' => 'internal_indexing']) ?>
                             </label>
 			</div>
-		<?php endif; ?>
+		<?php endif ?>
 	</div>
 </form>

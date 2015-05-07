@@ -9,7 +9,7 @@
 	<body id='b-login'>
 		<div>
 			<form name="login-form" action="/cms/login" method="post">
-                                <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+                                <input type="hidden" name="_token" value="<?php echo csrf_token() ?>">
 
 				<fieldset>
 					<?php if (isset($login_error)): ?>

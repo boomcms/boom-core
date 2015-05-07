@@ -7,7 +7,7 @@
 			<img id='b-page-feature-current' src='' />
 		<?php else: ?>
 			<img id='b-page-feature-current' data-asset-id="<?= $feature_image_id ?>" src='<?= Route::url('asset', ['id' => $feature_image_id, 'width' => 500]) ?>' />
-		<?php endif; ?>
+		<?php endif ?>
 
 
 		<div id='b-page-feature-buttons'>

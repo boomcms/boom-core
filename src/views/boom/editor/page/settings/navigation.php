@@ -3,13 +3,13 @@
 		<?php if ($allowAdvanced): ?>
 			<ul>
 				<li>
-					<a href="#basic"><?=Lang::get('Basic')?></a>
+					<a href="#basic"><?=Lang::get('Basic') ?></a>
 				</li>
 				<li>
-					<a href="#advanced"><?=Lang::get('Advanced')?></a>
+					<a href="#advanced"><?=Lang::get('Advanced') ?></a>
 				</li>
 			</ul>
-		<?php endif; ?>
+		<?php endif ?>
 
 		<div id="basic">
                     <label>
@@ -32,6 +32,6 @@
 					<li><a id="page_5" href="/" rel="5">Home</a></li>
 				</ul>
 			</div>
-		<?php endif; ?>
+		<?php endif ?>
 	</div>
 </form>

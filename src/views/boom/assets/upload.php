@@ -3,7 +3,7 @@
 		<div id="b-assets-upload-container">
 			<div id="b-assets-upload-info">
 				<p>Drag and drop files here, or <a id="b-assets-upload-add" href="#"><label for="b-assets-upload-file">select files</label></a> to start uploading.</p>
-				<p class="message"><?=Lang::get('Supported file types')?>: <?= implode(', ', \BoomCMS\Core\Asset\Mimetype::$allowedExtensions) ?></p>
+				<p class="message"><?=Lang::get('Supported file types') ?>: <?= implode(', ', \BoomCMS\Core\Asset\Mimetype::$allowedExtensions) ?></p>
 			</div>
 
 			<div id="b-assets-upload-progress"></div>

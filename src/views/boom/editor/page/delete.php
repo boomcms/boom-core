@@ -12,13 +12,13 @@
 	<?php if ($count > 0): ?>
 		<p>
 			<strong>Warning:</strong>
-			<br />Deleting this page will make it's <?= $count, " ", Inflector::plural("child page", $count); ?> inaccessible.
+			<br />Deleting this page will make it's <?= $count, " ", Inflector::plural("child page", $count) ?> inaccessible.
 		</p>
 		<div id="b-page-delete-children">
-			<?= Form::checkbox('with_children', 1); ?>
-			Delete <?= $count, " ", Inflector::plural("child page", $count); ?> as well.
+			<?= Form::checkbox('with_children', 1) ?>
+			Delete <?= $count, " ", Inflector::plural("child page", $count) ?> as well.
 		</div>
-	<?php endif; ?>
+	<?php endif ?>
 </form>
 
 <p>Click the tick to delete, or the cross to keep the page.</p>

@@ -3,17 +3,17 @@
 		<?php if ($allowAdvanced): ?>
 			<ul>
 				<li>
-					<a href="#basic"><?=Lang::get('Basic')?></a>
+					<a href="#basic"><?=Lang::get('Basic') ?></a>
 				</li>
 				<li>
-					<a href="#advanced"><?=Lang::get('Advanced')?></a>
+					<a href="#advanced"><?=Lang::get('Advanced') ?></a>
 				</li>
 			</ul>
-		<?php endif; ?>
+		<?php endif ?>
 
 		<div id="basic">
                     <label>
-                        <?=Lang::get('Default child template')?>
+                        <?=Lang::get('Default child template') ?>
 
                         <select name="children_template_id" id="children_template_id">
                             <?php foreach($templates as $t): ?>
@@ -28,7 +28,7 @@
                     </label*/?>
 
                     <label>
-                        <?=Lang::get('Child ordering policy')?>
+                        <?=Lang::get('Child ordering policy') ?>
 
                         <?= Form::select('children_ordering_policy', [
                                 'sequence'        =>    'Manual',
@@ -48,7 +48,7 @@
 		<?php if ($allowAdvanced): ?>
 			<div id="advanced">
                             <label>
-                                <?=Lang::get('Children visible in nav')?>?
+                                <?=Lang::get('Children visible in nav') ?>?
 
                                 <?= Form::select('children_visible_in_nav', [
                                         1 => 'Yes',
@@ -63,7 +63,7 @@
                             </label*/?>
 
                             <label>
-                                <?=Lang::get('Children visible in CMS nav')?>?
+                                <?=Lang::get('Children visible in CMS nav') ?>?
                                 <?= Form::select('children_visible_in_nav_cms', [
                                         1 => 'Yes',
                                         0 => 'No',
@@ -76,12 +76,12 @@
                             </label*/?>
 
                             <label>
-                                <?=Lang::get('Default child URI prefix')?>
+                                <?=Lang::get('Default child URI prefix') ?>
                                 <?= Form::input('children_url_prefix', $page->getChildPageUrlPrefix(), ['id' => 'children_url_prefix']) ?>
                             </label>
 
                             <label>
-                                <?=Lang::get('Default grandchild template')?>
+                                <?=Lang::get('Default grandchild template') ?>
 
                                 <select name="grandchild_template_id" id="grandchild_template_id">
                                     <?php foreach($templates as $t): ?>

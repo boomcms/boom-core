@@ -17,13 +17,13 @@
 				<?= new \BoomCMS\Core\UI\Button('preview', Lang::get("Preview the current version of the page even if it hasn't been published"), ['id' => 'boom-page-preview', 'class' => 'b-button-preview','data-preview' => 'preview']) ?>
 				<?= new \BoomCMS\Core\UI\Button('options', Lang::get("Changed the template used by the page"), ['id' => 'b-page-template']) ?>
 			</div>
-		<?php endif; ?>
+		<?php endif ?>
 
 		<?php if ($auth->loggedIn('add_page', $page)): ?>
 			<div class="b-page-container">
 				<?= new \BoomCMS\Core\UI\Button('add', Lang::get('Add a new page as a child of the current page'), ['id' => 'b-page-addpage']) ?>
 			</div>
-		<?php endif; ?>
+		<?php endif ?>
 
 		<div class="b-page-container">
 			<?php if ($auth->loggedIn('edit_page', $page)): ?>
@@ -37,7 +37,7 @@
 
 			<?php if (($page->wasCreatedBy($person) || $auth->loggedIn('delete_page', $page)) && ! $page->getMptt()->is_root()) : ?>
 				<?= new \BoomCMS\Core\UI\Button('delete', Lang::get('Delete this page'), ['id' => 'b-page-delete']) ?>
-			<?php endif; ?>
+			<?php endif ?>
 		</div>
 
 		<?php if ($readability): ?>
@@ -48,7 +48,7 @@
 
 		<div class="b-page-container">
 			<?/*<button id="boom-page-editlive" class="ui-button boom-button" data-icon="ui-icon-boom-edit-live">
-				<?=Lang::get('Edit live')?>
+				<?=Lang::get('Edit live') ?>
 			</button>*/?>
 
 			<?= new \BoomCMS\Core\UI\Button('view-live', Lang::get('View the page as it appears on the live site'), ['id' => 'boom-page-viewlive', 'class' => 'b-button-preview', 'data-preview' => 'disabled']) ?>

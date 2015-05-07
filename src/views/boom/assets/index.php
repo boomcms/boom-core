@@ -1,4 +1,4 @@
-	<?= View::make('boom::header', ['title' => 'Assets']); ?>
+	<?= View::make('boom::header', ['title' => 'Assets']) ?>
 
 	<?= $manager ?>
 
@@ -10,7 +10,7 @@
 			$('body')
 				.ui()
 				.assetManager({
-					allowedUploadTypes:[ '<?= implode('\', \'', \Boom\Asset\Mimetype::$allowedExtensions)?>' ]
+					allowedUploadTypes:[ '<?= implode('\', \'', \Boom\Asset\Mimetype::$allowedExtensions) ?>' ]
 				});
 		})(jQuery);
 		//]]>

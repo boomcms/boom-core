@@ -20,7 +20,7 @@
 					<span title="Remove URL" class="ui-icon ui-icon-remove-small b-urls-remove"></span>
 					<?= Form::radio('is_primary', $url->location, (bool) $url->is_primary, ['id' => 'is_primary_' . $url->id, 'class' => 'ui-helper-hidden b-urls-primary']) ?>
 				</li>
-			<?php endforeach; ?>
+			<?php endforeach ?>
 		</ul>
 	</section>
 	<section class='b-page-urls-short'>
