@@ -2,6 +2,13 @@ module.exports = function(grunt) {
 	// Project configuration.
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
+		autoprefixer: {
+			options: {
+			},
+			no_dest: {
+				src : 'public/css/cms.css'
+			}
+		},
 		concat: {
 			options: {
 				separator: ';',
@@ -152,8 +159,9 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-contrib-less');
 	grunt.loadNpmTasks('grunt-contrib-cssmin');
+	grunt.loadNpmTasks('grunt-autoprefixer');
 
-	grunt.registerTask('build', ['less', 'concat:dist']);
+	grunt.registerTask('build', ['less', 'concat:dist', 'autoprefixer:no_dest']);
 	grunt.registerTask('dist', ['less', 'cssmin', 'concat:dist', 'uglify']);
 	grunt.registerTask('default',['watch']);
 };
