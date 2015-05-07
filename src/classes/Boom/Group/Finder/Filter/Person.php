@@ -1,6 +1,6 @@
 <?php
 
-namespace Boom\Group\Finder\Filter;
+namespace BoomCMS\Core\Group\Finder\Filter;
 
 class Person extends \Boom\Finder\Filter
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Boom\Tag\Finder;
+namespace BoomCMS\Core\Tag\Finder;
 
 use \Boom\Tag\Tag as Tag;
 

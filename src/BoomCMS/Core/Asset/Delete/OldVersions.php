@@ -1,6 +1,6 @@
 <?php
 
-namespace Boom\Asset\Delete;
+namespace BoomCMS\Core\Asset\Delete;
 
 use \Boom\Asset\Command;
 use \Boom\Asset\Asset;

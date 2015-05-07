@@ -1,6 +1,6 @@
 <?php
 
-namespace Boom\Model\Chunk\Slideshow;
+namespace BoomCMS\Core\Model\Chunk\Slideshow;
 
 use Illuminate\Database\Eloquent\Model;
 use \Boom\Link\Link as Link;

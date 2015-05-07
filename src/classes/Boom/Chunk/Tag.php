@@ -1,6 +1,6 @@
 <?php
 
-namespace Boom\Chunk;
+namespace BoomCMS\Core\Chunk;
 
 use \Boom\Page\Page as Page;
 use \Kohana as Kohana;

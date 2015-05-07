@@ -1,6 +1,6 @@
 <?php
 
-namespace Boom\Asset\Processor;
+namespace BoomCMS\Core\Asset\Processor;
 
 use Boom;
 use Boom\Asset\Asset;

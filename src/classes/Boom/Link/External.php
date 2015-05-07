@@ -1,6 +1,6 @@
 <?php
 
-namespace Boom\Link;
+namespace BoomCMS\Core\Link;
 
 class External extends Link
 {

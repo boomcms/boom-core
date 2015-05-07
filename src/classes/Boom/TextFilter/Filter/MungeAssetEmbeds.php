@@ -1,6 +1,6 @@
 <?php
 
-namespace Boom\TextFilter\Filter;
+namespace BoomCMS\Core\TextFilter\Filter;
 
 /**
  * Turns links to assets such as <img src='/asset/view/324'> into munged hoopdb:// links to.

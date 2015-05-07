@@ -1,6 +1,6 @@
 <?php
 
-namespace Boom\Template;
+namespace BoomCMS\Core\Template;
 
 use Model_Template;
 

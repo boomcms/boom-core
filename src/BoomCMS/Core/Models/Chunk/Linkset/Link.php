@@ -1,6 +1,6 @@
 <?php
 
-namespace Boom\Model\Chunk\Linkset;
+namespace BoomCMS\Core\Model\Chunk\Linkset;
 
 use Illuminate\Database\Eloquent\Model;
 use \Boom\Link\Link as Link;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Boom\Tag\Finder\Filter;
+namespace BoomCMS\Core\Tag\Finder\Filter;
 
 class NameEquals extends \Boom\Finder\Filter
 {

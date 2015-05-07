@@ -1,6 +1,6 @@
 <?php
 
-namespace Boom\Link;
+namespace BoomCMS\Core\Link;
 
 use Boom\Page;
 

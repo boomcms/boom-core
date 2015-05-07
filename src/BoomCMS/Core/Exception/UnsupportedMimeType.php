@@ -1,6 +1,6 @@
 <?php
 
-namespace Boom\Exception;
+namespace BoomCMS\Core\Exception;
 
 class UnsupportedMimeType extends \Exception
 {

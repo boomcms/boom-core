@@ -1,6 +1,6 @@
 <?php
 
-namespace Boom\Log;
+namespace BoomCMS\Core\Log;
 
 use Psr\Log\AbstractLogger;
 use Kohana;

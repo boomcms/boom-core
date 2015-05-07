@@ -1,6 +1,6 @@
 <?php
 
-namespace Boom\Asset\Finder\Filter;
+namespace BoomCMS\Core\Asset\Finder\Filter;
 
 use DB;
 

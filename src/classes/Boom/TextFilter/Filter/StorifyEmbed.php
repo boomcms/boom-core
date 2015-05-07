@@ -1,6 +1,6 @@
 <?php
 
-namespace Boom\TextFilter\Filter;
+namespace BoomCMS\Core\TextFilter\Filter;
 
 class StorifyEmbed implements \Boom\TextFilter\Filter
 {

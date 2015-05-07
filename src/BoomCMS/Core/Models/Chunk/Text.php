@@ -1,6 +1,6 @@
 <?php
 
-namespace Boom\Model\Chunk;
+namespace BoomCMS\Core\Model\Chunk;
 
 use Illuminate\Database\Eloquent\Model;
 use Boom\TextFilter\Commander as TextFilter;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Boom\Asset\Archive;
+namespace BoomCMS\Core\Asset\Archive;
 
 use Boom;
 use \Boom\Asset\Asset;

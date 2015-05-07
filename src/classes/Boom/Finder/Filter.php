@@ -1,6 +1,6 @@
 <?php
 
-namespace Boom\Finder;
+namespace BoomCMS\Core\Finder;
 
 abstract class Filter
 {

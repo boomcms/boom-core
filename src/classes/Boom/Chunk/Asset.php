@@ -1,6 +1,6 @@
 <?php
 
-namespace Boom\Chunk;
+namespace BoomCMS\Core\Chunk;
 
 use \Boom\Page as Page;
 use \Boom\Link\Link as Link;

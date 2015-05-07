@@ -1,6 +1,6 @@
 <?php
 
-namespace Boom\Template;
+namespace BoomCMS\Core\Template;
 
 use \Boom\Page;
 use \Kohana as Kohana;

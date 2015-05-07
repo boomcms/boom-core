@@ -1,6 +1,6 @@
 <?php
 
-namespace Boom\Asset\Type;
+namespace BoomCMS\Core\Asset\Type;
 
 use Boom\Asset\Asset;
 

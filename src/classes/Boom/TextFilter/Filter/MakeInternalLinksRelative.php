@@ -1,6 +1,6 @@
 <?php
 
-namespace Boom\TextFilter\Filter;
+namespace BoomCMS\Core\TextFilter\Filter;
 
 use \URL as URL;
 use \Request as Request;

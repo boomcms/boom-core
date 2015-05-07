@@ -1,6 +1,6 @@
 <?php
 
-namespace Boom\Chunk;
+namespace BoomCMS\Core\Chunk;
 
 use Boom\Editor\Editor as Editor;
 use \View as View;

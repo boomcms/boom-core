@@ -1,6 +1,6 @@
 <?php
 
-namespace Boom\Group;
+namespace BoomCMS\Core\Group;
 
 use Boom;
 

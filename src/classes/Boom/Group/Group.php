@@ -1,6 +1,6 @@
 <?php
 
-namespace Boom\Group;
+namespace BoomCMS\Core\Group;
 
 use \DB as DB;
 use Cartalyst\Sentry\Groups\GroupInterface;

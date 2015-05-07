@@ -1,6 +1,6 @@
 <?php
 
-namespace Boom\TextFilter\Filter;
+namespace BoomCMS\Core\TextFilter\Filter;
 
 class RemoveAllHTML implements \Boom\TextFilter\Filter
 {

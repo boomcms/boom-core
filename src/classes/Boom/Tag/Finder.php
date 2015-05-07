@@ -1,6 +1,6 @@
 <?php
 
-namespace Boom\Tag;
+namespace BoomCMS\Core\Tag;
 
 use Boom;
 

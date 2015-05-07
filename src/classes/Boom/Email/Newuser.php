@@ -1,6 +1,6 @@
 <?php
 
-namespace Boom\Email;
+namespace BoomCMS\Core\Email;
 
 use Email;
 use Request;

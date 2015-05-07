@@ -1,6 +1,6 @@
 <?php
 
-namespace Boom\TextFilter;
+namespace BoomCMS\Core\TextFilter;
 
 class Commander implements Filter
 {

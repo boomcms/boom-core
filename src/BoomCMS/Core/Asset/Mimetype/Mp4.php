@@ -1,6 +1,6 @@
 <?php
 
-namespace Boom\Asset\Mimetype;
+namespace BoomCMS\Core\Asset\Mimetype;
 
 use \Boom\Asset;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Boom\Exception\Handler;
+namespace BoomCMS\Core\Exception\Handler;
 
 use Exception;
 use Response;
