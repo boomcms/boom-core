@@ -22,58 +22,42 @@
                         </select>
                     </label>
 
-                    <?/*label>
-                        <?= Lang::get('Update existing child pages') ?>
-                        <?= Form::checkbox('cascade_template', '1', false, ['id' => 'child_template_cascade']) ?>
-                    </label*/?>
-
                     <label>
                         <?=Lang::get('Child ordering policy') ?>
 
-                        <?= Form::select('children_ordering_policy', [
-                                'sequence'        =>    'Manual',
-                                'visible_from'    =>    'Date',
-                                'title'            =>    'Alphabetic'
-                            ], $child_order_column, ['id' => 'children_ordering_policy']);
-                        ?>
-                        <?= Form::select('children_ordering_direction', [
-                                'asc'        =>    'Ascending',
-                                'desc'    =>    'Descending'
-                            ], $child_order_direction);
-                        ?>
+                        <select name="children_ordering_policy" id="children_ordering_policy">
+                            <option value="sequence"<?php if ($child_order_column === 'sequence'): ?> selected="selected"<?php endif ?>>Manual</option>
+                            <option value="visible_from"<?php if ($child_order_column === 'visible_from'): ?> selected="selected"<?php endif ?>>Date by visible from time</option>
+                            <option value="title"<?php if ($child_order_column === 'title'): ?> selected="selected"<?php endif ?>>Alphabetic by title</option>
+                        </select>
 
-                        <?= new Boom\UI\Button('', 'Re-order', ['id' => 'b-page-settings-children-reorder', 'class' => 'b-button-textonly']) ?>
+                        <select name="children_ordering_direction">
+                            <option value="asc"<?php if ($child_order_direction === 'asc'): ?> selected="selected"<?php endif ?>>Ascending</option>
+                            <option value="desc"<?php if ($child_order_direction === 'desc'): ?> selected="selected"<?php endif ?>>Descending</option>
+                        </select>
+
+                        <?= new BoomCMS\Core\UI\Button('', 'Re-order', ['id' => 'b-page-settings-children-reorder', 'class' => 'b-button-textonly']) ?>
                     </label>
 		</div>
 		<?php if ($allowAdvanced): ?>
 			<div id="advanced">
                             <label>
-                                <?=Lang::get('Children visible in nav') ?>?
+                                <?= Lang::get('Children visible in nav') ?>?
 
-                                <?= Form::select('children_visible_in_nav', [
-                                        1 => 'Yes',
-                                        0 => 'No',
-                                    ], (int) $page->childrenAreVisibleInNav(), ['id' => 'children_visible_in_nav']);
-                                ?>
+                                <select name="children_visible_in_nav" id="children_visible_in_nav">
+                                    <option value="1"<?php if ($page->childrenAreVisibleInNav()): ?> selected="selected"<?php endif ?>>Yes</option>
+                                    <option value="0"<?php if ( ! $page->childrenAreVisibleInNav()): ?> selected="selected"<?php endif ?>>No</option>
+                                </select>
                             </label>
-
-                            <?/*label>
-                                <?= Lang::get('Update existing child pages') ?>
-                                <?= Form::checkbox('cascade[]', 'visible_in_nav', false, ['id' => 'visible_in_nav_cascade']) ?>
-                            </label*/?>
 
                             <label>
                                 <?=Lang::get('Children visible in CMS nav') ?>?
-                                <?= Form::select('children_visible_in_nav_cms', [
-                                        1 => 'Yes',
-                                        0 => 'No',
-                                    ], (int) $page->childrenAreVisibleInCmsNav(), ['id' => 'children_visible_in_nav_cms']) ?>
-                            </label>
 
-                            <?/*label>
-                                <?= Lang::get('Update existing child pages') ?>
-                                <?= Form::checkbox('cascade[]', 'visible_in_nav_cms', false, ['id' => 'visible_in_nav_cms_cascade']) ?>
-                            </label*/?>
+                                <select name="children_visible_in_nav_cms" id="children_visible_in_nav_cms">
+                                    <option value="1"<?php if ($page->childrenAreVisibleInNavCms()): ?> selected="selected"<?php endif ?>>Yes</option>
+                                    <option value="0"<?php if ( ! $page->childrenAreVisibleInNavCms()): ?> selected="selected"<?php endif ?>>No</option>
+                                </select>
+                            </label>
 
                             <label>
                                 <?=Lang::get('Default child URI prefix') ?>

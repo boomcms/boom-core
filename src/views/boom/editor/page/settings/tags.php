@@ -7,13 +7,13 @@
     <section id="free">
 	<ul class="b-tags-list" data-group="">
             <?php foreach ($freeTags as $tag): ?>
-                <?= new Boom\UI\Tag($tag) ?>
+                <?= new BoomCMS\Core\UI\Tag($tag) ?>
             <?php endforeach ?>
 
             <li class="b-tag">
                 <form class="b-tags-add">
                     <input type="text" value="" class="b-tags-add-name" />
-                    <?= new Boom\UI\Button('add', 'Add tag') ?>
+                    <?= new BoomCMS\Core\UI\Button('add', 'Add tag') ?>
                 </form>
             </li>
 	</ul>
@@ -28,14 +28,14 @@
                     <ul class="b-tags-list" data-group="<?= $group ?>">
                         <?php if (isset($tags[$group])): ?>
                             <?php foreach ($tags[$group] as $tag): ?>
-                                <?= new Boom\UI\Tag($tag) ?>
+                                <?= new BoomCMS\Core\UI\Tag($tag) ?>
                             <?php endforeach ?>
                         <?php endif ?>
 
                         <li class="b-tag">
                             <form class="b-tags-add">
                                 <input type="text" value="" class="b-tags-add-name" />
-                                <?= new Boom\UI\Button('add', 'Add tag') ?>
+                                <?= new BoomCMS\Core\UI\Button('add', 'Add tag') ?>
                             </form>
                         </li>
                     </ul>
@@ -47,7 +47,7 @@
 
                 <form>
                     <input type="text" value="" class="b-tags-newgroup-name" />
-                    <?= new Boom\UI\Button('add', 'Add tag group') ?>
+                    <?= new BoomCMS\Core\UI\Button('add', 'Add tag group') ?>
                 </form>
             </li>
         </ul>

@@ -26,6 +26,6 @@
         <label class="b-link">
             <span>Link</span>
             <input type="text" disabled value="<?= $chunk->getLink() ?>" />
-            <?= new Boom\UI\Button('edit', 'Edit link', ['class' => 'small']) ?>
+            <?= new BoomCMS\Core\UI\Button('edit', 'Edit link', ['class' => 'small']) ?>
         </label>
 </section>

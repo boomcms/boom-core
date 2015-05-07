@@ -36,7 +36,7 @@
 								<?php $page_count = $t->countPages() ?>
 								<a href='/cms/templates/pages/<?= $t->getId() ?>' title='View the title and URL of <?= $page_count, " ", Inflector::plural('page', $page_count) ?> which use this template'><?= $page_count ?>
 							</td>
-							<td><?= new Boom\UI\Button('delete', "Delete the &quot;{$t->getName()}&quot; template", ['class' => 'b-templates-delete']) ?>
+							<td><?= new BoomCMS\Core\UI\Button('delete', "Delete the &quot;{$t->getName()}&quot; template", ['class' => 'b-templates-delete']) ?>
 						</tr>
 					<?php endforeach ?>
 				</tbody>

@@ -17,26 +17,29 @@
             <form method="post" action="/cms/profile">
                 <label>
                     Name
-                    <?= Form::input('name', $person->getName(), ['size' => 35]) ?>
+
+                    <input type="text" name="name" size="35" value="<?= $person->getName() ?>" />
                 </label>
 
                 <label>
                     Current password
-                    <?= Form::password('current_password','', ['size' => 35]) ?>
+
+                    <input type="password" name="current_password" size="35" />
                 </label>
 
                 <label>
                     New password
-                    <?= Form::password('new_password','', ['size' => 35]) ?>
+
+                    <input type="password" name="new_password" size="35" />
                 </label>
 
-                <?= Form::submit('submit', 'Submit') ?>
+                <input type="submit" value="Submit" />
             </form>
 
             <table id="b-people-profile-authlog">
                 <?php foreach ($logs as $log): ?>
                     <tr>
-                        <td><?= Date::fuzzy_span($log->time) ?></td>
+                        <td><?= $log->time ?></td>
                         <td><?= $log->get_action() ?></td>
                         <td><?= ucfirst($log->method) ?></td>
                         <td><?= long2ip($log->ip) ?></td>
@@ -46,13 +49,12 @@
         </div>
     </div>
 
-	<?= Boom::include_js() ?>
-	<script type="text/javascript">
-		//<![CDATA[
-		(function ($) {
-			$.boom.init();
-		})(jQuery);
-		//]]>
-	</script>
+    <script type="text/javascript">
+        //<![CDATA[
+        (function ($) {
+            $.boom.init();
+        })(jQuery);
+        //]]>
+    </script>
 </body>
 </html>

@@ -19,7 +19,7 @@
                     <th></th>
                 </tr>
                 <?php foreach ($pages as $page): ?>
-                    <tr class="<?= Text::alternate('odd', 'even') ?>" data-page-id="<?= $page->getId() ?>">
+                    <tr data-page-id="<?= $page->getId() ?>">
                         <td><a href="<?= $page->url() ?>"><?= $page->getTitle() ?></a></td>
                         <td><?= $page->getCurrentVersion()->person->name ?> (<?= $page->getCurrentVersion()->person->email ?>)</td>
                         <td><?= date('d F Y H:i', $page->getCurrentVersion()->edited_time) ?></td>

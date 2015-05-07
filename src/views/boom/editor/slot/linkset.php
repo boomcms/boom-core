@@ -31,7 +31,7 @@
             <label class="b-linkset-target">
                 <p>Target</p>
                 <input type="text" name="target" disabled value="" />
-                <?= new Boom\UI\Button('edit-small', 'Edit link target', ['class' => 'small']) ?>
+                <?= new BoomCMS\Core\UI\Button('edit-small', 'Edit link target', ['class' => 'small']) ?>
             </label>
 
             <label class="b-linkset-title">
@@ -52,5 +52,5 @@
 
 <div id="b-linkset-editor-buttons">
 	<?= new \BoomCMS\Core\UI\Button('delete', Lang::get('Delete linkset'), ['id' => 'b-linkset-delete', 'class' => 'b-button-textonly']) ?>
-	<?= new Boom\UI\Button('add', 'Add link', ['id' => 'b-linkset-add', 'class' => 'b-button-withtext']) ?>
+	<?= new BoomCMS\Core\UI\Button('add', 'Add link', ['id' => 'b-linkset-add', 'class' => 'b-button-withtext']) ?>
 </div>

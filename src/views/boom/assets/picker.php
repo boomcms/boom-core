@@ -11,7 +11,7 @@
 
         <section id="b-assets-picker-upload">
             <h1>Upload Asset</h1>
-            <?= View::make('boom/assets/upload') ?>
+            <?= View::make('boom::assets.upload') ?>
         </section>
 
         <section id="b-assets-picker-filter" class="ui-front">
@@ -26,7 +26,14 @@
 
             <div>
                 <h2>Filter by asset type</h2>
-                <?= Form::select('types', array_merge(['0' => 'Filter by type'], \Boom\Asset\Type::whichExist()), null, ['id' => 'b-assets-types']) ?>
+
+                <select name="types" id="b-assets-types">
+                    <option value="0">Filter by type</option>
+
+                    <?php foreach (\BoomCMS\Core\Asset\Type::whichExist() as $key => $type): ?>
+                        <option value="<?= $key ?>"><?= $type ?></option>
+                    <?php endforeach ?>
+                </select>
             </div>
 
             <div>
@@ -47,6 +54,6 @@
             <a href="#" class="last" data-action="last">&raquo;</a>
         </section>
 
-        <?= new Boom\UI\Button('cancel', 'Close asset picker', ['class' => 'b-button-withtext', 'id' => 'b-assets-picker-close']) ?>
+        <?= new BoomCMS\Core\UI\Button('cancel', 'Close asset picker', ['class' => 'b-button-withtext', 'id' => 'b-assets-picker-close']) ?>
     </section>
 </div>

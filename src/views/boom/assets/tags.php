@@ -10,7 +10,7 @@
         <li class="b-tag">
             <form class="b-tags-add">
                 <input type="text" value="" class="b-tags-add-name" />
-                <?= new Boom\UI\Button('add', 'Add tag') ?>
+                <?= new BoomCMS\Core\UI\Button('add', 'Add tag') ?>
             </form>
         </li>
     </ul>

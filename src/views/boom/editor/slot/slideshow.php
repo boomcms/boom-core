@@ -48,7 +48,7 @@
             <label class="b-slideshow-link">
                 <p>Link</p>
                 <input type="text" name="url" disabled />
-                <?= new Boom\UI\Button('edit', 'Edit link', ['class' => 'small']) ?>
+                <?= new BoomCMS\Core\UI\Button('edit', 'Edit link', ['class' => 'small']) ?>
             </label>
 
             <label class="b-slideshow-linktext">

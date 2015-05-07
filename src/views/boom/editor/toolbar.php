@@ -63,7 +63,7 @@
         <div id="wysihtml5-toolbar" class="b-toolbar b-toolbar-vertical b-toolbar-text">
             <?php foreach (Boom\UI\TextEditorToolbar::getAvailableButtonSets() as $set): ?>
 
-                <?= new Boom\UI\TextEditorToolbar($set) ?>
+                <?= new BoomCMS\Core\UI\TextEditorToolbar($set) ?>
             <?php endforeach ?>
         </div>
 </div>
