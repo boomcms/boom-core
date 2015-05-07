@@ -1,13 +1,12 @@
 <?php
 
-namespace BoomCMS\Core\Asset\Processor;
+namespace BoomCMS\Core\Controllers\Asset;
 
-use Boom;
 use BoomCMS\Core\Asset\Asset;
-use Response;
+
 use Intervention\Image\ImageManager;
 
-class Image extends Processor
+class Image extends BaseController
 {
     /**
      *
@@ -15,7 +14,7 @@ class Image extends Processor
      */
     private $manager;
 
-    public function __construct(Asset $asset, Response $response)
+    public function __construct(Asset $asset)
     {
         parent::__construct($asset, $response);
 
@@ -37,7 +36,7 @@ class Image extends Processor
         }
 
         return $this->response
-                ->headers('content-type', $this->asset->getMimetype())
+                ->header('content-type', $this->asset->getMimetype())
                 ->body($image);
     }
 
@@ -62,7 +61,7 @@ class Image extends Processor
         }
 
         return $this->response
-            ->headers('content-type', (string) $this->asset->getMimetype())
+            ->header('content-type', (string) $this->asset->getMimetype())
             ->body($image);
     }
 

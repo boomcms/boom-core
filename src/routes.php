@@ -36,10 +36,10 @@ Route::group(['middleware' => [
         });
     });
 
-    Route::get('asset/{action}/{asset}', [
+    Route::get('asset/{action}/{asset}/{width?}/{height?}', [
         'as' => 'asset',
-        'uses' => function($action, $asset = null) {
-            return App::make('BoomCMS\Core\Controllers\AssetController')->$action($asset);
+        'uses' => function(BoomCMS\Core\Auth\Auth $auth, $action, $asset = null, $width = null, $height = null) {
+            return App::make('BoomCMS\Core\Controllers\Asset\\' . class_basename($asset), [$auth, $asset])->$action($width, $height);
         }
     ]);
 });

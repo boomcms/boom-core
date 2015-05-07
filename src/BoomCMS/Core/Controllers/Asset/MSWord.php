@@ -1,6 +1,6 @@
 <?php
 
-namespace BoomCMS\Core\Asset\Processor;
+namespace BoomCMS\Core\Controllers\Asset;
 
 class MSWord extends Processor
 {
