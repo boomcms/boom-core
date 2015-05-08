@@ -39,6 +39,10 @@ Route::group(['middleware' => [
     Route::get('asset/{action}/{asset}/{width?}/{height?}', [
         'as' => 'asset',
         'uses' => function(BoomCMS\Core\Auth\Auth $auth, $action, $asset = null, $width = null, $height = null) {
+            if ( ! $asset) {
+                abort(404);
+            }
+
             return App::make('BoomCMS\Core\Controllers\Asset\\' . class_basename($asset), [$auth, $asset])->$action($width, $height);
         }
     ]);

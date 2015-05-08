@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Core\Controllers\Asset;
 
-use BoomCMS\Auth\Auth;
+use BoomCMS\Core\Auth;
 use BoomCMS\Core\Asset;
 use BoomCMS\Core\Controllers\Controller;
 
