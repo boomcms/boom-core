@@ -34,11 +34,20 @@ Route::group(['middleware' => [
                 });
             });
 
-            Route::group(['prefix' => 'people', 'namespace' => 'People', 'middleware' => ['BoomCMS\Core\Http\Middleware\PeopleManager']], function() {
-                Route::get('', 'PeopleManager@index');
+            Route::group(['namespace' => 'People', 'middleware' => ['BoomCMS\Core\Http\Middleware\PeopleManager']], function() {
+                Route::get('people', 'PeopleManager@index');
+
+                Route::get('person/add', 'Person\ViewPerson@add');
+                Route::post('person/add', 'Person\SavePerson@add');
             });
 
-//            Route::get('person/{id}');
+            Route::get('person/{id}/{action?}', [
+                'as' => 'person',
+               // 'middleware' => ['BoomCMS\Core\Http\Middleware\GetPerson'],
+                'uses' => function($action = 'view') {
+                    return App::make('BoomCMS\Core\Controllers\CMS\People\Person\View')->$action();
+                }
+            ]);
         });
     });
 
