@@ -33,6 +33,10 @@ Route::group(['middleware' => [
                     return App::make('BoomCMS\Core\Controllers\CMS\Assets\AssetManager')->$action();
                 });
             });
+
+            Route::group(['prefix' => 'people', 'namespace' => 'People', 'middleware' => ['BoomCMS\Core\Http\Middleware\PeopleManager']], function() {
+                Route::get('', 'PeopleManager@index');
+            });
         });
     });
 

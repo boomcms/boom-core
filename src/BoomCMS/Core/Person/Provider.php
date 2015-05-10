@@ -46,6 +46,19 @@ class Provider
         return $this->findBy('email', $email);
     }
 
+    public function findByGroupId($groupId)
+    {
+        $people = [];
+        $query = Model::join('people_groups', 'people.id', '=', 'people_groups.person_id')
+            ->where('group_id', '=', $groupId);
+
+        foreach ($query->get() as $result) {
+            $people[] = $this->findAndCache($result);
+        }
+
+        return $people;
+    }
+
     public function findByLogin($login)
     {
         return $this->findByEmail($login);

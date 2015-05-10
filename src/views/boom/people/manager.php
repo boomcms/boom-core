@@ -27,7 +27,7 @@
 						<a class='b-groups-item' href='/cms/people?group=<?= $group->getId() ?>'><?= $group->getName() ?></a>
 
 						<a href='#' title="Delete" class="ui-icon ui-icon-close b-group-delete"></a>
-						<a href='<?= Route::url('people-edit', ['controller' => 'group', 'action' => 'edit', 'id' => $group->getId()]) ?>' title="Edit" class="ui-icon ui-icon-wrench"></a>
+						<a href='<?php//= Route::url('people-edit', ['controller' => 'group', 'action' => 'edit', 'id' => $group->getId()]) ?>' title="Edit" class="ui-icon ui-icon-wrench"></a>
 					</li>
 				<?php endforeach ?>
 			</ul>
