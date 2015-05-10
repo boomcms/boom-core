@@ -2,10 +2,10 @@
 
 namespace BoomCMS\Core\Asset\Mimetype;
 
-use BoomCMS\Core\Asset;
+use BoomCMS\Core\Asset\Type;
 
-class Mp4 extends Asset\Mimetype
+class Mp4 extends Mimetype
 {
     protected $_extension = 'mp4';
-    protected $_type = \Boom\Asset\Type::VIDEO;
+    protected $_type = Type::VIDEO;
 }

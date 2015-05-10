@@ -1,6 +1,9 @@
 <?php
 
 return [
+    'assets' => [
+        'directory' => storage_path() . '/boom/assets/',
+    ],
     'menu'    =>    [
         'view_filename'        =>    'boom::menu.boom',
         'items'            =>    [

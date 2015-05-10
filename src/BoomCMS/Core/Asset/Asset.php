@@ -2,6 +2,7 @@
 
 namespace BoomCMS\Core\Asset;
 
+use BoomCMS\Core\Config;
 use BoomCMS\Core\Person;
 use \DB;
 use \File;
@@ -26,7 +27,7 @@ abstract class Asset
 
     public static function directory()
     {
-        return APPPATH . 'assets';
+        return Config::get('assets.directory');
     }
 
     public static function factory(array $attributes)
@@ -82,7 +83,7 @@ abstract class Asset
 	 */
     public function getFilename()
     {
-        return static::directory() . DIRECTORY_SEPARATOR . $this->getId();
+        return static::directory() . $this->getId();
     }
 
     public function getFilesize()
@@ -102,7 +103,13 @@ abstract class Asset
 
     public function getMimetype()
     {
-        return $this->exists() ? Mimetype::factory(File::mime($this->getFilename())) : null;
+        if ($this->exists()) {
+            $finfo = finfo_open(FILEINFO_MIME_TYPE);
+            $mime = finfo_file($finfo, $this->getFilename());
+            finfo_close($finfo);
+
+            return Mimetype\Mimetype::factory($mime);
+        }
     }
 
     /**

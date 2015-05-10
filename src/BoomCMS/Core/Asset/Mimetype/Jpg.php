@@ -2,10 +2,10 @@
 
 namespace BoomCMS\Core\Asset\Mimetype;
 
-use BoomCMS\Core\Asset;
+use BoomCMS\Core\Asset\Type;
 
-class Jpg extends Asset\Mimetype
+class Jpg extends Mimetype
 {
     protected $_extension = 'jpg';
-    protected $_type = \Boom\Asset\Type::IMAGE;
+    protected $_type = Type::IMAGE;
 }

@@ -2,10 +2,10 @@
 
 namespace BoomCMS\Core\Asset\Mimetype;
 
-use BoomCMS\Core\Asset;
+use BoomCMS\Core\Asset\Type;
 
-class Docx extends Asset\Mimetype
+class Docx extends Mimetype
 {
     protected $_extension = 'docx';
-    protected $_type = \Boom\Asset\Type::MSWORD;
+    protected $_type = Type::MSWORD;
 }

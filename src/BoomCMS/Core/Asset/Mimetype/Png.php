@@ -2,10 +2,10 @@
 
 namespace BoomCMS\Core\Asset\Mimetype;
 
-use BoomCMS\Core\Asset;
+use BoomCMS\Core\Asset\Type;
 
-class Png extends Asset\Mimetype
+class Png extends Mimetype
 {
     protected $_extension = 'png';
-    protected $_type = \Boom\Asset\Type::IMAGE;
+    protected $_type = Type::IMAGE;
 }

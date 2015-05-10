@@ -4,6 +4,7 @@ namespace BoomCMS\Core\Controllers\Asset;
 
 use BoomCMS\Core\Auth;
 use BoomCMS\Core\Asset\Asset;
+use BoomCMS\Core\Config;
 
 use Intervention\Image\ImageManager;
 
@@ -21,7 +22,7 @@ class Image extends BaseController
 
         $this->manager = new ImageManager([
             'cache' => [
-                'path' => 'assets',
+                'path' => Config::get('assets.directory'),
             ]
         ]);
     }
@@ -63,7 +64,7 @@ class Image extends BaseController
 
         return $this->response
             ->header('content-type', (string) $this->asset->getMimetype())
-            ->body($image);
+            ->setContent($image);
     }
 
     public function embed()
