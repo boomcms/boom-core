@@ -37,6 +37,8 @@ Route::group(['middleware' => [
             Route::group(['prefix' => 'people', 'namespace' => 'People', 'middleware' => ['BoomCMS\Core\Http\Middleware\PeopleManager']], function() {
                 Route::get('', 'PeopleManager@index');
             });
+
+//            Route::get('person/{id}');
         });
     });
 

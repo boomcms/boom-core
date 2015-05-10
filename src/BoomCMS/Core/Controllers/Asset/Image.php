@@ -42,7 +42,7 @@ class Image extends BaseController
                 ->body($image);
     }
 
-    public function thumbnail($width = null, $height = null)
+    public function thumb($width = null, $height = null)
     {
         return $this->view($width, $height);
     }

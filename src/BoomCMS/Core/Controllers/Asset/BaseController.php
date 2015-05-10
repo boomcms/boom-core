@@ -77,7 +77,7 @@ abstract class BaseController extends Controller
             ->setContent(file_get_contents($this->asset->getFilename()));
     }
 
-//    abstract public function thumbnail($width = null, $height = null);
+    abstract public function thumb($width = null, $height = null);
 
 //    public function download()
 //    {
