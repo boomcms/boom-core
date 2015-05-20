@@ -2,69 +2,16 @@
 
 namespace BoomCMS\Core\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use BoomCMS\Core\Editor\Editor as Editor;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Page extends Model
 {
-    /**
-	 * Properties to create relationships with Kohana's ORM
-	 */
-    protected $_belongs_to = [
-        'mptt'        =>    ['model' => 'Page_MPTT', 'foreign_key' => 'id'],
-        'feature_image' => ['model' => 'Asset', 'foreign_key' => 'feature_image_id']
-    ];
-
-    protected $_created_column = [
-        'column'    =>    'created_time',
-        'format'    =>    true,
-    ];
-
-    protected $_has_one = [
-        'version'        =>    ['model' => 'Page_Version', 'foreign_key' => 'page_id'],
-    ];
-
-    protected $_has_many = [
-        'versions'    => ['model' => 'Page_Version', 'foreign_key' => 'page_id'],
-        'urls'        => ['model' => 'Page_URL', 'foreign_key' => 'page_id'],
-        'tags'    => ['model' => 'Tag', 'through' => 'pages_tags'],
-    ];
-
-    protected $_table_columns = [
-        'id'                        =>    '',
-        'sequence'                    =>    '',
-        'visible'                    =>    '',
-        'visible_from'                =>    '',
-        'visible_to'                =>    '',
-        'internal_name'                =>    '',
-        'external_indexing'            =>    '',
-        'internal_indexing'            =>    '',
-        'visible_in_nav'                =>    true,
-        'visible_in_nav_cms'            =>    true,
-        'children_visible_in_nav'        =>    true,
-        'children_visible_in_nav_cms'    =>    true,
-        'children_template_id'        =>    '',
-        'children_url_prefix'            =>    '',
-        'children_ordering_policy'        =>    '',
-        'grandchild_template_id'        =>    '',
-        'keywords'                =>    '',
-        'description'                =>    '',
-        'created_by'                =>    '',
-        'created_time'                =>    '',
-        'primary_uri'                =>    '',
-        'deleted'                    =>    '',
-        'feature_image_id'            =>    '',
-    ];
-
     protected $table = 'pages';
 
-    /**
-	 * Cached result for self::url()
-	 *
-	 * @access	private
-	 * @var		string
-	 */
-    private $_url;
+
 
     /**
 	 *
@@ -91,6 +38,22 @@ class Page extends Model
         return $this;
     }
 
+    public function getCurrentVersionQuery()
+    {
+        $query = DB::select([\DB::expr('max(id)'), 'id'], 'page_id')
+            ->from('page_versions')
+            ->where('stashed', '=', 0)
+            ->group_by('page_id');
+
+        if ($this->_editor->isDisabled()) {
+            $query
+                ->where('embargoed_until', '<=', \DB::expr(time()))
+                ->where('published', '=', \DB::expr(1));
+        }
+
+        return $query;
+    }
+
     public function set_template_of_children($template_id)
     {
         $versions = DB::select([DB::expr('max(page_versions.id)'), 'id'])
@@ -114,25 +77,6 @@ class Page extends Model
         }
     }
 
-    /**
-	 * Add the page version columns to a select query.
-	 *
-	 * @return \Boom_Model_Page
-	 */
-    protected function _select_version()
-    {
-        // Add the version columns to the select.
-
-        $model = "Model_".$this->_has_one['version']['model'];
-        $target = new $model();
-
-        foreach (array_keys($target->_object) as $column) {
-            // Add the prefix so that load_result can determine the relationship
-            $this->select(["version.$column", "version:$column"]);
-        }
-
-        return $this;
-    }
 
     /**
 	 * Restores a page to the last published version.
@@ -199,21 +143,36 @@ class Page extends Model
         return $this->_related['version'] = $query->find();
     }
 
-    /**
-	 *
-	 *
-	 * @param	\Boom\Editor	$editor
-	 * @param	boolean	$exclude_deleted
-	 * @return	Model_Page
-	 */
-    public function with_current_version(\Boom\Editor\Editor $editor)
+    public function scopeCurrentVersion($query)
     {
-        $page_query = new \Boom\Page\Query($this, $editor);
-        $page_query->execute();
+        return $query
+            ->join([$this->getCurrentVersionSubquery(), 'v2'], 'pages.id', '=', 'v2.page_id')
+            ->join(['page_versions', 'version'], function($join) {
+                $join
+                    ->on('pages.id', '=', 'version.page_id')
+                    ->on('v2.id', '=', 'version.id');
+            });
+    }
+    
+    public function scopeIsVisible($query)
+    {
+        return $this->isVisibleAtTime($query, time());
+    }
 
-        // Add the version columns to the query.
-        $this->_select_version();
+    public function scopeIsVisibleAtTime($query, $time)
+    {
+        return $query
+            ->where('visible', '=', true)
+            ->where('visible_from', '<=', $time)
+            ->where(function($query) use ($time) {
+                $query
+                    ->where('visible_to', '>=', $time)
+                    ->orWhere('visible_to', '=', 0);
+            });
+    }
 
-        return $this;
+    public function scropeWithUrl($query)
+    {
+        return $query->where('primary_uri', '!=', null);
     }
 }

@@ -2,25 +2,28 @@
 
 namespace BoomCMS\Core\Page\Finder;
 
-use Boom;
 use BoomCMS\Core\Editor\Editor;
 use BoomCMS\Core\Model\Page as Model;
+use BoomCMS\Core\Finder\Finder as BaseFinder;
 
-class Finder extends Boom\Finder\Finder
+class Finder extends BaseFinder
 {
     const TITLE = 'version.title';
     const MANUAL = 'sequence';
     const DATE = 'visible_from';
     const EDITED = 'edited_time';
 
-    public function __construct(Editor $editor = null)
+    public function __construct(Editor $editor)
     {
         $editor = $editor ?: Editor::instance();
 
-        $this->_query = \ORM::factory('Page')
-            ->where('deleted', '=', false)
-            ->with_current_version($editor)
-            ->where('page.primary_uri', '!=', null);
+        $this->query = Model::currentVersion()
+            ->withUrl()
+            ->isVisible();
+
+        if ($editor->isDisabled()) {
+            $this->query = $this->query->isVisible();
+        }
     }
 
     public function find()

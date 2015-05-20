@@ -3,7 +3,7 @@
 namespace BoomCMS\Core\Page;
 
 use BoomCMS\Core\Model\Page as Model;
-use BoomCMS\Core\Page\Finder;
+use BoomCMS\Core\Page\Finder\Finder;
 
 /**
  * TODO: Need to not return deleted / invisible pages by default with option to show a hidden page.
@@ -33,7 +33,7 @@ class Provider
     public function findByUri($uri)
     {
         $finder = new Finder();
-        $finder->addFilter(new Finder\Filter\Uri($uri));
+        $finder->addFilter(new Finder\Uri($uri));
 
         return $this->findAndCache($finder->find());
     }

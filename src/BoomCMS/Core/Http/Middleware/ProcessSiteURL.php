@@ -31,7 +31,7 @@ class ProcessSiteURL
     public function handle(Request $request, Closure $next)
     {
         // TODO: 2015/04/29: findByUri won't find a deleted page. Need to make it an option.
-        $page = $this->pageProvider->findByUri($request->path());
+        $page = $this->pageProvider->findByUri($request->route()->getParameter('location'));
 
          if ( ! $page->loaded()) {
              throw new NotFoundHttpException();
