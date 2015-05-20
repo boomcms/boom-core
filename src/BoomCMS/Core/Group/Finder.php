@@ -2,9 +2,9 @@
 
 namespace BoomCMS\Core\Group;
 
-use Boom;
+use BoomCMS\Core\Finder\Finder as BaseFinder;
 
-class Finder extends Boom\Finder\Finder
+class Finder extends BaseFinder
 {
     public function __construct()
     {

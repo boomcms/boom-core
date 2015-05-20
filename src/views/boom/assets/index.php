@@ -10,7 +10,7 @@
 			$('body')
 				.ui()
 				.assetManager({
-					allowedUploadTypes:[ '<?= implode('\', \'', \BoomCMS\Core\Asset\Mimetype::$allowedExtensions) ?>' ]
+					allowedUploadTypes:[ '<?= implode('\', \'', \BoomCMS\Core\Asset\Mimetype\Mimetype::$allowedExtensions) ?>' ]
 				});
 		})(jQuery);
 		//]]>

@@ -2,10 +2,10 @@
 
 namespace BoomCMS\Core\Asset\Mimetype;
 
-use BoomCMS\Core\Asset;
+use BoomCMS\Core\Asset\Type;
 
-class Pdf extends Asset\Mimetype
+class Pdf extends Mimetype
 {
     protected $_extension = 'pdf';
-    protected $_type = \Boom\Asset\Type::PDF;
+    protected $_type = Type::PDF;
 }

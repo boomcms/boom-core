@@ -2,7 +2,9 @@
 
 namespace BoomCMS\Core\Controllers\Asset;
 
+use BoomCMS\Core\Auth;
 use BoomCMS\Core\Asset\Asset;
+use BoomCMS\Core\Config;
 
 use Intervention\Image\ImageManager;
 
@@ -14,13 +16,13 @@ class Image extends BaseController
      */
     private $manager;
 
-    public function __construct(Asset $asset)
+    public function __construct(Auth\Auth $auth, Asset $asset)
     {
-        parent::__construct($asset, $response);
+        parent::__construct($auth, $asset);
 
         $this->manager = new ImageManager([
             'cache' => [
-                'path' => Boom\Boom::instance()->getCacheDir() . 'assets',
+                'path' => Config::get('assets.directory'),
             ]
         ]);
     }
@@ -40,7 +42,7 @@ class Image extends BaseController
                 ->body($image);
     }
 
-    public function thumbnail($width = null, $height = null)
+    public function thumb($width = null, $height = null)
     {
         return $this->view($width, $height);
     }
@@ -62,7 +64,7 @@ class Image extends BaseController
 
         return $this->response
             ->header('content-type', (string) $this->asset->getMimetype())
-            ->body($image);
+            ->setContent($image);
     }
 
     public function embed()

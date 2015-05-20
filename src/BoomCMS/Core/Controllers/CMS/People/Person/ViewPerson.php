@@ -1,13 +1,18 @@
 <?php
 
-use BoomCMS\Core\Group;
+namespace BoomCMS\Core\Controllers\CMS\People\Person;
 
-class Controller_Cms_Person_View extends Controller_Cms_Person
+use BoomCMS\Core\Group;
+use BoomCMS\Core\Group\Provider as GroupProvider;
+
+use Illuminate\Support\Facades\View;
+
+class ViewPerson extends BasePerson
 {
-    public function add()
+    public function add(GroupProvider $provider)
     {
         return View::make($this->viewPrefix."new", [
-            'groups'    =>    ORM::factory('Group')->names(),
+            'groups' => $provider->findAll(),
         ]);
     }
 

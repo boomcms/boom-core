@@ -2,10 +2,10 @@
 
 namespace BoomCMS\Core\Asset\Mimetype;
 
-use BoomCMS\Core\Asset;
+use BoomCMS\Core\Asset\Type;
 
-class Gif extends Asset\Mimetype
+class Gif extends Mimetype
 {
     protected $_extension = 'gif';
-    protected $_type = \Boom\Asset\Type::IMAGE;
+    protected $_type = Type::IMAGE;
 }

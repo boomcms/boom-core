@@ -3,19 +3,18 @@
 namespace BoomCMS\Core\Group;
 
 use \DB as DB;
-use Cartalyst\Sentry\Groups\GroupInterface;
 
-class Group implements GroupInterface
+class Group
 {
     /**
 	 *
-	 * @var \Model_Group
+	 * @var array
 	 */
-    protected $model;
+    protected $attributes;
 
-    public function __construct(\Model_Group $model)
+    public function __construct(array $attributes)
     {
-        $this->model = $model;
+        $this->attributes = $attributes;
     }
 
     /**
@@ -70,21 +69,19 @@ class Group implements GroupInterface
         return $this;
     }
 
-    public function delete()
+    public function get($key)
     {
-        $this->model->delete();
-
-        return $this;
+        return isset($this->attributes[$key]) ? $this->attributes[$key] : null;
     }
 
     public function getId()
     {
-        return $this->model->id;
+        return $this->get('id');
     }
 
     public function getName()
     {
-        return $this->model->name;
+        return $this->get('name');
     }
 
     public function getRoles($pageId = 0)
@@ -123,7 +120,7 @@ class Group implements GroupInterface
 
     public function loaded()
     {
-        return $this->model->loaded();
+        return $this->getId() > 0;
     }
 
     /**
@@ -149,34 +146,13 @@ class Group implements GroupInterface
 
     /**
 	 *
-	 * @return \Boom\Group\Group
-	 */
-    public function save()
-    {
-        $this->model->loaded() ? $this->model->update() : $this->model->create();
-
-        return $this;
-    }
-
-    /**
-	 *
 	 * @param string $name
 	 * @return \Boom\Group\Group
 	 */
     public function setName($name)
     {
-        $this->model->name = $name;
+        $this->attributes['name'] = $name;
 
         return $this;
-    }
-
-    public function delete()
-    {
-
-    }
-
-    public function getPermissions()
-    {
-
     }
 }

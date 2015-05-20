@@ -61,7 +61,7 @@ class PermissionsProvider
                 ->where('people_roles.page_id', '=', $pageId)
                 ->first();
 
-            $this->cache[$hash] = $result->allowed;
+            $this->cache[$hash] = isset($result->allowed) ? $result->allowed : null;
         }
 
         return $this->cache[$hash];

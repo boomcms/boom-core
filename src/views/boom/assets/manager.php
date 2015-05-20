@@ -22,7 +22,7 @@
 
 		<input type='text' class="b-filter-input" id="b-assets-filter-title" placeholder="Search by asset name" value="Search by asset name" />
 
-		<?//= Form::select('types', array_merge(['0' => 'Filter by type'], \Boom\Asset\Type::whichExist()), null, ['id' => 'b-assets-types']) ?>
+		<?php//= Form::select('types', array_merge(['0' => 'Filter by type'], \Boom\Asset\Type::whichExist()), null, ['id' => 'b-assets-types']) ?>
 
 		<div id='b-tags-search'>
 			<input type='text' class="b-filter-input" placeholder="Type a tag name" value="Type a tag name" />

@@ -2,9 +2,11 @@
 
 namespace BoomCMS\Core\Group;
 
-use Cartalyst\Sentry\Groups\ProviderInterface;
+use BoomCMS\Core\Models\Group as Model;
 
-class Provider implements ProviderInterface
+use Illuminate\Support\Facades\DB;
+
+class Provider
 {
     public function create(array $attributes)
     {
@@ -13,7 +15,13 @@ class Provider implements ProviderInterface
 
     public function findAll()
     {
+        $groups = [];
 
+        foreach (Model::all() as $m) {
+            $groups[] = new Group($m->toArray());
+        }
+
+        return $groups;
     }
 
     public function findById($id)
@@ -25,5 +33,4 @@ class Provider implements ProviderInterface
     {
 
     }
-
 }

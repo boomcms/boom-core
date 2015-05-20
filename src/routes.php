@@ -33,12 +33,31 @@ Route::group(['middleware' => [
                     return App::make('BoomCMS\Core\Controllers\CMS\Assets\AssetManager')->$action();
                 });
             });
+
+            Route::group(['namespace' => 'People', 'middleware' => ['BoomCMS\Core\Http\Middleware\PeopleManager']], function() {
+                Route::get('people', 'PeopleManager@index');
+
+                Route::get('person/add', 'Person\ViewPerson@add');
+                Route::post('person/add', 'Person\SavePerson@add');
+            });
+
+            Route::get('person/{id}/{action?}', [
+                'as' => 'person',
+               // 'middleware' => ['BoomCMS\Core\Http\Middleware\GetPerson'],
+                'uses' => function($action = 'view') {
+                    return App::make('BoomCMS\Core\Controllers\CMS\People\Person\View')->$action();
+                }
+            ]);
         });
     });
 
     Route::get('asset/{action}/{asset}/{width?}/{height?}', [
         'as' => 'asset',
         'uses' => function(BoomCMS\Core\Auth\Auth $auth, $action, $asset = null, $width = null, $height = null) {
+            if ( ! $asset) {
+                abort(404);
+            }
+
             return App::make('BoomCMS\Core\Controllers\Asset\\' . class_basename($asset), [$auth, $asset])->$action($width, $height);
         }
     ]);

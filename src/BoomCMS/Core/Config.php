@@ -2,6 +2,8 @@
 
 namespace BoomCMS\Core;
 
+use Illuminate\Support\Arr;
+
 abstract class Config
 {
     protected static $config;
@@ -12,7 +14,7 @@ abstract class Config
             static::$config = static::load();
         }
 
-        return isset(static::$config[$key]) ? static::$config[$key] : null;
+        return Arr::get(static::$config, $key);
     }
 
     protected static function load()

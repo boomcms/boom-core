@@ -1,8 +1,6 @@
 <?php
 
-namespace BoomCMS\Core\Asset;
-
-use BoomCMS\Core\Exception;
+namespace BoomCMS\Core\Asset\Mimetype;
 
 abstract class Mimetype
 {
@@ -39,12 +37,12 @@ abstract class Mimetype
     public static function factory($mimetype)
     {
         if (static::isSupported($mimetype)) {
-            $classname = '\\Boom\\Asset\\Mimetype\\' . ucfirst(static::$allowedTypes[$mimetype]);
+            $classname = 'BoomCMS\Core\Asset\Mimetype\\' . ucfirst(static::$allowedTypes[$mimetype]);
 
             return new $classname($mimetype);
 
         } else {
-            throw new Exception\UnsupportedMimeType($mimetype);
+            throw new UnsupportedMimeType($mimetype);
         }
     }
 
