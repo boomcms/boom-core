@@ -146,14 +146,14 @@ class Page extends Model
     public function scopeCurrentVersion($query)
     {
         return $query
-            ->join([$this->getCurrentVersionSubquery(), 'v2'], 'pages.id', '=', 'v2.page_id')
+            ->join([$this->getCurrentVersionQuery(), 'v2'], 'pages.id', '=', 'v2.page_id')
             ->join(['page_versions', 'version'], function($join) {
                 $join
                     ->on('pages.id', '=', 'version.page_id')
                     ->on('v2.id', '=', 'version.id');
             });
     }
-    
+
     public function scopeIsVisible($query)
     {
         return $this->isVisibleAtTime($query, time());

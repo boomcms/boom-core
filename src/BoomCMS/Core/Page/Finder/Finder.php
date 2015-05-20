@@ -3,7 +3,7 @@
 namespace BoomCMS\Core\Page\Finder;
 
 use BoomCMS\Core\Editor\Editor;
-use BoomCMS\Core\Model\Page as Model;
+use BoomCMS\Core\Models\Page as Model;
 use BoomCMS\Core\Finder\Finder as BaseFinder;
 
 class Finder extends BaseFinder
