@@ -2,6 +2,7 @@
 
 namespace BoomCMS\Core\Page;
 
+use BoomCMS\Core\Editor\Editor;
 use BoomCMS\Core\Model\Page as Model;
 use BoomCMS\Core\Page\Finder\Finder;
 
@@ -15,6 +16,33 @@ use BoomCMS\Core\Page\Finder\Finder;
 
 class Provider
 {
+    /**
+     *
+     * @var array
+     */
+    protected $cache = [
+        'id' => [],
+        'uri' => [],
+        'internal_name' => [],
+        'primary_uri' => [],
+    ];
+
+    /**
+     *
+     * @var Editor
+     */
+    protected $editor;
+
+    public function __construct(Editor $editor)
+    {
+        $this->editor = $editor;
+    }
+
+    private function cache(Page $page)
+    {
+        $this->cache['id'][$page->getId()] = $page;
+    }
+
     public function findById($id)
     {
         return $this->findAndCache(Model::find($id));
@@ -32,10 +60,16 @@ class Provider
 
     public function findByUri($uri)
     {
-        $finder = new Finder();
-        $finder->addFilter(new Finder\Uri($uri));
+        if ( !isset($this->cache['uri'][$uri])) {
+            $finder = new Finder($this->editor);
+            $finder->addFilter(new Finder\Uri($uri));
+            $page = $finder->find();
 
-        return $this->findAndCache($finder->find());
+            $this->cache($page);
+            $this->cache['uri'][$uri] = $page;
+        }
+
+        return $this->cache['uri'][$uri];
     }
 
     private function findAndCache(Model $model)

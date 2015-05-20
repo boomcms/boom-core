@@ -15,8 +15,6 @@ class Finder extends BaseFinder
 
     public function __construct(Editor $editor)
     {
-        $editor = $editor ?: Editor::instance();
-
         $this->query = Model::currentVersion()
             ->withUrl()
             ->isVisible();
@@ -30,7 +28,7 @@ class Finder extends BaseFinder
     {
         $model = parent::find();
 
-        return new Page($model);
+        return new Page($model->toArray());
     }
 
     public function findAll()
