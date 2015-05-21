@@ -2,7 +2,11 @@
 
 namespace BoomCMS\Core\Page\Finder;
 
-class ParentPage extends \Boom\Finder\Filter
+use BoomCMS\Core\Finder\Filter;
+
+use Illuminate\Database\Eloquent\Builder;
+
+class ParentPage extends Filter
 {
     protected $parent;
 
@@ -11,14 +15,13 @@ class ParentPage extends \Boom\Finder\Filter
         $this->parent = $parent;
     }
 
-    public function execute(\ORM $query)
+    public function execute(Builder $query)
     {
         $order = $this->parent->getChildOrderingPolicy();
 
         return $query
-            ->join('page_mptt', 'inner')
-            ->on('page.id', '=', 'page_mptt.id')
+            ->join('page_mptt', 'page.id', '=', 'page_mptt.id')
             ->where('page_mptt.parent_id', '=', $this->parent->getId())
-            ->order_by($order->getColumn(), $order->getDirection());
+            ->orderBy($order->getColumn(), $order->getDirection());
     }
 }

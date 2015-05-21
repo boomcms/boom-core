@@ -2,7 +2,10 @@
 
 namespace BoomCMS\Core\Page\Finder;
 
-class Uri extends \Boom\Finder\Filter
+use BoomCMS\Core\Finder\Filter;
+use Illuminate\Database\Eloquent\Builder;
+
+class Uri extends Filter
 {
     protected $uri;
 
@@ -11,11 +14,10 @@ class Uri extends \Boom\Finder\Filter
         $this->uri = $uri;
     }
 
-    public function execute(\ORM $query)
+    public function execute(Builder $query)
     {
         return $query
-            ->join('page_urls', 'inner')
-            ->on('page.id', '=', 'page_urls.page_id')
+            ->join('page_urls', 'pages.id', '=', 'page_urls.page_id')
             ->where('page_urls.location', '=', $this->uri);
     }
 }

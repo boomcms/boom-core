@@ -3,8 +3,11 @@
 namespace BoomCMS\Core\Page\Finder;
 
 use BoomCMS\Core\Model\Page as Model;
+use BoomCMS\Core\Finder\Filter;
 
-class ParentId extends \Boom\Finder\Filter
+use Illuminate\Database\Eloquent\Builder;
+
+class ParentId extends Filter
 {
     protected $parentId;
 
@@ -13,11 +16,10 @@ class ParentId extends \Boom\Finder\Filter
         $this->parentId = $parentId;
     }
 
-    public function execute(Model $query)
+    public function execute(Builder $query)
     {
         return $query
-            ->join('page_mptt', 'inner')
-            ->on('page.id', '=', 'page_mptt.id')
+            ->join('page_mptt', 'page.id', '=', 'page_mptt.id')
             ->where('page_mptt.parent_id', '=', $this->parentId);
     }
 }

@@ -40,16 +40,16 @@ class Page extends Model
 
     public function getCurrentVersionQuery()
     {
-        $query = DB::select([\DB::raw('max(id)'), 'id'], 'page_id')
-            ->from('page_versions')
+        $query = DB::table('page_versions')
+            ->select([DB::raw('max(id) as id'), 'page_id'])
             ->where('stashed', '=', 0)
-            ->group_by('page_id');
+            ->groupBy('page_id');
 
-        if ($this->_editor->isDisabled()) {
+       // if ($this->_editor->isDisabled()) {
             $query
-                ->where('embargoed_until', '<=', \DB::raw(time()))
-                ->where('published', '=', \DB::raw(1));
-        }
+                ->where('embargoed_until', '<=', time())
+                ->where('published', '=', 1);
+      //  }
 
         return $query;
     }
@@ -63,7 +63,7 @@ class Page extends Model
             ->where('page_mptt.scope', '=', $this->mptt->scope)
             ->where('page_mptt.lft', '>', $this->mptt->lft)
             ->where('page_mptt.rgt', '<', $this->mptt->rgt)
-            ->group_by('page_versions.page_id')
+            ->groupBy('page_versions.page_id')
             ->execute($this->_db)
             ->as_array();
 
@@ -93,7 +93,7 @@ class Page extends Model
         // Execute a DB query to stash unpublished versions.
         DB::update('page_versions')
             ->set(['stashed' => true])
-            ->where('embargoed_until', '>=', $_SERVER['REQUEST_TIME'])
+            ->where('embargoed_until', '>=', time())
             ->where('page_id', '=', $this->id)
             ->execute($this->_db);
 
@@ -131,12 +131,12 @@ class Page extends Model
             $query
                 ->where('published', '=', true)
                 ->where('embargoed_until', '<=', $time())
-                ->order_by('embargoed_until', 'desc')
-                ->order_by('id', 'desc');
+                ->orderBy('embargoed_until', 'desc')
+                ->orderBy('id', 'desc');
         } else {
             // For logged in users get the version with the highest ID.
             $query
-                ->order_by('id', 'desc');
+                ->orderBy('id', 'desc');
         }
 
         // Run the query and return the result.
@@ -145,9 +145,12 @@ class Page extends Model
 
     public function scopeCurrentVersion($query)
     {
+        $subquery = $this->getCurrentVersionQuery();
+
         return $query
-            ->join([$this->getCurrentVersionQuery(), 'v2'], 'pages.id', '=', 'v2.page_id')
-            ->join(['page_versions', 'version'], function($join) {
+            ->join(DB::raw('(' . $subquery->toSql() . ') as v2'), 'pages.id', '=', 'v2.page_id')
+            ->mergeBindings($subquery)
+            ->join('page_versions as version', function($join) {
                 $join
                     ->on('pages.id', '=', 'version.page_id')
                     ->on('v2.id', '=', 'version.id');
@@ -156,7 +159,7 @@ class Page extends Model
 
     public function scopeIsVisible($query)
     {
-        return $this->isVisibleAtTime($query, time());
+        return $this->scopeIsVisibleAtTime($query, time());
     }
 
     public function scopeIsVisibleAtTime($query, $time)
@@ -171,8 +174,8 @@ class Page extends Model
             });
     }
 
-    public function scropeWithUrl($query)
+    public function scopeWithUrl($query)
     {
-        return $query->where('primary_uri', '!=', null);
+        return $query->whereNotNull('primary_uri');
     }
 }

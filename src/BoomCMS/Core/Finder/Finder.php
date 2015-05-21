@@ -48,7 +48,7 @@ abstract class Finder
             $this->query = $this->applyFilters($this->query);
         }
 
-        return $this->query->find();
+        return $this->query->get();
     }
 
     public function findAll()

@@ -1,8 +1,10 @@
 <?php
 
 namespace BoomCMS\Core\Page\Finder;
+use BoomCMS\Core\Finder\Filter;
+use Illuminate\Database\Eloquent\Builder;
 
-class TitleIn extends \Boom\Finder\Filter
+class TitleIn extends Filter
 {
     /**
 	 *
@@ -15,7 +17,7 @@ class TitleIn extends \Boom\Finder\Filter
         $this->titles = $titles;
     }
 
-    public function execute(\ORM $query)
+    public function execute(Builder $query)
     {
         return $query->where('title', 'in', $this->titles);
     }

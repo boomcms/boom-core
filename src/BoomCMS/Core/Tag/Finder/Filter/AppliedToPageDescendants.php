@@ -26,6 +26,6 @@ class AppliedToPageDescendants extends \Boom\Finder\Filter
             ->where('page_mptt.rgt', '<=', $this->page->getMptt()->rgt)
             ->where('page_mptt.scope', '=', $this->page->getMptt()->scope)
             ->distinct(true)
-            ->order_by('tag.name', 'asc');
+            ->orderBy('tag.name', 'asc');
     }
 }

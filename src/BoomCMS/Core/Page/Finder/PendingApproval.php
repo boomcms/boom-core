@@ -2,20 +2,21 @@
 
 namespace BoomCMS\Core\Page\Finder;
 
-use DB;
+use BoomCMS\Core\Finder\Filter;
 
-class PendingApproval extends \Boom\Finder\Filter
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
+
+class PendingApproval extends Filter
 {
-    public function execute(\ORM $query)
+    public function execute(Builder $query)
     {
         $can_publish = DB::select('mptt.lft', 'mptt.rgt', 'mptt.scope')
             ->from(['page_mptt', 'mptt'])
-            ->join('people_roles', 'inner')
-            ->on('mptt.id', '=', 'people_roles.page_id')
-            ->join('roles', 'inner')
-            ->on('people_roles.role_id', '=', 'roles.id')
+            ->join('people_roles', 'mptt.id', '=', 'people_roles.page_id')
+            ->join('roles', 'people_roles.role_id', '=', 'roles.id')
             ->where('roles.name', '=', 'p_publish_page')
-            ->group_by('mptt.id');
+            ->groupBy('mptt.id');
 
         return $query
             ->where('pending_approval', '=', true)
@@ -25,6 +26,6 @@ class PendingApproval extends \Boom\Finder\Filter
             ->on('mptt1.lft', '>=', 'mptt2.lft')
             ->on('mptt1.rgt', '<=', 'mptt2.rgt')
             ->on('mptt1.scope', '=', 'mptt2.scope')
-            ->order_by('version.edited_time', 'desc');
+            ->orderBy('version.edited_time', 'desc');
     }
 }

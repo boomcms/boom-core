@@ -232,7 +232,7 @@ class Version extends Model
             $query = ORM::factory('Asset')
                 ->join('chunk_text_assets')
                 ->on('chunk_text_assets.asset_id', '=', 'asset.id')
-                ->order_by('position', 'asc')
+                ->orderBy('position', 'asc')
                 ->where('chunk_text_assets.chunk_id', '=', $chunk->id)
                 ->where('asset.type', '=', \Boom\Asset\Type::IMAGE);
 

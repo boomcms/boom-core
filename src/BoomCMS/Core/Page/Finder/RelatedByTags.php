@@ -3,8 +3,11 @@
 namespace BoomCMS\Core\Page\Finder;
 
 use BoomCMS\Core\Page\Page as Page;
+use BoomCMS\Core\Finder\Filter;
 
-class RelatedByTags extends \Boom\Finder\Filter
+use Illuminate\Database\Eloquent\Builder;
+
+class RelatedByTags extends Filter
 {
     /**
 	 *
@@ -24,17 +27,16 @@ class RelatedByTags extends \Boom\Finder\Filter
         $this->_tagIds = $this->_getTagIds();
     }
 
-    public function execute(\ORM $query)
+    public function execute(Builder $query)
     {
         return $query
             ->select([\DB::raw('count(pages_tags.tag_id)'), 'tag_count'])
-            ->join('pages_tags', 'inner')
-            ->on('page.id', '=', 'pages_tags.page_id')
+            ->join('pages_tags', 'page.id', '=', 'pages_tags.page_id')
             ->where('tag_id', 'in', $this->_tagIds)
             ->where('page.id', '!=', $this->_page->getId())
-            ->order_by('tag_count', 'desc')
-            ->order_by(\DB::raw('rand()'))
-            ->group_by('page.id');
+            ->orderBy('tag_count', 'desc')
+            ->orderBy(\DB::raw('rand()'))
+            ->groupBy('page.id');
     }
 
     /**

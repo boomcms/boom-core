@@ -3,8 +3,10 @@
 namespace BoomCMS\Core\Page\Finder;
 
 use BoomCMS\Core\Editor\Editor as Editor;
+use BoomCMS\Core\Finder\Filter;
+use Illuminate\Database\Eloquent\Builder;
 
-class VisibleInNavigation extends \Boom\Finder\Filter
+class VisibleInNavigation extends Filter
 {
     /**
 	 *
@@ -22,7 +24,7 @@ class VisibleInNavigation extends \Boom\Finder\Filter
         return ($this->_editor->isEnabled()) ? 'visible_in_nav_cms' : 'visible_in_nav';
     }
 
-    public function execute(\ORM $query)
+    public function execute(Builder $query)
     {
         return $query->where($this->_getNavigationVisibilityColumn(), '=', true);
     }

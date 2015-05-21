@@ -42,25 +42,22 @@ class Page
 
     public function allowsExternalIndexing()
     {
-        return isset($this->data['external_indexing'])
-            && $this->data['external_indexing'] == true;
+        return $this->get('external_indexing') == true;
     }
 
     public function allowsInternalIndexing()
     {
-        return isset($this->data['internal_indexing'])
-            && $this->data['internal_indexing'] == true;    }
+        return $this->get('internal_indexing') == true;
+    }
 
     public function childrenAreVisibleInNav()
     {
-        return isset($this->data['children_visible_in_nav'])
-            && $this->data['children_visible_in_nav'] == true;
+        return $this->get('children_visible_in_nav') == true;
     }
 
     public function childrenAreVisibleInCmsNav()
     {
-        return isset($this->data['children_visible_in_nav_cms'])
-            && $this->data['children_visible_in_nav_cms'] == true;
+        return $this->get('children_visible_in_nav_cms') == true;
     }
 
     public function createVersion($current = null, array $values = null)
@@ -84,19 +81,25 @@ class Page
         return $new_version;
     }
 
+    public function get($key)
+    {
+        return isset($this->data[$key]) ? $this->data[$key] : null;
+    }
+
     public function getChildOrderingPolicy()
     {
-        return new ChildOrderingPolicy($this->model->children_ordering_policy);
+        return new ChildOrderingPolicy($this->get('children_ordering_policy'));
     }
 
     public function getChildPageUrlPrefix()
     {
-        return $this->model->children_url_prefix;
+        return $this->get('children_url_prefix');
     }
 
     public function getCreatedBy()
     {
-        return $this->model->created_by;
+        // TODO: this needs to return a Person object.
+        return $this->get('created_by');
     }
 
     /**
@@ -105,12 +108,12 @@ class Page
 	 */
     public function getCreatedTime()
     {
-        return new DateTime('@' . $this->model->created_time);
+        return new DateTime('@' . $this->get('created_time'));
     }
 
     public function getCurrentVersion()
-    {
-        return $this->model->version();
+    {throw new \Exception('TODO');
+        //return $this->model->version();
     }
 
     /**
@@ -122,15 +125,15 @@ class Page
 	 */
     public function getDescription()
     {
-        $description = ($this->model->description != null) ? $this->model->description : \Chunk::factory('text', 'standfirst', $this)->text();
+        $description = ($this->get('description') != null) ? $this->get('description') : \Chunk::factory('text', 'standfirst', $this)->text();
 
         return \strip_tags($description);
     }
 
     public function getDefaultChildTemplateId()
     {
-        if ($this->model->children_template_id) {
-            return $this->model->children_template_id;
+        if ($templateId = $this->get('children_template_id')) {
+            return $templateId;
         }
 
         $parent = $this->getParent();
@@ -140,17 +143,18 @@ class Page
 
     public function getFeatureImage()
     {
-        return \Boom\Asset\Factory::fromModel($this->feature_image);
+        // TODO:: return an asset instance
+        return \Boom\Asset\Factory::fromModel($this->getFeatureImageId());
     }
 
     public function getFeatureImageId()
     {
-        return $this->model->feature_image_id;
+        return $this->get('feature_image_id');
     }
 
     public function getGrandchildTemplateId()
     {
-        return $this->model->grandchild_template_id;
+        return $this->get('grandchild_template_id');
     }
 
     public function getGroupedTags()
@@ -167,12 +171,12 @@ class Page
 
     public function getId()
     {
-        return $this->model->id;
+        return $this->get('id');
     }
 
     public function getInternalName()
     {
-        return $this->model->internal_name;
+        return $this->get('internal_name');
     }
 
     /**
@@ -181,7 +185,7 @@ class Page
 	 */
     public function getKeywords()
     {
-        return isset($this->data['keywords']) ? $this->data['keywords'] : ';';
+        return $this->get('keywords');
     }
 
     /**
@@ -195,12 +199,7 @@ class Page
 
     public function getManualOrderPosition()
     {
-        return $this->model->sequence;
-    }
-
-    public function getMptt()
-    {
-        return $this->model->mptt;
+        return $this->get('sequence');
     }
 
     public function getParent()
@@ -210,28 +209,7 @@ class Page
 
     public function getParentId()
     {
-        return $this->model->mptt->parent_id;
-    }
-
-    /**
-     *
-     * @return array
-     */
-    public function getTags()
-    {
-        $finder = new Tag\Finder();
-        $finder->addFilter(new Tag\Finder\Filter\Page($this));
-
-        return $finder->setOrderBy('name', 'asc')->findAll();
-    }
-
-    public function getTagsInGroup($group = null)
-    {
-        $finder = new Tag\Finder();
-        $finder->addFilter(new Tag\Finder\Filter\Page($this));
-        $finder->addFilter(new Tag\Finder\Filter\Group($group));
-
-        return $finder->setOrderBy('name', 'asc')->findAll();
+        return $this->get('parent_id');
     }
 
     public function getTemplate()
@@ -244,19 +222,9 @@ class Page
         return $this->getCurrentVersion()->template_id;
     }
 
-    public function getThumbnail()
-    {
-
-    }
-
     public function getTitle()
     {
         return $this->getCurrentVersion()->title;
-    }
-
-    public function getUrls()
-    {
-        return $this->model->urls->order_by('location', 'asc')->find_all();
     }
 
     /**
@@ -265,7 +233,7 @@ class Page
 	 */
     public function getVisibleFrom()
     {
-        $timestamp = $this->model->visible_from ?: time();
+        $timestamp = $this->get('visible_from') ?: time();
 
         return new DateTime('@' . $timestamp);
     }
@@ -276,12 +244,7 @@ class Page
 	 */
     public function getVisibleTo()
     {
-        return $this->model->visible_to == 0 ? null : new DateTime('@' . $this->model->visible_to);
-    }
-
-    public function hasChildren()
-    {
-        return $this->getMptt()->has_children();
+        return $this->get('visible_to') == 0 ? null : new DateTime('@' . $this->get('visible_to'));
     }
 
     public function hasFeatureImage()
@@ -291,12 +254,12 @@ class Page
 
     public function isDeleted()
     {
-        return (bool) $this->model->deleted;
+        return $this->get('deleted') === false;
     }
 
     public function isRoot()
     {
-        return (bool) $this->getMptt()->is_root();
+        return $this->getParentId() == null;
     }
 
     public function isVisible()
@@ -306,7 +269,7 @@ class Page
 
     public function isVisibleAtAnyTime()
     {
-        return (bool) $this->model->visible;
+        return $this->get('visible') == true;
     }
 
     /**
@@ -316,22 +279,25 @@ class Page
 	 */
     public function isVisibleAtTime($unixTimestamp)
     {
-        return ($this->model->visible && $this->getVisibleFrom()->getTimestamp() <= $unixTimestamp && ($this->getVisibleTo() === null || $this->getVisibleTo()->getTimestamp() >= $unixTimestamp));
+        return ($this->isVisibleAtAnyTime() &&
+            $this->getVisibleFrom()->getTimestamp() <= $unixTimestamp &&
+            ($this->getVisibleTo() === null || $this->getVisibleTo()->getTimestamp() >= $unixTimestamp)
+        );
     }
 
     public function isVisibleInCmsNav()
     {
-        return $this->model->visible_in_nav_cms;
+        return $this->get('visible_in_nav_cms') == true;
     }
 
     public function isVisibleInNav()
     {
-        return $this->model->visible_in_nav;
+        return $this->get('visible_in_nav') == true;
     }
 
     public function loaded()
     {
-        return $this->model->loaded();
+        return $this->getId() > 0;
     }
 
     public function removeTag(Tag\Tag $tag)
@@ -346,7 +312,7 @@ class Page
 
     public function setChildTemplateId($id)
     {
-        $this->model->children_template_id = $id;
+        $this->data['children_template_id'] = $id;
 
         return $this;
     }
@@ -359,7 +325,7 @@ class Page
     public function setChildOrderingPolicy($column, $direction)
     {
         $ordering_policy = new \Boom\Page\ChildOrderingPolicy($column, $direction);
-        $this->model->children_ordering_policy = $ordering_policy->asInt();
+        $this->data['children_ordering_policy'] = $ordering_policy->asInt();
 
         return $this;
     }
@@ -371,7 +337,7 @@ class Page
      */
     public function setChildrenUrlPrefix($prefix)
     {
-        $this->model->children_url_prefix = $prefix;
+        $this->data['children_url_prefix'] = $prefix;
 
         return $this;
     }
@@ -491,7 +457,7 @@ class Page
 	 */
     public function setParentPageId($parentId)
     {
-        $this->model->mptt->move_to_last_child($parentId);
+        $this->data['parent_id'] = $parentId;
 
         return $this;
     }
@@ -602,7 +568,7 @@ class Page
 	 * @return \Boom\Page
 	 */
     public function parent()
-    {
+    {throw new \Exception('TODO');
         return ($this->model->mptt->is_root()) ? $this : \Boom\Page\Factory::byId($this->model->mptt->parent_id);
     }
 

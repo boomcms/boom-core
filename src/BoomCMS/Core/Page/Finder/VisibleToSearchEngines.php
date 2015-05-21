@@ -2,9 +2,12 @@
 
 namespace BoomCMS\Core\Page\Finder;
 
-class VisibleToSearchEngines extends \Boom\Finder\Filter
+use BoomCMS\Core\Finder\Filter;
+use Illuminate\Database\Eloquent\Builder;
+
+class VisibleToSearchEngines extends Filter
 {
-    public function execute(\ORM $query)
+    public function execute(Builder $query)
     {
         return $query->where('external_indexing', '=', true);
     }

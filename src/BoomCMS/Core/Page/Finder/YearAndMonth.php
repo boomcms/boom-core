@@ -3,8 +3,10 @@
 namespace BoomCMS\Core\Page\Finder;
 
 use DB;
+use BoomCMS\Core\Finder\Filter;
+use Illuminate\Database\Eloquent\Builder;
 
-class YearAndMonth extends \Boom\Finder\Filter
+class YearAndMonth extends Filter
 {
     const EPOC_FIRST_YEAR = 1970;
 
@@ -17,7 +19,7 @@ class YearAndMonth extends \Boom\Finder\Filter
         $this->_month = $month;
     }
 
-    public function execute(\ORM $query)
+    public function execute(Builder $query)
     {
         return $query
             ->where(DB::raw('year(from_unixtime(visible_from))'), '=', $this->_year)

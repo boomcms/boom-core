@@ -2,7 +2,10 @@
 
 namespace BoomCMS\Core\Page\Finder;
 
-class Tag extends \Boom\Finder\Filter
+use BoomCMS\Core\Finder\Filter;
+use Illuminate\Database\Eloquent\Builder;
+
+class Tag extends Filter
 {
     /**
 	 *
@@ -15,11 +18,10 @@ class Tag extends \Boom\Finder\Filter
         $this->_tag = $tag;
     }
 
-    public function execute(\ORM $query)
+    public function execute(Builder $query)
     {
         return $query
-            ->join('pages_tags', 'inner')
-            ->on('page.id', '=', 'pages_tags.page_id')
+            ->join('pages_tags', 'page.id', '=', 'pages_tags.page_id')
             ->where('pages_tags.tag_id', '=', $this->_tag->getId());
     }
 

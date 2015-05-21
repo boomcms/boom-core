@@ -83,7 +83,7 @@ class Group extends Model
         $query = DB::select('id', 'name')
             ->from($this->_table_name)
             ->where('deleted', '=', false)
-            ->order_by('name', 'asc');
+            ->orderBy('name', 'asc');
 
         // Are we excluding any groups?
         if ($exclude !== null) {

@@ -4,7 +4,7 @@ namespace BoomCMS\Core\Page;
 
 use BoomCMS\Core\Editor\Editor;
 use BoomCMS\Core\Model\Page as Model;
-use BoomCMS\Core\Page\Finder\Finder;
+use BoomCMS\Core\Page\Finder;
 
 /**
  * TODO: Need to not return deleted / invisible pages by default with option to show a hidden page.
@@ -61,7 +61,7 @@ class Provider
     public function findByUri($uri)
     {
         if ( !isset($this->cache['uri'][$uri])) {
-            $finder = new Finder($this->editor);
+            $finder = new Finder\Finder($this->editor);
             $finder->addFilter(new Finder\Uri($uri));
             $page = $finder->find();
 

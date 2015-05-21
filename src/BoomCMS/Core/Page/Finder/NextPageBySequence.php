@@ -3,9 +3,11 @@
 namespace BoomCMS\Core\Page\Finder;
 
 use BoomCMS\Core\Page\Page;
-use BoomCMS\Core\Model\Page as Model;
+use BoomCMS\Core\Finder\Filter;
 
-class NextPageBySequence extends \Boom\Finder\Filter
+use Illuminate\Database\Eloquent\Builder;
+
+class NextPageBySequence extends Filter
 {
     /**
      *
@@ -18,7 +20,7 @@ class NextPageBySequence extends \Boom\Finder\Filter
         $this->currentPage = $currentPage;
     }
 
-    public function execute(Model $query)
+    public function execute(Builder $query)
     {
         return $query
             ->where('sequence', '>', $this->currentPage->getManualOrderPosition())

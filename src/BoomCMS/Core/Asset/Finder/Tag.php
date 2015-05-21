@@ -33,7 +33,7 @@ class Tag extends BaseFilter
 
         if (is_array($this->_tags)) {
             $query
-                ->group_by("tag")
+                ->groupBy("tag")
                 ->having(DB::raw('count(distinct tag)'), '>=', count($this->_tags));
         }
 

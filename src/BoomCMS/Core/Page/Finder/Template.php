@@ -3,9 +3,12 @@
 namespace BoomCMS\Core\Page\Finder;
 
 use BoomCMS\Core\Template\Template;
+use BoomCMS\Core\Finder\Filter;
 use BoomCMS\Core\Model\Page as Model;
 
-class Template extends \Boom\Finder\Filter
+use Illuminate\Database\Eloquent\Builder;
+
+class Template extends Filter
 {
     /**
      *
@@ -18,7 +21,7 @@ class Template extends \Boom\Finder\Filter
         $this->template = $template;
     }
 
-    public function execute(Model $query)
+    public function execute(Builder $query)
     {
         return $query->where('template_id', '=', $this->template->getId());
     }

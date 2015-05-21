@@ -33,7 +33,7 @@ class ProcessSiteURL
         // TODO: 2015/04/29: findByUri won't find a deleted page. Need to make it an option.
         $page = $this->pageProvider->findByUri($request->route()->getParameter('location'));
 
-         if ( ! $page->loaded()) {
+         if ( !$page->loaded()) {
              throw new NotFoundHttpException();
          }
 
@@ -45,7 +45,7 @@ class ProcessSiteURL
             throw new NotFoundHttpException();
         }
 
-        if ($page->url()->location !== $request->path) {
+        if ($page->url()->location !== $request->route()->getParameter('location')) {
             redirect($page->url(), 301);
         }
 
