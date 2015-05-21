@@ -2,18 +2,21 @@
 
 namespace BoomCMS\Core\Page;
 
-use BoomCMS\Core\Editor\Editor;
-use BoomCMS\Core\Template;
 use BoomCMS\Core\Person;
 use BoomCMS\Core\Tag;
+use BoomCMS\Core\Template;
+use BoomCMS\Core\URL\URL;
 
 use \DateTime;
 
-use \ORM;
-use \DB;
-
 class Page
 {
+    /**
+     *
+     * @var Page\Version
+     */
+    private $currentVersion;
+
     /**
 	 *
 	 * @var array
@@ -22,9 +25,15 @@ class Page
 
     /**
 	 *
-	 * @var \Model_Page_URL
+	 * @var URL
 	 */
-    protected $_url;
+    protected $primaryUrl;
+
+    /**
+     *
+     * @var Template\Template
+     */
+    private $template;
 
     public function __construct(array $data)
     {
@@ -112,8 +121,12 @@ class Page
     }
 
     public function getCurrentVersion()
-    {throw new \Exception('TODO');
-        //return $this->model->version();
+    {
+        if ($this->currentVersion === null) {
+
+        }
+
+        return $this->currentVersion;
     }
 
     /**
@@ -214,7 +227,12 @@ class Page
 
     public function getTemplate()
     {
-        return Template\Factory::fromModel($this->getCurrentVersion()->template);
+        if ($this->template === null) {
+            $provider = new Template\Provider();
+            $this->template = $provider->findById($this->getTemplateId());
+        }
+
+        return $this->template;
     }
 
     public function getTemplateId()
@@ -551,16 +569,15 @@ class Page
 	 */
     public function url()
     {
-        if ($this->_url === null) {
-            $this->_url = \ORM::factory('Page_URL')
-                ->values([
-                    'location'        =>    $this->model->primary_uri,
-                    'page_id'        =>    $this->model->id,
-                    'is_primary'    =>    true,
-                ]);
+        if ($this->primaryUrl === null) {
+            $this->primaryUrl = new URL([
+                'page' => $this,
+                'location' => $this->get('primary_uri'),
+                'is_primary' => true
+            ]);
         }
 
-        return $this->_url;
+        return $this->primaryUrl;
     }
 
     /**

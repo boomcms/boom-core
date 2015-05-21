@@ -16,9 +16,16 @@ class ProcessSiteURL
      */
     protected $pageProvider;
 
+    /**
+     *
+     * @var Editor
+     */
+    protected $editor;
+
     public function __construct(Provider $pageProvider, Editor $editor)
     {
         $this->pageProvider = $pageProvider;
+        $this->editor = $editor;
     }
 
     /**
@@ -45,11 +52,11 @@ class ProcessSiteURL
             throw new NotFoundHttpException();
         }
 
-        if ($page->url()->location !== $request->route()->getParameter('location')) {
+        if ( !$page->url()->is($request->route()->getParameter('location'))) {
             redirect($page->url(), 301);
         }
 
-        $request->route()->setParameter('boom.currentPage', $page);
+        $request->route()->setParameter('boomcms.currentPage', $page);
 
         return $next($request);
     }

@@ -1,6 +1,6 @@
 <?php
 
-namespace BoomCMS\Core\Page;
+namespace BoomCMS\Core\URL;
 
 /*
  * Page short URLs similar to t.co etc.

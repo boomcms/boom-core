@@ -65,5 +65,5 @@ Route::group(['middleware' => [
 
 Route::any('{location}', [
     'middleware' => ['BoomCMS\Core\Http\Middleware\ProcessSiteURL'],
-    'uses' => 'BoomCMS\Core\Controllers\show',
+    'uses' => 'BoomCMS\Core\Controllers\Page@show',
 ])->where(['location' => '.*']);

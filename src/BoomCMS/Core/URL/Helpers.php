@@ -1,12 +1,12 @@
 <?php
 
-namespace BoomCMS\Core\Page;
+namespace BoomCMS\Core\URL;
 
 /**
  * Helper functions for page URLs
  *
  */
-abstract class URL
+abstract class Helpers
 {
     public static function createPrimary($location, $page_id)
     {
