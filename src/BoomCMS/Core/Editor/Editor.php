@@ -19,8 +19,6 @@ class Editor
 	 */
     protected $auth;
 
-    protected $liveTime;
-    protected $liveTimePersistenceKey = 'editor_liveTime';
     protected $session;
     protected $state;
     protected $statePersistenceKey = 'editor_state';
@@ -56,30 +54,10 @@ class Editor
         return $this->state;
     }
 
-    public function getLiveTime()
-    {
-        if ($this->liveTime === null) {
-            $this->liveTime = $this->session->read($this->liveTimePersistenceKey, time());
-        }
-
-        return $this->liveTime;
-    }
-
     public function setState($state)
     {
         $this->state = $state;
 
         return $this->session->put($this->statePersistenceKey, $state);
-    }
-
-    /**
-	 * The time to use for viewing live pages.
-	 * This allows for viewing pages as they were at a certain time in the page.
-	 * If no time has been set then the value of $_SERVER['REQUEST_TIME'] is used.
-	 *
-	 */
-    public function setLiveTime($time = null)
-    {
-        return $this->session>write($this->liveTimePersistenceKey, $time);
     }
 }

@@ -130,7 +130,7 @@ class Page extends Model
             // Order by ID as well incase there's multiple versions with the same embargoed time.
             $query
                 ->where('published', '=', true)
-                ->where('embargoed_until', '<=', $editor->getLiveTime())
+                ->where('embargoed_until', '<=', $time())
                 ->order_by('embargoed_until', 'desc')
                 ->order_by('id', 'desc');
         } else {

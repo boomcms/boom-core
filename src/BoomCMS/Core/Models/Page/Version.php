@@ -198,10 +198,10 @@ class Version extends Model
         } elseif ($this->embargoed_until === null) {
             // Version is a draft if an embargo time hasn't been set.
             return 'draft';
-        } elseif ($this->embargoed_until <= Editor::instance()->getLiveTime()) {
+        } elseif ($this->embargoed_until <= time()) {
             // Version is live if the embargo time is in the past.
             return 'published';
-        } elseif ($this->embargoed_until > Editor::instance()->getLiveTime()) {
+        } elseif ($this->embargoed_until > time()) {
             // Version is embargoed if the embargo time is in the future.
             return 'embargoed';
         }
@@ -238,7 +238,7 @@ class Version extends Model
 
             // If the current user isn't logged in then make sure it's a published asset.
             if ( ! Auth::instance()->isLoggedIn()) {
-                $query->where('asset.visible_from', '<=', Editor::instance()->getLiveTime());
+                $query->where('asset.visible_from', '<=', time());
             }
 
             // Load the result.

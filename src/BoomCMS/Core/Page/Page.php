@@ -301,7 +301,7 @@ class Page
 
     public function isVisible()
     {
-        return $this->isVisibleAtTime(Editor::instance()->getLiveTime());
+        return $this->isVisibleAtTime(time());
     }
 
     public function isVisibleAtAnyTime()
