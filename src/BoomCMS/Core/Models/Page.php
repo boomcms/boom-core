@@ -106,48 +106,13 @@ class Page extends Model
         return $this;
     }
 
-    /**
-	 * Returns the current version for the page.
-	 *
-	 * @return	Model_Version_Page
-	 */
-    public function version()
-    {
-        // Has $this->_version been set?
-        if (isset($this->_related['version'])) {
-            // Yes it has, return it.
-            return $this->_related['version'];
-        }
-
-        $editor = Editor::instance();
-
-        // Start the query.
-        $query = ORM::factory('Page_Version')
-            ->where('page_id', '=', $this->id);
-
-        if ($editor->isDisabled()) {
-            // For site users get the published version with the embargoed time that's most recent to the current time.
-            // Order by ID as well incase there's multiple versions with the same embargoed time.
-            $query
-                ->where('published', '=', true)
-                ->where('embargoed_until', '<=', $time())
-                ->orderBy('embargoed_until', 'desc')
-                ->orderBy('id', 'desc');
-        } else {
-            // For logged in users get the version with the highest ID.
-            $query
-                ->orderBy('id', 'desc');
-        }
-
-        // Run the query and return the result.
-        return $this->_related['version'] = $query->find();
-    }
-
     public function scopeCurrentVersion($query)
     {
         $subquery = $this->getCurrentVersionQuery();
 
         return $query
+            ->select('version.*')
+            ->addSelect('pages.*')
             ->join(DB::raw('(' . $subquery->toSql() . ') as v2'), 'pages.id', '=', 'v2.page_id')
             ->mergeBindings($subquery)
             ->join('page_versions as version', function($join) {

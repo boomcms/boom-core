@@ -3,18 +3,28 @@
 namespace BoomCMS\Core\Http\Middleware;
 
 use Closure;
-use BoomCMS\Core\Environment;
+use BoomCMS\Core\Editor\Editor;
+use BoomCMS\Core\Environment\Environment;
+
+use Illuminate\Support\Facades\View;
 
 class InsertCMSToolbar
 {
+    /**
+     *
+     * @var Editor
+     */
+    protected $editor;
+
     /**
      *
      * @var Environment
      */
     protected $environment;
 
-    public function __construct(Environment $environment)
+    public function __construct(Editor $editor, Environment $environment)
     {
+        $this->editor = $editor;
         $this->environment = $environment;
     }
 
@@ -33,13 +43,14 @@ class InsertCMSToolbar
         preg_match("|(.*)(</head>)(.*<body[^>]*>)|imsU", $originalHtml, $matches);
 
         if ( ! empty($matches)) {
-            $head = new \View('boom/editor/iframe', [
+            $head = View::make('boom::editor.iframe', [
                 'before_closing_head' => $matches[1],
-                'body_tag'    =>    $matches[3],
-                'page_id'    =>    $request->route()->getParameter('boom.currentPage')->getId(),
+                'body_tag' => $matches[3],
+                'editor' => $this->editor,
+                'page_id' => $request->route()->getParameter('boomcms.currentPage')->getId(),
             ]);
 
-            $newHtml = str_replace($matches[0], $head->render(), $originalHtml);
+            $newHtml = str_replace($matches[0], (string) $head, $originalHtml);
             $response->setContent($newHtml);
         }
 

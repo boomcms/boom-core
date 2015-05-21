@@ -6,6 +6,7 @@ use BoomCMS\Core\Person;
 use BoomCMS\Core\Tag;
 use BoomCMS\Core\Template;
 use BoomCMS\Core\URL\URL;
+use BoomCMS\Core\Models\Page\Version as VersionModel;
 
 use \DateTime;
 
@@ -35,8 +36,33 @@ class Page
      */
     private $template;
 
+    protected $versionColumns = [
+        'page_id',
+        'template_id',
+        'title',
+        'edited_by',
+        'edited_time',
+        'published',
+        'embargoed_until',
+        'stashed',
+        'pending_approval',
+    ];
+
     public function __construct(array $data)
     {
+        $versionData = [];
+
+        foreach (array_keys($data) as $key) {
+            if (in_array($key, $this->versionColumns)) {
+                $versionData[$key] = $data[$key];
+                unset($data[$key]);
+            }
+        }
+
+        if ( !empty($versionData)) {
+            $this->currentVersion = new Version($versionData);
+        }
+
         $this->data = $data;
     }
 
@@ -123,7 +149,12 @@ class Page
     public function getCurrentVersion()
     {
         if ($this->currentVersion === null) {
-
+            if ($this->loaded()) {
+                $version = VersionModel::where('page_id', '=', $this->getId())->latestPublished();
+                $this->currentVersion = new Version($version->first()->toArray());
+            } else {
+                $this->currentVersion = new Version([]);
+            }
         }
 
         return $this->currentVersion;
@@ -227,12 +258,7 @@ class Page
 
     public function getTemplate()
     {
-        if ($this->template === null) {
-            $provider = new Template\Provider();
-            $this->template = $provider->findById($this->getTemplateId());
-        }
-
-        return $this->template;
+        return $this->getCurrentVersion()->getTemplate();
     }
 
     public function getTemplateId()
@@ -242,7 +268,7 @@ class Page
 
     public function getTitle()
     {
-        return $this->getCurrentVersion()->title;
+        return $this->getCurrentVersion()->getTitle();
     }
 
     /**

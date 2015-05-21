@@ -28,6 +28,7 @@ class Page extends Controller
         $method = 'asHTML';
 
         $page = $this->request->route()->getParameter('boomcms.currentPage');
-        $this->response = $page->getTemplate()->$method($page, $this->request, $this->response);
+
+        return $page->getTemplate()->$method($page, $this->request);
     }
 }

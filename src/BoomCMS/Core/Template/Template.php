@@ -3,10 +3,8 @@
 namespace BoomCMS\Core\Template;
 
 use BoomCMS\Core\Page;
-use \Kohana as Kohana;
-use \Model_Template;
-use \View;
-use Request;
+
+use Illuminate\Support\Facades\View;
 
 /**
  * Base template class.
@@ -16,7 +14,7 @@ use Request;
  */
 class Template
 {
-    const DIRECTORY = 'site/templates/';
+    const DIRECTORY = 'site.templates.';
 
     /**
      * An associative array of chunks by type which are used by the template.
@@ -27,15 +25,9 @@ class Template
 
     /**
      *
-     * @var View
+     * @var array
      */
-    protected ;
-
-    /**
-	 *
-	 * @var Model_Template
-	 */
-    protected $model;
+    protected $data;
 
     /**
      * An array of tag groups which would usually be applied to pages using this template.
@@ -47,9 +39,9 @@ class Template
      */
     protected $suggestedTagGroups = [];
 
-    public function __construct(\Model_Template $model)
+    public function __construct(array $data)
     {
-        $this->model = $model;
+        $this->data = $data;
         $this->view = $this->getView();
     }
 
@@ -60,11 +52,9 @@ class Template
      * @param \Boom\Page\Page $page
      * @param Request         $request
      */
-    public function asHtml(Page\Page $page, Request $request, \Response $response)
+    public function asHtml(Page\Page $page, $request)
     {
-        $this->response->body($this->view);
-
-        return $this->response;
+        return $this->view;
     }
 
     /**
@@ -103,7 +93,7 @@ class Template
 
     public function countPages()
     {
-        if ( ! $this->model->loaded()) {
+        if ( ! $this->loaded()) {
             return 0;
         }
 
@@ -113,22 +103,14 @@ class Template
         return $finder->count();
     }
 
-    /**
-     *
-     * @return \Boom\Template\Template
-     */
-    public function delete()
-    {
-        if ($this->loaded()) {
-            $this->model->delete();
-        }
-
-        return $this;
-    }
-
     public function fileExists()
     {
-        return (bool) Kohana::find_file("views", $this->getFullFilename());
+        return View::exists($this->getFullFilename());
+    }
+
+    public function get($key)
+    {
+        return isset($this->data[$key]) ? $this->data[$key] : null;
     }
 
     /**
@@ -143,27 +125,27 @@ class Template
 
     public function getDescription()
     {
-        return $this->model->description;
+        return $this->get('description');
     }
 
     public function getFilename()
     {
-        return $this->model->filename;
+        return $this->get('filename');
     }
 
     public function getFullFilename()
     {
-        return static::DIRECTORY.$this->getFilename();
+        return static::DIRECTORY . $this->getFilename();
     }
 
     public function getId()
     {
-        return $this->model->id;
+        return $this->get('id');
     }
 
     public function getName()
     {
-        return $this->model->name;
+        return $this->get('name');
     }
 
     public function getTagGroupSuggestions()
@@ -173,12 +155,12 @@ class Template
 
     public function getView()
     {
-        return ($this->fileExists()) ? new View($this->getFullFilename()) : new View();
+        return ($this->fileExists()) ? View::make($this->getFullFilename()) : View::make('boom::templates.default');
     }
 
     public function loaded()
     {
-        return $this->model->loaded();
+        return $this->getId() > 0;
     }
 
     /**

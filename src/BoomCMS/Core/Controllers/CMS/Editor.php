@@ -3,8 +3,11 @@
 namespace BoomCMS\Core\Controllers\CMS;
 
 use BoomCMS\Core\Page;
+use BoomCMS\Core\Controllers\Controller;
 
-class Editor extends Boom\Controller
+use Illuminate\Support\Facades\View;
+
+class Editor extends Controller
 {
     /**
 	 * Sets the page editor state.
@@ -30,23 +33,26 @@ class Editor extends Boom\Controller
 	 */
     public function toolbar(Page\Provider $provider)
     {
-        $page = $provider->findById($this->request->param('id'));
+        $page = $provider->findById($this->request->input('page_id'));
 
-        $editable = $this->editor->isEnabled();
+        if ($this->editor->isEnabled()) {
+            $toolbarFilename = 'toolbar';
+            $this->_add_readability_score_to_template($page);
+        } else {
+            $toolbarFilename = 'toolbar_preview';
+        }
 
-        $this->auth->cache_permissions($page);
+        View::share('editor', $this->editor);
+        View::share('auth', $this->auth);
+        View::share('page', $page);
+        View::share('person', $this->person);
 
-        $toolbar_filename = ($editable) ? 'toolbar' : 'toolbar_preview';
-        return View::make("boom/editor/$toolbar_filename");
-
-        $editable && $this->_add_readability_score_to_template($page);
-
-        View::bind_global('page', $page);
+        return View::make("boom::editor.$toolbarFilename");
     }
 
     protected function _add_readability_score_to_template(Page $page)
     {
-        $readability = new \Boom\Page\ReadabilityScore($page);
-        $this->template->set('readability', $readability->getSmogScore());
+        $readability = new Page\ReadabilityScore($page);
+        View::share('readability', $readability->getSmogScore());
     }
 }

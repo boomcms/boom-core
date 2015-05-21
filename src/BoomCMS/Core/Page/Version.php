@@ -1,0 +1,87 @@
+<?php
+
+namespace BoomCMS\Core\Page;
+
+use BoomCMS\Core\Template;
+
+class Version
+{
+    /**
+     *
+     * @var array
+     */
+    private $data;
+
+    /**
+     *
+     * @var Template\Template;
+     */
+    private $template;
+
+    public function __construct(array $data)
+    {
+        $this->data = $data;
+    }
+
+    public function get($key)
+    {
+        return isset($this->data[$key]) ? $this->data[$key] : null;
+    }
+
+    public function getTemplateId()
+    {
+        return $this->get('template_id');
+    }
+
+    public function getTemplate()
+    {
+        if ($this->template === null) {
+            $provider = new Template\Provider();
+            $this->template = $provider->findById($this->getTemplateId());
+        }
+
+        return $this->template;
+    }
+
+    public function getTitle()
+    {
+        return $this->get('title');
+    }
+
+    public function isPendingApproval()
+    {
+        return $this->get('pending_approval') == true;
+    }
+
+    public function isPublished()
+    {
+        return $this->get('embargoed_until') && $this->get('embargoed_until') < time();
+    }
+
+    /**
+     * Returns the status of the current page version.
+     *
+     * Status could be:
+     *
+     * * 'published' if the version is published.
+     * * 'embargoed' if the version is published but won't become live until a future time.
+     * * 'draft' if it's not published.
+     *
+     * @return string
+     */
+    public function status()
+    {
+        if ($this->isPendingApproval()) {
+            return 'pending approval';
+        } elseif ($this->get('embargoed_until') === null) {
+            // Version is a draft if an embargo time hasn't been set.
+            return 'draft';
+        } elseif ($this->get('embargoed_until') <= time()) {
+            // Version is live if the embargo time is in the past.
+            return 'published';
+        } elseif ($this->get('embargoed_until') > time()) {
+            // Version is embargoed if the embargo time is in the future.
+            return 'embargoed';
+        }
+    }
+}

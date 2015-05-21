@@ -1,49 +1,13 @@
 <?php
 
-namespace BoomCMS\Core\Models;
+namespace BoomCMS\Core\Models\Page;
 
 use Illuminate\Database\Eloquent\Model;
-use BoomCMS\Core\Auth\Auth as Auth;
-use BoomCMS\Core\Editor\Editor as Editor;
+use Illuminate\Support\Facades\App;
 
 class Version extends Model
 {
-    protected $_belongs_to = [
-        'template'        =>    ['model' => 'Template', 'foreign_key' => 'template_id'],
-        'person'        =>    ['model' => 'Person', 'foreign_key' => 'edited_by'],
-    ];
-
-    protected $_created_column = [
-        'column'    =>    'edited_time',
-        'format'    =>    true,
-    ];
-
-    protected $_has_many = [
-        'chunks'    => ['through' => 'page_chunks', 'foreign_key' => 'page_vid'],
-    ];
-
-    protected $_table_columns = [
-        'id'                =>    '',
-        'page_id'            =>    '',
-        'template_id'        =>    '',
-        'title'                =>    '',
-        'edited_by'        =>    '',
-        'edited_time'        =>    '',
-        'published'            =>    '',
-        'embargoed_until'    =>    '',
-        'stashed'            =>    '',
-        'pending_approval'    =>    '',
-    ];
-
     protected $table = 'page_versions';
-
-    /**
-	 * Hold the calculated thumbnails for this version.
-	 *
-	 * @see Model_Page_Version::thumbnail()
-	 * @var array
-	 */
-    protected $_thumbnails = [];
 
     /**
 	 * Adds a chunk to the page version.
@@ -152,11 +116,6 @@ class Version extends Model
        ];
     }
 
-    public function is_published()
-    {
-        return $this->embargoed_until && $this->embargoed_until < $_SERVER['REQUEST_TIME'];
-    }
-
     /**
 	 * Validation rules
 	 *
@@ -180,69 +139,23 @@ class Version extends Model
         ];
     }
 
-    /**
-	 * Returns the status of the current page version.
-	 *
-	 * Status could be:
-	 *
-	 * * 'published' if the version is published.
-	 * * 'embargoed' if the version is published but won't become live until a future time.
-	 * * 'draft' if it's not published.
-	 *
-	 * @return string
-	 */
-    public function status()
+    public function scopeLatestPublished($query)
     {
-        if ($this->pending_approval) {
-            return 'pending approval';
-        } elseif ($this->embargoed_until === null) {
-            // Version is a draft if an embargo time hasn't been set.
-            return 'draft';
-        } elseif ($this->embargoed_until <= time()) {
-            // Version is live if the embargo time is in the past.
-            return 'published';
-        } elseif ($this->embargoed_until > time()) {
-            // Version is embargoed if the embargo time is in the future.
-            return 'embargoed';
-        }
-    }
+        $editor = App::make('BoomCMS\Core\Editor\Editor');
 
-    /**
-	 * Returns a thumbnail for the current page version.
-	 * The thumbnail is the first image in the specified chunk.
-	 *
-	 * @param	$slotname		The slotname of the chunk to look for an image in. Default is to look in the bodycopy.
-	 * @return 	Model_Asset
-	 * @uses		Model_Page_Version::$_thumbnails
-	 */
-    public function thumbnail($slotname = 'bodycopy')
-    {
-        // Try and get it from the $_thumbnail property to prevent running the code multiple times
-        if (isset($this->_thumbnails[$slotname])) {
-            return $this->_thumbnails[$slotname];
-        }
-
-        // Get the standfirst for this page version.
-        $chunk = Chunk::find('text', $slotname, $this);
-
-        if ( ! $chunk->loaded()) {
-            return $this->_thumbnails[$slotname] = new Model_Asset();
+        if ($editor->isDisabled()) {
+            // For site users get the published version with the embargoed time that's most recent to the current time.
+            // Order by ID as well incase there's multiple versions with the same embargoed time.
+            $query
+                ->where('published', '=', true)
+                ->where('embargoed_until', '<=', time())
+                ->orderBy('embargoed_until', 'desc')
+                ->orderBy('id', 'desc');
         } else {
-            // Find the first image in this chunk.
-            $query = ORM::factory('Asset')
-                ->join('chunk_text_assets')
-                ->on('chunk_text_assets.asset_id', '=', 'asset.id')
-                ->orderBy('position', 'asc')
-                ->where('chunk_text_assets.chunk_id', '=', $chunk->id)
-                ->where('asset.type', '=', \Boom\Asset\Type::IMAGE);
-
-            // If the current user isn't logged in then make sure it's a published asset.
-            if ( ! Auth::instance()->isLoggedIn()) {
-                $query->where('asset.visible_from', '<=', time());
-            }
-
-            // Load the result.
-            return $this->_thumbnails[$slotname] = $query->find();
+            // For logged in users get the version with the highest ID.
+            $query->orderBy('id', 'desc');
         }
+
+        return $query;
     }
 }

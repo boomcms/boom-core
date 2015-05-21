@@ -23,6 +23,8 @@ Route::group(['middleware' => [
         });
 
         Route::group(['middleware' => ['BoomCMS\Core\Http\Middleware\RequireLogin']], function () {
+            Route::get('editor/toolbar', 'Editor@toolbar');
+
             Route::get('profile', 'Auth\Profile@index');
             Route::post('profile', 'Auth\Profile@save');
 
@@ -64,6 +66,9 @@ Route::group(['middleware' => [
 });
 
 Route::any('{location}', [
-    'middleware' => ['BoomCMS\Core\Http\Middleware\ProcessSiteURL'],
+    'middleware' => [
+        'BoomCMS\Core\Http\Middleware\ProcessSiteURL',
+        'BoomCMS\Core\Http\Middleware\InsertCMSToolbar',
+    ],
     'uses' => 'BoomCMS\Core\Controllers\Page@show',
 ])->where(['location' => '.*']);

@@ -19,7 +19,7 @@ class PermissionsProvider
 
     public function lookup(Person\Person $person, $role, Page\Page $page = null)
     {
-        return $page ? $this->lookupPagePermission($person, $page, $role) : $this->lookupPermission($person, $role);
+        return $page ? $this->lookupPagePermission($person, $role, $page) : $this->lookupPermission($person, $role);
     }
 
     public function lookupPagePermission(Person\Person $person, $role, Page\Page $page)
@@ -29,7 +29,7 @@ class PermissionsProvider
             $role = 'p_' . $role;
         }
 
-        $pageId = $pageId();
+        $pageId = $page->getId();
 
         do {
             $result = $this->doLookup($person->getId(), $role, $pageId);

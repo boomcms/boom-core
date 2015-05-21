@@ -3,7 +3,7 @@
 namespace BoomCMS\Core\Page;
 
 use BoomCMS\Core\Editor\Editor;
-use BoomCMS\Core\Model\Page as Model;
+use BoomCMS\Core\Models\Page as Model;
 use BoomCMS\Core\Page\Finder;
 
 /**
@@ -72,13 +72,15 @@ class Provider
         return $this->cache['uri'][$uri];
     }
 
-    private function findAndCache(Model $model)
+    private function findAndCache(Model $model = null)
     {
-        if ($model->id) {
+        if ($model) {
             $this->cache[$model->id] = $model;
+
+            return new Page($model->toArray());
         }
 
-        return new Page($model->toArray());
+        return new Page([]);
     }
 
     public function save(Page $page)

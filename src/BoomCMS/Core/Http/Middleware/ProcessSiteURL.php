@@ -6,7 +6,9 @@ use Closure;
 use BoomCMS\Core\Page\Provider;
 use BoomCMS\Core\Editor\Editor;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\View;
 
 class ProcessSiteURL
 {
@@ -57,6 +59,8 @@ class ProcessSiteURL
         }
 
         $request->route()->setParameter('boomcms.currentPage', $page);
+
+        View::share('page', $page);
 
         return $next($request);
     }

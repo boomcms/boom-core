@@ -29,7 +29,7 @@ class Finder extends BaseFinder
     {
         $model = parent::find();
 
-        return new Page($model->toArray());
+         return $model? new Page($model->toArray()): new Page([]);
     }
 
     public function findAll()
