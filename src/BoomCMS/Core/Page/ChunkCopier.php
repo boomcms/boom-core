@@ -105,7 +105,7 @@ class ChunkCopier
         $table = "chunk_$type".'s';
         $columns = $values = $this->_getColumnsForChunkType($type);
         \array_unshift($columns, 'page_vid');
-        \array_unshift($values, \DB::expr($this->_toVersion->id));
+        \array_unshift($values, \DB::raw($this->_toVersion->id));
 
         $subquery = \call_user_func_array(['DB', 'select'], $values);
         $subquery

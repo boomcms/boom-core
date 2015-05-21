@@ -40,15 +40,15 @@ class Page extends Model
 
     public function getCurrentVersionQuery()
     {
-        $query = DB::select([\DB::expr('max(id)'), 'id'], 'page_id')
+        $query = DB::select([\DB::raw('max(id)'), 'id'], 'page_id')
             ->from('page_versions')
             ->where('stashed', '=', 0)
             ->group_by('page_id');
 
         if ($this->_editor->isDisabled()) {
             $query
-                ->where('embargoed_until', '<=', \DB::expr(time()))
-                ->where('published', '=', \DB::expr(1));
+                ->where('embargoed_until', '<=', \DB::raw(time()))
+                ->where('published', '=', \DB::raw(1));
         }
 
         return $query;
@@ -56,7 +56,7 @@ class Page extends Model
 
     public function set_template_of_children($template_id)
     {
-        $versions = DB::select([DB::expr('max(page_versions.id)'), 'id'])
+        $versions = DB::select([DB::raw('max(page_versions.id)'), 'id'])
             ->from('page_versions')
             ->join('page_mptt', 'inner')
             ->on('page_mptt.id', '=', 'page_versions.page_id')

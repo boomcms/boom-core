@@ -20,8 +20,8 @@ class YearAndMonth extends \Boom\Finder\Filter
     public function execute(\ORM $query)
     {
         return $query
-            ->where(DB::expr('year(from_unixtime(visible_from))'), '=', $this->_year)
-            ->where(DB::expr('month(from_unixtime(visible_from))'), '=', $this->_month);
+            ->where(DB::raw('year(from_unixtime(visible_from))'), '=', $this->_year)
+            ->where(DB::raw('month(from_unixtime(visible_from))'), '=', $this->_month);
     }
 
     public function monthIsValid()

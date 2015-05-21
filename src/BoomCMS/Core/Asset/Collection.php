@@ -54,7 +54,7 @@ class Collection
             ->from('assets_tags')
             ->where('asset_id', 'in', $this->assetIds)
             ->group_by('tag')
-            ->having(DB::expr('count(distinct asset_id)'), '>=', count($this->assetIds))
+            ->having(DB::raw('count(distinct asset_id)'), '>=', count($this->assetIds))
             ->execute()
             ->as_array('tag');
 

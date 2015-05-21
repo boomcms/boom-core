@@ -210,7 +210,7 @@ abstract class Asset
     {
         $ip = ip2long($ip);
 
-        $logged = DB::select(DB::expr("1"))
+        $logged = DB::select(DB::raw("1"))
             ->from('asset_downloads')
             ->where('ip', '=', $ip)
             ->where('asset_id', '=', $this->getId())
@@ -228,7 +228,7 @@ abstract class Asset
                 ->create();
 
             DB::update('assets')
-                ->set(['downloads' => DB::expr('downloads + 1')])
+                ->set(['downloads' => DB::raw('downloads + 1')])
                 ->where('id', '=', $this->getId())
                 ->execute();
         }

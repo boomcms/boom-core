@@ -50,7 +50,7 @@ class Group
             if ($pageId) {
                 DB::insert('people_roles', ['person_id', 'group_id', 'role_id', 'allowed', 'page_id'])
                     ->select(
-                        DB::select('person_id', 'group_id', DB::expr($roleId), DB::expr($allowed), DB::expr($pageId))
+                        DB::select('person_id', 'group_id', DB::raw($roleId), DB::raw($allowed), DB::raw($pageId))
                             ->from('people_groups')
                             ->where('group_id', '=', $this->getId())
                     )
@@ -58,7 +58,7 @@ class Group
             } else {
                 DB::insert('people_roles', ['person_id', 'group_id', 'role_id', 'allowed'])
                     ->select(
-                        DB::select('person_id', 'group_id', DB::expr($roleId), DB::expr($allowed))
+                        DB::select('person_id', 'group_id', DB::raw($roleId), DB::raw($allowed))
                             ->from('people_groups')
                             ->where('group_id', '=', $this->getId())
                     )
@@ -107,7 +107,7 @@ class Group
             return false;
         }
 
-        $result = DB::select(DB::expr(1))
+        $result = DB::select(DB::raw(1))
             ->from('group_roles')
             ->where('group_id', '=', $this->getId())
             ->where('role_id', '=', $role_id)

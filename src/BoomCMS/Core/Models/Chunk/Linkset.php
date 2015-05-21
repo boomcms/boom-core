@@ -23,7 +23,7 @@ class Linkset extends Model
 
     public function copy($from_version_id)
     {
-        $subquery = DB::select(DB::expr($this->id), 'target_page_id', 'url', 'chunk_linkset_links.title', 'asset_id')
+        $subquery = DB::select(DB::raw($this->id), 'target_page_id', 'url', 'chunk_linkset_links.title', 'asset_id')
             ->from('chunk_linkset_links')
             ->join('chunk_linksets', 'inner')
             ->on('chunk_linksets.id', '=', 'chunk_linkset_links.chunk_linkset_id')

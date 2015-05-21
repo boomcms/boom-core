@@ -17,7 +17,7 @@ class Year extends \Boom\Finder\Filter
 
     public function execute(\ORM $query)
     {
-        return $query->where(DB::expr('year(from_unixtime(visible_from))'), '=', $this->year);
+        return $query->where(DB::raw('year(from_unixtime(visible_from))'), '=', $this->year);
     }
 
     public function shouldBeApplied()

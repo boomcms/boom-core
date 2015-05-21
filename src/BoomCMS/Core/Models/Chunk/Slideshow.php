@@ -23,7 +23,7 @@ class Slideshow extends Model
 
     public function copy($from_version_id)
     {
-        $subquery = DB::select(DB::expr($this->id), 'asset_id', 'url', 'caption', 'chunk_slideshow_slides.title', 'linktext')
+        $subquery = DB::select(DB::raw($this->id), 'asset_id', 'url', 'caption', 'chunk_slideshow_slides.title', 'linktext')
             ->from('chunk_slideshow_slides')
             ->join('chunk_slideshows', 'inner')
             ->on('chunk_slideshows.id', '=', 'chunk_slideshow_slides.chunk_id')

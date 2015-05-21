@@ -36,7 +36,7 @@ class Person
             // Inherit any roles assigned to the group.
             DB::insert('people_roles', ['person_id', 'group_id', 'role_id', 'allowed', 'page_id'])
                 ->select(
-                    DB::select(DB::expr($this->getId()), DB::expr($group->getId()), 'role_id', 'allowed', 'page_id')
+                    DB::select(DB::raw($this->getId()), DB::raw($group->getId()), 'role_id', 'allowed', 'page_id')
                         ->from('group_roles')
                         ->where('group_id', '=', $group->getId())
                     )
