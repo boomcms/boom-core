@@ -14,7 +14,6 @@
 		"intervention/imagecache" : "2.1.*",
 		"robbytaylor/htmlpurifier-tel" : "dev-master",
 		"psr/log": "~1.0",
-		"cartalyst/sentry": "2.1.*",
 		"illuminate/support": "5.0.*",
 		"symfony/http-kernel": "2.6.*"
 	},
