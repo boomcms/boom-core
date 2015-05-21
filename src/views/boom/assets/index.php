@@ -1,19 +1,20 @@
-	<?= View::make('boom::header', ['title' => 'Assets']) ?>
+    <?= View::make('boom::header', ['title' => 'Assets']) ?>
 
-	<?= $manager ?>
+    <?= $manager ?>
 
-	<script type="text/javascript">
-		//<![CDATA[
-		(function ($) {
-			$.boom.init();
+    <script type="text/javascript" src="/public/boom/js/cms.js"></script>
+    <script type="text/javascript">
+        //<![CDATA[
+        (function ($) {
+            $.boom.init();
 
-			$('body')
-				.ui()
-				.assetManager({
-					allowedUploadTypes:[ '<?= implode('\', \'', \BoomCMS\Core\Asset\Mimetype\Mimetype::$allowedExtensions) ?>' ]
-				});
-		})(jQuery);
-		//]]>
-	</script>
+            $('body')
+                .ui()
+                .assetManager({
+                    allowedUploadTypes:[ '<?= implode('\', \'', \BoomCMS\Core\Asset\Mimetype\Mimetype::$allowedExtensions) ?>' ]
+                });
+        })(jQuery);
+        //]]>
+    </script>
 </body>
 </html>

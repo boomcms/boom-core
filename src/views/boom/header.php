@@ -7,6 +7,5 @@
         <meta name="csrf-token" content="<?= csrf_token() ?>" />
 
         <link rel="stylesheet" type="text/css" href="/public/boom/css/cms.css" />
-        <script type="text/javascript" src="/public/boom/js/cms.js"></script>
     </head>
     <body>

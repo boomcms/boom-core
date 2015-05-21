@@ -38,6 +38,7 @@
 		</div>
 	</div>
 
+        <script type="text/javascript" src="/public/boom/js/cms.js"></script>
 	<script type="text/javascript">
 		//<![CDATA[
 		(function ($) {
