@@ -34,7 +34,7 @@
 				</span>
 			<?php endif ?>
 
-			<?php if (($page->wasCreatedBy($person) || $auth->loggedIn('delete_page', $page)) && ! $page->getMptt()->is_root()) : ?>
+			<?php if (($page->wasCreatedBy($person) || $auth->loggedIn('delete_page', $page)) && ! $page->isRoot()) : ?>
 				<?= new \BoomCMS\Core\UI\Button('delete', Lang::get('Delete this page'), ['id' => 'b-page-delete']) ?>
 			<?php endif ?>
 		</div>
@@ -61,7 +61,7 @@
 	</div>
 
         <div id="wysihtml5-toolbar" class="b-toolbar b-toolbar-vertical b-toolbar-text">
-            <?php foreach (Boom\UI\TextEditorToolbar::getAvailableButtonSets() as $set): ?>
+            <?php foreach (BoomCMS\Core\UI\TextEditorToolbar::getAvailableButtonSets() as $set): ?>
 
                 <?= new BoomCMS\Core\UI\TextEditorToolbar($set) ?>
             <?php endforeach ?>

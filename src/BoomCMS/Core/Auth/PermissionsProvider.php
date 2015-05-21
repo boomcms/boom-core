@@ -37,7 +37,8 @@ class PermissionsProvider
             if ($result === null) {
                 $pageId = $page->getParentId();
             }
-        } while ($result === null && $pageId > 0);
+
+        } while ($result === null && $pageId !== NULL);
 
         return (bool) $result;
     }

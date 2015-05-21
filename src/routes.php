@@ -24,6 +24,7 @@ Route::group(['middleware' => [
 
         Route::group(['middleware' => ['BoomCMS\Core\Http\Middleware\RequireLogin']], function () {
             Route::get('editor/toolbar', 'Editor@toolbar');
+            Route::post('editor/state', 'Editor@state');
 
             Route::get('profile', 'Auth\Profile@index');
             Route::post('profile', 'Auth\Profile@save');

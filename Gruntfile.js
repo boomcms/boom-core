@@ -110,6 +110,14 @@ module.exports = function(grunt) {
 			}
 		},
 		less: {
+			development: {
+				options: {
+					paths: ["src/css"]
+				},
+				files: {
+					"public/css/cms.css": "src/css/cms.less"
+				}
+			},
 			production: {
 				options: {
 					paths: ["src/css"]

@@ -3,6 +3,7 @@
 	<script type="text/javascript">
 		//<![CDATA[
 		$(document).ready(function () {
+            console.log($.boom);
 			$.boom.init();
 
 			$('body').pageEditor({

@@ -15,15 +15,15 @@ class Editor extends Controller
     public function state()
     {
         $state = $this->request->input('state');
-        $numeric_state = constant("\BoomCMS\Core\Editor\Editor::" . strtoupper($state));
+        $numericState = constant("\BoomCMS\Core\Editor\Editor::" . strtoupper($state));
 
-        if ($numeric_state === null) {
-            throw new Kohana_Exception("Invalid editor state: :state", [
+        if ($numericState === null) {
+            throw new \Exception("Invalid editor state: :state", [
                 ':state'    =>    $state,
             ]);
         }
 
-        $this->editor->setState($numeric_state);
+        $this->editor->setState($numericState);
     }
 
     /**
@@ -50,7 +50,7 @@ class Editor extends Controller
         return View::make("boom::editor.$toolbarFilename");
     }
 
-    protected function _add_readability_score_to_template(Page $page)
+    protected function _add_readability_score_to_template(Page\Page $page)
     {
         $readability = new Page\ReadabilityScore($page);
         View::share('readability', $readability->getSmogScore());

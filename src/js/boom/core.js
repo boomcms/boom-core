@@ -18,12 +18,13 @@ $.extend({
 
 		options: {},
 
-		/**
-		Boom bootstrap/setup. Initialises boom.config and does some browser detection.
-		*/
 		setup: function(){
 
 			$.extend(this, { config: window.boomConfig });
+
+			if (typeof(top.$) === 'undefined') {
+				top.$ = $;
+			}
 
 			// reference boom from the site window too.
 			top.$.boom = $.boom;

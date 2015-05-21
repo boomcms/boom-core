@@ -25,6 +25,12 @@ class Page
     protected $data;
 
     /**
+     *
+     * @var Page
+     */
+    protected $parent;
+
+    /**
 	 *
 	 * @var URL
 	 */
@@ -248,7 +254,14 @@ class Page
 
     public function getParent()
     {
-        return Factory::byId($this->getParentId());
+        if ($this->getParentId()) {
+            if ($this->parent === null) {
+                $provider = new Provider();
+                $this->parent = $provider->findById($this->getParentId());
+
+                return $this->parent;
+            }
+        }
     }
 
     public function getParentId()
@@ -604,15 +617,6 @@ class Page
         }
 
         return $this->primaryUrl;
-    }
-
-    /**
-	 *
-	 * @return \Boom\Page
-	 */
-    public function parent()
-    {throw new \Exception('TODO');
-        return ($this->model->mptt->is_root()) ? $this : \Boom\Page\Factory::byId($this->model->mptt->parent_id);
     }
 
     public function wasCreatedBy(Person\Person $person)
