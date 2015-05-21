@@ -1,11 +1,12 @@
 <?php
 
-namespace BoomCMS\Core\Controllers\CMS;
+namespace BoomCMS\Core\Controllers\CMS\Page;
 
 use BoomCMS\Core\Page as Page;
 use BoomCMS\Core\Page\Command\Delete as Delete;
+use BoomCMS\Core\Controllers\Controller as Controller;
 
-class Page extends CMS
+class PageController extends Controller
 {
     protected $viewPrefix = 'boom::editor.page.';
 

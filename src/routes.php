@@ -52,6 +52,14 @@ Route::group(['middleware' => [
                 }
             ]);
         });
+
+        Route::group(['prefix' => 'page/settings'], function() {
+            Route::get('{id}/{action}', [
+                'uses' => function($action) {
+                    return App::make('BoomCMS\Core\Controllers\CMS\Page\Settings\View')->$action();
+                }
+            ]);
+        });
     });
 
     Route::get('asset/{action}/{asset}/{width?}/{height?}', [

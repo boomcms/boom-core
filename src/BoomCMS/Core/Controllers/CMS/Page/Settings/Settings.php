@@ -1,6 +1,9 @@
 <?php
 
+namespace BoomCMS\Core\Controllers\CMS\Page\Settings;
+
 use BoomCMS\Core\Page\Page as Page;
+use BoomCMS\Core\Controllers\CMS\Page\PageController;
 
 /**
  * ##Base controller for editing page settings.
@@ -25,7 +28,7 @@ use BoomCMS\Core\Page\Page as Page;
  * @package	BoomCMS
  * @category	Controllers
  */
-abstract class Controller_Cms_Page_Settings extends Controller_Cms_Page
+abstract class Settings extends PageController
 {
     /**
 	 * Directory where views used by this class are stored.

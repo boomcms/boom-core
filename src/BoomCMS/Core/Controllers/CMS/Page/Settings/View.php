@@ -1,9 +1,12 @@
 <?php
 
+namespace BoomCMS\Core\Controllers\CMS\Page\Settings;
+
 use BoomCMS\Core\Template as Template;
 use BoomCMS\Core\Page\Finder as PageFinder;
 
-class Controller_Cms_Page_Settings_View extends Controller_Cms_Page_Settings
+
+class View extends Settings
 {
 
     public function admin()
