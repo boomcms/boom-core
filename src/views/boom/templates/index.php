@@ -27,16 +27,17 @@
 						<?php elseif (in_array($t->getId(), $imported)): ?>
 							 <?php $class = ' b-templates-new' ?>
 						<?php endif ?>
-						<tr class="<?= Text::alternate('odd', 'even') ?><?= $class ?>" data-id="<?= $t->getId() ?>">
+
+						<tr class="<?= $class ?>" data-id="<?= $t->getId() ?>">
 							<td><input type='hidden' name='templates[]' value='<?= $t->getId() ?>' /></td>
 							<td><input type='text' name='name-<?= $t->getId() ?>' value="<?= $t->getName() ?>" /></td>
 							<td><input type='text' name='description-<?= $t->getId() ?>' value="<?= $t->getDescription() ?>" /></td>
 							<td><input type="text" name="filename-<?= $t->getId() ?>" value="<?= $t->getFilename() ?>" /></td>
 							<td>
-								<?php $page_count = $t->countPages() ?>
-								<a href='/cms/templates/pages/<?= $t->getId() ?>' title='View the title and URL of <?= $page_count, " ", Inflector::plural('page', $page_count) ?> which use this template'><?= $page_count ?>
+								<?php $page_count = 'TODO' ?>
+								<a href='/cms/templates/pages/<?= $t->getId() ?>' title='View the title and URL of <?= $page_count, " ", Lang::get('page', [$page_count]) ?> which use this template'><?= $page_count ?>
 							</td>
-							<td><?= new BoomCMS\Core\UI\Button('delete', "Delete the &quot;{$t->getName()}&quot; template", ['class' => 'b-templates-delete']) ?>
+							<td><?= $button('delete', "Delete the &quot;{$t->getName()}&quot; template", ['class' => 'b-templates-delete']) ?>
 						</tr>
 					<?php endforeach ?>
 				</tbody>
@@ -44,6 +45,7 @@
 		</form>
 	</div>
 
+    <?= $boomJS ?>
 	<script type="text/javascript">
 		//<![CDATA[
 		(function ($) {

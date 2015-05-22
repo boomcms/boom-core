@@ -5,7 +5,11 @@ namespace BoomCMS\Core\Controllers\CMS;
 use BoomCMS\Core\Auth\Auth;
 use BoomCMS\Core\Template;
 use BoomCMS\Core\Page;
-use BoomCMS\Core\Controller\Controller;
+use BoomCMS\Core\Controllers\Controller;
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\View;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class Templates extends Controller
 {
@@ -13,7 +17,7 @@ class Templates extends Controller
      *
      * @var Auth
      */
-    private $auth;
+    public $auth;
 
     /**
      *
@@ -21,7 +25,7 @@ class Templates extends Controller
      */
     private $provider;
 
-    protected $viewPrefix = 'boom::templates';
+    protected $viewPrefix = 'boom::templates.';
 
     public function __construct(Auth $auth, Template\Provider $provider)
     {
@@ -31,9 +35,9 @@ class Templates extends Controller
         $this->authorization('manage_templates');
     }
 
-    public function index()
+    public function index(Template\Manager $manager)
     {
-        $imported = $this->provider->createNew();
+        $imported = $manager->createNew();
         $templates = $this->provider->findAll();
 
         return View::make($this->viewPrefix . 'index', [
@@ -45,12 +49,15 @@ class Templates extends Controller
     /**
      * Display a list of pages which use a given template.
      */
-    public function pages($id)
+    public function pages($id, Page\Finder\Finder $finder)
     {
         $template = $this->provider->findById($id);
 
-        $finder = new Page\Finder();
-        $finder->addFilter(new Page\Finder\Filter\Template($template));
+        if ( ! $template->loaded()) {
+            throw new NotFoundHttpException();
+        }
+
+        $finder->addFilter(new Page\Finder\Template($template));
         $pages = $finder->findAll();
 
         return View::make($this->viewPrefix . '.pages', [
@@ -58,9 +65,9 @@ class Templates extends Controller
         ]);
     }
 
-    public function save()
+    public function save(Request $request)
     {
-        $post = $this->request->input();
+        $post = $request->input();
         $templateIds = $post['templates'];
 
         foreach ($templateIds as $templateId) {
@@ -74,7 +81,7 @@ class Templates extends Controller
         }
     }
 
-    public function delete()
+    public function delete($id)
     {
         $this->provider->deleteById($id);
     }

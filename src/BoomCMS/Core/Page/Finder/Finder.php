@@ -34,12 +34,13 @@ class Finder extends BaseFinder
 
     public function findAll()
     {
-        $pages = parent::findAll()->as_array();
+        $pages = parent::findAll();
+        $return = [];
 
-        array_walk($pages, function (&$page) {
-           $page = new Page($page);
-        });
+        foreach ($pages as $page) {
+            $return = new Page($page->toArray());
+        }
 
-        return $pages;
+        return $return;
     }
 }

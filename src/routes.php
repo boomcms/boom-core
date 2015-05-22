@@ -54,6 +54,14 @@ Route::group(['middleware' => [
             ]);
         });
 
+        Route::group(['prefix' => 'templates'], function() {
+            Route::get('', 'Templates@index');
+            Route::get('pages/{id}', 'Templates@pages');
+
+            Route::post('save', 'Templates@save');
+            Route::post('delete/{id}', 'Templates@delete');
+        });
+
         Route::group(['prefix' => 'page/settings'], function() {
             Route::get('{id}/{action}', [
                 'uses' => function($action) {

@@ -91,18 +91,6 @@ class Template
         return $response->body((new Page\RssFeed($page))->render());
     }
 
-    public function countPages()
-    {
-        if ( ! $this->loaded()) {
-            return 0;
-        }
-
-        $finder = new Page\Finder();
-        $finder->addFilter(new Page\Finder\Filter\Template($this));
-
-        return $finder->count();
-    }
-
     public function fileExists()
     {
         return View::exists($this->getFullFilename());
@@ -161,6 +149,27 @@ class Template
     public function loaded()
     {
         return $this->getId() > 0;
+    }
+
+    public function setDescription($description)
+    {
+        $this->data['description'] = $description;
+
+        return $this;
+    }
+
+    public function setFilename($filename)
+    {
+        $this->data['filename'] = $filename;
+
+        return $this;
+    }
+
+    public function setName($name)
+    {
+        $this->data['name'] = $name;
+
+        return $this;
     }
 
     /**

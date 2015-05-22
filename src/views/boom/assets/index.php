@@ -2,7 +2,7 @@
 
     <?= $manager ?>
 
-    <script type="text/javascript" src="/public/boom/js/cms.js"></script>
+    <?= $boomJS ?>
     <script type="text/javascript">
         //<![CDATA[
         (function ($) {
