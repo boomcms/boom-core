@@ -46,10 +46,6 @@
 		<?php endif ?>
 
 		<div class="b-page-container">
-			<?/*<button id="boom-page-editlive" class="ui-button boom-button" data-icon="ui-icon-boom-edit-live">
-				<?=Lang::get('Edit live') ?>
-			</button>*/?>
-
 			<?= new \BoomCMS\Core\UI\Button('view-live', Lang::get('View the page as it appears on the live site'), ['id' => 'boom-page-viewlive', 'class' => 'b-button-preview', 'data-preview' => 'disabled']) ?>
 		</div>
 
