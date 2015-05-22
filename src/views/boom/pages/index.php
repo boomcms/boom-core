@@ -1,8 +1,8 @@
 	<?= View::make('boom::header', ['title' => 'Pages']) ?>
-	<?= new \BoomCMS\Core\Menu\Menu($auth)  ?>
+	<?= $menu() ?>
 
 	<div id="b-topbar" class="b-toolbar">
-		<?= new \BoomCMS\Core\UI\MenuButton() ?>
+		<?= $menuButton() ?>
 	</div>
 
 	<div id="b-pages">

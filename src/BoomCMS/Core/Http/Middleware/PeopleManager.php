@@ -32,8 +32,6 @@ class PeopleManager
         $response = $next($request);
 
         if ( ! $request->ajax()) {
-            View::share('request', $request);
-
             $v = View::make('boom::people.manager', [
                 'groups' => $this->provider->findAll(),
                 'content' => $response->getContent(),

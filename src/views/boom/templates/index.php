@@ -1,9 +1,9 @@
 	<?= View::make('boom::header', ['title' => 'Templates']) ?>
-	<?= new \BoomCMS\Core\Menu\Menu($auth)  ?>
+	<?= $menu() ?>
 
 	<div id="b-topbar" class="b-toolbar">
-		<?= new \BoomCMS\Core\UI\MenuButton() ?>
-		<?= new \BoomCMS\Core\UI\Button('accept', Lang::get('Save all'), ['id' => 'b-templates-save', 'class' => 'b-button-withtext']) ?>
+		<?= $menuButton() ?>
+		<?= $button('accept', Lang::get('Save all'), ['id' => 'b-templates-save', 'class' => 'b-button-withtext']) ?>
 	</div>
 
 	<div id="b-templates">

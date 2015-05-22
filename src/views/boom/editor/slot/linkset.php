@@ -51,6 +51,6 @@
 </div>
 
 <div id="b-linkset-editor-buttons">
-	<?= new \BoomCMS\Core\UI\Button('delete', Lang::get('Delete linkset'), ['id' => 'b-linkset-delete', 'class' => 'b-button-textonly']) ?>
+	<?= $button('delete', Lang::get('Delete linkset'), ['id' => 'b-linkset-delete', 'class' => 'b-button-textonly']) ?>
 	<?= new BoomCMS\Core\UI\Button('add', 'Add link', ['id' => 'b-linkset-add', 'class' => 'b-button-withtext']) ?>
 </div>

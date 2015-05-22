@@ -28,8 +28,8 @@
                                 </label>
 
 				<div>
-					<?= new \BoomCMS\Core\UI\Button('accept', Lang::get('Save'), ['id' => 'b-person-save', 'class' => 'b-people-save']) ?>
-					<?= new \BoomCMS\Core\UI\Button('delete', Lang::get('Delete'), ['id' => 'b-person-delete']) ?>
+					<?= $button('accept', Lang::get('Save'), ['id' => 'b-person-save', 'class' => 'b-people-save']) ?>
+					<?= $button('delete', Lang::get('Delete'), ['id' => 'b-person-delete']) ?>
 				</div>
 			</form>
 		</div>
@@ -74,7 +74,7 @@
 				</ul>
 			<?php endif ?>
 
-			<?= new \BoomCMS\Core\UI\Button('add', Lang::get('Add group'), ['class' => 'b-person-addgroups', 'rel' => $person->getId()]) ?>
+			<?= $button('add', Lang::get('Add group'), ['class' => 'b-person-addgroups', 'rel' => $person->getId()]) ?>
 		</div>
 	</div>
 </div>

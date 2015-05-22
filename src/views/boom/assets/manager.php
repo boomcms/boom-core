@@ -1,15 +1,15 @@
 <div id="b-assets-manager">
-	<?= new \BoomCMS\Core\UI\MenuButton() ?>
-	<?= (new \BoomCMS\Core\Menu\Menu($auth))->render()  ?>
+	<?= $menuButton() ?>
+	<?= $menu() ?>
 
 	<div id="b-topbar" class="b-asset-manager b-toolbar">
 		<div id="b-assets-buttons">
-			<?= new \BoomCMS\Core\UI\Button('upload', Lang::get('Upload files'), ['id' => 'b-assets-upload']) ?>
-			<?= new \BoomCMS\Core\UI\Button('edit', Lang::get('View').' / '.Lang::get('Edit'), ['id' => 'b-button-multiaction-edit', 'disabled' => 'disabled']) ?>
-			<?= new \BoomCMS\Core\UI\Button('delete', Lang::get('Delete'), ['id' => 'b-button-multiaction-delete', 'disabled' => 'disabled']) ?>
-			<?= new \BoomCMS\Core\UI\Button('download', Lang::get('Download'), ['id' => 'b-button-multiaction-download', 'disabled' => 'disabled']) ?>
-			<?= new \BoomCMS\Core\UI\Button('tag', Lang::get('Add Tags'), ['id' => 'b-button-multiaction-tag', 'disabled' => 'disabled']) ?>
-			<?= new \BoomCMS\Core\UI\Button('cancel', Lang::get('Clear Selection'), ['id' => 'b-button-multiaction-clear', 'disabled' => 'disabled']) ?>
+			<?= $button('upload', Lang::get('Upload files'), ['id' => 'b-assets-upload']) ?>
+			<?= $button('edit', Lang::get('View').' / '.Lang::get('Edit'), ['id' => 'b-button-multiaction-edit', 'disabled' => 'disabled']) ?>
+			<?= $button('delete', Lang::get('Delete'), ['id' => 'b-button-multiaction-delete', 'disabled' => 'disabled']) ?>
+			<?= $button('download', Lang::get('Download'), ['id' => 'b-button-multiaction-download', 'disabled' => 'disabled']) ?>
+			<?= $button('tag', Lang::get('Add Tags'), ['id' => 'b-button-multiaction-tag', 'disabled' => 'disabled']) ?>
+			<?= $button('cancel', Lang::get('Clear Selection'), ['id' => 'b-button-multiaction-clear', 'disabled' => 'disabled']) ?>
 		</div>
 	</div>
 

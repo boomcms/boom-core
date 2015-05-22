@@ -42,10 +42,7 @@ class Editor extends Controller
             $toolbarFilename = 'toolbar_preview';
         }
 
-        View::share('editor', $this->editor);
-        View::share('auth', $this->auth);
         View::share('page', $page);
-        View::share('person', $this->person);
 
         return View::make("boom::editor.$toolbarFilename");
     }

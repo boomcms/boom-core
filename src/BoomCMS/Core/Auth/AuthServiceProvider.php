@@ -3,7 +3,6 @@
 namespace BoomCMS\Core\Auth;
 
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\View;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -19,8 +18,6 @@ class AuthServiceProvider extends ServiceProvider
         $this->app->singleton('boomcms.auth', function ($app) use ($auth) {
             return $auth;
         });
-
-        View::share('auth', $auth);
     }
 
     /**

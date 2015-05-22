@@ -1,11 +1,11 @@
 	<?= View::make('boom::header', ['title' => 'People']) ?>
 
 	<div id="b-topbar" class="b-toolbar">
-		<?= new \BoomCMS\Core\Menu\Menu($auth)  ?>
+		<?= $menu() ?>
 
-		<?= new \BoomCMS\Core\UI\MenuButton() ?>
-		<?= new \BoomCMS\Core\UI\Button('add', Lang::get('New person'), ['id' => 'b-people-create']) ?>
-		<?= new \BoomCMS\Core\UI\Button('delete', Lang::get('Delete'), ['id' => 'b-people-multi-delete', 'disabled' => 'disabled']) ?>
+		<?= $menuButton() ?>
+		<?= $button('add', Lang::get('New person'), ['id' => 'b-people-create']) ?>
+		<?= $button('delete', Lang::get('Delete'), ['id' => 'b-people-multi-delete', 'disabled' => 'disabled']) ?>
 
 		<button id="b-people-all" class="b-button">
 			<?=Lang::get('All people') ?>
@@ -15,7 +15,7 @@
 	<div id="b-people-manager">
 		<div id="b-groups">
 			<div id="b-groups-header">
-				<?= new \BoomCMS\Core\UI\Button('add', Lang::get('Add group'), ['class' => 'b-people-group-add']) ?>
+				<?= $button('add', Lang::get('Add group'), ['class' => 'b-people-group-add']) ?>
 				<h2>
 					<?= Lang::get('Groups') ?>
 				</h2>
