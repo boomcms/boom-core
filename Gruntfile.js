@@ -136,6 +136,7 @@ module.exports = function(grunt) {
 				files: {
 					 'public/css/cms.css': [
 						'bower_components/datetimepicker/jquery.datetimepicker.css',
+						'bower_components/jquery-ui/themes/base/jquery-ui.css',
 						'bower_components/jquery-ui/themes/base/autocomplete.css',
 						'bower_components/jquery-ui/themes/base/tabs.css',
 						'bower_components/jquery-ui/themes/base/sortable.css',
@@ -144,7 +145,7 @@ module.exports = function(grunt) {
 						'bower_components/jquery-ui/themes/base/draggable.css',
 						'bower_components/jquery-ui/themes/base/dialog.css',
 						'src/css/libraries/jqpagination.css',
-						'src/css/cms.css'
+						'public/css/cms.css'
 					 ]
 				}
 			}
@@ -168,7 +169,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-cssmin');
 	grunt.loadNpmTasks('grunt-autoprefixer');
 
-	grunt.registerTask('build', ['less', 'concat:dist', 'autoprefixer:no_dest']);
+	grunt.registerTask('build', ['less', 'concat:dist', 'autoprefixer:no_dest', 'cssmin']);
 	grunt.registerTask('dist', ['less', 'cssmin', 'concat:dist', 'uglify']);
 	grunt.registerTask('default',['watch']);
 };
