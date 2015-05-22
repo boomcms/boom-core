@@ -12,7 +12,6 @@ function boomDialog(options) {
 		resizable: false,
 		draggable: true,
 		closeOnEscape: true,
-		position: ['center', 'center'],
 		buttons : [],
 		dialogClass : 'b-dialog',
 		boomDialog: this
