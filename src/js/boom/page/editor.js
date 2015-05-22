@@ -21,8 +21,9 @@ $.widget( 'boom.pageEditor', {
 				page : this.page,
 				publishable : this.options.publishable
 			})
-			.data('boomPageToolbar');
-
+			.data('boom-pageToolbar');
+console.log(this.page.toolbar);
+console.log(this.page);
 		$.boom.log('Page registered for editing: ' + self.options.page_id);
 
 		if (this.options.editable) {

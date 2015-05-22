@@ -4,7 +4,7 @@ class Controller_Cms_Page_Settings_Save extends Controller_Cms_Page_Settings
 {
     public function admin()
     {
-        parent::action_admin();
+        parent::admin();
 
         $this->log("Saved admin settings for page " . $this->page->getTitle() . " (ID: " . $this->page->getId() . ")");
 
@@ -15,7 +15,7 @@ class Controller_Cms_Page_Settings_Save extends Controller_Cms_Page_Settings
 
     public function children()
     {
-        parent::action_children();
+        parent::children();
 
         $post = $this->request->input();
 
@@ -55,7 +55,7 @@ class Controller_Cms_Page_Settings_Save extends Controller_Cms_Page_Settings
 
     public function feature()
     {
-        parent::action_feature();
+        parent::feature();
 
         $this->log("Updated the feature image of page " . $this->page->getTitle() . " (ID: " . $this->page->getId() . ")");
 
@@ -66,7 +66,7 @@ class Controller_Cms_Page_Settings_Save extends Controller_Cms_Page_Settings
 
     public function navigation()
     {
-        parent::action_navigation();
+        parent::navigation();
 
         $post = $this->request->input();
 
@@ -93,7 +93,7 @@ class Controller_Cms_Page_Settings_Save extends Controller_Cms_Page_Settings
 
     public function search()
     {
-        parent::action_search();
+        parent::search();
 
         $this->log("Saved search settings for page " . $this->page->getTitle() . " (ID: " . $this->page->getId() . ")");
 
@@ -112,30 +112,31 @@ class Controller_Cms_Page_Settings_Save extends Controller_Cms_Page_Settings
 
     public function sort_children()
     {
-        parent::action_children();
+        parent::children();
 
         Database::instance()->begin();
         $this->page->updateChildSequences($this->request->input('sequences'));
         Database::instance()->commit();
     }
 
-    public function visibility()
+    public function visibility(Page\Page $page)
     {
-        parent::action_visibility();
+        parent::visibility($page);
 
-        $this->log("Updated visibility settings for page " . $this->page->getTitle() . " (ID: " . $this->page->getId() . ")");
+//        $this->log("Updated visibility settings for page " . $this->page->getTitle() . " (ID: " . $this->page->getId() . ")");
 
-        $this->page->setVisibleAtAnyTime($this->request->input('visible') == 1);
+        $page->setVisibleAtAnyTime($this->request->input('visible') == 1);
 
-        if ($this->page->isVisibleAtAnyTime()) {
+        if ($page->isVisibleAtAnyTime()) {
             $visibleTo = ($this->request->input('toggle_visible_to') == 1) ? new DateTime($this->request->input('visible_to')) : null;
 
-            $this->page
+            $page
                 ->setVisibleFrom(new DateTime($this->request->input('visible_from')))
                 ->setVisibleTo($visibleTo);
         }
 
         $this->page->save();
-        $this->response->body( (int) $this->page->isVisible());
+
+        return (int) $this->page->isVisible();
     }
 }

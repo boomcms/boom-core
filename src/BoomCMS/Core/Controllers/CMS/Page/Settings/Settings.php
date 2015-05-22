@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Core\Controllers\CMS\Page\Settings;
 
-use BoomCMS\Core\Page\Page as Page;
+use BoomCMS\Core\Page;
 use BoomCMS\Core\Controllers\CMS\Page\PageController;
 
 /**
@@ -35,7 +35,7 @@ abstract class Settings extends PageController
 	 *
 	 * @var	string
 	 */
-    protected $viewPrefix = 'boom/editor/page/settings';
+    protected $viewPrefix = 'boom::editor.page.settings';
 
     /**
 	 * Whether the current user has access to the advanced settings of the permissions group that they're editing.
@@ -127,21 +127,12 @@ abstract class Settings extends PageController
         $this->allowAdvanced = $this->auth->loggedIn('edit_page_search_advanced', $this->page);
     }
 
-    /**
-	 * ** Edit page visibility settings. **
-	 *
-	 * Settings in this group:
-	 *  * visible
-	 *  * visible from
-	 *  * visible to
-	 *
-	 */
-    public function visibility()
+    public function visibility(Page\Page $page)
     {
-        $this->authorization('edit_page', $this->page);
+        $this->authorization('edit_page', $page);
     }
 
-    public function authorization($role, Page $page = null)
+    public function authorization($role, Page\Page $page = null)
     {
         if ( ! $this->auth->loggedIn('manage_pages')) {
             parent::authorization($role, $page);

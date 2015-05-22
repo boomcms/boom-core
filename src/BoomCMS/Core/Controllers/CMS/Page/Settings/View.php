@@ -2,18 +2,17 @@
 
 namespace BoomCMS\Core\Controllers\CMS\Page\Settings;
 
-use BoomCMS\Core\Template as Template;
-use BoomCMS\Core\Page\Finder as PageFinder;
+use BoomCMS\Core\Page;
 
+use Illuminate\Support\Facades\View as ViewFacade;
 
 class View extends Settings
 {
-
     public function admin()
     {
-        parent::action_admin();
+        parent::admin();
 
-        return View::make("$this->viewPrefix/admin", [
+        return ViewFacade::make("$this->viewPrefix/admin", [
             'page' => $this->page,
         ]);
     }
@@ -25,7 +24,7 @@ class View extends Settings
     public function children()
     {
         // Call the parent function to check permissions.
-        parent::action_children();
+        parent::children();
 
         $childOrderingPolicy = $this->page->getChildOrderingPolicy();
 
@@ -34,7 +33,7 @@ class View extends Settings
         $templates = $manager->getValidTemplates();
 
         // Create the main view with the basic settings
-        return View::make("$this->viewPrefix/children", [
+        return ViewFacade::make("$this->viewPrefix/children", [
             'default_child_template'    =>    $this->page->getDefaultChildTemplateId(),
             'templates' => $templates,
             'child_order_column'        =>    $childOrderingPolicy->getColumn(),
@@ -54,10 +53,10 @@ class View extends Settings
 
     public function feature()
     {
-        parent::action_feature();
+        parent::feature();
 
-        return View::make("$this->viewPrefix/feature", [
-            'feature_image_id' => $this->page->getFeatureImageId(),
+        return ViewFacade::make("$this->viewPrefix/feature", [
+            'featureImageId' => $this->page->getFeatureImageId(),
         ]);
     }
 
@@ -67,9 +66,9 @@ class View extends Settings
 	 */
     public function navigation()
     {
-        parent::action_navigation();
+        parent::navigation();
 
-        return View::make("$this->viewPrefix/navigation", [
+        return ViewFacade::make("$this->viewPrefix/navigation", [
             'page' => $this->page,
             'allowAdvanced' => $this->allowAdvanced,
         ]);
@@ -77,9 +76,9 @@ class View extends Settings
 
     public function search()
     {
-        parent::action_search();
+        parent::search();
 
-        return View::make("$this->viewPrefix/search", [
+        return ViewFacade::make("$this->viewPrefix/search", [
             'allowAdvanced' => $this->allowAdvanced,
             'page' => $this->page,
         ]);
@@ -87,7 +86,7 @@ class View extends Settings
 
     public function sort_children()
     {
-        parent::action_children();
+        parent::children();
 
         $finder = new PageFinder();
 
@@ -96,17 +95,17 @@ class View extends Settings
             ->setLimit(50)
             ->findAll();
 
-        return View::make("$this->viewPrefix/sort_children", [
+        return ViewFacade::make("$this->viewPrefix/sort_children", [
             'children' => $children
         ]);
     }
 
-    public function visibility()
+    public function visibility(Page\Page $page)
     {
-        parent::action_visibility();
+        parent::visibility($page);
 
-        return View::make("$this->viewPrefix/visibility", [
-            'page' => $this->page,
+        return ViewFacade::make("$this->viewPrefix/visibility", [
+            'page' => $page,
         ]);
     }
 }

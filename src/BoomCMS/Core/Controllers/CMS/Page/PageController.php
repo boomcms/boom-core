@@ -2,24 +2,21 @@
 
 namespace BoomCMS\Core\Controllers\CMS\Page;
 
+use BoomCMS\Core\Auth\Auth;
 use BoomCMS\Core\Page as Page;
 use BoomCMS\Core\Page\Command\Delete as Delete;
 use BoomCMS\Core\Controllers\Controller as Controller;
+
+use Illuminate\Http\Request;
 
 class PageController extends Controller
 {
     protected $viewPrefix = 'boom::editor.page.';
 
-    /**
-	*
-	* @var \Boom\Page
-	*/
-    public $page;
-    
-    public function __construct(Page\Provider $provider)
+    public function __construct(Auth $auth, Request $request)
     {
-        $this->provider = $provider;
-        $this->page = $this->provider->findById($this->request->param('id'));
+        $this->auth = $auth;
+        $this->request = $request;
     }
 
     public function add()
