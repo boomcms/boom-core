@@ -3,6 +3,7 @@
 namespace BoomCMS\Core\Http\Middleware;
 
 use Closure;
+use BoomCMS\Core\Auth\Auth;
 use BoomCMS\Core\Editor\Editor;
 use BoomCMS\Core\Environment\Environment;
 
@@ -10,6 +11,12 @@ use Illuminate\Support\Facades\View;
 
 class InsertCMSToolbar
 {
+    /**
+     *
+     * @var Auth
+     */
+    protected $auth;
+
     /**
      *
      * @var Editor
@@ -22,8 +29,9 @@ class InsertCMSToolbar
      */
     protected $environment;
 
-    public function __construct(Editor $editor, Environment $environment)
+    public function __construct(Auth $auth, Editor $editor, Environment $environment)
     {
+        $this->auth = $auth;
         $this->editor = $editor;
         $this->environment = $environment;
     }
@@ -37,6 +45,10 @@ class InsertCMSToolbar
      */
     public function handle($request, Closure $next)
     {
+        if ( !$this->auth->loggedIn()) {
+            return $next($request);
+        }
+
         $response = $next($request);
 
         $originalHtml = $response->getOriginalContent();
