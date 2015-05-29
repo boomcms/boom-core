@@ -41,38 +41,38 @@
 		</div>
 		<?php if ($allowAdvanced): ?>
 			<div id="advanced">
-                            <label>
-                                <?= Lang::get('Children visible in nav') ?>?
+                <label>
+                    <?= Lang::get('Children visible in nav') ?>?
 
-                                <select name="children_visible_in_nav" id="children_visible_in_nav">
-                                    <option value="1"<?php if ($page->childrenAreVisibleInNav()): ?> selected="selected"<?php endif ?>>Yes</option>
-                                    <option value="0"<?php if ( ! $page->childrenAreVisibleInNav()): ?> selected="selected"<?php endif ?>>No</option>
-                                </select>
-                            </label>
+                    <select name="children_visible_in_nav" id="children_visible_in_nav">
+                        <option value="1"<?php if ($page->childrenAreVisibleInNav()): ?> selected="selected"<?php endif ?>>Yes</option>
+                        <option value="0"<?php if ( ! $page->childrenAreVisibleInNav()): ?> selected="selected"<?php endif ?>>No</option>
+                    </select>
+                </label>
 
-                            <label>
-                                <?=Lang::get('Children visible in CMS nav') ?>?
+                <label>
+                    <?=Lang::get('Children visible in CMS nav') ?>?
 
-                                <select name="children_visible_in_nav_cms" id="children_visible_in_nav_cms">
-                                    <option value="1"<?php if ($page->childrenAreVisibleInNavCms()): ?> selected="selected"<?php endif ?>>Yes</option>
-                                    <option value="0"<?php if ( ! $page->childrenAreVisibleInNavCms()): ?> selected="selected"<?php endif ?>>No</option>
-                                </select>
-                            </label>
+                    <select name="children_visible_in_nav_cms" id="children_visible_in_nav_cms">
+                        <option value="1"<?php if ($page->childrenAreVisibleInCmsNav()): ?> selected="selected"<?php endif ?>>Yes</option>
+                        <option value="0"<?php if ( ! $page->childrenAreVisibleInCmsNav()): ?> selected="selected"<?php endif ?>>No</option>
+                    </select>
+                </label>
 
-                            <label>
-                                <?=Lang::get('Default child URI prefix') ?>
-                                <?= Form::input('children_url_prefix', $page->getChildPageUrlPrefix(), ['id' => 'children_url_prefix']) ?>
-                            </label>
+                <label>
+                    <?= Lang::get('Default child URI prefix') ?>
+                    <input type="text" id="children_url_prefix" name="children_url_prefix" value="<?= $page->getChildPageUrlPrefix() ?>" />
+                </label>
 
-                            <label>
-                                <?=Lang::get('Default grandchild template') ?>
+                <label>
+                    <?=Lang::get('Default grandchild template') ?>
 
-                                <select name="grandchild_template_id" id="grandchild_template_id">
-                                    <?php foreach($templates as $t): ?>
-                                        <option value="<?= $t->getId() ?>"<?php if($t->getId() === $default_grandchild_template): ?> selected<?php endif ?>><?= $t->getName() ?></option>
-                                    <?php endforeach ?>
-                                </select>
-                            </label>
+                    <select name="grandchild_template_id" id="grandchild_template_id">
+                        <?php foreach($templates as $t): ?>
+                            <option value="<?= $t->getId() ?>"<?php if($t->getId() === $default_grandchild_template): ?> selected<?php endif ?>><?= $t->getName() ?></option>
+                        <?php endforeach ?>
+                    </select>
+                </label>
 			</div>
 		<?php endif ?>
 	</div>

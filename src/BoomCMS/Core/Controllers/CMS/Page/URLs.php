@@ -1,22 +1,24 @@
 <?php
 
-class Controller_Cms_Page_Urls extends Boom\Controller
+namespace BoomCMS\Core\Controllers\CMS\Page;
+
+use BoomCMS\Core\Page;
+use BoomCMS\Core\Controllers\Controller;
+
+class URLs extends Controller
 {
     /**
 	 *
 	 * @var string
 	 */
-    protected $viewPrefix = "boom/editor/urls";
+    protected $viewPrefix = "boom::editor.urls";
 
-    /**
-	 *
-	 * @var Model_Page_URL
-	 */
+
     public $page_url;
 
     /**
 	 *
-	 * @var \Boom\Page
+	 * @var Page\Page
 	 */
     public $page;
 

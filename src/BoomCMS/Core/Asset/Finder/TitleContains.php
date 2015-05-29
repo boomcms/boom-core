@@ -3,6 +3,7 @@
 namespace BoomCMS\Core\Asset\Finder;
 
 use BoomCMS\Core\Finder\Filter as BaseFilter;
+use Illuminate\Database\Eloquent\Builder;
 
 class TitleContains extends BaseFilter
 {
@@ -13,7 +14,7 @@ class TitleContains extends BaseFilter
         $this->title = trim($title);
     }
 
-    public function execute(\ORM $query)
+    public function execute(Builder $query)
     {
         return $query
             ->and_where_open()

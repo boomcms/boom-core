@@ -45,16 +45,14 @@ abstract class Type
 	 */
     public static function whichExist()
     {
-        $typesAsNumbers = DB::select('type')
+        $typesAsNumbers = DB::table('assets')
             ->distinct(true)
-            ->from('assets')
-            ->execute()
-            ->as_array();
+            ->lists('type');
 
         $typesAsStrings = [];
 
         foreach ($typesAsNumbers as $type) {
-            $type = static::numericTypeToClass($type['type']);
+            $type = static::numericTypeToClass($type);
 
             if ($type) {
                 $typesAsStrings[] = $type;

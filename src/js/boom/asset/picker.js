@@ -5,7 +5,7 @@ function boomAssetPicker(currentAssetId, filters) {
 	this.filters = filters? filters : {};
 
 	boomAssetPicker.prototype.url = '/cms/assets/picker';
-	boomAssetPicker.prototype.listUrl = '/cms/assets/list';
+	boomAssetPicker.prototype.listUrl = '/cms/assets/get';
 
 	boomAssetPicker.prototype.addFilter = function(type, value) {
 		this.filters.page = 1;

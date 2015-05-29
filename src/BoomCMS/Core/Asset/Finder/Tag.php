@@ -5,9 +5,11 @@ namespace BoomCMS\Core\Asset\Finder;
 use BoomCMS\Core\Finder\Filter as BaseFilter;
 use DB;
 
+use Illuminate\Database\Eloquent\Builder;
+
 class Tag extends BaseFilter
 {
-    protected $_tags;
+    protected $tags;
 
     public function __construct($tags = null)
     {
@@ -19,22 +21,21 @@ class Tag extends BaseFilter
             }
         }
 
-        $this->_tags = $tags;
+        $this->tags = $tags;
     }
 
-    public function execute(\ORM $query)
+    public function execute(Builder $query)
     {
-        $op = (is_array($this->_tags)) ? 'IN' : '=';
+        $op = (is_array($this->tags)) ? 'IN' : '=';
 
         $query
-            ->join('assets_tags', 'inner')
-            ->on('assets_tags.asset_id', '=', 'asset.id')
-            ->where('assets_tags.tag', $op, $this->_tags);
+            ->join('assets_tags', 'assets_tags.asset_id', '=', 'assets.id')
+            ->where('assets_tags.tag', $op, $this->tags);
 
-        if (is_array($this->_tags)) {
+        if (is_array($this->tags)) {
             $query
                 ->groupBy("tag")
-                ->having(DB::raw('count(distinct tag)'), '>=', count($this->_tags));
+                ->having(DB::raw('count(distinct tag)'), '>=', count($this->tags));
         }
 
         return $query;
@@ -42,6 +43,6 @@ class Tag extends BaseFilter
 
     public function shouldBeApplied()
     {
-        return ! empty($this->_tags);
+        return ! empty($this->tags);
     }
 }

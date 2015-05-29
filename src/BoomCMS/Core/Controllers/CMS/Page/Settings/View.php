@@ -3,95 +3,87 @@
 namespace BoomCMS\Core\Controllers\CMS\Page\Settings;
 
 use BoomCMS\Core\Page;
+use BoomCMS\Core\Template;
 
 use Illuminate\Support\Facades\View as ViewFacade;
 
 class View extends Settings
 {
-    public function admin()
+    public function admin(Page\Page $page)
     {
-        parent::admin();
+        parent::admin($page);
 
         return ViewFacade::make("$this->viewPrefix/admin", [
-            'page' => $this->page,
+            'page' => $page,
         ]);
     }
 
-    /**
-	 * ** View the child page settings.**
-	 *
-	 */
-    public function children()
+    public function children(Page\Page $page)
     {
-        // Call the parent function to check permissions.
-        parent::children();
+        parent::children($page);
 
-        $childOrderingPolicy = $this->page->getChildOrderingPolicy();
+        $childOrderingPolicy = $page->getChildOrderingPolicy();
 
-        $manager = new \Boom\Template\Manager();
+        $manager = new Template\Manager();
         $manager->createNew();
         $templates = $manager->getValidTemplates();
 
         // Create the main view with the basic settings
-        return ViewFacade::make("$this->viewPrefix/children", [
-            'default_child_template'    =>    $this->page->getDefaultChildTemplateId(),
+        $v = ViewFacade::make("$this->viewPrefix/children", [
+            'default_child_template' => $page->getDefaultChildTemplateId(),
             'templates' => $templates,
-            'child_order_column'        =>    $childOrderingPolicy->getColumn(),
-            'child_order_direction'    =>    $childOrderingPolicy->getDirection(),
-            'allowAdvanced'        =>    $this->allowAdvanced,
+            'child_order_column' => $childOrderingPolicy->getColumn(),
+            'child_order_direction' => $childOrderingPolicy->getDirection(),
+            'allowAdvanced' => $this->allowAdvanced,
         ]);
 
         // If we're showing the advanced settings then set the neccessary variables.
         if ($this->allowAdvanced) {
             // Add the view for the advanced settings to the main view.
-            $this->template->set([
-                'default_grandchild_template'    => ($this->page->getGrandchildTemplateId() != 0) ? $this->page->getGrandchildTemplateId() : $this->page->getTemplateId(),
-                'page'                    => $this->page,
-            ]);
+            $v->default_grandchild_template = ($page->getGrandchildTemplateId() != 0) ? $page->getGrandchildTemplateId() : $page->getTemplateId();
+            $v->page = $page;
         }
+
+        return $v;
     }
 
-    public function feature()
+    public function feature(Page\Page $page)
     {
-        parent::feature();
+        parent::feature($page);
 
         return ViewFacade::make("$this->viewPrefix/feature", [
-            'featureImageId' => $this->page->getFeatureImageId(),
+            'featureImageId' => $page->getFeatureImageId(),
         ]);
     }
 
-    /**
-	 * ** View the page navigation settings.**
-	 *
-	 */
-    public function navigation()
+    public function navigation(Page\Page $page)
     {
-        parent::navigation();
+        parent::navigation($page);
 
         return ViewFacade::make("$this->viewPrefix/navigation", [
-            'page' => $this->page,
+            'page' => $page,
             'allowAdvanced' => $this->allowAdvanced,
         ]);
     }
 
-    public function search()
+    public function search(Page\Page $page)
     {
-        parent::search();
+        parent::search($page);
 
         return ViewFacade::make("$this->viewPrefix/search", [
             'allowAdvanced' => $this->allowAdvanced,
-            'page' => $this->page,
+            'page' => $page,
         ]);
     }
 
-    public function sort_children()
+    public function sort_children(Page\Page $page)
     {
-        parent::children();
+        parent::children($page);
 
         $finder = new PageFinder();
 
         $children = $finder
-            ->addFilter(new PageFinder\Filter\ParentPage($this->page))
+            ->addFilter(new PageFinder\Filter\ParentPage($page))
             ->setLimit(50)
             ->findAll();
 

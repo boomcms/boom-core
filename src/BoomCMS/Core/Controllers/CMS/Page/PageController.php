@@ -19,9 +19,9 @@ class PageController extends Controller
         $this->request = $request;
     }
 
-    public function add()
+    public function add(Page\Page $page)
     {
-        $this->authorization('add_page', $this->page);
+        $this->authorization('add_page', $page);
 
         $creator = new \Boom\Page\Creator($this->page, $this->person);
         $creator->setTemplateId($this->request->input('template_id'));

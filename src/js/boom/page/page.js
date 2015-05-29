@@ -9,7 +9,7 @@ function boomPage(page_id) {
 		var promise = new $.Deferred(),
 			page_id = this.id;
 
-		$.post('/cms/page/add/' + page_id, {csrf : $.boom.options.csrf}, function(response){
+		$.post('/cms/page/add/' + page_id, function(response){
 			var json = $.parseJSON(response);
 
 			(typeof json === 'object')? promise.resolve(json) : promise.reject(response);
@@ -73,7 +73,7 @@ function boomPage(page_id) {
 	boomPage.prototype.publish = function() {
 		var promise = new $.Deferred();
 
-		$.post('/cms/page/version/embargo/' + this.id, {csrf : $.boom.options.csrf})
+		$.post('/cms/page/version/embargo/' + this.id)
 			.done(function(response) {
 				promise.resolve(response);
 			});
@@ -84,7 +84,7 @@ function boomPage(page_id) {
 	boomPage.prototype.requestApproval = function() {
 		var url = '/cms/page/version/request_approval/' + this.id;
 
-		return $.post(url, {csrf : $.boom.options.csrf});
+		return $.post(url);
 	};
 
 	boomPage.prototype.removeTag = function(tagId) {
@@ -99,7 +99,7 @@ function boomPage(page_id) {
 
 		new boomConfirmation('Discard changes', 'Are you sure you want to discard any unpublished changes and revert this page to it\'s published state?')
 			.done(function() {
-				$.post('/cms/page/discard/' + page.id, {csrf : $.boom.options.csrf})
+				$.post('/cms/page/discard/' + page.id)
 					.done(function() {
 						promise.resolve();
 					});
@@ -110,7 +110,6 @@ function boomPage(page_id) {
 
 	boomPage.prototype.setTitle = function(title) {
 		return $.post('/cms/page/version/title/' + this.id, {
-			csrf : $.boom.options.csrf,
 			title : title
 		});
 	};

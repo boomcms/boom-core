@@ -39,6 +39,13 @@ class Manager
         }
     }
 
+    public function getAllTemplates()
+    {
+        $provider = new Provider();
+
+        return $provider->findAll();
+    }
+
     /**
 	 * Gets templates where the filename points to an non-existent file.
 	 */

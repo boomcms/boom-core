@@ -25,16 +25,17 @@
                         <?= Lang::get('Visible in CMS navigation') ?>?
 
                         <select name="visible_in_nav_cms" id="visible_in_nav_cms">
-                            <option value="1"<?php if ($page->isVisibleInNavCms()): ?> selected="selected"<?php endif ?>>Yes</option>
-                            <option value="0"<?php if ( ! $page->isVisibleInNavCms()): ?> selected="selected"<?php endif ?>>No</option>
-                        </select>                    </label>
+                            <option value="1"<?php if ($page->isVisibleInCmsNav()): ?> selected="selected"<?php endif ?>>Yes</option>
+                            <option value="0"<?php if ( ! $page->isVisibleInCmsNav()): ?> selected="selected"<?php endif ?>>No</option>
+                        </select>
+                    </label>
 		</div>
 
 		<?php if ($allowAdvanced): ?>
 			<div id='advanced'>
 				<label for="parent_id">Parent page</label>
 
-				<input type="hidden" name="parent_id" value="<?= $page->parent()->getId() ?>">
+				<input type="hidden" name="parent_id" value="<?= $page->getParent()->getId() ?>">
 				<ul class="boom-tree">
 					<li><a id="page_5" href="/" rel="5">Home</a></li>
 				</ul>

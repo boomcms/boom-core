@@ -1,5 +1,5 @@
 <div id="b-assets-picker">
-    <?= View::make('boom/assets/thumbs', ['assets' => []]) ?>
+    <?= View::make('boom::assets.thumbs', ['assets' => []]) ?>
 
     <section id="b-assets-picker-sidebar">
         <section id="b-assets-picker-current">

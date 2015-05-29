@@ -3,20 +3,21 @@
 namespace BoomCMS\Core\Asset\Finder;
 
 use BoomCMS\Core\Finder\Filter as BaseFilter;
+use Illuminate\Database\Eloquent\Builder;
 
 class Type extends BaseFilter
 {
-    protected $_type;
+    protected $type;
 
     public function __construct($types = null)
     {
         $types = is_array($types) ?: [$types];
-        $this->_type = $this->removeInvalidTypes($types);
+        $this->type = $this->removeInvalidTypes($types);
     }
 
-    public function execute(\ORM $query)
-    {
-        return $query->where('asset.type', 'in', $this->_type);
+    public function execute(Builder $query)
+    {return $query;
+        return $query->where('assets.type', 'in', $this->type);
     }
 
     private function removeInvalidTypes($types)
@@ -26,7 +27,7 @@ class Type extends BaseFilter
         foreach ($types as $type) {
             if ($type) {
                 if ( ! is_int($type) && ! ctype_digit($type)) {
-                    $validTypes[] = constant('\Boom\Asset\Type::' . strtoupper($type));
+                    $validTypes[] = constant('\BoomCMS\Core\Asset\Type::' . strtoupper($type));
                 } else {
                     $validTypes[] = $type;
                 }
@@ -38,6 +39,6 @@ class Type extends BaseFilter
 
     public function shouldBeApplied()
     {
-        return ! empty($this->_type);
+        return ! empty($this->type);
     }
 }

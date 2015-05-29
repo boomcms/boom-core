@@ -44,87 +44,32 @@ abstract class Settings extends PageController
 	 */
     public $allowAdvanced;
 
-    /**
-	 * **Edit the page admin settings.**
-	 *
-	 * Settings in this group:
-	 *
-	 *  * Internal name
-	 *
-	 */
-    public function admin()
+    public function admin(Page\Page $page)
     {
-        $this->authorization('edit_page_admin', $this->page);
+        $this->authorization('edit_page_admin', $page);
     }
 
-    /**
-	 * **Edit the child page settings.**
-	 *
-	 * Settings in this group:
-	 *
-	 *  * Basic:
-	 *    * Default child template
-	 *    * Child ordering policy
-	 *  * Advanced:
-	 *    * Children visible in nav
-	 *    * Children visible in CMS nav
-	 *    * Default child URL prefix
-	 *    * Default grandchild template
-	 *
-	 */
-    public function children()
+    public function children(Page\Page $page)
     {
-        $this->authorization('edit_page_children_basic', $this->page);
-        $this->allowAdvanced = $this->auth->loggedIn('edit_page_children_advanced', $this->page);
+        $this->authorization('edit_page_children_basic', $page);
+        $this->allowAdvanced = $this->auth->loggedIn('edit_page_children_advanced', $page);
     }
 
-    /**
-	 * Edit the page's feature image.
-	 *
-	 * Requires the edit_feature_image role.
-	 *
-	 * @uses Boom_Controller::authorization()
-	 */
-    public function feature()
+    public function feature(Page\Page $page)
     {
-        $this->authorization('edit_feature_image', $this->page);
+        $this->authorization('edit_feature_image', $page);
     }
 
-    /**
-	 * **Edit page navigation settings.**
-	 *
-	 * Settings in this group:
-	 *
-	 *  * Basic:
-	 *    * Visible in navigation
-	 *    * Visible in CMS navigation
-	 *  * Advanced:
-	 *    * Parent page
-	 *
-	 */
-    public function navigation()
+    public function navigation(Page\Page $page)
     {
-        $this->authorization('edit_page_navigation_basic', $this->page);
-        $this->allowAdvanced = $this->auth->loggedIn('edit_page_navigation_advanced', $this->page);
+        $this->authorization('edit_page_navigation_basic', $page);
+        $this->allowAdvanced = $this->auth->loggedIn('edit_page_navigation_advanced', $page);
     }
 
-    /**
-	 * ** Edit page search settings. **
-	 *
-	 * Settings in this group:
-	 *
-	 *  * Basic:
-	 *     * Keywords
-	 *     * Description
-	 *  Advanced:
-	 *     * External indexing
-	 *     * Internal indexing
-	 *
-	 */
-    public function search()
+    public function search(Page\Page $page)
     {
-        $this->authorization('edit_page_search_basic', $this->page);
-        $this->allowAdvanced = $this->auth->loggedIn('edit_page_search_advanced', $this->page);
+        $this->authorization('edit_page_search_basic', $page);
+        $this->allowAdvanced = $this->auth->loggedIn('edit_page_search_advanced', $page);
     }
 
     public function visibility(Page\Page $page)

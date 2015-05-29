@@ -3,6 +3,7 @@
 namespace BoomCMS\Core\Asset\Finder;
 
 use BoomCMS\Core\Finder\Filter as BaseFilter;
+use Illuminate\Database\Eloquent\Builder;
 
 class TitleOrDescriptionContains extends BaseFilter
 {
@@ -13,7 +14,7 @@ class TitleOrDescriptionContains extends BaseFilter
         $this->_text = trim($text);
     }
 
-    public function execute(\ORM $query)
+    public function execute(Builder $query)
     {
         return $query->where('title', 'like', "%{$this->_title}%");
     }

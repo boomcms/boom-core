@@ -6,6 +6,8 @@ use BoomCMS\Core\Editor\Editor;
 use BoomCMS\Core\Models\Page as Model;
 use BoomCMS\Core\Page\Finder;
 
+use Illuminate\Support\Facades\App;
+
 /**
  * TODO: Need to not return deleted / invisible pages by default with option to show a hidden page.
  *
@@ -33,14 +35,19 @@ class Provider
      */
     protected $editor;
 
-    public function __construct(Editor $editor)
+    public function __construct(Editor $editor = null)
     {
-        $this->editor = $editor;
+        $this->editor = $editor ?: App::offsetGet('boomcms.editor');
     }
 
     private function cache(Page $page)
     {
         $this->cache['id'][$page->getId()] = $page;
+    }
+
+    public function create($templateId, $title)
+    {
+        
     }
 
     public function findById($id)
