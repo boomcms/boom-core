@@ -4,7 +4,6 @@ namespace BoomCMS\Core\Controllers\Asset;
 
 use BoomCMS\Core\Auth;
 use BoomCMS\Core\Asset\Asset;
-use BoomCMS\Core\Config;
 
 use Intervention\Image\ImageManager;
 
@@ -20,11 +19,7 @@ class Image extends BaseController
     {
         parent::__construct($auth, $asset);
 
-        $this->manager = new ImageManager([
-            'cache' => [
-                'path' => Config::get('assets.directory'),
-            ]
-        ]);
+        $this->manager = new ImageManager();
     }
 
     public function crop($width = null, $height = null)
@@ -39,7 +34,7 @@ class Image extends BaseController
 
         return $this->response
                 ->header('content-type', $this->asset->getMimetype())
-                ->body($image);
+                ->setContent($image);
     }
 
     public function thumb($width = null, $height = null)

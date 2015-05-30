@@ -2,13 +2,13 @@
 
 namespace BoomCMS\Core\Controllers\Asset;
 
-class Video extends Processor
+class Video extends BaseController
 {
-    public function thumbnail($width = null, $height = null)
+    public function thumb($width = null, $height = null)
     {
         return $this->response
-            ->headers('Content-type', 'image/gif')
-            ->body(readfile(__DIR__.'/../../../../public/boom/img/icons/40x40/mov_icon.gif'));
+            ->header('Content-type', 'image/gif')
+            ->setContent(readfile(__DIR__ . '/../../../../../public/img/icons/40x40/mov_icon.gif'));
     }
 
     public function view($width = null, $height = null)

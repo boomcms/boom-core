@@ -4,10 +4,13 @@ namespace BoomCMS\Core\Controllers\CMS\Assets;
 
 use BoomCMS\Core\Auth;
 use BoomCMS\Core\Asset;
+use BoomCMS\Core\Asset\Mimetype\Mimetype;
 use BoomCMS\Core\Asset\Finder;
 use BoomCMS\Core\Controllers\Controller;
 
+use DateTime;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\View;
 
 class AssetManager extends Controller
@@ -20,14 +23,19 @@ class AssetManager extends Controller
 	 */
     protected $viewPrefix = 'boom::assets.';
 
+    /**
+     *
+     * @var Asset\Provider
+     */
     protected $provider;
 
-    public function __construct(Auth\Auth $auth, Request $request)
+    public function __construct(Auth\Auth $auth, Request $request, Asset\Provider $provider)
     {
         $this->auth = $auth;
         $this->request = $request;
+        $this->provider = $provider;
 
-        //$this->authorization('manage_assets');
+        $this->authorization('manage_assets');
     }
 
     public function delete()
@@ -149,6 +157,56 @@ class AssetManager extends Controller
             ->setCredits($this->request->input('credits'))
             ->setThumbnailAssetId($this->request->input('thumbnail_asset_id'))
             ->save();
+    }
+
+    public function upload()
+    {
+        $asset_ids = $errors = [];
+        $now = new DateTime('now');
+
+        foreach ($this->request->file() as $files) {
+            foreach ($files as $i => $file) {
+                if ( ! $file->isValid()) {
+                    $errors[] = $file->getErrorMessage();
+                    continue;
+                }
+
+                try {
+                    $mime = Mimetype::factory($file->getMimeType());
+                } catch (Exception\UnsupportedMimeType $e) {
+                    $errors[] = "File {$file->getClientOriginalName()} is of an unsuported type: {$e->getMimetype()}";
+                    continue;
+                }
+
+                $asset = Asset\Asset::factory(['type' => $mime->getType()]);
+                $asset
+                    ->setUploadedBy($this->auth->getPerson())
+                    ->setVisibleFrom($now)
+                    ->setLastModified($now)
+                    ->setTitle($file->getClientOriginalName())
+                    ->setFilename($file->getClientOriginalName())
+                    ->setFilesize($file->getClientSize());
+
+                $asset_ids[] = $provider->save($asset)->getId();
+                $file->move(Asset\Asset::directory(), $asset->getId());
+
+                if ($asset->isImage()) {
+                    list($width, $height) = getimagesize($filename);
+
+                    $asset
+                        ->setWidth($width)
+                        ->setHeight($height);
+
+                    $provider->save($asset);
+                }
+            }
+
+            if (count($errors)) {
+                return new JsonResponse($errors, 500);
+            } else {
+                return new JsonResponse($asset_ids);
+            }
+        }
     }
 
     public function view()

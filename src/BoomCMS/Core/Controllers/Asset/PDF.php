@@ -2,30 +2,25 @@
 
 namespace BoomCMS\Core\Controllers\Asset;
 
-use Kohana;
-use Imagick;
+use Intervention\Image\ImageManager;
 
-class PDF extends Processor
+class PDF extends BaseController
 {
-    public function thumbnail($width = null, $height = null)
+    public function thumb($width = null, $height = null)
     {
-        $cacheKey = 'asset-' . $this->asset->getId() . '-thumb-' . (int) $width . '-' . (int) $height;
+        $manager = new ImageManager();
 
-        if ( ! $image = Kohana::cache($cacheKey)) {
-            $image = new Imagick($this->asset->getFilename() . '[0]');
-            $image->setImageFormat('png');
-
-            if ($width || $height) {
-                $image->resizeImage($width, $height, Imagick::FILTER_UNDEFINED, 1);
-            }
-
-            $image = $image->getImageBlob();
-            Kohana::cache($cacheKey, $image);
+        if ($width && $height) {
+            $image = $manager->cache(function ($manager) use ($width, $height) {
+                return $manager->make($this->asset->getThumbnailFilename())->fit($width, $height);
+            });
+        } else {
+            $image = $manager->make($this->asset->getThumbnailFilename())->encode();
         }
 
         return $this->response
-            ->headers('Content-type', 'image/jpg')
-            ->body($image);
+                ->header('content-type', 'image/png')
+                ->setContent($image);
     }
 
     public function embed()
