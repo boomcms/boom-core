@@ -22,7 +22,13 @@
 
 		<input type='text' class="b-filter-input" id="b-assets-filter-title" placeholder="Search by asset name" value="Search by asset name" />
 
-		<?php//= Form::select('types', array_merge(['0' => 'Filter by type'], \Boom\Asset\Type::whichExist()), null, ['id' => 'b-assets-types']) ?>
+        <select id="b-assets-types" name="types">
+            <option value="0">Filter by type</option>
+
+            <?php foreach (BoomCMS\Core\Asset\Type::whichExist() as $type): ?>
+               <option value="<?= $type ?>"><?= $type ?></option>
+            <?php endforeach ?>
+        </select>
 
 		<div id='b-tags-search'>
 			<input type='text' class="b-filter-input" placeholder="Type a tag name" value="Type a tag name" />
