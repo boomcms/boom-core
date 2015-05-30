@@ -209,14 +209,10 @@ class AssetManager extends Controller
         }
     }
 
-    public function view()
+    public function view(Asset\Asset $asset)
     {
-        if ( ! $this->asset->loaded()) {
-            throw new HTTP_Exception_404();
-        }
-
         return View::make("$this->viewPrefix/view", [
-            'asset' => $this->asset,
+            'asset' => $asset,
         ]);
     }
 }

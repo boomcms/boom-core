@@ -4,11 +4,10 @@ namespace BoomCMS\Core\Asset;
 
 use BoomCMS\Core\Config;
 use BoomCMS\Core\Person;
-use \DB;
-use \File;
-use \DateTime;
+use DateTime;
 use Date;
-use ORM;
+
+use Rych\ByteSize\ByteSize;
 
 abstract class Asset
 {
@@ -89,6 +88,11 @@ abstract class Asset
     public function getFilesize()
     {
         return $this->get('filesize');
+    }
+
+    public function getHumanFilesize()
+    {
+        return \ByteSize::formatBinary($this->getFilesize());
     }
 
     public function getId()

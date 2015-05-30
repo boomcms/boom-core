@@ -3,17 +3,17 @@
 		<?php if ($allowAdvanced): ?>
 			<ul>
 				<li>
-					<a href="#basic"><?=Lang::get('Basic') ?></a>
+					<a href="#basic"><?= Lang::get('Basic') ?></a>
 				</li>
 				<li>
-					<a href="#advanced"><?=Lang::get('Advanced') ?></a>
+					<a href="#advanced"><?= Lang::get('Advanced') ?></a>
 				</li>
 			</ul>
 		<?php endif ?>
 
 		<div id="basic">
                     <label>
-                        <?=Lang::get('Default child template') ?>
+                        <?= Lang::get('Default child template') ?>
 
                         <select name="children_template_id" id="children_template_id">
                             <?php foreach($templates as $t): ?>
@@ -23,7 +23,7 @@
                     </label>
 
                     <label>
-                        <?=Lang::get('Child ordering policy') ?>
+                        <?= Lang::get('Child ordering policy') ?>
 
                         <select name="children_ordering_policy" id="children_ordering_policy">
                             <option value="sequence"<?php if ($child_order_column === 'sequence'): ?> selected="selected"<?php endif ?>>Manual</option>
@@ -51,7 +51,7 @@
                 </label>
 
                 <label>
-                    <?=Lang::get('Children visible in CMS nav') ?>?
+                    <?= Lang::get('Children visible in CMS nav') ?>?
 
                     <select name="children_visible_in_nav_cms" id="children_visible_in_nav_cms">
                         <option value="1"<?php if ($page->childrenAreVisibleInCmsNav()): ?> selected="selected"<?php endif ?>>Yes</option>
@@ -65,7 +65,7 @@
                 </label>
 
                 <label>
-                    <?=Lang::get('Default grandchild template') ?>
+                    <?= Lang::get('Default grandchild template') ?>
 
                     <select name="grandchild_template_id" id="grandchild_template_id">
                         <?php foreach($templates as $t): ?>

@@ -6,7 +6,7 @@
 			<li><a href="#b-person-view-groups<?= $person->getId() ?>">Groups</a></li>
 		</ul>
 
-		<div id="b-person-view-information<?=$person->getId() ?>">
+		<div id="b-person-view-information<?= $person->getId() ?>">
 			<form>
 				<label>
                                     Name

@@ -15,7 +15,7 @@
 				<div class="ui-state-highlight ui-corner-all">
 					<p style="margin: .5em;">
 						<span style="float: left; margin-right: 0.3em; margin-top:-.2em" class="ui-icon ui-icon-info"></span>
-						<?=Lang::get('Allowed file types') ?>: <?= implode(', ', array_keys(\Boom\Asset\Type::$allowed_types)) ?>
+						<?= Lang::get('Allowed file types') ?>: <?= implode(', ', array_keys(\Boom\Asset\Type::$allowed_types)) ?>
 					</p>
 				</div>
 			</div>

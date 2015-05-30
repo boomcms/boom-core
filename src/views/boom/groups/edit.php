@@ -3,7 +3,7 @@
 		<form data-group-id='<?= $group->getId() ?>'>
 			<fieldset>
 				<label for="b-people-group-name"><h2><?= Lang::get('Edit group name') ?></h2></label>
-				<input type="text" id="b-people-group-name" class="boom-input boom-input-medium" name="name" value="<?=$group->getName() ?>" />
+				<input type="text" id="b-people-group-name" class="boom-input boom-input-medium" name="name" value="<?= $group->getName() ?>" />
 
 				<?= $button('accept', Lang::get('Save group name'), ['id' => 'b-people-group-save']) ?>
 			</fieldset>
@@ -14,8 +14,8 @@
 		<h2>Edit permissions</h2>
 
 		<ul>
-			<li><a href="#b-group-roles-general"><?=Lang::get('CMS Permissions') ?></a></li>
-			<li><a href="#b-group-roles-pages"><?=Lang::get('Page Permissions') ?></a></li>
+			<li><a href="#b-group-roles-general"><?= Lang::get('CMS Permissions') ?></a></li>
+			<li><a href="#b-group-roles-pages"><?= Lang::get('Page Permissions') ?></a></li>
 		</ul>
 
 		<div id="b-group-roles-general">

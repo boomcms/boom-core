@@ -19,7 +19,7 @@
 
                     <label>
                         <?= Lang::get('Keywords') ?>
-                        <textarea name="keywords" rows="5"><?=$page->getKeywords() ?></textarea>
+                        <textarea name="keywords" rows="5"><?= $page->getKeywords() ?></textarea>
                     </label>
 		</div>
 

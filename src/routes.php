@@ -36,6 +36,8 @@ Route::group(['middleware' => [
                 Route::any('{action}', function($action = 'index') {
                     return App::make('BoomCMS\Core\Controllers\CMS\Assets\AssetManager')->$action();
                 });
+
+                Route::get('view/{asset}', 'AssetManager@view');
             });
 
             Route::group(['namespace' => 'People', 'middleware' => ['BoomCMS\Core\Http\Middleware\PeopleManager']], function() {

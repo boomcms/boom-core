@@ -8,7 +8,7 @@
 		<?= $button('delete', Lang::get('Delete'), ['id' => 'b-people-multi-delete', 'disabled' => 'disabled']) ?>
 
 		<button id="b-people-all" class="b-button">
-			<?=Lang::get('All people') ?>
+			<?= Lang::get('All people') ?>
 		</button>
 	</div>
 

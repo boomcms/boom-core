@@ -42,7 +42,7 @@ class DefineCMSViewSharedVariables
             return new UI\MenuButton();
         });
 
-        View::share('asset', function(array $params) {
+        View::share('assetURL', function(array $params) {
             return route('asset', $params);
         });
 

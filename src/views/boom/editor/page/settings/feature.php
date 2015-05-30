@@ -6,7 +6,7 @@
 		<?php if ( ! $featureImageId): ?>
 			<img id='b-page-feature-current' src='' />
 		<?php else: ?>
-			<img id='b-page-feature-current' data-asset-id="<?= $featureImageId ?>" src='<?= $asset(['asset' => $featureImageId, 'width' => 500]) ?>' />
+			<img id='b-page-feature-current' data-asset-id="<?= $featureImageId ?>" src='<?= $assetURL(['asset' => $featureImageId, 'width' => 500]) ?>' />
 		<?php endif ?>
 
 		<div id='b-page-feature-buttons'>

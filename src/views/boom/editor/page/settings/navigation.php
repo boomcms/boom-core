@@ -3,10 +3,10 @@
 		<?php if ($allowAdvanced): ?>
 			<ul>
 				<li>
-					<a href="#basic"><?=Lang::get('Basic') ?></a>
+					<a href="#basic"><?= Lang::get('Basic') ?></a>
 				</li>
 				<li>
-					<a href="#advanced"><?=Lang::get('Advanced') ?></a>
+					<a href="#advanced"><?= Lang::get('Advanced') ?></a>
 				</li>
 			</ul>
 		<?php endif ?>
