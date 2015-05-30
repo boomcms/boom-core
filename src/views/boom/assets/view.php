@@ -57,14 +57,14 @@
                 <dt><?= Lang::get('Filesize') ?></dt>
                 <dd><span id='filesize'><?= $asset->getHumanFilesize() ?></dd>
 
-                <?php if ($asset instanceof \Boom\Asset\Type\Image): ?>
+                <?php if ($asset->isImage()): ?>
                     <dt><?= Lang::get('Dimensions') ?></dt>
                     <dd><?= $asset->getWidth() ?> x <?= $asset->getHeight() ?></dd>
                 <?php endif ?>
 
                 <?php if ($uploader = $asset->getUploadedBy()): ?>
                     <dt><?= Lang::get('Uploaded by') ?></dt>
-                    <dd><?= $uploader->name ?></dd>
+                    <dd><?= $uploader->getName() ?></dd>
                 <?php endif ?>
 
                 <dt><?= Lang::get('Uploaded on') ?></dt>

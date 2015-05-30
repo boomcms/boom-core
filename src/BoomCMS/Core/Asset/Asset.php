@@ -7,6 +7,7 @@ use BoomCMS\Core\Person;
 use DateTime;
 use Date;
 
+use Illuminate\Support\Facades\DB;
 use Rych\ByteSize\ByteSize;
 
 abstract class Asset
@@ -18,6 +19,8 @@ abstract class Asset
     protected $attributes;
 
     protected $old_files = [];
+
+    protected $tags;
 
     public function __construct(array $attributes)
     {
@@ -92,7 +95,7 @@ abstract class Asset
 
     public function getHumanFilesize()
     {
-        return \ByteSize::formatBinary($this->getFilesize());
+        return ByteSize::formatBinary($this->getFilesize());
     }
 
     public function getId()
@@ -154,13 +157,13 @@ abstract class Asset
 
     public function getTags()
     {
-        $results = DB::select('tag')
-            ->from('assets_tags')
-            ->where('asset_id', '=', $this->getId())
-            ->execute()
-            ->as_array('tag');
+        if ($this->tags === null) {
+            $this->tags = DB::table('assets_tags')
+                ->where('asset_id', '=', $this->getId())
+                ->lists('tag');
+        }
 
-        return array_keys($results);
+        return $this->tags;
     }
 
     public function getThumbnailAssetId()
@@ -182,7 +185,9 @@ abstract class Asset
 
     public function getUploadedBy()
     {
-        return $this->model->uploader;
+        $provider = new Person\Provider();
+
+        return $provider->findById($this->get('uploaded_by'));
     }
 
     public function getUploadedTime()
