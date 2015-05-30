@@ -37,8 +37,6 @@ class PageController extends Controller
 
         $this->log("Added a new page under " . $this->page->getTitle(), "Page ID: " . $new_page->getId());
 
-        $new_page->getTemplate()->onPageCreate($new_page);
-
         $this->response->body(json_encode([
             'url' => URL::site($url, $this->request),
             'id' => $new_page->getId(),
@@ -67,8 +65,6 @@ class PageController extends Controller
 
             // Redirect to the parent page after we've finished.
             $this->response->body($this->page->parent()->url());
-
-            $this->page->getTemplate()->onPageDelete($this->page);
 
             $commander = new \Boom\Page\Commander($this->page);
             $commander

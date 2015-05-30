@@ -171,49 +171,4 @@ class Template
 
         return $this;
     }
-
-    /**
-     * Called after the template is applied to a page.
-     *
-     * @param \Boom\Page\Page $page
-     */
-    public function onApplied(Page\Page $page) {}
-
-    /**
-     * Called after a page is created with this template.
-     *
-     * @param \Boom\Page\Page $page
-     */
-    public function onPageCreate(Page\Page $page) {}
-
-    /**
-     * Called before a page using this template is deleted.
-     *
-     * @param \Boom\Page\Page $page
-     */
-    public function onPageDelete(Page\Page $page) {}
-
-    /**
-     * Called after a page using this template has its title changed.
-     *
-     * @param \Boom\Page\Page $page
-     * @param string
-     * @param string
-     */
-    public function onPageRename(Page\Page $page, $oldTitle, $newTitle) {}
-
-    /**
-     * Called after a chunk is saved.
-     *
-     * @param \Boom\Page\Page $page
-     * @param type            $chunk
-     */
-    public function onPageChunkSave(Page\Page $page, $chunk) {}
-
-    /**
-     * Called after a page using this template is saved.
-     *
-     * @param \Boom\Page\Page $page
-     */
-    public function onPageSave(Page\Page $page) {}
 }

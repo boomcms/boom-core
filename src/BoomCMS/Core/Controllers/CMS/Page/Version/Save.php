@@ -72,8 +72,6 @@ class Controller_Cms_Page_Version_Save extends Controller_Cms_Page_Version
             ->set('template_id', $this->request->input('template_id'))
             ->create()
             ->copy_chunks($this->old_version);
-
-        $this->page->getTemplate()->onApplied($this->page);
     }
 
     public function title()
@@ -93,8 +91,6 @@ class Controller_Cms_Page_Version_Save extends Controller_Cms_Page_Version
         $this->new_version
             ->create()
             ->copy_chunks($this->old_version);
-
-        $this->page->getTemplate()->onPageRename($this->page, $this->old_version->title, $this->new_version->title);
     }
 
     public function after()
