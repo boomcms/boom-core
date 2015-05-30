@@ -1,11 +1,10 @@
 <div id="b-assets-view">
     <div class="b-assets-preview">
-        <img src="<?= Route::url('asset', ['action' => 'thumb', 'id' => $asset->getId(), 'width' => 0, 'height' => 300, 'quality' => 85, 'crop' => 0]) ?>">
+        <img src="<?= $asset(['asset' => $asset->getId(), 'action' => 'crop', 'height' => 300]) ?>">
 
         <div class="ui-dialog-buttonpane">
             <?= $button('delete', Lang::get('Delete'), ['class' => 'b-assets-delete']) ?>
             <?= $button('download', Lang::get('Download'), ['class' => 'b-assets-download']) ?>
-            <?//= \Boom\UI\Button('replace', Lang::get('Replace'), array('class' => 'b-assets-replace')) ?>
         </div>
     </div>
 
@@ -78,7 +77,7 @@
             </dl>
         </div>
 
-        <?= View::make('boom/assets/tags', ['tags' => $asset->getTags()]) ?>
+        <?= View::make('boom::assets.tags', ['tags' => $asset->getTags()]) ?>
 
         <?php if (count($asset->getOldFiles()) > 0): ?>
             <div id="b-assets-view-files">
@@ -89,7 +88,7 @@
                     <?php foreach ($asset->getOldFiles() as $timestamp => $filename): ?>
                         <li>
                             <a href="/cms/assets/restore/<?= $asset->getId() ?>?timestamp=<?= $timestamp ?>">
-                                <img src="<?= Route::url('asset', ['action' => 'thumb', 'id' => $asset->getId(), 'width' => 160, 'height' => 160, 'quality' => 85, 'crop' => 1]) ?><?php if ($timestamp): ?>?timestamp=<?= $timestamp ?><?php endif ?>" />
+                                <img src="<?= $asset(['asset' => $asset->getId(), 'action' => 'crop', 'width' => 160, 'height' => 160]) ?><?php if ($timestamp): ?>?timestamp=<?= $timestamp ?><?php endif ?>" />
                             </a>
                             <?= date("d F Y H:i", $timestamp) ?>
                         </li>

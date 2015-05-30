@@ -42,6 +42,10 @@ class DefineCMSViewSharedVariables
             return new UI\MenuButton();
         });
 
+        View::share('asset', function(array $params) {
+            return route('asset', $params);
+        });
+
         View::share('boomJS', '<script type="text/javascript" src="/public/boom/js/cms.js"></script>');
 
         View::share('editor', $this->app['boomcms.editor']);
