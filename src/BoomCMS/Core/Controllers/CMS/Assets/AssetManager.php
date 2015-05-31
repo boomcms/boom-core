@@ -9,8 +9,11 @@ use BoomCMS\Core\Asset\Finder;
 use BoomCMS\Core\Controllers\Controller;
 
 use DateTime;
+use ZipArchive;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\View;
 
 class AssetManager extends Controller
@@ -54,6 +57,43 @@ class AssetManager extends Controller
                 ->execute();
 
             $this->log("Deleted asset {$asset->getTitle()} (ID: {$asset->getId()})");
+        }
+    }
+
+    public function download()
+    {
+        $assetIds = array_unique((array) $this->request->input('asset'));
+        $assets = [];
+
+        foreach ($assetIds as $assetId) {
+            $asset = $this->provider->findById($assetId);
+
+            if ($asset->loaded()) {
+                $assets[] = $asset;
+            }
+        }
+
+        if (count($assets) === 1) {
+            return Response::download($assets[0]->getFilename());
+        } else {
+            $filename = tempnam(sys_get_temp_dir(), 'boomcms_asset_download');
+            $zip = new ZipArchive();
+            $zip->open($filename, ZipArchive::CREATE);
+
+            foreach ($assets as $asset) {
+                $zip->addFile($asset->getFilename(), $asset->getOriginalFilename());
+            }
+
+            $zip->close();
+
+            $response = Response::make()
+                ->header("Content-type", "application/zip")
+                ->header("Content-Disposition", "attachment; filename=cms_assets.zip")
+                ->setContent(file_get_contents($filename));
+
+            unlink($filename);
+
+            return $response;
         }
     }
 
@@ -187,11 +227,8 @@ class AssetManager extends Controller
                     ->setFilename($file->getClientOriginalName())
                     ->setFilesize($file->getClientSize());
 
-                $asset_ids[] = $provider->save($asset)->getId();
-                $file->move(Asset\Asset::directory(), $asset->getId());
-
                 if ($asset->isImage()) {
-                    list($width, $height) = getimagesize($filename);
+                    list($width, $height) = getimagesize($file->getRealPath());
 
                     $asset
                         ->setWidth($width)
@@ -199,6 +236,9 @@ class AssetManager extends Controller
 
                     $provider->save($asset);
                 }
+
+                $asset_ids[] = $provider->save($asset)->getId();
+                $file->move(Asset\Asset::directory(), $asset->getId());
             }
 
             if (count($errors)) {

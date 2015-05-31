@@ -3,8 +3,8 @@
 namespace BoomCMS\Core\Asset\Finder;
 
 use BoomCMS\Core\Finder\Filter as BaseFilter;
-use DB;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Builder;
 
 class Tag extends BaseFilter
@@ -26,16 +26,15 @@ class Tag extends BaseFilter
 
     public function execute(Builder $query)
     {
-        $op = (is_array($this->tags)) ? 'IN' : '=';
-
-        $query
-            ->join('assets_tags', 'assets_tags.asset_id', '=', 'assets.id')
-            ->where('assets_tags.tag', $op, $this->tags);
+        $query->join('assets_tags', 'assets_tags.asset_id', '=', 'assets.id');
 
         if (is_array($this->tags)) {
             $query
+                ->whereIn('assets_tags.tag', $this->tags)
                 ->groupBy("tag")
-                ->having(DB::raw('count(distinct tag)'), '>=', count($this->tags));
+                ->having(DB::raw('count(distinct tag)'), '=', count($this->tags));
+        } else {
+            $query->where('assets_tags.tag', '=', $this->tags);
         }
 
         return $query;

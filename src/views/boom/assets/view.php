@@ -1,6 +1,6 @@
 <div id="b-assets-view">
     <div class="b-assets-preview">
-        <img src="<?= $assetURL(['asset' => $asset->getId(), 'action' => 'crop', 'height' => 300]) ?>">
+        <img src="<?= $assetURL(['asset' => $asset->getId(), 'action' => 'thumb', 'height' => 300]) ?>">
 
         <div class="ui-dialog-buttonpane">
             <?= $button('delete', Lang::get('Delete'), ['class' => 'b-assets-delete']) ?>

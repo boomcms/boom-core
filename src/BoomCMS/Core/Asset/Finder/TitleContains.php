@@ -16,11 +16,14 @@ class TitleContains extends BaseFilter
 
     public function execute(Builder $query)
     {
+        $text = $this->title;
+
         return $query
-            ->and_where_open()
-            ->where('title', 'like', "%{$this->title}%")
-            ->or_where('description', 'like', "%{$this->title}%")
-            ->and_where_close();
+            ->whereNested(function($query) use($text) {
+                return $query
+                    ->where('title', 'like', "%$text%")
+                    ->orWhere('description', 'like', "%$text%");
+            });
     }
 
     public function shouldBeApplied()

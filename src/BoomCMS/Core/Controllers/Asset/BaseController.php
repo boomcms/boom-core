@@ -50,14 +50,7 @@ abstract class BaseController extends Controller
 
     public function download()
     {
-        return $this->response->headers([
-            'content-type' => $this->asset->getMimetype(),
-            'content-disposition' => 'attachment; filename="' . $this->asset->getOriginalFilename() . '"',
-            'content-transfer-encoding' => 'binary',
-            'Content-Length' => $this->asset->getFilesize(),
-            'Accept-Ranges' => 'bytes',
-        ])
-        ->body(file_get_contents($this->asset->getFilename()));
+        return $this->response->download($this->asset->getFilename());
     }
 
     public function embed()

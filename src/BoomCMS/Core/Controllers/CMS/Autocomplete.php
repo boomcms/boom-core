@@ -2,9 +2,11 @@
 
 namespace BoomCMS\Core\Controllers\CMS;
 
-use BoomCMS\Core\Tag\Tag as Tag;
+use BoomCMS\Core\Controllers\Controller;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
-class Autocomplete extends Boom\Controller
+class Autocomplete extends Controller
 {
     /**
 	 * The number of results to be returned. Default is 10.
@@ -27,57 +29,39 @@ class Autocomplete extends Boom\Controller
 	 */
     public $text;
 
-    public function before()
+    public function __construct(Request $request)
     {
-        parent::before();
-
-        // Determine the number of results to display
-        // Use 10 as the default value if nothing is sent.
-        $this->count = ($this->request->query('count') > 0) ? $this->request->query('count') : 10;
-
-        // The text to search for.
-        $this->text = $this->request->query('text');
+        $this->count = ($request->input('count') > 0) ? $request->input('count') : 10;
+        $this->text = $request->input('text');
+        $this->request = $request;
     }
 
-    /**
-	 * Autocomplete on asset title.
-	 */
     public function assets()
     {
-        // Build the query.
-        $query = DB::select('title')
-            ->from('assets')
+        $query = DB::table('assets')
+            ->select('title')
             ->where('title', 'like', "%$this->text%")
             ->orderBy(DB::raw('length(title)'), 'asc')
+            ->distinct(true)
             ->limit($this->count);
 
-        // Get the results
-        $results = $query
-            ->execute()
-            ->as_array('title');
-
-        // Get an array of asset titles from the results.
-        $this->results = array_keys($results);
+        return $query->lists('title');
     }
 
     public function asset_tags()
     {
-        $query = DB::select('tag')
-            ->from('assets_tags')
+        $query = DB::table('assets_tags')
+            ->select('tag')
             ->where('tag', 'like', "%$this->text%")
             ->orderBy(DB::raw('length(tag)'), 'asc')
             ->distinct(true)
             ->limit($this->count);
 
-        if ($this->request->query('ignore')) {
-            $query->where('tag', 'not in', $this->request->query('ignore'));
+        if ($this->request->input('ignore')) {
+            $query->whereNotIn('tag', $this->request->input('ignore'));
         }
 
-        $results = $query
-            ->execute()
-            ->as_array();
-
-        $this->results = Arr::pluck($results, 'tag');
+        return $query->lists('tag');
     }
 
     /**
