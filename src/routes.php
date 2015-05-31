@@ -41,6 +41,9 @@ Route::group(['middleware' => [
                 });
 
                 Route::get('view/{asset}', 'AssetManager@view');
+                Route::get('tags/list/{assets}', 'Tags@listTags');
+                Route::post('tags/add', 'Tags@add');
+                Route::post('tags/remove', 'Tags@remove');
             });
 
             Route::group(['namespace' => 'People', 'middleware' => ['BoomCMS\Core\Http\Middleware\PeopleManager']], function() {

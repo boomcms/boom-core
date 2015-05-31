@@ -25,7 +25,7 @@ class Collection
      * Add a tag to all assets in the collection
      *
      * @param  string                 $tag
-     * @return \Boom\Asset\Collection
+     * @return Collection
      */
     public function addTag($tag)
     {
@@ -34,10 +34,12 @@ class Collection
 
         foreach ($this->assetIds as $id) {
             try {
-                DB::insert('assets_tags', ['asset_id', 'tag'])
-                    ->values([$id, $tag])
-                    ->execute();
-            } catch (\Database_Exception $e) {}
+                DB::table('assets_tags')
+                    ->insert([
+                        'asset_id' => $id,
+                        'tag' => $tag
+                    ]);
+            } catch (\Exception $e) {}
         }
 
         return $this;
@@ -67,29 +69,26 @@ class Collection
      */
     public function getTags()
     {
-        $results = DB::select('tag')
-            ->from('assets_tags')
-            ->where('asset_id', 'in', $this->assetIds)
+        return DB::table('assets_tags')
+            ->select('tag')
+            ->whereIn('asset_id', $this->assetIds)
             ->groupBy('tag')
-            ->having(DB::raw('count(distinct asset_id)'), '>=', count($this->assetIds))
-            ->execute()
-            ->as_array('tag');
-
-        return array_keys($results);
+            ->havingRaw(DB::raw('count(distinct asset_id) =' . count($this->assetIds)))
+            ->lists('tag');
     }
 
     /**
      * Remove a tag from all assets in the collection
      *
      * @param  string                 $tag
-     * @return \Boom\Asset\Collection
+     * @return Collection
      */
     public function removeTag($tag)
     {
-        DB::delete('assets_tags')
+        DB::table('assets_tags')
             ->where('tag', '=', $tag)
-            ->where('asset_id', 'in', $this->assetIds)
-            ->execute();
+            ->whereIn('asset_id', $this->assetIds)
+            ->delete();
 
         return $this;
     }
