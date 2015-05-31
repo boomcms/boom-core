@@ -12,7 +12,6 @@ use DateTime;
 use ZipArchive;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\View;
 
@@ -43,21 +42,8 @@ class AssetManager extends Controller
 
     public function delete()
     {
-        $assetIds = array_unique((array) $this->request->input('assets'));
-
-        foreach ($assetIds as $assetId) {
-            $asset = Asset\Factory::byId($assetId);
-
-            $commander = new \Boom\Asset\Commander($asset);
-            $commander
-                ->addCommand(new \Boom\Asset\Delete\CacheFiles())
-                ->addCommand(new \Boom\Asset\Delete\OldVersions())
-                ->addCommand(new \Boom\Asset\Delete\FromDatabase())
-                ->addCommand(new \Boom\Asset\Delete\File())
-                ->execute();
-
-            $this->log("Deleted asset {$asset->getTitle()} (ID: {$asset->getId()})");
-        }
+        $collection = new Asset\Collection($this->request->input('assets'));
+        $collection->delete();
     }
 
     public function download()

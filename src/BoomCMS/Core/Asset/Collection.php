@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Core\Asset;
 
-use DB;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Defines methods for working with a collection of assets
@@ -41,6 +41,23 @@ class Collection
         }
 
         return $this;
+    }
+
+    public function delete()
+    {
+        foreach ($this->assetIds as $assetId) {
+            $filename = Asset::directory() . $assetId;
+
+            file_exists($filename) && unlink($filename);
+
+            foreach (glob($filename . '.*') as $file) {
+                unlink($file);
+            }
+        }
+
+        DB::table('assets')
+            ->whereIn('id', $this->assetIds)
+            ->delete();
     }
 
     /**
