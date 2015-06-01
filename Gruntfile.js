@@ -110,14 +110,6 @@ module.exports = function(grunt) {
 			}
 		},
 		less: {
-			development: {
-				options: {
-					paths: ["src/css"]
-				},
-				files: {
-					"public/css/cms.css": "src/css/cms.less"
-				}
-			},
 			production: {
 				options: {
 					paths: ["src/css"]
@@ -152,12 +144,12 @@ module.exports = function(grunt) {
 		},
 		watch: {
 			css: {
-				files: '**/*.less',
-				tasks: ['build']
+				files: 'src/css/**/*.less',
+				tasks: ['build-css']
 			},
 			js: {
-				files: 'src/js/*.js',
-				tasks: ['build']
+				files: 'src/js/**/*.js',
+				tasks: ['build-js']
 			}
 		}
 	});
@@ -169,7 +161,8 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-cssmin');
 	grunt.loadNpmTasks('grunt-autoprefixer');
 
-	grunt.registerTask('build', ['less', 'concat:dist', 'autoprefixer:no_dest', 'cssmin']);
-	grunt.registerTask('dist', ['less', 'cssmin', 'concat:dist', 'uglify']);
+	grunt.registerTask('build-css', ['less', 'autoprefixer:no_dest', 'cssmin']);
+	grunt.registerTask('build-js', ['concat:dist']);
+	grunt.registerTask('dist', ['build-css', 'build-js', 'uglify']);
 	grunt.registerTask('default',['watch']);
 };
