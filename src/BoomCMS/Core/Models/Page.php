@@ -11,8 +11,6 @@ class Page extends Model
 {
     protected $table = 'pages';
 
-
-
     /**
 	 *
 	 * @return \Boom_Model_Page

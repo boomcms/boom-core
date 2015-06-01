@@ -43,9 +43,8 @@ class Provider
             $model = isset($this->cache[$asset->getId()]) ?
                 $this->cache[$asset->getId()]
                 : Model::find($asset->getId());
-    
-            $model->fill($asset->toArray());
-            $model->save();
+
+            $model->update($asset->toArray());
         } else {
             $model = Model::create($asset->toArray());
             $asset->setId($model->id);
