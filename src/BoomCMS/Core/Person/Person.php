@@ -75,10 +75,10 @@ class Person
 
     public function getGroups()
     {
-        $finder = new Group\Finder();
+        $finder = new Group\Finder\Finder();
 
         return $finder
-            ->addFilter(new Group\Finder\Filter\Person($this))
+            ->addFilter(new Group\Finder\Person($this))
             ->findAll();
     }
 

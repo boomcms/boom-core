@@ -15,7 +15,7 @@
 						<input type="checkbox" class="b-people-select" />
 					</td>
 					<td>
-						<a href="<?php//= Route::url('people-edit', ['controller' => 'person', 'action' => 'view', 'id' => $person->getId()]) ?>"><?= $person->getName() ?></a>
+						<a href="<?= route('person', ['controller' => 'person', 'action' => 'view', 'id' => $person->getId()]) ?>"><?= $person->getName() ?></a>
 					</td>
 					<td>
 						<?= $person->getEmail() ?>

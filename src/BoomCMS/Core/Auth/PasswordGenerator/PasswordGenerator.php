@@ -10,7 +10,7 @@ abstract class PasswordGenerator
     {
         $driver === null && $driver = static::$default;
 
-        $class = "\Boom\Auth\PasswordGenerator\\$driver";
+        $class = "BoomCMS\Core\Auth\PasswordGenerator\\$driver";
 
         return new $class();
     }

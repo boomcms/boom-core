@@ -1,6 +1,6 @@
 <?php
 
-namespace BoomCMS\Core\Controllers\People\Person;
+namespace BoomCMS\Core\Controllers\CMS\People\Person;
 
 use BoomCMS\Core\Auth\PasswordGenerator\PasswordGenerator;
 use BoomCMS\Core\Group;

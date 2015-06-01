@@ -8,7 +8,9 @@ class Provider
 {
     public function create(array $credentials)
     {
+        $model = Model::create($credentials);
 
+        return $this->findAndCache($model);
     }
 
     public function findAndCache(Model $model)
@@ -20,9 +22,21 @@ class Provider
         return new Person($model->toArray());
     }
 
+    public function findAll()
+    {
+        $models = Model::all();
+        $people = [];
+
+        foreach ($models as $model) {
+            $people[] = $this->findAndCache($model);
+        }
+
+        return $people;
+    }
+
     /**
      *
-     * @return \Boom\Person\Person
+     * @return Person
      */
     public function findBy($key, $value)
     {
