@@ -39,6 +39,18 @@ class Provider
 
     public function save(Asset $asset)
     {
+        if ($asset->loaded()) {
+            $model = isset($this->cache[$asset->getId()]) ?
+                $this->cache[$asset->getId()]
+                : Model::find($asset->getId());
+    
+            $model->fill($asset->toArray());
+            $model->save();
+        } else {
+            $model = Model::create($asset->toArray());
+            $asset->setId($model->id);
+        }
 
+        return $asset;
     }
 }

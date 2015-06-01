@@ -170,19 +170,16 @@ class AssetManager extends Controller
         $this->redirect('/cms/assets/#asset/'.$this->asset->getId());
     }
 
-    public function save()
+    public function save(Asset\Asset $asset)
     {
-        if ( ! $this->asset->loaded()) {
-            throw new HTTP_Exception_404();
-        }
-
-        $this->asset
+        $asset
             ->setTitle($this->request->input('title'))
             ->setDescription($this->request->input('description'))
             ->setVisiblefrom(new DateTime($this->request->input('visible_from')))
             ->setCredits($this->request->input('credits'))
-            ->setThumbnailAssetId($this->request->input('thumbnail_asset_id'))
-            ->save();
+            ->setThumbnailAssetId($this->request->input('thumbnail_asset_id'));
+
+        $this->provider->save($asset);
     }
 
     public function upload()

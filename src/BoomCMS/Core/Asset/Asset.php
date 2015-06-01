@@ -7,10 +7,11 @@ use BoomCMS\Core\Person;
 use DateTime;
 use Date;
 
+use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Facades\DB;
 use Rych\ByteSize\ByteSize;
 
-abstract class Asset
+abstract class Asset implements Arrayable
 {
     /**
      *
@@ -293,6 +294,15 @@ abstract class Asset
         return $this;
     }
 
+    public function setId($id)
+    {
+        if ( !$this->getId()) {
+            $this->attributes['id'] = $id;
+        }
+
+        return $this;
+    }
+
     /**
 	 *
 	 * @param DateTime $time
@@ -346,5 +356,10 @@ abstract class Asset
         $this->attributes['visible_from'] = $time->getTimestamp();
 
         return $this;
+    }
+
+    public function toArray()
+    {
+        return $this->attributes;
     }
 }

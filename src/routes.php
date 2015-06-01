@@ -42,6 +42,7 @@ Route::group(['middleware' => [
 
                 Route::get('view/{asset}', 'AssetManager@view');
                 Route::get('tags/list/{assets}', 'Tags@listTags');
+                Route::post('save/{asset}', 'AssetManager@save');
                 Route::post('tags/add', 'Tags@add');
                 Route::post('tags/remove', 'Tags@remove');
             });
