@@ -6,3 +6,4 @@ modules/orm
 modules/database
 modules/image
 modules/minion
+/nbproject/project
