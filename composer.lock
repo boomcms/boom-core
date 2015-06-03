@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "664253bb2eb9b876c3fe4c48b1f0bfb8",
+    "hash": "2d91e5e29d1bfb4334626fbe66643d5a",
     "packages": [
         {
             "name": "boomcms/boom-core",
@@ -50,6 +50,34 @@
             ],
             "description": "Core classes for BoomCMS",
             "time": "2015-06-03 20:47:34"
+        },
+        {
+            "name": "boomcms/boom-installer",
+            "version": "1.0.x-dev",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/boomcms/boom-installer.git",
+                "reference": "72ffef2a9e17ab222b64d15687b26f7beac1cca3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/boomcms/boom-installer/zipball/72ffef2a9e17ab222b64d15687b26f7beac1cca3",
+                "reference": "72ffef2a9e17ab222b64d15687b26f7beac1cca3",
+                "shasum": ""
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Rob Taylor",
+                    "email": "rob@uxblondon.com"
+                }
+            ],
+            "description": "BoomCMS installer",
+            "time": "2015-06-03 20:56:57"
         },
         {
             "name": "classpreloader/classpreloader",
