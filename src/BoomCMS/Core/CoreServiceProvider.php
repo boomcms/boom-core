@@ -37,6 +37,10 @@ class CoreServiceProvider extends ServiceProvider
             return $page;
         });
 
+        $this->publishes([
+          __DIR__.'/../../../public' => public_path('vendor/boomcms'),
+        ], 'boomcms');
+
         include __DIR__ . '/../../routes.php';
     }
 
@@ -46,6 +50,8 @@ class CoreServiceProvider extends ServiceProvider
 	 */
     public function register()
     {
+        $this->mergeConfigFrom(
+            __DIR__ . '/../../config/boomcms.php', 'boomcms'
+        );
     }
-
 }
