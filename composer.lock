@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "f4ceafae3177d26c082c8a131e3aaa03",
+    "hash": "664253bb2eb9b876c3fe4c48b1f0bfb8",
     "packages": [
         {
             "name": "boomcms/boom-core",
@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/boomcms/boom-core.git",
-                "reference": "224eb976be4a1f08f77f7b3921bcbb1067656134"
+                "reference": "6401a501915ebefab3e1eb90b69f769a403607c0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/boomcms/boom-core/zipball/224eb976be4a1f08f77f7b3921bcbb1067656134",
-                "reference": "224eb976be4a1f08f77f7b3921bcbb1067656134",
+                "url": "https://api.github.com/repos/boomcms/boom-core/zipball/6401a501915ebefab3e1eb90b69f769a403607c0",
+                "reference": "6401a501915ebefab3e1eb90b69f769a403607c0",
                 "shasum": ""
             },
             "require": {
@@ -49,7 +49,7 @@
                 "BSD-3-Clause"
             ],
             "description": "Core classes for BoomCMS",
-            "time": "2015-06-03 18:40:15"
+            "time": "2015-06-03 20:47:34"
         },
         {
             "name": "classpreloader/classpreloader",
