@@ -1,7 +1,7 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
     "hash": "2d91e5e29d1bfb4334626fbe66643d5a",
@@ -57,15 +57,27 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/boomcms/boom-installer.git",
-                "reference": "72ffef2a9e17ab222b64d15687b26f7beac1cca3"
+                "reference": "bafee62983c8037433d9eba10c70d1eceb9abf48"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/boomcms/boom-installer/zipball/72ffef2a9e17ab222b64d15687b26f7beac1cca3",
-                "reference": "72ffef2a9e17ab222b64d15687b26f7beac1cca3",
+                "url": "https://api.github.com/repos/boomcms/boom-installer/zipball/bafee62983c8037433d9eba10c70d1eceb9abf48",
+                "reference": "bafee62983c8037433d9eba10c70d1eceb9abf48",
                 "shasum": ""
             },
+            "require": {
+                "illuminate/support": "^5.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "^0.9.4",
+                "phpunit/phpunit": "^4.6"
+            },
             "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "BoomCMS\\Installer": "src/"
+                }
+            },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
@@ -77,7 +89,7 @@
                 }
             ],
             "description": "BoomCMS installer",
-            "time": "2015-06-03 20:56:57"
+            "time": "2015-06-04 07:56:21"
         },
         {
             "name": "classpreloader/classpreloader",
@@ -774,12 +786,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "4e6d4ea7787b3a3b0cf1607872e177f388eea2a3"
+                "reference": "08e51fb932bdbcf10420f4dfa7878ad4fdebdba0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/4e6d4ea7787b3a3b0cf1607872e177f388eea2a3",
-                "reference": "4e6d4ea7787b3a3b0cf1607872e177f388eea2a3",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/08e51fb932bdbcf10420f4dfa7878ad4fdebdba0",
+                "reference": "08e51fb932bdbcf10420f4dfa7878ad4fdebdba0",
                 "shasum": ""
             },
             "require": {
@@ -892,7 +904,7 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2015-06-03 16:29:01"
+            "time": "2015-06-04 12:57:08"
         },
         {
             "name": "league/flysystem",
