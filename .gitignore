@@ -1,10 +1,5 @@
 ._*
 /vendor/
-modules/asset-merger
-modules/auth
-modules/orm
-modules/database
-modules/image
-modules/minion
 /nbproject/private
 public/vendor
+.env
