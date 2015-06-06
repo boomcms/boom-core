@@ -2,29 +2,11 @@
 
 namespace BoomCMS\Core\Controllers\CMS\People\Person;
 
-use BoomCMS\Core\Auth\PasswordGenerator\PasswordGenerator;
-use BoomCMS\Core\Group;
-use BoomCMS\Core\Person;
-
 class SavePerson extends BasePerson
 {
-    public function add(Person\Provider $provider, Group\Provider $groupProvider)
+    public function add()
     {
-        $password = PasswordGenerator::factory()->get_password();
-        $encPassword = $this->auth->hash($password);
-
-        $person = $provider
-            ->create([
-                'name' => $this->request->input('name'),
-                'email' => $this->request->input('email'),
-                'password' => $encPassword
-            ])
-            ->addGroup($groupProvider->findById($this->request->input('group_id')));
-
-        if (isset($password)) {
-            $email = new BoomCMS\Core\Email\Newuser($person, $password, $this->request);
-            $email->send();
-        }
+        $this->dispatchFrom('BoomCMS\Core\Commands\CreatePerson', $this->request);
     }
 
     public function add_group()
