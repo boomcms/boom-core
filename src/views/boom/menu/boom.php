@@ -1,5 +1,5 @@
 <nav id="b-menu" class="pushy pushy-left">
-	<img src="/public/boom/img/logo.png" alt="BoomCMS Logo" />
+	<img src="/public/vendor/boomcms/boom-core/img/logo.png" alt="BoomCMS Logo" />
 	<ul>
 		<?php foreach ($menu_items as $item): ?>
 			<li>
