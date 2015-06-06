@@ -1,7 +1,7 @@
 $.widget('boom.boomLoader', {
 	_create : function(){
 		var img = new Image();
-		img.src = '/public/vendor/boomcms/boom-core/img/ajax_load.gif';
+		img.src = '/vendor/boomcms/boom-core/img/ajax_load.gif';
 
 		this.loader = $('<div id="b-loader"></div>').appendTo($(top.document).find('body'));
 		this._bind_loader_to_global_ajax_events();

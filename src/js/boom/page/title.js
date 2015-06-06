@@ -101,7 +101,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 		var title = this;
 
 		new boomDialog({
-			url : '/public/vendor/boomcms/boom-core/html/help/title_length.html',
+			url : '/vendor/boomcms/boom-core/html/help/title_length.html',
 			width : '600px',
 			cancelButton: false
 		}).always(function() {

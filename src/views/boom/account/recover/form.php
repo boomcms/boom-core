@@ -3,7 +3,7 @@
 	<head>
 		<title>BoomCMS | <?= Lang::get('Password reset') ?></title>
 		<meta name="robots" content="noindex, nofollow" />
-		<link rel="stylesheet" type="text/css" href="/public/vendor/boomcms/boom-core/css/cms.css" />
+		<link rel="stylesheet" type="text/css" href="/vendor/boomcms/boom-core/css/cms.css" />
 	</head>
 	<body id='b-login'>
 		<div>
