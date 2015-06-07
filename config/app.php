@@ -109,15 +109,6 @@ return [
 	*/
 
 	'providers' => [
-         // BoomCMS service providers
-		'BoomCMS\Core\CoreServiceProvider',
-        'BoomCMS\Core\Environment\EnvironmentServiceProvider',
-        'BoomCMS\Core\Auth\AuthServiceProvider',
-        'BoomCMS\Core\Editor\EditorServiceProvider',
-        'BoomCMS\Core\Person\PersonServiceProvider',
-        'BoomCMS\Core\Page\PageServiceProvider',
-        'BoomCMS\Installer\ServiceProvider',
-
 		/*
 		 * Laravel Framework Service Providers...
 		 */
@@ -143,6 +134,15 @@ return [
 		'Illuminate\Translation\TranslationServiceProvider',
 		'Illuminate\Validation\ValidationServiceProvider',
 		'Illuminate\View\ViewServiceProvider',
+
+         // BoomCMS service providers
+		'BoomCMS\Core\CoreServiceProvider',
+        'BoomCMS\Core\Environment\EnvironmentServiceProvider',
+        'BoomCMS\Core\Auth\AuthServiceProvider',
+        'BoomCMS\Core\Editor\EditorServiceProvider',
+        'BoomCMS\Core\Person\PersonServiceProvider',
+        'BoomCMS\Core\Page\PageServiceProvider',
+        'BoomCMS\Installer\ServiceProvider',
 	],
 
 	/*
