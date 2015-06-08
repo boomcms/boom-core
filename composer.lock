@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/boomcms/boom-core.git",
-                "reference": "842615295ea3fb75c8d24e39268c8ac775786e54"
+                "reference": "1faeafb736e0e3352fc98795b3b597c91e232e91"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/boomcms/boom-core/zipball/842615295ea3fb75c8d24e39268c8ac775786e54",
-                "reference": "842615295ea3fb75c8d24e39268c8ac775786e54",
+                "url": "https://api.github.com/repos/boomcms/boom-core/zipball/1faeafb736e0e3352fc98795b3b597c91e232e91",
+                "reference": "1faeafb736e0e3352fc98795b3b597c91e232e91",
                 "shasum": ""
             },
             "require": {
@@ -36,6 +36,7 @@
                 "thujohn/rss": "dev-master"
             },
             "require-dev": {
+                "mockery/mockery": "^0.9.4",
                 "phpunit/phpunit": "4.3.*"
             },
             "type": "library",
@@ -49,7 +50,7 @@
                 "BSD-3-Clause"
             ],
             "description": "Core classes for BoomCMS",
-            "time": "2015-06-06 13:22:54"
+            "time": "2015-06-08 17:05:32"
         },
         {
             "name": "boomcms/boom-installer",
@@ -57,16 +58,16 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/boomcms/boom-installer.git",
-                "reference": "6093984ec1be8012a86804d70a607c645bfc7e6f"
+                "reference": "9c96de9809ce50c043f4010a29915c8b5956c78e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/boomcms/boom-installer/zipball/6093984ec1be8012a86804d70a607c645bfc7e6f",
-                "reference": "6093984ec1be8012a86804d70a607c645bfc7e6f",
+                "url": "https://api.github.com/repos/boomcms/boom-installer/zipball/9c96de9809ce50c043f4010a29915c8b5956c78e",
+                "reference": "9c96de9809ce50c043f4010a29915c8b5956c78e",
                 "shasum": ""
             },
             "require": {
-                "illuminate/support": "^5.0"
+                "laravel/framework": "^5.0"
             },
             "require-dev": {
                 "mockery/mockery": "^0.9.4",
@@ -89,7 +90,7 @@
                 }
             ],
             "description": "BoomCMS installer",
-            "time": "2015-06-06 13:23:10"
+            "time": "2015-06-08 07:42:46"
         },
         {
             "name": "classpreloader/classpreloader",
@@ -912,12 +913,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "1ee1aacaed5f19befeb5e0a7413bb7e91dbfc965"
+                "reference": "56862959b45131ad33e5a7727a25db19f2cf090b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/1ee1aacaed5f19befeb5e0a7413bb7e91dbfc965",
-                "reference": "1ee1aacaed5f19befeb5e0a7413bb7e91dbfc965",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/56862959b45131ad33e5a7727a25db19f2cf090b",
+                "reference": "56862959b45131ad33e5a7727a25db19f2cf090b",
                 "shasum": ""
             },
             "require": {
@@ -988,7 +989,7 @@
                 "sftp",
                 "storage"
             ],
-            "time": "2015-05-30 16:58:20"
+            "time": "2015-06-07 21:27:37"
         },
         {
             "name": "monolog/monolog",
@@ -1452,12 +1453,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/swiftmailer/swiftmailer.git",
-                "reference": "b11f0054d96fa49200d10401e34d879e46c2a2c6"
+                "reference": "21b7eb31c51d98e9da0543527a0242875f3d92b9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/b11f0054d96fa49200d10401e34d879e46c2a2c6",
-                "reference": "b11f0054d96fa49200d10401e34d879e46c2a2c6",
+                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/21b7eb31c51d98e9da0543527a0242875f3d92b9",
+                "reference": "21b7eb31c51d98e9da0543527a0242875f3d92b9",
                 "shasum": ""
             },
             "require": {
@@ -1497,7 +1498,7 @@
                 "mail",
                 "mailer"
             ],
-            "time": "2015-06-02 14:34:12"
+            "time": "2015-06-06 14:20:09"
         },
         {
             "name": "symfony/console",
