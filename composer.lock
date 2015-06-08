@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "2d91e5e29d1bfb4334626fbe66643d5a",
+    "hash": "843383c48c9da2905beebe1169510d24",
     "packages": [
         {
             "name": "boomcms/boom-core",
@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/boomcms/boom-core.git",
-                "reference": "1faeafb736e0e3352fc98795b3b597c91e232e91"
+                "reference": "4de8089d626d2325f28201ba2f8e962952334401"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/boomcms/boom-core/zipball/1faeafb736e0e3352fc98795b3b597c91e232e91",
-                "reference": "1faeafb736e0e3352fc98795b3b597c91e232e91",
+                "url": "https://api.github.com/repos/boomcms/boom-core/zipball/4de8089d626d2325f28201ba2f8e962952334401",
+                "reference": "4de8089d626d2325f28201ba2f8e962952334401",
                 "shasum": ""
             },
             "require": {
@@ -50,7 +50,7 @@
                 "BSD-3-Clause"
             ],
             "description": "Core classes for BoomCMS",
-            "time": "2015-06-08 17:05:32"
+            "time": "2015-06-08 21:04:05"
         },
         {
             "name": "boomcms/boom-installer",
@@ -58,15 +58,16 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/boomcms/boom-installer.git",
-                "reference": "9c96de9809ce50c043f4010a29915c8b5956c78e"
+                "reference": "01852d58318213d86c1864c0796ff61c64898cf2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/boomcms/boom-installer/zipball/9c96de9809ce50c043f4010a29915c8b5956c78e",
-                "reference": "9c96de9809ce50c043f4010a29915c8b5956c78e",
+                "url": "https://api.github.com/repos/boomcms/boom-installer/zipball/01852d58318213d86c1864c0796ff61c64898cf2",
+                "reference": "01852d58318213d86c1864c0796ff61c64898cf2",
                 "shasum": ""
             },
             "require": {
+                "boomcms/boom-core": "3.0.*",
                 "laravel/framework": "^5.0"
             },
             "require-dev": {
@@ -90,7 +91,7 @@
                 }
             ],
             "description": "BoomCMS installer",
-            "time": "2015-06-08 07:42:46"
+            "time": "2015-06-08 20:48:26"
         },
         {
             "name": "classpreloader/classpreloader",
