@@ -2,6 +2,7 @@
 
 namespace BoomCMS\Core\Template;
 
+use BoomCMS\Core\Theme\Theme;
 use BoomCMS\Core\Models\Template as Model;
 use Illuminate\Filesystem\Filesystem;
 
@@ -18,8 +19,6 @@ class Manager
      * @var Provider
      */
     protected $provider;
-
-    protected $themesDir = 'storage/boomcms/themes';
 
     public function __construct(Filesystem $filesystem, Provider $provider, $findAndInstall = true)
     {
@@ -66,9 +65,9 @@ class Manager
         return $installed;
     }
 
-    public function findAvailableTemplates($theme)
+    public function findAvailableTemplates(Theme $theme)
     {
-        $files = $this->filesystem->files($this->getThemeDirectory($theme));
+        $files = $this->filesystem->files($theme->getTemplateDirectory());
         $templates = [];
 
         if (is_array($files)) {
@@ -84,7 +83,14 @@ class Manager
 
     public function findInstalledThemes()
     {
-        $themes = $this->filesystem->directories($this->themesDir);
+        $theme = new Theme();
+        $themes = $this->filesystem->directories($theme->getThemesDirectory());
+
+        if (is_array($themes)) {
+            foreach ($themes as &$t) {
+                $t = new Theme($t);
+            }
+        }
 
         return $themes ?: [];
     }
@@ -111,17 +117,6 @@ class Manager
         }
 
         return $invalid;
-    }
-
-    public function getThemeDirectory($theme)
-    {
-        return $this->themesDir .
-            DIRECTORY_SEPARATOR .
-            $theme .
-            DIRECTORY_SEPARATOR .
-            'views' .
-            DIRECTORY_SEPARATOR .
-            'templates';
     }
 
     public function getValidTemplates()

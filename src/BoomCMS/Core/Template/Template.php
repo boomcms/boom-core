@@ -2,8 +2,7 @@
 
 namespace BoomCMS\Core\Template;
 
-use BoomCMS\Core\Page;
-
+use BoomCMS\Core\Theme\Theme;
 use Illuminate\Support\Facades\View;
 
 class Template
@@ -15,7 +14,6 @@ class Template
      * @var array
      */
     protected $attrs;
-
 
     public function __construct(array $attrs)
     {
@@ -42,9 +40,23 @@ class Template
         return $this->get('filename');
     }
 
+    /**
+     *
+     * @return Theme
+     */
+    public function getTheme()
+    {
+        return new Theme($this->getThemeName());
+    }
+
+    public function getThemeName()
+    {
+        return $this->get('theme');
+    }
+
     public function getFullFilename()
     {
-        return static::DIRECTORY . $this->getFilename();
+        return $this->getTheme()->getTemplateDirectory() . DIRECTORY_SEPARATOR . $this->getFilename();
     }
 
     public function getId()

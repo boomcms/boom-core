@@ -1,6 +1,7 @@
 <?php
 
 use BoomCMS\Core\Template;
+use BoomCMS\Core\Theme\Theme;
 use BoomCMS\Core\Template\Manager;
 
 class TemplateManagerTest extends PHPUnit_Framework_TestCase
@@ -17,7 +18,7 @@ class TemplateManagerTest extends PHPUnit_Framework_TestCase
 
     public function testFindInstalledThemes()
     {
-        $themes = ['test1', 'test2'];
+        $themes = [new Theme('test1'), new Theme('test2')];
 
         $filesystem = $this->getFilesystem();
         $filesystem
@@ -27,7 +28,7 @@ class TemplateManagerTest extends PHPUnit_Framework_TestCase
             ->will($this->returnValue($themes));
 
         $manager = new Manager($filesystem, $this->getTemplateProvider(), false);
-        $this->assertEquals($themes, $manager->findInstalledThemes());
+        $this->assertEquals([new Theme($themes[0]), new Theme($themes[1])], $manager->findInstalledThemes());
     }
 
     public function testFindNoInstalledThemes()
@@ -45,14 +46,6 @@ class TemplateManagerTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($themes, $manager->findInstalledThemes());
     }
 
-    public function testGetThemeDirectory()
-    {
-        $theme = 'test';
-
-        $manager = new Manager($this->getFilesystem(), $this->getTemplateProvider(), false);
-        $this->assertEquals('storage/boomcms/themes/' . $theme . '/views/templates', $manager->getThemeDirectory($theme));
-    }
-
     public function testAvailableTemplates()
     {
         $templates = ['test1', 'test2'];
@@ -61,11 +54,11 @@ class TemplateManagerTest extends PHPUnit_Framework_TestCase
         $filesystem
             ->expects($this->once())
             ->method('files')
-            ->with($this->equalTo('storage/boomcms/themes/test1/views/templates'))
+            ->with($this->equalTo('storage/boomcms/themes/test1/src/views/templates'))
             ->will($this->returnValue(['test1.php', 'test2.php']));
 
         $manager = new Manager($filesystem, $this->getTemplateProvider(), false);
-        $this->assertEquals($templates, $manager->findAvailableTemplates('test1'));
+        $this->assertEquals($templates, $manager->findAvailableTemplates(new Theme('test1')));
     }
 
     public function testAvailableTemplatesMustEndBePHP()
@@ -74,11 +67,11 @@ class TemplateManagerTest extends PHPUnit_Framework_TestCase
         $filesystem
             ->expects($this->once())
             ->method('files')
-            ->with($this->equalTo('storage/boomcms/themes/test1/views/templates'))
+            ->with($this->equalTo('storage/boomcms/themes/test1/src/views/templates'))
             ->will($this->returnValue(['test1.png', 'test2.php', 'test3']));
 
         $manager = new Manager($filesystem, $this->getTemplateProvider(), false);
-        $this->assertEquals(['test2'], $manager->findAvailableTemplates('test1'));
+        $this->assertEquals(['test2'], $manager->findAvailableTemplates(new Theme('test1')));
     }
 
     public function testNoAvailableTemplates()
@@ -87,11 +80,11 @@ class TemplateManagerTest extends PHPUnit_Framework_TestCase
         $filesystem
             ->expects($this->once())
             ->method('files')
-            ->with($this->equalTo('storage/boomcms/themes/test1/views/templates'))
+            ->with($this->equalTo('storage/boomcms/themes/test1/src/views/templates'))
             ->will($this->returnValue(null));
 
         $manager = new Manager($filesystem, $this->getTemplateProvider(), false);
-        $this->assertEquals([], $manager->findAvailableTemplates('test1'));
+        $this->assertEquals([], $manager->findAvailableTemplates(new Theme('test1')));
     }
 
     public function testTemplateIsInstalled()
