@@ -2,7 +2,9 @@
 
 namespace BoomCMS\Core\Template;
 
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Filesystem;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
 class TemplateServiceProvider extends ServiceProvider
@@ -37,6 +39,29 @@ class TemplateServiceProvider extends ServiceProvider
 
             if ($this->app['filesystem']->exists($routes)) {
                 include $routes;
+            }
+
+            $config = Config::get("themes.$theme");
+
+            // Register View shared variables for this theme.
+            if (isset($config['shared'])) {
+                foreach ($config['shared'] as $var => $value) {
+                    View::share($var, $value);
+                }
+            }
+
+            // Register View composers for this theme
+            if (isset($config['composers'])) {
+                foreach ($config['composers'] as $view => $composer) {
+                    View::composer($view, $composer);
+                }
+            }
+
+            // Register View creators for this theme
+            if (isset($config['creators'])) {
+                foreach ($config['creators'] as $view => $creator) {
+                    View::creator($view, $creators);
+                }
             }
         }
     }
