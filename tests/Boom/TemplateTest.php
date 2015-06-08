@@ -1,7 +1,6 @@
 <?php
 
 use BoomCMS\Core\Template;
-use BoomCMS\Core\Template\Manager;
 
 use Illuminate\Support\Facades\View;
 
@@ -49,17 +48,24 @@ class TemplateTest extends PHPUnit_Framework_TestCase
 
         View::shouldReceive('exists')
             ->once()
-            ->with($template->getFullFilename())
+            ->with($template->getViewName())
             ->andReturn(false);
 
         $this->assertFalse($template->fileExists());
 
         View::shouldReceive('exists')
             ->once()
-            ->with($template->getFullFilename())
+            ->with($template->getViewName())
             ->andReturn(true);
 
         $this->assertTrue($template->fileExists());
+    }
+
+    public function testGetViewName()
+    {
+        $template = $this->getTemplate(['theme' => 'test', 'filename' => 'test']);
+
+        $this->assertEquals('test:templates.test', $template->getViewName());
     }
 
     protected function getTemplate(array $attrs = [])

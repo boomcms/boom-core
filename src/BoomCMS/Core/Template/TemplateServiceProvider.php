@@ -23,9 +23,9 @@ class TemplateServiceProvider extends ServiceProvider
     public function boot()
     {
         foreach($this->themes as $theme) {
-            $views = $this->manager->getThemeDirectory($theme) . '/src/views';
-            $public = $this->manager->getThemeDirectory($theme) . '/public';
-            $routes = $this->manager->getThemeDirectory($theme) . '/routes.php';
+            $views = $theme->getViewsDirectory();
+            $public = $theme->getPublicDirectory();
+            $routes = $theme->getDirectory() . DIRECTORY_SEPARATOR . 'routes.php';
 
             if ($this->app['filesystem']->exists($views)) {
                 $this->loadViewsFrom($views, $theme);
@@ -48,7 +48,7 @@ class TemplateServiceProvider extends ServiceProvider
     public function register()
     {
         $provider = new Provider();
-        $this->manager = $manager = new Manager($this->app['files'], $provider, false);
+        $manager = new Manager($this->app['files'], $provider, false);
 
         $this->app->singleton('boomcms.template.provider', function ($app) use($provider) {
             return $provider;

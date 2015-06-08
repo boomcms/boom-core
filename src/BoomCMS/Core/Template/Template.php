@@ -7,8 +7,6 @@ use Illuminate\Support\Facades\View;
 
 class Template
 {
-
-
     /**
      *
      * @var array
@@ -22,7 +20,7 @@ class Template
 
     public function fileExists()
     {
-        return View::exists($this->getFullFilename());
+        return View::exists($this->getViewName());
     }
 
     public function get($key)
@@ -72,6 +70,11 @@ class Template
     public function getView()
     {
         return ($this->fileExists()) ? View::make($this->getFullFilename()) : View::make('boom::templates.default');
+    }
+
+    public function getViewName()
+    {
+        return $this->getThemeName() . ':' . 'templates.' . $this->getFilename();
     }
 
     public function loaded()
