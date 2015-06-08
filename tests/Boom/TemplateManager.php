@@ -23,7 +23,7 @@ class TemplateManager extends PHPUnit_Framework_TestCase
         $filesystem
             ->expects($this->once())
             ->method('directories')
-            ->with($this->equalTo('boomcms/themes'))
+            ->with($this->equalTo('storage/boomcms/themes'))
             ->will($this->returnValue($themes));
 
         $manager = new Manager($filesystem, $this->getTemplateProvider(), false);
@@ -38,7 +38,7 @@ class TemplateManager extends PHPUnit_Framework_TestCase
         $filesystem
             ->expects($this->once())
             ->method('directories')
-            ->with($this->equalTo('boomcms/themes'))
+            ->with($this->equalTo('storage/boomcms/themes'))
             ->will($this->returnValue(null));
 
         $manager = new Manager($filesystem, $this->getTemplateProvider(), false);
@@ -50,7 +50,7 @@ class TemplateManager extends PHPUnit_Framework_TestCase
         $theme = 'test';
 
         $manager = new Manager($this->getFilesystem(), $this->getTemplateProvider(), false);
-        $this->assertEquals('boomcms/themes/' . $theme . '/views/templates', $manager->getThemeDirectory($theme));
+        $this->assertEquals('storage/boomcms/themes/' . $theme . '/views/templates', $manager->getThemeDirectory($theme));
     }
 
     public function testAvailableTemplates()
@@ -61,7 +61,7 @@ class TemplateManager extends PHPUnit_Framework_TestCase
         $filesystem
             ->expects($this->once())
             ->method('files')
-            ->with($this->equalTo('boomcms/themes/test1/views/templates'))
+            ->with($this->equalTo('storage/boomcms/themes/test1/views/templates'))
             ->will($this->returnValue(['test1.php', 'test2.php']));
 
         $manager = new Manager($filesystem, $this->getTemplateProvider(), false);
@@ -74,7 +74,7 @@ class TemplateManager extends PHPUnit_Framework_TestCase
         $filesystem
             ->expects($this->once())
             ->method('files')
-            ->with($this->equalTo('boomcms/themes/test1/views/templates'))
+            ->with($this->equalTo('storage/boomcms/themes/test1/views/templates'))
             ->will($this->returnValue(['test1.png', 'test2.php', 'test3']));
 
         $manager = new Manager($filesystem, $this->getTemplateProvider(), false);
@@ -87,7 +87,7 @@ class TemplateManager extends PHPUnit_Framework_TestCase
         $filesystem
             ->expects($this->once())
             ->method('files')
-            ->with($this->equalTo('boomcms/themes/test1/views/templates'))
+            ->with($this->equalTo('storage/boomcms/themes/test1/views/templates'))
             ->will($this->returnValue(null));
 
         $manager = new Manager($filesystem, $this->getTemplateProvider(), false);

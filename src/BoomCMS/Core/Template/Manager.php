@@ -19,7 +19,7 @@ class Manager
      */
     protected $provider;
 
-    protected $themesDir = 'boomcms/themes';
+    protected $themesDir = 'storage/boomcms/themes';
 
     public function __construct(Filesystem $filesystem, Provider $provider, $findAndInstall = true)
     {
@@ -52,13 +52,18 @@ class Manager
 
     public function findAndInstallNewTemplates()
     {
+        $installed = [];
+
         foreach ($this->findInstalledThemes() as $theme) {
             foreach ($this->findAvailableTemplates($theme) as $template) {
                 if ( ! $this->templateIsInstalled($theme, $template)) {
+                    $installed[] = [$theme, $template];
                     $this->createTemplateWithFilename($theme, $template);
                 }
             }
         }
+
+        return $installed;
     }
 
     public function findAvailableTemplates($theme)
