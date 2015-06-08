@@ -3,7 +3,8 @@
 	"description": "BoomCMS basic site",
 	"require": {
 		"boomcms/boom-core": "3.0.*",
-		"boomcms/boom-installer": "1.0.*"
+		"boomcms/boom-installer": "1.0.*",
+		"boomcms/theme-default": "1.0.*"
 	},
 	"license": "MIT",
 	"authors": [

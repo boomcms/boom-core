@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "843383c48c9da2905beebe1169510d24",
+    "hash": "39a6a0af7eeddc9bcb483ccb03164e2e",
     "packages": [
         {
             "name": "boomcms/boom-core",
@@ -92,6 +92,34 @@
             ],
             "description": "BoomCMS installer",
             "time": "2015-06-08 20:48:26"
+        },
+        {
+            "name": "boomcms/theme-default",
+            "version": "1.0.x-dev",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/boomcms/theme-default.git",
+                "reference": "ab4373b6548a07773822d4ad6ed2f0ea522f38c7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/boomcms/theme-default/zipball/ab4373b6548a07773822d4ad6ed2f0ea522f38c7",
+                "reference": "ab4373b6548a07773822d4ad6ed2f0ea522f38c7",
+                "shasum": ""
+            },
+            "type": "boomcms-template",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Rob Taylor",
+                    "email": "rob@uxblondon.com"
+                }
+            ],
+            "description": "Default Boom theme",
+            "time": "2015-06-08 21:09:14"
         },
         {
             "name": "classpreloader/classpreloader",
