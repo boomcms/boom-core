@@ -3,7 +3,7 @@
 use BoomCMS\Core\Template;
 use BoomCMS\Core\Template\Manager;
 
-class TemplateManager extends PHPUnit_Framework_TestCase
+class TemplateManagerTest extends PHPUnit_Framework_TestCase
 {
     protected function getFilesystem()
     {
