@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "2d91e5e29d1bfb4334626fbe66643d5a",
+    "hash": "843383c48c9da2905beebe1169510d24",
     "packages": [
         {
             "name": "boomcms/boom-core",
@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/boomcms/boom-core.git",
-                "reference": "842615295ea3fb75c8d24e39268c8ac775786e54"
+                "reference": "967307f46f97607a7cedae0cf1a253bd2870eb13"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/boomcms/boom-core/zipball/842615295ea3fb75c8d24e39268c8ac775786e54",
-                "reference": "842615295ea3fb75c8d24e39268c8ac775786e54",
+                "url": "https://api.github.com/repos/boomcms/boom-core/zipball/967307f46f97607a7cedae0cf1a253bd2870eb13",
+                "reference": "967307f46f97607a7cedae0cf1a253bd2870eb13",
                 "shasum": ""
             },
             "require": {
@@ -49,7 +49,7 @@
                 "BSD-3-Clause"
             ],
             "description": "Core classes for BoomCMS",
-            "time": "2015-06-06 13:22:54"
+            "time": "2015-06-08 15:25:36"
         },
         {
             "name": "boomcms/boom-installer",
@@ -57,27 +57,15 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/boomcms/boom-installer.git",
-                "reference": "6093984ec1be8012a86804d70a607c645bfc7e6f"
+                "reference": "72ffef2a9e17ab222b64d15687b26f7beac1cca3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/boomcms/boom-installer/zipball/6093984ec1be8012a86804d70a607c645bfc7e6f",
-                "reference": "6093984ec1be8012a86804d70a607c645bfc7e6f",
+                "url": "https://api.github.com/repos/boomcms/boom-installer/zipball/72ffef2a9e17ab222b64d15687b26f7beac1cca3",
+                "reference": "72ffef2a9e17ab222b64d15687b26f7beac1cca3",
                 "shasum": ""
             },
-            "require": {
-                "illuminate/support": "^5.0"
-            },
-            "require-dev": {
-                "mockery/mockery": "^0.9.4",
-                "phpunit/phpunit": "^4.6"
-            },
             "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "BoomCMS\\Installer": "src/"
-                }
-            },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
@@ -89,7 +77,7 @@
                 }
             ],
             "description": "BoomCMS installer",
-            "time": "2015-06-06 13:23:10"
+            "time": "2015-06-03 20:56:57"
         },
         {
             "name": "classpreloader/classpreloader",
@@ -912,12 +900,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "1ee1aacaed5f19befeb5e0a7413bb7e91dbfc965"
+                "reference": "56862959b45131ad33e5a7727a25db19f2cf090b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/1ee1aacaed5f19befeb5e0a7413bb7e91dbfc965",
-                "reference": "1ee1aacaed5f19befeb5e0a7413bb7e91dbfc965",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/56862959b45131ad33e5a7727a25db19f2cf090b",
+                "reference": "56862959b45131ad33e5a7727a25db19f2cf090b",
                 "shasum": ""
             },
             "require": {
@@ -988,7 +976,7 @@
                 "sftp",
                 "storage"
             ],
-            "time": "2015-05-30 16:58:20"
+            "time": "2015-06-07 21:27:37"
         },
         {
             "name": "monolog/monolog",
@@ -1452,12 +1440,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/swiftmailer/swiftmailer.git",
-                "reference": "b11f0054d96fa49200d10401e34d879e46c2a2c6"
+                "reference": "21b7eb31c51d98e9da0543527a0242875f3d92b9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/b11f0054d96fa49200d10401e34d879e46c2a2c6",
-                "reference": "b11f0054d96fa49200d10401e34d879e46c2a2c6",
+                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/21b7eb31c51d98e9da0543527a0242875f3d92b9",
+                "reference": "21b7eb31c51d98e9da0543527a0242875f3d92b9",
                 "shasum": ""
             },
             "require": {
@@ -1497,7 +1485,7 @@
                 "mail",
                 "mailer"
             ],
-            "time": "2015-06-02 14:34:12"
+            "time": "2015-06-06 14:20:09"
         },
         {
             "name": "symfony/console",
