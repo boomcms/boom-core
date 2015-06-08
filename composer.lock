@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/boomcms/boom-core.git",
-                "reference": "967307f46f97607a7cedae0cf1a253bd2870eb13"
+                "reference": "70e15e68a1f8f802c2ccf042e47c0b7d5985df85"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/boomcms/boom-core/zipball/967307f46f97607a7cedae0cf1a253bd2870eb13",
-                "reference": "967307f46f97607a7cedae0cf1a253bd2870eb13",
+                "url": "https://api.github.com/repos/boomcms/boom-core/zipball/70e15e68a1f8f802c2ccf042e47c0b7d5985df85",
+                "reference": "70e15e68a1f8f802c2ccf042e47c0b7d5985df85",
                 "shasum": ""
             },
             "require": {
@@ -49,7 +49,7 @@
                 "BSD-3-Clause"
             ],
             "description": "Core classes for BoomCMS",
-            "time": "2015-06-08 15:25:36"
+            "time": "2015-06-08 15:27:39"
         },
         {
             "name": "boomcms/boom-installer",
