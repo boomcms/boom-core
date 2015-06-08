@@ -30,7 +30,7 @@ abstract class Asset implements Arrayable
 
     public static function directory()
     {
-        return Config::get('assets.directory');
+        return 'boomcms/assets';
     }
 
     public static function factory(array $attributes)

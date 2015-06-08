@@ -2,9 +2,9 @@
 
 namespace BoomCMS\Core\Menu;
 
-use \BoomCMS\Core\Config;
 use \BoomCMS\Core\Auth\Auth as Auth;
 
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\View;
 
 class Menu
@@ -44,7 +44,7 @@ class Menu
 	 */
     public function __construct(Auth $auth, array $data = [])
     {
-        $config = Config::get("menu");
+        $config = Config::get('boomcms.menu');
         $this->viewFilename = array_get($config, 'view_filename');
         $this->menuItems = (array) array_get($config, 'items');
         $this->viewData = $data;

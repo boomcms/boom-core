@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Core\UI;
 
-use BoomCMS\Core\Config;
+use Illuminate\Support\Facades\Config;
 
 class TextEditorToolbar extends AbstractUIElement
 {
@@ -14,12 +14,12 @@ class TextEditorToolbar extends AbstractUIElement
     public function __construct($button_set = null)
     {
         $button_set && $this->_buttonSet = $button_set;
-        $this->_config = Config::get('text_editor_toolbar');
+        $this->_config = Config::get('boomcms.text_editor_toolbar');
     }
 
     public static function getAvailableButtonSets()
     {
-        $config = Config::get('text_editor_toolbar');
+        $config = Config::get('boomcms.text_editor_toolbar');
 
         return array_keys($config['button_sets']);
     }
