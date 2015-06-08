@@ -2,23 +2,14 @@
 
 namespace BoomCMS\Core\URL;
 
+use Illuminate\Support\Facades\DB;
+
 /**
  * Helper functions for page URLs
  *
  */
 abstract class Helpers
 {
-    public static function createPrimary($location, $page_id)
-    {
-        return \ORM::factory('Page_URL')
-            ->values([
-                'location'        =>    $location,
-                'page_id'        =>    $page_id,
-                'is_primary'    =>    true,
-            ])
-            ->create();
-    }
-
     /**
 	 * Generate a unique URL from a page title
 	 *
@@ -40,17 +31,19 @@ abstract class Helpers
     }
 
     /**
-	 * Determine whether a URL is already being used by a page in the CMS
-	 *
-	 * @param string $url
-	 */
+     * Determine whether a URL is already being used by a page in the CMS
+     *
+     * @param string $url
+     */
     public static function isAvailable($url, $ignore_url = null)
     {
-        return ! \ORM::factory('Page_URL')
+        $result = DB::table('page_urls')
+            ->select(DB::raw('1'))
             ->where('location', '=', $url)
             ->where('id', '!=', $ignore_url)
-            ->find()
-            ->loaded();
+            ->first();
+
+        return (bool) $result;
     }
 
     /**

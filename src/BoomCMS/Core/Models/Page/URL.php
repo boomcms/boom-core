@@ -6,13 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class URL extends Model
 {
-    protected $_belongs_to = ['page' => ['foreign_key' => 'page_id']];
-    protected $_table_columns = [
-        'id'            =>    '',
-        'page_id'        =>    '',
-        'location'        =>    '',
-        'is_primary'    =>    '',
-    ];
     protected $table = 'page_urls';
 
     /**
@@ -44,20 +37,6 @@ class URL extends Model
         return $this;
     }
 
-    public function rules()
-    {
-        return [
-            'page_id' => [
-                ['not_empty'],
-                ['numeric'],
-            ],
-            'location' => [
-                ['max_length', [':value', 2048]],
-                [['\Boom\Page\URL', 'isAvailable'], [':value', $this->id]],
-            ],
-        ];
-    }
-
     public function filters()
     {
         return [
@@ -65,11 +44,6 @@ class URL extends Model
                 [['\Boom\Page\URL', 'sanitise']]
             ],
         ];
-    }
-
-    public function getPage()
-    {
-        return \Boom\Page\Factory::byId($this->page_id);
     }
 
     /**

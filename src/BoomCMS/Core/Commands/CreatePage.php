@@ -8,6 +8,7 @@ use Illuminate\Contracts\Bus\SelfHandling;
 
 class CreatePage extends Command implements SelfHandling
 {
+
     protected $auth;
     protected $parent;
     protected $provider;
@@ -23,7 +24,7 @@ class CreatePage extends Command implements SelfHandling
     {
         $attrs = [
             'visible_from' => time(),
-            'created_by' => $this->auth->getPerson()->getId(),
+            'created_by' => $this->auth->getPerson()->getId()
         ];
 
         if ($this->parent) {
@@ -45,5 +46,7 @@ class CreatePage extends Command implements SelfHandling
             'published' => true,
             'embargoed_until' => time(),
         ]);
+
+        return $page;
     }
 }

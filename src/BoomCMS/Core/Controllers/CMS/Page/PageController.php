@@ -6,6 +6,7 @@ use BoomCMS\Core\Auth\Auth;
 use BoomCMS\Core\Page as Page;
 use BoomCMS\Core\Page\Command\Delete as Delete;
 use BoomCMS\Core\Controllers\Controller as Controller;
+use BoomCMS\Core\URL\Helpers as URLHelper;
 
 use Illuminate\Http\Request;
 
@@ -20,25 +21,19 @@ class PageController extends Controller
         $this->request = $request;
     }
 
-    public function add(Page\Page $page)
+    public function add(Page\Page $parent)
     {
-        $this->authorization('add_page', $page);
+        $this->authorization('add_page', $parent);
 
-        $this->dispatch('BoomCMS\Core\Commands\CreatePage', [$this->provider, $this->auth, $page]);
+        $newPage = $this->dispatch('BoomCMS\Core\Commands\CreatePage', [$this->provider, $this->auth, $parent]);
+        
+        $urlPrefix = ($this->parent->getChildPageUrlPrefix()) ?: $this->parent->url()->getLocation();
+        $url = $this->dispatch('BoomCMS\Core\Commands\CreatePagePrimaryURI', [$this->provider, $newPage, $urlPrefix]);
 
-        // Add a default URL.
-        // This needs to go into a class of some sort, not sure where though.
-        // Don't want it as part of Page_Creator because we sometimes want to create the default URLs in this format.
-        $prefix = ($this->page->getChildPageUrlPrefix()) ? $this->page->getChildPageUrlPrefix() : $this->page->url()->location;
-        $url = \Boom\Page\URL::fromTitle($prefix, $new_page->getTitle());
-        \Boom\Page\URL::createPrimary($url, $new_page->getId());
-
-        $this->log("Added a new page under " . $this->page->getTitle(), "Page ID: " . $new_page->getId());
-
-        $this->response->body(json_encode([
-            'url' => URL::site($url, $this->request),
-            'id' => $new_page->getId(),
-        ]));
+        return [
+            'url' => (string) $newPage->url(),
+            'id' => $newPage->getId(),
+        ];
     }
 
     public function delete()

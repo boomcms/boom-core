@@ -2,6 +2,7 @@
 
 namespace BoomCMS\Core\URL;
 
+use BoomCMS\Core\Models\Page\URL as Model;
 use Illuminate\Support\Facades\URL as URLHelper;
 
 class URL
@@ -15,6 +16,17 @@ class URL
     public function __construct(array $data)
     {
         $this->data = $data;
+    }
+
+    public static function create($location, $pageId, $isPrimary = false)
+    {
+        $model = Model::create([
+            'location' => $location,
+            'page_id' => $pageId,
+            'is_primary' => $isPrimary
+        ]);
+
+        return new static($model->toArray());
     }
 
     public function getLocation()
