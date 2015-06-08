@@ -1,7 +1,7 @@
 <?php
 
 use BoomCMS\Core\Auth;
-use Auth\PasswordGenerator\PasswordGenerator;
+use Auth\RandomPassword;
 use BoomCMS\Core\Group;
 use BoomCMS\Core\Person;
 
@@ -66,7 +66,7 @@ class CreatePerson extends Command
      */
     public function handle()
     {
-        $password = PasswordGenerator::factory()->get_password();
+        $password = (string) new RandomPassword();
 
         $person = $this->personProvider
             ->create([
