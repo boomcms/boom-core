@@ -6,9 +6,10 @@ use BoomCMS\Core\Group;
 use BoomCMS\Core\Person;
 
 use Illuminate\Console\Command;
+Illuminate\Contracts\Bus\SelfHandling;
 use Illuminate\Support\Facades\Mail;
 
-class CreatePerson extends Command
+class CreatePerson extends Command implements SelfHandling
 {
     /**
      *

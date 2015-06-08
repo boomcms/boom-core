@@ -2,9 +2,11 @@
 
 use BoomCMS\Auth\Auth;
 use BoomCMS\Core\Page;
-use Illuminate\Console\Command;
 
-class CreatePage extends Command
+use Illuminate\Console\Command;
+use Illuminate\Contracts\Bus\SelfHandling;
+
+class CreatePage extends Command implements SelfHandling
 {
     protected $auth;
     protected $parent;
