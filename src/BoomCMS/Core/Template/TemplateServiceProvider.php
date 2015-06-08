@@ -61,12 +61,10 @@ class TemplateServiceProvider extends ServiceProvider
         $this->themes = $manager->findInstalledThemes();
 
         foreach($this->themes as $theme) {
-            $config = $manager->getThemeDirectory($theme) . '/config/themes.php';
+            $config = $manager->getThemeDirectory($theme) . '/src/config/themes.php';
 
             if ($this->app['filesystem']->exists($config)) {
-                $this->mergeConfigFrom(
-                    $config, 'boomcms'
-                );
+                $this->mergeConfigFrom($config, 'boomcms');
             }
         }
     }
