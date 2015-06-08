@@ -30,9 +30,13 @@ class Provider
         return new Template(Model::find($id)->toArray());
     }
 
-    public function findByFilename($filename)
+    public function findByThemeAndFilename($theme, $filename)
     {
-        return new Template(Model::where('filename', '=', $filename)->first());
+        $model = Model::where('filename', '=', $filename)
+            ->where('theme', '=', $theme)
+            ->first();
+
+        return new Template($model->toArray());
     }
 
     public function save(Template $template)

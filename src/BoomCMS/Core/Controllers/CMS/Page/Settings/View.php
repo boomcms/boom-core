@@ -25,7 +25,6 @@ class View extends Settings
         $childOrderingPolicy = $page->getChildOrderingPolicy();
 
         $manager = new Template\Manager();
-        $manager->createNew();
         $templates = $manager->getValidTemplates();
 
         // Create the main view with the basic settings

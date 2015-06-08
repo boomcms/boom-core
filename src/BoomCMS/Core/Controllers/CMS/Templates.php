@@ -37,12 +37,10 @@ class Templates extends Controller
 
     public function index(Template\Manager $manager)
     {
-        $imported = $manager->createNew();
-        $templates = $this->provider->findAll();
+        $manager = new Template\Manager();
 
         return View::make($this->viewPrefix . 'index', [
-            'imported' => $imported,        // The IDs of the templates which we've just added.
-            'templates' => $templates,        // All the templates which are in the database.
+            'templates' => $this->provider->findAll(),
         ]);
     }
 

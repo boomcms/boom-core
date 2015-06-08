@@ -2,31 +2,42 @@
 
 namespace BoomCMS\Core\Template;
 
+use BoomCMS\Core\Models\Template as Model;
+use Illuminate\Filesystem\Filesystem;
+
 class Manager
 {
-    protected $template_filenames;
+    /**
+     *
+     * @var Filesystem
+     */
+    protected $filesystem;
 
-    public function createNew()
+    /**
+     *
+     * @var Provider
+     */
+    protected $provider;
+
+    protected $themesDir = 'boomcms/themes';
+
+    public function __construct(Filesystem $filesystem, Provider $provider, $findAndInstall = true)
     {
-        $imported = [];
-        foreach ($this->getTemplateFilenames() as $filename) {
-            if ( ! $this->templateExistsWithFilename($filename)) {
-                $template = $this->createTemplateWithFilename($filename);
-                $imported[] = $template->id;
-            }
-        }
+        $this->filesystem = $filesystem;
+        $this->provider = $provider;
 
-        return $imported;
+        if ($findAndInstall) {
+            $this->findAndInstallNewTemplates();
+        }
     }
 
-    public function createTemplateWithFilename($filename)
+    public function createTemplateWithFilename($theme, $filename)
     {
-        return ORM::factory('Template')
-            ->values([
-                'name'    =>    ucwords(str_replace("_", " ", $filename)),
-                'filename'    =>    $filename,
-            ])
-            ->create();
+        Model::create([
+            'name' => ucwords(str_replace("_", " ", $filename)),
+            'theme' => $theme,
+            'filename' =>$filename,
+        ]);
     }
 
     /**
@@ -37,6 +48,40 @@ class Manager
         foreach ($this->getInvalidTemplates() as $template) {
             $template->delete();
         }
+    }
+
+    public function findAndInstallNewTemplates()
+    {
+        foreach ($this->findInstalledThemes() as $theme) {
+            foreach ($this->findAvailableTemplates($theme) as $template) {
+                if ( ! $this->templateIsInstalled($theme, $template)) {
+                    $this->createTemplateWithFilename($theme, $template);
+                }
+            }
+        }
+    }
+
+    public function findAvailableTemplates($theme)
+    {
+        $files = $this->filesystem->files($this->getThemeDirectory($theme));
+        $templates = [];
+
+        if (is_array($files)) {
+            foreach ($files as $file) {
+                if (strpos($file, '.php') !== false) {
+                    $templates[] = str_replace('.php', '', $file);
+                }
+            }
+        }
+
+        return $templates;
+    }
+
+    public function findInstalledThemes()
+    {
+        $themes = $this->filesystem->directories($this->themesDir);
+
+        return $themes ?: [];
     }
 
     public function getAllTemplates()
@@ -63,20 +108,15 @@ class Manager
         return $invalid;
     }
 
-    public function getTemplateFilenames()
+    public function getThemeDirectory($theme)
     {
-return [];
-// TODO
-        if (! $this->template_filenames) {
-            $this->template_filenames = Kohana::list_files("views/" . Template::DIRECTORY);
-
-            foreach ($this->template_filenames as & $filename) {
-                $filename = str_replace(APPPATH . "views/" . Template::DIRECTORY, "", $filename);
-                $filename = str_replace(EXT, "", $filename);
-            }
-        }
-
-        return $this->template_filenames;
+        return $this->themesDir .
+            DIRECTORY_SEPARATOR .
+            $theme .
+            DIRECTORY_SEPARATOR .
+            'views' .
+            DIRECTORY_SEPARATOR .
+            'templates';
     }
 
     public function getValidTemplates()
@@ -91,6 +131,13 @@ return [];
         }
 
         return $valid;
+    }
+
+    public function templateIsInstalled($theme, $filename)
+    {
+        $template = $this->provider->findByThemeAndFilename($theme, $filename);
+
+        return $template->loaded();
     }
 
     public function templateExistsWithFilename($filename)
