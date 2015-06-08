@@ -54,5 +54,7 @@ class InstallTemplates extends Command
         } else {
             $this->info('No templates to install');
         }
+
+        $this->call('vendor:publish');
     }
 }
