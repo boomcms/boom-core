@@ -25,7 +25,6 @@
 	"scripts": {
 		"post-install-cmd": [
 			"php artisan boomcms:installTemplates",
-			"php artisan vendor:publish",
 			"php artisan clear-compiled",
 			"php artisan optimize"
 		],
@@ -34,7 +33,6 @@
 		],
 		"post-update-cmd": [
 			"php artisan boomcms:installTemplates",
-			"php artisan vendor:publish",
 			"php artisan optimize"
 		],
 		"post-create-project-cmd": [
