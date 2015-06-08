@@ -26,10 +26,10 @@
 			"php artisan boomcms:installTemplates",
 			"php artisan vendor:publish",
 			"php artisan clear-compiled",
-			"php artisan optimize",
+			"php artisan optimize"
 		],
 		"pre-update-cmd": [
-			"php artisan clear-compiled",
+			"php artisan clear-compiled"
 		],
 		"post-update-cmd": [
 			"php artisan boomcms:installTemplates",
