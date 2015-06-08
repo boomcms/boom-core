@@ -1,0 +1,47 @@
+<?php
+
+use BoomCMS\Auth\Auth;
+use BoomCMS\Core\Page;
+use Illuminate\Console\Command;
+
+class CreatePage extends Command
+{
+    protected $auth;
+    protected $parent;
+    protected $provider;
+
+    public function __construct(Page\Provider $provider, Auth $auth, Page\Page $parent = null)
+    {
+        $this->auth = $auth;
+        $this->parent = $parent;
+        $this->provider = $provider;
+    }
+
+    public function handle()
+    {
+        $attrs = [
+            'visible_from' => time(),
+            'created_by' => $this->auth->getPerson()->getId(),
+        ];
+
+        if ($this->parent) {
+            $attrs  = [
+                'visible_in_nav' => $this->parent->childrenAreVisibleInNav(),
+                'visible_in_nav_cms' => $this->parent->childrenAreVisibleInCmsNav(),
+                'children_visible_in_nav' => $this->parent->childrenAreVisibleInNav(),
+                'children_visible_in_nav_cms' => $this->parent->childrenAreVisibleInCmsNav(),
+            ];
+        }
+
+        $page = $this->provider->create($attrs);
+
+        $page->addVersion([
+            'edited_by' => $this->auth->getPerson()->getId(),
+            'page_id' => $page->id,
+            'template_id'  => $this->parent->getDefaultChildTemplateId(),
+            'title' => 'Untitled',
+            'published' => true,
+            'embargoed_until' => time(),
+        ]);
+    }
+}

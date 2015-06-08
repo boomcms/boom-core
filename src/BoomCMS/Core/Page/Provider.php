@@ -5,6 +5,7 @@ namespace BoomCMS\Core\Page;
 use BoomCMS\Core\Editor\Editor;
 use BoomCMS\Core\Models\Page as Model;
 use BoomCMS\Core\Page\Finder;
+use BoomCMS\Core\Person\Person;
 
 use Illuminate\Support\Facades\App;
 
@@ -45,9 +46,12 @@ class Provider
         $this->cache['id'][$page->getId()] = $page;
     }
 
-    public function create($templateId, $title)
+    public function create(array $attrs = [])
     {
-        
+        $model = Model::create($attrs);
+        $this->cache($model);
+
+        return new Page($model->toArray());
     }
 
     public function findById($id)

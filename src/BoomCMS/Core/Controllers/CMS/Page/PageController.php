@@ -13,8 +13,9 @@ class PageController extends Controller
 {
     protected $viewPrefix = 'boom::editor.page.';
 
-    public function __construct(Auth $auth, Request $request)
+    public function __construct(Page\Provider $provider, Auth $auth, Request $request)
     {
+        $this->provider = $provider;
         $this->auth = $auth;
         $this->request = $request;
     }
@@ -23,10 +24,7 @@ class PageController extends Controller
     {
         $this->authorization('add_page', $page);
 
-        $creator = new \Boom\Page\Creator($this->page, $this->person);
-        $creator->setTemplateId($this->request->input('template_id'));
-        $creator->setTitle($this->request->input('title'));
-        $new_page = $creator->execute();
+        $this->dispatch('BoomCMS\Core\Commands\CreatePage', [$this->provider, $this->auth, $page]);
 
         // Add a default URL.
         // This needs to go into a class of some sort, not sure where though.

@@ -101,25 +101,13 @@ class Page
         return $this->get('children_visible_in_nav_cms') == true;
     }
 
-    public function createVersion($current = null, array $values = null)
+    public function addVersion(array $attrs = [])
     {
-        // Get the current version
-        if ($current === null) {
-            $current = $this->getCurrentVersion();
+        if ($currentVersion = $this->getCurrentVersion()) {
+            $attrs = array_merge($currentVersion->toArray(), $attrs, ['page_id' => $this->getId()]);
         }
 
-        // Create a new version with the same values as the current version.
-        $new_version = ORM::factory('Page_Version')
-            ->values($current->object());
-
-        // Update the new version with any update values.
-        if ( ! empty($values)) {
-            $new_version
-                ->values($values, array_keys($values));
-        }
-
-        // Return the new version
-        return $new_version;
+        $this->currentVersion = new Version(VersionModel::create($attrs));
     }
 
     public function get($key)
