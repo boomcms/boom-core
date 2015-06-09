@@ -193,6 +193,7 @@ return [
         'Validator' => 'Illuminate\Support\Facades\Validator',
         'View'      => 'Illuminate\Support\Facades\View',
 
-//        'Settings' => 'BoomCMS\Core\Settings\Settings',
+        'Settings' => 'BoomCMS\Core\Settings\Settings',
+        'Chunk' => 'BoomCMS\Core\Chunk\Chunk',
     ],
 ];
