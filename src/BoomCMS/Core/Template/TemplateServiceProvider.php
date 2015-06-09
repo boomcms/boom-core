@@ -24,46 +24,55 @@ class TemplateServiceProvider extends ServiceProvider
 	 */
     public function boot()
     {
-        foreach($this->themes as $theme) {
-            $views = $theme->getViewsDirectory();
-            $public = $theme->getPublicDirectory();
-            $routes = $theme->getDirectory() . DIRECTORY_SEPARATOR . 'routes.php';
+        $this->themes = $this->manager->findInstalledThemes();
 
-            if ($this->app['filesystem']->exists($views)) {
-                $this->loadViewsFrom($views, $theme);
-            }
+//        foreach($this->themes as $theme) {
+//            $config = $theme->getConfigDirectory() . DIRECTORY_SEPARATOR . 'themes.php';
+//
+//            if ($this->app['filesystem']->exists($config)) {
+//                $this->mergeConfigFrom($config, 'boomcms');
+//            }
+//        }
+//        foreach($this->themes as $theme) {
+//            $views = $theme->getViewsDirectory();
+//            $public = $theme->getPublicDirectory();
+//            $routes = $theme->getDirectory() . DIRECTORY_SEPARATOR . 'routes.php';
+//
+//            if ($this->app['filesystem']->exists($views)) {
+//                $this->loadViewsFrom($views, $theme);
+//            }
+//
+//            if ($this->app['filesystem']->exists($public)) {
+//                $this->publishes([$public => public_path('vendor/boomcms/themes/' . $theme)], $theme);
+//            }
+//
+//            if ($this->app['filesystem']->exists($routes)) {
+//                include $routes;
+//            }
 
-            if ($this->app['filesystem']->exists($public)) {
-                $this->publishes([$public => public_path('vendor/boomcms/themes/' . $theme)], $theme);
-            }
+//            $config = Config::get("themes.$theme");
 
-            if ($this->app['filesystem']->exists($routes)) {
-                include $routes;
-            }
-
-            $config = Config::get("themes.$theme");
-
-            // Register View shared variables for this theme.
-            if (isset($config['shared'])) {
-                foreach ($config['shared'] as $var => $value) {
-                    View::share($var, $value);
-                }
-            }
-
-            // Register View composers for this theme
-            if (isset($config['composers'])) {
-                foreach ($config['composers'] as $view => $composer) {
-                    View::composer($view, $composer);
-                }
-            }
-
-            // Register View creators for this theme
-            if (isset($config['creators'])) {
-                foreach ($config['creators'] as $view => $creator) {
-                    View::creator($view, $creators);
-                }
-            }
-        }
+//            // Register View shared variables for this theme.
+//            if (isset($config['shared'])) {
+//                foreach ($config['shared'] as $var => $value) {
+//                    View::share($var, $value);
+//                }
+//            }
+//
+//            // Register View composers for this theme
+//            if (isset($config['composers'])) {
+//                foreach ($config['composers'] as $view => $composer) {
+//                    View::composer($view, $composer);
+//                }
+//            }
+//
+//            // Register View creators for this theme
+//            if (isset($config['creators'])) {
+//                foreach ($config['creators'] as $view => $creator) {
+//                    View::creator($view, $creators);
+//                }
+//            }
+//        }
     }
 
     /**
@@ -82,15 +91,5 @@ class TemplateServiceProvider extends ServiceProvider
         $this->app->singleton('boomcms.template.manager', function ($app) use($manager) {
             return $manager;
         });
-
-        $this->themes = $manager->findInstalledThemes();
-
-        foreach($this->themes as $theme) {
-            $config = $theme->getConfigDirectory() . DIRECTORY_SEPARATOR . 'themes.php';
-
-            if ($this->app['filesystem']->exists($config)) {
-                $this->mergeConfigFrom($config, 'boomcms');
-            }
-        }
     }
 }
