@@ -22,9 +22,9 @@ class CreatePerson extends Command implements SelfHandling
 
     /**
      *
-     * @var string
+     * @var array
      */
-    protected $email;
+    protected $credentials;
 
     /**
      *
@@ -40,12 +40,6 @@ class CreatePerson extends Command implements SelfHandling
 
     /**
      *
-     * @var string
-     */
-    protected $name;
-
-    /**
-     *
      * @var Person\Provider
      */
     protected $personProvider;
@@ -54,14 +48,14 @@ class CreatePerson extends Command implements SelfHandling
      *
      * @return void
      */
-    public function __construct($name, $email, array $groups, Auth\Auth $auth, Person\Provider $personProvider, Group\Provider $groupProvider)
+    public function __construct(array $credentials, array $groups, Auth\Auth $auth, Person\Provider $personProvider, Group\Provider $groupProvider)
     {
         $this->auth = $auth;
-        $this->email = $email;
-        $this->groups = $groups;
         $this->groupProvider = $groupProvider;
-        $this->name = $name;
         $this->personProvider = $personProvider;
+
+        $this->credentials = $credentials;
+        $this->groups = $groups;
     }
 
     /**
@@ -71,14 +65,10 @@ class CreatePerson extends Command implements SelfHandling
     public function handle()
     {
         $password = (string) new RandomPassword();
+        $this->credentials['password'] = $this->auth->hash($password);
 
         try {
-            $person = $this->personProvider
-                ->create([
-                    'name' => $this->name,
-                    'email' => $this->email,
-                    'password' => $this->auth->hash($password)
-                ]);
+            $person = $this->personProvider->create($this->credentials);
         } catch (Person\DuplicateEmailException $e) {}
 
         if (isset($person)) {
