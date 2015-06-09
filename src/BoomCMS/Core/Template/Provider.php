@@ -27,7 +27,10 @@ class Provider
 
     public function findById($id)
     {
-        return new Template(Model::find($id)->toArray());
+        $model = Model::find($id);
+        $attrs = $model ? $model->toArray() : [];
+
+        return new Template($attrs);
     }
 
     public function findByThemeAndFilename($theme, $filename)
