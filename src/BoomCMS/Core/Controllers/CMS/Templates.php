@@ -8,6 +8,7 @@ use BoomCMS\Core\Page;
 use BoomCMS\Core\Controllers\Controller;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\View;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -35,9 +36,9 @@ class Templates extends Controller
         $this->authorization('manage_templates');
     }
 
-    public function index(Template\Manager $manager)
+    public function index()
     {
-        $manager = new Template\Manager();
+        $manager = new Template\Manager(App::make('files'), $this->provider);
 
         return View::make($this->viewPrefix . 'index', [
             'templates' => $this->provider->findAll(),
