@@ -6,7 +6,7 @@ use BoomCMS\Core\Page\Page as Page;
 use \Kohana as Kohana;
 use \View as View;
 
-class Tag extends \Boom\Chunk
+class Tag extends Chunk
 {
     protected $_default_template = 'gallery';
     protected $_tag;
@@ -21,18 +21,18 @@ class Tag extends \Boom\Chunk
 
     protected function _show()
     {
-        if ( ! $this->_template || ! Kohana::find_file("views", $this->viewPrefix."tag/$this->_template")) {
-            $this->_template = $this->_default_template;
+        if ( ! $this->template || ! Kohana::find_file("views", $this->viewPrefix."tag/$this->template")) {
+            $this->template = $this->defaultTemplate;
         }
 
-        return View::factory($this->viewPrefix."tag/$this->_template", [
+        return View::factory($this->viewPrefix."tag/$this->template", [
             'tag' => $this->_tag,
         ]);
     }
 
-    protected function _show_default()
+    protected function _showDefault()
     {
-        return new View($this->viewPrefix."default/tag/$this->_template");
+        return new View($this->viewPrefix."default/tag/$this->template");
     }
 
     public function attributes()

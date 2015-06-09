@@ -5,7 +5,7 @@ namespace BoomCMS\Core\Chunk;
 use BoomCMS\Core\Editor\Editor as Editor;
 use \View as View;
 
-class Linkset extends \Boom\Chunk
+class Linkset extends Chunk
 {
     protected $_default_template = 'quicklinks';
     protected $_type = 'linkset';
@@ -14,15 +14,15 @@ class Linkset extends \Boom\Chunk
 
     protected function _show()
     {
-        return new View($this->viewPrefix."linkset/$this->_template", [
+        return new View($this->viewPrefix."linkset/$this->template", [
             'title' => $this->_chunk->title,
             'links' => $this->getLinks(),
         ]);
     }
 
-    public function _show_default()
+    public function _showDefault()
     {
-        return new View($this->viewPrefix . "default/linkset/$this->_template");
+        return new View($this->viewPrefix . "default/linkset/$this->template");
     }
 
     public function getLinks()

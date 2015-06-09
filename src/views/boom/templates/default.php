@@ -5,7 +5,7 @@
     
     <body>
         <h1 id="b-page-title"><?= $page->getTitle() ?></h1>
-        <? //= $chunks['text']['standfirst'] ?>
-        <? //= $chunks['text']['bodycopy'] ?>
+        <?= Chunk::factory('text', 'standfirst') ?>
+        <?= Chunk::factory('text', 'bodycopy') ?>
     </body>
 </html>

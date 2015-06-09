@@ -1,118 +1,124 @@
 <?php
 
-namespace Boom;
-
-use \HTML as HTML;
-use \Kohana as Kohana;
-use \Model_Page_Version as Model_Page_Version;
-use \ORM as ORM;
-use \Request as Request;
-use \Profiler as Profiler;
-use \View as View;
+namespace BoomCMS\Core\Chunk;
 
 use BoomCMS\Core\Auth\Auth as Auth;
 use BoomCMS\Core\Page\Page as Page;
 use BoomCMS\Core\Editor\Editor as Editor;
+
+use Illuminate\Support\Facades\Html;
 
 abstract class Chunk
 {
     protected $attributePrefix = 'data-boom-';
 
     /**
-	 *
-	 * @var ORM
-	 */
-    protected $_chunk;
+     *
+     * @var array
+     */
+    protected $attrs;
 
     /**
-	 *
-	 * @var string
-	 */
-    protected $_default_template = null;
+     *
+     * @var string
+     */
+    protected $defaultTemplate;
 
     /**
-	 *
-	 * @var boolean
-	 */
-    protected $_editable = true;
+     *
+     * @var boolean
+     */
+    protected $editable = true;
 
     /**
-	 *
-	 * @var Model_Page
-	 */
-    protected $_page;
+     *
+     * @var Page
+     */
+    protected $page;
 
     /**
-	 * An array of parameters which will be passed to the chunk template
-	 *
-	 * @var array
-	 */
-    protected $_params = [];
+     * An array of parameters which will be passed to the chunk view
+     *
+     * @var array
+     */
+    protected $viewParams = [];
 
     /**
-	 * The slotname used to find the chunk.
-	 * This has to be stored seperately to $this->_chunk so that for default chunks where $this->_chunk isn't loaded we know the slotname where the chunk belongs.
-	 *
-	 * @var string
-	 */
-    protected $_slotname;
+     * The slotname used to find the chunk.
+     * This has to be stored seperately to $this->_chunk so that for default chunks where $this->_chunk isn't loaded we know the slotname where the chunk belongs.
+     *
+     * @var string
+     */
+    protected $slotname;
 
     /**
-	 *
-	 * @var string
-	 */
-    protected $_template;
+     *
+     * @var string
+     */
+    protected $template;
 
     /**
-	 *
-	 * @var string
-	 */
-    protected $_type;
+     *
+     * @var string
+     */
+    protected $type;
 
-    protected $viewPrefix = 'site/slots/';
+    protected $viewPrefix = 'site.chunks';
 
     /**
-	 * Array of available chunk types.
-	 *
-	 * @var array
-	 */
+     * Array of available chunk types.
+     *
+     * @var array
+     */
     public static $types = ['asset', 'text', 'feature', 'linkset', 'slideshow', 'timestamp', 'tag'];
 
-    public function __construct(Page $page, $chunk, $slotname)
+    public function __construct(Page $page, array $attrs, $slotname)
     {
-        $this->_page = $page;
-        $this->_chunk = $chunk;
-        $this->_slotname = $slotname;
+        $this->page = $page;
+        $this->attrs = $attrs;
+        $this->slotname = $slotname;
     }
 
     /**
-	 *
-	 * @return string
-	 */
+     *
+     * @return string
+     */
     public function __toString()
     {
-        return (string) $this->execute();
+        return (string) $this->render();
     }
 
     /**
-	 * Displays the chunk when chunk data has been set.
-	 *
-	 * @return View
-	 */
+     * Displays the chunk when chunk data has been set.
+     *
+     */
     abstract protected function _show();
 
     /**
-	 * Displays default chunk HTML
-	 *
-	 * @return View
-	 */
-    abstract protected function _show_default();
+     * Displays default chunk HTML
+     *
+     * @return View
+     */
+    abstract protected function _showDefault();
 
     /**
-	 * Attributes to be added to the chunk HTML. Can be overriden to pass additional info to javascript editor.
-	 *
-	 * @return array()
-	 */
+     * Returns whether the logged in user is allowed to edit the chunk
+     *
+     * @return boolean
+     */
+    public function allowedToEdit()
+    {
+        return $this->editor->isEnabled() &&
+            ($this->page->wasCreatedBy($this->auth->getPerson())
+                || $this->auth->loggedIn("edit_page_content", $this->page)
+            );
+    }
+
+    /**
+     * Attributes to be added to the chunk HTML. Can be overriden to pass additional info to javascript editor.
+     *
+     * @return array()
+     */
     public function attributes()
     {
         return [];
@@ -125,21 +131,23 @@ abstract class Chunk
 	 * @param string $html HTML to add classes to.
 	 * @return string
 	 */
-    public function add_attributes($html)
+    public function addAttributesToHtml($html)
     {
         $html = trim( (string) $html);
 
         $attributes = [
-            $this->attributePrefix.'chunk' => $this->_type,
-            $this->attributePrefix.'slot-name' => $this->_slotname,
-            $this->attributePrefix.'slot-template' => $this->_template,
-            $this->attributePrefix.'page' => $this->_page->getId(),
-            $this->attributePrefix.'chunk-id' => $this->_chunk->id,
+            $this->attributePrefix . 'chunk' => $this->type,
+            $this->attributePrefix . 'slot-name' => $this->slotname,
+            $this->attributePrefix . 'slot-template' => $this->template,
+            $this->attributePrefix . 'page' => $this->page->getId(),
+            $this->attributePrefix . 'chunk-id' => isset($this->attrs['id']) ? $this->attrs['id'] : 0,
         ];
-        $attributes = array_merge($attributes, $this->attributes());
-        $attributes_string = HTML::attributes($attributes);
 
-        return preg_replace("|<(.*?)>|", "<$1 $attributes_string>", $html, 1);
+        $attributes = array_merge($attributes, $this->attributes());
+
+        $attributesString = HTML::attributes($attributes);
+
+        return preg_replace("|<(.*?)>|", "<$1 $attributesString>", $html, 1);
     }
 
     public function defaults(array $values)
@@ -150,53 +158,28 @@ abstract class Chunk
     }
 
     /**
-	 * Sets wether the chunk should be editable.
-	 *
-	 * @param bool $value
-	 */
+     * Sets wether the chunk should be editable.
+     *
+     * @param bool $value
+     */
     public function editable($value)
     {
-        // Set the value of $_editable.
-        $this->_editable = $value;
+        $this->editable = $value;
 
         return $this;
     }
 
     /**
-	 * Attempts to get the chunk data from the cache, otherwise calls _execute to generate the cache.
-	 */
-    public function execute()
+     * Attempts to get the chunk data from the cache, otherwise calls _execute to generate the cache.
+     */
+    public function render()
     {
-        // If profiling is enabled then record how long it takes to generate this chunk.
-        if (Kohana::$profiling === true) {
-            $benchmark = Profiler::start("Chunks", $this->_chunk->slotname);
-        }
+        $this->editable = ($this->editable === true && $this->allowedToEdit());
 
-        // Generate the HTML.
-        // Don't allow an error displaying the chunk to bring down the whole page.
-        try {
-            /** Should the chunk be editable?
-			 * This can be changed to calling editable(), for instance if we want to make a chunk read only.
-			 *
-			 * @todo Multiple chunks will be inserted on a single page - need to remove duplicate calles to Auth::instance()->isLoggedIn()
-			 */
-            $this->_editable = ($this->_editable === true && Editor::instance()->isEnabled() && ($this->_page->wasCreatedBy(Auth::instance()->getPerson()) || Auth::instance()->loggedIn("edit_page_content", $this->_page)));
+        $html = $this->html();
 
-            // Get the chunk HTML.
-            $html = $this->html();
-
-            if ($this->_editable === true) {
-                $html = $this->add_attributes($html);
-            }
-        } catch (Exception $e) {
-            // Log the error.
-            Kohana_Exception::log($e);
-
-            return;
-        }
-
-        if (isset($benchmark)) {
-            Profiler::stop($benchmark);
+        if ($this->editable === true) {
+            $html = $this->addAttributesToHtml($html);
         }
 
         return $html;
@@ -289,16 +272,16 @@ abstract class Chunk
 	 */
     public function html()
     {
-        if ($this->_template === null) {
-            $this->_template = $this->_default_template;
+        if ($this->template === null) {
+            $this->template = $this->defaultTemplate;
         }
 
         if ($this->hasContent()) {
             // Display the chunk.
             $return = $this->_show();
-        } elseif ($this->_editable === true) {
+        } elseif ($this->editable === true) {
             // Show the defult chunk.
-            $return = $this->_show_default();
+            $return = $this->_showDefault();
         } else {
             // Chunk has no content and the user isn't allowed to add any.
             // Don't display anything.
@@ -306,8 +289,8 @@ abstract class Chunk
         }
 
         // If the return data is a View then assign any parameters to it.
-        if ($return instanceof View && ! empty($this->_params)) {
-            foreach ($this->_params as $key => $value) {
+        if ($return instanceof View && ! empty($this->viewParams)) {
+            foreach ($this->viewParams as $key => $value) {
                 $return->$key = $value;
             }
         }
@@ -321,9 +304,9 @@ abstract class Chunk
     public function params($params = null)
     {
         if ($params === null) {
-            return $this->_params;
+            return $this->viewParams;
         } else {
-            $this->_params = $params;
+            $this->viewParams = $params;
 
             return $this;
         }
@@ -338,7 +321,7 @@ abstract class Chunk
     public function template($template = null)
     {
         // Set the template filename.
-        $this->_template = $template;
+        $this->template = $template;
 
         return $this;
     }

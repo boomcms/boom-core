@@ -8,7 +8,7 @@ use BoomCMS\Core\TextFilter\Filter as Filter;
 use \Kohana as Kohana;
 use \View as View;
 
-class Text extends \Boom\Chunk
+class Text extends Chunk
 {
     protected $_type = 'text';
 
@@ -16,7 +16,7 @@ class Text extends \Boom\Chunk
 
     protected function _add_html($text)
     {
-        switch ($this->_slotname) {
+        switch ($this->slotname) {
             case 'standfirst':
                 return "<p class=\"standfirst\">$text</p>";
             case 'bodycopy':
@@ -38,7 +38,7 @@ class Text extends \Boom\Chunk
         return $this->showText($this->text());
     }
 
-    protected function _show_default()
+    protected function _showDefault()
     {
         return $this->showText($this->defaultText());
     }
@@ -49,7 +49,7 @@ class Text extends \Boom\Chunk
             return $this->defaultText;
         }
 
-        $text = Kohana::message('chunks', $this->_slotname);
+        $text = Kohana::message('chunks', $this->slotname);
         $text || $text = Kohana::message('chunks', 'text');
 
         return $text;
@@ -95,10 +95,10 @@ class Text extends \Boom\Chunk
     private function showText($text)
     {
         // If no template has been set then add the default HTML tags for this slotname.
-        if ($this->_template === null) {
+        if ($this->template === null) {
             return $this->_add_html($text);
         } else {
-            return new View($this->viewPrefix."text/$this->_template", [
+            return new View($this->viewPrefix."text/$this->template", [
                 'text' => $text,
                 'chunk' => $this->_chunk
             ]);

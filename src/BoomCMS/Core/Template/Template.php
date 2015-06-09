@@ -3,6 +3,8 @@
 namespace BoomCMS\Core\Template;
 
 use BoomCMS\Core\Theme\Theme;
+
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\View;
 
 class Template
@@ -26,6 +28,21 @@ class Template
     public function get($key)
     {
         return isset($this->attrs[$key]) ? $this->attrs[$key] : null;
+    }
+
+    public function getChunks()
+    {
+        $config = $this->getConfig();
+
+        return (isset($config['chunks']) && is_array($config['chunks'])) ? $config['chunks'] : [];
+    }
+
+    public function getConfig()
+    {
+        $theme = Config::get('themes.' . $this->getThemeName() . '.*');
+        $template = Config::get('themes.' . $this->getThemeName() . '.' . $this->getName());
+
+        return array_merge((array) $theme, (array) $template);
     }
 
     public function getDescription()

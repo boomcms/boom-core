@@ -2,6 +2,7 @@
 
 use BoomCMS\Core\Template;
 
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\View;
 
 class TemplateTest extends TestCase
@@ -66,6 +67,59 @@ class TemplateTest extends TestCase
         $template = $this->getTemplate(['theme' => 'test', 'filename' => 'test']);
 
         $this->assertEquals('test:templates.test', $template->getViewName());
+    }
+
+    public function testGetConfigReturnsThemeConfigMergedWithTemplateConfig()
+    {
+        $template = $this->getTemplate(['theme' => 'test', 'name' => 'test']);
+
+        Config::shouldReceive('get')
+            ->with('themes.test.*')
+            ->once()
+            ->andReturn(['key1' => 'theme', 'key2' => 'theme']);
+
+        Config::shouldReceive('get')
+            ->with('themes.test.test')
+            ->once()
+            ->andReturn(['key2' => 'template', 'key3' => 'template']);
+
+        $this->assertEquals([
+            'key1' => 'theme',
+            'key2' => 'template',
+            'key3' => 'template',
+        ], $template->getConfig());
+    }
+
+    public function testGetConfigReturnsArray()
+    {
+        $template = $this->getTemplate(['theme' => 'test', 'name' => 'test']);
+
+        Config::shouldReceive('get')
+            ->with('themes.test.*')
+            ->once()
+            ->andReturn(null);
+
+        Config::shouldReceive('get')
+            ->with('themes.test.test')
+            ->once()
+            ->andReturn(null);
+
+        $this->assertEquals([], $template->getConfig());
+    }
+
+    public function testGetChunksAlwaysReturnsArray()
+    {
+        $template = $this->getMockBuilder('BoomCMS\Core\Template\Template')
+            ->setMethods(['getConfig'])
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $template
+            ->expects($this->once())
+            ->method('getConfig')
+            ->will($this->returnValue([]));
+
+        $this->assertEquals([], $template->getChunks());
     }
 
     protected function getTemplate(array $attrs = [])

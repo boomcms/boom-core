@@ -4,7 +4,7 @@ namespace BoomCMS\Core\Chunk;
 
 use \Kohana as Kohana;
 
-class Timestamp extends \Boom\Chunk
+class Timestamp extends Chunk
 {
     public static $default_format = 'j F Y';
     public static $formats = [
@@ -35,7 +35,7 @@ class Timestamp extends \Boom\Chunk
         return $this->_html_before.date($this->_chunk->format, $this->_chunk->timestamp).$this->_html_after;
     }
 
-    protected function _show_default()
+    protected function _showDefault()
     {
         return $this->_html_before.Kohana::message('chunks', 'timestamp').$this->_html_after;
     }
