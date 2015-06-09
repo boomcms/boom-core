@@ -34,6 +34,11 @@ class Editor
         $this->state = $this->session->get($this->statePersistenceKey, $default);
     }
 
+    public function enable()
+    {
+        return $this->setState(static::EDIT);
+    }
+
     public function isDisabled()
     {
         return $this->hasState(static::DISABLED);
