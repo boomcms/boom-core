@@ -3,7 +3,6 @@
 namespace BoomCMS\Core\Auth;
 
 use \Cookie as Cookie;
-use \Model_Role as Role;
 
 use BoomCMS\Core\Person;
 
@@ -144,7 +143,7 @@ class Auth
     {
         return ($role === null)
             ? $this->isLoggedIn()
-            : $this->isLoggedIn() && $this->permissionsProvider->lookup($this->getPerson(), $role, $page);
+            : $this->isLoggedIn() && ($this->getPerson()->isSuperuser() || $this->permissionsProvider->lookup($this->getPerson(), $role, $page));
     }
 
     public function login(Person\Person $person, $remember = false)

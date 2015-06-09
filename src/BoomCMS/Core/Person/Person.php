@@ -117,6 +117,11 @@ class Person
         return $this->getLockedUntil() && ($this->getLockedUntil() > time());
     }
 
+    public function isSuperuser()
+    {
+        return $this->get('superuser') == true;
+    }
+
     /**
      *
      * @return boolean
