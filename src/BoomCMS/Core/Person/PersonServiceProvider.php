@@ -2,6 +2,7 @@
 
 namespace BoomCMS\Core\Person;
 
+use BoomCMS\Core\Group;
 use Illuminate\Support\ServiceProvider;
 
 class PersonServiceProvider extends ServiceProvider
@@ -25,6 +26,10 @@ class PersonServiceProvider extends ServiceProvider
     {
         $this->app->singleton('boomcms.person.provider', function ($app) {
             return new Provider();
+        });
+
+        $this->app->singleton('boomcms.group.provider', function ($app) {
+            return new Group\Provider();
         });
     }
 }

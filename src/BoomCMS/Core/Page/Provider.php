@@ -44,14 +44,15 @@ class Provider
     private function cache(Page $page)
     {
         $this->cache['id'][$page->getId()] = $page;
+
+        return $page;
     }
 
     public function create(array $attrs = [])
     {
         $model = Model::create($attrs);
-        $this->cache($model);
 
-        return new Page($model->toArray());
+        return $this->cache(new Page($model->toArray()));
     }
 
     public function findById($id)
@@ -86,9 +87,7 @@ class Provider
     private function findAndCache(Model $model = null)
     {
         if ($model) {
-            $this->cache[$model->id] = $model;
-
-            return new Page($model->toArray());
+            return $this->cache(new Page($model->toArray()));
         }
 
         return new Page([]);
@@ -96,6 +95,17 @@ class Provider
 
     public function save(Page $page)
     {
+        if ($page->loaded()) {
+            $model = isset($this->cache[$page->getId()]) ?
+                $this->cache[$page->getId()]
+                : Model::find($page->getId());
 
+            $model->update($page->toArray());
+        } else {
+            $model = Model::create($page->toArray());
+            $page->setId($model->id);
+        }
+
+        return $page;
     }
 }

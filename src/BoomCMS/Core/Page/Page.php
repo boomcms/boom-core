@@ -107,7 +107,7 @@ class Page
             $attrs = array_merge($currentVersion->toArray(), $attrs, ['page_id' => $this->getId()]);
         }
 
-        $this->currentVersion = new Version(VersionModel::create($attrs));
+        $this->currentVersion = new Version(VersionModel::create($attrs)->toArray());
     }
 
     public function get($key)
@@ -144,8 +144,13 @@ class Page
     {
         if ($this->currentVersion === null) {
             if ($this->loaded()) {
-                $version = VersionModel::where('page_id', '=', $this->getId())->latestPublished();
-                $this->currentVersion = new Version($version->first()->toArray());
+                $version = VersionModel::where('page_id', '=', $this->getId())->latestPublished()->first();
+                
+                if ($version) {
+                    $this->currentVersion = new Version($version->toArray());
+                } else {
+                    $this->currentVersion = new Version([]);
+                }
             } else {
                 $this->currentVersion = new Version([]);
             }
@@ -459,6 +464,15 @@ class Page
         return $this;
     }
 
+    public function setId($id)
+    {
+        if ( !$this->getId()) {
+            $this->attributes['id'] = $id;
+        }
+
+        return $this;
+    }
+
     /**
 	 *
 	 * @param boolean $indexing
@@ -503,6 +517,13 @@ class Page
     public function setParentPageId($parentId)
     {
         $this->data['parent_id'] = $parentId;
+
+        return $this;
+    }
+
+    public function setPrimaryUri($uri)
+    {
+        $this->data['primary_uri'] = $uri;
 
         return $this;
     }
@@ -565,6 +586,11 @@ class Page
         $this->data['visible_to'] = $time ? $time->getTimestamp() : null;
 
         return $this;
+    }
+
+    public function toArray()
+    {
+        return $this->data;
     }
 
     public function updateChildSequences(array $sequences)

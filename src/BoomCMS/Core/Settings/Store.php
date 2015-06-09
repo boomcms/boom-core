@@ -6,7 +6,7 @@ use Illuminate\Filesystem\Filesystem;
 
 class Store implements \ArrayAccess
 {
-    protected $filename = 'boomcms/settings.json';
+    protected $filename;
 
     /**
      *
@@ -22,6 +22,7 @@ class Store implements \ArrayAccess
 
     public function __construct(Filesystem $filesystem)
     {
+        $this->filename = storage_path() . '/boomcms/settings.json';
         $this->filesystem = $filesystem;
         $this->settings = $this->loadSettings();
     }

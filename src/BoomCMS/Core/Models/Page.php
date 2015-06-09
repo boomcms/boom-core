@@ -2,14 +2,14 @@
 
 namespace BoomCMS\Core\Models;
 
-use BoomCMS\Core\Editor\Editor as Editor;
-
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
 class Page extends Model
 {
     protected $table = 'pages';
+    public $guarded = ['id'];
+    public $timestamps = false;
 
     /**
 	 *

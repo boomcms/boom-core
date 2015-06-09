@@ -5,7 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 
 use Illuminate\Support\Facades\DB;
 
-class ParentIdToPagesTable extends Migration
+class AddParentIdToPagesTable extends Migration
 {
     /**
 	 * Run the migrations.

@@ -1,6 +1,8 @@
 <?php
 
-use BoomCMS\Auth\Auth;
+namespace BoomCMS\Core\Commands;
+
+use BoomCMS\Core\Auth\Auth;
 use BoomCMS\Core\Page;
 
 use Illuminate\Console\Command;
@@ -40,8 +42,8 @@ class CreatePage extends Command implements SelfHandling
 
         $page->addVersion([
             'edited_by' => $this->auth->getPerson()->getId(),
-            'page_id' => $page->id,
-            'template_id'  => $this->parent->getDefaultChildTemplateId(),
+            'page_id' => $page->getId(),
+            'template_id'  => $this->parent? $this->parent->getDefaultChildTemplateId() : null,
             'title' => 'Untitled',
             'published' => true,
             'embargoed_until' => time(),

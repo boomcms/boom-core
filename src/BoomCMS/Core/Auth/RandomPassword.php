@@ -17,7 +17,7 @@ class RandomPassword
 
     public function getPassword()
     {
-        return $this->password();
+        return $this->password;
     }
 
     public function __toString()

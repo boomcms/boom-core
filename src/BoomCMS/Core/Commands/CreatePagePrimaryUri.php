@@ -1,5 +1,7 @@
 <?php
 
+namespace BoomCMS\Core\Commands;
+
 use BoomCMS\Core\Page;
 use BoomCMS\Core\URL;
 

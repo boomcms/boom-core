@@ -37,13 +37,17 @@ abstract class Helpers
      */
     public static function isAvailable($url, $ignore_url = null)
     {
-        $result = DB::table('page_urls')
+        $query = DB::table('page_urls')
             ->select(DB::raw('1'))
-            ->where('location', '=', $url)
-            ->where('id', '!=', $ignore_url)
-            ->first();
+            ->where('location', '=', $url);
 
-        return (bool) $result;
+        if ($ignore_url) {
+            $query->where('id', '!=', $ignore_url);
+        }
+
+        $result = $query->first();
+
+        return $result === null;
     }
 
     /**

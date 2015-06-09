@@ -1,12 +1,14 @@
 <?php
 
-namespace BoomCMS\Core\Models;
+namespace BoomCMS\Core\Models\Page;
 
 use Illuminate\Database\Eloquent\Model;
 
 class URL extends Model
 {
     protected $table = 'page_urls';
+    public $guarded = ['id'];
+    public $timestamps = false;
 
     /**
 	 * Convert a Model_Page_URL object to a string
@@ -18,32 +20,6 @@ class URL extends Model
     public function __toString()
     {
         return \URL::site($this->location, \Request::$current);
-    }
-
-    /**
-	 * Calls [Boom_Model_Page_URL::make_primary()] when a page URL is created which has the is_primary property set to true.
-	 * This removes the need to call is_primary() after creating a URL.
-	 *
-	 * @param \Validation $validation
-	 * @return \Boom_Model_Page_URL
-	 */
-    public function create(\Validation $validation = null)
-    {
-        parent::create($validation);
-
-        // Ensure that this is the only primary URL for this page.
-        $this->is_primary && $this->make_primary();
-
-        return $this;
-    }
-
-    public function filters()
-    {
-        return [
-            'location' => [
-                [['\Boom\Page\URL', 'sanitise']]
-            ],
-        ];
     }
 
     /**

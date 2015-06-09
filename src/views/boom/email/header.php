@@ -19,7 +19,7 @@
 						</tr>
 						<tr>
 							<td>
-								<table class="header" width="100%" cellspacing="0" cellpadding="0" style="margin: 0; padding: 0;background-color:#FFD200;color:#404040;">
+								<table class="header" width="100%" cellspacing="0" cellpadding="0" style="margin: 0; padding: 0;background-color:#bf1e2e;color:#fff;">
 									<tr>
 										<td width="10" height="10">
 											<img src="<?= url('/vendor/boomcms/boom-core/email_assets/spacer.gif') ?>" />
@@ -36,7 +36,7 @@
 											<img src="<?= url('/vendor/boomcms/boom-core/email_assets/spacer.gif') ?>" />
 										</td>
 										<td width="580" style="font-family: Arial, Helvetica, sans-serif !important; margin: 0; font-size:16px !important;text-align:center;">
-											<img src="<?= url('/vendor/boomcms/boom-core/email_assets/uxb_logo_sm.png') ?>" style="vertical-align:middle;"/> Email from BoomCMS, by <a href="http://www.uxblondon.com/services/content-management" style="color:#404040; text-decoration:underline !important;font-weight:bold;">UXB London</a>.
+											<img src="<?= url('/vendor/boomcms/boom-core/email_assets/logo_sm.png') ?>" style="vertical-align:middle;"/> Email from BoomCMS.
 										</td>
 										<td width="10" height="10">
 											<img src="<?= url('/vendor/boomcms/boom-core/email_assets/spacer.gif') ?>" />

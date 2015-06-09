@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\App;
 class Version extends Model
 {
     protected $table = 'page_versions';
+    public $guarded = ['id'];
+    public $timestamps = false;
 
     /**
 	 * Adds a chunk to the page version.
@@ -81,7 +83,7 @@ class Version extends Model
             ->set([
                 'published'    =>    false,
             ])
-            ->where('embargoed_until', '>', $_SERVER['REQUEST_TIME'])
+            ->where('embargoed_until', '>', time())
             ->where('page_id', '=', $this->page_id)
             ->where('id', '!=', $this->id)
             ->execute($this->_db);

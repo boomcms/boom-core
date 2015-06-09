@@ -10,7 +10,7 @@ class Version
      *
      * @var array
      */
-    private $data;
+    private $attrs;
 
     /**
      *
@@ -18,14 +18,14 @@ class Version
      */
     private $template;
 
-    public function __construct(array $data)
+    public function __construct(array $attrs)
     {
-        $this->data = $data;
+        $this->attrs = $attrs;
     }
 
     public function get($key)
     {
-        return isset($this->data[$key]) ? $this->data[$key] : null;
+        return isset($this->attrs[$key]) ? $this->attrs[$key] : null;
     }
 
     public function getTemplateId()
@@ -83,5 +83,10 @@ class Version
             // Version is embargoed if the embargo time is in the future.
             return 'embargoed';
         }
+    }
+
+    public function toArray()
+    {
+        return $this->attrs;
     }
 }

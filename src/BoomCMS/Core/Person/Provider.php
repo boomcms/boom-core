@@ -8,6 +8,12 @@ class Provider
 {
     public function create(array $credentials)
     {
+        $existing = $this->findByEmail($credentials['email']);
+
+        if ($existing->loaded()) {
+            throw new DuplicateEmailException($credentials['email']);
+        }
+
         $model = Model::create($credentials);
 
         return $this->findAndCache($model);
