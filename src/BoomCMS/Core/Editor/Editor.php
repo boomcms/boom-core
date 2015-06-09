@@ -11,7 +11,7 @@ class Editor
     const DISABLED = 2;
     const PREVIEW = 3;
 
-    public static $default = Editor::PREVIEW;
+    public static $default = Editor::EDIT;
 
     /**
 	 *
