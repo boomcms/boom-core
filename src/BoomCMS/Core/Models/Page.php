@@ -2,11 +2,14 @@
 
 namespace BoomCMS\Core\Models;
 
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
 class Page extends Model
 {
+    use SoftDeletes;
+
     protected $table = 'pages';
     public $guarded = ['id'];
     public $timestamps = false;
