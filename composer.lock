@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "afb180b4527f37789a3daf6a5a406480",
+    "hash": "4624650bd9d2dd4daab0d18456a2c63d",
     "packages": [
         {
             "name": "boomcms/boom-core",
@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/boomcms/boom-core.git",
-                "reference": "28afcf32b8ca0293f754df604e34dd7fbc6fefc3"
+                "reference": "0ffb11e62c0bc418054181b12c57133fd512726f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/boomcms/boom-core/zipball/28afcf32b8ca0293f754df604e34dd7fbc6fefc3",
-                "reference": "28afcf32b8ca0293f754df604e34dd7fbc6fefc3",
+                "url": "https://api.github.com/repos/boomcms/boom-core/zipball/0ffb11e62c0bc418054181b12c57133fd512726f",
+                "reference": "0ffb11e62c0bc418054181b12c57133fd512726f",
                 "shasum": ""
             },
             "require": {
@@ -50,7 +50,7 @@
                 "BSD-3-Clause"
             ],
             "description": "Core classes for BoomCMS",
-            "time": "2015-06-08 21:13:56"
+            "time": "2015-06-09 07:07:05"
         },
         {
             "name": "boomcms/boom-installer",
@@ -58,12 +58,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/boomcms/boom-installer.git",
-                "reference": "01852d58318213d86c1864c0796ff61c64898cf2"
+                "reference": "8d16c0dd4664ebb870b99f1aff6585f1843fa376"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/boomcms/boom-installer/zipball/01852d58318213d86c1864c0796ff61c64898cf2",
-                "reference": "01852d58318213d86c1864c0796ff61c64898cf2",
+                "url": "https://api.github.com/repos/boomcms/boom-installer/zipball/8d16c0dd4664ebb870b99f1aff6585f1843fa376",
+                "reference": "8d16c0dd4664ebb870b99f1aff6585f1843fa376",
                 "shasum": ""
             },
             "require": {
@@ -91,7 +91,7 @@
                 }
             ],
             "description": "BoomCMS installer",
-            "time": "2015-06-08 20:48:26"
+            "time": "2015-06-09 09:20:10"
         },
         {
             "name": "boomcms/theme-default",
@@ -99,15 +99,15 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/boomcms/theme-default.git",
-                "reference": "ab4373b6548a07773822d4ad6ed2f0ea522f38c7"
+                "reference": "d9e7be5792edd6687a353d1319a8240783d43770"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/boomcms/theme-default/zipball/ab4373b6548a07773822d4ad6ed2f0ea522f38c7",
-                "reference": "ab4373b6548a07773822d4ad6ed2f0ea522f38c7",
+                "url": "https://api.github.com/repos/boomcms/theme-default/zipball/d9e7be5792edd6687a353d1319a8240783d43770",
+                "reference": "d9e7be5792edd6687a353d1319a8240783d43770",
                 "shasum": ""
             },
-            "type": "boomcms-template",
+            "type": "boomcms-theme",
             "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
@@ -119,7 +119,7 @@
                 }
             ],
             "description": "Default Boom theme",
-            "time": "2015-06-08 21:09:14"
+            "time": "2015-06-09 09:11:52"
         },
         {
             "name": "classpreloader/classpreloader",
@@ -942,12 +942,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "56862959b45131ad33e5a7727a25db19f2cf090b"
+                "reference": "3b1077f6f4dd04b974fc9479660f6681942db687"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/56862959b45131ad33e5a7727a25db19f2cf090b",
-                "reference": "56862959b45131ad33e5a7727a25db19f2cf090b",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/3b1077f6f4dd04b974fc9479660f6681942db687",
+                "reference": "3b1077f6f4dd04b974fc9479660f6681942db687",
                 "shasum": ""
             },
             "require": {
@@ -1018,7 +1018,7 @@
                 "sftp",
                 "storage"
             ],
-            "time": "2015-06-07 21:27:37"
+            "time": "2015-06-08 21:31:19"
         },
         {
             "name": "monolog/monolog",

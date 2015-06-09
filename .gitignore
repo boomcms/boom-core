@@ -3,3 +3,5 @@
 /nbproject/private
 public/vendor
 .env
+storage/boomcms/settings.json
+database/migrations

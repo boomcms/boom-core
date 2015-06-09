@@ -143,6 +143,7 @@ return [
         'BoomCMS\Core\Person\PersonServiceProvider',
         'BoomCMS\Core\Page\PageServiceProvider',
         'BoomCMS\Core\Template\TemplateServiceProvider',
+        'BoomCMS\Core\Settings\SettingsServiceProvider',
         'BoomCMS\Installer\ServiceProvider',
     ],
 
@@ -192,6 +193,6 @@ return [
         'Validator' => 'Illuminate\Support\Facades\Validator',
         'View'      => 'Illuminate\Support\Facades\View',
 
-        'Settings' => 'BoomCMS\Core\Settings\Settings',
+//        'Settings' => 'BoomCMS\Core\Settings\Settings',
     ],
 ];
