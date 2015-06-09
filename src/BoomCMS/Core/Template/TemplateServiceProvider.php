@@ -32,7 +32,8 @@ class TemplateServiceProvider extends ServiceProvider
             if ($this->app['filesystem']->exists($config)) {
                 $this->mergeConfigFrom($config, 'boomcms');
             }
-
+        }
+        foreach($this->themes as $theme) {
             $views = $theme->getViewsDirectory();
             $public = $theme->getPublicDirectory();
             $routes = $theme->getDirectory() . DIRECTORY_SEPARATOR . 'routes.php';
@@ -81,7 +82,7 @@ class TemplateServiceProvider extends ServiceProvider
     public function register()
     {
         $provider = new Provider();
-        $manager = $this->manager = new Manager($this->app['files'], $provider, false);
+        $this->manager = $manager = new Manager($this->app['files'], $provider, false);
 
         $this->app->singleton('boomcms.template.provider', function ($app) use($provider) {
             return $provider;
