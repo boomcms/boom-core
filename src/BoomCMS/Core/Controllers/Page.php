@@ -24,11 +24,8 @@ class Page extends Controller
 
     public function show()
     {
-        //$method = 'as' . ucfirst(strtolower($this->request->param('format')));
-        $method = 'asHTML';
-
         $page = $this->request->route()->getParameter('boomcms.currentPage');
 
-        return $page->getTemplate()->$method($page, $this->request);
+        return $page->getTemplate()->getView();
     }
 }
