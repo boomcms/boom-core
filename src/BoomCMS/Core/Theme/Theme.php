@@ -2,11 +2,13 @@
 
 namespace BoomCMS\Core\Theme;
 
+use Illuminate\Support\Facades\Storage;
+
 class Theme
 {
     protected $name;
 
-    protected $themesDir = 'storage/boomcms/themes';
+    protected $themesDir = '/boomcms/themes';
 
     public function __construct($name = null)
     {
@@ -35,7 +37,7 @@ class Theme
 
     public function getThemesDirectory()
     {
-        return $this->themesDir;
+        return storage_path() . $this->themesDir;
     }
 
     public function getViewDirectory()

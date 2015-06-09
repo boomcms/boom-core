@@ -2,7 +2,7 @@
 
 use BoomCMS\Core\Settings\Store;
 
-class SettingsTest extends PHPUnit_Framework_TestCase
+class SettingsTest extends TestCase
 {
     public function testSettingsLoaded()
     {

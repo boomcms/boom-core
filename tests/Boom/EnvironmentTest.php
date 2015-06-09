@@ -1,6 +1,6 @@
 <?php
 
-class EnvironmentTest extends PHPUnit_Framework_TestCase
+class EnvironmentTest extends TestCase
 {
     private $environments = ['development', 'staging', 'production'];
 

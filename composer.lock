@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "5be231c99f7b28289eead8bb990b7dff",
+    "hash": "e9e7d93c34a416afae432c8b017d9b67",
     "packages": [
         {
             "name": "classpreloader/classpreloader",
@@ -2301,6 +2301,47 @@
                 "test"
             ],
             "time": "2015-05-11 14:41:42"
+        },
+        {
+            "name": "laravel/laravel",
+            "version": "v5.0.22",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laravel/laravel.git",
+                "reference": "7bddbdc2a1f8d9c23205707e74455d74684e3031"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laravel/laravel/zipball/7bddbdc2a1f8d9c23205707e74455d74684e3031",
+                "reference": "7bddbdc2a1f8d9c23205707e74455d74684e3031",
+                "shasum": ""
+            },
+            "require": {
+                "laravel/framework": "5.0.*"
+            },
+            "require-dev": {
+                "phpspec/phpspec": "~2.1",
+                "phpunit/phpunit": "~4.0"
+            },
+            "type": "project",
+            "autoload": {
+                "classmap": [
+                    "database"
+                ],
+                "psr-4": {
+                    "App\\": "app/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "The Laravel Framework.",
+            "keywords": [
+                "framework",
+                "laravel"
+            ],
+            "time": "2015-03-24 21:06:56"
         },
         {
             "name": "mockery/mockery",

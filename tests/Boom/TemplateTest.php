@@ -4,7 +4,7 @@ use BoomCMS\Core\Template;
 
 use Illuminate\Support\Facades\View;
 
-class TemplateTest extends PHPUnit_Framework_TestCase
+class TemplateTest extends TestCase
 {
     public function testLoadedIfHasId()
     {
@@ -36,7 +36,7 @@ class TemplateTest extends PHPUnit_Framework_TestCase
 
     public function testGetFullFilename()
     {
-        $filename = 'storage/boomcms/themes/test/src/views/templates/test';
+        $filename = storage_path() . '/boomcms/themes/test/src/views/templates/test';
         $template = $this->getTemplate(['theme' => 'test', 'filename' => 'test']);
 
         $this->assertEquals($filename, $template->getFullFilename());
