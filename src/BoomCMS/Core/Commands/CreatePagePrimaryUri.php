@@ -26,7 +26,7 @@ class CreatePagePrimaryUri extends Command implements SelfHandling
 
     public function handle()
     {
-        $url = $this->location ?: URL\Helpers::fromTitle($this->prefix, $this->page->getTitle());
+        $url = ($this->location !== null) ? $this->location : URL\Helpers::fromTitle($this->prefix, $this->page->getTitle());
 
         $this->page->setPrimaryUri($url);
         $page = $this->provider->save($this->page);
