@@ -102,7 +102,9 @@ abstract class BaseChunk
     abstract protected function showDefault();
 
     /**
-     * Attributes to be added to the chunk HTML. Can be overriden to pass additional info to javascript editor.
+     * Attributes to be added to the chunk HTML.
+     *
+     * Can be overriden to pass additional info to javascript editor.
      *
      * @return array()
      */
@@ -122,7 +124,7 @@ abstract class BaseChunk
     {
         $html = trim( (string) $html);
 
-        $attributes = [
+        $baseAttributes = [
             $this->attributePrefix . 'chunk' => $this->type,
             $this->attributePrefix . 'slot-name' => $this->slotname,
             $this->attributePrefix . 'slot-template' => $this->template,
@@ -130,8 +132,7 @@ abstract class BaseChunk
             $this->attributePrefix . 'chunk-id' => isset($this->attrs['id']) ? $this->attrs['id'] : 0,
         ];
 
-        $attributes = array_merge($attributes, $this->attributes());
-
+        $attributes = array_merge($baseAttributes, $this->attributes());
         $attributesString = Html::attributes($attributes);
 
         return preg_replace("|<(.*?)>|", "<$1 $attributesString>", $html, 1);
@@ -139,9 +140,14 @@ abstract class BaseChunk
 
     public function getPlaceholderText()
     {
-        $text = Lang::get("boom::chunks.{$this->type}.{$this->slotname}");
+        $text = Lang::get("boom::chunks.{$this->getType()}.{$this->slotname}");
 
-        return $text ?: Lang::get("boom::chunks.{$this->type}");
+        return $text ?: Lang::get("boom::chunks.{$this->getType()}");
+    }
+
+    public function getType()
+    {
+        return $this->type;
     }
 
     /**
