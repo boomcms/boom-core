@@ -73,8 +73,8 @@ Route::group(['middleware' => [
 
         Route::group(['prefix' => 'page/settings'], function() {
             Route::get('{action}/{page}', [
-                'uses' => function($action, $page) {
-                    return App::make('BoomCMS\Core\Controllers\CMS\Page\Settings\View')->$action($page);
+                'uses' => function($action) {
+                    return App::make('BoomCMS\Core\Controllers\CMS\Page\Settings\View')->$action();
                 }
             ]);
 

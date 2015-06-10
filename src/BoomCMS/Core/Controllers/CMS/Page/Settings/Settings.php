@@ -5,29 +5,6 @@ namespace BoomCMS\Core\Controllers\CMS\Page\Settings;
 use BoomCMS\Core\Page;
 use BoomCMS\Core\Controllers\CMS\Page\PageController;
 
-/**
- * ##Base controller for editing page settings.
- *
- * Editing page settings are handled across three main classes:
- *
- * * [Boom_Controller_Cms_Page_Settings]
- *
- *	The base class which is extended by the other classes for permissions checks and other common functionality.
- *
- * * [Boom_Controller_Cms_Page_Settings_View]
- *
- *	Displays forms where groups of settings can be changed.
- *
- * * [Boom_Controller_Cms_Page_Settings_Save]
- *
- *	Process submissions from the page settings forms to save changes to the page.
- *
- * A route set in init.php checks the request method and sends POST requests to [Boom_Controller_Cms_Page_Settings_Save] and all other requests to [Boom_Controller_Cms_Page_Settings_View]
- *
- *
- * @package	BoomCMS
- * @category	Controllers
- */
 abstract class Settings extends PageController
 {
     /**
@@ -44,43 +21,43 @@ abstract class Settings extends PageController
 	 */
     public $allowAdvanced;
 
-    public function admin(Page\Page $page)
+    public function admin()
     {
-        $this->authorization('edit_page_admin', $page);
+        $this->authorization('edit_page_admin');
     }
 
-    public function children(Page\Page $page)
+    public function children()
     {
-        $this->authorization('edit_page_children_basic', $page);
+        $this->authorization('edit_page_children_basic');
         $this->allowAdvanced = $this->auth->loggedIn('edit_page_children_advanced', $page);
     }
 
-    public function feature(Page\Page $page)
+    public function feature()
     {
-        $this->authorization('edit_feature_image', $page);
+        $this->authorization('edit_feature_image');
     }
 
-    public function navigation(Page\Page $page)
+    public function navigation()
     {
-        $this->authorization('edit_page_navigation_basic', $page);
+        $this->authorization('edit_page_navigation_basic');
         $this->allowAdvanced = $this->auth->loggedIn('edit_page_navigation_advanced', $page);
     }
 
-    public function search(Page\Page $page)
+    public function search()
     {
-        $this->authorization('edit_page_search_basic', $page);
+        $this->authorization('edit_page_search_basic');
         $this->allowAdvanced = $this->auth->loggedIn('edit_page_search_advanced', $page);
     }
 
-    public function visibility(Page\Page $page)
+    public function visibility()
     {
-        $this->authorization('edit_page', $page);
+        $this->authorization('edit_page');
     }
 
     public function authorization($role, Page\Page $page = null)
     {
         if ( ! $this->auth->loggedIn('manage_pages')) {
-            parent::authorization($role, $page);
+            parent::authorization($role, $this->page);
         }
     }
 }

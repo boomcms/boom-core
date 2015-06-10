@@ -1,6 +1,10 @@
 <?php
 
-class Controller_Cms_Page_Settings_Save extends Controller_Cms_Page_Settings
+namespace BoomCMS\Core\Controllers\CMS\Page\Settings;
+
+use Datetime;
+
+class Save extends Settings
 {
     public function admin()
     {
@@ -119,23 +123,21 @@ class Controller_Cms_Page_Settings_Save extends Controller_Cms_Page_Settings
         Database::instance()->commit();
     }
 
-    public function visibility(Page\Page $page)
+    public function visibility()
     {
-        parent::visibility($page);
+        parent::visibility();
 
-//        $this->log("Updated visibility settings for page " . $this->page->getTitle() . " (ID: " . $this->page->getId() . ")");
+        $this->page->setVisibleAtAnyTime($this->request->input('visible') == 1);
 
-        $page->setVisibleAtAnyTime($this->request->input('visible') == 1);
-
-        if ($page->isVisibleAtAnyTime()) {
+        if ($this->page->isVisibleAtAnyTime()) {
             $visibleTo = ($this->request->input('toggle_visible_to') == 1) ? new DateTime($this->request->input('visible_to')) : null;
 
-            $page
+            $this->page
                 ->setVisibleFrom(new DateTime($this->request->input('visible_from')))
                 ->setVisibleTo($visibleTo);
         }
 
-        $this->page->save();
+        $this->provider->save($this->page);
 
         return (int) $this->page->isVisible();
     }

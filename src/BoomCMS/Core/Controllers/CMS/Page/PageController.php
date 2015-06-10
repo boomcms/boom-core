@@ -14,20 +14,27 @@ class PageController extends Controller
 {
     protected $viewPrefix = 'boom::editor.page.';
 
+    /**
+     *
+     * @var Page\Page
+     */
+    protected $page;
+
     public function __construct(Page\Provider $provider, Auth $auth, Request $request)
     {
         $this->provider = $provider;
         $this->auth = $auth;
         $this->request = $request;
+        $this->page = $this->request->route()->getParameter('page');
     }
 
-    public function add(Page\Page $parent)
+    public function add()
     {
-        $this->authorization('add_page', $parent);
+        $this->authorization('add_page', $this->page);
 
         $newPage = $this->dispatch('BoomCMS\Core\Commands\CreatePage', [$this->provider, $this->auth, $parent]);
-        
-        $urlPrefix = ($this->parent->getChildPageUrlPrefix()) ?: $this->parent->url()->getLocation();
+
+        $urlPrefix = ($this->page->getChildPageUrlPrefix()) ?: $this->page->url()->getLocation();
         $url = $this->dispatch('BoomCMS\Core\Commands\CreatePagePrimaryURI', [$this->provider, $newPage, $urlPrefix]);
 
         return [
