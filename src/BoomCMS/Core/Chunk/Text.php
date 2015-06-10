@@ -30,7 +30,7 @@ class Text extends BaseChunk
 
     protected function showDefault()
     {
-        return $this->showText($this->defaultText());
+        return $this->showText($this->getPlaceholderText());
     }
 
     public function getPlaceholderText()
