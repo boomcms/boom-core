@@ -2,35 +2,27 @@
 
 namespace BoomCMS\Core\Chunk;
 
-use BoomCMS\Core\Editor\Editor as Editor;
 use BoomCMS\Core\TextFilter\Commander as TextFilter;
 use BoomCMS\Core\TextFilter\Filter as Filter;
 
 class Text extends BaseChunk
 {
+    protected $html;
     protected $type = 'text';
+    protected $placeholder;
 
-    protected $defaultText;
-
-    protected function _add_html($text)
+    public function getHtmlContainerForSlotname($slotname)
     {
-        switch ($this->slotname) {
+        switch ($slotname) {
             case 'standfirst':
-                return "<p class=\"standfirst\">$text</p>";
+                return "<p class=\"standfirst\">{text}</p>";
             case 'bodycopy':
-                return "<div class=\"content\">$text</div>";
-            case 'bodycopy2':
-                return "<div class=\"content-secondary\">$text</div>";
+                return "<div class=\"content\">{text}</div>";
             default:
-                return "<p>$text</p>";
+                return "<p>{text}</p>";
         }
     }
 
-    /**
-	 *
-	 * @uses Model_Chunk_Text::unmunge()
-	 * @uses Chunk_Text::embed_video()
-	 */
     protected function show()
     {
         return $this->showText($this->text());
@@ -41,13 +33,13 @@ class Text extends BaseChunk
         return $this->showText($this->defaultText());
     }
 
-    public function defaultText()
+    public function getPlaceholderText()
     {
-        if ($this->defaultText !== null) {
-            return $this->defaultText;
+        if ($this->placeholder !== null) {
+            return $this->plaeholder;
         }
 
-        return $this->getPlaceholderText();
+        return parent::getPlaceholderText();
     }
 
     /**
@@ -73,44 +65,45 @@ class Text extends BaseChunk
     }
 
     /**
-     * Sets the default text that should be shown in the editor if the text chunk has no content.
+     * Sets the placeholder text that should be shown in the editor if the text chunk has no content.
      *
      * This is useful as a way of setting some text which describes to editors what the text chunk is intended to be used for.
      *
      * @param  string           $text
      * @return \Boom\Chunk\Text
      */
-    public function setDefaultText($text)
+    public function setPlaceholder($text)
     {
-        $this->defaultText = $text;
+        $this->placeholder = $text;
+
+        return $this;
+    }
+
+    public function setHtml($html)
+    {
+        $this->html = $html;
 
         return $this;
     }
 
     private function showText($text)
     {
-        // If no template has been set then add the default HTML tags for this slotname.
-        if ($this->template === null) {
-            return $this->_add_html($text);
-        } else {
-            return new View($this->viewPrefix."text/$this->template", [
-                'text' => $text,
-                'chunk' => $this->_chunk
-            ]);
-        }
+        $html = $this->html ?: $this->getHtmlContainerForSlotname($this->slotname);
+
+        return str_replace('{text}', $text, $html);
     }
 
     public function text()
     {
-        if (Editor::instance()->isEnabled()) {
+        if ($this->isEditable()) {
             $commander = new TextFilter();
             $commander
                 ->addFilter(new Filter\UnmungeAssetEmbeds())
                 ->addFilter(new Filter\UnmungeInternalLinks());
 
-            $text = $commander->filterText($this->_chunk->text);
+            $text = $commander->filterText($this->getUnfilteredText());
         } else {
-            $text = $this->_chunk->site_text;
+            $text = $this->attrs['site_text'];
         }
 
         return $text;

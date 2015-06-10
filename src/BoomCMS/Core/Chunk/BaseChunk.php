@@ -214,14 +214,10 @@ abstract class BaseChunk
         }
 
         if ($this->hasContent()) {
-            // Display the chunk.
             $return = $this->show();
         } elseif ($this->isEditable()) {
-            // Show the defult chunk.
             $return = $this->showDefault();
         } else {
-            // Chunk has no content and the user isn't allowed to add any.
-            // Don't display anything.
             return "";
         }
 
