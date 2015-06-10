@@ -43,6 +43,7 @@ class Page
     private $template;
 
     protected $versionColumns = [
+        'version:id',
         'page_id',
         'template_id',
         'title',

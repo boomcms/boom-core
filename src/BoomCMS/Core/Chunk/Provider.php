@@ -21,17 +21,10 @@ class Provider
      */
     protected $editor;
 
-    /**
-     *
-     * @var Page
-     */
-    protected $defaultPage;
-
-    public function __construct(Auth $auth, Editor $editor, Page $defaultPage)
+    public function __construct(Auth $auth, Editor $editor)
     {
         $this->auth = $auth;
         $this->editor = $editor;
-        $this->defaultPage = $defaultPage;
     }
 
     /**
@@ -39,7 +32,7 @@ class Provider
      *
      * @return boolean
      */
-    public function allowedToEdit(Page\Page $page)
+    public function allowedToEdit(Page $page)
     {
         if ( ! $page->loaded()) {
             return true;
@@ -62,21 +55,21 @@ class Provider
 
     public function findOne($type, $slotname, Version $version)
     {
-        $model = "Chunk_" . ucfirst($type);
+        $class = 'BoomCMS\Core\Models\Chunk\\' . ucfirst($type);
 
-        return $model::where('page_vid', '=', $version->id)
-            ->with('target')
+        return $class::where('page_vid', '=', $version->getId())
+//            ->with('target')
             ->where('slotname', '=', $slotname)
             ->first();
     }
 
     public function findMany($type, array $slotnames, Version $version)
     {
-        $model = "Chunk_" . ucfirst($type);
+        $class = 'BoomCMS\Core\Models\Chunk\\' . ucfirst($type);
 
-        return $model::where('slotname', 'in', $slotnames)
-            ->with('target')
-            ->where('page_vid', '=', $version->id)
+        return $class::where('slotname', 'in', $slotnames)
+//            ->with('target')
+            ->where('page_vid', '=', $version->getId())
             ->get();
     }
 
@@ -91,16 +84,17 @@ class Provider
      */
     public function view($type, $slotname, $page = null)
     {
-        $className = ucfirst($type);
+        $className = 'BoomCMS\Core\Chunk\\' . ucfirst($type);
 
         if ($page === null) {
-            $page = $this->defaultPage;
+            $page = $this->editor->getActivePage();
         } elseif ($page === 0) {
             // 0 was given as the page - this signifies a 'global' chunk not assigned to any page.
             $page = new Page([]);
         }
 
         $chunk = $this->find($type, $slotname, $page->getCurrentVersion());
+        $chunk = $chunk? $chunk->toArray() : [];
 
         return new $className($page, $chunk, $slotname, $this->allowedToEdit($page));
     }

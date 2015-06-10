@@ -1,6 +1,6 @@
 <?php
 
-namespace BoomCMS\Core\Model\Chunk;
+namespace BoomCMS\Core\Models\Chunk;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -11,13 +11,6 @@ class Linkset extends Model
     ];
 
     protected $_links;
-
-    protected $_table_columns = [
-        'id'        =>    '',
-        'title'        =>    '',
-        'slotname'    =>    '',
-        'page_vid' => '',
-    ];
 
     protected $table = 'chunk_linksets';
 

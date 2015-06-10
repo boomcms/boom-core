@@ -10,9 +10,9 @@ use \View as View;
 
 class Text extends BaseChunk
 {
-    protected $_type = 'text';
+    protected $type = 'text';
 
-    private $defaultText;
+    protected $defaultText = 'Default Text';
 
     protected function _add_html($text)
     {
@@ -62,19 +62,19 @@ class Text extends BaseChunk
      */
     public function getUnfilteredText()
     {
-        return $this->_chunk->text;
+        return $this->attrs['text'];
     }
 
     public function get_paragraphs($offset = 0, $length = null)
     {
-        preg_match_all('|<p>(.*?)</p>|', $this->_chunk->text, $matches, PREG_PATTERN_ORDER);
+        preg_match_all('|<p>(.*?)</p>|', $this->attrs['text'], $matches, PREG_PATTERN_ORDER);
 
         return $matches[1];
     }
 
     public function hasContent()
     {
-        return trim($this->_chunk->text) != null;
+        return isset($this->attrs['text']) && trim($this->attrs['text']) != null;
     }
 
     /**

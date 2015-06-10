@@ -113,6 +113,7 @@ class Page extends Model
 
         return $query
             ->select('version.*')
+            ->addSelect('version.id as version:id')
             ->addSelect('pages.*')
             ->join(DB::raw('(' . $subquery->toSql() . ') as v2'), 'pages.id', '=', 'v2.page_id')
             ->mergeBindings($subquery)

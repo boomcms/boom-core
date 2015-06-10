@@ -1,6 +1,6 @@
 <?php
 
-namespace BoomCMS\Core\Model\Chunk;
+namespace BoomCMS\Core\Models\Chunk;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -11,13 +11,6 @@ class Slideshow extends Model
     ];
 
     protected $_slides;
-
-    protected $_table_columns = [
-        'title'        =>    '',
-        'id'        =>    '',
-        'slotname'    =>    '',
-        'page_vid' => '',
-    ];
 
     protected $table = 'chunk_slideshows';
 

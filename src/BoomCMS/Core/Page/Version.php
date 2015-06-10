@@ -20,12 +20,22 @@ class Version
 
     public function __construct(array $attrs)
     {
+        if (isset($attrs['version:id'])) {
+            $attrs['id'] = $attrs['version:id'];
+            unset($attrs['version:id']);
+        }
+
         $this->attrs = $attrs;
     }
 
     public function get($key)
     {
         return isset($this->attrs[$key]) ? $this->attrs[$key] : null;
+    }
+
+    public function getId()
+    {
+        return $this->get('id');
     }
 
     public function getTemplateId()

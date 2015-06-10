@@ -1,19 +1,11 @@
 <?php
 
-namespace BoomCMS\Core\Model\Chunk;
+namespace BoomCMS\Core\Models\Chunk;
 
 use Illuminate\Database\Eloquent\Model;
 
 class Timestamp extends Model
 {
-    protected $_table_columns = [
-        'id' => '',
-        'timestamp' => '',
-        'format' => '',
-        'slotname'    => '',
-        'page_vid' => '',
-    ];
-
     protected $table = 'chunk_timestamps';
 
     public function is_valid_format()

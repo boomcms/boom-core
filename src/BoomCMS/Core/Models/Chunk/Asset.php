@@ -1,6 +1,6 @@
 <?php
 
-namespace BoomCMS\Core\Model\Chunk;
+namespace BoomCMS\Core\Models\Chunk;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -8,16 +8,6 @@ class Asset extends Model
 {
     protected $_belongs_to = [
         'target' => ['model' => 'Asset', 'foreign_key' => 'asset_id'],
-    ];
-
-    protected $_table_columns = [
-        'id'            =>    '',
-        'asset_id'        =>    '',
-        'title'            =>    '',
-        'caption'        =>    '',
-        'url'            =>    '',
-        'slotname'        =>    '',
-        'page_vid' => '',
     ];
 
     protected $table = 'chunk_assets';

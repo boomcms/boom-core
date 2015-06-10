@@ -4,7 +4,7 @@ namespace BoomCMS\Core\Chunk;
 
 use BoomCMS\Core\Page\Page;
 
-use Illuminate\Support\Facades\HTML;
+use Illuminate\Support\Facades\Html;
 
 abstract class BaseChunk
 {
@@ -131,7 +131,7 @@ abstract class BaseChunk
 
         $attributes = array_merge($attributes, $this->attributes());
 
-        $attributesString = HTML::attributes($attributes);
+        $attributesString = Html::attributes($attributes);
 
         return preg_replace("|<(.*?)>|", "<$1 $attributesString>", $html, 1);
     }
