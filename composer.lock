@@ -1,7 +1,7 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
     "hash": "4624650bd9d2dd4daab0d18456a2c63d",
@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/boomcms/boom-core.git",
-                "reference": "5e4fa882a1936f31e936c42b7c64145ebdf8afe2"
+                "reference": "fe06e9e28d331810f352e2d0c134de2d22040e89"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/boomcms/boom-core/zipball/5e4fa882a1936f31e936c42b7c64145ebdf8afe2",
-                "reference": "5e4fa882a1936f31e936c42b7c64145ebdf8afe2",
+                "url": "https://api.github.com/repos/boomcms/boom-core/zipball/fe06e9e28d331810f352e2d0c134de2d22040e89",
+                "reference": "fe06e9e28d331810f352e2d0c134de2d22040e89",
                 "shasum": ""
             },
             "require": {
@@ -27,8 +27,8 @@
                 "genphrase/genphrase": "1.0.*",
                 "hautelook/phpass": "dev-master",
                 "illuminate/html": "5.*",
-                "intervention/imagecache": "2.1.*",
-                "laravel/framework": "5.0.*",
+                "intervention/imagecache": "2.*",
+                "laravel/framework": "5.*",
                 "mpratt/embera": "~1.0",
                 "php": ">=5.3",
                 "robbytaylor/htmlpurifier-tel": "dev-master",
@@ -37,7 +37,7 @@
                 "thujohn/rss": "dev-master"
             },
             "require-dev": {
-                "laravel/laravel": "5.0.*",
+                "laravel/laravel": "5.*",
                 "mockery/mockery": "^0.9.4",
                 "phpunit/phpunit": "4.3.*"
             },
@@ -49,10 +49,10 @@
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "BSD-3-Clause"
+                "MIT"
             ],
             "description": "Core classes for BoomCMS",
-            "time": "2015-06-10 15:54:52"
+            "time": "2015-06-10 17:07:46"
         },
         {
             "name": "boomcms/boom-installer",
@@ -569,12 +569,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Intervention/image.git",
-                "reference": "f388f8cbdecb28e960d257c975dc9b5254c4c7ba"
+                "reference": "1009557c32205b077e34b2ae611e6316fa423021"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Intervention/image/zipball/f388f8cbdecb28e960d257c975dc9b5254c4c7ba",
-                "reference": "f388f8cbdecb28e960d257c975dc9b5254c4c7ba",
+                "url": "https://api.github.com/repos/Intervention/image/zipball/1009557c32205b077e34b2ae611e6316fa423021",
+                "reference": "1009557c32205b077e34b2ae611e6316fa423021",
                 "shasum": ""
             },
             "require": {
@@ -617,31 +617,31 @@
                 "thumbnail",
                 "watermark"
             ],
-            "time": "2015-06-05 13:31:06"
+            "time": "2015-06-10 17:50:36"
         },
         {
             "name": "intervention/imagecache",
-            "version": "2.1.2",
+            "version": "2.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Intervention/imagecache.git",
-                "reference": "0794835d12636ae0f9bd9263cfe93f35fb842c24"
+                "reference": "27d2ee028672c13bedf896b4ca456b7c89d84086"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Intervention/imagecache/zipball/0794835d12636ae0f9bd9263cfe93f35fb842c24",
-                "reference": "0794835d12636ae0f9bd9263cfe93f35fb842c24",
+                "url": "https://api.github.com/repos/Intervention/imagecache/zipball/27d2ee028672c13bedf896b4ca456b7c89d84086",
+                "reference": "27d2ee028672c13bedf896b4ca456b7c89d84086",
                 "shasum": ""
             },
             "require": {
                 "illuminate/cache": "~4|~5",
                 "illuminate/filesystem": "~4|~5",
-                "intervention/image": "dev-master|~2,>=2.0.7",
+                "intervention/image": "dev-master|~2,>=2.2.0",
                 "jeremeamia/superclosure": "~1|~2",
                 "php": ">=5.3.0"
             },
             "require-dev": {
-                "mockery/mockery": "0.9.*",
+                "mockery/mockery": "~0.9.2",
                 "phpunit/phpunit": "3.*"
             },
             "type": "library",
@@ -670,7 +670,7 @@
                 "imagick",
                 "laravel"
             ],
-            "time": "2015-04-08 17:36:22"
+            "time": "2015-05-24 11:53:20"
         },
         {
             "name": "ircmaxell/password-compat",
