@@ -8,6 +8,7 @@ use BoomCMS\Core\Editor\Editor;
 use BoomCMS\Core\URL\Helpers as BoomURL;
 
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\GoneHttpException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
 
@@ -47,6 +48,7 @@ class ProcessSiteURL
              // Check whether the URL exists in the DB.
              // If so the page has been deleted.
              // If not the page never existed.
+             // TODO: this isn't quite working as expected - if the user isn't logged in and the page is invisible they'll get a gone expection rather than 404.
              if ( !BoomURL::isAvailable($uri)) {
                  throw new GoneHttpException();
              }
