@@ -1,7 +1,7 @@
 {
 	"name":        "boomcms/boom-core",
 	"description": "Core classes for BoomCMS",
-	"license":     "BSD-3-Clause",
+	"license":     "MIT",
 	"require": {
 		"php":        ">=5.3",
 		"ext-imagick" : "*",
