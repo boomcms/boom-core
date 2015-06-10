@@ -9,7 +9,7 @@ class Slideshow extends BaseChunk
 {
     protected $_default_template = 'circles';
 
-    protected $_type = 'slideshow';
+    protected $type = 'slideshow';
 
     protected function show()
     {

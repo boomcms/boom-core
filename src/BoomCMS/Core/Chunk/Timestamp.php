@@ -20,7 +20,7 @@ class Timestamp extends BaseChunk
 
     protected $_html_before = "<span class='b-chunk-timestamp'>";
     protected $_html_after = "</span>";
-    protected $_type = 'timestamp';
+    protected $type = 'timestamp';
 
     public function attributes()
     {
@@ -37,7 +37,7 @@ class Timestamp extends BaseChunk
 
     protected function showDefault()
     {
-        return $this->_html_before.Kohana::message('chunks', 'timestamp').$this->_html_after;
+        return $this->_html_before . $this->getPlaceholderText() . $this->_html_after;
     }
 
     public function hasContent()

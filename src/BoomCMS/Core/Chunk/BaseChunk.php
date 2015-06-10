@@ -141,7 +141,7 @@ abstract class BaseChunk
     {
         $text = Lang::get("boom::chunks.{$this->type}.{$this->slotname}");
 
-        return $text ?: Lang::get("boom::chunks.{$this->type}.default");
+        return $text ?: Lang::get("boom::chunks.{$this->type}");
     }
 
     /**
