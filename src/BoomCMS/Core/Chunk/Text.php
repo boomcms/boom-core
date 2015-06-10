@@ -8,7 +8,7 @@ use BoomCMS\Core\TextFilter\Filter as Filter;
 use \Kohana as Kohana;
 use \View as View;
 
-class Text extends Chunk
+class Text extends BaseChunk
 {
     protected $_type = 'text';
 
@@ -33,12 +33,12 @@ class Text extends Chunk
 	 * @uses Model_Chunk_Text::unmunge()
 	 * @uses Chunk_Text::embed_video()
 	 */
-    protected function _show()
+    protected function show()
     {
         return $this->showText($this->text());
     }
 
-    protected function _showDefault()
+    protected function showDefault()
     {
         return $this->showText($this->defaultText());
     }

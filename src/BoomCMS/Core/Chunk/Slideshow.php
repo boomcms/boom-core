@@ -5,13 +5,13 @@ namespace BoomCMS\Core\Chunk;
 use BoomCMS\Core\Editor\Editor as Editor;
 use \View as View;
 
-class Slideshow extends Chunk
+class Slideshow extends BaseChunk
 {
     protected $_default_template = 'circles';
 
     protected $_type = 'slideshow';
 
-    protected function _show()
+    protected function show()
     {
         return new View($this->viewPrefix . "slideshow/$this->template", [
             'chunk'    =>    $this->_chunk,
@@ -21,7 +21,7 @@ class Slideshow extends Chunk
         ]);
     }
 
-    public function _showDefault()
+    public function showDefault()
     {
         return new View($this->viewPrefix."default/slideshow/$this->template");
     }

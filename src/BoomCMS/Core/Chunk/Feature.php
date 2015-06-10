@@ -7,7 +7,7 @@ use BoomCMS\Core\Editor\Editor as Editor;
 use \Kohana as Kohana;
 use \View as View;
 
-class Feature extends Chunk
+class Feature extends BaseChunk
 {
     /**
 	* holds the page which is being featured.
@@ -27,7 +27,7 @@ class Feature extends Chunk
     /**
 	* Show a chunk where the target is set.
 	*/
-    public function _show()
+    public function show()
     {
         // If the template doesn't exist then use a default template.
         if ( ! Kohana::find_file("views", $this->viewPrefix."feature/$this->template")) {
@@ -45,7 +45,7 @@ class Feature extends Chunk
         }
     }
 
-    public function _showDefault()
+    public function showDefault()
     {
         return View::factory($this->viewPrefix."default/feature/$this->template");
     }

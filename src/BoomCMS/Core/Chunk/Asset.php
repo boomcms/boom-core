@@ -6,7 +6,7 @@ use BoomCMS\Core\Page as Page;
 use BoomCMS\Core\Link\Link as Link;
 use \View as View;
 
-class Asset extends Chunk
+class Asset extends BaseChunk
 {
     protected $_asset;
     protected $_default_template = 'image';
@@ -22,7 +22,7 @@ class Asset extends Chunk
         $this->_asset = \Boom\Asset\Factory::fromModel($this->_chunk->target);
     }
 
-    protected function _show()
+    protected function show()
     {
         $link = $this->getLink();
 
@@ -42,7 +42,7 @@ class Asset extends Chunk
         return $v;
     }
 
-    protected function _showDefault()
+    protected function showDefault()
     {
         return new View($this->viewPrefix."default/asset/$this->template");
     }

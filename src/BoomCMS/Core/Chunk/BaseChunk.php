@@ -2,13 +2,11 @@
 
 namespace BoomCMS\Core\Chunk;
 
-use BoomCMS\Core\Auth\Auth as Auth;
-use BoomCMS\Core\Page\Page as Page;
-use BoomCMS\Core\Editor\Editor as Editor;
+use BoomCMS\Core\Page\Page;
 
-use Illuminate\Support\Facades\Html;
+use Illuminate\Support\Facades\HTML;
 
-abstract class Chunk
+abstract class BaseChunk
 {
     protected $attributePrefix = 'data-boom-';
 
@@ -28,7 +26,7 @@ abstract class Chunk
      *
      * @var boolean
      */
-    protected $editable = true;
+    protected $editable;
 
     /**
      *
@@ -72,11 +70,12 @@ abstract class Chunk
      */
     public static $types = ['asset', 'text', 'feature', 'linkset', 'slideshow', 'timestamp', 'tag'];
 
-    public function __construct(Page $page, array $attrs, $slotname)
+    public function __construct(Page $page, array $attrs, $slotname, $editable)
     {
         $this->page = $page;
         $this->attrs = $attrs;
         $this->slotname = $slotname;
+        $this->editable = $editable;
     }
 
     /**
@@ -92,27 +91,14 @@ abstract class Chunk
      * Displays the chunk when chunk data has been set.
      *
      */
-    abstract protected function _show();
+    abstract protected function show();
 
     /**
      * Displays default chunk HTML
      *
      * @return View
      */
-    abstract protected function _showDefault();
-
-    /**
-     * Returns whether the logged in user is allowed to edit the chunk
-     *
-     * @return boolean
-     */
-    public function allowedToEdit()
-    {
-        return $this->editor->isEnabled() &&
-            ($this->page->wasCreatedBy($this->auth->getPerson())
-                || $this->auth->loggedIn("edit_page_content", $this->page)
-            );
-    }
+    abstract protected function showDefault();
 
     /**
      * Attributes to be added to the chunk HTML. Can be overriden to pass additional info to javascript editor.
@@ -150,21 +136,14 @@ abstract class Chunk
         return preg_replace("|<(.*?)>|", "<$1 $attributesString>", $html, 1);
     }
 
-    public function defaults(array $values)
-    {
-        $this->_chunk->values($values);
-
-        return $this;
-    }
-
     /**
-     * Sets wether the chunk should be editable.
+     * Makes a chunk readonly
      *
-     * @param bool $value
+     * @return BaseChunk
      */
-    public function editable($value)
+    public function readonly()
     {
-        $this->editable = $value;
+        $this->editable = false;
 
         return $this;
     }
@@ -174,8 +153,6 @@ abstract class Chunk
      */
     public function render()
     {
-        $this->editable = ($this->editable === true && $this->allowedToEdit());
-
         $html = $this->html();
 
         if ($this->editable === true) {
@@ -183,79 +160,6 @@ abstract class Chunk
         }
 
         return $html;
-    }
-
-    /**
-	 * Chunk object factory.
-	 * Returns a chunk object of the required type.
-	 *
-	 * @param	string	$type		Chunk type, e.g. text, feature, etc.
-	 * @param	string	$slotname		The name of the slot to retrieve a chunk from.
-	 * @param	mixed	$page		The page the chunk belongs to. If not given then the page from the current request will be used.
-	 * @param	boolean	$inherit		Whether the chunk should be inherited down the page tree.
-	 * @return 	Chunk
-	 */
-    public static function factory($type, $slotname, $page = null)
-    {
-        // Set the class name.
-        $class = "\Boom\Chunk\\" . ucfirst($type);
-
-        // Set the page that the chunk belongs to.
-        // This is used for permissions check, and quite importantly, for finding the chunk.
-        if ($page === null) {
-            // No page was given so use the page from the current request.
-            $page = Request::current()->param('page');
-        } elseif ($page === 0) {
-            // 0 was given as the page - this signifies a 'global' chunk not assigned to any page.
-            $page = new Model_Page();
-        }
-
-        // Load the chunk
-        $chunk = Chunk::find($type, $slotname, $page->getCurrentVersion());
-
-        return new $class($page, $chunk, $slotname);
-    }
-
-    public static function find($type, $slotname, Model_Page_Version $version)
-    {
-        if (is_array($slotname)) {
-            return Chunk::find_multiple($type, $slotname, $version);
-        } else {
-            return Chunk::find_single($type, $slotname, $version);
-        }
-    }
-
-    public static function find_single($type, $slotname, Model_Page_Version $version)
-    {
-        $model = (strpos($type, "Chunk_") === 0) ? ucfirst($type) : "Chunk_" . ucfirst($type);
-
-        $query = ORM::factory($model)
-            ->with('target')
-            ->where('page_vid', '=', $version->id);
-
-        if (is_array($slotname)) {
-            return $query
-                ->where('slotname', 'in', $slotname)
-                ->find_all();
-        } else {
-            return $query
-                ->where('slotname', '=', $slotname)
-                ->find();
-        }
-    }
-
-    public static function find_multiple($type, $slotname, Model_Page_Version $version)
-    {
-        // Get the name of the model that we're looking.
-        // e.g. if type is text we want a chunk_text model
-        $model = (strpos($type, "Chunk_") === 0) ? ucfirst($type) : "Chunk_" . ucfirst($type);
-
-        return ORM::factory($model)
-            ->with('target')
-            ->where('slotname', 'in', $slotname)
-            ->where('page_vid', '=', $version->id)
-            ->find_all()
-            ->as_array();
     }
 
     /**
@@ -278,10 +182,10 @@ abstract class Chunk
 
         if ($this->hasContent()) {
             // Display the chunk.
-            $return = $this->_show();
+            $return = $this->show();
         } elseif ($this->editable === true) {
             // Show the defult chunk.
-            $return = $this->_showDefault();
+            $return = $this->showDefault();
         } else {
             // Chunk has no content and the user isn't allowed to add any.
             // Don't display anything.
