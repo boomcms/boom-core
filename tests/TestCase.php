@@ -11,6 +11,9 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase
     {
         $app = require __DIR__ . '/../vendor/laravel/laravel/bootstrap/app.php';
         $app->make('Illuminate\Contracts\Console\Kernel')->bootstrap();
+        $app->bind('html', function($app) {
+            return new Illuminate\Html\HtmlBuilder($app['url']);
+        });
         return $app;
     }
 

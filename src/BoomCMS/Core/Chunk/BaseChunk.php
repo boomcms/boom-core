@@ -124,18 +124,28 @@ abstract class BaseChunk
     {
         $html = trim( (string) $html);
 
-        $baseAttributes = [
-            $this->attributePrefix . 'chunk' => $this->type,
+        $attributes = array_merge($this->getRequiredAttributes(), $this->attributes());
+        $attributesString = Html::attributes($attributes);
+
+        return preg_replace("|<(.*?)>|", "<$1$attributesString>", $html, 1);
+    }
+
+    /**
+     * Returns an array of HTML attributes which are required to be make the chunk editable.
+     *
+     * To add other attributes see the attributes method.
+     *
+     * @return array
+     */
+    public function getRequiredAttributes()
+    {
+        return [
+            $this->attributePrefix . 'chunk' => $this->getType(),
             $this->attributePrefix . 'slot-name' => $this->slotname,
             $this->attributePrefix . 'slot-template' => $this->template,
             $this->attributePrefix . 'page' => $this->page->getId(),
             $this->attributePrefix . 'chunk-id' => isset($this->attrs['id']) ? $this->attrs['id'] : 0,
         ];
-
-        $attributes = array_merge($baseAttributes, $this->attributes());
-        $attributesString = Html::attributes($attributes);
-
-        return preg_replace("|<(.*?)>|", "<$1 $attributesString>", $html, 1);
     }
 
     public function getPlaceholderText()
