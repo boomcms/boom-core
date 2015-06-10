@@ -3,21 +3,21 @@
 namespace BoomCMS\Core\Http\Middleware;
 
 use Closure;
-use BoomCMS\Core\Editor\Editor;
 
+use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\View;
 
 class InsertCMSToolbar
 {
     /**
      *
-     * @var Editor
+     * @var Application
      */
-    protected $editor;
+    protected $ap;
 
-    public function __construct(Editor $editor)
+    public function __construct(Application $app)
     {
-        $this->editor = $editor;
+        $this->app = $app;
     }
 
     /**
@@ -29,7 +29,7 @@ class InsertCMSToolbar
      */
     public function handle($request, Closure $next)
     {
-        if ( !$this->editor->isActive()) {
+        if ( !$this->app['boomcms.editor']->isActive()) {
             return $next($request);
         }
 
@@ -42,8 +42,8 @@ class InsertCMSToolbar
             $head = View::make('boom::editor.iframe', [
                 'before_closing_head' => $matches[1],
                 'body_tag' => $matches[3],
-                'editor' => $this->editor,
-                'page_id' => $this->editor->getActivePage()->getId(),
+                'editor' => $this->app['boomcms.editor'],
+                'page_id' => $this->app['boomcms.editor']->getActivePage()->getId(),
             ]);
 
             $newHtml = str_replace($matches[0], (string) $head, $originalHtml);

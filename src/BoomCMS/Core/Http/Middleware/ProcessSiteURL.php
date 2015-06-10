@@ -4,13 +4,13 @@ namespace BoomCMS\Core\Http\Middleware;
 
 use Closure;
 use BoomCMS\Core\Page\Provider;
-use BoomCMS\Core\Editor\Editor;
 use BoomCMS\Core\URL\Helpers as BoomURL;
 
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\GoneHttpException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
+use Illuminate\Foundation\Application;
 
 class ProcessSiteURL
 {
@@ -22,14 +22,14 @@ class ProcessSiteURL
 
     /**
      *
-     * @var Editor
+     * @var Application
      */
-    protected $editor;
+    protected $app;
 
-    public function __construct(Provider $pageProvider, Editor $editor)
+    public function __construct(Provider $pageProvider, Application $application)
     {
         $this->pageProvider = $pageProvider;
-        $this->editor = $editor;
+        $this->app = $application;
     }
 
     /**
@@ -56,7 +56,7 @@ class ProcessSiteURL
              throw new NotFoundHttpException();
          }
 
-        if ($this->editor->isDisabled() && ! $page->isVisible()) {
+        if ($this->app['boomcms.editor']->isDisabled() && ! $page->isVisible()) {
             throw new NotFoundHttpException();
         }
 
@@ -64,7 +64,8 @@ class ProcessSiteURL
             redirect($page->url(), 301);
         }
 
-        $this->editor->setActivePage($page);
+        $this->app['boomcms.editor']->setActivePage($page);
+
         View::share('page', $page);
 
         return $next($request);

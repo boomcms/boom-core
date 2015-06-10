@@ -39,7 +39,7 @@ class Provider
         }
 
         return $this->editor->isEnabled() &&
-            ($this->page->wasCreatedBy($this->auth->getPerson())
+            ($page->wasCreatedBy($this->auth->getPerson())
                 || $this->auth->loggedIn("edit_page_content", $page)
             );
     }

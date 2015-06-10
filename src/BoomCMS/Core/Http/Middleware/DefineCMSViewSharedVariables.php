@@ -52,8 +52,8 @@ class DefineCMSViewSharedVariables
 
         View::share('boomJS', '<script type="text/javascript" src="/vendor/boomcms/boom-core/js/cms.js"></script>');
 
-        View::share('editor', $this->app['boomcms.editor']);
         View::share('auth', $auth);
+        View::share('editor', $this->app['boomcms.editor']);
         View::share('person', $auth->getPerson());
         View::share('request', $request);
 

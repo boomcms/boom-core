@@ -5,14 +5,12 @@ namespace BoomCMS\Core\Chunk;
 use BoomCMS\Core\Editor\Editor as Editor;
 use BoomCMS\Core\TextFilter\Commander as TextFilter;
 use BoomCMS\Core\TextFilter\Filter as Filter;
-use \Kohana as Kohana;
-use \View as View;
 
 class Text extends BaseChunk
 {
     protected $type = 'text';
 
-    protected $defaultText = 'Default Text';
+    protected $defaultText;
 
     protected function _add_html($text)
     {
@@ -49,10 +47,7 @@ class Text extends BaseChunk
             return $this->defaultText;
         }
 
-        $text = Kohana::message('chunks', $this->slotname);
-        $text || $text = Kohana::message('chunks', 'text');
-
-        return $text;
+        return $this->getPlaceholderText();
     }
 
     /**

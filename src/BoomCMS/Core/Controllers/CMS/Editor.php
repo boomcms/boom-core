@@ -34,6 +34,7 @@ class Editor extends Controller
     public function toolbar(Page\Provider $provider)
     {
         $page = $provider->findById($this->request->input('page_id'));
+        $this->editor->setActivePage($page);
 
         if ($this->editor->isEnabled()) {
             $toolbarFilename = 'toolbar';
@@ -43,6 +44,7 @@ class Editor extends Controller
         }
 
         View::share('page', $page);
+        View::share('editor', $this->editor);
 
         return View::make("boom::editor.$toolbarFilename");
     }

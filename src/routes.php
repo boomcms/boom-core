@@ -101,6 +101,7 @@ Route::group(['middleware' => [
 Route::any('{location}', [
     'middleware' => [
         'BoomCMS\Core\Http\Middleware\ProcessSiteURL',
+        'BoomCMS\Core\Http\Middleware\InsertCMSToolbar',
     ],
     'uses' => 'BoomCMS\Core\Controllers\Page@show',
 ])->where(['location' => '.*']);

@@ -4,7 +4,8 @@ namespace BoomCMS\Core\Chunk;
 
 use BoomCMS\Core\Page\Page;
 
-use Illuminate\Support\Facades\Html;
+use Illuminate\Html\HtmlFacade as Html;
+use Illuminate\Support\Facades\Lang;
 
 abstract class BaseChunk
 {
@@ -136,6 +137,22 @@ abstract class BaseChunk
         return preg_replace("|<(.*?)>|", "<$1 $attributesString>", $html, 1);
     }
 
+    public function getPlaceholderText()
+    {
+        $text = Lang::get("boom::chunks.{$this->type}.{$this->slotname}");
+
+        return $text ?: Lang::get("boom::chunks.{$this->type}.default");
+    }
+
+    /**
+     *
+     * @return boolean
+     */
+    public function isEditable()
+    {
+        return $this->editable;
+    }
+
     /**
      * Makes a chunk readonly
      *
@@ -183,7 +200,7 @@ abstract class BaseChunk
         if ($this->hasContent()) {
             // Display the chunk.
             $return = $this->show();
-        } elseif ($this->editable === true) {
+        } elseif ($this->isEditable()) {
             // Show the defult chunk.
             $return = $this->showDefault();
         } else {
