@@ -107,7 +107,7 @@ class LoggedInTest extends TestCase
     protected function getAuth($person, $permissionsProvider)
     {
         $auth = $this->getMockBuilder('BoomCMS\Core\Auth\Auth')
-            ->setConstructorArgs([$this->getSession(), $this->getProvider(), $permissionsProvider])
+            ->setConstructorArgs([$this->getMockSession(), $this->getProvider(), $permissionsProvider])
             ->setMethods(['isLoggedIn', 'getPerson'])
             ->getMock();
 
@@ -117,14 +117,6 @@ class LoggedInTest extends TestCase
             ->will($this->returnValue($person));
 
         return $auth;
-    }
-
-    protected function getSession()
-    {
-        return $this
-            ->getMockBuilder('Illuminate\Session\SessionManager')
-            ->disableOriginalConstructor()
-            ->getMock();
     }
 
     protected function getProvider()

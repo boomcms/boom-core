@@ -14,7 +14,7 @@ class ChunkServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->app->singleton('boomcms.chunk', function ($app) {
-            return new Provider($app['boomcms.auth'], $app['boomcms.editor'], $app['boomcms.currentPage']);
+            return new Provider($app['boomcms.auth'], $app['boomcms.editor']);
         });
     }
 

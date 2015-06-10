@@ -3,6 +3,7 @@
 namespace BoomCMS\Core\Editor;
 
 use BoomCMS\Core\Auth\Auth;
+use BoomCMS\Core\Page\Page;
 use Illuminate\Session\SessionManager as Session;
 
 class Editor
@@ -14,10 +15,16 @@ class Editor
     public static $default = Editor::EDIT;
 
     /**
-	 *
-	 * @var	Auth
-	 */
+     *
+     * @var Auth
+     */
     protected $auth;
+
+    /**
+     *
+     * @var Page
+     */
+    protected $activePage;
 
     protected $session;
     protected $state;
@@ -32,9 +39,26 @@ class Editor
         $this->state = $this->session->get($this->statePersistenceKey, $default);
     }
 
+    public function disable()
+    {
+        return $this->setState(static::DISABLED);
+    }
+
     public function enable()
     {
         return $this->setState(static::EDIT);
+    }
+
+    /**
+     * Whether the editor is active.
+     *
+     * Determines whether the CMS toolbar should be injected into the response HTML.
+     *
+     * @return boolean
+     */
+    public function isActive()
+    {
+        return $this->getActivePage()->loaded() && $this->auth->loggedIn('edit_page', $this->getActivePage());
     }
 
     public function isDisabled()
@@ -44,7 +68,7 @@ class Editor
 
     public function isEnabled()
     {
-        return $this->auth->loggedIn() && $this->hasState(static::EDIT);
+        return $this->hasState(static::EDIT) && $this->isActive();
     }
 
     public function hasState($state)
@@ -52,9 +76,26 @@ class Editor
         return ($this->state == $state);
     }
 
+    public function getActivePage()
+    {
+        return $this->activePage ?: new Page([]);
+    }
+
     public function getState()
     {
         return $this->state;
+    }
+
+    public function preview()
+    {
+        return $this->setState(static::PREVIEW);
+    }
+
+    public function setActivePage(Page $page)
+    {
+        $this->activePage = $page;
+
+        return $this;
     }
 
     public function setState($state)

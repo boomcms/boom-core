@@ -9,7 +9,7 @@ class Page extends Controller
 {
     public function show()
     {
-        $page = $this->request->route()->getParameter('boomcms.currentPage');
+        $page = $this->editor->getActivePage();
         $template = $page->getTemplate();
 
         $loader = new ChunkLoader($page, $template->getChunks());

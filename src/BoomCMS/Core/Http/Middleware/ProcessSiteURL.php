@@ -64,8 +64,7 @@ class ProcessSiteURL
             redirect($page->url(), 301);
         }
 
-        $request->route()->setParameter('boomcms.currentPage', $page);
-
+        $this->editor->setActivePage($page);
         View::share('page', $page);
 
         return $next($request);

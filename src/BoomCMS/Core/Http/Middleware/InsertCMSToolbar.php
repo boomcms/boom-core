@@ -3,9 +3,7 @@
 namespace BoomCMS\Core\Http\Middleware;
 
 use Closure;
-use BoomCMS\Core\Auth\Auth;
 use BoomCMS\Core\Editor\Editor;
-use BoomCMS\Core\Environment\Environment;
 
 use Illuminate\Support\Facades\View;
 
@@ -13,27 +11,13 @@ class InsertCMSToolbar
 {
     /**
      *
-     * @var Auth
-     */
-    protected $auth;
-
-    /**
-     *
      * @var Editor
      */
     protected $editor;
 
-    /**
-     *
-     * @var Environment
-     */
-    protected $environment;
-
-    public function __construct(Auth $auth, Editor $editor, Environment $environment)
+    public function __construct(Editor $editor)
     {
-        $this->auth = $auth;
         $this->editor = $editor;
-        $this->environment = $environment;
     }
 
     /**
@@ -45,7 +29,7 @@ class InsertCMSToolbar
      */
     public function handle($request, Closure $next)
     {
-        if ( !$this->auth->loggedIn()) {
+        if ( !$this->editor->isActive()) {
             return $next($request);
         }
 
@@ -59,7 +43,7 @@ class InsertCMSToolbar
                 'before_closing_head' => $matches[1],
                 'body_tag' => $matches[3],
                 'editor' => $this->editor,
-                'page_id' => $request->route()->getParameter('boomcms.currentPage')->getId(),
+                'page_id' => $this->editor->getActivePage()->getId(),
             ]);
 
             $newHtml = str_replace($matches[0], (string) $head, $originalHtml);
