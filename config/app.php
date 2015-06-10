@@ -144,6 +144,7 @@ return [
         'BoomCMS\Core\Page\PageServiceProvider',
         'BoomCMS\Core\Template\TemplateServiceProvider',
         'BoomCMS\Core\Settings\SettingsServiceProvider',
+        'BoomCMS\Core\Chunk\ChunkServiceProvider',
         'BoomCMS\Installer\ServiceProvider',
     ],
 
@@ -193,7 +194,7 @@ return [
         'Validator' => 'Illuminate\Support\Facades\Validator',
         'View'      => 'Illuminate\Support\Facades\View',
 
-        'Settings' => 'BoomCMS\Core\Settings\Settings',
-        'Chunk' => 'BoomCMS\Core\Chunk\Chunk',
+        'Settings' => 'BoomCMS\Core\Facades\Settings',
+        'Chunk' => 'BoomCMS\Core\Facades\Chunk',
     ],
 ];

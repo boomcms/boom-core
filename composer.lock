@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/boomcms/boom-core.git",
-                "reference": "0ffb11e62c0bc418054181b12c57133fd512726f"
+                "reference": "5e4fa882a1936f31e936c42b7c64145ebdf8afe2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/boomcms/boom-core/zipball/0ffb11e62c0bc418054181b12c57133fd512726f",
-                "reference": "0ffb11e62c0bc418054181b12c57133fd512726f",
+                "url": "https://api.github.com/repos/boomcms/boom-core/zipball/5e4fa882a1936f31e936c42b7c64145ebdf8afe2",
+                "reference": "5e4fa882a1936f31e936c42b7c64145ebdf8afe2",
                 "shasum": ""
             },
             "require": {
@@ -26,6 +26,7 @@
                 "ezyang/htmlpurifier": "4.6.*",
                 "genphrase/genphrase": "1.0.*",
                 "hautelook/phpass": "dev-master",
+                "illuminate/html": "5.*",
                 "intervention/imagecache": "2.1.*",
                 "laravel/framework": "5.0.*",
                 "mpratt/embera": "~1.0",
@@ -36,6 +37,7 @@
                 "thujohn/rss": "dev-master"
             },
             "require-dev": {
+                "laravel/laravel": "5.0.*",
                 "mockery/mockery": "^0.9.4",
                 "phpunit/phpunit": "4.3.*"
             },
@@ -50,7 +52,7 @@
                 "BSD-3-Clause"
             ],
             "description": "Core classes for BoomCMS",
-            "time": "2015-06-09 07:07:05"
+            "time": "2015-06-10 15:54:52"
         },
         {
             "name": "boomcms/boom-installer",
@@ -58,12 +60,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/boomcms/boom-installer.git",
-                "reference": "8d16c0dd4664ebb870b99f1aff6585f1843fa376"
+                "reference": "0921927b994db97d49899b6bd1a97011f071bc08"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/boomcms/boom-installer/zipball/8d16c0dd4664ebb870b99f1aff6585f1843fa376",
-                "reference": "8d16c0dd4664ebb870b99f1aff6585f1843fa376",
+                "url": "https://api.github.com/repos/boomcms/boom-installer/zipball/0921927b994db97d49899b6bd1a97011f071bc08",
+                "reference": "0921927b994db97d49899b6bd1a97011f071bc08",
                 "shasum": ""
             },
             "require": {
@@ -91,7 +93,7 @@
                 }
             ],
             "description": "BoomCMS installer",
-            "time": "2015-06-09 09:20:10"
+            "time": "2015-06-09 14:43:07"
         },
         {
             "name": "boomcms/theme-default",
@@ -516,6 +518,52 @@
             "time": "2015-05-12 10:04:16"
         },
         {
+            "name": "illuminate/html",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/illuminate/html.git",
+                "reference": "3d1009bb8e0f25720c914af5c1f4015dd373c9ef"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/illuminate/html/zipball/3d1009bb8e0f25720c914af5c1f4015dd373c9ef",
+                "reference": "3d1009bb8e0f25720c914af5c1f4015dd373c9ef",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/http": "~5.0",
+                "illuminate/session": "~5.0",
+                "illuminate/support": "~5.0",
+                "php": ">=5.4.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "5.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Illuminate\\Html\\": ""
+                },
+                "files": [
+                    "helpers.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Taylor Otwell",
+                    "email": "taylorotwell@gmail.com"
+                }
+            ],
+            "time": "2015-01-01 16:31:18"
+        },
+        {
             "name": "intervention/image",
             "version": "dev-master",
             "source": {
@@ -758,12 +806,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/jeremeamia/super_closure.git",
-                "reference": "3638151950ec035bc987d9c81e00036d82aefa26"
+                "reference": "155fadced44802618435130ed7e16e44a2575e65"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jeremeamia/super_closure/zipball/3638151950ec035bc987d9c81e00036d82aefa26",
-                "reference": "3638151950ec035bc987d9c81e00036d82aefa26",
+                "url": "https://api.github.com/repos/jeremeamia/super_closure/zipball/155fadced44802618435130ed7e16e44a2575e65",
+                "reference": "155fadced44802618435130ed7e16e44a2575e65",
                 "shasum": ""
             },
             "require": {
@@ -808,7 +856,7 @@
                 "serialize",
                 "tokenizer"
             ],
-            "time": "2015-05-22 15:28:38"
+            "time": "2015-06-09 19:13:35"
         },
         {
             "name": "laravel/framework",
@@ -816,12 +864,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "08e51fb932bdbcf10420f4dfa7878ad4fdebdba0"
+                "reference": "b11c8ab88245f920b30e5f30e16b141ac8d461d3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/08e51fb932bdbcf10420f4dfa7878ad4fdebdba0",
-                "reference": "08e51fb932bdbcf10420f4dfa7878ad4fdebdba0",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/b11c8ab88245f920b30e5f30e16b141ac8d461d3",
+                "reference": "b11c8ab88245f920b30e5f30e16b141ac8d461d3",
                 "shasum": ""
             },
             "require": {
@@ -934,7 +982,7 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2015-06-04 12:57:08"
+            "time": "2015-06-09 13:12:19"
         },
         {
             "name": "league/flysystem",
@@ -942,12 +990,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "3b1077f6f4dd04b974fc9479660f6681942db687"
+                "reference": "29a65cf14d139e09c51fda7ab548addefdfc9985"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/3b1077f6f4dd04b974fc9479660f6681942db687",
-                "reference": "3b1077f6f4dd04b974fc9479660f6681942db687",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/29a65cf14d139e09c51fda7ab548addefdfc9985",
+                "reference": "29a65cf14d139e09c51fda7ab548addefdfc9985",
                 "shasum": ""
             },
             "require": {
@@ -1018,7 +1066,7 @@
                 "sftp",
                 "storage"
             ],
-            "time": "2015-06-08 21:31:19"
+            "time": "2015-06-10 15:47:57"
         },
         {
             "name": "monolog/monolog",
@@ -1812,12 +1860,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/HttpFoundation.git",
-                "reference": "f0ae7cc284c656276d0f1ffbe505f245ebac7960"
+                "reference": "fd3e4e6da122ac8d27758ba42fed17c8da93fbed"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/HttpFoundation/zipball/f0ae7cc284c656276d0f1ffbe505f245ebac7960",
-                "reference": "f0ae7cc284c656276d0f1ffbe505f245ebac7960",
+                "url": "https://api.github.com/repos/symfony/HttpFoundation/zipball/fd3e4e6da122ac8d27758ba42fed17c8da93fbed",
+                "reference": "fd3e4e6da122ac8d27758ba42fed17c8da93fbed",
                 "shasum": ""
             },
             "require": {
@@ -1857,7 +1905,7 @@
             ],
             "description": "Symfony HttpFoundation Component",
             "homepage": "https://symfony.com",
-            "time": "2015-06-04 20:11:39"
+            "time": "2015-06-09 15:06:34"
         },
         {
             "name": "symfony/http-kernel",
