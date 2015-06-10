@@ -71,6 +71,8 @@ Route::group(['middleware' => [
             Route::post('delete/{id}', 'Templates@delete');
         });
 
+        Route::post('/page/add/{page}', 'Page\PageController@add');
+
         Route::group(['prefix' => 'page/settings'], function() {
             Route::get('{action}/{page}', [
                 'uses' => function($action) {

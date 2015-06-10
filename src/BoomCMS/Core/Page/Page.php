@@ -146,7 +146,7 @@ class Page
         if ($this->currentVersion === null) {
             if ($this->loaded()) {
                 $version = VersionModel::where('page_id', '=', $this->getId())->latestPublished()->first();
-                
+
                 if ($version) {
                     $this->currentVersion = new Version($version->toArray());
                 } else {
@@ -255,6 +255,8 @@ class Page
 
                 return $this->parent;
             }
+        } else {
+            return new Page([]);
         }
     }
 
@@ -270,7 +272,7 @@ class Page
 
     public function getTemplateId()
     {
-        return $this->getCurrentVersion()->template_id;
+        return $this->getCurrentVersion()->getTemplateId();
     }
 
     public function getTitle()

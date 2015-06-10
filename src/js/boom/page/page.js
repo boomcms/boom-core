@@ -9,10 +9,8 @@ function boomPage(page_id) {
 		var promise = new $.Deferred(),
 			page_id = this.id;
 
-		$.post('/cms/page/add/' + page_id, function(response){
-			var json = $.parseJSON(response);
-
-			(typeof json === 'object')? promise.resolve(json) : promise.reject(response);
+		$.post('/cms/page/add/' + page_id, function(response) {
+			(typeof response.url !== 'undefined')? promise.resolve(response) : promise.reject(response);
 		});
 
 		return promise;

@@ -4,14 +4,19 @@ namespace BoomCMS\Core\Controllers\CMS\Page;
 
 use BoomCMS\Core\Auth\Auth;
 use BoomCMS\Core\Page as Page;
-use BoomCMS\Core\Page\Command\Delete as Delete;
-use BoomCMS\Core\Controllers\Controller as Controller;
-use BoomCMS\Core\URL\Helpers as URLHelper;
+
+use BoomCMS\Core\Page\Command\Delete;
+use BoomCMS\Core\Commands\CreatePage;
+use BoomCMS\Core\Commands\CreatePagePrimaryUri;
+use BoomCMS\Core\Controllers\Controller;
 
 use Illuminate\Http\Request;
+use Illuminate\Foundation\Bus\DispatchesCommands;
 
 class PageController extends Controller
 {
+    use DispatchesCommands;
+
     protected $viewPrefix = 'boom::editor.page.';
 
     /**
@@ -32,13 +37,13 @@ class PageController extends Controller
     {
         $this->authorization('add_page', $this->page);
 
-        $newPage = $this->dispatch('BoomCMS\Core\Commands\CreatePage', [$this->provider, $this->auth, $parent]);
+        $newPage = $this->dispatch(new CreatePage($this->provider, $this->auth, $this->page));
 
         $urlPrefix = ($this->page->getChildPageUrlPrefix()) ?: $this->page->url()->getLocation();
-        $url = $this->dispatch('BoomCMS\Core\Commands\CreatePagePrimaryURI', [$this->provider, $newPage, $urlPrefix]);
+        $url = $this->dispatch(new CreatePagePrimaryUri($this->provider, $newPage, $urlPrefix));
 
         return [
-            'url' => (string) $newPage->url(),
+            'url' => (string) $url,
             'id' => $newPage->getId(),
         ];
     }
