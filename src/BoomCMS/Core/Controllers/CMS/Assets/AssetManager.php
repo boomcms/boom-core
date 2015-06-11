@@ -217,17 +217,17 @@ class AssetManager extends Controller
                         ->setWidth($width)
                         ->setHeight($height);
 
-                    $provider->save($asset);
+                    $this->provider->save($asset);
                 }
 
-                $asset_ids[] = $provider->save($asset)->getId();
+                $asset_ids[] = $this->provider->save($asset)->getId();
                 $file->move(Asset\Asset::directory(), $asset->getId());
             }
 
             if (count($errors)) {
                 return new JsonResponse($errors, 500);
             } else {
-                return new JsonResponse($asset_ids);
+                return $asset_ids;
             }
         }
     }

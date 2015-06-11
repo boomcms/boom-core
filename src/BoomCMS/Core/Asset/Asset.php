@@ -30,7 +30,7 @@ abstract class Asset implements Arrayable
 
     public static function directory()
     {
-        return 'boomcms/assets';
+        return storage_path() . '/boomcms/assets';
     }
 
     public static function factory(array $attributes)
