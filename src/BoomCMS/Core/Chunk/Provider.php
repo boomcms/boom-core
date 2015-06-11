@@ -44,6 +44,32 @@ class Provider
             );
     }
 
+    /**
+     *
+     * Returns a chunk object of the required type.
+     *
+     * @param string $type Chunk type, e.g. text, feature, etc.
+     * @param string $slotname The name of the slot to retrieve a chunk from.
+     * @param mixed	 $page The page the chunk belongs to. If not given then the page from the current request will be used.
+     * @return  BaseChunk
+     */
+    public function edit($type, $slotname, $page = null)
+    {
+        $className = 'BoomCMS\Core\Chunk\\' . ucfirst($type);
+
+        if ($page === null) {
+            $page = $this->editor->getActivePage();
+        } elseif ($page === 0) {
+            // 0 was given as the page - this signifies a 'global' chunk not assigned to any page.
+            $page = new Page([]);
+        }
+
+        $chunk = $this->find($type, $slotname, $page->getCurrentVersion());
+        $attrs = $chunk? $chunk->toArray() : [];
+
+        return new $className($page, $chunk, $slotname, $this->allowedToEdit($page));
+    }
+
     public function find($type, $slotname, Version $version)
     {
         if (is_array($slotname)) {
@@ -71,31 +97,5 @@ class Provider
 //            ->with('target')
             ->where('page_vid', '=', $version->getId())
             ->get();
-    }
-
-    /**
-     *
-     * Returns a chunk object of the required type.
-     *
-     * @param string $type Chunk type, e.g. text, feature, etc.
-     * @param string $slotname The name of the slot to retrieve a chunk from.
-     * @param mixed	 $page The page the chunk belongs to. If not given then the page from the current request will be used.
-     * @return  BaseChunk
-     */
-    public function view($type, $slotname, $page = null)
-    {
-        $className = 'BoomCMS\Core\Chunk\\' . ucfirst($type);
-
-        if ($page === null) {
-            $page = $this->editor->getActivePage();
-        } elseif ($page === 0) {
-            // 0 was given as the page - this signifies a 'global' chunk not assigned to any page.
-            $page = new Page([]);
-        }
-
-        $chunk = $this->find($type, $slotname, $page->getCurrentVersion());
-        $chunk = $chunk? $chunk->toArray() : [];
-
-        return new $className($page, $chunk, $slotname, $this->allowedToEdit($page));
     }
 }
