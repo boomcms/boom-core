@@ -13,6 +13,9 @@ boomPageFeatureEditor = function(page) {
 	boomPageFeatureEditor.prototype.getImagesInPage = function() {
 		return top.$('body')
 			.find('img[src^="/asset/view/"]')
+			.filter(function(){
+				return $(this).parents('.b-dialog').length === 0
+			})
 			.map(function() {
 				var $this = $(this),
 					assetId,

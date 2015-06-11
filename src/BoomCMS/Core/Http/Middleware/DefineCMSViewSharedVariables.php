@@ -43,6 +43,10 @@ class DefineCMSViewSharedVariables
         });
 
         View::share('assetURL', function(array $params) {
+            if ( !isset($params['action'])) {
+                $params['action'] = 'view';
+            }
+
             if (isset($params['height']) && !isset($params['width'])) {
                 $params['width'] = 0;
             }
