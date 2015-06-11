@@ -219,4 +219,16 @@ class Person
 
         return $this;
     }
+
+    /**
+     *
+     * @param string $token
+     * @return \BoomCMS\Core\Person\Person
+     */
+    public function setRememberToken($token)
+    {
+        $this->data['remember_token'] = $token;
+
+        return $this;
+    }
 }

@@ -30,4 +30,19 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase
             ->disableOriginalConstructor()
             ->getMock();
     }
+
+    protected function getMockPersonProvider()
+    {
+        return $this->getMock('BoomCMS\Core\Person\Provider');
+    }
+
+    protected function getMockCookieJar()
+    {
+        return $this->getMock('Illuminate\Contracts\Cookie\QueueingFactory');
+    }
+
+    protected function getMockPermissionsProvider()
+    {
+        return $this->getMock('BoomCMS\Core\Auth\PermissionsProvider');
+    }
 }

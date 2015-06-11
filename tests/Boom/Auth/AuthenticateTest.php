@@ -19,7 +19,7 @@ class Auth_AuthenticateTest extends TestCase
 
         $email = 'test@test.com';
         $password = 'password';
-        $auth = new Auth\Auth($session, $personProvider, $permissions);
+        $auth = new Auth\Auth($session, $personProvider, $permissions, $this->getMockCookieJar());
 
         $personProvider
             ->expects($this->once())
@@ -43,7 +43,7 @@ class Auth_AuthenticateTest extends TestCase
 
         $email = 'test@test.com';
         $password = 'password';
-        $auth = new Auth\Auth($session, $personProvider, $permissions);
+        $auth = new Auth\Auth($session, $personProvider, $permissions, $this->getMockCookieJar());
 
         $person = $this->getMockBuilder('BoomCMS\Core\Person\Person')
             ->setMethods(['checkPassword'])
@@ -78,7 +78,7 @@ class Auth_AuthenticateTest extends TestCase
 
         $auth = $this->getMockBuilder('BoomCMS\Core\Auth\Auth')
             ->setMethods(['login'])
-            ->setConstructorArgs([$session, $personProvider, $permissions])
+            ->setConstructorArgs([$session, $personProvider, $permissions, $this->getMockCookieJar()])
             ->getMock();
 
         $person = $this->getMockBuilder('BoomCMS\Core\Person\Person')
