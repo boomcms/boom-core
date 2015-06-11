@@ -107,7 +107,7 @@ class Save extends Settings
                 ->setInternalIndexing($this->request->input('internal_indexing'));
         }
 
-        $this->page->save();
+        $this->provider->save($this->page);
     }
 
     public function sort_children()
