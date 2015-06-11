@@ -5,6 +5,7 @@ use BoomCMS\Core\Chunk\Text;
 
 use BoomCMS\Core\Facades\Asset;
 use BoomCMS\Core\Facades\Chunk;
+use BoomCMS\Core\Facades\Page as PageFacade;
 
 class Page_PageTest extends TestCase
 {
@@ -73,5 +74,37 @@ class Page_PageTest extends TestCase
     {
         $page = new Page(['description' => '<p>description</p>']);
         $this->assertEquals('description', $page->getDescription());
+    }
+
+    public function testSetParentIdPageCantBeChildOfItself()
+    {
+        $page = new Page(['id' => 1, 'parent_id' => 2]);
+        $page->setParentId($page->getId());
+
+        $this->assertEquals(2, $page->getParentId());
+    }
+
+    public function testSetParentIdMustBeValidPage()
+    {
+        PageFacade::shouldReceive('findById')
+            ->with(2)
+            ->andReturn(new Page([]));
+
+        $page = new Page([]);
+        $page->setParentId(2);
+
+        $this->assertNull($page->getParentId());
+    }
+
+    public function testParentIdIsSet()
+    {
+        PageFacade::shouldReceive('findById')
+            ->with(2)
+            ->andReturn(new Page(['id' => 2]));
+
+        $page = new Page([]);
+        $page->setParentId(2);
+
+        $this->assertEquals(2, $page->getParentId());
     }
 }

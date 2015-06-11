@@ -70,26 +70,15 @@ class Save extends Settings
     {
         parent::navigation();
 
-        $post = $this->request->input();
-
         if ($this->allowAdvanced) {
-            // Reparenting the page?
-            // Check that the ID of the parent has been changed and the page hasn't been set to be a child of itself.
-            if ($post['parent_id'] && $post['parent_id'] != $this->page->getParentId() && $post['parent_id'] != $this->page->getId()) {
-                // Check that the new parent ID is a valid page.
-                $newParent = \Boom\Page\Factory::byId($post['parent_id']);
-
-                if ($newParent->loaded()) {
-                    $this->page->setParentPageId($post['parent_id']);
-                }
-            }
+            $this->page->setParentId($this->request->input('parent_id'));
         }
 
         $this->log("Saved navigation settings for page " . $this->page->getTitle() . " (ID: " . $this->page->getId() . ")");
 
         $this->page
-            ->setVisibleInNav($post['visible_in_nav'])
-            ->setVisibleInCmsNav($post['visible_in_nav_cms'])
+            ->setVisibleInNav($this->request->input('visible_in_nav'))
+            ->setVisibleInCmsNav($this->request->input('visible_in_nav_cms'))
             ->save();
     }
 

@@ -10,6 +10,7 @@ use BoomCMS\Core\Models\Page\Version as VersionModel;
 
 use BoomCMS\Core\Facades\Chunk;
 use BoomCMS\Core\Facades\Asset;
+use BoomCMS\Core\Facades\Page as PageFacade;
 
 use \DateTime;
 
@@ -525,9 +526,15 @@ class Page
 	 * @param int $parentId
 	 * @return \Boom\Page\Page
 	 */
-    public function setParentPageId($parentId)
+    public function setParentId($parentId)
     {
-        $this->data['parent_id'] = $parentId;
+        if ($parentId && $parentId != $this->getId()) {
+            $parent = PageFacade::findById($parentId);
+
+            if ($parent->loaded()) {
+                $this->data['parent_id'] = $parentId;
+            }
+        }
 
         return $this;
     }
