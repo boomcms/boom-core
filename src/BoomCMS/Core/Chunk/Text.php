@@ -49,12 +49,12 @@ class Text extends BaseChunk
      */
     public function getUnfilteredText()
     {
-        return $this->attrs['text'];
+        return isset($this->attrs['text']) ? $this->attrs['text'] : '';
     }
 
     public function get_paragraphs($offset = 0, $length = null)
     {
-        preg_match_all('|<p>(.*?)</p>|', $this->attrs['text'], $matches, PREG_PATTERN_ORDER);
+        preg_match_all('|<p>(.*?)</p>|', $this->getUnfilteredText(), $matches, PREG_PATTERN_ORDER);
 
         return $matches[1];
     }
@@ -103,7 +103,7 @@ class Text extends BaseChunk
 
             $text = $commander->filterText($this->getUnfilteredText());
         } else {
-            $text = $this->attrs['site_text'];
+            $text = isset($this->attrs['site_text']) ? $this->attrs['site_text'] : '';
         }
 
         return $text;
