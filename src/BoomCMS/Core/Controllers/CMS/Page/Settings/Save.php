@@ -12,9 +12,8 @@ class Save extends Settings
 
         $this->log("Saved admin settings for page " . $this->page->getTitle() . " (ID: " . $this->page->getId() . ")");
 
-        $this->page
-            ->setInternalName($this->request->input('internal_name'))
-            ->save();
+        $this->page->setInternalName($this->request->input('internal_name'));
+        $this->provider->save($this->page);
     }
 
     public function children()
