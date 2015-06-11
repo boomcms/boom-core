@@ -12,6 +12,7 @@ abstract class Type
     const TIFF = 4;
     const MP3 = 5;
     const MSWORD = 6;
+    const MSEXCEL = 7;
 
     /**
 	 *
@@ -35,6 +36,9 @@ abstract class Type
 
             case static::MSWORD:
                 return "MSWord";
+
+            case static::MSEXCEL:
+                return "MSExcel";
         }
     }
 
