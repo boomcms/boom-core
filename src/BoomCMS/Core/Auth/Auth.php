@@ -7,7 +7,6 @@ use \Cookie as Cookie;
 use BoomCMS\Core\Person;
 
 use Hautelook\Phpass\PasswordHash;
-use Cartalyst\Sentry\Users\UserNotFoundException;
 use Illuminate\Session\SessionManager as Session;
 
 class Auth
@@ -51,63 +50,34 @@ class Auth
      * @param  type                  $password
      * @param  type                  $remember
      * @return Person\Person
-     * @throws UserNotFoundException
+     * @throws PersonNotFoundException
+     * @throws PersonSuspendedException
      */
     public function authenticate($email, $password, $remember = false)
     {
         $person = $this->personProvider->findByEmail(trim($email));
 
-       // if ($person->isValid() && $person->checkPassword($password)) {
-            $this->login($person, $remember);
-
-            return $person;
-      //      }
-
-        if ( ! $person->isValid()) {
-            throw new UserNotFoundException();
+        if ( ! $person->checkPassword($password) ||  ! $person->loaded()) {
+            throw new PersonNotFoundException();
         }
 
         if ($person->isLocked()) {
-
+            throw new PersonLockedException();
         }
+
+        $this->login($person, $remember);
+
+        return $person;
     }
 
     public function logout()
     {
-        $this->session->delete('auth_forced');
-
-        if ($token = Cookie::get('authautologin')) {
-            // Delete the autologin cookie to prevent re-login
-            Cookie::delete('authautologin');
-
-            // Clear the autologin token from the database
-            $token = ORM::factory('User_Token', ['token' => $token]);
-
-            if ($token->loaded()) {
-                // Delete all user tokens. This isn't the most elegant solution but does the job
-                $tokens = ORM::factory('User_Token')->where('user_id','=',$token->user_id)->find_all();
-
-                foreach ($tokens as $_token) {
-                    $_token->delete();
-                }
-            } elseif ($token->loaded()) {
-                $token->delete();
-            }
-        }
-
-        // Destroy the session completely
-        $this->session->destroy();
-
-        // Remove the user from the session
         $this->session->delete($this->sessionKey);
-
-        // Regenerate session_id
         $this->session->regenerate();
 
         $this->person = new Person\Guest();
 
-        // Double check
-        return ! $this->isLoggedIn();
+        return $this;
     }
 
     public function auto_login()

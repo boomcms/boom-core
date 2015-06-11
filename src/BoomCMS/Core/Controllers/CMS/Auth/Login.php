@@ -2,10 +2,9 @@
 
 namespace BoomCMS\Core\Controllers\CMS\Auth;
 
+use BoomCMS\Core\Auth;
 use BoomCMS\Core\Controllers\Controller;
-use BoomCMS\Core\Person;
 
-use Cartalyst\Sentry\Users\UserNotFoundException;
 use Illuminate\Support\Facades\Lang;
 
 class Login extends Controller
@@ -19,13 +18,13 @@ class Login extends Controller
         }
     }
 
-    public function processLogin(Person\Provider $provider)
+    public function processLogin()
     {
         try {
             $this->auth->authenticate($this->request->input('email'), $this->request->input('password'));
-        } catch (UserNotFoundException $e) {
+        } catch (Auth\PersonNotFoundException $e) {
             return $this->displayLoginForm(['login_error' => Lang::get('Invalid email address or password')]);
-        } catch (PersonSuspendedException $e) {
+        } catch (Auth\PersonSuspendedException $e) {
             return $this->displayLoginForm([
                 'login_error' => Lang::get('Your account has been locked due to too many unsuccessful login attempts. Please try again in :lock_wait', ['lock_wait' => $e->getLockWait()]),
             ]);

@@ -108,6 +108,21 @@ class Page_PageTest extends TestCase
         $this->assertEquals(2, $page->getParentId());
     }
 
+    public function testHasChildrenReturnsFalseIfChildCountIs0()
+    {
+        $page = $this->getMockBuilder('BoomCMS\Core\Page\Page')
+            ->setMethods(['countChildren'])
+            ->setConstructorArgs([[]])
+            ->getMock();
+
+        $page
+            ->expects($this->once())
+            ->method('countChildren')
+            ->will($this->returnValue(0));
+
+        $this->assertFalse($page->hasChildren());
+    }
+
     public function testHasChildrenReturnsTrueIfChildCountGreaterThan0()
     {
         $page = $this->getMockBuilder('BoomCMS\Core\Page\Page')
@@ -115,14 +130,11 @@ class Page_PageTest extends TestCase
             ->setConstructorArgs([[]])
             ->getMock();
 
-        $page->expects($this->once())
-            ->method('coundChildrn')
-            ->will($this->returnValue(0));
-        $this->assertFalse($page->hasChildren());
-
-       $page->expects($this->once())
-            ->method('coundChildrn')
+       $page
+           ->expects($this->once())
+            ->method('countChildren')
             ->will($this->returnValue(1));
+
         $this->assertTrue($page->hasChildren());
     }
 }

@@ -25,10 +25,10 @@ class Person
 
     /**
      *
-     * @param  GroupInterface      $group
-     * @return \Boom\Person\Person
+     * @param Group\Group $group
+     * @return Person
      */
-    public function addGroup(GroupInterface $group)
+    public function addGroup(Group\Group $group)
     {
         if ($group->loaded()) {
             $this->model->add('groups', $group->getId());
@@ -46,11 +46,16 @@ class Person
         return $this;
     }
 
+    /**
+     *
+     * @param string $password
+     * @return boolean
+     */
     public function checkPassword($password)
     {
         $hasher = new PasswordHash(8, false);
 
-        return $hasher->CheckPassword($password, $this->getPassword());
+        return $hasher->checkPassword($password, $this->getPassword());
     }
 
     /**
@@ -151,10 +156,10 @@ class Person
 
     /**
      *
-     * @param  GroupInterface      $group
-     * @return \Boom\Person\Person
+     * @param Group $group
+     * @return Person
      */
-    public function removeGroup(GroupInterface $group)
+    public function removeGroup(Group\Group $group)
     {
         if ($group->loaded()) {
             $this->model->remove('groups', $group->getId());

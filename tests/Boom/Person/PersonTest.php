@@ -2,6 +2,8 @@
 
 use BoomCMS\Core\Person\Person;
 
+use Hautelook\Phpass\PasswordHash;
+
 class Person_PersonTest extends TestCase
 {
     public function testLoadedIfHasId()
@@ -30,5 +32,15 @@ class Person_PersonTest extends TestCase
         $person = new Person(['superuser' => true]);
 
         $this->assertTrue($person->isSuperuser());
+    }
+
+    public function testCheckPassword()
+    {
+        $hasher = new PasswordHash(8, false);
+        $password = $hasher->HashPassword('test');
+
+        $person = new Person(['password' => $password]);
+        $this->assertTrue($person->checkPassword('test'));
+        $this->assertFalse($person->checkPassword('test2'));
     }
 }

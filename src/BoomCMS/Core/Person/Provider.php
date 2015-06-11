@@ -51,11 +51,6 @@ class Provider
         return $model ? $this->findAndCache($model) : new Guest();
     }
 
-    public function findByActivationCode($code)
-    {
-
-    }
-
     public function findById($id)
     {
         return $this->findBy('id', $id);
