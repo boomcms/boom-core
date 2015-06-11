@@ -63,9 +63,8 @@ class Save extends Settings
 
         $this->log("Updated the feature image of page " . $this->page->getTitle() . " (ID: " . $this->page->getId() . ")");
 
-        $this->page
-            ->setFeatureImageId($this->request->input('feature_image_id'))
-            ->save();
+        $this->page->setFeatureImageId($this->request->input('feature_image_id'));
+        $this->provider->save($this->page);
     }
 
     public function navigation()

@@ -102,13 +102,13 @@ class Controller extends BaseController
     public function log($activity)
     {
         // Add an item to the log table with the relevant details
-        ORM::factory('Log')
-            ->values([
-                'ip'            =>    Request::$client_ip,
-                'activity'        =>    $activity,
-                'person_id'    =>    $this->person->getId(),
-            ])
-            ->create();
+//        ORM::factory('Log')
+//            ->values([
+//                'ip'            =>    Request::$client_ip,
+//                'activity'        =>    $activity,
+//                'person_id'    =>    $this->person->getId(),
+//            ])
+//            ->create();
     }
 
     public function after()

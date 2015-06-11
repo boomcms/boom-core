@@ -86,7 +86,7 @@ abstract class Asset implements Arrayable
 	 */
     public function getFilename()
     {
-        return static::directory() . $this->getId();
+        return static::directory() . DIRECTORY_SEPARATOR . $this->getId();
     }
 
     public function getFilesize()
