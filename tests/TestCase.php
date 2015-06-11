@@ -17,6 +17,7 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase
         });
 
         $app->bind('boomcms.asset.provider', function($app) {});
+        $app->bind('boomcms.chunk', function($app) {});
 
         return $app;
     }

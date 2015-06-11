@@ -7,6 +7,8 @@ use BoomCMS\Core\Tag;
 use BoomCMS\Core\Template;
 use BoomCMS\Core\URL\URL;
 use BoomCMS\Core\Models\Page\Version as VersionModel;
+
+use BoomCMS\Core\Facades\Chunk;
 use BoomCMS\Core\Facades\Asset;
 
 use \DateTime;
@@ -170,7 +172,9 @@ class Page
 	 */
     public function getDescription()
     {
-        $description = ($this->get('description') != null) ? $this->get('description') : \Chunk::factory('text', 'standfirst', $this)->text();
+        $description = ($this->get('description') != null) ?
+            $this->get('description')
+            : Chunk::get('text', 'standfirst', $this)->text();
 
         return \strip_tags($description);
     }

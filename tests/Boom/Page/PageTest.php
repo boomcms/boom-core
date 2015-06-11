@@ -1,7 +1,10 @@
 <?php
 
 use BoomCMS\Core\Page\Page;
+use BoomCMS\Core\Chunk\Text;
+
 use BoomCMS\Core\Facades\Asset;
+use BoomCMS\Core\Facades\Chunk;
 
 class Page_PageTest extends TestCase
 {
@@ -46,5 +49,29 @@ class Page_PageTest extends TestCase
             ->with($page->getFeatureImageId());
 
         $page->getFeatureImage();
+    }
+
+    public function testGetDescriptionReturnsDescriptionIfSet()
+    {
+        $page = new Page(['description' => 'test']);
+        $this->assertEquals('test', $page->getDescription());
+    }
+
+    public function testGetDescriptionUsesPageStandfirstAsFallback()
+    {
+        $page = new Page([]);
+
+        Chunk::shouldReceive('get')
+            ->once()
+            ->with('text', 'standfirst', $page)
+            ->andReturn(new Text($page, ['site_text' => 'test standfirst'], 'standfirst', false));
+
+        $this->assertEquals('test standfirst', $page->getDescription());
+    }
+
+    public function testGetDescriptionRemovesHtml()
+    {
+        $page = new Page(['description' => '<p>description</p>']);
+        $this->assertEquals('description', $page->getDescription());
     }
 }

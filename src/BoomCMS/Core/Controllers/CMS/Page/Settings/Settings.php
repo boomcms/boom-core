@@ -29,7 +29,7 @@ abstract class Settings extends PageController
     public function children()
     {
         $this->authorization('edit_page_children_basic');
-        $this->allowAdvanced = $this->auth->loggedIn('edit_page_children_advanced', $page);
+        $this->allowAdvanced = $this->auth->loggedIn('edit_page_children_advanced', $this->page);
     }
 
     public function feature()
@@ -40,13 +40,13 @@ abstract class Settings extends PageController
     public function navigation()
     {
         $this->authorization('edit_page_navigation_basic');
-        $this->allowAdvanced = $this->auth->loggedIn('edit_page_navigation_advanced', $page);
+        $this->allowAdvanced = $this->auth->loggedIn('edit_page_navigation_advanced', $this->page);
     }
 
     public function search()
     {
         $this->authorization('edit_page_search_basic');
-        $this->allowAdvanced = $this->auth->loggedIn('edit_page_search_advanced', $page);
+        $this->allowAdvanced = $this->auth->loggedIn('edit_page_search_advanced', $this->page);
     }
 
     public function visibility()
