@@ -67,7 +67,7 @@ class Provider
         $chunk = $this->find($type, $slotname, $page->getCurrentVersion());
         $attrs = $chunk? $chunk->toArray() : [];
 
-        return new $className($page, $chunk, $slotname, $this->allowedToEdit($page));
+        return new $className($page, $attrs, $slotname, $this->allowedToEdit($page));
     }
 
     public function find($type, $slotname, Version $version)
@@ -97,5 +97,15 @@ class Provider
 //            ->with('target')
             ->where('page_vid', '=', $version->getId())
             ->get();
+    }
+
+    public function get($type, $slotname, Page $page)
+    {
+        $className = 'BoomCMS\Core\Chunk\\' . ucfirst($type);
+
+        $chunk = $this->find($type, $slotname, $page->getCurrentVersion());
+        $attrs = $chunk? $chunk->toArray() : [];
+
+        return new $className($page, $attrs, $slotname, false);
     }
 }
