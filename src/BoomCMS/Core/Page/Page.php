@@ -7,6 +7,7 @@ use BoomCMS\Core\Tag;
 use BoomCMS\Core\Template;
 use BoomCMS\Core\URL\URL;
 use BoomCMS\Core\Models\Page\Version as VersionModel;
+use BoomCMS\Core\Facades\Asset;
 
 use \DateTime;
 
@@ -185,10 +186,13 @@ class Page
         return ($parent->getGrandchildTemplateId() != 0) ? $parent->getGrandchildTemplateId() : $this->getTemplateId();
     }
 
+    /**
+     *
+     * @return BoomCMS\Core\Asset\Asset
+     */
     public function getFeatureImage()
     {
-        // TODO:: return an asset instance
-        return \Boom\Asset\Factory::fromModel($this->getFeatureImageId());
+        return Asset::findById($this->getFeatureImageId());
     }
 
     public function getFeatureImageId()
