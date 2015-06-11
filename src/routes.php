@@ -88,6 +88,8 @@ Route::group(['middleware' => [
         });
     });
 
+    Route::post('page/children', 'BoomCMS\Core\Controllers\Page@children');
+
     Route::get('asset/{action}/{asset}/{width?}/{height?}', [
         'as' => 'asset',
         'uses' => function(BoomCMS\Core\Auth\Auth $auth, $action, $asset = null, $width = null, $height = null) {

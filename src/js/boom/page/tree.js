@@ -10,38 +10,47 @@ $.widget('boom.pageTree', {
 		var self = this;
 
 		var treeConfig = $.extend({}, $.boom.config.tree, {
-			toggleSelected: false,
-			onClick: function(event) {
-				event.preventDefault();
-
-				self.itemClick($(this));
-			},
+			toggleSelected: true,
 			onToggle: function(page_id) {
 				return self.getChildren(page_id);
 			}
 		});
+
+		this.element.on('click', 'a', function(e) {
+			e.preventDefault();
+
+			self.itemClick($(this));
+		});
+
+		this
+			.getChildren(0, this.element)
+			.done(function() {
+				self.element.find('a[data-page-id]').each(function() {
+					self.getChildren($(this).attr('data-page-id'));
+				});
+			});
 
 		this.element.tree('destroy').tree(treeConfig);
 	},
 
 	itemClick : function($node) {
 		this.highlightItem($node);
-		this.options.onPageSelect(new boomLink($node.attr('href'), $node.attr('rel'), $node.text()));
+		this.options.onPageSelect(new boomLink($node.attr('href'), $node.attr('data-page-id'), $node.text()));
 	},
 
-	getChildren : function(page_id) {
+	getChildren : function(page_id, $ul) {
 		var list_ready = $.Deferred(),
 			pageTree = this;
 
 		$.ajax({
 			type: 'POST',
-			url: '/page/children.json',
+			url: '/page/children',
 			data: {parent : page_id},
 			dataType: 'json'
 		})
 		.done(function(data) {
 
-			var children = $('<ul></ul>');
+			var children = typeof($ul) !== 'undefined'? $ul : $('<ul></ul>');
 
 			$( data ).each( function( i, item ){
 				var li = $('<li></li>')
@@ -52,11 +61,14 @@ $.widget('boom.pageTree', {
 					.appendTo( children );
 
 				$('<a></a>')
-					.attr( 'id', 'page_' + item.id )
-					.attr( 'href', item.url )
-					.attr( 'rel', item.id )
-					.text( item.title )
-					.appendTo( li );
+					.attr('href', item.url)
+					.attr('data-page-id', item.id)
+					.text(item.title)
+					.appendTo(li);
+
+				if (item.has_children == 1) {
+					pageTree.element.tree('set_toggle', li);
+				}
 			});
 
 			pageTree._trigger('load', null, {
@@ -64,8 +76,8 @@ $.widget('boom.pageTree', {
 				children : data
 			});
 
-			var parent_id = $( 'input[name=parent_id]' ).val();
-			children.find( '#page_' + parent_id ).addClass( 'ui-state-active' );
+			var parent_id = $('input[name=parent_id]').val();
+			children.find('[data-page-id=' + parent_id + ']').addClass('ui-state-active');
 
 			list_ready.resolve( { childList: children } );
 		});

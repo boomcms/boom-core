@@ -106,6 +106,14 @@ class Page
         return $this->get('children_visible_in_nav_cms') == true;
     }
 
+    public function countChildren()
+    {
+        $finder = new Finder\Finder();
+        $finder->addFilter(new Finder\ParentId($this->getId()));
+
+        return $finder->count();
+    }
+
     public function addVersion(array $attrs = [])
     {
         if ($currentVersion = $this->getCurrentVersion()) {
@@ -307,6 +315,11 @@ class Page
     public function getVisibleTo()
     {
         return $this->get('visible_to') == 0 ? null : new DateTime('@' . $this->get('visible_to'));
+    }
+
+    public function hasChildren()
+    {
+        return $this->countChildren() > 0;
     }
 
     public function hasFeatureImage()

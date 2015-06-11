@@ -7,6 +7,8 @@ use BoomCMS\Core\Finder\Finder as BaseFinder;
 use BoomCMS\Core\Models\Page as Model;
 use BoomCMS\Core\Page\Page;
 
+use Illuminate\Support\Facades\App;
+
 class Finder extends BaseFinder
 {
     const TITLE = 'version.title';
@@ -14,11 +16,13 @@ class Finder extends BaseFinder
     const DATE = 'visible_from';
     const EDITED = 'edited_time';
 
-    public function __construct(Editor $editor)
+    public function __construct(Editor $editor = null)
     {
+        $this->editor = $editor ?: App::offsetGet('boomcms.editor');
+
         $this->query = Model::currentVersion()->withUrl();
 
-        if ($editor->isDisabled()) {
+        if ($this->editor->isDisabled()) {
             $this->query = $this->query->isVisible();
         }
     }
@@ -36,7 +40,7 @@ class Finder extends BaseFinder
         $return = [];
 
         foreach ($pages as $page) {
-            $return = new Page($page->toArray());
+            $return[] = new Page($page->toArray());
         }
 
         return $return;

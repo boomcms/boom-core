@@ -132,12 +132,12 @@ $.widget('ui.tree',
 	/**
 	@function
 	*/
-	_set_toggle : function( $item ) {
+	set_toggle : function( $item ) {
 
 		var self = this;
 
 		$('<span />')
-			.addClass('boom-tree-hitarea ui-icon')
+			.addClass('boom-tree-hitarea ui-icon ui-icon-triangle-1-e')
 			.bind('boom-tree.toggle', function(){
 				self.toggle( $item );
 			})
@@ -314,7 +314,7 @@ $.widget('ui.tree',
 
 		if ( !$item.find( '.boom-tree-hitarea' ).length) {
 
-			self._set_toggle( $item );
+			self.set_toggle( $item );
 
 		}
 
@@ -339,7 +339,7 @@ $.widget('ui.tree',
 
 		var self = this;
 		var children_ready = $.Deferred();
-		var id = $item.find('> a').attr('rel');
+		var id = $item.find('> a').attr('data-page-id');
 		var childList = $item.find( '> ul' );
 
 		if ( childList.length == 0 && self.options.onToggle) {
@@ -360,7 +360,7 @@ $.widget('ui.tree',
 									._set_remove( $child )
 									._set_icon( $child );
 								if ( $child.data( 'children' ) ) {
-									self._set_toggle( $child );
+									self.set_toggle( $child );
 									$child
 										.find( '.boom-tree-hitarea' )
 										.addClass( self.options.iconHitareaClosed );

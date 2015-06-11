@@ -65,6 +65,14 @@ class Provider
         return $this->findAndCache(Model::where('internal_name', '=', $name)->get());
     }
 
+    public function findByParentId($parentId)
+    {
+        $finder = new Finder\Finder($this->editor);
+        $finder->addFilter(new Finder\ParentId($parentId));
+
+        return $finder->findAll();
+    }
+
     public function findByPrimaryUri($uri)
     {
         return $this->findAndCache(Model::where('primary_uri', '=', $uri)->get());
