@@ -8,6 +8,8 @@ Route::group(['middleware' => [
     'BoomCMS\Core\Http\Middleware\DefineCMSViewSharedVariables'
 ]], function () {
     Route::group(['prefix' => 'cms', 'namespace' => 'BoomCMS\Core\Controllers\CMS'], function () {
+        Route::get('logout', 'Auth\Logout@index');
+
         Route::group(['namespace' => 'Auth', 'middleware' => ['BoomCMS\Core\Http\Middleware\RedirectIfAuthenticated']], function () {
             Route::get('login', [
                 'as' => 'login',
@@ -15,8 +17,6 @@ Route::group(['middleware' => [
             ]);
 
             Route::post('login', 'Login@processLogin');
-
-            Route::get('logout', 'Logout@index');
 
             Route::get('recover', 'Recover@showForm');
             Route::post('recover', 'Recover@createToken');

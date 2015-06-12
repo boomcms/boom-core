@@ -26,12 +26,12 @@ class Recover extends Controller
     public function createToken()
     {
 		/**
-		 * TODO: This is used in setPassword as well. 
-		 * 
+		 * TODO: This is used in setPassword as well.
+		 *
 		 * It should probably be made into a middleware.
 		 */
 		$person = $this->auth->getProvider()->findByEmail($this->request->input('email'));
-		
+
 		if ( !$person->isValid()) {
             return $this->showForm([
 				'error' => Lang::get('boom::recover.errors.invalid_email')
@@ -40,14 +40,14 @@ class Recover extends Controller
 		/* */
 
 		$token = $this->app['auth.password.tokens']->create($person);
-		
+
 		Mail::send('boom::email.recovery', ['token' => $token], function($message) use ($person) {
 			$message
 				->to($person->getEmail(), $person->getName())
 				->from(Settings::get('site.admin.email'), Settings::get('site.name'))
 				->subject('BoomCMS Password Reset');
 		});
-		
+
 		return View::make('boom::account.recover.email_sent');
     }
 
@@ -58,8 +58,14 @@ class Recover extends Controller
 
     public function setPassword()
     {
+        if ($this->request->method() === 'GET') {
+			return $this->showForm([
+				'token' => $this->request->input('token'),
+			]);
+        }
+
 		$person = $this->auth->getProvider()->findByEmail($this->request->input('email'));
-		
+
 		if ( !$person->isValid()) {
             return $this->showForm([
 				'error' => Lang::get('boom::recover.errors.invalid_email'),
@@ -76,14 +82,14 @@ class Recover extends Controller
 				'token' => $this->request->input('token'),
 			]);
 		}
-		
+
 		if ($this->request->input('password1') != $this->request->input('password2')) {
 			return $this->showForm([
 				'error' => Lang::get('boom::recover.errors.password_mismatch'),
 				'token' => $this->request->input('token'),
 			]);
 		}
-		
+
 		if ($this->request->input('password1') && $this->request->input('password2')) {
 			$tokens->delete($token);
 			$tokens->deleteExpired();
@@ -91,9 +97,12 @@ class Recover extends Controller
 			$this->app['boomcms.person.provider']->save($person);
 			$this->auth->login($person);
 
-			redirect('/');
+			return redirect('/');
 		} else {
-			$this->_display_form(['token' => $token]);
-		}
+			return $this->showForm([
+				'error' => Lang::get('boom::recover.errors.password_mismatch'),
+				'token' => $this->request->input('token'),
+			]);
+        }
     }
 }

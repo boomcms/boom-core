@@ -9,11 +9,11 @@ class Logout extends Controller
     public function index()
     {
         // This needs to happen before we log the user out, or we don't be able to log who logged out.
-        $this->_log_logout();
+//        $this->_log_logout();
 
         $this->auth->logout();
 
         // TODO: make sure response code is 303.
-        redirect()->back();
+        return redirect()->back();
     }
 }
