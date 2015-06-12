@@ -59,6 +59,7 @@ class Auth_AuthTest extends TestCase
     public function testRememberLogin()
     {
         $person = $this->getMockBuilder('BoomCMS\Core\Person\Person')
+            ->setMethods(['setRememberToken'])
             ->setConstructorArgs([[]])
             ->getMock();
 
@@ -75,10 +76,7 @@ class Auth_AuthTest extends TestCase
 
         $cookie = $this->getMockCookieJar();
 
-        $auth = $this->getMockBuilder('BoomCMS\Core\Auth\Auth')
-            ->setMethods(['rememberLogin'])
-            ->setConstructorArgs([$this->getMockSession(), $personProvider, $this->getMockPermissionsProvider(), $cookie])
-            ->getMock();
+        $auth = new Auth\Auth($this->getMockSession(), $personProvider, $this->getMockPermissionsProvider(), $cookie);
 
         $cookie
             ->expects($this->once())

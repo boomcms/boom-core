@@ -10,8 +10,6 @@ use \DB;
 
 class Person
 {
-    const LOCK_WAIT = 600;
-
    /**
     *
     * @var array
@@ -169,17 +167,6 @@ class Person
                 ->where('person_id', '=', $this->getId())
                 ->execute();
         }
-
-        return $this;
-    }
-
-    /**
-	 *
-	 * @return \Boom\Person
-	 */
-    public function save()
-    {
-        $this->model->loaded() ? $this->model->update() : $this->model->create();
 
         return $this;
     }

@@ -151,7 +151,7 @@ class Auth
     {
         $token = str_random(100);
         $person->setRememberToken($token);
-        $this->provider->save($person);
+        $this->personProvider->save($person);
 
         $this->cookie->queue(
             $this->cookie->forever($this->getAutoLoginCookie(), $token)

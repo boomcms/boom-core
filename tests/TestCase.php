@@ -33,7 +33,10 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase
 
     protected function getMockPersonProvider()
     {
-        return $this->getMock('BoomCMS\Core\Person\Provider');
+        return $this
+            ->getMockBuilder('BoomCMS\Core\Person\Provider')
+            ->setMethods(['save'])
+            ->getMock();
     }
 
     protected function getMockCookieJar()
