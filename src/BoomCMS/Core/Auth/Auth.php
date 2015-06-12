@@ -84,6 +84,11 @@ class Auth
 
         return $person;
     }
+	
+	public function autoLogin()
+	{
+		
+	}
 
     public function getAutoLoginCookie()
     {

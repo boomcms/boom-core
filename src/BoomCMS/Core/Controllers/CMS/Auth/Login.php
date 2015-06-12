@@ -11,11 +11,7 @@ class Login extends Controller
 {
     public function showLoginForm()
     {
-        if ($this->auth->auto_login()) {
-            $this->request->redirect('/');
-        } else {
-            return $this->displayLoginForm();
-        }
+		return ($this->auth->autoLogin()) ? redirect('/') : $this->displayLoginForm();
     }
 
     public function processLogin()
