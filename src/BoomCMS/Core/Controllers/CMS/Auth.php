@@ -51,11 +51,4 @@ class Auth extends Controller
             ])
             ->create();
     }
-
-    protected function _display_login_form($vars = [])
-    {
-        $vars['request'] = $this->request;
-
-        $this->response->body(new View('boom/account/login', $vars));
-    }
 }

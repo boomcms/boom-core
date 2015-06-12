@@ -43,4 +43,12 @@ class Person_PersonTest extends TestCase
         $this->assertTrue($person->checkPassword('test'));
         $this->assertFalse($person->checkPassword('test2'));
     }
+	
+	public function testSetGetRememberLoginToken()
+	{
+		$person = new Person([]);
+		$person->setRememberToken('token');
+		
+		$this->assertEquals('token', $person->getRememberToken());
+	}
 }

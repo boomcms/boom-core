@@ -150,9 +150,9 @@ abstract class BaseChunk
 
     public function getPlaceholderText()
     {
-        $text = Lang::get("boom::chunks.{$this->getType()}.{$this->slotname}");
-
-        return $text ?: Lang::get("boom::chunks.{$this->getType()}");
+		return (Lang::has("boom::chunks.{$this->getType()}.{$this->slotname}")) ?
+			Lang::get("boom::chunks.{$this->getType()}.{$this->slotname}")
+			: Lang::get("boom::chunks.{$this->getType()}.default");
     }
 
     public function getType()

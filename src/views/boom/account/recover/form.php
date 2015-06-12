@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="en-gb">
+<html dir="ltr" lang="en-gb" class="boom">
 	<head>
 		<title>BoomCMS | <?= Lang::get('Password reset') ?></title>
 		<meta name="robots" content="noindex, nofollow" />
@@ -7,7 +7,11 @@
 	</head>
 	<body id='b-login'>
 		<div>
+			<div id="logo"></div>
+
 			<form name="login-form" action="/cms/recover<?php if (isset($token)): ?>?token=<?= $token->token ?><?php endif ?>" method="post">
+				<input type="hidden" name="_token" value="<?php echo csrf_token() ?>">
+
 				<fieldset>
 					<?php if (isset($error)): ?>
 						<p class="b-error"><?= $error ?></p>

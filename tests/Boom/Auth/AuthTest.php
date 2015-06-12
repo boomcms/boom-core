@@ -8,12 +8,31 @@ class Auth_AuthTest extends TestCase
 {
     public function testLogout()
     {
+		$person = new Person\Person([]);
         $session = $this->getMockSession();
         $cookie = $this->getMockCookieJar();
         $permissions = $this->getMockPermissionsProvider();
 
-        $auth = new Auth\Auth($session, $this->getMockPersonProvider(), $permissions, $cookie);
-
+		$auth = $this->getMockBuilder('BoomCMS\Core\Auth\Auth')
+			->setMethods(['getPerson', 'refreshRememberLoginToken'])
+			->setConstructorArgs([
+				$session,
+				$this->getMockPersonProvider(),
+				$permissions,
+				$cookie
+			])
+			->getMock();
+		
+		$auth
+			->expects($this->any())
+			->method('getPerson')
+			->will($this->returnValue($person));
+		
+		$auth
+			->expects($this->once())
+			->method('refreshRememberLoginToken')
+			->with($person);
+		
         $session
             ->expects($this->once())
             ->method('remove')
@@ -25,9 +44,7 @@ class Auth_AuthTest extends TestCase
             ->with($this->equalTo('boomcms_autologin'));
 
         $auth->logout();
-
         $this->assertFalse($auth->isLoggedIn());
-        $this->assertInstanceOf('BoomCMS\Core\Person\Guest', $auth->getPerson());
     }
 
     public function testGetLoginSavesPersonIdToSession()
@@ -49,19 +66,34 @@ class Auth_AuthTest extends TestCase
         $person = new Person\Person(['id' => 1]);
 
         $auth = $this->getMockBuilder('BoomCMS\Core\Auth\Auth')
-            ->setMethods(['rememberLogin'])
+            ->setMethods(['refreshRememberLoginToken', 'rememberLogin'])
             ->setConstructorArgs([$this->getMockSession(), $this->getMockPersonProvider(), $this->getMockPermissionsProvider(), $this->getMockCookieJar()])
             ->getMock();
+		
+		$auth
+			->expects($this->once())
+			->method('refreshRememberLoginToken')
+			->with($this->equalTo($person));
+		
+		$auth
+			->expects($this->once())
+			->method('rememberLogin')
+			->with($this->equalTo($person));
 
         $auth->login($person, true);
     }
-
-    public function testRememberLogin()
-    {
+	
+	public function testRefreshRememberLoginToken()
+	{
         $person = $this->getMockBuilder('BoomCMS\Core\Person\Person')
-            ->setMethods(['setRememberToken'])
+            ->setMethods(['setRememberToken', 'loaded'])
             ->setConstructorArgs([[]])
             ->getMock();
+		
+		$person
+			->expects($this->once())
+			->method('loaded')
+			->will($this->returnValue(true));
 
         $person
             ->expects($this->once())
@@ -74,14 +106,37 @@ class Auth_AuthTest extends TestCase
             ->method('save')
             ->with($this->equalTo($person));
 
-        $cookie = $this->getMockCookieJar();
+        $auth = new Auth\Auth($this->getMockSession(),
+			$personProvider,
+			$this->getMockPermissionsProvider(),
+			$this->getMockCookieJar()
+		);
 
-        $auth = new Auth\Auth($this->getMockSession(), $personProvider, $this->getMockPermissionsProvider(), $cookie);
+		$auth->refreshRememberLoginToken($person);
+	}
+
+    public function testRememberLogin()
+    {
+		$person = new Person\Person(['id' => 1, 'remember_token' => 'token']);
+		$cookie = $this->getMockCookieJar();
+		
+		$auth = $this->getMockBuilder('BoomCMS\Core\Auth\Auth')
+			->setConstructorArgs([
+				$this->getMockSession(),
+				$this->getMockPersonProvider(),
+				$this->getMockPermissionsProvider(),
+				$cookie
+			])
+			->setMethods(['saveRememberLoginToken'])
+			->getMock();
 
         $cookie
             ->expects($this->once())
             ->method('forever')
-            ->with($this->equalTo($auth->getAutoLoginCookie()), $this->anything());
+            ->with($this->equalTo(
+				$auth->getAutoLoginCookie()),
+				$person->getId() . '-' . $person->getRememberToken()
+			);
 
         $auth->rememberLogin($person);
     }

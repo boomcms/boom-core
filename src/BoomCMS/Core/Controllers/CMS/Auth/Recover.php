@@ -1,19 +1,24 @@
 <?php
 
-use BoomCMS\Core\Config;
-use BoomCMS\Core\Person;
+namespace BoomCMS\Core\Controllers\CMS\Auth;
 
-class Controller_Cms_Auth_Recover extends Controller_Cms_Auth
+use BoomCMS\Core\Auth;
+use BoomCMS\Core\Controllers\Controller;
+
+class Recover extends Controller
 {
-    public function create_token()
+    public function createToken()
     {
-        $person = Person\Factory::byEmail($this->request->input('email'));
+		try {
+			$token = $this->auth->createRecoverToken($this->request->input('email'));
+		} catch (Auth\InvalidPersonException $e) {
+            return $this->showForm([
+				'error' => Lang::get('boom::recover.errors.invalid_email')
+			]);
+		}
+        $person = $this->provider->findByEmail($this->request->input('email'));
+		
 
-        if ( ! $person->loaded() || ! $person->isEnabled()) {
-            $this->_display_form(['error' => Kohana::message('auth', 'recover.errors.invalid_email')]);
-
-            return;
-        }
 
         $token = ORM::factory('PasswordToken')
             ->values([
@@ -42,12 +47,12 @@ class Controller_Cms_Auth_Recover extends Controller_Cms_Auth
         $this->response->body(new View('boom/account/recover/email_sent'));
     }
 
-    public function show_form()
+    public function showForm($vars = [])
     {
-        $this->_display_form();
+        return View::make('boom::account.recover.form', $vars);
     }
 
-    public function set_password()
+    public function setPassword()
     {
         $token = new Model_PasswordToken(['token' => $this->request->query('token')]);
 
@@ -87,10 +92,5 @@ class Controller_Cms_Auth_Recover extends Controller_Cms_Auth
         } else {
             $this->_display_form(['token' => $token, 'email' => $token->getPerson()->getEmail()]);
         }
-    }
-
-    protected function _display_form($vars = [])
-    {
-        $this->response->body(new View('boom/account/recover/form', $vars));
     }
 }

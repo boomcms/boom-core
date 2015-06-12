@@ -138,12 +138,15 @@ class Auth
         $this->session->set($this->getSessionKey(), $person->getId());
 
         if ($remember) {
+			$this->refreshRememberLoginToken($person);
             $this->rememberLogin($person);
         }
     }
 
     public function logout()
     {
+		$this->refreshRememberLoginToken($this->getPerson());
+		
         $this->session->remove($this->getSessionKey());
         $this->cookie->queue($this->cookie->forget($this->getAutoLoginCookie()));
 
@@ -151,15 +154,24 @@ class Auth
 
         return $this;
     }
+	
+	public function refreshRememberLoginToken(Person\Person $person)
+	{
+		if ($person->loaded()) {
+			$token = str_random(60);
+			$person->setRememberToken($token);
+			$this->personProvider->save($person);
+		}
+		
+		return $this;
+	}
 
     public function rememberLogin(Person\Person $person)
     {
-        $token = str_random(100);
-        $person->setRememberToken($token);
-        $this->personProvider->save($person);
+		$value = $person->getId() . '-' . $person->getRememberToken();
 
         $this->cookie->queue(
-            $this->cookie->forever($this->getAutoLoginCookie(), $token)
+			$this->cookie->forever($this->getAutoLoginCookie(), $value)
         );
     }
 }

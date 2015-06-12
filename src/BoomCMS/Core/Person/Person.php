@@ -109,6 +109,11 @@ class Person
     {
         return $this->get('password');
     }
+	
+	public function getRememberToken()
+	{
+		return $this->get('remember_token');
+	}
 
     public function isEnabled()
     {

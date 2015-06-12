@@ -3,10 +3,17 @@
 use BoomCMS\Core\Page\Page;
 use Illuminate\Support\Facades\Lang;
 
+use BoomCMS\Core\Chunk\BaseChunk;
+
 class BaseChunkTest extends TestCase
 {
     public function testGetPlaceholderTextForSlotnameIfDefined()
     {
+        Lang::shouldReceive('has')
+            ->once()
+            ->with('boom::chunks.text.test')
+            ->andReturn(true);
+
         Lang::shouldReceive('get')
             ->once()
             ->with('boom::chunks.text.test')
@@ -27,14 +34,14 @@ class BaseChunkTest extends TestCase
 
     public function testGetPlaceholderTextReturnsDefaultForType()
     {
-        Lang::shouldReceive('get')
+        Lang::shouldReceive('has')
             ->once()
             ->with('boom::chunks.text.test')
-            ->andReturn(null);
+            ->andReturn(false);
 
         Lang::shouldReceive('get')
             ->once()
-            ->with('boom::chunks.text')
+            ->with('boom::chunks.text.default')
             ->andReturn('some text');
 
         $chunk = $this->getMockBuilder('BoomCMS\Core\Chunk\BaseChunk')
@@ -49,6 +56,15 @@ class BaseChunkTest extends TestCase
 
         $this->assertEquals('some text', $chunk->getPlaceholderText());
     }
+	
+//	public function testDefaultPlaceholderTextsAreDefined()
+//	{
+//		var_dump(Lang::get('boom::chunks.text.standfirst'));
+//		foreach (BaseChunk::$types as $type) {
+//			$langKey = "boom::chunks.$type.default";
+//			$this->assertTrue(Lang::has($langKey), $type);
+//		}
+//	}
 
     public function testIsEditable()
     {

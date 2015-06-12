@@ -19,7 +19,7 @@ Route::group(['middleware' => [
             Route::get('logout', 'Logout@index');
 
             Route::get('recover', 'Recover@showForm');
-            Route::get('recover', 'Recover@createToken');
+            Route::post('recover', 'Recover@createToken');
             Route::get('recover', 'Recover@setNewPassword');
         });
 
