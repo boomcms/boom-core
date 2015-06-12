@@ -9,7 +9,7 @@
 		<div>
 			<div id="logo"></div>
 
-			<form name="login-form" action="/cms/recover<?php if (isset($token)): ?>?token=<?= $token->token ?><?php endif ?>" method="post">
+			<form name="login-form" action="/cms/recover<?php if (isset($token)): ?>/set-password?token=<?= $token ?><?php endif ?>" method="post">
 				<input type="hidden" name="_token" value="<?php echo csrf_token() ?>">
 
 				<fieldset>
@@ -18,6 +18,13 @@
 					<?php endif ?>
 
 					<?php if (isset($token)) : ?>
+						<p>
+							<label for="email">
+								<?= Lang::get('Email address') ?>
+							</label>
+							<input type="email" placeholder='<?= Lang::get('Email address') ?>' name="email" required class="b-input" id="email" />
+						</p>
+
 						<p>
 							<label for="password1">
 								<?= Lang::get('Enter a new password') ?>

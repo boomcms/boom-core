@@ -51,4 +51,31 @@ class Person_PersonTest extends TestCase
 		
 		$this->assertEquals('token', $person->getRememberToken());
 	}
+	
+	public function testPersonIsLockedIfLockedUntilIsInTheFuture()
+	{
+		$person = new Person([]);
+		$this->assertFalse($person->isLocked());
+
+		$person = new Person(['locked_until' => time() - 10]);
+		$this->assertFalse($person->isLocked());
+		
+		$person = new Person(['locked_until' => time() + 10]);
+		$this->assertTrue($person->isLocked());
+	}
+	
+	public function testIsValidIfLoadedAndNotLocked()
+	{
+		$person = new Person([]);
+		$this->assertFalse($person->isValid(), 'No ID or locked_until');
+		
+		$person = new Person(['id' => 1, 'locked_until' => time() + 10]);
+		$this->assertFalse($person->isValid(), "Loaded but locked");
+		
+		$person = new Person(['locked_until' => time() - 10]);
+		$this->assertFalse($person->isValid(), 'Not loaded, not locked');
+		
+		$person = new Person(['id' => 1, 'locked_until' => time() - 10]);
+		$this->assertTrue($person->isValid(), 'Loaded and not locked');
+	}
 }

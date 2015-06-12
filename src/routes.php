@@ -20,7 +20,7 @@ Route::group(['middleware' => [
 
             Route::get('recover', 'Recover@showForm');
             Route::post('recover', 'Recover@createToken');
-            Route::get('recover', 'Recover@setNewPassword');
+            Route::any('recover/set-password', 'Recover@setPassword');
         });
 
         Route::group(['middleware' => ['BoomCMS\Core\Http\Middleware\RequireLogin']], function () {

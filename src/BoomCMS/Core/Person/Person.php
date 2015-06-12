@@ -5,10 +5,10 @@ namespace BoomCMS\Core\Person;
 use BoomCMS\Core\Group;
 
 use Hautelook\Phpass\PasswordHash;
+use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Contracts\Auth\CanResetPassword;
 
-use \DB;
-
-class Person
+class Person implements Arrayable, CanResetPassword
 {
    /**
     *
@@ -75,6 +75,11 @@ class Person
     {
         return $this->get('email');
     }
+	
+	public function getEmailForPasswordReset()
+	{
+		return $this->getEmail();
+	}
 
     public function getGroups()
     {
@@ -136,12 +141,12 @@ class Person
      */
     public function isValid()
     {
-        return $this->getId() > 0;
+		return $this->loaded() && !$this->isLocked();
     }
 
     public function loaded()
     {
-        return $this->isValid();
+        return $this->getId() > 0;
     }
 
     public function loginFailed()
@@ -222,5 +227,10 @@ class Person
         $this->data['remember_token'] = $token;
 
         return $this;
+    }
+
+    public function toArray()
+    {
+        return $this->data;
     }
 }

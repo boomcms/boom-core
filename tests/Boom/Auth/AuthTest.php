@@ -100,7 +100,7 @@ class Auth_AuthTest extends TestCase
             ->method('setRememberToken')
             ->with($this->anything());
 
-        $personProvider = $this->getMockPersonProvider();
+        $personProvider = $this->getMockPersonProvider(['save']);
         $personProvider
             ->expects($this->once())
             ->method('save')
@@ -140,6 +140,19 @@ class Auth_AuthTest extends TestCase
 
         $auth->rememberLogin($person);
     }
+	
+	public function testGetProvider()
+	{
+		$provider = $this->getMockPersonProvider();
+
+		$auth = new Auth\Auth($this->getMockSession(),
+			$provider,
+			$this->getMockPermissionsProvider(),
+			$this->getMockCookieJar()
+		);
+		
+		$this->assertEquals($provider, $auth->getProvider());
+	}
 
     protected function getMockSession()
     {

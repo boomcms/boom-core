@@ -107,6 +107,15 @@ class Auth
 
         return $this->person;
     }
+	
+	/**
+	 * 
+	 * @return Person\Provider
+	 */
+	public function getProvider()
+	{
+		return $this->personProvider;
+	}
 
     public function getSessionKey()
     {

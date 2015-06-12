@@ -2,7 +2,6 @@
 
 namespace BoomCMS\Core\Asset;
 
-use BoomCMS\Core\Config;
 use BoomCMS\Core\Person;
 use DateTime;
 use Date;

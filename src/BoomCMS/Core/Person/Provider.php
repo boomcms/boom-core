@@ -92,4 +92,20 @@ class Provider
     {
         return new Guest();
     }
+	
+	public function save(Person $person)
+	{
+        if ($person->loaded()) {
+            $model = isset($this->cache[$person->getId()]) ?
+                $this->cache[$person->getId()]
+                : Model::find($person->getId());
+
+            $model->update($person->toArray());
+        } else {
+            $model = Model::create($person->toArray());
+            $person->setId($model->id);
+        }
+
+        return $person;
+	}
 }
