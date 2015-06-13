@@ -51,6 +51,11 @@ class Provider
         return $model ? $this->findAndCache($model) : new Guest();
     }
 
+    public function findByAutoLoginToken($token)
+    {
+        return $this->findBy('remember_token', $token);
+    }
+
     public function findById($id)
     {
         return $this->findBy('id', $id);
@@ -92,7 +97,7 @@ class Provider
     {
         return new Guest();
     }
-	
+
 	public function save(Person $person)
 	{
         if ($person->loaded()) {

@@ -5,6 +5,7 @@ namespace BoomCMS\Core\Auth;
 use BoomCMS\Core\Person;
 
 use Hautelook\Phpass\PasswordHash;
+use Illuminate\Http\Request;
 use Illuminate\Session\SessionManager as Session;
 use Illuminate\Contracts\Cookie\QueueingFactory as Cookie;
 
@@ -84,10 +85,22 @@ class Auth
 
         return $person;
     }
-	
-	public function autoLogin()
+
+	public function autoLogin(Request $request)
 	{
-		
+		$token = $request->cookie($this->getAutoLoginCookie());
+
+        if ($token) {
+            $person = $this->personProvider->findByAutoLoginToken($token);
+
+            if ($person->isValid()) {
+                $this->login($person);
+
+                return $person;
+            }
+        }
+
+        return false;
 	}
 
     public function getAutoLoginCookie()
@@ -107,9 +120,9 @@ class Auth
 
         return $this->person;
     }
-	
+
 	/**
-	 * 
+	 *
 	 * @return Person\Provider
 	 */
 	public function getProvider()
@@ -155,7 +168,7 @@ class Auth
     public function logout()
     {
 		$this->refreshRememberLoginToken($this->getPerson());
-		
+
         $this->session->remove($this->getSessionKey());
         $this->cookie->queue($this->cookie->forget($this->getAutoLoginCookie()));
 
@@ -163,7 +176,7 @@ class Auth
 
         return $this;
     }
-	
+
 	public function refreshRememberLoginToken(Person\Person $person)
 	{
 		if ($person->loaded()) {
@@ -171,7 +184,7 @@ class Auth
 			$person->setRememberToken($token);
 			$this->personProvider->save($person);
 		}
-		
+
 		return $this;
 	}
 
