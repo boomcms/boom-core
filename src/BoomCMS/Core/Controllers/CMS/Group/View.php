@@ -27,10 +27,7 @@ class Controller_Cms_Group_View extends Controller_Cms_Group
     public function list_roles()
     {
         $roles = $this->group->getRoles( (int) $this->request->query('page_id'));
-        $roles = json_encode($roles);
 
-        $this->response
-            ->headers('Content-Type', static::JSON_RESPONSE_MIME)
-            ->body($roles);
+        return $roles;
     }
 }

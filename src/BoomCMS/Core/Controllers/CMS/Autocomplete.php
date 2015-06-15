@@ -99,14 +99,6 @@ class Autocomplete extends Controller
             ];
         }
 
-        // Turn the results into a flat array of tag paths and pop it in $this->results for outputting.
-        $this->results = $results;
-    }
-
-    public function after()
-    {
-        $this->response
-            ->headers('content-type', static::JSON_RESPONSE_MIME)
-            ->body(json_encode($this->results));
+        return $results;
     }
 }

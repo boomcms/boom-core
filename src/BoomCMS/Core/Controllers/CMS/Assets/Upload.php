@@ -14,8 +14,6 @@ class Controller_Cms_Assets_Upload extends Controller_Cms_Assets
 
         $asset->replace_with_file($filename);
 
-        $this->response
-            ->headers('Content-Type', static::JSON_RESPONSE_MIME)
-            ->body(json_encode([$asset->getId()]));
+        return [$asset->getId()];
     }
 }
