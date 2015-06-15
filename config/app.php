@@ -145,6 +145,7 @@ return [
         'BoomCMS\Core\Template\TemplateServiceProvider',
         'BoomCMS\Core\Settings\SettingsServiceProvider',
         'BoomCMS\Core\Chunk\ChunkServiceProvider',
+        'BoomCMS\Core\URL\URLServiceProvider',
         'BoomCMS\Installer\ServiceProvider',
     ],
 
