@@ -3,7 +3,7 @@
 namespace BoomCMS\Core\Http\Middleware;
 
 use Closure;
-use BoomCMS\Core\Environment;
+use BoomCMS\Core\Environment\Environment;
 use Illuminate\Http\RedirectResponse;
 
 class RequireLoginForDevelopmentSites
@@ -13,6 +13,12 @@ class RequireLoginForDevelopmentSites
      * @var Environment
      */
     protected $environment;
+
+    protected $ignoreUrls = [
+        'cms/login',
+        'cms/logout',
+        'cms/recover',
+    ];
 
     public function __construct(Environment $environment)
     {
@@ -28,8 +34,10 @@ class RequireLoginForDevelopmentSites
      */
     public function handle($request, Closure $next)
     {
-        if ($this->environment->requiresLogin()) {
-            // TODO: check HTTP response code - needs to be 401.
+        if ($this->environment->requiresLogin()
+            && !in_array($request->path(), $this->ignoreUrls)
+        ) {
+            // TODO: return a 401 response with a custom error page to handle the redirect.
             return new RedirectResponse(route('login'));
         }
 

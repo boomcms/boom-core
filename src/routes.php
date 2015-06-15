@@ -3,7 +3,6 @@
 use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => [
-//    'BoomCMS\Core\Http\Middleware\RequireLoginForDevelopmentSites',
     'BoomCMS\Core\Http\Middleware\DisableHttpCacheIfLoggedIn',
     'BoomCMS\Core\Http\Middleware\DefineCMSViewSharedVariables'
 ]], function () {
