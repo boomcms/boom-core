@@ -36,7 +36,7 @@ abstract class BaseController extends Controller
         $this->response = new Response();
 
         if ( ! $this->asset->isVisible() && ! $this->auth->isLoggedIn()) {
-            throw new HTTP_Exception_404();
+            abort(404);
         }
     }
 

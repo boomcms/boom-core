@@ -51,7 +51,7 @@ class PageController extends Controller
     public function delete()
     {
         if ( ! ($this->page->wasCreatedBy($this->person) || $this->auth->loggedIn('delete_page', $this->page) || $this->auth->loggedIn('manage_pages')) || $this->page->isRoot()) {
-            throw new HTTP_Exception_403();
+            abort(403);
         }
 
         if ($this->request->method() === Request::GET) {

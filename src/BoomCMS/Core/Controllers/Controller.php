@@ -60,9 +60,7 @@ class Controller extends BaseController
 
     /**
 	 * Checks whether the current user is authorized to perform a particular action.
-	 *
-	 * Throws a HTTP_Exception_403 error if the user hasn't been given the required role.
-	 *
+     *
 	 * @uses	Auth::isLoggedIn()
 	 * @param string $role
 	 * @param Model_Page $page
@@ -70,11 +68,11 @@ class Controller extends BaseController
     public function authorization($role, Page $page = null)
     {
         if ( ! $this->auth->isLoggedIn()) {
-            throw new \HTTP_Exception_401();
+            abort(401);
         }
 
         if ( ! $this->auth->loggedIn($role, $page)) {
-            throw new \HTTP_Exception_403();
+           abort(403);
         }
     }
 

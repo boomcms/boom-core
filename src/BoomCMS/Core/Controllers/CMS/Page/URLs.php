@@ -30,11 +30,11 @@ class URLs extends Controller
         $this->page = \Boom\Page\Factory::byId($this->request->query('page_id'));
 
         if ($this->request->param('id') && ! $this->page_url->loaded()) {
-            throw new HTTP_Exception_404();
+            about(404);
         }
 
         if ($this->request->query('page_id') && ! $this->page->loaded()) {
-            throw new HTTP_Exception_404();
+            abourt(404);
         }
 
         if ($this->page->loaded()) {

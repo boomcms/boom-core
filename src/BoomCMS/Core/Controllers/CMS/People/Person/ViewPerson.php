@@ -32,7 +32,7 @@ class ViewPerson extends BasePerson
     public function view()
     {
         if ( ! $this->edit_person->loaded()) {
-            throw new HTTP_Exception_404();
+            abourt(404);
         }
 
         return View::make($this->viewPrefix."view", [
