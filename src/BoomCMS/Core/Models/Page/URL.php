@@ -11,18 +11,6 @@ class URL extends Model
     public $timestamps = false;
 
     /**
-	 * Convert a Model_Page_URL object to a string
-	 * Returns the location property for the current model
-	 *
-	 * @uses URL::site()
-	 * @return string
-	 */
-    public function __toString()
-    {
-        return \URL::site($this->location, \Request::$current);
-    }
-
-    /**
 	 * Function to be called when making a link the primary link for a page.
 	 * Ensures that this will be the only primary link for a page.
 	 *
