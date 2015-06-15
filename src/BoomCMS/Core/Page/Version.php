@@ -53,6 +53,11 @@ class Version
         return $this->template;
     }
 
+    public function getStatus()
+    {
+        return $this->status();
+    }
+
     public function getTitle()
     {
         return $this->get('title');

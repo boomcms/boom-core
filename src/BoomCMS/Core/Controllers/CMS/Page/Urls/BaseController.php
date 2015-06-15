@@ -51,7 +51,7 @@ class BaseController extends Controller
         $this->page = $pageProvider->findById($request->input('page_id'));
 
         if ($id = $request->route()->getParameter('id')) {
-            $this->url = $this->urlProvider->findById($id);
+            $this->url = $this->provider->findById($id);
         } else {
             $this->url = new URL\URL([]);
         }

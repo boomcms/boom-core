@@ -1,8 +1,9 @@
 <?php
 
-use BoomCMS\Core\URL\Helpers as URL;
-
 namespace BoomCMS\Core\Controllers\CMS\Page\Urls;
+
+use BoomCMS\Core\Commands\MakeURLPrimary;
+use Illuminate\Support\Facades\Bus;
 
 class Save extends BaseController
 {
@@ -28,9 +29,9 @@ class Save extends BaseController
         }
     }
 
-    public function make_primary()
+    public function makePrimary()
     {
-        $this->provider->makePrimary($this->url);
+        Bus::dispatch($this->provider, $this->url);
     }
 
     public function move()

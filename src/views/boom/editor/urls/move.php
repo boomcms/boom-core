@@ -1,8 +1,8 @@
 <p>
-	Would you like to move the URL <?= $url->location ?>?
+	Would you like to move the URL <?= $url->getLocation() ?>?
 </p>
 
-<?php if ($url->is_primary && ! $current->isDeleted()): ?>
+<?php if ($url->isPrimary() && ! $current->isDeleted()): ?>
 	<p>
 		<b>This URL is the primary URL for its page. If you move this URL its current page may become inaccessible.</b>
 	</p>
@@ -43,10 +43,10 @@
 	</tr>
 	<tr>
 		<td>
-			<?= ucfirst($current->getCurrentVersion()->status()) ?>
+			<?= ucfirst($current->getCurrentVersion()->getStatus()) ?>
 		</td>
 		<td>
-			<?= ucfirst($page->getCurrentVersion()->status()) ?>
+			<?= ucfirst($page->getCurrentVersion()->getStatus()) ?>
 		</td>
 	</tr>
 </table>

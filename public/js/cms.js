@@ -34406,9 +34406,7 @@ $.widget('boom.pageTree', {
 		$.post('/cms/page/urls/add?page_id=' + page_id, {location : location})
 			.done(function(response) {
 				if (response) {
-					response = $.parseJSON(response);
-
-					if (response.existing_url_id) {
+					if (typeof response.existing_url_id !== 'undefined') {
 						var url = new boomPageUrl(response.existing_url_id);
 						url.move(page_id)
 							.done(function() {

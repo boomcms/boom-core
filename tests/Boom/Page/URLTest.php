@@ -2,6 +2,7 @@
 
 use BoomCMS\Core\URL\URL;
 use BoomCMS\Core\Page\Page;
+use BoomCMS\Core\Facades\Page as PageFacade;
 
 class Page_URLTest extends TestCase
 {
@@ -49,5 +50,42 @@ class Page_URLTest extends TestCase
 
         $url = new URL(['page_id' => 2]);
         $this->assertTrue($url->isForPage($page));
+    }
+
+    public function testGetPage()
+    {
+        $page = new Page(['id' => 1]);
+        $url = new URL(['page_id' => 1]);
+
+        PageFacade::shouldReceive('findById')
+            ->once()
+            ->andReturn($page);
+
+        $this->assertEquals($page, $url->getPage());
+    }
+
+    public function testSetPageId()
+    {
+        $url = new URL(['page_id' => 1]);
+        $url->setPageId(2);
+
+        $this->assertEquals(2, $url->getPageId());
+    }
+
+    public function testSetIsPrimary()
+    {
+        $url = new URL(['is_primary' => true]);
+        $url->setIsPrimary(false);
+
+        $this->assertFalse($url->isPrimary());
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testIsPrimaryWithInvalidArgument()
+    {
+        $url = new URL(['is_primary' => true]);
+        $url->setIsPrimary('maybe');
     }
 }

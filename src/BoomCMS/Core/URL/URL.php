@@ -3,9 +3,14 @@
 namespace BoomCMS\Core\URL;
 
 use BoomCMS\Core\Page\Page;
-use Illuminate\Support\Facades\URL as URLHelper;
+use BoomCMS\Core\Facades\Page as PageFacade;
 
-class URL
+use Illuminate\Support\Facades\URL as URLHelper;
+use Illuminate\Contracts\Support\Arrayable;
+
+use InvalidArgumentException;
+
+class URL implements Arrayable
 {
     /**
      *
@@ -16,6 +21,11 @@ class URL
     public function __construct(array $attrs)
     {
         $this->attrs = $attrs;
+    }
+
+    public function toArray()
+    {
+        return $this->attrs;
     }
 
     public function get($key)
@@ -31,6 +41,11 @@ class URL
     public function getLocation()
     {
         return $this->get('location');
+    }
+
+    public function getPage()
+    {
+        return PageFacade::findById($this->getPageId());
     }
 
     public function getPageId()
@@ -62,6 +77,24 @@ class URL
     public function loaded()
     {
         return $this->getId() > 0;
+    }
+
+    public function setIsPrimary($isPrimary)
+    {
+        if  ( !is_bool($isPrimary)) {
+            throw new InvalidArgumentException(__CLASS__ . '::' . __METHOD__ . ' must only be called with a boolean argument');
+        }
+
+        $this->attrs['is_primary'] = $isPrimary;
+
+        return $this;
+    }
+
+    public function setPageId($id)
+    {
+        $this->attrs['page_id'] = $id;
+
+        return $this;
     }
 
     public function __toString()

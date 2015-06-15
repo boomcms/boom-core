@@ -17,6 +17,11 @@ class Provider
         return new URL($model->toArray());
     }
 
+    public function delete(URL $url)
+    {
+        Model::destroy($url->getId());
+    }
+
     public function findById($id)
     {
         $model = Model::find($id);
@@ -29,5 +34,14 @@ class Provider
         $model = Model::where('location', '=', Helpers::sanitise($location))->first();
 
         return $model ? new URL($model->toArray()) : new URL([]);
+    }
+
+    public function save(URL $url)
+    {
+        if ($url->loaded() && $model = Model::find($url->getId())) {
+            $model->update($url->toArray());
+        }
+
+        return $url;
     }
 }
