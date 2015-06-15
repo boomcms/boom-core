@@ -138,7 +138,6 @@ return [
 
         // BoomCMS service providers
         'BoomCMS\Core\CoreServiceProvider',
-        'BoomCMS\Core\Environment\EnvironmentServiceProvider',
         'BoomCMS\Core\Auth\AuthServiceProvider',
         'BoomCMS\Core\Editor\EditorServiceProvider',
         'BoomCMS\Core\Person\PersonServiceProvider',
