@@ -9,12 +9,6 @@ abstract class Environment
 {
     /**
      *
-     * @var boolean
-     */
-    protected $requiresLogin = false;
-
-    /**
-     *
      * @param  Exception               $e
      * @return PrivateExceptionHandler
      */
@@ -48,14 +42,5 @@ abstract class Environment
     public function isStaging()
     {
         return false;
-    }
-
-    /**
-     *
-     * @return boolean
-     */
-    public function requiresLogin()
-    {
-        return $this->requiresLogin;
     }
 }

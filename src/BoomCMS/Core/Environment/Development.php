@@ -7,8 +7,6 @@ use BoomCMS\Core\Exception\Handler\Pub as PublicExceptionHandler;
 
 class Development extends Environment
 {
-    protected $requiresLogin = true;
-
     /**
      *
      * @param  Exception              $e

@@ -21,19 +21,6 @@ class EnvironmentTest extends TestCase
         }
     }
 
-    public function testRequireLoginForDevelopmentOnly()
-    {
-        foreach($this->environments as $env) {
-            $class = $this->getEnvClass($env);
-
-            if ($env === 'development') {
-                $this->assertTrue($class->requiresLogin(), "$env requires login");
-            } else {
-                $this->assertFalse($class->requiresLogin(), "$env does not require login");
-            }
-        }
-    }
-
     private function getEnvClass($env)
     {
         $className = "BoomCMS\Core\Environment\\" . ucfirst($env);
