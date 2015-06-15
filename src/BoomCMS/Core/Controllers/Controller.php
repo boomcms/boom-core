@@ -51,7 +51,6 @@ class Controller extends BaseController
 
     public function __construct(Request $request, Session $session, Auth $auth, Editor $editor)
     {
-        $this->environment = $environment;
         $this->session = $session;
         $this->request = $request;
         $this->auth = $auth;
