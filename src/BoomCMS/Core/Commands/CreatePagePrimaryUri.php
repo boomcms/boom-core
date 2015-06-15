@@ -4,7 +4,7 @@ namespace BoomCMS\Core\Commands;
 
 use BoomCMS\Core\Page;
 use BoomCMS\Core\URL;
-use BoomCMS\Facades\URL as URLFacade;
+use BoomCMS\Core\Facades\URL as URLFacade;
 
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Bus\SelfHandling;
