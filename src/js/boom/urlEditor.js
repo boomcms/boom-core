@@ -1,6 +1,6 @@
 function boomUrlEditor(page) {
 	this.page = page;
-	this.list_url = '/cms/page/urls/' + this.page.id;
+	this.list_url = '/cms/page/urls/' + page.id;
 
 	boomUrlEditor.prototype.add = function() {
 		var url = new boomPageUrl(),

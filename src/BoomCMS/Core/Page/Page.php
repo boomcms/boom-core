@@ -6,6 +6,7 @@ use BoomCMS\Core\Person;
 use BoomCMS\Core\Tag;
 use BoomCMS\Core\Template;
 use BoomCMS\Core\URL\URL;
+use BoomCMS\Core\Models\Page\URL as URLModel;
 use BoomCMS\Core\Models\Page\Version as VersionModel;
 
 use BoomCMS\Core\Facades\Chunk;
@@ -295,6 +296,16 @@ class Page
     public function getTitle()
     {
         return $this->getCurrentVersion()->getTitle();
+    }
+
+    public function getUrls()
+    {
+        $urls = [];
+        foreach (URLModel::where('page_id', $this->getId())->get() as $model) {
+            $urls[] = new URL($model->toArray());
+        }
+
+        return $urls;
     }
 
     /**

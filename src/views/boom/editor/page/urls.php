@@ -16,13 +16,13 @@
 
         <ul id='b-page-urls-list'>
             <?php foreach($urls as $url): ?>
-                <li data-url="<?= $url->location ?>" data-id="<?= $url->id ?>" <?php if ( (bool) $url->is_primary ): echo 'class="b-page-urls-primary"'; endif ?>>
-                    <label class="primary" for="is_primary_<?= $url->id ?>">/<?= $url->location ?></label>
+                <li data-url="<?= $url->getLocation() ?>" data-id="<?= $url->getId() ?>" <?php if ( (bool) $url->isPrimary() ): echo 'class="b-page-urls-primary"'; endif ?>>
+                    <label class="primary" for="is_primary_<?= $url->getId() ?>"><?= $url->getLocation() ?></label>
 
                     <span class='b-page-urls-primary-indicator'>primary</span>
                     <span title="Remove URL" class="ui-icon ui-icon-remove-small b-urls-remove"></span>
 
-                    <input type="radio" name="is_primary" value="<?= $url->location ?>" id="is_primary_<?= $url->id ?>" class="ui-helper-hidden b-urls-primary" <?php if ($url->is_primary): ?> checked="checked"<?php endif ?>/>
+                    <input type="radio" name="is_primary" value="<?= $url->getLocation() ?>" id="is_primary_<?= $url->getId() ?>" class="ui-helper-hidden b-urls-primary" <?php if ($url->isPrimary()): ?> checked="checked"<?php endif ?>/>
                 </li>
             <?php endforeach ?>
         </ul>
@@ -35,7 +35,7 @@
         <p>Short URLs always start with an underscore to avoid conflicting with regular URLs. You should therefore avoid using underscores at the start of regular URLs.</p>
 
         <p class='short-url'>
-            <?= URL::site(\Boom\Page\ShortURL::urlFromPage($page), Request::current()) ?>
+            <?= url(BoomCMS\Core\URL\ShortURL::urlFromPage($page)) ?>
         </p>
     </section>
 </div>

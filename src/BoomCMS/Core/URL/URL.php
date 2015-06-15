@@ -11,11 +11,11 @@ class URL
      *
      * @var array
      */
-    private $data;
+    private $attrs;
 
-    public function __construct(array $data)
+    public function __construct(array $attrs)
     {
-        $this->data = $data;
+        $this->attrs = $attrs;
     }
 
     public static function create($location, $pageId, $isPrimary = false)
@@ -29,9 +29,19 @@ class URL
         return new static($model->toArray());
     }
 
+    public function get($key)
+    {
+        return isset($this->attrs[$key]) ? $this->attrs[$key] : null;
+    }
+
+    public function getId()
+    {
+        return $this->get('id');
+    }
+
     public function getLocation()
     {
-        return $this->data['location'];
+        return $this->get('location');
     }
 
     /**
@@ -43,6 +53,11 @@ class URL
     public function is($location)
     {
         return $this->getLocation() === $location;
+    }
+
+    public function isPrimary()
+    {
+        return $this->get('is_primary') == true;
     }
 
     public function __toString()

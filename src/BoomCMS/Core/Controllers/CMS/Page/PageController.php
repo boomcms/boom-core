@@ -10,6 +10,7 @@ use BoomCMS\Core\Commands\CreatePage;
 use BoomCMS\Core\Commands\CreatePagePrimaryUri;
 use BoomCMS\Core\Controllers\Controller;
 
+use Illuminate\Support\Facades\View;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Bus\DispatchesCommands;
 

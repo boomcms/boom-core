@@ -2,6 +2,8 @@
 
 namespace BoomCMS\Core\URL;
 
+use BoomCMS\Core\Page\Page;
+
 /*
  * Page short URLs similar to t.co etc.
  * A short URLL is the page ID converted to base-36 and prefixed with an underscore.
