@@ -92,16 +92,4 @@ class Controller extends BaseController
 //            ])
 //            ->create();
     }
-
-    public function after()
-    {
-        if ($this->template instanceof View && ! $this->response->body()) {
-            parent::after();
-
-            View::bind_global('person', $this->person);
-            View::bind_global('auth', $this->auth);
-
-            $this->response->body($this->template);
-        }
-    }
 }
