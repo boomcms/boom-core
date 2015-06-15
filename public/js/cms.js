@@ -33041,6 +33041,8 @@ window.boomConfig =
 		this.loader.hide();
 	}
 });;function boomNotification(message) {
+	boomNotification.prototype.$document = $(top.document);
+
 	boomNotification.prototype.options = {
 		theme : 'default',
 		speed : 240,
@@ -33052,13 +33054,14 @@ window.boomConfig =
 	};
 
 	boomNotification.prototype.open = function(message) {
+		if ( ! this.$document.find('#b-notification').length) {
+			$('<div id="b-notification"></div>')
+					.appendTo(this.$document.find('body'));
+		}
+
 		$.jGrowl(message, this.options);
 
-		this.$jgrowl = this.$jgrowl? this.$jgrowl : $('#jGrowl');
-
-		if (this.$jgrowl.length) {
-			top.$('body').append(this.$jgrowl);
-		}
+		this.$document.find('#b-notification').append($('#jGrowl'));
 	};
 
 	this.open(message);
