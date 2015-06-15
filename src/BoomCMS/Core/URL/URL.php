@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Core\URL;
 
-use BoomCMS\Core\Models\Page\URL as Model;
+use BoomCMS\Core\Page\Page;
 use Illuminate\Support\Facades\URL as URLHelper;
 
 class URL
@@ -16,17 +16,6 @@ class URL
     public function __construct(array $attrs)
     {
         $this->attrs = $attrs;
-    }
-
-    public static function create($location, $pageId, $isPrimary = false)
-    {
-        $model = Model::create([
-            'location' => $location,
-            'page_id' => $pageId,
-            'is_primary' => $isPrimary
-        ]);
-
-        return new static($model->toArray());
     }
 
     public function get($key)
@@ -44,6 +33,11 @@ class URL
         return $this->get('location');
     }
 
+    public function getPageId()
+    {
+        return $this->get('page_id');
+    }
+
     /**
      * Determine whether this URL matches a given URL.
      *
@@ -55,9 +49,19 @@ class URL
         return $this->getLocation() === $location;
     }
 
+    public function isForPage(Page $page)
+    {
+        return $this->getPageId() === $page->getId();
+    }
+
     public function isPrimary()
     {
         return $this->get('is_primary') == true;
+    }
+
+    public function loaded()
+    {
+        return $this->getId() > 0;
     }
 
     public function __toString()

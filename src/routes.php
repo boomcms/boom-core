@@ -72,6 +72,8 @@ Route::group(['middleware' => [
 
         Route::post('page/add/{page}', 'Page\PageController@add');
         Route::get('page/urls/{page}', 'Page\PageController@urls');
+        Route::get('page/urls/add', 'Page\Urls\View@add');
+        Route::post('page/urls/add', 'Page\Urls\Save@add');
 
         Route::group(['prefix' => 'page/settings'], function() {
             Route::get('{action}/{page}', [

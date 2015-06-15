@@ -1,49 +1,44 @@
 <?php
 
-class Controller_Cms_Page_Urls_Save extends Controller_Cms_Page_Urls
+use BoomCMS\Core\URL\Helpers as URL;
+
+namespace BoomCMS\Core\Controllers\CMS\Page\Urls;
+
+class Save extends BaseController
 {
     public function add()
     {
-        $location = \Boom\Page\URL::sanitise($this->request->input('location'));
+        $location = $this->request->input('location');
+        $this->url = $this->provider->findByLocation($location);
 
-        $this->page_url->where('location', '=', $location)->find();
-
-        if ($this->page_url->loaded() && $this->page_url->page_id !== $this->page->getId()) {
+        if ($this->url->loaded() && !$this->url->isForPage($this->page)) {
             // Url is being used for a different page.
             // Notify that the url is already in use so that the JS can load a prompt to move the url.
-            $this->response->body(json_encode(['existing_url_id' => $this->page_url->id]));
-        } elseif ( ! $this->page_url->loaded()) {
-            //  It's not an old URL, so create a new one.
-            $this->page_url
-                ->values([
-                    'location'        =>    $location,
-                    'page_id'        =>    $this->page->getId(),
-                    'is_primary'    =>    false,
-                ])
-                ->create();
-
+            return ['existing_url_id' => $this->url->getId()];
+        } elseif ( ! $this->url->loaded()) {
+            $this->provider->create($location, $this->page->getId());
             $this->log("Added secondary url $location to page " . $this->page->getTitle() . "(ID: " . $this->page->getId() . ")");
         }
     }
 
     public function delete()
     {
-        if (! $this->page_url->is_primary) {
-            $this->page_url->delete();
+        if (! $this->url->isPrimary()) {
+            $this->provider->delete($this->url);
         }
     }
 
     public function make_primary()
     {
-        $this->page_url->make_primary();
+        $this->provider->makePrimary($this->url);
     }
 
     public function move()
     {
-        $this->page_url->values([
-            'page_id'        =>    $this->page->getId(),
-            'is_primary'    =>    false, // Make sure that it's only a secondary url for the this page.
-        ])
-        ->update();
+        $this->url
+            ->setPageId($this->page->getId())
+            ->setIsPrimary(false);
+
+        $this->provider->save($this->url);
     }
 }

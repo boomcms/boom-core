@@ -1,19 +1,23 @@
 <?php
 
-class Controller_Cms_Page_Urls_View extends Controller_Cms_Page_Urls
+namespace BoomCMS\Core\Controllers\CMS\Page\Urls;
+
+use Illuminate\Support\Facades\View as ViewFacade;
+
+class View extends BaseController
 {
     public function add()
     {
-        return View::make("$this->viewPrefix/add", [
+        return ViewFacade::make("$this->viewPrefix/add", [
             'page' => $this->page,
         ]);
     }
 
     public function move()
     {
-        return View::make("$this->viewPrefix/move", [
-            'url' => $this->page_url,
-            'current' => $this->page_url->getPage(),
+        return ViewFacade::make("$this->viewPrefix/move", [
+            'url' => $this->url,
+            'current' => $this->url->getPage(),
             'page' => $this->page,
         ]);
     }

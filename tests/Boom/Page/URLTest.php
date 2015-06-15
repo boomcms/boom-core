@@ -1,6 +1,7 @@
 <?php
 
 use BoomCMS\Core\URL\URL;
+use BoomCMS\Core\Page\Page;
 
 class Page_URLTest extends TestCase
 {
@@ -29,5 +30,24 @@ class Page_URLTest extends TestCase
 
         $url = new URL(['location' => 'test/test']);
         $this->assertEquals('test/test', $url->getLocation());
+    }
+
+    public function testLoaded()
+    {
+        $url = new URL([]);
+        $this->assertFalse($url->loaded());
+
+        $url = new URL(['id' => 1]);
+        $this->assertTrue($url->loaded());
+    }
+
+    public function testIsForPage()
+    {
+        $page = new Page(['id' => 2]);
+        $url = new URL(['page_id' => 1]);
+        $this->assertFalse($url->isForPage($page));
+
+        $url = new URL(['page_id' => 2]);
+        $this->assertTrue($url->isForPage($page));
     }
 }

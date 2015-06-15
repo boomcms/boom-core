@@ -4,6 +4,7 @@ namespace BoomCMS\Core\Commands;
 
 use BoomCMS\Core\Page;
 use BoomCMS\Core\URL;
+use BoomCMS\Facades\URL as URLFacade;
 
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Bus\SelfHandling;
@@ -31,6 +32,6 @@ class CreatePagePrimaryUri extends Command implements SelfHandling
         $this->page->setPrimaryUri($url);
         $page = $this->provider->save($this->page);
 
-        return URL\URL::create($url, $page->getId(), true);
+        return URLFacade::create($url, $page->getId(), true);
     }
 }
