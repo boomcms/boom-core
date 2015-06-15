@@ -33054,6 +33054,36 @@ window.boomConfig =
 	};
 
 	boomNotification.prototype.open = function(message) {
+		var notified = false,
+			waitingApproval = false,
+			timer,
+			notification = this;
+
+		if ("Notification" in window && Notification.permission !== 'denied') {
+			waitingApproval = true;
+
+			Notification.requestPermission(function (permission) {
+				var n;
+
+				waitingApproval = false;
+
+				if (permission === "granted") {
+					n = new Notification(message);
+					setTimeout(n.close.bind(n), 4000);
+					notified = true;
+				}
+			});
+		}
+
+		var timer = setInterval(function() {
+			if ( ! waitingApproval && ! notified) {
+				notification.showFallback(message);
+				clearInterval(timer);
+			}
+		}, 100);
+	};
+
+	boomNotification.prototype.showFallback = function(message) {
 		if ( ! this.$document.find('#b-notification').length) {
 			$('<div id="b-notification"></div>')
 					.appendTo(this.$document.find('body'));
