@@ -38,12 +38,6 @@ class Controller extends BaseController
 
     /**
      *
-     * @var Environment\Environment
-     */
-    public $environment;
-
-    /**
-     *
      * @var Boom
      */
     public $boom;
@@ -64,7 +58,7 @@ class Controller extends BaseController
      */
     public $template;
 
-    public function __construct(Request $request, Session $session, Auth $auth, Editor $editor, Environment $environment)
+    public function __construct(Request $request, Session $session, Auth $auth, Editor $editor)
     {
         $this->environment = $environment;
         $this->session = $session;
