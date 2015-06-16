@@ -1,28 +1,32 @@
 <?php
 
-class Controller_Cms_Page_Version_View extends Controller_Cms_Page_Version
+namespace BoomCMS\Core\Controllers\CMS\Page\Version;
+
+use BoomCMS\Core\Template;
+use Illuminate\Support\Facades\View as ViewFacade;
+
+class View extends Version
 {
     public function embargo()
     {
         // Call the parent function to check permissions.
         parent::action_embargo();
 
-        return View::make("$this->viewPrefix/embargo", [
-            'version'    =>    $this->old_version,
+        return ViewFacade::make("$this->viewPrefix.embargo", [
+            'version' => $this->oldVersion,
         ]);
     }
 
-    public function template()
+    public function template(Template\Manager $manager)
     {
-        parent::action_template();
+        parent::action_template($manager);
 
-        $manager = new \Boom\Template\Manager();
         $manager->createNew();
         $templates = $manager->getValidTemplates();
 
-        return View::make("$this->viewPrefix/template", [
-            'template_id'    =>    $this->old_version->template_id,
-            'templates'    =>     $templates
+        return ViewFacade::make("$this->viewPrefix.template", [
+            'template_id' => $this->oldVersion->getTemplateId(),
+            'templates' => $templates
         ]);
     }
 }

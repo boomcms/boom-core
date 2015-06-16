@@ -69,6 +69,10 @@ Route::group(['middleware' => [
 			Route::group(['prefix' => 'page', 'namespace' => 'Page'], function() {
 				Route::get('delete/{page}', 'Delete@confirm');
 				Route::post('delete/{page}', 'Delete@delete');
+				
+				Route::group(['prefix' => 'version', 'namespace' => 'Version'], function() {
+					Route::get('template/{page}', 'View@template');
+				});
 			});
 
 			Route::post('page/add/{page}', 'Page\PageController@add');

@@ -5,7 +5,6 @@ namespace BoomCMS\Core\Controllers\CMS\Page;
 use BoomCMS\Core\Auth\Auth;
 use BoomCMS\Core\Page as Page;
 
-use BoomCMS\Core\Page\Command\Delete;
 use BoomCMS\Core\Commands\CreatePage;
 use BoomCMS\Core\Commands\CreatePagePrimaryUri;
 use BoomCMS\Core\Controllers\Controller;

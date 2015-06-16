@@ -1,6 +1,8 @@
 <?php
 
-class Controller_Cms_Page_Version_Save extends Controller_Cms_Page_Version
+namespace BoomCMS\Core\Controllers\CMS\Page\Version;
+
+class Save extends Version
 {
     /**
 	 * @var Database
@@ -21,7 +23,7 @@ class Controller_Cms_Page_Version_Save extends Controller_Cms_Page_Version
         $this->db->begin();
 
         // Create a new version of the page.
-        $this->new_version = $this->page->createVersion($this->old_version, [
+        $this->new_version = $this->page->createVersion($this->oldVersion, [
             'edited_by'    =>    $this->person->getId(),
         ]);
 
@@ -43,7 +45,7 @@ class Controller_Cms_Page_Version_Save extends Controller_Cms_Page_Version
             ->set('pending_approval', false)
             ->create()
             ->embargo($embargoed_until)
-            ->copy_chunks($this->old_version);
+            ->copy_chunks($this->oldVersion);
 
         if ($this->new_version->is_published()) {
             $commander = new \Boom\Page\Commander($this);
@@ -61,24 +63,24 @@ class Controller_Cms_Page_Version_Save extends Controller_Cms_Page_Version
         $this->new_version
             ->set('pending_approval', true)
             ->create()
-            ->copy_chunks($this->old_version);
+            ->copy_chunks($this->oldVersion);
     }
 
-    public function template()
+    public function template(Template\Manager $manager)
     {
         parent::action_template();
 
         $this->new_version
             ->set('template_id', $this->request->input('template_id'))
             ->create()
-            ->copy_chunks($this->old_version);
+            ->copy_chunks($this->oldVersion);
     }
 
     public function title()
     {
         $this->new_version->set('title', $this->request->input('title'));
 
-        if ($this->new_version->changed('title') && $this->old_version->title == 'Untitled' && ! $this->page->getMptt()->is_root()) {
+        if ($this->new_version->changed('title') && $this->oldVersion->title == 'Untitled' && ! $this->page->getMptt()->is_root()) {
             $location = \Boom\Page\URL::fromTitle($this->page->parent()->url()->location, $this->request->input('title'));
             $url = \Boom\Page\URL::createPrimary($location, $this->page->getId());
 
@@ -90,7 +92,7 @@ class Controller_Cms_Page_Version_Save extends Controller_Cms_Page_Version
 
         $this->new_version
             ->create()
-            ->copy_chunks($this->old_version);
+            ->copy_chunks($this->oldVersion);
     }
 
     public function after()
