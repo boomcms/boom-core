@@ -61,6 +61,10 @@ Route::group(['middleware' => [
 				Route::post('save', 'Templates@save');
 				Route::post('delete/{id}', 'Templates@delete');
 			});
+			
+			Route::group(['prefix' => 'pages'], function() {
+				Route::get('', 'Pages@index');
+			});
 
 			Route::post('page/add/{page}', 'Page\PageController@add');
 			Route::get('page/urls/{page}', 'Page\PageController@urls');

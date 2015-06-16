@@ -8,7 +8,7 @@ $.widget('boom.pageTree', {
 
 	_create : function() {
 		var self = this;
-
+		
 		var treeConfig = $.extend({}, $.boom.config.tree, {
 			toggleSelected: true,
 			onToggle: function(page_id) {

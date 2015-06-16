@@ -2,23 +2,21 @@
 
 namespace BoomCMS\Core\Controllers\CMS;
 
-use BoomCMS\Core\Page;
-use BoomCMS\Core\Controller\Controller;
+use BoomCMS\Core\Auth\Auth;
+use BoomCMS\Core\Controllers\Controller;
+use Illuminate\Support\Facades\View;
 
 class Pages extends Controller
 {
-    public function __construct()
+    public function __construct(Auth $auth)
     {
+		$this->auth = $auth;
+
         $this->authorization('manage_pages');
     }
 
-    public function index(Page\Finder $finder)
+    public function index()
     {
-        $finder->addFilter(new Page\Finder\Filter\ParentId(null));
-        $pages = $finder->findAll();
-
-        return View::make('boom::pages.index', [
-            'pages' => $pages,
-        ]);
+        return View::make('boom::pages.index');
     }
 }
