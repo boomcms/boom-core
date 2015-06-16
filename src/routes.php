@@ -53,49 +53,49 @@ Route::group(['middleware' => [
                 Route::get('person/add', 'Person\ViewPerson@add');
                 Route::post('person/add', 'Person\SavePerson@add');
             });
+			
+			Route::group(['prefix' => 'templates'], function() {
+				Route::get('', 'Templates@index');
+				Route::get('pages/{id}', 'Templates@pages');
+
+				Route::post('save', 'Templates@save');
+				Route::post('delete/{id}', 'Templates@delete');
+			});
+
+			Route::post('page/add/{page}', 'Page\PageController@add');
+			Route::get('page/urls/{page}', 'Page\PageController@urls');
+			Route::get('page/urls/add', 'Page\Urls\View@add');
+			Route::get('page/urls/move/{id}', 'Page\Urls\View@move');
+			Route::post('page/urls/add', 'Page\Urls\Save@add');
+			Route::post('page/urls/make_primary/{id}', 'Page\Urls\Save@makePrimary');
+			Route::post('page/urls/move/{id}', 'Page\Urls\Save@move');
+			Route::post('page/urls/delete/{id}', 'Page\Urls\Save@delete');
+
+			Route::group(['prefix' => 'page/tags'], function() {
+				Route::get('list/{page}', 'Page\Tags@listTags');
+				Route::post('add/{page}', 'Page\Tags@add');
+				Route::post('remove/{page}', 'Page\Tags@remove');
+			});
+
+			Route::group(['prefix' => 'page/settings'], function() {
+				Route::get('{action}/{page}', [
+					'uses' => function($action) {
+						return App::make('BoomCMS\Core\Controllers\CMS\Page\Settings\View')->$action();
+					}
+				]);
+
+				Route::post('{action}/{page}', [
+					'uses' => function($action, $page) {
+						return App::make('BoomCMS\Core\Controllers\CMS\Page\Settings\Save')->$action($page);
+					}
+				]);
+			});
 
             Route::get('person/{id}/{action?}', [
                 'as' => 'person',
                // 'middleware' => ['BoomCMS\Core\Http\Middleware\GetPerson'],
                 'uses' => function($action = 'view') {
                     return App::make('BoomCMS\Core\Controllers\CMS\People\Person\View')->$action();
-                }
-            ]);
-        });
-
-        Route::group(['prefix' => 'templates'], function() {
-            Route::get('', 'Templates@index');
-            Route::get('pages/{id}', 'Templates@pages');
-
-            Route::post('save', 'Templates@save');
-            Route::post('delete/{id}', 'Templates@delete');
-        });
-
-        Route::post('page/add/{page}', 'Page\PageController@add');
-        Route::get('page/urls/{page}', 'Page\PageController@urls');
-        Route::get('page/urls/add', 'Page\Urls\View@add');
-        Route::get('page/urls/move/{id}', 'Page\Urls\View@move');
-        Route::post('page/urls/add', 'Page\Urls\Save@add');
-        Route::post('page/urls/make_primary/{id}', 'Page\Urls\Save@makePrimary');
-        Route::post('page/urls/move/{id}', 'Page\Urls\Save@move');
-        Route::post('page/urls/delete/{id}', 'Page\Urls\Save@delete');
-
-        Route::group(['prefix' => 'page/tags'], function() {
-            Route::get('list/{page}', 'Page\Tags@listTags');
-			Route::post('add/{page}', 'Page\Tags@add');
-			Route::post('remove/{page}', 'Page\Tags@remove');
-        });
-
-        Route::group(['prefix' => 'page/settings'], function() {
-            Route::get('{action}/{page}', [
-                'uses' => function($action) {
-                    return App::make('BoomCMS\Core\Controllers\CMS\Page\Settings\View')->$action();
-                }
-            ]);
-
-            Route::post('{action}/{page}', [
-                'uses' => function($action, $page) {
-                    return App::make('BoomCMS\Core\Controllers\CMS\Page\Settings\Save')->$action($page);
                 }
             ]);
         });
