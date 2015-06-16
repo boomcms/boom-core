@@ -2,9 +2,8 @@
 
 namespace BoomCMS\Core\Controllers\CMS\Page\Settings;
 
-use BoomCMS\Core\Page;
 use BoomCMS\Core\Template;
-
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\View as ViewFacade;
 
 class View extends Settings
@@ -24,7 +23,7 @@ class View extends Settings
 
         $childOrderingPolicy = $this->page->getChildOrderingPolicy();
 
-        $manager = new Template\Manager();
+        $manager = App::getFacadeApplication()['boomcms.template.manager'];
         $templates = $manager->getValidTemplates();
 
         // Create the main view with the basic settings
@@ -39,7 +38,7 @@ class View extends Settings
         // If we're showing the advanced settings then set the neccessary variables.
         if ($this->allowAdvanced) {
             // Add the view for the advanced settings to the main view.
-            $v->default_grandchild_template = ($this->page->getGrandchildTemplateId() != 0) ? $page->getGrandchildTemplateId() : $page->getTemplateId();
+            $v->default_grandchild_template = ($this->page->getGrandchildTemplateId() != 0) ? $this->page->getGrandchildTemplateId() : $this->page->getTemplateId();
             $v->page = $this->page;
         }
 

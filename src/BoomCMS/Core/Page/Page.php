@@ -425,7 +425,7 @@ class Page
 	 */
     public function setChildOrderingPolicy($column, $direction)
     {
-        $ordering_policy = new \Boom\Page\ChildOrderingPolicy($column, $direction);
+        $ordering_policy = new ChildOrderingPolicy($column, $direction);
         $this->data['children_ordering_policy'] = $ordering_policy->asInt();
 
         return $this;

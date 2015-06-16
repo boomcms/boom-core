@@ -24,7 +24,7 @@ class Save extends Settings
 
         $this->log("Saved child page settings for page ".$this->page->getTitle()." (ID: ".$this->page->getId().")");
 
-        $this->page->setChildTemplateId($post['children_template_id']);
+        $this->page->setChildTemplateId($this->request->input('children_template_id'));
 
         if ($this->allowAdvanced) {
             $this->page
@@ -52,8 +52,8 @@ class Save extends Settings
 //        if (isset($post['cascade_template'])) {
 //            $this->page->set_template_of_children($this->page->children_template_id);
 //        }
-
-        $this->page->save();
+		
+		$this->provider->save($this->page);
     }
 
     public function feature()
