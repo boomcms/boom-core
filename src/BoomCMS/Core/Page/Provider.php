@@ -54,6 +54,12 @@ class Provider
 
         return $this->cache(new Page($model->toArray()));
     }
+	
+	public function delete(Page $page)
+	{
+		unset($this->cache['id'][$page->getId()]);
+		Model::destroy($page->getId());
+	}
 
     public function findById($id)
     {

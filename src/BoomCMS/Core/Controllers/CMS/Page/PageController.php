@@ -49,41 +49,6 @@ class PageController extends Controller
         ];
     }
 
-    public function delete()
-    {
-        if ( ! ($this->page->wasCreatedBy($this->person) || $this->auth->loggedIn('delete_page', $this->page) || $this->auth->loggedIn('manage_pages')) || $this->page->isRoot()) {
-            abort(403);
-        }
-
-        if ($this->request->method() === Request::GET) {
-            $finder = new \Boom\Page\Finder();
-            $finder->addFilter(new \Boom\Page\Finder\Filter\ParentId($this->page->getId()));
-            $children = $finder->count();
-
-            // Get request
-            // Show a confirmation dialogue warning that child pages will become inaccessible and asking whether to delete the children.
-            return View::make($this->viewPrefix . 'delete', [
-                'count' => $children,
-                'page' =>$this->page,
-            ]);
-        } else {
-            $this->log("Deleted page " . $this->page->getTitle() . " (ID: " . $this->page->getId() . ")");
-
-            // Redirect to the parent page after we've finished.
-            $this->response->body($this->page->parent()->url());
-
-            $commander = new \Boom\Page\Commander($this->page);
-            $commander
-                ->addCommand(new Delete\FromFeatureBoxes())
-                ->addCommand(new Delete\FromLinksets());
-
-            ($this->request->input('with_children') == 1) && $commander->addCommand(new Delete\Children());
-
-            $commander->addCommand(new Delete\FlagDeleted());
-            $commander->execute();
-        }
-    }
-
     public function discard()
     {
         $commander = new Page\Commander($this->page);

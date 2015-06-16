@@ -65,6 +65,11 @@ Route::group(['middleware' => [
 			Route::group(['prefix' => 'pages'], function() {
 				Route::get('', 'Pages@index');
 			});
+			
+			Route::group(['prefix' => 'page', 'namespace' => 'Page'], function() {
+				Route::get('delete/{page}', 'Delete@confirm');
+				Route::post('delete/{page}', 'Delete@delete');
+			});
 
 			Route::post('page/add/{page}', 'Page\PageController@add');
 			Route::get('page/urls/{page}', 'Page\PageController@urls');
