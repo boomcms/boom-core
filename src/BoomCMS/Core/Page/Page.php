@@ -12,6 +12,7 @@ use BoomCMS\Core\Models\Page\Version as VersionModel;
 use BoomCMS\Core\Facades\Asset;
 use BoomCMS\Core\Facades\Chunk;
 use BoomCMS\Core\Facades\Page as PageFacade;
+use BoomCMS\Core\Facades\Auth;
 
 use Illuminate\Support\Facades\DB;
 
@@ -93,6 +94,27 @@ class Page
         return $this;
     }
 
+    public function addVersion(array $attrs = [])
+    {
+        if ($currentVersion = $this->getCurrentVersion()) {
+            $attrs = array_merge($currentVersion->toArray(), $attrs);
+        }
+
+        $attrs = array_merge($attrs, [
+            'page_id' => $this->getId(),
+            'edited_by' => Auth::getPerson()->getId(),
+        ]);
+
+        // If the embargo time of the new version is in the past, set the embargo time to null
+        // This means that if the old version was published, the new version will be a draft.
+        // If the embargo time is in the future don't change it.
+        if ( !isset($attrs['embargoed_until']) || $attrs['embargoed_until'] < time()) {
+            $attrs['embargoed_until'] = null;
+        }
+
+        $this->currentVersion = new Version(VersionModel::create($attrs)->toArray());
+    }
+
     public function allowsExternalIndexing()
     {
         return $this->get('external_indexing') == true;
@@ -119,15 +141,6 @@ class Page
         $finder->addFilter(new Finder\ParentId($this->getId()));
 
         return $finder->count();
-    }
-
-    public function addVersion(array $attrs = [])
-    {
-        if ($currentVersion = $this->getCurrentVersion()) {
-            $attrs = array_merge($currentVersion->toArray(), $attrs, ['page_id' => $this->getId()]);
-        }
-
-        $this->currentVersion = new Version(VersionModel::create($attrs)->toArray());
     }
 
     public function get($key)
@@ -288,7 +301,7 @@ class Page
     {
         return $this->get('parent_id');
     }
-	
+
 	public function getTags()
     {
         $finder = new Tag\Finder\Finder();
@@ -397,6 +410,13 @@ class Page
     public function loaded()
     {
         return $this->getId() > 0;
+    }
+
+    public function markUpdatesAsPendingApproval()
+    {
+        $this->addVersion(['pending_approval' => true]);
+
+        return $this;
     }
 
     public function removeTag(Tag\Tag $tag)
@@ -581,6 +601,20 @@ class Page
     public function setPrimaryUri($uri)
     {
         $this->data['primary_uri'] = $uri;
+
+        return $this;
+    }
+
+    public function setTemplateId($templateId)
+    {
+        $this->addVersion(['template_id' => $templateId]);
+
+        return $this;
+    }
+
+    public function setTitle($title)
+    {
+        $this->addVersion(['title' => $title]);
 
         return $this;
     }

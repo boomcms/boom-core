@@ -53,7 +53,7 @@ Route::group(['middleware' => [
                 Route::get('person/add', 'Person\ViewPerson@add');
                 Route::post('person/add', 'Person\SavePerson@add');
             });
-			
+
 			Route::group(['prefix' => 'templates'], function() {
 				Route::get('', 'Templates@index');
 				Route::get('pages/{id}', 'Templates@pages');
@@ -61,17 +61,19 @@ Route::group(['middleware' => [
 				Route::post('save', 'Templates@save');
 				Route::post('delete/{id}', 'Templates@delete');
 			});
-			
+
 			Route::group(['prefix' => 'pages'], function() {
 				Route::get('', 'Pages@index');
 			});
-			
+
 			Route::group(['prefix' => 'page', 'namespace' => 'Page'], function() {
 				Route::get('delete/{page}', 'Delete@confirm');
 				Route::post('delete/{page}', 'Delete@delete');
-				
+
 				Route::group(['prefix' => 'version', 'namespace' => 'Version'], function() {
 					Route::get('template/{page}', 'View@template');
+                    Route::post('template/{page}', 'Save@template');
+                    Route::post('title/{page}', 'Save@title');
 				});
 			});
 

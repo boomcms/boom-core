@@ -3,53 +3,23 @@
 namespace BoomCMS\Core\Controllers\CMS\Page\Version;
 
 use BoomCMS\Core\Template;
+use BoomCMS\Core\URL\Helpers as URL;
 
 class Save extends Version
 {
-    /**
-	 * @var Database
-	 */
-    public $db;
-
-    /**
-	 * @var	Model_Page_Version
-	 */
-    public $new_version;
-
-    public function before()
-    {
-        parent::before();
-
-        // Start a database transaction.
-        $this->db = Database::instance();
-        $this->db->begin();
-
-        // Create a new version of the page.
-        $this->new_version = $this->page->createVersion($this->oldVersion, [
-            'edited_by'    =>    $this->person->getId(),
-        ]);
-
-        // If the embargo time of the new version is in the past, set the embargo time to null
-        // This means that if the old version was published, the new version will be a draft.
-        // If the embargo time is in the future don't change it.
-        if ($this->new_version->embargoed_until <= $_SERVER['REQUEST_TIME']) {
-            $this->new_version->embargoed_until = null;
-        }
-    }
-
     public function embargo()
     {
         parent::embargo();
 
         $embargoed_until = $this->request->input('embargoed_until') ? strtotime($this->request->input('embargoed_until')) : $_SERVER['REQUEST_TIME'];
 
-        $this->new_version
+        $this->newVersion
             ->set('pending_approval', false)
             ->create()
             ->embargo($embargoed_until)
             ->copy_chunks($this->oldVersion);
 
-        if ($this->new_version->is_published()) {
+        if ($this->page->getCurrentVersion()->isPublished()) {
             $commander = new \Boom\Page\Commander($this);
 
             return $commander
@@ -62,50 +32,33 @@ class Save extends Version
     {
         parent::request_approval();
 
-        $this->new_version
-            ->set('pending_approval', true)
-            ->create()
-            ->copy_chunks($this->oldVersion);
+        $this->page->makeUpdatesAsPendingApproval();
     }
 
     public function template(Template\Manager $manager)
     {
         parent::template();
 
-        $this->new_version
-            ->set('template_id', $this->request->input('template_id'))
-            ->create()
-            ->copy_chunks($this->oldVersion);
+        $this->page->setTemplateId($this->request->input('template_id'));
     }
 
     public function title()
     {
-        $this->new_version->set('title', $this->request->input('title'));
+        $oldTitle = $this->page->getTitle();
 
-        if ($this->new_version->changed('title') && $this->oldVersion->title == 'Untitled' && ! $this->page->getMptt()->is_root()) {
-            $location = \Boom\Page\URL::fromTitle($this->page->parent()->url()->location, $this->request->input('title'));
-            $url = \Boom\Page\URL::createPrimary($location, $this->page->getId());
+        $this->page->setTitle($this->request->input('title'));
 
-            // Put the page's new URL in the response body so that the JS will redirect to the new URL.
-            $this->response->body(json_encode([
-                'location' => URL::site($url->location, $this->request),
-            ]));
+        if ($oldTitle !== $this->page->getTitle()
+            && $oldTitle == 'Untitled'
+            && ! $this->page->url()->location === '/'
+        ) {
+//            $location = URL::fromTitle($this->page->parent()->url()->location, $this->page->getTitle());
+//            $url = \Boom\Page\URL::createPrimary($location, $this->page->getId());
+//
+//            // Put the page's new URL in the response body so that the JS will redirect to the new URL.
+//            return[
+//                'location' => (string) $url,
+//            ];
         }
-
-        $this->new_version
-            ->create()
-            ->copy_chunks($this->oldVersion);
-    }
-
-    public function after()
-    {
-        // Commit the changes.
-        $this->db->commit();
-
-        if ( ! $this->response->body()) {
-            $this->response->body($this->new_version->status());
-        }
-
-        parent::after();
     }
 }
