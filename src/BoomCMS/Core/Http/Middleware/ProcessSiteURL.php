@@ -52,7 +52,7 @@ class ProcessSiteURL
              if ( !BoomURL::isAvailable($uri)) {
                  throw new GoneHttpException();
              }
-             
+
              throw new NotFoundHttpException();
          }
 
@@ -61,7 +61,7 @@ class ProcessSiteURL
         }
 
         if ( !$page->url()->is($request->route()->getParameter('location'))) {
-            redirect($page->url(), 301);
+            return redirect((string) $page->url(), 301);
         }
 
         $this->app['boomcms.editor']->setActivePage($page);
