@@ -79,6 +79,10 @@ Route::group(['middleware' => [
         Route::post('page/urls/move/{id}', 'Page\Urls\Save@move');
         Route::post('page/urls/delete/{id}', 'Page\Urls\Save@delete');
 
+        Route::group(['prefix' => 'page/tags'], function() {
+            Route::get('list/{page}', 'Page\Tags@listTags');
+        });
+
         Route::group(['prefix' => 'page/settings'], function() {
             Route::get('{action}/{page}', [
                 'uses' => function($action) {

@@ -1,12 +1,22 @@
 <?php
 
+namespace BoomCMS\Core\Controllers\CMS\Page;
+
+use BoomCMS\Core\Auth\Auth;
+use BoomCMS\Core\Controllers\Controller;
 use BoomCMS\Core\Tag\Factory as TagFactory;
 
-class Controller_Cms_Page_Tags extends Controller_Cms_Page
+class Tags extends Controller
 {
-    public function before()
+    /**
+     *
+     * @var Auth
+     */
+    public $auth;
+
+    public function __construct(Auth $auth)
     {
-        parent::before();
+        $this->auth = $auth;
 
         $this->authorization('edit_page', $this->page);
     }
@@ -27,7 +37,7 @@ class Controller_Cms_Page_Tags extends Controller_Cms_Page
         $groupSuggestions = array_unique(array_merge(array_keys($tags), $groupSuggestions));
         sort($groupSuggestions);
 
-        return View::make("boom/editor/page/settings/tags", [
+        return View::make("boom::editor.page.settings.tags", [
             'tags' => $tags,
             'freeTags' => isset($freeTags) ? $freeTags : [],
             'groups' => $groupSuggestions,

@@ -55,6 +55,15 @@ class Template
         return $this->get('filename');
     }
 
+    public function getTagGroupSuggestions()
+    {
+        $config = $this->getConfig();
+
+        return (isset($config['tagGroups']) && is_array($config['tagGroups'])) ?
+            $config['tagGroups']
+            : [];
+    }
+
     /**
      *
      * @return Theme
