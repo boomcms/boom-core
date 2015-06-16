@@ -31,7 +31,7 @@ class Save extends BaseController
 
     public function makePrimary()
     {
-        Bus::dispatch($this->provider, $this->url);
+        Bus::dispatch(new MakeURLPrimary($this->provider, $this->url));
     }
 
     public function move()

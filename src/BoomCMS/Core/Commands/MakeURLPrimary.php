@@ -30,18 +30,17 @@ class MakeURLPrimary extends Command implements SelfHandling
 
     public function handle()
     {
-        DB::update('page_urls')
-            ->set(['is_primary' => false])
+        DB::table('page_urls')
             ->where('page_id', '=', $this->url->getPageId())
             ->where('id', '!=', $this->url->getId())
-            ->where('is_primary', '=', true);
+            ->where('is_primary', '=', true)
+            ->update(['is_primary' => false]);
 
         $this->url->setIsPrimary(true);
         $this->provider->save($this->url);
 
-        // Update the primary uri for the page in the pages table.
-        DB::update('pages')
-            ->set(['primary_uri' => $this->url->getLocation()])
-            ->where('id', '=', $this->url->getPageId());
+        DB::table('pages')
+            ->where('id', '=', $this->url->getPageId())
+            ->update(['primary_uri' => $this->url->getLocation()]);
     }
 }
