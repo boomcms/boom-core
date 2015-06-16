@@ -138,7 +138,6 @@ return [
 
         // BoomCMS service providers
         'BoomCMS\Core\CoreServiceProvider',
-        'BoomCMS\Core\Environment\EnvironmentServiceProvider',
         'BoomCMS\Core\Auth\AuthServiceProvider',
         'BoomCMS\Core\Editor\EditorServiceProvider',
         'BoomCMS\Core\Person\PersonServiceProvider',
@@ -146,6 +145,7 @@ return [
         'BoomCMS\Core\Template\TemplateServiceProvider',
         'BoomCMS\Core\Settings\SettingsServiceProvider',
         'BoomCMS\Core\Chunk\ChunkServiceProvider',
+        'BoomCMS\Core\URL\URLServiceProvider',
         'BoomCMS\Installer\ServiceProvider',
     ],
 
