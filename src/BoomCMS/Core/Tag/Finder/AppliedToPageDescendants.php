@@ -1,10 +1,12 @@
 <?php
 
-namespace BoomCMS\Core\Tag\Finder\Filter;
+namespace BoomCMS\Core\Tag\Finder;
 
+use BoomCMS\Core\Finder\Filter;
 use BoomCMS\Core\Page\Page;
+use Illuminate\Database\Eloquent\Builder;
 
-class AppliedToPageDescendants extends \Boom\Finder\Filter
+class AppliedToPageDescendants extends Filter
 {
     protected $page;
 
@@ -13,7 +15,7 @@ class AppliedToPageDescendants extends \Boom\Finder\Filter
         $this->page = $page;
     }
 
-    public function execute(\ORM $query)
+    public function execute(Builder $query)
     {
         return $query
             ->join('pages_tags', 'inner')

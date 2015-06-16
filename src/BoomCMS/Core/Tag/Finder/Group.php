@@ -2,7 +2,10 @@
 
 namespace BoomCMS\Core\Tag\Finder\Filter;
 
-class Group extends \Boom\Finder\Filter
+use BoomCMS\Core\Finder\Filter;
+use Illuminate\Database\Eloquent\Builder;
+
+class Group extends Filter
 {
     protected $gorup;
 
@@ -11,7 +14,7 @@ class Group extends \Boom\Finder\Filter
         $this->group = $group;
     }
 
-    public function execute(\ORM $query)
+    public function execute(Builder $query)
     {
         return $query->where('group', '=', $this->group);
     }

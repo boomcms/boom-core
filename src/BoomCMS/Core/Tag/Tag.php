@@ -6,13 +6,13 @@ class Tag
 {
     /**
 	 *
-	 * @var \Model_Tag
+	 * @var array
 	 */
-    protected $model;
+    protected $attrs;
 
-    public function __construct(\Model_Tag $model)
+    public function __construct($attrs = [])
     {
-        $this->model = $model;
+        $this->attrs = $attrs;
     }
 
     public function delete()
@@ -23,49 +23,47 @@ class Tag
 
         return $this;
     }
+	
+	public function get($key)
+	{
+		return isset($this->attrs[$key]) ? $this->attrs[$key] : null;
+	}
 
     public function getGroup()
     {
-        return $this->model->group;
+        return $this->get('group');
     }
 
     public function getId()
     {
-        return $this->model->id;
+        return $this->get('id');
     }
 
     public function getName()
     {
-        return $this->model->name;
+        return $this->get('name');
     }
 
     public function getSlug()
     {
-        return $this->model->slug_short;
+        return $this->get('slug');
     }
 
     public function loaded()
     {
-        return $this->model->loaded();
-    }
-
-    public function save()
-    {
-        $this->model->save();
-
-        return $this;
+        return $this->getId() > 0;
     }
 
     public function setName($name)
     {
-        $this->model->name = $name;
+        $this->attrs['name'] = $name;
 
         return $this;
     }
 
     public function setSlug($slug)
     {
-        $this->model->slug_short = $slug;
+        $this->attrs['slug'] = $slug;
 
         return $this;
     }

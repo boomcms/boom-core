@@ -9,9 +9,11 @@ use BoomCMS\Core\URL\URL;
 use BoomCMS\Core\Models\Page\URL as URLModel;
 use BoomCMS\Core\Models\Page\Version as VersionModel;
 
-use BoomCMS\Core\Facades\Chunk;
 use BoomCMS\Core\Facades\Asset;
+use BoomCMS\Core\Facades\Chunk;
 use BoomCMS\Core\Facades\Page as PageFacade;
+
+use Illuminate\Support\Facades\DB;
 
 use \DateTime;
 
@@ -80,9 +82,13 @@ class Page
 
     public function addTag(Tag\Tag $tag)
     {
-        DB::insert('pages_tags', ['page_id', 'tag_id'])
-            ->values([$this->getId(), $tag->getId()])
-            ->execute();
+		if ($this->loaded() && $tag->loaded()) {
+			DB::table('pages_tags')
+				->insert([
+					'page_id' => $this->getId(),
+					'tag_id' => $tag->getId()
+				]);
+		}
 
         return $this;
     }
@@ -282,6 +288,13 @@ class Page
     {
         return $this->get('parent_id');
     }
+	
+	public function getTags()
+    {
+        $finder = new Tag\Finder\Finder();
+        $finder->addFilter(new Tag\Finder\AppliedToPage($this));
+        return $finder->setOrderBy('name', 'asc')->findAll();
+    }
 
     public function getTemplate()
     {
@@ -388,10 +401,12 @@ class Page
 
     public function removeTag(Tag\Tag $tag)
     {
-        DB::delete('pages_tags')
-            ->where('page_id', '=', $this->getId())
-            ->where('tag_id', '=', $tag->getId())
-            ->execute();
+		if ($this->loaded() && $tag->loaded()) {
+			DB::table('pages_tags')
+				->where('page_id', '=', $this->getId())
+				->where('tag_id', '=', $tag->getId())
+				->delete();
+		}
 
         return $this;
     }

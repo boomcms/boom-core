@@ -2,19 +2,21 @@
 
 namespace BoomCMS\Core\UI;
 
+use BoomCMS\Core\Tag\Tag as TagObject;
+
 class Tag extends AbstractUIElement
 {
     /**
      *
-     * @var \Boom\Tag\Tag
+     * @var TagObject
      */
     private $tag;
 
     /**
      *
-     * @param \Boom\Tag\Tag $tag
+     * @param TagObject $tag
      */
-    public function __construct(\Boom\Tag\Tag $tag)
+    public function __construct(TagObject $tag)
     {
         $this->tag = $tag;
     }

@@ -64,20 +64,15 @@ class Autocomplete extends Controller
         return $query->lists('tag');
     }
 
-    /**
-	 * Suggest tag names based on an infix.
-	 *
-	 */
-    public function page_tags()
+    public function pageTags()
     {
         $group = $this->request->query('group') ?: null;
 
         // Build a query to find tags matching on path.
-        $query = DB::select('tags.name', 'tags.id')
-            ->from('tags')
-            ->join('pages_tags', 'inner')
-            ->on('tags.id', '=', "pages_tags.tag_id")
-            ->where('name', 'like', "%$this->text%")
+        $query = DB::table('tags')
+			->select('tags.name', 'tags.id')
+            ->join('pages_tags', 'tags.id', '=', 'pages_tags.tag_id')
+			->where('name', 'like', "%{$this->text}%")
             ->where('group', '=', $group)
             ->orderBy(DB::raw('length(tags.name)'), 'asc')
             ->distinct(true)
@@ -88,9 +83,7 @@ class Autocomplete extends Controller
         }
 
         // Get the query results.
-        $results = $query
-            ->execute()
-            ->as_array();
+        $results = $query->get();
 
         foreach ($results as &$result) {
             $result = [

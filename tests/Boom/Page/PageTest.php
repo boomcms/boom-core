@@ -7,6 +7,8 @@ use BoomCMS\Core\Facades\Asset;
 use BoomCMS\Core\Facades\Chunk;
 use BoomCMS\Core\Facades\Page as PageFacade;
 
+use Illuminate\Support\Facades\DB;
+
 class Page_PageTest extends TestCase
 {
     public function testGetParentReturnsPageObject()
@@ -137,4 +139,42 @@ class Page_PageTest extends TestCase
 
         $this->assertTrue($page->hasChildren());
     }
+	
+	public function testAddTag()
+	{
+		$page = $this->getMockBuilder('BoomCMS\Core\Page\Page')
+			->setMethods(['loaded'])
+			->setConstructorArgs([['id' => 1]])
+			->getMock();
+		
+		$tag = $this->getMockBuilder('BoomCMS\Core\Tag\Tag')
+			->setMethods(['loaded'])
+			->setConstructorArgs([['id' => 2]])
+			->getMock();
+		
+		$tag
+			->expects($this->once())
+			->method('loaded')
+			->will($this->returnValue(true));
+		
+		$page
+			->expects($this->once())
+			->method('loaded')
+			->will($this->returnValue(true));
+		
+		DB::shouldReceive('table')
+			->once()
+			->with('pages_tags')
+			->andReturnSelf();
+				
+		DB::shouldReceive('insert')
+			->once()
+			->with([
+				'page_id' => $page->getId(),
+				'tag_id' => $tag->getId(),
+			])
+			->andReturnSelf();
+		
+		$page->addTag($tag);
+	}
 }

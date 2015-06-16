@@ -25,6 +25,7 @@ Route::group(['middleware' => [
         Route::group(['middleware' => ['BoomCMS\Core\Http\Middleware\RequireLogin']], function () {
             Route::get('autocomplete/assets', 'Autocomplete@assets');
             Route::get('autocomplete/asset_tags', 'Autocomplete@asset_tags');
+			Route::get('autocomplete/page_tags', 'Autocomplete@pageTags');
 
             Route::get('editor/toolbar', 'Editor@toolbar');
             Route::post('editor/state', 'Editor@state');
@@ -81,6 +82,8 @@ Route::group(['middleware' => [
 
         Route::group(['prefix' => 'page/tags'], function() {
             Route::get('list/{page}', 'Page\Tags@listTags');
+			Route::post('add/{page}', 'Page\Tags@add');
+			Route::post('remove/{page}', 'Page\Tags@remove');
         });
 
         Route::group(['prefix' => 'page/settings'], function() {

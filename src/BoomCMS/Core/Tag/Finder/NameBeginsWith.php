@@ -2,7 +2,10 @@
 
 namespace BoomCMS\Core\Tag\Finder\Filter;
 
-class NameBeginsWith extends \Boom\Finder\Filter
+use BoomCMS\Core\Finder\Filter;
+use Illuminate\Database\Eloquent\Builder;
+
+class NameBeginsWith extends Filter
 {
     protected $string;
 
@@ -11,7 +14,7 @@ class NameBeginsWith extends \Boom\Finder\Filter
         $this->string = $string;
     }
 
-    public function execute(\ORM $query)
+    public function execute(Builder $query)
     {
         return $query->where('name', 'like', $this->string . '%');
     }
