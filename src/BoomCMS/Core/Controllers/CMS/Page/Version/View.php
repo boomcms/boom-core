@@ -9,8 +9,7 @@ class View extends Version
 {
     public function embargo()
     {
-        // Call the parent function to check permissions.
-        parent::action_embargo();
+        parent::embargo();
 
         return ViewFacade::make("$this->viewPrefix.embargo", [
             'version' => $this->oldVersion,
@@ -19,9 +18,9 @@ class View extends Version
 
     public function template(Template\Manager $manager)
     {
-        parent::action_template($manager);
+        parent::template($manager);
 
-        $manager->createNew();
+        $manager->findAndInstallNewTemplates();
         $templates = $manager->getValidTemplates();
 
         return ViewFacade::make("$this->viewPrefix.template", [

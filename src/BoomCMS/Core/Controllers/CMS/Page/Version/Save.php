@@ -2,6 +2,8 @@
 
 namespace BoomCMS\Core\Controllers\CMS\Page\Version;
 
+use BoomCMS\Core\Template;
+
 class Save extends Version
 {
     /**
@@ -37,7 +39,7 @@ class Save extends Version
 
     public function embargo()
     {
-        parent::action_embargo();
+        parent::embargo();
 
         $embargoed_until = $this->request->input('embargoed_until') ? strtotime($this->request->input('embargoed_until')) : $_SERVER['REQUEST_TIME'];
 
@@ -58,7 +60,7 @@ class Save extends Version
 
     public function request_approval()
     {
-        parent::action_request_approval();
+        parent::request_approval();
 
         $this->new_version
             ->set('pending_approval', true)
@@ -68,7 +70,7 @@ class Save extends Version
 
     public function template(Template\Manager $manager)
     {
-        parent::action_template();
+        parent::template();
 
         $this->new_version
             ->set('template_id', $this->request->input('template_id'))

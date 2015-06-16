@@ -3,8 +3,11 @@
 namespace BoomCMS\Core\Controllers\CMS\Page\Version;
 
 use BoomCMS\Core\Controllers\CMS\Page\PageController;
+use BoomCMS\Core\Auth\Auth;
+use BoomCMS\Core\Template;
 use BoomCMS\Core\Page;
 
+use Illuminate\Http\Request;
 
 abstract class Version extends PageController
 {
@@ -15,7 +18,7 @@ abstract class Version extends PageController
     public $oldVersion;
 
     protected $viewPrefix = 'boom::editor.page.version';
-	
+
     public function __construct(Page\Provider $provider, Auth $auth, Request $request)
     {
 		parent::__construct($provider, $auth, $request);
