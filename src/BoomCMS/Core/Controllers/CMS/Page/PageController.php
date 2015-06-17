@@ -50,9 +50,7 @@ class PageController extends Controller
 
     public function discard()
     {
-        $commander = new Page\Commander($this->page);
-        $commander->addCommand(new Page\Command\Delete\Drafts());
-        $commander->execute();
+		$this->page->deleteDrafts();
     }
 
     /**

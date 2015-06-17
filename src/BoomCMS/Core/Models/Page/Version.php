@@ -2,6 +2,7 @@
 
 namespace BoomCMS\Core\Models\Page;
 
+use BoomCMS\Core\Page\Page;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\App;
 
@@ -69,24 +70,32 @@ class Version extends Model
             ],
         ];
     }
+	
+	public function scopeLastPublished($query)
+	{
+		// Get the published version with the most recent embargoed time.
+		// Order by ID as well incase there's multiple versions with the same embargoed time.
+		return $query
+			->where('published', '=', true)
+			->where('embargoed_until', '<=', time())
+			->orderBy('embargoed_until', 'desc')
+			->orderBy('id', 'desc');
+	}
 
-    public function scopeLatestPublished($query)
+    public function scopeLatestAvailable($query)
     {
         $editor = App::make('BoomCMS\Core\Editor\Editor');
 
         if ($editor->isDisabled()) {
-            // For site users get the published version with the embargoed time that's most recent to the current time.
-            // Order by ID as well incase there's multiple versions with the same embargoed time.
-            $query
-                ->where('published', '=', true)
-                ->where('embargoed_until', '<=', time())
-                ->orderBy('embargoed_until', 'desc')
-                ->orderBy('id', 'desc');
+            return $this->scopeLastPublished($query);
         } else {
             // For logged in users get the version with the highest ID.
-            $query->orderBy('id', 'desc');
+            return $query->orderBy('id', 'desc');
         }
-
-        return $query;
     }
+	
+	public function scopeForPage($query, Page $page)
+	{
+		return $query->where('page_id', '=', $page->getId());
+	}
 }
