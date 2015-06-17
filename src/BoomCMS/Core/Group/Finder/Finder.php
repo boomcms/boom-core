@@ -10,7 +10,7 @@ class Finder extends BaseFinder
 {
     public function __construct()
     {
-        $this->query = Model::where('deleted', '=', false);
+        $this->query = new Model();
     }
 
     public function find()
@@ -26,7 +26,7 @@ class Finder extends BaseFinder
         $return = [];
 
         foreach ($groups as $group) {
-            $return = new Group($group->toArray());
+            $return[] = new Group($group->toArray());
         }
 
         return $return;
