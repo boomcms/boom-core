@@ -34249,7 +34249,7 @@ $.widget( 'boom.pageToolbar', {
 				page : this.options.page,
 				publishable : this.options.publishable
 			})
-			.data('boomPageStatus');
+			.data('boom-pageStatus');
 
 		this._bindButtonEvents();
 	},
@@ -35234,9 +35234,7 @@ $.widget('ui.chunk',
 			chunk = new boomChunk(this.options.currentPage.id, this.options.type, this.options.name);
 
 		return chunk.delete(this.options.template)
-			.done(function(response) {
-				var data = $.parseJSON(response);
-
+			.done(function(data) {
 				self._update_html(data.html);
 				$.boom.page.toolbar.status.set(data.status);
 				new boomNotification("Page content saved");
@@ -35251,9 +35249,7 @@ $.widget('ui.chunk',
 		data.template = this.options.template;
 
 		return chunk.save(data)
-			.done(function(response) {
-				var data = $.parseJSON(response);
-
+			.done(function(data) {
 				self._update_html(data.html);
 				$.boom.page.toolbar.status.set(data.status);
 				new boomNotification("Page content saved");

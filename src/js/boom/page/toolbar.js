@@ -106,7 +106,7 @@ $.widget( 'boom.pageToolbar', {
 				page : this.options.page,
 				publishable : this.options.publishable
 			})
-			.data('boomPageStatus');
+			.data('boom-pageStatus');
 
 		this._bindButtonEvents();
 	},
