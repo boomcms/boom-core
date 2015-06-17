@@ -79,7 +79,7 @@ class ProcessSiteURL
         if ( !$page->url()->is($request->route()->getParameter('location'))) {
             return redirect((string) $page->url(), 301);
         }
-var_dump($page->getCurrentVersion()->getId());
+
         $this->app['boomcms.editor']->setActivePage($page);
 
         View::share('page', $page);

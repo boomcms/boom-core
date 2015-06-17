@@ -20,7 +20,7 @@ class Finder extends BaseFinder
     {
         $this->editor = $editor ?: App::offsetGet('boomcms.editor');
 
-        $this->query = Model::currentVersion()->withUrl();
+        $this->query = Model::currentVersion($editor)->withUrl();
 
         if ($this->editor->isDisabled()) {
             $this->query = $this->query->isVisible();
