@@ -27,8 +27,11 @@ function boomNotification(message) {
 
 				if (permission === "granted") {
 					n = new Notification(message);
-					setTimeout(n.close.bind(n), 4000);
 					notified = true;
+
+					setTimeout(function() {
+						n.close();
+					}, 3000);
 				}
 			});
 		}
