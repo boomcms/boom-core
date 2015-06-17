@@ -12,50 +12,6 @@ class Version extends Model
     public $timestamps = false;
 
     /**
-	 * Adds a chunk to the page version.
-	 *
-	 * This should only be called when the page version has been saved and therefore has a version ID.
-	 *
-	 * This function assumes that the specified chunk doesn't already exist for the page version.
-	 * I can't think of a situation where we'd ever be updating a chunk which has already been added to a page version.
-	 * If we want to update a chunk on a page then we would create a new version and add the chunk to the latest version.
-	 * Checking whether a chunk exists and then updating it if necessary would therefore add extra DB queries with little benefit.
-	 *
-	 * **Examples**
-	 *
-	 * Add a text chunk to a version:
-	 *
-	 *		$version->add_chunk('text', 'standfirst', array('text' => 'Some text'));
-	 *		$version->add_chunk('text', 'standfirst', array('text' => 'Some text', 'title' => 'A text chunk with a title'));
-	 *
-	 * Add a feature chunk to a version:
-	 *
-	 *		$version->add_chunk('feature', 'feature_box_1', array('target_page_id' => 1));
-	 *
-	 * @param	string	$type	The type of chunk to add, e.g. text, feature, etc.
-	 * @param	string	$slotname	The slotname of the chunk
-	 * @param	array	$data	Array of values to assign to the new chunk.
-	 * @return	Model	Returns the model object for the created chunk
-	 * @throws	Exception	An exception is thrown when this function is called on a page version which hasn't been saved.
-	 *
-	 */
-    public function add_chunk($type, $slotname, array $data)
-    {
-        if ( ! ($this->_saved || $this->_loaded)) {
-            throw new Exception('You must call Model_Page_Version::save() before calling Model_Page_Version::add_chunk()');
-        }
-
-        $data['slotname'] = $slotname;
-        $data['page_vid'] = $this->id;
-
-        $chunk = ORM::factory('Chunk_' . ucfirst($type))
-            ->values($data)
-            ->create();
-
-        return $chunk;
-    }
-
-    /**
 	 * Copies the chunks from another page version to this version.
 	 *
 	 * @param Model_Page_Version $from_version
