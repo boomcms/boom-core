@@ -100,7 +100,7 @@ class Provider
 
         return $class::latestEdit($version)
 //            ->with('target')
-            ->where('slotname', '=', $slotname)
+            ->having('slotname', '=', $slotname)
             ->first();
     }
 
@@ -109,7 +109,7 @@ class Provider
         $class = 'BoomCMS\Core\Models\Chunk\\' . ucfirst($type);
 
         return $class::latestEdit($version)
-			->where('slotname', 'in', $slotnames)
+			->having('slotname', 'in', $slotnames)
 //            ->with('target')
             ->get();
     }

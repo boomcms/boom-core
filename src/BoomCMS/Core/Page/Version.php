@@ -37,6 +37,16 @@ class Version
     {
         return $this->get('id');
     }
+	
+	public function getPageId()
+	{
+		return $this->get('page_id');
+	}
+
+    public function getStatus()
+    {
+        return $this->status();
+    }
 
     public function getTemplateId()
     {
@@ -51,11 +61,6 @@ class Version
         }
 
         return $this->template;
-    }
-
-    public function getStatus()
-    {
-        return $this->status();
     }
 
     public function getTitle()
