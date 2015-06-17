@@ -33,6 +33,7 @@
 		],
 		"post-update-cmd": [
 			"php artisan boomcms:installTemplates",
+			"php artisan migrate --path=vendor/boomcms/boom-core/src/database/migrations",
 			"php artisan optimize"
 		],
 		"post-create-project-cmd": [
