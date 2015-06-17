@@ -54,22 +54,7 @@ class Version extends Model
 
         return $chunk;
     }
-
-    /**
-	 * Copies the chunks from another page version to this version.
-	 *
-	 * @param Model_Page_Version $from_version
-	 * @param array $exclude An array of slotnames which shouldn't be copied from the other version.
-	 * @return Model_Page_Version
-	 */
-    public function copy_chunks(Model_Page_Version $from_version, array $exclude = null)
-    {
-        $copier = new \Boom\Page\ChunkCopier($from_version, $this, $exclude);
-        $copier->copyAll();
-
-        return $this;
-    }
-
+    
     /**
 	 * Embargoes the page version until the specified time.
 	 *

@@ -14,20 +14,6 @@ class Slideshow extends Model
 
     protected $table = 'chunk_slideshows';
 
-    public function copy($from_version_id)
-    {
-        $subquery = DB::select(DB::raw($this->id), 'asset_id', 'url', 'caption', 'chunk_slideshow_slides.title', 'linktext')
-            ->from('chunk_slideshow_slides')
-            ->join('chunk_slideshows', 'inner')
-            ->on('chunk_slideshows.id', '=', 'chunk_slideshow_slides.chunk_id')
-            ->where('slotname', '=', $this->slotname)
-            ->where('page_vid', '=', $from_version_id);
-
-        DB::insert('chunk_slideshow_slides', ['chunk_id', 'asset_id', 'url', 'caption', 'title', 'linktext'])
-            ->select($subquery)
-            ->execute($this->_db);
-    }
-
     public function create(Validation $validation = null)
     {
         parent::create($validation);

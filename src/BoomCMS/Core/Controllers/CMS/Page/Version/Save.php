@@ -16,8 +16,7 @@ class Save extends Version
         $this->newVersion
             ->set('pending_approval', false)
             ->create()
-            ->embargo($embargoed_until)
-            ->copy_chunks($this->oldVersion);
+            ->embargo($embargoed_until);
 
         if ($this->page->getCurrentVersion()->isPublished()) {
             $commander = new \Boom\Page\Commander($this);

@@ -67,8 +67,7 @@ class Controller_Cms_Chunk extends Boom\Controller
         }
 
         $this->_new_version
-            ->create()
-            ->copy_chunks($old_version, [$this->_type => [$this->request->input('slotname')]]);
+            ->create();
     }
 
     protected function _preview_chunk() {}
