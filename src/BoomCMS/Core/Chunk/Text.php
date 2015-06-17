@@ -103,7 +103,7 @@ class Text extends BaseChunk
 
             $text = $commander->filterText($this->getUnfilteredText());
         } else {
-            $text = isset($this->attrs['site_text']) ? $this->attrs['site_text'] : '';
+            $text = isset($this->attrs['site_text']) ? $this->attrs['site_text'] : $this->attrs['text'];
         }
 
         return $text;
