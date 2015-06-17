@@ -59,9 +59,7 @@
 			<div>
 				<div>
 					<p>Select a page from the site tree to set or edit the permissions for that page and it's descendants.</p>
-					<div>
-						<ul class="boom-tree"></ul>
-					</div>
+					<ul class="boom-tree"></ul>
 				</div>
 				<div>
 					<?= View::make('boom::groups.roles', ['roles' => $page_roles]) ?>

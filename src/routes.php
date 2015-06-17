@@ -60,6 +60,9 @@ Route::group(['middleware' => [
 			], function() {
 				Route::get('group/add', 'View@add');
 				Route::post('group/add', 'Save@add');
+				Route::get('group/list_roles/{id}', 'View@listRoles');
+				Route::post('group/remove_role/{id}', 'Save@removeRole');
+				Route::post('group/add_role/{id}', 'Save@addRole');
 				
 				Route::get('group/edit/{id}', [
 					'as' => 'group-edit',

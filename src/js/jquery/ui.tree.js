@@ -81,14 +81,15 @@ $.widget('ui.tree',
 		var self = this;
 
 		var render_children = function( $ul ){
+			if ($ul.children().length) {
+				var children = $ul.children( 'li' ).toArray();
+				var i;
 
-			var children = $ul.children( 'li' ).toArray();
-			var i;
-
-			for ( i in children ) {
-				$this = $( children[i] );
-				self._add_item( $this );
-				render_children( $this.children( 'ul' ) );
+				for ( i in children ) {
+					$this = $( children[i] );
+					self._add_item( $this );
+					render_children( $this.children( 'ul' ) );
+				}
 			}
 		};
 

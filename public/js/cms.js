@@ -27538,14 +27538,15 @@ $.widget('ui.tree',
 		var self = this;
 
 		var render_children = function( $ul ){
+			if ($ul.children().length) {
+				var children = $ul.children( 'li' ).toArray();
+				var i;
 
-			var children = $ul.children( 'li' ).toArray();
-			var i;
-
-			for ( i in children ) {
-				$this = $( children[i] );
-				self._add_item( $this );
-				render_children( $this.children( 'ul' ) );
+				for ( i in children ) {
+					$this = $( children[i] );
+					self._add_item( $this );
+					render_children( $this.children( 'ul' ) );
+				}
 			}
 		};
 
@@ -37789,8 +37790,10 @@ function Row() {
 
 		this.group.getRoles(page_id)
 			.done(function(data) {
-				for (role in data) {
-					self._check_inputs($( 'input[name=' + role + ']' ), data[ role ]);
+				if (data.length) {
+					for (role in data) {
+						self._check_inputs($('input[name=' + role + ']'), data[role]);
+					}
 				}
 			});
 	}

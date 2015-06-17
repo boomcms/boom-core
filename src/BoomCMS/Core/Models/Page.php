@@ -40,14 +40,14 @@ class Page extends Model
         return $this;
     }
 	
-    public function getCurrentVersionQuery(Editor $editor)
+    public function getCurrentVersionQuery(Editor $editor = null)
     {
         $query = DB::table('page_versions')
             ->select([DB::raw('max(id) as id'), 'page_id'])
             ->where('stashed', '=', 0)
             ->groupBy('page_id');
 
-        if ( !$editor->isEnabled()) {
+        if ($editor && !$editor->isEnabled()) {
             $query
                 ->where('embargoed_until', '<=', time())
                 ->where('published', '=', 1);
@@ -108,7 +108,7 @@ class Page extends Model
         return $this;
     }
 
-    public function scopeCurrentVersion($query, Editor $editor)
+    public function scopeCurrentVersion($query, Editor $editor = null)
     {
         $subquery = $this->getCurrentVersionQuery($editor);
 

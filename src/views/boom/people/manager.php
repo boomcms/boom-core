@@ -43,7 +43,7 @@
 		//<![CDATA[
 		(function ($) {
 			$.boom.init();
-			$('body').peopleManager();
+			$(document.body).peopleManager();
 		})(jQuery);
 		//]]>
 	</script>

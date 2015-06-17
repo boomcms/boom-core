@@ -26,7 +26,7 @@ class View extends BaseController
 
     public function listRoles()
     {
-        $roles = $this->group->getRoles( (int) $this->request->query('page_id'));
+        $roles = $this->group->getRoles( (int) $this->request->input('page_id'));
 
         return $roles;
     }

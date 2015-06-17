@@ -18,7 +18,7 @@ class Finder extends BaseFinder
 
     public function __construct(Editor $editor = null)
     {
-        $this->editor = $editor ?: App::offsetGet('boomcms.editor');
+        $this->editor = $editor ?: App::make('BoomCMS\Core\Editor\Editor');
 
         $this->query = Model::currentVersion($editor)->withUrl();
 
