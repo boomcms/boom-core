@@ -32,6 +32,11 @@ class Version
     {
         return isset($this->attrs[$key]) ? $this->attrs[$key] : null;
     }
+	
+	public function getEmbargoedUntil()
+	{
+		return $this->get('embargoed_until');
+	}
 
     public function getId()
     {

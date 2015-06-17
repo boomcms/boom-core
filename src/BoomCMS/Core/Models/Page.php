@@ -38,6 +38,22 @@ class Page extends Model
 
         return $this;
     }
+	
+    public function getCurrentVersionQuery()
+    {
+        $query = DB::table('page_versions')
+            ->select([DB::raw('max(id) as id'), 'page_id'])
+            ->where('stashed', '=', 0)
+            ->groupBy('page_id');
+
+       // if ($this->_editor->isDisabled()) {
+//            $query
+//                ->where('embargoed_until', '<=', time())
+//                ->where('published', '=', 1);
+      //  }
+
+        return $query;
+    }
 
     public function set_template_of_children($template_id)
     {
@@ -93,30 +109,19 @@ class Page extends Model
 
     public function scopeCurrentVersion($query)
     {
-        $query
+        $subquery = $this->getCurrentVersionQuery();
+
+        return $query
             ->select('version.*')
             ->addSelect('version.id as version:id')
             ->addSelect('pages.*')
-			->join('page_versions as version', 'pages.id', '=', 'version.page_id')
-			->where('version.stashed', '=', 0)
-			->leftJoin('page_versions as v2', function($join){
-				$join
-					->on('version.page_id', '=', 'v2.page_id')
-					->on('version.id', '<', 'v2.id');
-			})
-			->whereNull('v2.id');
-			
-		// if ($this->_editor->isDisabled()) {
-            $query
-				->where(function($query) {
-					$query
-						->where('version.embargoed_until', '<=', time())
-						->orWhereNull('version.embargoed_until');
-				})
-                ->where('version.published', '=', 1);
-		//  }	
-			
-		return $query;
+            ->join(DB::raw('(' . $subquery->toSql() . ') as v2'), 'pages.id', '=', 'v2.page_id')
+            ->mergeBindings($subquery)
+            ->join('page_versions as version', function($join) {
+                $join
+                    ->on('pages.id', '=', 'version.page_id')
+                    ->on('v2.id', '=', 'version.id');
+            });
     }
 
     public function scopeIsVisible($query)

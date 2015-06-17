@@ -19,7 +19,7 @@ module.exports = function(grunt) {
 			dist: {
 	  			src: [
 					'bower_components/modernizr/modernizr.js',
-					'src/js/string.js',
+					'bower_components/js-shim/dist/js-shim.min.js',
 					'bower_components/jquery/dist/jquery.js',
 					'bower_components/jquery-ui/jquery-ui.js',
 					'src/js/jquery/ui.splitbutton.js',

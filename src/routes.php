@@ -78,6 +78,8 @@ Route::group(['middleware' => [
 					Route::get('template/{page}', 'View@template');
                     Route::post('template/{page}', 'Save@template');
                     Route::post('title/{page}', 'Save@title');
+					Route::get('embargo/{page}', 'View@embargo');
+					Route::post('embargo/{page}', 'Save@embargo');
 				});
 			});
 

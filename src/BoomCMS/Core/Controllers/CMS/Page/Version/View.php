@@ -12,7 +12,7 @@ class View extends Version
         parent::embargo();
 
         return ViewFacade::make("$this->viewPrefix.embargo", [
-            'version' => $this->oldVersion,
+            'version' => $this->page->getCurrentVersion(),
         ]);
     }
 
@@ -24,7 +24,7 @@ class View extends Version
         $templates = $manager->getValidTemplates();
 
         return ViewFacade::make("$this->viewPrefix.template", [
-            'template_id' => $this->oldVersion->getTemplateId(),
+            'template_id' => $this->page->getCurrentVersion()->getTemplateId(),
             'templates' => $templates
         ]);
     }

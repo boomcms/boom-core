@@ -546,6 +546,20 @@ class Page
 
         return $this;
     }
+	
+	public function setEmbargoTime($embargoed_until)
+	{
+		DB::table('page_versions')
+			->where('page_id', '=', $this->getId())
+			->where('embargoed_until', '>', time())
+			->update(['published' => false]);
+
+		$this->addVersion([
+			'pending_approval' => false,
+			'published' => true,
+			'embargoed_until' => $embargoed_until,
+		]);
+	}
 
     /**
 	 *

@@ -11,21 +11,21 @@ class Save extends Version
     {
         parent::embargo();
 
-        $embargoed_until = $this->request->input('embargoed_until') ? strtotime($this->request->input('embargoed_until')) : $_SERVER['REQUEST_TIME'];
-
-        $this->newVersion
-            ->set('pending_approval', false)
-            ->create()
-            ->embargo($embargoed_until)
-            ->copy_chunks($this->oldVersion);
+        $embargoed_until = $this->request->input('embargoed_until') ?
+			strtotime($this->request->input('embargoed_until'))
+			: time();
+		
+		$this->page->setEmbargoTime($embargoed_until);
 
         if ($this->page->getCurrentVersion()->isPublished()) {
             $commander = new \Boom\Page\Commander($this);
 
-            return $commander
-                ->addCommand(new \Boom\Page\Command\Delete\Drafts())
-                ->execute();
+//            return $commander
+//                ->addCommand(new \Boom\Page\Command\Delete\Drafts())
+//                ->execute();
         }
+		
+		return $this->page->getCurrentVersion()->getStatus();
     }
 
     public function request_approval()
