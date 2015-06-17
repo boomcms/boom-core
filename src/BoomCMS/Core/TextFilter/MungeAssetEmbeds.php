@@ -1,12 +1,12 @@
 <?php
 
-namespace BoomCMS\Core\TextFilter\Filter;
+namespace BoomCMS\Core\TextFilter;
 
 /**
  * Turns links to assets such as <img src='/asset/view/324'> into munged hoopdb:// links to.
  *
  */
-class MungeAssetEmbeds implements \Boom\TextFilter\Filter
+class MungeAssetEmbeds implements Filter
 {
     public function filterText($text)
     {

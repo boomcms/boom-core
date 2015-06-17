@@ -65,6 +65,10 @@ Route::group(['middleware' => [
 			Route::group(['prefix' => 'pages'], function() {
 				Route::get('', 'Pages@index');
 			});
+			
+			Route::group(['prefix' => 'chunk', 'namespace' => 'Chunk'], function() {
+				Route::post('save/{page}', 'Chunk@save');
+			});
 
 			Route::group(['prefix' => 'page', 'namespace' => 'Page'], function() {
 				Route::get('delete/{page}', 'Delete@confirm');

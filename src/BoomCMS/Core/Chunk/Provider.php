@@ -26,6 +26,21 @@ class Provider
         $this->auth = $auth;
         $this->editor = $editor;
     }
+	
+	public function create(Page $page, $attrs)
+	{
+		$version = $page->addVersion();
+		$attrs['page_vid'] = $version->getId();
+		$type = $attrs['type'];
+		unset($attrs['type']);
+
+		$modelName = 'BoomCMS\Core\Models\Chunk\\' . ucfirst($type);
+		$model = $modelName::create($attrs);
+		
+		$className = 'BoomCMS\Core\Chunk\\' . ucfirst($type);
+		
+		return new $className($page, $attrs, $attrs['slotname'], true);
+	}
 
     /**
      * Returns whether the logged in user is allowed to edit a page

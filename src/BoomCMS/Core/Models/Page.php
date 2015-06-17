@@ -93,13 +93,11 @@ class Page extends Model
 
     public function scopeCurrentVersion($query)
     {
-        return $query
+        $query
             ->select('version.*')
             ->addSelect('version.id as version:id')
             ->addSelect('pages.*')
 			->join('page_versions as version', 'pages.id', '=', 'version.page_id')
-			->where('version.embargoed_until', '<=', time())
-			->where('version.published', '=', 1)
 			->where('version.stashed', '=', 0)
 			->leftJoin('page_versions as v2', function($join){
 				$join
@@ -107,6 +105,18 @@ class Page extends Model
 					->on('version.id', '<', 'v2.id');
 			})
 			->whereNull('v2.id');
+			
+		// if ($this->_editor->isDisabled()) {
+            $query
+				->where(function($query) {
+					$query
+						->where('version.embargoed_until', '<=', time())
+						->orWhereNull('version.embargoed_until');
+				})
+                ->where('version.published', '=', 1);
+		//  }	
+			
+		return $query;
     }
 
     public function scopeIsVisible($query)

@@ -1,11 +1,11 @@
 <?php
 
-namespace BoomCMS\Core\TextFilter\Filter;
+namespace BoomCMS\Core\TextFilter;
 
 use \URL as URL;
 use \Request as Request;
 
-class MakeInternalLinksRelative implements \Boom\TextFilter\Filter
+class MakeInternalLinksRelative implements Filter
 {
     public function filterText($text)
     {

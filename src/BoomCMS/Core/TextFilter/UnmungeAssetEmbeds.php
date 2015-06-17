@@ -1,10 +1,10 @@
 <?php
 
-namespace BoomCMS\Core\TextFilter\Filter;
+namespace BoomCMS\Core\TextFilter;
 
 use BoomCMS\Core\Asset;
 
-class UnmungeAssetEmbeds implements \Boom\TextFilter\Filter
+class UnmungeAssetEmbeds implements Filter
 {
     public function filterText($text)
     {

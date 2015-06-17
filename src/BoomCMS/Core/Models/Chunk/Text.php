@@ -3,7 +3,7 @@
 namespace BoomCMS\Core\Models\Chunk;
 
 use BoomCMS\Core\TextFilter\Commander as TextFilter;
-use BoomCMS\Core\TextFilter\Filter as Filter;
+use BoomCMS\Core\TextFilter as Filter;
 
 class Text extends BaseChunk
 {

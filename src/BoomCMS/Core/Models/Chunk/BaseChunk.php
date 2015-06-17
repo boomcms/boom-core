@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class BaseChunk extends Model
 {
+	public $guarded = ['id'];
+	public $timestamps = false;
+
 	public function scopeLatestEdit($query, Version $upToVersion)
 	{
 		$query
@@ -18,7 +21,7 @@ class BaseChunk extends Model
 					->on('v1.id', '<', 'v2.id');
 			})
 			->whereNull('v2.id')
-			->where('v2.id', '<=', $upToVersion->getId());
+			->where('v1.id', '<=', $upToVersion->getId());
 			
 		return $query;
 	}

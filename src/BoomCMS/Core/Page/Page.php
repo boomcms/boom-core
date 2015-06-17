@@ -103,6 +103,7 @@ class Page
         $attrs = array_merge($attrs, [
             'page_id' => $this->getId(),
             'edited_by' => Auth::getPerson()->getId(),
+			'edited_time' => time(),
         ]);
 
         // If the embargo time of the new version is in the past, set the embargo time to null
@@ -113,6 +114,8 @@ class Page
         }
 
         $this->currentVersion = new Version(VersionModel::create($attrs)->toArray());
+		
+		return $this->currentVersion;
     }
 
     public function allowsExternalIndexing()

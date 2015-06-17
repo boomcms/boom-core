@@ -1,8 +1,8 @@
 <?php
 
-namespace BoomCMS\Core\TextFilter\Filter;
+namespace BoomCMS\Core\TextFilter;
 
-class RemoveAllHTML implements \Boom\TextFilter\Filter
+class RemoveAllHTML implements Filter
 {
     public function filterText($text)
     {
