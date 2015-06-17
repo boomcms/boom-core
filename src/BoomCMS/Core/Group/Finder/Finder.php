@@ -10,7 +10,7 @@ class Finder extends BaseFinder
 {
     public function __construct()
     {
-        $this->query = new Model();
+        $this->query = Model::query();
     }
 
     public function find()
