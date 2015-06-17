@@ -53,6 +53,19 @@ Route::group(['middleware' => [
                 Route::get('person/add', 'Person\ViewPerson@add');
                 Route::post('person/add', 'Person\SavePerson@add');
             });
+			
+            Route::group([
+				'namespace' => 'Group',
+				'middleware' => ['BoomCMS\Core\Http\Middleware\PeopleManager']
+			], function() {
+				Route::get('group/add', 'View@add');
+				Route::post('group/add', 'Save@add');
+				
+				Route::get('group/edit/{id}', [
+					'as' => 'group-edit',
+					'uses' => 'View@edit',
+				]);
+            });
 
 			Route::group(['prefix' => 'templates'], function() {
 				Route::get('', 'Templates@index');

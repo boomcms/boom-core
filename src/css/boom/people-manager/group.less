@@ -5,6 +5,10 @@
 		margin-bottom: 0.5em;
 		height: 50px;
 		padding: 0.5em;
+		
+		label {
+			display: inline-block;
+		}
 
 		input {
 			margin-left: 1em;
@@ -13,17 +17,18 @@
 		}
 
 		button {
-			margin-top: -0.75em;
+			margin-top: 0;
 			background-color: transparent;
 			border :0;
 			width: auto;
+			vertical-align: top;
 
 			&:hover, &:focus, &:active {
 				background-color: #555;
 			}
 
 			.b-button-text {
-				text-indent: 1.5em;
+				text-indent: 3em;
 				text-transform: uppercase;
 				font-weight: normal;
 			}

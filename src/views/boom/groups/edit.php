@@ -58,12 +58,9 @@
 		<div id="b-group-roles-pages">
 			<div>
 				<div>
-					<input type="hidden" name="parent_id" value="">
 					<p>Select a page from the site tree to set or edit the permissions for that page and it's descendants.</p>
-					<div class="boom-tree">
-						<ul>
-							<li><a id="page_5" href="/" rel="5">Home</a></li>
-						</ul>
+					<div>
+						<ul class="boom-tree"></ul>
 					</div>
 				</div>
 				<div>
@@ -111,7 +108,7 @@
 
 <script type='text/javascript'>
 	window.onload = function () {
-		$('body').groupPermissionsEditor({
+		$('#b-group-edit').groupPermissionsEditor({
 			group : new boomGroup(<?= $group->getId() ?>)
 		});
 	};

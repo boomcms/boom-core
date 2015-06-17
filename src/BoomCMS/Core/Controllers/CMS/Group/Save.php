@@ -1,15 +1,14 @@
 <?php
 
-class Controller_Cms_Group_Save extends Controller_Cms_Group
+namespace BoomCMS\Core\Controllers\CMS\Group;
+
+class Save extends BaseController
 {
     public function add()
     {
-        $this->group
-            ->setName($this->request->input('name'))
-            ->save();
-
-        $this->log("Created group: ".$this->group->getName());
-        $this->response->body($this->group->getId());
+		$group = $this->provider->create(['name' => $this->request->input('name')]);
+		
+		return $group->getId();
     }
 
     public function add_role()

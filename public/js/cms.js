@@ -37736,13 +37736,13 @@ function Row() {
 		 */
 		var page_tree = this.element.find('#b-group-roles-pages .boom-tree');
 
-		page_tree.tree().pageTree({
+		page_tree.pageTree({
 			onPageSelect : function(link) {
 				$('#b-group-roles-pages .b-group-roles').show();
 
 				selected_page = link.getPageId();
 
-				self._check_inputs($( '#b-group-roles-pages input[type=radio]'), -1);
+				self._check_inputs($('#b-group-roles-pages input[type=radio]'), -1);
 
 				page_tree
 					.find('a[rel=' + link.getPageId() + ']')
@@ -37769,16 +37769,14 @@ function Row() {
 		radio_buttons
 			.filter(':checked')
 			.prop('checked', false)
-			.removeAttr('checked')
 			.end()
 			.filter('[value=' + value + ']')
-			.prop('checked', true)
-			.attr('checked', 'checked');
-
+			.prop('checked', true);
 	},
 
 	_create : function() {
 		this.group = this.options.group;
+		this.element.ui();
 		this.bind();
 
 		this._check_inputs($('#b-group-roles-general input[type=radio]'), -1);
@@ -37786,7 +37784,8 @@ function Row() {
 	},
 
 	_show_permissions : function(page_id) {
-		var self = this;
+		var self = this,
+			role;
 
 		this.group.getRoles(page_id)
 			.done(function(data) {

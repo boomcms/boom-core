@@ -1,30 +1,30 @@
 <?php
 
-class Controller_Cms_Group_View extends Controller_Cms_Group
+namespace BoomCMS\Core\Controllers\CMS\Group;
+
+use BoomCMS\Core\Group\Group as GroupObject;
+use BoomCMS\Core\Models\Role;
+use Illuminate\Support\Facades\View as ViewFacade;
+
+class View extends BaseController
 {
     public function add()
     {
-        return View::make("$this->viewPrefix/add", [
-            'group' => new Model_Group(),
+        return ViewFacade::make("$this->viewPrefix/add", [
+            'group' => new GroupObject([]),
         ]);
     }
 
     public function edit()
     {
-        return View::make("$this->viewPrefix/edit", [
-            'group'        =>    $this->group,
-            'general_roles'    =>    ORM::factory('Role')
-                ->where('name', 'not like', 'p_%')
-                ->orderBy('description', 'asc')
-                ->find_all(),
-            'page_roles'    =>    ORM::factory('Role')
-                ->where('name', 'like', 'p_%')
-                ->orderBy('description', 'asc')
-                ->find_all(),
+        return ViewFacade::make("$this->viewPrefix/edit", [
+            'group' => $this->group,
+            'general_roles' => Role::getGeneralRoles(),
+            'page_roles' => Role::getPageRoles(),
         ]);
     }
 
-    public function list_roles()
+    public function listRoles()
     {
         $roles = $this->group->getRoles( (int) $this->request->query('page_id'));
 
