@@ -2,9 +2,7 @@
 
 namespace BoomCMS\Core\Models\Chunk;
 
-use Illuminate\Database\Eloquent\Model;
-
-class Asset extends Model
+class Asset extends BaseChunks
 {
     protected $_belongs_to = [
         'target' => ['model' => 'Asset', 'foreign_key' => 'asset_id'],

@@ -83,7 +83,7 @@ class Provider
     {
         $class = 'BoomCMS\Core\Models\Chunk\\' . ucfirst($type);
 
-        return $class::where('page_vid', '=', $version->getId())
+        return $class::latestEdit($version)
 //            ->with('target')
             ->where('slotname', '=', $slotname)
             ->first();
@@ -93,9 +93,9 @@ class Provider
     {
         $class = 'BoomCMS\Core\Models\Chunk\\' . ucfirst($type);
 
-        return $class::where('slotname', 'in', $slotnames)
+        return $class::latestEdit($version)
+			->where('slotname', 'in', $slotnames)
 //            ->with('target')
-            ->where('page_vid', '=', $version->getId())
             ->get();
     }
 

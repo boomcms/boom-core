@@ -2,9 +2,7 @@
 
 namespace BoomCMS\Core\Models\Chunk;
 
-use Illuminate\Database\Eloquent\Model;
-
-class Linkset extends Model
+class Linkset extends BaseChunk
 {
     protected $_has_many = [
         'links' => ['model' => 'Chunk_Linkset_Link', 'foreign_key' => 'chunk_linkset_id'],

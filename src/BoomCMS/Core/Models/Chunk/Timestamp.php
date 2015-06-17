@@ -2,9 +2,7 @@
 
 namespace BoomCMS\Core\Models\Chunk;
 
-use Illuminate\Database\Eloquent\Model;
-
-class Timestamp extends Model
+class Timestamp extends BaseChunk
 {
     protected $table = 'chunk_timestamps';
 
