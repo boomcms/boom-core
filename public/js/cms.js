@@ -1404,7 +1404,7 @@ window.Modernizr = (function( window, document, undefined ) {
     return Modernizr;
 
 })(this, this.document);
-;!function(){"use strict";var a="undefined"!=typeof window.jsShimDebug;String.prototype.count=function(a){return"undefined"==typeof a?this.length:(a&&a.length&&this.match(new RegExp(a,"g"))||"").length},String.prototype.fuzzy=function(a){var b,c=0,d=-1,e=this.toLowerCase().replace(/\s+/g,"");for(a=a.toLowerCase().replace(/\s+/g,"");b=a[c++];)if(!~(d=e.indexOf(b,d+1)))return!1;return!0},String.prototype.ltrim=function(a){return this.replace(new RegExp("^"+(a?a:"\\s")+"+"),"")},String.prototype.rtrim=function(a){return this.replace(new RegExp((a?a:"\\s")+"+$"),"")},String.prototype.trim=function(a){return this.ltrim(a).rtrim(a)},String.prototype.stripTags=function(){for(var a=document.createElement("DIV"),b=this,c=new RegExp("<\\/?\\w+(\\s*[^>])*>");c.test(b);)b=b.replace(c,"");return a.innerHTML=""+b,a.textContent||a.innerText||""},String.prototype.ucfirst=function(){return this.toLowerCase().replace(/\b([a-z])/gi,function(a){return a.toUpperCase()})},(!String.prototype.toDate||a)&&(String.prototype.toDate=function(){var a=this.split("-");return new Date(a[0],a[1]-1,a[2])}),String.prototype.decodeEntities=function(){if(!~(""+this).indexOf("&"))return this;var a=document.createElement("div");return a.innerHTML=this,a.innerText||a.textContent},Array.prototype.inArray=function(a){var b=0,c=this.length;if("object"==typeof a){for(;c>b;b++)if(Object.compare(this[b],a))return b}else for(;c>b;b++)if(this[b]===a)return b;return-1},(!Array.prototype.indexOf||a)&&(Array.prototype.indexOf=Array.prototype.inArray),(!Array.prototype.forEach||a)&&(Array.prototype.forEach=function(a,b){for(var c=0,d=this.length;d>c;++c)a.call(b||this,this[c],c,this)}),(!Array.prototype.map||a)&&(Array.prototype.map=function(a,b){if(null===this)throw new TypeError(" this is null or not defined");if("function"!=typeof a)throw new TypeError(a+" is not a function");var c,d,e,f=Object(this),g=f.length>>>0,h=new Array(g),i=0;for(b&&(c=b);g>i;)i in f&&(d=f[i],e=a.call(c,d,i,f),h[i]=e),i++;return h}),Array.prototype.removeAt=function(){if(!arguments.length)return this;var a=[],b=Array.prototype.slice.call(arguments);return this.forEach(function(c,d){-1===b.inArray(d)&&a.push(c)}),a},Array.prototype.remove=function(){var a,b,c=this,d=0,e=Array.prototype.slice.call(arguments);return e.forEach(function(e){if(a=c,c=[],"object"==typeof e)for(;b=a[d++];)Object.compare(b,e)||c.push(b);else for(;b=a[d++];)b!==e&&c.push(b)}),c},(!Array.prototype.filter||a)&&(Array.prototype.filter=function(a,b){if(!this||"function"!=typeof a)throw new TypeError;var c,d=[],e=Object(this);b=b||a;for(c in e)e.hasOwnProperty(c)&&a.call(b,e[c],c,e)&&d.push(e[c]);return d}),(!Array.prototype.unique||a)&&(Array.prototype.unique=function(){for(var a,b=[],c=this.length,d=0;c>d;d++){for(a=d+1;c>a;a++)"object"==typeof this[d]&&Object.compare(this[d],this[a])?a=++d:this[d]===this[a]&&(a=++d);b.push(this[d])}return b}),Object.type=function(a){return a?Object.prototype.toString.call(a).slice(8,-1).toLowerCase():"undefined"},Object.compare=function(a,b){if(a===b)return!0;if(!(a instanceof Object&&b instanceof Object))return!1;if(a.constructor!==b.constructor)return!1;for(var c in a)if(a.hasOwnProperty(c)){if(!b.hasOwnProperty(c))return!1;if(a[c]!==b[c])if("function"!=typeof a[c]){if("object"!=typeof a[c])return!1;if(!Object.compare(a[c],b[c]))return!1}else{if("function"!=typeof b[c])return!1;if(a[c].toString()!==b[c].toString())return!1}}for(c in b)if(b.hasOwnProperty(c)&&!a.hasOwnProperty(c))return!1;return!0},Object.isEmpty=function(a){if(!a||"undefined"==typeof a||null===a)return!0;if("number"==typeof a)return 0===a;if("string"==typeof a)return""===a;if("boolean"==typeof a)return a===!1;if("array"===Object.type(a))return 0===a.length;if("object"==typeof a)for(var b in a)if(a.hasOwnProperty(b))return!1;return!0},(!Object.keys||a)&&(Object.keys=function(){var a=Object.prototype.hasOwnProperty,b=!{toString:null}.propertyIsEnumerable("toString"),c=["toString","toLocaleString","valueOf","hasOwnProperty","isPrototypeOf","propertyIsEnumerable","constructor"],d=c.length;return function(e){if("[object String]"===Object.prototype.toString.call(e)&&(e=e.split("")),"object"!=typeof e&&"function"!=typeof e||null===e)throw new TypeError("Object.keys called on non-object");var f,g=[],h=0;for(f in e)a.call(e,f)&&g.push(f);if(b)for(;d>h;h++)a.call(e,c[h])&&g.push(c[h]);return g}}()),Date.prototype.toStr=function(){var a=this.getFullYear(),b=this.getMonth()+1,c=this.getDate();return[a,("0"+b).substr(-2),("0"+c).substr(-2)].join("-")},(!Date.prototype.addDays||a)&&(Date.prototype.addDays=function(a){var b=new Date(this);return b.setDate(this.getDate()+(a||0)),b}),(!Date.today||a)&&(Date.today=function(){return new Date}),function(){var b,c=0,d=["webkit","moz"];for(b=0;b<d.length&&!window.requestAnimationFrame;++b)window.requestAnimationFrame=window[d[b]+"RequestAnimationFrame"],window.cancelAnimationFrame=window[d[b]+"CancelAnimationFrame"]||window[d[b]+"CancelRequestAnimationFrame"];(!window.requestAnimationFrame||a)&&(window.requestAnimationFrame=function(a){var b=(new Date).getTime(),d=Math.max(0,16-(b-c)),e=window.setTimeout(function(){a(b+d)},d);return c=b+d,e}),(!window.cancelAnimationFrame||a)&&(window.cancelAnimationFrame=function(a){clearTimeout(a)})}()}();;/*!
+;/*!
  * jQuery JavaScript Library v2.1.4
  * http://jquery.com/
  *
@@ -27897,6 +27897,36 @@ $.widget('ui.tree',
 			.unwrap();
 	}
 });;/**
+convert 8 bit characters to their 7 bit equivalent
+@function
+*/
+String.prototype.safeEscape = function() {
+	var str = $.trim(this),
+	replacements = {
+		"\xa0": " ", "\xb7": "*", "\u2018": "'", "\u2019": "'",	"\u2026": "...", "\u2002": " ", "\u2003": " ", "\u2009": " ", "\u2012": "-", "\u2013": "-", "\u2014": "-", "\u2015": "-",
+		"\u201c": '"',	// smart quote
+		"\u201d": '"'	// smart quote
+	};
+
+	for (key in replacements)
+		str = str.replace(new RegExp(key, 'g'), replacements[key]);
+
+	return encodeURIComponent(str).replace(/%20/g, '+').toString();
+};
+
+/**
+@function
+*/
+String.prototype.ucfirst = function() {
+	return this.substr(0, 1).toUpperCase() + this.substr(1, this.length);
+};
+
+/**
+@function
+*/
+String.prototype.toInt = function() {
+	return parseInt(this, 10);
+};;/**
  * jGrowl 1.4.3
  *
  * Dual licensed under the MIT (http://www.opensource.org/licenses/mit-license.php)
