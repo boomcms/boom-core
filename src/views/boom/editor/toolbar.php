@@ -64,4 +64,5 @@
         </div>
 </div>
 
+<?= View::make('boom::editor.linkPicker') ?>
 <?= View::make('boom::editor.footer') ?>

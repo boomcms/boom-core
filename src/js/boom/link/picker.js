@@ -7,7 +7,14 @@ function boomLinkPicker(link) {
 
 		this.externalTypeSelector
 			.on('change', function() {
-				var val = linkPicker.externalUrl.val();
+				var type = linkPicker.externalTypeSelector.val(),
+					val = linkPicker.externalUrl.val();
+
+				if (type === 'http' || type === 'https') {
+					linkPicker.externalUrl.autocomplete('enable');
+				} else {
+					linkPicker.externalUrl.autocomplete('disable');
+				}
 
 				if (val === 'http://') {
 					linkPicker.externalUrl.val('');
@@ -16,6 +23,30 @@ function boomLinkPicker(link) {
 				linkPicker.externalUrl.focus();
 				linkPicker.externalUrl[0].setSelectionRange(0, val.length);
 			});
+			
+		this.externalUrl.autocomplete({
+			source: function(request, response) {
+				if (linkPicker.externalTypeSelector.val('http') || linkPicker.externalTypeSelector.val('https')) {
+					if (linkPicker.externalUrl.val()) {
+						$.ajax({
+							url: '/cms/autocomplete/page_titles',
+							dataType: 'json',
+							data: {
+								text : linkPicker.externalUrl.val()
+							}
+						})
+						.done(function(data) {
+							response(data);
+						});
+					}
+				}
+			},
+			select : function(event, ui) {
+				event.preventDefault();
+
+				linkPicker.externalUrl.val(ui.item.value);
+			}
+		});
 
 		this.dialog.contents.find('.boom-tree').pageTree({
 			onPageSelect : function(link) {
@@ -52,9 +83,10 @@ function boomLinkPicker(link) {
 		return new boomLink(url, 0, linkText);
 	};
 
-	boomLinkPicker.prototype.onLoad = function() {
-		this.internal = this.dialog.contents.find('#b-linkpicker-add-internal');
-		this.external = this.dialog.contents.find('#b-linkpicker-add-external'),
+	boomLinkPicker.prototype.onLoad = function(dialog) {
+		this.dialog = dialog;
+		this.internal = dialog.contents.find('#b-linkpicker-add-internal');
+		this.external = dialog.contents.find('#b-linkpicker-add-external'),
 		this.externalTypeSelector = this.external.find('select'),
 		this.externalUrl = this.external.find('input');
 
@@ -66,13 +98,13 @@ function boomLinkPicker(link) {
 	boomLinkPicker.prototype.open = function() {
 		var linkPicker = this;
 
-		this.dialog = new boomDialog({
+		new boomDialog({
 			title : 'Edit link',
-			url : '/cms/chunk/insert_url',
+			msg : $('#b-linkpicker-container').html(),
 			id : 'b-linkpicker',
 			width : 600,
-			onLoad : function() {
-				linkPicker.onLoad();
+			onLoad : function(dialog) {
+				linkPicker.onLoad(dialog);
 			}
 		})
 		.done(function() {

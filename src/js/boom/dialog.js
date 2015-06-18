@@ -116,8 +116,12 @@ function boomDialog(options) {
 
 		} else if (this.options.msg.length) {
 			this.contents.html(this.options.msg);
-
+			this.contents.dialog();
 			this.init();
+			
+			if ($.isFunction(this.options.onLoad)) {
+				this.options.onLoad(this);
+			}
 		}
 	};
 

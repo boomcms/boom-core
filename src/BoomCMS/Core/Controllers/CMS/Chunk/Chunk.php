@@ -33,11 +33,6 @@ class Chunk extends Controller
 			parent::authorization('edit_page_content', $this->page);
     }
 
-    public function insert_url()
-    {
-        return View::make('boom/editor/slot/insert_link');
-    }
-
     public function remove()
     {
         $this->authCheck();

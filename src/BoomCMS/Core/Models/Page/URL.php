@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Core\Models\Page;
 
-use BoomCMS\Core\URL\Helpers as URL;
+use BoomCMS\Core\URL\Helpers as URLHelper;
 use Illuminate\Database\Eloquent\Model;
 
 class URL extends Model
@@ -13,6 +13,6 @@ class URL extends Model
 	
 	public function setLocationAttribute($value)
 	{
-		$this->location = URL::sanitise($value);
+		$this->location = URLHelper::sanitise($value);
 	}
 }

@@ -107,6 +107,16 @@ class Page extends Model
         // Return the current object.
         return $this;
     }
+	
+	public function scopeAutocompleteTitle($query, $title, $limit)
+	{
+		return $query
+			->currentVersion()
+			->select('title', 'primary_uri')
+			->where('title', 'like', '%' . $title. '%')
+			->limit($limit)
+			->orderBy(DB::raw('length(title)'), 'asc');
+	}
 
     public function scopeCurrentVersion($query, Editor $editor = null)
     {

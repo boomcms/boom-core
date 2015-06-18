@@ -3,6 +3,7 @@
 namespace BoomCMS\Core\Controllers\CMS;
 
 use BoomCMS\Core\Controllers\Controller;
+use BoomCMS\Core\Models\Page;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -63,6 +64,21 @@ class Autocomplete extends Controller
 
         return $query->lists('tag');
     }
+	
+	public function pageTitles()
+	{
+		$results = [];
+		$pages = Page::autocompleteTitle($this->request->input('text'), $this->count)->get();
+	
+		foreach ($pages as $p) {
+			$results[] = [
+				'label' => $p->title . ' (' . $p->primary_uri . ')',
+				'value' => $p->primary_uri
+			];
+		}
+		
+		return $results;
+	}
 
     public function pageTags()
     {
