@@ -17,14 +17,6 @@ class Save extends Version
 
 		$this->page->setEmbargoTime($embargoed_until);
 
-        if ($this->page->getCurrentVersion()->isPublished()) {
-            $commander = new \Boom\Page\Commander($this);
-
-//            return $commander
-//                ->addCommand(new \Boom\Page\Command\Delete\Drafts())
-//                ->execute();
-        }
-
 		return $this->page->getCurrentVersion()->getStatus();
     }
 
