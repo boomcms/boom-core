@@ -114,7 +114,7 @@ class Page
         }
 
         $this->currentVersion = new Version(VersionModel::create($attrs)->toArray());
-		
+
 		return $this->currentVersion;
     }
 
@@ -145,7 +145,7 @@ class Page
 
         return $finder->count();
     }
-	
+
 	public function deleteDrafts()
 	{
 		DB::table('page_versions')
@@ -296,13 +296,13 @@ class Page
     {
         return new DateTime('@' . $this->getCurrentVersion()->edited_time);
     }
-	
+
 	public function getLastPublishedTime()
 	{
 		$m = VersionModel::forPage($this)
 			->lastPublished()
 			->first();
-			
+
 		return new DateTime('@' . $m['embargoed_until']);
 	}
 
@@ -571,7 +571,7 @@ class Page
 
         return $this;
     }
-	
+
 	public function setEmbargoTime($embargoed_until)
 	{
 		DB::table('page_versions')

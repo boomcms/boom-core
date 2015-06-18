@@ -3,7 +3,8 @@
 namespace BoomCMS\Core\Controllers\CMS\Page\Version;
 
 use BoomCMS\Core\Template;
-use BoomCMS\Core\URL\Helpers as URL;
+use BoomCMS\Core\Commands\CreatePagePrimaryUri;
+use Illuminate\Support\Facades\Bus;
 
 class Save extends Version
 {
@@ -25,6 +26,8 @@ class Save extends Version
         parent::request_approval();
 
         $this->page->makeUpdatesAsPendingApproval();
+
+		return $this->page->getCurrentVersion()->getStatus();
     }
 
     public function template(Template\Manager $manager)
@@ -32,25 +35,35 @@ class Save extends Version
         parent::template();
 
         $this->page->setTemplateId($this->request->input('template_id'));
+
+		return $this->page->getCurrentVersion()->getStatus();
     }
 
     public function title()
     {
         $oldTitle = $this->page->getTitle();
-
         $this->page->setTitle($this->request->input('title'));
 
         if ($oldTitle !== $this->page->getTitle()
             && $oldTitle == 'Untitled'
-            && ! $this->page->url()->location === '/'
+            && $this->page->url()->getLocation() !== '/'
         ) {
-//            $location = URL::fromTitle($this->page->parent()->url()->location, $this->page->getTitle());
-//            $url = \Boom\Page\URL::createPrimary($location, $this->page->getId());
-//
-//            // Put the page's new URL in the response body so that the JS will redirect to the new URL.
-//            return[
-//                'location' => (string) $url,
-//            ];
+            $prefix = ($this->page->getParent()->getChildPageUrlPrefix()) ?: $this->page->getParent()->url()->getLocation();
+
+            $url = Bus::dispatch(
+                new CreatePagePrimaryUri(
+                    $this->provider,
+                    $this->page,
+                    $prefix
+                )
+            );
+
+            return [
+                'status' => $this->page->getCurrentVersion()->getStatus(),
+                'location' => (string) $url,
+            ];
         }
+
+		return $this->page->getCurrentVersion()->getStatus();
     }
 }
