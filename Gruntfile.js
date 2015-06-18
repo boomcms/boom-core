@@ -105,7 +105,7 @@ module.exports = function(grunt) {
 			},
 			build: {
 				files: {
-					'public/js/cms.js': 'public/js/cms.js'
+					'public/js/cms.js': 'public/js/cms.min.js'
 				}
 			}
 		},
@@ -162,7 +162,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-autoprefixer');
 
 	grunt.registerTask('build-css', ['less', 'autoprefixer:no_dest', 'cssmin']);
-	grunt.registerTask('build-js', ['concat:dist']);
-	grunt.registerTask('dist', ['build-css', 'build-js', 'uglify']);
+	grunt.registerTask('build-js', ['concat:dist', 'uglify']);
+	grunt.registerTask('dist', ['build-css', 'build-js']);
 	grunt.registerTask('default',['watch']);
 };
