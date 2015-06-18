@@ -56,7 +56,7 @@ class DefineCMSViewSharedVariables
 		
 		$jsFile = $this->app->environment('local') ? 'cms.js' : 'cms.min.js';
 
-        View::share('boomJS', '<script type="text/javascript" src="/vendor/boomcms/boom-core/js/$jsFile"></script>');
+        View::share('boomJS', "<script type='text/javascript' src='/vendor/boomcms/boom-core/js/$jsFile'></script>");
 
         View::share('auth', $auth);
         View::share('editor', $this->app['boomcms.editor']);
