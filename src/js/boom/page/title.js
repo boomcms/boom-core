@@ -20,6 +20,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 				var title = self.element.text().trim();
 
 				if (title != '' && title != old_text) {
+					self.updatePageTitle(old_text, title);
 					self._save(title, old_text);
 				}
 
@@ -32,7 +33,10 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 
 		this.element
 			.on('keydown change paste', function() {
+				var oldText = element.text();
+
 				setTimeout(function() {
+					self.updatePageTitle(oldText, element.text());
 					self._update_length_counter(element.text().length);
 				}, 0);
 			})
@@ -139,6 +143,10 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 				var page_title = top.$('title').text().replace(old_title, title);
 				top.$('title').text(page_title);
 			});
+	},
+	
+	updatePageTitle : function(oldTitle, newTitle) {
+		top.document.title = top.document.title.replace(oldTitle, newTitle);
 	},
 
 	_update_length_counter : function(length) {
