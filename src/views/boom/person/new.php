@@ -12,7 +12,7 @@
     <label for="create-group">
         Group
 
-        <select name="group_id" multiple>
+        <select name="groups[]" multiple>
             <?php foreach($groups as $group): ?>
                 <option value="<?= $group->getId() ?>"><?= $group->getName() ?></option>
             <?php endforeach ?>

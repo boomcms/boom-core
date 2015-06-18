@@ -20,25 +20,25 @@ class ViewPerson extends BasePerson
     {
         $finder = new Group\Finder();
         $finder
-            ->addFilter(new Group\Finder\Filter\ExcludingPersonsGroups($this->edit_person))
+            ->addFilter(new Group\Finder\Filter\ExcludingPersonsGroups($this->editPerson))
             ->setOrderBy('name');
 
         return View::make("$this->viewPrefix/addgroup", [
-            'person' => $this->edit_person,
+            'person' => $this->editPerson,
             'groups' => $finder->findAll(),
         ]);
     }
 
     public function view()
     {
-        if ( ! $this->edit_person->loaded()) {
+        if ( ! $this->editPerson->loaded()) {
             abourt(404);
         }
 
         return View::make($this->viewPrefix."view", [
-            'person' => $this->edit_person,
+            'person' => $this->editPerson,
             'request' => $this->request,
-            'groups' => $this->edit_person->getGroups(),
+            'groups' => $this->editPerson->getGroups(),
             'activities' => [],
         ]);
     }

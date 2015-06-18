@@ -8,19 +8,28 @@ html.boom .b-toolbar, .b-toolbar {
 	height: 60px;
 	width: 100%;
 	overflow: hidden;
-	position: relative;
+	position: fixed;
 	padding-left: 80px;
+	z-index: 1000;
+	
+	+ * {
+		margin-top: 70px;
+	}
 
 	&.b-toolbar-vertical {
 		width: 60px;
 		height: 100%;
 		z-index: 10000;
-		position: fixed;
 		padding-left: 0;
+		margin-bottom: 0;
 
 		.b-button {
 			border-right: 0;
 			border-bottom: 1px solid #555;
+		}
+		
+		+ * {
+			margin-top: auto;
 		}
 	}
 
@@ -59,6 +68,14 @@ html.boom body.pushy-active, body.pushy-active {
 		-ms-transition: all 0.2s linear;
 		-o-transition: all 0.2s linear;
 		transition: all 0.2s linear;
+	}
+	
+	.b-toolbar {
+		position: static;
+		
+		+ * {
+			margin-top: 10px;
+		}
 	}
 }
 

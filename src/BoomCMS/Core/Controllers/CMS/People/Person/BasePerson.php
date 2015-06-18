@@ -2,7 +2,11 @@
 
 namespace BoomCMS\Core\Controllers\CMS\People\Person;
 
+use BoomCMS\Core\Auth\Auth;
+use BoomCMS\Core\Person;
+use BoomCMS\Core\Group;
 use BoomCMS\Core\Controllers\CMS\People\PeopleManager;
+use Illuminate\Http\Request;
 
 class BasePerson extends PeopleManager
 {
@@ -21,12 +25,21 @@ class BasePerson extends PeopleManager
 	 *
 	 * @var Model_Person
 	 */
-    public $edit_person;
+    public $editPerson;
+	
+	protected $personProvider;
+	protected $groupProvider;
 
-    public function before()
-    {
-        parent::before();
-
-        $this->edit_person = Person\Factory::byId($this->request->param('id'));
-    }
+	public function __construct(Auth $auth,
+		Person\Provider $personProvider,
+		Group\Provider $groupProvider,
+		Request $request
+	) {
+		$this->auth = $auth;
+		$this->personProvider = $personProvider;
+		$this->groupProvider = $groupProvider;
+		$this->request = $request;
+		
+		$this->editPerson = $this->personProvider->findById($this->request->route()->getParameter('id'));
+	}
 }

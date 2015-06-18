@@ -28,9 +28,13 @@ class Person implements Arrayable, CanResetPassword
      */
     public function addGroup(Group\Group $group)
     {
-        if ($group->loaded()) {
-            $this->model->add('groups', $group->getId());
-
+        if ($this->loaded() && $group->loaded()) {
+			DB::table('people_groups')
+				->insert([
+					'person_id' => $this->getId(),
+					'group_id' => $group->getId(),
+				]);
+			
             // Inherit any roles assigned to the group.
             DB::insert('people_roles', ['person_id', 'group_id', 'role_id', 'allowed', 'page_id'])
                 ->select(
@@ -192,6 +196,13 @@ class Person implements Arrayable, CanResetPassword
 
         return $this;
     }
+	
+	public function setEnabled($enabled)
+	{
+		$this->data['enabled'] = $enabled;
+		
+		return $this;
+	}
 
     /**
 	 *

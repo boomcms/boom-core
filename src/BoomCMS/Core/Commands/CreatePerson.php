@@ -91,7 +91,7 @@ class CreatePerson extends Command implements SelfHandling
 
             return $person;
         } else {
-            return $this->personProvider->findByEmail($this->email);
+            return $this->personProvider->findByEmail($this->credentials['email']);
         }
     }
 }

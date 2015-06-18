@@ -48,6 +48,7 @@ $.extend({
 			$('#b-topbar').ui();
 
 			this._init_widgets();
+			$('body').ui();
 		},
 
 		_init_widgets : function() {

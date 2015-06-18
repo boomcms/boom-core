@@ -52,6 +52,8 @@ Route::group(['middleware' => [
 
                 Route::get('person/add', 'Person\ViewPerson@add');
                 Route::post('person/add', 'Person\SavePerson@add');
+				Route::get('person/view/{id}', 'Person\ViewPerson@view');
+				Route::post('person/save/{id}', 'Person\SavePerson@save');
             });
 			
             Route::group([
@@ -128,14 +130,6 @@ Route::group(['middleware' => [
 					}
 				]);
 			});
-
-            Route::get('person/{id}/{action?}', [
-                'as' => 'person',
-               // 'middleware' => ['BoomCMS\Core\Http\Middleware\GetPerson'],
-                'uses' => function($action = 'view') {
-                    return App::make('BoomCMS\Core\Controllers\CMS\People\Person\View')->$action();
-                }
-            ]);
         });
     });
 
