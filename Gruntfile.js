@@ -105,7 +105,7 @@ module.exports = function(grunt) {
 			},
 			build: {
 				files: {
-					'public/js/cms.js': 'public/js/cms.min.js'
+					'public/js/cms.min.js': 'public/js/cms.js'
 				}
 			}
 		},
