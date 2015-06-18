@@ -9,4 +9,9 @@ class Tag extends Model
     protected $table = 'tags';
     public $guarded = ['id'];
     public $timestamps = false;
+	
+	public function setNameAttribute($value)
+	{
+		$this->attributes['name'] = trim($name);
+	}
 }

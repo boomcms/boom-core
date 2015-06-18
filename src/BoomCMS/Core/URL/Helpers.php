@@ -2,6 +2,7 @@
 
 namespace BoomCMS\Core\URL;
 
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\DB;
 
 /**
@@ -49,6 +50,11 @@ abstract class Helpers
 
         return $result === null;
     }
+	
+	public function makeRelative($url)
+	{
+		return ($base = Request::getHttpHost()) ? str_replace($base, '/', $url) : $url;
+	}
 
     /**
 	 * Increments a numeric suffix until the URL is unique

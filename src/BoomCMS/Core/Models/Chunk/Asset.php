@@ -2,30 +2,28 @@
 
 namespace BoomCMS\Core\Models\Chunk;
 
+use BoomCMS\Link\Link;
+
 class Asset extends BaseChunks
 {
-    protected $_belongs_to = [
-        'target' => ['model' => 'Asset', 'foreign_key' => 'asset_id'],
-    ];
-
     protected $table = 'chunk_assets';
-
-    public function filters()
-    {
-        return [
-            'title'    => [
-                ['strip_tags'],
-            ],
-            'caption'    => [
-                ['strip_tags'],
-            ],
-            'url' => [[
-                function ($url) {
-                    $link = Boom\Link\Link::factory($url);
-
-                    return $link->isInternal() ? $link->getPage()->getId() : $link->url();
-                },
-            ]],
-        ];
-    }
+	
+	public function setCaptionAttribute($value)
+	{
+		$this->attributes['caption'] = strip_tags($value);
+	}
+	
+	public function setTitleAttribute($value)
+	{
+		$this->attributes['title'] = strip_tags($value);
+	}
+	
+	public function setUrlAttribute($value)
+	{
+		$link = Link::factory($value);
+		
+		$this->attributes['url'] = $link->isInternal() ?
+			$link->getPage()->getId() :
+			$link->url();
+	}
 }

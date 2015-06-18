@@ -3,42 +3,14 @@
 namespace BoomCMS\Core\Model\Chunk\Slideshow;
 
 use Illuminate\Database\Eloquent\Model;
-use BoomCMS\Core\Link\Link as Link;
+use BoomCMS\Core\URL\Helpers as URL;
+use BoomCMS\Core\Link\Link;
 
 class Slide extends Model
 {
-    protected $_belongs_to = [
-        'asset'    =>    ['model' => 'Asset', 'foreign_key' => 'asset_id']
-    ];
-
-    protected $_table_columns = [
-        'id'        =>    '',
-        'asset_id'    =>    '',
-        'url'        =>    '',
-        'chunk_id'    =>    '',
-        'caption'    =>    '',
-        'title'        =>    '',
-        'linktext' => '',
-    ];
-
     protected $table = 'chunk_slideshow_slides';
 
     private $assetCache;
-
-    public function filters()
-    {
-        return [
-            'caption' => [
-                ['strip_tags'],
-            ],
-            'url' => [
-                [[$this, 'makeLinkLelative']],
-            ],
-            'link_text' => [
-                ['strip_tags'],
-            ],
-        ];
-    }
 
     public function getAsset()
     {
@@ -66,9 +38,19 @@ class Slide extends Model
     {
         return $this->url && $this->url != 'http://';
     }
-
-    public function makeLinkLelative($url)
-    {
-        return ($base = \URL::base(\Request::current())) ? str_replace($base, '/', $url) : $url;
-    }
+	
+	public function setCaptionAttribute($value)
+	{
+		$this->attributes['caption'] = strip_tags($value);
+	}
+	
+	public function setLinkTextAttribute($value)
+	{
+		$this->attributes['link_text'] = strip_tags($value);
+	}
+	
+	public function setUrlAttribute($value)
+	{
+		$this->attributes['url'] = URL::makeRelative($url);
+	}
 }

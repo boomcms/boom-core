@@ -11,13 +11,5 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Asset extends Model
 {
-    protected $_primary_key = null;
-    protected $_belongs_to = ['asset' => []];
-    protected $_table_columns = [
-        'chunk_id'    =>    '',
-        'asset_id'    =>    '',
-        'position'    =>    '',
-    ];
-
     protected $table = 'chunk_text_assets';
 }

@@ -20,15 +20,11 @@ class Slideshow extends BaseChunk
 
         return $this;
     }
-
-    public function filters()
-    {
-        return [
-            'title'    => [
-                ['strip_tags'],
-            ]
-        ];
-    }
+	
+	public function setTitleAttribute($value)
+	{
+		$this->attributes['title'] = strip_tags($title);
+	}
 
     /**
 	 * Sets or gets the slideshows slides

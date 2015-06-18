@@ -11,50 +11,6 @@ class Version extends Model
     protected $table = 'page_versions';
     public $guarded = ['id'];
     public $timestamps = false;
-
-    /**
-	 * Filters for the versioned person columns
-	 * @link http://kohanaframework.org/3.2/guide/orm/filters
-	 */
-    public function filters()
-    {
-        return [
-            'title' => [
-                ['strip_tags'],
-                ['html_entity_decode'],
-                ['trim'],
-            ],
-            'keywords' => [
-                ['trim'],
-            ],
-            'description' => [
-                ['trim'],
-            ],
-       ];
-    }
-
-    /**
-	 * Validation rules
-	 *
-	 * @return	array
-	 */
-    public function rules()
-    {
-        return [
-            'page_id'    =>    [
-                ['not_empty'],
-                ['numeric'],
-            ],
-            'template_id'    =>    [
-                ['not_empty'],
-                ['numeric'],
-            ],
-            'title'    =>    [
-                ['not_empty'],
-                ['max_length', [':value', 70]]
-            ],
-        ];
-    }
 	
 	public function scopeLastPublished($query)
 	{
@@ -82,5 +38,10 @@ class Version extends Model
 	public function scopeForPage($query, Page $page)
 	{
 		return $query->where('page_id', '=', $page->getId());
+	}
+	
+	public function setTitleAttribute($title)
+	{
+		$this->attributes['title'] = trim(html_entity_decode(strip_tags($title)));
 	}
 }

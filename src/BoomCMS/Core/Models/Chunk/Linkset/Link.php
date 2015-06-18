@@ -9,19 +9,6 @@ class Link extends Model
 {
     protected $_link;
 
-    protected $_belongs_to = [
-        'target'    => ['model' => 'page', 'foreign_key' => 'target_page_id']
-    ];
-
-    protected $_table_columns = [
-        'id'                =>    '',
-        'target_page_id'    =>    '',
-        'chunk_linkset_id'    =>    '',
-        'url'                =>    '',
-        'title'                =>    '',
-        'asset_id' => '',
-    ];
-
     protected $table = 'chunk_linkset_links';
 
     public function getLink()
