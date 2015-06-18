@@ -2,9 +2,7 @@
 
 namespace BoomCMS\Core\Models\Chunk;
 
-use Illuminate\Database\Eloquent\Model;
-
-class Tag extends Model
+class Tag extends BaseChunk
 {
     protected $table = 'chunk_tags';
 }

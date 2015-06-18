@@ -3,7 +3,7 @@
 namespace BoomCMS\Core\Chunk;
 
 use BoomCMS\Core\TextFilter\Commander as TextFilter;
-use BoomCMS\Core\TextFilter\Filter as Filter;
+use BoomCMS\Core\TextFilter as Filter;
 
 class Text extends BaseChunk
 {
@@ -103,7 +103,7 @@ class Text extends BaseChunk
 
             $text = $commander->filterText($this->getUnfilteredText());
         } else {
-            $text = isset($this->attrs['site_text']) ? $this->attrs['site_text'] : '';
+            $text = isset($this->attrs['site_text']) ? $this->attrs['site_text'] : $this->attrs['text'];
         }
 
         return $text;

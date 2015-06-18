@@ -4,13 +4,13 @@ namespace BoomCMS\Core\Group;
 
 use BoomCMS\Core\Models\Group as Model;
 
-use Illuminate\Support\Facades\DB;
-
 class Provider
 {
     public function create(array $attributes)
     {
-
+		$m = Model::create($attributes);
+		
+		return new Group($m->toArray());
     }
 
     public function findAll()
@@ -26,7 +26,9 @@ class Provider
 
     public function findById($id)
     {
-        return new Group(new \Model_Group($id));
+		$m = Model::find($id);
+
+        return new Group($m? $m->toArray() : []);
     }
 
     public function findByName($name)

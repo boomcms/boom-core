@@ -72,14 +72,9 @@ class EditorTest extends TestCase
         $this->assertTrue($editor->isActive());
     }
 
-    public function testIsEnabledIfIsActiveAndHasEditState()
+    public function testIsEnabledIfHasEditState()
     {
-        $editor = $this->getEditor(['isActive', 'hasState']);
-
-        $editor
-            ->expects($this->once())
-            ->method('isActive')
-            ->will($this->returnValue(true));
+        $editor = $this->getEditor(['hasState']);
 
         $editor
             ->expects($this->once())

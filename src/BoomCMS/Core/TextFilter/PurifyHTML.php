@@ -1,13 +1,13 @@
 <?php
 
-namespace BoomCMS\Core\TextFilter\Filter;
+namespace BoomCMS\Core\TextFilter;
 
 use HTMLPurifier;
 use HTMLPurifier_Config;
 
 use Illuminate\Support\Facades\Config;
 
-class PurifyHTML implements \Boom\TextFilter\Filter
+class PurifyHTML implements Filter
 {
     public function filterText($text)
     {

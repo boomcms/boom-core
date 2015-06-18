@@ -1,10 +1,10 @@
 <?php
 
-namespace BoomCMS\Core\TextFilter\Filter;
+namespace BoomCMS\Core\TextFilter;
 
 use BoomCMS\Core\Page\Factory as PageFactory;
 
-class RemoveLinksToInvisiblePages implements \Boom\TextFilter\Filter
+class RemoveLinksToInvisiblePages implements Filter
 {
     protected $_regex = "|(<a.*href=['\"]hoopdb://page/(\d+)['\"].*>)(.*)(</a>)|U";
 

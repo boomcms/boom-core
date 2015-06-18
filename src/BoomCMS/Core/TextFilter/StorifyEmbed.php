@@ -1,8 +1,8 @@
 <?php
 
-namespace BoomCMS\Core\TextFilter\Filter;
+namespace BoomCMS\Core\TextFilter;
 
-class StorifyEmbed implements \Boom\TextFilter\Filter
+class StorifyEmbed implements Filter
 {
     protected $_filterMatchString = "/\<p\>(https?\:\/\/(?:www\.)?storify\.com\/(?:[^\/]+)\/(?:[^\/]+))\/?\<\/p\>/i";
     protected $_filterReplaceString = '<script type="text/javascript" src="${1}.js"></script>';

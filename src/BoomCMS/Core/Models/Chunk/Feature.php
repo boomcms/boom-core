@@ -2,9 +2,7 @@
 
 namespace BoomCMS\Core\Models\Chunk;
 
-use Illuminate\Database\Eloquent\Model;
-
-class Feature extends Model
+class Feature extends BaseChunk
 {
     protected $_belongs_to = ['target' => ['model' => 'Page', 'foreign_key' => 'target_page_id']];
 

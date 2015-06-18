@@ -32,10 +32,25 @@ class Version
     {
         return isset($this->attrs[$key]) ? $this->attrs[$key] : null;
     }
+	
+	public function getEmbargoedUntil()
+	{
+		return $this->get('embargoed_until');
+	}
 
     public function getId()
     {
         return $this->get('id');
+    }
+	
+	public function getPageId()
+	{
+		return $this->get('page_id');
+	}
+
+    public function getStatus()
+    {
+        return $this->status();
     }
 
     public function getTemplateId()
@@ -51,11 +66,6 @@ class Version
         }
 
         return $this->template;
-    }
-
-    public function getStatus()
-    {
-        return $this->status();
     }
 
     public function getTitle()

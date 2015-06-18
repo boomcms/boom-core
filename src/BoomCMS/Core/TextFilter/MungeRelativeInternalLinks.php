@@ -1,6 +1,6 @@
 <?php
 
-namespace BoomCMS\Core\TextFilter\Filter;
+namespace BoomCMS\Core\TextFilter;
 
 use BoomCMS\Core\Page\Factory as PageFactory;
 
@@ -14,7 +14,7 @@ use BoomCMS\Core\Page\Factory as PageFactory;
  * As those filters look for hoopdb://page/<pageId>
  *
  */
-class MungeRelativeInternalLinks implements \Boom\TextFilter\Filter
+class MungeRelativeInternalLinks implements Filter
 {
     public function filterText($text)
     {

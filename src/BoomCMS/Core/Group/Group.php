@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Core\Group;
 
-use \DB as DB;
+use Illuminate\Support\Facades\DB;
 
 class Group
 {
@@ -33,34 +33,32 @@ class Group
 	 */
     public function addRole($roleId, $allowed, $pageId = 0)
     {
-        $role = \ORM::factory('Role', $roleId);
-
-        if ( ! $role->loaded()) {
-            throw new InvalidArgumentException("Argument 1 to ".__CLASS__."::".__METHOD__." must be a valid role ID. Called with $roleId which doesn't exist.");
-        }
-
         // Check that the group doesn't already have this role before continuing.
         if ( ! $this->hasRole($roleId, $pageId)) {
-            DB::insert('group_roles', ['group_id', 'role_id', 'allowed', 'page_id'])
-                ->values([$this->getId(), $roleId, $allowed, $pageId])
-                ->execute();
+			
+            DB::table('group_roles')
+				->insert([
+					'group_id' => $this->getId(),
+					'role_id' => DB::raw($roleId),
+					'allowed' => DB::raw($allowed),
+					'page_id' => DB::raw($pageId)
+				]);
 
-            // If the page ID is isn't set the set it to a string with '0' as the contents
-            // otherwise it won't be included in the DB::select()
             if ($pageId) {
-                DB::insert('people_roles', ['person_id', 'group_id', 'role_id', 'allowed', 'page_id'])
-                    ->select(
-                        DB::select('person_id', 'group_id', DB::raw($roleId), DB::raw($allowed), DB::raw($pageId))
-                            ->from('people_groups')
+                DB::table('people_roles')
+					->insert(
+						DB::table('people_groups')
+							->select('person_id', 'group_id', DB::raw("'$roleId'"), DB::raw("'$allowed'"), DB::raw("'$pageId'"))
                             ->where('group_id', '=', $this->getId())
-                    )
-                    ->execute();
+							->toSql()
+                    );
             } else {
-                DB::insert('people_roles', ['person_id', 'group_id', 'role_id', 'allowed'])
-                    ->select(
-                        DB::select('person_id', 'group_id', DB::raw($roleId), DB::raw($allowed))
-                            ->from('people_groups')
+                DB::table('people_roles')
+					->insert(
+						DB::table('people_groups')
+							->select('person_id', 'group_id', DB::raw("'$roleId'"), DB::raw("'$allowed'"))
                             ->where('group_id', '=', $this->getId())
+							->toSql()
                     )
                     ->execute();
             }
@@ -86,12 +84,11 @@ class Group
 
     public function getRoles($pageId = 0)
     {
-        return DB::select('role_id', 'allowed')
-            ->from('group_roles')
+        return DB::table('group_roles')
+			->select('role_id', 'allowed')
             ->where('group_id', '=', $this->getId())
             ->where('page_id', '=', $pageId)
-            ->execute()
-            ->as_array('role_id', 'allowed');
+			->lists('roles_id', 'allowed');
     }
 
     /**
@@ -133,13 +130,16 @@ class Group
 	 */
     public function removeRole($roleId)
     {
-        $this->model->remove('roles', $roleId);
+		DB::table('group_roles')
+			->where('group_id', '=', $this->getId())
+			->where('role_id', '=', $roleId)
+			->delete();
 
         // Remove the role from people in this group.
-        DB::delete('people_roles')
+        DB::table('people_roles')
             ->where('group_id', '=', $this->getId())
             ->where('role_id', '=', $roleId)
-            ->execute();
+            ->delete();
 
         return $this;
     }

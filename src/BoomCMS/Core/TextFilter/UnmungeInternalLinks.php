@@ -1,10 +1,10 @@
 <?php
 
-namespace BoomCMS\Core\TextFilter\Filter;
+namespace BoomCMS\Core\TextFilter;
 
 use BoomCMS\Core\Page\Factory as PageFactory;
 
-class UnmungeInternalLinks implements \Boom\TextFilter\Filter
+class UnmungeInternalLinks implements Filter
 {
     protected $_internalLinkRegex = '(hoopdb://page/(\d+))';
 

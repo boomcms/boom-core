@@ -103,6 +103,7 @@ class Page
         $attrs = array_merge($attrs, [
             'page_id' => $this->getId(),
             'edited_by' => Auth::getPerson()->getId(),
+			'edited_time' => time(),
         ]);
 
         // If the embargo time of the new version is in the past, set the embargo time to null
@@ -113,6 +114,8 @@ class Page
         }
 
         $this->currentVersion = new Version(VersionModel::create($attrs)->toArray());
+		
+		return $this->currentVersion;
     }
 
     public function allowsExternalIndexing()
@@ -142,6 +145,20 @@ class Page
 
         return $finder->count();
     }
+	
+	public function deleteDrafts()
+	{
+		DB::table('page_versions')
+			->where('page_id', '=', $this->getId())
+			->where(function($query) {
+				$query
+					->whereNull('embargoed_until')
+					->orWhere('embargoed_until', '>', time());
+			})
+			->where('edited_time', '>', $this->getLastPublishedTime()->getTimestamp())
+            ->where('stashed', '=', false)
+			->delete();
+	}
 
     public function get($key)
     {
@@ -177,7 +194,9 @@ class Page
     {
         if ($this->currentVersion === null) {
             if ($this->loaded()) {
-                $version = VersionModel::where('page_id', '=', $this->getId())->latestPublished()->first();
+                $version = VersionModel::forPage($this)
+					->latestAvailable()
+					->first();
 
                 if ($version) {
                     $this->currentVersion = new Version($version->toArray());
@@ -277,6 +296,15 @@ class Page
     {
         return new DateTime('@' . $this->getCurrentVersion()->edited_time);
     }
+	
+	public function getLastPublishedTime()
+	{
+		$m = VersionModel::forPage($this)
+			->lastPublished()
+			->first();
+			
+		return new DateTime('@' . $m['embargoed_until']);
+	}
 
     public function getManualOrderPosition()
     {
@@ -543,6 +571,20 @@ class Page
 
         return $this;
     }
+	
+	public function setEmbargoTime($embargoed_until)
+	{
+		DB::table('page_versions')
+			->where('page_id', '=', $this->getId())
+			->where('embargoed_until', '>', time())
+			->update(['published' => false]);
+
+		$this->addVersion([
+			'pending_approval' => false,
+			'published' => true,
+			'embargoed_until' => $embargoed_until,
+		]);
+	}
 
     /**
 	 *

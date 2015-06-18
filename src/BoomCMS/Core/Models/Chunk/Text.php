@@ -2,11 +2,10 @@
 
 namespace BoomCMS\Core\Models\Chunk;
 
-use Illuminate\Database\Eloquent\Model;
 use BoomCMS\Core\TextFilter\Commander as TextFilter;
-use BoomCMS\Core\TextFilter\Filter as Filter;
+use BoomCMS\Core\TextFilter as Filter;
 
-class Text extends Model
+class Text extends BaseChunk
 {
     protected $table = 'chunk_texts';
 

@@ -1,10 +1,10 @@
 <?php
 
-namespace BoomCMS\Core\TextFilter\Filter;
+namespace BoomCMS\Core\TextFilter;
 
-use \Embera\Embera as Embera;
+use \Embera\Embera;
 
-class OEmbed implements \Boom\TextFilter\Filter
+class OEmbed implements Filter
 {
     /**
      * Uses Embera to find any embeddable links within the text.

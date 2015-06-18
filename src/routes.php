@@ -53,6 +53,22 @@ Route::group(['middleware' => [
                 Route::get('person/add', 'Person\ViewPerson@add');
                 Route::post('person/add', 'Person\SavePerson@add');
             });
+			
+            Route::group([
+				'namespace' => 'Group',
+				'middleware' => ['BoomCMS\Core\Http\Middleware\PeopleManager']
+			], function() {
+				Route::get('group/add', 'View@add');
+				Route::post('group/add', 'Save@add');
+				Route::get('group/list_roles/{id}', 'View@listRoles');
+				Route::post('group/remove_role/{id}', 'Save@removeRole');
+				Route::post('group/add_role/{id}', 'Save@addRole');
+				
+				Route::get('group/edit/{id}', [
+					'as' => 'group-edit',
+					'uses' => 'View@edit',
+				]);
+            });
 
 			Route::group(['prefix' => 'templates'], function() {
 				Route::get('', 'Templates@index');
@@ -65,15 +81,22 @@ Route::group(['middleware' => [
 			Route::group(['prefix' => 'pages'], function() {
 				Route::get('', 'Pages@index');
 			});
+			
+			Route::group(['prefix' => 'chunk', 'namespace' => 'Chunk'], function() {
+				Route::post('save/{page}', 'Chunk@save');
+			});
 
 			Route::group(['prefix' => 'page', 'namespace' => 'Page'], function() {
 				Route::get('delete/{page}', 'Delete@confirm');
 				Route::post('delete/{page}', 'Delete@delete');
+				Route::post('discard/{page}', 'PageController@discard');
 
 				Route::group(['prefix' => 'version', 'namespace' => 'Version'], function() {
 					Route::get('template/{page}', 'View@template');
                     Route::post('template/{page}', 'Save@template');
                     Route::post('title/{page}', 'Save@title');
+					Route::get('embargo/{page}', 'View@embargo');
+					Route::post('embargo/{page}', 'Save@embargo');
 				});
 			});
 
