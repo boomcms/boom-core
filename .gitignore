@@ -3,5 +3,4 @@
 /nbproject/private
 public/vendor
 .env
-storage/boomcms/settings.json
-storage/boomcms/assets
+storage/boomcms/
