@@ -12,9 +12,9 @@ class Person extends Model
     public $table = 'people';
     public $guarded = ['id'];
     public $timestamps = false;
-	
+
 	public function setEmailAttribute($value)
 	{
-		$this->attributes['email'] = strotolower(trim($email));
+		$this->attributes['email'] = strtolower(trim($value));
 	}
 }
