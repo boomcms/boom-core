@@ -1,14 +1,14 @@
 <?php
 
-namespace BoomCMS\Core\TextFilter;
+namespace BoomCMS\Core\Commands\TextFilters;
 
-class StorifyEmbed implements Filter
+class StorifyEmbed extends BaseTextFilter
 {
     protected $_filterMatchString = "/\<p\>(https?\:\/\/(?:www\.)?storify\.com\/(?:[^\/]+)\/(?:[^\/]+))\/?\<\/p\>/i";
     protected $_filterReplaceString = '<script type="text/javascript" src="${1}.js"></script>';
 
-    public function filterText($text)
+    public function handle()
     {
-        return \preg_replace($this->_filterMatchString, $this->_filterReplaceString, $text);
+        return \preg_replace($this->_filterMatchString, $this->_filterReplaceString, $this->text);
     }
 }
