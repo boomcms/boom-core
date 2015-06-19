@@ -73,6 +73,7 @@ class Manager
         if (is_array($files)) {
             foreach ($files as $file) {
                 if (strpos($file, '.php') !== false) {
+                    $file = str_replace($theme->getTemplateDirectory() . '/', '', $file);
                     $templates[] = str_replace('.php', '', $file);
                 }
             }
@@ -88,7 +89,7 @@ class Manager
 
         if (is_array($themes)) {
             foreach ($themes as &$t) {
-                $t = new Theme($t);
+                $t = new Theme(str_replace($theme->getThemesDirectory() . '/', '', $t));
             }
         }
 

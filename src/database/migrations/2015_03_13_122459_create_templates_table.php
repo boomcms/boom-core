@@ -13,7 +13,7 @@ class CreateTemplatesTable extends Migration
     public function up()
     {
         Schema::create('templates', function (Blueprint $table) {
-            $table->boolean('id')->primary();
+            $table->increments('id');
             $table->string('name', 100);
             $table->text('description', 65535)->nullable();
             $table->string('filename', 25);

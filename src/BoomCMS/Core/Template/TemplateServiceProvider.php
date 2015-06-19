@@ -34,7 +34,7 @@ class TemplateServiceProvider extends ServiceProvider
             }
         }
         foreach($this->themes as $theme) {
-            $views = $theme->getViewsDirectory();
+            $views = $theme->getViewDirectory();
             $public = $theme->getPublicDirectory();
             $routes = $theme->getDirectory() . DIRECTORY_SEPARATOR . 'routes.php';
 

@@ -39,7 +39,7 @@ class Provider
             ->where('theme', '=', $theme)
             ->first();
 
-        return new Template($model->toArray());
+        return $model ? new Template($model->toArray()) : new Template([]);
     }
 
     public function save(Template $template)

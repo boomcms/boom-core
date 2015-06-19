@@ -13,6 +13,11 @@ class Theme
         $this->name = $name;
     }
 
+    public function __toString()
+    {
+        return $this->getName();
+    }
+
     public function getConfigDirectory()
     {
         return $this->getDirectory() . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'config';
