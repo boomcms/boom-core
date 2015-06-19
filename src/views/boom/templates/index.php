@@ -24,8 +24,6 @@
 						<?php $class = "" ?>
 						<?php if ( ! $t->fileExists()): ?>
 							<?php $class = ' b-templates-nofile' ?>
-						<?php elseif (in_array($t->getId(), $imported)): ?>
-							 <?php $class = ' b-templates-new' ?>
 						<?php endif ?>
 
 						<tr class="<?= $class ?>" data-id="<?= $t->getId() ?>">

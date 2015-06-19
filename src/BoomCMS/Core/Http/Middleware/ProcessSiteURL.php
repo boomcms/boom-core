@@ -20,7 +20,7 @@ class ProcessSiteURL
      * @var Provider
      */
     protected $pageProvider;
-	
+
 	/**
 	 *
 	 * @var URLProvider
@@ -59,7 +59,7 @@ class ProcessSiteURL
 
 			// The URL isn't in use or
 			// The URL is in use and has a page - the page must not be visible to the current user
-			// 
+			//
 			// 404.
 			if ( !$url->loaded() || ($url->loaded() && $url->getPage()->loaded())) {
 				throw new NotFoundHttpException();
@@ -80,6 +80,7 @@ class ProcessSiteURL
             return redirect((string) $page->url(), 301);
         }
 
+        $request->route()->setParameter('page', $page);
         $this->app['boomcms.editor']->setActivePage($page);
 
         View::share('page', $page);

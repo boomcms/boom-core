@@ -2,9 +2,6 @@
 
 namespace BoomCMS\Core\Chunk;
 
-use BoomCMS\Core\TextFilter\Commander as TextFilter;
-use BoomCMS\Core\TextFilter as Filter;
-
 class Text extends BaseChunk
 {
     protected $html;

@@ -20,9 +20,14 @@ class Template
         $this->attrs = $attrs;
     }
 
+    public function countPages()
+    {
+        return 'TODO';
+    }
+
     public function fileExists()
     {
-        return View::exists($this->getViewName());
+        return View::exists($this->getFullFilename());
     }
 
     public function get($key)
@@ -39,8 +44,8 @@ class Template
 
     public function getConfig()
     {
-        $theme = Config::get('themes.' . $this->getThemeName() . '.*');
-        $template = Config::get('themes.' . $this->getThemeName() . '.' . $this->getName());
+        $theme = Config::get('boomcms.themes.' . $this->getThemeName() . '.*');
+        $template = Config::get('boomcms.themes.' . $this->getThemeName() . '.' . $this->getFilename());
 
         return array_merge((array) $theme, (array) $template);
     }

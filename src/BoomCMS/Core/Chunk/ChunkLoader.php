@@ -3,6 +3,7 @@
 namespace BoomCMS\Core\Chunk;
 
 use BoomCMS\Core\Page;
+use BoomCMS\Core\Facades\Chunk;
 
 class ChunkLoader
 {
@@ -26,14 +27,15 @@ class ChunkLoader
 
             foreach ($models as $m) {
                 $found[] = $m->slotname;
-                $chunks[$type][$m->slotname] = new $class($this->page, $m->toArray(), $m->slotname);
+                $this->chunks[$type][$m->slotname] = new $class($this->page, $m->toArray(), $m->slotname, true);
             }
 
             $not_found = array_diff($slotnames, $found);
             foreach ($not_found as $slotname) {
-                $chunks[$type][$slotname] = new $class($this->page, [], $slotname);
+                $this->chunks[$type][$slotname] = new $class($this->page, [], $slotname, true);
             }
         }
+
         return $this->chunks;
     }
 }

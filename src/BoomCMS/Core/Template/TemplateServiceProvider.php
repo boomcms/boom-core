@@ -28,25 +28,20 @@ class TemplateServiceProvider extends ServiceProvider
 
         foreach($this->themes as $theme) {
             $config = $theme->getConfigDirectory() . DIRECTORY_SEPARATOR . 'themes.php';
-
-            if ($this->app['filesystem']->exists($config)) {
-                $this->mergeConfigFrom($config, 'boomcms');
-            }
+            $this->mergeConfigFrom($config, 'boomcms.themes');
         }
+
         foreach($this->themes as $theme) {
             $views = $theme->getViewDirectory();
             $public = $theme->getPublicDirectory();
             $routes = $theme->getDirectory() . DIRECTORY_SEPARATOR . 'routes.php';
 
-            if ($this->app['filesystem']->exists($views)) {
-                $this->loadViewsFrom($views, $theme);
-            }
+            $this->loadViewsFrom($views, $theme->getName());
+            $this->loadViewsFrom($views . '/chunks', 'boomcms.chunks');
 
-            if ($this->app['filesystem']->exists($public)) {
-                $this->publishes([$public => public_path('vendor/boomcms/themes/' . $theme)], $theme);
-            }
+            $this->publishes([$public => public_path('vendor/boomcms/themes/' . $theme)], $theme->getName());
 
-            if ($this->app['filesystem']->exists($routes)) {
+            if (file_exists($routes)) {
                 include $routes;
             }
 

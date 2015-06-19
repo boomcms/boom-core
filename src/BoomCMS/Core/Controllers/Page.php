@@ -11,7 +11,7 @@ class Page extends Controller
 {
     public function show()
     {
-        $page = $this->editor->getActivePage();
+        $page = $this->request->route()->getParameter('page');
         $template = $page->getTemplate();
 
         $loader = new ChunkLoader($page, $template->getChunks());
@@ -19,7 +19,7 @@ class Page extends Controller
         View::share('chunks', $loader->getChunks());
         return $template->getView();
     }
-    
+
     public function children()
     {
         $pages = PageFacade::findByParentId($this->request->input('parent'));

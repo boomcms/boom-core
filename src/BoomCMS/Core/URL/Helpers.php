@@ -50,7 +50,7 @@ abstract class Helpers
 
         return $result === null;
     }
-	
+
 	public function makeRelative($url)
 	{
 		return ($base = Request::getHttpHost()) ? str_replace($base, '/', $url) : $url;
@@ -90,7 +90,7 @@ abstract class Helpers
 			// Remove trailing or preceeding slashes
 			$url = trim($url, '/');
 		}
-		
+
         $url = preg_replace('|[^'.preg_quote('-').'\/\pL\pN\s]+|u', '', $url); // Remove all characters that are not a hypeh, letters, numbers, or forward slash
         $url = preg_replace('|['.preg_quote('-').'\s]+|u', '-', $url); // Replace all hypens and whitespace by a single hyphen
 

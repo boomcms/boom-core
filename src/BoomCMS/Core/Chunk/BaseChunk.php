@@ -62,7 +62,7 @@ abstract class BaseChunk
      */
     protected $type;
 
-    protected $viewPrefix = 'site.chunks';
+    protected $viewPrefix = 'boomcms.chunks::';
 
     /**
      * Array of available chunk types.

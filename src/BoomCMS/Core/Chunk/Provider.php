@@ -26,7 +26,7 @@ class Provider
         $this->auth = $auth;
         $this->editor = $editor;
     }
-	
+
 	public function create(Page $page, $attrs)
 	{
 		$version = $page->addVersion();
@@ -36,9 +36,9 @@ class Provider
 
 		$modelName = 'BoomCMS\Core\Models\Chunk\\' . ucfirst($type);
 		$model = $modelName::create($attrs);
-		
+
 		$className = 'BoomCMS\Core\Chunk\\' . ucfirst($type);
-		
+
 		return new $className($page, $attrs, $attrs['slotname'], true);
 	}
 
@@ -109,7 +109,7 @@ class Provider
         $class = 'BoomCMS\Core\Models\Chunk\\' . ucfirst($type);
 
         return $class::latestEdit($version)
-			->having('slotname', 'in', $slotnames)
+			->where('c2.slotname', 'in', $slotnames)
 //            ->with('target')
             ->get();
     }

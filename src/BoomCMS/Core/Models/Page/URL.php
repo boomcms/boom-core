@@ -10,9 +10,9 @@ class URL extends Model
     protected $table = 'page_urls';
     public $guarded = ['id'];
     public $timestamps = false;
-	
+
 	public function setLocationAttribute($value)
 	{
-		$this->location = URLHelper::sanitise($value);
+		$this->attributes['location'] = URLHelper::sanitise($value);
 	}
 }

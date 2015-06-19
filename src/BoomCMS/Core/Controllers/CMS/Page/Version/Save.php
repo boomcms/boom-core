@@ -32,7 +32,7 @@ class Save extends Version
 
     public function template(Template\Manager $manager)
     {
-        parent::template();
+        parent::template($manager);
 
         $this->page->setTemplateId($this->request->input('template_id'));
 

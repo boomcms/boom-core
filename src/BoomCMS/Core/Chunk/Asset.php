@@ -4,22 +4,27 @@ namespace BoomCMS\Core\Chunk;
 
 use BoomCMS\Core\Page as Page;
 use BoomCMS\Core\Link\Link as Link;
-use \View as View;
+
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\View;
 
 class Asset extends BaseChunk
 {
-    protected $_asset;
-    protected $_default_template = 'image';
-    protected $_type = 'asset';
+    protected $asset;
+    protected $defaultTemplate = 'image';
+    protected $type = 'asset';
 
     private $filterByType;
     private $link;
 
-    public function __construct(Page\Page $page, $chunk, $editable = true)
+    public function __construct(Page\Page $page, array $attrs, $slotname, $editable = true)
     {
-        parent::__construct($page, $chunk, $editable);
+        parent::__construct($page, $attrs, $slotname, $editable);
 
-        $this->_asset = \Boom\Asset\Factory::fromModel($this->_chunk->target);
+        if (isset($attrs['asset_id'])) {
+            $provider = App::make('BoomCMS\Core\Asset\Provider');
+            $this->asset = $provider->findById($this->attrs['asset_id']);
+        }
     }
 
     protected function show()
@@ -44,7 +49,9 @@ class Asset extends BaseChunk
 
     protected function showDefault()
     {
-        return new View($this->viewPrefix."default/asset/$this->template");
+        return View::make($this->viewPrefix."default/asset/$this->template", [
+            'placeholder' => $this->getPlaceholderText(),
+        ]);
     }
 
     public function attributes()
@@ -57,12 +64,12 @@ class Asset extends BaseChunk
 
     public function asset()
     {
-        return $this->_asset;
+        return $this->asset;
     }
 
     public function getCaption()
     {
-        return $this->_chunk->caption;
+        return isset($this->attrs['caption'])? $this->attrs['caption'] : '';
     }
 
     public function getLink()
@@ -76,12 +83,12 @@ class Asset extends BaseChunk
 
     public function getTitle()
     {
-        return $this->_chunk->title;
+        return isset($this->attrs['title']) ? $this->attrs['title'] : '';
     }
 
     public function hasContent()
     {
-        return $this->_chunk->loaded() && $this->_asset->loaded();
+        return $this->asset && $this->asset->loaded();
     }
 
     /**
@@ -99,6 +106,6 @@ class Asset extends BaseChunk
 
     public function target()
     {
-        return $this->_asset->getId();
+        return $this->asset && $this->asset->getId();
     }
 }
