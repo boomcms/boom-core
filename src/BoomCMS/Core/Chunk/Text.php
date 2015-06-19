@@ -95,17 +95,6 @@ class Text extends BaseChunk
 
     public function text()
     {
-        if ($this->isEditable()) {
-            $commander = new TextFilter();
-            $commander
-                ->addFilter(new Filter\UnmungeAssetEmbeds())
-                ->addFilter(new Filter\UnmungeInternalLinks());
-
-            $text = $commander->filterText($this->getUnfilteredText());
-        } else {
-            $text = isset($this->attrs['site_text']) ? $this->attrs['site_text'] : $this->attrs['text'];
-        }
-
-        return $text;
+        return ($this->isEditable()) ? $this->attrs['text'] : $this->attrs['site_text'];
     }
 }

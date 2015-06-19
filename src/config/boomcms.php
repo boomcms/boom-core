@@ -57,7 +57,7 @@ return [
         'AutoFormat.RemoveEmpty' => true,
         'AutoFormat.RemoveSpansWithoutAttributes' => true,
         'Core.RemoveInvalidImg' => false,
-        //'Cache.SerializerPath' => \Boom\Boom::instance()->getCacheDir(),
+        'Cache.SerializerPath' => storage_path() . '/boomcms',
         'CSS.AllowedProperties' => [],
         'URI.AllowedSchemes' =>  [
             'http' => true,
