@@ -2,8 +2,6 @@
 
 namespace BoomCMS\Core\Theme;
 
-use Illuminate\Support\Facades\Storage;
-
 class Theme
 {
     protected $name;
