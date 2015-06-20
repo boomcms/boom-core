@@ -37,7 +37,7 @@ class TemplateTest extends TestCase
 
     public function testGetFullFilename()
     {
-        $filename = storage_path() . '/boomcms/themes/test/src/views/templates/test';
+        $filename = 'test::templates.test';
         $template = $this->getTemplate(['theme' => 'test', 'filename' => 'test']);
 
         $this->assertEquals($filename, $template->getFullFilename());
@@ -49,14 +49,14 @@ class TemplateTest extends TestCase
 
         View::shouldReceive('exists')
             ->once()
-            ->with($template->getViewName())
+            ->with($template->getFullFilename())
             ->andReturn(false);
 
         $this->assertFalse($template->fileExists());
 
         View::shouldReceive('exists')
             ->once()
-            ->with($template->getViewName())
+            ->with($template->getFullFilename())
             ->andReturn(true);
 
         $this->assertTrue($template->fileExists());
@@ -71,15 +71,15 @@ class TemplateTest extends TestCase
 
     public function testGetConfigReturnsThemeConfigMergedWithTemplateConfig()
     {
-        $template = $this->getTemplate(['theme' => 'test', 'name' => 'test']);
+        $template = $this->getTemplate(['theme' => 'test', 'filename' => 'test']);
 
         Config::shouldReceive('get')
-            ->with('themes.test.*')
+            ->with('boomcms.themes.test.*')
             ->once()
             ->andReturn(['key1' => 'theme', 'key2' => 'theme']);
 
         Config::shouldReceive('get')
-            ->with('themes.test.test')
+            ->with('boomcms.themes.test.test')
             ->once()
             ->andReturn(['key2' => 'template', 'key3' => 'template']);
 
@@ -92,15 +92,15 @@ class TemplateTest extends TestCase
 
     public function testGetConfigReturnsArray()
     {
-        $template = $this->getTemplate(['theme' => 'test', 'name' => 'test']);
+        $template = $this->getTemplate(['theme' => 'test', 'filename' => 'test']);
 
         Config::shouldReceive('get')
-            ->with('themes.test.*')
+            ->with('boomcms.themes.test.*')
             ->once()
             ->andReturn(null);
 
         Config::shouldReceive('get')
-            ->with('themes.test.test')
+            ->with('boomcms.themes.test.test')
             ->once()
             ->andReturn(null);
 

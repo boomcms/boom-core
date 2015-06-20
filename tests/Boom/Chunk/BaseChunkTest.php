@@ -59,7 +59,6 @@ class BaseChunkTest extends TestCase
 
 	public function testDefaultPlaceholderTextsAreDefined()
 	{
-		var_dump(Lang::get('boom::chunks.text.standfirst'));
 		foreach (BaseChunk::$types as $type) {
 			$langKey = "boom::chunks.$type.default";
 			$this->assertTrue(Lang::has($langKey), $type);

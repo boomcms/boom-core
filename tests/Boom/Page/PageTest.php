@@ -67,7 +67,7 @@ class Page_PageTest extends TestCase
         Chunk::shouldReceive('get')
             ->once()
             ->with('text', 'standfirst', $page)
-            ->andReturn(new Text($page, ['site_text' => 'test standfirst'], 'standfirst', false));
+            ->andReturn(new Text($page, ['text' => 'test standfirst', 'site_text' => 'test standfirst'], 'standfirst', false));
 
         $this->assertEquals('test standfirst', $page->getDescription());
     }
@@ -139,34 +139,34 @@ class Page_PageTest extends TestCase
 
         $this->assertTrue($page->hasChildren());
     }
-	
+
 	public function testAddTag()
 	{
 		$page = $this->getMockBuilder('BoomCMS\Core\Page\Page')
 			->setMethods(['loaded'])
 			->setConstructorArgs([['id' => 1]])
 			->getMock();
-		
+
 		$tag = $this->getMockBuilder('BoomCMS\Core\Tag\Tag')
 			->setMethods(['loaded'])
 			->setConstructorArgs([['id' => 2]])
 			->getMock();
-		
+
 		$tag
 			->expects($this->once())
 			->method('loaded')
 			->will($this->returnValue(true));
-		
+
 		$page
 			->expects($this->once())
 			->method('loaded')
 			->will($this->returnValue(true));
-		
+
 		DB::shouldReceive('table')
 			->once()
 			->with('pages_tags')
 			->andReturnSelf();
-				
+
 		DB::shouldReceive('insert')
 			->once()
 			->with([
@@ -174,7 +174,7 @@ class Page_PageTest extends TestCase
 				'tag_id' => $tag->getId(),
 			])
 			->andReturnSelf();
-		
+
 		$page->addTag($tag);
 	}
 }
