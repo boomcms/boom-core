@@ -3,7 +3,6 @@
 namespace BoomCMS\Core\Page\Finder;
 
 use BoomCMS\Core\Finder\Filter;
-
 use Illuminate\Database\Eloquent\Builder;
 
 class ParentPage extends Filter
@@ -20,8 +19,7 @@ class ParentPage extends Filter
         $order = $this->parent->getChildOrderingPolicy();
 
         return $query
-            ->join('page_mptt', 'page.id', '=', 'page_mptt.id')
-            ->where('page_mptt.parent_id', '=', $this->parent->getId())
+            ->where('parent_id', '=', $this->parent->getId())
             ->orderBy($order->getColumn(), $order->getDirection());
     }
 }

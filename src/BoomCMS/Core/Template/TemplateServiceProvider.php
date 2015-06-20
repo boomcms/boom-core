@@ -45,7 +45,7 @@ class TemplateServiceProvider extends ServiceProvider
                 include $routes;
             }
 
-            $config = Config::get("themes.$theme");
+            $config = Config::get("boomcms.themes.$theme");
 
             // Register View shared variables for this theme.
             if (isset($config['shared'])) {
@@ -64,7 +64,7 @@ class TemplateServiceProvider extends ServiceProvider
             // Register View creators for this theme
             if (isset($config['creators'])) {
                 foreach ($config['creators'] as $view => $creator) {
-                    View::creator($view, $creators);
+                    View::creator($view, $creator);
                 }
             }
         }

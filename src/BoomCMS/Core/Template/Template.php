@@ -85,7 +85,7 @@ class Template
 
     public function getFullFilename()
     {
-        return $this->getTheme()->getTemplateDirectory() . DIRECTORY_SEPARATOR . $this->getFilename();
+        return $this->getTheme()->getName() . '::templates.' . $this->getFilename();
     }
 
     public function getId()
