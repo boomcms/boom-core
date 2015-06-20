@@ -16,6 +16,7 @@ class BaseChunk extends Model
         return $query
             ->where('slotname', '=', $slotname)
             ->where('page_vid', '<=', $version->getId())
+            ->where('page_id', '=', $version->getPageId())
             ->orderBy('page_vid', 'desc');
     }
 
