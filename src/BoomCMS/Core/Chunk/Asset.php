@@ -106,6 +106,6 @@ class Asset extends BaseChunk
 
     public function target()
     {
-        return $this->asset && $this->asset->getId();
+        return $this->asset ? $this->asset->getId() : 0;
     }
 }
