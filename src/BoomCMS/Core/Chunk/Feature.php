@@ -2,26 +2,26 @@
 
 namespace BoomCMS\Core\Chunk;
 
-use BoomCMS\Core\Page as Page;
-use BoomCMS\Core\Editor\Editor as Editor;
-use \Kohana as Kohana;
-use \View as View;
+use BoomCMS\Core\Page;
+use BoomCMS\Core\Facades\Page as PageFacade;
+use Illuminate\Support\Facades\View;
 
 class Feature extends BaseChunk
 {
     /**
-	* holds the page which is being featured.
-	* @var Model_Page
+	* @var Page\Page
 	*/
-    protected $_target_page;
+    protected $targetPage;
 
-    protected $_type = 'feature';
+    protected $type = 'feature';
 
-    public function __construct(Page\Page $page, $chunk, $editable = true)
+    public function __construct(Page\Page $page, array $attrs, $slotname, $editable = true)
     {
-        parent::__construct($page, $chunk, $editable);
+        parent::__construct($page, $attrs, $slotname, $editable);
 
-        $this->_target_page = \Boom\Page\Factory::byId($this->_chunk->target_page_id);
+        if (isset($this->attrs['target_page_id'])) {
+            $this->targetPage = PageFacade::findById($this->attrs['target_page_id']);
+        }
     }
 
     /**
@@ -29,25 +29,21 @@ class Feature extends BaseChunk
 	*/
     public function show()
     {
-        // If the template doesn't exist then use a default template.
-        if ( ! Kohana::find_file("views", $this->viewPrefix."feature/$this->template")) {
-            $this->template = $this->defaultTemplate;
-        }
-
-        // Get the target page.
-        $page = $this->target_page();
+        $page = $this->getTargetPage();
 
         // Only show the page feature if the page is visible or the feature box is editable.
-        if ( ! Editor::instance()->isDisabled() || $page->isVisible()) {
-            return View::factory($this->viewPrefix."feature/$this->template", [
-                'target'    =>    $page,
+        if ($this->editable || $page->isVisible()) {
+            return View::make($this->viewPrefix."feature.$this->template", [
+                'target' => $page,
             ]);
         }
     }
 
     public function showDefault()
     {
-        return View::factory($this->viewPrefix."default/feature/$this->template");
+        return View::make($this->viewPrefix."default.feature.$this->template", [
+            'placeholder' => $this->getPlaceholderText()
+        ]);
     }
 
     public function attributes()
@@ -59,20 +55,20 @@ class Feature extends BaseChunk
 
     public function hasContent()
     {
-        return $this->_chunk->loaded() && $this->_target_page->loaded();
+        return $this->targetPage && $this->targetPage->loaded();
     }
 
     public function target()
     {
-        return $this->_target_page->getId();
+        return $this->targetPage ? $this->targetPage->getId() : 0;
     }
 
     /**
 	 *
-	 * @return Model_Page
+	 * @return Page\Page
 	 */
-    public function target_page()
+    public function getTargetPage()
     {
-        return $this->_target_page;
+        return $this->targetPage;
     }
 }

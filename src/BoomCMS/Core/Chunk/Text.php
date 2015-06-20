@@ -92,6 +92,10 @@ class Text extends BaseChunk
 
     public function text()
     {
-        return ($this->isEditable()) ? $this->attrs['text'] : $this->attrs['site_text'];
+        if ($this->hasContent()) {
+            return ($this->isEditable()) ? $this->attrs['text'] : $this->attrs['site_text'];
+        }
+
+        return '';
     }
 }

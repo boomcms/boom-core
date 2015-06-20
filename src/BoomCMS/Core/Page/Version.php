@@ -3,6 +3,7 @@
 namespace BoomCMS\Core\Page;
 
 use BoomCMS\Core\Template;
+use DateTime;
 
 class Version
 {
@@ -32,7 +33,14 @@ class Version
     {
         return isset($this->attrs[$key]) ? $this->attrs[$key] : null;
     }
-	
+
+    public function getEditedTime()
+    {
+        return $this->attrs['edited_time']?
+            new DateTime('@' . $this->attrs['edited_time'])
+            : null;
+    }
+
 	public function getEmbargoedUntil()
 	{
 		return $this->get('embargoed_until');
@@ -42,7 +50,7 @@ class Version
     {
         return $this->get('id');
     }
-	
+
 	public function getPageId()
 	{
 		return $this->get('page_id');

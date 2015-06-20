@@ -187,7 +187,10 @@ class Page
 	 */
     public function getCreatedTime()
     {
-        return new DateTime('@' . $this->get('created_time'));
+        $time = new DateTime();
+        $time->setTimestamp($this->get('created_time'));
+
+        return $time;
     }
 
     public function getCurrentVersion()
@@ -294,7 +297,7 @@ class Page
      */
     public function getLastModified()
     {
-        return new DateTime('@' . $this->getCurrentVersion()->edited_time);
+        return $this->getCurrentVersion()->getEditedTime();
     }
 
 	public function getLastPublishedTime()
