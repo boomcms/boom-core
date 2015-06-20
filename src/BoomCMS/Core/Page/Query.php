@@ -53,6 +53,14 @@ class Query
             }
         }
 
+        if (isset($params['limit'])) {
+            $finder->setLimit($params['limit']);
+        }
+
+        if (isset($params['offset'])) {
+            $finder->setOffset($params['offset']);
+        }
+
         return $finder;
     }
 
