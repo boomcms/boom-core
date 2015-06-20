@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Core\Link;
 
-use BoomCMS\Core\Page;
+use BoomCMS\Core\Facades\Page;
 
 class Internal extends Link
 {
@@ -29,7 +29,7 @@ class Internal extends Link
     public function __construct($link)
     {
         if (ctype_digit($link)) {
-            $this->page = Page\Factory::byId($link);
+            $this->page = Page::findById($link);
         } else {
             $location = ($link === '/') ? '' : substr($link, 1);
 
@@ -38,7 +38,7 @@ class Internal extends Link
             $this->urlFragment = parse_url($link, PHP_URL_FRAGMENT);
 
             // Only get the path of the URL to ensure that if there's a query string it's ignored.
-            $this->page = Page\Factory::byUri(parse_url($location, PHP_URL_PATH));
+            $this->page = Page::findByUri(parse_url($location, PHP_URL_PATH));
         }
     }
 

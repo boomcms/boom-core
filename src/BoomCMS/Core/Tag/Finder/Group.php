@@ -1,6 +1,6 @@
 <?php
 
-namespace BoomCMS\Core\Tag\Finder\Filter;
+namespace BoomCMS\Core\Tag\Finder;
 
 use BoomCMS\Core\Finder\Filter;
 use Illuminate\Database\Eloquent\Builder;

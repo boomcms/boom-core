@@ -337,6 +337,16 @@ class Page
     {
         $finder = new Tag\Finder\Finder();
         $finder->addFilter(new Tag\Finder\AppliedToPage($this));
+
+        return $finder->setOrderBy('name', 'asc')->findAll();
+    }
+
+	public function getTagsInGroup($group)
+    {
+        $finder = new Tag\Finder\Finder();
+        $finder->addFilter(new Tag\Finder\AppliedToPage($this));
+        $finder->addFilter(new Tag\Finder\Group($group));
+
         return $finder->setOrderBy('name', 'asc')->findAll();
     }
 
