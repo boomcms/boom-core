@@ -27817,12 +27817,7 @@ $.widget('ui.tree',
 									._set_edit( $child )
 									._set_remove( $child )
 									._set_icon( $child );
-								if ( $child.data( 'children' ) ) {
-									self.set_toggle( $child );
-									$child
-										.find( '.boom-tree-hitarea' )
-										.addClass( self.options.iconHitareaClosed );
-								}
+
 								self._bind_events( $child );
 							})
 							.end()
@@ -34333,7 +34328,7 @@ $.widget('boom.pageTree', {
 
 	_create : function() {
 		var self = this;
-		
+
 		var treeConfig = $.extend({}, $.boom.config.tree, {
 			toggleSelected: true,
 			onToggle: function(page_id) {
@@ -34347,13 +34342,7 @@ $.widget('boom.pageTree', {
 			self.itemClick($(this));
 		});
 
-		this
-			.getChildren(0, this.element)
-			.done(function() {
-				self.element.find('a[data-page-id]').each(function() {
-					self.getChildren($(this).attr('data-page-id'));
-				});
-			});
+		this.getChildren(0, this.element);
 
 		this.element.tree('destroy').tree(treeConfig);
 	},

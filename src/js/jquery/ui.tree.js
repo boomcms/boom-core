@@ -360,12 +360,7 @@ $.widget('ui.tree',
 									._set_edit( $child )
 									._set_remove( $child )
 									._set_icon( $child );
-								if ( $child.data( 'children' ) ) {
-									self.set_toggle( $child );
-									$child
-										.find( '.boom-tree-hitarea' )
-										.addClass( self.options.iconHitareaClosed );
-								}
+
 								self._bind_events( $child );
 							})
 							.end()
