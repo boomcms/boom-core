@@ -35325,17 +35325,12 @@ $.widget('ui.chunkText', $.ui.chunk,
 		this.content = ($content.length)? $content.html() : this.element.html();
 
 		return {
-			text : this.content,
-			is_block : this.isBlockLevel()? 1 : 0
+			text : this.content
 		};
 	},
 
 	hasContent : function() {
 		return this.element.text() !== '' || this.element.find('img').length > 0;
-	},
-
-	isBlockLevel : function() {
-		return this.element.is('div');
 	},
 
 	unbind : function() {
