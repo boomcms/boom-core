@@ -17,6 +17,7 @@ class Kernel extends HttpKernel
         'Illuminate\View\Middleware\ShareErrorsFromSession',
         'App\Http\Middleware\VerifyCsrfToken',
         'BoomCMS\Core\Http\Middleware\InsertCMSToolbar',
+        'BoomCMS\Core\Http\Middleware\DefineGlobalViewSharedVariables',
     ];
 
 }
