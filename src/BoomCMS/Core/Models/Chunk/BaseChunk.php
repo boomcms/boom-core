@@ -11,6 +11,14 @@ class BaseChunk extends Model
 	public $guarded = ['id'];
 	public $timestamps = false;
 
+    public function scopeGetSingleChunk($query, Version $version, $slotname)
+    {
+        return $query
+            ->where('slotname', '=', $slotname)
+            ->where('page_vid', '<=', $version->getId())
+            ->orderBy('page_vid', 'desc');
+    }
+
 	public function scopeLatestEdit($query, Version $upToVersion)
 	{
 		$query

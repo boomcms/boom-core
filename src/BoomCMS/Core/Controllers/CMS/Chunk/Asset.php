@@ -1,9 +1,12 @@
 <?php
 
-class Controller_Cms_Chunk_Asset extends Controller_Cms_Chunk
-{
-    protected $_type = 'asset';
+namespace BoomCMS\Core\Controllers\CMS\Chunk;
 
+use BoomCMS\Core\Facades\Chunk as ChunkFacade;
+use Illuminate\Support\Facades\View;
+
+class Asset extends Chunk
+{
     protected function _preview_chunk()
     {
         $chunk = new \Boom\Chunk\Asset($this->page, $this->_model, $this->request->input('slotname'));
@@ -22,9 +25,9 @@ class Controller_Cms_Chunk_Asset extends Controller_Cms_Chunk
 
     public function edit()
     {
-        $chunk = Chunk::factory('asset', $this->request->query('slotname'), $this->page);
+        $chunk = ChunkFacade::get('asset', $this->request->query('slotname'), $this->page);
 
-        return View::make('boom/editor/slot/asset', [
+        return View::make('boom::editor.chunk.asset', [
             'chunk' => $chunk,
         ]);
     }

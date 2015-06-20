@@ -74,8 +74,8 @@ class Asset extends BaseChunk
 
     public function getLink()
     {
-        if ($this->link === null && $this->_chunk->url) {
-            $this->link = Link::factory($this->_chunk->url);
+        if ($this->link === null && isset($this->attrs['url'])) {
+            $this->link = Link::factory($this->attrs['url']);
         }
 
         return $this->link;

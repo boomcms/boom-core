@@ -98,14 +98,21 @@ class Provider
     {
         $class = 'BoomCMS\Core\Models\Chunk\\' . ucfirst($type);
 
-        return $class::latestEdit($version)
-//            ->with('target')
-            ->having('slotname', '=', $slotname)
-            ->first();
+        return $version->getId() ?
+            $class::getSingleChunk($version, $slotname)->first()
+            : null;
     }
 
     public function findMany($type, array $slotnames, Version $version)
     {
+        $chunks = [];
+
+        foreach ($slotnames as $slotname) {
+            $chunks[] = $this->findOne($type, $slotname, $version);
+        }
+
+        return $chunks;
+// TODO: fix loading multiple chunks in one go.
         $class = 'BoomCMS\Core\Models\Chunk\\' . ucfirst($type);
 
         return $class::latestEdit($version)

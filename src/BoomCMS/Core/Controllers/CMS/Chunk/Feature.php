@@ -1,29 +1,15 @@
 <?php
 
-class Controller_Cms_Chunk_Feature extends Controller_Cms_Chunk
-{
-    protected $_type = 'feature';
+namespace BoomCMS\Core\Controllers\CMS\Chunk;
 
+use Illuminate\Support\Facades\View;
+
+class Feature extends Chunk
+{
     public function edit()
     {
-        return View::make('boom/editor/slot/feature', [
-            'page'    =>    $this->page,
+        return View::make('boom::editor.chunk.feature', [
+            'page' => $this->page,
         ]);
-    }
-
-    protected function _preview_chunk()
-    {
-        $chunk = new \Boom\Chunk\Feature($this->page, $this->_model, $this->request->input('slotname'));
-        $chunk->template($this->request->input('template'));
-
-        return $chunk->execute();
-    }
-
-    protected function _preview_default_chunk()
-    {
-        $chunk = new \Boom\Chunk\Feature($this->page, new Model_Chunk_Feature(), $this->request->input('slotname'));
-        $chunk->template($this->request->input('template'));
-
-        return $chunk->execute();
     }
 }

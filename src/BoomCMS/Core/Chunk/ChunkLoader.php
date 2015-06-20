@@ -26,8 +26,10 @@ class ChunkLoader
             $found = [];
 
             foreach ($models as $m) {
-                $found[] = $m->slotname;
-                $this->chunks[$type][$m->slotname] = new $class($this->page, $m->toArray(), $m->slotname, true);
+                if ($m) {
+                    $found[] = $m->slotname;
+                    $this->chunks[$type][$m->slotname] = new $class($this->page, $m->toArray(), $m->slotname, true);
+                }
             }
 
             $not_found = array_diff($slotnames, $found);

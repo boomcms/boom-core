@@ -56,7 +56,7 @@ Route::group(['middleware' => [
 				Route::get('person/view/{id}', 'Person\ViewPerson@view');
 				Route::post('person/save/{id}', 'Person\SavePerson@save');
             });
-			
+
             Route::group([
 				'namespace' => 'Group',
 				'middleware' => ['BoomCMS\Core\Http\Middleware\PeopleManager']
@@ -66,7 +66,7 @@ Route::group(['middleware' => [
 				Route::get('group/list_roles/{id}', 'View@listRoles');
 				Route::post('group/remove_role/{id}', 'Save@removeRole');
 				Route::post('group/add_role/{id}', 'Save@addRole');
-				
+
 				Route::get('group/edit/{id}', [
 					'as' => 'group-edit',
 					'uses' => 'View@edit',
@@ -84,9 +84,11 @@ Route::group(['middleware' => [
 			Route::group(['prefix' => 'pages'], function() {
 				Route::get('', 'Pages@index');
 			});
-			
+
 			Route::group(['prefix' => 'chunk', 'namespace' => 'Chunk'], function() {
 				Route::post('save/{page}', 'Chunk@save');
+                Route::get('feature/edit/{page}', 'Feature@edit');
+                Route::get('asset/edit/{page}', 'Asset@edit');
 			});
 
 			Route::group(['prefix' => 'page', 'namespace' => 'Page'], function() {
