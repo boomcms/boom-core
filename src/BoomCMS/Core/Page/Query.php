@@ -7,13 +7,14 @@ use ReflectionClass;
 class Query
 {
     protected $filterAliases = [
-        'parentId' => 'ParentId',
+        'parentid' => 'ParentId',
         'parent' => 'ParentPage',
         'tag' => 'Tag',
         'template' => 'Template',
         'uri' => 'uri',
         'relatedbytags' => 'RelatedByTags',
         'visibleinnavigation' => 'VisibleInNavigation',
+        'nextto' => 'NextTo',
     ];
 
     /**
@@ -73,5 +74,20 @@ class Query
         $finder = $this->addFilters(new Finder\Finder(), $this->params);
 
         return $finder->findAll();
+    }
+
+    public function getNextTo(Page $page, $direction)
+    {
+        $params = $this->params;
+
+        if (isset($params['parent'])) {
+            unset($params['parent']);
+        }
+
+        $params['parentid'] = $page->getParentId();
+        $params['nextto'] = [$page, $direction];
+        $finder = $this->addFilters(new Finder\Finder(), $params);
+
+        return $finder->find();
     }
 }

@@ -55,6 +55,26 @@ class ChildOrderingPolicy
         return ($direction === 'asc') ? static::ASC : static::DESC;
     }
 
+    /**
+     * Returns the name of a method which can be called on a Page object corresponding to the order column.
+     *
+     */
+    public function getAccessor()
+    {
+        $column = $this->getColumn();
+
+        switch ($column) {
+            case ($column == 'manual' || $column == 'sequence'):
+                return 'getManualOrderPosition';
+
+            case ($column == 'date' || $column == 'visible_from'):
+                return 'getVisibleFromTimestamp';
+
+            default:
+                return 'getTitle';
+        }
+    }
+
     public function getColumn()
     {
         return $this->column;

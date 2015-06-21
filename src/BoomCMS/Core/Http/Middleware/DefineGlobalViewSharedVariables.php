@@ -3,6 +3,7 @@
 namespace BoomCMS\Core\Http\Middleware;
 
 use BoomCMS\Core\Page;
+use BoomCMS\Core\Facades\Editor;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
@@ -34,6 +35,16 @@ class DefineGlobalViewSharedVariables
 
         View::share('getPages', function(array $params) {
             return (new Page\Query($params))->getPages();
+        });
+
+        $editor = Editor::getFacadeRoot();
+
+        View::share('next', function(array $params = []) use ($editor) {
+            return (new Page\Query($params))->getNextTo($editor->getActivePage(), 'after');
+        });
+
+        View::share('prev', function(array $params = []) use ($editor) {
+            return (new Page\Query($params))->getNextTo($editor->getActivePage(), 'before');
         });
 
         return $next($request);

@@ -386,6 +386,11 @@ class Page
         return new DateTime('@' . $timestamp);
     }
 
+    public function getVisibleFromTimestamp()
+    {
+        return $this->get('visible_from');
+    }
+
     /**
 	 *
 	 * @return DateTime
