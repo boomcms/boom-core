@@ -22,7 +22,7 @@ class Finder extends BaseFinder
 
         $this->query = Model::currentVersion($editor)->withUrl();
 
-        if ($this->editor->isDisabled()) {
+        if ( !$this->editor->isEnabled()) {
             $this->query = $this->query->isVisible();
         }
     }
