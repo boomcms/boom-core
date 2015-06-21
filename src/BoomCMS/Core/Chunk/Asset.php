@@ -36,14 +36,14 @@ class Asset extends BaseChunk
             'caption' => $this->getCaption(),
             'title' => $this->getTitle(),
             'link' => $link
-        ]);
+        ])->render();
     }
 
     protected function showDefault()
     {
         return View::make($this->viewPrefix."default/asset/$this->template", [
             'placeholder' => $this->getPlaceholderText(),
-        ]);
+        ])->render();
     }
 
     public function attributes()
