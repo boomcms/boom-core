@@ -37,14 +37,6 @@ class Asset extends BaseChunk
             'title' => $this->getTitle(),
             'link' => $link
         ]);
-
-        if ($link) {
-            $v->set([
-                'url' => $link->url()
-            ]);
-        }
-
-        return $v;
     }
 
     protected function showDefault()
