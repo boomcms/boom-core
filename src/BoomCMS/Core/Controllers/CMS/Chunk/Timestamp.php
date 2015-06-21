@@ -15,7 +15,7 @@ class Controller_Cms_Chunk_Timestamp extends Controller_Cms_Chunk
 
         return View::make('boom/editor/slot/timestamp', [
             'timestamp' => 0,
-            'format' => ChunkTimestamp::$default_format,
+            'format' => ChunkTimestamp::$defaultFormat,
             'formats' => $formats,
         ]);
     }

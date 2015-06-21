@@ -2,11 +2,9 @@
 
 namespace BoomCMS\Core\Chunk;
 
-use \Kohana as Kohana;
-
 class Timestamp extends BaseChunk
 {
-    public static $default_format = 'j F Y';
+    public static $defaultFormat = 'j F Y';
     public static $formats = [
         'j F Y',
         'j F Y H:i',
@@ -18,35 +16,39 @@ class Timestamp extends BaseChunk
         'h:i A',
     ];
 
-    protected $_html_before = "<span class='b-chunk-timestamp'>";
-    protected $_html_after = "</span>";
+    protected $html = "<span class='b-chunk-timestamp'>{time}</span>";
     protected $type = 'timestamp';
 
     public function attributes()
     {
         return [
-            $this->attributePrefix.'timestamp' => $this->_chunk->timestamp,
-            $this->attributePrefix.'format' => $this->_chunk->format,
+            $this->attributePrefix.'timestamp' => $this->getTimestamp(),
+            $this->attributePrefix.'format' => $this->_getFormat(),
         ];
     }
 
     protected function show()
     {
-        return $this->_html_before.date($this->_chunk->format, $this->_chunk->timestamp).$this->_html_after;
+        return str_replace('{time}', date($this->getFormat(), $this->getTimestamp()), $this->html);
     }
 
     protected function showDefault()
     {
-        return $this->_html_before . $this->getPlaceholderText() . $this->_html_after;
+        return str_replace('{time}', $this->getPlaceholderText(), $this->html);
     }
 
     public function hasContent()
     {
-        return $this->_chunk->timestamp > 0;
+        return $this->getTimestamp() > 0;
     }
 
-    public function timestamp()
+    public function getFormat()
     {
-        return $this->_chunk->timestamp;
+        return isset($this->attrs['format']) ? $this->attrs['format'] : static::$defaultFormat;
+    }
+
+    public function getTimestamp()
+    {
+        return isset($this->attrs['timestamp']) ? $this->attrs['timestamp'] : 0;
     }
 }
