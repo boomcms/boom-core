@@ -12,6 +12,8 @@ class Query
         'tag' => 'Tag',
         'template' => 'Template',
         'uri' => 'uri',
+        'relatedbytags' => 'RelatedByTags',
+        'visibleinnavigation' => 'VisibleInNavigation',
     ];
 
     /**
@@ -28,6 +30,8 @@ class Query
     public function addFilters($finder, array $params)
     {
         foreach ($params as $param => $args) {
+            $param = strtolower($param);
+
             if (isset($this->filterAliases[$param])) {
                 $class = 'BoomCMS\Core\Page\Finder\\' . $this->filterAliases[$param];
 
