@@ -13,18 +13,18 @@ class RelatedByTags extends Filter
 	 *
 	 * @var array
 	 */
-    protected $_tagIds;
+    protected $tagIds;
 
     /**
 	 *
 	 * @var Page
 	 */
-    protected $_page;
+    protected $page;
 
     public function __construct(Page $page)
     {
-        $this->_page = $page;
-        $this->_tagIds = $this->_getTagIds();
+        $this->page = $page;
+        $this->tagIds = $this->getTagIds();
     }
 
     public function execute(Builder $query)
@@ -32,8 +32,8 @@ class RelatedByTags extends Filter
         return $query
             ->select([\DB::raw('count(pages_tags.tag_id)'), 'tag_count'])
             ->join('pages_tags', 'page.id', '=', 'pages_tags.page_id')
-            ->where('tag_id', 'in', $this->_tagIds)
-            ->where('page.id', '!=', $this->_page->getId())
+            ->where('tag_id', 'in', $this->tagIds)
+            ->where('page.id', '!=', $this->page->getId())
             ->orderBy('tag_count', 'desc')
             ->orderBy(\DB::raw('rand()'))
             ->groupBy('page.id');
@@ -42,11 +42,11 @@ class RelatedByTags extends Filter
     /**
 	 * TODO: This should probably be in a \Boom\Page\Tags class
 	 */
-    protected function _getTagIds()
+    protected function getTagIds()
     {
         $results = \DB::select('tag_id')
             ->from('pages_tags')
-            ->where('page_id', '=', $this->_page->getId())
+            ->where('page_id', '=', $this->page->getId())
             ->execute();
 
         return \Arr::pluck($results, 'tag_id');
@@ -54,6 +54,6 @@ class RelatedByTags extends Filter
 
     public function shouldBeApplied()
     {
-        return \count($this->_tagIds) > 0;
+        return \count($this->tagIds) > 0;
     }
 }
