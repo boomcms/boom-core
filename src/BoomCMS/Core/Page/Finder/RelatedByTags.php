@@ -31,13 +31,13 @@ class RelatedByTags extends Filter
     public function execute(Builder $query)
     {
         return $query
-            ->select([DB::raw('count(pages_tags.tag_id)'), 'tag_count'])
-            ->join('pages_tags', 'page.id', '=', 'pages_tags.page_id')
+            ->select(DB::raw('count(pages_tags.tag_id) as tag_count'))
+            ->join('pages_tags', 'pages.id', '=', 'pages_tags.page_id')
             ->whereIn('tag_id', $this->tagIds)
-            ->where('page.id', '!=', $this->page->getId())
+            ->where('pages.id', '!=', $this->page->getId())
             ->orderBy('tag_count', 'desc')
             ->orderBy(DB::raw('rand()'))
-            ->groupBy('page.id');
+            ->groupBy('pages.id');
     }
 
     /**
