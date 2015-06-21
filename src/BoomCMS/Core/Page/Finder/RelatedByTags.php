@@ -5,6 +5,7 @@ namespace BoomCMS\Core\Page\Finder;
 use BoomCMS\Core\Page\Page as Page;
 use BoomCMS\Core\Finder\Filter;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Builder;
 
 class RelatedByTags extends Filter
@@ -30,12 +31,12 @@ class RelatedByTags extends Filter
     public function execute(Builder $query)
     {
         return $query
-            ->select([\DB::raw('count(pages_tags.tag_id)'), 'tag_count'])
+            ->select([DB::raw('count(pages_tags.tag_id)'), 'tag_count'])
             ->join('pages_tags', 'page.id', '=', 'pages_tags.page_id')
-            ->where('tag_id', 'in', $this->tagIds)
+            ->whereIn('tag_id', $this->tagIds)
             ->where('page.id', '!=', $this->page->getId())
             ->orderBy('tag_count', 'desc')
-            ->orderBy(\DB::raw('rand()'))
+            ->orderBy(DB::raw('rand()'))
             ->groupBy('page.id');
     }
 
@@ -44,12 +45,10 @@ class RelatedByTags extends Filter
 	 */
     protected function getTagIds()
     {
-        $results = \DB::select('tag_id')
-            ->from('pages_tags')
+        return DB::table('pages_tags')
+            ->select('tag_id')
             ->where('page_id', '=', $this->page->getId())
-            ->execute();
-
-        return \Arr::pluck($results, 'tag_id');
+            ->lists('tag_id');
     }
 
     public function shouldBeApplied()
