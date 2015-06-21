@@ -32,13 +32,13 @@ class PermissionsProvider
         $pageId = $page->getId();
 
         do {
-            $result = $this->doLookup($person->getId(), $role, $pageId);
+            $result = $this->doLookup($person->getId(), $role, $page->getId());
 
             if ($result === null) {
-                $pageId = $page->getParentId();
+                $page = $page->getParent();
             }
 
-        } while ($result === null && $pageId !== NULL);
+        } while ($result === null && $page && $page->loaded());
 
         return (bool) $result;
     }
