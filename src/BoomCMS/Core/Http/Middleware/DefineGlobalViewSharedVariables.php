@@ -33,6 +33,8 @@ class DefineGlobalViewSharedVariables
 
         View::share('request', $request);
 
+        // TODO: Make $getPages(), $next, and $prev populate query params from request input.
+        // E.g. get tag ID from query string etc.
         View::share('getPages', function(array $params) {
             return (new Page\Query($params))->getPages();
         });
