@@ -20,6 +20,7 @@ class CoreServiceProvider extends ServiceProvider
     public function boot(Router $router, Asset\Provider $assetProvider, Page\Provider $pageProvider)
     {
         $this->loadViewsFrom(__DIR__ . '/../../views/boom', 'boom');
+        $this->loadViewsFrom(__DIR__ . '/../../views/chunks', 'boomcms.chunks');
 		$this->loadTranslationsFrom(__DIR__ . '/../../lang', 'boom');
 
         $router->pattern('asset', '[0-9]+');
