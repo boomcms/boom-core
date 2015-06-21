@@ -34205,7 +34205,7 @@ $.widget( 'boom.pageToolbar', {
 				self.options.page.template();
 			})
 			.on('click', '#b-menu-button', function() {
-				var $body = top.$('body');
+				var $body = $('body');
 
 				if ($body.hasClass('pushy-active')) {
 					self.maximise();
