@@ -16,7 +16,10 @@
 	"autoload": {
 		"psr-4": {
 			"App\\": "app/"
-		}
+		},
+		"classmap": [
+			"storage/boomcms/themes/"	
+		]
 	},
     "minimum-stability": "dev",
 	"config": {

@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "ce3838fff7127427a13c2c58be6b12ac",
+    "hash": "e5d76389ffaaeaf9abb5b74bcf137b63",
     "packages": [
         {
             "name": "boomcms/boom-core",
@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/boomcms/boom-core.git",
-                "reference": "70316af5318b7e3288be0b89442bcf3d1600231c"
+                "reference": "adac3e739ceedde4797f4777fcb0b53ac10b7053"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/boomcms/boom-core/zipball/70316af5318b7e3288be0b89442bcf3d1600231c",
-                "reference": "70316af5318b7e3288be0b89442bcf3d1600231c",
+                "url": "https://api.github.com/repos/boomcms/boom-core/zipball/adac3e739ceedde4797f4777fcb0b53ac10b7053",
+                "reference": "adac3e739ceedde4797f4777fcb0b53ac10b7053",
                 "shasum": ""
             },
             "require": {
@@ -53,7 +53,7 @@
                 "MIT"
             ],
             "description": "Core classes for BoomCMS",
-            "time": "2015-06-19 15:38:32"
+            "time": "2015-06-21 15:29:02"
         },
         {
             "name": "boomcms/boom-installer",
@@ -1476,12 +1476,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "722d421640ae84d647dbd7dc46c5cc5f1c4db3bf"
+                "reference": "49f95a2d636ea9e7409c67890ae29730f50bc22a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/722d421640ae84d647dbd7dc46c5cc5f1c4db3bf",
-                "reference": "722d421640ae84d647dbd7dc46c5cc5f1c4db3bf",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/49f95a2d636ea9e7409c67890ae29730f50bc22a",
+                "reference": "49f95a2d636ea9e7409c67890ae29730f50bc22a",
                 "shasum": ""
             },
             "require": {
@@ -1544,20 +1544,20 @@
                 "logging",
                 "psr-3"
             ],
-            "time": "2015-06-19 14:06:20"
+            "time": "2015-06-21 04:39:17"
         },
         {
             "name": "mpratt/embera",
-            "version": "1.8.9",
+            "version": "1.8.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mpratt/Embera.git",
-                "reference": "c30c6a4f420a07d2198ca7c6f70ef8e03830e3b4"
+                "reference": "4ce99a9844e1d7e87f4317e66560ff4040395b0b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mpratt/Embera/zipball/c30c6a4f420a07d2198ca7c6f70ef8e03830e3b4",
-                "reference": "c30c6a4f420a07d2198ca7c6f70ef8e03830e3b4",
+                "url": "https://api.github.com/repos/mpratt/Embera/zipball/4ce99a9844e1d7e87f4317e66560ff4040395b0b",
+                "reference": "4ce99a9844e1d7e87f4317e66560ff4040395b0b",
                 "shasum": ""
             },
             "require": {
@@ -1590,7 +1590,7 @@
                 "vimeo",
                 "youtube"
             ],
-            "time": "2015-06-04 17:37:51"
+            "time": "2015-06-19 21:41:44"
         },
         {
             "name": "mtdowling/cron-expression",
@@ -1689,12 +1689,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/nikic/PHP-Parser.git",
-                "reference": "bb2c5303ae1149dabcde9709ece6abca4850057b"
+                "reference": "fd7ee2e083860f40a1f7f51a3db449b5a734bab5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/bb2c5303ae1149dabcde9709ece6abca4850057b",
-                "reference": "bb2c5303ae1149dabcde9709ece6abca4850057b",
+                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/fd7ee2e083860f40a1f7f51a3db449b5a734bab5",
+                "reference": "fd7ee2e083860f40a1f7f51a3db449b5a734bab5",
                 "shasum": ""
             },
             "require": {
@@ -1726,7 +1726,7 @@
                 "parser",
                 "php"
             ],
-            "time": "2015-06-05 16:56:25"
+            "time": "2015-06-20 10:34:10"
         },
         {
             "name": "psr/log",
@@ -2104,12 +2104,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/EventDispatcher.git",
-                "reference": "d91fb729673cc8587d0471bab5be02c77d608e77"
+                "reference": "2f5f776587d59b4808d29a25fffd84e37033e687"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/EventDispatcher/zipball/d91fb729673cc8587d0471bab5be02c77d608e77",
-                "reference": "d91fb729673cc8587d0471bab5be02c77d608e77",
+                "url": "https://api.github.com/repos/symfony/EventDispatcher/zipball/2f5f776587d59b4808d29a25fffd84e37033e687",
+                "reference": "2f5f776587d59b4808d29a25fffd84e37033e687",
                 "shasum": ""
             },
             "require": {
@@ -2154,7 +2154,7 @@
             ],
             "description": "Symfony EventDispatcher Component",
             "homepage": "https://symfony.com",
-            "time": "2015-06-11 17:27:52"
+            "time": "2015-06-19 15:09:14"
         },
         {
             "name": "symfony/filesystem",
