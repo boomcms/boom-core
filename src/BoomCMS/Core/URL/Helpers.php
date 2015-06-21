@@ -51,7 +51,7 @@ abstract class Helpers
         return $result === null;
     }
 
-	public function makeRelative($url)
+	public static function makeRelative($url)
 	{
 		return ($base = Request::getHttpHost()) ? str_replace($base, '/', $url) : $url;
 	}

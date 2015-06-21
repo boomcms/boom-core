@@ -2,38 +2,52 @@
 
 namespace BoomCMS\Core\Chunk;
 
-use BoomCMS\Core\Editor\Editor as Editor;
-use \View as View;
+use Illuminate\Support\Facades\View;
 
 class Slideshow extends BaseChunk
 {
-    protected $_default_template = 'circles';
-
+    protected $defaultTemplate = 'circles';
     protected $type = 'slideshow';
+
+    public function __construct(\BoomCMS\Core\Page\Page $page, array $attrs, $slotname, $editable)
+    {
+        parent::__construct($page, $attrs, $slotname, $editable);
+
+        if (isset($this->attrs['slides'])) {
+            foreach ($this->attrs['slides'] as &$slide) {
+                $slide = new Slideshow\Slide($slide);
+            }
+        }
+    }
 
     protected function show()
     {
-        return new View($this->viewPrefix . "slideshow/$this->template", [
-            'chunk'    =>    $this->_chunk,
-            'title'        =>    $this->_chunk->title,
-            'slides'    =>    $this->_chunk->slides(),
-            'editor'    =>    Editor::instance(),
-        ]);
+        return View::make($this->viewPrefix . "slideshow/$this->template", [
+            'title' => $this->getTitle(),
+            'slides' => $this->getSlides(),
+        ])->render();
     }
 
     public function showDefault()
     {
-        return new View($this->viewPrefix."default/slideshow/$this->template");
+        return View::make($this->viewPrefix."default.slideshow.$this->template", [
+            'placeholder' => $this->getPlaceholderText(),
+        ])->render();
     }
 
     public function hasContent()
     {
-        return $this->_chunk->loaded() && count($this->_chunk->slides()) > 0;
+        return count($this->getSlides()) > 0;
     }
 
-    public function slides()
+    public function getSlides()
     {
-        return $this->_chunk->slides();
+        return isset($this->attrs['slides']) ? $this->attrs['slides'] : [];
+    }
+
+    public function getTitle()
+    {
+        return isset($this->attrs['title']) ? $this->attrs['title'] : '';
     }
 
     public function thumbnail()

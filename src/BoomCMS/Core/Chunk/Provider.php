@@ -31,6 +31,7 @@ class Provider
 	{
 		$version = $page->addVersion();
 		$attrs['page_vid'] = $version->getId();
+        $attrs['page_id'] = $page->getId();
 		$type = $attrs['type'];
 		unset($attrs['type']);
 

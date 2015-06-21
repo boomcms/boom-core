@@ -4,94 +4,66 @@ namespace BoomCMS\Core\Models\Chunk;
 
 class Slideshow extends BaseChunk
 {
-    protected $_has_many = [
-        'slides' => ['model' => 'Chunk_Slideshow_Slide', 'foreign_key' => 'chunk_id'],
-    ];
-
-    protected $_slides;
-
     protected $table = 'chunk_slideshows';
 
-    public function create(Validation $validation = null)
+    public static function create(array $attributes)
     {
-        parent::create($validation);
+        if (isset($attributes['slides'])) {
+            $slides = $attributes['slides'];
+            unset($attributes['slides']);
+        }
 
-        $this->save_slides();
+        $slideshow = parent::create($attributes);
 
-        return $this;
+        if (isset($slides)) {
+            $slideshow->slides = $slides;
+        }
+
+        return $slideshow;
     }
-	
+
 	public function setTitleAttribute($value)
 	{
-		$this->attributes['title'] = strip_tags($title);
+		$this->attributes['title'] = strip_tags($value);
 	}
 
-    /**
-	 * Sets or gets the slideshows slides
-	 *
-	 */
-    public function slides($slides = null)
+    public function slides()
     {
-        if ($slides === null) {
-            if ($this->_slides === null) {
-                $this->_slides = $this
-                    ->slides
-                    ->with('asset')
-                    ->find_all()
-                    ->as_array();
-            }
-
-            return $this->_slides;
-        } else {
-            // If the slides are arrays of data then turn them into Chunk_Slideshow_Slides objects.
-            foreach ($slides as & $slide) {
-                if ( ! $slide instanceof Model_Chunk_Slideshow_Slide && isset($slide['asset_id']) && $slide['asset_id'] > 0) {
-                    $slide['url'] = (isset($slide['page']) && $slide['page'] > 0) ? $slide['page'] : isset($slide['url']) ? $slide['url'] : null;
-
-                    $slide = ORM::factory('Chunk_Slideshow_Slide')
-                        ->values( (array) $slide);
-                }
-            }
-            $this->_slides = $slides;
-
-            return $this;
-        }
+        return $this->hasMany('BoomCMS\Core\Models\Chunk\Slideshow\Slide', 'chunk_id');
     }
 
     /**
 	 * Persists slide data to the database.
 	 *
-	 * @return \Boom_Model_Chunk_Slideshow
 	 */
-    public function save_slides()
+    public function setSlidesAttribute($slides)
     {
-        // Remove all existing slides.
-        DB::delete('chunk_slideshow_slides')
-            ->where('chunk_id', '=', $this->id)
-            ->execute();
+        foreach ($slides as &$slide) {
+            $slide['url'] = (isset($slide['page']) && $slide['page'] > 0) ?
+                $slide['page']
+                : isset($slide['url']) ? $slide['url'] : null;
 
-        foreach ( (array) $this->_slides as $slide) {
-            if (is_object($slide) && $slide instanceof Model_Chunk_Slideshow_Slide) {
-                $slide->chunk_id = $this->id;
-
-                try {
-                    $slide->save();
-                } catch (Exception $e) {}
-            }
+            unset($slide['page']);
+            $slide = new Slideshow\Slide($slide);
         }
 
-        return $this;
+        $this->slides()->saveMany($slides);
+    }
+
+    public function scopeWithRelations($query)
+    {
+        return $query->with('slides.asset');
     }
 
     public function thumbnail()
     {
-        if ($this->_slides === null) {
+        if ($this->slides === null) {
             return $this->slides
                 ->with('asset')
                 ->find()
                 ->asset;
         } else {
-            return $this->_slides[0]->asset;
+            return $this->slides[0]->asset;
         }
     }
 }

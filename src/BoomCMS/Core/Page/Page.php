@@ -320,9 +320,9 @@ class Page
             if ($this->parent === null) {
                 $provider = new Provider();
                 $this->parent = $provider->findById($this->getParentId());
-
-                return $this->parent;
             }
+
+            return $this->parent;
         } else {
             return new Page([]);
         }

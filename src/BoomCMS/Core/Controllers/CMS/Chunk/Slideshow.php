@@ -1,15 +1,20 @@
 <?php
 
-class Controller_Cms_Chunk_Slideshow extends Controller_Cms_Chunk
+namespace BoomCMS\Core\Controllers\CMS\Chunk;
+
+use BoomCMS\Core\Facades\Chunk as ChunkFacade;
+use Illuminate\Support\Facades\View;
+
+class Slideshow extends Chunk
 {
     protected $_type = 'slideshow';
 
     public function edit()
     {
-        $chunk = Chunk::find('slideshow', $this->request->query('slotname'), $this->page->getCurrentVersion());
+        $chunk = ChunkFacade::get('slideshow', $this->request->query('slotname'), $this->page);
 
-        return View::make('boom/editor/slot/slideshow', [
-            'slides' => $chunk->slides(),
+        return View::make('boom::editor.chunk.slideshow', [
+            'slides' => $chunk->getSlides(),
         ]);
     }
 

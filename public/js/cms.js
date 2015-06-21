@@ -35927,7 +35927,7 @@ $.widget('ui.chunkTag', $.ui.chunk,
 
 	boomChunkSlideshowEditor.prototype._getSlideDetails = function($element) {
 		return {
-			asset_id : $element.siblings('img').attr('src').replace('/asset/view/', ''),
+			asset_id : $element.attr('data-asset'),
 			url : $element.data('url'),
 			page : $element.data('page'),
 			caption : $element.data('caption'),

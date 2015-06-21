@@ -89,6 +89,7 @@ Route::group(['middleware' => [
 				Route::post('save/{page}', 'Chunk@save');
                 Route::get('feature/edit/{page}', 'Feature@edit');
                 Route::get('asset/edit/{page}', 'Asset@edit');
+                Route::get('slideshow/edit/{page}', 'Slideshow@edit');
 			});
 
 			Route::group(['prefix' => 'page', 'namespace' => 'Page'], function() {
@@ -152,8 +153,8 @@ Route::group(['middleware' => [
 
 Route::any('{location}', [
     'middleware' => [
-        'BoomCMS\Core\Http\Middleware\InsertCMSToolbar',
         'BoomCMS\Core\Http\Middleware\ProcessSiteURL',
+        'BoomCMS\Core\Http\Middleware\InsertCMSToolbar',
     ],
     'uses' => 'BoomCMS\Core\Controllers\Page@show',
 ])->where(['location' => '.*']);

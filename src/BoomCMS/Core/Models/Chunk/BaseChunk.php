@@ -14,6 +14,7 @@ class BaseChunk extends Model
     public function scopeGetSingleChunk($query, Version $version, $slotname)
     {
         return $query
+            ->withRelations()
             ->where('slotname', '=', $slotname)
             ->where('page_vid', '<=', $version->getId())
             ->where('page_id', '=', $version->getPageId())
@@ -42,4 +43,9 @@ class BaseChunk extends Model
 
 		return $query;
 	}
+
+    public function scopeWithRelations($query)
+    {
+        return $query;
+    }
 }

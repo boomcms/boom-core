@@ -29,16 +29,18 @@ class PermissionsProvider
             $role = 'p_' . $role;
         }
 
-        $pageId = $page->getId();
-
         do {
             $result = $this->doLookup($person->getId(), $role, $page->getId());
+
+            if ($page->getParentId() === null) {
+                break;
+            }
 
             if ($result === null) {
                 $page = $page->getParent();
             }
 
-        } while ($result === null && $page && $page->loaded());
+        } while ($result === null);
 
         return (bool) $result;
     }
