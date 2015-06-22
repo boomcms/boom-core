@@ -50,6 +50,8 @@ class CoreServiceProvider extends ServiceProvider
 	 */
     public function register()
     {
-        $this->mergeConfigFrom(__DIR__ . '/../../config/boomcms.php', 'boomcms');
+        $this->mergeConfigFrom(__DIR__ . '/../../config/boomcms/menu.php', 'boomcms');
+        $this->mergeConfigFrom(__DIR__ . '/../../config/boomcms/htmlpurifier.php', 'boomcms');
+        $this->mergeConfigFrom(__DIR__ . '/../../config/boomcms/text_editor_toolbar.php', 'boomcms');
     }
 }
