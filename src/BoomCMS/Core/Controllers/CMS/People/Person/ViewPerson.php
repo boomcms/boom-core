@@ -39,7 +39,6 @@ class ViewPerson extends BasePerson
             'person' => $this->editPerson,
             'request' => $this->request,
             'groups' => $this->editPerson->getGroups(),
-            'activities' => [],
         ]);
     }
 }

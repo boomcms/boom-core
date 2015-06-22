@@ -2,7 +2,6 @@
 	<div class="boom-tabs">
 		<ul>
 			<li><a href="#b-person-view-information<?= $person->getId() ?>">Information</a></li>
-			<li><a href="#b-person-view-activity<?= $person->getId() ?>">Activity</a></li>
 			<li><a href="#b-person-view-groups<?= $person->getId() ?>">Groups</a></li>
 		</ul>
 
@@ -32,31 +31,6 @@
 					<?= $button('delete', Lang::get('Delete'), ['id' => 'b-person-delete']) ?>
 				</div>
 			</form>
-		</div>
-
-		<div id="b-person-view-activity<?= $person->getId() ?>">
-			<?php if (count($activities) > 0): ?>
-				<table width="100%">
-					<thead>
-						<th>Time</th>
-						<th>Activity</th>
-						<th>Note</th>
-					</thead>
-					<tbody>
-						<?php foreach ($activities as $al): ?>
-							<tr>
-								<td><?= date('d F Y H:i:s', $al->time) ?></td>
-								<td><?= $al->activity ?></td>
-								<td><?= $al->note ?></td>
-							</tr>
-						<?php endforeach ?>
-					</tbody>
-				</table>
-			<?php else: ?>
-				<p>
-					(No activity logged)
-				</p>
-			<?php endif ?>
 		</div>
 
 		<div id="b-person-view-groups<?= $person->getId() ?>">
