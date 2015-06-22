@@ -34,10 +34,6 @@ abstract class BaseController extends Controller
         $this->auth = $auth;
         $this->asset = $asset;
         $this->response = new Response();
-
-        if ( ! $this->asset->isVisible() && ! $this->auth->isLoggedIn()) {
-            abort(404);
-        }
     }
 
     public function before()

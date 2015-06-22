@@ -195,19 +195,9 @@ abstract class Asset implements Arrayable
         return new \DateTime('@' . $this->get('uploaded_time'));
     }
 
-    public function getVisibleFrom()
-    {
-        return new \DateTime('@' . $this->get('visible_from'));
-    }
-
     public function isImage()
     {
         return false;
-    }
-
-    public function isVisible()
-    {
-        return $this->getVisibleFrom()->getTimestamp() < time();
     }
 
     public function loaded()
@@ -346,13 +336,6 @@ abstract class Asset implements Arrayable
     public function setUploadedBy(Person\Person $person)
     {
         $this->attributes['uploaded_by'] = $person->getId();
-
-        return $this;
-    }
-
-    public function setVisibleFrom(DateTime $time)
-    {
-        $this->attributes['visible_from'] = $time->getTimestamp();
 
         return $this;
     }

@@ -175,7 +175,6 @@ class AssetManager extends Controller
         $asset
             ->setTitle($this->request->input('title'))
             ->setDescription($this->request->input('description'))
-            ->setVisiblefrom(new DateTime($this->request->input('visible_from')))
             ->setCredits($this->request->input('credits'))
             ->setThumbnailAssetId($this->request->input('thumbnail_asset_id'));
 
@@ -204,7 +203,6 @@ class AssetManager extends Controller
                 $asset = Asset\Asset::factory(['type' => $mime->getType()]);
                 $asset
                     ->setUploadedBy($this->auth->getPerson())
-                    ->setVisibleFrom($now)
                     ->setLastModified($now)
                     ->setTitle($file->getClientOriginalName())
                     ->setFilename($file->getClientOriginalName())
