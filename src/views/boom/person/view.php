@@ -9,23 +9,23 @@
 		<div id="b-person-view-information<?= $person->getId() ?>">
 			<form>
 				<label>
-                                    Name
-                                    <input type="text" name="name" value="<?= $person->getName() ?>" />
-                                </label>
+					Name
+					<input type="text" name="name" value="<?= $person->getName() ?>" />
+				</label>
 
-                                <label for="person-email">
-                                    Email
-                                    <input type="text" name="email" disabled="disabled" value="<?= $person->getEmail() ?>" />
-                                </label>
+				<label for="person-email">
+					Email
+					<input type="text" name="email" disabled="disabled" value="<?= $person->getEmail() ?>" />
+				</label>
 
-                                <label for='person-status'>
-                                    Status
+				<label for='person-status'>
+					Status
 
-                                    <select name="enabled" id="person-status">
-                                        <option value="0"<?php if ( ! $person->isEnabled()): ?> selected="selected"<?php endif ?>>Disabled</option>
-                                        <option value="1"<?php if ($person->isEnabled()): ?> selected="selected"<?php endif ?>>Enabled</option>
-                                    </select>
-                                </label>
+					<select name="enabled" id="person-status">
+						<option value="0"<?php if ( ! $person->isEnabled()): ?> selected="selected"<?php endif ?>>Disabled</option>
+						<option value="1"<?php if ($person->isEnabled()): ?> selected="selected"<?php endif ?>>Enabled</option>
+					</select>
+				</label>
 
 				<div>
 					<?= $button('accept', Lang::get('Save'), ['id' => 'b-person-save', 'class' => 'b-people-save']) ?>
