@@ -36,11 +36,6 @@
                     <textarea id="credits" name="credits"><?= $asset->getCredits() ?></textarea>
                 </label>
 
-                <label>
-                    <?= Lang::get('Visible from') ?>
-                    <input type="text" id="visible_from" name="visible_from" class="boom-datepicker" value="<?= $asset->getVisibleFrom()->format('d F Y h:m') ?>" />
-                </label>
-
                 <?php if ( ! $asset instanceof \Boom\Asset\Type\Image): ?>
                     <label for="thumbnail">Thumbnail
                         <input type="text" id="thumbnail" name="thumbnail_asset_id" value="<?= $asset->getThumbnailAssetId() ?>" size="4" />
