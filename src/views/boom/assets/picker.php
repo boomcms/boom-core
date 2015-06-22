@@ -30,8 +30,8 @@
                 <select name="types" id="b-assets-types">
                     <option value="0">Filter by type</option>
 
-                    <?php foreach (\BoomCMS\Core\Asset\Type::whichExist() as $key => $type): ?>
-                        <option value="<?= $key ?>"><?= $type ?></option>
+                    <?php foreach (\BoomCMS\Core\Asset\Type::whichExist() as $type): ?>
+                        <option value="<?= $type ?>"><?= $type ?></option>
                     <?php endforeach ?>
                 </select>
             </div>
