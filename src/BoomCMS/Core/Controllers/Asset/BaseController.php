@@ -67,13 +67,4 @@ abstract class BaseController extends Controller
     }
 
     abstract public function thumb($width = null, $height = null);
-
-//    public function download()
-//    {
-//        if ( ! $this->auth->isLoggedIn()) {
-//            $this->asset->logDownload(Request::$client_ip);
-//        }
-//
-//        $this->response = $this->processor->download();
-//    }
 }
