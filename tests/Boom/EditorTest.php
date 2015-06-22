@@ -15,7 +15,7 @@ class EditorTest extends TestCase
         $this->session = $this->getMockSession();
         $provider = $this->getMock('BoomCMS\Core\Person\Provider');
         $permissionsProvider = $this->getMock('BoomCMS\Core\Auth\PermissionsProvider');
-        $this->auth = $this->getMock('BoomCMS\Core\Auth\Auth', ['getPerson', 'loggedIn'], [$this->session, $provider, $permissionsProvider, $this->getMockCookieJar()]);
+        $this->auth = $this->getMock('BoomCMS\Core\Auth\Auth', ['getPerson', 'loggedIn'], [$this->session, $provider, $permissionsProvider]);
 
         $this->auth
             ->expects($this->any())

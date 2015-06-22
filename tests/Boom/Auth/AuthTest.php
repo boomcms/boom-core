@@ -2,7 +2,7 @@
 
 use BoomCMS\Core\Auth;
 use BoomCMS\Core\Person;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cookie;
 
 class Auth_AuthTest extends TestCase
 {
@@ -10,7 +10,6 @@ class Auth_AuthTest extends TestCase
     {
 		$person = new Person\Person([]);
         $session = $this->getMockSession();
-        $cookie = $this->getMockCookieJar();
         $permissions = $this->getMockPermissionsProvider();
 
 		$auth = $this->getMockBuilder('BoomCMS\Core\Auth\Auth')
@@ -18,8 +17,7 @@ class Auth_AuthTest extends TestCase
 			->setConstructorArgs([
 				$session,
 				$this->getMockPersonProvider(),
-				$permissions,
-				$cookie
+				$permissions
 			])
 			->getMock();
 
@@ -38,10 +36,13 @@ class Auth_AuthTest extends TestCase
             ->method('remove')
             ->with($this->equalTo($auth->getSessionKey()));
 
-        $cookie
-            ->expects($this->once())
-            ->method('forget')
-            ->with($this->equalTo('boomcms_autologin'));
+        Cookie::shouldReceive('queue')
+            ->once();
+
+        Cookie::shouldReceive('forget')
+            ->once()
+            ->with('boomcms_autologin')
+            ->andReturnSelf();
 
         $auth->logout();
         $this->assertFalse($auth->isLoggedIn());
@@ -51,7 +52,7 @@ class Auth_AuthTest extends TestCase
     {
         $person = new Person\Person(['id' => 1]);
         $session = $this->getMockSession();
-        $auth = new Auth\Auth($session, $this->getMockPersonProvider(), $this->getMockPermissionsProvider(), $this->getMockCookieJar());
+        $auth = new Auth\Auth($session, $this->getMockPersonProvider(), $this->getMockPermissionsProvider());
 
         $session
             ->expects($this->once())
@@ -67,7 +68,7 @@ class Auth_AuthTest extends TestCase
 
         $auth = $this->getMockBuilder('BoomCMS\Core\Auth\Auth')
             ->setMethods(['refreshRememberLoginToken', 'rememberLogin'])
-            ->setConstructorArgs([$this->getMockSession(), $this->getMockPersonProvider(), $this->getMockPermissionsProvider(), $this->getMockCookieJar()])
+            ->setConstructorArgs([$this->getMockSession(), $this->getMockPersonProvider(), $this->getMockPermissionsProvider()])
             ->getMock();
 
 		$auth
@@ -108,8 +109,7 @@ class Auth_AuthTest extends TestCase
 
         $auth = new Auth\Auth($this->getMockSession(),
 			$personProvider,
-			$this->getMockPermissionsProvider(),
-			$this->getMockCookieJar()
+			$this->getMockPermissionsProvider()
 		);
 
 		$auth->refreshRememberLoginToken($person);
@@ -118,25 +118,20 @@ class Auth_AuthTest extends TestCase
     public function testRememberLogin()
     {
 		$person = new Person\Person(['id' => 1, 'remember_token' => 'token']);
-		$cookie = $this->getMockCookieJar();
 
 		$auth = $this->getMockBuilder('BoomCMS\Core\Auth\Auth')
 			->setConstructorArgs([
 				$this->getMockSession(),
 				$this->getMockPersonProvider(),
-				$this->getMockPermissionsProvider(),
-				$cookie
+				$this->getMockPermissionsProvider()
 			])
 			->setMethods(['saveRememberLoginToken'])
 			->getMock();
 
-        $cookie
-            ->expects($this->once())
-            ->method('forever')
-            ->with($this->equalTo(
-				$auth->getAutoLoginCookie()),
-				$person->getId() . '-' . $person->getRememberToken()
-			);
+        Cookie::shouldReceive('queue')->once();
+        Cookie::shouldReceive('forever')
+            ->once()
+            ->with($auth->getAutoLoginCookie(), $person->getId() . '-' . $person->getRememberToken());
 
         $auth->rememberLogin($person);
     }
@@ -147,8 +142,7 @@ class Auth_AuthTest extends TestCase
 
 		$auth = new Auth\Auth($this->getMockSession(),
 			$provider,
-			$this->getMockPermissionsProvider(),
-			$this->getMockCookieJar()
+			$this->getMockPermissionsProvider()
 		);
 
 		$this->assertEquals($provider, $auth->getProvider());
@@ -164,8 +158,7 @@ class Auth_AuthTest extends TestCase
 			->setConstructorArgs([
 				$this->getMockSession(),
 				$provider,
-				$this->getMockPermissionsProvider(),
-				$this->getMockCookieJar()
+				$this->getMockPermissionsProvider()
 			])
 			->setMethods(['login'])
 			->getMock();
@@ -174,7 +167,7 @@ class Auth_AuthTest extends TestCase
             ->expects($this->once())
             ->method($this->equalTo('cookie'))
             ->with($auth->getAutoLoginCookie())
-            ->will($this->returnValue('test'));
+            ->will($this->returnValue('1-test'));
 
         $provider
             ->expects($this->once())
@@ -198,8 +191,7 @@ class Auth_AuthTest extends TestCase
 			->setConstructorArgs([
 				$this->getMockSession(),
 				$provider,
-				$this->getMockPermissionsProvider(),
-				$this->getMockCookieJar()
+				$this->getMockPermissionsProvider()
 			])
 			->setMethods(['login'])
 			->getMock();
@@ -229,8 +221,7 @@ class Auth_AuthTest extends TestCase
 			->setConstructorArgs([
 				$this->getMockSession(),
 				$provider,
-				$this->getMockPermissionsProvider(),
-				$this->getMockCookieJar()
+				$this->getMockPermissionsProvider()
 			])
 			->setMethods(['login'])
 			->getMock();
@@ -239,7 +230,7 @@ class Auth_AuthTest extends TestCase
             ->expects($this->once())
             ->method($this->equalTo('cookie'))
             ->with($auth->getAutoLoginCookie())
-            ->will($this->returnValue('test'));
+            ->will($this->returnValue('1-test'));
 
         $provider
             ->expects($this->once())

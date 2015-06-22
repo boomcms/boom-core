@@ -107,7 +107,7 @@ class LoggedInTest extends TestCase
     protected function getAuth($person, $permissionsProvider)
     {
         $auth = $this->getMockBuilder('BoomCMS\Core\Auth\Auth')
-            ->setConstructorArgs([$this->getMockSession(), $this->getMockPersonProvider(), $permissionsProvider, $this->getMockCookieJar()])
+            ->setConstructorArgs([$this->getMockSession(), $this->getMockPersonProvider(), $permissionsProvider])
             ->setMethods(['isLoggedIn', 'getPerson'])
             ->getMock();
 
