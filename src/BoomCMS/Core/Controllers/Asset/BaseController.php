@@ -36,14 +36,6 @@ abstract class BaseController extends Controller
         $this->response = new Response();
     }
 
-    public function before()
-    {
-        if ($this->enable_caching) {
-            $this->response->headers('Cache-Control', 'public, max-age='.$this->max_age);
-            HTTP::check_cache($this->request, $this->response, $this->asset->getLastModified()->getTimestamp());
-        }
-    }
-
     public function download()
     {
         return $this->response->download($this->asset->getFilename());
