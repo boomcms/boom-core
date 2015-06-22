@@ -235,7 +235,7 @@ $.widget('boom.assetManager', {
 		// The filters bar will now be higher so move the content box down.
 		// Filters bar is position: fixed so this won't happen automatically.
 		var $filters = this.element.find('#b-assets-filters');
-		this.element.find('#b-assets-content').css('padding-top', parseFloat($filters.css('top')) + $filters.outerHeight() + 'px');
+		this.element.find('#b-assets-content').css('padding-top', $filters.outerHeight() + ($filters.offset().top) + 'px');
 	},
 
 	updateTagFilters : function(tags) {

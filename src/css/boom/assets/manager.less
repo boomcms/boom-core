@@ -9,14 +9,14 @@
 
 	#b-assets-filters {
 		position: fixed;
-		top: 0;
+		top: -10px;
 		left: 0;
 		right: 0;
 		z-index: 2;
 		height: auto;
 		min-height: 60px;
 		background: @lightest-grey;
-		padding-left: 3px;
+		padding: 5px 0 5px 3px;
 
 		> * {
 			vertical-align: top;
@@ -34,7 +34,7 @@
 
 	#b-assets-content {
 		.box-sizing;
-		padding-top: 120px;
+		padding-top: 135px;
 		min-height: 100vh;
 	}
 
@@ -97,4 +97,8 @@
 			bottom: 2em;
 		}
 	}
+}
+
+html.boom body.pushy-active .b-toolbar + #b-assets-filters {
+	margin-top: 70px;
 }
