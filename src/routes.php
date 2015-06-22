@@ -139,6 +139,15 @@ Route::group(['middleware' => [
 
     Route::post('page/children', 'BoomCMS\Core\Controllers\Page@children');
 
+	Route::get('asset/download/{asset}', [
+		'asset' => 'asset-download',
+		'middleware' => [
+			'BoomCMS\Core\Http\Middleware\LogAssetDownload',
+		],
+        'uses' => function(BoomCMS\Core\Auth\Auth $auth, $asset) {
+            return App::make('BoomCMS\Core\Controllers\Asset\\' . class_basename($asset), [$auth, $asset])->download();
+        }
+	]);
     Route::get('asset/{action}/{asset}/{width?}/{height?}', [
         'as' => 'asset',
 		'middleware' => [

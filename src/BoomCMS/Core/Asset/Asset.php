@@ -4,7 +4,6 @@ namespace BoomCMS\Core\Asset;
 
 use BoomCMS\Core\Person;
 use DateTime;
-use Date;
 
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Facades\DB;
@@ -194,6 +193,17 @@ abstract class Asset implements Arrayable
     {
         return new \DateTime('@' . $this->get('uploaded_time'));
     }
+	
+	public function incrementDownloads()
+	{
+		if ($this->loaded()) {
+			DB::table('assets')
+				->where('id', '=', $this->getId())
+				->update([
+					'downloads' => DB::raw('downloads + 1')
+				]);
+		}
+	}
 
     public function isImage()
     {
@@ -203,36 +213,6 @@ abstract class Asset implements Arrayable
     public function loaded()
     {
         return $this->getId() > 0;
-    }
-
-    public function logDownload($ip)
-    {
-        $ip = ip2long($ip);
-
-        $logged = DB::select(DB::raw("1"))
-            ->from('asset_downloads')
-            ->where('ip', '=', $ip)
-            ->where('asset_id', '=', $this->getId())
-            ->where('time', '>=', time() - Date::MINUTE * 10)
-            ->limit(1)
-            ->execute()
-            ->as_array();
-
-        if ( ! count($logged)) {
-            ORM::factory('Asset_Download')
-                ->values([
-                    'asset_id' => $this->getId(),
-                    'ip' => $ip,
-                ])
-                ->create();
-
-            DB::update('assets')
-                ->set(['downloads' => DB::raw('downloads + 1')])
-                ->where('id', '=', $this->getId())
-                ->execute();
-        }
-
-        return $this;
     }
 
     /**

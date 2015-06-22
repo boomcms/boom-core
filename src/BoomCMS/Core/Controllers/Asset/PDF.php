@@ -25,7 +25,6 @@ class PDF extends BaseController
 
     public function embed()
     {
-        return $this->response
-            ->body("<a class='b-asset-embed' href='/asset/view/{$this->asset->getId()}'>{$this->asset->getTitle()}</a>");
+        return "<a class='b-asset-embed' href='/asset/view/{$this->asset->getId()}'>{$this->asset->getTitle()}</a>";
     }
 }

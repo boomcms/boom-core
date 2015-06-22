@@ -1,26 +1,20 @@
 <?php
 
-namespace BoomCMS\Core\Model\Asset;
+namespace BoomCMS\Core\Models\Asset;
 
 use Illuminate\Database\Eloquent\Model;
 
 class Download extends Model
 {
-    protected $_belongs_to = [
-        'asset'        =>    [],
-    ];
-
-    protected $_created_column = [
-        'column'    =>    'time',
-        'format'    =>    true,
-    ];
-
-    protected $_table_columns = [
-        'id' => '',
-        'asset_id' => '',
-        'time' => '',
-        'ip' => '',
-    ];
-
+    public $guarded = ['id'];
     protected $table = 'asset_downloads';
+	public $timestamps = false;
+	
+	public function scopeRecentlyLogged($query, $assetId, $ip)
+	{
+		return $query
+			->where('ip', '=', $ip)
+			->where('asset_id', '=', $assetId)
+			->where('time', '>=', time() - 600);
+	}
 }

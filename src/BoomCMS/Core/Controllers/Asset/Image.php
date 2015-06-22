@@ -64,8 +64,7 @@ class Image extends BaseController
 
     public function embed()
     {
-       return $this->response
-            ->body("<img src='/asset/view/{$this->asset->getId()}' />");
+       return "<img src='/asset/view/{$this->asset->getId()}' />";
 
     }
 }

@@ -20,18 +20,17 @@ abstract class BaseController extends Controller
     {
         $this->auth = $auth;
         $this->asset = $asset;
-        $this->response = new Response();
+		$this->response = new Response();
     }
 
     public function download()
     {
-        return $this->response->download($this->asset->getFilename());
+        return response()->download($this->asset->getFilename());
     }
 
     public function embed()
     {
-        return $this->response
-            ->body("<a class='download' href='/asset/view/{$this->asset->getId()}'>{$this->asset->getTitle()}</a>");
+        return "<a class='download' href='/asset/view/{$this->asset->getId()}'>{$this->asset->getTitle()}</a>";
     }
 
     public function view($width = null, $height = null)
