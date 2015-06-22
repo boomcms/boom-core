@@ -141,6 +141,7 @@ Route::group(['middleware' => [
 
     Route::get('asset/{action}/{asset}/{width?}/{height?}', [
         'as' => 'asset',
+		'middleware' => ['BoomCMS\Core\Http\Middleware\CheckAssetETag'],
         'uses' => function(BoomCMS\Core\Auth\Auth $auth, $action, $asset = null, $width = null, $height = null) {
             if ( ! $asset) {
                 abort(404);
