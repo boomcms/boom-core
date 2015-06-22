@@ -33992,12 +33992,9 @@ boomPage.prototype.childsettings = function() {
 			$('select[name="children_ordering_policy"]').on('change', function(){
 				var reorder_link = $('#b-page-settings-children-reorder');
 
-				if ($(this).val() == 'sequence')
-				{
+				if ($(this).val() == 'sequence') {
 					reorder_link.removeClass('ui-helper-hidden');
-				}
-				else
-				{
+				} else {
 					reorder_link.addClass('ui-helper-hidden');
 				}
 			});

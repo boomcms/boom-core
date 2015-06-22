@@ -96,9 +96,7 @@ class Save extends Settings
     {
         parent::children();
 
-        Database::instance()->begin();
         $this->page->updateChildSequences($this->request->input('sequences'));
-        Database::instance()->commit();
     }
 
     public function visibility()

@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Core\Controllers\CMS\Page\Settings;
 
-use BoomCMS\Core\Template;
+use BoomCMS\Core\Page\Finder as PageFinder;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\View as ViewFacade;
 
@@ -78,10 +78,10 @@ class View extends Settings
     {
         parent::children();
 
-        $finder = new PageFinder();
+        $finder = new PageFinder\Finder();
 
         $children = $finder
-            ->addFilter(new PageFinder\Filter\ParentPage($this->page))
+            ->addFilter(new PageFinder\ParentPage($this->page))
             ->setLimit(50)
             ->findAll();
 

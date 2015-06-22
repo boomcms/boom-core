@@ -747,14 +747,15 @@ class Page
     public function updateChildSequences(array $sequences)
     {
         foreach ($sequences as $sequence => $pageId) {
-            $mptt = new \Model_Page_Mptt($pageId);
+            $page = PageFacade::findById($pageId);
 
             // Only update the sequence of pages which are children of this page.
-            if ($mptt->scope == $this->model->mptt->scope && $mptt->parent_id == $this->getId()) {
-                \DB::update('pages')
-                    ->set(['sequence' => $sequence])
-                    ->where('id', '=', $pageId)
-                    ->execute();
+            if ($page->getParentId() == $this->getId()) {
+				DB::table('pages')
+					->where('id', '=', $pageId)
+					->update([
+						'sequence' => $sequence
+					]);
             }
         }
 
