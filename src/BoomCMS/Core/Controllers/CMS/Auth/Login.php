@@ -17,7 +17,11 @@ class Login extends Controller
     public function processLogin()
     {
         try {
-            $this->auth->authenticate($this->request->input('email'), $this->request->input('password'));
+            $this->auth->authenticate(
+                $this->request->input('email'),
+                $this->request->input('password'),
+                $this->request->input('remember') == 1
+            );
         } catch (Auth\PersonNotFoundException $e) {
             return $this->displayLoginForm(['login_error' => Lang::get('Invalid email address or password')]);
         } catch (Auth\PersonSuspendedException $e) {
