@@ -199,5 +199,6 @@ return [
         'Settings' => 'BoomCMS\Core\Facades\Settings',
         'Chunk' => 'BoomCMS\Core\Facades\Chunk',
         'Page' => 'BoomCMS\Core\Facades\Page',
+        'Editor' => 'BoomCMS\Core\Facades\Editor',
     ],
 ];
