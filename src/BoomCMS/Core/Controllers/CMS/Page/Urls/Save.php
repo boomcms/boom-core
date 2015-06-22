@@ -18,7 +18,6 @@ class Save extends BaseController
             return ['existing_url_id' => $this->url->getId()];
         } elseif ( ! $this->url->loaded()) {
             $this->provider->create($location, $this->page->getId());
-            $this->log("Added secondary url $location to page " . $this->page->getTitle() . "(ID: " . $this->page->getId() . ")");
         }
     }
 

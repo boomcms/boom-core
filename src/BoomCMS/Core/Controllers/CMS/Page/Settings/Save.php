@@ -10,8 +10,6 @@ class Save extends Settings
     {
         parent::admin();
 
-        $this->log("Saved admin settings for page " . $this->page->getTitle() . " (ID: " . $this->page->getId() . ")");
-
         $this->page->setInternalName($this->request->input('internal_name'));
         $this->provider->save($this->page);
     }
@@ -21,8 +19,6 @@ class Save extends Settings
         parent::children();
 
         $post = $this->request->input();
-
-        $this->log("Saved child page settings for page ".$this->page->getTitle()." (ID: ".$this->page->getId().")");
 
         $this->page->setChildTemplateId($this->request->input('children_template_id'));
 
@@ -60,8 +56,6 @@ class Save extends Settings
     {
         parent::feature();
 
-        $this->log("Updated the feature image of page " . $this->page->getTitle() . " (ID: " . $this->page->getId() . ")");
-
         $this->page->setFeatureImageId($this->request->input('feature_image_id'));
         $this->provider->save($this->page);
     }
@@ -74,8 +68,6 @@ class Save extends Settings
             $this->page->setParentId($this->request->input('parent_id'));
         }
 
-        $this->log("Saved navigation settings for page " . $this->page->getTitle() . " (ID: " . $this->page->getId() . ")");
-
         $this->page
             ->setVisibleInNav($this->request->input('visible_in_nav'))
             ->setVisibleInCmsNav($this->request->input('visible_in_nav_cms'));
@@ -86,8 +78,6 @@ class Save extends Settings
     public function search()
     {
         parent::search();
-
-        $this->log("Saved search settings for page " . $this->page->getTitle() . " (ID: " . $this->page->getId() . ")");
 
         $this->page
             ->setDescription($this->request->input('description'))

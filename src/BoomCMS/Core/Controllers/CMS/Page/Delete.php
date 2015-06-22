@@ -34,8 +34,6 @@ class Delete extends PageController
 	}
 	
 	public function delete() {
-		$this->log("Deleted page " . $this->page->getTitle() . " (ID: " . $this->page->getId() . ")");
-
 		$parentUrl = $this->page->getParent()->url();
 		
 		if ($this->request->input('with_children') == 1) {
