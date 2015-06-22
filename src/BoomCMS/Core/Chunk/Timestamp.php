@@ -23,7 +23,7 @@ class Timestamp extends BaseChunk
     {
         return [
             $this->attributePrefix.'timestamp' => $this->getTimestamp(),
-            $this->attributePrefix.'format' => $this->_getFormat(),
+            $this->attributePrefix.'format' => $this->getFormat(),
         ];
     }
 
