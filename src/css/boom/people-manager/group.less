@@ -1,10 +1,15 @@
 #b-group-edit {
 	&-name {
 		.text-default;
-		background: @lightest-grey;
+		background: @grey;
 		margin-bottom: 0.5em;
 		height: 50px;
 		padding: 0.5em;
+
+		fieldset {
+			padding: 0;
+			margin: 0;
+		}
 
 		label {
 			display: inline-block;
@@ -13,7 +18,7 @@
 		input {
 			margin-left: 1em;
 			vertical-align: top;
-			margin-top: 0;
+			margin-top: 5px;
 		}
 
 		button {
@@ -41,7 +46,6 @@
 
 	&-permissions {
 		padding: 9.75px;
-		background: #444;
 
 		h2 {
 			.text-default;
@@ -49,21 +53,12 @@
 		}
 
 		> ul {
-			background: #444;
 			padding-left: 1em;
-
-			> li {
-				background: #ccc;
-
-				&.ui-state-active {
-					background: @lightest-grey;
-				}
-			}
 		}
 
 		#b-group-roles-general, #b-group-roles-pages {
 			display: none;
-			background: @lightest-grey;
+			background: @grey;
 			padding-left: 2em;
 			overflow: hidden;
 

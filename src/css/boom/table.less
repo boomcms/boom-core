@@ -3,7 +3,7 @@
 	border: 0;
 
 	thead {
-		background: #222;
+		background: @darkest-grey;
 	}
 
 	tr, td, th {
@@ -19,12 +19,14 @@
 		color: white;
 	}
 
-	.odd {
-		background: #eeeeee;
-	}
+	tbody tr {
+		&:nth-of-type(odd) {
+			background: @white;
+		}
 
-	.even {
-		background: #bbbbbb;
+		&:nth-of-type(even) {
+			background: @lightest-grey;
+		}
 	}
 
 	a {

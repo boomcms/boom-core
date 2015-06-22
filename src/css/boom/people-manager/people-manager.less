@@ -28,7 +28,7 @@
 			width: 100%;
 
 			thead {
-				background: @lightest-grey;
+				background: @darkest-grey;
 
 				tr th {
 					.text-default;
@@ -38,14 +38,6 @@
 					font-weight: normal;
 					text-transform: uppercase;
 				}
-			}
-
-			tbody:before {
-				line-height: 0.5em;
-				content: "-";
-				color: white; /* to hide text */
-				background: white;
-				display: block;
 			}
 		}
 	}
@@ -57,17 +49,17 @@
 
 		&-header {
 			.text-default;
-			background: @lightest-grey;
+			background: @darkest-grey;
 			height: 50px;
 			padding: 0.5em;
 
 			button {
 				float: right;
-				background-color: #222;
+				background-color: @grey;
 				margin-top: 0;
 
 				&:hover, &:focus, &:active {
-					background-color: #555;
+					background-color: @dark-grey;
 				}
 			}
 
@@ -93,7 +85,7 @@
 				border-bottom: 1px solid #eee;
 
 				&:hover, &:focus, &:active, &.current {
-					background: @lightest-grey;
+					background: @grey;
 				}
 
 				.ui-icon {
