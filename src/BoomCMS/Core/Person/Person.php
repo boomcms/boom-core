@@ -227,6 +227,13 @@ class Person implements Arrayable, CanResetPassword
 
         return $this;
     }
+	
+	public function setSuperuser($superuser)
+	{
+		$this->data['superuser'] = $superuser;
+		
+		return $this;
+	}
 
     /**
      *
