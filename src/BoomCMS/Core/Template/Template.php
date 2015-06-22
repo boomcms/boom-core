@@ -3,6 +3,7 @@
 namespace BoomCMS\Core\Template;
 
 use BoomCMS\Core\Theme\Theme;
+use BoomCMS\Core\Page\Finder;
 
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\View;
@@ -22,7 +23,10 @@ class Template
 
     public function countPages()
     {
-        return 'TODO';
+		$finder = new Finder\Finder();
+		$finder->addFilter(new Finder\Template($this));
+		
+		return $finder->count();
     }
 
     public function fileExists()

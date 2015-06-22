@@ -23,6 +23,9 @@ $.widget('boom.templateManager', {
 				$.post('/cms/templates/save', data, function(){
 					new boomNotification('Templates successfully saved.');
 				});
+			})
+			.on('click', '#b-template-pages-download', function() {
+				window.location.href = window.location.href + '.csv';
 			});
 	},
 
