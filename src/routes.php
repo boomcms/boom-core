@@ -31,8 +31,8 @@ Route::group(['middleware' => [
             Route::get('editor/toolbar', 'Editor@toolbar');
             Route::post('editor/state', 'Editor@state');
 
-            Route::get('profile', 'Auth\Profile@index');
-            Route::post('profile', 'Auth\Profile@save');
+            Route::get('account', 'Auth\Account@view');
+            Route::post('account', 'Auth\Account@save');
 
             Route::group(['prefix' => 'assets', 'namespace' => 'Assets'], function () {
                 Route::get('', 'AssetManager@index');

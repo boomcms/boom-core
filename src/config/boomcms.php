@@ -28,8 +28,8 @@ return [
                 'priority'    =>    6,
             ],
             'profile'        =>    [
-                'title'        =>    'Profile',
-                'url'        =>    '/cms/profile',
+                'title'        =>    'Manage Account',
+                'url'        =>    '/cms/account',
                 'priority'    =>    99,
             ],
             'logout'        =>    [
