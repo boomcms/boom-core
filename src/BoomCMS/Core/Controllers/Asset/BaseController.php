@@ -16,19 +16,6 @@ abstract class BaseController extends Controller
      */
     protected $asset;
 
-    public $enable_caching = true;
-
-    /**
-	 * The value to use for the max-age header.
-     *
-     * 100800 = 4 weeks.
-	 *
-	 * @var integer
-	 */
-    public $max_age = 100800;
-
-    protected $response;
-
     public function __construct(Auth\Auth $auth, Asset\Asset $asset)
     {
         $this->auth = $auth;
