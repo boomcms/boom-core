@@ -13,19 +13,10 @@
 	&-container {
 		padding: 0;
 		width: 320px;
-
-		ul li a {
-			line-height: 25px;
-		}
-	}
-
-	&-hitarea {
-		margin: 1px 0 0 1px;
-		cursor: pointer !important;
 	}
 
 	ul {
-		margin: 0 0 0 1.4em;
+		margin: 0 0 0 2em;
 		padding: 0;
 	}
 
@@ -36,6 +27,7 @@
 		overflow: hidden;
 		min-height: 30px;
 		background-color: #444;
+		font-weight: normal;
 
 		ul {
 			clear:left;
@@ -47,10 +39,39 @@
 		}
 
 		span {
-			width: 30px;
+			width: 40px;
+			height: 40px;
+			float: left;
+			display: inline-block;
+			position: relative;
+			margin: 0;
+			cursor: pointer !important;
+
+			&:before {
+				.text-large;
+				position: absolute;
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				line-height: 40px;
+				content: '+';
+				text-align: center;
+				color: @lightest-grey;
+			}
+
+			&.expanded:before {
+				content: '‒';
+			}
 
 			&:hover, &:focus {
-				background-color: @dark-grey;
+				&:before {
+					color: @red;
+				}
+			}
+
+			+ a {
+				padding-left: 0;
 			}
 		}
 
@@ -58,31 +79,25 @@
 			display: block;
 			padding: .2em;
 			outline: none;
-			line-height: 30px;
+			line-height: 40px;
 			border: 0px;
 			border-bottom: 1px solid #eee;
 			text-decoration: none;
+			height: 40px;
+			padding: 0;
+			padding-left: 40px;
 
-			&:hover {
-				color: #fff;
+			&:last-of-type {
+				border-bottom: 0;
+			}
+
+			&:hover, &:focus {
+				color: @red;
 			}
 
 			&.ui-state-active {
 				font-weight: normal;
 			}
-		}
-
-		.ui-icon {
-			float: left;
-			cursor: default;
-			border: 0;
-			margin-right: 3px;
-			height: 30px;
-		}
-
-		.ui-helper-right {
-			float: right;
-			cursor: pointer;
 		}
 
 		.ui-icon-placeholder {

@@ -55,6 +55,7 @@ $.widget('boom.pageTree', {
 					.appendTo( children );
 
 				$('<a></a>')
+					.attr('target', '_blank')
 					.attr('href', item.url)
 					.attr('data-page-id', item.id)
 					.text(item.title)
@@ -71,7 +72,7 @@ $.widget('boom.pageTree', {
 			});
 
 			var parent_id = $('input[name=parent_id]').val();
-			children.find('[data-page-id=' + parent_id + ']').addClass('ui-state-active');
+			children.find('[data-page-id=' + page_id + ']').addClass('ui-state-active');
 
 			list_ready.resolve( { childList: children } );
 		});

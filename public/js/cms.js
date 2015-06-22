@@ -27595,23 +27595,15 @@ $.widget('ui.tree',
 		var self = this;
 
 		$('<span />')
-			.addClass('boom-tree-hitarea ui-icon ui-icon-triangle-1-e')
+			.addClass('b-tree-toggle boom-tree-hitarea')
 			.bind('boom-tree.toggle', function(){
 				self.toggle( $item );
 			})
 			.click(function(event){
 				self._trigger('toggle', event, { hitarea: this });
 
-				$( this ).trigger( 'boom-tree.toggle' );
+				$(this).toggleClass('expanded').trigger('boom-tree.toggle');
 			})
-			.hover(
-				function(){
-					$(this).addClass(self.options.iconHitareaHover);
-				},
-				function(){
-					$(this).removeClass(self.options.iconHitareaHover);
-				}
-			)
 			.prependTo( $item );
 
 			return self;
@@ -27747,16 +27739,7 @@ $.widget('ui.tree',
 						.addClass(self.options.iconToggleChecked);
 					}
 				}
-			})
-			.removeClass('ui-state-hover')
-			.hover(
-				function(){
-					$(this).addClass('ui-state-hover');
-				},
-				function(){
-					$(this).removeClass('ui-state-hover');
-				}
-			);
+			});
 
 		return self;
 	},
@@ -34372,6 +34355,7 @@ $.widget('boom.pageTree', {
 					.appendTo( children );
 
 				$('<a></a>')
+					.attr('target', '_blank')
 					.attr('href', item.url)
 					.attr('data-page-id', item.id)
 					.text(item.title)
@@ -34388,7 +34372,7 @@ $.widget('boom.pageTree', {
 			});
 
 			var parent_id = $('input[name=parent_id]').val();
-			children.find('[data-page-id=' + parent_id + ']').addClass('ui-state-active');
+			children.find('[data-page-id=' + page_id + ']').addClass('ui-state-active');
 
 			list_ready.resolve( { childList: children } );
 		});
@@ -53856,7 +53840,7 @@ if (!console) {
 
 		page.add()
 			.done(function(data) {
-				top.location = data.url;
+				window.open(data.url);
 			});
 	},
 
@@ -53869,7 +53853,7 @@ if (!console) {
 					pageManager.addActionButtons(data.elements, data.children);
 				},
 				onPageSelect : function(link) {
-					top.window.location = link.getUrl();
+					window.open(link.getUrl());
 				}
 			});
 

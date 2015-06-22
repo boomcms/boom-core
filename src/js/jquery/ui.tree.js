@@ -138,23 +138,15 @@ $.widget('ui.tree',
 		var self = this;
 
 		$('<span />')
-			.addClass('boom-tree-hitarea ui-icon ui-icon-triangle-1-e')
+			.addClass('b-tree-toggle boom-tree-hitarea')
 			.bind('boom-tree.toggle', function(){
 				self.toggle( $item );
 			})
 			.click(function(event){
 				self._trigger('toggle', event, { hitarea: this });
 
-				$( this ).trigger( 'boom-tree.toggle' );
+				$(this).toggleClass('expanded').trigger('boom-tree.toggle');
 			})
-			.hover(
-				function(){
-					$(this).addClass(self.options.iconHitareaHover);
-				},
-				function(){
-					$(this).removeClass(self.options.iconHitareaHover);
-				}
-			)
 			.prependTo( $item );
 
 			return self;
@@ -290,16 +282,7 @@ $.widget('ui.tree',
 						.addClass(self.options.iconToggleChecked);
 					}
 				}
-			})
-			.removeClass('ui-state-hover')
-			.hover(
-				function(){
-					$(this).addClass('ui-state-hover');
-				},
-				function(){
-					$(this).removeClass('ui-state-hover');
-				}
-			);
+			});
 
 		return self;
 	},

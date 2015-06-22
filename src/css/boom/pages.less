@@ -1,42 +1,78 @@
 #b-pages {
-	.boom-tree-container {
-		background: @lightest-grey;
-	}
+	background: @lightest-grey;
 
 	> ul {
 		width: 100%;
 		height: 100%;
 	}
 
+	li {
+		&:nth-of-type(odd) {
+			background: @white;
+		}
+
+		&:nth-of-type(even) {
+			background: @lightest-grey;
+		}
+	}
+
 	ul {
 		max-height: none;
 
 		li {
-			background: @lightest-grey;
 			border-bottom: 1px solid #eee;
 
 			> div, > a {
 				display: inline-block;
+				float: left;
 				border: 0;
 			}
 
-			> a {
-				width: 70%;
-			}
+			span {
+				&:before {
+					color: @darkest-grey;
+				}
 
-			> div {
-				float: right;
-				width: 19%;
-
-				a {
-					display: inline-block;
-					width: auto;
-					border: 0;
+				&:hover, &:focus {
+					&:before {
+						color: @lightest-grey;
+						background: @darkest-grey;
+					}
 				}
 			}
 
-			a:hover {
-				background: #222;
+			> a {
+				width: 50%;
+				color: @darkest-grey;
+
+				&:hover, &:focus {
+					background: none;
+					color: @red;
+				}
+			}
+
+			> div {
+				width: 320px;
+				height: 25px;
+
+				a {
+					color: @darkest-grey;
+					display: inline-block;
+					width: auto;
+					border-left: 1px solid @darkest-grey;
+					height: 40px;
+					line-height: 40px;
+					padding: 0 20px;
+
+					&:last-of-type {
+						border-right: 1px solid @darkest-grey;
+					}
+
+					&:hover, &:focus {
+						background: @darkest-grey;
+						color: @lightest-grey;
+					}
+				}
 			}
 		}
 	}

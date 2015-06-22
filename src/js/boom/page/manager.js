@@ -26,7 +26,7 @@ $.widget( 'boom.pageManager', {
 
 		page.add()
 			.done(function(data) {
-				top.location = data.url;
+				window.open(data.url);
 			});
 	},
 
@@ -39,7 +39,7 @@ $.widget( 'boom.pageManager', {
 					pageManager.addActionButtons(data.elements, data.children);
 				},
 				onPageSelect : function(link) {
-					top.window.location = link.getUrl();
+					window.open(link.getUrl());
 				}
 			});
 
