@@ -137,7 +137,7 @@ Route::group(['middleware' => [
         });
     });
 
-    Route::post('page/children', 'BoomCMS\Core\Controllers\Page@children');
+    Route::get('page/children', 'BoomCMS\Core\Controllers\Page@children');
 
 	Route::get('asset/download/{asset}', [
 		'asset' => 'asset-download',

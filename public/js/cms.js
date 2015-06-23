@@ -34335,35 +34335,29 @@ $.widget('boom.pageTree', {
 		var list_ready = $.Deferred(),
 			pageTree = this;
 
-		$.ajax({
-			type: 'POST',
-			url: '/page/children',
-			data: {parent : page_id},
-			dataType: 'json'
-		})
-		.done(function(data) {
+		$.get('/page/children', {parent : page_id})
+			.done(function(data) {
+				var children = typeof($ul) !== 'undefined'? $ul : $('<ul></ul>');
 
-			var children = typeof($ul) !== 'undefined'? $ul : $('<ul></ul>');
+				$( data ).each( function( i, item ){
+					var li = $('<li></li>')
+						.data({
+							children : parseInt(item.has_children, 10),
+							'page-id' : item.id
+						})
+						.appendTo( children );
 
-			$( data ).each( function( i, item ){
-				var li = $('<li></li>')
-					.data({
-						children : parseInt(item.has_children, 10),
-						'page-id' : item.id
-					})
-					.appendTo( children );
+					$('<a></a>')
+						.attr('target', '_blank')
+						.attr('href', item.url)
+						.attr('data-page-id', item.id)
+						.text(item.title)
+						.appendTo(li);
 
-				$('<a></a>')
-					.attr('target', '_blank')
-					.attr('href', item.url)
-					.attr('data-page-id', item.id)
-					.text(item.title)
-					.appendTo(li);
-
-				if (item.has_children == 1) {
-					pageTree.element.tree('set_toggle', li);
-				}
-			});
+					if (item.has_children == 1) {
+						pageTree.element.tree('set_toggle', li);
+					}
+				});
 
 			pageTree._trigger('load', null, {
 				elements : children.find('li'),
