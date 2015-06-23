@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "5a2170c31ef1762e1755606ab841a8ce",
+    "hash": "8d986f523991c4fd9143811e1e864bd7",
     "packages": [
         {
             "name": "boomcms/boom-core",
@@ -94,6 +94,43 @@
             ],
             "description": "BoomCMS installer",
             "time": "2015-06-10 19:08:13"
+        },
+        {
+            "name": "boomcms/boom-robotstxt",
+            "version": "3.0.x-dev",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/boomcms/boom-robotstxt.git",
+                "reference": "e635f958f2b9b52c39ea76168378606eeddfd409"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/boomcms/boom-robotstxt/zipball/e635f958f2b9b52c39ea76168378606eeddfd409",
+                "reference": "e635f958f2b9b52c39ea76168378606eeddfd409",
+                "shasum": ""
+            },
+            "require": {
+                "boomcms/boom-core": "3.*",
+                "illuminate/support": "~5.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "BoomCMS\\Robots": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Rob Taylor",
+                    "email": "rob@uxblondon.com"
+                }
+            ],
+            "description": "robots.txt generator for BoomCMS",
+            "time": "2015-06-23 14:40:33"
         },
         {
             "name": "boomcms/theme-default",

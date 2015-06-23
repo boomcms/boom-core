@@ -137,6 +137,7 @@ return [
         'Illuminate\Html\HtmlServiceProvider',
 
         // BoomCMS service providers
+		'BoomCMS\Robots\ServiceProvider',
         'BoomCMS\Core\CoreServiceProvider',
         'BoomCMS\Core\Asset\AssetServiceProvider',
         'BoomCMS\Core\Auth\AuthServiceProvider',
@@ -147,6 +148,7 @@ return [
         'BoomCMS\Core\Settings\SettingsServiceProvider',
         'BoomCMS\Core\Chunk\ChunkServiceProvider',
         'BoomCMS\Core\URL\URLServiceProvider',
+		
         'BoomCMS\Installer\ServiceProvider',
     ],
 
