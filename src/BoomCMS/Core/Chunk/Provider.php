@@ -40,7 +40,7 @@ class Provider
 
 		$className = 'BoomCMS\Core\Chunk\\' . ucfirst($type);
 
-		return new $className($page, $attrs, $attrs['slotname'], true);
+		return new $className($page, $model->toArray(), $attrs['slotname'], true);
 	}
 
     /**
