@@ -4,3 +4,4 @@
 public/vendor
 .env
 storage/boomcms/
+migrations/boomcms/

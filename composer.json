@@ -21,7 +21,8 @@
 			"storage/boomcms/themes/"	
 		]
 	},
-    "minimum-stability": "dev",
+	"minimum-stability": "dev",
+	"prefer-stable": true,
 	"config": {
 		"preferred-install": "dist"
 	},
