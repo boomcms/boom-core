@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "a55dd5b3304101728ec414adc04e9bc1",
+    "hash": "4e11dcceefe0b25d8ca6d0f05da93af1",
     "packages": [
         {
             "name": "boomcms/boom-core",
@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/boomcms/boom-core.git",
-                "reference": "2f509adcc27d44f18bfe182d5522fe52aba6ee7a"
+                "reference": "2861d3648edd2d78b54420c7d59b528215f5c719"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/boomcms/boom-core/zipball/2f509adcc27d44f18bfe182d5522fe52aba6ee7a",
-                "reference": "2f509adcc27d44f18bfe182d5522fe52aba6ee7a",
+                "url": "https://api.github.com/repos/boomcms/boom-core/zipball/2861d3648edd2d78b54420c7d59b528215f5c719",
+                "reference": "2861d3648edd2d78b54420c7d59b528215f5c719",
                 "shasum": ""
             },
             "require": {
@@ -52,7 +52,7 @@
                 "MIT"
             ],
             "description": "Core classes for BoomCMS",
-            "time": "2015-06-23 16:34:46"
+            "time": "2015-06-23 19:07:27"
         },
         {
             "name": "boomcms/boom-installer",
@@ -97,16 +97,16 @@
         },
         {
             "name": "boomcms/boom-robotstxt",
-            "version": "v3.0",
+            "version": "v3.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/boomcms/boom-robotstxt.git",
-                "reference": "483ffc5260d8a7eb452d0fb7fd21d72e7cbcbdcb"
+                "reference": "08c33eef79df1a2b58ca342c5eeb5004d221aa2b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/boomcms/boom-robotstxt/zipball/483ffc5260d8a7eb452d0fb7fd21d72e7cbcbdcb",
-                "reference": "483ffc5260d8a7eb452d0fb7fd21d72e7cbcbdcb",
+                "url": "https://api.github.com/repos/boomcms/boom-robotstxt/zipball/08c33eef79df1a2b58ca342c5eeb5004d221aa2b",
+                "reference": "08c33eef79df1a2b58ca342c5eeb5004d221aa2b",
                 "shasum": ""
             },
             "require": {
@@ -130,20 +130,20 @@
                 }
             ],
             "description": "robots.txt generator for BoomCMS",
-            "time": "2015-06-23 16:33:57"
+            "time": "2015-06-23 16:45:49"
         },
         {
             "name": "boomcms/boom-sitemap",
-            "version": "3.0.x-dev",
+            "version": "v3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/boomcms/boom-sitemap.git",
-                "reference": "d742114ca374a4dba8a3d6a73bad21f416d1aaa7"
+                "reference": "184a9a3e28aaee64ad4f9224de0a5e2aeeb41023"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/boomcms/boom-sitemap/zipball/d742114ca374a4dba8a3d6a73bad21f416d1aaa7",
-                "reference": "d742114ca374a4dba8a3d6a73bad21f416d1aaa7",
+                "url": "https://api.github.com/repos/boomcms/boom-sitemap/zipball/184a9a3e28aaee64ad4f9224de0a5e2aeeb41023",
+                "reference": "184a9a3e28aaee64ad4f9224de0a5e2aeeb41023",
                 "shasum": ""
             },
             "require": {
@@ -152,7 +152,7 @@
             "type": "library",
             "autoload": {
                 "psr-0": {
-                    "BoomCMS\\Robots": "src/"
+                    "BoomCMS\\Sitemap": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -166,7 +166,7 @@
                 }
             ],
             "description": "sitemap.xml generator for BoomCMS",
-            "time": "2015-06-23 16:44:50"
+            "time": "2015-06-23 18:34:55"
         },
         {
             "name": "boomcms/theme-default",
@@ -362,6 +362,44 @@
             "description": "PHP package to measure the readability of text according to various algorithms.",
             "homepage": "https://github.com/DaveChild/Text-Statistics",
             "time": "2015-04-22 14:55:55"
+        },
+        {
+            "name": "davidbarratt/custom-installer",
+            "version": "1.0.0-alpha1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/davidbarratt/custom-installer.git",
+                "reference": "1961a377c6e4435301f225154d17fe1f3d0f2ea7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/davidbarratt/custom-installer/zipball/1961a377c6e4435301f225154d17fe1f3d0f2ea7",
+                "reference": "1961a377c6e4435301f225154d17fe1f3d0f2ea7",
+                "shasum": ""
+            },
+            "require": {
+                "composer-plugin-api": "1.0.0"
+            },
+            "require-dev": {
+                "composer/composer": "1.0.*@dev",
+                "phpunit/phpunit": "4.1.*"
+            },
+            "type": "composer-plugin",
+            "extra": {
+                "class": "DavidBarratt\\CustomInstaller\\CustomInstallerPlugin"
+            },
+            "autoload": {
+                "psr-4": {
+                    "DavidBarratt\\CustomInstaller\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "description": "Install custom types into custom locations.",
+            "homepage": "https://github.com/davidbarratt/custom-installer",
+            "time": "2014-09-01 15:46:17"
         },
         {
             "name": "dnoegel/php-xdg-base-dir",

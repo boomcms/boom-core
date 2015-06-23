@@ -2,6 +2,7 @@
 	"name": "boomcms/boomcms",
 	"description": "BoomCMS basic site",
 	"require": {
+		"davidbarratt/custom-installer": "1.*",
 		"boomcms/boom-core": "3.0.*",
 		"boomcms/boom-installer": "1.0.*",
                 "boomcms/theme-default": "1.0.*",
@@ -45,5 +46,10 @@
 			"php artisan key:generate",
 			"php artisan vendor:publish"
 		]
+	},
+	"extra": {
+        	"custom-installer": {
+        	    "boomcms-theme": "storage/boomcms/themes/{$name}/"
+        	}
 	}
 }
