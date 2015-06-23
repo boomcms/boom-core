@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "4e11dcceefe0b25d8ca6d0f05da93af1",
+    "hash": "a4f667f87408dc3526997d3228d1c765",
     "packages": [
         {
             "name": "boomcms/boom-core",
