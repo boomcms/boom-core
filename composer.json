@@ -12,7 +12,7 @@
 		"thujohn/rss": "dev-master",
 		"intervention/imagecache" : "2.*",
 		"robbytaylor/htmlpurifier-tel" : "dev-master",
-		"laravel/framework": "5.*",
+		"laravel/framework": "5.0.*",
 		"symfony/http-kernel": "2.6.*",
 		"rych/bytesize": "1.0.*",
 		"illuminate/html": "5.*",
@@ -21,7 +21,7 @@
 	"require-dev": {
 		"phpunit/phpunit": "4.3.*",
 		"Mockery/Mockery": "^0.9.4",
-		"laravel/laravel": "5.*"
+		"laravel/laravel": "5.0.*"
 	},
 	"autoload": {
 		"psr-0": {"BoomCMS\\Core": "src/"}
