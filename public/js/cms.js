@@ -32898,9 +32898,8 @@ window.boomConfig =
 		showAnim: 'fadeIn',
 		/**
 		@type string
-		@default 'dd MM yy'
 		*/
-		dateFormat: 'dd MM yy',
+		format: 'd M Y H:i',
 		/**
 		@type boolean
 		@default true
