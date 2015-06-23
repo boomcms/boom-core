@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "8d986f523991c4fd9143811e1e864bd7",
+    "hash": "a55dd5b3304101728ec414adc04e9bc1",
     "packages": [
         {
             "name": "boomcms/boom-core",
@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/boomcms/boom-core.git",
-                "reference": "06fc07239cb85c81f19ba61ca63fc5702d707af4"
+                "reference": "2f509adcc27d44f18bfe182d5522fe52aba6ee7a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/boomcms/boom-core/zipball/06fc07239cb85c81f19ba61ca63fc5702d707af4",
-                "reference": "06fc07239cb85c81f19ba61ca63fc5702d707af4",
+                "url": "https://api.github.com/repos/boomcms/boom-core/zipball/2f509adcc27d44f18bfe182d5522fe52aba6ee7a",
+                "reference": "2f509adcc27d44f18bfe182d5522fe52aba6ee7a",
                 "shasum": ""
             },
             "require": {
@@ -52,7 +52,7 @@
                 "MIT"
             ],
             "description": "Core classes for BoomCMS",
-            "time": "2015-06-23 14:30:09"
+            "time": "2015-06-23 16:34:46"
         },
         {
             "name": "boomcms/boom-installer",
@@ -97,16 +97,16 @@
         },
         {
             "name": "boomcms/boom-robotstxt",
-            "version": "3.0.x-dev",
+            "version": "v3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/boomcms/boom-robotstxt.git",
-                "reference": "e635f958f2b9b52c39ea76168378606eeddfd409"
+                "reference": "483ffc5260d8a7eb452d0fb7fd21d72e7cbcbdcb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/boomcms/boom-robotstxt/zipball/e635f958f2b9b52c39ea76168378606eeddfd409",
-                "reference": "e635f958f2b9b52c39ea76168378606eeddfd409",
+                "url": "https://api.github.com/repos/boomcms/boom-robotstxt/zipball/483ffc5260d8a7eb452d0fb7fd21d72e7cbcbdcb",
+                "reference": "483ffc5260d8a7eb452d0fb7fd21d72e7cbcbdcb",
                 "shasum": ""
             },
             "require": {
@@ -130,7 +130,43 @@
                 }
             ],
             "description": "robots.txt generator for BoomCMS",
-            "time": "2015-06-23 14:40:33"
+            "time": "2015-06-23 16:33:57"
+        },
+        {
+            "name": "boomcms/boom-sitemap",
+            "version": "3.0.x-dev",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/boomcms/boom-sitemap.git",
+                "reference": "d742114ca374a4dba8a3d6a73bad21f416d1aaa7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/boomcms/boom-sitemap/zipball/d742114ca374a4dba8a3d6a73bad21f416d1aaa7",
+                "reference": "d742114ca374a4dba8a3d6a73bad21f416d1aaa7",
+                "shasum": ""
+            },
+            "require": {
+                "boomcms/boom-core": "3.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "BoomCMS\\Robots": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Rob Taylor",
+                    "email": "rob@uxblondon.com"
+                }
+            ],
+            "description": "sitemap.xml generator for BoomCMS",
+            "time": "2015-06-23 16:44:50"
         },
         {
             "name": "boomcms/theme-default",

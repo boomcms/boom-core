@@ -5,7 +5,8 @@
 		"boomcms/boom-core": "3.0.*",
 		"boomcms/boom-installer": "1.0.*",
                 "boomcms/theme-default": "1.0.*",
-		"boomcms/boom-robotstxt": "3.*"
+		"boomcms/boom-robotstxt": "3.*",
+		"boomcms/boom-sitemap": "3.*"
 	},
 	"license": "MIT",
 	"authors": [
