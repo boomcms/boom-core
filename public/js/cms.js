@@ -34348,7 +34348,6 @@ $.widget('boom.pageTree', {
 						.appendTo( children );
 
 					$('<a></a>')
-						.attr('target', '_blank')
 						.attr('href', item.url)
 						.attr('data-page-id', item.id)
 						.text(item.title)
