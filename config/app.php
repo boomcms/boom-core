@@ -138,6 +138,7 @@ return [
 
         // BoomCMS service providers
 		'BoomCMS\Robots\ServiceProvider',
+		'BoomCMS\Sitemap\ServiceProvider',
         'BoomCMS\Core\CoreServiceProvider',
         'BoomCMS\Core\Asset\AssetServiceProvider',
         'BoomCMS\Core\Auth\AuthServiceProvider',
