@@ -37,7 +37,7 @@ class Auth_AuthenticateTest extends TestCase
     {
         $session = $this->getMockSession();
         $personProvider = $this->getMockBuilder('BoomCMS\Core\Person\Provider')
-            ->setMethods(['findByEmail'])
+            ->setMethods(['findByEmail', 'save'])
             ->getMock();
         $permissions = $this->getMock('BoomCMS\Core\Auth\PermissionsProvider');
 
@@ -47,7 +47,7 @@ class Auth_AuthenticateTest extends TestCase
 
         $person = $this->getMockBuilder('BoomCMS\Core\Person\Person')
             ->setMethods(['checkPassword'])
-            ->setConstructorArgs([['id' => 1]])
+            ->setConstructorArgs([['id' => 1, 'failed_logins' => 0]])
             ->getMock();
 
         $person
