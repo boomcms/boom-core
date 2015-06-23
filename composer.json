@@ -12,7 +12,7 @@
 		"thujohn/rss": "dev-master",
 		"intervention/imagecache" : "2.*",
 		"robbytaylor/htmlpurifier-tel" : "dev-master",
-		"laravel/framework": "5.0.*",
+		"laravel/framework": "~5.0",
 		"symfony/http-kernel": "2.6.*",
 		"rych/bytesize": "1.0.*",
 		"illuminate/html": "5.*",
