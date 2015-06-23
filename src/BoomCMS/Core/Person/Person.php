@@ -4,6 +4,7 @@ namespace BoomCMS\Core\Person;
 
 use BoomCMS\Core\Group;
 
+use DateTime;
 use Hautelook\Phpass\PasswordHash;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Auth\CanResetPassword;
@@ -34,7 +35,7 @@ class Person implements Arrayable, CanResetPassword
 					'person_id' => $this->getId(),
 					'group_id' => $group->getId(),
 				]);
-			
+
             // Inherit any roles assigned to the group.
             DB::insert('people_roles', ['person_id', 'group_id', 'role_id', 'allowed', 'page_id'])
                 ->select(
@@ -79,11 +80,16 @@ class Person implements Arrayable, CanResetPassword
     {
         return $this->get('email');
     }
-	
+
 	public function getEmailForPasswordReset()
 	{
 		return $this->getEmail();
 	}
+
+    public function getFailedLogins()
+    {
+        return $this->get('failed_logins');
+    }
 
     public function getGroups()
     {
@@ -97,6 +103,17 @@ class Person implements Arrayable, CanResetPassword
     public function getId()
     {
         return $this->get('id');
+    }
+
+    public function getLastFailedLogin()
+    {
+        $time = new DateTime();
+
+        if ($timestamp = $this->get('last_failed_login')) {
+            $time->setTimestamp($timestamp);
+        }
+
+        return $time;
     }
 
     public function getLockedUntil()
@@ -118,11 +135,18 @@ class Person implements Arrayable, CanResetPassword
     {
         return $this->get('password');
     }
-	
+
 	public function getRememberToken()
 	{
 		return $this->get('remember_token');
 	}
+
+    public function incrementFailedLogins()
+    {
+        ++$this->data['failed_logins'];
+
+        return $this;
+    }
 
     public function isEnabled()
     {
@@ -151,19 +175,6 @@ class Person implements Arrayable, CanResetPassword
     public function loaded()
     {
         return $this->getId() > 0;
-    }
-
-    public function loginFailed()
-    {
-        $this->model->set('failed_logins', ++$this->model->failed_logins);
-
-        if ($this->model->failed_logins > 3) {
-            $this->model->set('locked_until', time() + static::LOCK_WAIT);
-        }
-
-        $this->model->update();
-
-        return $this;
     }
 
     /**
@@ -196,11 +207,11 @@ class Person implements Arrayable, CanResetPassword
 
         return $this;
     }
-	
+
 	public function setEnabled($enabled)
 	{
 		$this->data['enabled'] = $enabled;
-		
+
 		return $this;
 	}
 
@@ -216,6 +227,27 @@ class Person implements Arrayable, CanResetPassword
         return $this;
     }
 
+    public function setFailedLogins($count)
+    {
+        $this->data['failed_logins'] = $count;
+
+        return $this;
+    }
+
+    public function setLastFailedLogin($time)
+    {
+        $this->data['last_failed_login'] = $time;
+
+        return $this;
+    }
+
+    public function setLockedUntil($timestamp)
+    {
+        $this->data['locked_until'] = $timestamp;
+
+        return $this;
+    }
+
     /**
 	 *
 	 * @param string $name
@@ -227,11 +259,11 @@ class Person implements Arrayable, CanResetPassword
 
         return $this;
     }
-	
+
 	public function setSuperuser($superuser)
 	{
 		$this->data['superuser'] = $superuser;
-		
+
 		return $this;
 	}
 

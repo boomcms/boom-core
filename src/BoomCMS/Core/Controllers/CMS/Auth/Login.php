@@ -24,9 +24,9 @@ class Login extends Controller
             );
         } catch (Auth\PersonNotFoundException $e) {
             return $this->displayLoginForm(['login_error' => Lang::get('Invalid email address or password')]);
-        } catch (Auth\PersonSuspendedException $e) {
+        } catch (Auth\PersonLockedException $e) {
             return $this->displayLoginForm([
-                'login_error' => Lang::get('Your account has been locked due to too many unsuccessful login attempts. Please try again in :lock_wait', ['lock_wait' => $e->getLockWait()]),
+                'login_error' => Lang::get('boom::auth.locked', ['lock_wait' => $e->getLockWait()]),
             ]);
         }
 

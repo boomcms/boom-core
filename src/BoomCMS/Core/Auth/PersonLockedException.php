@@ -1,20 +1,18 @@
 <?php
 
-namespace BoomCMS\Core\Auth\Auth;
-
-use BoomCMS\Core\Person\Person;
+namespace BoomCMS\Core\Auth;
 
 class PersonLockedException extends \UnexpectedValueException
 {
-    protected $person;
+    protected $lockedUntil;
 
-    public function __construct(Person $person)
+    public function __construct($lockedUntil)
     {
-        $this->person = $person;
+        $this->lockedUntil = $lockedUntil;
     }
 
-    public function getPerson()
+    public function getLockWait()
     {
-        return $this->person;
+        return ceil(($this->lockedUntil - time()) / 60);
     }
 }
