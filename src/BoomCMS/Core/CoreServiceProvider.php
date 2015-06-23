@@ -39,7 +39,10 @@ class CoreServiceProvider extends ServiceProvider
             return $page;
         });
 
-        $this->publishes([__DIR__ . '/../../../public' => public_path('vendor/boomcms/boom-core')], 'boomcms');
+        $this->publishes([
+			__DIR__ . '/../../../public' => public_path('vendor/boomcms/boom-core'),
+			__DIR__ . '/../../database/migrations' => base_path('/migrations/boomcms'),
+		], 'boomcms');
 
         include __DIR__ . '/../../routes.php';
     }
