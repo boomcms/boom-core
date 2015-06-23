@@ -32899,7 +32899,7 @@ window.boomConfig =
 		/**
 		@type string
 		*/
-		format: 'd M Y H:i',
+		format: 'd F Y H:i',
 		/**
 		@type boolean
 		@default true
