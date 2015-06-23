@@ -28,7 +28,8 @@ class TemplateServiceProvider extends ServiceProvider
 
         foreach($this->themes as $theme) {
             $config = $theme->getConfigDirectory() . DIRECTORY_SEPARATOR . 'themes.php';
-            $this->mergeConfigFrom($config, 'boomcms.themes');
+
+            file_exists($config) && $this->mergeConfigFrom($config, 'boomcms.themes');
         }
 
         foreach($this->themes as $theme) {
