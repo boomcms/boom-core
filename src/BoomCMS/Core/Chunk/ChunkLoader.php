@@ -3,12 +3,13 @@
 namespace BoomCMS\Core\Chunk;
 
 use BoomCMS\Core\Page;
+use BoomCMS\Core\Facades\Editor;
 use BoomCMS\Core\Facades\Chunk;
 
 class ChunkLoader
 {
     protected $chunks;
-    protected$page;
+    protected $page;
 
     public function __construct(Page\Page $page, array $chunks)
     {
@@ -28,13 +29,13 @@ class ChunkLoader
             foreach ($models as $m) {
                 if ($m) {
                     $found[] = $m->slotname;
-                    $this->chunks[$type][$m->slotname] = new $class($this->page, $m->toArray(), $m->slotname, true);
+                    $this->chunks[$type][$m->slotname] = new $class($this->page, $m->toArray(), $m->slotname, Editor::isEnabled());
                 }
             }
 
             $not_found = array_diff($slotnames, $found);
             foreach ($not_found as $slotname) {
-                $this->chunks[$type][$slotname] = new $class($this->page, [], $slotname, true);
+                $this->chunks[$type][$slotname] = new $class($this->page, [], $slotname, Editor::isEnabled());
             }
         }
 
