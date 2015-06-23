@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Core\Controllers;
 
-use BoomCMS\Core\Chunk\ChunkLoader;
+use BoomCMS\Core\Facades\Chunk;
 use BoomCMS\Core\Facades\Page as PageFacade;
 
 use Illuminate\Support\Facades\View;
@@ -14,9 +14,9 @@ class Page extends Controller
         $page = $this->request->route()->getParameter('page');
         $template = $page->getTemplate();
 
-        $loader = new ChunkLoader($page, $template->getChunks());
+        $chunks = Chunk::load($page, $template->getChunks());
 
-        View::share('chunks', $loader->getChunks());
+        View::share('chunks', $chunks);
         return $template->getView();
     }
 

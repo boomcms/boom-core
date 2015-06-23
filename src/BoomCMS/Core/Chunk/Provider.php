@@ -131,4 +131,29 @@ class Provider
 
         return new $className($page, $attrs, $slotname, false);
     }
+
+    public function load(Page $page, $chunks)
+    {
+        foreach ($chunks as $type => $slotnames) {
+            $model = ucfirst($type);
+            $class = "\BoomCMS\Core\Chunk\\" . $model;
+
+            $models = $this->find($type, $slotnames, $page->getCurrentVersion());
+            $found = [];
+
+            foreach ($models as $m) {
+                if ($m) {
+                    $found[] = $m->slotname;
+                    $chunks[$type][$m->slotname] = new $class($page, $m->toArray(), $m->slotname, $this->allowedToEdit($page));
+                }
+            }
+
+            $not_found = array_diff($slotnames, $found);
+            foreach ($not_found as $slotname) {
+                $chunks[$type][$slotname] = new $class($page, [], $slotname, $this->allowedToEdit($page));
+            }
+        }
+
+        return $chunks;
+    }
 }
