@@ -6,7 +6,6 @@
 		"php":        ">=5.3",
 		"ext-imagick" : "*",
 		"mpratt/embera": "~1.0",
-		"ezyang/htmlpurifier": "4.6.*",
                 "genphrase/genphrase" : "1.0.*",
 		"davechild/textstatistics": "1.0.*@dev",
 		"hautelook/phpass": "dev-master",

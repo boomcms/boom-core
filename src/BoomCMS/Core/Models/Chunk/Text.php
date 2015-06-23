@@ -17,7 +17,6 @@ class Text extends BaseChunk
             $siteText = $text = Bus::dispatch(new TextFilters\RemoveAllHTML($text));
         } else {
             $text = Bus::dispatch(new TextFilters\MakeInternalLinksRelative($text));
-            $text = Bus::dispatch(new TextFilters\PurifyHTML($text));
 
             $siteText = Bus::dispatch(new TextFilters\OEmbed($text));
             $siteText = Bus::dispatch(new TextFilters\StorifyEmbed($siteText));
