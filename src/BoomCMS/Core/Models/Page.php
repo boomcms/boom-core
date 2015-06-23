@@ -39,7 +39,7 @@ class Page extends Model
 
         return $this;
     }
-	
+
     public function getCurrentVersionQuery(Editor $editor = null)
     {
         $query = DB::table('page_versions')
@@ -47,7 +47,7 @@ class Page extends Model
             ->where('stashed', '=', 0)
             ->groupBy('page_id');
 
-        if ($editor && !$editor->isEnabled()) {
+        if ($editor && $editor->isDisabled()) {
             $query
                 ->where('embargoed_until', '<=', time())
                 ->where('published', '=', 1);
@@ -107,7 +107,7 @@ class Page extends Model
         // Return the current object.
         return $this;
     }
-	
+
 	public function scopeAutocompleteTitle($query, $title, $limit)
 	{
 		return $query
