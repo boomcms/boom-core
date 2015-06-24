@@ -4,7 +4,15 @@ use BoomCMS\Core\Page;
 
 return [
     'viewHelpers' => [
-        'assetURL' => function(array $params) {
+        'assetURL' => function() {
+			$args = func_get_args();
+			$params = [];
+			
+			if (isset($params['asset'])) {
+				$params['id'] = $asset->getId();
+				unset($params['asset']);
+			}
+			
             if ( !isset($params['action'])) {
                 $params['action'] = 'view';
             }
