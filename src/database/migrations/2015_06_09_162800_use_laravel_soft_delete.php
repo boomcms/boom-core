@@ -15,7 +15,7 @@ class UseLaravelSoftDelete extends Migration
     {
         Schema::table('pages', function (Blueprint $table) {
             $table->softDeletes();
-            $table->integer('deleted_by')->unsigned()->nullable();
+            $table->mediumInteger('deleted_by', false, true)->nullable();
             $table
                 ->foreign('deleted_by')
                 ->references('id')
@@ -31,7 +31,7 @@ class UseLaravelSoftDelete extends Migration
 
         Schema::table('people', function (Blueprint $table) {
             $table->softDeletes();
-            $table->integer('deleted_by')->unsigned()->nullable();
+            $table->mediumInteger('deleted_by', false, true)->nullable();
             $table
                 ->foreign('deleted_by')
                 ->references('id')
@@ -41,7 +41,7 @@ class UseLaravelSoftDelete extends Migration
 
             Schema::table('groups', function (Blueprint $table) {
             $table->softDeletes();
-            $table->integer('deleted_by')->unsigned()->nullable();
+            $table->mediumInteger('deleted_by', false, true)->nullable();
             $table
                 ->foreign('deleted_by')
                 ->references('id')

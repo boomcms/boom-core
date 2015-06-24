@@ -13,7 +13,7 @@ class CreatePagesTable extends Migration
     public function up()
     {
         Schema::create('pages', function (Blueprint $table) {
-            $table->smallInteger('id', true)->unsigned();
+            $table->increments('id');
             $table->integer('sequence')->unsigned()->nullable()->default(0)->index('page_sequence');
             $table->boolean('visible')->nullable()->default(0);
             $table->integer('visible_from')->unsigned()->nullable();
