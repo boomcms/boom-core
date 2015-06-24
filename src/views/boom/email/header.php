@@ -19,7 +19,7 @@
 						</tr>
 						<tr>
 							<td>
-								<table class="header" width="100%" cellspacing="0" cellpadding="0" style="margin: 0; padding: 0;background-color:#bf1e2e;color:#fff;">
+								<table class="header" width="100%" cellspacing="0" cellpadding="0" style="margin: 0; padding: 0;background-color:#222;color:#fff;">
 									<tr>
 										<td width="10" height="10">
 											<img src="<?= url('/vendor/boomcms/boom-core/email_assets/spacer.gif') ?>" />
