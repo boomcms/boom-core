@@ -14,7 +14,7 @@ class CreatePageVersionsTable extends Migration
     {
         Schema::create('page_versions', function (Blueprint $table) {
             $table->increments('id');
-            $table->smallInteger('page_id')->unsigned()->nullable()->index('page_v_rid');
+            $table->integer('page_id')->unsigned()->nullable()->index('page_v_rid');
             $table->smallInteger('template_id')->nullable()->index('page_versions_template_id');
             $table->string('title', 100)->nullable()->default('Untitled');
             $table->smallInteger('edited_by')->unsigned()->nullable()->index('edited_by');

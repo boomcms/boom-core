@@ -16,7 +16,7 @@ class AddPageIdToChunks extends Migration
     {
         foreach (['chunk_texts', 'chunk_features', 'chunk_slideshows', 'chunk_assets', 'chunk_linksets', 'chunk_tags', 'chunk_timestamps'] as $t) {
             Schema::table($t, function (Blueprint $table) {
-                $table->smallInteger('page_id')->unsigned();
+                $table->integer('page_id')->unsigned();
             });
 
             DB::statement("update $t inner join page_versions on page_vid = page_versions.id set {$t}.page_id = page_versions.page_id");

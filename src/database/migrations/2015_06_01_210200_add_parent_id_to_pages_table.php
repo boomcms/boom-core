@@ -15,7 +15,7 @@ class AddParentIdToPagesTable extends Migration
     public function up()
     {
         Schema::table('pages', function (Blueprint $table) {
-            $table->smallInteger('parent_id')->unsigned()->nullable();
+            $table->integer('parent_id')->unsigned()->nullable();
             $table->foreign('parent_id')->references('id')->on('pages')->onUpdate('CASCADE')->onDelete('CASCADE');
         });
 
