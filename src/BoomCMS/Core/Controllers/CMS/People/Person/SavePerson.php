@@ -14,7 +14,7 @@ class SavePerson extends BasePerson
 				'email' => $this->request->input('email'),
 				'name' => $this->request->input('name'),
 			],
-			$this->request->input('groups'),
+			$this->request->input('groups')? : [],
 			$this->auth,
 			$this->personProvider,
 			$this->groupProvider
