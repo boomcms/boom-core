@@ -32,7 +32,7 @@ class Asset extends BaseChunk
         $link = $this->getLink();
 
         return View::make($this->viewPrefix."asset/$this->template", [
-            'asset' => $this->asset(),
+            'asset' => $this->getAsset(),
             'caption' => $this->getCaption(),
             'title' => $this->getTitle(),
             'link' => $link
@@ -54,7 +54,7 @@ class Asset extends BaseChunk
         ];
     }
 
-    public function asset()
+    public function getAsset()
     {
         return $this->asset;
     }
