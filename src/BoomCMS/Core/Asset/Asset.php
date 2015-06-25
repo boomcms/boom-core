@@ -191,7 +191,7 @@ abstract class Asset implements Arrayable
 
     public function getUploadedTime()
     {
-        return new \DateTime('@' . $this->get('uploaded_time'));
+        return (new DateTime)->setTimestamp($this->get('uploaded_time'));
     }
 	
 	public function incrementDownloads()
@@ -319,6 +319,13 @@ abstract class Asset implements Arrayable
 
         return $this;
     }
+	
+	public function setUploadedTime(DateTime $time)
+	{
+		$this->attributes['uploaded_time'] = $time->getTimestamp();
+		
+		return $this;
+	}
 
     public function toArray()
     {

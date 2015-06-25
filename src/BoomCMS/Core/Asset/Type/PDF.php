@@ -12,7 +12,7 @@ class PDF extends Asset
         $filename = $this->getFilename() . '.thumb';
 
         if ( ! file_exists($filename)) {
-            $image = new Imagick($this->asset->getFilename() . '[0]');
+            $image = new Imagick($this->getFilename() . '[0]');
             $image->setImageFormat('png');
 
             file_put_contents($filename, $image->getImageBlob());

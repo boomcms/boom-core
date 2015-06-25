@@ -202,6 +202,7 @@ class AssetManager extends Controller
 
                 $asset = Asset\Asset::factory(['type' => $mime->getType()]);
                 $asset
+					->setUploadedTime(new DateTime('@' . time()))
                     ->setUploadedBy($this->auth->getPerson())
                     ->setLastModified($now)
                     ->setTitle($file->getClientOriginalName())
