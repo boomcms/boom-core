@@ -21,8 +21,8 @@ class Page extends Controller
 			if ($page) {
 				return Chunk::get($type, $slotname);
 			}
-			
-			return (isset($chunks[$type][$slotname])) ? 
+
+			return (isset($chunks[$type][$slotname])) ?
 				$chunks[$type][$slotname] :
 				Chunk::edit($type, $slotname);
 		});
@@ -32,7 +32,7 @@ class Page extends Controller
 
     public function children()
     {
-        $pages = PageFacade::findByParentId($this->request->input('parent'));
+        $pages = PageFacade::findByParent(PageFacade::findById($this->request->input('parent')));
         $return = [];
 
         foreach ($pages as $page) {

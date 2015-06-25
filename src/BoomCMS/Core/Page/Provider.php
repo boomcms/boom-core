@@ -54,7 +54,7 @@ class Provider
 
         return $this->cache(new Page($model->toArray()));
     }
-	
+
 	public function delete(Page $page)
 	{
 		unset($this->cache['id'][$page->getId()]);
@@ -69,6 +69,14 @@ class Provider
     public function findByInternalName($name)
     {
         return $this->findAndCache(Model::where('internal_name', '=', $name)->get());
+    }
+
+    public function findByParent(Page $parent)
+    {
+        $finder = new Finder\Finder($this->editor);
+        $finder->addFilter(new Finder\ParentPage($parent));
+
+        return $finder->findAll();
     }
 
     public function findByParentId($parentId)
