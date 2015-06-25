@@ -89,7 +89,7 @@ class Provider
 
     public function findByPrimaryUri($uri)
     {
-        return $this->findAndCache(Model::where('primary_uri', '=', $uri)->get());
+        return $this->findAndCache(Model::where('primary_uri', '=', $uri)->first());
     }
 
     public function findByUri($uri)
