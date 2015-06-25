@@ -33,14 +33,6 @@ class Chunk extends Controller
 			parent::authorization('edit_page_content', $this->page);
     }
 
-    public function remove()
-    {
-        $this->authCheck();
-        $this->_createVersion();
-
-        $this->_send_response($this->_preview_default_chunk());
-    }
-
     public function save()
     {
         $input = $this->request->input();

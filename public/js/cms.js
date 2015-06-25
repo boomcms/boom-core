@@ -35143,11 +35143,14 @@ $.widget('boom.textEditor', {
 	this.type = type;
 	this.urlPrefix = '/cms/chunk/';
 
+	/**
+	 * To remove a chunk save it with no data.
+	 *
+	 * @param string template
+	 * @returns {jqXHR}
+	 */
 	boomChunk.prototype.delete = function(template) {
-		return $.post(this.urlPrefix + 'remove/' + this.page_id, {
-			slotname : this.slotname,
-			template : template
-		});
+		return this.save([]);
 	};
 
 	boomChunk.prototype.save = function(data) {
