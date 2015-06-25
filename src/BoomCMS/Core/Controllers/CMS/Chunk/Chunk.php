@@ -52,14 +52,4 @@ class Chunk extends Controller
 			'html' => $chunk->render(),
 		];
     }
-
-    protected function _preview_chunk() {}
-
-    protected function _save_chunk()
-    {
-        return $this->_model = ORM::factory("Chunk_".ucfirst($this->_type))
-            ->values($this->request->input())
-            ->set('page_vid', $this->_new_version->id)
-            ->create();
-    }
 }
