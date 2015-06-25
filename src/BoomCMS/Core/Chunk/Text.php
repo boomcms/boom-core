@@ -9,6 +9,7 @@ class Text extends BaseChunk
     protected $html;
     protected $type = 'text';
     protected $placeholder;
+	protected $allowFormatting = false;
 
     public function getHtmlContainerForSlotname($slotname)
     {
@@ -18,9 +19,16 @@ class Text extends BaseChunk
             case 'bodycopy':
                 return "<div class=\"content\">{text}</div>";
             default:
-                return "<p>{text}</p>";
+                return $this->allowFormatting? '<div><p>{text}</p></div>' : '<p>{text}</p>';
         }
     }
+	
+	public function allowFormatting()
+	{
+		$this->allowFormatting = true;
+		
+		return $this;
+	}
 
     protected function show()
     {
