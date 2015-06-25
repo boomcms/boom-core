@@ -116,18 +116,14 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 
 	_save : function(title, old_title) {
 		this.options.currentPage.setTitle(title)
-			.done(function(response) {
-				try {
-					var data = $.parseJSON(response);
-				} catch (e) {};
-
+			.done(function(data) {
 				if (typeof data == 'object' && data.location) {
 					var history = new boomHistory();
 
 					if (history.isSupported()) {
 						history.replaceState({}, title, data.location);
 						new boomNotification('Page title saved.');
-						$.boom.page.toolbar.status.set(response);
+						$.boom.page.toolbar.status.set(data.status);
 					} else {
 						var confirmation = new boomConfirmation('Page URL changed', "Because you've set a page title for the first time the URL of this page has been updated to reflect the new title.<br /><br />Would you like to reload the page using the new URL?<br /><br />You can continue editing the page without reloading.");
 						confirmation
@@ -137,7 +133,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 					}
 				} else {
 					new boomNotification('Page title saved.');
-					$.boom.page.toolbar.status.set(response);
+					$.boom.page.toolbar.status.set(data.status);
 				}
 
 				var page_title = top.$('title').text().replace(old_title, title);
