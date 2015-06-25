@@ -34,15 +34,19 @@ $.widget('boom.textEditor', {
 
 		self.toolbar = $('#wysihtml5-toolbar').find('[data-buttonset=' + self.mode  + ']').first().clone().appendTo('#wysihtml5-toolbar');
 
-		self.instance = new wysihtml5.Editor(element[0], { // id of textarea element
-			toolbar : self.toolbar[0],
-			style : true,
-			parserRules :  (self.mode == 'block')? wysihtml5ParserRules : wysihtml5ParserRulesInline, // defined in parser rules set
-			useLineBreaks : false,
-			contentEditableMode : true,
-			autoLink : false,
-			uneditableContainerClassname : 'b-asset-embed'
-		});
+		if (self.mode === 'block') {
+			self.instance = new wysihtml5.Editor(element[0], { // id of textarea element
+				toolbar : self.toolbar[0],
+				style : true,
+				parserRules :  (self.mode == 'block')? wysihtml5ParserRules : wysihtml5ParserRulesInline, // defined in parser rules set
+				useLineBreaks : false,
+				contentEditableMode : true,
+				autoLink : false,
+				uneditableContainerClassname : 'b-asset-embed'
+			});
+		} else {
+			element.attr('contenteditable', true);
+		}
 
 		element
 			.on('focus', function() {
@@ -53,23 +57,25 @@ $.widget('boom.textEditor', {
 
 		this.enableAutoSave();
 
-		$(self.instance.composer)
-			.on('before:boomdialog', function() {
-				self.disableAutoSave();
-			})
-			.on('after:boomdialog', function() {
-				self.element.focus();
-				self.enableAutoSave();
-			});
+		if (self.mode === 'block') {
+			$(self.instance.composer)
+				.on('before:boomdialog', function() {
+					self.disableAutoSave();
+				})
+				.on('after:boomdialog', function() {
+					self.element.focus();
+					self.enableAutoSave();
+				});
 
-		self.instance
-			.on('show:dialog', function(options) {
-				if (options.command == 'createBoomLink') {
-					if ( ! wysihtml5.commands.createBoomLink.state(self.instance.composer)) {
-						wysihtml5.commands.createBoomLink.exec(self.instance.composer);
+			self.instance
+				.on('show:dialog', function(options) {
+					if (options.command == 'createBoomLink') {
+						if ( ! wysihtml5.commands.createBoomLink.state(self.instance.composer)) {
+							wysihtml5.commands.createBoomLink.exec(self.instance.composer);
+						}
 					}
-				}
-			});
+				});
+		}
 
 		this.toolbar
 			.on('click', '.b-editor-accept', function(event) {
