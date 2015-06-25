@@ -12,6 +12,6 @@ class Tag extends Model
 	
 	public function setNameAttribute($value)
 	{
-		$this->attributes['name'] = trim($name);
+		$this->attributes['name'] = trim(strip_tags($value));
 	}
 }

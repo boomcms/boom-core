@@ -30,7 +30,7 @@ class Provider
 		return new Tag($m->toArray());
 	}
 
-    public function findByNameAndGroup($name, $group= null)
+    public function findByNameAndGroup($name, $group = null)
     {
 		$model = Model::where('name', $name)
 			->where('group', $group)
