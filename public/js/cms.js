@@ -27875,24 +27875,6 @@ $.widget('ui.tree',
 			.unwrap();
 	}
 });;/**
-convert 8 bit characters to their 7 bit equivalent
-@function
-*/
-String.prototype.safeEscape = function() {
-	var str = $.trim(this),
-	replacements = {
-		"\xa0": " ", "\xb7": "*", "\u2018": "'", "\u2019": "'",	"\u2026": "...", "\u2002": " ", "\u2003": " ", "\u2009": " ", "\u2012": "-", "\u2013": "-", "\u2014": "-", "\u2015": "-",
-		"\u201c": '"',	// smart quote
-		"\u201d": '"'	// smart quote
-	};
-
-	for (key in replacements)
-		str = str.replace(new RegExp(key, 'g'), replacements[key]);
-
-	return encodeURIComponent(str).replace(/%20/g, '+').toString();
-};
-
-/**
 @function
 */
 String.prototype.ucfirst = function() {
@@ -34991,15 +34973,19 @@ $.widget('boom.textEditor', {
 
 		self.toolbar = $('#wysihtml5-toolbar').find('[data-buttonset=' + self.mode  + ']').first().clone().appendTo('#wysihtml5-toolbar');
 
-		self.instance = new wysihtml5.Editor(element[0], { // id of textarea element
-			toolbar : self.toolbar[0],
-			style : true,
-			parserRules :  (self.mode == 'block')? wysihtml5ParserRules : wysihtml5ParserRulesInline, // defined in parser rules set
-			useLineBreaks : false,
-			contentEditableMode : true,
-			autoLink : false,
-			uneditableContainerClassname : 'b-asset-embed'
-		});
+		if (self.mode === 'block') {
+			self.instance = new wysihtml5.Editor(element[0], { // id of textarea element
+				toolbar : self.toolbar[0],
+				style : true,
+				parserRules :  (self.mode == 'block')? wysihtml5ParserRules : wysihtml5ParserRulesInline, // defined in parser rules set
+				useLineBreaks : false,
+				contentEditableMode : true,
+				autoLink : false,
+				uneditableContainerClassname : 'b-asset-embed'
+			});
+		} else {
+			element.attr('contenteditable', true);
+		}
 
 		element
 			.on('focus', function() {
@@ -35010,23 +34996,25 @@ $.widget('boom.textEditor', {
 
 		this.enableAutoSave();
 
-		$(self.instance.composer)
-			.on('before:boomdialog', function() {
-				self.disableAutoSave();
-			})
-			.on('after:boomdialog', function() {
-				self.element.focus();
-				self.enableAutoSave();
-			});
+		if (self.mode === 'block') {
+			$(self.instance.composer)
+				.on('before:boomdialog', function() {
+					self.disableAutoSave();
+				})
+				.on('after:boomdialog', function() {
+					self.element.focus();
+					self.enableAutoSave();
+				});
 
-		self.instance
-			.on('show:dialog', function(options) {
-				if (options.command == 'createBoomLink') {
-					if ( ! wysihtml5.commands.createBoomLink.state(self.instance.composer)) {
-						wysihtml5.commands.createBoomLink.exec(self.instance.composer);
+			self.instance
+				.on('show:dialog', function(options) {
+					if (options.command == 'createBoomLink') {
+						if ( ! wysihtml5.commands.createBoomLink.state(self.instance.composer)) {
+							wysihtml5.commands.createBoomLink.exec(self.instance.composer);
+						}
 					}
-				}
-			});
+				});
+		}
 
 		this.toolbar
 			.on('click', '.b-editor-accept', function(event) {
@@ -36411,18 +36399,14 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 
 	_save : function(title, old_title) {
 		this.options.currentPage.setTitle(title)
-			.done(function(response) {
-				try {
-					var data = $.parseJSON(response);
-				} catch (e) {};
-
+			.done(function(data) {
 				if (typeof data == 'object' && data.location) {
 					var history = new boomHistory();
 
 					if (history.isSupported()) {
 						history.replaceState({}, title, data.location);
 						new boomNotification('Page title saved.');
-						$.boom.page.toolbar.status.set(response);
+						$.boom.page.toolbar.status.set(data.status);
 					} else {
 						var confirmation = new boomConfirmation('Page URL changed', "Because you've set a page title for the first time the URL of this page has been updated to reflect the new title.<br /><br />Would you like to reload the page using the new URL?<br /><br />You can continue editing the page without reloading.");
 						confirmation
@@ -36432,7 +36416,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 					}
 				} else {
 					new boomNotification('Page title saved.');
-					$.boom.page.toolbar.status.set(response);
+					$.boom.page.toolbar.status.set(data.status);
 				}
 
 				var page_title = top.$('title').text().replace(old_title, title);
