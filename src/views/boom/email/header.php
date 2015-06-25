@@ -36,7 +36,7 @@
 											<img src="<?= url('/vendor/boomcms/boom-core/email_assets/spacer.gif') ?>" />
 										</td>
 										<td width="580" style="font-family: Arial, Helvetica, sans-serif !important; margin: 0; font-size:16px !important;text-align:center;">
-											<img src="<?= url('/vendor/boomcms/boom-core/email_assets/logo_sm.png') ?>" style="vertical-align:middle;"/> Email from BoomCMS.
+											<img src="<?= url('/vendor/boomcms/boom-core/email_assets/logo_sm.png') ?>" style="vertical-align:middle;"/>
 										</td>
 										<td width="10" height="10">
 											<img src="<?= url('/vendor/boomcms/boom-core/email_assets/spacer.gif') ?>" />
