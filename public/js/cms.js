@@ -36687,7 +36687,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 
 					return (typeof text == 'undefined') ? $( node ).text() : text;
 				},
-				sortList: [[1,0]]
+				sortList: [[3,0], [1,0]]
 			});
 	}
 });;function boomAsset(asset_id) {
