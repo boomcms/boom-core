@@ -133,17 +133,15 @@ $.widget('boom.textEditor', {
 
 		this.disableAutoSave();
 		this.element.blur();
-		this.hideToolbar();
 
 		if (this.hasBeenEdited()) {
 			new boomConfirmation('Cancel changes', 'Cancel all changes and exit the editor?')
 				.done(function() {
 					textEditor.element.html(textEditor.original_html);
+					textEditor.hideToolbar();
 				})
 				.fail(function() {
 					textEditor.element.focus();
-				})
-				.always(function() {
 					textEditor.enableAutoSave();
 				});
 		}
