@@ -17,7 +17,7 @@ class Text extends BaseChunk
             case 'standfirst':
                 return "<p class=\"standfirst\">{text}</p>";
             case 'bodycopy':
-                return "<div class=\"content\">{text}</div>";
+                return "<div class=\"content\"><p>{text}</p></div>";
             default:
                 return $this->allowFormatting? '<div><p>{text}</p></div>' : '<p>{text}</p>';
         }
@@ -68,7 +68,9 @@ class Text extends BaseChunk
 
     public function hasContent()
     {
-        return isset($this->attrs['text']) && trim($this->attrs['text']) != null;
+        return isset($this->attrs['text'])
+			&& trim($this->attrs['text']) != null
+			&& strcmp(strip_tags(trim($this->attrs['text'])), $this->getPlaceholderText()) !== 0;
     }
 
     /**
