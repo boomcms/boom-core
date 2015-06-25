@@ -16,7 +16,7 @@ $.widget('boom.pageTree', {
 			}
 		});
 
-		this.element.on('click', 'a', function(e) {
+		this.element.on('click', 'a[data-page-id]', function(e) {
 			e.preventDefault();
 
 			self.itemClick($(this));
