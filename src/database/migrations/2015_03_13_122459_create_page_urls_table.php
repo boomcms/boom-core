@@ -15,8 +15,9 @@ class CreatePageUrlsTable extends Migration
         Schema::create('page_urls', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('page_id')->unsigned();
-            $table->string('location', 2048)->nullable()->index('page_uri_uri');
+            $table->string('location', 2048)->nullable();
             $table->boolean('is_primary')->nullable();
+			$table->unique('location');
             $table->index(['page_id','is_primary'], 'page_uri_page_id_primary_uri');
         });
     }
