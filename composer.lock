@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "a4f667f87408dc3526997d3228d1c765",
+    "hash": "03e5d37de5a41126846679e35ddf56b0",
     "packages": [
         {
             "name": "boomcms/boom-core",
@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/boomcms/boom-core.git",
-                "reference": "df04b927fb522e3b951bd93e704a51b842bb9175"
+                "reference": "6e6739a4046bb4ea1f75b7004d2a1da5f41bd118"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/boomcms/boom-core/zipball/df04b927fb522e3b951bd93e704a51b842bb9175",
-                "reference": "df04b927fb522e3b951bd93e704a51b842bb9175",
+                "url": "https://api.github.com/repos/boomcms/boom-core/zipball/6e6739a4046bb4ea1f75b7004d2a1da5f41bd118",
+                "reference": "6e6739a4046bb4ea1f75b7004d2a1da5f41bd118",
                 "shasum": ""
             },
             "require": {
@@ -31,7 +31,6 @@
                 "laravel/framework": "~5.0",
                 "mpratt/embera": "~1.0",
                 "php": ">=5.3",
-                "robbytaylor/htmlpurifier-tel": "dev-master",
                 "rych/bytesize": "1.0.*",
                 "symfony/http-kernel": "2.6.*",
                 "thujohn/rss": "dev-master"
@@ -52,7 +51,7 @@
                 "MIT"
             ],
             "description": "Core classes for BoomCMS",
-            "time": "2015-06-24 16:32:04"
+            "time": "2015-06-25 16:37:00"
         },
         {
             "name": "boomcms/boom-installer",
@@ -97,16 +96,16 @@
         },
         {
             "name": "boomcms/boom-robotstxt",
-            "version": "v3.0.1",
+            "version": "v3.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/boomcms/boom-robotstxt.git",
-                "reference": "08c33eef79df1a2b58ca342c5eeb5004d221aa2b"
+                "reference": "a5421db43a80a7dd3e28d4f9ba5619621441edaa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/boomcms/boom-robotstxt/zipball/08c33eef79df1a2b58ca342c5eeb5004d221aa2b",
-                "reference": "08c33eef79df1a2b58ca342c5eeb5004d221aa2b",
+                "url": "https://api.github.com/repos/boomcms/boom-robotstxt/zipball/a5421db43a80a7dd3e28d4f9ba5619621441edaa",
+                "reference": "a5421db43a80a7dd3e28d4f9ba5619621441edaa",
                 "shasum": ""
             },
             "require": {
@@ -130,7 +129,7 @@
                 }
             ],
             "description": "robots.txt generator for BoomCMS",
-            "time": "2015-06-23 16:45:49"
+            "time": "2015-06-25 17:07:23"
         },
         {
             "name": "boomcms/boom-sitemap",
@@ -902,50 +901,6 @@
                 "parser"
             ],
             "time": "2014-09-09 13:34:57"
-        },
-        {
-            "name": "ezyang/htmlpurifier",
-            "version": "v4.6.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/ezyang/htmlpurifier.git",
-                "reference": "6f389f0f25b90d0b495308efcfa073981177f0fd"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/6f389f0f25b90d0b495308efcfa073981177f0fd",
-                "reference": "6f389f0f25b90d0b495308efcfa073981177f0fd",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.2"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "HTMLPurifier": "library/"
-                },
-                "files": [
-                    "library/HTMLPurifier.composer.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "LGPL"
-            ],
-            "authors": [
-                {
-                    "name": "Edward Z. Yang",
-                    "email": "admin@htmlpurifier.org",
-                    "homepage": "http://ezyang.com"
-                }
-            ],
-            "description": "Standards compliant HTML filter written in PHP",
-            "homepage": "http://htmlpurifier.org/",
-            "keywords": [
-                "html"
-            ],
-            "time": "2013-11-30 08:25:19"
         },
         {
             "name": "genphrase/genphrase",
@@ -1750,21 +1705,21 @@
         },
         {
             "name": "nesbot/carbon",
-            "version": "1.19.0",
+            "version": "1.20.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/briannesbitt/Carbon.git",
-                "reference": "68868e0b02d2d803d0052a59d4e5003cccf87320"
+                "reference": "bfd3eaba109c9a2405c92174c8e17f20c2b9caf3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/68868e0b02d2d803d0052a59d4e5003cccf87320",
-                "reference": "68868e0b02d2d803d0052a59d4e5003cccf87320",
+                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/bfd3eaba109c9a2405c92174c8e17f20c2b9caf3",
+                "reference": "bfd3eaba109c9a2405c92174c8e17f20c2b9caf3",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0",
-                "symfony/translation": "~2.6"
+                "symfony/translation": "~2.6|~3.0"
             },
             "require-dev": {
                 "phpunit/phpunit": "~4.0"
@@ -1793,7 +1748,7 @@
                 "datetime",
                 "time"
             ],
-            "time": "2015-05-09 03:23:44"
+            "time": "2015-06-25 04:19:39"
         },
         {
             "name": "nikic/php-parser",
@@ -1948,42 +1903,6 @@
                 "shell"
             ],
             "time": "2015-03-26 18:43:54"
-        },
-        {
-            "name": "robbytaylor/htmlpurifier-tel",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/robbytaylor/htmlpurifier-tel.git",
-                "reference": "cf5abecd43e3f5a9b563459d29ee90425507e211"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/robbytaylor/htmlpurifier-tel/zipball/cf5abecd43e3f5a9b563459d29ee90425507e211",
-                "reference": "cf5abecd43e3f5a9b563459d29ee90425507e211",
-                "shasum": ""
-            },
-            "require": {
-                "ezyang/htmlpurifier": "4.6.*"
-            },
-            "type": "library",
-            "autoload": {
-                "classmap": [
-                    "src/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Rob Taylor",
-                    "email": "rob@uxblondon.com"
-                }
-            ],
-            "description": "Tel URI scheme for HTMLPurifier",
-            "time": "2014-11-06 21:46:02"
         },
         {
             "name": "rych/bytesize",
