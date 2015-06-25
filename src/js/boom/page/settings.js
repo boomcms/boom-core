@@ -83,7 +83,9 @@ boomPage.prototype.template = function() {
 		page.saveSettings(url, $("#b-page-version-template").serialize(), 'Page template saved, reloading page')
 			.done(function() {
 				// Reload the page to show the template change.
-				top.location.reload();
+				setTimeout(function() {
+					$.boom.reload();
+				}, 1500);
 			});
 	});
 

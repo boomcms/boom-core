@@ -28,9 +28,12 @@ function boomNotification(message) {
 				if (permission === "granted") {
 					n = new Notification(message);
 					notified = true;
+	
+					$.boom.notifications.push(n);
 
 					setTimeout(function() {
 						n.close();
+						$.boom.notifications.splice($.boom.notifications.indexOf(n), -1);
 					}, 3000);
 				}
 			});

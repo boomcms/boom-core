@@ -18,6 +18,8 @@ $.extend({
 
 		options: {},
 
+		notifications: [],
+
 		setup: function(){
 
 			$.extend(this, { config: window.boomConfig });
@@ -53,6 +55,23 @@ $.extend({
 
 		_init_widgets : function() {
 			this.loader = $('body').boomLoader({}).data('boomBoomLoader');
+		},
+
+		/**
+		 * Close all notifications before reload the page.
+		 *
+		 * Because Chrome doesn't do it for us :(
+		 *
+		 * @returns {undefined}
+		 */
+		reload: function() {
+			var notifications = $.boom.notifications, i;
+
+			for (i = 0; i < notifications.length; i++) {
+				notifications[i].close();
+			}
+
+			top.location.reload();
 		}
 	}
 });
