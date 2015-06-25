@@ -3,6 +3,7 @@
 namespace BoomCMS\Core\Models;
 
 use BoomCMS\Core\Editor\Editor;
+use BoomCMS\Core\URL\Helpers as URLHelper;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
@@ -156,4 +157,9 @@ class Page extends Model
     {
         return $query->whereNotNull('primary_uri');
     }
+	
+	public function setPrimaryUriAttribute($value)
+	{
+		$this->attributes['primary_uri'] = URLHelper::sanitise($value);
+	}
 }
