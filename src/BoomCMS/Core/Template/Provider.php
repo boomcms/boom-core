@@ -16,6 +16,7 @@ class Provider
     public function findAll()
     {
         $models = Model::query()
+			->orderBy('theme', 'asc')
             ->orderBy('name', 'asc')
             ->get();
 
