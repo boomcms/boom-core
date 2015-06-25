@@ -15,7 +15,10 @@ class Provider
 
     public function findAll()
     {
-        $models = Model::all();
+        $models = Model::query()
+            ->orderBy('name', 'asc')
+            ->get();
+
         $templates = [];
 
         foreach ($models as $model) {
