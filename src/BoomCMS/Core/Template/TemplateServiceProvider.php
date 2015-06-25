@@ -40,8 +40,11 @@ class TemplateServiceProvider extends ServiceProvider
             $this->loadViewsFrom($views, $theme->getName());
             $this->loadViewsFrom($views . '/chunks', 'boomcms.chunks');
 
-            $this->publishes([$public => public_path('vendor/boomcms/themes/' . $theme)], $theme->getName());
-
+            $this->publishes([
+				$public => public_path('vendor/boomcms/themes/' . $theme),
+				$theme->getDirectory() . '/migrations/' => base_path('/migrations/boomcms'),
+			], $theme->getName());
+			
             if (file_exists($routes)) {
                 include $routes;
             }
