@@ -19,7 +19,7 @@ class Page extends Controller
         View::share('chunks', $chunks);
 		View::share('chunk', function($type, $slotname, $page = null) use ($chunks) {
 			if ($page) {
-				return Chunk::get($type, $slotname);
+				return Chunk::get($type, $slotname, $page);
 			}
 
 			return (isset($chunks[$type][$slotname])) ?
