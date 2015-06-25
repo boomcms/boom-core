@@ -31,11 +31,13 @@
 	},
 	"scripts": {
 		"post-install-cmd": [
+			"php artisan vendor:publish --force",
 			"php artisan boomcms:installTemplates",
 			"php artisan clear-compiled",
 			"php artisan optimize"
 		],
 		"post-update-cmd": [
+			"php artisan vendor:publish --force",
 			"php artisan clear-compiled",
 			"php artisan boomcms:installTemplates",
 			"php artisan migrate --path=migrations/boomcms",
