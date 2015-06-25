@@ -68,9 +68,7 @@ var wysihtml5ParserRules = {
      *                            - any:            allows anything to pass
      */
     "tags": {
-        "tr": {
-              unwrap : 1
-        },
+        "tr": {},
         "strike": {
             "unwrap": 1
         },
@@ -185,9 +183,7 @@ var wysihtml5ParserRules = {
         "head": {
             "unwrap": 1
         },
-        "tbody": {
-            "unwrap": 1
-        },
+        "tbody": {},
         "dd": {
             "unwrap": 1
         },
@@ -195,9 +191,7 @@ var wysihtml5ParserRules = {
             "unwrap": 1
         },
         "li": {},
-        "td": {
-            unwrap : 1
-        },
+        "td": {},
         "object": {
             "remove": 1
         },
@@ -244,9 +238,7 @@ var wysihtml5ParserRules = {
         "input": {
             "remove": 1
         },
-        "table": {
-            "unwrap": 1
-	},
+        "table": {},
         "keygen": {
             "remove": 1
         },
@@ -268,15 +260,11 @@ var wysihtml5ParserRules = {
         "caption": {
            "unwrap": 1
         },
-        "tfoot": {
-            "unwrap": 1
-        },
+        "tfoot": {},
         "base": {
             "remove": 1
         },
-        "video": {
-            "remove": 1
-        },
+        "video": {},
         "strong": {},
         "canvas": {
             "remove": 1
@@ -375,11 +363,7 @@ var wysihtml5ParserRules = {
         "noembed": {
             "remove": 1
         },
-        "thead": {
-            "add_class": {
-                "align": "align_text"
-            }
-        },
+        "thead": {},
         "blink": {
             "unwrap": 1
         },
@@ -399,9 +383,6 @@ var wysihtml5ParserRules = {
             "check_attributes": {
                 "rowspan": "numbers",
                 "colspan": "numbers"
-            },
-            "add_class": {
-                "align": "align_text"
             }
         },
         "legend": {
