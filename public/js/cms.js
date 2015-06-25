@@ -34984,7 +34984,15 @@ $.widget('boom.textEditor', {
 				uneditableContainerClassname : 'b-asset-embed'
 			});
 		} else {
-			element.attr('contenteditable', true);
+			element
+				.attr('contenteditable', true)
+				.on('keydown', function(event) {
+					switch(event.which) {
+						case 13:
+							event.preventDefault();
+						break;
+					}
+				});
 		}
 
 		element
@@ -35039,9 +35047,16 @@ $.widget('boom.textEditor', {
 	@param {Object} element The element being edited.
 	*/
 	apply : function(element) {
-		this.hideToolbar();
+		var html = element.html();
 
-		this._trigger('edit', element.html());
+		this.hideToolbar();
+		
+		if (this.mode !== 'block') {
+			html = html.replace(/<br>|\n|\r|\n\r/g, ' ');
+			element.html(html);
+		}
+
+		this._trigger('edit', html);
 	},
 
 	blur : function(element) {
@@ -35081,6 +35096,7 @@ $.widget('boom.textEditor', {
 		var editor = this;
 
 		this.element.on('blur', function() {
+			console.log('blur');
 			if ( ! editor.toolbar.children(':focus').length) {
 				editor.apply(editor.element);
 			}
