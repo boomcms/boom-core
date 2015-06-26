@@ -39,12 +39,6 @@
 			<?php endif ?>
 		</div>
 
-		<?php if ($readability): ?>
-			<button id="b-page-readability" class="b-button">
-				<?= $readability ?>
-			</button>
-		<?php endif ?>
-
 		<div class="b-page-container">
 			<?= $button('view-live', Lang::get('View the page as it appears on the live site'), ['id' => 'boom-page-viewlive', 'class' => 'b-button-preview', 'data-preview' => 'disabled']) ?>
 		</div>

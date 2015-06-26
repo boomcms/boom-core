@@ -35,23 +35,12 @@ class Editor extends Controller
     {
         $page = $provider->findById($this->request->input('page_id'));
         $this->editor->setActivePage($page);
-
-        if ($this->editor->isEnabled()) {
-            $toolbarFilename = 'toolbar';
-            $this->_add_readability_score_to_template($page);
-        } else {
-            $toolbarFilename = 'toolbar_preview';
-        }
-
+        
         View::share('page', $page);
         View::share('editor', $this->editor);
 
-        return View::make("boom::editor.$toolbarFilename");
-    }
+		$toolbarFilename = ($this->editor->isEnabled()) ? 'toolbar' : 'toolbar_preview';
 
-    protected function _add_readability_score_to_template(Page\Page $page)
-    {
-        $readability = new Page\ReadabilityScore($page);
-        View::share('readability', $readability->getSmogScore());
+        return View::make("boom::editor.$toolbarFilename");
     }
 }

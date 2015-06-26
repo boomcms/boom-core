@@ -29,14 +29,6 @@ $.widget( 'boom.pageToolbar', {
 			.on('click', '#boom-page-editlive', function() {
 				self.options.page.stash();
 			})
-			.on('click', '#b-page-readability', function() {
-				new boomDialog({
-					url : '/vendor/boomcms/boom-core/html/help/readability.html',
-					width : 600,
-					title: 'Readability measure',
-					cancelButton : false
-				});
-			})
 			.on('click', '.b-page-visibility', function() {
 				self.options.page.visibility()
 					.done(function(response) {

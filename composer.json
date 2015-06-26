@@ -7,7 +7,6 @@
 		"ext-imagick" : "*",
 		"mpratt/embera": "~1.0",
                 "genphrase/genphrase" : "1.0.*",
-		"davechild/textstatistics": "1.0.*@dev",
 		"hautelook/phpass": "dev-master",
 		"thujohn/rss": "dev-master",
 		"intervention/imagecache" : "2.*",
