@@ -11,7 +11,11 @@
 
 	<p>
 		<label for="format">Format</label>
-		<?= Form::select('format', $formats, $format, ['id' => 'format']) ?>
+        <select name="format" id="format">
+            <?php foreach ($formats as $f => $example): ?>
+              <option value="<?= $f ?>"<?php if ($f == $format): ?> selected="selected"<?php endif ?>><?= $example ?></option>
+            <?php endforeach ?>
+        </select>
 	</p>
 
 	<p>

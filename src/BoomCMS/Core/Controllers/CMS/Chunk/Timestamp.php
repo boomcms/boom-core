@@ -15,7 +15,7 @@ class Timestamp extends Chunk
         }
 
         return View::make('boom::editor.chunk.timestamp', [
-            'timestamp' => 0,
+            'timestamp' => time(),
             'format' => ChunkTimestamp::$defaultFormat,
             'formats' => $formats,
         ]);
