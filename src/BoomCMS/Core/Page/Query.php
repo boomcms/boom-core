@@ -15,6 +15,7 @@ class Query
         'relatedbytags' => 'RelatedByTags',
         'visibleinnavigation' => 'VisibleInNavigation',
         'nextto' => 'NextTo',
+		'title' => 'Title',
     ];
 
     /**
