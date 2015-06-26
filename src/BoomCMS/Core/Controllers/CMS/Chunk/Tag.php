@@ -1,13 +1,18 @@
 <?php
 
-class Controller_Cms_Chunk_Tag extends Controller_Cms_Chunk
-{
-    protected $_type = 'tag';
+namespace BoomCMS\Core\Controllers\CMS\Chunk;
 
+use BoomCMS\Core\Tag\Provider as TagProvider;
+use Illuminate\Support\Facades\View;
+
+class Tag extends Chunk
+{
     public function edit()
     {
-        return View::make('boom/editor/slot/tag', [
-            'current_tag' => new Model_Tag($this->request->query('tag')),
+        $provider = new TagProvider();
+
+        return View::make('boom::editor.chunk.tag', [
+            'current_tag' => $provider->findByName($this->request->input('tag')),
         ]);
     }
 }

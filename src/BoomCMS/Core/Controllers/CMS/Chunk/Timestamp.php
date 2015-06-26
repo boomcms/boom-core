@@ -1,19 +1,20 @@
 <?php
 
+namespace BoomCMS\Core\Controllers\CMS\Chunk;
+
 use BoomCMS\Core\Chunk\Timestamp as ChunkTimestamp;
+use Illuminate\Support\Facades\View;
 
-class Controller_Cms_Chunk_Timestamp extends Controller_Cms_Chunk
+class Timestamp extends Chunk
 {
-    protected $_type = 'timestamp';
-
     public function edit()
     {
         $formats = [];
         foreach (ChunkTimestamp::$formats as $format) {
-            $formats[$format] = date($format, $_SERVER['REQUEST_TIME']);
+            $formats[$format] = date($format, time());
         }
 
-        return View::make('boom/editor/slot/timestamp', [
+        return View::make('boom::editor.chunk.timestamp', [
             'timestamp' => 0,
             'format' => ChunkTimestamp::$defaultFormat,
             'formats' => $formats,
