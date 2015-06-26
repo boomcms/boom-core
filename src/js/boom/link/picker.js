@@ -109,6 +109,9 @@ function boomLinkPicker(link) {
 		})
 		.done(function() {
 			linkPicker.pick(linkPicker.getExternalLink());
+		})
+		.fail(function() {
+			linkPicker.deferred.reject();
 		});
 
 		return this.deferred;

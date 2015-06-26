@@ -55,7 +55,6 @@
 							composer.commands.exec("createLink", { href: url, title: '', text: text});
 						}
 					}
-
 				})
 				.always(function() {
 					$(composer).trigger('after:boomdialog');

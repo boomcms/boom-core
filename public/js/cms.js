@@ -34161,14 +34161,6 @@ $.widget( 'boom.pageToolbar', {
 			.on('click', '#boom-page-editlive', function() {
 				self.options.page.stash();
 			})
-			.on('click', '#b-page-readability', function() {
-				new boomDialog({
-					url : '/vendor/boomcms/boom-core/html/help/readability.html',
-					width : 600,
-					title: 'Readability measure',
-					cancelButton : false
-				});
-			})
 			.on('click', '.b-page-visibility', function() {
 				self.options.page.visibility()
 					.done(function(response) {
@@ -36642,6 +36634,9 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 		})
 		.done(function() {
 			linkPicker.pick(linkPicker.getExternalLink());
+		})
+		.fail(function() {
+			linkPicker.deferred.reject();
 		});
 
 		return this.deferred;
@@ -53309,7 +53304,7 @@ wysihtml5.views.View = Base.extend(
 				.done(function(link) {
 					var url = link.getUrl(),
 						page_id = link.getPageId();
-
+console.log(link.getUrl());
 					if (existing_link) {
 						$(existing_link)
 							.attr('href', link.getUrl())
@@ -53326,7 +53321,6 @@ wysihtml5.views.View = Base.extend(
 							composer.commands.exec("createLink", { href: url, title: '', text: text});
 						}
 					}
-
 				})
 				.always(function() {
 					$(composer).trigger('after:boomdialog');

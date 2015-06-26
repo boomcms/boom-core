@@ -155,7 +155,6 @@ $.widget('boom.textEditor', {
 		var editor = this;
 
 		this.element.on('blur', function() {
-			console.log('blur');
 			if ( ! editor.toolbar.children(':focus').length) {
 				editor.apply(editor.element);
 			}
