@@ -20,9 +20,9 @@ class Title extends Filter
     public function execute(Builder $query)
     {
 		if (is_array($this->title)) {
-			return $query->whereIn('title', $this->titles);
+			return $query->whereIn('title', $this->title);
 		} else {
-			return $query->where('title', '=', $this->titles);
+			return $query->where('title', '=', $this->title);
 		}
     }
 
