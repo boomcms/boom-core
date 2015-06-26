@@ -35110,7 +35110,6 @@ $.widget('boom.textEditor', {
 		var editor = this;
 
 		this.element.on('blur', function() {
-			console.log('blur');
 			if ( ! editor.toolbar.children(':focus').length) {
 				editor.apply(editor.element);
 			}
@@ -53304,7 +53303,7 @@ wysihtml5.views.View = Base.extend(
 				.done(function(link) {
 					var url = link.getUrl(),
 						page_id = link.getPageId();
-console.log(link.getUrl());
+
 					if (existing_link) {
 						$(existing_link)
 							.attr('href', link.getUrl())

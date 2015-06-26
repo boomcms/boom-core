@@ -40,10 +40,8 @@ function boomLink(url, pageId, title) {
 	};
 	
 	boomLink.prototype.makeUrlRelative = function() {
-		var url = (this.url.indexOf(window.location.hostname) > -1) ?
+		return (this.url.indexOf(window.location.hostname) > -1) ?
 			this.url.replace(/^https?:\/\//, '').replace(window.location.hostname, '') :
 			this.url;
-	
-		return url !== ''? url : '/';
 	};
 };
