@@ -90,6 +90,9 @@ Route::group(['middleware' => [
                 Route::get('feature/edit/{page}', 'Feature@edit');
                 Route::get('asset/edit/{page}', 'Asset@edit');
                 Route::get('slideshow/edit/{page}', 'Slideshow@edit');
+                Route::get('timestamp/edit/{page}', 'Timestamp@edit');
+                Route::get('tag/edit/{page}', 'Tag@edit');
+                Route::get('linkset/edit/{page}', 'Linkset@edit');
 			});
 
 			Route::group(['prefix' => 'page', 'namespace' => 'Page'], function() {
