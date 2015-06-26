@@ -11,7 +11,7 @@ html.boom .b-toolbar, .b-toolbar {
 	position: fixed;
 	padding-left: 80px;
 	z-index: 1000;
-	
+
 	+ * {
 		margin-top: 70px;
 	}
@@ -27,7 +27,7 @@ html.boom .b-toolbar, .b-toolbar {
 			border-right: 0;
 			border-bottom: 1px solid #555;
 		}
-		
+
 		+ * {
 			margin-top: auto;
 		}
@@ -69,10 +69,10 @@ html.boom body.pushy-active, body.pushy-active {
 		-o-transition: all 0.2s linear;
 		transition: all 0.2s linear;
 	}
-	
+
 	.b-toolbar {
 		position: static;
-		
+
 		+ * {
 			margin-top: 10px;
 		}
@@ -82,11 +82,20 @@ html.boom body.pushy-active, body.pushy-active {
 #wysihtml5-toolbar {
 	display: none;
 
-	div {
+	> div {
 		position: absolute;
 		top: 0;
 		left: 5px;
 		display: none;
+	}
+
+	.b-button-group {
+		position: static;
+		display: block;
+
+		+ .b-button-group {
+			margin-top: 20px;
+		}
 	}
 
 	[data-wysihtml5-dialog="createBoomLink"] {

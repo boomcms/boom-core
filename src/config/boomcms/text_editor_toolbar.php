@@ -22,9 +22,9 @@ return [
             'hr' => ['Insert horizontal rule', ['data-wysihtml5-command' => 'insertHorizontalRule', 'class' => 'command']],
         ],
         'button_sets' => [
-            'text' => ['accept', 'cancel'],
-            'inline' => ['accept', 'cancel', 'bold', 'italic', 'link','edit'],
-            'block' => ['accept', 'cancel', 'bold', 'italic', 'list', 'ol', 'link', 'edit', 'asset', 'paragraph', 'h2', 'h3', 'blockquote'],
+            'text' => [['accept', 'cancel']],
+            'inline' => [['accept', 'cancel'], ['bold', 'italic'], ['link','edit']],
+            'block' => [['accept', 'cancel'], ['h2', 'h3', 'paragraph', 'bold', 'italic', 'list', 'ol', 'blockquote', 'cta'], ['link', 'edit', 'asset', 'hr']],
         ],
     ],
 ];
