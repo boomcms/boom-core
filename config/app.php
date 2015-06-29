@@ -149,8 +149,7 @@ return [
         'BoomCMS\Core\Settings\SettingsServiceProvider',
         'BoomCMS\Core\Chunk\ChunkServiceProvider',
         'BoomCMS\Core\URL\URLServiceProvider',
-		
-        'BoomCMS\Installer\ServiceProvider',
+		'BoomCMS\Core\Tag\TagServiceProvider',
     ],
 
     /*
@@ -203,5 +202,6 @@ return [
         'Chunk' => 'BoomCMS\Core\Facades\Chunk',
         'Page' => 'BoomCMS\Core\Facades\Page',
         'Editor' => 'BoomCMS\Core\Facades\Editor',
+		'Tag' => 'BoomCMS\Core\Facades\Tag',
     ],
 ];
