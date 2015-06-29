@@ -37809,7 +37809,7 @@ function Row() {
 				self._check_inputs($('#b-group-roles-pages input[type=radio]'), -1);
 
 				page_tree
-					.find('a[rel=' + link.getPageId() + ']')
+					.find('a[data-page-id=' + link.getPageId() + ']')
 					.parents('.boom-tree')
 					.find('a.ui-state-active')
 					.removeClass('ui-state-active')
@@ -37849,13 +37849,15 @@ function Row() {
 
 	_show_permissions : function(page_id) {
 		var self = this,
-			role;
+			i;
 
 		this.group.getRoles(page_id)
 			.done(function(data) {
+				console.log(data);
 				if (data.length) {
-					for (role in data) {
-						self._check_inputs($('input[name=' + role + ']'), data[role]);
+					for (i in data) {
+						console.log(data[i]);
+						self._check_inputs($('input[name=' + data[i].role_id + ']'), data[i].allowed);
 					}
 				}
 			});

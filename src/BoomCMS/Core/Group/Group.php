@@ -33,15 +33,13 @@ class Group
 	 */
     public function addRole($roleId, $allowed, $pageId = 0)
     {
-        // Check that the group doesn't already have this role before continuing.
         if ( ! $this->hasRole($roleId, $pageId)) {
-			
             DB::table('group_roles')
 				->insert([
 					'group_id' => $this->getId(),
-					'role_id' => DB::raw($roleId),
-					'allowed' => DB::raw($allowed),
-					'page_id' => DB::raw($pageId)
+					'role_id' => $roleId,
+					'allowed' => $allowed,
+					'page_id' => $pageId
 				]);
 
             if ($pageId) {
@@ -50,7 +48,7 @@ class Group
 						DB::table('people_groups')
 							->select('person_id', 'group_id', DB::raw("'$roleId'"), DB::raw("'$allowed'"), DB::raw("'$pageId'"))
                             ->where('group_id', '=', $this->getId())
-							->toSql()
+							->get()
                     );
             } else {
                 DB::table('people_roles')
@@ -58,9 +56,8 @@ class Group
 						DB::table('people_groups')
 							->select('person_id', 'group_id', DB::raw("'$roleId'"), DB::raw("'$allowed'"))
                             ->where('group_id', '=', $this->getId())
-							->toSql()
-                    )
-                    ->execute();
+							->get()
+                    );
             }
         }
 
@@ -88,7 +85,7 @@ class Group
 			->select('role_id', 'allowed')
             ->where('group_id', '=', $this->getId())
             ->where('page_id', '=', $pageId)
-			->lists('roles_id', 'allowed');
+			->get();
     }
 
     /**
@@ -104,13 +101,12 @@ class Group
             return false;
         }
 
-        $result = DB::select(DB::raw(1))
-            ->from('group_roles')
+        $result = DB::table('group_roles')
+            ->select(DB::raw(1))
             ->where('group_id', '=', $this->getId())
             ->where('role_id', '=', $role_id)
             ->where('page_id', '=', $page_id)
-            ->execute()
-            ->as_array();
+            ->get();
 
         return (count($result) > 0);
     }
