@@ -35,7 +35,7 @@ function boomDialog(options) {
 
 	boomDialog.prototype.cancel = function() {
 		this.deferred.rejectWith(this.dialog);
-		this.contents.dialog('destroy');
+		this.contents.remove();
 	};
 
 	boomDialog.prototype.closeButton = {
@@ -50,7 +50,7 @@ function boomDialog(options) {
 
 	boomDialog.prototype.close = function() {
 		this.deferred.resolveWith(this.dialog);
-		this.contents.dialog('destroy');
+		this.contents.remove();
 	};
 
 	boomDialog.prototype.done = function(callback) {
@@ -91,10 +91,9 @@ function boomDialog(options) {
 	};
 
 	boomDialog.prototype.open = function() {
-		var id = this.options.id? this.options.id : $.boom.util.dom.uniqueId('boom-dialog-'),
-			self = this;
+		var self = this;
 
-		this.contents = $('#' + id).length? $('#' + id) : $('<div />').attr('id', id).hide().appendTo($(document).contents().find('body'));
+		this.contents = $('<div></div>').appendTo($(document).contents().find('body'));
 
 		this.options.cancelButton && this.options.buttons.push(this.cancelButton);
 		this.options.closeButton && this.options.buttons.push(this.closeButton);
