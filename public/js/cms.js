@@ -33321,6 +33321,11 @@ function boomHistory() {
 	boomDialog.prototype.init = function() {
 		var boomDialog = this;
 
+		this
+			.contents
+			.dialog(this.options)
+			.ui();
+
 		$(top.window)
 			.trigger('boom:dialog:open')
 			.resize(function() {
@@ -33330,11 +33335,6 @@ function boomHistory() {
 					boomDialog.reposition();
 				}, 100);
 			});
-
-		this
-			.contents
-			.dialog(this.options)
-			.ui();
 
 		this.contents.dialog('option', 'position', this.options.position);
 
@@ -33370,7 +33370,7 @@ function boomHistory() {
 			this.contents.html(this.options.msg);
 			this.contents.dialog();
 			this.init();
-			
+
 			if ($.isFunction(this.options.onLoad)) {
 				this.options.onLoad(this);
 			}
@@ -33875,14 +33875,11 @@ boomPage.prototype.navigation = function() {
 		width: 570,
 		onLoad : function() {
 			dialog.contents.find('.boom-tree').pageTree({
+				active: $('input[name=parent_id]').val(),
 				onPageSelect : function(page) {
-					$( 'input[name=parent_id]' ).val(page.pageId);
+					$('input[name=parent_id]').val(page.pageId);
 				}
 			});
-		},
-		open: function() {
-			var parent_id = $( 'input[name=parent_id]' ).val();
-			$( '#page_' + parent_id ).addClass( 'ui-state-active' );
 		}
 	});
 
@@ -34352,6 +34349,12 @@ $.widget('boom.pageTree', {
 
 					if (item.has_children == 1) {
 						pageTree.element.tree('set_toggle', li);
+					}
+
+					if (typeof(pageTree.options.active) !== 'undefined') {
+						children
+							.find('a[data-page-id=' + pageTree.options.active + ']')
+							.addClass('active');
 					}
 				});
 

@@ -18,14 +18,11 @@ boomPage.prototype.navigation = function() {
 		width: 570,
 		onLoad : function() {
 			dialog.contents.find('.boom-tree').pageTree({
+				active: $('input[name=parent_id]').val(),
 				onPageSelect : function(page) {
-					$( 'input[name=parent_id]' ).val(page.pageId);
+					$('input[name=parent_id]').val(page.pageId);
 				}
 			});
-		},
-		open: function() {
-			var parent_id = $( 'input[name=parent_id]' ).val();
-			$( '#page_' + parent_id ).addClass( 'ui-state-active' );
 		}
 	});
 

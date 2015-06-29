@@ -35,7 +35,7 @@
 			<div id='advanced'>
 				<label for="parent_id">Parent page</label>
 
-				<input type="hidden" name="parent_id" value="<?= $page->getParent()->getId() ?>">
+				<input type="hidden" name="parent_id" value="<?= $page->getParentId() ?>">
 				<ul class="boom-tree"></ul>
 			</div>
 		<?php endif ?>

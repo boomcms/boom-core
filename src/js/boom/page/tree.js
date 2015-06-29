@@ -57,6 +57,12 @@ $.widget('boom.pageTree', {
 					if (item.has_children == 1) {
 						pageTree.element.tree('set_toggle', li);
 					}
+
+					if (typeof(pageTree.options.active) !== 'undefined') {
+						children
+							.find('a[data-page-id=' + pageTree.options.active + ']')
+							.addClass('active');
+					}
 				});
 
 			pageTree._trigger('load', null, {
