@@ -61,8 +61,8 @@ class Templates extends Controller
 		$finder = new Page\Finder\Finder();
 		$finder->addFilter(new Page\Finder\Template($template));
 		$pages = $finder->findAll();
-		
-		if ($this->request->format('csv')) {
+
+		if ($this->request->route()->getParameter('format') === 'csv') {
 			$headers = [
 				'Content-type'        => 'text/csv',
 				'Content-Disposition' => "attachment; filename=pages_with_template_{$template->getFilename()}.csv",
@@ -88,7 +88,6 @@ class Templates extends Controller
 			};
 			
 			return Response::stream($callback, 200, $headers);
-			
 		} else {
 			return View::make($this->viewPrefix . '.pages', [
 				'pages' => $pages,
