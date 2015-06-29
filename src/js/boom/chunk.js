@@ -11,7 +11,9 @@ function boomChunk(page_id, type, slotname) {
 	 * @returns {jqXHR}
 	 */
 	boomChunk.prototype.delete = function(template) {
-		return this.save([]);
+		return this.save({
+			'template': template
+		});
 	};
 
 	boomChunk.prototype.save = function(data) {
