@@ -33321,11 +33321,6 @@ function boomHistory() {
 	boomDialog.prototype.init = function() {
 		var boomDialog = this;
 
-		this
-			.contents
-			.dialog(this.options)
-			.ui();
-
 		$(top.window)
 			.trigger('boom:dialog:open')
 			.resize(function() {
@@ -33335,6 +33330,11 @@ function boomHistory() {
 					boomDialog.reposition();
 				}, 100);
 			});
+
+		this
+			.contents
+			.dialog(this.options)
+			.ui();
 
 		this.contents.dialog('option', 'position', this.options.position);
 
@@ -35387,7 +35387,7 @@ $.widget('ui.chunkFeature', $.ui.chunk,
 	edit : function() {
 		var featureEditor = this;
 
-		if (this.options.id > 0) {
+		if (this.options.id > 0 && this.element.attr('href')) {
 			this.confirmation = new boomDialog({
 				title : 'Edit feature?',
 				msg : '<p>You clicked on a feature box.</p><p>Do you want to visit the featured page or edit the feature?</p>',

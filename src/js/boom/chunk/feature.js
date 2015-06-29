@@ -38,7 +38,7 @@ $.widget('ui.chunkFeature', $.ui.chunk,
 	edit : function() {
 		var featureEditor = this;
 
-		if (this.options.id > 0) {
+		if (this.options.id > 0 && this.getTargetUrl()) {
 			this.confirmation = new boomDialog({
 				title : 'Edit feature?',
 				msg : '<p>You clicked on a feature box.</p><p>Do you want to visit the featured page or edit the feature?</p>',
