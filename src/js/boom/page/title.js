@@ -27,7 +27,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 				old_text = title;
 
 				self.lengthCounterCreated = false;
-				top.$('#b-title-length').remove();
+				$(top.document).find('#b-title-length').remove();
 			}
 		});
 
@@ -53,19 +53,24 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 	},
 
 	_create_length_counter : function() {
-		top.$('body').append('<div id="b-title-length"><span></span></div>');
+		var $counter = $('<div id="b-title-length"><span></span></div>');
+		
+		$(top.document)
+				.find('body')
+				.first()
+				.append($counter);
 
 		var offset = this.element.offset(),
 			title = this;
 
-		top.$('#b-title-length')
+		$counter
 			.css({
 				top : offset.top + 'px',
-				left : (offset.left - 110) + 'px',
+				left : (offset.left - 110) + 'px'
 			});
 
 		$('<p><a href="#" id="b-title-help">What is this?</a></p>')
-			.appendTo(top.$('#b-title-length'))
+			.appendTo($counter)
 			.on('mousedown', 'a', function() {
 				title.element.textEditor('disableAutoSave');
 			})
@@ -146,7 +151,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 	},
 
 	_update_length_counter : function(length) {
-		top.$('#b-title-length')
+		$(top.document).find('#b-title-length')
 			.find('span')
 			.text(length)
 			.end()
@@ -159,5 +164,5 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 			.css('opacity', opacity);
 	},
 
-	unbind : function() {},
+	unbind : function() {}
 });
