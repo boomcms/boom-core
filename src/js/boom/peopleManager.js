@@ -58,8 +58,8 @@ $.widget('boom.peopleManager', {
 				new boomNotification('Group successfully saved, reloading.');
 
 				window.setTimeout(function() {
-					top.location.reload();
-				}, 300);
+					$.boom.reload();
+				}, 1500);
 			});
 	},
 
