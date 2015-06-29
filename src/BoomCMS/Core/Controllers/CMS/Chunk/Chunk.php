@@ -47,6 +47,12 @@ class Chunk extends Controller
             $chunk->template($this->request->input('template'));
         }
 
+        // This is usually defined by the page controller.
+        // We need to define a variant of it incase the callback is used in teh chunk view.
+		View::share('chunk', function($type, $slotname, $page = null) {
+			return Chunk::get($type, $slotname, $page);
+		});
+
 		return [
 			'status' => $this->page->getCurrentVersion()->getStatus(),
 			'html' => $chunk->render(),
