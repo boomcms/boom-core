@@ -3,30 +3,32 @@
 namespace BoomCMS\Core\Page\Finder;
 
 use BoomCMS\Core\Finder\Filter;
+use BoomCMS\Core\Tag\Tag as TagObject;
+
 use Illuminate\Database\Eloquent\Builder;
 
 class Tag extends Filter
 {
     /**
 	 *
-	 * @var \Boom\Tag\Tag
+	 * @var TagObject
 	 */
-    protected $_tag;
+    protected $tag;
 
-    public function __construct(\Boom\Tag\Tag $tag)
+    public function __construct(TagObject $tag)
     {
-        $this->_tag = $tag;
+        $this->tag = $tag;
     }
 
     public function execute(Builder $query)
     {
         return $query
             ->join('pages_tags', 'page.id', '=', 'pages_tags.page_id')
-            ->where('pages_tags.tag_id', '=', $this->_tag->getId());
+            ->where('pages_tags.tag_id', '=', $this->tag->getId());
     }
 
     public function shouldBeApplied()
     {
-        return $this->_tag->loaded();
+        return $this->tag->loaded();
     }
 }
