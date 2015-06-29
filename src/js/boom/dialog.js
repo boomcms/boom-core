@@ -68,11 +68,6 @@ function boomDialog(options) {
 	boomDialog.prototype.init = function() {
 		var boomDialog = this;
 
-		this
-			.contents
-			.dialog(this.options)
-			.ui();
-
 		$(top.window)
 			.trigger('boom:dialog:open')
 			.resize(function() {
@@ -82,6 +77,11 @@ function boomDialog(options) {
 					boomDialog.reposition();
 				}, 100);
 			});
+
+		this
+			.contents
+			.dialog(this.options)
+			.ui();
 
 		this.contents.dialog('option', 'position', this.options.position);
 
