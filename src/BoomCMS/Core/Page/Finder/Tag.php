@@ -23,7 +23,7 @@ class Tag extends Filter
     public function execute(Builder $query)
     {
         return $query
-            ->join('pages_tags', 'page.id', '=', 'pages_tags.page_id')
+            ->join('pages_tags', 'pages.id', '=', 'pages_tags.page_id')
             ->where('pages_tags.tag_id', '=', $this->tag->getId());
     }
 

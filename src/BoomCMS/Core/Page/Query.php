@@ -16,6 +16,7 @@ class Query
         'visibleinnavigation' => 'VisibleInNavigation',
         'nextto' => 'NextTo',
 		'title' => 'Title',
+		'search' => 'Search'
     ];
 
     /**
