@@ -33155,44 +33155,6 @@ $.extend($.boom,
 	}
 });
 
-$.extend($.boom,
-	/** @lends $.boom */
-	{
-	/**
-	Boom utils.
-	@class
-	@static
-	*/
-	util :
-		/** @lends $.boom.util */
-		{
-		/**
-		@class
-		@static
-		@name $.boom.util.dom
-		*/
-		dom :
-			/** @lends $.boom.util.dom */
-			{
-			/**
-			Generate a unique ID for a DOM element
-			@param {String} prefix Optional prefix. Defaults to 'boom-'
-			*/
-			uniqueId : function(prefix){
-
-				prefix = prefix || 'b-';
-				var id;
-
-				do {
-					id = Math.floor(Math.random()*1000);
-				} while($('#' + prefix + id).length);
-
-				return (prefix + id);
-			}
-		}
-	}
-});
-
 $.boom.setup();;/* 
  * Boom history class.
  * Eventuall replacement to history.js
