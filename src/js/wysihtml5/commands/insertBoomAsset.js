@@ -79,7 +79,7 @@
 			new boomAssetPicker()
 				.done(function(asset_id) {
 					if (asset_id > 0) {
-						$.post('/asset/embed/' + asset_id)
+						$.get('/asset/embed/' + asset_id)
 							.done(function(response) {
 								asset_embed.resolve(response);
 							})
