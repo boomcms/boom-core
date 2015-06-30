@@ -2,40 +2,57 @@
 
 namespace BoomCMS\Core\Chunk;
 
-use BoomCMS\Core\Editor\Editor as Editor;
-use \View as View;
+use BoomCMS\Core\Page\Page;
+use Illuminate\Support\Facades\View;
 
 class Linkset extends BaseChunk
 {
-    protected $_default_template = 'quicklinks';
-    protected $_type = 'linkset';
+    protected $defaultTemplate = 'quicklinks';
+    protected $type = 'linkset';
 
     protected $links;
 
+    public function __construct(Page $page, array $attrs, $slotname, $editable)
+    {
+        parent::__construct($page, $attrs, $slotname, $editable);
+
+        if (isset($this->attrs['links'])) {
+            foreach ($this->attrs['links'] as &$link) {
+                $link = new Linkset\Link($link);
+            }
+        }
+    }
+
     protected function show()
     {
-        return new View($this->viewPrefix."linkset/$this->template", [
-            'title' => $this->_chunk->title,
+        return View::make($this->viewPrefix . "linkset.$this->template", [
+            'title' => $this->getTitle(),
             'links' => $this->getLinks(),
         ]);
     }
 
     public function showDefault()
     {
-        return new View($this->viewPrefix . "default/linkset/$this->template");
+        return View::make($this->viewPrefix . "default.linkset.$this->template", [
+            'placeholder' => $this->getPlaceholderText()
+        ]);
     }
 
     public function getLinks()
     {
         if ($this->links === null) {
-            $this->links = $this->_chunk->links();
+            if (isset($this->attrs['links'])) {
+                $this->links = $this->attrs['links'];
 
-            if ( ! Editor::instance()->isEnabled()) {
-                foreach ($this->links as $i => $link) {
-                    if ($link->isInternal() && ! $link->getLink()->getPage()->isVisible()) {
-                        unset($this->links[$i]);
+                if ( ! $this->editable) {
+                    foreach ($this->links as $i => $link) {
+                        if ($link->isInternal() && ! $link->getLink()->getPage()->isVisible()) {
+                            unset($this->links[$i]);
+                        }
                     }
                 }
+            } else {
+                $this->links = [];
             }
         }
 
@@ -45,5 +62,10 @@ class Linkset extends BaseChunk
     public function hasContent()
     {
         return count($this->getLinks()) > 0;
+    }
+
+    public function getTitle()
+    {
+        return isset($this->attrs['title']) ? $this->attrs['title'] : '';
     }
 }

@@ -36067,7 +36067,7 @@ $.widget('ui.chunkTag', $.ui.chunk,
 	boomChunkLinksetEditor.prototype.getLinks = function() {
 		var links = [];
 
-		this.$links.find('a:not(.delete)').each(function(sequence) {
+		this.$links.find('a:not(.delete)').each(function() {
 			var $this = $(this);
 
 			links.push({
@@ -36075,7 +36075,6 @@ $.widget('ui.chunkTag', $.ui.chunk,
 				url : $this.attr('data-url'),
 				title : $this.attr('data-title'),
 				asset_id : $this.attr('data-asset'),
-				sequence : sequence
 			});
 		});
 

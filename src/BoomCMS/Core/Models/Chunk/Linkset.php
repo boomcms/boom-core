@@ -4,92 +4,45 @@ namespace BoomCMS\Core\Models\Chunk;
 
 class Linkset extends BaseChunk
 {
-    protected $_links;
-
     protected $table = 'chunk_linksets';
 
-    public function create(Validation $validation = null)
+    public static function create(array $attributes)
     {
-        parent::create($validation);
-
-        $this->save_links();
-
-        return $this;
-    }
-
-    public function filters()
-    {
-        return [
-            'title'    => [
-                ['strip_tags'],
-            ]
-        ];
-    }
-
-    /**
-	 * Sets or gets the linkset's links
-	 *
-	 */
-    public function links($links = null)
-    {
-        if ($links === null) {
-            // Act as getter.
-
-            if ($this->_links === null) {
-                $page = new \Model_Page();
-
-                $query = ORM::factory('Chunk_Linkset_Link')
-                    ->join(['pages', 'target'], 'left')
-                    ->on('target_page_id', '=', 'target.id')
-                    ->where('chunk_linkset_id', '=', $this->id);
-
-                // Add the page to the select clause.
-                foreach (array_keys($page->_object) as $column) {
-                    $query->select(["target.$column", "target:$column"]);
-                }
-
-                $this->_links = $query
-                    ->find_all()
-                    ->as_array();
-            }
-
-            return $this->_links;
-        } else {
-            // If the links are arrays of data then turn them into Chunk_Linkset_Links objects.
-            foreach ($links as & $link) {
-                if (! $link instanceof Linkset_Link) {
-                    $link = ORM::factory('Chunk_Linkset_Link')
-                        ->values( (array) $link);
-                }
-            }
-
-            $this->_links = $links;
-
-            return $this;
-        }
-    }
-
-    /**
-	 * Persists link data to the database.
-	 *
-	 * @return \Boom_Model_Chunk_Linkset
-	 */
-    public function save_links()
-    {
-        // Remove all existing link.
-        DB::delete('chunk_linkset_links')
-            ->where('chunk_linkset_id', '=', $this->id)
-            ->execute();
-
-        // Loop through all the links.
-        foreach ( (array) $this->_links as $link) {
-            // Make the link belong to the current linkset.
-            $link->chunk_linkset_id = $this->id;
-
-            // Save the link.
-            $link->save();
+        if (isset($attributes['links'])) {
+            $links = $attributes['links'];
+            unset($attributes['links']);
         }
 
-        return $this;
+        $linkset = parent::create($attributes);
+
+        if (isset($links)) {
+            $linkset->links = $links;
+        }
+
+        return $linkset;
+    }
+
+    public function links()
+    {
+        return $this->hasMany('BoomCMS\Core\Models\Chunk\Linkset\Link', 'chunk_linkset_id');
+    }
+
+    public function scopeWithRelations($query)
+    {
+        return $query->with('links');
+    }
+
+    public function setLinksAttribute($links)
+    {
+        foreach ($links as &$link) {
+            $link = new Linkset\Link($link);
+        }
+
+        $this->links()->saveMany($links);
+    }
+
+    public function setTitleAttribute($value)
+    {
+        $this->attributes['title'] = trim(strip_tags($value));
     }
 }
