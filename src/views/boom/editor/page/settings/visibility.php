@@ -11,7 +11,7 @@
     <label>
         <?= Lang::get('Visible from') ?>
 
-        <input type="text" name="visible_from" value="<?= $page->getVisibleFrom()->format('d F Y H:i') ?>" id="visible-from" classs="boom-datepicker" />
+        <input type="text" name="visible_from" value="<?= $page->getVisibleFrom()->format('d F Y H:i') ?>" id="visible-from" class="boom-datepicker" />
     </label>
 
     <label>
