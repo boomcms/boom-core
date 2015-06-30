@@ -81,6 +81,8 @@ $.widget('boom.textEditor', {
 						if ( ! wysihtml5.commands.createBoomLink.state(self.instance.composer)) {
 							wysihtml5.commands.createBoomLink.exec(self.instance.composer);
 						}
+
+						self.toolbar.find('[data-wysihtml5-command=createBoomLink]').removeClass('wysihtml5-command-dialog-opened');
 					}
 				});
 		}
@@ -111,7 +113,7 @@ $.widget('boom.textEditor', {
 		var html = element.html();
 
 		this.hideToolbar();
-		
+
 		if (this.mode !== 'block') {
 			html = html.replace(/<br>|\n|\r|\n\r/g, ' ');
 			element.html(html);
