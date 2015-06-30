@@ -40,7 +40,9 @@ class URL implements Arrayable
 
     public function getLocation()
     {
-        return $this->get('location');
+		$location = $this->get('location');
+
+        return (substr($location, 0) === '/') ? $location : '/' . $location;
     }
 
     public function getPage()
