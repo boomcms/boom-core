@@ -33306,9 +33306,14 @@ function boomHistory() {
 	};
 
 	boomDialog.prototype.open = function() {
-		var self = this;
-
-		this.contents = $('<div></div>').appendTo($(document).contents().find('body'));
+		var self = this,
+			$div = $('<div></div>');
+		
+		if (this.options.id) {
+			$div.attr('id', this.options.id);
+		}
+		
+		this.contents = $div.appendTo($(document).contents().find('body'));
 
 		this.options.cancelButton && this.options.buttons.push(this.cancelButton);
 		this.options.closeButton && this.options.buttons.push(this.closeButton);
