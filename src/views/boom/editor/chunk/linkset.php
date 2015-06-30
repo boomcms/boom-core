@@ -10,7 +10,7 @@
 
             <ul>
                 <?php foreach ($links as $link): ?>
-                    <li><a class="b-linkset-link" href='#' data-page-id="<?= $link->target_page_id ?>" data-url="<?= $link->url ?>" data-title="<?= $link->getTitle() ?>" data-asset="<?= $link->asset_id ?>"><?= $link->getTitle() ?></a></li>
+                    <li><a class="b-linkset-link" href='#' data-page-id="<?= $link->getTargetPageId() ?>" data-url="<?= $link->getUrl() ?>" data-title="<?= $link->getTitle() ?>" data-asset="<?= $link->getAssetId() ?>"><?= $link->getTitle() ?></a></li>
                 <?php endforeach ?>
             </ul>
 

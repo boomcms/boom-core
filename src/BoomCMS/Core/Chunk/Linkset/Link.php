@@ -17,6 +17,11 @@ class Link
         $this->attrs = $attrs;
     }
 
+    public function getAssetId()
+    {
+        return $this->attrs['asset_id'];
+    }
+
     public function getId()
     {
         return $this->attrs['id'];
@@ -27,7 +32,7 @@ class Link
 	 */
     public function getLink()
     {
-        return LinkObject::factory($this->attrs['url']);
+        return LinkObject::factory($this->getUrl());
     }
 
     public function getTarget()
@@ -35,11 +40,21 @@ class Link
         return $this->getLink();
     }
 
+    public function getTargetPageId()
+    {
+        return $this->attrs['target_page_id'];
+    }
+
     public function getTitle()
     {
         return (isset($this->attrs['title']) && $this->attrs['title']) ?
             $this->attrs['title'] :
             $this->getLink()->getTitle();
+    }
+
+    public function getUrl()
+    {
+        return $this->attrs['url'];
     }
 
     public function isInternal()
