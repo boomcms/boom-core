@@ -53177,36 +53177,6 @@ wysihtml5.views.View = Base.extend(
 		},
 
 		state: function(composer) {
-			var selectedNode = composer.selection.getSelectedNode(),
-				$selectedNode = $(selectedNode),
-				matchingChildren;
-
-			if ( ! selectedNode) {
-				return false;
-			}
-
-			if ($selectedNode.prop("tagName") === 'IMG') {
-				return selectedNode;
-			}
-
-			if ($selectedNode.prop('tagName') === 'A' && $selectedNode.attr('href').match(/asset\/(thumb|view|get_asset)\/([0-9]+)/)) {
-				return selectedNode;
-			}
-
-			if ($selectedNode.find('img').length) {
-				return selectedNode;
-			}
-
-			matchingChildren = $selectedNode.find('a').filter(function() {
-				var href = $(this).attr('href');
-
-				return href && href.match(/asset\/(thumb|view|get_asset)\/([0-9]+)/);
-			}).length;
-
-			if (matchingChildren > 0) {
-				return selectedNode;
-			}
-
 			return false;
 		},
 
