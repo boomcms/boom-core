@@ -22,7 +22,7 @@ class Search extends Filter
     public function execute(Builder $query)
     {
 		return $query
-			->addSelect(DB::raw("((MATCH(title) against ('{$this->text}')) * 100) as rel1"))
+			->addSelect(DB::raw("((MATCH(title) against ('{$this->text}')) * 1000) as rel1"))
 			->leftJoin('chunk_texts as standfirst_table', function($join) {
 				$join
 					->on('version.id', '=', 'standfirst_table.page_vid')
