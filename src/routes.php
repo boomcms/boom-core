@@ -4,7 +4,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => [
     'BoomCMS\Core\Http\Middleware\DisableHttpCacheIfLoggedIn',
-    'BoomCMS\Core\Http\Middleware\DefineCMSViewSharedVariables'
+    'BoomCMS\Core\Http\Middleware\DefineCMSViewSharedVariables',
+    'BoomCMS\Core\Http\Middleware\SaveUrlForRedirect',
 ]], function () {
     Route::group(['prefix' => 'cms', 'namespace' => 'BoomCMS\Core\Controllers\CMS'], function () {
         Route::get('logout', 'Auth\Logout@index');
@@ -167,6 +168,7 @@ Route::any('{location}', [
     'middleware' => [
         'BoomCMS\Core\Http\Middleware\ProcessSiteURL',
         'BoomCMS\Core\Http\Middleware\InsertCMSToolbar',
+        'BoomCMS\Core\Http\Middleware\SaveUrlForRedirect',
     ],
     'uses' => 'BoomCMS\Core\Controllers\Page@show',
 ])->where(['location' => '.*']);

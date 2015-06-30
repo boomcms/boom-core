@@ -6,6 +6,7 @@ use BoomCMS\Core\Auth;
 use BoomCMS\Core\Controllers\Controller;
 
 use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\Facades\Session;
 
 class Login extends Controller
 {
@@ -30,7 +31,9 @@ class Login extends Controller
             ]);
         }
 
-        return redirect()->back();
+        $url = Session::get('boomcms.redirect_url');
+
+        return $url ? redirect()->to($url) : redirect()->back();
     }
 
     protected function displayLoginForm(array $data = [])
