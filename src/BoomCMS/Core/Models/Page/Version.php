@@ -42,6 +42,10 @@ class Version extends Model
 	
 	public function setTitleAttribute($title)
 	{
-		$this->attributes['title'] = trim(html_entity_decode(strip_tags($title)));
+		$title = trim(html_entity_decode(strip_tags($title)));
+		
+		if (strlen($title) <= 70) {
+			$this->attributes['title'] = $title;
+		}
 	}
 }

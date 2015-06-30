@@ -19,7 +19,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 			edit : function() {
 				var title = self.element.text().trim();
 
-				if (title != '' && title != old_text) {
+				if (title != '' && title != old_text && title.length <= self.max_length) {
 					self.updatePageTitle(old_text, title);
 					self._save(title, old_text);
 				}
@@ -138,7 +138,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 					}
 				} else {
 					new boomNotification('Page title saved.');
-					$.boom.page.toolbar.status.set(data.status);
+					$.boom.page.toolbar.status.set(data);
 				}
 
 				var page_title = top.$('title').text().replace(old_title, title);
