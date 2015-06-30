@@ -61,10 +61,4 @@ class Image extends BaseController
             ->header('content-type', (string) $this->asset->getMimetype())
             ->setContent($image);
     }
-
-    public function embed()
-    {
-       return "<img src='/asset/view/{$this->asset->getId()}' />";
-
-    }
 }

@@ -7,6 +7,7 @@ use BoomCMS\Core\Asset;
 use BoomCMS\Core\Controllers\Controller;
 
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\View;
 
 abstract class BaseController extends Controller
 {
@@ -30,7 +31,16 @@ abstract class BaseController extends Controller
 
     public function embed()
     {
-        return "<a class='download' href='/asset/view/{$this->asset->getId()}'>{$this->asset->getTitle()}</a>";
+        $viewPrefix = 'boom::assets.embed.';
+        $assetType = strtolower(class_basename($this));
+
+        $viewName = View::exists($viewPrefix . $assetType)?
+            $viewPrefix . $assetType :
+            $viewPrefix . 'default';
+
+        return View::make($viewName, [
+            'asset' => $this->asset,
+        ]);
     }
 
     public function view($width = null, $height = null)

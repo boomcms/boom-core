@@ -22,9 +22,4 @@ class PDF extends BaseController
                 ->header('content-type', 'image/png')
                 ->setContent($image);
     }
-
-    public function embed()
-    {
-        return "<a class='b-asset-embed' href='/asset/view/{$this->asset->getId()}'>{$this->asset->getTitle()}</a>";
-    }
 }
