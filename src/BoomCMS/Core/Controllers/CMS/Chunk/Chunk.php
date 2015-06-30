@@ -54,6 +54,8 @@ class Chunk extends Controller
 		View::share('chunk', function($type, $slotname, $page = null) {
 			return Chunk::get($type, $slotname, $page);
 		});
+		
+		View::share('page', $this->page);
 
 		return [
 			'status' => $this->page->getCurrentVersion()->getStatus(),
