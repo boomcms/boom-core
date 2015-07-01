@@ -39,9 +39,7 @@ $.widget('ui.chunkSlideshow', $.ui.chunk,
 	},
 
 	hasClass : function(c) {
-		c = '.' + c;
-
-		return this.element.hasClass(c) || this.element.find(c).length > 0;
+		return this.element.hasClass(c) || this.element.find('.' + c).length > 0;
 	},
 
 	/**
