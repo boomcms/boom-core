@@ -40,9 +40,7 @@ class URL implements Arrayable
 
     public function getLocation()
     {
-		$location = $this->get('location');
-
-        return (substr($location, 0) === '/') ? $location : '/' . $location;
+		return $this->get('location');
     }
 
     public function getPage()
@@ -64,7 +62,7 @@ class URL implements Arrayable
     public function is($location)
     {
 		
-        return $this->get('location') === $location;
+        return $this->getLocation() === $location;
     }
 
     public function isForPage(Page $page)
@@ -102,6 +100,9 @@ class URL implements Arrayable
 
     public function __toString()
     {
-        return URLHelper::to($this->getLocation());
+		$location = $this->getLocation();
+        $location = (substr($location, 0) === '/') ? $location : '/' . $location;
+
+        return URLHelper::to($location);
     }
 }

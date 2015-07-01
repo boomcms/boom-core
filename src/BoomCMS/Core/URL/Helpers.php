@@ -85,10 +85,11 @@ abstract class Helpers
         $url = strtolower($url);
         $url = parse_url($url, PHP_URL_PATH);        // Make sure it doesn't contain a hostname
         $url = preg_replace('|/+|', '/', $url);        // Remove duplicate forward slashes.
-
+		$url = rtrim($url, '/');
+		
 		if ($url !== '/') {
 			// Remove trailing or preceeding slashes
-			$url = trim($url, '/');
+			$url = ltrim($url, '/');
 		}
 
         $url = preg_replace('|[^'.preg_quote('-').'\/\pL\pN\s]+|u', '', $url); // Remove all characters that are not a hypeh, letters, numbers, or forward slash
