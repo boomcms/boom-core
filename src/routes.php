@@ -82,6 +82,10 @@ Route::group(['middleware' => [
 				Route::post('delete/{id}', 'Templates@delete');
 			});
 
+			Route::group(['prefix' => 'pages'], function() {
+				Route::get('', 'Pages@index');
+			});
+
 			Route::group(['prefix' => 'chunk', 'namespace' => 'Chunk'], function() {
 				Route::post('save/{page}', 'Chunk@save');
                 Route::get('feature/edit/{page}', 'Feature@edit');
