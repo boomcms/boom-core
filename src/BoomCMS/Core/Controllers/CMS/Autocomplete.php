@@ -71,9 +71,11 @@ class Autocomplete extends Controller
 		$pages = Page::autocompleteTitle($this->request->input('text'), $this->count)->get();
 	
 		foreach ($pages as $p) {
+			$primaryUri = substr($p->primary_uri, 0, 1) === '/'? $p->primary_uri : '/' . $p->primary_uri;
+
 			$results[] = [
-				'label' => $p->title . ' (' . $p->primary_uri . ')',
-				'value' => $p->primary_uri
+				'label' => $p->title . ' (' . $primaryUri . ')',
+				'value' => $primaryUri
 			];
 		}
 		

@@ -36524,6 +36524,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 			});
 			
 		this.externalUrl.autocomplete({
+			appendTo: linkPicker.dialog.contents.find('#b-linkpicker-add-external form'),
 			source: function(request, response) {
 				if (linkPicker.externalTypeSelector.val('http') || linkPicker.externalTypeSelector.val('https')) {
 					if (linkPicker.externalUrl.val()) {
