@@ -60,7 +60,7 @@ class Internal extends Link
     public function url()
     {
         // Return the URL of the page and append the fragment and query string if provided.
-        $url = $this->page->url()->getLocation();
+        $url = (string) $this->page->url();
 
         if ($this->urlFragment) {
             $url .= '#' . $this->urlFragment;
