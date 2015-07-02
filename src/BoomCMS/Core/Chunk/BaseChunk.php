@@ -41,6 +41,12 @@ abstract class BaseChunk
      * @var array
      */
     protected $viewParams = [];
+	
+	/**
+	 *
+	 * @var string
+	 */
+	protected $placeholderText;
 
     /**
      * The slotname used to find the chunk.
@@ -150,6 +156,10 @@ abstract class BaseChunk
 
     public function getPlaceholderText()
     {
+		if ($this->placeholderText) {
+			return $this->placeholderText;
+		}
+
 		return (Lang::has("boom::chunks.{$this->getType()}.{$this->slotname}")) ?
 			Lang::get("boom::chunks.{$this->getType()}.{$this->slotname}")
 			: Lang::get("boom::chunks.{$this->getType()}.default");
@@ -244,6 +254,13 @@ abstract class BaseChunk
             return $this;
         }
     }
+	
+	public function setPlaceholderText($text)
+	{
+		$this->placeholderText = $text;
+		
+		return $this;
+	}
 
     /**
 	 * Set the template to display the chunk
