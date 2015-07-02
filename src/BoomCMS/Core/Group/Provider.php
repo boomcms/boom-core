@@ -3,6 +3,7 @@
 namespace BoomCMS\Core\Group;
 
 use BoomCMS\Core\Models\Group as Model;
+use Illuminate\Support\Facades\DB;
 
 class Provider
 {
@@ -12,6 +13,16 @@ class Provider
 		
 		return new Group($m->toArray());
     }
+	
+	public function delete(Group $group)
+	{
+		// Delete all people roles associated with this group.
+		DB::table('people_roles')
+			->where('group_id', '=', $group->getId())
+			->delete();
+		
+		Model::destroy($group->getId());
+	}
 
     public function findAll()
     {

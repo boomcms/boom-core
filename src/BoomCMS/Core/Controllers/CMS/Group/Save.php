@@ -19,7 +19,6 @@ class Save extends BaseController
     public function delete()
     {
 		$this->provider->delete($this->group);
-        $this->group->delete();
     }
 
     public function removeRole()
