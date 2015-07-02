@@ -54,6 +54,14 @@ $.widget('boom.textEditor', {
 						break;
 					}
 				});
+				
+			element[0].onpaste = function(e) {
+				var html = e.clipboardData.getData('text'),
+					text = $('<div>' + html + '</div>').text().replace(/\n|\r|\n\r/g, '');
+
+				e.preventDefault();
+				element.text(text);
+			};
 		}
 
 		element
