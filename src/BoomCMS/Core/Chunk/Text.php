@@ -49,7 +49,6 @@ class Text extends BaseChunk
         $placeholder = parent::getPlaceholderText();
 		
 		return $this->allowFormatting ? "<p>$placeholder</p>" : $placeholder;
-		}
     }
 
     /**
