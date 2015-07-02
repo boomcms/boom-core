@@ -52993,11 +52993,7 @@ wysihtml5.views.View = Base.extend(
         "del": {
             "unwrap": 1
         },
-        "blockquote": {
-            "check_attributes": {
-                "cite": "url"
-            }
-        },
+        "blockquote": {},
         "style": {
             "remove": 1
         },

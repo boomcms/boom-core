@@ -330,11 +330,7 @@ var wysihtml5ParserRules = {
         "del": {
             "unwrap": 1
         },
-        "blockquote": {
-            "check_attributes": {
-                "cite": "url"
-            }
-        },
+        "blockquote": {},
         "style": {
             "remove": 1
         },
