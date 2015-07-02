@@ -17,8 +17,8 @@ return [
             'blockquote' => ['Insert blockquote', ['data-wysihtml5-command' => 'formatBlock', 'data-wysihtml5-command-value' => 'blockquote', 'class' => 'command']],
             'edit' => ['Edit link', ['class' => 'b-editor-link', 'data-wysihtml5-dialog' => 'createBoomLink', 'style' => 'display:none']],
             'cta' => ['Call to action', ['data-wysihtml5-command' => 'cta']],
-            'sup' => ['Superscript', ['data-wysihtml5-command' => 'insertSuperscript', 'class' => 'command']],
-            'sub' => ['Subscript', ['data-wysihtml5-command' => 'insertSubscript', 'class' => 'command']],
+            'sup' => ['Superscript', ['data-wysihtml5-command' => 'superscript', 'class' => 'command']],
+            'sub' => ['Subscript', ['data-wysihtml5-command' => 'subscript', 'class' => 'command']],
             'hr' => ['Insert horizontal rule', ['data-wysihtml5-command' => 'insertHorizontalRule', 'class' => 'command']],
         ],
         'button_sets' => [

@@ -53280,6 +53280,7 @@ wysihtml5.views.View = Base.extend(
  */
 (function(wysihtml5) {
 	var nodeOptions = {
+		nodeName: 'SPAN',
 		className: "cta",
 		classRegExp: /cta/g,
 		toggle: true
@@ -53287,39 +53288,11 @@ wysihtml5.views.View = Base.extend(
 
 	wysihtml5.commands.cta = {
 		exec: function(composer, command) {
-			return wysihtml5.commands.formatBlock.exec(composer, "formatBlock", nodeOptions);
+			return composer.commands.exec("formatInline", 'P', 'cta', /cta/g);
 		},
 
 		state: function(composer, command) {
-			return wysihtml5.commands.formatBlock.state(composer, "formatBlock", nodeOptions);
-		}
-	};
-})(wysihtml5);;(function(wysihtml5) {
-	wysihtml5.commands.insertSuperscript = {
-		exec: function(composer, command) {
-			if (wysihtml5.commands.insertSuperscript.state(composer, command)) {
-				return wysihtml5.commands.formatInline.exec(composer, "formatInline", 'sup');
-			} else {
-				return wysihtml5.commands.formatInline.exec(composer, "formatInline", 'sup');
-			}
-		},
-
-		state: function(composer, command) {
-			return wysihtml5.commands.formatInline.state(composer, "formatInline", 'sup');
-		}
-	};
-})(wysihtml5);;(function(wysihtml5) {
-	wysihtml5.commands.insertSubscript = {
-		exec: function(composer, command) {
-			if (wysihtml5.commands.insertSubscript.state(composer, command)) {
-				return wysihtml5.commands.formatInline.exec(composer, "formatInline", 'sub');
-			} else {
-				return wysihtml5.commands.formatInline.exec(composer, "formatInline", 'sub');
-			}
-		},
-
-		state: function(composer, command) {
-			return wysihtml5.commands.formatInline.state(composer, "formatInline", 'sub');
+			return composer.commands.state("formatInline", 'P', 'cta', /cta/g);
 		}
 	};
 })(wysihtml5);;/*!
