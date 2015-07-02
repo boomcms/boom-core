@@ -39,7 +39,7 @@ class Page extends Controller
             $return[] = [
                 'id' => $page->getId(),
                 'title' => $page->getTitle(),
-                'url' => $page->url()->getLocation(),
+                'url' => (string) $page->url(),
                 'visible' => (int) $page->isVisible(),
                 'has_children' => (int) $page->hasChildren(),
             ];
