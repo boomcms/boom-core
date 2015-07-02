@@ -72,8 +72,19 @@ boomPageFeatureEditor = function(page) {
 				pageFeatureEditor._open();
 			}
 		}).done(function() {
-			pageFeatureEditor.save();
+			pageFeatureEditor.save()
+				.done(function() {
+					pageFeatureEditor.deferred.resolve(pageFeatureEditor.currentImage);
+				})
+				.fail(function() {
+					pageFeatureEditor.deferred.reject();
+				});
+		})
+		.fail(function() {
+			pageFeatureEditor.deferred.reject();
 		});
+		
+		return this.deferred;
 	};
 
 	boomPageFeatureEditor.prototype.removeFeature = function() {
@@ -90,10 +101,9 @@ boomPageFeatureEditor = function(page) {
 		var pageFeatureEditor = this;
 
 		if (this.changed) {
-			$.post(this.url, {feature_image_id : this.currentImage})
+			return $.post(this.url, {feature_image_id : this.currentImage})
 				.done(function(response) {
 					new boomNotification('Page feature image saved');
-					pageFeatureEditor.deferred.resolve(response);
 				});
 		}
 	};

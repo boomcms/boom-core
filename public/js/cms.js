@@ -34066,6 +34066,27 @@ boomPage.prototype.adminsettings = function() {
 				$(this).chunkPageVisibility({
 					currentPage : self.page
 				});
+			})
+			.end()
+			.find('.b-page-featureimage')
+			.each(function() {
+				var $this = $(this);
+		
+				$this
+					.addClass('b-editable')
+					.on('click', function() {
+						new boomPageFeatureEditor(self.page)
+							.done(function(assetId) {
+								if (assetId) {
+									var src = $this.attr('src');
+
+									src = src.replace(/\/asset\/view\/\d+/, '/asset/view/' + assetId);
+									$this.attr('src', src);
+								} else {
+									$this.remove();
+								}
+							});
+					});
 			});
 	},
 
@@ -34776,8 +34797,19 @@ $.widget('boom.pageTree', {
 				pageFeatureEditor._open();
 			}
 		}).done(function() {
-			pageFeatureEditor.save();
+			pageFeatureEditor.save()
+				.done(function() {
+					pageFeatureEditor.deferred.resolve(pageFeatureEditor.currentImage);
+				})
+				.fail(function() {
+					pageFeatureEditor.deferred.reject();
+				});
+		})
+		.fail(function() {
+			pageFeatureEditor.deferred.reject();
 		});
+		
+		return this.deferred;
 	};
 
 	boomPageFeatureEditor.prototype.removeFeature = function() {
@@ -34794,10 +34826,9 @@ $.widget('boom.pageTree', {
 		var pageFeatureEditor = this;
 
 		if (this.changed) {
-			$.post(this.url, {feature_image_id : this.currentImage})
+			return $.post(this.url, {feature_image_id : this.currentImage})
 				.done(function(response) {
 					new boomNotification('Page feature image saved');
-					pageFeatureEditor.deferred.resolve(response);
 				});
 		}
 	};
