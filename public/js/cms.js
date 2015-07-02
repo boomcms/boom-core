@@ -53295,34 +53295,6 @@ wysihtml5.views.View = Base.extend(
 			return composer.commands.state("formatInline", 'P', 'cta', /cta/g);
 		}
 	};
-})(wysihtml5);;(function(wysihtml5) {
-	wysihtml5.commands.insertSuperscript = {
-		exec: function(composer, command) {
-			if (wysihtml5.commands.insertSuperscript.state(composer, command)) {
-				return wysihtml5.commands.formatInline.exec(composer, "formatInline", 'sup');
-			} else {
-				return wysihtml5.commands.formatInline.exec(composer, "formatInline", 'sup');
-			}
-		},
-
-		state: function(composer, command) {
-			return wysihtml5.commands.formatInline.state(composer, "formatInline", 'sup');
-		}
-	};
-})(wysihtml5);;(function(wysihtml5) {
-	wysihtml5.commands.insertSubscript = {
-		exec: function(composer, command) {
-			if (wysihtml5.commands.insertSubscript.state(composer, command)) {
-				return wysihtml5.commands.formatInline.exec(composer, "formatInline", 'sub');
-			} else {
-				return wysihtml5.commands.formatInline.exec(composer, "formatInline", 'sub');
-			}
-		},
-
-		state: function(composer, command) {
-			return wysihtml5.commands.formatInline.state(composer, "formatInline", 'sub');
-		}
-	};
 })(wysihtml5);;/*!
  * jqPagination, a jQuery pagination plugin (obviously)
  * Version: 1.4 (26th July 2013)
