@@ -14,7 +14,7 @@ return [
             'paragraph' => ['Insert paragraph', ['data-wysihtml5-command' => 'formatBlock', 'data-wysihtml5-command-value' => 'p', 'class' => 'command']],
             'h2' => ['Insert headline 2', ['data-wysihtml5-command' => 'formatBlock', 'data-wysihtml5-command-value' => 'h2', 'class' => 'command']],
             'h3' => ['Insert headline 3', ['data-wysihtml5-command' => 'formatBlock', 'data-wysihtml5-command-value' => 'h3', 'class' => 'command']],
-            'blockquote' => ['Insert blockquote', ['data-wysihtml5-command' => 'formatBlock', 'data-wysihtml5-command-value' => 'blockquote', 'class' => 'command']],
+            'blockquote' => ['Insert blockquote', ['data-wysihtml5-command' => 'insertBlockQuote', 'class' => 'command']],
             'edit' => ['Edit link', ['class' => 'b-editor-link', 'data-wysihtml5-dialog' => 'createBoomLink', 'style' => 'display:none']],
             'cta' => ['Call to action', ['data-wysihtml5-command' => 'cta']],
             'sup' => ['Superscript', ['data-wysihtml5-command' => 'superscript', 'class' => 'command']],
