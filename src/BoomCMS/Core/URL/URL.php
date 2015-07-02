@@ -61,8 +61,7 @@ class URL implements Arrayable
      */
     public function is($location)
     {
-		
-        return $this->getLocation() === $location;
+		return trim($this->getLocation(), '/') === ltrim($location, '/');
     }
 
     public function isForPage(Page $page)
