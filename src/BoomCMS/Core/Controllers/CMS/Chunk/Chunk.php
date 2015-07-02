@@ -6,6 +6,7 @@ use BoomCMS\Core\Controllers\Controller;
 use BoomCMS\Core\Auth\Auth;
 use BoomCMS\Core\Chunk\Provider;
 use BoomCMS\Core\Page\Page;
+use BoomCMS\Core\Facades\Chunk as ChunkFacade;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
@@ -52,7 +53,7 @@ class Chunk extends Controller
         // This is usually defined by the page controller.
         // We need to define a variant of it incase the callback is used in teh chunk view.
 		View::share('chunk', function($type, $slotname, $page = null) {
-			return Chunk::get($type, $slotname, $page);
+			return ChunkFacade::get($type, $slotname, $page);
 		});
 		
 		View::share('page', $this->page);
