@@ -17,9 +17,9 @@ class Text extends BaseChunk
             case 'standfirst':
                 return "<p class=\"standfirst\">{text}</p>";
             case 'bodycopy':
-                return "<div class=\"content\"><p>{text}</p></div>";
+                return "<div class=\"content\">{text}</div>";
             default:
-                return $this->allowFormatting? '<div><p>{text}</p></div>' : '<p>{text}</p>';
+                return $this->allowFormatting? '<div>{text}</div>' : '<p>{text}</p>';
         }
     }
 	
