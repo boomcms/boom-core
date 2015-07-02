@@ -35,9 +35,8 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 		var data = this.getData();
 
 		this.dialog = new boomDialog({
-			url: '/cms/chunk/timestamp/edit/' + this.options.currentPage.id,
+			url: '/cms/chunk/timestamp/edit/' + this.options.currentPage.id + '?slotname=' + self.options.name,
 			width: 400,
-			id: self.element[0].id + '-boom-dialog',
 			title: 'Edit date / time',
 			onLoad : function() {
 				data.format && $('#format').val(data.format);
@@ -56,6 +55,9 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 				timestamp = dateyDate.valueOf() / 1000;
 
 			self.insert(format, timestamp);
+		})
+		.always(function() {
+			self.bind();	
 		});
 	},
 

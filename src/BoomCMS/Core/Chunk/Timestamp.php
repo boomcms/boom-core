@@ -22,8 +22,8 @@ class Timestamp extends BaseChunk
     public function attributes()
     {
         return [
-            $this->attributePrefix.'timestamp' => $this->getTimestamp(),
-            $this->attributePrefix.'format' => $this->getFormat(),
+            $this->attributePrefix . 'timestamp' => $this->getTimestamp(),
+            $this->attributePrefix . 'format' => $this->getFormat(),
         ];
     }
 

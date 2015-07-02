@@ -20,6 +20,6 @@
 
 	<p>
 		<label for="timestamp">Date / time</label>
-		<input id="timestamp" name="timestamp" class="boom-input boom-datepicker" value="<?= date("d F Y h:m", $timestamp) ?>" />
+		<input id="timestamp" name="timestamp" class="boom-input boom-datepicker" value="<?= date("d F Y H:i", $timestamp) ?>" />
 	</p>
 </form>
