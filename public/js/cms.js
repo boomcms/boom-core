@@ -36351,7 +36351,7 @@ $.widget('ui.chunkPageVisibility', {
 	},
 
 	insert : function(link) {
-		if (typeof(link) === 'undefined' || link.url === '') {
+		if (typeof(link) === 'undefined' || link.getUrl() === '') {
 			this.remove();
 		} else {
 			this._save({
@@ -36560,7 +36560,8 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 	};
 
 	boomLink.prototype.getUrl = function() {
-		return this.makeUrlRelative();
+		console.log(this.url);
+		return (this.url == 'http://') ? '' : this.makeUrlRelative();
 	};
 
 	boomLink.prototype.getPageId = function() {

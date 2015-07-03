@@ -25,7 +25,7 @@ $.widget('ui.chunkLink', $.ui.chunk, {
 	},
 
 	insert : function(link) {
-		if (typeof(link) === 'undefined' || link.url === '') {
+		if (typeof(link) === 'undefined' || link.getUrl() === '') {
 			this.remove();
 		} else {
 			this._save({

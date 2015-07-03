@@ -28,7 +28,7 @@ function boomLink(url, pageId, title) {
 	};
 
 	boomLink.prototype.getUrl = function() {
-		return this.makeUrlRelative();
+		return (this.url == 'http://') ? '' : this.makeUrlRelative();
 	};
 
 	boomLink.prototype.getPageId = function() {
