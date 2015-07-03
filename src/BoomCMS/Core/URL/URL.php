@@ -102,6 +102,8 @@ class URL implements Arrayable
 		$location = $this->getLocation();
         $location = (substr($location, 0) === '/') ? $location : '/' . $location;
 
-        return URLHelper::to($location);
+		$url = URLHelper::to($location);
+		
+        return ($location === '/') ? $url . '/' : $url;
     }
 }
