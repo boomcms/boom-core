@@ -127,6 +127,9 @@ $.widget('boom.textEditor', {
 			.on('click', '.b-editor-link', function() {
 				wysihtml5.commands.createBoomLink.edit(self.instance.composer);
 			})
+			.on('mousedown', '.b-editor-table', function() {
+				self.disableAutoSave();
+			})
 			.on('click', '.b-editor-table', function(e) {
 				e.preventDefault();
 
@@ -136,6 +139,7 @@ $.widget('boom.textEditor', {
 				});
 
 				self.element.focus();
+				self.enableAutoSave();
 				self.instance.fire('tableselect:composer');
 			});
 	},
