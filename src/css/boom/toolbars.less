@@ -39,12 +39,14 @@ html.boom .b-toolbar, .b-toolbar {
 	&.b-page-toolbar {
 		#b-topbar-page-buttons {
 			position: absolute;
-			top: 60px;
+			width: 100%;
 			left: 0;
 			bottom: 0;
 			padding: 0 5px;
 			background: @darkest-grey;
 			z-index: 6;
+			box-sizing: border-box;
+			top: 60px;
 		}
 	}
 
@@ -80,17 +82,20 @@ html.boom body.pushy-active, body.pushy-active {
 
 #wysihtml5-toolbar {
 	display: none;
+	width: 100%;
 
 	> div {
 		position: absolute;
 		top: 0;
 		left: 5px;
 		display: none;
+		width: 100%;
 	}
 
 	.b-button-group {
 		position: static;
 		display: block;
+		width: 60px;
 
 		+ .b-button-group {
 			margin-top: 10px;
@@ -98,7 +103,7 @@ html.boom body.pushy-active, body.pushy-active {
 			padding-top: 10px;
 		}
 	}
-	
+
 	.b-button:not(.b-editor-accept):not(.b-editor-cancel) {
 		height: 30px;
 		width: 30px;
@@ -112,18 +117,24 @@ html.boom body.pushy-active, body.pushy-active {
 			left: 5px;
 		}
 	}
-	
+
 	[data-wysihtml5-hiddentools="table"] {
 		display: none;
 		position: absolute;
 		right: 0;
 		top: 0;
-		
-		a {
+		width: 100px;
+
+		&.visible {
 			display: block;
 		}
+
+		a {
+			display: block;
+			text-decoration: none;
+		}
 	}
-	
+
 	.wysihtml5-command-active .fa-link {
 		&:before {
 			content: @fa-var-unlink;
