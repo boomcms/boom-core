@@ -3,6 +3,7 @@
 		<ul>
 			<li><a href="#b-linkpicker-add-internal">Select page</a></li>
 			<li><a href="#b-linkpicker-add-external">Enter URL</a></li>
+			<li><a href="#b-linkpicker-text">Link text</a></li>
 		</ul>
 
 		<div id="b-linkpicker-add-internal">
@@ -23,6 +24,16 @@
 				</select>
 
 				<input type="text" />
+			</form>
+		</div>
+		
+		<div id="b-linkpicker-text">
+			<p>
+				Set the text for the link.
+			</p>
+
+			<form action="#">
+				<input type="text" name="link_text" />
 			</form>
 		</div>
 	</div>

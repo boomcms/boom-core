@@ -1,6 +1,9 @@
-function boomLinkPicker(link) {
+function boomLinkPicker(link, options) {
 	this.deferred = new $.Deferred();
 	this.link = link? link : new boomLink();
+	
+	this.defaultOptions = {text: false},
+	this.options = $.extend(this.defaultOptions, options);
 
 	boomLinkPicker.prototype.bind = function() {
 		var linkPicker = this;
@@ -58,8 +61,8 @@ function boomLinkPicker(link) {
 	};
 
 	boomLinkPicker.prototype.getExternalLink = function() {
-		var url,
-			linkText = url = this.externalUrl.val();
+		var url = this.externalUrl.val(),
+			linkText;
 
 		if (url.indexOf(window.location.hostname) == -1) {
 			switch(this.externalTypeSelector.val()) {
@@ -80,6 +83,8 @@ function boomLinkPicker(link) {
 					break;
 			}
 		}
+		
+		linkText = (this.options.text && this.textInput.val()) ? this.textInput.val() : url;
 
 		return new boomLink(url, 0, linkText);
 	};
@@ -90,9 +95,11 @@ function boomLinkPicker(link) {
 		this.external = dialog.contents.find('#b-linkpicker-add-external'),
 		this.externalTypeSelector = this.external.find('select'),
 		this.externalUrl = this.external.find('input');
+		this.textInput = dialog.contents.find('#b-linkpicker-text input[type=text]');
 
 		this.setupInternal();
 		this.setupExternalUrl();
+		this.setupText();
 		this.bind();
 	};
 
@@ -148,6 +155,17 @@ function boomLinkPicker(link) {
 
 		if (pageId) {
 			this.internal.find('input').val(pageId);
+		}
+	};
+	
+	boomLinkPicker.prototype.setupText = function() {
+		if ( ! this.options.text) {
+			this.dialog.contents.find('#b-linkpicker-text').hide();
+			this.dialog.contents.find('a[href=#b-linkpicker-text]').hide();
+		} else {
+			this.dialog.contents
+				.find('#b-linkpicker-text input[type=text]')
+				.val(link.getTitle());
 		}
 	};
 

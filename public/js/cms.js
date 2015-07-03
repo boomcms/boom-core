@@ -36324,6 +36324,45 @@ $.widget('ui.chunkPageVisibility', {
 	_create : function() {
 		this.bind();
 	}
+});;$.widget('ui.chunkLink', $.ui.chunk, {
+	edit : function() {
+		var chunkLink = this,
+			link = new boomLink(this.getUrl(), this.getTargetPageId(), this.getText());
+		
+		new boomLinkPicker(link, {text: true})
+			.done(function(link) {
+				chunkLink.insert(link);
+			})
+			.fail(function() {
+				chunkLink.destroy();	
+			});
+	},
+	
+	getTargetPageId : function() {
+		return this.element.attr('data-boom-target_page_id');
+	},
+	
+	getText : function() {
+		return this.element.attr('data-boom-text');
+	},
+	
+	getUrl : function() {
+		return this.element.attr('data-boom-url');
+	},
+
+	insert : function(link) {
+		if (typeof(link) === 'undefined' || link.url === '') {
+			this.remove();
+		} else {
+			this._save({
+				links: [{
+					title: link.getTitle(),
+					url: link.getUrl(),
+					target_page_id: link.getPageId()
+				}]
+			});
+		}
+	}
 });;/**
  * TODO: Tell someone off for trying to blank a page title or writing an essay in the title.
  */
@@ -36533,14 +36572,19 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 	};
 	
 	boomLink.prototype.makeUrlRelative = function() {
-		return (this.url.indexOf(window.location.hostname) > -1) ?
+		var url = (this.url.indexOf(window.location.hostname) > -1) ?
 			this.url.replace(/^https?:\/\//, '').replace(window.location.hostname, '') :
 			this.url;
+	
+		return url !== ''? url : '/';
 	};
 };
-;function boomLinkPicker(link) {
+;function boomLinkPicker(link, options) {
 	this.deferred = new $.Deferred();
 	this.link = link? link : new boomLink();
+	
+	this.defaultOptions = {text: false},
+	this.options = $.extend(this.defaultOptions, options);
 
 	boomLinkPicker.prototype.bind = function() {
 		var linkPicker = this;
@@ -36598,8 +36642,8 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 	};
 
 	boomLinkPicker.prototype.getExternalLink = function() {
-		var url,
-			linkText = url = this.externalUrl.val();
+		var url = this.externalUrl.val(),
+			linkText;
 
 		if (url.indexOf(window.location.hostname) == -1) {
 			switch(this.externalTypeSelector.val()) {
@@ -36620,6 +36664,8 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 					break;
 			}
 		}
+		
+		linkText = (this.options.text && this.textInput.val()) ? this.textInput.val() : url;
 
 		return new boomLink(url, 0, linkText);
 	};
@@ -36630,9 +36676,11 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 		this.external = dialog.contents.find('#b-linkpicker-add-external'),
 		this.externalTypeSelector = this.external.find('select'),
 		this.externalUrl = this.external.find('input');
+		this.textInput = dialog.contents.find('#b-linkpicker-text input[type=text]');
 
 		this.setupInternal();
 		this.setupExternalUrl();
+		this.setupText();
 		this.bind();
 	};
 
@@ -36688,6 +36736,17 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 
 		if (pageId) {
 			this.internal.find('input').val(pageId);
+		}
+	};
+	
+	boomLinkPicker.prototype.setupText = function() {
+		if ( ! this.options.text) {
+			this.dialog.contents.find('#b-linkpicker-text').hide();
+			this.dialog.contents.find('a[href=#b-linkpicker-text]').hide();
+		} else {
+			this.dialog.contents
+				.find('#b-linkpicker-text input[type=text]')
+				.val(link.getTitle());
 		}
 	};
 

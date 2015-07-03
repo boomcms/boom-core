@@ -12,6 +12,9 @@ return [
     'linkset' => [
         'default' => 'Insert a linkset here',
     ],
+	'link' => [
+		'default' => 'Insert a link here',
+	],
     'slideshow' => [
         'default' => 'Insert a slideshow',
     ],

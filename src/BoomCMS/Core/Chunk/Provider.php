@@ -39,8 +39,9 @@ class Provider
 		$model = $modelName::create($attrs);
 
 		$className = 'BoomCMS\Core\Chunk\\' . ucfirst($type);
+		$attrs['id'] = $model->id;
 
-		return new $className($page, $model->toArray(), $attrs['slotname'], true);
+		return new $className($page, $attrs, $attrs['slotname'], true);
 	}
 
     /**
