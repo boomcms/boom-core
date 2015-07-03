@@ -1,12 +1,4 @@
 #b-page {
-	&-addpage {
-		background: @dark-green;
-
-		&:hover {
-			background: lighten(@dark-green, 20%);
-		}
-	}
-
 	&-settings-urls{
 		input[type=radio], input[type=checkbox] {
 			position: absolute;
@@ -80,24 +72,29 @@
 	}
 
 	&-version-status {
-		background-color: #d6278e;
+		color: @pink;
 		text-transform: capitalize;
 		width: 50px;
+		opacity: 1;
+		
+		&:hover, &:focus {
+			color: @red;
+		}
 
 		span {
 			padding: .4em;
 		}
 
 		&[data-status=published] {
-			background-color: #75d627;
+			color: @white;
 		}
 
 		&[data-status=embargoed] {
-			background-color: #e3ca68;
+			color: #e3ca68;
 		}
 
 		&[data-status='pending approval'] {
-			background-color: #249ac1;
+			color: #249ac1;
 		}
 	}
 
@@ -129,7 +126,6 @@
 			font-size: 16px;
 			line-height: 16px;
 			text-align: center;
-			color: #fff;
 			position: absolute;
 			top: 9px;
 		}

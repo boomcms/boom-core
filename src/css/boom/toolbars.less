@@ -25,7 +25,6 @@ html.boom .b-toolbar, .b-toolbar {
 
 		.b-button {
 			border-right: 0;
-			border-bottom: 1px solid #555;
 		}
 
 		+ * {
@@ -94,19 +93,41 @@ html.boom body.pushy-active, body.pushy-active {
 		display: block;
 
 		+ .b-button-group {
-			margin-top: 20px;
+			margin-top: 10px;
+			border-top: 1px solid @grey;
+			padding-top: 10px;
 		}
 	}
+	
+	.b-button:not(.b-editor-accept):not(.b-editor-cancel) {
+		height: 30px;
+		width: 30px;
+		margin-left: 10px;
 
-	[data-wysihtml5-dialog="createBoomLink"] {
-		display: none;
+		.b-button-icon {
+			font-size: 1em;
+			height: 20px;
+			width: 20px;
+			top: 5px;
+			left: 5px;
+		}
 	}
-}
-
-@media screen and (max-height: 767px) {
-	.b-toolbar-text .b-button {
-		height: 45px;
-		margin-top: 2px;
+	
+	[data-wysihtml5-hiddentools="table"] {
+		display: none;
+		position: absolute;
+		right: 0;
+		top: 0;
+		
+		a {
+			display: block;
+		}
+	}
+	
+	.wysihtml5-command-active .fa-link {
+		&:before {
+			content: @fa-var-unlink;
+		}
 	}
 }
 

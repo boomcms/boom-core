@@ -3,6 +3,7 @@
 namespace BoomCMS\Core\UI;
 
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\View;
 
 class TextEditorToolbar extends AbstractUIElement
 {
@@ -58,6 +59,10 @@ class TextEditorToolbar extends AbstractUIElement
 
             $buttons .= '</div>';
         }
+		
+		if ($this->_buttonSet === 'block') {
+			$buttons .= View::make('boom::editor.table_buttons')->render();
+		}
 
         return $buttons;
     }

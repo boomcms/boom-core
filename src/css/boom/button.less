@@ -8,19 +8,22 @@ html.boom .b-button, .b-button {
 	position: relative;
 	padding: 0;
 	border: 0;
-	border-right: 1px solid #555;
-	color: #fff;
+	border-right: 1px solid @grey;
+	color: @white;
+	border-radius: 0;
+	cursor: pointer;
 
 	&:disabled {
 		opacity: 0.35;
-
-		&:hover, &:focus, &:active {
-			background-color: transparent;
+		cursor: initial;
+		
+		&:hover, &:focus {
+			color: @white;
 		}
 	}
 
-	&:hover, &:focus, &:active {
-		background-color: #555;
+	&:hover, &:focus {
+		color: @red;
 	}
 
 	&.b-button-withtext {
@@ -80,6 +83,10 @@ html.boom .b-button, .b-button {
 		
 		&.fa-eye-slash {
 			color: @pink;
+			
+			&:hover, &:focus {
+				color: @red;
+			}
 		}
 		
 		&.fa-h2, &.fa-h3 {
@@ -87,7 +94,7 @@ html.boom .b-button, .b-button {
 			left: 5px;
 			
 			&:before {
-				font-size: 24px;
+				font-size: 1em;
 				font-weight: bold;
 			}
 		}
@@ -103,7 +110,6 @@ html.boom .b-button, .b-button {
 		&-cancel, &-accept {
 			.fa;
 			.fa-2x;
-			color: @white;
 			background-image: none;
 			text-indent: 0;
 		}
@@ -122,10 +128,10 @@ html.boom .b-button, .b-button {
 	}
 
 	&.wysihtml5-command-active {
-		background: @green;
+		color: @pink;
 
 		&:hover, &:focus, &:active {
-			background: @green;
+			color: @pink;
 		}
 	}
 }

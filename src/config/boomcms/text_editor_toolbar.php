@@ -19,11 +19,12 @@ return [
             'superscript' => ['Superscript', ['data-wysihtml5-command' => 'superscript', 'class' => 'command']],
             'subscript' => ['Subscript', ['data-wysihtml5-command' => 'subscript', 'class' => 'command']],
             'minus' => ['Insert horizontal rule', ['data-wysihtml5-command' => 'insertHorizontalRule', 'class' => 'command']],
-        ],
+			'table' => ['Insert table', ['class' => 'command b-editor-table']],
+		],
         'button_sets' => [
             'text' => [['check', 'times']],
             'inline' => [['check', 'times'], ['bold', 'italic'], ['link']],
-            'block' => [['check', 'times'], ['h2', 'h3', 'paragraph', 'bold', 'italic', 'list-ul', 'list-ol', 'quote-left', 'exclamation'], ['link', 'paperclip', 'minus']],
+            'block' => [['check', 'times'], ['h2', 'h3', 'paragraph', 'bold', 'italic', 'list-ul', 'list-ol', 'quote-left', 'exclamation'], ['link', 'paperclip', 'minus', 'table']],
         ],
     ],
 ];

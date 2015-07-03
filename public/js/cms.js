@@ -35000,7 +35000,8 @@ $.widget('boom.textEditor', {
 				useLineBreaks : false,
 				contentEditableMode : true,
 				autoLink : false,
-				uneditableContainerClassname : 'b-asset-embed'
+				uneditableContainerClassname : 'b-asset-embed',
+				handleTables: true
 			});
 		} else {
 			element
@@ -35050,6 +35051,21 @@ $.widget('boom.textEditor', {
 
 						self.toolbar.find('[data-wysihtml5-command=createBoomLink]').removeClass('wysihtml5-command-dialog-opened');
 					}
+				})
+				.on('tableselect:composer', function(e) {
+					$.boom.page.toolbar.element.width('120px');
+					self.toolbar.width('120px');
+
+					$('#wysihtml5-toolbar')
+						.width('120px')
+						.find('[data-wysihtml5-hiddentools="table"]').show();
+				})
+				.on('tableunselect:composer', function(e) {
+					$.boom.page.toolbar.element.width('60px');
+					self.toolbar.width('60px');
+					$('#wysihtml5-toolbar')
+						.width('60px')
+						.find('[data-wysihtml5-hiddentools="table"]').hide();
 				});
 		}
 
@@ -35068,6 +35084,16 @@ $.widget('boom.textEditor', {
 			})
 			.on('click', '.b-editor-link', function() {
 				wysihtml5.commands.createBoomLink.edit(self.instance.composer);
+			})
+			.on('click', '.b-editor-table', function(e) {
+				e.preventDefault();
+	
+				wysihtml5.commands.createTable.exec(self.instance.composer, 'createTable', {
+					rows: 2,
+					cols: 2
+				});
+				
+				self.element.focus();
 			});
 	},
 
@@ -35122,11 +35148,11 @@ $.widget('boom.textEditor', {
 	enableAutoSave : function() {
 		var editor = this;
 
-		this.element.on('blur', function() {
-			if ( ! editor.toolbar.children(':focus').length) {
-				editor.apply(editor.element);
-			}
-		});
+//		this.element.on('blur', function() {
+//			if ( ! editor.toolbar.children(':focus').length) {
+//				editor.apply(editor.element);
+//			}
+//		});
 	},
 
 	hasBeenEdited : function() {

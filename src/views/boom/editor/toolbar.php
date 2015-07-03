@@ -5,38 +5,39 @@
 	<?= $menu() ?>
 
 	<div id="b-topbar-page-buttons">
-		<?php if ($page->wasCreatedBy($person) || $auth->loggedIn('edit_page_content', $page)): ?>
-			<div id="b-page-actions" class="b-page-container">
-				<span id="b-page-publish-menu">
-					<button id="b-page-version-status" class="b-button" data-status="<?= $page->getCurrentVersion()->status() ?>">
-						<?= $page->getCurrentVersion()->status() ?>
-					</button>
-				</span>
+		<?php if ($auth->loggedIn('add_page', $page)): ?>
+			<?= $button('plus', Lang::get('Add a new page as a child of the current page'), ['id' => 'b-page-addpage']) ?>
+		<?php endif ?>
 
+		<?php if ($page->wasCreatedBy($person) || $auth->loggedIn('edit_page_content', $page)): ?>
+			<div id="b-page-actions">
 				<?= $button('file-text-o', Lang::get("Changed the template used by the page"), ['id' => 'b-page-template']) ?>
 			</div>
 		<?php endif ?>
 
-		<?php if ($auth->loggedIn('add_page', $page)): ?>
-			<div class="b-page-container">
-				<?= $button('plus', Lang::get('Add a new page as a child of the current page'), ['id' => 'b-page-addpage']) ?>
+
+		<?php if ($auth->loggedIn('edit_page', $page)): ?>
+			<div id="b-page-settings-menu">
+				<?= $button('cog', Lang::get('Page settings which apply whichever version is published'), ['id' => 'boom-page-settings']) ?>
+			</div>
+		<?php endif ?>
+		
+		<?php if ($page->wasCreatedBy($person) || $auth->loggedIn('edit_page_content', $page)): ?>
+			<div id="b-page-publish-menu">
+				<button id="b-page-version-status" class="b-button" data-status="<?= $page->getCurrentVersion()->status() ?>">
+					<?= $page->getCurrentVersion()->status() ?>
+				</button>
 			</div>
 		<?php endif ?>
 
-		<div class="b-page-container">
-			<?php if ($auth->loggedIn('edit_page', $page)): ?>
-				<?= $button('eye', Lang::get('This page is visible. The content displayed will depend on which version of the page is published'), ['id' => 'b-page-visible', 'class' => $page->isVisible() ? 'b-page-visibility ' : 'b-page-visibility ui-helper-hidden']) ?>
-				<?= $button('eye-slash', Lang::get('This page is hidden regardless of whether there is a published version'), ['id' => 'b-page-invisible', 'class' => $page->isVisible() ? 'b-page-visibility ui-helper-hidden' : 'b-page-visibility']) ?>
+		<?php if ($auth->loggedIn('edit_page', $page)): ?>
+			<?= $button('eye', Lang::get('This page is visible. The content displayed will depend on which version of the page is published'), ['id' => 'b-page-visible', 'class' => $page->isVisible() ? 'b-page-visibility ' : 'b-page-visibility ui-helper-hidden']) ?>
+			<?= $button('eye-slash', Lang::get('This page is hidden regardless of whether there is a published version'), ['id' => 'b-page-invisible', 'class' => $page->isVisible() ? 'b-page-visibility ui-helper-hidden' : 'b-page-visibility']) ?>
+		<?php endif ?>
 
-				<span id="b-page-settings-menu">
-					<?= $button('cog', Lang::get('Page settings which apply whichever version is published'), ['id' => 'boom-page-settings']) ?>
-				</span>
-			<?php endif ?>
-
-			<?php if (($page->wasCreatedBy($person) || $auth->loggedIn('delete_page', $page)) && ! $page->isRoot()) : ?>
-				<?= $button('trash-o', Lang::get('Delete this page'), ['id' => 'b-page-delete']) ?>
-			<?php endif ?>
-		</div>
+		<?php if (($page->wasCreatedBy($person) || $auth->loggedIn('delete_page', $page)) && ! $page->isRoot()) : ?>
+			<?= $button('trash-o', Lang::get('Delete this page'), ['id' => 'b-page-delete']) ?>
+		<?php endif ?>
 
 		<div class="b-page-container">
 			<?= $button('view-live', Lang::get('View the page as it appears on the live site'), ['id' => 'b-page-viewlive', 'class' => 'b-button-preview', 'data-preview' => 'disabled']) ?>
