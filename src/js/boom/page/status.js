@@ -7,7 +7,11 @@ $.widget('boom.pageStatus', {
 
 		options = this.options.publishable? this._get_publish_menu(status) : this._get_approvals_menu(status);
 
-		options = $.extend(options, {
+		options = $.extend({
+				"Preview": function() {
+					$.boom.editor.state('preview');
+				}
+			}, options, {
 			"Revert to published version" : function() {
 				// The call to setTimout fixes a bug in IE9 where the toolbar call is minimised (because the splitbutton menu has close) after the dialog is opened.
 				// Therefore preventing the dialog from being seen.
@@ -115,9 +119,9 @@ $.widget('boom.pageStatus', {
 		this._buildMenu(status);
 
 		if (status == 'published') {
-			this.element.button('disable');
+			this.element.prop('disabled', true);
 		} else {
-			this.element.button('enable');
+			this.element.prop('disabled', false);
 		}
 	}
 });

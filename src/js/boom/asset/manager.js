@@ -227,8 +227,8 @@ $.widget('boom.assetManager', {
 
 	toggleButtons : function() {
 		var buttons = $('[id|=b-button-multiaction]').not('#b-button-multiaction-edit');
-		$('#b-button-multiaction-edit').button(this.selected.length == 1 ? 'enable' : 'disable');
-		buttons.button(this.selected.length > 0 ? 'enable' : 'disable');
+		$('#b-button-multiaction-edit').prop('disabled', this.selected.length == 1 ? false : true);
+		buttons.prop('disabled', this.selected.length > 0 ? false : true);
 	},
 
 	updateContentAreaMargin : function() {

@@ -63,5 +63,5 @@
 
 <div id="b-slideshow-editor-buttons">
     <?= $button('delete', Lang::get('Delete slideshow'), ['id' => 'b-slideshow-editor-delete', 'class' => 'b-button-textonly']) ?>
-    <?= $button('add', Lang::get('Add slide'), ['id' => 'b-slideshow-editor-add', 'class' => 'b-button-withtext']) ?>
+    <?= $button('plus', Lang::get('Add slide'), ['id' => 'b-slideshow-editor-add', 'class' => 'b-button-withtext']) ?>
 </div>

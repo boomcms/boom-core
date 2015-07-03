@@ -51,9 +51,7 @@ class Button extends AbstractUIElement
             $attrs_string .= "$key = \"$value\"";
         }
 
-        $type = $this->type ? " b-button-icon-{$this->type}" : '';
-
-        return "<button $attrs_string><span class='b-button-icon $type'></span><span class='b-button-text'>{$this->text}</span></button>";
+		return "<button $attrs_string><span class='b-button-icon fa-2x fa fa-{$this->type}'></span><span class='b-button-text'>{$this->text}</span></button>";
 
     }
 }

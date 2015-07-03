@@ -4,7 +4,7 @@ $.widget('boom.assetTagSearch',  {
 	addTag : function(tag) {
 		this.tags.push(tag);
 
-		var $newTag = $('<li class="b-tag"><span>' + tag + '</span><a href="#" class="b-tag-remove" data-tag="' + tag + '"></a></li>');
+		var $newTag = $('<li class="b-tag"><span>' + tag + '</span><a href="#" class="fa fa-trash-o b-tag-remove" data-tag="' + tag + '"></a></li>');
 
 		if (this.tagList.children().length) {
 			$newTag.insertBefore(this.tagList.children().last());

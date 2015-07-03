@@ -9,6 +9,19 @@ module.exports = function(grunt) {
 				src : 'public/css/cms.css'
 			}
 		},
+		copy: {
+			main: {
+				files: [
+					{
+						expand: true,
+						flatten: true,
+						src: ['bower_components/fontawesome/fonts/*'],
+						dest: 'public/fonts/',
+						filter: 'isFile'
+					}
+				]
+			}
+		},
 		concat: {
 			options: {
 				separator: ';',
@@ -161,9 +174,10 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-less');
 	grunt.loadNpmTasks('grunt-contrib-cssmin');
 	grunt.loadNpmTasks('grunt-autoprefixer');
+	grunt.loadNpmTasks('grunt-contrib-copy');
 
 	grunt.registerTask('build-css', ['less', 'autoprefixer:no_dest', 'cssmin']);
 	grunt.registerTask('build-js', ['concat:dist', 'uglify']);
-	grunt.registerTask('dist', ['build-css', 'build-js']);
+	grunt.registerTask('dist', ['copy', 'build-css', 'build-js']);
 	grunt.registerTask('default',['watch']);
 };

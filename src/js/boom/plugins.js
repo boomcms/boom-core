@@ -19,7 +19,6 @@ boom.plugins.js
 	$.fn.ui = function(opts){
 		$.boom.log('Start bind UI events');
 
-		this.find('.b-button').button($.boom.config.button);
 		this.find('.boom-tabs').tabs();
 		this.find('.boom-datepicker').datetimepicker($.boom.config.datepicker);
 		this.find('.boom-tree').tree($.boom.config.tree);

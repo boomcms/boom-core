@@ -107,7 +107,7 @@ $.widget( 'boom.pageToolbar', {
 		this.buttons = {
 			visible : this.element.contents().find('#b-page-visible'),
 			invisible : this.element.contents().find('#b-page-invisible'),
-			viewLive : this.element.contents().find('#boom-page-viewlive')
+			viewLive : this.element.contents().find('#b-page-viewlive')
 		};
 	},
 
@@ -155,11 +155,11 @@ $.widget( 'boom.pageToolbar', {
 		if (this.buttons.visible.css('display') == 'none') {
 			this.buttons.viewLive
 				.attr('title', 'You cannot view a live version of this page as it is currently hidden from the live site')
-				.button('disable');
+				.prop('disabled', true);
 		} else {
 			this.buttons.viewLive
 				.attr('title', 'View the page as it appears on the live site')
-				.button('enable');
+				.prop('disabled', false);
 		}
 	}
 });

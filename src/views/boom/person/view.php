@@ -38,8 +38,8 @@
 				<?php endif ?>
 
 				<div>
-					<?= $button('accept', Lang::get('Save'), ['id' => 'b-person-save', 'class' => 'b-people-save']) ?>
-					<?= $button('delete', Lang::get('Delete'), ['id' => 'b-person-delete']) ?>
+					<?= $button('check', Lang::get('Save'), ['id' => 'b-person-save', 'class' => 'b-people-save']) ?>
+					<?= $button('trash-o', Lang::get('Delete'), ['id' => 'b-person-delete']) ?>
 				</div>
 			</form>
 		</div>
@@ -59,7 +59,7 @@
 				</ul>
 			<?php endif ?>
 
-			<?= $button('add', Lang::get('Add group'), ['class' => 'b-person-addgroups', 'rel' => $person->getId()]) ?>
+			<?= $button('plus', Lang::get('Add group'), ['class' => 'b-person-addgroups', 'rel' => $person->getId()]) ?>
 		</div>
 	</div>
 </div>

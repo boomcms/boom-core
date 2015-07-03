@@ -4,7 +4,7 @@ $.widget('boom.pageTagSearch',  {
 	addTag : function(tag) {
 		this.tags.push(tag.id);
 
-		$('<li class="b-tag"><span>' + tag.name + '</span><a href="#" class="b-tag-remove" data-tag="' + tag.id + '"></a></li>')
+		$('<li class="b-tag"><span>' + tag.name + '</span><a href="#" class="fa fa-trash-o b-tag-remove" data-tag="' + tag.id + '"></a></li>')
 			.insertBefore(this.tagList.children().last());
 
 		this._trigger('addTag', null, {

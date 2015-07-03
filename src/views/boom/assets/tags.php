@@ -3,14 +3,14 @@
         <?php foreach ($tags as $tag): ?>
             <li class='b-tag'>
                 <span><?= $tag ?></span>
-                <a href='#' class='b-tag-remove' data-tag="<?= $tag ?>"></a>
+                <a href='#' class='fa fa-trash-o b-tag-remove' data-tag="<?= $tag ?>"></a>
             </li>
         <?php endforeach ?>
 
         <li class="b-tag">
             <form class="b-tags-add">
                 <input type="text" value="" class="b-tags-add-name" />
-                <?= new BoomCMS\Core\UI\Button('add', 'Add tag') ?>
+                <?= new BoomCMS\Core\UI\Button('plus', 'Add tag') ?>
             </form>
         </li>
     </ul>

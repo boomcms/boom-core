@@ -3,7 +3,7 @@
 
 	<div id="b-topbar" class="b-toolbar">
 		<?= $menuButton() ?>
-		<?= $button('accept', Lang::get('Save all'), ['id' => 'b-templates-save', 'class' => 'b-button-withtext']) ?>
+		<?= $button('check', Lang::get('Save all'), ['id' => 'b-templates-save', 'class' => 'b-button-withtext']) ?>
 	</div>
 
 	<div id="b-templates">
@@ -37,7 +37,7 @@
 								<?php $pageCount = $t->countPages() ?>
 								<a href='/cms/templates/pages/<?= $t->getId() ?>' title='View the title and URL of <?= $pageCount, " ", Lang::get('page', [$pageCount]) ?> which use this template'><?= $pageCount ?>
 							</td>
-							<td><?= $button('delete', "Delete the &quot;{$t->getName()}&quot; template", ['class' => 'b-templates-delete']) ?>
+							<td><?= $button('trash', "Delete the &quot;{$t->getName()}&quot; template", ['class' => 'b-templates-delete']) ?>
 						</tr>
 					<?php endforeach ?>
 				</tbody>

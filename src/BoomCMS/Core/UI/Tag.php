@@ -23,6 +23,6 @@ class Tag extends AbstractUIElement
 
     public function render()
     {
-        return "<li class='b-tag'><span>{$this->tag->getName()}</span><a href='#' data-tag='{$this->tag->getId()}' class='b-tag-remove'></a></li>";
+        return "<li class='b-tag'><span>{$this->tag->getName()}</span><a href='#' data-tag='{$this->tag->getId()}' class='fa fa-trash-o b-tag-remove'></a></li>";
     }
 }

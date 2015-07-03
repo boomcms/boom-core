@@ -77,67 +77,55 @@ html.boom .b-button, .b-button {
 		margin: 0;
 		display: block;
 		position: absolute;
-		background-image: url(/vendor/boomcms/boom-core/img/sprite.png);
+		
+		&.fa-eye-slash {
+			color: @pink;
+		}
+		
+		&.fa-h2, &.fa-h3 {
+			top: 5px;
+			left: 5px;
+			
+			&:before {
+				font-size: 24px;
+				font-weight: bold;
+			}
+		}
+		
+		&.fa-h2:before {
+			content: 'H2';
+		}
+		
+		&.fa-h3:before {
+			content: 'H3';
+		}
+		
+		&-cancel, &-accept {
+			.fa;
+			.fa-2x;
+			color: @white;
+			background-image: none;
+			text-indent: 0;
+		}
+		
+		&-cancel {
+			&:before {
+				content: @fa-var-times;
+			}
+		}
+		
+		&-accept {
+			&:before {
+				content: @fa-var-check;
+			}
+		}
 	}
 
 	&.wysihtml5-command-active {
-		background: #468017;
+		background: @green;
 
 		&:hover, &:focus, &:active {
-			background: #468017;
-		}
-	}
-
-	.b-button-icon-{
-		&accept { background-position: 0 0;}
-		&cancel { background-position: -30px 0;}
-		&preview { background-position: -60px 0;}
-		&options { background-position: -90px 0;}
-		&visible { background-position: -120px 0;}
-		&settings { background-position: -150px 0;}
-		&history { background-position: -180px 0;}
-		&delete { background-position: -210px 0;}
-		&add { background-position: -240px 0;}
-		&menu { background-position: -270px 0;}
-		&edit-live { background-position: 0 -30px;}
-		&view-live { background-position: -30px -30px;}
-		&person { background-position: -60px -30px;}
-		&thumbnails { background-position: -90px -30px;}
-		&previous {background-position: -210px -120px;}
-		&next {background-position: -240px -120px;}
-		&h2 { background-position: -210px -30px;}
-		&h3 { background-position: -240px -30px;}
-		&blockquote { background-position:	 -270px -30px;}
-		&list { background-position:	 0px -60px;}
-		&ol { background-position:	 -30px -60px;}
-		&bold { background-position:	 -60px -60px;}
-		&italic { background-position:	 -90px -60px;}
-		&link { background-position:	 -120px -60px;}
-		&asset { background-position:	 -150px -60px;}
-		&hr { background-position:	 -180px -60px;}
-		&speech { background-position:	 -210px -60px;}
-		&edit {	background-position: -30px -90px;}
-		&tag { background-position: -60px -90px;}
-		&download {	background-position: -90px -90px;}
-		&upload { background-position: -120px -90px;}
-		&invisible { background-position: -150px -90px;}
-		&replace { background-position: -270px -90px;}
-		&back { background-position: -210px -120px;}
-		&paragraph {background-position: -180px -30px;}
-		&sort {background-position: -210px -90px;}
-		&sup {background-position: 0 -150px;}
-		&sub {background-position: -30px -150px;}
-		&cta {
-			background-image: none;
-
-			&:after {
-				content: "!";
-				font-size: 30px;
-				color: #fff;
-			}
-		}
-		&edit-small {
-			background-position: -90px -120px;
+			background: @green;
 		}
 	}
 }

@@ -3,7 +3,7 @@
         <img src="<?= $assetURL(['asset' => $asset->getId(), 'action' => 'thumb', 'height' => 300]) ?>">
 
         <div class="ui-dialog-buttonpane">
-            <?= $button('delete', Lang::get('Delete'), ['class' => 'b-assets-delete']) ?>
+            <?= $button('trash-o', Lang::get('Delete'), ['class' => 'b-assets-delete']) ?>
             <?= $button('download', Lang::get('Download'), ['class' => 'b-assets-download']) ?>
         </div>
     </div>

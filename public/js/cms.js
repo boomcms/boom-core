@@ -32804,7 +32804,6 @@ boom.plugins.js
 	$.fn.ui = function(opts){
 		$.boom.log('Start bind UI events');
 
-		this.find('.b-button').button($.boom.config.button);
 		this.find('.boom-tabs').tabs();
 		this.find('.boom-datepicker').datetimepicker($.boom.config.datepicker);
 		this.find('.boom-tree').tree($.boom.config.tree);
@@ -33581,7 +33580,11 @@ $(function() {
 
 		options = this.options.publishable? this._get_publish_menu(status) : this._get_approvals_menu(status);
 
-		options = $.extend(options, {
+		options = $.extend({
+				"Preview": function() {
+					$.boom.editor.state('preview');
+				}
+			}, options, {
 			"Revert to published version" : function() {
 				// The call to setTimout fixes a bug in IE9 where the toolbar call is minimised (because the splitbutton menu has close) after the dialog is opened.
 				// Therefore preventing the dialog from being seen.
@@ -33689,9 +33692,9 @@ $(function() {
 		this._buildMenu(status);
 
 		if (status == 'published') {
-			this.element.button('disable');
+			this.element.prop('disabled', true);
 		} else {
-			this.element.button('enable');
+			this.element.prop('disabled', false);
 		}
 	}
 });;/**
@@ -34223,7 +34226,7 @@ $.widget( 'boom.pageToolbar', {
 		this.buttons = {
 			visible : this.element.contents().find('#b-page-visible'),
 			invisible : this.element.contents().find('#b-page-invisible'),
-			viewLive : this.element.contents().find('#boom-page-viewlive')
+			viewLive : this.element.contents().find('#b-page-viewlive')
 		};
 	},
 
@@ -34271,11 +34274,11 @@ $.widget( 'boom.pageToolbar', {
 		if (this.buttons.visible.css('display') == 'none') {
 			this.buttons.viewLive
 				.attr('title', 'You cannot view a live version of this page as it is currently hidden from the live site')
-				.button('disable');
+				.prop('disabled', true);
 		} else {
 			this.buttons.viewLive
 				.attr('title', 'View the page as it appears on the live site')
-				.button('enable');
+				.prop('disabled', false);
 		}
 	}
 });
@@ -34551,7 +34554,7 @@ $.widget('boom.pageTree', {
 	addTag : function(tag) {
 		this.tags.push(tag.id);
 
-		$('<li class="b-tag"><span>' + tag.name + '</span><a href="#" class="b-tag-remove" data-tag="' + tag.id + '"></a></li>')
+		$('<li class="b-tag"><span>' + tag.name + '</span><a href="#" class="fa fa-trash-o b-tag-remove" data-tag="' + tag.id + '"></a></li>')
 			.insertBefore(this.tagList.children().last());
 
 		this._trigger('addTag', null, {
@@ -36560,7 +36563,6 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 	};
 
 	boomLink.prototype.getUrl = function() {
-		console.log(this.url);
 		return (this.url == 'http://') ? '' : this.makeUrlRelative();
 	};
 
@@ -37091,8 +37093,8 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 
 	toggleButtons : function() {
 		var buttons = $('[id|=b-button-multiaction]').not('#b-button-multiaction-edit');
-		$('#b-button-multiaction-edit').button(this.selected.length == 1 ? 'enable' : 'disable');
-		buttons.button(this.selected.length > 0 ? 'enable' : 'disable');
+		$('#b-button-multiaction-edit').prop('disabled', this.selected.length == 1 ? false : true);
+		buttons.prop('disabled', this.selected.length > 0 ? false : true);
 	},
 
 	updateContentAreaMargin : function() {
@@ -37701,7 +37703,7 @@ function Row() {
 	addTag : function(tag) {
 		this.tags.push(tag);
 
-		var $newTag = $('<li class="b-tag"><span>' + tag + '</span><a href="#" class="b-tag-remove" data-tag="' + tag + '"></a></li>');
+		var $newTag = $('<li class="b-tag"><span>' + tag + '</span><a href="#" class="fa fa-trash-o b-tag-remove" data-tag="' + tag + '"></a></li>');
 
 		if (this.tagList.children().length) {
 			$newTag.insertBefore(this.tagList.children().last());
