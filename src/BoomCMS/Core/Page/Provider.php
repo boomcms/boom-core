@@ -68,7 +68,7 @@ class Provider
 
     public function findByInternalName($name)
     {
-        return $this->findAndCache(Model::where('internal_name', '=', $name)->get());
+        return $this->findAndCache(Model::where('internal_name', '=', $name)->first());
     }
 
     public function findByParent(Page $parent)
