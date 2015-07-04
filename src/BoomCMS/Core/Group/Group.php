@@ -42,23 +42,14 @@ class Group
 					'page_id' => $pageId
 				]);
 
-            if ($pageId) {
-                DB::table('people_roles')
-					->insert(
-						DB::table('people_groups')
-							->select('person_id', 'group_id', DB::raw("'$roleId'"), DB::raw("'$allowed'"), DB::raw("'$pageId'"))
-                            ->where('group_id', '=', $this->getId())
-							->get()
-                    );
-            } else {
-                DB::table('people_roles')
-					->insert(
-						DB::table('people_groups')
-							->select('person_id', 'group_id', DB::raw("'$roleId'"), DB::raw("'$allowed'"))
-                            ->where('group_id', '=', $this->getId())
-							->get()
-                    );
-            }
+            $select = DB::table('people_groups')
+                ->select('person_id', 'group_id', DB::raw($roleId), DB::raw($allowed), DB::raw($pageId))
+                ->where('group_id', '=', $this->getId());
+
+            $bindings = $select->getBindings();
+            $insert = 'INSERT INTO people_roles (person_id, group_id, role_id, allowed, page_id) ' . $select->toSql();
+
+            DB::statement($insert, $bindings);
         }
 
         return $this;
