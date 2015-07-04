@@ -2,6 +2,7 @@
 
 namespace BoomCMS\Core\Controllers\CMS\People\Person;
 
+use BoomCMS\Core\Facades\Group;
 use BoomCMS\Core\Commands\CreatePerson;
 use Illuminate\Support\Facades\Bus;
 
@@ -21,11 +22,14 @@ class SavePerson extends BasePerson
 		));
     }
 
-    public function add_group()
+    public function addGroup()
     {
         foreach ($this->request->input('groups') as $groupId) {
-            $group = Group\Factory::byId($groupId);
-            $this->editPerson->addGroup($group);
+            $group = Group::findById($groupId);
+
+            if ($group->loaded()) {
+                $this->editPerson->addGroup($group);
+            }
         }
     }
 
@@ -37,9 +41,9 @@ class SavePerson extends BasePerson
         }
     }
 
-    public function remove_group()
+    public function removeGroup()
     {
-        $group = Group\Factory::byId($this->request->input('group_id'));
+        $group = Group::findById($this->request->input('group_id'));
         $this->editPerson->removeGroup($group);
     }
 
@@ -48,14 +52,14 @@ class SavePerson extends BasePerson
         $this->editPerson
 			->setName($this->request->input('name'))
 			->setEnabled($this->request->input('enabled') == 1);
-		
-		if ($superuser = $this->request->input('superuser') 
+
+		if ($superuser = $this->request->input('superuser')
 			&& $this->auth->getPerson()->isSuperuser()
 			&& $this->auth->getPerson()->getId() != $this->editPerson->getId()
 		) {
 			$this->editPerson->setSuperuser($superuser == 1);
 		}
-		
+
 		$this->personProvider->save($this->editPerson);
     }
 }

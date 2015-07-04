@@ -2,9 +2,11 @@
 
 namespace BoomCMS\Core\Group\Finder;
 
-use BoomcMS\Core\Finder\Filter;
+use BoomCMS\Core\Finder\Filter;
 use BoomCMS\Core\Person\Person;
+
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
 
 class ExcludingPersonsGroups extends Filter
 {
@@ -29,7 +31,7 @@ class ExcludingPersonsGroups extends Filter
             DB::table('people_groups')
                 ->select('group_id')
                 ->where('person_id', '=', $this->person->getId())
-                ->toSql()
+                ->lists('group_id')
         );
 
         return $query;

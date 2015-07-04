@@ -6,8 +6,10 @@ use BoomCMS\Core\Group;
 
 use DateTime;
 use Hautelook\Phpass\PasswordHash;
+
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Auth\CanResetPassword;
+use Illuminate\Support\Facades\DB;
 
 class Person implements Arrayable, CanResetPassword
 {
@@ -37,13 +39,14 @@ class Person implements Arrayable, CanResetPassword
 				]);
 
             // Inherit any roles assigned to the group.
-            DB::insert('people_roles', ['person_id', 'group_id', 'role_id', 'allowed', 'page_id'])
-                ->select(
-                    DB::select(DB::raw($this->getId()), DB::raw($group->getId()), 'role_id', 'allowed', 'page_id')
-                        ->from('group_roles')
-                        ->where('group_id', '=', $group->getId())
-                    )
-                ->execute();
+            $select = DB::table('group_roles')
+                ->select(DB::raw($this->getId()), DB::raw($group->getId()), 'role_id', 'allowed', 'page_id')
+                ->where('group_id', '=', $group->getId());
+
+            $bindings = $select->getBindings();
+            $insert = "INSERT INTO people_roles (person_id, group_id, role_id, allowed, page_id) " . $select->toSql();
+
+            DB::statement($insert, $bindings);
         }
 
         return $this;
@@ -184,13 +187,16 @@ class Person implements Arrayable, CanResetPassword
      */
     public function removeGroup(Group\Group $group)
     {
-        if ($group->loaded()) {
-            $this->model->remove('groups', $group->getId());
-
-            DB::delete('people_roles')
-                ->where('group_id', '=', $group->getId())
+        if ($group->loaded() && $this->loaded()) {
+            DB::table('people_groups')
                 ->where('person_id', '=', $this->getId())
-                ->execute();
+                ->where('group_id', '=', $group->getId())
+                ->delete();
+
+            DB::table('people_roles')
+                ->where('person_id', '=', $this->getId())
+                ->where('group_id', '=', $group->getId())
+                ->delete();
         }
 
         return $this;

@@ -16,12 +16,12 @@ class ViewPerson extends BasePerson
         ]);
     }
 
-    public function add_group()
+    public function addGroup()
     {
-        $finder = new Group\Finder();
+        $finder = new Group\Finder\Finder();
         $finder
-            ->addFilter(new Group\Finder\Filter\ExcludingPersonsGroups($this->editPerson))
-            ->setOrderBy('name');
+            ->addFilter(new Group\Finder\ExcludingPersonsGroups($this->editPerson))
+            ->setOrderBy('name', 'asc');
 
         return View::make("$this->viewPrefix/addgroup", [
             'person' => $this->editPerson,
