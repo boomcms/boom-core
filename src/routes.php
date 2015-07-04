@@ -99,6 +99,7 @@ Route::group(['middleware' => [
                 Route::get('timestamp/edit/{page}', 'Timestamp@edit');
                 Route::get('tag/edit/{page}', 'Tag@edit');
                 Route::get('linkset/edit/{page}', 'Linkset@edit');
+                Route::get('location/edit/{page}', 'Location@edit');
 			});
 
 			Route::group(['prefix' => 'page', 'namespace' => 'Page'], function() {

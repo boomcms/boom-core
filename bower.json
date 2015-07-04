@@ -23,6 +23,7 @@
     "tablesorter": "*",
     "wysihtml": "~0.4.17",
     "modernizr": "~2.8.3",
-    "fontawesome": "~4.3.0"
+    "fontawesome": "~4.3.0",
+    "leaflet": "~0.7.3"
   }
 }

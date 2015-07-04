@@ -15,6 +15,9 @@ return [
 	'link' => [
 		'default' => 'Insert a link here',
 	],
+    'location' => [
+        'default' => 'Insert a location here',
+    ],
     'slideshow' => [
         'default' => 'Insert a slideshow',
     ],

@@ -18,6 +18,13 @@ module.exports = function(grunt) {
 						src: ['bower_components/fontawesome/fonts/*'],
 						dest: 'public/fonts/',
 						filter: 'isFile'
+					},
+					{
+						expand: true,
+						flatten: true,
+						src: ['bower_components/leaflet/dist/images/*'],
+						dest: 'public/images/',
+						filter: 'isFile'
 					}
 				]
 			}
@@ -41,6 +48,7 @@ module.exports = function(grunt) {
 					'bower_components/tablesorter/jquery.tablesorter.js',
 					'bower_components/datetimepicker/jquery.datetimepicker.js',
 					'bower_components/jquery-file-upload/js/jquery.fileupload.js',
+					'bower_components/leaflet/dist/leaflet.js',
 					'src/js/boom/plugins.js',
 					'src/js/boom/config.js',
 					'src/js/boom/loader.js',
@@ -82,6 +90,8 @@ module.exports = function(grunt) {
 					'src/js/boom/chunk/pageTags.js',
 					'src/js/boom/chunk/pageVisibility.js',
 					'src/js/boom/chunk/link.js',
+					'src/js/boom/chunk/location.js',
+					'src/js/boom/chunk/location/editor.js',
 					'src/js/boom/page/title.js',
 					'src/js/boom/link/link.js',
 					'src/js/boom/link/picker.js',
@@ -150,6 +160,7 @@ module.exports = function(grunt) {
 						'bower_components/jquery-ui/themes/base/button.css',
 						'bower_components/jquery-ui/themes/base/draggable.css',
 						'bower_components/jquery-ui/themes/base/dialog.css',
+						'bower_components/leaflet/dist/leaflet.css',
 						'src/css/libraries/jqpagination.css',
 						'public/css/cms.css'
 					 ]
