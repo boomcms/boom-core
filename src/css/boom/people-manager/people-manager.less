@@ -88,12 +88,17 @@
 					background: @grey;
 				}
 
-				.ui-icon {
+				a.fa {
 					display: inline-block;
 					float: right;
 					height: 30px;
 					width: 30px;
-					background-image: url(/vendor/boomcms/boom-core/img/sprite.png);
+					color: @white;
+					text-decoration: none;
+
+					&:hover, &:focus {
+						color: @red;
+					}
 				}
 
 				.b-group-delete {
