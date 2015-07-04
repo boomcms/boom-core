@@ -61,7 +61,8 @@ boomPage.prototype.featureimage = function() {
 boomPage.prototype.template = function() {
 	var	page = this,
 		url = '/cms/page/version/template/' + page.id,
-		dialog;
+		dialog,
+		currentTemplate;
 
 	dialog = new boomDialog({
 		url: url,
@@ -70,6 +71,8 @@ boomPage.prototype.template = function() {
 		open: function() {
 			page.template._show_details();
 
+			currentTemplate = dialog.contents.find('select option:selected').val();
+
 			dialog.contents.on('change', 'select', function() {
 				page.template._show_details();
 			});
@@ -77,13 +80,15 @@ boomPage.prototype.template = function() {
 	});
 
 	dialog.done(function() {
-		page.saveSettings(url, $("#b-page-version-template").serialize(), 'Page template saved, reloading page')
-			.done(function() {
-				// Reload the page to show the template change.
-				setTimeout(function() {
-					$.boom.reload();
-				}, 1500);
-			});
+		if (currentTemplate !== dialog.contents.find('select option:selected').val()) {
+			page.saveSettings(url, $("#b-page-version-template").serialize(), 'Page template saved, reloading page')
+				.done(function() {
+					// Reload the page to show the template change.
+					setTimeout(function() {
+						$.boom.reload();
+					}, 1500);
+				});
+		}
 	});
 
 	boomPage.prototype.template._show_details = function() {
