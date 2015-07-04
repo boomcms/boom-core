@@ -1,7 +1,10 @@
 <?php namespace App\Exceptions;
 
 use Exception;
+use BoomCMS\Core\Facades\Page;
+use Illuminate\Support\Facades\App;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Support\Facades\View;
 
 class Handler extends ExceptionHandler {
 
@@ -36,6 +39,21 @@ class Handler extends ExceptionHandler {
 	 */
 	public function render($request, Exception $e)
 	{
+        if ($this->isHttpException($e)) {
+            $code = $e->getStatusCode();
+
+            if ($code !== 500 || (App::environment('production') || App::environment('staging'))) {
+                $page = Page::findByInternalName($code);
+
+                if ($page->loaded()) {
+                    View::share('page', $page);
+                    $request->route()->setParameter('page', $page);
+
+                    return response(App::make('BoomCMS\Core\Controllers\Page')->show(), $code);
+                }
+            }
+        }
+
 		return parent::render($request, $e);
 	}
 
