@@ -203,5 +203,6 @@ return [
         'Page' => 'BoomCMS\Core\Facades\Page',
         'Editor' => 'BoomCMS\Core\Facades\Editor',
 		'Tag' => 'BoomCMS\Core\Facades\Tag',
+        'Group' => 'BoomCMS\Core\Facades\Group',
     ],
 ];
