@@ -35,7 +35,6 @@ class CreateChunkLocationsTable extends Migration
             $table->mediumText('address')->nullable();
             $table->string('title')->nullable();
             $table->string('postcode', 10)->nullable();
-            $table->boolean('location_manually_set')->default(false);
         });
     }
 

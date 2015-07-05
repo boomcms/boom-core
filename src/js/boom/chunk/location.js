@@ -4,8 +4,8 @@ $.widget('ui.chunkLocation', $.ui.chunk, {
 			editor = new boomChunkLocationEditor(this.options.page, this.options.name);
 
 		editor
-			.done(function(slides) {
-
+			.done(function(data) {
+				chunk._save(data);
 			})
 			.always(function() {
 				chunk.bind();

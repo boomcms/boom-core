@@ -16,6 +16,8 @@
             <span>Postcode</span>
             <input type="text" name="postcode" value="<?= $chunk->getPostcode() ?>" />
         </label>
+
+        <?= $button('globe', 'Set map location from address', ['id' => 'b-location-set', 'class' => 'b-button-withtext']) ?>
     </form>
 </section>
 
@@ -23,7 +25,9 @@
     <h1>Map</h1>
     <p>Set the location by moving the pin on the map</p>
 
-    <div class="b-map">
+    <div id="b-location-map" data-lat="<?= $chunk->getLat() ?>" data-lng="<?= $chunk->getLng() ?>">
 
     </div>
+
+    <?= $button('trash-o', 'Remove location', ['id' => 'b-location-remove', 'class' => 'b-button-withtext']) ?>
 </section>

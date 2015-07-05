@@ -16,7 +16,7 @@ html.boom .b-button, .b-button {
 	&:disabled {
 		opacity: 0.35;
 		cursor: initial;
-		
+
 		&:hover, &:focus {
 			color: @white;
 		}
@@ -69,7 +69,6 @@ html.boom .b-button, .b-button {
 		display: block;
 		padding: 0.4em;
 		text-indent: -9999999px;
-		color: @white;
 	}
 
 	.b-button-icon {
@@ -80,46 +79,46 @@ html.boom .b-button, .b-button {
 		margin: 0;
 		display: block;
 		position: absolute;
-		
+
 		&.fa-eye-slash {
 			color: @pink;
-			
+
 			&:hover, &:focus {
 				color: @red;
 			}
 		}
-		
+
 		&.fa-h2, &.fa-h3 {
 			top: 5px;
 			left: 5px;
-			
+
 			&:before {
 				font-size: 1em;
 				font-weight: bold;
 			}
 		}
-		
+
 		&.fa-h2:before {
 			content: 'H2';
 		}
-		
+
 		&.fa-h3:before {
 			content: 'H3';
 		}
-		
+
 		&-cancel, &-accept {
 			.fa;
 			.fa-2x;
 			background-image: none;
 			text-indent: 0;
 		}
-		
+
 		&-cancel {
 			&:before {
 				content: @fa-var-times;
 			}
 		}
-		
+
 		&-accept {
 			&:before {
 				content: @fa-var-check;

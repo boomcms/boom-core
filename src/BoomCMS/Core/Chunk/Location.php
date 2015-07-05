@@ -10,12 +10,12 @@ class Location extends BaseChunk
 
     public function hasContent()
     {
-        return $this->getLat() && $this->getLng();
+        return $this->getLat() != 0 && $this->getLng() != 0;
     }
 
     public function getAddress()
     {
-        return isset($this->attrs['address']) ? $this->attrs['title'] : '';
+        return isset($this->attrs['address']) ? $this->attrs['address'] : '';
     }
 
     public function getLat()
@@ -43,7 +43,7 @@ class Location extends BaseChunk
 	*/
     public function show()
     {
-        return View::make($this->viewPrefix."feature.$this->template", [
+        return View::make($this->viewPrefix."location.$this->template", [
             'lat' => $this->getLat(),
             'lng' => $this->getLng(),
             'address' => $this->getAddress(),
