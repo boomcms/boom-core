@@ -6,7 +6,7 @@
             <h1>Current Asset</h1>
             <img src="" />
 
-            <?= $button('delete', 'Remove current asset', ['id' => 'b-assets-picker-current-remove', 'class' => 'b-button-withtext']) ?>
+            <?= $button('trash-o', 'Remove current asset', ['id' => 'b-assets-picker-current-remove', 'class' => 'b-button-withtext']) ?>
         </section>
 
         <section id="b-assets-picker-upload">
