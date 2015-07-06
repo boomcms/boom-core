@@ -23,7 +23,10 @@ function boomChunkLocationEditor(page_id, slotname) {
 			})
 			.on('click', '#b-location-remove', function() {
 				if (locationEditor.marker) {
-					locationEditor.map.removeLayer(locationEditor.marker);
+					locationEditor.map
+						.removeLayer(locationEditor.marker)
+						.setView(null, 13);
+
 					locationEditor.marker = null;
 					locationEditor.element.find('#b-location-remove').hide();
 				}
@@ -100,9 +103,7 @@ function boomChunkLocationEditor(page_id, slotname) {
 			draggable: true
 		}).addTo(this.map);
 
-		this.map
-			.setView([lat, lng]);
-
+		this.map.setView([lat, lng], 16);
 		this.element.find('#b-location-remove').show();
 	};
 
