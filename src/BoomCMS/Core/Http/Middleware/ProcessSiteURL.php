@@ -76,7 +76,7 @@ class ProcessSiteURL
             throw new NotFoundHttpException();
         }
 
-        if ( !$page->url()->is($request->route()->getParameter('location'))) {
+        if ( !$page->url()->is($uri)) {
             return redirect((string) $page->url(), 301);
         }
 

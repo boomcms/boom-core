@@ -2,6 +2,7 @@
 
 namespace BoomCMS\Core\Page;
 
+use BoomCMS\Core\Facades\Page as PageFacade;
 use Thujohn\Rss\Rss;
 
 class RssFeed
@@ -14,7 +15,7 @@ class RssFeed
 
     /**
      *
-     * @param \Boom\Page\Page\Page $page
+     * @param Page $page
      */
     public function __construct(Page $page)
     {
@@ -28,28 +29,25 @@ class RssFeed
 
     public function addItem(Rss $feed, Page $page)
     {
-            $authors = (array) $page->getTagsInGroup('Author');
+        $authors = (array) $page->getTagsInGroup('Author');
 
-            foreach ($authors as &$author) {
-                $author  = $author->getName();
-            }
+        foreach ($authors as &$author) {
+            $author  = $author->getName();
+        }
 
-            $feed->item([
-                'guid' => $page->url(),
-                'title' => $page->getTitle(),
-                'description|cdata' => $page->getDescription(),
-                'link' => $page->url(),
-                'pubDate' => $page->getVisibleFrom()->format('r'),
-                'author|cdata' => empty($authors) ? null : implode(',', $authors),
-            ]);
+        $feed->item([
+            'guid' => $page->url(),
+            'title' => $page->getTitle(),
+            'description|cdata' => $page->getDescription(),
+            'link' => $page->url(),
+            'pubDate' => $page->getVisibleFrom()->format('r'),
+            'author|cdata' => empty($authors) ? null : implode(',', $authors),
+        ]);
     }
 
     public function getFeedItems()
     {
-        $finder = new Finder();
-        $finder->addFilter(new Finder\Filter\ParentPage($this->page));
-
-        return $finder->findAll();
+        return PageFacade::findByParentId($this->page->getId());
     }
 
     public function render()

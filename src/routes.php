@@ -147,7 +147,7 @@ Route::group(['middleware' => [
         });
     });
 
-    Route::get('page/children', 'BoomCMS\Core\Controllers\Page@children');
+    Route::get('page/children', 'BoomCMS\Core\Controllers\PageController@children');
 
 	Route::get('asset/download/{asset}', [
 		'asset' => 'asset-download',
@@ -174,11 +174,14 @@ Route::group(['middleware' => [
     ]);
 });
 
-Route::any('{location}', [
+Route::any('{location}.{format?}', [
     'middleware' => [
         'BoomCMS\Core\Http\Middleware\ProcessSiteURL',
         'BoomCMS\Core\Http\Middleware\InsertCMSToolbar',
         'BoomCMS\Core\Http\Middleware\SaveUrlForRedirect',
     ],
-    'uses' => 'BoomCMS\Core\Controllers\Page@show',
-])->where(['location' => '.*']);
+    'uses' => 'BoomCMS\Core\Controllers\PageController@show',
+])->where([
+    'location' => '(.*?)',
+    'format' => '([a-z]+)',
+]);
