@@ -20,7 +20,7 @@
                     <label class="primary" for="is_primary_<?= $url->getId() ?>"><?= $url->getLocation() ?></label>
 
                     <span class='b-page-urls-primary-indicator'>primary</span>
-                    <span title="Remove URL" class="ui-icon ui-icon-remove-small b-urls-remove"></span>
+                    <span title="Remove URL" class="fa fa-trash-o b-urls-remove"></span>
 
                     <input type="radio" name="is_primary" value="<?= $url->getLocation() ?>" id="is_primary_<?= $url->getId() ?>" class="ui-helper-hidden b-urls-primary" <?php if ($url->isPrimary()): ?> checked="checked"<?php endif ?>/>
                 </li>
