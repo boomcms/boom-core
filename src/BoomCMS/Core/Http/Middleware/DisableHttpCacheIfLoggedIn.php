@@ -30,7 +30,7 @@ class DisableHttpCacheIfLoggedIn
         $response = $next($request);
 
         if ($this->auth->isLoggedIn()) {
-            $response->setCache(['private' => true]);
+            $response->header('Cache-Control', 'no-cache, max-age=0, must-revalidate, no-store');
         }
 
         return $response;
