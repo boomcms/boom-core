@@ -31,6 +31,7 @@ class CreatePage extends Command implements SelfHandling
 
         if ($this->parent) {
             $attrs  = [
+                'visible_from' => time(),
                 'parent_id' => $this->parent->getId(),
                 'visible_in_nav' => $this->parent->childrenAreVisibleInNav(),
                 'visible_in_nav_cms' => $this->parent->childrenAreVisibleInCmsNav(),
