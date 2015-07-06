@@ -54,6 +54,6 @@
             <a href="#" class="last" data-action="last">&raquo;</a>
         </section>
 
-        <?= new BoomCMS\Core\UI\Button('cancel', 'Close asset picker', ['class' => 'b-button-withtext', 'id' => 'b-assets-picker-close']) ?>
+        <?= $button('times', 'Close asset picker', ['class' => 'b-button-withtext', 'id' => 'b-assets-picker-close']) ?>
     </section>
 </div>
