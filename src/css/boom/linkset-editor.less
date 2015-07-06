@@ -76,14 +76,17 @@
 
 			a.delete {
 				.box-sizing;
+				.fa;
 				position: absolute;
 				top: 0;
 				right: 0;
 				bottom: 0;
-				padding: 15px;
+				padding: 7px;
 				margin-top: 0;
-				background: transparent url(/vendor/boomcms/boom-core/img/sprite.png) center;
-				background-position: -120px -120px;
+
+				&:before {
+					content: @fa-var-trash-o;
+				}
 
 				&:hover, &:focus {
 					background-color: @grey;
