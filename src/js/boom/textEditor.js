@@ -151,6 +151,7 @@ $.widget('boom.textEditor', {
 	apply : function(element) {
 		var html = element.html();
 
+		$.boom.page.toolbar.minimise();
 		this.hideToolbar();
 
 		if (this.mode !== 'block') {
