@@ -68,6 +68,8 @@ boomPageFeatureEditor = function(page) {
 		this.dialog = new boomDialog({
 			url: this.url,
 			title: 'Page feature image',
+			closeButton: false,
+			saveButton: true,
 			onLoad: function() {
 				pageFeatureEditor._open();
 			}
@@ -83,7 +85,7 @@ boomPageFeatureEditor = function(page) {
 		.fail(function() {
 			pageFeatureEditor.deferred.reject();
 		});
-		
+
 		return this.deferred;
 	};
 

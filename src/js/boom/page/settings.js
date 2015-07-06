@@ -16,6 +16,8 @@ boomPage.prototype.navigation = function() {
 		url: url,
 		title: 'Navigation',
 		width: 570,
+		closeButton: false,
+		saveButton: true,
 		onLoad : function() {
 			dialog.contents.find('.boom-tree').pageTree({
 				active: $('input[name=parent_id]').val(),
@@ -39,7 +41,9 @@ boomPage.prototype.search = function() {
 	dialog = new boomDialog({
 		url : url,
 		title : 'Search Settings',
-		width : 'auto'
+		width : 'auto',
+		closeButton: false,
+		saveButton: true
 	}).done(function() {
 		page.saveSettings(url, dialog.contents.find("form").serialize(), 'Page search settings saved');
 	});
@@ -68,6 +72,8 @@ boomPage.prototype.template = function() {
 		url: url,
 		title: 'Page template',
 		width: 500,
+		closeButton: false,
+		saveButton: true,
 		open: function() {
 			page.template._show_details();
 
@@ -120,6 +126,8 @@ boomPage.prototype.childsettings = function() {
 		url: url,
 		title: 'Child page settings',
 		width: 'auto',
+		closeButton: false,
+		saveButton: true,
 		open: function() {
 			$('select[name="children_ordering_policy"]').on('change', function(){
 				var reorder_link = $('#b-page-settings-children-reorder');
@@ -170,7 +178,9 @@ boomPage.prototype.adminsettings = function() {
 	dialog = new boomDialog({
 		url: url,
 		title: 'Admin settings',
-		width: '500px'
+		width: '500px',
+		closeButton: false,
+		saveButton: true
 	})
 	.done(function() {
 		page.saveSettings(url, dialog.contents.find("form").serialize(), 'Page admin settings saved');

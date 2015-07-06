@@ -33315,15 +33315,16 @@ function boomHistory() {
 	boomDialog.prototype.open = function() {
 		var self = this,
 			$div = $('<div></div>');
-		
+
 		if (this.options.id) {
 			$div.attr('id', this.options.id);
 		}
-		
+
 		this.contents = $div.appendTo($(document).contents().find('body'));
 
 		this.options.cancelButton && this.options.buttons.push(this.cancelButton);
 		this.options.closeButton && this.options.buttons.push(this.closeButton);
+		this.options.saveButton && this.options.buttons.push(this.saveButton);
 
 		if (this.options.url && this.options.url.length) {
 			if (this.contents.hasClass('ui-dialog-content')) {
@@ -33353,6 +33354,16 @@ function boomHistory() {
 
 	boomDialog.prototype.reposition = function() {
 		this.contents.dialog('option', 'position', this.options.position);
+	};
+
+	boomDialog.prototype.saveButton = {
+		text : 'Save',
+		class : 'b-button',
+		icons : { primary : 'b-button-icon-save b-button-icon' },
+		click : function() {
+			var boomDialog = $(this).dialog('option', 'boomDialog');
+			boomDialog.close();
+		}
 	};
 
 	this.open();
@@ -33851,6 +33862,8 @@ boomPage.prototype.navigation = function() {
 		url: url,
 		title: 'Navigation',
 		width: 570,
+		closeButton: false,
+		saveButton: true,
 		onLoad : function() {
 			dialog.contents.find('.boom-tree').pageTree({
 				active: $('input[name=parent_id]').val(),
@@ -33874,7 +33887,9 @@ boomPage.prototype.search = function() {
 	dialog = new boomDialog({
 		url : url,
 		title : 'Search Settings',
-		width : 'auto'
+		width : 'auto',
+		closeButton: false,
+		saveButton: true
 	}).done(function() {
 		page.saveSettings(url, dialog.contents.find("form").serialize(), 'Page search settings saved');
 	});
@@ -33903,6 +33918,8 @@ boomPage.prototype.template = function() {
 		url: url,
 		title: 'Page template',
 		width: 500,
+		closeButton: false,
+		saveButton: true,
 		open: function() {
 			page.template._show_details();
 
@@ -33955,6 +33972,8 @@ boomPage.prototype.childsettings = function() {
 		url: url,
 		title: 'Child page settings',
 		width: 'auto',
+		closeButton: false,
+		saveButton: true,
 		open: function() {
 			$('select[name="children_ordering_policy"]').on('change', function(){
 				var reorder_link = $('#b-page-settings-children-reorder');
@@ -34005,7 +34024,9 @@ boomPage.prototype.adminsettings = function() {
 	dialog = new boomDialog({
 		url: url,
 		title: 'Admin settings',
-		width: '500px'
+		width: '500px',
+		closeButton: false,
+		saveButton: true
 	})
 	.done(function() {
 		page.saveSettings(url, dialog.contents.find("form").serialize(), 'Page admin settings saved');
@@ -34809,6 +34830,8 @@ $.widget('boom.pageTree', {
 		this.dialog = new boomDialog({
 			url: this.url,
 			title: 'Page feature image',
+			closeButton: false,
+			saveButton: true,
 			onLoad: function() {
 				pageFeatureEditor._open();
 			}
@@ -34824,7 +34847,7 @@ $.widget('boom.pageTree', {
 		.fail(function() {
 			pageFeatureEditor.deferred.reject();
 		});
-		
+
 		return this.deferred;
 	};
 
@@ -35996,6 +36019,8 @@ $.widget('ui.chunkTag', $.ui.chunk,
 			url : '/cms/chunk/slideshow/edit/' + this.page_id + '?slotname=' + this.slotname,
 			id : 'b-slideshow-editor',
 			width: 920,
+			closeButton: false,
+			saveButton: true,
 			open : function() {
 				slideshowEditor.bind();
 			}
@@ -36182,6 +36207,8 @@ $.widget('ui.chunkTag', $.ui.chunk,
 			title: 'Edit linkset',
 			id: 'b-linkset-editor',
 			width: 900,
+			closeButton: false,
+			saveButton: true,
 			onLoad: function() {
 				linksetEditor.bind();
 			}
@@ -36270,6 +36297,8 @@ $.widget('ui.chunkTag', $.ui.chunk,
 		this.dialog = new boomDialog({
 			url : '/cms/chunk/asset/edit/' + this.pageId + '?slotname=' + this.slotname,
 			id : 'b-assets-chunk-editor',
+			closeButton: false,
+			saveButton: true,
 			open : function() {
 				chunkAssetEditor.dialogOpened();
 			}
@@ -36500,6 +36529,8 @@ $.widget('ui.chunkPageVisibility', {
 			url : '/cms/chunk/location/edit/' + this.page_id + '?slotname=' + this.slotname,
 			id : 'b-location-editor',
 			width: 920,
+			closeButton: false,
+			saveButton: true,
 			title: 'Location Chunk Editor',
 			open : function() {
 				locationEditor.mapElement = locationEditor.dialog.contents.find('#b-location-map');
@@ -37303,6 +37334,8 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 			title : 'Edit Asset',
 			url : this.baseUrl + 'view/' + assetId,
 			width: document.documentElement.clientWidth >= 1000? '1000px' : '100%',
+			closeButton: false,
+			saveButton: true,
 			onLoad : function() {
 				dialog.contents
 					.find('#b-tags')

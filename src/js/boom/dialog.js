@@ -93,15 +93,16 @@ function boomDialog(options) {
 	boomDialog.prototype.open = function() {
 		var self = this,
 			$div = $('<div></div>');
-		
+
 		if (this.options.id) {
 			$div.attr('id', this.options.id);
 		}
-		
+
 		this.contents = $div.appendTo($(document).contents().find('body'));
 
 		this.options.cancelButton && this.options.buttons.push(this.cancelButton);
 		this.options.closeButton && this.options.buttons.push(this.closeButton);
+		this.options.saveButton && this.options.buttons.push(this.saveButton);
 
 		if (this.options.url && this.options.url.length) {
 			if (this.contents.hasClass('ui-dialog-content')) {
@@ -131,6 +132,16 @@ function boomDialog(options) {
 
 	boomDialog.prototype.reposition = function() {
 		this.contents.dialog('option', 'position', this.options.position);
+	};
+
+	boomDialog.prototype.saveButton = {
+		text : 'Save',
+		class : 'b-button',
+		icons : { primary : 'b-button-icon-save b-button-icon' },
+		click : function() {
+			var boomDialog = $(this).dialog('option', 'boomDialog');
+			boomDialog.close();
+		}
 	};
 
 	this.open();

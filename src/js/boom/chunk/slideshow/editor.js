@@ -175,6 +175,8 @@ function boomChunkSlideshowEditor(page_id, slotname, options) {
 			url : '/cms/chunk/slideshow/edit/' + this.page_id + '?slotname=' + this.slotname,
 			id : 'b-slideshow-editor',
 			width: 920,
+			closeButton: false,
+			saveButton: true,
 			open : function() {
 				slideshowEditor.bind();
 			}

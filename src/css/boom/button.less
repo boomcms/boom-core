@@ -105,7 +105,7 @@ html.boom .b-button, .b-button {
 			content: 'H3';
 		}
 
-		&-cancel, &-accept, &-add {
+		&-cancel, &-accept, &-add, &-save {
 			.fa;
 			.fa-2x;
 			background-image: none;
@@ -127,6 +127,14 @@ html.boom .b-button, .b-button {
 		&-add {
 			&:before {
 				content: @fa-var-plus;
+			}
+		}
+
+
+
+		&-save {
+			&:before {
+				content: @fa-var-save;
 			}
 		}
 	}

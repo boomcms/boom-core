@@ -49,6 +49,8 @@ function boomChunkAssetEditor(pageId, slotname, visibleElements) {
 		this.dialog = new boomDialog({
 			url : '/cms/chunk/asset/edit/' + this.pageId + '?slotname=' + this.slotname,
 			id : 'b-assets-chunk-editor',
+			closeButton: false,
+			saveButton: true,
 			open : function() {
 				chunkAssetEditor.dialogOpened();
 			}
