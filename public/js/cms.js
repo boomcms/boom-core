@@ -36702,20 +36702,20 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 				}, 0);
 			})
 			.on('focus', function() {
+				if (self.isUntitled()) {
+					self.element.text('');
+				}
+
 				if ( ! self.lengthCounterCreated) {
 					self._create_length_counter();
 					self.lengthCounterCreated = true;
-				}
-
-				if (self.isUntitled()) {
-					self.element.text('');
 				}
 			});
 	},
 
 	_create_length_counter : function() {
 		var $counter = $('<div id="b-title-length"><span></span></div>');
-		
+
 		$(top.document)
 				.find('body')
 				.first()
@@ -36806,7 +36806,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 				top.$('title').text(page_title);
 			});
 	},
-	
+
 	updatePageTitle : function(oldTitle, newTitle) {
 		top.document.title = top.document.title.replace(oldTitle, newTitle);
 	},
