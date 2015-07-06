@@ -2,53 +2,50 @@
 
 namespace BoomCMS\Core\Chunk;
 
-use BoomCMS\Core\Page\Page as Page;
-use \Kohana as Kohana;
-use \View as View;
+use BoomCMS\Core\Page\Page;
+use Illuminate\Support\Facades\View;
 
 class Tag extends BaseChunk
 {
     protected $_default_template = 'gallery';
-    protected $_tag;
+    protected $tag;
     protected $type = 'tag';
 
-    public function __construct(Page $page, $chunk, $editable = true)
+    public function __construct(Page $page, array $attrs, $slotname, $editable)
     {
-        parent::__construct($page, $chunk, $editable);
+        parent::__construct($page, $attrs, $slotname, $editable);
 
-        $this->_tag = $this->_chunk->tag;
+        $this->tag = isset($attrs['tag']) ? $attrs['tag'] : '';
     }
 
     protected function show()
     {
-        if ( ! $this->template || ! Kohana::find_file("views", $this->viewPrefix."tag/$this->template")) {
-            $this->template = $this->defaultTemplate;
-        }
-
-        return View::factory($this->viewPrefix."tag/$this->template", [
-            'tag' => $this->_tag,
+        return View::make($this->viewPrefix."tag.$this->template", [
+            'tag' => $this->getTag(),
         ]);
     }
 
     protected function showDefault()
     {
-        return new View($this->viewPrefix."default/tag/$this->template");
+        return View::make($this->viewPrefix."default.tag.$this->template", [
+            'placeholder' => $this->getPlaceholderText(),
+        ]);
     }
 
     public function attributes()
     {
         return [
-            $this->attributePrefix.'tag' => $this->getTag(),
+            $this->attributePrefix . 'tag' => $this->getTag(),
         ];
     }
 
     public function getTag()
     {
-        return $this->_tag;
+        return $this->tag;
     }
 
     public function hasContent()
     {
-        return $this->_chunk->loaded() && $this->getTag();
+        return $this->getTag() != null;
     }
 }
