@@ -36524,9 +36524,13 @@ $.widget('ui.chunkPageVisibility', {
 	boomChunkLocationEditor.prototype.setMapLocation = function(lat, lng) {
 		L.Icon.Default.imagePath = '/vendor/boomcms/boom-core/images';
 
-		this.marker = L.marker([lat, lng], {
-			draggable: true
-		}).addTo(this.map);
+		if ( ! this.marker) {
+			this.marker = L.marker([lat, lng], {
+				draggable: true
+			}).addTo(this.map);
+		} else {
+			this.marker.setLatLng([lat, lng]);
+		}
 
 		this.map.setView([lat, lng], 16);
 		this.element.find('#b-location-remove').show();
