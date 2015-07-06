@@ -7,11 +7,11 @@
 			</div>
 
 			<div id="b-assets-upload-progress"></div>
-			<?= $button('cancel', Lang::get('Cancel'), ['id' => 'b-assets-upload-cancel']) ?>
+			<?= $button('times', Lang::get('Cancel'), ['id' => 'b-assets-upload-cancel']) ?>
 
 			<input type="file" name="b-assets-upload-files[]" id="b-assets-upload-file" multiple min="1" max="5" />
 
-            <?= $button('cancel', Lang::get('Close uploader'), ['id' => 'b-assets-upload-close', 'class' => 'b-button-withtext']) ?>
+            <?= $button('times', Lang::get('Close uploader'), ['id' => 'b-assets-upload-close', 'class' => 'b-button-withtext']) ?>
         </div>
 	</form>
 </div>
