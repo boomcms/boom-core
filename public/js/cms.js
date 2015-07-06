@@ -35819,9 +35819,11 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 			url: '/cms/chunk/timestamp/edit/' + this.options.currentPage.id + '?slotname=' + self.options.name,
 			width: 400,
 			title: 'Edit date / time',
+			closeButton: false,
+			saveButton: true,
 			onLoad : function() {
 				data.format && $('#format').val(data.format);
-				
+
 				var time = (data.timestamp)? new Date(data.timestamp * 1000) : new Date();
 
 				$( "#timestamp" ).datepicker('setDate', time);
@@ -35838,7 +35840,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 			self.insert(format, timestamp);
 		})
 		.always(function() {
-			self.bind();	
+			self.bind();
 		});
 	},
 
