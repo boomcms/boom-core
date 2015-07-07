@@ -38,7 +38,7 @@
 				<?php endif ?>
 
 				<div>
-					<?= $button('check', Lang::get('Save'), ['id' => 'b-person-save', 'class' => 'b-people-save']) ?>
+					<?= $button('save', Lang::get('Save'), ['id' => 'b-person-save', 'class' => 'b-people-save']) ?>
 					<?= $button('trash-o', Lang::get('Delete'), ['id' => 'b-person-delete']) ?>
 				</div>
 			</form>
