@@ -12,6 +12,6 @@
 
     <label>
         Date / time
-        <input id="timestamp" type="text" name="timestamp" class="boom-input boom-datepicker" value="<?= date("d F Y H:i", $timestamp) ?>" />
+        <input id="timestamp" type="text" name="timestamp" class="boom-input boom-datepicker" value="<?= $timestamp? date("d F Y H:i", $timestamp) : 'Select a date and time' ?>" />
     </label>
 </form>
