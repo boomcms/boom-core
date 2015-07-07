@@ -137,8 +137,8 @@ return [
         'Illuminate\Html\HtmlServiceProvider',
 
         // BoomCMS service providers
-		'BoomCMS\Robots\ServiceProvider',
-		'BoomCMS\Sitemap\ServiceProvider',
+	'BoomCMS\Robots\ServiceProvider',
+	'BoomCMS\Sitemap\ServiceProvider',
         'BoomCMS\Core\CoreServiceProvider',
         'BoomCMS\Core\Asset\AssetServiceProvider',
         'BoomCMS\Core\Auth\AuthServiceProvider',
@@ -149,7 +149,8 @@ return [
         'BoomCMS\Core\Settings\SettingsServiceProvider',
         'BoomCMS\Core\Chunk\ChunkServiceProvider',
         'BoomCMS\Core\URL\URLServiceProvider',
-		'BoomCMS\Core\Tag\TagServiceProvider',
+	'BoomCMS\Core\Tag\TagServiceProvider',
+	'BoomCMS\Installer\ServiceProvider.php',
     ],
 
     /*
