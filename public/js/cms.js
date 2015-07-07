@@ -35125,11 +35125,11 @@ $.widget('boom.textEditor', {
 				});
 
 			element[0].onpaste = function(e) {
-				var html = e.clipboardData.getData('text'),
+				var html = e.clipboardData.getData('text/plain'),
 					text = $('<div>' + html + '</div>').text().replace(/\n|\r|\n\r/g, '');
 
 				e.preventDefault();
-				element.text(text);
+				top.document.execCommand("insertHTML", false, text);
 			};
 		}
 
@@ -35804,9 +35804,6 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 		$.ui.chunk.prototype._create.call(this);
 	},
 
-	/**
-	Make the element editable by invokeing boom.editor.edit() on it.
-	*/
 	edit : function(){
 
 		var self = this;
