@@ -10,6 +10,15 @@ class Text extends BaseChunk
     protected $type = 'text';
     protected $placeholder;
 	protected $allowFormatting = false;
+	
+	public function __construct(\BoomCMS\Core\Page\Page $page, array $attrs, $slotname, $editable)
+	{
+		parent::__construct($page, $attrs, $slotname, $editable);
+		
+		// Formatting is allowed for bodycopy by default.
+		// For other text chunks it must be manually set.
+		$this->allowFormatting = ($this->slotname === 'bodycopy');
+	}
 
     public function getHtmlContainerForSlotname($slotname)
     {
