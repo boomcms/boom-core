@@ -5,3 +5,4 @@ public/vendor
 .env
 storage/boomcms/
 migrations/boomcms/
+composer.lock
