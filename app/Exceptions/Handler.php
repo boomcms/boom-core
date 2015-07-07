@@ -2,6 +2,8 @@
 
 use Exception;
 use BoomCMS\Core\Facades\Page;
+use BoomCMS\Core\Facades\Editor;
+
 use Illuminate\Support\Facades\App;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Support\Facades\View;
@@ -42,14 +44,14 @@ class Handler extends ExceptionHandler {
         if ($this->isHttpException($e)) {
             $code = $e->getStatusCode();
 
-            if ($code !== 500 || (App::environment('production') || App::environment('staging'))) {
+            if ($code !== 500 || App::environment('production') || App::environment('staging')) {
                 $page = Page::findByInternalName($code);
 
                 if ($page->loaded()) {
-                    View::share('page', $page);
-                    $request->route()->setParameter('page', $page);
+					View::share('page', $page);
+                    Editor::setActivePage($page);
 
-                    return response(App::make('BoomCMS\Core\Controllers\PageController')->show(), $code);
+                    return response(App::make('BoomCMS\Core\Controllers\PageController')->asHtml($page), $code);
                 }
             }
         }
