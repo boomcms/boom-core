@@ -36876,8 +36876,12 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 ;function boomLinkPicker(link, options) {
 	this.deferred = new $.Deferred();
 	this.link = link? link : new boomLink();
-	
-	this.defaultOptions = {text: false},
+
+	this.defaultOptions = {
+		text: false,
+		remove: false
+	};
+
 	this.options = $.extend(this.defaultOptions, options);
 
 	boomLinkPicker.prototype.bind = function() {
@@ -36901,7 +36905,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 				linkPicker.externalUrl.focus();
 				linkPicker.externalUrl[0].setSelectionRange(0, val.length);
 			});
-			
+
 		this.externalUrl.autocomplete({
 			appendTo: linkPicker.dialog.contents.find('#b-linkpicker-add-external form'),
 			source: function(request, response) {
@@ -36933,6 +36937,13 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 				linkPicker.dialog.cancel();
 			}
 		});
+
+		this.removeButton.on('click', function(e) {
+			e.preventDefault();
+
+			linkPicker.deferred.resolve(new boomLink());
+			linkPicker.dialog.cancel();
+		});
 	};
 
 	boomLinkPicker.prototype.getExternalLink = function() {
@@ -36958,7 +36969,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 					break;
 			}
 		}
-		
+
 		linkText = (this.options.text && this.textInput.val()) ? this.textInput.val() : url;
 
 		return new boomLink(url, 0, linkText);
@@ -36971,6 +36982,11 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 		this.externalTypeSelector = this.external.find('select'),
 		this.externalUrl = this.external.find('input');
 		this.textInput = dialog.contents.find('#b-linkpicker-text input[type=text]');
+		this.removeButton = dialog.contents.find('#b-linkpicker-remove').appendTo(dialog.contents.parent().find('.ui-dialog-buttonpane'));
+
+		if ( ! this.options.remove) {
+			this.removeButton.hide();
+		}
 
 		this.setupInternal();
 		this.setupExternalUrl();
@@ -37032,7 +37048,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 			this.internal.find('input').val(pageId);
 		}
 	};
-	
+
 	boomLinkPicker.prototype.setupText = function() {
 		if ( ! this.options.text) {
 			this.dialog.contents.find('#b-linkpicker-text').hide();
@@ -53605,17 +53621,15 @@ wysihtml5.views.View = Base.extend(
 	};
 })(wysihtml5);;(function(wysihtml5) {
 	wysihtml5.commands.createBoomLink = {
-		edit : function(composer) {
+		exec: function(composer, command, value) {
 			this._select_link(composer);
 		},
 
-		exec: function(composer, command, value) {
+		removeLink: function(composer) {
 			var anchors = this.state(composer, this);
 
 			if (anchors) {
 				$(composer.selection.getSelectedNode()).unwrap();
-			} else {
-				this._select_link(composer);
 			}
 		},
 
@@ -53639,10 +53653,14 @@ wysihtml5.views.View = Base.extend(
 
 			$(composer).trigger('before:boomdialog');
 
-			new boomLinkPicker(link)
+			new boomLinkPicker(link, {remove: link.getUrl() != ''})
 				.done(function(link) {
 					var url = link.getUrl(),
 						page_id = link.getPageId();
+
+					if ( ! url) {
+						return self.removeLink(composer);
+					}
 
 					if (existing_link) {
 						$(existing_link)

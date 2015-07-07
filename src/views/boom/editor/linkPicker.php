@@ -26,7 +26,7 @@
 				<input type="text" />
 			</form>
 		</div>
-		
+
 		<div id="b-linkpicker-text">
 			<p>
 				Set the text for the link.
@@ -37,4 +37,6 @@
 			</form>
 		</div>
 	</div>
+
+    <?= $button('trash-o', 'Remove link', ['id' => 'b-linkpicker-remove', 'class' => 'b-button-withtext']) ?>
 </div>

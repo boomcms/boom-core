@@ -1,16 +1,14 @@
 (function(wysihtml5) {
 	wysihtml5.commands.createBoomLink = {
-		edit : function(composer) {
+		exec: function(composer, command, value) {
 			this._select_link(composer);
 		},
 
-		exec: function(composer, command, value) {
+		removeLink: function(composer) {
 			var anchors = this.state(composer, this);
 
 			if (anchors) {
 				$(composer.selection.getSelectedNode()).unwrap();
-			} else {
-				this._select_link(composer);
 			}
 		},
 
@@ -34,10 +32,14 @@
 
 			$(composer).trigger('before:boomdialog');
 
-			new boomLinkPicker(link)
+			new boomLinkPicker(link, {remove: link.getUrl() != ''})
 				.done(function(link) {
 					var url = link.getUrl(),
 						page_id = link.getPageId();
+
+					if ( ! url) {
+						return self.removeLink(composer);
+					}
 
 					if (existing_link) {
 						$(existing_link)

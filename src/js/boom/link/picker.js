@@ -1,8 +1,12 @@
 function boomLinkPicker(link, options) {
 	this.deferred = new $.Deferred();
 	this.link = link? link : new boomLink();
-	
-	this.defaultOptions = {text: false},
+
+	this.defaultOptions = {
+		text: false,
+		remove: false
+	};
+
 	this.options = $.extend(this.defaultOptions, options);
 
 	boomLinkPicker.prototype.bind = function() {
@@ -26,7 +30,7 @@ function boomLinkPicker(link, options) {
 				linkPicker.externalUrl.focus();
 				linkPicker.externalUrl[0].setSelectionRange(0, val.length);
 			});
-			
+
 		this.externalUrl.autocomplete({
 			appendTo: linkPicker.dialog.contents.find('#b-linkpicker-add-external form'),
 			source: function(request, response) {
@@ -58,6 +62,13 @@ function boomLinkPicker(link, options) {
 				linkPicker.dialog.cancel();
 			}
 		});
+
+		this.removeButton.on('click', function(e) {
+			e.preventDefault();
+
+			linkPicker.deferred.resolve(new boomLink());
+			linkPicker.dialog.cancel();
+		});
 	};
 
 	boomLinkPicker.prototype.getExternalLink = function() {
@@ -83,7 +94,7 @@ function boomLinkPicker(link, options) {
 					break;
 			}
 		}
-		
+
 		linkText = (this.options.text && this.textInput.val()) ? this.textInput.val() : url;
 
 		return new boomLink(url, 0, linkText);
@@ -96,6 +107,11 @@ function boomLinkPicker(link, options) {
 		this.externalTypeSelector = this.external.find('select'),
 		this.externalUrl = this.external.find('input');
 		this.textInput = dialog.contents.find('#b-linkpicker-text input[type=text]');
+		this.removeButton = dialog.contents.find('#b-linkpicker-remove').appendTo(dialog.contents.parent().find('.ui-dialog-buttonpane'));
+
+		if ( ! this.options.remove) {
+			this.removeButton.hide();
+		}
 
 		this.setupInternal();
 		this.setupExternalUrl();
@@ -157,7 +173,7 @@ function boomLinkPicker(link, options) {
 			this.internal.find('input').val(pageId);
 		}
 	};
-	
+
 	boomLinkPicker.prototype.setupText = function() {
 		if ( ! this.options.text) {
 			this.dialog.contents.find('#b-linkpicker-text').hide();
