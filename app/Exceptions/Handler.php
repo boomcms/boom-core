@@ -49,7 +49,7 @@ class Handler extends ExceptionHandler {
                     View::share('page', $page);
                     $request->route()->setParameter('page', $page);
 
-                    return response(App::make('BoomCMS\Core\Controllers\Page')->show(), $code);
+                    return response(App::make('BoomCMS\Core\Controllers\PageController')->show(), $code);
                 }
             }
         }
