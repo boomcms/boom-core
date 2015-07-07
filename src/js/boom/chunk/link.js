@@ -3,7 +3,10 @@ $.widget('ui.chunkLink', $.ui.chunk, {
 		var chunkLink = this,
 			link = new boomLink(this.getUrl(), this.getTargetPageId(), this.getText());
 		
-		new boomLinkPicker(link, {text: true})
+		new boomLinkPicker(link, {
+			text: true,
+			remove: link.getUrl() != ''
+		})
 			.done(function(link) {
 				chunkLink.insert(link);
 			})
