@@ -23,9 +23,6 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 		$.ui.chunk.prototype._create.call(this);
 	},
 
-	/**
-	Make the element editable by invokeing boom.editor.edit() on it.
-	*/
 	edit : function(){
 
 		var self = this;
