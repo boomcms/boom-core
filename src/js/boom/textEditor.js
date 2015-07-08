@@ -45,6 +45,11 @@ $.widget('boom.textEditor', {
 				uneditableContainerClassname : 'b-asset-embed',
 				handleTables: true
 			});
+
+			// Ensures that default text is wrapped in a paragraph
+			if ( ! element.find('p').length) {
+				element.html($('<p></p>').text(element.text()));
+			}
 		} else {
 			element
 				.attr('contenteditable', true)
