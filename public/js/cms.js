@@ -33669,26 +33669,28 @@ $(function() {
 	menu : $('#b-page-publish-menu'),
 
 	_buildMenu : function(status) {
-		var self = this, options;
+		var self = this, options, moreOptions;
 
-		options = this.options.publishable? this._get_publish_menu(status) : this._get_approvals_menu(status);
+		options = {"Preview": function() {
+			$.boom.editor.state('preview');
+		}};
 
-		options = $.extend({
-				"Preview": function() {
-					$.boom.editor.state('preview');
+		if (status !== 'published') {
+			moreOptions = this.options.publishable? this._get_publish_menu(status) : this._get_approvals_menu(status);
+
+			options = $.extend(options, moreOptions, {
+				"Revert to published version" : function() {
+					// The call to setTimout fixes a bug in IE9 where the toolbar call is minimised (because the splitbutton menu has close) after the dialog is opened.
+					// Therefore preventing the dialog from being seen.
+					setTimeout(function() {
+						self.options.page.revertToPublished()
+							.done(function() {
+								top.location.reload();
+							});
+						}, 0);
 				}
-			}, options, {
-			"Revert to published version" : function() {
-				// The call to setTimout fixes a bug in IE9 where the toolbar call is minimised (because the splitbutton menu has close) after the dialog is opened.
-				// Therefore preventing the dialog from being seen.
-				setTimeout(function() {
-					self.options.page.revertToPublished()
-						.done(function() {
-							top.location.reload();
-						});
-					}, 0);
-			}
-		});
+			});
+		}
 
 		if (this.element.hasClass('ui-splitbutton-hitarea')) {
 			this.menu.splitbutton('destroy');
@@ -33783,12 +33785,6 @@ $(function() {
 			.attr('title', status.ucfirst());
 
 		this._buildMenu(status);
-
-		if (status == 'published') {
-			this.element.prop('disabled', true);
-		} else {
-			this.element.prop('disabled', false);
-		}
 	}
 });;/**
 * @class
