@@ -32,8 +32,8 @@ class Provider
 
     public function findByNameAndGroup($name, $group = null)
     {
-		$model = Model::where('name', $name)
-			->where('group', $group)
+		$model = Model::where('name', '=', $name)
+			->where('group', '=', $group)
 			->first();
 
         return $model ? new Tag($model->toArray()) : new Tag();
@@ -43,9 +43,8 @@ class Provider
     {
         // Ensure group is null if an empty string is passed.
         $group = $group ?: null;
+		$tag = $this->findByNameAndGroup($name, $group);
 
-        if ( ! $this->findByNameAndGroup($name, $group)->loaded()) {
-			return $this->create($name, $group);
-        }
+        return $tag->loaded() ? $tag : $this->create($name, $group);
     }
 }
