@@ -35,10 +35,7 @@ class SavePerson extends BasePerson
 
     public function delete()
     {
-        foreach ($this->request->input('people') as $personId) {
-            $person = Person\Factory::byId($personId);
-            $person->delete();
-        }
+		$this->personProvider->deleteByIds($this->request->input('people'));
     }
 
     public function removeGroup()

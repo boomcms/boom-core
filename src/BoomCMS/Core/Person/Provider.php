@@ -18,6 +18,11 @@ class Provider
 
         return $this->findAndCache($model);
     }
+	
+	public function deleteByIds(array $ids)
+	{
+		Model::destroy($ids);
+	}
 
     public function findAndCache(Model $model)
     {

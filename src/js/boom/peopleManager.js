@@ -225,6 +225,6 @@ $.widget('boom.peopleManager', {
 	togglePersonDeleteButton : function() {
 		var button = this.element.find('#b-people-multi-delete');
 
-		(this.selectedPeople > 0)? button.button('enable') : button.button('disable');
+		(this.selectedPeople > 0)? button.prop('disabled', false) : button.prop('disabled', true);
 	}
 });
