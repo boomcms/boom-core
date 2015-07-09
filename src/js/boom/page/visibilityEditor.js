@@ -45,6 +45,8 @@ boomPageVisibilityEditor = function(page) {
 		this.dialog = new boomDialog({
 			url : pageVisibilityEditor.url,
 			title : 'Page visibility',
+			closeButton: false,
+			saveButton: true,
 			open : function() {
 				pageVisibilityEditor.findElements();
 				pageVisibilityEditor.bind();

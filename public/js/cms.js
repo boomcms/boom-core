@@ -34486,6 +34486,8 @@ $.widget('boom.pageTree', {
 		dialog = new boomDialog({
 			url : '/cms/page/urls/add?page_id=' + page_id,
 			title : 'Add URL',
+			closeButton: false,
+			saveButton: true,
 			width : 500
 		}).done(function() {
 			var location = dialog.contents.find('input[name=url]').val();
@@ -35007,6 +35009,8 @@ $.widget('boom.pageTree', {
 		this.dialog = new boomDialog({
 			url : pageVisibilityEditor.url,
 			title : 'Page visibility',
+			closeButton: false,
+			saveButton: true,
 			open : function() {
 				pageVisibilityEditor.findElements();
 				pageVisibilityEditor.bind();
