@@ -11,7 +11,9 @@ function boomPerson(person_id) {
 		dialog = new boomDialog({
 			url : this.base_url + 'add',
 			width: 'auto',
-			title : 'Create new person'
+			title : 'Create new person',
+			closeButton: false,
+			saveButton: true
 		})
 		.done(function() {
 			var data = dialog.contents.find('form').serialize();
@@ -35,7 +37,9 @@ function boomPerson(person_id) {
 
 		dialog = new boomDialog({
 			url: url,
-			title: 'Add group'
+			title: 'Add group',
+			closeButton: false,
+			saveButton: true
 		}).done(function() {
 			var groups = {};
 

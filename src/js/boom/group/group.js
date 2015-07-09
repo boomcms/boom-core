@@ -10,7 +10,9 @@ function boomGroup(group_id) {
 
 		dialog = new boomDialog({
 			url: this.base_url + 'add',
-			title: 'Add group'
+			title: 'Add group',
+			closeButton: false,
+			saveButton: true
 		})
 		.done(function() {
 			group.addWithName(dialog.contents.find('input[type=text]').val())

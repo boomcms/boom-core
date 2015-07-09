@@ -38099,7 +38099,9 @@ function Row() {
 
 		dialog = new boomDialog({
 			url: this.base_url + 'add',
-			title: 'Add group'
+			title: 'Add group',
+			closeButton: false,
+			saveButton: true
 		})
 		.done(function() {
 			group.addWithName(dialog.contents.find('input[type=text]').val())
@@ -38274,7 +38276,9 @@ function Row() {
 		dialog = new boomDialog({
 			url : this.base_url + 'add',
 			width: 'auto',
-			title : 'Create new person'
+			title : 'Create new person',
+			closeButton: false,
+			saveButton: true
 		})
 		.done(function() {
 			var data = dialog.contents.find('form').serialize();
@@ -38298,7 +38302,9 @@ function Row() {
 
 		dialog = new boomDialog({
 			url: url,
-			title: 'Add group'
+			title: 'Add group',
+			closeButton: false,
+			saveButton: true
 		}).done(function() {
 			var groups = {};
 
