@@ -108,11 +108,7 @@ $.widget('boom.textEditor', {
 					self.toolbar.find('[data-wysihtml5-hiddentools=table]').addClass('visible');
 				})
 				.on('tableunselect:composer', function(e) {
-					$.boom.page.toolbar.element.width('60px');
-					self.toolbar.parents('#b-topbar').width('60px');
-					top.$('body').first().animate({'margin-left': '60px'}, 500);
-					$('#wysihtml5-toolbar').width('60px');
-					$('#wysihtml5-toolbar [data-wysihtml5-hiddentools=table]').removeClass('visible');
+					self.hideTableButtons();
 				});
 		}
 
@@ -120,7 +116,18 @@ $.widget('boom.textEditor', {
 			.on('click', '.b-editor-accept', function(event) {
 				event.preventDefault();
 
+				self.disableAutoSave();
+			
+				self.instance.fire('tableunselect:composer');
+
+				self.element
+					.find('.wysiwyg-tmp-selected-cell')
+					.removeClass('wysiwyg-tmp-selected-cell')
+					.end()
+					.blur();
+			
 				self.apply(self.element);
+				self.enableAutoSave();
 
 				return false;
 			})
@@ -210,6 +217,14 @@ $.widget('boom.textEditor', {
 
 	hasBeenEdited : function() {
 		return this.element.html() !== this.original_html;
+	},
+	
+	hideTableButtons: function() {
+		$.boom.page.toolbar.element.width('60px');
+		this.toolbar.parents('#b-topbar').width('60px');
+		top.$('body').first().animate({'margin-left': '60px'}, 500);
+		$('#wysihtml5-toolbar').width('60px');
+		$('#wysihtml5-toolbar [data-wysihtml5-hiddentools=table]').removeClass('visible');
 	},
 
 	hideToolbar : function() {
