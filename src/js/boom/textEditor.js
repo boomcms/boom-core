@@ -106,8 +106,8 @@ $.widget('boom.textEditor', {
 
 					$('#wysihtml5-toolbar').width('160px');
 					self.toolbar.find('[data-wysihtml5-hiddentools=table]').addClass('visible');
-				});
-				self.instance.on('tableunselect:composer', function(e) {
+				})
+				.on('tableunselect:composer', function(e) {
 					$.boom.page.toolbar.element.width('60px');
 					self.toolbar.parents('#b-topbar').width('60px');
 					top.$('body').first().animate({'margin-left': '60px'}, 500);
