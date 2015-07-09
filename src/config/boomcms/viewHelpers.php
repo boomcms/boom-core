@@ -38,5 +38,14 @@ return [
 
 			return $finder->setOrderBy('name', 'asc')->findAll();
 		},
+		'getTagsInSection' => function(Page\Page $page = null, $group = null) {
+			$page = $page?: Editor::getActivePage();
+
+			$finder = new Tag\Finder\Finder();
+			$finder->addFilter(new Tag\Finder\AppliedToPageDescendants($page));
+			$finder->addFilter(new Tag\Finder\Group($group));
+
+			return $finder->setOrderBy('name', 'asc')->findAll();
+		},
     ],
 ];
