@@ -38429,7 +38429,7 @@ function Row() {
 				new boomNotification('Success');
 
 				setTimeout(function() {
-					top.location.reload();
+					$.boom.reload();
 				}, 300);
 			})
 			.fail(function() {
