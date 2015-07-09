@@ -35181,7 +35181,7 @@ $.widget('boom.textEditor', {
 		}
 
 		this.toolbar
-			.on('click', '.b-editor-accept', function(event) {
+			.on('mousedown', '.b-editor-accept', function(event) {
 				event.preventDefault();
 
 				self.disableAutoSave();
@@ -35199,12 +35199,13 @@ $.widget('boom.textEditor', {
 
 				return false;
 			})
-			.on('click', '.b-editor-cancel', function(event) {
+			.on('mousedown', '.b-editor-cancel', function(event) {
 				event.preventDefault();
+		
 				self.cancel(self.element);
 				return false;
 			})
-			.on('click', '.b-editor-link', function() {
+			.on('mousedown', '.b-editor-link', function() {
 				wysihtml5.commands.createBoomLink.edit(self.instance.composer);
 			})
 			.on('mousedown', '.b-editor-table', function() {
@@ -35261,11 +35262,17 @@ $.widget('boom.textEditor', {
 				.done(function() {
 					textEditor.element.html(textEditor.original_html);
 					textEditor.hideToolbar();
+					
+					textEditor._trigger('edit', textEditor.original_html);
 				})
 				.fail(function() {
 					textEditor.element.focus();
 					textEditor.enableAutoSave();
 				});
+		} else {
+			textEditor.hideToolbar();
+					
+			this._trigger('edit', textEditor.original_html);
 		}
 	},
 
@@ -36706,9 +36713,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 				}
 
 				old_text = title;
-
-				self.lengthCounterCreated = false;
-				$(top.document).find('#b-title-length').remove();
+				self.removeTitleLengthCounter();
 			}
 		});
 
@@ -36798,6 +36803,11 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 			title.element.textEditor('enableAutoSave');
 			title.element.focus();
 		});
+	},
+	
+	removeTitleLengthCounter: function() {
+		this.lengthCounterCreated = false;
+		$(top.document).find('#b-title-length').remove();	
 	},
 
 	_save : function(title, old_title) {
