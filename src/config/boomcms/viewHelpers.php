@@ -20,6 +20,9 @@ return [
 
             return route('asset', $params);
         },
+		'countPages' => function(array $params) {
+			return (new Page\Query($params))->countPages();
+		},
         'getPages' => function(array $params) {
             return (new Page\Query($params))->getPages();
         },
