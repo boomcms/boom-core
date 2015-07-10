@@ -53,7 +53,7 @@ abstract class Helpers
 
 	public static function makeRelative($url)
 	{
-		return ($base = Request::getHttpHost()) ? str_replace($base, '/', $url) : $url;
+		return ($base = Request::getHttpHost()) ? str_replace(Request::getScheme() . $base, '/', $url) : $url;
 	}
 
     /**
