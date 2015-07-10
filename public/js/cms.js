@@ -35107,7 +35107,7 @@ $.widget('boom.textEditor', {
 
 		self.toolbar = $('#wysihtml5-toolbar').find('[data-buttonset=' + self.mode  + ']').first().clone(true, true).appendTo('#wysihtml5-toolbar');
 
-		if (self.mode === 'block') {
+		if (self.mode !== 'text') {
 			self.instance = new wysihtml5.Editor(element[0], { // id of textarea element
 				toolbar : self.toolbar[0],
 				style : true,
@@ -35120,8 +35120,18 @@ $.widget('boom.textEditor', {
 			});
 
 			// Ensures that default text is wrapped in a paragraph
-			if (element.text() == element.html()) {
+			if (self.mode === 'block' && element.text() == element.html()) {
 				element.html($('<p></p>').text(element.text()));
+			}
+			
+			if (self.mode === 'inline') {
+				element[0].onpaste = function(e) {
+					var html = e.clipboardData.getData('text/plain'),
+						text = html.replace(/\n|\r|\n\r/g, '');
+
+					e.preventDefault();
+					top.document.execCommand("insertHTML", false, text);
+				};
 			}
 		} else {
 			element
@@ -35152,7 +35162,7 @@ $.widget('boom.textEditor', {
 
 		this.enableAutoSave();
 
-		if (self.mode === 'block') {
+		if (self.mode !== 'text') {
 			$(self.instance.composer)
 				.on('before:boomdialog', function() {
 					self.disableAutoSave();
