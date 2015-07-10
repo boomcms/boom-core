@@ -38,6 +38,15 @@ class Provider
 
         return $model ? new Tag($model->toArray()) : new Tag();
     }
+	
+	public function findBySlugAndGroup($slug, $group = null)
+	{
+		$model = Model::where('slug', '=', $slug)
+			->where('group', '=', $group)
+			->first();
+
+		return $model ? new Tag($model->toArray()) : new Tag();
+	}
 
     public function findOrCreateByNameAndGroup($name, $group = null)
     {
