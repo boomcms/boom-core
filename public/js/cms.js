@@ -35186,7 +35186,9 @@ $.widget('boom.textEditor', {
 
 				self.disableAutoSave();
 			
-				self.instance.fire('tableunselect:composer');
+				if (typeof self.instance !== 'undefined') {
+					self.instance.fire('tableunselect:composer');
+				}
 
 				self.element
 					.find('.wysiwyg-tmp-selected-cell')
