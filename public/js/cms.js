@@ -33330,8 +33330,10 @@ function boomHistory() {
 	};
 
 	boomDialog.prototype.cancel = function() {
-		this.deferred.rejectWith(this.dialog);
 		this.contents.remove();
+		this.contents = null;
+
+		this.deferred.rejectWith(this.dialog);
 	};
 
 	boomDialog.prototype.closeButton = {
@@ -33345,8 +33347,10 @@ function boomHistory() {
 	};
 
 	boomDialog.prototype.close = function() {
-		this.deferred.resolveWith(this.dialog);
 		this.contents.remove();
+		this.contents = null;
+
+		this.deferred.resolveWith(this.dialog);
 	};
 
 	boomDialog.prototype.done = function(callback) {
@@ -33370,7 +33374,9 @@ function boomHistory() {
 				var timeout = setTimeout(function() {
 					clearTimeout(timeout);
 
-					boomDialog.reposition();
+					if (boomDialog.contents) {
+						boomDialog.reposition();
+					}
 				}, 100);
 			});
 
