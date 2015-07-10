@@ -56,12 +56,12 @@
                 <input type="text" name="linktext" />
             </label>
 
-            <?= $button('delete', 'Delete this slide', ['id' => 'b-slideshow-editor-current-delete', 'class' => 'b-button-withtext']) ?>
+            <?= $button('trash-o', 'Delete this slide', ['id' => 'b-slideshow-editor-current-delete', 'class' => 'b-button-withtext']) ?>
         </form>
     </section>
 </div>
 
 <div id="b-slideshow-editor-buttons">
-    <?= $button('delete', Lang::get('Delete slideshow'), ['id' => 'b-slideshow-editor-delete', 'class' => 'b-button-textonly']) ?>
+    <?= $button('trash-o', Lang::get('Delete slideshow'), ['id' => 'b-slideshow-editor-delete', 'class' => 'b-button-textonly']) ?>
     <?= $button('plus', Lang::get('Add slide'), ['id' => 'b-slideshow-editor-add', 'class' => 'b-button-withtext']) ?>
 </div>
