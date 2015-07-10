@@ -34,10 +34,10 @@ function boomDialog(options) {
 	};
 
 	boomDialog.prototype.cancel = function() {
+		this.deferred.rejectWith(this.dialog);
+
 		this.contents.remove();
 		this.contents = null;
-
-		this.deferred.rejectWith(this.dialog);
 	};
 
 	boomDialog.prototype.closeButton = {
@@ -51,10 +51,10 @@ function boomDialog(options) {
 	};
 
 	boomDialog.prototype.close = function() {
+		this.deferred.resolveWith(this.dialog);
+		
 		this.contents.remove();
 		this.contents = null;
-
-		this.deferred.resolveWith(this.dialog);
 	};
 
 	boomDialog.prototype.done = function(callback) {
