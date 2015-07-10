@@ -35115,7 +35115,7 @@ $.widget('boom.textEditor', {
 			});
 
 			// Ensures that default text is wrapped in a paragraph
-			if ( ! element.find('p').length) {
+			if (element.text() == element.html()) {
 				element.html($('<p></p>').text(element.text()));
 			}
 		} else {
