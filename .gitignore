@@ -1,6 +1,6 @@
 ._*
 /vendor/
-/nbproject/private
+/nbproject/
 public/vendor
 .env
 storage/boomcms/
