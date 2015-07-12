@@ -40,7 +40,7 @@ class URL implements Arrayable
 
     public function getLocation()
     {
-		return $this->get('location');
+        return $this->get('location');
     }
 
     public function getPage()
@@ -56,12 +56,12 @@ class URL implements Arrayable
     /**
      * Determine whether this URL matches a given URL.
      *
-     * @param string $location
+     * @param  string $location
      * @return bool
      */
     public function is($location)
     {
-		return trim($this->getLocation(), '/') === ltrim($location, '/');
+        return trim($this->getLocation(), '/') === ltrim($location, '/');
     }
 
     public function isForPage(Page $page)
@@ -81,7 +81,7 @@ class URL implements Arrayable
 
     public function setIsPrimary($isPrimary)
     {
-        if  ( !is_bool($isPrimary)) {
+        if ( !is_bool($isPrimary)) {
             throw new InvalidArgumentException(__CLASS__ . '::' . __METHOD__ . ' must only be called with a boolean argument');
         }
 
@@ -99,11 +99,11 @@ class URL implements Arrayable
 
     public function __toString()
     {
-		$location = $this->getLocation();
+        $location = $this->getLocation();
         $location = (substr($location, 0) === '/') ? $location : '/' . $location;
 
-		$url = URLHelper::to($location);
-		
+        $url = URLHelper::to($location);
+
         return ($location === '/') ? $url . '/' : $url;
     }
 }

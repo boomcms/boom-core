@@ -48,8 +48,8 @@ class Save extends Settings
 //        if (isset($post['cascade_template'])) {
 //            $this->page->set_template_of_children($this->page->children_template_id);
 //        }
-		
-		$this->provider->save($this->page);
+
+        $this->provider->save($this->page);
     }
 
     public function feature()
@@ -72,7 +72,7 @@ class Save extends Settings
             ->setVisibleInNav($this->request->input('visible_in_nav'))
             ->setVisibleInCmsNav($this->request->input('visible_in_nav_cms'));
 
-	$this->provider->save($this->page);
+    $this->provider->save($this->page);
     }
 
     public function search()

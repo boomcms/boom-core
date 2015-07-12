@@ -10,7 +10,7 @@ class Pages extends Controller
 {
     public function __construct(Auth $auth)
     {
-		$this->auth = $auth;
+        $this->auth = $auth;
 
         $this->authorization('manage_pages');
     }

@@ -9,16 +9,16 @@ class Text extends BaseChunk
     protected $html;
     protected $type = 'text';
     protected $placeholder;
-	protected $allowFormatting = false;
-	
-	public function __construct(\BoomCMS\Core\Page\Page $page, array $attrs, $slotname, $editable)
-	{
-		parent::__construct($page, $attrs, $slotname, $editable);
-		
-		// Formatting is allowed for bodycopy by default.
-		// For other text chunks it must be manually set.
-		$this->allowFormatting = ($this->slotname === 'bodycopy');
-	}
+    protected $allowFormatting = false;
+
+    public function __construct(\BoomCMS\Core\Page\Page $page, array $attrs, $slotname, $editable)
+    {
+        parent::__construct($page, $attrs, $slotname, $editable);
+
+        // Formatting is allowed for bodycopy by default.
+        // For other text chunks it must be manually set.
+        $this->allowFormatting = ($this->slotname === 'bodycopy');
+    }
 
     public function getHtmlContainerForSlotname($slotname)
     {
@@ -28,16 +28,16 @@ class Text extends BaseChunk
             case 'bodycopy':
                 return "<div class=\"content\">{text}</div>";
             default:
-                return $this->allowFormatting? '<div>{text}</div>' : '<p>{text}</p>';
+                return $this->allowFormatting ? '<div>{text}</div>' : '<p>{text}</p>';
         }
     }
-	
-	public function allowFormatting()
-	{
-		$this->allowFormatting = true;
-		
-		return $this;
-	}
+
+    public function allowFormatting()
+    {
+        $this->allowFormatting = true;
+
+        return $this;
+    }
 
     protected function show()
     {
@@ -56,8 +56,8 @@ class Text extends BaseChunk
         }
 
         $placeholder = parent::getPlaceholderText();
-		
-		return $this->allowFormatting ? "<p>$placeholder</p>" : $placeholder;
+
+        return $this->allowFormatting ? "<p>$placeholder</p>" : $placeholder;
     }
 
     /**
@@ -80,8 +80,8 @@ class Text extends BaseChunk
     public function hasContent()
     {
         return isset($this->attrs['text'])
-			&& trim($this->attrs['text']) != null
-			&& strcmp(strip_tags(trim($this->attrs['text'])), $this->getPlaceholderText()) !== 0;
+            && trim($this->attrs['text']) != null
+            && strcmp(strip_tags(trim($this->attrs['text'])), $this->getPlaceholderText()) !== 0;
     }
 
     /**

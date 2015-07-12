@@ -21,7 +21,7 @@
 				<?= $button('cog', Lang::get('Page settings which apply whichever version is published'), ['id' => 'boom-page-settings']) ?>
 			</div>
 		<?php endif ?>
-		
+
 		<?php if ($page->wasCreatedBy($person) || $auth->loggedIn('edit_page_content', $page)): ?>
 			<div id="b-page-publish-menu">
 				<button id="b-page-version-status" class="b-button" data-status="<?= $page->getCurrentVersion()->status() ?>">

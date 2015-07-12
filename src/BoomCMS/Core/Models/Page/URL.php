@@ -11,8 +11,8 @@ class URL extends Model
     public $guarded = ['id'];
     public $timestamps = false;
 
-	public function setLocationAttribute($value)
-	{
-		$this->attributes['location'] = URLHelper::sanitise($value);
-	}
+    public function setLocationAttribute($value)
+    {
+        $this->attributes['location'] = URLHelper::sanitise($value);
+    }
 }

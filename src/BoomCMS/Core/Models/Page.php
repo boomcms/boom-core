@@ -80,7 +80,6 @@ class Page extends Model
         }
     }
 
-
     /**
 	 * Restores a page to the last published version.
 	 * Marks all versions which haven't been published since the last published versions as stashed.
@@ -109,15 +108,15 @@ class Page extends Model
         return $this;
     }
 
-	public function scopeAutocompleteTitle($query, $title, $limit)
-	{
-		return $query
-			->currentVersion()
-			->select('title', 'primary_uri')
-			->where('title', 'like', '%' . $title. '%')
-			->limit($limit)
-			->orderBy(DB::raw('length(title)'), 'asc');
-	}
+    public function scopeAutocompleteTitle($query, $title, $limit)
+    {
+        return $query
+            ->currentVersion()
+            ->select('title', 'primary_uri')
+            ->where('title', 'like', '%' . $title. '%')
+            ->limit($limit)
+            ->orderBy(DB::raw('length(title)'), 'asc');
+    }
 
     public function scopeCurrentVersion($query, Editor $editor = null)
     {
@@ -129,7 +128,7 @@ class Page extends Model
             ->addSelect('pages.*')
             ->join(DB::raw('(' . $subquery->toSql() . ') as v2'), 'pages.id', '=', 'v2.page_id')
             ->mergeBindings($subquery)
-            ->join('page_versions as version', function($join) {
+            ->join('page_versions as version', function ($join) {
                 $join
                     ->on('pages.id', '=', 'version.page_id')
                     ->on('v2.id', '=', 'version.id');
@@ -146,7 +145,7 @@ class Page extends Model
         return $query
             ->where('visible', '=', true)
             ->where('visible_from', '<=', $time)
-            ->where(function($query) use ($time) {
+            ->where(function ($query) use ($time) {
                 $query
                     ->where('visible_to', '>=', $time)
                     ->orWhere('visible_to', '=', 0);
@@ -157,9 +156,9 @@ class Page extends Model
     {
         return $query->whereNotNull('primary_uri');
     }
-	
-	public function setPrimaryUriAttribute($value)
-	{
-		$this->attributes['primary_uri'] = URLHelper::sanitise($value);
-	}
+
+    public function setPrimaryUriAttribute($value)
+    {
+        $this->attributes['primary_uri'] = URLHelper::sanitise($value);
+    }
 }

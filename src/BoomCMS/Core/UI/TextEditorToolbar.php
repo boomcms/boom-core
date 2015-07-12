@@ -59,10 +59,10 @@ class TextEditorToolbar extends AbstractUIElement
 
             $buttons .= '</div>';
         }
-		
-		if ($this->_buttonSet === 'block') {
-			$buttons .= View::make('boom::editor.table_buttons')->render();
-		}
+
+        if ($this->_buttonSet === 'block') {
+            $buttons .= View::make('boom::editor.table_buttons')->render();
+        }
 
         return $buttons;
     }

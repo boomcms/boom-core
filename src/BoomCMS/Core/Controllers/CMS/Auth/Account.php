@@ -16,7 +16,7 @@ class Account extends Controller
         $this->request = $request;
         $this->auth = $auth;
         $this->person = $this->auth->getPerson();
-		$this->provider = $provider;
+        $this->provider = $provider;
     }
 
     public function view()
@@ -29,34 +29,34 @@ class Account extends Controller
     }
 
     public function save()
-    {		
-		$message = '';
+    {
+        $message = '';
 
-		if ($name = $this->request->input('name')) {
-			$this->person->setName($name);
-		}
-
-		if ($this->request->input('password1') &&
-			$this->request->input('password1') != $this->request->input('current_password')
-		) {
-			if (!$this->person->checkPassword($this->request->input('current_password'))) {
-				$message = 'Invalid password';
-			} elseif ($this->request->input('password1') != $this->request->input('password2')) {
-				$message = 'The passwords you entered did not match';
-			} else {
-				$this->person->setEncryptedPassword($this->auth->hash($this->request->input('password1')));
-			
-				$message = 'Your password has been updated';
-			}
+        if ($name = $this->request->input('name')) {
+            $this->person->setName($name);
         }
 
-		$this->provider->save($this->person);
-		
-		return View::make('boom::account.account', [
-			'person' => $this->person,
-			'auth' => $this->auth,
-			'logs' => [],
-			'message' => $message
-		]);
+        if ($this->request->input('password1') &&
+            $this->request->input('password1') != $this->request->input('current_password')
+        ) {
+            if (!$this->person->checkPassword($this->request->input('current_password'))) {
+                $message = 'Invalid password';
+            } elseif ($this->request->input('password1') != $this->request->input('password2')) {
+                $message = 'The passwords you entered did not match';
+            } else {
+                $this->person->setEncryptedPassword($this->auth->hash($this->request->input('password1')));
+
+                $message = 'Your password has been updated';
+            }
+        }
+
+        $this->provider->save($this->person);
+
+        return View::make('boom::account.account', [
+            'person' => $this->person,
+            'auth' => $this->auth,
+            'logs' => [],
+            'message' => $message
+        ]);
     }
 }

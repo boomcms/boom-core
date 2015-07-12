@@ -23,7 +23,7 @@ class Provider
 
     private function findAndCache(Model $model = null)
     {
-        if ( ! $model) {
+        if (! $model) {
             return;
         }
 

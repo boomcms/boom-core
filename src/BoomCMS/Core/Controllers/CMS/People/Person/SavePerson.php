@@ -10,16 +10,16 @@ class SavePerson extends BasePerson
 {
     public function add()
     {
-		Bus::dispatch(new CreatePerson(
-			[
-				'email' => $this->request->input('email'),
-				'name' => $this->request->input('name'),
-			],
-			$this->request->input('groups') ?: [],
-			$this->auth,
-			$this->personProvider,
-			$this->groupProvider
-		));
+        Bus::dispatch(new CreatePerson(
+            [
+                'email' => $this->request->input('email'),
+                'name' => $this->request->input('name'),
+            ],
+            $this->request->input('groups') ?: [],
+            $this->auth,
+            $this->personProvider,
+            $this->groupProvider
+        ));
     }
 
     public function addGroup()
@@ -35,7 +35,7 @@ class SavePerson extends BasePerson
 
     public function delete()
     {
-		$this->personProvider->deleteByIds($this->request->input('people'));
+        $this->personProvider->deleteByIds($this->request->input('people'));
     }
 
     public function removeGroup()
@@ -47,16 +47,16 @@ class SavePerson extends BasePerson
     public function save()
     {
         $this->editPerson
-			->setName($this->request->input('name'))
-			->setEnabled($this->request->input('enabled') == 1);
+            ->setName($this->request->input('name'))
+            ->setEnabled($this->request->input('enabled') == 1);
 
-		if ($superuser = $this->request->input('superuser')
-			&& $this->auth->getPerson()->isSuperuser()
-			&& $this->auth->getPerson()->getId() != $this->editPerson->getId()
-		) {
-			$this->editPerson->setSuperuser($superuser == 1);
-		}
+        if ($superuser = $this->request->input('superuser')
+            && $this->auth->getPerson()->isSuperuser()
+            && $this->auth->getPerson()->getId() != $this->editPerson->getId()
+        ) {
+            $this->editPerson->setSuperuser($superuser == 1);
+        }
 
-		$this->personProvider->save($this->editPerson);
+        $this->personProvider->save($this->editPerson);
     }
 }

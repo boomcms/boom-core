@@ -17,7 +17,6 @@ class BaseController extends Controller
 	 */
     protected $viewPrefix = "boom::editor.urls";
 
-
     public $url;
 
     /**

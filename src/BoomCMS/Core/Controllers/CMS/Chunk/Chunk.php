@@ -13,27 +13,27 @@ use Illuminate\Support\Facades\View;
 
 class Chunk extends Controller
 {
-	/**
+    /**
 	 *
 	 * @var Page
 	 */
-	protected $page;
+    protected $page;
 
-	/**
+    /**
 	 *
 	 * @var Provider
 	 */
-	protected $provider;
+    protected $provider;
 
     public function __construct(Auth $auth, Request $request, Provider $provider)
     {
         $this->auth = $auth;
         $this->request = $request;
         $this->page = $this->request->route()->getParameter('page');
-		$this->provider = $provider;
+        $this->provider = $provider;
 
-		$this->page->wasCreatedBy($this->auth->getPerson()) ||
-			parent::authorization('edit_page_content', $this->page);
+        $this->page->wasCreatedBy($this->auth->getPerson()) ||
+            parent::authorization('edit_page_content', $this->page);
     }
 
     public function save()
@@ -44,7 +44,7 @@ class Chunk extends Controller
             unset($input['template']);
         }
 
-		$chunk = $this->provider->create($this->page, $input);
+        $chunk = $this->provider->create($this->page, $input);
 
         if ($this->request->input('template')) {
             $chunk->template($this->request->input('template'));
@@ -52,15 +52,15 @@ class Chunk extends Controller
 
         // This is usually defined by the page controller.
         // We need to define a variant of it incase the callback is used in teh chunk view.
-		View::share('chunk', function($type, $slotname, $page = null) {
-			return ChunkFacade::get($type, $slotname, $page);
-		});
-		
-		View::share('page', $this->page);
+        View::share('chunk', function ($type, $slotname, $page = null) {
+            return ChunkFacade::get($type, $slotname, $page);
+        });
 
-		return [
-			'status' => $this->page->getCurrentVersion()->getStatus(),
-			'html' => $chunk->render(),
-		];
+        View::share('page', $this->page);
+
+        return [
+            'status' => $this->page->getCurrentVersion()->getStatus(),
+            'html' => $chunk->render(),
+        ];
     }
 }

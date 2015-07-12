@@ -27,22 +27,22 @@ class Provider
         $this->editor = $editor;
     }
 
-	public function create(Page $page, $attrs)
-	{
-		$version = $page->addVersion();
-		$attrs['page_vid'] = $version->getId();
+    public function create(Page $page, $attrs)
+    {
+        $version = $page->addVersion();
+        $attrs['page_vid'] = $version->getId();
         $attrs['page_id'] = $page->getId();
-		$type = $attrs['type'];
-		unset($attrs['type']);
+        $type = $attrs['type'];
+        unset($attrs['type']);
 
-		$modelName = 'BoomCMS\Core\Models\Chunk\\' . ucfirst($type);
-		$model = $modelName::create($attrs);
+        $modelName = 'BoomCMS\Core\Models\Chunk\\' . ucfirst($type);
+        $model = $modelName::create($attrs);
 
-		$className = 'BoomCMS\Core\Chunk\\' . ucfirst($type);
-		$attrs['id'] = $model->id;
+        $className = 'BoomCMS\Core\Chunk\\' . ucfirst($type);
+        $attrs['id'] = $model->id;
 
-		return new $className($page, $attrs, $attrs['slotname'], true);
-	}
+        return new $className($page, $attrs, $attrs['slotname'], true);
+    }
 
     /**
      * Returns whether the logged in user is allowed to edit a page
@@ -65,10 +65,10 @@ class Provider
      *
      * Returns a chunk object of the required type.
      *
-     * @param string $type Chunk type, e.g. text, feature, etc.
-     * @param string $slotname The name of the slot to retrieve a chunk from.
-     * @param mixed	 $page The page the chunk belongs to. If not given then the page from the current request will be used.
-     * @return  BaseChunk
+     * @param  string    $type     Chunk type, e.g. text, feature, etc.
+     * @param  string    $slotname The name of the slot to retrieve a chunk from.
+     * @param  mixed     $page     The page the chunk belongs to. If not given then the page from the current request will be used.
+     * @return BaseChunk
      */
     public function edit($type, $slotname, $page = null)
     {
@@ -82,7 +82,7 @@ class Provider
         }
 
         $chunk = $this->find($type, $slotname, $page->getCurrentVersion());
-        $attrs = $chunk? $chunk->toArray() : [];
+        $attrs = $chunk ? $chunk->toArray() : [];
 
         return new $className($page, $attrs, $slotname, $this->allowedToEdit($page));
     }
@@ -118,7 +118,7 @@ class Provider
         $class = 'BoomCMS\Core\Models\Chunk\\' . ucfirst($type);
 
         return $class::latestEdit($version)
-			->where('c2.slotname', 'in', $slotnames)
+            ->where('c2.slotname', 'in', $slotnames)
 //            ->with('target')
             ->get();
     }
@@ -128,7 +128,7 @@ class Provider
         $className = 'BoomCMS\Core\Chunk\\' . ucfirst($type);
 
         $chunk = $this->find($type, $slotname, $page->getCurrentVersion());
-        $attrs = $chunk? $chunk->toArray() : [];
+        $attrs = $chunk ? $chunk->toArray() : [];
 
         return new $className($page, $attrs, $slotname, false);
     }

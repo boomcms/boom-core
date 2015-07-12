@@ -16,23 +16,23 @@
             <?php endif ?>
 
             <form method="post" action="/cms/account">
-				<input type="hidden" name="_token" value="<?= csrf_token() ?>" /> 
-				
+				<input type="hidden" name="_token" value="<?= csrf_token() ?>" />
+
 				<p>
 					<label for="name">Name</label>
 					<input id="name" type="text" name="name" value="<?= $person->getName() ?>" />
 				</p>
-				
+
 				<p>
 					<label for="current_password">Current password</label>
 					<input id="current_password" type="password" name="current_password" />
 				</p>
-				
+
 				<p>
 					<label for="password1">New password</label>
 					<input id="password1" type="password" name="password1" />
 				</p>
-				
+
 				<p>
 					<label for="password2">Confirm new password</label>
 					<input id="password2" type="password" name="password2" />

@@ -81,8 +81,8 @@ class CreatePerson extends Command implements SelfHandling
                         'person' => $person,
                         'siteName' => Settings::get('site.name'),
                         'password' => $password,
-						'createdBy' => $this->auth->loggedIn()? $this->auth->getPerson()->getName() : Settings::get('site.admin.email')
-                    ], function($message) use($person) {
+                        'createdBy' => $this->auth->loggedIn() ? $this->auth->getPerson()->getName() : Settings::get('site.admin.email')
+                    ], function ($message) use ($person) {
                     $message
                         ->to($person->getEmail(), $person->getName())
                         ->from(Settings::get('site.admin.email'), Settings::get('site.name'))

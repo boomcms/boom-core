@@ -18,9 +18,9 @@ class DisableSession
     public function handle(Request $request, Closure $next)
     {
         Config::set('session.driver', 'array');
-		Config::set('cookie.driver', 'array');
-		
-		return $next($request);
+        Config::set('cookie.driver', 'array');
+
+        return $next($request);
     }
 
 }

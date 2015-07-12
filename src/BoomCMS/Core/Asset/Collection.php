@@ -24,7 +24,7 @@ class Collection
     /**
      * Add a tag to all assets in the collection
      *
-     * @param  string                 $tag
+     * @param  string     $tag
      * @return Collection
      */
     public function addTag($tag)
@@ -80,7 +80,7 @@ class Collection
     /**
      * Remove a tag from all assets in the collection
      *
-     * @param  string                 $tag
+     * @param  string     $tag
      * @return Collection
      */
     public function removeTag($tag)

@@ -43,14 +43,14 @@ class Menu
 
     public function render()
     {
-		$this->menuItems = Config::get('boomcms.menu');
+        $this->menuItems = Config::get('boomcms.menu');
         $this->filterItems();
         $this->sort('priority');
 
         if ( ! empty($this->menuItems)) {
             return View::make($this->viewFilename, [
-				'items' => $this->menuItems
-			])->render();
+                'items' => $this->menuItems
+            ])->render();
         }
     }
 

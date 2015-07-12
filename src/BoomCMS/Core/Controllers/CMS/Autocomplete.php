@@ -64,23 +64,23 @@ class Autocomplete extends Controller
 
         return $query->lists('tag');
     }
-	
-	public function pageTitles()
-	{
-		$results = [];
-		$pages = Page::autocompleteTitle($this->request->input('text'), $this->count)->get();
-	
-		foreach ($pages as $p) {
-			$primaryUri = substr($p->primary_uri, 0, 1) === '/'? $p->primary_uri : '/' . $p->primary_uri;
 
-			$results[] = [
-				'label' => $p->title . ' (' . $primaryUri . ')',
-				'value' => $primaryUri
-			];
-		}
-		
-		return $results;
-	}
+    public function pageTitles()
+    {
+        $results = [];
+        $pages = Page::autocompleteTitle($this->request->input('text'), $this->count)->get();
+
+        foreach ($pages as $p) {
+            $primaryUri = substr($p->primary_uri, 0, 1) === '/' ? $p->primary_uri : '/' . $p->primary_uri;
+
+            $results[] = [
+                'label' => $p->title . ' (' . $primaryUri . ')',
+                'value' => $primaryUri
+            ];
+        }
+
+        return $results;
+    }
 
     public function pageTags()
     {
@@ -88,9 +88,9 @@ class Autocomplete extends Controller
 
         // Build a query to find tags matching on path.
         $query = DB::table('tags')
-			->select('tags.name', 'tags.id')
+            ->select('tags.name', 'tags.id')
             ->join('pages_tags', 'tags.id', '=', 'pages_tags.tag_id')
-			->where('name', 'like', "%{$this->text}%")
+            ->where('name', 'like', "%{$this->text}%")
             ->where('group', '=', $group)
             ->orderBy(DB::raw('length(tags.name)'), 'asc')
             ->distinct(true)

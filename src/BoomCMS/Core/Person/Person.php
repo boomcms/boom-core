@@ -26,17 +26,17 @@ class Person implements Arrayable, CanResetPassword
 
     /**
      *
-     * @param Group\Group $group
+     * @param  Group\Group $group
      * @return Person
      */
     public function addGroup(Group\Group $group)
     {
         if ($this->loaded() && $group->loaded()) {
-			DB::table('people_groups')
-				->insert([
-					'person_id' => $this->getId(),
-					'group_id' => $group->getId(),
-				]);
+            DB::table('people_groups')
+                ->insert([
+                    'person_id' => $this->getId(),
+                    'group_id' => $group->getId(),
+                ]);
 
             // Inherit any roles assigned to the group.
             $select = DB::table('group_roles')
@@ -54,7 +54,7 @@ class Person implements Arrayable, CanResetPassword
 
     /**
      *
-     * @param string $password
+     * @param  string  $password
      * @return boolean
      */
     public function checkPassword($password)
@@ -84,10 +84,10 @@ class Person implements Arrayable, CanResetPassword
         return $this->get('email');
     }
 
-	public function getEmailForPasswordReset()
-	{
-		return $this->getEmail();
-	}
+    public function getEmailForPasswordReset()
+    {
+        return $this->getEmail();
+    }
 
     public function getFailedLogins()
     {
@@ -139,10 +139,10 @@ class Person implements Arrayable, CanResetPassword
         return $this->get('password');
     }
 
-	public function getRememberToken()
-	{
-		return $this->get('remember_token');
-	}
+    public function getRememberToken()
+    {
+        return $this->get('remember_token');
+    }
 
     public function incrementFailedLogins()
     {
@@ -172,7 +172,7 @@ class Person implements Arrayable, CanResetPassword
      */
     public function isValid()
     {
-		return $this->loaded() && !$this->isLocked();
+        return $this->loaded() && !$this->isLocked();
     }
 
     public function loaded()
@@ -182,7 +182,7 @@ class Person implements Arrayable, CanResetPassword
 
     /**
      *
-     * @param Group $group
+     * @param  Group  $group
      * @return Person
      */
     public function removeGroup(Group\Group $group)
@@ -214,12 +214,12 @@ class Person implements Arrayable, CanResetPassword
         return $this;
     }
 
-	public function setEnabled($enabled)
-	{
-		$this->data['enabled'] = $enabled;
+    public function setEnabled($enabled)
+    {
+        $this->data['enabled'] = $enabled;
 
-		return $this;
-	}
+        return $this;
+    }
 
     /**
 	 *
@@ -266,16 +266,16 @@ class Person implements Arrayable, CanResetPassword
         return $this;
     }
 
-	public function setSuperuser($superuser)
-	{
-		$this->data['superuser'] = $superuser;
+    public function setSuperuser($superuser)
+    {
+        $this->data['superuser'] = $superuser;
 
-		return $this;
-	}
+        return $this;
+    }
 
     /**
      *
-     * @param string $token
+     * @param  string                      $token
      * @return \BoomCMS\Core\Person\Person
      */
     public function setRememberToken($token)

@@ -6,9 +6,9 @@ class Save extends BaseController
 {
     public function add()
     {
-		$group = $this->provider->create(['name' => $this->request->input('name')]);
-		
-		return $group->getId();
+        $group = $this->provider->create(['name' => $this->request->input('name')]);
+
+        return $group->getId();
     }
 
     public function addRole()
@@ -18,7 +18,7 @@ class Save extends BaseController
 
     public function delete()
     {
-		$this->provider->delete($this->group);
+        $this->provider->delete($this->group);
     }
 
     public function removeRole()
@@ -29,6 +29,6 @@ class Save extends BaseController
     public function save()
     {
         $this->group->setName($this->request->input('name'));
-		$this->provider->save($this->group);
+        $this->provider->save($this->group);
     }
 }
