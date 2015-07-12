@@ -150,7 +150,7 @@ return [
         'BoomCMS\Core\Chunk\ChunkServiceProvider',
         'BoomCMS\Core\URL\URLServiceProvider',
 	'BoomCMS\Core\Tag\TagServiceProvider',
-	'BoomCMS\Installer\ServiceProvider.php',
+	'BoomCMS\Installer\ServiceProvider',
     ],
 
     /*
