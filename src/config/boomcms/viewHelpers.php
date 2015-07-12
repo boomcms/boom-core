@@ -20,6 +20,9 @@ return [
 
             return route('asset', $params);
         },
+		'countPages' => function(array $params) {
+			return (new Page\Query($params))->countPages();
+		},
         'getPages' => function(array $params) {
             return (new Page\Query($params))->getPages();
         },
@@ -34,6 +37,15 @@ return [
 
 			$finder = new Tag\Finder\Finder();
 			$finder->addFilter(new Tag\Finder\AppliedToPage($page));
+			$finder->addFilter(new Tag\Finder\Group($group));
+
+			return $finder->setOrderBy('name', 'asc')->findAll();
+		},
+		'getTagsInSection' => function(Page\Page $page = null, $group = null) {
+			$page = $page?: Editor::getActivePage();
+
+			$finder = new Tag\Finder\Finder();
+			$finder->addFilter(new Tag\Finder\AppliedToPageDescendants($page));
 			$finder->addFilter(new Tag\Finder\Group($group));
 
 			return $finder->setOrderBy('name', 'asc')->findAll();

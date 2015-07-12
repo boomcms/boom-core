@@ -34,7 +34,7 @@ $.widget('boom.textEditor', {
 
 		self.toolbar = $('#wysihtml5-toolbar').find('[data-buttonset=' + self.mode  + ']').first().clone(true, true).appendTo('#wysihtml5-toolbar');
 
-		if (self.mode === 'block') {
+		if (self.mode !== 'text') {
 			self.instance = new wysihtml5.Editor(element[0], { // id of textarea element
 				toolbar : self.toolbar[0],
 				style : true,
@@ -45,6 +45,21 @@ $.widget('boom.textEditor', {
 				uneditableContainerClassname : 'b-asset-embed',
 				handleTables: true
 			});
+
+			// Ensures that default text is wrapped in a paragraph
+			if (self.mode === 'block' && element.text() == element.html()) {
+				element.html($('<p></p>').text(element.text()));
+			}
+			
+			if (self.mode === 'inline') {
+				element[0].onpaste = function(e) {
+					var html = e.clipboardData.getData('text/plain'),
+						text = html.replace(/\n|\r|\n\r/g, '');
+
+					e.preventDefault();
+					top.document.execCommand("insertHTML", false, text);
+				};
+			}
 		} else {
 			element
 				.attr('contenteditable', true)
@@ -74,7 +89,7 @@ $.widget('boom.textEditor', {
 
 		this.enableAutoSave();
 
-		if (self.mode === 'block') {
+		if (self.mode !== 'text') {
 			$(self.instance.composer)
 				.on('before:boomdialog', function() {
 					self.disableAutoSave();
@@ -101,30 +116,40 @@ $.widget('boom.textEditor', {
 
 					$('#wysihtml5-toolbar').width('160px');
 					self.toolbar.find('[data-wysihtml5-hiddentools=table]').addClass('visible');
-				});
-				self.instance.on('tableunselect:composer', function(e) {
-					$.boom.page.toolbar.element.width('60px');
-					self.toolbar.parents('#b-topbar').width('60px');
-					top.$('body').first().animate({'margin-left': '60px'}, 500);
-					$('#wysihtml5-toolbar').width('60px');
-					$('#wysihtml5-toolbar [data-wysihtml5-hiddentools=table]').removeClass('visible');
+				})
+				.on('tableunselect:composer', function(e) {
+					self.hideTableButtons();
 				});
 		}
 
 		this.toolbar
-			.on('click', '.b-editor-accept', function(event) {
+			.on('mousedown', '.b-editor-accept', function(event) {
 				event.preventDefault();
 
+				self.disableAutoSave();
+			
+				if (typeof self.instance !== 'undefined') {
+					self.instance.fire('tableunselect:composer');
+				}
+
+				self.element
+					.find('.wysiwyg-tmp-selected-cell')
+					.removeClass('wysiwyg-tmp-selected-cell')
+					.end()
+					.blur();
+			
 				self.apply(self.element);
+				self.enableAutoSave();
 
 				return false;
 			})
-			.on('click', '.b-editor-cancel', function(event) {
+			.on('mousedown', '.b-editor-cancel', function(event) {
 				event.preventDefault();
+		
 				self.cancel(self.element);
 				return false;
 			})
-			.on('click', '.b-editor-link', function() {
+			.on('mousedown', '.b-editor-link', function() {
 				wysihtml5.commands.createBoomLink.edit(self.instance.composer);
 			})
 			.on('mousedown', '.b-editor-table', function() {
@@ -181,11 +206,17 @@ $.widget('boom.textEditor', {
 				.done(function() {
 					textEditor.element.html(textEditor.original_html);
 					textEditor.hideToolbar();
+					
+					textEditor._trigger('edit', textEditor.original_html);
 				})
 				.fail(function() {
 					textEditor.element.focus();
 					textEditor.enableAutoSave();
 				});
+		} else {
+			textEditor.hideToolbar();
+					
+			this._trigger('edit', textEditor.original_html);
 		}
 	},
 
@@ -205,6 +236,14 @@ $.widget('boom.textEditor', {
 
 	hasBeenEdited : function() {
 		return this.element.html() !== this.original_html;
+	},
+	
+	hideTableButtons: function() {
+		$.boom.page.toolbar.element.width('60px');
+		this.toolbar.parents('#b-topbar').width('60px');
+		top.$('body').first().animate({'margin-left': '60px'}, 500);
+		$('#wysihtml5-toolbar').width('60px');
+		$('#wysihtml5-toolbar [data-wysihtml5-hiddentools=table]').removeClass('visible');
 	},
 
 	hideToolbar : function() {

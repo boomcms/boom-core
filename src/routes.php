@@ -56,6 +56,7 @@ Route::group(['middleware' => [
                 Route::post('person/add', 'Person\SavePerson@add');
 				Route::get('person/view/{id}', 'Person\ViewPerson@view');
 				Route::post('person/save/{id}', 'Person\SavePerson@save');
+				Route::post('person/delete', 'Person\SavePerson@delete');
                 Route::get('person/add_group/{id}', 'Person\ViewPerson@addGroup');
                 Route::post('person/add_group/{id}', 'Person\SavePerson@addGroup');
                 Route::get('person/remove_group/{id}', 'Person\ViewPerson@removeGroup');

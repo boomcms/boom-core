@@ -109,15 +109,14 @@ $.widget('boom.pageStatus', {
 	},
 
 	set : function(status) {
-		var abbreviated_status = this._get_abbreviated_status(status);
+
+		this._buildMenu(status);
 
 		this.element
 			.find('span')
-			.text(abbreviated_status)
+			.text(this._get_abbreviated_status(status))
 			.end()
 			.attr('data-status', status)
 			.attr('title', status.ucfirst());
-
-		this._buildMenu(status);
 	}
 });

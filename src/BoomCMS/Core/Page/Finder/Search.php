@@ -22,6 +22,7 @@ class Search extends Filter
     public function execute(Builder $query)
     {
 		return $query
+			->where('internal_indexing', '=', true)
 			->addSelect(DB::raw("((MATCH(title) against ('{$this->text}')) * 1000) as rel1"))
 			->leftJoin('chunk_texts as standfirst_table', function($join) {
 				$join

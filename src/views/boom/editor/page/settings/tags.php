@@ -13,7 +13,7 @@
             <li class="b-tag">
                 <form class="b-tags-add">
                     <input type="text" value="" class="b-tags-add-name" />
-                    <?= new BoomCMS\Core\UI\Button('add', 'Add tag') ?>
+                    <?= $button('plus', 'Add tag') ?>
                 </form>
             </li>
 	</ul>
@@ -35,7 +35,7 @@
                         <li class="b-tag">
                             <form class="b-tags-add">
                                 <input type="text" value="" class="b-tags-add-name" />
-                                <?= new BoomCMS\Core\UI\Button('add', 'Add tag') ?>
+                                <?= $button('plus', 'Add tag') ?>
                             </form>
                         </li>
                     </ul>
@@ -47,7 +47,7 @@
 
                 <form>
                     <input type="text" value="" class="b-tags-newgroup-name" />
-                    <?= new BoomCMS\Core\UI\Button('add', 'Add tag group') ?>
+                    <?= $button('plus', 'Add tag group') ?>
                 </form>
             </li>
         </ul>

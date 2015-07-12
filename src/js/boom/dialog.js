@@ -35,7 +35,9 @@ function boomDialog(options) {
 
 	boomDialog.prototype.cancel = function() {
 		this.deferred.rejectWith(this.dialog);
+
 		this.contents.remove();
+		this.contents = null;
 	};
 
 	boomDialog.prototype.closeButton = {
@@ -50,7 +52,9 @@ function boomDialog(options) {
 
 	boomDialog.prototype.close = function() {
 		this.deferred.resolveWith(this.dialog);
+		
 		this.contents.remove();
+		this.contents = null;
 	};
 
 	boomDialog.prototype.done = function(callback) {
@@ -74,7 +78,9 @@ function boomDialog(options) {
 				var timeout = setTimeout(function() {
 					clearTimeout(timeout);
 
-					boomDialog.reposition();
+					if (boomDialog.contents) {
+						boomDialog.reposition();
+					}
 				}, 100);
 			});
 

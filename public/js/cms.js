@@ -33331,7 +33331,9 @@ function boomHistory() {
 
 	boomDialog.prototype.cancel = function() {
 		this.deferred.rejectWith(this.dialog);
+
 		this.contents.remove();
+		this.contents = null;
 	};
 
 	boomDialog.prototype.closeButton = {
@@ -33346,7 +33348,9 @@ function boomHistory() {
 
 	boomDialog.prototype.close = function() {
 		this.deferred.resolveWith(this.dialog);
+		
 		this.contents.remove();
+		this.contents = null;
 	};
 
 	boomDialog.prototype.done = function(callback) {
@@ -33370,7 +33374,9 @@ function boomHistory() {
 				var timeout = setTimeout(function() {
 					clearTimeout(timeout);
 
-					boomDialog.reposition();
+					if (boomDialog.contents) {
+						boomDialog.reposition();
+					}
 				}, 100);
 			});
 
@@ -33775,16 +33781,15 @@ $(function() {
 	},
 
 	set : function(status) {
-		var abbreviated_status = this._get_abbreviated_status(status);
+
+		this._buildMenu(status);
 
 		this.element
 			.find('span')
-			.text(abbreviated_status)
+			.text(this._get_abbreviated_status(status))
 			.end()
 			.attr('data-status', status)
 			.attr('title', status.ucfirst());
-
-		this._buildMenu(status);
 	}
 });;/**
 * @class
@@ -34486,6 +34491,8 @@ $.widget('boom.pageTree', {
 		dialog = new boomDialog({
 			url : '/cms/page/urls/add?page_id=' + page_id,
 			title : 'Add URL',
+			closeButton: false,
+			saveButton: true,
 			width : 500
 		}).done(function() {
 			var location = dialog.contents.find('input[name=url]').val();
@@ -35007,6 +35014,8 @@ $.widget('boom.pageTree', {
 		this.dialog = new boomDialog({
 			url : pageVisibilityEditor.url,
 			title : 'Page visibility',
+			closeButton: false,
+			saveButton: true,
 			open : function() {
 				pageVisibilityEditor.findElements();
 				pageVisibilityEditor.bind();
@@ -35098,7 +35107,7 @@ $.widget('boom.textEditor', {
 
 		self.toolbar = $('#wysihtml5-toolbar').find('[data-buttonset=' + self.mode  + ']').first().clone(true, true).appendTo('#wysihtml5-toolbar');
 
-		if (self.mode === 'block') {
+		if (self.mode !== 'text') {
 			self.instance = new wysihtml5.Editor(element[0], { // id of textarea element
 				toolbar : self.toolbar[0],
 				style : true,
@@ -35109,6 +35118,21 @@ $.widget('boom.textEditor', {
 				uneditableContainerClassname : 'b-asset-embed',
 				handleTables: true
 			});
+
+			// Ensures that default text is wrapped in a paragraph
+			if (self.mode === 'block' && element.text() == element.html()) {
+				element.html($('<p></p>').text(element.text()));
+			}
+			
+			if (self.mode === 'inline') {
+				element[0].onpaste = function(e) {
+					var html = e.clipboardData.getData('text/plain'),
+						text = html.replace(/\n|\r|\n\r/g, '');
+
+					e.preventDefault();
+					top.document.execCommand("insertHTML", false, text);
+				};
+			}
 		} else {
 			element
 				.attr('contenteditable', true)
@@ -35138,7 +35162,7 @@ $.widget('boom.textEditor', {
 
 		this.enableAutoSave();
 
-		if (self.mode === 'block') {
+		if (self.mode !== 'text') {
 			$(self.instance.composer)
 				.on('before:boomdialog', function() {
 					self.disableAutoSave();
@@ -35165,30 +35189,40 @@ $.widget('boom.textEditor', {
 
 					$('#wysihtml5-toolbar').width('160px');
 					self.toolbar.find('[data-wysihtml5-hiddentools=table]').addClass('visible');
-				});
-				self.instance.on('tableunselect:composer', function(e) {
-					$.boom.page.toolbar.element.width('60px');
-					self.toolbar.parents('#b-topbar').width('60px');
-					top.$('body').first().animate({'margin-left': '60px'}, 500);
-					$('#wysihtml5-toolbar').width('60px');
-					$('#wysihtml5-toolbar [data-wysihtml5-hiddentools=table]').removeClass('visible');
+				})
+				.on('tableunselect:composer', function(e) {
+					self.hideTableButtons();
 				});
 		}
 
 		this.toolbar
-			.on('click', '.b-editor-accept', function(event) {
+			.on('mousedown', '.b-editor-accept', function(event) {
 				event.preventDefault();
 
+				self.disableAutoSave();
+			
+				if (typeof self.instance !== 'undefined') {
+					self.instance.fire('tableunselect:composer');
+				}
+
+				self.element
+					.find('.wysiwyg-tmp-selected-cell')
+					.removeClass('wysiwyg-tmp-selected-cell')
+					.end()
+					.blur();
+			
 				self.apply(self.element);
+				self.enableAutoSave();
 
 				return false;
 			})
-			.on('click', '.b-editor-cancel', function(event) {
+			.on('mousedown', '.b-editor-cancel', function(event) {
 				event.preventDefault();
+		
 				self.cancel(self.element);
 				return false;
 			})
-			.on('click', '.b-editor-link', function() {
+			.on('mousedown', '.b-editor-link', function() {
 				wysihtml5.commands.createBoomLink.edit(self.instance.composer);
 			})
 			.on('mousedown', '.b-editor-table', function() {
@@ -35245,11 +35279,17 @@ $.widget('boom.textEditor', {
 				.done(function() {
 					textEditor.element.html(textEditor.original_html);
 					textEditor.hideToolbar();
+					
+					textEditor._trigger('edit', textEditor.original_html);
 				})
 				.fail(function() {
 					textEditor.element.focus();
 					textEditor.enableAutoSave();
 				});
+		} else {
+			textEditor.hideToolbar();
+					
+			this._trigger('edit', textEditor.original_html);
 		}
 	},
 
@@ -35269,6 +35309,14 @@ $.widget('boom.textEditor', {
 
 	hasBeenEdited : function() {
 		return this.element.html() !== this.original_html;
+	},
+	
+	hideTableButtons: function() {
+		$.boom.page.toolbar.element.width('60px');
+		this.toolbar.parents('#b-topbar').width('60px');
+		top.$('body').first().animate({'margin-left': '60px'}, 500);
+		$('#wysihtml5-toolbar').width('60px');
+		$('#wysihtml5-toolbar [data-wysihtml5-hiddentools=table]').removeClass('visible');
 	},
 
 	hideToolbar : function() {
@@ -36682,9 +36730,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 				}
 
 				old_text = title;
-
-				self.lengthCounterCreated = false;
-				$(top.document).find('#b-title-length').remove();
+				self.removeTitleLengthCounter();
 			}
 		});
 
@@ -36774,6 +36820,11 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 			title.element.textEditor('enableAutoSave');
 			title.element.focus();
 		});
+	},
+	
+	removeTitleLengthCounter: function() {
+		this.lengthCounterCreated = false;
+		$(top.document).find('#b-title-length').remove();	
 	},
 
 	_save : function(title, old_title) {
@@ -38075,7 +38126,9 @@ function Row() {
 
 		dialog = new boomDialog({
 			url: this.base_url + 'add',
-			title: 'Add group'
+			title: 'Add group',
+			closeButton: false,
+			saveButton: true
 		})
 		.done(function() {
 			group.addWithName(dialog.contents.find('input[type=text]').val())
@@ -38250,7 +38303,9 @@ function Row() {
 		dialog = new boomDialog({
 			url : this.base_url + 'add',
 			width: 'auto',
-			title : 'Create new person'
+			title : 'Create new person',
+			closeButton: false,
+			saveButton: true
 		})
 		.done(function() {
 			var data = dialog.contents.find('form').serialize();
@@ -38274,7 +38329,9 @@ function Row() {
 
 		dialog = new boomDialog({
 			url: url,
-			title: 'Add group'
+			title: 'Add group',
+			closeButton: false,
+			saveButton: true
 		}).done(function() {
 			var groups = {};
 
@@ -38405,7 +38462,7 @@ function Row() {
 				new boomNotification('Success');
 
 				setTimeout(function() {
-					top.location.reload();
+					$.boom.reload();
 				}, 300);
 			})
 			.fail(function() {
@@ -38559,7 +38616,7 @@ function Row() {
 	togglePersonDeleteButton : function() {
 		var button = this.element.find('#b-people-multi-delete');
 
-		(this.selectedPeople > 0)? button.button('enable') : button.button('disable');
+		(this.selectedPeople > 0)? button.prop('disabled', false) : button.prop('disabled', true);
 	}
 });;// TODO: in future try to replace most inline compability checks with polyfills for code readability 
 
