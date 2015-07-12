@@ -33331,7 +33331,9 @@ function boomHistory() {
 
 	boomDialog.prototype.cancel = function() {
 		this.deferred.rejectWith(this.dialog);
+
 		this.contents.remove();
+		this.contents = null;
 	};
 
 	boomDialog.prototype.closeButton = {
@@ -33346,7 +33348,9 @@ function boomHistory() {
 
 	boomDialog.prototype.close = function() {
 		this.deferred.resolveWith(this.dialog);
+		
 		this.contents.remove();
+		this.contents = null;
 	};
 
 	boomDialog.prototype.done = function(callback) {
@@ -33370,7 +33374,9 @@ function boomHistory() {
 				var timeout = setTimeout(function() {
 					clearTimeout(timeout);
 
-					boomDialog.reposition();
+					if (boomDialog.contents) {
+						boomDialog.reposition();
+					}
 				}, 100);
 			});
 
@@ -33775,16 +33781,15 @@ $(function() {
 	},
 
 	set : function(status) {
-		var abbreviated_status = this._get_abbreviated_status(status);
+
+		this._buildMenu(status);
 
 		this.element
 			.find('span')
-			.text(abbreviated_status)
+			.text(this._get_abbreviated_status(status))
 			.end()
 			.attr('data-status', status)
 			.attr('title', status.ucfirst());
-
-		this._buildMenu(status);
 	}
 });;/**
 * @class
@@ -35102,7 +35107,7 @@ $.widget('boom.textEditor', {
 
 		self.toolbar = $('#wysihtml5-toolbar').find('[data-buttonset=' + self.mode  + ']').first().clone(true, true).appendTo('#wysihtml5-toolbar');
 
-		if (self.mode === 'block') {
+		if (self.mode !== 'text') {
 			self.instance = new wysihtml5.Editor(element[0], { // id of textarea element
 				toolbar : self.toolbar[0],
 				style : true,
@@ -35115,8 +35120,18 @@ $.widget('boom.textEditor', {
 			});
 
 			// Ensures that default text is wrapped in a paragraph
-			if ( ! element.find('p').length) {
+			if (self.mode === 'block' && element.text() == element.html()) {
 				element.html($('<p></p>').text(element.text()));
+			}
+			
+			if (self.mode === 'inline') {
+				element[0].onpaste = function(e) {
+					var html = e.clipboardData.getData('text/plain'),
+						text = html.replace(/\n|\r|\n\r/g, '');
+
+					e.preventDefault();
+					top.document.execCommand("insertHTML", false, text);
+				};
 			}
 		} else {
 			element
@@ -35147,7 +35162,7 @@ $.widget('boom.textEditor', {
 
 		this.enableAutoSave();
 
-		if (self.mode === 'block') {
+		if (self.mode !== 'text') {
 			$(self.instance.composer)
 				.on('before:boomdialog', function() {
 					self.disableAutoSave();
@@ -35181,12 +35196,14 @@ $.widget('boom.textEditor', {
 		}
 
 		this.toolbar
-			.on('click', '.b-editor-accept', function(event) {
+			.on('mousedown', '.b-editor-accept', function(event) {
 				event.preventDefault();
 
 				self.disableAutoSave();
 			
-				self.instance.fire('tableunselect:composer');
+				if (typeof self.instance !== 'undefined') {
+					self.instance.fire('tableunselect:composer');
+				}
 
 				self.element
 					.find('.wysiwyg-tmp-selected-cell')
@@ -35199,12 +35216,13 @@ $.widget('boom.textEditor', {
 
 				return false;
 			})
-			.on('click', '.b-editor-cancel', function(event) {
+			.on('mousedown', '.b-editor-cancel', function(event) {
 				event.preventDefault();
+		
 				self.cancel(self.element);
 				return false;
 			})
-			.on('click', '.b-editor-link', function() {
+			.on('mousedown', '.b-editor-link', function() {
 				wysihtml5.commands.createBoomLink.edit(self.instance.composer);
 			})
 			.on('mousedown', '.b-editor-table', function() {
@@ -35261,11 +35279,17 @@ $.widget('boom.textEditor', {
 				.done(function() {
 					textEditor.element.html(textEditor.original_html);
 					textEditor.hideToolbar();
+					
+					textEditor._trigger('edit', textEditor.original_html);
 				})
 				.fail(function() {
 					textEditor.element.focus();
 					textEditor.enableAutoSave();
 				});
+		} else {
+			textEditor.hideToolbar();
+					
+			this._trigger('edit', textEditor.original_html);
 		}
 	},
 
@@ -36706,9 +36730,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 				}
 
 				old_text = title;
-
-				self.lengthCounterCreated = false;
-				$(top.document).find('#b-title-length').remove();
+				self.removeTitleLengthCounter();
 			}
 		});
 
@@ -36798,6 +36820,11 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 			title.element.textEditor('enableAutoSave');
 			title.element.focus();
 		});
+	},
+	
+	removeTitleLengthCounter: function() {
+		this.lengthCounterCreated = false;
+		$(top.document).find('#b-title-length').remove();	
 	},
 
 	_save : function(title, old_title) {
@@ -38099,7 +38126,9 @@ function Row() {
 
 		dialog = new boomDialog({
 			url: this.base_url + 'add',
-			title: 'Add group'
+			title: 'Add group',
+			closeButton: false,
+			saveButton: true
 		})
 		.done(function() {
 			group.addWithName(dialog.contents.find('input[type=text]').val())
@@ -38274,7 +38303,9 @@ function Row() {
 		dialog = new boomDialog({
 			url : this.base_url + 'add',
 			width: 'auto',
-			title : 'Create new person'
+			title : 'Create new person',
+			closeButton: false,
+			saveButton: true
 		})
 		.done(function() {
 			var data = dialog.contents.find('form').serialize();
@@ -38298,7 +38329,9 @@ function Row() {
 
 		dialog = new boomDialog({
 			url: url,
-			title: 'Add group'
+			title: 'Add group',
+			closeButton: false,
+			saveButton: true
 		}).done(function() {
 			var groups = {};
 
@@ -38429,7 +38462,7 @@ function Row() {
 				new boomNotification('Success');
 
 				setTimeout(function() {
-					top.location.reload();
+					$.boom.reload();
 				}, 300);
 			})
 			.fail(function() {
@@ -38583,7 +38616,7 @@ function Row() {
 	togglePersonDeleteButton : function() {
 		var button = this.element.find('#b-people-multi-delete');
 
-		(this.selectedPeople > 0)? button.button('enable') : button.button('disable');
+		(this.selectedPeople > 0)? button.prop('disabled', false) : button.prop('disabled', true);
 	}
 });;// TODO: in future try to replace most inline compability checks with polyfills for code readability 
 

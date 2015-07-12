@@ -17,17 +17,17 @@ class AppliedToPageDescendants extends Filter
 
     public function execute(Builder $query)
     {
+		$page = $this->page;
+
         return $query
-            ->join('pages_tags', 'inner')
-            ->on('tag.id', '=', 'pages_tags.tag_id')
-            ->join('pages', 'inner')
-            ->on('pages_tags.page_id', '=', 'pages.id')
-            ->join('page_mptt', 'inner')
-            ->on('pages.id', '=', 'page_mptt.id')
-            ->where('page_mptt.lft', '>=', $this->page->getMptt()->lft)
-            ->where('page_mptt.rgt', '<=', $this->page->getMptt()->rgt)
-            ->where('page_mptt.scope', '=', $this->page->getMptt()->scope)
+            ->join('pages_tags', 'tags.id', '=', 'pages_tags.tag_id')
+            ->join('pages', 'pages_tags.page_id', '=', 'pages.id')
+			->where(function($query) use($page) {
+				$query
+					->where('pages.id', '=', $page->getId())
+					->orWhere('pages.parent_id', '=', $page->getId());
+			})
             ->distinct(true)
-            ->orderBy('tag.name', 'asc');
+            ->orderBy('tags.name', 'asc');
     }
 }

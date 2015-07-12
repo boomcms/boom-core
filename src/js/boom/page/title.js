@@ -25,9 +25,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 				}
 
 				old_text = title;
-
-				self.lengthCounterCreated = false;
-				$(top.document).find('#b-title-length').remove();
+				self.removeTitleLengthCounter();
 			}
 		});
 
@@ -117,6 +115,11 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 			title.element.textEditor('enableAutoSave');
 			title.element.focus();
 		});
+	},
+	
+	removeTitleLengthCounter: function() {
+		this.lengthCounterCreated = false;
+		$(top.document).find('#b-title-length').remove();	
 	},
 
 	_save : function(title, old_title) {

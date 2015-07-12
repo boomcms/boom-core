@@ -70,6 +70,13 @@ class Query
 
         return $finder;
     }
+	
+    public function countPages()
+    {
+        $finder = $this->addFilters(new Finder\Finder(), $this->params);
+
+        return $finder->count();
+    }
 
     public function getPages()
     {
