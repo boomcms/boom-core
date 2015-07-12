@@ -1,6 +1,6 @@
 <?php
 
-namespace BoomCMS\Core\Controllers\CMS\Chunk;
+namespace BoomCMS\Core\Controllers\CMS;
 
 use BoomCMS\Core\Controllers\Controller;
 use BoomCMS\Core\Auth\Auth;
@@ -36,7 +36,17 @@ class Chunk extends Controller
             parent::authorization('edit_page_content', $this->page);
     }
 
-    public function save()
+    public function getEdit()
+    {
+        $type = $this->request->input('type');
+        $chunk = ChunkFacade::get($type, $this->request->input('slotname'), $this->page);
+
+        return View::make('boom::editor.chunk.' . $type, [
+            'chunk' => $chunk,
+        ]);
+    }
+
+    public function postSave()
     {
         $input = $this->request->input();
 

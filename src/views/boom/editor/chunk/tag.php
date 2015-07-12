@@ -6,8 +6,8 @@
 
 <div id="b-selected">
 	<h2>Selected Tag</h2>
-	<?php if ($current_tag->loaded()): ?>
-		<p><?= $current_tag->name ?></p>
+	<?php if ($chunk->getTag()): ?>
+		<p><?= $chunk->getTag()->getName() ?></p>
 	<?php else: ?>
 		<p>No tag is currently selected</p>
 	<?php endif ?>
