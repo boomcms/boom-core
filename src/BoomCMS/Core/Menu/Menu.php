@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Core\Menu;
 
-use BoomCMS\Core\Facades\Auth;
+use BoomCMS\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\View;
 

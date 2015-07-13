@@ -1,6 +1,6 @@
 <?php
 
-namespace BoomCMS\Core\Facades;
+namespace BoomCMS\Support\Facades;
 
 use Illuminate\Support\Facades\Facade;
 

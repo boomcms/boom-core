@@ -3,7 +3,7 @@
 namespace BoomCMS\Core\Chunk;
 
 use BoomCMS\Core\Page;
-use BoomCMS\Core\Facades\Page as PageFacade;
+use BoomCMS\Support\Facades\Page as PageFacade;
 use Illuminate\Support\Facades\View;
 
 class Feature extends BaseChunk

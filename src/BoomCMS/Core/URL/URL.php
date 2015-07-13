@@ -3,7 +3,7 @@
 namespace BoomCMS\Core\URL;
 
 use BoomCMS\Core\Page\Page;
-use BoomCMS\Core\Facades\Page as PageFacade;
+use BoomCMS\Support\Facades\Page as PageFacade;
 
 use Illuminate\Support\Facades\URL as URLHelper;
 use Illuminate\Contracts\Support\Arrayable;

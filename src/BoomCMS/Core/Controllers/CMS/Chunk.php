@@ -6,7 +6,7 @@ use BoomCMS\Core\Controllers\Controller;
 use BoomCMS\Core\Auth\Auth;
 use BoomCMS\Core\Chunk\Provider;
 use BoomCMS\Core\Page\Page;
-use BoomCMS\Core\Facades\Chunk as ChunkFacade;
+use BoomCMS\Support\Facades\Chunk as ChunkFacade;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;

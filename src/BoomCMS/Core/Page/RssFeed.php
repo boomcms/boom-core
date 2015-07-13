@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Core\Page;
 
-use BoomCMS\Core\Facades\Page as PageFacade;
+use BoomCMS\Support\Facades\Page as PageFacade;
 use Thujohn\Rss\Rss;
 
 class RssFeed

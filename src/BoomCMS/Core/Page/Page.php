@@ -9,10 +9,10 @@ use BoomCMS\Core\URL\URL;
 use BoomCMS\Core\Models\Page\URL as URLModel;
 use BoomCMS\Core\Models\Page\Version as VersionModel;
 
-use BoomCMS\Core\Facades\Asset;
-use BoomCMS\Core\Facades\Chunk;
-use BoomCMS\Core\Facades\Page as PageFacade;
-use BoomCMS\Core\Facades\Auth;
+use BoomCMS\Support\Facades\Asset;
+use BoomCMS\Support\Facades\Chunk;
+use BoomCMS\Support\Facades\Page as PageFacade;
+use BoomCMS\Support\Facades\Auth;
 
 use Illuminate\Support\Facades\DB;
 

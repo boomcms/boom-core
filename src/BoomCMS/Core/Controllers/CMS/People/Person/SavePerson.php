@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Core\Controllers\CMS\People\Person;
 
-use BoomCMS\Core\Facades\Group;
+use BoomCMS\Support\Facades\Group;
 use BoomCMS\Core\Commands\CreatePerson;
 use Illuminate\Support\Facades\Bus;
 

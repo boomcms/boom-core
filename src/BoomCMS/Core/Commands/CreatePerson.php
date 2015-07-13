@@ -6,7 +6,7 @@ use BoomCMS\Core\Auth;
 use BoomCMS\Core\Auth\RandomPassword;
 use BoomCMS\Core\Group;
 use BoomCMS\Core\Person;
-use BoomCMS\Core\Facades\Settings;
+use BoomCMS\Support\Facades\Settings;
 
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Bus\SelfHandling;
