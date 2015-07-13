@@ -81,6 +81,21 @@ class Page
         $this->data = $data;
     }
 
+    public function addRelation(Page $page)
+    {
+        if ($this->loaded() && $page->loaded()) {
+            DB::table('pages_relations')
+                ->insert([
+                    'page_id' => $this->getId(),
+                    'related_page_id' => $page->getId(),
+                    'created_at' => time(),
+                    'created_by' => Auth::getPerson()->getId(),
+                ]);
+        }
+
+        return $this;
+    }
+
     public function addTag(Tag\Tag $tag)
     {
         if ($this->loaded() && $tag->loaded()) {
@@ -461,6 +476,18 @@ class Page
     public function markUpdatesAsPendingApproval()
     {
         $this->addVersion(['pending_approval' => true]);
+
+        return $this;
+    }
+
+    public function removeRelation(Page $page)
+    {
+        if ($this->loaded() && $page->loaded()) {
+            DB::table('pages_relations')
+                ->where('page_id', '=', $this->getId())
+                ->where('related_page_id', '=', $page->getId())
+                ->delete();
+        }
 
         return $this;
     }

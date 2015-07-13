@@ -52,7 +52,15 @@ $.widget('ui.chunkFeature', $.ui.chunk,
 						}
 					},
 					{
-						text : 'Edit feature',
+						text: 'Remove the featured page',
+						class: 'b-button b-button-textonly',
+						click: function() {
+							featureEditor.remove();
+							featureEditor.confirmation.close();
+						}
+					},
+					{
+						text : 'Change the featured page',
 						class : 'b-button b-button-textonly',
 						click : function() {
 							featureEditor.editTarget();
@@ -72,6 +80,11 @@ $.widget('ui.chunkFeature', $.ui.chunk,
 		var featureEditor = this;
 
 		$.boom.log('Feature chunk slot edit');
+
+		new boomPagePicker(this.options.currentPage.id)
+			.done(function(link) {
+				
+			});
 
 		this.dialog = new boomDialog({
 			url: '/cms/chunk/feature/edit/' + this.options.currentPage.id,
