@@ -5,6 +5,7 @@ namespace BoomCMS\Core\Controllers\CMS\Page;
 use BoomCMS\Core\Auth\Auth;
 use BoomCMS\Core\Controllers\Controller;
 use BoomCMS\Core\Tag;
+use BoomCMS\Support\Facades\Page;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
@@ -57,6 +58,7 @@ class Tags extends Controller
             'tags' => $tags,
             'freeTags' => isset($freeTags) ? $freeTags : [],
             'groups' => $groupSuggestions,
+            'relatedPages' => Page::findRelatedTo($this->page)
         ]);
     }
 
