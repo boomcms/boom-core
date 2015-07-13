@@ -4,7 +4,8 @@ function boomLinkPicker(link, options) {
 
 	this.defaultOptions = {
 		text: false,
-		remove: false
+		remove: false,
+		external: true
 	};
 
 	this.options = $.extend(this.defaultOptions, options);
@@ -113,6 +114,11 @@ function boomLinkPicker(link, options) {
 
 		if ( ! this.options.remove) {
 			this.removeButton.hide();
+		}
+
+		if ( ! this.options.external) {
+			this.external.hide();
+			dialog.contents.find('.ui-tabs-nav li:nth-of-type(2)').hide();
 		}
 
 		this.setupInternal();

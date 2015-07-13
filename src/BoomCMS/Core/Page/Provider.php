@@ -104,6 +104,14 @@ class Provider
         return $this->cache['uri'][$uri];
     }
 
+    public function findRelatedTo(Page $page)
+    {
+        $finder = new Finder\Finder($this->editor);
+        $finder->addFilter(new Finder\RelatedTo($page));
+
+        return $finder->findAll();
+    }
+
     private function findAndCache(Model $model = null)
     {
         if ($model) {
