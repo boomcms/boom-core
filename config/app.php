@@ -199,11 +199,11 @@ return [
         'Validator' => 'Illuminate\Support\Facades\Validator',
         'View'      => 'Illuminate\Support\Facades\View',
 
-        'Settings' => 'BoomCMS\Core\Facades\Settings',
-        'Chunk' => 'BoomCMS\Core\Facades\Chunk',
-        'Page' => 'BoomCMS\Core\Facades\Page',
-        'Editor' => 'BoomCMS\Core\Facades\Editor',
-		'Tag' => 'BoomCMS\Core\Facades\Tag',
-        'Group' => 'BoomCMS\Core\Facades\Group',
+        'Settings' => 'BoomCMS\Support\Facades\Settings',
+        'Chunk' => 'BoomCMS\Support\Facades\Chunk',
+        'Page' => 'BoomCMS\Support\Facades\Page',
+        'Editor' => 'BoomCMS\Support\Facades\Editor',
+		'Tag' => 'BoomCMS\Support\Facades\Tag',
+        'Group' => 'BoomCMS\Support\Facades\Group',
     ],
 ];

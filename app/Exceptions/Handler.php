@@ -1,8 +1,8 @@
 <?php namespace App\Exceptions;
 
 use Exception;
-use BoomCMS\Core\Facades\Page;
-use BoomCMS\Core\Facades\Editor;
+use BoomCMS\Support\Facades\Page;
+use BoomCMS\Support\Facades\Editor;
 
 use Illuminate\Support\Facades\App;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
