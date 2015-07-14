@@ -146,7 +146,7 @@ $.widget('boom.assetManager', {
 					.justifyAssets();
 
 				assetManager.element
-					.find('.pagination')
+					.find('.b-pagination')
 					.replaceWith($response[2]);
 
 				assetManager.initPagination();
@@ -165,7 +165,7 @@ $.widget('boom.assetManager', {
 	initPagination : function() {
 		var assetManager = this;
 
-		assetManager.element.find('.pagination')
+		assetManager.element.find('.b-pagination')
 			.jqPagination({
 				paged: function(page) {
 					assetManager.getPage(page);

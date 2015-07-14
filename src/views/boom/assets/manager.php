@@ -46,7 +46,7 @@
             <option value="downloads-desc">Most downloaded</option>
         </select>
 
-        <div id="b-assets-pagination" class="pagination"></div>
+        <div id="b-assets-pagination" class="b-pagination"></div>
 	</div>
 
 	<div id="b-assets-content">
