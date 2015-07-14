@@ -37368,7 +37368,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 					.justifyAssets();
 
 				assetManager.element
-					.find('.pagination')
+					.find('.b-pagination')
 					.replaceWith($response[2]);
 
 				assetManager.initPagination();
@@ -37387,7 +37387,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 	initPagination : function() {
 		var assetManager = this;
 
-		assetManager.element.find('.pagination')
+		assetManager.element.find('.b-pagination')
 			.jqPagination({
 				paged: function(page) {
 					assetManager.getPage(page);
@@ -37628,7 +37628,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 				assetPicker.picker.find('#b-assets-view-thumbs').replaceWith($response.find('#b-assets-view-thumbs'));
 				assetPicker.justifyAssets();
 
-				assetPicker.picker.find('.pagination').replaceWith($response[2]);
+				assetPicker.picker.find('.b-pagination').replaceWith($response[2]);
 				assetPicker.initPagination();
 			});
 	};
@@ -37649,7 +37649,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 	boomAssetPicker.prototype.initPagination = function() {
 		var assetPicker = this;
 
-		assetPicker.picker.find('.pagination')
+		assetPicker.picker.find('.b-pagination')
 			.jqPagination({
 				paged: function(page) {
 					assetPicker.getPage(page);
