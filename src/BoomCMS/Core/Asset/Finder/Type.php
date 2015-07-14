@@ -15,7 +15,7 @@ class Type extends BaseFilter
         $this->type = $this->removeInvalidTypes($types);
     }
 
-    public function execute(Builder $query)
+    public function build(Builder $query)
     {
         return $query->whereIn('type', $this->type);
     }
