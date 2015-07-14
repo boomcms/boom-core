@@ -34896,7 +34896,7 @@ $.widget('boom.pageTree', {
 			this.dialog.contents.find('#b-page-feature-none').hide();
 		} else {
 			this.dialog.contents.find('#b-page-feature-current').hide();
-			this.dialog.contents.find('#b-page-feature-remove').button('disable');
+			this.dialog.contents.find('#b-page-feature-remove').prop('disabled', true);
 		}
 	};
 
@@ -34956,11 +34956,11 @@ $.widget('boom.pageTree', {
 
 			if (assetId) {
 				this.dialog.contents.find('#b-page-feature-current').attr('src', '/asset/view/' + assetId + '/' + '500').show();
-				this.dialog.contents.find('#b-page-feature-remove').button('enable');
+				this.dialog.contents.find('#b-page-feature-remove').prop('disabled', false);
 				this.dialog.contents.find('#b-page-feature-none').hide();
 			} else {
 				this.dialog.contents.find('#b-page-feature-current').hide();
-				this.dialog.contents.find('#b-page-feature-remove').button('disable');
+				this.dialog.contents.find('#b-page-feature-remove').prop('disabled', true);
 				this.dialog.contents.find('#b-page-feature-none').show();
 			}
 		}
