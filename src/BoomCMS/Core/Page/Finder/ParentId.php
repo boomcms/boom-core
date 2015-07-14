@@ -15,7 +15,7 @@ class ParentId extends Filter
         $this->parentId = $parentId;
     }
 
-    public function execute(Builder $query)
+    public function build(Builder $query)
     {
         if ($this->parentId) {
             return $query->where('parent_id', '=', $this->parentId);

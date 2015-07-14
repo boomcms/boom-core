@@ -15,7 +15,7 @@ class AppliedToPageDescendants extends Filter
         $this->page = $page;
     }
 
-    public function execute(Builder $query)
+    public function build(Builder $query)
     {
 		$page = $this->page;
 

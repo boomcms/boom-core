@@ -6,7 +6,15 @@ use Illuminate\Database\Eloquent\Builder;
 
 abstract class Filter
 {
-    abstract public function execute(Builder $query);
+    public function build(Builder $query)
+	{
+		return $query;
+	}
+	
+	public function execute(Builder $query)
+	{
+		return $query;
+	}
 
     public function shouldBeApplied()
     {

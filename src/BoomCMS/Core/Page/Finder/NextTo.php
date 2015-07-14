@@ -27,7 +27,7 @@ class NextTo extends Filter
         $this->direction = $direction;
     }
 
-    public function execute(Builder $query)
+    public function build(Builder $query)
     {
         $order = $this->currentPage->getParent()->getChildOrderingPolicy();
 

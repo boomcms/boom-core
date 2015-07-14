@@ -25,7 +25,7 @@ class ExcludingPersonsGroups extends Filter
         $this->person = $person;
     }
 
-    public function execute(Builder $query)
+    public function build(Builder $query)
     {
         $query->whereNotIn('id',
             DB::table('people_groups')

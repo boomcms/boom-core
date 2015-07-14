@@ -19,7 +19,7 @@ class YearAndMonth extends Filter
         $this->_month = $month;
     }
 
-    public function execute(Builder $query)
+    public function build(Builder $query)
     {
         return $query
             ->where(DB::raw('year(from_unixtime(visible_from))'), '=', $this->_year)

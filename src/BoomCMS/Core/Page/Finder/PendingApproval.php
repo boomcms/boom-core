@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 
 class PendingApproval extends Filter
 {
-    public function execute(Builder $query)
+    public function build(Builder $query)
     {
         $can_publish = DB::select('mptt.lft', 'mptt.rgt', 'mptt.scope')
             ->from(['page_mptt', 'mptt'])
