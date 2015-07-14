@@ -60,7 +60,10 @@ class AssetManager extends Controller
         }
 
         if (count($assets) === 1) {
-            return Response::download($assets[0]->getFilename());
+            return Response::download(
+				$assets[0]->getFilename(), 
+				$assets[0]->getOriginalFilename()
+			);
         } else {
             $filename = tempnam(sys_get_temp_dir(), 'boomcms_asset_download');
             $zip = new ZipArchive();
