@@ -24,7 +24,7 @@ class Tag extends BaseFilter
         $this->tags = $tags;
     }
 
-    public function execute(Builder $query)
+    public function build(Builder $query)
     {
         $query->join('assets_tags', 'assets_tags.asset_id', '=', 'assets.id');
 

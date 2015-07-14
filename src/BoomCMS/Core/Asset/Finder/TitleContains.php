@@ -14,7 +14,7 @@ class TitleContains extends BaseFilter
         $this->title = trim($title);
     }
 
-    public function execute(Builder $query)
+    public function build(Builder $query)
     {
         $text = $this->title;
 
