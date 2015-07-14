@@ -17,7 +17,7 @@ class Title extends Filter
         $this->title = $title;
     }
 
-    public function execute(Builder $query)
+    public function build(Builder $query)
     {
         if (is_array($this->title)) {
             return $query->whereIn('title', $this->title);

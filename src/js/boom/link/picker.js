@@ -95,7 +95,9 @@ function boomLinkPicker(link, options) {
 			}
 		}
 
-		linkText = (this.options.text && this.textInput.val()) ? this.textInput.val() : url;
+		linkText = (this.options.text && this.textInput.val()) ?
+			this.textInput.val() :
+			url.replace('mailto:', '').replace('tel:', '');
 
 		return new boomLink(url, 0, linkText);
 	};

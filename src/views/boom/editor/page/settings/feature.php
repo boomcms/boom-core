@@ -10,8 +10,8 @@
 		<?php endif ?>
 
 		<div id='b-page-feature-buttons'>
-			<?= $button('asset', 'Select an image from the asset manager', ['id' => 'b-page-feature-edit', 'class' => 'b-button-withtext']) ?>
-			<?= $button('delete', 'Remove feature image', ['id' => 'b-page-feature-remove', 'class' => 'b-button-withtext']) ?>
+			<?= $button('image', 'Select an image from the asset manager', ['id' => 'b-page-feature-edit', 'class' => 'b-button-withtext']) ?>
+			<?= $button('trash-o', 'Remove feature image', ['id' => 'b-page-feature-remove', 'class' => 'b-button-withtext']) ?>
 		</div>
 	</section>
 	<section>

@@ -14,7 +14,7 @@ class Uri extends Filter
         $this->uri = $uri;
     }
 
-    public function execute(Builder $query)
+    public function build(Builder $query)
     {
         return $query
             ->join('page_urls', 'pages.id', '=', 'page_urls.page_id')

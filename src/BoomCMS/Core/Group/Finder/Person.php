@@ -15,7 +15,7 @@ class Person extends Filter
         $this->person = $person;
     }
 
-    public function execute(Builder $query)
+    public function build(Builder $query)
     {
         return $query
             ->join('people_groups', 'group_id', '=', 'id')

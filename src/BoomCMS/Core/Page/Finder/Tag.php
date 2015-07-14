@@ -20,7 +20,7 @@ class Tag extends Filter
         $this->tag = $tag;
     }
 
-    public function execute(Builder $query)
+    public function build(Builder $query)
     {
         return $query
             ->join('pages_tags', 'pages.id', '=', 'pages_tags.page_id')

@@ -10,14 +10,15 @@
 			cursor: pointer;
 			overflow: inherit;
 		}
-
-		&:visited {
-			color: black;
-		}
 	}
 
 	&-cancel {
 		margin: 1em auto;
+		color: @darkest-grey;
+		
+		&:hover, &:focus {
+			color: @red;
+		}
 	}
 
 	&-container {

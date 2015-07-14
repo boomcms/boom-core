@@ -20,13 +20,17 @@ abstract class Finder
         return $this;
     }
 
-    protected function applyFilters(Builder $query)
+    protected function applyFilters(Builder $query, $execute = false)
     {
         $this->filtersApplied = true;
 
         foreach ($this->filters as $filter) {
             if ($filter->shouldBeApplied()) {
-                $query = $filter->execute($query);
+                $query = $filter->build($query);
+				
+				if ($execute === true) {
+					$query = $filter->execute($query);
+				}
             }
         }
 
@@ -45,7 +49,7 @@ abstract class Finder
     public function find()
     {
         if (! $this->filtersApplied) {
-            $this->query = $this->applyFilters($this->query);
+            $this->query = $this->applyFilters($this->query, true);
         }
 
         return $this->query->first();
@@ -54,7 +58,7 @@ abstract class Finder
     public function findAll()
     {
         if (! $this->filtersApplied) {
-            $this->query = $this->applyFilters($this->query);
+            $this->query = $this->applyFilters($this->query, true);
         }
 
         return $this->query->get();

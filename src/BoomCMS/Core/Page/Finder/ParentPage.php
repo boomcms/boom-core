@@ -14,7 +14,7 @@ class ParentPage extends Filter
         $this->parent = $parent;
     }
 
-    public function execute(Builder $query)
+    public function build(Builder $query)
     {
         $order = $this->parent->getChildOrderingPolicy();
 
