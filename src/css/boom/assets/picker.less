@@ -98,10 +98,6 @@
 		.text-default;
 		margin: 2em;
 		color: @white;
-
-		label[for=b-assets-upload-file] {
-			color: @red;
-		}
 	}
 
 	#b-assets-upload-add {
@@ -114,6 +110,14 @@
 		border: 0;
 		margin-top: 2em;
 		width: 100%;
+	}
+	
+	#b-assets-upload-cancel {
+		color: @white;
+		
+		&:hover, &:focus {
+			color: @red;
+		}
 	}
 
 	.b-tags-list {
