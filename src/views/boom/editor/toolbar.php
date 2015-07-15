@@ -11,7 +11,7 @@
 
 		<?php if ($page->wasCreatedBy($person) || $auth->loggedIn('edit_page_content', $page)): ?>
 			<div id="b-page-actions">
-				<?= $button('file-text-o', Lang::get("Changed the template used by the page"), ['id' => 'b-page-template']) ?>
+				<?= $button('file-text-o', Lang::get("Change the template used by the page"), ['id' => 'b-page-template']) ?>
 			</div>
 		<?php endif ?>
 
