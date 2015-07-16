@@ -35879,7 +35879,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 			var	format = $('#format').val(),
 				stringDate = $('#timestamp').val(),
 				dateyDate = new Date(stringDate),
-				timestamp = dateyDate.valueOf() / 1000;
+				timestamp = (dateyDate.valueOf() / 1000) - (new Date().getTimezoneOffset() * 60);
 
 			self.insert(format, timestamp);
 		})
