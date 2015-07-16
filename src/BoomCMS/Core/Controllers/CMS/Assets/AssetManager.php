@@ -218,8 +218,6 @@ class AssetManager extends Controller
                     $asset
                         ->setWidth($width)
                         ->setHeight($height);
-
-                    $this->provider->save($asset);
                 }
 
                 $asset_ids[] = $this->provider->save($asset)->getId();
