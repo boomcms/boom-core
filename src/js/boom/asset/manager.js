@@ -27,8 +27,13 @@ $.widget('boom.assetManager', {
 
 		this.uploader
 			.assetUploader({
-				done : function(e, data) {
+				done: function(e, data) {
 					assetManager.assetsUploaded(data.result);
+				},
+				fail: function() {
+					// Update asset list even though an error occurred
+					// For situations where multiple files were uploaded but one caused an error.
+					assetManager.getAssets();
 				}
 			})
 			.on('click', '#b-assets-upload-close', function(e) {
