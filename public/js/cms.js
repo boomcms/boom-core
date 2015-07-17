@@ -34771,7 +34771,10 @@ $.widget('boom.pageTree', {
 					urlEditor.makePrimary($url);
 
 					var history = new boomHistory();
-					history.replaceState({}, top.window.document.title, $url.find('label').text());
+					history.replaceState({},
+						top.window.document.title,
+						'/' + $url.find('label').text()
+					);
 				}
 			})
 			.on('click', '.b-urls-remove', function(e) {
@@ -35876,7 +35879,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 			var	format = $('#format').val(),
 				stringDate = $('#timestamp').val(),
 				dateyDate = new Date(stringDate),
-				timestamp = dateyDate.valueOf() / 1000;
+				timestamp = (dateyDate.valueOf() / 1000) - (new Date().getTimezoneOffset() * 60);
 
 			self.insert(format, timestamp);
 		})
@@ -37249,8 +37252,13 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 
 		this.uploader
 			.assetUploader({
-				done : function(e, data) {
+				done: function(e, data) {
 					assetManager.assetsUploaded(data.result);
+				},
+				fail: function() {
+					// Update asset list even though an error occurred
+					// For situations where multiple files were uploaded but one caused an error.
+					assetManager.getAssets();
 				}
 			})
 			.on('click', '#b-assets-upload-close', function(e) {

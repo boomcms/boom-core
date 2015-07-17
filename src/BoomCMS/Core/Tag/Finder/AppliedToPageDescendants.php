@@ -27,7 +27,7 @@ class AppliedToPageDescendants extends Filter
                     ->where('pages.id', '=', $page->getId())
                     ->orWhere('pages.parent_id', '=', $page->getId());
             })
-            ->distinct(true)
+            ->groupBy('tags.id')
             ->orderBy('tags.name', 'asc');
     }
 }

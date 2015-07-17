@@ -1,8 +1,8 @@
 <?php
 
-namespace BoomCMS\Core\Exception;
+namespace BoomCMS\Core\Asset\Mimetype;
 
-class UnsupportedMimeType extends \Exception
+class UnsupportedMimeType extends \UnexpectedValueException
 {
     private $mimetype;
 

@@ -5,6 +5,7 @@ namespace BoomCMS\Core\Controllers\CMS\Assets;
 use BoomCMS\Core\Auth;
 use BoomCMS\Core\Asset;
 use BoomCMS\Core\Asset\Mimetype\Mimetype;
+use BoomCMS\Core\Asset\Mimetype\UnsupportedMimeType;
 use BoomCMS\Core\Asset\Finder;
 use BoomCMS\Core\Controllers\Controller;
 
@@ -198,7 +199,7 @@ class AssetManager extends Controller
 
                 try {
                     $mime = Mimetype::factory($file->getMimeType());
-                } catch (Exception\UnsupportedMimeType $e) {
+                } catch (UnsupportedMimeType $e) {
                     $errors[] = "File {$file->getClientOriginalName()} is of an unsuported type: {$e->getMimetype()}";
                     continue;
                 }
@@ -218,8 +219,6 @@ class AssetManager extends Controller
                     $asset
                         ->setWidth($width)
                         ->setHeight($height);
-
-                    $this->provider->save($asset);
                 }
 
                 $asset_ids[] = $this->provider->save($asset)->getId();

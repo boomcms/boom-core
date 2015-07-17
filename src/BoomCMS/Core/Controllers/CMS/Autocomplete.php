@@ -105,8 +105,8 @@ class Autocomplete extends Controller
 
         foreach ($results as &$result) {
             $result = [
-                'label' => $result['name'],
-                'value' => $result['id'],
+                'label' => $result->name,
+                'value' => $result->id,
             ];
         }
 
