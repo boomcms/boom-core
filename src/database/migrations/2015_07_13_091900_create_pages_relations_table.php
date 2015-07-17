@@ -28,7 +28,8 @@ class CreatePagesRelationsTable extends Migration
                 ->onDelete('CASCADE');
 
             $table
-                ->foreign('created_by')
+                ->integer('created_by')
+                ->unsigned()
                 ->references('id')
                 ->on('people')
                 ->onUpdate('CASCADE')

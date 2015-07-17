@@ -19,7 +19,7 @@ class RelatedTo extends Filter
     {
         return $query
             ->join('pages_relations', 'pages.id', '=', 'pages_relations.related_page_id')
-            ->where('pages_relations.page_id', '=', $this->page->id);
+            ->where('pages_relations.page_id', '=', $this->page->getId());
     }
 
     public function shouldBeApplied()

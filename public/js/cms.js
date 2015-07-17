@@ -29318,7 +29318,7 @@ String.prototype.toInt = function() {
     });
 })(jQuery);
 ;/**
- * @preserve jQuery DateTimePicker plugin v2.4.5
+ * @preserve jQuery DateTimePicker plugin v2.4.3
  * @homepage http://xdsoft.net/jqplugins/datetimepicker/
  * (c) 2014, Chupurnov Valeriy.
  */
@@ -29349,14 +29349,6 @@ String.prototype.toInt = function() {
 				],
 				dayOfWeek: [
 					"Min", "Sen", "Sel", "Rab", "Kam", "Jum", "Sab"
-				]
-			},
-			is: { // Icelandic
-				months: [
-					"Janúar", "Febrúar", "Mars", "Apríl", "Maí", "Júní", "Júlí", "Ágúst", "September", "Október", "Nóvember", "Desember"
-				],
-				dayOfWeek: [
-					"Sun", "Mán", "Þrið", "Mið", "Fim", "Fös", "Lau"
 				]
 			},
 			bg: { // Bulgarian
@@ -29787,8 +29779,6 @@ String.prototype.toInt = function() {
 		maxDate: false,
 		minTime: false,
 		maxTime: false,
-		disabledMinTime: false,
-		disabledMaxTime: false,
 
 		allowTimes: [],
 		opened: false,
@@ -29840,7 +29830,6 @@ String.prototype.toInt = function() {
 		highlightedDates: [],
 		highlightedPeriods: [],
 		disabledDates : [],
-		disabledWeekDays: [],
 		yearOffset: 0,
 		beforeShowDay: null,
 
@@ -29848,24 +29837,6 @@ String.prototype.toInt = function() {
         showApplyButton: false
 	};
 	// fix for ie8
-	if (!window.getComputedStyle) {
-		window.getComputedStyle = function (el, pseudo) {
-			this.el = el;
-			this.getPropertyValue = function (prop) {
-				var re = /(\-([a-z]){1})/g;
-				if (prop === 'float') {
-					prop = 'styleFloat';
-				}
-				if (re.test(prop)) {
-					prop = prop.replace(re, function (a, b, c) {
-						return c.toUpperCase();
-					});
-				}
-				return el.currentStyle[prop] || null;
-			};
-			return this;
-		};
-	}
 	if (!Array.prototype.indexOf) {
 		Array.prototype.indexOf = function (obj, start) {
 			var i, j;
@@ -30083,7 +30054,7 @@ String.prototype.toInt = function() {
 			};
 
 		createDateTimePicker = function (input) {
-			var datetimepicker = $('<div class="xdsoft_datetimepicker xdsoft_noselect"></div>'),
+			var datetimepicker = $('<div ' + (options.id ? 'id="' + options.id + '"' : '') + ' ' + (options.style ? 'style="' + options.style + '"' : '') + ' class="xdsoft_datetimepicker xdsoft_' + options.theme + ' xdsoft_noselect ' + (options.weeks ? ' xdsoft_showweeks' : '') + options.className + '"></div>'),
 				xdsoft_copyright = $('<div class="xdsoft_copyright"><a target="_blank" href="http://xdsoft.net/jqplugins/datetimepicker/">xdsoft.net</a></div>'),
 				datepicker = $('<div class="xdsoft_datepicker active"></div>'),
 				mounth_picker = $('<div class="xdsoft_mounthpicker"><button type="button" class="xdsoft_prev"></button><button type="button" class="xdsoft_today_button"></button>' +
@@ -30094,7 +30065,7 @@ String.prototype.toInt = function() {
 				timepicker = $('<div class="xdsoft_timepicker active"><button type="button" class="xdsoft_prev"></button><div class="xdsoft_time_box"></div><button type="button" class="xdsoft_next"></button></div>'),
 				timeboxparent = timepicker.find('.xdsoft_time_box').eq(0),
 				timebox = $('<div class="xdsoft_time_variant"></div>'),
-                applyButton = $('<button type="button" class="xdsoft_save_selected blue-gradient-button">Save Selected</button>'),
+                applyButton = $('<button class="xdsoft_save_selected blue-gradient-button">Save Selected</button>'),
 				/*scrollbar = $('<div class="xdsoft_scrollbar"></div>'),
 				scroller = $('<div class="xdsoft_scroller"></div>'),*/
 				monthselect = $('<div class="xdsoft_select xdsoft_monthselect"><div></div></div>'),
@@ -30109,19 +30080,6 @@ String.prototype.toInt = function() {
 				timer = 0,
 				timer1 = 0,
 				_xdsoft_datetime;
-
-			if (options.id) {
-				datetimepicker.attr('id', options.id);
-			}
-			if (options.style) {
-				datetimepicker.attr('style', options.style);
-			}
-			if (options.weeks) {
-				datetimepicker.addClass('xdsoft_showweeks');
-			}
-
-			datetimepicker.addClass('xdsoft_' + options.theme);
-			datetimepicker.addClass(options.className);
 
 			mounth_picker
 				.find('.xdsoft_month span')
@@ -30295,10 +30253,6 @@ String.prototype.toInt = function() {
 
 				if (_options.disabledDates && $.isArray(_options.disabledDates) && _options.disabledDates.length) {
 					options.disabledDates = $.extend(true, [], _options.disabledDates);
-				}
-
-				if (_options.disabledWeekDays && $.isArray(_options.disabledWeekDays) && _options.disabledWeekDays.length) {
-				    options.disabledWeekDays = $.extend(true, [], _options.disabledWeekDays);
 				}
 
 				if ((options.open || options.opened) && (!options.inline)) {
@@ -30690,18 +30644,6 @@ String.prototype.toInt = function() {
 					_xdsoft_datetime.setCurrentTime(0);
 					datetimepicker.trigger('afterOpen.xdsoft');
 				}).on('dblclick.xdsoft', function () {
-					var currentDate = _xdsoft_datetime.getCurrentTime(), minDate, maxDate;
-					currentDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate());
-					minDate = _xdsoft_datetime.strToDate(options.minDate);
-					minDate = new Date(minDate.getFullYear(), minDate.getMonth(), minDate.getDate());
-					if (currentDate < minDate) {
-						return;
-					}
-					maxDate = _xdsoft_datetime.strToDate(options.maxDate);
-					maxDate = new Date(maxDate.getFullYear(), maxDate.getMonth(), maxDate.getDate());
-					if (currentDate > maxDate) {
-						return;
-					}
 					input.val(_xdsoft_datetime.str());
 					datetimepicker.trigger('close.xdsoft');
 				});
@@ -30781,7 +30723,6 @@ String.prototype.toInt = function() {
 							maxDate = false,
 							minDate = false,
 							hDate,
-							day,
 							d,
 							y,
 							m,
@@ -30825,7 +30766,6 @@ String.prototype.toInt = function() {
 							classes = [];
 							i += 1;
 
-							day = start.getDay();
 							d = start.getDate();
 							y = start.getFullYear();
 							m = start.getMonth();
@@ -30844,8 +30784,6 @@ String.prototype.toInt = function() {
 								classes.push('xdsoft_disabled');
 							} else if (options.disabledDates.indexOf(start.dateFormat(options.formatDate)) !== -1) {
 								classes.push('xdsoft_disabled');
-							} else if (options.disabledWeekDays.indexOf(day) !== -1) {
-							    classes.push('xdsoft_disabled');
 							}
 
 							if (customDateSettings && customDateSettings[1] !== "") {
@@ -30919,9 +30857,6 @@ String.prototype.toInt = function() {
 							optionDateTime.setMinutes(m);
 							classes = [];
 							if ((options.minDateTime !== false && options.minDateTime > optionDateTime) || (options.maxTime !== false && _xdsoft_datetime.strtotime(options.maxTime).getTime() < now.getTime()) || (options.minTime !== false && _xdsoft_datetime.strtotime(options.minTime).getTime() > now.getTime())) {
-								classes.push('xdsoft_disabled');
-							}
-							if ((options.minDateTime !== false && options.minDateTime > optionDateTime) || ((options.disabledMinTime !== false && now.getTime() > _xdsoft_datetime.strtotime(options.disabledMinTime).getTime()) && (options.disabledMaxTime !== false && now.getTime() < _xdsoft_datetime.strtotime(options.disabledMaxTime).getTime()))) {
 								classes.push('xdsoft_disabled');
 							}
 
@@ -31025,7 +30960,7 @@ String.prototype.toInt = function() {
 					datetimepicker.trigger('select.xdsoft', [currentTime]);
 
 					input.val(_xdsoft_datetime.str());
-					if ((timerclick > 1 || (options.closeOnDateSelect === true || (options.closeOnDateSelect === false && !options.timepicker))) && !options.inline) {
+					if ((timerclick > 1 || (options.closeOnDateSelect === true || (options.closeOnDateSelect === 0 && !options.timepicker))) && !options.inline) {
 						datetimepicker.trigger('close.xdsoft');
 					}
 
@@ -31137,7 +31072,7 @@ String.prototype.toInt = function() {
 			current_time_index = 0;
 
 			setPos = function () {
-				var offset = datetimepicker.data('input').offset(), top = offset.top + datetimepicker.data('input')[0].offsetHeight - 1, left = offset.left, position = "absolute", node;
+				var offset = datetimepicker.data('input').offset(), top = offset.top + datetimepicker.data('input')[0].offsetHeight - 1, left = offset.left, position = "absolute";
 				if (options.fixed) {
 					top -= $(window).scrollTop();
 					left -= $(window).scrollLeft();
@@ -31153,15 +31088,6 @@ String.prototype.toInt = function() {
 						left = $(window).width() - datetimepicker[0].offsetWidth;
 					}
 				}
-
-				node = datetimepicker[0];
-				do {
-					node = node.parentNode;
-					if (window.getComputedStyle(node).getPropertyValue('position') === 'relative' && $(window).width() >= node.offsetWidth) {
-						left = left - (($(window).width() - node.offsetWidth) / 2);
-						break;
-					}
-				} while (node.nodeName !== 'HTML');
 				datetimepicker.css({
 					left: left,
 					top: top,
@@ -34572,6 +34498,17 @@ $.widget('boom.pageTree', {
 	this.page = page;
 	this.baseUrl = '/cms/page/tags/';
 
+	boomPageTagEditor.prototype.addRelatedPage = function() {
+		var page = this.page;
+
+		new boomLinkPicker(new boomLink(), {
+				external: false
+			})
+			.done(function(link) {
+				page.addRelatedPage(link.getPageId());
+			});
+	};
+
 	boomPageTagEditor.prototype.addTag = function(group, tag) {
 		var tagEditor = this;
 
@@ -34605,6 +34542,9 @@ $.widget('boom.pageTree', {
 
 				tagEditor.addTagGroup($input.val());
 				$input.val('');
+			})
+			.on('click', '#b-tags-addpage', function() {
+				tagEditor.addRelatedPage();
 			});
 
 		this.initTagList($dialog.find('.b-tags-list'));
@@ -35598,7 +35538,15 @@ $.widget('ui.chunkFeature', $.ui.chunk,
 						}
 					},
 					{
-						text : 'Edit feature',
+						text: 'Remove the featured page',
+						class: 'b-button b-button-textonly',
+						click: function() {
+							featureEditor.remove();
+							featureEditor.confirmation.close();
+						}
+					},
+					{
+						text : 'Change the featured page',
 						class : 'b-button b-button-textonly',
 						click : function() {
 							featureEditor.editTarget();
@@ -35619,28 +35567,16 @@ $.widget('ui.chunkFeature', $.ui.chunk,
 
 		$.boom.log('Feature chunk slot edit');
 
-		this.dialog = new boomDialog({
-			url: '/cms/chunk/feature/edit/' + this.options.currentPage.id,
-			width: 700,
-			closeButton : false,
-			title: 'Page feature',
-			onLoad : function() {
-				featureEditor.confirmation && featureEditor.confirmation.close();
-
-				featureEditor.dialog.contents.find('.boom-tree').pageTree({
-					onPageSelect : function(link) {
-						featureEditor.dialog.close();
-						featureEditor.insert(link.getPageId());
-					}
-				});
-			},
-			open: function() {
-				featureEditor._bind();
-			}
-		})
-		.fail(function() {
-			featureEditor.bind();
-		});
+		new boomLinkPicker(new boomLink(null, this.options.currentPage.id), {
+				external: false
+			})
+			.done(function(link) {
+				featureEditor.dialog.close();
+				featureEditor.insert(link.getPageId());
+			})
+			.fail(function() {
+				featureEditor.bind();
+			});
 	},
 
 	getData: function() {
@@ -36926,7 +36862,8 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 
 	this.defaultOptions = {
 		text: false,
-		remove: false
+		remove: false,
+		external: true
 	};
 
 	this.options = $.extend(this.defaultOptions, options);
@@ -37033,6 +36970,11 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 
 		if ( ! this.options.remove) {
 			this.removeButton.hide();
+		}
+
+		if ( ! this.options.external) {
+			this.external.hide();
+			dialog.contents.find('.ui-tabs-nav li:nth-of-type(2)').hide();
 		}
 
 		this.setupInternal();

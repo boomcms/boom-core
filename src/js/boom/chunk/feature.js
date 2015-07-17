@@ -81,33 +81,16 @@ $.widget('ui.chunkFeature', $.ui.chunk,
 
 		$.boom.log('Feature chunk slot edit');
 
-		new boomPagePicker(this.options.currentPage.id)
+		new boomLinkPicker(new boomLink(null, this.options.currentPage.id), {
+				external: false
+			})
 			.done(function(link) {
-				
+				featureEditor.dialog.close();
+				featureEditor.insert(link.getPageId());
+			})
+			.fail(function() {
+				featureEditor.bind();
 			});
-
-		this.dialog = new boomDialog({
-			url: '/cms/chunk/feature/edit/' + this.options.currentPage.id,
-			width: 700,
-			closeButton : false,
-			title: 'Page feature',
-			onLoad : function() {
-				featureEditor.confirmation && featureEditor.confirmation.close();
-
-				featureEditor.dialog.contents.find('.boom-tree').pageTree({
-					onPageSelect : function(link) {
-						featureEditor.dialog.close();
-						featureEditor.insert(link.getPageId());
-					}
-				});
-			},
-			open: function() {
-				featureEditor._bind();
-			}
-		})
-		.fail(function() {
-			featureEditor.bind();
-		});
 	},
 
 	getData: function() {

@@ -70,6 +70,6 @@
             <?php endforeach ?>
         </ul>
 
-        <?= $button('plus', 'Add related page', ['id' => 'b-tags-addpage']) ?>
+        <?= $button('plus', 'Add related page', ['id' => 'b-tags-addpage', 'class' => 'b-button-withtext']) ?>
     </section>
 </div>

@@ -3,7 +3,14 @@ function boomPageTagEditor(page) {
 	this.baseUrl = '/cms/page/tags/';
 
 	boomPageTagEditor.prototype.addRelatedPage = function() {
-		
+		var page = this.page;
+
+		new boomLinkPicker(new boomLink(), {
+				external: false
+			})
+			.done(function(link) {
+				page.addRelatedPage(link.getPageId());
+			});
 	};
 
 	boomPageTagEditor.prototype.addTag = function(group, tag) {
