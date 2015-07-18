@@ -95,16 +95,20 @@ body#b-login {
 				}
 			}
 
-			input {
-				padding: 1.5em;
+			input[type=email],
+			input[type=password],
+			input[type=submit] {
+				height: 3em;
+				line-height: 3em;
+				padding: 0 1.5em;
+				display: block;
 			}
 
 			input[type=submit] {
 				width: auto;
 				min-width: 10em;
 				margin: 4em auto;
-				display: block;
-				padding: 1em 0 2em 0;
+				padding: 0;
 			}
 
 			fieldset {
