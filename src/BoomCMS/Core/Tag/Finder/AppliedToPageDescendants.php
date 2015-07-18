@@ -15,7 +15,7 @@ class AppliedToPageDescendants extends Filter
         $this->page = $page;
     }
 
-    public function execute(Builder $query)
+    public function build(Builder $query)
     {
 		$page = $this->page;
 
@@ -27,7 +27,7 @@ class AppliedToPageDescendants extends Filter
 					->where('pages.id', '=', $page->getId())
 					->orWhere('pages.parent_id', '=', $page->getId());
 			})
-            ->distinct(true)
+            ->groupBy('tags.id')
             ->orderBy('tags.name', 'asc');
     }
 }

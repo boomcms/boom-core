@@ -14,7 +14,7 @@ class SlugEquals extends Filter
         $this->string = $string;
     }
 
-    public function execute(Builder $query)
+    public function build(Builder $query)
     {
         return $query->where('slug', $this->string);
     }

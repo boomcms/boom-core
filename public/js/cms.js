@@ -34771,7 +34771,10 @@ $.widget('boom.pageTree', {
 					urlEditor.makePrimary($url);
 
 					var history = new boomHistory();
-					history.replaceState({}, top.window.document.title, $url.find('label').text());
+					history.replaceState({},
+						top.window.document.title,
+						'/' + $url.find('label').text()
+					);
 				}
 			})
 			.on('click', '.b-urls-remove', function(e) {
@@ -34896,7 +34899,7 @@ $.widget('boom.pageTree', {
 			this.dialog.contents.find('#b-page-feature-none').hide();
 		} else {
 			this.dialog.contents.find('#b-page-feature-current').hide();
-			this.dialog.contents.find('#b-page-feature-remove').button('disable');
+			this.dialog.contents.find('#b-page-feature-remove').prop('disabled', true);
 		}
 	};
 
@@ -34956,11 +34959,11 @@ $.widget('boom.pageTree', {
 
 			if (assetId) {
 				this.dialog.contents.find('#b-page-feature-current').attr('src', '/asset/view/' + assetId + '/' + '500').show();
-				this.dialog.contents.find('#b-page-feature-remove').button('enable');
+				this.dialog.contents.find('#b-page-feature-remove').prop('disabled', false);
 				this.dialog.contents.find('#b-page-feature-none').hide();
 			} else {
 				this.dialog.contents.find('#b-page-feature-current').hide();
-				this.dialog.contents.find('#b-page-feature-remove').button('disable');
+				this.dialog.contents.find('#b-page-feature-remove').prop('disabled', true);
 				this.dialog.contents.find('#b-page-feature-none').show();
 			}
 		}
@@ -35876,7 +35879,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 			var	format = $('#format').val(),
 				stringDate = $('#timestamp').val(),
 				dateyDate = new Date(stringDate),
-				timestamp = dateyDate.valueOf() / 1000;
+				timestamp = (dateyDate.valueOf() / 1000) - (new Date().getTimezoneOffset() * 60);
 
 			self.insert(format, timestamp);
 		})
@@ -37017,7 +37020,9 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 			}
 		}
 
-		linkText = (this.options.text && this.textInput.val()) ? this.textInput.val() : url;
+		linkText = (this.options.text && this.textInput.val()) ?
+			this.textInput.val() :
+			url.replace('mailto:', '').replace('tel:', '');
 
 		return new boomLink(url, 0, linkText);
 	};
@@ -37247,8 +37252,13 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 
 		this.uploader
 			.assetUploader({
-				done : function(e, data) {
+				done: function(e, data) {
 					assetManager.assetsUploaded(data.result);
+				},
+				fail: function() {
+					// Update asset list even though an error occurred
+					// For situations where multiple files were uploaded but one caused an error.
+					assetManager.getAssets();
 				}
 			})
 			.on('click', '#b-assets-upload-close', function(e) {
@@ -37366,7 +37376,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 					.justifyAssets();
 
 				assetManager.element
-					.find('.pagination')
+					.find('.b-pagination')
 					.replaceWith($response[2]);
 
 				assetManager.initPagination();
@@ -37385,7 +37395,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 	initPagination : function() {
 		var assetManager = this;
 
-		assetManager.element.find('.pagination')
+		assetManager.element.find('.b-pagination')
 			.jqPagination({
 				paged: function(page) {
 					assetManager.getPage(page);
@@ -37626,7 +37636,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 				assetPicker.picker.find('#b-assets-view-thumbs').replaceWith($response.find('#b-assets-view-thumbs'));
 				assetPicker.justifyAssets();
 
-				assetPicker.picker.find('.pagination').replaceWith($response[2]);
+				assetPicker.picker.find('.b-pagination').replaceWith($response[2]);
 				assetPicker.initPagination();
 			});
 	};
@@ -37647,7 +37657,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 	boomAssetPicker.prototype.initPagination = function() {
 		var assetPicker = this;
 
-		assetPicker.picker.find('.pagination')
+		assetPicker.picker.find('.b-pagination')
 			.jqPagination({
 				paged: function(page) {
 					assetPicker.getPage(page);

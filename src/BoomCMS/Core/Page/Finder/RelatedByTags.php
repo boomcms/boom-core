@@ -28,7 +28,7 @@ class RelatedByTags extends Filter
         $this->tagIds = $this->getTagIds();
     }
 
-    public function execute(Builder $query)
+    public function build(Builder $query)
     {
         return $query
             ->select(DB::raw('count(pages_tags.tag_id) as tag_count'))

@@ -73,4 +73,11 @@ class Link extends Linkset
     {
         return $this->getLink() !== null;
     }
+	
+	public function setHtml($html)
+	{
+		$this->html = $html;
+		
+		return $this;
+	}
 }

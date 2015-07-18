@@ -2,7 +2,7 @@
 	<?= View::make('boom::assets.thumbs', ['assets' => $assets]) ?>
 </div>
 
-<div id="b-assets-pagination" class="pagination">
+<div id="b-assets-pagination" class="b-pagination">
     <a href="#" class="first" data-action="first">&laquo;</a>
     <a href="#" class="previous" data-action="previous">&lsaquo;</a>
     <input type="text" readonly="readonly" data-max-page="<?= $pages ?>" data-current-page="<?= $page ?>" />

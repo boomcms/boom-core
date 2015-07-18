@@ -105,7 +105,7 @@ function boomAssetPicker(currentAssetId, filters) {
 				assetPicker.picker.find('#b-assets-view-thumbs').replaceWith($response.find('#b-assets-view-thumbs'));
 				assetPicker.justifyAssets();
 
-				assetPicker.picker.find('.pagination').replaceWith($response[2]);
+				assetPicker.picker.find('.b-pagination').replaceWith($response[2]);
 				assetPicker.initPagination();
 			});
 	};
@@ -126,7 +126,7 @@ function boomAssetPicker(currentAssetId, filters) {
 	boomAssetPicker.prototype.initPagination = function() {
 		var assetPicker = this;
 
-		assetPicker.picker.find('.pagination')
+		assetPicker.picker.find('.b-pagination')
 			.jqPagination({
 				paged: function(page) {
 					assetPicker.getPage(page);

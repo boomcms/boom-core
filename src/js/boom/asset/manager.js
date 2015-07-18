@@ -27,8 +27,13 @@ $.widget('boom.assetManager', {
 
 		this.uploader
 			.assetUploader({
-				done : function(e, data) {
+				done: function(e, data) {
 					assetManager.assetsUploaded(data.result);
+				},
+				fail: function() {
+					// Update asset list even though an error occurred
+					// For situations where multiple files were uploaded but one caused an error.
+					assetManager.getAssets();
 				}
 			})
 			.on('click', '#b-assets-upload-close', function(e) {
@@ -146,7 +151,7 @@ $.widget('boom.assetManager', {
 					.justifyAssets();
 
 				assetManager.element
-					.find('.pagination')
+					.find('.b-pagination')
 					.replaceWith($response[2]);
 
 				assetManager.initPagination();
@@ -165,7 +170,7 @@ $.widget('boom.assetManager', {
 	initPagination : function() {
 		var assetManager = this;
 
-		assetManager.element.find('.pagination')
+		assetManager.element.find('.b-pagination')
 			.jqPagination({
 				paged: function(page) {
 					assetManager.getPage(page);

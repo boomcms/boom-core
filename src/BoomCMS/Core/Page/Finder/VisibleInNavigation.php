@@ -24,7 +24,7 @@ class VisibleInNavigation extends Filter
         return ($this->_editor->isEnabled()) ? 'visible_in_nav_cms' : 'visible_in_nav';
     }
 
-    public function execute(Builder $query)
+    public function build(Builder $query)
     {
         return $query->where($this->_getNavigationVisibilityColumn(), '=', true);
     }
