@@ -6,7 +6,7 @@ This is the template application for BoomCMS. BoomCMS is a content management sy
 BoomCMS can be installed via Composer:
 
 ```Shell
-composer create-project laravel/laravel --prefer-dist
+composer create-project boomcms/boomcms --prefer-dist
 ```
 
 You'll then want to setup your Apache virtual host:
