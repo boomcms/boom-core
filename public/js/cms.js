@@ -33791,7 +33791,7 @@ $(function() {
 			.attr('data-status', status)
 			.attr('title', status.ucfirst());
 	}
-});;/**
+});;	/**
 * @class
 * @name boomPage
 */
@@ -33825,15 +33825,15 @@ function boomPage(page_id) {
 
 	boomPage.prototype.delete = function() {
 		var promise = new $.Deferred(),
-			page_id = this.id;
+			url = this.baseUrl + 'delete/' + this.id;
 
 		new boomDialog({
 			width: 600,
-			url: this.baseUrl + 'delete/' + page_id,
+			url: url,
 			title: 'Please confirm',
 			id: 'b-page-confirmdelete'
 		}).done(function() {
-			$.post(this.baseUrl + 'delete/' + page_id, {}, function(response) {
+			$.post(url, {}, function(response) {
 				promise.resolve(response);
 			});
 		});
@@ -34117,7 +34117,11 @@ boomPage.prototype.adminsettings = function() {
 		saveButton: true
 	})
 	.done(function() {
+		var disableDelete = dialog.contents.find("form").find('select[name=disable_delete] option:selected').val() == '1';
+
 		page.saveSettings(url, dialog.contents.find("form").serialize(), 'Page admin settings saved');
+
+		top.$.boom.page.toolbar.element.contents().find('#b-page-delete').prop('disabled', disableDelete);
 	});
 };
 ;$.widget( 'boom.pageEditor', {

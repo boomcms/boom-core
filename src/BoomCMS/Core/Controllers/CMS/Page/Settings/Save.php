@@ -11,6 +11,11 @@ class Save extends Settings
         parent::admin();
 
         $this->page->setInternalName($this->request->input('internal_name'));
+
+        if ($this->auth->loggedIn('edit_disable_delete', $this->page)) {
+            $this->page->setDisableDelete($this->request->input('disable_delete') == '1');
+        }
+
         $this->provider->save($this->page);
     }
 

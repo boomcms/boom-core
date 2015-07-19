@@ -143,6 +143,11 @@ class Page
         return $this->get('internal_indexing') == true;
     }
 
+    public function canBeDeleted()
+    {
+        return $this->get('disable_delete') == '0';
+    }
+
     public function childrenAreVisibleInNav()
     {
         return $this->get('children_visible_in_nav') == true;
@@ -500,6 +505,13 @@ class Page
                 ->where('tag_id', '=', $tag->getId())
                 ->delete();
         }
+
+        return $this;
+    }
+
+    public function setDisableDelete($value)
+    {
+        $this->data['disable_delete'] = $value;
 
         return $this;
     }
