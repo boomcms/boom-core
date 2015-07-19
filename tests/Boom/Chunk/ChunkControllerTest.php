@@ -7,7 +7,7 @@ class Chunk_ChunkControllerTest extends TestCase
 {
     public function testEditViewsCanBeRenderedWithJustAChunkVariable()
     {
-        $types = ['asset', 'feature', 'linkset', 'location', 'slideshow', 'tag', 'timestamp'];
+        $types = ['asset', 'linkset', 'location', 'slideshow', 'tag', 'timestamp'];
 
         View::share('button', function() {
             return '';
