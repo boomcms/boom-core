@@ -25,7 +25,7 @@ class Manager
         $this->filesystem = $filesystem;
         $this->provider = $provider;
 
-        if ($findAndInstall) {
+        if ($findAndInstall === true) {
             $this->findAndInstallNewTemplates();
         }
     }
