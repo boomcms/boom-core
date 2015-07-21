@@ -4,11 +4,11 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "03e5d37de5a41126846679e35ddf56b0",
+    "hash": "328576feccb72fd646d978864d87529e",
     "packages": [
         {
             "name": "boomcms/boom-core",
-            "version": "v3.0.0",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/boomcms/boom-core.git",
@@ -54,20 +54,20 @@
         },
         {
             "name": "boomcms/boom-installer",
-            "version": "v1.0",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/boomcms/boom-installer.git",
-                "reference": "b842379341f93435eb492b32ffa276576353c443"
+                "reference": "c5f1e6d1092e747314f7a75534875e867294dda9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/boomcms/boom-installer/zipball/2495f1e0aca0182f7014097ccba83584d313a42f",
-                "reference": "b842379341f93435eb492b32ffa276576353c443",
+                "url": "https://api.github.com/repos/boomcms/boom-installer/zipball/c5f1e6d1092e747314f7a75534875e867294dda9",
+                "reference": "c5f1e6d1092e747314f7a75534875e867294dda9",
                 "shasum": ""
             },
             "require": {
-                "boomcms/boom-core": "3.*",
+                "boomcms/boom-core": ">=3.0",
                 "laravel/framework": "^5.0"
             },
             "require-dev": {
@@ -91,25 +91,28 @@
                 }
             ],
             "description": "BoomCMS installer",
-            "time": "2015-07-13 07:55:02"
+            "time": "2015-07-21 13:44:27"
         },
         {
             "name": "boomcms/boom-robotstxt",
-            "version": "v3.0.6",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/boomcms/boom-robotstxt.git",
-                "reference": "3cbef1fff30a96f1cfe4817206d1374ea3301284"
+                "reference": "66fb0addef4c3e7682597c262289fe853649d571"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/boomcms/boom-robotstxt/zipball/3cbef1fff30a96f1cfe4817206d1374ea3301284",
-                "reference": "3cbef1fff30a96f1cfe4817206d1374ea3301284",
+                "url": "https://api.github.com/repos/boomcms/boom-robotstxt/zipball/66fb0addef4c3e7682597c262289fe853649d571",
+                "reference": "66fb0addef4c3e7682597c262289fe853649d571",
                 "shasum": ""
             },
             "require": {
-                "boomcms/boom-core": "3.*",
+                "boomcms/boom-core": ">=3.0",
                 "illuminate/support": "~5.0"
+            },
+            "require-dev": {
+                "boomcms/boom-core": "dev-master"
             },
             "type": "library",
             "autoload": {
@@ -128,24 +131,27 @@
                 }
             ],
             "description": "robots.txt generator for BoomCMS",
-            "time": "2015-07-03 12:05:07"
+            "time": "2015-07-21 13:59:49"
         },
         {
             "name": "boomcms/boom-sitemap",
-            "version": "v3.0",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/boomcms/boom-sitemap.git",
-                "reference": "184a9a3e28aaee64ad4f9224de0a5e2aeeb41023"
+                "reference": "f667aa8a50290e82468eaf1c9b0001a80c13bed9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/boomcms/boom-sitemap/zipball/184a9a3e28aaee64ad4f9224de0a5e2aeeb41023",
-                "reference": "184a9a3e28aaee64ad4f9224de0a5e2aeeb41023",
+                "url": "https://api.github.com/repos/boomcms/boom-sitemap/zipball/f667aa8a50290e82468eaf1c9b0001a80c13bed9",
+                "reference": "f667aa8a50290e82468eaf1c9b0001a80c13bed9",
                 "shasum": ""
             },
             "require": {
-                "boomcms/boom-core": "3.*"
+                "boomcms/boom-core": ">=3.0"
+            },
+            "require-dev": {
+                "boomcms/boom-core": "dev-master"
             },
             "type": "library",
             "autoload": {
@@ -164,23 +170,23 @@
                 }
             ],
             "description": "sitemap.xml generator for BoomCMS",
-            "time": "2015-06-23 18:34:55"
+            "time": "2015-07-21 14:03:50"
         },
         {
             "name": "boomcms/theme-default",
-            "version": "1.0.x-dev",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/boomcms/theme-default.git",
-                "reference": "d9e7be5792edd6687a353d1319a8240783d43770"
+                "reference": "ab4373b6548a07773822d4ad6ed2f0ea522f38c7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/boomcms/theme-default/zipball/d9e7be5792edd6687a353d1319a8240783d43770",
-                "reference": "d9e7be5792edd6687a353d1319a8240783d43770",
+                "url": "https://api.github.com/repos/boomcms/theme-default/zipball/ab4373b6548a07773822d4ad6ed2f0ea522f38c7",
+                "reference": "ab4373b6548a07773822d4ad6ed2f0ea522f38c7",
                 "shasum": ""
             },
-            "type": "boomcms-theme",
+            "type": "boomcms-template",
             "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
@@ -192,7 +198,7 @@
                 }
             ],
             "description": "Default Boom theme",
-            "time": "2015-06-09 09:11:52"
+            "time": "2015-06-08 21:09:14"
         },
         {
             "name": "classpreloader/classpreloader",
@@ -989,7 +995,7 @@
                 "password",
                 "security"
             ],
-            "time": "2012-08-31 00:00:00"
+            "time": "2015-05-12 10:04:16"
         },
         {
             "name": "illuminate/html",
@@ -2860,9 +2866,46 @@
         }
     ],
     "packages-dev": [],
-    "aliases": [],
+    "aliases": [
+        {
+            "alias": "3.1.0",
+            "alias_normalized": "3.1.0.0",
+            "version": "9999999-dev",
+            "package": "boomcms/boom-core"
+        },
+        {
+            "alias": "1.1",
+            "alias_normalized": "1.1.0.0",
+            "version": "9999999-dev",
+            "package": "boomcms/boom-installer"
+        },
+        {
+            "alias": "1.1",
+            "alias_normalized": "1.1.0.0",
+            "version": "9999999-dev",
+            "package": "boomcms/theme-default"
+        },
+        {
+            "alias": "3.1",
+            "alias_normalized": "3.1.0.0",
+            "version": "9999999-dev",
+            "package": "boomcms/boom-robotstxt"
+        },
+        {
+            "alias": "3.1",
+            "alias_normalized": "3.1.0.0",
+            "version": "9999999-dev",
+            "package": "boomcms/boom-sitemap"
+        }
+    ],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "boomcms/boom-core": 20,
+        "boomcms/boom-installer": 20,
+        "boomcms/theme-default": 20,
+        "boomcms/boom-robotstxt": 20,
+        "boomcms/boom-sitemap": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": [],
