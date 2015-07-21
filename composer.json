@@ -1,6 +1,6 @@
 {
 	"name": "boomcms/boomcms",
-	"description": "BoomCMS basic site",
+	"description": "BoomCMS is built on Laravel 5 and released under the MIT license. BoomCMS is designed to be easy to use for content editors and developers alike",
 	"require": {
 		"davidbarratt/custom-installer": "1.*",
 		"boomcms/boom-core": ">=3.1",
