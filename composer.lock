@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "1d02b905a2146c9ee46c8623e0e66c04",
+    "hash": "4678934f2d9100edf4b248c2dd7ae9c4",
     "packages": [
         {
             "name": "classpreloader/classpreloader",
@@ -1236,16 +1236,16 @@
         },
         {
             "name": "league/flysystem",
-            "version": "1.0.6",
+            "version": "1.0.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "e87d33ecc3a9fe2b1931856dc9921628f8c18cd5"
+                "reference": "941a320939cf9421bb6573fad417c841f8b862f3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/e87d33ecc3a9fe2b1931856dc9921628f8c18cd5",
-                "reference": "e87d33ecc3a9fe2b1931856dc9921628f8c18cd5",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/941a320939cf9421bb6573fad417c841f8b862f3",
+                "reference": "941a320939cf9421bb6573fad417c841f8b862f3",
                 "shasum": ""
             },
             "require": {
@@ -1313,20 +1313,20 @@
                 "sftp",
                 "storage"
             ],
-            "time": "2015-07-08 20:43:57"
+            "time": "2015-07-12 21:01:33"
         },
         {
             "name": "monolog/monolog",
-            "version": "1.14.0",
+            "version": "1.15.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "b287fbbe1ca27847064beff2bad7fb6920bf08cc"
+                "reference": "dc5150cc608f2334c72c3b6a553ec9668a4156b0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/b287fbbe1ca27847064beff2bad7fb6920bf08cc",
-                "reference": "b287fbbe1ca27847064beff2bad7fb6920bf08cc",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/dc5150cc608f2334c72c3b6a553ec9668a4156b0",
+                "reference": "dc5150cc608f2334c72c3b6a553ec9668a4156b0",
                 "shasum": ""
             },
             "require": {
@@ -1363,7 +1363,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.14.x-dev"
+                    "dev-master": "1.15.x-dev"
                 }
             },
             "autoload": {
@@ -1389,7 +1389,7 @@
                 "logging",
                 "psr-3"
             ],
-            "time": "2015-06-19 13:29:54"
+            "time": "2015-07-12 13:54:09"
         },
         {
             "name": "mpratt/embera",

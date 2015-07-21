@@ -11,6 +11,11 @@ class Save extends Settings
         parent::admin();
 
         $this->page->setInternalName($this->request->input('internal_name'));
+
+        if ($this->auth->loggedIn('edit_disable_delete', $this->page)) {
+            $this->page->setDisableDelete($this->request->input('disable_delete') == '1');
+        }
+
         $this->provider->save($this->page);
     }
 
@@ -48,8 +53,8 @@ class Save extends Settings
 //        if (isset($post['cascade_template'])) {
 //            $this->page->set_template_of_children($this->page->children_template_id);
 //        }
-		
-		$this->provider->save($this->page);
+
+        $this->provider->save($this->page);
     }
 
     public function feature()
@@ -72,7 +77,7 @@ class Save extends Settings
             ->setVisibleInNav($this->request->input('visible_in_nav'))
             ->setVisibleInCmsNav($this->request->input('visible_in_nav_cms'));
 
-	$this->provider->save($this->page);
+    $this->provider->save($this->page);
     }
 
     public function search()

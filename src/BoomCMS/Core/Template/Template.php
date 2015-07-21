@@ -23,10 +23,10 @@ class Template
 
     public function countPages()
     {
-		$finder = new Finder\Finder();
-		$finder->addFilter(new Finder\Template($this));
-		
-		return $finder->count();
+        $finder = new Finder\Finder();
+        $finder->addFilter(new Finder\Template($this));
+
+        return $finder->count();
     }
 
     public function fileExists()

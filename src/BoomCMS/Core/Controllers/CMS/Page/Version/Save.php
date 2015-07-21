@@ -13,12 +13,12 @@ class Save extends Version
         parent::embargo();
 
         $embargoed_until = $this->request->input('embargoed_until') ?
-			strtotime($this->request->input('embargoed_until'))
-			: time();
+            strtotime($this->request->input('embargoed_until'))
+            : time();
 
-		$this->page->setEmbargoTime($embargoed_until);
+        $this->page->setEmbargoTime($embargoed_until);
 
-		return $this->page->getCurrentVersion()->getStatus();
+        return $this->page->getCurrentVersion()->getStatus();
     }
 
     public function request_approval()
@@ -27,7 +27,7 @@ class Save extends Version
 
         $this->page->makeUpdatesAsPendingApproval();
 
-		return $this->page->getCurrentVersion()->getStatus();
+        return $this->page->getCurrentVersion()->getStatus();
     }
 
     public function template(Template\Manager $manager)
@@ -36,7 +36,7 @@ class Save extends Version
 
         $this->page->setTemplateId($this->request->input('template_id'));
 
-		return $this->page->getCurrentVersion()->getStatus();
+        return $this->page->getCurrentVersion()->getStatus();
     }
 
     public function title()
@@ -64,6 +64,6 @@ class Save extends Version
             ];
         }
 
-		return $this->page->getCurrentVersion()->getStatus();
+        return $this->page->getCurrentVersion()->getStatus();
     }
 }

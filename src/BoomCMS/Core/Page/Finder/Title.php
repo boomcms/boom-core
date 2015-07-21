@@ -19,11 +19,11 @@ class Title extends Filter
 
     public function build(Builder $query)
     {
-		if (is_array($this->title)) {
-			return $query->whereIn('title', $this->title);
-		} else {
-			return $query->where('title', '=', $this->title);
-		}
+        if (is_array($this->title)) {
+            return $query->whereIn('title', $this->title);
+        } else {
+            return $query->where('title', '=', $this->title);
+        }
     }
 
     public function shouldBeApplied()

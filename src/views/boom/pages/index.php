@@ -12,7 +12,7 @@
 	<?= $boomJS ?>
 	<script type="text/javascript">
 		//<![CDATA[
-		window.onload = function() {
+		window.onload = function () {
 			$.boom.init();
 
 			$('body').ui();

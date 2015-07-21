@@ -21,7 +21,7 @@
 				<?= $button('cog', Lang::get('Page settings which apply whichever version is published'), ['id' => 'boom-page-settings']) ?>
 			</div>
 		<?php endif ?>
-		
+
 		<?php if ($page->wasCreatedBy($person) || $auth->loggedIn('edit_page_content', $page)): ?>
 			<div id="b-page-publish-menu">
 				<button id="b-page-version-status" class="b-button" data-status="<?= $page->getCurrentVersion()->status() ?>">
@@ -35,8 +35,12 @@
 			<?= $button('eye-slash', Lang::get('This page is hidden regardless of whether there is a published version'), ['id' => 'b-page-invisible', 'class' => $page->isVisible() ? 'b-page-visibility ui-helper-hidden' : 'b-page-visibility']) ?>
 		<?php endif ?>
 
-		<?php if (($page->wasCreatedBy($person) || $auth->loggedIn('delete_page', $page)) && ! $page->isRoot()) : ?>
-			<?= $button('trash-o', Lang::get('Delete this page'), ['id' => 'b-page-delete']) ?>
+		<?php if (($page->wasCreatedBy($person) || $auth->loggedIn('delete_page', $page))) : ?>
+            <?php if ($page->canBeDeleted()): ?>
+    			<?= $button('trash-o', Lang::get('Delete this page'), ['id' => 'b-page-delete']) ?>
+            <?php else: ?>
+                <?= $button('trash-o', Lang::get('Page delete has been disabled for this page'), ['id' => 'b-page-delete', 'disabled' => 'disabled']) ?>
+            <?php endif ?>
 		<?php endif ?>
 
 		<div class="b-page-container">

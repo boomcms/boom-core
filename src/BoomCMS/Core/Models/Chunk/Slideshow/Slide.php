@@ -16,18 +16,18 @@ class Slide extends Model
         return $this->belongsTo('BoomCMS\Core\Models\Asset');
     }
 
-	public function setCaptionAttribute($value)
-	{
-		$this->attributes['caption'] = strip_tags($value);
-	}
+    public function setCaptionAttribute($value)
+    {
+        $this->attributes['caption'] = strip_tags($value);
+    }
 
-	public function setLinkTextAttribute($value)
-	{
-		$this->attributes['link_text'] = strip_tags($value);
-	}
+    public function setLinkTextAttribute($value)
+    {
+        $this->attributes['link_text'] = strip_tags($value);
+    }
 
-	public function setUrlAttribute($value)
-	{
-		$this->attributes['url'] = URL::makeRelative($value);
-	}
+    public function setUrlAttribute($value)
+    {
+        $this->attributes['url'] = URL::makeRelative($value);
+    }
 }

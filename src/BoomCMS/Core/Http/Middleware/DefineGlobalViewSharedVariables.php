@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Core\Http\Middleware;
 
-use BoomCMS\Core\Facades\Editor;
+use BoomCMS\Support\Facades\Editor;
 use Closure;
 
 use Illuminate\Http\Request;

@@ -92,16 +92,7 @@ Route::group(['middleware' => [
 				Route::get('', 'Pages@index');
 			});
 
-			Route::group(['prefix' => 'chunk', 'namespace' => 'Chunk'], function() {
-				Route::post('save/{page}', 'Chunk@save');
-                Route::get('feature/edit/{page}', 'Feature@edit');
-                Route::get('asset/edit/{page}', 'Asset@edit');
-                Route::get('slideshow/edit/{page}', 'Slideshow@edit');
-                Route::get('timestamp/edit/{page}', 'Timestamp@edit');
-                Route::get('tag/edit/{page}', 'Tag@edit');
-                Route::get('linkset/edit/{page}', 'Linkset@edit');
-                Route::get('location/edit/{page}', 'Location@edit');
-			});
+            Route::controller('chunk', 'Chunk');
 
 			Route::group(['prefix' => 'page', 'namespace' => 'Page'], function() {
 				Route::get('delete/{page}', 'Delete@confirm');
@@ -131,6 +122,9 @@ Route::group(['middleware' => [
 				Route::post('add/{page}', 'Page\Tags@add');
 				Route::post('remove/{page}', 'Page\Tags@remove');
 			});
+
+            Route::post('page/relations/add/{page}', 'Page\Relations@add');
+            Route::post('page/relations/remove/{page}', 'Page\Relations@remove');
 
 			Route::group(['prefix' => 'page/settings'], function() {
 				Route::get('{action}/{page}', [

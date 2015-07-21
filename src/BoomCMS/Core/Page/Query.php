@@ -15,8 +15,9 @@ class Query
         'relatedbytags' => 'RelatedByTags',
         'visibleinnavigation' => 'VisibleInNavigation',
         'nextto' => 'NextTo',
-		'title' => 'Title',
-		'search' => 'Search'
+        'title' => 'Title',
+        'search' => 'Search',
+        'relatedto' => 'RelatedTo',
     ];
 
     /**
@@ -70,7 +71,7 @@ class Query
 
         return $finder;
     }
-	
+
     public function countPages()
     {
         $finder = $this->addFilters(new Finder\Finder(), $this->params);

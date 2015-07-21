@@ -35,11 +35,11 @@ class Editor extends Controller
     {
         $page = $provider->findById($this->request->input('page_id'));
         $this->editor->setActivePage($page);
-        
+
         View::share('page', $page);
         View::share('editor', $this->editor);
 
-		$toolbarFilename = ($this->editor->isEnabled()) ? 'toolbar' : 'toolbar_preview';
+        $toolbarFilename = ($this->editor->isEnabled()) ? 'toolbar' : 'toolbar_preview';
 
         return View::make("boom::editor.$toolbarFilename");
     }

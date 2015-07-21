@@ -16,13 +16,13 @@
 					<th>Last Edited</th>
 				</tr>
 			</thead>
-			
+
 			<tbody>
 				<?php foreach ($pages as $p): ?>
 					<tr>
 						<td><?= $p->getTitle() ?></td>
 						<td><a href='<?= $p->url() ?>'><?= $p->url()->getLocation() ?></a></td>
-						<td><?= $p->isVisible()? 'Yes' : 'No' ?></td>
+						<td><?= $p->isVisible() ? 'Yes' : 'No' ?></td>
 						<td><?= $p->getLastModified()->format('Y-m-d H:i:s') ?></td>
 					</tr>
 				<?php endforeach ?>

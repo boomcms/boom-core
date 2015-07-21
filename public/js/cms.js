@@ -33791,26 +33791,33 @@ $(function() {
 			.attr('data-status', status)
 			.attr('title', status.ucfirst());
 	}
-});;/**
+});;	/**
 * @class
 * @name boomPage
 */
 function boomPage(page_id) {
 	this.id = page_id;
+	this.baseUrl = '/cms/page/';
 
 	boomPage.prototype.add = function() {
 		var promise = new $.Deferred(),
 			page_id = this.id;
 
-		$.post('/cms/page/add/' + page_id, function(response) {
+		$.post(this.baseUrl + 'add/' + page_id, function(response) {
 			(typeof response.url !== 'undefined')? promise.resolve(response) : promise.reject(response);
 		});
 
 		return promise;
 	};
 
+	boomPage.prototype.addRelatedPage = function(page_id) {
+		return $.post(this.baseUrl + 'relations/add/' + this.id, {
+			related_page_id: page_id
+		});
+	};
+
 	boomPage.prototype.addTag = function(group, tag) {
-		return $.post('/cms/page/tags/add/' + this.id, {
+		return $.post(this.baseUrl + 'tags/add/' + this.id, {
 			group : group,
 			tag : tag
 		});
@@ -33818,15 +33825,15 @@ function boomPage(page_id) {
 
 	boomPage.prototype.delete = function() {
 		var promise = new $.Deferred(),
-			page_id = this.id;
+			url = this.baseUrl + 'delete/' + this.id;
 
 		new boomDialog({
 			width: 600,
-			url: '/cms/page/delete/' + page_id,
+			url: url,
 			title: 'Please confirm',
 			id: 'b-page-confirmdelete'
 		}).done(function() {
-			$.post('/cms/page/delete/' + page_id, {}, function(response) {
+			$.post(url, {}, function(response) {
 				promise.resolve(response);
 			});
 		});
@@ -33836,7 +33843,7 @@ function boomPage(page_id) {
 
 	boomPage.prototype.embargo = function() {
 		var page = this,
-			url = '/cms/page/version/embargo/' + this.id,
+			url = this.baseUrl + 'version/embargo/' + this.id,
 			promise = new $.Deferred(),
 			dialog;
 
@@ -33864,7 +33871,7 @@ function boomPage(page_id) {
 	boomPage.prototype.publish = function() {
 		var promise = new $.Deferred();
 
-		$.post('/cms/page/version/embargo/' + this.id)
+		$.post(this.baseUrl + 'version/embargo/' + this.id)
 			.done(function(response) {
 				promise.resolve(response);
 			});
@@ -33873,13 +33880,19 @@ function boomPage(page_id) {
 	};
 
 	boomPage.prototype.requestApproval = function() {
-		var url = '/cms/page/version/request_approval/' + this.id;
+		var url = this.baseUrl + 'version/request_approval/' + this.id;
 
 		return $.post(url);
 	};
 
+	boomPage.prototype.removeRelatedPage = function(page_id) {
+		return $.post(this.baseUrl + 'relations/remove/' + this.id, {
+			related_page_id: page_id
+		});
+	};
+
 	boomPage.prototype.removeTag = function(tagId) {
-		return $.post('/cms/page/tags/remove/' + this.id, {
+		return $.post(this.baseUrl + 'tags/remove/' + this.id, {
 			tag : tagId
 		});
 	};
@@ -33890,7 +33903,7 @@ function boomPage(page_id) {
 
 		new boomConfirmation('Discard changes', 'Are you sure you want to discard any unpublished changes and revert this page to it\'s published state?')
 			.done(function() {
-				$.post('/cms/page/discard/' + page.id)
+				$.post(this.baseUrl + 'discard/' + page.id)
 					.done(function() {
 						promise.resolve();
 					});
@@ -33900,7 +33913,7 @@ function boomPage(page_id) {
 	};
 
 	boomPage.prototype.setTitle = function(title) {
-		return $.post('/cms/page/version/title/' + this.id, {
+		return $.post(this.baseUrl + 'version/title/' + this.id, {
 			title : title
 		});
 	};
@@ -33913,7 +33926,7 @@ function boomPage(page_id) {
 			.done(function() {
 				$.boom.log('stashing page edits');
 
-				$.post('/cms/page/stash/' + page_id)
+				$.post(this.baseUrl + 'stash/' + page_id)
 					.done(function(response) {
 						top.window.reload();
 					});
@@ -34104,7 +34117,11 @@ boomPage.prototype.adminsettings = function() {
 		saveButton: true
 	})
 	.done(function() {
+		var disableDelete = dialog.contents.find("form").find('select[name=disable_delete] option:selected').val() == '1';
+
 		page.saveSettings(url, dialog.contents.find("form").serialize(), 'Page admin settings saved');
+
+		top.$.boom.page.toolbar.element.contents().find('#b-page-delete').prop('disabled', disableDelete);
 	});
 };
 ;$.widget( 'boom.pageEditor', {
@@ -34572,6 +34589,28 @@ $.widget('boom.pageTree', {
 	this.page = page;
 	this.baseUrl = '/cms/page/tags/';
 
+	boomPageTagEditor.prototype.addRelatedPage = function() {
+		var page = this.page,
+			$relatedPages = this.dialog.find('#pages ul'),
+			dialog = this.dialog;
+
+		new boomLinkPicker(new boomLink(), {
+				external: false
+			})
+			.done(function(link) {
+				page.addRelatedPage(link.getPageId())
+					.done(function() {
+						var $li = $('<li></li>')
+								.append('<span class="title">' + link.getTitle() + '</span>')
+								.append('<span class="uri">' + link.getUrl() + '</span>')
+								.append('<a href="#" class="fa fa-trash-o"><span>Remove</span></a>');
+
+						$relatedPages.append($li);
+						dialog.find('#pages .current').show();
+					});
+			});
+	};
+
 	boomPageTagEditor.prototype.addTag = function(group, tag) {
 		var tagEditor = this;
 
@@ -34605,6 +34644,12 @@ $.widget('boom.pageTree', {
 
 				tagEditor.addTagGroup($input.val());
 				$input.val('');
+			})
+			.on('click', '#b-tags-addpage', function() {
+				tagEditor.addRelatedPage();
+			})
+			.on('click', '#pages li a', function() {
+				tagEditor.removeRelatedPage($(this));
 			});
 
 		this.initTagList($dialog.find('.b-tags-list'));
@@ -34638,6 +34683,19 @@ $.widget('boom.pageTree', {
 				tagEditor.bind(tagEditor.dialog);
 			}
 		});
+	};
+
+	boomPageTagEditor.prototype.removeRelatedPage = function($a) {
+		var dialog = this.dialog,
+			$relatedPages = dialog.find('#pages ul'),
+			$current = dialog.find('#pages .current');
+
+		this.page.removeRelatedPage($a.attr('data-page-id'))
+			.done(function() {
+				$a.parent().remove();
+
+				$relatedPages.find('li').length ? $current.show() : $current.hide();
+			});
 	};
 
 	boomPageTagEditor.prototype.removeTag = function($a) {
@@ -35601,7 +35659,15 @@ $.widget('ui.chunkFeature', $.ui.chunk,
 						}
 					},
 					{
-						text : 'Edit feature',
+						text: 'Remove the featured page',
+						class: 'b-button b-button-textonly',
+						click: function() {
+							featureEditor.remove();
+							featureEditor.confirmation.close();
+						}
+					},
+					{
+						text : 'Change the featured page',
 						class : 'b-button b-button-textonly',
 						click : function() {
 							featureEditor.editTarget();
@@ -35622,28 +35688,16 @@ $.widget('ui.chunkFeature', $.ui.chunk,
 
 		$.boom.log('Feature chunk slot edit');
 
-		this.dialog = new boomDialog({
-			url: '/cms/chunk/feature/edit/' + this.options.currentPage.id,
-			width: 700,
-			closeButton : false,
-			title: 'Page feature',
-			onLoad : function() {
-				featureEditor.confirmation && featureEditor.confirmation.close();
-
-				featureEditor.dialog.contents.find('.boom-tree').pageTree({
-					onPageSelect : function(link) {
-						featureEditor.dialog.close();
-						featureEditor.insert(link.getPageId());
-					}
-				});
-			},
-			open: function() {
-				featureEditor._bind();
-			}
-		})
-		.fail(function() {
-			featureEditor.bind();
-		});
+		new boomLinkPicker(new boomLink(null, this.options.currentPage.id), {
+				external: false
+			})
+			.done(function(link) {
+				featureEditor.dialog.close();
+				featureEditor.insert(link.getPageId());
+			})
+			.fail(function() {
+				featureEditor.bind();
+			});
 	},
 
 	getData: function() {
@@ -36929,7 +36983,8 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 
 	this.defaultOptions = {
 		text: false,
-		remove: false
+		remove: false,
+		external: true
 	};
 
 	this.options = $.extend(this.defaultOptions, options);
@@ -37038,6 +37093,11 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 
 		if ( ! this.options.remove) {
 			this.removeButton.hide();
+		}
+
+		if ( ! this.options.external) {
+			this.external.hide();
+			dialog.contents.find('.ui-tabs-nav li:nth-of-type(2)').hide();
 		}
 
 		this.setupInternal();

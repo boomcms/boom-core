@@ -9,16 +9,16 @@ use Illuminate\Http\Request;
 
 class LogAssetDownload
 {
-	/**
+    /**
 	 *
 	 * @var Auth
 	 */
-	protected $auth;
-	
-	public function __construct(Auth $auth)
-	{
-		$this->auth = $auth;
-	}
+    protected $auth;
+
+    public function __construct(Auth $auth)
+    {
+        $this->auth = $auth;
+    }
 
     /**
      * Handle an incoming request.
@@ -29,23 +29,23 @@ class LogAssetDownload
      */
     public function handle(Request $request, Closure $next)
     {
-		$asset = $request->route()->getParameter('asset');
+        $asset = $request->route()->getParameter('asset');
 
-		if ($asset->loaded() && !$this->auth->loggedIn()) {
-			$ip = ip2long($request->ip());
+        if ($asset->loaded() && !$this->auth->loggedIn()) {
+            $ip = ip2long($request->ip());
 
-			if ( ! AssetDownload::recentlyLogged($asset->getId(), $ip)->count() > 0) {
-				AssetDownload::create([
-					'asset_id' => $asset->getId(),
-					'ip' => $ip,
-					'time' => time(),
-				]);
-				
-				$asset->incrementDownloads();
-			}
-		}
-		
-		return $next($request);
+            if ( ! AssetDownload::recentlyLogged($asset->getId(), $ip)->count() > 0) {
+                AssetDownload::create([
+                    'asset_id' => $asset->getId(),
+                    'ip' => $ip,
+                    'time' => time(),
+                ]);
+
+                $asset->incrementDownloads();
+            }
+        }
+
+        return $next($request);
     }
 
 }

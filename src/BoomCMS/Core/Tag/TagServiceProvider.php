@@ -6,7 +6,7 @@ use Illuminate\Support\ServiceProvider;
 
 class TagServiceProvider extends ServiceProvider
 {
-	protected $deferred = true;
+    protected $deferred = true;
 
     /**
      * Bootstrap any application services.

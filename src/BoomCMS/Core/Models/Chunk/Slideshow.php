@@ -22,10 +22,10 @@ class Slideshow extends BaseChunk
         return $slideshow;
     }
 
-	public function setTitleAttribute($value)
-	{
-		$this->attributes['title'] = strip_tags($value);
-	}
+    public function setTitleAttribute($value)
+    {
+        $this->attributes['title'] = strip_tags($value);
+    }
 
     public function slides()
     {

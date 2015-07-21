@@ -1,2 +1,3 @@
 public/js/* linguist-vendored
 public/css/* linguist-vendored
+src/views/* linguist-language=HTML

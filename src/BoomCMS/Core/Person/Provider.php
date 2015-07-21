@@ -18,11 +18,11 @@ class Provider
 
         return $this->findAndCache($model);
     }
-	
-	public function deleteByIds(array $ids)
-	{
-		Model::destroy($ids);
-	}
+
+    public function deleteByIds(array $ids)
+    {
+        Model::destroy($ids);
+    }
 
     public function findAndCache(Model $model)
     {
@@ -103,8 +103,8 @@ class Provider
         return new Guest();
     }
 
-	public function save(Person $person)
-	{
+    public function save(Person $person)
+    {
         if ($person->loaded()) {
             $model = isset($this->cache[$person->getId()]) ?
                 $this->cache[$person->getId()]
@@ -117,5 +117,5 @@ class Provider
         }
 
         return $person;
-	}
+    }
 }

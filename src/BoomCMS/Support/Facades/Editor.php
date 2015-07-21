@@ -1,13 +1,13 @@
 <?php
 
-namespace BoomCMS\Core\Facades;
+namespace BoomCMS\Support\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
-class URL extends Facade {
-
+class Editor extends Facade
+{
     protected static function getFacadeAccessor()
     {
-        return 'boomcms.url.provider';
+        return 'boomcms.editor';
     }
 }

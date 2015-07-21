@@ -25,7 +25,7 @@
 						<option value="1"<?php if ($person->isEnabled()): ?> selected="selected"<?php endif ?>>Enabled</option>
 					</select>
 				</label>
-				
+
 				<?php if ($auth->getPerson()->isSuperuser() && $auth->getPerson()->getId() != $person->getId()): ?>
 					<label for='person-superuser'>
 						Superuser

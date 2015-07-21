@@ -50,7 +50,7 @@ class PageController extends Controller
 
     public function discard()
     {
-		$this->page->deleteDrafts();
+        $this->page->deleteDrafts();
     }
 
     /**

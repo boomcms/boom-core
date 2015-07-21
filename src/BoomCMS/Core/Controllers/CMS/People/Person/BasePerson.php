@@ -26,20 +26,20 @@ class BasePerson extends PeopleManager
 	 * @var Model_Person
 	 */
     public $editPerson;
-	
-	protected $personProvider;
-	protected $groupProvider;
 
-	public function __construct(Auth $auth,
-		Person\Provider $personProvider,
-		Group\Provider $groupProvider,
-		Request $request
-	) {
-		$this->auth = $auth;
-		$this->personProvider = $personProvider;
-		$this->groupProvider = $groupProvider;
-		$this->request = $request;
-		
-		$this->editPerson = $this->personProvider->findById($this->request->route()->getParameter('id'));
-	}
+    protected $personProvider;
+    protected $groupProvider;
+
+    public function __construct(Auth $auth,
+        Person\Provider $personProvider,
+        Group\Provider $groupProvider,
+        Request $request
+    ) {
+        $this->auth = $auth;
+        $this->personProvider = $personProvider;
+        $this->groupProvider = $groupProvider;
+        $this->request = $request;
+
+        $this->editPerson = $this->personProvider->findById($this->request->route()->getParameter('id'));
+    }
 }

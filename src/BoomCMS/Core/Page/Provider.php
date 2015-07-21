@@ -4,8 +4,6 @@ namespace BoomCMS\Core\Page;
 
 use BoomCMS\Core\Editor\Editor;
 use BoomCMS\Core\Models\Page as Model;
-use BoomCMS\Core\Page\Finder;
-use BoomCMS\Core\Person\Person;
 
 use Illuminate\Support\Facades\App;
 
@@ -55,11 +53,11 @@ class Provider
         return $this->cache(new Page($model->toArray()));
     }
 
-	public function delete(Page $page)
-	{
-		unset($this->cache['id'][$page->getId()]);
-		Model::destroy($page->getId());
-	}
+    public function delete(Page $page)
+    {
+        unset($this->cache['id'][$page->getId()]);
+        Model::destroy($page->getId());
+    }
 
     public function findById($id)
     {
@@ -104,6 +102,14 @@ class Provider
         }
 
         return $this->cache['uri'][$uri];
+    }
+
+    public function findRelatedTo(Page $page)
+    {
+        $finder = new Finder\Finder($this->editor);
+        $finder->addFilter(new Finder\RelatedTo($page));
+
+        return $finder->findAll();
     }
 
     private function findAndCache(Model $model = null)

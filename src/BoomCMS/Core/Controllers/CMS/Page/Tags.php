@@ -5,6 +5,7 @@ namespace BoomCMS\Core\Controllers\CMS\Page;
 use BoomCMS\Core\Auth\Auth;
 use BoomCMS\Core\Controllers\Controller;
 use BoomCMS\Core\Tag;
+use BoomCMS\Support\Facades\Page;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
@@ -16,29 +17,29 @@ class Tags extends Controller
      * @var Auth
      */
     public $auth;
-	
-	/**
+
+    /**
 	 *
 	 * @var Tag\Provider
 	 */
-	protected $provider;
+    protected $provider;
 
     public function __construct(Auth $auth, Request $request, Tag\Provider $provider)
     {
         $this->auth = $auth;
-		$this->request = $request;
-		$this->page = $request->route()->getParameter('page');
-		$this->provider = $provider;
+        $this->request = $request;
+        $this->page = $request->route()->getParameter('page');
+        $this->provider = $provider;
 
         $this->authorization('edit_page', $this->page);
     }
 
     public function add()
     {
-		$tag = $this->provider->findOrCreateByNameAndGroup(
-			$this->request->input('tag'),
-			$this->request->input('group')
-		);
+        $tag = $this->provider->findOrCreateByNameAndGroup(
+            $this->request->input('tag'),
+            $this->request->input('group')
+        );
 
         $this->page->addTag($tag);
     }
@@ -57,12 +58,13 @@ class Tags extends Controller
             'tags' => $tags,
             'freeTags' => isset($freeTags) ? $freeTags : [],
             'groups' => $groupSuggestions,
+            'relatedPages' => Page::findRelatedTo($this->page)
         ]);
     }
 
     public function remove()
     {
-		$tag = $this->provider->byId($this->request->input('tag'));
+        $tag = $this->provider->byId($this->request->input('tag'));
         $this->page->removeTag($tag);
     }
 }

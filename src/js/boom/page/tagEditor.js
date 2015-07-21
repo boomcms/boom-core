@@ -2,6 +2,28 @@ function boomPageTagEditor(page) {
 	this.page = page;
 	this.baseUrl = '/cms/page/tags/';
 
+	boomPageTagEditor.prototype.addRelatedPage = function() {
+		var page = this.page,
+			$relatedPages = this.dialog.find('#pages ul'),
+			dialog = this.dialog;
+
+		new boomLinkPicker(new boomLink(), {
+				external: false
+			})
+			.done(function(link) {
+				page.addRelatedPage(link.getPageId())
+					.done(function() {
+						var $li = $('<li></li>')
+								.append('<span class="title">' + link.getTitle() + '</span>')
+								.append('<span class="uri">' + link.getUrl() + '</span>')
+								.append('<a href="#" class="fa fa-trash-o"><span>Remove</span></a>');
+
+						$relatedPages.append($li);
+						dialog.find('#pages .current').show();
+					});
+			});
+	};
+
 	boomPageTagEditor.prototype.addTag = function(group, tag) {
 		var tagEditor = this;
 
@@ -35,6 +57,12 @@ function boomPageTagEditor(page) {
 
 				tagEditor.addTagGroup($input.val());
 				$input.val('');
+			})
+			.on('click', '#b-tags-addpage', function() {
+				tagEditor.addRelatedPage();
+			})
+			.on('click', '#pages li a', function() {
+				tagEditor.removeRelatedPage($(this));
 			});
 
 		this.initTagList($dialog.find('.b-tags-list'));
@@ -68,6 +96,19 @@ function boomPageTagEditor(page) {
 				tagEditor.bind(tagEditor.dialog);
 			}
 		});
+	};
+
+	boomPageTagEditor.prototype.removeRelatedPage = function($a) {
+		var dialog = this.dialog,
+			$relatedPages = dialog.find('#pages ul'),
+			$current = dialog.find('#pages .current');
+
+		this.page.removeRelatedPage($a.attr('data-page-id'))
+			.done(function() {
+				$a.parent().remove();
+
+				$relatedPages.find('li').length ? $current.show() : $current.hide();
+			});
 	};
 
 	boomPageTagEditor.prototype.removeTag = function($a) {
