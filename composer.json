@@ -3,11 +3,18 @@
 	"description": "BoomCMS basic site",
 	"require": {
 		"davidbarratt/custom-installer": "1.*",
-		"boomcms/boom-core": "3.0.*",
-		"boomcms/boom-installer": "1.0.*",
-                "boomcms/theme-default": "1.0.*",
-		"boomcms/boom-robotstxt": "3.*",
-		"boomcms/boom-sitemap": "3.*"
+		"boomcms/boom-core": ">=3.1",
+		"boomcms/boom-installer": ">=1.0",
+                "boomcms/theme-default": ">=1.1",
+		"boomcms/boom-robotstxt": ">=3.1",
+		"boomcms/boom-sitemap": ">=3.1"
+	},
+	"require-dev": {
+                "boomcms/boom-core": "dev-master as 3.1.0",
+                "boomcms/boom-installer": "dev-master as 1.1",
+                "boomcms/theme-default": "dev-master as 1.1",
+                "boomcms/boom-robotstxt": "dev-master as 3.1",
+                "boomcms/boom-sitemap": "dev-master as 3.1"
 	},
 	"license": "MIT",
 	"authors": [
@@ -24,11 +31,11 @@
 			"storage/boomcms/themes/"	
 		]
 	},
+        "prefer-stable": true,
+        "config": {
+                "preferred-install": "dist"
+        },
 	"minimum-stability": "dev",
-	"prefer-stable": true,
-	"config": {
-		"preferred-install": "dist"
-	},
 	"scripts": {
 		"post-install-cmd": [
 			"php artisan vendor:publish --force",
