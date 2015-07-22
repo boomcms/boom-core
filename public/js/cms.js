@@ -36570,16 +36570,22 @@ $.widget('ui.chunkPageVisibility', {
 
 		editor
 			.done(function(data) {
-				chunk._save(data);
+				if (data.lat != 0 && data.lng != 0) {
+					chunk._save(data);
+				} else {
+					chunk.remove();
+				}
 			})
 			.always(function() {
 				chunk.bind();
 			});
 	}
-});;function boomChunkLocationEditor(page_id, slotname) {
+});
+;function boomChunkLocationEditor(page_id, slotname) {
 	this.page_id = page_id;
 	this.slotname = slotname;
 	this.deferred = new $.Deferred();
+	this.defaultLocation = [51.528837, -0.165653];
 
 	boomChunkLocationEditor.prototype.bind = function() {
 		var locationEditor = this;
@@ -36603,7 +36609,7 @@ $.widget('ui.chunkPageVisibility', {
 				if (locationEditor.marker) {
 					locationEditor.map
 						.removeLayer(locationEditor.marker)
-						.setView(null, 13);
+						.setView(locationEditor.defaultLocation, 13);
 
 					locationEditor.marker = null;
 					locationEditor.element.find('#b-location-remove').hide();
@@ -36660,7 +36666,7 @@ $.widget('ui.chunkPageVisibility', {
 				locationEditor.mapElement = locationEditor.dialog.contents.find('#b-location-map');
 
 				locationEditor.map = L.map(locationEditor.mapElement[0])
-					.setView([51.528837, -0.165653], 13);
+					.setView(locationEditor.defaultLocation, 13);
 
 				locationEditor.element = locationEditor.dialog.contents;
 				locationEditor.bind();
@@ -36706,7 +36712,8 @@ $.widget('ui.chunkPageVisibility', {
 	};
 
 	return this.open();
-};;/**
+};
+;/**
  * TODO: Tell someone off for trying to blank a page title or writing an essay in the title.
  */
 $.widget('boom.pageTitle', $.ui.chunk, {
