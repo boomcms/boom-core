@@ -13,7 +13,6 @@ class AddForeignKeysToChunkFeaturesTable extends Migration
     public function up()
     {
         Schema::table('chunk_features', function (Blueprint $table) {
-            $table->foreign('page_vid', 'chunk_features_ibfk_2')->references('id')->on('page_versions')->onUpdate('CASCADE')->onDelete('CASCADE');
             $table->foreign('page_vid', 'chunk_features_ibfk_1')->references('id')->on('page_versions')->onUpdate('CASCADE')->onDelete('CASCADE');
         });
     }
@@ -26,7 +25,6 @@ class AddForeignKeysToChunkFeaturesTable extends Migration
     public function down()
     {
         Schema::table('chunk_features', function (Blueprint $table) {
-            $table->dropForeign('chunk_features_ibfk_2');
             $table->dropForeign('chunk_features_ibfk_1');
         });
     }
