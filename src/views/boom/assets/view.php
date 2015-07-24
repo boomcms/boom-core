@@ -5,6 +5,7 @@
         <div class="ui-dialog-buttonpane">
             <?= $button('trash-o', Lang::get('Delete'), ['class' => 'b-assets-delete']) ?>
             <?= $button('download', Lang::get('Download'), ['class' => 'b-assets-download']) ?>
+            <?= $button('refresh', Lang::get('Refresh'), ['class' => 'b-assets-replace']) ?>
         </div>
     </div>
 
