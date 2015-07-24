@@ -2,6 +2,17 @@ function boomPageTagEditor(page) {
 	this.page = page;
 	this.baseUrl = '/cms/page/tags/';
 
+	boomPageTagEditor.prototype.addRelatedPage = function() {
+		var page = this.page;
+
+		new boomLinkPicker(new boomLink(), {
+				external: false
+			})
+			.done(function(link) {
+				page.addRelatedPage(link.getPageId());
+			});
+	};
+
 	boomPageTagEditor.prototype.addTag = function(group, tag) {
 		var tagEditor = this;
 
@@ -35,6 +46,9 @@ function boomPageTagEditor(page) {
 
 				tagEditor.addTagGroup($input.val());
 				$input.val('');
+			})
+			.on('click', '#b-tags-addpage', function() {
+				tagEditor.addRelatedPage();
 			});
 
 		this.initTagList($dialog.find('.b-tags-list'));
