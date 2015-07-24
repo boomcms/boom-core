@@ -8,7 +8,7 @@ use BoomCMS\Core\Page;
 
 use Illuminate\Http\Request;
 
-class Tags extends Controller
+class Relations extends Controller
 {
     /**
      *

@@ -1,0 +1,35 @@
+#b-page-relations {
+	padding-left: 0;
+
+	li {
+		list-style-type: none;
+
+		.title {
+			font-weight: bold;
+			vertical-align: top;
+		}
+
+		.uri {
+			margin-left: 1em;
+			font-style: italic;
+			vertical-align: top;
+		}
+
+		a {
+			margin-left: 1em;
+			overflow: hidden;
+			position: relative;
+			color: @lightest-grey;
+			text-decoration: none;
+
+			span {
+				position: absolute;
+				top: -1000%;
+			}
+
+			&:hover, &:focus {
+				color: @red;
+			}
+		}
+	}
+}
