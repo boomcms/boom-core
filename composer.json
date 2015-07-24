@@ -22,7 +22,7 @@
 		"laravel/laravel": "~5.0"
 	},
 	"autoload": {
-		"psr-0": {"BoomCMS\\Core": "src/"}
+		"psr-0": {"BoomCMS": "src/"}
 	},
 	"minimum-stability" : "dev",
 	"prefer-stable": true,
