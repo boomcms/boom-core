@@ -1,9 +1,11 @@
-function boomAssetEditor(asset) {
+function boomAssetEditor(asset, uploader) {
     this.asset = asset;
+    this.uploader = uploader;
 
     boomAssetEditor.prototype.bind = function() {
         var asset = this.asset,
-            dialgo = this.dialog;
+            dialgo = this.dialog,
+            assetEditor = this;
 
         this.dialog.contents
 			.on('click', '.b-assets-delete', function() {
@@ -18,6 +20,12 @@ function boomAssetEditor(asset) {
 				e.preventDefault();
 				asset.download();
 			})
+            .on('click', '.b-assets-replace', function(e) {
+                e.preventDefault();
+
+                assetEditor.uploader.assetUploader('replacesAsset', asset);
+                assetEditor.uploader.show();
+            })
 			.on('focus', '#thumbnail', function() {
 				var $this = $(this);
 
@@ -56,6 +64,8 @@ function boomAssetEditor(asset) {
                     new boomNotification("Asset details saved");
                 });
         });
+
+        this.bind();
 
         return this.dialog;
     };

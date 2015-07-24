@@ -7,6 +7,7 @@ use DateTime;
 
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Facades\DB;
+use Symfony\Component\HttpFoundation\File\UploadedFile as File;
 use Rych\ByteSize\ByteSize;
 
 abstract class Asset implements Arrayable
@@ -213,6 +214,30 @@ abstract class Asset implements Arrayable
     public function loaded()
     {
         return $this->getId() > 0;
+    }
+
+    public function replaceWith(File $file)
+    {
+        $this->setAttributesFromFile($file);
+        $file->move(static::directory(), $this->getId());
+    }
+
+    public function setAttributesFromFile(File $file)
+    {
+        $this
+            ->setTitle($file->getClientOriginalName())
+            ->setFilename($file->getClientOriginalName())
+            ->setFilesize($file->getClientSize());
+
+        if ($this->isImage()) {
+            list($width, $height) = getimagesize($file->getRealPath());
+
+            $this
+                ->setWidth($width)
+                ->setHeight($height);
+        }
+
+        return $this;
     }
 
     /**

@@ -62,7 +62,7 @@ class AssetManager extends Controller
 
         if (count($assets) === 1) {
             return Response::download(
-				$assets[0]->getFilename(), 
+				$assets[0]->getFilename(),
 				$assets[0]->getOriginalFilename()
 			);
         } else {
@@ -153,6 +153,18 @@ class AssetManager extends Controller
         return View::make($this->viewPrefix . 'picker');
     }
 
+    public function replace(Asset\Asset $asset)
+    {
+        foreach ($this->request->file() as $files) {
+            foreach ($files as $i => $file) {
+                $asset->replaceWith($file);
+                $this->provider->save($asset);
+
+                return [$asset->getId()];
+            }
+        }
+    }
+
     public function restore()
     {
         $timestamp = $this->request->query('timestamp');
@@ -208,18 +220,9 @@ class AssetManager extends Controller
                 $asset
                     ->setUploadedTime(new DateTime('@' . time()))
                     ->setUploadedBy($this->auth->getPerson())
-                    ->setLastModified($now)
-                    ->setTitle($file->getClientOriginalName())
-                    ->setFilename($file->getClientOriginalName())
-                    ->setFilesize($file->getClientSize());
+                    ->setLastModified($now);
 
-                if ($asset->isImage()) {
-                    list($width, $height) = getimagesize($file->getRealPath());
-
-                    $asset
-                        ->setWidth($width)
-                        ->setHeight($height);
-                }
+                $asset->setAttributesFromFile($file);
 
                 $asset_ids[] = $this->provider->save($asset)->getId();
                 $file->move(Asset\Asset::directory(), $asset->getId());

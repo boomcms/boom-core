@@ -37281,12 +37281,14 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 	boomAsset.prototype.save = function(data) {
 		return $.post(this.base_url + 'save/' + this.id, data);
 	};
-};;function boomAssetEditor(asset) {
+};;function boomAssetEditor(asset, uploader) {
     this.asset = asset;
+    this.uploader = uploader;
 
     boomAssetEditor.prototype.bind = function() {
         var asset = this.asset,
-            dialgo = this.dialog;
+            dialgo = this.dialog,
+            assetEditor = this;
 
         this.dialog.contents
 			.on('click', '.b-assets-delete', function() {
@@ -37301,6 +37303,12 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 				e.preventDefault();
 				asset.download();
 			})
+            .on('click', '.b-assets-replace', function(e) {
+                e.preventDefault();
+
+                assetEditor.uploader.assetUploader('replacesAsset', asset);
+                assetEditor.uploader.show();
+            })
 			.on('focus', '#thumbnail', function() {
 				var $this = $(this);
 
@@ -37339,6 +37347,8 @@ $.widget('boom.pageTitle', $.ui.chunk, {
                     new boomNotification("Asset details saved");
                 });
         });
+
+        this.bind();
 
         return this.dialog;
     };
@@ -37600,7 +37610,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 	viewAsset : function(assetId) {
 		var assetManager = this;
 
-		new boomAssetEditor(new boomAsset(assetId))
+		new boomAssetEditor(new boomAsset(assetId), assetManager.uploader)
 			.done(function() {
 				assetManager.getAssets();
 			});
@@ -37928,6 +37938,27 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 		this.dropArea.find('p.message').html(message);
 	},
 
+	/**
+	 * Make the uploader replace an existing asset rather than upload a new asset.
+	 */
+	replacesAsset: function(asset) {
+		var assetUploader = this,
+			originalOptions = this.uploadForm.fileupload('option');
+
+		this.uploadForm.fileupload('option', {
+			url: '/cms/assets/replace/' + asset.id,
+			singleFileUploads: true,
+			done: function(e, data) {
+				assetUploader.uploadForm.fileupload('option', originalOptions);
+				assetUploader.uploadFinished(e, data);
+			},
+			fail: function(e, data) {
+				assetUploader.uploadForm.fileupload('option', originalOptions);
+				assetUploader.uploadFailed(e, data);
+			}
+		});
+	},
+
 	resizeDropArea : function() {
 		this.options.dropAreaHeight && this.dropArea.height(this.options.dropAreaHeight);
 	},
@@ -37970,7 +38001,8 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 
 		this._trigger('start', e, data);
 	}
-});;$.widget('boom.justifyAssets', {
+});
+;$.widget('boom.justifyAssets', {
 	$el : null,
 	targetRightOffset : null,
 	windowWidth : null,

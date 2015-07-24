@@ -80,6 +80,27 @@ $.widget('boom.assetUploader', {
 		this.dropArea.find('p.message').html(message);
 	},
 
+	/**
+	 * Make the uploader replace an existing asset rather than upload a new asset.
+	 */
+	replacesAsset: function(asset) {
+		var assetUploader = this,
+			originalOptions = this.uploadForm.fileupload('option');
+
+		this.uploadForm.fileupload('option', {
+			url: '/cms/assets/replace/' + asset.id,
+			singleFileUploads: true,
+			done: function(e, data) {
+				assetUploader.uploadForm.fileupload('option', originalOptions);
+				assetUploader.uploadFinished(e, data);
+			},
+			fail: function(e, data) {
+				assetUploader.uploadForm.fileupload('option', originalOptions);
+				assetUploader.uploadFailed(e, data);
+			}
+		});
+	},
+
 	resizeDropArea : function() {
 		this.options.dropAreaHeight && this.dropArea.height(this.options.dropAreaHeight);
 	},
