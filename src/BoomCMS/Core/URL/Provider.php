@@ -8,8 +8,10 @@ class Provider
 {
     public function create($location, $pageId, $isPrimary = false)
     {
+        $unique = Helpers::makeUnique(Helpers::sanitise($location));
+
         $model = Model::create([
-            'location' => Helpers::sanitise($location),
+            'location' => $unique,
             'page_id' => $pageId,
             'is_primary' => $isPrimary
         ]);
