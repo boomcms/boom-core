@@ -2,19 +2,19 @@
     <section>
         <label id="b-linkset-title">
                 <p>Linkset title</p>
-                <input type="text" name="title" value="<?= $title ?>" />
+                <input type="text" name="title" value="<?= $chunk->getTitle() ?>" />
         </label>
 
         <div id="b-linkset-links">
             <h1>All links</h1>
 
             <ul>
-                <?php foreach ($links as $link): ?>
+                <?php foreach ($chunk->getLinks() as $link): ?>
                     <li><a class="b-linkset-link" href='#' data-page-id="<?= $link->getTargetPageId() ?>" data-url="<?= $link->getUrl() ?>" data-title="<?= $link->getTitle() ?>" data-asset="<?= $link->getAssetId() ?>"><?= $link->getTitle() ?></a></li>
                 <?php endforeach ?>
             </ul>
 
-            <?php if (! count($links)): ?>
+            <?php if (! count($chunk->getLinks())): ?>
                 <p class="none">This linkset does not contain any links.</p>
             <?php endif ?>
         </div>

@@ -10,7 +10,7 @@
 
 						<p>
 							<strong>Type</strong> <?= $asset->getType() ?><br />
-							<strong>Description</strong> <?= ($asset->getDescription()) ?$asset->getDescription() : 'None set' ?><br />
+							<strong>Description</strong> <?= ($asset->getDescription()) ? $asset->getDescription() : 'None set' ?><br />
 
 							<?php if ($asset->getDownloads()) : ?>
 								<strong>Downloads</strong> <?= $asset->getDownloads() ?><br />

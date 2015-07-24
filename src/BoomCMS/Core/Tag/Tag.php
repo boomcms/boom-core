@@ -23,11 +23,11 @@ class Tag
 
         return $this;
     }
-	
-	public function get($key)
-	{
-		return isset($this->attrs[$key]) ? $this->attrs[$key] : null;
-	}
+
+    public function get($key)
+    {
+        return isset($this->attrs[$key]) ? $this->attrs[$key] : null;
+    }
 
     public function getGroup()
     {

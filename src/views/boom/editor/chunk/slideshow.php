@@ -11,7 +11,7 @@
         </ul>
 
         <ol id="b-slideshow-editor-slides">
-            <?php foreach ($slides as $slide): ?>
+            <?php foreach ($chunk->getSlides() as $slide): ?>
                 <?php $link = $slide->getLink() ?>
                 <li>
                     <label>

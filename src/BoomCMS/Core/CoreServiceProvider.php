@@ -2,9 +2,6 @@
 
 namespace BoomCMS\Core;
 
-use BoomCMS\Core\Asset;
-use BoomCMS\Core\Page;
-
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Routing\Router;
 
@@ -21,15 +18,15 @@ class CoreServiceProvider extends ServiceProvider
     {
         $this->loadViewsFrom(__DIR__ . '/../../views/boom', 'boom');
         $this->loadViewsFrom(__DIR__ . '/../../views/chunks', 'boomcms.chunks');
-		$this->loadTranslationsFrom(__DIR__ . '/../../lang', 'boom');
+        $this->loadTranslationsFrom(__DIR__ . '/../../lang', 'boom');
 
         $router->pattern('asset', '[0-9]+');
-        $router->bind('asset', function($assetId) use ($assetProvider) {
+        $router->bind('asset', function ($assetId) use ($assetProvider) {
             return $assetProvider->findById($assetId);
         });
 
         $router->pattern('page', '[0-9]+');
-        $router->bind('page', function($pageId) use ($pageProvider) {
+        $router->bind('page', function ($pageId) use ($pageProvider) {
             $page = $pageProvider->findById($pageId);
 
             if ( !$page->loaded()) {
@@ -40,9 +37,9 @@ class CoreServiceProvider extends ServiceProvider
         });
 
         $this->publishes([
-			__DIR__ . '/../../../public' => public_path('vendor/boomcms/boom-core'),
-			__DIR__ . '/../../database/migrations' => base_path('/migrations/boomcms'),
-		], 'boomcms');
+            __DIR__ . '/../../../public' => public_path('vendor/boomcms/boom-core'),
+            __DIR__ . '/../../database/migrations' => base_path('/migrations/boomcms'),
+        ], 'boomcms');
 
         include __DIR__ . '/../../routes.php';
     }

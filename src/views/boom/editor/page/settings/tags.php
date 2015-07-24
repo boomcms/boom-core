@@ -6,16 +6,16 @@
 
     <section id="free">
 	<ul class="b-tags-list" data-group="">
-            <?php foreach ($freeTags as $tag): ?>
-                <?= new BoomCMS\Core\UI\Tag($tag) ?>
-            <?php endforeach ?>
+        <?php foreach ($freeTags as $tag): ?>
+            <?= new BoomCMS\Core\UI\Tag($tag) ?>
+        <?php endforeach ?>
 
-            <li class="b-tag">
-                <form class="b-tags-add">
-                    <input type="text" value="" class="b-tags-add-name" />
-                    <?= $button('plus', 'Add tag') ?>
-                </form>
-            </li>
+        <li class="b-tag">
+            <form class="b-tags-add">
+                <input type="text" value="" class="b-tags-add-name" />
+                <?= $button('plus', 'Add tag') ?>
+            </form>
+        </li>
 	</ul>
     </section>
 

@@ -51,8 +51,8 @@ class InstallTemplates extends Command
 
                 $this->info("Installed $template in theme $theme");
             }
-			
-			$this->call('vendor:publish', ['--force']);
+
+            $this->call('vendor:publish', ['--force']);
         } else {
             $this->info('No templates to install');
         }

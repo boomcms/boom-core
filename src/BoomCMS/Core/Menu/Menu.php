@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Core\Menu;
 
-use BoomCMS\Core\Facades\Auth;
+use BoomCMS\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\View;
 
@@ -43,14 +43,14 @@ class Menu
 
     public function render()
     {
-		$this->menuItems = Config::get('boomcms.menu');
+        $this->menuItems = Config::get('boomcms.menu');
         $this->filterItems();
         $this->sort('priority');
 
         if ( ! empty($this->menuItems)) {
             return View::make($this->viewFilename, [
-				'items' => $this->menuItems
-			])->render();
+                'items' => $this->menuItems
+            ])->render();
         }
     }
 

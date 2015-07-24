@@ -61,9 +61,9 @@ class Auth
 
     /**
      *
-     * @param  type                  $email
-     * @param  type                  $password
-     * @param  type                  $remember
+     * @param  type                     $email
+     * @param  type                     $password
+     * @param  type                     $remember
      * @return Person\Person
      * @throws PersonNotFoundException
      * @throws PersonSuspendedException
@@ -89,9 +89,9 @@ class Auth
         return $person;
     }
 
-	public function autoLogin(Request $request)
-	{
-		$token = $request->cookie($this->getAutoLoginCookie());
+    public function autoLogin(Request $request)
+    {
+        $token = $request->cookie($this->getAutoLoginCookie());
 
         if ($token) {
             list($personId, $token) = explode('-', $token);
@@ -105,7 +105,7 @@ class Auth
         }
 
         return false;
-	}
+    }
 
     public function getAutoLoginCookie()
     {
@@ -125,14 +125,14 @@ class Auth
         return $this->person;
     }
 
-	/**
+    /**
 	 *
 	 * @return Person\Provider
 	 */
-	public function getProvider()
-	{
-		return $this->personProvider;
-	}
+    public function getProvider()
+    {
+        return $this->personProvider;
+    }
 
     public function getSessionKey()
     {
@@ -164,7 +164,7 @@ class Auth
         $this->session->set($this->getSessionKey(), $person->getId());
 
         if ($remember) {
-			$this->refreshRememberLoginToken($person);
+            $this->refreshRememberLoginToken($person);
             $this->rememberLogin($person);
         }
     }
@@ -187,7 +187,7 @@ class Auth
 
     public function logout()
     {
-		$this->refreshRememberLoginToken($this->getPerson());
+        $this->refreshRememberLoginToken($this->getPerson());
 
         $this->session->remove($this->getSessionKey());
         Cookie::queue(Cookie::forget($this->getAutoLoginCookie()));
@@ -197,20 +197,20 @@ class Auth
         return $this;
     }
 
-	public function refreshRememberLoginToken(Person\Person $person)
-	{
-		if ($person->loaded()) {
-			$token = str_random(60);
-			$person->setRememberToken($token);
-			$this->personProvider->save($person);
-		}
+    public function refreshRememberLoginToken(Person\Person $person)
+    {
+        if ($person->loaded()) {
+            $token = str_random(60);
+            $person->setRememberToken($token);
+            $this->personProvider->save($person);
+        }
 
-		return $this;
-	}
+        return $this;
+    }
 
     public function rememberLogin(Person\Person $person)
     {
-		$value = $person->getId() . '-' . $person->getRememberToken();
+        $value = $person->getId() . '-' . $person->getRememberToken();
 
         Cookie::queue(Cookie::forever($this->getAutoLoginCookie(), $value));
     }

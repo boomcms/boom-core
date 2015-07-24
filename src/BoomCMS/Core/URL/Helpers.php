@@ -51,10 +51,10 @@ abstract class Helpers
         return $result === null;
     }
 
-	public static function makeRelative($url)
-	{
-		return ($base = Request::getHttpHost()) ? str_replace(Request::getScheme() . $base, '/', $url) : $url;
-	}
+    public static function makeRelative($url)
+    {
+        return ($base = Request::getHttpHost()) ? str_replace(Request::getScheme() . $base, '/', $url) : $url;
+    }
 
     /**
 	 * Increments a numeric suffix until the URL is unique
@@ -86,10 +86,10 @@ abstract class Helpers
         $url = parse_url($url, PHP_URL_PATH);        // Make sure it doesn't contain a hostname
         $url = preg_replace('|/+|', '/', $url);        // Remove duplicate forward slashes.
 
-		if ($url !== '/') {
-			// Remove trailing or preceeding slashes
-			$url = trim($url, '/');
-		}
+        if ($url !== '/') {
+            // Remove trailing or preceeding slashes
+            $url = trim($url, '/');
+        }
 
         $url = preg_replace('|[^'.preg_quote('-').'\/\pL\pN\s]+|u', '', $url); // Remove all characters that are not a hypeh, letters, numbers, or forward slash
         $url = preg_replace('|['.preg_quote('-').'\s]+|u', '-', $url); // Replace all hypens and whitespace by a single hyphen

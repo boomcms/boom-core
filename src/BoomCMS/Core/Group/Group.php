@@ -35,12 +35,12 @@ class Group
     {
         if ( ! $this->hasRole($roleId, $pageId)) {
             DB::table('group_roles')
-				->insert([
-					'group_id' => $this->getId(),
-					'role_id' => $roleId,
-					'allowed' => $allowed,
-					'page_id' => $pageId
-				]);
+                ->insert([
+                    'group_id' => $this->getId(),
+                    'role_id' => $roleId,
+                    'allowed' => $allowed,
+                    'page_id' => $pageId
+                ]);
 
             $select = DB::table('people_groups')
                 ->select('person_id', 'group_id', DB::raw($roleId), DB::raw($allowed), DB::raw($pageId))
@@ -73,10 +73,10 @@ class Group
     public function getRoles($pageId = 0)
     {
         return DB::table('group_roles')
-			->select('role_id', 'allowed')
+            ->select('role_id', 'allowed')
             ->where('group_id', '=', $this->getId())
             ->where('page_id', '=', $pageId)
-			->get();
+            ->get();
     }
 
     /**
@@ -117,10 +117,10 @@ class Group
 	 */
     public function removeRole($roleId)
     {
-		DB::table('group_roles')
-			->where('group_id', '=', $this->getId())
-			->where('role_id', '=', $roleId)
-			->delete();
+        DB::table('group_roles')
+            ->where('group_id', '=', $this->getId())
+            ->where('role_id', '=', $roleId)
+            ->delete();
 
         // Remove the role from people in this group.
         DB::table('people_roles')

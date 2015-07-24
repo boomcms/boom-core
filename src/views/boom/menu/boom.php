@@ -3,7 +3,7 @@
 	<ul>
 		<?php foreach ($items as $item): ?>
 			<li>
-				<a target='_top' href='<?= $item['url'] ?>'><?= Lang::get($item['title']) ?></a>
+				<a target='_top' href='<?= $item['url'] ?>'<?php if (isset($item['icon'])): ?> class="fa fa-2x fa-<?= $item['icon'] ?>"<?php endif ?>><?= Lang::get($item['title']) ?></a>
 			</li>
 		<?php endforeach ?>
 	</ul>

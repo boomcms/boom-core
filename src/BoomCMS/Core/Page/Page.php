@@ -9,10 +9,10 @@ use BoomCMS\Core\URL\URL;
 use BoomCMS\Core\Models\Page\URL as URLModel;
 use BoomCMS\Core\Models\Page\Version as VersionModel;
 
-use BoomCMS\Core\Facades\Asset;
-use BoomCMS\Core\Facades\Chunk;
-use BoomCMS\Core\Facades\Page as PageFacade;
-use BoomCMS\Core\Facades\Auth;
+use BoomCMS\Support\Facades\Asset;
+use BoomCMS\Support\Facades\Chunk;
+use BoomCMS\Support\Facades\Page as PageFacade;
+use BoomCMS\Support\Facades\Auth;
 
 use Illuminate\Support\Facades\DB;
 
@@ -83,13 +83,13 @@ class Page
 
     public function addTag(Tag\Tag $tag)
     {
-		if ($this->loaded() && $tag->loaded()) {
-			DB::table('pages_tags')
-				->insert([
-					'page_id' => $this->getId(),
-					'tag_id' => $tag->getId()
-				]);
-		}
+        if ($this->loaded() && $tag->loaded()) {
+            DB::table('pages_tags')
+                ->insert([
+                    'page_id' => $this->getId(),
+                    'tag_id' => $tag->getId()
+                ]);
+        }
 
         return $this;
     }
@@ -103,7 +103,7 @@ class Page
         $attrs = array_merge($attrs, [
             'page_id' => $this->getId(),
             'edited_by' => Auth::getPerson()->getId(),
-			'edited_time' => time(),
+            'edited_time' => time(),
         ]);
 
         // If the embargo time of the new version is in the past, set the embargo time to null
@@ -115,7 +115,7 @@ class Page
 
         $this->currentVersion = new Version(VersionModel::create($attrs)->toArray());
 
-		return $this->currentVersion;
+        return $this->currentVersion;
     }
 
     public function allowsExternalIndexing()
@@ -146,19 +146,19 @@ class Page
         return $finder->count();
     }
 
-	public function deleteDrafts()
-	{
-		DB::table('page_versions')
-			->where('page_id', '=', $this->getId())
-			->where(function($query) {
-				$query
-					->whereNull('embargoed_until')
-					->orWhere('embargoed_until', '>', time());
-			})
-			->where('edited_time', '>', $this->getLastPublishedTime()->getTimestamp())
+    public function deleteDrafts()
+    {
+        DB::table('page_versions')
+            ->where('page_id', '=', $this->getId())
+            ->where(function ($query) {
+                $query
+                    ->whereNull('embargoed_until')
+                    ->orWhere('embargoed_until', '>', time());
+            })
+            ->where('edited_time', '>', $this->getLastPublishedTime()->getTimestamp())
             ->where('stashed', '=', false)
-			->delete();
-	}
+            ->delete();
+    }
 
     public function get($key)
     {
@@ -198,8 +198,8 @@ class Page
         if ($this->currentVersion === null) {
             if ($this->loaded()) {
                 $version = VersionModel::forPage($this)
-					->latestAvailable()
-					->first();
+                    ->latestAvailable()
+                    ->first();
 
                 if ($version) {
                     $this->currentVersion = new Version($version->toArray());
@@ -300,14 +300,14 @@ class Page
         return $this->getCurrentVersion()->getEditedTime();
     }
 
-	public function getLastPublishedTime()
-	{
-		$m = VersionModel::forPage($this)
-			->lastPublished()
-			->first();
+    public function getLastPublishedTime()
+    {
+        $m = VersionModel::forPage($this)
+            ->lastPublished()
+            ->first();
 
-		return new DateTime('@' . $m['embargoed_until']);
-	}
+        return new DateTime('@' . $m['embargoed_until']);
+    }
 
     public function getManualOrderPosition()
     {
@@ -333,7 +333,7 @@ class Page
         return $this->get('parent_id');
     }
 
-	public function getTags()
+    public function getTags()
     {
         $finder = new Tag\Finder\Finder();
         $finder->addFilter(new Tag\Finder\AppliedToPage($this));
@@ -341,7 +341,7 @@ class Page
         return $finder->setOrderBy('name', 'asc')->findAll();
     }
 
-	public function getTagsInGroup($group)
+    public function getTagsInGroup($group)
     {
         $finder = new Tag\Finder\Finder();
         $finder->addFilter(new Tag\Finder\AppliedToPage($this));
@@ -467,12 +467,12 @@ class Page
 
     public function removeTag(Tag\Tag $tag)
     {
-		if ($this->loaded() && $tag->loaded()) {
-			DB::table('pages_tags')
-				->where('page_id', '=', $this->getId())
-				->where('tag_id', '=', $tag->getId())
-				->delete();
-		}
+        if ($this->loaded() && $tag->loaded()) {
+            DB::table('pages_tags')
+                ->where('page_id', '=', $this->getId())
+                ->where('tag_id', '=', $tag->getId())
+                ->delete();
+        }
 
         return $this;
     }
@@ -590,19 +590,19 @@ class Page
         return $this;
     }
 
-	public function setEmbargoTime($embargoed_until)
-	{
-		DB::table('page_versions')
-			->where('page_id', '=', $this->getId())
-			->where('embargoed_until', '>', time())
-			->update(['published' => false]);
+    public function setEmbargoTime($embargoed_until)
+    {
+        DB::table('page_versions')
+            ->where('page_id', '=', $this->getId())
+            ->where('embargoed_until', '>', time())
+            ->update(['published' => false]);
 
-		$this->addVersion([
-			'pending_approval' => false,
-			'published' => true,
-			'embargoed_until' => $embargoed_until,
-		]);
-	}
+        $this->addVersion([
+            'pending_approval' => false,
+            'published' => true,
+            'embargoed_until' => $embargoed_until,
+        ]);
+    }
 
     /**
 	 *
@@ -751,11 +751,11 @@ class Page
 
             // Only update the sequence of pages which are children of this page.
             if ($page->getParentId() == $this->getId()) {
-				DB::table('pages')
-					->where('id', '=', $pageId)
-					->update([
-						'sequence' => $sequence
-					]);
+                DB::table('pages')
+                    ->where('id', '=', $pageId)
+                    ->update([
+                        'sequence' => $sequence
+                    ]);
             }
         }
 

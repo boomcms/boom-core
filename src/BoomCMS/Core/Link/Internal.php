@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Core\Link;
 
-use BoomCMS\Core\Facades\Page;
+use BoomCMS\Support\Facades\Page;
 
 class Internal extends Link
 {

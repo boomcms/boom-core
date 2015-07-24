@@ -33,7 +33,7 @@ class Templates extends Controller
     {
         $this->auth = $auth;
         $this->provider = $provider;
-		$this->request = $request;
+        $this->request = $request;
 
         $this->authorization('manage_templates');
     }
@@ -57,42 +57,42 @@ class Templates extends Controller
         if ( ! $template->loaded()) {
             throw new NotFoundHttpException();
         }
-		
-		$finder = new Page\Finder\Finder();
-		$finder->addFilter(new Page\Finder\Template($template));
-		$pages = $finder->findAll();
 
-		if ($this->request->route()->getParameter('format') === 'csv') {
-			$headers = [
-				'Content-type'        => 'text/csv',
-				'Content-Disposition' => "attachment; filename=pages_with_template_{$template->getFilename()}.csv",
-			];
-			
-			$callback = function() use ($pages) {
-				$fh = fopen('php://output', 'w');
-				
-				fputcsv($fh, ['Title', 'URL', 'Visible?', 'Last edited']);
+        $finder = new Page\Finder\Finder();
+        $finder->addFilter(new Page\Finder\Template($template));
+        $pages = $finder->findAll();
 
-				foreach ($pages as $p) {
-					$data = [
-						'title' => $p->getTitle(),
-						'url' => (string) $p->url(),
-						'visible' => $p->isVisible() ? 'Yes' : 'No',
-						'last_edited' => $p->getLastModified()->format('Y-m-d H:i:s'),
-					];
+        if ($this->request->route()->getParameter('format') === 'csv') {
+            $headers = [
+                'Content-type'        => 'text/csv',
+                'Content-Disposition' => "attachment; filename=pages_with_template_{$template->getFilename()}.csv",
+            ];
 
-					fputcsv($fh, $data);
-				}
+            $callback = function () use ($pages) {
+                $fh = fopen('php://output', 'w');
 
-				fclose($fh);
-			};
-			
-			return Response::stream($callback, 200, $headers);
-		} else {
-			return View::make($this->viewPrefix . '.pages', [
-				'pages' => $pages,
-			]);
-		}
+                fputcsv($fh, ['Title', 'URL', 'Visible?', 'Last edited']);
+
+                foreach ($pages as $p) {
+                    $data = [
+                        'title' => $p->getTitle(),
+                        'url' => (string) $p->url(),
+                        'visible' => $p->isVisible() ? 'Yes' : 'No',
+                        'last_edited' => $p->getLastModified()->format('Y-m-d H:i:s'),
+                    ];
+
+                    fputcsv($fh, $data);
+                }
+
+                fclose($fh);
+            };
+
+            return Response::stream($callback, 200, $headers);
+        } else {
+            return View::make($this->viewPrefix . '.pages', [
+                'pages' => $pages,
+            ]);
+        }
     }
 
     public function save(Request $request)

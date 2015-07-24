@@ -61,7 +61,7 @@ class Asset extends BaseChunk
 
     public function getCaption()
     {
-        return isset($this->attrs['caption'])? $this->attrs['caption'] : '';
+        return isset($this->attrs['caption']) ? $this->attrs['caption'] : '';
     }
 
     public function getLink()

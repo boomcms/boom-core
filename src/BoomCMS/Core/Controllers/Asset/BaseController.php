@@ -21,7 +21,7 @@ abstract class BaseController extends Controller
     {
         $this->auth = $auth;
         $this->asset = $asset;
-		$this->response = new Response();
+        $this->response = new Response();
     }
 
     public function download()
@@ -37,7 +37,7 @@ abstract class BaseController extends Controller
         $viewPrefix = 'boom::assets.embed.';
         $assetType = strtolower(class_basename($this));
 
-        $viewName = View::exists($viewPrefix . $assetType)?
+        $viewName = View::exists($viewPrefix . $assetType) ?
             $viewPrefix . $assetType :
             $viewPrefix . 'default';
 

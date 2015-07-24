@@ -1,11 +1,11 @@
 <?php
 
-namespace BoomCMS\Core\Facades;
+namespace BoomCMS\Support\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
-class Asset extends Facade {
-
+class Asset extends Facade
+{
     protected static function getFacadeAccessor()
     {
         return 'boomcms.asset.provider';

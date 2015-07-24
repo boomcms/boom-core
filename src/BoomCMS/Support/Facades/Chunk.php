@@ -1,13 +1,13 @@
 <?php
 
-namespace BoomCMS\Core\Facades;
+namespace BoomCMS\Support\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
-class Tag extends Facade {
-
+class Chunk extends Facade
+{
     protected static function getFacadeAccessor()
     {
-        return 'boomcms.tag.provider';
+        return 'boomcms.chunk';
     }
 }

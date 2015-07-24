@@ -17,18 +17,18 @@ class BaseController extends Controller
      * @var Group\Group
      */
     public $group;
-	
-	/**
+
+    /**
 	 *
 	 * @var Group\Provider;
 	 */
-	protected $provider;
+    protected $provider;
 
     public function __construct(Auth $auth, Group\Provider $provider, Request $request)
     {
-		$this->auth = $auth;
-		$this->provider = $provider;
-		$this->request = $request;
+        $this->auth = $auth;
+        $this->provider = $provider;
+        $this->request = $request;
 
         $this->authorization('manage_people');
         $this->group = $this->provider->findById($this->request->route()->getParameter('id'));

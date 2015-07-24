@@ -3,9 +3,9 @@
 use BoomCMS\Core\Page\Page;
 use BoomCMS\Core\Chunk\Text;
 
-use BoomCMS\Core\Facades\Asset;
-use BoomCMS\Core\Facades\Chunk;
-use BoomCMS\Core\Facades\Page as PageFacade;
+use BoomCMS\Support\Facades\Asset;
+use BoomCMS\Support\Facades\Chunk;
+use BoomCMS\Support\Facades\Page as PageFacade;
 
 use Illuminate\Support\Facades\DB;
 

@@ -1,7 +1,6 @@
 <?php
 
 use BoomCMS\Core\Asset;
-use BoomCMS\Core\Exception;
 
 class Controller_Cms_Assets_Upload extends Controller_Cms_Assets
 {

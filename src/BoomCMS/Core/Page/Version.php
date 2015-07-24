@@ -36,25 +36,25 @@ class Version
 
     public function getEditedTime()
     {
-        return $this->attrs['edited_time']?
+        return $this->attrs['edited_time'] ?
             new DateTime('@' . $this->attrs['edited_time'])
             : null;
     }
 
-	public function getEmbargoedUntil()
-	{
-		return $this->get('embargoed_until');
-	}
+    public function getEmbargoedUntil()
+    {
+        return $this->get('embargoed_until');
+    }
 
     public function getId()
     {
         return $this->get('id');
     }
 
-	public function getPageId()
-	{
-		return $this->get('page_id');
-	}
+    public function getPageId()
+    {
+        return $this->get('page_id');
+    }
 
     public function getStatus()
     {

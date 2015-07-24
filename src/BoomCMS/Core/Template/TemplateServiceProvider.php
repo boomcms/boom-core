@@ -3,7 +3,6 @@
 namespace BoomCMS\Core\Template;
 
 use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Filesystem;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -26,13 +25,13 @@ class TemplateServiceProvider extends ServiceProvider
     {
         $this->themes = $this->manager->findInstalledThemes();
 
-        foreach($this->themes as $theme) {
+        foreach ($this->themes as $theme) {
             $config = $theme->getConfigDirectory() . DIRECTORY_SEPARATOR . 'themes.php';
 
             file_exists($config) && $this->mergeConfigFrom($config, 'boomcms.themes');
         }
 
-        foreach($this->themes as $theme) {
+        foreach ($this->themes as $theme) {
             $views = $theme->getViewDirectory();
             $public = $theme->getPublicDirectory();
             $routes = $theme->getDirectory() . DIRECTORY_SEPARATOR . 'routes.php';
@@ -41,10 +40,10 @@ class TemplateServiceProvider extends ServiceProvider
             $this->loadViewsFrom($views . '/chunks', 'boomcms.chunks');
 
             $this->publishes([
-				$public => public_path('vendor/boomcms/themes/' . $theme),
-				$theme->getDirectory() . '/migrations/' => base_path('/migrations/boomcms'),
-			], $theme->getName());
-			
+                $public => public_path('vendor/boomcms/themes/' . $theme),
+                $theme->getDirectory() . '/migrations/' => base_path('/migrations/boomcms'),
+            ], $theme->getName());
+
             if (file_exists($routes)) {
                 include $routes;
             }
@@ -83,11 +82,11 @@ class TemplateServiceProvider extends ServiceProvider
         $provider = new Provider();
         $this->manager = $manager = new Manager($this->app['files'], $provider, false);
 
-        $this->app->singleton('boomcms.template.provider', function ($app) use($provider) {
+        $this->app->singleton('boomcms.template.provider', function ($app) use ($provider) {
             return $provider;
         });
 
-        $this->app->singleton('boomcms.template.manager', function ($app) use($manager) {
+        $this->app->singleton('boomcms.template.manager', function ($app) use ($manager) {
             return $manager;
         });
     }
