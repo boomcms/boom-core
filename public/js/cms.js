@@ -37281,7 +37281,71 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 	boomAsset.prototype.save = function(data) {
 		return $.post(this.base_url + 'save/' + this.id, data);
 	};
-};;$.widget('boom.assetManager', {
+};;function boomAssetEditor(asset) {
+    this.asset = asset;
+
+    boomAssetEditor.prototype.bind = function() {
+        var asset = this.asset,
+            dialgo = this.dialog;
+
+        this.dialog.contents
+			.on('click', '.b-assets-delete', function() {
+				asset
+					.delete()
+					.done(function() {
+						dialog.close();
+						assetManager.getAssets();
+					});
+			})
+			.on('click', '.b-assets-download', function(e) {
+				e.preventDefault();
+				asset.download();
+			})
+			.on('focus', '#thumbnail', function() {
+				var $this = $(this);
+
+				new boomAssetPicker($this.val())
+					.done(function(assetId) {
+						$this.val(assetId);
+					});
+			});
+    };
+
+    boomAssetEditor.prototype.open = function() {
+        var assetEditor = this;
+
+        this.dialog = new boomDialog({
+			title : 'Edit Asset',
+			url : '/cms/assets/view/' + assetEditor.asset.id,
+			width: document.documentElement.clientWidth >= 1000? '1000px' : '100%',
+			closeButton: false,
+			saveButton: true,
+			onLoad : function() {
+				assetEditor.dialog.contents
+					.find('#b-tags')
+					.assetTagSearch({
+						addTag: function(e, tag) {
+							assetEditor.asset.addTag(tag);
+						},
+						removeTag: function(e, tag) {
+							assetEditor.asset.removeTag(tag);
+						}
+					});
+			}
+		}).done(function() {
+            assetEditor.asset
+                .save(assetEditor.dialog.contents.find('form').serialize())
+                .done(function() {
+                    new boomNotification("Asset details saved");
+                });
+        });
+
+        return this.dialog;
+    };
+
+    return this.open();
+};
+;$.widget('boom.assetManager', {
 	baseUrl : '/cms/assets/',
 	listUrl : '/cms/assets/get',
 	postData : {
@@ -37534,60 +37598,15 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 	},
 
 	viewAsset : function(assetId) {
-		var asset = new boomAsset(assetId),
-			assetManager = this,
-			dialog;
+		var assetManager = this;
 
-		dialog = new boomDialog({
-			title : 'Edit Asset',
-			url : this.baseUrl + 'view/' + assetId,
-			width: document.documentElement.clientWidth >= 1000? '1000px' : '100%',
-			closeButton: false,
-			saveButton: true,
-			onLoad : function() {
-				dialog.contents
-					.find('#b-tags')
-					.assetTagSearch({
-						addTag : function(e, tag) {
-							asset.addTag(tag);
-						},
-						removeTag : function(e, tag) {
-							asset.removeTag(tag);
-						}
-					});
-			}
-		})
-		.done(function() {
-			asset
-				.save(dialog.contents.find('form').serialize())
-				.done(function() {
-					new boomNotification("Asset details saved");
-				});
-		});
-
-		dialog.contents
-			.on('click', '.b-assets-delete', function() {
-				asset
-					.delete()
-					.done(function() {
-						dialog.close();
-						assetManager.getAssets();
-					});
-			})
-			.on('click', '.b-assets-download', function(e) {
-				e.preventDefault();
-				asset.download();
-			})
-			.on('focus', '#thumbnail', function() {
-				var $this = $(this),
-					picker;
-				picker = new boomAssetPicker($this.val())
-					.done(function(assetId) {
-						$this.val(assetId);
-					});
+		new boomAssetEditor(new boomAsset(assetId))
+			.done(function() {
+				assetManager.getAssets();
 			});
 	}
-});;function boomAssetPicker(currentAssetId, filters) {
+});
+;function boomAssetPicker(currentAssetId, filters) {
 	this.currentAssetId = currentAssetId? currentAssetId : 0;
 	this.deferred = new $.Deferred();
 	this.document = $(document);

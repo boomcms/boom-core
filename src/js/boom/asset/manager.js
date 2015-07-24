@@ -251,57 +251,11 @@ $.widget('boom.assetManager', {
 	},
 
 	viewAsset : function(assetId) {
-		var asset = new boomAsset(assetId),
-			assetManager = this,
-			dialog;
+		var assetManager = this;
 
-		dialog = new boomDialog({
-			title : 'Edit Asset',
-			url : this.baseUrl + 'view/' + assetId,
-			width: document.documentElement.clientWidth >= 1000? '1000px' : '100%',
-			closeButton: false,
-			saveButton: true,
-			onLoad : function() {
-				dialog.contents
-					.find('#b-tags')
-					.assetTagSearch({
-						addTag : function(e, tag) {
-							asset.addTag(tag);
-						},
-						removeTag : function(e, tag) {
-							asset.removeTag(tag);
-						}
-					});
-			}
-		})
-		.done(function() {
-			asset
-				.save(dialog.contents.find('form').serialize())
-				.done(function() {
-					new boomNotification("Asset details saved");
-				});
-		});
-
-		dialog.contents
-			.on('click', '.b-assets-delete', function() {
-				asset
-					.delete()
-					.done(function() {
-						dialog.close();
-						assetManager.getAssets();
-					});
-			})
-			.on('click', '.b-assets-download', function(e) {
-				e.preventDefault();
-				asset.download();
-			})
-			.on('focus', '#thumbnail', function() {
-				var $this = $(this),
-					picker;
-				picker = new boomAssetPicker($this.val())
-					.done(function(assetId) {
-						$this.val(assetId);
-					});
+		new boomAssetEditor(new boomAsset(assetId))
+			.done(function() {
+				assetManager.getAssets();
 			});
 	}
 });

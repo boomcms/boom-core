@@ -97,6 +97,7 @@ module.exports = function(grunt) {
 					'src/js/boom/link/picker.js',
 					'src/js/boom/template/manager.js',
 					'src/js/boom/asset/asset.js',
+					'src/js/boom/asset/editor.js',
 					'src/js/boom/asset/manager.js',
 					'src/js/boom/asset/picker.js',
 					'src/js/boom/asset/titleFilter.js',
