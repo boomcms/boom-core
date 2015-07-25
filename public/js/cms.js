@@ -34717,7 +34717,8 @@ $.widget('boom.pageTree', {
 	};
 
 	return this.open();
-};$.widget('boom.pageTagSearch',  {
+}
+;$.widget('boom.pageTagSearch',  {
 	tags : [],
 
 	addTag : function(tag) {
@@ -36638,7 +36639,7 @@ $.widget('ui.chunkPageVisibility', {
 	boomChunkLocationEditor.prototype.bind = function() {
 		var locationEditor = this;
 
-		L.tileLayer( 'http://{s}.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.png', {
+		L.tileLayer('http://{s}.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.png', {
 			attribution: '&copy; <a href="http://osm.org/copyright" title="OpenStreetMap" target="_blank">OpenStreetMap</a> contributors | Tiles Courtesy of <a href="http://www.mapquest.com/" title="MapQuest" target="_blank">MapQuest</a> <img src="http://developer.mapquest.com/content/osm/mq_logo.png" width="16" height="16">',
 			subdomains: ['otile1','otile2','otile3','otile4']
 		}).addTo(this.map);
@@ -36694,7 +36695,7 @@ $.widget('ui.chunkPageVisibility', {
 	};
 
 	boomChunkLocationEditor.prototype.geocode = function(location) {
-		return $.get('http://nominatim.openstreetmap.org/search', {
+		return $.get('//nominatim.openstreetmap.org/search', {
 			q: location,
 			format: 'json'
 		});
@@ -36760,7 +36761,8 @@ $.widget('ui.chunkPageVisibility', {
 	};
 
 	return this.open();
-};;/**
+};
+;/**
  * TODO: Tell someone off for trying to blank a page title or writing an essay in the title.
  */
 $.widget('boom.pageTitle', $.ui.chunk, {
