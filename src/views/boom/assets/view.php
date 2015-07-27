@@ -1,6 +1,6 @@
 <div id="b-assets-view">
     <div class="b-assets-preview">
-        <img src="<?= $assetURL(['asset' => $asset->getId(), 'action' => 'thumb', 'height' => 300]) ?>">
+        <img src="<?= $assetURL(['asset' => $asset, 'action' => 'thumb', 'height' => 300]) ?>">
 
         <div class="ui-dialog-buttonpane">
             <?= $button('trash-o', Lang::get('Delete'), ['class' => 'b-assets-delete']) ?>
@@ -84,7 +84,7 @@
                     <?php foreach ($asset->getOldFiles() as $timestamp => $filename): ?>
                         <li>
                             <a href="/cms/assets/restore/<?= $asset->getId() ?>?timestamp=<?= $timestamp ?>">
-                                <img src="<?= $assetURL(['asset' => $asset->getId(), 'action' => 'crop', 'width' => 160, 'height' => 160]) ?><?php if ($timestamp): ?>?timestamp=<?= $timestamp ?><?php endif ?>" />
+                                <img src="<?= $assetURL(['asset' => $asset, 'action' => 'crop', 'width' => 160, 'height' => 160]) ?><?php if ($timestamp): ?>?timestamp=<?= $timestamp ?><?php endif ?>" />
                             </a>
                             <?= date("d F Y H:i", $timestamp) ?>
                         </li>

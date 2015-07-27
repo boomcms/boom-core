@@ -5,7 +5,7 @@ use BoomCMS\Core\Tag;
 
 return [
     'viewHelpers' => [
-        'assetURL' => function(array $params) {	
+        'assetURL' => function(array $params) {
 			if (isset($params['asset']) && is_object($params['asset'])) {
 				$params['asset'] = $params['asset']->getId();
 			}

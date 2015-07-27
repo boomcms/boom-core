@@ -37287,7 +37287,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 
     boomAssetEditor.prototype.bind = function() {
         var asset = this.asset,
-            dialgo = this.dialog,
+            dialog = this.dialog,
             assetEditor = this;
 
         this.dialog.contents
@@ -37304,9 +37304,19 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 				asset.download();
 			})
             .on('click', '.b-assets-replace', function(e) {
+                var originalDone = assetEditor.uploader.assetUploader('option', 'done');
                 e.preventDefault();
 
                 assetEditor.uploader.assetUploader('replacesAsset', asset);
+                assetEditor.uploader.assetUploader('option', 'done', function(e, data) {
+                    var $img = dialog.contents.find('img');
+
+                    $img.attr("src", $img.attr('src') + '?' + new Date().getTime());
+                    originalDone(e, data);
+
+                    assetEditor.uploader.assetUploader('option', 'done', originalDone);
+                });
+
                 assetEditor.uploader.show();
             })
 			.on('focus', '#thumbnail', function() {
@@ -37373,7 +37383,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 		var assetManager = this;
 
 		assetManager.getAssets();
-		assetManager.uploader.hide();
+		assetManager.uploader.assetUploader('close');
 	},
 
 	bind : function() {
@@ -37897,6 +37907,11 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 		});
 	},
 
+	close: function() {
+		this.reset();
+		this.element.hide();
+	},
+
 	_create : function() {
 		this.cancelButton = this.element.find('#b-assets-upload-cancel');
 		this.dropArea = this.element.find('#b-assets-upload-container');
@@ -37963,6 +37978,13 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 		this.options.dropAreaHeight && this.dropArea.height(this.options.dropAreaHeight);
 	},
 
+	reset: function() {
+		this.progressBar.progressbar('destroy');
+		this.uploadForm.fileupload('destroy');
+		this.initUploader();
+		this.dropArea.find('p.message').html('');
+	},
+
 	updateProgressBar : function(e, percentComplete) {
 		this.progressBar.progressbar('value', percentComplete);
 
@@ -37987,7 +38009,6 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 
 	uploadFinished : function(e, data) {
 		this.notify("File upload completed");
-		this.progressBar.progressbar('destroy');
 		this.cancelButton.hide();
 
 		this._trigger('done', e, data);

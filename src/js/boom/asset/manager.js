@@ -16,7 +16,7 @@ $.widget('boom.assetManager', {
 		var assetManager = this;
 
 		assetManager.getAssets();
-		assetManager.uploader.hide();
+		assetManager.uploader.assetUploader('close');
 	},
 
 	bind : function() {

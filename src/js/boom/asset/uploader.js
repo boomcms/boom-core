@@ -39,6 +39,11 @@ $.widget('boom.assetUploader', {
 		});
 	},
 
+	close: function() {
+		this.reset();
+		this.element.hide();
+	},
+
 	_create : function() {
 		this.cancelButton = this.element.find('#b-assets-upload-cancel');
 		this.dropArea = this.element.find('#b-assets-upload-container');
@@ -105,6 +110,13 @@ $.widget('boom.assetUploader', {
 		this.options.dropAreaHeight && this.dropArea.height(this.options.dropAreaHeight);
 	},
 
+	reset: function() {
+		this.progressBar.progressbar('destroy');
+		this.uploadForm.fileupload('destroy');
+		this.initUploader();
+		this.dropArea.find('p.message').html('');
+	},
+
 	updateProgressBar : function(e, percentComplete) {
 		this.progressBar.progressbar('value', percentComplete);
 
@@ -129,7 +141,6 @@ $.widget('boom.assetUploader', {
 
 	uploadFinished : function(e, data) {
 		this.notify("File upload completed");
-		this.progressBar.progressbar('destroy');
 		this.cancelButton.hide();
 
 		this._trigger('done', e, data);

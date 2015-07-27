@@ -4,7 +4,7 @@ function boomAssetEditor(asset, uploader) {
 
     boomAssetEditor.prototype.bind = function() {
         var asset = this.asset,
-            dialgo = this.dialog,
+            dialog = this.dialog,
             assetEditor = this;
 
         this.dialog.contents
@@ -21,9 +21,19 @@ function boomAssetEditor(asset, uploader) {
 				asset.download();
 			})
             .on('click', '.b-assets-replace', function(e) {
+                var originalDone = assetEditor.uploader.assetUploader('option', 'done');
                 e.preventDefault();
 
                 assetEditor.uploader.assetUploader('replacesAsset', asset);
+                assetEditor.uploader.assetUploader('option', 'done', function(e, data) {
+                    var $img = dialog.contents.find('img');
+
+                    $img.attr("src", $img.attr('src') + '?' + new Date().getTime());
+                    originalDone(e, data);
+
+                    assetEditor.uploader.assetUploader('option', 'done', originalDone);
+                });
+
                 assetEditor.uploader.show();
             })
 			.on('focus', '#thumbnail', function() {
