@@ -3,6 +3,7 @@
 namespace BoomCMS\Core\Asset;
 
 use BoomCMS\Core\Person;
+use BoomCMS\Support\Facades\Auth;
 use DateTime;
 
 use Illuminate\Contracts\Support\Arrayable;
@@ -216,18 +217,14 @@ abstract class Asset implements Arrayable
         return $this->getId() > 0;
     }
 
-    public function replaceWith(File $file)
-    {
-        $this->setAttributesFromFile($file);
-        $file->move(static::directory(), $this->getId());
-    }
-
-    public function setAttributesFromFile(File $file)
+    public function createVersionFromFile(File $file)
     {
         $this
             ->setTitle($file->getClientOriginalName())
             ->setFilename($file->getClientOriginalName())
-            ->setFilesize($file->getClientSize());
+            ->setFilesize($file->getClientSize())
+            ->setEditedAt(time())
+            ->setEditorBy(Auth::getPerson()->getId());
 
         if ($this->isImage()) {
             list($width, $height) = getimagesize($file->getRealPath());
@@ -236,6 +233,8 @@ abstract class Asset implements Arrayable
                 ->setWidth($width)
                 ->setHeight($height);
         }
+
+        $file->move(static::directory(), $versionId);
 
         return $this;
     }

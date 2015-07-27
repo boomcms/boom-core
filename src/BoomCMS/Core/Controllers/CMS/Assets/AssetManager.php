@@ -157,7 +157,7 @@ class AssetManager extends Controller
     {
         foreach ($this->request->file() as $files) {
             foreach ($files as $i => $file) {
-                $asset->replaceWith($file);
+                $asset->createVersionFromFile($file);
                 $this->provider->save($asset);
 
                 return [$asset->getId()];
@@ -219,13 +219,11 @@ class AssetManager extends Controller
                 $asset = Asset\Asset::factory(['type' => $mime->getType()]);
                 $asset
                     ->setUploadedTime(new DateTime('@' . time()))
-                    ->setUploadedBy($this->auth->getPerson())
-                    ->setLastModified($now);
-
-                $asset->setAttributesFromFile($file);
+                    ->setUploadedBy($this->auth->getPerson());
 
                 $asset_ids[] = $this->provider->save($asset)->getId();
-                $file->move(Asset\Asset::directory(), $asset->getId());
+
+                $asset->createVersionFromFile($file);
             }
 
             if (count($errors)) {

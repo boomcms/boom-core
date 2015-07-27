@@ -16,14 +16,21 @@ class Finder extends BaseFinder
 
     public function __construct()
     {
-        $this->query = new Model();
+        $this->query = new Model()->withLatestVersion();
+    }
+
+    protected function createFrom(Model $model)
+    {
+        $attrs = $model->toArray();
+
+        return Asset::factory($attrs);
     }
 
     public function find()
     {
         $model = parent::find();
 
-        return Asset::factory($model->toArray());
+        return $this->createFrom($model);
     }
 
     public function findAll()
@@ -32,7 +39,7 @@ class Finder extends BaseFinder
         $assets = [];
 
         foreach ($models as $m) {
-            $assets[] = Asset::factory($m->toArray());
+            $assets[] = $this->createFrom($m);
         }
 
         return $assets;
