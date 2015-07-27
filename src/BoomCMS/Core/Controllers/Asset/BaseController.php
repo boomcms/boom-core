@@ -27,8 +27,8 @@ abstract class BaseController extends Controller
     public function download()
     {
 		return response()->download(
-			$this->asset->getOriginalFilename(),
-			$this->asset->getFilename()
+			$this->asset->getFilename(),
+			$this->asset->getOriginalFilename()
 		);
     }
 
