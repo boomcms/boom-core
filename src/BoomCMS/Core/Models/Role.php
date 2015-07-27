@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class Role extends Model
 {
     protected $table = 'roles';
+    public $guarded = ['id'];
+    public $timestamps = false;
 
     public function scopeGetGeneralRoles($query)
     {

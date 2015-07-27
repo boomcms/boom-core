@@ -1,4 +1,4 @@
-/**
+	/**
 * @class
 * @name boomPage
 */
@@ -32,15 +32,15 @@ function boomPage(page_id) {
 
 	boomPage.prototype.delete = function() {
 		var promise = new $.Deferred(),
-			page_id = this.id;
+			url = this.baseUrl + 'delete/' + this.id;
 
 		new boomDialog({
 			width: 600,
-			url: this.baseUrl + 'delete/' + page_id,
+			url: url,
 			title: 'Please confirm',
 			id: 'b-page-confirmdelete'
 		}).done(function() {
-			$.post(this.baseUrl + 'delete/' + page_id, {}, function(response) {
+			$.post(url, {}, function(response) {
 				promise.resolve(response);
 			});
 		});

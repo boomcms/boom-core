@@ -5,7 +5,11 @@ $.widget('ui.chunkLocation', $.ui.chunk, {
 
 		editor
 			.done(function(data) {
-				chunk._save(data);
+				if (data.lat != 0 && data.lng != 0) {
+					chunk._save(data);
+				} else {
+					chunk.remove();
+				}
 			})
 			.always(function() {
 				chunk.bind();
