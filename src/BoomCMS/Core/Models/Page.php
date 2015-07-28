@@ -157,6 +157,13 @@ class Page extends Model
         return $query->whereNotNull('primary_uri');
     }
 
+    public function setInternalNameAttribute($value)
+    {
+        $value = strtolower(preg_replace('|[^-_0-9a-zA-Z]|', '', $value));
+
+        $this->attributes['internal_name'] = $value ? $value : null;
+    }
+
     public function setPrimaryUriAttribute($value)
     {
         $this->attributes['primary_uri'] = URLHelper::sanitise($value);

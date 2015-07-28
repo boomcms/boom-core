@@ -2,6 +2,7 @@ function boomChunkLocationEditor(page_id, slotname) {
 	this.page_id = page_id;
 	this.slotname = slotname;
 	this.deferred = new $.Deferred();
+	this.defaultLocation = [51.528837, -0.165653];
 
 	boomChunkLocationEditor.prototype.bind = function() {
 		var locationEditor = this;
@@ -25,7 +26,7 @@ function boomChunkLocationEditor(page_id, slotname) {
 				if (locationEditor.marker) {
 					locationEditor.map
 						.removeLayer(locationEditor.marker)
-						.setView(null, 13);
+						.setView(locationEditor.defaultLocation, 13);
 
 					locationEditor.marker = null;
 					locationEditor.element.find('#b-location-remove').hide();
@@ -82,7 +83,7 @@ function boomChunkLocationEditor(page_id, slotname) {
 				locationEditor.mapElement = locationEditor.dialog.contents.find('#b-location-map');
 
 				locationEditor.map = L.map(locationEditor.mapElement[0])
-					.setView([51.528837, -0.165653], 13);
+					.setView(locationEditor.defaultLocation, 13);
 
 				locationEditor.element = locationEditor.dialog.contents;
 				locationEditor.bind();

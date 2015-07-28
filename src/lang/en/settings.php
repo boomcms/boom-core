@@ -1,6 +1,9 @@
 <?php
 
 return [
+    'admin' => [
+        'disable_delete' => 'Prevent this page from being deleted?',
+    ],
     'tags' => [
         'pages' => [
             'intro' => "<p>You can other pages as being related to this page.</p>
@@ -9,5 +12,5 @@ return [
             'add' => 'Add related page',
             'current' => 'Current page relationships:',
         ],
-    ]
+    ],
 ];

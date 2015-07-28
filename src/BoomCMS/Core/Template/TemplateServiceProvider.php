@@ -35,14 +35,22 @@ class TemplateServiceProvider extends ServiceProvider
             $views = $theme->getViewDirectory();
             $public = $theme->getPublicDirectory();
             $routes = $theme->getDirectory() . DIRECTORY_SEPARATOR . 'routes.php';
+            $migrations = $theme->getDirectory() . '/migrations/';
 
             $this->loadViewsFrom($views, $theme->getName());
             $this->loadViewsFrom($views . '/chunks', 'boomcms.chunks');
 
-            $this->publishes([
-                $public => public_path('vendor/boomcms/themes/' . $theme),
-                $theme->getDirectory() . '/migrations/' => base_path('/migrations/boomcms'),
-            ], $theme->getName());
+            if (file_exists($public)) {
+                $this->publishes([
+                    $public => public_path('vendor/boomcms/themes/' . $theme)
+                ], $theme->getName());
+            }
+
+            if (file_exists($migrations)) {
+                $this->publishes([
+                    $migrations => base_path('/migrations/boomcms')
+                ], $theme->getName());
+            }
 
             if (file_exists($routes)) {
                 include $routes;
