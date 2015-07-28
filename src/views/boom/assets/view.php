@@ -15,9 +15,9 @@
             <li><a href="#b-assets-view-attributes"><?= Lang::get('Attributes') ?></a></li>
             <li><a href="#b-tags"><?= Lang::get('Tags') ?></a></li>
 
-            <?php if (count($asset->getOldFiles()) > 0): ?>
+            <?php /*if (count($asset->getOldFiles()) > 0): ?>
                 <li><a href="#b-assets-view-files"><?= Lang::get('Previous Files') ?></a></li>
-            <?php endif ?>
+            <?php endif*/ ?>
         </ul>
 
         <div id="b-assets-view-attributes">
@@ -75,7 +75,7 @@
 
         <?= View::make('boom::assets.tags', ['tags' => $asset->getTags()]) ?>
 
-        <?php if (count($asset->getOldFiles()) > 0): ?>
+        <?php /*if (count($asset->getOldFiles()) > 0): ?>
             <div id="b-assets-view-files">
                 <p>
                     These files were previously assigned to this asset but were replaced.
@@ -91,6 +91,6 @@
                     <?php endforeach ?>
                 </ul>
             </div>
-        <?php endif ?>
+        <?php endif */ ?>
     </div>
 </div>

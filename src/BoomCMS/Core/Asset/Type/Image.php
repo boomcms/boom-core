@@ -30,28 +30,4 @@ class Image extends Asset
     {
         return true;
     }
-
-    /**
-	 *
-	 * @param int $height
-	 * @return \Boom\Asset\Type\Image
-	 */
-    public function setHeight($height)
-    {
-        $this->attributes['height'] = $height;
-
-        return $this;
-    }
-
-    /**
-	 *
-	 * @param int $width
-	 * @return \Boom\Asset\Type\Image
-	 */
-    public function setWidth($width)
-    {
-        $this->attributes['width'] = $width;
-
-        return $this;
-    }
 }

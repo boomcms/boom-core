@@ -10,7 +10,7 @@ class Provider
 
     public function findById($id)
     {
-        return $this->findAndCache(Model::find($id));
+        return $this->findAndCache(Model::withLatestVersion()->find($id));
     }
 
     public static function createFromType($type)

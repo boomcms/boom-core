@@ -12,16 +12,21 @@ class Asset extends Model
 
     public function versions()
     {
-        return $this->hasMany('BoomCMS\Core\Asset\Version');
+        return $this->hasMany('BoomCMS\Core\Models\Asset\Version');
     }
 
     public function scopeWithLatestVersion($query)
     {
-        return $query->with(['versions' => function($query) {
-            $query
-                ->leftJoin('asset_versions as av2', 'av2.asset_id', '=', 'asset.id')
-                ->where('av2.id', '>', 'asset_versions.id')
-                ->whereNull('av2.id');
-        }]);
+        return $query
+            ->select('version.*')
+            ->addSelect('version.id as version:id')
+            ->addSelect('assets.*')
+            ->join('asset_versions as version', 'assets.id', '=', 'version.asset_id')
+            ->leftJoin('asset_versions as av2', function($query) {
+                $query
+                    ->on('av2.asset_id', '=', 'version.asset_id')
+                    ->on('av2.id', '>', 'version.id');
+            })
+            ->whereNull('av2.id');
     }
 }

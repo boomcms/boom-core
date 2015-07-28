@@ -16,43 +16,30 @@ class CreateAssetVersionsTable extends Migration
     {
         Schema::create('asset_versions', function (Blueprint $table) {
             $table->increments('id');
-            $table
-                ->integer('asset_id')
-                ->unsigned()
-                ->references('id')
-                ->on('assets')
-                ->onUpdate('CASCADE')
-                ->onDelete('CASCADE');
-
+            $table->integer('asset_id')->unsigned();
             $table->smallInteger('width')->unsigned()->nullable();
             $table->smallInteger('height')->unsigned()->nullable();
             $table->string('filename', 150);
-            $table->string('type', 100)->nullable()->index('asset_v_type');
-            $table->integer('filesize')->unsigned()->nullable()->default(0)->index('asset_versions_filesize_desc');
-            $table->integer('duration')->unsigned()->nullable();
-            $table->integer('created_at')->unsigned()->nullable();
-            $table->integer('created_by')
+            $table->string('type', 100)->nullable()->index('asset_versions_type');
+            $table->integer('filesize')->unsigned()->nullable()->default(0)->index('asset_versions_filesize');
+            $table->integer('edited_at')->unsigned()->nullable();
+            $table->integer('edited_by')
                 ->unsigned()
                 ->nullable()
                 ->references('id')
                 ->on('people')
                 ->onUpdate('CASCADE')
                 ->onDelete('set null');
+
+            $table
+                ->foreign('asset_id')
+                ->references('id')
+                ->on('assets')
+                ->onUpdate('CASCADE')
+                ->onDelete('CASCADE');
         });
 
-        foreach (Asset::all() as $asset) {
-            Asset\Version::create([
-                'asset_id' => $asset->id,
-                'width' => $asset->width,
-                'height' => $asset->height,
-                'filename' => $asset->filename,
-                'type' => $asset->type,
-                'filesize' => $asset->filesize,
-                'duration' => $asset->duration,
-                'created_at' => $asset->uploaded_time,
-                'created_by' => $asset->uploaded_by
-            ]);
-        }
+        DB::statement('insert into asset_versions (id, asset_id, width, height, filename, type, filesize, edited_at, edited_by) select id, id, width, height, filename, type, filesize, uploaded_time, uploaded_by from assets');
 
         Schema::table('assets', function($table) {
             $table->dropColumn('width');
@@ -63,8 +50,6 @@ class CreateAssetVersionsTable extends Migration
             $table->dropColumn('duration');
             $table->dropColumn('last_modified');
         });
-
-        DB::statement('update asset_versions inner join assets on asset_id = assets.id set asset_versions.id = assets.id');            
     }
 
     /**

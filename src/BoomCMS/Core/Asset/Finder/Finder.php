@@ -12,11 +12,16 @@ class Finder extends BaseFinder
 	 *
 	 * @var array
 	 */
-    protected $_allowedOrderByColumns = ['last_modified', 'title', 'downloads', 'filesize', 'uploaded_time'];
+    protected $allowedOrderByColumns = ['last_modified', 'title', 'downloads', 'filesize', 'uploaded_time'];
+
+    protected $orderByAliases = [
+        'last_modified' => 'version.edited_at',
+        'filesize' => 'version.filesize',
+    ];
 
     public function __construct()
     {
-        $this->query = new Model()->withLatestVersion();
+        $this->query = (new Model())->withLatestVersion();
     }
 
     protected function createFrom(Model $model)
@@ -47,7 +52,11 @@ class Finder extends BaseFinder
 
     public function setOrderBy($field, $direction = null)
     {
-        in_array($field, $this->_allowedOrderByColumns) || $field = 'title';
+        in_array($field, $this->allowedOrderByColumns) || $field = 'title';
+
+        if (isset($this->orderByAliases[$field])) {
+            $field = $this->orderByAliases[$field];
+        }
 
         return parent::setOrderBy($field, $direction);
     }

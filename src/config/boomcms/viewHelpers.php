@@ -7,6 +7,7 @@ return [
     'viewHelpers' => [
         'assetURL' => function(array $params) {
 			if (isset($params['asset']) && is_object($params['asset'])) {
+                $asset = $params['asset'];
 				$params['asset'] = $params['asset']->getId();
 			}
 
@@ -18,7 +19,13 @@ return [
                 $params['width'] = 0;
             }
 
-            return route('asset', $params);
+            $url = route('asset', $params);
+
+            if (isset($asset)) {
+                $url .= '?' . $asset->getLastModified()->getTimestamp();
+            }
+
+            return $url;
         },
 		'countPages' => function(array $params) {
 			return (new Page\Query($params))->countPages();

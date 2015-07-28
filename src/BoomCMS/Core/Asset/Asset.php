@@ -3,6 +3,8 @@
 namespace BoomCMS\Core\Asset;
 
 use BoomCMS\Core\Person;
+use BoomCMS\Core\Models\Asset\Version as VersionModel;
+use BoomCMS\Core\Asset\Mimetype\Mimetype;
 use BoomCMS\Support\Facades\Auth;
 use DateTime;
 
@@ -17,15 +19,25 @@ abstract class Asset implements Arrayable
      *
      * @var array
      */
-    protected $attributes;
-
-    protected $old_files = [];
+    protected $attrs;
 
     protected $tags;
 
-    public function __construct(array $attributes)
+    protected $versionColumns = [
+        'asset_id' => '',
+        'width' => '',
+        'height' => '',
+        'type' => '',
+        'filesize' => '',
+        'filename' => '',
+        'edited_at' => '',
+        'edited_by' => '',
+        'version:id' => '',
+    ];
+
+    public function __construct(array $attrs)
     {
-        $this->attributes = $attributes;
+        $this->attrs = $attrs;
     }
 
     public static function directory()
@@ -33,12 +45,12 @@ abstract class Asset implements Arrayable
         return storage_path() . '/boomcms/assets';
     }
 
-    public static function factory(array $attributes)
+    public static function factory(array $attrs)
     {
-        $type = Type::numericTypeToClass($attributes['type']) ?: 'Invalid';
+        $type = Type::numericTypeToClass($attrs['type']) ?: 'Invalid';
         $classname = "BoomCMS\Core\Asset\Type\\" . $type;
 
-        return new $classname($attributes);
+        return new $classname($attrs);
     }
 
     public function exists()
@@ -48,7 +60,7 @@ abstract class Asset implements Arrayable
 
     public function get($key)
     {
-        return isset($this->attributes[$key]) ? $this->attributes[$key] : null;
+        return isset($this->attrs[$key]) ? $this->attrs[$key] : null;
     }
 
     public function getAspectRatio()
@@ -59,15 +71,6 @@ abstract class Asset implements Arrayable
     public function getCredits()
     {
         return $this->get('credits');
-    }
-
-    /**
-	 *
-	 * @return string
-	 */
-    public function getExtension()
-    {
-        return $this->getMimetype()->getExtension();
     }
 
     public function getDescription()
@@ -84,9 +87,18 @@ abstract class Asset implements Arrayable
 	 *
 	 * @return string
 	 */
+    public function getExtension()
+    {
+        return $this->getMimetype()->getExtension();
+    }
+
+    /**
+	 *
+	 * @return string
+	 */
     public function getFilename()
     {
-        return static::directory() . DIRECTORY_SEPARATOR . $this->getId();
+        return static::directory() . DIRECTORY_SEPARATOR . $this->getLatestVersionId();
     }
 
     public function getFilesize()
@@ -106,7 +118,12 @@ abstract class Asset implements Arrayable
 
     public function getLastModified()
     {
-        return new DateTime('@' . $this->get('last_modified'));
+        return new DateTime('@' . $this->get('edited_at'));
+    }
+
+    public function getLatestVersionId()
+    {
+        return $this->get('version:id');
     }
 
     public function getMimetype()
@@ -116,39 +133,8 @@ abstract class Asset implements Arrayable
             $mime = finfo_file($finfo, $this->getFilename());
             finfo_close($finfo);
 
-            return Mimetype\Mimetype::factory($mime);
+            return Mimetype::factory($mime);
         }
-    }
-
-    /**
-	 * Returns an array of old files which have been replaced.
-	 * Where an asset has been replaced the array will contain the names of the backup files for the previous versions.
-	 *
-	 * @return	array
-	 */
-    public function getOldFiles()
-    {
-        // If the asset doesn't exist return an empty array.
-        if ( ! $this->loaded()) {
-            return [];
-        }
-
-        if ($this->old_files === null) {
-            // Add files for previous versions of the asset.
-            // Wrap the glob in array_reverse() so that we end up with an array with the most recent first.
-            foreach (new OldFilesIterator($this) as $file) {
-                // Get the version ID out of the filename.
-                preg_match('/' . $this->id . '.(\d+).bak$/', $file->getFilename(), $matches);
-
-                if (isset($matches[1])) {
-                    $this->old_files[$matches[1]] = $file;
-                } else {
-                    $this->old_files[] = $file;
-                }
-            }
-        }
-
-        return $this->old_files;
     }
 
     public function getOriginalFilename()
@@ -219,22 +205,24 @@ abstract class Asset implements Arrayable
 
     public function createVersionFromFile(File $file)
     {
-        $this
-            ->setTitle($file->getClientOriginalName())
-            ->setFilename($file->getClientOriginalName())
-            ->setFilesize($file->getClientSize())
-            ->setEditedAt(time())
-            ->setEditorBy(Auth::getPerson()->getId());
-
-        if ($this->isImage()) {
-            list($width, $height) = getimagesize($file->getRealPath());
-
-            $this
-                ->setWidth($width)
-                ->setHeight($height);
+        if ( ! $this->getTitle()) {
+            $this->setTitle($file->getClientOriginalName());
         }
 
-        $file->move(static::directory(), $versionId);
+        list($width, $height) = getimagesize($file->getRealPath());
+
+        $version = VersionModel::create([
+            'asset_id' => $this->getId(),
+            'filesize' => $file->getClientSize(),
+            'filename' => $file->getClientOriginalName(),
+            'width' => $width,
+            'height' => $height,
+            'edited_at' => time(),
+            'edited_by' => Auth::getPerson()->getId(),
+            'type' => Mimetype::factory($file->getMimeType())->getType(),
+        ]);
+
+        $file->move(static::directory(), $version->id);
 
         return $this;
     }
@@ -246,7 +234,7 @@ abstract class Asset implements Arrayable
 	 */
     public function setCredits($credits)
     {
-        $this->attributes['credits'] = $credits;
+        $this->attrs['credits'] = $credits;
 
         return $this;
     }
@@ -258,31 +246,7 @@ abstract class Asset implements Arrayable
 	 */
     public function setDescription($description)
     {
-        $this->attributes['description'] = $description;
-
-        return $this;
-    }
-
-    /**
-	 *
-	 * @param string $filename
-	 * @return \Boom\Asset\Asset
-	 */
-    public function setFilename($filename)
-    {
-        $this->attributes['filename'] = $filename;
-
-        return $this;
-    }
-
-    /**
-	 *
-	 * @param float $size
-	 * @return \Boom\Asset\Asset
-	 */
-    public function setFilesize($size)
-    {
-        $this->attributes['filesize'] = $size;
+        $this->attrs['description'] = $description;
 
         return $this;
     }
@@ -290,20 +254,8 @@ abstract class Asset implements Arrayable
     public function setId($id)
     {
         if ( !$this->getId()) {
-            $this->attributes['id'] = $id;
+            $this->attrs['id'] = $id;
         }
-
-        return $this;
-    }
-
-    /**
-	 *
-	 * @param DateTime $time
-	 * @return \Boom\Asset\Asset
-	 */
-    public function setLastModified(DateTime $time)
-    {
-        $this->attributes['last_modified'] = $time->getTimestamp();
 
         return $this;
     }
@@ -315,7 +267,7 @@ abstract class Asset implements Arrayable
 	 */
     public function setThumbnailAssetId($assetId)
     {
-        $this->attributes['thumbnail_asset_id'] = $assetId;
+        $this->attrs['thumbnail_asset_id'] = $assetId;
 
         return $this;
     }
@@ -327,7 +279,7 @@ abstract class Asset implements Arrayable
 	 */
     public function setTitle($title)
     {
-        $this->attributes['title'] = $title;
+        $this->attrs['title'] = $title;
 
         return $this;
     }
@@ -339,20 +291,20 @@ abstract class Asset implements Arrayable
 	 */
     public function setUploadedBy(Person\Person $person)
     {
-        $this->attributes['uploaded_by'] = $person->getId();
+        $this->attrs['uploaded_by'] = $person->getId();
 
         return $this;
     }
 
     public function setUploadedTime(DateTime $time)
     {
-        $this->attributes['uploaded_time'] = $time->getTimestamp();
+        $this->attrs['uploaded_time'] = $time->getTimestamp();
 
         return $this;
     }
 
     public function toArray()
     {
-        return $this->attributes;
+        return array_diff_key($this->attrs, $this->versionColumns);
     }
 }
