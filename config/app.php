@@ -153,19 +153,7 @@ return [
 	'BoomCMS\Installer\ServiceProvider',
     ],
 
-    /*
-    |--------------------------------------------------------------------------
-    | Class Aliases
-    |--------------------------------------------------------------------------
-    |
-    | This array of class aliases will be registered when this application
-    | is started. However, feel free to register as many as you wish as
-    | the aliases are "lazy" loaded so they don't hinder performance.
-    |
-    */
-
     'aliases' => [
-
         'App'       => 'Illuminate\Support\Facades\App',
         'Artisan'   => 'Illuminate\Support\Facades\Artisan',
         'Auth'      => 'Illuminate\Support\Facades\Auth',
@@ -199,11 +187,12 @@ return [
         'Validator' => 'Illuminate\Support\Facades\Validator',
         'View'      => 'Illuminate\Support\Facades\View',
 
-        'Settings' => 'BoomCMS\Support\Facades\Settings',
-        'Chunk' => 'BoomCMS\Support\Facades\Chunk',
-        'Page' => 'BoomCMS\Support\Facades\Page',
-        'Editor' => 'BoomCMS\Support\Facades\Editor',
-		'Tag' => 'BoomCMS\Support\Facades\Tag',
-        'Group' => 'BoomCMS\Support\Facades\Group',
+        'Asset'     => 'BoomCMS\Support\Facades\Asset',
+        'Settings'  => 'BoomCMS\Support\Facades\Settings',
+        'Chunk'     => 'BoomCMS\Support\Facades\Chunk',
+        'Page'      => 'BoomCMS\Support\Facades\Page',
+        'Editor'    => 'BoomCMS\Support\Facades\Editor',
+		'Tag'       => 'BoomCMS\Support\Facades\Tag',
+        'Group'     => 'BoomCMS\Support\Facades\Group',
     ],
 ];
