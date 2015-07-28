@@ -35,13 +35,8 @@ $.widget('boom.assetUploader', {
 
 			$(this).hide();
 			assetUploader.progressBar.progressbar('destroy');
-			assetUploader.notify('Upload was canceled');
+			assetUploader.notify('Upload was cancelled');
 		});
-	},
-
-	close: function() {
-		this.reset();
-		this.element.hide();
 	},
 
 	_create : function() {
@@ -49,6 +44,7 @@ $.widget('boom.assetUploader', {
 		this.dropArea = this.element.find('#b-assets-upload-container');
 		this.progressBar = this.element.find('#b-assets-upload-progress');
 		this.uploadForm = this.element;
+		this.originalMessage = this.dropArea.find('.message').html();
 
 		this.options = $.extend({}, this.defaultOptions, this.options);
 
@@ -61,27 +57,28 @@ $.widget('boom.assetUploader', {
 		var assetUploader = this,
 			uploaderOptions;
 
-		uploaderOptions = $.extend({}, this.options, {
-			start: function(e, data) {
-				assetUploader.uploadStarted(e, data);
-			},
-			progressall: function(e, data) {
-				var percentComplete = parseInt((data.loaded / data.total * 100), 10);
+		this.uploadForm
+			.fileupload(this.options)
+			.fileupload('option', {
+				start: function(e, data) {
+					assetUploader.uploadStarted(e, data);
+				},
+				progressall: function(e, data) {
+					var percentComplete = parseInt((data.loaded / data.total * 100), 10);
 
-				assetUploader.updateProgressBar(e, percentComplete);
-			},
-			done: function(e, data) {
-				assetUploader.uploadFinished(e, data);
-			},
-			fail: function(e, data) {
-				assetUploader.uploadFailed(e, data);
-			}
-		});
-
-		this.uploadForm.fileupload(uploaderOptions);
+					assetUploader.updateProgressBar(e, percentComplete);
+				},
+				fail: function(e, data) {
+					assetUploader.uploadFailed(e, data);
+				}
+			});
 	},
 
 	notify : function(message) {
+		if ( ! message) {
+			message = this.originalMessage;
+		}
+
 		this.dropArea.find('p.message').html(message);
 	},
 
@@ -89,20 +86,9 @@ $.widget('boom.assetUploader', {
 	 * Make the uploader replace an existing asset rather than upload a new asset.
 	 */
 	replacesAsset: function(asset) {
-		var assetUploader = this,
-			originalOptions = this.uploadForm.fileupload('option');
-
 		this.uploadForm.fileupload('option', {
 			url: '/cms/assets/replace/' + asset.id,
-			singleFileUploads: true,
-			done: function(e, data) {
-				assetUploader.uploadForm.fileupload('option', originalOptions);
-				assetUploader.uploadFinished(e, data);
-			},
-			fail: function(e, data) {
-				assetUploader.uploadForm.fileupload('option', originalOptions);
-				assetUploader.uploadFailed(e, data);
-			}
+			singleFileUploads: true
 		});
 	},
 
@@ -112,9 +98,13 @@ $.widget('boom.assetUploader', {
 
 	reset: function() {
 		this.progressBar.progressbar('destroy');
-		this.uploadForm.fileupload('destroy');
+		this.cancelButton.hide();
+		this.notify('');
+
+		// If we don't call disable first then when the uploader is reintialized
+		// we end up with multiple file uploads taking place.
+		this.uploadForm.fileupload('disable').fileupload('destroy');
 		this.initUploader();
-		this.dropArea.find('p.message').html('');
 	},
 
 	updateProgressBar : function(e, percentComplete) {
@@ -135,15 +125,6 @@ $.widget('boom.assetUploader', {
 		this.notify(message);
 		this.progressBar.progressbar('destroy');
 		this.cancelButton.hide();
-
-		this._trigger('uploadFailed', e, data);
-	},
-
-	uploadFinished : function(e, data) {
-		this.notify("File upload completed");
-		this.cancelButton.hide();
-
-		this._trigger('uploadFinished', e, data);
 	},
 
 	uploadStarted : function(e, data) {

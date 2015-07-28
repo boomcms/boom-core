@@ -2,12 +2,11 @@ function boomAssetEditor(asset, uploader) {
     this.asset = asset;
     this.uploader = uploader;
 
-    boomAssetEditor.prototype.bind = function() {
+    boomAssetEditor.prototype.bind = function(dialog) {
         var asset = this.asset,
-            dialog = this.dialog,
             assetEditor = this;
 
-        this.dialog.contents
+        dialog.contents
 			.on('click', '.b-assets-delete', function() {
 				asset
 					.delete()
@@ -20,15 +19,11 @@ function boomAssetEditor(asset, uploader) {
 				asset.download();
 			})
             .on('click', '.b-assets-replace', function(e) {
-                var originalFinished = assetEditor.uploader.assetUploader('option', 'uploadFinished');
                 e.preventDefault();
 
                 assetEditor.uploader.assetUploader('replacesAsset', asset);
-                assetEditor.uploader.assetUploader('option', 'uploadFinished', function(e, data) {
+                assetEditor.uploader.assetUploader('option', 'done', function(e, data) {
                     assetEditor.reloadPreviewImage();
-                    originalFinished(e, data);
-
-                    assetEditor.uploader.assetUploader('option', 'uploadFinished', originalFinished);
                 });
 
                 assetEditor.uploader.show();
@@ -58,6 +53,8 @@ function boomAssetEditor(asset, uploader) {
 			closeButton: false,
 			saveButton: true,
 			onLoad : function() {
+                assetEditor.bind(assetEditor.dialog);
+
 				assetEditor.dialog.contents
 					.find('#b-tags')
 					.assetTagSearch({
@@ -76,8 +73,6 @@ function boomAssetEditor(asset, uploader) {
                     new boomNotification("Asset details saved");
                 });
         });
-
-        this.bind();
 
         return this.dialog;
     };

@@ -37302,12 +37302,11 @@ $.widget('boom.pageTitle', $.ui.chunk, {
     this.asset = asset;
     this.uploader = uploader;
 
-    boomAssetEditor.prototype.bind = function() {
+    boomAssetEditor.prototype.bind = function(dialog) {
         var asset = this.asset,
-            dialog = this.dialog,
             assetEditor = this;
 
-        this.dialog.contents
+        dialog.contents
 			.on('click', '.b-assets-delete', function() {
 				asset
 					.delete()
@@ -37320,15 +37319,11 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 				asset.download();
 			})
             .on('click', '.b-assets-replace', function(e) {
-                var originalFinished = assetEditor.uploader.assetUploader('option', 'uploadFinished');
                 e.preventDefault();
 
                 assetEditor.uploader.assetUploader('replacesAsset', asset);
-                assetEditor.uploader.assetUploader('option', 'uploadFinished', function(e, data) {
+                assetEditor.uploader.assetUploader('option', 'done', function(e, data) {
                     assetEditor.reloadPreviewImage();
-                    originalFinished(e, data);
-
-                    assetEditor.uploader.assetUploader('option', 'uploadFinished', originalFinished);
                 });
 
                 assetEditor.uploader.show();
@@ -37358,6 +37353,8 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 			closeButton: false,
 			saveButton: true,
 			onLoad : function() {
+                assetEditor.bind(assetEditor.dialog);
+
 				assetEditor.dialog.contents
 					.find('#b-tags')
 					.assetTagSearch({
@@ -37376,8 +37373,6 @@ $.widget('boom.pageTitle', $.ui.chunk, {
                     new boomNotification("Asset details saved");
                 });
         });
-
-        this.bind();
 
         return this.dialog;
     };
@@ -37418,7 +37413,8 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 		var assetManager = this;
 
 		assetManager.getAssets();
-		assetManager.uploader.assetUploader('close');
+		assetManager.uploader.assetUploader('reset');
+		assetManager.uploader.hide();
 	},
 
 	bind : function() {
@@ -37429,10 +37425,10 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 
 		this.uploader
 			.assetUploader({
-				uploadFinished: function(e, data) {
+				done: function(e, data) {
 					assetManager.assetsUploaded(data.result);
 				},
-				uploadFailed: function() {
+				fail: function() {
 					// Update asset list even though an error occurred
 					// For situations where multiple files were uploaded but one caused an error.
 					assetManager.getAssets();
@@ -37938,13 +37934,8 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 
 			$(this).hide();
 			assetUploader.progressBar.progressbar('destroy');
-			assetUploader.notify('Upload was canceled');
+			assetUploader.notify('Upload was cancelled');
 		});
-	},
-
-	close: function() {
-		this.reset();
-		this.element.hide();
 	},
 
 	_create : function() {
@@ -37952,6 +37943,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 		this.dropArea = this.element.find('#b-assets-upload-container');
 		this.progressBar = this.element.find('#b-assets-upload-progress');
 		this.uploadForm = this.element;
+		this.originalMessage = this.dropArea.find('.message').html();
 
 		this.options = $.extend({}, this.defaultOptions, this.options);
 
@@ -37964,27 +37956,28 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 		var assetUploader = this,
 			uploaderOptions;
 
-		uploaderOptions = $.extend({}, this.options, {
-			start: function(e, data) {
-				assetUploader.uploadStarted(e, data);
-			},
-			progressall: function(e, data) {
-				var percentComplete = parseInt((data.loaded / data.total * 100), 10);
+		this.uploadForm
+			.fileupload(this.options)
+			.fileupload('option', {
+				start: function(e, data) {
+					assetUploader.uploadStarted(e, data);
+				},
+				progressall: function(e, data) {
+					var percentComplete = parseInt((data.loaded / data.total * 100), 10);
 
-				assetUploader.updateProgressBar(e, percentComplete);
-			},
-			done: function(e, data) {
-				assetUploader.uploadFinished(e, data);
-			},
-			fail: function(e, data) {
-				assetUploader.uploadFailed(e, data);
-			}
-		});
-
-		this.uploadForm.fileupload(uploaderOptions);
+					assetUploader.updateProgressBar(e, percentComplete);
+				},
+				fail: function(e, data) {
+					assetUploader.uploadFailed(e, data);
+				}
+			});
 	},
 
 	notify : function(message) {
+		if ( ! message) {
+			message = this.originalMessage;
+		}
+
 		this.dropArea.find('p.message').html(message);
 	},
 
@@ -37992,20 +37985,9 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 	 * Make the uploader replace an existing asset rather than upload a new asset.
 	 */
 	replacesAsset: function(asset) {
-		var assetUploader = this,
-			originalOptions = this.uploadForm.fileupload('option');
-
 		this.uploadForm.fileupload('option', {
 			url: '/cms/assets/replace/' + asset.id,
-			singleFileUploads: true,
-			done: function(e, data) {
-				assetUploader.uploadForm.fileupload('option', originalOptions);
-				assetUploader.uploadFinished(e, data);
-			},
-			fail: function(e, data) {
-				assetUploader.uploadForm.fileupload('option', originalOptions);
-				assetUploader.uploadFailed(e, data);
-			}
+			singleFileUploads: true
 		});
 	},
 
@@ -38015,9 +37997,13 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 
 	reset: function() {
 		this.progressBar.progressbar('destroy');
-		this.uploadForm.fileupload('destroy');
+		this.cancelButton.hide();
+		this.notify('');
+
+		// If we don't call disable first then when the uploader is reintialized
+		// we end up with multiple file uploads taking place.
+		this.uploadForm.fileupload('disable').fileupload('destroy');
 		this.initUploader();
-		this.dropArea.find('p.message').html('');
 	},
 
 	updateProgressBar : function(e, percentComplete) {
@@ -38038,15 +38024,6 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 		this.notify(message);
 		this.progressBar.progressbar('destroy');
 		this.cancelButton.hide();
-
-		this._trigger('uploadFailed', e, data);
-	},
-
-	uploadFinished : function(e, data) {
-		this.notify("File upload completed");
-		this.cancelButton.hide();
-
-		this._trigger('uploadFinished', e, data);
 	},
 
 	uploadStarted : function(e, data) {
