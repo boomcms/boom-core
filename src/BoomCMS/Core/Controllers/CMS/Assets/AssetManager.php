@@ -155,13 +155,13 @@ class AssetManager extends Controller
 
     public function replace(Asset\Asset $asset)
     {
-        foreach ($this->request->file() as $files) {
-            foreach ($files as $i => $file) {
-                $asset->createVersionFromFile($file);
-                $this->provider->save($asset);
+        list($validFiles, $errors) = $this->validateFileUpload();
 
-                return [$asset->getId()];
-            }
+        foreach ($validFiles as $file) {
+            $asset->createVersionFromFile($file);
+            $this->provider->save($asset);
+
+            return [$asset->getId()];
         }
     }
 
@@ -186,6 +186,32 @@ class AssetManager extends Controller
         $asset_ids = $errors = [];
         $now = new DateTime('now');
 
+        list($validFiles, $errors) = $this->validateFileUpload();
+
+        foreach ($validFiles as $file) {
+            $mime = Mimetype::factory($file->getMimeType());
+
+            $asset = Asset\Asset::factory(['type' => $mime->getType()]);
+            $asset
+                ->setUploadedTime(new DateTime('@' . time()))
+                ->setUploadedBy($this->auth->getPerson());
+
+            $asset_ids[] = $this->provider->save($asset)->getId();
+
+            $asset->createVersionFromFile($file);
+        }
+
+        if (count($errors)) {
+            return new JsonResponse($errors, 500);
+        } else {
+            return $asset_ids;
+        }
+    }
+
+    protected function validateFileUpload()
+    {
+        $validFiles = $errors = [];
+
         foreach ($this->request->file() as $files) {
             foreach ($files as $i => $file) {
                 if ( ! $file->isValid()) {
@@ -200,22 +226,11 @@ class AssetManager extends Controller
                     continue;
                 }
 
-                $asset = Asset\Asset::factory(['type' => $mime->getType()]);
-                $asset
-                    ->setUploadedTime(new DateTime('@' . time()))
-                    ->setUploadedBy($this->auth->getPerson());
-
-                $asset_ids[] = $this->provider->save($asset)->getId();
-
-                $asset->createVersionFromFile($file);
-            }
-
-            if (count($errors)) {
-                return new JsonResponse($errors, 500);
-            } else {
-                return $asset_ids;
+                $validFiles[] = $file;
             }
         }
+
+        return [$validFiles, $errors];
     }
 
     public function view(Asset\Asset $asset)
