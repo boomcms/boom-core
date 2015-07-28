@@ -21,17 +21,17 @@ function boomAssetEditor(asset, uploader) {
 				asset.download();
 			})
             .on('click', '.b-assets-replace', function(e) {
-                var originalDone = assetEditor.uploader.assetUploader('option', 'done');
+                var originalFinished = assetEditor.uploader.assetUploader('option', 'uploadFinished');
                 e.preventDefault();
 
                 assetEditor.uploader.assetUploader('replacesAsset', asset);
-                assetEditor.uploader.assetUploader('option', 'done', function(e, data) {
+                assetEditor.uploader.assetUploader('option', 'uploadFinished', function(e, data) {
                     var $img = dialog.contents.find('img');
 
                     $img.attr("src", $img.attr('src') + '?' + new Date().getTime());
-                    originalDone(e, data);
+                    originalFinished(e, data);
 
-                    assetEditor.uploader.assetUploader('option', 'done', originalDone);
+                    assetEditor.uploader.assetUploader('option', 'uploadFinished', originalFinished);
                 });
 
                 assetEditor.uploader.show();

@@ -37314,17 +37314,17 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 				asset.download();
 			})
             .on('click', '.b-assets-replace', function(e) {
-                var originalDone = assetEditor.uploader.assetUploader('option', 'done');
+                var originalFinished = assetEditor.uploader.assetUploader('option', 'uploadFinished');
                 e.preventDefault();
 
                 assetEditor.uploader.assetUploader('replacesAsset', asset);
-                assetEditor.uploader.assetUploader('option', 'done', function(e, data) {
+                assetEditor.uploader.assetUploader('option', 'uploadFinished', function(e, data) {
                     var $img = dialog.contents.find('img');
 
                     $img.attr("src", $img.attr('src') + '?' + new Date().getTime());
-                    originalDone(e, data);
+                    originalFinished(e, data);
 
-                    assetEditor.uploader.assetUploader('option', 'done', originalDone);
+                    assetEditor.uploader.assetUploader('option', 'uploadFinished', originalFinished);
                 });
 
                 assetEditor.uploader.show();
@@ -37404,10 +37404,10 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 
 		this.uploader
 			.assetUploader({
-				done: function(e, data) {
+				uploadFinished: function(e, data) {
 					assetManager.assetsUploaded(data.result);
 				},
-				fail: function() {
+				uploadFailed: function() {
 					// Update asset list even though an error occurred
 					// For situations where multiple files were uploaded but one caused an error.
 					assetManager.getAssets();
@@ -37953,7 +37953,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 			},
 			fail: function(e, data) {
 				assetUploader.uploadFailed(e, data);
-			 }
+			}
 		});
 
 		this.uploadForm.fileupload(uploaderOptions);
@@ -37998,7 +37998,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 	updateProgressBar : function(e, percentComplete) {
 		this.progressBar.progressbar('value', percentComplete);
 
-		this._trigger('progress', e, [percentComplete]);
+		this._trigger('uploadProgress', e, [percentComplete]);
 	},
 
 	uploadFailed : function(e, data) {
@@ -38014,14 +38014,14 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 		this.progressBar.progressbar('destroy');
 		this.cancelButton.hide();
 
-		this._trigger('fail', e, data);
+		this._trigger('uploadFailed', e, data);
 	},
 
 	uploadFinished : function(e, data) {
 		this.notify("File upload completed");
 		this.cancelButton.hide();
 
-		this._trigger('done', e, data);
+		this._trigger('uploadFinished', e, data);
 	},
 
 	uploadStarted : function(e, data) {
@@ -38030,7 +38030,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 
 		this.fileData = data;
 
-		this._trigger('start', e, data);
+		this._trigger('uploadStarted', e, data);
 	}
 });
 ;$.widget('boom.justifyAssets', {

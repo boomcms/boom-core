@@ -75,7 +75,7 @@ $.widget('boom.assetUploader', {
 			},
 			fail: function(e, data) {
 				assetUploader.uploadFailed(e, data);
-			 }
+			}
 		});
 
 		this.uploadForm.fileupload(uploaderOptions);
@@ -120,7 +120,7 @@ $.widget('boom.assetUploader', {
 	updateProgressBar : function(e, percentComplete) {
 		this.progressBar.progressbar('value', percentComplete);
 
-		this._trigger('progress', e, [percentComplete]);
+		this._trigger('uploadProgress', e, [percentComplete]);
 	},
 
 	uploadFailed : function(e, data) {
@@ -136,14 +136,14 @@ $.widget('boom.assetUploader', {
 		this.progressBar.progressbar('destroy');
 		this.cancelButton.hide();
 
-		this._trigger('fail', e, data);
+		this._trigger('uploadFailed', e, data);
 	},
 
 	uploadFinished : function(e, data) {
 		this.notify("File upload completed");
 		this.cancelButton.hide();
 
-		this._trigger('done', e, data);
+		this._trigger('uploadFinished', e, data);
 	},
 
 	uploadStarted : function(e, data) {
@@ -152,6 +152,6 @@ $.widget('boom.assetUploader', {
 
 		this.fileData = data;
 
-		this._trigger('start', e, data);
+		this._trigger('uploadStarted', e, data);
 	}
 });

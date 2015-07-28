@@ -182,6 +182,17 @@ abstract class Asset implements Arrayable
         return (new DateTime())->setTimestamp($this->get('uploaded_time'));
     }
 
+    public function hasPreviousVersions()
+    {
+        $result = DB::table('asset_versions')
+            ->select(DB::raw('1'))
+            ->where('asset_id', '=', $this->getId())
+            ->where('id', '!=', $this->getLatestVersionId())
+            ->first();
+
+        return isset($result[0]);
+    }
+
     public function incrementDownloads()
     {
         if ($this->loaded()) {
