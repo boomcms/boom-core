@@ -29,4 +29,14 @@ class Asset extends Model
             })
             ->whereNull('av2.id');
     }
+
+    public function scopeWithVersion($query, $versionId)
+    {
+        return $query
+            ->select('version.*')
+            ->addSelect('version.id as version:id')
+            ->addSelect('assets.*')
+            ->join('asset_versions as version', 'assets.id', '=', 'version.asset_id')
+            ->where('version.id', '=', $versionId);
+    }
 }

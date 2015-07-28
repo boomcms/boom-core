@@ -13,6 +13,16 @@ class Provider
         return $this->findAndCache(Model::withLatestVersion()->find($id));
     }
 
+    public function findByVersionId($versionId)
+    {
+        $model = Model::withVersion($versionId)->first();
+
+        $type = Type::numericTypeToClass($model->type) ?: 'Invalid';
+        $classname = "\BoomCMS\Core\Asset\\Type\\" . $type;
+
+        return $model ? new $classname($model->toArray()) : new $classname();
+    }
+
     public static function createFromType($type)
     {
         $model = new Model_Asset();

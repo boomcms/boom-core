@@ -145,6 +145,16 @@ Route::group(['middleware' => [
 
     Route::get('page/children', 'BoomCMS\Core\Controllers\PageController@children');
 
+    Route::get('asset/version/{id}/{width?}/{height?}', [
+        'as' => 'asset-version',
+        'middleware' => ['BoomCMS\Core\Http\Middleware\RequireLogin'],
+        'uses' => function(BoomCMS\Core\Auth\Auth $auth, $id, $width = null, $height = null) {
+            $asset = Asset::findByVersionId($id);
+
+            return App::make('BoomCMS\Core\Controllers\Asset\\' . class_basename($asset), [$auth, $asset])->view($width, $height);
+        }
+    ]);
+
 	Route::get('asset/download/{asset}', [
 		'asset' => 'asset-download',
 		'middleware' => [
@@ -154,6 +164,7 @@ Route::group(['middleware' => [
             return App::make('BoomCMS\Core\Controllers\Asset\\' . class_basename($asset), [$auth, $asset])->download();
         }
 	]);
+
     Route::get('asset/{action}/{asset}/{width?}/{height?}', [
         'as' => 'asset',
 		'middleware' => [

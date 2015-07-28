@@ -21,6 +21,8 @@ abstract class Asset implements Arrayable
      */
     protected $attrs;
 
+    protected $hasPreviousVersions;
+
     protected $tags;
 
     protected $versionColumns = [
@@ -182,15 +184,24 @@ abstract class Asset implements Arrayable
         return (new DateTime())->setTimestamp($this->get('uploaded_time'));
     }
 
+    public function getVersions()
+    {
+        return VersionModel::forAsset($this)->get();
+    }
+
     public function hasPreviousVersions()
     {
-        $result = DB::table('asset_versions')
-            ->select(DB::raw('1'))
-            ->where('asset_id', '=', $this->getId())
-            ->where('id', '!=', $this->getLatestVersionId())
-            ->first();
+        if ($this->hasPreviousVersions === null) {
+            $result = DB::table('asset_versions')
+                ->select("id")
+                ->where('asset_id', '=', $this->getId())
+                ->where('id', '!=', $this->getLatestVersionId())
+                ->first();
 
-        return isset($result[0]);
+            $this->hasPreviousVersions = isset($result->id);
+        }
+
+        return $this->hasPreviousVersions;
     }
 
     public function incrementDownloads()

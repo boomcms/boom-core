@@ -3,6 +3,7 @@
 namespace BoomCMS\Core\Asset;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Routing\Router;
 
 class AssetServiceProvider extends ServiceProvider
 {
@@ -12,9 +13,12 @@ class AssetServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
+    public function boot(Router $router, Provider $assetProvider)
     {
-
+        $router->pattern('asset', '[0-9]+');
+        $router->bind('asset', function ($assetId) use ($assetProvider) {
+            return $assetProvider->findById($assetId);
+        });
     }
 
     /**

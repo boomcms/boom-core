@@ -20,11 +20,6 @@ class CoreServiceProvider extends ServiceProvider
         $this->loadViewsFrom(__DIR__ . '/../../views/chunks', 'boomcms.chunks');
         $this->loadTranslationsFrom(__DIR__ . '/../../lang', 'boom');
 
-        $router->pattern('asset', '[0-9]+');
-        $router->bind('asset', function ($assetId) use ($assetProvider) {
-            return $assetProvider->findById($assetId);
-        });
-
         $router->pattern('page', '[0-9]+');
         $router->bind('page', function ($pageId) use ($pageProvider) {
             $page = $pageProvider->findById($pageId);
