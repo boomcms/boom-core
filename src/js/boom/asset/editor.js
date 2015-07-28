@@ -13,7 +13,6 @@ function boomAssetEditor(asset, uploader) {
 					.delete()
 					.done(function() {
 						dialog.close();
-						assetManager.getAssets();
 					});
 			})
 			.on('click', '.b-assets-download', function(e) {
@@ -26,15 +25,18 @@ function boomAssetEditor(asset, uploader) {
 
                 assetEditor.uploader.assetUploader('replacesAsset', asset);
                 assetEditor.uploader.assetUploader('option', 'uploadFinished', function(e, data) {
-                    var $img = dialog.contents.find('img');
-
-                    $img.attr("src", $img.attr('src') + '?' + new Date().getTime());
+                    assetEditor.reloadPreviewImage();
                     originalFinished(e, data);
 
                     assetEditor.uploader.assetUploader('option', 'uploadFinished', originalFinished);
                 });
 
                 assetEditor.uploader.show();
+            })
+            .on('click', '.b-assets-revert', function(e) {
+                e.preventDefault();
+
+                assetEditor.revertTo($(this).attr('data-version-id'));
             })
 			.on('focus', '#thumbnail', function() {
 				var $this = $(this);
@@ -78,6 +80,22 @@ function boomAssetEditor(asset, uploader) {
         this.bind();
 
         return this.dialog;
+    };
+
+    boomAssetEditor.prototype.reloadPreviewImage = function() {
+        var $img = this.dialog.contents.find('.b-assets-preview img');
+
+        $img.attr("src", $img.attr('src') + '?' + new Date().getTime());
+    };
+
+    boomAssetEditor.prototype.revertTo = function(versionId) {
+        var assetEditor = this;
+
+        this.asset.revertToVersion(versionId)
+            .done(function() {
+                new boomNotification("This asset has been reverted to the previous version");
+                assetEditor.reloadPreviewImage();
+            });
     };
 
     return this.open();

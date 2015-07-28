@@ -37288,10 +37288,17 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 		});
 	};
 
+	boomAsset.prototype.revertToVersion = function(versionId) {
+		return $.post(this.base_url + 'revert/' + this.id, {
+			version_id: versionId
+		});
+	};
+
 	boomAsset.prototype.save = function(data) {
 		return $.post(this.base_url + 'save/' + this.id, data);
 	};
-};;function boomAssetEditor(asset, uploader) {
+};
+;function boomAssetEditor(asset, uploader) {
     this.asset = asset;
     this.uploader = uploader;
 
@@ -37306,7 +37313,6 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 					.delete()
 					.done(function() {
 						dialog.close();
-						assetManager.getAssets();
 					});
 			})
 			.on('click', '.b-assets-download', function(e) {
@@ -37319,15 +37325,18 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 
                 assetEditor.uploader.assetUploader('replacesAsset', asset);
                 assetEditor.uploader.assetUploader('option', 'uploadFinished', function(e, data) {
-                    var $img = dialog.contents.find('img');
-
-                    $img.attr("src", $img.attr('src') + '?' + new Date().getTime());
+                    assetEditor.reloadPreviewImage();
                     originalFinished(e, data);
 
                     assetEditor.uploader.assetUploader('option', 'uploadFinished', originalFinished);
                 });
 
                 assetEditor.uploader.show();
+            })
+            .on('click', '.b-assets-revert', function(e) {
+                e.preventDefault();
+
+                assetEditor.revertTo($(this).attr('data-version-id'));
             })
 			.on('focus', '#thumbnail', function() {
 				var $this = $(this);
@@ -37371,6 +37380,22 @@ $.widget('boom.pageTitle', $.ui.chunk, {
         this.bind();
 
         return this.dialog;
+    };
+
+    boomAssetEditor.prototype.reloadPreviewImage = function() {
+        var $img = this.dialog.contents.find('.b-assets-preview img');
+
+        $img.attr("src", $img.attr('src') + '?' + new Date().getTime());
+    };
+
+    boomAssetEditor.prototype.revertTo = function(versionId) {
+        var assetEditor = this;
+
+        this.asset.revertToVersion(versionId)
+            .done(function() {
+                new boomNotification("This asset has been reverted to the previous version");
+                assetEditor.reloadPreviewImage();
+            });
     };
 
     return this.open();

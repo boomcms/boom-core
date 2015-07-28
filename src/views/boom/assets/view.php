@@ -93,7 +93,7 @@
                                 <h3>Edited at</h3>
                                 <time datetime="<?= $version->getEditedAt()->format('c') ?>"><?= $version->getEditedAt()->format('d F Y H:i') ?></time>
 
-                                <?= $button('undo', 'Revert to this version', ['class' => 'b-button-withtext', 'data-version-id' => $version->getId()]) ?>
+                                <?= $button('undo', 'Revert to this version', ['class' => 'b-button-withtext b-assets-revert', 'data-version-id' => $version->getId()]) ?>
                             </div>
                         </li>
                     <?php endforeach ?>

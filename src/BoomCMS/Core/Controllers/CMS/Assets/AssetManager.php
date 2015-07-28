@@ -165,25 +165,9 @@ class AssetManager extends Controller
         }
     }
 
-    public function restore()
+    public function revert(Asset\Asset $asset)
     {
-        $timestamp = $this->request->query('timestamp');
-
-        if (file_exists($this->asset->getFilename().".".$timestamp.".bak")) {
-            // Backup the current active file.
-            @rename($this->asset->getFilename(), $this->asset->getFilename().".".$_SERVER['REQUEST_TIME'].".bak");
-
-            // Restore the old file.
-            @copy($this->asset->getFilename().".".$timestamp.".bak", $this->asset->getFilename());
-        }
-
-        $this->asset
-            ->delete_cache_files()
-            ->set('last_modified', $_SERVER['REQUEST_TIME'])
-            ->update();
-
-        // Go back to viewing the asset.
-        $this->redirect('/cms/assets/#asset/'.$this->asset->getId());
+        $asset->revertTo($this->request->input('version_id'));
     }
 
     public function save(Asset\Asset $asset)

@@ -249,6 +249,27 @@ abstract class Asset implements Arrayable
         return $this;
     }
 
+    public function revertTo($versionId)
+    {
+        $version = VersionModel::find($versionId);
+
+        if ($version && $version->asset_id = $this->getId()) {
+            $attrs = $version->toArray();
+            unset($attrs['id']);
+            $attrs['edited_at'] = time();
+            $attrs['edited_by'] = Auth::getPerson()->getId();
+
+            $version = VersionModel::create($attrs);
+
+            copy(
+                static::directory() . DIRECTORY_SEPARATOR . $versionId,
+                static::directory() . DIRECTORY_SEPARATOR . $version->id
+            );
+        }
+
+        return $this;
+    }
+
     /**
 	 *
 	 * @param string $credits
