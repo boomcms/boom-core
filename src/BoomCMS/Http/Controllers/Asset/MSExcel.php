@@ -1,6 +1,6 @@
 <?php
 
-namespace BoomCMS\Core\Controllers\Asset;
+namespace BoomCMS\Http\Controllers\Asset;
 
 class MSExcel extends BaseController
 {
