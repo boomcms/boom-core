@@ -163,6 +163,10 @@ class AssetManager extends Controller
 
             return [$asset->getId()];
         }
+
+        if (count($errors)) {
+            return new JsonResponse($errors, 500);
+        }
     }
 
     public function revert(Asset\Asset $asset)

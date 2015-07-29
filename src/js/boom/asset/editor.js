@@ -19,11 +19,17 @@ function boomAssetEditor(asset, uploader) {
 				asset.download();
 			})
             .on('click', '.b-assets-replace', function(e) {
+                var uploadFinished = assetEditor.uploader.assetUploader('option', 'uploadFinished');
+
                 e.preventDefault();
 
                 assetEditor.uploader.assetUploader('replacesAsset', asset);
-                assetEditor.uploader.assetUploader('option', 'done', function(e, data) {
+                assetEditor.uploader.assetUploader('option', 'uploadFinished', function(e, data) {
                     assetEditor.reloadPreviewImage();
+                    uploadFinished(e, data);
+
+                    // Restore the previous event handler.
+                    assetEditor.uploader.assetUploader('option', 'uploadFinished', uploadFinished);
                 });
 
                 assetEditor.uploader.show();

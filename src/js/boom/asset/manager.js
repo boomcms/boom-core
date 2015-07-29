@@ -17,7 +17,7 @@ $.widget('boom.assetManager', {
 
 		assetManager.getAssets();
 		assetManager.uploader.assetUploader('reset');
-		assetManager.uploader.hide();
+		assetManager.uploader.assetUploader('close');
 	},
 
 	bind : function() {
@@ -28,10 +28,10 @@ $.widget('boom.assetManager', {
 
 		this.uploader
 			.assetUploader({
-				done: function(e, data) {
+				uploadFinished: function(e, data) {
 					assetManager.assetsUploaded(data.result);
 				},
-				fail: function() {
+				uploadFailed: function() {
 					// Update asset list even though an error occurred
 					// For situations where multiple files were uploaded but one caused an error.
 					assetManager.getAssets();
@@ -39,7 +39,8 @@ $.widget('boom.assetManager', {
 			})
 			.on('click', '#b-assets-upload-close', function(e) {
 				e.preventDefault();
-				assetManager.uploader.hide();
+
+				assetManager.uploader.assetUploader('close');
 			});
 	},
 

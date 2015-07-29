@@ -37319,11 +37319,17 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 				asset.download();
 			})
             .on('click', '.b-assets-replace', function(e) {
+                var uploadFinished = assetEditor.uploader.assetUploader('option', 'uploadFinished');
+
                 e.preventDefault();
 
                 assetEditor.uploader.assetUploader('replacesAsset', asset);
-                assetEditor.uploader.assetUploader('option', 'done', function(e, data) {
+                assetEditor.uploader.assetUploader('option', 'uploadFinished', function(e, data) {
                     assetEditor.reloadPreviewImage();
+                    uploadFinished(e, data);
+
+                    // Restore the previous event handler.
+                    assetEditor.uploader.assetUploader('option', 'uploadFinished', uploadFinished);
                 });
 
                 assetEditor.uploader.show();
@@ -37414,7 +37420,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 
 		assetManager.getAssets();
 		assetManager.uploader.assetUploader('reset');
-		assetManager.uploader.hide();
+		assetManager.uploader.assetUploader('close');
 	},
 
 	bind : function() {
@@ -37425,10 +37431,10 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 
 		this.uploader
 			.assetUploader({
-				done: function(e, data) {
+				uploadFinished: function(e, data) {
 					assetManager.assetsUploaded(data.result);
 				},
-				fail: function() {
+				uploadFailed: function() {
 					// Update asset list even though an error occurred
 					// For situations where multiple files were uploaded but one caused an error.
 					assetManager.getAssets();
@@ -37436,7 +37442,8 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 			})
 			.on('click', '#b-assets-upload-close', function(e) {
 				e.preventDefault();
-				assetManager.uploader.hide();
+
+				assetManager.uploader.assetUploader('close');
 			});
 	},
 
@@ -37898,7 +37905,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 			});
 	}
 });;$.widget('boom.assetUploader', {
-	defaultOptions : {
+	uploaderOptions: {
 		/**
 		@type string
 		@default '/cms/assets/upload'
@@ -37926,7 +37933,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 		limitMultiFileUploads: 50
 	},
 
-	bind : function() {
+	bind: function() {
 		var assetUploader = this;
 
 		this.cancelButton.on('click', function() {
@@ -37938,26 +37945,29 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 		});
 	},
 
-	_create : function() {
+	close: function() {
+		this.notify('');
+		this.element.hide();
+	},
+
+	_create: function() {
 		this.cancelButton = this.element.find('#b-assets-upload-cancel');
 		this.dropArea = this.element.find('#b-assets-upload-container');
 		this.progressBar = this.element.find('#b-assets-upload-progress');
 		this.uploadForm = this.element;
 		this.originalMessage = this.dropArea.find('.message').html();
 
-		this.options = $.extend({}, this.defaultOptions, this.options);
-
 		this.resizeDropArea();
 		this.bind();
 		this.initUploader();
 	},
 
-	initUploader : function() {
+	initUploader: function() {
 		var assetUploader = this,
 			uploaderOptions;
 
 		this.uploadForm
-			.fileupload(this.options)
+			.fileupload(this.uploaderOptions)
 			.fileupload('option', {
 				start: function(e, data) {
 					assetUploader.uploadStarted(e, data);
@@ -37966,6 +37976,9 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 					var percentComplete = parseInt((data.loaded / data.total * 100), 10);
 
 					assetUploader.updateProgressBar(e, percentComplete);
+				},
+				done: function(e, data) {
+					assetUploader.uploadFinished(e, data);
 				},
 				fail: function(e, data) {
 					assetUploader.uploadFailed(e, data);
@@ -37998,7 +38011,6 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 	reset: function() {
 		this.progressBar.progressbar('destroy');
 		this.cancelButton.hide();
-		this.notify('');
 
 		// If we don't call disable first then when the uploader is reintialized
 		// we end up with multiple file uploads taking place.
@@ -38022,8 +38034,13 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 		}
 
 		this.notify(message);
-		this.progressBar.progressbar('destroy');
-		this.cancelButton.hide();
+		this.reset();
+
+		this._trigger('uploadFailed', e, data);
+	},
+
+	uploadFinished: function(e, data) {
+		this._trigger('uploadFinished', e, data);
 	},
 
 	uploadStarted : function(e, data) {

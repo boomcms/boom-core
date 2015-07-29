@@ -1,5 +1,5 @@
 $.widget('boom.assetUploader', {
-	defaultOptions : {
+	uploaderOptions: {
 		/**
 		@type string
 		@default '/cms/assets/upload'
@@ -27,7 +27,7 @@ $.widget('boom.assetUploader', {
 		limitMultiFileUploads: 50
 	},
 
-	bind : function() {
+	bind: function() {
 		var assetUploader = this;
 
 		this.cancelButton.on('click', function() {
@@ -39,26 +39,29 @@ $.widget('boom.assetUploader', {
 		});
 	},
 
-	_create : function() {
+	close: function() {
+		this.notify('');
+		this.element.hide();
+	},
+
+	_create: function() {
 		this.cancelButton = this.element.find('#b-assets-upload-cancel');
 		this.dropArea = this.element.find('#b-assets-upload-container');
 		this.progressBar = this.element.find('#b-assets-upload-progress');
 		this.uploadForm = this.element;
 		this.originalMessage = this.dropArea.find('.message').html();
 
-		this.options = $.extend({}, this.defaultOptions, this.options);
-
 		this.resizeDropArea();
 		this.bind();
 		this.initUploader();
 	},
 
-	initUploader : function() {
+	initUploader: function() {
 		var assetUploader = this,
 			uploaderOptions;
 
 		this.uploadForm
-			.fileupload(this.options)
+			.fileupload(this.uploaderOptions)
 			.fileupload('option', {
 				start: function(e, data) {
 					assetUploader.uploadStarted(e, data);
@@ -67,6 +70,9 @@ $.widget('boom.assetUploader', {
 					var percentComplete = parseInt((data.loaded / data.total * 100), 10);
 
 					assetUploader.updateProgressBar(e, percentComplete);
+				},
+				done: function(e, data) {
+					assetUploader.uploadFinished(e, data);
 				},
 				fail: function(e, data) {
 					assetUploader.uploadFailed(e, data);
@@ -99,7 +105,6 @@ $.widget('boom.assetUploader', {
 	reset: function() {
 		this.progressBar.progressbar('destroy');
 		this.cancelButton.hide();
-		this.notify('');
 
 		// If we don't call disable first then when the uploader is reintialized
 		// we end up with multiple file uploads taking place.
@@ -123,8 +128,13 @@ $.widget('boom.assetUploader', {
 		}
 
 		this.notify(message);
-		this.progressBar.progressbar('destroy');
-		this.cancelButton.hide();
+		this.reset();
+
+		this._trigger('uploadFailed', e, data);
+	},
+
+	uploadFinished: function(e, data) {
+		this._trigger('uploadFinished', e, data);
 	},
 
 	uploadStarted : function(e, data) {
