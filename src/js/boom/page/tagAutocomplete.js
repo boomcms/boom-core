@@ -1,5 +1,5 @@
 $.widget('boom.pageTagAutocomplete', $.boom.tagAutocomplete,  {
-	url : '/cms/autocomplete/page_tags',
+	url : '/cms/autocomplete/page-tags',
 
 	tagSelected : function(tag) {
 		if (typeof(tag) === 'object') {

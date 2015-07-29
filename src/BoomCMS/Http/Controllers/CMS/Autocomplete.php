@@ -37,7 +37,7 @@ class Autocomplete extends Controller
         $this->request = $request;
     }
 
-    public function assets()
+    public function getAssets()
     {
         $query = DB::table('assets')
             ->select('title')
@@ -49,7 +49,7 @@ class Autocomplete extends Controller
         return $query->lists('title');
     }
 
-    public function asset_tags()
+    public function getAssetTags()
     {
         $query = DB::table('assets_tags')
             ->select('tag')
@@ -65,7 +65,7 @@ class Autocomplete extends Controller
         return $query->lists('tag');
     }
 
-    public function pageTitles()
+    public function getPageTitles()
     {
         $results = [];
         $pages = Page::autocompleteTitle($this->request->input('text'), $this->count)->get();
@@ -82,7 +82,7 @@ class Autocomplete extends Controller
         return $results;
     }
 
-    public function pageTags()
+    public function getPageTags()
     {
         $group = $this->request->query('group') ?: null;
 

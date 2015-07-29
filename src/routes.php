@@ -24,10 +24,7 @@ Route::group(['middleware' => [
         });
 
         Route::group(['middleware' => ['BoomCMS\Http\Middleware\RequireLogin']], function () {
-            Route::get('autocomplete/assets', 'Autocomplete@assets');
-            Route::get('autocomplete/asset_tags', 'Autocomplete@asset_tags');
-			Route::get('autocomplete/page_tags', 'Autocomplete@pageTags');
-			Route::get('autocomplete/page_titles', 'Autocomplete@pageTitles');
+            Route::controller('autocomplete', 'Autocomplete');
 
             Route::get('editor/toolbar', 'Editor@toolbar');
             Route::post('editor/state', 'Editor@state');
@@ -94,7 +91,7 @@ Route::group(['middleware' => [
 				Route::get('', 'Pages@index');
 			});
 
-            Route::controller('chunk', 'Chunk');
+            Route::controller('chunk/{page}', 'Chunk');
 
 			Route::group(['prefix' => 'page', 'namespace' => 'Page'], function() {
 				Route::get('delete/{page}', 'Delete@confirm');
