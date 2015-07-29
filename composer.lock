@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "328576feccb72fd646d978864d87529e",
+    "hash": "f90fc0cdd10e8babdc7f51c0a307585f",
     "packages": [
         {
             "name": "boomcms/boom-core",
@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/boomcms/boom-core.git",
-                "reference": "011ce12d4a318a7a3c1f7ac68a73cc8b30617776"
+                "reference": "9484b33416717471002b2ab1b7f7eadbad6afc05"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/boomcms/boom-core/zipball/011ce12d4a318a7a3c1f7ac68a73cc8b30617776",
-                "reference": "011ce12d4a318a7a3c1f7ac68a73cc8b30617776",
+                "url": "https://api.github.com/repos/boomcms/boom-core/zipball/9484b33416717471002b2ab1b7f7eadbad6afc05",
+                "reference": "9484b33416717471002b2ab1b7f7eadbad6afc05",
                 "shasum": ""
             },
             "require": {
@@ -41,8 +41,8 @@
             },
             "type": "library",
             "autoload": {
-                "psr-0": {
-                    "BoomCMS\\Core": "src/"
+                "psr-4": {
+                    "BoomCMS\\": "src/BoomCMS/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -50,7 +50,7 @@
                 "MIT"
             ],
             "description": "Core classes for BoomCMS",
-            "time": "2015-07-20 18:41:56"
+            "time": "2015-07-29 10:46:56"
         },
         {
             "name": "boomcms/boom-installer",
@@ -58,12 +58,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/boomcms/boom-installer.git",
-                "reference": "c5f1e6d1092e747314f7a75534875e867294dda9"
+                "reference": "01be7e579c0d7fb843fed8d5ecece8bd0afbecc2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/boomcms/boom-installer/zipball/c5f1e6d1092e747314f7a75534875e867294dda9",
-                "reference": "c5f1e6d1092e747314f7a75534875e867294dda9",
+                "url": "https://api.github.com/repos/boomcms/boom-installer/zipball/01be7e579c0d7fb843fed8d5ecece8bd0afbecc2",
+                "reference": "01be7e579c0d7fb843fed8d5ecece8bd0afbecc2",
                 "shasum": ""
             },
             "require": {
@@ -76,8 +76,8 @@
             },
             "type": "library",
             "autoload": {
-                "psr-0": {
-                    "BoomCMS\\Installer": "src/"
+                "psr-4": {
+                    "BoomCMS\\": "src/BoomCMS/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -91,7 +91,7 @@
                 }
             ],
             "description": "BoomCMS installer",
-            "time": "2015-07-21 13:44:27"
+            "time": "2015-07-29 11:18:38"
         },
         {
             "name": "boomcms/boom-robotstxt",
@@ -99,12 +99,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/boomcms/boom-robotstxt.git",
-                "reference": "66fb0addef4c3e7682597c262289fe853649d571"
+                "reference": "48b54d00e6206f1c8d9a3c53fd598dac56aca11b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/boomcms/boom-robotstxt/zipball/66fb0addef4c3e7682597c262289fe853649d571",
-                "reference": "66fb0addef4c3e7682597c262289fe853649d571",
+                "url": "https://api.github.com/repos/boomcms/boom-robotstxt/zipball/48b54d00e6206f1c8d9a3c53fd598dac56aca11b",
+                "reference": "48b54d00e6206f1c8d9a3c53fd598dac56aca11b",
                 "shasum": ""
             },
             "require": {
@@ -116,8 +116,8 @@
             },
             "type": "library",
             "autoload": {
-                "psr-0": {
-                    "BoomCMS\\Robots": "src/"
+                "psr-4": {
+                    "BoomCMS\\": "src/BoomCMS/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -131,7 +131,7 @@
                 }
             ],
             "description": "robots.txt generator for BoomCMS",
-            "time": "2015-07-21 13:59:49"
+            "time": "2015-07-29 11:12:38"
         },
         {
             "name": "boomcms/boom-sitemap",
@@ -139,12 +139,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/boomcms/boom-sitemap.git",
-                "reference": "f667aa8a50290e82468eaf1c9b0001a80c13bed9"
+                "reference": "892ddf321428720773b021832f996ee465f460b4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/boomcms/boom-sitemap/zipball/f667aa8a50290e82468eaf1c9b0001a80c13bed9",
-                "reference": "f667aa8a50290e82468eaf1c9b0001a80c13bed9",
+                "url": "https://api.github.com/repos/boomcms/boom-sitemap/zipball/892ddf321428720773b021832f996ee465f460b4",
+                "reference": "892ddf321428720773b021832f996ee465f460b4",
                 "shasum": ""
             },
             "require": {
@@ -155,8 +155,8 @@
             },
             "type": "library",
             "autoload": {
-                "psr-0": {
-                    "BoomCMS\\Sitemap": "src/"
+                "psr-4": {
+                    "BoomCMS\\": "src/BoomCMS/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -170,7 +170,7 @@
                 }
             ],
             "description": "sitemap.xml generator for BoomCMS",
-            "time": "2015-07-21 14:03:50"
+            "time": "2015-07-29 11:13:52"
         },
         {
             "name": "boomcms/theme-default",
@@ -262,16 +262,16 @@
         },
         {
             "name": "danielstjules/stringy",
-            "version": "1.9.0",
+            "version": "1.10.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/danielstjules/Stringy.git",
-                "reference": "3cf18e9e424a6dedc38b7eb7ef580edb0929461b"
+                "reference": "4749c205db47ee5b32e8d1adf6d9aff8db6caf3b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/danielstjules/Stringy/zipball/3cf18e9e424a6dedc38b7eb7ef580edb0929461b",
-                "reference": "3cf18e9e424a6dedc38b7eb7ef580edb0929461b",
+                "url": "https://api.github.com/repos/danielstjules/Stringy/zipball/4749c205db47ee5b32e8d1adf6d9aff8db6caf3b",
+                "reference": "4749c205db47ee5b32e8d1adf6d9aff8db6caf3b",
                 "shasum": ""
             },
             "require": {
@@ -314,7 +314,7 @@
                 "utility",
                 "utils"
             ],
-            "time": "2015-02-10 06:19:18"
+            "time": "2015-07-23 00:54:12"
         },
         {
             "name": "davidbarratt/custom-installer",
@@ -1473,16 +1473,16 @@
         },
         {
             "name": "league/flysystem",
-            "version": "1.0.9",
+            "version": "1.0.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "c42bed650525ec9ea1a83b715e37f4fc690f99aa"
+                "reference": "c16222fdc02467eaa12cb6d6d0e65527741f6040"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/c42bed650525ec9ea1a83b715e37f4fc690f99aa",
-                "reference": "c42bed650525ec9ea1a83b715e37f4fc690f99aa",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/c16222fdc02467eaa12cb6d6d0e65527741f6040",
+                "reference": "c16222fdc02467eaa12cb6d6d0e65527741f6040",
                 "shasum": ""
             },
             "require": {
@@ -1550,7 +1550,7 @@
                 "sftp",
                 "storage"
             ],
-            "time": "2015-07-13 09:25:28"
+            "time": "2015-07-28 20:41:58"
         },
         {
             "name": "monolog/monolog",
@@ -2068,17 +2068,17 @@
         },
         {
             "name": "symfony/console",
-            "version": "v2.6.10",
+            "version": "v2.6.11",
             "target-dir": "Symfony/Component/Console",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Console.git",
-                "reference": "042107bc202845086739414339e551fbe81293d7"
+                "reference": "0e5e18ae09d3f5c06367759be940e9ed3f568359"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Console/zipball/042107bc202845086739414339e551fbe81293d7",
-                "reference": "042107bc202845086739414339e551fbe81293d7",
+                "url": "https://api.github.com/repos/symfony/Console/zipball/0e5e18ae09d3f5c06367759be940e9ed3f568359",
+                "reference": "0e5e18ae09d3f5c06367759be940e9ed3f568359",
                 "shasum": ""
             },
             "require": {
@@ -2122,11 +2122,11 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "https://symfony.com",
-            "time": "2015-07-13 09:09:47"
+            "time": "2015-07-26 09:08:40"
         },
         {
             "name": "symfony/debug",
-            "version": "v2.6.10",
+            "version": "v2.6.11",
             "target-dir": "Symfony/Component/Debug",
             "source": {
                 "type": "git",
@@ -2294,7 +2294,7 @@
         },
         {
             "name": "symfony/finder",
-            "version": "v2.6.10",
+            "version": "v2.6.11",
             "target-dir": "Symfony/Component/Finder",
             "source": {
                 "type": "git",
@@ -2344,17 +2344,17 @@
         },
         {
             "name": "symfony/http-foundation",
-            "version": "v2.6.10",
+            "version": "v2.6.11",
             "target-dir": "Symfony/Component/HttpFoundation",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/HttpFoundation.git",
-                "reference": "b2a6fad1b82f666e42b5f06198fbf04c6f800bfb"
+                "reference": "e8fd1b73ac1c3de1f76c73801ddf1a8ecb1c1c9c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/HttpFoundation/zipball/b2a6fad1b82f666e42b5f06198fbf04c6f800bfb",
-                "reference": "b2a6fad1b82f666e42b5f06198fbf04c6f800bfb",
+                "url": "https://api.github.com/repos/symfony/HttpFoundation/zipball/e8fd1b73ac1c3de1f76c73801ddf1a8ecb1c1c9c",
+                "reference": "e8fd1b73ac1c3de1f76c73801ddf1a8ecb1c1c9c",
                 "shasum": ""
             },
             "require": {
@@ -2394,28 +2394,28 @@
             ],
             "description": "Symfony HttpFoundation Component",
             "homepage": "https://symfony.com",
-            "time": "2015-07-09 16:02:48"
+            "time": "2015-07-22 10:08:40"
         },
         {
             "name": "symfony/http-kernel",
-            "version": "v2.6.10",
+            "version": "v2.6.11",
             "target-dir": "Symfony/Component/HttpKernel",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/HttpKernel.git",
-                "reference": "52c99b667d1e1ec25d5d6cbb5dcdb6028748777c"
+                "reference": "a3f0ed713255c0400a2db38b3ed01989ef4b7322"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/HttpKernel/zipball/52c99b667d1e1ec25d5d6cbb5dcdb6028748777c",
-                "reference": "52c99b667d1e1ec25d5d6cbb5dcdb6028748777c",
+                "url": "https://api.github.com/repos/symfony/HttpKernel/zipball/a3f0ed713255c0400a2db38b3ed01989ef4b7322",
+                "reference": "a3f0ed713255c0400a2db38b3ed01989ef4b7322",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3",
                 "psr/log": "~1.0",
                 "symfony/debug": "~2.6,>=2.6.2",
-                "symfony/event-dispatcher": "~2.5.9|~2.6,>=2.6.2",
+                "symfony/event-dispatcher": "~2.6,>=2.6.7",
                 "symfony/http-foundation": "~2.5,>=2.5.4"
             },
             "require-dev": {
@@ -2472,11 +2472,11 @@
             ],
             "description": "Symfony HttpKernel Component",
             "homepage": "https://symfony.com",
-            "time": "2015-07-13 09:34:32"
+            "time": "2015-07-26 10:44:22"
         },
         {
             "name": "symfony/process",
-            "version": "v2.6.10",
+            "version": "v2.6.11",
             "target-dir": "Symfony/Component/Process",
             "source": {
                 "type": "git",
@@ -2526,7 +2526,7 @@
         },
         {
             "name": "symfony/routing",
-            "version": "v2.6.10",
+            "version": "v2.6.11",
             "target-dir": "Symfony/Component/Routing",
             "source": {
                 "type": "git",
@@ -2595,17 +2595,17 @@
         },
         {
             "name": "symfony/security-core",
-            "version": "v2.6.10",
+            "version": "v2.6.11",
             "target-dir": "Symfony/Component/Security/Core",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/security-core.git",
-                "reference": "955bf2f0a562e0e7a0b97b1b31872b5b392d4927"
+                "reference": "05f58bb3814e8a853332dc448e3b7addaa87679c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/security-core/zipball/955bf2f0a562e0e7a0b97b1b31872b5b392d4927",
-                "reference": "955bf2f0a562e0e7a0b97b1b31872b5b392d4927",
+                "url": "https://api.github.com/repos/symfony/security-core/zipball/05f58bb3814e8a853332dc448e3b7addaa87679c",
+                "reference": "05f58bb3814e8a853332dc448e3b7addaa87679c",
                 "shasum": ""
             },
             "require": {
@@ -2655,11 +2655,11 @@
             ],
             "description": "Symfony Security Component - Core Library",
             "homepage": "https://symfony.com",
-            "time": "2015-07-08 05:59:48"
+            "time": "2015-07-22 10:08:40"
         },
         {
             "name": "symfony/translation",
-            "version": "v2.6.10",
+            "version": "v2.6.11",
             "target-dir": "Symfony/Component/Translation",
             "source": {
                 "type": "git",
@@ -2718,7 +2718,7 @@
         },
         {
             "name": "symfony/var-dumper",
-            "version": "v2.6.10",
+            "version": "v2.6.11",
             "target-dir": "Symfony/Component/VarDumper",
             "source": {
                 "type": "git",
