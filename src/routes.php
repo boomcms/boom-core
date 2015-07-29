@@ -26,9 +26,7 @@ Route::group(['middleware' => [
         Route::group(['middleware' => ['BoomCMS\Http\Middleware\RequireLogin']], function () {
             Route::controller('autocomplete', 'Autocomplete');
             Route::controller('editor', 'Editor');
-
-            Route::get('account', 'Auth\Account@view');
-            Route::post('account', 'Auth\Account@save');
+            Route::controller('account', 'Auth\Account');
 
             Route::group(['prefix' => 'assets', 'namespace' => 'Assets'], function () {
                 Route::get('', 'AssetManager@index');

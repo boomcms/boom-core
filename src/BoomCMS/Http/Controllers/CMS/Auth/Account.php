@@ -19,7 +19,7 @@ class Account extends Controller
         $this->provider = $provider;
     }
 
-    public function view()
+    public function getIndex()
     {
         return View::make('boom::account.account', [
             'person' => $this->person,
@@ -28,7 +28,7 @@ class Account extends Controller
         ]);
     }
 
-    public function save()
+    public function postIndex()
     {
         $message = '';
 
