@@ -154,7 +154,7 @@ function boomChunkLinksetEditor(pageId, slotname, options) {
 				target_page_id : $this.attr('data-page-id'),
 				url : $this.attr('data-url'),
 				title : $this.attr('data-title'),
-				asset_id : $this.attr('data-asset'),
+				asset_id : $this.attr('data-asset')
 			});
 		});
 
@@ -165,7 +165,7 @@ function boomChunkLinksetEditor(pageId, slotname, options) {
 		var linksetEditor = this;
 
 		this.dialog = new boomDialog({
-			url: '/cms/chunk/linkset/edit/' + this.pageId + '?slotname=' + this.slotname,
+			url: '/cms/chunk/' + this.pageId + '/edit?slotname=' + this.slotname + '&type=linkset',
 			title: 'Edit linkset',
 			id: 'b-linkset-editor',
 			width: 900,

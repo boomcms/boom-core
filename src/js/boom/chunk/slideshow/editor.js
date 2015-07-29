@@ -172,7 +172,7 @@ function boomChunkSlideshowEditor(page_id, slotname, options) {
 		this.deferred = new $.Deferred();
 
 		this.dialog = new boomDialog({
-			url : '/cms/chunk/slideshow/edit/' + this.page_id + '?slotname=' + this.slotname,
+			url : '/cms/chunk/' + this.page_id + '/edit?slotname=' + this.slotname + '&type=slideshow',
 			id : 'b-slideshow-editor',
 			width: 920,
 			closeButton: false,

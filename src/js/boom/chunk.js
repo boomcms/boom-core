@@ -2,7 +2,7 @@ function boomChunk(page_id, type, slotname) {
 	this.page_id = page_id;
 	this.slotname = slotname;
 	this.type = type;
-	this.urlPrefix = '/cms/chunk/';
+	this.urlPrefix = '/cms/chunk/' + this.page_id + '/';
 
 	/**
 	 * To remove a chunk save it with no data.
@@ -20,6 +20,6 @@ function boomChunk(page_id, type, slotname) {
 		data.slotname = this.slotname;
 		data.type = this.type;
 
-		return $.post(this.urlPrefix + 'save/' + this.page_id, data);
+		return $.post(this.urlPrefix + 'save', data);
 	};
 }
