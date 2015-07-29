@@ -11,7 +11,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        'BoomCMS\Core\Console\Commands\InstallTemplates',
+        'BoomCMS\Console\Commands\InstallTemplates',
     ];
 
     /**
