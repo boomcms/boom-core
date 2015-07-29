@@ -1,6 +1,6 @@
 <?php
 
-namespace BoomCMS\Core\UI;
+namespace BoomCMS\UI;
 
 use BoomCMS\Core\Tag\Tag as TagObject;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace BoomCMS\Core\UI;
+namespace BoomCMS\UI;
 
 abstract class AbstractUIElement
 {

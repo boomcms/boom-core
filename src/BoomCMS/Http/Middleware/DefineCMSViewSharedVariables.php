@@ -3,7 +3,7 @@
 namespace BoomCMS\Http\Middleware;
 
 use BoomCMS\Core\Menu\Menu;
-use BoomCMS\Core\UI;
+use BoomCMS\UI;
 
 use Closure;
 use Illuminate\Foundation\Application;
