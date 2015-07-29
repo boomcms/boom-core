@@ -34,7 +34,7 @@ class Provider
 
     public function findByLocation($location)
     {
-        $model = Model::where('location', '=', Helpers::sanitise($location))->first();
+        $model = Model::where('location', '=', URLHelper::sanitise($location))->first();
 
         return $model ? new URL($model->toArray()) : new URL([]);
     }
