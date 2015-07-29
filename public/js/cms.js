@@ -34784,7 +34784,7 @@ $.widget('boom.pageTree', {
 		this._trigger('update', null, {tags : this.tags});
 	}
 });;$.widget('boom.pageTagAutocomplete', $.boom.tagAutocomplete,  {
-	url : '/cms/autocomplete/page_tags',
+	url : '/cms/autocomplete/page-tags',
 
 	tagSelected : function(tag) {
 		if (typeof(tag) === 'object') {
@@ -35393,7 +35393,7 @@ $.widget('boom.textEditor', {
 	this.page_id = page_id;
 	this.slotname = slotname;
 	this.type = type;
-	this.urlPrefix = '/cms/chunk/';
+	this.urlPrefix = '/cms/chunk/' + this.page_id + '/';
 
 	/**
 	 * To remove a chunk save it with no data.
@@ -35411,7 +35411,7 @@ $.widget('boom.textEditor', {
 		data.slotname = this.slotname;
 		data.type = this.type;
 
-		return $.post(this.urlPrefix + 'save/' + this.page_id, data);
+		return $.post(this.urlPrefix + 'save', data);
 	};
 };/**
 @fileOverview jQuery UI widgets for editable slots.
@@ -36192,7 +36192,7 @@ $.widget('ui.chunkTag', $.ui.chunk,
 		this.deferred = new $.Deferred();
 
 		this.dialog = new boomDialog({
-			url : '/cms/chunk/slideshow/edit/' + this.page_id + '?slotname=' + this.slotname,
+			url : '/cms/chunk/' + this.page_id + '/edit?slotname=' + this.slotname + '&type=slideshow',
 			id : 'b-slideshow-editor',
 			width: 920,
 			closeButton: false,
@@ -36368,7 +36368,7 @@ $.widget('ui.chunkTag', $.ui.chunk,
 				target_page_id : $this.attr('data-page-id'),
 				url : $this.attr('data-url'),
 				title : $this.attr('data-title'),
-				asset_id : $this.attr('data-asset'),
+				asset_id : $this.attr('data-asset')
 			});
 		});
 
@@ -36379,7 +36379,7 @@ $.widget('ui.chunkTag', $.ui.chunk,
 		var linksetEditor = this;
 
 		this.dialog = new boomDialog({
-			url: '/cms/chunk/linkset/edit/' + this.pageId + '?slotname=' + this.slotname,
+			url: '/cms/chunk/' + this.pageId + '/edit?slotname=' + this.slotname + '&type=linkset',
 			title: 'Edit linkset',
 			id: 'b-linkset-editor',
 			width: 900,
@@ -36471,7 +36471,7 @@ $.widget('ui.chunkTag', $.ui.chunk,
 		this.deferred = new $.Deferred();
 
 		this.dialog = new boomDialog({
-			url : '/cms/chunk/asset/edit/' + this.pageId + '?slotname=' + this.slotname,
+			url : '/cms/chunk/' + this.pageId + '/edit?slotname=' + this.slotname + '&type=asset',
 			id : 'b-assets-chunk-editor',
 			closeButton: false,
 			saveButton: true,
@@ -36711,7 +36711,7 @@ $.widget('ui.chunkPageVisibility', {
 		var locationEditor = this;
 
 		this.dialog = new boomDialog({
-			url : '/cms/chunk/location/edit/' + this.page_id + '?slotname=' + this.slotname,
+			url : '/cms/chunk/' + this.page_id + '/edit?slotname=' + this.slotname + '&type=location',
 			id : 'b-location-editor',
 			width: 920,
 			closeButton: false,
@@ -37025,7 +37025,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 				if (linkPicker.externalTypeSelector.val('http') || linkPicker.externalTypeSelector.val('https')) {
 					if (linkPicker.externalUrl.val()) {
 						$.ajax({
-							url: '/cms/autocomplete/page_titles',
+							url: '/cms/autocomplete/page-titles',
 							dataType: 'json',
 							data: {
 								text : linkPicker.externalUrl.val()
@@ -38213,7 +38213,7 @@ function Row() {
 		return ($el.offset.top >= (this.elements[this.elements.length - 1].offset.top + $el.height()));
 	};
 };$.widget('boom.assetTagAutocomplete', $.boom.tagAutocomplete,  {
-	url : '/cms/autocomplete/asset_tags',
+	url : '/cms/autocomplete/asset-tags',
 
 	tagSelected : function(tag) {
 		if (typeof(tag) === 'object') {
