@@ -35,7 +35,7 @@ class Provider
         $type = $attrs['type'];
         unset($attrs['type']);
 
-        $modelName = 'BoomCMS\Core\Models\Chunk\\' . ucfirst($type);
+        $modelName = 'BoomCMS\Database\Models\Chunk\\' . ucfirst($type);
         $model = $modelName::create($attrs);
 
         $className = 'BoomCMS\Core\Chunk\\' . ucfirst($type);
@@ -98,7 +98,7 @@ class Provider
 
     public function findOne($type, $slotname, Version $version)
     {
-        $class = 'BoomCMS\Core\Models\Chunk\\' . ucfirst($type);
+        $class = 'BoomCMS\Database\Models\Chunk\\' . ucfirst($type);
 
         return $version->getId() ?
             $class::getSingleChunk($version, $slotname)->first()
@@ -115,7 +115,7 @@ class Provider
 
         return $chunks;
 // TODO: fix loading multiple chunks in one go.
-        $class = 'BoomCMS\Core\Models\Chunk\\' . ucfirst($type);
+        $class = 'BoomCMS\Database\Models\Chunk\\' . ucfirst($type);
 
         return $class::latestEdit($version)
             ->where('c2.slotname', 'in', $slotnames)

@@ -1,6 +1,6 @@
 <?php
 
-use BoomCMS\Core\Models\Tag;
+use BoomCMS\Database\Models\Tag;
 
 class Models_TagTest extends TestCase
 {

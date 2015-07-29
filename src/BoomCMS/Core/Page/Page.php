@@ -6,8 +6,8 @@ use BoomCMS\Core\Person;
 use BoomCMS\Core\Tag;
 use BoomCMS\Core\Template;
 use BoomCMS\Core\URL\URL;
-use BoomCMS\Core\Models\Page\URL as URLModel;
-use BoomCMS\Core\Models\Page\Version as VersionModel;
+use BoomCMS\Database\Models\Page\URL as URLModel;
+use BoomCMS\Database\Models\Page\Version as VersionModel;
 
 use BoomCMS\Support\Facades\Asset;
 use BoomCMS\Support\Facades\Chunk;

@@ -1,6 +1,6 @@
 <?php
 
-use BoomCMS\Core\Auth\AuthServiceProvider;
+use BoomCMS\ServiceProviders\AuthServiceProvider;
 
 class ServiceProviders_AuthTest extends TestCase
 {

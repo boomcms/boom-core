@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Core\Asset;
 
-use BoomCMS\Core\Models\Asset as Model;
+use BoomCMS\Database\Models\Asset as Model;
 
 class Provider
 {

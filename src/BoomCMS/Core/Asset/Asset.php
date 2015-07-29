@@ -3,7 +3,7 @@
 namespace BoomCMS\Core\Asset;
 
 use BoomCMS\Core\Person;
-use BoomCMS\Core\Models\Asset\Version as VersionModel;
+use BoomCMS\Database\Models\Asset\Version as VersionModel;
 use BoomCMS\Core\Asset\Mimetype\Mimetype;
 use BoomCMS\Support\Facades\Auth;
 use DateTime;

@@ -3,7 +3,7 @@
 namespace BoomCMS\Core\Page;
 
 use BoomCMS\Core\Editor\Editor;
-use BoomCMS\Core\Models\Page as Model;
+use BoomCMS\Database\Models\Page as Model;
 
 use Illuminate\Support\Facades\App;
 

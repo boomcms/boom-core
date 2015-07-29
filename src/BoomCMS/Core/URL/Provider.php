@@ -2,13 +2,14 @@
 
 namespace BoomCMS\Core\URL;
 
-use BoomCMS\Core\Models\Page\URL as Model;
+use BoomCMS\Support\Helpers\URL as URLHelper;
+use BoomCMS\Database\Models\Page\URL as Model;
 
 class Provider
 {
     public function create($location, $pageId, $isPrimary = false)
     {
-        $unique = Helpers::makeUnique(Helpers::sanitise($location));
+        $unique = URLHelper::makeUnique(Helpers::sanitise($location));
 
         $model = Model::create([
             'location' => $unique,

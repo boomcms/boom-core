@@ -3,7 +3,7 @@
 namespace BoomCMS\Core\Commands;
 
 use BoomCMS\Core\Page;
-use BoomCMS\Core\URL;
+use BoomCMS\Support\Helpers\URL as URLHelper;
 use BoomCMS\Support\Facades\URL as URLFacade;
 
 use Illuminate\Support\Facades\Bus;
@@ -28,7 +28,7 @@ class CreatePagePrimaryUri extends Command implements SelfHandling
 
     public function handle()
     {
-        $url = ($this->location !== null) ? $this->location : URL\Helpers::fromTitle($this->prefix, $this->page->getTitle());
+        $url = ($this->location !== null) ? $this->location : URLHelper::fromTitle($this->prefix, $this->page->getTitle());
 
         $this->page->setPrimaryUri($url);
         $page = $this->provider->save($this->page);
