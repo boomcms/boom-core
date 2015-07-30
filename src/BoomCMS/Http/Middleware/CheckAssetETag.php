@@ -4,6 +4,7 @@ namespace BoomCMS\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class CheckAssetETag
 {
@@ -30,6 +31,10 @@ class CheckAssetETag
 		
         $response = $next($request);
 		
+        if ($response instanceof StreamedResponse) {
+            return $response;
+        }
+
         return $response
             ->header('Cache-Control', 'public, max-age=100800, must-revalidate')
             ->header('etag', $etag);

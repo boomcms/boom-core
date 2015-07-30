@@ -2,6 +2,8 @@
 
 namespace BoomCMS\Http\Controllers\Asset;
 
+use Illuminate\Support\Facades\Response;
+
 class Video extends BaseController
 {
     public function thumb($width = null, $height = null)
@@ -13,11 +15,13 @@ class Video extends BaseController
 
     public function view($width = null, $height = null)
     {
-        return $this->response
-            ->send_file($this->asset->getFilename(), $this->asset->getFilename(), [
-                'inline' => true,
-                'mime_type' => $this->asset->getMimetype(),
-                'resumable' => true,
-            ]);
+        $stream = fopen($this->asset->getFilename(), 'r');
+
+        return Response::stream(function() use ($stream) {
+            fpassthru($stream);
+        }, 200, [
+            'content-length' => $this->asset->getFilesize(),
+            'content-type' => (string) $this->asset->getMimetype(),
+        ]);
     }
 }
