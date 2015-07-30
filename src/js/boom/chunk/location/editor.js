@@ -73,7 +73,7 @@ function boomChunkLocationEditor(page_id, slotname) {
 		var locationEditor = this;
 
 		this.dialog = new boomDialog({
-			url : '/cms/chunk/location/edit/' + this.page_id + '?slotname=' + this.slotname,
+			url : '/cms/chunk/' + this.page_id + '/edit?slotname=' + this.slotname + '&type=location',
 			id : 'b-location-editor',
 			width: 920,
 			closeButton: false,

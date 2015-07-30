@@ -1,6 +1,6 @@
 <?php
 
-use BoomCMS\Core\Models\Role;
+use BoomCMS\Database\Models\Role;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\DB;

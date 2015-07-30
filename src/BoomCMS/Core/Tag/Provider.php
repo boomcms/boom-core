@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Core\Tag;
 
-use BoomCMS\Core\Models\Tag as Model;
+use BoomCMS\Database\Models\Tag as Model;
 
 class Provider
 {

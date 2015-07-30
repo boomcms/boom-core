@@ -28,6 +28,6 @@ class TitleContains extends BaseFilter
 
     public function shouldBeApplied()
     {
-        return $this->title ? true : false;
+        return $this->title == null ? false : true;
     }
 }

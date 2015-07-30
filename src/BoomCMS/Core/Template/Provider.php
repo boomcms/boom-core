@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Core\Template;
 
-use BoomCMS\Core\Models\Template as Model;
+use BoomCMS\Database\Models\Template as Model;
 
 class Provider
 {

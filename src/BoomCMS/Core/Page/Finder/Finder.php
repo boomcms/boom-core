@@ -4,7 +4,7 @@ namespace BoomCMS\Core\Page\Finder;
 
 use BoomCMS\Core\Editor\Editor;
 use BoomCMS\Core\Finder\Finder as BaseFinder;
-use BoomCMS\Core\Models\Page as Model;
+use BoomCMS\Database\Models\Page as Model;
 use BoomCMS\Core\Page\Page;
 
 use Illuminate\Support\Facades\App;

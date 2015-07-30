@@ -16,7 +16,8 @@ $.widget('boom.assetManager', {
 		var assetManager = this;
 
 		assetManager.getAssets();
-		assetManager.uploader.hide();
+		assetManager.uploader.assetUploader('reset');
+		assetManager.uploader.assetUploader('close');
 	},
 
 	bind : function() {
@@ -27,10 +28,10 @@ $.widget('boom.assetManager', {
 
 		this.uploader
 			.assetUploader({
-				done: function(e, data) {
+				uploadFinished: function(e, data) {
 					assetManager.assetsUploaded(data.result);
 				},
-				fail: function() {
+				uploadFailed: function() {
 					// Update asset list even though an error occurred
 					// For situations where multiple files were uploaded but one caused an error.
 					assetManager.getAssets();
@@ -38,7 +39,8 @@ $.widget('boom.assetManager', {
 			})
 			.on('click', '#b-assets-upload-close', function(e) {
 				e.preventDefault();
-				assetManager.uploader.hide();
+
+				assetManager.uploader.assetUploader('close');
 			});
 	},
 
@@ -251,57 +253,11 @@ $.widget('boom.assetManager', {
 	},
 
 	viewAsset : function(assetId) {
-		var asset = new boomAsset(assetId),
-			assetManager = this,
-			dialog;
+		var assetManager = this;
 
-		dialog = new boomDialog({
-			title : 'Edit Asset',
-			url : this.baseUrl + 'view/' + assetId,
-			width: document.documentElement.clientWidth >= 1000? '1000px' : '100%',
-			closeButton: false,
-			saveButton: true,
-			onLoad : function() {
-				dialog.contents
-					.find('#b-tags')
-					.assetTagSearch({
-						addTag : function(e, tag) {
-							asset.addTag(tag);
-						},
-						removeTag : function(e, tag) {
-							asset.removeTag(tag);
-						}
-					});
-			}
-		})
-		.done(function() {
-			asset
-				.save(dialog.contents.find('form').serialize())
-				.done(function() {
-					new boomNotification("Asset details saved");
-				});
-		});
-
-		dialog.contents
-			.on('click', '.b-assets-delete', function() {
-				asset
-					.delete()
-					.done(function() {
-						dialog.close();
-						assetManager.getAssets();
-					});
-			})
-			.on('click', '.b-assets-download', function(e) {
-				e.preventDefault();
-				asset.download();
-			})
-			.on('focus', '#thumbnail', function() {
-				var $this = $(this),
-					picker;
-				picker = new boomAssetPicker($this.val())
-					.done(function(assetId) {
-						$this.val(assetId);
-					});
+		new boomAssetEditor(new boomAsset(assetId), assetManager.uploader)
+			.done(function() {
+				assetManager.getAssets();
 			});
 	}
 });

@@ -3,7 +3,7 @@
 namespace BoomCMS\Core\Template;
 
 use BoomCMS\Core\Theme\Theme;
-use BoomCMS\Core\Models\Template as Model;
+use BoomCMS\Database\Models\Template as Model;
 use Illuminate\Filesystem\Filesystem;
 
 class Manager

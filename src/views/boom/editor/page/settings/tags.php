@@ -8,7 +8,7 @@
     <section id="free">
         <ul class="b-tags-list" data-group="">
             <?php foreach ($freeTags as $tag): ?>
-                <?= new BoomCMS\Core\UI\Tag($tag) ?>
+                <?= new BoomCMS\UI\Tag($tag) ?>
             <?php endforeach ?>
 
             <li class="b-tag">
@@ -29,7 +29,7 @@
                     <ul class="b-tags-list" data-group="<?= $group ?>">
                         <?php if (isset($tags[$group])): ?>
                             <?php foreach ($tags[$group] as $tag): ?>
-                                <?= new BoomCMS\Core\UI\Tag($tag) ?>
+                                <?= new BoomCMS\UI\Tag($tag) ?>
                             <?php endforeach ?>
                         <?php endif ?>
 

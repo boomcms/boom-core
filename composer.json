@@ -22,13 +22,13 @@
 		"laravel/laravel": "~5.0"
 	},
 	"autoload": {
-		"psr-0": {"BoomCMS": "src/"}
+		"psr-4": {"BoomCMS\\": "src/BoomCMS/"}
 	},
 	"minimum-stability" : "dev",
 	"prefer-stable": true,
 	"scripts": {
-        	"post-install-cmd": [
-			"npm install",
+	"post-install-cmd": [
+		"npm install",
             		"bower install",
 			"grunt dist"
         	],

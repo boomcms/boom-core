@@ -1,4 +1,40 @@
 #b-assets-view {
+	&-files {
+		ul {
+			padding-left: 0;
+
+			li {
+				list-style-type: none;
+				overflow: hidden;
+
+				+ li {
+					margin-top: 15px;
+				}
+
+				div {
+					display: inline-block;
+					float: left;
+					width: 50%;
+					vertical-align: top;
+				}
+
+				h3 {
+					margin: 0;
+					font-size: 1em;
+				}
+
+				p, time {
+					display: block;
+					margin-top: 5px;
+				}
+
+				button {
+					margin-left: -15px;
+				}
+			}
+		}
+	}
+
 	.b-assets-preview, .boom-tabs {
 		.box-sizing;
 		display: inline-block;
@@ -35,11 +71,6 @@
 
 	.ui-dialog-buttonpane {
 		margin: 2em 0 0 0;
-	}
-
-	&-thumbs {
-		background: @lightest-grey;
-		width: 100%;
 	}
 
 	dl {

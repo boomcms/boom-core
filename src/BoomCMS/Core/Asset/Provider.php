@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Core\Asset;
 
-use BoomCMS\Core\Models\Asset as Model;
+use BoomCMS\Database\Models\Asset as Model;
 
 class Provider
 {
@@ -10,7 +10,17 @@ class Provider
 
     public function findById($id)
     {
-        return $this->findAndCache(Model::find($id));
+        return $this->findAndCache(Model::withLatestVersion()->find($id));
+    }
+
+    public function findByVersionId($versionId)
+    {
+        $model = Model::withVersion($versionId)->first();
+
+        $type = Type::numericTypeToClass($model->type) ?: 'Invalid';
+        $classname = "\BoomCMS\Core\Asset\\Type\\" . $type;
+
+        return $model ? new $classname($model->toArray()) : new $classname();
     }
 
     public static function createFromType($type)

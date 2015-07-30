@@ -7,20 +7,20 @@ use Illuminate\Database\Eloquent\Builder;
 
 class TitleOrDescriptionContains extends BaseFilter
 {
-    protected $_text;
+    protected $title;
 
-    public function __construct($text = null)
+    public function __construct($title = null)
     {
-        $this->_text = trim($text);
+        $this->title = trim($title);
     }
 
     public function build(Builder $query)
     {
-        return $query->where('title', 'like', "%{$this->_title}%");
+        return $query->where('title', 'like', "%{$this->title}%");
     }
 
     public function shouldBeApplied()
     {
-        return $this->_text ? true : false;
+        return $this->title == null ? false : true;
     }
 }

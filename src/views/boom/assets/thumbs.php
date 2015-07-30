@@ -3,7 +3,7 @@
 		<div style="height: 160px; width: <?= floor(160 * $asset->getAspectRatio()) ?>px" data-aspect-ratio="<?= $asset->getAspectRatio() ?>">
 			<div class="thumb" data-asset="<?= $asset->getId() ?>">
 				<a href="#asset/<?= $asset->getId() ?>">
-					<img src="/asset/thumb/<?= $asset->getId() ?>/400/0" />
+					<img src="<?= $assetURL(['asset' => $asset, 'action' => 'thumb', 'width' => 400]) ?>" />
 
 					<section class="b-asset-details">
 						<h1><?= $asset->getTitle() ?></h1>

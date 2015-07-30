@@ -13,7 +13,7 @@ class Asset_AssetTest extends TestCase
     {
         $asset = $this->getMockBuilder('BoomCMS\Core\Asset\Asset')
             ->setMethods(['getType'])
-            ->setConstructorArgs([['id' => 1]])
+            ->setConstructorArgs([['version:id' => 1]])
             ->getMock();
 
         $this->assertEquals(Asset::directory() . '/1', $asset->getFilename());

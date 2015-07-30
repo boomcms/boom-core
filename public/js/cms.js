@@ -34717,7 +34717,8 @@ $.widget('boom.pageTree', {
 	};
 
 	return this.open();
-};$.widget('boom.pageTagSearch',  {
+}
+;$.widget('boom.pageTagSearch',  {
 	tags : [],
 
 	addTag : function(tag) {
@@ -34783,7 +34784,7 @@ $.widget('boom.pageTree', {
 		this._trigger('update', null, {tags : this.tags});
 	}
 });;$.widget('boom.pageTagAutocomplete', $.boom.tagAutocomplete,  {
-	url : '/cms/autocomplete/page_tags',
+	url : '/cms/autocomplete/page-tags',
 
 	tagSelected : function(tag) {
 		if (typeof(tag) === 'object') {
@@ -35392,7 +35393,7 @@ $.widget('boom.textEditor', {
 	this.page_id = page_id;
 	this.slotname = slotname;
 	this.type = type;
-	this.urlPrefix = '/cms/chunk/';
+	this.urlPrefix = '/cms/chunk/' + this.page_id + '/';
 
 	/**
 	 * To remove a chunk save it with no data.
@@ -35410,7 +35411,7 @@ $.widget('boom.textEditor', {
 		data.slotname = this.slotname;
 		data.type = this.type;
 
-		return $.post(this.urlPrefix + 'save/' + this.page_id, data);
+		return $.post(this.urlPrefix + 'save', data);
 	};
 };/**
 @fileOverview jQuery UI widgets for editable slots.
@@ -36191,7 +36192,7 @@ $.widget('ui.chunkTag', $.ui.chunk,
 		this.deferred = new $.Deferred();
 
 		this.dialog = new boomDialog({
-			url : '/cms/chunk/slideshow/edit/' + this.page_id + '?slotname=' + this.slotname,
+			url : '/cms/chunk/' + this.page_id + '/edit?slotname=' + this.slotname + '&type=slideshow',
 			id : 'b-slideshow-editor',
 			width: 920,
 			closeButton: false,
@@ -36367,7 +36368,7 @@ $.widget('ui.chunkTag', $.ui.chunk,
 				target_page_id : $this.attr('data-page-id'),
 				url : $this.attr('data-url'),
 				title : $this.attr('data-title'),
-				asset_id : $this.attr('data-asset'),
+				asset_id : $this.attr('data-asset')
 			});
 		});
 
@@ -36378,7 +36379,7 @@ $.widget('ui.chunkTag', $.ui.chunk,
 		var linksetEditor = this;
 
 		this.dialog = new boomDialog({
-			url: '/cms/chunk/linkset/edit/' + this.pageId + '?slotname=' + this.slotname,
+			url: '/cms/chunk/' + this.pageId + '/edit?slotname=' + this.slotname + '&type=linkset',
 			title: 'Edit linkset',
 			id: 'b-linkset-editor',
 			width: 900,
@@ -36470,7 +36471,7 @@ $.widget('ui.chunkTag', $.ui.chunk,
 		this.deferred = new $.Deferred();
 
 		this.dialog = new boomDialog({
-			url : '/cms/chunk/asset/edit/' + this.pageId + '?slotname=' + this.slotname,
+			url : '/cms/chunk/' + this.pageId + '/edit?slotname=' + this.slotname + '&type=asset',
 			id : 'b-assets-chunk-editor',
 			closeButton: false,
 			saveButton: true,
@@ -36710,7 +36711,7 @@ $.widget('ui.chunkPageVisibility', {
 		var locationEditor = this;
 
 		this.dialog = new boomDialog({
-			url : '/cms/chunk/location/edit/' + this.page_id + '?slotname=' + this.slotname,
+			url : '/cms/chunk/' + this.page_id + '/edit?slotname=' + this.slotname + '&type=location',
 			id : 'b-location-editor',
 			width: 920,
 			closeButton: false,
@@ -37024,7 +37025,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 				if (linkPicker.externalTypeSelector.val('http') || linkPicker.externalTypeSelector.val('https')) {
 					if (linkPicker.externalUrl.val()) {
 						$.ajax({
-							url: '/cms/autocomplete/page_titles',
+							url: '/cms/autocomplete/page-titles',
 							dataType: 'json',
 							data: {
 								text : linkPicker.externalUrl.val()
@@ -37287,10 +37288,120 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 		});
 	};
 
+	boomAsset.prototype.revertToVersion = function(versionId) {
+		return $.post(this.base_url + 'revert/' + this.id, {
+			version_id: versionId
+		});
+	};
+
 	boomAsset.prototype.save = function(data) {
 		return $.post(this.base_url + 'save/' + this.id, data);
 	};
-};;$.widget('boom.assetManager', {
+};
+;function boomAssetEditor(asset, uploader) {
+    this.asset = asset;
+    this.uploader = uploader;
+
+    boomAssetEditor.prototype.bind = function(dialog) {
+        var asset = this.asset,
+            assetEditor = this;
+
+        dialog.contents
+			.on('click', '.b-assets-delete', function() {
+				asset
+					.delete()
+					.done(function() {
+						dialog.close();
+					});
+			})
+			.on('click', '.b-assets-download', function(e) {
+				e.preventDefault();
+				asset.download();
+			})
+            .on('click', '.b-assets-replace', function(e) {
+                var uploadFinished = assetEditor.uploader.assetUploader('option', 'uploadFinished');
+
+                e.preventDefault();
+
+                assetEditor.uploader.assetUploader('replacesAsset', asset);
+                assetEditor.uploader.assetUploader('option', 'uploadFinished', function(e, data) {
+                    assetEditor.reloadPreviewImage();
+                    uploadFinished(e, data);
+
+                    // Restore the previous event handler.
+                    assetEditor.uploader.assetUploader('option', 'uploadFinished', uploadFinished);
+                });
+
+                assetEditor.uploader.show();
+            })
+            .on('click', '.b-assets-revert', function(e) {
+                e.preventDefault();
+
+                assetEditor.revertTo($(this).attr('data-version-id'));
+            })
+			.on('focus', '#thumbnail', function() {
+				var $this = $(this);
+
+				new boomAssetPicker($this.val())
+					.done(function(assetId) {
+						$this.val(assetId);
+					});
+			});
+    };
+
+    boomAssetEditor.prototype.open = function() {
+        var assetEditor = this;
+
+        this.dialog = new boomDialog({
+			title : 'Edit Asset',
+			url : '/cms/assets/view/' + assetEditor.asset.id,
+			width: document.documentElement.clientWidth >= 1000? '1000px' : '100%',
+			closeButton: false,
+			saveButton: true,
+			onLoad : function() {
+                assetEditor.bind(assetEditor.dialog);
+
+				assetEditor.dialog.contents
+					.find('#b-tags')
+					.assetTagSearch({
+						addTag: function(e, tag) {
+							assetEditor.asset.addTag(tag);
+						},
+						removeTag: function(e, tag) {
+							assetEditor.asset.removeTag(tag);
+						}
+					});
+			}
+		}).done(function() {
+            assetEditor.asset
+                .save(assetEditor.dialog.contents.find('form').serialize())
+                .done(function() {
+                    new boomNotification("Asset details saved");
+                });
+        });
+
+        return this.dialog;
+    };
+
+    boomAssetEditor.prototype.reloadPreviewImage = function() {
+        var $img = this.dialog.contents.find('.b-assets-preview img');
+
+        $img.attr("src", $img.attr('src') + '?' + new Date().getTime());
+    };
+
+    boomAssetEditor.prototype.revertTo = function(versionId) {
+        var assetEditor = this;
+
+        this.asset.revertToVersion(versionId)
+            .done(function() {
+                new boomNotification("This asset has been reverted to the previous version");
+                assetEditor.reloadPreviewImage();
+            });
+    };
+
+    return this.open();
+};
+;$.widget('boom.assetManager', {
 	baseUrl : '/cms/assets/',
 	listUrl : '/cms/assets/get',
 	postData : {
@@ -37308,7 +37419,8 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 		var assetManager = this;
 
 		assetManager.getAssets();
-		assetManager.uploader.hide();
+		assetManager.uploader.assetUploader('reset');
+		assetManager.uploader.assetUploader('close');
 	},
 
 	bind : function() {
@@ -37319,10 +37431,10 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 
 		this.uploader
 			.assetUploader({
-				done: function(e, data) {
+				uploadFinished: function(e, data) {
 					assetManager.assetsUploaded(data.result);
 				},
-				fail: function() {
+				uploadFailed: function() {
 					// Update asset list even though an error occurred
 					// For situations where multiple files were uploaded but one caused an error.
 					assetManager.getAssets();
@@ -37330,7 +37442,8 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 			})
 			.on('click', '#b-assets-upload-close', function(e) {
 				e.preventDefault();
-				assetManager.uploader.hide();
+
+				assetManager.uploader.assetUploader('close');
 			});
 	},
 
@@ -37543,60 +37656,15 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 	},
 
 	viewAsset : function(assetId) {
-		var asset = new boomAsset(assetId),
-			assetManager = this,
-			dialog;
+		var assetManager = this;
 
-		dialog = new boomDialog({
-			title : 'Edit Asset',
-			url : this.baseUrl + 'view/' + assetId,
-			width: document.documentElement.clientWidth >= 1000? '1000px' : '100%',
-			closeButton: false,
-			saveButton: true,
-			onLoad : function() {
-				dialog.contents
-					.find('#b-tags')
-					.assetTagSearch({
-						addTag : function(e, tag) {
-							asset.addTag(tag);
-						},
-						removeTag : function(e, tag) {
-							asset.removeTag(tag);
-						}
-					});
-			}
-		})
-		.done(function() {
-			asset
-				.save(dialog.contents.find('form').serialize())
-				.done(function() {
-					new boomNotification("Asset details saved");
-				});
-		});
-
-		dialog.contents
-			.on('click', '.b-assets-delete', function() {
-				asset
-					.delete()
-					.done(function() {
-						dialog.close();
-						assetManager.getAssets();
-					});
-			})
-			.on('click', '.b-assets-download', function(e) {
-				e.preventDefault();
-				asset.download();
-			})
-			.on('focus', '#thumbnail', function() {
-				var $this = $(this),
-					picker;
-				picker = new boomAssetPicker($this.val())
-					.done(function(assetId) {
-						$this.val(assetId);
-					});
+		new boomAssetEditor(new boomAsset(assetId), assetManager.uploader)
+			.done(function() {
+				assetManager.getAssets();
 			});
 	}
-});;function boomAssetPicker(currentAssetId, filters) {
+});
+;function boomAssetPicker(currentAssetId, filters) {
 	this.currentAssetId = currentAssetId? currentAssetId : 0;
 	this.deferred = new $.Deferred();
 	this.document = $(document);
@@ -37837,7 +37905,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 			});
 	}
 });;$.widget('boom.assetUploader', {
-	defaultOptions : {
+	uploaderOptions: {
 		/**
 		@type string
 		@default '/cms/assets/upload'
@@ -37865,7 +37933,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 		limitMultiFileUploads: 50
 	},
 
-	bind : function() {
+	bind: function() {
 		var assetUploader = this;
 
 		this.cancelButton.on('click', function() {
@@ -37873,59 +37941,87 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 
 			$(this).hide();
 			assetUploader.progressBar.progressbar('destroy');
-			assetUploader.notify('Upload was canceled');
+			assetUploader.notify('Upload was cancelled');
 		});
 	},
 
-	_create : function() {
+	close: function() {
+		this.notify('');
+		this.element.hide();
+	},
+
+	_create: function() {
 		this.cancelButton = this.element.find('#b-assets-upload-cancel');
 		this.dropArea = this.element.find('#b-assets-upload-container');
 		this.progressBar = this.element.find('#b-assets-upload-progress');
 		this.uploadForm = this.element;
-
-		this.options = $.extend({}, this.defaultOptions, this.options);
+		this.originalMessage = this.dropArea.find('.message').html();
 
 		this.resizeDropArea();
 		this.bind();
 		this.initUploader();
 	},
 
-	initUploader : function() {
+	initUploader: function() {
 		var assetUploader = this,
 			uploaderOptions;
 
-		uploaderOptions = $.extend({}, this.options, {
-			start: function(e, data) {
-				assetUploader.uploadStarted(e, data);
-			},
-			progressall: function(e, data) {
-				var percentComplete = parseInt((data.loaded / data.total * 100), 10);
+		this.uploadForm
+			.fileupload(this.uploaderOptions)
+			.fileupload('option', {
+				start: function(e, data) {
+					assetUploader.uploadStarted(e, data);
+				},
+				progressall: function(e, data) {
+					var percentComplete = parseInt((data.loaded / data.total * 100), 10);
 
-				assetUploader.updateProgressBar(e, percentComplete);
-			},
-			done: function(e, data) {
-				assetUploader.uploadFinished(e, data);
-			},
-			fail: function(e, data) {
-				assetUploader.uploadFailed(e, data);
-			 }
-		});
-
-		this.uploadForm.fileupload(uploaderOptions);
+					assetUploader.updateProgressBar(e, percentComplete);
+				},
+				done: function(e, data) {
+					assetUploader.uploadFinished(e, data);
+				},
+				fail: function(e, data) {
+					assetUploader.uploadFailed(e, data);
+				}
+			});
 	},
 
 	notify : function(message) {
+		if ( ! message) {
+			message = this.originalMessage;
+		}
+
 		this.dropArea.find('p.message').html(message);
+	},
+
+	/**
+	 * Make the uploader replace an existing asset rather than upload a new asset.
+	 */
+	replacesAsset: function(asset) {
+		this.uploadForm.fileupload('option', {
+			url: '/cms/assets/replace/' + asset.id,
+			singleFileUploads: true
+		});
 	},
 
 	resizeDropArea : function() {
 		this.options.dropAreaHeight && this.dropArea.height(this.options.dropAreaHeight);
 	},
 
+	reset: function() {
+		this.progressBar.progressbar('destroy');
+		this.cancelButton.hide();
+
+		// If we don't call disable first then when the uploader is reintialized
+		// we end up with multiple file uploads taking place.
+		this.uploadForm.fileupload('disable').fileupload('destroy');
+		this.initUploader();
+	},
+
 	updateProgressBar : function(e, percentComplete) {
 		this.progressBar.progressbar('value', percentComplete);
 
-		this._trigger('progress', e, [percentComplete]);
+		this._trigger('uploadProgress', e, [percentComplete]);
 	},
 
 	uploadFailed : function(e, data) {
@@ -37938,18 +38034,13 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 		}
 
 		this.notify(message);
-		this.progressBar.progressbar('destroy');
-		this.cancelButton.hide();
+		this.reset();
 
-		this._trigger('fail', e, data);
+		this._trigger('uploadFailed', e, data);
 	},
 
-	uploadFinished : function(e, data) {
-		this.notify("File upload completed");
-		this.progressBar.progressbar('destroy');
-		this.cancelButton.hide();
-
-		this._trigger('done', e, data);
+	uploadFinished: function(e, data) {
+		this._trigger('uploadFinished', e, data);
 	},
 
 	uploadStarted : function(e, data) {
@@ -37958,9 +38049,10 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 
 		this.fileData = data;
 
-		this._trigger('start', e, data);
+		this._trigger('uploadStarted', e, data);
 	}
-});;$.widget('boom.justifyAssets', {
+});
+;$.widget('boom.justifyAssets', {
 	$el : null,
 	targetRightOffset : null,
 	windowWidth : null,
@@ -38121,7 +38213,7 @@ function Row() {
 		return ($el.offset.top >= (this.elements[this.elements.length - 1].offset.top + $el.height()));
 	};
 };$.widget('boom.assetTagAutocomplete', $.boom.tagAutocomplete,  {
-	url : '/cms/autocomplete/asset_tags',
+	url : '/cms/autocomplete/asset-tags',
 
 	tagSelected : function(tag) {
 		if (typeof(tag) === 'object') {

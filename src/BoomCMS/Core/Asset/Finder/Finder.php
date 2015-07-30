@@ -4,7 +4,7 @@ namespace BoomCMS\Core\Asset\Finder;
 
 use BoomCMS\Core\Asset\Asset;
 use BoomCMS\Core\Finder\Finder as BaseFinder;
-use BoomCMS\Core\Models\Asset as Model;
+use BoomCMS\Database\Models\Asset as Model;
 
 class Finder extends BaseFinder
 {
@@ -12,18 +12,30 @@ class Finder extends BaseFinder
 	 *
 	 * @var array
 	 */
-    protected $_allowedOrderByColumns = ['last_modified', 'title', 'downloads', 'filesize', 'uploaded_time'];
+    protected $allowedOrderByColumns = ['last_modified', 'title', 'downloads', 'filesize', 'uploaded_time'];
+
+    protected $orderByAliases = [
+        'last_modified' => 'version.edited_at',
+        'filesize' => 'version.filesize',
+    ];
 
     public function __construct()
     {
-        $this->query = new Model();
+        $this->query = (new Model())->withLatestVersion();
+    }
+
+    protected function createFrom(Model $model)
+    {
+        $attrs = $model->toArray();
+
+        return Asset::factory($attrs);
     }
 
     public function find()
     {
         $model = parent::find();
 
-        return Asset::factory($model->toArray());
+        return $this->createFrom($model);
     }
 
     public function findAll()
@@ -32,7 +44,7 @@ class Finder extends BaseFinder
         $assets = [];
 
         foreach ($models as $m) {
-            $assets[] = Asset::factory($m->toArray());
+            $assets[] = $this->createFrom($m);
         }
 
         return $assets;
@@ -40,7 +52,11 @@ class Finder extends BaseFinder
 
     public function setOrderBy($field, $direction = null)
     {
-        in_array($field, $this->_allowedOrderByColumns) || $field = 'title';
+        in_array($field, $this->allowedOrderByColumns) || $field = 'title';
+
+        if (isset($this->orderByAliases[$field])) {
+            $field = $this->orderByAliases[$field];
+        }
 
         return parent::setOrderBy($field, $direction);
     }

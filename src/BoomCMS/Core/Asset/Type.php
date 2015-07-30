@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Core\Asset;
 
-use \DB as DB;
+use Illuminate\Support\Facades\DB;
 
 abstract class Type
 {
@@ -49,9 +49,7 @@ abstract class Type
 	 */
     public static function whichExist()
     {
-        $typesAsNumbers = DB::table('assets')
-            ->distinct(true)
-            ->lists('type');
+        $typesAsNumbers = DB::table('asset_versions')->distinct()->lists('type');
 
         $typesAsStrings = [];
 

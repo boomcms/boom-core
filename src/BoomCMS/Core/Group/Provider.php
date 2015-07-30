@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Core\Group;
 
-use BoomCMS\Core\Models\Group as Model;
+use BoomCMS\Database\Models\Group as Model;
 use Illuminate\Support\Facades\DB;
 
 class Provider

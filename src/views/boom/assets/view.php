@@ -1,10 +1,11 @@
 <div id="b-assets-view">
     <div class="b-assets-preview">
-        <img src="<?= $assetURL(['asset' => $asset->getId(), 'action' => 'thumb', 'height' => 300]) ?>">
+        <img src="<?= $assetURL(['asset' => $asset, 'action' => 'thumb', 'height' => 300]) ?>">
 
         <div class="ui-dialog-buttonpane">
             <?= $button('trash-o', Lang::get('Delete'), ['class' => 'b-assets-delete']) ?>
             <?= $button('download', Lang::get('Download'), ['class' => 'b-assets-download']) ?>
+            <?= $button('refresh', Lang::get('Replace'), ['class' => 'b-assets-replace']) ?>
         </div>
     </div>
 
@@ -14,8 +15,8 @@
             <li><a href="#b-assets-view-attributes"><?= Lang::get('Attributes') ?></a></li>
             <li><a href="#b-tags"><?= Lang::get('Tags') ?></a></li>
 
-            <?php if (count($asset->getOldFiles()) > 0): ?>
-                <li><a href="#b-assets-view-files"><?= Lang::get('Previous Files') ?></a></li>
+            <?php if ($asset->hasPreviousVersions()): ?>
+                <li><a href="#b-assets-view-files"><?= Lang::get('boom::asset.previous_versions') ?></a></li>
             <?php endif ?>
         </ul>
 
@@ -74,22 +75,30 @@
 
         <?= View::make('boom::assets.tags', ['tags' => $asset->getTags()]) ?>
 
-        <?php if (count($asset->getOldFiles()) > 0): ?>
+        <?php if ($asset->hasPreviousVersions()): ?>
             <div id="b-assets-view-files">
-                <p>
-                    These files were previously assigned to this asset but were replaced.
-                </p>
+                <p><?= Lang::get('boom::asset.previous_versions_intro') ?></p>
+
                 <ul>
-                    <?php foreach ($asset->getOldFiles() as $timestamp => $filename): ?>
+                    <?php foreach ($asset->getVersions() as $version): ?>
                         <li>
-                            <a href="/cms/assets/restore/<?= $asset->getId() ?>?timestamp=<?= $timestamp ?>">
-                                <img src="<?= $assetURL(['asset' => $asset->getId(), 'action' => 'crop', 'width' => 160, 'height' => 160]) ?><?php if ($timestamp): ?>?timestamp=<?= $timestamp ?><?php endif ?>" />
-                            </a>
-                            <?= date("d F Y H:i", $timestamp) ?>
+                            <div>
+                                <img src="<?= URL::route('asset-version', ['id' => $version->getId(), 'width' => '200', 'height' => 0]) ?>" />
+                            </div>
+
+                            <div>
+                                <h3>Edited by</h3>
+                                <p><?= $version->getEditedBy()->getName() ?></p>
+
+                                <h3>Edited at</h3>
+                                <time datetime="<?= $version->getEditedAt()->format('c') ?>"><?= $version->getEditedAt()->format('d F Y H:i') ?></time>
+
+                                <?= $button('undo', 'Revert to this version', ['class' => 'b-button-withtext b-assets-revert', 'data-version-id' => $version->getId()]) ?>
+                            </div>
                         </li>
                     <?php endforeach ?>
                 </ul>
             </div>
-        <?php endif ?>
+        <?php endif  ?>
     </div>
 </div>

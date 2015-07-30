@@ -55,6 +55,12 @@ function boomAsset(asset_id) {
 		});
 	};
 
+	boomAsset.prototype.revertToVersion = function(versionId) {
+		return $.post(this.base_url + 'revert/' + this.id, {
+			version_id: versionId
+		});
+	};
+
 	boomAsset.prototype.save = function(data) {
 		return $.post(this.base_url + 'save/' + this.id, data);
 	};

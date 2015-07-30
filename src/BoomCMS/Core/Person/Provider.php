@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Core\Person;
 
-use BoomCMS\Core\Models\Person as Model;
+use BoomCMS\Database\Models\Person as Model;
 
 class Provider
 {

@@ -54,7 +54,7 @@ class Handler extends ExceptionHandler
 					View::share('page', $page);
                     Editor::setActivePage($page);
 
-                    return response(App::make('BoomCMS\Core\Controllers\PageController')->asHtml($page), $code);
+                    return response(App::make('BoomCMS\Http\Controllers\PageController')->asHtml($page), $code);
                 }
             }
         }

@@ -36,7 +36,7 @@
                             <option value="desc"<?php if ($child_order_direction === 'desc'): ?> selected="selected"<?php endif ?>>Descending</option>
                         </select>
 
-                        <?= new BoomCMS\Core\UI\Button('', 'Re-order', ['id' => 'b-page-settings-children-reorder', 'class' => 'b-button-textonly']) ?>
+                        <?= new BoomCMS\UI\Button('', 'Re-order', ['id' => 'b-page-settings-children-reorder', 'class' => 'b-button-textonly']) ?>
                     </label>
 		</div>
 		<?php if ($allowAdvanced): ?>
