@@ -26,10 +26,10 @@ abstract class BaseController extends Controller
 
     public function download()
     {
-		return response()->download(
-			$this->asset->getFilename(),
+        return response()->download(
+            $this->asset->getFilename(),
             $this->asset->getOriginalFilename()
-		);
+        );
     }
 
     public function embed()
