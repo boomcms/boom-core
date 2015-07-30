@@ -4,7 +4,7 @@ namespace BoomCMS\Core\Asset\Mimetype;
 
 abstract class Mimetype
 {
-    public static $allowedExtensions = ['jpeg', 'gif', 'jpg', 'png', 'tiff', 'doc', 'docx', 'pdf', 'mp4', 'xls', 'xlsx'];
+    public static $allowedExtensions = ['jpeg', 'gif', 'jpg', 'png', 'tiff', 'doc', 'docx', 'pdf', 'mp4', 'xls', 'xlsx', 'mov'];
 
     public static $allowedTypes = [
         'image/jpeg' => 'jpg',
@@ -17,6 +17,7 @@ abstract class Mimetype
         'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' => 'xlsx',
         'application/pdf' => 'pdf',
         'video/mp4' => 'mp4',
+        'video/quicktime' => 'mov',
     ];
 
     protected $_mimetype;
