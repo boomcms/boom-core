@@ -9,7 +9,7 @@ class Provider
 {
     public function create($location, $pageId, $isPrimary = false)
     {
-        $unique = URLHelper::makeUnique(Helpers::sanitise($location));
+        $unique = URLHelper::makeUnique(URLHelper::sanitise($location));
 
         $model = Model::create([
             'location' => $unique,
