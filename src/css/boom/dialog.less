@@ -1,5 +1,6 @@
 .b-dialog {
-	background-color: #555;
+	background-color: @lightest-grey;
+	color: @darkest-grey;
 	max-height: 100%;
 	overflow: hidden;
 	border: 0;
@@ -14,7 +15,7 @@
 
 	.ui-dialog-titlebar {
 		text-transform: uppercase;
-		background-color: #222;
+		background-color: @darkest-grey;
 		color: @white;
 		border: 0;
 
@@ -29,8 +30,12 @@
 
 	.ui-dialog-buttonpane {
 		margin-top: 0;
-		background-color: #666;
+		background-color: @lightest-grey;
 		border: 0;
+
+		.b-button {
+			color: @darkest-grey;
+		}
 
 		.ui-icon {
 			margin: 0;
@@ -45,8 +50,8 @@
 	}
 
 	.ui-widget-content {
-		background-color: #666;
-		color: @white;
+		background-color: @lightest-grey;
+		color: @darkest-grey;
 
 		&.ui-dialog-content {
 			padding-top: 0;
