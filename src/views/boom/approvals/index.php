@@ -19,14 +19,16 @@
                     <th></th>
                 </tr>
                 <?php foreach ($pages as $page): ?>
-                    <tr data-page-id="<?= $page->getId() ?>">
-                        <td><a href="<?= $page->url() ?>"><?= $page->getTitle() ?></a></td>
-                        <td><?= $page->getCurrentVersion()->person->name ?> (<?= $page->getCurrentVersion()->person->email ?>)</td>
-                        <td><?= date('d F Y H:i', $page->getCurrentVersion()->edited_time) ?></td>
-                        <td><a href="#" class="b-approvals-publish">Publish</a></td>
-                        <td><a href="#" class="b-approvals-reject">Revert to published version</a></td>
-                        <td><a href="<?= $page->url() ?>">View page</a></td>
-                    </tr>
+                    <?php if ($auth->loggedIn('publish', $page)): ?>
+                        <tr data-page-id="<?= $page->getId() ?>">
+                            <td><a href="<?= $page->url() ?>"><?= $page->getTitle() ?></a></td>
+                            <td><?= $page->getCurrentVersion()->getEditedBy()->getName() ?> (<?= $page->getCurrentVersion()->getEditedBy()->getEmail() ?>)</td>
+                            <td><?= $page->getCurrentVersion()->getEditedTime()->format('d F Y H:i') ?></td>
+                            <td><a href="#" class="b-approvals-publish">Publish</a></td>
+                            <td><a href="#" class="b-approvals-reject">Revert to published version</a></td>
+                            <td><a href="<?= $page->url() ?>">View page</a></td>
+                        </tr>
+                    <?php endif ?>
                 <?php endforeach ?>
             </table>
         <?php else: ?>
@@ -36,7 +38,7 @@
         <?php endif ?>
     </div>
 
-    <?= Assets::factory('boom_approvals')->js('boom/approvals.js') ?>
+    <?= $boomJS ?>
 
     <script type="text/javascript">
         //<![CDATA[

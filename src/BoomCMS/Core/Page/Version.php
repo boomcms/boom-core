@@ -3,6 +3,7 @@
 namespace BoomCMS\Core\Page;
 
 use BoomCMS\Core\Template;
+use BoomCMS\Support\Facades\Person;
 use DateTime;
 
 class Version
@@ -18,6 +19,8 @@ class Version
      * @var Template\Template;
      */
     private $template;
+    
+    protected $editedBy;
 
     public function __construct(array $attrs)
     {
@@ -32,6 +35,15 @@ class Version
     public function get($key)
     {
         return isset($this->attrs[$key]) ? $this->attrs[$key] : null;
+    }
+    
+    public function getEditedBy()
+    {
+        if ($this->editedBy === null) {
+            $this->editedBy = Person::findById($this->get('edited_by'));
+        }
+        
+        return $this->editedBy;
     }
 
     public function getEditedTime()

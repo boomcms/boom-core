@@ -113,6 +113,7 @@ module.exports = function(grunt) {
 					'src/js/boom/person.js',
 					'src/js/boom/peopleManager.js',
 					'src/js/boom/imageEditor.js',
+					'src/js/bom/approvals.js',
 					'bower_components/wysihtml/dist/wysihtml5x-toolbar.js',
 					'src/js/wysihtml5/parser_rules/full.js',
 					'src/js/wysihtml5/parser_rules/inline.js',

@@ -2,29 +2,25 @@
 
 namespace BoomCMS\Http\Controllers\CMS;
 
-use BoomCMS\Core\Page;
-use BoomCMS\Core\Controller\Controller;
+use BoomCMS\Core\Page\Finder;
+use BoomCMS\Http\Controllers\Controller;
+use Illuminate\Support\Facades\View;
 
 class Approvals extends Controller
 {
-    public function before()
+    public function getIndex()
     {
-        parent::before();
-
         $this->authorization('manage_approvals');
-    }
 
-    public function index()
-    {
-        return View::make('boom/approvals/index', [
-            'pages' => $this->_get_pages_awaiting_approval(),
+        return View::make('boom::approvals.index', [
+            'pages' => $this->getPagesAwaitingApproval(),
         ]);
     }
 
-    protected function _get_pages_awaiting_approval()
+    protected function getPagesAwaitingApproval()
     {
-        $finder = new Page\Finder();
-        $finder->addFilter(new Page\Finder\Filter\PendingApproval());
+        $finder = new Finder\Finder();
+        $finder->addFilter(new Finder\PendingApproval());
 
         return $finder->findAll();
     }
