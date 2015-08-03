@@ -14,7 +14,7 @@ $.widget('boom.pageSettings', {
 
 		this.bind();
 	},
-	
+
 	getUrl: function(section) {
 		switch (section) {
 			case 'urls':
@@ -30,8 +30,10 @@ $.widget('boom.pageSettings', {
 				return '/cms/page/settings/' + section + '/' + this.page.id;
 		}
 	},
-	
+
 	show: function(section) {
+		var pageSettings = this;
+
 		this.$menu
 			.find('li')
 			.removeClass('fa-caret-right')
@@ -39,7 +41,17 @@ $.widget('boom.pageSettings', {
 			.find('a[data-b-page-setting=' + section + ']')
 			.parent('li')
 			.addClass('fa fa-caret-right');
-		
-		this.$content.load(this.getUrl(section));
+
+		this.$content.load(this.getUrl(section), function() {
+			var widget = 'pageSettings' + section.ucfirst();
+
+			pageSettings.$content.ui();
+
+			if (typeof(pageSettings.$content[widget]) === 'function') {
+				pageSettings.$content[widget]({
+					page: pageSettings.page
+				});
+			}
+		});
 	}
 });

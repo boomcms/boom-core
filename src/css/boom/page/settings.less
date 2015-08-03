@@ -1,5 +1,6 @@
 .b-page-settings {
 	background: @lightest-grey;
+	color: @darkest-grey;
 	width: 100%;
 	height: 100%;
 	padding: 50px;
@@ -12,31 +13,31 @@
 		box-sizing: border-box;
 		padding-left: 0;
 		margin: -0.75em 0;
-		
+
 		li {
 			display: block;
 			list-style-type: none;
 			position: relative;
-			
+
 			&:before {
 				position: absolute;
 				left: 0;
 				top: 12px;
 			}
-			
+
 			a {
 				display: block;
 				color: @darkest-grey;
 				text-decoration: none;
 				padding: 0.75em 0 0.75em 1em;
-				
+
 				&:hover, &:focus {
 					color: @red;
 				}
 			}
 		}
 	}
-	
+
 	.b-page-settings-content {
 		display: inline-block;
 		width: 66%;
@@ -49,7 +50,7 @@
 			.text-large;
 			margin-top: 0;
 		}
-		
+
 		h2 {
 			.text-default;
 			font-weight: bold;
@@ -58,15 +59,25 @@
 		p {
 			.text-default;
 		}
-		
+
 		section + section {
 			margin-top: 1.5em;
 		}
-		
+
 		input[type=text], select, textarea {
 			width: 25em;
 			float: none;
 			margin-left: 0;
+		}
+
+		.b-button {
+			color: @darkest-grey;
+
+			&[disabled] {
+				&:hover, &:focus {
+					color: @darkest-grey;
+				}
+			}
 		}
 	}
 }
@@ -79,7 +90,7 @@
 	left: 60px;
 	transform: translateX(-100%);
 	transition: all 1s;
-	
+
 	&.open {
 		transform: translateX(0);
 		transition: all 1s;

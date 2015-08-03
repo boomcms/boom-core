@@ -1,13 +1,12 @@
-boomPageVisibilityEditor = function(page) {
-	this.changed = false;
-	this.deferred = new $.Deferred();
-	this.page = page;
-	this.url = '/cms/page/settings/visibility/' + this.page.id;
+$.widget('boom.pageSettingsVisibility', {
+	changed: false,
+	deferred: new $.Deferred(),
+	baseUrl: '/cms/page/settings/visibility/',
 
-	boomPageVisibilityEditor.prototype.bind = function() {
+	bind: function() {
 		var pageVisibilityEditor = this;
 
-		this.dialog.contents
+		this.element
 			.on('change', 'input, select', function() {
 				pageVisibilityEditor.changed = true;
 			})
@@ -20,45 +19,28 @@ boomPageVisibilityEditor = function(page) {
 
 			this.toggleVisible(this.elements.visible.find('option:selected').val() === '1');
 			this.toggleVisibleTo(this.elements.visibleToToggle.is(':checked'));
-	};
+	},
 
-	boomPageVisibilityEditor.prototype.disableElements = function() {
+	disableElements: function() {
 		var elementsToDisable = ['visibleFrom', 'visibleTo', 'visibleToToggle'];
 
 		for (var el in elementsToDisable) {
 			this.elements[elementsToDisable[el]].attr('disabled', 'disabled');
 		}
-	};
+	},
 
-	boomPageVisibilityEditor.prototype.findElements = function() {
+	findElements: function() {
+		var $el = this.element;
+
 		this.elements = {
-			visible : this.dialog.contents.find('#b-page-visible'),
-			visibleFrom : this.dialog.contents.find('#visible-from'),
-			visibleTo : this.dialog.contents.find('#visible-to'),
-			visibleToToggle : this.dialog.contents.find('#toggle-visible')
+			visible: $el.find('#b-page-visible'),
+			visibleFrom: $el.find('#visible-from'),
+			visibleTo: $el.find('#visible-to'),
+			visibleToToggle: $el.find('#toggle-visible')
 		};
-	};
+	},
 
-	boomPageVisibilityEditor.prototype.open = function() {
-		var pageVisibilityEditor = this;
-
-		this.dialog = new boomDialog({
-			url : pageVisibilityEditor.url,
-			title : 'Page visibility',
-			closeButton: false,
-			saveButton: true,
-			open : function() {
-				pageVisibilityEditor.findElements();
-				pageVisibilityEditor.bind();
-			}
-		}).done(function() {
-			pageVisibilityEditor.save();
-		});
-
-		return this.deferred;
-	};
-
-	boomPageVisibilityEditor.prototype.save = function() {
+	save: function() {
 		var visibilityEditor = this;
 
 		if (this.changed) {
@@ -68,18 +50,18 @@ boomPageVisibilityEditor = function(page) {
 					visibilityEditor.deferred.resolve(response);
 				});
 		}
-	};
+	},
 
-	boomPageVisibilityEditor.prototype.toggleVisible = function(visible) {
+	toggleVisible: function(visible) {
 		if (visible) {
 			this.elements.visibleFrom.removeAttr('disabled');
 			this.elements.visibleToToggle.removeAttr('disabled');
 		} else {
 			this.disableElements();
 		}
-	};
+	},
 
-	boomPageVisibilityEditor.prototype.toggleVisibleTo = function(disable) {
+	toggleVisibleTo: function(disable) {
 		var visibleTo = this.elements.visibleTo;
 
 		if (disable) {
@@ -99,7 +81,5 @@ boomPageVisibilityEditor = function(page) {
 
 			visibleTo.blur();
 		}
-	};
-
-	return this.open();
-};
+	}
+});

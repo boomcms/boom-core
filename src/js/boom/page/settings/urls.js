@@ -1,8 +1,7 @@
-function boomUrlEditor(page) {
-	this.page = page;
-	this.list_url = '/cms/page/urls/' + page.id;
+$.widget('boom.pageSettingsUrls', {
+	baseUrl: '/cms/page/urls/',
 
-	boomUrlEditor.prototype.add = function() {
+	add: function() {
 		var url = new boomPageUrl(),
 			urlEditor = this;
 
@@ -10,15 +9,15 @@ function boomUrlEditor(page) {
 			.done(function(response) {
 				new boomNotification('Url added.');
 
-				urlEditor.dialog.contents.load(urlEditor.list_url);
+				urlEditor.element.load(urlEditor.list_url);
 			});
-	};
+	},
 
-	boomUrlEditor.prototype.bind = function() {
+	bind: function() {
 		var urlEditor = this,
 			page = this.page;
 
-		this.dialog.contents
+		this.element
 			.on('change', '.b-urls-primary', function() {
 				var $url = $(this).closest('li'),
 					is_primary = $url.find('.b-urls-primary').is(':checked')? 1 : 0;
@@ -38,9 +37,17 @@ function boomUrlEditor(page) {
 
 				urlEditor.delete($(e.target).closest('li'));
 			});
-	};
+	},
 
-	boomUrlEditor.prototype.delete = function($li) {
+	_create: function() {
+		var urlEditor = this,
+			page = this.page;
+
+		this.page = this.options.page;
+		this.list_url = this.baseUrl + this.page.id;
+	},
+
+	delete: function($li) {
 		var id = $li.data('id'),
 			url = new boomPageUrl(id);
 
@@ -50,36 +57,9 @@ function boomUrlEditor(page) {
 
 				new boomNotification("The specified URL has been deleted.");
 			});
-	};
+	},
 
-	boomUrlEditor.prototype.open = function() {
-		var urlEditor = this,
-			page = this.page;
-
-		this.dialog = new boomDialog({
-			url: this.list_url,
-			title: 'URL Editor',
-			width: 800,
-			cancelButton : false,
-			buttons: [
-				{
-					text : 'Add URL',
-					title : 'Add URL',
-					id : 'b-page-urls-add',
-					class : 'b-button b-button-withtext',
-					icons: {primary : 'b-button-icon b-button-icon-add'},
-					click: function() {
-						urlEditor.add();
-					}
-				}
-			],
-			open: function() {
-				urlEditor.bind();
-			}
-		});
-	};
-
-	boomUrlEditor.prototype.makePrimary = function($url) {
+	makePrimary: function($url) {
 		var url = new boomPageUrl($url.data('id'));
 
 		url.makePrimary()
@@ -95,5 +75,5 @@ function boomUrlEditor(page) {
 
 				new boomNotification("The primary URL of the page has been updated.");
 			});
-	};
-};
+	}
+});
