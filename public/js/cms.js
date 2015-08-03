@@ -31484,7 +31484,7 @@ Date.parseFunctions={count:0};Date.parseRegexes=[];Date.formatFunctions={count:0
     } else {
         window.dataURLtoBlob = dataURLtoBlob;
     }
-}(this));
+}(window));
 ;/*
  * jQuery File Upload Plugin 5.42.3
  * https://github.com/blueimp/jQuery-File-Upload
