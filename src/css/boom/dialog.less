@@ -60,6 +60,15 @@
 	.ui-widget-content {
 		background-color: @lightest-grey;
 		color: @darkest-grey;
+		
+		a {
+			color: @darkest-grey;
+			
+			&:hover, &:focus {
+				background: transparent;
+				color: @red;
+			}
+		}
 
 		&.ui-dialog-content {
 			padding-top: 0;
