@@ -1,8 +1,4 @@
 #b-page-urls {
-	h1 {
-		.text-large;
-	}
-
 	p, li {
 		.text-default;
 
@@ -12,29 +8,10 @@
 		}
 	}
 
-	> section {
-		.box-sizing;
-		display: inline-block;
-		vertical-align: top;
-
-		&:first-of-type {
-			border-right: 1px solid @darkest-grey;
-			margin-right: 1em;
-			padding-right: 1em;
-			width: 420px;
-		}
-	}
-
-	.b-page-urls-short {
-		width: 315px;
-	}
-
 	&-list {
 		padding-left: 0;
 		width: 100%;
 		list-style-type: none;
-		max-height: 300px;
-		overflow: auto;
 		margin-top: 2em;
 
 		li {
@@ -51,10 +28,6 @@
 					display: inline;
 				}
 
-				label {
-					width: 308px;
-				}
-
 				.b-urls-remove {
 					display: none;
 				}
@@ -62,12 +35,12 @@
 
 			label {
 				.box-sizing;
-				width: 336px;
 				cursor: pointer;
 				padding: 0.7em;
 				margin-top: 0;
 				display: inline;
 				float: left;
+				min-width: 30em;
 			}
 
 			.b-page-urls-primary-indicator {

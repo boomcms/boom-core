@@ -1,11 +1,9 @@
-<div id="b-tags" class="boom-tabs">
-    <ul>
-        <li><a href="#free">Free tags</a></li>
-        <li><a href="#grouped">Grouped tags</a></li>
-        <li><a href="#pages">Tagged pages</a></li>
-    </ul>
+<div id="b-tags">
+    <h1><?= Lang::get('boom::settings.tags.heading') ?></h1>
 
     <section id="free">
+        <h2><?= Lang::get('Free tags') ?></h2>
+
         <ul class="b-tags-list" data-group="">
             <?php foreach ($freeTags as $tag): ?>
                 <?= new BoomCMS\UI\Tag($tag) ?>
@@ -21,6 +19,8 @@
     </section>
 
     <section id="grouped">
+        <h2><?= Lang::get('Grouped tags') ?></h2>
+
         <ul class="b-tags-grouped">
             <?php foreach ($groups as $group): ?>
                 <li>
@@ -55,6 +55,8 @@
     </section>
 
     <section id="pages">
+        <h2><?= Lang::get('Tagged pages') ?></h2>
+
         <?= Lang::get('boom::settings.tags.pages.intro') ?>
 
         <h2 class="current"<?php if ( !count($relatedPages)): ?> style="display: none"<?php endif ?>>

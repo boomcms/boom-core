@@ -1,43 +1,36 @@
-<form class="b-form-settings">
-	<div class="boom-tabs">
-		<?php if ($allowAdvanced): ?>
-			<ul>
-				<li>
-					<a href="#basic"><?= Lang::get('Basic') ?></a>
-				</li>
-				<li>
-					<a href="#advanced"><?= Lang::get('Advanced') ?></a>
-				</li>
-			</ul>
-		<?php endif ?>
+<form>
+    <h1><?= Lang::get('boom::settings.navigation.heading') ?></h1>
 
-		<div id="basic">
-                    <label>
-                        <?= Lang::get('Visible in navigation') ?>?
+    <section id="basic">
+        <h2><?= Lang::get('boom::settings.basic') ?></h2>
 
-                        <select name="visible_in_nav" id="visible_in_nav">
-                            <option value="1"<?php if ($page->isVisibleInNav()): ?> selected="selected"<?php endif ?>>Yes</option>
-                            <option value="0"<?php if ( ! $page->isVisibleInNav()): ?> selected="selected"<?php endif ?>>No</option>
-                        </select>
-                    </label>
+        <label>
+            <p><?= Lang::get('boom::settings.navigation.nav') ?></p>
 
-                    <label>
-                        <?= Lang::get('Visible in CMS navigation') ?>?
+            <select name="visible_in_nav" id="visible_in_nav">
+                <option value="1"<?php if ($page->isVisibleInNav()): ?> selected="selected"<?php endif ?>>Yes</option>
+                <option value="0"<?php if ( ! $page->isVisibleInNav()): ?> selected="selected"<?php endif ?>>No</option>
+            </select>
+        </label>
 
-                        <select name="visible_in_nav_cms" id="visible_in_nav_cms">
-                            <option value="1"<?php if ($page->isVisibleInCmsNav()): ?> selected="selected"<?php endif ?>>Yes</option>
-                            <option value="0"<?php if ( ! $page->isVisibleInCmsNav()): ?> selected="selected"<?php endif ?>>No</option>
-                        </select>
-                    </label>
-		</div>
+        <label>
+            <p><?= Lang::get('boom::settings.navigation.cms') ?></p>
 
-		<?php if ($allowAdvanced): ?>
-			<div id='advanced'>
-				<label for="parent_id">Parent page</label>
+            <select name="visible_in_nav_cms" id="visible_in_nav_cms">
+                <option value="1"<?php if ($page->isVisibleInCmsNav()): ?> selected="selected"<?php endif ?>>Yes</option>
+                <option value="0"<?php if ( ! $page->isVisibleInCmsNav()): ?> selected="selected"<?php endif ?>>No</option>
+            </select>
+        </label>
+    </section>
 
-				<input type="hidden" name="parent_id" value="<?= $page->getParentId() ?>">
-				<ul class="boom-tree"></ul>
-			</div>
-		<?php endif ?>
-	</div>
+    <?php if ($allowAdvanced): ?>
+        <section id='advanced'>
+            <h2><?= Lang::get('boom::settings.advanced') ?></h2>
+
+            <label for="parent_id">Parent page</label>
+
+            <input type="hidden" name="parent_id" value="<?= $page->getParentId() ?>">
+            <ul class="boom-tree"></ul>
+        </section>
+    <?php endif ?>
 </form>

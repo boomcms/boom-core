@@ -1,4 +1,6 @@
 <form id="b-page-version-template" name="pageversion-template">
+    <h1><?= Lang::get('boom::settings.template.heading') ?></h1>
+
 	<div class="b-template">
 		<p>Changing the template of the page will change how the content of the page is visually displayed.</p>
 		<p>Although some content may not be visible with certain templates, the content will remain with the page and become visible if the template is changed back.</p>

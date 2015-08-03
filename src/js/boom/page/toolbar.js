@@ -30,7 +30,10 @@ $.widget( 'boom.pageToolbar', {
 				self.options.page.stash();
 			})
 			.on('click', '.b-page-visibility', function() {
-				self.options.page.visibility()
+				self.openPageSettings();
+
+				self.$settings
+					.pageSettings('show', 'visibility')
 					.done(function(response) {
 						if (response == 1) {
 							self.buttons.visible.show();
@@ -47,7 +50,10 @@ $.widget( 'boom.pageToolbar', {
 				$.boom.editor.state($(this).attr('data-preview'));
 			})
 			.on('click', '#b-page-template', function() {
-				self.options.page.template();
+				self.openPageSettings();
+
+				self.$settings
+					.pageSettings('show', 'template');
 			})
 			.on('click', '#b-menu-button', function() {
 				var $body = $('body');
@@ -58,37 +64,30 @@ $.widget( 'boom.pageToolbar', {
 					self.minimise();
 				}
 			})
-			.find('#b-page-settings-menu')
-			.splitbutton({
-				items: self._buildSettingsMenu(),
-				width: 'auto',
-				menuPosition: 'right',
-				split: false
+			.on('click', '#b-page-settings', function() {
+				var $settings = self.element
+					.contents()
+					.find('#b-page-settings-toolbar');
+		
+				if ($settings.hasClass('open')) {
+					$settings.removeClass('open');
+
+					setTimeout(function() {
+						self.minimise();
+					}, 1000);
+				} else {
+					self.maximise();
+					$settings.addClass('open');
+				}
 			});
 
 		this.buttonBar = this.element.contents().find('#b-topbar');
 	},
 
-	_buildSettingsMenu : function() {
-		var menu_items = {};
-		var self = this;
-
-		this.element.contents().find('button.b-page-settings').each(function(index, value) {
-			var $this = $(this);
-			var setting = $this.attr('data-b-page-setting');
-			var item = [];
-
-			item[$this.text()] =  function() {
-				self.options.page[setting]();
-			}
-			menu_items = $.extend(menu_items, item);
-		});
-
-		return menu_items;
-	},
-
 	_create : function() {
-		$.boom.log( 'init CMS toolbar' );
+		var toolbar = this;
+
+		$.boom.log('init CMS toolbar');
 
 		this.findButtons();
 
@@ -99,6 +98,13 @@ $.widget( 'boom.pageToolbar', {
 				publishable : this.options.publishable
 			})
 			.data('boom-pageStatus');
+	
+		this.$settings = this.element
+			.contents()
+			.find('.b-page-settings')
+			.pageSettings({
+				page: toolbar.options.page
+			});
 
 		this._bindButtonEvents();
 	},
@@ -135,6 +141,15 @@ $.widget( 'boom.pageToolbar', {
 			width : '60px',
 			'z-index' : 10000
 		});
+	},
+	
+	openPageSettings: function() {
+		this.maximise();
+
+		this.element
+			.contents()
+			.find('#b-page-settings-toolbar')
+			.addClass('open');
 	},
 
 	/**

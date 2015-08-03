@@ -18,7 +18,7 @@
 
 		<?php if ($auth->loggedIn('edit_page', $page)): ?>
 			<div id="b-page-settings-menu">
-				<?= $button('cog', Lang::get('Page settings which apply whichever version is published'), ['id' => 'boom-page-settings']) ?>
+				<?= $button('cog', Lang::get('Page settings which apply whichever version is published'), ['id' => 'b-page-settings']) ?>
 			</div>
 		<?php endif ?>
 
@@ -46,19 +46,17 @@
 		<div class="b-page-container">
 			<?= $button('view-live', Lang::get('View the page as it appears on the live site'), ['id' => 'b-page-viewlive', 'class' => 'b-button-preview', 'data-preview' => 'disabled']) ?>
 		</div>
-
-		<div id="b-topbar-pagesettings">
-			<div>
-				<?= View::make('boom::editor.page.settings.index') ?>
-			</div>
-		</div>
 	</div>
 
-        <div id="wysihtml5-toolbar" class="b-toolbar b-toolbar-vertical b-toolbar-text">
-            <?php foreach (BoomCMS\UI\TextEditorToolbar::getAvailableButtonSets() as $set): ?>
-                <?= new BoomCMS\UI\TextEditorToolbar($set) ?>
-            <?php endforeach ?>
-        </div>
+    <div id="wysihtml5-toolbar" class="b-toolbar b-toolbar-vertical b-toolbar-text">
+        <?php foreach (BoomCMS\UI\TextEditorToolbar::getAvailableButtonSets() as $set): ?>
+            <?= new BoomCMS\UI\TextEditorToolbar($set) ?>
+        <?php endforeach ?>
+    </div>
+</div>
+
+<div id="b-page-settings-toolbar">
+    <?= View::make('boom::editor.page.settings.index') ?>
 </div>
 
 <?= View::make('boom::editor.linkPicker') ?>
