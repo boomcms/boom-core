@@ -22,7 +22,7 @@
             <?= $button('times', Lang::get('boom::buttons.cancel'), ['id' => 'b-imageeditor-crop-cancel', 'class' => 'b-button-withtext']) ?>
          </div>
         
-        <?= $button('undo', Lang::get('boom::buttons.image-revert'), ['id' => 'b-imageeditor-revert', 'class' => 'b-button-withtext']) ?>
+        <?= $button('refresh', Lang::get('boom::buttons.image-revert'), ['id' => 'b-imageeditor-revert', 'class' => 'b-button-withtext']) ?>
     </div>
 
     <img id="b-imageeditor-image" src="" />
