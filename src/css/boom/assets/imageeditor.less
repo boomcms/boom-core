@@ -1,0 +1,56 @@
+#b-imageeditor {
+	position: relative;
+	height: 100%;
+	width: 100%;
+	overflow: hidden;
+
+	#b-imageeditor-image, .jcrop-active {
+		max-height: 90%;
+		max-width: 700px;
+		width: auto;
+		height: auto;
+		display: inline-block;
+		float: left;
+	}
+	
+	#b-imageeditor-image, .jcrop-active {
+		position: absolute;
+		margin-left: 100px;
+		top: 50% !important;
+		left: 50% !important;
+		transform: translateX(-50%) translateY(-50%) !important;
+	}
+	
+	#b-imageeditor-toolbar {
+		width: 200px;
+		display: inline-block;
+		float: left;
+		position: relative;
+		top: 50% !important;
+		transform: translateY(-50%);
+		
+		button.b-button {
+			display: block;
+		}
+	}
+	
+	.crop-tools {
+		display: none;
+		padding-left: 1em;
+		
+		.aspect-ratio {
+			p {
+				margin: 0 0 0 1em;
+			}
+
+			select {
+				float: none;
+				width: 100%;
+			}
+		}
+	}
+	
+	.jcrop-vline, .jcrop-hline {
+		background-image: none;
+	}
+}

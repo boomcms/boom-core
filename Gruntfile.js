@@ -47,8 +47,11 @@ module.exports = function(grunt) {
 					'bower_components/jgrowl/jquery.jgrowl.js',
 					'bower_components/tablesorter/jquery.tablesorter.js',
 					'bower_components/datetimepicker/jquery.datetimepicker.js',
+					'bower_components/blueimp-canvas-to-blob/js/canvas-to-blob.js',
 					'bower_components/jquery-file-upload/js/jquery.fileupload.js',
 					'bower_components/leaflet/dist/leaflet.js',
+					'bower_components/caman/dist/caman.full.js',
+					'bower_components/jcrop/js/Jcrop.js',
 					'src/js/boom/plugins.js',
 					'src/js/boom/config.js',
 					'src/js/boom/loader.js',
@@ -109,6 +112,7 @@ module.exports = function(grunt) {
 					'src/js/boom/group/permissionsEditor.js',
 					'src/js/boom/person.js',
 					'src/js/boom/peopleManager.js',
+					'src/js/boom/imageEditor.js',
 					'bower_components/wysihtml/dist/wysihtml5x-toolbar.js',
 					'src/js/wysihtml5/parser_rules/full.js',
 					'src/js/wysihtml5/parser_rules/inline.js',
@@ -162,6 +166,7 @@ module.exports = function(grunt) {
 						'bower_components/jquery-ui/themes/base/draggable.css',
 						'bower_components/jquery-ui/themes/base/dialog.css',
 						'bower_components/leaflet/dist/leaflet.css',
+						'bower_components/jcrop/css/Jcrop.css',
 						'src/css/libraries/jqpagination.css',
 						'public/css/cms.css'
 					 ]

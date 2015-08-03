@@ -25,6 +25,7 @@ Route::group(['middleware' => [
 
         Route::group(['middleware' => ['BoomCMS\Http\Middleware\RequireLogin']], function () {
             Route::controller('autocomplete', 'Autocomplete');
+            Route::controller('ui', 'UI');
             Route::controller('editor', 'Editor');
             Route::controller('account', 'Auth\Account');
 

@@ -31391,6 +31391,101 @@ function HighlightedDate(date, desc, style) {
 Date.parseFunctions={count:0};Date.parseRegexes=[];Date.formatFunctions={count:0};Date.prototype.dateFormat=function(b){if(b=="unixtime"){return parseInt(this.getTime()/1000);}if(Date.formatFunctions[b]==null){Date.createNewFormat(b);}var a=Date.formatFunctions[b];return this[a]();};Date.createNewFormat=function(format){var funcName="format"+Date.formatFunctions.count++;Date.formatFunctions[format]=funcName;var codePrefix="Date.prototype."+funcName+" = function() {return ";var code="";var special=false;var ch="";for(var i=0;i<format.length;++i){ch=format.charAt(i);if(!special&&ch=="\\"){special=true;}else{if(special){special=false;code+="'"+String.escape(ch)+"' + ";}else{code+=Date.getFormatCode(ch);}}}if(code.length==0){code="\"\"";}else{code=code.substring(0,code.length-3);}eval(codePrefix+code+";}");};Date.getFormatCode=function(a){switch(a){case"d":return"String.leftPad(this.getDate(), 2, '0') + ";case"D":return"Date.dayNames[this.getDay()].substring(0, 3) + ";case"j":return"this.getDate() + ";case"l":return"Date.dayNames[this.getDay()] + ";case"S":return"this.getSuffix() + ";case"w":return"this.getDay() + ";case"z":return"this.getDayOfYear() + ";case"W":return"this.getWeekOfYear() + ";case"F":return"Date.monthNames[this.getMonth()] + ";case"m":return"String.leftPad(this.getMonth() + 1, 2, '0') + ";case"M":return"Date.monthNames[this.getMonth()].substring(0, 3) + ";case"n":return"(this.getMonth() + 1) + ";case"t":return"this.getDaysInMonth() + ";case"L":return"(this.isLeapYear() ? 1 : 0) + ";case"Y":return"this.getFullYear() + ";case"y":return"('' + this.getFullYear()).substring(2, 4) + ";case"a":return"(this.getHours() < 12 ? 'am' : 'pm') + ";case"A":return"(this.getHours() < 12 ? 'AM' : 'PM') + ";case"g":return"((this.getHours() %12) ? this.getHours() % 12 : 12) + ";case"G":return"this.getHours() + ";case"h":return"String.leftPad((this.getHours() %12) ? this.getHours() % 12 : 12, 2, '0') + ";case"H":return"String.leftPad(this.getHours(), 2, '0') + ";case"i":return"String.leftPad(this.getMinutes(), 2, '0') + ";case"s":return"String.leftPad(this.getSeconds(), 2, '0') + ";case"O":return"this.getGMTOffset() + ";case"T":return"this.getTimezone() + ";case"Z":return"(this.getTimezoneOffset() * -60) + ";default:return"'"+String.escape(a)+"' + ";}};Date.parseDate=function(a,c){if(c=="unixtime"){return new Date(!isNaN(parseInt(a))?parseInt(a)*1000:0);}if(Date.parseFunctions[c]==null){Date.createParser(c);}var b=Date.parseFunctions[c];return Date[b](a);};Date.createParser=function(format){var funcName="parse"+Date.parseFunctions.count++;var regexNum=Date.parseRegexes.length;var currentGroup=1;Date.parseFunctions[format]=funcName;var code="Date."+funcName+" = function(input) {\nvar y = -1, m = -1, d = -1, h = -1, i = -1, s = -1, z = -1;\nvar d = new Date();\ny = d.getFullYear();\nm = d.getMonth();\nd = d.getDate();\nvar results = input.match(Date.parseRegexes["+regexNum+"]);\nif (results && results.length > 0) {";var regex="";var special=false;var ch="";for(var i=0;i<format.length;++i){ch=format.charAt(i);if(!special&&ch=="\\"){special=true;}else{if(special){special=false;regex+=String.escape(ch);}else{obj=Date.formatCodeToRegex(ch,currentGroup);currentGroup+=obj.g;regex+=obj.s;if(obj.g&&obj.c){code+=obj.c;}}}}code+="if (y > 0 && z > 0){\nvar doyDate = new Date(y,0);\ndoyDate.setDate(z);\nm = doyDate.getMonth();\nd = doyDate.getDate();\n}";code+="if (y > 0 && m >= 0 && d > 0 && h >= 0 && i >= 0 && s >= 0)\n{return new Date(y, m, d, h, i, s);}\nelse if (y > 0 && m >= 0 && d > 0 && h >= 0 && i >= 0)\n{return new Date(y, m, d, h, i);}\nelse if (y > 0 && m >= 0 && d > 0 && h >= 0)\n{return new Date(y, m, d, h);}\nelse if (y > 0 && m >= 0 && d > 0)\n{return new Date(y, m, d);}\nelse if (y > 0 && m >= 0)\n{return new Date(y, m);}\nelse if (y > 0)\n{return new Date(y);}\n}return null;}";Date.parseRegexes[regexNum]=new RegExp("^"+regex+"$",'i');eval(code);};Date.formatCodeToRegex=function(b,a){switch(b){case"D":return{g:0,c:null,s:"(?:Sun|Mon|Tue|Wed|Thu|Fri|Sat)"};case"j":case"d":return{g:1,c:"d = parseInt(results["+a+"], 10);\n",s:"(\\d{1,2})"};case"l":return{g:0,c:null,s:"(?:"+Date.dayNames.join("|")+")"};case"S":return{g:0,c:null,s:"(?:st|nd|rd|th)"};case"w":return{g:0,c:null,s:"\\d"};case"z":return{g:1,c:"z = parseInt(results["+a+"], 10);\n",s:"(\\d{1,3})"};case"W":return{g:0,c:null,s:"(?:\\d{2})"};case"F":return{g:1,c:"m = parseInt(Date.monthNumbers[results["+a+"].substring(0, 3)], 10);\n",s:"("+Date.monthNames.join("|")+")"};case"M":return{g:1,c:"m = parseInt(Date.monthNumbers[results["+a+"]], 10);\n",s:"(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)"};case"n":case"m":return{g:1,c:"m = parseInt(results["+a+"], 10) - 1;\n",s:"(\\d{1,2})"};case"t":return{g:0,c:null,s:"\\d{1,2}"};case"L":return{g:0,c:null,s:"(?:1|0)"};case"Y":return{g:1,c:"y = parseInt(results["+a+"], 10);\n",s:"(\\d{4})"};case"y":return{g:1,c:"var ty = parseInt(results["+a+"], 10);\ny = ty > Date.y2kYear ? 1900 + ty : 2000 + ty;\n",s:"(\\d{1,2})"};case"a":return{g:1,c:"if (results["+a+"] == 'am') {\nif (h == 12) { h = 0; }\n} else { if (h < 12) { h += 12; }}",s:"(am|pm)"};case"A":return{g:1,c:"if (results["+a+"] == 'AM') {\nif (h == 12) { h = 0; }\n} else { if (h < 12) { h += 12; }}",s:"(AM|PM)"};case"g":case"G":case"h":case"H":return{g:1,c:"h = parseInt(results["+a+"], 10);\n",s:"(\\d{1,2})"};case"i":return{g:1,c:"i = parseInt(results["+a+"], 10);\n",s:"(\\d{2})"};case"s":return{g:1,c:"s = parseInt(results["+a+"], 10);\n",s:"(\\d{2})"};case"O":return{g:0,c:null,s:"[+-]\\d{4}"};case"T":return{g:0,c:null,s:"[A-Z]{3}"};case"Z":return{g:0,c:null,s:"[+-]\\d{1,5}"};default:return{g:0,c:null,s:String.escape(b)};}};Date.prototype.getTimezone=function(){return this.toString().replace(/^.*? ([A-Z]{3}) [0-9]{4}.*$/,"$1").replace(/^.*?\(([A-Z])[a-z]+ ([A-Z])[a-z]+ ([A-Z])[a-z]+\)$/,"$1$2$3");};Date.prototype.getGMTOffset=function(){return(this.getTimezoneOffset()>0?"-":"+")+String.leftPad(Math.floor(Math.abs(this.getTimezoneOffset())/60),2,"0")+String.leftPad(Math.abs(this.getTimezoneOffset())%60,2,"0");};Date.prototype.getDayOfYear=function(){var a=0;Date.daysInMonth[1]=this.isLeapYear()?29:28;for(var b=0;b<this.getMonth();++b){a+=Date.daysInMonth[b];}return a+this.getDate();};Date.prototype.getWeekOfYear=function(){var b=this.getDayOfYear()+(4-this.getDay());var a=new Date(this.getFullYear(),0,1);var c=(7-a.getDay()+4);return String.leftPad(Math.ceil((b-c)/7)+1,2,"0");};Date.prototype.isLeapYear=function(){var a=this.getFullYear();return((a&3)==0&&(a%100||(a%400==0&&a)));};Date.prototype.getFirstDayOfMonth=function(){var a=(this.getDay()-(this.getDate()-1))%7;return(a<0)?(a+7):a;};Date.prototype.getLastDayOfMonth=function(){var a=(this.getDay()+(Date.daysInMonth[this.getMonth()]-this.getDate()))%7;return(a<0)?(a+7):a;};Date.prototype.getDaysInMonth=function(){Date.daysInMonth[1]=this.isLeapYear()?29:28;return Date.daysInMonth[this.getMonth()];};Date.prototype.getSuffix=function(){switch(this.getDate()){case 1:case 21:case 31:return"st";case 2:case 22:return"nd";case 3:case 23:return"rd";default:return"th";}};String.escape=function(a){return a.replace(/('|\\)/g,"\\$1");};String.leftPad=function(d,b,c){var a=new String(d);if(c==null){c=" ";}while(a.length<b){a=c+a;}return a;};Date.daysInMonth=[31,28,31,30,31,30,31,31,30,31,30,31];Date.monthNames=["January","February","March","April","May","June","July","August","September","October","November","December"];Date.dayNames=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];Date.y2kYear=50;Date.monthNumbers={Jan:0,Feb:1,Mar:2,Apr:3,May:4,Jun:5,Jul:6,Aug:7,Sep:8,Oct:9,Nov:10,Dec:11};Date.patterns={ISO8601LongPattern:"Y-m-d H:i:s",ISO8601ShortPattern:"Y-m-d",ShortDatePattern:"n/j/Y",LongDatePattern:"l, F d, Y",FullDateTimePattern:"l, F d, Y g:i:s A",MonthDayPattern:"F d",ShortTimePattern:"g:i A",LongTimePattern:"g:i:s A",SortableDateTimePattern:"Y-m-d\\TH:i:s",UniversalSortableDateTimePattern:"Y-m-d H:i:sO",YearMonthPattern:"F, Y"};
 }());
 ;/*
+ * JavaScript Canvas to Blob 2.0.5
+ * https://github.com/blueimp/JavaScript-Canvas-to-Blob
+ *
+ * Copyright 2012, Sebastian Tschan
+ * https://blueimp.net
+ *
+ * Licensed under the MIT license:
+ * http://www.opensource.org/licenses/MIT
+ *
+ * Based on stackoverflow user Stoive's code snippet:
+ * http://stackoverflow.com/q/4998908
+ */
+
+/*jslint nomen: true, regexp: true */
+/*global window, atob, Blob, ArrayBuffer, Uint8Array, define */
+
+(function (window) {
+    'use strict';
+    var CanvasPrototype = window.HTMLCanvasElement &&
+            window.HTMLCanvasElement.prototype,
+        hasBlobConstructor = window.Blob && (function () {
+            try {
+                return Boolean(new Blob());
+            } catch (e) {
+                return false;
+            }
+        }()),
+        hasArrayBufferViewSupport = hasBlobConstructor && window.Uint8Array &&
+            (function () {
+                try {
+                    return new Blob([new Uint8Array(100)]).size === 100;
+                } catch (e) {
+                    return false;
+                }
+            }()),
+        BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder ||
+            window.MozBlobBuilder || window.MSBlobBuilder,
+        dataURLtoBlob = (hasBlobConstructor || BlobBuilder) && window.atob &&
+            window.ArrayBuffer && window.Uint8Array && function (dataURI) {
+                var byteString,
+                    arrayBuffer,
+                    intArray,
+                    i,
+                    mimeString,
+                    bb;
+                if (dataURI.split(',')[0].indexOf('base64') >= 0) {
+                    // Convert base64 to raw binary data held in a string:
+                    byteString = atob(dataURI.split(',')[1]);
+                } else {
+                    // Convert base64/URLEncoded data component to raw binary data:
+                    byteString = decodeURIComponent(dataURI.split(',')[1]);
+                }
+                // Write the bytes of the string to an ArrayBuffer:
+                arrayBuffer = new ArrayBuffer(byteString.length);
+                intArray = new Uint8Array(arrayBuffer);
+                for (i = 0; i < byteString.length; i += 1) {
+                    intArray[i] = byteString.charCodeAt(i);
+                }
+                // Separate out the mime component:
+                mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+                // Write the ArrayBuffer (or ArrayBufferView) to a blob:
+                if (hasBlobConstructor) {
+                    return new Blob(
+                        [hasArrayBufferViewSupport ? intArray : arrayBuffer],
+                        {type: mimeString}
+                    );
+                }
+                bb = new BlobBuilder();
+                bb.append(arrayBuffer);
+                return bb.getBlob(mimeString);
+            };
+    if (window.HTMLCanvasElement && !CanvasPrototype.toBlob) {
+        if (CanvasPrototype.mozGetAsFile) {
+            CanvasPrototype.toBlob = function (callback, type, quality) {
+                if (quality && CanvasPrototype.toDataURL && dataURLtoBlob) {
+                    callback(dataURLtoBlob(this.toDataURL(type, quality)));
+                } else {
+                    callback(this.mozGetAsFile('blob', type));
+                }
+            };
+        } else if (CanvasPrototype.toDataURL && dataURLtoBlob) {
+            CanvasPrototype.toBlob = function (callback, type, quality) {
+                callback(dataURLtoBlob(this.toDataURL(type, quality)));
+            };
+        }
+    }
+    if (typeof define === 'function' && define.amd) {
+        define(function () {
+            return dataURLtoBlob;
+        });
+    } else {
+        window.dataURLtoBlob = dataURLtoBlob;
+    }
+}(this));
+;/*
  * jQuery File Upload Plugin 5.42.3
  * https://github.com/blueimp/jQuery-File-Upload
  *
@@ -32865,7 +32960,6545 @@ Date.parseFunctions={count:0};Date.parseRegexes=[];Date.formatFunctions={count:0
 !function(t,e,i){var n=t.L,o={};o.version="0.7.3","object"==typeof module&&"object"==typeof module.exports?module.exports=o:"function"==typeof define&&define.amd&&define(o),o.noConflict=function(){return t.L=n,this},t.L=o,o.Util={extend:function(t){var e,i,n,o,s=Array.prototype.slice.call(arguments,1);for(i=0,n=s.length;n>i;i++){o=s[i]||{};for(e in o)o.hasOwnProperty(e)&&(t[e]=o[e])}return t},bind:function(t,e){var i=arguments.length>2?Array.prototype.slice.call(arguments,2):null;return function(){return t.apply(e,i||arguments)}},stamp:function(){var t=0,e="_leaflet_id";return function(i){return i[e]=i[e]||++t,i[e]}}(),invokeEach:function(t,e,i){var n,o;if("object"==typeof t){o=Array.prototype.slice.call(arguments,3);for(n in t)e.apply(i,[n,t[n]].concat(o));return!0}return!1},limitExecByInterval:function(t,e,i){var n,o;return function s(){var a=arguments;return n?void(o=!0):(n=!0,setTimeout(function(){n=!1,o&&(s.apply(i,a),o=!1)},e),void t.apply(i,a))}},falseFn:function(){return!1},formatNum:function(t,e){var i=Math.pow(10,e||5);return Math.round(t*i)/i},trim:function(t){return t.trim?t.trim():t.replace(/^\s+|\s+$/g,"")},splitWords:function(t){return o.Util.trim(t).split(/\s+/)},setOptions:function(t,e){return t.options=o.extend({},t.options,e),t.options},getParamString:function(t,e,i){var n=[];for(var o in t)n.push(encodeURIComponent(i?o.toUpperCase():o)+"="+encodeURIComponent(t[o]));return(e&&-1!==e.indexOf("?")?"&":"?")+n.join("&")},template:function(t,e){return t.replace(/\{ *([\w_]+) *\}/g,function(t,n){var o=e[n];if(o===i)throw new Error("No value provided for variable "+t);return"function"==typeof o&&(o=o(e)),o})},isArray:Array.isArray||function(t){return"[object Array]"===Object.prototype.toString.call(t)},emptyImageUrl:"data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="},function(){function e(e){var i,n,o=["webkit","moz","o","ms"];for(i=0;i<o.length&&!n;i++)n=t[o[i]+e];return n}function i(e){var i=+new Date,o=Math.max(0,16-(i-n));return n=i+o,t.setTimeout(e,o)}var n=0,s=t.requestAnimationFrame||e("RequestAnimationFrame")||i,a=t.cancelAnimationFrame||e("CancelAnimationFrame")||e("CancelRequestAnimationFrame")||function(e){t.clearTimeout(e)};o.Util.requestAnimFrame=function(e,n,a,r){return e=o.bind(e,n),a&&s===i?void e():s.call(t,e,r)},o.Util.cancelAnimFrame=function(e){e&&a.call(t,e)}}(),o.extend=o.Util.extend,o.bind=o.Util.bind,o.stamp=o.Util.stamp,o.setOptions=o.Util.setOptions,o.Class=function(){},o.Class.extend=function(t){var e=function(){this.initialize&&this.initialize.apply(this,arguments),this._initHooks&&this.callInitHooks()},i=function(){};i.prototype=this.prototype;var n=new i;n.constructor=e,e.prototype=n;for(var s in this)this.hasOwnProperty(s)&&"prototype"!==s&&(e[s]=this[s]);t.statics&&(o.extend(e,t.statics),delete t.statics),t.includes&&(o.Util.extend.apply(null,[n].concat(t.includes)),delete t.includes),t.options&&n.options&&(t.options=o.extend({},n.options,t.options)),o.extend(n,t),n._initHooks=[];var a=this;return e.__super__=a.prototype,n.callInitHooks=function(){if(!this._initHooksCalled){a.prototype.callInitHooks&&a.prototype.callInitHooks.call(this),this._initHooksCalled=!0;for(var t=0,e=n._initHooks.length;e>t;t++)n._initHooks[t].call(this)}},e},o.Class.include=function(t){o.extend(this.prototype,t)},o.Class.mergeOptions=function(t){o.extend(this.prototype.options,t)},o.Class.addInitHook=function(t){var e=Array.prototype.slice.call(arguments,1),i="function"==typeof t?t:function(){this[t].apply(this,e)};this.prototype._initHooks=this.prototype._initHooks||[],this.prototype._initHooks.push(i)};var s="_leaflet_events";o.Mixin={},o.Mixin.Events={addEventListener:function(t,e,i){if(o.Util.invokeEach(t,this.addEventListener,this,e,i))return this;var n,a,r,h,l,u,c,d=this[s]=this[s]||{},p=i&&i!==this&&o.stamp(i);for(t=o.Util.splitWords(t),n=0,a=t.length;a>n;n++)r={action:e,context:i||this},h=t[n],p?(l=h+"_idx",u=l+"_len",c=d[l]=d[l]||{},c[p]||(c[p]=[],d[u]=(d[u]||0)+1),c[p].push(r)):(d[h]=d[h]||[],d[h].push(r));return this},hasEventListeners:function(t){var e=this[s];return!!e&&(t in e&&e[t].length>0||t+"_idx"in e&&e[t+"_idx_len"]>0)},removeEventListener:function(t,e,i){if(!this[s])return this;if(!t)return this.clearAllEventListeners();if(o.Util.invokeEach(t,this.removeEventListener,this,e,i))return this;var n,a,r,h,l,u,c,d,p,_=this[s],m=i&&i!==this&&o.stamp(i);for(t=o.Util.splitWords(t),n=0,a=t.length;a>n;n++)if(r=t[n],u=r+"_idx",c=u+"_len",d=_[u],e){if(h=m&&d?d[m]:_[r]){for(l=h.length-1;l>=0;l--)h[l].action!==e||i&&h[l].context!==i||(p=h.splice(l,1),p[0].action=o.Util.falseFn);i&&d&&0===h.length&&(delete d[m],_[c]--)}}else delete _[r],delete _[u],delete _[c];return this},clearAllEventListeners:function(){return delete this[s],this},fireEvent:function(t,e){if(!this.hasEventListeners(t))return this;var i,n,a,r,h,l=o.Util.extend({},e,{type:t,target:this}),u=this[s];if(u[t])for(i=u[t].slice(),n=0,a=i.length;a>n;n++)i[n].action.call(i[n].context,l);r=u[t+"_idx"];for(h in r)if(i=r[h].slice())for(n=0,a=i.length;a>n;n++)i[n].action.call(i[n].context,l);return this},addOneTimeEventListener:function(t,e,i){if(o.Util.invokeEach(t,this.addOneTimeEventListener,this,e,i))return this;var n=o.bind(function(){this.removeEventListener(t,e,i).removeEventListener(t,n,i)},this);return this.addEventListener(t,e,i).addEventListener(t,n,i)}},o.Mixin.Events.on=o.Mixin.Events.addEventListener,o.Mixin.Events.off=o.Mixin.Events.removeEventListener,o.Mixin.Events.once=o.Mixin.Events.addOneTimeEventListener,o.Mixin.Events.fire=o.Mixin.Events.fireEvent,function(){var n="ActiveXObject"in t,s=n&&!e.addEventListener,a=navigator.userAgent.toLowerCase(),r=-1!==a.indexOf("webkit"),h=-1!==a.indexOf("chrome"),l=-1!==a.indexOf("phantom"),u=-1!==a.indexOf("android"),c=-1!==a.search("android [23]"),d=-1!==a.indexOf("gecko"),p=typeof orientation!=i+"",_=t.navigator&&t.navigator.msPointerEnabled&&t.navigator.msMaxTouchPoints&&!t.PointerEvent,m=t.PointerEvent&&t.navigator.pointerEnabled&&t.navigator.maxTouchPoints||_,f="devicePixelRatio"in t&&t.devicePixelRatio>1||"matchMedia"in t&&t.matchMedia("(min-resolution:144dpi)")&&t.matchMedia("(min-resolution:144dpi)").matches,g=e.documentElement,v=n&&"transition"in g.style,y="WebKitCSSMatrix"in t&&"m11"in new t.WebKitCSSMatrix&&!c,P="MozPerspective"in g.style,L="OTransition"in g.style,x=!t.L_DISABLE_3D&&(v||y||P||L)&&!l,w=!t.L_NO_TOUCH&&!l&&function(){var t="ontouchstart";if(m||t in g)return!0;var i=e.createElement("div"),n=!1;return i.setAttribute?(i.setAttribute(t,"return;"),"function"==typeof i[t]&&(n=!0),i.removeAttribute(t),i=null,n):!1}();o.Browser={ie:n,ielt9:s,webkit:r,gecko:d&&!r&&!t.opera&&!n,android:u,android23:c,chrome:h,ie3d:v,webkit3d:y,gecko3d:P,opera3d:L,any3d:x,mobile:p,mobileWebkit:p&&r,mobileWebkit3d:p&&y,mobileOpera:p&&t.opera,touch:w,msPointer:_,pointer:m,retina:f}}(),o.Point=function(t,e,i){this.x=i?Math.round(t):t,this.y=i?Math.round(e):e},o.Point.prototype={clone:function(){return new o.Point(this.x,this.y)},add:function(t){return this.clone()._add(o.point(t))},_add:function(t){return this.x+=t.x,this.y+=t.y,this},subtract:function(t){return this.clone()._subtract(o.point(t))},_subtract:function(t){return this.x-=t.x,this.y-=t.y,this},divideBy:function(t){return this.clone()._divideBy(t)},_divideBy:function(t){return this.x/=t,this.y/=t,this},multiplyBy:function(t){return this.clone()._multiplyBy(t)},_multiplyBy:function(t){return this.x*=t,this.y*=t,this},round:function(){return this.clone()._round()},_round:function(){return this.x=Math.round(this.x),this.y=Math.round(this.y),this},floor:function(){return this.clone()._floor()},_floor:function(){return this.x=Math.floor(this.x),this.y=Math.floor(this.y),this},distanceTo:function(t){t=o.point(t);var e=t.x-this.x,i=t.y-this.y;return Math.sqrt(e*e+i*i)},equals:function(t){return t=o.point(t),t.x===this.x&&t.y===this.y},contains:function(t){return t=o.point(t),Math.abs(t.x)<=Math.abs(this.x)&&Math.abs(t.y)<=Math.abs(this.y)},toString:function(){return"Point("+o.Util.formatNum(this.x)+", "+o.Util.formatNum(this.y)+")"}},o.point=function(t,e,n){return t instanceof o.Point?t:o.Util.isArray(t)?new o.Point(t[0],t[1]):t===i||null===t?t:new o.Point(t,e,n)},o.Bounds=function(t,e){if(t)for(var i=e?[t,e]:t,n=0,o=i.length;o>n;n++)this.extend(i[n])},o.Bounds.prototype={extend:function(t){return t=o.point(t),this.min||this.max?(this.min.x=Math.min(t.x,this.min.x),this.max.x=Math.max(t.x,this.max.x),this.min.y=Math.min(t.y,this.min.y),this.max.y=Math.max(t.y,this.max.y)):(this.min=t.clone(),this.max=t.clone()),this},getCenter:function(t){return new o.Point((this.min.x+this.max.x)/2,(this.min.y+this.max.y)/2,t)},getBottomLeft:function(){return new o.Point(this.min.x,this.max.y)},getTopRight:function(){return new o.Point(this.max.x,this.min.y)},getSize:function(){return this.max.subtract(this.min)},contains:function(t){var e,i;return t="number"==typeof t[0]||t instanceof o.Point?o.point(t):o.bounds(t),t instanceof o.Bounds?(e=t.min,i=t.max):e=i=t,e.x>=this.min.x&&i.x<=this.max.x&&e.y>=this.min.y&&i.y<=this.max.y},intersects:function(t){t=o.bounds(t);var e=this.min,i=this.max,n=t.min,s=t.max,a=s.x>=e.x&&n.x<=i.x,r=s.y>=e.y&&n.y<=i.y;return a&&r},isValid:function(){return!(!this.min||!this.max)}},o.bounds=function(t,e){return!t||t instanceof o.Bounds?t:new o.Bounds(t,e)},o.Transformation=function(t,e,i,n){this._a=t,this._b=e,this._c=i,this._d=n},o.Transformation.prototype={transform:function(t,e){return this._transform(t.clone(),e)},_transform:function(t,e){return e=e||1,t.x=e*(this._a*t.x+this._b),t.y=e*(this._c*t.y+this._d),t},untransform:function(t,e){return e=e||1,new o.Point((t.x/e-this._b)/this._a,(t.y/e-this._d)/this._c)}},o.DomUtil={get:function(t){return"string"==typeof t?e.getElementById(t):t},getStyle:function(t,i){var n=t.style[i];if(!n&&t.currentStyle&&(n=t.currentStyle[i]),(!n||"auto"===n)&&e.defaultView){var o=e.defaultView.getComputedStyle(t,null);n=o?o[i]:null}return"auto"===n?null:n},getViewportOffset:function(t){var i,n=0,s=0,a=t,r=e.body,h=e.documentElement;do{if(n+=a.offsetTop||0,s+=a.offsetLeft||0,n+=parseInt(o.DomUtil.getStyle(a,"borderTopWidth"),10)||0,s+=parseInt(o.DomUtil.getStyle(a,"borderLeftWidth"),10)||0,i=o.DomUtil.getStyle(a,"position"),a.offsetParent===r&&"absolute"===i)break;if("fixed"===i){n+=r.scrollTop||h.scrollTop||0,s+=r.scrollLeft||h.scrollLeft||0;break}if("relative"===i&&!a.offsetLeft){var l=o.DomUtil.getStyle(a,"width"),u=o.DomUtil.getStyle(a,"max-width"),c=a.getBoundingClientRect();("none"!==l||"none"!==u)&&(s+=c.left+a.clientLeft),n+=c.top+(r.scrollTop||h.scrollTop||0);break}a=a.offsetParent}while(a);a=t;do{if(a===r)break;n-=a.scrollTop||0,s-=a.scrollLeft||0,a=a.parentNode}while(a);return new o.Point(s,n)},documentIsLtr:function(){return o.DomUtil._docIsLtrCached||(o.DomUtil._docIsLtrCached=!0,o.DomUtil._docIsLtr="ltr"===o.DomUtil.getStyle(e.body,"direction")),o.DomUtil._docIsLtr},create:function(t,i,n){var o=e.createElement(t);return o.className=i,n&&n.appendChild(o),o},hasClass:function(t,e){if(t.classList!==i)return t.classList.contains(e);var n=o.DomUtil._getClass(t);return n.length>0&&new RegExp("(^|\\s)"+e+"(\\s|$)").test(n)},addClass:function(t,e){if(t.classList!==i)for(var n=o.Util.splitWords(e),s=0,a=n.length;a>s;s++)t.classList.add(n[s]);else if(!o.DomUtil.hasClass(t,e)){var r=o.DomUtil._getClass(t);o.DomUtil._setClass(t,(r?r+" ":"")+e)}},removeClass:function(t,e){t.classList!==i?t.classList.remove(e):o.DomUtil._setClass(t,o.Util.trim((" "+o.DomUtil._getClass(t)+" ").replace(" "+e+" "," ")))},_setClass:function(t,e){t.className.baseVal===i?t.className=e:t.className.baseVal=e},_getClass:function(t){return t.className.baseVal===i?t.className:t.className.baseVal},setOpacity:function(t,e){if("opacity"in t.style)t.style.opacity=e;else if("filter"in t.style){var i=!1,n="DXImageTransform.Microsoft.Alpha";try{i=t.filters.item(n)}catch(o){if(1===e)return}e=Math.round(100*e),i?(i.Enabled=100!==e,i.Opacity=e):t.style.filter+=" progid:"+n+"(opacity="+e+")"}},testProp:function(t){for(var i=e.documentElement.style,n=0;n<t.length;n++)if(t[n]in i)return t[n];return!1},getTranslateString:function(t){var e=o.Browser.webkit3d,i="translate"+(e?"3d":"")+"(",n=(e?",0":"")+")";return i+t.x+"px,"+t.y+"px"+n},getScaleString:function(t,e){var i=o.DomUtil.getTranslateString(e.add(e.multiplyBy(-1*t))),n=" scale("+t+") ";return i+n},setPosition:function(t,e,i){t._leaflet_pos=e,!i&&o.Browser.any3d?t.style[o.DomUtil.TRANSFORM]=o.DomUtil.getTranslateString(e):(t.style.left=e.x+"px",t.style.top=e.y+"px")},getPosition:function(t){return t._leaflet_pos}},o.DomUtil.TRANSFORM=o.DomUtil.testProp(["transform","WebkitTransform","OTransform","MozTransform","msTransform"]),o.DomUtil.TRANSITION=o.DomUtil.testProp(["webkitTransition","transition","OTransition","MozTransition","msTransition"]),o.DomUtil.TRANSITION_END="webkitTransition"===o.DomUtil.TRANSITION||"OTransition"===o.DomUtil.TRANSITION?o.DomUtil.TRANSITION+"End":"transitionend",function(){if("onselectstart"in e)o.extend(o.DomUtil,{disableTextSelection:function(){o.DomEvent.on(t,"selectstart",o.DomEvent.preventDefault)},enableTextSelection:function(){o.DomEvent.off(t,"selectstart",o.DomEvent.preventDefault)}});else{var i=o.DomUtil.testProp(["userSelect","WebkitUserSelect","OUserSelect","MozUserSelect","msUserSelect"]);o.extend(o.DomUtil,{disableTextSelection:function(){if(i){var t=e.documentElement.style;this._userSelect=t[i],t[i]="none"}},enableTextSelection:function(){i&&(e.documentElement.style[i]=this._userSelect,delete this._userSelect)}})}o.extend(o.DomUtil,{disableImageDrag:function(){o.DomEvent.on(t,"dragstart",o.DomEvent.preventDefault)},enableImageDrag:function(){o.DomEvent.off(t,"dragstart",o.DomEvent.preventDefault)}})}(),o.LatLng=function(t,e,n){if(t=parseFloat(t),e=parseFloat(e),isNaN(t)||isNaN(e))throw new Error("Invalid LatLng object: ("+t+", "+e+")");this.lat=t,this.lng=e,n!==i&&(this.alt=parseFloat(n))},o.extend(o.LatLng,{DEG_TO_RAD:Math.PI/180,RAD_TO_DEG:180/Math.PI,MAX_MARGIN:1e-9}),o.LatLng.prototype={equals:function(t){if(!t)return!1;t=o.latLng(t);var e=Math.max(Math.abs(this.lat-t.lat),Math.abs(this.lng-t.lng));return e<=o.LatLng.MAX_MARGIN},toString:function(t){return"LatLng("+o.Util.formatNum(this.lat,t)+", "+o.Util.formatNum(this.lng,t)+")"},distanceTo:function(t){t=o.latLng(t);var e=6378137,i=o.LatLng.DEG_TO_RAD,n=(t.lat-this.lat)*i,s=(t.lng-this.lng)*i,a=this.lat*i,r=t.lat*i,h=Math.sin(n/2),l=Math.sin(s/2),u=h*h+l*l*Math.cos(a)*Math.cos(r);return 2*e*Math.atan2(Math.sqrt(u),Math.sqrt(1-u))},wrap:function(t,e){var i=this.lng;return t=t||-180,e=e||180,i=(i+e)%(e-t)+(t>i||i===e?e:t),new o.LatLng(this.lat,i)}},o.latLng=function(t,e){return t instanceof o.LatLng?t:o.Util.isArray(t)?"number"==typeof t[0]||"string"==typeof t[0]?new o.LatLng(t[0],t[1],t[2]):null:t===i||null===t?t:"object"==typeof t&&"lat"in t?new o.LatLng(t.lat,"lng"in t?t.lng:t.lon):e===i?null:new o.LatLng(t,e)},o.LatLngBounds=function(t,e){if(t)for(var i=e?[t,e]:t,n=0,o=i.length;o>n;n++)this.extend(i[n])},o.LatLngBounds.prototype={extend:function(t){if(!t)return this;var e=o.latLng(t);return t=null!==e?e:o.latLngBounds(t),t instanceof o.LatLng?this._southWest||this._northEast?(this._southWest.lat=Math.min(t.lat,this._southWest.lat),this._southWest.lng=Math.min(t.lng,this._southWest.lng),this._northEast.lat=Math.max(t.lat,this._northEast.lat),this._northEast.lng=Math.max(t.lng,this._northEast.lng)):(this._southWest=new o.LatLng(t.lat,t.lng),this._northEast=new o.LatLng(t.lat,t.lng)):t instanceof o.LatLngBounds&&(this.extend(t._southWest),this.extend(t._northEast)),this},pad:function(t){var e=this._southWest,i=this._northEast,n=Math.abs(e.lat-i.lat)*t,s=Math.abs(e.lng-i.lng)*t;return new o.LatLngBounds(new o.LatLng(e.lat-n,e.lng-s),new o.LatLng(i.lat+n,i.lng+s))},getCenter:function(){return new o.LatLng((this._southWest.lat+this._northEast.lat)/2,(this._southWest.lng+this._northEast.lng)/2)},getSouthWest:function(){return this._southWest},getNorthEast:function(){return this._northEast},getNorthWest:function(){return new o.LatLng(this.getNorth(),this.getWest())},getSouthEast:function(){return new o.LatLng(this.getSouth(),this.getEast())},getWest:function(){return this._southWest.lng},getSouth:function(){return this._southWest.lat},getEast:function(){return this._northEast.lng},getNorth:function(){return this._northEast.lat},contains:function(t){t="number"==typeof t[0]||t instanceof o.LatLng?o.latLng(t):o.latLngBounds(t);var e,i,n=this._southWest,s=this._northEast;return t instanceof o.LatLngBounds?(e=t.getSouthWest(),i=t.getNorthEast()):e=i=t,e.lat>=n.lat&&i.lat<=s.lat&&e.lng>=n.lng&&i.lng<=s.lng},intersects:function(t){t=o.latLngBounds(t);var e=this._southWest,i=this._northEast,n=t.getSouthWest(),s=t.getNorthEast(),a=s.lat>=e.lat&&n.lat<=i.lat,r=s.lng>=e.lng&&n.lng<=i.lng;return a&&r},toBBoxString:function(){return[this.getWest(),this.getSouth(),this.getEast(),this.getNorth()].join(",")},equals:function(t){return t?(t=o.latLngBounds(t),this._southWest.equals(t.getSouthWest())&&this._northEast.equals(t.getNorthEast())):!1},isValid:function(){return!(!this._southWest||!this._northEast)}},o.latLngBounds=function(t,e){return!t||t instanceof o.LatLngBounds?t:new o.LatLngBounds(t,e)},o.Projection={},o.Projection.SphericalMercator={MAX_LATITUDE:85.0511287798,project:function(t){var e=o.LatLng.DEG_TO_RAD,i=this.MAX_LATITUDE,n=Math.max(Math.min(i,t.lat),-i),s=t.lng*e,a=n*e;return a=Math.log(Math.tan(Math.PI/4+a/2)),new o.Point(s,a)},unproject:function(t){var e=o.LatLng.RAD_TO_DEG,i=t.x*e,n=(2*Math.atan(Math.exp(t.y))-Math.PI/2)*e;return new o.LatLng(n,i)}},o.Projection.LonLat={project:function(t){return new o.Point(t.lng,t.lat)},unproject:function(t){return new o.LatLng(t.y,t.x)}},o.CRS={latLngToPoint:function(t,e){var i=this.projection.project(t),n=this.scale(e);return this.transformation._transform(i,n)},pointToLatLng:function(t,e){var i=this.scale(e),n=this.transformation.untransform(t,i);return this.projection.unproject(n)},project:function(t){return this.projection.project(t)},scale:function(t){return 256*Math.pow(2,t)},getSize:function(t){var e=this.scale(t);return o.point(e,e)}},o.CRS.Simple=o.extend({},o.CRS,{projection:o.Projection.LonLat,transformation:new o.Transformation(1,0,-1,0),scale:function(t){return Math.pow(2,t)}}),o.CRS.EPSG3857=o.extend({},o.CRS,{code:"EPSG:3857",projection:o.Projection.SphericalMercator,transformation:new o.Transformation(.5/Math.PI,.5,-.5/Math.PI,.5),project:function(t){var e=this.projection.project(t),i=6378137;return e.multiplyBy(i)}}),o.CRS.EPSG900913=o.extend({},o.CRS.EPSG3857,{code:"EPSG:900913"}),o.CRS.EPSG4326=o.extend({},o.CRS,{code:"EPSG:4326",projection:o.Projection.LonLat,transformation:new o.Transformation(1/360,.5,-1/360,.5)}),o.Map=o.Class.extend({includes:o.Mixin.Events,options:{crs:o.CRS.EPSG3857,fadeAnimation:o.DomUtil.TRANSITION&&!o.Browser.android23,trackResize:!0,markerZoomAnimation:o.DomUtil.TRANSITION&&o.Browser.any3d},initialize:function(t,e){e=o.setOptions(this,e),this._initContainer(t),this._initLayout(),this._onResize=o.bind(this._onResize,this),this._initEvents(),e.maxBounds&&this.setMaxBounds(e.maxBounds),e.center&&e.zoom!==i&&this.setView(o.latLng(e.center),e.zoom,{reset:!0}),this._handlers=[],this._layers={},this._zoomBoundLayers={},this._tileLayersNum=0,this.callInitHooks(),this._addLayers(e.layers)},setView:function(t,e){return e=e===i?this.getZoom():e,this._resetView(o.latLng(t),this._limitZoom(e)),this},setZoom:function(t,e){return this._loaded?this.setView(this.getCenter(),t,{zoom:e}):(this._zoom=this._limitZoom(t),this)},zoomIn:function(t,e){return this.setZoom(this._zoom+(t||1),e)},zoomOut:function(t,e){return this.setZoom(this._zoom-(t||1),e)},setZoomAround:function(t,e,i){var n=this.getZoomScale(e),s=this.getSize().divideBy(2),a=t instanceof o.Point?t:this.latLngToContainerPoint(t),r=a.subtract(s).multiplyBy(1-1/n),h=this.containerPointToLatLng(s.add(r));return this.setView(h,e,{zoom:i})},fitBounds:function(t,e){e=e||{},t=t.getBounds?t.getBounds():o.latLngBounds(t);var i=o.point(e.paddingTopLeft||e.padding||[0,0]),n=o.point(e.paddingBottomRight||e.padding||[0,0]),s=this.getBoundsZoom(t,!1,i.add(n)),a=n.subtract(i).divideBy(2),r=this.project(t.getSouthWest(),s),h=this.project(t.getNorthEast(),s),l=this.unproject(r.add(h).divideBy(2).add(a),s);return s=e&&e.maxZoom?Math.min(e.maxZoom,s):s,this.setView(l,s,e)},fitWorld:function(t){return this.fitBounds([[-90,-180],[90,180]],t)},panTo:function(t,e){return this.setView(t,this._zoom,{pan:e})},panBy:function(t){return this.fire("movestart"),this._rawPanBy(o.point(t)),this.fire("move"),this.fire("moveend")},setMaxBounds:function(t){return t=o.latLngBounds(t),this.options.maxBounds=t,t?(this._loaded&&this._panInsideMaxBounds(),this.on("moveend",this._panInsideMaxBounds,this)):this.off("moveend",this._panInsideMaxBounds,this)},panInsideBounds:function(t,e){var i=this.getCenter(),n=this._limitCenter(i,this._zoom,t);return i.equals(n)?this:this.panTo(n,e)},addLayer:function(t){var e=o.stamp(t);return this._layers[e]?this:(this._layers[e]=t,!t.options||isNaN(t.options.maxZoom)&&isNaN(t.options.minZoom)||(this._zoomBoundLayers[e]=t,this._updateZoomLevels()),this.options.zoomAnimation&&o.TileLayer&&t instanceof o.TileLayer&&(this._tileLayersNum++,this._tileLayersToLoad++,t.on("load",this._onTileLayerLoad,this)),this._loaded&&this._layerAdd(t),this)},removeLayer:function(t){var e=o.stamp(t);return this._layers[e]?(this._loaded&&t.onRemove(this),delete this._layers[e],this._loaded&&this.fire("layerremove",{layer:t}),this._zoomBoundLayers[e]&&(delete this._zoomBoundLayers[e],this._updateZoomLevels()),this.options.zoomAnimation&&o.TileLayer&&t instanceof o.TileLayer&&(this._tileLayersNum--,this._tileLayersToLoad--,t.off("load",this._onTileLayerLoad,this)),this):this},hasLayer:function(t){return t?o.stamp(t)in this._layers:!1},eachLayer:function(t,e){for(var i in this._layers)t.call(e,this._layers[i]);return this},invalidateSize:function(t){if(!this._loaded)return this;t=o.extend({animate:!1,pan:!0},t===!0?{animate:!0}:t);var e=this.getSize();this._sizeChanged=!0,this._initialCenter=null;var i=this.getSize(),n=e.divideBy(2).round(),s=i.divideBy(2).round(),a=n.subtract(s);return a.x||a.y?(t.animate&&t.pan?this.panBy(a):(t.pan&&this._rawPanBy(a),this.fire("move"),t.debounceMoveend?(clearTimeout(this._sizeTimer),this._sizeTimer=setTimeout(o.bind(this.fire,this,"moveend"),200)):this.fire("moveend")),this.fire("resize",{oldSize:e,newSize:i})):this},addHandler:function(t,e){if(!e)return this;var i=this[t]=new e(this);return this._handlers.push(i),this.options[t]&&i.enable(),this},remove:function(){this._loaded&&this.fire("unload"),this._initEvents("off");try{delete this._container._leaflet}catch(t){this._container._leaflet=i}return this._clearPanes(),this._clearControlPos&&this._clearControlPos(),this._clearHandlers(),this},getCenter:function(){return this._checkIfLoaded(),this._initialCenter&&!this._moved()?this._initialCenter:this.layerPointToLatLng(this._getCenterLayerPoint())},getZoom:function(){return this._zoom},getBounds:function(){var t=this.getPixelBounds(),e=this.unproject(t.getBottomLeft()),i=this.unproject(t.getTopRight());return new o.LatLngBounds(e,i)},getMinZoom:function(){return this.options.minZoom===i?this._layersMinZoom===i?0:this._layersMinZoom:this.options.minZoom},getMaxZoom:function(){return this.options.maxZoom===i?this._layersMaxZoom===i?1/0:this._layersMaxZoom:this.options.maxZoom},getBoundsZoom:function(t,e,i){t=o.latLngBounds(t);var n,s=this.getMinZoom()-(e?1:0),a=this.getMaxZoom(),r=this.getSize(),h=t.getNorthWest(),l=t.getSouthEast(),u=!0;i=o.point(i||[0,0]);do s++,n=this.project(l,s).subtract(this.project(h,s)).add(i),u=e?n.x<r.x||n.y<r.y:r.contains(n);while(u&&a>=s);return u&&e?null:e?s:s-1},getSize:function(){return(!this._size||this._sizeChanged)&&(this._size=new o.Point(this._container.clientWidth,this._container.clientHeight),this._sizeChanged=!1),this._size.clone()},getPixelBounds:function(){var t=this._getTopLeftPoint();return new o.Bounds(t,t.add(this.getSize()))},getPixelOrigin:function(){return this._checkIfLoaded(),this._initialTopLeftPoint},getPanes:function(){return this._panes},getContainer:function(){return this._container},getZoomScale:function(t){var e=this.options.crs;return e.scale(t)/e.scale(this._zoom)},getScaleZoom:function(t){return this._zoom+Math.log(t)/Math.LN2},project:function(t,e){return e=e===i?this._zoom:e,this.options.crs.latLngToPoint(o.latLng(t),e)},unproject:function(t,e){return e=e===i?this._zoom:e,this.options.crs.pointToLatLng(o.point(t),e)},layerPointToLatLng:function(t){var e=o.point(t).add(this.getPixelOrigin());return this.unproject(e)},latLngToLayerPoint:function(t){var e=this.project(o.latLng(t))._round();return e._subtract(this.getPixelOrigin())},containerPointToLayerPoint:function(t){return o.point(t).subtract(this._getMapPanePos())},layerPointToContainerPoint:function(t){return o.point(t).add(this._getMapPanePos())},containerPointToLatLng:function(t){var e=this.containerPointToLayerPoint(o.point(t));return this.layerPointToLatLng(e)},latLngToContainerPoint:function(t){return this.layerPointToContainerPoint(this.latLngToLayerPoint(o.latLng(t)))},mouseEventToContainerPoint:function(t){return o.DomEvent.getMousePosition(t,this._container)},mouseEventToLayerPoint:function(t){return this.containerPointToLayerPoint(this.mouseEventToContainerPoint(t))},mouseEventToLatLng:function(t){return this.layerPointToLatLng(this.mouseEventToLayerPoint(t))},_initContainer:function(t){var e=this._container=o.DomUtil.get(t);if(!e)throw new Error("Map container not found.");if(e._leaflet)throw new Error("Map container is already initialized.");e._leaflet=!0},_initLayout:function(){var t=this._container;o.DomUtil.addClass(t,"leaflet-container"+(o.Browser.touch?" leaflet-touch":"")+(o.Browser.retina?" leaflet-retina":"")+(o.Browser.ielt9?" leaflet-oldie":"")+(this.options.fadeAnimation?" leaflet-fade-anim":""));var e=o.DomUtil.getStyle(t,"position");"absolute"!==e&&"relative"!==e&&"fixed"!==e&&(t.style.position="relative"),this._initPanes(),this._initControlPos&&this._initControlPos()},_initPanes:function(){var t=this._panes={};this._mapPane=t.mapPane=this._createPane("leaflet-map-pane",this._container),this._tilePane=t.tilePane=this._createPane("leaflet-tile-pane",this._mapPane),t.objectsPane=this._createPane("leaflet-objects-pane",this._mapPane),t.shadowPane=this._createPane("leaflet-shadow-pane"),t.overlayPane=this._createPane("leaflet-overlay-pane"),t.markerPane=this._createPane("leaflet-marker-pane"),t.popupPane=this._createPane("leaflet-popup-pane");var e=" leaflet-zoom-hide";this.options.markerZoomAnimation||(o.DomUtil.addClass(t.markerPane,e),o.DomUtil.addClass(t.shadowPane,e),o.DomUtil.addClass(t.popupPane,e))},_createPane:function(t,e){return o.DomUtil.create("div",t,e||this._panes.objectsPane)},_clearPanes:function(){this._container.removeChild(this._mapPane)},_addLayers:function(t){t=t?o.Util.isArray(t)?t:[t]:[];for(var e=0,i=t.length;i>e;e++)this.addLayer(t[e])},_resetView:function(t,e,i,n){var s=this._zoom!==e;n||(this.fire("movestart"),s&&this.fire("zoomstart")),this._zoom=e,this._initialCenter=t,this._initialTopLeftPoint=this._getNewTopLeftPoint(t),i?this._initialTopLeftPoint._add(this._getMapPanePos()):o.DomUtil.setPosition(this._mapPane,new o.Point(0,0)),this._tileLayersToLoad=this._tileLayersNum;var a=!this._loaded;this._loaded=!0,this.fire("viewreset",{hard:!i}),a&&(this.fire("load"),this.eachLayer(this._layerAdd,this)),this.fire("move"),(s||n)&&this.fire("zoomend"),this.fire("moveend",{hard:!i})},_rawPanBy:function(t){o.DomUtil.setPosition(this._mapPane,this._getMapPanePos().subtract(t))},_getZoomSpan:function(){return this.getMaxZoom()-this.getMinZoom()},_updateZoomLevels:function(){var t,e=1/0,n=-1/0,o=this._getZoomSpan();for(t in this._zoomBoundLayers){var s=this._zoomBoundLayers[t];isNaN(s.options.minZoom)||(e=Math.min(e,s.options.minZoom)),isNaN(s.options.maxZoom)||(n=Math.max(n,s.options.maxZoom))}t===i?this._layersMaxZoom=this._layersMinZoom=i:(this._layersMaxZoom=n,this._layersMinZoom=e),o!==this._getZoomSpan()&&this.fire("zoomlevelschange")},_panInsideMaxBounds:function(){this.panInsideBounds(this.options.maxBounds)},_checkIfLoaded:function(){if(!this._loaded)throw new Error("Set map center and zoom first.")},_initEvents:function(e){if(o.DomEvent){e=e||"on",o.DomEvent[e](this._container,"click",this._onMouseClick,this);var i,n,s=["dblclick","mousedown","mouseup","mouseenter","mouseleave","mousemove","contextmenu"];for(i=0,n=s.length;n>i;i++)o.DomEvent[e](this._container,s[i],this._fireMouseEvent,this);this.options.trackResize&&o.DomEvent[e](t,"resize",this._onResize,this)}},_onResize:function(){o.Util.cancelAnimFrame(this._resizeRequest),this._resizeRequest=o.Util.requestAnimFrame(function(){this.invalidateSize({debounceMoveend:!0})},this,!1,this._container)},_onMouseClick:function(t){!this._loaded||!t._simulated&&(this.dragging&&this.dragging.moved()||this.boxZoom&&this.boxZoom.moved())||o.DomEvent._skipped(t)||(this.fire("preclick"),this._fireMouseEvent(t))},_fireMouseEvent:function(t){if(this._loaded&&!o.DomEvent._skipped(t)){var e=t.type;if(e="mouseenter"===e?"mouseover":"mouseleave"===e?"mouseout":e,this.hasEventListeners(e)){"contextmenu"===e&&o.DomEvent.preventDefault(t);var i=this.mouseEventToContainerPoint(t),n=this.containerPointToLayerPoint(i),s=this.layerPointToLatLng(n);this.fire(e,{latlng:s,layerPoint:n,containerPoint:i,originalEvent:t})}}},_onTileLayerLoad:function(){this._tileLayersToLoad--,this._tileLayersNum&&!this._tileLayersToLoad&&this.fire("tilelayersload")},_clearHandlers:function(){for(var t=0,e=this._handlers.length;e>t;t++)this._handlers[t].disable()},whenReady:function(t,e){return this._loaded?t.call(e||this,this):this.on("load",t,e),this},_layerAdd:function(t){t.onAdd(this),this.fire("layeradd",{layer:t})},_getMapPanePos:function(){return o.DomUtil.getPosition(this._mapPane)},_moved:function(){var t=this._getMapPanePos();return t&&!t.equals([0,0])},_getTopLeftPoint:function(){return this.getPixelOrigin().subtract(this._getMapPanePos())},_getNewTopLeftPoint:function(t,e){var i=this.getSize()._divideBy(2);return this.project(t,e)._subtract(i)._round()},_latLngToNewLayerPoint:function(t,e,i){var n=this._getNewTopLeftPoint(i,e).add(this._getMapPanePos());return this.project(t,e)._subtract(n)},_getCenterLayerPoint:function(){return this.containerPointToLayerPoint(this.getSize()._divideBy(2))},_getCenterOffset:function(t){return this.latLngToLayerPoint(t).subtract(this._getCenterLayerPoint())},_limitCenter:function(t,e,i){if(!i)return t;var n=this.project(t,e),s=this.getSize().divideBy(2),a=new o.Bounds(n.subtract(s),n.add(s)),r=this._getBoundsOffset(a,i,e);return this.unproject(n.add(r),e)},_limitOffset:function(t,e){if(!e)return t;var i=this.getPixelBounds(),n=new o.Bounds(i.min.add(t),i.max.add(t));return t.add(this._getBoundsOffset(n,e))},_getBoundsOffset:function(t,e,i){var n=this.project(e.getNorthWest(),i).subtract(t.min),s=this.project(e.getSouthEast(),i).subtract(t.max),a=this._rebound(n.x,-s.x),r=this._rebound(n.y,-s.y);return new o.Point(a,r)},_rebound:function(t,e){return t+e>0?Math.round(t-e)/2:Math.max(0,Math.ceil(t))-Math.max(0,Math.floor(e))},_limitZoom:function(t){var e=this.getMinZoom(),i=this.getMaxZoom();return Math.max(e,Math.min(i,t))}}),o.map=function(t,e){return new o.Map(t,e)},o.Projection.Mercator={MAX_LATITUDE:85.0840591556,R_MINOR:6356752.314245179,R_MAJOR:6378137,project:function(t){var e=o.LatLng.DEG_TO_RAD,i=this.MAX_LATITUDE,n=Math.max(Math.min(i,t.lat),-i),s=this.R_MAJOR,a=this.R_MINOR,r=t.lng*e*s,h=n*e,l=a/s,u=Math.sqrt(1-l*l),c=u*Math.sin(h);c=Math.pow((1-c)/(1+c),.5*u);var d=Math.tan(.5*(.5*Math.PI-h))/c;return h=-s*Math.log(d),new o.Point(r,h)},unproject:function(t){for(var e,i=o.LatLng.RAD_TO_DEG,n=this.R_MAJOR,s=this.R_MINOR,a=t.x*i/n,r=s/n,h=Math.sqrt(1-r*r),l=Math.exp(-t.y/n),u=Math.PI/2-2*Math.atan(l),c=15,d=1e-7,p=c,_=.1;Math.abs(_)>d&&--p>0;)e=h*Math.sin(u),_=Math.PI/2-2*Math.atan(l*Math.pow((1-e)/(1+e),.5*h))-u,u+=_;
 return new o.LatLng(u*i,a)}},o.CRS.EPSG3395=o.extend({},o.CRS,{code:"EPSG:3395",projection:o.Projection.Mercator,transformation:function(){var t=o.Projection.Mercator,e=t.R_MAJOR,i=.5/(Math.PI*e);return new o.Transformation(i,.5,-i,.5)}()}),o.TileLayer=o.Class.extend({includes:o.Mixin.Events,options:{minZoom:0,maxZoom:18,tileSize:256,subdomains:"abc",errorTileUrl:"",attribution:"",zoomOffset:0,opacity:1,unloadInvisibleTiles:o.Browser.mobile,updateWhenIdle:o.Browser.mobile},initialize:function(t,e){e=o.setOptions(this,e),e.detectRetina&&o.Browser.retina&&e.maxZoom>0&&(e.tileSize=Math.floor(e.tileSize/2),e.zoomOffset++,e.minZoom>0&&e.minZoom--,this.options.maxZoom--),e.bounds&&(e.bounds=o.latLngBounds(e.bounds)),this._url=t;var i=this.options.subdomains;"string"==typeof i&&(this.options.subdomains=i.split(""))},onAdd:function(t){this._map=t,this._animated=t._zoomAnimated,this._initContainer(),t.on({viewreset:this._reset,moveend:this._update},this),this._animated&&t.on({zoomanim:this._animateZoom,zoomend:this._endZoomAnim},this),this.options.updateWhenIdle||(this._limitedUpdate=o.Util.limitExecByInterval(this._update,150,this),t.on("move",this._limitedUpdate,this)),this._reset(),this._update()},addTo:function(t){return t.addLayer(this),this},onRemove:function(t){this._container.parentNode.removeChild(this._container),t.off({viewreset:this._reset,moveend:this._update},this),this._animated&&t.off({zoomanim:this._animateZoom,zoomend:this._endZoomAnim},this),this.options.updateWhenIdle||t.off("move",this._limitedUpdate,this),this._container=null,this._map=null},bringToFront:function(){var t=this._map._panes.tilePane;return this._container&&(t.appendChild(this._container),this._setAutoZIndex(t,Math.max)),this},bringToBack:function(){var t=this._map._panes.tilePane;return this._container&&(t.insertBefore(this._container,t.firstChild),this._setAutoZIndex(t,Math.min)),this},getAttribution:function(){return this.options.attribution},getContainer:function(){return this._container},setOpacity:function(t){return this.options.opacity=t,this._map&&this._updateOpacity(),this},setZIndex:function(t){return this.options.zIndex=t,this._updateZIndex(),this},setUrl:function(t,e){return this._url=t,e||this.redraw(),this},redraw:function(){return this._map&&(this._reset({hard:!0}),this._update()),this},_updateZIndex:function(){this._container&&this.options.zIndex!==i&&(this._container.style.zIndex=this.options.zIndex)},_setAutoZIndex:function(t,e){var i,n,o,s=t.children,a=-e(1/0,-1/0);for(n=0,o=s.length;o>n;n++)s[n]!==this._container&&(i=parseInt(s[n].style.zIndex,10),isNaN(i)||(a=e(a,i)));this.options.zIndex=this._container.style.zIndex=(isFinite(a)?a:0)+e(1,-1)},_updateOpacity:function(){var t,e=this._tiles;if(o.Browser.ielt9)for(t in e)o.DomUtil.setOpacity(e[t],this.options.opacity);else o.DomUtil.setOpacity(this._container,this.options.opacity)},_initContainer:function(){var t=this._map._panes.tilePane;if(!this._container){if(this._container=o.DomUtil.create("div","leaflet-layer"),this._updateZIndex(),this._animated){var e="leaflet-tile-container";this._bgBuffer=o.DomUtil.create("div",e,this._container),this._tileContainer=o.DomUtil.create("div",e,this._container)}else this._tileContainer=this._container;t.appendChild(this._container),this.options.opacity<1&&this._updateOpacity()}},_reset:function(t){for(var e in this._tiles)this.fire("tileunload",{tile:this._tiles[e]});this._tiles={},this._tilesToLoad=0,this.options.reuseTiles&&(this._unusedTiles=[]),this._tileContainer.innerHTML="",this._animated&&t&&t.hard&&this._clearBgBuffer(),this._initContainer()},_getTileSize:function(){var t=this._map,e=t.getZoom()+this.options.zoomOffset,i=this.options.maxNativeZoom,n=this.options.tileSize;return i&&e>i&&(n=Math.round(t.getZoomScale(e)/t.getZoomScale(i)*n)),n},_update:function(){if(this._map){var t=this._map,e=t.getPixelBounds(),i=t.getZoom(),n=this._getTileSize();if(!(i>this.options.maxZoom||i<this.options.minZoom)){var s=o.bounds(e.min.divideBy(n)._floor(),e.max.divideBy(n)._floor());this._addTilesFromCenterOut(s),(this.options.unloadInvisibleTiles||this.options.reuseTiles)&&this._removeOtherTiles(s)}}},_addTilesFromCenterOut:function(t){var i,n,s,a=[],r=t.getCenter();for(i=t.min.y;i<=t.max.y;i++)for(n=t.min.x;n<=t.max.x;n++)s=new o.Point(n,i),this._tileShouldBeLoaded(s)&&a.push(s);var h=a.length;if(0!==h){a.sort(function(t,e){return t.distanceTo(r)-e.distanceTo(r)});var l=e.createDocumentFragment();for(this._tilesToLoad||this.fire("loading"),this._tilesToLoad+=h,n=0;h>n;n++)this._addTile(a[n],l);this._tileContainer.appendChild(l)}},_tileShouldBeLoaded:function(t){if(t.x+":"+t.y in this._tiles)return!1;var e=this.options;if(!e.continuousWorld){var i=this._getWrapTileNum();if(e.noWrap&&(t.x<0||t.x>=i.x)||t.y<0||t.y>=i.y)return!1}if(e.bounds){var n=e.tileSize,o=t.multiplyBy(n),s=o.add([n,n]),a=this._map.unproject(o),r=this._map.unproject(s);if(e.continuousWorld||e.noWrap||(a=a.wrap(),r=r.wrap()),!e.bounds.intersects([a,r]))return!1}return!0},_removeOtherTiles:function(t){var e,i,n,o;for(o in this._tiles)e=o.split(":"),i=parseInt(e[0],10),n=parseInt(e[1],10),(i<t.min.x||i>t.max.x||n<t.min.y||n>t.max.y)&&this._removeTile(o)},_removeTile:function(t){var e=this._tiles[t];this.fire("tileunload",{tile:e,url:e.src}),this.options.reuseTiles?(o.DomUtil.removeClass(e,"leaflet-tile-loaded"),this._unusedTiles.push(e)):e.parentNode===this._tileContainer&&this._tileContainer.removeChild(e),o.Browser.android||(e.onload=null,e.src=o.Util.emptyImageUrl),delete this._tiles[t]},_addTile:function(t,e){var i=this._getTilePos(t),n=this._getTile();o.DomUtil.setPosition(n,i,o.Browser.chrome),this._tiles[t.x+":"+t.y]=n,this._loadTile(n,t),n.parentNode!==this._tileContainer&&e.appendChild(n)},_getZoomForUrl:function(){var t=this.options,e=this._map.getZoom();return t.zoomReverse&&(e=t.maxZoom-e),e+=t.zoomOffset,t.maxNativeZoom?Math.min(e,t.maxNativeZoom):e},_getTilePos:function(t){var e=this._map.getPixelOrigin(),i=this._getTileSize();return t.multiplyBy(i).subtract(e)},getTileUrl:function(t){return o.Util.template(this._url,o.extend({s:this._getSubdomain(t),z:t.z,x:t.x,y:t.y},this.options))},_getWrapTileNum:function(){var t=this._map.options.crs,e=t.getSize(this._map.getZoom());return e.divideBy(this._getTileSize())._floor()},_adjustTilePoint:function(t){var e=this._getWrapTileNum();this.options.continuousWorld||this.options.noWrap||(t.x=(t.x%e.x+e.x)%e.x),this.options.tms&&(t.y=e.y-t.y-1),t.z=this._getZoomForUrl()},_getSubdomain:function(t){var e=Math.abs(t.x+t.y)%this.options.subdomains.length;return this.options.subdomains[e]},_getTile:function(){if(this.options.reuseTiles&&this._unusedTiles.length>0){var t=this._unusedTiles.pop();return this._resetTile(t),t}return this._createTile()},_resetTile:function(){},_createTile:function(){var t=o.DomUtil.create("img","leaflet-tile");return t.style.width=t.style.height=this._getTileSize()+"px",t.galleryimg="no",t.onselectstart=t.onmousemove=o.Util.falseFn,o.Browser.ielt9&&this.options.opacity!==i&&o.DomUtil.setOpacity(t,this.options.opacity),o.Browser.mobileWebkit3d&&(t.style.WebkitBackfaceVisibility="hidden"),t},_loadTile:function(t,e){t._layer=this,t.onload=this._tileOnLoad,t.onerror=this._tileOnError,this._adjustTilePoint(e),t.src=this.getTileUrl(e),this.fire("tileloadstart",{tile:t,url:t.src})},_tileLoaded:function(){this._tilesToLoad--,this._animated&&o.DomUtil.addClass(this._tileContainer,"leaflet-zoom-animated"),this._tilesToLoad||(this.fire("load"),this._animated&&(clearTimeout(this._clearBgBufferTimer),this._clearBgBufferTimer=setTimeout(o.bind(this._clearBgBuffer,this),500)))},_tileOnLoad:function(){var t=this._layer;this.src!==o.Util.emptyImageUrl&&(o.DomUtil.addClass(this,"leaflet-tile-loaded"),t.fire("tileload",{tile:this,url:this.src})),t._tileLoaded()},_tileOnError:function(){var t=this._layer;t.fire("tileerror",{tile:this,url:this.src});var e=t.options.errorTileUrl;e&&(this.src=e),t._tileLoaded()}}),o.tileLayer=function(t,e){return new o.TileLayer(t,e)},o.TileLayer.WMS=o.TileLayer.extend({defaultWmsParams:{service:"WMS",request:"GetMap",version:"1.1.1",layers:"",styles:"",format:"image/jpeg",transparent:!1},initialize:function(t,e){this._url=t;var i=o.extend({},this.defaultWmsParams),n=e.tileSize||this.options.tileSize;i.width=i.height=e.detectRetina&&o.Browser.retina?2*n:n;for(var s in e)this.options.hasOwnProperty(s)||"crs"===s||(i[s]=e[s]);this.wmsParams=i,o.setOptions(this,e)},onAdd:function(t){this._crs=this.options.crs||t.options.crs,this._wmsVersion=parseFloat(this.wmsParams.version);var e=this._wmsVersion>=1.3?"crs":"srs";this.wmsParams[e]=this._crs.code,o.TileLayer.prototype.onAdd.call(this,t)},getTileUrl:function(t){var e=this._map,i=this.options.tileSize,n=t.multiplyBy(i),s=n.add([i,i]),a=this._crs.project(e.unproject(n,t.z)),r=this._crs.project(e.unproject(s,t.z)),h=this._wmsVersion>=1.3&&this._crs===o.CRS.EPSG4326?[r.y,a.x,a.y,r.x].join(","):[a.x,r.y,r.x,a.y].join(","),l=o.Util.template(this._url,{s:this._getSubdomain(t)});return l+o.Util.getParamString(this.wmsParams,l,!0)+"&BBOX="+h},setParams:function(t,e){return o.extend(this.wmsParams,t),e||this.redraw(),this}}),o.tileLayer.wms=function(t,e){return new o.TileLayer.WMS(t,e)},o.TileLayer.Canvas=o.TileLayer.extend({options:{async:!1},initialize:function(t){o.setOptions(this,t)},redraw:function(){this._map&&(this._reset({hard:!0}),this._update());for(var t in this._tiles)this._redrawTile(this._tiles[t]);return this},_redrawTile:function(t){this.drawTile(t,t._tilePoint,this._map._zoom)},_createTile:function(){var t=o.DomUtil.create("canvas","leaflet-tile");return t.width=t.height=this.options.tileSize,t.onselectstart=t.onmousemove=o.Util.falseFn,t},_loadTile:function(t,e){t._layer=this,t._tilePoint=e,this._redrawTile(t),this.options.async||this.tileDrawn(t)},drawTile:function(){},tileDrawn:function(t){this._tileOnLoad.call(t)}}),o.tileLayer.canvas=function(t){return new o.TileLayer.Canvas(t)},o.ImageOverlay=o.Class.extend({includes:o.Mixin.Events,options:{opacity:1},initialize:function(t,e,i){this._url=t,this._bounds=o.latLngBounds(e),o.setOptions(this,i)},onAdd:function(t){this._map=t,this._image||this._initImage(),t._panes.overlayPane.appendChild(this._image),t.on("viewreset",this._reset,this),t.options.zoomAnimation&&o.Browser.any3d&&t.on("zoomanim",this._animateZoom,this),this._reset()},onRemove:function(t){t.getPanes().overlayPane.removeChild(this._image),t.off("viewreset",this._reset,this),t.options.zoomAnimation&&t.off("zoomanim",this._animateZoom,this)},addTo:function(t){return t.addLayer(this),this},setOpacity:function(t){return this.options.opacity=t,this._updateOpacity(),this},bringToFront:function(){return this._image&&this._map._panes.overlayPane.appendChild(this._image),this},bringToBack:function(){var t=this._map._panes.overlayPane;return this._image&&t.insertBefore(this._image,t.firstChild),this},setUrl:function(t){this._url=t,this._image.src=this._url},getAttribution:function(){return this.options.attribution},_initImage:function(){this._image=o.DomUtil.create("img","leaflet-image-layer"),this._map.options.zoomAnimation&&o.Browser.any3d?o.DomUtil.addClass(this._image,"leaflet-zoom-animated"):o.DomUtil.addClass(this._image,"leaflet-zoom-hide"),this._updateOpacity(),o.extend(this._image,{galleryimg:"no",onselectstart:o.Util.falseFn,onmousemove:o.Util.falseFn,onload:o.bind(this._onImageLoad,this),src:this._url})},_animateZoom:function(t){var e=this._map,i=this._image,n=e.getZoomScale(t.zoom),s=this._bounds.getNorthWest(),a=this._bounds.getSouthEast(),r=e._latLngToNewLayerPoint(s,t.zoom,t.center),h=e._latLngToNewLayerPoint(a,t.zoom,t.center)._subtract(r),l=r._add(h._multiplyBy(.5*(1-1/n)));i.style[o.DomUtil.TRANSFORM]=o.DomUtil.getTranslateString(l)+" scale("+n+") "},_reset:function(){var t=this._image,e=this._map.latLngToLayerPoint(this._bounds.getNorthWest()),i=this._map.latLngToLayerPoint(this._bounds.getSouthEast())._subtract(e);o.DomUtil.setPosition(t,e),t.style.width=i.x+"px",t.style.height=i.y+"px"},_onImageLoad:function(){this.fire("load")},_updateOpacity:function(){o.DomUtil.setOpacity(this._image,this.options.opacity)}}),o.imageOverlay=function(t,e,i){return new o.ImageOverlay(t,e,i)},o.Icon=o.Class.extend({options:{className:""},initialize:function(t){o.setOptions(this,t)},createIcon:function(t){return this._createIcon("icon",t)},createShadow:function(t){return this._createIcon("shadow",t)},_createIcon:function(t,e){var i=this._getIconUrl(t);if(!i){if("icon"===t)throw new Error("iconUrl not set in Icon options (see the docs).");return null}var n;return n=e&&"IMG"===e.tagName?this._createImg(i,e):this._createImg(i),this._setIconStyles(n,t),n},_setIconStyles:function(t,e){var i,n=this.options,s=o.point(n[e+"Size"]);i=o.point("shadow"===e?n.shadowAnchor||n.iconAnchor:n.iconAnchor),!i&&s&&(i=s.divideBy(2,!0)),t.className="leaflet-marker-"+e+" "+n.className,i&&(t.style.marginLeft=-i.x+"px",t.style.marginTop=-i.y+"px"),s&&(t.style.width=s.x+"px",t.style.height=s.y+"px")},_createImg:function(t,i){return i=i||e.createElement("img"),i.src=t,i},_getIconUrl:function(t){return o.Browser.retina&&this.options[t+"RetinaUrl"]?this.options[t+"RetinaUrl"]:this.options[t+"Url"]}}),o.icon=function(t){return new o.Icon(t)},o.Icon.Default=o.Icon.extend({options:{iconSize:[25,41],iconAnchor:[12,41],popupAnchor:[1,-34],shadowSize:[41,41]},_getIconUrl:function(t){var e=t+"Url";if(this.options[e])return this.options[e];o.Browser.retina&&"icon"===t&&(t+="-2x");var i=o.Icon.Default.imagePath;if(!i)throw new Error("Couldn't autodetect L.Icon.Default.imagePath, set it manually.");return i+"/marker-"+t+".png"}}),o.Icon.Default.imagePath=function(){var t,i,n,o,s,a=e.getElementsByTagName("script"),r=/[\/^]leaflet[\-\._]?([\w\-\._]*)\.js\??/;for(t=0,i=a.length;i>t;t++)if(n=a[t].src,o=n.match(r))return s=n.split(r)[0],(s?s+"/":"")+"images"}(),o.Marker=o.Class.extend({includes:o.Mixin.Events,options:{icon:new o.Icon.Default,title:"",alt:"",clickable:!0,draggable:!1,keyboard:!0,zIndexOffset:0,opacity:1,riseOnHover:!1,riseOffset:250},initialize:function(t,e){o.setOptions(this,e),this._latlng=o.latLng(t)},onAdd:function(t){this._map=t,t.on("viewreset",this.update,this),this._initIcon(),this.update(),this.fire("add"),t.options.zoomAnimation&&t.options.markerZoomAnimation&&t.on("zoomanim",this._animateZoom,this)},addTo:function(t){return t.addLayer(this),this},onRemove:function(t){this.dragging&&this.dragging.disable(),this._removeIcon(),this._removeShadow(),this.fire("remove"),t.off({viewreset:this.update,zoomanim:this._animateZoom},this),this._map=null},getLatLng:function(){return this._latlng},setLatLng:function(t){return this._latlng=o.latLng(t),this.update(),this.fire("move",{latlng:this._latlng})},setZIndexOffset:function(t){return this.options.zIndexOffset=t,this.update(),this},setIcon:function(t){return this.options.icon=t,this._map&&(this._initIcon(),this.update()),this._popup&&this.bindPopup(this._popup),this},update:function(){if(this._icon){var t=this._map.latLngToLayerPoint(this._latlng).round();this._setPos(t)}return this},_initIcon:function(){var t=this.options,e=this._map,i=e.options.zoomAnimation&&e.options.markerZoomAnimation,n=i?"leaflet-zoom-animated":"leaflet-zoom-hide",s=t.icon.createIcon(this._icon),a=!1;s!==this._icon&&(this._icon&&this._removeIcon(),a=!0,t.title&&(s.title=t.title),t.alt&&(s.alt=t.alt)),o.DomUtil.addClass(s,n),t.keyboard&&(s.tabIndex="0"),this._icon=s,this._initInteraction(),t.riseOnHover&&o.DomEvent.on(s,"mouseover",this._bringToFront,this).on(s,"mouseout",this._resetZIndex,this);var r=t.icon.createShadow(this._shadow),h=!1;r!==this._shadow&&(this._removeShadow(),h=!0),r&&o.DomUtil.addClass(r,n),this._shadow=r,t.opacity<1&&this._updateOpacity();var l=this._map._panes;a&&l.markerPane.appendChild(this._icon),r&&h&&l.shadowPane.appendChild(this._shadow)},_removeIcon:function(){this.options.riseOnHover&&o.DomEvent.off(this._icon,"mouseover",this._bringToFront).off(this._icon,"mouseout",this._resetZIndex),this._map._panes.markerPane.removeChild(this._icon),this._icon=null},_removeShadow:function(){this._shadow&&this._map._panes.shadowPane.removeChild(this._shadow),this._shadow=null},_setPos:function(t){o.DomUtil.setPosition(this._icon,t),this._shadow&&o.DomUtil.setPosition(this._shadow,t),this._zIndex=t.y+this.options.zIndexOffset,this._resetZIndex()},_updateZIndex:function(t){this._icon.style.zIndex=this._zIndex+t},_animateZoom:function(t){var e=this._map._latLngToNewLayerPoint(this._latlng,t.zoom,t.center).round();this._setPos(e)},_initInteraction:function(){if(this.options.clickable){var t=this._icon,e=["dblclick","mousedown","mouseover","mouseout","contextmenu"];o.DomUtil.addClass(t,"leaflet-clickable"),o.DomEvent.on(t,"click",this._onMouseClick,this),o.DomEvent.on(t,"keypress",this._onKeyPress,this);for(var i=0;i<e.length;i++)o.DomEvent.on(t,e[i],this._fireMouseEvent,this);o.Handler.MarkerDrag&&(this.dragging=new o.Handler.MarkerDrag(this),this.options.draggable&&this.dragging.enable())}},_onMouseClick:function(t){var e=this.dragging&&this.dragging.moved();(this.hasEventListeners(t.type)||e)&&o.DomEvent.stopPropagation(t),e||(this.dragging&&this.dragging._enabled||!this._map.dragging||!this._map.dragging.moved())&&this.fire(t.type,{originalEvent:t,latlng:this._latlng})},_onKeyPress:function(t){13===t.keyCode&&this.fire("click",{originalEvent:t,latlng:this._latlng})},_fireMouseEvent:function(t){this.fire(t.type,{originalEvent:t,latlng:this._latlng}),"contextmenu"===t.type&&this.hasEventListeners(t.type)&&o.DomEvent.preventDefault(t),"mousedown"!==t.type?o.DomEvent.stopPropagation(t):o.DomEvent.preventDefault(t)},setOpacity:function(t){return this.options.opacity=t,this._map&&this._updateOpacity(),this},_updateOpacity:function(){o.DomUtil.setOpacity(this._icon,this.options.opacity),this._shadow&&o.DomUtil.setOpacity(this._shadow,this.options.opacity)},_bringToFront:function(){this._updateZIndex(this.options.riseOffset)},_resetZIndex:function(){this._updateZIndex(0)}}),o.marker=function(t,e){return new o.Marker(t,e)},o.DivIcon=o.Icon.extend({options:{iconSize:[12,12],className:"leaflet-div-icon",html:!1},createIcon:function(t){var i=t&&"DIV"===t.tagName?t:e.createElement("div"),n=this.options;return i.innerHTML=n.html!==!1?n.html:"",n.bgPos&&(i.style.backgroundPosition=-n.bgPos.x+"px "+-n.bgPos.y+"px"),this._setIconStyles(i,"icon"),i},createShadow:function(){return null}}),o.divIcon=function(t){return new o.DivIcon(t)},o.Map.mergeOptions({closePopupOnClick:!0}),o.Popup=o.Class.extend({includes:o.Mixin.Events,options:{minWidth:50,maxWidth:300,autoPan:!0,closeButton:!0,offset:[0,7],autoPanPadding:[5,5],keepInView:!1,className:"",zoomAnimation:!0},initialize:function(t,e){o.setOptions(this,t),this._source=e,this._animated=o.Browser.any3d&&this.options.zoomAnimation,this._isOpen=!1},onAdd:function(t){this._map=t,this._container||this._initLayout();var e=t.options.fadeAnimation;e&&o.DomUtil.setOpacity(this._container,0),t._panes.popupPane.appendChild(this._container),t.on(this._getEvents(),this),this.update(),e&&o.DomUtil.setOpacity(this._container,1),this.fire("open"),t.fire("popupopen",{popup:this}),this._source&&this._source.fire("popupopen",{popup:this})},addTo:function(t){return t.addLayer(this),this},openOn:function(t){return t.openPopup(this),this},onRemove:function(t){t._panes.popupPane.removeChild(this._container),o.Util.falseFn(this._container.offsetWidth),t.off(this._getEvents(),this),t.options.fadeAnimation&&o.DomUtil.setOpacity(this._container,0),this._map=null,this.fire("close"),t.fire("popupclose",{popup:this}),this._source&&this._source.fire("popupclose",{popup:this})},getLatLng:function(){return this._latlng},setLatLng:function(t){return this._latlng=o.latLng(t),this._map&&(this._updatePosition(),this._adjustPan()),this},getContent:function(){return this._content},setContent:function(t){return this._content=t,this.update(),this},update:function(){this._map&&(this._container.style.visibility="hidden",this._updateContent(),this._updateLayout(),this._updatePosition(),this._container.style.visibility="",this._adjustPan())},_getEvents:function(){var t={viewreset:this._updatePosition};return this._animated&&(t.zoomanim=this._zoomAnimation),("closeOnClick"in this.options?this.options.closeOnClick:this._map.options.closePopupOnClick)&&(t.preclick=this._close),this.options.keepInView&&(t.moveend=this._adjustPan),t},_close:function(){this._map&&this._map.closePopup(this)},_initLayout:function(){var t,e="leaflet-popup",i=e+" "+this.options.className+" leaflet-zoom-"+(this._animated?"animated":"hide"),n=this._container=o.DomUtil.create("div",i);this.options.closeButton&&(t=this._closeButton=o.DomUtil.create("a",e+"-close-button",n),t.href="#close",t.innerHTML="&#215;",o.DomEvent.disableClickPropagation(t),o.DomEvent.on(t,"click",this._onCloseButtonClick,this));var s=this._wrapper=o.DomUtil.create("div",e+"-content-wrapper",n);o.DomEvent.disableClickPropagation(s),this._contentNode=o.DomUtil.create("div",e+"-content",s),o.DomEvent.disableScrollPropagation(this._contentNode),o.DomEvent.on(s,"contextmenu",o.DomEvent.stopPropagation),this._tipContainer=o.DomUtil.create("div",e+"-tip-container",n),this._tip=o.DomUtil.create("div",e+"-tip",this._tipContainer)},_updateContent:function(){if(this._content){if("string"==typeof this._content)this._contentNode.innerHTML=this._content;else{for(;this._contentNode.hasChildNodes();)this._contentNode.removeChild(this._contentNode.firstChild);this._contentNode.appendChild(this._content)}this.fire("contentupdate")}},_updateLayout:function(){var t=this._contentNode,e=t.style;e.width="",e.whiteSpace="nowrap";var i=t.offsetWidth;i=Math.min(i,this.options.maxWidth),i=Math.max(i,this.options.minWidth),e.width=i+1+"px",e.whiteSpace="",e.height="";var n=t.offsetHeight,s=this.options.maxHeight,a="leaflet-popup-scrolled";s&&n>s?(e.height=s+"px",o.DomUtil.addClass(t,a)):o.DomUtil.removeClass(t,a),this._containerWidth=this._container.offsetWidth},_updatePosition:function(){if(this._map){var t=this._map.latLngToLayerPoint(this._latlng),e=this._animated,i=o.point(this.options.offset);e&&o.DomUtil.setPosition(this._container,t),this._containerBottom=-i.y-(e?0:t.y),this._containerLeft=-Math.round(this._containerWidth/2)+i.x+(e?0:t.x),this._container.style.bottom=this._containerBottom+"px",this._container.style.left=this._containerLeft+"px"}},_zoomAnimation:function(t){var e=this._map._latLngToNewLayerPoint(this._latlng,t.zoom,t.center);o.DomUtil.setPosition(this._container,e)},_adjustPan:function(){if(this.options.autoPan){var t=this._map,e=this._container.offsetHeight,i=this._containerWidth,n=new o.Point(this._containerLeft,-e-this._containerBottom);this._animated&&n._add(o.DomUtil.getPosition(this._container));var s=t.layerPointToContainerPoint(n),a=o.point(this.options.autoPanPadding),r=o.point(this.options.autoPanPaddingTopLeft||a),h=o.point(this.options.autoPanPaddingBottomRight||a),l=t.getSize(),u=0,c=0;s.x+i+h.x>l.x&&(u=s.x+i-l.x+h.x),s.x-u-r.x<0&&(u=s.x-r.x),s.y+e+h.y>l.y&&(c=s.y+e-l.y+h.y),s.y-c-r.y<0&&(c=s.y-r.y),(u||c)&&t.fire("autopanstart").panBy([u,c])}},_onCloseButtonClick:function(t){this._close(),o.DomEvent.stop(t)}}),o.popup=function(t,e){return new o.Popup(t,e)},o.Map.include({openPopup:function(t,e,i){if(this.closePopup(),!(t instanceof o.Popup)){var n=t;t=new o.Popup(i).setLatLng(e).setContent(n)}return t._isOpen=!0,this._popup=t,this.addLayer(t)},closePopup:function(t){return t&&t!==this._popup||(t=this._popup,this._popup=null),t&&(this.removeLayer(t),t._isOpen=!1),this}}),o.Marker.include({openPopup:function(){return this._popup&&this._map&&!this._map.hasLayer(this._popup)&&(this._popup.setLatLng(this._latlng),this._map.openPopup(this._popup)),this},closePopup:function(){return this._popup&&this._popup._close(),this},togglePopup:function(){return this._popup&&(this._popup._isOpen?this.closePopup():this.openPopup()),this},bindPopup:function(t,e){var i=o.point(this.options.icon.options.popupAnchor||[0,0]);return i=i.add(o.Popup.prototype.options.offset),e&&e.offset&&(i=i.add(e.offset)),e=o.extend({offset:i},e),this._popupHandlersAdded||(this.on("click",this.togglePopup,this).on("remove",this.closePopup,this).on("move",this._movePopup,this),this._popupHandlersAdded=!0),t instanceof o.Popup?(o.setOptions(t,e),this._popup=t):this._popup=new o.Popup(e,this).setContent(t),this},setPopupContent:function(t){return this._popup&&this._popup.setContent(t),this},unbindPopup:function(){return this._popup&&(this._popup=null,this.off("click",this.togglePopup,this).off("remove",this.closePopup,this).off("move",this._movePopup,this),this._popupHandlersAdded=!1),this},getPopup:function(){return this._popup},_movePopup:function(t){this._popup.setLatLng(t.latlng)}}),o.LayerGroup=o.Class.extend({initialize:function(t){this._layers={};var e,i;if(t)for(e=0,i=t.length;i>e;e++)this.addLayer(t[e])},addLayer:function(t){var e=this.getLayerId(t);return this._layers[e]=t,this._map&&this._map.addLayer(t),this},removeLayer:function(t){var e=t in this._layers?t:this.getLayerId(t);return this._map&&this._layers[e]&&this._map.removeLayer(this._layers[e]),delete this._layers[e],this},hasLayer:function(t){return t?t in this._layers||this.getLayerId(t)in this._layers:!1},clearLayers:function(){return this.eachLayer(this.removeLayer,this),this},invoke:function(t){var e,i,n=Array.prototype.slice.call(arguments,1);for(e in this._layers)i=this._layers[e],i[t]&&i[t].apply(i,n);return this},onAdd:function(t){this._map=t,this.eachLayer(t.addLayer,t)},onRemove:function(t){this.eachLayer(t.removeLayer,t),this._map=null},addTo:function(t){return t.addLayer(this),this},eachLayer:function(t,e){for(var i in this._layers)t.call(e,this._layers[i]);return this},getLayer:function(t){return this._layers[t]},getLayers:function(){var t=[];for(var e in this._layers)t.push(this._layers[e]);return t},setZIndex:function(t){return this.invoke("setZIndex",t)},getLayerId:function(t){return o.stamp(t)}}),o.layerGroup=function(t){return new o.LayerGroup(t)},o.FeatureGroup=o.LayerGroup.extend({includes:o.Mixin.Events,statics:{EVENTS:"click dblclick mouseover mouseout mousemove contextmenu popupopen popupclose"},addLayer:function(t){return this.hasLayer(t)?this:("on"in t&&t.on(o.FeatureGroup.EVENTS,this._propagateEvent,this),o.LayerGroup.prototype.addLayer.call(this,t),this._popupContent&&t.bindPopup&&t.bindPopup(this._popupContent,this._popupOptions),this.fire("layeradd",{layer:t}))},removeLayer:function(t){return this.hasLayer(t)?(t in this._layers&&(t=this._layers[t]),t.off(o.FeatureGroup.EVENTS,this._propagateEvent,this),o.LayerGroup.prototype.removeLayer.call(this,t),this._popupContent&&this.invoke("unbindPopup"),this.fire("layerremove",{layer:t})):this},bindPopup:function(t,e){return this._popupContent=t,this._popupOptions=e,this.invoke("bindPopup",t,e)},openPopup:function(t){for(var e in this._layers){this._layers[e].openPopup(t);break}return this},setStyle:function(t){return this.invoke("setStyle",t)},bringToFront:function(){return this.invoke("bringToFront")},bringToBack:function(){return this.invoke("bringToBack")},getBounds:function(){var t=new o.LatLngBounds;return this.eachLayer(function(e){t.extend(e instanceof o.Marker?e.getLatLng():e.getBounds())}),t},_propagateEvent:function(t){t=o.extend({layer:t.target,target:this},t),this.fire(t.type,t)}}),o.featureGroup=function(t){return new o.FeatureGroup(t)},o.Path=o.Class.extend({includes:[o.Mixin.Events],statics:{CLIP_PADDING:function(){var e=o.Browser.mobile?1280:2e3,i=(e/Math.max(t.outerWidth,t.outerHeight)-1)/2;return Math.max(0,Math.min(.5,i))}()},options:{stroke:!0,color:"#0033ff",dashArray:null,lineCap:null,lineJoin:null,weight:5,opacity:.5,fill:!1,fillColor:null,fillOpacity:.2,clickable:!0},initialize:function(t){o.setOptions(this,t)},onAdd:function(t){this._map=t,this._container||(this._initElements(),this._initEvents()),this.projectLatlngs(),this._updatePath(),this._container&&this._map._pathRoot.appendChild(this._container),this.fire("add"),t.on({viewreset:this.projectLatlngs,moveend:this._updatePath},this)},addTo:function(t){return t.addLayer(this),this},onRemove:function(t){t._pathRoot.removeChild(this._container),this.fire("remove"),this._map=null,o.Browser.vml&&(this._container=null,this._stroke=null,this._fill=null),t.off({viewreset:this.projectLatlngs,moveend:this._updatePath},this)},projectLatlngs:function(){},setStyle:function(t){return o.setOptions(this,t),this._container&&this._updateStyle(),this},redraw:function(){return this._map&&(this.projectLatlngs(),this._updatePath()),this}}),o.Map.include({_updatePathViewport:function(){var t=o.Path.CLIP_PADDING,e=this.getSize(),i=o.DomUtil.getPosition(this._mapPane),n=i.multiplyBy(-1)._subtract(e.multiplyBy(t)._round()),s=n.add(e.multiplyBy(1+2*t)._round());this._pathViewport=new o.Bounds(n,s)}}),o.Path.SVG_NS="http://www.w3.org/2000/svg",o.Browser.svg=!(!e.createElementNS||!e.createElementNS(o.Path.SVG_NS,"svg").createSVGRect),o.Path=o.Path.extend({statics:{SVG:o.Browser.svg},bringToFront:function(){var t=this._map._pathRoot,e=this._container;return e&&t.lastChild!==e&&t.appendChild(e),this},bringToBack:function(){var t=this._map._pathRoot,e=this._container,i=t.firstChild;return e&&i!==e&&t.insertBefore(e,i),this},getPathString:function(){},_createElement:function(t){return e.createElementNS(o.Path.SVG_NS,t)},_initElements:function(){this._map._initPathRoot(),this._initPath(),this._initStyle()},_initPath:function(){this._container=this._createElement("g"),this._path=this._createElement("path"),this.options.className&&o.DomUtil.addClass(this._path,this.options.className),this._container.appendChild(this._path)},_initStyle:function(){this.options.stroke&&(this._path.setAttribute("stroke-linejoin","round"),this._path.setAttribute("stroke-linecap","round")),this.options.fill&&this._path.setAttribute("fill-rule","evenodd"),this.options.pointerEvents&&this._path.setAttribute("pointer-events",this.options.pointerEvents),this.options.clickable||this.options.pointerEvents||this._path.setAttribute("pointer-events","none"),this._updateStyle()},_updateStyle:function(){this.options.stroke?(this._path.setAttribute("stroke",this.options.color),this._path.setAttribute("stroke-opacity",this.options.opacity),this._path.setAttribute("stroke-width",this.options.weight),this.options.dashArray?this._path.setAttribute("stroke-dasharray",this.options.dashArray):this._path.removeAttribute("stroke-dasharray"),this.options.lineCap&&this._path.setAttribute("stroke-linecap",this.options.lineCap),this.options.lineJoin&&this._path.setAttribute("stroke-linejoin",this.options.lineJoin)):this._path.setAttribute("stroke","none"),this.options.fill?(this._path.setAttribute("fill",this.options.fillColor||this.options.color),this._path.setAttribute("fill-opacity",this.options.fillOpacity)):this._path.setAttribute("fill","none")},_updatePath:function(){var t=this.getPathString();t||(t="M0 0"),this._path.setAttribute("d",t)},_initEvents:function(){if(this.options.clickable){(o.Browser.svg||!o.Browser.vml)&&o.DomUtil.addClass(this._path,"leaflet-clickable"),o.DomEvent.on(this._container,"click",this._onMouseClick,this);for(var t=["dblclick","mousedown","mouseover","mouseout","mousemove","contextmenu"],e=0;e<t.length;e++)o.DomEvent.on(this._container,t[e],this._fireMouseEvent,this)}},_onMouseClick:function(t){this._map.dragging&&this._map.dragging.moved()||this._fireMouseEvent(t)},_fireMouseEvent:function(t){if(this.hasEventListeners(t.type)){var e=this._map,i=e.mouseEventToContainerPoint(t),n=e.containerPointToLayerPoint(i),s=e.layerPointToLatLng(n);this.fire(t.type,{latlng:s,layerPoint:n,containerPoint:i,originalEvent:t}),"contextmenu"===t.type&&o.DomEvent.preventDefault(t),"mousemove"!==t.type&&o.DomEvent.stopPropagation(t)}}}),o.Map.include({_initPathRoot:function(){this._pathRoot||(this._pathRoot=o.Path.prototype._createElement("svg"),this._panes.overlayPane.appendChild(this._pathRoot),this.options.zoomAnimation&&o.Browser.any3d?(o.DomUtil.addClass(this._pathRoot,"leaflet-zoom-animated"),this.on({zoomanim:this._animatePathZoom,zoomend:this._endPathZoom})):o.DomUtil.addClass(this._pathRoot,"leaflet-zoom-hide"),this.on("moveend",this._updateSvgViewport),this._updateSvgViewport())
 },_animatePathZoom:function(t){var e=this.getZoomScale(t.zoom),i=this._getCenterOffset(t.center)._multiplyBy(-e)._add(this._pathViewport.min);this._pathRoot.style[o.DomUtil.TRANSFORM]=o.DomUtil.getTranslateString(i)+" scale("+e+") ",this._pathZooming=!0},_endPathZoom:function(){this._pathZooming=!1},_updateSvgViewport:function(){if(!this._pathZooming){this._updatePathViewport();var t=this._pathViewport,e=t.min,i=t.max,n=i.x-e.x,s=i.y-e.y,a=this._pathRoot,r=this._panes.overlayPane;o.Browser.mobileWebkit&&r.removeChild(a),o.DomUtil.setPosition(a,e),a.setAttribute("width",n),a.setAttribute("height",s),a.setAttribute("viewBox",[e.x,e.y,n,s].join(" ")),o.Browser.mobileWebkit&&r.appendChild(a)}}}),o.Path.include({bindPopup:function(t,e){return t instanceof o.Popup?this._popup=t:((!this._popup||e)&&(this._popup=new o.Popup(e,this)),this._popup.setContent(t)),this._popupHandlersAdded||(this.on("click",this._openPopup,this).on("remove",this.closePopup,this),this._popupHandlersAdded=!0),this},unbindPopup:function(){return this._popup&&(this._popup=null,this.off("click",this._openPopup).off("remove",this.closePopup),this._popupHandlersAdded=!1),this},openPopup:function(t){return this._popup&&(t=t||this._latlng||this._latlngs[Math.floor(this._latlngs.length/2)],this._openPopup({latlng:t})),this},closePopup:function(){return this._popup&&this._popup._close(),this},_openPopup:function(t){this._popup.setLatLng(t.latlng),this._map.openPopup(this._popup)}}),o.Browser.vml=!o.Browser.svg&&function(){try{var t=e.createElement("div");t.innerHTML='<v:shape adj="1"/>';var i=t.firstChild;return i.style.behavior="url(#default#VML)",i&&"object"==typeof i.adj}catch(n){return!1}}(),o.Path=o.Browser.svg||!o.Browser.vml?o.Path:o.Path.extend({statics:{VML:!0,CLIP_PADDING:.02},_createElement:function(){try{return e.namespaces.add("lvml","urn:schemas-microsoft-com:vml"),function(t){return e.createElement("<lvml:"+t+' class="lvml">')}}catch(t){return function(t){return e.createElement("<"+t+' xmlns="urn:schemas-microsoft.com:vml" class="lvml">')}}}(),_initPath:function(){var t=this._container=this._createElement("shape");o.DomUtil.addClass(t,"leaflet-vml-shape"+(this.options.className?" "+this.options.className:"")),this.options.clickable&&o.DomUtil.addClass(t,"leaflet-clickable"),t.coordsize="1 1",this._path=this._createElement("path"),t.appendChild(this._path),this._map._pathRoot.appendChild(t)},_initStyle:function(){this._updateStyle()},_updateStyle:function(){var t=this._stroke,e=this._fill,i=this.options,n=this._container;n.stroked=i.stroke,n.filled=i.fill,i.stroke?(t||(t=this._stroke=this._createElement("stroke"),t.endcap="round",n.appendChild(t)),t.weight=i.weight+"px",t.color=i.color,t.opacity=i.opacity,t.dashStyle=i.dashArray?o.Util.isArray(i.dashArray)?i.dashArray.join(" "):i.dashArray.replace(/( *, *)/g," "):"",i.lineCap&&(t.endcap=i.lineCap.replace("butt","flat")),i.lineJoin&&(t.joinstyle=i.lineJoin)):t&&(n.removeChild(t),this._stroke=null),i.fill?(e||(e=this._fill=this._createElement("fill"),n.appendChild(e)),e.color=i.fillColor||i.color,e.opacity=i.fillOpacity):e&&(n.removeChild(e),this._fill=null)},_updatePath:function(){var t=this._container.style;t.display="none",this._path.v=this.getPathString()+" ",t.display=""}}),o.Map.include(o.Browser.svg||!o.Browser.vml?{}:{_initPathRoot:function(){if(!this._pathRoot){var t=this._pathRoot=e.createElement("div");t.className="leaflet-vml-container",this._panes.overlayPane.appendChild(t),this.on("moveend",this._updatePathViewport),this._updatePathViewport()}}}),o.Browser.canvas=function(){return!!e.createElement("canvas").getContext}(),o.Path=o.Path.SVG&&!t.L_PREFER_CANVAS||!o.Browser.canvas?o.Path:o.Path.extend({statics:{CANVAS:!0,SVG:!1},redraw:function(){return this._map&&(this.projectLatlngs(),this._requestUpdate()),this},setStyle:function(t){return o.setOptions(this,t),this._map&&(this._updateStyle(),this._requestUpdate()),this},onRemove:function(t){t.off("viewreset",this.projectLatlngs,this).off("moveend",this._updatePath,this),this.options.clickable&&(this._map.off("click",this._onClick,this),this._map.off("mousemove",this._onMouseMove,this)),this._requestUpdate(),this.fire("remove"),this._map=null},_requestUpdate:function(){this._map&&!o.Path._updateRequest&&(o.Path._updateRequest=o.Util.requestAnimFrame(this._fireMapMoveEnd,this._map))},_fireMapMoveEnd:function(){o.Path._updateRequest=null,this.fire("moveend")},_initElements:function(){this._map._initPathRoot(),this._ctx=this._map._canvasCtx},_updateStyle:function(){var t=this.options;t.stroke&&(this._ctx.lineWidth=t.weight,this._ctx.strokeStyle=t.color),t.fill&&(this._ctx.fillStyle=t.fillColor||t.color)},_drawPath:function(){var t,e,i,n,s,a;for(this._ctx.beginPath(),t=0,i=this._parts.length;i>t;t++){for(e=0,n=this._parts[t].length;n>e;e++)s=this._parts[t][e],a=(0===e?"move":"line")+"To",this._ctx[a](s.x,s.y);this instanceof o.Polygon&&this._ctx.closePath()}},_checkIfEmpty:function(){return!this._parts.length},_updatePath:function(){if(!this._checkIfEmpty()){var t=this._ctx,e=this.options;this._drawPath(),t.save(),this._updateStyle(),e.fill&&(t.globalAlpha=e.fillOpacity,t.fill()),e.stroke&&(t.globalAlpha=e.opacity,t.stroke()),t.restore()}},_initEvents:function(){this.options.clickable&&(this._map.on("mousemove",this._onMouseMove,this),this._map.on("click",this._onClick,this))},_onClick:function(t){this._containsPoint(t.layerPoint)&&this.fire("click",t)},_onMouseMove:function(t){this._map&&!this._map._animatingZoom&&(this._containsPoint(t.layerPoint)?(this._ctx.canvas.style.cursor="pointer",this._mouseInside=!0,this.fire("mouseover",t)):this._mouseInside&&(this._ctx.canvas.style.cursor="",this._mouseInside=!1,this.fire("mouseout",t)))}}),o.Map.include(o.Path.SVG&&!t.L_PREFER_CANVAS||!o.Browser.canvas?{}:{_initPathRoot:function(){var t,i=this._pathRoot;i||(i=this._pathRoot=e.createElement("canvas"),i.style.position="absolute",t=this._canvasCtx=i.getContext("2d"),t.lineCap="round",t.lineJoin="round",this._panes.overlayPane.appendChild(i),this.options.zoomAnimation&&(this._pathRoot.className="leaflet-zoom-animated",this.on("zoomanim",this._animatePathZoom),this.on("zoomend",this._endPathZoom)),this.on("moveend",this._updateCanvasViewport),this._updateCanvasViewport())},_updateCanvasViewport:function(){if(!this._pathZooming){this._updatePathViewport();var t=this._pathViewport,e=t.min,i=t.max.subtract(e),n=this._pathRoot;o.DomUtil.setPosition(n,e),n.width=i.x,n.height=i.y,n.getContext("2d").translate(-e.x,-e.y)}}}),o.LineUtil={simplify:function(t,e){if(!e||!t.length)return t.slice();var i=e*e;return t=this._reducePoints(t,i),t=this._simplifyDP(t,i)},pointToSegmentDistance:function(t,e,i){return Math.sqrt(this._sqClosestPointOnSegment(t,e,i,!0))},closestPointOnSegment:function(t,e,i){return this._sqClosestPointOnSegment(t,e,i)},_simplifyDP:function(t,e){var n=t.length,o=typeof Uint8Array!=i+""?Uint8Array:Array,s=new o(n);s[0]=s[n-1]=1,this._simplifyDPStep(t,s,e,0,n-1);var a,r=[];for(a=0;n>a;a++)s[a]&&r.push(t[a]);return r},_simplifyDPStep:function(t,e,i,n,o){var s,a,r,h=0;for(a=n+1;o-1>=a;a++)r=this._sqClosestPointOnSegment(t[a],t[n],t[o],!0),r>h&&(s=a,h=r);h>i&&(e[s]=1,this._simplifyDPStep(t,e,i,n,s),this._simplifyDPStep(t,e,i,s,o))},_reducePoints:function(t,e){for(var i=[t[0]],n=1,o=0,s=t.length;s>n;n++)this._sqDist(t[n],t[o])>e&&(i.push(t[n]),o=n);return s-1>o&&i.push(t[s-1]),i},clipSegment:function(t,e,i,n){var o,s,a,r=n?this._lastCode:this._getBitCode(t,i),h=this._getBitCode(e,i);for(this._lastCode=h;;){if(!(r|h))return[t,e];if(r&h)return!1;o=r||h,s=this._getEdgeIntersection(t,e,o,i),a=this._getBitCode(s,i),o===r?(t=s,r=a):(e=s,h=a)}},_getEdgeIntersection:function(t,e,i,n){var s=e.x-t.x,a=e.y-t.y,r=n.min,h=n.max;return 8&i?new o.Point(t.x+s*(h.y-t.y)/a,h.y):4&i?new o.Point(t.x+s*(r.y-t.y)/a,r.y):2&i?new o.Point(h.x,t.y+a*(h.x-t.x)/s):1&i?new o.Point(r.x,t.y+a*(r.x-t.x)/s):void 0},_getBitCode:function(t,e){var i=0;return t.x<e.min.x?i|=1:t.x>e.max.x&&(i|=2),t.y<e.min.y?i|=4:t.y>e.max.y&&(i|=8),i},_sqDist:function(t,e){var i=e.x-t.x,n=e.y-t.y;return i*i+n*n},_sqClosestPointOnSegment:function(t,e,i,n){var s,a=e.x,r=e.y,h=i.x-a,l=i.y-r,u=h*h+l*l;return u>0&&(s=((t.x-a)*h+(t.y-r)*l)/u,s>1?(a=i.x,r=i.y):s>0&&(a+=h*s,r+=l*s)),h=t.x-a,l=t.y-r,n?h*h+l*l:new o.Point(a,r)}},o.Polyline=o.Path.extend({initialize:function(t,e){o.Path.prototype.initialize.call(this,e),this._latlngs=this._convertLatLngs(t)},options:{smoothFactor:1,noClip:!1},projectLatlngs:function(){this._originalPoints=[];for(var t=0,e=this._latlngs.length;e>t;t++)this._originalPoints[t]=this._map.latLngToLayerPoint(this._latlngs[t])},getPathString:function(){for(var t=0,e=this._parts.length,i="";e>t;t++)i+=this._getPathPartStr(this._parts[t]);return i},getLatLngs:function(){return this._latlngs},setLatLngs:function(t){return this._latlngs=this._convertLatLngs(t),this.redraw()},addLatLng:function(t){return this._latlngs.push(o.latLng(t)),this.redraw()},spliceLatLngs:function(){var t=[].splice.apply(this._latlngs,arguments);return this._convertLatLngs(this._latlngs,!0),this.redraw(),t},closestLayerPoint:function(t){for(var e,i,n=1/0,s=this._parts,a=null,r=0,h=s.length;h>r;r++)for(var l=s[r],u=1,c=l.length;c>u;u++){e=l[u-1],i=l[u];var d=o.LineUtil._sqClosestPointOnSegment(t,e,i,!0);n>d&&(n=d,a=o.LineUtil._sqClosestPointOnSegment(t,e,i))}return a&&(a.distance=Math.sqrt(n)),a},getBounds:function(){return new o.LatLngBounds(this.getLatLngs())},_convertLatLngs:function(t,e){var i,n,s=e?t:[];for(i=0,n=t.length;n>i;i++){if(o.Util.isArray(t[i])&&"number"!=typeof t[i][0])return;s[i]=o.latLng(t[i])}return s},_initEvents:function(){o.Path.prototype._initEvents.call(this)},_getPathPartStr:function(t){for(var e,i=o.Path.VML,n=0,s=t.length,a="";s>n;n++)e=t[n],i&&e._round(),a+=(n?"L":"M")+e.x+" "+e.y;return a},_clipPoints:function(){var t,e,i,n=this._originalPoints,s=n.length;if(this.options.noClip)return void(this._parts=[n]);this._parts=[];var a=this._parts,r=this._map._pathViewport,h=o.LineUtil;for(t=0,e=0;s-1>t;t++)i=h.clipSegment(n[t],n[t+1],r,t),i&&(a[e]=a[e]||[],a[e].push(i[0]),(i[1]!==n[t+1]||t===s-2)&&(a[e].push(i[1]),e++))},_simplifyPoints:function(){for(var t=this._parts,e=o.LineUtil,i=0,n=t.length;n>i;i++)t[i]=e.simplify(t[i],this.options.smoothFactor)},_updatePath:function(){this._map&&(this._clipPoints(),this._simplifyPoints(),o.Path.prototype._updatePath.call(this))}}),o.polyline=function(t,e){return new o.Polyline(t,e)},o.PolyUtil={},o.PolyUtil.clipPolygon=function(t,e){var i,n,s,a,r,h,l,u,c,d=[1,4,2,8],p=o.LineUtil;for(n=0,l=t.length;l>n;n++)t[n]._code=p._getBitCode(t[n],e);for(a=0;4>a;a++){for(u=d[a],i=[],n=0,l=t.length,s=l-1;l>n;s=n++)r=t[n],h=t[s],r._code&u?h._code&u||(c=p._getEdgeIntersection(h,r,u,e),c._code=p._getBitCode(c,e),i.push(c)):(h._code&u&&(c=p._getEdgeIntersection(h,r,u,e),c._code=p._getBitCode(c,e),i.push(c)),i.push(r));t=i}return t},o.Polygon=o.Polyline.extend({options:{fill:!0},initialize:function(t,e){o.Polyline.prototype.initialize.call(this,t,e),this._initWithHoles(t)},_initWithHoles:function(t){var e,i,n;if(t&&o.Util.isArray(t[0])&&"number"!=typeof t[0][0])for(this._latlngs=this._convertLatLngs(t[0]),this._holes=t.slice(1),e=0,i=this._holes.length;i>e;e++)n=this._holes[e]=this._convertLatLngs(this._holes[e]),n[0].equals(n[n.length-1])&&n.pop();t=this._latlngs,t.length>=2&&t[0].equals(t[t.length-1])&&t.pop()},projectLatlngs:function(){if(o.Polyline.prototype.projectLatlngs.call(this),this._holePoints=[],this._holes){var t,e,i,n;for(t=0,i=this._holes.length;i>t;t++)for(this._holePoints[t]=[],e=0,n=this._holes[t].length;n>e;e++)this._holePoints[t][e]=this._map.latLngToLayerPoint(this._holes[t][e])}},setLatLngs:function(t){return t&&o.Util.isArray(t[0])&&"number"!=typeof t[0][0]?(this._initWithHoles(t),this.redraw()):o.Polyline.prototype.setLatLngs.call(this,t)},_clipPoints:function(){var t=this._originalPoints,e=[];if(this._parts=[t].concat(this._holePoints),!this.options.noClip){for(var i=0,n=this._parts.length;n>i;i++){var s=o.PolyUtil.clipPolygon(this._parts[i],this._map._pathViewport);s.length&&e.push(s)}this._parts=e}},_getPathPartStr:function(t){var e=o.Polyline.prototype._getPathPartStr.call(this,t);return e+(o.Browser.svg?"z":"x")}}),o.polygon=function(t,e){return new o.Polygon(t,e)},function(){function t(t){return o.FeatureGroup.extend({initialize:function(t,e){this._layers={},this._options=e,this.setLatLngs(t)},setLatLngs:function(e){var i=0,n=e.length;for(this.eachLayer(function(t){n>i?t.setLatLngs(e[i++]):this.removeLayer(t)},this);n>i;)this.addLayer(new t(e[i++],this._options));return this},getLatLngs:function(){var t=[];return this.eachLayer(function(e){t.push(e.getLatLngs())}),t}})}o.MultiPolyline=t(o.Polyline),o.MultiPolygon=t(o.Polygon),o.multiPolyline=function(t,e){return new o.MultiPolyline(t,e)},o.multiPolygon=function(t,e){return new o.MultiPolygon(t,e)}}(),o.Rectangle=o.Polygon.extend({initialize:function(t,e){o.Polygon.prototype.initialize.call(this,this._boundsToLatLngs(t),e)},setBounds:function(t){this.setLatLngs(this._boundsToLatLngs(t))},_boundsToLatLngs:function(t){return t=o.latLngBounds(t),[t.getSouthWest(),t.getNorthWest(),t.getNorthEast(),t.getSouthEast()]}}),o.rectangle=function(t,e){return new o.Rectangle(t,e)},o.Circle=o.Path.extend({initialize:function(t,e,i){o.Path.prototype.initialize.call(this,i),this._latlng=o.latLng(t),this._mRadius=e},options:{fill:!0},setLatLng:function(t){return this._latlng=o.latLng(t),this.redraw()},setRadius:function(t){return this._mRadius=t,this.redraw()},projectLatlngs:function(){var t=this._getLngRadius(),e=this._latlng,i=this._map.latLngToLayerPoint([e.lat,e.lng-t]);this._point=this._map.latLngToLayerPoint(e),this._radius=Math.max(this._point.x-i.x,1)},getBounds:function(){var t=this._getLngRadius(),e=this._mRadius/40075017*360,i=this._latlng;return new o.LatLngBounds([i.lat-e,i.lng-t],[i.lat+e,i.lng+t])},getLatLng:function(){return this._latlng},getPathString:function(){var t=this._point,e=this._radius;return this._checkIfEmpty()?"":o.Browser.svg?"M"+t.x+","+(t.y-e)+"A"+e+","+e+",0,1,1,"+(t.x-.1)+","+(t.y-e)+" z":(t._round(),e=Math.round(e),"AL "+t.x+","+t.y+" "+e+","+e+" 0,23592600")},getRadius:function(){return this._mRadius},_getLatRadius:function(){return this._mRadius/40075017*360},_getLngRadius:function(){return this._getLatRadius()/Math.cos(o.LatLng.DEG_TO_RAD*this._latlng.lat)},_checkIfEmpty:function(){if(!this._map)return!1;var t=this._map._pathViewport,e=this._radius,i=this._point;return i.x-e>t.max.x||i.y-e>t.max.y||i.x+e<t.min.x||i.y+e<t.min.y}}),o.circle=function(t,e,i){return new o.Circle(t,e,i)},o.CircleMarker=o.Circle.extend({options:{radius:10,weight:2},initialize:function(t,e){o.Circle.prototype.initialize.call(this,t,null,e),this._radius=this.options.radius},projectLatlngs:function(){this._point=this._map.latLngToLayerPoint(this._latlng)},_updateStyle:function(){o.Circle.prototype._updateStyle.call(this),this.setRadius(this.options.radius)},setLatLng:function(t){return o.Circle.prototype.setLatLng.call(this,t),this._popup&&this._popup._isOpen&&this._popup.setLatLng(t),this},setRadius:function(t){return this.options.radius=this._radius=t,this.redraw()},getRadius:function(){return this._radius}}),o.circleMarker=function(t,e){return new o.CircleMarker(t,e)},o.Polyline.include(o.Path.CANVAS?{_containsPoint:function(t,e){var i,n,s,a,r,h,l,u=this.options.weight/2;for(o.Browser.touch&&(u+=10),i=0,a=this._parts.length;a>i;i++)for(l=this._parts[i],n=0,r=l.length,s=r-1;r>n;s=n++)if((e||0!==n)&&(h=o.LineUtil.pointToSegmentDistance(t,l[s],l[n]),u>=h))return!0;return!1}}:{}),o.Polygon.include(o.Path.CANVAS?{_containsPoint:function(t){var e,i,n,s,a,r,h,l,u=!1;if(o.Polyline.prototype._containsPoint.call(this,t,!0))return!0;for(s=0,h=this._parts.length;h>s;s++)for(e=this._parts[s],a=0,l=e.length,r=l-1;l>a;r=a++)i=e[a],n=e[r],i.y>t.y!=n.y>t.y&&t.x<(n.x-i.x)*(t.y-i.y)/(n.y-i.y)+i.x&&(u=!u);return u}}:{}),o.Circle.include(o.Path.CANVAS?{_drawPath:function(){var t=this._point;this._ctx.beginPath(),this._ctx.arc(t.x,t.y,this._radius,0,2*Math.PI,!1)},_containsPoint:function(t){var e=this._point,i=this.options.stroke?this.options.weight/2:0;return t.distanceTo(e)<=this._radius+i}}:{}),o.CircleMarker.include(o.Path.CANVAS?{_updateStyle:function(){o.Path.prototype._updateStyle.call(this)}}:{}),o.GeoJSON=o.FeatureGroup.extend({initialize:function(t,e){o.setOptions(this,e),this._layers={},t&&this.addData(t)},addData:function(t){var e,i,n,s=o.Util.isArray(t)?t:t.features;if(s){for(e=0,i=s.length;i>e;e++)n=s[e],(n.geometries||n.geometry||n.features||n.coordinates)&&this.addData(s[e]);return this}var a=this.options;if(!a.filter||a.filter(t)){var r=o.GeoJSON.geometryToLayer(t,a.pointToLayer,a.coordsToLatLng,a);return r.feature=o.GeoJSON.asFeature(t),r.defaultOptions=r.options,this.resetStyle(r),a.onEachFeature&&a.onEachFeature(t,r),this.addLayer(r)}},resetStyle:function(t){var e=this.options.style;e&&(o.Util.extend(t.options,t.defaultOptions),this._setLayerStyle(t,e))},setStyle:function(t){this.eachLayer(function(e){this._setLayerStyle(e,t)},this)},_setLayerStyle:function(t,e){"function"==typeof e&&(e=e(t.feature)),t.setStyle&&t.setStyle(e)}}),o.extend(o.GeoJSON,{geometryToLayer:function(t,e,i,n){var s,a,r,h,l="Feature"===t.type?t.geometry:t,u=l.coordinates,c=[];switch(i=i||this.coordsToLatLng,l.type){case"Point":return s=i(u),e?e(t,s):new o.Marker(s);case"MultiPoint":for(r=0,h=u.length;h>r;r++)s=i(u[r]),c.push(e?e(t,s):new o.Marker(s));return new o.FeatureGroup(c);case"LineString":return a=this.coordsToLatLngs(u,0,i),new o.Polyline(a,n);case"Polygon":if(2===u.length&&!u[1].length)throw new Error("Invalid GeoJSON object.");return a=this.coordsToLatLngs(u,1,i),new o.Polygon(a,n);case"MultiLineString":return a=this.coordsToLatLngs(u,1,i),new o.MultiPolyline(a,n);case"MultiPolygon":return a=this.coordsToLatLngs(u,2,i),new o.MultiPolygon(a,n);case"GeometryCollection":for(r=0,h=l.geometries.length;h>r;r++)c.push(this.geometryToLayer({geometry:l.geometries[r],type:"Feature",properties:t.properties},e,i,n));return new o.FeatureGroup(c);default:throw new Error("Invalid GeoJSON object.")}},coordsToLatLng:function(t){return new o.LatLng(t[1],t[0],t[2])},coordsToLatLngs:function(t,e,i){var n,o,s,a=[];for(o=0,s=t.length;s>o;o++)n=e?this.coordsToLatLngs(t[o],e-1,i):(i||this.coordsToLatLng)(t[o]),a.push(n);return a},latLngToCoords:function(t){var e=[t.lng,t.lat];return t.alt!==i&&e.push(t.alt),e},latLngsToCoords:function(t){for(var e=[],i=0,n=t.length;n>i;i++)e.push(o.GeoJSON.latLngToCoords(t[i]));return e},getFeature:function(t,e){return t.feature?o.extend({},t.feature,{geometry:e}):o.GeoJSON.asFeature(e)},asFeature:function(t){return"Feature"===t.type?t:{type:"Feature",properties:{},geometry:t}}});var a={toGeoJSON:function(){return o.GeoJSON.getFeature(this,{type:"Point",coordinates:o.GeoJSON.latLngToCoords(this.getLatLng())})}};o.Marker.include(a),o.Circle.include(a),o.CircleMarker.include(a),o.Polyline.include({toGeoJSON:function(){return o.GeoJSON.getFeature(this,{type:"LineString",coordinates:o.GeoJSON.latLngsToCoords(this.getLatLngs())})}}),o.Polygon.include({toGeoJSON:function(){var t,e,i,n=[o.GeoJSON.latLngsToCoords(this.getLatLngs())];if(n[0].push(n[0][0]),this._holes)for(t=0,e=this._holes.length;e>t;t++)i=o.GeoJSON.latLngsToCoords(this._holes[t]),i.push(i[0]),n.push(i);return o.GeoJSON.getFeature(this,{type:"Polygon",coordinates:n})}}),function(){function t(t){return function(){var e=[];return this.eachLayer(function(t){e.push(t.toGeoJSON().geometry.coordinates)}),o.GeoJSON.getFeature(this,{type:t,coordinates:e})}}o.MultiPolyline.include({toGeoJSON:t("MultiLineString")}),o.MultiPolygon.include({toGeoJSON:t("MultiPolygon")}),o.LayerGroup.include({toGeoJSON:function(){var e,i=this.feature&&this.feature.geometry,n=[];if(i&&"MultiPoint"===i.type)return t("MultiPoint").call(this);var s=i&&"GeometryCollection"===i.type;return this.eachLayer(function(t){t.toGeoJSON&&(e=t.toGeoJSON(),n.push(s?e.geometry:o.GeoJSON.asFeature(e)))}),s?o.GeoJSON.getFeature(this,{geometries:n,type:"GeometryCollection"}):{type:"FeatureCollection",features:n}}})}(),o.geoJson=function(t,e){return new o.GeoJSON(t,e)},o.DomEvent={addListener:function(t,e,i,n){var s,a,r,h=o.stamp(i),l="_leaflet_"+e+h;return t[l]?this:(s=function(e){return i.call(n||t,e||o.DomEvent._getEvent())},o.Browser.pointer&&0===e.indexOf("touch")?this.addPointerListener(t,e,s,h):(o.Browser.touch&&"dblclick"===e&&this.addDoubleTapListener&&this.addDoubleTapListener(t,s,h),"addEventListener"in t?"mousewheel"===e?(t.addEventListener("DOMMouseScroll",s,!1),t.addEventListener(e,s,!1)):"mouseenter"===e||"mouseleave"===e?(a=s,r="mouseenter"===e?"mouseover":"mouseout",s=function(e){return o.DomEvent._checkMouse(t,e)?a(e):void 0},t.addEventListener(r,s,!1)):"click"===e&&o.Browser.android?(a=s,s=function(t){return o.DomEvent._filterClick(t,a)},t.addEventListener(e,s,!1)):t.addEventListener(e,s,!1):"attachEvent"in t&&t.attachEvent("on"+e,s),t[l]=s,this))},removeListener:function(t,e,i){var n=o.stamp(i),s="_leaflet_"+e+n,a=t[s];return a?(o.Browser.pointer&&0===e.indexOf("touch")?this.removePointerListener(t,e,n):o.Browser.touch&&"dblclick"===e&&this.removeDoubleTapListener?this.removeDoubleTapListener(t,n):"removeEventListener"in t?"mousewheel"===e?(t.removeEventListener("DOMMouseScroll",a,!1),t.removeEventListener(e,a,!1)):"mouseenter"===e||"mouseleave"===e?t.removeEventListener("mouseenter"===e?"mouseover":"mouseout",a,!1):t.removeEventListener(e,a,!1):"detachEvent"in t&&t.detachEvent("on"+e,a),t[s]=null,this):this},stopPropagation:function(t){return t.stopPropagation?t.stopPropagation():t.cancelBubble=!0,o.DomEvent._skipped(t),this},disableScrollPropagation:function(t){var e=o.DomEvent.stopPropagation;return o.DomEvent.on(t,"mousewheel",e).on(t,"MozMousePixelScroll",e)},disableClickPropagation:function(t){for(var e=o.DomEvent.stopPropagation,i=o.Draggable.START.length-1;i>=0;i--)o.DomEvent.on(t,o.Draggable.START[i],e);return o.DomEvent.on(t,"click",o.DomEvent._fakeStop).on(t,"dblclick",e)},preventDefault:function(t){return t.preventDefault?t.preventDefault():t.returnValue=!1,this},stop:function(t){return o.DomEvent.preventDefault(t).stopPropagation(t)},getMousePosition:function(t,e){if(!e)return new o.Point(t.clientX,t.clientY);var i=e.getBoundingClientRect();return new o.Point(t.clientX-i.left-e.clientLeft,t.clientY-i.top-e.clientTop)},getWheelDelta:function(t){var e=0;return t.wheelDelta&&(e=t.wheelDelta/120),t.detail&&(e=-t.detail/3),e},_skipEvents:{},_fakeStop:function(t){o.DomEvent._skipEvents[t.type]=!0},_skipped:function(t){var e=this._skipEvents[t.type];return this._skipEvents[t.type]=!1,e},_checkMouse:function(t,e){var i=e.relatedTarget;if(!i)return!0;try{for(;i&&i!==t;)i=i.parentNode}catch(n){return!1}return i!==t},_getEvent:function(){var e=t.event;if(!e)for(var i=arguments.callee.caller;i&&(e=i.arguments[0],!e||t.Event!==e.constructor);)i=i.caller;return e},_filterClick:function(t,e){var i=t.timeStamp||t.originalEvent.timeStamp,n=o.DomEvent._lastClick&&i-o.DomEvent._lastClick;return n&&n>100&&500>n||t.target._simulatedClick&&!t._simulated?void o.DomEvent.stop(t):(o.DomEvent._lastClick=i,e(t))}},o.DomEvent.on=o.DomEvent.addListener,o.DomEvent.off=o.DomEvent.removeListener,o.Draggable=o.Class.extend({includes:o.Mixin.Events,statics:{START:o.Browser.touch?["touchstart","mousedown"]:["mousedown"],END:{mousedown:"mouseup",touchstart:"touchend",pointerdown:"touchend",MSPointerDown:"touchend"},MOVE:{mousedown:"mousemove",touchstart:"touchmove",pointerdown:"touchmove",MSPointerDown:"touchmove"}},initialize:function(t,e){this._element=t,this._dragStartTarget=e||t},enable:function(){if(!this._enabled){for(var t=o.Draggable.START.length-1;t>=0;t--)o.DomEvent.on(this._dragStartTarget,o.Draggable.START[t],this._onDown,this);this._enabled=!0}},disable:function(){if(this._enabled){for(var t=o.Draggable.START.length-1;t>=0;t--)o.DomEvent.off(this._dragStartTarget,o.Draggable.START[t],this._onDown,this);this._enabled=!1,this._moved=!1}},_onDown:function(t){if(this._moved=!1,!(t.shiftKey||1!==t.which&&1!==t.button&&!t.touches||(o.DomEvent.stopPropagation(t),o.Draggable._disabled||(o.DomUtil.disableImageDrag(),o.DomUtil.disableTextSelection(),this._moving)))){var i=t.touches?t.touches[0]:t;this._startPoint=new o.Point(i.clientX,i.clientY),this._startPos=this._newPos=o.DomUtil.getPosition(this._element),o.DomEvent.on(e,o.Draggable.MOVE[t.type],this._onMove,this).on(e,o.Draggable.END[t.type],this._onUp,this)}},_onMove:function(t){if(t.touches&&t.touches.length>1)return void(this._moved=!0);var i=t.touches&&1===t.touches.length?t.touches[0]:t,n=new o.Point(i.clientX,i.clientY),s=n.subtract(this._startPoint);(s.x||s.y)&&(o.Browser.touch&&Math.abs(s.x)+Math.abs(s.y)<3||(o.DomEvent.preventDefault(t),this._moved||(this.fire("dragstart"),this._moved=!0,this._startPos=o.DomUtil.getPosition(this._element).subtract(s),o.DomUtil.addClass(e.body,"leaflet-dragging"),this._lastTarget=t.target||t.srcElement,o.DomUtil.addClass(this._lastTarget,"leaflet-drag-target")),this._newPos=this._startPos.add(s),this._moving=!0,o.Util.cancelAnimFrame(this._animRequest),this._animRequest=o.Util.requestAnimFrame(this._updatePosition,this,!0,this._dragStartTarget)))},_updatePosition:function(){this.fire("predrag"),o.DomUtil.setPosition(this._element,this._newPos),this.fire("drag")},_onUp:function(){o.DomUtil.removeClass(e.body,"leaflet-dragging"),this._lastTarget&&(o.DomUtil.removeClass(this._lastTarget,"leaflet-drag-target"),this._lastTarget=null);for(var t in o.Draggable.MOVE)o.DomEvent.off(e,o.Draggable.MOVE[t],this._onMove).off(e,o.Draggable.END[t],this._onUp);o.DomUtil.enableImageDrag(),o.DomUtil.enableTextSelection(),this._moved&&this._moving&&(o.Util.cancelAnimFrame(this._animRequest),this.fire("dragend",{distance:this._newPos.distanceTo(this._startPos)})),this._moving=!1}}),o.Handler=o.Class.extend({initialize:function(t){this._map=t},enable:function(){this._enabled||(this._enabled=!0,this.addHooks())},disable:function(){this._enabled&&(this._enabled=!1,this.removeHooks())},enabled:function(){return!!this._enabled}}),o.Map.mergeOptions({dragging:!0,inertia:!o.Browser.android23,inertiaDeceleration:3400,inertiaMaxSpeed:1/0,inertiaThreshold:o.Browser.touch?32:18,easeLinearity:.25,worldCopyJump:!1}),o.Map.Drag=o.Handler.extend({addHooks:function(){if(!this._draggable){var t=this._map;this._draggable=new o.Draggable(t._mapPane,t._container),this._draggable.on({dragstart:this._onDragStart,drag:this._onDrag,dragend:this._onDragEnd},this),t.options.worldCopyJump&&(this._draggable.on("predrag",this._onPreDrag,this),t.on("viewreset",this._onViewReset,this),t.whenReady(this._onViewReset,this))}this._draggable.enable()},removeHooks:function(){this._draggable.disable()},moved:function(){return this._draggable&&this._draggable._moved},_onDragStart:function(){var t=this._map;t._panAnim&&t._panAnim.stop(),t.fire("movestart").fire("dragstart"),t.options.inertia&&(this._positions=[],this._times=[])},_onDrag:function(){if(this._map.options.inertia){var t=this._lastTime=+new Date,e=this._lastPos=this._draggable._newPos;this._positions.push(e),this._times.push(t),t-this._times[0]>200&&(this._positions.shift(),this._times.shift())}this._map.fire("move").fire("drag")},_onViewReset:function(){var t=this._map.getSize()._divideBy(2),e=this._map.latLngToLayerPoint([0,0]);this._initialWorldOffset=e.subtract(t).x,this._worldWidth=this._map.project([0,180]).x},_onPreDrag:function(){var t=this._worldWidth,e=Math.round(t/2),i=this._initialWorldOffset,n=this._draggable._newPos.x,o=(n-e+i)%t+e-i,s=(n+e+i)%t-e-i,a=Math.abs(o+i)<Math.abs(s+i)?o:s;this._draggable._newPos.x=a},_onDragEnd:function(t){var e=this._map,i=e.options,n=+new Date-this._lastTime,s=!i.inertia||n>i.inertiaThreshold||!this._positions[0];if(e.fire("dragend",t),s)e.fire("moveend");else{var a=this._lastPos.subtract(this._positions[0]),r=(this._lastTime+n-this._times[0])/1e3,h=i.easeLinearity,l=a.multiplyBy(h/r),u=l.distanceTo([0,0]),c=Math.min(i.inertiaMaxSpeed,u),d=l.multiplyBy(c/u),p=c/(i.inertiaDeceleration*h),_=d.multiplyBy(-p/2).round();_.x&&_.y?(_=e._limitOffset(_,e.options.maxBounds),o.Util.requestAnimFrame(function(){e.panBy(_,{duration:p,easeLinearity:h,noMoveStart:!0})})):e.fire("moveend")}}}),o.Map.addInitHook("addHandler","dragging",o.Map.Drag),o.Map.mergeOptions({doubleClickZoom:!0}),o.Map.DoubleClickZoom=o.Handler.extend({addHooks:function(){this._map.on("dblclick",this._onDoubleClick,this)},removeHooks:function(){this._map.off("dblclick",this._onDoubleClick,this)},_onDoubleClick:function(t){var e=this._map,i=e.getZoom()+(t.originalEvent.shiftKey?-1:1);"center"===e.options.doubleClickZoom?e.setZoom(i):e.setZoomAround(t.containerPoint,i)}}),o.Map.addInitHook("addHandler","doubleClickZoom",o.Map.DoubleClickZoom),o.Map.mergeOptions({scrollWheelZoom:!0}),o.Map.ScrollWheelZoom=o.Handler.extend({addHooks:function(){o.DomEvent.on(this._map._container,"mousewheel",this._onWheelScroll,this),o.DomEvent.on(this._map._container,"MozMousePixelScroll",o.DomEvent.preventDefault),this._delta=0},removeHooks:function(){o.DomEvent.off(this._map._container,"mousewheel",this._onWheelScroll),o.DomEvent.off(this._map._container,"MozMousePixelScroll",o.DomEvent.preventDefault)},_onWheelScroll:function(t){var e=o.DomEvent.getWheelDelta(t);this._delta+=e,this._lastMousePos=this._map.mouseEventToContainerPoint(t),this._startTime||(this._startTime=+new Date);var i=Math.max(40-(+new Date-this._startTime),0);clearTimeout(this._timer),this._timer=setTimeout(o.bind(this._performZoom,this),i),o.DomEvent.preventDefault(t),o.DomEvent.stopPropagation(t)},_performZoom:function(){var t=this._map,e=this._delta,i=t.getZoom();e=e>0?Math.ceil(e):Math.floor(e),e=Math.max(Math.min(e,4),-4),e=t._limitZoom(i+e)-i,this._delta=0,this._startTime=null,e&&("center"===t.options.scrollWheelZoom?t.setZoom(i+e):t.setZoomAround(this._lastMousePos,i+e))}}),o.Map.addInitHook("addHandler","scrollWheelZoom",o.Map.ScrollWheelZoom),o.extend(o.DomEvent,{_touchstart:o.Browser.msPointer?"MSPointerDown":o.Browser.pointer?"pointerdown":"touchstart",_touchend:o.Browser.msPointer?"MSPointerUp":o.Browser.pointer?"pointerup":"touchend",addDoubleTapListener:function(t,i,n){function s(t){var e;if(o.Browser.pointer?(_.push(t.pointerId),e=_.length):e=t.touches.length,!(e>1)){var i=Date.now(),n=i-(r||i);h=t.touches?t.touches[0]:t,l=n>0&&u>=n,r=i}}function a(t){if(o.Browser.pointer){var e=_.indexOf(t.pointerId);if(-1===e)return;_.splice(e,1)}if(l){if(o.Browser.pointer){var n,s={};for(var a in h)n=h[a],s[a]="function"==typeof n?n.bind(h):n;h=s}h.type="dblclick",i(h),r=null}}var r,h,l=!1,u=250,c="_leaflet_",d=this._touchstart,p=this._touchend,_=[];t[c+d+n]=s,t[c+p+n]=a;var m=o.Browser.pointer?e.documentElement:t;return t.addEventListener(d,s,!1),m.addEventListener(p,a,!1),o.Browser.pointer&&m.addEventListener(o.DomEvent.POINTER_CANCEL,a,!1),this},removeDoubleTapListener:function(t,i){var n="_leaflet_";return t.removeEventListener(this._touchstart,t[n+this._touchstart+i],!1),(o.Browser.pointer?e.documentElement:t).removeEventListener(this._touchend,t[n+this._touchend+i],!1),o.Browser.pointer&&e.documentElement.removeEventListener(o.DomEvent.POINTER_CANCEL,t[n+this._touchend+i],!1),this}}),o.extend(o.DomEvent,{POINTER_DOWN:o.Browser.msPointer?"MSPointerDown":"pointerdown",POINTER_MOVE:o.Browser.msPointer?"MSPointerMove":"pointermove",POINTER_UP:o.Browser.msPointer?"MSPointerUp":"pointerup",POINTER_CANCEL:o.Browser.msPointer?"MSPointerCancel":"pointercancel",_pointers:[],_pointerDocumentListener:!1,addPointerListener:function(t,e,i,n){switch(e){case"touchstart":return this.addPointerListenerStart(t,e,i,n);case"touchend":return this.addPointerListenerEnd(t,e,i,n);case"touchmove":return this.addPointerListenerMove(t,e,i,n);default:throw"Unknown touch event type"}},addPointerListenerStart:function(t,i,n,s){var a="_leaflet_",r=this._pointers,h=function(t){o.DomEvent.preventDefault(t);for(var e=!1,i=0;i<r.length;i++)if(r[i].pointerId===t.pointerId){e=!0;
-break}e||r.push(t),t.touches=r.slice(),t.changedTouches=[t],n(t)};if(t[a+"touchstart"+s]=h,t.addEventListener(this.POINTER_DOWN,h,!1),!this._pointerDocumentListener){var l=function(t){for(var e=0;e<r.length;e++)if(r[e].pointerId===t.pointerId){r.splice(e,1);break}};e.documentElement.addEventListener(this.POINTER_UP,l,!1),e.documentElement.addEventListener(this.POINTER_CANCEL,l,!1),this._pointerDocumentListener=!0}return this},addPointerListenerMove:function(t,e,i,n){function o(t){if(t.pointerType!==t.MSPOINTER_TYPE_MOUSE&&"mouse"!==t.pointerType||0!==t.buttons){for(var e=0;e<a.length;e++)if(a[e].pointerId===t.pointerId){a[e]=t;break}t.touches=a.slice(),t.changedTouches=[t],i(t)}}var s="_leaflet_",a=this._pointers;return t[s+"touchmove"+n]=o,t.addEventListener(this.POINTER_MOVE,o,!1),this},addPointerListenerEnd:function(t,e,i,n){var o="_leaflet_",s=this._pointers,a=function(t){for(var e=0;e<s.length;e++)if(s[e].pointerId===t.pointerId){s.splice(e,1);break}t.touches=s.slice(),t.changedTouches=[t],i(t)};return t[o+"touchend"+n]=a,t.addEventListener(this.POINTER_UP,a,!1),t.addEventListener(this.POINTER_CANCEL,a,!1),this},removePointerListener:function(t,e,i){var n="_leaflet_",o=t[n+e+i];switch(e){case"touchstart":t.removeEventListener(this.POINTER_DOWN,o,!1);break;case"touchmove":t.removeEventListener(this.POINTER_MOVE,o,!1);break;case"touchend":t.removeEventListener(this.POINTER_UP,o,!1),t.removeEventListener(this.POINTER_CANCEL,o,!1)}return this}}),o.Map.mergeOptions({touchZoom:o.Browser.touch&&!o.Browser.android23,bounceAtZoomLimits:!0}),o.Map.TouchZoom=o.Handler.extend({addHooks:function(){o.DomEvent.on(this._map._container,"touchstart",this._onTouchStart,this)},removeHooks:function(){o.DomEvent.off(this._map._container,"touchstart",this._onTouchStart,this)},_onTouchStart:function(t){var i=this._map;if(t.touches&&2===t.touches.length&&!i._animatingZoom&&!this._zooming){var n=i.mouseEventToLayerPoint(t.touches[0]),s=i.mouseEventToLayerPoint(t.touches[1]),a=i._getCenterLayerPoint();this._startCenter=n.add(s)._divideBy(2),this._startDist=n.distanceTo(s),this._moved=!1,this._zooming=!0,this._centerOffset=a.subtract(this._startCenter),i._panAnim&&i._panAnim.stop(),o.DomEvent.on(e,"touchmove",this._onTouchMove,this).on(e,"touchend",this._onTouchEnd,this),o.DomEvent.preventDefault(t)}},_onTouchMove:function(t){var e=this._map;if(t.touches&&2===t.touches.length&&this._zooming){var i=e.mouseEventToLayerPoint(t.touches[0]),n=e.mouseEventToLayerPoint(t.touches[1]);this._scale=i.distanceTo(n)/this._startDist,this._delta=i._add(n)._divideBy(2)._subtract(this._startCenter),1!==this._scale&&(e.options.bounceAtZoomLimits||!(e.getZoom()===e.getMinZoom()&&this._scale<1||e.getZoom()===e.getMaxZoom()&&this._scale>1))&&(this._moved||(o.DomUtil.addClass(e._mapPane,"leaflet-touching"),e.fire("movestart").fire("zoomstart"),this._moved=!0),o.Util.cancelAnimFrame(this._animRequest),this._animRequest=o.Util.requestAnimFrame(this._updateOnMove,this,!0,this._map._container),o.DomEvent.preventDefault(t))}},_updateOnMove:function(){var t=this._map,e=this._getScaleOrigin(),i=t.layerPointToLatLng(e),n=t.getScaleZoom(this._scale);t._animateZoom(i,n,this._startCenter,this._scale,this._delta,!1,!0)},_onTouchEnd:function(){if(!this._moved||!this._zooming)return void(this._zooming=!1);var t=this._map;this._zooming=!1,o.DomUtil.removeClass(t._mapPane,"leaflet-touching"),o.Util.cancelAnimFrame(this._animRequest),o.DomEvent.off(e,"touchmove",this._onTouchMove).off(e,"touchend",this._onTouchEnd);var i=this._getScaleOrigin(),n=t.layerPointToLatLng(i),s=t.getZoom(),a=t.getScaleZoom(this._scale)-s,r=a>0?Math.ceil(a):Math.floor(a),h=t._limitZoom(s+r),l=t.getZoomScale(h)/this._scale;t._animateZoom(n,h,i,l)},_getScaleOrigin:function(){var t=this._centerOffset.subtract(this._delta).divideBy(this._scale);return this._startCenter.add(t)}}),o.Map.addInitHook("addHandler","touchZoom",o.Map.TouchZoom),o.Map.mergeOptions({tap:!0,tapTolerance:15}),o.Map.Tap=o.Handler.extend({addHooks:function(){o.DomEvent.on(this._map._container,"touchstart",this._onDown,this)},removeHooks:function(){o.DomEvent.off(this._map._container,"touchstart",this._onDown,this)},_onDown:function(t){if(t.touches){if(o.DomEvent.preventDefault(t),this._fireClick=!0,t.touches.length>1)return this._fireClick=!1,void clearTimeout(this._holdTimeout);var i=t.touches[0],n=i.target;this._startPos=this._newPos=new o.Point(i.clientX,i.clientY),n.tagName&&"a"===n.tagName.toLowerCase()&&o.DomUtil.addClass(n,"leaflet-active"),this._holdTimeout=setTimeout(o.bind(function(){this._isTapValid()&&(this._fireClick=!1,this._onUp(),this._simulateEvent("contextmenu",i))},this),1e3),o.DomEvent.on(e,"touchmove",this._onMove,this).on(e,"touchend",this._onUp,this)}},_onUp:function(t){if(clearTimeout(this._holdTimeout),o.DomEvent.off(e,"touchmove",this._onMove,this).off(e,"touchend",this._onUp,this),this._fireClick&&t&&t.changedTouches){var i=t.changedTouches[0],n=i.target;n&&n.tagName&&"a"===n.tagName.toLowerCase()&&o.DomUtil.removeClass(n,"leaflet-active"),this._isTapValid()&&this._simulateEvent("click",i)}},_isTapValid:function(){return this._newPos.distanceTo(this._startPos)<=this._map.options.tapTolerance},_onMove:function(t){var e=t.touches[0];this._newPos=new o.Point(e.clientX,e.clientY)},_simulateEvent:function(i,n){var o=e.createEvent("MouseEvents");o._simulated=!0,n.target._simulatedClick=!0,o.initMouseEvent(i,!0,!0,t,1,n.screenX,n.screenY,n.clientX,n.clientY,!1,!1,!1,!1,0,null),n.target.dispatchEvent(o)}}),o.Browser.touch&&!o.Browser.pointer&&o.Map.addInitHook("addHandler","tap",o.Map.Tap),o.Map.mergeOptions({boxZoom:!0}),o.Map.BoxZoom=o.Handler.extend({initialize:function(t){this._map=t,this._container=t._container,this._pane=t._panes.overlayPane,this._moved=!1},addHooks:function(){o.DomEvent.on(this._container,"mousedown",this._onMouseDown,this)},removeHooks:function(){o.DomEvent.off(this._container,"mousedown",this._onMouseDown),this._moved=!1},moved:function(){return this._moved},_onMouseDown:function(t){return this._moved=!1,!t.shiftKey||1!==t.which&&1!==t.button?!1:(o.DomUtil.disableTextSelection(),o.DomUtil.disableImageDrag(),this._startLayerPoint=this._map.mouseEventToLayerPoint(t),void o.DomEvent.on(e,"mousemove",this._onMouseMove,this).on(e,"mouseup",this._onMouseUp,this).on(e,"keydown",this._onKeyDown,this))},_onMouseMove:function(t){this._moved||(this._box=o.DomUtil.create("div","leaflet-zoom-box",this._pane),o.DomUtil.setPosition(this._box,this._startLayerPoint),this._container.style.cursor="crosshair",this._map.fire("boxzoomstart"));var e=this._startLayerPoint,i=this._box,n=this._map.mouseEventToLayerPoint(t),s=n.subtract(e),a=new o.Point(Math.min(n.x,e.x),Math.min(n.y,e.y));o.DomUtil.setPosition(i,a),this._moved=!0,i.style.width=Math.max(0,Math.abs(s.x)-4)+"px",i.style.height=Math.max(0,Math.abs(s.y)-4)+"px"},_finish:function(){this._moved&&(this._pane.removeChild(this._box),this._container.style.cursor=""),o.DomUtil.enableTextSelection(),o.DomUtil.enableImageDrag(),o.DomEvent.off(e,"mousemove",this._onMouseMove).off(e,"mouseup",this._onMouseUp).off(e,"keydown",this._onKeyDown)},_onMouseUp:function(t){this._finish();var e=this._map,i=e.mouseEventToLayerPoint(t);if(!this._startLayerPoint.equals(i)){var n=new o.LatLngBounds(e.layerPointToLatLng(this._startLayerPoint),e.layerPointToLatLng(i));e.fitBounds(n),e.fire("boxzoomend",{boxZoomBounds:n})}},_onKeyDown:function(t){27===t.keyCode&&this._finish()}}),o.Map.addInitHook("addHandler","boxZoom",o.Map.BoxZoom),o.Map.mergeOptions({keyboard:!0,keyboardPanOffset:80,keyboardZoomOffset:1}),o.Map.Keyboard=o.Handler.extend({keyCodes:{left:[37],right:[39],down:[40],up:[38],zoomIn:[187,107,61,171],zoomOut:[189,109,173]},initialize:function(t){this._map=t,this._setPanOffset(t.options.keyboardPanOffset),this._setZoomOffset(t.options.keyboardZoomOffset)},addHooks:function(){var t=this._map._container;-1===t.tabIndex&&(t.tabIndex="0"),o.DomEvent.on(t,"focus",this._onFocus,this).on(t,"blur",this._onBlur,this).on(t,"mousedown",this._onMouseDown,this),this._map.on("focus",this._addHooks,this).on("blur",this._removeHooks,this)},removeHooks:function(){this._removeHooks();var t=this._map._container;o.DomEvent.off(t,"focus",this._onFocus,this).off(t,"blur",this._onBlur,this).off(t,"mousedown",this._onMouseDown,this),this._map.off("focus",this._addHooks,this).off("blur",this._removeHooks,this)},_onMouseDown:function(){if(!this._focused){var i=e.body,n=e.documentElement,o=i.scrollTop||n.scrollTop,s=i.scrollLeft||n.scrollLeft;this._map._container.focus(),t.scrollTo(s,o)}},_onFocus:function(){this._focused=!0,this._map.fire("focus")},_onBlur:function(){this._focused=!1,this._map.fire("blur")},_setPanOffset:function(t){var e,i,n=this._panKeys={},o=this.keyCodes;for(e=0,i=o.left.length;i>e;e++)n[o.left[e]]=[-1*t,0];for(e=0,i=o.right.length;i>e;e++)n[o.right[e]]=[t,0];for(e=0,i=o.down.length;i>e;e++)n[o.down[e]]=[0,t];for(e=0,i=o.up.length;i>e;e++)n[o.up[e]]=[0,-1*t]},_setZoomOffset:function(t){var e,i,n=this._zoomKeys={},o=this.keyCodes;for(e=0,i=o.zoomIn.length;i>e;e++)n[o.zoomIn[e]]=t;for(e=0,i=o.zoomOut.length;i>e;e++)n[o.zoomOut[e]]=-t},_addHooks:function(){o.DomEvent.on(e,"keydown",this._onKeyDown,this)},_removeHooks:function(){o.DomEvent.off(e,"keydown",this._onKeyDown,this)},_onKeyDown:function(t){var e=t.keyCode,i=this._map;if(e in this._panKeys){if(i._panAnim&&i._panAnim._inProgress)return;i.panBy(this._panKeys[e]),i.options.maxBounds&&i.panInsideBounds(i.options.maxBounds)}else{if(!(e in this._zoomKeys))return;i.setZoom(i.getZoom()+this._zoomKeys[e])}o.DomEvent.stop(t)}}),o.Map.addInitHook("addHandler","keyboard",o.Map.Keyboard),o.Handler.MarkerDrag=o.Handler.extend({initialize:function(t){this._marker=t},addHooks:function(){var t=this._marker._icon;this._draggable||(this._draggable=new o.Draggable(t,t)),this._draggable.on("dragstart",this._onDragStart,this).on("drag",this._onDrag,this).on("dragend",this._onDragEnd,this),this._draggable.enable(),o.DomUtil.addClass(this._marker._icon,"leaflet-marker-draggable")},removeHooks:function(){this._draggable.off("dragstart",this._onDragStart,this).off("drag",this._onDrag,this).off("dragend",this._onDragEnd,this),this._draggable.disable(),o.DomUtil.removeClass(this._marker._icon,"leaflet-marker-draggable")},moved:function(){return this._draggable&&this._draggable._moved},_onDragStart:function(){this._marker.closePopup().fire("movestart").fire("dragstart")},_onDrag:function(){var t=this._marker,e=t._shadow,i=o.DomUtil.getPosition(t._icon),n=t._map.layerPointToLatLng(i);e&&o.DomUtil.setPosition(e,i),t._latlng=n,t.fire("move",{latlng:n}).fire("drag")},_onDragEnd:function(t){this._marker.fire("moveend").fire("dragend",t)}}),o.Control=o.Class.extend({options:{position:"topright"},initialize:function(t){o.setOptions(this,t)},getPosition:function(){return this.options.position},setPosition:function(t){var e=this._map;return e&&e.removeControl(this),this.options.position=t,e&&e.addControl(this),this},getContainer:function(){return this._container},addTo:function(t){this._map=t;var e=this._container=this.onAdd(t),i=this.getPosition(),n=t._controlCorners[i];return o.DomUtil.addClass(e,"leaflet-control"),-1!==i.indexOf("bottom")?n.insertBefore(e,n.firstChild):n.appendChild(e),this},removeFrom:function(t){var e=this.getPosition(),i=t._controlCorners[e];return i.removeChild(this._container),this._map=null,this.onRemove&&this.onRemove(t),this},_refocusOnMap:function(){this._map&&this._map.getContainer().focus()}}),o.control=function(t){return new o.Control(t)},o.Map.include({addControl:function(t){return t.addTo(this),this},removeControl:function(t){return t.removeFrom(this),this},_initControlPos:function(){function t(t,s){var a=i+t+" "+i+s;e[t+s]=o.DomUtil.create("div",a,n)}var e=this._controlCorners={},i="leaflet-",n=this._controlContainer=o.DomUtil.create("div",i+"control-container",this._container);t("top","left"),t("top","right"),t("bottom","left"),t("bottom","right")},_clearControlPos:function(){this._container.removeChild(this._controlContainer)}}),o.Control.Zoom=o.Control.extend({options:{position:"topleft",zoomInText:"+",zoomInTitle:"Zoom in",zoomOutText:"-",zoomOutTitle:"Zoom out"},onAdd:function(t){var e="leaflet-control-zoom",i=o.DomUtil.create("div",e+" leaflet-bar");return this._map=t,this._zoomInButton=this._createButton(this.options.zoomInText,this.options.zoomInTitle,e+"-in",i,this._zoomIn,this),this._zoomOutButton=this._createButton(this.options.zoomOutText,this.options.zoomOutTitle,e+"-out",i,this._zoomOut,this),this._updateDisabled(),t.on("zoomend zoomlevelschange",this._updateDisabled,this),i},onRemove:function(t){t.off("zoomend zoomlevelschange",this._updateDisabled,this)},_zoomIn:function(t){this._map.zoomIn(t.shiftKey?3:1)},_zoomOut:function(t){this._map.zoomOut(t.shiftKey?3:1)},_createButton:function(t,e,i,n,s,a){var r=o.DomUtil.create("a",i,n);r.innerHTML=t,r.href="#",r.title=e;var h=o.DomEvent.stopPropagation;return o.DomEvent.on(r,"click",h).on(r,"mousedown",h).on(r,"dblclick",h).on(r,"click",o.DomEvent.preventDefault).on(r,"click",s,a).on(r,"click",this._refocusOnMap,a),r},_updateDisabled:function(){var t=this._map,e="leaflet-disabled";o.DomUtil.removeClass(this._zoomInButton,e),o.DomUtil.removeClass(this._zoomOutButton,e),t._zoom===t.getMinZoom()&&o.DomUtil.addClass(this._zoomOutButton,e),t._zoom===t.getMaxZoom()&&o.DomUtil.addClass(this._zoomInButton,e)}}),o.Map.mergeOptions({zoomControl:!0}),o.Map.addInitHook(function(){this.options.zoomControl&&(this.zoomControl=new o.Control.Zoom,this.addControl(this.zoomControl))}),o.control.zoom=function(t){return new o.Control.Zoom(t)},o.Control.Attribution=o.Control.extend({options:{position:"bottomright",prefix:'<a href="http://leafletjs.com" title="A JS library for interactive maps">Leaflet</a>'},initialize:function(t){o.setOptions(this,t),this._attributions={}},onAdd:function(t){this._container=o.DomUtil.create("div","leaflet-control-attribution"),o.DomEvent.disableClickPropagation(this._container);for(var e in t._layers)t._layers[e].getAttribution&&this.addAttribution(t._layers[e].getAttribution());return t.on("layeradd",this._onLayerAdd,this).on("layerremove",this._onLayerRemove,this),this._update(),this._container},onRemove:function(t){t.off("layeradd",this._onLayerAdd).off("layerremove",this._onLayerRemove)},setPrefix:function(t){return this.options.prefix=t,this._update(),this},addAttribution:function(t){return t?(this._attributions[t]||(this._attributions[t]=0),this._attributions[t]++,this._update(),this):void 0},removeAttribution:function(t){return t?(this._attributions[t]&&(this._attributions[t]--,this._update()),this):void 0},_update:function(){if(this._map){var t=[];for(var e in this._attributions)this._attributions[e]&&t.push(e);var i=[];this.options.prefix&&i.push(this.options.prefix),t.length&&i.push(t.join(", ")),this._container.innerHTML=i.join(" | ")}},_onLayerAdd:function(t){t.layer.getAttribution&&this.addAttribution(t.layer.getAttribution())},_onLayerRemove:function(t){t.layer.getAttribution&&this.removeAttribution(t.layer.getAttribution())}}),o.Map.mergeOptions({attributionControl:!0}),o.Map.addInitHook(function(){this.options.attributionControl&&(this.attributionControl=(new o.Control.Attribution).addTo(this))}),o.control.attribution=function(t){return new o.Control.Attribution(t)},o.Control.Scale=o.Control.extend({options:{position:"bottomleft",maxWidth:100,metric:!0,imperial:!0,updateWhenIdle:!1},onAdd:function(t){this._map=t;var e="leaflet-control-scale",i=o.DomUtil.create("div",e),n=this.options;return this._addScales(n,e,i),t.on(n.updateWhenIdle?"moveend":"move",this._update,this),t.whenReady(this._update,this),i},onRemove:function(t){t.off(this.options.updateWhenIdle?"moveend":"move",this._update,this)},_addScales:function(t,e,i){t.metric&&(this._mScale=o.DomUtil.create("div",e+"-line",i)),t.imperial&&(this._iScale=o.DomUtil.create("div",e+"-line",i))},_update:function(){var t=this._map.getBounds(),e=t.getCenter().lat,i=6378137*Math.PI*Math.cos(e*Math.PI/180),n=i*(t.getNorthEast().lng-t.getSouthWest().lng)/180,o=this._map.getSize(),s=this.options,a=0;o.x>0&&(a=n*(s.maxWidth/o.x)),this._updateScales(s,a)},_updateScales:function(t,e){t.metric&&e&&this._updateMetric(e),t.imperial&&e&&this._updateImperial(e)},_updateMetric:function(t){var e=this._getRoundNum(t);this._mScale.style.width=this._getScaleWidth(e/t)+"px",this._mScale.innerHTML=1e3>e?e+" m":e/1e3+" km"},_updateImperial:function(t){var e,i,n,o=3.2808399*t,s=this._iScale;o>5280?(e=o/5280,i=this._getRoundNum(e),s.style.width=this._getScaleWidth(i/e)+"px",s.innerHTML=i+" mi"):(n=this._getRoundNum(o),s.style.width=this._getScaleWidth(n/o)+"px",s.innerHTML=n+" ft")},_getScaleWidth:function(t){return Math.round(this.options.maxWidth*t)-10},_getRoundNum:function(t){var e=Math.pow(10,(Math.floor(t)+"").length-1),i=t/e;return i=i>=10?10:i>=5?5:i>=3?3:i>=2?2:1,e*i}}),o.control.scale=function(t){return new o.Control.Scale(t)},o.Control.Layers=o.Control.extend({options:{collapsed:!0,position:"topright",autoZIndex:!0},initialize:function(t,e,i){o.setOptions(this,i),this._layers={},this._lastZIndex=0,this._handlingClick=!1;for(var n in t)this._addLayer(t[n],n);for(n in e)this._addLayer(e[n],n,!0)},onAdd:function(t){return this._initLayout(),this._update(),t.on("layeradd",this._onLayerChange,this).on("layerremove",this._onLayerChange,this),this._container},onRemove:function(t){t.off("layeradd",this._onLayerChange,this).off("layerremove",this._onLayerChange,this)},addBaseLayer:function(t,e){return this._addLayer(t,e),this._update(),this},addOverlay:function(t,e){return this._addLayer(t,e,!0),this._update(),this},removeLayer:function(t){var e=o.stamp(t);return delete this._layers[e],this._update(),this},_initLayout:function(){var t="leaflet-control-layers",e=this._container=o.DomUtil.create("div",t);e.setAttribute("aria-haspopup",!0),o.Browser.touch?o.DomEvent.on(e,"click",o.DomEvent.stopPropagation):o.DomEvent.disableClickPropagation(e).disableScrollPropagation(e);var i=this._form=o.DomUtil.create("form",t+"-list");if(this.options.collapsed){o.Browser.android||o.DomEvent.on(e,"mouseover",this._expand,this).on(e,"mouseout",this._collapse,this);var n=this._layersLink=o.DomUtil.create("a",t+"-toggle",e);n.href="#",n.title="Layers",o.Browser.touch?o.DomEvent.on(n,"click",o.DomEvent.stop).on(n,"click",this._expand,this):o.DomEvent.on(n,"focus",this._expand,this),o.DomEvent.on(i,"click",function(){setTimeout(o.bind(this._onInputClick,this),0)},this),this._map.on("click",this._collapse,this)}else this._expand();this._baseLayersList=o.DomUtil.create("div",t+"-base",i),this._separator=o.DomUtil.create("div",t+"-separator",i),this._overlaysList=o.DomUtil.create("div",t+"-overlays",i),e.appendChild(i)},_addLayer:function(t,e,i){var n=o.stamp(t);this._layers[n]={layer:t,name:e,overlay:i},this.options.autoZIndex&&t.setZIndex&&(this._lastZIndex++,t.setZIndex(this._lastZIndex))},_update:function(){if(this._container){this._baseLayersList.innerHTML="",this._overlaysList.innerHTML="";var t,e,i=!1,n=!1;for(t in this._layers)e=this._layers[t],this._addItem(e),n=n||e.overlay,i=i||!e.overlay;this._separator.style.display=n&&i?"":"none"}},_onLayerChange:function(t){var e=this._layers[o.stamp(t.layer)];if(e){this._handlingClick||this._update();var i=e.overlay?"layeradd"===t.type?"overlayadd":"overlayremove":"layeradd"===t.type?"baselayerchange":null;i&&this._map.fire(i,e)}},_createRadioElement:function(t,i){var n='<input type="radio" class="leaflet-control-layers-selector" name="'+t+'"';i&&(n+=' checked="checked"'),n+="/>";var o=e.createElement("div");return o.innerHTML=n,o.firstChild},_addItem:function(t){var i,n=e.createElement("label"),s=this._map.hasLayer(t.layer);t.overlay?(i=e.createElement("input"),i.type="checkbox",i.className="leaflet-control-layers-selector",i.defaultChecked=s):i=this._createRadioElement("leaflet-base-layers",s),i.layerId=o.stamp(t.layer),o.DomEvent.on(i,"click",this._onInputClick,this);var a=e.createElement("span");a.innerHTML=" "+t.name,n.appendChild(i),n.appendChild(a);var r=t.overlay?this._overlaysList:this._baseLayersList;return r.appendChild(n),n},_onInputClick:function(){var t,e,i,n=this._form.getElementsByTagName("input"),o=n.length;for(this._handlingClick=!0,t=0;o>t;t++)e=n[t],i=this._layers[e.layerId],e.checked&&!this._map.hasLayer(i.layer)?this._map.addLayer(i.layer):!e.checked&&this._map.hasLayer(i.layer)&&this._map.removeLayer(i.layer);this._handlingClick=!1,this._refocusOnMap()},_expand:function(){o.DomUtil.addClass(this._container,"leaflet-control-layers-expanded")},_collapse:function(){this._container.className=this._container.className.replace(" leaflet-control-layers-expanded","")}}),o.control.layers=function(t,e,i){return new o.Control.Layers(t,e,i)},o.PosAnimation=o.Class.extend({includes:o.Mixin.Events,run:function(t,e,i,n){this.stop(),this._el=t,this._inProgress=!0,this._newPos=e,this.fire("start"),t.style[o.DomUtil.TRANSITION]="all "+(i||.25)+"s cubic-bezier(0,0,"+(n||.5)+",1)",o.DomEvent.on(t,o.DomUtil.TRANSITION_END,this._onTransitionEnd,this),o.DomUtil.setPosition(t,e),o.Util.falseFn(t.offsetWidth),this._stepTimer=setInterval(o.bind(this._onStep,this),50)},stop:function(){this._inProgress&&(o.DomUtil.setPosition(this._el,this._getPos()),this._onTransitionEnd(),o.Util.falseFn(this._el.offsetWidth))},_onStep:function(){var t=this._getPos();return t?(this._el._leaflet_pos=t,void this.fire("step")):void this._onTransitionEnd()},_transformRe:/([-+]?(?:\d*\.)?\d+)\D*, ([-+]?(?:\d*\.)?\d+)\D*\)/,_getPos:function(){var e,i,n,s=this._el,a=t.getComputedStyle(s);if(o.Browser.any3d){if(n=a[o.DomUtil.TRANSFORM].match(this._transformRe),!n)return;e=parseFloat(n[1]),i=parseFloat(n[2])}else e=parseFloat(a.left),i=parseFloat(a.top);return new o.Point(e,i,!0)},_onTransitionEnd:function(){o.DomEvent.off(this._el,o.DomUtil.TRANSITION_END,this._onTransitionEnd,this),this._inProgress&&(this._inProgress=!1,this._el.style[o.DomUtil.TRANSITION]="",this._el._leaflet_pos=this._newPos,clearInterval(this._stepTimer),this.fire("step").fire("end"))}}),o.Map.include({setView:function(t,e,n){if(e=e===i?this._zoom:this._limitZoom(e),t=this._limitCenter(o.latLng(t),e,this.options.maxBounds),n=n||{},this._panAnim&&this._panAnim.stop(),this._loaded&&!n.reset&&n!==!0){n.animate!==i&&(n.zoom=o.extend({animate:n.animate},n.zoom),n.pan=o.extend({animate:n.animate},n.pan));var s=this._zoom!==e?this._tryAnimatedZoom&&this._tryAnimatedZoom(t,e,n.zoom):this._tryAnimatedPan(t,n.pan);if(s)return clearTimeout(this._sizeTimer),this}return this._resetView(t,e),this},panBy:function(t,e){if(t=o.point(t).round(),e=e||{},!t.x&&!t.y)return this;if(this._panAnim||(this._panAnim=new o.PosAnimation,this._panAnim.on({step:this._onPanTransitionStep,end:this._onPanTransitionEnd},this)),e.noMoveStart||this.fire("movestart"),e.animate!==!1){o.DomUtil.addClass(this._mapPane,"leaflet-pan-anim");var i=this._getMapPanePos().subtract(t);this._panAnim.run(this._mapPane,i,e.duration||.25,e.easeLinearity)}else this._rawPanBy(t),this.fire("move").fire("moveend");return this},_onPanTransitionStep:function(){this.fire("move")},_onPanTransitionEnd:function(){o.DomUtil.removeClass(this._mapPane,"leaflet-pan-anim"),this.fire("moveend")},_tryAnimatedPan:function(t,e){var i=this._getCenterOffset(t)._floor();return(e&&e.animate)===!0||this.getSize().contains(i)?(this.panBy(i,e),!0):!1}}),o.PosAnimation=o.DomUtil.TRANSITION?o.PosAnimation:o.PosAnimation.extend({run:function(t,e,i,n){this.stop(),this._el=t,this._inProgress=!0,this._duration=i||.25,this._easeOutPower=1/Math.max(n||.5,.2),this._startPos=o.DomUtil.getPosition(t),this._offset=e.subtract(this._startPos),this._startTime=+new Date,this.fire("start"),this._animate()},stop:function(){this._inProgress&&(this._step(),this._complete())},_animate:function(){this._animId=o.Util.requestAnimFrame(this._animate,this),this._step()},_step:function(){var t=+new Date-this._startTime,e=1e3*this._duration;e>t?this._runFrame(this._easeOut(t/e)):(this._runFrame(1),this._complete())},_runFrame:function(t){var e=this._startPos.add(this._offset.multiplyBy(t));o.DomUtil.setPosition(this._el,e),this.fire("step")},_complete:function(){o.Util.cancelAnimFrame(this._animId),this._inProgress=!1,this.fire("end")},_easeOut:function(t){return 1-Math.pow(1-t,this._easeOutPower)}}),o.Map.mergeOptions({zoomAnimation:!0,zoomAnimationThreshold:4}),o.DomUtil.TRANSITION&&o.Map.addInitHook(function(){this._zoomAnimated=this.options.zoomAnimation&&o.DomUtil.TRANSITION&&o.Browser.any3d&&!o.Browser.android23&&!o.Browser.mobileOpera,this._zoomAnimated&&o.DomEvent.on(this._mapPane,o.DomUtil.TRANSITION_END,this._catchTransitionEnd,this)}),o.Map.include(o.DomUtil.TRANSITION?{_catchTransitionEnd:function(t){this._animatingZoom&&t.propertyName.indexOf("transform")>=0&&this._onZoomTransitionEnd()},_nothingToAnimate:function(){return!this._container.getElementsByClassName("leaflet-zoom-animated").length},_tryAnimatedZoom:function(t,e,i){if(this._animatingZoom)return!0;if(i=i||{},!this._zoomAnimated||i.animate===!1||this._nothingToAnimate()||Math.abs(e-this._zoom)>this.options.zoomAnimationThreshold)return!1;var n=this.getZoomScale(e),o=this._getCenterOffset(t)._divideBy(1-1/n),s=this._getCenterLayerPoint()._add(o);return i.animate===!0||this.getSize().contains(o)?(this.fire("movestart").fire("zoomstart"),this._animateZoom(t,e,s,n,null,!0),!0):!1},_animateZoom:function(t,e,i,n,s,a,r){r||(this._animatingZoom=!0),o.DomUtil.addClass(this._mapPane,"leaflet-zoom-anim"),this._animateToCenter=t,this._animateToZoom=e,o.Draggable&&(o.Draggable._disabled=!0),o.Util.requestAnimFrame(function(){this.fire("zoomanim",{center:t,zoom:e,origin:i,scale:n,delta:s,backwards:a})},this)},_onZoomTransitionEnd:function(){this._animatingZoom=!1,o.DomUtil.removeClass(this._mapPane,"leaflet-zoom-anim"),this._resetView(this._animateToCenter,this._animateToZoom,!0,!0),o.Draggable&&(o.Draggable._disabled=!1)}}:{}),o.TileLayer.include({_animateZoom:function(t){this._animating||(this._animating=!0,this._prepareBgBuffer());var e=this._bgBuffer,i=o.DomUtil.TRANSFORM,n=t.delta?o.DomUtil.getTranslateString(t.delta):e.style[i],s=o.DomUtil.getScaleString(t.scale,t.origin);e.style[i]=t.backwards?s+" "+n:n+" "+s},_endZoomAnim:function(){var t=this._tileContainer,e=this._bgBuffer;t.style.visibility="",t.parentNode.appendChild(t),o.Util.falseFn(e.offsetWidth),this._animating=!1},_clearBgBuffer:function(){var t=this._map;!t||t._animatingZoom||t.touchZoom._zooming||(this._bgBuffer.innerHTML="",this._bgBuffer.style[o.DomUtil.TRANSFORM]="")},_prepareBgBuffer:function(){var t=this._tileContainer,e=this._bgBuffer,i=this._getLoadedTilesPercentage(e),n=this._getLoadedTilesPercentage(t);return e&&i>.5&&.5>n?(t.style.visibility="hidden",void this._stopLoadingImages(t)):(e.style.visibility="hidden",e.style[o.DomUtil.TRANSFORM]="",this._tileContainer=e,e=this._bgBuffer=t,this._stopLoadingImages(e),void clearTimeout(this._clearBgBufferTimer))},_getLoadedTilesPercentage:function(t){var e,i,n=t.getElementsByTagName("img"),o=0;for(e=0,i=n.length;i>e;e++)n[e].complete&&o++;return o/i},_stopLoadingImages:function(t){var e,i,n,s=Array.prototype.slice.call(t.getElementsByTagName("img"));for(e=0,i=s.length;i>e;e++)n=s[e],n.complete||(n.onload=o.Util.falseFn,n.onerror=o.Util.falseFn,n.src=o.Util.emptyImageUrl,n.parentNode.removeChild(n))}}),o.Map.include({_defaultLocateOptions:{watch:!1,setView:!1,maxZoom:1/0,timeout:1e4,maximumAge:0,enableHighAccuracy:!1},locate:function(t){if(t=this._locateOptions=o.extend(this._defaultLocateOptions,t),!navigator.geolocation)return this._handleGeolocationError({code:0,message:"Geolocation not supported."}),this;var e=o.bind(this._handleGeolocationResponse,this),i=o.bind(this._handleGeolocationError,this);return t.watch?this._locationWatchId=navigator.geolocation.watchPosition(e,i,t):navigator.geolocation.getCurrentPosition(e,i,t),this},stopLocate:function(){return navigator.geolocation&&navigator.geolocation.clearWatch(this._locationWatchId),this._locateOptions&&(this._locateOptions.setView=!1),this},_handleGeolocationError:function(t){var e=t.code,i=t.message||(1===e?"permission denied":2===e?"position unavailable":"timeout");this._locateOptions.setView&&!this._loaded&&this.fitWorld(),this.fire("locationerror",{code:e,message:"Geolocation error: "+i+"."})},_handleGeolocationResponse:function(t){var e=t.coords.latitude,i=t.coords.longitude,n=new o.LatLng(e,i),s=180*t.coords.accuracy/40075017,a=s/Math.cos(o.LatLng.DEG_TO_RAD*e),r=o.latLngBounds([e-s,i-a],[e+s,i+a]),h=this._locateOptions;if(h.setView){var l=Math.min(this.getBoundsZoom(r),h.maxZoom);this.setView(n,l)}var u={latlng:n,bounds:r,timestamp:t.timestamp};for(var c in t.coords)"number"==typeof t.coords[c]&&(u[c]=t.coords[c]);this.fire("locationfound",u)}})}(window,document);;/**
+break}e||r.push(t),t.touches=r.slice(),t.changedTouches=[t],n(t)};if(t[a+"touchstart"+s]=h,t.addEventListener(this.POINTER_DOWN,h,!1),!this._pointerDocumentListener){var l=function(t){for(var e=0;e<r.length;e++)if(r[e].pointerId===t.pointerId){r.splice(e,1);break}};e.documentElement.addEventListener(this.POINTER_UP,l,!1),e.documentElement.addEventListener(this.POINTER_CANCEL,l,!1),this._pointerDocumentListener=!0}return this},addPointerListenerMove:function(t,e,i,n){function o(t){if(t.pointerType!==t.MSPOINTER_TYPE_MOUSE&&"mouse"!==t.pointerType||0!==t.buttons){for(var e=0;e<a.length;e++)if(a[e].pointerId===t.pointerId){a[e]=t;break}t.touches=a.slice(),t.changedTouches=[t],i(t)}}var s="_leaflet_",a=this._pointers;return t[s+"touchmove"+n]=o,t.addEventListener(this.POINTER_MOVE,o,!1),this},addPointerListenerEnd:function(t,e,i,n){var o="_leaflet_",s=this._pointers,a=function(t){for(var e=0;e<s.length;e++)if(s[e].pointerId===t.pointerId){s.splice(e,1);break}t.touches=s.slice(),t.changedTouches=[t],i(t)};return t[o+"touchend"+n]=a,t.addEventListener(this.POINTER_UP,a,!1),t.addEventListener(this.POINTER_CANCEL,a,!1),this},removePointerListener:function(t,e,i){var n="_leaflet_",o=t[n+e+i];switch(e){case"touchstart":t.removeEventListener(this.POINTER_DOWN,o,!1);break;case"touchmove":t.removeEventListener(this.POINTER_MOVE,o,!1);break;case"touchend":t.removeEventListener(this.POINTER_UP,o,!1),t.removeEventListener(this.POINTER_CANCEL,o,!1)}return this}}),o.Map.mergeOptions({touchZoom:o.Browser.touch&&!o.Browser.android23,bounceAtZoomLimits:!0}),o.Map.TouchZoom=o.Handler.extend({addHooks:function(){o.DomEvent.on(this._map._container,"touchstart",this._onTouchStart,this)},removeHooks:function(){o.DomEvent.off(this._map._container,"touchstart",this._onTouchStart,this)},_onTouchStart:function(t){var i=this._map;if(t.touches&&2===t.touches.length&&!i._animatingZoom&&!this._zooming){var n=i.mouseEventToLayerPoint(t.touches[0]),s=i.mouseEventToLayerPoint(t.touches[1]),a=i._getCenterLayerPoint();this._startCenter=n.add(s)._divideBy(2),this._startDist=n.distanceTo(s),this._moved=!1,this._zooming=!0,this._centerOffset=a.subtract(this._startCenter),i._panAnim&&i._panAnim.stop(),o.DomEvent.on(e,"touchmove",this._onTouchMove,this).on(e,"touchend",this._onTouchEnd,this),o.DomEvent.preventDefault(t)}},_onTouchMove:function(t){var e=this._map;if(t.touches&&2===t.touches.length&&this._zooming){var i=e.mouseEventToLayerPoint(t.touches[0]),n=e.mouseEventToLayerPoint(t.touches[1]);this._scale=i.distanceTo(n)/this._startDist,this._delta=i._add(n)._divideBy(2)._subtract(this._startCenter),1!==this._scale&&(e.options.bounceAtZoomLimits||!(e.getZoom()===e.getMinZoom()&&this._scale<1||e.getZoom()===e.getMaxZoom()&&this._scale>1))&&(this._moved||(o.DomUtil.addClass(e._mapPane,"leaflet-touching"),e.fire("movestart").fire("zoomstart"),this._moved=!0),o.Util.cancelAnimFrame(this._animRequest),this._animRequest=o.Util.requestAnimFrame(this._updateOnMove,this,!0,this._map._container),o.DomEvent.preventDefault(t))}},_updateOnMove:function(){var t=this._map,e=this._getScaleOrigin(),i=t.layerPointToLatLng(e),n=t.getScaleZoom(this._scale);t._animateZoom(i,n,this._startCenter,this._scale,this._delta,!1,!0)},_onTouchEnd:function(){if(!this._moved||!this._zooming)return void(this._zooming=!1);var t=this._map;this._zooming=!1,o.DomUtil.removeClass(t._mapPane,"leaflet-touching"),o.Util.cancelAnimFrame(this._animRequest),o.DomEvent.off(e,"touchmove",this._onTouchMove).off(e,"touchend",this._onTouchEnd);var i=this._getScaleOrigin(),n=t.layerPointToLatLng(i),s=t.getZoom(),a=t.getScaleZoom(this._scale)-s,r=a>0?Math.ceil(a):Math.floor(a),h=t._limitZoom(s+r),l=t.getZoomScale(h)/this._scale;t._animateZoom(n,h,i,l)},_getScaleOrigin:function(){var t=this._centerOffset.subtract(this._delta).divideBy(this._scale);return this._startCenter.add(t)}}),o.Map.addInitHook("addHandler","touchZoom",o.Map.TouchZoom),o.Map.mergeOptions({tap:!0,tapTolerance:15}),o.Map.Tap=o.Handler.extend({addHooks:function(){o.DomEvent.on(this._map._container,"touchstart",this._onDown,this)},removeHooks:function(){o.DomEvent.off(this._map._container,"touchstart",this._onDown,this)},_onDown:function(t){if(t.touches){if(o.DomEvent.preventDefault(t),this._fireClick=!0,t.touches.length>1)return this._fireClick=!1,void clearTimeout(this._holdTimeout);var i=t.touches[0],n=i.target;this._startPos=this._newPos=new o.Point(i.clientX,i.clientY),n.tagName&&"a"===n.tagName.toLowerCase()&&o.DomUtil.addClass(n,"leaflet-active"),this._holdTimeout=setTimeout(o.bind(function(){this._isTapValid()&&(this._fireClick=!1,this._onUp(),this._simulateEvent("contextmenu",i))},this),1e3),o.DomEvent.on(e,"touchmove",this._onMove,this).on(e,"touchend",this._onUp,this)}},_onUp:function(t){if(clearTimeout(this._holdTimeout),o.DomEvent.off(e,"touchmove",this._onMove,this).off(e,"touchend",this._onUp,this),this._fireClick&&t&&t.changedTouches){var i=t.changedTouches[0],n=i.target;n&&n.tagName&&"a"===n.tagName.toLowerCase()&&o.DomUtil.removeClass(n,"leaflet-active"),this._isTapValid()&&this._simulateEvent("click",i)}},_isTapValid:function(){return this._newPos.distanceTo(this._startPos)<=this._map.options.tapTolerance},_onMove:function(t){var e=t.touches[0];this._newPos=new o.Point(e.clientX,e.clientY)},_simulateEvent:function(i,n){var o=e.createEvent("MouseEvents");o._simulated=!0,n.target._simulatedClick=!0,o.initMouseEvent(i,!0,!0,t,1,n.screenX,n.screenY,n.clientX,n.clientY,!1,!1,!1,!1,0,null),n.target.dispatchEvent(o)}}),o.Browser.touch&&!o.Browser.pointer&&o.Map.addInitHook("addHandler","tap",o.Map.Tap),o.Map.mergeOptions({boxZoom:!0}),o.Map.BoxZoom=o.Handler.extend({initialize:function(t){this._map=t,this._container=t._container,this._pane=t._panes.overlayPane,this._moved=!1},addHooks:function(){o.DomEvent.on(this._container,"mousedown",this._onMouseDown,this)},removeHooks:function(){o.DomEvent.off(this._container,"mousedown",this._onMouseDown),this._moved=!1},moved:function(){return this._moved},_onMouseDown:function(t){return this._moved=!1,!t.shiftKey||1!==t.which&&1!==t.button?!1:(o.DomUtil.disableTextSelection(),o.DomUtil.disableImageDrag(),this._startLayerPoint=this._map.mouseEventToLayerPoint(t),void o.DomEvent.on(e,"mousemove",this._onMouseMove,this).on(e,"mouseup",this._onMouseUp,this).on(e,"keydown",this._onKeyDown,this))},_onMouseMove:function(t){this._moved||(this._box=o.DomUtil.create("div","leaflet-zoom-box",this._pane),o.DomUtil.setPosition(this._box,this._startLayerPoint),this._container.style.cursor="crosshair",this._map.fire("boxzoomstart"));var e=this._startLayerPoint,i=this._box,n=this._map.mouseEventToLayerPoint(t),s=n.subtract(e),a=new o.Point(Math.min(n.x,e.x),Math.min(n.y,e.y));o.DomUtil.setPosition(i,a),this._moved=!0,i.style.width=Math.max(0,Math.abs(s.x)-4)+"px",i.style.height=Math.max(0,Math.abs(s.y)-4)+"px"},_finish:function(){this._moved&&(this._pane.removeChild(this._box),this._container.style.cursor=""),o.DomUtil.enableTextSelection(),o.DomUtil.enableImageDrag(),o.DomEvent.off(e,"mousemove",this._onMouseMove).off(e,"mouseup",this._onMouseUp).off(e,"keydown",this._onKeyDown)},_onMouseUp:function(t){this._finish();var e=this._map,i=e.mouseEventToLayerPoint(t);if(!this._startLayerPoint.equals(i)){var n=new o.LatLngBounds(e.layerPointToLatLng(this._startLayerPoint),e.layerPointToLatLng(i));e.fitBounds(n),e.fire("boxzoomend",{boxZoomBounds:n})}},_onKeyDown:function(t){27===t.keyCode&&this._finish()}}),o.Map.addInitHook("addHandler","boxZoom",o.Map.BoxZoom),o.Map.mergeOptions({keyboard:!0,keyboardPanOffset:80,keyboardZoomOffset:1}),o.Map.Keyboard=o.Handler.extend({keyCodes:{left:[37],right:[39],down:[40],up:[38],zoomIn:[187,107,61,171],zoomOut:[189,109,173]},initialize:function(t){this._map=t,this._setPanOffset(t.options.keyboardPanOffset),this._setZoomOffset(t.options.keyboardZoomOffset)},addHooks:function(){var t=this._map._container;-1===t.tabIndex&&(t.tabIndex="0"),o.DomEvent.on(t,"focus",this._onFocus,this).on(t,"blur",this._onBlur,this).on(t,"mousedown",this._onMouseDown,this),this._map.on("focus",this._addHooks,this).on("blur",this._removeHooks,this)},removeHooks:function(){this._removeHooks();var t=this._map._container;o.DomEvent.off(t,"focus",this._onFocus,this).off(t,"blur",this._onBlur,this).off(t,"mousedown",this._onMouseDown,this),this._map.off("focus",this._addHooks,this).off("blur",this._removeHooks,this)},_onMouseDown:function(){if(!this._focused){var i=e.body,n=e.documentElement,o=i.scrollTop||n.scrollTop,s=i.scrollLeft||n.scrollLeft;this._map._container.focus(),t.scrollTo(s,o)}},_onFocus:function(){this._focused=!0,this._map.fire("focus")},_onBlur:function(){this._focused=!1,this._map.fire("blur")},_setPanOffset:function(t){var e,i,n=this._panKeys={},o=this.keyCodes;for(e=0,i=o.left.length;i>e;e++)n[o.left[e]]=[-1*t,0];for(e=0,i=o.right.length;i>e;e++)n[o.right[e]]=[t,0];for(e=0,i=o.down.length;i>e;e++)n[o.down[e]]=[0,t];for(e=0,i=o.up.length;i>e;e++)n[o.up[e]]=[0,-1*t]},_setZoomOffset:function(t){var e,i,n=this._zoomKeys={},o=this.keyCodes;for(e=0,i=o.zoomIn.length;i>e;e++)n[o.zoomIn[e]]=t;for(e=0,i=o.zoomOut.length;i>e;e++)n[o.zoomOut[e]]=-t},_addHooks:function(){o.DomEvent.on(e,"keydown",this._onKeyDown,this)},_removeHooks:function(){o.DomEvent.off(e,"keydown",this._onKeyDown,this)},_onKeyDown:function(t){var e=t.keyCode,i=this._map;if(e in this._panKeys){if(i._panAnim&&i._panAnim._inProgress)return;i.panBy(this._panKeys[e]),i.options.maxBounds&&i.panInsideBounds(i.options.maxBounds)}else{if(!(e in this._zoomKeys))return;i.setZoom(i.getZoom()+this._zoomKeys[e])}o.DomEvent.stop(t)}}),o.Map.addInitHook("addHandler","keyboard",o.Map.Keyboard),o.Handler.MarkerDrag=o.Handler.extend({initialize:function(t){this._marker=t},addHooks:function(){var t=this._marker._icon;this._draggable||(this._draggable=new o.Draggable(t,t)),this._draggable.on("dragstart",this._onDragStart,this).on("drag",this._onDrag,this).on("dragend",this._onDragEnd,this),this._draggable.enable(),o.DomUtil.addClass(this._marker._icon,"leaflet-marker-draggable")},removeHooks:function(){this._draggable.off("dragstart",this._onDragStart,this).off("drag",this._onDrag,this).off("dragend",this._onDragEnd,this),this._draggable.disable(),o.DomUtil.removeClass(this._marker._icon,"leaflet-marker-draggable")},moved:function(){return this._draggable&&this._draggable._moved},_onDragStart:function(){this._marker.closePopup().fire("movestart").fire("dragstart")},_onDrag:function(){var t=this._marker,e=t._shadow,i=o.DomUtil.getPosition(t._icon),n=t._map.layerPointToLatLng(i);e&&o.DomUtil.setPosition(e,i),t._latlng=n,t.fire("move",{latlng:n}).fire("drag")},_onDragEnd:function(t){this._marker.fire("moveend").fire("dragend",t)}}),o.Control=o.Class.extend({options:{position:"topright"},initialize:function(t){o.setOptions(this,t)},getPosition:function(){return this.options.position},setPosition:function(t){var e=this._map;return e&&e.removeControl(this),this.options.position=t,e&&e.addControl(this),this},getContainer:function(){return this._container},addTo:function(t){this._map=t;var e=this._container=this.onAdd(t),i=this.getPosition(),n=t._controlCorners[i];return o.DomUtil.addClass(e,"leaflet-control"),-1!==i.indexOf("bottom")?n.insertBefore(e,n.firstChild):n.appendChild(e),this},removeFrom:function(t){var e=this.getPosition(),i=t._controlCorners[e];return i.removeChild(this._container),this._map=null,this.onRemove&&this.onRemove(t),this},_refocusOnMap:function(){this._map&&this._map.getContainer().focus()}}),o.control=function(t){return new o.Control(t)},o.Map.include({addControl:function(t){return t.addTo(this),this},removeControl:function(t){return t.removeFrom(this),this},_initControlPos:function(){function t(t,s){var a=i+t+" "+i+s;e[t+s]=o.DomUtil.create("div",a,n)}var e=this._controlCorners={},i="leaflet-",n=this._controlContainer=o.DomUtil.create("div",i+"control-container",this._container);t("top","left"),t("top","right"),t("bottom","left"),t("bottom","right")},_clearControlPos:function(){this._container.removeChild(this._controlContainer)}}),o.Control.Zoom=o.Control.extend({options:{position:"topleft",zoomInText:"+",zoomInTitle:"Zoom in",zoomOutText:"-",zoomOutTitle:"Zoom out"},onAdd:function(t){var e="leaflet-control-zoom",i=o.DomUtil.create("div",e+" leaflet-bar");return this._map=t,this._zoomInButton=this._createButton(this.options.zoomInText,this.options.zoomInTitle,e+"-in",i,this._zoomIn,this),this._zoomOutButton=this._createButton(this.options.zoomOutText,this.options.zoomOutTitle,e+"-out",i,this._zoomOut,this),this._updateDisabled(),t.on("zoomend zoomlevelschange",this._updateDisabled,this),i},onRemove:function(t){t.off("zoomend zoomlevelschange",this._updateDisabled,this)},_zoomIn:function(t){this._map.zoomIn(t.shiftKey?3:1)},_zoomOut:function(t){this._map.zoomOut(t.shiftKey?3:1)},_createButton:function(t,e,i,n,s,a){var r=o.DomUtil.create("a",i,n);r.innerHTML=t,r.href="#",r.title=e;var h=o.DomEvent.stopPropagation;return o.DomEvent.on(r,"click",h).on(r,"mousedown",h).on(r,"dblclick",h).on(r,"click",o.DomEvent.preventDefault).on(r,"click",s,a).on(r,"click",this._refocusOnMap,a),r},_updateDisabled:function(){var t=this._map,e="leaflet-disabled";o.DomUtil.removeClass(this._zoomInButton,e),o.DomUtil.removeClass(this._zoomOutButton,e),t._zoom===t.getMinZoom()&&o.DomUtil.addClass(this._zoomOutButton,e),t._zoom===t.getMaxZoom()&&o.DomUtil.addClass(this._zoomInButton,e)}}),o.Map.mergeOptions({zoomControl:!0}),o.Map.addInitHook(function(){this.options.zoomControl&&(this.zoomControl=new o.Control.Zoom,this.addControl(this.zoomControl))}),o.control.zoom=function(t){return new o.Control.Zoom(t)},o.Control.Attribution=o.Control.extend({options:{position:"bottomright",prefix:'<a href="http://leafletjs.com" title="A JS library for interactive maps">Leaflet</a>'},initialize:function(t){o.setOptions(this,t),this._attributions={}},onAdd:function(t){this._container=o.DomUtil.create("div","leaflet-control-attribution"),o.DomEvent.disableClickPropagation(this._container);for(var e in t._layers)t._layers[e].getAttribution&&this.addAttribution(t._layers[e].getAttribution());return t.on("layeradd",this._onLayerAdd,this).on("layerremove",this._onLayerRemove,this),this._update(),this._container},onRemove:function(t){t.off("layeradd",this._onLayerAdd).off("layerremove",this._onLayerRemove)},setPrefix:function(t){return this.options.prefix=t,this._update(),this},addAttribution:function(t){return t?(this._attributions[t]||(this._attributions[t]=0),this._attributions[t]++,this._update(),this):void 0},removeAttribution:function(t){return t?(this._attributions[t]&&(this._attributions[t]--,this._update()),this):void 0},_update:function(){if(this._map){var t=[];for(var e in this._attributions)this._attributions[e]&&t.push(e);var i=[];this.options.prefix&&i.push(this.options.prefix),t.length&&i.push(t.join(", ")),this._container.innerHTML=i.join(" | ")}},_onLayerAdd:function(t){t.layer.getAttribution&&this.addAttribution(t.layer.getAttribution())},_onLayerRemove:function(t){t.layer.getAttribution&&this.removeAttribution(t.layer.getAttribution())}}),o.Map.mergeOptions({attributionControl:!0}),o.Map.addInitHook(function(){this.options.attributionControl&&(this.attributionControl=(new o.Control.Attribution).addTo(this))}),o.control.attribution=function(t){return new o.Control.Attribution(t)},o.Control.Scale=o.Control.extend({options:{position:"bottomleft",maxWidth:100,metric:!0,imperial:!0,updateWhenIdle:!1},onAdd:function(t){this._map=t;var e="leaflet-control-scale",i=o.DomUtil.create("div",e),n=this.options;return this._addScales(n,e,i),t.on(n.updateWhenIdle?"moveend":"move",this._update,this),t.whenReady(this._update,this),i},onRemove:function(t){t.off(this.options.updateWhenIdle?"moveend":"move",this._update,this)},_addScales:function(t,e,i){t.metric&&(this._mScale=o.DomUtil.create("div",e+"-line",i)),t.imperial&&(this._iScale=o.DomUtil.create("div",e+"-line",i))},_update:function(){var t=this._map.getBounds(),e=t.getCenter().lat,i=6378137*Math.PI*Math.cos(e*Math.PI/180),n=i*(t.getNorthEast().lng-t.getSouthWest().lng)/180,o=this._map.getSize(),s=this.options,a=0;o.x>0&&(a=n*(s.maxWidth/o.x)),this._updateScales(s,a)},_updateScales:function(t,e){t.metric&&e&&this._updateMetric(e),t.imperial&&e&&this._updateImperial(e)},_updateMetric:function(t){var e=this._getRoundNum(t);this._mScale.style.width=this._getScaleWidth(e/t)+"px",this._mScale.innerHTML=1e3>e?e+" m":e/1e3+" km"},_updateImperial:function(t){var e,i,n,o=3.2808399*t,s=this._iScale;o>5280?(e=o/5280,i=this._getRoundNum(e),s.style.width=this._getScaleWidth(i/e)+"px",s.innerHTML=i+" mi"):(n=this._getRoundNum(o),s.style.width=this._getScaleWidth(n/o)+"px",s.innerHTML=n+" ft")},_getScaleWidth:function(t){return Math.round(this.options.maxWidth*t)-10},_getRoundNum:function(t){var e=Math.pow(10,(Math.floor(t)+"").length-1),i=t/e;return i=i>=10?10:i>=5?5:i>=3?3:i>=2?2:1,e*i}}),o.control.scale=function(t){return new o.Control.Scale(t)},o.Control.Layers=o.Control.extend({options:{collapsed:!0,position:"topright",autoZIndex:!0},initialize:function(t,e,i){o.setOptions(this,i),this._layers={},this._lastZIndex=0,this._handlingClick=!1;for(var n in t)this._addLayer(t[n],n);for(n in e)this._addLayer(e[n],n,!0)},onAdd:function(t){return this._initLayout(),this._update(),t.on("layeradd",this._onLayerChange,this).on("layerremove",this._onLayerChange,this),this._container},onRemove:function(t){t.off("layeradd",this._onLayerChange,this).off("layerremove",this._onLayerChange,this)},addBaseLayer:function(t,e){return this._addLayer(t,e),this._update(),this},addOverlay:function(t,e){return this._addLayer(t,e,!0),this._update(),this},removeLayer:function(t){var e=o.stamp(t);return delete this._layers[e],this._update(),this},_initLayout:function(){var t="leaflet-control-layers",e=this._container=o.DomUtil.create("div",t);e.setAttribute("aria-haspopup",!0),o.Browser.touch?o.DomEvent.on(e,"click",o.DomEvent.stopPropagation):o.DomEvent.disableClickPropagation(e).disableScrollPropagation(e);var i=this._form=o.DomUtil.create("form",t+"-list");if(this.options.collapsed){o.Browser.android||o.DomEvent.on(e,"mouseover",this._expand,this).on(e,"mouseout",this._collapse,this);var n=this._layersLink=o.DomUtil.create("a",t+"-toggle",e);n.href="#",n.title="Layers",o.Browser.touch?o.DomEvent.on(n,"click",o.DomEvent.stop).on(n,"click",this._expand,this):o.DomEvent.on(n,"focus",this._expand,this),o.DomEvent.on(i,"click",function(){setTimeout(o.bind(this._onInputClick,this),0)},this),this._map.on("click",this._collapse,this)}else this._expand();this._baseLayersList=o.DomUtil.create("div",t+"-base",i),this._separator=o.DomUtil.create("div",t+"-separator",i),this._overlaysList=o.DomUtil.create("div",t+"-overlays",i),e.appendChild(i)},_addLayer:function(t,e,i){var n=o.stamp(t);this._layers[n]={layer:t,name:e,overlay:i},this.options.autoZIndex&&t.setZIndex&&(this._lastZIndex++,t.setZIndex(this._lastZIndex))},_update:function(){if(this._container){this._baseLayersList.innerHTML="",this._overlaysList.innerHTML="";var t,e,i=!1,n=!1;for(t in this._layers)e=this._layers[t],this._addItem(e),n=n||e.overlay,i=i||!e.overlay;this._separator.style.display=n&&i?"":"none"}},_onLayerChange:function(t){var e=this._layers[o.stamp(t.layer)];if(e){this._handlingClick||this._update();var i=e.overlay?"layeradd"===t.type?"overlayadd":"overlayremove":"layeradd"===t.type?"baselayerchange":null;i&&this._map.fire(i,e)}},_createRadioElement:function(t,i){var n='<input type="radio" class="leaflet-control-layers-selector" name="'+t+'"';i&&(n+=' checked="checked"'),n+="/>";var o=e.createElement("div");return o.innerHTML=n,o.firstChild},_addItem:function(t){var i,n=e.createElement("label"),s=this._map.hasLayer(t.layer);t.overlay?(i=e.createElement("input"),i.type="checkbox",i.className="leaflet-control-layers-selector",i.defaultChecked=s):i=this._createRadioElement("leaflet-base-layers",s),i.layerId=o.stamp(t.layer),o.DomEvent.on(i,"click",this._onInputClick,this);var a=e.createElement("span");a.innerHTML=" "+t.name,n.appendChild(i),n.appendChild(a);var r=t.overlay?this._overlaysList:this._baseLayersList;return r.appendChild(n),n},_onInputClick:function(){var t,e,i,n=this._form.getElementsByTagName("input"),o=n.length;for(this._handlingClick=!0,t=0;o>t;t++)e=n[t],i=this._layers[e.layerId],e.checked&&!this._map.hasLayer(i.layer)?this._map.addLayer(i.layer):!e.checked&&this._map.hasLayer(i.layer)&&this._map.removeLayer(i.layer);this._handlingClick=!1,this._refocusOnMap()},_expand:function(){o.DomUtil.addClass(this._container,"leaflet-control-layers-expanded")},_collapse:function(){this._container.className=this._container.className.replace(" leaflet-control-layers-expanded","")}}),o.control.layers=function(t,e,i){return new o.Control.Layers(t,e,i)},o.PosAnimation=o.Class.extend({includes:o.Mixin.Events,run:function(t,e,i,n){this.stop(),this._el=t,this._inProgress=!0,this._newPos=e,this.fire("start"),t.style[o.DomUtil.TRANSITION]="all "+(i||.25)+"s cubic-bezier(0,0,"+(n||.5)+",1)",o.DomEvent.on(t,o.DomUtil.TRANSITION_END,this._onTransitionEnd,this),o.DomUtil.setPosition(t,e),o.Util.falseFn(t.offsetWidth),this._stepTimer=setInterval(o.bind(this._onStep,this),50)},stop:function(){this._inProgress&&(o.DomUtil.setPosition(this._el,this._getPos()),this._onTransitionEnd(),o.Util.falseFn(this._el.offsetWidth))},_onStep:function(){var t=this._getPos();return t?(this._el._leaflet_pos=t,void this.fire("step")):void this._onTransitionEnd()},_transformRe:/([-+]?(?:\d*\.)?\d+)\D*, ([-+]?(?:\d*\.)?\d+)\D*\)/,_getPos:function(){var e,i,n,s=this._el,a=t.getComputedStyle(s);if(o.Browser.any3d){if(n=a[o.DomUtil.TRANSFORM].match(this._transformRe),!n)return;e=parseFloat(n[1]),i=parseFloat(n[2])}else e=parseFloat(a.left),i=parseFloat(a.top);return new o.Point(e,i,!0)},_onTransitionEnd:function(){o.DomEvent.off(this._el,o.DomUtil.TRANSITION_END,this._onTransitionEnd,this),this._inProgress&&(this._inProgress=!1,this._el.style[o.DomUtil.TRANSITION]="",this._el._leaflet_pos=this._newPos,clearInterval(this._stepTimer),this.fire("step").fire("end"))}}),o.Map.include({setView:function(t,e,n){if(e=e===i?this._zoom:this._limitZoom(e),t=this._limitCenter(o.latLng(t),e,this.options.maxBounds),n=n||{},this._panAnim&&this._panAnim.stop(),this._loaded&&!n.reset&&n!==!0){n.animate!==i&&(n.zoom=o.extend({animate:n.animate},n.zoom),n.pan=o.extend({animate:n.animate},n.pan));var s=this._zoom!==e?this._tryAnimatedZoom&&this._tryAnimatedZoom(t,e,n.zoom):this._tryAnimatedPan(t,n.pan);if(s)return clearTimeout(this._sizeTimer),this}return this._resetView(t,e),this},panBy:function(t,e){if(t=o.point(t).round(),e=e||{},!t.x&&!t.y)return this;if(this._panAnim||(this._panAnim=new o.PosAnimation,this._panAnim.on({step:this._onPanTransitionStep,end:this._onPanTransitionEnd},this)),e.noMoveStart||this.fire("movestart"),e.animate!==!1){o.DomUtil.addClass(this._mapPane,"leaflet-pan-anim");var i=this._getMapPanePos().subtract(t);this._panAnim.run(this._mapPane,i,e.duration||.25,e.easeLinearity)}else this._rawPanBy(t),this.fire("move").fire("moveend");return this},_onPanTransitionStep:function(){this.fire("move")},_onPanTransitionEnd:function(){o.DomUtil.removeClass(this._mapPane,"leaflet-pan-anim"),this.fire("moveend")},_tryAnimatedPan:function(t,e){var i=this._getCenterOffset(t)._floor();return(e&&e.animate)===!0||this.getSize().contains(i)?(this.panBy(i,e),!0):!1}}),o.PosAnimation=o.DomUtil.TRANSITION?o.PosAnimation:o.PosAnimation.extend({run:function(t,e,i,n){this.stop(),this._el=t,this._inProgress=!0,this._duration=i||.25,this._easeOutPower=1/Math.max(n||.5,.2),this._startPos=o.DomUtil.getPosition(t),this._offset=e.subtract(this._startPos),this._startTime=+new Date,this.fire("start"),this._animate()},stop:function(){this._inProgress&&(this._step(),this._complete())},_animate:function(){this._animId=o.Util.requestAnimFrame(this._animate,this),this._step()},_step:function(){var t=+new Date-this._startTime,e=1e3*this._duration;e>t?this._runFrame(this._easeOut(t/e)):(this._runFrame(1),this._complete())},_runFrame:function(t){var e=this._startPos.add(this._offset.multiplyBy(t));o.DomUtil.setPosition(this._el,e),this.fire("step")},_complete:function(){o.Util.cancelAnimFrame(this._animId),this._inProgress=!1,this.fire("end")},_easeOut:function(t){return 1-Math.pow(1-t,this._easeOutPower)}}),o.Map.mergeOptions({zoomAnimation:!0,zoomAnimationThreshold:4}),o.DomUtil.TRANSITION&&o.Map.addInitHook(function(){this._zoomAnimated=this.options.zoomAnimation&&o.DomUtil.TRANSITION&&o.Browser.any3d&&!o.Browser.android23&&!o.Browser.mobileOpera,this._zoomAnimated&&o.DomEvent.on(this._mapPane,o.DomUtil.TRANSITION_END,this._catchTransitionEnd,this)}),o.Map.include(o.DomUtil.TRANSITION?{_catchTransitionEnd:function(t){this._animatingZoom&&t.propertyName.indexOf("transform")>=0&&this._onZoomTransitionEnd()},_nothingToAnimate:function(){return!this._container.getElementsByClassName("leaflet-zoom-animated").length},_tryAnimatedZoom:function(t,e,i){if(this._animatingZoom)return!0;if(i=i||{},!this._zoomAnimated||i.animate===!1||this._nothingToAnimate()||Math.abs(e-this._zoom)>this.options.zoomAnimationThreshold)return!1;var n=this.getZoomScale(e),o=this._getCenterOffset(t)._divideBy(1-1/n),s=this._getCenterLayerPoint()._add(o);return i.animate===!0||this.getSize().contains(o)?(this.fire("movestart").fire("zoomstart"),this._animateZoom(t,e,s,n,null,!0),!0):!1},_animateZoom:function(t,e,i,n,s,a,r){r||(this._animatingZoom=!0),o.DomUtil.addClass(this._mapPane,"leaflet-zoom-anim"),this._animateToCenter=t,this._animateToZoom=e,o.Draggable&&(o.Draggable._disabled=!0),o.Util.requestAnimFrame(function(){this.fire("zoomanim",{center:t,zoom:e,origin:i,scale:n,delta:s,backwards:a})},this)},_onZoomTransitionEnd:function(){this._animatingZoom=!1,o.DomUtil.removeClass(this._mapPane,"leaflet-zoom-anim"),this._resetView(this._animateToCenter,this._animateToZoom,!0,!0),o.Draggable&&(o.Draggable._disabled=!1)}}:{}),o.TileLayer.include({_animateZoom:function(t){this._animating||(this._animating=!0,this._prepareBgBuffer());var e=this._bgBuffer,i=o.DomUtil.TRANSFORM,n=t.delta?o.DomUtil.getTranslateString(t.delta):e.style[i],s=o.DomUtil.getScaleString(t.scale,t.origin);e.style[i]=t.backwards?s+" "+n:n+" "+s},_endZoomAnim:function(){var t=this._tileContainer,e=this._bgBuffer;t.style.visibility="",t.parentNode.appendChild(t),o.Util.falseFn(e.offsetWidth),this._animating=!1},_clearBgBuffer:function(){var t=this._map;!t||t._animatingZoom||t.touchZoom._zooming||(this._bgBuffer.innerHTML="",this._bgBuffer.style[o.DomUtil.TRANSFORM]="")},_prepareBgBuffer:function(){var t=this._tileContainer,e=this._bgBuffer,i=this._getLoadedTilesPercentage(e),n=this._getLoadedTilesPercentage(t);return e&&i>.5&&.5>n?(t.style.visibility="hidden",void this._stopLoadingImages(t)):(e.style.visibility="hidden",e.style[o.DomUtil.TRANSFORM]="",this._tileContainer=e,e=this._bgBuffer=t,this._stopLoadingImages(e),void clearTimeout(this._clearBgBufferTimer))},_getLoadedTilesPercentage:function(t){var e,i,n=t.getElementsByTagName("img"),o=0;for(e=0,i=n.length;i>e;e++)n[e].complete&&o++;return o/i},_stopLoadingImages:function(t){var e,i,n,s=Array.prototype.slice.call(t.getElementsByTagName("img"));for(e=0,i=s.length;i>e;e++)n=s[e],n.complete||(n.onload=o.Util.falseFn,n.onerror=o.Util.falseFn,n.src=o.Util.emptyImageUrl,n.parentNode.removeChild(n))}}),o.Map.include({_defaultLocateOptions:{watch:!1,setView:!1,maxZoom:1/0,timeout:1e4,maximumAge:0,enableHighAccuracy:!1},locate:function(t){if(t=this._locateOptions=o.extend(this._defaultLocateOptions,t),!navigator.geolocation)return this._handleGeolocationError({code:0,message:"Geolocation not supported."}),this;var e=o.bind(this._handleGeolocationResponse,this),i=o.bind(this._handleGeolocationError,this);return t.watch?this._locationWatchId=navigator.geolocation.watchPosition(e,i,t):navigator.geolocation.getCurrentPosition(e,i,t),this},stopLocate:function(){return navigator.geolocation&&navigator.geolocation.clearWatch(this._locationWatchId),this._locateOptions&&(this._locateOptions.setView=!1),this},_handleGeolocationError:function(t){var e=t.code,i=t.message||(1===e?"permission denied":2===e?"position unavailable":"timeout");this._locateOptions.setView&&!this._loaded&&this.fitWorld(),this.fire("locationerror",{code:e,message:"Geolocation error: "+i+"."})},_handleGeolocationResponse:function(t){var e=t.coords.latitude,i=t.coords.longitude,n=new o.LatLng(e,i),s=180*t.coords.accuracy/40075017,a=s/Math.cos(o.LatLng.DEG_TO_RAD*e),r=o.latLngBounds([e-s,i-a],[e+s,i+a]),h=this._locateOptions;if(h.setView){var l=Math.min(this.getBoundsZoom(r),h.maxZoom);this.setView(n,l)}var u={latlng:n,bounds:r,timestamp:t.timestamp};for(var c in t.coords)"number"==typeof t.coords[c]&&(u[c]=t.coords[c]);this.fire("locationfound",u)}})}(window,document);;// Generated by CoffeeScript 1.6.2
+(function() {
+  var $, Analyze, Blender, Calculate, Caman, CamanParser, Canvas, Convert, Event, Fiber, Filter, IO, Image, Layer, Log, Module, Pixel, Plugin, Renderer, Root, Store, Util, fs, moduleKeywords, slice, vignetteFilters,
+    __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; },
+    __slice = [].slice,
+    __hasProp = {}.hasOwnProperty,
+    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+  moduleKeywords = ['extended', 'included'];
+
+  Module = (function() {
+    function Module() {}
+
+    Module["extends"] = function(obj) {
+      var key, value, _ref;
+
+      for (key in obj) {
+        value = obj[key];
+        if (__indexOf.call(moduleKeywords, key) < 0) {
+          this[key] = value;
+        }
+      }
+      if ((_ref = obj.extended) != null) {
+        _ref.apply(this);
+      }
+      return this;
+    };
+
+    Module.includes = function(obj) {
+      var key, value, _ref;
+
+      for (key in obj) {
+        value = obj[key];
+        if (__indexOf.call(moduleKeywords, key) < 0) {
+          this.prototype[key] = value;
+        }
+      }
+      if ((_ref = obj.included) != null) {
+        _ref.apply(this);
+      }
+      return this;
+    };
+
+    Module.delegate = function() {
+      var args, source, target, _i, _len, _results;
+
+      args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
+      target = args.pop();
+      _results = [];
+      for (_i = 0, _len = args.length; _i < _len; _i++) {
+        source = args[_i];
+        _results.push(this.prototype[source] = target.prototype[source]);
+      }
+      return _results;
+    };
+
+    Module.aliasFunction = function(to, from) {
+      var _this = this;
+
+      return this.prototype[to] = function() {
+        var args;
+
+        args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
+        return _this.prototype[from].apply(_this, args);
+      };
+    };
+
+    Module.aliasProperty = function(to, from) {
+      return Object.defineProperty(this.prototype, to, {
+        get: function() {
+          return this[from];
+        },
+        set: function(val) {
+          return this[from] = val;
+        }
+      });
+    };
+
+    Module.included = function(func) {
+      return func.call(this, this.prototype);
+    };
+
+    return Module;
+
+  })();
+
+  slice = Array.prototype.slice;
+
+  $ = function(sel, root) {
+    if (root == null) {
+      root = document;
+    }
+    if (typeof sel === "object" || (typeof exports !== "undefined" && exports !== null)) {
+      return sel;
+    }
+    return root.querySelector(sel);
+  };
+
+  Util = (function() {
+    function Util() {}
+
+    Util.uniqid = (function() {
+      var id;
+
+      id = 0;
+      return {
+        get: function() {
+          return id++;
+        }
+      };
+    })();
+
+    Util.extend = function() {
+      var copy, dest, obj, prop, src, _i, _len;
+
+      obj = arguments[0], src = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
+      dest = obj;
+      for (_i = 0, _len = src.length; _i < _len; _i++) {
+        copy = src[_i];
+        for (prop in copy) {
+          if (!__hasProp.call(copy, prop)) continue;
+          dest[prop] = copy[prop];
+        }
+      }
+      return dest;
+    };
+
+    Util.clampRGB = function(val) {
+      if (val < 0) {
+        return 0;
+      }
+      if (val > 255) {
+        return 255;
+      }
+      return val;
+    };
+
+    Util.copyAttributes = function(from, to, opts) {
+      var attr, _i, _len, _ref, _ref1, _results;
+
+      if (opts == null) {
+        opts = {};
+      }
+      _ref = from.attributes;
+      _results = [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        attr = _ref[_i];
+        if ((opts.except != null) && (_ref1 = attr.nodeName, __indexOf.call(opts.except, _ref1) >= 0)) {
+          continue;
+        }
+        _results.push(to.setAttribute(attr.nodeName, attr.nodeValue));
+      }
+      return _results;
+    };
+
+    Util.dataArray = function(length) {
+      if (length == null) {
+        length = 0;
+      }
+      if (Caman.NodeJS || (window.Uint8Array != null)) {
+        return new Uint8Array(length);
+      }
+      return new Array(length);
+    };
+
+    return Util;
+
+  })();
+
+  if (typeof exports !== "undefined" && exports !== null) {
+    Root = exports;
+    Canvas = require('canvas');
+    Image = Canvas.Image;
+    Fiber = require('fibers');
+    fs = require('fs');
+  } else {
+    Root = window;
+  }
+
+  Caman = (function(_super) {
+    __extends(Caman, _super);
+
+    Caman.version = {
+      release: "4.1.2",
+      date: "7/27/2013"
+    };
+
+    Caman.DEBUG = false;
+
+    Caman.allowRevert = true;
+
+    Caman.crossOrigin = "anonymous";
+
+    Caman.remoteProxy = "";
+
+    Caman.proxyParam = "camanProxyUrl";
+
+    Caman.NodeJS = typeof exports !== "undefined" && exports !== null;
+
+    Caman.autoload = !Caman.NodeJS;
+
+    Caman.toString = function() {
+      return "Version " + Caman.version.release + ", Released " + Caman.version.date;
+    };
+
+    Caman.getAttrId = function(canvas) {
+      if (Caman.NodeJS) {
+        return true;
+      }
+      if (typeof canvas === "string") {
+        canvas = $(canvas);
+      }
+      if (!((canvas != null) && (canvas.getAttribute != null))) {
+        return null;
+      }
+      return canvas.getAttribute('data-caman-id');
+    };
+
+    function Caman() {
+      this.nodeFileReady = __bind(this.nodeFileReady, this);
+      var args, callback, id,
+        _this = this;
+
+      if (arguments.length === 0) {
+        throw "Invalid arguments";
+      }
+      if (this instanceof Caman) {
+        this.finishInit = this.finishInit.bind(this);
+        this.imageLoaded = this.imageLoaded.bind(this);
+        args = arguments[0];
+        if (!Caman.NodeJS) {
+          id = parseInt(Caman.getAttrId(args[0]), 10);
+          callback = typeof args[1] === "function" ? args[1] : typeof args[2] === "function" ? args[2] : function() {};
+          if (!isNaN(id) && Store.has(id)) {
+            return Store.execute(id, callback);
+          }
+        }
+        this.id = Util.uniqid.get();
+        this.initializedPixelData = this.originalPixelData = null;
+        this.cropCoordinates = {
+          x: 0,
+          y: 0
+        };
+        this.cropped = false;
+        this.resized = false;
+        this.pixelStack = [];
+        this.layerStack = [];
+        this.canvasQueue = [];
+        this.currentLayer = null;
+        this.scaled = false;
+        this.analyze = new Analyze(this);
+        this.renderer = new Renderer(this);
+        this.domIsLoaded(function() {
+          _this.parseArguments(args);
+          return _this.setup();
+        });
+        return this;
+      } else {
+        return new Caman(arguments);
+      }
+    }
+
+    Caman.prototype.domIsLoaded = function(cb) {
+      var listener,
+        _this = this;
+
+      if (Caman.NodeJS) {
+        return setTimeout(function() {
+          return cb.call(_this);
+        }, 0);
+      } else {
+        if (document.readyState === "complete") {
+          Log.debug("DOM initialized");
+          return setTimeout(function() {
+            return cb.call(_this);
+          }, 0);
+        } else {
+          listener = function() {
+            if (document.readyState === "complete") {
+              Log.debug("DOM initialized");
+              return cb.call(_this);
+            }
+          };
+          return document.addEventListener("readystatechange", listener, false);
+        }
+      }
+    };
+
+    Caman.prototype.parseArguments = function(args) {
+      var key, val, _ref, _results;
+
+      if (args.length === 0) {
+        throw "Invalid arguments given";
+      }
+      this.initObj = null;
+      this.initType = null;
+      this.imageUrl = null;
+      this.callback = function() {};
+      this.setInitObject(args[0]);
+      if (args.length === 1) {
+        return;
+      }
+      switch (typeof args[1]) {
+        case "string":
+          this.imageUrl = args[1];
+          break;
+        case "function":
+          this.callback = args[1];
+      }
+      if (args.length === 2) {
+        return;
+      }
+      this.callback = args[2];
+      if (args.length === 4) {
+        _ref = args[4];
+        _results = [];
+        for (key in _ref) {
+          if (!__hasProp.call(_ref, key)) continue;
+          val = _ref[key];
+          _results.push(this.options[key] = val);
+        }
+        return _results;
+      }
+    };
+
+    Caman.prototype.setInitObject = function(obj) {
+      if (Caman.NodeJS) {
+        this.initObj = obj;
+        this.initType = 'node';
+        return;
+      }
+      if (typeof obj === "object") {
+        this.initObj = obj;
+      } else {
+        this.initObj = $(obj);
+      }
+      if (this.initObj == null) {
+        throw "Could not find image or canvas for initialization.";
+      }
+      return this.initType = this.initObj.nodeName.toLowerCase();
+    };
+
+    Caman.prototype.setup = function() {
+      switch (this.initType) {
+        case "node":
+          return this.initNode();
+        case "img":
+          return this.initImage();
+        case "canvas":
+          return this.initCanvas();
+      }
+    };
+
+    Caman.prototype.initNode = function() {
+      Log.debug("Initializing for NodeJS");
+      if (typeof this.initObj === "string") {
+        return fs.readFile(this.initObj, this.nodeFileReady);
+      } else {
+        return this.nodeFileReady(null, this.initObj);
+      }
+    };
+
+    Caman.prototype.nodeFileReady = function(err, data) {
+      if (err) {
+        throw err;
+      }
+      this.image = new Image();
+      this.image.src = data;
+      Log.debug("Image loaded. Width = " + (this.imageWidth()) + ", Height = " + (this.imageHeight()));
+      this.canvas = new Canvas(this.imageWidth(), this.imageHeight());
+      return this.finishInit();
+    };
+
+    Caman.prototype.initImage = function() {
+      this.image = this.initObj;
+      this.canvas = document.createElement('canvas');
+      this.context = this.canvas.getContext('2d');
+      Util.copyAttributes(this.image, this.canvas, {
+        except: ['src']
+      });
+      this.image.parentNode.replaceChild(this.canvas, this.image);
+      this.imageAdjustments();
+      return this.waitForImageLoaded();
+    };
+
+    Caman.prototype.initCanvas = function() {
+      this.canvas = this.initObj;
+      this.context = this.canvas.getContext('2d');
+      if (this.imageUrl != null) {
+        this.image = document.createElement('img');
+        this.image.src = this.imageUrl;
+        this.imageAdjustments();
+        return this.waitForImageLoaded();
+      } else {
+        return this.finishInit();
+      }
+    };
+
+    Caman.prototype.imageAdjustments = function() {
+      if (this.needsHiDPISwap()) {
+        Log.debug(this.image.src, "->", this.hiDPIReplacement());
+        this.swapped = true;
+        this.image.src = this.hiDPIReplacement();
+      }
+      if (IO.isRemote(this.image)) {
+        this.image.src = IO.proxyUrl(this.image.src);
+        return Log.debug("Remote image detected, using URL = " + this.image.src);
+      }
+    };
+
+    Caman.prototype.waitForImageLoaded = function() {
+      if (this.isImageLoaded()) {
+        return this.imageLoaded();
+      } else {
+        return this.image.onload = this.imageLoaded;
+      }
+    };
+
+    Caman.prototype.isImageLoaded = function() {
+      if (!this.image.complete) {
+        return false;
+      }
+      if ((this.image.naturalWidth != null) && this.image.naturalWidth === 0) {
+        return false;
+      }
+      return true;
+    };
+
+    Caman.prototype.imageWidth = function() {
+      return this.image.width || this.image.naturalWidth;
+    };
+
+    Caman.prototype.imageHeight = function() {
+      return this.image.height || this.image.naturalHeight;
+    };
+
+    Caman.prototype.imageLoaded = function() {
+      Log.debug("Image loaded. Width = " + (this.imageWidth()) + ", Height = " + (this.imageHeight()));
+      if (this.swapped) {
+        this.canvas.width = this.imageWidth() / this.hiDPIRatio();
+        this.canvas.height = this.imageHeight() / this.hiDPIRatio();
+      } else {
+        this.canvas.width = this.imageWidth();
+        this.canvas.height = this.imageHeight();
+      }
+      return this.finishInit();
+    };
+
+    Caman.prototype.finishInit = function() {
+      var i, pixel, _i, _len, _ref;
+
+      if (this.context == null) {
+        this.context = this.canvas.getContext('2d');
+      }
+      this.originalWidth = this.preScaledWidth = this.width = this.canvas.width;
+      this.originalHeight = this.preScaledHeight = this.height = this.canvas.height;
+      this.hiDPIAdjustments();
+      if (!this.hasId()) {
+        this.assignId();
+      }
+      if (this.image != null) {
+        this.context.drawImage(this.image, 0, 0, this.imageWidth(), this.imageHeight(), 0, 0, this.preScaledWidth, this.preScaledHeight);
+      }
+      this.imageData = this.context.getImageData(0, 0, this.canvas.width, this.canvas.height);
+      this.pixelData = this.imageData.data;
+      if (Caman.allowRevert) {
+        this.initializedPixelData = Util.dataArray(this.pixelData.length);
+        this.originalPixelData = Util.dataArray(this.pixelData.length);
+        _ref = this.pixelData;
+        for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
+          pixel = _ref[i];
+          this.initializedPixelData[i] = pixel;
+          this.originalPixelData[i] = pixel;
+        }
+      }
+      this.dimensions = {
+        width: this.canvas.width,
+        height: this.canvas.height
+      };
+      if (!Caman.NodeJS) {
+        Store.put(this.id, this);
+      }
+      this.callback.call(this, this);
+      return this.callback = function() {};
+    };
+
+    Caman.prototype.reloadCanvasData = function() {
+      this.imageData = this.context.getImageData(0, 0, this.canvas.width, this.canvas.height);
+      return this.pixelData = this.imageData.data;
+    };
+
+    Caman.prototype.resetOriginalPixelData = function() {
+      var i, pixel, _i, _len, _ref, _results;
+
+      if (!Caman.allowRevert) {
+        throw "Revert disabled";
+      }
+      this.originalPixelData = Util.dataArray(this.pixelData.length);
+      _ref = this.pixelData;
+      _results = [];
+      for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
+        pixel = _ref[i];
+        _results.push(this.originalPixelData[i] = pixel);
+      }
+      return _results;
+    };
+
+    Caman.prototype.hasId = function() {
+      return Caman.getAttrId(this.canvas) != null;
+    };
+
+    Caman.prototype.assignId = function() {
+      if (Caman.NodeJS || this.canvas.getAttribute('data-caman-id')) {
+        return;
+      }
+      return this.canvas.setAttribute('data-caman-id', this.id);
+    };
+
+    Caman.prototype.hiDPIDisabled = function() {
+      return this.canvas.getAttribute('data-caman-hidpi-disabled') !== null;
+    };
+
+    Caman.prototype.hiDPIAdjustments = function() {
+      var ratio;
+
+      if (Caman.NodeJS || !this.needsHiDPISwap()) {
+        return;
+      }
+      ratio = this.hiDPIRatio();
+      if (ratio !== 1) {
+        Log.debug("HiDPI ratio = " + ratio);
+        this.scaled = true;
+        this.preScaledWidth = this.canvas.width;
+        this.preScaledHeight = this.canvas.height;
+        this.canvas.width = this.preScaledWidth * ratio;
+        this.canvas.height = this.preScaledHeight * ratio;
+        this.canvas.style.width = "" + this.preScaledWidth + "px";
+        this.canvas.style.height = "" + this.preScaledHeight + "px";
+        this.context.scale(ratio, ratio);
+        this.width = this.originalWidth = this.canvas.width;
+        return this.height = this.originalHeight = this.canvas.height;
+      }
+    };
+
+    Caman.prototype.hiDPIRatio = function() {
+      var backingStoreRatio, devicePixelRatio;
+
+      devicePixelRatio = window.devicePixelRatio || 1;
+      backingStoreRatio = this.context.webkitBackingStorePixelRatio || this.context.mozBackingStorePixelRatio || this.context.msBackingStorePixelRatio || this.context.oBackingStorePixelRatio || this.context.backingStorePixelRatio || 1;
+      return devicePixelRatio / backingStoreRatio;
+    };
+
+    Caman.prototype.hiDPICapable = function() {
+      return (window.devicePixelRatio != null) && window.devicePixelRatio !== 1;
+    };
+
+    Caman.prototype.needsHiDPISwap = function() {
+      if (this.hiDPIDisabled() || !this.hiDPICapable()) {
+        return false;
+      }
+      return this.hiDPIReplacement() !== null;
+    };
+
+    Caman.prototype.hiDPIReplacement = function() {
+      if (this.image == null) {
+        return null;
+      }
+      return this.image.getAttribute('data-caman-hidpi');
+    };
+
+    Caman.prototype.replaceCanvas = function(newCanvas) {
+      var oldCanvas;
+
+      oldCanvas = this.canvas;
+      this.canvas = newCanvas;
+      this.context = this.canvas.getContext('2d');
+      if (!Caman.NodeJS) {
+        oldCanvas.parentNode.replaceChild(this.canvas, oldCanvas);
+      }
+      this.width = this.canvas.width;
+      this.height = this.canvas.height;
+      this.reloadCanvasData();
+      return this.dimensions = {
+        width: this.canvas.width,
+        height: this.canvas.height
+      };
+    };
+
+    Caman.prototype.render = function(callback) {
+      var _this = this;
+
+      if (callback == null) {
+        callback = function() {};
+      }
+      Event.trigger(this, "renderStart");
+      return this.renderer.execute(function() {
+        _this.context.putImageData(_this.imageData, 0, 0);
+        return callback.call(_this);
+      });
+    };
+
+    Caman.prototype.revert = function(updateContext) {
+      var i, pixel, _i, _len, _ref;
+
+      if (updateContext == null) {
+        updateContext = true;
+      }
+      if (!Caman.allowRevert) {
+        throw "Revert disabled";
+      }
+      _ref = this.originalVisiblePixels();
+      for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
+        pixel = _ref[i];
+        this.pixelData[i] = pixel;
+      }
+      if (updateContext) {
+        return this.context.putImageData(this.imageData, 0, 0);
+      }
+    };
+
+    Caman.prototype.reset = function() {
+      var canvas, ctx, i, imageData, pixel, pixelData, _i, _len, _ref;
+
+      canvas = document.createElement('canvas');
+      Util.copyAttributes(this.canvas, canvas);
+      canvas.width = this.originalWidth;
+      canvas.height = this.originalHeight;
+      ctx = canvas.getContext('2d');
+      imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      pixelData = imageData.data;
+      _ref = this.initializedPixelData;
+      for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
+        pixel = _ref[i];
+        pixelData[i] = pixel;
+      }
+      ctx.putImageData(imageData, 0, 0);
+      this.cropCoordinates = {
+        x: 0,
+        y: 0
+      };
+      this.resized = false;
+      return this.replaceCanvas(canvas);
+    };
+
+    Caman.prototype.originalVisiblePixels = function() {
+      var canvas, coord, ctx, endX, endY, i, imageData, pixel, pixelData, pixels, scaledCanvas, startX, startY, width, _i, _j, _len, _ref, _ref1, _ref2, _ref3;
+
+      if (!Caman.allowRevert) {
+        throw "Revert disabled";
+      }
+      pixels = [];
+      startX = this.cropCoordinates.x;
+      endX = startX + this.width;
+      startY = this.cropCoordinates.y;
+      endY = startY + this.height;
+      if (this.resized) {
+        canvas = document.createElement('canvas');
+        canvas.width = this.originalWidth;
+        canvas.height = this.originalHeight;
+        ctx = canvas.getContext('2d');
+        imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        pixelData = imageData.data;
+        _ref = this.originalPixelData;
+        for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
+          pixel = _ref[i];
+          pixelData[i] = pixel;
+        }
+        ctx.putImageData(imageData, 0, 0);
+        scaledCanvas = document.createElement('canvas');
+        scaledCanvas.width = this.width;
+        scaledCanvas.height = this.height;
+        ctx = scaledCanvas.getContext('2d');
+        ctx.drawImage(canvas, 0, 0, this.originalWidth, this.originalHeight, 0, 0, this.width, this.height);
+        pixelData = ctx.getImageData(0, 0, this.width, this.height).data;
+        width = this.width;
+      } else {
+        pixelData = this.originalPixelData;
+        width = this.originalWidth;
+      }
+      for (i = _j = 0, _ref1 = pixelData.length; _j < _ref1; i = _j += 4) {
+        coord = Pixel.locationToCoordinates(i, width);
+        if (((startX <= (_ref2 = coord.x) && _ref2 < endX)) && ((startY <= (_ref3 = coord.y) && _ref3 < endY))) {
+          pixels.push(pixelData[i], pixelData[i + 1], pixelData[i + 2], pixelData[i + 3]);
+        }
+      }
+      return pixels;
+    };
+
+    Caman.prototype.process = function(name, processFn) {
+      this.renderer.add({
+        type: Filter.Type.Single,
+        name: name,
+        processFn: processFn
+      });
+      return this;
+    };
+
+    Caman.prototype.processKernel = function(name, adjust, divisor, bias) {
+      var i, _i, _ref;
+
+      if (divisor == null) {
+        divisor = null;
+      }
+      if (bias == null) {
+        bias = 0;
+      }
+      if (divisor == null) {
+        divisor = 0;
+        for (i = _i = 0, _ref = adjust.length; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
+          divisor += adjust[i];
+        }
+      }
+      this.renderer.add({
+        type: Filter.Type.Kernel,
+        name: name,
+        adjust: adjust,
+        divisor: divisor,
+        bias: bias
+      });
+      return this;
+    };
+
+    Caman.prototype.processPlugin = function(plugin, args) {
+      this.renderer.add({
+        type: Filter.Type.Plugin,
+        plugin: plugin,
+        args: args
+      });
+      return this;
+    };
+
+    Caman.prototype.newLayer = function(callback) {
+      var layer;
+
+      layer = new Layer(this);
+      this.canvasQueue.push(layer);
+      this.renderer.add({
+        type: Filter.Type.LayerDequeue
+      });
+      callback.call(layer);
+      this.renderer.add({
+        type: Filter.Type.LayerFinished
+      });
+      return this;
+    };
+
+    Caman.prototype.executeLayer = function(layer) {
+      return this.pushContext(layer);
+    };
+
+    Caman.prototype.pushContext = function(layer) {
+      this.layerStack.push(this.currentLayer);
+      this.pixelStack.push(this.pixelData);
+      this.currentLayer = layer;
+      return this.pixelData = layer.pixelData;
+    };
+
+    Caman.prototype.popContext = function() {
+      this.pixelData = this.pixelStack.pop();
+      return this.currentLayer = this.layerStack.pop();
+    };
+
+    Caman.prototype.applyCurrentLayer = function() {
+      return this.currentLayer.applyToParent();
+    };
+
+    return Caman;
+
+  })(Module);
+
+  Root.Caman = Caman;
+
+  Caman.Analyze = (function() {
+    function Analyze(c) {
+      this.c = c;
+    }
+
+    Analyze.prototype.calculateLevels = function() {
+      var i, levels, numPixels, _i, _j, _k, _ref;
+
+      levels = {
+        r: {},
+        g: {},
+        b: {}
+      };
+      for (i = _i = 0; _i <= 255; i = ++_i) {
+        levels.r[i] = 0;
+        levels.g[i] = 0;
+        levels.b[i] = 0;
+      }
+      for (i = _j = 0, _ref = this.c.pixelData.length; _j < _ref; i = _j += 4) {
+        levels.r[this.c.pixelData[i]]++;
+        levels.g[this.c.pixelData[i + 1]]++;
+        levels.b[this.c.pixelData[i + 2]]++;
+      }
+      numPixels = this.c.pixelData.length / 4;
+      for (i = _k = 0; _k <= 255; i = ++_k) {
+        levels.r[i] /= numPixels;
+        levels.g[i] /= numPixels;
+        levels.b[i] /= numPixels;
+      }
+      return levels;
+    };
+
+    return Analyze;
+
+  })();
+
+  Analyze = Caman.Analyze;
+
+  Caman.DOMUpdated = function() {
+    var img, imgs, parser, _i, _len, _results;
+
+    imgs = document.querySelectorAll("img[data-caman]");
+    if (!(imgs.length > 0)) {
+      return;
+    }
+    _results = [];
+    for (_i = 0, _len = imgs.length; _i < _len; _i++) {
+      img = imgs[_i];
+      _results.push(parser = new CamanParser(img, function() {
+        this.parse();
+        return this.execute();
+      }));
+    }
+    return _results;
+  };
+
+  if (Caman.autoload) {
+    (function() {
+      if (document.readyState === "complete") {
+        return Caman.DOMUpdated();
+      } else {
+        return document.addEventListener("DOMContentLoaded", Caman.DOMUpdated, false);
+      }
+    })();
+  }
+
+  CamanParser = (function() {
+    var INST_REGEX;
+
+    INST_REGEX = "(\\w+)\\((.*?)\\)";
+
+    function CamanParser(ele, ready) {
+      this.dataStr = ele.getAttribute('data-caman');
+      this.caman = Caman(ele, ready.bind(this));
+    }
+
+    CamanParser.prototype.parse = function() {
+      var args, e, filter, func, inst, instFunc, m, r, unparsedInstructions, _i, _len, _ref, _results;
+
+      this.ele = this.caman.canvas;
+      r = new RegExp(INST_REGEX, 'g');
+      unparsedInstructions = this.dataStr.match(r);
+      if (!(unparsedInstructions.length > 0)) {
+        return;
+      }
+      r = new RegExp(INST_REGEX);
+      _results = [];
+      for (_i = 0, _len = unparsedInstructions.length; _i < _len; _i++) {
+        inst = unparsedInstructions[_i];
+        _ref = inst.match(r), m = _ref[0], filter = _ref[1], args = _ref[2];
+        instFunc = new Function("return function() {        this." + filter + "(" + args + ");      };");
+        try {
+          func = instFunc();
+          _results.push(func.call(this.caman));
+        } catch (_error) {
+          e = _error;
+          _results.push(Log.debug(e));
+        }
+      }
+      return _results;
+    };
+
+    CamanParser.prototype.execute = function() {
+      var ele;
+
+      ele = this.ele;
+      return this.caman.render(function() {
+        return ele.parentNode.replaceChild(this.toImage(), ele);
+      });
+    };
+
+    return CamanParser;
+
+  })();
+
+  Caman.Blender = (function() {
+    function Blender() {}
+
+    Blender.blenders = {};
+
+    Blender.register = function(name, func) {
+      return this.blenders[name] = func;
+    };
+
+    Blender.execute = function(name, rgbaLayer, rgbaParent) {
+      return this.blenders[name](rgbaLayer, rgbaParent);
+    };
+
+    return Blender;
+
+  })();
+
+  Blender = Caman.Blender;
+
+  Caman.Calculate = (function() {
+    function Calculate() {}
+
+    Calculate.distance = function(x1, y1, x2, y2) {
+      return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+    };
+
+    Calculate.randomRange = function(min, max, getFloat) {
+      var rand;
+
+      if (getFloat == null) {
+        getFloat = false;
+      }
+      rand = min + (Math.random() * (max - min));
+      if (getFloat) {
+        return rand.toFixed(getFloat);
+      } else {
+        return Math.round(rand);
+      }
+    };
+
+    Calculate.luminance = function(rgba) {
+      return (0.299 * rgba.r) + (0.587 * rgba.g) + (0.114 * rgba.b);
+    };
+
+    Calculate.bezier = function(start, ctrl1, ctrl2, end, lowBound, highBound) {
+      var Ax, Ay, Bx, By, Cx, Cy, bezier, curveX, curveY, i, j, leftCoord, rightCoord, t, x0, x1, x2, x3, y0, y1, y2, y3, _i, _j, _k, _ref, _ref1;
+
+      x0 = start[0];
+      y0 = start[1];
+      x1 = ctrl1[0];
+      y1 = ctrl1[1];
+      x2 = ctrl2[0];
+      y2 = ctrl2[1];
+      x3 = end[0];
+      y3 = end[1];
+      bezier = {};
+      Cx = parseInt(3 * (x1 - x0), 10);
+      Bx = 3 * (x2 - x1) - Cx;
+      Ax = x3 - x0 - Cx - Bx;
+      Cy = 3 * (y1 - y0);
+      By = 3 * (y2 - y1) - Cy;
+      Ay = y3 - y0 - Cy - By;
+      for (i = _i = 0; _i < 1000; i = ++_i) {
+        t = i / 1000;
+        curveX = Math.round((Ax * Math.pow(t, 3)) + (Bx * Math.pow(t, 2)) + (Cx * t) + x0);
+        curveY = Math.round((Ay * Math.pow(t, 3)) + (By * Math.pow(t, 2)) + (Cy * t) + y0);
+        if (lowBound && curveY < lowBound) {
+          curveY = lowBound;
+        } else if (highBound && curveY > highBound) {
+          curveY = highBound;
+        }
+        bezier[curveX] = curveY;
+      }
+      if (bezier.length < end[0] + 1) {
+        for (i = _j = 0, _ref = end[0]; 0 <= _ref ? _j <= _ref : _j >= _ref; i = 0 <= _ref ? ++_j : --_j) {
+          if (bezier[i] == null) {
+            leftCoord = [i - 1, bezier[i - 1]];
+            for (j = _k = i, _ref1 = end[0]; i <= _ref1 ? _k <= _ref1 : _k >= _ref1; j = i <= _ref1 ? ++_k : --_k) {
+              if (bezier[j] != null) {
+                rightCoord = [j, bezier[j]];
+                break;
+              }
+            }
+            bezier[i] = leftCoord[1] + ((rightCoord[1] - leftCoord[1]) / (rightCoord[0] - leftCoord[0])) * (i - leftCoord[0]);
+          }
+        }
+      }
+      if (bezier[end[0]] == null) {
+        bezier[end[0]] = bezier[end[0] - 1];
+      }
+      return bezier;
+    };
+
+    return Calculate;
+
+  })();
+
+  Calculate = Caman.Calculate;
+
+  Caman.Convert = (function() {
+    function Convert() {}
+
+    Convert.hexToRGB = function(hex) {
+      var b, g, r;
+
+      if (hex.charAt(0) === "#") {
+        hex = hex.substr(1);
+      }
+      r = parseInt(hex.substr(0, 2), 16);
+      g = parseInt(hex.substr(2, 2), 16);
+      b = parseInt(hex.substr(4, 2), 16);
+      return {
+        r: r,
+        g: g,
+        b: b
+      };
+    };
+
+    Convert.rgbToHSL = function(r, g, b) {
+      var d, h, l, max, min, s;
+
+      if (typeof r === "object") {
+        g = r.g;
+        b = r.b;
+        r = r.r;
+      }
+      r /= 255;
+      g /= 255;
+      b /= 255;
+      max = Math.max(r, g, b);
+      min = Math.min(r, g, b);
+      l = (max + min) / 2;
+      if (max === min) {
+        h = s = 0;
+      } else {
+        d = max - min;
+        s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+        h = (function() {
+          switch (max) {
+            case r:
+              return (g - b) / d + (g < b ? 6 : 0);
+            case g:
+              return (b - r) / d + 2;
+            case b:
+              return (r - g) / d + 4;
+          }
+        })();
+        h /= 6;
+      }
+      return {
+        h: h,
+        s: s,
+        l: l
+      };
+    };
+
+    Convert.hslToRGB = function(h, s, l) {
+      var b, g, p, q, r;
+
+      if (typeof h === "object") {
+        s = h.s;
+        l = h.l;
+        h = h.h;
+      }
+      if (s === 0) {
+        r = g = b = l;
+      } else {
+        q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+        p = 2 * l - q;
+        r = this.hueToRGB(p, q, h + 1 / 3);
+        g = this.hueToRGB(p, q, h);
+        b = this.hueToRGB(p, q, h - 1 / 3);
+      }
+      return {
+        r: r * 255,
+        g: g * 255,
+        b: b * 255
+      };
+    };
+
+    Convert.hueToRGB = function(p, q, t) {
+      if (t < 0) {
+        t += 1;
+      }
+      if (t > 1) {
+        t -= 1;
+      }
+      if (t < 1 / 6) {
+        return p + (q - p) * 6 * t;
+      }
+      if (t < 1 / 2) {
+        return q;
+      }
+      if (t < 2 / 3) {
+        return p + (q - p) * (2 / 3 - t) * 6;
+      }
+      return p;
+    };
+
+    Convert.rgbToHSV = function(r, g, b) {
+      var d, h, max, min, s, v;
+
+      r /= 255;
+      g /= 255;
+      b /= 255;
+      max = Math.max(r, g, b);
+      min = Math.min(r, g, b);
+      v = max;
+      d = max - min;
+      s = max === 0 ? 0 : d / max;
+      if (max === min) {
+        h = 0;
+      } else {
+        h = (function() {
+          switch (max) {
+            case r:
+              return (g - b) / d + (g < b ? 6 : 0);
+            case g:
+              return (b - r) / d + 2;
+            case b:
+              return (r - g) / d + 4;
+          }
+        })();
+        h /= 6;
+      }
+      return {
+        h: h,
+        s: s,
+        v: v
+      };
+    };
+
+    Convert.hsvToRGB = function(h, s, v) {
+      var b, f, g, i, p, q, r, t;
+
+      i = Math.floor(h * 6);
+      f = h * 6 - i;
+      p = v * (1 - s);
+      q = v * (1 - f * s);
+      t = v * (1 - (1 - f) * s);
+      switch (i % 6) {
+        case 0:
+          r = v;
+          g = t;
+          b = p;
+          break;
+        case 1:
+          r = q;
+          g = v;
+          b = p;
+          break;
+        case 2:
+          r = p;
+          g = v;
+          b = t;
+          break;
+        case 3:
+          r = p;
+          g = q;
+          b = v;
+          break;
+        case 4:
+          r = t;
+          g = p;
+          b = v;
+          break;
+        case 5:
+          r = v;
+          g = p;
+          b = q;
+      }
+      return {
+        r: Math.floor(r * 255),
+        g: Math.floor(g * 255),
+        b: Math.floor(b * 255)
+      };
+    };
+
+    Convert.rgbToXYZ = function(r, g, b) {
+      var x, y, z;
+
+      r /= 255;
+      g /= 255;
+      b /= 255;
+      if (r > 0.04045) {
+        r = Math.pow((r + 0.055) / 1.055, 2.4);
+      } else {
+        r /= 12.92;
+      }
+      if (g > 0.04045) {
+        g = Math.pow((g + 0.055) / 1.055, 2.4);
+      } else {
+        g /= 12.92;
+      }
+      if (b > 0.04045) {
+        b = Math.pow((b + 0.055) / 1.055, 2.4);
+      } else {
+        b /= 12.92;
+      }
+      x = r * 0.4124 + g * 0.3576 + b * 0.1805;
+      y = r * 0.2126 + g * 0.7152 + b * 0.0722;
+      z = r * 0.0193 + g * 0.1192 + b * 0.9505;
+      return {
+        x: x * 100,
+        y: y * 100,
+        z: z * 100
+      };
+    };
+
+    Convert.xyzToRGB = function(x, y, z) {
+      var b, g, r;
+
+      x /= 100;
+      y /= 100;
+      z /= 100;
+      r = (3.2406 * x) + (-1.5372 * y) + (-0.4986 * z);
+      g = (-0.9689 * x) + (1.8758 * y) + (0.0415 * z);
+      b = (0.0557 * x) + (-0.2040 * y) + (1.0570 * z);
+      if (r > 0.0031308) {
+        r = (1.055 * Math.pow(r, 0.4166666667)) - 0.055;
+      } else {
+        r *= 12.92;
+      }
+      if (g > 0.0031308) {
+        g = (1.055 * Math.pow(g, 0.4166666667)) - 0.055;
+      } else {
+        g *= 12.92;
+      }
+      if (b > 0.0031308) {
+        b = (1.055 * Math.pow(b, 0.4166666667)) - 0.055;
+      } else {
+        b *= 12.92;
+      }
+      return {
+        r: r * 255,
+        g: g * 255,
+        b: b * 255
+      };
+    };
+
+    Convert.xyzToLab = function(x, y, z) {
+      var a, b, l, whiteX, whiteY, whiteZ;
+
+      if (typeof x === "object") {
+        y = x.y;
+        z = x.z;
+        x = x.x;
+      }
+      whiteX = 95.047;
+      whiteY = 100.0;
+      whiteZ = 108.883;
+      x /= whiteX;
+      y /= whiteY;
+      z /= whiteZ;
+      if (x > 0.008856451679) {
+        x = Math.pow(x, 0.3333333333);
+      } else {
+        x = (7.787037037 * x) + 0.1379310345;
+      }
+      if (y > 0.008856451679) {
+        y = Math.pow(y, 0.3333333333);
+      } else {
+        y = (7.787037037 * y) + 0.1379310345;
+      }
+      if (z > 0.008856451679) {
+        z = Math.pow(z, 0.3333333333);
+      } else {
+        z = (7.787037037 * z) + 0.1379310345;
+      }
+      l = 116 * y - 16;
+      a = 500 * (x - y);
+      b = 200 * (y - z);
+      return {
+        l: l,
+        a: a,
+        b: b
+      };
+    };
+
+    Convert.labToXYZ = function(l, a, b) {
+      var x, y, z;
+
+      if (typeof l === "object") {
+        a = l.a;
+        b = l.b;
+        l = l.l;
+      }
+      y = (l + 16) / 116;
+      x = y + (a / 500);
+      z = y - (b / 200);
+      if (x > 0.2068965517) {
+        x = x * x * x;
+      } else {
+        x = 0.1284185493 * (x - 0.1379310345);
+      }
+      if (y > 0.2068965517) {
+        y = y * y * y;
+      } else {
+        y = 0.1284185493 * (y - 0.1379310345);
+      }
+      if (z > 0.2068965517) {
+        z = z * z * z;
+      } else {
+        z = 0.1284185493 * (z - 0.1379310345);
+      }
+      return {
+        x: x * 95.047,
+        y: y * 100.0,
+        z: z * 108.883
+      };
+    };
+
+    Convert.rgbToLab = function(r, g, b) {
+      var xyz;
+
+      if (typeof r === "object") {
+        g = r.g;
+        b = r.b;
+        r = r.r;
+      }
+      xyz = this.rgbToXYZ(r, g, b);
+      return this.xyzToLab(xyz);
+    };
+
+    Convert.labToRGB = function(l, a, b) {};
+
+    return Convert;
+
+  })();
+
+  Convert = Caman.Convert;
+
+  Caman.Event = (function() {
+    function Event() {}
+
+    Event.events = {};
+
+    Event.types = ["processStart", "processComplete", "renderStart", "renderFinished", "blockStarted", "blockFinished"];
+
+    Event.trigger = function(target, type, data) {
+      var event, _i, _len, _ref, _results;
+
+      if (data == null) {
+        data = null;
+      }
+      if (this.events[type] && this.events[type].length) {
+        _ref = this.events[type];
+        _results = [];
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          event = _ref[_i];
+          if (event.target === null || target.id === event.target.id) {
+            _results.push(event.fn.call(target, data));
+          } else {
+            _results.push(void 0);
+          }
+        }
+        return _results;
+      }
+    };
+
+    Event.listen = function(target, type, fn) {
+      var _fn, _type;
+
+      if (typeof target === "string") {
+        _type = target;
+        _fn = type;
+        target = null;
+        type = _type;
+        fn = _fn;
+      }
+      if (__indexOf.call(this.types, type) < 0) {
+        return false;
+      }
+      if (!this.events[type]) {
+        this.events[type] = [];
+      }
+      this.events[type].push({
+        target: target,
+        fn: fn
+      });
+      return true;
+    };
+
+    return Event;
+
+  })();
+
+  Event = Caman.Event;
+
+  Caman.Filter = (function() {
+    function Filter() {}
+
+    Filter.Type = {
+      Single: 1,
+      Kernel: 2,
+      LayerDequeue: 3,
+      LayerFinished: 4,
+      LoadOverlay: 5,
+      Plugin: 6
+    };
+
+    Filter.register = function(name, filterFunc) {
+      return Caman.prototype[name] = filterFunc;
+    };
+
+    return Filter;
+
+  })();
+
+  Filter = Caman.Filter;
+
+  Caman.IO = (function() {
+    function IO() {}
+
+    IO.domainRegex = /(?:(?:http|https):\/\/)((?:\w+)\.(?:(?:\w|\.)+))/;
+
+    IO.isRemote = function(img) {
+      if (img == null) {
+        return false;
+      }
+      if (this.corsEnabled(img)) {
+        return false;
+      }
+      return this.isURLRemote(img.src);
+    };
+
+    IO.corsEnabled = function(img) {
+      var _ref;
+
+      return (img.crossOrigin != null) && ((_ref = img.crossOrigin.toLowerCase()) === 'anonymous' || _ref === 'use-credentials');
+    };
+
+    IO.isURLRemote = function(url) {
+      var matches;
+
+      matches = url.match(this.domainRegex);
+      if (matches) {
+        return matches[1] !== document.domain;
+      } else {
+        return false;
+      }
+    };
+
+    IO.remoteCheck = function(src) {
+      if (this.isURLRemote(src)) {
+        if (!Caman.remoteProxy.length) {
+          Log.info("Attempting to load a remote image without a configured proxy. URL: " + src);
+        } else {
+          if (Caman.isURLRemote(Caman.remoteProxy)) {
+            Log.info("Cannot use a remote proxy for loading images.");
+            return;
+          }
+          return this.proxyUrl(src);
+        }
+      }
+    };
+
+    IO.proxyUrl = function(src) {
+      return "" + Caman.remoteProxy + "?" + Caman.proxyParam + "=" + (encodeURIComponent(src));
+    };
+
+    IO.useProxy = function(lang) {
+      var langToExt;
+
+      langToExt = {
+        ruby: 'rb',
+        python: 'py',
+        perl: 'pl',
+        javascript: 'js'
+      };
+      lang = lang.toLowerCase();
+      if (langToExt[lang] != null) {
+        lang = langToExt[lang];
+      }
+      return "proxies/caman_proxy." + lang;
+    };
+
+    return IO;
+
+  })();
+
+  Caman.prototype.save = function() {
+    if (typeof exports !== "undefined" && exports !== null) {
+      return this.nodeSave.apply(this, arguments);
+    } else {
+      return this.browserSave.apply(this, arguments);
+    }
+  };
+
+  Caman.prototype.browserSave = function(type) {
+    var image;
+
+    if (type == null) {
+      type = "png";
+    }
+    type = type.toLowerCase();
+    image = this.toBase64(type).replace("image/" + type, "image/octet-stream");
+    return document.location.href = image;
+  };
+
+  Caman.prototype.nodeSave = function(file, overwrite) {
+    var e, stats;
+
+    if (overwrite == null) {
+      overwrite = true;
+    }
+    try {
+      stats = fs.statSync(file);
+      if (stats.isFile() && !overwrite) {
+        return false;
+      }
+    } catch (_error) {
+      e = _error;
+      Log.debug("Creating output file " + file);
+    }
+    return fs.writeFile(file, this.canvas.toBuffer(), function() {
+      return Log.debug("Finished writing to " + file);
+    });
+  };
+
+  Caman.prototype.toImage = function(type) {
+    var img;
+
+    img = document.createElement('img');
+    img.src = this.toBase64(type);
+    img.width = this.dimensions.width;
+    img.height = this.dimensions.height;
+    if (window.devicePixelRatio) {
+      img.width /= window.devicePixelRatio;
+      img.height /= window.devicePixelRatio;
+    }
+    return img;
+  };
+
+  Caman.prototype.toBase64 = function(type) {
+    if (type == null) {
+      type = "png";
+    }
+    type = type.toLowerCase();
+    return this.canvas.toDataURL("image/" + type);
+  };
+
+  IO = Caman.IO;
+
+  Caman.Layer = (function() {
+    function Layer(c) {
+      this.c = c;
+      this.filter = this.c;
+      this.options = {
+        blendingMode: 'normal',
+        opacity: 1.0
+      };
+      this.layerID = Util.uniqid.get();
+      this.canvas = typeof exports !== "undefined" && exports !== null ? new Canvas() : document.createElement('canvas');
+      this.canvas.width = this.c.dimensions.width;
+      this.canvas.height = this.c.dimensions.height;
+      this.context = this.canvas.getContext('2d');
+      this.context.createImageData(this.canvas.width, this.canvas.height);
+      this.imageData = this.context.getImageData(0, 0, this.canvas.width, this.canvas.height);
+      this.pixelData = this.imageData.data;
+    }
+
+    Layer.prototype.newLayer = function(cb) {
+      return this.c.newLayer.call(this.c, cb);
+    };
+
+    Layer.prototype.setBlendingMode = function(mode) {
+      this.options.blendingMode = mode;
+      return this;
+    };
+
+    Layer.prototype.opacity = function(opacity) {
+      this.options.opacity = opacity / 100;
+      return this;
+    };
+
+    Layer.prototype.copyParent = function() {
+      var i, parentData, _i, _ref;
+
+      parentData = this.c.pixelData;
+      for (i = _i = 0, _ref = this.c.pixelData.length; _i < _ref; i = _i += 4) {
+        this.pixelData[i] = parentData[i];
+        this.pixelData[i + 1] = parentData[i + 1];
+        this.pixelData[i + 2] = parentData[i + 2];
+        this.pixelData[i + 3] = parentData[i + 3];
+      }
+      return this;
+    };
+
+    Layer.prototype.fillColor = function() {
+      return this.c.fillColor.apply(this.c, arguments);
+    };
+
+    Layer.prototype.overlayImage = function(image) {
+      if (typeof image === "object") {
+        image = image.src;
+      } else if (typeof image === "string" && image[0] === "#") {
+        image = $(image).src;
+      }
+      if (!image) {
+        return this;
+      }
+      this.c.renderer.renderQueue.push({
+        type: Filter.Type.LoadOverlay,
+        src: image,
+        layer: this
+      });
+      return this;
+    };
+
+    Layer.prototype.applyToParent = function() {
+      var i, layerData, parentData, result, rgbaLayer, rgbaParent, _i, _ref, _results;
+
+      parentData = this.c.pixelStack[this.c.pixelStack.length - 1];
+      layerData = this.c.pixelData;
+      _results = [];
+      for (i = _i = 0, _ref = layerData.length; _i < _ref; i = _i += 4) {
+        rgbaParent = {
+          r: parentData[i],
+          g: parentData[i + 1],
+          b: parentData[i + 2],
+          a: parentData[i + 3]
+        };
+        rgbaLayer = {
+          r: layerData[i],
+          g: layerData[i + 1],
+          b: layerData[i + 2],
+          a: layerData[i + 3]
+        };
+        result = Blender.execute(this.options.blendingMode, rgbaLayer, rgbaParent);
+        result.r = Util.clampRGB(result.r);
+        result.g = Util.clampRGB(result.g);
+        result.b = Util.clampRGB(result.b);
+        if (result.a == null) {
+          result.a = rgbaLayer.a;
+        }
+        parentData[i] = rgbaParent.r - ((rgbaParent.r - result.r) * (this.options.opacity * (result.a / 255)));
+        parentData[i + 1] = rgbaParent.g - ((rgbaParent.g - result.g) * (this.options.opacity * (result.a / 255)));
+        _results.push(parentData[i + 2] = rgbaParent.b - ((rgbaParent.b - result.b) * (this.options.opacity * (result.a / 255))));
+      }
+      return _results;
+    };
+
+    return Layer;
+
+  })();
+
+  Layer = Caman.Layer;
+
+  Caman.Logger = (function() {
+    function Logger() {
+      var name, _i, _len, _ref;
+
+      _ref = ['log', 'info', 'warn', 'error'];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        name = _ref[_i];
+        this[name] = (function(name) {
+          return function() {
+            var args, e;
+
+            args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
+            if (!Caman.DEBUG) {
+              return;
+            }
+            try {
+              return console[name].apply(console, args);
+            } catch (_error) {
+              e = _error;
+              return console[name](args);
+            }
+          };
+        })(name);
+      }
+      this.debug = this.log;
+    }
+
+    return Logger;
+
+  })();
+
+  Log = new Caman.Logger();
+
+  Caman.Pixel = (function() {
+    Pixel.coordinatesToLocation = function(x, y, width) {
+      return (y * width + x) * 4;
+    };
+
+    Pixel.locationToCoordinates = function(loc, width) {
+      var x, y;
+
+      y = Math.floor(loc / (width * 4));
+      x = (loc % (width * 4)) / 4;
+      return {
+        x: x,
+        y: y
+      };
+    };
+
+    function Pixel(r, g, b, a, c) {
+      this.r = r != null ? r : 0;
+      this.g = g != null ? g : 0;
+      this.b = b != null ? b : 0;
+      this.a = a != null ? a : 255;
+      this.c = c != null ? c : null;
+      this.loc = 0;
+    }
+
+    Pixel.prototype.setContext = function(c) {
+      return this.c = c;
+    };
+
+    Pixel.prototype.locationXY = function() {
+      var x, y;
+
+      if (this.c == null) {
+        throw "Requires a CamanJS context";
+      }
+      y = this.c.dimensions.height - Math.floor(this.loc / (this.c.dimensions.width * 4));
+      x = (this.loc % (this.c.dimensions.width * 4)) / 4;
+      return {
+        x: x,
+        y: y
+      };
+    };
+
+    Pixel.prototype.pixelAtLocation = function(loc) {
+      if (this.c == null) {
+        throw "Requires a CamanJS context";
+      }
+      return new Pixel(this.c.pixelData[loc], this.c.pixelData[loc + 1], this.c.pixelData[loc + 2], this.c.pixelData[loc + 3], this.c);
+    };
+
+    Pixel.prototype.getPixelRelative = function(horiz, vert) {
+      var newLoc;
+
+      if (this.c == null) {
+        throw "Requires a CamanJS context";
+      }
+      newLoc = this.loc + (this.c.dimensions.width * 4 * (vert * -1)) + (4 * horiz);
+      if (newLoc > this.c.pixelData.length || newLoc < 0) {
+        return new Pixel(0, 0, 0, 255, this.c);
+      }
+      return this.pixelAtLocation(newLoc);
+    };
+
+    Pixel.prototype.putPixelRelative = function(horiz, vert, rgba) {
+      var nowLoc;
+
+      if (this.c == null) {
+        throw "Requires a CamanJS context";
+      }
+      nowLoc = this.loc + (this.c.dimensions.width * 4 * (vert * -1)) + (4 * horiz);
+      if (newLoc > this.c.pixelData.length || newLoc < 0) {
+        return;
+      }
+      this.c.pixelData[newLoc] = rgba.r;
+      this.c.pixelData[newLoc + 1] = rgba.g;
+      this.c.pixelData[newLoc + 2] = rgba.b;
+      this.c.pixelData[newLoc + 3] = rgba.a;
+      return true;
+    };
+
+    Pixel.prototype.getPixel = function(x, y) {
+      var loc;
+
+      if (this.c == null) {
+        throw "Requires a CamanJS context";
+      }
+      loc = this.coordinatesToLocation(x, y, this.width);
+      return this.pixelAtLocation(loc);
+    };
+
+    Pixel.prototype.putPixel = function(x, y, rgba) {
+      var loc;
+
+      if (this.c == null) {
+        throw "Requires a CamanJS context";
+      }
+      loc = this.coordinatesToLocation(x, y, this.width);
+      this.c.pixelData[loc] = rgba.r;
+      this.c.pixelData[loc + 1] = rgba.g;
+      this.c.pixelData[loc + 2] = rgba.b;
+      return this.c.pixelData[loc + 3] = rgba.a;
+    };
+
+    Pixel.prototype.toString = function() {
+      return this.toKey();
+    };
+
+    Pixel.prototype.toHex = function(includeAlpha) {
+      var hex;
+
+      if (includeAlpha == null) {
+        includeAlpha = false;
+      }
+      hex = '#' + this.r.toString(16) + this.g.toString(16) + this.b.toString(16);
+      if (includeAlpha) {
+        return hex + this.a.toString(16);
+      } else {
+        return hex;
+      }
+    };
+
+    return Pixel;
+
+  })();
+
+  Pixel = Caman.Pixel;
+
+  Caman.Plugin = (function() {
+    function Plugin() {}
+
+    Plugin.plugins = {};
+
+    Plugin.register = function(name, plugin) {
+      return this.plugins[name] = plugin;
+    };
+
+    Plugin.execute = function(context, name, args) {
+      return this.plugins[name].apply(context, args);
+    };
+
+    return Plugin;
+
+  })();
+
+  Plugin = Caman.Plugin;
+
+  Caman.Renderer = (function() {
+    Renderer.Blocks = Caman.NodeJS ? require('os').cpus().length : 4;
+
+    function Renderer(c) {
+      this.c = c;
+      this.processNext = __bind(this.processNext, this);
+      this.renderQueue = [];
+      this.modPixelData = null;
+    }
+
+    Renderer.prototype.add = function(job) {
+      if (job == null) {
+        return;
+      }
+      return this.renderQueue.push(job);
+    };
+
+    Renderer.prototype.processNext = function() {
+      var layer;
+
+      if (this.renderQueue.length === 0) {
+        Event.trigger(this, "renderFinished");
+        if (this.finishedFn != null) {
+          this.finishedFn.call(this.c);
+        }
+        return this;
+      }
+      this.currentJob = this.renderQueue.shift();
+      switch (this.currentJob.type) {
+        case Filter.Type.LayerDequeue:
+          layer = this.c.canvasQueue.shift();
+          this.c.executeLayer(layer);
+          return this.processNext();
+        case Filter.Type.LayerFinished:
+          this.c.applyCurrentLayer();
+          this.c.popContext();
+          return this.processNext();
+        case Filter.Type.LoadOverlay:
+          return this.loadOverlay(this.currentJob.layer, this.currentJob.src);
+        case Filter.Type.Plugin:
+          return this.executePlugin();
+        default:
+          return this.executeFilter();
+      }
+    };
+
+    Renderer.prototype.execute = function(callback) {
+      this.finishedFn = callback;
+      this.modPixelData = Util.dataArray(this.c.pixelData.length);
+      return this.processNext();
+    };
+
+    Renderer.prototype.eachBlock = function(fn) {
+      var blockN, blockPixelLength, bnum, end, f, i, lastBlockN, n, start, _i, _ref, _results,
+        _this = this;
+
+      this.blocksDone = 0;
+      n = this.c.pixelData.length;
+      blockPixelLength = Math.floor((n / 4) / Renderer.Blocks);
+      blockN = blockPixelLength * 4;
+      lastBlockN = blockN + ((n / 4) % Renderer.Blocks) * 4;
+      _results = [];
+      for (i = _i = 0, _ref = Renderer.Blocks; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
+        start = i * blockN;
+        end = start + (i === Renderer.Blocks - 1 ? lastBlockN : blockN);
+        if (Caman.NodeJS) {
+          f = Fiber(function() {
+            return fn.call(_this, i, start, end);
+          });
+          bnum = f.run();
+          _results.push(this.blockFinished(bnum));
+        } else {
+          _results.push(setTimeout((function(i, start, end) {
+            return function() {
+              return fn.call(_this, i, start, end);
+            };
+          })(i, start, end), 0));
+        }
+      }
+      return _results;
+    };
+
+    Renderer.prototype.executeFilter = function() {
+      Event.trigger(this.c, "processStart", this.currentJob);
+      if (this.currentJob.type === Filter.Type.Single) {
+        return this.eachBlock(this.renderBlock);
+      } else {
+        return this.eachBlock(this.renderKernel);
+      }
+    };
+
+    Renderer.prototype.executePlugin = function() {
+      Log.debug("Executing plugin " + this.currentJob.plugin);
+      Plugin.execute(this.c, this.currentJob.plugin, this.currentJob.args);
+      Log.debug("Plugin " + this.currentJob.plugin + " finished!");
+      return this.processNext();
+    };
+
+    Renderer.prototype.renderBlock = function(bnum, start, end) {
+      var i, pixel, _i;
+
+      Log.debug("Block #" + bnum + " - Filter: " + this.currentJob.name + ", Start: " + start + ", End: " + end);
+      Event.trigger(this.c, "blockStarted", {
+        blockNum: bnum,
+        totalBlocks: Renderer.Blocks,
+        startPixel: start,
+        endPixel: end
+      });
+      pixel = new Pixel();
+      pixel.setContext(this.c);
+      for (i = _i = start; _i < end; i = _i += 4) {
+        pixel.loc = i;
+        pixel.r = this.c.pixelData[i];
+        pixel.g = this.c.pixelData[i + 1];
+        pixel.b = this.c.pixelData[i + 2];
+        pixel.a = this.c.pixelData[i + 3];
+        this.currentJob.processFn(pixel);
+        this.c.pixelData[i] = Util.clampRGB(pixel.r);
+        this.c.pixelData[i + 1] = Util.clampRGB(pixel.g);
+        this.c.pixelData[i + 2] = Util.clampRGB(pixel.b);
+        this.c.pixelData[i + 3] = Util.clampRGB(pixel.a);
+      }
+      if (Caman.NodeJS) {
+        return Fiber["yield"](bnum);
+      } else {
+        return this.blockFinished(bnum);
+      }
+    };
+
+    Renderer.prototype.renderKernel = function(bnum, start, end) {
+      var adjust, adjustSize, bias, builder, builderIndex, divisor, i, j, k, kernel, n, name, p, pixel, res, _i, _j, _k;
+
+      name = this.currentJob.name;
+      bias = this.currentJob.bias;
+      divisor = this.currentJob.divisor;
+      n = this.c.pixelData.length;
+      adjust = this.currentJob.adjust;
+      adjustSize = Math.sqrt(adjust.length);
+      kernel = [];
+      Log.debug("Rendering kernel - Filter: " + this.currentJob.name);
+      start = Math.max(start, this.c.dimensions.width * 4 * ((adjustSize - 1) / 2));
+      end = Math.min(end, n - (this.c.dimensions.width * 4 * ((adjustSize - 1) / 2)));
+      builder = (adjustSize - 1) / 2;
+      pixel = new Pixel();
+      pixel.setContext(this.c);
+      for (i = _i = start; _i < end; i = _i += 4) {
+        pixel.loc = i;
+        builderIndex = 0;
+        for (j = _j = -builder; -builder <= builder ? _j <= builder : _j >= builder; j = -builder <= builder ? ++_j : --_j) {
+          for (k = _k = builder; builder <= -builder ? _k <= -builder : _k >= -builder; k = builder <= -builder ? ++_k : --_k) {
+            p = pixel.getPixelRelative(j, k);
+            kernel[builderIndex * 3] = p.r;
+            kernel[builderIndex * 3 + 1] = p.g;
+            kernel[builderIndex * 3 + 2] = p.b;
+            builderIndex++;
+          }
+        }
+        res = this.processKernel(adjust, kernel, divisor, bias);
+        this.modPixelData[i] = Util.clampRGB(res.r);
+        this.modPixelData[i + 1] = Util.clampRGB(res.g);
+        this.modPixelData[i + 2] = Util.clampRGB(res.b);
+        this.modPixelData[i + 3] = this.c.pixelData[i + 3];
+      }
+      if (Caman.NodeJS) {
+        return Fiber["yield"](bnum);
+      } else {
+        return this.blockFinished(bnum);
+      }
+    };
+
+    Renderer.prototype.blockFinished = function(bnum) {
+      var i, _i, _ref;
+
+      if (bnum >= 0) {
+        Log.debug("Block #" + bnum + " finished! Filter: " + this.currentJob.name);
+      }
+      this.blocksDone++;
+      Event.trigger(this.c, "blockFinished", {
+        blockNum: bnum,
+        blocksFinished: this.blocksDone,
+        totalBlocks: Renderer.Blocks
+      });
+      if (this.blocksDone === Renderer.Blocks) {
+        if (this.currentJob.type === Filter.Type.Kernel) {
+          for (i = _i = 0, _ref = this.c.pixelData.length; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
+            this.c.pixelData[i] = this.modPixelData[i];
+          }
+        }
+        if (bnum >= 0) {
+          Log.debug("Filter " + this.currentJob.name + " finished!");
+        }
+        Event.trigger(this.c, "processComplete", this.currentJob);
+        return this.processNext();
+      }
+    };
+
+    Renderer.prototype.processKernel = function(adjust, kernel, divisor, bias) {
+      var i, val, _i, _ref;
+
+      val = {
+        r: 0,
+        g: 0,
+        b: 0
+      };
+      for (i = _i = 0, _ref = adjust.length; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
+        val.r += adjust[i] * kernel[i * 3];
+        val.g += adjust[i] * kernel[i * 3 + 1];
+        val.b += adjust[i] * kernel[i * 3 + 2];
+      }
+      val.r = (val.r / divisor) + bias;
+      val.g = (val.g / divisor) + bias;
+      val.b = (val.b / divisor) + bias;
+      return val;
+    };
+
+    Renderer.prototype.loadOverlay = function(layer, src) {
+      var img, proxyUrl,
+        _this = this;
+
+      img = document.createElement('img');
+      img.onload = function() {
+        layer.context.drawImage(img, 0, 0, _this.c.dimensions.width, _this.c.dimensions.height);
+        layer.imageData = layer.context.getImageData(0, 0, _this.c.dimensions.width, _this.c.dimensions.height);
+        layer.pixelData = layer.imageData.data;
+        _this.c.pixelData = layer.pixelData;
+        return _this.processNext();
+      };
+      proxyUrl = IO.remoteCheck(src);
+      return img.src = proxyUrl != null ? proxyUrl : src;
+    };
+
+    return Renderer;
+
+  })();
+
+  Renderer = Caman.Renderer;
+
+  Caman.Store = (function() {
+    function Store() {}
+
+    Store.items = {};
+
+    Store.has = function(search) {
+      return this.items[search] != null;
+    };
+
+    Store.get = function(search) {
+      return this.items[search];
+    };
+
+    Store.put = function(name, obj) {
+      return this.items[name] = obj;
+    };
+
+    Store.execute = function(search, callback) {
+      var _this = this;
+
+      setTimeout(function() {
+        return callback.call(_this.get(search), _this.get(search));
+      }, 0);
+      return this.get(search);
+    };
+
+    Store.flush = function(name) {
+      if (name == null) {
+        name = false;
+      }
+      if (name) {
+        return delete this.items[name];
+      } else {
+        return this.items = {};
+      }
+    };
+
+    return Store;
+
+  })();
+
+  Store = Caman.Store;
+
+  Blender.register("normal", function(rgbaLayer, rgbaParent) {
+    return {
+      r: rgbaLayer.r,
+      g: rgbaLayer.g,
+      b: rgbaLayer.b
+    };
+  });
+
+  Blender.register("multiply", function(rgbaLayer, rgbaParent) {
+    return {
+      r: (rgbaLayer.r * rgbaParent.r) / 255,
+      g: (rgbaLayer.g * rgbaParent.g) / 255,
+      b: (rgbaLayer.b * rgbaParent.b) / 255
+    };
+  });
+
+  Blender.register("screen", function(rgbaLayer, rgbaParent) {
+    return {
+      r: 255 - (((255 - rgbaLayer.r) * (255 - rgbaParent.r)) / 255),
+      g: 255 - (((255 - rgbaLayer.g) * (255 - rgbaParent.g)) / 255),
+      b: 255 - (((255 - rgbaLayer.b) * (255 - rgbaParent.b)) / 255)
+    };
+  });
+
+  Blender.register("overlay", function(rgbaLayer, rgbaParent) {
+    var result;
+
+    result = {};
+    result.r = rgbaParent.r > 128 ? 255 - 2 * (255 - rgbaLayer.r) * (255 - rgbaParent.r) / 255 : (rgbaParent.r * rgbaLayer.r * 2) / 255;
+    result.g = rgbaParent.g > 128 ? 255 - 2 * (255 - rgbaLayer.g) * (255 - rgbaParent.g) / 255 : (rgbaParent.g * rgbaLayer.g * 2) / 255;
+    result.b = rgbaParent.b > 128 ? 255 - 2 * (255 - rgbaLayer.b) * (255 - rgbaParent.b) / 255 : (rgbaParent.b * rgbaLayer.b * 2) / 255;
+    return result;
+  });
+
+  Blender.register("difference", function(rgbaLayer, rgbaParent) {
+    return {
+      r: rgbaLayer.r - rgbaParent.r,
+      g: rgbaLayer.g - rgbaParent.g,
+      b: rgbaLayer.b - rgbaParent.b
+    };
+  });
+
+  Blender.register("addition", function(rgbaLayer, rgbaParent) {
+    return {
+      r: rgbaParent.r + rgbaLayer.r,
+      g: rgbaParent.g + rgbaLayer.g,
+      b: rgbaParent.b + rgbaLayer.b
+    };
+  });
+
+  Blender.register("exclusion", function(rgbaLayer, rgbaParent) {
+    return {
+      r: 128 - 2 * (rgbaParent.r - 128) * (rgbaLayer.r - 128) / 255,
+      g: 128 - 2 * (rgbaParent.g - 128) * (rgbaLayer.g - 128) / 255,
+      b: 128 - 2 * (rgbaParent.b - 128) * (rgbaLayer.b - 128) / 255
+    };
+  });
+
+  Blender.register("softLight", function(rgbaLayer, rgbaParent) {
+    var result;
+
+    result = {};
+    result.r = rgbaParent.r > 128 ? 255 - ((255 - rgbaParent.r) * (255 - (rgbaLayer.r - 128))) / 255 : (rgbaParent.r * (rgbaLayer.r + 128)) / 255;
+    result.g = rgbaParent.g > 128 ? 255 - ((255 - rgbaParent.g) * (255 - (rgbaLayer.g - 128))) / 255 : (rgbaParent.g * (rgbaLayer.g + 128)) / 255;
+    result.b = rgbaParent.b > 128 ? 255 - ((255 - rgbaParent.b) * (255 - (rgbaLayer.b - 128))) / 255 : (rgbaParent.b * (rgbaLayer.b + 128)) / 255;
+    return result;
+  });
+
+  Blender.register("lighten", function(rgbaLayer, rgbaParent) {
+    return {
+      r: rgbaParent.r > rgbaLayer.r ? rgbaParent.r : rgbaLayer.r,
+      g: rgbaParent.g > rgbaLayer.g ? rgbaParent.g : rgbaLayer.g,
+      b: rgbaParent.b > rgbaLayer.b ? rgbaParent.b : rgbaLayer.b
+    };
+  });
+
+  Blender.register("darken", function(rgbaLayer, rgbaParent) {
+    return {
+      r: rgbaParent.r > rgbaLayer.r ? rgbaLayer.r : rgbaParent.r,
+      g: rgbaParent.g > rgbaLayer.g ? rgbaLayer.g : rgbaParent.g,
+      b: rgbaParent.b > rgbaLayer.b ? rgbaLayer.b : rgbaParent.b
+    };
+  });
+
+  Filter.register("fillColor", function() {
+    var color;
+
+    if (arguments.length === 1) {
+      color = Convert.hexToRGB(arguments[0]);
+    } else {
+      color = {
+        r: arguments[0],
+        g: arguments[1],
+        b: arguments[2]
+      };
+    }
+    return this.process("fillColor", function(rgba) {
+      rgba.r = color.r;
+      rgba.g = color.g;
+      rgba.b = color.b;
+      rgba.a = 255;
+      return rgba;
+    });
+  });
+
+  Filter.register("brightness", function(adjust) {
+    adjust = Math.floor(255 * (adjust / 100));
+    return this.process("brightness", function(rgba) {
+      rgba.r += adjust;
+      rgba.g += adjust;
+      rgba.b += adjust;
+      return rgba;
+    });
+  });
+
+  Filter.register("saturation", function(adjust) {
+    adjust *= -0.01;
+    return this.process("saturation", function(rgba) {
+      var max;
+
+      max = Math.max(rgba.r, rgba.g, rgba.b);
+      if (rgba.r !== max) {
+        rgba.r += (max - rgba.r) * adjust;
+      }
+      if (rgba.g !== max) {
+        rgba.g += (max - rgba.g) * adjust;
+      }
+      if (rgba.b !== max) {
+        rgba.b += (max - rgba.b) * adjust;
+      }
+      return rgba;
+    });
+  });
+
+  Filter.register("vibrance", function(adjust) {
+    adjust *= -1;
+    return this.process("vibrance", function(rgba) {
+      var amt, avg, max;
+
+      max = Math.max(rgba.r, rgba.g, rgba.b);
+      avg = (rgba.r + rgba.g + rgba.b) / 3;
+      amt = ((Math.abs(max - avg) * 2 / 255) * adjust) / 100;
+      if (rgba.r !== max) {
+        rgba.r += (max - rgba.r) * amt;
+      }
+      if (rgba.g !== max) {
+        rgba.g += (max - rgba.g) * amt;
+      }
+      if (rgba.b !== max) {
+        rgba.b += (max - rgba.b) * amt;
+      }
+      return rgba;
+    });
+  });
+
+  Filter.register("greyscale", function(adjust) {
+    return this.process("greyscale", function(rgba) {
+      var avg;
+
+      avg = Calculate.luminance(rgba);
+      rgba.r = avg;
+      rgba.g = avg;
+      rgba.b = avg;
+      return rgba;
+    });
+  });
+
+  Filter.register("contrast", function(adjust) {
+    adjust = Math.pow((adjust + 100) / 100, 2);
+    return this.process("contrast", function(rgba) {
+      rgba.r /= 255;
+      rgba.r -= 0.5;
+      rgba.r *= adjust;
+      rgba.r += 0.5;
+      rgba.r *= 255;
+      rgba.g /= 255;
+      rgba.g -= 0.5;
+      rgba.g *= adjust;
+      rgba.g += 0.5;
+      rgba.g *= 255;
+      rgba.b /= 255;
+      rgba.b -= 0.5;
+      rgba.b *= adjust;
+      rgba.b += 0.5;
+      rgba.b *= 255;
+      return rgba;
+    });
+  });
+
+  Filter.register("hue", function(adjust) {
+    return this.process("hue", function(rgba) {
+      var b, g, h, hsv, r, _ref;
+
+      hsv = Convert.rgbToHSV(rgba.r, rgba.g, rgba.b);
+      h = hsv.h * 100;
+      h += Math.abs(adjust);
+      h = h % 100;
+      h /= 100;
+      hsv.h = h;
+      _ref = Convert.hsvToRGB(hsv.h, hsv.s, hsv.v), r = _ref.r, g = _ref.g, b = _ref.b;
+      rgba.r = r;
+      rgba.g = g;
+      rgba.b = b;
+      return rgba;
+    });
+  });
+
+  Filter.register("colorize", function() {
+    var level, rgb;
+
+    if (arguments.length === 2) {
+      rgb = Convert.hexToRGB(arguments[0]);
+      level = arguments[1];
+    } else if (arguments.length === 4) {
+      rgb = {
+        r: arguments[0],
+        g: arguments[1],
+        b: arguments[2]
+      };
+      level = arguments[3];
+    }
+    return this.process("colorize", function(rgba) {
+      rgba.r -= (rgba.r - rgb.r) * (level / 100);
+      rgba.g -= (rgba.g - rgb.g) * (level / 100);
+      rgba.b -= (rgba.b - rgb.b) * (level / 100);
+      return rgba;
+    });
+  });
+
+  Filter.register("invert", function() {
+    return this.process("invert", function(rgba) {
+      rgba.r = 255 - rgba.r;
+      rgba.g = 255 - rgba.g;
+      rgba.b = 255 - rgba.b;
+      return rgba;
+    });
+  });
+
+  Filter.register("sepia", function(adjust) {
+    if (adjust == null) {
+      adjust = 100;
+    }
+    adjust /= 100;
+    return this.process("sepia", function(rgba) {
+      rgba.r = Math.min(255, (rgba.r * (1 - (0.607 * adjust))) + (rgba.g * (0.769 * adjust)) + (rgba.b * (0.189 * adjust)));
+      rgba.g = Math.min(255, (rgba.r * (0.349 * adjust)) + (rgba.g * (1 - (0.314 * adjust))) + (rgba.b * (0.168 * adjust)));
+      rgba.b = Math.min(255, (rgba.r * (0.272 * adjust)) + (rgba.g * (0.534 * adjust)) + (rgba.b * (1 - (0.869 * adjust))));
+      return rgba;
+    });
+  });
+
+  Filter.register("gamma", function(adjust) {
+    return this.process("gamma", function(rgba) {
+      rgba.r = Math.pow(rgba.r / 255, adjust) * 255;
+      rgba.g = Math.pow(rgba.g / 255, adjust) * 255;
+      rgba.b = Math.pow(rgba.b / 255, adjust) * 255;
+      return rgba;
+    });
+  });
+
+  Filter.register("noise", function(adjust) {
+    adjust = Math.abs(adjust) * 2.55;
+    return this.process("noise", function(rgba) {
+      var rand;
+
+      rand = Calculate.randomRange(adjust * -1, adjust);
+      rgba.r += rand;
+      rgba.g += rand;
+      rgba.b += rand;
+      return rgba;
+    });
+  });
+
+  Filter.register("clip", function(adjust) {
+    adjust = Math.abs(adjust) * 2.55;
+    return this.process("clip", function(rgba) {
+      if (rgba.r > 255 - adjust) {
+        rgba.r = 255;
+      } else if (rgba.r < adjust) {
+        rgba.r = 0;
+      }
+      if (rgba.g > 255 - adjust) {
+        rgba.g = 255;
+      } else if (rgba.g < adjust) {
+        rgba.g = 0;
+      }
+      if (rgba.b > 255 - adjust) {
+        rgba.b = 255;
+      } else if (rgba.b < adjust) {
+        rgba.b = 0;
+      }
+      return rgba;
+    });
+  });
+
+  Filter.register("channels", function(options) {
+    var chan, value;
+
+    if (typeof options !== "object") {
+      return this;
+    }
+    for (chan in options) {
+      if (!__hasProp.call(options, chan)) continue;
+      value = options[chan];
+      if (value === 0) {
+        delete options[chan];
+        continue;
+      }
+      options[chan] /= 100;
+    }
+    if (options.length === 0) {
+      return this;
+    }
+    return this.process("channels", function(rgba) {
+      if (options.red != null) {
+        if (options.red > 0) {
+          rgba.r += (255 - rgba.r) * options.red;
+        } else {
+          rgba.r -= rgba.r * Math.abs(options.red);
+        }
+      }
+      if (options.green != null) {
+        if (options.green > 0) {
+          rgba.g += (255 - rgba.g) * options.green;
+        } else {
+          rgba.g -= rgba.g * Math.abs(options.green);
+        }
+      }
+      if (options.blue != null) {
+        if (options.blue > 0) {
+          rgba.b += (255 - rgba.b) * options.blue;
+        } else {
+          rgba.b -= rgba.b * Math.abs(options.blue);
+        }
+      }
+      return rgba;
+    });
+  });
+
+  Filter.register("curves", function() {
+    var bezier, chans, cps, ctrl1, ctrl2, end, i, start, _i, _j, _ref, _ref1;
+
+    chans = arguments[0], cps = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
+    if (typeof chans === "string") {
+      chans = chans.split("");
+    }
+    if (chans[0] === "v") {
+      chans = ['r', 'g', 'b'];
+    }
+    if (cps.length < 3 || cps.length > 4) {
+      throw "Invalid number of arguments to curves filter";
+    }
+    start = cps[0];
+    ctrl1 = cps[1];
+    ctrl2 = cps.length === 4 ? cps[2] : cps[1];
+    end = cps[cps.length - 1];
+    bezier = Calculate.bezier(start, ctrl1, ctrl2, end, 0, 255);
+    if (start[0] > 0) {
+      for (i = _i = 0, _ref = start[0]; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
+        bezier[i] = start[1];
+      }
+    }
+    if (end[0] < 255) {
+      for (i = _j = _ref1 = end[0]; _ref1 <= 255 ? _j <= 255 : _j >= 255; i = _ref1 <= 255 ? ++_j : --_j) {
+        bezier[i] = end[1];
+      }
+    }
+    return this.process("curves", function(rgba) {
+      var _k, _ref2;
+
+      for (i = _k = 0, _ref2 = chans.length; 0 <= _ref2 ? _k < _ref2 : _k > _ref2; i = 0 <= _ref2 ? ++_k : --_k) {
+        rgba[chans[i]] = bezier[rgba[chans[i]]];
+      }
+      return rgba;
+    });
+  });
+
+  Filter.register("exposure", function(adjust) {
+    var ctrl1, ctrl2, p;
+
+    p = Math.abs(adjust) / 100;
+    ctrl1 = [0, 255 * p];
+    ctrl2 = [255 - (255 * p), 255];
+    if (adjust < 0) {
+      ctrl1 = ctrl1.reverse();
+      ctrl2 = ctrl2.reverse();
+    }
+    return this.curves('rgb', [0, 0], ctrl1, ctrl2, [255, 255]);
+  });
+
+  Caman.Plugin.register("crop", function(width, height, x, y) {
+    var canvas, ctx;
+
+    if (x == null) {
+      x = 0;
+    }
+    if (y == null) {
+      y = 0;
+    }
+    if (typeof exports !== "undefined" && exports !== null) {
+      canvas = new Canvas(width, height);
+    } else {
+      canvas = document.createElement('canvas');
+      Util.copyAttributes(this.canvas, canvas);
+      canvas.width = width;
+      canvas.height = height;
+    }
+    ctx = canvas.getContext('2d');
+    ctx.drawImage(this.canvas, x, y, width, height, 0, 0, width, height);
+    this.cropCoordinates = {
+      x: x,
+      y: y
+    };
+    this.cropped = true;
+    return this.replaceCanvas(canvas);
+  });
+
+  Caman.Plugin.register("resize", function(newDims) {
+    var canvas, ctx;
+
+    if (newDims == null) {
+      newDims = null;
+    }
+    if (newDims === null || ((newDims.width == null) && (newDims.height == null))) {
+      Log.error("Invalid or missing dimensions given for resize");
+      return;
+    }
+    if (newDims.width == null) {
+      newDims.width = this.canvas.width * newDims.height / this.canvas.height;
+    } else if (newDims.height == null) {
+      newDims.height = this.canvas.height * newDims.width / this.canvas.width;
+    }
+    if (typeof exports !== "undefined" && exports !== null) {
+      canvas = new Canvas(newDims.width, newDims.height);
+    } else {
+      canvas = document.createElement('canvas');
+      Util.copyAttributes(this.canvas, canvas);
+      canvas.width = newDims.width;
+      canvas.height = newDims.height;
+    }
+    ctx = canvas.getContext('2d');
+    ctx.drawImage(this.canvas, 0, 0, this.canvas.width, this.canvas.height, 0, 0, newDims.width, newDims.height);
+    this.resized = true;
+    return this.replaceCanvas(canvas);
+  });
+
+  Caman.Filter.register("crop", function() {
+    return this.processPlugin("crop", Array.prototype.slice.call(arguments, 0));
+  });
+
+  Caman.Filter.register("resize", function() {
+    return this.processPlugin("resize", Array.prototype.slice.call(arguments, 0));
+  });
+
+  Caman.Filter.register("boxBlur", function() {
+    return this.processKernel("Box Blur", [1, 1, 1, 1, 1, 1, 1, 1, 1]);
+  });
+
+  Caman.Filter.register("heavyRadialBlur", function() {
+    return this.processKernel("Heavy Radial Blur", [0, 0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 0, 0, 1, 0, 0]);
+  });
+
+  Caman.Filter.register("gaussianBlur", function() {
+    return this.processKernel("Gaussian Blur", [1, 4, 6, 4, 1, 4, 16, 24, 16, 4, 6, 24, 36, 24, 6, 4, 16, 24, 16, 4, 1, 4, 6, 4, 1]);
+  });
+
+  Caman.Filter.register("motionBlur", function(degrees) {
+    var kernel;
+
+    if (degrees === 0 || degrees === 180) {
+      kernel = [0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0];
+    } else if ((degrees > 0 && degrees < 90) || (degrees > 180 && degrees < 270)) {
+      kernel = [0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0];
+    } else if (degrees === 90 || degrees === 270) {
+      kernel = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    } else {
+      kernel = [1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1];
+    }
+    return this.processKernel("Motion Blur", kernel);
+  });
+
+  Caman.Filter.register("sharpen", function(amt) {
+    if (amt == null) {
+      amt = 100;
+    }
+    amt /= 100;
+    return this.processKernel("Sharpen", [0, -amt, 0, -amt, 4 * amt + 1, -amt, 0, -amt, 0]);
+  });
+
+  vignetteFilters = {
+    brightness: function(rgba, amt, opts) {
+      rgba.r = rgba.r - (rgba.r * amt * opts.strength);
+      rgba.g = rgba.g - (rgba.g * amt * opts.strength);
+      rgba.b = rgba.b - (rgba.b * amt * opts.strength);
+      return rgba;
+    },
+    gamma: function(rgba, amt, opts) {
+      rgba.r = Math.pow(rgba.r / 255, Math.max(10 * amt * opts.strength, 1)) * 255;
+      rgba.g = Math.pow(rgba.g / 255, Math.max(10 * amt * opts.strength, 1)) * 255;
+      rgba.b = Math.pow(rgba.b / 255, Math.max(10 * amt * opts.strength, 1)) * 255;
+      return rgba;
+    },
+    colorize: function(rgba, amt, opts) {
+      rgba.r -= (rgba.r - opts.color.r) * amt;
+      rgba.g -= (rgba.g - opts.color.g) * amt;
+      rgba.b -= (rgba.b - opts.color.b) * amt;
+      return rgba;
+    }
+  };
+
+  Filter.register("vignette", function(size, strength) {
+    var bezier, center, end, start;
+
+    if (strength == null) {
+      strength = 60;
+    }
+    if (typeof size === "string" && size.substr(-1) === "%") {
+      if (this.dimensions.height > this.dimensions.width) {
+        size = this.dimensions.width * (parseInt(size.substr(0, size.length - 1), 10) / 100);
+      } else {
+        size = this.dimensions.height * (parseInt(size.substr(0, size.length - 1), 10) / 100);
+      }
+    }
+    strength /= 100;
+    center = [this.dimensions.width / 2, this.dimensions.height / 2];
+    start = Math.sqrt(Math.pow(center[0], 2) + Math.pow(center[1], 2));
+    end = start - size;
+    bezier = Calculate.bezier([0, 1], [30, 30], [70, 60], [100, 80]);
+    return this.process("vignette", function(rgba) {
+      var dist, div, loc;
+
+      loc = rgba.locationXY();
+      dist = Calculate.distance(loc.x, loc.y, center[0], center[1]);
+      if (dist > end) {
+        div = Math.max(1, (bezier[Math.round(((dist - end) / size) * 100)] / 10) * strength);
+        rgba.r = Math.pow(rgba.r / 255, div) * 255;
+        rgba.g = Math.pow(rgba.g / 255, div) * 255;
+        rgba.b = Math.pow(rgba.b / 255, div) * 255;
+      }
+      return rgba;
+    });
+  });
+
+  Filter.register("rectangularVignette", function(opts) {
+    var defaults, dim, percent, size, _i, _len, _ref;
+
+    defaults = {
+      strength: 50,
+      cornerRadius: 0,
+      method: 'brightness',
+      color: {
+        r: 0,
+        g: 0,
+        b: 0
+      }
+    };
+    opts = Util.extend(defaults, opts);
+    if (!opts.size) {
+      return this;
+    } else if (typeof opts.size === "string") {
+      percent = parseInt(opts.size, 10) / 100;
+      opts.size = {
+        width: this.dimensions.width * percent,
+        height: this.dimensions.height * percent
+      };
+    } else if (typeof opts.size === "object") {
+      _ref = ["width", "height"];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        dim = _ref[_i];
+        if (typeof opts.size[dim] === "string") {
+          opts.size[dim] = this.dimensions[dim] * (parseInt(opts.size[dim], 10) / 100);
+        }
+      }
+    } else if (opts.size === "number") {
+      size = opts.size;
+      opts.size = {
+        width: size,
+        height: size
+      };
+    }
+    if (typeof opts.cornerRadius === "string") {
+      opts.cornerRadius = (opts.size.width / 2) * (parseInt(opts.cornerRadius, 10) / 100);
+    }
+    opts.strength /= 100;
+    opts.size.width = Math.floor(opts.size.width);
+    opts.size.height = Math.floor(opts.size.height);
+    opts.image = {
+      width: this.dimensions.width,
+      height: this.dimensions.height
+    };
+    if (opts.method === "colorize" && typeof opts.color === "string") {
+      opts.color = Convert.hexToRGB(opts.color);
+    }
+    opts.coords = {
+      left: (this.dimensions.width - opts.size.width) / 2,
+      right: this.dimensions.width - opts.coords.left,
+      bottom: (this.dimensions.height - opts.size.height) / 2,
+      top: this.dimensions.height - opts.coords.bottom
+    };
+    opts.corners = [
+      {
+        x: opts.coords.left + opts.cornerRadius,
+        y: opts.coords.top - opts.cornerRadius
+      }, {
+        x: opts.coords.right - opts.cornerRadius,
+        y: opts.coords.top - opts.cornerRadius
+      }, {
+        x: opts.coords.right - opts.cornerRadius,
+        y: opts.coords.bottom + opts.cornerRadius
+      }, {
+        x: opts.coords.left + opts.cornerRadius,
+        y: opts.coords.bottom + opts.cornerRadius
+      }
+    ];
+    opts.maxDist = Calculate.distance(0, 0, opts.corners[3].x, opts.corners[3].y) - opts.cornerRadius;
+    return this.process("rectangularVignette", function(rgba) {
+      var amt, loc, radialDist;
+
+      loc = rgba.locationXY();
+      if ((loc.x > opts.corners[0].x && loc.x < opts.corners[1].x) && (loc.y > opts.coords.bottom && loc.y < opts.coords.top)) {
+        return rgba;
+      }
+      if ((loc.x > opts.coords.left && loc.x < opts.coords.right) && (loc.y > opts.corners[3].y && loc.y < opts.corners[2].y)) {
+        return rgba;
+      }
+      if (loc.x > opts.corners[0].x && loc.x < opts.corners[1].x && loc.y > opts.coords.top) {
+        amt = (loc.y - opts.coords.top) / opts.maxDist;
+      } else if (loc.y > opts.corners[2].y && loc.y < opts.corners[1].y && loc.x > opts.coords.right) {
+        amt = (loc.x - opts.coords.right) / opts.maxDist;
+      } else if (loc.x > opts.corners[0].x && loc.x < opts.corners[1].x && loc.y < opts.coords.bottom) {
+        amt = (opts.coords.bottom - loc.y) / opts.maxDist;
+      } else if (loc.y > opts.corners[2].y && loc.y < opts.corners[1].y && loc.x < opts.coords.left) {
+        amt = (opts.coords.left - loc.x) / opts.maxDist;
+      } else if (loc.x <= opts.corners[0].x && loc.y >= opts.corners[0].y) {
+        radialDist = Caman.distance(loc.x, loc.y, opts.corners[0].x, opts.corners[0].y);
+        amt = (radialDist - opts.cornerRadius) / opts.maxDist;
+      } else if (loc.x >= opts.corners[1].x && loc.y >= opts.corners[1].y) {
+        radialDist = Caman.distance(loc.x, loc.y, opts.corners[1].x, opts.corners[1].y);
+        amt = (radialDist - opts.cornerRadius) / opts.maxDist;
+      } else if (loc.x >= opts.corners[2].x && loc.y <= opts.corners[2].y) {
+        radialDist = Caman.distance(loc.x, loc.y, opts.corners[2].x, opts.corners[2].y);
+        amt = (radialDist - opts.cornerRadius) / opts.maxDist;
+      } else if (loc.x <= opts.corners[3].x && loc.y <= opts.corners[3].y) {
+        radialDist = Caman.distance(loc.x, loc.y, opts.corners[3].x, opts.corners[3].y);
+        amt = (radialDist - opts.cornerRadius) / opts.maxDist;
+      }
+      if (amt < 0) {
+        return rgba;
+      }
+      return vignetteFilters[opts.method](rgba, amt, opts);
+    });
+  });
+
+  /*
+  CompoundBlur - Blurring with varying radii for Canvas
+  
+  Version:   0.1
+  Author:  Mario Klingemann
+  Contact:   mario@quasimondo.com
+  Website:  http://www.quasimondo.com/StackBlurForCanvas
+  Twitter:  @quasimondo
+  Modified By: Ryan LeFevre (@meltingice)
+  
+  In case you find this class useful - especially in commercial projects -
+  I am not totally unhappy for a small donation to my PayPal account
+  mario@quasimondo.de
+  
+  Copyright (c) 2011 Mario Klingemann
+  
+  Permission is hereby granted, free of charge, to any person
+  obtaining a copy of this software and associated documentation
+  files (the "Software"), to deal in the Software without
+  restriction, including without limitation the rights to use,
+  copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the
+  Software is furnished to do so, subject to the following
+  conditions:
+  
+  The above copyright notice and this permission notice shall be
+  included in all copies or substantial portions of the Software.
+  
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+  EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+  OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+  NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+  HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+  OTHER DEALINGS IN THE SOFTWARE.
+  */
+
+
+  (function() {
+    var BlurStack, getLinearGradientMap, getRadialGradientMap, mul_table, shg_table;
+
+    mul_table = [512, 512, 456, 512, 328, 456, 335, 512, 405, 328, 271, 456, 388, 335, 292, 512, 454, 405, 364, 328, 298, 271, 496, 456, 420, 388, 360, 335, 312, 292, 273, 512, 482, 454, 428, 405, 383, 364, 345, 328, 312, 298, 284, 271, 259, 496, 475, 456, 437, 420, 404, 388, 374, 360, 347, 335, 323, 312, 302, 292, 282, 273, 265, 512, 497, 482, 468, 454, 441, 428, 417, 405, 394, 383, 373, 364, 354, 345, 337, 328, 320, 312, 305, 298, 291, 284, 278, 271, 265, 259, 507, 496, 485, 475, 465, 456, 446, 437, 428, 420, 412, 404, 396, 388, 381, 374, 367, 360, 354, 347, 341, 335, 329, 323, 318, 312, 307, 302, 297, 292, 287, 282, 278, 273, 269, 265, 261, 512, 505, 497, 489, 482, 475, 468, 461, 454, 447, 441, 435, 428, 422, 417, 411, 405, 399, 394, 389, 383, 378, 373, 368, 364, 359, 354, 350, 345, 341, 337, 332, 328, 324, 320, 316, 312, 309, 305, 301, 298, 294, 291, 287, 284, 281, 278, 274, 271, 268, 265, 262, 259, 257, 507, 501, 496, 491, 485, 480, 475, 470, 465, 460, 456, 451, 446, 442, 437, 433, 428, 424, 420, 416, 412, 408, 404, 400, 396, 392, 388, 385, 381, 377, 374, 370, 367, 363, 360, 357, 354, 350, 347, 344, 341, 338, 335, 332, 329, 326, 323, 320, 318, 315, 312, 310, 307, 304, 302, 299, 297, 294, 292, 289, 287, 285, 282, 280, 278, 275, 273, 271, 269, 267, 265, 263, 261, 259];
+    shg_table = [9, 11, 12, 13, 13, 14, 14, 15, 15, 15, 15, 16, 16, 16, 16, 17, 17, 17, 17, 17, 17, 17, 18, 18, 18, 18, 18, 18, 18, 18, 18, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24];
+    getLinearGradientMap = function(width, height, centerX, centerY, angle, length, mirrored) {
+      var cnv, context, gradient, x1, x2, y1, y2;
+
+      cnv = typeof exports !== "undefined" && exports !== null ? new Canvas() : document.createElement('canvas');
+      cnv.width = width;
+      cnv.height = height;
+      x1 = centerX + Math.cos(angle) * length * 0.5;
+      y1 = centerY + Math.sin(angle) * length * 0.5;
+      x2 = centerX - Math.cos(angle) * length * 0.5;
+      y2 = centerY - Math.sin(angle) * length * 0.5;
+      context = cnv.getContext("2d");
+      gradient = context.createLinearGradient(x1, y1, x2, y2);
+      if (!mirrored) {
+        gradient.addColorStop(0, "white");
+        gradient.addColorStop(1, "black");
+      } else {
+        gradient.addColorStop(0, "white");
+        gradient.addColorStop(0.5, "black");
+        gradient.addColorStop(1, "white");
+      }
+      context.fillStyle = gradient;
+      context.fillRect(0, 0, width, height);
+      return context.getImageData(0, 0, width, height);
+    };
+    getRadialGradientMap = function(width, height, centerX, centerY, radius1, radius2) {
+      var cnv, context, gradient;
+
+      cnv = typeof exports !== "undefined" && exports !== null ? new Canvas() : document.createElement('canvas');
+      cnv.width = width;
+      cnv.height = height;
+      context = cnv.getContext("2d");
+      gradient = context.createRadialGradient(centerX, centerY, radius1, centerX, centerY, radius2);
+      gradient.addColorStop(1, "white");
+      gradient.addColorStop(0, "black");
+      context.fillStyle = gradient;
+      context.fillRect(0, 0, width, height);
+      return context.getImageData(0, 0, width, height);
+    };
+    BlurStack = function() {
+      this.r = 0;
+      this.g = 0;
+      this.b = 0;
+      this.a = 0;
+      return this.next = null;
+    };
+    Caman.Plugin.register("compoundBlur", function(radiusData, radius, increaseFactor, blurLevels) {
+      var b_in_sum, b_out_sum, b_sum, blend, currentIndex, div, g_in_sum, g_out_sum, g_sum, height, heightMinus1, i, iblend, idx, imagePixels, index, iradius, lookupValue, mul_sum, p, pb, pg, pixels, pr, r_in_sum, r_out_sum, r_sum, radiusPixels, radiusPlus1, rbs, shg_sum, stack, stackEnd, stackIn, stackOut, stackStart, steps, sumFactor, w4, wh, wh4, width, widthMinus1, x, y, yi, yp, yw, _i, _j, _k, _l, _m, _n, _o, _p, _q, _r;
+
+      width = this.dimensions.width;
+      height = this.dimensions.height;
+      imagePixels = this.pixelData;
+      radiusPixels = radiusData.data;
+      wh = width * height;
+      wh4 = wh << 2;
+      pixels = [];
+      for (i = _i = 0; 0 <= wh4 ? _i < wh4 : _i > wh4; i = 0 <= wh4 ? ++_i : --_i) {
+        pixels[i] = imagePixels[i];
+      }
+      currentIndex = 0;
+      steps = blurLevels;
+      blurLevels -= 1;
+      while (steps-- >= 0) {
+        iradius = (radius + 0.5) | 0;
+        if (iradius === 0) {
+          continue;
+        }
+        if (iradius > 256) {
+          iradius = 256;
+        }
+        div = iradius + iradius + 1;
+        w4 = width << 2;
+        widthMinus1 = width - 1;
+        heightMinus1 = height - 1;
+        radiusPlus1 = iradius + 1;
+        sumFactor = radiusPlus1 * (radiusPlus1 + 1) / 2;
+        stackStart = new BlurStack();
+        stackEnd = void 0;
+        stack = stackStart;
+        for (i = _j = 1; 1 <= div ? _j < div : _j > div; i = 1 <= div ? ++_j : --_j) {
+          stack = stack.next = new BlurStack();
+          if (i === radiusPlus1) {
+            stackEnd = stack;
+          }
+        }
+        stack.next = stackStart;
+        stackIn = null;
+        stackOut = null;
+        yw = yi = 0;
+        mul_sum = mul_table[iradius];
+        shg_sum = shg_table[iradius];
+        for (y = _k = 0; 0 <= height ? _k < height : _k > height; y = 0 <= height ? ++_k : --_k) {
+          r_in_sum = g_in_sum = b_in_sum = r_sum = g_sum = b_sum = 0;
+          r_out_sum = radiusPlus1 * (pr = pixels[yi]);
+          g_out_sum = radiusPlus1 * (pg = pixels[yi + 1]);
+          b_out_sum = radiusPlus1 * (pb = pixels[yi + 2]);
+          r_sum += sumFactor * pr;
+          g_sum += sumFactor * pg;
+          b_sum += sumFactor * pb;
+          stack = stackStart;
+          for (i = _l = 0; 0 <= radiusPlus1 ? _l < radiusPlus1 : _l > radiusPlus1; i = 0 <= radiusPlus1 ? ++_l : --_l) {
+            stack.r = pr;
+            stack.g = pg;
+            stack.b = pb;
+            stack = stack.next;
+          }
+          for (i = _m = 1; 1 <= radiusPlus1 ? _m < radiusPlus1 : _m > radiusPlus1; i = 1 <= radiusPlus1 ? ++_m : --_m) {
+            p = yi + ((widthMinus1 < i ? widthMinus1 : i) << 2);
+            r_sum += (stack.r = (pr = pixels[p])) * (rbs = radiusPlus1 - i);
+            g_sum += (stack.g = (pg = pixels[p + 1])) * rbs;
+            b_sum += (stack.b = (pb = pixels[p + 2])) * rbs;
+            r_in_sum += pr;
+            g_in_sum += pg;
+            b_in_sum += pb;
+            stack = stack.next;
+          }
+          stackIn = stackStart;
+          stackOut = stackEnd;
+          for (x = _n = 0; 0 <= width ? _n < width : _n > width; x = 0 <= width ? ++_n : --_n) {
+            pixels[yi] = (r_sum * mul_sum) >> shg_sum;
+            pixels[yi + 1] = (g_sum * mul_sum) >> shg_sum;
+            pixels[yi + 2] = (b_sum * mul_sum) >> shg_sum;
+            r_sum -= r_out_sum;
+            g_sum -= g_out_sum;
+            b_sum -= b_out_sum;
+            r_out_sum -= stackIn.r;
+            g_out_sum -= stackIn.g;
+            b_out_sum -= stackIn.b;
+            p = (yw + ((p = x + radiusPlus1) < widthMinus1 ? p : widthMinus1)) << 2;
+            r_in_sum += (stackIn.r = pixels[p]);
+            g_in_sum += (stackIn.g = pixels[p + 1]);
+            b_in_sum += (stackIn.b = pixels[p + 2]);
+            r_sum += r_in_sum;
+            g_sum += g_in_sum;
+            b_sum += b_in_sum;
+            stackIn = stackIn.next;
+            r_out_sum += (pr = stackOut.r);
+            g_out_sum += (pg = stackOut.g);
+            b_out_sum += (pb = stackOut.b);
+            r_in_sum -= pr;
+            g_in_sum -= pg;
+            b_in_sum -= pb;
+            stackOut = stackOut.next;
+            yi += 4;
+          }
+          yw += width;
+        }
+        for (x = _o = 0; 0 <= width ? _o < width : _o > width; x = 0 <= width ? ++_o : --_o) {
+          g_in_sum = b_in_sum = r_in_sum = g_sum = b_sum = r_sum = 0;
+          yi = x << 2;
+          r_out_sum = radiusPlus1 * (pr = pixels[yi]);
+          g_out_sum = radiusPlus1 * (pg = pixels[yi + 1]);
+          b_out_sum = radiusPlus1 * (pb = pixels[yi + 2]);
+          r_sum += sumFactor * pr;
+          g_sum += sumFactor * pg;
+          b_sum += sumFactor * pb;
+          stack = stackStart;
+          for (i = _p = 0; 0 <= radiusPlus1 ? _p < radiusPlus1 : _p > radiusPlus1; i = 0 <= radiusPlus1 ? ++_p : --_p) {
+            stack.r = pr;
+            stack.g = pg;
+            stack.b = pb;
+            stack = stack.next;
+          }
+          yp = width;
+          for (i = _q = 1; 1 <= radiusPlus1 ? _q < radiusPlus1 : _q > radiusPlus1; i = 1 <= radiusPlus1 ? ++_q : --_q) {
+            yi = (yp + x) << 2;
+            r_sum += (stack.r = (pr = pixels[yi])) * (rbs = radiusPlus1 - i);
+            g_sum += (stack.g = (pg = pixels[yi + 1])) * rbs;
+            b_sum += (stack.b = (pb = pixels[yi + 2])) * rbs;
+            r_in_sum += pr;
+            g_in_sum += pg;
+            b_in_sum += pb;
+            stack = stack.next;
+            if (i < heightMinus1) {
+              yp += width;
+            }
+          }
+          yi = x;
+          stackIn = stackStart;
+          stackOut = stackEnd;
+          for (y = _r = 0; 0 <= height ? _r < height : _r > height; y = 0 <= height ? ++_r : --_r) {
+            p = yi << 2;
+            pixels[p] = (r_sum * mul_sum) >> shg_sum;
+            pixels[p + 1] = (g_sum * mul_sum) >> shg_sum;
+            pixels[p + 2] = (b_sum * mul_sum) >> shg_sum;
+            r_sum -= r_out_sum;
+            g_sum -= g_out_sum;
+            b_sum -= b_out_sum;
+            r_out_sum -= stackIn.r;
+            g_out_sum -= stackIn.g;
+            b_out_sum -= stackIn.b;
+            p = (x + (((p = y + radiusPlus1) < heightMinus1 ? p : heightMinus1) * width)) << 2;
+            r_sum += (r_in_sum += (stackIn.r = pixels[p]));
+            g_sum += (g_in_sum += (stackIn.g = pixels[p + 1]));
+            b_sum += (b_in_sum += (stackIn.b = pixels[p + 2]));
+            stackIn = stackIn.next;
+            r_out_sum += (pr = stackOut.r);
+            g_out_sum += (pg = stackOut.g);
+            b_out_sum += (pb = stackOut.b);
+            r_in_sum -= pr;
+            g_in_sum -= pg;
+            b_in_sum -= pb;
+            stackOut = stackOut.next;
+            yi += width;
+          }
+        }
+        radius *= increaseFactor;
+        i = wh;
+        while (--i > -1) {
+          idx = i << 2;
+          lookupValue = (radiusPixels[idx + 2] & 0xff) / 255.0 * blurLevels;
+          index = lookupValue | 0;
+          if (index === currentIndex) {
+            blend = 256.0 * (lookupValue - (lookupValue | 0));
+            iblend = 256 - blend;
+            imagePixels[idx] = (imagePixels[idx] * iblend + pixels[idx] * blend) >> 8;
+            imagePixels[idx + 1] = (imagePixels[idx + 1] * iblend + pixels[idx + 1] * blend) >> 8;
+            imagePixels[idx + 2] = (imagePixels[idx + 2] * iblend + pixels[idx + 2] * blend) >> 8;
+          } else if (index === currentIndex + 1) {
+            imagePixels[idx] = pixels[idx];
+            imagePixels[idx + 1] = pixels[idx + 1];
+            imagePixels[idx + 2] = pixels[idx + 2];
+          }
+        }
+        currentIndex++;
+      }
+      return this;
+    });
+    Caman.Filter.register("tiltShift", function(opts) {
+      var defaults, gradient;
+
+      defaults = {
+        center: {
+          x: this.dimensions.width / 2,
+          y: this.dimensions.height / 2
+        },
+        angle: 45,
+        focusWidth: 200,
+        startRadius: 3,
+        radiusFactor: 1.5,
+        steps: 3
+      };
+      opts = Util.extend(defaults, opts);
+      opts.angle *= Math.PI / 180;
+      gradient = getLinearGradientMap(this.dimensions.width, this.dimensions.height, opts.center.x, opts.center.y, opts.angle, opts.focusWidth, true);
+      return this.processPlugin("compoundBlur", [gradient, opts.startRadius, opts.radiusFactor, opts.steps]);
+    });
+    return Caman.Filter.register("radialBlur", function(opts) {
+      var defaults, gradient, radius1, radius2;
+
+      defaults = {
+        size: 50,
+        center: {
+          x: this.dimensions.width / 2,
+          y: this.dimensions.height / 2
+        },
+        startRadius: 3,
+        radiusFactor: 1.5,
+        steps: 3,
+        radius: null
+      };
+      opts = Util.extend(defaults, opts);
+      if (!opts.radius) {
+        opts.radius = this.dimensions.width < this.dimensions.height ? this.dimensions.height : this.dimensions.width;
+      }
+      radius1 = (opts.radius / 2) - opts.size;
+      radius2 = opts.radius / 2;
+      gradient = getRadialGradientMap(this.dimensions.width, this.dimensions.height, opts.center.x, opts.center.y, radius1, radius2);
+      return this.processPlugin("compoundBlur", [gradient, opts.startRadius, opts.radiusFactor, opts.steps]);
+    });
+  })();
+
+  Caman.Filter.register("edgeEnhance", function() {
+    return this.processKernel("Edge Enhance", [0, 0, 0, -1, 1, 0, 0, 0, 0]);
+  });
+
+  Caman.Filter.register("edgeDetect", function() {
+    return this.processKernel("Edge Detect", [-1, -1, -1, -1, 8, -1, -1, -1, -1]);
+  });
+
+  Caman.Filter.register("emboss", function() {
+    return this.processKernel("Emboss", [-2, -1, 0, -1, 1, 1, 0, 1, 2]);
+  });
+
+  Caman.Filter.register("posterize", function(adjust) {
+    var numOfAreas, numOfValues;
+
+    numOfAreas = 256 / adjust;
+    numOfValues = 255 / (adjust - 1);
+    return this.process("posterize", function(rgba) {
+      rgba.r = Math.floor(Math.floor(rgba.r / numOfAreas) * numOfValues);
+      rgba.g = Math.floor(Math.floor(rgba.g / numOfAreas) * numOfValues);
+      rgba.b = Math.floor(Math.floor(rgba.b / numOfAreas) * numOfValues);
+      return rgba;
+    });
+  });
+
+  Caman.Filter.register("vintage", function(vignette) {
+    if (vignette == null) {
+      vignette = true;
+    }
+    this.greyscale();
+    this.contrast(5);
+    this.noise(3);
+    this.sepia(100);
+    this.channels({
+      red: 8,
+      blue: 2,
+      green: 4
+    });
+    this.gamma(0.87);
+    if (vignette) {
+      return this.vignette("40%", 30);
+    }
+  });
+
+  Caman.Filter.register("lomo", function(vignette) {
+    if (vignette == null) {
+      vignette = true;
+    }
+    this.brightness(15);
+    this.exposure(15);
+    this.curves('rgb', [0, 0], [200, 0], [155, 255], [255, 255]);
+    this.saturation(-20);
+    this.gamma(1.8);
+    if (vignette) {
+      this.vignette("50%", 60);
+    }
+    return this.brightness(5);
+  });
+
+  Caman.Filter.register("clarity", function(grey) {
+    if (grey == null) {
+      grey = false;
+    }
+    this.vibrance(20);
+    this.curves('rgb', [5, 0], [130, 150], [190, 220], [250, 255]);
+    this.sharpen(15);
+    this.vignette("45%", 20);
+    if (grey) {
+      this.greyscale();
+      this.contrast(4);
+    }
+    return this;
+  });
+
+  Caman.Filter.register("sinCity", function() {
+    this.contrast(100);
+    this.brightness(15);
+    this.exposure(10);
+    this.posterize(80);
+    this.clip(30);
+    return this.greyscale();
+  });
+
+  Caman.Filter.register("sunrise", function() {
+    this.exposure(3.5);
+    this.saturation(-5);
+    this.vibrance(50);
+    this.sepia(60);
+    this.colorize("#e87b22", 10);
+    this.channels({
+      red: 8,
+      blue: 8
+    });
+    this.contrast(5);
+    this.gamma(1.2);
+    return this.vignette("55%", 25);
+  });
+
+  Caman.Filter.register("crossProcess", function() {
+    this.exposure(5);
+    this.colorize("#e87b22", 4);
+    this.sepia(20);
+    this.channels({
+      blue: 8,
+      red: 3
+    });
+    this.curves('b', [0, 0], [100, 150], [180, 180], [255, 255]);
+    this.contrast(15);
+    this.vibrance(75);
+    return this.gamma(1.6);
+  });
+
+  Caman.Filter.register("orangePeel", function() {
+    this.curves('rgb', [0, 0], [100, 50], [140, 200], [255, 255]);
+    this.vibrance(-30);
+    this.saturation(-30);
+    this.colorize('#ff9000', 30);
+    this.contrast(-5);
+    return this.gamma(1.4);
+  });
+
+  Caman.Filter.register("love", function() {
+    this.brightness(5);
+    this.exposure(8);
+    this.contrast(4);
+    this.colorize('#c42007', 30);
+    this.vibrance(50);
+    return this.gamma(1.3);
+  });
+
+  Caman.Filter.register("grungy", function() {
+    this.gamma(1.5);
+    this.clip(25);
+    this.saturation(-60);
+    this.contrast(5);
+    this.noise(5);
+    return this.vignette("50%", 30);
+  });
+
+  Caman.Filter.register("jarques", function() {
+    this.saturation(-35);
+    this.curves('b', [20, 0], [90, 120], [186, 144], [255, 230]);
+    this.curves('r', [0, 0], [144, 90], [138, 120], [255, 255]);
+    this.curves('g', [10, 0], [115, 105], [148, 100], [255, 248]);
+    this.curves('rgb', [0, 0], [120, 100], [128, 140], [255, 255]);
+    return this.sharpen(20);
+  });
+
+  Caman.Filter.register("pinhole", function() {
+    this.greyscale();
+    this.sepia(10);
+    this.exposure(10);
+    this.contrast(15);
+    return this.vignette("60%", 35);
+  });
+
+  Caman.Filter.register("oldBoot", function() {
+    this.saturation(-20);
+    this.vibrance(-50);
+    this.gamma(1.1);
+    this.sepia(30);
+    this.channels({
+      red: -10,
+      blue: 5
+    });
+    this.curves('rgb', [0, 0], [80, 50], [128, 230], [255, 255]);
+    return this.vignette("60%", 30);
+  });
+
+  Caman.Filter.register("glowingSun", function(vignette) {
+    if (vignette == null) {
+      vignette = true;
+    }
+    this.brightness(10);
+    this.newLayer(function() {
+      this.setBlendingMode("multiply");
+      this.opacity(80);
+      this.copyParent();
+      this.filter.gamma(0.8);
+      this.filter.contrast(50);
+      return this.filter.exposure(10);
+    });
+    this.newLayer(function() {
+      this.setBlendingMode("softLight");
+      this.opacity(80);
+      return this.fillColor("#f49600");
+    });
+    this.exposure(20);
+    this.gamma(0.8);
+    if (vignette) {
+      return this.vignette("45%", 20);
+    }
+  });
+
+  Caman.Filter.register("hazyDays", function() {
+    this.gamma(1.2);
+    this.newLayer(function() {
+      this.setBlendingMode("overlay");
+      this.opacity(60);
+      this.copyParent();
+      this.filter.channels({
+        red: 5
+      });
+      return this.filter.stackBlur(15);
+    });
+    this.newLayer(function() {
+      this.setBlendingMode("addition");
+      this.opacity(40);
+      return this.fillColor("#6899ba");
+    });
+    this.newLayer(function() {
+      this.setBlendingMode("multiply");
+      this.opacity(35);
+      this.copyParent();
+      this.filter.brightness(40);
+      this.filter.vibrance(40);
+      this.filter.exposure(30);
+      this.filter.contrast(15);
+      this.filter.curves('r', [0, 40], [128, 128], [128, 128], [255, 215]);
+      this.filter.curves('g', [0, 40], [128, 128], [128, 128], [255, 215]);
+      this.filter.curves('b', [0, 40], [128, 128], [128, 128], [255, 215]);
+      return this.filter.stackBlur(5);
+    });
+    this.curves('r', [20, 0], [128, 158], [128, 128], [235, 255]);
+    this.curves('g', [20, 0], [128, 128], [128, 128], [235, 255]);
+    this.curves('b', [20, 0], [128, 108], [128, 128], [235, 255]);
+    return this.vignette("45%", 20);
+  });
+
+  Caman.Filter.register("herMajesty", function() {
+    this.brightness(40);
+    this.colorize("#ea1c5d", 10);
+    this.curves('b', [0, 10], [128, 180], [190, 190], [255, 255]);
+    this.newLayer(function() {
+      this.setBlendingMode('overlay');
+      this.opacity(50);
+      this.copyParent();
+      this.filter.gamma(0.7);
+      return this.newLayer(function() {
+        this.setBlendingMode('normal');
+        this.opacity(60);
+        return this.fillColor('#ea1c5d');
+      });
+    });
+    this.newLayer(function() {
+      this.setBlendingMode('multiply');
+      this.opacity(60);
+      this.copyParent();
+      this.filter.saturation(50);
+      this.filter.hue(90);
+      return this.filter.contrast(10);
+    });
+    this.gamma(1.4);
+    this.vibrance(-30);
+    this.newLayer(function() {
+      this.opacity(10);
+      return this.fillColor('#e5f0ff');
+    });
+    return this;
+  });
+
+  Caman.Filter.register("nostalgia", function() {
+    this.saturation(20);
+    this.gamma(1.4);
+    this.greyscale();
+    this.contrast(5);
+    this.sepia(100);
+    this.channels({
+      red: 8,
+      blue: 2,
+      green: 4
+    });
+    this.gamma(0.8);
+    this.contrast(5);
+    this.exposure(10);
+    this.newLayer(function() {
+      this.setBlendingMode('overlay');
+      this.copyParent();
+      this.opacity(55);
+      return this.filter.stackBlur(10);
+    });
+    return this.vignette("50%", 30);
+  });
+
+  Caman.Filter.register("hemingway", function() {
+    this.greyscale();
+    this.contrast(10);
+    this.gamma(0.9);
+    this.newLayer(function() {
+      this.setBlendingMode("multiply");
+      this.opacity(40);
+      this.copyParent();
+      this.filter.exposure(15);
+      this.filter.contrast(15);
+      return this.filter.channels({
+        green: 10,
+        red: 5
+      });
+    });
+    this.sepia(30);
+    this.curves('rgb', [0, 10], [120, 90], [180, 200], [235, 255]);
+    this.channels({
+      red: 5,
+      green: -2
+    });
+    return this.exposure(15);
+  });
+
+  Caman.Filter.register("concentrate", function() {
+    this.sharpen(40);
+    this.saturation(-50);
+    this.channels({
+      red: 3
+    });
+    this.newLayer(function() {
+      this.setBlendingMode("multiply");
+      this.opacity(80);
+      this.copyParent();
+      this.filter.sharpen(5);
+      this.filter.contrast(50);
+      this.filter.exposure(10);
+      return this.filter.channels({
+        blue: 5
+      });
+    });
+    return this.brightness(10);
+  });
+
+  Caman.Plugin.register("rotate", function(degrees) {
+    var angle, canvas, ctx, height, to_radians, width, x, y;
+
+    angle = degrees % 360;
+    if (angle === 0) {
+      return this.dimensions = {
+        width: this.canvas.width,
+        height: this.canvas.height
+      };
+    }
+    to_radians = Math.PI / 180;
+    if (typeof exports !== "undefined" && exports !== null) {
+      canvas = new Canvas();
+    } else {
+      canvas = document.createElement('canvas');
+      Util.copyAttributes(this.canvas, canvas);
+    }
+    if (angle === 90 || angle === -270 || angle === 270 || angle === -90) {
+      width = this.canvas.height;
+      height = this.canvas.width;
+      x = width / 2;
+      y = height / 2;
+    } else if (angle === 180) {
+      width = this.canvas.width;
+      height = this.canvas.height;
+      x = width / 2;
+      y = height / 2;
+    } else {
+      width = Math.sqrt(Math.pow(this.originalWidth, 2) + Math.pow(this.originalHeight, 2));
+      height = width;
+      x = this.canvas.height / 2;
+      y = this.canvas.width / 2;
+    }
+    canvas.width = width;
+    canvas.height = height;
+    ctx = canvas.getContext('2d');
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.rotate(angle * to_radians);
+    ctx.drawImage(this.canvas, -this.canvas.width / 2, -this.canvas.height / 2, this.canvas.width, this.canvas.height);
+    ctx.restore();
+    return this.replaceCanvas(canvas);
+  });
+
+  Caman.Filter.register("rotate", function() {
+    return this.processPlugin("rotate", Array.prototype.slice.call(arguments, 0));
+  });
+
+  /*
+  StackBlur - a fast almost Gaussian Blur For Canvas v0.31 modified for CamanJS
+  
+  Version:   0.31
+  Author:    Mario Klingemann
+  Contact:   mario@quasimondo.com
+  Website:  http://www.quasimondo.com/StackBlurForCanvas
+  Twitter:  @quasimondo
+  Modified By: Ryan LeFevre (@meltingice)
+  
+  In case you find this class useful - especially in commercial projects -
+  I am not totally unhappy for a small donation to my PayPal account
+  mario@quasimondo.de
+  
+  Or support me on flattr: 
+  https://flattr.com/thing/72791/StackBlur-a-fast-almost-Gaussian-Blur-Effect-for-CanvasJavascript
+  
+  Copyright (c) 2010 Mario Klingemann
+  
+  Permission is hereby granted, free of charge, to any person
+  obtaining a copy of this software and associated documentation
+  files (the "Software"), to deal in the Software without
+  restriction, including without limitation the rights to use,
+  copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the
+  Software is furnished to do so, subject to the following
+  conditions:
+  
+  The above copyright notice and this permission notice shall be
+  included in all copies or substantial portions of the Software.
+  
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+  EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+  OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+  NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+  HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+  OTHER DEALINGS IN THE SOFTWARE.
+  */
+
+
+  (function() {
+    var BlurStack, mul_table, shg_table;
+
+    mul_table = [512, 512, 456, 512, 328, 456, 335, 512, 405, 328, 271, 456, 388, 335, 292, 512, 454, 405, 364, 328, 298, 271, 496, 456, 420, 388, 360, 335, 312, 292, 273, 512, 482, 454, 428, 405, 383, 364, 345, 328, 312, 298, 284, 271, 259, 496, 475, 456, 437, 420, 404, 388, 374, 360, 347, 335, 323, 312, 302, 292, 282, 273, 265, 512, 497, 482, 468, 454, 441, 428, 417, 405, 394, 383, 373, 364, 354, 345, 337, 328, 320, 312, 305, 298, 291, 284, 278, 271, 265, 259, 507, 496, 485, 475, 465, 456, 446, 437, 428, 420, 412, 404, 396, 388, 381, 374, 367, 360, 354, 347, 341, 335, 329, 323, 318, 312, 307, 302, 297, 292, 287, 282, 278, 273, 269, 265, 261, 512, 505, 497, 489, 482, 475, 468, 461, 454, 447, 441, 435, 428, 422, 417, 411, 405, 399, 394, 389, 383, 378, 373, 368, 364, 359, 354, 350, 345, 341, 337, 332, 328, 324, 320, 316, 312, 309, 305, 301, 298, 294, 291, 287, 284, 281, 278, 274, 271, 268, 265, 262, 259, 257, 507, 501, 496, 491, 485, 480, 475, 470, 465, 460, 456, 451, 446, 442, 437, 433, 428, 424, 420, 416, 412, 408, 404, 400, 396, 392, 388, 385, 381, 377, 374, 370, 367, 363, 360, 357, 354, 350, 347, 344, 341, 338, 335, 332, 329, 326, 323, 320, 318, 315, 312, 310, 307, 304, 302, 299, 297, 294, 292, 289, 287, 285, 282, 280, 278, 275, 273, 271, 269, 267, 265, 263, 261, 259];
+    shg_table = [9, 11, 12, 13, 13, 14, 14, 15, 15, 15, 15, 16, 16, 16, 16, 17, 17, 17, 17, 17, 17, 17, 18, 18, 18, 18, 18, 18, 18, 18, 18, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24];
+    BlurStack = function() {
+      this.r = 0;
+      this.g = 0;
+      this.b = 0;
+      this.a = 0;
+      return this.next = null;
+    };
+    Caman.Plugin.register("stackBlur", function(radius) {
+      var b_in_sum, b_out_sum, b_sum, div, g_in_sum, g_out_sum, g_sum, height, heightMinus1, i, mul_sum, p, pb, pg, pixels, pr, r_in_sum, r_out_sum, r_sum, radiusPlus1, rbs, shg_sum, stack, stackEnd, stackIn, stackOut, stackStart, sumFactor, w4, width, widthMinus1, x, y, yi, yp, yw, _i, _j, _k, _l, _m, _n, _o, _p, _q;
+
+      if (isNaN(radius) || radius < 1) {
+        return;
+      }
+      radius |= 0;
+      pixels = this.pixelData;
+      width = this.dimensions.width;
+      height = this.dimensions.height;
+      div = radius + radius + 1;
+      w4 = width << 2;
+      widthMinus1 = width - 1;
+      heightMinus1 = height - 1;
+      radiusPlus1 = radius + 1;
+      sumFactor = radiusPlus1 * (radiusPlus1 + 1) / 2;
+      stackStart = new BlurStack();
+      stack = stackStart;
+      for (i = _i = 1; 1 <= div ? _i < div : _i > div; i = 1 <= div ? ++_i : --_i) {
+        stack = stack.next = new BlurStack();
+        if (i === radiusPlus1) {
+          stackEnd = stack;
+        }
+      }
+      stack.next = stackStart;
+      stackIn = null;
+      stackOut = null;
+      yw = yi = 0;
+      mul_sum = mul_table[radius];
+      shg_sum = shg_table[radius];
+      for (y = _j = 0; 0 <= height ? _j < height : _j > height; y = 0 <= height ? ++_j : --_j) {
+        r_in_sum = g_in_sum = b_in_sum = r_sum = g_sum = b_sum = 0;
+        r_out_sum = radiusPlus1 * (pr = pixels[yi]);
+        g_out_sum = radiusPlus1 * (pg = pixels[yi + 1]);
+        b_out_sum = radiusPlus1 * (pb = pixels[yi + 2]);
+        r_sum += sumFactor * pr;
+        g_sum += sumFactor * pg;
+        b_sum += sumFactor * pb;
+        stack = stackStart;
+        for (i = _k = 0; 0 <= radiusPlus1 ? _k < radiusPlus1 : _k > radiusPlus1; i = 0 <= radiusPlus1 ? ++_k : --_k) {
+          stack.r = pr;
+          stack.g = pg;
+          stack.b = pb;
+          stack = stack.next;
+        }
+        for (i = _l = 1; 1 <= radiusPlus1 ? _l < radiusPlus1 : _l > radiusPlus1; i = 1 <= radiusPlus1 ? ++_l : --_l) {
+          p = yi + ((widthMinus1 < i ? widthMinus1 : i) << 2);
+          r_sum += (stack.r = (pr = pixels[p])) * (rbs = radiusPlus1 - i);
+          g_sum += (stack.g = (pg = pixels[p + 1])) * rbs;
+          b_sum += (stack.b = (pb = pixels[p + 2])) * rbs;
+          r_in_sum += pr;
+          g_in_sum += pg;
+          b_in_sum += pb;
+          stack = stack.next;
+        }
+        stackIn = stackStart;
+        stackOut = stackEnd;
+        for (x = _m = 0; 0 <= width ? _m < width : _m > width; x = 0 <= width ? ++_m : --_m) {
+          pixels[yi] = (r_sum * mul_sum) >> shg_sum;
+          pixels[yi + 1] = (g_sum * mul_sum) >> shg_sum;
+          pixels[yi + 2] = (b_sum * mul_sum) >> shg_sum;
+          r_sum -= r_out_sum;
+          g_sum -= g_out_sum;
+          b_sum -= b_out_sum;
+          r_out_sum -= stackIn.r;
+          g_out_sum -= stackIn.g;
+          b_out_sum -= stackIn.b;
+          p = (yw + ((p = x + radius + 1) < widthMinus1 ? p : widthMinus1)) << 2;
+          r_in_sum += (stackIn.r = pixels[p]);
+          g_in_sum += (stackIn.g = pixels[p + 1]);
+          b_in_sum += (stackIn.b = pixels[p + 2]);
+          r_sum += r_in_sum;
+          g_sum += g_in_sum;
+          b_sum += b_in_sum;
+          stackIn = stackIn.next;
+          r_out_sum += (pr = stackOut.r);
+          g_out_sum += (pg = stackOut.g);
+          b_out_sum += (pb = stackOut.b);
+          r_in_sum -= pr;
+          g_in_sum -= pg;
+          b_in_sum -= pb;
+          stackOut = stackOut.next;
+          yi += 4;
+        }
+        yw += width;
+      }
+      for (x = _n = 0; 0 <= width ? _n < width : _n > width; x = 0 <= width ? ++_n : --_n) {
+        g_in_sum = b_in_sum = r_in_sum = g_sum = b_sum = r_sum = 0;
+        yi = x << 2;
+        r_out_sum = radiusPlus1 * (pr = pixels[yi]);
+        g_out_sum = radiusPlus1 * (pg = pixels[yi + 1]);
+        b_out_sum = radiusPlus1 * (pb = pixels[yi + 2]);
+        r_sum += sumFactor * pr;
+        g_sum += sumFactor * pg;
+        b_sum += sumFactor * pb;
+        stack = stackStart;
+        for (i = _o = 0; 0 <= radiusPlus1 ? _o < radiusPlus1 : _o > radiusPlus1; i = 0 <= radiusPlus1 ? ++_o : --_o) {
+          stack.r = pr;
+          stack.g = pg;
+          stack.b = pb;
+          stack = stack.next;
+        }
+        yp = width;
+        for (i = _p = 1; 1 <= radius ? _p <= radius : _p >= radius; i = 1 <= radius ? ++_p : --_p) {
+          yi = (yp + x) << 2;
+          r_sum += (stack.r = (pr = pixels[yi])) * (rbs = radiusPlus1 - i);
+          g_sum += (stack.g = (pg = pixels[yi + 1])) * rbs;
+          b_sum += (stack.b = (pb = pixels[yi + 2])) * rbs;
+          r_in_sum += pr;
+          g_in_sum += pg;
+          b_in_sum += pb;
+          stack = stack.next;
+          if (i < heightMinus1) {
+            yp += width;
+          }
+        }
+        yi = x;
+        stackIn = stackStart;
+        stackOut = stackEnd;
+        for (y = _q = 0; 0 <= height ? _q < height : _q > height; y = 0 <= height ? ++_q : --_q) {
+          p = yi << 2;
+          pixels[p] = (r_sum * mul_sum) >> shg_sum;
+          pixels[p + 1] = (g_sum * mul_sum) >> shg_sum;
+          pixels[p + 2] = (b_sum * mul_sum) >> shg_sum;
+          r_sum -= r_out_sum;
+          g_sum -= g_out_sum;
+          b_sum -= b_out_sum;
+          r_out_sum -= stackIn.r;
+          g_out_sum -= stackIn.g;
+          b_out_sum -= stackIn.b;
+          p = (x + (((p = y + radiusPlus1) < heightMinus1 ? p : heightMinus1) * width)) << 2;
+          r_sum += (r_in_sum += (stackIn.r = pixels[p]));
+          g_sum += (g_in_sum += (stackIn.g = pixels[p + 1]));
+          b_sum += (b_in_sum += (stackIn.b = pixels[p + 2]));
+          stackIn = stackIn.next;
+          r_out_sum += (pr = stackOut.r);
+          g_out_sum += (pg = stackOut.g);
+          b_out_sum += (pb = stackOut.b);
+          r_in_sum -= pr;
+          g_in_sum -= pg;
+          b_in_sum -= pb;
+          stackOut = stackOut.next;
+          yi += width;
+        }
+      }
+      return this;
+    });
+    return Caman.Filter.register("stackBlur", function(radius) {
+      return this.processPlugin("stackBlur", [radius]);
+    });
+  })();
+
+  Caman.Filter.register("threshold", function(adjust) {
+    return this.process("threshold", function(rgba) {
+      var luminance;
+
+      luminance = (0.2126 * rgba.r) + (0.7152 * rgba.g) + (0.0722 * rgba.b);
+      if (luminance < adjust) {
+        rgba.r = 0;
+        rgba.g = 0;
+        rgba.b = 0;
+      } else {
+        rgba.r = 255;
+        rgba.g = 255;
+        rgba.b = 255;
+      }
+      return rgba;
+    });
+  });
+
+}).call(this);
+;/*! Jcrop.js v2.0.0 - build: 20141025
+ *  @copyright 2008-2014 Tapmodo Interactive LLC
+ *  @license Free software under MIT License
+ *  @website http://jcrop.org/
+ **/
+(function($){
+  'use strict';
+
+  // Jcrop constructor
+  var Jcrop = function(element,opt){
+    var _ua = navigator.userAgent.toLowerCase();
+
+    this.opt = $.extend({},Jcrop.defaults,opt || {});
+
+    this.container = $(element);
+
+    this.opt.is_msie = /msie/.test(_ua);
+    this.opt.is_ie_lt9 = /msie [1-8]\./.test(_ua);
+
+    this.container.addClass(this.opt.css_container);
+
+    this.ui = {};
+    this.state = null;
+    this.ui.multi = [];
+    this.ui.selection = null;
+    this.filter = {};
+
+    this.init();
+    this.setOptions(opt);
+    this.applySizeConstraints();
+    this.container.trigger('cropinit',this);
+      
+    // IE<9 doesn't work if mouse events are attached to window
+    if (this.opt.is_ie_lt9)
+      this.opt.dragEventTarget = document.body;
+  };
+
+
+  // Jcrop component storage
+  /*
+  Jcrop.component = {
+    Animator: CropAnimator,
+    DragState: DragState,
+    EventManager: EventManager,
+    ImageLoader: ImageLoader,
+    StageManager: StageManager,
+    Selection: Selection,
+    Keyboard: KeyWatcher,
+    Thumbnailer: Thumbnailer,
+    CanvasAnimator: CanvasAnimator,
+    Touch: JcropTouch
+  };
+
+  // Jcrop stage constructors
+  Jcrop.stage = {
+    Block: AbstractStage,
+    Image: ImageStage,
+    Canvas: CanvasStage,
+    Transform: TransformStage
+  };
+  */
+
+  // Jcrop static functions
+  $.extend(Jcrop,{
+    component: { },
+    filter: { },
+    stage: { },
+    registerComponent: function(name,component){
+      Jcrop.component[name] = component;
+    },
+    registerFilter: function(name,filter){
+      Jcrop.filter[name] = filter;
+    },
+    registerStageType: function(name,stage){
+      Jcrop.stage[name] = stage;
+    },
+    // attach: function(element,opt){{{
+    attach: function(element,opt){
+      var obj = new $.Jcrop(element,opt);
+      return obj;
+    },
+    // }}}
+    // imgCopy: function(imgel){{{
+    imgCopy: function(imgel){
+      var img = new Image;
+      img.src = imgel.src;
+      return img;
+    },
+    // }}}
+    // imageClone: function(imgel){{{
+    imageClone: function(imgel){
+      return $.Jcrop.supportsCanvas?
+        Jcrop.canvasClone(imgel):
+        Jcrop.imgCopy(imgel);
+    },
+    // }}}
+    // canvasClone: function(imgel){{{
+    canvasClone: function(imgel){
+      var canvas = document.createElement('canvas'),
+          ctx = canvas.getContext('2d');
+
+      $(canvas).width(imgel.width).height(imgel.height),
+      canvas.width = imgel.naturalWidth;
+      canvas.height = imgel.naturalHeight;
+      ctx.drawImage(imgel,0,0,imgel.naturalWidth,imgel.naturalHeight);
+      return canvas;
+    },
+    // }}}
+    // propagate: function(plist,config,obj){{{
+    propagate: function(plist,config,obj){
+      for(var i=0,l=plist.length;i<l;i++)
+        if (config.hasOwnProperty(plist[i]))
+          obj[plist[i]] = config[plist[i]];
+    },
+    // }}}
+    // getLargestBox: function(ratio,w,h){{{
+    getLargestBox: function(ratio,w,h){
+      if ((w/h) > ratio)
+        return [ h * ratio, h ];
+          else return [ w, w / ratio ];
+    },
+    // }}}
+    // stageConstructor: function(el,options,callback){{{
+    stageConstructor: function(el,options,callback){
+
+      // Get a priority-ordered list of available stages
+      var stages = [];
+      $.each(Jcrop.stage,function(i,e){
+        stages.push(e);
+      });
+      stages.sort(function(a,b){ return a.priority - b.priority; });
+
+      // Find the first one that supports this element
+      for(var i=0,l=stages.length;i<l;i++){
+        if (stages[i].isSupported(el,options)){
+          stages[i].create(el,options,function(obj,opt){
+            if (typeof callback == 'function') callback(obj,opt);
+          });
+          break;
+        }
+      }
+    },
+    // }}}
+    // supportsColorFade: function(){{{
+    supportsColorFade: function(){
+      return $.fx.step.hasOwnProperty('backgroundColor');
+    },
+    // }}}
+    // wrapFromXywh: function(xywh){{{
+    wrapFromXywh: function(xywh){
+      var b = { x: xywh[0], y: xywh[1], w: xywh[2], h: xywh[3] };
+      b.x2 = b.x + b.w;
+      b.y2 = b.y + b.h;
+      return b;
+    }
+    // }}}
+  });
+
+var AbstractStage = function(){
+};
+
+$.extend(AbstractStage,{
+  isSupported: function(el,o){
+    // @todo: should actually check if it's an HTML element
+    return true;
+  },
+  // A higher priority means less desirable
+  // AbstractStage is the last one we want to use
+  priority: 100,
+  create: function(el,options,callback){
+    var obj = new AbstractStage;
+    obj.element = el;
+    callback.call(this,obj,options);
+  },
+  prototype: {
+    attach: function(core){
+      this.init(core);
+      core.ui.stage = this;
+    },
+    triggerEvent: function(ev){
+      $(this.element).trigger(ev);
+      return this;
+    },
+    getElement: function(){
+      return this.element;
+    }
+  }
+});
+Jcrop.registerStageType('Block',AbstractStage);
+
+
+var ImageStage = function(){
+};
+
+ImageStage.prototype = new AbstractStage();
+
+$.extend(ImageStage,{
+  isSupported: function(el,o){
+    if (el.tagName == 'IMG') return true;
+  },
+  priority: 90,
+  create: function(el,options,callback){
+    $.Jcrop.component.ImageLoader.attach(el,function(w,h){
+      var obj = new ImageStage;
+      obj.element = $(el).wrap('<div />').parent();
+
+      obj.element.width(w).height(h);
+      obj.imgsrc = el;
+
+      if (typeof callback == 'function')
+        callback.call(this,obj,options);
+    });
+  }
+});
+Jcrop.registerStageType('Image',ImageStage);
+
+
+var CanvasStage = function(){
+  this.angle = 0;
+  this.scale = 1;
+  this.scaleMin = 0.2;
+  this.scaleMax = 1.25;
+  this.offset = [0,0];
+};
+
+CanvasStage.prototype = new ImageStage();
+
+$.extend(CanvasStage,{
+  isSupported: function(el,o){
+    if ($.Jcrop.supportsCanvas && (el.tagName == 'IMG')) return true;
+  },
+  priority: 60,
+  create: function(el,options,callback){
+    var $el = $(el);
+    var opt = $.extend({},options);
+    $.Jcrop.component.ImageLoader.attach(el,function(w,h){
+      var obj = new CanvasStage;
+      $el.hide();
+      obj.createCanvas(el,w,h);
+      $el.before(obj.element);
+      obj.imgsrc = el;
+      opt.imgsrc = el;
+
+      if (typeof callback == 'function'){
+        callback(obj,opt);
+        obj.redraw();
+      }
+    });
+  }
+});
+
+$.extend(CanvasStage.prototype,{
+  init: function(core){
+    this.core = core;
+  },
+  // setOffset: function(x,y) {{{
+  setOffset: function(x,y) {
+    this.offset = [x,y];
+    return this;
+  },
+  // }}}
+  // setAngle: function(v) {{{
+  setAngle: function(v) {
+    this.angle = v;
+    return this;
+  },
+  // }}}
+  // setScale: function(v) {{{
+  setScale: function(v) {
+    this.scale = this.boundScale(v);
+    return this;
+  },
+  // }}}
+  boundScale: function(v){
+    if (v<this.scaleMin) v = this.scaleMin;
+    else if (v>this.scaleMax) v = this.scaleMax;
+    return v;
+  },
+  createCanvas: function(img,w,h){
+    this.width = w;
+    this.height = h;
+    this.canvas = document.createElement('canvas');
+    this.canvas.width = w;
+    this.canvas.height = h;
+    this.$canvas = $(this.canvas)
+      .width(w)
+      .height(h);
+    this.context = this.canvas.getContext('2d');
+    this.fillstyle = "rgb(0,0,0)";
+    this.element = this.$canvas.wrap('<div />').parent().width(w).height(h);
+  },
+  triggerEvent: function(ev){
+    this.$canvas.trigger(ev);
+    return this;
+  },
+  // clear: function() {{{
+  clear: function() {
+    this.context.fillStyle = this.fillstyle;
+    this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
+    return this;
+  },
+  // }}}
+  // redraw: function() {{{
+  redraw: function() {
+    // Save the current context
+    this.context.save();
+    this.clear();
+
+    // Translate to the center point of our image
+    this.context.translate(parseInt(this.width * 0.5), parseInt(this.height * 0.5));
+    // Perform the rotation and scaling
+    this.context.translate(this.offset[0]/this.core.opt.xscale,this.offset[1]/this.core.opt.yscale);
+    this.context.rotate(this.angle * (Math.PI/180));
+    this.context.scale(this.scale,this.scale);
+    // Translate back to the top left of our image
+    this.context.translate(-parseInt(this.width * 0.5), -parseInt(this.height * 0.5));
+    // Finally we draw the image
+    this.context.drawImage(this.imgsrc,0,0,this.width,this.height);
+
+    // And restore the updated context
+    this.context.restore();
+    this.$canvas.trigger('cropredraw');
+    return this;
+  },
+  // }}}
+  // setFillStyle: function(v) {{{
+  setFillStyle: function(v) {
+    this.fillstyle = v;
+    return this;
+  }
+  // }}}
+});
+
+Jcrop.registerStageType('Canvas',CanvasStage);
+
+
+  /**
+   *  BackoffFilter
+   *  move out-of-bounds selection into allowed position at same size
+   */
+  var BackoffFilter = function(){
+    this.minw = 40;
+    this.minh = 40;
+    this.maxw = 0;
+    this.maxh = 0;
+    this.core = null;
+  };
+  $.extend(BackoffFilter.prototype,{
+    tag: 'backoff',
+    priority: 22,
+    filter: function(b){
+      var r = this.bound;
+
+      if (b.x < r.minx) { b.x = r.minx; b.x2 = b.w + b.x; }
+      if (b.y < r.miny) { b.y = r.miny; b.y2 = b.h + b.y; }
+      if (b.x2 > r.maxx) { b.x2 = r.maxx; b.x = b.x2 - b.w; }
+      if (b.y2 > r.maxy) { b.y2 = r.maxy; b.y = b.y2 - b.h; }
+
+      return b;
+    },
+    refresh: function(sel){
+      this.elw = sel.core.container.width();
+      this.elh = sel.core.container.height();
+      this.bound = {
+        minx: 0 + sel.edge.w,
+        miny: 0 + sel.edge.n,
+        maxx: this.elw + sel.edge.e,
+        maxy: this.elh + sel.edge.s
+      };
+    }
+  });
+  Jcrop.registerFilter('backoff',BackoffFilter);
+
+  /**
+   *  ConstrainFilter
+   *  a filter to constrain crop selection to bounding element
+   */
+  var ConstrainFilter = function(){
+    this.core = null;
+  };
+  $.extend(ConstrainFilter.prototype,{
+    tag: 'constrain',
+    priority: 5,
+    filter: function(b,ord){
+      if (ord == 'move') {
+        if (b.x < this.minx) { b.x = this.minx; b.x2 = b.w + b.x; }
+        if (b.y < this.miny) { b.y = this.miny; b.y2 = b.h + b.y; }
+        if (b.x2 > this.maxx) { b.x2 = this.maxx; b.x = b.x2 - b.w; }
+        if (b.y2 > this.maxy) { b.y2 = this.maxy; b.y = b.y2 - b.h; }
+      } else {
+        if (b.x < this.minx) { b.x = this.minx; }
+        if (b.y < this.miny) { b.y = this.miny; }
+        if (b.x2 > this.maxx) { b.x2 = this.maxx; }
+        if (b.y2 > this.maxy) { b.y2 = this.maxy; }
+      }
+      b.w = b.x2 - b.x;
+      b.h = b.y2 - b.y;
+      return b;
+    },
+    refresh: function(sel){
+      this.elw = sel.core.container.width();
+      this.elh = sel.core.container.height();
+      this.minx = 0 + sel.edge.w;
+      this.miny = 0 + sel.edge.n;
+      this.maxx = this.elw + sel.edge.e;
+      this.maxy = this.elh + sel.edge.s;
+    }
+  });
+  Jcrop.registerFilter('constrain',ConstrainFilter);
+
+  /**
+   *  ExtentFilter
+   *  a filter to implement minimum or maximum size
+   */
+  var ExtentFilter = function(){
+    this.core = null;
+  };
+  $.extend(ExtentFilter.prototype,{
+    tag: 'extent',
+    priority: 12,
+    offsetFromCorner: function(corner,box,b){
+      var w = box[0], h = box[1];
+      switch(corner){
+        case 'bl': return [ b.x2 - w, b.y, w, h ];
+        case 'tl': return [ b.x2 - w , b.y2 - h, w, h ];
+        case 'br': return [ b.x, b.y, w, h ];
+        case 'tr': return [ b.x, b.y2 - h, w, h ];
+      }
+    },
+    getQuadrant: function(s){
+      var relx = s.opposite[0]-s.offsetx
+      var rely = s.opposite[1]-s.offsety;
+
+      if ((relx < 0) && (rely < 0)) return 'br';
+        else if ((relx >= 0) && (rely >= 0)) return 'tl';
+        else if ((relx < 0) && (rely >= 0)) return 'tr';
+        return 'bl';
+    },
+    filter: function(b,ord,sel){
+
+      if (ord == 'move') return b;
+
+      var w = b.w, h = b.h, st = sel.state, r = this.limits;
+      var quad = st? this.getQuadrant(st): 'br';
+
+      if (r.minw && (w < r.minw)) w = r.minw;
+      if (r.minh && (h < r.minh)) h = r.minh;
+      if (r.maxw && (w > r.maxw)) w = r.maxw;
+      if (r.maxh && (h > r.maxh)) h = r.maxh;
+
+      if ((w == b.w) && (h == b.h)) return b;
+
+      return Jcrop.wrapFromXywh(this.offsetFromCorner(quad,[w,h],b));
+    },
+    refresh: function(sel){
+      this.elw = sel.core.container.width();
+      this.elh = sel.core.container.height();
+
+      this.limits = {
+        minw: sel.minSize[0],
+        minh: sel.minSize[1],
+        maxw: sel.maxSize[0],
+        maxh: sel.maxSize[1]
+      };
+    }
+  });
+  Jcrop.registerFilter('extent',ExtentFilter);
+
+
+  /**
+   *  GridFilter
+   *  a rudimentary grid effect
+   */
+  var GridFilter = function(){
+    this.stepx = 1;
+    this.stepy = 1;
+    this.core = null;
+  };
+  $.extend(GridFilter.prototype,{
+    tag: 'grid',
+    priority: 19,
+    filter: function(b){
+      
+      var n = {
+        x: Math.round(b.x / this.stepx) * this.stepx,
+        y: Math.round(b.y / this.stepy) * this.stepy,
+        x2: Math.round(b.x2 / this.stepx) * this.stepx,
+        y2: Math.round(b.y2 / this.stepy) * this.stepy
+      };
+      
+      n.w = n.x2 - n.x;
+      n.h = n.y2 - n.y;
+
+      return n;
+    }
+  });
+  Jcrop.registerFilter('grid',GridFilter);
+
+
+  /**
+   *  RatioFilter
+   *  implements aspectRatio locking
+   */
+  var RatioFilter = function(){
+    this.ratio = 0;
+    this.core = null;
+  };
+  $.extend(RatioFilter.prototype,{
+    tag: 'ratio',
+    priority: 15,
+    offsetFromCorner: function(corner,box,b){
+      var w = box[0], h = box[1];
+      switch(corner){
+        case 'bl': return [ b.x2 - w, b.y, w, h ];
+        case 'tl': return [ b.x2 - w , b.y2 - h, w, h ];
+        case 'br': return [ b.x, b.y, w, h ];
+        case 'tr': return [ b.x, b.y2 - h, w, h ];
+      }
+    },
+    getBoundRatio: function(b,quad){
+      var box = Jcrop.getLargestBox(this.ratio,b.w,b.h);
+      return Jcrop.wrapFromXywh(this.offsetFromCorner(quad,box,b));
+    },
+    getQuadrant: function(s){
+      var relx = s.opposite[0]-s.offsetx
+      var rely = s.opposite[1]-s.offsety;
+
+      if ((relx < 0) && (rely < 0)) return 'br';
+        else if ((relx >= 0) && (rely >= 0)) return 'tl';
+        else if ((relx < 0) && (rely >= 0)) return 'tr';
+        return 'bl';
+    },
+    filter: function(b,ord,sel){
+
+      if (!this.ratio) return b;
+
+      var rt = b.w / b.h;
+      var st = sel.state;
+
+      var quad = st? this.getQuadrant(st): 'br';
+      ord = ord || 'se';
+
+      if (ord == 'move') return b;
+
+      switch(ord) {
+        case 'n':
+          b.x2 = this.elw;
+          b.w = b.x2 - b.x;
+          quad = 'tr';
+          break;
+        case 's':
+          b.x2 = this.elw;
+          b.w = b.x2 - b.x;
+          quad = 'br';
+          break;
+        case 'e':
+          b.y2 = this.elh;
+          b.h = b.y2 - b.y;
+          quad = 'br';
+          break;
+        case 'w':
+          b.y2 = this.elh;
+          b.h = b.y2 - b.y;
+          quad = 'bl';
+          break;
+      }
+
+      return this.getBoundRatio(b,quad);
+    },
+    refresh: function(sel){
+      this.ratio = sel.aspectRatio;
+      this.elw = sel.core.container.width();
+      this.elh = sel.core.container.height();
+    }
+  });
+  Jcrop.registerFilter('ratio',RatioFilter);
+
+
+  /**
+   *  RoundFilter
+   *  rounds coordinate values to integers
+   */
+  var RoundFilter = function(){
+    this.core = null;
+  };
+  $.extend(RoundFilter.prototype,{
+    tag: 'round',
+    priority: 90,
+    filter: function(b){
+      
+      var n = {
+        x: Math.round(b.x),
+        y: Math.round(b.y),
+        x2: Math.round(b.x2),
+        y2: Math.round(b.y2)
+      };
+      
+      n.w = n.x2 - n.x;
+      n.h = n.y2 - n.y;
+
+      return n;
+    }
+  });
+  Jcrop.registerFilter('round',RoundFilter);
+
+
+  /**
+   *  ShadeFilter
+   *  A filter that implements div-based shading on any element
+   *
+   *  The shading you see is actually four semi-opaque divs
+   *  positioned inside the container, around the selection
+   */
+  var ShadeFilter = function(opacity,color){
+    this.color = color || 'black';
+    this.opacity = opacity || 0.5;
+    this.core = null;
+    this.shades = {};
+  };
+  $.extend(ShadeFilter.prototype,{
+    tag: 'shader',
+    fade: true,
+    fadeEasing: 'swing',
+    fadeSpeed: 320,
+    priority: 95,
+    init: function(){
+      var t = this;
+
+      if (!t.attached) {
+        t.visible = false;
+
+        t.container = $('<div />').addClass(t.core.opt.css_shades)
+          .prependTo(this.core.container).hide();
+
+        t.elh = this.core.container.height();
+        t.elw = this.core.container.width();
+
+        t.shades = {
+          top: t.createShade(),
+          right: t.createShade(),
+          left: t.createShade(),
+          bottom: t.createShade()
+        };
+
+        t.attached = true;
+      }
+    },
+    destroy: function(){
+      this.container.remove();
+    },
+    setColor: function(color,instant){
+      var t = this;
+
+      if (color == t.color) return t;
+
+      this.color = color;
+      var colorfade = Jcrop.supportsColorFade();
+      $.each(t.shades,function(u,i){
+        if (!t.fade || instant || !colorfade) i.css('backgroundColor',color);
+          else i.animate({backgroundColor:color},{queue:false,duration:t.fadeSpeed,easing:t.fadeEasing});
+      });
+      return t;
+    },
+    setOpacity: function(opacity,instant){
+      var t = this;
+
+      if (opacity == t.opacity) return t;
+
+      t.opacity = opacity;
+      $.each(t.shades,function(u,i){
+        if (!t.fade || instant) i.css({opacity:opacity});
+          else i.animate({opacity:opacity},{queue:false,duration:t.fadeSpeed,easing:t.fadeEasing});
+      });
+      return t;
+    },
+    createShade: function(){
+      return $('<div />').css({
+        position: 'absolute',
+        backgroundColor: this.color,
+        opacity: this.opacity
+      }).appendTo(this.container);
+    },
+    refresh: function(sel){
+      var m = this.core, s = this.shades;
+
+      this.setColor(sel.bgColor?sel.bgColor:this.core.opt.bgColor);
+      this.setOpacity(sel.bgOpacity?sel.bgOpacity:this.core.opt.bgOpacity);
+        
+      this.elh = m.container.height();
+      this.elw = m.container.width();
+      s.right.css('height',this.elh+'px');
+      s.left.css('height',this.elh+'px');
+    },
+    filter: function(b,ord,sel){
+
+      if (!sel.active) return b;
+
+      var t = this,
+        s = t.shades;
+      
+      s.top.css({
+        left: Math.round(b.x)+'px',
+        width: Math.round(b.w)+'px',
+        height: Math.round(b.y)+'px'
+      });
+      s.bottom.css({
+        top: Math.round(b.y2)+'px',
+        left: Math.round(b.x)+'px',
+        width: Math.round(b.w)+'px',
+        height: (t.elh-Math.round(b.y2))+'px'
+      });
+      s.right.css({
+        left: Math.round(b.x2)+'px',
+        width: (t.elw-Math.round(b.x2))+'px'
+      });
+      s.left.css({
+        width: Math.round(b.x)+'px'
+      });
+
+      if (!t.visible) {
+        t.container.show();
+        t.visible = true;
+      }
+
+      return b;
+    }
+  });
+  Jcrop.registerFilter('shader',ShadeFilter);
+  
+
+  /**
+   *  CanvasAnimator
+   *  manages smooth cropping animation
+   *
+   *  This object is called internally to manage animation.
+   *  An in-memory div is animated and a progress callback
+   *  is used to update the selection coordinates of the
+   *  visible selection in realtime.
+   */
+  var CanvasAnimator = function(stage){
+    this.stage = stage;
+    this.core = stage.core;
+    this.cloneStagePosition();
+  };
+
+  CanvasAnimator.prototype = {
+
+    cloneStagePosition: function(){
+      var s = this.stage;
+      this.angle = s.angle;
+      this.scale = s.scale;
+      this.offset = s.offset;
+    },
+
+    getElement: function(){
+      var s = this.stage;
+
+      return $('<div />')
+        .css({
+          position: 'absolute',
+          top: s.offset[0]+'px',
+          left: s.offset[1]+'px',
+          width: s.angle+'px',
+          height: s.scale+'px'
+        });
+    },
+
+    animate: function(cb){
+      var t = this;
+
+      this.scale = this.stage.boundScale(this.scale);
+      t.stage.triggerEvent('croprotstart');
+
+      t.getElement().animate({
+        top: t.offset[0]+'px',
+        left: t.offset[1]+'px',
+        width: t.angle+'px',
+        height: t.scale+'px'
+      },{
+        easing: t.core.opt.animEasing,
+        duration: t.core.opt.animDuration,
+        complete: function(){
+          t.stage.triggerEvent('croprotend');
+          (typeof cb == 'function') && cb.call(this);
+        },
+        progress: function(anim){
+          var props = {}, i, tw = anim.tweens;
+
+          for(i=0;i<tw.length;i++){
+            props[tw[i].prop] = tw[i].now; }
+
+          t.stage.setAngle(props.width)
+            .setScale(props.height)
+            .setOffset(props.top,props.left)
+            .redraw();
+        }
+      });
+    }
+
+  };
+  Jcrop.stage.Canvas.prototype.getAnimator = function(){
+    return new CanvasAnimator(this);
+  };
+  Jcrop.registerComponent('CanvasAnimator',CanvasAnimator);
+
+
+  /**
+   *  CropAnimator
+   *  manages smooth cropping animation
+   *
+   *  This object is called internally to manage animation.
+   *  An in-memory div is animated and a progress callback
+   *  is used to update the selection coordinates of the
+   *  visible selection in realtime.
+   */
+  // var CropAnimator = function(selection){{{
+  var CropAnimator = function(selection){
+    this.selection = selection;
+    this.core = selection.core;
+  };
+  // }}}
+
+  CropAnimator.prototype = {
+
+    getElement: function(){
+      var b = this.selection.get();
+
+      return $('<div />')
+        .css({
+          position: 'absolute',
+          top: b.y+'px',
+          left: b.x+'px',
+          width: b.w+'px',
+          height: b.h+'px'
+        });
+    },
+
+    animate: function(x,y,w,h,cb){
+      var t = this;
+
+      t.selection.allowResize(false);
+
+      t.getElement().animate({
+        top: y+'px',
+        left: x+'px',
+        width: w+'px',
+        height: h+'px'
+      },{
+        easing: t.core.opt.animEasing,
+        duration: t.core.opt.animDuration,
+        complete: function(){
+          t.selection.allowResize(true);
+          cb && cb.call(this);
+        },
+        progress: function(anim){
+          var props = {}, i, tw = anim.tweens;
+
+          for(i=0;i<tw.length;i++){
+            props[tw[i].prop] = tw[i].now; }
+
+          var b = {
+            x: parseInt(props.left),
+            y: parseInt(props.top),
+            w: parseInt(props.width),
+            h: parseInt(props.height)
+          };
+
+          b.x2 = b.x + b.w;
+          b.y2 = b.y + b.h;
+
+          t.selection.updateRaw(b,'se');
+        }
+      });
+    }
+
+  };
+  Jcrop.registerComponent('Animator',CropAnimator);
+
+
+  /**
+   *  DragState
+   *  an object that handles dragging events
+   *
+   *  This object is used by the built-in selection object to
+   *  track a dragging operation on a selection
+   */
+  // var DragState = function(e,selection,ord){{{
+  var DragState = function(e,selection,ord){
+    var t = this;
+
+    t.x = e.pageX;
+    t.y = e.pageY;
+
+    t.selection = selection;
+    t.eventTarget = selection.core.opt.dragEventTarget;
+    t.orig = selection.get();
+
+    selection.callFilterFunction('refresh');
+
+    var p = selection.core.container.position();
+    t.elx = p.left;
+    t.ely = p.top;
+
+    t.offsetx = 0;
+    t.offsety = 0;
+    t.ord = ord;
+    t.opposite = t.getOppositeCornerOffset();
+
+    t.initEvents(e);
+
+  };
+  // }}}
+
+  DragState.prototype = {
+    // getOppositeCornerOffset: function(){{{
+    // Calculate relative offset of locked corner
+    getOppositeCornerOffset: function(){
+
+      var o = this.orig;
+      var relx = this.x - this.elx - o.x;
+      var rely = this.y - this.ely - o.y;
+
+      switch(this.ord){
+        case 'nw':
+        case 'w':
+          return [ o.w - relx, o.h - rely ];
+          return [ o.x + o.w, o.y + o.h ];
+
+        case 'sw':
+          return [ o.w - relx, -rely ];
+          return [ o.x + o.w, o.y ];
+
+        case 'se':
+        case 's':
+        case 'e':
+          return [ -relx, -rely ];
+          return [ o.x, o.y ];
+
+        case 'ne':
+        case 'n':
+          return [ -relx, o.h - rely ];
+          return [ o.w, o.y + o.h ];
+      }
+
+      return [ null, null ];
+    },
+    // }}}
+    // initEvents: function(e){{{
+    initEvents: function(e){
+      $(this.eventTarget)
+        .on('mousemove.jcrop',this.createDragHandler())
+        .on('mouseup.jcrop',this.createStopHandler());
+    },
+    // }}}
+    // dragEvent: function(e){{{
+    dragEvent: function(e){
+      this.offsetx = e.pageX - this.x;
+      this.offsety = e.pageY - this.y;
+      this.selection.updateRaw(this.getBox(),this.ord);
+    },
+    // }}}
+    // endDragEvent: function(e){{{
+    endDragEvent: function(e){
+      var sel = this.selection;
+      sel.core.container.removeClass('jcrop-dragging');
+      sel.element.trigger('cropend',[sel,sel.core.unscale(sel.get())]);
+      sel.focus();
+    },
+    // }}}
+    // createStopHandler: function(){{{
+    createStopHandler: function(){
+      var t = this;
+      return function(e){
+        $(t.eventTarget).off('.jcrop');
+        t.endDragEvent(e);
+        return false;
+      };
+    },
+    // }}}
+    // createDragHandler: function(){{{
+    createDragHandler: function(){
+      var t = this;
+      return function(e){
+        t.dragEvent(e);
+        return false;
+      };
+    },
+    // }}}
+    //update: function(x,y){{{
+    update: function(x,y){
+      var t = this;
+      t.offsetx = x - t.x;
+      t.offsety = y - t.y;
+    },
+    //}}}
+    //resultWrap: function(d){{{
+    resultWrap: function(d){
+      var b = {
+          x: Math.min(d[0],d[2]),
+          y: Math.min(d[1],d[3]),
+          x2: Math.max(d[0],d[2]),
+          y2: Math.max(d[1],d[3])
+        };
+
+      b.w = b.x2 - b.x;
+      b.h = b.y2 - b.y;
+
+      return b;
+    },
+    //}}}
+    //getBox: function(){{{
+    getBox: function(){
+      var t = this;
+      var o = t.orig;
+      var _c = { x2: o.x + o.w, y2: o.y + o.h };
+      switch(t.ord){
+        case 'n': return t.resultWrap([ o.x, t.offsety + o.y, _c.x2, _c.y2 ]);
+        case 's': return t.resultWrap([ o.x, o.y, _c.x2, t.offsety + _c.y2 ]);
+        case 'e': return t.resultWrap([ o.x, o.y, t.offsetx + _c.x2, _c.y2 ]);
+        case 'w': return t.resultWrap([ o.x + t.offsetx, o.y, _c.x2, _c.y2 ]);
+        case 'sw': return t.resultWrap([ t.offsetx + o.x, o.y, _c.x2, t.offsety + _c.y2 ]);
+        case 'se': return t.resultWrap([ o.x, o.y, t.offsetx + _c.x2, t.offsety + _c.y2 ]);
+        case 'ne': return t.resultWrap([ o.x, t.offsety + o.y, t.offsetx + _c.x2, _c.y2 ]);
+        case 'nw': return t.resultWrap([ t.offsetx + o.x, t.offsety + o.y, _c.x2, _c.y2 ]);
+        case 'move':
+          _c.nx = o.x + t.offsetx;
+          _c.ny = o.y + t.offsety;
+          return t.resultWrap([ _c.nx, _c.ny, _c.nx + o.w, _c.ny + o.h ]);
+      }
+    }
+    //}}}
+  };
+  Jcrop.registerComponent('DragState',DragState);
+
+
+  /**
+   *  EventManager
+   *  provides internal event support
+   */
+  var EventManager = function(core){
+    this.core = core;
+  };
+  EventManager.prototype = {
+      on: function(n,cb){ $(this).on(n,cb); },
+      off: function(n){ $(this).off(n); },
+      trigger: function(n){ $(this).trigger(n); }
+  };
+  Jcrop.registerComponent('EventManager',EventManager);
+
+
+  /**
+   * Image Loader
+   * Reliably pre-loads images
+   */
+  // var ImageLoader = function(src,element,cb){{{
+  var ImageLoader = function(src,element,cb){
+    this.src = src;
+    if (!element) element = new Image;
+    this.element = element;
+    this.callback = cb;
+    this.load();
+  };
+  // }}}
+
+  $.extend(ImageLoader,{
+    // attach: function(el,cb){{{
+    attach: function(el,cb){
+      return new ImageLoader(el.src,el,cb);
+    },
+    // }}}
+    // prototype: {{{
+    prototype: {
+      getDimensions: function(){
+        var el = this.element;
+
+        if (el.naturalWidth)
+          return [ el.naturalWidth, el. naturalHeight ];
+
+        if (el.width)
+          return [ el.width, el.height ];
+
+        return null;
+      },
+      fireCallback: function(){
+        this.element.onload = null;
+        if (typeof this.callback == 'function')
+          this.callback.apply(this,this.getDimensions());
+      },
+      isLoaded: function(){
+        return this.element.complete;
+      },
+      load: function(){
+        var t = this;
+        var el = t.element;
+
+        el.src = t.src;
+
+        if (t.isLoaded()) t.fireCallback();
+          else t.element.onload = function(e){
+            t.fireCallback();
+          };
+      }
+    }
+    // }}}
+  });
+  Jcrop.registerComponent('ImageLoader',ImageLoader);
+
+
+  /**
+   * JcropTouch
+   * Detects and enables mobile touch support
+   */
+  // var JcropTouch = function(core){{{
+  var JcropTouch = function(core){
+    this.core = core;
+    this.init();
+  };
+  // }}}
+
+  $.extend(JcropTouch,{
+    // support: function(){{{
+    support: function(){
+      if(('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch)
+        return true;
+    },
+    // }}}
+    prototype: {
+      // init: function(){{{
+      init: function(){
+        var t = this,
+          p = $.Jcrop.component.DragState.prototype;
+
+        // A bit of an ugly hack to make sure we modify prototype
+        // only once, store a key on the prototype
+        if (!p.touch) {
+          t.initEvents();
+          t.shimDragState();
+          t.shimStageDrag();
+          p.touch = true;
+        }
+      },
+      // }}}
+      // shimDragState: function(){{{
+      shimDragState: function(){
+        var t = this;
+        $.Jcrop.component.DragState.prototype.initEvents = function(e){
+          
+          // Attach subsequent drag event handlers based on initial
+          // event type - avoids collecting "pseudo-mouse" events
+          // generated by some mobile browsers in some circumstances
+          if (e.type.substr(0,5) == 'touch') {
+
+            $(this.eventTarget)
+              .on('touchmove.jcrop.jcrop-touch',t.dragWrap(this.createDragHandler()))
+              .on('touchend.jcrop.jcrop-touch',this.createStopHandler());
+
+          }
+          
+          // For other events, use the mouse handlers that
+          // the default DragState.initEvents() method sets...
+          else {
+
+            $(this.eventTarget)
+              .on('mousemove.jcrop',this.createDragHandler())
+              .on('mouseup.jcrop',this.createStopHandler());
+
+          }
+
+        };
+      },
+      // }}}
+      // shimStageDrag: function(){{{
+      shimStageDrag: function(){
+        this.core.container
+          .addClass('jcrop-touch')
+          .on('touchstart.jcrop.jcrop-stage',this.dragWrap(this.core.ui.manager.startDragHandler()));
+      },
+      // }}}
+      // dragWrap: function(cb){{{
+      dragWrap: function(cb){
+        return function(e){
+          e.preventDefault();
+          e.stopPropagation();
+          if (e.type.substr(0,5) == 'touch') {
+            e.pageX = e.originalEvent.changedTouches[0].pageX;
+            e.pageY = e.originalEvent.changedTouches[0].pageY;
+            return cb(e);
+          }
+          return false;
+        };
+      },
+      // }}}
+      // initEvents: function(){{{
+      initEvents: function(){
+        var t = this, c = t.core;
+
+        c.container.on(
+          'touchstart.jcrop.jcrop-touch',
+          '.'+c.opt.css_drag,
+          t.dragWrap(c.startDrag())
+        );
+      }
+      // }}}
+    }
+  });
+  Jcrop.registerComponent('Touch',JcropTouch);
+
+
+  /**
+   *  KeyWatcher
+   *  provides keyboard support
+   */
+  // var KeyWatcher = function(core){{{
+  var KeyWatcher = function(core){
+    this.core = core;
+    this.init();
+  };
+  // }}}
+  $.extend(KeyWatcher,{
+    // defaults: {{{
+    defaults: {
+      eventName: 'keydown.jcrop',
+      passthru: [ 9 ],
+      debug: false
+    },
+    // }}}
+    prototype: {
+      // init: function(){{{
+      init: function(){
+        $.extend(this,KeyWatcher.defaults);
+        this.enable();
+      },
+      // }}}
+      // disable: function(){{{
+      disable: function(){
+        this.core.container.off(this.eventName);
+      },
+      // }}}
+      // enable: function(){{{
+      enable: function(){
+        var t = this, m = t.core;
+        m.container.on(t.eventName,function(e){
+          var nudge = e.shiftKey? 16: 2;
+
+          if ($.inArray(e.keyCode,t.passthru) >= 0)
+            return true;
+
+          switch(e.keyCode){
+            case 37: m.nudge(-nudge,0); break;
+            case 38: m.nudge(0,-nudge); break;
+            case 39: m.nudge(nudge,0); break;
+            case 40: m.nudge(0,nudge); break;
+
+            case 46:
+            case 8:
+              m.requestDelete();
+              return false;
+              break;
+
+            default:
+              if (t.debug) console.log('keycode: ' + e.keyCode);
+              break;
+          }
+
+          if (!e.metaKey && !e.ctrlKey)
+            e.preventDefault();
+        });
+      }
+      // }}}
+    }
+  });
+  Jcrop.registerComponent('Keyboard',KeyWatcher);
+
+
+  /**
+   * Selection
+   * Built-in selection object
+   */
+  var Selection = function(){};
+
+  $.extend(Selection,{
+    // defaults: {{{
+    defaults: {
+      minSize: [ 8, 8 ],
+      maxSize: [ 0, 0 ],
+      aspectRatio: 0,
+      edge: { n: 0, s: 0, e: 0, w: 0 },
+      bgColor: null,
+      bgOpacity: null,
+      last: null,
+
+      state: null,
+      active: true,
+      linked: true,
+      canDelete: true,
+      canDrag: true,
+      canResize: true,
+      canSelect: true
+    },
+    // }}}
+    prototype: {
+      // init: function(core){{{
+      init: function(core){
+        this.core = core;
+        this.startup();
+        this.linked = this.core.opt.linked;
+        this.attach();
+        this.setOptions(this.core.opt);
+        core.container.trigger('cropcreate',[this]);
+      },
+      // }}}
+      // attach: function(){{{
+      attach: function(){
+        // For extending init() sequence
+      },
+      // }}}
+      // startup: function(){{{
+      startup: function(){
+        var t = this, o = t.core.opt;
+        $.extend(t,Selection.defaults);
+        t.filter = t.core.getDefaultFilters();
+
+        t.element = $('<div />').addClass(o.css_selection).data({ selection: t });
+        t.frame = $('<button />').addClass(o.css_button).data('ord','move');
+        t.element.append(t.frame).appendTo(t.core.container);
+
+        // IE background/draggable hack
+        if (t.core.opt.is_msie) t.frame.css({
+          opacity: 0,
+          backgroundColor: 'white'
+        });
+
+        t.insertElements();
+
+        // Bind focus and blur events for this selection
+        t.frame.on('focus.jcrop',function(e){
+          t.core.setSelection(t);
+          t.element.trigger('cropfocus',t);
+          t.element.addClass('jcrop-focus');
+        }).on('blur.jcrop',function(e){
+          t.element.removeClass('jcrop-focus');
+          t.element.trigger('cropblur',t);
+        });
+      },
+      // }}}
+      // propagate: [{{{
+      propagate: [
+        'canDelete', 'canDrag', 'canResize', 'canSelect',
+        'minSize', 'maxSize', 'aspectRatio', 'edge'
+      ],
+      // }}}
+      // setOptions: function(opt){{{
+      setOptions: function(opt){
+        Jcrop.propagate(this.propagate,opt,this);
+        this.refresh();
+        return this;
+      },
+      // }}}
+      // refresh: function(){{{
+      refresh: function(){
+        this.allowResize();
+        this.allowDrag();
+        this.allowSelect();
+        this.callFilterFunction('refresh');
+        this.updateRaw(this.get(),'se');
+      },
+      // }}}
+      // callFilterFunction: function(f,args){{{
+      callFilterFunction: function(f,args){
+        for(var i=0;i<this.filter.length;i++)
+          if (this.filter[i][f]) this.filter[i][f](this);
+        return this;
+      },
+      // }}}
+      //addFilter: function(filter){{{
+      addFilter: function(filter){
+        filter.core = this.core;
+        if (!this.hasFilter(filter)) {
+          this.filter.push(filter);
+          this.sortFilters();
+          if (filter.init) filter.init();
+          this.refresh();
+        }
+      },
+      //}}}
+      // hasFilter: function(filter){{{
+      hasFilter: function(filter){
+        var i, f = this.filter, n = [];
+        for(i=0;i<f.length;i++) if (f[i] === filter) return true;
+      },
+      // }}}
+      // sortFilters: function(){{{
+      sortFilters: function(){
+        this.filter.sort(
+          function(x,y){ return x.priority - y.priority; }
+        );
+      },
+      // }}}
+      //clearFilters: function(){{{
+      clearFilters: function(){
+        var i, f = this.filter;
+
+        for(var i=0;i<f.length;i++)
+          if (f[i].destroy) f[i].destroy();
+
+        this.filter = [];
+      },
+      //}}}
+      // removeFiltersByTag: function(tag){{{
+      removeFilter: function(tag){
+        var i, f = this.filter, n = [];
+
+        for(var i=0;i<f.length;i++)
+          if ((f[i].tag && (f[i].tag == tag)) || (tag === f[i])){
+            if (f[i].destroy) f[i].destroy();
+          }
+          else n.push(f[i]);
+
+        this.filter = n;
+      },
+      // }}}
+      // runFilters: function(b,ord){{{
+      runFilters: function(b,ord){
+        for(var i=0;i<this.filter.length;i++)
+          b = this.filter[i].filter(b,ord,this);
+        return b;
+      },
+      // }}}
+      //endDrag: function(){{{
+      endDrag: function(){
+        if (this.state) {
+          $(document.body).off('.jcrop');
+          this.focus();
+          this.state = null;
+        }
+      },
+      //}}}
+      // startDrag: function(e,ord){{{
+      startDrag: function(e,ord){
+        var t = this;
+        var m = t.core;
+
+        ord = ord || $(e.target).data('ord');
+
+        this.focus();
+
+        if ((ord == 'move') && t.element.hasClass(t.core.opt.css_nodrag))
+          return false;
+
+        this.state = new Jcrop.component.DragState(e,this,ord);
+        return false;
+      },
+      // }}}
+      // allowSelect: function(v){{{
+      allowSelect: function(v){
+        if (v === undefined) v = this.canSelect;
+
+        if (v && this.canSelect) this.frame.attr('disabled',false);
+          else this.frame.attr('disabled','disabled');
+
+        return this;
+      },
+      // }}}
+      // allowDrag: function(v){{{
+      allowDrag: function(v){
+        var t = this, o = t.core.opt;
+        if (v == undefined) v = t.canDrag;
+
+        if (v && t.canDrag) t.element.removeClass(o.css_nodrag);
+          else t.element.addClass(o.css_nodrag);
+
+        return this;
+      },
+      // }}}
+      // allowResize: function(v){{{
+      allowResize: function(v){
+        var t = this, o = t.core.opt;
+        if (v == undefined) v = t.canResize;
+
+        if (v && t.canResize) t.element.removeClass(o.css_noresize);
+          else t.element.addClass(o.css_noresize);
+
+        return this;
+      },
+      // }}}
+      // remove: function(){{{
+      remove: function(){
+        this.element.trigger('cropremove',this);
+        this.element.remove();
+      },
+      // }}}
+      // toBack: function(){{{
+      toBack: function(){
+        this.active = false;
+        this.element.removeClass('jcrop-current jcrop-focus');
+      },
+      // }}}
+      // toFront: function(){{{
+      toFront: function(){
+        this.active = true;
+        this.element.addClass('jcrop-current');
+        this.callFilterFunction('refresh');
+        this.refresh();
+      },
+      // }}}
+      // redraw: function(b){{{
+      redraw: function(b){
+        this.moveTo(b.x,b.y);
+        this.resize(b.w,b.h);
+        this.last = b;
+        return this;
+      },
+      // }}}
+      // update: function(b,ord){{{
+      update: function(b,ord){
+        return this.updateRaw(this.core.scale(b),ord);
+      },
+      // }}}
+      // update: function(b,ord){{{
+      updateRaw: function(b,ord){
+        b = this.runFilters(b,ord);
+        this.redraw(b);
+        this.element.trigger('cropmove',[this,this.core.unscale(b)]);
+        return this;
+      },
+      // }}}
+      // animateTo: function(box,cb){{{
+      animateTo: function(box,cb){
+        var ca = new Jcrop.component.Animator(this),
+            b = this.core.scale(Jcrop.wrapFromXywh(box));
+
+        ca.animate(b.x,b.y,b.w,b.h,cb);
+      },
+      // }}}
+      // center: function(instant){{{
+      center: function(instant){
+        var b = this.get(), m = this.core;
+        var elw = m.container.width(), elh = m.container.height();
+        var box = [ (elw-b.w)/2, (elh-b.h)/2, b.w, b.h ];
+        return this[instant?'setSelect':'animateTo'](box);
+      },
+      // }}}
+      //createElement: function(type,ord){{{
+      createElement: function(type,ord){
+        return $('<div />').addClass(type+' ord-'+ord).data('ord',ord);
+      },
+      //}}}
+      //moveTo: function(x,y){{{
+      moveTo: function(x,y){
+        this.element.css({top: y+'px', left: x+'px'});
+      },
+      //}}}
+      // blur: function(){{{
+      blur: function(){
+        this.element.blur();
+        return this;
+      },
+      // }}}
+      // focus: function(){{{
+      focus: function(){
+        this.core.setSelection(this);
+        this.frame.focus();
+        return this;
+      },
+      // }}}
+      //resize: function(w,h){{{
+      resize: function(w,h){
+        this.element.css({width: w+'px', height: h+'px'});
+      },
+      //}}}
+      //get: function(){{{
+      get: function(){
+        var b = this.element,
+          o = b.position(),
+          w = b.width(),
+          h = b.height(),
+          rv = { x: o.left, y: o.top };
+
+        rv.x2 = rv.x + w;
+        rv.y2 = rv.y + h;
+        rv.w = w;
+        rv.h = h;
+
+        return rv;
+      },
+      //}}}
+      //insertElements: function(){{{
+      insertElements: function(){
+        var t = this, i,
+          m = t.core,
+          fr = t.element,
+          o = t.core.opt,
+          b = o.borders,
+          h = o.handles,
+          d = o.dragbars;
+
+        for(i=0; i<d.length; i++)
+          fr.append(t.createElement(o.css_dragbars,d[i]));
+
+        for(i=0; i<h.length; i++)
+          fr.append(t.createElement(o.css_handles,h[i]));
+
+        for(i=0; i<b.length; i++)
+          fr.append(t.createElement(o.css_borders,b[i]));
+      }
+      //}}}
+    }
+  });
+  Jcrop.registerComponent('Selection',Selection);
+
+
+  /**
+   * StageDrag
+   * Facilitates dragging
+   */
+  // var StageDrag = function(manager,opt){{{
+  var StageDrag = function(manager,opt){
+    $.extend(this,StageDrag.defaults,opt || {});
+    this.manager = manager;
+    this.core = manager.core;
+  };
+  // }}}
+  // StageDrag.defaults = {{{
+  StageDrag.defaults = {
+    offset: [ -8, -8 ],
+    active: true,
+    minsize: [ 20, 20 ]
+  };
+  // }}}
+
+  $.extend(StageDrag.prototype,{
+    // start: function(e){{{
+    start: function(e){
+      var c = this.core;
+
+      // Do nothing if allowSelect is off
+      if (!c.opt.allowSelect) return;
+
+      // Also do nothing if we can't draw any more selections
+      if (c.opt.multi && c.opt.multiMax && (c.ui.multi.length >= c.opt.multiMax)) return false;
+
+      // calculate a few variables for this drag operation
+      var o = $(e.currentTarget).offset();
+      var origx = e.pageX - o.left + this.offset[0];
+      var origy = e.pageY - o.top + this.offset[1];
+      var m = c.ui.multi;
+
+      // Determine newly dragged crop behavior if multi disabled
+      if (!c.opt.multi) {
+        // For multiCleaanup true, remove all existing selections
+        if (c.opt.multiCleanup){
+          for(var i=0;i<m.length;i++) m[i].remove();
+          c.ui.multi = [];
+        }
+        // If not, only remove the currently active selection
+        else {
+          c.removeSelection(c.ui.selection);
+        }
+      }
+
+      c.container.addClass('jcrop-dragging');
+
+      // Create the new selection
+      var sel = c.newSelection()
+        // and position it
+        .updateRaw(Jcrop.wrapFromXywh([origx,origy,1,1]));
+
+      sel.element.trigger('cropstart',[sel,this.core.unscale(sel.get())]);
+      
+      return sel.startDrag(e,'se');
+    },
+    // }}}
+    // end: function(x,y){{{
+    end: function(x,y){
+      this.drag(x,y);
+      var b = this.sel.get();
+
+      this.core.container.removeClass('jcrop-dragging');
+
+      if ((b.w < this.minsize[0]) || (b.h < this.minsize[1]))
+        this.core.requestDelete();
+
+        else this.sel.focus();
+    }
+    // }}}
+  });
+  Jcrop.registerComponent('StageDrag',StageDrag);
+
+
+  /**
+   * StageManager
+   * Provides basic stage-specific functionality
+   */
+  // var StageManager = function(core){{{
+  var StageManager = function(core){
+    this.core = core;
+    this.ui = core.ui;
+    this.init();
+  };
+  // }}}
+
+  $.extend(StageManager.prototype,{
+    // init: function(){{{
+    init: function(){
+      this.setupEvents();
+      this.dragger = new StageDrag(this);
+    },
+    // }}}
+    // tellConfigUpdate: function(options){{{
+    tellConfigUpdate: function(options){
+      for(var i=0,m=this.ui.multi,l=m.length;i<l;i++)
+        if (m[i].setOptions && (m[i].linked || (this.core.opt.linkCurrent && m[i] == this.ui.selection)))
+          m[i].setOptions(options);
+    },
+    // }}}
+    // startDragHandler: function(){{{
+    startDragHandler: function(){
+      var t = this;
+      return function(e){
+        if (!e.button || t.core.opt.is_ie_lt9) return t.dragger.start(e);
+      };
+    },
+    // }}}
+    // removeEvents: function(){{{
+    removeEvents: function(){
+      this.core.event.off('.jcrop-stage');
+      this.core.container.off('.jcrop-stage');
+    },
+    // }}}
+    // shimLegacyHandlers: function(options){{{
+    // This method uses the legacyHandlers configuration object to
+    // gracefully wrap old-style Jcrop events with new ones
+    shimLegacyHandlers: function(options){
+      var _x = {}, core = this.core, tmp;
+
+      $.each(core.opt.legacyHandlers,function(k,i){
+        if (k in options) {
+          tmp = options[k];
+          core.container.off('.jcrop-'+k)
+            .on(i+'.jcrop.jcrop-'+k,function(e,s,c){
+              tmp.call(core,c);
+            });
+          delete options[k];
+        }
+      });
+    },
+    // }}}
+    // setupEvents: function(){{{
+    setupEvents: function(){
+      var t = this, c = t.core;
+
+      c.event.on('configupdate.jcrop-stage',function(e){
+        t.shimLegacyHandlers(c.opt);
+        t.tellConfigUpdate(c.opt)
+        c.container.trigger('cropconfig',[c,c.opt]);
+      });
+
+      this.core.container
+        .on('mousedown.jcrop.jcrop-stage',this.startDragHandler());
+    }
+    // }}}
+  });
+  Jcrop.registerComponent('StageManager',StageManager);
+
+
+  var Thumbnailer = function(){
+  };
+
+  $.extend(Thumbnailer,{
+    defaults: {
+      // Set to a specific Selection object
+      // If this value is set, the preview will only track that Selection
+      selection: null,
+
+      fading: true,
+      fadeDelay: 1000,
+      fadeDuration: 1000,
+      autoHide: false,
+      width: 80,
+      height: 80,
+      _hiding: null
+    },
+
+    prototype: {
+      recopyCanvas: function(){
+        var s = this.core.ui.stage, cxt = s.context;
+        this.context.putImageData(cxt.getImageData(0,0,s.canvas.width,s.canvas.height),0,0);
+      },
+      init: function(core,options){
+        var t = this;
+        this.core = core;
+        $.extend(this,Thumbnailer.defaults,options);
+        t.initEvents();
+        t.refresh();
+        t.insertElements();
+        if (t.selection) {
+          t.renderSelection(t.selection);
+          t.selectionTarget = t.selection.element[0];
+        } else if (t.core.ui.selection) {
+          t.renderSelection(t.core.ui.selection);
+        }
+
+        if (t.core.ui.stage.canvas) {
+          t.context = t.preview[0].getContext('2d');
+          t.core.container.on('cropredraw',function(e){
+            t.recopyCanvas();
+            t.refresh();
+          });
+        }
+      },
+      updateImage: function(imgel){
+        this.preview.remove();
+        this.preview = $($.Jcrop.imageClone(imgel));
+        this.element.append(this.preview);
+        this.refresh();
+        return this;
+      },
+      insertElements: function(){
+        this.preview = $($.Jcrop.imageClone(this.core.ui.stage.imgsrc));
+
+        this.element = $('<div />').addClass('jcrop-thumb')
+          .width(this.width).height(this.height)
+          .append(this.preview)
+          .appendTo(this.core.container);
+      },
+      resize: function(w,h){
+        this.width = w;
+        this.height = h;
+        this.element.width(w).height(h);
+        this.renderCoords(this.last);
+      },
+      refresh: function(){
+        this.cw = (this.core.opt.xscale * this.core.container.width());
+        this.ch = (this.core.opt.yscale * this.core.container.height());
+        if (this.last) {
+          this.renderCoords(this.last);
+        }
+      },
+      renderCoords: function(c){
+        var rx = this.width / c.w;
+        var ry = this.height / c.h;
+
+        this.preview.css({
+          width: Math.round(rx * this.cw) + 'px',
+          height: Math.round(ry * this.ch) + 'px',
+          marginLeft: '-' + Math.round(rx * c.x) + 'px',
+          marginTop: '-' + Math.round(ry * c.y) + 'px'
+        });
+
+        this.last = c;
+        return this;
+      },
+      renderSelection: function(s){
+        return this.renderCoords(s.core.unscale(s.get()));
+      },
+      selectionStart: function(s){
+        this.renderSelection(s);
+      },
+      show: function(){
+        if (this._hiding) clearTimeout(this._hiding);
+
+        if (!this.fading) this.element.stop().css({ opacity: 1 });
+        else this.element.stop().animate({ opacity: 1 },{ duration: 80, queue: false });
+      },
+      hide: function(){
+        var t = this;
+        if (!t.fading) t.element.hide();
+        else t._hiding = setTimeout(function(){
+          t._hiding = null;
+          t.element.stop().animate({ opacity: 0 },{ duration: t.fadeDuration, queue: false });
+        },t.fadeDelay);
+      },
+      initEvents: function(){
+        var t = this;
+        t.core.container.on('croprotstart croprotend cropimage cropstart cropmove cropend',function(e,s,c){
+          if (t.selectionTarget && (t.selectionTarget !== e.target)) return false;
+
+          switch(e.type){
+
+            case 'cropimage':
+              t.updateImage(c);
+              break;
+
+            case 'cropstart':
+              t.selectionStart(s);
+            case 'croprotstart':
+              t.show();
+              break;
+
+            case 'cropend':
+              t.renderCoords(c);
+            case 'croprotend':
+              if (t.autoHide) t.hide();
+              break;
+
+            case 'cropmove':
+              t.renderCoords(c);
+              break;
+          }
+        });
+      }
+    }
+  });
+  Jcrop.registerComponent('Thumbnailer',Thumbnailer);
+
+
+  /**
+   * DialDrag component
+   * This is a little hacky, it was adapted from some previous/old code
+   * Plan to update this API in the future
+   */
+  var DialDrag = function() { };
+
+  DialDrag.prototype = {
+
+    init: function(core,actuator,callback){
+      var that = this;
+
+      if (!actuator) actuator = core.container;
+      this.$btn = $(actuator);
+      this.$targ = $(actuator);
+      this.core = core;
+
+      this.$btn
+        .addClass('dialdrag')
+        .on('mousedown.dialdrag',this.mousedown())
+        .data('dialdrag',this);
+
+      if (!$.isFunction(callback)) callback = function(){ };
+      this.callback = callback;
+      this.ondone = callback;
+    },
+
+    remove: function(){
+      this.$btn
+        .removeClass('dialdrag')
+        .off('.dialdrag')
+        .data('dialdrag',null);
+      return this;
+    },
+
+    setTarget: function(obj){
+      this.$targ = $(obj);
+      return this;
+    },
+
+    getOffset: function(){
+      var targ = this.$targ, pos = targ.offset();
+      return [
+        pos.left + (targ.width()/2),
+        pos.top + (targ.height()/2)
+      ];
+    },
+
+    relMouse: function(e){
+      var x = e.pageX - this.offset[0],
+          y = e.pageY - this.offset[1],
+          ang = Math.atan2(y,x) * (180 / Math.PI),
+          vec = Math.sqrt(Math.pow(x,2)+Math.pow(y,2));
+      return [ x, y, ang, vec ];
+    },
+
+    mousedown: function(){
+      var that = this;
+
+      function mouseUp(e){
+        $(window).off('.dialdrag');
+        that.ondone.call(that,that.relMouse(e));
+        that.core.container.trigger('croprotend');
+      }
+
+      function mouseMove(e){
+        that.callback.call(that,that.relMouse(e));
+      }
+
+      return function(e) {
+        that.offset = that.getOffset();
+        var rel = that.relMouse(e);
+        that.angleOffset = -that.core.ui.stage.angle+rel[2];
+        that.distOffset = rel[3];
+        that.dragOffset = [rel[0],rel[1]];
+        that.core.container.trigger('croprotstart');
+
+        $(window)
+          .on('mousemove.dialdrag',mouseMove)
+          .on('mouseup.dialdrag',mouseUp);
+
+        that.callback.call(that,that.relMouse(e));
+
+        return false;
+      };
+    }
+    
+  };
+  Jcrop.registerComponent('DialDrag',DialDrag);
+
+
+    /////////////////////////////////
+    // DEFAULT SETTINGS
+
+    Jcrop.defaults = {
+
+      // Selection Behavior
+      edge: { n: 0, s: 0, e: 0, w: 0 },
+      setSelect: null,
+      linked: true,
+      linkCurrent: true,
+      canDelete: true,
+      canSelect: true,
+      canDrag: true,
+      canResize: true,
+
+      // Component constructors
+      eventManagerComponent:  Jcrop.component.EventManager,
+      keyboardComponent:      Jcrop.component.Keyboard,
+      dragstateComponent:     Jcrop.component.DragState,
+      stagemanagerComponent:  Jcrop.component.StageManager,
+      animatorComponent:      Jcrop.component.Animator,
+      selectionComponent:     Jcrop.component.Selection,
+
+      // This is a function that is called, which returns a stage object
+      stageConstructor:       Jcrop.stageConstructor,
+
+      // Stage Behavior
+      allowSelect: true,
+      multi: false,
+      multiMax: false,
+      multiCleanup: true,
+      animation: true,
+      animEasing: 'swing',
+      animDuration: 400,
+      fading: true,
+      fadeDuration: 300,
+      fadeEasing: 'swing',
+      bgColor: 'black',
+      bgOpacity: .5,
+
+      // Startup options
+      applyFilters: [ 'constrain', 'extent', 'backoff', 'ratio', 'shader', 'round' ],
+      borders:  [ 'e', 'w', 's', 'n' ],
+      handles:  [ 'n', 's', 'e', 'w', 'sw', 'ne', 'nw', 'se' ],
+      dragbars: [ 'n', 'e', 'w', 's' ],
+
+      dragEventTarget: window,
+
+      xscale: 1,
+      yscale: 1,
+
+      boxWidth: null,
+      boxHeight: null,
+
+      // CSS Classes
+      // @todo: These need to be moved to top-level object keys
+      // for better customization. Currently if you try to extend one
+      // via an options object to Jcrop, it will wipe out all
+      // the others you don't specify. Be careful for now!
+      css_nodrag: 'jcrop-nodrag',
+      css_drag: 'jcrop-drag',
+      css_container: 'jcrop-active',
+      css_shades: 'jcrop-shades',
+      css_selection: 'jcrop-selection',
+      css_borders: 'jcrop-border',
+      css_handles: 'jcrop-handle jcrop-drag',
+      css_button: 'jcrop-box jcrop-drag',
+      css_noresize: 'jcrop-noresize',
+      css_dragbars: 'jcrop-dragbar jcrop-drag',
+
+      legacyHandlers: {
+        onChange: 'cropmove',
+        onSelect: 'cropend'
+      }
+
+    };
+
+
+  // Jcrop API methods
+  $.extend(Jcrop.prototype,{
+    //init: function(){{{
+    init: function(){
+      this.event = new this.opt.eventManagerComponent(this);
+      this.ui.keyboard = new this.opt.keyboardComponent(this);
+      this.ui.manager = new this.opt.stagemanagerComponent(this);
+      this.applyFilters();
+
+      if ($.Jcrop.supportsTouch)
+        new $.Jcrop.component.Touch(this);
+
+      this.initEvents();
+    },
+    //}}}
+    // applySizeConstraints: function(){{{
+    applySizeConstraints: function(){
+      var o = this.opt,
+          img = this.opt.imgsrc;
+
+      if (img){
+
+        var iw = img.naturalWidth || img.width,
+            ih = img.naturalHeight || img.height,
+            bw = o.boxWidth || iw,
+            bh = o.boxHeight || ih;
+
+        if (img && ((iw > bw) || (ih > bh))){
+          var bx = Jcrop.getLargestBox(iw/ih,bw,bh);
+          $(img).width(bx[0]).height(bx[1]);
+          this.resizeContainer(bx[0],bx[1]);
+          this.opt.xscale = iw / bx[0];
+          this.opt.yscale = ih / bx[1];
+        }
+          
+      }
+
+      if (this.opt.trueSize){
+        var dw = this.opt.trueSize[0];
+        var dh = this.opt.trueSize[1];
+        var cs = this.getContainerSize();
+        this.opt.xscale = dw / cs[0];
+        this.opt.yscale = dh / cs[1];
+      }
+    },
+    // }}}
+    initComponent: function(name){
+      if (Jcrop.component[name]) {
+        var args = Array.prototype.slice.call(arguments);
+        var obj = new Jcrop.component[name];
+        args.shift();
+        args.unshift(this);
+        obj.init.apply(obj,args);
+        return obj;
+      }
+    },
+    // setOptions: function(opt){{{
+    setOptions: function(opt,proptype){
+
+      if (!$.isPlainObject(opt)) opt = {};
+
+      $.extend(this.opt,opt);
+
+      // Handle a setSelect value
+      if (this.opt.setSelect) {
+
+        // If there is no current selection
+        // passing setSelect will create one
+        if (!this.ui.multi.length)
+          this.newSelection();
+
+        // Use these values to update the current selection
+        this.ui.multi[0].update(Jcrop.wrapFromXywh(this.opt.setSelect));
+        // Set to null so it doesn't get called again
+        this.opt.setSelect = null;
+      }
+
+      this.event.trigger('configupdate');
+      return this;
+    },
+    // }}}
+    //destroy: function(){{{
+    destroy: function(){
+      if (this.opt.imgsrc) {
+        this.container.before(this.opt.imgsrc);
+        this.container.remove();
+        $(this.opt.imgsrc).removeData('Jcrop');
+      } else {
+        // @todo: more elegant destroy() process for non-image containers
+        this.container.remove();
+      }
+    },
+    // }}}
+    // applyFilters: function(){{{
+    applyFilters: function(){
+      var obj;
+      for(var i=0,f=this.opt.applyFilters,l=f.length; i<l; i++){
+        if ($.Jcrop.filter[f[i]])
+          obj = new $.Jcrop.filter[f[i]];
+          obj.core = this;
+          if (obj.init) obj.init();
+          this.filter[f[i]] = obj;
+      }
+    },
+    // }}}
+    // getDefaultFilters: function(){{{
+    getDefaultFilters: function(){
+      var rv = [];
+
+      for(var i=0,f=this.opt.applyFilters,l=f.length; i<l; i++)
+        if(this.filter.hasOwnProperty(f[i]))
+          rv.push(this.filter[f[i]]);
+
+      rv.sort(function(x,y){ return x.priority - y.priority; });
+      return rv;
+    },
+    // }}}
+    // setSelection: function(sel){{{
+    setSelection: function(sel){
+      var m = this.ui.multi;
+      var n = [];
+      for(var i=0;i<m.length;i++) {
+        if (m[i] !== sel) n.push(m[i]);
+        m[i].toBack();
+      }
+      n.unshift(sel);
+      this.ui.multi = n;
+      this.ui.selection = sel;
+      sel.toFront();
+      return sel;
+    },
+    // }}}
+    // getSelection: function(raw){{{
+    getSelection: function(raw){
+      var b = this.ui.selection.get();
+      return b;
+    },
+    // }}}
+    // newSelection: function(){{{
+    newSelection: function(sel){
+      if (!sel)
+        sel = new this.opt.selectionComponent();
+
+      sel.init(this);
+      this.setSelection(sel);
+
+      return sel;
+    },
+    // }}}
+    // hasSelection: function(sel){{{
+    hasSelection: function(sel){
+      for(var i=0;i<this.ui.multi;i++)
+        if (sel === this.ui.multi[i]) return true;
+    },
+    // }}}
+    // removeSelection: function(sel){{{
+    removeSelection: function(sel){
+      var i, n = [], m = this.ui.multi;
+      for(var i=0;i<m.length;i++){
+        if (sel !== m[i])
+          n.push(m[i]);
+        else m[i].remove();
+      }
+      return this.ui.multi = n;
+    },
+    // }}}
+    //addFilter: function(filter){{{
+    addFilter: function(filter){
+      for(var i=0,m=this.ui.multi,l=m.length; i<l; i++)
+        m[i].addFilter(filter);
+
+      return this;
+    },
+    //}}}
+    // removeFiltersByTag: function(tag){{{
+    removeFilter: function(filter){
+      for(var i=0,m=this.ui.multi,l=m.length; i<l; i++)
+        m[i].removeFilter(filter);
+
+      return this;
+    },
+    // }}}
+    // blur: function(){{{
+    blur: function(){
+      this.ui.selection.blur();
+      return this;
+    },
+    // }}}
+    // focus: function(){{{
+    focus: function(){
+      this.ui.selection.focus();
+      return this;
+    },
+    // }}}
+    //initEvents: function(){{{
+    initEvents: function(){
+      var t = this;
+      t.container.on('selectstart',function(e){ return false; })
+        .on('mousedown','.'+t.opt.css_drag,t.startDrag());
+    },
+    //}}}
+    // maxSelect: function(){{{
+    maxSelect: function(){
+      this.setSelect([0,0,this.elw,this.elh]);
+    },
+    // }}}
+    // nudge: function(x,y){{{
+    nudge: function(x,y){
+      var s = this.ui.selection, b = s.get();
+
+      b.x += x;
+      b.x2 += x;
+      b.y += y;
+      b.y2 += y;
+
+      if (b.x < 0) { b.x2 = b.w; b.x = 0; }
+        else if (b.x2 > this.elw) { b.x2 = this.elw; b.x = b.x2 - b.w; }
+
+      if (b.y < 0) { b.y2 = b.h; b.y = 0; }
+        else if (b.y2 > this.elh) { b.y2 = this.elh; b.y = b.y2 - b.h; }
+      
+      s.element.trigger('cropstart',[s,this.unscale(b)]);
+      s.updateRaw(b,'move');
+      s.element.trigger('cropend',[s,this.unscale(b)]);
+    },
+    // }}}
+    // refresh: function(){{{
+    refresh: function(){
+      for(var i=0,s=this.ui.multi,l=s.length;i<l;i++)
+        s[i].refresh();
+    },
+    // }}}
+    // blurAll: function(){{{
+    blurAll: function(){
+      var m = this.ui.multi;
+      for(var i=0;i<m.length;i++) {
+        if (m[i] !== sel) n.push(m[i]);
+        m[i].toBack();
+      }
+    },
+    // }}}
+    // scale: function(b){{{
+    scale: function(b){
+      var xs = this.opt.xscale,
+          ys = this.opt.yscale;
+
+      return {
+        x: b.x / xs,
+        y: b.y / ys,
+        x2: b.x2 / xs,
+        y2: b.y2 / ys,
+        w: b.w / xs,
+        h: b.h / ys
+      };
+    },
+    // }}}
+    // unscale: function(b){{{
+    unscale: function(b){
+      var xs = this.opt.xscale,
+          ys = this.opt.yscale;
+
+      return {
+        x: b.x * xs,
+        y: b.y * ys,
+        x2: b.x2 * xs,
+        y2: b.y2 * ys,
+        w: b.w * xs,
+        h: b.h * ys
+      };
+    },
+    // }}}
+    // requestDelete: function(){{{
+    requestDelete: function(){
+      if ((this.ui.multi.length > 1) && (this.ui.selection.canDelete))
+        return this.deleteSelection();
+    },
+    // }}}
+    // deleteSelection: function(){{{
+    deleteSelection: function(){
+      if (this.ui.selection) {
+        this.removeSelection(this.ui.selection);
+        this.ui.multi[0].focus();
+        this.ui.selection.refresh();
+      }
+    },
+    // }}}
+    // animateTo: function(box){{{
+    animateTo: function(box){
+      if (this.ui.selection)
+        this.ui.selection.animateTo(box);
+      return this;
+    },
+    // }}}
+    // setselect: function(box){{{
+    setSelect: function(box){
+      if (this.ui.selection)
+        this.ui.selection.update(Jcrop.wrapFromXywh(box));
+      return this;
+    },
+    // }}}
+    //startDrag: function(){{{
+    startDrag: function(){
+      var t = this;
+      return function(e){
+        var $targ = $(e.target);
+        var selection = $targ.closest('.'+t.opt.css_selection).data('selection');
+        var ord = $targ.data('ord');
+        t.container.trigger('cropstart',[selection,t.unscale(selection.get())]);
+        selection.startDrag(e,ord);
+        return false;
+      };
+    },
+    //}}}
+    // getContainerSize: function(){{{
+    getContainerSize: function(){
+      return [ this.container.width(), this.container.height() ];
+    },
+    // }}}
+    // resizeContainer: function(w,h){{{
+    resizeContainer: function(w,h){
+      this.container.width(w).height(h);
+      this.refresh();
+    },
+    // }}}
+    // setImage: function(src,cb){{{
+    setImage: function(src,cb){
+      var t = this, targ = t.opt.imgsrc;
+
+      if (!targ) return false;
+
+      new $.Jcrop.component.ImageLoader(src,null,function(w,h){
+        t.resizeContainer(w,h);
+
+        targ.src = src;
+        $(targ).width(w).height(h);
+        t.applySizeConstraints();
+        t.refresh();
+        t.container.trigger('cropimage',[t,targ]);
+
+        if (typeof cb == 'function')
+          cb.call(t,w,h);
+      });
+    },
+    // }}}
+    // update: function(b){{{
+    update: function(b){
+      if (this.ui.selection)
+        this.ui.selection.update(b);
+    }
+    // }}}
+  });
+
+  // Jcrop jQuery plugin function
+  $.fn.Jcrop = function(options,callback){
+
+    var first = this.eq(0).data('Jcrop');
+    var args = Array.prototype.slice.call(arguments);
+
+    // Return API if requested
+    if (options == 'api') { return first; }
+
+    // Allow calling API methods (with arguments)
+    else if (first && (typeof options == 'string')) {
+
+      // Call method if it exists
+      if (first[options]) {
+        args.shift();
+        first[options].apply(first,args);
+        return first;
+      }
+
+      // Unknown input/method does not exist
+      return false;
+    }
+
+    // Otherwise, loop over selected elements
+    this.each(function(){
+      var t = this, $t = $(this);
+      var exists = $t.data('Jcrop');
+      var obj;
+
+      // If Jcrop already exists on this element only setOptions()
+      if (exists)
+        exists.setOptions(options);
+
+      else {
+        if (!options.stageConstructor) options.stageConstructor = $.Jcrop.stageConstructor;
+
+        options.stageConstructor(this,options,function(stage,options){
+          var obj = $.Jcrop.attach(stage.element,options);
+
+          if (typeof stage.attach == 'function')
+            stage.attach(obj);
+
+          $t.data('Jcrop',obj);
+
+          if (typeof callback == 'function')
+            callback.call(obj);
+        });
+      }
+
+      return this;
+    });
+  };
+
+/* Modernizr 2.7.1 (Custom Build) | MIT & BSD
+ * Build: http://modernizr.com/download/#-csstransforms-canvas-canvastext-draganddrop-inlinesvg-svg-svgclippaths-touch-teststyles-testprop-testallprops-hasevent-prefixes-domprefixes-url_data_uri
+ */
+;
+
+var Modernizr = (function( window, document, undefined ) {
+
+    var version = '2.7.1',
+
+    Modernizr = {},
+
+
+    docElement = document.documentElement,
+
+    mod = 'modernizr',
+    modElem = document.createElement(mod),
+    mStyle = modElem.style,
+
+    inputElem  ,
+
+
+    toString = {}.toString,
+
+    prefixes = ' -webkit- -moz- -o- -ms- '.split(' '),
+
+
+
+    omPrefixes = 'Webkit Moz O ms',
+
+    cssomPrefixes = omPrefixes.split(' '),
+
+    domPrefixes = omPrefixes.toLowerCase().split(' '),
+
+    ns = {'svg': 'http://www.w3.org/2000/svg'},
+
+    tests = {},
+    inputs = {},
+    attrs = {},
+
+    classes = [],
+
+    slice = classes.slice,
+
+    featureName, 
+
+
+    injectElementWithStyles = function( rule, callback, nodes, testnames ) {
+
+      var style, ret, node, docOverflow,
+          div = document.createElement('div'),
+                body = document.body,
+                fakeBody = body || document.createElement('body');
+
+      if ( parseInt(nodes, 10) ) {
+                      while ( nodes-- ) {
+              node = document.createElement('div');
+              node.id = testnames ? testnames[nodes] : mod + (nodes + 1);
+              div.appendChild(node);
+          }
+      }
+
+                style = ['&#173;','<style id="s', mod, '">', rule, '</style>'].join('');
+      div.id = mod;
+          (body ? div : fakeBody).innerHTML += style;
+      fakeBody.appendChild(div);
+      if ( !body ) {
+                fakeBody.style.background = '';
+                fakeBody.style.overflow = 'hidden';
+          docOverflow = docElement.style.overflow;
+          docElement.style.overflow = 'hidden';
+          docElement.appendChild(fakeBody);
+      }
+
+      ret = callback(div, rule);
+        if ( !body ) {
+          fakeBody.parentNode.removeChild(fakeBody);
+          docElement.style.overflow = docOverflow;
+      } else {
+          div.parentNode.removeChild(div);
+      }
+
+      return !!ret;
+
+    },
+
+
+
+    isEventSupported = (function() {
+
+      var TAGNAMES = {
+        'select': 'input', 'change': 'input',
+        'submit': 'form', 'reset': 'form',
+        'error': 'img', 'load': 'img', 'abort': 'img'
+      };
+
+      function isEventSupported( eventName, element ) {
+
+        element = element || document.createElement(TAGNAMES[eventName] || 'div');
+        eventName = 'on' + eventName;
+
+            var isSupported = eventName in element;
+
+        if ( !isSupported ) {
+                if ( !element.setAttribute ) {
+            element = document.createElement('div');
+          }
+          if ( element.setAttribute && element.removeAttribute ) {
+            element.setAttribute(eventName, '');
+            isSupported = is(element[eventName], 'function');
+
+                    if ( !is(element[eventName], 'undefined') ) {
+              element[eventName] = undefined;
+            }
+            element.removeAttribute(eventName);
+          }
+        }
+
+        element = null;
+        return isSupported;
+      }
+      return isEventSupported;
+    })(),
+
+
+    _hasOwnProperty = ({}).hasOwnProperty, hasOwnProp;
+
+    if ( !is(_hasOwnProperty, 'undefined') && !is(_hasOwnProperty.call, 'undefined') ) {
+      hasOwnProp = function (object, property) {
+        return _hasOwnProperty.call(object, property);
+      };
+    }
+    else {
+      hasOwnProp = function (object, property) { 
+        return ((property in object) && is(object.constructor.prototype[property], 'undefined'));
+      };
+    }
+
+
+    if (!Function.prototype.bind) {
+      Function.prototype.bind = function bind(that) {
+
+        var target = this;
+
+        if (typeof target != "function") {
+            throw new TypeError();
+        }
+
+        var args = slice.call(arguments, 1),
+            bound = function () {
+
+            if (this instanceof bound) {
+
+              var F = function(){};
+              F.prototype = target.prototype;
+              var self = new F();
+
+              var result = target.apply(
+                  self,
+                  args.concat(slice.call(arguments))
+              );
+              if (Object(result) === result) {
+                  return result;
+              }
+              return self;
+
+            } else {
+
+              return target.apply(
+                  that,
+                  args.concat(slice.call(arguments))
+              );
+
+            }
+
+        };
+
+        return bound;
+      };
+    }
+
+    function setCss( str ) {
+        mStyle.cssText = str;
+    }
+
+    function setCssAll( str1, str2 ) {
+        return setCss(prefixes.join(str1 + ';') + ( str2 || '' ));
+    }
+
+    function is( obj, type ) {
+        return typeof obj === type;
+    }
+
+    function contains( str, substr ) {
+        return !!~('' + str).indexOf(substr);
+    }
+
+    function testProps( props, prefixed ) {
+        for ( var i in props ) {
+            var prop = props[i];
+            if ( !contains(prop, "-") && mStyle[prop] !== undefined ) {
+                return prefixed == 'pfx' ? prop : true;
+            }
+        }
+        return false;
+    }
+
+    function testDOMProps( props, obj, elem ) {
+        for ( var i in props ) {
+            var item = obj[props[i]];
+            if ( item !== undefined) {
+
+                            if (elem === false) return props[i];
+
+                            if (is(item, 'function')){
+                                return item.bind(elem || obj);
+                }
+
+                            return item;
+            }
+        }
+        return false;
+    }
+
+    function testPropsAll( prop, prefixed, elem ) {
+
+        var ucProp  = prop.charAt(0).toUpperCase() + prop.slice(1),
+            props   = (prop + ' ' + cssomPrefixes.join(ucProp + ' ') + ucProp).split(' ');
+
+            if(is(prefixed, "string") || is(prefixed, "undefined")) {
+          return testProps(props, prefixed);
+
+            } else {
+          props = (prop + ' ' + (domPrefixes).join(ucProp + ' ') + ucProp).split(' ');
+          return testDOMProps(props, prefixed, elem);
+        }
+    }
+
+
+
+    tests['canvas'] = function() {
+        var elem = document.createElement('canvas');
+        return !!(elem.getContext && elem.getContext('2d'));
+    };
+
+    tests['canvastext'] = function() {
+        return !!(Modernizr['canvas'] && is(document.createElement('canvas').getContext('2d').fillText, 'function'));
+    };
+    tests['touch'] = function() {
+        var bool;
+
+        if(('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch) {
+          bool = true;
+        } else {
+          injectElementWithStyles(['@media (',prefixes.join('touch-enabled),('),mod,')','{#modernizr{top:9px;position:absolute}}'].join(''), function( node ) {
+            bool = node.offsetTop === 9;
+          });
+        }
+
+        return bool;
+    };
+
+    tests['draganddrop'] = function() {
+        var div = document.createElement('div');
+        return ('draggable' in div) || ('ondragstart' in div && 'ondrop' in div);
+    };
+
+
+    tests['csstransforms'] = function() {
+        return !!testPropsAll('transform');
+    };
+
+
+    tests['svg'] = function() {
+        return !!document.createElementNS && !!document.createElementNS(ns.svg, 'svg').createSVGRect;
+    };
+
+    tests['inlinesvg'] = function() {
+      var div = document.createElement('div');
+      div.innerHTML = '<svg/>';
+      return (div.firstChild && div.firstChild.namespaceURI) == ns.svg;
+    };
+
+
+
+    tests['svgclippaths'] = function() {
+        return !!document.createElementNS && /SVGClipPath/.test(toString.call(document.createElementNS(ns.svg, 'clipPath')));
+    };
+
+    for ( var feature in tests ) {
+        if ( hasOwnProp(tests, feature) ) {
+                                    featureName  = feature.toLowerCase();
+            Modernizr[featureName] = tests[feature]();
+
+            classes.push((Modernizr[featureName] ? '' : 'no-') + featureName);
+        }
+    }
+
+
+
+     Modernizr.addTest = function ( feature, test ) {
+       if ( typeof feature == 'object' ) {
+         for ( var key in feature ) {
+           if ( hasOwnProp( feature, key ) ) {
+             Modernizr.addTest( key, feature[ key ] );
+           }
+         }
+       } else {
+
+         feature = feature.toLowerCase();
+
+         if ( Modernizr[feature] !== undefined ) {
+                                              return Modernizr;
+         }
+
+         test = typeof test == 'function' ? test() : test;
+
+         if (typeof enableClasses !== "undefined" && enableClasses) {
+           docElement.className += ' ' + (test ? '' : 'no-') + feature;
+         }
+         Modernizr[feature] = test;
+
+       }
+
+       return Modernizr; 
+     };
+
+
+    setCss('');
+    modElem = inputElem = null;
+
+
+    Modernizr._version      = version;
+
+    Modernizr._prefixes     = prefixes;
+    Modernizr._domPrefixes  = domPrefixes;
+    Modernizr._cssomPrefixes  = cssomPrefixes;
+
+
+    Modernizr.hasEvent      = isEventSupported;
+
+    Modernizr.testProp      = function(prop){
+        return testProps([prop]);
+    };
+
+    Modernizr.testAllProps  = testPropsAll;
+
+
+    Modernizr.testStyles    = injectElementWithStyles;
+    return Modernizr;
+
+})(window, window.document);
+// data uri test.
+// https://github.com/Modernizr/Modernizr/issues/14
+
+// This test is asynchronous. Watch out.
+
+
+// in IE7 in HTTPS this can cause a Mixed Content security popup. 
+//  github.com/Modernizr/Modernizr/issues/362
+// To avoid that you can create a new iframe and inject this.. perhaps..
+
+
+(function(){
+
+  var datauri = new Image();
+
+
+  datauri.onerror = function() {
+      Modernizr.addTest('datauri', function () { return false; });
+  };  
+  datauri.onload = function() {
+      Modernizr.addTest('datauri', function () { return (datauri.width == 1 && datauri.height == 1); });
+  };
+
+  datauri.src = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==";
+
+})();
+;
+
+  // Attach to jQuery object
+  $.Jcrop = Jcrop;
+
+  $.Jcrop.supportsCanvas = Modernizr.canvas;
+  $.Jcrop.supportsCanvasText = Modernizr.canvastext;
+  $.Jcrop.supportsDragAndDrop = Modernizr.draganddrop;
+  $.Jcrop.supportsDataURI = Modernizr.datauri;
+  $.Jcrop.supportsSVG = Modernizr.svg;
+  $.Jcrop.supportsInlineSVG = Modernizr.inlinesvg;
+  $.Jcrop.supportsSVGClipPaths = Modernizr.svgclippaths;
+  $.Jcrop.supportsCSSTransforms = Modernizr.csstransforms;
+  $.Jcrop.supportsTouch = Modernizr.touch;
+
+})(jQuery);
+;/**
 @fileOverview jQuery plugins written specifically for Boom.
 */
 /**
@@ -37276,6 +43909,14 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 	boomAsset.prototype.get = function() {
 		return $.get(this.base_url + 'view/' + this.id);
 	};
+	
+	boomAsset.prototype.getId = function() {
+		return this.id;
+	};
+	
+	boomAsset.prototype.getViewUrl = function() {
+		return '/asset/view/' + this.id;
+	};
 
 	boomAsset.prototype.hasMultipleIds = function() {
 		return this.id.indexOf('-') !== -1;
@@ -37339,6 +43980,21 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 
                 assetEditor.revertTo($(this).attr('data-version-id'));
             })
+			.on('click', '.b-assets-openeditor', function(e) {
+				e.preventDefault();
+		
+				new boomImageEditor(asset.getViewUrl() + '?' + new Date().getTime())
+					.done(function(blob) {
+						assetEditor.replaceWithBlob(blob);
+					});
+			})
+			.on('click', '.b-assets-save', function() {
+				assetEditor.asset
+					.save(assetEditor.dialog.contents.find('form').serialize())
+					.done(function() {
+						new boomNotification("Asset details saved");
+					});
+			})
 			.on('focus', '#thumbnail', function() {
 				var $this = $(this);
 
@@ -37357,7 +44013,6 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 			url : '/cms/assets/view/' + assetEditor.asset.id,
 			width: document.documentElement.clientWidth >= 1000? '1000px' : '100%',
 			closeButton: false,
-			saveButton: true,
 			onLoad : function() {
                 assetEditor.bind(assetEditor.dialog);
 
@@ -37372,13 +44027,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 						}
 					});
 			}
-		}).done(function() {
-            assetEditor.asset
-                .save(assetEditor.dialog.contents.find('form').serialize())
-                .done(function() {
-                    new boomNotification("Asset details saved");
-                });
-        });
+		});
 
         return this.dialog;
     };
@@ -37388,6 +44037,24 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 
         $img.attr("src", $img.attr('src') + '?' + new Date().getTime());
     };
+	
+	boomAssetEditor.prototype.replaceWithBlob = function(blob) {
+		var assetEditor = this,
+			data = new FormData();
+		
+		data.append('files[]', blob);
+
+		$.ajax({
+			data: data,
+			url: '/cms/assets/replace/' + asset.getId(),
+			processData: false,
+			contentType: false,
+			type: 'POST'
+		})
+		.done(function() {
+			assetEditor.reloadPreviewImage();
+		});
+	};
 
     boomAssetEditor.prototype.revertTo = function(versionId) {
         var assetEditor = this;
@@ -37659,7 +44326,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 		var assetManager = this;
 
 		new boomAssetEditor(new boomAsset(assetId), assetManager.uploader)
-			.done(function() {
+			.fail(function() {
 				assetManager.getAssets();
 			});
 	}
@@ -38787,7 +45454,271 @@ function Row() {
 
 		(this.selectedPeople > 0)? button.prop('disabled', false) : button.prop('disabled', true);
 	}
-});;// TODO: in future try to replace most inline compability checks with polyfills for code readability 
+});;function boomImageEditor(imageUrl) {
+	this.imageUrl = imageUrl;
+	this.imageSelector = '#b-imageeditor-image';
+	this.cropButtonSelector = '#b-imageeditor-crop';
+	this.url = '/cms/ui/image-editor';
+	this.deferred = new $.Deferred();
+	this.isCropping = false;
+	
+	boomImageEditor.prototype.bind = function() {
+		var imageEditor = this;
+		
+		this.$toolbar = this.$element.find('#b-imageeditor-toolbar');
+		
+		this.$element
+			.on('click', '#b-imageeditor-rotate-left', function() {
+				Caman(imageEditor.imageSelector, function () {
+					this.rotate(-90).render();
+					imageEditor.saveImageDimensions();
+				});
+			})
+			.on('click', '#b-imageeditor-rotate-right', function() {
+				Caman(imageEditor.imageSelector, function () {
+					this.rotate(90).render();
+					imageEditor.saveImageDimensions();
+				});
+			})
+			.on('click', '#b-imageeditor-crop-cancel', function() {
+				imageEditor.hideCropTool();
+			})
+			.on('click', this.cropButtonSelector, function() {
+				if (imageEditor.isCropping) {
+					imageEditor.hideCropTool();
+				} else {
+					imageEditor.showCropTool();
+				}
+				
+				imageEditor.isCropping = !imageEditor.isCropping;
+		
+				$(this).blur();
+			})
+			.on('click', '#b-imageeditor-revert', function() {
+				imageEditor.loadImage();
+			})
+			.on('change', '.crop-tools select', function() {
+				var $this = $(this);
+
+				imageEditor.$cropImage.Jcrop({
+					aspectRatio: $this.find(':selected').val()
+				});
+			});
+	};
+	
+	boomImageEditor.prototype.blobToBase64 = function(blob) {
+		var deferred = new $.Deferred();
+
+		var reader = new window.FileReader();
+		reader.readAsDataURL(blob); 
+		reader.onloadend = function() {
+			deferred.resolve(reader.result);                
+		};
+		
+		return deferred;
+	};
+	
+	boomImageEditor.prototype.createCanvas = function() {
+		var imageEditor = this,
+			$el = this.$element;
+			
+		this.$cropImage = $('<img>').css('display', 'none');
+
+		$el
+			.find('#b-imageeditor')
+			.append(this.$cropImage)
+			.end();
+	
+		this.loadImage();
+	};
+	
+	boomImageEditor.prototype.cropImage = function(x, y, width, height) {
+		var imageEditor = this,
+			canvas = this.$element.find('canvas').get(0),
+			deferred = new $.Deferred();
+
+		this.getImageBase64().done(function(base64) {
+			var img = new Image(),
+				context = canvas.getContext('2d');
+
+			if (canvas.clientWidth > width) {
+				canvas.width = width;
+			}
+			
+			if (canvas.clientHeight > height) {
+				canvas.height = height;
+			}
+			
+			img.onload = function() {
+				context.clearRect(0, 0, canvas.width, canvas.height);
+				context.drawImage(img, x, y, width, height, 0, 0, canvas.width, canvas.height);
+				deferred.resolve('');
+			};
+
+			img.src = base64;
+			imageEditor.saveImageDimensions();
+		});
+		
+		return deferred;
+	};
+	
+	boomImageEditor.prototype.getImageBase64 = function() {
+		var imageEditor = this,
+			deferred = new $.Deferred();
+		
+		this.getImageBlob().done(function(blob) {
+			imageEditor.blobToBase64(blob).done(function(base64) {
+				deferred.resolve(base64);
+			});
+		});
+
+		return deferred;
+	};
+	
+	boomImageEditor.prototype.getImageBlob = function() {
+		var deferred = new $.Deferred();
+
+		this.$element.find(this.imageSelector).get(0).toBlob(function(blob) {
+			deferred.resolve(blob);
+		});
+
+		return deferred;
+	};
+	
+	boomImageEditor.prototype.hideCropTool = function() {
+		this.$cropImage.Jcrop('destroy');
+
+		this.$toolbar
+			.children('.b-button')
+			.not(this.cropButtonSelector)
+			.prop('disabled', false);
+	
+		this.toggleCropTools();
+
+		this.$canvas.show();
+	};
+	
+	boomImageEditor.prototype.loadImage = function() {
+		var imageEditor = this,
+			$el = this.$element,
+			$image = $el.find(this.imageSelector);
+	
+		if ($image.is('canvas')) {
+			$image.replaceWith($('<img />').attr('id', this.imageSelector.replace('#', '')));
+			$image = $el.find(this.imageSelector);
+		}
+
+		$image.attr('src', this.imageUrl).on('load', function() {
+			imageEditor.saveImageDimensions();
+			
+			Caman(imageEditor.imageSelector, function () {
+				imageEditor.$canvas = $el.find('canvas:first-of-type');
+				imageEditor.canvas = imageEditor.$canvas[0];
+				
+				imageEditor.$element
+					.find('.crop-tools select')
+					.append(
+						$('<option>')
+							.val(parseFloat(imageEditor.imageWidth / imageEditor.imageHeight))
+							.text('Initial')
+					);
+			});
+		});
+	};
+	
+	boomImageEditor.prototype.open = function() {
+		var imageEditor = this;
+
+		this.dialog = new boomDialog({
+			url: this.url,
+			width: document.documentElement.clientWidth < 1024? '100%' : 1024,
+			height: document.documentElement.clientHeight < 768? document.documentElement.clientHeight : 768,
+			title: 'Image editor',
+			closeButton: false,
+			saveButton: true,
+			onLoad: function() {
+				imageEditor.$element = imageEditor.dialog.contents;
+				imageEditor.createCanvas();
+				imageEditor.bind();
+			}
+		})
+		.done(function() {
+			imageEditor.getImageBlob().then(function(blob) {
+				imageEditor.deferred.resolve(blob);
+			});
+		});
+		
+		return this.deferred;
+	};
+	
+	boomImageEditor.prototype.saveImageDimensions = function() {
+		this.imageWidth = this.$element.find(this.imageSelector).width();
+		this.imageHeight = this.$element.find(this.imageSelector).height();
+		this.aspectRatio = this.imageWidth / this.imageHeight;
+	};
+	
+	boomImageEditor.prototype.showCropTool = function() {
+		var $el = this.dialog.contents,
+			imageEditor = this;
+	
+		this.$toolbar
+			.children('.b-button')
+			.not(this.cropButtonSelector)
+			.prop('disabled', true);
+	
+		this.toggleCropTools();
+
+		this.getImageBase64()
+			.done(function(base64) {
+				var crop = {};
+			
+				imageEditor.$cropImage
+					.attr('src', base64)
+					.on('load', function() {
+						imageEditor.$cropImage
+						.Jcrop({
+							boxWidth: imageEditor.imageWidth,
+							boxHeight: imageEditor.imageHeight,
+							setSelect: [
+								0,
+								0,
+								imageEditor.$cropImage[0].naturalWidth,
+								imageEditor.$cropImage[0].naturalHeight
+							],
+							onChange: function(c) {
+								crop = c;
+							},
+							aspectRatio: $el.find('.crop-tools select option:selected').val()
+						});
+
+						$el
+							.find('.jcrop-active canvas')
+							.css({
+								width: imageEditor.imageWidth,
+								height: imageEditor.imageHeight
+							});
+
+						imageEditor.$canvas.hide();
+					});
+
+				$el.one('click', '#b-imageeditor-crop-accept', function() {
+					if (crop !== {}) {
+						imageEditor
+							.cropImage(crop.x, crop.y, crop.w, crop.h)
+							.done(function() {
+								imageEditor.hideCropTool();
+							});
+					}
+				});
+			});
+	};
+	
+	boomImageEditor.prototype.toggleCropTools = function() {
+		this.$toolbar.find('.crop-tools').slideToggle();
+	};
+	
+	return this.open();
+};;// TODO: in future try to replace most inline compability checks with polyfills for code readability 
 
 // IE8 SUPPORT BLOCK
 // You can compile wuthout all this if IE8 is not needed

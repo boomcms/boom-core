@@ -256,7 +256,7 @@ $.widget('boom.assetManager', {
 		var assetManager = this;
 
 		new boomAssetEditor(new boomAsset(assetId), assetManager.uploader)
-			.done(function() {
+			.fail(function() {
 				assetManager.getAssets();
 			});
 	}

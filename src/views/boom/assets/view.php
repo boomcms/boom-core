@@ -6,6 +6,10 @@
             <?= $button('trash-o', Lang::get('Delete'), ['class' => 'b-assets-delete']) ?>
             <?= $button('download', Lang::get('Download'), ['class' => 'b-assets-download']) ?>
             <?= $button('refresh', Lang::get('Replace'), ['class' => 'b-assets-replace']) ?>
+        
+            <?php if ($asset->isImage()): ?>
+                <?= $button('edit', Lang::get('boom::asset.openeditor'), ['class' => 'b-assets-openeditor b-button-withtext']) ?>
+            <?php endif ?>
         </div>
     </div>
 
@@ -43,6 +47,8 @@
                     </label>
                 <?php endif ?>
             </form>
+            
+            <?= $button('save', Lang::get('boom::buttons.save-changes'), ['class' => 'b-assets-save b-button-withtext']) ?>
         </div>
 
         <div id="b-assets-view-info">

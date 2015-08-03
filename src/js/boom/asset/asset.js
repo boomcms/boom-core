@@ -43,6 +43,14 @@ function boomAsset(asset_id) {
 	boomAsset.prototype.get = function() {
 		return $.get(this.base_url + 'view/' + this.id);
 	};
+	
+	boomAsset.prototype.getId = function() {
+		return this.id;
+	};
+	
+	boomAsset.prototype.getViewUrl = function() {
+		return '/asset/view/' + this.id;
+	};
 
 	boomAsset.prototype.hasMultipleIds = function() {
 		return this.id.indexOf('-') !== -1;

@@ -39,6 +39,21 @@ function boomAssetEditor(asset, uploader) {
 
                 assetEditor.revertTo($(this).attr('data-version-id'));
             })
+			.on('click', '.b-assets-openeditor', function(e) {
+				e.preventDefault();
+		
+				new boomImageEditor(asset.getViewUrl() + '?' + new Date().getTime())
+					.done(function(blob) {
+						assetEditor.replaceWithBlob(blob);
+					});
+			})
+			.on('click', '.b-assets-save', function() {
+				assetEditor.asset
+					.save(assetEditor.dialog.contents.find('form').serialize())
+					.done(function() {
+						new boomNotification("Asset details saved");
+					});
+			})
 			.on('focus', '#thumbnail', function() {
 				var $this = $(this);
 
@@ -57,7 +72,6 @@ function boomAssetEditor(asset, uploader) {
 			url : '/cms/assets/view/' + assetEditor.asset.id,
 			width: document.documentElement.clientWidth >= 1000? '1000px' : '100%',
 			closeButton: false,
-			saveButton: true,
 			onLoad : function() {
                 assetEditor.bind(assetEditor.dialog);
 
@@ -72,13 +86,7 @@ function boomAssetEditor(asset, uploader) {
 						}
 					});
 			}
-		}).done(function() {
-            assetEditor.asset
-                .save(assetEditor.dialog.contents.find('form').serialize())
-                .done(function() {
-                    new boomNotification("Asset details saved");
-                });
-        });
+		});
 
         return this.dialog;
     };
@@ -88,6 +96,24 @@ function boomAssetEditor(asset, uploader) {
 
         $img.attr("src", $img.attr('src') + '?' + new Date().getTime());
     };
+	
+	boomAssetEditor.prototype.replaceWithBlob = function(blob) {
+		var assetEditor = this,
+			data = new FormData();
+		
+		data.append('files[]', blob);
+
+		$.ajax({
+			data: data,
+			url: '/cms/assets/replace/' + asset.getId(),
+			processData: false,
+			contentType: false,
+			type: 'POST'
+		})
+		.done(function() {
+			assetEditor.reloadPreviewImage();
+		});
+	};
 
     boomAssetEditor.prototype.revertTo = function(versionId) {
         var assetEditor = this;
