@@ -25,18 +25,6 @@ $.widget('boom.pageStatus', {
 				}
 			});
 		}
-
-		if (this.element.hasClass('ui-splitbutton-hitarea')) {
-			this.menu.splitbutton('destroy');
-		}
-
-		this.menu
-			.splitbutton({
-				items: options,
-				width: 'auto',
-				menuPosition: 'right',
-				split: false
-			});
 	},
 
 	_create : function() {
@@ -113,9 +101,7 @@ $.widget('boom.pageStatus', {
 		this._buildMenu(status);
 
 		this.element
-			.find('span')
 			.text(this._get_abbreviated_status(status))
-			.end()
 			.attr('data-status', status)
 			.attr('title', status.ucfirst());
 	}

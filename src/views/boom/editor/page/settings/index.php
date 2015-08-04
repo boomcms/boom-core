@@ -69,6 +69,12 @@
                 </a>
             </li>
         <?php endif ?>
+            
+        <li>
+            <a href="#" class="fa fa-pencil" data-b-page-setting="drafts">
+                <?= Lang::get('boom::settings.menu.drafts') ?>
+            </a>
+        </li>
     </ul>
 
     <div class="b-page-settings-content"></div>

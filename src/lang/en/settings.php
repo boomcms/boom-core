@@ -11,6 +11,7 @@ return [
         'feature' => 'Feature Image',
         'template' => 'Template',
         'visibility' => 'Visibility',
+        'drafts' => 'Page drafs',
     ],
     'admin' => [
         'heading' => 'Admin settings',

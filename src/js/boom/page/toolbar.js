@@ -77,6 +77,10 @@ $.widget( 'boom.pageToolbar', {
 					self.maximise();
 					$settings.addClass('open');
 				}
+			})
+			.on('click', '#b-page-version-status', function() {
+				self.$settings.pageSettings('show', 'drafts');
+				self.openPageSettings();
 			});
 
 		this.buttonBar = this.element.contents().find('#b-topbar');
