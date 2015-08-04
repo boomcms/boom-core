@@ -30,8 +30,6 @@ $.widget( 'boom.pageToolbar', {
 				self.options.page.stash();
 			})
 			.on('click', '.b-page-visibility', function() {
-				self.openPageSettings();
-
 				self.$settings
 					.pageSettings('show', 'visibility')
 					.done(function(response) {
@@ -45,15 +43,15 @@ $.widget( 'boom.pageToolbar', {
 
 						self._toggle_view_live_button();
 					});
+					
+				self.openPageSettings();
 			})
 			.on('click', '.b-button-preview', function() {
 				$.boom.editor.state($(this).attr('data-preview'));
 			})
 			.on('click', '#b-page-template', function() {
+				self.$settings.pageSettings('show', 'template');
 				self.openPageSettings();
-
-				self.$settings
-					.pageSettings('show', 'template');
 			})
 			.on('click', '#b-menu-button', function() {
 				var $body = $('body');
