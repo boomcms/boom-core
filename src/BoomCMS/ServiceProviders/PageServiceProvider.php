@@ -25,7 +25,7 @@ class PageServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->singleton('boomcms.page.provider', function ($app) {
-            return new Page\Provider($app['boomcms.editor']);
+            return new Page\Provider();
         });
     }
 }

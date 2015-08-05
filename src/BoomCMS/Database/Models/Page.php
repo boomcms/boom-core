@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Database\Models;
 
-use BoomCMS\Core\Editor\Editor;
+use BoomCMS\Support\Facades\Editor;
 use BoomCMS\Support\Helpers\URL as URLHelper;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
@@ -41,14 +41,14 @@ class Page extends Model
         return $this;
     }
 
-    public function getCurrentVersionQuery(Editor $editor = null)
+    public function getCurrentVersionQuery()
     {
         $query = DB::table('page_versions')
             ->select([DB::raw('max(id) as id'), 'page_id'])
             ->where('stashed', '=', 0)
             ->groupBy('page_id');
 
-        if ($editor && $editor->isDisabled()) {
+        if (Editor::isDisabled()) {
             $query
                 ->where('embargoed_until', '<=', time())
                 ->where('published', '=', 1);
@@ -118,9 +118,9 @@ class Page extends Model
             ->orderBy(DB::raw('length(title)'), 'asc');
     }
 
-    public function scopeCurrentVersion($query, Editor $editor = null)
+    public function scopeCurrentVersion($query)
     {
-        $subquery = $this->getCurrentVersionQuery($editor);
+        $subquery = $this->getCurrentVersionQuery();
 
         return $query
             ->select('version.*')

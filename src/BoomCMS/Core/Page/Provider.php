@@ -2,7 +2,6 @@
 
 namespace BoomCMS\Core\Page;
 
-use BoomCMS\Core\Editor\Editor;
 use BoomCMS\Database\Models\Page as Model;
 
 use Illuminate\Support\Facades\App;
@@ -27,17 +26,6 @@ class Provider
         'internal_name' => [],
         'primary_uri' => [],
     ];
-
-    /**
-     *
-     * @var Editor
-     */
-    protected $editor;
-
-    public function __construct(Editor $editor = null)
-    {
-        $this->editor = $editor ?: App::offsetGet('boomcms.editor');
-    }
 
     private function cache(Page $page)
     {
@@ -71,7 +59,7 @@ class Provider
 
     public function findByParent(Page $parent)
     {
-        $finder = new Finder\Finder($this->editor);
+        $finder = new Finder\Finder();
         $finder->addFilter(new Finder\ParentPage($parent));
 
         return $finder->findAll();
@@ -79,7 +67,7 @@ class Provider
 
     public function findByParentId($parentId)
     {
-        $finder = new Finder\Finder($this->editor);
+        $finder = new Finder\Finder();
         $finder->addFilter(new Finder\ParentId($parentId));
 
         return $finder->findAll();
@@ -93,7 +81,7 @@ class Provider
     public function findByUri($uri)
     {
         if ( !isset($this->cache['uri'][$uri])) {
-            $finder = new Finder\Finder($this->editor);
+            $finder = new Finder\Finder();
             $finder->addFilter(new Finder\Uri($uri));
             $page = $finder->find();
 
@@ -106,7 +94,7 @@ class Provider
 
     public function findRelatedTo(Page $page)
     {
-        $finder = new Finder\Finder($this->editor);
+        $finder = new Finder\Finder();
         $finder->addFilter(new Finder\RelatedTo($page));
 
         return $finder->findAll();

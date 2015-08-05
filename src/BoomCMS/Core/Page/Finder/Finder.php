@@ -2,12 +2,10 @@
 
 namespace BoomCMS\Core\Page\Finder;
 
-use BoomCMS\Core\Editor\Editor;
+use BoomCMS\Support\Facades\Editor;
 use BoomCMS\Core\Finder\Finder as BaseFinder;
 use BoomCMS\Database\Models\Page as Model;
 use BoomCMS\Core\Page\Page;
-
-use Illuminate\Support\Facades\App;
 
 class Finder extends BaseFinder
 {
@@ -16,13 +14,11 @@ class Finder extends BaseFinder
     const DATE = 'visible_from';
     const EDITED = 'edited_time';
 
-    public function __construct(Editor $editor = null)
+    public function __construct()
     {
-        $this->editor = $editor ?: App::make('BoomCMS\Core\Editor\Editor');
+        $this->query = Model::currentVersion()->withUrl();
 
-        $this->query = Model::currentVersion($editor)->withUrl();
-
-        if ($this->editor->isDisabled()) {
+        if (Editor::isDisabled()) {
             $this->query = $this->query->isVisible();
         }
     }
