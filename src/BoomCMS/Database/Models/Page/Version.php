@@ -3,8 +3,8 @@
 namespace BoomCMS\Database\Models\Page;
 
 use BoomCMS\Core\Page\Page;
+use BoomCMS\Support\Facades\Editor;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\App;
 
 class Version extends Model
 {
@@ -25,9 +25,7 @@ class Version extends Model
 
     public function scopeLatestAvailable($query)
     {
-        $editor = App::make('BoomCMS\Core\Editor\Editor');
-
-        if ($editor->isDisabled()) {
+        if (Editor::isDisabled()) {
             return $this->scopeLastPublished($query);
         } else {
             // For logged in users get the version with the highest ID.
