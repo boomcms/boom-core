@@ -35,8 +35,11 @@ class Editor
         $this->auth = $auth;
         $this->session = $session;
 
-        $default = ($this->auth->isLoggedIn()) ? static::$default : static::DISABLED;
-        $this->state = $this->session->get($this->statePersistenceKey, $default);
+        if ($this->auth->isLoggedIn()) {
+            $this->state = $this->session->get($this->statePersistenceKey, static::$default);
+        } else {
+            $this->state = static::DISABLED;
+        }
     }
 
     public function disable()
