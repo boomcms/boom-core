@@ -3,9 +3,9 @@
 namespace BoomCMS\Core\Chunk;
 
 use BoomCMS\Core\Auth\Auth;
-use BoomCMS\Core\Editor\Editor;
 use BoomCMS\Core\Page\Page;
 use BoomCMS\Core\Page\Version;
+use BoomCMS\Support\Facades\Editor;
 
 class Provider
 {
@@ -15,16 +15,9 @@ class Provider
      */
     protected $auth;
 
-    /**
-     *
-     * @var Editor
-     */
-    protected $editor;
-
-    public function __construct(Auth $auth, Editor $editor)
+    public function __construct(Auth $auth)
     {
         $this->auth = $auth;
-        $this->editor = $editor;
     }
 
     public function create(Page $page, $attrs)
@@ -55,7 +48,7 @@ class Provider
             return true;
         }
 
-        return $this->editor->isEnabled() &&
+        return Editor::isEnabled() &&
             ($page->wasCreatedBy($this->auth->getPerson())
                 || $this->auth->loggedIn("edit_page_content", $page)
             );
@@ -75,7 +68,7 @@ class Provider
         $className = 'BoomCMS\Core\Chunk\\' . ucfirst($type);
 
         if ($page === null) {
-            $page = $this->editor->getActivePage();
+            $page = Editor::getActivePage();
         } elseif ($page === 0) {
             // 0 was given as the page - this signifies a 'global' chunk not assigned to any page.
             $page = new Page([]);
