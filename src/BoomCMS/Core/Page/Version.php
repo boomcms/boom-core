@@ -92,6 +92,16 @@ class Version
     {
         return $this->get('title');
     }
+    
+    public function isDraft()
+    {
+        return $this->get('embargoed_until') === null;
+    }
+    
+    public function isEmbargoed()
+    {
+        return $this->get('embargoed_until') > time();
+    }
 
     public function isPendingApproval()
     {
@@ -106,11 +116,6 @@ class Version
     /**
      * Returns the status of the current page version.
      *
-     * Status could be:
-     *
-     * * 'published' if the version is published.
-     * * 'embargoed' if the version is published but won't become live until a future time.
-     * * 'draft' if it's not published.
      *
      * @return string
      */
@@ -118,14 +123,11 @@ class Version
     {
         if ($this->isPendingApproval()) {
             return 'pending approval';
-        } elseif ($this->get('embargoed_until') === null) {
-            // Version is a draft if an embargo time hasn't been set.
+        } elseif ($this->isDraft()) {
             return 'draft';
-        } elseif ($this->get('embargoed_until') <= time()) {
-            // Version is live if the embargo time is in the past.
+        } elseif ($this->isPublished()) {
             return 'published';
-        } elseif ($this->get('embargoed_until') > time()) {
-            // Version is embargoed if the embargo time is in the future.
+        } elseif ($this->isEmbargoed()) {
             return 'embargoed';
         }
     }
