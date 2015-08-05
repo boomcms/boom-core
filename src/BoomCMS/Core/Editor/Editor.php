@@ -65,6 +65,19 @@ class Editor
     {
         return $this->hasState(static::DISABLED);
     }
+    
+    /**
+     * Returns whether or not the logged in user can edit the content of a page.
+     * 
+     * A page can be edited if it was created by a user or they have edit permissions for the page.
+     * 
+     * @param Page $page
+     * @return boolean
+     */
+    public function isEditable(Page $page)
+    {
+        return $page->wasCreatedBy($this->auth->getPerson()) || $this->auth->loggedIn("edit_page_content", $page);
+    }
 
     public function isEnabled()
     {

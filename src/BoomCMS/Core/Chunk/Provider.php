@@ -48,10 +48,7 @@ class Provider
             return true;
         }
 
-        return Editor::isEnabled() &&
-            ($page->wasCreatedBy($this->auth->getPerson())
-                || $this->auth->loggedIn("edit_page_content", $page)
-            );
+        return Editor::isEnabled() && Editor::isEditable($page);
     }
 
     /**
