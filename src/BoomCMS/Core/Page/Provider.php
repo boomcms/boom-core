@@ -4,8 +4,6 @@ namespace BoomCMS\Core\Page;
 
 use BoomCMS\Database\Models\Page as Model;
 
-use Illuminate\Support\Facades\App;
-
 /**
  * TODO: Need to not return deleted / invisible pages by default with option to show a hidden page.
  *
