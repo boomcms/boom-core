@@ -40376,7 +40376,8 @@ function boomPage(page_id) {
 
 			if (typeof(pageSettings.$content[widget]) === 'function') {
 				pageSettings.$content[widget]({
-					page: pageSettings.page
+					page: pageSettings.page,
+					settings: pageSettings
 				});
 			}
 		});
@@ -41389,6 +41390,24 @@ $.widget('boom.pageTree', {
 		}
 
 		$count.find('p').html($selected.data('count'));
+	}
+});;$.widget('boom.pageSettingsDrafts', {
+	bind: function() {
+		var draftSettings = this,
+			page = this.options.page;
+
+		this.element
+			.on('click', '.b-page-publish', function() {
+				page.publish()
+					.done(function(response) {
+						draftSettings._trigger('done', response);
+						draftSettings.options.settings.show('drafts');
+					});
+			});
+	},
+
+	_create: function() {
+		this.bind();
 	}
 });;/**
 @fileOverview Boom interface for wysihtml5.

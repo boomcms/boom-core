@@ -5,29 +5,17 @@
     <?php if ($version->isDraft()): ?>
         <p><?= Lang::get('boom::settings.draft-status.draft') ?></p>
         
-        <?php if ($auth->loggedIn('publish', $page)): ?>
-            <?php /* Publish, embargo, and revert to published buttons. */ ?>
-        <?php else: ?>
-            <?php /* request approval button. */ ?>
+        <?php if (!$auth->loggedIn('publish_page', $page)): ?>
+            <?= $button('thumbs-up', Lang::get('boom::buttons.request-approval'), ['class' => 'b-button-withtext b-page-request-approval']) ?>
         <?php endif ?>
     <?php elseif ($version->isPendingApproval()): ?>
         <p><?= Lang::get('boom::settings.draft-status.pending') ?></p>
-        
-        <?php if ($auth->loggedIn('publish', $page)): ?>
-            <?php /* Publish, embargo, and revert to published buttons. */ ?>
-        <?php else: ?>
-            <?php /* request approval button. */ ?>
-        <?php endif ?>
     <?php elseif ($version->isEmbargoed()): ?>
         <p>
             <?= Lang::get('boom::settings.draft-status.embargoed', [
                 'date' => $version->getEmbargoedUntil()->format('l d F Y H:i'),
             ]) ?>
         </p>
-        
-        <?php if ($auth->loggedIn('publish', $page)): ?>
-            <?php /* Publish now , change embargo, and revert to published buttons. */ ?>
-        <?php endif ?>
     <?php elseif ($version->isPublished()): ?>
         <p><?= Lang::get('boom::settings.draft-status.published') ?></p>
     <?php endif ?>
@@ -52,5 +40,11 @@
                 'date' => $page->getLastPublishedTime()->format('l d F Y H:i')
             ]) ?>
         </p>
+        
+        <?php if ($auth->loggedIn('publish_page', $page)): ?>
+            <?= $button('check', Lang::get('boom::buttons.publish'), ['class' => 'b-button-withtext b-page-publish']) ?>
+            <?= $button('clock-o', Lang::get('boom::buttons.embargo-change'), ['class' => 'b-button-withtext b-page-embargo']) ?>
+            <?= $button('undo', Lang::get('boom::buttons.page-revert'), ['class' => 'b-button-withtext b-page-revert']) ?>
+        <?php endif ?>
     <?php endif ?>
 </div>

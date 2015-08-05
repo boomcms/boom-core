@@ -9,4 +9,9 @@ return [
     'resize' => 'Resize',
     'image-revert' => 'Restore to original',
     'save-changes' => 'Save changes',
+    'publish' => 'Publish now',
+    'page-revert' => 'Revert to published version',
+    'embargo' => 'Embargo changes',
+    'embargo-change' => 'Change embargo time',
+    'request-approval' => 'Request approval',
 ];

@@ -48,7 +48,8 @@ $.widget('boom.pageSettings', {
 
 			if (typeof(pageSettings.$content[widget]) === 'function') {
 				pageSettings.$content[widget]({
-					page: pageSettings.page
+					page: pageSettings.page,
+					settings: pageSettings
 				});
 			}
 		});
