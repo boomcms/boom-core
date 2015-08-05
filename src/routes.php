@@ -102,6 +102,7 @@ Route::group(['middleware' => [
                     Route::post('title/{page}', 'Save@title');
 					Route::get('embargo/{page}', 'View@embargo');
 					Route::post('embargo/{page}', 'Save@embargo');
+                    Route::get('status/{page}', 'View@status');
 				});
 			});
 

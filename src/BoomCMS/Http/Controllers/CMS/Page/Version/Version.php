@@ -18,6 +18,11 @@ abstract class Version extends PageController
     {
         $this->authorization('edit_page_content', $this->page);
     }
+    
+    public function status()
+    {
+        $this->authorization('edit_page_content', $this->page);
+    }
 
     public function template(Template\Manager $manager)
     {

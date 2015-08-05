@@ -11,7 +11,7 @@ return [
         'feature' => 'Feature Image',
         'template' => 'Template',
         'visibility' => 'Visibility',
-        'drafts' => 'Page drafs',
+        'drafts' => 'Draft status',
     ],
     'admin' => [
         'heading' => 'Admin settings',
@@ -28,6 +28,17 @@ return [
         'nav-cms' => 'Children visible in CMS nav',
         'uri-prefix' => 'Default child URI prefix',
         'grandchild-template' => 'Default grandchild template',
+    ],
+    'draft-status' => [
+        'heading' => 'Draft status',
+        'intro' => 'When you edit the template or content of a page your changes will be saved as a draft and won\'t appear on the live site until published.',
+        'draft' => 'The latest version of this page is in <strong>draft</strong> and <strong>will not be visible on the live site</strong>',
+        'pending' => 'The latest version of this page is current <strong>pending approval</strong> by someone with publish permissions for this page',
+        'embargoed' => 'The latest version of this page is <strong>embargoed</strong> and will become published at <strong>:date</strong>',
+        'published' => 'There are no drafts for this page. All edits are <strong>published</strong>',
+        'latest' => 'This version was created by :name (:email) at :date',
+        'published-since' => 'and has been published since :date',
+        'last-published' => 'The page was last published at :date',
     ],
     'feature' => [
         'heading' => 'Page feature image',

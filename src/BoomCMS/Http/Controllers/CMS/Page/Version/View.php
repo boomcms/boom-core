@@ -15,6 +15,16 @@ class View extends Version
             'version' => $this->page->getCurrentVersion(),
         ]);
     }
+    
+    public function status()
+    {
+        parent::status();
+        
+        return ViewFacade::make("$this->viewPrefix.status", [
+            'page' => $this->page,
+            'version' => $this->page->getCurrentVersion(),
+        ]);
+    }
 
     public function template(Template\Manager $manager)
     {
