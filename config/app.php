@@ -192,7 +192,7 @@ return [
         'Chunk'     => 'BoomCMS\Support\Facades\Chunk',
         'Page'      => 'BoomCMS\Support\Facades\Page',
         'Editor'    => 'BoomCMS\Support\Facades\Editor',
-		'Tag'       => 'BoomCMS\Support\Facades\Tag',
+        'Tag'       => 'BoomCMS\Support\Facades\Tag',
         'Group'     => 'BoomCMS\Support\Facades\Group',
     ],
 ];
