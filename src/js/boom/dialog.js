@@ -126,13 +126,14 @@ function boomDialog(options) {
 			}
 
 		} else if (this.options.msg.length) {
-			this.contents.html(this.options.msg);
-			this.contents.dialog();
-			this.init();
+			setTimeout(function() {
+				self.contents.html(self.options.msg);
+				self.init();
 
-			if ($.isFunction(this.options.onLoad)) {
-				this.options.onLoad(this);
-			}
+				if ($.isFunction(self.options.onLoad)) {
+					self.options.onLoad(self);
+				}
+			}, 100);
 		}
 	};
 
