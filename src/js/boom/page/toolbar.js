@@ -53,7 +53,7 @@ $.widget( 'boom.pageToolbar', {
 				var $settings = self.element
 					.contents()
 					.find('#b-page-settings-toolbar');
-		
+
 				if ($settings.hasClass('open')) {
 					$settings.removeClass('open');
 
@@ -89,7 +89,7 @@ $.widget( 'boom.pageToolbar', {
 				publishable : this.options.publishable
 			})
 			.data('boom-pageStatus');
-	
+
 		this.$settings = this.element
 			.contents()
 			.find('.b-page-settings')
@@ -120,6 +120,13 @@ $.widget( 'boom.pageToolbar', {
 					}
 
 					toolbar._toggle_view_live_button();
+				},
+				urlsSave: function(event, primaryUrl) {
+					var history = new boomHistory();
+					history.replaceState({},
+						top.window.document.title,
+						'/' + primaryUrl
+					);
 				}
 			});
 
@@ -159,7 +166,7 @@ $.widget( 'boom.pageToolbar', {
 			'z-index' : 10000
 		});
 	},
-	
+
 	openPageSettings: function() {
 		this.maximise();
 
@@ -167,7 +174,7 @@ $.widget( 'boom.pageToolbar', {
 			.contents()
 			.find('#b-page-settings-toolbar')
 			.addClass('open');
-	
+
 		$(top.window).trigger('boom:dialog:open');
 	},
 

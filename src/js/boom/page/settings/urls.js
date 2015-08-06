@@ -24,12 +24,7 @@ $.widget('boom.pageSettingsUrls', {
 
 				if (is_primary) {
 					urlEditor.makePrimary($url);
-
-					var history = new boomHistory();
-					history.replaceState({},
-						top.window.document.title,
-						'/' + $url.find('label').text()
-					);
+					urlEditor._trigger('done', null, $url.find('label').text());
 				}
 			})
 			.on('click', '.b-urls-remove', function(e) {
@@ -38,7 +33,7 @@ $.widget('boom.pageSettingsUrls', {
 				urlEditor.delete($(e.target).closest('li'));
 			})
 			.on('click', '.b-urls-add', function() {
-				urlEditor.add();	
+				urlEditor.add();
 			});
 	},
 
@@ -47,7 +42,7 @@ $.widget('boom.pageSettingsUrls', {
 
 		this.page = this.options.page;
 		this.list_url = this.baseUrl + this.page.id;
-		
+
 		this.bind();
 	},
 

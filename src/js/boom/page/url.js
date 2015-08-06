@@ -11,7 +11,7 @@ function boomPageUrl(id) {
 			title : 'Add URL',
 			closeButton: false,
 			saveButton: true,
-			width : 500
+			width : 700
 		}).done(function() {
 			var location = dialog.contents.find('input[name=url]').val();
 

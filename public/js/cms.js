@@ -31259,7 +31259,7 @@ Date.parseFunctions={count:0};Date.parseRegexes=[];Date.formatFunctions={count:0
     } else {
         window.dataURLtoBlob = dataURLtoBlob;
     }
-}(window));
+}(this));
 ;/*
  * jQuery File Upload Plugin 5.42.3
  * https://github.com/blueimp/jQuery-File-Upload
@@ -40496,7 +40496,7 @@ $.widget( 'boom.pageToolbar', {
 				var $settings = self.element
 					.contents()
 					.find('#b-page-settings-toolbar');
-		
+
 				if ($settings.hasClass('open')) {
 					$settings.removeClass('open');
 
@@ -40532,7 +40532,7 @@ $.widget( 'boom.pageToolbar', {
 				publishable : this.options.publishable
 			})
 			.data('boom-pageStatus');
-	
+
 		this.$settings = this.element
 			.contents()
 			.find('.b-page-settings')
@@ -40563,6 +40563,13 @@ $.widget( 'boom.pageToolbar', {
 					}
 
 					toolbar._toggle_view_live_button();
+				},
+				urlsSave: function(event, primaryUrl) {
+					var history = new boomHistory();
+					history.replaceState({},
+						top.window.document.title,
+						'/' + primaryUrl
+					);
 				}
 			});
 
@@ -40602,7 +40609,7 @@ $.widget( 'boom.pageToolbar', {
 			'z-index' : 10000
 		});
 	},
-	
+
 	openPageSettings: function() {
 		this.maximise();
 
@@ -40610,7 +40617,7 @@ $.widget( 'boom.pageToolbar', {
 			.contents()
 			.find('#b-page-settings-toolbar')
 			.addClass('open');
-	
+
 		$(top.window).trigger('boom:dialog:open');
 	},
 
@@ -40825,7 +40832,7 @@ $.widget('boom.pageTree', {
 			title : 'Add URL',
 			closeButton: false,
 			saveButton: true,
-			width : 500
+			width : 700
 		}).done(function() {
 			var location = dialog.contents.find('input[name=url]').val();
 
@@ -41235,12 +41242,7 @@ $.widget('boom.pageTree', {
 
 				if (is_primary) {
 					urlEditor.makePrimary($url);
-
-					var history = new boomHistory();
-					history.replaceState({},
-						top.window.document.title,
-						'/' + $url.find('label').text()
-					);
+					urlEditor._trigger('done', null, $url.find('label').text());
 				}
 			})
 			.on('click', '.b-urls-remove', function(e) {
@@ -41249,7 +41251,7 @@ $.widget('boom.pageTree', {
 				urlEditor.delete($(e.target).closest('li'));
 			})
 			.on('click', '.b-urls-add', function() {
-				urlEditor.add();	
+				urlEditor.add();
 			});
 	},
 
@@ -41258,7 +41260,7 @@ $.widget('boom.pageTree', {
 
 		this.page = this.options.page;
 		this.list_url = this.baseUrl + this.page.id;
-		
+
 		this.bind();
 	},
 
