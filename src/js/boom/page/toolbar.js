@@ -44,9 +44,9 @@ $.widget( 'boom.pageToolbar', {
 				var $body = $('body');
 
 				if ($body.hasClass('pushy-active')) {
-					self.maximise();
+					$(top.window).trigger('boom:dialog:open');
 				} else {
-					self.minimise();
+					$(top.window).trigger('boom:dialog:close');
 				}
 			})
 			.on('click', '#b-page-settings', function() {
