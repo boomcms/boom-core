@@ -15,14 +15,20 @@
 		margin-top: 2em;
 
 		li {
-			background-color: transparent;
-			border-bottom: 1px solid @darkest-grey;
 			overflow: hidden;
 			line-height: initial;
 			color: @darkest-grey;
+			
+			&:nth-of-type(odd) {
+				background: @white;
+			}
+
+			&:nth-of-type(even) {
+				background: @lightest-grey;
+			}
 
 			&.b-page-urls-primary {
-				background-color: @light-grey;
+				color: @red;
 
 				.b-page-urls-primary-indicator {
 					display: inline;

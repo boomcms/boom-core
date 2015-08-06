@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'add-url' => 'Add URL',
     'cancel' => 'Cancel',
     'rotate-left' => 'Rotate left 90&deg;',
     'rotate-right' => 'Rotate right 90&deg;',

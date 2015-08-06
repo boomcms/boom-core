@@ -36,15 +36,19 @@ $.widget('boom.pageSettingsUrls', {
 				e.preventDefault();
 
 				urlEditor.delete($(e.target).closest('li'));
+			})
+			.on('click', '.b-urls-add', function() {
+				urlEditor.add();	
 			});
 	},
 
 	_create: function() {
-		var urlEditor = this,
-			page = this.page;
+		var urlEditor = this;
 
 		this.page = this.options.page;
 		this.list_url = this.baseUrl + this.page.id;
+		
+		this.bind();
 	},
 
 	delete: function($li) {
