@@ -55,7 +55,7 @@ class Version
 
     public function getEmbargoedUntil()
     {
-        return $this->get('embargoed_until');
+        return (new DateTime())->setTimestamp($this->get('embargoed_until'));
     }
 
     public function getId()
@@ -110,7 +110,7 @@ class Version
 
     public function isPublished()
     {
-        return $this->get('embargoed_until') && $this->get('embargoed_until') < time();
+        return $this->get('embargoed_until') && $this->get('embargoed_until') <= time();
     }
 
     /**

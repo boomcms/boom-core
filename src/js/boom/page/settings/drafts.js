@@ -6,14 +6,48 @@ $.widget('boom.pageSettingsDrafts', {
 		this.element
 			.on('click', '.b-page-publish', function() {
 				page.publish()
-					.done(function(response) {
-						draftSettings._trigger('done', response);
-						draftSettings.options.settings.show('drafts');
+					.done(function(status) {
+						draftSettings.update({
+							action: 'publish',
+							status: status
+						});
+					});
+			})
+			.on('click', '.b-page-embargo', function() {
+				page.embargo()
+					.done(function(status) {
+						draftSettings.update({
+							action: 'embargo',
+							status: status
+						});
+					});
+			})
+			.on('click', '.b-page-revert', function() {
+				page.revertToPublished()
+					.done(function(status) {
+						draftSettings.update({
+							action: 'revert',
+							status: status
+						});
+					});
+			})
+			.on('click', '.b-page-request-approval', function() {
+				page.requestApproval()
+					.done(function(status) {
+						draftSettings.update({
+							action: 'request approval',
+							status: status
+						});
 					});
 			});
 	},
 
 	_create: function() {
 		this.bind();
+	},
+	
+	update: function(status) {
+		this._trigger('done', null, status);
+		this.options.settings.show('drafts');
 	}
 });

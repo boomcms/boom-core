@@ -40082,31 +40082,6 @@ $(function() {
 
 	menu : $('#b-page-publish-menu'),
 
-	_buildMenu : function(status) {
-		var self = this, options, moreOptions;
-
-		options = {"Preview": function() {
-			$.boom.editor.state('preview');
-		}};
-
-		if (status !== 'published') {
-			moreOptions = this.options.publishable? this._get_publish_menu(status) : this._get_approvals_menu(status);
-
-			options = $.extend(options, moreOptions, {
-				"Revert to published version" : function() {
-					// The call to setTimout fixes a bug in IE9 where the toolbar call is minimised (because the splitbutton menu has close) after the dialog is opened.
-					// Therefore preventing the dialog from being seen.
-					setTimeout(function() {
-						self.options.page.revertToPublished()
-							.done(function() {
-								top.location.reload();
-							});
-						}, 0);
-				}
-			});
-		}
-	},
-
 	_create : function() {
 		this.set(this.element.text().trim());
 	},
@@ -40124,62 +40099,7 @@ $(function() {
 		}
 	},
 
-	_get_approvals_menu : function(status) {
-		var self = this, options = {};
-
-		(status == 'draft') && (options = {
-			"Request approval" : function(){
-				self.options.page.requestApproval()
-					.done(function(response) {
-						new boomNotification('This version of the page is awaiting approval.');
-						self.set(response);
-					});
-			}
-		});
-
-		return options;
-	},
-
-	_get_publish_menu : function(status) {
-		var self = this, options;
-
-		options = {
-			"Publish now" : function(){
-				self.options.page.publish()
-					.done(function(response) {
-						new boomNotification('This version of the page is now published.');
-						self.set(response);
-					});
-			}
-		};
-
-		if (status == 'embargoed') {
-			options = $.extend(options, {
-				'View or edit embargo time' : function() {
-					self.options.page.embargo()
-						.done(function(response) {
-							self.set(response);
-						});
-				}
-			});
-		} else {
-			options = $.extend(options, {
-				'Publish later' : function() {
-					self.options.page.embargo()
-						.done(function(response) {
-							self.set(response);
-						});
-				}
-			});
-		}
-
-		return options;
-	},
-
 	set : function(status) {
-
-		this._buildMenu(status);
-
 		this.element
 			.text(this._get_abbreviated_status(status))
 			.attr('data-status', status)
@@ -40297,7 +40217,7 @@ function boomPage(page_id) {
 
 		new boomConfirmation('Discard changes', 'Are you sure you want to discard any unpublished changes and revert this page to it\'s published state?')
 			.done(function() {
-				$.post(this.baseUrl + 'discard/' + page.id)
+				$.post(page.baseUrl + 'discard/' + page.id)
 					.done(function() {
 						promise.resolve();
 					});
@@ -40377,7 +40297,10 @@ function boomPage(page_id) {
 			if (typeof(pageSettings.$content[widget]) === 'function') {
 				pageSettings.$content[widget]({
 					page: pageSettings.page,
-					settings: pageSettings
+					settings: pageSettings,
+					done: function(event, data) {
+						pageSettings._trigger(section + 'Save', event, data);
+					}
 				});
 			}
 		});
@@ -40575,10 +40498,12 @@ $.widget( 'boom.pageToolbar', {
 
 					setTimeout(function() {
 						self.minimise();
+						$(top.window).trigger('boom:dialog:close');
 					}, 1000);
 				} else {
 					self.maximise();
 					$settings.addClass('open');
+					$(top.window).trigger('boom:dialog:open');
 				}
 			})
 			.on('click', '#b-page-version-status', function() {
@@ -40608,7 +40533,14 @@ $.widget( 'boom.pageToolbar', {
 			.contents()
 			.find('.b-page-settings')
 			.pageSettings({
-				page: toolbar.options.page
+				page: toolbar.options.page,
+				draftsSave: function(event, data) {
+					if (data.action === 'revert') {
+						$.boom.reload();
+					} else {
+						toolbar.status.set(data.status);
+					}
+				}
 			});
 
 		this._bindButtonEvents();
@@ -40655,6 +40587,8 @@ $.widget( 'boom.pageToolbar', {
 			.contents()
 			.find('#b-page-settings-toolbar')
 			.addClass('open');
+	
+		$(top.window).trigger('boom:dialog:open');
 	},
 
 	/**
@@ -41399,15 +41333,49 @@ $.widget('boom.pageTree', {
 		this.element
 			.on('click', '.b-page-publish', function() {
 				page.publish()
-					.done(function(response) {
-						draftSettings._trigger('done', response);
-						draftSettings.options.settings.show('drafts');
+					.done(function(status) {
+						draftSettings.update({
+							action: 'publish',
+							status: status
+						});
+					});
+			})
+			.on('click', '.b-page-embargo', function() {
+				page.embargo()
+					.done(function(status) {
+						draftSettings.update({
+							action: 'embargo',
+							status: status
+						});
+					});
+			})
+			.on('click', '.b-page-revert', function() {
+				page.revertToPublished()
+					.done(function(status) {
+						draftSettings.update({
+							action: 'revert',
+							status: status
+						});
+					});
+			})
+			.on('click', '.b-page-request-approval', function() {
+				page.requestApproval()
+					.done(function(status) {
+						draftSettings.update({
+							action: 'request approval',
+							status: status
+						});
 					});
 			});
 	},
 
 	_create: function() {
 		this.bind();
+	},
+	
+	update: function(status) {
+		this._trigger('done', null, status);
+		this.options.settings.show('drafts');
 	}
 });;/**
 @fileOverview Boom interface for wysihtml5.

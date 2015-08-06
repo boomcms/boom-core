@@ -72,10 +72,12 @@ $.widget( 'boom.pageToolbar', {
 
 					setTimeout(function() {
 						self.minimise();
+						$(top.window).trigger('boom:dialog:close');
 					}, 1000);
 				} else {
 					self.maximise();
 					$settings.addClass('open');
+					$(top.window).trigger('boom:dialog:open');
 				}
 			})
 			.on('click', '#b-page-version-status', function() {
@@ -105,7 +107,14 @@ $.widget( 'boom.pageToolbar', {
 			.contents()
 			.find('.b-page-settings')
 			.pageSettings({
-				page: toolbar.options.page
+				page: toolbar.options.page,
+				draftsSave: function(event, data) {
+					if (data.action === 'revert') {
+						$.boom.reload();
+					} else {
+						toolbar.status.set(data.status);
+					}
+				}
 			});
 
 		this._bindButtonEvents();
@@ -152,6 +161,8 @@ $.widget( 'boom.pageToolbar', {
 			.contents()
 			.find('#b-page-settings-toolbar')
 			.addClass('open');
+	
+		$(top.window).trigger('boom:dialog:open');
 	},
 
 	/**

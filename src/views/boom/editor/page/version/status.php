@@ -26,12 +26,6 @@
             'email' => $version->getEditedBy()->getEmail(),
             'date' => $version->getEditedTime()->format('l d F Y H:i'),
         ]) ?>
-        
-        <?php if ($version->isPublished()): ?>
-            <?= Lang::get('boom::settings.draft-status.published-since', [
-                'date' => $version->getEmbargoedUntil()->format('l d F Y H:i')
-            ]) ?>
-        <?php endif ?>
     </p>
     
     <?php if ( !$version->isPublished()): ?>
@@ -43,7 +37,13 @@
         
         <?php if ($auth->loggedIn('publish_page', $page)): ?>
             <?= $button('check', Lang::get('boom::buttons.publish'), ['class' => 'b-button-withtext b-page-publish']) ?>
-            <?= $button('clock-o', Lang::get('boom::buttons.embargo-change'), ['class' => 'b-button-withtext b-page-embargo']) ?>
+            
+            <?php if ($version->isEmbargoed()): ?>
+                <?= $button('clock-o', Lang::get('boom::buttons.embargo-change'), ['class' => 'b-button-withtext b-page-embargo']) ?>
+            <?php else: ?>
+                <?= $button('clock-o', Lang::get('boom::buttons.embargo'), ['class' => 'b-button-withtext b-page-embargo']) ?>
+            <?php endif ?>
+
             <?= $button('undo', Lang::get('boom::buttons.page-revert'), ['class' => 'b-button-withtext b-page-revert']) ?>
         <?php endif ?>
     <?php endif ?>

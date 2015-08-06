@@ -49,7 +49,10 @@ $.widget('boom.pageSettings', {
 			if (typeof(pageSettings.$content[widget]) === 'function') {
 				pageSettings.$content[widget]({
 					page: pageSettings.page,
-					settings: pageSettings
+					settings: pageSettings,
+					done: function(event, data) {
+						pageSettings._trigger(section + 'Save', event, data);
+					}
 				});
 			}
 		});

@@ -110,7 +110,7 @@ function boomPage(page_id) {
 
 		new boomConfirmation('Discard changes', 'Are you sure you want to discard any unpublished changes and revert this page to it\'s published state?')
 			.done(function() {
-				$.post(this.baseUrl + 'discard/' + page.id)
+				$.post(page.baseUrl + 'discard/' + page.id)
 					.done(function() {
 						promise.resolve();
 					});

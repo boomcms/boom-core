@@ -37,7 +37,6 @@ return [
         'embargoed' => 'The latest version of this page is <strong>embargoed</strong> and will become published at <strong>:date</strong>',
         'published' => 'There are no drafts for this page. All edits are <strong>published</strong>',
         'latest' => 'This version was created by :name (:email) at :date',
-        'published-since' => 'and has been published since :date',
         'last-published' => 'The page was last published at :date',
     ],
     'feature' => [

@@ -4,9 +4,16 @@ use BoomCMS\Core\Page\Version;
 
 class Page_VersionTest extends TestCase
 {
-    public function testIsPublishedIfEmbargoesTimeIsPast()
+    public function testIsPublishedIfEmbargoedTimeIsPast()
     {
         $published = new Version(['embargoed_until' => time() - 10]);
+        $this->assertTrue($published->isPublished());
+        $this->assertEquals('published', $published->status());
+    }
+    
+    public function testIsPublishedIfEmbargoedTimeIsCurrent()
+    {
+        $published = new Version(['embargoed_until' => time()]);
         $this->assertTrue($published->isPublished());
         $this->assertEquals('published', $published->status());
     }

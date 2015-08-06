@@ -11,7 +11,7 @@ return [
     'save-changes' => 'Save changes',
     'publish' => 'Publish now',
     'page-revert' => 'Revert to published version',
-    'embargo' => 'Embargo changes',
+    'embargo' => 'Set embargo time',
     'embargo-change' => 'Change embargo time',
     'request-approval' => 'Request approval',
 ];
