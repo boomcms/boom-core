@@ -40306,7 +40306,7 @@ function boomPage(page_id) {
 			.find('a[data-b-page-setting=' + section + ']')
 			.parent('li')
 			.addClass('fa fa-caret-right');
-	
+
 		this.$content.replaceWith($div);
 		this.$content = $div;
 
@@ -40315,15 +40315,18 @@ function boomPage(page_id) {
 
 			pageSettings.$content.ui();
 
-			if (typeof(pageSettings.$content[widget]) === 'function') {
-				pageSettings.$content[widget]({
-					page: pageSettings.page,
-					settings: pageSettings,
-					done: function(event, data) {
-						pageSettings._trigger(section + 'Save', event, data);
-					}
-				});
+			if (typeof(pageSettings.$content[widget]) !== 'function') {
+				widget = 'pageSettingsDefault';
 			}
+console.log(widget);
+			pageSettings.$content[widget]({
+				page: pageSettings.page,
+				section: section,
+				settings: pageSettings,
+				done: function(event, data) {
+					pageSettings._trigger(section + 'Save', event, data);
+				}
+			});
 		});
 	}
 });;$.widget( 'boom.pageEditor', {
@@ -40911,7 +40914,32 @@ $.widget('boom.pageTree', {
 
 		return deferred;
 	};
-};$.widget('boom.pageSettingsFeature', {
+};$.widget('boom.pageSettingsDefault', {
+	bind: function() {
+		var settingsEditor = this,
+			section = settingsEditor.options.section;
+
+		this.element
+			.on('click', '.b-button-cancel', function(e) {
+				e.preventDefault();
+
+				settingsEditor.options.settings.show(section);
+			})
+			.on('click', '.b-button-save', function(e) {
+				e.preventDefault();
+
+				settingsEditor.page.saveSettings(section, settingsEditor.element.find('form').serialize())
+					.done(function() {
+						new boomNotification('Page settings saved');
+					});
+			});
+	},
+
+	_create: function() {
+		this.page = this.options.page;
+		this.bind();
+	}
+});;$.widget('boom.pageSettingsFeature', {
 	changed: false,
 
 	getImagesInPage: function() {
@@ -41358,12 +41386,36 @@ $.widget('boom.pageTree', {
 
 		this.bind();
 	}
-});;$.widget('boom.pageSettingsNavigation', {
+});;$.widget('boom.pageSettingsNavigation', $.boom.pageSettingsDefault, {
+	bind: function() {
+		var settingsEditor = this,
+			section = settingsEditor.options.section;
+
+		this.element
+			.on('click', '.b-button-cancel', function(e) {
+				e.preventDefault();
+
+				settingsEditor.options.settings.show(section);
+			})
+			.on('click', '.b-button-save', function(e) {
+				e.preventDefault();
+
+				settingsEditor.page.saveSettings(section, settingsEditor.element.find('form').serialize())
+					.done(function() {
+						new boomNotification('Page settings saved');
+					});
+			});
+	},
+
 	_create: function() {
-		this.element.find('.boom-tree').pageTree({
-			active: this.element.find('input[name=parent_id]').val(),
+		var $el = this.element;
+		this.page = this.options.page;
+		this.bind();
+
+		$el.find('.boom-tree').pageTree({
+			active: $el.find('input[name=parent_id]').val(),
 			onPageSelect : function(page) {
-				$('input[name=parent_id]').val(page.pageId);
+				$el.find('input[name=parent_id]').val(page.pageId);
 			}
 		});
 	}

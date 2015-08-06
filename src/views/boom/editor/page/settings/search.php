@@ -39,4 +39,7 @@
 			</section>
 		<?php endif ?>
 	</div>
+
+    <?= $button('times', Lang::get('boom::buttons.cancel'), ['class' => 'b-button-cancel b-button-withtext']) ?>
+    <?= $button('save', Lang::get('boom::buttons.save'), ['class' => 'b-button-save b-button-withtext']) ?>
 </form>

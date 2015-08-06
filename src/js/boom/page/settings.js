@@ -41,7 +41,7 @@ $.widget('boom.pageSettings', {
 			.find('a[data-b-page-setting=' + section + ']')
 			.parent('li')
 			.addClass('fa fa-caret-right');
-	
+
 		this.$content.replaceWith($div);
 		this.$content = $div;
 
@@ -50,15 +50,18 @@ $.widget('boom.pageSettings', {
 
 			pageSettings.$content.ui();
 
-			if (typeof(pageSettings.$content[widget]) === 'function') {
-				pageSettings.$content[widget]({
-					page: pageSettings.page,
-					settings: pageSettings,
-					done: function(event, data) {
-						pageSettings._trigger(section + 'Save', event, data);
-					}
-				});
+			if (typeof(pageSettings.$content[widget]) !== 'function') {
+				widget = 'pageSettingsDefault';
 			}
+console.log(widget);
+			pageSettings.$content[widget]({
+				page: pageSettings.page,
+				section: section,
+				settings: pageSettings,
+				done: function(event, data) {
+					pageSettings._trigger(section + 'Save', event, data);
+				}
+			});
 		});
 	}
 });

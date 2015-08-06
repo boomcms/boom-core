@@ -72,6 +72,7 @@ module.exports = function(grunt) {
 					'src/js/boom/page/tagSearch.js',
 					'src/js/boom/page/tagAutocomplete.js',
 					'src/js/boom/page/url.js',
+					'src/js/boom/page/settings/default.js',
 					'src/js/boom/page/settings/feature.js',
 					'src/js/boom/page/settings/visibility.js',
 					'src/js/boom/page/settings/tags.js',

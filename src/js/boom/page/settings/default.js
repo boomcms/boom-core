@@ -1,4 +1,4 @@
-$.widget('boom.pageSettingsNavigation', $.boom.pageSettingsDefault, {
+$.widget('boom.pageSettingsDefault', {
 	bind: function() {
 		var settingsEditor = this,
 			section = settingsEditor.options.section;
@@ -20,15 +20,7 @@ $.widget('boom.pageSettingsNavigation', $.boom.pageSettingsDefault, {
 	},
 
 	_create: function() {
-		var $el = this.element;
 		this.page = this.options.page;
 		this.bind();
-
-		$el.find('.boom-tree').pageTree({
-			active: $el.find('input[name=parent_id]').val(),
-			onPageSelect : function(page) {
-				$el.find('input[name=parent_id]').val(page.pageId);
-			}
-		});
 	}
 });
