@@ -15,7 +15,7 @@
 		<div id='description'><strong>Template description:</strong><p></p></div>
 		<div id='count'><strong>Pages using this template:</strong><p></p></div>
         
-        <?= $button('times', Lang::get('boom::buttons.cancel'), ['class' => 'b-template-cancel b-button-withtext', 'disabled' => 'disabled']) ?>
-        <?= $button('save', Lang::get('boom::buttons.save'), ['class' => 'b-template-save b-button-withtext', 'disabled' => 'disabled']) ?>
+        <?= $button('times', Lang::get('boom::buttons.cancel'), ['class' => 'b-template-cancel b-button-withtext']) ?>
+        <?= $button('save', Lang::get('boom::buttons.save'), ['class' => 'b-template-save b-button-withtext']) ?>
     </div>
 </form>

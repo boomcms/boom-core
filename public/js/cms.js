@@ -40467,20 +40467,7 @@ $.widget( 'boom.pageToolbar', {
 				self.options.page.stash();
 			})
 			.on('click', '.b-page-visibility', function() {
-				self.$settings
-					.pageSettings('show', 'visibility')
-					.done(function(response) {
-						if (response == 1) {
-							self.buttons.visible.show();
-							self.buttons.invisible.hide();
-						} else {
-							self.buttons.visible.hide();
-							self.buttons.invisible.show();
-						}
-
-						self._toggle_view_live_button();
-					});
-					
+				self.$settings.pageSettings('show', 'visibility');
 				self.openPageSettings();
 			})
 			.on('click', '.b-button-preview', function() {
@@ -40559,6 +40546,17 @@ $.widget( 'boom.pageToolbar', {
 						.done(function() {
 							$.boom.reload();
 						});
+				},
+				visibilitySave: function(event, response) {
+					if (response == 1) {
+						toolbar.buttons.visible.show();
+						toolbar.buttons.invisible.hide();
+					} else {
+						toolbar.buttons.visible.hide();
+						toolbar.buttons.invisible.show();
+					}
+
+					toolbar._toggle_view_live_button();
 				}
 			});
 
@@ -40998,7 +40996,6 @@ $.widget('boom.pageTree', {
 	}
 });;$.widget('boom.pageSettingsVisibility', {
 	changed: false,
-	deferred: new $.Deferred(),
 	baseUrl: '/cms/page/settings/visibility/',
 
 	bind: function() {
@@ -41013,10 +41010,21 @@ $.widget('boom.pageTree', {
 			})
 			.on('change', '#b-page-visible', function() {
 				pageVisibilityEditor.toggleVisible($(this).find('option:selected').val() === '1');
+			})
+			.on('click', '.b-visibility-cancel', function() {
+				pageVisibilityEditor.options.settings.show('visibility');
+			})
+			.on('click', '.b-visibility-save', function() {
+				pageVisibilityEditor.save();
 			});
 
-			this.toggleVisible(this.elements.visible.find('option:selected').val() === '1');
-			this.toggleVisibleTo(this.elements.visibleToToggle.is(':checked'));
+		this.toggleVisible(this.elements.visible.find('option:selected').val() === '1');
+		this.toggleVisibleTo(this.elements.visibleToToggle.is(':checked'));
+	},
+	
+	_create: function() {
+		this.findElements();
+		this.bind();
 	},
 
 	disableElements: function() {
@@ -41042,19 +41050,22 @@ $.widget('boom.pageTree', {
 		var visibilityEditor = this;
 
 		if (this.changed) {
-			$.post(this.url, this.dialog.contents.find('form').serialize())
+			$.post(this.baseUrl + this.options.page.id, this.element.find('form').serialize())
 				.done(function(response) {
 					new boomNotification('Page visibility saved');
-					visibilityEditor.deferred.resolve(response);
+			
+					visibilityEditor._trigger('done', null, response);
 				});
 		}
 	},
 
 	toggleVisible: function(visible) {
 		if (visible) {
+			this.element.find('.b-visibility-toggle').slideDown();
 			this.elements.visibleFrom.removeAttr('disabled');
 			this.elements.visibleToToggle.removeAttr('disabled');
 		} else {
+			this.element.find('.b-visibility-toggle').slideUp();
 			this.disableElements();
 		}
 	},
@@ -41321,8 +41332,6 @@ $.widget('boom.pageTree', {
 });;$.widget('boom.pageSettingsTemplate', {
 	_create: function() {
 		var templateEditor = this,
-			$cancelButton = this.element.find('.b-template-cancel'),
-			$saveButton = this.element.find('.b-template-save'),
 			initial = this.element.find('select option:selected').val();
 
 		this.showDetails();
@@ -41330,33 +41339,21 @@ $.widget('boom.pageTree', {
 		this.element
 			.on('change', 'select', function() {
 				templateEditor.showDetails();
-				$cancelButton.removeAttr('disabled');
-				$saveButton.removeAttr('disabled');
-			});
-			
-		$saveButton
-			.on('click', function(e) {
+			})
+			.on('click', '.b-template-save', function(e) {
 				e.preventDefault();
 
 				templateEditor.options.page.setTemplate(templateEditor.element.find('select option:selected').val())
 					.done(function() {
 						new boomNotification('Page template updated');
-				
-						$cancelButton.attr('disabled', 'disabled');
-						$saveButton.attr('disabled', 'disabled');
 						
 						templateEditor._trigger('done');
 					});
-			});
-			
-		$cancelButton
-			.on('click', function(e) {
+			})
+			.on('click', '.b-template-cancel', function(e) {
 				e.preventDefault();
 
 				templateEditor.element.find('select').val(initial);
-		
-				$cancelButton.attr('disabled', 'disabled');
-				$saveButton.attr('disabled', 'disabled');
 			});
 	},
 

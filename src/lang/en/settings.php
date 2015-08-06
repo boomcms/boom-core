@@ -71,6 +71,8 @@ return [
         'heading' => 'Page visibility',
         'visible' => 'Visible',
         'from' => 'Visible from',
+        'from-description' => 'Set a time and date here to make the page become visible at a particular time',
         'to' => 'Visible until',
+        'to-description' => 'Set a time and date here to make the page become invisible again in the future',
     ]
 ];

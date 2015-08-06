@@ -30,20 +30,7 @@ $.widget( 'boom.pageToolbar', {
 				self.options.page.stash();
 			})
 			.on('click', '.b-page-visibility', function() {
-				self.$settings
-					.pageSettings('show', 'visibility')
-					.done(function(response) {
-						if (response == 1) {
-							self.buttons.visible.show();
-							self.buttons.invisible.hide();
-						} else {
-							self.buttons.visible.hide();
-							self.buttons.invisible.show();
-						}
-
-						self._toggle_view_live_button();
-					});
-					
+				self.$settings.pageSettings('show', 'visibility');
 				self.openPageSettings();
 			})
 			.on('click', '.b-button-preview', function() {
@@ -122,6 +109,17 @@ $.widget( 'boom.pageToolbar', {
 						.done(function() {
 							$.boom.reload();
 						});
+				},
+				visibilitySave: function(event, response) {
+					if (response == 1) {
+						toolbar.buttons.visible.show();
+						toolbar.buttons.invisible.hide();
+					} else {
+						toolbar.buttons.visible.hide();
+						toolbar.buttons.invisible.show();
+					}
+
+					toolbar._toggle_view_live_button();
 				}
 			});
 

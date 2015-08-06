@@ -58,14 +58,14 @@
 		h2 {
 			.text-default;
 			font-weight: bold;
+			
+			+ p {
+				margin-top: 0;
+			}
 		}
 
 		p {
 			.text-default;
-			
-			&:last-of-type {
-				margin-bottom: 0;
-			}
 		}
 
 		section + section {
@@ -87,6 +87,10 @@
 					color: @darkest-grey;
 				}
 			}
+		}
+		
+		.b-visibility-toggle {
+			display: none;
 		}
 	}
 }
