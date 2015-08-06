@@ -1,12 +1,43 @@
 $.widget('boom.pageSettingsTemplate', {
 	_create: function() {
-		var templateEditor = this;
+		var templateEditor = this,
+			$cancelButton = this.element.find('.b-template-cancel'),
+			$saveButton = this.element.find('.b-template-save'),
+			initial = this.element.find('select option:selected').val();
 
 		this.showDetails();
 
-		this.element.on('change', 'select', function() {
-			templateEditor.template.showDetails();
-		});
+		this.element
+			.on('change', 'select', function() {
+				templateEditor.showDetails();
+				$cancelButton.removeAttr('disabled');
+				$saveButton.removeAttr('disabled');
+			});
+			
+		$saveButton
+			.on('click', function(e) {
+				e.preventDefault();
+
+				templateEditor.options.page.setTemplate(templateEditor.element.find('select option:selected').val())
+					.done(function() {
+						new boomNotification('Page template updated');
+				
+						$cancelButton.attr('disabled', 'disabled');
+						$saveButton.attr('disabled', 'disabled');
+						
+						templateEditor._trigger('done');
+					});
+			});
+			
+		$cancelButton
+			.on('click', function(e) {
+				e.preventDefault();
+
+				templateEditor.element.find('select').val(initial);
+		
+				$cancelButton.attr('disabled', 'disabled');
+				$saveButton.attr('disabled', 'disabled');
+			});
 	},
 
 	showDetails: function() {

@@ -124,6 +124,12 @@ function boomPage(page_id) {
 			title : title
 		});
 	};
+	
+	boomPage.prototype.setTemplate = function(templateId) {
+		return $.post(this.baseUrl + 'version/template/' + this.id, {
+			template_id: templateId
+		});
+	};
 
 	boomPage.prototype.stash = function() {
 		var page_id = this.id,

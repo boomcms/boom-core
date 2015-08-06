@@ -14,4 +14,5 @@ return [
     'embargo' => 'Set embargo time',
     'embargo-change' => 'Change embargo time',
     'request-approval' => 'Request approval',
+    'save' => 'Save',
 ];

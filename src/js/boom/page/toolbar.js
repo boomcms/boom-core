@@ -114,6 +114,14 @@ $.widget( 'boom.pageToolbar', {
 					} else {
 						toolbar.status.set(data.status);
 					}
+				},
+				templateSave: function() {
+					toolbar.status.set('draft');
+
+					new boomConfirmation('Reload page?', "Do you want to reload the page to view the new template?")
+						.done(function() {
+							$.boom.reload();
+						});
 				}
 			});
 
