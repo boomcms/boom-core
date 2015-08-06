@@ -40286,7 +40286,8 @@ function boomPage(page_id) {
 	},
 
 	show: function(section) {
-		var pageSettings = this;
+		var pageSettings = this,
+			$div = $('<div class="b-page-settings-content"></div>');
 
 		this.$menu
 			.find('li')
@@ -40295,6 +40296,9 @@ function boomPage(page_id) {
 			.find('a[data-b-page-setting=' + section + ']')
 			.parent('li')
 			.addClass('fa fa-caret-right');
+	
+		this.$content.replaceWith($div);
+		this.$content = $div;
 
 		this.$content.load(this.getUrl(section), function() {
 			var widget = 'pageSettings' + section.ucfirst();
