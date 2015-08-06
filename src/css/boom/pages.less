@@ -6,16 +6,6 @@
 		height: 100%;
 	}
 
-	li {
-		&:nth-of-type(odd) {
-			background: @white;
-		}
-
-		&:nth-of-type(even) {
-			background: @lightest-grey;
-		}
-	}
-
 	ul {
 		max-height: none;
 
@@ -28,27 +18,8 @@
 				border: 0;
 			}
 
-			span {
-				&:before {
-					color: @darkest-grey;
-				}
-
-				&:hover, &:focus {
-					&:before {
-						color: @lightest-grey;
-						background: @darkest-grey;
-					}
-				}
-			}
-
 			> a {
 				width: 50%;
-				color: @darkest-grey;
-
-				&:hover, &:focus {
-					background: none;
-					color: @red;
-				}
 			}
 
 			> div {

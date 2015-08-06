@@ -3,7 +3,6 @@
 .boom-tree {
 	margin: 0;
 	width: 100%;
-	max-height: 400px;
 	overflow: auto;
 	border: 1px solid #D3D3D3;
 	border-width: 0 0px 0px 0;
@@ -26,16 +25,18 @@
 		border: none;
 		overflow: hidden;
 		min-height: 30px;
-		background-color: #444;
 		font-weight: normal;
+
+		&:nth-of-type(odd) {
+			background: @white;
+		}
+
+		&:nth-of-type(even) {
+			background: @lightest-grey;
+		}
 
 		ul {
 			clear:left;
-		}
-
-		&.ui-state-default a {
-			color: #fff;
-			text-transform: none;
 		}
 
 		span {
@@ -57,7 +58,7 @@
 				line-height: 40px;
 				content: '+';
 				text-align: center;
-				color: @lightest-grey;
+				color: @darkest-grey;
 			}
 
 			&.expanded:before {
@@ -75,7 +76,8 @@
 			}
 		}
 
-		a {
+		&.ui-state-default a, a {
+			color: @darkest-grey;
 			display: block;
 			padding: .2em;
 			outline: none;
@@ -92,6 +94,7 @@
 			}
 
 			&:hover, &:focus {
+				background: none;
 				color: @red;
 			}
 
@@ -103,15 +106,6 @@
 				font-weight: normal;
 			}
 		}
-
-		.ui-icon-placeholder {
-			background: transparent !important;
-			cursor: auto !important;
-		}
-
-		.boom-tree-hitarea-hover {
-			background-color: #ddd;
-		}
 	}
 
 	.ui-state-default {
@@ -122,4 +116,8 @@
 	.ui-state-hover {
 		font-weight: normal;
 	}
+}
+
+.b-dialog .boom-tree {
+	max-height: 400px;
 }
