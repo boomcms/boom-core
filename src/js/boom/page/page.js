@@ -118,6 +118,12 @@ function boomPage(page_id) {
 
 		return promise;
 	};
+	
+	boomPage.prototype.setFeatureImage = function(assetId) {
+		return $.post(this.baseUrl + 'settings/feature/' + this.id, {
+			feature_image_id : assetId
+		});
+	};
 
 	boomPage.prototype.setTitle = function(title) {
 		return $.post(this.baseUrl + 'version/title/' + this.id, {

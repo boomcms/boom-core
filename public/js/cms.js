@@ -40226,6 +40226,12 @@ function boomPage(page_id) {
 
 		return promise;
 	};
+	
+	boomPage.prototype.setFeatureImage = function(assetId) {
+		return $.post(this.baseUrl + 'settings/feature/' + this.id, {
+			feature_image_id : assetId
+		});
+	};
 
 	boomPage.prototype.setTitle = function(title) {
 		return $.post(this.baseUrl + 'version/title/' + this.id, {
@@ -40896,16 +40902,9 @@ $.widget('boom.pageTree', {
 	};
 };$.widget('boom.pageSettingsFeature', {
 	changed: false,
-	deferred: new $.Deferred(),
-
-	done: function(callback) {
-		this.deferred.done(callback);
-
-		return this;
-	},
 
 	getImagesInPage: function() {
-		return top.$('body')
+		return top.$('body:first-of-type')
 			.find('img[src^="/asset/view/"]')
 			.map(function() {
 				var $this = $(this),
@@ -40920,12 +40919,7 @@ $.widget('boom.pageTree', {
 		var pageFeatureEditor = this,
 			$imagesInPageContainer = this.element.find('.images-in-page');
 
-		this.currentImage = this.element.find('#b-page-feature-current').attr('src').replace('/asset/view/', '');
-
 		this.element
-			.on('click', '.b-page-feature-set', function() {
-				pageFeatureEditor.setFeature($(this).data('asset-id'));
-			})
 			.on('click', '#b-page-feature-remove', function() {
 				pageFeatureEditor.removeFeature();
 			})
@@ -40934,6 +40928,12 @@ $.widget('boom.pageTree', {
 					.done(function(assetId) {
 						pageFeatureEditor.setFeature(assetId);
 					});
+			})
+			.on('click', '.b-button-cancel', function() {
+				pageFeatureEditor.setFeature(pageFeatureEditor.intial);
+				pageFeatureEditor.changed = false;
+			}).on('click', '.b-button-save', function() {
+				pageFeatureEditor.save();
 			});
 
 		if (this.imagesInPage.length) {
@@ -40941,7 +40941,7 @@ $.widget('boom.pageTree', {
 				$imagesInPageContainer.append("<li><a href='#' class='b-page-feature-set' data-asset-id='" + this.imagesInPage[i] + "'><img src='/asset/view/" + this.imagesInPage[i] + "' /></a></li>");
 			}
 		} else {
-			$imagesInPageContainer.replaceWith("<p>This page doesn't contain any images.</p>");
+			$imagesInPageContainer.parent('section').hide();
 		}
 
 		if (this.currentImage) {
@@ -40953,6 +40953,7 @@ $.widget('boom.pageTree', {
 	},
 
 	_create: function() {
+		this.currentImage = this.initial = this.element.find('#b-page-feature-current').attr('src').replace('/asset/view/', '');
 		this.imagesInPage = this.getImagesInPage();
 		this.bind();
 	},
@@ -40971,9 +40972,11 @@ $.widget('boom.pageTree', {
 		var pageFeatureEditor = this;
 
 		if (this.changed) {
-			return $.post(this.url, {feature_image_id : this.currentImage})
+			pageFeatureEditor.options.page.setFeatureImage(this.currentImage)
 				.done(function(response) {
 					new boomNotification('Page feature image saved');
+			
+					pageFeatureEditor._trigger('done', null, pageFeatureEditor.currentImage);
 				});
 		}
 	},

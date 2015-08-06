@@ -41,6 +41,7 @@ return [
     ],
     'feature' => [
         'heading' => 'Page feature image',
+        'from-page' => 'Use an image from the page'
     ],
     'navigation' => [
         'heading' => 'Page navigation settings',
