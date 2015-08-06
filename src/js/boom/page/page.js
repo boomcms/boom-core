@@ -118,7 +118,11 @@ function boomPage(page_id) {
 
 		return promise;
 	};
-	
+
+	boomPage.prototype.saveSettings = function(section, data) {
+		return $.post(this.baseUrl + 'settings/' + section + '/' + this.id, data);
+	};
+
 	boomPage.prototype.setFeatureImage = function(assetId) {
 		return $.post(this.baseUrl + 'settings/feature/' + this.id, {
 			feature_image_id : assetId
@@ -130,7 +134,7 @@ function boomPage(page_id) {
 			title : title
 		});
 	};
-	
+
 	boomPage.prototype.setTemplate = function(templateId) {
 		return $.post(this.baseUrl + 'version/template/' + this.id, {
 			template_id: templateId

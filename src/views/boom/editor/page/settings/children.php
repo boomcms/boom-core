@@ -29,7 +29,7 @@
                     <option value="desc"<?php if ($child_order_direction === 'desc'): ?> selected="selected"<?php endif ?>>Descending</option>
                 </select>
 
-                <?= new BoomCMS\UI\Button('', 'Re-order', ['id' => 'b-page-settings-children-reorder', 'class' => 'b-button-textonly']) ?>
+                <?= $button('', Lang::get('boom::buttons.reorder'), ['id' => 'b-page-settings-children-reorder', 'class' => 'b-button-textonly']) ?>
             </label>
 		</section>
 
@@ -72,4 +72,7 @@
 			</section>
 		<?php endif ?>
 	</div>
+
+    <?= $button('times', Lang::get('boom::buttons.cancel'), ['class' => 'b-button-cancel b-button-withtext']) ?>
+    <?= $button('save', Lang::get('boom::buttons.save'), ['class' => 'b-button-save b-button-withtext']) ?>
 </form>

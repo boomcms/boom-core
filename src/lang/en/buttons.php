@@ -14,6 +14,7 @@ return [
     'page-revert' => 'Revert to published version',
     'embargo' => 'Set embargo time',
     'embargo-change' => 'Change embargo time',
+    'reorder' => 'Re-order',
     'request-approval' => 'Request approval',
     'save' => 'Save',
 ];

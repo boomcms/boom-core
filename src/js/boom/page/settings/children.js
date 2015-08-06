@@ -1,37 +1,58 @@
 $.widget('boom.pageSettingsChildren', {
-	_create: function() {
-		$('select[name="children_ordering_policy"]').on('change', function(){
-			var reorder_link = $('#b-page-settings-children-reorder');
+	bind: function() {
+		var settingsEditor = this;
 
-			if ($(this).val() == 'sequence') {
-				reorder_link.removeClass('ui-helper-hidden');
-			} else {
-				reorder_link.addClass('ui-helper-hidden');
-			}
-		});
-
-		$('#b-page-settings-children-reorder').on('click', function(e) {
-			e.preventDefault();
-
-			var sort_url = '/cms/page/settings/sort_children/' + page.id,
-				sortDialog;
-
-			sortDialog = new boomDialog({
-				url:  sort_url,
-				title: 'Reorder child pages',
-				width: 'auto',
-				open: function() {
-					sortDialog.contents.find('#b-page-settings-children-sort').sortable();
+		this.element
+			.on('change', 'select[name="children_ordering_policy"]', function() {
+				if ($(this).find('option:selected').val() === 'sequence') {
+					settingsEditor.$reorderButton.show();
+				} else {
+					settingsEditor.$reorderButton.hide();
 				}
-			});
+			})
+			.on('click', '#b-page-settings-children-reorder', function(e) {
+				e.preventDefault();
 
-			sortDialog.done(function() {
-				var sequences = sortDialog.contents.find('li').map(function() {
-					return $(this).attr('data-id');
-				}).get();
+				var sortDialog = new boomDialog({
+					url:  settingsEditor.sortUrl,
+					title: 'Reorder child pages',
+					width: 'auto',
+					open: function() {
+						sortDialog.contents.find('#b-page-settings-children-sort').sortable();
+					}
+				});
 
-				page.saveSettings(sort_url, {sequences: sequences}, 'Child page ordering saved, reloading page');
-			});
-		});
+				sortDialog.done(function() {
+					var sequences = sortDialog.contents.find('li').map(function() {
+						return $(this).attr('data-id');
+					}).get();
+
+					$.post(settingsEditor.sortUrl, {sequences: sequences})
+						.done(function() {
+							new boomNotification('Child page ordering saved');
+						});
+				});
+			})
+			.on('click', '.b-button-cancel', function() {
+				settingsEditor.options.settings.show('children');
+			})
+			.on('click', '.b-button-save', function(e) {
+				e.preventDefault();
+
+				settingsEditor
+					.options
+					.page
+					.saveSettings('children', settingsEditor.element.find('form').serialize())
+					.done(function() {
+						new boomNotification('Child page settings saved');
+					});
+			});;
+	},
+
+	_create: function() {
+		this.$reorderButton = this.element.find('#b-page-settings-children-reorder');
+		this.sortUrl = '/cms/page/settings/sort_children/' + this.options.page.id;
+
+		this.bind();
 	}
 });
