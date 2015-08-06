@@ -3,7 +3,7 @@ $.widget('boom.pageSettingsTags', {
 
 	addRelatedPage: function() {
 		var page = this.page,
-			$relatedPages = this.dialog.find('#pages ul'),
+			$relatedPages = this.element.find('#pages ul'),
 			$el = this.element;
 
 		new boomLinkPicker(new boomLink(), {
@@ -13,9 +13,9 @@ $.widget('boom.pageSettingsTags', {
 				page.addRelatedPage(link.getPageId())
 					.done(function() {
 						var $li = $('<li></li>')
-								.append('<span class="title">' + link.getTitle() + '</span>')
-								.append('<span class="uri">' + link.getUrl() + '</span>')
-								.append('<a href="#" class="fa fa-trash-o"><span>Remove</span></a>');
+							.append('<span class="title">' + link.getTitle() + '</span>')
+							.append('<span class="uri">' + link.getUrl() + '</span>')
+							.append('<a href="#" class="fa fa-trash-o"><span>Remove</span></a>');
 
 						$relatedPages.append($li);
 						$el.find('#pages .current').show();
@@ -36,8 +36,8 @@ $.widget('boom.pageSettingsTags', {
 		if (name) {
 			var $newGroup = $('<li><p>' + name + '</p><ul class="b-tags-list" data-group="' + name + '"><li class="b-tag"></li></ul></li>');
 
-			$newGroup.find('.b-tag').html(this.dialog.find('.b-tags-add').first().clone());
-			$newGroup.insertBefore(this.dialog.find('.b-tags-grouped').children().last());
+			$newGroup.find('.b-tag').html(this.element.find('.b-tags-add').first().clone());
+			$newGroup.insertBefore(this.element.find('.b-tags-grouped').children().last());
 			$newGroup.find('.b-tags-add input[type=text]').focus();
 
 			this.initTagList($newGroup.find('.b-tags-list'));
@@ -69,6 +69,8 @@ $.widget('boom.pageSettingsTags', {
 
 	_create: function() {
 		this.page = this.options.page;
+
+		this.bind();
 	},
 
 	getUrl: function(action) {
@@ -76,6 +78,8 @@ $.widget('boom.pageSettingsTags', {
 	},
 
 	initTagList: function($list) {
+		var page = this.page;
+
 		$list.pageTagSearch({
 			addTag : function(e, data) {
 				page.addTag(data.group, data.tag);

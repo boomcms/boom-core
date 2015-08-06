@@ -3,7 +3,7 @@
 	display: inline-block;
 	list-style-type: none;
 	position: relative;
-	border: 1px solid @grey;
+	border: 1px solid @light-grey;
 	margin: 0.25em;
 
 	> * {
@@ -14,7 +14,7 @@
 	> span {
 		display: block;
 		margin-right: 30px;
-		border-right: 1px solid @grey;
+		border-right: 1px solid @light-grey;
 	}
 
 	> a {
@@ -27,7 +27,11 @@
 		line-height: 100%;
 
 		&:hover, &:focus {
-			background-color: @dark-grey;
+			background-color: @light-grey;
 		}
+	}
+
+	form.b-tags-add button.b-button {
+		margin-top: 0;
 	}
 }
