@@ -40467,6 +40467,7 @@ function boomPage(page_id) {
 */
 $.widget( 'boom.pageToolbar', {
 	buttons : {},
+	closeSettingsOnPublish: false,
 
 	_bindButtonEvents : function() {
 		var self = this;
@@ -40517,6 +40518,7 @@ $.widget( 'boom.pageToolbar', {
 			.on('click', '#b-page-version-status', function() {
 				self.$settings.pageSettings('show', 'drafts');
 				self.openPageSettings();
+				self.closeSettingsOnPublish = true;
 			});
 
 		this.buttonBar = this.element.contents().find('#b-topbar');
@@ -40564,6 +40566,10 @@ $.widget( 'boom.pageToolbar', {
 						$.boom.reload();
 					} else {
 						toolbar.status.set(data.status);
+						
+						if (data.status === 'published' && toolbar.closeSettingsOnPublish) {
+							toolbar.closePageSettings();
+						}
 					}
 				},
 				templateSave: function() {
@@ -40632,6 +40638,7 @@ $.widget( 'boom.pageToolbar', {
 	},
 
 	openPageSettings: function() {
+		this.closeSettingsOnPublish = false;
 		this.maximise();
 
 		this.element
