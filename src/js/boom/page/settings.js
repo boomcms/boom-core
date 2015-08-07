@@ -53,7 +53,7 @@ $.widget('boom.pageSettings', {
 			if (typeof(pageSettings.$content[widget]) !== 'function') {
 				widget = 'pageSettingsDefault';
 			}
-console.log(widget);
+
 			pageSettings.$content[widget]({
 				page: pageSettings.page,
 				section: section,
