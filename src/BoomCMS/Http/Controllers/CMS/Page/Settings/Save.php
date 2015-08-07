@@ -2,7 +2,9 @@
 
 namespace BoomCMS\Http\Controllers\CMS\Page\Settings;
 
+use BoomCMS\Events\PageWasMadeVisible;
 use Datetime;
+use Illuminate\Support\Facades\Event;
 
 class Save extends Settings
 {
@@ -107,6 +109,8 @@ class Save extends Settings
     public function visibility()
     {
         parent::visibility();
+        
+        $wasVisbile = $this->page->isVisible();
 
         $this->page->setVisibleAtAnyTime($this->request->input('visible') == 1);
 
@@ -119,6 +123,10 @@ class Save extends Settings
         }
 
         $this->provider->save($this->page);
+
+        if (!$wasVisible && $this->page->isVisible()) {
+            Event::fire(new PageWasMadeVisible($this->page, $this->person));
+        }
 
         return (int) $this->page->isVisible();
     }
