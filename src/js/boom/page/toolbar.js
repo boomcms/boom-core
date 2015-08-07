@@ -59,6 +59,20 @@ $.widget( 'boom.pageToolbar', {
 
 		this.buttonBar = this.element.contents().find('#b-topbar');
 	},
+	
+	closePageSettings: function() {
+		var toolbar = this;
+
+		this.element
+			.contents()
+			.find('#b-page-settings-toolbar')
+			.removeClass('open');
+
+		setTimeout(function() {
+			toolbar.minimise();
+			$(top.window).trigger('boom:dialog:close');
+		}, 1000);
+	},
 
 	_create : function() {
 		var toolbar = this;
@@ -80,6 +94,9 @@ $.widget( 'boom.pageToolbar', {
 			.find('.b-page-settings')
 			.pageSettings({
 				page: toolbar.options.page,
+				close: function() {
+					toolbar.closePageSettings();
+				},
 				draftsSave: function(event, data) {
 					if (data.action === 'revert') {
 						$.boom.reload();

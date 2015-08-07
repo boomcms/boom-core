@@ -2,6 +2,7 @@
 
 return [
     'menu' => [
+        'close' => 'Close settings window',
         'navigation' => 'Navigation',
         'urls' => 'URLs',
         'search' => 'Search',

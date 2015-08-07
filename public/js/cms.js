@@ -40267,9 +40267,21 @@ function boomPage(page_id) {
 	bind: function() {
 		var pageSettings = this;
 
-		this.$menu.on('click', 'a', function() {
-			pageSettings.show($(this).attr('data-b-page-setting'));
-		});
+		this.$menu
+			.on('click', '.b-page-settings-close', function() {
+				pageSettings.close();
+			})
+			.on('click', 'a[data-b-page-setting]', function() {
+				pageSettings.show($(this).attr('data-b-page-setting'));
+			});
+	},
+	
+	close: function() {
+		if (typeof(this.options.close) === 'function') {
+			this.options.close();
+		} else {		
+			this.element.hide();
+		}
 	},
 
 	_create: function() {
@@ -40509,6 +40521,20 @@ $.widget( 'boom.pageToolbar', {
 
 		this.buttonBar = this.element.contents().find('#b-topbar');
 	},
+	
+	closePageSettings: function() {
+		var toolbar = this;
+
+		this.element
+			.contents()
+			.find('#b-page-settings-toolbar')
+			.removeClass('open');
+
+		setTimeout(function() {
+			toolbar.minimise();
+			$(top.window).trigger('boom:dialog:close');
+		}, 1000);
+	},
 
 	_create : function() {
 		var toolbar = this;
@@ -40530,6 +40556,9 @@ $.widget( 'boom.pageToolbar', {
 			.find('.b-page-settings')
 			.pageSettings({
 				page: toolbar.options.page,
+				close: function() {
+					toolbar.closePageSettings();
+				},
 				draftsSave: function(event, data) {
 					if (data.action === 'revert') {
 						$.boom.reload();

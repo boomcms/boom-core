@@ -2,9 +2,21 @@ $.widget('boom.pageSettings', {
 	bind: function() {
 		var pageSettings = this;
 
-		this.$menu.on('click', 'a', function() {
-			pageSettings.show($(this).attr('data-b-page-setting'));
-		});
+		this.$menu
+			.on('click', '.b-page-settings-close', function() {
+				pageSettings.close();
+			})
+			.on('click', 'a[data-b-page-setting]', function() {
+				pageSettings.show($(this).attr('data-b-page-setting'));
+			});
+	},
+	
+	close: function() {
+		if (typeof(this.options.close) === 'function') {
+			this.options.close();
+		} else {		
+			this.element.hide();
+		}
 	},
 
 	_create: function() {

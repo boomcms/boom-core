@@ -75,6 +75,12 @@
                 <?= Lang::get('boom::settings.menu.drafts') ?>
             </a>
         </li>
+        
+        <li class="b-page-settings-close">
+            <a href="#" class="fa fa-close">
+                <?= Lang::get('boom::settings.menu.close') ?>
+            </a>
+        </li>
     </ul>
 
     <div class="b-page-settings-content"></div>
