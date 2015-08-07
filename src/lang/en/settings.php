@@ -47,6 +47,8 @@ return [
         'heading' => 'Page navigation settings',
         'nav' => 'Visible in navigation',
         'cms' => 'Visible in CMS navigation',
+        'no-parent' => 'This page has no parent',
+        'parent' => 'Parent page'
     ],
     'search' => [
         'heading' => 'Page search settings',

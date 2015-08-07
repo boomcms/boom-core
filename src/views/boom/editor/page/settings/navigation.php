@@ -1,4 +1,4 @@
-<form>
+<form id="b-page-navigation">
     <h1><?= Lang::get('boom::settings.navigation.heading') ?></h1>
 
     <section id="basic">
@@ -25,12 +25,19 @@
 
     <?php if ($allowAdvanced): ?>
         <section id='advanced'>
-            <h2><?= Lang::get('boom::settings.advanced') ?></h2>
+            <h2><?= Lang::get('boom::settings.navigation.parent') ?></h2>
 
-            <label for="parent_id">Parent page</label>
+            <?php if ($page->getParent()->loaded()): ?>
+                <p>
+                    <span class="title"><?= $page->getParent()->getTitle() ?></span>
+                    (<span class="uri"><?= $page->getParent()->url()->getLocation() ?></span>)
+                </p>
+            <?php else: ?>
+                <p><?= Lang::get('boom::settings.navigation.no-parent') ?></p>
+            <?php endif ?>
 
             <input type="hidden" name="parent_id" value="<?= $page->getParentId() ?>">
-            <ul class="boom-tree"></ul>
+            <?= $button('sitemap', Lang::get('boom::buttons.reparent'), ['class' => 'b-navigation-reparent b-button-withtext']) ?>
         </section>
     <?php endif ?>
 

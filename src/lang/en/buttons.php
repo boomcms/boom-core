@@ -15,6 +15,7 @@ return [
     'embargo' => 'Set embargo time',
     'embargo-change' => 'Change embargo time',
     'reorder' => 'Re-order',
+    'reparent' => 'Change parent',
     'request-approval' => 'Request approval',
     'save' => 'Save',
 ];

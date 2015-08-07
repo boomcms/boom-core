@@ -16,6 +16,23 @@ $.widget('boom.pageSettingsNavigation', $.boom.pageSettingsDefault, {
 					.done(function() {
 						new boomNotification('Page settings saved');
 					});
+			})
+			.on('click', '.b-navigation-reparent', function(e) {
+				var current = settingsEditor.element.find('input[name=parent_id]').val();
+
+				e.preventDefault();
+
+				new boomLinkPicker(new boomLink(null, current))
+					.done(function(link) {
+						settingsEditor.element.find('input[name=parent_id]').val(link.getPageId());
+				
+						settingsEditor.element
+							.find('.title')
+							.text(link.getTitle())
+							.end()
+							.find('.uri')
+							.text(link.getUrl());
+					});
 			});
 	},
 
