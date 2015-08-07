@@ -110,7 +110,7 @@ class Save extends Settings
     {
         parent::visibility();
         
-        $wasVisbile = $this->page->isVisible();
+        $wasVisible = $this->page->isVisible();
 
         $this->page->setVisibleAtAnyTime($this->request->input('visible') == 1);
 
