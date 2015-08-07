@@ -40500,22 +40500,7 @@ $.widget( 'boom.pageToolbar', {
 				}
 			})
 			.on('click', '#b-page-settings', function() {
-				var $settings = self.element
-					.contents()
-					.find('#b-page-settings-toolbar');
-
-				if ($settings.hasClass('open')) {
-					$settings.removeClass('open');
-
-					setTimeout(function() {
-						self.minimise();
-						$(top.window).trigger('boom:dialog:close');
-					}, 1000);
-				} else {
-					self.maximise();
-					$settings.addClass('open');
-					$(top.window).trigger('boom:dialog:open');
-				}
+					self.openPageSettings();
 			})
 			.on('click', '#b-page-version-status', function() {
 				self.$settings.pageSettings('show', 'drafts');
