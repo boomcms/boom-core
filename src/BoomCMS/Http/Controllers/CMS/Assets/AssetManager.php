@@ -2,32 +2,29 @@
 
 namespace BoomCMS\Http\Controllers\CMS\Assets;
 
-use BoomCMS\Core\Auth;
 use BoomCMS\Core\Asset;
+use BoomCMS\Core\Asset\Finder;
 use BoomCMS\Core\Asset\Mimetype\Mimetype;
 use BoomCMS\Core\Asset\Mimetype\UnsupportedMimeType;
-use BoomCMS\Core\Asset\Finder;
+use BoomCMS\Core\Auth;
 use BoomCMS\Http\Controllers\Controller;
-
 use DateTime;
-use ZipArchive;
-use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\View;
+use ZipArchive;
 
 class AssetManager extends Controller
 {
     protected $perpage = 30;
 
     /**
-	 *
-	 * @var	string
-	 */
+     * @var string
+     */
     protected $viewPrefix = 'boom::assets.';
 
     /**
-     *
      * @var Asset\Provider
      */
     protected $provider;
@@ -62,9 +59,9 @@ class AssetManager extends Controller
 
         if (count($assets) === 1) {
             return Response::download(
-				$assets[0]->getFilename(),
-				$assets[0]->getOriginalFilename()
-			);
+                $assets[0]->getFilename(),
+                $assets[0]->getOriginalFilename()
+            );
         } else {
             $filename = tempnam(sys_get_temp_dir(), 'boomcms_asset_download');
             $zip = new ZipArchive();
@@ -77,8 +74,8 @@ class AssetManager extends Controller
             $zip->close();
 
             $response = Response::make()
-                ->header("Content-type", "application/zip")
-                ->header("Content-Disposition", "attachment; filename=cms_assets.zip")
+                ->header('Content-type', 'application/zip')
+                ->header('Content-Disposition', 'attachment; filename=cms_assets.zip')
                 ->setContent(file_get_contents($filename));
 
             unlink($filename);
@@ -88,14 +85,13 @@ class AssetManager extends Controller
     }
 
     /**
-	 * Display the asset manager.
-	 *
-	 */
+     * Display the asset manager.
+     */
     public function index()
     {
-        return View::make($this->viewPrefix . 'index', [
+        return View::make($this->viewPrefix.'index', [
             'manager' => $this->manager(),
-            'person' => $this->person,
+            'person'  => $this->person,
         ]);
     }
 
@@ -109,7 +105,7 @@ class AssetManager extends Controller
         $column = 'last_modified';
         $order = 'desc';
 
-        if (strpos($this->request->input('sortby'), '-' ) > 1) {
+        if (strpos($this->request->input('sortby'), '-') > 1) {
             list($column, $order) = explode('-', $this->request->input('sortby'));
         }
 
@@ -118,7 +114,7 @@ class AssetManager extends Controller
         $count = $finder->count();
 
         if ($count === 0) {
-            return View::make($this->viewPrefix . 'none_found');
+            return View::make($this->viewPrefix.'none_found');
         } else {
             $page = max(1, $this->request->input('page'));
             $perpage = max($this->perpage, $this->request->input('perpage'));
@@ -129,28 +125,27 @@ class AssetManager extends Controller
                 ->setOffset(($page - 1) * $perpage)
                 ->findAll();
 
-            return View::make($this->viewPrefix . 'list', [
+            return View::make($this->viewPrefix.'list', [
                 'assets' => $assets,
-                'total' => $count,
-                'order' =>     $order,
-                'pages' => $pages,
-                'page' => $page
+                'total'  => $count,
+                'order'  => $order,
+                'pages'  => $pages,
+                'page'   => $page,
             ]);
         }
     }
 
     /**
-    * Display the asset manager without topbar etc.
-    *
-    */
+     * Display the asset manager without topbar etc.
+     */
     public function manager()
     {
-        return View::make($this->viewPrefix . 'manager');
+        return View::make($this->viewPrefix.'manager');
     }
 
     public function picker()
     {
-        return View::make($this->viewPrefix . 'picker');
+        return View::make($this->viewPrefix.'picker');
     }
 
     public function replace(Asset\Asset $asset)
@@ -197,7 +192,7 @@ class AssetManager extends Controller
 
             $asset = Asset\Asset::factory(['type' => $mime->getType()]);
             $asset
-                ->setUploadedTime(new DateTime('@' . time()))
+                ->setUploadedTime(new DateTime('@'.time()))
                 ->setUploadedBy($this->auth->getPerson());
 
             $asset_ids[] = $this->provider->save($asset)->getId();
@@ -218,7 +213,7 @@ class AssetManager extends Controller
 
         foreach ($this->request->file() as $files) {
             foreach ($files as $i => $file) {
-                if ( ! $file->isValid()) {
+                if (!$file->isValid()) {
                     $errors[] = $file->getErrorMessage();
                     continue;
                 }

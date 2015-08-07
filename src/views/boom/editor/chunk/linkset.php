@@ -14,7 +14,7 @@
                 <?php endforeach ?>
             </ul>
 
-            <?php if (! count($chunk->getLinks())): ?>
+            <?php if (!count($chunk->getLinks())): ?>
                 <p class="none">This linkset does not contain any links.</p>
             <?php endif ?>
         </div>

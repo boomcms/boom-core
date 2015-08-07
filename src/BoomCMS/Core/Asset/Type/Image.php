@@ -18,7 +18,7 @@ class Image extends Asset
 
     public function getType()
     {
-        return "Image";
+        return 'Image';
     }
 
     public function getWidth()

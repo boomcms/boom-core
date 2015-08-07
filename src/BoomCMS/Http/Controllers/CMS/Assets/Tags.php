@@ -2,9 +2,8 @@
 
 namespace BoomCMS\Http\Controllers\CMS\Assets;
 
-use BoomCMS\Http\Controllers\Controller;
 use BoomCMS\Core\Asset;
-
+use BoomCMS\Http\Controllers\Controller;
 use Illuminate\Support\Facades\View;
 
 class Tags extends Controller
@@ -14,7 +13,7 @@ class Tags extends Controller
         $collection = new Asset\Collection(explode('-', $this->request->route('assets')));
 
         return View::make('boom::assets.tags', [
-            'tags' => $collection->getTags()
+            'tags' => $collection->getTags(),
         ]);
     }
 

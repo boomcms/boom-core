@@ -8,6 +8,6 @@ class Video extends Asset
 {
     public function getType()
     {
-        return "Video";
+        return 'Video';
     }
 }

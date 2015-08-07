@@ -2,10 +2,10 @@
 
 namespace BoomCMS\Core\Page\Finder;
 
-use BoomCMS\Support\Facades\Editor;
 use BoomCMS\Core\Finder\Finder as BaseFinder;
-use BoomCMS\Database\Models\Page as Model;
 use BoomCMS\Core\Page\Page;
+use BoomCMS\Database\Models\Page as Model;
+use BoomCMS\Support\Facades\Editor;
 
 class Finder extends BaseFinder
 {
@@ -27,7 +27,7 @@ class Finder extends BaseFinder
     {
         $model = parent::find();
 
-         return $model ? new Page($model->toArray()) : new Page([]);
+        return $model ? new Page($model->toArray()) : new Page([]);
     }
 
     public function findAll()

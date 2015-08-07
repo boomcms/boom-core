@@ -4,7 +4,6 @@ namespace BoomCMS\Core\Chunk;
 
 /**
  * Link chunk - this is essentially a linkset which only has one link associated with it.
- *
  */
 class Link extends Linkset
 {
@@ -17,9 +16,9 @@ class Link extends Linkset
     public function attributes()
     {
         return [
-            $this->attributePrefix . 'text' => $this->getText(),
-            $this->attributePrefix . 'url' => (string) $this->getUrl(),
-            $this->attributePrefix . 'target_page_id' => $this->getTargetPageId(),
+            $this->attributePrefix.'text'           => $this->getText(),
+            $this->attributePrefix.'url'            => (string) $this->getUrl(),
+            $this->attributePrefix.'target_page_id' => $this->getTargetPageId(),
         ];
     }
 
@@ -39,9 +38,9 @@ class Link extends Linkset
             if (isset($this->attrs['links'])) {
                 $this->links = $this->attrs['links'];
 
-                if (! $this->editable) {
+                if (!$this->editable) {
                     foreach ($this->links as $i => $link) {
-                        if ($link->isInternal() && ! $link->getLink()->getPage()->isVisible()) {
+                        if ($link->isInternal() && !$link->getLink()->getPage()->isVisible()) {
                             unset($this->links[$i]);
                         }
                     }
@@ -73,11 +72,11 @@ class Link extends Linkset
     {
         return $this->getLink() !== null;
     }
-	
-	public function setHtml($html)
-	{
-		$this->html = $html;
-		
-		return $this;
-	}
+
+    public function setHtml($html)
+    {
+        $this->html = $html;
+
+        return $this;
+    }
 }

@@ -23,8 +23,8 @@ class Provider
     public function create($name, $group)
     {
         $m = Model::create([
-            'name' => $name,
-            'group' => $group
+            'name'  => $name,
+            'group' => $group,
         ]);
 
         return new Tag($m->toArray());

@@ -2,13 +2,12 @@
 
 namespace BoomCMS\ServiceProviders;
 
-use BoomCMS\Core\Person;
 use BoomCMS\Core\Group;
+use BoomCMS\Core\Person;
 use Illuminate\Support\ServiceProvider;
 
 class PersonServiceProvider extends ServiceProvider
 {
-
     /**
      * Bootstrap any application services.
      *
@@ -16,11 +15,9 @@ class PersonServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-
     }
 
     /**
-     *
      * @return void
      */
     public function register()

@@ -3,7 +3,6 @@
 namespace BoomCMS\Core\Auth;
 
 use BoomCMS\Core\Person;
-
 use Hautelook\Phpass\PasswordHash;
 use Illuminate\Http\Request;
 use Illuminate\Session\SessionManager as Session;
@@ -12,7 +11,6 @@ use Illuminate\Support\Facades\Cookie;
 class Auth
 {
     /**
-     *
      * @var string
      */
     protected $autoLoginCookie = 'boomcms_autologin';
@@ -25,27 +23,23 @@ class Auth
     protected $lockWait = 900;
 
     /**
-	 *
-	 * @var Boom\Person\Person
-	 */
+     * @var Boom\Person\Person
+     */
     protected $person;
 
     /**
-     *
      * @var Person\Provider
      */
     private $personProvider;
 
     /**
-     *
      * @var PermissionProvider
      */
     private $permissionsProvider;
 
     /**
-	 *
-	 * @var type Session
-	 */
+     * @var type Session
+     */
     protected $session;
 
     protected $sessionKey = 'boomcms.person.id';
@@ -60,13 +54,14 @@ class Auth
     }
 
     /**
+     * @param type $email
+     * @param type $password
+     * @param type $remember
      *
-     * @param  type                     $email
-     * @param  type                     $password
-     * @param  type                     $remember
-     * @return Person\Person
      * @throws PersonNotFoundException
      * @throws PersonSuspendedException
+     *
+     * @return Person\Person
      */
     public function authenticate($email, $password, $remember = false)
     {
@@ -76,7 +71,7 @@ class Auth
             throw new PersonLockedException($person->getLockedUntil());
         }
 
-        if ( ! $person->checkPassword($password) || ! $person->loaded()) {
+        if (!$person->checkPassword($password) || !$person->loaded()) {
             if ($person->loaded()) {
                 $this->loginFailed($person);
             }
@@ -126,9 +121,8 @@ class Auth
     }
 
     /**
-	 *
-	 * @return Person\Provider
-	 */
+     * @return Person\Provider
+     */
     public function getProvider()
     {
         return $this->personProvider;
@@ -210,7 +204,7 @@ class Auth
 
     public function rememberLogin(Person\Person $person)
     {
-        $value = $person->getId() . '-' . $person->getRememberToken();
+        $value = $person->getId().'-'.$person->getRememberToken();
 
         Cookie::queue(Cookie::forever($this->getAutoLoginCookie(), $value));
     }

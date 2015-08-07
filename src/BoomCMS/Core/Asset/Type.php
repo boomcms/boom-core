@@ -15,10 +15,10 @@ abstract class Type
     const MSEXCEL = 7;
 
     /**
-	 *
-	 * @param integer
-	 * @return  string
-	 */
+     * @param int
+     *
+     * @return string
+     */
     public static function numericTypeToClass($type)
     {
         switch ($type) {
@@ -35,18 +35,18 @@ abstract class Type
                 return 'Tiff';
 
             case static::MSWORD:
-                return "MSWord";
+                return 'MSWord';
 
             case static::MSEXCEL:
-                return "MSExcel";
+                return 'MSExcel';
         }
     }
 
     /**
-	 * Returns an array of the asset types which exist in the database.
-	 *
-	 * @return array
-	 */
+     * Returns an array of the asset types which exist in the database.
+     *
+     * @return array
+     */
     public static function whichExist()
     {
         $typesAsNumbers = DB::table('asset_versions')->distinct()->lists('type');

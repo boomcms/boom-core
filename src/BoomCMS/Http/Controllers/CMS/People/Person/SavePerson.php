@@ -2,8 +2,8 @@
 
 namespace BoomCMS\Http\Controllers\CMS\People\Person;
 
-use BoomCMS\Support\Facades\Group;
 use BoomCMS\Core\Commands\CreatePerson;
+use BoomCMS\Support\Facades\Group;
 use Illuminate\Support\Facades\Bus;
 
 class SavePerson extends BasePerson
@@ -13,7 +13,7 @@ class SavePerson extends BasePerson
         Bus::dispatch(new CreatePerson(
             [
                 'email' => $this->request->input('email'),
-                'name' => $this->request->input('name'),
+                'name'  => $this->request->input('name'),
             ],
             $this->request->input('groups') ?: [],
             $this->auth,

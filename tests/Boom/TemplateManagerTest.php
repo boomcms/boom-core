@@ -1,8 +1,8 @@
 <?php
 
 use BoomCMS\Core\Template;
-use BoomCMS\Core\Theme\Theme;
 use BoomCMS\Core\Template\Manager;
+use BoomCMS\Core\Theme\Theme;
 
 class TemplateManagerTest extends TestCase
 {
@@ -24,7 +24,7 @@ class TemplateManagerTest extends TestCase
         $filesystem
             ->expects($this->once())
             ->method('directories')
-            ->with($this->equalTo(storage_path() . '/boomcms/themes'))
+            ->with($this->equalTo(storage_path().'/boomcms/themes'))
             ->will($this->returnValue($themes));
 
         $manager = new Manager($filesystem, $this->getTemplateProvider(), false);
@@ -39,7 +39,7 @@ class TemplateManagerTest extends TestCase
         $filesystem
             ->expects($this->once())
             ->method('directories')
-            ->with($this->equalTo(storage_path() . '/boomcms/themes'))
+            ->with($this->equalTo(storage_path().'/boomcms/themes'))
             ->will($this->returnValue(null));
 
         $manager = new Manager($filesystem, $this->getTemplateProvider(), false);
@@ -54,7 +54,7 @@ class TemplateManagerTest extends TestCase
         $filesystem
             ->expects($this->once())
             ->method('files')
-            ->with($this->equalTo(storage_path() . '/boomcms/themes/test1/src/views/templates'))
+            ->with($this->equalTo(storage_path().'/boomcms/themes/test1/src/views/templates'))
             ->will($this->returnValue(['test1.php', 'test2.php']));
 
         $manager = new Manager($filesystem, $this->getTemplateProvider(), false);
@@ -67,7 +67,7 @@ class TemplateManagerTest extends TestCase
         $filesystem
             ->expects($this->once())
             ->method('files')
-            ->with($this->equalTo(storage_path() . '/boomcms/themes/test1/src/views/templates'))
+            ->with($this->equalTo(storage_path().'/boomcms/themes/test1/src/views/templates'))
             ->will($this->returnValue(['test1.png', 'test2.php', 'test3']));
 
         $manager = new Manager($filesystem, $this->getTemplateProvider(), false);
@@ -80,7 +80,7 @@ class TemplateManagerTest extends TestCase
         $filesystem
             ->expects($this->once())
             ->method('files')
-            ->with($this->equalTo(storage_path() . '/boomcms/themes/test1/src/views/templates'))
+            ->with($this->equalTo(storage_path().'/boomcms/themes/test1/src/views/templates'))
             ->will($this->returnValue(null));
 
         $manager = new Manager($filesystem, $this->getTemplateProvider(), false);

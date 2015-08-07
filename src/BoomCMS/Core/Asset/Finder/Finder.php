@@ -9,14 +9,13 @@ use BoomCMS\Database\Models\Asset as Model;
 class Finder extends BaseFinder
 {
     /**
-	 *
-	 * @var array
-	 */
+     * @var array
+     */
     protected $allowedOrderByColumns = ['last_modified', 'title', 'downloads', 'filesize', 'uploaded_time'];
 
     protected $orderByAliases = [
         'last_modified' => 'version.edited_at',
-        'filesize' => 'version.filesize',
+        'filesize'      => 'version.filesize',
     ];
 
     public function __construct()

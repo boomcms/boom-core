@@ -8,6 +8,6 @@ class MSExcel extends Asset
 {
     public function getType()
     {
-        return "Microsoft Excel";
+        return 'Microsoft Excel';
     }
 }

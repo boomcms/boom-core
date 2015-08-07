@@ -6,33 +6,28 @@ use BoomCMS\Core\Auth\Auth;
 use BoomCMS\Core\Page;
 use BoomCMS\Core\URL;
 use BoomCMS\Http\Controllers\Controller;
-
 use Illuminate\Http\Request;
 
 class BaseController extends Controller
 {
     /**
-	 *
-	 * @var string
-	 */
-    protected $viewPrefix = "boom::editor.urls";
+     * @var string
+     */
+    protected $viewPrefix = 'boom::editor.urls';
 
     public $url;
 
     /**
-	 *
-	 * @var Page\Page
-	 */
+     * @var Page\Page
+     */
     public $page;
 
     /**
-     *
      * @var Page\Provider
      */
     public $pageProvider;
 
     /**
-     *
      * @var URL\Provider
      */
     public $provider;
@@ -41,8 +36,7 @@ class BaseController extends Controller
         Request $request,
         Page\Provider $pageProvider,
         URL\Provider $provider
-    )
-    {
+    ) {
         $this->auth = $auth;
         $this->request = $request;
         $this->pageProvider = $pageProvider;
@@ -55,11 +49,11 @@ class BaseController extends Controller
             $this->url = new URL\URL([]);
         }
 
-        if ($request->route()->getParameter('id') && ! $this->url->loaded()) {
+        if ($request->route()->getParameter('id') && !$this->url->loaded()) {
             about(404);
         }
 
-        if ($request->input('page_id') && ! $this->page->loaded()) {
+        if ($request->input('page_id') && !$this->page->loaded()) {
             abourt(404);
         }
 

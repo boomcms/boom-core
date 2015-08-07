@@ -14,36 +14,36 @@ class ThemeTest extends TestCase
     public function testGetThemesDirectory()
     {
         $theme = new Theme();
-        $this->assertEquals(storage_path() . '/boomcms/themes', $theme->getThemesDirectory());
+        $this->assertEquals(storage_path().'/boomcms/themes', $theme->getThemesDirectory());
     }
 
     public function testGetDirectory()
     {
         $theme = new Theme('test');
-        $this->assertEquals(storage_path() . '/boomcms/themes/test', $theme->getDirectory());
+        $this->assertEquals(storage_path().'/boomcms/themes/test', $theme->getDirectory());
     }
 
     public function testGetConfigDirectory()
     {
         $theme = new Theme('test');
-        $this->assertEquals(storage_path() . '/boomcms/themes/test/src/config', $theme->getConfigDirectory());
+        $this->assertEquals(storage_path().'/boomcms/themes/test/src/config', $theme->getConfigDirectory());
     }
 
     public function testGetViewDirectory()
     {
         $theme = new Theme('test');
-        $this->assertEquals(storage_path() . '/boomcms/themes/test/src/views', $theme->getViewDirectory());
+        $this->assertEquals(storage_path().'/boomcms/themes/test/src/views', $theme->getViewDirectory());
     }
 
     public function testGetTemplateDirectory()
     {
         $theme = new Theme('test');
-        $this->assertEquals(storage_path() . '/boomcms/themes/test/src/views/templates', $theme->getTemplateDirectory());
+        $this->assertEquals(storage_path().'/boomcms/themes/test/src/views/templates', $theme->getTemplateDirectory());
     }
 
     public function testGetPublicDirectory()
     {
         $theme = new Theme('test');
-        $this->assertEquals(storage_path() . '/boomcms/themes/test/public', $theme->getPublicDirectory());
+        $this->assertEquals(storage_path().'/boomcms/themes/test/public', $theme->getPublicDirectory());
     }
 }

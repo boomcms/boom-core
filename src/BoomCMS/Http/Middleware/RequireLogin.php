@@ -2,14 +2,13 @@
 
 namespace BoomCMS\Http\Middleware;
 
-use Closure;
 use BoomCMS\Core\Auth\Auth;
+use Closure;
 use Illuminate\Http\RedirectResponse;
 
 class RequireLogin
 {
     /**
-     *
      * @var Auth
      */
     protected $auth;
@@ -22,17 +21,17 @@ class RequireLogin
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  \Closure                 $next
+     * @param \Illuminate\Http\Request $request
+     * @param \Closure                 $next
+     *
      * @return mixed
      */
     public function handle($request, Closure $next)
     {
-        if ( ! $this->auth->isLoggedIn()) {
+        if (!$this->auth->isLoggedIn()) {
             return new RedirectResponse(route('login'));
         }
 
         return $next($request);
     }
-
 }

@@ -2,4 +2,6 @@
 
 namespace BoomCMS\Database\Models\Chunk;
 
-class Link extends Linkset {}
+class Link extends Linkset
+{
+}

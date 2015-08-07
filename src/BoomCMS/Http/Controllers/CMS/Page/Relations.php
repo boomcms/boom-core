@@ -3,27 +3,23 @@
 namespace BoomCMS\Http\Controllers\CMS\Page;
 
 use BoomCMS\Core\Auth\Auth;
-use BoomCMS\Http\Controllers\Controller;
 use BoomCMS\Core\Page;
-
+use BoomCMS\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class Relations extends Controller
 {
     /**
-     *
      * @var Auth
      */
     public $auth;
 
     /**
-	 *
-	 * @var Tag\Provider
-	 */
+     * @var Tag\Provider
+     */
     protected $provider;
 
     /**
-     *
      * @var Page\Page;
      */
     protected $related;

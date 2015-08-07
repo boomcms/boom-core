@@ -5,13 +5,13 @@ use BoomCMS\Core\Tag;
 
 return [
     'viewHelpers' => [
-        'assetURL' => function(array $params) {
-			if (isset($params['asset']) && is_object($params['asset'])) {
+        'assetURL' => function (array $params) {
+            if (isset($params['asset']) && is_object($params['asset'])) {
                 $asset = $params['asset'];
-				$params['asset'] = $params['asset']->getId();
-			}
+                $params['asset'] = $params['asset']->getId();
+            }
 
-            if ( !isset($params['action'])) {
+            if (!isset($params['action'])) {
                 $params['action'] = 'view';
             }
 
@@ -22,40 +22,40 @@ return [
             $url = route('asset', $params);
 
             if (isset($asset)) {
-                $url .= '?' . $asset->getLastModified()->getTimestamp();
+                $url .= '?'.$asset->getLastModified()->getTimestamp();
             }
 
             return $url;
         },
-		'countPages' => function(array $params) {
-			return (new Page\Query($params))->countPages();
-		},
-        'getPages' => function(array $params) {
+        'countPages' => function (array $params) {
+            return (new Page\Query($params))->countPages();
+        },
+        'getPages' => function (array $params) {
             return (new Page\Query($params))->getPages();
         },
-        'next' => function(array $params = []) {
+        'next' => function (array $params = []) {
             return (new Page\Query($params))->getNextTo(Editor::getActivePage(), 'after');
         },
-        'prev' => function(array $params = []) {
+        'prev' => function (array $params = []) {
             return (new Page\Query($params))->getNextTo(Editor::getActivePage(), 'before');
         },
-		'getTags' => function(Page\Page $page = null, $group = null) {
-			$page = $page?: Editor::getActivePage();
+        'getTags' => function (Page\Page $page = null, $group = null) {
+            $page = $page ?: Editor::getActivePage();
 
-			$finder = new Tag\Finder\Finder();
-			$finder->addFilter(new Tag\Finder\AppliedToPage($page));
-			$finder->addFilter(new Tag\Finder\Group($group));
+            $finder = new Tag\Finder\Finder();
+            $finder->addFilter(new Tag\Finder\AppliedToPage($page));
+            $finder->addFilter(new Tag\Finder\Group($group));
 
-			return $finder->setOrderBy('name', 'asc')->findAll();
-		},
-		'getTagsInSection' => function(Page\Page $page = null, $group = null) {
-			$page = $page?: Editor::getActivePage();
+            return $finder->setOrderBy('name', 'asc')->findAll();
+        },
+        'getTagsInSection' => function (Page\Page $page = null, $group = null) {
+            $page = $page ?: Editor::getActivePage();
 
-			$finder = new Tag\Finder\Finder();
-			$finder->addFilter(new Tag\Finder\AppliedToPageDescendants($page));
-			$finder->addFilter(new Tag\Finder\Group($group));
+            $finder = new Tag\Finder\Finder();
+            $finder->addFilter(new Tag\Finder\AppliedToPageDescendants($page));
+            $finder->addFilter(new Tag\Finder\Group($group));
 
-			return $finder->setOrderBy('name', 'asc')->findAll();
-		},
+            return $finder->setOrderBy('name', 'asc')->findAll();
+        },
     ],
 ];

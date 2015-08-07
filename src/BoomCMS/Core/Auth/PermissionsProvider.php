@@ -4,14 +4,12 @@ namespace BoomCMS\Core\Auth;
 
 use BoomCMS\Core\Page;
 use BoomCMS\Core\Person;
-
 use Illuminate\Support\Facades\DB;
 
 /**
  * This class is used to check whether a particular person can perform a particular role.
  *
  * Results of lookups are cached for the duration of the script execution to minimise database queries.
- *
  */
 class PermissionsProvider
 {
@@ -26,7 +24,7 @@ class PermissionsProvider
     {
         // Page permissions are prefixed with p_ so add the prefix if it's not present.
         if (substr($role, 0, 2) !== 'p_') {
-            $role = 'p_' . $role;
+            $role = 'p_'.$role;
         }
 
         do {
@@ -39,7 +37,6 @@ class PermissionsProvider
             if ($result === null) {
                 $page = $page->getParent();
             }
-
         } while ($result === null);
 
         return (bool) $result;
@@ -52,11 +49,11 @@ class PermissionsProvider
 
     protected function doLookup($personId, $role, $pageId)
     {
-        $hash = md5($personId . '-' . $role . '-' . $pageId);
+        $hash = md5($personId.'-'.$role.'-'.$pageId);
 
-        if ( ! isset($this->cache[$hash])) {
+        if (!isset($this->cache[$hash])) {
             $result = DB::table('people_roles')
-                ->select(DB::raw("bit_and(allowed) as allowed"))
+                ->select(DB::raw('bit_and(allowed) as allowed'))
                 ->where('person_id', '=', $personId)
                 ->join('roles', 'roles.id', '=', 'people_roles.role_id')
                 ->where('roles.name', '=', $role)

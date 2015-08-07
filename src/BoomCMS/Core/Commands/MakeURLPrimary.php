@@ -3,21 +3,18 @@
 namespace BoomCMS\Core\Commands;
 
 use BoomCMS\Core\URL;
-
-use Illuminate\Support\Facades\DB;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Bus\SelfHandling;
+use Illuminate\Support\Facades\DB;
 
 class MakeURLPrimary extends Command implements SelfHandling
 {
     /**
-     *
      * @var URL\Provider
      */
     protected $provider;
 
     /**
-     *
      * @var URL\URL
      */
     protected $url;

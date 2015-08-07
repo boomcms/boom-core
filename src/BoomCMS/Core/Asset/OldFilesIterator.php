@@ -5,9 +5,8 @@ namespace BoomCMS\Core\Asset;
 class OldFilesIterator extends \FilterIterator
 {
     /**
-	 *
-	 * @var Asset
-	 */
+     * @var Asset
+     */
     protected $asset;
 
     public function __construct(Asset $asset)

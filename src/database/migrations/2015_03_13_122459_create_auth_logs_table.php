@@ -6,10 +6,10 @@ use Illuminate\Database\Schema\Blueprint;
 class CreateAuthLogsTable extends Migration
 {
     /**
-	 * Run the migrations.
-	 *
-	 * @return void
-	 */
+     * Run the migrations.
+     *
+     * @return void
+     */
     public function up()
     {
         Schema::create('auth_logs', function (Blueprint $table) {
@@ -25,13 +25,12 @@ class CreateAuthLogsTable extends Migration
     }
 
     /**
-	 * Reverse the migrations.
-	 *
-	 * @return void
-	 */
+     * Reverse the migrations.
+     *
+     * @return void
+     */
     public function down()
     {
         Schema::drop('auth_logs');
     }
-
 }

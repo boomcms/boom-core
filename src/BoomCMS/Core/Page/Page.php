@@ -2,50 +2,42 @@
 
 namespace BoomCMS\Core\Page;
 
+use DateTime;
 use BoomCMS\Core\Person;
 use BoomCMS\Core\Tag;
 use BoomCMS\Core\Template;
 use BoomCMS\Core\URL\URL;
 use BoomCMS\Database\Models\Page\URL as URLModel;
 use BoomCMS\Database\Models\Page\Version as VersionModel;
-
 use BoomCMS\Support\Facades\Asset;
+use BoomCMS\Support\Facades\Auth;
 use BoomCMS\Support\Facades\Chunk;
 use BoomCMS\Support\Facades\Page as PageFacade;
-use BoomCMS\Support\Facades\Auth;
-
 use Illuminate\Support\Facades\DB;
-
-use \DateTime;
 
 class Page
 {
     /**
-     *
      * @var Page\Version
      */
     private $currentVersion;
 
     /**
-	 *
-	 * @var array
-	 */
+     * @var array
+     */
     protected $data;
 
     /**
-     *
      * @var Page
      */
     protected $parent;
 
     /**
-	 *
-	 * @var URL
-	 */
+     * @var URL
+     */
     protected $primaryUrl;
 
     /**
-     *
      * @var Template\Template
      */
     private $template;
@@ -74,7 +66,7 @@ class Page
             }
         }
 
-        if ( !empty($versionData)) {
+        if (!empty($versionData)) {
             $this->currentVersion = new Version($versionData);
         }
 
@@ -86,10 +78,10 @@ class Page
         if ($this->loaded() && $page->loaded()) {
             DB::table('pages_relations')
                 ->insert([
-                    'page_id' => $this->getId(),
+                    'page_id'         => $this->getId(),
                     'related_page_id' => $page->getId(),
-                    'created_at' => time(),
-                    'created_by' => Auth::getPerson()->getId(),
+                    'created_at'      => time(),
+                    'created_by'      => Auth::getPerson()->getId(),
                 ]);
         }
 
@@ -102,7 +94,7 @@ class Page
             DB::table('pages_tags')
                 ->insert([
                     'page_id' => $this->getId(),
-                    'tag_id' => $tag->getId()
+                    'tag_id'  => $tag->getId(),
                 ]);
         }
 
@@ -116,15 +108,15 @@ class Page
         }
 
         $attrs = array_merge($attrs, [
-            'page_id' => $this->getId(),
-            'edited_by' => Auth::getPerson()->getId(),
+            'page_id'     => $this->getId(),
+            'edited_by'   => Auth::getPerson()->getId(),
             'edited_time' => time(),
         ]);
 
         // If the embargo time of the new version is in the past, set the embargo time to null
         // This means that if the old version was published, the new version will be a draft.
         // If the embargo time is in the future don't change it.
-        if ( !isset($attrs['embargoed_until']) || $attrs['embargoed_until'] < time()) {
+        if (!isset($attrs['embargoed_until']) || $attrs['embargoed_until'] < time()) {
             $attrs['embargoed_until'] = null;
         }
 
@@ -202,9 +194,8 @@ class Page
     }
 
     /**
-	 *
-	 * @return DateTime
-	 */
+     * @return DateTime
+     */
     public function getCreatedTime()
     {
         $time = new DateTime();
@@ -235,12 +226,12 @@ class Page
     }
 
     /**
-	 * Get a description for the page.
-	 *
-	 * If no description property is set then the standfirst is used instead.
-	 *
-	 * @return string
-	 */
+     * Get a description for the page.
+     *
+     * If no description property is set then the standfirst is used instead.
+     *
+     * @return string
+     */
     public function getDescription()
     {
         $description = ($this->get('description') != null) ?
@@ -262,7 +253,6 @@ class Page
     }
 
     /**
-     *
      * @return BoomCMS\Core\Asset\Asset
      */
     public function getFeatureImage()
@@ -303,16 +293,14 @@ class Page
     }
 
     /**
-	 *
-	 * @return Keywords
-	 */
+     * @return Keywords
+     */
     public function getKeywords()
     {
         return $this->get('keywords');
     }
 
     /**
-     *
      * @return DateTime
      */
     public function getLastModified()
@@ -326,7 +314,7 @@ class Page
             ->lastPublished()
             ->first();
 
-        return new DateTime('@' . $m['embargoed_until']);
+        return new DateTime('@'.$m['embargoed_until']);
     }
 
     public function getManualOrderPosition()
@@ -344,7 +332,7 @@ class Page
 
             return $this->parent;
         } else {
-            return new Page([]);
+            return new self([]);
         }
     }
 
@@ -396,14 +384,13 @@ class Page
     }
 
     /**
-	 *
-	 * @return DateTime
-	 */
+     * @return DateTime
+     */
     public function getVisibleFrom()
     {
         $timestamp = $this->get('visible_from') ?: time();
 
-        return new DateTime('@' . $timestamp);
+        return new DateTime('@'.$timestamp);
     }
 
     public function getVisibleFromTimestamp()
@@ -412,12 +399,11 @@ class Page
     }
 
     /**
-	 *
-	 * @return DateTime
-	 */
+     * @return DateTime
+     */
     public function getVisibleTo()
     {
-        return $this->get('visible_to') == 0 ? null : new DateTime('@' . $this->get('visible_to'));
+        return $this->get('visible_to') == 0 ? null : new DateTime('@'.$this->get('visible_to'));
     }
 
     public function hasChildren()
@@ -451,10 +437,10 @@ class Page
     }
 
     /**
-	 *
-	 * @param int $unixTimestamp
-	 * @return boolean
-	 */
+     * @param int $unixTimestamp
+     *
+     * @return bool
+     */
     public function isVisibleAtTime($unixTimestamp)
     {
         return ($this->isVisibleAtAnyTime() &&
@@ -524,10 +510,9 @@ class Page
     }
 
     /**
-	 *
-	 * @param	string	$column
-	 * @param	string	$direction
-	 */
+     * @param string $column
+     * @param string $direction
+     */
     public function setChildOrderingPolicy($column, $direction)
     {
         $ordering_policy = new ChildOrderingPolicy($column, $direction);
@@ -537,8 +522,8 @@ class Page
     }
 
     /**
+     * @param string $prefix
      *
-     * @param  string          $prefix
      * @return \Boom\Page\Page
      */
     public function setChildrenUrlPrefix($prefix)
@@ -549,8 +534,8 @@ class Page
     }
 
     /**
+     * @param bool $visible
      *
-     * @param  boolean         $visible
      * @return \Boom\Page\Page
      */
     public function setChildrenVisibleInNav($visible)
@@ -561,8 +546,8 @@ class Page
     }
 
     /**
+     * @param bool $visible
      *
-     * @param  boolean         $visible
      * @return \Boom\Page\Page
      */
     public function setChildrenVisibleInNavCMS($visible)
@@ -573,10 +558,10 @@ class Page
     }
 
     /**
-	 *
-	 * @param string $description
-	 * @return \Boom\Page\Page
-	 */
+     * @param string $description
+     *
+     * @return \Boom\Page\Page
+     */
     public function setDescription($description)
     {
         $this->data['description'] = $description;
@@ -585,10 +570,10 @@ class Page
     }
 
     /**
-	 *
-	 * @param boolean $indexing
-	 * @return \Boom\Page\Page
-	 */
+     * @param bool $indexing
+     *
+     * @return \Boom\Page\Page
+     */
     public function setExternalIndexing($indexing)
     {
         $this->data['external_indexing'] = $indexing;
@@ -597,10 +582,10 @@ class Page
     }
 
     /**
-	 *
-	 * @param int $featureImageId
-	 * @return \Boom\Page\Page
-	 */
+     * @param int $featureImageId
+     *
+     * @return \Boom\Page\Page
+     */
     public function setFeatureImageId($featureImageId)
     {
         $this->data['feature_image_id'] = $featureImageId > 0 ? $featureImageId : null;
@@ -609,8 +594,8 @@ class Page
     }
 
     /**
+     * @param int $templateId
      *
-     * @param  int             $templateId
      * @return \Boom\Page\Page
      */
     public function setGrandchildTemplateId($templateId)
@@ -622,7 +607,7 @@ class Page
 
     public function setId($id)
     {
-        if ( !$this->getId()) {
+        if (!$this->getId()) {
             $this->attributes['id'] = $id;
         }
 
@@ -638,16 +623,16 @@ class Page
 
         $this->addVersion([
             'pending_approval' => false,
-            'published' => true,
-            'embargoed_until' => $embargoed_until,
+            'published'        => true,
+            'embargoed_until'  => $embargoed_until,
         ]);
     }
 
     /**
-	 *
-	 * @param boolean $indexing
-	 * @return \Boom\Page\Page
-	 */
+     * @param bool $indexing
+     *
+     * @return \Boom\Page\Page
+     */
     public function setInternalIndexing($indexing)
     {
         $this->data['internal_indexing'] = $indexing;
@@ -656,10 +641,10 @@ class Page
     }
 
     /**
-	 *
-	 * @param string $name
-	 * @return \Boom\Page\Page
-	 */
+     * @param string $name
+     *
+     * @return \Boom\Page\Page
+     */
     public function setInternalName($name)
     {
         $this->data['internal_name'] = $name;
@@ -668,10 +653,10 @@ class Page
     }
 
     /**
-	 *
-	 * @param string $keywords
-	 * @return \Boom\Page\Page
-	 */
+     * @param string $keywords
+     *
+     * @return \Boom\Page\Page
+     */
     public function setKeywords($keywords)
     {
         $this->data['keywords'] = $keywords;
@@ -680,10 +665,10 @@ class Page
     }
 
     /**
-	 *
-	 * @param int $parentId
-	 * @return \Boom\Page\Page
-	 */
+     * @param int $parentId
+     *
+     * @return \Boom\Page\Page
+     */
     public function setParentId($parentId)
     {
         if ($parentId && $parentId != $this->getId()) {
@@ -719,10 +704,10 @@ class Page
     }
 
     /**
-	 *
-	 * @param boolean $visible
-	 * @return \Boom\Page\Page
-	 */
+     * @param bool $visible
+     *
+     * @return \Boom\Page\Page
+     */
     public function setVisibleAtAnyTime($visible)
     {
         $this->data['visible'] = $visible;
@@ -731,10 +716,10 @@ class Page
     }
 
     /**
-	 *
-	 * @param DateTime $time
-	 * @return \Boom\Page\Page
-	 */
+     * @param DateTime $time
+     *
+     * @return \Boom\Page\Page
+     */
     public function setVisibleFrom(DateTime $time)
     {
         $this->data['visible_from'] = $time->getTimestamp();
@@ -743,10 +728,10 @@ class Page
     }
 
     /**
-	 *
-	 * @param boolean $visible
-	 * @return \Boom\Page\Page
-	 */
+     * @param bool $visible
+     *
+     * @return \Boom\Page\Page
+     */
     public function setVisibleInCmsNav($visible)
     {
         $this->data['visible_in_nav_cms'] = $visible;
@@ -755,10 +740,10 @@ class Page
     }
 
     /**
-	 *
-	 * @param boolean $visible
-	 * @return \Boom\Page\Page
-	 */
+     * @param bool $visible
+     *
+     * @return \Boom\Page\Page
+     */
     public function setVisibleInNav($visible)
     {
         $this->data['visible_in_nav'] = $visible;
@@ -767,10 +752,10 @@ class Page
     }
 
     /**
-	 *
-	 * @param DateTime $time
-	 * @return \Boom\Page\Page
-	 */
+     * @param DateTime $time
+     *
+     * @return \Boom\Page\Page
+     */
     public function setVisibleTo(DateTime $time = null)
     {
         $this->data['visible_to'] = $time ? $time->getTimestamp() : null;
@@ -793,7 +778,7 @@ class Page
                 DB::table('pages')
                     ->where('id', '=', $pageId)
                     ->update([
-                        'sequence' => $sequence
+                        'sequence' => $sequence,
                     ]);
             }
         }
@@ -802,22 +787,22 @@ class Page
     }
 
     /**
-	 * Returns the Model_Page_URL object for the page's primary URI
-	 *
-	 * The URL can be displayed by casting the returned object to a string:
-	 *
-	 *		(string) $page->url();
-	 *
-	 *
-	 * @return \Model_Page_URL
-	 */
+     * Returns the Model_Page_URL object for the page's primary URI.
+     *
+     * The URL can be displayed by casting the returned object to a string:
+     *
+     *		(string) $page->url();
+     *
+     *
+     * @return \Model_Page_URL
+     */
     public function url()
     {
         if ($this->primaryUrl === null) {
             $this->primaryUrl = new URL([
-                'page' => $this,
-                'location' => $this->get('primary_uri'),
-                'is_primary' => true
+                'page'       => $this,
+                'location'   => $this->get('primary_uri'),
+                'is_primary' => true,
             ]);
         }
 

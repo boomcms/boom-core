@@ -15,8 +15,8 @@
         </ul>
 
         <ul id='b-page-urls-list'>
-            <?php foreach($urls as $url): ?>
-                <li data-url="<?= $url->getLocation() ?>" data-id="<?= $url->getId() ?>" <?php if ( (bool) $url->isPrimary() ): echo 'class="b-page-urls-primary"'; endif ?>>
+            <?php foreach ($urls as $url): ?>
+                <li data-url="<?= $url->getLocation() ?>" data-id="<?= $url->getId() ?>" <?php if ((bool) $url->isPrimary()): echo 'class="b-page-urls-primary"'; endif ?>>
                     <label class="primary" for="is_primary_<?= $url->getId() ?>"><?= $url->getLocation() ?></label>
 
                     <span class='b-page-urls-primary-indicator'>primary</span>

@@ -2,27 +2,24 @@
 
 namespace BoomCMS\Http\Controllers\CMS;
 
-use BoomCMS\Http\Controllers\Controller;
 use BoomCMS\Core\Auth\Auth;
 use BoomCMS\Core\Chunk\Provider;
 use BoomCMS\Core\Page\Page;
+use BoomCMS\Http\Controllers\Controller;
 use BoomCMS\Support\Facades\Chunk as ChunkFacade;
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
 
 class Chunk extends Controller
 {
     /**
-	 *
-	 * @var Page
-	 */
+     * @var Page
+     */
     protected $page;
 
     /**
-	 *
-	 * @var Provider
-	 */
+     * @var Provider
+     */
     protected $provider;
 
     public function __construct(Auth $auth, Request $request, Provider $provider)
@@ -41,7 +38,7 @@ class Chunk extends Controller
         $type = $this->request->input('type');
         $chunk = ChunkFacade::get($type, $this->request->input('slotname'), $this->page);
 
-        return View::make('boom::editor.chunk.' . $type, [
+        return View::make('boom::editor.chunk.'.$type, [
             'chunk' => $chunk,
         ]);
     }
@@ -70,7 +67,7 @@ class Chunk extends Controller
 
         return [
             'status' => $this->page->getCurrentVersion()->getStatus(),
-            'html' => $chunk->render(),
+            'html'   => $chunk->render(),
         ];
     }
 }

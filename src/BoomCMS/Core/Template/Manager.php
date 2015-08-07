@@ -9,13 +9,11 @@ use Illuminate\Filesystem\Filesystem;
 class Manager
 {
     /**
-     *
      * @var Filesystem
      */
     protected $filesystem;
 
     /**
-     *
      * @var Provider
      */
     protected $provider;
@@ -33,15 +31,15 @@ class Manager
     public function createTemplateWithFilename($theme, $filename)
     {
         Model::create([
-            'name' => ucwords(str_replace("_", " ", $filename)),
-            'theme' => $theme,
-            'filename' =>$filename,
+            'name'     => ucwords(str_replace('_', ' ', $filename)),
+            'theme'    => $theme,
+            'filename' => $filename,
         ]);
     }
 
     /**
-	 * Deletes templates where the filename points to an non-existent file.
-	 */
+     * Deletes templates where the filename points to an non-existent file.
+     */
     public function deleteInvalidTemplates()
     {
         foreach ($this->getInvalidTemplates() as $template) {
@@ -55,7 +53,7 @@ class Manager
 
         foreach ($this->findInstalledThemes() as $theme) {
             foreach ($this->findAvailableTemplates($theme) as $template) {
-                if ( ! $this->templateIsInstalled($theme, $template)) {
+                if (!$this->templateIsInstalled($theme, $template)) {
                     $installed[] = [$theme, $template];
                     $this->createTemplateWithFilename($theme, $template);
                 }
@@ -73,7 +71,7 @@ class Manager
         if (is_array($files)) {
             foreach ($files as $file) {
                 if (strpos($file, '.php') !== false) {
-                    $file = str_replace($theme->getTemplateDirectory() . '/', '', $file);
+                    $file = str_replace($theme->getTemplateDirectory().'/', '', $file);
                     $templates[] = str_replace('.php', '', $file);
                 }
             }
@@ -89,7 +87,7 @@ class Manager
 
         if (is_array($themes)) {
             foreach ($themes as &$t) {
-                $t = new Theme(str_replace($theme->getThemesDirectory() . '/', '', $t));
+                $t = new Theme(str_replace($theme->getThemesDirectory().'/', '', $t));
             }
         }
 
@@ -104,15 +102,15 @@ class Manager
     }
 
     /**
-	 * Gets templates where the filename points to an non-existent file.
-	 */
+     * Gets templates where the filename points to an non-existent file.
+     */
     public function getInvalidTemplates()
     {
         $invalid = [];
         $templates = $this->getAllTemplates();
 
         foreach ($templates as $template) {
-            if ( ! $template->fileExists()) {
+            if (!$template->fileExists()) {
                 $invalid[] = $template;
             }
         }

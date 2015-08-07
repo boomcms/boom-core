@@ -6,10 +6,10 @@ use Illuminate\Database\Schema\Blueprint;
 class AddForeignKeysToPageVersionsTable extends Migration
 {
     /**
-	 * Run the migrations.
-	 *
-	 * @return void
-	 */
+     * Run the migrations.
+     *
+     * @return void
+     */
     public function up()
     {
         Schema::table('page_versions', function (Blueprint $table) {
@@ -18,15 +18,14 @@ class AddForeignKeysToPageVersionsTable extends Migration
     }
 
     /**
-	 * Reverse the migrations.
-	 *
-	 * @return void
-	 */
+     * Reverse the migrations.
+     *
+     * @return void
+     */
     public function down()
     {
         Schema::table('page_versions', function (Blueprint $table) {
             $table->dropForeign('page_versions_ibfk_1');
         });
     }
-
 }

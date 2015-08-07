@@ -3,14 +3,12 @@
 namespace BoomCMS\Http\Middleware;
 
 use BoomCMS\Core\Auth\Auth;
-
 use Closure;
 use Illuminate\Http\Request;
 
 class AutoLogin
 {
     /**
-     *
      * @var Auth
      */
     protected $auth;
@@ -23,8 +21,9 @@ class AutoLogin
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  \Closure                 $next
+     * @param \Illuminate\Http\Request $request
+     * @param \Closure                 $next
+     *
      * @return mixed
      */
     public function handle(Request $request, Closure $next)

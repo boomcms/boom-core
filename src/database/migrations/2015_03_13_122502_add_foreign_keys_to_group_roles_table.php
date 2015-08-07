@@ -6,10 +6,10 @@ use Illuminate\Database\Schema\Blueprint;
 class AddForeignKeysToGroupRolesTable extends Migration
 {
     /**
-	 * Run the migrations.
-	 *
-	 * @return void
-	 */
+     * Run the migrations.
+     *
+     * @return void
+     */
     public function up()
     {
         Schema::table('group_roles', function (Blueprint $table) {
@@ -19,10 +19,10 @@ class AddForeignKeysToGroupRolesTable extends Migration
     }
 
     /**
-	 * Reverse the migrations.
-	 *
-	 * @return void
-	 */
+     * Reverse the migrations.
+     *
+     * @return void
+     */
     public function down()
     {
         Schema::table('group_roles', function (Blueprint $table) {
@@ -30,5 +30,4 @@ class AddForeignKeysToGroupRolesTable extends Migration
             $table->dropForeign('group_roles_ibfk_1');
         });
     }
-
 }

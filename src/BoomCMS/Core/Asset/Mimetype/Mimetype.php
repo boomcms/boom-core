@@ -7,17 +7,17 @@ abstract class Mimetype
     public static $allowedExtensions = ['jpeg', 'gif', 'jpg', 'png', 'tiff', 'doc', 'docx', 'pdf', 'mp4', 'xls', 'xlsx', 'mov'];
 
     public static $allowedTypes = [
-        'image/jpeg' => 'jpg',
-        'image/gif' => 'gif',
-        'image/png' => 'png',
-        'image/tiff' => 'tiff',
-        'application/msword' => 'doc',
+        'image/jpeg'                                                              => 'jpg',
+        'image/gif'                                                               => 'gif',
+        'image/png'                                                               => 'png',
+        'image/tiff'                                                              => 'tiff',
+        'application/msword'                                                      => 'doc',
         'application/vnd.openxmlformats-officedocument.wordprocessingml.document' => 'docx',
-        'application/msexcel' => 'xls',
-        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' => 'xlsx',
-        'application/pdf' => 'pdf',
-        'video/mp4' => 'mp4',
-        'video/quicktime' => 'mov',
+        'application/msexcel'                                                     => 'xls',
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'       => 'xlsx',
+        'application/pdf'                                                         => 'pdf',
+        'video/mp4'                                                               => 'mp4',
+        'video/quicktime'                                                         => 'mov',
     ];
 
     protected $_mimetype;
@@ -40,10 +40,9 @@ abstract class Mimetype
     public static function factory($mimetype)
     {
         if (static::isSupported($mimetype)) {
-            $classname = 'BoomCMS\Core\Asset\Mimetype\\' . ucfirst(static::$allowedTypes[$mimetype]);
+            $classname = 'BoomCMS\Core\Asset\Mimetype\\'.ucfirst(static::$allowedTypes[$mimetype]);
 
             return new $classname($mimetype);
-
         } else {
             throw new UnsupportedMimeType($mimetype);
         }

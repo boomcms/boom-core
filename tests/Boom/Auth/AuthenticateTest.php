@@ -1,7 +1,6 @@
 <?php
 
 use BoomCMS\Core\Auth;
-
 use BoomCMS\Core\Person;
 
 class Auth_AuthenticateTest extends TestCase

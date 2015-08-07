@@ -18,15 +18,15 @@ class View extends BaseController
     public function edit()
     {
         return ViewFacade::make("$this->viewPrefix/edit", [
-            'group' => $this->group,
+            'group'         => $this->group,
             'general_roles' => Role::getGeneralRoles(),
-            'page_roles' => Role::getPageRoles(),
+            'page_roles'    => Role::getPageRoles(),
         ]);
     }
 
     public function listRoles()
     {
-        $roles = $this->group->getRoles( (int) $this->request->input('page_id'));
+        $roles = $this->group->getRoles((int) $this->request->input('page_id'));
 
         return $roles;
     }

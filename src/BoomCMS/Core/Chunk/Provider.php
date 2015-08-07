@@ -10,7 +10,6 @@ use BoomCMS\Support\Facades\Editor;
 class Provider
 {
     /**
-     *
      * @var Auth
      */
     protected $auth;
@@ -28,23 +27,23 @@ class Provider
         $type = $attrs['type'];
         unset($attrs['type']);
 
-        $modelName = 'BoomCMS\Database\Models\Chunk\\' . ucfirst($type);
+        $modelName = 'BoomCMS\Database\Models\Chunk\\'.ucfirst($type);
         $model = $modelName::create($attrs);
 
-        $className = 'BoomCMS\Core\Chunk\\' . ucfirst($type);
+        $className = 'BoomCMS\Core\Chunk\\'.ucfirst($type);
         $attrs['id'] = $model->id;
 
         return new $className($page, $attrs, $attrs['slotname'], true);
     }
 
     /**
-     * Returns whether the logged in user is allowed to edit a page
+     * Returns whether the logged in user is allowed to edit a page.
      *
-     * @return boolean
+     * @return bool
      */
     public function allowedToEdit(Page $page)
     {
-        if ( ! $page->loaded()) {
+        if (!$page->loaded()) {
             return true;
         }
 
@@ -52,17 +51,17 @@ class Provider
     }
 
     /**
-     *
      * Returns a chunk object of the required type.
      *
-     * @param  string    $type     Chunk type, e.g. text, feature, etc.
-     * @param  string    $slotname The name of the slot to retrieve a chunk from.
-     * @param  mixed     $page     The page the chunk belongs to. If not given then the page from the current request will be used.
+     * @param string $type     Chunk type, e.g. text, feature, etc.
+     * @param string $slotname The name of the slot to retrieve a chunk from.
+     * @param mixed  $page     The page the chunk belongs to. If not given then the page from the current request will be used.
+     *
      * @return BaseChunk
      */
     public function edit($type, $slotname, $page = null)
     {
-        $className = 'BoomCMS\Core\Chunk\\' . ucfirst($type);
+        $className = 'BoomCMS\Core\Chunk\\'.ucfirst($type);
 
         if ($page === null) {
             $page = Editor::getActivePage();
@@ -88,7 +87,7 @@ class Provider
 
     public function findOne($type, $slotname, Version $version)
     {
-        $class = 'BoomCMS\Database\Models\Chunk\\' . ucfirst($type);
+        $class = 'BoomCMS\Database\Models\Chunk\\'.ucfirst($type);
 
         return $version->getId() ?
             $class::getSingleChunk($version, $slotname)->first()
@@ -105,7 +104,7 @@ class Provider
 
         return $chunks;
 // TODO: fix loading multiple chunks in one go.
-        $class = 'BoomCMS\Database\Models\Chunk\\' . ucfirst($type);
+        $class = 'BoomCMS\Database\Models\Chunk\\'.ucfirst($type);
 
         return $class::latestEdit($version)
             ->where('c2.slotname', 'in', $slotnames)
@@ -115,7 +114,7 @@ class Provider
 
     public function get($type, $slotname, Page $page)
     {
-        $className = 'BoomCMS\Core\Chunk\\' . ucfirst($type);
+        $className = 'BoomCMS\Core\Chunk\\'.ucfirst($type);
 
         $chunk = $this->find($type, $slotname, $page->getCurrentVersion());
         $attrs = $chunk ? $chunk->toArray() : [];
@@ -127,7 +126,7 @@ class Provider
     {
         foreach ($chunks as $type => $slotnames) {
             $model = ucfirst($type);
-            $class = "\BoomCMS\Core\Chunk\\" . $model;
+            $class = "\BoomCMS\Core\Chunk\\".$model;
 
             $models = $this->find($type, $slotnames, $page->getCurrentVersion());
             $found = [];

@@ -13,7 +13,7 @@ abstract class ShortURL
 {
     public static function urlFromPage(Page $page)
     {
-        return "_" . base_convert($page->getId(), 10, 36);
+        return '_'.base_convert($page->getId(), 10, 36);
     }
 
     public static function pageFromUrl($url)

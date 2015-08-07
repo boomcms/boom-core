@@ -57,7 +57,6 @@ class ChildOrderingPolicy
 
     /**
      * Returns the name of a method which can be called on a Page object corresponding to the order column.
-     *
      */
     public function getAccessor()
     {

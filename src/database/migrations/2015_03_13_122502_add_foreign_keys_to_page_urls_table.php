@@ -6,10 +6,10 @@ use Illuminate\Database\Schema\Blueprint;
 class AddForeignKeysToPageUrlsTable extends Migration
 {
     /**
-	 * Run the migrations.
-	 *
-	 * @return void
-	 */
+     * Run the migrations.
+     *
+     * @return void
+     */
     public function up()
     {
         Schema::table('page_urls', function (Blueprint $table) {
@@ -18,15 +18,14 @@ class AddForeignKeysToPageUrlsTable extends Migration
     }
 
     /**
-	 * Reverse the migrations.
-	 *
-	 * @return void
-	 */
+     * Reverse the migrations.
+     *
+     * @return void
+     */
     public function down()
     {
         Schema::table('page_urls', function (Blueprint $table) {
             $table->dropForeign('page_urls_ibfk_1');
         });
     }
-
 }

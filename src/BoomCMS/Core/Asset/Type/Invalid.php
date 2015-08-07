@@ -19,7 +19,7 @@ class Invalid extends Asset
 
     public function getType()
     {
-        return NULL;
+        return null;
     }
 
     public function loaded()

@@ -6,10 +6,10 @@ use Illuminate\Database\Schema\Blueprint;
 class AddForeignKeysToPeopleRolesTable extends Migration
 {
     /**
-	 * Run the migrations.
-	 *
-	 * @return void
-	 */
+     * Run the migrations.
+     *
+     * @return void
+     */
     public function up()
     {
         Schema::table('people_roles', function (Blueprint $table) {
@@ -19,10 +19,10 @@ class AddForeignKeysToPeopleRolesTable extends Migration
     }
 
     /**
-	 * Reverse the migrations.
-	 *
-	 * @return void
-	 */
+     * Reverse the migrations.
+     *
+     * @return void
+     */
     public function down()
     {
         Schema::table('people_roles', function (Blueprint $table) {
@@ -30,5 +30,4 @@ class AddForeignKeysToPeopleRolesTable extends Migration
             $table->dropForeign('people_roles_ibfk_1');
         });
     }
-
 }

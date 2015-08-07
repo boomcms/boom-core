@@ -9,8 +9,8 @@ use Illuminate\Support\Facades\View;
 class Feature extends BaseChunk
 {
     /**
-	* @var Page\Page
-	*/
+     * @var Page\Page
+     */
     protected $targetPage;
 
     protected $type = 'feature';
@@ -25,8 +25,8 @@ class Feature extends BaseChunk
     }
 
     /**
-	* Show a chunk where the target is set.
-	*/
+     * Show a chunk where the target is set.
+     */
     public function show()
     {
         $page = $this->getTargetPage();
@@ -42,7 +42,7 @@ class Feature extends BaseChunk
     public function showDefault()
     {
         return View::make($this->viewPrefix."default.feature.$this->template", [
-            'placeholder' => $this->getPlaceholderText()
+            'placeholder' => $this->getPlaceholderText(),
         ]);
     }
 
@@ -64,9 +64,8 @@ class Feature extends BaseChunk
     }
 
     /**
-	 *
-	 * @return Page\Page
-	 */
+     * @return Page\Page
+     */
     public function getTargetPage()
     {
         return $this->targetPage;

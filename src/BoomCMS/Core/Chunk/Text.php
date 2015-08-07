@@ -24,9 +24,9 @@ class Text extends BaseChunk
     {
         switch ($slotname) {
             case 'standfirst':
-                return "<p class=\"standfirst\">{text}</p>";
+                return '<p class="standfirst">{text}</p>';
             case 'bodycopy':
-                return "<div class=\"content\">{text}</div>";
+                return '<div class="content">{text}</div>';
             default:
                 return $this->allowFormatting ? '<div>{text}</div>' : '<p>{text}</p>';
         }
@@ -61,7 +61,7 @@ class Text extends BaseChunk
     }
 
     /**
-     * Returns the chunk's text without any filters applied
+     * Returns the chunk's text without any filters applied.
      *
      * @return string
      */
@@ -89,7 +89,8 @@ class Text extends BaseChunk
      *
      * This is useful as a way of setting some text which describes to editors what the text chunk is intended to be used for.
      *
-     * @param  string           $text
+     * @param string $text
+     *
      * @return \Boom\Chunk\Text
      */
     public function setPlaceholder($text)
@@ -109,8 +110,8 @@ class Text extends BaseChunk
     private function showText($text)
     {
         if ($this->template) {
-            return View::make($this->viewPrefix . 'text.' . $this->template, [
-                'text' => $text
+            return View::make($this->viewPrefix.'text.'.$this->template, [
+                'text' => $text,
             ])->render();
         } else {
             $html = $this->html ?: $this->getHtmlContainerForSlotname($this->slotname);

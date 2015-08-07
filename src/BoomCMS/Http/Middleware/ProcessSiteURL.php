@@ -2,32 +2,28 @@
 
 namespace BoomCMS\Http\Middleware;
 
-use Closure;
 use BoomCMS\Core\Page\Provider;
 use BoomCMS\Core\URL\Provider as URLProvider;
-
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\HttpKernel\Exception\GoneHttpException;
+use Closure;
+use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
-use Illuminate\Foundation\Application;
+use Symfony\Component\HttpKernel\Exception\GoneHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ProcessSiteURL
 {
     /**
-     *
      * @var Provider
      */
     protected $pageProvider;
 
     /**
-	 *
-	 * @var URLProvider
-	 */
+     * @var URLProvider
+     */
     protected $urlProvider;
 
     /**
-     *
      * @var Application
      */
     protected $app;
@@ -44,8 +40,9 @@ class ProcessSiteURL
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  \Closure                 $next
+     * @param \Illuminate\Http\Request $request
+     * @param \Closure                 $next
+     *
      * @return mixed
      */
     public function handle(Request $request, Closure $next)
@@ -53,14 +50,14 @@ class ProcessSiteURL
         $uri = $request->route()->getParameter('location');
         $page = $this->pageProvider->findByUri($uri);
 
-        if ( !$page->loaded()) {
+        if (!$page->loaded()) {
             $url = $this->urlProvider->findByLocation($uri);
 
             // The URL isn't in use or
             // The URL is in use and has a page - the page must not be visible to the current user
             //
             // 404.
-            if ( !$url->loaded() || ($url->loaded() && $url->getPage()->loaded())) {
+            if (!$url->loaded() || ($url->loaded() && $url->getPage()->loaded())) {
                 throw new NotFoundHttpException();
             }
 
@@ -71,11 +68,11 @@ class ProcessSiteURL
             throw new GoneHttpException();
         }
 
-        if ($this->app['boomcms.editor']->isDisabled() && ! $page->isVisible()) {
+        if ($this->app['boomcms.editor']->isDisabled() && !$page->isVisible()) {
             throw new NotFoundHttpException();
         }
 
-        if ( !$page->url()->is($uri)) {
+        if (!$page->url()->is($uri)) {
             return redirect((string) $page->url(), 301);
         }
 

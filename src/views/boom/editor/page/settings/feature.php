@@ -4,7 +4,7 @@
 	<section>
 		<p id="b-page-feature-none">This page has no feature image.</p>
 
-		<?php if ( ! $featureImageId): ?>
+		<?php if (!$featureImageId): ?>
 			<img id='b-page-feature-current' src='' />
 		<?php else: ?>
 			<img id='b-page-feature-current' data-asset-id="<?= $featureImageId ?>" src='<?= $assetURL(['asset' => $featureImageId, 'width' => 500]) ?>' />

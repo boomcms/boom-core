@@ -5,7 +5,6 @@ namespace BoomCMS\Http\Controllers\CMS\Auth;
 use BoomCMS\Core\Auth\Auth;
 use BoomCMS\Core\Person\Provider;
 use BoomCMS\Http\Controllers\Controller;
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
 
@@ -23,8 +22,8 @@ class Account extends Controller
     {
         return View::make('boom::account.account', [
             'person' => $this->person,
-            'auth' => $this->auth,
-            'logs' => [],
+            'auth'   => $this->auth,
+            'logs'   => [],
         ]);
     }
 
@@ -53,10 +52,10 @@ class Account extends Controller
         $this->provider->save($this->person);
 
         return View::make('boom::account.account', [
-            'person' => $this->person,
-            'auth' => $this->auth,
-            'logs' => [],
-            'message' => $message
+            'person'  => $this->person,
+            'auth'    => $this->auth,
+            'logs'    => [],
+            'message' => $message,
         ]);
     }
 }

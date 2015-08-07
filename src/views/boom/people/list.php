@@ -22,7 +22,7 @@
 					</td>
 					<td>
 						<span class='tags'>
-							<?php foreach($person->getGroups() as $group): ?>
+							<?php foreach ($person->getGroups() as $group): ?>
 								<a rel=​'ajax' name='<?= $group->getId() ?>' href='/cms/people?group=<?= $group->getId() ?>'><?= $group->getName() ?> &raquo;</a>
 							<?php endforeach ?>​
 						</span>
