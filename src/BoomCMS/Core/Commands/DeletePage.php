@@ -3,8 +3,10 @@
 namespace BoomCMS\Core\Commands;
 
 use BoomCMS\Core\Page;
+use BoomCMS\Events\PageWasDeleted;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Bus\SelfHandling;
+use Illuminate\Support\Facades\Event;
 
 class DeletePage extends Command implements SelfHandling
 {
@@ -27,5 +29,7 @@ class DeletePage extends Command implements SelfHandling
     public function handle()
     {
         $this->provider->delete($this->page);
+
+        Event::fire(new PageWasDeleted($this->page));
     }
 }

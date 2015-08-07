@@ -5,9 +5,11 @@ namespace BoomCMS\Http\Controllers\CMS;
 use BoomCMS\Core\Auth\Auth;
 use BoomCMS\Core\Chunk\Provider;
 use BoomCMS\Core\Page\Page;
+use BoomCMS\Events\ChunkWasCreated;
 use BoomCMS\Http\Controllers\Controller;
 use BoomCMS\Support\Facades\Chunk as ChunkFacade;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\View;
 
 class Chunk extends Controller
@@ -64,6 +66,8 @@ class Chunk extends Controller
         });
 
         View::share('page', $this->page);
+        
+        Event::fire(new ChunkWasCreated($this->page, $chunk));
 
         return [
             'status' => $this->page->getCurrentVersion()->getStatus(),
