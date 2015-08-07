@@ -34,7 +34,7 @@ class TemplateServiceProvider extends ServiceProvider
         foreach ($this->themes as $theme) {
             $views = $theme->getViewDirectory();
             $public = $theme->getPublicDirectory();
-            $routes = $theme->getDirectory().DIRECTORY_SEPARATOR.'routes.php';
+            $init = $theme->getDirectory().DIRECTORY_SEPARATOR.'init.php';
             $migrations = $theme->getDirectory().'/migrations/';
 
             $this->loadViewsFrom($views, $theme->getName());
@@ -51,9 +51,9 @@ class TemplateServiceProvider extends ServiceProvider
                     $migrations => base_path('/migrations/boomcms'),
                 ], $theme->getName());
             }
-
-            if (file_exists($routes)) {
-                include $routes;
+            
+            if (file_exists($init)) {
+                include $init;
             }
 
             $config = Config::get("boomcms.themes.$theme");
