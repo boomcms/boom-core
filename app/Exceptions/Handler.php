@@ -1,7 +1,9 @@
 <?php
 
-namespace App\Exceptions;
+namespace app\Exceptions;
 
 use BoomCMS\Foundation\Exceptions\Handler as ExceptionHandler;
 
-class Handler extends ExceptionHandler {}
+class Handler extends ExceptionHandler
+{
+}
