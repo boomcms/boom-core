@@ -125,7 +125,7 @@ class Save extends Settings
         $this->provider->save($this->page);
 
         if (!$wasVisible && $this->page->isVisible()) {
-            Event::fire(new PageWasMadeVisible($this->page, $this->person));
+            Event::fire(new PageWasMadeVisible($this->page, $this->auth->getPerson()));
         }
 
         return (int) $this->page->isVisible();
