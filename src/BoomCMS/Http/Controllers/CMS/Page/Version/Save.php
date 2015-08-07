@@ -21,6 +21,10 @@ class Save extends Version
 
         $this->page->setEmbargoTime($embargoed_until);
 
+        if ($this->page->getCurrentVersion()->isPublished()) {
+            Event::fire(new Events\PageWasPublished($this->page, $this->auth->getPerson()));
+        }
+
         return $this->page->getCurrentVersion()->getStatus();
     }
 
@@ -30,7 +34,7 @@ class Save extends Version
 
         $this->page->makeUpdatesAsPendingApproval();
 
-        Event::fire(new Events\PageApprovalRequested($this->page, $this->person));
+        Event::fire(new Events\PageApprovalRequested($this->page, $this->auth->getPerson()));
 
         return $this->page->getCurrentVersion()->getStatus();
     }
