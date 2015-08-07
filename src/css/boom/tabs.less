@@ -7,6 +7,27 @@
 			display: inline-block;
 			list-style: none;
 			float: left;
+			background: @lightest-grey;
+			border: 1px solid @light-grey;
+			border-bottom: 0;
+			
+			&:hover, &:focus {
+				background: @light-grey;
+			}
+			
+			&.ui-state-default {
+				a {
+					color: @darkest-grey;
+				}
+			}
+			
+			&.ui-state-active {
+				background: @light-grey;
+
+				a {
+					color: @white;
+				}
+			}
 
 			a {
 				.text-default;
