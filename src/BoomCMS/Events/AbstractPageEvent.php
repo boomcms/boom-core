@@ -7,7 +7,7 @@ use BoomCMS\Core\Page\Page;
 abstract class AbstractPageEvent
 {
     /**
-     * @var Page 
+     * @var Page
      */
     protected $page;
 
@@ -15,7 +15,7 @@ abstract class AbstractPageEvent
     {
         $this->page = $page;
     }
-    
+
     /**
      * @return Page
      */
