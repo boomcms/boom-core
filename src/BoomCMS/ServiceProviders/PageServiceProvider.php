@@ -7,7 +7,6 @@ use Illuminate\Support\ServiceProvider;
 
 class PageServiceProvider extends ServiceProvider
 {
-
     /**
      * Bootstrap any application services.
      *
@@ -15,11 +14,9 @@ class PageServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-
     }
 
     /**
-     *
      * @return void
      */
     public function register()

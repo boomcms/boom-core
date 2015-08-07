@@ -13,7 +13,7 @@
         Group
 
         <select name="groups[]" multiple>
-            <?php foreach($groups as $group): ?>
+            <?php foreach ($groups as $group): ?>
                 <option value="<?= $group->getId() ?>"><?= $group->getName() ?></option>
             <?php endforeach ?>
         </select>

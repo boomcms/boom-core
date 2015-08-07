@@ -9,15 +9,13 @@ use Illuminate\Contracts\Bus\SelfHandling;
 class DeletePage extends Command implements SelfHandling
 {
     /**
-	 *
-	 * @var Page\Page
-	 */
+     * @var Page\Page
+     */
     protected $page;
 
     /**
-	 *
-	 * @var Page\Provider
-	 */
+     * @var Page\Provider
+     */
     protected $provider;
 
     public function __construct(Page\Provider $provider, Page\Page $page)

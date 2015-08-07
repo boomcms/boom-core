@@ -1,17 +1,16 @@
 <?php
 
-use BoomCMS\Database\Models\Asset;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
 
 class CreateAssetVersionsTable extends Migration
 {
     /**
-	 * Run the migrations.
-	 *
-	 * @return void
-	 */
+     * Run the migrations.
+     *
+     * @return void
+     */
     public function up()
     {
         Schema::create('asset_versions', function (Blueprint $table) {
@@ -41,7 +40,7 @@ class CreateAssetVersionsTable extends Migration
 
         DB::statement('insert into asset_versions (id, asset_id, width, height, filename, type, filesize, edited_at, edited_by) select id, id, width, height, filename, type, filesize, uploaded_time, uploaded_by from assets');
 
-        Schema::table('assets', function($table) {
+        Schema::table('assets', function ($table) {
             $table->dropColumn('width');
             $table->dropColumn('height');
             $table->dropColumn('filename');
@@ -53,10 +52,10 @@ class CreateAssetVersionsTable extends Migration
     }
 
     /**
-	 * Reverse the migrations.
-	 *
-	 * @return void
-	 */
+     * Reverse the migrations.
+     *
+     * @return void
+     */
     public function down()
     {
         Schema::drop('asset_versions');

@@ -6,10 +6,10 @@ use Illuminate\Database\Schema\Blueprint;
 class CreatePasswordTokensTable extends Migration
 {
     /**
-	 * Run the migrations.
-	 *
-	 * @return void
-	 */
+     * Run the migrations.
+     *
+     * @return void
+     */
     public function up()
     {
         Schema::create('password_tokens', function (Blueprint $table) {
@@ -22,13 +22,12 @@ class CreatePasswordTokensTable extends Migration
     }
 
     /**
-	 * Reverse the migrations.
-	 *
-	 * @return void
-	 */
+     * Reverse the migrations.
+     *
+     * @return void
+     */
     public function down()
     {
         Schema::drop('password_tokens');
     }
-
 }

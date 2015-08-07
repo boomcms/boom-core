@@ -2,15 +2,13 @@
 
 namespace BoomCMS\Http\Controllers;
 
+use View as View;
 use BoomCMS\Core\Auth\Auth;
-use BoomCMS\Core\Page\Page;
 use BoomCMS\Core\Editor\Editor;
-
-use Illuminate\Routing\Controller as BaseController;
+use BoomCMS\Core\Page\Page;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Session\SessionManager as Session;
-
-use \View as View;
 
 class Controller extends BaseController
 {
@@ -27,13 +25,12 @@ class Controller extends BaseController
     public $auth;
 
     /**
-     *
      * @var Boom
      */
     public $boom;
 
     /**
-     * @var	Editor
+     * @var Editor
      */
     public $editor;
 
@@ -43,7 +40,6 @@ class Controller extends BaseController
     public $session;
 
     /**
-     *
      * @var View
      */
     public $template;
@@ -58,20 +54,21 @@ class Controller extends BaseController
     }
 
     /**
-	 * Checks whether the current user is authorized to perform a particular action.
+     * Checks whether the current user is authorized to perform a particular action.
      *
-	 * @uses	Auth::isLoggedIn()
-	 * @param string $role
-	 * @param Model_Page $page
-	 */
+     * @uses	Auth::isLoggedIn()
+     *
+     * @param string     $role
+     * @param Model_Page $page
+     */
     public function authorization($role, Page $page = null)
     {
-        if ( ! $this->auth->isLoggedIn()) {
+        if (!$this->auth->isLoggedIn()) {
             abort(401);
         }
 
-        if ( ! $this->auth->loggedIn($role, $page)) {
-           abort(403);
+        if (!$this->auth->loggedIn($role, $page)) {
+            abort(403);
         }
     }
 }

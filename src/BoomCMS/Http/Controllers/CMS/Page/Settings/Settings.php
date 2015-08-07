@@ -8,17 +8,17 @@ use BoomCMS\Http\Controllers\CMS\Page\PageController;
 abstract class Settings extends PageController
 {
     /**
-	 * Directory where views used by this class are stored.
-	 *
-	 * @var	string
-	 */
+     * Directory where views used by this class are stored.
+     *
+     * @var string
+     */
     protected $viewPrefix = 'boom::editor.page.settings';
 
     /**
-	 * Whether the current user has access to the advanced settings of the permissions group that they're editing.
-	 *
-	 * @var boolean
-	 */
+     * Whether the current user has access to the advanced settings of the permissions group that they're editing.
+     *
+     * @var bool
+     */
     public $allowAdvanced;
 
     public function admin()
@@ -56,7 +56,7 @@ abstract class Settings extends PageController
 
     public function authorization($role, Page\Page $page = null)
     {
-        if ( ! $this->auth->loggedIn('manage_pages')) {
+        if (!$this->auth->loggedIn('manage_pages')) {
             parent::authorization($role, $this->page);
         }
     }

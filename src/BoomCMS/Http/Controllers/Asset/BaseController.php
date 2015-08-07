@@ -2,17 +2,15 @@
 
 namespace BoomCMS\Http\Controllers\Asset;
 
-use BoomCMS\Core\Auth;
 use BoomCMS\Core\Asset;
+use BoomCMS\Core\Auth;
 use BoomCMS\Http\Controllers\Controller;
-
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\View;
 
 abstract class BaseController extends Controller
 {
     /**
-     *
      * @var Asset\Asset
      */
     protected $asset;
@@ -37,9 +35,9 @@ abstract class BaseController extends Controller
         $viewPrefix = 'boom::assets.embed.';
         $assetType = strtolower(class_basename($this));
 
-        $viewName = View::exists($viewPrefix . $assetType) ?
-            $viewPrefix . $assetType :
-            $viewPrefix . 'default';
+        $viewName = View::exists($viewPrefix.$assetType) ?
+            $viewPrefix.$assetType :
+            $viewPrefix.'default';
 
         return View::make($viewName, [
             'asset' => $this->asset,
@@ -48,9 +46,9 @@ abstract class BaseController extends Controller
 
     public function view($width = null, $height = null)
     {
-       return $this->response
+        return $this->response
             ->header('content-type', $this->asset->getMimetype())
-            ->header('content-disposition', 'inline; filename="' . $this->asset->getOriginalFilename() . '"')
+            ->header('content-disposition', 'inline; filename="'.$this->asset->getOriginalFilename().'"')
             ->header('content-transfer-encoding', 'binary')
             ->header('Content-Length', $this->asset->getFilesize())
             ->header('Accept-Ranges', 'bytes')

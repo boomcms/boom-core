@@ -2,32 +2,32 @@
 
 namespace BoomCMS\Http\Controllers\CMS;
 
-use BoomCMS\Http\Controllers\Controller;
 use BoomCMS\Database\Models\Page;
+use BoomCMS\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class Autocomplete extends Controller
 {
     /**
-	 * The number of results to be returned. Default is 10.
-	 *
-	 * @var	integer
-	 */
+     * The number of results to be returned. Default is 10.
+     *
+     * @var int
+     */
     public $count;
 
     /**
-	 * Array of matches to be output.
-	 *
-	 * @var	array
-	 */
+     * Array of matches to be output.
+     *
+     * @var array
+     */
     public $results = [];
 
     /**
-	 * The text to search for.
-	 *
-	 * @var	string
-	 */
+     * The text to search for.
+     *
+     * @var string
+     */
     public $text;
 
     public function __construct(Request $request)
@@ -71,11 +71,11 @@ class Autocomplete extends Controller
         $pages = Page::autocompleteTitle($this->request->input('text'), $this->count)->get();
 
         foreach ($pages as $p) {
-            $primaryUri = substr($p->primary_uri, 0, 1) === '/' ? $p->primary_uri : '/' . $p->primary_uri;
+            $primaryUri = substr($p->primary_uri, 0, 1) === '/' ? $p->primary_uri : '/'.$p->primary_uri;
 
             $results[] = [
-                'label' => $p->title . ' (' . $primaryUri . ')',
-                'value' => $primaryUri
+                'label' => $p->title.' ('.$primaryUri.')',
+                'value' => $primaryUri,
             ];
         }
 

@@ -46,7 +46,6 @@ class Provider
     }
 
     /**
-     *
      * @return Person
      */
     public function findBy($key, $value)
@@ -95,7 +94,6 @@ class Provider
     }
 
     /**
-     *
      * @return \Boom\Person\Guest
      */
     public function getEmptyUser()

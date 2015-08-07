@@ -4,9 +4,7 @@ namespace BoomCMS\Http\Controllers\CMS\People;
 
 use BoomCMS\Core\Auth;
 use BoomCMS\Core\Person;
-
 use BoomCMS\Http\Controllers\Controller;
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
 
@@ -28,8 +26,8 @@ class PeopleManager extends Controller
         $groupId = $this->request->input('group');
         $people = $groupId ? $this->provider->findByGroupId($groupId) : $this->provider->findAll();
 
-        return View::make($this->viewPrefix . 'list', [
-            'people' => $people
+        return View::make($this->viewPrefix.'list', [
+            'people' => $people,
         ]);
     }
 }

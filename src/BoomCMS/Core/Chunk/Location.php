@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\View;
 
 class Location extends BaseChunk
 {
-     protected $type = 'location';
+    protected $type = 'location';
 
     public function hasContent()
     {
@@ -39,15 +39,15 @@ class Location extends BaseChunk
     }
 
     /**
-	* Show a chunk where the target is set.
-	*/
+     * Show a chunk where the target is set.
+     */
     public function show()
     {
         return View::make($this->viewPrefix."location.$this->template", [
-            'lat' => $this->getLat(),
-            'lng' => $this->getLng(),
-            'address' => $this->getAddress(),
-            'title' => $this->getTitle(),
+            'lat'      => $this->getLat(),
+            'lng'      => $this->getLng(),
+            'address'  => $this->getAddress(),
+            'title'    => $this->getTitle(),
             'postcode' => $this->getPostcode(),
         ]);
     }
@@ -55,7 +55,7 @@ class Location extends BaseChunk
     public function showDefault()
     {
         return View::make($this->viewPrefix."default.location.$this->template", [
-            'placeholder' => $this->getPlaceholderText()
+            'placeholder' => $this->getPlaceholderText(),
         ]);
     }
 }

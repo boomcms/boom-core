@@ -29,10 +29,10 @@ class View extends Settings
         // Create the main view with the basic settings
         $v = ViewFacade::make("$this->viewPrefix/children", [
             'default_child_template' => $this->page->getDefaultChildTemplateId(),
-            'templates' => $templates,
-            'child_order_column' => $childOrderingPolicy->getColumn(),
-            'child_order_direction' => $childOrderingPolicy->getDirection(),
-            'allowAdvanced' => $this->allowAdvanced,
+            'templates'              => $templates,
+            'child_order_column'     => $childOrderingPolicy->getColumn(),
+            'child_order_direction'  => $childOrderingPolicy->getDirection(),
+            'allowAdvanced'          => $this->allowAdvanced,
         ]);
 
         // If we're showing the advanced settings then set the neccessary variables.
@@ -59,7 +59,7 @@ class View extends Settings
         parent::navigation();
 
         return ViewFacade::make("$this->viewPrefix/navigation", [
-            'page' => $this->page,
+            'page'          => $this->page,
             'allowAdvanced' => $this->allowAdvanced,
         ]);
     }
@@ -70,7 +70,7 @@ class View extends Settings
 
         return ViewFacade::make("$this->viewPrefix/search", [
             'allowAdvanced' => $this->allowAdvanced,
-            'page' => $this->page,
+            'page'          => $this->page,
         ]);
     }
 
@@ -86,7 +86,7 @@ class View extends Settings
             ->findAll();
 
         return ViewFacade::make("$this->viewPrefix/sort_children", [
-            'children' => $children
+            'children' => $children,
         ]);
     }
 

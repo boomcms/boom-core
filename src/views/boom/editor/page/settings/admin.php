@@ -12,7 +12,7 @@
 
             <select name="disable_delete">
                 <option value="0"<?php if ($page->canBeDeleted()): ?> selected<?php endif ?>>No</option>
-                <option value="1"<?php if ( !$page->canBeDeleted()): ?> selected<?php endif ?>>Yes</option>
+                <option value="1"<?php if (!$page->canBeDeleted()): ?> selected<?php endif ?>>Yes</option>
             </select>
         </label>
     <?php endif ?>

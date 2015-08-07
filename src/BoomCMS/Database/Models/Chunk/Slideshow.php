@@ -33,9 +33,8 @@ class Slideshow extends BaseChunk
     }
 
     /**
-	 * Persists slide data to the database.
-	 *
-	 */
+     * Persists slide data to the database.
+     */
     public function setSlidesAttribute($slides)
     {
         foreach ($slides as &$slide) {

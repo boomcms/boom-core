@@ -42,7 +42,7 @@ class TextEditorToolbar extends AbstractUIElement
 
     public function render()
     {
-        return $this->getHtmlBefore() . $this->_showButtons() . $this->_htmlAfter;
+        return $this->getHtmlBefore().$this->_showButtons().$this->_htmlAfter;
     }
 
     protected function _showButtons()

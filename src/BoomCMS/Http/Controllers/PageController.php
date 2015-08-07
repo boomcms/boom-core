@@ -5,7 +5,6 @@ namespace BoomCMS\Http\Controllers;
 use BoomCMS\Core\Page;
 use BoomCMS\Support\Facades\Chunk;
 use BoomCMS\Support\Facades\Page as PageFacade;
-
 use Illuminate\Support\Facades\View;
 
 class PageController extends Controller
@@ -19,7 +18,7 @@ class PageController extends Controller
             $format = $this->request->route()->getParameter('format');
         }
 
-        $method = 'as' . ucfirst($format);
+        $method = 'as'.ucfirst($format);
 
         if (method_exists($this, $method)) {
             return $this->$method($page);
@@ -60,10 +59,10 @@ class PageController extends Controller
 
         foreach ($pages as $page) {
             $return[] = [
-                'id' => $page->getId(),
-                'title' => $page->getTitle(),
-                'url' => (string) $page->url(),
-                'visible' => (int) $page->isVisible(),
+                'id'           => $page->getId(),
+                'title'        => $page->getTitle(),
+                'url'          => (string) $page->url(),
+                'visible'      => (int) $page->isVisible(),
                 'has_children' => (int) $page->hasChildren(),
             ];
         }

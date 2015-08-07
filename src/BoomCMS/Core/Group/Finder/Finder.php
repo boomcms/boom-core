@@ -2,8 +2,8 @@
 
 namespace BoomCMS\Core\Group\Finder;
 
-use BoomCMS\Core\Group\Group;
 use BoomCMS\Core\Finder\Finder as BaseFinder;
+use BoomCMS\Core\Group\Group;
 use BoomCMS\Database\Models\Group as Model;
 
 class Finder extends BaseFinder

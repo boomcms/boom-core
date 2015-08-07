@@ -44,6 +44,5 @@ class Provider
 
     public function findByName($name)
     {
-
     }
 }

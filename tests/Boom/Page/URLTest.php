@@ -1,7 +1,7 @@
 <?php
 
-use BoomCMS\Core\URL\URL;
 use BoomCMS\Core\Page\Page;
+use BoomCMS\Core\URL\URL;
 use BoomCMS\Support\Facades\Page as PageFacade;
 
 class Page_URLTest extends TestCase

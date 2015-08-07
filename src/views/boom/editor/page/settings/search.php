@@ -24,7 +24,7 @@
                     <p><?= Lang::get('boom::settings.search.external') ?></p>
                     <select name="external_indexing" id="external_indexing">
                         <option value="1"<?php if ($page->allowsExternalIndexing()): ?> selected="selected"<?php endif ?>>Yes</option>
-                        <option value="0"<?php if ( ! $page->allowsExternalIndexing()): ?> selected="selected"<?php endif ?>>No</option>
+                        <option value="0"<?php if (!$page->allowsExternalIndexing()): ?> selected="selected"<?php endif ?>>No</option>
                     </select>
                 </label>
 
@@ -33,7 +33,7 @@
 
                     <select name="internal_indexing" id="internal_indexing">
                         <option value="1"<?php if ($page->allowsInternalIndexing()): ?> selected="selected"<?php endif ?>>Yes</option>
-                        <option value="0"<?php if ( ! $page->allowsInternalIndexing()): ?> selected="selected"<?php endif ?>>No</option>
+                        <option value="0"<?php if (!$page->allowsInternalIndexing()): ?> selected="selected"<?php endif ?>>No</option>
                     </select>
                 </label>
 			</section>

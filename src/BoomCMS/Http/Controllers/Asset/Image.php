@@ -2,15 +2,13 @@
 
 namespace BoomCMS\Http\Controllers\Asset;
 
-use BoomCMS\Core\Auth;
 use BoomCMS\Core\Asset\Asset;
-
+use BoomCMS\Core\Auth;
 use Intervention\Image\ImageManager;
 
 class Image extends BaseController
 {
     /**
-     *
      * @var ImageManager
      */
     private $manager;
@@ -44,7 +42,7 @@ class Image extends BaseController
 
     public function view($width = null, $height = null)
     {
-        $filename = $this->asset->exists() ? $this->asset->getFilename() : __DIR__ . '/../../../../vendor/boomcms/boom-core/img/placeholder.png';
+        $filename = $this->asset->exists() ? $this->asset->getFilename() : __DIR__.'/../../../../vendor/boomcms/boom-core/img/placeholder.png';
 
         if ($width || $height) {
             $image = $this->manager->cache(function ($manager) use ($width, $height, $filename) {

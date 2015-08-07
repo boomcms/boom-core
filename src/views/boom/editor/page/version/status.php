@@ -22,16 +22,16 @@
         
     <p>
         <?= Lang::get('boom::settings.draft-status.latest', [
-            'name' => $version->getEditedBy()->getName(),
+            'name'  => $version->getEditedBy()->getName(),
             'email' => $version->getEditedBy()->getEmail(),
-            'date' => $version->getEditedTime()->format('l d F Y H:i'),
+            'date'  => $version->getEditedTime()->format('l d F Y H:i'),
         ]) ?>
     </p>
     
-    <?php if ( !$version->isPublished()): ?>
+    <?php if (!$version->isPublished()): ?>
         <p>
             <?= Lang::get('boom::settings.draft-status.last-published', [
-                'date' => $page->getLastPublishedTime()->format('l d F Y H:i')
+                'date' => $page->getLastPublishedTime()->format('l d F Y H:i'),
             ]) ?>
         </p>
         

@@ -2,28 +2,27 @@
 
 namespace BoomCMS\Support\Helpers;
 
-use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Request;
 
 /**
- * Helper functions for page URLs
- *
+ * Helper functions for page URLs.
  */
 abstract class URL
 {
     /**
-	 * Generate a unique URL from a page title
-	 *
-	 * @param string $base
-	 * @param string $title
-	 */
+     * Generate a unique URL from a page title.
+     *
+     * @param string $base
+     * @param string $title
+     */
     public static function fromTitle($base, $title)
     {
         $url = static::sanitise($title);
 
         // If the base URL isn't empty and there's no trailing / then add one.
-        if ($base && substr($base, -1) != "/") {
-            $base = $base."/";
+        if ($base && substr($base, -1) != '/') {
+            $base = $base.'/';
         }
 
         $url = ($base == '/') ? $url : $base.$url;
@@ -32,7 +31,7 @@ abstract class URL
     }
 
     /**
-     * Determine whether a URL is already being used by a page in the CMS
+     * Determine whether a URL is already being used by a page in the CMS.
      *
      * @param string $url
      */
@@ -53,14 +52,14 @@ abstract class URL
 
     public static function makeRelative($url)
     {
-        return ($base = Request::getHttpHost()) ? str_replace(Request::getScheme() . $base, '/', $url) : $url;
+        return ($base = Request::getHttpHost()) ? str_replace(Request::getScheme().$base, '/', $url) : $url;
     }
 
     /**
-	 * Increments a numeric suffix until the URL is unique
-	 *
-	 * @param string $url
-	 */
+     * Increments a numeric suffix until the URL is unique.
+     *
+     * @param string $url
+     */
     public static function makeUnique($url)
     {
         $append = 0;
@@ -69,16 +68,16 @@ abstract class URL
         do {
             $url = ($append > 0) ? ($start_url.$append) : $start_url;
             $append++;
-        } while ( ! static::isAvailable($url));
+        } while (!static::isAvailable($url));
 
         return $url;
     }
 
     /**
-	 * Remove invalid characters from a URL
-	 *
-	 * @param string $url
-	 */
+     * Remove invalid characters from a URL.
+     *
+     * @param string $url
+     */
     public static function sanitise($url)
     {
         $url = trim($url);

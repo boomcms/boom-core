@@ -6,7 +6,9 @@ class Guest extends Person
 {
     protected $data = [];
 
-    public function __construct() {}
+    public function __construct()
+    {
+    }
 
     public function isValid()
     {
@@ -14,7 +16,6 @@ class Guest extends Person
     }
 
     /**
-     *
      * @return \Boom\Person\Guest
      */
     public function save()

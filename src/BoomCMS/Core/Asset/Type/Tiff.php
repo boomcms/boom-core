@@ -8,6 +8,6 @@ class Tiff extends Asset
 {
     public function getType()
     {
-        return "Tiff";
+        return 'Tiff';
     }
 }

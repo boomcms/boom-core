@@ -4,7 +4,6 @@ namespace BoomCMS\Http\Middleware;
 
 use BoomCMS\Core\Menu\Menu;
 use BoomCMS\UI;
-
 use Closure;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
@@ -22,8 +21,9 @@ class DefineCMSViewSharedVariables
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  \Closure                 $next
+     * @param \Illuminate\Http\Request $request
+     * @param \Closure                 $next
+     *
      * @return mixed
      */
     public function handle(Request $request, Closure $next)

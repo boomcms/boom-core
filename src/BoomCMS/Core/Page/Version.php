@@ -9,17 +9,15 @@ use DateTime;
 class Version
 {
     /**
-     *
      * @var array
      */
     private $attrs;
 
     /**
-     *
      * @var Template\Template;
      */
     private $template;
-    
+
     protected $editedBy;
 
     public function __construct(array $attrs)
@@ -36,20 +34,20 @@ class Version
     {
         return isset($this->attrs[$key]) ? $this->attrs[$key] : null;
     }
-    
+
     public function getEditedBy()
     {
         if ($this->editedBy === null) {
             $this->editedBy = Person::findById($this->get('edited_by'));
         }
-        
+
         return $this->editedBy;
     }
 
     public function getEditedTime()
     {
         return $this->attrs['edited_time'] ?
-            new DateTime('@' . $this->attrs['edited_time'])
+            new DateTime('@'.$this->attrs['edited_time'])
             : null;
     }
 
@@ -92,12 +90,12 @@ class Version
     {
         return $this->get('title');
     }
-    
+
     public function isDraft()
     {
         return $this->get('embargoed_until') === null;
     }
-    
+
     public function isEmbargoed()
     {
         return $this->get('embargoed_until') > time();

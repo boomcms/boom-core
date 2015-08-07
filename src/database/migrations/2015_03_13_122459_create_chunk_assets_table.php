@@ -6,10 +6,10 @@ use Illuminate\Database\Schema\Blueprint;
 class CreateChunkAssetsTable extends Migration
 {
     /**
-	 * Run the migrations.
-	 *
-	 * @return void
-	 */
+     * Run the migrations.
+     *
+     * @return void
+     */
     public function up()
     {
         Schema::create('chunk_assets', function (Blueprint $table) {
@@ -25,13 +25,12 @@ class CreateChunkAssetsTable extends Migration
     }
 
     /**
-	 * Reverse the migrations.
-	 *
-	 * @return void
-	 */
+     * Reverse the migrations.
+     *
+     * @return void
+     */
     public function down()
     {
         Schema::drop('chunk_assets');
     }
-
 }

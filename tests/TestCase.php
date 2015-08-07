@@ -9,17 +9,17 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase
      */
     public function createApplication()
     {
-        $app = require __DIR__ . '/../vendor/laravel/laravel/bootstrap/app.php';
+        $app = require __DIR__.'/../vendor/laravel/laravel/bootstrap/app.php';
         $app->make('Illuminate\Contracts\Console\Kernel')->bootstrap();
-		$app->register('BoomCMS\ServiceProviders\CoreServiceProvider');
+        $app->register('BoomCMS\ServiceProviders\CoreServiceProvider');
 
-        $app->bind('html', function($app) {
+        $app->bind('html', function ($app) {
             return new Illuminate\Html\HtmlBuilder($app['url']);
         });
 
-        $app->bind('boomcms.asset.provider', function($app) {});
-        $app->bind('boomcms.chunk', function($app) {});
-        $app->bind('boomcms.page.provider', function($app) {});
+        $app->bind('boomcms.asset.provider', function ($app) {});
+        $app->bind('boomcms.chunk', function ($app) {});
+        $app->bind('boomcms.page.provider', function ($app) {});
 
         return $app;
     }

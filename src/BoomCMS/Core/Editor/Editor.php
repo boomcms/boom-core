@@ -12,16 +12,14 @@ class Editor
     const DISABLED = 2;
     const PREVIEW = 3;
 
-    public static $default = Editor::EDIT;
+    public static $default = self::EDIT;
 
     /**
-     *
      * @var Auth
      */
     protected $auth;
 
     /**
-     *
      * @var Page
      */
     protected $activePage;
@@ -57,7 +55,7 @@ class Editor
      *
      * Determines whether the CMS toolbar should be injected into the response HTML.
      *
-     * @return boolean
+     * @return bool
      */
     public function isActive()
     {
@@ -68,18 +66,19 @@ class Editor
     {
         return $this->hasState(static::DISABLED);
     }
-    
+
     /**
      * Returns whether or not the logged in user can edit the content of a page.
      * 
      * A page can be edited if it was created by a user or they have edit permissions for the page.
      * 
      * @param Page $page
-     * @return boolean
+     *
+     * @return bool
      */
     public function isEditable(Page $page)
     {
-        return $page->wasCreatedBy($this->auth->getPerson()) || $this->auth->loggedIn("edit_page_content", $page);
+        return $page->wasCreatedBy($this->auth->getPerson()) || $this->auth->loggedIn('edit_page_content', $page);
     }
 
     public function isEnabled()

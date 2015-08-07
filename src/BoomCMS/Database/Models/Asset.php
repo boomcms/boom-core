@@ -22,7 +22,7 @@ class Asset extends Model
             ->addSelect('version.id as version:id')
             ->addSelect('assets.*')
             ->join('asset_versions as version', 'assets.id', '=', 'version.asset_id')
-            ->leftJoin('asset_versions as av2', function($query) {
+            ->leftJoin('asset_versions as av2', function ($query) {
                 $query
                     ->on('av2.asset_id', '=', 'version.asset_id')
                     ->on('av2.id', '>', 'version.id');

@@ -2,15 +2,13 @@
 
 namespace BoomCMS\Core\Page\Finder;
 
-use BoomCMS\Core\Template\Template as TemplateObject;
 use BoomCMS\Core\Finder\Filter;
-
+use BoomCMS\Core\Template\Template as TemplateObject;
 use Illuminate\Database\Eloquent\Builder;
 
 class Template extends Filter
 {
     /**
-     *
      * @var TemplateObject
      */
     protected $template;

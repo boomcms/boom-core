@@ -7,7 +7,6 @@ use Illuminate\Support\ServiceProvider;
 
 class URLServiceProvider extends ServiceProvider
 {
-
     /**
      * Bootstrap any application services.
      *
@@ -15,11 +14,9 @@ class URLServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-
     }
 
     /**
-     *
      * @return void
      */
     public function register()

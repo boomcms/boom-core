@@ -3,26 +3,23 @@
 namespace BoomCMS\Http\Controllers\CMS;
 
 use BoomCMS\Core\Auth\Auth;
-use BoomCMS\Core\Template;
 use BoomCMS\Core\Page;
+use BoomCMS\Core\Template;
 use BoomCMS\Http\Controllers\Controller;
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\View;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class Templates extends Controller
 {
     /**
-     *
      * @var Auth
      */
     public $auth;
 
     /**
-     *
      * @var Template\Provider
      */
     private $provider;
@@ -42,7 +39,7 @@ class Templates extends Controller
     {
         $manager = new Template\Manager(App::make('files'), $this->provider);
 
-        return View::make($this->viewPrefix . 'index', [
+        return View::make($this->viewPrefix.'index', [
             'templates' => $this->provider->findAll(),
         ]);
     }
@@ -54,7 +51,7 @@ class Templates extends Controller
     {
         $template = $this->provider->findById($id);
 
-        if ( ! $template->loaded()) {
+        if (!$template->loaded()) {
             throw new NotFoundHttpException();
         }
 
@@ -75,9 +72,9 @@ class Templates extends Controller
 
                 foreach ($pages as $p) {
                     $data = [
-                        'title' => $p->getTitle(),
-                        'url' => (string) $p->url(),
-                        'visible' => $p->isVisible() ? 'Yes' : 'No',
+                        'title'       => $p->getTitle(),
+                        'url'         => (string) $p->url(),
+                        'visible'     => $p->isVisible() ? 'Yes' : 'No',
                         'last_edited' => $p->getLastModified()->format('Y-m-d H:i:s'),
                     ];
 
@@ -89,7 +86,7 @@ class Templates extends Controller
 
             return Response::stream($callback, 200, $headers);
         } else {
-            return View::make($this->viewPrefix . '.pages', [
+            return View::make($this->viewPrefix.'.pages', [
                 'pages' => $pages,
             ]);
         }

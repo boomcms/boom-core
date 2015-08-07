@@ -6,10 +6,10 @@ use Illuminate\Database\Schema\Blueprint;
 class CreatePeopleRolesTable extends Migration
 {
     /**
-	 * Run the migrations.
-	 *
-	 * @return void
-	 */
+     * Run the migrations.
+     *
+     * @return void
+     */
     public function up()
     {
         Schema::create('people_roles', function (Blueprint $table) {
@@ -24,13 +24,12 @@ class CreatePeopleRolesTable extends Migration
     }
 
     /**
-	 * Reverse the migrations.
-	 *
-	 * @return void
-	 */
+     * Reverse the migrations.
+     *
+     * @return void
+     */
     public function down()
     {
         Schema::drop('people_roles');
     }
-
 }

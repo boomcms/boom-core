@@ -4,15 +4,13 @@ namespace BoomCMS\Core\Page\Finder;
 
 use BoomCMS\Core\Finder\Filter;
 use BoomCMS\Core\Tag\Tag as TagObject;
-
 use Illuminate\Database\Eloquent\Builder;
 
 class Tag extends Filter
 {
     /**
-	 *
-	 * @var TagObject
-	 */
+     * @var TagObject
+     */
     protected $tag;
 
     public function __construct(TagObject $tag)

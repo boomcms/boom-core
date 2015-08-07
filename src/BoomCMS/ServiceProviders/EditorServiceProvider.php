@@ -8,10 +8,10 @@ use Illuminate\Support\ServiceProvider;
 class EditorServiceProvider extends ServiceProvider
 {
     /**
-	 * Bootstrap any application services.
-	 *
-	 * @return void
-	 */
+     * Bootstrap any application services.
+     *
+     * @return void
+     */
     public function boot()
     {
         $this->app->singleton('boomcms.editor', function ($app) {
@@ -20,11 +20,9 @@ class EditorServiceProvider extends ServiceProvider
     }
 
     /**
-	 *
-	 * @return void
-	 */
+     * @return void
+     */
     public function register()
     {
     }
-
 }

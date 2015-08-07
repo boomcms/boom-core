@@ -8,13 +8,11 @@ use Thujohn\Rss\Rss;
 class RssFeed
 {
     /**
-     *
      * @var Page\Page
      */
     private $page;
 
     /**
-     *
      * @param Page $page
      */
     public function __construct(Page $page)
@@ -32,16 +30,16 @@ class RssFeed
         $authors = (array) $page->getTagsInGroup('Author');
 
         foreach ($authors as &$author) {
-            $author  = $author->getName();
+            $author = $author->getName();
         }
 
         $feed->item([
-            'guid' => $page->url(),
-            'title' => $page->getTitle(),
+            'guid'              => $page->url(),
+            'title'             => $page->getTitle(),
             'description|cdata' => $page->getDescription(),
-            'link' => $page->url(),
-            'pubDate' => $page->getVisibleFrom()->format('r'),
-            'author|cdata' => empty($authors) ? null : implode(',', $authors),
+            'link'              => $page->url(),
+            'pubDate'           => $page->getVisibleFrom()->format('r'),
+            'author|cdata'      => empty($authors) ? null : implode(',', $authors),
         ]);
     }
 
@@ -56,9 +54,9 @@ class RssFeed
         $feed
             ->feed('2.0', 'UTF-8')
             ->channel([
-                'title' => $this->page->getTitle(),
+                'title'       => $this->page->getTitle(),
                 'description' => $this->page->getDescription(),
-                'link' => $this->page->url()
+                'link'        => $this->page->url(),
             ]);
 
         foreach ($this->getFeedItems() as $page) {

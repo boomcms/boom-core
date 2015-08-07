@@ -4,16 +4,13 @@ namespace BoomCMS\Core\URL;
 
 use BoomCMS\Core\Page\Page;
 use BoomCMS\Support\Facades\Page as PageFacade;
-
-use Illuminate\Support\Facades\URL as URLHelper;
 use Illuminate\Contracts\Support\Arrayable;
-
+use Illuminate\Support\Facades\URL as URLHelper;
 use InvalidArgumentException;
 
 class URL implements Arrayable
 {
     /**
-     *
      * @var array
      */
     private $attrs;
@@ -56,7 +53,8 @@ class URL implements Arrayable
     /**
      * Determine whether this URL matches a given URL.
      *
-     * @param  string $location
+     * @param string $location
+     *
      * @return bool
      */
     public function is($location)
@@ -81,8 +79,8 @@ class URL implements Arrayable
 
     public function setIsPrimary($isPrimary)
     {
-        if ( !is_bool($isPrimary)) {
-            throw new InvalidArgumentException(__CLASS__ . '::' . __METHOD__ . ' must only be called with a boolean argument');
+        if (!is_bool($isPrimary)) {
+            throw new InvalidArgumentException(__CLASS__.'::'.__METHOD__.' must only be called with a boolean argument');
         }
 
         $this->attrs['is_primary'] = $isPrimary;
@@ -100,10 +98,10 @@ class URL implements Arrayable
     public function __toString()
     {
         $location = $this->getLocation();
-        $location = (substr($location, 0) === '/') ? $location : '/' . $location;
+        $location = (substr($location, 0) === '/') ? $location : '/'.$location;
 
         $url = URLHelper::to($location);
 
-        return ($location === '/') ? $url . '/' : $url;
+        return ($location === '/') ? $url.'/' : $url;
     }
 }

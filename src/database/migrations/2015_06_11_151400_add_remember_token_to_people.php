@@ -6,10 +6,10 @@ use Illuminate\Database\Schema\Blueprint;
 class AddRememberTokenToPeople extends Migration
 {
     /**
-	 * Run the migrations.
-	 *
-	 * @return void
-	 */
+     * Run the migrations.
+     *
+     * @return void
+     */
     public function up()
     {
         Schema::table('people', function (Blueprint $table) {
@@ -20,10 +20,10 @@ class AddRememberTokenToPeople extends Migration
     }
 
     /**
-	 * Reverse the migrations.
-	 *
-	 * @return void
-	 */
+     * Reverse the migrations.
+     *
+     * @return void
+     */
     public function down()
     {
         Schema::create('user_tokens', function (Blueprint $table) {
@@ -39,5 +39,4 @@ class AddRememberTokenToPeople extends Migration
             $table->dropRememberToken();
         });
     }
-
 }

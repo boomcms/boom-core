@@ -3,20 +3,17 @@
 namespace BoomCMS\Core\Person;
 
 use BoomCMS\Core\Group;
-
 use DateTime;
 use Hautelook\Phpass\PasswordHash;
-
-use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Auth\CanResetPassword;
+use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Facades\DB;
 
 class Person implements Arrayable, CanResetPassword
 {
-   /**
-    *
-    * @var array
-    */
+    /**
+     * @var array
+     */
     protected $data;
 
     public function __construct(array $data)
@@ -25,8 +22,8 @@ class Person implements Arrayable, CanResetPassword
     }
 
     /**
+     * @param Group\Group $group
      *
-     * @param  Group\Group $group
      * @return Person
      */
     public function addGroup(Group\Group $group)
@@ -35,7 +32,7 @@ class Person implements Arrayable, CanResetPassword
             DB::table('people_groups')
                 ->insert([
                     'person_id' => $this->getId(),
-                    'group_id' => $group->getId(),
+                    'group_id'  => $group->getId(),
                 ]);
 
             // Inherit any roles assigned to the group.
@@ -44,7 +41,7 @@ class Person implements Arrayable, CanResetPassword
                 ->where('group_id', '=', $group->getId());
 
             $bindings = $select->getBindings();
-            $insert = "INSERT INTO people_roles (person_id, group_id, role_id, allowed, page_id) " . $select->toSql();
+            $insert = 'INSERT INTO people_roles (person_id, group_id, role_id, allowed, page_id) '.$select->toSql();
 
             DB::statement($insert, $bindings);
         }
@@ -53,9 +50,9 @@ class Person implements Arrayable, CanResetPassword
     }
 
     /**
+     * @param string $password
      *
-     * @param  string  $password
-     * @return boolean
+     * @return bool
      */
     public function checkPassword($password)
     {
@@ -65,9 +62,9 @@ class Person implements Arrayable, CanResetPassword
     }
 
     /**
+     * @param type $persistCode
      *
-     * @param  type    $persistCode
-     * @return boolean
+     * @return bool
      */
     public function checkPersistCode($persistCode)
     {
@@ -167,8 +164,7 @@ class Person implements Arrayable, CanResetPassword
     }
 
     /**
-     *
-     * @return boolean
+     * @return bool
      */
     public function isValid()
     {
@@ -181,8 +177,8 @@ class Person implements Arrayable, CanResetPassword
     }
 
     /**
+     * @param Group $group
      *
-     * @param  Group  $group
      * @return Person
      */
     public function removeGroup(Group\Group $group)
@@ -203,10 +199,10 @@ class Person implements Arrayable, CanResetPassword
     }
 
     /**
-	 *
-	 * @param string $email
-	 * @return \Boom\Person
-	 */
+     * @param string $email
+     *
+     * @return \Boom\Person
+     */
     public function setEmail($email)
     {
         $this->data['email'] = $email;
@@ -222,10 +218,10 @@ class Person implements Arrayable, CanResetPassword
     }
 
     /**
-	 *
-	 * @param string $password
-	 * @return \Boom\Person
-	 */
+     * @param string $password
+     *
+     * @return \Boom\Person
+     */
     public function setEncryptedPassword($password)
     {
         $this->data['password'] = $password;
@@ -255,10 +251,10 @@ class Person implements Arrayable, CanResetPassword
     }
 
     /**
-	 *
-	 * @param string $name
-	 * @return \Boom\Person
-	 */
+     * @param string $name
+     *
+     * @return \Boom\Person
+     */
     public function setName($name)
     {
         $this->data['name'] = $name;
@@ -274,8 +270,8 @@ class Person implements Arrayable, CanResetPassword
     }
 
     /**
+     * @param string $token
      *
-     * @param  string                      $token
      * @return \BoomCMS\Core\Person\Person
      */
     public function setRememberToken($token)
