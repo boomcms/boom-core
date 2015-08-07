@@ -1,6 +1,6 @@
 <?php
 
-namespace BoomCMS\Core\Commands\TextFilters;
+namespace BoomCMS\Commands\TextFilters;
 
 use Illuminate\Support\Facades\Request;
 

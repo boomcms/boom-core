@@ -1,6 +1,6 @@
 <?php
 
-namespace BoomCMS\Core\Commands;
+namespace BoomCMS\Commands;
 
 use BoomCMS\Core\Page;
 use BoomCMS\Events\PageWasDeleted;

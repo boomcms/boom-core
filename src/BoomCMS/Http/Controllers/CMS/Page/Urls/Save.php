@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Http\Controllers\CMS\Page\Urls;
 
-use BoomCMS\Core\Commands\MakeURLPrimary;
+use BoomCMS\Commands\MakeURLPrimary;
 use Illuminate\Support\Facades\Bus;
 
 class Save extends BaseController

@@ -3,8 +3,8 @@
 namespace BoomCMS\Http\Controllers\CMS\Page;
 
 use BoomCMS\Core\Auth\Auth;
-use BoomCMS\Core\Commands\CreatePage;
-use BoomCMS\Core\Commands\CreatePagePrimaryUri;
+use BoomCMS\Commands\CreatePage;
+use BoomCMS\Commands\CreatePagePrimaryUri;
 use BoomCMS\Core\Page as Page;
 use BoomCMS\Events\PageWasCreated;
 use BoomCMS\Http\Controllers\Controller;

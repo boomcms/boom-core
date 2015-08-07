@@ -1,6 +1,6 @@
 <?php
 
-namespace BoomCMS\Core\Commands\TextFilters;
+namespace BoomCMS\Commands\TextFilters;
 
 class RemoveAllHTML extends BaseTextFilter
 {

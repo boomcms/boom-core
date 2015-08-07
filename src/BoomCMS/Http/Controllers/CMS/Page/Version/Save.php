@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Http\Controllers\CMS\Page\Version;
 
-use BoomCMS\Core\Commands\CreatePagePrimaryUri;
+use BoomCMS\Commands\CreatePagePrimaryUri;
 use BoomCMS\Core\Template;
 use BoomCMS\Events;
 use BoomCMS\Support\Facades\Template as TemplateFacade;

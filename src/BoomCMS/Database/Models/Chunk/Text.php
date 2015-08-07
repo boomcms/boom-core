@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Database\Models\Chunk;
 
-use BoomCMS\Core\Commands\TextFilters;
+use BoomCMS\Commands\TextFilters;
 use Illuminate\Support\Facades\Bus;
 
 class Text extends BaseChunk
