@@ -35,7 +35,7 @@ class Tag extends BaseChunk
     public function attributes()
     {
         return [
-            $this->attributePrefix . 'tag' => $this->getTag(),
+            $this->attributePrefix.'tag' => $this->getTag(),
         ];
     }
 

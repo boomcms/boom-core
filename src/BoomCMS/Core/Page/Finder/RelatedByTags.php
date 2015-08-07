@@ -2,24 +2,21 @@
 
 namespace BoomCMS\Core\Page\Finder;
 
-use BoomCMS\Core\Page\Page as Page;
 use BoomCMS\Core\Finder\Filter;
-
-use Illuminate\Support\Facades\DB;
+use BoomCMS\Core\Page\Page as Page;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
 
 class RelatedByTags extends Filter
 {
     /**
-	 *
-	 * @var array
-	 */
+     * @var array
+     */
     protected $tagIds;
 
     /**
-	 *
-	 * @var Page
-	 */
+     * @var Page
+     */
     protected $page;
 
     public function __construct(Page $page)
@@ -41,8 +38,8 @@ class RelatedByTags extends Filter
     }
 
     /**
-	 * TODO: This should probably be in a \Boom\Page\Tags class
-	 */
+     * TODO: This should probably be in a \Boom\Page\Tags class.
+     */
     protected function getTagIds()
     {
         return DB::table('pages_tags')

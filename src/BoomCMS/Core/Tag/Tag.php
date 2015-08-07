@@ -5,9 +5,8 @@ namespace BoomCMS\Core\Tag;
 class Tag
 {
     /**
-	 *
-	 * @var array
-	 */
+     * @var array
+     */
     protected $attrs;
 
     public function __construct($attrs = [])

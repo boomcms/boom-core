@@ -3,19 +3,17 @@
 namespace BoomCMS\Core\Chunk\Slideshow;
 
 use BoomCMS\Core\Asset\Asset;
-use BoomCMS\Support\Facades\Asset as AssetFacade;
 use BoomCMS\Core\Link\Link;
+use BoomCMS\Support\Facades\Asset as AssetFacade;
 
 class Slide
 {
     /**
-     *
      * @var array
      */
     protected $attrs;
 
     /**
-     *
      * @var Asset
      */
     protected $asset;
@@ -54,8 +52,8 @@ class Slide
     }
 
     /**
-	 * @return Link
-	 */
+     * @return Link
+     */
     public function getLink()
     {
         return Link::factory($this->attrs['url']);
@@ -72,10 +70,10 @@ class Slide
     }
 
     /**
-	 * Whether the current slide has a link associated with it.
-	 *
-	 * @return boolean
-	 */
+     * Whether the current slide has a link associated with it.
+     *
+     * @return bool
+     */
     public function hasLink()
     {
         return isset($this->attrs['url']) && $this->attrs['url'] != 'http://';

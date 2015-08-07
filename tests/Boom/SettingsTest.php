@@ -19,7 +19,7 @@ class SettingsTest extends TestCase
     {
         $settings = [
             'key1' => 'value1',
-            'key2' => 'value2'
+            'key2' => 'value2',
         ];
 
         $store = $this->getStore($settings);
@@ -30,7 +30,7 @@ class SettingsTest extends TestCase
     {
         $settings = [
             'key1' => 'value1',
-            'key2' => 'value2'
+            'key2' => 'value2',
         ];
 
         $store = $this->getStore($settings);
@@ -80,26 +80,26 @@ class SettingsTest extends TestCase
     {
         $settings = [
             'key1' => 'value1',
-            'key2' => 'value2'
+            'key2' => 'value2',
         ];
 
         $filesystem = $this->getMock('Illuminate\Filesystem\Filesystem');
         $filesystem
             ->expects($this->once())
             ->method('exists')
-            ->with($this->equalTo(storage_path() . '/boomcms/settings.json'))
+            ->with($this->equalTo(storage_path().'/boomcms/settings.json'))
             ->will($this->returnValue(true));
 
         $filesystem
             ->expects($this->once())
             ->method('get')
-            ->with($this->equalTo(storage_path() . '/boomcms/settings.json'))
-            ->will($this->returnValue($settings? json_encode($settings) : null));
+            ->with($this->equalTo(storage_path().'/boomcms/settings.json'))
+            ->will($this->returnValue($settings ? json_encode($settings) : null));
 
         $filesystem
             ->expects($this->once())
             ->method('put')
-            ->with($this->equalTo(storage_path() . '/boomcms/settings.json'), json_encode($settings));
+            ->with($this->equalTo(storage_path().'/boomcms/settings.json'), json_encode($settings));
 
         $store = new Store($filesystem);
         $store->set($settings);
@@ -132,14 +132,14 @@ class SettingsTest extends TestCase
         $filesystem
             ->expects($this->once())
             ->method('exists')
-            ->with($this->equalTo(storage_path() . '/boomcms/settings.json'))
+            ->with($this->equalTo(storage_path().'/boomcms/settings.json'))
             ->will($this->returnValue(true));
 
         $filesystem
             ->expects($this->once())
             ->method('get')
-            ->with($this->equalTo(storage_path() . '/boomcms/settings.json'))
-            ->will($this->returnValue($settings? json_encode($settings) : null));
+            ->with($this->equalTo(storage_path().'/boomcms/settings.json'))
+            ->will($this->returnValue($settings ? json_encode($settings) : null));
 
         return new Store($filesystem);
     }

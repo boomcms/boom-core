@@ -6,10 +6,10 @@ use Illuminate\Database\Schema\Blueprint;
 class CreateGroupsTable extends Migration
 {
     /**
-	 * Run the migrations.
-	 *
-	 * @return void
-	 */
+     * Run the migrations.
+     *
+     * @return void
+     */
     public function up()
     {
         Schema::create('groups', function (Blueprint $table) {
@@ -20,13 +20,12 @@ class CreateGroupsTable extends Migration
     }
 
     /**
-	 * Reverse the migrations.
-	 *
-	 * @return void
-	 */
+     * Reverse the migrations.
+     *
+     * @return void
+     */
     public function down()
     {
         Schema::drop('groups');
     }
-
 }

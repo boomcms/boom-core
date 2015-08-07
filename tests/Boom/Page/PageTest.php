@@ -1,12 +1,10 @@
 <?php
 
-use BoomCMS\Core\Page\Page;
 use BoomCMS\Core\Chunk\Text;
-
+use BoomCMS\Core\Page\Page;
 use BoomCMS\Support\Facades\Asset;
 use BoomCMS\Support\Facades\Chunk;
 use BoomCMS\Support\Facades\Page as PageFacade;
-
 use Illuminate\Support\Facades\DB;
 
 class Page_PageTest extends TestCase
@@ -132,7 +130,7 @@ class Page_PageTest extends TestCase
             ->setConstructorArgs([[]])
             ->getMock();
 
-       $page
+        $page
            ->expects($this->once())
             ->method('countChildren')
             ->will($this->returnValue(1));
@@ -140,41 +138,41 @@ class Page_PageTest extends TestCase
         $this->assertTrue($page->hasChildren());
     }
 
-	public function testAddTag()
-	{
-		$page = $this->getMockBuilder('BoomCMS\Core\Page\Page')
-			->setMethods(['loaded'])
-			->setConstructorArgs([['id' => 1]])
-			->getMock();
+    public function testAddTag()
+    {
+        $page = $this->getMockBuilder('BoomCMS\Core\Page\Page')
+            ->setMethods(['loaded'])
+            ->setConstructorArgs([['id' => 1]])
+            ->getMock();
 
-		$tag = $this->getMockBuilder('BoomCMS\Core\Tag\Tag')
-			->setMethods(['loaded'])
-			->setConstructorArgs([['id' => 2]])
-			->getMock();
+        $tag = $this->getMockBuilder('BoomCMS\Core\Tag\Tag')
+            ->setMethods(['loaded'])
+            ->setConstructorArgs([['id' => 2]])
+            ->getMock();
 
-		$tag
-			->expects($this->once())
-			->method('loaded')
-			->will($this->returnValue(true));
+        $tag
+            ->expects($this->once())
+            ->method('loaded')
+            ->will($this->returnValue(true));
 
-		$page
-			->expects($this->once())
-			->method('loaded')
-			->will($this->returnValue(true));
+        $page
+            ->expects($this->once())
+            ->method('loaded')
+            ->will($this->returnValue(true));
 
-		DB::shouldReceive('table')
-			->once()
-			->with('pages_tags')
-			->andReturnSelf();
+        DB::shouldReceive('table')
+            ->once()
+            ->with('pages_tags')
+            ->andReturnSelf();
 
-		DB::shouldReceive('insert')
-			->once()
-			->with([
-				'page_id' => $page->getId(),
-				'tag_id' => $tag->getId(),
-			])
-			->andReturnSelf();
+        DB::shouldReceive('insert')
+            ->once()
+            ->with([
+                'page_id' => $page->getId(),
+                'tag_id'  => $tag->getId(),
+            ])
+            ->andReturnSelf();
 
-		$page->addTag($tag);
-	}
+        $page->addTag($tag);
+    }
 }

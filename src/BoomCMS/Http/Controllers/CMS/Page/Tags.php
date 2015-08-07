@@ -3,25 +3,22 @@
 namespace BoomCMS\Http\Controllers\CMS\Page;
 
 use BoomCMS\Core\Auth\Auth;
-use BoomCMS\Http\Controllers\Controller;
 use BoomCMS\Core\Tag;
+use BoomCMS\Http\Controllers\Controller;
 use BoomCMS\Support\Facades\Page;
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
 
 class Tags extends Controller
 {
     /**
-     *
      * @var Auth
      */
     public $auth;
 
     /**
-	 *
-	 * @var Tag\Provider
-	 */
+     * @var Tag\Provider
+     */
     protected $provider;
 
     public function __construct(Auth $auth, Request $request, Tag\Provider $provider)
@@ -54,11 +51,11 @@ class Tags extends Controller
         $groupSuggestions = array_unique(array_merge(array_keys($tags), $groupSuggestions));
         sort($groupSuggestions);
 
-        return View::make("boom::editor.page.settings.tags", [
-            'tags' => $tags,
-            'freeTags' => isset($freeTags) ? $freeTags : [],
-            'groups' => $groupSuggestions,
-            'relatedPages' => Page::findRelatedTo($this->page)
+        return View::make('boom::editor.page.settings.tags', [
+            'tags'         => $tags,
+            'freeTags'     => isset($freeTags) ? $freeTags : [],
+            'groups'       => $groupSuggestions,
+            'relatedPages' => Page::findRelatedTo($this->page),
         ]);
     }
 

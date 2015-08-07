@@ -7,13 +7,11 @@ use BoomCMS\Core\Tag\Tag as TagObject;
 class Tag extends AbstractUIElement
 {
     /**
-     *
      * @var TagObject
      */
     private $tag;
 
     /**
-     *
      * @param TagObject $tag
      */
     public function __construct(TagObject $tag)

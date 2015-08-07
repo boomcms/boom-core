@@ -2,8 +2,8 @@
 
 namespace BoomCMS\Database\Models\Chunk\Slideshow;
 
-use Illuminate\Database\Eloquent\Model;
 use BoomCMS\Support\Helpers\URL;
+use Illuminate\Database\Eloquent\Model;
 
 class Slide extends Model
 {

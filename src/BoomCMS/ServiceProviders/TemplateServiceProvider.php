@@ -12,22 +12,21 @@ class TemplateServiceProvider extends ServiceProvider
     protected $themes = [];
 
     /**
-     *
      * @var Template\Manager
      */
     protected $manager;
 
     /**
-	 * Bootstrap any application services.
-	 *
-	 * @return void
-	 */
+     * Bootstrap any application services.
+     *
+     * @return void
+     */
     public function boot()
     {
         $this->themes = $this->manager->findInstalledThemes();
 
         foreach ($this->themes as $theme) {
-            $config = $theme->getConfigDirectory() . DIRECTORY_SEPARATOR . 'themes.php';
+            $config = $theme->getConfigDirectory().DIRECTORY_SEPARATOR.'themes.php';
 
             file_exists($config) && $this->mergeConfigFrom($config, 'boomcms.themes');
         }
@@ -35,21 +34,21 @@ class TemplateServiceProvider extends ServiceProvider
         foreach ($this->themes as $theme) {
             $views = $theme->getViewDirectory();
             $public = $theme->getPublicDirectory();
-            $routes = $theme->getDirectory() . DIRECTORY_SEPARATOR . 'routes.php';
-            $migrations = $theme->getDirectory() . '/migrations/';
+            $routes = $theme->getDirectory().DIRECTORY_SEPARATOR.'routes.php';
+            $migrations = $theme->getDirectory().'/migrations/';
 
             $this->loadViewsFrom($views, $theme->getName());
-            $this->loadViewsFrom($views . '/chunks', 'boomcms.chunks');
+            $this->loadViewsFrom($views.'/chunks', 'boomcms.chunks');
 
             if (file_exists($public)) {
                 $this->publishes([
-                    $public => public_path('vendor/boomcms/themes/' . $theme)
+                    $public => public_path('vendor/boomcms/themes/'.$theme),
                 ], $theme->getName());
             }
 
             if (file_exists($migrations)) {
                 $this->publishes([
-                    $migrations => base_path('/migrations/boomcms')
+                    $migrations => base_path('/migrations/boomcms'),
                 ], $theme->getName());
             }
 
@@ -83,9 +82,8 @@ class TemplateServiceProvider extends ServiceProvider
     }
 
     /**
-	 *
-	 * @return void
-	 */
+     * @return void
+     */
     public function register()
     {
         $provider = new Template\Provider();

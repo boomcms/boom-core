@@ -26,8 +26,8 @@ class Type extends BaseFilter
 
         foreach ($types as $type) {
             if ($type) {
-                if ( ! is_int($type) && ! ctype_digit($type)) {
-                    $validTypes[] = constant('BoomCMS\Core\Asset\Type::' . strtoupper($type));
+                if (!is_int($type) && !ctype_digit($type)) {
+                    $validTypes[] = constant('BoomCMS\Core\Asset\Type::'.strtoupper($type));
                 } else {
                     $validTypes[] = $type;
                 }
@@ -39,6 +39,6 @@ class Type extends BaseFilter
 
     public function shouldBeApplied()
     {
-        return ! empty($this->type);
+        return !empty($this->type);
     }
 }

@@ -6,10 +6,10 @@ use Illuminate\Database\Schema\Blueprint;
 class CreateAssetsTable extends Migration
 {
     /**
-	 * Run the migrations.
-	 *
-	 * @return void
-	 */
+     * Run the migrations.
+     *
+     * @return void
+     */
     public function up()
     {
         Schema::create('assets', function (Blueprint $table) {
@@ -33,13 +33,12 @@ class CreateAssetsTable extends Migration
     }
 
     /**
-	 * Reverse the migrations.
-	 *
-	 * @return void
-	 */
+     * Reverse the migrations.
+     *
+     * @return void
+     */
     public function down()
     {
         Schema::drop('assets');
     }
-
 }

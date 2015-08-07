@@ -18,7 +18,7 @@ class Provider
         $model = Model::withVersion($versionId)->first();
 
         $type = Type::numericTypeToClass($model->type) ?: 'Invalid';
-        $classname = "\BoomCMS\Core\Asset\\Type\\" . $type;
+        $classname = "\BoomCMS\Core\Asset\\Type\\".$type;
 
         return $model ? new $classname($model->toArray()) : new $classname();
     }
@@ -33,7 +33,7 @@ class Provider
 
     private function findAndCache(Model $model = null)
     {
-        if (! $model) {
+        if (!$model) {
             return;
         }
 
@@ -42,7 +42,7 @@ class Provider
         }
 
         $type = Type::numericTypeToClass($model->type) ?: 'Invalid';
-        $classname = "\BoomCMS\Core\Asset\\Type\\" . $type;
+        $classname = "\BoomCMS\Core\Asset\\Type\\".$type;
 
         return new $classname($model->toArray());
     }

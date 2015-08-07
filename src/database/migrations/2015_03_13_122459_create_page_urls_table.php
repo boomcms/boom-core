@@ -6,10 +6,10 @@ use Illuminate\Database\Schema\Blueprint;
 class CreatePageUrlsTable extends Migration
 {
     /**
-	 * Run the migrations.
-	 *
-	 * @return void
-	 */
+     * Run the migrations.
+     *
+     * @return void
+     */
     public function up()
     {
         Schema::create('page_urls', function (Blueprint $table) {
@@ -22,13 +22,12 @@ class CreatePageUrlsTable extends Migration
     }
 
     /**
-	 * Reverse the migrations.
-	 *
-	 * @return void
-	 */
+     * Reverse the migrations.
+     *
+     * @return void
+     */
     public function down()
     {
         Schema::drop('page_urls');
     }
-
 }

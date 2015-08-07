@@ -3,12 +3,11 @@
 namespace BoomCMS\ServiceProviders;
 
 use BoomCMS\Core\Asset\Provider;
-use Illuminate\Support\ServiceProvider;
 use Illuminate\Routing\Router;
+use Illuminate\Support\ServiceProvider;
 
 class AssetServiceProvider extends ServiceProvider
 {
-
     /**
      * Bootstrap any application services.
      *
@@ -23,7 +22,6 @@ class AssetServiceProvider extends ServiceProvider
     }
 
     /**
-     *
      * @return void
      */
     public function register()

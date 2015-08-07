@@ -4,8 +4,8 @@ namespace BoomCMS\Database\Models\Asset;
 
 use BoomCMS\Core\Asset\Asset;
 use BoomCMS\Support\Facades\Person;
-use Illuminate\Database\Eloquent\Model;
 use DateTime;
+use Illuminate\Database\Eloquent\Model;
 
 class Version extends Model
 {

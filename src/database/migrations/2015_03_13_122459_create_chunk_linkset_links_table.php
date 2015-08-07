@@ -6,10 +6,10 @@ use Illuminate\Database\Schema\Blueprint;
 class CreateChunkLinksetLinksTable extends Migration
 {
     /**
-	 * Run the migrations.
-	 *
-	 * @return void
-	 */
+     * Run the migrations.
+     *
+     * @return void
+     */
     public function up()
     {
         Schema::create('chunk_linkset_links', function (Blueprint $table) {
@@ -23,13 +23,12 @@ class CreateChunkLinksetLinksTable extends Migration
     }
 
     /**
-	 * Reverse the migrations.
-	 *
-	 * @return void
-	 */
+     * Reverse the migrations.
+     *
+     * @return void
+     */
     public function down()
     {
         Schema::drop('chunk_linkset_links');
     }
-
 }

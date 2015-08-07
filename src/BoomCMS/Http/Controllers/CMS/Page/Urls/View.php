@@ -16,9 +16,9 @@ class View extends BaseController
     public function move()
     {
         return ViewFacade::make("$this->viewPrefix/move", [
-            'url' => $this->url,
+            'url'     => $this->url,
             'current' => $this->url->getPage(),
-            'page' => $this->page,
+            'page'    => $this->page,
         ]);
     }
 }

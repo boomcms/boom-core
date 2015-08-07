@@ -8,10 +8,10 @@ use Illuminate\Support\ServiceProvider;
 class SettingsServiceProvider extends ServiceProvider
 {
     /**
-	 * Bootstrap any application services.
-	 *
-	 * @return void
-	 */
+     * Bootstrap any application services.
+     *
+     * @return void
+     */
     public function boot()
     {
         $this->app->singleton('boomcms.settings', function ($app) {
@@ -20,9 +20,9 @@ class SettingsServiceProvider extends ServiceProvider
     }
 
     /**
-	 *
-	 * @return void
-	 */
-    public function register() {}
-
+     * @return void
+     */
+    public function register()
+    {
+    }
 }

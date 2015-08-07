@@ -6,7 +6,7 @@ class Asset_AssetTest extends TestCase
 {
     public function testDirectory()
     {
-        $this->assertEquals(storage_path() . '/boomcms/assets', Asset::directory());
+        $this->assertEquals(storage_path().'/boomcms/assets', Asset::directory());
     }
 
     public function testGetFilename()
@@ -16,6 +16,6 @@ class Asset_AssetTest extends TestCase
             ->setConstructorArgs([['version:id' => 1]])
             ->getMock();
 
-        $this->assertEquals(Asset::directory() . '/1', $asset->getFilename());
+        $this->assertEquals(Asset::directory().'/1', $asset->getFilename());
     }
 }

@@ -2,4 +2,6 @@
 
 namespace BoomCMS\Core\Person;
 
-class DuplicateEmailException extends \InvalidArgumentException {}
+class DuplicateEmailException extends \InvalidArgumentException
+{
+}

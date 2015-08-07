@@ -77,7 +77,7 @@ class Save extends Settings
             ->setVisibleInNav($this->request->input('visible_in_nav'))
             ->setVisibleInCmsNav($this->request->input('visible_in_nav_cms'));
 
-    $this->provider->save($this->page);
+        $this->provider->save($this->page);
     }
 
     public function search()

@@ -3,7 +3,6 @@
 namespace BoomCMS\Core\Chunk;
 
 use BoomCMS\Core\Page\Page;
-
 use Illuminate\Html\HtmlFacade as Html;
 use Illuminate\Support\Facades\Lang;
 
@@ -12,40 +11,35 @@ abstract class BaseChunk
     protected $attributePrefix = 'data-boom-';
 
     /**
-     *
      * @var array
      */
     protected $attrs;
 
     /**
-     *
      * @var string
      */
     protected $defaultTemplate;
 
     /**
-     *
-     * @var boolean
+     * @var bool
      */
     protected $editable;
 
     /**
-     *
      * @var Page
      */
     protected $page;
 
     /**
-     * An array of parameters which will be passed to the chunk view
+     * An array of parameters which will be passed to the chunk view.
      *
      * @var array
      */
     protected $viewParams = [];
 
     /**
-	 *
-	 * @var string
-	 */
+     * @var string
+     */
     protected $placeholderText;
 
     /**
@@ -57,13 +51,11 @@ abstract class BaseChunk
     protected $slotname;
 
     /**
-     *
      * @var string
      */
     protected $template;
 
     /**
-     *
      * @var string
      */
     protected $type;
@@ -86,7 +78,6 @@ abstract class BaseChunk
     }
 
     /**
-     *
      * @return string
      */
     public function __toString()
@@ -96,12 +87,11 @@ abstract class BaseChunk
 
     /**
      * Displays the chunk when chunk data has been set.
-     *
      */
     abstract protected function show();
 
     /**
-     * Displays default chunk HTML
+     * Displays default chunk HTML.
      *
      * @return View
      */
@@ -120,20 +110,21 @@ abstract class BaseChunk
     }
 
     /**
-	 * This adds the necessary classes to chunk HTML for them to be picked up by the JS editor.
-	 * i.e. it makes chunks editable.
-	 *
-	 * @param string $html HTML to add classes to.
-	 * @return string
-	 */
+     * This adds the necessary classes to chunk HTML for them to be picked up by the JS editor.
+     * i.e. it makes chunks editable.
+     *
+     * @param string $html HTML to add classes to.
+     *
+     * @return string
+     */
     public function addAttributesToHtml($html)
     {
-        $html = trim( (string) $html);
+        $html = trim((string) $html);
 
         $attributes = array_merge($this->getRequiredAttributes(), $this->attributes());
         $attributesString = Html::attributes($attributes);
 
-        return preg_replace("|<(.*?)>|", "<$1$attributesString>", $html, 1);
+        return preg_replace('|<(.*?)>|', "<$1$attributesString>", $html, 1);
     }
 
     /**
@@ -146,11 +137,11 @@ abstract class BaseChunk
     public function getRequiredAttributes()
     {
         return [
-            $this->attributePrefix . 'chunk' => $this->getType(),
-            $this->attributePrefix . 'slot-name' => $this->slotname,
-            $this->attributePrefix . 'slot-template' => $this->template,
-            $this->attributePrefix . 'page' => $this->page->getId(),
-            $this->attributePrefix . 'chunk-id' => isset($this->attrs['id']) ? $this->attrs['id'] : 0,
+            $this->attributePrefix.'chunk'         => $this->getType(),
+            $this->attributePrefix.'slot-name'     => $this->slotname,
+            $this->attributePrefix.'slot-template' => $this->template,
+            $this->attributePrefix.'page'          => $this->page->getId(),
+            $this->attributePrefix.'chunk-id'      => isset($this->attrs['id']) ? $this->attrs['id'] : 0,
         ];
     }
 
@@ -171,8 +162,7 @@ abstract class BaseChunk
     }
 
     /**
-     *
-     * @return boolean
+     * @return bool
      */
     public function isEditable()
     {
@@ -180,7 +170,7 @@ abstract class BaseChunk
     }
 
     /**
-     * Makes a chunk readonly
+     * Makes a chunk readonly.
      *
      * @return BaseChunk
      */
@@ -206,17 +196,17 @@ abstract class BaseChunk
     }
 
     /**
-	 * Returns whether the chunk has any content.
-	 *
-	 * @return	bool
-	 */
+     * Returns whether the chunk has any content.
+     *
+     * @return bool
+     */
     abstract public function hasContent();
 
     /**
-	 * Generate the HTML to display the chunk
-	 *
-	 * @return 	string
-	 */
+     * Generate the HTML to display the chunk.
+     *
+     * @return string
+     */
     public function html()
     {
         if ($this->template === null) {
@@ -228,11 +218,11 @@ abstract class BaseChunk
         } elseif ($this->isEditable()) {
             $return = $this->showDefault();
         } else {
-            return "";
+            return '';
         }
 
         // If the return data is a View then assign any parameters to it.
-        if ($return instanceof View && ! empty($this->viewParams)) {
+        if ($return instanceof View && !empty($this->viewParams)) {
             foreach ($this->viewParams as $key => $value) {
                 $return->$key = $value;
             }
@@ -242,8 +232,8 @@ abstract class BaseChunk
     }
 
     /**
-	 * Getter / setter method for template parameters.
-	 */
+     * Getter / setter method for template parameters.
+     */
     public function params($params = null)
     {
         if ($params === null) {
@@ -263,11 +253,12 @@ abstract class BaseChunk
     }
 
     /**
-	 * Set the template to display the chunk
-	 *
-	 * @param	string	$template	The name of a view file.
-	 * @return	Chunk
-	 */
+     * Set the template to display the chunk.
+     *
+     * @param string $template The name of a view file.
+     *
+     * @return Chunk
+     */
     public function template($template = null)
     {
         // Set the template filename.

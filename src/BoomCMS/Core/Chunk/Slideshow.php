@@ -22,8 +22,8 @@ class Slideshow extends BaseChunk
 
     protected function show()
     {
-        return View::make($this->viewPrefix . "slideshow/$this->template", [
-            'title' => $this->getTitle(),
+        return View::make($this->viewPrefix."slideshow/$this->template", [
+            'title'  => $this->getTitle(),
             'slides' => $this->getSlides(),
         ])->render();
     }

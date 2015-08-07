@@ -10,9 +10,8 @@ use Illuminate\Http\Request;
 class LogAssetDownload
 {
     /**
-	 *
-	 * @var Auth
-	 */
+     * @var Auth
+     */
     protected $auth;
 
     public function __construct(Auth $auth)
@@ -23,8 +22,9 @@ class LogAssetDownload
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  \Closure                 $next
+     * @param \Illuminate\Http\Request $request
+     * @param \Closure                 $next
+     *
      * @return mixed
      */
     public function handle(Request $request, Closure $next)
@@ -34,11 +34,11 @@ class LogAssetDownload
         if ($asset->loaded() && !$this->auth->loggedIn()) {
             $ip = ip2long($request->ip());
 
-            if ( ! AssetDownload::recentlyLogged($asset->getId(), $ip)->count() > 0) {
+            if (!AssetDownload::recentlyLogged($asset->getId(), $ip)->count() > 0) {
                 AssetDownload::create([
                     'asset_id' => $asset->getId(),
-                    'ip' => $ip,
-                    'time' => time(),
+                    'ip'       => $ip,
+                    'time'     => time(),
                 ]);
 
                 $asset->incrementDownloads();
@@ -47,5 +47,4 @@ class LogAssetDownload
 
         return $next($request);
     }
-
 }

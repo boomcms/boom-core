@@ -2,15 +2,13 @@
 
 namespace BoomCMS\Http\Middleware;
 
-use Closure;
 use BoomCMS\Core\Group;
-
+use Closure;
 use Illuminate\Support\Facades\View;
 
 class PeopleManager
 {
     /**
-     *
      * @var Group\Provider
      */
     protected $provider;
@@ -23,17 +21,18 @@ class PeopleManager
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  \Closure                 $next
+     * @param \Illuminate\Http\Request $request
+     * @param \Closure                 $next
+     *
      * @return mixed
      */
     public function handle($request, Closure $next)
     {
         $response = $next($request);
 
-        if ( ! $request->ajax()) {
+        if (!$request->ajax()) {
             $v = View::make('boom::people.manager', [
-                'groups' => $this->provider->findAll(),
+                'groups'  => $this->provider->findAll(),
                 'content' => $response->getContent(),
             ]);
 
@@ -42,5 +41,4 @@ class PeopleManager
 
         return $response;
     }
-
 }

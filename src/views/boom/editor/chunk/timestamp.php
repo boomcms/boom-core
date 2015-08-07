@@ -12,6 +12,6 @@
 
     <label>
         Date / time
-        <input id="timestamp" type="text" name="timestamp" class="boom-input boom-datepicker" value="<?= $chunk->getTimestamp() ? date("d F Y H:i", $chunk->getTimestamp()) : 'Select a date and time' ?>" />
+        <input id="timestamp" type="text" name="timestamp" class="boom-input boom-datepicker" value="<?= $chunk->getTimestamp() ? date('d F Y H:i', $chunk->getTimestamp()) : 'Select a date and time' ?>" />
     </label>
 </form>

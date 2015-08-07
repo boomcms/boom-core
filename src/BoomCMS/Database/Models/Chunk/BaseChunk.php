@@ -36,8 +36,7 @@ class BaseChunk extends Model
             ->leftJoin('page_versions as v2', function ($query) use ($upToVersion) {
                 $query
                     ->on('c2.page_vid', '=', 'v2.id')
-                    ->on('v1.page_id', '=', 'v2.page_id')
-                    ;
+                    ->on('v1.page_id', '=', 'v2.page_id');
             })
             ->whereNull('c2.id');
 

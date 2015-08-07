@@ -9,10 +9,10 @@ class PDF extends Asset
 {
     public function getThumbnailFilename()
     {
-        $filename = $this->getFilename() . '.thumb';
+        $filename = $this->getFilename().'.thumb';
 
-        if ( ! file_exists($filename)) {
-            $image = new Imagick($this->getFilename() . '[0]');
+        if (!file_exists($filename)) {
+            $image = new Imagick($this->getFilename().'[0]');
             $image->setImageFormat('png');
 
             file_put_contents($filename, $image->getImageBlob());
@@ -23,6 +23,6 @@ class PDF extends Asset
 
     public function getType()
     {
-        return "PDF";
+        return 'PDF';
     }
 }

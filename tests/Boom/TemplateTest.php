@@ -1,7 +1,6 @@
 <?php
 
 use BoomCMS\Core\Template;
-
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\View;
 

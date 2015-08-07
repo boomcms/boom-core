@@ -59,7 +59,7 @@
 
         <?= Lang::get('boom::settings.tags.pages.intro') ?>
 
-        <h2 class="current"<?php if ( !count($relatedPages)): ?> style="display: none"<?php endif ?>>
+        <h2 class="current"<?php if (!count($relatedPages)): ?> style="display: none"<?php endif ?>>
             <?= Lang::get('boom::settings.tags.pages.current') ?>
         </h2>
 

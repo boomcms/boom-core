@@ -7,10 +7,10 @@ use Illuminate\Support\Facades\DB;
 class UseLaravelSoftDelete extends Migration
 {
     /**
-	 * Run the migrations.
-	 *
-	 * @return void
-	 */
+     * Run the migrations.
+     *
+     * @return void
+     */
     public function up()
     {
         Schema::table('pages', function (Blueprint $table) {
@@ -39,7 +39,7 @@ class UseLaravelSoftDelete extends Migration
                 ->onDelete('set null');
         });
 
-            Schema::table('groups', function (Blueprint $table) {
+        Schema::table('groups', function (Blueprint $table) {
             $table->softDeletes();
             $table->integer('deleted_by')->unsigned()->nullable();
             $table
@@ -57,10 +57,10 @@ class UseLaravelSoftDelete extends Migration
     }
 
     /**
-	 * Reverse the migrations.
-	 *
-	 * @return void
-	 */
+     * Reverse the migrations.
+     *
+     * @return void
+     */
     public function down()
     {
         Schema::create('groups', function (Blueprint $table) {
@@ -90,5 +90,4 @@ class UseLaravelSoftDelete extends Migration
             $table->dropColumn('deleted_by');
         });
     }
-
 }

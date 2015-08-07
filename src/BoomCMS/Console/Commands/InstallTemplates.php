@@ -3,12 +3,11 @@
 namespace BoomCMS\Console\Commands;
 
 use BoomCMS\Core\Template;
-use Illuminate\Filesystem\Filesystem;
 use Illuminate\Console\Command;
+use Illuminate\Filesystem\Filesystem;
 
 class InstallTemplates extends Command
 {
-
     /**
      * The console command name.
      *
@@ -17,7 +16,6 @@ class InstallTemplates extends Command
     protected $name = 'boomcms:installTemplates';
 
     /**
-     *
      * @var Template\Manager
      */
     protected $manager;

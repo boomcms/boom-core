@@ -1,15 +1,15 @@
 <?php
 
 namespace BoomCMS\Core\Page\Finder;
+
 use BoomCMS\Core\Finder\Filter;
 use Illuminate\Database\Eloquent\Builder;
 
 class Title extends Filter
 {
     /**
-	 *
-	 * @var array
-	 */
+     * @var array
+     */
     protected $title;
 
     public function __construct($title)
@@ -28,6 +28,6 @@ class Title extends Filter
 
     public function shouldBeApplied()
     {
-        return ! empty($this->title);
+        return !empty($this->title);
     }
 }

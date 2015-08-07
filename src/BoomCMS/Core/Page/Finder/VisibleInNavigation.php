@@ -9,9 +9,8 @@ use Illuminate\Database\Eloquent\Builder;
 class VisibleInNavigation extends Filter
 {
     /**
-	 *
-	 * @var Editor
-	 */
+     * @var Editor
+     */
     protected $_editor;
 
     public function __construct(Editor $editor = null)

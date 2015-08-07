@@ -13,7 +13,7 @@ class Person_ProviderTest extends TestCase
         $person = new Person\Person(['id' => 1, 'email' => $email]);
 
         $provider = $this->getMockBuilder('BoomCMS\Core\Person\Provider')
-            ->setMethods(array('findByEmail'))
+            ->setMethods(['findByEmail'])
             ->getMock();
 
         $provider

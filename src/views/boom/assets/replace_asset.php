@@ -1,11 +1,10 @@
 <?php
 /**
-* Allows replacing an existing asset with a new file.
-* Template to upload the new file.
-*
-* Rendered by: Controller_Cms_Assets::action_replace()
-*
-*/
+ * Allows replacing an existing asset with a new file.
+ * Template to upload the new file.
+ *
+ * Rendered by: Controller_Cms_Assets::action_replace()
+ */
 ?>
 <div class="boom-tabs">
 	<form id="boom-tagmanager-replace-form" action='/cms/assets/replace/<?= $asset->getId() ?>' method='post' enctype="multipart/form-data">

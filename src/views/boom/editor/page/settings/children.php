@@ -9,8 +9,8 @@
                 <p><?= Lang::get('boom::settings.children.template') ?></p>
 
                 <select name="children_template_id" id="children_template_id">
-                    <?php foreach($templates as $t): ?>
-                      <option value="<?= $t->getId() ?>"<?php if($t->getId() === $default_child_template): ?> selected<?php endif ?>><?= $t->getName() ?></option>
+                    <?php foreach ($templates as $t): ?>
+                      <option value="<?= $t->getId() ?>"<?php if ($t->getId() === $default_child_template): ?> selected<?php endif ?>><?= $t->getName() ?></option>
                     <?php endforeach ?>
                 </select>
             </label>
@@ -42,7 +42,7 @@
 
                     <select name="children_visible_in_nav" id="children_visible_in_nav">
                         <option value="1"<?php if ($page->childrenAreVisibleInNav()): ?> selected="selected"<?php endif ?>>Yes</option>
-                        <option value="0"<?php if ( ! $page->childrenAreVisibleInNav()): ?> selected="selected"<?php endif ?>>No</option>
+                        <option value="0"<?php if (!$page->childrenAreVisibleInNav()): ?> selected="selected"<?php endif ?>>No</option>
                     </select>
                 </label>
 
@@ -51,7 +51,7 @@
 
                     <select name="children_visible_in_nav_cms" id="children_visible_in_nav_cms">
                         <option value="1"<?php if ($page->childrenAreVisibleInCmsNav()): ?> selected="selected"<?php endif ?>>Yes</option>
-                        <option value="0"<?php if ( ! $page->childrenAreVisibleInCmsNav()): ?> selected="selected"<?php endif ?>>No</option>
+                        <option value="0"<?php if (!$page->childrenAreVisibleInCmsNav()): ?> selected="selected"<?php endif ?>>No</option>
                     </select>
                 </label>
 
@@ -64,8 +64,8 @@
                     <p><?= Lang::get('boom::settings.children.grandchild-template') ?></p>
 
                     <select name="grandchild_template_id" id="grandchild_template_id">
-                        <?php foreach($templates as $t): ?>
-                            <option value="<?= $t->getId() ?>"<?php if($t->getId() === $default_grandchild_template): ?> selected<?php endif ?>><?= $t->getName() ?></option>
+                        <?php foreach ($templates as $t): ?>
+                            <option value="<?= $t->getId() ?>"<?php if ($t->getId() === $default_grandchild_template): ?> selected<?php endif ?>><?= $t->getName() ?></option>
                         <?php endforeach ?>
                     </select>
                 </label>

@@ -4,8 +4,8 @@ namespace BoomCMS\Database\Models;
 
 use BoomCMS\Support\Facades\Editor;
 use BoomCMS\Support\Helpers\URL as URLHelper;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
 
 class Page extends Model
@@ -17,18 +17,18 @@ class Page extends Model
     public $timestamps = false;
 
     /**
-	 *
-	 * @return \Boom_Model_Page
-	 * @throws Exception
-	 */
+     * @throws Exception
+     *
+     * @return \Boom_Model_Page
+     */
     public function cascade_to_children(array $settings)
     {
         // Page must be loaded.
-        if (! $this->_loaded) {
-            throw new Exception("Cannot call ".__CLASS__."::".__METHOD__." on an unloaded object.");
+        if (!$this->_loaded) {
+            throw new Exception('Cannot call '.__CLASS__.'::'.__METHOD__.' on an unloaded object.');
         }
 
-        if ( ! empty($settings)) {
+        if (!empty($settings)) {
             DB::update('pages')
                 ->where('id', 'IN', DB::select('id')
                     ->from('page_mptt')
@@ -72,7 +72,7 @@ class Page extends Model
 
         $versions = Arr::pluck($versions, 'id');
 
-        if ( ! empty($versions)) {
+        if (!empty($versions)) {
             DB::update('page_versions')
                 ->set(['template_id' => $template_id])
                 ->where('id', 'IN', $versions)
@@ -81,15 +81,15 @@ class Page extends Model
     }
 
     /**
-	 * Restores a page to the last published version.
-	 * Marks all versions which haven't been published since the last published versions as stashed.
-	 *
-	 * This is used for when there are edits to a page in progress which aren't ready to be published but a change needs to be made to the live (published) version (e.g. a typo fix).
-	 *
-	 * Yes, it's named after 'git stash'. The principal is the same.
-	 *
-	 * @return \Boom_Model_Page
-	 */
+     * Restores a page to the last published version.
+     * Marks all versions which haven't been published since the last published versions as stashed.
+     *
+     * This is used for when there are edits to a page in progress which aren't ready to be published but a change needs to be made to the live (published) version (e.g. a typo fix).
+     *
+     * Yes, it's named after 'git stash'. The principal is the same.
+     *
+     * @return \Boom_Model_Page
+     */
     public function stash()
     {
         // Execute a DB query to stash unpublished versions.
@@ -113,7 +113,7 @@ class Page extends Model
         return $query
             ->currentVersion()
             ->select('title', 'primary_uri')
-            ->where('title', 'like', '%' . $title. '%')
+            ->where('title', 'like', '%'.$title.'%')
             ->limit($limit)
             ->orderBy(DB::raw('length(title)'), 'asc');
     }
@@ -126,7 +126,7 @@ class Page extends Model
             ->select('version.*')
             ->addSelect('version.id as version:id')
             ->addSelect('pages.*')
-            ->join(DB::raw('(' . $subquery->toSql() . ') as v2'), 'pages.id', '=', 'v2.page_id')
+            ->join(DB::raw('('.$subquery->toSql().') as v2'), 'pages.id', '=', 'v2.page_id')
             ->mergeBindings($subquery)
             ->join('page_versions as version', function ($join) {
                 $join

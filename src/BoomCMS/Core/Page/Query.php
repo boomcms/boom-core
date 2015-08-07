@@ -7,21 +7,20 @@ use ReflectionClass;
 class Query
 {
     protected $filterAliases = [
-        'parentid' => 'ParentId',
-        'parent' => 'ParentPage',
-        'tag' => 'Tag',
-        'template' => 'Template',
-        'uri' => 'uri',
-        'relatedbytags' => 'RelatedByTags',
+        'parentid'            => 'ParentId',
+        'parent'              => 'ParentPage',
+        'tag'                 => 'Tag',
+        'template'            => 'Template',
+        'uri'                 => 'uri',
+        'relatedbytags'       => 'RelatedByTags',
         'visibleinnavigation' => 'VisibleInNavigation',
-        'nextto' => 'NextTo',
-        'title' => 'Title',
-        'search' => 'Search',
-        'relatedto' => 'RelatedTo',
+        'nextto'              => 'NextTo',
+        'title'               => 'Title',
+        'search'              => 'Search',
+        'relatedto'           => 'RelatedTo',
     ];
 
     /**
-     *
      * @var array
      */
     protected $params;
@@ -37,10 +36,10 @@ class Query
             $param = strtolower($param);
 
             if (isset($this->filterAliases[$param])) {
-                $class = 'BoomCMS\Core\Page\Finder\\' . $this->filterAliases[$param];
+                $class = 'BoomCMS\Core\Page\Finder\\'.$this->filterAliases[$param];
 
                 if (is_array($args)) {
-                    $reflect  = new ReflectionClass($class);
+                    $reflect = new ReflectionClass($class);
                     $filter = $reflect->newInstanceArgs($args);
                 } else {
                     $filter = new $class($args);
@@ -54,8 +53,8 @@ class Query
             list($column, $direction) = explode(' ', $params['order']);
 
             if ($column && $direction) {
-                $column = constant('BoomCMS\Core\Page\Finder\Finder::' . strtoupper($column));
-                $direction = constant('BoomCMS\Core\Page\Finder\Finder::' . strtoupper($direction));
+                $column = constant('BoomCMS\Core\Page\Finder\Finder::'.strtoupper($column));
+                $direction = constant('BoomCMS\Core\Page\Finder\Finder::'.strtoupper($direction));
 
                 $finder->setOrderBy($column, $direction);
             }

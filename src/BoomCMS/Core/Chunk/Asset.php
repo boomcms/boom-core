@@ -2,9 +2,8 @@
 
 namespace BoomCMS\Core\Chunk;
 
-use BoomCMS\Core\Page as Page;
 use BoomCMS\Core\Link\Link as Link;
-
+use BoomCMS\Core\Page as Page;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\View;
 
@@ -32,10 +31,10 @@ class Asset extends BaseChunk
         $link = $this->getLink();
 
         return View::make($this->viewPrefix."asset/$this->template", [
-            'asset' => $this->getAsset(),
+            'asset'   => $this->getAsset(),
             'caption' => $this->getCaption(),
-            'title' => $this->getTitle(),
-            'link' => $link
+            'title'   => $this->getTitle(),
+            'link'    => $link,
         ])->render();
     }
 
@@ -49,8 +48,8 @@ class Asset extends BaseChunk
     public function attributes()
     {
         return [
-            $this->attributePrefix . 'target' => $this->target(),
-            $this->attributePrefix . 'filterByType' => $this->filterByType
+            $this->attributePrefix.'target'       => $this->target(),
+            $this->attributePrefix.'filterByType' => $this->filterByType,
         ];
     }
 

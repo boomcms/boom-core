@@ -7,7 +7,6 @@ use BoomCMS\Support\Facades\Page;
 class Internal extends Link
 {
     /**
-     *
      * @var Page\Page
      */
     protected $page;
@@ -63,11 +62,11 @@ class Internal extends Link
         $url = (string) $this->page->url();
 
         if ($this->urlFragment) {
-            $url .= '#' . $this->urlFragment;
+            $url .= '#'.$this->urlFragment;
         }
 
         if ($this->queryString) {
-            $url .= '?' . $this->queryString;
+            $url .= '?'.$this->queryString;
         }
 
         return $url;

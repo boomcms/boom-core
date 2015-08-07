@@ -1,9 +1,8 @@
 <?php
 
+use BoomCMS\Core\Chunk\BaseChunk;
 use BoomCMS\Core\Page\Page;
 use Illuminate\Support\Facades\Lang;
-
-use BoomCMS\Core\Chunk\BaseChunk;
 
 class BaseChunkTest extends TestCase
 {
@@ -57,13 +56,13 @@ class BaseChunkTest extends TestCase
         $this->assertEquals('some text', $chunk->getPlaceholderText());
     }
 
-	public function testDefaultPlaceholderTextsAreDefined()
-	{
-		foreach (BaseChunk::$types as $type) {
-			$langKey = "boom::chunks.$type.default";
-			$this->assertTrue(Lang::has($langKey), $type);
-		}
-	}
+    public function testDefaultPlaceholderTextsAreDefined()
+    {
+        foreach (BaseChunk::$types as $type) {
+            $langKey = "boom::chunks.$type.default";
+            $this->assertTrue(Lang::has($langKey), $type);
+        }
+    }
 
     public function testIsEditable()
     {
@@ -96,11 +95,11 @@ class BaseChunkTest extends TestCase
     public function testGetRequiredAttributes()
     {
         $requiredAttributes = [
-            'data-boom-chunk' => 'testType',
-            'data-boom-slot-name' => 'test',
+            'data-boom-chunk'         => 'testType',
+            'data-boom-slot-name'     => 'test',
             'data-boom-slot-template' => null,
-            'data-boom-page' => 1,
-            'data-boom-chunk-id' => 2
+            'data-boom-page'          => 1,
+            'data-boom-chunk-id'      => 2,
         ];
 
         $chunk = $this->getMockBuilder('BoomCMS\Core\Chunk\BaseChunk')

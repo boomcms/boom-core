@@ -4,14 +4,13 @@ namespace BoomCMS\Http\Controllers\CMS\People\Person;
 
 use BoomCMS\Core\Group;
 use BoomCMS\Core\Group\Provider as GroupProvider;
-
 use Illuminate\Support\Facades\View;
 
 class ViewPerson extends BasePerson
 {
     public function add(GroupProvider $provider)
     {
-        return View::make($this->viewPrefix."new", [
+        return View::make($this->viewPrefix.'new', [
             'groups' => $provider->findAll(),
         ]);
     }
@@ -31,14 +30,14 @@ class ViewPerson extends BasePerson
 
     public function view()
     {
-        if ( ! $this->editPerson->loaded()) {
+        if (!$this->editPerson->loaded()) {
             abourt(404);
         }
 
-        return View::make($this->viewPrefix."view", [
-            'person' => $this->editPerson,
+        return View::make($this->viewPrefix.'view', [
+            'person'  => $this->editPerson,
             'request' => $this->request,
-            'groups' => $this->editPerson->getGroups(),
+            'groups'  => $this->editPerson->getGroups(),
         ]);
     }
 }

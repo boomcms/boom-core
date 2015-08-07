@@ -2,7 +2,7 @@
 	Would you like to move the URL <?= $url->getLocation() ?>?
 </p>
 
-<?php if ($url->isPrimary() && ! $current->isDeleted()): ?>
+<?php if ($url->isPrimary() && !$current->isDeleted()): ?>
 	<p>
 		<b>This URL is the primary URL for its page. If you move this URL its current page may become inaccessible.</b>
 	</p>

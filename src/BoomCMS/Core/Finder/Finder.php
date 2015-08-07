@@ -27,10 +27,10 @@ abstract class Finder
         foreach ($this->filters as $filter) {
             if ($filter->shouldBeApplied()) {
                 $query = $filter->build($query);
-				
-				if ($execute === true) {
-					$query = $filter->execute($query);
-				}
+
+                if ($execute === true) {
+                    $query = $filter->execute($query);
+                }
             }
         }
 
@@ -39,7 +39,7 @@ abstract class Finder
 
     public function count()
     {
-        if (! $this->filtersApplied) {
+        if (!$this->filtersApplied) {
             $this->query = $this->applyFilters($this->query);
         }
 
@@ -48,7 +48,7 @@ abstract class Finder
 
     public function find()
     {
-        if (! $this->filtersApplied) {
+        if (!$this->filtersApplied) {
             $this->query = $this->applyFilters($this->query, true);
         }
 
@@ -57,7 +57,7 @@ abstract class Finder
 
     public function findAll()
     {
-        if (! $this->filtersApplied) {
+        if (!$this->filtersApplied) {
             $this->query = $this->applyFilters($this->query, true);
         }
 

@@ -2,8 +2,8 @@
 
 namespace BoomCMS\Http\Controllers\CMS\Page\Version;
 
-use BoomCMS\Core\Template;
 use BoomCMS\Core\Commands\CreatePagePrimaryUri;
+use BoomCMS\Core\Template;
 use Illuminate\Support\Facades\Bus;
 
 class Save extends Version
@@ -59,7 +59,7 @@ class Save extends Version
             );
 
             return [
-                'status' => $this->page->getCurrentVersion()->getStatus(),
+                'status'   => $this->page->getCurrentVersion()->getStatus(),
                 'location' => (string) $url,
             ];
         }

@@ -5,13 +5,11 @@ namespace BoomCMS\Core\Asset;
 use Illuminate\Support\Facades\DB;
 
 /**
- * Defines methods for working with a collection of assets
- *
+ * Defines methods for working with a collection of assets.
  */
 class Collection
 {
     /**
-     *
      * @var array
      */
     private $assetIds;
@@ -22,9 +20,10 @@ class Collection
     }
 
     /**
-     * Add a tag to all assets in the collection
+     * Add a tag to all assets in the collection.
      *
-     * @param  string     $tag
+     * @param string $tag
+     *
      * @return Collection
      */
     public function addTag($tag)
@@ -37,9 +36,10 @@ class Collection
                 DB::table('assets_tags')
                     ->insert([
                         'asset_id' => $id,
-                        'tag' => $tag
+                        'tag'      => $tag,
                     ]);
-            } catch (\Exception $e) {}
+            } catch (\Exception $e) {
+            }
         }
 
         return $this;
@@ -48,11 +48,11 @@ class Collection
     public function delete()
     {
         foreach ($this->assetIds as $assetId) {
-            $filename = Asset::directory() . $assetId;
+            $filename = Asset::directory().$assetId;
 
             file_exists($filename) && unlink($filename);
 
-            foreach (glob($filename . '.*') as $file) {
+            foreach (glob($filename.'.*') as $file) {
                 unlink($file);
             }
         }
@@ -73,14 +73,15 @@ class Collection
             ->select('tag')
             ->whereIn('asset_id', $this->assetIds)
             ->groupBy('tag')
-            ->havingRaw(DB::raw('count(distinct asset_id) =' . count($this->assetIds)))
+            ->havingRaw(DB::raw('count(distinct asset_id) ='.count($this->assetIds)))
             ->lists('tag');
     }
 
     /**
-     * Remove a tag from all assets in the collection
+     * Remove a tag from all assets in the collection.
      *
-     * @param  string     $tag
+     * @param string $tag
+     *
      * @return Collection
      */
     public function removeTag($tag)

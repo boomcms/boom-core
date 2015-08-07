@@ -2,21 +2,19 @@
 
 namespace BoomCMS\Core\Asset;
 
+use BoomCMS\Core\Asset\Mimetype\Mimetype;
 use BoomCMS\Core\Person;
 use BoomCMS\Database\Models\Asset\Version as VersionModel;
-use BoomCMS\Core\Asset\Mimetype\Mimetype;
 use BoomCMS\Support\Facades\Auth;
 use DateTime;
-
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Facades\DB;
-use Symfony\Component\HttpFoundation\File\UploadedFile as File;
 use Rych\ByteSize\ByteSize;
+use Symfony\Component\HttpFoundation\File\UploadedFile as File;
 
 abstract class Asset implements Arrayable
 {
     /**
-     *
      * @var array
      */
     protected $attrs;
@@ -26,14 +24,14 @@ abstract class Asset implements Arrayable
     protected $tags;
 
     protected $versionColumns = [
-        'asset_id' => '',
-        'width' => '',
-        'height' => '',
-        'type' => '',
-        'filesize' => '',
-        'filename' => '',
-        'edited_at' => '',
-        'edited_by' => '',
+        'asset_id'   => '',
+        'width'      => '',
+        'height'     => '',
+        'type'       => '',
+        'filesize'   => '',
+        'filename'   => '',
+        'edited_at'  => '',
+        'edited_by'  => '',
         'version:id' => '',
     ];
 
@@ -44,13 +42,13 @@ abstract class Asset implements Arrayable
 
     public static function directory()
     {
-        return storage_path() . '/boomcms/assets';
+        return storage_path().'/boomcms/assets';
     }
 
     public static function factory(array $attrs)
     {
         $type = Type::numericTypeToClass($attrs['type']) ?: 'Invalid';
-        $classname = "BoomCMS\Core\Asset\Type\\" . $type;
+        $classname = "BoomCMS\Core\Asset\Type\\".$type;
 
         return new $classname($attrs);
     }
@@ -86,21 +84,19 @@ abstract class Asset implements Arrayable
     }
 
     /**
-	 *
-	 * @return string
-	 */
+     * @return string
+     */
     public function getExtension()
     {
         return $this->getMimetype()->getExtension();
     }
 
     /**
-	 *
-	 * @return string
-	 */
+     * @return string
+     */
     public function getFilename()
     {
-        return static::directory() . DIRECTORY_SEPARATOR . $this->getLatestVersionId();
+        return static::directory().DIRECTORY_SEPARATOR.$this->getLatestVersionId();
     }
 
     public function getFilesize()
@@ -120,7 +116,7 @@ abstract class Asset implements Arrayable
 
     public function getLastModified()
     {
-        return new DateTime('@' . $this->get('edited_at'));
+        return new DateTime('@'.$this->get('edited_at'));
     }
 
     public function getLatestVersionId()
@@ -193,7 +189,7 @@ abstract class Asset implements Arrayable
     {
         if ($this->hasPreviousVersions === null) {
             $result = DB::table('asset_versions')
-                ->select("id")
+                ->select('id')
                 ->where('asset_id', '=', $this->getId())
                 ->where('id', '!=', $this->getLatestVersionId())
                 ->first();
@@ -210,7 +206,7 @@ abstract class Asset implements Arrayable
             DB::table('assets')
                 ->where('id', '=', $this->getId())
                 ->update([
-                    'downloads' => DB::raw('downloads + 1')
+                    'downloads' => DB::raw('downloads + 1'),
                 ]);
         }
     }
@@ -227,21 +223,21 @@ abstract class Asset implements Arrayable
 
     public function createVersionFromFile(File $file)
     {
-        if ( ! $this->getTitle()) {
+        if (!$this->getTitle()) {
             $this->setTitle($file->getClientOriginalName());
         }
 
         list($width, $height) = getimagesize($file->getRealPath());
 
         $version = VersionModel::create([
-            'asset_id' => $this->getId(),
-            'filesize' => $file->getClientSize(),
-            'filename' => $file->getClientOriginalName(),
-            'width' => $width,
-            'height' => $height,
+            'asset_id'  => $this->getId(),
+            'filesize'  => $file->getClientSize(),
+            'filename'  => $file->getClientOriginalName(),
+            'width'     => $width,
+            'height'    => $height,
             'edited_at' => time(),
             'edited_by' => Auth::getPerson()->getId(),
-            'type' => Mimetype::factory($file->getMimeType())->getType(),
+            'type'      => Mimetype::factory($file->getMimeType())->getType(),
         ]);
 
         $file->move(static::directory(), $version->id);
@@ -262,8 +258,8 @@ abstract class Asset implements Arrayable
             $version = VersionModel::create($attrs);
 
             copy(
-                static::directory() . DIRECTORY_SEPARATOR . $versionId,
-                static::directory() . DIRECTORY_SEPARATOR . $version->id
+                static::directory().DIRECTORY_SEPARATOR.$versionId,
+                static::directory().DIRECTORY_SEPARATOR.$version->id
             );
         }
 
@@ -271,10 +267,10 @@ abstract class Asset implements Arrayable
     }
 
     /**
-	 *
-	 * @param string $credits
-	 * @return \Boom\Asset\Asset
-	 */
+     * @param string $credits
+     *
+     * @return \Boom\Asset\Asset
+     */
     public function setCredits($credits)
     {
         $this->attrs['credits'] = $credits;
@@ -283,10 +279,10 @@ abstract class Asset implements Arrayable
     }
 
     /**
-	 *
-	 * @param string $description
-	 * @return \Boom\Asset\Asset
-	 */
+     * @param string $description
+     *
+     * @return \Boom\Asset\Asset
+     */
     public function setDescription($description)
     {
         $this->attrs['description'] = $description;
@@ -296,7 +292,7 @@ abstract class Asset implements Arrayable
 
     public function setId($id)
     {
-        if ( !$this->getId()) {
+        if (!$this->getId()) {
             $this->attrs['id'] = $id;
         }
 
@@ -304,10 +300,10 @@ abstract class Asset implements Arrayable
     }
 
     /**
-	 *
-	 * @param int $assetId
-	 * @return \Boom\Asset\Asset
-	 */
+     * @param int $assetId
+     *
+     * @return \Boom\Asset\Asset
+     */
     public function setThumbnailAssetId($assetId)
     {
         $this->attrs['thumbnail_asset_id'] = $assetId;
@@ -316,10 +312,10 @@ abstract class Asset implements Arrayable
     }
 
     /**
-	 *
-	 * @param string $title
-	 * @return \Boom\Asset\Asset
-	 */
+     * @param string $title
+     *
+     * @return \Boom\Asset\Asset
+     */
     public function setTitle($title)
     {
         $this->attrs['title'] = $title;
@@ -328,10 +324,10 @@ abstract class Asset implements Arrayable
     }
 
     /**
-	 *
-	 * @param \Boom\Person\Person $person
-	 * @return \Boom\Asset\Asset
-	 */
+     * @param \Boom\Person\Person $person
+     *
+     * @return \Boom\Asset\Asset
+     */
     public function setUploadedBy(Person\Person $person)
     {
         $this->attrs['uploaded_by'] = $person->getId();
