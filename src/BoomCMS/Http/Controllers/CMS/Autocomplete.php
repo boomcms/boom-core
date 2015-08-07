@@ -97,7 +97,7 @@ class Autocomplete extends Controller
             ->limit($this->count);
 
         if ($this->request->query('ignore')) {
-            $query->where('tags.id', 'not in', $this->request->query('ignore'));
+            $query->whereNotIn('tags.id', $this->request->query('ignore'));
         }
 
         // Get the query results.
