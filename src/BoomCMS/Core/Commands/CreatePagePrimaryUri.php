@@ -3,16 +3,14 @@
 namespace BoomCMS\Core\Commands;
 
 use BoomCMS\Core\Page;
-use BoomCMS\Support\Helpers\URL as URLHelper;
 use BoomCMS\Support\Facades\URL as URLFacade;
-
-use Illuminate\Support\Facades\Bus;
+use BoomCMS\Support\Helpers\URL as URLHelper;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Bus\SelfHandling;
+use Illuminate\Support\Facades\Bus;
 
 class CreatePagePrimaryUri extends Command implements SelfHandling
 {
-
     protected $location;
     protected $page;
     protected $prefix;

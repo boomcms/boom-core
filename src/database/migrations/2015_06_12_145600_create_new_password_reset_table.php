@@ -6,13 +6,13 @@ use Illuminate\Database\Schema\Blueprint;
 class CreateNewPasswordResetTable extends Migration
 {
     /**
-	 * Run the migrations.
-	 *
-	 * @return void
-	 */
+     * Run the migrations.
+     *
+     * @return void
+     */
     public function up()
     {
-		Schema::create('password_resets', function (Blueprint $table) {
+        Schema::create('password_resets', function (Blueprint $table) {
             $table->string('email')->index();
             $table->string('token')->index();
             $table->timestamp('created_at');
@@ -22,15 +22,15 @@ class CreateNewPasswordResetTable extends Migration
     }
 
     /**
-	 * Reverse the migrations.
-	 *
-	 * @return void
-	 */
+     * Reverse the migrations.
+     *
+     * @return void
+     */
     public function down()
     {
         Schema::drop('password_resets');
-		
-		Schema::create('password_tokens', function (Blueprint $table) {
+
+        Schema::create('password_tokens', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('person_id')->unsigned()->index('password_tokens_person_id');
             $table->string('token', 40)->unique('uniq_token');
@@ -38,5 +38,4 @@ class CreateNewPasswordResetTable extends Migration
             $table->integer('expires')->unsigned()->index('password_tokens_expires');
         });
     }
-
 }

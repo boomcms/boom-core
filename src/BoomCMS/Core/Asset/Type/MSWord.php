@@ -8,6 +8,6 @@ class MSWord extends Asset
 {
     public function getType()
     {
-        return "Microsoft Word";
+        return 'Microsoft Word';
     }
 }

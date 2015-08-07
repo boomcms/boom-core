@@ -6,10 +6,10 @@ use Illuminate\Database\Schema\Blueprint;
 class AddForeignKeysToChunkTextsTable extends Migration
 {
     /**
-	 * Run the migrations.
-	 *
-	 * @return void
-	 */
+     * Run the migrations.
+     *
+     * @return void
+     */
     public function up()
     {
         Schema::table('chunk_texts', function (Blueprint $table) {
@@ -18,15 +18,14 @@ class AddForeignKeysToChunkTextsTable extends Migration
     }
 
     /**
-	 * Reverse the migrations.
-	 *
-	 * @return void
-	 */
+     * Reverse the migrations.
+     *
+     * @return void
+     */
     public function down()
     {
         Schema::table('chunk_texts', function (Blueprint $table) {
             $table->dropForeign('chunk_texts_ibfk_1');
         });
     }
-
 }

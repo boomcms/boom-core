@@ -10,18 +10,18 @@ class Video extends BaseController
     {
         return $this->response
             ->header('Content-type', 'image/gif')
-            ->setContent(readfile(__DIR__ . '/../../../../../public/img/icons/40x40/mov_icon.gif'));
+            ->setContent(readfile(__DIR__.'/../../../../../public/img/icons/40x40/mov_icon.gif'));
     }
 
     public function view($width = null, $height = null)
     {
         $stream = fopen($this->asset->getFilename(), 'r');
 
-        return Response::stream(function() use ($stream) {
+        return Response::stream(function () use ($stream) {
             fpassthru($stream);
         }, 200, [
             'content-length' => $this->asset->getFilesize(),
-            'content-type' => (string) $this->asset->getMimetype(),
+            'content-type'   => (string) $this->asset->getMimetype(),
         ]);
     }
 }

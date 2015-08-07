@@ -25,7 +25,7 @@ class Linkset extends BaseChunk
 
     protected function show()
     {
-        return View::make($this->viewPrefix . "linkset.$this->template", [
+        return View::make($this->viewPrefix."linkset.$this->template", [
             'title' => $this->getTitle(),
             'links' => $this->getLinks(),
         ]);
@@ -33,8 +33,8 @@ class Linkset extends BaseChunk
 
     public function showDefault()
     {
-        return View::make($this->viewPrefix . "default.linkset.$this->template", [
-            'placeholder' => $this->getPlaceholderText()
+        return View::make($this->viewPrefix."default.linkset.$this->template", [
+            'placeholder' => $this->getPlaceholderText(),
         ]);
     }
 
@@ -44,9 +44,9 @@ class Linkset extends BaseChunk
             if (isset($this->attrs['links'])) {
                 $this->links = $this->attrs['links'];
 
-                if (! $this->editable) {
+                if (!$this->editable) {
                     foreach ($this->links as $i => $link) {
-                        if ($link->isInternal() && ! $link->getLink()->getPage()->isVisible()) {
+                        if ($link->isInternal() && !$link->getLink()->getPage()->isVisible()) {
                             unset($this->links[$i]);
                         }
                     }

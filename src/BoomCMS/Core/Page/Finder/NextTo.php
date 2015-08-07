@@ -2,21 +2,18 @@
 
 namespace BoomCMS\Core\Page\Finder;
 
-use BoomCMS\Core\Page\Page;
 use BoomCMS\Core\Finder\Filter;
-
+use BoomCMS\Core\Page\Page;
 use Illuminate\Database\Eloquent\Builder;
 
 class NextTo extends Filter
 {
     /**
-     *
      * @var Page
      */
     protected $currentPage;
 
     /**
-     *
      * @var string
      */
     protected $direction;
@@ -43,7 +40,7 @@ class NextTo extends Filter
         }
 
         return $query
-            ->where($order->getColumn(), $operator . '=', $this->currentPage->{$order->getAccessor()}())
+            ->where($order->getColumn(), $operator.'=', $this->currentPage->{$order->getAccessor()}())
             ->where('pages.id', $operator, $this->currentPage->getId())
             ->limit(1)
             ->orderBy($order->getColumn(), $direction);

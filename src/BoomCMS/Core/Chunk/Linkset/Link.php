@@ -7,7 +7,6 @@ use BoomCMS\Core\Link\Link as LinkObject;
 class Link
 {
     /**
-     *
      * @var array
      */
     protected $attrs;
@@ -28,8 +27,8 @@ class Link
     }
 
     /**
-	 * @return Link
-	 */
+     * @return Link
+     */
     public function getLink()
     {
         return LinkObject::factory($this->getUrl());
@@ -64,6 +63,6 @@ class Link
 
     public function isExternal()
     {
-        return ! $this->isInternal();
+        return !$this->isInternal();
     }
 }

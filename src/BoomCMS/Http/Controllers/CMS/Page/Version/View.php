@@ -15,13 +15,13 @@ class View extends Version
             'version' => $this->page->getCurrentVersion(),
         ]);
     }
-    
+
     public function status()
     {
         parent::status();
-        
+
         return ViewFacade::make("$this->viewPrefix.status", [
-            'page' => $this->page,
+            'page'    => $this->page,
             'version' => $this->page->getCurrentVersion(),
         ]);
     }
@@ -35,7 +35,7 @@ class View extends Version
 
         return ViewFacade::make("$this->viewPrefix.template", [
             'template_id' => $this->page->getCurrentVersion()->getTemplateId(),
-            'templates' => $templates
+            'templates'   => $templates,
         ]);
     }
 }

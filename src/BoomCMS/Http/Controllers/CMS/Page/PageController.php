@@ -3,15 +3,13 @@
 namespace BoomCMS\Http\Controllers\CMS\Page;
 
 use BoomCMS\Core\Auth\Auth;
-use BoomCMS\Core\Page as Page;
-
 use BoomCMS\Core\Commands\CreatePage;
 use BoomCMS\Core\Commands\CreatePagePrimaryUri;
+use BoomCMS\Core\Page as Page;
 use BoomCMS\Http\Controllers\Controller;
-
-use Illuminate\Support\Facades\View;
-use Illuminate\Http\Request;
 use Illuminate\Foundation\Bus\DispatchesCommands;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\View;
 
 class PageController extends Controller
 {
@@ -20,7 +18,6 @@ class PageController extends Controller
     protected $viewPrefix = 'boom::editor.page.';
 
     /**
-     *
      * @var Page\Page
      */
     protected $page;
@@ -44,7 +41,7 @@ class PageController extends Controller
 
         return [
             'url' => (string) $url,
-            'id' => $newPage->getId(),
+            'id'  => $newPage->getId(),
         ];
     }
 
@@ -54,10 +51,10 @@ class PageController extends Controller
     }
 
     /**
-	 * Reverts the current page to the last published version.
-	 *
-	 * @uses	Model_Page::stash()
-	 */
+     * Reverts the current page to the last published version.
+     *
+     * @uses	Model_Page::stash()
+     */
     public function stash()
     {
         $this->page->stash();
@@ -65,7 +62,7 @@ class PageController extends Controller
 
     public function urls()
     {
-        return View::make($this->viewPrefix . 'urls', [
+        return View::make($this->viewPrefix.'urls', [
             'page' => $this->page,
             'urls' => $this->page->getUrls(),
         ]);

@@ -2,4 +2,6 @@
 
 namespace BoomCMS\Core\Auth;
 
-class PersonNotFoundException extends \UnexpectedValueException {}
+class PersonNotFoundException extends \UnexpectedValueException
+{
+}

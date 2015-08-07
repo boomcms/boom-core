@@ -2,8 +2,8 @@
 
 namespace BoomCMS\Core\URL;
 
-use BoomCMS\Support\Helpers\URL as URLHelper;
 use BoomCMS\Database\Models\Page\URL as Model;
+use BoomCMS\Support\Helpers\URL as URLHelper;
 
 class Provider
 {
@@ -12,9 +12,9 @@ class Provider
         $unique = URLHelper::makeUnique(URLHelper::sanitise($location));
 
         $model = Model::create([
-            'location' => $unique,
-            'page_id' => $pageId,
-            'is_primary' => $isPrimary
+            'location'   => $unique,
+            'page_id'    => $pageId,
+            'is_primary' => $isPrimary,
         ]);
 
         return new URL($model->toArray());

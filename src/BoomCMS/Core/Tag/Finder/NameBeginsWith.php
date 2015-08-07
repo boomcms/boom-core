@@ -16,6 +16,6 @@ class NameBeginsWith extends Filter
 
     public function build(Builder $query)
     {
-        return $query->where('name', 'like', $this->string . '%');
+        return $query->where('name', 'like', $this->string.'%');
     }
 }

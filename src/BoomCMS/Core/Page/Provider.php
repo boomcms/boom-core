@@ -9,20 +9,17 @@ use BoomCMS\Database\Models\Page as Model;
  *
  * This should probably be done by providing an editor instance to the consuctor
  * with a boolean flag to change whether hidden pages are returned.
- *
  */
-
 class Provider
 {
     /**
-     *
      * @var array
      */
     protected $cache = [
-        'id' => [],
-        'uri' => [],
+        'id'            => [],
+        'uri'           => [],
         'internal_name' => [],
-        'primary_uri' => [],
+        'primary_uri'   => [],
     ];
 
     private function cache(Page $page)
@@ -78,7 +75,7 @@ class Provider
 
     public function findByUri($uri)
     {
-        if ( !isset($this->cache['uri'][$uri])) {
+        if (!isset($this->cache['uri'][$uri])) {
             $finder = new Finder\Finder();
             $finder->addFilter(new Finder\Uri($uri));
             $page = $finder->find();

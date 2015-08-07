@@ -6,10 +6,10 @@ use Illuminate\Database\Schema\Blueprint;
 class CreateChunkSlideshowsTable extends Migration
 {
     /**
-	 * Run the migrations.
-	 *
-	 * @return void
-	 */
+     * Run the migrations.
+     *
+     * @return void
+     */
     public function up()
     {
         Schema::create('chunk_slideshows', function (Blueprint $table) {
@@ -22,13 +22,12 @@ class CreateChunkSlideshowsTable extends Migration
     }
 
     /**
-	 * Reverse the migrations.
-	 *
-	 * @return void
-	 */
+     * Reverse the migrations.
+     *
+     * @return void
+     */
     public function down()
     {
         Schema::drop('chunk_slideshows');
     }
-
 }

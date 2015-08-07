@@ -16,14 +16,14 @@ class Save extends BaseController
             // Url is being used for a different page.
             // Notify that the url is already in use so that the JS can load a prompt to move the url.
             return ['existing_url_id' => $this->url->getId()];
-        } elseif ( ! $this->url->loaded()) {
+        } elseif (!$this->url->loaded()) {
             $this->provider->create($location, $this->page->getId());
         }
     }
 
     public function delete()
     {
-        if (! $this->url->isPrimary()) {
+        if (!$this->url->isPrimary()) {
             $this->provider->delete($this->url);
         }
     }

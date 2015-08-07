@@ -2,8 +2,8 @@
 
 namespace BoomCMS\Http\Controllers\CMS\Page\Version;
 
-use BoomCMS\Http\Controllers\CMS\Page\PageController;
 use BoomCMS\Core\Template;
+use BoomCMS\Http\Controllers\CMS\Page\PageController;
 
 abstract class Version extends PageController
 {
@@ -18,7 +18,7 @@ abstract class Version extends PageController
     {
         $this->authorization('edit_page_content', $this->page);
     }
-    
+
     public function status()
     {
         $this->authorization('edit_page_content', $this->page);

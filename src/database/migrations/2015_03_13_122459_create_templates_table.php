@@ -6,10 +6,10 @@ use Illuminate\Database\Schema\Blueprint;
 class CreateTemplatesTable extends Migration
 {
     /**
-	 * Run the migrations.
-	 *
-	 * @return void
-	 */
+     * Run the migrations.
+     *
+     * @return void
+     */
     public function up()
     {
         Schema::create('templates', function (Blueprint $table) {
@@ -21,13 +21,12 @@ class CreateTemplatesTable extends Migration
     }
 
     /**
-	 * Reverse the migrations.
-	 *
-	 * @return void
-	 */
+     * Reverse the migrations.
+     *
+     * @return void
+     */
     public function down()
     {
         Schema::drop('templates');
     }
-
 }

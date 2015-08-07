@@ -9,7 +9,7 @@
 
         <label class="b-address">
             <span>Address</span>
-            <textarea name="address"><?= str_replace('<br />', "", $chunk->getAddress()) ?></textarea>
+            <textarea name="address"><?= str_replace('<br />', '', $chunk->getAddress()) ?></textarea>
         </label>
 
         <label class="b-postcode">

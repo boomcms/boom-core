@@ -6,10 +6,10 @@ use Illuminate\Database\Schema\Blueprint;
 class CreatePagesTagsTable extends Migration
 {
     /**
-	 * Run the migrations.
-	 *
-	 * @return void
-	 */
+     * Run the migrations.
+     *
+     * @return void
+     */
     public function up()
     {
         Schema::create('pages_tags', function (Blueprint $table) {
@@ -20,13 +20,12 @@ class CreatePagesTagsTable extends Migration
     }
 
     /**
-	 * Reverse the migrations.
-	 *
-	 * @return void
-	 */
+     * Reverse the migrations.
+     *
+     * @return void
+     */
     public function down()
     {
         Schema::drop('pages_tags');
     }
-
 }

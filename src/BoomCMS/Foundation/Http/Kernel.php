@@ -21,5 +21,4 @@ class Kernel extends HttpKernel
         'BoomCMS\Http\Middleware\AutoLogin',
         'BoomCMS\Http\Middleware\DefineGlobalViewSharedVariables',
     ];
-
 }

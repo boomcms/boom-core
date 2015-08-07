@@ -41,7 +41,7 @@
                     <textarea id="credits" name="credits"><?= $asset->getCredits() ?></textarea>
                 </label>
 
-                <?php if ( ! $asset->isImage()): ?>
+                <?php if (!$asset->isImage()): ?>
                     <label for="thumbnail">Thumbnail
                         <input type="text" id="thumbnail" name="thumbnail_asset_id" value="<?= $asset->getThumbnailAssetId() ?>" size="4" />
                     </label>
@@ -72,7 +72,7 @@
                 <dt><?= Lang::get('Uploaded on') ?></dt>
                 <dd><?= $asset->getUploadedTime()->format('d F Y h:i:s') ?></dd>
 
-                <?php if ( ! $asset->isImage()): ?>
+                <?php if (!$asset->isImage()): ?>
                     <dt><?= Lang::get('Downloads') ?></dt>
                     <dd><?= $asset->getDownloads() ?></dd>
                 <?php endif ?>

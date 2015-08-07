@@ -2,16 +2,14 @@
 
 namespace BoomCMS\Core\Template;
 
-use BoomCMS\Core\Theme\Theme;
 use BoomCMS\Core\Page\Finder;
-
+use BoomCMS\Core\Theme\Theme;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\View;
 
 class Template
 {
     /**
-     *
      * @var array
      */
     protected $attrs;
@@ -48,8 +46,8 @@ class Template
 
     public function getConfig()
     {
-        $theme = Config::get('boomcms.themes.' . $this->getThemeName() . '.*');
-        $template = Config::get('boomcms.themes.' . $this->getThemeName() . '.' . $this->getFilename());
+        $theme = Config::get('boomcms.themes.'.$this->getThemeName().'.*');
+        $template = Config::get('boomcms.themes.'.$this->getThemeName().'.'.$this->getFilename());
 
         return array_merge((array) $theme, (array) $template);
     }
@@ -74,7 +72,6 @@ class Template
     }
 
     /**
-     *
      * @return Theme
      */
     public function getTheme()
@@ -89,7 +86,7 @@ class Template
 
     public function getFullFilename()
     {
-        return $this->getTheme()->getName() . '::templates.' . $this->getFilename();
+        return $this->getTheme()->getName().'::templates.'.$this->getFilename();
     }
 
     public function getId()
@@ -109,7 +106,7 @@ class Template
 
     public function getViewName()
     {
-        return $this->getThemeName() . ':' . 'templates.' . $this->getFilename();
+        return $this->getThemeName().':'.'templates.'.$this->getFilename();
     }
 
     public function loaded()

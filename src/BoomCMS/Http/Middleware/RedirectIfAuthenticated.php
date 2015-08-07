@@ -2,14 +2,13 @@
 
 namespace BoomCMS\Http\Middleware;
 
-use Closure;
 use BoomCMS\Core\Auth\Auth;
+use Closure;
 use Illuminate\Http\RedirectResponse;
 
 class RedirectIfAuthenticated
 {
     /**
-     *
      * @var Auth
      */
     protected $auth;
@@ -22,8 +21,9 @@ class RedirectIfAuthenticated
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  \Closure                 $next
+     * @param \Illuminate\Http\Request $request
+     * @param \Closure                 $next
+     *
      * @return mixed
      */
     public function handle($request, Closure $next)
@@ -34,5 +34,4 @@ class RedirectIfAuthenticated
 
         return $next($request);
     }
-
 }

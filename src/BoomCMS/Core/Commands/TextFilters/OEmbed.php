@@ -13,7 +13,8 @@ class OEmbed extends BaseTextFilter
      *      * It doesn't appear within double or single quotes (' or ").
      *      * Doesn't have a closing anchor tag after it (</a>).
      *
-     * @param  string $text
+     * @param string $text
+     *
      * @return string
      */
     public function handle()
@@ -24,13 +25,13 @@ class OEmbed extends BaseTextFilter
         if ($data = $embera->getUrlInfo($text)) {
             $table = [];
             foreach ($data as $url => $service) {
-                if ( ! empty($service['html'])) {
+                if (!empty($service['html'])) {
                     $table[$url] = $service['html'];
                 }
             }
 
             foreach ($table as $url => $replacement) {
-                $text = preg_replace('~(?<![\'\"])'. preg_quote($url) . '(?![\'\"])(?!\</a\>)~', $replacement, $text);
+                $text = preg_replace('~(?<![\'\"])'.preg_quote($url).'(?![\'\"])(?!\</a\>)~', $replacement, $text);
             }
         }
 

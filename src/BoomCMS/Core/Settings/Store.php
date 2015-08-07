@@ -9,20 +9,18 @@ class Store implements \ArrayAccess
     protected $filename;
 
     /**
-     *
      * @var Filesystem
      */
     protected $filesystem;
 
     /**
-     *
      * @var array
      */
     protected $settings;
 
     public function __construct(Filesystem $filesystem)
     {
-        $this->filename = storage_path() . '/boomcms/settings.json';
+        $this->filename = storage_path().'/boomcms/settings.json';
         $this->filesystem = $filesystem;
         $this->settings = $this->loadSettings();
     }

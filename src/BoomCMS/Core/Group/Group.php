@@ -7,9 +7,8 @@ use Illuminate\Support\Facades\DB;
 class Group
 {
     /**
-	 *
-	 * @var array
-	 */
+     * @var array
+     */
     protected $attributes;
 
     public function __construct(array $attributes)
@@ -18,28 +17,28 @@ class Group
     }
 
     /**
-	 * Adds a role to the current group.
-	 *
-	 * This will also add the role to all members of the group.
-	 *
-	 *
-	 * @param integer $roleId	ID of the role to add
-	 * @param integer $allowed	Whether the group is allowed or prevented from the role.
-	 * @param integer $pageId	Make the role active at a particular point in the page tree.
-	 *
-	 * @throws InvalidArgumentException When called with a role ID which is not in use.
-	 *
-	 * @return \Boom\Group\Group
-	 */
+     * Adds a role to the current group.
+     *
+     * This will also add the role to all members of the group.
+     *
+     *
+     * @param int $roleId  ID of the role to add
+     * @param int $allowed Whether the group is allowed or prevented from the role.
+     * @param int $pageId  Make the role active at a particular point in the page tree.
+     *
+     * @throws InvalidArgumentException When called with a role ID which is not in use.
+     *
+     * @return \Boom\Group\Group
+     */
     public function addRole($roleId, $allowed, $pageId = 0)
     {
-        if ( ! $this->hasRole($roleId, $pageId)) {
+        if (!$this->hasRole($roleId, $pageId)) {
             DB::table('group_roles')
                 ->insert([
                     'group_id' => $this->getId(),
-                    'role_id' => $roleId,
-                    'allowed' => $allowed,
-                    'page_id' => $pageId
+                    'role_id'  => $roleId,
+                    'allowed'  => $allowed,
+                    'page_id'  => $pageId,
                 ]);
 
             $select = DB::table('people_groups')
@@ -47,7 +46,7 @@ class Group
                 ->where('group_id', '=', $this->getId());
 
             $bindings = $select->getBindings();
-            $insert = 'INSERT INTO people_roles (person_id, group_id, role_id, allowed, page_id) ' . $select->toSql();
+            $insert = 'INSERT INTO people_roles (person_id, group_id, role_id, allowed, page_id) '.$select->toSql();
 
             DB::statement($insert, $bindings);
         }
@@ -80,15 +79,16 @@ class Group
     }
 
     /**
-	 * Determines whether the current group has a specified role allowed / denied.
-	 *
-	 * @param integer $role_id
-	 * @param integer $page_id
-	 * @return boolean
-	 */
+     * Determines whether the current group has a specified role allowed / denied.
+     *
+     * @param int $role_id
+     * @param int $page_id
+     *
+     * @return bool
+     */
     public function hasRole($role_id, $page_id = 0)
     {
-        if ( ! $this->loaded()) {
+        if (!$this->loaded()) {
             return false;
         }
 
@@ -108,13 +108,14 @@ class Group
     }
 
     /**
-	 * Remove a role from a group.
-	 *
-	 * After removing the role from the group the permissions for the people the group are updated.
-	 *
-	 * @param integer $roleId
-	 * @return \Boom\Group\Group
-	 */
+     * Remove a role from a group.
+     *
+     * After removing the role from the group the permissions for the people the group are updated.
+     *
+     * @param int $roleId
+     *
+     * @return \Boom\Group\Group
+     */
     public function removeRole($roleId)
     {
         DB::table('group_roles')
@@ -132,10 +133,10 @@ class Group
     }
 
     /**
-	 *
-	 * @param string $name
-	 * @return \Boom\Group\Group
-	 */
+     * @param string $name
+     *
+     * @return \Boom\Group\Group
+     */
     public function setName($name)
     {
         $this->attributes['name'] = $name;

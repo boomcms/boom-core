@@ -2,8 +2,8 @@
 
 namespace BoomCMS\Core\Page\Finder;
 
-use DB;
 use BoomCMS\Core\Finder\Filter;
+use DB;
 use Illuminate\Database\Eloquent\Builder;
 
 class YearAndMonth extends Filter

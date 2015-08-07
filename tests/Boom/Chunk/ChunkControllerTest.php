@@ -9,15 +9,15 @@ class Chunk_ChunkControllerTest extends TestCase
     {
         $types = ['asset', 'linkset', 'location', 'slideshow', 'tag', 'timestamp'];
 
-        View::share('button', function() {
+        View::share('button', function () {
             return '';
         });
 
         foreach ($types as $type) {
-            $className = 'BoomCMS\Core\Chunk\\' . ucfirst($type);
+            $className = 'BoomCMS\Core\Chunk\\'.ucfirst($type);
 
             $chunk = new $className(new Page([]), [], 'test', true);
-            View::make('boom::editor.chunk.' . $type, [
+            View::make('boom::editor.chunk.'.$type, [
                 'chunk' => $chunk,
             ])->render();
         }

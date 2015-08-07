@@ -9,31 +9,30 @@ use Illuminate\Support\Facades\View;
 class Menu
 {
     /**
-	 *
-	 * @var	array
-	 */
+     * @var array
+     */
     protected $menuItems = [];
 
     protected $viewFilename = 'boom::menu.boom';
 
     /**
-	 * Convert the menu object to a string by calling [Menu::render()]
-	 */
+     * Convert the menu object to a string by calling [Menu::render()].
+     */
     public function __toString()
     {
         return (string) $this->render();
     }
 
     /**
-	 * Filter the menu items so that any items which have a role set are only displayed if the current user is logged in to the specified role.
-	 */
+     * Filter the menu items so that any items which have a role set are only displayed if the current user is logged in to the specified role.
+     */
     protected function filterItems()
     {
         // Array of items we're going to include for this menu.
         $itemsToInclude = [];
 
         foreach ($this->menuItems as $item) {
-            if ( ! isset($item['role']) || Auth::loggedIn($item['role'])) {
+            if (!isset($item['role']) || Auth::loggedIn($item['role'])) {
                 $itemsToInclude[] = $item;
             }
         }
@@ -47,20 +46,21 @@ class Menu
         $this->filterItems();
         $this->sort('priority');
 
-        if ( ! empty($this->menuItems)) {
+        if (!empty($this->menuItems)) {
             return View::make($this->viewFilename, [
-                'items' => $this->menuItems
+                'items' => $this->menuItems,
             ])->render();
         }
     }
 
     /**
-	 * Sort the items in the menu by the specified key.
-	 * Can also be a passed a callback function for custom sorting.
-	 *
-	 * @param	mixed	$key
-	 * @return	Menu	Current menu object
-	 */
+     * Sort the items in the menu by the specified key.
+     * Can also be a passed a callback function for custom sorting.
+     *
+     * @param mixed $key
+     *
+     * @return Menu Current menu object
+     */
     public function sort($key)
     {
         if (is_string($key)) {

@@ -3,7 +3,6 @@
 namespace BoomCMS\Core\Page\Finder;
 
 use BoomCMS\Core\Finder\Filter;
-
 use Illuminate\Database\Eloquent\Builder;
 
 class RelatedTo extends Filter

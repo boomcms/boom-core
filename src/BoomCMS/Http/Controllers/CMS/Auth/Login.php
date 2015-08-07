@@ -4,7 +4,6 @@ namespace BoomCMS\Http\Controllers\CMS\Auth;
 
 use BoomCMS\Core\Auth;
 use BoomCMS\Http\Controllers\Controller;
-
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Session;
 

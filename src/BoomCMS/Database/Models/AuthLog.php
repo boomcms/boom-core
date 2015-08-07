@@ -11,20 +11,20 @@ class AuthLog extends Model
     const LOGIN = 1;
 
     protected $_table_columns = [
-        'id'            =>    '',
-        'person_id'        =>    '',
-        'action'        =>    '',
-        'method'        =>    '',
-        'ip'            =>    '',
-        'user_agent'    =>    '',
-        'time'            =>    '',
+        'id'               => '',
+        'person_id'        => '',
+        'action'           => '',
+        'method'           => '',
+        'ip'               => '',
+        'user_agent'       => '',
+        'time'             => '',
     ];
 
     protected $table = 'auth_logs';
 
     protected $_created_column = [
-        'column'    =>    'time',
-        'format'    =>    true,
+        'column'    => 'time',
+        'format'    => true,
     ];
 
     public function get_action()

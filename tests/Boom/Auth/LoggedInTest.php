@@ -43,7 +43,7 @@ class LoggedInTest extends TestCase
         $auth->loggedIn('testrole');
     }
 
-   public function testLoggedInWithRoleWhileLoggedOutReturnsFalse()
+    public function testLoggedInWithRoleWhileLoggedOutReturnsFalse()
     {
         $person = new Person(['id' => 1, 'superuser' => true]);
         $permissionsProvider = $this->getMock('BoomCMS\Core\Auth\PermissionsProvider');
@@ -62,7 +62,7 @@ class LoggedInTest extends TestCase
         $this->assertFalse($auth->loggedIn('testrole'));
     }
 
-   public function testLoggedInWithoutPermissionReturnsFalse()
+    public function testLoggedInWithoutPermissionReturnsFalse()
     {
         $person = new Person(['id' => 1]);
         $permissionsProvider = $this->getMock('BoomCMS\Core\Auth\PermissionsProvider');
@@ -83,7 +83,7 @@ class LoggedInTest extends TestCase
         $this->assertFalse($auth->loggedIn('testrole'));
     }
 
-   public function testLoggedInWithPermissionReturnsTrue()
+    public function testLoggedInWithPermissionReturnsTrue()
     {
         $person = new Person(['id' => 1]);
         $permissionsProvider = $this->getMock('BoomCMS\Core\Auth\PermissionsProvider');

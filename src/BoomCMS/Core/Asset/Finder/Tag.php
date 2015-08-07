@@ -3,9 +3,8 @@
 namespace BoomCMS\Core\Asset\Finder;
 
 use BoomCMS\Core\Finder\Filter as BaseFilter;
-
-use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
 
 class Tag extends BaseFilter
 {
@@ -31,7 +30,7 @@ class Tag extends BaseFilter
         if (is_array($this->tags)) {
             $query
                 ->whereIn('assets_tags.tag', $this->tags)
-                ->groupBy("tag")
+                ->groupBy('tag')
                 ->having(DB::raw('count(distinct tag)'), '=', count($this->tags));
         } else {
             $query->where('assets_tags.tag', '=', $this->tags);
@@ -42,6 +41,6 @@ class Tag extends BaseFilter
 
     public function shouldBeApplied()
     {
-        return ! empty($this->tags);
+        return !empty($this->tags);
     }
 }
