@@ -8,17 +8,17 @@ use BoomCMS\Core\Page\Page;
 class ChunkWasCreated extends AbstractPageEvent
 {
     /**
-     * @var Chunk 
+     * @var Chunk
      */
     protected $chunk;
 
     public function __construct(Page $page, Chunk $chunk)
     {
         parent::__construct($page);
-        
+
         $this->chunk = $chunk;
     }
-    
+
     public function getChunk()
     {
         return $this->chunk;

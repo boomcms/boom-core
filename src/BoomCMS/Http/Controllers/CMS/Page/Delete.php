@@ -2,8 +2,8 @@
 
 namespace BoomCMS\Http\Controllers\CMS\Page;
 
-use BoomCMS\Core\Auth\Auth;
 use BoomCMS\Commands\DeletePage;
+use BoomCMS\Core\Auth\Auth;
 use BoomCMS\Core\Page;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Bus;

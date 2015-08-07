@@ -12,10 +12,10 @@ class PageApprovalRequested extends AbstractPageEvent
     public function __construct(Page $page, Person $person)
     {
         parent::__construct($page);
-        
+
         $this->requestedBy = $person;
     }
-    
+
     public function getRequestedBy()
     {
         return $this->requestedBy;

@@ -51,7 +51,7 @@ class TemplateServiceProvider extends ServiceProvider
                     $migrations => base_path('/migrations/boomcms'),
                 ], $theme->getName());
             }
-            
+
             if (file_exists($init)) {
                 include $init;
             }

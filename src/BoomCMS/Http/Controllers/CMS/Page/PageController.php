@@ -2,9 +2,9 @@
 
 namespace BoomCMS\Http\Controllers\CMS\Page;
 
-use BoomCMS\Core\Auth\Auth;
 use BoomCMS\Commands\CreatePage;
 use BoomCMS\Commands\CreatePagePrimaryUri;
+use BoomCMS\Core\Auth\Auth;
 use BoomCMS\Core\Page as Page;
 use BoomCMS\Events\PageWasCreated;
 use BoomCMS\Http\Controllers\Controller;
@@ -42,7 +42,7 @@ class PageController extends Controller
         $url = $this->dispatch(new CreatePagePrimaryUri($this->provider, $newPage, $urlPrefix));
 
         Event::fire(new PageWasCreated($newPage, $this->page));
-        
+
         return [
             'url' => (string) $url,
             'id'  => $newPage->getId(),

@@ -66,7 +66,7 @@ class Chunk extends Controller
         });
 
         View::share('page', $this->page);
-        
+
         Event::fire(new ChunkWasCreated($this->page, $chunk));
 
         return [

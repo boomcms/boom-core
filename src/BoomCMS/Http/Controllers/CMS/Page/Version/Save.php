@@ -29,7 +29,7 @@ class Save extends Version
         parent::request_approval();
 
         $this->page->makeUpdatesAsPendingApproval();
-        
+
         Event::fire(new Events\PageApprovalRequested($this->page, $this->person));
 
         return $this->page->getCurrentVersion()->getStatus();
@@ -40,7 +40,7 @@ class Save extends Version
         parent::template($manager);
 
         $this->page->setTemplateId($this->request->input('template_id'));
-        
+
         $template = TemplateFacade::findById($this->request->input('template_id'));
         Event::fire(new Events\PageTemplateWasChanged($this->page, $template));
 
@@ -51,7 +51,7 @@ class Save extends Version
     {
         $oldTitle = $this->page->getTitle();
         $this->page->setTitle($this->request->input('title'));
-        
+
         Event::fire(new Events\PageTitleWasChanged($this->page, $oldTitle, $this->page->getTitle()));
 
         if ($oldTitle !== $this->page->getTitle()
