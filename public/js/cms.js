@@ -31259,7 +31259,7 @@ Date.parseFunctions={count:0};Date.parseRegexes=[];Date.formatFunctions={count:0
     } else {
         window.dataURLtoBlob = dataURLtoBlob;
     }
-}(window));
+}(this));
 ;/*
  * jQuery File Upload Plugin 5.42.3
  * https://github.com/blueimp/jQuery-File-Upload
@@ -39381,6 +39381,63 @@ window.boomConfig =
 		@default 'bottom'
 		*/
 		timePos: 'bottom'
+	},
+
+	/**
+	@static
+	@class
+	*/
+	tree : {
+		/**
+		@type boolean
+		@default false
+		*/
+		parentAsFolder: false,
+		/**
+		@type boolean
+		@default false
+		*/
+		icons: false,
+		/**
+		@type boolean
+		@default false
+		*/
+		showEdit: false,
+		/**
+		@type boolean
+		@default false
+		*/
+		showRemove: false,
+		/**
+		@type number
+		@default -1
+		*/
+		maxSelected: -1,
+		/**
+		@type boolean
+		@default true
+		*/
+		toggleSelected: true,
+		/**
+		@type string
+		@default 'auto'
+		*/
+		width: 'auto',
+		/**
+		@type string
+		@default 'auto'
+		*/
+		height: 'auto',
+		/**
+		@type string
+		@default 'boom-tree-hitarea-hover'
+		*/
+		iconHitareaHover: 'boom-tree-hitarea-hover',
+		/**
+		@type boolean
+		@default false
+		*/
+		preventDefault: true
 	},
 
 	/**
@@ -61024,7 +61081,7 @@ if (!console) {
 		$elements.each(function() {
 			var $el = $(this);
 
-			$el.append("<div><a href='#' class='b-pages-add'>Add page</a><a href='#' class='b-pages-delete'>Delete page</a><a href='#' class='b-pages-urls'>URLs</a></div>");
+			$el.append("<div><a href='#' class='fa fa-plus b-pages-add'><span>Add page</span></a><a href='#' class='fa fa-trash-o b-pages-delete'><span>Delete page</span></a><a href='#' class='fa fa-cog b-pages-settings'><span>Settings</span></a></div>");
 			elementsById[$el.find('a').attr('rel')] = $el;
 		});
 
@@ -61073,10 +61130,20 @@ if (!console) {
 			});
 	},
 
-	editURLs : function($el) {
-		var page = new boomPage($el.data('page-id'));
+	editSettings : function($el) {
+		var page = new boomPage($el.data('page-id')),
+			$el = $('<div></div>');
 
-		page.urls();
+		$el
+			.addClass('b-settings-container')
+			.appendTo($('#b-pages'))
+			.load('/cms/page/settings/index/' + page.id, function() {
+				$el
+					.addClass('open')
+					.pageSettings({
+						page: page
+					});
+			});
 	},
 
 	editVisibility : function($el) {
@@ -61108,10 +61175,10 @@ if (!console) {
 
 				pageManager.addPage($(this).closest('li'));
 			})
-			.on('click', '.b-pages-urls', function(e) {
+			.on('click', '.b-pages-settings', function(e) {
 				e.preventDefault();
 
-				pageManager.editURLs($(this).closest('li'));
+				pageManager.editSettings($(this).closest('li'));
 			})
 			.on('click', '.b-pages-visibility', function(e) {
 				e.preventDefault();

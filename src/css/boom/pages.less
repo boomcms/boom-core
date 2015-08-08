@@ -1,7 +1,22 @@
 #b-pages {
 	background: @lightest-grey;
 
-	ul {
+	.b-settings-container {
+		position: fixed;
+		top: 60px;
+		left: 0;
+		bottom: 0;
+		width: 100%;
+		max-width: 0;
+		overflow: hidden;
+
+		&.open {
+			max-width: 100%;
+			transition: all 1s;
+		}
+	}
+
+	ul.boom-tree {
 		max-height: none;
 		width: 100%;
 		height: 100%;
@@ -27,18 +42,18 @@
 					color: @darkest-grey;
 					display: inline-block;
 					width: auto;
-					border-left: 1px solid @darkest-grey;
 					height: 40px;
 					line-height: 40px;
-					padding: 0 20px;
+					padding: 0 10px;
 
-					&:last-of-type {
-						border-right: 1px solid @darkest-grey;
+					span {
+						text-indent: -1000%;
+						overflow: hidden;
+						width: 0;
 					}
 
 					&:hover, &:focus {
-						background: @darkest-grey;
-						color: @lightest-grey;
+						color: @red;
 					}
 				}
 			}
