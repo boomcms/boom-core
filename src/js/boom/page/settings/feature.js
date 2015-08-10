@@ -32,6 +32,9 @@ $.widget('boom.pageSettingsFeature', {
 				pageFeatureEditor.changed = false;
 			}).on('click', '.b-button-save', function() {
 				pageFeatureEditor.save();
+			})
+			.on('click', '.b-page-feature-set', function() {
+				pageFeatureEditor.setFeature($(this).attr('data-asset-id'));
 			});
 
 		if (this.imagesInPage.length) {
