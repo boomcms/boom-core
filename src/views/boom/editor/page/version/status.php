@@ -13,7 +13,8 @@
     <?php elseif ($version->isEmbargoed()): ?>
         <p>
             <?= Lang::get('boom::settings.draft-status.embargoed', [
-                'date' => $version->getEmbargoedUntil()->format('l d F Y H:i'),
+                'date' => $version->getEmbargoedUntil()->format('l d F Y'),
+                'time' => $version->getEmbargoedUntil()->format('H:i'),
             ]) ?>
         </p>
     <?php elseif ($version->isPublished()): ?>
@@ -24,14 +25,16 @@
         <?= Lang::get('boom::settings.draft-status.latest', [
             'name'  => $version->getEditedBy()->getName(),
             'email' => $version->getEditedBy()->getEmail(),
-            'date'  => $version->getEditedTime()->format('l d F Y H:i'),
+            'date'  => $version->getEditedTime()->format('l d F Y'),
+            'time'  => $version->getEditedTime()->format('H:i')
         ]) ?>
     </p>
     
     <?php if (!$version->isPublished()): ?>
         <p>
             <?= Lang::get('boom::settings.draft-status.last-published', [
-                'date' => $page->getLastPublishedTime()->format('l d F Y H:i'),
+                'date' => $page->getLastPublishedTime()->format('l d F Y'),
+                'time' => $page->getLastPublishedTime()->format('H:i'),
             ]) ?>
         </p>
         

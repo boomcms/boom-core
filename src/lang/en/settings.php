@@ -37,8 +37,8 @@ return [
         'pending'        => 'The latest version of this page is current <strong>pending approval</strong> by someone with publish permissions for this page',
         'embargoed'      => 'The latest version of this page is <strong>embargoed</strong> and will become published at <strong>:date</strong>',
         'published'      => 'There are no drafts for this page. All edits are <strong>published</strong>',
-        'latest'         => 'This version was created by :name (:email) at :date',
-        'last-published' => 'The page was last published at :date',
+        'latest'         => 'This version was created by :name (:email) on :date at :time',
+        'last-published' => 'The page was last published on :date at :time',
     ],
     'feature' => [
         'heading'   => 'Page feature image',
