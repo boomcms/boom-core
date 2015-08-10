@@ -26,7 +26,7 @@
             'name'  => $version->getEditedBy()->getName(),
             'email' => $version->getEditedBy()->getEmail(),
             'date'  => $version->getEditedTime()->format('l d F Y'),
-            'time'  => $version->getEditedTime()->format('H:i')
+            'time'  => $version->getEditedTime()->format('H:i'),
         ]) ?>
     </p>
     
