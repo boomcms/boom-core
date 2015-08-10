@@ -32,7 +32,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 		var data = this.getData();
 
 		this.dialog = new boomDialog({
-			url: '/cms/chunk/timestamp/edit/' + this.options.currentPage.id + '?slotname=' + self.options.name,
+			url: '/cms/chunk/' + this.options.currentPage.id + '/edit?slotname=' + self.options.name + '&type=timestamp',
 			width: 400,
 			title: 'Edit date / time',
 			closeButton: false,

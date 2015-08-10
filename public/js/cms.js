@@ -39387,6 +39387,63 @@ window.boomConfig =
 	@static
 	@class
 	*/
+	tree : {
+		/**
+		@type boolean
+		@default false
+		*/
+		parentAsFolder: false,
+		/**
+		@type boolean
+		@default false
+		*/
+		icons: false,
+		/**
+		@type boolean
+		@default false
+		*/
+		showEdit: false,
+		/**
+		@type boolean
+		@default false
+		*/
+		showRemove: false,
+		/**
+		@type number
+		@default -1
+		*/
+		maxSelected: -1,
+		/**
+		@type boolean
+		@default true
+		*/
+		toggleSelected: true,
+		/**
+		@type string
+		@default 'auto'
+		*/
+		width: 'auto',
+		/**
+		@type string
+		@default 'auto'
+		*/
+		height: 'auto',
+		/**
+		@type string
+		@default 'boom-tree-hitarea-hover'
+		*/
+		iconHitareaHover: 'boom-tree-hitarea-hover',
+		/**
+		@type boolean
+		@default false
+		*/
+		preventDefault: true
+	},
+
+	/**
+	@static
+	@class
+	*/
 	sortable : {
 		/**
 		@type string
@@ -42277,7 +42334,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 		var data = this.getData();
 
 		this.dialog = new boomDialog({
-			url: '/cms/chunk/timestamp/edit/' + this.options.currentPage.id + '?slotname=' + self.options.name,
+			url: '/cms/chunk/' + this.options.currentPage.id + '/edit?slotname=' + self.options.name + '&type=timestamp',
 			width: 400,
 			title: 'Edit date / time',
 			closeButton: false,
