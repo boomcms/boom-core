@@ -60,13 +60,7 @@ $.widget('boom.pageSettingsFeature', {
 	},
 
 	removeFeature: function() {
-		var pageFeatureEditor = this,
-			confirmation = new boomConfirmation('Please confirm', "Are you sure you want to do delete this page's feature image?");
-
-		confirmation
-			.done(function() {
-				pageFeatureEditor.setFeature(0);
-			});
+		this.setFeature(0);
 	},
 
 	save: function() {
