@@ -4,7 +4,7 @@
         </p>
 
         <p>
-            <strong>Note: this will set a time for the page's edits to become live. If you want to embargo the entire page you should use the <a href="#" class="visibility">visibility settings</a>.</strong>
+            <strong>Note: this will set a time for the page's edits to become live. If you want to embargo the entire page you should use the visibility settings.</strong>
         </p>
 
         <label>

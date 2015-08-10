@@ -40169,13 +40169,7 @@ function boomPage(page_id) {
 		dialog = new boomDialog({
 			url: url,
 			title: 'Page embargo',
-			width: 440,
-			onLoad : function() {
-				dialog.contents.on('click', '.visibility', function() {
-					page.visibility();
-					dialog.cancel();
-				});
-			}
+			width: 440
 		}).done(function() {
 			$.post(url, dialog.contents.find('form').serialize())
 			.done(function(response) {
