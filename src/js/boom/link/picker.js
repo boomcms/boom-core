@@ -131,7 +131,6 @@ function boomLinkPicker(link, options) {
 		var linkPicker = this;
 
 		new boomDialog({
-			title : 'Edit link',
 			msg : $('#b-linkpicker-container').html(),
 			id : 'b-linkpicker',
 			width : 600,
