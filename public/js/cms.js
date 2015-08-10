@@ -43730,7 +43730,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 				asset
 					.delete()
 					.done(function() {
-						dialog.close();
+						dialog.cancel();
 					});
 			})
 			.on('click', '.b-assets-download', function(e) {

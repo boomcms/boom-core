@@ -11,7 +11,7 @@ function boomAssetEditor(asset, uploader) {
 				asset
 					.delete()
 					.done(function() {
-						dialog.close();
+						dialog.cancel();
 					});
 			})
 			.on('click', '.b-assets-download', function(e) {
