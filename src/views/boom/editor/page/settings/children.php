@@ -29,7 +29,9 @@
                     <option value="desc"<?php if ($child_order_direction === 'desc'): ?> selected="selected"<?php endif ?>>Descending</option>
                 </select>
 
-                <?= $button('', Lang::get('boom::buttons.reorder'), ['id' => 'b-page-settings-children-reorder', 'class' => 'b-button-textonly']) ?>
+                <?php if ($page->hasChildren()): ?>
+                    <?= $button('', Lang::get('boom::buttons.reorder'), ['id' => 'b-page-settings-children-reorder', 'class' => 'b-button-textonly']) ?>
+                <?php endif ?>
             </label>
 		</section>
 
