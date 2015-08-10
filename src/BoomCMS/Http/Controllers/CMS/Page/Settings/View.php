@@ -54,6 +54,13 @@ class View extends Settings
         ]);
     }
 
+    public function index()
+    {
+        return ViewFacade::make("$this->viewPrefix/index", [
+            'page' => $this->page,
+        ]);
+    }
+
     public function navigation()
     {
         parent::navigation();

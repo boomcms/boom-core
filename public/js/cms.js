@@ -42393,11 +42393,6 @@ $.widget('ui.chunkTag', $.ui.chunk,
 		$.ui.chunk.prototype._create.call(this);
 	},
 
-
-	/**
-	Open a dialog with a tree control to pick a page for the current feature
-	and a button to remove any existing page without replacing it.
-	*/
 	edit : function(){
 		$.boom.log('Tag chunk slot edit');
 
@@ -61080,7 +61075,7 @@ if (!console) {
 		$elements.each(function() {
 			var $el = $(this);
 
-			$el.append("<div><a href='#' class='b-pages-add'>Add page</a><a href='#' class='b-pages-delete'>Delete page</a><a href='#' class='b-pages-urls'>URLs</a></div>");
+			$el.append("<div><a href='#' class='fa fa-plus b-pages-add'><span>Add page</span></a><a href='#' class='fa fa-trash-o b-pages-delete'><span>Delete page</span></a><a href='#' class='fa fa-cog b-pages-settings'><span>Settings</span></a></div>");
 			elementsById[$el.find('a').attr('rel')] = $el;
 		});
 
@@ -61129,10 +61124,20 @@ if (!console) {
 			});
 	},
 
-	editURLs : function($el) {
-		var page = new boomPage($el.data('page-id'));
+	editSettings : function($el) {
+		var page = new boomPage($el.data('page-id')),
+			$el = $('<div></div>');
 
-		page.urls();
+		$el
+			.addClass('b-settings-container')
+			.appendTo($('#b-pages'))
+			.load('/cms/page/settings/index/' + page.id, function() {
+				$el
+					.addClass('open')
+					.pageSettings({
+						page: page
+					});
+			});
 	},
 
 	editVisibility : function($el) {
@@ -61164,10 +61169,10 @@ if (!console) {
 
 				pageManager.addPage($(this).closest('li'));
 			})
-			.on('click', '.b-pages-urls', function(e) {
+			.on('click', '.b-pages-settings', function(e) {
 				e.preventDefault();
 
-				pageManager.editURLs($(this).closest('li'));
+				pageManager.editSettings($(this).closest('li'));
 			})
 			.on('click', '.b-pages-visibility', function(e) {
 				e.preventDefault();
