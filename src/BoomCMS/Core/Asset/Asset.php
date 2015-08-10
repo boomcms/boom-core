@@ -270,7 +270,7 @@ abstract class Asset implements Arrayable
     /**
      * @param string $credits
      *
-     * @return \Boom\Asset\Asset
+     * @return $this
      */
     public function setCredits($credits)
     {
@@ -282,7 +282,7 @@ abstract class Asset implements Arrayable
     /**
      * @param string $description
      *
-     * @return \Boom\Asset\Asset
+     * @return $this
      */
     public function setDescription($description)
     {
@@ -303,7 +303,7 @@ abstract class Asset implements Arrayable
     /**
      * @param int $assetId
      *
-     * @return \Boom\Asset\Asset
+     * @return $this
      */
     public function setThumbnailAssetId($assetId)
     {
@@ -315,7 +315,7 @@ abstract class Asset implements Arrayable
     /**
      * @param string $title
      *
-     * @return \Boom\Asset\Asset
+     * @return $this
      */
     public function setTitle($title)
     {
@@ -339,7 +339,7 @@ abstract class Asset implements Arrayable
     /**
      * @param \Boom\Person\Person $person
      *
-     * @return \Boom\Asset\Asset
+     * @return $this
      */
     public function setUploadedBy(Person\Person $person)
     {
