@@ -54,8 +54,8 @@
     <?php if (!$version->isPublished() || !$page->isVisible()): ?>
         <div>
             <?= $button('', Lang::get('boom::buttons.preview'), [
-                'class' => 'b-button-textonly b-page-preview',
-                'data-url' => (string) $page->url()
+                'class'    => 'b-button-textonly b-page-preview',
+                'data-url' => (string) $page->url(),
             ]) ?>
         </div>
     <?php endif ?>
