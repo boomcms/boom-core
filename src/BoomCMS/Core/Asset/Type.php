@@ -49,7 +49,7 @@ abstract class Type
      */
     public static function whichExist()
     {
-        $typesAsNumbers = DB::table('asset_versions')->distinct()->lists('type');
+        $typesAsNumbers = DB::table('assets')->distinct()->lists('type');
 
         $typesAsStrings = [];
 

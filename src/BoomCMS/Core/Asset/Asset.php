@@ -27,7 +27,6 @@ abstract class Asset implements Arrayable
         'asset_id'   => '',
         'width'      => '',
         'height'     => '',
-        'type'       => '',
         'filesize'   => '',
         'filename'   => '',
         'edited_at'  => '',

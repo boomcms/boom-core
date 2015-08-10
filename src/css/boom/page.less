@@ -32,10 +32,6 @@
 		width: 50px;
 		opacity: 1;
 
-		&:hover, &:focus {
-			color: @red;
-		}
-
 		span {
 			padding: .4em;
 		}
@@ -50,6 +46,10 @@
 
 		&[data-status='pending approval'] {
 			color: #249ac1;
+		}
+		
+		&[data-status]:hover, &[data-status]:focus {
+			color: @red;
 		}
 	}
 
