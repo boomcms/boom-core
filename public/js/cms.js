@@ -44179,7 +44179,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 			})
 			.find('#b-assets-upload-form')
 			.assetUploader({
-				done : function(e, data) {
+				uploadFinished: function(e, data) {
 					assetPicker.assetsUploaded(data.result);
 				}
 			})
