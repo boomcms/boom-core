@@ -116,7 +116,7 @@ abstract class Asset implements Arrayable
 
     public function getLastModified()
     {
-        return new DateTime('@'.$this->get('edited_at'));
+        return (new DateTime())->setTimestamp($this->get('edited_at'));
     }
 
     public function getLatestVersionId()
