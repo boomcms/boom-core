@@ -19,7 +19,6 @@ class CreateAssetVersionsTable extends Migration
             $table->smallInteger('width')->unsigned()->nullable();
             $table->smallInteger('height')->unsigned()->nullable();
             $table->string('filename', 150);
-            $table->string('type', 100)->nullable()->index('asset_versions_type');
             $table->integer('filesize')->unsigned()->nullable()->default(0)->index('asset_versions_filesize');
             $table->integer('edited_at')->unsigned()->nullable();
             $table->integer('edited_by')
@@ -38,13 +37,12 @@ class CreateAssetVersionsTable extends Migration
                 ->onDelete('CASCADE');
         });
 
-        DB::statement('insert into asset_versions (id, asset_id, width, height, filename, type, filesize, edited_at, edited_by) select id, id, width, height, filename, type, filesize, uploaded_time, uploaded_by from assets');
+        DB::statement('insert into asset_versions (id, asset_id, width, height, filename, filesize, edited_at, edited_by) select id, id, width, height, filename, filesize, uploaded_time, uploaded_by from assets');
 
         Schema::table('assets', function ($table) {
             $table->dropColumn('width');
             $table->dropColumn('height');
             $table->dropColumn('filename');
-            $table->dropColumn('type');
             $table->dropColumn('filesize');
             $table->dropColumn('duration');
             $table->dropColumn('last_modified');

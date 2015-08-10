@@ -237,8 +237,9 @@ abstract class Asset implements Arrayable
             'height'    => $height,
             'edited_at' => time(),
             'edited_by' => Auth::getPerson()->getId(),
-            'type'      => Mimetype::factory($file->getMimeType())->getType(),
         ]);
+
+        $this->setType(Mimetype::factory($file->getMimeType())->getType());
 
         $file->move(static::directory(), $version->id);
 
@@ -320,6 +321,18 @@ abstract class Asset implements Arrayable
     {
         $this->attrs['title'] = $title;
 
+        return $this;
+    }
+
+    /**
+     * @param integer $type
+     *
+     * @return $this
+     */
+    public function setType($type)
+    {
+        $this->attrs['type'] = $type;
+        
         return $this;
     }
 
