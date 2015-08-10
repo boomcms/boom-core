@@ -8,7 +8,7 @@ use BoomCMS\Core\Person\Person;
 class PageWasPublished extends AbstractPageEvent
 {
     /**
-     * @var Person 
+     * @var Person
      */
     protected $person;
 
