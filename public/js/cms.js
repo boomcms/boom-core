@@ -42110,7 +42110,10 @@ $.widget('ui.chunkFeature', $.ui.chunk,
 				external: false
 			})
 			.done(function(link) {
-				featureEditor.dialog.close();
+				if (typeof(featureEditor.confirmation) !== 'undefined') {
+					featureEditor.confirmation.close();
+				}
+
 				featureEditor.insert(link.getPageId());
 			})
 			.fail(function() {
