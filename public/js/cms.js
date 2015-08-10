@@ -42404,13 +42404,12 @@ $.widget('ui.chunkTag', $.ui.chunk,
 		var self = this;
 
 		this.dialog = new boomDialog({
-			url: '/cms/chunk/tag/edit/' + this.options.currentPage.id + '?tag=' + this.tag,
+			url: '/cms/chunk/' + this.options.currentPage.id + '/edit?type=tag&tag=' + this.tag,
 			width: 400,
 			id: self.element[0].id + '-boom-dialog',
 			title: 'Select tag',
 			onLoad : function() {
 				self.dialog.contents.find('#b-tags-add-name').assetTagAutocomplete({
-					type : 1,
 					complete : function(e, data) {
 						self.tag = data.tag;
 						self.dialog.contents.find('#b-selected p').text(data.tag);
