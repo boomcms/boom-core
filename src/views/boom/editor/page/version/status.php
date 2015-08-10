@@ -50,4 +50,13 @@
             <?= $button('undo', Lang::get('boom::buttons.page-revert'), ['class' => 'b-button-withtext b-page-revert']) ?>
         <?php endif ?>
     <?php endif ?>
+        
+    <?php if (!$version->isPublished() || !$page->isVisible()): ?>
+        <div>
+            <?= $button('', Lang::get('boom::buttons.preview'), [
+                'class' => 'b-button-textonly b-page-preview',
+                'data-url' => (string) $page->url()
+            ]) ?>
+        </div>
+    <?php endif ?>
 </div>

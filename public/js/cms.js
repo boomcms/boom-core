@@ -39635,10 +39635,14 @@ $.extend($.boom,
 	@class
 	*/
 	editor: {
-		state : function(state) {
+		state : function(state, url) {
 
 			$.post('/cms/editor/state', {state: state}, function() {
-				top.location.reload();
+				if (url) {
+					top.location = url;
+				} else {
+					top.location.reload();
+				}
 			});
 		}
 	}
@@ -41541,6 +41545,9 @@ $.widget('boom.pageTree', {
 							status: status
 						});
 					});
+			})
+			.on('click', '.b-page-preview', function() {
+				$.boom.editor.state('preview', $(this).attr('data-url'));
 			});
 	},
 

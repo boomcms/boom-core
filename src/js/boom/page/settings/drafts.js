@@ -39,6 +39,9 @@ $.widget('boom.pageSettingsDrafts', {
 							status: status
 						});
 					});
+			})
+			.on('click', '.b-page-preview', function() {
+				$.boom.editor.state('preview', $(this).attr('data-url'));
 			});
 	},
 
