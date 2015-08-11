@@ -196,8 +196,8 @@ class AssetManager extends Controller
                 ->setUploadedBy($this->auth->getPerson());
 
             $asset_ids[] = $this->provider->save($asset)->getId();
-
             $asset->createVersionFromFile($file);
+            $this->provider->save($asset);
         }
 
         if (count($errors)) {
