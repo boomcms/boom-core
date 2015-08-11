@@ -23,6 +23,8 @@ class Collection
                 unset($this->assetIds[$i]);
             }
         }
+        
+        $this->assetIds = array_values($this->assetIds);
     }
 
     /**
@@ -37,7 +39,7 @@ class Collection
         // If an asset already has the tag then a Database_Exception will be thrown due to a unique key on asset_id and tag.
         // Therefore, the tag is added to each asset individually.
 
-        foreach ($this->assetIds as $id) {
+        foreach ($this->getAssetIds() as $id) {
             try {
                 DB::table('assets_tags')
                     ->insert([
@@ -53,7 +55,7 @@ class Collection
 
     public function delete()
     {
-        foreach ($this->assetIds as $assetId) {
+        foreach ($this->getAssetIds() as $assetId) {
             $filename = Asset::directory().$assetId;
 
             file_exists($filename) && unlink($filename);
@@ -64,8 +66,16 @@ class Collection
         }
 
         DB::table('assets')
-            ->whereIn('id', $this->assetIds)
+            ->whereIn('id', $this->getAssetIds())
             ->delete();
+    }
+
+    /**
+     * @return array
+     */
+    public function getAssetIds()
+    {
+        return $this->assetIds;
     }
 
     /**
@@ -77,9 +87,9 @@ class Collection
     {
         return DB::table('assets_tags')
             ->select('tag')
-            ->whereIn('asset_id', $this->assetIds)
+            ->whereIn('asset_id', $this->getAssetIds())
             ->groupBy('tag')
-            ->havingRaw(DB::raw('count(distinct asset_id) ='.count($this->assetIds)))
+            ->havingRaw(DB::raw('count(distinct asset_id) ='.count($this->getAssetIds())))
             ->lists('tag');
     }
 
@@ -94,7 +104,7 @@ class Collection
     {
         DB::table('assets_tags')
             ->where('tag', '=', $tag)
-            ->whereIn('asset_id', $this->assetIds)
+            ->whereIn('asset_id', $this->getAssetIds())
             ->delete();
 
         return $this;
