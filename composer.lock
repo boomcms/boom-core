@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/boomcms/boom-core.git",
-                "reference": "9484b33416717471002b2ab1b7f7eadbad6afc05"
+                "reference": "75f6c0f5b1f093ba44c9999bfd2181fc60d5c412"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/boomcms/boom-core/zipball/9484b33416717471002b2ab1b7f7eadbad6afc05",
-                "reference": "9484b33416717471002b2ab1b7f7eadbad6afc05",
+                "url": "https://api.github.com/repos/boomcms/boom-core/zipball/75f6c0f5b1f093ba44c9999bfd2181fc60d5c412",
+                "reference": "75f6c0f5b1f093ba44c9999bfd2181fc60d5c412",
                 "shasum": ""
             },
             "require": {
@@ -50,7 +50,7 @@
                 "MIT"
             ],
             "description": "Core classes for BoomCMS",
-            "time": "2015-07-29 10:46:56"
+            "time": "2015-08-11 09:03:27"
         },
         {
             "name": "boomcms/boom-installer",
@@ -58,12 +58,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/boomcms/boom-installer.git",
-                "reference": "01be7e579c0d7fb843fed8d5ecece8bd0afbecc2"
+                "reference": "25059580b1a614fc0c4516ba19301b68ead7c7d7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/boomcms/boom-installer/zipball/01be7e579c0d7fb843fed8d5ecece8bd0afbecc2",
-                "reference": "01be7e579c0d7fb843fed8d5ecece8bd0afbecc2",
+                "url": "https://api.github.com/repos/boomcms/boom-installer/zipball/25059580b1a614fc0c4516ba19301b68ead7c7d7",
+                "reference": "25059580b1a614fc0c4516ba19301b68ead7c7d7",
                 "shasum": ""
             },
             "require": {
@@ -91,7 +91,7 @@
                 }
             ],
             "description": "BoomCMS installer",
-            "time": "2015-07-29 11:18:38"
+            "time": "2015-08-07 11:25:36"
         },
         {
             "name": "boomcms/boom-robotstxt",
@@ -99,12 +99,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/boomcms/boom-robotstxt.git",
-                "reference": "48b54d00e6206f1c8d9a3c53fd598dac56aca11b"
+                "reference": "b6162b487f2db4e00ad1e8dd7b3ff5f5cd135fde"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/boomcms/boom-robotstxt/zipball/48b54d00e6206f1c8d9a3c53fd598dac56aca11b",
-                "reference": "48b54d00e6206f1c8d9a3c53fd598dac56aca11b",
+                "url": "https://api.github.com/repos/boomcms/boom-robotstxt/zipball/b6162b487f2db4e00ad1e8dd7b3ff5f5cd135fde",
+                "reference": "b6162b487f2db4e00ad1e8dd7b3ff5f5cd135fde",
                 "shasum": ""
             },
             "require": {
@@ -131,7 +131,7 @@
                 }
             ],
             "description": "robots.txt generator for BoomCMS",
-            "time": "2015-07-29 11:12:38"
+            "time": "2015-08-07 11:26:09"
         },
         {
             "name": "boomcms/boom-sitemap",
@@ -139,12 +139,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/boomcms/boom-sitemap.git",
-                "reference": "892ddf321428720773b021832f996ee465f460b4"
+                "reference": "44d275a9053f5dde6537c5b6051e115e991cb64f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/boomcms/boom-sitemap/zipball/892ddf321428720773b021832f996ee465f460b4",
-                "reference": "892ddf321428720773b021832f996ee465f460b4",
+                "url": "https://api.github.com/repos/boomcms/boom-sitemap/zipball/44d275a9053f5dde6537c5b6051e115e991cb64f",
+                "reference": "44d275a9053f5dde6537c5b6051e115e991cb64f",
                 "shasum": ""
             },
             "require": {
@@ -170,7 +170,7 @@
                 }
             ],
             "description": "sitemap.xml generator for BoomCMS",
-            "time": "2015-07-29 11:13:52"
+            "time": "2015-08-07 11:26:37"
         },
         {
             "name": "boomcms/theme-default",
@@ -1554,16 +1554,16 @@
         },
         {
             "name": "monolog/monolog",
-            "version": "1.15.0",
+            "version": "1.16.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "dc5150cc608f2334c72c3b6a553ec9668a4156b0"
+                "reference": "c0c0b4bee3aabce7182876b0d912ef2595563db7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/dc5150cc608f2334c72c3b6a553ec9668a4156b0",
-                "reference": "dc5150cc608f2334c72c3b6a553ec9668a4156b0",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/c0c0b4bee3aabce7182876b0d912ef2595563db7",
+                "reference": "c0c0b4bee3aabce7182876b0d912ef2595563db7",
                 "shasum": ""
             },
             "require": {
@@ -1600,7 +1600,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.15.x-dev"
+                    "dev-master": "1.16.x-dev"
                 }
             },
             "autoload": {
@@ -1626,7 +1626,7 @@
                 "logging",
                 "psr-3"
             ],
-            "time": "2015-07-12 13:54:09"
+            "time": "2015-08-09 17:44:44"
         },
         {
             "name": "mpratt/embera",
@@ -2187,7 +2187,7 @@
         },
         {
             "name": "symfony/event-dispatcher",
-            "version": "v2.7.2",
+            "version": "v2.7.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/EventDispatcher.git",
@@ -2245,7 +2245,7 @@
         },
         {
             "name": "symfony/filesystem",
-            "version": "v2.7.2",
+            "version": "v2.7.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Filesystem.git",
