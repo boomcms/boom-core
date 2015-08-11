@@ -17,6 +17,12 @@ class Collection
     public function __construct(array $assetIds)
     {
         $this->assetIds = array_unique($assetIds);
+
+        foreach ($this->assetIds as $i => $assetId) {
+            if (!$assetId) {
+                unset($this->assetIds[$i]);
+            }
+        }
     }
 
     /**
