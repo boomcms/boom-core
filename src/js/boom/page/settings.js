@@ -71,6 +71,7 @@ $.widget('boom.pageSettings', {
 				section: section,
 				settings: pageSettings,
 				done: function(event, data) {
+					pageSettings._trigger('save', event, data);
 					pageSettings._trigger(section + 'Save', event, data);
 				}
 			});
