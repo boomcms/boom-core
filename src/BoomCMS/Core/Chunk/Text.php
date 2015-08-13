@@ -55,19 +55,9 @@ class Text extends BaseChunk
         return $this->allowFormatting ? "<p>$placeholder</p>" : $placeholder;
     }
 
-    /**
-     * Returns the chunk's text without any filters applied.
-     *
-     * @return string
-     */
-    public function getUnfilteredText()
-    {
-        return isset($this->attrs['text']) ? $this->attrs['text'] : '';
-    }
-
     public function get_paragraphs($offset = 0, $length = null)
     {
-        preg_match_all('|<p>(.*?)</p>|', $this->getUnfilteredText(), $matches, PREG_PATTERN_ORDER);
+        preg_match_all('|<p>(.*?)</p>|', $this->text(), $matches, PREG_PATTERN_ORDER);
 
         return $matches[1];
     }
