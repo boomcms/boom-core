@@ -11,7 +11,7 @@ class Page_PageTest extends TestCase
 {
     public function testGetParentReturnsPageObject()
     {
-        $page = new Page([]);
+        $page = new Page();
 
         $this->assertInstanceOf('BoomCMS\Core\Page\Page', $page->getParent());
     }
@@ -28,7 +28,7 @@ class Page_PageTest extends TestCase
         $page = new Page(['feature_image_id' => 1]);
         $this->assertTrue($page->hasFeatureImage());
 
-        $page = new Page([]);
+        $page = new Page();
         $this->assertFalse($page->hasFeatureImage());
     }
 
@@ -37,7 +37,7 @@ class Page_PageTest extends TestCase
         $page = new Page(['feature_image_id' => 1]);
         $this->assertEquals(1, $page->getFeatureImageId());
 
-        $page = new Page([]);
+        $page = new Page();
         $this->assertNull($page->getFeatureImageId());
     }
 
@@ -60,7 +60,7 @@ class Page_PageTest extends TestCase
 
     public function testGetDescriptionUsesPageStandfirstAsFallback()
     {
-        $page = new Page([]);
+        $page = new Page();
 
         Chunk::shouldReceive('get')
             ->once()
@@ -88,9 +88,9 @@ class Page_PageTest extends TestCase
     {
         PageFacade::shouldReceive('findById')
             ->with(2)
-            ->andReturn(new Page([]));
+            ->andReturn(new Page());
 
-        $page = new Page([]);
+        $page = new Page();
         $page->setParentId(2);
 
         $this->assertNull($page->getParentId());
@@ -102,7 +102,7 @@ class Page_PageTest extends TestCase
             ->with(2)
             ->andReturn(new Page(['id' => 2]));
 
-        $page = new Page([]);
+        $page = new Page();
         $page->setParentId(2);
 
         $this->assertEquals(2, $page->getParentId());

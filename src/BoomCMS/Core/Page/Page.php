@@ -55,7 +55,7 @@ class Page
         'pending_approval',
     ];
 
-    public function __construct(array $data)
+    public function __construct(array $data = [])
     {
         $versionData = [];
 

@@ -67,7 +67,7 @@ class Provider
             $page = Editor::getActivePage();
         } elseif ($page === 0) {
             // 0 was given as the page - this signifies a 'global' chunk not assigned to any page.
-            $page = new Page([]);
+            $page = new Page();
         }
 
         $chunk = $this->find($type, $slotname, $page->getCurrentVersion());

@@ -27,7 +27,7 @@ class Finder extends BaseFinder
     {
         $model = parent::find();
 
-        return $model ? new Page($model->toArray()) : new Page([]);
+        return $model ? new Page($model->toArray()) : new Page();
     }
 
     public function findAll()

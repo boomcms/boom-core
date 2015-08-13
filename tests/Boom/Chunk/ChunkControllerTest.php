@@ -16,7 +16,7 @@ class Chunk_ChunkControllerTest extends TestCase
         foreach ($types as $type) {
             $className = 'BoomCMS\Core\Chunk\\'.ucfirst($type);
 
-            $chunk = new $className(new Page([]), [], 'test', true);
+            $chunk = new $className(new Page(), [], 'test', true);
             View::make('boom::editor.chunk.'.$type, [
                 'chunk' => $chunk,
             ])->render();

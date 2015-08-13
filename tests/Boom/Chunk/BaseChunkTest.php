@@ -20,7 +20,7 @@ class BaseChunkTest extends TestCase
 
         $chunk = $this->getMockBuilder('BoomCMS\Core\Chunk\BaseChunk')
             ->setMethods(['show', 'showDefault', 'hasContent', 'getType'])
-            ->setConstructorArgs([new Page([]), [], 'test', true])
+            ->setConstructorArgs([new Page(), [], 'test', true])
             ->getMock();
 
         $chunk
@@ -45,7 +45,7 @@ class BaseChunkTest extends TestCase
 
         $chunk = $this->getMockBuilder('BoomCMS\Core\Chunk\BaseChunk')
             ->setMethods(['show', 'showDefault', 'hasContent', 'getType'])
-            ->setConstructorArgs([new Page([]), [], 'test', true])
+            ->setConstructorArgs([new Page(), [], 'test', true])
             ->getMock();
 
         $chunk
@@ -68,12 +68,12 @@ class BaseChunkTest extends TestCase
     {
         $editable = $this->getMockBuilder('BoomCMS\Core\Chunk\BaseChunk')
             ->setMethods(['show', 'showDefault', 'hasContent'])
-            ->setConstructorArgs([new Page([]), [], 'test', true])
+            ->setConstructorArgs([new Page(), [], 'test', true])
             ->getMock();
 
         $noteditable = $this->getMockBuilder('BoomCMS\Core\Chunk\BaseChunk')
             ->setMethods(['show', 'showDefault', 'hasContent'])
-            ->setConstructorArgs([new Page([]), [], 'test', false])
+            ->setConstructorArgs([new Page(), [], 'test', false])
             ->getMock();
 
         $this->assertTrue($editable->isEditable());
@@ -84,7 +84,7 @@ class BaseChunkTest extends TestCase
     {
         $editable = $this->getMockBuilder('BoomCMS\Core\Chunk\BaseChunk')
             ->setMethods(['show', 'showDefault', 'hasContent'])
-            ->setConstructorArgs([new Page([]), [], 'test', true])
+            ->setConstructorArgs([new Page(), [], 'test', true])
             ->getMock();
 
         $readonly = $editable->readonly();
@@ -119,7 +119,7 @@ class BaseChunkTest extends TestCase
     {
         $chunk = $this->getMockBuilder('BoomCMS\Core\Chunk\BaseChunk')
             ->setMethods(['show', 'showDefault', 'hasContent', 'getRequiredAttributes', 'attributes'])
-            ->setConstructorArgs([new Page([]), [], 'test', true])
+            ->setConstructorArgs([new Page(), [], 'test', true])
             ->getMock();
 
         $chunk

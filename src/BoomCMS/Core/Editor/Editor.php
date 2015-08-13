@@ -93,7 +93,7 @@ class Editor
 
     public function getActivePage()
     {
-        return $this->activePage ?: new Page([]);
+        return $this->activePage ?: new Page();
     }
 
     public function getState()

@@ -101,7 +101,7 @@ class Provider
             return $this->cache(new Page($model->toArray()));
         }
 
-        return new Page([]);
+        return new Page();
     }
 
     public function save(Page $page)

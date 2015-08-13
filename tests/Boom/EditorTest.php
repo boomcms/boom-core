@@ -31,7 +31,7 @@ class EditorTest extends TestCase
     public function testSetGetActivePage()
     {
         $editor = $this->getEditor();
-        $page = new Page([]);
+        $page = new Page();
 
         $editor->setActivePage($page);
         $this->assertEquals($page, $editor->getActivePage());
