@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/boomcms/boom-core.git",
-                "reference": "75f6c0f5b1f093ba44c9999bfd2181fc60d5c412"
+                "reference": "b156089a80e52570371ee542c0b88dbf02d0069f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/boomcms/boom-core/zipball/75f6c0f5b1f093ba44c9999bfd2181fc60d5c412",
-                "reference": "75f6c0f5b1f093ba44c9999bfd2181fc60d5c412",
+                "url": "https://api.github.com/repos/boomcms/boom-core/zipball/b156089a80e52570371ee542c0b88dbf02d0069f",
+                "reference": "b156089a80e52570371ee542c0b88dbf02d0069f",
                 "shasum": ""
             },
             "require": {
@@ -50,7 +50,7 @@
                 "MIT"
             ],
             "description": "Core classes for BoomCMS",
-            "time": "2015-08-11 09:03:27"
+            "time": "2015-08-13 11:51:00"
         },
         {
             "name": "boomcms/boom-installer",
@@ -178,15 +178,15 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/boomcms/theme-default.git",
-                "reference": "ab4373b6548a07773822d4ad6ed2f0ea522f38c7"
+                "reference": "dd9ea11e50b2893e69eea88366133648984905c8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/boomcms/theme-default/zipball/ab4373b6548a07773822d4ad6ed2f0ea522f38c7",
-                "reference": "ab4373b6548a07773822d4ad6ed2f0ea522f38c7",
+                "url": "https://api.github.com/repos/boomcms/theme-default/zipball/dd9ea11e50b2893e69eea88366133648984905c8",
+                "reference": "dd9ea11e50b2893e69eea88366133648984905c8",
                 "shasum": ""
             },
-            "type": "boomcms-template",
+            "type": "boomcms-theme",
             "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
@@ -197,8 +197,8 @@
                     "email": "rob@uxblondon.com"
                 }
             ],
-            "description": "Default Boom theme",
-            "time": "2015-06-08 21:09:14"
+            "description": "Default theme for BoomCMS",
+            "time": "2015-08-13 11:38:23"
         },
         {
             "name": "classpreloader/classpreloader",
@@ -1107,16 +1107,16 @@
         },
         {
             "name": "intervention/imagecache",
-            "version": "2.3.1",
+            "version": "2.3.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Intervention/imagecache.git",
-                "reference": "b3f1958c5f300a1986281d599f6a3654d991e30b"
+                "reference": "433585e8b77d0c3bef9ae332c53aa7fabdc6359e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Intervention/imagecache/zipball/b3f1958c5f300a1986281d599f6a3654d991e30b",
-                "reference": "b3f1958c5f300a1986281d599f6a3654d991e30b",
+                "url": "https://api.github.com/repos/Intervention/imagecache/zipball/433585e8b77d0c3bef9ae332c53aa7fabdc6359e",
+                "reference": "433585e8b77d0c3bef9ae332c53aa7fabdc6359e",
                 "shasum": ""
             },
             "require": {
@@ -1156,7 +1156,7 @@
                 "imagick",
                 "laravel"
             ],
-            "time": "2015-07-18 11:00:37"
+            "time": "2015-08-11 15:59:42"
         },
         {
             "name": "ircmaxell/password-compat",
