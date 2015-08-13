@@ -55,13 +55,6 @@ class Text extends BaseChunk
         return $this->allowFormatting ? "<p>$placeholder</p>" : $placeholder;
     }
 
-    public function get_paragraphs($offset = 0, $length = null)
-    {
-        preg_match_all('|<p>(.*?)</p>|', $this->text(), $matches, PREG_PATTERN_ORDER);
-
-        return $matches[1];
-    }
-
     public function hasContent()
     {
         return isset($this->attrs['text'])
