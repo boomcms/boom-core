@@ -23,7 +23,7 @@ class Collection
                 unset($this->assetIds[$i]);
             }
         }
-        
+
         $this->assetIds = array_values($this->assetIds);
     }
 

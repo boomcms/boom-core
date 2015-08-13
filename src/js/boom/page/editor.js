@@ -77,18 +77,10 @@ $.widget( 'boom.pageEditor', {
 		
 				$this
 					.addClass('b-editable')
-					.on('click', function() {
-						new boomPageFeatureEditor(self.page)
-							.done(function(assetId) {
-								if (assetId) {
-									var src = $this.attr('src');
+					.on('click', function(e) {
+						e.preventDefault();
 
-									src = src.replace(/\/asset\/view\/\d+/, '/asset/view/' + assetId);
-									$this.attr('src', src);
-								} else {
-									$this.remove();
-								}
-							});
+						$.boom.page.toolbar.showSettingsAndCloseOnSave('feature');
 					});
 			});
 	},
