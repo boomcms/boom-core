@@ -58,12 +58,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/boomcms/boom-installer.git",
-                "reference": "25059580b1a614fc0c4516ba19301b68ead7c7d7"
+                "reference": "215c0b3df2db9d775e493eac3ac1b48525d74d65"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/boomcms/boom-installer/zipball/25059580b1a614fc0c4516ba19301b68ead7c7d7",
-                "reference": "25059580b1a614fc0c4516ba19301b68ead7c7d7",
+                "url": "https://api.github.com/repos/boomcms/boom-installer/zipball/215c0b3df2db9d775e493eac3ac1b48525d74d65",
+                "reference": "215c0b3df2db9d775e493eac3ac1b48525d74d65",
                 "shasum": ""
             },
             "require": {
@@ -91,7 +91,7 @@
                 }
             ],
             "description": "BoomCMS installer",
-            "time": "2015-08-07 11:25:36"
+            "time": "2015-08-13 14:02:12"
         },
         {
             "name": "boomcms/boom-robotstxt",
