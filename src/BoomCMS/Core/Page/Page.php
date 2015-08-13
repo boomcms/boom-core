@@ -37,11 +37,6 @@ class Page
      */
     protected $primaryUrl;
 
-    /**
-     * @var Template\Template
-     */
-    private $template;
-
     protected $versionColumns = [
         'version:id',
         'page_id',
