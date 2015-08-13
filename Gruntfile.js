@@ -99,6 +99,7 @@ module.exports = function(grunt) {
 					'src/js/boom/chunk/link.js',
 					'src/js/boom/chunk/location.js',
 					'src/js/boom/chunk/location/editor.js',
+					'src/js/boom/chunk/html.js',
 					'src/js/boom/page/title.js',
 					'src/js/boom/link/link.js',
 					'src/js/boom/link/picker.js',

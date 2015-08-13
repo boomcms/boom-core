@@ -2,10 +2,8 @@
 
 namespace BoomCMS\Core\Page;
 
-use DateTime;
 use BoomCMS\Core\Person;
 use BoomCMS\Core\Tag;
-use BoomCMS\Core\Template;
 use BoomCMS\Core\URL\URL;
 use BoomCMS\Database\Models\Page\URL as URLModel;
 use BoomCMS\Database\Models\Page\Version as VersionModel;
@@ -13,6 +11,7 @@ use BoomCMS\Support\Facades\Asset;
 use BoomCMS\Support\Facades\Auth;
 use BoomCMS\Support\Facades\Chunk;
 use BoomCMS\Support\Facades\Page as PageFacade;
+use DateTime;
 use Illuminate\Support\Facades\DB;
 
 class Page

@@ -69,7 +69,7 @@ abstract class BaseChunk
      */
     public static $types = ['asset', 'text', 'feature', 'linkset', 'slideshow', 'timestamp', 'tag'];
 
-    public function __construct(Page $page, array $attrs, $slotname, $editable)
+    public function __construct(Page $page, array $attrs, $slotname, $editable = false)
     {
         $this->page = $page;
         $this->attrs = $attrs;
