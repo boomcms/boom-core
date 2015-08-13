@@ -18,14 +18,10 @@ class Manager
      */
     protected $provider;
 
-    public function __construct(Filesystem $filesystem, Provider $provider, $findAndInstall = true)
+    public function __construct(Filesystem $filesystem, Provider $provider)
     {
         $this->filesystem = $filesystem;
         $this->provider = $provider;
-
-        if ($findAndInstall === true) {
-            $this->findAndInstallNewTemplates();
-        }
     }
 
     public function createTemplateWithFilename($theme, $filename)

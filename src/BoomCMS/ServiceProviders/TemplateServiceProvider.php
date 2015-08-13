@@ -87,7 +87,7 @@ class TemplateServiceProvider extends ServiceProvider
     public function register()
     {
         $provider = new Template\Provider();
-        $this->manager = $manager = new Template\Manager($this->app['files'], $provider, false);
+        $this->manager = $manager = new Template\Manager($this->app['files'], $provider);
 
         $this->app->singleton('boomcms.template.provider', function ($app) use ($provider) {
             return $provider;
