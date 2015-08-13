@@ -8,7 +8,6 @@ class Text extends BaseChunk
 {
     protected $html;
     protected $type = 'text';
-    protected $placeholder;
     protected $allowFormatting = false;
 
     public function __construct(\BoomCMS\Core\Page\Page $page, array $attrs, $slotname, $editable)
@@ -51,10 +50,6 @@ class Text extends BaseChunk
 
     public function getPlaceholderText()
     {
-        if ($this->placeholder !== null) {
-            return $this->plaeholder;
-        }
-
         $placeholder = parent::getPlaceholderText();
 
         return $this->allowFormatting ? "<p>$placeholder</p>" : $placeholder;
@@ -82,22 +77,6 @@ class Text extends BaseChunk
         return isset($this->attrs['text'])
             && trim($this->attrs['text']) != null
             && strcmp(strip_tags(trim($this->attrs['text'])), $this->getPlaceholderText()) !== 0;
-    }
-
-    /**
-     * Sets the placeholder text that should be shown in the editor if the text chunk has no content.
-     *
-     * This is useful as a way of setting some text which describes to editors what the text chunk is intended to be used for.
-     *
-     * @param string $text
-     *
-     * @return \Boom\Chunk\Text
-     */
-    public function setPlaceholder($text)
-    {
-        $this->placeholder = $text;
-
-        return $this;
     }
 
     public function setHtml($html)
