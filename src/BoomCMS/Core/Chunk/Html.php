@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Lang;
 class Html extends BaseChunk
 {
     protected $type = 'html';
-    
+
     protected function editLink()
     {
         $text = Lang::get('boom::editor.html.editlink');

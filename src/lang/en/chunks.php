@@ -31,6 +31,6 @@ return [
         'default' => 'Select a tag to feature here',
     ],
     'html' => [
-        'default' => 'Insert HTML here'
-    ]
+        'default' => 'Insert HTML here',
+    ],
 ];

@@ -30,7 +30,7 @@ class CreateChunkHtmlTable extends Migration
                 ->onUpdate('CASCADE')
                 ->onDelete('CASCADE');
 
-            $table->string('slotname', 50)->nullable(); 
+            $table->string('slotname', 50)->nullable();
             $table->text('html');
             $table->unique(['slotname','page_vid'], 'slotname');
         });
