@@ -5,6 +5,7 @@ namespace BoomCMS\Console\Commands;
 use BoomCMS\Core\Template;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
+use PDOException;
 
 class InstallTemplates extends Command
 {
@@ -41,18 +42,22 @@ class InstallTemplates extends Command
      */
     public function fire()
     {
-        $installed = $this->manager->findAndInstallNewTemplates();
+        try {
+            $installed = $this->manager->findAndInstallNewTemplates();
 
-        if (count($installed)) {
-            foreach ($installed as $i) {
-                list($theme, $template) = $i;
+            if (count($installed)) {
+                foreach ($installed as $i) {
+                    list($theme, $template) = $i;
 
-                $this->info("Installed $template in theme $theme");
+                    $this->info("Installed $template in theme $theme");
+                }
+
+                $this->call('vendor:publish', ['--force']);
+            } else {
+                $this->info('No templates to install');
             }
-
-            $this->call('vendor:publish', ['--force']);
-        } else {
-            $this->info('No templates to install');
+        } catch (PDOException $e) {
+            $this->info('Unable to install templates: '.$e->getMessage());
         }
     }
 }
