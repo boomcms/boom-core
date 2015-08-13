@@ -14,7 +14,6 @@ class AddSearchIndexes extends Migration
     {
         DB::statement('alter table chunk_texts drop foreign key chunk_texts_page_id_foreign');
         DB::statement('alter table chunk_texts drop foreign key chunk_texts_ibfk_1');
-        DB::statement('alter table chunk_texts drop foreign key chunk_texts_ibfk_2');
         DB::statement('alter table chunk_texts engine = "MyISAM"');
         DB::statement('CREATE FULLTEXT INDEX text_fulltext on chunk_texts(text)');
         DB::statement('create index chunk_texts_page_id on chunk_texts(page_id)');
