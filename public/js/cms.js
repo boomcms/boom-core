@@ -40334,6 +40334,7 @@ function boomPage(page_id) {
 				section: section,
 				settings: pageSettings,
 				done: function(event, data) {
+					pageSettings._trigger('save', event, data);
 					pageSettings._trigger(section + 'Save', event, data);
 				}
 			});
@@ -40418,18 +40419,10 @@ function boomPage(page_id) {
 		
 				$this
 					.addClass('b-editable')
-					.on('click', function() {
-						new boomPageFeatureEditor(self.page)
-							.done(function(assetId) {
-								if (assetId) {
-									var src = $this.attr('src');
+					.on('click', function(e) {
+						e.preventDefault();
 
-									src = src.replace(/\/asset\/view\/\d+/, '/asset/view/' + assetId);
-									$this.attr('src', src);
-								} else {
-									$this.remove();
-								}
-							});
+						$.boom.page.toolbar.showSettingsAndCloseOnSave('feature');
 					});
 			});
 	},
@@ -40465,7 +40458,6 @@ function boomPage(page_id) {
 */
 $.widget( 'boom.pageToolbar', {
 	buttons : {},
-	closeSettingsOnPublish: false,
 
 	_bindButtonEvents : function() {
 		var self = this;
@@ -40514,9 +40506,7 @@ $.widget( 'boom.pageToolbar', {
 					self.openPageSettings();
 			})
 			.on('click', '#b-page-version-status', function() {
-				self.$settings.pageSettings('show', 'drafts');
-				self.openPageSettings();
-				self.closeSettingsOnPublish = true;
+				self.showSettingsAndCloseOnSave('drafts');
 			});
 
 		this.buttonBar = this.element.contents().find('#b-topbar');
@@ -40564,11 +40554,34 @@ $.widget( 'boom.pageToolbar', {
 						$.boom.reload();
 					} else {
 						toolbar.status.set(data.status);
-						
-						if (data.status === 'published' && toolbar.closeSettingsOnPublish) {
-							toolbar.closePageSettings();
-						}
 					}
+				},
+				featureSave: function(event, assetId) {
+					top.$('.b-page-featureimage').each(function() {
+						var $el = $(this);
+
+						if (assetId > 0) {
+							if ($el.is('img')) {
+								var src = $el
+									.attr('src')
+									.replace(/\/asset\/view\/\d+/, '/asset/view/' + assetId);
+
+								$el.attr('src', src);
+							} else {
+								var attrs = { };
+
+								$.each($el[0].attributes, function(i, attr) {
+									attrs[attr.nodeName] = attr.nodeValue;
+								});
+
+								$el.replaceWith(function () {
+									return $("<img />", attrs).attr('src', '/asset/view/' + assetId);
+								});
+							}
+						} else {
+							$el.remove();
+						}
+					});
 				},
 				templateSave: function() {
 					toolbar.status.set('draft');
@@ -40659,6 +40672,24 @@ $.widget( 'boom.pageToolbar', {
 	*/
 	show : function() {
 		this.buttonBar.css('z-index', 10000);
+	},
+	
+	showSettingsAndCloseOnSave: function(settingsGroup) {
+		var toolbar = this;
+
+		this.$settings
+			.pageSettings({
+				save: function() {
+					toolbar.$settings.pageSettings({
+						save: function() {}
+					});
+					
+					toolbar.closePageSettings();
+				}	
+			})
+			.pageSettings('show', settingsGroup);
+
+		this.openPageSettings();
 	},
 
 	_toggle_view_live_button : function() {

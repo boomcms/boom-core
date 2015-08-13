@@ -324,14 +324,14 @@ abstract class Asset implements Arrayable
     }
 
     /**
-     * @param integer $type
+     * @param int $type
      *
      * @return $this
      */
     public function setType($type)
     {
         $this->attrs['type'] = $type;
-        
+
         return $this;
     }
 
