@@ -40229,9 +40229,9 @@ function boomPage(page_id) {
 		return $.post(this.baseUrl + 'settings/' + section + '/' + this.id, data);
 	};
 
-	boomPage.prototype.setFeatureImage = function(assetId) {
+	boomPage.prototype.setFeatureImage = function(asset) {
 		return $.post(this.baseUrl + 'settings/feature/' + this.id, {
-			feature_image_id : assetId
+			feature_image_id : asset.getId()
 		});
 	};
 
@@ -41014,8 +41014,8 @@ $.widget('boom.pageTree', {
 			})
 			.on('click', '#b-page-feature-edit', function() {
 				new boomAssetPicker(pageFeatureEditor.currentImage)
-					.done(function(assetId) {
-						pageFeatureEditor.setFeature(assetId);
+					.done(function(asset) {
+						pageFeatureEditor.setFeature(asset);
 					});
 			})
 			.on('click', '.b-button-cancel', function() {
@@ -41025,12 +41025,14 @@ $.widget('boom.pageTree', {
 				pageFeatureEditor.save();
 			})
 			.on('click', '.b-page-feature-set', function() {
-				pageFeatureEditor.setFeature($(this).attr('data-asset-id'));
+				pageFeatureEditor.setFeature(new boomAsset($(this).attr('data-asset-id')));
 			});
 
 		if (this.imagesInPage.length) {
 			for (var i = 0; i < this.imagesInPage.length; i++) {
-				$imagesInPageContainer.append("<li><a href='#' class='b-page-feature-set' data-asset-id='" + this.imagesInPage[i] + "'><img src='/asset/view/" + this.imagesInPage[i] + "' /></a></li>");
+				var asset = new boomAsset(this.imagesInPage[i]);
+
+				$imagesInPageContainer.append("<li><a href='#' class='b-page-feature-set' data-asset-id='" + asset.getId() + "'><img src='" + asset.getUrl() + "' /></a></li>");
 			}
 		} else {
 			$imagesInPageContainer.parent('section').hide();
@@ -41045,13 +41047,13 @@ $.widget('boom.pageTree', {
 	},
 
 	_create: function() {
-		this.currentImage = this.initial = this.element.find('#b-page-feature-current').attr('src').replace('/asset/view/', '');
+		this.currentImage = this.initial = new boomAsset(this.element.find('#b-page-feature-current').attr('src').replace('/asset/view/', ''));
 		this.imagesInPage = this.getImagesInPage();
 		this.bind();
 	},
 
 	removeFeature: function() {
-		this.setFeature(0);
+		this.setFeature(new boomAsset());
 	},
 
 	save: function() {
@@ -41067,13 +41069,13 @@ $.widget('boom.pageTree', {
 		}
 	},
 
-	setFeature: function(assetId) {
-		if (assetId !== this.currentImage) {
+	setFeature: function(asset) {
+		if (asset.getId() !== this.currentImage.getId()) {
 			this.changed = true;
-			this.currentImage = assetId;
+			this.currentImage = asset;
 
-			if (assetId) {
-				this.element.find('#b-page-feature-current').attr('src', '/asset/view/' + assetId + '/' + '500').show();
+			if (asset.getId()) {
+				this.element.find('#b-page-feature-current').attr('src', asset.getUrl('view', 500)).show();
 				this.element.find('#b-page-feature-remove').prop('disabled', false);
 				this.element.find('#b-page-feature-none').hide();
 			} else {
@@ -42177,13 +42179,13 @@ $.widget('ui.chunkFeature', $.ui.chunk,
 	editAssetOnly : function() {
 		var chunkAsset = this;
 
-		new boomAssetPicker(this.assetId, this.getPickerFilters())
-		.done(function(assetId) {
-			chunkAsset.assetId = assetId;
+		new boomAssetPicker(this.asset, this.getPickerFilters())
+		.done(function(asset) {
+			chunkAsset.asset = asset;
 
-			if (assetId) {
+			if (asset.getId()) {
 				chunkAsset.save({
-					asset_id : assetId
+					asset_id : asset.getId()
 				});
 			} else {
 				chunkAsset.remove();
@@ -42203,7 +42205,7 @@ $.widget('ui.chunkFeature', $.ui.chunk,
 			title : this.elements.title.length
 		})
 		.done(function(chunkData) {
-			chunkAsset.assetId = chunkData['asset_id'];
+			chunkAsset.asset = new boomAsset(chunkData['asset_id']);
 			chunkAsset.save(chunkData);
 		})
 		.fail(function() {
@@ -42249,7 +42251,7 @@ $.widget('ui.chunkFeature', $.ui.chunk,
 
 	edit : function() {
 		this.elements = this.getElements();
-		this.assetId = this.element.attr('data-boom-target');
+		this.asset = new boomAsset(this.element.attr('data-boom-target'));
 
 		if (this.hasMetadata()) {
 			this.editAllElements();
@@ -42505,7 +42507,7 @@ $.widget('ui.chunkTag', $.ui.chunk,
 				e.preventDefault();
 
 				var currentAssetId = $(this).find('img').attr('src').replace('/asset/view/', '');
-				slideshowEditor.editCurrentSlideAsset(currentAssetId);
+				slideshowEditor.editCurrentSlideAsset(new boomAsset(currentAssetId));
 			})
 			.on('keydown, change', '#b-slideshow-editor-current form input[type=text]', function() {
 				var $this = $(this),
@@ -42544,15 +42546,15 @@ $.widget('ui.chunkTag', $.ui.chunk,
 		var slideshowEditor = this;
 
 		new boomAssetPicker()
-			.done(function(asset_id) {
-				var $new_slide = $('<li><label><input type="radio" value="" name="slide" data-asset="' + asset_id + '"  /><img src="/asset/view/' + asset_id + '" /></label></li>');
+			.done(function(asset) {
+				var $new_slide = $('<li><label><input type="radio" value="" name="slide" data-asset="' + asset.getId() + '"  /><img src="' + asset.getUrl() + '" /></label></li>');
 
 				slideshowEditor.dialog.contents
 					.find('#b-slideshow-editor-slides')
 					.append($new_slide);
 
 				$new_slide.find('input').attr('checked', true);
-				slideshowEditor.editSlide({asset_id : asset_id});
+				slideshowEditor.editSlide({asset : asset});
 			});
 	};
 
@@ -42570,14 +42572,16 @@ $.widget('ui.chunkTag', $.ui.chunk,
 			.hide();
 	};
 
-	boomChunkSlideshowEditor.prototype.editCurrentSlideAsset = function(currentAssetId) {
+	boomChunkSlideshowEditor.prototype.editCurrentSlideAsset = function(currentAsset) {
 		var slideshowEditor = this;
 
-		new boomAssetPicker(currentAssetId)
-			.done(function(asset_id) {
-				slideshowEditor.dialog
+		new boomAssetPicker(currentAsset)
+			.done(function(asset) {
+				slideshowEditor.dialog.contents
 					.find('#b-slideshow-editor-current img, #b-slideshow-editor-slides input[type=radio]:checked + img')
-					.attr('src', '/asset/view/' + asset_id);
+					.attr('src', asset.getUrl())
+					.siblings('input')
+					.attr('data-asset', asset.getId());
 			});
 	};
 
@@ -42589,7 +42593,7 @@ $.widget('ui.chunkTag', $.ui.chunk,
 			.find('form')
 			.show()
 			.find('img')
-			.attr('src', '/asset/view/' + slide.asset_id)
+			.attr('src', new boomAsset(slide.asset_id).getUrl())
 			.end()
 			.find('input[name=title]')
 			.val(slide.title)
@@ -42623,12 +42627,12 @@ $.widget('ui.chunkTag', $.ui.chunk,
 
 	boomChunkSlideshowEditor.prototype._getSlideDetails = function($element) {
 		return {
-			asset_id : $element.attr('data-asset'),
-			url : $element.data('url'),
-			page : $element.data('page'),
-			caption : $element.data('caption'),
-			title : $element.data('title'),
-			linktext : $element.data('linktext')
+			asset_id: $element.attr('data-asset'),
+			url: $element.data('url'),
+			page: $element.data('page'),
+			caption: $element.data('caption'),
+			title: $element.data('title'),
+			linktext: $element.data('linktext')
 		};
 	};
 
@@ -42740,19 +42744,19 @@ $.widget('ui.chunkTag', $.ui.chunk,
 				linksetEditor.dialog.cancel();
 			})
 			.on('click', '.b-linkset-asset a', function() {
-				linksetEditor.editAsset(linksetEditor.currentLink.attr('data-asset'));
+				linksetEditor.editAsset(new boomAsset(linksetEditor.currentLink.attr('data-asset')));
 			})
 			.find('ul')
 			.sortable();
 	};
 
-	boomChunkLinksetEditor.prototype.editAsset = function(currentAssetId) {
+	boomChunkLinksetEditor.prototype.editAsset = function(currentAsset) {
 		var linksetEditor = this;
 
-		new boomAssetPicker(currentAssetId)
-			.done(function(assetId) {
-				linksetEditor.currentLink.attr('data-asset', assetId);
-				linksetEditor.toggleLinkAsset(assetId);
+		new boomAssetPicker(currentAsset)
+			.done(function(asset) {
+				linksetEditor.currentLink.attr('data-asset', asset.getId());
+				linksetEditor.toggleLinkAsset(asset);
 			});
 	};
 
@@ -42844,10 +42848,10 @@ $.widget('ui.chunkTag', $.ui.chunk,
 		return this.deferred;
 	};
 
-	boomChunkLinksetEditor.prototype.toggleLinkAsset = function(assetId) {
+	boomChunkLinksetEditor.prototype.toggleLinkAsset = function(asset) {
 		var $linksetAsset = this.dialog.contents.find('.b-linkset-asset');
 
-		if (assetId && assetId > 0) {
+		if (asset && asset.getId() > 0) {
 			$linksetAsset
 				.find('.none')
 				.hide()
@@ -42855,7 +42859,7 @@ $.widget('ui.chunkTag', $.ui.chunk,
 				.find('.set')
 				.show()
 				.find('img')
-				.attr('src', '/asset/view/' + assetId + '/500');
+				.attr('src', asset.getUrl('view', 500));
 		} else {
 			$linksetAsset
 				.find('.none')
@@ -42876,9 +42880,9 @@ $.widget('ui.chunkTag', $.ui.chunk,
 		var chunkAssetEditor = this;
 
 		this.asset.on('click', function() {
-			new boomAssetPicker(chunkAssetEditor.asset.attr("data-asset-id"))
-				.done(function(assetId) {
-					chunkAssetEditor.setAsset(assetId);
+			new boomAssetPicker(chunkAssetEditor.asset)
+				.done(function(asset) {
+					chunkAssetEditor.setAsset(asset);
 				});
 		});
 
@@ -42896,7 +42900,8 @@ $.widget('ui.chunkTag', $.ui.chunk,
 		this.title = this.dialog.contents.find('.b-title');
 		this.caption = this.dialog.contents.find('.b-caption');
 		this.link = this.dialog.contents.find('.b-link');
-		this.asset = this.dialog.contents.find('a');
+		this.assetElement = this.dialog.contents.find('a');
+		this.asset = new boomAsset(this.assetElement.attr("data-asset-id"));
 
 		this.bind();
 		this.toggleElements();
@@ -42904,7 +42909,7 @@ $.widget('ui.chunkTag', $.ui.chunk,
 
 	boomChunkAssetEditor.prototype.getData = function() {
 		return {
-			asset_id : this.asset.attr('data-asset-id'),
+			asset_id : this.asset.getId(),
 			caption : this.caption.find('textarea').val(),
 			url : this.link.find('input').val(),
 			title : this.title.find('textarea').val()
@@ -42934,17 +42939,18 @@ $.widget('ui.chunkTag', $.ui.chunk,
 		return this.deferred;
 	};
 
-	boomChunkAssetEditor.prototype.setAsset = function(assetId) {
-		this.asset.attr('data-asset-id', assetId);
+	boomChunkAssetEditor.prototype.setAsset = function(asset) {
+		this.asset = asset;
+		this.assetElement.attr('data-asset-id', asset.getId());
 
-		var $img = this.asset.find('img');
+		var $img = this.assetElement.find('img');
 
 		if ( ! $img.length) {
 			$img = $('<img />');
-			this.asset.find('p').replaceWith($img);
+			this.assetElement.find('p').replaceWith($img);
 		}
 
-		$img.attr('src', '/asset/view/' + assetId + '/400');
+		$img.attr('src', asset.getUrl('view', 400));
 	};
 
 	boomChunkAssetEditor.prototype.setLink = function(link) {
@@ -43720,9 +43726,23 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 	boomAsset.prototype.getId = function() {
 		return this.id;
 	};
+
+	boomAsset.prototype.getEmbedCode = function() {
+		return $.get(this.getUrl('embed'));
+	};
 	
-	boomAsset.prototype.getUrl = function() {
-		return '/asset/view/' + this.id;
+	boomAsset.prototype.getUrl = function(action, width) {
+		var url;
+
+		action = action ? action : 'view';
+
+		url = '/asset/' + action + '/' + this.getId();
+		
+		if (width) {
+			url = url + '/' + width;
+		}
+		
+		return url;
 	};
 };
 ;function boomAssetEditor(asset, uploader) {
@@ -44087,8 +44107,10 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 			});
 	}
 });
-;function boomAssetPicker(currentAssetId, filters) {
-	this.currentAssetId = currentAssetId? currentAssetId : 0;
+;function boomAssetPicker(currentAsset, filters) {
+	this.currentAsset = typeof(currentAsset) === 'boomAsset' ? 
+		currentAsset : new boomAsset();
+
 	this.deferred = new $.Deferred();
 	this.document = $(document);
 	this.filters = filters? filters : {};
@@ -44141,9 +44163,9 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 			.on('click', '.thumb a', function(e) {
 				e.preventDefault();
 
-				var asset_id = $(this).attr('href').replace('#asset/', '');
+				var assetId = $(this).attr('href').replace('#asset/', '');
 
-				assetPicker.pick(asset_id);
+				assetPicker.pick(new boomAsset(assetId));
 
 				return false;
 			})
@@ -44151,7 +44173,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 				assetPicker.cancel();
 			})
 			.on('click', '#b-assets-picker-current-remove', function() {
-				assetPicker.pick(0);
+				assetPicker.pick(new boomAsset());
 			})
 			.find('#b-assets-upload-form')
 			.assetUploader({
@@ -44247,10 +44269,10 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 				assetPicker.bind();
 				assetPicker.getAssets();
 
-				if (assetPicker.currentAssetId > 0) {
+				if (assetPicker.currentAsset.getId() > 0) {
 					assetPicker.picker
 						.find('#b-assets-picker-current img')
-						.attr('src', '/asset/view/' + assetPicker.currentAssetId);
+						.attr('src', assetPicker.currentAsset.getUrl());
 				} else {
 					assetPicker.hideCurrentAsset();
 				}
@@ -44264,8 +44286,8 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 		return this.deferred;
 	};
 
-	boomAssetPicker.prototype.pick = function(asset_id) {
-		this.deferred.resolve(asset_id);
+	boomAssetPicker.prototype.pick = function(asset) {
+		this.deferred.resolve(asset);
 
 		this.close();
 	};
@@ -60620,13 +60642,14 @@ wysihtml5.views.View = Base.extend(
 			$(composer).trigger('before:boomdialog');
 
 			new boomAssetPicker()
-				.done(function(asset_id) {
-					if (asset_id > 0) {
-						$.get('/asset/embed/' + asset_id)
+				.done(function(asset) {
+console.log(asset);
+					if (asset.getId() > 0) {
+						asset.getEmbedCode()
 							.done(function(response) {
 								asset_embed.resolve(response);
 							})
-							.always(function() {
+							.fail(function() {
 								asset_embed.reject();
 							});
 					}

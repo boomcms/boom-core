@@ -40,7 +40,7 @@ function boomChunkSlideshowEditor(page_id, slotname, options) {
 				e.preventDefault();
 
 				var currentAssetId = $(this).find('img').attr('src').replace('/asset/view/', '');
-				slideshowEditor.editCurrentSlideAsset(currentAssetId);
+				slideshowEditor.editCurrentSlideAsset(new boomAsset(currentAssetId));
 			})
 			.on('keydown, change', '#b-slideshow-editor-current form input[type=text]', function() {
 				var $this = $(this),
@@ -79,15 +79,15 @@ function boomChunkSlideshowEditor(page_id, slotname, options) {
 		var slideshowEditor = this;
 
 		new boomAssetPicker()
-			.done(function(asset_id) {
-				var $new_slide = $('<li><label><input type="radio" value="" name="slide" data-asset="' + asset_id + '"  /><img src="/asset/view/' + asset_id + '" /></label></li>');
+			.done(function(asset) {
+				var $new_slide = $('<li><label><input type="radio" value="" name="slide" data-asset="' + asset.getId() + '"  /><img src="' + asset.getUrl() + '" /></label></li>');
 
 				slideshowEditor.dialog.contents
 					.find('#b-slideshow-editor-slides')
 					.append($new_slide);
 
 				$new_slide.find('input').attr('checked', true);
-				slideshowEditor.editSlide({asset_id : asset_id});
+				slideshowEditor.editSlide({asset : asset});
 			});
 	};
 
@@ -105,14 +105,16 @@ function boomChunkSlideshowEditor(page_id, slotname, options) {
 			.hide();
 	};
 
-	boomChunkSlideshowEditor.prototype.editCurrentSlideAsset = function(currentAssetId) {
+	boomChunkSlideshowEditor.prototype.editCurrentSlideAsset = function(currentAsset) {
 		var slideshowEditor = this;
 
-		new boomAssetPicker(currentAssetId)
-			.done(function(asset_id) {
-				slideshowEditor.dialog
+		new boomAssetPicker(currentAsset)
+			.done(function(asset) {
+				slideshowEditor.dialog.contents
 					.find('#b-slideshow-editor-current img, #b-slideshow-editor-slides input[type=radio]:checked + img')
-					.attr('src', '/asset/view/' + asset_id);
+					.attr('src', asset.getUrl())
+					.siblings('input')
+					.attr('data-asset', asset.getId());
 			});
 	};
 
@@ -124,7 +126,7 @@ function boomChunkSlideshowEditor(page_id, slotname, options) {
 			.find('form')
 			.show()
 			.find('img')
-			.attr('src', '/asset/view/' + slide.asset_id)
+			.attr('src', new boomAsset(slide.asset_id).getUrl())
 			.end()
 			.find('input[name=title]')
 			.val(slide.title)
@@ -158,12 +160,12 @@ function boomChunkSlideshowEditor(page_id, slotname, options) {
 
 	boomChunkSlideshowEditor.prototype._getSlideDetails = function($element) {
 		return {
-			asset_id : $element.attr('data-asset'),
-			url : $element.data('url'),
-			page : $element.data('page'),
-			caption : $element.data('caption'),
-			title : $element.data('title'),
-			linktext : $element.data('linktext')
+			asset_id: $element.attr('data-asset'),
+			url: $element.data('url'),
+			page: $element.data('page'),
+			caption: $element.data('caption'),
+			title: $element.data('title'),
+			linktext: $element.data('linktext')
 		};
 	};
 

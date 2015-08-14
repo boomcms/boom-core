@@ -47,13 +47,13 @@
 			$(composer).trigger('before:boomdialog');
 
 			new boomAssetPicker()
-				.done(function(asset_id) {
-					if (asset_id > 0) {
-						$.get('/asset/embed/' + asset_id)
+				.done(function(asset) {
+					if (asset.getId() > 0) {
+						asset.getEmbedCode()
 							.done(function(response) {
 								asset_embed.resolve(response);
 							})
-							.always(function() {
+							.fail(function() {
 								asset_embed.reject();
 							});
 					}

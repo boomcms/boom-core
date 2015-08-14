@@ -117,9 +117,9 @@ function boomPage(page_id) {
 		return $.post(this.baseUrl + 'settings/' + section + '/' + this.id, data);
 	};
 
-	boomPage.prototype.setFeatureImage = function(assetId) {
+	boomPage.prototype.setFeatureImage = function(asset) {
 		return $.post(this.baseUrl + 'settings/feature/' + this.id, {
-			feature_image_id : assetId
+			feature_image_id : asset.getId()
 		});
 	};
 

@@ -23,8 +23,8 @@ $.widget('boom.pageSettingsFeature', {
 			})
 			.on('click', '#b-page-feature-edit', function() {
 				new boomAssetPicker(pageFeatureEditor.currentImage)
-					.done(function(assetId) {
-						pageFeatureEditor.setFeature(assetId);
+					.done(function(asset) {
+						pageFeatureEditor.setFeature(asset);
 					});
 			})
 			.on('click', '.b-button-cancel', function() {
@@ -34,12 +34,14 @@ $.widget('boom.pageSettingsFeature', {
 				pageFeatureEditor.save();
 			})
 			.on('click', '.b-page-feature-set', function() {
-				pageFeatureEditor.setFeature($(this).attr('data-asset-id'));
+				pageFeatureEditor.setFeature(new boomAsset($(this).attr('data-asset-id')));
 			});
 
 		if (this.imagesInPage.length) {
 			for (var i = 0; i < this.imagesInPage.length; i++) {
-				$imagesInPageContainer.append("<li><a href='#' class='b-page-feature-set' data-asset-id='" + this.imagesInPage[i] + "'><img src='/asset/view/" + this.imagesInPage[i] + "' /></a></li>");
+				var asset = new boomAsset(this.imagesInPage[i]);
+
+				$imagesInPageContainer.append("<li><a href='#' class='b-page-feature-set' data-asset-id='" + asset.getId() + "'><img src='" + asset.getUrl() + "' /></a></li>");
 			}
 		} else {
 			$imagesInPageContainer.parent('section').hide();
@@ -54,13 +56,13 @@ $.widget('boom.pageSettingsFeature', {
 	},
 
 	_create: function() {
-		this.currentImage = this.initial = this.element.find('#b-page-feature-current').attr('src').replace('/asset/view/', '');
+		this.currentImage = this.initial = new boomAsset(this.element.find('#b-page-feature-current').attr('src').replace('/asset/view/', ''));
 		this.imagesInPage = this.getImagesInPage();
 		this.bind();
 	},
 
 	removeFeature: function() {
-		this.setFeature(0);
+		this.setFeature(new boomAsset());
 	},
 
 	save: function() {
@@ -76,13 +78,13 @@ $.widget('boom.pageSettingsFeature', {
 		}
 	},
 
-	setFeature: function(assetId) {
-		if (assetId !== this.currentImage) {
+	setFeature: function(asset) {
+		if (asset.getId() !== this.currentImage.getId()) {
 			this.changed = true;
-			this.currentImage = assetId;
+			this.currentImage = asset;
 
-			if (assetId) {
-				this.element.find('#b-page-feature-current').attr('src', '/asset/view/' + assetId + '/' + '500').show();
+			if (asset.getId()) {
+				this.element.find('#b-page-feature-current').attr('src', asset.getUrl('view', 500)).show();
 				this.element.find('#b-page-feature-remove').prop('disabled', false);
 				this.element.find('#b-page-feature-none').hide();
 			} else {

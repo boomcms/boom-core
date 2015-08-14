@@ -7,9 +7,9 @@ function boomChunkAssetEditor(pageId, slotname, visibleElements) {
 		var chunkAssetEditor = this;
 
 		this.asset.on('click', function() {
-			new boomAssetPicker(chunkAssetEditor.asset.attr("data-asset-id"))
-				.done(function(assetId) {
-					chunkAssetEditor.setAsset(assetId);
+			new boomAssetPicker(chunkAssetEditor.asset)
+				.done(function(asset) {
+					chunkAssetEditor.setAsset(asset);
 				});
 		});
 
@@ -27,7 +27,8 @@ function boomChunkAssetEditor(pageId, slotname, visibleElements) {
 		this.title = this.dialog.contents.find('.b-title');
 		this.caption = this.dialog.contents.find('.b-caption');
 		this.link = this.dialog.contents.find('.b-link');
-		this.asset = this.dialog.contents.find('a');
+		this.assetElement = this.dialog.contents.find('a');
+		this.asset = new boomAsset(this.assetElement.attr("data-asset-id"));
 
 		this.bind();
 		this.toggleElements();
@@ -35,7 +36,7 @@ function boomChunkAssetEditor(pageId, slotname, visibleElements) {
 
 	boomChunkAssetEditor.prototype.getData = function() {
 		return {
-			asset_id : this.asset.attr('data-asset-id'),
+			asset_id : this.asset.getId(),
 			caption : this.caption.find('textarea').val(),
 			url : this.link.find('input').val(),
 			title : this.title.find('textarea').val()
@@ -65,17 +66,18 @@ function boomChunkAssetEditor(pageId, slotname, visibleElements) {
 		return this.deferred;
 	};
 
-	boomChunkAssetEditor.prototype.setAsset = function(assetId) {
-		this.asset.attr('data-asset-id', assetId);
+	boomChunkAssetEditor.prototype.setAsset = function(asset) {
+		this.asset = asset;
+		this.assetElement.attr('data-asset-id', asset.getId());
 
-		var $img = this.asset.find('img');
+		var $img = this.assetElement.find('img');
 
 		if ( ! $img.length) {
 			$img = $('<img />');
-			this.asset.find('p').replaceWith($img);
+			this.assetElement.find('p').replaceWith($img);
 		}
 
-		$img.attr('src', '/asset/view/' + assetId + '/400');
+		$img.attr('src', asset.getUrl('view', 400));
 	};
 
 	boomChunkAssetEditor.prototype.setLink = function(link) {
