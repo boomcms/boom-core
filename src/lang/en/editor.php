@@ -6,7 +6,7 @@ return [
         'info'     => 'You will need to preview the page in order to view the HTML as it will appear in the site',
         'editlink' => 'Edit HTML chunk',
     ],
-    'link-picker'         => [
+    'link-picker' => [
         'tabs'            => [
             'internal' => 'Select page',
             'external' => 'Enter URL',
@@ -19,5 +19,10 @@ return [
         'asset-action'    => 'What should happen when this link is clicked?',
         'action-view'     => 'The asset should be viewed',
         'action-download' => 'The asset should be downloaded',
+    ],
+    'timestamp' => [
+        'intro'  => 'Select a date / time and format below',
+        'format' => 'Format',
+        'value'  => 'Date / time',
     ],
 ];
