@@ -1,5 +1,5 @@
 function boomAssetPicker(currentAsset, filters) {
-	this.currentAsset = typeof(currentAsset) === 'boomAsset' ? 
+	this.currentAsset = typeof(currentAsset) === 'object' ? 
 		currentAsset : new boomAsset();
 
 	this.deferred = new $.Deferred();
