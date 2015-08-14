@@ -40556,15 +40556,15 @@ $.widget( 'boom.pageToolbar', {
 						toolbar.status.set(data.status);
 					}
 				},
-				featureSave: function(event, assetId) {
+				featureSave: function(event, asset) {
 					top.$('.b-page-featureimage').each(function() {
 						var $el = $(this);
 
-						if (assetId > 0) {
+						if (asset.getId() > 0) {
 							if ($el.is('img')) {
 								var src = $el
 									.attr('src')
-									.replace(/\/asset\/view\/\d+/, '/asset/view/' + assetId);
+									.replace(/\/asset\/view\/\d+/, asset.getUrl());
 
 								$el.attr('src', src);
 							} else {
@@ -40575,7 +40575,7 @@ $.widget( 'boom.pageToolbar', {
 								});
 
 								$el.replaceWith(function () {
-									return $("<img />", attrs).attr('src', '/asset/view/' + assetId);
+									return $("<img />", attrs).attr('src', asset.getUrl());
 								});
 							}
 						} else {
@@ -43434,6 +43434,10 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 	this.pageId = pageId? pageId : 0;
 	this.title = title? title : "";
 
+	boomLink.prototype.isAsset = function() {
+		return this.getUrl().indexOf('/asset/') === 0;
+	};
+
 	boomLink.prototype.isExternal = function() {
 		return this.getUrl() !== "" && this.getUrl().substring(0,1) !== '/';
 	};
@@ -43456,6 +43460,18 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 
 	boomLink.prototype.isTel = function() {
 		return this.url.substring(0,4) === 'tel:';
+	};
+
+	boomLink.prototype.getAsset = function() {
+		var assetId = this.getUrl().replace(/\/asset\/(view|download)\/(\d+)(.*?)/i, "$2");
+
+		return new boomAsset(assetId);
+	};
+
+	boomLink.prototype.getAssetAction = function() {
+		if (this.isAsset()) {
+			return this.getUrl().replace(/\/asset\/(view|download)\/(.*?)/i, "$1");
+		}
 	};
 
 	boomLink.prototype.getUrl = function() {
@@ -43483,7 +43499,8 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 	this.defaultOptions = {
 		text: false,
 		remove: false,
-		external: true
+		external: true,
+		asset: true
 	};
 
 	this.options = $.extend(this.defaultOptions, options);
@@ -43548,6 +43565,31 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 			linkPicker.deferred.resolve(new boomLink());
 			linkPicker.dialog.cancel();
 		});
+
+		this.dialog.contents
+			.on('click', '#b-linkpicker-asset-select', function() {
+				new boomAssetPicker(linkPicker.link.getAsset())
+					.done(function(asset) {
+						var action = linkPicker.asset.find('option:selected').val();
+
+						linkPicker.externalUrl.val(asset.getUrl(action));
+						linkPicker.asset.find('img').attr('src', asset.getUrl());
+					});
+			})
+			.on('focus', '#b-linkpicker-add-asset select', function() {
+				var $this = $(this);
+
+				$this.data('previous', $this.find('option:selected').val());
+			})
+			.on('change', '#b-linkpicker-add-asset select', function() {
+				if (linkPicker.link.isAsset()) {
+					var $this = $(this),
+						action = $this.find('option:selected').val(),
+						url = linkPicker.externalUrl.val().replace($this.data('previous'), action);
+
+						linkPicker.externalUrl.val(url);
+				}
+			});
 	};
 
 	boomLinkPicker.prototype.getExternalLink = function() {
@@ -43584,24 +43626,31 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 	boomLinkPicker.prototype.onLoad = function(dialog) {
 		this.dialog = dialog;
 		this.internal = dialog.contents.find('#b-linkpicker-add-internal');
-		this.external = dialog.contents.find('#b-linkpicker-add-external'),
+		this.external = dialog.contents.find('#b-linkpicker-add-external');
+		this.asset = dialog.contents.find('#b-linkpicker-add-asset');
 		this.externalTypeSelector = this.external.find('select'),
 		this.externalUrl = this.external.find('input');
 		this.textInput = dialog.contents.find('#b-linkpicker-text input[type=text]');
 		this.removeButton = dialog.contents.find('#b-linkpicker-remove').appendTo(dialog.contents.parent().find('.ui-dialog-buttonpane'));
 
-		if ( ! this.options.remove) {
+		if (!this.options.remove) {
 			this.removeButton.hide();
 		}
 
-		if ( ! this.options.external) {
+		if (!this.options.external) {
 			this.external.hide();
 			dialog.contents.find('.ui-tabs-nav li:nth-of-type(2)').hide();
+		}
+
+		if (!this.options.asset) {
+			this.asset.hide();
+			dialog.contents.find('.ui-tabs-nav li:nth-of-type(3)').hide();
 		}
 
 		this.setupInternal();
 		this.setupExternalUrl();
 		this.setupText();
+		this.setupAssetLink();
 		this.bind();
 	};
 
@@ -43630,6 +43679,23 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 		this.deferred.resolve(link);
 	};
 
+	boomLinkPicker.prototype.setupAssetLink = function() {
+		if (this.link.isAsset()) {
+			this.asset
+				.find('img')
+				.attr('src', this.link.getAsset().getUrl())
+				.end()
+				.find('select')
+				.find('option')
+				.removeAttr('selected')
+				.end()
+				.find('option[value=' + this.link.getAssetAction() + ']')
+				.attr('selected', 'selected');
+
+			$('a[href=#b-linkpicker-add-asset]').click();
+		}
+	};
+
 	boomLinkPicker.prototype.setupExternalUrl = function() {
 		var url = this.link.url;
 
@@ -43646,7 +43712,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 
 		this.externalUrl.val(url);
 
-		if (url !== "") {
+		if (url !== "" && !this.link.isAsset()) {
 			$('a[href=#b-linkpicker-add-external]').click();
 		}
 	};

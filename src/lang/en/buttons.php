@@ -16,7 +16,9 @@ return [
     'embargo-change'   => 'Change embargo time',
     'preview'          => 'Preview current version',
     'reorder'          => 'Re-order',
+    'remove-link'      => 'Remove link',
     'reparent'         => 'Change parent',
     'request-approval' => 'Request approval',
     'save'             => 'Save',
+    'select-asset'     => 'Select an asset',
 ];

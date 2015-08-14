@@ -5,7 +5,8 @@ function boomLinkPicker(link, options) {
 	this.defaultOptions = {
 		text: false,
 		remove: false,
-		external: true
+		external: true,
+		asset: true
 	};
 
 	this.options = $.extend(this.defaultOptions, options);
@@ -70,6 +71,31 @@ function boomLinkPicker(link, options) {
 			linkPicker.deferred.resolve(new boomLink());
 			linkPicker.dialog.cancel();
 		});
+
+		this.dialog.contents
+			.on('click', '#b-linkpicker-asset-select', function() {
+				new boomAssetPicker(linkPicker.link.getAsset())
+					.done(function(asset) {
+						var action = linkPicker.asset.find('option:selected').val();
+
+						linkPicker.externalUrl.val(asset.getUrl(action));
+						linkPicker.asset.find('img').attr('src', asset.getUrl());
+					});
+			})
+			.on('focus', '#b-linkpicker-add-asset select', function() {
+				var $this = $(this);
+
+				$this.data('previous', $this.find('option:selected').val());
+			})
+			.on('change', '#b-linkpicker-add-asset select', function() {
+				if (linkPicker.link.isAsset()) {
+					var $this = $(this),
+						action = $this.find('option:selected').val(),
+						url = linkPicker.externalUrl.val().replace($this.data('previous'), action);
+
+						linkPicker.externalUrl.val(url);
+				}
+			});
 	};
 
 	boomLinkPicker.prototype.getExternalLink = function() {
@@ -106,24 +132,31 @@ function boomLinkPicker(link, options) {
 	boomLinkPicker.prototype.onLoad = function(dialog) {
 		this.dialog = dialog;
 		this.internal = dialog.contents.find('#b-linkpicker-add-internal');
-		this.external = dialog.contents.find('#b-linkpicker-add-external'),
+		this.external = dialog.contents.find('#b-linkpicker-add-external');
+		this.asset = dialog.contents.find('#b-linkpicker-add-asset');
 		this.externalTypeSelector = this.external.find('select'),
 		this.externalUrl = this.external.find('input');
 		this.textInput = dialog.contents.find('#b-linkpicker-text input[type=text]');
 		this.removeButton = dialog.contents.find('#b-linkpicker-remove').appendTo(dialog.contents.parent().find('.ui-dialog-buttonpane'));
 
-		if ( ! this.options.remove) {
+		if (!this.options.remove) {
 			this.removeButton.hide();
 		}
 
-		if ( ! this.options.external) {
+		if (!this.options.external) {
 			this.external.hide();
 			dialog.contents.find('.ui-tabs-nav li:nth-of-type(2)').hide();
+		}
+
+		if (!this.options.asset) {
+			this.asset.hide();
+			dialog.contents.find('.ui-tabs-nav li:nth-of-type(3)').hide();
 		}
 
 		this.setupInternal();
 		this.setupExternalUrl();
 		this.setupText();
+		this.setupAssetLink();
 		this.bind();
 	};
 
@@ -152,6 +185,23 @@ function boomLinkPicker(link, options) {
 		this.deferred.resolve(link);
 	};
 
+	boomLinkPicker.prototype.setupAssetLink = function() {
+		if (this.link.isAsset()) {
+			this.asset
+				.find('img')
+				.attr('src', this.link.getAsset().getUrl())
+				.end()
+				.find('select')
+				.find('option')
+				.removeAttr('selected')
+				.end()
+				.find('option[value=' + this.link.getAssetAction() + ']')
+				.attr('selected', 'selected');
+
+			$('a[href=#b-linkpicker-add-asset]').click();
+		}
+	};
+
 	boomLinkPicker.prototype.setupExternalUrl = function() {
 		var url = this.link.url;
 
@@ -168,7 +218,7 @@ function boomLinkPicker(link, options) {
 
 		this.externalUrl.val(url);
 
-		if (url !== "") {
+		if (url !== "" && !this.link.isAsset()) {
 			$('a[href=#b-linkpicker-add-external]').click();
 		}
 	};

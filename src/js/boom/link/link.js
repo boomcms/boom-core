@@ -4,7 +4,7 @@ function boomLink(url, pageId, title) {
 	this.title = title? title : "";
 
 	boomLink.prototype.isAsset = function() {
-		return this.getUrl.indexOf('/asset/view/') === 0;
+		return this.getUrl().indexOf('/asset/') === 0;
 	};
 
 	boomLink.prototype.isExternal = function() {
@@ -32,9 +32,15 @@ function boomLink(url, pageId, title) {
 	};
 
 	boomLink.prototype.getAsset = function() {
-		var assetId = this.getUrl().replace(/\/asset\/view\/(\d+)(.*?)/i, "$1")
+		var assetId = this.getUrl().replace(/\/asset\/(view|download)\/(\d+)(.*?)/i, "$2");
 
 		return new boomAsset(assetId);
+	};
+
+	boomLink.prototype.getAssetAction = function() {
+		if (this.isAsset()) {
+			return this.getUrl().replace(/\/asset\/(view|download)\/(.*?)/i, "$1");
+		}
 	};
 
 	boomLink.prototype.getUrl = function() {
