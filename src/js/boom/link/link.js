@@ -3,6 +3,10 @@ function boomLink(url, pageId, title) {
 	this.pageId = pageId? pageId : 0;
 	this.title = title? title : "";
 
+	boomLink.prototype.isAsset = function() {
+		return this.getUrl.indexOf('/asset/view/') === 0;
+	};
+
 	boomLink.prototype.isExternal = function() {
 		return this.getUrl() !== "" && this.getUrl().substring(0,1) !== '/';
 	};
@@ -25,6 +29,12 @@ function boomLink(url, pageId, title) {
 
 	boomLink.prototype.isTel = function() {
 		return this.url.substring(0,4) === 'tel:';
+	};
+
+	boomLink.prototype.getAsset = function() {
+		var assetId = this.getUrl().replace(/\/asset\/view\/(\d+)(.*?)/i, "$1")
+
+		return new boomAsset(assetId);
 	};
 
 	boomLink.prototype.getUrl = function() {
