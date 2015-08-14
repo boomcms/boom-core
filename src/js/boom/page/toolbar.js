@@ -103,15 +103,15 @@ $.widget( 'boom.pageToolbar', {
 						toolbar.status.set(data.status);
 					}
 				},
-				featureSave: function(event, assetId) {
+				featureSave: function(event, asset) {
 					top.$('.b-page-featureimage').each(function() {
 						var $el = $(this);
 
-						if (assetId > 0) {
+						if (asset.getId() > 0) {
 							if ($el.is('img')) {
 								var src = $el
 									.attr('src')
-									.replace(/\/asset\/view\/\d+/, '/asset/view/' + assetId);
+									.replace(/\/asset\/view\/\d+/, asset.getUrl());
 
 								$el.attr('src', src);
 							} else {
@@ -122,7 +122,7 @@ $.widget( 'boom.pageToolbar', {
 								});
 
 								$el.replaceWith(function () {
-									return $("<img />", attrs).attr('src', '/asset/view/' + assetId);
+									return $("<img />", attrs).attr('src', asset.getUrl());
 								});
 							}
 						} else {
