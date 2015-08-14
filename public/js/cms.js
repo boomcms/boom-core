@@ -40246,21 +40246,6 @@ function boomPage(page_id) {
 			template_id: templateId
 		});
 	};
-
-	boomPage.prototype.stash = function() {
-		var page_id = this.id,
-			confirmation = new boomConfirmation('Edit live', 'Discard changes and edit the live page?');
-
-		confirmation
-			.done(function() {
-				$.boom.log('stashing page edits');
-
-				$.post(this.baseUrl + 'stash/' + page_id)
-					.done(function(response) {
-						top.window.reload();
-					});
-			});
-	};
 };;$.widget('boom.pageSettings', {
 	bind: function() {
 		var pageSettings = this;
@@ -40478,9 +40463,6 @@ $.widget( 'boom.pageToolbar', {
 					.fail(function(response) {
 						new boomAlert(response);
 					});
-			})
-			.on('click', '#boom-page-editlive', function() {
-				self.options.page.stash();
 			})
 			.on('click', '.b-page-visibility', function() {
 				self.$settings.pageSettings('show', 'visibility');
