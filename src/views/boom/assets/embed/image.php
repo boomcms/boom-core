@@ -1,1 +1,1 @@
-<img src='/asset/view/<?= $asset->getId() ?>' alt="<?= $asset->getTitle() ?>" />
+<img src='/asset/<?= $asset->getId() ?>' alt="<?= $asset->getTitle() ?>" />

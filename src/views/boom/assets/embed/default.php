@@ -1,1 +1,1 @@
-<a class='download' href='/asset/view/<?= $asset->getId() ?>'><?= $asset->getTitle() ?></a>
+<a class='download' href='/asset/<?= $asset->getId() ?>'><?= $asset->getTitle() ?></a>

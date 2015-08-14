@@ -10,16 +10,20 @@ function boomAsset(assetId) {
 	};
 	
 	boomAsset.prototype.getUrl = function(action, width) {
-		var url;
+		var url = '/asset/' + this.getId();
 
-		action = action ? action : 'view';
+		if (!action && width) {
+			action = 'view';
+		}
 
-		url = '/asset/' + action + '/' + this.getId();
-		
+		if (action) {
+			url = url + '/' + action;
+		}
+
 		if (width) {
 			url = url + '/' + width;
 		}
-		
+
 		return url;
 	};
 };

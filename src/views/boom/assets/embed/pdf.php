@@ -1,1 +1,1 @@
-<a class='b-asset-embed' href='/asset/view/<?= $asset->getId() ?>'><?= $asset->getTitle() ?></a>
+<a class='b-asset-embed' href='/asset/<?= $asset->getId() ?>'><?= $asset->getTitle() ?></a>

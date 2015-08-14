@@ -39,7 +39,7 @@ function boomChunkSlideshowEditor(page_id, slotname, options) {
 			.on('click', '#b-slideshow-editor-current form a', function(e) {
 				e.preventDefault();
 
-				var currentAssetId = $(this).find('img').attr('src').replace('/asset/view/', '');
+				var currentAssetId = $(this).find('img').attr('src').replace(/\/asset\/(\d+)(.*?)/, "$1");
 				slideshowEditor.editCurrentSlideAsset(new boomAsset(currentAssetId));
 			})
 			.on('keydown, change', '#b-slideshow-editor-current form input[type=text]', function() {

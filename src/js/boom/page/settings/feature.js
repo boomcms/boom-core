@@ -3,11 +3,11 @@ $.widget('boom.pageSettingsFeature', {
 
 	getImagesInPage: function() {
 		return top.$('body:first-of-type')
-			.find('img[src^="/asset/view/"]')
+			.find('img[src^="/asset/"]')
 			.map(function() {
 				var $this = $(this),
 					assetId,
-					src = $this.attr('src').replace('/asset/view/', '');
+					src = $this.attr('src').replace(/\/asset\/(\d+)(.*?)/, "$1");
 
 				return src.indexOf('/')? src : src.substring(0, src.indexOf('/'));
 			});
@@ -56,7 +56,7 @@ $.widget('boom.pageSettingsFeature', {
 	},
 
 	_create: function() {
-		this.currentImage = this.initial = new boomAsset(this.element.find('#b-page-feature-current').attr('src').replace('/asset/view/', ''));
+		this.currentImage = this.initial = new boomAsset(this.element.find('#b-page-feature-current').attr('src').replace(/\/asset\/(\d+)(.*)/, "$1"));
 		this.imagesInPage = this.getImagesInPage();
 		this.bind();
 	},

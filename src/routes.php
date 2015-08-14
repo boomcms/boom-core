@@ -152,7 +152,7 @@ Route::group(['middleware' => [
         },
     ]);
 
-    Route::get('asset/download/{asset}', [
+    Route::get('asset/{asset}/download', [
         'asset'      => 'asset-download',
         'middleware' => [
             'BoomCMS\Http\Middleware\LogAssetDownload',
@@ -162,17 +162,13 @@ Route::group(['middleware' => [
         },
     ]);
 
-    Route::get('asset/{action}/{asset}/{width?}/{height?}', [
+    Route::get('asset/{asset}/{action?}/{width?}/{height?}', [
         'as'         => 'asset',
         'middleware' => [
             'BoomCMS\Http\Middleware\CheckAssetETag',
             'BoomCMS\Http\Middleware\DisableSession',
         ],
-        'uses' => function (BoomCMS\Core\Auth\Auth $auth, $action, $asset = null, $width = null, $height = null) {
-            if (!$asset) {
-                abort(404);
-            }
-
+        'uses' => function (BoomCMS\Core\Auth\Auth $auth, $asset, $action = 'view', $width = null, $height = null) {
             return App::make('BoomCMS\Http\Controllers\Asset\\'.class_basename($asset), [$auth, $asset])->$action($width, $height);
         },
     ]);

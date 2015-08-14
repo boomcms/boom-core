@@ -40994,11 +40994,11 @@ $.widget('boom.pageTree', {
 
 	getImagesInPage: function() {
 		return top.$('body:first-of-type')
-			.find('img[src^="/asset/view/"]')
+			.find('img[src^="/asset/"]')
 			.map(function() {
 				var $this = $(this),
 					assetId,
-					src = $this.attr('src').replace('/asset/view/', '');
+					src = $this.attr('src').replace(/\/asset\/(\d+)(.*?)/, "$1");
 
 				return src.indexOf('/')? src : src.substring(0, src.indexOf('/'));
 			});
@@ -41047,7 +41047,7 @@ $.widget('boom.pageTree', {
 	},
 
 	_create: function() {
-		this.currentImage = this.initial = new boomAsset(this.element.find('#b-page-feature-current').attr('src').replace('/asset/view/', ''));
+		this.currentImage = this.initial = new boomAsset(this.element.find('#b-page-feature-current').attr('src').replace(/\/asset\/(\d+)(.*)/, "$1"));
 		this.imagesInPage = this.getImagesInPage();
 		this.bind();
 	},
@@ -42506,7 +42506,7 @@ $.widget('ui.chunkTag', $.ui.chunk,
 			.on('click', '#b-slideshow-editor-current form a', function(e) {
 				e.preventDefault();
 
-				var currentAssetId = $(this).find('img').attr('src').replace('/asset/view/', '');
+				var currentAssetId = $(this).find('img').attr('src').replace(/\/asset\/(\d+)(.*?)/, "$1");
 				slideshowEditor.editCurrentSlideAsset(new boomAsset(currentAssetId));
 			})
 			.on('keydown, change', '#b-slideshow-editor-current form input[type=text]', function() {
@@ -43799,16 +43799,20 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 	};
 	
 	boomAsset.prototype.getUrl = function(action, width) {
-		var url;
+		var url = '/asset/' + this.getId();
 
-		action = action ? action : 'view';
+		if (!action && width) {
+			action = 'view';
+		}
 
-		url = '/asset/' + action + '/' + this.getId();
-		
+		if (action) {
+			url = url + '/' + action;
+		}
+
 		if (width) {
 			url = url + '/' + width;
 		}
-		
+
 		return url;
 	};
 };
