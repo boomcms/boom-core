@@ -45,7 +45,6 @@ class Page extends Model
     {
         $query = DB::table('page_versions')
             ->select([DB::raw('max(id) as id'), 'page_id'])
-            ->where('stashed', '=', 0)
             ->groupBy('page_id');
 
         if (Editor::isDisabled()) {
@@ -78,34 +77,6 @@ class Page extends Model
                 ->where('id', 'IN', $versions)
                 ->execute($this->_db);
         }
-    }
-
-    /**
-     * Restores a page to the last published version.
-     * Marks all versions which haven't been published since the last published versions as stashed.
-     *
-     * This is used for when there are edits to a page in progress which aren't ready to be published but a change needs to be made to the live (published) version (e.g. a typo fix).
-     *
-     * Yes, it's named after 'git stash'. The principal is the same.
-     *
-     * @return \Boom_Model_Page
-     */
-    public function stash()
-    {
-        // Execute a DB query to stash unpublished versions.
-        DB::update('page_versions')
-            ->set(['stashed' => true])
-            ->where('embargoed_until', '>=', time())
-            ->where('page_id', '=', $this->id)
-            ->execute($this->_db);
-
-        // If the local cache for the current version is set then clear it.
-        if (isset($this->_related['version'])) {
-            $this->_related['version'] = null;
-        }
-
-        // Return the current object.
-        return $this;
     }
 
     public function scopeAutocompleteTitle($query, $title, $limit)

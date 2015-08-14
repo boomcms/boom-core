@@ -26,9 +26,6 @@ $.widget( 'boom.pageToolbar', {
 						new boomAlert(response);
 					});
 			})
-			.on('click', '#boom-page-editlive', function() {
-				self.options.page.stash();
-			})
 			.on('click', '.b-page-visibility', function() {
 				self.$settings.pageSettings('show', 'visibility');
 				self.openPageSettings();

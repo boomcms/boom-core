@@ -54,16 +54,6 @@ class PageController extends Controller
         $this->page->deleteDrafts();
     }
 
-    /**
-     * Reverts the current page to the last published version.
-     *
-     * @uses	Model_Page::stash()
-     */
-    public function stash()
-    {
-        $this->page->stash();
-    }
-
     public function urls()
     {
         return View::make($this->viewPrefix.'urls', [

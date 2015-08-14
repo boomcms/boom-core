@@ -45,7 +45,6 @@ class Page
         'edited_time',
         'published',
         'embargoed_until',
-        'stashed',
         'pending_approval',
     ];
 
@@ -162,7 +161,6 @@ class Page
                     ->orWhere('embargoed_until', '>', time());
             })
             ->where('edited_time', '>', $this->getLastPublishedTime()->getTimestamp())
-            ->where('stashed', '=', false)
             ->delete();
     }
 
