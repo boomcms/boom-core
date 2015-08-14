@@ -42661,7 +42661,8 @@ $.widget('ui.chunkTag', $.ui.chunk,
 	};
 
 	return this.open();
-};;function boomChunkLinksetEditor(pageId, slotname, options) {
+};
+;function boomChunkLinksetEditor(pageId, slotname, options) {
 	this.pageId = pageId;
 	this.slotname = slotname;
 	this.options = options;
@@ -60643,7 +60644,6 @@ wysihtml5.views.View = Base.extend(
 
 			new boomAssetPicker()
 				.done(function(asset) {
-console.log(asset);
 					if (asset.getId() > 0) {
 						asset.getEmbedCode()
 							.done(function(response) {
