@@ -163,6 +163,7 @@ module.exports = function(grunt) {
 			target: {
 				files: {
 					 'public/css/cms.css': [
+						'bower_components/normalize.css/normalize.css',
 						'bower_components/datetimepicker/jquery.datetimepicker.css',
 						'bower_components/jquery-ui/themes/base/jquery-ui.css',
 						'bower_components/jquery-ui/themes/base/autocomplete.css',
