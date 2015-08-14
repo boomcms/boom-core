@@ -1,8 +1,21 @@
 html.boom {
-	select {
+	select,
+	textarea,
+	input[type=text],
+	input[type=email],
+	input[type=password],
+	input[type=submit] {
 		border-radius: 0;
-		border: 0;
+		border: 1px solid @light-grey;
+		padding: 2px 5px;
 		-webkit-appearance: none;
+	}
+	
+	input[type=submit] {
+		border: 0;
+	}
+
+	select {
 		height: 2em;
 		padding: 2px 30px 2px 5px;
 		background: @white url(/vendor/boomcms/boom-core/img/down.png) no-repeat center right;
@@ -14,18 +27,7 @@ html.boom {
 	}
 
 	input[type=text], input[type=password], input[type=submit], input[type=email] {
-		border-radius: 0;
-		border: 0;
-		-webkit-appearance: none;
 		height: 2em;
-		padding: 2px 5px;
-	}
-
-	textarea {
-		border-radius: 0;
-		border: 0;
-		-webkit-appearance: none;
-		padding: 2px 5px;
 	}
 
 	label {

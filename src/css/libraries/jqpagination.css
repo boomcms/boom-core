@@ -1,7 +1,7 @@
 .b-pagination {
   display: inline-block;
-  border: 1px solid #CDCDCD;
-  border-radius: 3px; }
+  border: 0;
+}
 
 .b-pagination a {
   display: block;
