@@ -1,14 +1,16 @@
 function boomAssetEditor(asset, uploader) {
     this.asset = asset;
     this.uploader = uploader;
+	this.selection = new boomAssetSelection([this.asset.id]);
 
     boomAssetEditor.prototype.bind = function(dialog) {
         var asset = this.asset,
+			selection = this.selection,
             assetEditor = this;
 
         dialog.contents
 			.on('click', '.b-assets-delete', function() {
-				asset
+				selection
 					.delete()
 					.done(function() {
 						dialog.cancel();
@@ -16,7 +18,7 @@ function boomAssetEditor(asset, uploader) {
 			})
 			.on('click', '.b-assets-download', function(e) {
 				e.preventDefault();
-				asset.download();
+				selection.download();
 			})
             .on('click', '.b-assets-replace', function(e) {
                 var uploadFinished = assetEditor.uploader.assetUploader('option', 'uploadFinished');
@@ -42,13 +44,13 @@ function boomAssetEditor(asset, uploader) {
 			.on('click', '.b-assets-openeditor', function(e) {
 				e.preventDefault();
 		
-				new boomImageEditor(asset.getViewUrl() + '?' + new Date().getTime())
+				new boomImageEditor(asset.getUrl() + '?' + new Date().getTime())
 					.done(function(blob) {
 						assetEditor.replaceWithBlob(blob);
 					});
 			})
 			.on('click', '.b-assets-save', function() {
-				assetEditor.asset
+				assetEditor.selection
 					.save(assetEditor.dialog.contents.find('form').serialize())
 					.done(function() {
 						new boomNotification("Asset details saved");
@@ -79,10 +81,10 @@ function boomAssetEditor(asset, uploader) {
 					.find('#b-tags')
 					.assetTagSearch({
 						addTag: function(e, tag) {
-							assetEditor.asset.addTag(tag);
+							assetEditor.selection.addTag(tag);
 						},
 						removeTag: function(e, tag) {
-							assetEditor.asset.removeTag(tag);
+							assetEditor.selection.removeTag(tag);
 						}
 					});
 			}
@@ -118,7 +120,7 @@ function boomAssetEditor(asset, uploader) {
     boomAssetEditor.prototype.revertTo = function(versionId) {
         var assetEditor = this;
 
-        this.asset.revertToVersion(versionId)
+        this.selection.revertToVersion(versionId)
             .done(function() {
                 new boomNotification("This asset has been reverted to the previous version");
                 assetEditor.reloadPreviewImage();

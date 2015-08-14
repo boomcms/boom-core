@@ -43714,92 +43714,30 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 				sortList: [[3,0], [1,0]]
 			});
 	}
-});;function boomAsset(asset_id) {
-	this.id = asset_id;
-
-	boomAsset.prototype.base_url = '/cms/assets/';
-
-	boomAsset.prototype.addTag = function(tag) {
-		$.post(this.base_url + 'tags/add', {
-			assets : this.id.split('-'),
-			tag : tag
-		});
-	};
-
-	boomAsset.prototype.delete = function() {
-		var asset = this,
-			deleted = new $.Deferred(),
-			confirmation,
-			message = this.hasMultipleIds()? 'Are you sure you wanted to delete these assets?' : 'Are you sure you want to delete this asset?'
-
-		confirmation = new boomConfirmation('Please confirm', message);
-		confirmation.done(function() {
-			$.post(asset.base_url + 'delete', {
-				assets : asset.id.split('-')
-			})
-			.done(function() {
-				deleted.resolve();
-			});
-		});
-
-		return deleted;
-	};
-
-	boomAsset.prototype.download = function() {
-		var url = this.base_url + 'download?',
-			assets = this.id.split('-');
-
-		for (var i = 0; i < assets.length; i++) {
-			assets[i] = 'asset[]=' + assets[i];
-		}
-
-		window.location = url + assets.join('&');
-	};
-
-	boomAsset.prototype.get = function() {
-		return $.get(this.base_url + 'view/' + this.id);
-	};
+});;function boomAsset(assetId) {
+	this.id = assetId;
 	
 	boomAsset.prototype.getId = function() {
 		return this.id;
 	};
 	
-	boomAsset.prototype.getViewUrl = function() {
+	boomAsset.prototype.getUrl = function() {
 		return '/asset/view/' + this.id;
-	};
-
-	boomAsset.prototype.hasMultipleIds = function() {
-		return this.id.indexOf('-') !== -1;
-	};
-
-	boomAsset.prototype.removeTag = function(tag) {
-		$.post(this.base_url + 'tags/remove', {
-			assets : this.id.split('-'),
-			tag : tag
-		});
-	};
-
-	boomAsset.prototype.revertToVersion = function(versionId) {
-		return $.post(this.base_url + 'revert/' + this.id, {
-			version_id: versionId
-		});
-	};
-
-	boomAsset.prototype.save = function(data) {
-		return $.post(this.base_url + 'save/' + this.id, data);
 	};
 };
 ;function boomAssetEditor(asset, uploader) {
     this.asset = asset;
     this.uploader = uploader;
+	this.selection = new boomAssetSelection([this.asset.id]);
 
     boomAssetEditor.prototype.bind = function(dialog) {
         var asset = this.asset,
+			selection = this.selection,
             assetEditor = this;
 
         dialog.contents
 			.on('click', '.b-assets-delete', function() {
-				asset
+				selection
 					.delete()
 					.done(function() {
 						dialog.cancel();
@@ -43807,7 +43745,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 			})
 			.on('click', '.b-assets-download', function(e) {
 				e.preventDefault();
-				asset.download();
+				selection.download();
 			})
             .on('click', '.b-assets-replace', function(e) {
                 var uploadFinished = assetEditor.uploader.assetUploader('option', 'uploadFinished');
@@ -43833,13 +43771,13 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 			.on('click', '.b-assets-openeditor', function(e) {
 				e.preventDefault();
 		
-				new boomImageEditor(asset.getViewUrl() + '?' + new Date().getTime())
+				new boomImageEditor(asset.getUrl() + '?' + new Date().getTime())
 					.done(function(blob) {
 						assetEditor.replaceWithBlob(blob);
 					});
 			})
 			.on('click', '.b-assets-save', function() {
-				assetEditor.asset
+				assetEditor.selection
 					.save(assetEditor.dialog.contents.find('form').serialize())
 					.done(function() {
 						new boomNotification("Asset details saved");
@@ -43870,10 +43808,10 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 					.find('#b-tags')
 					.assetTagSearch({
 						addTag: function(e, tag) {
-							assetEditor.asset.addTag(tag);
+							assetEditor.selection.addTag(tag);
 						},
 						removeTag: function(e, tag) {
-							assetEditor.asset.removeTag(tag);
+							assetEditor.selection.removeTag(tag);
 						}
 					});
 			}
@@ -43909,7 +43847,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
     boomAssetEditor.prototype.revertTo = function(versionId) {
         var assetEditor = this;
 
-        this.asset.revertToVersion(versionId)
+        this.selection.revertToVersion(versionId)
             .done(function() {
                 new boomNotification("This asset has been reverted to the previous version");
                 assetEditor.reloadPreviewImage();
@@ -43919,13 +43857,13 @@ $.widget('boom.pageTitle', $.ui.chunk, {
     return this.open();
 };
 ;$.widget('boom.assetManager', {
-	baseUrl : '/cms/assets/',
-	listUrl : '/cms/assets/get',
-	postData : {
-		page : 1
+	baseUrl: '/cms/assets/',
+	listUrl: '/cms/assets/get',
+	postData: {
+		page: 1
 	},
 
-	selected : [],
+	selection: new boomAssetSelection(),
 
 	addFilter : function(type, value) {
 		this.postData.page = 1;
@@ -44014,28 +43952,24 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 
 		this.menu
 			.on('click', '#b-button-multiaction-delete', function() {
-				var asset = new boomAsset(assetManager.selected.join('-'));
-
-				asset.delete()
+				assetManager.selection.delete()
 					.done(function() {
 						assetManager.getAssets();
 						assetManager.clearSelection();
 				});
 			})
 			.on('click', '#b-button-multiaction-edit', function() {
-				assetManager.viewAsset(assetManager.selected.join('-'));
+				assetManager.viewAsset();
 				assetManager.clearSelection();
 			})
 			.on('click', '#b-button-multiaction-download', function() {
-				var asset = new boomAsset(assetManager.selected.join('-'));
-
-				asset.download();
+				assetManager.selection.download();
 			})
 			.on('click', '#b-button-multiaction-clear', function() {
 				assetManager.clearSelection();
 			})
 			.on('click', '#b-button-multiaction-tag', function() {
-				assetManager.tagMultiple(assetManager.selected);
+				assetManager.selection.tag();
 			})
 			.on('click', '#b-assets-upload', function() {
 				assetManager.uploader.show();
@@ -44043,7 +43977,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 	},
 
 	clearSelection : function() {
-		this.selected = [];
+		this.selection.clear();
 		this.toggleButtons();
 
 		this.element.find('#b-assets-view-thumbs div').removeClass('selected');
@@ -44113,14 +44047,8 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 		this.getAssets();
 	},
 
-	select : function(asset_id) {
-		var index = this.selected.indexOf(asset_id);
-
-		if (index == -1) {
-			this.selected.push(asset_id);
-		} else {
-			this.selected.splice(index, 1);
-		}
+	select : function(assetId) {
+		this.selection.add(assetId);
 
 		this.toggleButtons();
 	},
@@ -44130,32 +44058,10 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 		this.getAssets();
 	},
 
-	tagMultiple : function(assetIds) {
-		var asset = new boomAsset(assetIds.join('-')),
-			dialog;
-
-		dialog = new boomDialog({
-			url: '/cms/assets/tags/list/' + asset.id,
-			title: 'Asset tags',
-			width: 440,
-			cancelButton : false,
-			onLoad: function() {
-				dialog.contents.find('#b-tags').assetTagSearch({
-					addTag : function(e, tag) {
-						asset.addTag(tag);
-					},
-					removeTag : function(e, tag) {
-						asset.removeTag(tag);
-					}
-				});
-			}
-		});
-	},
-
 	toggleButtons : function() {
 		var buttons = $('[id|=b-button-multiaction]').not('#b-button-multiaction-edit');
-		$('#b-button-multiaction-edit').prop('disabled', this.selected.length == 1 ? false : true);
-		buttons.prop('disabled', this.selected.length > 0 ? false : true);
+		$('#b-button-multiaction-edit').prop('disabled', this.selection.length() == 1 ? false : true);
+		buttons.prop('disabled', this.selection.length() ? false : true);
 	},
 
 	updateContentAreaMargin : function() {
@@ -44172,10 +44078,10 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 		this.getAssets();
 	},
 
-	viewAsset : function(assetId) {
+	viewAsset : function() {
 		var assetManager = this;
 
-		new boomAssetEditor(new boomAsset(assetId), assetManager.uploader)
+		new boomAssetEditor(new boomAsset(this.selection.index(0)), assetManager.uploader)
 			.fail(function() {
 				assetManager.getAssets();
 			});
@@ -44800,7 +44706,118 @@ function Row() {
 		this.input.assetTagAutocomplete('setIgnoreTags', this.tags);
 		this._trigger('update', null, {tags : this.tags});
 	}
-});;function boomGroup(group_id) {
+});;function boomAssetSelection(assetIds) {
+	this.assets = typeof(assetIds) === 'object' ? assetIds : [];
+
+	boomAssetSelection.prototype.baseUrl = '/cms/assets/';
+
+	boomAssetSelection.prototype.add = function(assetId) {
+		var index = this.assets.indexOf(assetId);
+
+		if (index == -1) {
+			this.assets.push(assetId);
+		} else {
+			this.assets.splice(index, 1);
+		}
+	};
+
+	boomAssetSelection.prototype.addTag = function(tag) {
+		$.post(this.baseUrl + 'tags/add', {
+			assets : this.assets,
+			tag : tag
+		});
+	};
+
+	boomAssetSelection.prototype.clear = function() {
+		this.assets = [];
+	};
+
+	boomAssetSelection.prototype.delete = function() {
+		var selection = this,
+			deleted = new $.Deferred(),
+			confirmation,
+			message = this.hasMultipleIds()? 'Are you sure you wanted to delete these assets?' : 'Are you sure you want to delete this asset?'
+
+		confirmation = new boomConfirmation('Please confirm', message);
+		confirmation.done(function() {
+			$.post(selection.baseUrl + 'delete', {
+				assets : selection.assets
+			})
+			.done(function() {
+				deleted.resolve();
+			});
+		});
+
+		return deleted;
+	};
+	
+	boomAssetSelection.prototype.download = function() {
+		var url = this.baseUrl + 'download?',
+			assets = [];
+
+		for (var i = 0; i < this.assets.length; i++) {
+			assets[i] = 'asset[]=' + this.assets[i];
+		}
+
+		window.location = url + assets.join('&');
+	};
+
+	boomAssetSelection.prototype.get = function() {
+		return $.get(this.baseUrl + 'view/' + this.assets);
+	};
+
+	boomAssetSelection.prototype.hasMultipleIds = function() {
+		return this.length() > 1;
+	};
+
+	boomAssetSelection.prototype.index = function(i) {
+		return this.assets[i];
+	};
+
+	boomAssetSelection.prototype.length = function() {
+		return this.assets.length;
+	};
+
+	boomAssetSelection.prototype.removeTag = function(tag) {
+		$.post(this.baseUrl + 'tags/remove', {
+			assets : this.assets,
+			tag : tag
+		});
+	};
+
+	boomAssetSelection.prototype.revertToVersion = function(versionId) {
+		return $.post(this.baseUrl + 'revert/' + this.assets[0], {
+			version_id: versionId
+		});
+	};
+
+	boomAssetSelection.prototype.save = function(data) {
+		return $.post(this.baseUrl + 'save/' + this.assets[0], data);
+	};
+
+	boomAssetSelection.prototype.tag = function() {
+		var assetSelection = this,
+			url = this.baseUrl + 'tags/list/' + this.assets.join('-'),
+			dialog;
+				
+		dialog = new boomDialog({
+			url: url,
+			title: 'Asset tags',
+			width: 440,
+			cancelButton : false,
+			onLoad: function() {
+				dialog.contents.find('#b-tags').assetTagSearch({
+					addTag : function(e, tag) {
+						assetSelection.addTag(tag);
+					},
+					removeTag : function(e, tag) {
+						assetSelection.removeTag(tag);
+					}
+				});
+			}
+		});
+	};
+};;function boomGroup(group_id) {
 	this.id = group_id;
 
 	boomGroup.prototype.base_url = '/cms/group/';

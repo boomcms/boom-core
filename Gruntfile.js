@@ -113,6 +113,7 @@ module.exports = function(grunt) {
 					'src/js/boom/asset/justify.js',
 					'src/js/boom/asset/tagAutocomplete.js',
 					'src/js/boom/asset/tagSearch.js',
+					'src/js/boom/asset/selection.js',
 					'src/js/boom/group/group.js',
 					'src/js/boom/group/permissionsEditor.js',
 					'src/js/boom/person.js',

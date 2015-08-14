@@ -1,11 +1,11 @@
 $.widget('boom.assetManager', {
-	baseUrl : '/cms/assets/',
-	listUrl : '/cms/assets/get',
-	postData : {
-		page : 1
+	baseUrl: '/cms/assets/',
+	listUrl: '/cms/assets/get',
+	postData: {
+		page: 1
 	},
 
-	selected : [],
+	selection: new boomAssetSelection(),
 
 	addFilter : function(type, value) {
 		this.postData.page = 1;
@@ -94,28 +94,24 @@ $.widget('boom.assetManager', {
 
 		this.menu
 			.on('click', '#b-button-multiaction-delete', function() {
-				var asset = new boomAsset(assetManager.selected.join('-'));
-
-				asset.delete()
+				assetManager.selection.delete()
 					.done(function() {
 						assetManager.getAssets();
 						assetManager.clearSelection();
 				});
 			})
 			.on('click', '#b-button-multiaction-edit', function() {
-				assetManager.viewAsset(assetManager.selected.join('-'));
+				assetManager.viewAsset();
 				assetManager.clearSelection();
 			})
 			.on('click', '#b-button-multiaction-download', function() {
-				var asset = new boomAsset(assetManager.selected.join('-'));
-
-				asset.download();
+				assetManager.selection.download();
 			})
 			.on('click', '#b-button-multiaction-clear', function() {
 				assetManager.clearSelection();
 			})
 			.on('click', '#b-button-multiaction-tag', function() {
-				assetManager.tagMultiple(assetManager.selected);
+				assetManager.selection.tag();
 			})
 			.on('click', '#b-assets-upload', function() {
 				assetManager.uploader.show();
@@ -123,7 +119,7 @@ $.widget('boom.assetManager', {
 	},
 
 	clearSelection : function() {
-		this.selected = [];
+		this.selection.clear();
 		this.toggleButtons();
 
 		this.element.find('#b-assets-view-thumbs div').removeClass('selected');
@@ -193,14 +189,8 @@ $.widget('boom.assetManager', {
 		this.getAssets();
 	},
 
-	select : function(asset_id) {
-		var index = this.selected.indexOf(asset_id);
-
-		if (index == -1) {
-			this.selected.push(asset_id);
-		} else {
-			this.selected.splice(index, 1);
-		}
+	select : function(assetId) {
+		this.selection.add(assetId);
 
 		this.toggleButtons();
 	},
@@ -210,32 +200,10 @@ $.widget('boom.assetManager', {
 		this.getAssets();
 	},
 
-	tagMultiple : function(assetIds) {
-		var asset = new boomAsset(assetIds.join('-')),
-			dialog;
-
-		dialog = new boomDialog({
-			url: '/cms/assets/tags/list/' + asset.id,
-			title: 'Asset tags',
-			width: 440,
-			cancelButton : false,
-			onLoad: function() {
-				dialog.contents.find('#b-tags').assetTagSearch({
-					addTag : function(e, tag) {
-						asset.addTag(tag);
-					},
-					removeTag : function(e, tag) {
-						asset.removeTag(tag);
-					}
-				});
-			}
-		});
-	},
-
 	toggleButtons : function() {
 		var buttons = $('[id|=b-button-multiaction]').not('#b-button-multiaction-edit');
-		$('#b-button-multiaction-edit').prop('disabled', this.selected.length == 1 ? false : true);
-		buttons.prop('disabled', this.selected.length > 0 ? false : true);
+		$('#b-button-multiaction-edit').prop('disabled', this.selection.length() == 1 ? false : true);
+		buttons.prop('disabled', this.selection.length() ? false : true);
 	},
 
 	updateContentAreaMargin : function() {
@@ -252,10 +220,10 @@ $.widget('boom.assetManager', {
 		this.getAssets();
 	},
 
-	viewAsset : function(assetId) {
+	viewAsset : function() {
 		var assetManager = this;
 
-		new boomAssetEditor(new boomAsset(assetId), assetManager.uploader)
+		new boomAssetEditor(new boomAsset(this.selection.index(0)), assetManager.uploader)
 			.fail(function() {
 				assetManager.getAssets();
 			});
