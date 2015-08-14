@@ -110,9 +110,11 @@ function boomChunkSlideshowEditor(page_id, slotname, options) {
 
 		new boomAssetPicker(currentAssetId)
 			.done(function(asset_id) {
-				slideshowEditor.dialog
+				slideshowEditor.dialog.contents
 					.find('#b-slideshow-editor-current img, #b-slideshow-editor-slides input[type=radio]:checked + img')
-					.attr('src', '/asset/view/' + asset_id);
+					.attr('src', '/asset/view/' + asset_id)
+					.siblings('input')
+					.attr('data-asset', asset_id);
 			});
 	};
 
