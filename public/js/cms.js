@@ -45483,17 +45483,17 @@ function Row() {
 			var img = new Image(),
 				context = canvas.getContext('2d');
 
-			if (canvas.clientWidth > width) {
+			if (canvas.width > width) {
 				canvas.width = width;
 			}
 			
-			if (canvas.clientHeight > height) {
+			if (canvas.height > height) {
 				canvas.height = height;
 			}
-			
+
 			img.onload = function() {
 				context.clearRect(0, 0, canvas.width, canvas.height);
-				context.drawImage(img, x, y, width, height, 0, 0, canvas.width, canvas.height);
+				context.drawImage(img, x, y, width, height, 0, 0, width, height);
 				deferred.resolve('');
 			};
 
