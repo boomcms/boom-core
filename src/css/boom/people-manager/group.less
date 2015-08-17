@@ -1,45 +1,28 @@
 #b-group-edit {
 	&-name {
-		background: @grey;
-		margin-bottom: 0.5em;
-		height: 50px;
-		padding: 0.5em;
+		background: @light-grey;
+		margin-bottom: 1.5rem;
+		padding: 1.5rem 1rem;
 
 		fieldset {
 			padding: 0;
 			margin: 0;
-		}
-
-		label {
-			display: inline-block;
-		}
-
-		input {
-			margin-left: 1em;
-			vertical-align: top;
-			margin-top: 5px;
-		}
-
-		button {
-			margin-top: 0;
-			background-color: transparent;
-			border :0;
-			width: auto;
-			vertical-align: top;
-
-			&:hover, &:focus, &:active {
-				background-color: #555;
-			}
-
-			.b-button-text {
-				text-indent: 3em;
-				text-transform: uppercase;
-				font-weight: normal;
-			}
-		}
-
-		fieldset {
 			border: 0;
+			
+			h2 {
+				margin-bottom: 0;
+			}
+		
+			> * {
+				display: inline-block;
+				margin: 0;
+				vertical-align: middle;
+				color: @darkest-grey;
+
+				+ * {
+					margin-left: 1.5rem;
+				}
+			}
 		}
 	}
 
@@ -56,52 +39,41 @@
 
 		#b-group-roles-general, #b-group-roles-pages {
 			display: none;
-			background: @grey;
-			padding-left: 2em;
 			overflow: hidden;
 
 			input[type=radio], input[type=checkbox] {
 				position: absolute;
 				left: -9999px;
 			}
+
 			label {
-				display: inline;
-				clear: none;
-				float: none;
-				display: inline-block;
-				color: transparent;
 				width: 100%;
 				height: 100%;
-				line-height: 0px;
-				margin-left: 1.5em;
+				display: block;
+				text-indent: -1000%;
+				overflow: hidden;
+				text-align: center;
+				margin: 0;
+				padding: 1.5rem;
 
 				&:after {
-					display: inline-block;
-					content: " - ";
-					color: white;
+					display: block;
+					content: "-";
 					position: absolute;
-					top: 0;
-					bottom: 0;
 					left: 0;
 					right: 0;
-					text-align: center;
-					padding-top: 1.25em;
+					text-indent: 0;
+					top: 50%;
+					transform: translateY(-50%);
 				}
-				&:hover, &:active, &:focus {
-					&:after {
-						background: #444;
-					}
+
+				&:hover, &:active {
+					background: @light-grey;
 				}
 			}
 			input:checked + label {
 				&:after {
-					content: " X ";
-					color: white;
-				}
-				&:hover, &:active, &:focus {
-					&:after {
-						background: initial;
-					}
+					content: "X";
 				}
 			}
 		}
@@ -118,13 +90,13 @@
 		th {
 			font-weight: normal;
 			text-transform: uppercase;
+			padding: 1.5rem;
 		}
 	}
 
 	tr td, tr th {
-		padding: 0.8em 1em;
-		border-right: 1px solid #eee;
-		border-bottom: 1px solid #eee;
+		border-right: 1px solid @grey;
+		border-bottom: 1px solid @grey;
 	}
 
 	td {
@@ -133,7 +105,6 @@
 
 	td:first-of-type, th:first-of-type {
 		width: 50%;
-		padding-left: 0;
 	}
 
 	&-help {
@@ -141,7 +112,7 @@
 		width: 35%;
 		vertical-align: top;
 		padding-left: 1em;
-		border-left: 3px solid white;
+		border-left: 1px solid @grey;
 		margin-top: -2em;
 		float: right;
 

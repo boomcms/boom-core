@@ -5,7 +5,7 @@
 				<label for="b-people-group-name"><h2><?= Lang::get('Edit group name') ?></h2></label>
 				<input type="text" id="b-people-group-name" class="boom-input boom-input-medium" name="name" value="<?= $group->getName() ?>" />
 
-				<?= $button('accept', Lang::get('Save group name'), ['id' => 'b-people-group-save']) ?>
+				<?= $button('save', Lang::get('Save group name'), ['id' => 'b-people-group-save', 'class' => 'b-button-withtext']) ?>
 			</fieldset>
 		</form>
 	</div>

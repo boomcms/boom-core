@@ -30,11 +30,15 @@
 				background: @darkest-grey;
 
 				tr th {
-					padding: 0.5em;
-					height: 50px;
-					color: white;
-					font-weight: normal;
+					padding: 1.5rem 1rem;
 					text-transform: uppercase;
+					font-weight: normal;
+				}
+			}
+			
+			tbody {
+				td {
+					padding: 1.5rem 1rem;
 				}
 			}
 		}
@@ -47,8 +51,7 @@
 
 		&-header {
 			background: @darkest-grey;
-			height: 50px;
-			padding: 0.5em;
+			padding: 0.5rem;
 
 			button {
 				float: right;
@@ -67,45 +70,44 @@
 		}
 
 		&-list {
-			padding: 0.5em;
+			padding: 0;
 			margin: 0;
-			margin-top: 0.5em;
 			list-style-type: none;
-			background: #444;
-			line-height: 30px;
-			min-height: 90%;
 
 			li {
 				margin: 0;
-				padding: 0.7em 0 0.2em 0;
-				border-bottom: 1px solid #eee;
+				padding:0;
+				overflow: hidden;
+				width: 100%;
 
-				&:hover, &:focus, &:active, &.current {
-					background: @grey;
+				&:nth-of-type(odd) {
+					background: @white;
+				}
+				
+				&:nth-of-type(even) {
+					background: @lightest-grey;
 				}
 
-				a.fa {
-					display: inline-block;
-					float: right;
-					height: 30px;
-					width: 30px;
-					color: @white;
-					text-decoration: none;
-
-					&:hover, &:focus {
+				&.current {
+					a.b-groups-item {
 						color: @red;
 					}
 				}
-
-				.b-group-delete {
-					background-position: -120px -120px;
+				
+				a {
+					display: inline-block;
+					float: left;
 				}
 
 				.b-groups-item {
-					color: #fff;
-					text-decoration: none;
-					display: inline-block;
-					width: 70%;
+					width: calc(~"100% - 6rem");
+					padding: 1rem 0.5rem;
+				}
+
+				a.fa {
+					height: 2rem;
+					width: 2rem;
+					margin: 1.2rem 1rem 0 0;
 				}
 			}
 		}
