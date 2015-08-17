@@ -73,27 +73,12 @@ function boomDialog(options) {
 		var boomDialog = this;
 
 		$(top.window)
-			.trigger('boom:dialog:open')
-			.resize(function() {
-				var timeout = setTimeout(function() {
-					clearTimeout(timeout);
-
-					if (boomDialog.contents) {
-						boomDialog.reposition();
-					}
-				}, 100);
-			});
+			.trigger('boom:dialog:open');
 
 		this
 			.contents
 			.dialog(this.options)
 			.ui();
-
-		this.contents.dialog('option', 'position', this.options.position);
-
-		this.contents.find('img').load(function() {
-			boomDialog.reposition();
-		});
 	};
 
 	boomDialog.prototype.open = function() {
@@ -135,10 +120,6 @@ function boomDialog(options) {
 				}
 			}, 100);
 		}
-	};
-
-	boomDialog.prototype.reposition = function() {
-		this.contents.dialog('option', 'position', this.options.position);
 	};
 
 	boomDialog.prototype.saveButton = {
