@@ -1,7 +1,11 @@
 .boom-tabs {
+	padding: 0;
+	background: transparent;
+	border: 0;
+
 	> ul.ui-tabs-nav {
 		margin: 0;
-		padding: 0.5em 0 0 0;
+		padding: 0;
 		background: transparent;
 
 		> li {
@@ -31,9 +35,18 @@
 			}
 		}
 	}
+	
+	button.b-button {
+		color: @darkest-grey;
+		
+		&:hover, &:focus {
+			color: @red;
+		}
+	}
 
 	.ui-tabs-panel {
 		border: 1px solid @grey;
 		padding: 1em;
+		background: @lightest-grey;
 	}
 }

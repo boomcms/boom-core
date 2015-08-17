@@ -6,14 +6,6 @@
 	border: 0;
 	padding: 0;
 	z-index: 10002;
-	
-	button.b-button {
-		color: @darkest-grey;
-		
-		&:hover, &:focus {
-			color: @red;
-		}
-	}
 
 	.b-dialog-form {
 		input, select {
@@ -26,6 +18,7 @@
 		background-color: @red;
 		color: @white;
 		border: 0;
+		border-radius: 0;
 	}
 	
 	.ui-dialog-titlebar-close {
@@ -53,9 +46,10 @@
 		}
 	}
 
-	.ui-widget-content {
+	.ui-dialog-content {
 		background-color: @lightest-grey;
 		color: @darkest-grey;
+		padding: 1.5rem;
 		
 		a {
 			color: @darkest-grey;
@@ -65,14 +59,6 @@
 				color: @red;
 			}
 		}
-
-		&.ui-dialog-content {
-			padding-top: 0;
-		}
-	}
-	
-	.ui-widget-header {
-		background-color: @lightest-grey;
 	}
 
 	.ui-state-highlight {
