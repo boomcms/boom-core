@@ -42862,7 +42862,7 @@ $.widget('ui.chunkTag', $.ui.chunk,
 	boomChunkAssetEditor.prototype.bind = function() {
 		var chunkAssetEditor = this;
 
-		this.asset.on('click', function() {
+		this.assetElement.on('click', function() {
 			new boomAssetPicker(chunkAssetEditor.asset)
 				.done(function(asset) {
 					chunkAssetEditor.setAsset(asset);
