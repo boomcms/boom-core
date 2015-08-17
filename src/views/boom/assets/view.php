@@ -2,7 +2,7 @@
     <div class="b-assets-preview">
         <img src="<?= $assetURL(['asset' => $asset, 'action' => 'thumb', 'height' => 300]) ?>">
 
-        <div class="ui-dialog-buttonpane">
+        <div class="b-buttons">
             <?= $button('trash-o', Lang::get('Delete'), ['class' => 'b-assets-delete']) ?>
             <?= $button('download', Lang::get('Download'), ['class' => 'b-assets-download']) ?>
             <?= $button('refresh', Lang::get('Replace'), ['class' => 'b-assets-replace']) ?>

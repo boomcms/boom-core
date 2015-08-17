@@ -12,26 +12,30 @@
 			display: inline-block;
 			list-style: none;
 			float: left;
-			background: @lightest-grey;
 			border: 1px solid @grey;
 			border-bottom: 0;
-			
-			&:hover, &:focus {
-				background: @light-grey;
-			}
-			
-			&.ui-state-default {
-				a {
-					color: @darkest-grey;
-				}
-			}
+			margin: 0 0.5rem 0 0;
 			
 			&.ui-state-active {
-				background: @light-grey;
+				margin-bottom: -1px;
+				padding-bottom: 1px;
+				
+				a {
+					background: @light-grey;
+				}
 			}
 
 			a {
 				font-weight: bold;
+				padding: 1rem 1.5rem;
+				display: block;
+				color: @darkest-grey;
+				background: @lightest-grey;
+
+				&:hover, &:focus {
+					background: @light-grey;
+					outline: 0;
+				}	
 			}
 		}
 	}
@@ -46,7 +50,7 @@
 
 	.ui-tabs-panel {
 		border: 1px solid @grey;
-		padding: 1em;
+		padding: 1.5rem;
 		background: @lightest-grey;
 	}
 }
