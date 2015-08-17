@@ -3,8 +3,6 @@
 	color: @darkest-grey;
 	max-height: 100%;
 	overflow: hidden;
-	border: 0;
-	padding: 0;
 	z-index: 10002;
 	outline: 0;
 
@@ -13,6 +11,7 @@
 		background-color: @red;
 		color: @white;
 		padding: 1rem 1.5rem;
+		cursor: move;
 	}
 	
 	.ui-dialog-titlebar-close {
@@ -20,9 +19,6 @@
 	}
 
 	.ui-dialog-buttonpane {
-		margin-top: 0;
-		background-color: @lightest-grey;
-		border: 0;
 		padding: 0 1rem 1rem 0;
 		text-align: right;
 
@@ -33,29 +29,7 @@
 	}
 
 	.ui-dialog-content {
-		background-color: @lightest-grey;
-		color: @darkest-grey;
 		padding: 1.5rem;
-		
-		a {
-			color: @darkest-grey;
-			
-			&:hover, &:focus {
-				background: transparent;
-				color: @red;
-			}
-		}
-	}
-
-	.ui-state-highlight {
-		background: transparent;
-		color: @lightest-grey;
-		font-weight: bold;
-		border: 0;
-
-		span {
-			display: none;
-		}
 	}
 	
 	button.b-button {
