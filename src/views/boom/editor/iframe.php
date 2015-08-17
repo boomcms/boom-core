@@ -1,5 +1,5 @@
     <?= $before_closing_head ?>
-    <link rel="stylesheet" type="text/css" href="/vendor/boomcms/boom-core/css/cms.css" />
+    <link rel="stylesheet" type="text/css" href="/vendor/boomcms/boom-core/css/inpage.css" />
 </head>
 <?= $body_tag ?>
 

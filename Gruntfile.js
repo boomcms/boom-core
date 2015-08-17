@@ -151,7 +151,8 @@ module.exports = function(grunt) {
 					paths: ["src/css"]
 				},
 				files: {
-					"public/css/cms.css": "src/css/cms.less"
+					"public/css/cms.css": "src/css/cms.less",
+					"public/css/inpage.css": "src/css/inpage.less"
 				}
 			}
 		},
@@ -162,7 +163,10 @@ module.exports = function(grunt) {
 			},
 			target: {
 				files: {
-					 'public/css/cms.css': [
+					'public/css/inpage.css': [
+						'public/css/inpage.css'
+					],
+					'public/css/cms.css': [
 						'bower_components/normalize.css/normalize.css',
 						'bower_components/datetimepicker/jquery.datetimepicker.css',
 						'bower_components/jquery-ui/themes/base/jquery-ui.css',
