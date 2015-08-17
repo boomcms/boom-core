@@ -19,7 +19,7 @@
 		padding: 0;
 	}
 
-	li, li.ui-state-default {
+	li {
 		list-style: none;
 		background-position: 50% 50% !important;
 		border: none;
@@ -76,7 +76,7 @@
 			padding-left: 0;
 		}
 
-		&.ui-state-default a, a {
+		a {
 			color: @darkest-grey;
 			display: block;
 			padding: .2em;
@@ -101,20 +101,7 @@
 			&.active {
 				background: @grey;
 			}
-
-			&.ui-state-active {
-				font-weight: normal;
-			}
 		}
-	}
-
-	.ui-state-default {
-		border-width: 1px 0 0 1px;
-		font-weight: normal;
-	}
-
-	.ui-state-hover {
-		font-weight: normal;
 	}
 }
 
