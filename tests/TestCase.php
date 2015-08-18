@@ -1,5 +1,7 @@
 <?php
 
+use Mockery as m;
+
 class TestCase extends Illuminate\Foundation\Testing\TestCase
 {
     /**
@@ -19,6 +21,11 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase
 
         $app->bind('boomcms.asset.provider', function ($app) {});
         $app->bind('boomcms.chunk', function ($app) {});
+
+        $app->bind('boomcms.person.provider', function($app) {
+            return new PersonProvider();
+        });
+
         $app->bind('boomcms.page.provider', function ($app) {});
 
         return $app;
