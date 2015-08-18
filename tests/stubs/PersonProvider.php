@@ -3,5 +3,6 @@
 class PersonProvider
 {
     public function save()
-    {}
+    {
+    }
 }

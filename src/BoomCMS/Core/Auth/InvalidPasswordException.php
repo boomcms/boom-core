@@ -8,7 +8,7 @@ use Exception;
 class InvalidPasswordException extends Exception
 {
     /**
-     * @var Person 
+     * @var Person
      */
     protected $person;
 

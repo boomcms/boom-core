@@ -8,12 +8,12 @@ use Illuminate\Http\Request;
 class AuthEvent
 {
     /**
-     * @var Person 
+     * @var Person
      */
     protected $person;
 
     /**
-     * @var Request 
+     * @var Request
      */
     protected $request;
 

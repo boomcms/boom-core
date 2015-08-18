@@ -2,8 +2,8 @@
 
 namespace BoomCMS\Core\Group\Finder;
 
-use BoomCMS\Foundation\Finder\Filter;
 use BoomCMS\Core\Person\Person;
+use BoomCMS\Foundation\Finder\Filter;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 

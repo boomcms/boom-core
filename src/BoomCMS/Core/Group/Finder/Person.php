@@ -2,8 +2,8 @@
 
 namespace BoomCMS\Core\Group\Finder;
 
-use BoomCMS\Foundation\Finder\Filter;
 use BoomCMS\Core\Person\Person as PersonObject;
+use BoomCMS\Foundation\Finder\Filter;
 use Illuminate\Database\Eloquent\Builder;
 
 class Person extends Filter
