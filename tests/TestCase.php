@@ -25,6 +25,10 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase
             return new PersonProvider();
         });
 
+        $app->bind('boomcms.settings', function($app) {
+            return new SettingsStore();
+        });
+
         $app->bind('boomcms.page.provider', function ($app) {});
 
         return $app;

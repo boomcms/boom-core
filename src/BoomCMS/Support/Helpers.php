@@ -5,9 +5,22 @@ namespace BoomCMS\Support;
 use BoomCMS\Core\Page;
 use BoomCMS\Core\Tag;
 use BoomCMS\Support\Facades\Editor;
+use BoomCMS\Support\Facades\Settings;
+use Illuminate\Support\Facades\App;
 
 abstract class Helpers
 {
+    /**
+     * If the app is in the production then the analytics setting is returned.
+     * Otherwise an empty string is returned.
+     * 
+     * @return string
+     */
+    public static function analytics()
+    {
+        return App::environment() === 'production'? Settings::get('analytics') : '';
+    }
+
     /**
      * Generate a URL to link to an asset
      * 

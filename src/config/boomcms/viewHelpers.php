@@ -4,6 +4,9 @@ use BoomCMS\Support\Helpers;
 
 return [
     'viewHelpers' => [
+        'analytics' => function() {
+            return Helpers::analytics();
+        },
         'assetURL' => function (array $params) {
             return Helpers::assetURL($params);
         },
