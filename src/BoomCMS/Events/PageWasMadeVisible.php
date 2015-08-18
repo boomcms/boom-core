@@ -2,10 +2,11 @@
 
 namespace BoomCMS\Events;
 
+use BoomCMS\Foundation\Events\PageEvent;
 use BoomCMS\Core\Page\Page;
 use BoomCMS\Core\Person\Person;
 
-class PageWasMadeVisible extends AbstractPageEvent
+class PageWasMadeVisible extends PageEvent
 {
     /**
      * @var Person

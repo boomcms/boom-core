@@ -2,9 +2,10 @@
 
 namespace BoomCMS\Events;
 
+use BoomCMS\Foundation\Events\PageEvent;
 use BoomCMS\Core\Page\Page;
 
-class PageWasCreated extends AbstractPageEvent
+class PageWasCreated extends PageEvent
 {
     /**
      * @var Page

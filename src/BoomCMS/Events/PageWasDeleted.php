@@ -2,6 +2,8 @@
 
 namespace BoomCMS\Events;
 
-class PageWasDeleted extends AbstractPageEvent
+use BoomCMS\Foundation\Events\PageEvent;
+
+class PageWasDeleted extends PageEvent
 {
 }

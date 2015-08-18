@@ -2,9 +2,10 @@
 
 namespace BoomCMS\Events;
 
+use BoomCMS\Foundation\Events\PageEvent;
 use BoomCMS\Core\Page\Page;
 
-class PageTitleWasChanged extends AbstractPageEvent
+class PageTitleWasChanged extends PageEvent
 {
     /**
      * @var string

@@ -1,10 +1,10 @@
 <?php
 
-namespace BoomCMS\Events;
+namespace BoomCMS\Foundation\Events;
 
 use BoomCMS\Core\Page\Page;
 
-abstract class AbstractPageEvent
+abstract class PageEvent
 {
     /**
      * @var Page

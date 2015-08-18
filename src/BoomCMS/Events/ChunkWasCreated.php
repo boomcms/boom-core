@@ -5,7 +5,7 @@ namespace BoomCMS\Events;
 use BoomCMS\Core\Chunk\BaseChunk as Chunk;
 use BoomCMS\Core\Page\Page;
 
-class ChunkWasCreated extends AbstractPageEvent
+class ChunkWasCreated extends PageEvent
 {
     /**
      * @var Chunk
