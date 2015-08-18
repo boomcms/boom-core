@@ -3,6 +3,7 @@
 namespace BoomCMS\Events;
 
 use BoomCMS\Core\Chunk\BaseChunk as Chunk;
+use BoomCMS\Foundation\Events\PageEvent;
 use BoomCMS\Core\Page\Page;
 
 class ChunkWasCreated extends PageEvent
