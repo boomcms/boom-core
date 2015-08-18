@@ -2,7 +2,6 @@
 
 namespace BoomCMS\Http\Middleware;
 
-use BoomCMS\Core\Menu\Menu;
 use BoomCMS\UI;
 use Closure;
 use Illuminate\Foundation\Application;
@@ -35,7 +34,7 @@ class DefineCMSViewSharedVariables
         });
 
         View::share('menu', function () use ($auth) {
-            return new Menu($auth);
+            return View::make('boom::menu')->render();
         });
 
         View::share('menuButton', function () {
