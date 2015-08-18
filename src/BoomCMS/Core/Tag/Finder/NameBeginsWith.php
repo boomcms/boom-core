@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Core\Tag\Finder\Filter;
 
-use BoomCMS\Core\Finder\Filter;
+use BoomCMS\Foundation\Finder\Filter;
 use Illuminate\Database\Eloquent\Builder;
 
 class NameBeginsWith extends Filter

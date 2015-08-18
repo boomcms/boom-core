@@ -1,6 +1,6 @@
 <?php
 
-namespace BoomCMS\Core\Finder;
+namespace BoomCMS\Foundation\Finder;
 
 use Illuminate\Database\Eloquent\Builder;
 

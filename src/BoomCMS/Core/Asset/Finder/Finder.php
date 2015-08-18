@@ -3,7 +3,7 @@
 namespace BoomCMS\Core\Asset\Finder;
 
 use BoomCMS\Core\Asset\Asset;
-use BoomCMS\Core\Finder\Finder as BaseFinder;
+use BoomCMS\Foundation\Finder\Finder as BaseFinder;
 use BoomCMS\Database\Models\Asset as Model;
 
 class Finder extends BaseFinder

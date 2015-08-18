@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Core\Page\Finder;
 
-use BoomCMS\Core\Finder\Finder as BaseFinder;
+use BoomCMS\Foundation\Finder\Finder as BaseFinder;
 use BoomCMS\Core\Page\Page;
 use BoomCMS\Database\Models\Page as Model;
 use BoomCMS\Support\Facades\Editor;

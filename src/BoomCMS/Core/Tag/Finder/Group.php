@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Core\Tag\Finder;
 
-use BoomCMS\Core\Finder\Filter;
+use BoomCMS\Foundation\Finder\Filter;
 use Illuminate\Database\Eloquent\Builder;
 
 class Group extends Filter

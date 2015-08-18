@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Core\Tag\Finder;
 
-use BoomCMS\Core\Finder\Finder as BaseFinder;
+use BoomCMS\Foundation\Finder\Finder as BaseFinder;
 use BoomCMS\Core\Tag\Tag;
 use BoomCMS\Database\Models\Tag as Model;
 

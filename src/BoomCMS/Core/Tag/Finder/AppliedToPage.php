@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Core\Tag\Finder;
 
-use BoomCMS\Core\Finder\Filter;
+use BoomCMS\Foundation\Finder\Filter;
 use BoomCMS\Core\Page\Page;
 use Illuminate\Database\Eloquent\Builder;
 

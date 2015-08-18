@@ -3,7 +3,7 @@
 namespace BoomCMS\Core\Page\Finder;
 
 use BoomCMS\Core\Editor\Editor as Editor;
-use BoomCMS\Core\Finder\Filter;
+use BoomCMS\Foundation\Finder\Filter;
 use Illuminate\Database\Eloquent\Builder;
 
 class VisibleInNavigation extends Filter

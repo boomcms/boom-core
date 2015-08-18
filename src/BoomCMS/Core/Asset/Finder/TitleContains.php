@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Core\Asset\Finder;
 
-use BoomCMS\Core\Finder\Filter as BaseFilter;
+use BoomCMS\Foundation\Finder\Filter as BaseFilter;
 use Illuminate\Database\Eloquent\Builder;
 
 class TitleContains extends BaseFilter
