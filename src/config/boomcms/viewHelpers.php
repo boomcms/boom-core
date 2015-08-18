@@ -1,61 +1,29 @@
 <?php
 
-use BoomCMS\Core\Page;
-use BoomCMS\Core\Tag;
+use BoomCMS\Support\Helpers;
 
 return [
     'viewHelpers' => [
         'assetURL' => function (array $params) {
-            if (isset($params['asset']) && is_object($params['asset'])) {
-                $asset = $params['asset'];
-                $params['asset'] = $params['asset']->getId();
-            }
-
-            if (!isset($params['action'])) {
-                $params['action'] = 'view';
-            }
-
-            if (isset($params['height']) && !isset($params['width'])) {
-                $params['width'] = 0;
-            }
-
-            $url = route('asset', $params);
-
-            if (isset($asset)) {
-                $url .= '?'.$asset->getLastModified()->getTimestamp();
-            }
-
-            return $url;
+            return Helpers::assetURL($params);
         },
         'countPages' => function (array $params) {
-            return (new Page\Query($params))->countPages();
+            return Helpers::countPages($params);
         },
         'getPages' => function (array $params) {
-            return (new Page\Query($params))->getPages();
+            return Helpers::getPages($params);
         },
         'next' => function (array $params = []) {
-            return (new Page\Query($params))->getNextTo(Editor::getActivePage(), 'after');
+            return Helpers::next($params);
         },
         'prev' => function (array $params = []) {
-            return (new Page\Query($params))->getNextTo(Editor::getActivePage(), 'before');
+            return Helpers::prev($params);
         },
         'getTags' => function (Page\Page $page = null, $group = null) {
-            $page = $page ?: Editor::getActivePage();
-
-            $finder = new Tag\Finder\Finder();
-            $finder->addFilter(new Tag\Finder\AppliedToPage($page));
-            $finder->addFilter(new Tag\Finder\Group($group));
-
-            return $finder->setOrderBy('name', 'asc')->findAll();
+            return Helpers::getTags($page, $group);
         },
         'getTagsInSection' => function (Page\Page $page = null, $group = null) {
-            $page = $page ?: Editor::getActivePage();
-
-            $finder = new Tag\Finder\Finder();
-            $finder->addFilter(new Tag\Finder\AppliedToPageDescendants($page));
-            $finder->addFilter(new Tag\Finder\Group($group));
-
-            return $finder->setOrderBy('name', 'asc')->findAll();
+            return Helpers::getTagsInSection($page, $group);
         },
     ],
 ];
