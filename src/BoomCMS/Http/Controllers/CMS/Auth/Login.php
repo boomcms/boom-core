@@ -3,7 +3,10 @@
 namespace BoomCMS\Http\Controllers\CMS\Auth;
 
 use BoomCMS\Core\Auth;
+use BoomCMS\Events\FailedLogin;
+use BoomCMS\Events\SuccessfulLogin;
 use BoomCMS\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Session;
 
@@ -23,6 +26,8 @@ class Login extends Controller
                 $this->request->input('remember') == 1
             );
         } catch (Auth\InvalidPasswordException $e) {
+            Event::fire(new FailedLogin($e->getPerson(), $this->request));
+
             return $this->displayLoginForm(['login_error' => Lang::get('Invalid email address or password')]);
         } catch (Auth\PersonNotFoundException $e) {
             return $this->displayLoginForm(['login_error' => Lang::get('Invalid email address or password')]);
@@ -31,6 +36,8 @@ class Login extends Controller
                 'login_error' => Lang::get('boom::auth.locked', ['lock_wait' => $e->getLockWait()]),
             ]);
         }
+
+        Event::fire(new SuccessfulLogin($this->auth->getPerson(), $this->request));
 
         $url = Session::get('boomcms.redirect_url');
 
