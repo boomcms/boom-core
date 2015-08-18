@@ -11,7 +11,7 @@
         <?php foreach ($items as $key => $item): ?>
             <?php if (!isset($item['role']) || $auth->loggedIn($item['role'])): ?>
                 <li>
-                    <a target='_top' href='<?= $item['url'] ?>'<?php if (isset($item['icon'])): ?> class="fa fa-<?= $item['icon'] ?>"<?php endif ?>><?= Lang::get('boom::menu.'.$key) ?></a>
+                    <a target='_top' href='<?= $item['url'] ?>'<?php if (isset($item['icon'])): ?> class="fa fa-<?= $item['icon'] ?>"<?php endif ?>><?= isset($item['title']) ? $item['title'] : Lang::get('boom::menu.'.$key) ?></a>
                 </li>
             <?php endif ?>
         <?php endforeach ?>

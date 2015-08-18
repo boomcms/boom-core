@@ -26,4 +26,9 @@ return [
         'role'     => 'manage_people',
         'icon'     => 'users',
     ],
+    'settings' => [
+        'url'      => '/cms/settings',
+        'role'     => 'manage_settings',
+        'icon'     => 'cog',
+    ],
 ];

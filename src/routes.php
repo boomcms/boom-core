@@ -29,6 +29,7 @@ Route::group(['middleware' => [
             Route::controller('editor', 'Editor');
             Route::controller('account', 'Auth\Account');
             Route::controller('approvals', 'Approvals');
+            Route::controller('settings', 'Settings');
 
             Route::group(['prefix' => 'assets', 'namespace' => 'Assets'], function () {
                 Route::get('', 'AssetManager@index');
