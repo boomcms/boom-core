@@ -2,8 +2,8 @@
 
 namespace BoomCMS\Core\Tag\Finder;
 
-use BoomCMS\Foundation\Finder\Filter;
 use BoomCMS\Core\Page\Page;
+use BoomCMS\Foundation\Finder\Filter;
 use Illuminate\Database\Eloquent\Builder;
 
 class AppliedToPageDescendants extends Filter

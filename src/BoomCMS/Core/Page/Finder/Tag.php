@@ -2,8 +2,8 @@
 
 namespace BoomCMS\Core\Page\Finder;
 
-use BoomCMS\Foundation\Finder\Filter;
 use BoomCMS\Core\Tag\Tag as TagObject;
+use BoomCMS\Foundation\Finder\Filter;
 use Illuminate\Database\Eloquent\Builder;
 
 class Tag extends Filter

@@ -2,9 +2,9 @@
 
 namespace BoomCMS\Events;
 
-use BoomCMS\Foundation\Events\PageEvent;
 use BoomCMS\Core\Page\Page;
 use BoomCMS\Core\Template\Template;
+use BoomCMS\Foundation\Events\PageEvent;
 
 class PageTemplateWasChanged extends PageEvent
 {

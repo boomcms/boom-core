@@ -2,8 +2,8 @@
 
 namespace BoomCMS\Core\Page\Finder;
 
-use BoomCMS\Foundation\Finder\Filter;
 use BoomCMS\Core\Template\Template as TemplateObject;
+use BoomCMS\Foundation\Finder\Filter;
 use Illuminate\Database\Eloquent\Builder;
 
 class Template extends Filter

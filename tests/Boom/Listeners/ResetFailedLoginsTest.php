@@ -20,7 +20,7 @@ class Listeners_ResetFailedLoginsTest extends TestCase
 
         $this->handle($person);
     }
-    
+
     public function testLastFailedLoginIsNulled()
     {
         $person = $this->getMock(Person::class);
