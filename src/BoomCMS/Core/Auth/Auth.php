@@ -74,6 +74,8 @@ class Auth
         if (!$person->checkPassword($password) || !$person->loaded()) {
             if ($person->loaded()) {
                 $this->loginFailed($person);
+
+                throw new InvalidPasswordException($person);
             }
 
             throw new PersonNotFoundException();

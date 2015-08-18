@@ -30,9 +30,9 @@ class Auth_AuthenticateTest extends TestCase
     }
 
     /**
-     * @expectedException BoomCMS\Core\Auth\PersonNotFoundException
+     * @expectedException BoomCMS\Core\Auth\InvalidPasswordException
      */
-    public function testPersonNotFoundExceptionIfInvalidPassword()
+    public function testInvalidPasswordExceptionIfInvalidPassword()
     {
         $session = $this->getMockSession();
         $personProvider = $this->getMockBuilder('BoomCMS\Core\Person\Provider')

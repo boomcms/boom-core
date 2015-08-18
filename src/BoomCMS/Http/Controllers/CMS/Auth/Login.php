@@ -22,6 +22,8 @@ class Login extends Controller
                 $this->request->input('password'),
                 $this->request->input('remember') == 1
             );
+        } catch (Auth\InvalidPasswordException $e) {
+            return $this->displayLoginForm(['login_error' => Lang::get('Invalid email address or password')]);
         } catch (Auth\PersonNotFoundException $e) {
             return $this->displayLoginForm(['login_error' => Lang::get('Invalid email address or password')]);
         } catch (Auth\PersonLockedException $e) {
