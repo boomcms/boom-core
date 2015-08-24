@@ -1,7 +1,7 @@
 <?php
 
-use BoomCMS\Support\Helpers;
 use BoomCMS\Support\Facades\Settings;
+use BoomCMS\Support\Helpers;
 use Illuminate\Support\Facades\App;
 
 class Support_HelpersTest extends TestCase

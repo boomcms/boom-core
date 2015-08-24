@@ -18,13 +18,14 @@ abstract class Helpers
      */
     public static function analytics()
     {
-        return App::environment() === 'production'? Settings::get('analytics') : '';
+        return App::environment() === 'production' ? Settings::get('analytics') : '';
     }
 
     /**
-     * Generate a URL to link to an asset
+     * Generate a URL to link to an asset.
      * 
      * @param array $params
+     *
      * @return string
      */
     public static function assetURL(array $params)
@@ -52,9 +53,10 @@ abstract class Helpers
     }
 
     /**
-     * Get a count of pages matching an array of query parameters
+     * Get a count of pages matching an array of query parameters.
      * 
      * @param array $params
+     *
      * @return int
      */
     public static function countPages(array $params)
@@ -66,6 +68,7 @@ abstract class Helpers
      * Returns an array of Pages which match the given query parameters.
      * 
      * @param array $params
+     *
      * @return array
      */
     public static function getPages(array $params)
@@ -77,6 +80,7 @@ abstract class Helpers
      * Get the next page in the sequence.
      * 
      * @param array $params
+     *
      * @return Page\Page
      */
     public static function next(array $params)
@@ -86,9 +90,10 @@ abstract class Helpers
     }
 
     /**
-     * Get the previous page in a sequence
+     * Get the previous page in a sequence.
      * 
      * @param array $params
+     *
      * @return Page\Page
      */
     public static function prev(array $params)
@@ -98,13 +103,15 @@ abstract class Helpers
     }
 
     /**
-     * Get the tags applied to a page
+     * Get the tags applied to a page.
      * 
      * @param Page\Page $page
-     * @param string $group
+     * @param string    $group
+     *
      * @return array
      */
-    public static function getTags(Page\Page $page = null, $group = null) {
+    public static function getTags(Page\Page $page = null, $group = null)
+    {
         $page = $page ?: Editor::getActivePage();
 
         $finder = new Tag\Finder\Finder();
@@ -115,13 +122,15 @@ abstract class Helpers
     }
 
     /**
-     * Get the pages applied to the children of a page
+     * Get the pages applied to the children of a page.
      * 
      * @param Page\Page $page
-     * @param string $group
+     * @param string    $group
+     *
      * @return array
      */
-    public static function getTagsInSection(Page\Page $page = null, $group = null) {
+    public static function getTagsInSection(Page\Page $page = null, $group = null)
+    {
         $page = $page ?: Editor::getActivePage();
 
         $finder = new Tag\Finder\Finder();
