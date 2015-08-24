@@ -8,6 +8,7 @@ class Migration_Boom_20141201153300 extends Minion_Migration_Base
                 $db->query(null, "alter table tags add `group` varchar(100)");
                 $db->query(null, "alter table tags drop index tags_name");
                 $db->query(null, "create unique index tags_group_name on tags(`group`, name)");
+		$db->query(null, "alter table tags drop index tags_slug_long");
 
                 $tags = DB::select('id', 'name')
                     ->from('tags')
