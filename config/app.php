@@ -194,6 +194,7 @@ return [
         'Page'      => 'BoomCMS\Support\Facades\Page',
         'Editor'    => 'BoomCMS\Support\Facades\Editor',
         'Tag'       => 'BoomCMS\Support\Facades\Tag',
+        'Template'  => 'BoomCMS\Support\Facades\Template',
         'Group'     => 'BoomCMS\Support\Facades\Group',
     ],
 ];
