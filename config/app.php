@@ -150,7 +150,7 @@ return [
         'BoomCMS\ServiceProviders\ChunkServiceProvider',
         'BoomCMS\ServiceProviders\URLServiceProvider',
         'BoomCMS\ServiceProviders\TagServiceProvider',
-        'BoomCMS\SerivceProviders\EventServiceProvider',
+        'BoomCMS\ServiceProviders\EventServiceProvider',
         'BoomCMS\ServiceProviders\InstallerServiceProvider',
     ],
 
