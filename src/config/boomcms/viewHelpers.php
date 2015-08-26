@@ -1,5 +1,6 @@
 <?php
 
+use BoomCMS\Core\Page\Page;
 use BoomCMS\Support\Helpers;
 
 return [
@@ -22,10 +23,10 @@ return [
         'prev' => function (array $params = []) {
             return Helpers::prev($params);
         },
-        'getTags' => function (Page\Page $page = null, $group = null) {
+        'getTags' => function (Page $page = null, $group = null) {
             return Helpers::getTags($page, $group);
         },
-        'getTagsInSection' => function (Page\Page $page = null, $group = null) {
+        'getTagsInSection' => function (Page $page = null, $group = null) {
             return Helpers::getTagsInSection($page, $group);
         },
     ],
