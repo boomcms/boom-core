@@ -1,0 +1,5 @@
+{
+        "require": {
+                "boomcms/theme-default": ">=1.1",
+        }
+}

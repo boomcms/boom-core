@@ -5,9 +5,9 @@
 		"davidbarratt/custom-installer": "1.*",
 		"boomcms/boom-core": ">=3.1",
 		"boomcms/boom-installer": ">=1.0",
-                "boomcms/theme-default": ">=1.1",
 		"boomcms/boom-robotstxt": ">=3.1",
-		"boomcms/boom-sitemap": ">=3.1"
+		"boomcms/boom-sitemap": ">=3.1",
+		"wikimedia/composer-merge-plugin": "^1.3@dev"
 	},
 	"license": "MIT",
 	"authors": [
@@ -46,12 +46,21 @@
 		"post-create-project-cmd": [
 			"php -r \"copy('.env.example', '.env');\"",
 			"php artisan key:generate",
-			"php artisan vendor:publish"
+			"php artisan vendor:publish",
+			"php -r \"copy('themes.json.example', 'storage/boomcms/themes.json');\""
 		]
 	},
 	"extra": {
         	"custom-installer": {
         	    "boomcms-theme": "storage/boomcms/themes/{$name}/"
-        	}
+                },
+		"merge-plugin": {
+			"include": [
+				"storage/boomcms/themes.json"
+			],
+			"recurse": false,
+			"replace": false,
+			"merge-extra": false
+		}
 	}
 }
