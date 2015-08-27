@@ -43222,7 +43222,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 
 		var self = this,
 			element = this.element,
-			old_text = element.text();
+			old_text = this.getTitle();
 
 		this.element.textEditor({
 			edit : function() {
@@ -43240,10 +43240,10 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 
 		this.element
 			.on('keydown change paste', function() {
-				var oldText = element.text();
+				var oldText = this.getTitle();
 
 				setTimeout(function() {
-					self.updatePageTitle(oldText, element.text());
+					self.updatePageTitle(oldText, self.getTitle());
 					self._update_length_counter(self.getLength());
 				}, 0);
 			})
@@ -43318,7 +43318,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 	},
 
 	isUntitled : function() {
-		return this.element.text() == 'Untitled';
+		return this.getTitle() === 'Untitled';
 	},
 
 	openHelp : function() {
