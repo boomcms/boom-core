@@ -36400,8 +36400,8 @@ break}e||r.push(t),t.touches=r.slice(),t.changedTouches=[t],n(t)};if(t[a+"touchs
   });
 
 }).call(this);
-;/*! Jcrop.js v2.0.0 - build: 20141025
- *  @copyright 2008-2014 Tapmodo Interactive LLC
+;/*! Jcrop.js v2.0.0 - build: 20150804
+ *  @copyright 2008-2015 Tapmodo Interactive LLC
  *  @license Free software under MIT License
  *  @website http://jcrop.org/
  **/
@@ -36437,30 +36437,6 @@ break}e||r.push(t),t.touches=r.slice(),t.changedTouches=[t],n(t)};if(t[a+"touchs
       this.opt.dragEventTarget = document.body;
   };
 
-
-  // Jcrop component storage
-  /*
-  Jcrop.component = {
-    Animator: CropAnimator,
-    DragState: DragState,
-    EventManager: EventManager,
-    ImageLoader: ImageLoader,
-    StageManager: StageManager,
-    Selection: Selection,
-    Keyboard: KeyWatcher,
-    Thumbnailer: Thumbnailer,
-    CanvasAnimator: CanvasAnimator,
-    Touch: JcropTouch
-  };
-
-  // Jcrop stage constructors
-  Jcrop.stage = {
-    Block: AbstractStage,
-    Image: ImageStage,
-    Canvas: CanvasStage,
-    Transform: TransformStage
-  };
-  */
 
   // Jcrop static functions
   $.extend(Jcrop,{
@@ -36684,9 +36660,7 @@ $.extend(CanvasStage.prototype,{
     this.canvas = document.createElement('canvas');
     this.canvas.width = w;
     this.canvas.height = h;
-    this.$canvas = $(this.canvas)
-      .width(w)
-      .height(h);
+    this.$canvas = $(this.canvas).width('100%').height('100%');
     this.context = this.canvas.getContext('2d');
     this.fillstyle = "rgb(0,0,0)";
     this.element = this.$canvas.wrap('<div />').parent().width(w).height(h);
@@ -38547,7 +38521,8 @@ Jcrop.registerStageType('Canvas',CanvasStage);
           this.newSelection();
 
         // Use these values to update the current selection
-        this.ui.multi[0].update(Jcrop.wrapFromXywh(this.opt.setSelect));
+        this.setSelect(this.opt.setSelect);
+
         // Set to null so it doesn't get called again
         this.opt.setSelect = null;
       }
@@ -38861,15 +38836,25 @@ Jcrop.registerStageType('Canvas',CanvasStage);
         exists.setOptions(options);
 
       else {
-        if (!options.stageConstructor) options.stageConstructor = $.Jcrop.stageConstructor;
+
+        if (!options.stageConstructor)
+          options.stageConstructor = $.Jcrop.stageConstructor;
 
         options.stageConstructor(this,options,function(stage,options){
+          var selection = options.setSelect;
+          if (selection) delete(options.setSelect);
+
           var obj = $.Jcrop.attach(stage.element,options);
 
           if (typeof stage.attach == 'function')
             stage.attach(obj);
 
           $t.data('Jcrop',obj);
+
+          if (selection) {
+            obj.newSelection();
+            obj.setSelect(selection);
+          }
 
           if (typeof callback == 'function')
             callback.call(obj);
@@ -43426,14 +43411,14 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 	};
 
 	boomLink.prototype.getAsset = function() {
-		var assetId = this.getUrl().replace(/\/asset\/(view|download)\/(\d+)(.*?)/i, "$2");
+		var assetId = this.getUrl().replace(/\/asset\/(\d+)([\/\d]*?)\/(view|download)/i, "$1");
 
 		return new boomAsset(assetId);
 	};
 
 	boomLink.prototype.getAssetAction = function() {
 		if (this.isAsset()) {
-			return this.getUrl().replace(/\/asset\/(view|download)\/(.*?)/i, "$1");
+			return this.getUrl().replace(/\/asset\/(\d+)([\/\d]*?)\/(view|download)/i, "$3");
 		}
 	};
 
@@ -43594,7 +43579,10 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 		this.externalTypeSelector = this.external.find('select'),
 		this.externalUrl = this.external.find('input');
 		this.textInput = dialog.contents.find('#b-linkpicker-text input[type=text]');
-		this.removeButton = dialog.contents.find('#b-linkpicker-remove').appendTo(dialog.contents.parent().find('.ui-dialog-buttonpane'));
+		this.removeButton = dialog.contents
+			.find('#b-linkpicker-remove')
+			.appendTo(dialog.contents.parent().find('.ui-dialog-buttonset'))
+			.css('float', 'left');
 
 		if (!this.options.remove) {
 			this.removeButton.hide();
@@ -44291,6 +44279,13 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 		this.dialog = new boomDialog({
 			url : this.url,
 			onLoad : function() {
+				assetPicker.dialog.contents.parent().css({
+					position: 'fixed',
+					height: '100vh',
+					width: '100vw',
+					transform: 'none'
+				});
+
 				assetPicker.picker = assetPicker.dialog.contents.find('#b-assets-picker');
 				assetPicker.titleFilter = assetPicker.picker.find('#b-assets-filter-title');
 				assetPicker.tagFilter = assetPicker.picker.find('#b-tags-search');

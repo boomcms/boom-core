@@ -4,6 +4,8 @@
 	left: 0;
 	right: 0;
 	top: 0;
+	width: 100vw;
+	height: 100vh;
 	z-index: 100002;
 	overflow: auto;
 	background: @lightest-grey;
@@ -13,9 +15,9 @@
 	}
 
 	#b-assets-view-thumbs {
-		height: auto;
-		width: auto;
-		margin-right: 24em;
+		height: 100%;
+		width: calc(~"100vw - 25em");
+		margin: 0;
 	}
 
 	&-current {
