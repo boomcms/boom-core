@@ -14,7 +14,7 @@ class UpdateAssetLinks extends Migration
     {
         $chunks = Text::where('text', 'like', '%/asset/%')
             ->get();
-        
+
         foreach ($chunks as $chunk) {
             $chunk->text = preg_replace('|(/asset/)([a-z]+)/([/0-9]+)|', '$1$3/$2', $chunk->text);
             $chunk->text = preg_replace('|(/asset/)([/0-9]+)/view|', '$1$2', $chunk->text);
@@ -28,5 +28,6 @@ class UpdateAssetLinks extends Migration
      * @return void
      */
     public function down()
-    {}
+    {
+    }
 }
