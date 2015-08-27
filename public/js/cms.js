@@ -43226,7 +43226,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 
 		this.element.textEditor({
 			edit : function() {
-				var title = self.element.text().trim();
+				var title = self.getTitle();
 
 				if (title != '' && title != old_text && title.length <= self.max_length) {
 					self.updatePageTitle(old_text, title);
@@ -43310,7 +43310,11 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 	},
 
 	getLength: function() {
-		return this.element.text().trim().length;
+		return this.getTitle().length;
+	},
+
+	getTitle: function() {
+		return this.element.text().trim();
 	},
 
 	isUntitled : function() {
