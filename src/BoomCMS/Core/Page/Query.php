@@ -7,6 +7,7 @@ use ReflectionClass;
 class Query
 {
     protected $filterAliases = [
+        'pageid'              => 'PageId',
         'parentid'            => 'ParentId',
         'parent'              => 'ParentPage',
         'tag'                 => 'Tag',
