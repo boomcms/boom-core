@@ -148,6 +148,13 @@ function boomAssetPicker(currentAsset, filters) {
 		this.dialog = new boomDialog({
 			url : this.url,
 			onLoad : function() {
+				assetPicker.dialog.contents.parent().css({
+					position: 'fixed',
+					height: '100vh',
+					width: '100vw',
+					transform: 'none'
+				});
+
 				assetPicker.picker = assetPicker.dialog.contents.find('#b-assets-picker');
 				assetPicker.titleFilter = assetPicker.picker.find('#b-assets-filter-title');
 				assetPicker.tagFilter = assetPicker.picker.find('#b-tags-search');
