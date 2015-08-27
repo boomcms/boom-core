@@ -6,18 +6,17 @@ use BoomCMS\Foundation\Finder\Filter;
 use Illuminate\Database\Eloquent\Builder;
 
 /**
- * Find pages by a single or array of page IDs
+ * Find pages by a single or array of page IDs.
  */
 class PageId extends Filter
 {
     /**
-     * @var array|int 
+     * @var array|int
      */
     protected $pageId;
 
     /**
-     * 
-     * @param array|int  $pageId
+     * @param array|int $pageId
      */
     public function __construct($pageId)
     {
@@ -35,8 +34,8 @@ class PageId extends Filter
 
     public function shouldBeApplied()
     {
-        return (is_int($this->pageId) || 
-            ctype_digit($this->pageId) || 
+        return (is_int($this->pageId) ||
+            ctype_digit($this->pageId) ||
             is_array($this->pageId)
         ) && !empty($this->pageId);
     }
