@@ -32,14 +32,14 @@ function boomLink(url, pageId, title) {
 	};
 
 	boomLink.prototype.getAsset = function() {
-		var assetId = this.getUrl().replace(/\/asset\/(view|download)\/(\d+)(.*?)/i, "$2");
+		var assetId = this.getUrl().replace(/\/asset\/(\d+)([\/\d]*?)\/(view|download)/i, "$1");
 
 		return new boomAsset(assetId);
 	};
 
 	boomLink.prototype.getAssetAction = function() {
 		if (this.isAsset()) {
-			return this.getUrl().replace(/\/asset\/(view|download)\/(.*?)/i, "$1");
+			return this.getUrl().replace(/\/asset\/(\d+)([\/\d]*?)\/(view|download)/i, "$3");
 		}
 	};
 
