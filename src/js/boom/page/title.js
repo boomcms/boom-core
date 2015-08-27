@@ -35,7 +35,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 
 				setTimeout(function() {
 					self.updatePageTitle(oldText, element.text());
-					self._update_length_counter(element.text().length);
+					self._update_length_counter(self.getLength());
 				}, 0);
 			})
 			.on('focus', function() {
@@ -44,7 +44,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 				}
 
 				if ( ! self.lengthCounterCreated) {
-					self._create_length_counter();
+					self._create_length_counter(self.getLength());
 					self.lengthCounterCreated = true;
 				}
 			});
@@ -83,7 +83,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 				title.openHelp();
 			});
 
-		this._update_length_counter(this.element.text().length);
+		this._update_length_counter(this.getLength());
 	},
 
 	edit : function() {},
@@ -98,6 +98,10 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 		}
 
 		return 'green';
+	},
+
+	getLength: function() {
+		return this.element.text().trim().length;
 	},
 
 	isUntitled : function() {
