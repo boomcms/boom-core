@@ -14,7 +14,7 @@ class Link extends Linkset
     protected $defaultHtml = "<a href='{url}'>{text}</a>";
 
     protected $links;
-    
+
     public function addContentToHtml($url, $text)
     {
         $html = $this->html ?: $this->defaultHtml;
