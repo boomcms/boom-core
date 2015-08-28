@@ -21,11 +21,9 @@ class DefineGlobalViewSharedVariables
      */
     public function handle(Request $request, Closure $next)
     {
-        $editor = Editor::getFacadeRoot();
-
         View::share('auth', Auth::getFacadeRoot());
         View::share('request', $request);
-        View::share('editor', $editor);
+        View::share('editor', Editor::getFacadeRoot());
 
         $viewHelpers = Config::get('boomcms.viewHelpers');
 
