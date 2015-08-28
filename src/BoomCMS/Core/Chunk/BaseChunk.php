@@ -58,11 +58,6 @@ abstract class BaseChunk
      */
     protected $template;
 
-    /**
-     * @var string
-     */
-    protected $type;
-
     protected $viewPrefix = 'boomcms.chunks::';
 
     /**
@@ -153,7 +148,7 @@ abstract class BaseChunk
 
     public function getType()
     {
-        return $this->type;
+        return strtolower(class_basename($this));
     }
 
     /**

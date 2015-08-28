@@ -9,7 +9,6 @@ class Text extends BaseChunk
 {
     use AcceptsHtmlString;
 
-    protected $type = 'text';
     protected $allowFormatting = false;
 
     public function __construct(\BoomCMS\Core\Page\Page $page, array $attrs, $slotname, $editable)

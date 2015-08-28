@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\View;
 class Slideshow extends BaseChunk
 {
     protected $defaultTemplate = 'circles';
-    protected $type = 'slideshow';
 
     public function __construct(\BoomCMS\Core\Page\Page $page, array $attrs, $slotname, $editable)
     {

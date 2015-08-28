@@ -135,4 +135,14 @@ class BaseChunkTest extends TestCase
         $expected = '<p required="value1" attr="value2"></p>';
         $this->assertEquals($expected, $chunk->addAttributesToHtml('<p></p>'));
     }
+
+    public function testGetTypeReturnsClassName()
+    {
+        $chunk = $this->getMockBuilder('BoomCMS\Core\Chunk\BaseChunk')
+            ->setMethods(['show', 'showDefault', 'hasContent'])
+            ->setConstructorArgs([new Page(), [], 'test', true])
+            ->getMock();
+
+        $this->assertEquals(strtolower(class_basename($chunk)), $chunk->getType());
+    }
 }

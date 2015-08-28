@@ -6,8 +6,6 @@ use Illuminate\Support\Facades\View;
 
 class Location extends BaseChunk
 {
-    protected $type = 'location';
-
     public function hasContent()
     {
         return $this->getLat() != 0 && $this->getLng() != 0;

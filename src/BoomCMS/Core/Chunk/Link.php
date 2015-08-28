@@ -9,7 +9,6 @@ class Link extends Linkset
 {
     protected $defaultTemplate = '';
     protected $html = "<a href='{url}'>{text}</a>";
-    protected $type = 'link';
 
     protected $links;
 
