@@ -2,12 +2,9 @@
 
 namespace BoomCMS\UI;
 
+use BoomCMS\Support\Traits\Renderable;
+
 abstract class AbstractUIElement
 {
-    public function __toString()
-    {
-        return (string) $this->render();
-    }
-
-    abstract public function render();
+    use Renderable;
 }

@@ -3,11 +3,14 @@
 namespace BoomCMS\Core\Chunk;
 
 use BoomCMS\Core\Page\Page;
+use BoomCMS\Support\Traits\Renderable;
 use Illuminate\Html\HtmlFacade as Html;
 use Illuminate\Support\Facades\Lang;
 
 abstract class BaseChunk
 {
+    use Renderable;
+
     protected $attributePrefix = 'data-boom-';
 
     /**
@@ -75,14 +78,6 @@ abstract class BaseChunk
         $this->attrs = $attrs;
         $this->slotname = $slotname;
         $this->editable = $editable;
-    }
-
-    /**
-     * @return string
-     */
-    public function __toString()
-    {
-        return (string) $this->render();
     }
 
     /**
