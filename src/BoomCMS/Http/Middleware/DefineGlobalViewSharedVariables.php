@@ -2,6 +2,7 @@
 
 namespace BoomCMS\Http\Middleware;
 
+use BoomCMS\Support\Facades\Auth;
 use BoomCMS\Support\Facades\Editor;
 use Closure;
 use Illuminate\Http\Request;
@@ -22,6 +23,7 @@ class DefineGlobalViewSharedVariables
     {
         $editor = Editor::getFacadeRoot();
 
+        View::share('auth', Auth::getFacadeRoot());
         View::share('request', $request);
         View::share('editor', $editor);
 
