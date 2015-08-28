@@ -39,7 +39,7 @@ class Timestamp extends BaseChunk
 
     public function hasContent()
     {
-        return $this->getTimestamp() > 0;
+        return $this->getFormat() && $this->getTimestamp() > 0;
     }
 
     public function getFormat()
