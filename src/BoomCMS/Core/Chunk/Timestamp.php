@@ -21,7 +21,6 @@ class Timestamp extends BaseChunk
     ];
 
     protected $defaultHtml = "<span class='b-chunk-timestamp'>{time}</span>";
-    protected $type = 'timestamp';
 
     protected function addContentToHtml($content)
     {

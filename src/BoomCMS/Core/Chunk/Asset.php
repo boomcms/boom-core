@@ -11,7 +11,6 @@ class Asset extends BaseChunk
 {
     protected $asset;
     protected $defaultTemplate = 'image';
-    protected $type = 'asset';
 
     private $filterByType;
     private $link;

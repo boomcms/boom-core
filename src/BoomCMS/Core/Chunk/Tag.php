@@ -9,7 +9,6 @@ class Tag extends BaseChunk
 {
     protected $_default_template = 'gallery';
     protected $tag;
-    protected $type = 'tag';
 
     public function __construct(Page $page, array $attrs, $slotname, $editable)
     {
