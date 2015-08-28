@@ -18,7 +18,7 @@ class BaseChunkTest extends TestCase
             ->with('boom::chunks.text.test')
             ->andReturn('some text');
 
-        $chunk = $this->getMockBuilder('BoomCMS\Core\Chunk\BaseChunk')
+        $chunk = $this->getMockBuilder(BaseChunk::class)
             ->setMethods(['show', 'showDefault', 'hasContent', 'getType'])
             ->setConstructorArgs([new Page(), [], 'test', true])
             ->getMock();
@@ -43,7 +43,7 @@ class BaseChunkTest extends TestCase
             ->with('boom::chunks.text.default')
             ->andReturn('some text');
 
-        $chunk = $this->getMockBuilder('BoomCMS\Core\Chunk\BaseChunk')
+        $chunk = $this->getMockBuilder(BaseChunk::class)
             ->setMethods(['show', 'showDefault', 'hasContent', 'getType'])
             ->setConstructorArgs([new Page(), [], 'test', true])
             ->getMock();
@@ -66,12 +66,12 @@ class BaseChunkTest extends TestCase
 
     public function testIsEditable()
     {
-        $editable = $this->getMockBuilder('BoomCMS\Core\Chunk\BaseChunk')
+        $editable = $this->getMockBuilder(BaseChunk::class)
             ->setMethods(['show', 'showDefault', 'hasContent'])
             ->setConstructorArgs([new Page(), [], 'test', true])
             ->getMock();
 
-        $noteditable = $this->getMockBuilder('BoomCMS\Core\Chunk\BaseChunk')
+        $noteditable = $this->getMockBuilder(BaseChunk::class)
             ->setMethods(['show', 'showDefault', 'hasContent'])
             ->setConstructorArgs([new Page(), [], 'test', false])
             ->getMock();
@@ -82,7 +82,7 @@ class BaseChunkTest extends TestCase
 
     public function testReadonly()
     {
-        $editable = $this->getMockBuilder('BoomCMS\Core\Chunk\BaseChunk')
+        $editable = $this->getMockBuilder(BaseChunk::class)
             ->setMethods(['show', 'showDefault', 'hasContent'])
             ->setConstructorArgs([new Page(), [], 'test', true])
             ->getMock();
@@ -102,7 +102,7 @@ class BaseChunkTest extends TestCase
             'data-boom-chunk-id'      => 2,
         ];
 
-        $chunk = $this->getMockBuilder('BoomCMS\Core\Chunk\BaseChunk')
+        $chunk = $this->getMockBuilder(BaseChunk::class)
             ->setMethods(['show', 'showDefault', 'hasContent', 'getType'])
             ->setConstructorArgs([new Page(['id' => 1]), ['id' => 2], 'test', true])
             ->getMock();
@@ -117,7 +117,7 @@ class BaseChunkTest extends TestCase
 
     public function testAddAttributesToHtml()
     {
-        $chunk = $this->getMockBuilder('BoomCMS\Core\Chunk\BaseChunk')
+        $chunk = $this->getMockBuilder(BaseChunk::class)
             ->setMethods(['show', 'showDefault', 'hasContent', 'getRequiredAttributes', 'attributes'])
             ->setConstructorArgs([new Page(), [], 'test', true])
             ->getMock();
@@ -138,7 +138,7 @@ class BaseChunkTest extends TestCase
 
     public function testGetTypeReturnsClassName()
     {
-        $chunk = $this->getMockBuilder('BoomCMS\Core\Chunk\BaseChunk')
+        $chunk = $this->getMockBuilder(BaseChunk::class)
             ->setMethods(['show', 'showDefault', 'hasContent'])
             ->setConstructorArgs([new Page(), [], 'test', true])
             ->getMock();
