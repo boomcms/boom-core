@@ -16,8 +16,8 @@ class UpdateAssetLinks extends Migration
             ->get();
 
         foreach ($chunks as $chunk) {
-            $chunk->text = preg_replace('|(/asset/)([a-z]+)/([/0-9]+)|', '$1$3/$2', $chunk->text);
-            $chunk->text = preg_replace('|(/asset/)([/0-9]+)/view|', '$1$2', $chunk->text);
+            $chunk->text = preg_replace('|(/asset/)([a-z]+)/(\d+)|', '$1$3/$2', $chunk->text);
+            $chunk->text = preg_replace('|(/asset/)([\d]+)/view([^/])|', '$1$2$3', $chunk->text);
             $chunk->save();
         }
     }
