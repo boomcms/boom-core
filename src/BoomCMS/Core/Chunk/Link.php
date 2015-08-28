@@ -2,15 +2,25 @@
 
 namespace BoomCMS\Core\Chunk;
 
+use BoomCMS\Foundation\Chunk\AcceptsHtmlString;
+
 /**
  * Link chunk - this is essentially a linkset which only has one link associated with it.
  */
 class Link extends Linkset
 {
-    protected $defaultTemplate = '';
-    protected $html = "<a href='{url}'>{text}</a>";
+    use AcceptsHtmlString;
+
+    protected $defaultHtml = "<a href='{url}'>{text}</a>";
 
     protected $links;
+    
+    public function addContentToHtml($url, $text)
+    {
+        $html = $this->html ?: $this->defaultHtml;
+
+        return str_replace(['{url}', '{text}'], [$url, $text], $html);
+    }
 
     public function attributes()
     {
@@ -23,12 +33,12 @@ class Link extends Linkset
 
     public function show()
     {
-        return str_replace(['{url}', '{text}'], [$this->getUrl(), $this->getText()], $this->html);
+        return $this->addContentToHtml($this->getUrl(), $this->getText());
     }
 
     public function showDefault()
     {
-        return str_replace(['{url}', '{text}'], ['#', $this->getPlaceholderText()], $this->html);
+        return $this->addContentToHtml('#', $this->getPlaceholderText());
     }
 
     public function getLink()
@@ -70,12 +80,5 @@ class Link extends Linkset
     public function hasContent()
     {
         return $this->getLink() !== null;
-    }
-
-    public function setHtml($html)
-    {
-        $this->html = $html;
-
-        return $this;
     }
 }
