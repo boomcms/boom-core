@@ -2,8 +2,12 @@
 
 namespace BoomCMS\Core\Chunk;
 
+use BoomCMS\Foundation\Chunk\AcceptsHtmlString;
+
 class Timestamp extends BaseChunk
 {
+    use AcceptsHtmlString;
+
     public static $defaultFormat = 'j F Y';
     public static $formats = [
         'j F Y',
@@ -16,8 +20,15 @@ class Timestamp extends BaseChunk
         'h:i A',
     ];
 
-    protected $html = "<span class='b-chunk-timestamp'>{time}</span>";
+    protected $defaultHtml = "<span class='b-chunk-timestamp'>{time}</span>";
     protected $type = 'timestamp';
+
+    protected function addContentToHtml($content)
+    {
+        $html = $this->html ?: $this->defaultHtml;
+
+        return str_replace('{time}', $content, $html);
+    }
 
     public function attributes()
     {
@@ -25,16 +36,6 @@ class Timestamp extends BaseChunk
             $this->attributePrefix.'timestamp' => $this->getTimestamp(),
             $this->attributePrefix.'format'    => $this->getFormat(),
         ];
-    }
-
-    protected function show()
-    {
-        return str_replace('{time}', date($this->getFormat(), $this->getTimestamp()), $this->html);
-    }
-
-    protected function showDefault()
-    {
-        return str_replace('{time}', $this->getPlaceholderText(), $this->html);
     }
 
     public function hasContent()
@@ -50,5 +51,15 @@ class Timestamp extends BaseChunk
     public function getTimestamp()
     {
         return isset($this->attrs['timestamp']) ? $this->attrs['timestamp'] : 0;
+    }
+
+    protected function show()
+    {
+        return $this->addContentToHtml(date($this->getFormat(), $this->getTimestamp()));
+    }
+
+    protected function showDefault()
+    {
+        return $this->addContentToHtml($this->getPlaceholderText());
     }
 }

@@ -2,11 +2,13 @@
 
 namespace BoomCMS\Core\Chunk;
 
+use BoomCMS\Foundation\Chunk\AcceptsHtmlString;
 use Illuminate\Support\Facades\View;
 
 class Text extends BaseChunk
 {
-    protected $html;
+    use AcceptsHtmlString;
+
     protected $type = 'text';
     protected $allowFormatting = false;
 
@@ -60,13 +62,6 @@ class Text extends BaseChunk
         return isset($this->attrs['text'])
             && trim($this->attrs['text']) != null
             && strcmp(strip_tags(trim($this->attrs['text'])), $this->getPlaceholderText()) !== 0;
-    }
-
-    public function setHtml($html)
-    {
-        $this->html = $html;
-
-        return $this;
     }
 
     private function showText($text)
