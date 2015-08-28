@@ -12,13 +12,15 @@ function boomAsset(assetId) {
 	boomAsset.prototype.getUrl = function(action, width) {
 		var url = '/asset/' + this.getId();
 
+		if ((!action || action === 'view') && !width) {
+			return url;
+		}
+
 		if (!action && width) {
 			action = 'view';
 		}
 
-		if (action) {
-			url = url + '/' + action;
-		}
+		url = url + '/' + action;
 
 		if (width) {
 			url = url + '/' + width;
