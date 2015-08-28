@@ -60,13 +60,6 @@ abstract class BaseChunk
 
     protected $viewPrefix = 'boomcms.chunks::';
 
-    /**
-     * Array of available chunk types.
-     *
-     * @var array
-     */
-    public static $types = ['asset', 'text', 'feature', 'linkset', 'slideshow', 'timestamp', 'tag'];
-
     public function __construct(Page $page, array $attrs, $slotname, $editable = false)
     {
         $this->page = $page;

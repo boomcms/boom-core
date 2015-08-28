@@ -58,7 +58,9 @@ class BaseChunkTest extends TestCase
 
     public function testDefaultPlaceholderTextsAreDefined()
     {
-        foreach (BaseChunk::$types as $type) {
+        $types = ['asset', 'location', 'link', 'text', 'html', 'feature', 'linkset', 'slideshow', 'timestamp', 'tag'];
+
+        foreach ($types as $type) {
             $langKey = "boom::chunks.$type.default";
             $this->assertTrue(Lang::has($langKey), $type);
         }
