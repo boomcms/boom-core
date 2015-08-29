@@ -60,6 +60,19 @@ class Store implements \ArrayAccess
         return $this->settings;
     }
 
+    public function replaceAll(array $settings)
+    {
+        $this->settings = $settings;
+        $this->save();
+
+        return $this;
+    }
+
+    protected function save()
+    {
+        $this->filesystem->put($this->filename, json_encode($this->settings));
+    }
+
     public function set($key, $value = null)
     {
         if (is_array($key)) {
@@ -68,7 +81,7 @@ class Store implements \ArrayAccess
             $this->settings[$key] = $value;
         }
 
-        $this->filesystem->put($this->filename, json_encode($this->settings));
+        $this->save();
 
         return $this;
     }
