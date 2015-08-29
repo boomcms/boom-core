@@ -2,8 +2,8 @@
 
 return [
     'settingsManagerOptions' => [
-        'analytics' => 'text',
+        'analytics'        => 'text',
         'site.admin.email' => 'string',
-        'site.name' => 'string',
+        'site.name'        => 'string',
     ],
 ];

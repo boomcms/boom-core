@@ -29,7 +29,7 @@ class TemplateServiceProvider extends ServiceProvider
             $config = $theme->getConfigDirectory().DIRECTORY_SEPARATOR.'themes.php';
 
             file_exists($config) && $this->mergeConfigFrom($config, 'boomcms.themes');
-        
+
             $settingsManagerConfig = $theme->getConfigDirectory().DIRECTORY_SEPARATOR.'settingsManagerOptions.php';
             file_exists($settingsManagerConfig) && $this->mergeConfigFrom($settingsManagerConfig, 'boomcms');
         }
