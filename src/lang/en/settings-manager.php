@@ -1,7 +1,7 @@
 <?php
 
 return [
-    '_saved' => 'You\'re settings have been saved',
+    '_saved'    => 'You\'re settings have been saved',
     'analytics' => [
         '_label' => 'Analytics',
         '_info'  => 'Enter an analytics tracking script here. This can then be inserted into templates when the site is in production',
