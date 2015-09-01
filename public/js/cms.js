@@ -31259,7 +31259,7 @@ Date.parseFunctions={count:0};Date.parseRegexes=[];Date.formatFunctions={count:0
     } else {
         window.dataURLtoBlob = dataURLtoBlob;
     }
-}(this));
+}(window));
 ;/*
  * jQuery File Upload Plugin 5.42.3
  * https://github.com/blueimp/jQuery-File-Upload
@@ -36400,8 +36400,8 @@ break}e||r.push(t),t.touches=r.slice(),t.changedTouches=[t],n(t)};if(t[a+"touchs
   });
 
 }).call(this);
-;/*! Jcrop.js v2.0.0 - build: 20141025
- *  @copyright 2008-2014 Tapmodo Interactive LLC
+;/*! Jcrop.js v2.0.0 - build: 20150804
+ *  @copyright 2008-2015 Tapmodo Interactive LLC
  *  @license Free software under MIT License
  *  @website http://jcrop.org/
  **/
@@ -36437,30 +36437,6 @@ break}e||r.push(t),t.touches=r.slice(),t.changedTouches=[t],n(t)};if(t[a+"touchs
       this.opt.dragEventTarget = document.body;
   };
 
-
-  // Jcrop component storage
-  /*
-  Jcrop.component = {
-    Animator: CropAnimator,
-    DragState: DragState,
-    EventManager: EventManager,
-    ImageLoader: ImageLoader,
-    StageManager: StageManager,
-    Selection: Selection,
-    Keyboard: KeyWatcher,
-    Thumbnailer: Thumbnailer,
-    CanvasAnimator: CanvasAnimator,
-    Touch: JcropTouch
-  };
-
-  // Jcrop stage constructors
-  Jcrop.stage = {
-    Block: AbstractStage,
-    Image: ImageStage,
-    Canvas: CanvasStage,
-    Transform: TransformStage
-  };
-  */
 
   // Jcrop static functions
   $.extend(Jcrop,{
@@ -36684,9 +36660,7 @@ $.extend(CanvasStage.prototype,{
     this.canvas = document.createElement('canvas');
     this.canvas.width = w;
     this.canvas.height = h;
-    this.$canvas = $(this.canvas)
-      .width(w)
-      .height(h);
+    this.$canvas = $(this.canvas).width('100%').height('100%');
     this.context = this.canvas.getContext('2d');
     this.fillstyle = "rgb(0,0,0)";
     this.element = this.$canvas.wrap('<div />').parent().width(w).height(h);
@@ -38547,7 +38521,8 @@ Jcrop.registerStageType('Canvas',CanvasStage);
           this.newSelection();
 
         // Use these values to update the current selection
-        this.ui.multi[0].update(Jcrop.wrapFromXywh(this.opt.setSelect));
+        this.setSelect(this.opt.setSelect);
+
         // Set to null so it doesn't get called again
         this.opt.setSelect = null;
       }
@@ -38861,15 +38836,25 @@ Jcrop.registerStageType('Canvas',CanvasStage);
         exists.setOptions(options);
 
       else {
-        if (!options.stageConstructor) options.stageConstructor = $.Jcrop.stageConstructor;
+
+        if (!options.stageConstructor)
+          options.stageConstructor = $.Jcrop.stageConstructor;
 
         options.stageConstructor(this,options,function(stage,options){
+          var selection = options.setSelect;
+          if (selection) delete(options.setSelect);
+
           var obj = $.Jcrop.attach(stage.element,options);
 
           if (typeof stage.attach == 'function')
             stage.attach(obj);
 
           $t.data('Jcrop',obj);
+
+          if (selection) {
+            obj.newSelection();
+            obj.setSelect(selection);
+          }
 
           if (typeof callback == 'function')
             callback.call(obj);
