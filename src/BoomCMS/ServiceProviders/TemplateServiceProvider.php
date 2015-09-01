@@ -3,6 +3,7 @@
 namespace BoomCMS\ServiceProviders;
 
 use BoomCMS\Core\Template;
+use BoomCMS\Support\Helpers\Config as ConfigHelper;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
@@ -26,12 +27,7 @@ class TemplateServiceProvider extends ServiceProvider
         $this->themes = $this->manager->findInstalledThemes();
 
         foreach ($this->themes as $theme) {
-            $config = $theme->getConfigDirectory().DIRECTORY_SEPARATOR.'themes.php';
-
-            file_exists($config) && $this->mergeConfigFrom($config, 'boomcms.themes');
-
-            $settingsManagerConfig = $theme->getConfigDirectory().DIRECTORY_SEPARATOR.'settingsManagerOptions.php';
-            file_exists($settingsManagerConfig) && $this->mergeConfigFrom($settingsManagerConfig, 'boomcms');
+            ConfigHelper::merge($theme->getConfigDirectory().DIRECTORY_SEPARATOR.'boomcms.php');
         }
 
         foreach ($this->themes as $theme) {
