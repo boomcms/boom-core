@@ -58,6 +58,7 @@ class Templates extends Controller
 
         $finder = new Page\Finder\Finder();
         $finder->addFilter(new Page\Finder\Template($template));
+        $finder->setOrderBy('title', 'asc');
         $pages = $finder->findAll();
 
         if ($this->request->route()->getParameter('format') === 'csv') {
