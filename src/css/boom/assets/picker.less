@@ -5,8 +5,8 @@
 	right: 0;
 	top: 0;
 	width: 100vw;
-	height: 100vh;
 	z-index: 100002;
+	height: auto;
 	overflow: auto;
 	background: @lightest-grey;
 
@@ -15,9 +15,10 @@
 	}
 
 	#b-assets-view-thumbs {
-		height: 100%;
+		height: auto;
 		width: calc(~"100vw - 25em");
 		margin: 0;
+		overflow: auto;
 	}
 
 	&-current {
@@ -38,7 +39,7 @@
 		padding: 5px;
 		z-index: 2;
 		max-width: 100%;
-		overflow: auto;
+		overflow: hidden;
 
 		section {
 			width: 100%;
