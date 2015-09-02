@@ -43,8 +43,7 @@ $.widget('boom.templateManager', {
 						.val();
 
 					return (typeof text == 'undefined') ? $( node ).text() : text;
-				},
-				sortList: [[3,0], [1,0]]
+				}
 			});
 	}
 });

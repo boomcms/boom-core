@@ -43742,8 +43742,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 						.val();
 
 					return (typeof text == 'undefined') ? $( node ).text() : text;
-				},
-				sortList: [[3,0], [1,0]]
+				}
 			});
 	}
 });;function boomAsset(assetId) {
