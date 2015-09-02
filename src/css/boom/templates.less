@@ -1,20 +1,15 @@
 #b-templates-table {
-	border: 0px;
-	background-color: #ffffff;
-	width: 100%;
-
-	tr:hover {
-		background-color: #E6EEEE;
+	thead {
+		th {
+			&:hover, &:focus {
+				background: @red;
+			}
+		}
 	}
 
 	/* Table row for a template where the file doesn't exist in the templates directory */
 	tbody tr.b-templates-nofile {
 		background-color: @red;
-	}
-
-	td {
-		border: 0px;
-		border-width: 0px;
 	}
 
 	input {
@@ -28,12 +23,12 @@
 	}
 
 	.b-button {
-		color: @grey;
+		color: @darkest-grey;
 		border-right: 0;
 		
 		&:hover, &:focus {
 			background: transparent;
-			color: @darkest-grey; 
+			color: @red; 
 		}
 	}
 }

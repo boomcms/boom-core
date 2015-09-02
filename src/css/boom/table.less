@@ -1,9 +1,16 @@
 .b-table {
 	color: black;
 	border: 0;
+	width: 100%;
 
 	thead {
 		background: @darkest-grey;
+
+		tr th {
+			padding: 1.5rem 1rem;
+			text-transform: uppercase;
+			font-weight: normal;
+		}
 	}
 
 	tr, td, th {
@@ -25,6 +32,10 @@
 
 		&:nth-of-type(even) {
 			background: @lightest-grey;
+		}
+
+		td {
+			padding: 1.5rem 1rem;
 		}
 	}
 

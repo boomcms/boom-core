@@ -7,7 +7,7 @@
 	</div>
 
     <div>
-        <table class="tablesorter">
+        <table class="b-table tablesorter">
 			<thead>
 				<tr>
 					<th>Page title</th>

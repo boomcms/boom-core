@@ -1,5 +1,5 @@
-<div id="b-items-view-list" class="b-table">
-	<table>
+<div id="b-items-view-list">
+	<table class="b-table">
 		<thead>
 			<tr>
 				<th></th>
