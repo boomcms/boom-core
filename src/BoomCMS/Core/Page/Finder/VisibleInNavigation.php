@@ -2,29 +2,19 @@
 
 namespace BoomCMS\Core\Page\Finder;
 
-use BoomCMS\Core\Editor\Editor as Editor;
 use BoomCMS\Foundation\Finder\Filter;
+use BoomCMS\Support\Facades\Editor;
 use Illuminate\Database\Eloquent\Builder;
 
 class VisibleInNavigation extends Filter
 {
-    /**
-     * @var Editor
-     */
-    protected $_editor;
-
-    public function __construct(Editor $editor = null)
+    protected function getNavigationVisibilityColumn()
     {
-        $this->_editor = $editor ?: Editor::instance();
-    }
-
-    protected function _getNavigationVisibilityColumn()
-    {
-        return ($this->_editor->isEnabled()) ? 'visible_in_nav_cms' : 'visible_in_nav';
+        return (Editor::isEnabled()) ? 'visible_in_nav_cms' : 'visible_in_nav';
     }
 
     public function build(Builder $query)
     {
-        return $query->where($this->_getNavigationVisibilityColumn(), '=', true);
+        return $query->where($this->getNavigationVisibilityColumn(), '=', true);
     }
 }
