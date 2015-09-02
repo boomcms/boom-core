@@ -43648,7 +43648,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 				.find('option')
 				.removeAttr('selected')
 				.end()
-				.find('option[value=' + this.link.getAssetAction() + ']')
+				.find('option[value="' + this.link.getAssetAction() + '"]')
 				.attr('selected', 'selected');
 
 			$('a[href=#b-linkpicker-add-asset]').click();
