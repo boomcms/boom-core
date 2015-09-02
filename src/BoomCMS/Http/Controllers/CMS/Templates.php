@@ -38,6 +38,7 @@ class Templates extends Controller
     public function index()
     {
         $manager = new Template\Manager(App::make('files'), $this->provider);
+        $manager->findAndInstallNewTemplates();
 
         return View::make($this->viewPrefix.'index', [
             'templates' => $this->provider->findAll(),
