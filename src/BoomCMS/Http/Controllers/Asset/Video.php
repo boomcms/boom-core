@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Http\Controllers\Asset;
 
-use Illuminate\Support\Facades\Response;
+use BoomCMS\Http\Response\Stream;
 
 class Video extends BaseController
 {
@@ -15,13 +15,6 @@ class Video extends BaseController
 
     public function view($width = null, $height = null)
     {
-        $stream = fopen($this->asset->getFilename(), 'r');
-
-        return Response::stream(function () use ($stream) {
-            fpassthru($stream);
-        }, 200, [
-            'content-length' => $this->asset->getFilesize(),
-            'content-type'   => (string) $this->asset->getMimetype(),
-        ]);
+        return (new Stream($this->asset))->getResponse();
     }
 }
