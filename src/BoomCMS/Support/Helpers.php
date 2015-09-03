@@ -103,20 +103,27 @@ abstract class Helpers
     }
 
     /**
-     * Get the tags applied to a page.
-     * 
-     * @param Page\Page $page
-     * @param string    $group
+     * Get tags matching given parameters.
+     * Accepts a page, group name, or tag as arguments in any order to search by.
+     *
      *
      * @return array
      */
-    public static function getTags(Page\Page $page = null, $group = null)
+    public static function getTags()
     {
-        $page = $page ?: Editor::getActivePage();
-
         $finder = new Tag\Finder\Finder();
-        $finder->addFilter(new Tag\Finder\AppliedToPage($page));
-        $finder->addFilter(new Tag\Finder\Group($group));
+
+        foreach (func_get_args() as $arg) {
+            if (is_string($arg)) {
+                $finder->addFilter(new Tag\Finder\Group($arg));
+            }
+            elseif ($arg instanceof Page\Page) {
+                $finder->addFilter(new Tag\Finder\AppliedToPage($arg));
+            }
+            elseif ($arg instanceof Tag\Tag) {
+                $finder->addFilter(new Tag\Finder\AppliedWith($arg));
+            }
+        }
 
         return $finder->setOrderBy('name', 'asc')->findAll();
     }

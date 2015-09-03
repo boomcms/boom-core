@@ -23,8 +23,8 @@ return [
         'prev' => function (array $params = []) {
             return Helpers::prev($params);
         },
-        'getTags' => function (Page $page = null, $group = null) {
-            return Helpers::getTags($page, $group);
+        'getTags' => function () {
+            return call_user_func_array([Helpers::class, 'getTags'], func_get_args());
         },
         'getTagsInSection' => function (Page $page = null, $group = null) {
             return Helpers::getTagsInSection($page, $group);
