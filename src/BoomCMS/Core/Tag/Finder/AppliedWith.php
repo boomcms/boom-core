@@ -18,10 +18,10 @@ class AppliedWith extends Filter
     public function execute(Builder $query)
     {
         return $query
-			->join('pages_tags as pt1', 'tags.id', '=', 'pt1.tag_id')
-			->join('pages_tags as pt2', 'pt1.page_id', '=', 'pt2.page_id')
-			->where('pt2.tag_id', '=', $this->tag->getId())
-			->distinct()
+            ->join('pages_tags as pt1', 'tags.id', '=', 'pt1.tag_id')
+            ->join('pages_tags as pt2', 'pt1.page_id', '=', 'pt2.page_id')
+            ->where('pt2.tag_id', '=', $this->tag->getId())
+            ->distinct()
             ->groupBy('pt1.tag_id');
     }
 
