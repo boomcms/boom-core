@@ -116,11 +116,9 @@ abstract class Helpers
         foreach (func_get_args() as $arg) {
             if (is_string($arg)) {
                 $finder->addFilter(new Tag\Finder\Group($arg));
-            }
-            elseif ($arg instanceof Page\Page) {
+            } elseif ($arg instanceof Page\Page) {
                 $finder->addFilter(new Tag\Finder\AppliedToPage($arg));
-            }
-            elseif ($arg instanceof Tag\Tag) {
+            } elseif ($arg instanceof Tag\Tag) {
                 $finder->addFilter(new Tag\Finder\AppliedWith($arg));
             }
         }
