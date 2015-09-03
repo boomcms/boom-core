@@ -9,24 +9,44 @@ use Illuminate\Database\Eloquent\Builder;
 class Tag extends Filter
 {
     /**
-     * @var TagObject
+     * @var array
      */
-    protected $tag;
+    protected $tags = [];
 
-    public function __construct(TagObject $tag)
+    /**
+     * @param array|TagObject $tags
+     */
+    public function __construct($tags)
     {
-        $this->tag = $tag;
+        if (is_array($tags)) {
+            foreach ($tags as $i => $tag) {
+                if (!$tag instanceof TagObject || ! $tag->loaded()) {
+                    unset($tags[$i]);
+                }
+            }
+
+            $this->tags = $tags;
+        }
+        elseif ($tags instanceof TagObject && $tags->loaded()) {
+            $this->tags = [$tags];
+        }
     }
 
     public function build(Builder $query)
     {
-        return $query
-            ->join('pages_tags', 'pages.id', '=', 'pages_tags.page_id')
-            ->where('pages_tags.tag_id', '=', $this->tag->getId());
+        foreach ($this->tags as $i => $tag) {
+            $alias = "tag-$i";
+
+            $query
+                ->join("pages_tags as $alias", 'pages.id', '=', "$alias.page_id")
+                ->where("$alias.tag_id", '=', $tag->getId());
+        }
+
+        return $query;
     }
 
     public function shouldBeApplied()
     {
-        return $this->tag->loaded();
+        return !empty($this->tags);
     }
 }

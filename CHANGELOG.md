@@ -1,3 +1,7 @@
+### [3.1.2] - 2015-08-25
+
+  * Updated Tag filter for page finder to accept an array of tags
+
 ### [3.1] - 2015-08-17
 
   * Code refactoring / improvements
