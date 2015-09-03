@@ -9,13 +9,6 @@
 			<?= $button('plus', Lang::get('Add a new page as a child of the current page'), ['id' => 'b-page-addpage']) ?>
 		<?php endif ?>
 
-		<?php if ($page->wasCreatedBy($person) || $auth->loggedIn('edit_page_content', $page)): ?>
-			<div id="b-page-actions">
-				<?= $button('file-o', Lang::get('Change the template used by the page'), ['id' => 'b-page-template']) ?>
-			</div>
-		<?php endif ?>
-
-
 		<?php if ($auth->loggedIn('edit_page', $page)): ?>
 			<div id="b-page-settings-menu">
 				<?= $button('cog', Lang::get('Page settings which apply whichever version is published'), ['id' => 'b-page-settings']) ?>

@@ -62,7 +62,7 @@
             </li>
 		<?php endif ?>
             
-        <?php if ($auth->loggedIn('edit_page_template', $page)): ?>
+        <?php if ($page->wasCreatedBy($person) || $auth->loggedIn('edit_page_template', $page)): ?>
             <li>
                 <a href="#" class="fa fa-file-text-o" data-b-page-setting="template">
                     <?= Lang::get('boom::settings.menu.template') ?>
