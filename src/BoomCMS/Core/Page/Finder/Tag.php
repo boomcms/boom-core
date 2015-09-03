@@ -20,14 +20,13 @@ class Tag extends Filter
     {
         if (is_array($tags)) {
             foreach ($tags as $i => $tag) {
-                if (!$tag instanceof TagObject || ! $tag->loaded()) {
+                if (!$tag instanceof TagObject || !$tag->loaded()) {
                     unset($tags[$i]);
                 }
             }
 
             $this->tags = $tags;
-        }
-        elseif ($tags instanceof TagObject && $tags->loaded()) {
+        } elseif ($tags instanceof TagObject && $tags->loaded()) {
             $this->tags = [$tags];
         }
     }
