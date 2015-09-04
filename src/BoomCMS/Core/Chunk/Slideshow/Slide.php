@@ -76,6 +76,9 @@ class Slide
      */
     public function hasLink()
     {
-        return isset($this->attrs['url']) && $this->attrs['url'] != 'http://';
+        return isset($this->attrs['url'])
+            && trim($this->attrs['url'])
+            && $this->attrs['url'] !== '#'
+            && $this->attrs['url'] !== 'http://';
     }
 }
