@@ -40262,11 +40262,11 @@ function boomPage(page_id) {
 
 		this.$menu
 			.find('li')
-			.removeClass('fa-caret-right')
+			.removeClass('selected')
 			.end()
 			.find('a[data-b-page-setting=' + section + ']')
 			.parent('li')
-			.addClass('fa fa-caret-right');
+			.addClass('selected');
 
 		this.$content.replaceWith($div);
 		this.$content = $div;

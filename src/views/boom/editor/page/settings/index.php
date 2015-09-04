@@ -1,5 +1,13 @@
 <div class='b-page-settings'>
     <ul class="b-page-settings-menu">
+        <?php if ($page->wasCreatedBy($person) || $auth->loggedIn('edit_page_template', $page)): ?>
+            <li>
+                <a href="#" class="fa fa-file-text-o" data-b-page-setting="template">
+                    <?= Lang::get('boom::settings.menu.template') ?>
+                </a>
+            </li>
+        <?php endif ?>
+
         <?php if ($auth->loggedIn('edit_page_navigation_basic', $page)): ?>
             <li>
                 <a href="#" class="fa fa-sitemap" data-b-page-setting="navigation">
@@ -53,29 +61,23 @@
                 </a>
             </li>
         <?php endif ?>
-            
-		<?php if ($auth->loggedIn('edit_page', $page)): ?>
+
+        <div class="group">
+            <?php if ($auth->loggedIn('edit_page', $page)): ?>
+                <li>
+                    <a href="#" class="fa fa-eye" data-b-page-setting="visibility">
+                        <?= Lang::get('boom::settings.menu.visibility') ?>
+                    </a>
+                </li>
+            <?php endif ?>
+
             <li>
-                <a href="#" class="fa fa-eye" data-b-page-setting="visibility">
-                    <?= Lang::get('boom::settings.menu.visibility') ?>
+                <a href="#" class="fa fa-pencil" data-b-page-setting="drafts">
+                    <?= Lang::get('boom::settings.menu.drafts') ?>
                 </a>
             </li>
-		<?php endif ?>
-            
-        <?php if ($page->wasCreatedBy($person) || $auth->loggedIn('edit_page_template', $page)): ?>
-            <li>
-                <a href="#" class="fa fa-file-text-o" data-b-page-setting="template">
-                    <?= Lang::get('boom::settings.menu.template') ?>
-                </a>
-            </li>
-        <?php endif ?>
-            
-        <li>
-            <a href="#" class="fa fa-pencil" data-b-page-setting="drafts">
-                <?= Lang::get('boom::settings.menu.drafts') ?>
-            </a>
-        </li>
-        
+        </div>
+
         <li class="b-page-settings-close">
             <a href="#" class="fa fa-close">
                 <?= Lang::get('boom::settings.menu.close') ?>
