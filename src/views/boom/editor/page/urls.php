@@ -17,11 +17,9 @@
         <ul id='b-page-urls-list'>
             <?php foreach ($urls as $url): ?>
                 <li data-url="<?= $url->getLocation() ?>" data-id="<?= $url->getId() ?>" <?php if ((bool) $url->isPrimary()): echo 'class="b-page-urls-primary"'; endif ?>>
-                    <label class="primary" for="is_primary_<?= $url->getId() ?>"><?= $url->getLocation() ?></label>
-
                     <span class='b-page-urls-primary-indicator'>primary</span>
                     <span title="Remove URL" class="fa fa-trash-o b-urls-remove"></span>
-
+                    <label class="primary" for="is_primary_<?= $url->getId() ?>"><?= $url->getLocation() ?></label>
                     <input type="radio" name="is_primary" value="<?= $url->getLocation() ?>" id="is_primary_<?= $url->getId() ?>" class="ui-helper-hidden b-urls-primary" <?php if ($url->isPrimary()): ?> checked="checked"<?php endif ?>/>
                 </li>
             <?php endforeach ?>
