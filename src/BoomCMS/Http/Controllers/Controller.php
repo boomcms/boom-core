@@ -2,13 +2,13 @@
 
 namespace BoomCMS\Http\Controllers;
 
-use View as View;
 use BoomCMS\Core\Auth\Auth;
 use BoomCMS\Core\Editor\Editor;
 use BoomCMS\Core\Page\Page;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Session\SessionManager as Session;
+use View as View;
 
 class Controller extends BaseController
 {
