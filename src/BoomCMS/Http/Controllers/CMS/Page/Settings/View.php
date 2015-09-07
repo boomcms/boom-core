@@ -33,13 +33,13 @@ class View extends Settings
             'child_order_column'     => $childOrderingPolicy->getColumn(),
             'child_order_direction'  => $childOrderingPolicy->getDirection(),
             'allowAdvanced'          => $this->allowAdvanced,
+            'page'                   => $this->page,
         ]);
 
         // If we're showing the advanced settings then set the neccessary variables.
         if ($this->allowAdvanced) {
             // Add the view for the advanced settings to the main view.
             $v->default_grandchild_template = ($this->page->getGrandchildTemplateId() != 0) ? $this->page->getGrandchildTemplateId() : $this->page->getTemplateId();
-            $v->page = $this->page;
         }
 
         return $v;
