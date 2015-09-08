@@ -81,6 +81,7 @@ class URL implements Arrayable
      * Get the URL using a given scheme.
      * 
      * @param string $scheme
+     *
      * @return string
      */
     public function scheme($scheme)

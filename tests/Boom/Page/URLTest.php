@@ -3,7 +3,6 @@
 use BoomCMS\Core\Page\Page;
 use BoomCMS\Core\URL\URL;
 use BoomCMS\Support\Facades\Page as PageFacade;
-use Illuminate\Support\Facades\Config;
 
 class Page_URLTest extends TestCase
 {
