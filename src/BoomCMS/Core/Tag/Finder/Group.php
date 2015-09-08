@@ -16,6 +16,10 @@ class Group extends Filter
 
     public function execute(Builder $query)
     {
-        return $query->where('group', '=', $this->group);
+        if ($this->group) {
+            return $query->where('group', '=', $this->group);
+        } else {
+            return $query->whereNull('group');
+        }
     }
 }
