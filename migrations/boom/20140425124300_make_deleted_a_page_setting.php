@@ -12,7 +12,7 @@ class Migration_Boom_20140425124300 extends Minion_Migration_Base
 		{
 			$result = DB::select('page_deleted')
 				->from('page_versions')
-				->where('id', '=', $page['id'])
+				->where('page_id', '=', $page['id'])
 				->order_by('id', 'desc')
 				->limit(1)
 				->execute()
