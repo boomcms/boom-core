@@ -3,6 +3,7 @@
 use BoomCMS\Core\Page\Page;
 use BoomCMS\Core\URL\URL;
 use BoomCMS\Support\Facades\Page as PageFacade;
+use Illuminate\Support\Facades\Config;
 
 class Page_URLTest extends TestCase
 {
@@ -87,5 +88,12 @@ class Page_URLTest extends TestCase
     {
         $url = new URL(['is_primary' => true]);
         $url->setIsPrimary('maybe');
+    }
+
+    public function testScheme()
+    {
+        $url = new URL(['location' => 'test']);
+
+        $this->assertEquals('webcal://localhost/test', $url->scheme('webcal'));
     }
 }

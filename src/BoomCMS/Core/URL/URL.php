@@ -77,6 +77,17 @@ class URL implements Arrayable
         return $this->getId() > 0;
     }
 
+    /**
+     * Get the URL using a given scheme.
+     * 
+     * @param string $scheme
+     * @return string
+     */
+    public function scheme($scheme)
+    {
+        return str_replace('http', $scheme, (string) $this);
+    }
+
     public function setIsPrimary($isPrimary)
     {
         if (!is_bool($isPrimary)) {
