@@ -10,7 +10,7 @@ class Finder extends BaseFinder
 {
     public function __construct()
     {
-        $this->query = Model::query();
+        $this->query = Model::query()->select('tags.*');
     }
 
     public function find()
