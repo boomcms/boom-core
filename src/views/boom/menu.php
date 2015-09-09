@@ -6,14 +6,10 @@
             <a target='_top' href='/' class="fa fa-home"><?= Lang::get('boom::menu.home') ?></a>
         </li>
 
-        <?php $items = Config::get('boomcms.menu'); ?>
-        <?php ksort($items) ?>
-        <?php foreach ($items as $key => $item): ?>
-            <?php if (!isset($item['role']) || $auth->loggedIn($item['role'])): ?>
-                <li>
-                    <a target='_top' href='<?= $item['url'] ?>'<?php if (isset($item['icon'])): ?> class="fa fa-<?= $item['icon'] ?>"<?php endif ?>><?= isset($item['title']) ? $item['title'] : Lang::get('boom::menu.'.$key) ?></a>
-                </li>
-            <?php endif ?>
+        <?php foreach (BoomCMS\Support\Menu::items() as $item): ?>
+            <li>
+                <a target='_top' href='<?= $item['url'] ?>'<?php if (isset($item['icon'])): ?> class="fa fa-<?= $item['icon'] ?>"<?php endif ?>><?= $item['title'] ?></a>
+            </li>
         <?php endforeach ?>
 
         <li>
