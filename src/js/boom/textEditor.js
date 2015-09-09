@@ -43,7 +43,7 @@ $.widget('boom.textEditor', {
 				contentEditableMode : true,
 				autoLink : false,
 				uneditableContainerClassname : 'b-asset-embed',
-				handleTables: true
+				handleTables: (self.mode === 'block')
 			});
 
 			// Ensures that default text is wrapped in a paragraph
