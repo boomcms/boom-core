@@ -16,31 +16,6 @@ class Page extends Model
     public $guarded = ['id'];
     public $timestamps = false;
 
-    /**
-     * @throws Exception
-     *
-     * @return \Boom_Model_Page
-     */
-    public function cascade_to_children(array $settings)
-    {
-        // Page must be loaded.
-        if (!$this->_loaded) {
-            throw new Exception('Cannot call '.__CLASS__.'::'.__METHOD__.' on an unloaded object.');
-        }
-
-        if (!empty($settings)) {
-            DB::update('pages')
-                ->where('id', 'IN', DB::select('id')
-                    ->from('page_mptt')
-                    ->where('parent_id', '=', $this->id)
-                )
-                ->set($settings)
-                ->execute($this->_db);
-        }
-
-        return $this;
-    }
-
     public function getCurrentVersionQuery()
     {
         $query = DB::table('page_versions')
@@ -54,29 +29,6 @@ class Page extends Model
         }
 
         return $query;
-    }
-
-    public function set_template_of_children($template_id)
-    {
-        $versions = DB::select([DB::raw('max(page_versions.id)'), 'id'])
-            ->from('page_versions')
-            ->join('page_mptt', 'inner')
-            ->on('page_mptt.id', '=', 'page_versions.page_id')
-            ->where('page_mptt.scope', '=', $this->mptt->scope)
-            ->where('page_mptt.lft', '>', $this->mptt->lft)
-            ->where('page_mptt.rgt', '<', $this->mptt->rgt)
-            ->groupBy('page_versions.page_id')
-            ->execute($this->_db)
-            ->as_array();
-
-        $versions = Arr::pluck($versions, 'id');
-
-        if (!empty($versions)) {
-            DB::update('page_versions')
-                ->set(['template_id' => $template_id])
-                ->where('id', 'IN', $versions)
-                ->execute($this->_db);
-        }
     }
 
     public function scopeAutocompleteTitle($query, $title, $limit)
