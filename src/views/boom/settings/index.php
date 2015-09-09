@@ -20,22 +20,20 @@
             <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
 
             <table class='b-table'>
-                <?php foreach (Config::get('boomcms.settingsManagerOptions') as $name => $type): ?>
+                <?php foreach (BoomCMS\Core\Settings\Manager::options() as $option): ?>
                     <tr>
-                        <td><?= Lang::get("boom::settings-manager.$name._label") ?></td>
+                        <td><?= $option['label'] ?></td>
 
                         <td>
-                            <?php if ($type === 'string'): ?>
-                                <input type='text' name='<?= $name ?>' value='<?= Settings::get($name) ?>' />
-                            <?php elseif ($type === 'text'): ?>
-                                <textarea name='<?= $name ?>'><?= Settings::get($name) ?></textarea>
+                            <?php if ($option['type'] === 'string'): ?>
+                                <input type='text' name='<?= $option['name'] ?>' value='<?= $option['value'] ?>' />
+                            <?php elseif ($option['type'] === 'text'): ?>
+                                <textarea name='<?= $option['name'] ?>'><?= $option['value'] ?></textarea>
                             <?php endif ?>
                         </td>
 
                         <td>
-                            <?php if (Lang::has("boom::settings-manager.$name._info")): ?>
-                                <?= Lang::get("boom::settings-manager.$name._info") ?>
-                            <?php endif ?>
+                            <?= $option['info'] ?>
                         </td>
                     </tr>
                 <?php endforeach ?>
