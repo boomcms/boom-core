@@ -41407,7 +41407,10 @@ $.widget('boom.pageTree', {
 
 				e.preventDefault();
 
-				new boomLinkPicker(new boomLink(null, current))
+				new boomLinkPicker(new boomLink(null, current), {
+						external: false,
+						asset: false
+					})
 					.done(function(link) {
 						settingsEditor.element.find('input[name=parent_id]').val(link.getPageId());
 				
