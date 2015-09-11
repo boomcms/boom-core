@@ -18,15 +18,15 @@ abstract class Menu
                 continue;
             }
 
-            $items[$key]['title'] = isset($item['title'])? $item['title'] : Lang::get('boom::menu.'.$key);
+            $items[$key]['title'] = isset($item['title']) ? $item['title'] : Lang::get('boom::menu.'.$key);
         }
 
-        usort($items, function($a, $b) {
+        usort($items, function ($a, $b) {
             if ($a['title'] === $b['title']) {
                 return 0;
             }
 
-            return ($a['title'] < $b['title'])? -1 : 1;
+            return ($a['title'] < $b['title']) ? -1 : 1;
         });
 
         return $items;
