@@ -26,8 +26,8 @@ abstract class Manager
             ];
         }
 
-        usort($options, function($a, $b) {
-            return ($a['label'] < $b['label'])? -1 : 1;
+        usort($options, function ($a, $b) {
+            return ($a['label'] < $b['label']) ? -1 : 1;
         });
 
         return $options;
