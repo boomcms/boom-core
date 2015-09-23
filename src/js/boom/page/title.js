@@ -31,7 +31,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 
 		this.element
 			.on('keydown change paste', function() {
-				var oldText = this.getTitle();
+				var oldText = self.getTitle();
 
 				setTimeout(function() {
 					self.updatePageTitle(oldText, self.getTitle());
