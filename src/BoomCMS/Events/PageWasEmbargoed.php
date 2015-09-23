@@ -4,6 +4,6 @@ namespace BoomCMS\Events;
 
 use BoomCMS\Foundation\Events\PageVersionEvent;
 
-class PageWasPublished extends PageVersionEvent
+class PageWasEmbargoed extends PageVersionEvent
 {
 }

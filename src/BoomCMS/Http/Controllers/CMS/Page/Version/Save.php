@@ -20,9 +20,13 @@ class Save extends Version
             : time();
 
         $this->page->setEmbargoTime($embargoed_until);
+    
+        $version = $this->page->getCurrentVersion();
 
-        if ($this->page->getCurrentVersion()->isPublished()) {
-            Event::fire(new Events\PageWasPublished($this->page, $this->auth->getPerson()));
+        if ($version->isPublished()) {
+            Event::fire(new Events\PageWasPublished($this->page, $this->auth->getPerson(), $version));
+        } elseif ($version->isEmbargoed()) {
+            Event::fire(new Events\PageWasEmbargoed($this->page, $this->auth->getPerson(), $version));
         }
 
         return $this->page->getCurrentVersion()->getStatus();

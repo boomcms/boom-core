@@ -10,5 +10,15 @@ class EventServiceProvider extends ServiceProvider
         'BoomCMS\Events\SuccessfulLogin' => [
             'BoomCMS\Listeners\ResetFailedLogins',
         ],
+        'BoomCMS\Events\PageWasDeleted' => [
+            'BoomCMS\Listeners\RemovePageFromSearch',
+        ],
+        'BoomCMS\Events\PageWasPublished' => [
+            'BoomCMS\Listeners\SaveSearchText',
+            'BoomCMS\Listeners\RemoveExpiredSearchTexts'
+        ],
+        'BoomCMS\Events\PageWasEmbargoed' => [
+            'BoomCMS\Listeners\SaveSearchText',
+        ]
     ];
 }
