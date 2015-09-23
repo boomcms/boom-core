@@ -21,8 +21,8 @@ class SaveSearchText
             'page_vid'        => $version->getId(),
             'embargoed_until' => $version->getEmbargoedUntil()->getTimestamp(),
             'title'           => $version->getTitle(),
-            'standfirst'      => $standfirst? $standfirst->text : '',
-            'text'            => $bodycopy? strip_tags($bodycopy->text) : '',
+            'standfirst'      => $standfirst ? $standfirst->text : '',
+            'text'            => $bodycopy ? strip_tags($bodycopy->text) : '',
         ]);
     }
 }

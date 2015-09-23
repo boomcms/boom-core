@@ -20,7 +20,7 @@ class Save extends Version
             : time();
 
         $this->page->setEmbargoTime($embargoed_until);
-    
+
         $version = $this->page->getCurrentVersion();
 
         if ($version->isPublished()) {

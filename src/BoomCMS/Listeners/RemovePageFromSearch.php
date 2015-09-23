@@ -2,8 +2,8 @@
 
 namespace BoomCMS\Listeners;
 
-use BoomCMS\Foundation\Events\PageEvent;
 use BoomCMS\Database\Models\SearchText;
+use BoomCMS\Foundation\Events\PageEvent;
 
 class RemovePageFromSearch
 {
