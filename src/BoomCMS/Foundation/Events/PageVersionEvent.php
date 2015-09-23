@@ -14,7 +14,7 @@ class PageVersionEvent extends PageEvent
     protected $person;
 
     /**
-     * @var Version 
+     * @var Version
      */
     protected $version;
 

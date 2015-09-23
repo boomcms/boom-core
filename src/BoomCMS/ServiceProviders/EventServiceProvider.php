@@ -15,10 +15,10 @@ class EventServiceProvider extends ServiceProvider
         ],
         'BoomCMS\Events\PageWasPublished' => [
             'BoomCMS\Listeners\SaveSearchText',
-            'BoomCMS\Listeners\RemoveExpiredSearchTexts'
+            'BoomCMS\Listeners\RemoveExpiredSearchTexts',
         ],
         'BoomCMS\Events\PageWasEmbargoed' => [
             'BoomCMS\Listeners\SaveSearchText',
-        ]
+        ],
     ];
 }
