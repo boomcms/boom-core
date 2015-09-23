@@ -21,6 +21,7 @@ class Timestamp extends BaseChunk
     ];
 
     protected $defaultHtml = "<span class='b-chunk-timestamp'>{time}</span>";
+    protected $formatIsEditable = true;
 
     protected function addContentToHtml($content)
     {
@@ -32,8 +33,9 @@ class Timestamp extends BaseChunk
     public function attributes()
     {
         return [
-            $this->attributePrefix.'timestamp' => $this->getTimestamp(),
-            $this->attributePrefix.'format'    => $this->getFormat(),
+            $this->attributePrefix.'timestamp'        => $this->getTimestamp(),
+            $this->attributePrefix.'format'           => $this->getFormat(),
+            $this->attributePrefix.'formatIsEditable' => (int) $this->formatIsEditable,
         ];
     }
 
@@ -50,6 +52,14 @@ class Timestamp extends BaseChunk
     public function getTimestamp()
     {
         return isset($this->attrs['timestamp']) ? $this->attrs['timestamp'] : 0;
+    }
+
+    public function setFormat($format)
+    {
+        $this->formatIsEditable = false;
+        $this->attrs['format'] = $format;
+
+        return $this;
     }
 
     protected function show()
