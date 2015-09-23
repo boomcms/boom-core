@@ -125,11 +125,13 @@
 	bottom: 0;
 	top: 0;
 	left: 60px;
-	transform: translateX(-100%);
+	max-width: 0;
+	width: 100%;
 	transition: all 1s;
+	overflow: hidden;
 
 	&.open {
-		transform: translateX(0);
+		max-width: 5000px;
 		transition: all 1s;
 	}
 }
