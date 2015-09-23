@@ -32,7 +32,7 @@ class CreateTableForSearchText extends Migration
                 ->on('pages')
                 ->onUpdate('CASCADE')
                 ->onDelete('CASCADE');
-            
+
             $table->integer('embargoed_until')->unsigned()->nullable();
             $table->string('title', 75)->nullable();
             $table->string('standfirst', '255')->null();
@@ -54,12 +54,12 @@ class CreateTableForSearchText extends Migration
         foreach ($pages as $p) {
             DB::table('search_texts')
                 ->insert([
-                    'page_id' => $p->getId(),
+                    'page_id'         => $p->getId(),
                     'embargoed_until' => $p->getCurrentVersion()->getEmbargoedUntil()->getTimestamp(),
-                    'page_vid' => $p->getCurrentVersion()->getId(),
-                    'title' => $p->getTitle(),
-                    'standfirst' => Chunk::get('text', 'standfirst', $p)->text(),
-                    'text' => strip_tags(Chunk::get('text', 'bodycopy', $p)->text())
+                    'page_vid'        => $p->getCurrentVersion()->getId(),
+                    'title'           => $p->getTitle(),
+                    'standfirst'      => Chunk::get('text', 'standfirst', $p)->text(),
+                    'text'            => strip_tags(Chunk::get('text', 'bodycopy', $p)->text()),
                 ]);
         }
     }
