@@ -25,7 +25,7 @@ class WithoutTag extends Filter
     public function build(Builder $query)
     {
         return $query
-            ->leftJoin('pages_tags as pt_without', function($q) {
+            ->leftJoin('pages_tags as pt_without', function ($q) {
                 $q
                     ->on('pages.id', '=', 'pt_without.page_id')
                     ->on('pt_without.tag_id', '=', DB::raw($this->tag->getId()));

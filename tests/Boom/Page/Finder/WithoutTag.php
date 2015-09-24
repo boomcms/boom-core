@@ -31,7 +31,7 @@ class Page_Finder_WithoutTagTest extends TestCase
 
         $query
             ->shouldReceive('leftJoin')
-            ->with('pages_tags as pt_without', m::on(function() {
+            ->with('pages_tags as pt_without', m::on(function () {
                 return true;
             }))
             ->andReturnSelf()
