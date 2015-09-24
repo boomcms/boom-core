@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Listeners;
 
-use BoomCMS\Events\SuccessfulLogin;
+use BoomCMS\Events\Auth\SuccessfulLogin;
 use BoomCMS\Support\Facades\Person;
 
 class ResetFailedLogins

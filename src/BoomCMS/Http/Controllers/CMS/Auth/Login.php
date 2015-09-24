@@ -3,8 +3,8 @@
 namespace BoomCMS\Http\Controllers\CMS\Auth;
 
 use BoomCMS\Core\Auth;
-use BoomCMS\Events\FailedLogin;
-use BoomCMS\Events\SuccessfulLogin;
+use BoomCMS\Events\Auth\FailedLogin;
+use BoomCMS\Events\Auth\SuccessfulLogin;
 use BoomCMS\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Lang;

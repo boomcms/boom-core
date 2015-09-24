@@ -7,7 +7,7 @@ use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvi
 class EventServiceProvider extends ServiceProvider
 {
     protected $listen = [
-        'BoomCMS\Events\SuccessfulLogin' => [
+        'BoomCMS\Events\Auth\SuccessfulLogin' => [
             'BoomCMS\Listeners\ResetFailedLogins',
         ],
         'BoomCMS\Events\PageWasDeleted' => [

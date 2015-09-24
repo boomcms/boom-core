@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Http\Controllers\CMS\Auth;
 
-use BoomCMS\Events\Logout as LogoutEvent;
+use BoomCMS\Events\Auth\Logout as LogoutEvent;
 use BoomCMS\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Session;

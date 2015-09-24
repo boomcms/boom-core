@@ -1,7 +1,7 @@
 <?php
 
 use BoomCMS\Core\Person\Person;
-use BoomCMS\Events\SuccessfulLogin;
+use BoomCMS\Events\Auth\SuccessfulLogin;
 use BoomCMS\Listeners\ResetFailedLogins;
 use BoomCMS\Support\Facades\Person as PersonFacade;
 use Illuminate\Http\Request;

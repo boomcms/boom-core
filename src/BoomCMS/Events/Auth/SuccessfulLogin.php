@@ -1,6 +1,6 @@
 <?php
 
-namespace BoomCMS\Events;
+namespace BoomCMS\Events\Auth;
 
 use BoomCMS\Foundation\Events\AuthEvent;
 
