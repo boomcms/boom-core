@@ -107,6 +107,19 @@
 					color: @darkest-grey;
 				}
 			}
+
+			&.b-button-withtext {
+				border: 1px solid @light-grey;
+				min-width: 15rem;
+
+				&:hover, &:focus {
+					background: @light-grey;
+				}
+
+				+ .b-button-withtext {
+					margin-left: 1.5rem;
+				}
+			}
 		}
 
 		.b-visibility-toggle {
