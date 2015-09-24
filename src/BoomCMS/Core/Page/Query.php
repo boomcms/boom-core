@@ -21,6 +21,7 @@ class Query
         'title'               => 'Title',
         'search'              => 'Search',
         'relatedto'           => 'RelatedTo',
+        'withouttag'          => 'WithoutTag',
     ];
 
     /**
