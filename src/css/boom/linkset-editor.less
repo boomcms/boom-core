@@ -57,16 +57,23 @@
 			+ li a {
 				margin-top: 1px;
 			}
+			
+			&:nth-of-type(odd) a {
+				background: @white;
+			}
+
+			&:nth-of-type(even) a {
+				background: @lightest-grey;
+			}
 
 			a {
 
 				display: block;
-				background: @dark-grey;
 				text-decoration: none;
-				padding: 0.3em;
+				padding: 1rem;
 
 				&:hover, &:focus {
-					background: @grey;
+					color: @red;
 				}
 			}
 
@@ -79,13 +86,14 @@
 				bottom: 0;
 				padding: 7px;
 				margin-top: 0;
+				line-height: 26px;
 
 				&:before {
 					content: @fa-var-trash-o;
 				}
 
 				&:hover, &:focus {
-					background-color: @grey;
+					color: @red;
 				}
 			}
 		}
@@ -114,8 +122,6 @@
 			.b-linkset-target {
 				input {
 					background: transparent;
-					color: @white;
-					padding: 0;
 					width: 17em;
 					float: left;
 				}

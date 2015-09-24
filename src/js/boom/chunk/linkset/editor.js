@@ -114,7 +114,7 @@ function boomChunkLinksetEditor(pageId, slotname, options) {
 			.val($a.attr('data-title'))
 			.end();
 
-		this.toggleLinkAsset($a.attr('data-asset'));
+		this.toggleLinkAsset(new boomAsset($a.attr('data-asset')));
 	};
 
 	boomChunkLinksetEditor.prototype.editLinkTarget = function() {
