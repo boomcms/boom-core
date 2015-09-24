@@ -8,7 +8,7 @@
 	z-index: 100002;
 	height: auto;
 	overflow: auto;
-	background: @lightest-grey;
+	background: @white;
 
 	#b-assets-upload-close {
 		display: none;
@@ -19,6 +19,7 @@
 		width: calc(~"100vw - 25em");
 		margin: 0;
 		overflow: auto;
+		background: transparent;
 	}
 
 	&-current {
@@ -35,8 +36,8 @@
 		right: 0;
 		bottom: 0;
 		width: 25em;
-		background: #222;
-		padding: 5px;
+		background: @lightest-grey;
+		padding: 1rem 1.5rem;
 		z-index: 2;
 		max-width: 100%;
 		overflow-y: auto;
@@ -44,34 +45,33 @@
 
 		section {
 			width: 100%;
+		}
 
-			h1 {
-				color: @white;
-			}
+		h1 {
+			.text-large;
+			border-bottom: 1px solid @red;
+			padding-bottom: 1.5rem;
+			width: 75%;
+			margin: 0 0 1.5rem 0;
 		}
 	}
 
 	&-filter {
-		margin-top: 2em;
+		margin-top: 1.5rem;
 
 		> div {
-			border: 1px solid @lightest-grey;
-			padding: 10px;
-			margin-top: 10px;
+			border: 1px solid @light-grey;
+			padding: 1.5rem;
+			margin-top: 1.5rem;
 		}
 
 		h2 {
-			color: @white;
 			text-align: center;
-			margin: 0 0 20px 0;
+			margin: 0 0 1.5rem 0;
 		}
 
 		input, select {
 			width: 100%;
-			border: 0;
-			padding: 5px;
-			-webkit-appearance: none;
-			border-radius: 0;
 		}
 	}
 
@@ -82,21 +82,17 @@
 
 	&-all {
 		display: block;
-		margin: 10px auto;
-	}
-
-	h1 {
-		margin-top: 0;
-		.text-large;
+		margin: 1.5rem auto;
+		border: 1px solid @grey;
+		min-width: 15rem;
 	}
 
 	#b-assets-upload-container {
-		border-color: @white;
+		border-color: @grey;
 	}
 
 	#b-assets-upload-info {
-		margin: 2em;
-		color: @white;
+		margin: 1.5rem;
 	}
 
 	#b-assets-upload-add {
@@ -110,21 +106,13 @@
 		margin-top: 2em;
 		width: 100%;
 	}
-	
-	.b-button {
-		color: @white;
-		
-		&:hover, &:focus {
-			color: @red;
-		}
-	}
 
 	.b-tags-list {
 		padding-left: 0;
 		margin: auto -0.25em;
 
 		.b-tag {
-			border-color: @dark-grey;
+			border-color: @darkest-grey;
 			color: @white;
 		}
 	}
