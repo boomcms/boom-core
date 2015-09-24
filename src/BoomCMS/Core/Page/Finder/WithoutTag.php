@@ -5,6 +5,7 @@ namespace BoomCMS\Core\Page\Finder;
 use BoomCMS\Core\Tag\Tag;
 use BoomCMS\Foundation\Finder\Filter;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
 
 class WithoutTag extends Filter
 {
@@ -24,8 +25,11 @@ class WithoutTag extends Filter
     public function build(Builder $query)
     {
         return $query
-            ->leftJoin('pages_tags as pt_without', 'pages.id', '=', 'pt_without.page_id')
-            ->where('pt_without.tag_id', '=', $this->tag->getId())
+            ->leftJoin('pages_tags as pt_without', function($q) {
+                $q
+                    ->on('pages.id', '=', 'pt_without.page_id')
+                    ->on('pt_without.tag_id', '=', DB::raw($this->tag->getId()));
+            })
             ->whereNull('pt_without.page_id');
     }
 
