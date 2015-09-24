@@ -4,8 +4,10 @@ namespace BoomCMS\Http\Controllers\CMS\Auth;
 
 use BoomCMS\Core\Auth\Auth;
 use BoomCMS\Core\Person\Provider;
+use BoomCMS\Events\Auth\PasswordChanged;
 use BoomCMS\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\View;
 
 class Account extends Controller
@@ -45,6 +47,7 @@ class Account extends Controller
             } else {
                 $this->person->setEncryptedPassword($this->auth->hash($this->request->input('password1')));
 
+                Event::fire(new PasswordChanged($this->person, $this->request));
                 $message = 'Your password has been updated';
             }
         }
