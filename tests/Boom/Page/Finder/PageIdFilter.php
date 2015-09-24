@@ -15,6 +15,8 @@ class Page_Finder_PageIdFilterTest extends TestCase
         $query
             ->shouldReceive('where')
             ->with('pages.id', '=', 1);
+
+        $filter->build($query);
     }
 
     public function testMultiplePageIds()
@@ -27,6 +29,8 @@ class Page_Finder_PageIdFilterTest extends TestCase
         $query
             ->shouldReceive('where')
             ->with('pages.id', 'in', [1, 2]);
+
+        $filter->build($query);
     }
 
     public function testNoPageIdShouldNotBeApplied()
