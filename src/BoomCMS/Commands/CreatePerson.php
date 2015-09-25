@@ -6,10 +6,10 @@ use BoomCMS\Core\Auth;
 use BoomCMS\Core\Auth\RandomPassword;
 use BoomCMS\Core\Group;
 use BoomCMS\Core\Person;
-use BoomCMS\Support\Facades\Settings;
+use BoomCMS\Events\AccountCreated;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Bus\SelfHandling;
-use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Event;
 
 class CreatePerson extends Command implements SelfHandling
 {
@@ -69,19 +69,7 @@ class CreatePerson extends Command implements SelfHandling
                 $person->addGroup($this->groupProvider->findById($groupId));
             }
 
-            if (isset($password)) {
-                Mail::send('boom::email.newperson', [
-                        'person'    => $person,
-                        'siteName'  => Settings::get('site.name'),
-                        'password'  => $password,
-                        'createdBy' => $this->auth->loggedIn() ? $this->auth->getPerson()->getName() : Settings::get('site.admin.email'),
-                    ], function ($message) use ($person) {
-                    $message
-                        ->to($person->getEmail(), $person->getName())
-                        ->from(Settings::get('site.admin.email'), Settings::get('site.name'))
-                        ->subject('Welcome to BoomCMS');
-                });
-            }
+            Event::fire(new AccountCreated($person, $password, $this->auth->getPerson()));
 
             return $person;
         } else {
