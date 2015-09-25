@@ -79,7 +79,7 @@ $.widget('boom.pageSettingsFeature', {
 	},
 
 	setFeature: function(asset) {
-		if (asset.getId() !== this.currentImage.getId()) {
+		if (asset && asset.getId() !== this.currentImage.getId()) {
 			this.changed = true;
 			this.currentImage = asset;
 
