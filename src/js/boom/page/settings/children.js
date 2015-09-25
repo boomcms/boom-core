@@ -33,7 +33,9 @@ $.widget('boom.pageSettingsChildren', {
 						});
 				});
 			})
-			.on('click', '.b-button-cancel', function() {
+			.on('click', '.b-button-cancel', function(e) {
+				e.preventDefault();
+
 				settingsEditor.options.settings.show('children');
 			})
 			.on('click', '.b-button-save', function(e) {
