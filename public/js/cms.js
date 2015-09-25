@@ -40986,11 +40986,8 @@ $.widget('boom.pageTree', {
 			$imagesInPageContainer.parent('section').hide();
 		}
 
-		if (this.currentImage) {
-			this.element.find('#b-page-feature-none').hide();
-		} else {
-			this.element.find('#b-page-feature-current').hide();
-			this.element.find('#b-page-feature-remove').prop('disabled', true);
+		if (!this.currentImage.getId()) {
+			this.hasNoFeatureImage();
 		}
 	},
 
@@ -40998,6 +40995,12 @@ $.widget('boom.pageTree', {
 		this.currentImage = this.initial = new boomAsset(this.element.find('#b-page-feature-current').attr('src').replace(/\/asset\/(\d+)(.*)/, "$1"));
 		this.imagesInPage = this.getImagesInPage();
 		this.bind();
+	},
+
+	hasNoFeatureImage: function() {
+		this.element.find('#b-page-feature-current').hide();
+		this.element.find('#b-page-feature-remove').prop('disabled', true);
+		this.element.find('#b-page-feature-none').show();
 	},
 
 	removeFeature: function() {
@@ -41026,11 +41029,11 @@ $.widget('boom.pageTree', {
 				this.element.find('#b-page-feature-current').attr('src', asset.getUrl('view', 500)).show();
 				this.element.find('#b-page-feature-remove').prop('disabled', false);
 				this.element.find('#b-page-feature-none').hide();
-			} else {
-				this.element.find('#b-page-feature-current').hide();
-				this.element.find('#b-page-feature-remove').prop('disabled', true);
-				this.element.find('#b-page-feature-none').show();
 			}
+		}
+
+		if (!asset || !asset.getId()) {
+			this.hasNoFeatureImage();
 		}
 	}
 });;$.widget('boom.pageSettingsVisibility', {
