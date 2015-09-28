@@ -168,7 +168,6 @@ Route::group(['middleware' => [
         'as'         => 'asset',
         'middleware' => [
             'BoomCMS\Http\Middleware\CheckAssetETag',
-            'BoomCMS\Http\Middleware\DisableSession',
         ],
         'uses' => function (BoomCMS\Core\Auth\Auth $auth, $asset, $action = 'view', $width = null, $height = null) {
             return App::make('BoomCMS\Http\Controllers\Asset\\'.class_basename($asset), [$auth, $asset])->$action($width, $height);
