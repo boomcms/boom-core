@@ -10,7 +10,7 @@ function boomPerson(person_id) {
 
 		dialog = new boomDialog({
 			url : this.base_url + 'add',
-			width: 'auto',
+			width: '600px',
 			title : 'Create new person',
 			closeButton: false,
 			saveButton: true
