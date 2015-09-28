@@ -2,12 +2,12 @@
 
 namespace BoomCMS\Foundation\Exceptions;
 
-use BoomCMS\Support\Facades\Editor;
 use BoomCMS\Support\Facades\Page;
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\Route;
 
 class Handler extends ExceptionHandler
 {
@@ -51,10 +51,9 @@ class Handler extends ExceptionHandler
                 $page = Page::findByInternalName($code);
 
                 if ($page->loaded()) {
-                    View::share('page', $page);
-                    Editor::setActivePage($page);
+                    $request = Request::create($page->url()->getLocation(), 'GET');
 
-                    return response(App::make('BoomCMS\Http\Controllers\PageController')->asHtml($page), $code);
+                    return response(Route::dispatch($request)->getContent(), $code);
                 }
             }
         }

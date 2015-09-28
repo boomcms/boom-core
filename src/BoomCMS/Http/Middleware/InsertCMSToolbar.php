@@ -4,6 +4,7 @@ namespace BoomCMS\Http\Middleware;
 
 use Closure;
 use Illuminate\Foundation\Application;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\View;
 
 class InsertCMSToolbar
@@ -34,7 +35,10 @@ class InsertCMSToolbar
 
         $response = $next($request);
 
-        $originalHtml = $response->getOriginalContent();
+        $originalHtml = ($response instanceof Response)
+            ? $response->getOriginalContent()
+            : (string) $response;
+
         preg_match('|(.*)(</head>)(.*<body[^>]*>)|imsU', $originalHtml, $matches);
 
         if (!empty($matches)) {
@@ -46,7 +50,12 @@ class InsertCMSToolbar
             ]);
 
             $newHtml = str_replace($matches[0], (string) $head, $originalHtml);
-            $response->setContent($newHtml);
+
+            if ($response instanceof Response) {
+                $response->setContent($newHtml);
+            } else {
+                return $newHtml;
+            }
         }
 
         return $response;
