@@ -19,6 +19,7 @@ return [
     'remove-link'      => 'Remove link',
     'reparent'         => 'Change parent',
     'request-approval' => 'Request approval',
+    'reset'            => 'Reset',
     'save'             => 'Save',
     'select-asset'     => 'Select an asset',
 ];
