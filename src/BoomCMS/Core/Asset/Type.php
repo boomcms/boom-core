@@ -13,6 +13,7 @@ abstract class Type
     const MP3 = 5;
     const MSWORD = 6;
     const MSEXCEL = 7;
+    const TEXT = 8;
 
     /**
      * @param int
@@ -39,6 +40,9 @@ abstract class Type
 
             case static::MSEXCEL:
                 return 'MSExcel';
+
+            case static::TEXT:
+                return 'Text';
         }
     }
 
