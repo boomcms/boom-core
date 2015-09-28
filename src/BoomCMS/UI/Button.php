@@ -2,7 +2,7 @@
 
 namespace BoomCMS\UI;
 
-use HTML;
+use Illuminate\Support\Facades\Lang;
 
 class Button extends AbstractUIElement
 {
@@ -29,7 +29,7 @@ class Button extends AbstractUIElement
     public function __construct($type, $text, $attrs = [])
     {
         $this->type = $type;
-        $this->text = $text;
+        $this->text = $this->translate($text);
         $this->attrs = $attrs;
     }
 
@@ -48,5 +48,12 @@ class Button extends AbstractUIElement
         }
 
         return "<button $attrs_string><span class='b-button-icon fa-2x fa fa-{$this->type}'></span><span class='b-button-text'>{$this->text}</span></button>";
+    }
+
+    public function translate($text)
+    {
+        $key = "boom::buttons.$text";
+
+        return (Lang::has($key)) ? Lang::get($key) : $text;
     }
 }

@@ -17,6 +17,6 @@
         </label>
     <?php endif ?>
 
-    <?= $button('refresh', Lang::get('boom::buttons.reset'), ['class' => 'b-button-cancel b-button-withtext']) ?>
-    <?= $button('save', Lang::get('boom::buttons.save'), ['class' => 'b-button-save b-button-withtext']) ?>
+    <?= $button('refresh', 'reset', ['class' => 'b-button-cancel b-button-withtext']) ?>
+    <?= $button('save', 'save', ['class' => 'b-button-save b-button-withtext']) ?>
 </form>

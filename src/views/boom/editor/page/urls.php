@@ -25,7 +25,7 @@
             <?php endforeach ?>
         </ul>
 
-        <?= $button('plus', Lang::get('boom::buttons.add-url'), ['class' => 'b-urls-add b-button-withtext']) ?>
+        <?= $button('plus', 'add-url', ['class' => 'b-urls-add b-button-withtext']) ?>
     </section>
 
     <section class='b-page-urls-short'>

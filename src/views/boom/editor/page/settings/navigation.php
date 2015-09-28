@@ -37,10 +37,10 @@
             <?php endif ?>
 
             <input type="hidden" name="parent_id" value="<?= $page->getParentId() ?>">
-            <?= $button('sitemap', Lang::get('boom::buttons.reparent'), ['class' => 'b-navigation-reparent b-button-withtext']) ?>
+            <?= $button('sitemap', 'reparent', ['class' => 'b-navigation-reparent b-button-withtext']) ?>
         </section>
     <?php endif ?>
 
-    <?= $button('refresh', Lang::get('boom::buttons.reset'), ['class' => 'b-button-cancel b-button-withtext']) ?>
-    <?= $button('save', Lang::get('boom::buttons.save'), ['class' => 'b-button-save b-button-withtext']) ?>
+    <?= $button('refresh', 'reset', ['class' => 'b-button-cancel b-button-withtext']) ?>
+    <?= $button('save', 'save', ['class' => 'b-button-save b-button-withtext']) ?>
 </form>

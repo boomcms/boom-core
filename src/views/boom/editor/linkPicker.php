@@ -38,7 +38,7 @@
                 </select>
             </label>
 
-			<?= $button('paperclip', Lang::get('boom::buttons.select-asset'), ['id' => 'b-linkpicker-asset-select', 'class' => 'b-button-withtext']) ?>
+			<?= $button('paperclip', 'select-asset', ['id' => 'b-linkpicker-asset-select', 'class' => 'b-button-withtext']) ?>
 		
             <img />
         </div>
@@ -54,5 +54,5 @@
 		</div>
 	</div>
 
-    <?= $button('trash-o', Lang::get('boom::buttons.remove-link'), ['id' => 'b-linkpicker-remove', 'class' => 'b-button-withtext']) ?>
+    <?= $button('trash-o', 'remove-link', ['id' => 'b-linkpicker-remove', 'class' => 'b-button-withtext']) ?>
 </div>

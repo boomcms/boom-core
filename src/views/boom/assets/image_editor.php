@@ -1,8 +1,8 @@
 <div id="b-imageeditor">
     <div id="b-imageeditor-toolbar">
-        <?= $button('rotate-left', Lang::get('boom::buttons.rotate-left'), ['id' => 'b-imageeditor-rotate-left', 'class' => 'b-button-withtext']) ?>
-        <?= $button('rotate-right', Lang::get('boom::buttons.rotate-right'), ['id' => 'b-imageeditor-rotate-right', 'class' => 'b-button-withtext']) ?>
-        <?= $button('crop', Lang::get('boom::buttons.crop'), ['id' => 'b-imageeditor-crop', 'class' => 'b-button-withtext']) ?>
+        <?= $button('rotate-left', 'rotate-left', ['id' => 'b-imageeditor-rotate-left', 'class' => 'b-button-withtext']) ?>
+        <?= $button('rotate-right', 'rotate-right', ['id' => 'b-imageeditor-rotate-right', 'class' => 'b-button-withtext']) ?>
+        <?= $button('crop', 'crop', ['id' => 'b-imageeditor-crop', 'class' => 'b-button-withtext']) ?>
         
         <div class="crop-tools">
             <label class="aspect-ratio">
@@ -18,11 +18,11 @@
                 </select>
             </label>
 
-            <?= $button('check', Lang::get('boom::buttons.accept-crop'), ['id' => 'b-imageeditor-crop-accept', 'class' => 'b-button-withtext']) ?>
-            <?= $button('times', Lang::get('boom::buttons.cancel'), ['id' => 'b-imageeditor-crop-cancel', 'class' => 'b-button-withtext']) ?>
+            <?= $button('check', 'accept-crop', ['id' => 'b-imageeditor-crop-accept', 'class' => 'b-button-withtext']) ?>
+            <?= $button('times', 'cancel', ['id' => 'b-imageeditor-crop-cancel', 'class' => 'b-button-withtext']) ?>
          </div>
         
-        <?= $button('refresh', Lang::get('boom::buttons.image-revert'), ['id' => 'b-imageeditor-revert', 'class' => 'b-button-withtext']) ?>
+        <?= $button('refresh', 'image-revert', ['id' => 'b-imageeditor-revert', 'class' => 'b-button-withtext']) ?>
     </div>
 
     <img id="b-imageeditor-image" src="" />

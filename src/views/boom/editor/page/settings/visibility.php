@@ -28,5 +28,5 @@
     </div>
 </form>
 
-<?= $button('refresh', Lang::get('boom::buttons.reset'), ['class' => 'b-visibility-cancel b-button-withtext']) ?>
-<?= $button('save', Lang::get('boom::buttons.save'), ['class' => 'b-visibility-save b-button-withtext']) ?>
+<?= $button('refresh', 'reset', ['class' => 'b-visibility-cancel b-button-withtext']) ?>
+<?= $button('save', 'save', ['class' => 'b-visibility-save b-button-withtext']) ?>

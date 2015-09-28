@@ -48,7 +48,7 @@
                 <?php endif ?>
             </form>
             
-            <?= $button('save', Lang::get('boom::buttons.save-changes'), ['class' => 'b-assets-save b-button-withtext']) ?>
+            <?= $button('save', 'save-changes', ['class' => 'b-assets-save b-button-withtext']) ?>
         </div>
 
         <div id="b-assets-view-info">

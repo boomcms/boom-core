@@ -30,7 +30,7 @@
                 </select>
 
                 <?php if ($page->hasChildren()): ?>
-                    <?= $button('', Lang::get('boom::buttons.reorder'), ['id' => 'b-page-settings-children-reorder', 'class' => 'b-button-textonly']) ?>
+                    <?= $button('', 'reorder', ['id' => 'b-page-settings-children-reorder', 'class' => 'b-button-textonly']) ?>
                 <?php endif ?>
             </label>
 		</section>
@@ -75,6 +75,6 @@
 		<?php endif ?>
 	</div>
 
-    <?= $button('refresh', Lang::get('boom::buttons.reset'), ['class' => 'b-button-cancel b-button-withtext']) ?>
-    <?= $button('save', Lang::get('boom::buttons.save'), ['class' => 'b-button-save b-button-withtext']) ?>
+    <?= $button('refresh', 'reset', ['class' => 'b-button-cancel b-button-withtext']) ?>
+    <?= $button('save', 'save', ['class' => 'b-button-save b-button-withtext']) ?>
 </form>

@@ -6,7 +6,7 @@
         <p><?= Lang::get('boom::settings.draft-status.draft') ?></p>
         
         <?php if (!$auth->loggedIn('publish_page', $page)): ?>
-            <?= $button('thumbs-up', Lang::get('boom::buttons.request-approval'), ['class' => 'b-button-withtext b-page-request-approval']) ?>
+            <?= $button('thumbs-up', 'request-approval', ['class' => 'b-button-withtext b-page-request-approval']) ?>
         <?php endif ?>
     <?php elseif ($version->isPendingApproval()): ?>
         <p><?= Lang::get('boom::settings.draft-status.pending') ?></p>
@@ -39,21 +39,21 @@
         </p>
         
         <?php if ($auth->loggedIn('publish_page', $page)): ?>
-            <?= $button('check', Lang::get('boom::buttons.publish'), ['class' => 'b-button-withtext b-page-publish']) ?>
+            <?= $button('check', 'publish', ['class' => 'b-button-withtext b-page-publish']) ?>
             
             <?php if ($version->isEmbargoed()): ?>
-                <?= $button('clock-o', Lang::get('boom::buttons.embargo-change'), ['class' => 'b-button-withtext b-page-embargo']) ?>
+                <?= $button('clock-o', 'embargo-change', ['class' => 'b-button-withtext b-page-embargo']) ?>
             <?php else: ?>
-                <?= $button('clock-o', Lang::get('boom::buttons.embargo'), ['class' => 'b-button-withtext b-page-embargo']) ?>
+                <?= $button('clock-o', 'embargo', ['class' => 'b-button-withtext b-page-embargo']) ?>
             <?php endif ?>
 
-            <?= $button('undo', Lang::get('boom::buttons.page-revert'), ['class' => 'b-button-withtext b-page-revert']) ?>
+            <?= $button('undo', 'page-revert', ['class' => 'b-button-withtext b-page-revert']) ?>
         <?php endif ?>
     <?php endif ?>
         
     <?php if (!$version->isPublished() || !$page->isVisible()): ?>
         <div>
-            <?= $button('', Lang::get('boom::buttons.preview'), [
+            <?= $button('', 'preview', [
                 'class'    => 'b-button-textonly b-page-preview',
                 'data-url' => (string) $page->url(),
             ]) ?>
