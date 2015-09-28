@@ -31,18 +31,18 @@ class Page_Finder_WithoutTagTest extends TestCase
 
         $query
             ->shouldReceive('leftJoin')
-            ->with('pages_tags as pt_without', m::on(function () {
+            ->with('pages_tags as pt_without-0', m::on(function () {
                 return true;
             }))
             ->andReturnSelf()
             ->shouldReceive('on')
-            ->with('pages.id', '=', 'pt_without.page_id')
+            ->with('pages.id', '=', 'pt_without-0.page_id')
             ->andReturnSelf()
             ->shouldReceive('on')
-            ->with('pt_without.tag_id', '=', $tag->getId())
+            ->with('pt_without-0.tag_id', '=', $tag->getId())
             ->andReturnSelf()
             ->shouldReceive('whereNull')
-            ->with('pt_without.page_id');
+            ->with('pt_without-0.page_id');
 
         $filter->build($query);
     }

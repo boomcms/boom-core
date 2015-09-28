@@ -2,39 +2,25 @@
 
 namespace BoomCMS\Core\Page\Finder;
 
-use BoomCMS\Core\Tag\Tag;
-use BoomCMS\Foundation\Finder\Filter;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 
-class WithoutTag extends Filter
+class WithoutTag extends Tag
 {
-    /**
-     * @var Tag
-     */
-    protected $tag;
-
-    /**
-     * @param Tag $tag
-     */
-    public function __construct(Tag $tag)
-    {
-        $this->tag = $tag;
-    }
-
     public function build(Builder $query)
     {
-        return $query
-            ->leftJoin('pages_tags as pt_without', function ($q) {
-                $q
-                    ->on('pages.id', '=', 'pt_without.page_id')
-                    ->on('pt_without.tag_id', '=', DB::raw($this->tag->getId()));
-            })
-            ->whereNull('pt_without.page_id');
-    }
+        foreach ($this->tags as $i => $tag) {
+            $alias = "pt_without-$i";
 
-    public function shouldBeApplied()
-    {
-        return $this->tag->loaded();
+            $query
+                ->leftJoin("pages_tags as $alias", function ($q) use ($tag, $alias) {
+                    $q
+                        ->on('pages.id', '=', "$alias.page_id")
+                        ->on("$alias.tag_id", '=', DB::raw($tag->getId()));
+                })
+                ->whereNull("$alias.page_id");
+        }
+
+        return $query;
     }
 }
