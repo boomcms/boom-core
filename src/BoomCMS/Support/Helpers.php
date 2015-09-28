@@ -2,6 +2,7 @@
 
 namespace BoomCMS\Support;
 
+use BoomCMS\Core\Asset\Asset;
 use BoomCMS\Core\Page;
 use BoomCMS\Core\Tag;
 use BoomCMS\Support\Facades\Editor;
@@ -19,6 +20,17 @@ abstract class Helpers
     public static function analytics()
     {
         return App::environment() === 'production' ? Settings::get('analytics') : '';
+    }
+
+    /**
+     * Get the HTML code to embed an asset
+     * 
+     * @param Asset $asset
+     * @return string
+     */
+    public static function assetEmbed(Asset $asset, $height = null, $width = null)
+    {
+        return (string) $asset->getEmbedHtml($height, $width);
     }
 
     /**

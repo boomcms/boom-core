@@ -9,6 +9,7 @@ use BoomCMS\Support\Facades\Auth;
 use DateTime;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\View;
 use Rych\ByteSize\ByteSize;
 use Symfony\Component\HttpFoundation\File\UploadedFile as File;
 
@@ -106,6 +107,22 @@ abstract class Asset implements Arrayable
     public function getHumanFilesize()
     {
         return ByteSize::formatBinary($this->getFilesize());
+    }
+
+    public function getEmbedHtml($height = null, $width = null)
+    {
+        $viewPrefix = 'boom::assets.embed.';
+        $assetType = strtolower(class_basename($this->getType()));
+
+        $viewName = View::exists($viewPrefix.$assetType) ?
+            $viewPrefix.$assetType :
+            $viewPrefix.'default';
+
+        return View::make($viewName, [
+            'asset'  => $this,
+            'height' => $height,
+            'width'  => $width,
+        ]);
     }
 
     public function getId()

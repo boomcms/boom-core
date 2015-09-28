@@ -6,7 +6,6 @@ use BoomCMS\Core\Asset;
 use BoomCMS\Core\Auth;
 use BoomCMS\Http\Controllers\Controller;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\View;
 
 abstract class BaseController extends Controller
 {
@@ -32,16 +31,7 @@ abstract class BaseController extends Controller
 
     public function embed()
     {
-        $viewPrefix = 'boom::assets.embed.';
-        $assetType = strtolower(class_basename($this));
-
-        $viewName = View::exists($viewPrefix.$assetType) ?
-            $viewPrefix.$assetType :
-            $viewPrefix.'default';
-
-        return View::make($viewName, [
-            'asset' => $this->asset,
-        ]);
+        return $this->asset->getEmbedHtml();
     }
 
     public function view($width = null, $height = null)
