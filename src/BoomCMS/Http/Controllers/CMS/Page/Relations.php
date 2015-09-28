@@ -5,7 +5,9 @@ namespace BoomCMS\Http\Controllers\CMS\Page;
 use BoomCMS\Core\Auth\Auth;
 use BoomCMS\Core\Page;
 use BoomCMS\Http\Controllers\Controller;
+use BoomCMS\Support\Facades\Page as PageFacade;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\View;
 
 class Relations extends Controller
 {
@@ -44,5 +46,12 @@ class Relations extends Controller
     public function remove()
     {
         $this->page->removeRelation($this->related);
+    }
+
+    public function view()
+    {
+        return View::make('boom::editor.page.settings.relations', [
+            'relatedPages' => PageFacade::findRelatedTo($this->page),
+        ]);
     }
 }

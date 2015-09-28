@@ -4,6 +4,10 @@
 	li {
 		list-style-type: none;
 
+		+ li {
+			margin-top: 0.5rem;
+		}
+
 		.title {
 			font-weight: bold;
 			vertical-align: top;
@@ -16,11 +20,13 @@
 		}
 
 		a {
-			margin-left: 1em;
+			margin-right: 1em;
 			overflow: hidden;
 			position: relative;
-			color: @lightest-grey;
+			color: @darkest-grey;
 			text-decoration: none;
+			float: left;
+			line-height: 21px;
 
 			span {
 				position: absolute;

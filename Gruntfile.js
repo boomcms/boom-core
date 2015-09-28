@@ -81,6 +81,7 @@ module.exports = function(grunt) {
 					'src/js/boom/page/settings/navigation.js',
 					'src/js/boom/page/settings/template.js',
 					'src/js/boom/page/settings/drafts.js',
+					'src/js/boom/page/settings/relations.js',
 					'src/js/boom/textEditor.js',
 					'src/js/boom/chunk.js',
 					'src/js/boom/chunk/chunk.js',

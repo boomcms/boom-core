@@ -124,6 +124,7 @@ Route::group(['middleware' => [
 
             Route::post('page/relations/add/{page}', 'Page\Relations@add');
             Route::post('page/relations/remove/{page}', 'Page\Relations@remove');
+            Route::get('page/relations/view/{page}', 'Page\Relations@view');
 
             Route::group(['prefix' => 'page/settings'], function () {
                 Route::get('{action}/{page}', [

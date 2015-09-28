@@ -31,6 +31,8 @@ $.widget('boom.pageSettings', {
 		switch (section) {
 			case 'urls':
 				return '/cms/page/urls/' + this.page.id;
+			case 'relations':
+				return '/cms/page/relations/view/' + this.page.id;
 			case 'tags':
 				return '/cms/page/tags/list/' + this.page.id;
 			case 'template':

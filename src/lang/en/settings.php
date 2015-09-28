@@ -13,6 +13,7 @@ return [
         'template'   => 'Template',
         'visibility' => 'Visibility',
         'drafts'     => 'Draft status',
+        'relations'  => 'Relationships',
     ],
     'admin' => [
         'heading'        => 'Admin settings',
@@ -51,6 +52,14 @@ return [
         'no-parent' => 'This page has no parent',
         'parent'    => 'Parent page',
     ],
+    'relations'   => [
+        'heading' => 'Page relationships',
+        'intro'   => '<p>You can define relationships between pages.</p>
+                    <p>This might be useful, for example, when your site contains blog templates and you need to define a relationship between blog posts and author pages.</p>
+                    <p>In this case you would add author pages as related pages of the blog post page.</p>',
+        'add'     => 'Add related page',
+        'current' => 'Current page relationships:',
+    ],
     'search' => [
         'heading'     => 'Page search settings',
         'description' => 'Description',
@@ -60,13 +69,6 @@ return [
     ],
     'tags' => [
         'heading' => 'Page tags',
-        'pages'   => [
-            'intro' => '<p>You can other pages as being related to this page.</p>
-                        <p>This might be useful, for example, when your site contains blog templates and you need to define a relationship between blog posts and author pages.</p>
-                        <p>In this case you would tag a blog post with author pages.</p>',
-            'add'     => 'Add related page',
-            'current' => 'Current page relationships:',
-        ],
     ],
     'template' => [
         'heading' => 'Page template',

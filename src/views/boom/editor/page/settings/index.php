@@ -38,6 +38,12 @@
             </a>
         </li>
 
+        <li>
+            <a href="#" class="fa fa-puzzle-piece" data-b-page-setting="relations">
+                <?= Lang::get('boom::settings.menu.relations') ?>
+            </a>
+        </li>
+
         <?php if ($auth->loggedIn('edit_page_children_basic', $page)): ?>
             <li>
                 <a href="#" class="fa fa-child" data-b-page-setting="children">

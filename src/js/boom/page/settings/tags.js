@@ -1,28 +1,6 @@
 $.widget('boom.pageSettingsTags', {
 	baseUrl: '/cms/page/tags/',
 
-	addRelatedPage: function() {
-		var page = this.page,
-			$relatedPages = this.element.find('#pages ul'),
-			$el = this.element;
-
-		new boomLinkPicker(new boomLink(), {
-				external: false
-			})
-			.done(function(link) {
-				page.addRelatedPage(link.getPageId())
-					.done(function() {
-						var $li = $('<li></li>')
-							.append('<span class="title">' + link.getTitle() + '</span>')
-							.append('<span class="uri">' + link.getUrl() + '</span>')
-							.append('<a href="#" class="fa fa-trash-o"><span>Remove</span></a>');
-
-						$relatedPages.append($li);
-						$el.find('#pages .current').show();
-					});
-			});
-	},
-
 	addTag: function(group, tag) {
 		var tagEditor = this;
 
@@ -56,12 +34,6 @@ $.widget('boom.pageSettingsTags', {
 
 				tagEditor.addTagGroup($input.val());
 				$input.val('');
-			})
-			.on('click', '#b-tags-addpage', function() {
-				tagEditor.addRelatedPage();
-			})
-			.on('click', '#pages li a', function() {
-				tagEditor.removeRelatedPage($(this));
 			});
 
 		this.initTagList(this.element.find('.b-tags-list'));
@@ -88,19 +60,6 @@ $.widget('boom.pageSettingsTags', {
 				page.removeTag(tagId);
 			}
 		});
-	},
-
-	removeRelatedPage: function($a) {
-		var $el = this.element,
-			$relatedPages = $el.find('#pages ul'),
-			$current = $el.find('#pages .current');
-
-		this.page.removeRelatedPage($a.attr('data-page-id'))
-			.done(function() {
-				$a.parent().remove();
-
-				$relatedPages.find('li').length ? $current.show() : $current.hide();
-			});
 	},
 
 	removeTag: function($a) {

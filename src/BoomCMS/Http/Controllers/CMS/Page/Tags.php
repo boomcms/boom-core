@@ -55,7 +55,6 @@ class Tags extends Controller
             'tags'         => $tags,
             'freeTags'     => isset($freeTags) ? $freeTags : [],
             'groups'       => $groupSuggestions,
-            'relatedPages' => Page::findRelatedTo($this->page),
         ]);
     }
 
