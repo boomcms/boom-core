@@ -9,10 +9,12 @@
             <?= $button('trash-o', 'Remove current asset', ['id' => 'b-assets-picker-current-remove', 'class' => 'b-button-withtext']) ?>
         </section>
 
-        <section id="b-assets-picker-upload">
-            <h1>Upload Asset</h1>
-            <?= View::make('boom::assets.upload') ?>
-        </section>
+        <?php if ($auth->loggedIn('manage_assets')): ?>
+            <section id="b-assets-picker-upload">
+                <h1>Upload Asset</h1>
+                <?= View::make('boom::assets.upload') ?>
+            </section>
+        <?php endif ?>
 
         <section id="b-assets-picker-filter" class="ui-front">
             <h1>Filter Assets</h1>

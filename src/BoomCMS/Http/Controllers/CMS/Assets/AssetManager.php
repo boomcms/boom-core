@@ -35,7 +35,9 @@ class AssetManager extends Controller
         $this->request = $request;
         $this->provider = $provider;
 
-        $this->authorization('manage_assets');
+        if (!$this->request->is('*/picker') && !$this->request->is('*/get')) {
+            $this->authorization('manage_assets');
+        }
     }
 
     public function delete()
