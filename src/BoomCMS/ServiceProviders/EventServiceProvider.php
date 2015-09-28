@@ -10,6 +10,9 @@ class EventServiceProvider extends ServiceProvider
         'BoomCMS\Events\AccountCreated' => [
             'BoomCMS\Listeners\SendAccountCreatedNotification',
         ],
+        'BoomCMS\Events\Auth\PasswordChanged' => [
+            'BoomCMS\Listeners\SendPasswordChangedNotification',
+        ],
         'BoomCMS\Events\Auth\SuccessfulLogin' => [
             'BoomCMS\Listeners\ResetFailedLogins',
         ],
