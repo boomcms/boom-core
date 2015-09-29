@@ -20,6 +20,9 @@ $.widget('boom.pageSettingsVisibility', {
 			})
 			.on('click', '.b-visibility-save', function() {
 				pageVisibilityEditor.save();
+			})
+			.on('click', '.b-visibility-preview', function() {
+				$.boom.editor.state('preview');
 			});
 
 		this.toggleVisible(this.elements.visible.find('option:selected').val() === '1');

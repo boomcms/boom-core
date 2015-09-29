@@ -1,6 +1,10 @@
 <form>
     <h1><?= Lang::get('boom::settings.visibility.heading') ?></h1>
 
+    <?php if (!$page->isVisible()): ?>
+        <p><?= Lang::get('boom::settings.visibility.preview') ?></p>
+    <?php endif ?>
+
     <label>
         <h2><?= Lang::get('boom::settings.visibility.visible') ?></h2>
 

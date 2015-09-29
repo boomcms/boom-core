@@ -80,5 +80,6 @@ return [
         'from-description' => 'Set a time and date here to make the page become visible at a particular time',
         'to'               => 'Visible until',
         'to-description'   => 'Set a time and date here to make the page become invisible again in the future',
+        'preview'          => 'This page is not visibile. To see how the page would appear on the site you can <a href="#" class="b-visibility-preview">preview the page</a>.',
     ],
 ];
