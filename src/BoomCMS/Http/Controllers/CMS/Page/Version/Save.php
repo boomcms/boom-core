@@ -47,9 +47,9 @@ class Save extends Version
     {
         parent::template($manager);
 
-        $this->page->setTemplateId($this->request->input('template_id'));
-
         $template = TemplateFacade::findById($this->request->input('template_id'));
+        $this->page->setTemplate($template);
+
         Event::fire(new Events\PageTemplateWasChanged($this->page, $template));
 
         return $this->page->getCurrentVersion()->getStatus();

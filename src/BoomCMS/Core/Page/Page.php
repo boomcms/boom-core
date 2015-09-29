@@ -4,6 +4,7 @@ namespace BoomCMS\Core\Page;
 
 use BoomCMS\Core\Person;
 use BoomCMS\Core\Tag;
+use BoomCMS\Core\Template\Template;
 use BoomCMS\Core\URL\URL;
 use BoomCMS\Database\Models\Page\URL as URLModel;
 use BoomCMS\Database\Models\Page\Version as VersionModel;
@@ -681,9 +682,14 @@ class Page
         return $this;
     }
 
-    public function setTemplateId($templateId)
+    /**
+     * @param Template $template
+     *
+     * @return $this
+     */
+    public function setTemplate($template)
     {
-        $this->addVersion(['template_id' => $templateId]);
+        $this->addVersion(['template_id' => $template->getId()]);
 
         return $this;
     }
