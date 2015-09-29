@@ -23,9 +23,10 @@ abstract class Helpers
     }
 
     /**
-     * Get the HTML code to embed an asset
+     * Get the HTML code to embed an asset.
      * 
      * @param Asset $asset
+     *
      * @return string
      */
     public static function assetEmbed(Asset $asset, $height = null, $width = null)
