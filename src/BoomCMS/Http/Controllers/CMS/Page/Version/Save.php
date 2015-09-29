@@ -36,7 +36,7 @@ class Save extends Version
     {
         parent::request_approval();
 
-        $this->page->makeUpdatesAsPendingApproval();
+        $this->page->markUpdatesAsPendingApproval();
 
         Event::fire(new Events\PageApprovalRequested($this->page, $this->auth->getPerson()));
 
