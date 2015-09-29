@@ -2,11 +2,9 @@
 
 namespace BoomCMS\Http\Controllers\CMS\Page\Version;
 
-use BoomCMS\Commands\CreatePagePrimaryUri;
 use BoomCMS\Core\Template;
 use BoomCMS\Events;
 use BoomCMS\Support\Facades\Template as TemplateFacade;
-use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Event;
 
 class Save extends Version
@@ -62,26 +60,9 @@ class Save extends Version
 
         Event::fire(new Events\PageTitleWasChanged($this->page, $oldTitle, $this->page->getTitle()));
 
-        if ($oldTitle !== $this->page->getTitle()
-            && $oldTitle == 'Untitled'
-            && $this->page->url()->getLocation() !== '/'
-        ) {
-            $prefix = ($this->page->getParent()->getChildPageUrlPrefix()) ?: $this->page->getParent()->url()->getLocation();
-
-            $url = Bus::dispatch(
-                new CreatePagePrimaryUri(
-                    $this->provider,
-                    $this->page,
-                    $prefix
-                )
-            );
-
-            return [
-                'status'   => $this->page->getCurrentVersion()->getStatus(),
-                'location' => (string) $url,
-            ];
-        }
-
-        return $this->page->getCurrentVersion()->getStatus();
+        return [
+            'status'   => $this->page->getCurrentVersion()->getStatus(),
+            'location' => $this->page->url()->getLocation(),
+        ];
     }
 }

@@ -3,6 +3,7 @@
 namespace BoomCMS\Commands;
 
 use BoomCMS\Core\Page;
+use BoomCMS\Support\Facades\Page as PageFacade;
 use BoomCMS\Support\Facades\URL as URLFacade;
 use BoomCMS\Support\Helpers\URL as URLHelper;
 use Illuminate\Console\Command;
@@ -14,14 +15,12 @@ class CreatePagePrimaryUri extends Command implements SelfHandling
     protected $location;
     protected $page;
     protected $prefix;
-    protected $provider;
 
-    public function __construct(Page\Provider $provider, Page\Page $page, $prefix = null, $location = null)
+    public function __construct(Page\Page $page, $prefix = null, $location = null)
     {
         $this->location = $location;
         $this->page = $page;
         $this->prefix = $prefix;
-        $this->provider = $provider;
     }
 
     public function handle()
@@ -29,7 +28,7 @@ class CreatePagePrimaryUri extends Command implements SelfHandling
         $url = ($this->location !== null) ? $this->location : URLHelper::fromTitle($this->prefix, $this->page->getTitle());
 
         $this->page->setPrimaryUri($url);
-        $page = $this->provider->save($this->page);
+        $page = PageFacade::save($this->page);
 
         $url = URLFacade::create($url, $page->getId(), true);
         Bus::dispatch(new MakeURLPrimary(URLFacade::getFacadeRoot(), $url));

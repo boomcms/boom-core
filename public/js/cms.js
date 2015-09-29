@@ -43367,16 +43367,16 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 			title.element.focus();
 		});
 	},
-	
+
 	removeTitleLengthCounter: function() {
 		this.lengthCounterCreated = false;
-		$(top.document).find('#b-title-length').remove();	
+		$(top.document).find('#b-title-length').remove();
 	},
 
 	_save : function(title, old_title) {
 		this.options.currentPage.setTitle(title)
 			.done(function(data) {
-				if (typeof data == 'object' && data.location) {
+				if (data.location !== top.window.location.href) {
 					var history = new boomHistory();
 
 					if (history.isSupported()) {

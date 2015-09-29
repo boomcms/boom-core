@@ -16,6 +16,9 @@ class EventServiceProvider extends ServiceProvider
         'BoomCMS\Events\Auth\SuccessfulLogin' => [
             'BoomCMS\Listeners\ResetFailedLogins',
         ],
+        'BoomCMS\Events\PageTitleWasChanged' => [
+            'BoomCMS\Listeners\UpdatePagePrimaryURLToTitle',
+        ],
         'BoomCMS\Events\PageWasDeleted' => [
             'BoomCMS\Listeners\RemovePageFromSearch',
         ],

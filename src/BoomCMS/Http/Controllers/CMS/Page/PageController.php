@@ -39,7 +39,7 @@ class PageController extends Controller
         $newPage = $this->dispatch(new CreatePage($this->provider, $this->auth, $this->page));
 
         $urlPrefix = ($this->page->getChildPageUrlPrefix()) ?: $this->page->url()->getLocation();
-        $url = $this->dispatch(new CreatePagePrimaryUri($this->provider, $newPage, $urlPrefix));
+        $url = $this->dispatch(new CreatePagePrimaryUri($newPage, $urlPrefix));
 
         Event::fire(new PageWasCreated($newPage, $this->page));
 
