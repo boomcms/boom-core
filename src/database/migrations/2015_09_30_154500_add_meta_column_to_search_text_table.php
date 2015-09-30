@@ -1,7 +1,5 @@
 <?php
 
-use BoomCMS\Core\Page\Finder;
-use BoomCMS\Support\Facades\Chunk;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
