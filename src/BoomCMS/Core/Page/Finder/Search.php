@@ -24,7 +24,7 @@ class Search extends Filter
             ->select('page_id')
             ->join('pages', 'pages.id', '=', 'search_texts.page_id')
             ->where('internal_indexing', '=', '?')
-            ->whereRaw('match(title, standfirst, text) against (?)')
+            ->whereRaw('match(title, standfirst, text, meta) against (?)')
             ->where('embargoed_until', '<=', '?')
             ->setBindings([true, $this->text, time()])
             ->lists('page_id');
@@ -35,7 +35,7 @@ class Search extends Filter
     public function execute(Builder $query)
     {
         return $query
-            ->addSelect(DB::raw("(((match(search_texts.title) against ('{$this->text}')) * 100) + ((match(search_texts.standfirst) against ('{$this->text}')) * 10) + match(search_texts.text) against ('{$this->text}')) as rel"))
+            ->addSelect(DB::raw("(((match(search_texts.title) against ('{$this->text}')) * 100) + ((match(search_texts.meta) against ('{$this->text}')) * 20) + ((match(search_texts.standfirst) against ('{$this->text}')) * 10) + match(search_texts.text) against ('{$this->text}')) as rel"))
             ->join('search_texts', 'pages.id', '=', 'search_texts.page_id')
             ->where('search_texts.embargoed_until', '<=', time())
             ->orderBy('rel', 'desc');

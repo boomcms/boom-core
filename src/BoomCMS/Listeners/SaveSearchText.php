@@ -15,6 +15,8 @@ class SaveSearchText
 
         $standfirst = Chunk::find('text', 'standfirst', $version);
         $bodycopy = Chunk::find('text', 'bodycopy', $version);
+        $description = $page->getDescription();
+        $description = ($description == $standfirst) ? '' : $description;
 
         SearchText::create([
             'page_id'         => $page->getId(),
@@ -23,6 +25,7 @@ class SaveSearchText
             'title'           => $version->getTitle(),
             'standfirst'      => $standfirst ? $standfirst->text : '',
             'text'            => $bodycopy ? strip_tags($bodycopy->text) : '',
+            'meta'            => $page->getKeywords().' '.$description,
         ]);
     }
 }
