@@ -37,7 +37,7 @@ class CheckAssetETag
         }
 
         return $response
-            ->header('Cache-Control', 'public, max-age=100800, must-revalidate')
+            ->header('Cache-Control', 'public, must-revalidate')
             ->header('etag', $etag);
     }
 }
