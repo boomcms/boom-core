@@ -4,8 +4,11 @@ namespace BoomCMS\Http\Controllers\CMS\Page;
 
 use BoomCMS\Core\Auth\Auth;
 use BoomCMS\Core\Tag;
+use BoomCMS\Events\PageHadTagAdded;
+use BoomCMS\Events\PageHadTagRemoved;
 use BoomCMS\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\View;
 
 class Tags extends Controller
@@ -38,6 +41,7 @@ class Tags extends Controller
         );
 
         $this->page->addTag($tag);
+        Event::fire(new PageHadTagAdded($this->page, $tag));
     }
 
     public function listTags()
@@ -61,5 +65,7 @@ class Tags extends Controller
     {
         $tag = $this->provider->byId($this->request->input('tag'));
         $this->page->removeTag($tag);
+
+        Event::fire(new PageHadTagRemoved($this->page, $tag));
     }
 }
