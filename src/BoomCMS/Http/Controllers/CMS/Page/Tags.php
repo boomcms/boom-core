@@ -5,7 +5,6 @@ namespace BoomCMS\Http\Controllers\CMS\Page;
 use BoomCMS\Core\Auth\Auth;
 use BoomCMS\Core\Tag;
 use BoomCMS\Http\Controllers\Controller;
-use BoomCMS\Support\Facades\Page;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
 
