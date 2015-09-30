@@ -2,6 +2,7 @@
 
 namespace BoomCMS\Http\Controllers\CMS\Page\Settings;
 
+use BoomCMS\Events\PageSearchSettingsWereUpdated;
 use BoomCMS\Events\PageWasMadeVisible;
 use Illuminate\Support\Facades\Event;
 
@@ -81,6 +82,7 @@ class Save extends Settings
         }
 
         $this->provider->save($this->page);
+        Event::fire(new PageSearchSettingsWereUpdated($this->page));
     }
 
     public function sort_children()
