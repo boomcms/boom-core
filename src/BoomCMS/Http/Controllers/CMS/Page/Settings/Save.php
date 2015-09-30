@@ -4,6 +4,7 @@ namespace BoomCMS\Http\Controllers\CMS\Page\Settings;
 
 use BoomCMS\Events\PageSearchSettingsWereUpdated;
 use BoomCMS\Events\PageWasMadeVisible;
+use DateTime;
 use Illuminate\Support\Facades\Event;
 
 class Save extends Settings
