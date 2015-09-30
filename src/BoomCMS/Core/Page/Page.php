@@ -794,9 +794,9 @@ class Page
      *
      * @return \Model_Page_URL
      */
-    public function url()
+    public function url($refresh = false)
     {
-        if ($this->primaryUrl === null) {
+        if ($refresh || $this->primaryUrl === null) {
             $this->primaryUrl = new URL([
                 'page'       => $this,
                 'location'   => $this->get('primary_uri'),

@@ -43376,7 +43376,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 	_save : function(title, old_title) {
 		this.options.currentPage.setTitle(title)
 			.done(function(data) {
-				if (data.location !== top.window.location.href) {
+				if (data.location !== top.window.location) {
 					var history = new boomHistory();
 
 					if (history.isSupported()) {

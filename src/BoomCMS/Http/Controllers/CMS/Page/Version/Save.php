@@ -62,7 +62,7 @@ class Save extends Version
 
         return [
             'status'   => $this->page->getCurrentVersion()->getStatus(),
-            'location' => $this->page->url()->getLocation(),
+            'location' => (string) $this->page->url(true),
         ];
     }
 }
