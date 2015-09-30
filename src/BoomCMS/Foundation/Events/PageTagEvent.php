@@ -8,7 +8,6 @@ use BoomCMS\Core\Tag\Tag;
 abstract class PageTagEvent extends PageEvent
 {
     /**
-     *
      * @var Tag
      */
     protected $tag;
