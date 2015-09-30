@@ -3,7 +3,6 @@
 namespace BoomCMS\Http\Controllers\CMS\Page\Settings;
 
 use BoomCMS\Events\PageWasMadeVisible;
-use Datetime;
 use Illuminate\Support\Facades\Event;
 
 class Save extends Settings
