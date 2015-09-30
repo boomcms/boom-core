@@ -2,7 +2,7 @@
     <h1><?= Lang::get('boom::settings.draft-status.heading') ?></h1>
     <p><?= Lang::get('boom::settings.draft-status.intro') ?></p>
 
-    <?php if ($version->isDraft()): ?>
+    <?php if ($version->isDraft() && !$version->isPendingApproval()): ?>
         <p><?= Lang::get('boom::settings.draft-status.draft') ?></p>
         
         <?php if (!$auth->loggedIn('publish_page', $page)): ?>
