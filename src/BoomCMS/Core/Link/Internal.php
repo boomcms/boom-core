@@ -30,7 +30,7 @@ class Internal extends Link
         if (ctype_digit($link)) {
             $this->page = Page::findById($link);
         } else {
-            $location = ($link === '/') ? '' : substr($link, 1);
+            $location = ($link === '/') ? $link : substr($link, 1);
 
             // Extract the query string and fragement
             $this->queryString = parse_url($link, PHP_URL_QUERY);
