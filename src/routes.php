@@ -71,6 +71,7 @@ Route::group(['middleware' => [
                 Route::post('group/remove_role/{id}', 'Save@removeRole');
                 Route::post('group/add_role/{id}', 'Save@addRole');
                 Route::post('group/delete/{id}', 'Save@delete');
+                Route::post('group/save/{id}', 'Save@save');
 
                 Route::get('group/edit/{id}', [
                     'as'   => 'group-edit',

@@ -45,4 +45,12 @@ class Provider
     public function findByName($name)
     {
     }
+
+    public function save(Group $group)
+    {
+        $model = Model::find($group->getId());
+        $model->update($group->toArray());
+
+        return $group;
+    }
 }

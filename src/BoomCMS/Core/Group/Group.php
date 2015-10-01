@@ -143,4 +143,9 @@ class Group
 
         return $this;
     }
+
+    public function toArray()
+    {
+        return $this->attributes;
+    }
 }
