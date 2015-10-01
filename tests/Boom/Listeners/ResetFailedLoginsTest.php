@@ -18,7 +18,7 @@ class Listeners_ResetFailedLoginsTest extends TestCase
             ->method('setFailedLogins')
             ->with($this->equalTo(0));
 
-        $this->handle($person);
+        $this->doHandle($person);
     }
 
     public function testLastFailedLoginIsNulled()
@@ -30,7 +30,7 @@ class Listeners_ResetFailedLoginsTest extends TestCase
             ->method('setLastFailedLogin')
             ->with($this->equalTo(null));
 
-        $this->handle($person);
+        $this->doHandle($person);
     }
 
     public function testPersonIsSaved()
@@ -39,10 +39,10 @@ class Listeners_ResetFailedLoginsTest extends TestCase
 
         PersonFacade::shouldReceive('save')->with($person);
 
-        $this->handle($person);
+        $this->doHandle($person);
     }
 
-    protected function handle($person)
+    protected function doHandle($person)
     {
         $event = new SuccessfulLogin($person, m::mock(Request::class));
         $listener = new ResetFailedLogins();
