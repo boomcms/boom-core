@@ -10,8 +10,8 @@
 		"hautelook/phpass": "dev-master",
 		"thujohn/rss": "dev-master",
 		"intervention/imagecache" : "2.*",
-		"laravel/framework": "~5.0",
-		"symfony/http-kernel": "2.6.*",
+		"laravel/framework": "~5.1",
+		"symfony/http-kernel": "2.*",
 		"rych/bytesize": "1.0.*",
 		"illuminate/html": "5.*",
 		"doctrine/dbal": "~2.3"
@@ -19,7 +19,7 @@
 	"require-dev": {
 		"phpunit/phpunit": "4.3.*",
 		"Mockery/Mockery": "^0.9.4",
-		"laravel/laravel": "~5.0"
+		"laravel/laravel": "~5.1"
 	},
 	"autoload": {
 		"psr-4": {"BoomCMS\\": "src/BoomCMS/"}
