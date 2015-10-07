@@ -185,7 +185,6 @@ class AssetManager extends Controller
     public function upload()
     {
         $asset_ids = $errors = [];
-        $now = new DateTime('now');
 
         list($validFiles, $errors) = $this->validateFileUpload();
 
@@ -194,7 +193,7 @@ class AssetManager extends Controller
 
             $asset = Asset\Asset::factory(['type' => $mime->getType()]);
             $asset
-                ->setUploadedTime(new DateTime('@'.time()))
+                ->setUploadedTime(new DateTime('now'))
                 ->setUploadedBy($this->auth->getPerson());
 
             $asset_ids[] = $this->provider->save($asset)->getId();
