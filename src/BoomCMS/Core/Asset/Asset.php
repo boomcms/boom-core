@@ -5,6 +5,7 @@ namespace BoomCMS\Core\Asset;
 use BoomCMS\Core\Asset\Mimetype\Mimetype;
 use BoomCMS\Core\Person;
 use BoomCMS\Database\Models\Asset\Version as VersionModel;
+use BoomCMS\Support\Facades\Asset as AssetFacade;
 use BoomCMS\Support\Facades\Auth;
 use DateTime;
 use Illuminate\Contracts\Support\Arrayable;
@@ -174,7 +175,7 @@ abstract class Asset implements Arrayable
 
     public function getThumbnail()
     {
-        return Factory::byId($this->getThumbnailAssetId());
+        return AssetFacade::findById($this->getThumbnailAssetId());
     }
 
     public function getTitle()
@@ -214,6 +215,11 @@ abstract class Asset implements Arrayable
         }
 
         return $this->hasPreviousVersions;
+    }
+
+    public function hasThumbnail()
+    {
+        return $this->getThumbnailAssetId() > 0;
     }
 
     public function incrementDownloads()

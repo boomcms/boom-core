@@ -59,9 +59,9 @@ function boomAssetEditor(asset, uploader) {
 			.on('focus', '#thumbnail', function() {
 				var $this = $(this);
 
-				new boomAssetPicker($this.val())
-					.done(function(assetId) {
-						$this.val(assetId);
+				new boomAssetPicker(new boomAsset($this.val()))
+					.done(function(asset) {
+						$this.val(asset.getId());
 					});
 			});
     };
