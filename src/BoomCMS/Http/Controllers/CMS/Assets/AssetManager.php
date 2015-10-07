@@ -184,7 +184,7 @@ class AssetManager extends Controller
 
     public function upload()
     {
-        $asset_ids = $errors = [];
+        $assetIds = $errors = [];
 
         list($validFiles, $errors) = $this->validateFileUpload();
 
@@ -196,16 +196,12 @@ class AssetManager extends Controller
                 ->setUploadedTime(new DateTime('now'))
                 ->setUploadedBy($this->auth->getPerson());
 
-            $asset_ids[] = $this->provider->save($asset)->getId();
+            $assetIds[] = $this->provider->save($asset)->getId();
             $asset->createVersionFromFile($file);
             $this->provider->save($asset);
         }
 
-        if (count($errors)) {
-            return new JsonResponse($errors, 500);
-        } else {
-            return $asset_ids;
-        }
+        return (count($errors)) ? new JsonResponse($errors, 500) : $assetIds;
     }
 
     protected function validateFileUpload()
