@@ -184,7 +184,7 @@ class AssetManager extends Controller
 
     public function upload()
     {
-        $assetIds = $errors = [];
+        $assetIds = [];
 
         list($validFiles, $errors) = $this->validateFileUpload();
 
