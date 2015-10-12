@@ -19,7 +19,7 @@ class UpdateSearchText
 
         SearchText::where('page_vid', '=', $version->getId())
             ->update([
-                'meta' => $page->getKeywords().' '.$description
+                'meta' => $page->getKeywords().' '.$description,
             ]);
     }
 }
