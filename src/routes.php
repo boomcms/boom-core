@@ -165,7 +165,7 @@ Route::group(['middleware' => [
         },
     ]);
         
-    Route::get('asset/{asset}/{action?}{extension}', [
+    Route::get('asset/{asset}/{action}.{extension}', [
         'as'         => 'asset',
         'middleware' => [
             'BoomCMS\Http\Middleware\CheckAssetETag',
@@ -175,7 +175,7 @@ Route::group(['middleware' => [
         },
     ])->where([
         'action' => '[a-z]+',
-        'extension' => '.[a-z]+',
+        'extension' => '[a-z]+',
     ]);
 
     Route::get('asset/{asset}/{action?}/{width?}/{height?}', [
