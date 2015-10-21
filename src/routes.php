@@ -164,6 +164,19 @@ Route::group(['middleware' => [
             return App::make('BoomCMS\Http\Controllers\Asset\\'.class_basename($asset), [$auth, $asset])->download();
         },
     ]);
+        
+    Route::get('asset/{asset}/{action?}{extension}', [
+        'as'         => 'asset',
+        'middleware' => [
+            'BoomCMS\Http\Middleware\CheckAssetETag',
+        ],
+        'uses' => function (BoomCMS\Core\Auth\Auth $auth, $asset, $action = 'view', $width = null, $height = null) {
+            return App::make('BoomCMS\Http\Controllers\Asset\\'.class_basename($asset), [$auth, $asset])->$action($width, $height);
+        },
+    ])->where([
+        'action' => '[a-z]+',
+        'extension' => '.[a-z]+',
+    ]);
 
     Route::get('asset/{asset}/{action?}/{width?}/{height?}', [
         'as'         => 'asset',
