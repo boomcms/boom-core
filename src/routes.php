@@ -164,7 +164,7 @@ Route::group(['middleware' => [
             return App::make('BoomCMS\Http\Controllers\Asset\\'.class_basename($asset), [$auth, $asset])->download();
         },
     ]);
-        
+
     Route::get('asset/{asset}/{action}.{extension}', [
         'as'         => 'asset',
         'middleware' => [
@@ -174,7 +174,7 @@ Route::group(['middleware' => [
             return App::make('BoomCMS\Http\Controllers\Asset\\'.class_basename($asset), [$auth, $asset])->$action($width, $height);
         },
     ])->where([
-        'action' => '[a-z]+',
+        'action'    => '[a-z]+',
         'extension' => '[a-z]+',
     ]);
 
