@@ -27,6 +27,7 @@ class Search extends Filter
             ->whereRaw('match(title, standfirst, text, meta) against (?)')
             ->where('embargoed_until', '<=', '?')
             ->setBindings([true, $this->text, time()])
+            ->groupBy('page_id')
             ->lists('page_id');
 
         return $query->whereIn('pages.id', $pageIds);
