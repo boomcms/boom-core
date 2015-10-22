@@ -1,6 +1,6 @@
 <?php
 
-namespace BoomCMS\Commands;
+namespace BoomCMS\Jobs;
 
 use BoomCMS\Core\Auth\Auth;
 use BoomCMS\Core\Page;

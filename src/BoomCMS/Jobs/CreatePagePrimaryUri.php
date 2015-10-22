@@ -1,6 +1,6 @@
 <?php
 
-namespace BoomCMS\Commands;
+namespace BoomCMS\Jobs;
 
 use BoomCMS\Core\Page;
 use BoomCMS\Support\Facades\Page as PageFacade;

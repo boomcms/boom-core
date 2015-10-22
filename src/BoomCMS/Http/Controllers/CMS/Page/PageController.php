@@ -2,8 +2,8 @@
 
 namespace BoomCMS\Http\Controllers\CMS\Page;
 
-use BoomCMS\Commands\CreatePage;
-use BoomCMS\Commands\CreatePagePrimaryUri;
+use BoomCMS\Jobs\CreatePage;
+use BoomCMS\Jobs\CreatePagePrimaryUri;
 use BoomCMS\Core\Auth\Auth;
 use BoomCMS\Core\Page as Page;
 use BoomCMS\Events\PageWasCreated;

@@ -1,6 +1,6 @@
 <?php
 
-namespace BoomCMS\Commands;
+namespace BoomCMS\Jobs;
 
 use BoomCMS\Core\URL;
 use Illuminate\Console\Command;

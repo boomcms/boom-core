@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Listeners;
 
-use BoomCMS\Commands\CreatePagePrimaryUri;
+use BoomCMS\Jobs\CreatePagePrimaryUri;
 use BoomCMS\Core\Page\Page;
 use BoomCMS\Events\PageTitleWasChanged;
 use Illuminate\Support\Facades\Bus;

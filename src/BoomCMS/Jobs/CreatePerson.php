@@ -1,6 +1,6 @@
 <?php
 
-namespace BoomCMS\Commands;
+namespace BoomCMS\Jobs;
 
 use BoomCMS\Core\Auth;
 use BoomCMS\Core\Auth\RandomPassword;
