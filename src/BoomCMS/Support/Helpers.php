@@ -8,6 +8,7 @@ use BoomCMS\Core\Tag;
 use BoomCMS\Support\Facades\Editor;
 use BoomCMS\Support\Facades\Settings;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\View;
 
 abstract class Helpers
 {
@@ -156,5 +157,12 @@ abstract class Helpers
         $finder->addFilter(new Tag\Finder\Group($group));
 
         return $finder->setOrderBy('name', 'asc')->findAll();
+    }
+
+    public static function view($name, $data = null, $namespace = null)
+    {
+        $namespace = $namespace ?: Editor::getActivePage()->getTemplate()->getThemeName();
+
+        return View::make("$namespace::$name", $data);
     }
 }

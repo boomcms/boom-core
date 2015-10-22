@@ -32,5 +32,8 @@ return [
         'getTagsInSection' => function (Page $page = null, $group = null) {
             return Helpers::getTagsInSection($page, $group);
         },
+        'view' => function () {
+            return call_user_func_array([Helpers::class, 'view'], func_get_args());
+        },
     ],
 ];

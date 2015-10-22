@@ -1,8 +1,12 @@
 <?php
 
+use BoomCMS\Core\Page\Page;
+use BoomCMS\Core\Template\Template;
+use BoomCMS\Support\Facades\Editor;
 use BoomCMS\Support\Facades\Settings;
 use BoomCMS\Support\Helpers;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\View;
 
 class Support_HelpersTest extends TestCase
 {
@@ -20,5 +24,28 @@ class Support_HelpersTest extends TestCase
         Settings::shouldReceive('get')->with('analytics')->andReturn('test');
 
         $this->assertEquals('', Helpers::analytics());
+    }
+
+    public function testViewWithNamespaceGiven()
+    {
+        View::shouldReceive('make')->with('namespace::name', [])->andReturn('view');
+
+        $this->assertEquals('view', Helpers::view('name', [], 'namespace'));
+    }
+
+    public function testViewUsesNamespaceOfActivePageTemplate()
+    {
+        $template = new Template(['theme' => 'test']);
+        $page = $this->getMock(Page::class);
+        $page
+            ->expects($this->once())
+            ->method('getTemplate')
+            ->willReturn($template);
+        
+        Editor::shouldReceive('getActivePage')->andReturn($page);
+
+        View::shouldReceive('make')->with('test::name', [])->andReturn('view');
+
+        $this->assertEquals('view', Helpers::view('name'));
     }
 }
