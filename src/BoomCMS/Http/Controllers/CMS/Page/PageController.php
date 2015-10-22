@@ -2,12 +2,12 @@
 
 namespace BoomCMS\Http\Controllers\CMS\Page;
 
-use BoomCMS\Jobs\CreatePage;
-use BoomCMS\Jobs\CreatePagePrimaryUri;
 use BoomCMS\Core\Auth\Auth;
 use BoomCMS\Core\Page as Page;
 use BoomCMS\Events\PageWasCreated;
 use BoomCMS\Http\Controllers\Controller;
+use BoomCMS\Jobs\CreatePage;
+use BoomCMS\Jobs\CreatePagePrimaryUri;
 use Illuminate\Foundation\Bus\DispatchesCommands;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Event;
