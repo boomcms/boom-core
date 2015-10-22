@@ -41,7 +41,7 @@ class Support_HelpersTest extends TestCase
             ->expects($this->once())
             ->method('getTemplate')
             ->willReturn($template);
-        
+
         Editor::shouldReceive('getActivePage')->andReturn($page);
 
         View::shouldReceive('make')->with('test::name', [])->andReturn('view');
