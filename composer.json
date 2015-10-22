@@ -25,17 +25,5 @@
 		"psr-4": {"BoomCMS\\": "src/BoomCMS/"}
 	},
 	"minimum-stability" : "dev",
-	"prefer-stable": true,
-	"scripts": {
-	"post-install-cmd": [
-		"npm install",
-            		"bower install",
-			"grunt dist"
-        	],
-        	"post-update-cmd": [
-			"npm install",
-            		"bower install",
-			"grunt dist"
-        	]
-    	}
+	"prefer-stable": true
 }
