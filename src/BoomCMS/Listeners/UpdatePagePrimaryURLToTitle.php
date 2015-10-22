@@ -2,9 +2,9 @@
 
 namespace BoomCMS\Listeners;
 
-use BoomCMS\Jobs\CreatePagePrimaryUri;
 use BoomCMS\Core\Page\Page;
 use BoomCMS\Events\PageTitleWasChanged;
+use BoomCMS\Jobs\CreatePagePrimaryUri;
 use Illuminate\Support\Facades\Bus;
 
 class UpdatePagePrimaryURLToTitle
