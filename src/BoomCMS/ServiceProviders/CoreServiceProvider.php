@@ -3,17 +3,7 @@
 namespace BoomCMS\ServiceProviders;
 
 use BoomCMS\Core\Page;
-use BoomCMS\ServiceProviders\AssetServiceProvider;
-use BoomCMS\ServiceProviders\AuthServiceProvider;
-use BoomCMS\ServiceProviders\ChunkServiceProvider;
-use BoomCMS\ServiceProviders\EditorServiceProvider;
-use BoomCMS\ServiceProviders\EventServiceProvider;
-use BoomCMS\ServiceProviders\PageServiceProvider;
-use BoomCMS\ServiceProviders\PersonServiceProvider;
-use BoomCMS\ServiceProviders\SettingsServiceProvider;
-use BoomCMS\ServiceProviders\TagServiceProvider;
-use BoomCMS\ServiceProviders\TemplateServiceProvider;
-use BoomCMS\ServiceProviders\URLServiceProvider;
+use BoomCMS\ServiceProviders;
 use BoomCMS\Support\Facades;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Html\HtmlServiceProvider;
@@ -35,17 +25,17 @@ class CoreServiceProvider extends ServiceProvider
     ];
 
     protected $serviceProviders = [
-        TemplateServiceProvider::class,
-        AssetServiceProvider::class,
-        PersonServiceProvider::class,
-        AuthServiceProvider::class,
-        EditorServiceProvider::class,
-        PageServiceProvider::class,
-        SettingsServiceProvider::class,
-        ChunkServiceProvider::class,
-        URLServiceProvider::class,
-        TagServiceProvider::class,
-        EventServiceProvider::class,
+        ServiceProviders\TemplateServiceProvider::class,
+        ServiceProviders\AssetServiceProvider::class,
+        ServiceProviders\PersonServiceProvider::class,
+        ServiceProviders\AuthServiceProvider::class,
+        ServiceProviders\EditorServiceProvider::class,
+        ServiceProviders\PageServiceProvider::class,
+        ServiceProviders\SettingsServiceProvider::class,
+        ServiceProviders\ChunkServiceProvider::class,
+        ServiceProviders\URLServiceProvider::class,
+        ServiceProviders\TagServiceProvider::class,
+        ServiceProviders\EventServiceProvider::class,
         HtmlServiceProvider::class,
     ];
 
