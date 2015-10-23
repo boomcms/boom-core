@@ -175,14 +175,5 @@ return [
         'URL'       => 'Illuminate\Support\Facades\URL',
         'Validator' => 'Illuminate\Support\Facades\Validator',
         'View'      => 'Illuminate\Support\Facades\View',
-
-        'Asset'     => 'BoomCMS\Support\Facades\Asset',
-        'Settings'  => 'BoomCMS\Support\Facades\Settings',
-        'Chunk'     => 'BoomCMS\Support\Facades\Chunk',
-        'Page'      => 'BoomCMS\Support\Facades\Page',
-        'Editor'    => 'BoomCMS\Support\Facades\Editor',
-        'Tag'       => 'BoomCMS\Support\Facades\Tag',
-        'Template'  => 'BoomCMS\Support\Facades\Template',
-        'Group'     => 'BoomCMS\Support\Facades\Group',
     ],
 ];
