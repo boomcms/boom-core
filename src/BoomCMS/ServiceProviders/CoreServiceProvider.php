@@ -14,6 +14,8 @@ use BoomCMS\ServiceProviders\SettingsServiceProvider;
 use BoomCMS\ServiceProviders\TagServiceProvider;
 use BoomCMS\ServiceProviders\TemplateServiceProvider;
 use BoomCMS\ServiceProviders\URLServiceProvider;
+use BoomCMS\Support\Facades;
+use Illuminate\Foundation\AliasLoader;
 use Illuminate\Html\HtmlServiceProvider;
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
@@ -21,6 +23,17 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class CoreServiceProvider extends ServiceProvider
 {
+    protected $aliases = [
+        'Asset'     => Facades\Asset::class,
+        'Settings'  => Facades\Settings::class,
+        'Chunk'     => Facades\Chunk::class,
+        'Page'      => Facades\Page::class,
+        'Editor'    => Facades\Editor::class,
+        'Tag'       => Facades\Tag::class,
+        'Template'  => Facades\Template::class,
+        'Group'     => Facades\Group::class,
+    ];
+
     protected $serviceProviders = [
         TemplateServiceProvider::class,
         AssetServiceProvider::class,
@@ -71,12 +84,23 @@ class CoreServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->registerAliases();
+
         $this->mergeConfigFrom(__DIR__.'/../../config/boomcms/menu.php', 'boomcms.menu');
         $this->mergeConfigFrom(__DIR__.'/../../config/boomcms/text_editor_toolbar.php', 'boomcms');
         $this->mergeConfigFrom(__DIR__.'/../../config/boomcms/viewHelpers.php', 'boomcms');
         $this->mergeConfigFrom(__DIR__.'/../../config/boomcms/settingsManagerOptions.php', 'boomcms');
     
         $this->registerServiceProviders();
+    }
+
+    private function registerAliases()
+    {
+        $loader = AliasLoader::getInstance();
+
+        foreach ($this->aliases as $abstract => $alias) {
+            $loader->alias($abstract, $alias);
+        }
     }
 
     private function registerServiceProviders()
