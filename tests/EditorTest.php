@@ -2,9 +2,12 @@
 
 namespace BoomCMS\Tests;
 
+use BoomCMS\Core\Auth\Auth;
+use BoomCMS\Core\Auth\PermissionsProvider;
 use BoomCMS\Core\Editor\Editor;
 use BoomCMS\Core\Page\Page;
 use BoomCMS\Core\Person\Person;
+use BoomCMS\Core\Person\Provider as PersonProvider;
 use BoomCMS\Tests\AbstractTestCase;
 
 class EditorTest extends AbstractTestCase
@@ -16,9 +19,9 @@ class EditorTest extends AbstractTestCase
         parent::setUp();
 
         $this->session = $this->getMockSession();
-        $provider = $this->getMock('BoomCMS\Core\Person\Provider');
-        $permissionsProvider = $this->getMock('BoomCMS\Core\Auth\PermissionsProvider');
-        $this->auth = $this->getMock('BoomCMS\Core\Auth\Auth', ['getPerson', 'loggedIn'], [$this->session, $provider, $permissionsProvider]);
+        $provider = $this->getMock(PersonProvider::class);
+        $permissionsProvider = $this->getMock(PermissionsProvider::class);
+        $this->auth = $this->getMock(Auth::class, ['getPerson', 'loggedIn'], [$this->session, $provider, $permissionsProvider]);
 
         $this->auth
             ->expects($this->any())
@@ -28,7 +31,7 @@ class EditorTest extends AbstractTestCase
 
     public function testSetGetActivePageAlwaysReturnsAPage()
     {
-        $this->assertInstanceOf('BoomCMS\Core\Page\Page', $this->getEditor()->getActivePage());
+        $this->assertInstanceOf(Page::class, $this->getEditor()->getActivePage());
     }
 
     public function testSetGetActivePage()
