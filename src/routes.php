@@ -5,7 +5,6 @@ use Illuminate\Support\Facades\Route;
 Route::group(['middleware' => [
     'BoomCMS\Http\Middleware\DisableHttpCacheIfLoggedIn',
     'BoomCMS\Http\Middleware\DefineCMSViewSharedVariables',
-    'BoomCMS\Http\Middleware\SaveUrlForRedirect',
 ]], function () {
     Route::group(['prefix' => 'cms', 'namespace' => 'BoomCMS\Http\Controllers\CMS'], function () {
         Route::get('logout', 'Auth\Logout@index');
@@ -31,64 +30,71 @@ Route::group(['middleware' => [
             Route::controller('approvals', 'Approvals');
             Route::controller('settings', 'Settings');
 
-            Route::group(['prefix' => 'assets', 'namespace' => 'Assets'], function () {
-                Route::get('', 'AssetManager@index');
-                Route::post('get', 'AssetManager@get');
-                Route::any('{action}', function ($action = 'index') {
-                    return App::make('BoomCMS\Http\Controllers\CMS\Assets\AssetManager')->$action();
+            Route::group([
+                'middleware' => ['BoomCMS\Http\Middleware\SaveUrlForRedirect']
+            ], function() {
+                Route::group([
+                    'prefix' => 'assets',
+                    'namespace' => 'Assets'
+                ], function () {
+                    Route::get('', 'AssetManager@index');
+                    Route::post('get', 'AssetManager@get');
+                    Route::any('{action}', function ($action = 'index') {
+                        return App::make('BoomCMS\Http\Controllers\CMS\Assets\AssetManager')->$action();
+                    });
+
+                    Route::get('view/{asset}', 'AssetManager@view');
+                    Route::post('save/{asset}', 'AssetManager@save');
+                    Route::post('replace/{asset}', 'AssetManager@replace');
+                    Route::post('revert/{asset}', 'AssetManager@revert');
+                    Route::post('tags/add', 'Tags@add');
+                    Route::post('tags/remove', 'Tags@remove');
+                    Route::get('tags/list/{assets}', 'Tags@listTags');
                 });
 
-                Route::get('view/{asset}', 'AssetManager@view');
-                Route::post('save/{asset}', 'AssetManager@save');
-                Route::post('replace/{asset}', 'AssetManager@replace');
-                Route::post('revert/{asset}', 'AssetManager@revert');
-                Route::post('tags/add', 'Tags@add');
-                Route::post('tags/remove', 'Tags@remove');
-                Route::get('tags/list/{assets}', 'Tags@listTags');
-            });
+                Route::group(['namespace' => 'People', 'middleware' => ['BoomCMS\Http\Middleware\PeopleManager']], function () {
+                    Route::get('people', 'PeopleManager@index');
 
-            Route::group(['namespace' => 'People', 'middleware' => ['BoomCMS\Http\Middleware\PeopleManager']], function () {
-                Route::get('people', 'PeopleManager@index');
+                    Route::get('person/add', 'Person\ViewPerson@add');
+                    Route::post('person/add', 'Person\SavePerson@add');
+                    Route::get('person/view/{id}', 'Person\ViewPerson@view');
+                    Route::post('person/save/{id}', 'Person\SavePerson@save');
+                    Route::post('person/delete', 'Person\SavePerson@delete');
+                    Route::get('person/add_group/{id}', 'Person\ViewPerson@addGroup');
+                    Route::post('person/add_group/{id}', 'Person\SavePerson@addGroup');
+                    Route::get('person/remove_group/{id}', 'Person\ViewPerson@removeGroup');
+                    Route::post('person/remove_group/{id}', 'Person\SavePerson@removeGroup');
+                });
 
-                Route::get('person/add', 'Person\ViewPerson@add');
-                Route::post('person/add', 'Person\SavePerson@add');
-                Route::get('person/view/{id}', 'Person\ViewPerson@view');
-                Route::post('person/save/{id}', 'Person\SavePerson@save');
-                Route::post('person/delete', 'Person\SavePerson@delete');
-                Route::get('person/add_group/{id}', 'Person\ViewPerson@addGroup');
-                Route::post('person/add_group/{id}', 'Person\SavePerson@addGroup');
-                Route::get('person/remove_group/{id}', 'Person\ViewPerson@removeGroup');
-                Route::post('person/remove_group/{id}', 'Person\SavePerson@removeGroup');
-            });
+                Route::group([
+                    'namespace'  => 'Group',
+                    'middleware' => ['BoomCMS\Http\Middleware\PeopleManager'],
+                ], function () {
+                    Route::get('group/add', 'View@add');
+                    Route::post('group/add', 'Save@add');
+                    Route::get('group/list_roles/{id}', 'View@listRoles');
+                    Route::post('group/remove_role/{id}', 'Save@removeRole');
+                    Route::post('group/add_role/{id}', 'Save@addRole');
+                    Route::post('group/delete/{id}', 'Save@delete');
+                    Route::post('group/save/{id}', 'Save@save');
 
-            Route::group([
-                'namespace'  => 'Group',
-                'middleware' => ['BoomCMS\Http\Middleware\PeopleManager'],
-            ], function () {
-                Route::get('group/add', 'View@add');
-                Route::post('group/add', 'Save@add');
-                Route::get('group/list_roles/{id}', 'View@listRoles');
-                Route::post('group/remove_role/{id}', 'Save@removeRole');
-                Route::post('group/add_role/{id}', 'Save@addRole');
-                Route::post('group/delete/{id}', 'Save@delete');
-                Route::post('group/save/{id}', 'Save@save');
+                    Route::get('group/edit/{id}', [
+                        'as'   => 'group-edit',
+                        'uses' => 'View@edit',
+                    ]);
+                });
 
-                Route::get('group/edit/{id}', [
-                    'as'   => 'group-edit',
-                    'uses' => 'View@edit',
-                ]);
-            });
+                Route::group(['prefix' => 'templates'], function () {
+                    Route::get('', 'Templates@index');
+                    Route::get('pages/{id}.{format?}', 'Templates@pages');
 
-            Route::group(['prefix' => 'templates'], function () {
-                Route::get('', 'Templates@index');
-                Route::get('pages/{id}.{format?}', 'Templates@pages');
+                    Route::post('save', 'Templates@save');
+                    Route::post('delete/{id}', 'Templates@delete');
+                });
 
-                Route::post('save', 'Templates@save');
-                Route::post('delete/{id}', 'Templates@delete');
-            });
-
-            Route::group(['prefix' => 'pages'], function () {
-                Route::get('', 'Pages@index');
+                Route::group(['prefix' => 'pages'], function () {
+                    Route::get('', 'Pages@index');
+                });
             });
 
             Route::controller('chunk/{page}', 'Chunk');
