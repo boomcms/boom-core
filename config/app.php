@@ -134,23 +134,11 @@ return [
         'Illuminate\Translation\TranslationServiceProvider',
         'Illuminate\Validation\ValidationServiceProvider',
         'Illuminate\View\ViewServiceProvider',
-        'Illuminate\Html\HtmlServiceProvider',
 
         // BoomCMS service providers
         'BoomCMS\ServiceProviders\RobotsServiceProvider',
         'BoomCMS\ServiceProviders\SitemapServiceProvider',
-        'BoomCMS\ServiceProviders\TemplateServiceProvider',
         'BoomCMS\ServiceProviders\CoreServiceProvider',
-        'BoomCMS\ServiceProviders\AssetServiceProvider',
-        'BoomCMS\ServiceProviders\AuthServiceProvider',
-        'BoomCMS\ServiceProviders\EditorServiceProvider',
-        'BoomCMS\ServiceProviders\PersonServiceProvider',
-        'BoomCMS\ServiceProviders\PageServiceProvider',
-        'BoomCMS\ServiceProviders\SettingsServiceProvider',
-        'BoomCMS\ServiceProviders\ChunkServiceProvider',
-        'BoomCMS\ServiceProviders\URLServiceProvider',
-        'BoomCMS\ServiceProviders\TagServiceProvider',
-        'BoomCMS\ServiceProviders\EventServiceProvider',
         'BoomCMS\ServiceProviders\InstallerServiceProvider',
     ],
 
