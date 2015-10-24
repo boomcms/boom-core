@@ -56,7 +56,7 @@ module.exports = function(grunt) {
 					'src/js/boom/loader.js',
 					'src/js/boom/notification.js',
 					'src/js/boom/core.js',
-					'src/js/boom/history2.js',
+					'src/js/boom/history.js',
 					'src/js/boom/log.js',
 					'src/js/boom/dialog.js',
 					'src/js/boom/alert.js',
