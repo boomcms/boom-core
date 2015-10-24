@@ -3,7 +3,7 @@
 namespace BoomCMS\Tests\Stubs;
 
 use BoomCMS\ServiceProviders\AssetServiceProvider;
-use BoomCMS\ServiceProviders\CoreServiceProvider as BaseCoreServiceProvider;
+use BoomCMS\ServiceProviders\BoomCMSServiceProvider as BaseServiceProvider;
 use BoomCMS\ServiceProviders\AuthServiceProvider;
 use BoomCMS\ServiceProviders\EditorServiceProvider;
 use BoomCMS\ServiceProviders\PersonServiceProvider;
@@ -14,7 +14,7 @@ use BoomCMS\ServiceProviders\TagServiceProvider;
 use BoomCMS\ServiceProviders\EventServiceProvider;
 use Illuminate\Html\HtmlServiceProvider;
 
-class CoreServiceProvider extends BaseCoreServiceProvider
+class BoomCMSServiceProvider extends BaseServiceProvider
 {
     protected $serviceProviders = [
         AssetServiceProvider::class,

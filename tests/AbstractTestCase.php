@@ -15,7 +15,7 @@ abstract class AbstractTestCase extends \Illuminate\Foundation\Testing\TestCase
     {
         $app = require __DIR__.'/../vendor/laravel/laravel/bootstrap/app.php';
         $app->make(Kernel::class)->bootstrap();
-        $app->register(Stubs\CoreServiceProvider::class);
+        $app->register(Stubs\BoomCMSServiceProvider::class);
 
         $app->bind('boomcms.person.provider', function ($app) {
             return new Stubs\PersonProvider();

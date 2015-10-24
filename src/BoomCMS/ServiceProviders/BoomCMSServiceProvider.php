@@ -11,7 +11,7 @@ use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class CoreServiceProvider extends ServiceProvider
+class BoomCMSServiceProvider extends ServiceProvider
 {
     protected $aliases = [
         'Asset'     => Facades\Asset::class,
@@ -80,7 +80,7 @@ class CoreServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(__DIR__.'/../../config/boomcms/text_editor_toolbar.php', 'boomcms');
         $this->mergeConfigFrom(__DIR__.'/../../config/boomcms/viewHelpers.php', 'boomcms');
         $this->mergeConfigFrom(__DIR__.'/../../config/boomcms/settingsManagerOptions.php', 'boomcms');
-    
+
         $this->registerServiceProviders();
     }
 
