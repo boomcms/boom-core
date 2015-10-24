@@ -138,7 +138,7 @@ return [
         // BoomCMS service providers
         'BoomCMS\ServiceProviders\RobotsServiceProvider',
         'BoomCMS\ServiceProviders\SitemapServiceProvider',
-        'BoomCMS\ServiceProviders\CoreServiceProvider',
+        'BoomCMS\ServiceProviders\BoomCMSServiceProvider',
         'BoomCMS\ServiceProviders\InstallerServiceProvider',
     ],
 
