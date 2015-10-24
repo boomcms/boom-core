@@ -41,7 +41,6 @@ module.exports = function(grunt) {
 					'bower_components/modernizr/modernizr.js',
 					'bower_components/jquery/dist/jquery.js',
 					'bower_components/jquery-ui/jquery-ui.js',
-					'src/js/jquery/ui.tree.js',
 					'src/js/string.js',
 					'bower_components/jgrowl/jquery.jgrowl.js',
 					'bower_components/tablesorter/jquery.tablesorter.js',

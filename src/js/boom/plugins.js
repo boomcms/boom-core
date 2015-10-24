@@ -21,7 +21,6 @@ boom.plugins.js
 
 		this.find('.boom-tabs').tabs();
 		this.find('.boom-datepicker').datetimepicker($.boom.config.datepicker);
-		this.find('.boom-tree').tree($.boom.config.tree);
 
 		$.boom.log('Stop bind UI events');
 

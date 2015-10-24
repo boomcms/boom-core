@@ -6,85 +6,97 @@ $.widget('boom.pageTree', {
 		onPageSelect : function() {}
 	},
 
+	bind: function() {
+		var pageTree = this;
+
+		this.element
+			.on('click', 'a[data-page-id]', function(e) {
+				e.preventDefault();
+
+				pageTree.itemClick($(this));
+			})
+			.on('click', '.b-tree-toggle', function(e) {
+				e.preventDefault();
+
+				var $this = $(this);
+
+				$this.toggleClass('expanded');
+
+				if ($this.hasClass('expanded')) {
+					pageTree.showChildren($this.closest('li'));
+				} else {
+					pageTree.hideChildren($this.closest('li'));
+				}
+			});
+	},
+
 	_create : function() {
-		var self = this;
-
-		var treeConfig = $.extend({}, $.boom.config.tree, {
-			toggleSelected: true,
-			onToggle: function(page_id) {
-				return self.getChildren(page_id);
-			}
-		});
-
-		this.element.on('click', 'a[data-page-id]', function(e) {
-			e.preventDefault();
-
-			self.itemClick($(this));
-		});
-
+		this.bind();
 		this.getChildren(0, this.element);
-
-		this.element.tree('destroy').tree(treeConfig);
 	},
 
 	itemClick : function($node) {
-		this.highlightItem($node);
 		this.options.onPageSelect(new boomLink($node.attr('href'), $node.attr('data-page-id'), $node.text()));
 	},
 
-	getChildren : function(page_id, $ul) {
-		var list_ready = $.Deferred(),
-			pageTree = this;
+	getChildren : function(pageId, $ul) {
+		var pageTree = this;
 
-		$.get('/page/children', {parent : page_id})
+		$.get('/page/children', {parent : pageId})
 			.done(function(data) {
-				var children = typeof($ul) !== 'undefined'? $ul : $('<ul></ul>');
 
-				$( data ).each( function( i, item ){
-					var li = $('<li></li>')
+				$(data).each(function(i, item) {
+					var $li = $('<li></li>')
 						.data({
 							children : parseInt(item.has_children, 10),
 							'page-id' : item.id
 						})
-						.appendTo( children );
+						.appendTo($ul);
 
 					$('<a></a>')
 						.attr('href', item.url)
 						.attr('data-page-id', item.id)
 						.text(item.title)
-						.appendTo(li);
+						.appendTo($li);
 
 					if (item.has_children == 1) {
-						pageTree.element.tree('set_toggle', li);
+						pageTree.makeExpandable($li);
 					}
 
 					if (typeof(pageTree.options.active) !== 'undefined') {
-						children
+						$ul
 							.find('a[data-page-id=' + pageTree.options.active + ']')
 							.addClass('active');
 					}
 				});
 
 			pageTree._trigger('load', null, {
-				elements : children.find('li'),
+				elements : $ul.find('li'),
 				children : data
 			});
-
-			var parent_id = $('input[name=parent_id]').val();
-			children.find('[data-page-id=' + page_id + ']').addClass('ui-state-active');
-
-			list_ready.resolve( { childList: children } );
 		});
-
-		return list_ready;
 	},
 
-	highlightItem : function($item) {
-		$item
-			.addClass('ui-state-active')
-			.parents('.boom-tree')
-			.find('a.ui-state-active')
-			.not($item)
-			.removeClass('ui-state-active');
+	hideChildren: function($li) {
+		$li.find('> ul').hide();
+	},
+
+	makeExpandable: function($li) {
+		$('<span />')
+			.addClass('b-tree-toggle')
+			.prependTo($li);
+	},
+
+	showChildren: function($li) {
+		var $ul = $li.find('> ul');
+
+		if ($ul.length === 0) {
+			var $ul = $('<ul></ul>');
+
+			$li.append($ul);
+			this.getChildren($li.data('page-id'), $ul);
+		} else {
+			$ul.show();
+		}
 	}
 });
