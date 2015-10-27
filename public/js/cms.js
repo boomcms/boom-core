@@ -43725,7 +43725,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 
 	boomAssetPicker.prototype.assetsUploaded = function(assetIds) {
 		if (assetIds.length === 1) {
-			this.pick(assetIds[0]);
+			this.pick(new boomAsset(assetIds[0]));
 		} else {
 			this.clearFilters();
 			this.getAssets();
