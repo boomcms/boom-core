@@ -3,7 +3,6 @@
 namespace BoomCMS\Tests;
 
 use BoomCMS\Core\Template;
-use BoomCMS\Tests\AbstractTestCase;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\View;
 

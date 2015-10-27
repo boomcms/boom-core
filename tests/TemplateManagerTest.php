@@ -5,7 +5,6 @@ namespace BoomCMS\Tests;
 use BoomCMS\Core\Template;
 use BoomCMS\Core\Template\Manager;
 use BoomCMS\Core\Theme\Theme;
-use BoomCMS\Tests\AbstractTestCase;
 
 class TemplateManagerTest extends AbstractTestCase
 {

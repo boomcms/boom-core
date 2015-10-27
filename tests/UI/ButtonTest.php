@@ -2,8 +2,8 @@
 
 namespace BoomCMS\Tests\UI;
 
-use BoomCMS\UI\Button;
 use BoomCMS\Tests\AbstractTestCase;
+use BoomCMS\UI\Button;
 use Illuminate\Support\Facades\Lang;
 
 class ButtonTest extends AbstractTestCase

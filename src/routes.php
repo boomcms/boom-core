@@ -31,11 +31,11 @@ Route::group(['middleware' => [
             Route::controller('settings', 'Settings');
 
             Route::group([
-                'middleware' => ['BoomCMS\Http\Middleware\SaveUrlForRedirect']
-            ], function() {
+                'middleware' => ['BoomCMS\Http\Middleware\SaveUrlForRedirect'],
+            ], function () {
                 Route::group([
-                    'prefix' => 'assets',
-                    'namespace' => 'Assets'
+                    'prefix'    => 'assets',
+                    'namespace' => 'Assets',
                 ], function () {
                     Route::get('', 'AssetManager@index');
                     Route::post('get', 'AssetManager@get');
