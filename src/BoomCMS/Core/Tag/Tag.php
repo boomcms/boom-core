@@ -2,8 +2,12 @@
 
 namespace BoomCMS\Core\Tag;
 
+use BoomCMS\Support\Traits\Comparable;
+
 class Tag
 {
+    use Comparable;
+
     /**
      * @var array
      */

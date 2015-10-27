@@ -3,6 +3,7 @@
 namespace BoomCMS\Core\Person;
 
 use BoomCMS\Core\Group;
+use BoomCMS\Support\Traits\Comparable;
 use DateTime;
 use Hautelook\Phpass\PasswordHash;
 use Illuminate\Contracts\Auth\CanResetPassword;
@@ -11,6 +12,8 @@ use Illuminate\Support\Facades\DB;
 
 class Person implements Arrayable, CanResetPassword
 {
+    use Comparable;
+
     /**
      * @var array
      */

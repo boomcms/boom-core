@@ -2,10 +2,13 @@
 
 namespace BoomCMS\Core\Group;
 
+use BoomCMS\Support\Traits\Comparable;
 use Illuminate\Support\Facades\DB;
 
 class Group
 {
+    use Comparable;
+
     /**
      * @var array
      */

@@ -12,11 +12,14 @@ use BoomCMS\Support\Facades\Asset;
 use BoomCMS\Support\Facades\Auth;
 use BoomCMS\Support\Facades\Chunk;
 use BoomCMS\Support\Facades\Page as PageFacade;
+use BoomCMS\Support\Traits\Comparable;
 use DateTime;
 use Illuminate\Support\Facades\DB;
 
 class Page
 {
+    use Comparable;
+
     /**
      * @var Page\Version
      */

@@ -7,6 +7,7 @@ use BoomCMS\Core\Person;
 use BoomCMS\Database\Models\Asset\Version as VersionModel;
 use BoomCMS\Support\Facades\Asset as AssetFacade;
 use BoomCMS\Support\Facades\Auth;
+use BoomCMS\Support\Traits\Comparable;
 use DateTime;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Facades\DB;
@@ -16,6 +17,8 @@ use Symfony\Component\HttpFoundation\File\UploadedFile as File;
 
 abstract class Asset implements Arrayable
 {
+    use Comparable;
+
     /**
      * @var array
      */
