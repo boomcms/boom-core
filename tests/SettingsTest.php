@@ -3,7 +3,6 @@
 namespace BoomCMS\Tests;
 
 use BoomCMS\Core\Settings\Store;
-use BoomCMS\Tests\AbstractTestCase;
 
 class SettingsTest extends AbstractTestCase
 {

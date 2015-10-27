@@ -3,7 +3,6 @@
 namespace BoomCMS\Tests;
 
 use BoomCMS\Core\Theme\Theme;
-use BoomCMS\Tests\AbstractTestCase;
 
 class ThemeTest extends AbstractTestCase
 {

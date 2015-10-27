@@ -20,7 +20,9 @@ class Comparable
     }
 }
 
-class ComparableType2 extends Comparable {}
+class ComparableType2 extends Comparable
+{
+}
 
 class ComparableTest extends AbstractTestCase
 {

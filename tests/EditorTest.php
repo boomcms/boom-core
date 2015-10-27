@@ -8,7 +8,6 @@ use BoomCMS\Core\Editor\Editor;
 use BoomCMS\Core\Page\Page;
 use BoomCMS\Core\Person\Person;
 use BoomCMS\Core\Person\Provider as PersonProvider;
-use BoomCMS\Tests\AbstractTestCase;
 
 class EditorTest extends AbstractTestCase
 {
