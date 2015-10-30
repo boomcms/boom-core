@@ -45248,7 +45248,7 @@ function Row() {
 		$element.parents('tr').remove();
 	}
 });;/**
- * @license wysihtml v0.5.0
+ * @license wysihtml v0.5.1
  * https://github.com/Voog/wysihtml
  *
  * Author: Christopher Blum (https://github.com/tiff)
@@ -45259,7 +45259,7 @@ function Row() {
  *
  */
 var wysihtml5 = {
-  version: "0.5.0",
+  version: "0.5.1",
 
   // namespaces
   commands:   {},
@@ -54413,7 +54413,9 @@ wysihtml5.dom.parse = function(elementOrHtml_current, config_current) {
           attributes["class"] = oldNode.getAttribute("class");
         }
       } else {
-        attributes["class"] = wysihtml5.lang.array(classes).unique().join(" ");
+        if(classes && classes.length > 0) {
+          attributes["class"] = wysihtml5.lang.array(classes).unique().join(" ");
+        }
       }
     } else {
       // make sure that wysihtml5 temp class doesn't get stripped out
