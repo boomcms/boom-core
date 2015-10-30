@@ -6,7 +6,7 @@ class Linkset extends BaseChunk
 {
     protected $table = 'chunk_linksets';
 
-    public static function create(array $attributes)
+    public static function create(array $attributes = [])
     {
         if (isset($attributes['links'])) {
             $links = $attributes['links'];

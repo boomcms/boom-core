@@ -6,7 +6,7 @@ class Slideshow extends BaseChunk
 {
     protected $table = 'chunk_slideshows';
 
-    public static function create(array $attributes)
+    public static function create(array $attributes = [])
     {
         if (isset($attributes['slides'])) {
             $slides = $attributes['slides'];
