@@ -42064,7 +42064,7 @@ $.widget('ui.chunkTag', $.ui.chunk,
 
 		new boomAssetPicker()
 			.done(function(asset) {
-				var $new_slide = $('<li><label><input type="radio" value="" name="slide" data-asset="' + asset.getId() + '"  /><img src="' + asset.getUrl() + '" /></label></li>');
+				var $new_slide = $('<li><label><input type="radio" value="" name="slide" data-asset="' + asset.getId() + '"  /><img src="' + asset.getUrl('view', 150) + '" /></label></li>');
 
 				slideshowEditor.dialog.contents
 					.find('#b-slideshow-editor-slides')
@@ -42096,7 +42096,7 @@ $.widget('ui.chunkTag', $.ui.chunk,
 			.done(function(asset) {
 				slideshowEditor.dialog.contents
 					.find('#b-slideshow-editor-current img, #b-slideshow-editor-slides input[type=radio]:checked + img')
-					.attr('src', asset.getUrl())
+					.attr('src', asset.getUrl('view', 300))
 					.siblings('input')
 					.attr('data-asset', asset.getId());
 			});
@@ -42110,7 +42110,7 @@ $.widget('ui.chunkTag', $.ui.chunk,
 			.find('form')
 			.show()
 			.find('img')
-			.attr('src', new boomAsset(slide.asset_id).getUrl())
+			.attr('src', slide.asset.getUrl('view', 300))
 			.end()
 			.find('input[name=title]')
 			.val(slide.title)
