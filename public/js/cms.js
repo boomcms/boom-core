@@ -42110,7 +42110,7 @@ $.widget('ui.chunkTag', $.ui.chunk,
 			.find('form')
 			.show()
 			.find('img')
-			.attr('src', slide.asset.getUrl('view', 300))
+			.attr('src', new boomAsset(slide.asset_id).getUrl('view', 300))
 			.end()
 			.find('input[name=title]')
 			.val(slide.title)
