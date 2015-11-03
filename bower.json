@@ -21,7 +21,7 @@
     "jgrowl": "~1.4.2",
     "pushy": "~0.9.2",
     "tablesorter": "*",
-    "wysihtml": "~0.4.17",
+    "wysihtml": "~0.5",
     "modernizr": "~2.8.3",
     "fontawesome": "*",
     "leaflet": "~0.7.3",
