@@ -26,9 +26,9 @@
 
                         <td>
                             <?php if ($option['type'] === 'string'): ?>
-                                <input type='text' name='<?= $option['name'] ?>' value='<?= $option['value'] ?>' />
+                                <input type='text' name='settings[<?= $option['name'] ?>]' value='<?= $option['value'] ?>' />
                             <?php elseif ($option['type'] === 'text'): ?>
-                                <textarea name='<?= $option['name'] ?>'><?= $option['value'] ?></textarea>
+                                <textarea name='settings[<?= $option['name'] ?>]'><?= $option['value'] ?></textarea>
                             <?php endif ?>
                         </td>
 
