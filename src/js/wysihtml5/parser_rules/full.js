@@ -285,13 +285,7 @@ var wysihtml5ParserRules = {
             "remove": 1
         },
         "span": {
-            "one_of_type": {
-                "text_formatting_object": 1,
-                "text_color_object": 1,
-                "text_fontsize_object": 1
-            },
-            "keep_styles": {},
-            "remove_action": "unwrap"
+            "unwrap": 1
         },
         "rp": {
             "unwrap": 1

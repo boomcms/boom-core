@@ -4,19 +4,17 @@
  */
 (function(wysihtml5) {
 	var nodeOptions = {
-		nodeName: 'SPAN',
-		className: "cta",
-		classRegExp: /cta/g,
+		className: 'cta',
 		toggle: true
 	};
 
 	wysihtml5.commands.cta = {
 		exec: function(composer, command) {
-			return composer.commands.exec("formatInline", 'P', 'cta', /cta/g);
+			return wysihtml5.commands.formatBlock.exec(composer, "formatBlock", nodeOptions);
 		},
 
 		state: function(composer, command) {
-			return composer.commands.state("formatInline", 'P', 'cta', /cta/g);
+			return wysihtml5.commands.formatBlock.state(composer, "formatBlock", nodeOptions);
 		}
 	};
 })(wysihtml5);

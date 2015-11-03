@@ -64076,13 +64076,7 @@ wysihtml5.views.View = Base.extend(
             "remove": 1
         },
         "span": {
-            "one_of_type": {
-                "text_formatting_object": 1,
-                "text_color_object": 1,
-                "text_fontsize_object": 1
-            },
-            "keep_styles": {},
-            "remove_action": "unwrap"
+            "unwrap": 1
         },
         "rp": {
             "unwrap": 1
@@ -64406,19 +64400,17 @@ wysihtml5.views.View = Base.extend(
  */
 (function(wysihtml5) {
 	var nodeOptions = {
-		nodeName: 'SPAN',
-		className: "cta",
-		classRegExp: /cta/g,
+		className: 'cta',
 		toggle: true
 	};
 
 	wysihtml5.commands.cta = {
 		exec: function(composer, command) {
-			return composer.commands.exec("formatInline", 'P', 'cta', /cta/g);
+			return wysihtml5.commands.formatBlock.exec(composer, "formatBlock", nodeOptions);
 		},
 
 		state: function(composer, command) {
-			return composer.commands.state("formatInline", 'P', 'cta', /cta/g);
+			return wysihtml5.commands.formatBlock.state(composer, "formatBlock", nodeOptions);
 		}
 	};
 })(wysihtml5);;/*!
