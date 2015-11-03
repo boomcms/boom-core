@@ -41440,6 +41440,13 @@ $.widget('ui.chunk',
 		this.element = $html;
 
 		this.bind();
+
+		top.$.event.trigger({
+			type: "boomcms:chunkload",
+			element: this.element,
+			html: $html,
+			target: this.element
+		});
 	},
 
 	remove : function() {

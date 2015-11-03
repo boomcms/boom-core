@@ -66,6 +66,12 @@ $.widget('ui.chunk',
 		this.element = $html;
 
 		this.bind();
+
+		top.$.event.trigger({
+			type: "boomcms:chunkload",
+			html: $html[0],
+			target: this.element[0]
+		});
 	},
 
 	remove : function() {
