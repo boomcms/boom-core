@@ -41443,9 +41443,8 @@ $.widget('ui.chunk',
 
 		top.$.event.trigger({
 			type: "boomcms:chunkload",
-			element: this.element,
-			html: $html,
-			target: this.element
+			html: $html[0],
+			target: this.element[0]
 		});
 	},
 
@@ -41842,13 +41841,6 @@ $.widget('ui.chunkSlideshow', $.ui.chunk,
 	*/
 	getData: function() {
 		return {slides : this.slides};
-	},
-
-	_update_html : function(html) {
-		new boomAlert('Your changes have been saved and the page will now reload to update the slideshow')
-			.done(function() {
-				$.boom.reload();
-			});
 	}
 });;/**
 Editable timestamps
