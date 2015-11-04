@@ -310,7 +310,7 @@ class Page
             ->lastPublished()
             ->first();
 
-        return (new DateTime)->setTimestamp($m['embargoed_until']);
+        return (new DateTime())->setTimestamp($m['embargoed_until']);
     }
 
     public function getManualOrderPosition()
