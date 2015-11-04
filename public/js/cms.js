@@ -41443,7 +41443,11 @@ $.widget('ui.chunk',
 
 		top.$.event.trigger({
 			type: "boomcms:chunkload",
-			html: $html[0],
+			chunk: {
+				type: this.options.type,
+				name: this.options.name,
+				html: $html[0]
+			},
 			target: this.element[0]
 		});
 	},
