@@ -42016,6 +42016,8 @@ $.widget('ui.chunkTag', $.ui.chunk,
 			})
 			.on('change', '#b-slideshow-editor-slides input[type=radio]', function() {
 				var slide = slideshowEditor._getSlideDetails($(this));
+		
+				slide.asset = new boomAsset(slide.asset_id);
 				slideshowEditor.editSlide(slide);
 			})
 			.on('click', '#b-slideshow-editor-current-delete', function(e) {

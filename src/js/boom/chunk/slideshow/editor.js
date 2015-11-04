@@ -29,6 +29,8 @@ function boomChunkSlideshowEditor(page_id, slotname, options) {
 			})
 			.on('change', '#b-slideshow-editor-slides input[type=radio]', function() {
 				var slide = slideshowEditor._getSlideDetails($(this));
+		
+				slide.asset = new boomAsset(slide.asset_id);
 				slideshowEditor.editSlide(slide);
 			})
 			.on('click', '#b-slideshow-editor-current-delete', function(e) {
