@@ -126,7 +126,7 @@ function boomChunkSlideshowEditor(page_id, slotname, options) {
 			.find('form')
 			.show()
 			.find('img')
-			.attr('src', new boomAsset(slide.asset_id).getUrl('view', 300))
+			.attr('src', slide.asset.getUrl('view', 300))
 			.end()
 			.find('input[name=title]')
 			.val(slide.title)
