@@ -29,7 +29,7 @@ class Settings extends Controller
     }
 
     public function postIndex()
-    {        
+    {
         SettingsStore::replaceAll($this->request->input('settings'));
 
         return $this->view->with('message', Lang::get('boom::settings-manager._saved'));
