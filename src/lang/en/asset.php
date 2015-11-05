@@ -9,6 +9,7 @@ return [
         'image'   => 'Image',
         'msexcel' => 'Microsoft Excel',
         'msword'  => 'Microsoft Word',
+        'pdf'     => 'PDF Document',
         'text'    => 'Text',
         'tiff'    => 'Tiff Image',
         'video'   => 'Video',
