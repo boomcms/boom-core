@@ -3,7 +3,7 @@
 namespace BoomCMS\ServiceProviders;
 
 use BoomCMS\Core\Template;
-use BoomCMS\Support\Helpers\Config as Config;
+use BoomCMS\Support\Helpers\Config;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
