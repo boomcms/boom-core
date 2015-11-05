@@ -6,5 +6,4 @@ use BoomCMS\Core\Asset\Asset;
 
 class Video extends Asset
 {
-    protected $type = 'Video';
 }

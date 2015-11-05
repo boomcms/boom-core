@@ -6,5 +6,4 @@ use BoomCMS\Core\Asset\Asset;
 
 class MSExcel extends Asset
 {
-    protected $type = 'Microsoft Excel';
 }

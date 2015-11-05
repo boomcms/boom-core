@@ -188,7 +188,7 @@ abstract class Asset implements Arrayable
 
     public function getType()
     {
-        return $this->type;
+        return class_basename($this);
     }
 
     public function getUploadedBy()

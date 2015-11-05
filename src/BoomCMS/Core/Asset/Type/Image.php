@@ -6,8 +6,6 @@ use BoomCMS\Core\Asset\Asset;
 
 class Image extends Asset
 {
-    protected $type = 'Image';
-
     public function getAspectRatio()
     {
         return ($this->getHeight() > 0) ? ($this->getWidth() / $this->getHeight()) : 1;

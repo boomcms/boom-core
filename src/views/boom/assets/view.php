@@ -6,7 +6,7 @@
             <?= $button('trash-o', Lang::get('Delete'), ['class' => 'b-assets-delete']) ?>
             <?= $button('download', Lang::get('Download'), ['class' => 'b-assets-download']) ?>
             <?= $button('refresh', Lang::get('Replace'), ['class' => 'b-assets-replace']) ?>
-        
+
             <?php if ($asset->isImage()): ?>
                 <?= $button('edit', Lang::get('boom::asset.openeditor'), ['class' => 'b-assets-openeditor b-button-withtext']) ?>
             <?php endif ?>
@@ -47,14 +47,14 @@
                     </label>
                 <?php endif ?>
             </form>
-            
+
             <?= $button('save', 'save-changes', ['class' => 'b-assets-save b-button-withtext']) ?>
         </div>
 
         <div id="b-assets-view-info">
             <dl>
                 <dt><?= Lang::get('Type') ?></dt>
-                <dd><?= $asset->getType() ?></dd>
+                <dd><?= Lang::get('boom::asset.type.'.strtolower($asset->getType())) ?></dd>
 
                 <dt><?= Lang::get('Filesize') ?></dt>
                 <dd><span id='filesize'><?= $asset->getHumanFilesize() ?></dd>
