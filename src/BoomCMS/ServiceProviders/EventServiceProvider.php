@@ -2,35 +2,37 @@
 
 namespace BoomCMS\ServiceProviders;
 
+use BoomCMS\Events;
+use BoomCMS\Listeners;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
 class EventServiceProvider extends ServiceProvider
 {
     protected $listen = [
-        'BoomCMS\Events\AccountCreated' => [
-            'BoomCMS\Listeners\SendAccountCreatedNotification',
+        Events\AccountCreated::class => [
+            BoomCMS\Listeners\SendAccountCreatedNotification::class,
         ],
-        'BoomCMS\Events\Auth\PasswordChanged' => [
-            'BoomCMS\Listeners\SendPasswordChangedNotification',
+        Events\Auth\PasswordChanged::class => [
+            Listeners\SendPasswordChangedNotification::class,
         ],
-        'BoomCMS\Events\Auth\SuccessfulLogin' => [
-            'BoomCMS\Listeners\ResetFailedLogins',
+        BoomCMS\Events\Auth\SuccessfulLogin::class => [
+            Listeners\ResetFailedLogins::class,
         ],
-        'BoomCMS\Events\PageSearchSettingsWereUpdated' => [
-            'BoomCMS\Listeners\UpdateSearchText',
+        Events\PageSearchSettingsWereUpdated::class => [
+            Listeners\UpdateSearchText::class,
         ],
-        'BoomCMS\Events\PageTitleWasChanged' => [
-            'BoomCMS\Listeners\UpdatePagePrimaryURLToTitle',
+        Events\PageTitleWasChanged::class => [
+            Listeners\UpdatePagePrimaryURLToTitle::class,
         ],
-        'BoomCMS\Events\PageWasDeleted' => [
-            'BoomCMS\Listeners\RemovePageFromSearch',
+        Events\PageWasDeleted::class => [
+            Listeners\RemovePageFromSearch::class,
         ],
-        'BoomCMS\Events\PageWasPublished' => [
-            'BoomCMS\Listeners\SaveSearchText',
-            'BoomCMS\Listeners\RemoveExpiredSearchTexts',
+        Events\PageWasPublished::class => [
+            Listeners\SaveSearchText::class,
+            Listeners\RemoveExpiredSearchTexts::class,
         ],
-        'BoomCMS\Events\PageWasEmbargoed' => [
-            'BoomCMS\Listeners\SaveSearchText',
+        Events\PageWasEmbargoed::class => [
+            Listeners\SaveSearchText::class,
         ],
     ];
 }
