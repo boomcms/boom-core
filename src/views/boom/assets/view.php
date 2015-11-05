@@ -3,9 +3,9 @@
         <img src="<?= $assetURL(['asset' => $asset, 'action' => 'thumb', 'height' => 300]) ?>">
 
         <div class="b-buttons">
-            <?= $button('trash-o', Lang::get('Delete'), ['class' => 'b-assets-delete']) ?>
-            <?= $button('download', Lang::get('Download'), ['class' => 'b-assets-download']) ?>
-            <?= $button('refresh', Lang::get('Replace'), ['class' => 'b-assets-replace']) ?>
+            <?= $button('trash-o', 'Delete', ['class' => 'b-assets-delete']) ?>
+            <?= $button('download', 'Download', ['class' => 'b-assets-download']) ?>
+            <?= $button('refresh', 'Replace', ['class' => 'b-assets-replace']) ?>
 
             <?php if ($asset->isImage()): ?>
                 <?= $button('edit', Lang::get('boom::asset.openeditor'), ['class' => 'b-assets-openeditor b-button-withtext']) ?>

@@ -18,6 +18,7 @@ return [
     'remove-link'      => 'Remove link',
     'reorder'          => 'Re-order',
     'reparent'         => 'Change parent',
+    'replace'          => 'Replace',
     'request-approval' => 'Request approval',
     'reset'            => 'Reset',
     'resize'           => 'Resize',
