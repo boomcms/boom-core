@@ -28,7 +28,7 @@ class EditorTest extends AbstractTestCase
             ->will($this->returnValue(new Person(['id' => 1])));
     }
 
-    public function testSetGetActivePageAlwaysReturnsAPage()
+    public function testGetActivePageAlwaysReturnsAPage()
     {
         $this->assertInstanceOf(Page::class, $this->getEditor()->getActivePage());
     }
