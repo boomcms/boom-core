@@ -2,8 +2,6 @@
 
 namespace BoomCMS\Core\Asset\Helpers;
 
-use Illuminate\Support\Facades\DB;
-
 abstract class Type
 {
     const IMAGE = 1;
@@ -15,7 +13,7 @@ abstract class Type
     const MSEXCEL = 7;
     const TEXT = 8;
 
-    public static $supportedMimetypes  = [
+    public static $supportedMimetypes = [
         self::IMAGE => [
             'image/jpeg',
             'image/gif',
@@ -93,7 +91,6 @@ abstract class Type
     public static function typeFromMimetype($mime)
     {
         foreach (static::$supportedMimetypes as $type => $mimetypes) {
-
             if (array_search($mime, $mimetypes) !== false) {
                 return $type;
             }
