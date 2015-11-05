@@ -6,8 +6,5 @@ use BoomCMS\Core\Asset\Asset;
 
 class MSWord extends Asset
 {
-    public function getType()
-    {
-        return 'Microsoft Word';
-    }
+    protected $type = 'Microsoft Word';
 }

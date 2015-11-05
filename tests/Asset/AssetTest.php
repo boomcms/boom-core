@@ -14,11 +14,25 @@ class AssetTest extends AbstractTestCase
 
     public function testGetFilename()
     {
-        $asset = $this->getMockBuilder('BoomCMS\Core\Asset\Asset')
-            ->setMethods(['getType'])
-            ->setConstructorArgs([['version:id' => 1]])
-            ->getMock();
+        $asset = $this->getAsset(['version:id' => 1], ['getType']);
 
         $this->assertEquals(Asset::directory().'/1', $asset->getFilename());
+    }
+
+    public function testGetExtension()
+    {
+        $asset = $this->getAsset(['extension' => 'txt']);
+        $this->assertEquals('txt', $asset->getExtension());
+
+        $asset = $this->getAsset();
+        $this->assertNull($asset->getExtension());
+    }
+
+    protected function getAsset($attrs = [], $methods = null)
+    {
+        return $this->getMockBuilder(Asset::class)
+            ->setConstructorArgs([$attrs])
+            ->setMethods($methods)
+            ->getMock();
     }
 }

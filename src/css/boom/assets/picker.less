@@ -10,6 +10,10 @@
 	overflow: auto;
 	background: @white;
 
+	#b-assets-upload-progress {
+		height: 1.5rem;
+	}
+
 	#b-assets-upload-close {
 		display: none;
 	}
@@ -89,10 +93,13 @@
 
 	#b-assets-upload-container {
 		border-color: @grey;
+		height: 20rem;
 	}
 
 	#b-assets-upload-info {
-		margin: 1.5rem;
+		padding: 0 1.5rem;
+		top: 50%;
+		transform: translateY(-50%);
 	}
 
 	#b-assets-upload-add {

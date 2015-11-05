@@ -27,15 +27,25 @@
 	}
 
 	&-info {
-		margin-top: 15%;
 		text-align: center;
 		color: @darkest-grey;
+		position: relative;
+		top: 33%;
+
+		p:first-of-type {
+			margin: 0;
+		}
+
+		.message {
+			display: none;
+		}
 	}
 
 	&-progress {
 		width: 50%;
-		margin: 2em auto 0 auto;
+		margin: 2rem auto 0 auto;
 		height: 5rem;
+		border: 1px solid @darkest-grey;
 
 		.ui-progressbar-value {
 			background: @light-green;
@@ -43,7 +53,7 @@
 		}
 	}
 
-	&-file, &-cancel {
+	&-progress, &-file, &-cancel {
 		display: none;
 	}
 }

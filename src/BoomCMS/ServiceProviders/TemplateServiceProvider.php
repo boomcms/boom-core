@@ -3,8 +3,7 @@
 namespace BoomCMS\ServiceProviders;
 
 use BoomCMS\Core\Template;
-use BoomCMS\Support\Helpers\Config as ConfigHelper;
-use Illuminate\Support\Facades\Config;
+use BoomCMS\Support\Helpers\Config;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -27,7 +26,7 @@ class TemplateServiceProvider extends ServiceProvider
         $this->themes = $this->manager->findInstalledThemes();
 
         foreach ($this->themes as $theme) {
-            ConfigHelper::merge($theme->getConfigDirectory().DIRECTORY_SEPARATOR.'boomcms.php');
+            Config::merge($theme->getConfigDirectory().DIRECTORY_SEPARATOR.'boomcms.php');
         }
 
         foreach ($this->themes as $theme) {
@@ -53,29 +52,6 @@ class TemplateServiceProvider extends ServiceProvider
 
             if (file_exists($init)) {
                 include $init;
-            }
-
-            $config = Config::get("boomcms.themes.$theme");
-
-            // Register View shared variables for this theme.
-            if (isset($config['shared'])) {
-                foreach ($config['shared'] as $var => $value) {
-                    View::share($var, $value);
-                }
-            }
-
-            // Register View composers for this theme
-            if (isset($config['composers'])) {
-                foreach ($config['composers'] as $view => $composer) {
-                    View::composer($view, $composer);
-                }
-            }
-
-            // Register View creators for this theme
-            if (isset($config['creators'])) {
-                foreach ($config['creators'] as $view => $creator) {
-                    View::creator($view, $creator);
-                }
             }
         }
     }

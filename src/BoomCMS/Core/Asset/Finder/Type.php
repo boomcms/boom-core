@@ -2,6 +2,7 @@
 
 namespace BoomCMS\Core\Asset\Finder;
 
+use BoomCMS\Core\Asset\Helpers\Type as TypeHelper;
 use BoomCMS\Foundation\Finder\Filter as BaseFilter;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -27,7 +28,7 @@ class Type extends BaseFilter
         foreach ($types as $type) {
             if ($type) {
                 if (!is_int($type) && !ctype_digit($type)) {
-                    $validTypes[] = constant('BoomCMS\Core\Asset\Type::'.strtoupper($type));
+                    $validTypes[] = constant(TypeHelper::class.'::'.strtoupper($type));
                 } else {
                     $validTypes[] = $type;
                 }

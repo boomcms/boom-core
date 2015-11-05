@@ -6,7 +6,7 @@ use BoomCMS\Core\Asset\Asset;
 use BoomCMS\Core\Auth;
 use Intervention\Image\ImageManager;
 
-class Image extends BaseController
+class Tiff extends BaseController
 {
     /**
      * @var ImageManager
@@ -17,21 +17,24 @@ class Image extends BaseController
     {
         parent::__construct($auth, $asset);
 
-        $this->manager = new ImageManager();
+        $this->manager = new ImageManager(['driver' => 'imagick']);
     }
 
     public function crop($width = null, $height = null)
     {
         if ($width && $height) {
             $image = $this->manager->cache(function ($manager) use ($width, $height) {
-                return $manager->make($this->asset->getFilename())->fit($width, $height);
+                return $manager
+                    ->make($this->asset->getFilename())
+                    ->fit($width, $height)
+                    ->encode('png');
             });
         } else {
-            $image = $this->manager->make($this->asset->getFilename())->encode();
+            $image = $this->manager->make($this->asset->getFilename())->encode('png');
         }
 
         return $this->response
-                ->header('content-type', $this->asset->getMimetype())
+                ->header('content-type', 'image/png')
                 ->setContent($image);
     }
 
@@ -49,14 +52,15 @@ class Image extends BaseController
                 return $manager->make($filename)->resize($width != 0 ? $width : null, $height != 0 ? $height : null, function ($constraint) {
                     $constraint->aspectRatio();
                     $constraint->upsize();
-                });
+                })
+                ->encode('png');
             });
         } else {
-            $image = $this->manager->make($this->asset->getFilename())->encode();
+            $image = $this->manager->make($this->asset->getFilename())->encode('png');
         }
 
         return $this->response
-            ->header('content-type', $this->asset->getMimetype())
+            ->header('content-type', 'image/png')
             ->setContent($image);
     }
 }

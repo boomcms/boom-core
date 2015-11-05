@@ -44048,7 +44048,10 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 			message = this.originalMessage;
 		}
 
-		this.dropArea.find('p.message').html(message);
+		this.dropArea
+			.find('p.message')
+			.show()
+			.html(message);
 	},
 
 	/**
@@ -44066,7 +44069,10 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 	},
 
 	reset: function() {
-		this.progressBar.progressbar('destroy');
+		this.progressBar
+			.css('display', 'none')
+			.progressbar('destroy');
+
 		this.cancelButton.hide();
 
 		// If we don't call disable first then when the uploader is reintialized
@@ -44101,7 +44107,10 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 	},
 
 	uploadStarted : function(e, data) {
-		this.progressBar.progressbar();
+		this.progressBar
+			.css('display', 'block')
+			.progressbar();
+
 		this.cancelButton.css('display', 'block');
 
 		this.fileData = data;

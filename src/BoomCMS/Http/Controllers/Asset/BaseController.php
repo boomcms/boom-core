@@ -7,7 +7,7 @@ use BoomCMS\Core\Auth;
 use BoomCMS\Http\Controllers\Controller;
 use Illuminate\Http\Response;
 
-abstract class BaseController extends Controller
+class BaseController extends Controller
 {
     /**
      * @var Asset\Asset
@@ -40,10 +40,15 @@ abstract class BaseController extends Controller
             ->header('content-type', $this->asset->getMimetype())
             ->header('content-disposition', 'inline; filename="'.$this->asset->getOriginalFilename().'"')
             ->header('content-transfer-encoding', 'binary')
-            ->header('Content-Length', $this->asset->getFilesize())
-            ->header('Accept-Ranges', 'bytes')
+            ->header('content-length', $this->asset->getFilesize())
+            ->header('accept-ranges', 'bytes')
             ->setContent(file_get_contents($this->asset->getFilename()));
     }
 
-    abstract public function thumb($width = null, $height = null);
+    public function thumb($width = null, $height = null)
+    {
+        return $this->response
+            ->header('Content-type', 'image/png')
+            ->setContent(readfile(__DIR__."/../../../../../public/img/extensions/{$this->asset->getExtension()}.png"));
+    }
 }

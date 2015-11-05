@@ -4,12 +4,12 @@
 
 	<div id="b-topbar" class="b-asset-manager b-toolbar">
 		<div id="b-assets-buttons">
-			<?= $button('upload', Lang::get('Upload files'), ['id' => 'b-assets-upload']) ?>
-			<?= $button('edit', Lang::get('View').' / '.Lang::get('Edit'), ['id' => 'b-button-multiaction-edit', 'disabled' => 'disabled']) ?>
-			<?= $button('trash-o', Lang::get('Delete'), ['id' => 'b-button-multiaction-delete', 'disabled' => 'disabled']) ?>
-			<?= $button('download', Lang::get('Download'), ['id' => 'b-button-multiaction-download', 'disabled' => 'disabled']) ?>
-			<?= $button('tags', Lang::get('Add Tags'), ['id' => 'b-button-multiaction-tag', 'disabled' => 'disabled']) ?>
-			<?= $button('close', Lang::get('Clear Selection'), ['id' => 'b-button-multiaction-clear', 'disabled' => 'disabled']) ?>
+			<?= $button('upload', 'upload', ['id' => 'b-assets-upload']) ?>
+			<?= $button('edit', 'view-edit', ['id' => 'b-button-multiaction-edit', 'disabled' => 'disabled']) ?>
+			<?= $button('trash-o', 'delete', ['id' => 'b-button-multiaction-delete', 'disabled' => 'disabled']) ?>
+			<?= $button('download', 'download', ['id' => 'b-button-multiaction-download', 'disabled' => 'disabled']) ?>
+			<?= $button('tags', 'add-tags', ['id' => 'b-button-multiaction-tag', 'disabled' => 'disabled']) ?>
+			<?= $button('close', 'clear-selected', ['id' => 'b-button-multiaction-clear', 'disabled' => 'disabled']) ?>
 		</div>
 	</div>
 
@@ -25,7 +25,7 @@
         <select id="b-assets-types" name="types">
             <option value="0">Filter by type</option>
 
-            <?php foreach (BoomCMS\Core\Asset\Type::whichExist() as $type): ?>
+            <?php foreach (Asset::getStoredTypes() as $type): ?>
                <option value="<?= $type ?>"><?= $type ?></option>
             <?php endforeach ?>
         </select>

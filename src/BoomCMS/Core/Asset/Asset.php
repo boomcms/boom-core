@@ -2,7 +2,6 @@
 
 namespace BoomCMS\Core\Asset;
 
-use BoomCMS\Core\Asset\Mimetype\Mimetype;
 use BoomCMS\Core\Person;
 use BoomCMS\Database\Models\Asset\Version as VersionModel;
 use BoomCMS\Support\Facades\Asset as AssetFacade;
@@ -37,9 +36,10 @@ abstract class Asset implements Arrayable
         'edited_at'  => '',
         'edited_by'  => '',
         'version:id' => '',
+        'extension'  => '',
     ];
 
-    public function __construct(array $attrs)
+    public function __construct(array $attrs = [])
     {
         $this->attrs = $attrs;
     }
@@ -51,7 +51,7 @@ abstract class Asset implements Arrayable
 
     public static function factory(array $attrs)
     {
-        $type = Type::numericTypeToClass($attrs['type']) ?: 'Invalid';
+        $type = Helpers\Type::numericTypeToClass($attrs['type']) ?: 'Invalid';
         $classname = "BoomCMS\Core\Asset\Type\\".$type;
 
         return new $classname($attrs);
@@ -92,7 +92,7 @@ abstract class Asset implements Arrayable
      */
     public function getExtension()
     {
-        return $this->getMimetype()->getExtension();
+        return $this->get('extension');
     }
 
     /**
@@ -151,7 +151,7 @@ abstract class Asset implements Arrayable
             $mime = finfo_file($finfo, $this->getFilename());
             finfo_close($finfo);
 
-            return Mimetype::factory($mime);
+            return $mime;
         }
     }
 
@@ -186,7 +186,10 @@ abstract class Asset implements Arrayable
         return $this->get('title');
     }
 
-    abstract public function getType();
+    public function getType()
+    {
+        return $this->type;
+    }
 
     public function getUploadedBy()
     {
@@ -253,9 +256,11 @@ abstract class Asset implements Arrayable
         }
 
         list($width, $height) = getimagesize($file->getRealPath());
+        preg_match('|\.([a-z]+)$|', $file->getClientOriginalName(), $extension);
 
         $version = VersionModel::create([
             'asset_id'  => $this->getId(),
+            'extension' => $extension[1],
             'filesize'  => $file->getClientSize(),
             'filename'  => $file->getClientOriginalName(),
             'width'     => $width,
@@ -264,7 +269,7 @@ abstract class Asset implements Arrayable
             'edited_by' => Auth::getPerson()->getId(),
         ]);
 
-        $this->setType(Mimetype::factory($file->getMimeType())->getType());
+        $this->setType(Helpers\Type::typeFromMimetype($file->getMimeType()));
 
         $file->move(static::directory(), $version->id);
 

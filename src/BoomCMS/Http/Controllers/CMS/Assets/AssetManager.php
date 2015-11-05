@@ -4,8 +4,6 @@ namespace BoomCMS\Http\Controllers\CMS\Assets;
 
 use BoomCMS\Core\Asset;
 use BoomCMS\Core\Asset\Finder;
-use BoomCMS\Core\Asset\Mimetype\Mimetype;
-use BoomCMS\Core\Asset\Mimetype\UnsupportedMimeType;
 use BoomCMS\Core\Auth;
 use BoomCMS\Http\Controllers\Controller;
 use DateTime;
@@ -189,9 +187,9 @@ class AssetManager extends Controller
         list($validFiles, $errors) = $this->validateFileUpload();
 
         foreach ($validFiles as $file) {
-            $mime = Mimetype::factory($file->getMimeType());
+            $className = 'BoomCMS\Core\Asset\Type\\'.Asset\Helpers\Type::classNameFromMimetype($file->getMimeType());
 
-            $asset = Asset\Asset::factory(['type' => $mime->getType()]);
+            $asset = new $className();
             $asset
                 ->setUploadedTime(new DateTime('now'))
                 ->setUploadedBy($this->auth->getPerson());
@@ -215,10 +213,10 @@ class AssetManager extends Controller
                     continue;
                 }
 
-                try {
-                    $mime = Mimetype::factory($file->getMimeType());
-                } catch (UnsupportedMimeType $e) {
-                    $errors[] = "File {$file->getClientOriginalName()} is of an unsuported type: {$e->getMimetype()}";
+                $type = Asset\Helpers\Type::typeFromMimetype($file->getMimetype());
+                
+                if ($type === null) {
+                    $errors[] = "File {$file->getClientOriginalName()} is of an unsuported type: {$file->getMimetype()}";
                     continue;
                 }
 

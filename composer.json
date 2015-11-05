@@ -1,12 +1,12 @@
 {
-	"name":        "boomcms/boom-core",
+	"name": "boomcms/boom-core",
 	"description": "Core classes for BoomCMS",
-	"license":     "MIT",
+	"license": "MIT",
 	"require": {
-		"php":        ">=5.3",
+		"php": ">=5.3",
 		"ext-imagick" : "*",
 		"mpratt/embera": "~1.0",
-                "genphrase/genphrase" : "1.0.*",
+		"genphrase/genphrase" : "1.0.*",
 		"hautelook/phpass": "dev-master",
 		"thujohn/rss": "dev-master",
 		"intervention/imagecache" : "2.*",
@@ -24,9 +24,9 @@
 	"autoload": {
 		"psr-4": {"BoomCMS\\": "src/BoomCMS/"}
 	},
-        "autoload-dev": {
-                "psr-4": {"BoomCMS\\Tests\\": "tests/"}
-        },
+	"autoload-dev": {
+		"psr-4": {"BoomCMS\\Tests\\": "tests/"}
+	},
 	"minimum-stability" : "dev",
 	"prefer-stable": true
 }

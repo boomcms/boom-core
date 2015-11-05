@@ -7,6 +7,8 @@ use Imagick;
 
 class PDF extends Asset
 {
+    protected $type = 'PDF';
+
     public function getThumbnailFilename()
     {
         $filename = $this->getFilename().'.thumb';
@@ -19,10 +21,5 @@ class PDF extends Asset
         }
 
         return $filename;
-    }
-
-    public function getType()
-    {
-        return 'PDF';
     }
 }

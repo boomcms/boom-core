@@ -2,7 +2,9 @@
 
 namespace BoomCMS\Core\Asset;
 
+use BoomCMS\Core\Asset\Helpers\Type;
 use BoomCMS\Database\Models\Asset as Model;
+use Illuminate\Support\Facades\DB;
 
 class Provider
 {
@@ -21,6 +23,28 @@ class Provider
         $classname = "\BoomCMS\Core\Asset\\Type\\".$type;
 
         return $model ? new $classname($model->toArray()) : new $classname();
+    }
+
+    /**
+     * Returns an array of the asset types which exist in the database.
+     *
+     * @return array
+     */
+    public function getStoredTypes()
+    {
+        $typesAsNumbers = DB::table('assets')->distinct()->lists('type');
+
+        $typesAsStrings = [];
+
+        foreach ($typesAsNumbers as $type) {
+            $type = Type::numericTypeToClass($type);
+
+            if ($type) {
+                $typesAsStrings[] = $type;
+            }
+        }
+
+        return $typesAsStrings;
     }
 
     public static function createFromType($type)

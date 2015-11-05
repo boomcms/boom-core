@@ -4,10 +4,7 @@ namespace BoomCMS\Core\Asset\Type;
 
 use BoomCMS\Core\Asset\Asset;
 
-class Tiff extends Asset
+class Tiff extends Image
 {
-    public function getType()
-    {
-        return 'Tiff';
-    }
+    protected $type = 'Tiff Image';
 }

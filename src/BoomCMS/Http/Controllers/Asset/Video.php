@@ -10,9 +10,7 @@ class Video extends BaseController
     public function thumb($width = null, $height = null)
     {
         if (!$this->asset->hasThumbnail()) {
-            return $this->response
-                ->header('Content-type', 'image/gif')
-                ->setContent(readfile(__DIR__.'/../../../../../public/img/icons/40x40/mov_icon.gif'));
+            return parent::thumb();
         }
 
         $thumbnail = $this->asset->getThumbnail();

@@ -6,8 +6,5 @@ use BoomCMS\Core\Asset\Asset;
 
 class Text extends Asset
 {
-    public function getType()
-    {
-        return 'Text';
-    }
+    protected $type = 'Text';
 }

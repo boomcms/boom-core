@@ -6,8 +6,5 @@ use BoomCMS\Core\Asset\Asset;
 
 class Video extends Asset
 {
-    public function getType()
-    {
-        return 'Video';
-    }
+    protected $type = 'Video';
 }
