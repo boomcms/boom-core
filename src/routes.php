@@ -1,7 +1,7 @@
 <?php
 
-use BoomCMS\Core\Auth\Auth;
 use BoomCMS\Core\Asset\Helpers\Type as AssetType;
+use BoomCMS\Core\Auth\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => [

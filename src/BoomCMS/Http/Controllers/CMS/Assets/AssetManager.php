@@ -214,7 +214,7 @@ class AssetManager extends Controller
                 }
 
                 $type = Asset\Helpers\Type::typeFromMimetype($file->getMimetype());
-                
+
                 if ($type === null) {
                     $errors[] = "File {$file->getClientOriginalName()} is of an unsuported type: {$file->getMimetype()}";
                     continue;
