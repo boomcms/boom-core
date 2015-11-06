@@ -22,13 +22,7 @@
 
 		<input type='text' class="b-filter-input" id="b-assets-filter-title" placeholder="Search by asset name" value="Search by asset name" />
 
-        <select id="b-assets-types" name="types">
-            <option value="0">Filter by type</option>
-
-            <?php foreach (array_keys(AssetHelper::types()) as $type): ?>
-               <option value="<?= $type ?>"><?= Lang::get('boom::asset.type.'.$type) ?></option>
-            <?php endforeach ?>
-        </select>
+        <?= View::make('boom::assets.search.type') ?>
 
 		<div id='b-tags-search'>
 			<input type='text' class="b-filter-input" placeholder="Type a tag name" value="Type a tag name" />

@@ -29,13 +29,7 @@
             <div>
                 <h2>Filter by asset type</h2>
 
-                <select name="types" id="b-assets-types">
-                    <option value="0">Filter by type</option>
-
-                    <?php foreach (\BoomCMS\Core\Asset\Helpers\Type::whichExist() as $type): ?>
-                        <option value="<?= $type ?>"><?= $type ?></option>
-                    <?php endforeach ?>
-                </select>
+                <?= View::make('boom::assets.search.type') ?>
             </div>
 
             <div>
