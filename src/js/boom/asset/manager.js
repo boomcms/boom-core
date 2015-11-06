@@ -146,7 +146,15 @@ $.widget('boom.assetManager', {
 
 				assetManager.element
 					.find('#b-assets-view-thumbs')
-					.justifyAssets();
+					.justifyAssets()
+					.find('[data-asset]')
+					.each(function() {
+						var $this = $(this),
+							asset = new boomAsset($this.attr('data-asset')),
+							url  = asset.getUrl('thumb', $this.width(), $this.height());
+
+						$this.find('img').attr('src', url);
+					});
 
 				assetManager.element
 					.find('.b-pagination')
