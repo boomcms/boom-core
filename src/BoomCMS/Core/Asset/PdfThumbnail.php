@@ -3,7 +3,7 @@
 namespace BoomCMS\Core\Asset;
 
 use Imagick;
-use \InvalidArgumentException;
+use InvalidArgumentException;
 
 /**
  * Creates a thumbnail image for a PDF.
@@ -11,13 +11,11 @@ use \InvalidArgumentException;
 class PdfThumbnail
 {
     /**
-     *
      * @var Asset
      */
     protected $asset;
 
     /**
-     * 
      * @param Asset $asset
      */
     public function __construct(Asset $asset)
@@ -30,7 +28,6 @@ class PdfThumbnail
     }
 
     /**
-     * 
      * @return bool
      */
     public function exists()
@@ -47,7 +44,6 @@ class PdfThumbnail
     }
 
     /**
-     * 
      * @return string
      */
     public function getFilename()
