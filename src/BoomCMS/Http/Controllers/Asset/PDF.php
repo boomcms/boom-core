@@ -2,6 +2,7 @@
 
 namespace BoomCMS\Http\Controllers\Asset;
 
+use BoomCMS\Core\Asset\PdfThumbnail;
 use Intervention\Image\ImageManager;
 
 class PDF extends BaseController
@@ -9,13 +10,14 @@ class PDF extends BaseController
     public function thumb($width = null, $height = null)
     {
         $manager = new ImageManager();
+        $thumb = new PdfThumbnail($this->asset);
 
         if ($width && $height) {
-            $image = $manager->cache(function ($manager) use ($width, $height) {
-                return $manager->make($this->asset->getThumbnailFilename())->fit($width, $height);
+            $image = $manager->cache(function ($manager) use ($width, $height, $thumb) {
+                return $manager->make($thumb->getAndMakeFilename())->fit($width, $height);
             });
         } else {
-            $image = $manager->make($this->asset->getThumbnailFilename())->encode();
+            $image = $manager->make($thumb->getAndMakeFilename())->encode();
         }
 
         return $this->response
