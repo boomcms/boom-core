@@ -14,8 +14,14 @@ return [
         'assetURL' => function (array $params) {
             return Helpers::assetURL($params);
         },
+        'countAssets' => function (array $params) {
+            return Helpers::countAssets($params);
+        },
         'countPages' => function (array $params) {
             return Helpers::countPages($params);
+        },
+        'getAssets' => function (array $params) {
+            return Helpers::getAssets($params);
         },
         'getPages' => function (array $params) {
             return Helpers::getPages($params);

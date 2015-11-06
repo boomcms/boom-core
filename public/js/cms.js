@@ -41954,14 +41954,13 @@ $.widget('ui.chunkTag', $.ui.chunk,
 	},
 
 	edit : function(){
-		$.boom.log('Tag chunk slot edit');
+		$.boom.log('Tag chunk edit');
 
 		var self = this;
 
 		this.dialog = new boomDialog({
-			url: '/cms/chunk/' + this.options.currentPage.id + '/edit?type=tag&tag=' + this.tag,
+			url: '/cms/chunk/' + this.options.currentPage.id + '/edit?type=tag&slotname=' + this.options.name,
 			width: 400,
-			id: self.element[0].id + '-boom-dialog',
 			title: 'Select tag',
 			onLoad : function() {
 				self.dialog.contents.find('#b-tags-add-name').assetTagAutocomplete({
@@ -41971,8 +41970,6 @@ $.widget('ui.chunkTag', $.ui.chunk,
 					}
 				});
 			}
-		}).done(function() {
-			self.insert(tag);
 		})
 		.always(function() {
 			self.bind();
@@ -41983,9 +41980,6 @@ $.widget('ui.chunkTag', $.ui.chunk,
 		return {tag : this.tag};
 	},
 
-	/**
-	@param {Int} id Tag ID
-	*/
 	insert : function(tag) {
 		this.tag = tag;
 
