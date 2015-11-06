@@ -43131,6 +43131,10 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 	boomLinkPicker.prototype.getExternalLink = function() {
 		var url = this.externalUrl.val(),
 			linkText;
+	
+		linkText = (this.options.text && this.textInput.val()) ?
+			this.textInput.val() :
+			url.replace('mailto:', '').replace('tel:', '');
 
 		if (url.indexOf(window.location.hostname) == -1) {
 			switch(this.externalTypeSelector.val()) {
@@ -43146,15 +43150,11 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 					break;
 				case 'tel':
 					if (url.substring(0,3)) {
-						url = 'tel:' + url;
+						url = 'tel:' + url.replace(' ', '');
 					}
 					break;
 			}
 		}
-
-		linkText = (this.options.text && this.textInput.val()) ?
-			this.textInput.val() :
-			url.replace('mailto:', '').replace('tel:', '');
 
 		return new boomLink(url, 0, linkText);
 	};
