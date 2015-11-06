@@ -48,6 +48,6 @@ class Login extends Controller
     {
         $data['request'] = $this->request;
 
-        return view('boom::account.login', $data);
+        return view('boomcms::account.login', $data);
     }
 }

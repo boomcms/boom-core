@@ -17,7 +17,7 @@ class PageController extends Controller
 {
     use DispatchesCommands;
 
-    protected $viewPrefix = 'boom::editor.page.';
+    protected $viewPrefix = 'boomcms::editor.page.';
 
     /**
      * @var Page\Page

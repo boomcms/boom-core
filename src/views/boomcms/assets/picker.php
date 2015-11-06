@@ -1,5 +1,5 @@
 <div id="b-assets-picker">
-    <?= View::make('boom::assets.thumbs', ['assets' => []]) ?>
+    <?= View::make('boomcms::assets.thumbs', ['assets' => []]) ?>
 
     <section id="b-assets-picker-sidebar">
         <section id="b-assets-picker-current">
@@ -12,7 +12,7 @@
         <?php if ($auth->loggedIn('manage_assets')): ?>
             <section id="b-assets-picker-upload">
                 <h1>Upload Asset</h1>
-                <?= View::make('boom::assets.upload') ?>
+                <?= View::make('boomcms::assets.upload') ?>
             </section>
         <?php endif ?>
 
@@ -29,7 +29,7 @@
             <div>
                 <h2>Filter by asset type</h2>
 
-                <?= View::make('boom::assets.search.type') ?>
+                <?= View::make('boomcms::assets.search.type') ?>
             </div>
 
             <div>

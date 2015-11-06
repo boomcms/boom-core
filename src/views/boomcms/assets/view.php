@@ -82,7 +82,7 @@
             </dl>
         </div>
 
-        <?= View::make('boom::assets.tags', ['tags' => $asset->getTags()]) ?>
+        <?= View::make('boomcms::assets.tags', ['tags' => $asset->getTags()]) ?>
 
         <?php if ($asset->hasPreviousVersions()): ?>
             <div id="b-assets-view-files">

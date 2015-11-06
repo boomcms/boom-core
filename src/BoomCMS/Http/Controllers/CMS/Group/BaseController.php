@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 
 class BaseController extends Controller
 {
-    protected $viewPrefix = 'boom::groups.';
+    protected $viewPrefix = 'boomcms::groups.';
 
     /**
      * @var Group\Group

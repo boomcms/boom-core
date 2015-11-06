@@ -34,7 +34,7 @@ class DefineCMSViewSharedVariables
         });
 
         View::share('menu', function () use ($auth) {
-            return View::make('boom::menu')->render();
+            return View::make('boomcms::menu')->render();
         });
 
         View::share('menuButton', function () {

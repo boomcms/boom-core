@@ -17,6 +17,6 @@ class Pages extends Controller
 
     public function index()
     {
-        return View::make('boom::pages.index');
+        return View::make('boomcms::pages.index');
     }
 }

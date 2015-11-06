@@ -1,4 +1,4 @@
-    <?= View::make('boom::header', ['title' => 'Assets']) ?>
+    <?= View::make('boomcms::header', ['title' => 'Assets']) ?>
 
     <?= $manager ?>
 

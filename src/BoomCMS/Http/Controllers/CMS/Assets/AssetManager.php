@@ -18,7 +18,7 @@ class AssetManager extends Controller
     /**
      * @var string
      */
-    protected $viewPrefix = 'boom::assets.';
+    protected $viewPrefix = 'boomcms::assets.';
 
     /**
      * @var Asset\Provider

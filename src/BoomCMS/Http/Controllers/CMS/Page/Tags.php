@@ -54,7 +54,7 @@ class Tags extends Controller
         $groupSuggestions = array_unique(array_merge(array_keys($tags), $groupSuggestions));
         sort($groupSuggestions);
 
-        return View::make('boom::editor.page.settings.tags', [
+        return View::make('boomcms::editor.page.settings.tags', [
             'tags'         => $tags,
             'freeTags'     => isset($freeTags) ? $freeTags : [],
             'groups'       => $groupSuggestions,

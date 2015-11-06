@@ -24,7 +24,7 @@ class Templates extends Controller
      */
     private $provider;
 
-    protected $viewPrefix = 'boom::templates.';
+    protected $viewPrefix = 'boomcms::templates.';
 
     public function __construct(Request $request, Auth $auth, Template\Provider $provider)
     {

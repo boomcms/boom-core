@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\View;
 
 class PeopleManager extends Controller
 {
-    protected $viewPrefix = 'boom::people.';
+    protected $viewPrefix = 'boomcms::people.';
 
     public function __construct(Request $request, Auth\Auth $auth, Person\Provider $provider)
     {

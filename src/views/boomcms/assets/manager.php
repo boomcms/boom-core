@@ -22,7 +22,7 @@
 
 		<input type='text' class="b-filter-input" id="b-assets-filter-title" placeholder="Search by asset name" value="Search by asset name" />
 
-        <?= View::make('boom::assets.search.type') ?>
+        <?= View::make('boomcms::assets.search.type') ?>
 
 		<div id='b-tags-search'>
 			<input type='text' class="b-filter-input" placeholder="Type a tag name" value="Type a tag name" />
@@ -47,5 +47,5 @@
 		<div id="b-assets-view-thumbs"></div>
 	</div>
 
-	<?= View::make('boom::assets.upload') ?>
+	<?= View::make('boomcms::assets.upload') ?>
 </div>

@@ -20,7 +20,7 @@ class ChunkControllerTest extends AbstractTestCase
             $className = 'BoomCMS\Core\Chunk\\'.ucfirst($type);
 
             $chunk = new $className(new Page(), [], 'test', true);
-            View::make('boom::editor.chunk.'.$type, [
+            View::make('boomcms::editor.chunk.'.$type, [
                 'chunk' => $chunk,
             ])->render();
         }

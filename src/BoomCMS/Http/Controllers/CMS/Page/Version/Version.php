@@ -7,7 +7,7 @@ use BoomCMS\Http\Controllers\CMS\Page\PageController;
 
 abstract class Version extends PageController
 {
-    protected $viewPrefix = 'boom::editor.page.version';
+    protected $viewPrefix = 'boomcms::editor.page.version';
 
     public function embargo()
     {

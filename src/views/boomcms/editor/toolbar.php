@@ -1,4 +1,4 @@
-<?= View::make('boom::header', ['title' => $page->getTitle()]) ?>
+<?= View::make('boomcms::header', ['title' => $page->getTitle()]) ?>
 
 <div id="b-topbar" class='b-page-toolbar b-toolbar b-toolbar-vertical'>
 	<?= $menuButton() ?>
@@ -49,8 +49,8 @@
 </div>
 
 <div id="b-page-settings-toolbar">
-    <?= View::make('boom::editor.page.settings.index') ?>
+    <?= View::make('boomcms::editor.page.settings.index') ?>
 </div>
 
-<?= View::make('boom::editor.linkPicker') ?>
-<?= View::make('boom::editor.footer') ?>
+<?= View::make('boomcms::editor.linkPicker') ?>
+<?= View::make('boomcms::editor.footer') ?>

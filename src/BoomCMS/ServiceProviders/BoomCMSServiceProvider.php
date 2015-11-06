@@ -48,7 +48,7 @@ class BoomCMSServiceProvider extends ServiceProvider
      */
     public function boot(Router $router, Page\Provider $pageProvider)
     {
-        $this->loadViewsFrom(__DIR__.'/../../views/boom', 'boom');
+        $this->loadViewsFrom(__DIR__.'/../../views/boomcms', 'boomcms');
         $this->loadViewsFrom(__DIR__.'/../../views/chunks', 'boomcms.chunks');
         $this->loadTranslationsFrom(__DIR__.'/../../lang', 'boomcms');
 

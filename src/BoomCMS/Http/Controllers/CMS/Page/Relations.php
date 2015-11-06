@@ -50,7 +50,7 @@ class Relations extends Controller
 
     public function view()
     {
-        return View::make('boom::editor.page.settings.relations', [
+        return View::make('boomcms::editor.page.settings.relations', [
             'relatedPages' => PageFacade::findRelatedTo($this->page),
         ]);
     }

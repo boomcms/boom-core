@@ -13,7 +13,7 @@ class BaseController extends Controller
     /**
      * @var string
      */
-    protected $viewPrefix = 'boom::editor.urls';
+    protected $viewPrefix = 'boomcms::editor.urls';
 
     public $url;
 

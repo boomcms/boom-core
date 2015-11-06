@@ -12,7 +12,7 @@ abstract class Settings extends PageController
      *
      * @var string
      */
-    protected $viewPrefix = 'boom::editor.page.settings';
+    protected $viewPrefix = 'boomcms::editor.page.settings';
 
     /**
      * Whether the current user has access to the advanced settings of the permissions group that they're editing.

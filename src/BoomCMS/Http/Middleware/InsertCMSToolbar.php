@@ -42,7 +42,7 @@ class InsertCMSToolbar
         preg_match('|(.*)(</head>)(.*<body[^>]*>)|imsU', $originalHtml, $matches);
 
         if (!empty($matches)) {
-            $head = View::make('boom::editor.iframe', [
+            $head = View::make('boomcms::editor.iframe', [
                 'before_closing_head' => $matches[1],
                 'body_tag'            => $matches[3],
                 'editor'              => $this->app['boomcms.editor'],

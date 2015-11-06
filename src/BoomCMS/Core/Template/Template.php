@@ -101,7 +101,7 @@ class Template
 
     public function getView()
     {
-        return ($this->fileExists()) ? View::make($this->getFullFilename()) : View::make('boom::templates.default');
+        return ($this->fileExists()) ? View::make($this->getFullFilename()) : View::make('boomcms::templates.default');
     }
 
     public function getViewName()

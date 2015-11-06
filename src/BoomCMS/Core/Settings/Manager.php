@@ -13,7 +13,7 @@ abstract class Manager
         $options = [];
 
         foreach (Config::get('boomcms.settingsManagerOptions') as $name => $type) {
-            $langPrefix = "boom::settings-manager.$name.";
+            $langPrefix = "boomcms::settings-manager.$name.";
 
             $options[] = [
                 'name'  => $name,

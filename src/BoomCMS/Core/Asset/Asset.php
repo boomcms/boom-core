@@ -116,7 +116,7 @@ class Asset implements Arrayable
 
     public function getEmbedHtml($height = null, $width = null)
     {
-        $viewPrefix = 'boom::assets.embed.';
+        $viewPrefix = 'boomcms::assets.embed.';
         $assetType = strtolower(class_basename($this->getType()));
 
         $viewName = View::exists($viewPrefix.$assetType) ?

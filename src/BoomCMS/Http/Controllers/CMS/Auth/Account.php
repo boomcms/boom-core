@@ -22,7 +22,7 @@ class Account extends Controller
 
     public function getIndex()
     {
-        return View::make('boom::account.account', [
+        return View::make('boomcms::account.account', [
             'person' => $this->person,
             'auth'   => $this->auth,
             'logs'   => [],
@@ -54,7 +54,7 @@ class Account extends Controller
 
         $this->provider->save($this->person);
 
-        return View::make('boom::account.account', [
+        return View::make('boomcms::account.account', [
             'person'  => $this->person,
             'auth'    => $this->auth,
             'logs'    => [],

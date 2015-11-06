@@ -40,19 +40,19 @@ class Recover extends Controller
 
         $token = $this->app['auth.password.tokens']->create($person);
 
-        Mail::send('boom::email.recovery', ['token' => $token], function ($message) use ($person) {
+        Mail::send('boomcms::email.recovery', ['token' => $token], function ($message) use ($person) {
             $message
                 ->to($person->getEmail(), $person->getName())
                 ->from(Settings::get('site.admin.email'), Settings::get('site.name'))
                 ->subject('BoomCMS Password Reset');
         });
 
-        return View::make('boom::account.recover.email_sent');
+        return View::make('boomcms::account.recover.email_sent');
     }
 
     public function showForm($vars = [])
     {
-        return View::make('boom::account.recover.form', $vars);
+        return View::make('boomcms::account.recover.form', $vars);
     }
 
     public function setPassword()

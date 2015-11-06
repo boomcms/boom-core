@@ -40,7 +40,7 @@ class Chunk extends Controller
         $type = $this->request->input('type');
         $chunk = ChunkFacade::get($type, $this->request->input('slotname'), $this->page);
 
-        return View::make('boom::editor.chunk.'.$type, [
+        return View::make('boomcms::editor.chunk.'.$type, [
             'chunk' => $chunk,
         ]);
     }

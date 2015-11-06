@@ -1,4 +1,4 @@
-	<?= View::make('boom::header', ['title' => 'Templates']) ?>
+	<?= View::make('boomcms::header', ['title' => 'Templates']) ?>
 	<?= $menu() ?>
 
 	<div id="b-topbar" class="b-toolbar">

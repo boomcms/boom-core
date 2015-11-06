@@ -13,7 +13,7 @@ class BasePerson extends PeopleManager
     /**
      * @var string Directory where the views which relate to this class are held.
      */
-    protected $viewPrefix = 'boom::person.';
+    protected $viewPrefix = 'boomcms::person.';
 
     /**
      * Person object to be edited.

@@ -20,7 +20,7 @@ class Settings extends Controller
 
         $this->authorization('manage_settings');
 
-        $this->view = View::make('boom::settings.index');
+        $this->view = View::make('boomcms::settings.index');
     }
 
     public function getIndex()
