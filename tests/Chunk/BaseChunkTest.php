@@ -13,12 +13,12 @@ class BaseChunkTest extends AbstractTestCase
     {
         Lang::shouldReceive('has')
             ->once()
-            ->with('boom::chunks.text.test')
+            ->with('boomcms::chunks.text.test')
             ->andReturn(true);
 
         Lang::shouldReceive('get')
             ->once()
-            ->with('boom::chunks.text.test')
+            ->with('boomcms::chunks.text.test')
             ->andReturn('some text');
 
         $chunk = $this->getMockBuilder(BaseChunk::class)
@@ -38,12 +38,12 @@ class BaseChunkTest extends AbstractTestCase
     {
         Lang::shouldReceive('has')
             ->once()
-            ->with('boom::chunks.text.test')
+            ->with('boomcms::chunks.text.test')
             ->andReturn(false);
 
         Lang::shouldReceive('get')
             ->once()
-            ->with('boom::chunks.text.default')
+            ->with('boomcms::chunks.text.default')
             ->andReturn('some text');
 
         $chunk = $this->getMockBuilder(BaseChunk::class)
@@ -64,7 +64,7 @@ class BaseChunkTest extends AbstractTestCase
         $types = ['asset', 'location', 'link', 'text', 'html', 'feature', 'linkset', 'slideshow', 'timestamp', 'tag'];
 
         foreach ($types as $type) {
-            $langKey = "boom::chunks.$type.default";
+            $langKey = "boomcms::chunks.$type.default";
             $this->assertTrue(Lang::has($langKey), $type);
         }
     }

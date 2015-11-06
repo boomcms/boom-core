@@ -6,7 +6,7 @@
         
         <div class="crop-tools">
             <label class="aspect-ratio">
-                <p><?= Lang::get('boom::asset.aspect-ratio') ?></p>
+                <p><?= Lang::get('boomcms::asset.aspect-ratio') ?></p>
                
                 <select>
                     <option value="">Fluid</option>

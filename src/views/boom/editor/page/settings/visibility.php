@@ -1,12 +1,12 @@
 <form>
-    <h1><?= Lang::get('boom::settings.visibility.heading') ?></h1>
+    <h1><?= Lang::get('boomcms::settings.visibility.heading') ?></h1>
 
     <?php if (!$page->isVisible()): ?>
-        <p><?= Lang::get('boom::settings.visibility.preview') ?></p>
+        <p><?= Lang::get('boomcms::settings.visibility.preview') ?></p>
     <?php endif ?>
 
     <label>
-        <h2><?= Lang::get('boom::settings.visibility.visible') ?></h2>
+        <h2><?= Lang::get('boomcms::settings.visibility.visible') ?></h2>
 
         <select name="visible" id="b-page-visible">
             <option value="1"<?php if ($page->isVisibleAtAnyTime()): ?> selected="selected"<?php endif ?>>Yes</option>
@@ -16,15 +16,15 @@
 
     <div class="b-visibility-toggle">
         <label>
-            <h2><?= Lang::get('boom::settings.visibility.from') ?></h2>
-            <p><?= Lang::get('boom::settings.visibility.from-description') ?></p>
+            <h2><?= Lang::get('boomcms::settings.visibility.from') ?></h2>
+            <p><?= Lang::get('boomcms::settings.visibility.from-description') ?></p>
 
             <input type="text" name="visible_from" value="<?= $page->getVisibleFrom()->format('d F Y H:i') ?>" id="visible-from" class="boom-datepicker" />
         </label>
 
         <label>
-            <h2><?= Lang::get('boom::settings.visibility.to') ?></h2>
-            <p><?= Lang::get('boom::settings.visibility.to-description') ?></p>
+            <h2><?= Lang::get('boomcms::settings.visibility.to') ?></h2>
+            <p><?= Lang::get('boomcms::settings.visibility.to-description') ?></p>
 
             <input type="checkbox" name="toggle_visible_to" value="1" id="toggle-visible"<?php if ($page->getVisibleTo() !== null): ?> checked="checked"<?php endif ?> />
             <input type="text" name="visible_to" value="<?= ($page->getVisibleTo() != null) ? $page->getVisibleTo()->format('d F Y H:i') : date('d F Y H:i', time()) ?>" id="visible-to" class="boom-datepicker" />

@@ -33,7 +33,7 @@ class Recover extends Controller
 
         if (!$person->isValid()) {
             return $this->showForm([
-                'error' => Lang::get('boom::recover.errors.invalid_email'),
+                'error' => Lang::get('boomcms::recover.errors.invalid_email'),
             ]);
         }
         /* */
@@ -67,7 +67,7 @@ class Recover extends Controller
 
         if (!$person->isValid()) {
             return $this->showForm([
-                'error' => Lang::get('boom::recover.errors.invalid_email'),
+                'error' => Lang::get('boomcms::recover.errors.invalid_email'),
                 'token' => $this->request->input('token'),
             ]);
         }
@@ -77,14 +77,14 @@ class Recover extends Controller
 
         if (!$token) {
             return $this->showForm([
-                'error' => Lang::get('boom::recover.errors.invalid_token'),
+                'error' => Lang::get('boomcms::recover.errors.invalid_token'),
                 'token' => $this->request->input('token'),
             ]);
         }
 
         if ($this->request->input('password1') != $this->request->input('password2')) {
             return $this->showForm([
-                'error' => Lang::get('boom::recover.errors.password_mismatch'),
+                'error' => Lang::get('boomcms::recover.errors.password_mismatch'),
                 'token' => $this->request->input('token'),
             ]);
         }
@@ -99,7 +99,7 @@ class Recover extends Controller
             return redirect('/');
         } else {
             return $this->showForm([
-                'error' => Lang::get('boom::recover.errors.password_mismatch'),
+                'error' => Lang::get('boomcms::recover.errors.password_mismatch'),
                 'token' => $this->request->input('token'),
             ]);
         }

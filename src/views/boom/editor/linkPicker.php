@@ -1,20 +1,20 @@
 <div id="b-linkpicker-container">
 	<div class="boom-tabs b-linkpicker">
 		<ul>
-			<li><a href="#b-linkpicker-add-internal"><?= Lang::get('boom::editor.link-picker.tabs.internal') ?></a></li>
-			<li><a href="#b-linkpicker-add-external"><?= Lang::get('boom::editor.link-picker.tabs.external') ?></a></li>
-			<li><a href="#b-linkpicker-add-asset"><?= Lang::get('boom::editor.link-picker.tabs.asset') ?></a></li>
-			<li><a href="#b-linkpicker-text"><?= Lang::get('boom::editor.link-picker.tabs.text') ?></a></li>
+			<li><a href="#b-linkpicker-add-internal"><?= Lang::get('boomcms::editor.link-picker.tabs.internal') ?></a></li>
+			<li><a href="#b-linkpicker-add-external"><?= Lang::get('boomcms::editor.link-picker.tabs.external') ?></a></li>
+			<li><a href="#b-linkpicker-add-asset"><?= Lang::get('boomcms::editor.link-picker.tabs.asset') ?></a></li>
+			<li><a href="#b-linkpicker-text"><?= Lang::get('boomcms::editor.link-picker.tabs.text') ?></a></li>
 		</ul>
 
 		<div id="b-linkpicker-add-internal">
-			<p><?= Lang::get('boom::editor.link-picker.internal') ?></p>
+			<p><?= Lang::get('boomcms::editor.link-picker.internal') ?></p>
 			<ul class="boom-tree"></ul>
 		</div>
 
 		<div id="b-linkpicker-add-external">
 			<p>
-				<?= Lang::get('boom::editor.link-picker.external') ?>
+				<?= Lang::get('boomcms::editor.link-picker.external') ?>
 			</p>
 
 			<form action="#">
@@ -30,11 +30,11 @@
 
 		<div id="b-linkpicker-add-asset">
             <label>
-                <p><?= Lang::get('boom::editor.link-picker.asset-action') ?></p>
+                <p><?= Lang::get('boomcms::editor.link-picker.asset-action') ?></p>
                 
                 <select>
-                    <option value="view" selected><?= Lang::get('boom::editor.link-picker.action-view') ?></option>
-                    <option value="download"><?= Lang::get('boom::editor.link-picker.action-download') ?></option>
+                    <option value="view" selected><?= Lang::get('boomcms::editor.link-picker.action-view') ?></option>
+                    <option value="download"><?= Lang::get('boomcms::editor.link-picker.action-download') ?></option>
                 </select>
             </label>
 
@@ -45,7 +45,7 @@
 
 		<div id="b-linkpicker-text">
 			<p>
-                <?= Lang::get('boom::editor.link-picker.text') ?>
+                <?= Lang::get('boomcms::editor.link-picker.text') ?>
 			</p>
 
 			<form action="#">

@@ -13,7 +13,7 @@ class ButtonTest extends AbstractTestCase
         $button = $this->getButton();
 
         Lang::shouldReceive('has')
-            ->with('boom::buttons.test')
+            ->with('boomcms::buttons.test')
             ->andReturn(false);
 
         $this->assertEquals('test', $button->translate('test'));
@@ -25,11 +25,11 @@ class ButtonTest extends AbstractTestCase
         $translation = 'Test button text';
 
         Lang::shouldReceive('has')
-            ->with('boom::buttons.test')
+            ->with('boomcms::buttons.test')
             ->andReturn(true);
 
         Lang::shouldReceive('get')
-            ->with('boom::buttons.test')
+            ->with('boomcms::buttons.test')
             ->andReturn($translation);
 
         $this->assertEquals($translation, $button->translate('test'));

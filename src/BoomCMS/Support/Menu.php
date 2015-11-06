@@ -18,7 +18,7 @@ abstract class Menu
                 continue;
             }
 
-            $items[$key]['title'] = isset($item['title']) ? $item['title'] : Lang::get('boom::menu.'.$key);
+            $items[$key]['title'] = isset($item['title']) ? $item['title'] : Lang::get('boomcms::menu.'.$key);
         }
 
         usort($items, function ($a, $b) {

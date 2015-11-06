@@ -1,14 +1,14 @@
 <form>
-    <h1><?= Lang::get('boom::settings.admin.heading') ?></h1>
+    <h1><?= Lang::get('boomcms::settings.admin.heading') ?></h1>
 
     <label>
-        <p><?= Lang::get('boom::settings.admin.internal-name') ?></p>
+        <p><?= Lang::get('boomcms::settings.admin.internal-name') ?></p>
         <input type='text' name='internal_name' value='<?= $page->getInternalName() ?>' />
     </label>
 
     <?php if ($auth->loggedIn('edit_disable_delete', $page)): ?>
         <label>
-            <p><?= Lang::get('boom::settings.admin.disable-delete') ?></p>
+            <p><?= Lang::get('boomcms::settings.admin.disable-delete') ?></p>
 
             <select name="disable_delete">
                 <option value="0"<?php if ($page->canBeDeleted()): ?> selected<?php endif ?>>No</option>

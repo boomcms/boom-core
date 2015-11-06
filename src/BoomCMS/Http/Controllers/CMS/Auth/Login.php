@@ -33,7 +33,7 @@ class Login extends Controller
             return $this->displayLoginForm(['login_error' => Lang::get('Invalid email address or password')]);
         } catch (Auth\PersonLockedException $e) {
             return $this->displayLoginForm([
-                'login_error' => Lang::get('boom::auth.locked', ['lock_wait' => $e->getLockWait()]),
+                'login_error' => Lang::get('boomcms::auth.locked', ['lock_wait' => $e->getLockWait()]),
             ]);
         }
 

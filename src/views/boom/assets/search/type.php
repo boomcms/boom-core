@@ -2,6 +2,6 @@
     <option value="0">Filter by type</option>
 
     <?php foreach (array_keys(AssetHelper::types()) as $type): ?>
-       <option value="<?= $type ?>"><?= Lang::get('boom::asset.type.'.$type) ?></option>
+       <option value="<?= $type ?>"><?= Lang::get('boomcms::asset.type.'.$type) ?></option>
     <?php endforeach ?>
 </select>

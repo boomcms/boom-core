@@ -1,5 +1,5 @@
 <form id="b-page-version-template" name="pageversion-template">
-    <h1><?= Lang::get('boom::settings.template.heading') ?></h1>
+    <h1><?= Lang::get('boomcms::settings.template.heading') ?></h1>
 
 	<div class="b-template">
 		<p>Changing the template of the page will change how the content of the page is visually displayed.</p>

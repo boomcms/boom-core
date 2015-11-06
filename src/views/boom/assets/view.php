@@ -8,7 +8,7 @@
             <?= $button('refresh', 'Replace', ['class' => 'b-assets-replace']) ?>
 
             <?php if ($asset->isImage()): ?>
-                <?= $button('edit', Lang::get('boom::asset.openeditor'), ['class' => 'b-assets-openeditor b-button-withtext']) ?>
+                <?= $button('edit', Lang::get('boomcms::asset.openeditor'), ['class' => 'b-assets-openeditor b-button-withtext']) ?>
             <?php endif ?>
         </div>
     </div>
@@ -20,7 +20,7 @@
             <li><a href="#b-tags"><?= Lang::get('Tags') ?></a></li>
 
             <?php if ($asset->hasPreviousVersions()): ?>
-                <li><a href="#b-assets-view-files"><?= Lang::get('boom::asset.previous_versions') ?></a></li>
+                <li><a href="#b-assets-view-files"><?= Lang::get('boomcms::asset.previous_versions') ?></a></li>
             <?php endif ?>
         </ul>
 
@@ -54,9 +54,9 @@
         <div id="b-assets-view-info">
             <dl>
                 <dt><?= Lang::get('Type') ?></dt>
-                <dd><?= Lang::get('boom::asset.type.'.strtolower($asset->getType())) ?></dd>
+                <dd><?= Lang::get('boomcms::asset.type.'.strtolower($asset->getType())) ?></dd>
 
-                <dt><?= Lang::get('boom::asset.extension') ?></dt>
+                <dt><?= Lang::get('boomcms::asset.extension') ?></dt>
                 <dd><?= $asset->getExtension() ?></dd>
 
                 <dt><?= Lang::get('Filesize') ?></dt>
@@ -86,7 +86,7 @@
 
         <?php if ($asset->hasPreviousVersions()): ?>
             <div id="b-assets-view-files">
-                <p><?= Lang::get('boom::asset.previous_versions_intro') ?></p>
+                <p><?= Lang::get('boomcms::asset.previous_versions_intro') ?></p>
 
                 <ul>
                     <?php foreach ($asset->getVersions() as $version): ?>

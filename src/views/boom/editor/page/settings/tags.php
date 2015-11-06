@@ -1,5 +1,5 @@
 <div id="b-tags">
-    <h1><?= Lang::get('boom::settings.tags.heading') ?></h1>
+    <h1><?= Lang::get('boomcms::settings.tags.heading') ?></h1>
 
     <section id="free">
         <h2><?= Lang::get('Free tags') ?></h2>

@@ -32,6 +32,6 @@ class Settings extends Controller
     {
         SettingsStore::replaceAll($this->request->input('settings'));
 
-        return $this->view->with('message', Lang::get('boom::settings-manager._saved'));
+        return $this->view->with('message', Lang::get('boomcms::settings-manager._saved'));
     }
 }

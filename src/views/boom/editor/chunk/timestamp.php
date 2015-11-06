@@ -1,8 +1,8 @@
 <form>
-    <p><?= Lang::get('boom::editor.timestamp.intro') ?></p>
+    <p><?= Lang::get('boomcms::editor.timestamp.intro') ?></p>
 
     <label>
-        <?= Lang::get('boom::editor.timestamp.format') ?>
+        <?= Lang::get('boomcms::editor.timestamp.format') ?>
 
         <select name="format" id="format">
             <?php foreach (BoomCMS\Core\Chunk\Timestamp::$formats as $format): ?>
@@ -12,7 +12,7 @@
     </label>
 
     <label>
-        <?= Lang::get('boom::editor.timestamp.value') ?>
+        <?= Lang::get('boomcms::editor.timestamp.value') ?>
 
         <input id="timestamp" type="text" name="timestamp" class="boom-datepicker" value="<?= $chunk->getTimestamp() ? date('d F Y H:i', $chunk->getTimestamp()) : 'Select a date and time' ?>" />
     </label>

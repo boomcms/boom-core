@@ -9,7 +9,7 @@ class Html extends BaseChunk
 {
     protected function editLink()
     {
-        $text = Lang::get('boom::editor.html.editlink');
+        $text = Lang::get('boomcms::editor.html.editlink');
 
         return "<a href='#'>$text</a>";
     }

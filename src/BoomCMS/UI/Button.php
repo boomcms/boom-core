@@ -52,7 +52,7 @@ class Button extends AbstractUIElement
 
     public function translate($text)
     {
-        $key = "boom::buttons.$text";
+        $key = "boomcms::buttons.$text";
 
         return (Lang::has($key)) ? Lang::get($key) : $text;
     }

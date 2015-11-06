@@ -1,10 +1,10 @@
 <section id="b-page-relations">
-    <h1><?= Lang::get('boom::settings.relations.heading') ?></h1>
+    <h1><?= Lang::get('boomcms::settings.relations.heading') ?></h1>
 
-    <?= Lang::get('boom::settings.relations.intro') ?>
+    <?= Lang::get('boomcms::settings.relations.intro') ?>
 
     <h2 class="current"<?php if (!count($relatedPages)): ?> style="display: none"<?php endif ?>>
-        <?= Lang::get('boom::settings.relations.current') ?>
+        <?= Lang::get('boomcms::settings.relations.current') ?>
     </h2>
 
     <ul id="b-page-relations">
@@ -18,5 +18,5 @@
         <?php endforeach ?>
     </ul>
 
-    <?= $button('plus', Lang::get('boom::settings.relations.add'), ['id' => 'b-tags-addpage', 'class' => 'b-button-withtext']) ?>
+    <?= $button('plus', Lang::get('boomcms::settings.relations.add'), ['id' => 'b-tags-addpage', 'class' => 'b-button-withtext']) ?>
 </section>

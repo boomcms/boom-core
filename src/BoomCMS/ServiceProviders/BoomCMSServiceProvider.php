@@ -50,7 +50,7 @@ class BoomCMSServiceProvider extends ServiceProvider
     {
         $this->loadViewsFrom(__DIR__.'/../../views/boom', 'boom');
         $this->loadViewsFrom(__DIR__.'/../../views/chunks', 'boomcms.chunks');
-        $this->loadTranslationsFrom(__DIR__.'/../../lang', 'boom');
+        $this->loadTranslationsFrom(__DIR__.'/../../lang', 'boomcms');
 
         $router->pattern('page', '[0-9]+');
         $router->bind('page', function ($pageId) use ($pageProvider) {
