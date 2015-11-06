@@ -43687,7 +43687,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 	},
 
 	sortBy : function(sort) {
-		this.postData['sortby'] = sort;
+		this.postData['order'] = sort;
 		this.getAssets();
 	},
 

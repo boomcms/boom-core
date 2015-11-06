@@ -198,7 +198,7 @@ $.widget('boom.assetManager', {
 	},
 
 	sortBy : function(sort) {
-		this.postData['sortby'] = sort;
+		this.postData['order'] = sort;
 		this.getAssets();
 	},
 

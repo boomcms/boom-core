@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Support;
 
-use BoomCMS\Core\Asset\Asset;
+use BoomCMS\Core\Asset;
 use BoomCMS\Core\Page;
 use BoomCMS\Core\Tag;
 use BoomCMS\Support\Facades\Editor;
@@ -30,7 +30,7 @@ abstract class Helpers
      *
      * @return string
      */
-    public static function assetEmbed(Asset $asset, $height = null, $width = null)
+    public static function assetEmbed(Asset\Asset $asset, $height = null, $width = null)
     {
         return (string) $asset->getEmbedHtml($height, $width);
     }
@@ -67,6 +67,18 @@ abstract class Helpers
     }
 
     /**
+     * Get a count of assets matching an array of query parameters.
+     * 
+     * @param array $params
+     *
+     * @return int
+     */
+    public static function countAssets(array $params)
+    {
+        return (new Asset\Query($params))->count();
+    }
+
+    /**
      * Get a count of pages matching an array of query parameters.
      * 
      * @param array $params
@@ -75,7 +87,19 @@ abstract class Helpers
      */
     public static function countPages(array $params)
     {
-        return (new Page\Query($params))->countPages();
+        return (new Page\Query($params))->count();
+    }
+
+    /**
+     * Returns an array of Pages which match the given query parameters.
+     * 
+     * @param array $params
+     *
+     * @return array
+     */
+    public static function getAssets(array $params)
+    {
+        return (new Asset\Query($params))->getResults();
     }
 
     /**
@@ -87,7 +111,7 @@ abstract class Helpers
      */
     public static function getPages(array $params)
     {
-        return (new Page\Query($params))->getPages();
+        return (new Page\Query($params))->getResults();
     }
 
     /**

@@ -16,8 +16,6 @@ use ZipArchive;
 
 class AssetManager extends Controller
 {
-    protected $perpage = 30;
-
     /**
      * @var string
      */
@@ -96,42 +94,27 @@ class AssetManager extends Controller
         ]);
     }
 
-    public function get(Finder\Finder $finder)
+    public function get()
     {
-        $finder
-            ->addFilter(new Finder\Tag($this->request->input('tag')))
-            ->addFilter(new Finder\TitleContains($this->request->input('title')))
-            ->addFilter(new Finder\Type($this->request->input('type')));
+        $defaults = [
+            'page' => 1,
+            'limit' => 30,
+            'order' => 'last_modified desc',
+        ];
 
-        $column = 'last_modified';
-        $order = 'desc';
-
-        if (strpos($this->request->input('sortby'), '-') > 1) {
-            list($column, $order) = explode('-', $this->request->input('sortby'));
-        }
-
-        $finder->setOrderBy($column, $order);
-
-        $count = $finder->count();
+        $params =  $this->request->input() + $defaults;
+        
+        $query = new Asset\Query($params);
+        $count = $query->count();
 
         if ($count === 0) {
             return View::make($this->viewPrefix.'none_found');
         } else {
-            $page = max(1, $this->request->input('page'));
-            $perpage = max($this->perpage, $this->request->input('perpage'));
-            $pages = ceil($count / $perpage);
-
-            $assets = $finder
-                ->setLimit($perpage)
-                ->setOffset(($page - 1) * $perpage)
-                ->findAll();
-
             return View::make($this->viewPrefix.'list', [
-                'assets' => $assets,
+                'assets' => $query->getResults(),
                 'total'  => $count,
-                'order'  => $order,
-                'pages'  => $pages,
-                'page'   => $page,
+                'pages'  => ceil($count / $params['limit']),
+                'page'   => $this->request->input('page'),
             ]);
         }
     }

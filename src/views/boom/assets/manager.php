@@ -31,13 +31,13 @@
 		</div>
 
         <select id="b-assets-sortby">
-            <option value="last_modified-desc" selected="selected">Most recent</option>
-            <option value="last_modified-asc">Oldest</option>
-            <option value="title-asc">Title A - Z</option>
-            <option value="title-desc">Title Z - A</option>
-            <option value="filesize-asc">Size (smallest)</option>
-            <option value="filesize-desc">Size (largest)</option>
-            <option value="downloads-desc">Most downloaded</option>
+            <option value="last_modified desc" selected="selected">Most recent</option>
+            <option value="last_modified asc">Oldest</option>
+            <option value="title asc">Title A - Z</option>
+            <option value="title desc">Title Z - A</option>
+            <option value="filesize asc">Size (smallest)</option>
+            <option value="filesize desc">Size (largest)</option>
+            <option value="downloads desc">Most downloaded</option>
         </select>
 
         <div id="b-assets-pagination" class="b-pagination"></div>

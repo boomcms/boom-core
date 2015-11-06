@@ -2,87 +2,36 @@
 
 namespace BoomCMS\Core\Page;
 
-use ReflectionClass;
+use BoomCMS\Foundation\Query as BaseQuery;
 
-class Query
+class Query extends BaseQuery
 {
     protected $filterAliases = [
-        'ignorepages'         => 'IgnorePages',
-        'not'                 => 'IgnorePages',
-        'pageid'              => 'PageId',
-        'parentid'            => 'ParentId',
-        'parent'              => 'ParentPage',
-        'tag'                 => 'Tag',
-        'template'            => 'Template',
-        'uri'                 => 'uri',
-        'relatedbytags'       => 'RelatedByTags',
-        'visibleinnavigation' => 'VisibleInNavigation',
-        'nextto'              => 'NextTo',
-        'title'               => 'Title',
-        'search'              => 'Search',
-        'relatedto'           => 'RelatedTo',
-        'withouttag'          => 'WithoutTag',
+        'ignorepages'         => Finder\IgnorePages::class,
+        'not'                 => Finder\IgnorePages::class,
+        'pageid'              => Finder\PageId::class,
+        'parentid'            => Finder\ParentId::class,
+        'parent'              => Finder\ParentPage::class,
+        'tag'                 => Finder\Tag::class,
+        'template'            => Finder\Template::class,
+        'uri'                 => Finder\Uri::class,
+        'relatedbytags'       => Finder\RelatedByTags::class,
+        'visibleinnavigation' => Finder\VisibleInNavigation::class,
+        'nextto'              => Finder\NextTo::class,
+        'title'               => Finder\Title::class,
+        'search'              => Finder\Search::class,
+        'relatedto'           => Finder\RelatedTo::class,
+        'withouttag'          => Finder\WithoutTag::class,
     ];
 
-    /**
-     * @var array
-     */
-    protected $params;
-
-    public function __construct(array $params)
-    {
-        $this->params = $params;
-    }
-
-    public function addFilters($finder, array $params)
-    {
-        foreach ($params as $param => $args) {
-            $param = strtolower($param);
-
-            if (isset($this->filterAliases[$param])) {
-                $class = 'BoomCMS\Core\Page\Finder\\'.$this->filterAliases[$param];
-
-                if (is_array($args)) {
-                    $reflect = new ReflectionClass($class);
-                    $filter = $reflect->newInstanceArgs($args);
-                } else {
-                    $filter = new $class($args);
-                }
-
-                $finder->addFilter($filter);
-            }
-        }
-
-        if (isset($params['order'])) {
-            list($column, $direction) = explode(' ', $params['order']);
-
-            if ($column && $direction) {
-                $column = constant('BoomCMS\Core\Page\Finder\Finder::'.strtoupper($column));
-                $direction = constant('BoomCMS\Core\Page\Finder\Finder::'.strtoupper($direction));
-
-                $finder->setOrderBy($column, $direction);
-            }
-        }
-
-        if (isset($params['limit'])) {
-            $finder->setLimit($params['limit']);
-        }
-
-        if (isset($params['offset'])) {
-            $finder->setOffset($params['offset']);
-        }
-
-        return $finder;
-    }
-
-    public function countPages()
+    public function count()
     {
         $finder = $this->addFilters(new Finder\Finder(), $this->params);
 
         return $finder->count();
     }
 
-    public function getPages()
+    public function getResults()
     {
         $finder = $this->addFilters(new Finder\Finder(), $this->params);
 
