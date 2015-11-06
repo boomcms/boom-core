@@ -2,8 +2,8 @@
 
 namespace BoomCMS\Core\Asset\Finder;
 
-use BoomCMS\Support\Helpers\Asset;
 use BoomCMS\Foundation\Finder\Filter as BaseFilter;
+use BoomCMS\Support\Helpers\Asset;
 use Illuminate\Database\Eloquent\Builder;
 
 class Type extends BaseFilter

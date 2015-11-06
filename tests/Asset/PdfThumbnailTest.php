@@ -3,7 +3,6 @@
 namespace BoomCMS\Tests\Asset;
 
 use BoomCMS\Core\Asset\PdfThumbnail;
-use BoomCMS\Exceptions\InvalidAssetException;
 
 class PdfThumbnailTest extends AssetTest
 {

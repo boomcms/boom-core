@@ -11,6 +11,7 @@ abstract class Asset
      * Return the controller to be used to display an asset.
      * 
      * @param Asset $asset
+     *
      * @return string
      */
     public static function controller(A $asset)
@@ -18,7 +19,7 @@ abstract class Asset
         $namespace = 'BoomCMS\Http\Controllers\Asset\\';
 
         if (!$asset->loaded()) {
-            return null;
+            return;
         }
 
         $byExtension = $namespace.ucfirst($asset->getExtension());
@@ -35,8 +36,8 @@ abstract class Asset
     }
 
     /**
-     * 
      * @param string $mime
+     *
      * @return string
      */
     public static function typeFromMimetype($mime)
