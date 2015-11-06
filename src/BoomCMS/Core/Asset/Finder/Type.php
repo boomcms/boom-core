@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Core\Asset\Finder;
 
-use BoomCMS\Core\Asset\Helpers\Type as TypeHelper;
+use BoomCMS\Support\Helpers\Asset;
 use BoomCMS\Foundation\Finder\Filter as BaseFilter;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -12,7 +12,7 @@ class Type extends BaseFilter
 
     public function __construct($types = null)
     {
-        $types = is_array($types) ?: [$types];
+        $types = is_array($types) ? $types : [$types];
         $this->type = $this->removeInvalidTypes($types);
     }
 
@@ -21,21 +21,11 @@ class Type extends BaseFilter
         return $query->whereIn('type', $this->type);
     }
 
-    private function removeInvalidTypes($types)
+    public function removeInvalidTypes(array $types)
     {
-        $validTypes = [];
+        $validTypes = array_keys(Asset::types());
 
-        foreach ($types as $type) {
-            if ($type) {
-                if (!is_int($type) && !ctype_digit($type)) {
-                    $validTypes[] = constant(TypeHelper::class.'::'.strtoupper($type));
-                } else {
-                    $validTypes[] = $type;
-                }
-            }
-        }
-
-        return $validTypes;
+        return array_intersect($validTypes, $types);
     }
 
     public function shouldBeApplied()

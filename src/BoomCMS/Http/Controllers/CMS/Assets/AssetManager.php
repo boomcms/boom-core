@@ -6,6 +6,7 @@ use BoomCMS\Core\Asset;
 use BoomCMS\Core\Asset\Finder;
 use BoomCMS\Core\Auth;
 use BoomCMS\Http\Controllers\Controller;
+use BoomCMS\Support\Helpers\Asset as AssetHelper;
 use DateTime;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -187,9 +188,7 @@ class AssetManager extends Controller
         list($validFiles, $errors) = $this->validateFileUpload();
 
         foreach ($validFiles as $file) {
-            $className = 'BoomCMS\Core\Asset\Type\\'.Asset\Helpers\Type::classNameFromMimetype($file->getMimeType());
-
-            $asset = new $className();
+            $asset = new Asset\Asset();
             $asset
                 ->setUploadedTime(new DateTime('now'))
                 ->setUploadedBy($this->auth->getPerson());
@@ -213,7 +212,7 @@ class AssetManager extends Controller
                     continue;
                 }
 
-                $type = Asset\Helpers\Type::typeFromMimetype($file->getMimetype());
+                $type = AssetHelper::typeFromMimetype($file->getMimetype());
 
                 if ($type === null) {
                     $errors[] = "File {$file->getClientOriginalName()} is of an unsuported type: {$file->getMimetype()}";

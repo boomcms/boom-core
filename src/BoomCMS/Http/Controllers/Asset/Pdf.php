@@ -5,7 +5,7 @@ namespace BoomCMS\Http\Controllers\Asset;
 use BoomCMS\Core\Asset\PdfThumbnail;
 use Intervention\Image\ImageManager;
 
-class PDF extends BaseController
+class Pdf extends BaseController
 {
     public function thumb($width = null, $height = null)
     {

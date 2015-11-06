@@ -2,9 +2,8 @@
 
 namespace BoomCMS\Core\Asset;
 
-use BoomCMS\Core\Asset\Helpers\Type;
+use BoomCMS\Core\Asset\Asset;
 use BoomCMS\Database\Models\Asset as Model;
-use Illuminate\Support\Facades\DB;
 
 class Provider
 {
@@ -19,40 +18,7 @@ class Provider
     {
         $model = Model::withVersion($versionId)->first();
 
-        $type = Type::numericTypeToClass($model->type) ?: 'Invalid';
-        $classname = "\BoomCMS\Core\Asset\\Type\\".$type;
-
-        return $model ? new $classname($model->toArray()) : new $classname();
-    }
-
-    /**
-     * Returns an array of the asset types which exist in the database.
-     *
-     * @return array
-     */
-    public function getStoredTypes()
-    {
-        $typesAsNumbers = DB::table('assets')->distinct()->lists('type');
-
-        $typesAsStrings = [];
-
-        foreach ($typesAsNumbers as $type) {
-            $type = Type::numericTypeToClass($type);
-
-            if ($type) {
-                $typesAsStrings[] = $type;
-            }
-        }
-
-        return $typesAsStrings;
-    }
-
-    public static function createFromType($type)
-    {
-        $model = new Model_Asset();
-        $model->type = $type;
-
-        return static::fromModel($model);
+        return $model ? new Asset($model->toArray()) : new Asset();
     }
 
     private function findAndCache(Model $model = null)
@@ -65,10 +31,7 @@ class Provider
             $this->cache[$model->id] = $model;
         }
 
-        $type = Type::numericTypeToClass($model->type) ?: 'Invalid';
-        $classname = "\BoomCMS\Core\Asset\\Type\\".$type;
-
-        return new $classname($model->toArray());
+        return new Asset($model->toArray());
     }
 
     public function save(Asset $asset)

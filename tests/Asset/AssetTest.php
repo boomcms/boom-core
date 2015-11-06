@@ -28,6 +28,44 @@ class AssetTest extends AbstractTestCase
         $this->assertNull($asset->getExtension());
     }
 
+    public function testGetType()
+    {
+        $asset = $this->getAsset(['type' => 'image']);
+        $this->assertEquals('image', $asset->getType());
+
+        $asset = $this->getAsset(['type' => 'video']);
+        $this->assertEquals('video', $asset->getType());
+
+        $asset = $this->getAsset();
+        $this->assertEquals('', $asset->getType());
+    }
+
+    public function testIsImage()
+    {
+        $image = $this->getAsset(['type' => 'image']);
+        $this->assertTrue($image->isImage());
+
+        $notAnImage = $this->getAsset(['type' => 'video']);
+        $this->assertFalse($notAnImage->isImage());
+
+        $empty = $this->getAsset();
+        $this->assertFalse($empty->isImage());
+    }
+
+    public function testGetWidth()
+    {
+        $asset = $this->getAsset(['width' => 1]);
+        $this->assertEquals(1, $asset->getWidth());
+        $this->assertInternalType('int', $asset->getWidth());
+    }
+
+    public function testGetHeight()
+    {
+        $asset = $this->getAsset(['height' => 1]);
+        $this->assertEquals(1, $asset->getHeight());
+        $this->assertInternalType('int', $asset->getHeight());
+    }
+
     protected function getAsset($attrs = [], $methods = null)
     {
         return $this->getMockBuilder(Asset::class)

@@ -25,9 +25,7 @@ class Finder extends BaseFinder
 
     protected function createFrom(Model $model)
     {
-        $attrs = $model->toArray();
-
-        return Asset::factory($attrs);
+        return new Asset($model->toArray());
     }
 
     public function find()

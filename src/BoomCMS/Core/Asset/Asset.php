@@ -7,6 +7,7 @@ use BoomCMS\Database\Models\Asset\Version as VersionModel;
 use BoomCMS\Support\Facades\Asset as AssetFacade;
 use BoomCMS\Support\Facades\Auth;
 use BoomCMS\Support\Traits\Comparable;
+use BoomCMS\Support\Helpers\Asset as AssetHelper;
 use DateTime;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Facades\DB;
@@ -14,7 +15,7 @@ use Illuminate\Support\Facades\View;
 use Rych\ByteSize\ByteSize;
 use Symfony\Component\HttpFoundation\File\UploadedFile as File;
 
-abstract class Asset implements Arrayable
+class Asset implements Arrayable
 {
     use Comparable;
 
@@ -49,14 +50,6 @@ abstract class Asset implements Arrayable
         return storage_path().'/boomcms/assets';
     }
 
-    public static function factory(array $attrs)
-    {
-        $type = Helpers\Type::numericTypeToClass($attrs['type']) ?: 'Invalid';
-        $classname = "BoomCMS\Core\Asset\Type\\".$type;
-
-        return new $classname($attrs);
-    }
-
     public function exists()
     {
         return $this->loaded() && file_exists($this->getFilename());
@@ -69,7 +62,7 @@ abstract class Asset implements Arrayable
 
     public function getAspectRatio()
     {
-        return 1;
+        return ($this->getHeight() > 0) ? ($this->getWidth() / $this->getHeight()) : 1;
     }
 
     public function getCredits()
@@ -106,6 +99,15 @@ abstract class Asset implements Arrayable
     public function getFilesize()
     {
         return $this->get('filesize');
+    }
+
+    /**
+     * 
+     * @return int
+     */
+    public function getHeight()
+    {
+        return (int) $this->get('height');
     }
 
     public function getHumanFilesize()
@@ -186,9 +188,13 @@ abstract class Asset implements Arrayable
         return $this->get('title');
     }
 
+    /**
+     * 
+     * @return int
+     */
     public function getType()
     {
-        return class_basename($this);
+        return $this->get('type');
     }
 
     public function getUploadedBy()
@@ -206,6 +212,15 @@ abstract class Asset implements Arrayable
     public function getVersions()
     {
         return VersionModel::forAsset($this)->get();
+    }
+
+    /**
+     * 
+     * @return int
+     */
+    public function getWidth()
+    {
+        return (int) $this->get('width');
     }
 
     public function hasPreviousVersions()
@@ -239,9 +254,13 @@ abstract class Asset implements Arrayable
         }
     }
 
+    /**
+     * 
+     * @return boolean
+     */
     public function isImage()
     {
-        return false;
+        return $this->getType() == 'image';
     }
 
     public function loaded()
@@ -269,7 +288,7 @@ abstract class Asset implements Arrayable
             'edited_by' => Auth::getPerson()->getId(),
         ]);
 
-        $this->setType(Helpers\Type::typeFromMimetype($file->getMimeType()));
+        $this->setType(AssetHelper::typeFromMimetype($file->getMimeType()));
 
         $file->move(static::directory(), $version->id);
 

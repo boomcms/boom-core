@@ -1,6 +1,5 @@
 <?php
 
-use BoomCMS\Core\Asset\Helpers\Type as AssetType;
 use BoomCMS\Core\Auth\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -159,7 +158,7 @@ Route::group(['middleware' => [
         'uses'       => function (Auth $auth, $id, $width = null, $height = null) {
             $asset = Asset::findByVersionId($id);
 
-            return App::make(AssetType::controllerFromClassname(class_basename($asset)), [$auth, $asset])->view($width, $height);
+            return App::make(AssetHelper::controller($asset), [$auth, $asset])->view($width, $height);
         },
     ]);
 
@@ -169,7 +168,7 @@ Route::group(['middleware' => [
             'BoomCMS\Http\Middleware\LogAssetDownload',
         ],
         'uses' => function (Auth $auth, $asset) {
-            return App::make(AssetType::controllerFromClassname(class_basename($asset)), [$auth, $asset])->download();
+            return App::make(AssetHelper::controller($asset), [$auth, $asset])->download();
         },
     ]);
 
@@ -179,7 +178,7 @@ Route::group(['middleware' => [
             'BoomCMS\Http\Middleware\CheckAssetETag',
         ],
         'uses' => function (Auth $auth, $asset, $action = 'view', $width = null, $height = null) {
-            return App::make(AssetType::controllerFromClassname(class_basename($asset)), [$auth, $asset])->$action($width, $height);
+            return App::make(AssetHelper::controller($asset), [$auth, $asset])->$action($width, $height);
         },
     ])->where([
         'action'    => '[a-z]+',
@@ -192,7 +191,7 @@ Route::group(['middleware' => [
             'BoomCMS\Http\Middleware\CheckAssetETag',
         ],
         'uses' => function (Auth $auth, $asset, $action = 'view', $width = null, $height = null) {
-            return App::make(AssetType::controllerFromClassname(class_basename($asset)), [$auth, $asset])->$action($width, $height);
+            return App::make(AssetHelper::controller($asset), [$auth, $asset])->$action($width, $height);
         },
     ]);
 });

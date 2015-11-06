@@ -20,7 +20,7 @@ class Stream
         $size = $fullsize = $this->asset->getFilesize();
         $stream = fopen($this->asset->getFilename(), 'r');
         $code = 200;
-        $headers = ['Content-type' => (string) $this->asset->getMimetype()];
+        $headers = ['Content-type' => $this->asset->getMimetype()];
 
         if ($range = Request::header('Range')) {
             $eqPos = strpos($range, '=');

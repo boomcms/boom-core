@@ -52,7 +52,7 @@ $.widget('boom.assetManager', {
 				assetManager.sortBy(this.value);
 			})
 			.on('change', '#b-assets-types', function(event) {
-				assetManager.addFilter('type', this.selectedIndex? this.options[this.selectedIndex].innerHTML : '');
+				assetManager.addFilter('type', this.selectedIndex? this.options[this.selectedIndex].value : '');
 				assetManager.getAssets();
 			})
 			.on('click', '#b-assets-all', function(event) {

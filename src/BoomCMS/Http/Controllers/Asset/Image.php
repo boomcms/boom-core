@@ -13,18 +13,23 @@ class Image extends BaseController
      */
     private $manager;
 
+    protected $encoding;
+
     public function __construct(Auth\Auth $auth, Asset $asset)
     {
         parent::__construct($auth, $asset);
 
-        $this->manager = new ImageManager();
+        $this->manager = new ImageManager(['driver' => 'imagick']);
     }
 
     public function crop($width = null, $height = null)
     {
         if ($width && $height) {
             $image = $this->manager->cache(function ($manager) use ($width, $height) {
-                return $manager->make($this->asset->getFilename())->fit($width, $height);
+                return $manager->make($this->asset
+                    ->getFilename())
+                    ->fit($width, $height)
+                    ->encode($this->encoding);
             });
         } else {
             $image = $this->manager->make($this->asset->getFilename())->encode();
@@ -49,7 +54,8 @@ class Image extends BaseController
                 return $manager->make($filename)->resize($width != 0 ? $width : null, $height != 0 ? $height : null, function ($constraint) {
                     $constraint->aspectRatio();
                     $constraint->upsize();
-                });
+                })
+                ->encode($this->encoding);
             });
         } else {
             $image = $this->manager->make($this->asset->getFilename())->encode();

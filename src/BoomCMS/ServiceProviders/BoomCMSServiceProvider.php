@@ -5,6 +5,7 @@ namespace BoomCMS\ServiceProviders;
 use BoomCMS\Core\Page;
 use BoomCMS\ServiceProviders;
 use BoomCMS\Support\Facades;
+use BoomCMS\Support\Helpers\Asset;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Html\HtmlServiceProvider;
 use Illuminate\Routing\Router;
@@ -14,14 +15,15 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class BoomCMSServiceProvider extends ServiceProvider
 {
     protected $aliases = [
-        'Asset'     => Facades\Asset::class,
-        'Settings'  => Facades\Settings::class,
-        'Chunk'     => Facades\Chunk::class,
-        'Page'      => Facades\Page::class,
-        'Editor'    => Facades\Editor::class,
-        'Tag'       => Facades\Tag::class,
-        'Template'  => Facades\Template::class,
-        'Group'     => Facades\Group::class,
+        'Asset'       => Facades\Asset::class,
+        'AssetHelper' => Asset::class,
+        'Settings'    => Facades\Settings::class,
+        'Chunk'       => Facades\Chunk::class,
+        'Page'        => Facades\Page::class,
+        'Editor'      => Facades\Editor::class,
+        'Tag'         => Facades\Tag::class,
+        'Template'    => Facades\Template::class,
+        'Group'       => Facades\Group::class,
     ];
 
     protected $serviceProviders = [
@@ -80,6 +82,7 @@ class BoomCMSServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(__DIR__.'/../../config/boomcms/text_editor_toolbar.php', 'boomcms');
         $this->mergeConfigFrom(__DIR__.'/../../config/boomcms/viewHelpers.php', 'boomcms');
         $this->mergeConfigFrom(__DIR__.'/../../config/boomcms/settingsManagerOptions.php', 'boomcms');
+        $this->mergeConfigFrom(__DIR__.'/../../config/boomcms/assets.php', 'boomcms');
 
         $this->registerServiceProviders();
     }

@@ -56,6 +56,9 @@
                 <dt><?= Lang::get('Type') ?></dt>
                 <dd><?= Lang::get('boom::asset.type.'.strtolower($asset->getType())) ?></dd>
 
+                <dt><?= Lang::get('boom::asset.extension') ?></dt>
+                <dd><?= $asset->getExtension() ?></dd>
+
                 <dt><?= Lang::get('Filesize') ?></dt>
                 <dd><span id='filesize'><?= $asset->getHumanFilesize() ?></dd>
 

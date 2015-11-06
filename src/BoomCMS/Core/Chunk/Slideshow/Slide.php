@@ -23,7 +23,7 @@ class Slide
         $this->attrs = $attrs;
 
         if (isset($this->attrs['asset'])) {
-            $this->asset = Asset::factory($this->attrs['asset']);
+            $this->asset = new Asset($this->attrs['asset']);
         }
     }
 

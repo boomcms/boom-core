@@ -34,4 +34,11 @@ class Version extends Model
             ->where('asset_id', '=', $asset->getId())
             ->orderBy('edited_at', 'desc');
     }
+
+    public function setExtensionAttribute($value)
+    {
+        $extension = preg_replace('|[^a-z0-9]|', '', strtolower($value));
+
+        $this->attributes['extension'] = $extension;
+    }
 }
