@@ -14,10 +14,10 @@ class AssetTest extends AbstractTestCase
     {
         parent::setUp();
 
-        $config = include(__DIR__.'/../../../src/config/boomcms/assets.php');
+        $config = include __DIR__.'/../../../src/config/boomcms/assets.php';
         $this->types = $config['assets']['types'];
     }
-    
+
     public function testTypes()
     {
         $this->AssertEquals($this->types, AssetHelper::types());

@@ -6,8 +6,8 @@ use BoomCMS\Core\Person;
 use BoomCMS\Database\Models\Asset\Version as VersionModel;
 use BoomCMS\Support\Facades\Asset as AssetFacade;
 use BoomCMS\Support\Facades\Auth;
-use BoomCMS\Support\Traits\Comparable;
 use BoomCMS\Support\Helpers\Asset as AssetHelper;
+use BoomCMS\Support\Traits\Comparable;
 use DateTime;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Facades\DB;
@@ -102,7 +102,6 @@ class Asset implements Arrayable
     }
 
     /**
-     * 
      * @return int
      */
     public function getHeight()
@@ -189,7 +188,6 @@ class Asset implements Arrayable
     }
 
     /**
-     * 
      * @return int
      */
     public function getType()
@@ -215,7 +213,6 @@ class Asset implements Arrayable
     }
 
     /**
-     * 
      * @return int
      */
     public function getWidth()
@@ -255,8 +252,7 @@ class Asset implements Arrayable
     }
 
     /**
-     * 
-     * @return boolean
+     * @return bool
      */
     public function isImage()
     {

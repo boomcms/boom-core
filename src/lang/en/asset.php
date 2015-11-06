@@ -8,7 +8,7 @@ return [
     'aspect-ratio'            => 'Aspect ratio',
     'type'                    => [
         'image'    => 'Image',
-        'doc' => 'Document',
+        'doc'      => 'Document',
         'video'    => 'Video',
         'audio'    => 'Audio',
     ],
