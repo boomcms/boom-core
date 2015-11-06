@@ -3,7 +3,6 @@
 namespace BoomCMS\Http\Controllers\CMS\Assets;
 
 use BoomCMS\Core\Asset;
-use BoomCMS\Core\Asset\Finder;
 use BoomCMS\Core\Auth;
 use BoomCMS\Http\Controllers\Controller;
 use BoomCMS\Support\Helpers\Asset as AssetHelper;
@@ -97,13 +96,13 @@ class AssetManager extends Controller
     public function get()
     {
         $defaults = [
-            'page' => 1,
+            'page'  => 1,
             'limit' => 30,
             'order' => 'last_modified desc',
         ];
 
-        $params =  $this->request->input() + $defaults;
-        
+        $params = $this->request->input() + $defaults;
+
         $query = new Asset\Query($params);
         $count = $query->count();
 

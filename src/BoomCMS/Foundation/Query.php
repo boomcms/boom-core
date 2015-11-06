@@ -13,7 +13,7 @@ class Query
     {
         $this->params = $params;
     }
-    
+
     public function addFilters($finder, array $params)
     {
         foreach ($params as $param => $args) {
