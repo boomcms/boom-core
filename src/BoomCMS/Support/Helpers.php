@@ -15,7 +15,7 @@ abstract class Helpers
     /**
      * If the app is in the production then the analytics setting is returned.
      * Otherwise an empty string is returned.
-     * 
+     *
      * @return string
      */
     public static function analytics()
@@ -25,7 +25,7 @@ abstract class Helpers
 
     /**
      * Get the HTML code to embed an asset.
-     * 
+     *
      * @param Asset $asset
      *
      * @return string
@@ -37,7 +37,7 @@ abstract class Helpers
 
     /**
      * Generate a URL to link to an asset.
-     * 
+     *
      * @param array $params
      *
      * @return string
@@ -68,7 +68,7 @@ abstract class Helpers
 
     /**
      * Get a count of assets matching an array of query parameters.
-     * 
+     *
      * @param array $params
      *
      * @return int
@@ -80,7 +80,7 @@ abstract class Helpers
 
     /**
      * Get a count of pages matching an array of query parameters.
-     * 
+     *
      * @param array $params
      *
      * @return int
@@ -92,7 +92,7 @@ abstract class Helpers
 
     /**
      * Returns an array of Pages which match the given query parameters.
-     * 
+     *
      * @param array $params
      *
      * @return array
@@ -104,7 +104,7 @@ abstract class Helpers
 
     /**
      * Returns an array of Pages which match the given query parameters.
-     * 
+     *
      * @param array $params
      *
      * @return array
@@ -116,7 +116,7 @@ abstract class Helpers
 
     /**
      * Get the next page in the sequence.
-     * 
+     *
      * @param array $params
      *
      * @return Page\Page
@@ -129,7 +129,7 @@ abstract class Helpers
 
     /**
      * Get the previous page in a sequence.
-     * 
+     *
      * @param array $params
      *
      * @return Page\Page
@@ -166,7 +166,7 @@ abstract class Helpers
 
     /**
      * Get the pages applied to the children of a page.
-     * 
+     *
      * @param Page\Page $page
      * @param string    $group
      *
@@ -183,7 +183,7 @@ abstract class Helpers
         return $finder->setOrderBy('name', 'asc')->findAll();
     }
 
-    public static function view($name, $data = null, $namespace = null)
+    public static function view($name, $data = [], $namespace = null)
     {
         $namespace = $namespace ?: Editor::getActivePage()->getTemplate()->getThemeName();
 
