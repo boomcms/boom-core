@@ -5,9 +5,9 @@ namespace BoomCMS\Core\Chunk;
 use BoomCMS\Core\Page\Page;
 use Illuminate\Support\Facades\View;
 
-class Tag extends BaseChunk
+class Library extends BaseChunk
 {
-    protected $_default_template = 'gallery';
+    protected $defaultTemplate = 'gallery';
     protected $tag;
 
     public function __construct(Page $page, array $attrs, $slotname, $editable)
@@ -19,14 +19,14 @@ class Tag extends BaseChunk
 
     protected function show()
     {
-        return View::make($this->viewPrefix."tag.$this->template", [
+        return View::make($this->viewPrefix."library.$this->template", [
             'tag' => $this->getTag(),
         ]);
     }
 
     protected function showDefault()
     {
-        return View::make($this->viewPrefix."default.tag.$this->template", [
+        return View::make($this->viewPrefix."default.library.$this->template", [
             'placeholder' => $this->getPlaceholderText(),
         ]);
     }

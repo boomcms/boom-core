@@ -90,7 +90,7 @@ module.exports = function(grunt) {
 					'src/js/boom/chunk/asset.js',
 					'src/js/boom/chunk/slideshow.js',
 					'src/js/boom/chunk/timestamp.js',
-					'src/js/boom/chunk/tag.js',
+					'src/js/boom/chunk/library.js',
 					'src/js/boom/chunk/slideshow/editor.js',
 					'src/js/boom/chunk/linkset/editor.js',
 					'src/js/boom/chunk/asset/editor.js',

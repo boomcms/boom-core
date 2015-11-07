@@ -9,6 +9,9 @@ return [
     'feature' => [
        'default' => 'Feature a page here',
     ],
+    'library' => [
+        'default' => 'Select a tag to feature here',
+    ],
     'linkset' => [
         'default' => 'Insert a linkset here',
     ],
@@ -26,9 +29,6 @@ return [
     ],
     'timestamp' => [
         'default' => 'Select date and / or time',
-    ],
-    'tag' => [
-        'default' => 'Select a tag to feature here',
     ],
     'html' => [
         'default' => 'Insert HTML here',

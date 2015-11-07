@@ -4,7 +4,7 @@
 @extends $.ui.chunk
 @memberOf $.ui
 */
-$.widget('ui.chunkTag', $.ui.chunk,
+$.widget('ui.chunkLibrary', $.ui.chunk,
 	/**
 	@lends $.ui.chunkTag
 	*/

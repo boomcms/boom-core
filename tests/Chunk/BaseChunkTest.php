@@ -61,7 +61,7 @@ class BaseChunkTest extends AbstractTestCase
 
     public function testDefaultPlaceholderTextsAreDefined()
     {
-        $types = ['asset', 'location', 'link', 'text', 'html', 'feature', 'linkset', 'slideshow', 'timestamp', 'tag'];
+        $types = ['asset', 'location', 'link', 'text', 'html', 'feature', 'library', 'linkset', 'slideshow', 'timestamp'];
 
         foreach ($types as $type) {
             $langKey = "boomcms::chunks.$type.default";
