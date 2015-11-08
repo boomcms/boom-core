@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\View;
 class Library extends BaseChunk
 {
     /**
-     *
      * @var array
      */
     protected $params;
@@ -24,13 +23,13 @@ class Library extends BaseChunk
     }
 
     /**
-     *
      * @param array $array
+     *
      * @return array
      */
     public function cleanData(array $array)
     {
-        return array_filter($array, function($v) {
+        return array_filter($array, function ($v) {
             return !empty($v);
         });
     }
@@ -41,7 +40,6 @@ class Library extends BaseChunk
     }
 
     /**
-     *
      * @return array
      */
     public function getParams()
@@ -50,7 +48,6 @@ class Library extends BaseChunk
     }
 
     /**
-     *
      * @return string
      */
     public function getTag()
@@ -61,7 +58,6 @@ class Library extends BaseChunk
     }
 
     /**
-     *
      * @return bool
      */
     public function hasContent()
@@ -72,11 +68,11 @@ class Library extends BaseChunk
     protected function show()
     {
         return View::make($this->viewPrefix."library.$this->template", [
-            'tag' => $this->getTag(),
+            'tag'    => $this->getTag(),
             'params' => $this->getParams(),
-            'assets' => function() {
+            'assets' => function () {
                 return $this->getAssets();
-            }
+            },
         ]);
     }
 

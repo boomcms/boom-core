@@ -198,11 +198,12 @@ abstract class Helpers
      *
      * @param string $file
      * @param string $theme
+     *
      * @return string
      */
     public static function pub($file, $theme = null)
     {
-        $theme = $theme ?:static::activeThemeName();
+        $theme = $theme ?: static::activeThemeName();
 
         return "/vendor/boomcms/themes/$theme/".ltrim(trim($file), '/');
     }
