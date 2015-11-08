@@ -16,7 +16,7 @@ class ChunkLibraryTest extends AbstractTestCase
     }
 
     /**
-     * getParams() should return the params array
+     * getParams() should return the params array.
      */
     public function testGetParams()
     {
@@ -27,7 +27,7 @@ class ChunkLibraryTest extends AbstractTestCase
     }
 
     /**
-     * If no params attribute is given getParams() should return an empty array
+     * If no params attribute is given getParams() should return an empty array.
      */
     public function testGetParamsAlwaysReturnsArray()
     {
@@ -44,11 +44,11 @@ class ChunkLibraryTest extends AbstractTestCase
     }
 
     /**
-     * getTag() should return the tag from the params array
+     * getTag() should return the tag from the params array.
      */
     public function testGetTagReturnsTag()
     {
-        $tag ='test';
+        $tag = 'test';
 
         $chunk = $this->getChunk(['params' => ['tag' => $tag]]);
         $this->assertEquals($tag, $chunk->getTag());
@@ -74,10 +74,10 @@ class ChunkLibraryTest extends AbstractTestCase
         $values = [
             [],
             null,
-            ['tag' => ''],
+            ['tag'    => ''],
             ['anykey' => null],
             ['anykey' => ''],
-            ['limit' => 0],
+            ['limit'  => 0],
         ];
 
         foreach ($values as $v) {
@@ -92,9 +92,9 @@ class ChunkLibraryTest extends AbstractTestCase
         // Possible values of the params attribute which should be counted as the chunk having content.
         $values = [
             ['tag' => 'test'],
-            ['type' => 'image'],
+            ['type'  => 'image'],
             ['limit' => 10],
-            ['tag' => 'test', 'type' => null],
+            ['tag'   => 'test', 'type' => null],
         ];
 
         foreach ($values as $v) {

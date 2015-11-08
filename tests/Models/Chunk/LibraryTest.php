@@ -4,7 +4,7 @@ namespace BoomCMS\Tests\Models\Chunk;
 
 use BoomCMS\Database\Models\Chunk\Library;
 use BoomCMS\Tests\AbstractTestCase;
-use \Mockery as m;
+use Mockery as m;
 
 class LibraryTest extends AbstractTestCase
 {
