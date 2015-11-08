@@ -2,6 +2,8 @@
 
 namespace BoomCMS\Foundation;
 
+use ReflectionClass;
+
 class Query
 {
     /**
