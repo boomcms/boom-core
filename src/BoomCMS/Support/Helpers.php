@@ -13,6 +13,16 @@ use Illuminate\Support\Facades\View;
 abstract class Helpers
 {
     /**
+     * Returns the name of the theme used by the active page.
+     *
+     * @return string
+     */
+    public static function activeThemeName()
+    {
+        return Editor::getActivePage()->getTemplate()->getThemeName();
+    }
+
+    /**
      * If the app is in the production then the analytics setting is returned.
      * Otherwise an empty string is returned.
      *
@@ -183,9 +193,23 @@ abstract class Helpers
         return $finder->setOrderBy('name', 'asc')->findAll();
     }
 
+    /**
+     * Get a relative path to a file in a theme's public directory.
+     *
+     * @param string $file
+     * @param string $theme
+     * @return string
+     */
+    public static function pub($file, $theme = null)
+    {
+        $theme = $theme ?:static::activeThemeName();
+
+        return "/vendor/boomcms/themes/$theme/".ltrim(trim($file), '/');
+    }
+
     public static function view($name, $data = [], $namespace = null)
     {
-        $namespace = $namespace ?: Editor::getActivePage()->getTemplate()->getThemeName();
+        $namespace = $namespace ?: static::activeThemeName();
 
         return View::make("$namespace::$name", $data);
     }

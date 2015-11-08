@@ -51,4 +51,33 @@ class HelpersTest extends AbstractTestCase
 
         $this->assertEquals('view', Helpers::view('name'));
     }
+
+    public function testPubWithNamespaceGiven()
+    {
+        $this->assertEquals('/vendor/boomcms/themes/test/file.png', Helpers::pub('file.png', 'test'));
+    }
+
+    public function testPubRemovesExtraneousSlash()
+    {
+        $this->assertEquals('/vendor/boomcms/themes/test/file.png', Helpers::pub('/file.png', 'test'));
+    }
+
+    public function testPubRemovesWhitespace()
+    {
+        $this->assertEquals('/vendor/boomcms/themes/test/file.png', Helpers::pub(' file.png ', 'test'));
+    }
+
+    public function testPubUsesNamespaceOfActivePageTemplate()
+    {
+        $template = new Template(['theme' => 'test']);
+        $page = $this->getMock(Page::class);
+        $page
+            ->expects($this->once())
+            ->method('getTemplate')
+            ->willReturn($template);
+
+        Editor::shouldReceive('getActivePage')->andReturn($page);
+
+        $this->assertEquals('/vendor/boomcms/themes/test/file.png', Helpers::pub('file.png'));
+    }
 }
