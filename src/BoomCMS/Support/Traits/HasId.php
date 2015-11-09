@@ -10,8 +10,7 @@ trait HasId
     }
 
     /**
-     * 
-     * @return boolean
+     * @return bool
      */
     public function loaded()
     {

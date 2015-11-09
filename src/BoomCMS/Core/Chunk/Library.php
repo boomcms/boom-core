@@ -51,6 +51,7 @@ class Library extends BaseChunk
      * Returns a search parameter by key.
      *
      * @param string $key
+     *
      * @return mixed
      */
     public function getParam($key)
@@ -84,7 +85,7 @@ class Library extends BaseChunk
      */
     public function hasContent()
     {
-        return !empty($this->params) && 
+        return !empty($this->params) &&
             !empty(array_values($this->params)) &&
             $this->hasFilters();
     }
@@ -105,8 +106,8 @@ class Library extends BaseChunk
     {
         return View::make($this->viewPrefix."library.$this->template", [
             'tags'    => $this->getTags(),
-            'params' => $this->getParams(),
-            'assets' => function () {
+            'params'  => $this->getParams(),
+            'assets'  => function () {
                 return $this->getAssets();
             },
         ]);

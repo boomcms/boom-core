@@ -30,7 +30,7 @@ return [
             'heading'     => 'Asset Library',
             'about'       => 'Specify criteria to display assets by',
             'limit'       => 'Number of assets to show',
-            'limit_about' => 'Set an (optional) limit on the number of results to be returned. Leave empty for no limit.'
+            'limit_about' => 'Set an (optional) limit on the number of results to be returned. Leave empty for no limit.',
         ],
     ],
 ];
