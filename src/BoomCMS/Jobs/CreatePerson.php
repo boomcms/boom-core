@@ -2,22 +2,18 @@
 
 namespace BoomCMS\Jobs;
 
-use BoomCMS\Core\Auth;
 use BoomCMS\Core\Auth\RandomPassword;
-use BoomCMS\Core\Group;
-use BoomCMS\Core\Person;
+use BoomCMS\Core\Person\DuplicateEmailException;
 use BoomCMS\Events\AccountCreated;
+use BoomCMS\Support\Facades\Auth;
+use BoomCMS\Support\Facades\Group;
+use BoomCMS\Support\Facades\Person;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Bus\SelfHandling;
 use Illuminate\Support\Facades\Event;
 
 class CreatePerson extends Command implements SelfHandling
 {
-    /**
-     * @var Auth\Auth
-     */
-    protected $auth;
-
     /**
      * @var array
      */
@@ -29,24 +25,10 @@ class CreatePerson extends Command implements SelfHandling
     protected $groups;
 
     /**
-     * @var Group\Provider
-     */
-    protected $groupProvider;
-
-    /**
-     * @var Person\Provider
-     */
-    protected $personProvider;
-
-    /**
      * @return void
      */
-    public function __construct(array $credentials, array $groups, Auth\Auth $auth, Person\Provider $personProvider, Group\Provider $groupProvider)
+    public function __construct(array $credentials, array $groups)
     {
-        $this->auth = $auth;
-        $this->groupProvider = $groupProvider;
-        $this->personProvider = $personProvider;
-
         $this->credentials = $credentials;
         $this->groups = $groups;
     }
@@ -57,23 +39,23 @@ class CreatePerson extends Command implements SelfHandling
     public function handle()
     {
         $password = (string) new RandomPassword();
-        $this->credentials['password'] = $this->auth->hash($password);
+        $this->credentials['password'] = Auth::hash($password);
 
         try {
-            $person = $this->personProvider->create($this->credentials);
-        } catch (Person\DuplicateEmailException $e) {
+            $person = Person::create($this->credentials);
+        } catch (DuplicateEmailException $e) {
         }
 
         if (isset($person)) {
             foreach ($this->groups as $groupId) {
-                $person->addGroup($this->groupProvider->findById($groupId));
+                $person->addGroup(Group::findById($groupId));
             }
 
-            Event::fire(new AccountCreated($person, $password, $this->auth->getPerson()));
+            Event::fire(new AccountCreated($person, $password, Auth::getPerson()));
 
             return $person;
         } else {
-            return $this->personProvider->findByEmail($this->credentials['email']);
+            return Person::findByEmail($this->credentials['email']);
         }
     }
 }
