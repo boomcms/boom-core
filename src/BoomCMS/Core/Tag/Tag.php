@@ -18,15 +18,6 @@ class Tag
         $this->attributes = $attributes;
     }
 
-    public function delete()
-    {
-        if ($this->loaded()) {
-            $this->model->delete();
-        }
-
-        return $this;
-    }
-
     public function get($key)
     {
         return isset($this->attributes[$key]) ? $this->attributes[$key] : null;
