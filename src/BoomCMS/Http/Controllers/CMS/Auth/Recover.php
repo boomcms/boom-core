@@ -4,6 +4,7 @@ namespace BoomCMS\Http\Controllers\CMS\Auth;
 
 use BoomCMS\Core\Auth;
 use BoomCMS\Http\Controllers\Controller;
+use BoomCMS\Suppoert\Facades\Person;
 use BoomCMS\Support\Facades\Settings;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
@@ -24,12 +25,7 @@ class Recover extends Controller
 
     public function createToken()
     {
-        /*
-         * TODO: This is used in setPassword as well.
-         *
-         * It should probably be made into a middleware.
-         */
-        $person = $this->auth->getProvider()->findByEmail($this->request->input('email'));
+        $person = Person::findByEmail($this->request->input('email'));
 
         if (!$person->isValid()) {
             return $this->showForm([
@@ -63,7 +59,7 @@ class Recover extends Controller
             ]);
         }
 
-        $person = $this->auth->getProvider()->findByEmail($this->request->input('email'));
+        $person = Person::findByEmail($this->request->input('email'));
 
         if (!$person->isValid()) {
             return $this->showForm([

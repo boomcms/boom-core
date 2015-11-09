@@ -3,21 +3,20 @@
 namespace BoomCMS\Http\Controllers\CMS\Auth;
 
 use BoomCMS\Core\Auth\Auth;
-use BoomCMS\Core\Person\Provider;
 use BoomCMS\Events\Auth\PasswordChanged;
 use BoomCMS\Http\Controllers\Controller;
+use BoomCMS\Support\Facades\Person;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\View;
 
 class Account extends Controller
 {
-    public function __construct(Request $request, Auth $auth, Provider $provider)
+    public function __construct(Request $request, Auth $auth)
     {
         $this->request = $request;
         $this->auth = $auth;
         $this->person = $this->auth->getPerson();
-        $this->provider = $provider;
     }
 
     public function getIndex()
@@ -52,7 +51,7 @@ class Account extends Controller
             }
         }
 
-        $this->provider->save($this->person);
+        Person::save($this->person);
 
         return View::make('boomcms::account.account', [
             'person'  => $this->person,

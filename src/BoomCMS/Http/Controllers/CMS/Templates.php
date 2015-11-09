@@ -2,11 +2,10 @@
 
 namespace BoomCMS\Http\Controllers\CMS;
 
-use BoomCMS\Core\Auth\Auth;
 use BoomCMS\Core\Page;
 use BoomCMS\Core\Template;
 use BoomCMS\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use BoomCMS\Support\Facades\Template as TemplateFacade;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\View;
@@ -14,34 +13,17 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class Templates extends Controller
 {
-    /**
-     * @var Auth
-     */
-    public $auth;
-
-    /**
-     * @var Template\Provider
-     */
-    private $provider;
-
     protected $viewPrefix = 'boomcms::templates.';
 
-    public function __construct(Request $request, Auth $auth, Template\Provider $provider)
-    {
-        $this->auth = $auth;
-        $this->provider = $provider;
-        $this->request = $request;
-
-        $this->authorization('manage_templates');
-    }
+    protected $role = 'manage_templates';
 
     public function index()
     {
-        $manager = new Template\Manager(App::make('files'), $this->provider);
+        $manager = new Template\Manager(App::make('files'), TemplateFacade::getFacadeRoot());
         $manager->findAndInstallNewTemplates();
 
         return View::make($this->viewPrefix.'index', [
-            'templates' => $this->provider->findAll(),
+            'templates' => TemplateFacade::findAll(),
         ]);
     }
 
@@ -50,7 +32,7 @@ class Templates extends Controller
      */
     public function pages($id)
     {
-        $template = $this->provider->findById($id);
+        $template = TemplateFacade::findById($id);
 
         if (!$template->loaded()) {
             throw new NotFoundHttpException();
@@ -100,18 +82,18 @@ class Templates extends Controller
         $templateIds = $post['templates'];
 
         foreach ($templateIds as $templateId) {
-            $template = $this->provider->findById($templateId);
+            $template = TemplateFacade::findById($templateId);
             $template
                 ->setName($post["name-$templateId"])
                 ->setFilename($post["filename-$templateId"])
                 ->setDescription($post["description-$templateId"]);
 
-            $this->provider->save($template);
+            TemplateFacade::save($template);
         }
     }
 
     public function delete($id)
     {
-        $this->provider->deleteById($id);
+        TemplateFacade::deleteById($id);
     }
 }

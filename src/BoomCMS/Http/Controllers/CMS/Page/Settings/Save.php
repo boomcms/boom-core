@@ -4,6 +4,7 @@ namespace BoomCMS\Http\Controllers\CMS\Page\Settings;
 
 use BoomCMS\Events\PageSearchSettingsWereUpdated;
 use BoomCMS\Events\PageWasMadeVisible;
+use BoomCMS\Support\Facades\Page;
 use DateTime;
 use Illuminate\Support\Facades\Event;
 
@@ -19,7 +20,7 @@ class Save extends Settings
             $this->page->setDisableDelete($this->request->input('disable_delete') == '1');
         }
 
-        $this->provider->save($this->page);
+        Page::save($this->page);
     }
 
     public function children()
@@ -42,7 +43,7 @@ class Save extends Settings
             $this->page->setChildOrderingPolicy($post['children_ordering_policy'], $post['children_ordering_direction']);
         }
 
-        $this->provider->save($this->page);
+        Page::save($this->page);
     }
 
     public function feature()
@@ -50,7 +51,7 @@ class Save extends Settings
         parent::feature();
 
         $this->page->setFeatureImageId($this->request->input('feature_image_id'));
-        $this->provider->save($this->page);
+        Page::save($this->page);
     }
 
     public function navigation()
@@ -65,7 +66,7 @@ class Save extends Settings
             ->setVisibleInNav($this->request->input('visible_in_nav'))
             ->setVisibleInCmsNav($this->request->input('visible_in_nav_cms'));
 
-        $this->provider->save($this->page);
+        Page::save($this->page);
     }
 
     public function search()
@@ -82,7 +83,7 @@ class Save extends Settings
                 ->setInternalIndexing($this->request->input('internal_indexing'));
         }
 
-        $this->provider->save($this->page);
+        Page::save($this->page);
         Event::fire(new PageSearchSettingsWereUpdated($this->page));
     }
 
@@ -109,7 +110,7 @@ class Save extends Settings
                 ->setVisibleTo($visibleTo);
         }
 
-        $this->provider->save($this->page);
+        Page::save($this->page);
 
         if (!$wasVisible && $this->page->isVisible()) {
             Event::fire(new PageWasMadeVisible($this->page, $this->auth->getPerson()));

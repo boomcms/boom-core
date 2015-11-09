@@ -3,8 +3,8 @@
 namespace BoomCMS\Http\Controllers\CMS\Assets;
 
 use BoomCMS\Core\Asset;
-use BoomCMS\Core\Auth;
 use BoomCMS\Http\Controllers\Controller;
+use BoomCMS\Support\Facades\Asset as AssetFacade;
 use BoomCMS\Support\Helpers\Asset as AssetHelper;
 use DateTime;
 use Illuminate\Http\JsonResponse;
@@ -25,11 +25,9 @@ class AssetManager extends Controller
      */
     protected $provider;
 
-    public function __construct(Auth\Auth $auth, Request $request, Asset\Provider $provider)
+    public function __construct(Request $request)
     {
-        $this->auth = $auth;
         $this->request = $request;
-        $this->provider = $provider;
 
         if (!$this->request->is('*/picker') && !$this->request->is('*/get')) {
             $this->authorization('manage_assets');
@@ -48,7 +46,7 @@ class AssetManager extends Controller
         $assets = [];
 
         foreach ($assetIds as $assetId) {
-            $asset = $this->provider->findById($assetId);
+            $asset = AssetFacade::findById($assetId);
 
             if ($asset->loaded()) {
                 $assets[] = $asset;
@@ -137,7 +135,7 @@ class AssetManager extends Controller
 
         foreach ($validFiles as $file) {
             $asset->createVersionFromFile($file);
-            $this->provider->save($asset);
+            AssetFacade::save($asset);
 
             return [$asset->getId()];
         }
@@ -160,7 +158,7 @@ class AssetManager extends Controller
             ->setCredits($this->request->input('credits'))
             ->setThumbnailAssetId($this->request->input('thumbnail_asset_id'));
 
-        $this->provider->save($asset);
+        AssetFacade::save($asset);
     }
 
     public function upload()
@@ -177,7 +175,7 @@ class AssetManager extends Controller
 
             $assetIds[] = $this->provider->save($asset)->getId();
             $asset->createVersionFromFile($file);
-            $this->provider->save($asset);
+            AssetFacade::save($asset);
         }
 
         return (count($errors)) ? new JsonResponse($errors, 500) : $assetIds;

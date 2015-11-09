@@ -2,11 +2,13 @@
 
 namespace BoomCMS\Http\Controllers\CMS\Group;
 
+use BoomCMS\Support\Facades\Group;
+
 class Save extends BaseController
 {
     public function add()
     {
-        $group = $this->provider->create(['name' => $this->request->input('name')]);
+        $group = Group::create(['name' => $this->request->input('name')]);
 
         return $group->getId();
     }
@@ -18,17 +20,17 @@ class Save extends BaseController
 
     public function delete()
     {
-        $this->provider->delete($this->group);
+        Group::delete($this->group);
     }
 
     public function removeRole()
     {
-        $this->group->removeRole($this->request->input('role_id'));
+        Group::removeRole($this->request->input('role_id'));
     }
 
     public function save()
     {
         $this->group->setName($this->request->input('name'));
-        $this->provider->save($this->group);
+        Group::save($this->group);
     }
 }

@@ -2,22 +2,21 @@
 
 namespace BoomCMS\Http\Controllers\CMS\Page;
 
-use BoomCMS\Core\Auth\Auth;
-use BoomCMS\Core\Page;
 use BoomCMS\Jobs\DeletePage;
+use BoomCMS\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\View;
 
 class Delete extends PageController
 {
-    public function __construct(Page\Provider $provider, Auth $auth, Request $request)
+    public function __construct(Request $request)
     {
-        parent::__construct($provider, $auth, $request);
+        parent::__construct($request);
 
-        if (!($this->page->wasCreatedBy($this->auth->getPerson()) ||
-                $this->auth->loggedIn('delete_page', $this->page) ||
-                $this->auth->loggedIn('manage_pages')
+        if (!($this->page->wasCreatedBy(Auth::getPerson()) ||
+                Auth::loggedIn('delete_page', $this->page) ||
+                Auth::loggedIn('manage_pages')
             ) || !$this->page->canBeDeleted()
         ) {
             abort(403);

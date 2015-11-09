@@ -3,15 +3,15 @@
 namespace BoomCMS\Http\Controllers\CMS\People\Person;
 
 use BoomCMS\Core\Group;
-use BoomCMS\Core\Group\Provider as GroupProvider;
+use BoomCMS\Support\Facades\Group as GroupFacade;
 use Illuminate\Support\Facades\View;
 
 class ViewPerson extends BasePerson
 {
-    public function add(GroupProvider $provider)
+    public function add()
     {
         return View::make($this->viewPrefix.'new', [
-            'groups' => $provider->findAll(),
+            'groups' => GroupFacade::findAll(),
         ]);
     }
 

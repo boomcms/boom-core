@@ -2,11 +2,10 @@
 
 namespace BoomCMS\Http\Controllers\CMS;
 
-use BoomCMS\Core\Auth\Auth;
-use BoomCMS\Core\Chunk\Provider;
 use BoomCMS\Core\Page\Page;
 use BoomCMS\Events\ChunkWasCreated;
 use BoomCMS\Http\Controllers\Controller;
+use BoomcMS\Support\Facades\Auth;
 use BoomCMS\Support\Facades\Chunk as ChunkFacade;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Event;
@@ -19,19 +18,12 @@ class Chunk extends Controller
      */
     protected $page;
 
-    /**
-     * @var Provider
-     */
-    protected $provider;
-
-    public function __construct(Auth $auth, Request $request, Provider $provider)
+    public function __construct(Request $request)
     {
-        $this->auth = $auth;
         $this->request = $request;
         $this->page = $this->request->route()->getParameter('page');
-        $this->provider = $provider;
 
-        $this->page->wasCreatedBy($this->auth->getPerson()) ||
+        $this->page->wasCreatedBy(Auth::getPerson()) ||
             parent::authorization('edit_page_content', $this->page);
     }
 
@@ -53,7 +45,7 @@ class Chunk extends Controller
             unset($input['template']);
         }
 
-        $chunk = $this->provider->create($this->page, $input);
+        $chunk = ChunkFacade::create($this->page, $input);
 
         if ($this->request->input('template')) {
             $chunk->template($this->request->input('template'));

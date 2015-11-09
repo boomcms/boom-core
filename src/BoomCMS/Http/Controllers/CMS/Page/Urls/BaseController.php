@@ -2,10 +2,10 @@
 
 namespace BoomCMS\Http\Controllers\CMS\Page\Urls;
 
-use BoomCMS\Core\Auth\Auth;
-use BoomCMS\Core\Page;
-use BoomCMS\Core\URL;
+use BoomCMS\Core\URL\URL;
 use BoomCMS\Http\Controllers\Controller;
+use BoomCMS\Support\Facades\Page;
+use BoomcMS\Support\Facades\URL as URLFacade;
 use Illuminate\Http\Request;
 
 class BaseController extends Controller
@@ -22,29 +22,13 @@ class BaseController extends Controller
      */
     public $page;
 
-    /**
-     * @var Page\Provider
-     */
-    public $pageProvider;
-
-    /**
-     * @var URL\Provider
-     */
-    public $provider;
-
-    public function __construct(Auth $auth,
-        Request $request,
-        Page\Provider $pageProvider,
-        URL\Provider $provider
-    ) {
-        $this->auth = $auth;
+    public function __construct(Request $request)
+    {
         $this->request = $request;
-        $this->pageProvider = $pageProvider;
-        $this->provider = $provider;
-        $this->page = $pageProvider->findById($request->input('page_id'));
+        $this->page = Page::findById($request->input('page_id'));
 
         if ($id = $request->route()->getParameter('id')) {
-            $this->url = $this->provider->findById($id);
+            $this->url = URLFacade::findById($id);
         } else {
             $this->url = new URL\URL([]);
         }

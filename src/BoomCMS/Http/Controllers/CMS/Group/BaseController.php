@@ -2,8 +2,7 @@
 
 namespace BoomCMS\Http\Controllers\CMS\Group;
 
-use BoomCMS\Core\Auth\Auth;
-use BoomCMS\Core\Group;
+use BoomCMS\Support\Facades\Group;
 use BoomCMS\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -16,18 +15,11 @@ class BaseController extends Controller
      */
     public $group;
 
-    /**
-     * @var Group\Provider;
-     */
-    protected $provider;
-
-    public function __construct(Auth $auth, Group\Provider $provider, Request $request)
+    public function __construct(Request $request)
     {
-        $this->auth = $auth;
-        $this->provider = $provider;
         $this->request = $request;
 
         $this->authorization('manage_people');
-        $this->group = $this->provider->findById($this->request->route()->getParameter('id'));
+        $this->group = Group::findById($this->request->route()->getParameter('id'));
     }
 }

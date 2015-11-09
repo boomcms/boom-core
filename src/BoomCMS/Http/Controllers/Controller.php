@@ -2,9 +2,9 @@
 
 namespace BoomCMS\Http\Controllers;
 
-use BoomCMS\Core\Auth\Auth;
 use BoomCMS\Core\Editor\Editor;
 use BoomCMS\Core\Page\Page;
+use BoomCMS\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Session\SessionManager as Session;
@@ -20,14 +20,9 @@ class Controller extends BaseController
     public $person;
 
     /**
-     * @var Auth
+     * @var \BoomCMS\Core\Auth\Auth
      */
     public $auth;
-
-    /**
-     * @var Boom
-     */
-    public $boom;
 
     /**
      * @var Editor
@@ -35,39 +30,41 @@ class Controller extends BaseController
     public $editor;
 
     /**
+     * @var string
+     */
+    protected $role;
+
+    /**
      * @var Session
      */
     public $session;
 
-    /**
-     * @var View
-     */
-    public $template;
-
-    public function __construct(Request $request, Session $session, Auth $auth, Editor $editor)
+    public function __construct(Request $request, Session $session, Editor $editor)
     {
         $this->session = $session;
         $this->request = $request;
-        $this->auth = $auth;
+        $this->auth = Auth::getFacadeRoot();
         $this->editor = $editor;
         $this->person = $this->auth->getPerson();
+
+        if ($this->role) {
+            $this->authorization($this->role);
+        }
     }
 
     /**
      * Checks whether the current user is authorized to perform a particular action.
      *
-     * @uses	Auth::isLoggedIn()
-     *
      * @param string     $role
-     * @param Model_Page $page
+     * @param Page $page
      */
     public function authorization($role, Page $page = null)
     {
-        if (!$this->auth->isLoggedIn()) {
+        if (!Auth::isLoggedIn()) {
             abort(401);
         }
 
-        if (!$this->auth->loggedIn($role, $page)) {
+        if (!Auth::loggedIn($role, $page)) {
             abort(403);
         }
     }
