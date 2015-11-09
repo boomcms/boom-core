@@ -13,12 +13,14 @@ use BoomCMS\Support\Facades\Auth;
 use BoomCMS\Support\Facades\Chunk;
 use BoomCMS\Support\Facades\Page as PageFacade;
 use BoomCMS\Support\Traits\Comparable;
+use BoomCMS\Support\Traits\HasId;
 use DateTime;
 use Illuminate\Support\Facades\DB;
 
 class Page
 {
     use Comparable;
+    use HasId;
 
     /**
      * @var Page\Version
@@ -278,11 +280,6 @@ class Page
         return $grouped;
     }
 
-    public function getId()
-    {
-        return $this->get('id');
-    }
-
     public function getInternalName()
     {
         return $this->get('internal_name');
@@ -455,11 +452,6 @@ class Page
         return $this->get('visible_in_nav') == true;
     }
 
-    public function loaded()
-    {
-        return $this->getId() > 0;
-    }
-
     public function markUpdatesAsPendingApproval()
     {
         $this->addVersion(['pending_approval' => true]);
@@ -597,15 +589,6 @@ class Page
     public function setGrandchildTemplateId($templateId)
     {
         $this->attributes['grandchild_template_id'] = $templateId;
-
-        return $this;
-    }
-
-    public function setId($id)
-    {
-        if (!$this->getId()) {
-            $this->attributes['id'] = $id;
-        }
 
         return $this;
     }

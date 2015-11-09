@@ -3,11 +3,13 @@
 namespace BoomCMS\Core\Group;
 
 use BoomCMS\Support\Traits\Comparable;
+use BoomCMS\Support\Traits\HasId;
 use Illuminate\Support\Facades\DB;
 
 class Group
 {
     use Comparable;
+    use HasId;
 
     /**
      * @var array
@@ -62,11 +64,6 @@ class Group
         return isset($this->attributes[$key]) ? $this->attributes[$key] : null;
     }
 
-    public function getId()
-    {
-        return $this->get('id');
-    }
-
     public function getName()
     {
         return $this->get('name');
@@ -103,11 +100,6 @@ class Group
             ->get();
 
         return (count($result) > 0);
-    }
-
-    public function loaded()
-    {
-        return $this->getId() > 0;
     }
 
     /**

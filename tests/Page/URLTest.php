@@ -9,15 +9,6 @@ use BoomCMS\Tests\AbstractTestCase;
 
 class URLTest extends AbstractTestCase
 {
-    public function testGetId()
-    {
-        $url = new URL([]);
-        $this->assertNull($url->getId());
-
-        $url = new URL(['id' => 1]);
-        $this->assertEquals(1, $url->getId());
-    }
-
     public function testIsPrimary()
     {
         $url = new URL([]);

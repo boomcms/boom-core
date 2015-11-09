@@ -4,6 +4,7 @@ namespace BoomCMS\Core\Person;
 
 use BoomCMS\Core\Group;
 use BoomCMS\Support\Traits\Comparable;
+use BoomCMS\Support\Traits\HasId;
 use DateTime;
 use Hautelook\Phpass\PasswordHash;
 use Illuminate\Contracts\Auth\CanResetPassword;
@@ -13,6 +14,7 @@ use Illuminate\Support\Facades\DB;
 class Person implements Arrayable, CanResetPassword
 {
     use Comparable;
+    use HasId;
 
     /**
      * @var array
@@ -103,11 +105,6 @@ class Person implements Arrayable, CanResetPassword
             ->findAll();
     }
 
-    public function getId()
-    {
-        return $this->get('id');
-    }
-
     public function getLastFailedLogin()
     {
         $time = new DateTime();
@@ -172,11 +169,6 @@ class Person implements Arrayable, CanResetPassword
     public function isValid()
     {
         return $this->loaded() && !$this->isLocked();
-    }
-
-    public function loaded()
-    {
-        return $this->getId() > 0;
     }
 
     /**

@@ -7,15 +7,6 @@ use BoomCMS\Tests\AbstractTestCase;
 
 class TagTest extends AbstractTestCase
 {
-    public function testGetId()
-    {
-        $tag = new Tag([]);
-        $this->assertNull($tag->getId());
-
-        $tag = new Tag(['id' => 1]);
-        $this->assertEquals(1, $tag->getId());
-    }
-
     public function testGetSlug()
     {
         $tag = new Tag([]);

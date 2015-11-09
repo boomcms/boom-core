@@ -3,10 +3,12 @@
 namespace BoomCMS\Core\Tag;
 
 use BoomCMS\Support\Traits\Comparable;
+use BoomCMS\Support\Traits\HasId;
 
 class Tag
 {
     use Comparable;
+    use HasId;
 
     /**
      * @var array
@@ -28,11 +30,6 @@ class Tag
         return $this->get('group');
     }
 
-    public function getId()
-    {
-        return $this->get('id');
-    }
-
     public function getName()
     {
         return $this->get('name');
@@ -41,11 +38,6 @@ class Tag
     public function getSlug()
     {
         return $this->get('slug');
-    }
-
-    public function loaded()
-    {
-        return $this->getId() > 0;
     }
 
     public function setName($name)

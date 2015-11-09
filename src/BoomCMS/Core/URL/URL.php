@@ -4,12 +4,15 @@ namespace BoomCMS\Core\URL;
 
 use BoomCMS\Core\Page\Page;
 use BoomCMS\Support\Facades\Page as PageFacade;
+use BoomCMS\Support\Traits\HasId;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Facades\URL as URLHelper;
 use InvalidArgumentException;
 
 class URL implements Arrayable
 {
+    use HasId;
+
     /**
      * @var array
      */
@@ -28,11 +31,6 @@ class URL implements Arrayable
     public function get($key)
     {
         return isset($this->attributes[$key]) ? $this->attributes[$key] : null;
-    }
-
-    public function getId()
-    {
-        return $this->get('id');
     }
 
     public function getLocation()
@@ -70,11 +68,6 @@ class URL implements Arrayable
     public function isPrimary()
     {
         return $this->get('is_primary') == true;
-    }
-
-    public function loaded()
-    {
-        return $this->getId() > 0;
     }
 
     /**

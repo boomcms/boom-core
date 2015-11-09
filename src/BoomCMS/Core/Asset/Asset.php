@@ -8,6 +8,7 @@ use BoomCMS\Support\Facades\Asset as AssetFacade;
 use BoomCMS\Support\Facades\Auth;
 use BoomCMS\Support\Helpers\Asset as AssetHelper;
 use BoomCMS\Support\Traits\Comparable;
+use BoomCMS\Support\Traits\HasId;
 use DateTime;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Facades\DB;
@@ -18,6 +19,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile as File;
 class Asset implements Arrayable
 {
     use Comparable;
+    use HasId;
 
     /**
      * @var array
@@ -259,11 +261,6 @@ class Asset implements Arrayable
         return $this->getType() == 'image';
     }
 
-    public function loaded()
-    {
-        return $this->getId() > 0;
-    }
-
     public function createVersionFromFile(File $file)
     {
         if (!$this->getTitle()) {
@@ -332,15 +329,6 @@ class Asset implements Arrayable
     public function setDescription($description)
     {
         $this->attributes['description'] = $description;
-
-        return $this;
-    }
-
-    public function setId($id)
-    {
-        if (!$this->getId()) {
-            $this->attributes['id'] = $id;
-        }
 
         return $this;
     }

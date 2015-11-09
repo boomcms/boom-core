@@ -4,10 +4,13 @@ namespace BoomCMS\Core\Page;
 
 use BoomCMS\Core\Template;
 use BoomCMS\Support\Facades\Person;
+use BoomCMS\Support\Traits\HasId;
 use DateTime;
 
 class Version
 {
+    use HasId;
+
     /**
      * @var array
      */
@@ -54,11 +57,6 @@ class Version
     public function getEmbargoedUntil()
     {
         return (new DateTime())->setTimestamp($this->get('embargoed_until'));
-    }
-
-    public function getId()
-    {
-        return $this->get('id');
     }
 
     public function getPageId()

@@ -4,11 +4,14 @@ namespace BoomCMS\Core\Template;
 
 use BoomCMS\Core\Page\Finder;
 use BoomCMS\Core\Theme\Theme;
+use BoomCMS\Support\Traits\HasId;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\View;
 
 class Template
 {
+    use HasId;
+
     /**
      * @var array
      */
@@ -89,11 +92,6 @@ class Template
         return $this->getTheme()->getName().'::templates.'.$this->getFilename();
     }
 
-    public function getId()
-    {
-        return $this->get('id');
-    }
-
     public function getName()
     {
         return $this->get('name');
@@ -107,11 +105,6 @@ class Template
     public function getViewName()
     {
         return $this->getThemeName().':'.'templates.'.$this->getFilename();
-    }
-
-    public function loaded()
-    {
-        return $this->getId() > 0;
     }
 
     public function setDescription($description)
