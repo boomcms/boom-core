@@ -11,7 +11,7 @@ class Version
     /**
      * @var array
      */
-    private $attrs;
+    private $attributes;
 
     /**
      * @var Template\Template;
@@ -20,19 +20,19 @@ class Version
 
     protected $editedBy;
 
-    public function __construct(array $attrs)
+    public function __construct(array $attributes)
     {
-        if (isset($attrs['version:id'])) {
-            $attrs['id'] = $attrs['version:id'];
-            unset($attrs['version:id']);
+        if (isset($attributes['version:id'])) {
+            $attributes['id'] = $attributes['version:id'];
+            unset($attributes['version:id']);
         }
 
-        $this->attrs = $attrs;
+        $this->attributes = $attributes;
     }
 
     public function get($key)
     {
-        return isset($this->attrs[$key]) ? $this->attrs[$key] : null;
+        return isset($this->attributes[$key]) ? $this->attributes[$key] : null;
     }
 
     public function getEditedBy()
@@ -46,8 +46,8 @@ class Version
 
     public function getEditedTime()
     {
-        return $this->attrs['edited_time'] ?
-            new DateTime('@'.$this->attrs['edited_time'])
+        return $this->attributes['edited_time'] ?
+            new DateTime('@'.$this->attributes['edited_time'])
             : null;
     }
 
@@ -132,6 +132,6 @@ class Version
 
     public function toArray()
     {
-        return $this->attrs;
+        return $this->attributes;
     }
 }
