@@ -12,11 +12,11 @@ class Template
     /**
      * @var array
      */
-    protected $attrs;
+    protected $attributes;
 
-    public function __construct(array $attrs)
+    public function __construct(array $attributes)
     {
-        $this->attrs = $attrs;
+        $this->attributes = $attributes;
     }
 
     public function countPages()
@@ -34,7 +34,7 @@ class Template
 
     public function get($key)
     {
-        return isset($this->attrs[$key]) ? $this->attrs[$key] : null;
+        return isset($this->attributes[$key]) ? $this->attributes[$key] : null;
     }
 
     public function getChunks()
@@ -116,21 +116,21 @@ class Template
 
     public function setDescription($description)
     {
-        $this->attrs['description'] = $description;
+        $this->attributes['description'] = $description;
 
         return $this;
     }
 
     public function setFilename($filename)
     {
-        $this->attrs['filename'] = $filename;
+        $this->attributes['filename'] = $filename;
 
         return $this;
     }
 
     public function setName($name)
     {
-        $this->attrs['name'] = $name;
+        $this->attributes['name'] = $name;
 
         return $this;
     }

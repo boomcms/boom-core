@@ -13,21 +13,21 @@ class URL implements Arrayable
     /**
      * @var array
      */
-    private $attrs;
+    private $attributes;
 
-    public function __construct(array $attrs)
+    public function __construct(array $attributes)
     {
-        $this->attrs = $attrs;
+        $this->attributes = $attributes;
     }
 
     public function toArray()
     {
-        return $this->attrs;
+        return $this->attributes;
     }
 
     public function get($key)
     {
-        return isset($this->attrs[$key]) ? $this->attrs[$key] : null;
+        return isset($this->attributes[$key]) ? $this->attributes[$key] : null;
     }
 
     public function getId()
@@ -95,14 +95,14 @@ class URL implements Arrayable
             throw new InvalidArgumentException(__CLASS__.'::'.__METHOD__.' must only be called with a boolean argument');
         }
 
-        $this->attrs['is_primary'] = $isPrimary;
+        $this->attributes['is_primary'] = $isPrimary;
 
         return $this;
     }
 
     public function setPageId($id)
     {
-        $this->attrs['page_id'] = $id;
+        $this->attributes['page_id'] = $id;
 
         return $this;
     }

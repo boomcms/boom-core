@@ -22,7 +22,7 @@ class Asset implements Arrayable
     /**
      * @var array
      */
-    protected $attrs;
+    protected $attributes;
 
     protected $hasPreviousVersions;
 
@@ -40,9 +40,9 @@ class Asset implements Arrayable
         'extension'  => '',
     ];
 
-    public function __construct(array $attrs = [])
+    public function __construct(array $attributes = [])
     {
-        $this->attrs = $attrs;
+        $this->attributes = $attributes;
     }
 
     public static function directory()
@@ -57,7 +57,7 @@ class Asset implements Arrayable
 
     public function get($key)
     {
-        return isset($this->attrs[$key]) ? $this->attrs[$key] : null;
+        return isset($this->attributes[$key]) ? $this->attributes[$key] : null;
     }
 
     public function getAspectRatio()
@@ -319,7 +319,7 @@ class Asset implements Arrayable
      */
     public function setCredits($credits)
     {
-        $this->attrs['credits'] = $credits;
+        $this->attributes['credits'] = $credits;
 
         return $this;
     }
@@ -331,7 +331,7 @@ class Asset implements Arrayable
      */
     public function setDescription($description)
     {
-        $this->attrs['description'] = $description;
+        $this->attributes['description'] = $description;
 
         return $this;
     }
@@ -339,7 +339,7 @@ class Asset implements Arrayable
     public function setId($id)
     {
         if (!$this->getId()) {
-            $this->attrs['id'] = $id;
+            $this->attributes['id'] = $id;
         }
 
         return $this;
@@ -352,7 +352,7 @@ class Asset implements Arrayable
      */
     public function setThumbnailAssetId($assetId)
     {
-        $this->attrs['thumbnail_asset_id'] = $assetId;
+        $this->attributes['thumbnail_asset_id'] = $assetId;
 
         return $this;
     }
@@ -364,7 +364,7 @@ class Asset implements Arrayable
      */
     public function setTitle($title)
     {
-        $this->attrs['title'] = $title;
+        $this->attributes['title'] = $title;
 
         return $this;
     }
@@ -376,7 +376,7 @@ class Asset implements Arrayable
      */
     public function setType($type)
     {
-        $this->attrs['type'] = $type;
+        $this->attributes['type'] = $type;
 
         return $this;
     }
@@ -388,20 +388,20 @@ class Asset implements Arrayable
      */
     public function setUploadedBy(Person\Person $person)
     {
-        $this->attrs['uploaded_by'] = $person->getId();
+        $this->attributes['uploaded_by'] = $person->getId();
 
         return $this;
     }
 
     public function setUploadedTime(DateTime $time)
     {
-        $this->attrs['uploaded_time'] = $time->getTimestamp();
+        $this->attributes['uploaded_time'] = $time->getTimestamp();
 
         return $this;
     }
 
     public function toArray()
     {
-        return array_diff_key($this->attrs, $this->versionColumns);
+        return array_diff_key($this->attributes, $this->versionColumns);
     }
 }

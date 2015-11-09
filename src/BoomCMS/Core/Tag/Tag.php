@@ -11,11 +11,11 @@ class Tag
     /**
      * @var array
      */
-    protected $attrs;
+    protected $attributes;
 
-    public function __construct($attrs = [])
+    public function __construct($attributes = [])
     {
-        $this->attrs = $attrs;
+        $this->attributes = $attributes;
     }
 
     public function delete()
@@ -29,7 +29,7 @@ class Tag
 
     public function get($key)
     {
-        return isset($this->attrs[$key]) ? $this->attrs[$key] : null;
+        return isset($this->attributes[$key]) ? $this->attributes[$key] : null;
     }
 
     public function getGroup()
@@ -59,14 +59,14 @@ class Tag
 
     public function setName($name)
     {
-        $this->attrs['name'] = $name;
+        $this->attributes['name'] = $name;
 
         return $this;
     }
 
     public function setSlug($slug)
     {
-        $this->attrs['slug'] = $slug;
+        $this->attributes['slug'] = $slug;
 
         return $this;
     }

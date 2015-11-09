@@ -17,11 +17,11 @@ class Person implements Arrayable, CanResetPassword
     /**
      * @var array
      */
-    protected $data;
+    protected $attributes;
 
-    public function __construct(array $data = [])
+    public function __construct(array $attributes = [])
     {
-        $this->data = $data;
+        $this->attributes = $attributes;
     }
 
     /**
@@ -76,7 +76,7 @@ class Person implements Arrayable, CanResetPassword
 
     public function get($key)
     {
-        return isset($this->data[$key]) ? $this->data[$key] : null;
+        return isset($this->attributes[$key]) ? $this->attributes[$key] : null;
     }
 
     public function getEmail()
@@ -146,7 +146,7 @@ class Person implements Arrayable, CanResetPassword
 
     public function incrementFailedLogins()
     {
-        ++$this->data['failed_logins'];
+        ++$this->attributes['failed_logins'];
 
         return $this;
     }
@@ -208,14 +208,14 @@ class Person implements Arrayable, CanResetPassword
      */
     public function setEmail($email)
     {
-        $this->data['email'] = $email;
+        $this->attributes['email'] = $email;
 
         return $this;
     }
 
     public function setEnabled($enabled)
     {
-        $this->data['enabled'] = $enabled;
+        $this->attributes['enabled'] = $enabled;
 
         return $this;
     }
@@ -227,28 +227,28 @@ class Person implements Arrayable, CanResetPassword
      */
     public function setEncryptedPassword($password)
     {
-        $this->data['password'] = $password;
+        $this->attributes['password'] = $password;
 
         return $this;
     }
 
     public function setFailedLogins($count)
     {
-        $this->data['failed_logins'] = $count;
+        $this->attributes['failed_logins'] = $count;
 
         return $this;
     }
 
     public function setLastFailedLogin($time)
     {
-        $this->data['last_failed_login'] = $time;
+        $this->attributes['last_failed_login'] = $time;
 
         return $this;
     }
 
     public function setLockedUntil($timestamp)
     {
-        $this->data['locked_until'] = $timestamp;
+        $this->attributes['locked_until'] = $timestamp;
 
         return $this;
     }
@@ -260,14 +260,14 @@ class Person implements Arrayable, CanResetPassword
      */
     public function setName($name)
     {
-        $this->data['name'] = $name;
+        $this->attributes['name'] = $name;
 
         return $this;
     }
 
     public function setSuperuser($superuser)
     {
-        $this->data['superuser'] = $superuser;
+        $this->attributes['superuser'] = $superuser;
 
         return $this;
     }
@@ -279,13 +279,13 @@ class Person implements Arrayable, CanResetPassword
      */
     public function setRememberToken($token)
     {
-        $this->data['remember_token'] = $token;
+        $this->attributes['remember_token'] = $token;
 
         return $this;
     }
 
     public function toArray()
     {
-        return $this->data;
+        return $this->attributes;
     }
 }

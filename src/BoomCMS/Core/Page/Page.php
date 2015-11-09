@@ -28,7 +28,7 @@ class Page
     /**
      * @var array
      */
-    protected $data;
+    protected $attributes;
 
     /**
      * @var Page
@@ -52,14 +52,14 @@ class Page
         'pending_approval',
     ];
 
-    public function __construct(array $data = [])
+    public function __construct(array $attributes = [])
     {
         $versionData = [];
 
-        foreach (array_keys($data) as $key) {
+        foreach (array_keys($attributes) as $key) {
             if (in_array($key, $this->versionColumns)) {
-                $versionData[$key] = $data[$key];
-                unset($data[$key]);
+                $versionData[$key] = $attributes[$key];
+                unset($attributes[$key]);
             }
         }
 
@@ -67,7 +67,7 @@ class Page
             $this->currentVersion = new Version($versionData);
         }
 
-        $this->data = $data;
+        $this->attributes = $attributes;
     }
 
     public function addRelation(Page $page)
@@ -170,7 +170,7 @@ class Page
 
     public function get($key)
     {
-        return isset($this->data[$key]) ? $this->data[$key] : null;
+        return isset($this->attributes[$key]) ? $this->attributes[$key] : null;
     }
 
     public function getChildOrderingPolicy()
@@ -493,14 +493,14 @@ class Page
 
     public function setDisableDelete($value)
     {
-        $this->data['disable_delete'] = $value;
+        $this->attributes['disable_delete'] = $value;
 
         return $this;
     }
 
     public function setChildTemplateId($id)
     {
-        $this->data['children_template_id'] = $id;
+        $this->attributes['children_template_id'] = $id;
 
         return $this;
     }
@@ -512,7 +512,7 @@ class Page
     public function setChildOrderingPolicy($column, $direction)
     {
         $ordering_policy = new ChildOrderingPolicy($column, $direction);
-        $this->data['children_ordering_policy'] = $ordering_policy->asInt();
+        $this->attributes['children_ordering_policy'] = $ordering_policy->asInt();
 
         return $this;
     }
@@ -524,7 +524,7 @@ class Page
      */
     public function setChildrenUrlPrefix($prefix)
     {
-        $this->data['children_url_prefix'] = $prefix;
+        $this->attributes['children_url_prefix'] = $prefix;
 
         return $this;
     }
@@ -536,7 +536,7 @@ class Page
      */
     public function setChildrenVisibleInNav($visible)
     {
-        $this->data['children_visible_in_nav'] = $visible;
+        $this->attributes['children_visible_in_nav'] = $visible;
 
         return $this;
     }
@@ -548,7 +548,7 @@ class Page
      */
     public function setChildrenVisibleInNavCMS($visible)
     {
-        $this->data['children_visible_in_nav_cms'] = $visible;
+        $this->attributes['children_visible_in_nav_cms'] = $visible;
 
         return $this;
     }
@@ -560,7 +560,7 @@ class Page
      */
     public function setDescription($description)
     {
-        $this->data['description'] = $description;
+        $this->attributes['description'] = $description;
 
         return $this;
     }
@@ -572,7 +572,7 @@ class Page
      */
     public function setExternalIndexing($indexing)
     {
-        $this->data['external_indexing'] = $indexing;
+        $this->attributes['external_indexing'] = $indexing;
 
         return $this;
     }
@@ -584,7 +584,7 @@ class Page
      */
     public function setFeatureImageId($featureImageId)
     {
-        $this->data['feature_image_id'] = $featureImageId > 0 ? $featureImageId : null;
+        $this->attributes['feature_image_id'] = $featureImageId > 0 ? $featureImageId : null;
 
         return $this;
     }
@@ -596,7 +596,7 @@ class Page
      */
     public function setGrandchildTemplateId($templateId)
     {
-        $this->data['grandchild_template_id'] = $templateId;
+        $this->attributes['grandchild_template_id'] = $templateId;
 
         return $this;
     }
@@ -631,7 +631,7 @@ class Page
      */
     public function setInternalIndexing($indexing)
     {
-        $this->data['internal_indexing'] = $indexing;
+        $this->attributes['internal_indexing'] = $indexing;
 
         return $this;
     }
@@ -643,7 +643,7 @@ class Page
      */
     public function setInternalName($name)
     {
-        $this->data['internal_name'] = $name;
+        $this->attributes['internal_name'] = $name;
 
         return $this;
     }
@@ -655,7 +655,7 @@ class Page
      */
     public function setKeywords($keywords)
     {
-        $this->data['keywords'] = $keywords;
+        $this->attributes['keywords'] = $keywords;
 
         return $this;
     }
@@ -671,7 +671,7 @@ class Page
             $parent = PageFacade::findById($parentId);
 
             if ($parent->loaded()) {
-                $this->data['parent_id'] = $parentId;
+                $this->attributes['parent_id'] = $parentId;
             }
         }
 
@@ -680,7 +680,7 @@ class Page
 
     public function setPrimaryUri($uri)
     {
-        $this->data['primary_uri'] = $uri;
+        $this->attributes['primary_uri'] = $uri;
 
         return $this;
     }
@@ -711,7 +711,7 @@ class Page
      */
     public function setVisibleAtAnyTime($visible)
     {
-        $this->data['visible'] = $visible;
+        $this->attributes['visible'] = $visible;
 
         return $this;
     }
@@ -723,7 +723,7 @@ class Page
      */
     public function setVisibleFrom(DateTime $time)
     {
-        $this->data['visible_from'] = $time->getTimestamp();
+        $this->attributes['visible_from'] = $time->getTimestamp();
 
         return $this;
     }
@@ -735,7 +735,7 @@ class Page
      */
     public function setVisibleInCmsNav($visible)
     {
-        $this->data['visible_in_nav_cms'] = $visible;
+        $this->attributes['visible_in_nav_cms'] = $visible;
 
         return $this;
     }
@@ -747,7 +747,7 @@ class Page
      */
     public function setVisibleInNav($visible)
     {
-        $this->data['visible_in_nav'] = $visible;
+        $this->attributes['visible_in_nav'] = $visible;
 
         return $this;
     }
@@ -759,14 +759,14 @@ class Page
      */
     public function setVisibleTo(DateTime $time = null)
     {
-        $this->data['visible_to'] = $time ? $time->getTimestamp() : null;
+        $this->attributes['visible_to'] = $time ? $time->getTimestamp() : null;
 
         return $this;
     }
 
     public function toArray()
     {
-        return $this->data;
+        return $this->attributes;
     }
 
     public function updateChildSequences(array $sequences)
