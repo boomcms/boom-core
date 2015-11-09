@@ -3,6 +3,7 @@
 namespace BoomCMS\Http\Controllers\CMS\People\Person;
 
 use BoomCMS\Jobs\CreatePerson;
+use BoomCMS\Support\Facades\Person;
 use BoomCMS\Support\Facades\Group;
 use Illuminate\Support\Facades\Bus;
 
@@ -32,7 +33,7 @@ class SavePerson extends BasePerson
 
     public function delete()
     {
-        $this->personProvider->deleteByIds($this->request->input('people'));
+        Person::deleteByIds($this->request->input('people'));
     }
 
     public function removeGroup()
@@ -54,6 +55,6 @@ class SavePerson extends BasePerson
             $this->editPerson->setSuperuser($superuser == 1);
         }
 
-        $this->personProvider->save($this->editPerson);
+        Person::save($this->editPerson);
     }
 }
