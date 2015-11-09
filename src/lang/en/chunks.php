@@ -10,7 +10,7 @@ return [
        'default' => 'Feature a page here',
     ],
     'library' => [
-        'default' => 'Select a tag to feature here',
+        'default' => 'Set criteria to search assets here',
     ],
     'linkset' => [
         'default' => 'Insert a linkset here',
