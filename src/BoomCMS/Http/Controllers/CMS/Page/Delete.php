@@ -40,7 +40,7 @@ class Delete extends PageController
             Bus::dispatch(new DeletePageChildren($this->page));
         }
 
-        Bus::dispatch(new DeletePage($this->provider, $this->page));
+        Bus::dispatch(new DeletePage($this->page));
 
         return $parentUrl;
     }

@@ -2,29 +2,40 @@
 
 namespace BoomCMS\Jobs;
 
-use BoomCMS\Core\Auth\Auth;
-use BoomCMS\Core\Page;
+use BoomCMS\Core\Page\Page;
+use BoomCMS\Core\Person\Person;
+use BoomCMS\Support\Facades\Page as PageFacade;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Bus\SelfHandling;
 
 class CreatePage extends Command implements SelfHandling
 {
-    protected $auth;
-    protected $parent;
-    protected $provider;
+    /**
+     * @var Person
+     */
+    protected $createdBy;
 
-    public function __construct(Page\Provider $provider, Auth $auth, Page\Page $parent = null)
+    /**
+     *
+     * @var Page
+     */
+    protected $parent;
+
+    /**
+     * @param Person $createdBy
+     * @param Page $parent
+     */
+    public function __construct(Person $createdBy, Page $parent = null)
     {
-        $this->auth = $auth;
+        $this->createdBy = $createdBy;
         $this->parent = $parent;
-        $this->provider = $provider;
     }
 
     public function handle()
     {
         $attrs = [
             'visible_from' => time(),
-            'created_by'   => $this->auth->getPerson()->getId(),
+            'created_by'   => $this->createdBy->getId(),
         ];
 
         if ($this->parent) {
@@ -38,10 +49,10 @@ class CreatePage extends Command implements SelfHandling
             ];
         }
 
-        $page = $this->provider->create($attrs);
+        $page = PageFacade::create($attrs);
 
         $page->addVersion([
-            'edited_by'       => $this->auth->getPerson()->getId(),
+            'edited_by'       => $this->createdBy->getId(),
             'page_id'         => $page->getId(),
             'template_id'     => $this->parent ? $this->parent->getDefaultChildTemplateId() : null,
             'title'           => 'Untitled',

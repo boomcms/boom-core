@@ -36,7 +36,7 @@ class PageController extends Controller
     {
         $this->authorization('add_page', $this->page);
 
-        $newPage = $this->dispatch(new CreatePage($this->provider, $this->auth, $this->page));
+        $newPage = $this->dispatch(new CreatePage($this->auth->getPerson(), $this->page));
 
         $urlPrefix = ($this->page->getChildPageUrlPrefix()) ?: $this->page->url()->getLocation();
         $url = $this->dispatch(new CreatePagePrimaryUri($newPage, $urlPrefix));
