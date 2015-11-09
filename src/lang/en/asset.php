@@ -6,6 +6,20 @@ return [
     'previous_versions_intro' => 'These files were previously assigned to this asset but were replaced.',
     'openeditor'              => 'Open in image editor',
     'aspect-ratio'            => 'Aspect ratio',
+    'search' => [
+        'sort' => 'Sort assets by',
+        'tag' => 'Filter by tag',
+        'type' => 'Filter by asset type',
+    ],
+    'sort' => [
+        'last_modifed desc' => 'Most recent',
+        'last_modified asc' => 'Oldest',
+        'title asc'         => 'Title A - Z',
+        'title desc'        => 'Title Z - A',
+        'filesize asc'      => 'Size (smallest)',
+        'filesize desc'     => 'Size (largest)',
+        'downloads desc'    => 'Most downloaded',
+    ],
     'type'                    => [
         'image'    => 'Image',
         'doc'      => 'Document',

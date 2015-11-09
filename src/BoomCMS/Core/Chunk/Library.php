@@ -40,6 +40,25 @@ class Library extends BaseChunk
     }
 
     /**
+     * @return void|int
+     */
+    public function getLimit()
+    {
+        return $this->getParam('limit');
+    }
+
+    /**
+     * Returns a search parameter by key.
+     *
+     * @param string $key
+     * @return mixed
+     */
+    public function getParam($key)
+    {
+        return isset($this->params[$key]) ? $this->params[$key] : null;
+    }
+
+    /**
      * @return array
      */
     public function getParams()
@@ -48,13 +67,16 @@ class Library extends BaseChunk
     }
 
     /**
-     * @return string
+     * @return array
      */
-    public function getTag()
+    public function getTags()
     {
-        return (isset($this->params['tag']) && $this->params['tag'] !== '') ?
-            $this->params['tag']
-            : null;
+        return $this->getParam('tag') ? $this->getParam('tag') : [];
+    }
+
+    public function getOrder()
+    {
+        return $this->getParam('order');
     }
 
     /**
@@ -62,13 +84,27 @@ class Library extends BaseChunk
      */
     public function hasContent()
     {
-        return !empty($this->params) && !empty(array_values($this->params));
+        return !empty($this->params) && 
+            !empty(array_values($this->params)) &&
+            $this->hasFilters();
+    }
+
+    /**
+     * Returns whether the parameters array contains any filters.
+     *
+     * @return bool
+     */
+    public function hasFilters()
+    {
+        $params = array_except($this->params, ['order', 'limit']);
+
+        return !empty($params) && !empty(array_values($params));
     }
 
     protected function show()
     {
         return View::make($this->viewPrefix."library.$this->template", [
-            'tag'    => $this->getTag(),
+            'tags'    => $this->getTags(),
             'params' => $this->getParams(),
             'assets' => function () {
                 return $this->getAssets();

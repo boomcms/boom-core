@@ -1,4 +1,12 @@
 $.widget('ui.chunkLibrary', $.ui.chunk, {
+	clearFilters: function() {
+		var $el = this.dialog.contents;
+
+		$el.find('select').prop('selectedIndex', 0);
+		$el.find('#b-tags-search li').remove();
+		$el.find('input[type=text]').val('');
+	},
+
 	edit : function(){
 		$.boom.log('Tag library edit');
 
@@ -6,28 +14,39 @@ $.widget('ui.chunkLibrary', $.ui.chunk, {
 
 		this.dialog = new boomDialog({
 			url: '/cms/chunk/' + this.options.currentPage.id + '/edit?type=library&slotname=' + this.options.name,
-			width: 400,
-			title: 'Select tag',
-			onLoad : function() {
-				library.tag = library.dialog.contents.find('#b-selected p').text();
-
-				library.dialog.contents.find('#b-tags-add-name').assetTagAutocomplete({
-					complete : function(e, data) {
-						library.tag = data.tag;
-						library.dialog.contents.find('#b-selected p').text(data.tag);
-					}
-				});
+			width: 700,
+			closeButton: false,
+			saveButton: true,
+			onLoad: function() {
+				library.dialog.contents
+					.on('click', '.b-button.clear', function() {
+						library.clearFilters();
+					})
+					.find('#b-tags-search')
+					.assetTagSearch();
 			}
+		})
+		.always(function() {
+			library.bind();	
+		})
+		.done(function() {
+			console.log(library.getData());
+			library._save(library.getData());	
 		});
 	},
 
 	getData: function() {
-		return {params : {tag: this.tag}};
-	},
+		var $el = this.dialog.contents;
 
-	insert : function(tag) {
-		this.tag = tag;
-
-		return this._save();
+		return {
+			params: {
+				type: $el.find('#b-assets-types :selected').val(),
+				order: $el.find('#b-assets-sortby :selected').val(),
+				limit: $el.find('input[name=limit]').val(),
+				tag: $el.find('#b-tags-search [data-tag]').map(function() {
+					return $(this).attr('data-tag');
+				}).toArray()
+			}
+		};
 	}
 });

@@ -23,22 +23,8 @@
 		<input type='text' class="b-filter-input" id="b-assets-filter-title" placeholder="Search by asset name" value="Search by asset name" />
 
         <?= View::make('boomcms::assets.search.type') ?>
-
-		<div id='b-tags-search'>
-			<input type='text' class="b-filter-input" placeholder="Type a tag name" value="Type a tag name" />
-			<ul class="b-tags-list">
-			</ul>
-		</div>
-
-        <select id="b-assets-sortby">
-            <option value="last_modified desc" selected="selected">Most recent</option>
-            <option value="last_modified asc">Oldest</option>
-            <option value="title asc">Title A - Z</option>
-            <option value="title desc">Title Z - A</option>
-            <option value="filesize asc">Size (smallest)</option>
-            <option value="filesize desc">Size (largest)</option>
-            <option value="downloads desc">Most downloaded</option>
-        </select>
+        <?= View::make('boomcms::assets.search.tag') ?>
+        <?= View::make('boomcms::assets.search.sort') ?>
 
         <div id="b-assets-pagination" class="b-pagination"></div>
 	</div>

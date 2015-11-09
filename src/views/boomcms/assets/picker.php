@@ -27,18 +27,14 @@
             </div>
 
             <div>
-                <h2>Filter by asset type</h2>
+                <h2><?= Lang::get('boomcms::asset.search.type') ?></h2>
 
                 <?= View::make('boomcms::assets.search.type') ?>
             </div>
 
             <div>
-                <h2>Filter by tag</h2>
-                <div id='b-tags-search'>
-                    <input type='text' class="b-filter-input" placeholder="Type a tag name" value="Type a tag name" />
-                    <ul class="b-tags-list">
-                    </ul>
-                </div>
+                <h2><?= Lang::get('boomcms::asset.search.tag') ?></h2>
+                <?= View::make('boomcms::assets.search.tag') ?>
             </div>
         </section>
 

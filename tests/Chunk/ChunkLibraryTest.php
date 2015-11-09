@@ -46,25 +46,56 @@ class ChunkLibraryTest extends AbstractTestCase
     /**
      * getTag() should return the tag from the params array.
      */
-    public function testGetTagReturnsTag()
+    public function testGetTagsReturnsTags()
     {
-        $tag = 'test';
+        $tag = ['test'];
 
         $chunk = $this->getChunk(['params' => ['tag' => $tag]]);
-        $this->assertEquals($tag, $chunk->getTag());
+        $this->assertEquals($tag, $chunk->getTags());
     }
 
-    public function testGetTagReturnsNull()
+    public function testGetTagReturnsEmptyArray()
     {
         $values = [
             [],
             ['tag' => ''],
             ['tag' => null],
+            ['tag' => []]
         ];
 
         foreach ($values as $v) {
             $chunk = $this->getChunk($v);
-            $this->assertNull($chunk->getTag());
+            $this->assertEquals([], $chunk->getTags());
+        }
+    }
+
+    public function getGetOrderRetunsOrder()
+    {
+        $order = 'last_modified desc';
+
+        $chunk = $this->getChunk(['order' => $order]);
+        $this->assertEquals($order, $chunk->getOrder());
+    }
+
+    public function getGetLimitRetunsLimit()
+    {
+        $limit = 100;
+
+        $chunk = $this->getChunk(['limit' => $limit]);
+        $this->assertEquals($limit, $chunk->getLimit());
+    }
+
+    public function testGetLimitReturnsNull()
+    {
+        $values = [
+            [],
+            ['limit' => ''],
+            ['limit' => null],
+        ];
+
+        foreach ($values as $v) {
+            $chunk = $this->getChunk($v);
+            $this->assertNull($chunk->getLimit());
         }
     }
 
@@ -87,13 +118,24 @@ class ChunkLibraryTest extends AbstractTestCase
         }
     }
 
+    /**
+     * A library doesn't have content if the params only contain a sort order or limit.
+     * 
+     * There most be a filter parameter as well.
+     */
+    public function testHasContentIsFalseIfParamsDontContainFilters()
+    {
+        $chunk = $this->getChunk(['params' => ['order' => 'last_modified desc', 'limit' => 100]]);
+
+        $this->assertFalse($chunk->hasContent());
+    }
+
     public function testHasContentIfParamsIsNotEmptyArray()
     {
         // Possible values of the params attribute which should be counted as the chunk having content.
         $values = [
             ['tag' => 'test'],
             ['type'  => 'image'],
-            ['limit' => 10],
             ['tag'   => 'test', 'type' => null],
         ];
 

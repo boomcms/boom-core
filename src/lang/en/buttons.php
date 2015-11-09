@@ -5,6 +5,7 @@ return [
     'add-tags'         => 'Add tags',
     'add-url'          => 'Add URL',
     'cancel'           => 'Cancel',
+    'clear-filters'    => 'Clear filters',
     'clear-selection'  => 'Clear selection',
     'crop'             => 'Crop',
     'delete'           => 'Delete',
