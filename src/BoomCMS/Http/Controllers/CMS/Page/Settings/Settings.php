@@ -4,6 +4,7 @@ namespace BoomCMS\Http\Controllers\CMS\Page\Settings;
 
 use BoomCMS\Core\Page;
 use BoomCMS\Http\Controllers\CMS\Page\PageController;
+use BoomCMS\Support\Facades\Auth;
 
 abstract class Settings extends PageController
 {
@@ -29,7 +30,7 @@ abstract class Settings extends PageController
     public function children()
     {
         $this->authorization('edit_page_children_basic');
-        $this->allowAdvanced = $this->auth->loggedIn('edit_page_children_advanced', $this->page);
+        $this->allowAdvanced = Auth::loggedIn('edit_page_children_advanced', $this->page);
     }
 
     public function feature()
@@ -40,13 +41,13 @@ abstract class Settings extends PageController
     public function navigation()
     {
         $this->authorization('edit_page_navigation_basic');
-        $this->allowAdvanced = $this->auth->loggedIn('edit_page_navigation_advanced', $this->page);
+        $this->allowAdvanced = Auth::loggedIn('edit_page_navigation_advanced', $this->page);
     }
 
     public function search()
     {
         $this->authorization('edit_page_search_basic');
-        $this->allowAdvanced = $this->auth->loggedIn('edit_page_search_advanced', $this->page);
+        $this->allowAdvanced = Auth::loggedIn('edit_page_search_advanced', $this->page);
     }
 
     public function visibility()
@@ -56,8 +57,8 @@ abstract class Settings extends PageController
 
     public function authorization($role, Page\Page $page = null)
     {
-        if (!$this->auth->loggedIn('manage_pages')) {
-            parent::authorization($role, $this->page);
+        if (!Auth::loggedIn('manage_pages')) {
+            parent::authorization($role, $page);
         }
     }
 }

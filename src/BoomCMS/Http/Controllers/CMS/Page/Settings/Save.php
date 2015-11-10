@@ -4,6 +4,7 @@ namespace BoomCMS\Http\Controllers\CMS\Page\Settings;
 
 use BoomCMS\Events\PageSearchSettingsWereUpdated;
 use BoomCMS\Events\PageWasMadeVisible;
+use BoomCMS\Support\Facades\Auth;
 use BoomCMS\Support\Facades\Page;
 use DateTime;
 use Illuminate\Support\Facades\Event;
@@ -16,7 +17,7 @@ class Save extends Settings
 
         $this->page->setInternalName($this->request->input('internal_name'));
 
-        if ($this->auth->loggedIn('edit_disable_delete', $this->page)) {
+        if (Auth::loggedIn('edit_disable_delete', $this->page)) {
             $this->page->setDisableDelete($this->request->input('disable_delete') == '1');
         }
 
@@ -113,7 +114,7 @@ class Save extends Settings
         Page::save($this->page);
 
         if (!$wasVisible && $this->page->isVisible()) {
-            Event::fire(new PageWasMadeVisible($this->page, $this->auth->getPerson()));
+            Event::fire(new PageWasMadeVisible($this->page, Auth::getPerson()));
         }
 
         return (int) $this->page->isVisible();
