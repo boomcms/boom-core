@@ -5,6 +5,7 @@ namespace BoomCMS\Http\Controllers\CMS\Assets;
 use BoomCMS\Core\Asset;
 use BoomCMS\Http\Controllers\Controller;
 use BoomCMS\Support\Facades\Asset as AssetFacade;
+use BoomCMS\Support\Facades\Auth;
 use BoomCMS\Support\Helpers\Asset as AssetHelper;
 use DateTime;
 use Illuminate\Http\JsonResponse;
@@ -171,9 +172,9 @@ class AssetManager extends Controller
             $asset = new Asset\Asset();
             $asset
                 ->setUploadedTime(new DateTime('now'))
-                ->setUploadedBy($this->auth->getPerson());
+                ->setUploadedBy(Auth::getPerson());
 
-            $assetIds[] = $this->provider->save($asset)->getId();
+            $assetIds[] = AssetFacade::save($asset)->getId();
             $asset->createVersionFromFile($file);
             AssetFacade::save($asset);
         }
