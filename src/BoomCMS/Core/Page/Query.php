@@ -34,6 +34,7 @@ class Query extends BaseQuery
     public function getResults()
     {
         $finder = $this->addFilters(new Finder\Finder(), $this->params);
+        $finder = $this->configurePagination($finder, $this->params);
 
         return $finder->findAll();
     }
