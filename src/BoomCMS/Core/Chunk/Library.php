@@ -102,6 +102,16 @@ class Library extends BaseChunk
         return !empty($params) && !empty(array_values($params));
     }
 
+    /**
+     * @param array $params
+     */
+    public function mergeParams(array $params)
+    {
+        $this->params = $this->params + $params;
+
+        return $this;
+    }
+
     protected function show()
     {
         return View::make($this->viewPrefix."library.$this->template", [

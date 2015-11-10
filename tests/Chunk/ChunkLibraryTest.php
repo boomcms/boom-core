@@ -146,6 +146,35 @@ class ChunkLibraryTest extends AbstractTestCase
         }
     }
 
+    public function testMergeParamsThenGet()
+    {
+        $params = ['tag' => 'test'];
+        $merged = ['limit' => 4];
+
+        $chunk = $this->getChunk(['params' => $params]);
+        $chunk->mergeParams($merged);
+
+        $this->assertEquals($params + $merged, $chunk->getParams());
+    }
+
+    public function testMergeParamsAreOverwritten()
+    {
+        $params = ['limit' => 5];
+        $merged = ['tag' => 'test', 'limit' => 4];
+
+        $chunk = $this->getChunk(['params' => $params]);
+        $chunk->mergeParams($merged);
+
+        $this->assertEquals(['tag' => 'test', 'limit' => 5], $chunk->getParams());
+    }
+
+    public function testMergeParamsReturnsSelf()
+    {
+        $chunk = $this->getChunk();
+        
+        $this->assertEquals($chunk, $chunk->mergeParams([]));
+    }
+
     protected function getChunk($attrs = [], $slotname = 'test', $editable = true)
     {
         return new Library(new Page([]), $attrs, $slotname, $editable);
