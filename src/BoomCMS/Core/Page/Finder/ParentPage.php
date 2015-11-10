@@ -16,10 +16,14 @@ class ParentPage extends Filter
 
     public function build(Builder $query)
     {
-        $order = $this->parent->getChildOrderingPolicy();
+        if ($this->parent->loaded()) {
+            $order = $this->parent->getChildOrderingPolicy();
 
-        return $query
-            ->where('parent_id', '=', $this->parent->getId())
-            ->orderBy($order->getColumn(), $order->getDirection());
+            return $query
+                ->where('parent_id', '=', $this->parent->getId())
+                ->orderBy($order->getColumn(), $order->getDirection());
+        } else {
+            return $query->whereNull('parent_id');
+        }
     }
 }

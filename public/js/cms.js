@@ -40217,7 +40217,7 @@ $.widget('boom.pageTree', {
 
 	_create : function() {
 		this.bind();
-		this.getChildren(0, this.element);
+		this.getChildren(null, this.element);
 	},
 
 	itemClick : function($node) {
@@ -40227,7 +40227,7 @@ $.widget('boom.pageTree', {
 	getChildren : function(pageId, $ul) {
 		var pageTree = this;
 
-		$.get('/page/children', {parent : pageId})
+		$.get('/page/children', {parent: pageId})
 			.done(function(data) {
 
 				$(data).each(function(i, item) {
