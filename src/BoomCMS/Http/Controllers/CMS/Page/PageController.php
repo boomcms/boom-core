@@ -2,12 +2,12 @@
 
 namespace BoomCMS\Http\Controllers\CMS\Page;
 
+use BoomCMS\Core\Auth\Auth;
 use BoomCMS\Core\Page as Page;
 use BoomCMS\Events\PageWasCreated;
 use BoomCMS\Http\Controllers\Controller;
 use BoomCMS\Jobs\CreatePage;
 use BoomCMS\Jobs\CreatePagePrimaryUri;
-use BoomCMS\Support\Facades\Auth;
 use Illuminate\Foundation\Bus\DispatchesCommands;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Event;
@@ -24,8 +24,9 @@ class PageController extends Controller
      */
     protected $page;
 
-    public function __construct(Request $request)
+    public function __construct(Auth $auth, Request $request)
     {
+        $this->auth = $auth;
         $this->request = $request;
         $this->page = $this->request->route()->getParameter('page');
     }
@@ -34,7 +35,7 @@ class PageController extends Controller
     {
         $this->authorization('add_page', $this->page);
 
-        $newPage = $this->dispatch(new CreatePage(Auth::getPerson(), $this->page));
+        $newPage = $this->dispatch(new CreatePage($this->auth->getPerson(), $this->page));
 
         $urlPrefix = ($this->page->getChildPageUrlPrefix()) ?: $this->page->url()->getLocation();
         $url = $this->dispatch(new CreatePagePrimaryUri($newPage, $urlPrefix));
