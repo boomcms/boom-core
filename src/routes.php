@@ -1,16 +1,17 @@
 <?php
 
 use BoomCMS\Core\Auth\Auth;
+use BoomCMS\Http\Middleware;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => [
-    'BoomCMS\Http\Middleware\DisableHttpCacheIfLoggedIn',
-    'BoomCMS\Http\Middleware\DefineCMSViewSharedVariables',
+    Middleware\DisableHttpCacheIfLoggedIn::class,
+    Middleware\DefineCMSViewSharedVariables::class,
 ]], function () {
     Route::group(['prefix' => 'cms', 'namespace' => 'BoomCMS\Http\Controllers\CMS'], function () {
         Route::get('logout', 'Auth\Logout@index');
 
-        Route::group(['namespace' => 'Auth', 'middleware' => ['BoomCMS\Http\Middleware\RedirectIfAuthenticated']], function () {
+        Route::group(['namespace' => 'Auth', 'middleware' => [Middleware\RedirectIfAuthenticated::class]], function () {
             Route::get('login', [
                 'as'   => 'login',
                 'uses' => 'Login@showLoginForm',
@@ -23,7 +24,7 @@ Route::group(['middleware' => [
             Route::any('recover/set-password', 'Recover@setPassword');
         });
 
-        Route::group(['middleware' => ['BoomCMS\Http\Middleware\RequireLogin']], function () {
+        Route::group(['middleware' => [Middleware\RequireLogin::class]], function () {
             Route::controller('autocomplete', 'Autocomplete');
             Route::controller('ui', 'UI');
             Route::controller('editor', 'Editor');
@@ -32,7 +33,7 @@ Route::group(['middleware' => [
             Route::controller('settings', 'Settings');
 
             Route::group([
-                'middleware' => ['BoomCMS\Http\Middleware\SaveUrlForRedirect'],
+                'middleware' => [Middleware\SaveUrlForRedirect::class],
             ], function () {
                 Route::group([
                     'prefix'    => 'assets',
@@ -53,7 +54,7 @@ Route::group(['middleware' => [
                     Route::get('tags/list/{assets}', 'Tags@listTags');
                 });
 
-                Route::group(['namespace' => 'People', 'middleware' => ['BoomCMS\Http\Middleware\PeopleManager']], function () {
+                Route::group(['namespace' => 'People', 'middleware' => [Middleware\PeopleManager::class]], function () {
                     Route::get('people', 'PeopleManager@index');
 
                     Route::get('person/add', 'Person\ViewPerson@add');
@@ -69,7 +70,7 @@ Route::group(['middleware' => [
 
                 Route::group([
                     'namespace'  => 'Group',
-                    'middleware' => ['BoomCMS\Http\Middleware\PeopleManager'],
+                    'middleware' => [Middleware\PeopleManager::class],
                 ], function () {
                     Route::get('group/add', 'View@add');
                     Route::post('group/add', 'Save@add');
@@ -154,7 +155,7 @@ Route::group(['middleware' => [
 
     Route::get('asset/version/{id}/{width?}/{height?}', [
         'as'         => 'asset-version',
-        'middleware' => ['BoomCMS\Http\Middleware\RequireLogin'],
+        'middleware' => [Middleware\RequireLogin::class],
         'uses'       => function (Auth $auth, $id, $width = null, $height = null) {
             $asset = Asset::findByVersionId($id);
 
@@ -165,7 +166,7 @@ Route::group(['middleware' => [
     Route::get('asset/{asset}/download', [
         'asset'      => 'asset-download',
         'middleware' => [
-            'BoomCMS\Http\Middleware\LogAssetDownload',
+            Middleware\LogAssetDownload::class,
         ],
         'uses' => function (Auth $auth, $asset) {
             return App::make(AssetHelper::controller($asset), [$auth, $asset])->download();
@@ -175,7 +176,7 @@ Route::group(['middleware' => [
     Route::get('asset/{asset}/{action}.{extension}', [
         'as'         => 'asset',
         'middleware' => [
-            'BoomCMS\Http\Middleware\CheckAssetETag',
+            Middleware\CheckAssetETag::class,
         ],
         'uses' => function (Auth $auth, $asset, $action = 'view', $width = null, $height = null) {
             return App::make(AssetHelper::controller($asset), [$auth, $asset])->$action($width, $height);
@@ -188,7 +189,7 @@ Route::group(['middleware' => [
     Route::get('asset/{asset}/{action?}/{width?}/{height?}', [
         'as'         => 'asset',
         'middleware' => [
-            'BoomCMS\Http\Middleware\CheckAssetETag',
+            Middleware\CheckAssetETag::class,
         ],
         'uses' => function (Auth $auth, $asset, $action = 'view', $width = null, $height = null) {
             return App::make(AssetHelper::controller($asset), [$auth, $asset])->$action($width, $height);
@@ -198,9 +199,9 @@ Route::group(['middleware' => [
 
 Route::any('{location}.{format?}', [
     'middleware' => [
-        'BoomCMS\Http\Middleware\ProcessSiteURL',
-        'BoomCMS\Http\Middleware\InsertCMSToolbar',
-        'BoomCMS\Http\Middleware\SaveUrlForRedirect',
+        Middleware\ProcessSiteURL::class,
+        Middleware\InsertCMSToolbar::class,
+        Middleware\SaveUrlForRedirect::class,
     ],
     'uses' => 'BoomCMS\Http\Controllers\PageController@show',
 ])->where([
