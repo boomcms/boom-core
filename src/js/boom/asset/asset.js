@@ -9,21 +9,21 @@ function boomAsset(assetId) {
 		return $.get(this.getUrl('embed'));
 	};
 	
-	boomAsset.prototype.getUrl = function(action, width) {
+	boomAsset.prototype.getUrl = function(action, width, height) {
 		var url = '/asset/' + this.getId();
 
-		if ((!action || action === 'view') && !width) {
+		if ((!action || action === 'view') && !(width || height)) {
 			return url;
 		}
 
-		if (!action && width) {
+		if (!action && (width || height)) {
 			action = 'view';
 		}
 
 		url = url + '/' + action;
 
-		if (width) {
-			url = url + '/' + width;
+		if (width || height) {
+			url = url + '/' + width + '/' + height;
 		}
 
 		return url;

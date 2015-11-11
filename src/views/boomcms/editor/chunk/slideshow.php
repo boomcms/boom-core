@@ -16,7 +16,7 @@
                 <li>
                     <label>
                         <input type="radio" value="<?= $slide->getId() ?>" name="slide" data-asset="<?= $slide->getAssetId() ?>" data-title="<?= $slide->getTitle() ?>" data-url="<?= $link->url() ?>" data-page="<?= $link->isInternal() ? $link->getPage()->getId() : 0 ?>" data-caption="<?= $slide->getCaption() ?>" data-linktext='<?= $slide->getLinkText() ?>' />
-                        <img src="<?= $assetURL(['id' => $slide->getAssetId(), 'width' => 150]) ?>" />
+                        <img src="<?= $assetURL(['id' => $slide->getAssetId(), 'height' => 100]) ?>" />
                     </label>
                 </li>
             <?php endforeach ?>

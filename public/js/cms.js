@@ -42070,7 +42070,7 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 
 		new boomAssetPicker()
 			.done(function(asset) {
-				var $new_slide = $('<li><label><input type="radio" value="" name="slide" data-asset="' + asset.getId() + '"  /><img src="' + asset.getUrl('view', 150) + '" /></label></li>');
+				var $new_slide = $('<li><label><input type="radio" value="" name="slide" data-asset="' + asset.getId() + '"  /><img src="' + asset.getUrl('view', 0, 100) + '" /></label></li>');
 
 				slideshowEditor.dialog.contents
 					.find('#b-slideshow-editor-slides')
@@ -43332,21 +43332,21 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 		return $.get(this.getUrl('embed'));
 	};
 	
-	boomAsset.prototype.getUrl = function(action, width) {
+	boomAsset.prototype.getUrl = function(action, width, height) {
 		var url = '/asset/' + this.getId();
 
-		if ((!action || action === 'view') && !width) {
+		if ((!action || action === 'view') && !(width || height)) {
 			return url;
 		}
 
-		if (!action && width) {
+		if (!action && (width || height)) {
 			action = 'view';
 		}
 
 		url = url + '/' + action;
 
-		if (width) {
-			url = url + '/' + width;
+		if (width || height) {
+			url = url + '/' + width + '/' + height;
 		}
 
 		return url;

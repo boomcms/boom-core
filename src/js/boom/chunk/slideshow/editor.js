@@ -82,7 +82,7 @@ function boomChunkSlideshowEditor(page_id, slotname, options) {
 
 		new boomAssetPicker()
 			.done(function(asset) {
-				var $new_slide = $('<li><label><input type="radio" value="" name="slide" data-asset="' + asset.getId() + '"  /><img src="' + asset.getUrl('view', 150) + '" /></label></li>');
+				var $new_slide = $('<li><label><input type="radio" value="" name="slide" data-asset="' + asset.getId() + '"  /><img src="' + asset.getUrl('view', 0, 100) + '" /></label></li>');
 
 				slideshowEditor.dialog.contents
 					.find('#b-slideshow-editor-slides')
