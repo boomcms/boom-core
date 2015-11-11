@@ -51,14 +51,12 @@ function boomAssetPicker(currentAsset, filters) {
 		});
 
 		this.picker
-			.on('click', '.thumb a', function(e) {
+			.on('click', '.thumb', function(e) {
 				e.preventDefault();
 
-				var assetId = $(this).attr('href').replace('#asset/', '');
+				var assetId = $(this).attr('data-asset');
 
 				assetPicker.pick(new boomAsset(assetId));
-
-				return false;
 			})
 			.on('click', '#b-assets-picker-close', function() {
 				assetPicker.cancel();

@@ -59,13 +59,13 @@ $.widget('boom.assetManager', {
 				assetManager.removeFilters();
 				assetManager.getAssets();
 			})
-			.on('click', '.thumb a', function(event) {
+			.on('click', '.thumb', function(event) {
 				event.preventDefault();
 
 				var $this = $(this);
 
-				assetManager.select($this.attr('href').replace('#asset/', ''));
-				$this.parent().parent().toggleClass('selected');
+				assetManager.select($this.attr('data-asset'));
+				$this.toggleClass('selected');
 			});
 
 		this.titleFilter = this.element
@@ -122,7 +122,7 @@ $.widget('boom.assetManager', {
 		this.selection.clear();
 		this.toggleButtons();
 
-		this.element.find('#b-assets-view-thumbs div').removeClass('selected');
+		this.element.find('#b-assets-view-thumbs .selected').removeClass('selected');
 	},
 
 	_create : function() {

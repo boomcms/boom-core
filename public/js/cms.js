@@ -43544,13 +43544,13 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 				assetManager.removeFilters();
 				assetManager.getAssets();
 			})
-			.on('click', '.thumb a', function(event) {
+			.on('click', '.thumb', function(event) {
 				event.preventDefault();
 
 				var $this = $(this);
 
-				assetManager.select($this.attr('href').replace('#asset/', ''));
-				$this.parent().parent().toggleClass('selected');
+				assetManager.select($this.attr('data-asset'));
+				$this.toggleClass('selected');
 			});
 
 		this.titleFilter = this.element
@@ -43607,7 +43607,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 		this.selection.clear();
 		this.toggleButtons();
 
-		this.element.find('#b-assets-view-thumbs div').removeClass('selected');
+		this.element.find('#b-assets-view-thumbs .selected').removeClass('selected');
 	},
 
 	_create : function() {
@@ -43769,14 +43769,12 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 		});
 
 		this.picker
-			.on('click', '.thumb a', function(e) {
+			.on('click', '.thumb', function(e) {
 				e.preventDefault();
 
-				var assetId = $(this).attr('href').replace('#asset/', '');
+				var assetId = $(this).attr('data-asset');
 
 				assetPicker.pick(new boomAsset(assetId));
-
-				return false;
 			})
 			.on('click', '#b-assets-picker-close', function() {
 				assetPicker.cancel();
