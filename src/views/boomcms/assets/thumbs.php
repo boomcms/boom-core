@@ -9,6 +9,12 @@
 
                     <p>
                         <?= Lang::get('boomcms::asset.type.'.strtolower($asset->getType())) ?><br />
+                    
+                        <?php if ($asset->isImage()): ?>
+                            <?= $asset->getWidth() ?> x <?= $asset->getHeight() ?>
+                        <?php else: ?>
+                            <?= $asset->getHumanFilesize() ?>
+                        <?php endif ?>
                     </p>
                 </div>
 			</a>
