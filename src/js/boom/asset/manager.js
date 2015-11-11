@@ -65,7 +65,10 @@ $.widget('boom.assetManager', {
 				var $this = $(this);
 
 				assetManager.select($this.attr('data-asset'));
-				$this.toggleClass('selected');
+
+				$this
+					.toggleClass('selected')
+					.blur();
 			});
 
 		this.titleFilter = this.element
