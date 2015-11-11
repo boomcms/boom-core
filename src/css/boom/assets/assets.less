@@ -47,13 +47,6 @@
 				display: block;
 			}
 
-			input {
-				z-index: 0;
-				position: absolute;
-				top: 0;
-				left: 0;
-			}
-
 			img {
 				position: relative;
 				z-index: 1;
@@ -79,23 +72,17 @@
 				overflow: hidden;
 				transition: all 1.5s ease-in;
 
-				h1 {
+				h2 {
 					text-align: center;
 				}
 
-				h1, p {
+				h2, p {
 					padding: 5px;
-				}
-
-				img.type {
-					width: 16px;
-					height: 16px;
 				}
 			}
 
 			&:hover, &:focus, &:active {
 				.b-asset-details {
-					font-weight: normal;
 					max-height: 100%;
 					transition: all 1.5s ease-out;
 				}

@@ -1,4 +1,4 @@
-<div id="b-assets-view-thumbs" class="ui-helper-left">
+<div id="b-assets-view-thumbs">
 	<?php foreach ($assets as $asset): ?>
 		<div style="height: 160px; width: <?= floor(160 * $asset->getAspectRatio()) ?>px" data-aspect-ratio="<?= $asset->getAspectRatio() ?>">
 			<div class="thumb" data-asset="<?= $asset->getId() ?>">
@@ -6,10 +6,10 @@
 					<img />
 
 					<section class="b-asset-details">
-						<h1><?= $asset->getTitle() ?></h1>
+						<h2><?= $asset->getTitle() ?></h2>
 
 						<p>
-							<strong>Type</strong> <?= $asset->getType() ?><br />
+							<strong>Type</strong> <?= Lang::get('boomcms::asset.type.'.strtolower($asset->getType())) ?><br />
 							<strong>Description</strong> <?= ($asset->getDescription()) ? $asset->getDescription() : 'None set' ?><br />
 
 							<?php if ($asset->getDownloads()) : ?>
