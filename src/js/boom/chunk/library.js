@@ -30,7 +30,6 @@ $.widget('ui.chunkLibrary', $.ui.chunk, {
 			library.bind();	
 		})
 		.done(function() {
-			console.log(library.getData());
 			library._save(library.getData());	
 		});
 	},

@@ -41967,7 +41967,6 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 			library.bind();	
 		})
 		.done(function() {
-			console.log(library.getData());
 			library._save(library.getData());	
 		});
 	},
