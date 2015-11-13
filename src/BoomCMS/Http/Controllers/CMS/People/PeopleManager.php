@@ -2,8 +2,8 @@
 
 namespace BoomCMS\Http\Controllers\CMS\People;
 
-use BoomCMS\Support\Facades\Person;
 use BoomCMS\Http\Controllers\Controller;
+use BoomCMS\Support\Facades\Person;
 use Illuminate\Support\Facades\View;
 
 class PeopleManager extends Controller

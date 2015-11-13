@@ -171,7 +171,7 @@ class ChunkLibraryTest extends AbstractTestCase
     public function testMergeParamsReturnsSelf()
     {
         $chunk = $this->getChunk();
-        
+
         $this->assertEquals($chunk, $chunk->mergeParams([]));
     }
 
