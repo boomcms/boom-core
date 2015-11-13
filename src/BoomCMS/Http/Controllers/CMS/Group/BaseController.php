@@ -2,8 +2,8 @@
 
 namespace BoomCMS\Http\Controllers\CMS\Group;
 
-use BoomCMS\Support\Facades\Group;
 use BoomCMS\Http\Controllers\Controller;
+use BoomCMS\Support\Facades\Group;
 use Illuminate\Http\Request;
 
 class BaseController extends Controller

@@ -16,14 +16,13 @@ class CreatePage extends Command implements SelfHandling
     protected $createdBy;
 
     /**
-     *
      * @var Page
      */
     protected $parent;
 
     /**
      * @param Person $createdBy
-     * @param Page $parent
+     * @param Page   $parent
      */
     public function __construct(Person $createdBy, Page $parent = null)
     {

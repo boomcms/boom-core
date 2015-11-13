@@ -8,7 +8,6 @@ use BoomCMS\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Session\SessionManager as Session;
-use View as View;
 
 class Controller extends BaseController
 {
@@ -55,8 +54,8 @@ class Controller extends BaseController
     /**
      * Checks whether the current user is authorized to perform a particular action.
      *
-     * @param string     $role
-     * @param Page $page
+     * @param string $role
+     * @param Page   $page
      */
     public function authorization($role, Page $page = null)
     {
