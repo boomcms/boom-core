@@ -10,7 +10,7 @@ class EventServiceProvider extends ServiceProvider
 {
     protected $listen = [
         Events\AccountCreated::class => [
-            BoomCMS\Listeners\SendAccountCreatedNotification::class,
+            Listeners\SendAccountCreatedNotification::class,
         ],
         Events\Auth\PasswordChanged::class => [
             Listeners\SendPasswordChangedNotification::class,
