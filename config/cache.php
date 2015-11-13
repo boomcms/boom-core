@@ -37,14 +37,14 @@ return [
         ],
 
         'database' => [
-            'driver'     => 'database',
-            'table'      => 'cache',
+            'driver' => 'database',
+            'table'  => 'cache',
             'connection' => null,
         ],
 
         'file' => [
             'driver' => 'file',
-            'path'   => storage_path().'/framework/cache',
+            'path'   => storage_path('framework/cache'),
         ],
 
         'memcached' => [
@@ -57,7 +57,7 @@ return [
         ],
 
         'redis' => [
-            'driver'     => 'redis',
+            'driver' => 'redis',
             'connection' => 'default',
         ],
 
