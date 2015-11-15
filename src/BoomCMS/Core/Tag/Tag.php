@@ -40,6 +40,11 @@ class Tag
         return $this->get('slug');
     }
 
+    /**
+     * @param string $name
+     *
+     * @return $this
+     */
     public function setName($name)
     {
         $this->attributes['name'] = $name;
@@ -47,6 +52,11 @@ class Tag
         return $this;
     }
 
+    /**
+     * @param string $slug
+     *
+     * @return $this
+     */
     public function setSlug($slug)
     {
         $this->attributes['slug'] = $slug;

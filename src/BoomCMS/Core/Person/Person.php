@@ -196,7 +196,7 @@ class Person implements Arrayable, CanResetPassword
     /**
      * @param string $email
      *
-     * @return \Boom\Person
+     * @return $this
      */
     public function setEmail($email)
     {
@@ -215,7 +215,7 @@ class Person implements Arrayable, CanResetPassword
     /**
      * @param string $password
      *
-     * @return \Boom\Person
+     * @return $this
      */
     public function setEncryptedPassword($password)
     {
@@ -248,7 +248,7 @@ class Person implements Arrayable, CanResetPassword
     /**
      * @param string $name
      *
-     * @return \Boom\Person
+     * @return $this
      */
     public function setName($name)
     {
