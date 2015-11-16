@@ -40,6 +40,6 @@ class Save extends BaseController
             ->setPageId($this->page->getId())
             ->setIsPrimary(false);
 
-        $this->provider->save($this->url);
+        URL::save($this->url);
     }
 }
