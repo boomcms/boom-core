@@ -3,7 +3,7 @@
 namespace BoomCMS\Support\Helpers;
 
 use BoomCMS\Core\Asset\Asset as A;
-use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Config as ConfigFacade;
 
 abstract class Asset
 {
@@ -51,6 +51,6 @@ abstract class Asset
 
     public static function types()
     {
-        return Config::get('boomcms.assets.types');
+        return ConfigFacade::get('boomcms.assets.types');
     }
 }
