@@ -9,16 +9,16 @@
     "packages": [
         {
             "name": "boomcms/boom-core",
-            "version": "v4.0.0-beta1",
+            "version": "v4.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/boomcms/boom-core.git",
-                "reference": "1f4e1be55479c69ae829b8aeba3ef9e794431dc2"
+                "reference": "1b921058e00470c8a8c789cfa9d589a5d5c1a8ac"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/boomcms/boom-core/zipball/1f4e1be55479c69ae829b8aeba3ef9e794431dc2",
-                "reference": "1f4e1be55479c69ae829b8aeba3ef9e794431dc2",
+                "url": "https://api.github.com/repos/boomcms/boom-core/zipball/1b921058e00470c8a8c789cfa9d589a5d5c1a8ac",
+                "reference": "1b921058e00470c8a8c789cfa9d589a5d5c1a8ac",
                 "shasum": ""
             },
             "require": {
@@ -51,7 +51,7 @@
                 "MIT"
             ],
             "description": "Core classes for BoomCMS",
-            "time": "2015-11-13 15:09:01"
+            "time": "2015-11-15 14:57:39"
         },
         {
             "name": "boomcms/boom-installer",
@@ -172,6 +172,34 @@
             ],
             "description": "sitemap.xml generator for BoomCMS",
             "time": "2015-08-07 11:26:37"
+        },
+        {
+            "name": "boomcms/theme-default",
+            "version": "v1.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/boomcms/theme-default.git",
+                "reference": "16bac32f3cf8f2fb2a23341b7c788e550254463d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/boomcms/theme-default/zipball/16bac32f3cf8f2fb2a23341b7c788e550254463d",
+                "reference": "16bac32f3cf8f2fb2a23341b7c788e550254463d",
+                "shasum": ""
+            },
+            "type": "boomcms-theme",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Rob Taylor",
+                    "email": "rob@uxblondon.com"
+                }
+            ],
+            "description": "Default theme for BoomCMS",
+            "time": "2015-11-14 13:15:27"
         },
         {
             "name": "classpreloader/classpreloader",
