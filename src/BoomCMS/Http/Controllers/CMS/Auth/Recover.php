@@ -4,7 +4,7 @@ namespace BoomCMS\Http\Controllers\CMS\Auth;
 
 use BoomCMS\Core\Auth;
 use BoomCMS\Http\Controllers\Controller;
-use BoomCMS\Suppoert\Facades\Person;
+use BoomCMS\Support\Facades\Person;
 use BoomCMS\Support\Facades\Settings;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;

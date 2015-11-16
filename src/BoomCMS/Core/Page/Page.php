@@ -512,7 +512,7 @@ class Page
     /**
      * @param string $prefix
      *
-     * @return \Boom\Page\Page
+     * @return $this
      */
     public function setChildrenUrlPrefix($prefix)
     {
@@ -524,7 +524,7 @@ class Page
     /**
      * @param bool $visible
      *
-     * @return \Boom\Page\Page
+     * @return $this
      */
     public function setChildrenVisibleInNav($visible)
     {
@@ -536,7 +536,7 @@ class Page
     /**
      * @param bool $visible
      *
-     * @return \Boom\Page\Page
+     * @return $this
      */
     public function setChildrenVisibleInNavCMS($visible)
     {
@@ -548,7 +548,7 @@ class Page
     /**
      * @param string $description
      *
-     * @return \Boom\Page\Page
+     * @return $this
      */
     public function setDescription($description)
     {
@@ -560,7 +560,7 @@ class Page
     /**
      * @param bool $indexing
      *
-     * @return \Boom\Page\Page
+     * @return $this
      */
     public function setExternalIndexing($indexing)
     {
@@ -572,7 +572,7 @@ class Page
     /**
      * @param int $featureImageId
      *
-     * @return \Boom\Page\Page
+     * @return $this
      */
     public function setFeatureImageId($featureImageId)
     {
@@ -584,7 +584,7 @@ class Page
     /**
      * @param int $templateId
      *
-     * @return \Boom\Page\Page
+     * @return $this
      */
     public function setGrandchildTemplateId($templateId)
     {
@@ -610,7 +610,7 @@ class Page
     /**
      * @param bool $indexing
      *
-     * @return \Boom\Page\Page
+     * @return $this
      */
     public function setInternalIndexing($indexing)
     {
@@ -622,7 +622,7 @@ class Page
     /**
      * @param string $name
      *
-     * @return \Boom\Page\Page
+     * @return $this
      */
     public function setInternalName($name)
     {
@@ -634,7 +634,7 @@ class Page
     /**
      * @param string $keywords
      *
-     * @return \Boom\Page\Page
+     * @return $this
      */
     public function setKeywords($keywords)
     {
@@ -646,7 +646,7 @@ class Page
     /**
      * @param int $parentId
      *
-     * @return \Boom\Page\Page
+     * @return $this
      */
     public function setParentId($parentId)
     {
@@ -690,7 +690,7 @@ class Page
     /**
      * @param bool $visible
      *
-     * @return \Boom\Page\Page
+     * @return $this
      */
     public function setVisibleAtAnyTime($visible)
     {
@@ -702,7 +702,7 @@ class Page
     /**
      * @param DateTime $time
      *
-     * @return \Boom\Page\Page
+     * @return $this
      */
     public function setVisibleFrom(DateTime $time)
     {
@@ -714,7 +714,7 @@ class Page
     /**
      * @param bool $visible
      *
-     * @return \Boom\Page\Page
+     * @return $this
      */
     public function setVisibleInCmsNav($visible)
     {
@@ -726,7 +726,7 @@ class Page
     /**
      * @param bool $visible
      *
-     * @return \Boom\Page\Page
+     * @return $this
      */
     public function setVisibleInNav($visible)
     {
@@ -738,7 +738,7 @@ class Page
     /**
      * @param DateTime $time
      *
-     * @return \Boom\Page\Page
+     * @return $this
      */
     public function setVisibleTo(DateTime $time = null)
     {

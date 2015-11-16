@@ -23,7 +23,7 @@ class Settings extends Controller
         SettingsStore::replaceAll($this->request->input('settings'));
 
         return View::make($this->view, [
-            'message' => Lang::get('boomcms::settings-manager._saved')
+            'message' => Lang::get('boomcms::settings-manager._saved'),
         ]);
     }
 }
