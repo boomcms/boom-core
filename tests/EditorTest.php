@@ -7,7 +7,6 @@ use BoomCMS\Core\Auth\PermissionsProvider;
 use BoomCMS\Core\Editor\Editor;
 use BoomCMS\Core\Page\Page;
 use BoomCMS\Core\Person\Person;
-use BoomCMS\Core\Person\Provider as PersonProvider;
 
 class EditorTest extends AbstractTestCase
 {
@@ -18,9 +17,9 @@ class EditorTest extends AbstractTestCase
         parent::setUp();
 
         $this->session = $this->getMockSession();
-        $provider = $this->getMock(PersonProvider::class);
+        $repository = $this->getMockPersonRepository();
         $permissionsProvider = $this->getMock(PermissionsProvider::class);
-        $this->auth = $this->getMock(Auth::class, ['getPerson', 'loggedIn'], [$this->session, $provider, $permissionsProvider]);
+        $this->auth = $this->getMock(Auth::class, ['getPerson', 'loggedIn'], [$this->session, $repository, $permissionsProvider]);
 
         $this->auth
             ->expects($this->any())

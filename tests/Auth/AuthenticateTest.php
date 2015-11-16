@@ -2,8 +2,10 @@
 
 namespace BoomCMS\Tests\Auth;
 
-use BoomCMS\Core\Auth;
-use BoomCMS\Core\Person;
+use BoomCMS\Core\Auth\Auth;
+use BoomCMS\Core\Auth\PermissionsProvider;
+use BoomCMS\Core\Person\Person;
+use BoomCMS\Core\Person\Guest;
 use BoomCMS\Tests\AbstractTestCase;
 
 class AuthenticateTest extends AbstractTestCase
@@ -14,20 +16,18 @@ class AuthenticateTest extends AbstractTestCase
     public function testPersonNotFoundExceptionIfInvalidEmail()
     {
         $session = $this->getMockSession();
-        $personProvider = $this->getMockBuilder('BoomCMS\Core\Person\Provider')
-            ->setMethods(['findByEmail'])
-            ->getMock();
-        $permissions = $this->getMock('BoomCMS\Core\Auth\PermissionsProvider');
+        $personRepository = $this->getMockPersonRepository(['findByEmail']);
+        $permissions = $this->getMock(PermissionsProvider::class);
 
         $email = 'test@test.com';
         $password = 'password';
-        $auth = new Auth\Auth($session, $personProvider, $permissions);
+        $auth = new Auth($session, $personRepository, $permissions);
 
-        $personProvider
+        $personRepository
             ->expects($this->once())
             ->method('findByEmail')
             ->with($this->equalTo($email))
-            ->will($this->returnValue(new Person\Guest()));
+            ->will($this->returnValue(new Guest()));
 
         $auth->authenticate($email, $password);
     }
@@ -38,16 +38,14 @@ class AuthenticateTest extends AbstractTestCase
     public function testInvalidPasswordExceptionIfInvalidPassword()
     {
         $session = $this->getMockSession();
-        $personProvider = $this->getMockBuilder('BoomCMS\Core\Person\Provider')
-            ->setMethods(['findByEmail', 'save'])
-            ->getMock();
-        $permissions = $this->getMock('BoomCMS\Core\Auth\PermissionsProvider');
+        $personRepository = $this->getMockPersonRepository(['findByEmail', 'save']);
+        $permissions = $this->getMock(PermissionsProvider::class);
 
         $email = 'test@test.com';
         $password = 'password';
-        $auth = new Auth\Auth($session, $personProvider, $permissions);
+        $auth = new Auth($session, $personRepository, $permissions);
 
-        $person = $this->getMockBuilder('BoomCMS\Core\Person\Person')
+        $person = $this->getMockBuilder(Person::class)
             ->setMethods(['checkPassword'])
             ->setConstructorArgs([['id' => 1, 'failed_logins' => 0]])
             ->getMock();
@@ -58,7 +56,7 @@ class AuthenticateTest extends AbstractTestCase
             ->with($password)
             ->will($this->returnValue(false));
 
-        $personProvider
+        $personRepository
             ->expects($this->once())
             ->method('findByEmail')
             ->with($this->equalTo($email))
@@ -70,20 +68,18 @@ class AuthenticateTest extends AbstractTestCase
     public function testLoginCalledAndPersonReturnedIfCorrectDetails()
     {
         $session = $this->getMockSession();
-        $personProvider = $this->getMockBuilder('BoomCMS\Core\Person\Provider')
-            ->setMethods(['findByEmail'])
-            ->getMock();
-        $permissions = $this->getMock('BoomCMS\Core\Auth\PermissionsProvider');
+        $personRepository = $this->getMockPersonRepository(['findByEmail']);
+        $permissions = $this->getMock(PermissionsProvider::class);
 
         $email = 'test@test.com';
         $password = 'password';
 
-        $auth = $this->getMockBuilder('BoomCMS\Core\Auth\Auth')
+        $auth = $this->getMockBuilder(Auth::class)
             ->setMethods(['login'])
-            ->setConstructorArgs([$session, $personProvider, $permissions])
+            ->setConstructorArgs([$session, $personRepository, $permissions])
             ->getMock();
 
-        $person = $this->getMockBuilder('BoomCMS\Core\Person\Person')
+        $person = $this->getMockBuilder(Person::class)
             ->setMethods(['checkPassword'])
             ->setConstructorArgs([['id' => 1]])
             ->getMock();
@@ -99,7 +95,7 @@ class AuthenticateTest extends AbstractTestCase
             ->with($password)
             ->will($this->returnValue(true));
 
-        $personProvider
+        $personRepository
             ->expects($this->once())
             ->method('findByEmail')
             ->with($this->equalTo($email))

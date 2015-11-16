@@ -110,7 +110,7 @@ class LoggedInTest extends AbstractTestCase
     protected function getAuth($person, $permissionsProvider)
     {
         $auth = $this->getMockBuilder('BoomCMS\Core\Auth\Auth')
-            ->setConstructorArgs([$this->getMockSession(), $this->getMockPersonProvider(), $permissionsProvider])
+            ->setConstructorArgs([$this->getMockSession(), $this->getMockPersonRepository(), $permissionsProvider])
             ->setMethods(['isLoggedIn', 'getPerson'])
             ->getMock();
 

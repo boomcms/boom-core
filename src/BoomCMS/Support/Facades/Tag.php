@@ -8,6 +8,6 @@ class Tag extends Facade
 {
     protected static function getFacadeAccessor()
     {
-        return 'boomcms.tag.provider';
+        return 'boomcms.repositories.tag';
     }
 }

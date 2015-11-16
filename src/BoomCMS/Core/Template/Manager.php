@@ -2,6 +2,7 @@
 
 namespace BoomCMS\Core\Template;
 
+use BoomCMS\Repositories\Template as TemplateRepository;
 use BoomCMS\Core\Theme\Theme;
 use BoomCMS\Database\Models\Template as Model;
 use Illuminate\Filesystem\Filesystem;
@@ -14,14 +15,14 @@ class Manager
     protected $filesystem;
 
     /**
-     * @var Provider
+     * @var TemplateRepository
      */
-    protected $provider;
+    protected $repository;
 
-    public function __construct(Filesystem $filesystem, Provider $provider)
+    public function __construct(Filesystem $filesystem, TemplateRepository $repository)
     {
         $this->filesystem = $filesystem;
-        $this->provider = $provider;
+        $this->repository = $repository;
     }
 
     public function createTemplateWithFilename($theme, $filename)
@@ -92,9 +93,7 @@ class Manager
 
     public function getAllTemplates()
     {
-        $provider = new Provider();
-
-        return $provider->findAll();
+        return $this->repository->findAll();
     }
 
     /**
@@ -130,7 +129,7 @@ class Manager
 
     public function templateIsInstalled($theme, $filename)
     {
-        $template = $this->provider->findByThemeAndFilename($theme, $filename);
+        $template = $this->repository->findByThemeAndFilename($theme, $filename);
 
         return $template->loaded();
     }

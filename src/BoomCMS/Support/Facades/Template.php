@@ -8,6 +8,6 @@ class Template extends Facade
 {
     protected static function getFacadeAccessor()
     {
-        return 'boomcms.template.provider';
+        return 'boomcms.repositories.template';
     }
 }

@@ -2,8 +2,7 @@
 
 namespace BoomCMS\ServiceProviders;
 
-use BoomCMS\Core\Group;
-use BoomCMS\Core\Person;
+use BoomCMS\Repositories;
 use Illuminate\Support\ServiceProvider;
 
 class PersonServiceProvider extends ServiceProvider
@@ -22,12 +21,12 @@ class PersonServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton('boomcms.person.provider', function ($app) {
-            return new Person\Provider();
+        $this->app->singleton('boomcms.repositories.person', function ($app) {
+            return new Repositories\Person();
         });
 
-        $this->app->singleton('boomcms.group.provider', function ($app) {
-            return new Group\Provider();
+        $this->app->singleton('boomcms.repositories.group', function ($app) {
+            return new Repositories\Group();
         });
     }
 }

@@ -89,7 +89,8 @@ class Recover extends Controller
             $tokens->delete($token);
             $tokens->deleteExpired();
             $person->setEncryptedPassword($this->auth->hash($this->request->input('password1')));
-            $this->app['boomcms.person.provider']->save($person);
+
+            Person::save($person);
             $this->auth->login($person);
 
             return redirect('/');

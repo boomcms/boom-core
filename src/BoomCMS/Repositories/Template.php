@@ -1,10 +1,11 @@
 <?php
 
-namespace BoomCMS\Core\Template;
+namespace BoomCMS\Repositories;
 
+use BoomCMS\Core\Template\Template as TemplateObject;
 use BoomCMS\Database\Models\Template as Model;
 
-class Provider
+class Template
 {
     public function deleteById($id)
     {
@@ -23,7 +24,7 @@ class Provider
         $templates = [];
 
         foreach ($models as $model) {
-            $templates[] = new Template($model->toArray());
+            $templates[] = new TemplateObject($model->toArray());
         }
 
         return $templates;
@@ -34,7 +35,7 @@ class Provider
         $model = Model::find($id);
         $attrs = $model ? $model->toArray() : [];
 
-        return new Template($attrs);
+        return new TemplateObject($attrs);
     }
 
     public function findByThemeAndFilename($theme, $filename)
@@ -43,7 +44,7 @@ class Provider
             ->where('theme', '=', $theme)
             ->first();
 
-        return $model ? new Template($model->toArray()) : new Template([]);
+        return $model ? new TemplateObject($model->toArray()) : new Template([]);
     }
 
     public function save(Template $template)

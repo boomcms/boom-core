@@ -1,11 +1,12 @@
 <?php
 
-namespace BoomCMS\Core\Group;
+namespace BoomCMS\Repositories;
 
+use BoomCMS\Core\Group\Group as GroupObject;
 use BoomCMS\Database\Models\Group as Model;
 use Illuminate\Support\Facades\DB;
 
-class Provider
+class Group
 {
     public function create(array $attributes)
     {
@@ -39,14 +40,14 @@ class Provider
     {
         $m = Model::find($id);
 
-        return new Group($m ? $m->toArray() : []);
+        return new GroupObject($m ? $m->toArray() : []);
     }
 
     public function findByName($name)
     {
     }
 
-    public function save(Group $group)
+    public function save(GroupObject $group)
     {
         $model = Model::find($group->getId());
         $model->update($group->toArray());

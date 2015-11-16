@@ -8,6 +8,6 @@ class URL extends Facade
 {
     protected static function getFacadeAccessor()
     {
-        return 'boomcms.url.provider';
+        return 'boomcms.repositories.url';
     }
 }

@@ -1,10 +1,11 @@
 <?php
 
-namespace BoomCMS\Core\Asset;
+namespace BoomCMS\Repositories;
 
+use BoomCMS\Core\Asset\Asset as AssetObject;
 use BoomCMS\Database\Models\Asset as Model;
 
-class Provider
+class Asset
 {
     protected $cache = [];
 
@@ -17,7 +18,7 @@ class Provider
     {
         $model = Model::withVersion($versionId)->first();
 
-        return $model ? new Asset($model->toArray()) : new Asset();
+        return $model ? new AssetObject($model->toArray()) : new Asset();
     }
 
     private function findAndCache(Model $model = null)
@@ -30,10 +31,10 @@ class Provider
             $this->cache[$model->id] = $model;
         }
 
-        return new Asset($model->toArray());
+        return new AssetObject($model->toArray());
     }
 
-    public function save(Asset $asset)
+    public function save(AssetObject $asset)
     {
         if ($asset->loaded()) {
             $model = isset($this->cache[$asset->getId()]) ?

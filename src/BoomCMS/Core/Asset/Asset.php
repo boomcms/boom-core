@@ -6,6 +6,7 @@ use BoomCMS\Core\Person;
 use BoomCMS\Database\Models\Asset\Version as VersionModel;
 use BoomCMS\Support\Facades\Asset as AssetFacade;
 use BoomCMS\Support\Facades\Auth;
+use BoomCMS\Support\Facades\Person as PersonFacade;
 use BoomCMS\Support\Helpers\Asset as AssetHelper;
 use BoomCMS\Support\Traits\Comparable;
 use BoomCMS\Support\Traits\HasId;
@@ -199,9 +200,7 @@ class Asset implements Arrayable
 
     public function getUploadedBy()
     {
-        $provider = new Person\Provider();
-
-        return $provider->findById($this->get('uploaded_by'));
+        return PersonFacade::findById($this->get('uploaded_by'));
     }
 
     public function getUploadedTime()

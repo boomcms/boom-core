@@ -8,6 +8,6 @@ class Page extends Facade
 {
     protected static function getFacadeAccessor()
     {
-        return 'boomcms.page.provider';
+        return 'boomcms.repositories.page';
     }
 }

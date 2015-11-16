@@ -21,11 +21,6 @@ class AssetManager extends Controller
      */
     protected $viewPrefix = 'boomcms::assets.';
 
-    /**
-     * @var Asset\Provider
-     */
-    protected $provider;
-
     public function __construct(Request $request)
     {
         $this->request = $request;

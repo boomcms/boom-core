@@ -1,6 +1,6 @@
 <?php
 
-namespace BoomCMS\Core\Person;
+namespace BoomCMS\Exceptions;
 
 class DuplicateEmailException extends \InvalidArgumentException
 {

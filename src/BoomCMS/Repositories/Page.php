@@ -1,16 +1,12 @@
 <?php
 
-namespace BoomCMS\Core\Page;
+namespace BoomCMS\Repositories;
 
+use BoomCMS\Core\Page\Finder;
+use BoomCMS\Core\Page\Page as PageObject;
 use BoomCMS\Database\Models\Page as Model;
 
-/**
- * TODO: Need to not return deleted / invisible pages by default with option to show a hidden page.
- *
- * This should probably be done by providing an editor instance to the consuctor
- * with a boolean flag to change whether hidden pages are returned.
- */
-class Provider
+class Page
 {
     /**
      * @var array
@@ -33,7 +29,7 @@ class Provider
     {
         $model = Model::create($attrs);
 
-        return $this->cache(new Page($model->toArray()));
+        return $this->cache(new PageObject($model->toArray()));
     }
 
     public function delete(Page $page)
@@ -98,13 +94,13 @@ class Provider
     private function findAndCache(Model $model = null)
     {
         if ($model) {
-            return $this->cache(new Page($model->toArray()));
+            return $this->cache(new PageObject($model->toArray()));
         }
 
         return new Page();
     }
 
-    public function save(Page $page)
+    public function save(PageObject $page)
     {
         if ($page->loaded()) {
             $model = isset($this->cache[$page->getId()]) ?

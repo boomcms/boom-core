@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Jobs;
 
-use BoomCMS\Core\Page;
+use BoomCMS\Core\Page\Page;
 use BoomCMS\Support\Facades\Page as PageFacade;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Bus\SelfHandling;
@@ -11,11 +11,11 @@ use Illuminate\Support\Facades\Bus;
 class DeletePageChildren extends Command implements SelfHandling
 {
     /**
-     * @var Page\Page
+     * @var Page
      */
     protected $page;
 
-    public function __construct(Page\Page $page)
+    public function __construct(Page $page)
     {
         $this->page = $page;
     }
@@ -25,7 +25,7 @@ class DeletePageChildren extends Command implements SelfHandling
         $this->doDelete($this->page);
     }
 
-    protected function doDelete(Page\Page $page)
+    protected function doDelete(Page $page)
     {
         $children = PageFacade::findByParentId($page->getId());
 

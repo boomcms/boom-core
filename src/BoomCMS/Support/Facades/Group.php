@@ -8,6 +8,6 @@ class Group extends Facade
 {
     protected static function getFacadeAccessor()
     {
-        return 'boomcms.group.provider';
+        return 'boomcms.repositories.group';
     }
 }

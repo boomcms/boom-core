@@ -3,6 +3,7 @@
 namespace BoomCMS\ServiceProviders;
 
 use BoomCMS\Core\Auth;
+use BoomCMS\Support\Facades\Person;
 use Illuminate\Support\ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
@@ -15,7 +16,7 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $auth = new Auth\Auth($this->app['session'],
-            $this->app['boomcms.person.provider'],
+            $this->app['boomcms.repositories.person'],
             new Auth\PermissionsProvider(),
             $this->app['cookie']
         );

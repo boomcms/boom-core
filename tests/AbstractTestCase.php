@@ -2,7 +2,10 @@
 
 namespace BoomCMS\Tests;
 
+use BoomCMS\Core\Auth\PermissionsProvider;
+use BoomCMS\Repositories;
 use Illuminate\Contracts\Console\Kernel;
+use Illuminate\Session\SessionManager;
 
 abstract class AbstractTestCase extends \Illuminate\Foundation\Testing\TestCase
 {
@@ -17,8 +20,8 @@ abstract class AbstractTestCase extends \Illuminate\Foundation\Testing\TestCase
         $app->make(Kernel::class)->bootstrap();
         $app->register(Stubs\BoomCMSServiceProvider::class);
 
-        $app->bind('boomcms.person.provider', function ($app) {
-            return new Stubs\PersonProvider();
+        $app->bind('boomcms.repositories.person', function ($app) {
+            return new Stubs\PersonRepository();
         });
 
         $app->bind('boomcms.settings', function ($app) {
@@ -31,21 +34,21 @@ abstract class AbstractTestCase extends \Illuminate\Foundation\Testing\TestCase
     protected function getMockSession()
     {
         return $this
-            ->getMockBuilder('Illuminate\Session\SessionManager')
+            ->getMockBuilder(SessionManager::class)
             ->disableOriginalConstructor()
             ->getMock();
     }
 
-    protected function getMockPersonProvider($methods = null)
+    protected function getMockPersonRepository($methods = null)
     {
         return $this
-            ->getMockBuilder('BoomCMS\Core\Person\Provider')
+            ->getMockBuilder(Repositories\Person::class)
             ->setMethods($methods)
             ->getMock();
     }
 
     protected function getMockPermissionsProvider()
     {
-        return $this->getMock('BoomCMS\Core\Auth\PermissionsProvider');
+        return $this->getMock(PermissionsProvider::class);
     }
 }

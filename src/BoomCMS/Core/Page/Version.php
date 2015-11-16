@@ -4,6 +4,7 @@ namespace BoomCMS\Core\Page;
 
 use BoomCMS\Core\Template;
 use BoomCMS\Support\Facades\Person;
+use BoomCMS\Support\Facades\Template as TemplateFacade;
 use BoomCMS\Support\Traits\HasId;
 use DateTime;
 
@@ -77,8 +78,7 @@ class Version
     public function getTemplate()
     {
         if ($this->template === null) {
-            $provider = new Template\Provider();
-            $this->template = $provider->findById($this->getTemplateId());
+            $this->template = TemplateFacade::findById($this->getTemplateId());
         }
 
         return $this->template;

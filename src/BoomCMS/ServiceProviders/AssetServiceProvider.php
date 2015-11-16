@@ -2,7 +2,7 @@
 
 namespace BoomCMS\ServiceProviders;
 
-use BoomCMS\Core\Asset\Provider;
+use BoomCMS\Repositories\Asset;
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
 
@@ -13,11 +13,11 @@ class AssetServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot(Router $router, Provider $assetProvider)
+    public function boot(Router $router, Asset $assetRepository)
     {
         $router->pattern('asset', '[0-9]+');
-        $router->bind('asset', function ($assetId) use ($assetProvider) {
-            return $assetProvider->findById($assetId);
+        $router->bind('asset', function ($assetId) use ($assetRepository) {
+            return $assetRepository->findById($assetId);
         });
     }
 
@@ -26,8 +26,8 @@ class AssetServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton('boomcms.asset.provider', function ($app) {
-            return new Provider();
+        $this->app->singleton('boomcms.repositories.asset', function ($app) {
+            return new Asset();
         });
     }
 }

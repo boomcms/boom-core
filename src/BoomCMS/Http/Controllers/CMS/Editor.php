@@ -2,8 +2,8 @@
 
 namespace BoomCMS\Http\Controllers\CMS;
 
-use BoomCMS\Core\Page;
 use BoomCMS\Http\Controllers\Controller;
+use BoomCMS\Support\Facades\Page;
 use Illuminate\Support\Facades\View;
 
 class Editor extends Controller
@@ -30,9 +30,9 @@ class Editor extends Controller
      * Called from an iframe when logged into the CMS.
      * The ID of the page which is being viewed is given as a URL paramater (e.g. /cms/editor/toolbar/<page ID>).
      */
-    public function getToolbar(Page\Provider $provider)
+    public function getToolbar()
     {
-        $page = $provider->findById($this->request->input('page_id'));
+        $page = Page::findById($this->request->input('page_id'));
         $this->editor->setActivePage($page);
 
         View::share('page', $page);

@@ -15,11 +15,11 @@ class AuthTest extends AbstractTestCase
         $session = $this->getMockSession();
         $permissions = $this->getMockPermissionsProvider();
 
-        $auth = $this->getMockBuilder('BoomCMS\Core\Auth\Auth')
+        $auth = $this->getMockBuilder(Auth\Auth::class)
             ->setMethods(['getPerson', 'refreshRememberLoginToken'])
             ->setConstructorArgs([
                 $session,
-                $this->getMockPersonProvider(),
+                $this->getMockPersonRepository(),
                 $permissions,
             ])
             ->getMock();
@@ -55,7 +55,7 @@ class AuthTest extends AbstractTestCase
     {
         $person = new Person\Person(['id' => 1]);
         $session = $this->getMockSession();
-        $auth = new Auth\Auth($session, $this->getMockPersonProvider(), $this->getMockPermissionsProvider());
+        $auth = new Auth\Auth($session, $this->getMockPersonRepository(), $this->getMockPermissionsProvider());
 
         $session
             ->expects($this->once())
@@ -69,9 +69,9 @@ class AuthTest extends AbstractTestCase
     {
         $person = new Person\Person(['id' => 1]);
 
-        $auth = $this->getMockBuilder('BoomCMS\Core\Auth\Auth')
+        $auth = $this->getMockBuilder(Auth\Auth::class)
             ->setMethods(['refreshRememberLoginToken', 'rememberLogin'])
-            ->setConstructorArgs([$this->getMockSession(), $this->getMockPersonProvider(), $this->getMockPermissionsProvider()])
+            ->setConstructorArgs([$this->getMockSession(), $this->getMockPersonRepository(), $this->getMockPermissionsProvider()])
             ->getMock();
 
         $auth
@@ -104,7 +104,7 @@ class AuthTest extends AbstractTestCase
             ->method('setRememberToken')
             ->with($this->anything());
 
-        $personProvider = $this->getMockPersonProvider(['save']);
+        $personProvider = $this->getMockPersonRepository(['save']);
         $personProvider
             ->expects($this->once())
             ->method('save')
@@ -125,7 +125,7 @@ class AuthTest extends AbstractTestCase
         $auth = $this->getMockBuilder('BoomCMS\Core\Auth\Auth')
             ->setConstructorArgs([
                 $this->getMockSession(),
-                $this->getMockPersonProvider(),
+                $this->getMockPersonRepository(),
                 $this->getMockPermissionsProvider(),
             ])
             ->setMethods(['saveRememberLoginToken'])
@@ -141,7 +141,7 @@ class AuthTest extends AbstractTestCase
 
     public function testGetProvider()
     {
-        $provider = $this->getMockPersonProvider();
+        $provider = $this->getMockPersonRepository();
 
         $auth = new Auth\Auth($this->getMockSession(),
             $provider,
@@ -154,7 +154,7 @@ class AuthTest extends AbstractTestCase
     public function testAutoLoginSucceeds()
     {
         $person = new Person\Person(['id' => 1, 'remember_token' => 'token']);
-        $provider = $this->getMockPersonProvider(['findByAutoLoginToken']);
+        $provider = $this->getMockPersonRepository(['findByAutoLoginToken']);
         $request = $this->getMock('Illuminate\Http\Request');
 
         $auth = $this->getMockBuilder('BoomCMS\Core\Auth\Auth')
@@ -188,7 +188,7 @@ class AuthTest extends AbstractTestCase
     public function testAutoLoginFailsWhenNoCookie()
     {
         $request = $this->getMock('Illuminate\Http\Request');
-        $provider = $this->getMockPersonProvider(['findByAutoLoginToken']);
+        $provider = $this->getMockPersonRepository(['findByAutoLoginToken']);
 
         $auth = $this->getMockBuilder('BoomCMS\Core\Auth\Auth')
             ->setConstructorArgs([
@@ -218,7 +218,7 @@ class AuthTest extends AbstractTestCase
     public function testAutoLoginFailsWithInvalidToken()
     {
         $request = $this->getMock('Illuminate\Http\Request');
-        $provider = $this->getMockPersonProvider(['findByAutoLoginToken']);
+        $provider = $this->getMockPersonRepository(['findByAutoLoginToken']);
 
         $auth = $this->getMockBuilder('BoomCMS\Core\Auth\Auth')
             ->setConstructorArgs([

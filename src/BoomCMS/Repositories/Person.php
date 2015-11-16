@@ -1,10 +1,13 @@
 <?php
 
-namespace BoomCMS\Core\Person;
+namespace BoomCMS\Repositories;
 
+use BoomCMS\Core\Person\Guest;
+use BoomCMS\Core\Person\Person as PersonObject;
+use BoomCMS\Exceptions\DuplicateEmailException;
 use BoomCMS\Database\Models\Person as Model;
 
-class Provider
+class Person
 {
     public function create(array $credentials)
     {
@@ -30,7 +33,7 @@ class Provider
             $this->cache[$model->id] = $model;
         }
 
-        return new Person($model->toArray());
+        return new PersonObject($model->toArray());
     }
 
     public function findAll()
@@ -94,14 +97,14 @@ class Provider
     }
 
     /**
-     * @return \Boom\Person\Guest
+     * @return Guest
      */
     public function getEmptyUser()
     {
         return new Guest();
     }
 
-    public function save(Person $person)
+    public function save(PersonObject $person)
     {
         if ($person->loaded()) {
             $model = isset($this->cache[$person->getId()]) ?

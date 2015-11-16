@@ -8,6 +8,6 @@ class Asset extends Facade
 {
     protected static function getFacadeAccessor()
     {
-        return 'boomcms.asset.provider';
+        return 'boomcms.repositories.asset';
     }
 }

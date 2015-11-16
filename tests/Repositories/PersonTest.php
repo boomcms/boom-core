@@ -1,21 +1,22 @@
 <?php
 
-namespace BoomCMS\Tests\Person;
+namespace BoomCMS\Tests\Repositories;
 
-use BoomCMS\Core\Person;
+use BoomCMS\Core\Person\Person;
+use BoomCMS\Repositories\Person as PersonRepository;
 use BoomCMS\Tests\AbstractTestCase;
 
-class ProviderTest extends AbstractTestCase
+class PersonTest extends AbstractTestCase
 {
     /**
-     * @expectedException BoomCMS\Core\Person\DuplicateEmailException
+     * @expectedException BoomCMS\Exceptions\DuplicateEmailException
      */
     public function testCreateThrowsDuplicateEmailException()
     {
         $email = 'test@test.com';
-        $person = new Person\Person(['id' => 1, 'email' => $email]);
+        $person = new Person(['id' => 1, 'email' => $email]);
 
-        $provider = $this->getMockBuilder('BoomCMS\Core\Person\Provider')
+        $provider = $this->getMockBuilder(PersonRepository::class)
             ->setMethods(['findByEmail'])
             ->getMock();
 

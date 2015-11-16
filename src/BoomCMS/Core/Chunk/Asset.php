@@ -4,7 +4,7 @@ namespace BoomCMS\Core\Chunk;
 
 use BoomCMS\Core\Link\Link as Link;
 use BoomCMS\Core\Page as Page;
-use Illuminate\Support\Facades\App;
+use BoomCMS\Support\Facades\Asset as AssetFacade;
 use Illuminate\Support\Facades\View;
 
 class Asset extends BaseChunk
@@ -20,8 +20,7 @@ class Asset extends BaseChunk
         parent::__construct($page, $attrs, $slotname, $editable);
 
         if (isset($attrs['asset_id'])) {
-            $provider = App::make('BoomCMS\Core\Asset\Provider');
-            $this->asset = $provider->findById($this->attrs['asset_id']);
+            $this->asset = AssetFacade::findById($this->attrs['asset_id']);
         }
     }
 

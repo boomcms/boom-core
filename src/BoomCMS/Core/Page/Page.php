@@ -319,8 +319,7 @@ class Page
     {
         if ($this->getParentId()) {
             if ($this->parent === null) {
-                $provider = new Provider();
-                $this->parent = $provider->findById($this->getParentId());
+                $this->parent = PageFacade::findById($this->getParentId());
             }
 
             return $this->parent;

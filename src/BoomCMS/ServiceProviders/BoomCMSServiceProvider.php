@@ -2,7 +2,6 @@
 
 namespace BoomCMS\ServiceProviders;
 
-use BoomCMS\Core\Page;
 use BoomCMS\ServiceProviders;
 use BoomCMS\Support\Facades;
 use BoomCMS\Support\Helpers\Asset;
@@ -46,15 +45,15 @@ class BoomCMSServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot(Router $router, Page\Provider $pageProvider)
+    public function boot(Router $router)
     {
         $this->loadViewsFrom(__DIR__.'/../../views/boomcms', 'boomcms');
         $this->loadViewsFrom(__DIR__.'/../../views/chunks', 'boomcms.chunks');
         $this->loadTranslationsFrom(__DIR__.'/../../lang', 'boomcms');
 
         $router->pattern('page', '[0-9]+');
-        $router->bind('page', function ($pageId) use ($pageProvider) {
-            $page = $pageProvider->findById($pageId);
+        $router->bind('page', function ($pageId) {
+            $page = Facades\Page::findById($pageId);
 
             if (!$page->loaded()) {
                 throw new NotFoundHttpException();

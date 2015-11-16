@@ -1,10 +1,11 @@
 <?php
 
-namespace BoomCMS\Core\Tag;
+namespace BoomCMS\Repositories;
 
+use BoomCMS\Core\Tag\Tag as TagObject;
 use BoomCMS\Database\Models\Tag as Model;
 
-class Provider
+class Tag
 {
     public function byId($id)
     {
@@ -36,7 +37,7 @@ class Provider
             ->where('group', '=', $group)
             ->first();
 
-        return $model ? new Tag($model->toArray()) : new Tag();
+        return $model ? new TagObject($model->toArray()) : new Tag();
     }
 
     public function findBySlugAndGroup($slug, $group = null)
@@ -45,7 +46,7 @@ class Provider
             ->where('group', '=', $group)
             ->first();
 
-        return $model ? new Tag($model->toArray()) : new Tag();
+        return $model ? new TagObject($model->toArray()) : new Tag();
     }
 
     public function findOrCreateByNameAndGroup($name, $group = null)

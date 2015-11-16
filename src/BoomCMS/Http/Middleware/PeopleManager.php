@@ -2,22 +2,12 @@
 
 namespace BoomCMS\Http\Middleware;
 
-use BoomCMS\Core\Group;
+use BoomCMS\Support\Facades\Group;
 use Closure;
 use Illuminate\Support\Facades\View;
 
 class PeopleManager
 {
-    /**
-     * @var Group\Provider
-     */
-    protected $provider;
-
-    public function __construct(Group\Provider $provider)
-    {
-        $this->provider = $provider;
-    }
-
     /**
      * Handle an incoming request.
      *
@@ -32,7 +22,7 @@ class PeopleManager
 
         if (!$request->ajax()) {
             $v = View::make('boomcms::people.manager', [
-                'groups'  => $this->provider->findAll(),
+                'groups'  => Group::findAll(),
                 'content' => $response->getContent(),
             ]);
 

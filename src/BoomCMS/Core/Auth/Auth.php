@@ -3,6 +3,7 @@
 namespace BoomCMS\Core\Auth;
 
 use BoomCMS\Core\Person;
+use BoomCMS\Repositories\Person as PersonRepository;
 use Hautelook\Phpass\PasswordHash;
 use Illuminate\Http\Request;
 use Illuminate\Session\SessionManager as Session;
@@ -28,9 +29,9 @@ class Auth
     protected $person;
 
     /**
-     * @var Person\Provider
+     * @var PersonRepository
      */
-    private $personProvider;
+    private $personRepository;
 
     /**
      * @var PermissionProvider
@@ -45,11 +46,11 @@ class Auth
     protected $sessionKey = 'boomcms.person.id';
 
     public function __construct(Session $session,
-        Person\Provider $personProvider,
+        PersonRepository $personRepository,
         PermissionsProvider $permissionsProvider)
     {
         $this->session = $session;
-        $this->personProvider = $personProvider;
+        $this->personRepository = $personRepository;
         $this->permissionsProvider = $permissionsProvider;
     }
 
@@ -65,7 +66,7 @@ class Auth
      */
     public function authenticate($email, $password, $remember = false)
     {
-        $person = $this->personProvider->findByEmail(trim($email));
+        $person = $this->personRepository->findByEmail(trim($email));
 
         if ($person->isLocked()) {
             throw new PersonLockedException($person->getLockedUntil());
@@ -92,7 +93,7 @@ class Auth
 
         if ($token) {
             list($personId, $token) = explode('-', $token);
-            $person = $this->personProvider->findByAutoLoginToken($token);
+            $person = $this->personRepository->findByAutoLoginToken($token);
 
             if ($person->isValid() && $person->getId() == $personId) {
                 $this->login($person);
@@ -115,19 +116,19 @@ class Auth
             $personId = $this->session->get($this->getSessionKey());
 
             $this->person = $personId ?
-                $this->personProvider->findById($personId)
-                : $this->personProvider->getEmptyUser();
+                $this->personRepository->findById($personId)
+                : $this->personRepository->getEmptyUser();
         }
 
         return $this->person;
     }
 
     /**
-     * @return Person\Provider
+     * @return PersonRepository
      */
     public function getProvider()
     {
-        return $this->personProvider;
+        return $this->personRepository;
     }
 
     public function getSessionKey()
@@ -178,7 +179,7 @@ class Auth
         }
 
         $person->setLastFailedLogin(time());
-        $this->personProvider->save($person);
+        $this->personRepository->save($person);
     }
 
     public function logout()
@@ -198,7 +199,7 @@ class Auth
         if ($person->loaded()) {
             $token = str_random(60);
             $person->setRememberToken($token);
-            $this->personProvider->save($person);
+            $this->personRepository->save($person);
         }
 
         return $this;
