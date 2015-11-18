@@ -18,7 +18,7 @@ class Page
         'primary_uri'   => [],
     ];
 
-    private function cache(Page $page)
+    private function cache(PageObject $page)
     {
         $this->cache['id'][$page->getId()] = $page;
 
@@ -97,7 +97,7 @@ class Page
             return $this->cache(new PageObject($model->toArray()));
         }
 
-        return new Page();
+        return new PageObject();
     }
 
     public function save(PageObject $page)

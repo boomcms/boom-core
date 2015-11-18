@@ -2,10 +2,10 @@
 
 namespace BoomCMS\Core\Page;
 
-use BoomCMS\Core\Person;
-use BoomCMS\Core\Tag;
-use BoomCMS\Core\Template\Template;
-use BoomCMS\Core\URL\URL;
+use BoomCMS\Contracts\Models\Person;
+use BoomcMS\Contracts\Models\Tag;
+use BoomCMS\Contracts\Models\Template;
+use BoomCMS\Contracts\Models\URL;
 use BoomCMS\Database\Models\Page\URL as URLModel;
 use BoomCMS\Database\Models\Page\Version as VersionModel;
 use BoomCMS\Support\Facades\Asset;
@@ -87,9 +87,9 @@ class Page
         return $this;
     }
 
-    public function addTag(Tag\Tag $tag)
+    public function addTag(Tag $tag)
     {
-        if ($this->loaded() && $tag->loaded()) {
+        if ($this->loaded()) {
             DB::table('pages_tags')
                 ->insert([
                     'page_id' => $this->getId(),
@@ -350,6 +350,10 @@ class Page
         return $finder->setOrderBy('name', 'asc')->findAll();
     }
 
+    /**
+     * 
+     * @return Template
+     */
     public function getTemplate()
     {
         return $this->getCurrentVersion()->getTemplate();
@@ -367,12 +371,7 @@ class Page
 
     public function getUrls()
     {
-        $urls = [];
-        foreach (URLModel::where('page_id', $this->getId())->get() as $model) {
-            $urls[] = new URL($model->toArray());
-        }
-
-        return $urls;
+        return URLModel::where('page_id', $this->getId())->get();
     }
 
     /**
@@ -470,9 +469,9 @@ class Page
         return $this;
     }
 
-    public function removeTag(Tag\Tag $tag)
+    public function removeTag(Tag $tag)
     {
-        if ($this->loaded() && $tag->loaded()) {
+        if ($this->loaded()) {
             DB::table('pages_tags')
                 ->where('page_id', '=', $this->getId())
                 ->where('tag_id', '=', $tag->getId())
@@ -672,7 +671,7 @@ class Page
      *
      * @return $this
      */
-    public function setTemplate($template)
+    public function setTemplate(Template $template)
     {
         $this->addVersion(['template_id' => $template->getId()]);
 
@@ -777,12 +776,12 @@ class Page
      *		(string) $page->url();
      *
      *
-     * @return \Model_Page_URL
+     * @return URL
      */
     public function url($refresh = false)
     {
         if ($refresh || $this->primaryUrl === null) {
-            $this->primaryUrl = new URL([
+            $this->primaryUrl = new URLModel([
                 'page'       => $this,
                 'location'   => $this->get('primary_uri'),
                 'is_primary' => true,
@@ -792,7 +791,7 @@ class Page
         return $this->primaryUrl;
     }
 
-    public function wasCreatedBy(Person\Person $person)
+    public function wasCreatedBy(Person $person)
     {
         return $this->getCreatedBy() === $person->getId();
     }

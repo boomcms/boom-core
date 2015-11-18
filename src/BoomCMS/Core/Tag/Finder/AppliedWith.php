@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Core\Tag\Finder;
 
-use BoomCMS\Core\Tag\Tag;
+use BoomCMS\Contracts\Models\Tag;
 use BoomCMS\Foundation\Finder\Filter;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -27,6 +27,6 @@ class AppliedWith extends Filter
 
     public function shouldBeApplied()
     {
-        return $this->tag->loaded();
+        return $this->tag->getId() > 0;
     }
 }

@@ -31,10 +31,9 @@ class PageController extends Controller
     {
         $template = $page->getTemplate();
 
-        $chunks = Chunk::load($page, $template->getChunks());
+        View::share('chunk', function ($type, $slotname, $page = null) {
+            $chunks = [];
 
-        View::share('chunks', $chunks);
-        View::share('chunk', function ($type, $slotname, $page = null) use ($chunks) {
             if ($page) {
                 return Chunk::get($type, $slotname, $page);
             }

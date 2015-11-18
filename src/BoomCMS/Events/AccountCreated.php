@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Events;
 
-use BoomCMS\Core\Person\Person;
+use BoomCMS\Contracts\Models\Person;
 
 class AccountCreated
 {

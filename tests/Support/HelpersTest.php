@@ -3,7 +3,7 @@
 namespace BoomCMS\Tests\Support;
 
 use BoomCMS\Core\Page\Page;
-use BoomCMS\Core\Template\Template;
+use BoomCMS\Database\Models\Template;
 use BoomCMS\Support\Facades\Editor;
 use BoomCMS\Support\Facades\Settings;
 use BoomCMS\Support\Helpers;

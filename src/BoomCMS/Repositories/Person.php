@@ -2,50 +2,51 @@
 
 namespace BoomCMS\Repositories;
 
-use BoomCMS\Core\Person\Guest;
-use BoomCMS\Core\Person\Person as PersonObject;
-use BoomCMS\Exceptions\DuplicateEmailException;
+use BoomCMS\Contracts\Repositories\Person as PersonRepositoryInterface;
+use BoomCMS\Contracts\Models\Person as PersonInterface;
+use BoomCMS\Core\Auth\Guest;
 use BoomCMS\Database\Models\Person as Model;
+use BoomCMS\Exceptions\DuplicateEmailException;
 
-class Person
+class Person implements PersonRepositoryInterface
 {
+    /**
+     * @var Model
+     */
+    protected $model;
+
+    /**
+     * @param Model $model
+     */
+    public function __construct(Model $model)
+    {
+        $this->model = $model;
+    }
+
     public function create(array $credentials)
     {
         $existing = $this->findByEmail($credentials['email']);
 
-        if ($existing->loaded()) {
+        if ($existing) {
             throw new DuplicateEmailException($credentials['email']);
         }
 
-        $model = Model::create($credentials);
-
-        return $this->findAndCache($model);
+        return $this->model->create($credentials);
     }
 
     public function deleteByIds(array $ids)
     {
-        Model::destroy($ids);
+        $this->destroy($ids);
     }
 
-    public function findAndCache(Model $model)
+    public function find($id)
     {
-        if ($model->id) {
-            $this->cache[$model->id] = $model;
-        }
-
-        return new PersonObject($model->toArray());
+        return $this->findBy(Model::ATTR_ID, $id);
     }
 
     public function findAll()
     {
-        $models = Model::all();
-        $people = [];
-
-        foreach ($models as $model) {
-            $people[] = $this->findAndCache($model);
-        }
-
-        return $people;
+        return $this->model->all();
     }
 
     /**
@@ -53,37 +54,17 @@ class Person
      */
     public function findBy($key, $value)
     {
-        $model = Model::where($key, '=', $value)->first();
-
-        return $model ? $this->findAndCache($model) : new Guest();
+        return $this->model->where($key, '=', $value)->first();
     }
 
     public function findByAutoLoginToken($token)
     {
-        return $this->findBy('remember_token', $token);
-    }
-
-    public function findById($id)
-    {
-        return $this->findBy('id', $id);
+        return $this->findBy(Model::ATTR_REMEMBER_TOKEN, $token);
     }
 
     public function findByEmail($email)
     {
-        return $this->findBy('email', $email);
-    }
-
-    public function findByGroupId($groupId)
-    {
-        $people = [];
-        $query = Model::join('people_groups', 'people.id', '=', 'people_groups.person_id')
-            ->where('group_id', '=', $groupId);
-
-        foreach ($query->get() as $result) {
-            $people[] = $this->findAndCache($result);
-        }
-
-        return $people;
+        return $this->findBy(Model::ATTR_EMAIL, $email);
     }
 
     public function findByLogin($login)
@@ -93,7 +74,7 @@ class Person
 
     public function findByResetPasswordCode($code)
     {
-        return $this->findBy('reset_password_code', $code);
+        return $this->findBy(Model::ATTR_REMEMBER_TOKEN, $code);
     }
 
     /**
@@ -104,7 +85,7 @@ class Person
         return new Guest();
     }
 
-    public function save(PersonObject $person)
+    public function save(PersonInterface $person)
     {
         if ($person->loaded()) {
             $model = isset($this->cache[$person->getId()]) ?

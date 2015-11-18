@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Jobs;
 
-use BoomCMS\Core\URL;
+use BoomCMS\Contracts\Models\URL as URL;
 use BoomCMS\Support\Facades\URL as URLFacade;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Bus\SelfHandling;
@@ -11,11 +11,11 @@ use Illuminate\Support\Facades\DB;
 class MakeURLPrimary extends Command implements SelfHandling
 {
     /**
-     * @var URL\URL
+     * @var URL
      */
     protected $url;
 
-    public function __construct(URL\URL $url)
+    public function __construct(URL $url)
     {
         $this->url = $url;
     }

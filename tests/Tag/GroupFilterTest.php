@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Tests\Tag;
 
-use BoomCMS\Core\Tag;
+use BoomCMS\Core\Tag\Finder;
 use BoomCMS\Tests\AbstractTestCase;
 use Illuminate\Database\Eloquent\Builder;
 use Mockery as m;
@@ -18,7 +18,7 @@ class GroupFilterTest extends AbstractTestCase
             ->once()
             ->with('group');
 
-        $filter = new Tag\Finder\Group('');
+        $filter = new Finder\Group('');
         $filter->execute($query);
     }
 
@@ -32,7 +32,7 @@ class GroupFilterTest extends AbstractTestCase
             ->once()
             ->with('group', '=', $group);
 
-        $filter = new Tag\Finder\Group($group);
+        $filter = new Finder\Group($group);
         $filter->execute($query);
     }
 }

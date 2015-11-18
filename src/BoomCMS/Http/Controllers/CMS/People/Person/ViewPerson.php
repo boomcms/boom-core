@@ -2,7 +2,6 @@
 
 namespace BoomCMS\Http\Controllers\CMS\People\Person;
 
-use BoomCMS\Core\Group;
 use BoomCMS\Support\Facades\Group as GroupFacade;
 use Illuminate\Support\Facades\View;
 
@@ -17,14 +16,9 @@ class ViewPerson extends BasePerson
 
     public function addGroup()
     {
-        $finder = new Group\Finder\Finder();
-        $finder
-            ->addFilter(new Group\Finder\ExcludingPersonsGroups($this->editPerson))
-            ->setOrderBy('name', 'asc');
-
         return View::make("$this->viewPrefix/addgroup", [
             'person' => $this->editPerson,
-            'groups' => $finder->findAll(),
+            'groups' => GroupFacade::allExcept($this->editPerson->getGroupIds()),
         ]);
     }
 

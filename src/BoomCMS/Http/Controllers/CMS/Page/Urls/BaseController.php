@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Http\Controllers\CMS\Page\Urls;
 
-use BoomCMS\Core\URL\URL;
+use BoomCMS\Database\Models\URL;
 use BoomCMS\Http\Controllers\Controller;
 use BoomCMS\Support\Facades\Page;
 use BoomCMS\Support\Facades\URL as URLFacade;
@@ -30,10 +30,10 @@ class BaseController extends Controller
         if ($id = $request->route()->getParameter('id')) {
             $this->url = URLFacade::findById($id);
         } else {
-            $this->url = new URL([]);
+            $this->url = new URL();
         }
 
-        if ($request->route()->getParameter('id') && !$this->url->loaded()) {
+        if ($request->route()->getParameter('id') && !$this->url->getId()) {
             about(404);
         }
 

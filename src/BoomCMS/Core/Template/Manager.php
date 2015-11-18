@@ -131,13 +131,6 @@ class Manager
     {
         $template = $this->repository->findByThemeAndFilename($theme, $filename);
 
-        return $template->loaded();
-    }
-
-    public function templateExistsWithFilename($filename)
-    {
-        $template = Factory::byFilename($filename);
-
-        return $template->loaded();
+        return $template !== null;
     }
 }

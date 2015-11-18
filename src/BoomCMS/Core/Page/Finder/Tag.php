@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Core\Page\Finder;
 
-use BoomCMS\Core\Tag\Tag as TagObject;
+use BoomCMS\Contracts\Models\Tag as TagInterface;
 use BoomCMS\Foundation\Finder\Filter;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -14,19 +14,19 @@ class Tag extends Filter
     protected $tags = [];
 
     /**
-     * @param array|TagObject $tags
+     * @param array|TagInterface $tags
      */
     public function __construct($tags)
     {
         if (is_array($tags)) {
             foreach ($tags as $i => $tag) {
-                if (!$tag instanceof TagObject || !$tag->loaded()) {
+                if (!$tag instanceof TagInterface || !$tag->getId()) {
                     unset($tags[$i]);
                 }
             }
 
             $this->tags = $tags;
-        } elseif ($tags instanceof TagObject && $tags->loaded()) {
+        } elseif ($tags instanceof TagInterface && $tags->getId()) {
             $this->tags = [$tags];
         }
     }

@@ -20,7 +20,7 @@ class Version extends Model
 
     public function getEditedBy()
     {
-        return Person::findById($this->attributes['edited_by']);
+        return Person::find($this->attributes['edited_by']);
     }
 
     public function getId()

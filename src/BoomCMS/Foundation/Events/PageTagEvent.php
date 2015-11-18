@@ -3,7 +3,7 @@
 namespace BoomCMS\Foundation\Events;
 
 use BoomCMS\Core\Page\Page;
-use BoomCMS\Core\Tag\Tag;
+use BoomCMS\Contracts\Models\Tag;
 
 abstract class PageTagEvent extends PageEvent
 {

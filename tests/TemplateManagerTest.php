@@ -2,11 +2,12 @@
 
 namespace BoomCMS\Tests;
 
-use BoomCMS\Core\Template;
 use BoomCMS\Core\Template\Manager;
+use BoomCMS\Database\Models\Template;
 use BoomCMS\Core\Theme\Theme;
 use BoomCMS\Repositories\Template as TemplateRepository;
 use Illuminate\Filesystem\Filesystem;
+use Mockery as m;
 
 class TemplateManagerTest extends AbstractTestCase
 {
@@ -17,7 +18,7 @@ class TemplateManagerTest extends AbstractTestCase
 
     protected function getTemplateRepository()
     {
-        return $this->getMock(TemplateRepository::class);
+        return m::mock(TemplateRepository::class);
     }
 
     public function testFindInstalledThemes()
@@ -94,14 +95,13 @@ class TemplateManagerTest extends AbstractTestCase
     public function testTemplateIsInstalled()
     {
         $theme = $filename = 'test';
-        $template = new Template\Template(['id' => 1]);
+        $template = new Template(['id' => 1]);
 
         $provider = $this->getTemplateRepository();
         $provider
-            ->expects($this->once())
-            ->method('findByThemeAndFilename')
-            ->with($this->equalTo($theme), $this->equalTo($filename))
-            ->will($this->returnValue($template));
+            ->shouldReceive('findByThemeAndFilename')
+            ->with($theme, $filename)
+            ->andReturn($template);
 
         $manager = new Manager($this->getFilesystem(), $provider, false);
         $this->assertTrue($manager->templateIsInstalled($theme, $filename));
@@ -110,14 +110,12 @@ class TemplateManagerTest extends AbstractTestCase
     public function testTemplateIsNotInstalled()
     {
         $theme = $filename = 'test';
-        $template = new Template\Template(['id' => 0]);
 
         $provider = $this->getTemplateRepository();
         $provider
-            ->expects($this->once())
-            ->method('findByThemeAndFilename')
-            ->with($this->equalTo($theme), $this->equalTo($filename))
-            ->will($this->returnValue($template));
+            ->shouldReceive('findByThemeAndFilename')
+            ->with($theme, $filename)
+            ->andReturn(null);
 
         $manager = new Manager($this->getFilesystem(), $provider, false);
         $this->assertFalse($manager->templateIsInstalled($theme, $filename));

@@ -2,6 +2,7 @@
 
 namespace BoomCMS\ServiceProviders;
 
+use BoomCMS\Database\Models\Tag as TagModel;
 use BoomCMS\Repositories\Tag;
 use Illuminate\Support\ServiceProvider;
 
@@ -16,9 +17,6 @@ class TagServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->app->singleton('boomcms.repositories.tag', function ($app) {
-            return new Tag();
-        });
     }
 
     /**
@@ -26,5 +24,8 @@ class TagServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->app->singleton('boomcms.repositories.tag', function ($app) {
+            return new Tag(new TagModel());
+        });
     }
 }

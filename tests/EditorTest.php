@@ -6,7 +6,7 @@ use BoomCMS\Core\Auth\Auth;
 use BoomCMS\Core\Auth\PermissionsProvider;
 use BoomCMS\Core\Editor\Editor;
 use BoomCMS\Core\Page\Page;
-use BoomCMS\Core\Person\Person;
+use BoomCMS\Database\Models\Person;
 
 class EditorTest extends AbstractTestCase
 {

@@ -29,6 +29,6 @@ class BasePerson extends PeopleManager
     {
         $this->request = $request;
 
-        $this->editPerson = Person::findById($this->request->route()->getParameter('id'));
+        $this->editPerson = Person::find($this->request->route()->getParameter('id'));
     }
 }

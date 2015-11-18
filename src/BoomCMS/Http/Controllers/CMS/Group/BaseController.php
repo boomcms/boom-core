@@ -20,6 +20,6 @@ class BaseController extends Controller
         $this->request = $request;
 
         $this->authorization('manage_people');
-        $this->group = Group::findById($this->request->route()->getParameter('id'));
+        $this->group = Group::find($this->request->route()->getParameter('id'));
     }
 }

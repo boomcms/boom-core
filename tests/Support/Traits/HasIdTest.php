@@ -3,13 +3,8 @@
 namespace BoomCMS\Tests\Support\Traits;
 
 use BoomCMS\Core\Asset\Asset;
-use BoomCMS\Core\Group\Group;
 use BoomCMS\Core\Page\Page;
 use BoomCMS\Core\Page\Version;
-use BoomCMS\Core\Person\Person;
-use BoomCMS\Core\Tag\Tag;
-use BoomCMS\Core\Template\Template;
-use BoomCMS\Core\URL\URL;
 use BoomCMS\Support\Traits\HasId as HasIdTrait;
 use BoomCMS\Tests\AbstractTestCase;
 
@@ -73,12 +68,7 @@ class HasIdTest extends AbstractTestCase
     {
         $classes = [
             Asset::class,
-            Group::class,
             Page::class,
-            Person::class,
-            Tag::class,
-            Template::class,
-            URL::class,
             Version::class,
         ];
 

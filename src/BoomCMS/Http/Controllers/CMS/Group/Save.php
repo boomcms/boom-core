@@ -25,7 +25,7 @@ class Save extends BaseController
 
     public function removeRole()
     {
-        $this->group->removeRole($this->request->input('role_id'));
+        $this->group->removeRole($this->request->input('role_id'), $this->request->input('page_id'));
     }
 
     public function save()

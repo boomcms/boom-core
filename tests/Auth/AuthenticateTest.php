@@ -4,8 +4,7 @@ namespace BoomCMS\Tests\Auth;
 
 use BoomCMS\Core\Auth\Auth;
 use BoomCMS\Core\Auth\PermissionsProvider;
-use BoomCMS\Core\Person\Person;
-use BoomCMS\Core\Person\Guest;
+use BoomCMS\Database\Models\Person;
 use BoomCMS\Tests\AbstractTestCase;
 
 class AuthenticateTest extends AbstractTestCase
@@ -27,7 +26,7 @@ class AuthenticateTest extends AbstractTestCase
             ->expects($this->once())
             ->method('findByEmail')
             ->with($this->equalTo($email))
-            ->will($this->returnValue(new Guest()));
+            ->will($this->returnValue(null));
 
         $auth->authenticate($email, $password);
     }

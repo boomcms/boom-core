@@ -2,6 +2,8 @@
 
 namespace BoomCMS\ServiceProviders;
 
+use BoomCMS\Core\Template\Manager as TemplateManager;
+use BoomCMS\Database\Models\Template as TemplateModel;
 use BoomCMS\Repositories\Template as TemplateRepository;
 use BoomCMS\Support\Helpers\Config;
 use Illuminate\Support\ServiceProvider;
@@ -60,8 +62,8 @@ class TemplateServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $repository = new TemplateRepository();
-        $this->manager = $manager = new Template\Manager($this->app['files'], $repository);
+        $repository = new TemplateRepository(new TemplateModel());
+        $this->manager = $manager = new TemplateManager($this->app['files'], $repository);
 
         $this->app->singleton('boomcms.repositories.template', function ($app) use ($repository) {
             return $repository;

@@ -1,25 +1,27 @@
 <?php
 
-namespace BoomCMS\Tests\Person;
+namespace BoomCMS\Tests\Database\Models;
 
-use BoomCMS\Core\Person\Person;
+use BoomCMS\Database\Models\Person;
 use BoomCMS\Tests\AbstractTestCase;
 use Hautelook\Phpass\PasswordHash;
 
 class PersonTest extends AbstractTestCase
 {
-    public function testLoadedIfHasId()
+    public function testGetIdReturnsIdAttribute()
     {
-        $person = new Person(['id' => 2]);
+        $person = new Person();
+        $person->{Person::ATTR_ID} = 1;
 
-        $this->assertTrue($person->loaded());
+        $this->assertEquals(1, $person->getId());
     }
 
-    public function testNotLoadedIfNoId()
+    public function testGetEmailReturnsEmailAttribute()
     {
-        $person = new Person([]);
+        $email = 'test@test.com';
+        $person = new Person([Person::ATTR_EMAIL => $email]);
 
-        $this->assertFalse($person->loaded());
+        $this->assertEquals($email, $person->getEmail());
     }
 
     public function testIsSuperuserDefaultFalse()
@@ -71,13 +73,44 @@ class PersonTest extends AbstractTestCase
         $person = new Person([]);
         $this->assertFalse($person->isValid(), 'No ID or locked_until');
 
-        $person = new Person(['id' => 1, 'locked_until' => time() + 10]);
+        $person = new Person(['locked_until' => time() + 10]);
+        $person->id = 1;
+
         $this->assertFalse($person->isValid(), 'Loaded but locked');
 
         $person = new Person(['locked_until' => time() - 10]);
         $this->assertFalse($person->isValid(), 'Not loaded, not locked');
 
-        $person = new Person(['id' => 1, 'locked_until' => time() - 10]);
+        $person = new Person(['locked_until' => time() - 10]);
+        $person->id = 1;
+
         $this->assertTrue($person->isValid(), 'Loaded and not locked');
+    }
+
+    public function testSetEmailSetsEmailAddress()
+    {
+        $email = 'test@test.com';
+        $person = new Person([]);
+        $person->setEmail($email);
+
+        $this->assertEquals($email, $person->getEmail());
+    }
+
+    public function testEmailAddressIsAlwaysLowecase()
+    {
+        $email = 'test@test.com';
+        $person = new Person([]);
+        $person->setEmail(strtoupper($email));
+
+        $this->assertEquals($email, $person->getEmail());
+    }
+
+    public function testEmailAddressIsTrimmed()
+    {
+        $email = 'test@test.com';
+        $person = new Person([]);
+        $person->setEmail(' '.$email.' ');
+
+        $this->assertEquals($email, $person->getEmail());
     }
 }

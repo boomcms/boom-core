@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Core\Page;
 
-use BoomCMS\Core\Template;
+use BoomCMS\Contracts\Models\Template;
 use BoomCMS\Support\Facades\Person;
 use BoomCMS\Support\Facades\Template as TemplateFacade;
 use BoomCMS\Support\Traits\HasId;
@@ -42,7 +42,7 @@ class Version
     public function getEditedBy()
     {
         if ($this->editedBy === null) {
-            $this->editedBy = Person::findById($this->get('edited_by'));
+            $this->editedBy = Person::find($this->get('edited_by'));
         }
 
         return $this->editedBy;
@@ -78,7 +78,7 @@ class Version
     public function getTemplate()
     {
         if ($this->template === null) {
-            $this->template = TemplateFacade::findById($this->getTemplateId());
+            $this->template = TemplateFacade::find($this->getTemplateId());
         }
 
         return $this->template;

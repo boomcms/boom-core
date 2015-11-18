@@ -23,7 +23,7 @@ class SavePerson extends BasePerson
     public function addGroup()
     {
         foreach ($this->request->input('groups') as $groupId) {
-            $group = Group::findById($groupId);
+            $group = Group::find($groupId);
 
             if ($group->loaded()) {
                 $this->editPerson->addGroup($group);
@@ -38,7 +38,7 @@ class SavePerson extends BasePerson
 
     public function removeGroup()
     {
-        $group = Group::findById($this->request->input('group_id'));
+        $group = Group::find($this->request->input('group_id'));
         $this->editPerson->removeGroup($group);
     }
 

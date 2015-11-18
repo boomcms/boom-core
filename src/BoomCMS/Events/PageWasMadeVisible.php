@@ -3,7 +3,7 @@
 namespace BoomCMS\Events;
 
 use BoomCMS\Core\Page\Page;
-use BoomCMS\Core\Person\Person;
+use BoomCMS\Contracts\Models\Person;
 use BoomCMS\Foundation\Events\PageEvent;
 
 class PageWasMadeVisible extends PageEvent

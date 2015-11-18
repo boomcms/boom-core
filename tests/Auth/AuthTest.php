@@ -2,20 +2,62 @@
 
 namespace BoomCMS\Tests\Auth;
 
-use BoomCMS\Core\Auth;
-use BoomCMS\Core\Person;
+use BoomCMS\Core\Auth\Auth;
+use BoomCMS\Core\Auth\Guest;
+use BoomCMS\Database\Models\Person;
 use BoomCMS\Tests\AbstractTestCase;
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Http\Request;
 
 class AuthTest extends AbstractTestCase
 {
+    public function testGetPersonReturnsGuest()
+    {
+        $session = $this->getMockSession();
+        $session
+            ->expects($this->once())
+            ->method('get')
+            ->with($this->anything())
+            ->will($this->returnValue(null));
+        
+        $permissions = $this->getMockPermissionsProvider();
+        $repository = $this->getMockPersonRepository();
+
+        $auth = new Auth($session, $repository, $permissions);
+        $this->assertInstanceOf(Guest::class, $auth->getPerson());
+    }
+
+    public function testGetPersonReturnsPerson()
+    {
+        $personId = 1;
+
+        $session = $this->getMockSession();
+        $session
+            ->expects($this->once())
+            ->method('get')
+            ->with($this->anything())
+            ->will($this->returnValue($personId));
+        
+        $permissions = $this->getMockPermissionsProvider();
+
+        $repository = $this->getMockPersonRepository(['find']);
+        $repository
+            ->expects($this->once())
+            ->method('find')
+            ->with($this->equalTo($personId))
+            ->will($this->returnValue('person'));
+
+        $auth = new Auth($session, $repository, $permissions);
+        $this->assertEquals('person', $auth->getPerson());
+    }
+
     public function testLogout()
     {
-        $person = new Person\Person([]);
+        $person = new Person([]);
         $session = $this->getMockSession();
         $permissions = $this->getMockPermissionsProvider();
 
-        $auth = $this->getMockBuilder(Auth\Auth::class)
+        $auth = $this->getMockBuilder(Auth::class)
             ->setMethods(['getPerson', 'refreshRememberLoginToken'])
             ->setConstructorArgs([
                 $session,
@@ -53,9 +95,9 @@ class AuthTest extends AbstractTestCase
 
     public function testGetLoginSavesPersonIdToSession()
     {
-        $person = new Person\Person(['id' => 1]);
+        $person = new Person(['id' => 1]);
         $session = $this->getMockSession();
-        $auth = new Auth\Auth($session, $this->getMockPersonRepository(), $this->getMockPermissionsProvider());
+        $auth = new Auth($session, $this->getMockPersonRepository(), $this->getMockPermissionsProvider());
 
         $session
             ->expects($this->once())
@@ -67,9 +109,9 @@ class AuthTest extends AbstractTestCase
 
     public function testLoginRememberIsCalled()
     {
-        $person = new Person\Person(['id' => 1]);
+        $person = new Person(['id' => 1]);
 
-        $auth = $this->getMockBuilder(Auth\Auth::class)
+        $auth = $this->getMockBuilder(Auth::class)
             ->setMethods(['refreshRememberLoginToken', 'rememberLogin'])
             ->setConstructorArgs([$this->getMockSession(), $this->getMockPersonRepository(), $this->getMockPermissionsProvider()])
             ->getMock();
@@ -89,7 +131,7 @@ class AuthTest extends AbstractTestCase
 
     public function testRefreshRememberLoginToken()
     {
-        $person = $this->getMockBuilder('BoomCMS\Core\Person\Person')
+        $person = $this->getMockBuilder(Person::class)
             ->setMethods(['setRememberToken', 'loaded'])
             ->setConstructorArgs([[]])
             ->getMock();
@@ -110,7 +152,7 @@ class AuthTest extends AbstractTestCase
             ->method('save')
             ->with($this->equalTo($person));
 
-        $auth = new Auth\Auth($this->getMockSession(),
+        $auth = new Auth($this->getMockSession(),
             $personProvider,
             $this->getMockPermissionsProvider()
         );
@@ -120,9 +162,9 @@ class AuthTest extends AbstractTestCase
 
     public function testRememberLogin()
     {
-        $person = new Person\Person(['id' => 1, 'remember_token' => 'token']);
+        $person = new Person(['id' => 1, 'remember_token' => 'token']);
 
-        $auth = $this->getMockBuilder('BoomCMS\Core\Auth\Auth')
+        $auth = $this->getMockBuilder(Auth::class)
             ->setConstructorArgs([
                 $this->getMockSession(),
                 $this->getMockPersonRepository(),
@@ -143,7 +185,7 @@ class AuthTest extends AbstractTestCase
     {
         $provider = $this->getMockPersonRepository();
 
-        $auth = new Auth\Auth($this->getMockSession(),
+        $auth = new Auth($this->getMockSession(),
             $provider,
             $this->getMockPermissionsProvider()
         );
@@ -153,11 +195,13 @@ class AuthTest extends AbstractTestCase
 
     public function testAutoLoginSucceeds()
     {
-        $person = new Person\Person(['id' => 1, 'remember_token' => 'token']);
-        $provider = $this->getMockPersonRepository(['findByAutoLoginToken']);
-        $request = $this->getMock('Illuminate\Http\Request');
+        $person = new Person(['remember_token' => 'token']);
+        $person->{Person::ATTR_ID} = 1;
 
-        $auth = $this->getMockBuilder('BoomCMS\Core\Auth\Auth')
+        $provider = $this->getMockPersonRepository(['findByAutoLoginToken']);
+        $request = $this->getMock(Request::class);
+
+        $auth = $this->getMockBuilder(Auth::class)
             ->setConstructorArgs([
                 $this->getMockSession(),
                 $provider,
@@ -190,7 +234,7 @@ class AuthTest extends AbstractTestCase
         $request = $this->getMock('Illuminate\Http\Request');
         $provider = $this->getMockPersonRepository(['findByAutoLoginToken']);
 
-        $auth = $this->getMockBuilder('BoomCMS\Core\Auth\Auth')
+        $auth = $this->getMockBuilder(Auth::class)
             ->setConstructorArgs([
                 $this->getMockSession(),
                 $provider,
@@ -217,10 +261,10 @@ class AuthTest extends AbstractTestCase
 
     public function testAutoLoginFailsWithInvalidToken()
     {
-        $request = $this->getMock('Illuminate\Http\Request');
+        $request = $this->getMock(Request::class);
         $provider = $this->getMockPersonRepository(['findByAutoLoginToken']);
 
-        $auth = $this->getMockBuilder('BoomCMS\Core\Auth\Auth')
+        $auth = $this->getMockBuilder(Auth::class)
             ->setConstructorArgs([
                 $this->getMockSession(),
                 $provider,
@@ -239,7 +283,7 @@ class AuthTest extends AbstractTestCase
             ->expects($this->once())
             ->method('findByAutoLoginToken')
             ->with($this->equalTo('test'))
-            ->will($this->returnValue(new Person\Person([])));
+            ->will($this->returnValue(new Person([])));
 
         $auth->expects($this->never())
             ->method('login');
@@ -252,7 +296,7 @@ class AuthTest extends AbstractTestCase
         return $this
             ->getMockBuilder('Illuminate\Session\SessionManager')
             ->disableOriginalConstructor()
-            ->setMethods(['remove', 'set'])
+            ->setMethods(['remove', 'set', 'get'])
             ->getMock();
     }
 }

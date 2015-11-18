@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Tests\Repositories;
 
-use BoomCMS\Core\Person\Person;
+use BoomCMS\Database\Models\Person;
 use BoomCMS\Repositories\Person as PersonRepository;
 use BoomCMS\Tests\AbstractTestCase;
 
@@ -17,6 +17,7 @@ class PersonTest extends AbstractTestCase
         $person = new Person(['id' => 1, 'email' => $email]);
 
         $provider = $this->getMockBuilder(PersonRepository::class)
+            ->disableOriginalConstructor()
             ->setMethods(['findByEmail'])
             ->getMock();
 

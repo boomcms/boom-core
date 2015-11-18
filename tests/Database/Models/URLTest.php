@@ -1,9 +1,9 @@
 <?php
 
-namespace BoomCMS\Tests\Page;
+namespace BoomCMS\Tests\Models;
 
 use BoomCMS\Core\Page\Page;
-use BoomCMS\Core\URL\URL;
+use BoomCMS\Database\Models\URL;
 use BoomCMS\Support\Facades\Page as PageFacade;
 use BoomCMS\Tests\AbstractTestCase;
 
@@ -11,7 +11,7 @@ class URLTest extends AbstractTestCase
 {
     public function testIsPrimary()
     {
-        $url = new URL([]);
+        $url = new URL();
         $this->assertFalse($url->isPrimary());
 
         $url = new URL(['is_primary' => true]);
@@ -20,20 +20,11 @@ class URLTest extends AbstractTestCase
 
     public function testGetLocation()
     {
-        $url = new URL([]);
+        $url = new URL();
         $this->assertNull($url->getLocation());
 
         $url = new URL(['location' => 'test/test']);
         $this->assertEquals('test/test', $url->getLocation());
-    }
-
-    public function testLoaded()
-    {
-        $url = new URL([]);
-        $this->assertFalse($url->loaded());
-
-        $url = new URL(['id' => 1]);
-        $this->assertTrue($url->loaded());
     }
 
     public function testIsForPage()

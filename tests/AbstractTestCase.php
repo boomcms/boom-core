@@ -20,10 +20,6 @@ abstract class AbstractTestCase extends \Illuminate\Foundation\Testing\TestCase
         $app->make(Kernel::class)->bootstrap();
         $app->register(Stubs\BoomCMSServiceProvider::class);
 
-        $app->bind('boomcms.repositories.person', function ($app) {
-            return new Stubs\PersonRepository();
-        });
-
         $app->bind('boomcms.settings', function ($app) {
             return new Stubs\SettingsStore();
         });
@@ -44,6 +40,7 @@ abstract class AbstractTestCase extends \Illuminate\Foundation\Testing\TestCase
         return $this
             ->getMockBuilder(Repositories\Person::class)
             ->setMethods($methods)
+            ->disableOriginalConstructor()
             ->getMock();
     }
 

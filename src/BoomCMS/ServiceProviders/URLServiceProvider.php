@@ -3,6 +3,7 @@
 namespace BoomCMS\ServiceProviders;
 
 use BoomCMS\Repositories\URL;
+use BoomCMS\Database\Models\URL as URLModel;
 use Illuminate\Support\ServiceProvider;
 
 class URLServiceProvider extends ServiceProvider
@@ -22,7 +23,7 @@ class URLServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->singleton('boomcms.repositories.url', function ($app) {
-            return new URL();
+            return new URL(new URLModel());
         });
     }
 }

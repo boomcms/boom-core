@@ -3,7 +3,7 @@
 namespace BoomCMS\Tests\Page\Finder;
 
 use BoomCMS\Core\Page\Finder\WithoutTag as Filter;
-use BoomCMS\Core\Tag\Tag;
+use BoomCMS\Database\Models\Tag;
 use BoomCMS\Tests\AbstractTestCase;
 use Illuminate\Database\Eloquent\Builder;
 use Mockery as m;
@@ -12,7 +12,9 @@ class WithoutTagTest extends AbstractTestCase
 {
     public function testShouldBeAppliedIfTagIsValid()
     {
-        $tag = new Tag(['id' => 1]);
+        $tag = new Tag();
+        $tag->id = 1;
+
         $filter = new Filter($tag);
 
         $this->assertTrue($filter->shouldBeApplied());

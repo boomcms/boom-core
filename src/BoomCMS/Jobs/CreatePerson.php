@@ -3,8 +3,8 @@
 namespace BoomCMS\Jobs;
 
 use BoomCMS\Core\Auth\RandomPassword;
-use BoomCMS\Core\Person\DuplicateEmailException;
 use BoomCMS\Events\AccountCreated;
+use BoomCMS\Exceptions\DuplicateEmailException;
 use BoomCMS\Support\Facades\Auth;
 use BoomCMS\Support\Facades\Group;
 use BoomCMS\Support\Facades\Person;
@@ -48,7 +48,7 @@ class CreatePerson extends Command implements SelfHandling
 
         if (isset($person)) {
             foreach ($this->groups as $groupId) {
-                $person->addGroup(Group::findById($groupId));
+                $person->addGroup(Group::find($groupId));
             }
 
             Event::fire(new AccountCreated($person, $password, Auth::getPerson()));

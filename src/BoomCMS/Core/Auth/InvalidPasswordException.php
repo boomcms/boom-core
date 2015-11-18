@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Core\Auth;
 
-use BoomCMS\Core\Person\Person;
+use BoomCMS\Contracts\Models\Person;
 use Exception;
 
 class InvalidPasswordException extends Exception

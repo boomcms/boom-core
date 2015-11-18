@@ -2,62 +2,75 @@
 
 namespace BoomCMS\Repositories;
 
-use BoomCMS\Core\Template\Template as TemplateObject;
-use BoomCMS\Database\Models\Template as Model;
+use BoomCMS\Contracts\Models\Template as TemplateInterface;
+use BoomCMS\Database\Models\Template as TemplateModel;
 
 class Template
 {
+    /**
+     * @var Model
+     */
+    protected $model;
+
+    /**
+     * @param TemplateModel $model
+     */
+    public function __construct(TemplateModel $model)
+    {
+        $this->model = $model;
+    }
+
+    /**
+     * @param int $id
+     *
+     * @return $this
+     */
     public function deleteById($id)
     {
-        Model::destroy($id);
+        $this->model->destroy($id);
 
         return $this;
     }
 
+    /**
+     * @param int $id
+     *
+     * @return TemplateInterface
+     */
+    public function find($id)
+    {
+        return $this->model->find($id);
+    }
+
     public function findAll()
     {
-        $models = Model::query()
+        return $this->model
             ->orderBy('theme', 'asc')
             ->orderBy('name', 'asc')
             ->get();
-
-        $templates = [];
-
-        foreach ($models as $model) {
-            $templates[] = new TemplateObject($model->toArray());
-        }
-
-        return $templates;
     }
 
-    public function findById($id)
-    {
-        $model = Model::find($id);
-        $attrs = $model ? $model->toArray() : [];
-
-        return new TemplateObject($attrs);
-    }
-
+    /**
+     * @param string $theme
+     * @param string $filename
+     *
+     * @return TemplateInterface
+     */
     public function findByThemeAndFilename($theme, $filename)
     {
-        $model = Model::where('filename', '=', $filename)
+        return $this->model->where('filename', '=', $filename)
             ->where('theme', '=', $theme)
             ->first();
-
-        return $model ? new TemplateObject($model->toArray()) : new Template([]);
     }
 
-    public function save(Template $template)
+    /**
+     * @param TemplateInterface $model
+     *
+     * @return $this
+     */
+    public function save(TemplateInterface $model)
     {
-        $model = Model::find($template->getId());
-
-        if ($model) {
-            $model->filename = $template->getFilename();
-            $model->description = $template->getDescription();
-            $model->name = $template->getName();
-
-            $model->save();
-        }
+        $model->save();
 
         return $this;
     }

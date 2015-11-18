@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Foundation\Events;
 
-use BoomCMS\Core\Person\Person;
+use BoomCMS\Contracts\Models\Person;
 use Illuminate\Http\Request;
 
 class AuthEvent

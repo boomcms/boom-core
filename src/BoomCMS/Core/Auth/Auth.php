@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Core\Auth;
 
-use BoomCMS\Core\Person;
+use BoomCMS\Contracts\Models\Person;
 use BoomCMS\Repositories\Person as PersonRepository;
 use Hautelook\Phpass\PasswordHash;
 use Illuminate\Http\Request;
@@ -24,7 +24,7 @@ class Auth
     protected $lockWait = 900;
 
     /**
-     * @var Boom\Person\Person
+     * @var Person
      */
     protected $person;
 
@@ -62,18 +62,18 @@ class Auth
      * @throws PersonNotFoundException
      * @throws PersonSuspendedException
      *
-     * @return Person\Person
+     * @return Person
      */
     public function authenticate($email, $password, $remember = false)
     {
         $person = $this->personRepository->findByEmail(trim($email));
 
-        if ($person->isLocked()) {
+        if ($person && $person->isLocked()) {
             throw new PersonLockedException($person->getLockedUntil());
         }
 
-        if (!$person->checkPassword($password) || !$person->loaded()) {
-            if ($person->loaded()) {
+        if (!$person || !$person->checkPassword($password)) {
+            if ($person) {
                 $this->loginFailed($person);
 
                 throw new InvalidPasswordException($person);
@@ -95,7 +95,7 @@ class Auth
             list($personId, $token) = explode('-', $token);
             $person = $this->personRepository->findByAutoLoginToken($token);
 
-            if ($person->isValid() && $person->getId() == $personId) {
+            if ($person && $person->isValid() && $person->getId() == $personId) {
                 $this->login($person);
 
                 return $person;
@@ -116,11 +116,20 @@ class Auth
             $personId = $this->session->get($this->getSessionKey());
 
             $this->person = $personId ?
-                $this->personRepository->findById($personId)
-                : $this->personRepository->getEmptyUser();
+                $this->personRepository->find($personId)
+                : $this->getEmptyUser();
         }
 
         return $this->person;
+    }
+
+    /**
+     * 
+     * @return Guest
+     */
+    public function getEmptyUser()
+    {
+        return new Guest();
     }
 
     /**
@@ -155,7 +164,7 @@ class Auth
             : $this->isLoggedIn() && ($this->getPerson()->isSuperuser() || $this->permissionsProvider->lookup($this->getPerson(), $role, $page));
     }
 
-    public function login(Person\Person $person, $remember = false)
+    public function login(Person $person, $remember = false)
     {
         $this->person = $person;
         $this->session->set($this->getSessionKey(), $person->getId());
@@ -166,7 +175,7 @@ class Auth
         }
     }
 
-    public function loginFailed(Person\Person $person)
+    public function loginFailed(Person $person)
     {
         if ($person->getLastFailedLogin()->getTimestamp() > (time() - 600)) {
             $person->incrementFailedLogins();
@@ -189,12 +198,12 @@ class Auth
         $this->session->remove($this->getSessionKey());
         Cookie::queue(Cookie::forget($this->getAutoLoginCookie()));
 
-        $this->person = new Person\Guest();
+        $this->person = new Guest();
 
         return $this;
     }
 
-    public function refreshRememberLoginToken(Person\Person $person)
+    public function refreshRememberLoginToken(Person $person)
     {
         if ($person->loaded()) {
             $token = str_random(60);
@@ -205,7 +214,7 @@ class Auth
         return $this;
     }
 
-    public function rememberLogin(Person\Person $person)
+    public function rememberLogin(Person $person)
     {
         $value = $person->getId().'-'.$person->getRememberToken();
 

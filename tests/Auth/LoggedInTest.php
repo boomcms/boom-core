@@ -2,7 +2,9 @@
 
 namespace BoomCMS\Tests\Auth;
 
-use BoomCMS\Core\Person\Person;
+use BoomCMS\Core\Auth\Auth;
+use BoomCMS\Core\Auth\PermissionsProvider;
+use BoomCMS\Database\Models\Person;
 use BoomCMS\Tests\AbstractTestCase;
 
 class LoggedInTest extends AbstractTestCase
@@ -10,7 +12,7 @@ class LoggedInTest extends AbstractTestCase
     public function testLoggedInForSuperuserDoesntCheckPermissions()
     {
         $person = new Person(['id' => 1, 'superuser' => true]);
-        $permissionsProvider = $this->getMock('BoomCMS\Core\Auth\PermissionsProvider');
+        $permissionsProvider = $this->getMock(PermissionsProvider::class);
 
         $permissionsProvider
             ->expects($this->never())
@@ -29,7 +31,7 @@ class LoggedInTest extends AbstractTestCase
     public function testLoggedInForNonSuperuserDoesCheckPermissions()
     {
         $person = new Person(['id' => 1]);
-        $permissionsProvider = $this->getMock('BoomCMS\Core\Auth\PermissionsProvider');
+        $permissionsProvider = $this->getMock(PermissionsProvider::class);
 
         $permissionsProvider
             ->expects($this->once())
@@ -49,7 +51,7 @@ class LoggedInTest extends AbstractTestCase
     public function testLoggedInWithRoleWhileLoggedOutReturnsFalse()
     {
         $person = new Person(['id' => 1, 'superuser' => true]);
-        $permissionsProvider = $this->getMock('BoomCMS\Core\Auth\PermissionsProvider');
+        $permissionsProvider = $this->getMock(PermissionsProvider::class);
 
         $permissionsProvider
             ->expects($this->never())
@@ -68,7 +70,7 @@ class LoggedInTest extends AbstractTestCase
     public function testLoggedInWithoutPermissionReturnsFalse()
     {
         $person = new Person(['id' => 1]);
-        $permissionsProvider = $this->getMock('BoomCMS\Core\Auth\PermissionsProvider');
+        $permissionsProvider = $this->getMock(PermissionsProvider::class);
 
         $permissionsProvider
             ->expects($this->once())
@@ -89,7 +91,7 @@ class LoggedInTest extends AbstractTestCase
     public function testLoggedInWithPermissionReturnsTrue()
     {
         $person = new Person(['id' => 1]);
-        $permissionsProvider = $this->getMock('BoomCMS\Core\Auth\PermissionsProvider');
+        $permissionsProvider = $this->getMock(PermissionsProvider::class);
 
         $permissionsProvider
             ->expects($this->once())
@@ -109,7 +111,7 @@ class LoggedInTest extends AbstractTestCase
 
     protected function getAuth($person, $permissionsProvider)
     {
-        $auth = $this->getMockBuilder('BoomCMS\Core\Auth\Auth')
+        $auth = $this->getMockBuilder(Auth::class)
             ->setConstructorArgs([$this->getMockSession(), $this->getMockPersonRepository(), $permissionsProvider])
             ->setMethods(['isLoggedIn', 'getPerson'])
             ->getMock();

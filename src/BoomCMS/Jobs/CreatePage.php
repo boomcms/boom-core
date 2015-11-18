@@ -3,7 +3,7 @@
 namespace BoomCMS\Jobs;
 
 use BoomCMS\Core\Page\Page;
-use BoomCMS\Core\Person\Person;
+use BoomCMS\Contracts\Models\Person;
 use BoomCMS\Support\Facades\Page as PageFacade;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Bus\SelfHandling;

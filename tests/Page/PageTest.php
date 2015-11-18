@@ -4,6 +4,7 @@ namespace BoomCMS\Tests\Page;
 
 use BoomCMS\Core\Chunk\Text;
 use BoomCMS\Core\Page\Page;
+use BoomCMS\Database\Models\Tag;
 use BoomCMS\Support\Facades\Asset;
 use BoomCMS\Support\Facades\Chunk;
 use BoomCMS\Support\Facades\Page as PageFacade;
@@ -148,15 +149,7 @@ class PageTest extends AbstractTestCase
             ->setConstructorArgs([['id' => 1]])
             ->getMock();
 
-        $tag = $this->getMockBuilder('BoomCMS\Core\Tag\Tag')
-            ->setMethods(['loaded'])
-            ->setConstructorArgs([['id' => 2]])
-            ->getMock();
-
-        $tag
-            ->expects($this->once())
-            ->method('loaded')
-            ->will($this->returnValue(true));
+        $tag = new Tag(['id' => 1]);
 
         $page
             ->expects($this->once())

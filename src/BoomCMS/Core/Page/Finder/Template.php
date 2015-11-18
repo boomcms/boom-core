@@ -2,18 +2,18 @@
 
 namespace BoomCMS\Core\Page\Finder;
 
-use BoomCMS\Core\Template\Template as TemplateObject;
+use BoomCMS\Contracts\Models\Template as TemplateInterface;
 use BoomCMS\Foundation\Finder\Filter;
 use Illuminate\Database\Eloquent\Builder;
 
 class Template extends Filter
 {
     /**
-     * @var TemplateObject
+     * @var TemplateInterface
      */
     protected $template;
 
-    public function __construct(TemplateObject $template)
+    public function __construct(TemplateInterface $template)
     {
         $this->template = $template;
     }

@@ -2,56 +2,65 @@
 
 namespace BoomCMS\Repositories;
 
-use BoomCMS\Core\Group\Group as GroupObject;
+use BoomCMS\Contracts\Repositories\Group as GroupRepositoryInterface;
+use BoomCMS\Contracts\Models\Group as GroupModelInterface;
 use BoomCMS\Database\Models\Group as Model;
 use Illuminate\Support\Facades\DB;
 
-class Group
+class Group implements GroupRepositoryInterface
 {
-    public function create(array $attributes)
-    {
-        $m = Model::create($attributes);
+    /**
+     * @var Model
+     */
+    protected $model;
 
-        return new Group($m->toArray());
+    public function __construct(Model $model = null)
+    {
+        $class = Model::class;
+
+        $this->model = $model ?: new $class();
     }
 
-    public function delete(Group $group)
+    /**
+     * @param array $groupIds
+     *
+     * @return array
+     */
+    public function allExcept(array $groupIds)
     {
-        // Delete all people roles associated with this group.
+        return $this->model
+            ->whereNotIn(Model::ATTR_ID, $groupIds)
+            ->orderBy(Model::ATTR_NAME, 'asc')
+            ->get();
+    }
+
+    public function create(array $attributes)
+    {
+        return Model::create($attributes);
+    }
+
+    public function delete(GroupModelInterface $group)
+    {
+        // Delete all people roles associated with the group.
         DB::table('people_roles')
             ->where('group_id', '=', $group->getId())
             ->delete();
 
-        Model::destroy($group->getId());
+        $group->delete();
     }
 
     public function findAll()
     {
-        $groups = [];
-
-        foreach (Model::all() as $m) {
-            $groups[] = new Group($m->toArray());
-        }
-
-        return $groups;
+        return $this->model->all();
     }
 
-    public function findById($id)
+    public function find($id)
     {
-        $m = Model::find($id);
-
-        return new GroupObject($m ? $m->toArray() : []);
+        return $this->model->find($id);
     }
 
-    public function findByName($name)
+    public function save(GroupModelInterface $group)
     {
-    }
-
-    public function save(GroupObject $group)
-    {
-        $model = Model::find($group->getId());
-        $model->update($group->toArray());
-
-        return $group;
+        return $group->save();
     }
 }

@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Foundation\Listeners;
 
-use BoomCMS\Core\Person\Person;
+use BoomCMS\Contracts\Models\Person;
 use BoomCMS\Support\Facades\Settings;
 use Illuminate\Support\Facades\Mail;
 

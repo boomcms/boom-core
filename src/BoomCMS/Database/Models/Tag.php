@@ -2,18 +2,82 @@
 
 namespace BoomCMS\Database\Models;
 
+use BoomCMS\Contracts\Models\Tag as TagInterface;
+use BoomCMS\Support\Traits\Comparable;
+use BoomCMS\Support\Traits\HasId;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
-class Tag extends Model
+class Tag extends Model implements TagInterface
 {
+    use Comparable;
+    use HasId;
+
+    const ATTR_ID = 'id';
+    const ATTR_GROUP = 'group';
+    const ATTR_NAME = 'name';
+    const ATTR_SLUG = 'slug';
+
     protected $table = 'tags';
-    public $guarded = ['id'];
+
+    public $guarded = [
+        self::ATTR_ID,
+    ];
+
     public $timestamps = false;
 
+    /**
+     * @return string
+     */
+    public function getGroup()
+    {
+        return $this->{self::ATTR_GROUP};
+    }
+
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->{self::ATTR_ID};
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->{self::ATTR_NAME};
+    }
+
+    /**
+     * @return string
+     */
+    public function getSlug()
+    {
+        return $this->{self::ATTR_SLUG};
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return $this
+     */
+    public function setName($name)
+    {
+        $this->{self::ATTR_NAME} = $name;
+
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     */
     public function setNameAttribute($value)
     {
-        $this->attributes['name'] = trim(strip_tags($value));
-        $this->attributes['slug'] = Str::slug($this->attributes['name']);
+        $name = trim(strip_tags($value));
+
+        $this->attributes[self::ATTR_NAME] = $name;
+        $this->attributes[self::ATTR_SLUG] = Str::slug($name);
     }
 }

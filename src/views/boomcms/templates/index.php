@@ -34,7 +34,7 @@
                         <td><?= $t->getTheme() ?></td>
                         <td><input type="text" name="filename-<?= $t->getId() ?>" value="<?= $t->getFilename() ?>" /></td>
                         <td>
-                            <?php $pageCount = $t->countPages() ?>
+                            <?php $pageCount = $countPages(['template' => $t]) ?>
                             <a href='/cms/templates/pages/<?= $t->getId() ?>' title='View the title and URL of <?= $pageCount, ' ', Lang::get('page', [$pageCount]) ?> which use this template'><?= $pageCount ?>
                         </td>
                         <td><?= $button('trash', "Delete the &quot;{$t->getName()}&quot; template", ['class' => 'b-templates-delete']) ?>

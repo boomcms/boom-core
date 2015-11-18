@@ -86,11 +86,9 @@ $.widget('boom.groupPermissionsEditor', {
 
 		this.group.getRoles(page_id)
 			.done(function(data) {
-				console.log(data);
 				if (data.length) {
 					for (i in data) {
-						console.log(data[i]);
-						self._check_inputs($('input[name=' + data[i].role_id + ']'), data[i].allowed);
+						self._check_inputs($('input[name=' + data[i].id + ']'), data[i].allowed);
 					}
 				}
 			});

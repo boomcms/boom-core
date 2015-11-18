@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Core\Asset;
 
-use BoomCMS\Core\Person;
+use BoomCMS\Contracts\Models\Person as PersonInterface;
 use BoomCMS\Database\Models\Asset\Version as VersionModel;
 use BoomCMS\Support\Facades\Asset as AssetFacade;
 use BoomCMS\Support\Facades\Auth;
@@ -369,11 +369,11 @@ class Asset implements Arrayable
     }
 
     /**
-     * @param \Boom\Person\Person $person
+     * @param PersonInterface $person
      *
      * @return $this
      */
-    public function setUploadedBy(Person\Person $person)
+    public function setUploadedBy(PersonInterface $person)
     {
         $this->attributes['uploaded_by'] = $person->getId();
 

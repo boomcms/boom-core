@@ -4,7 +4,7 @@ namespace BoomCMS\Foundation\Events;
 
 use BoomCMS\Core\Page\Page;
 use BoomCMS\Core\Page\Version;
-use BoomCMS\Core\Person\Person;
+use BoomCMS\Contracts\Models\Person;
 
 class PageVersionEvent extends PageEvent
 {

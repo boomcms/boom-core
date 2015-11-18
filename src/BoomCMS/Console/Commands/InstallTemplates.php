@@ -3,6 +3,7 @@
 namespace BoomCMS\Console\Commands;
 
 use BoomCMS\Core\Template;
+use BoomCMS\Repositories\Template as TemplateRepository;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 use PDOException;
@@ -32,7 +33,7 @@ class InstallTemplates extends Command
     {
         parent::__construct();
 
-        $this->manager = new Template\Manager($filesystem, new Template\Provider());
+        $this->manager = new Template\Manager($filesystem, new TemplateRepository());
     }
 
     /**
