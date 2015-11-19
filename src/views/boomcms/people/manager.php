@@ -13,6 +13,8 @@
 	</div>
 
 	<div id="b-people-manager">
+        <h1>Manage people and groups</h1>
+
 		<div id="b-groups">
 			<div id="b-groups-header">
 				<?= $button('plus', Lang::get('Add group'), ['class' => 'b-people-group-add']) ?>
