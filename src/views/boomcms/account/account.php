@@ -6,9 +6,8 @@
     </div>
 
     <div id="b-account">
-        <p class="information">
-            You can use this form to update your account details. If you leave the password fields blank your password will not be changed.
-        </p>
+        <h1><?= Lang::get('boomcms::account.heading') ?></h1>
+        <p class="information"><?= Lang::get('boomcms::account.intro') ?></p>
 
         <div style="margin-top: 20px;">
             <?php if (isset($message)): ?>
