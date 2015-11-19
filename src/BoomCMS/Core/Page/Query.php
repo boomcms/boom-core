@@ -34,13 +34,15 @@ class Query extends BaseQuery
 
     public function configurePagination(BaseFinder $finder, array $params)
     {
-        list($column, $direction) = explode(' ', strtoupper($params['order']));
+        if (isset($params['order'])) {
+            list($column, $direction) = explode(' ', strtoupper($params['order']));
 
-        if ($column && $direction) {
-            $column = constant(Finder\Finder::class.'::'.$column);
-            $direction = constant(Finder\Finder::class.'::'.$direction);
+            if ($column && $direction) {
+                $column = constant(Finder\Finder::class.'::'.$column);
+                $direction = constant(Finder\Finder::class.'::'.$direction);
 
-            $params['order'] = "$column $direction";
+                $params['order'] = "$column $direction";
+            }
         }
 
         return parent::configurePagination($finder, $params);
