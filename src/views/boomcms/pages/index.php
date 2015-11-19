@@ -6,6 +6,7 @@
 	</div>
 
 	<div id="b-pages">
+        <h1><?= Lang::get('boomcms::pages.heading') ?></h1>
 		<ul class='boom-tree'></ul>
 	</div>
 

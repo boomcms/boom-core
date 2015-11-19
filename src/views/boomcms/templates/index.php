@@ -7,6 +7,8 @@
 	</div>
 
 	<form id="b-templates">
+        <h1><?= Lang::get('boomcms::templates.heading') ?></h1>
+
         <table id="b-templates-table" class="b-table tablesorter">
             <thead>
                 <tr>

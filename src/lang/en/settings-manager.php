@@ -1,6 +1,7 @@
 <?php
 
 return [
+    '_heading'  => 'Manage BoomCMS settings',
     '_saved'    => 'You\'re settings have been saved',
     'analytics' => [
         '_label' => 'Analytics',

@@ -13,7 +13,7 @@
 	</div>
 
 	<div id="b-people-manager">
-        <h1>Manage people and groups</h1>
+        <h1><?= Lang::get('boomcms::people.heading') ?></h1>
 
 		<div id="b-groups">
 			<div id="b-groups-header">
