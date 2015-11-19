@@ -15,7 +15,7 @@ class Text extends BaseChunk
         $text = str_replace('&nbsp;', ' ', $text);
 
         if ($this->slotname === 'standfirst') {
-            $siteText = $text = Bus::dispatch(new TextFilters\RemoveAllHTML($text));
+            $siteText = $text = strip_tags($text);
         } else {
             $text = Str::makeInternalLinksRelative($text);
 
