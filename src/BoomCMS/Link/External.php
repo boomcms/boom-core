@@ -4,11 +4,11 @@ namespace BoomCMS\Link;
 
 class External extends Link
 {
-    protected $_link;
+    protected $link;
 
     public function __construct($link)
     {
-        $this->_link = $link;
+        $this->link = $link;
     }
 
     public function getTitle()
@@ -18,6 +18,6 @@ class External extends Link
 
     public function url()
     {
-        return $this->_link;
+        return $this->link;
     }
 }

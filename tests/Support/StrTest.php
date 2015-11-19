@@ -7,8 +7,6 @@ use BoomCMS\Tests\AbstractTestCase;
 
 class StrTest extends AbstractTestCase
 {
-    protected $baseUrl = 'localhost';
-
     public function testFilesize()
     {
         $sizes = [

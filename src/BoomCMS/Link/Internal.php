@@ -27,10 +27,10 @@ class Internal extends Link
 
     public function __construct($link)
     {
-        if (ctype_digit($link)) {
+        if (is_int($link) || ctype_digit($link)) {
             $this->page = Page::findById($link);
         } else {
-            $location = ($link === '/') ? $link : substr($link, 1);
+            $location = ($link === '/') ? $link : ltrim($link, '/');
 
             // Extract the query string and fragement
             $this->queryString = parse_url($link, PHP_URL_QUERY);

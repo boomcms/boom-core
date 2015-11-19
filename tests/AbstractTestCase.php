@@ -3,12 +3,15 @@
 namespace BoomCMS\Tests;
 
 use BoomCMS\Core\Auth\PermissionsProvider;
+use BoomCMS\Core\Page\Page;
 use BoomCMS\Repositories;
 use Illuminate\Contracts\Console\Kernel;
 use Illuminate\Session\SessionManager;
 
 abstract class AbstractTestCase extends \Illuminate\Foundation\Testing\TestCase
 {
+    protected $baseUrl = 'localhost';
+
     /**
      * Creates the application.
      *
@@ -47,5 +50,15 @@ abstract class AbstractTestCase extends \Illuminate\Foundation\Testing\TestCase
     protected function getMockPermissionsProvider()
     {
         return $this->getMock(PermissionsProvider::class);
+    }
+
+    protected function invalidPage()
+    {
+        return new Page();
+    }
+
+    protected function validPage()
+    {
+        return new Page(['id' => 1]);
     }
 }

@@ -2,6 +2,8 @@
 
 namespace BoomCMS\Link;
 
+use Illuminate\Support\Facades\Request;
+
 abstract class Link
 {
     public function __toString()
@@ -11,7 +13,9 @@ abstract class Link
 
     public static function factory($link)
     {
-        if (ctype_digit($link) || substr($link, 0, 1) == '/') {
+        $link = preg_replace('|^https?://'.Request::getHttpHost().'|', '', $link);
+
+        if (is_int($link) || ctype_digit($link) || substr($link, 0, 1) == '/') {
             $internal = new Internal($link);
 
             // If it's not a valid CMS URL then it's a relative URL which isn't CMS managed so treat it as an external URL.
