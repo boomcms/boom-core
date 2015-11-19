@@ -14,7 +14,6 @@ use DateTime;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View;
-use Rych\ByteSize\ByteSize;
 use Symfony\Component\HttpFoundation\File\UploadedFile as File;
 
 class Asset implements Arrayable
@@ -110,11 +109,6 @@ class Asset implements Arrayable
     public function getHeight()
     {
         return (int) $this->get('height');
-    }
-
-    public function getHumanFilesize()
-    {
-        return ByteSize::formatBinary($this->getFilesize());
     }
 
     public function getEmbedHtml($height = null, $width = null)

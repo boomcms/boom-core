@@ -60,7 +60,7 @@
                 <dd><?= $asset->getExtension() ?></dd>
 
                 <dt><?= Lang::get('Filesize') ?></dt>
-                <dd><span id='filesize'><?= $asset->getHumanFilesize() ?></dd>
+                <dd><span id='filesize'><?= Str::filesize($asset->getFilesize()) ?></dd>
 
                 <?php if ($asset->isImage()): ?>
                     <dt><?= Lang::get('Dimensions') ?></dt>

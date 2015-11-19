@@ -13,7 +13,7 @@
                         <?php if ($asset->isImage()): ?>
                             <?= $asset->getWidth() ?> x <?= $asset->getHeight() ?>
                         <?php else: ?>
-                            <?= $asset->getHumanFilesize() ?>
+                            <?= Str::filesize($asset->getFilesize()) ?>
                         <?php endif ?>
                     </p>
                 </div>
