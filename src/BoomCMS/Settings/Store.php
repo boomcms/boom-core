@@ -1,6 +1,6 @@
 <?php
 
-namespace BoomCMS\Core\Settings;
+namespace BoomCMS\Settings;
 
 use Illuminate\Filesystem\Filesystem;
 

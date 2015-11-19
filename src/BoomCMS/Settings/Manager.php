@@ -1,6 +1,6 @@
 <?php
 
-namespace BoomCMS\Core\Settings;
+namespace BoomCMS\Settings;
 
 use BoomCMS\Support\Facades\Settings;
 use Illuminate\Support\Facades\Config;

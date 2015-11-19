@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Tests;
 
-use BoomCMS\Core\Settings\Store;
+use BoomCMS\Settings\Store;
 
 class SettingsTest extends AbstractTestCase
 {
@@ -56,7 +56,7 @@ class SettingsTest extends AbstractTestCase
     public function testSetReturnsStore()
     {
         $store = $this->getStore();
-        $this->assertInstanceOf('BoomCMS\Core\Settings\Store', $store->set('key1', 'value'));
+        $this->assertInstanceOf('BoomCMS\Settings\Store', $store->set('key1', 'value'));
     }
 
     public function testGetAfterSet()

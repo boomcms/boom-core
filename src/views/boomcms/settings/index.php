@@ -20,7 +20,7 @@
             <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
 
             <table class='b-table'>
-                <?php foreach (BoomCMS\Core\Settings\Manager::options() as $option): ?>
+                <?php foreach (BoomCMS\Settings\Manager::options() as $option): ?>
                     <tr>
                         <td><?= $option['label'] ?></td>
 
