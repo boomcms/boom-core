@@ -4,7 +4,7 @@ namespace BoomCMS\Tests;
 
 use BoomCMS\Core\Auth\Auth;
 use BoomCMS\Core\Auth\PermissionsProvider;
-use BoomCMS\Core\Editor\Editor;
+use BoomCMS\Editor\Editor;
 use BoomCMS\Core\Page\Page;
 use BoomCMS\Database\Models\Person;
 
@@ -127,7 +127,7 @@ class EditorTest extends AbstractTestCase
 
     protected function getEditor($methods = null)
     {
-        return $this->getMockBuilder('BoomCMS\Core\Editor\Editor')
+        return $this->getMockBuilder(BoomCMS\Editor\Editor::class)
             ->setMethods($methods)
             ->setConstructorArgs([$this->auth, $this->session])
             ->getMock();

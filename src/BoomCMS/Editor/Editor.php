@@ -1,6 +1,6 @@
 <?php
 
-namespace BoomCMS\Core\Editor;
+namespace BoomCMS\Editor;
 
 use BoomCMS\Core\Auth\Auth;
 use BoomCMS\Core\Page\Page;

@@ -2,7 +2,7 @@
 
 namespace BoomCMS\ServiceProviders;
 
-use BoomCMS\Core\Editor;
+use BoomCMS\Editor;
 use Illuminate\Support\ServiceProvider;
 
 class EditorServiceProvider extends ServiceProvider

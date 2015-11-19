@@ -2,6 +2,7 @@
 
 namespace BoomCMS\Http\Controllers\CMS;
 
+use BoomCMS\Editor\Editor;
 use BoomCMS\Http\Controllers\Controller;
 use BoomCMS\Support\Facades\Page;
 use Illuminate\Support\Facades\View;
@@ -14,7 +15,7 @@ class Editor extends Controller
     public function postState()
     {
         $state = $this->request->input('state');
-        $numericState = constant("\BoomCMS\Core\Editor\Editor::".strtoupper($state));
+        $numericState = constant(Editor::class.'::'.strtoupper($state));
 
         if ($numericState === null) {
             throw new \Exception('Invalid editor state: :state', [

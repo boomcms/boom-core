@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Http\Controllers;
 
-use BoomCMS\Core\Editor\Editor;
+use BoomCMS\Editor\Editor;
 use BoomCMS\Core\Page\Page;
 use BoomCMS\Support\Facades\Auth;
 use Illuminate\Http\Request;
