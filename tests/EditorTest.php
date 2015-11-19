@@ -127,7 +127,7 @@ class EditorTest extends AbstractTestCase
 
     protected function getEditor($methods = null)
     {
-        return $this->getMockBuilder(BoomCMS\Editor\Editor::class)
+        return $this->getMockBuilder(Editor::class)
             ->setMethods($methods)
             ->setConstructorArgs([$this->auth, $this->session])
             ->getMock();
