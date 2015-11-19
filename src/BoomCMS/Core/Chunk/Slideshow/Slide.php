@@ -3,7 +3,7 @@
 namespace BoomCMS\Core\Chunk\Slideshow;
 
 use BoomCMS\Core\Asset\Asset;
-use BoomCMS\Core\Link\Link;
+use BoomCMS\Link\Link;
 use BoomCMS\Support\Facades\Asset as AssetFacade;
 
 class Slide

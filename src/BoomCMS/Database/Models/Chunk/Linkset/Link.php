@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Database\Models\Chunk\Linkset;
 
-use BoomCMS\Core\Link\Link as LinkObject;
+use BoomCMS\Link\Link as LinkObject;
 use Illuminate\Database\Eloquent\Model;
 
 class Link extends Model

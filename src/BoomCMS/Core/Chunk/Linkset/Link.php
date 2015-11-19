@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Core\Chunk\Linkset;
 
-use BoomCMS\Core\Link\Link as LinkObject;
+use BoomCMS\Link\Link as LinkObject;
 
 class Link
 {

@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Core\Chunk;
 
-use BoomCMS\Core\Link\Link as Link;
+use BoomCMS\Link\Link as Link;
 use BoomCMS\Core\Page as Page;
 use BoomCMS\Support\Facades\Asset as AssetFacade;
 use Illuminate\Support\Facades\View;

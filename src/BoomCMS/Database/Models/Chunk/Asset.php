@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Database\Models\Chunk;
 
-use BoomCMS\Core\Link\Link;
+use BoomCMS\Link\Link;
 
 class Asset extends BaseChunk
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace BoomCMS\Core\Link;
+namespace BoomCMS\Link;
 
 abstract class Link
 {
