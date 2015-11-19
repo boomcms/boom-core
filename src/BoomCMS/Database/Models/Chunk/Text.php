@@ -3,6 +3,7 @@
 namespace BoomCMS\Database\Models\Chunk;
 
 use BoomCMS\Jobs\TextFilters;
+use BoomCMS\Support\Str;
 use Illuminate\Support\Facades\Bus;
 
 class Text extends BaseChunk
@@ -16,7 +17,7 @@ class Text extends BaseChunk
         if ($this->slotname === 'standfirst') {
             $siteText = $text = Bus::dispatch(new TextFilters\RemoveAllHTML($text));
         } else {
-            $text = Bus::dispatch(new TextFilters\MakeInternalLinksRelative($text));
+            $text = Str::makeInternalLinksRelative($text);
 
             $siteText = Bus::dispatch(new TextFilters\OEmbed($text));
             $siteText = Bus::dispatch(new TextFilters\StorifyEmbed($siteText));
