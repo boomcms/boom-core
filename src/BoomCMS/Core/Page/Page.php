@@ -679,6 +679,18 @@ class Page
     }
 
     /**
+     * @param int $sequence
+     *
+     * @return $this
+     */
+    public function setSequence($sequence)
+    {
+        $this->attributes['sequence'] = $sequence;
+
+        return $this;
+    }
+
+    /**
      * @param Template $template
      *
      * @return $this
@@ -760,24 +772,6 @@ class Page
     public function toArray()
     {
         return $this->attributes;
-    }
-
-    public function updateChildSequences(array $sequences)
-    {
-        foreach ($sequences as $sequence => $pageId) {
-            $page = PageFacade::findById($pageId);
-
-            // Only update the sequence of pages which are children of this page.
-            if ($page->getParentId() == $this->getId()) {
-                DB::table('pages')
-                    ->where('id', '=', $pageId)
-                    ->update([
-                        'sequence' => $sequence,
-                    ]);
-            }
-        }
-
-        return $this;
     }
 
     /**

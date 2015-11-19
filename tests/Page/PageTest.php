@@ -181,4 +181,12 @@ class PageTest extends AbstractTestCase
         $this->assertTrue($parent->isParentOf($child), 'Child');
         $this->assertFalse($parent->isParentOf($notAChild), 'Not child');
     }
+
+    public function testSetSequence()
+    {
+        $page = new Page();
+
+        $this->assertEquals($page, $page->setSequence(2));
+        $this->assertEquals(2, $page->getManualOrderPosition());
+    }
 }

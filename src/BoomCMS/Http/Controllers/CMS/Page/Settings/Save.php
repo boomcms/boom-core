@@ -4,9 +4,11 @@ namespace BoomCMS\Http\Controllers\CMS\Page\Settings;
 
 use BoomCMS\Events\PageSearchSettingsWereUpdated;
 use BoomCMS\Events\PageWasMadeVisible;
+use BoomCMS\Jobs\ReorderChildPages;
 use BoomCMS\Support\Facades\Auth;
 use BoomCMS\Support\Facades\Page;
 use DateTime;
+use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Event;
 
 class Save extends Settings
@@ -92,7 +94,7 @@ class Save extends Settings
     {
         parent::children();
 
-        $this->page->updateChildSequences($this->request->input('sequences'));
+        Bus::dispatch(new ReorderChildPages($this->page, $this->request->input('sequences')));
     }
 
     public function visibility()
