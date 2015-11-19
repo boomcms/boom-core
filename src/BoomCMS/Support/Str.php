@@ -2,6 +2,7 @@
 
 namespace BoomCMS\Support;
 
+use Embera\Embera;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Str as BaseStr;
 use Rych\ByteSize;
@@ -43,5 +44,48 @@ abstract class Str extends BaseStr
         }
 
         return $text;
+    }
+
+    /**
+     * Replace embeddable URLs with the embed code.
+     *
+     * @param string $text
+     *
+     * @return string
+     */
+    public static function OEmbed($text)
+    {
+        $embera = new Embera();
+
+        if ($data = $embera->getUrlInfo($text)) {
+            $table = [];
+
+            foreach ($data as $url => $service) {
+                if (!empty($service['html'])) {
+                    $table[$url] = $service['html'];
+                }
+            }
+
+            foreach ($table as $url => $replacement) {
+                $text = preg_replace('~(?<![\'\"])'.preg_quote($url).'(?![\'\"])(?!\</a\>)~', $replacement, $text);
+            }
+        }
+
+        return $text;
+    }
+
+    /**
+     * Embed storify links (doesn't use OEmbed)
+     *
+     * @param string $text
+     *
+     * @return string
+     */
+    public function storifyEmbed($text)
+    {
+        $matchString = "/\<p\>(https?\:\/\/(?:www\.)?storify\.com\/(?:[^\/]+)\/(?:[^\/]+))\/?\<\/p\>/i";
+        $replaceString = '<script type="text/javascript" src="${1}.js"></script>';
+
+        return \preg_replace($matchString, $replaceString, $text);
     }
 }

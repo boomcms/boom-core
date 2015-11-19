@@ -2,9 +2,7 @@
 
 namespace BoomCMS\Database\Models\Chunk;
 
-use BoomCMS\Jobs\TextFilters;
 use BoomCMS\Support\Str;
-use Illuminate\Support\Facades\Bus;
 
 class Text extends BaseChunk
 {
@@ -18,9 +16,7 @@ class Text extends BaseChunk
             $siteText = $text = strip_tags($text);
         } else {
             $text = Str::makeInternalLinksRelative($text);
-
-            $siteText = Bus::dispatch(new TextFilters\OEmbed($text));
-            $siteText = Bus::dispatch(new TextFilters\StorifyEmbed($siteText));
+            $siteText = Str::StorifyEmbed(Str::OEmbed($text));
         }
 
         $this->attributes['text'] = $text;

@@ -41,4 +41,17 @@ class StrTest extends AbstractTestCase
             $this->AssertEquals($after, Str::makeInternalLinksRelative($original));
         }
     }
+
+    public function testOembed()
+    {
+        $replacements = [
+            'https://www.youtube.com/watch?v=5omxorBHiv8' => '<iframe width="459" height="344" src="https://www.youtube.com/embed/5omxorBHiv8?feature=oembed" frameborder="0" allowfullscreen></iframe>',
+            'https://youtu.be/5omxorBHiv8' => '<iframe width="459" height="344" src="https://www.youtube.com/embed/5omxorBHiv8?feature=oembed" frameborder="0" allowfullscreen></iframe>',
+            '<a href="https://youtu.be/5omxorBHiv8">https://youtu.be/5omxorBHiv8</a>' => '<a href="https://youtu.be/5omxorBHiv8">https://youtu.be/5omxorBHiv8</a>',
+        ];
+
+        foreach ($replacements as $original => $after) {
+            $this->AssertEquals($after, Str::OEmbed($original));
+        }
+    }
 }
