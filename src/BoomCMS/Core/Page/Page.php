@@ -6,7 +6,7 @@ use BoomCMS\Contracts\Models\Person;
 use BoomcMS\Contracts\Models\Tag;
 use BoomCMS\Contracts\Models\Template;
 use BoomCMS\Contracts\Models\URL;
-use BoomCMS\Database\Models\Page\URL as URLModel;
+use BoomCMS\Database\Models\URL as URLModel;
 use BoomCMS\Database\Models\Page\Version as VersionModel;
 use BoomCMS\Support\Facades\Asset;
 use BoomCMS\Support\Facades\Auth;

@@ -33,7 +33,7 @@ class ProcessSiteURL
             // The URL is in use and has a page - the page must not be visible to the current user
             //
             // 404.
-            if (!$url->loaded() || ($url->loaded() && $url->getPage()->loaded())) {
+            if (!$url || ($url && $url->getPage()->loaded())) {
                 throw new NotFoundHttpException();
             }
 
