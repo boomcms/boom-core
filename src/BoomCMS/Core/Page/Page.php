@@ -412,6 +412,18 @@ class Page
         return $this->get('deleted') === false;
     }
 
+    /**
+     * Returns whether this page is the parent of a given page.
+     *
+     * @param Page $page
+     *
+     * @return bool
+     */
+    public function isParentOf(Page $page)
+    {
+        return $page->getParentId() === $this->getId();
+    }
+
     public function isRoot()
     {
         return $this->getParentId() == null;

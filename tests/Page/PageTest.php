@@ -171,4 +171,14 @@ class PageTest extends AbstractTestCase
 
         $page->addTag($tag);
     }
+
+    public function testIsParentOf()
+    {
+        $parent = new Page(['id' => 1]);
+        $child = new Page(['parent_id' => 1]);
+        $notAChild = new Page(['parent_id' => 2]);
+
+        $this->assertTrue($parent->isParentOf($child), 'Child');
+        $this->assertFalse($parent->isParentOf($notAChild), 'Not child');
+    }
 }
