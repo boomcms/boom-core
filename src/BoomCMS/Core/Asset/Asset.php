@@ -200,7 +200,7 @@ class Asset implements Arrayable
 
     public function getUploadedBy()
     {
-        return PersonFacade::findById($this->get('uploaded_by'));
+        return PersonFacade::find($this->get('uploaded_by'));
     }
 
     public function getUploadedTime()

@@ -3,6 +3,7 @@
 namespace BoomCMS\Tests\Asset;
 
 use BoomCMS\Core\Asset\Asset;
+use BoomCMS\Support\Facades\Person;
 use BoomCMS\Tests\AbstractTestCase;
 
 class AssetTest extends AbstractTestCase
@@ -64,6 +65,16 @@ class AssetTest extends AbstractTestCase
         $asset = $this->getAsset(['height' => 1]);
         $this->assertEquals(1, $asset->getHeight());
         $this->assertInternalType('int', $asset->getHeight());
+    }
+
+    public function testGetUploadedBy()
+    {
+        Person::shouldReceive('find')
+            ->with(1)
+            ->andReturn('a person');
+
+        $asset = $this->getAsset(['uploaded_by' => 1]);
+        $this->assertEquals('a person', $asset->getUploadedBy());
     }
 
     protected function getAsset($attrs = [], $methods = null)
