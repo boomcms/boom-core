@@ -5,6 +5,7 @@ namespace BoomCMS\ServiceProviders;
 use BoomCMS\ServiceProviders;
 use BoomCMS\Support\Facades;
 use BoomCMS\Support\Helpers\Asset;
+use BoomCMS\Support\Str;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Html\HtmlServiceProvider;
 use Illuminate\Routing\Router;
@@ -23,6 +24,7 @@ class BoomCMSServiceProvider extends ServiceProvider
         'Tag'         => Facades\Tag::class,
         'Template'    => Facades\Template::class,
         'Group'       => Facades\Group::class,
+        'Str'         => Str::class,
     ];
 
     protected $serviceProviders = [
