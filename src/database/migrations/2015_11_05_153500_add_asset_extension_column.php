@@ -18,9 +18,9 @@ class AddAssetExtensionColumn extends Migration
         $versions = Version::all();
 
         foreach ($versions as $v) {
-            if (isset($matches[1])) {
-                preg_match('|\.([a-z]+)$|', $v->filename, $matches);
+            preg_match('|\.([a-z]+)$|', $v->filename, $matches);
 
+            if (isset($matches[1])) {
                 $v->extension = $matches[1];
                 $v->save();
             }
