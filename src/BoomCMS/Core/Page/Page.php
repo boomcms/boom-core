@@ -22,11 +22,9 @@ class Page
     use Comparable;
     use HasId;
 
-    const ORDER_MANUAL = 1;
-    const ORDER_SEQUENCE = self::ORDER_MANUAL;
-    const ORDER_ALPHABETIC = 2;
-    const ORDER_DATE = 4;
-    const ORDER_VISIBLE_FROM = self::ORDER_MANUAL;
+    const ORDER_SEQUENCE = 1;
+    const ORDER_TITLE = 2;
+    const ORDER_VISIBLE_FROM = 4;
     const ORDER_ASC = 8;
     const ORDER_DESC = 16;
 
@@ -187,9 +185,9 @@ class Page
     {
         $order = $this->get('children_ordering_policy');
 
-        if ($order & static::ORDER_ALPHABETIC) {
+        if ($order & static::ORDER_TITLE) {
             $column = 'title';
-        } elseif ($order & static::ORDER_DATE) {
+        } elseif ($order & static::ORDER_VISIBLE_FROM) {
             $column = 'visible_from';
         } else {
             $column = 'sequence';

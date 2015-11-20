@@ -13,6 +13,26 @@ use Illuminate\Support\Facades\DB;
 
 class PageTest extends AbstractTestCase
 {
+    public function testGetChildOrderingPolicy()
+    {
+        $values = [
+            Page::ORDER_TITLE => ['title', 'desc'], // Default is descending
+            Page::ORDER_TITLE | Page::ORDER_ASC => ['title', 'asc'],
+            Page::ORDER_TITLE | Page::ORDER_DESC => ['title', 'desc'],
+            Page::ORDER_VISIBLE_FROM | Page::ORDER_ASC => ['visible_from', 'asc'],
+            Page::ORDER_VISIBLE_FROM | Page::ORDER_DESC => ['visible_from', 'desc'],
+            Page::ORDER_SEQUENCE | Page::ORDER_ASC => ['sequence', 'asc'],
+            Page::ORDER_SEQUENCE | Page::ORDER_DESC => ['sequence', 'desc'],
+            0 => ['sequence', 'desc'],
+        ];
+
+        foreach ($values as $order => $expected) {
+            $page = new Page(['children_ordering_policy' => $order]);
+
+            $this->assertEquals($expected, $page->getChildOrderingPolicy());
+        }
+    }
+
     public function testGetParentReturnsPageObject()
     {
         $page = new Page();
@@ -78,6 +98,29 @@ class PageTest extends AbstractTestCase
     {
         $page = new Page(['description' => '<p>description</p>']);
         $this->assertEquals('description', $page->getDescription());
+    }
+
+    public function testSetAndGetChildOrderingPolicy()
+    {
+        $values = [
+            ['title', 'asc'],
+            ['title', 'desc'],
+            ['visible_from', 'asc'],
+            ['visible_from', 'desc'],
+            ['sequence', 'asc'],
+            ['sequence', 'desc'],
+        ];
+
+        foreach ($values as $v) {
+            list($column, $direction) = $v;
+
+            $page = new Page();
+            $page->setChildOrderingPolicy($column, $direction);
+            list($newCol, $newDirection) = $page->getChildOrderingPolicy();
+
+            $this->assertEquals($column, $newCol);
+            $this->assertEquals($direction, $newDirection);
+        }
     }
 
     public function testSetParentIdPageCantBeChildOfItself()
