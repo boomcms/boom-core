@@ -6,6 +6,7 @@ use BoomCMS\Events\PageHadTagAdded;
 use BoomCMS\Events\PageHadTagRemoved;
 use BoomCMS\Http\Controllers\Controller;
 use BoomCMS\Support\Facades\Tag;
+use BoomCMS\Support\Helpers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\View;
@@ -33,18 +34,16 @@ class Tags extends Controller
 
     public function listTags()
     {
-        $tags = $this->page->getGroupedTags();
-        $freeTags = isset($tags['']) ? $tags[''] : [];
-        unset($tags['']);
+        $grouped = [];
+        $tags = Helpers::getTags($this->page);
 
-        $groupSuggestions = $this->page->getTemplate()->getTagGroupSuggestions();
-        $groupSuggestions = array_unique(array_merge(array_keys($tags), $groupSuggestions));
-        sort($groupSuggestions);
+        foreach ($tags as $t) {
+            $group = $t->getGroup() ?: '';
+            $grouped[$group][] = $t;
+        }
 
         return View::make('boomcms::editor.page.settings.tags', [
-            'tags'         => $tags,
-            'freeTags'     => isset($freeTags) ? $freeTags : [],
-            'groups'       => $groupSuggestions,
+            'tags' => $grouped
         ]);
     }
 

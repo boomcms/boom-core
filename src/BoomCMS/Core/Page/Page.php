@@ -3,7 +3,7 @@
 namespace BoomCMS\Core\Page;
 
 use BoomCMS\Contracts\Models\Person;
-use BoomcMS\Contracts\Models\Tag;
+use BoomCMS\Contracts\Models\Tag;
 use BoomCMS\Contracts\Models\Template;
 use BoomCMS\Contracts\Models\URL;
 use BoomCMS\Database\Models\URL as URLModel;
@@ -268,18 +268,6 @@ class Page
         return $this->get('grandchild_template_id');
     }
 
-    public function getGroupedTags()
-    {
-        $tags = $this->getTags();
-        $grouped = [];
-
-        foreach ($tags as $tag) {
-            $grouped[$tag->getGroup()][] = $tag;
-        }
-
-        return $grouped;
-    }
-
     public function getInternalName()
     {
         return $this->get('internal_name');
@@ -331,23 +319,6 @@ class Page
     public function getParentId()
     {
         return $this->get('parent_id');
-    }
-
-    public function getTags()
-    {
-        $finder = new Tag\Finder\Finder();
-        $finder->addFilter(new Tag\Finder\AppliedToPage($this));
-
-        return $finder->setOrderBy('name', 'asc')->findAll();
-    }
-
-    public function getTagsInGroup($group)
-    {
-        $finder = new Tag\Finder\Finder();
-        $finder->addFilter(new Tag\Finder\AppliedToPage($this));
-        $finder->addFilter(new Tag\Finder\Group($group));
-
-        return $finder->setOrderBy('name', 'asc')->findAll();
     }
 
     /**

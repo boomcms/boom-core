@@ -3,6 +3,7 @@
 namespace BoomCMS\Core\Page;
 
 use BoomCMS\Support\Facades\Page as PageFacade;
+use BoomCMS\Support\Helpers;
 use Thujohn\Rss\Rss;
 
 class RssFeed
@@ -27,7 +28,7 @@ class RssFeed
 
     public function addItem(Rss $feed, Page $page)
     {
-        $authors = (array) $page->getTagsInGroup('Author');
+        $authors = (array) Helpers::getTags($page, 'Author');
 
         foreach ($authors as &$author) {
             $author = $author->getName();

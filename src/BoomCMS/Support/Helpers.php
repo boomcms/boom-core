@@ -171,7 +171,10 @@ abstract class Helpers
             }
         }
 
-        return $finder->setOrderBy('name', 'asc')->findAll();
+        return $finder
+            ->setOrderBy('group', 'asc')
+            ->setOrderBy('name', 'asc')
+            ->findAll();
     }
 
     /**

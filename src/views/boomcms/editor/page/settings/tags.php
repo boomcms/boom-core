@@ -5,9 +5,11 @@
         <h2><?= Lang::get('Free tags') ?></h2>
 
         <ul class="b-tags-list" data-group="">
-            <?php foreach ($freeTags as $tag): ?>
-                <?= new BoomCMS\UI\Tag($tag) ?>
-            <?php endforeach ?>
+            <?php if (isset($tags[''])): ?>
+                <?php foreach ($tags[''] as $tag): ?>
+                    <?= new BoomCMS\UI\Tag($tag) ?>
+                <?php endforeach ?>
+            <?php endif ?>
 
             <li class="b-tag">
                 <form class="b-tags-add">
@@ -22,25 +24,27 @@
         <h2><?= Lang::get('Grouped tags') ?></h2>
 
         <ul class="b-tags-grouped">
-            <?php foreach ($groups as $group): ?>
-                <li>
-                    <p><?= $group ?></p>
+            <?php foreach (array_keys($tags) as $group): ?>
+                <?php if ($group): ?>
+                    <li>
+                        <p><?= $group ?></p>
 
-                    <ul class="b-tags-list" data-group="<?= $group ?>">
-                        <?php if (isset($tags[$group])): ?>
-                            <?php foreach ($tags[$group] as $tag): ?>
-                                <?= new BoomCMS\UI\Tag($tag) ?>
-                            <?php endforeach ?>
-                        <?php endif ?>
+                        <ul class="b-tags-list" data-group="<?= $group ?>">
+                            <?php if (isset($tags[$group])): ?>
+                                <?php foreach ($tags[$group] as $tag): ?>
+                                    <?= new BoomCMS\UI\Tag($tag) ?>
+                                <?php endforeach ?>
+                            <?php endif ?>
 
-                        <li class="b-tag">
-                            <form class="b-tags-add">
-                                <input type="text" value="" class="b-tags-add-name" />
-                                <?= $button('plus', 'Add tag') ?>
-                            </form>
-                        </li>
-                    </ul>
-                </li>
+                            <li class="b-tag">
+                                <form class="b-tags-add">
+                                    <input type="text" value="" class="b-tags-add-name" />
+                                    <?= $button('plus', 'Add tag') ?>
+                                </form>
+                            </li>
+                        </ul>
+                    </li>
+                <?php endif ?>
             <?php endforeach ?>
 
             <li class="b-tags-newgroup">
