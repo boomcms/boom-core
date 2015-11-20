@@ -2,7 +2,7 @@
 
 namespace BoomCMS\UI;
 
-use BoomCMS\Core\Tag\Tag as TagObject;
+use BoomCMS\Contracts\Models\Tag as TagObject;
 
 class Tag extends AbstractUIElement
 {
