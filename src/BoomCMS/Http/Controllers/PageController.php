@@ -4,7 +4,6 @@ namespace BoomCMS\Http\Controllers;
 
 use BoomCMS\Core\Page;
 use BoomCMS\Support\Facades\Chunk;
-use BoomCMS\Support\Facades\Page as PageFacade;
 use Illuminate\Support\Facades\View;
 
 class PageController extends Controller
