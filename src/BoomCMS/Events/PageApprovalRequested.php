@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Events;
 
-use BoomCMS\Core\Page\Page;
+use BoomCMS\Contracts\Models\Page;
 use BoomCMS\Contracts\Models\Person;
 use BoomCMS\Foundation\Events\PageEvent;
 

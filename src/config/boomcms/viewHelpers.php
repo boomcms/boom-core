@@ -1,6 +1,6 @@
 <?php
 
-use BoomCMS\Core\Page\Page;
+use BoomCMS\Contracts\Models\Page;
 use BoomCMS\Support\Helpers;
 
 return [

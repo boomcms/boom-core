@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Database\Models;
 
-use BoomCMS\Core\Page\Page as PageObject;
+use BoomCMS\Contracts\Models\Page as Page;
 use BoomCMS\Contracts\Models\URL as URLInterface;
 use BoomCMS\Support\Helpers\URL as URLHelper;
 use BoomCMS\Support\Facades\Page as PageFacade;
@@ -72,11 +72,11 @@ class URL extends Model implements URLInterface
     }
 
     /**
-     * @param PageObject $page
+     * @param Page $page
      *
      * @return bool
      */
-    public function isForPage(PageObject $page)
+    public function isForPage(Page $page)
     {
         return $this->getPageId() === $page->getId();
     }

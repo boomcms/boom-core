@@ -3,7 +3,7 @@
 namespace BoomCMS\Http\Controllers;
 
 use BoomCMS\Editor\Editor;
-use BoomCMS\Core\Page\Page;
+use BoomCMS\Contracts\Models\Page;
 use BoomCMS\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
@@ -14,7 +14,7 @@ class Controller extends BaseController
     /**
      * The current user.
      *
-     * @var Boom\Person\Person
+     * @var \BoomCMS\Contracts\Models\Person
      */
     public $person;
 

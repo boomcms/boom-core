@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Jobs;
 
-use BoomCMS\Core\Page\Page;
+use BoomCMS\Contracts\Models\Page;
 use BoomCMS\Events\PageWasDeleted;
 use BoomCMS\Support\Facades\Page as PageFacade;
 use Illuminate\Console\Command;

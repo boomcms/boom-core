@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Core\Chunk;
 
-use BoomCMS\Core\Page\Page;
+use BoomCMS\Contracts\Models\Page;
 use BoomCMS\Support\Traits\Renderable;
 use Illuminate\Html\HtmlFacade as Html;
 use Illuminate\Support\Facades\Lang;

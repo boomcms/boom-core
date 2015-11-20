@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Foundation\Events;
 
-use BoomCMS\Core\Page\Page;
+use BoomCMS\Contracts\Models\Page;
 use BoomCMS\Core\Page\Version;
 use BoomCMS\Contracts\Models\Person;
 

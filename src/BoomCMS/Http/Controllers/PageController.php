@@ -2,8 +2,9 @@
 
 namespace BoomCMS\Http\Controllers;
 
-use BoomCMS\Core\Page;
+use BoomCMS\Contracts\Models\Page;
 use BoomCMS\Support\Facades\Chunk;
+use BoomCMS\Core\Page\RssFeed;
 use Illuminate\Support\Facades\View;
 
 class PageController extends Controller
@@ -26,7 +27,7 @@ class PageController extends Controller
         }
     }
 
-    public function asHtml(Page\Page $page)
+    public function asHtml(Page $page)
     {
         $template = $page->getTemplate();
 
@@ -45,8 +46,8 @@ class PageController extends Controller
         return $template->getView();
     }
 
-    public function asRss(Page\Page $page)
+    public function asRss(Page $page)
     {
-        return new Page\RssFeed($page);
+        return new RssFeed($page);
     }
 }

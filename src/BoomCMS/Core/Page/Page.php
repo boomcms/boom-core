@@ -2,6 +2,7 @@
 
 namespace BoomCMS\Core\Page;
 
+use BoomCMS\Contracts\Models\Page as PageInterface;
 use BoomCMS\Contracts\Models\Person;
 use BoomCMS\Contracts\Models\Tag;
 use BoomCMS\Contracts\Models\Template;
@@ -17,7 +18,7 @@ use BoomCMS\Support\Traits\HasId;
 use DateTime;
 use Illuminate\Support\Facades\DB;
 
-class Page
+class Page implements PageInterface
 {
     use Comparable;
     use HasId;
@@ -78,7 +79,7 @@ class Page
         $this->attributes = $attributes;
     }
 
-    public function addRelation(Page $page)
+    public function addRelation(PageInterface $page)
     {
         if ($this->loaded() && $page->loaded()) {
             DB::table('pages_relations')
@@ -292,7 +293,7 @@ class Page
     }
 
     /**
-     * @return Keywords
+     * @return string
      */
     public function getKeywords()
     {
@@ -373,11 +374,6 @@ class Page
         return new DateTime('@'.$timestamp);
     }
 
-    public function getVisibleFromTimestamp()
-    {
-        return $this->get('visible_from');
-    }
-
     /**
      * @return DateTime
      */
@@ -404,11 +400,11 @@ class Page
     /**
      * Returns whether this page is the parent of a given page.
      *
-     * @param Page $page
+     * @param PageInterface $page
      *
      * @return bool
      */
-    public function isParentOf(Page $page)
+    public function isParentOf(PageInterface $page)
     {
         return $page->getParentId() === $this->getId();
     }
@@ -420,7 +416,7 @@ class Page
 
     public function isVisible()
     {
-        return $this->isVisibleAtTime(time());
+        return $this->isVisibleAtTime(new DateTime('now'));
     }
 
     public function isVisibleAtAnyTime()
@@ -429,15 +425,15 @@ class Page
     }
 
     /**
-     * @param int $unixTimestamp
+     * @param DateTime $time
      *
      * @return bool
      */
-    public function isVisibleAtTime($unixTimestamp)
+    public function isVisibleAtTime(DateTime $time)
     {
         return ($this->isVisibleAtAnyTime() &&
-            $this->getVisibleFrom()->getTimestamp() <= $unixTimestamp &&
-            ($this->getVisibleTo() === null || $this->getVisibleTo()->getTimestamp() >= $unixTimestamp)
+            $this->getVisibleFrom()->getTimestamp() <= $time->getTimestamp() &&
+            ($this->getVisibleTo() === null || $this->getVisibleTo()->getTimestamp() >= $time->getTimestamp())
         );
     }
 
@@ -458,7 +454,7 @@ class Page
         return $this;
     }
 
-    public function removeRelation(Page $page)
+    public function removeRelation(PageInterface $page)
     {
         if ($this->loaded() && $page->loaded()) {
             DB::table('pages_relations')
@@ -594,7 +590,7 @@ class Page
         return $this;
     }
 
-    public function setEmbargoTime($embargoed_until)
+    public function setEmbargoTime(DateTime $time)
     {
         DB::table('page_versions')
             ->where('page_id', '=', $this->getId())
@@ -604,7 +600,7 @@ class Page
         $this->addVersion([
             'pending_approval' => false,
             'published'        => true,
-            'embargoed_until'  => $embargoed_until,
+            'embargoed_until'  => $time->getTimestamp(),
         ]);
     }
 

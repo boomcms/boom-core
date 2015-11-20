@@ -2,9 +2,8 @@
 
 namespace BoomCMS\Core\Auth;
 
-use BoomCMS\Core\Page\Page;
+use BoomCMS\Contracts\Models\Page;
 use BoomCMS\Contracts\Models\Person;
-use Illuminate\Support\Facades\DB;
 
 /**
  * This class is used to check whether a particular person can perform a particular role.

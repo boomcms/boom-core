@@ -2,8 +2,8 @@
 
 namespace BoomCMS\Core\Chunk;
 
+use BoomCMS\Contracts\Models\Page;
 use BoomCMS\Core\Auth\Auth;
-use BoomCMS\Core\Page\Page;
 use BoomCMS\Core\Page\Version;
 use BoomCMS\Support\Facades\Editor;
 

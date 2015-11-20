@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Jobs;
 
-use BoomCMS\Core\Page;
+use BoomCMS\Contracts\Models\Page;
 use BoomCMS\Support\Facades\Page as PageFacade;
 use BoomCMS\Support\Facades\URL as URLFacade;
 use BoomCMS\Support\Helpers\URL as URLHelper;
@@ -16,7 +16,7 @@ class CreatePagePrimaryUri extends Command implements SelfHandling
     protected $page;
     protected $prefix;
 
-    public function __construct(Page\Page $page, $prefix = null, $location = null)
+    public function __construct(Page $page, $prefix = null, $location = null)
     {
         $this->location = $location;
         $this->page = $page;

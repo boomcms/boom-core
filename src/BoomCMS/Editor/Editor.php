@@ -3,7 +3,8 @@
 namespace BoomCMS\Editor;
 
 use BoomCMS\Core\Auth\Auth;
-use BoomCMS\Core\Page\Page;
+use BoomCMS\Core\Page\Page as PageObject;
+use BoomCMS\Contracts\Models\Page;
 use Illuminate\Session\SessionManager as Session;
 
 class Editor
@@ -93,7 +94,7 @@ class Editor
 
     public function getActivePage()
     {
-        return $this->activePage ?: new Page();
+        return $this->activePage ?: new PageObject();
     }
 
     public function getState()

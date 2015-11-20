@@ -2,8 +2,6 @@
 
 namespace BoomCMS\Contracts\Models;
 
-use BoomCMS\Core\Page\Page;
-
 interface URL
 {
     /**

@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Foundation\Events;
 
-use BoomCMS\Core\Page\Page;
+use BoomCMS\Contracts\Models\Page;
 
 abstract class PageEvent
 {

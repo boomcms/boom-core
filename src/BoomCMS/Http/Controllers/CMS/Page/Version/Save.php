@@ -5,6 +5,7 @@ namespace BoomCMS\Http\Controllers\CMS\Page\Version;
 use BoomCMS\Core\Template;
 use BoomCMS\Events;
 use BoomCMS\Support\Facades\Template as TemplateFacade;
+use DateTime;
 use Illuminate\Support\Facades\Event;
 
 class Save extends Version
@@ -13,11 +14,11 @@ class Save extends Version
     {
         parent::embargo();
 
-        $embargoed_until = $this->request->input('embargoed_until') ?
+        $time = $this->request->input('embargoed_until') ?
             strtotime($this->request->input('embargoed_until'))
             : time();
 
-        $this->page->setEmbargoTime($embargoed_until);
+        $this->page->setEmbargoTime(new DateTime($time));
 
         $version = $this->page->getCurrentVersion();
 

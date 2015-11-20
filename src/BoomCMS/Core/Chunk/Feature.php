@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Core\Chunk;
 
-use BoomCMS\Core\Page;
+use BoomCMS\Contracts\Models\Page;
 use BoomCMS\Support\Facades\Page as PageFacade;
 use Illuminate\Support\Facades\View;
 
@@ -13,7 +13,7 @@ class Feature extends BaseChunk
      */
     protected $targetPage;
 
-    public function __construct(Page\Page $page, array $attrs, $slotname, $editable = true)
+    public function __construct(Page $page, array $attrs, $slotname, $editable = true)
     {
         parent::__construct($page, $attrs, $slotname, $editable);
 

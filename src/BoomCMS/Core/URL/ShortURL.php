@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Core\URL;
 
-use BoomCMS\Core\Page\Page;
+use BoomCMS\Contracts\Models\Page;
 
 /*
  * Page short URLs similar to t.co etc.

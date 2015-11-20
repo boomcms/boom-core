@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Core\Chunk;
 
-use BoomCMS\Core\Page\Page;
+use BoomCMS\Contracts\Models\Page;
 use BoomCMS\Support\Helpers;
 use Illuminate\Support\Facades\View;
 

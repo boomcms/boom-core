@@ -2,8 +2,8 @@
 
 namespace BoomCMS\Core\Chunk;
 
-use BoomCMS\Link\Link as Link;
-use BoomCMS\Core\Page as Page;
+use BoomCMS\Contracts\Models\Page;
+use BoomCMS\Link\Link;
 use BoomCMS\Support\Facades\Asset as AssetFacade;
 use Illuminate\Support\Facades\View;
 
@@ -15,7 +15,7 @@ class Asset extends BaseChunk
     private $filterByType;
     private $link;
 
-    public function __construct(Page\Page $page, array $attrs, $slotname, $editable = true)
+    public function __construct(Page $page, array $attrs, $slotname, $editable = true)
     {
         parent::__construct($page, $attrs, $slotname, $editable);
 

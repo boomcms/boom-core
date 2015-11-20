@@ -2,6 +2,7 @@
 
 namespace BoomCMS\Core\Chunk;
 
+use BoomCMS\Contracts\Models\Page;
 use BoomCMS\Foundation\Chunk\AcceptsHtmlString;
 use Illuminate\Support\Facades\View;
 
@@ -11,7 +12,7 @@ class Text extends BaseChunk
 
     protected $allowFormatting = false;
 
-    public function __construct(\BoomCMS\Core\Page\Page $page, array $attrs, $slotname, $editable)
+    public function __construct(Page $page, array $attrs, $slotname, $editable)
     {
         parent::__construct($page, $attrs, $slotname, $editable);
 

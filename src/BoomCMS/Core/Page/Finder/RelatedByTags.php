@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Core\Page\Finder;
 
-use BoomCMS\Core\Page\Page as Page;
+use BoomCMS\Contracts\Models\Page;
 use BoomCMS\Foundation\Finder\Filter;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;

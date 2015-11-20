@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Http\Controllers\CMS;
 
-use BoomCMS\Core\Page\Page;
+use BoomCMS\Contracts\Models\Page;
 use BoomCMS\Events\ChunkWasCreated;
 use BoomCMS\Http\Controllers\Controller;
 use BoomcMS\Support\Facades\Auth;

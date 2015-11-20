@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Http\Controllers\CMS\Page\Settings;
 
-use BoomCMS\Core\Page;
+use BoomCMS\Contracts\Models\Page;
 use BoomCMS\Http\Controllers\CMS\Page\PageController;
 use BoomCMS\Support\Facades\Auth;
 
@@ -55,7 +55,7 @@ abstract class Settings extends PageController
         $this->authorization('edit_page');
     }
 
-    public function authorization($role, Page\Page $page = null)
+    public function authorization($role, Page $page = null)
     {
         if (!Auth::loggedIn('manage_pages')) {
             parent::authorization($role, $page);

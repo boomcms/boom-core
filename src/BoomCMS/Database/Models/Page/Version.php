@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Database\Models\Page;
 
-use BoomCMS\Core\Page\Page;
+use BoomCMS\Contracts\Models\Page;
 use BoomCMS\Support\Facades\Editor;
 use Illuminate\Database\Eloquent\Model;
 
