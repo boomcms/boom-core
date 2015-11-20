@@ -41068,7 +41068,8 @@ $.widget('boom.pageTree', {
 			$el = this.element;
 
 		new boomLinkPicker(new boomLink(), {
-				external: false
+				external: false,
+				asset: false
 			})
 			.done(function(link) {
 				page.addRelatedPage(link.getPageId())
@@ -41100,7 +41101,35 @@ $.widget('boom.pageTree', {
 	_create: function() {
 		this.page = this.options.page;
 
+		this.getRelatedPages();
 		this.bind();
+	},
+
+	getRelatedPages: function() {
+		var $element = this.element;
+
+		$.get('/cms/search/pages', {relatedTo: this.page.id})
+			.done(function(pages) {
+				var $ul = $element.find('ul');
+
+				if (pages.length) {
+					$element.find('.current').show();
+				}
+
+				for (var i = 0; i < pages.length; i++) {
+					var $li = $('<li>'),
+						$title = $('<span>').addClass('title').text(pages[i].title).appendTo($li),
+						$uri = $('<span>').addClass('uri').text(pages[i].uri).appendTo($li),
+						$delete = $('<a>')
+							.attr('href', '#')
+							.addClass('fa fa-trash-o')
+							.attr('data-page-id', pages[i].id)
+							.html('<span>Remove</span>')
+							.appendTo($li);
+
+					$ul.append($li);
+				}
+			});
 	},
 
 	removeRelatedPage: function($a) {

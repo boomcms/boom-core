@@ -2,7 +2,9 @@
 
 namespace BoomCMS\Core\Page\Finder;
 
+use BoomCMS\Core\Page\Page;
 use BoomCMS\Foundation\Finder\Filter;
+use BoomCMS\Support\Facades\Page as PageFacade;
 use Illuminate\Database\Eloquent\Builder;
 
 class RelatedTo extends Filter
@@ -11,7 +13,7 @@ class RelatedTo extends Filter
 
     public function __construct($page)
     {
-        $this->page = $page;
+        $this->page = ($page instanceof Page) ? $page : PageFacade::findById($page);
     }
 
     public function execute(Builder $query)

@@ -83,14 +83,6 @@ class Page
         return $this->cache['uri'][$uri];
     }
 
-    public function findRelatedTo(Page $page)
-    {
-        $finder = new Finder\Finder();
-        $finder->addFilter(new Finder\RelatedTo($page));
-
-        return $finder->findAll();
-    }
-
     private function findAndCache(Model $model = null)
     {
         if ($model) {
