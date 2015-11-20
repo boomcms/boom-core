@@ -31,6 +31,7 @@ Route::group(['middleware' => [
             Route::controller('account', 'Auth\Account');
             Route::controller('approvals', 'Approvals');
             Route::controller('settings', 'Settings');
+            Route::controller('search', 'Search');
 
             Route::group([
                 'middleware' => [Middleware\SaveUrlForRedirect::class],

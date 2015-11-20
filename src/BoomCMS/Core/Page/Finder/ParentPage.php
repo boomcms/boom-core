@@ -2,7 +2,9 @@
 
 namespace BoomCMS\Core\Page\Finder;
 
+use BoomCMS\Core\Page\Page;
 use BoomCMS\Foundation\Finder\Filter;
+use BoomCMS\Support\Facades\Page as PageFacade;
 use Illuminate\Database\Eloquent\Builder;
 
 class ParentPage extends Filter
@@ -11,7 +13,7 @@ class ParentPage extends Filter
 
     public function __construct($parent)
     {
-        $this->parent = $parent;
+        $this->parent = ($parent instanceof Page)? $parent : PageFacade::findById($parent);
     }
 
     public function build(Builder $query)

@@ -50,22 +50,4 @@ class PageController extends Controller
     {
         return new Page\RssFeed($page);
     }
-
-    public function children()
-    {
-        $pages = PageFacade::findByParent(PageFacade::findById($this->request->input('parent')));
-        $return = [];
-
-        foreach ($pages as $page) {
-            $return[] = [
-                'id'           => $page->getId(),
-                'title'        => $page->getTitle(),
-                'url'          => (string) $page->url(),
-                'visible'      => (int) $page->isVisible(),
-                'has_children' => (int) $page->hasChildren(),
-            ];
-        }
-
-        return $return;
-    }
 }

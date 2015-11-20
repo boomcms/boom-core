@@ -42,7 +42,7 @@ $.widget('boom.pageTree', {
 	getChildren : function(pageId, $ul) {
 		var pageTree = this;
 
-		$.get('/page/children', {parent: pageId})
+		$.get('/cms/search/pages', {parent: pageId})
 			.done(function(data) {
 
 				$(data).each(function(i, item) {

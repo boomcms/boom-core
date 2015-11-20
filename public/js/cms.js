@@ -40227,7 +40227,7 @@ $.widget('boom.pageTree', {
 	getChildren : function(pageId, $ul) {
 		var pageTree = this;
 
-		$.get('/page/children', {parent: pageId})
+		$.get('/cms/search/pages', {parent: pageId})
 			.done(function(data) {
 
 				$(data).each(function(i, item) {
@@ -40836,7 +40836,8 @@ $.widget('boom.pageTree', {
 	}
 });;$.widget('boom.pageSettingsChildren', {
 	bind: function() {
-		var settingsEditor = this;
+		var settingsEditor = this,
+			page = this.options.page;
 
 		this.element
 			.on('change', 'select[name="children_ordering_policy"]', function() {
@@ -40848,26 +40849,44 @@ $.widget('boom.pageTree', {
 			})
 			.on('click', '#b-page-settings-children-reorder', function(e) {
 				e.preventDefault();
+		
+				$.get('/cms/search/pages', {parent: page.id})
+					.done(function(pages) {
+						var sortDialog = new boomDialog({
+							msg: "<div></div>",
+							title: 'Reorder child pages',
+							width: 'auto',
+							open: function() {
+								var $ul = $('<ul>')
+									.attr('id', 'b-page-settings-children-sort')
+									.appendTo(sortDialog.contents);
 
-				var sortDialog = new boomDialog({
-					url:  settingsEditor.sortUrl,
-					title: 'Reorder child pages',
-					width: 'auto',
-					open: function() {
-						sortDialog.contents.find('#b-page-settings-children-sort').sortable();
-					}
-				});
-
-				sortDialog.done(function() {
-					var sequences = sortDialog.contents.find('li').map(function() {
-						return $(this).attr('data-id');
-					}).get();
-
-					$.post(settingsEditor.sortUrl, {sequences: sequences})
-						.done(function() {
-							new boomNotification('Child page ordering saved');
+								for (var i = 0; i < pages.length; i++) {
+									$('<li>')
+										.attr('data-id', pages[i].id)
+										.append(
+											$('<span>')
+												.addClass('title fa fa-bars')
+												.text(pages[i].title)
+										)
+										.appendTo($ul);
+								}
+										
+								$ul.sortable();
+							}
 						});
-				});
+
+						sortDialog.done(function() {
+							var sequences = sortDialog.contents.find('li').map(function() {
+								return $(this).attr('data-id');
+							}).get();
+
+							$.post(settingsEditor.sortUrl, {sequences: sequences})
+								.done(function() {
+									new boomNotification('Child page ordering saved');
+								});
+						});
+					});
 			})
 			.on('click', '.b-button-cancel', function(e) {
 				e.preventDefault();
@@ -40877,9 +40896,7 @@ $.widget('boom.pageTree', {
 			.on('click', '.b-button-save', function(e) {
 				e.preventDefault();
 
-				settingsEditor
-					.options
-					.page
+				page
 					.saveSettings('children', settingsEditor.element.find('form').serialize())
 					.done(function() {
 						new boomNotification('Child page settings saved');
