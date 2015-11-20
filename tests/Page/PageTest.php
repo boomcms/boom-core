@@ -17,7 +17,7 @@ class PageTest extends AbstractTestCase
     {
         $page = new Page();
 
-        $this->assertInstanceOf('BoomCMS\Core\Page\Page', $page->getParent());
+        $this->assertInstanceOf(Page::class, $page->getParent());
     }
 
     public function testGetTemplateId()
@@ -114,7 +114,7 @@ class PageTest extends AbstractTestCase
 
     public function testHasChildrenReturnsFalseIfChildCountIs0()
     {
-        $page = $this->getMockBuilder('BoomCMS\Core\Page\Page')
+        $page = $this->getMockBuilder(Page::class)
             ->setMethods(['countChildren'])
             ->setConstructorArgs([[]])
             ->getMock();
@@ -129,7 +129,7 @@ class PageTest extends AbstractTestCase
 
     public function testHasChildrenReturnsTrueIfChildCountGreaterThan0()
     {
-        $page = $this->getMockBuilder('BoomCMS\Core\Page\Page')
+        $page = $this->getMockBuilder(Page::class)
             ->setMethods(['countChildren'])
             ->setConstructorArgs([[]])
             ->getMock();
@@ -144,7 +144,7 @@ class PageTest extends AbstractTestCase
 
     public function testAddTag()
     {
-        $page = $this->getMockBuilder('BoomCMS\Core\Page\Page')
+        $page = $this->getMockBuilder(Page::class)
             ->setMethods(['loaded'])
             ->setConstructorArgs([['id' => 1]])
             ->getMock();
