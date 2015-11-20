@@ -21,7 +21,7 @@ class View extends Settings
     {
         parent::children();
 
-        $childOrderingPolicy = $this->page->getChildOrderingPolicy();
+        list($orderCol, $orderDirection) = $this->page->getChildOrderingPolicy();
 
         $manager = App::getFacadeApplication()['boomcms.template.manager'];
         $templates = $manager->getValidTemplates();
@@ -30,8 +30,8 @@ class View extends Settings
         $v = ViewFacade::make("$this->viewPrefix/children", [
             'default_child_template' => $this->page->getDefaultChildTemplateId(),
             'templates'              => $templates,
-            'child_order_column'     => $childOrderingPolicy->getColumn(),
-            'child_order_direction'  => $childOrderingPolicy->getDirection(),
+            'child_order_column'     => $orderCol,
+            'child_order_direction'  => $orderDirection,
             'allowAdvanced'          => $this->allowAdvanced,
             'page'                   => $this->page,
         ]);

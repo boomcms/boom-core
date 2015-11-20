@@ -17,11 +17,11 @@ class ParentPage extends Filter
     public function build(Builder $query)
     {
         if ($this->parent->loaded()) {
-            $order = $this->parent->getChildOrderingPolicy();
+            list($col, $direction) = $this->parent->getChildOrderingPolicy();
 
             return $query
                 ->where('parent_id', '=', $this->parent->getId())
-                ->orderBy($order->getColumn(), $order->getDirection());
+                ->orderBy($col, $direction);
         } else {
             return $query->whereNull('parent_id');
         }

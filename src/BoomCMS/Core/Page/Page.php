@@ -22,6 +22,14 @@ class Page
     use Comparable;
     use HasId;
 
+    const ORDER_MANUAL = 1;
+    const ORDER_SEQUENCE = self::ORDER_MANUAL;
+    const ORDER_ALPHABETIC = 2;
+    const ORDER_DATE = 4;
+    const ORDER_VISIBLE_FROM = self::ORDER_MANUAL;
+    const ORDER_ASC = 8;
+    const ORDER_DESC = 16;
+
     /**
      * @var Page\Version
      */
@@ -177,7 +185,19 @@ class Page
 
     public function getChildOrderingPolicy()
     {
-        return new ChildOrderingPolicy($this->get('children_ordering_policy'));
+        $order = $this->get('children_ordering_policy');
+
+        if ($order & static::ORDER_ALPHABETIC) {
+            $column = 'title';
+        } elseif ($order & static::ORDER_DATE) {
+            $column = 'visible_from';
+        } else {
+            $column = 'sequence';
+        }
+
+        $direction = ($order & static::ORDER_ASC) ? 'asc' : 'desc';
+
+        return [$column, $direction];
     }
 
     public function getChildPageUrlPrefix()
@@ -484,8 +504,10 @@ class Page
      */
     public function setChildOrderingPolicy($column, $direction)
     {
-        $ordering_policy = new ChildOrderingPolicy($column, $direction);
-        $this->attributes['children_ordering_policy'] = $ordering_policy->asInt();
+        $column = constant(self::class.'::ORDER_'.strtoupper($column));
+        $direction = ($direction === 'asc') ? self::ORDER_ASC : self::ORDER_DESC;
+
+        $this->attributes['children_ordering_policy'] = $column | $direction;
 
         return $this;
     }
