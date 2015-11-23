@@ -3,7 +3,7 @@
 namespace BoomCMS\Tests;
 
 use BoomCMS\Core\Auth\PermissionsProvider;
-use BoomCMS\Core\Page\Page;
+use BoomCMS\Database\Models\Page;
 use BoomCMS\Repositories;
 use Illuminate\Contracts\Console\Kernel;
 use Illuminate\Session\SessionManager;

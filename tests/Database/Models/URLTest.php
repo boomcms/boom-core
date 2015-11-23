@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Tests\Models;
 
-use BoomCMS\Core\Page\Page;
+use BoomCMS\Database\Models\Page;
 use BoomCMS\Database\Models\URL;
 use BoomCMS\Support\Facades\Page as PageFacade;
 use BoomCMS\Tests\AbstractTestCase;

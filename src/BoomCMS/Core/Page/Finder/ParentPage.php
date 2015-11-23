@@ -18,7 +18,7 @@ class ParentPage extends Filter
 
     public function build(Builder $query)
     {
-        if ($this->parent->loaded()) {
+        if ($this->parent) {
             list($col, $direction) = $this->parent->getChildOrderingPolicy();
 
             return $query

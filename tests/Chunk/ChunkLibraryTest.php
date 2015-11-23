@@ -3,7 +3,7 @@
 namespace BoomCMS\Tests\Chunk;
 
 use BoomCMS\Core\Chunk\Library;
-use BoomCMS\Core\Page\Page;
+use BoomCMS\Database\Models\Page;
 use BoomCMS\Tests\AbstractTestCase;
 
 class ChunkLibraryTest extends AbstractTestCase

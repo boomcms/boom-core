@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Tests\Chunk;
 
-use BoomCMS\Core\Page\Page;
+use BoomCMS\Database\Models\Page;
 use BoomCMS\Tests\AbstractTestCase;
 use Illuminate\Support\Facades\View;
 

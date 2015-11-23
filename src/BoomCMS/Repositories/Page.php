@@ -3,7 +3,7 @@
 namespace BoomCMS\Repositories;
 
 use BoomCMS\Core\Page\Finder;
-use BoomCMS\Core\Page\Page as PageObject;
+use BoomCMS\Database\Models\Page as PageObject;
 use BoomCMS\Database\Models\Page as Model;
 
 class Page
@@ -29,7 +29,7 @@ class Page
     {
         $model = Model::create($attrs);
 
-        return $this->cache(new PageObject($model->toArray()));
+        return $this->cache($model);
     }
 
     public function delete(Page $page)
@@ -45,15 +45,7 @@ class Page
 
     public function findByInternalName($name)
     {
-        return $this->findAndCache(Model::where('internal_name', '=', $name)->first());
-    }
-
-    public function findByParent(Page $parent)
-    {
-        $finder = new Finder\Finder();
-        $finder->addFilter(new Finder\ParentPage($parent));
-
-        return $finder->findAll();
+        return $this->findAndCache(Model::where(Model::ATTR_INTERNAL_NAME, '=', $name)->first());
     }
 
     public function findByParentId($parentId)
@@ -86,10 +78,8 @@ class Page
     private function findAndCache(Model $model = null)
     {
         if ($model) {
-            return $this->cache(new PageObject($model->toArray()));
+            return $this->cache($model);
         }
-
-        return new PageObject();
     }
 
     public function save(PageObject $page)

@@ -3,7 +3,7 @@
 namespace BoomCMS\Tests\Chunk;
 
 use BoomCMS\Core\Chunk\Html as Chunk;
-use BoomCMS\Core\Page\Page;
+use BoomCMS\Database\Models\Page;
 use BoomCMS\Database\Models\Chunk\Html as Model;
 use BoomCMS\Tests\AbstractTestCase;
 

@@ -3,8 +3,8 @@
 namespace BoomCMS\Core\Chunk;
 
 use BoomCMS\Contracts\Models\Page;
+use BoomCMS\Contracts\Models\PageVersion;
 use BoomCMS\Core\Auth\Auth;
-use BoomCMS\Core\Page\Version;
 use BoomCMS\Support\Facades\Editor;
 
 class Provider
@@ -76,7 +76,7 @@ class Provider
         return new $className($page, $attrs, $slotname, $this->allowedToEdit($page));
     }
 
-    public function find($type, $slotname, Version $version)
+    public function find($type, $slotname, PageVersion $version)
     {
         if (is_array($slotname)) {
             return $this->findMany($type, $slotname, $version);
@@ -85,7 +85,7 @@ class Provider
         }
     }
 
-    public function findOne($type, $slotname, Version $version)
+    public function findOne($type, $slotname, PageVersion $version)
     {
         $class = 'BoomCMS\Database\Models\Chunk\\'.ucfirst($type);
 
@@ -94,7 +94,7 @@ class Provider
             : null;
     }
 
-    public function findMany($type, array $slotnames, Version $version)
+    public function findMany($type, array $slotnames, PageVersion $version)
     {
         $chunks = [];
 

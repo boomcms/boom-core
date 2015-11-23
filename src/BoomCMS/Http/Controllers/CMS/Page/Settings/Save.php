@@ -62,7 +62,11 @@ class Save extends Settings
         parent::navigation();
 
         if ($this->allowAdvanced) {
-            $this->page->setParentId($this->request->input('parent_id'));
+            $parent = Page::find($this->request->input('parent_id'));
+
+            if ($parent) {
+                $this->page->setParent($parent);
+            }
         }
 
         $this->page

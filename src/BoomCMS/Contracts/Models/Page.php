@@ -357,11 +357,11 @@ interface Page
     public function setKeywords($keywords);
 
     /**
-     * @param int $parentId
+     * @param Page $parent
      *
      * @return $this
      */
-    public function setParentId($parentId);
+    public function setParent(self $parent);
 
     /**
      * Set the primary URI attribute

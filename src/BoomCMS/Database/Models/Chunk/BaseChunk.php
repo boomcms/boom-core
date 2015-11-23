@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Database\Models\Chunk;
 
-use BoomCMS\Core\Page\Version;
+use BoomCMS\Contracts\Models\PageVersion;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
@@ -11,7 +11,7 @@ class BaseChunk extends Model
     public $guarded = ['id'];
     public $timestamps = false;
 
-    public function scopeGetSingleChunk($query, Version $version, $slotname)
+    public function scopeGetSingleChunk($query, PageVersion $version, $slotname)
     {
         return $query
             ->withRelations()
@@ -21,7 +21,7 @@ class BaseChunk extends Model
             ->orderBy('page_vid', 'desc');
     }
 
-    public function scopeLatestEdit($query, Version $upToVersion)
+    public function scopeLatestEdit($query, PageVersion $upToVersion)
     {
         $query
             ->select("{$this->table}.*")

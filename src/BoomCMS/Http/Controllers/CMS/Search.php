@@ -9,10 +9,11 @@ class Search extends Controller
 {
     public function getPages()
     {
+        $results = [];
         $pages = Helpers::getPages($this->request->input());
 
-        foreach ($pages as &$p) {
-            $p = [
+        foreach ($pages as $p) {
+            $results[] = [
                 'id'           => $p->getId(),
                 'title'        => $p->getTitle(),
                 'url'          => (string) $p->url(),
@@ -21,6 +22,6 @@ class Search extends Controller
             ];
         }
 
-        return $pages;
+        return $results;
     }
 }

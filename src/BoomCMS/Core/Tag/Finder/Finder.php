@@ -11,14 +11,4 @@ class Finder extends BaseFinder
     {
         $this->query = Model::query();
     }
-
-    public function find()
-    {
-        return parent::find();
-    }
-
-    public function findAll()
-    {
-        return parent::findAll();
-    }
 }

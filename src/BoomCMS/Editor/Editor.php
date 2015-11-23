@@ -3,7 +3,7 @@
 namespace BoomCMS\Editor;
 
 use BoomCMS\Core\Auth\Auth;
-use BoomCMS\Core\Page\Page as PageObject;
+use BoomCMS\Database\Models\Page as PageObject;
 use BoomCMS\Contracts\Models\Page;
 use Illuminate\Session\SessionManager as Session;
 

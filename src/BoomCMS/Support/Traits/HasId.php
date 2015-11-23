@@ -6,7 +6,7 @@ trait HasId
 {
     public function getId()
     {
-        return isset($this->attributes['id']) ? $this->attributes['id'] : 0;
+        return $this->id ? (int) $this->id : 0;
     }
 
     /**
@@ -15,14 +15,5 @@ trait HasId
     public function loaded()
     {
         return $this->getId() > 0;
-    }
-
-    public function setId($id)
-    {
-        if (!$this->getId()) {
-            $this->attributes['id'] = $id;
-        }
-
-        return $this;
     }
 }

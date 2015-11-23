@@ -1,9 +1,9 @@
 <?php
 
-namespace BoomCMS\Tests\Page;
+namespace BoomCMS\Tests\Database\Models;
 
 use BoomCMS\Core\Chunk\Text;
-use BoomCMS\Core\Page\Page;
+use BoomCMS\Database\Models\Page;
 use BoomCMS\Database\Models\Tag;
 use BoomCMS\Support\Facades\Asset;
 use BoomCMS\Support\Facades\Chunk;
@@ -27,7 +27,7 @@ class PageTest extends AbstractTestCase
         ];
 
         foreach ($values as $order => $expected) {
-            $page = new Page(['children_ordering_policy' => $order]);
+            $page = new Page([Page::ATTR_CHILD_ORDERING_POLICY => $order]);
 
             $this->assertEquals($expected, $page->getChildOrderingPolicy());
         }
@@ -49,7 +49,7 @@ class PageTest extends AbstractTestCase
 
     public function testHasFeatureImage()
     {
-        $page = new Page(['feature_image_id' => 1]);
+        $page = new Page([Page::ATTR_FEATURE_IMAGE => 1]);
         $this->assertTrue($page->hasFeatureImage());
 
         $page = new Page();
@@ -58,7 +58,7 @@ class PageTest extends AbstractTestCase
 
     public function testGetFeatureImageId()
     {
-        $page = new Page(['feature_image_id' => 1]);
+        $page = new Page([Page::ATTR_FEATURE_IMAGE => 1]);
         $this->assertEquals(1, $page->getFeatureImageId());
 
         $page = new Page();
@@ -67,7 +67,7 @@ class PageTest extends AbstractTestCase
 
     public function testGetFeatureImage()
     {
-        $page = new Page(['feature_image_id' => 1]);
+        $page = new Page([Page::ATTR_FEATURE_IMAGE => 1]);
 
         Asset::shouldReceive('findById')
             ->once()
@@ -78,7 +78,7 @@ class PageTest extends AbstractTestCase
 
     public function testGetDescriptionReturnsDescriptionIfSet()
     {
-        $page = new Page(['description' => 'test']);
+        $page = new Page([Page::ATTR_DESCRIPTION => 'test']);
         $this->assertEquals('test', $page->getDescription());
     }
 
@@ -96,7 +96,7 @@ class PageTest extends AbstractTestCase
 
     public function testGetDescriptionRemovesHtml()
     {
-        $page = new Page(['description' => '<p>description</p>']);
+        $page = new Page([Page::ATTR_DESCRIPTION => '<p>description</p>']);
         $this->assertEquals('description', $page->getDescription());
     }
 
@@ -123,34 +123,10 @@ class PageTest extends AbstractTestCase
         }
     }
 
-    public function testSetParentIdPageCantBeChildOfItself()
+    public function testSetParentPageCantBeChildOfItself()
     {
-        $page = new Page(['id' => 1, 'parent_id' => 2]);
-        $page->setParentId($page->getId());
-
-        $this->assertEquals(2, $page->getParentId());
-    }
-
-    public function testSetParentIdMustBeValidPage()
-    {
-        PageFacade::shouldReceive('findById')
-            ->with(2)
-            ->andReturn(new Page());
-
-        $page = new Page();
-        $page->setParentId(2);
-
-        $this->assertNull($page->getParentId());
-    }
-
-    public function testParentIdIsSet()
-    {
-        PageFacade::shouldReceive('findById')
-            ->with(2)
-            ->andReturn(new Page(['id' => 2]));
-
-        $page = new Page();
-        $page->setParentId(2);
+        $page = new Page([Page::ATTR_ID => 1, Page::ATTR_PARENT => 2]);
+        $page->setParent($page);
 
         $this->assertEquals(2, $page->getParentId());
     }
@@ -189,10 +165,10 @@ class PageTest extends AbstractTestCase
     {
         $page = $this->getMockBuilder(Page::class)
             ->setMethods(['loaded'])
-            ->setConstructorArgs([['id' => 1]])
+            ->setConstructorArgs([[Page::ATTR_ID => 1]])
             ->getMock();
 
-        $tag = new Tag(['id' => 1]);
+        $tag = new Tag([Tag::ATTR_ID => 1]);
 
         $page
             ->expects($this->once())
@@ -217,9 +193,9 @@ class PageTest extends AbstractTestCase
 
     public function testIsParentOf()
     {
-        $parent = new Page(['id' => 1]);
-        $child = new Page(['parent_id' => 1]);
-        $notAChild = new Page(['parent_id' => 2]);
+        $parent = new Page([Page::ATTR_ID => 1]);
+        $child = new Page([Page::ATTR_PARENT => 1]);
+        $notAChild = new Page([Page::ATTR_PARENT => 2]);
 
         $this->assertTrue($parent->isParentOf($child), 'Child');
         $this->assertFalse($parent->isParentOf($notAChild), 'Not child');

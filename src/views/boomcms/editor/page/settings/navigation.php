@@ -27,7 +27,7 @@
         <section id='advanced'>
             <h2><?= Lang::get('boomcms::settings.navigation.parent') ?></h2>
 
-            <?php if ($page->getParent()->loaded()): ?>
+            <?php if (!$page->isRoot()): ?>
                 <p>
                     <span class="title"><?= $page->getParent()->getTitle() ?></span>
                     (<span class="uri"><?= $page->getParent()->url()->getLocation() ?></span>)
