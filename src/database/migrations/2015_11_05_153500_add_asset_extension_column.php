@@ -1,6 +1,6 @@
 <?php
 
-use BoomCMS\Database\Models\Asset\Version;
+use BoomCMS\Database\Models\AssetVersion;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\DB;
 
@@ -15,7 +15,7 @@ class AddAssetExtensionColumn extends Migration
     {
         DB::update('alter table asset_versions add extension varchar(10)');
 
-        $versions = Version::all();
+        $versions = AssetVersion::all();
 
         foreach ($versions as $v) {
             preg_match('|\.([a-z]+)$|', $v->filename, $matches);
