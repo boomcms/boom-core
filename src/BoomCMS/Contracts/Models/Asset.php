@@ -20,6 +20,11 @@ interface Asset
     /**
      * @return string
      */
+    public function getCredits();
+
+    /**
+     * @return string
+     */
     public function getExtension();
 
     /**

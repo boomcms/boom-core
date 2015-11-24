@@ -38,14 +38,33 @@ class Asset extends Model implements AssetInterface
      */
     protected $uploadedBy;
 
+    /**
+     * @var AssetVersion
+     */
+    protected $latestVersionCache;
+
+    /**
+     * @return string
+     */
     public function directory()
     {
         return storage_path().'/boomcms/assets';
     }
 
+    /**
+     * @return bool
+     */
     public function exists()
     {
         return $this->getId() && file_exists($this->getFilename());
+    }
+
+    /**
+     * @return string
+     */
+    public function getCredits()
+    {
+        return $this->{self::ATTR_CREDITS};
     }
 
     /**
@@ -64,9 +83,12 @@ class Asset extends Model implements AssetInterface
         return $this->directory().DIRECTORY_SEPARATOR.$this->getLatestVersionId();
     }
 
+    /**
+     * @return int
+     */
     public function getFilesize()
     {
-        return $this->get('filesize');
+        return $this->getLatestVersion()->getFilesize();
     }
 
     /**
@@ -114,7 +136,11 @@ class Asset extends Model implements AssetInterface
      */
     public function getLatestVersion()
     {
-        return $this->latestVersion->first()->first();
+        if ($this->latestVersionCache === null) {
+            $this->latestVersionCache = $this->latestVersion->first()->first();
+        }
+
+        return $this->latestVersionCache;
     }
 
     public function getLatestVersionId()
@@ -146,19 +172,25 @@ class Asset extends Model implements AssetInterface
         return $this->tags;
     }
 
+    /**
+     * @return int
+     */
     public function getThumbnailAssetId()
     {
-        return $this->get('thumbnail_asset_id');
+        return (int) $this->{self::ATTR_THUMBNAIL_ID};
     }
 
     public function getThumbnail()
     {
-        return AssetFacade::find($this->getThumbnailAssetId());
+        return $this->hasOne(static::class, 'thumbnail_asset_id', 'asset_id');
     }
 
+    /**
+     * @return string
+     */
     public function getTitle()
     {
-        return $this->get('title');
+        return $this->{self::ATTR_TITLE};
     }
 
     /**
@@ -183,7 +215,7 @@ class Asset extends Model implements AssetInterface
 
     public function getUploadedTime()
     {
-        return (new DateTime())->setTimestamp($this->get('uploaded_time'));
+        return (new DateTime())->setTimestamp($this->{self::ATTR_UPLOADED_AT});
     }
 
     public function getVersions()
@@ -288,7 +320,7 @@ class Asset extends Model implements AssetInterface
      */
     public function setCredits($credits)
     {
-        $this->attributes['credits'] = $credits;
+        $this->{self::ATTR_CREDITS} = $credits;
 
         return $this;
     }
@@ -300,7 +332,7 @@ class Asset extends Model implements AssetInterface
      */
     public function setDescription($description)
     {
-        $this->attributes['description'] = $description;
+        $this->{self::ATTR_DESCRIPTION} = $description;
 
         return $this;
     }
@@ -312,7 +344,7 @@ class Asset extends Model implements AssetInterface
      */
     public function setThumbnailAssetId($assetId)
     {
-        $this->attributes['thumbnail_asset_id'] = $assetId;
+        $this->{self::ATTR_THUMBNAIL_ID} = $assetId;
 
         return $this;
     }
@@ -324,7 +356,7 @@ class Asset extends Model implements AssetInterface
      */
     public function setTitle($title)
     {
-        $this->attributes['title'] = $title;
+        $this->{self::ATTR_TITLE} = $title;
 
         return $this;
     }
@@ -336,7 +368,7 @@ class Asset extends Model implements AssetInterface
      */
     public function setType($type)
     {
-        $this->attributes['type'] = $type;
+        $this->{self::ATTR_TYPE} = $type;
 
         return $this;
     }
@@ -348,14 +380,14 @@ class Asset extends Model implements AssetInterface
      */
     public function setUploadedBy(PersonInterface $person)
     {
-        $this->attributes['uploaded_by'] = $person->getId();
+        $this->{self::ATTR_UPLOADED_BY} = $person->getId();
 
         return $this;
     }
 
     public function setUploadedTime(DateTime $time)
     {
-        $this->attributes['uploaded_time'] = $time->getTimestamp();
+        $this->{self::ATTR_UPLOADED_AT} = $time->getTimestamp();
 
         return $this;
     }

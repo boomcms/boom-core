@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Support\Helpers;
 
-use BoomCMS\Database\Models\Asset as A;
+use BoomCMS\Database\Models\Asset as AssetModel;
 use Illuminate\Support\Facades\Config as ConfigFacade;
 
 abstract class Asset
@@ -14,10 +14,10 @@ abstract class Asset
      *
      * @return string
      */
-    public static function controller(A $asset)
+    public static function controller(AssetModel $asset)
     {
         $namespace = 'BoomCMS\Http\Controllers\Asset\\';
-
+dd($asset);
         if (!$asset->getExtension()) {
             return;
         }

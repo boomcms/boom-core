@@ -4,10 +4,17 @@ namespace BoomCMS\Tests\Database\Models;
 
 use BoomCMS\Database\Models\Asset;
 use BoomCMS\Database\Models\AssetVersion;
+use DateTime;
 
 class AssetTest extends AbstractModelTestCase
 {
     protected $model = Asset::class;
+
+    public function testGetCreditsReturnsCreditsAttribute()
+    {
+        $asset = new Asset([Asset::ATTR_CREDITS => 'test']);
+        $this->assertEquals('test', $asset->getCredits());
+    }
 
     public function testDirectory()
     {
@@ -35,27 +42,33 @@ class AssetTest extends AbstractModelTestCase
         $this->assertEquals('', $asset->getExtension());
     }
 
+    public function testGetFilesize()
+    {
+        $asset = $this->mockVersionedAttribute(['filesize' => 1000]);
+        $this->assertEquals(1000, $asset->getFilesize());
+    }
+
     public function testGetType()
     {
-        $asset = $this->getAsset(['type' => 'image']);
+        $asset = new Asset([Asset::ATTR_TYPE => 'image']);
         $this->assertEquals('image', $asset->getType());
 
-        $asset = $this->getAsset(['type' => 'video']);
+        $asset = new Asset([Asset::ATTR_TYPE => 'video']);
         $this->assertEquals('video', $asset->getType());
 
-        $asset = $this->getAsset();
+        $asset = new Asset();
         $this->assertEquals('', $asset->getType());
     }
 
     public function testIsImage()
     {
-        $image = $this->getAsset(['type' => 'image']);
+        $image = new Asset([Asset::ATTR_TYPE => 'image']);
         $this->assertTrue($image->isImage());
 
-        $notAnImage = $this->getAsset(['type' => 'video']);
+        $notAnImage = new Asset([Asset::ATTR_TYPE => 'video']);
         $this->assertFalse($notAnImage->isImage());
 
-        $empty = $this->getAsset();
+        $empty = new Asset();
         $this->assertFalse($empty->isImage());
     }
 
@@ -73,6 +86,27 @@ class AssetTest extends AbstractModelTestCase
         $this->assertInternalType('int', $asset->getHeight());
     }
 
+    public function testGetTitleReturnsTitleAttribute()
+    {
+        $asset = new Asset([Asset::ATTR_TITLE => 'test']);
+        $this->assertEquals('test', $asset->getTitle());
+    }
+
+    public function testGetThumbnailAssetIdReturnsThumbnailAttribute()
+    {
+        $asset = new Asset([Asset::ATTR_THUMBNAIL_ID => 1]);
+        $this->assertEquals(1, $asset->getThumbnailAssetId());
+    }
+
+    public function testGetUploadedTime()
+    {
+        $now = new DateTime('now');
+
+        $asset = new Asset([Asset::ATTR_UPLOADED_AT => $now->getTimestamp()]);
+        $this->assertInstanceOf(DateTime::class, $asset->getUploadedTime());
+        $this->assertEquals($now->getTimestamp(), $asset->getUploadedTime()->getTimestamp());
+    }
+
     protected function mockVersionedAttribute($attrs)
     {
         $version = new AssetVersion($attrs);
@@ -84,13 +118,5 @@ class AssetTest extends AbstractModelTestCase
             ->will($this->returnValue($version));
 
         return $asset;
-    }
-
-    protected function getAsset($attrs = [], $methods = null)
-    {
-        return $this->getMockBuilder(Asset::class)
-            ->setConstructorArgs([$attrs])
-            ->setMethods($methods)
-            ->getMock();
     }
 }

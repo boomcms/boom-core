@@ -61,6 +61,14 @@ class AssetVersion extends Model
     /**
      * @return int
      */
+    public function getFilesize()
+    {
+        return (int) $this->{self::ATTR_FILESIZE};
+    }
+
+    /**
+     * @return int
+     */
     public function getHeight()
     {
         return (int) $this->{self::ATTR_HEIGHT};
