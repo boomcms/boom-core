@@ -2,7 +2,8 @@
 
 namespace BoomCMS\ServiceProviders;
 
-use BoomCMS\Repositories\Page;
+use BoomCMS\Database\Models\Page;
+use BoomCMS\Repositories\Page as Repository;
 use Illuminate\Support\ServiceProvider;
 
 class PageServiceProvider extends ServiceProvider
@@ -22,7 +23,7 @@ class PageServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->singleton('boomcms.repositories.page', function ($app) {
-            return new Page();
+            return new Repository(new Page());
         });
     }
 }

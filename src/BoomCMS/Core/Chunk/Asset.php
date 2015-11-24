@@ -20,7 +20,7 @@ class Asset extends BaseChunk
         parent::__construct($page, $attrs, $slotname, $editable);
 
         if (isset($attrs['asset_id'])) {
-            $this->asset = AssetFacade::findById($this->attrs['asset_id']);
+            $this->asset = AssetFacade::find($this->attrs['asset_id']);
         }
     }
 
@@ -77,7 +77,7 @@ class Asset extends BaseChunk
 
     public function hasContent()
     {
-        return $this->asset && $this->asset->loaded();
+        return $this->asset;
     }
 
     /**

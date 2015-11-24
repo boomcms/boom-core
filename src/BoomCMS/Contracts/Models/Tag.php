@@ -10,6 +10,11 @@ interface Tag
     public function getGroup();
 
     /**
+     * @return int
+     */
+    public function getId();
+
+    /**
      * @return string
      */
     public function getSlug();

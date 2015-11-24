@@ -3,18 +3,11 @@
 namespace BoomCMS\Tests\Database\Models;
 
 use BoomCMS\Database\Models\Person;
-use BoomCMS\Tests\AbstractTestCase;
 use Hautelook\Phpass\PasswordHash;
 
-class PersonTest extends AbstractTestCase
+class PersonTest extends AbstractModelTestCase
 {
-    public function testGetIdReturnsIdAttribute()
-    {
-        $person = new Person();
-        $person->{Person::ATTR_ID} = 1;
-
-        $this->assertEquals(1, $person->getId());
-    }
+    protected $model = Person::class;
 
     public function testGetEmailReturnsEmailAttribute()
     {

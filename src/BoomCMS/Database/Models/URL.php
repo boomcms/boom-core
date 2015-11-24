@@ -48,7 +48,7 @@ class URL extends Model implements URLInterface
      */
     public function getPage()
     {
-        return PageFacade::findById($this->getPageId());
+        return $this->hasOne(Page::class)->first();
     }
 
     /**

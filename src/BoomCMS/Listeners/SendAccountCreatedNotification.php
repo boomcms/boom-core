@@ -17,7 +17,7 @@ class SendAccountCreatedNotification extends EmailNotification
             'person'    => $person,
             'siteName'  => Settings::get('site.name'),
             'password'  => $event->getPassword(),
-            'createdBy' => $createdBy->loaded() ? $createdBy->getName() : Settings::get('site.admin.email'),
+            'createdBy' => $createdBy ? $createdBy->getName() : Settings::get('site.admin.email'),
         ]);
     }
 }

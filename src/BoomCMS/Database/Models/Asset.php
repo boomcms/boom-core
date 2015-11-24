@@ -5,7 +5,6 @@ namespace BoomCMS\Database\Models;
 use BoomCMS\Contracts\Models\Asset as AssetInterface;
 use BoomCMS\Contracts\Models\Person as PersonInterface;
 use BoomCMS\Support\Traits\Comparable;
-use BoomCMS\Support\Traits\HasId;
 use DateTime;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
@@ -15,7 +14,6 @@ use Symfony\Component\HttpFoundation\File\UploadedFile as File;
 class Asset extends Model implements AssetInterface
 {
     use Comparable;
-    use HasId;
 
     const ATTR_ID = 'id';
     const ATTR_TITLE = 'title';
@@ -35,6 +33,11 @@ class Asset extends Model implements AssetInterface
 
     public $timestamps = false;
 
+    /**
+     * @var PersinInterface
+     */
+    protected $uploadedBy;
+
     public function directory()
     {
         return storage_path().'/boomcms/assets';
@@ -43,6 +46,14 @@ class Asset extends Model implements AssetInterface
     public function exists()
     {
         return $this->getId() && file_exists($this->getFilename());
+    }
+
+    /**
+     * @return string
+     */
+    public function getExtension()
+    {
+        return $this->getLatestVersion()->getExtension();
     }
 
     /**
@@ -63,7 +74,15 @@ class Asset extends Model implements AssetInterface
      */
     public function getHeight()
     {
-        return (int) $this->get('height');
+        return (int) $this->getLatestVersion()->getHeight();
+    }
+
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return  (int) $this->{self::ATTR_ID};
     }
 
     public function getEmbedHtml($height = null, $width = null)
@@ -82,25 +101,38 @@ class Asset extends Model implements AssetInterface
         ]);
     }
 
-    public function getLatestVersionId()
+    /**
+     * @return DateTime
+     */
+    public function getLastModified()
     {
-        return $this->get('version:id');
+        return $this->getLatestVersion()->getEditedAt();
     }
 
+    /**
+     * @return AssetVersion
+     */
+    public function getLatestVersion()
+    {
+        return $this->latestVersion->first()->first();
+    }
+
+    public function getLatestVersionId()
+    {
+        return $this->getLatestVersion()->getId();
+    }
+
+    /**
+     * @return string
+     */
     public function getMimetype()
     {
-        if ($this->exists()) {
-            $finfo = finfo_open(FILEINFO_MIME_TYPE);
-            $mime = finfo_file($finfo, $this->getFilename());
-            finfo_close($finfo);
-
-            return $mime;
-        }
+        return $this->getLatestVersion()->getMimetype();
     }
 
     public function getOriginalFilename()
     {
-        return $this->get('filename');
+        return $this->getLatestVersion()->getFilename();
     }
 
     public function getTags()
@@ -121,7 +153,7 @@ class Asset extends Model implements AssetInterface
 
     public function getThumbnail()
     {
-        return AssetFacade::findById($this->getThumbnailAssetId());
+        return AssetFacade::find($this->getThumbnailAssetId());
     }
 
     public function getTitle()
@@ -134,12 +166,19 @@ class Asset extends Model implements AssetInterface
      */
     public function getType()
     {
-        return $this->get('type');
+        return $this->{self::ATTR_TYPE};
     }
 
+    /**
+     * @return PersonInterface
+     */
     public function getUploadedBy()
     {
-        return PersonFacade::find($this->get('uploaded_by'));
+        if ($this->uploadedBy === null) {
+            $this->uploadedBy = $this->hasOne(Person::class, 'uploaded_by')->first();
+        }
+
+        return $this->uploadedBy;
     }
 
     public function getUploadedTime()
@@ -149,7 +188,7 @@ class Asset extends Model implements AssetInterface
 
     public function getVersions()
     {
-        return VersionModel::forAsset($this)->get();
+        return $this->versions;
     }
 
     /**
@@ -157,22 +196,17 @@ class Asset extends Model implements AssetInterface
      */
     public function getWidth()
     {
-        return (int) $this->get('width');
+        return (int) $this->getLatestVersion()->getWidth();
     }
 
+    /**
+     * @return bool
+     */
     public function hasPreviousVersions()
     {
-        if ($this->hasPreviousVersions === null) {
-            $result = DB::table('asset_versions')
-                ->select('id')
-                ->where('asset_id', '=', $this->getId())
-                ->where('id', '!=', $this->getLatestVersionId())
-                ->first();
-
-            $this->hasPreviousVersions = isset($result->id);
-        }
-
-        return $this->hasPreviousVersions;
+        return $this->versions
+            ->where('id', '!=', $this->getLatestVersionId())
+            ->exists();
     }
 
     public function hasThumbnail()
@@ -180,15 +214,14 @@ class Asset extends Model implements AssetInterface
         return $this->getThumbnailAssetId() > 0;
     }
 
+    /**
+     * @return $this
+     */
     public function incrementDownloads()
     {
-        if ($this->loaded()) {
-            DB::table('assets')
-                ->where('id', '=', $this->getId())
-                ->update([
-                    'downloads' => DB::raw('downloads + 1'),
-                ]);
-        }
+        $this->increment(self::ATTR_DOWNLOADS);
+
+        return $this;
     }
 
     /**
@@ -208,7 +241,7 @@ class Asset extends Model implements AssetInterface
         list($width, $height) = getimagesize($file->getRealPath());
         preg_match('|\.([a-z]+)$|', $file->getClientOriginalName(), $extension);
 
-        $version = VersionModel::create([
+        $version = AssetVersion::create([
             'asset_id'  => $this->getId(),
             'extension' => $extension[1],
             'filesize'  => $file->getClientSize(),
@@ -217,6 +250,7 @@ class Asset extends Model implements AssetInterface
             'height'    => $height,
             'edited_at' => time(),
             'edited_by' => Auth::getPerson()->getId(),
+            'mimetype'  => File::mime($file->getRealPath()),
         ]);
 
         $this->setType(AssetHelper::typeFromMimetype($file->getMimeType()));
@@ -228,7 +262,7 @@ class Asset extends Model implements AssetInterface
 
     public function revertTo($versionId)
     {
-        $version = VersionModel::find($versionId);
+        $version = AssetVersion::find($versionId);
 
         if ($version && $version->asset_id = $this->getId()) {
             $attrs = $version->toArray();
@@ -326,17 +360,13 @@ class Asset extends Model implements AssetInterface
         return $this;
     }
 
-    public function scopeWithLatestVersion($query)
+    public function latestVersion()
     {
-        return $query
-            ->select('version.*')
-            ->addSelect('version.id as version:id')
-            ->addSelect('assets.*')
-            ->join('asset_versions as version', 'assets.id', '=', 'version.asset_id')
+        return $this->versions()
             ->leftJoin('asset_versions as av2', function ($query) {
                 $query
-                    ->on('av2.asset_id', '=', 'version.asset_id')
-                    ->on('av2.id', '>', 'version.id');
+                    ->on('av2.asset_id', '=', 'asset_versions.asset_id')
+                    ->on('av2.id', '>', 'asset_versions.id');
             })
             ->whereNull('av2.id');
     }
@@ -344,10 +374,12 @@ class Asset extends Model implements AssetInterface
     public function scopeWithVersion($query, $versionId)
     {
         return $query
-            ->select('version.*')
-            ->addSelect('version.id as version:id')
-            ->addSelect('assets.*')
-            ->join('asset_versions as version', 'assets.id', '=', 'version.asset_id')
-            ->where('version.id', '=', $versionId);
+            ->where('asset_versions.id', '=', $versionId)
+            ->first();
+    }
+
+    public function versions()
+    {
+        return $this->hasMany(AssetVersion::class);
     }
 }

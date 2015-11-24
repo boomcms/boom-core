@@ -26,14 +26,14 @@ class ProcessSiteURL
         $uri = $request->route()->getParameter('location');
         $page = Page::findByUri($uri);
 
-        if (!$page->loaded()) {
+        if (!$page) {
             $url = URL::findByLocation($uri);
 
             // The URL isn't in use or
             // The URL is in use and has a page - the page must not be visible to the current user
             //
             // 404.
-            if (!$url || ($url && $url->getPage()->loaded())) {
+            if (!$url || ($url && $url->getPage())) {
                 throw new NotFoundHttpException();
             }
 

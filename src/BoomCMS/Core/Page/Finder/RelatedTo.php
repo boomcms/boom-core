@@ -13,7 +13,7 @@ class RelatedTo extends Filter
 
     public function __construct($page)
     {
-        $this->page = ($page instanceof Page) ? $page : PageFacade::findById($page);
+        $this->page = ($page instanceof Page) ? $page : PageFacade::find($page);
     }
 
     public function execute(Builder $query)
@@ -25,6 +25,6 @@ class RelatedTo extends Filter
 
     public function shouldBeApplied()
     {
-        return $this->page->loaded();
+        return $this->page !== null;
     }
 }

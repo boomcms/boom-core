@@ -3,7 +3,6 @@
 namespace BoomCMS\Repositories;
 
 use BoomCMS\Core\Page\Finder;
-use BoomCMS\Database\Models\Page as PageObject;
 use BoomCMS\Database\Models\Page as Model;
 
 class Page
@@ -18,7 +17,17 @@ class Page
         'primary_uri'   => [],
     ];
 
-    private function cache(PageObject $page)
+    /**
+     * @var Model
+     */
+    protected $model;
+
+    public function __construct(Model $model)
+    {
+        $this->model = $model;
+    }
+    
+    private function cache(Model $page = null)
     {
         $this->cache['id'][$page->getId()] = $page;
 
@@ -38,9 +47,9 @@ class Page
         Model::destroy($page->getId());
     }
 
-    public function findById($id)
+    public function find($id)
     {
-        return $this->findAndCache(Model::find($id));
+        return $this->model->find($id);
     }
 
     public function findByInternalName($name)
@@ -84,7 +93,7 @@ class Page
 
     public function save(PageObject $page)
     {
-        if ($page->loaded()) {
+        if ($page->getId()) {
             $model = isset($this->cache[$page->getId()]) ?
                 $this->cache[$page->getId()]
                 : Model::find($page->getId());

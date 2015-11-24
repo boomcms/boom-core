@@ -5,14 +5,12 @@ namespace BoomCMS\Database\Models;
 use BoomCMS\Contracts\Models\Template as TemplateInterface;
 use BoomCMS\Core\Theme\Theme;
 use BoomCMS\Support\Traits\Comparable;
-use BoomCMS\Support\Traits\HasId;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\View;
 
 class Template extends Model implements TemplateInterface
 {
     use Comparable;
-    use HasId;
 
     const ATTR_ID = 'id';
     const ATTR_NAME = 'name';
@@ -50,6 +48,14 @@ class Template extends Model implements TemplateInterface
     public function getFilename()
     {
         return $this->{self::ATTR_FILENAME};
+    }
+
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return  (int) $this->{self::ATTR_ID};
     }
 
     /**

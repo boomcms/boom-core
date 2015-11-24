@@ -4,17 +4,14 @@ namespace BoomCMS\Database\Models;
 
 use BoomCMS\Contracts\Models\Page as PageInterface;
 use BoomCMS\Contracts\Models\Person as PersonInterface;
-use BoomCMS\Contracts\Models\Tag;
+use BoomCMS\Contracts\Models\Tag as TagInterface;
 use BoomCMS\Contracts\Models\Template as TemplateInterface;
 use BoomCMS\Contracts\Models\URL as URLInterface;
-use BoomCMS\Support\Facades\Asset;
 use BoomCMS\Support\Facades\Auth;
 use BoomCMS\Support\Facades\Chunk;
 use BoomCMS\Support\Facades\Editor;
-use BoomCMS\Support\Facades\Page as PageFacade;
 use BoomCMS\Support\Helpers\URL as URLHelper;
 use BoomCMS\Support\Traits\Comparable;
-use BoomCMS\Support\Traits\HasId;
 use DateTime;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -23,7 +20,6 @@ use Illuminate\Support\Facades\DB;
 class Page extends Model implements PageInterface
 {
     use Comparable;
-    use HasId;
     use SoftDeletes;
 
     const ATTR_ID = 'id';
@@ -67,6 +63,11 @@ class Page extends Model implements PageInterface
 
     public $timestamps = false;
 
+    /**
+     * @var Asset
+     */
+    protected $featureImage;
+
     public function addRelation(PageInterface $page)
     {
         $this->relations()->attach($page, [
@@ -77,7 +78,7 @@ class Page extends Model implements PageInterface
         return $this;
     }
 
-    public function addTag(Tag $tag)
+    public function addTag(TagInterface $tag)
     {
         $this->tags()->attach($tag);
 
@@ -242,11 +243,15 @@ class Page extends Model implements PageInterface
     }
 
     /**
-     * @return BoomCMS\Core\Asset\Asset
+     * @return AssetInterface
      */
     public function getFeatureImage()
     {
-        return Asset::findById($this->getFeatureImageId());
+        if ($this->featureImage === null) {
+            $this->featureImage = $this->hasOne(Asset::class, self::ATTR_FEATURE_IMAGE);
+        }
+
+        return $this->featureImage;
     }
 
     public function getFeatureImageId()
@@ -257,6 +262,14 @@ class Page extends Model implements PageInterface
     public function getGrandchildTemplateId()
     {
         return $this->{self::ATTR_GRANDCHILD_TEMPLATE};
+    }
+
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return  (int) $this->{self::ATTR_ID};
     }
 
     public function getInternalName()
@@ -431,7 +444,7 @@ class Page extends Model implements PageInterface
         return $this;
     }
 
-    public function removeTag(Tag $tag)
+    public function removeTag(TagInterface $tag)
     {
         $this->tags()->detach($tag);
 

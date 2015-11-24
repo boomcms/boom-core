@@ -50,7 +50,7 @@ class Handler extends ExceptionHandler
             if ($code !== 500 || App::environment('production') || App::environment('staging')) {
                 $page = Page::findByInternalName($code);
 
-                if ($page->loaded()) {
+                if ($page) {
                     $request = Request::create($page->url()->getLocation(), 'GET');
 
                     return response(Route::dispatch($request)->getContent(), $code);

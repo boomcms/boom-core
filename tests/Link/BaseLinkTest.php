@@ -21,7 +21,7 @@ class BaseLinkTest extends AbstractTestCase
             "http://{$this->baseUrl}/test#test",
         ];
 
-        Page::shouldReceive('findById')
+        Page::shouldReceive('find')
             ->with(m::any(1, '1'))
             ->andReturn($this->validPage());
             

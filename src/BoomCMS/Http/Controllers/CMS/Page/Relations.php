@@ -21,7 +21,7 @@ class Relations extends Controller
 
         $this->authorization('edit_page', $this->page);
 
-        $this->related = Page::findById($this->request->input('related_page_id'));
+        $this->related = Page::find($this->request->input('related_page_id'));
     }
 
     public function add()

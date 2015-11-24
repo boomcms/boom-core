@@ -24,6 +24,11 @@ interface PageVersion
     /**
      * @return int
      */
+    public function getId();
+
+    /**
+     * @return int
+     */
     public function getPageId();
 
     /**

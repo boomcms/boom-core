@@ -33,7 +33,7 @@ class Editor extends Controller
      */
     public function getToolbar()
     {
-        $page = Page::findById($this->request->input('page_id'));
+        $page = Page::find($this->request->input('page_id'));
         $this->editor->setActivePage($page);
 
         View::share('page', $page);

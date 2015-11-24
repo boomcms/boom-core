@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Support\Helpers;
 
-use BoomCMS\Core\Asset\Asset as A;
+use BoomCMS\Database\Models\Asset as A;
 use Illuminate\Support\Facades\Config as ConfigFacade;
 
 abstract class Asset
@@ -18,7 +18,7 @@ abstract class Asset
     {
         $namespace = 'BoomCMS\Http\Controllers\Asset\\';
 
-        if (!$asset->loaded()) {
+        if (!$asset->getExtension()) {
             return;
         }
 

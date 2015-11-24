@@ -13,11 +13,11 @@ class Save extends BaseController
         $location = $this->request->input('location');
         $this->url = URL::findByLocation($location);
 
-        if ($this->url->loaded() && !$this->url->isForPage($this->page)) {
+        if ($this->url && !$this->url->isForPage($this->page)) {
             // Url is being used for a different page.
             // Notify that the url is already in use so that the JS can load a prompt to move the url.
             return ['existing_url_id' => $this->url->getId()];
-        } elseif (!$this->url->loaded()) {
+        } elseif (!$this->url) {
             URL::create($location, $this->page->getId());
         }
     }

@@ -18,6 +18,11 @@ interface Person
 
     public function getGroupIds();
 
+    /**
+     * @return int
+     */
+    public function getId();
+
     public function getLastFailedLogin();
 
     public function getLockedUntil();

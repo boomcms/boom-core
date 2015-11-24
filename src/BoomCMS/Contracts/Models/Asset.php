@@ -20,6 +20,11 @@ interface Asset
     /**
      * @return string
      */
+    public function getExtension();
+
+    /**
+     * @return string
+     */
     public function getFilename();
 
     /**
@@ -34,8 +39,20 @@ interface Asset
      */
     public function getHeight();
 
+    /**
+     * @return int
+     */
+    public function getId();
+
     public function getEmbedHtml($height = null, $width = null);
 
+    /**
+     * @return DateTime
+     */
+    public function getLastModified();
+
+    public function getLatestVersion();
+    
     /**
      * @return int
      */

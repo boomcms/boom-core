@@ -3,6 +3,7 @@
 namespace BoomCMS\Console\Commands;
 
 use BoomCMS\Core\Template;
+use BoomCMS\Database\Models\Template as TemplateModel;
 use BoomCMS\Repositories\Template as TemplateRepository;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
@@ -33,7 +34,7 @@ class InstallTemplates extends Command
     {
         parent::__construct();
 
-        $this->manager = new Template\Manager($filesystem, new TemplateRepository());
+        $this->manager = new Template\Manager($filesystem, new TemplateRepository(new TemplateModel()));
     }
 
     /**

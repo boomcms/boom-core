@@ -28,7 +28,7 @@ class Internal extends Link
     public function __construct($link)
     {
         if (is_int($link) || ctype_digit($link)) {
-            $this->page = Page::findById($link);
+            $this->page = Page::find($link);
         } else {
             $location = ($link === '/') ? $link : ltrim($link, '/');
 
@@ -53,7 +53,7 @@ class Internal extends Link
 
     public function isValidPage()
     {
-        return $this->page->loaded();
+        return $this->page && $this->page->getId();
     }
 
     public function url()

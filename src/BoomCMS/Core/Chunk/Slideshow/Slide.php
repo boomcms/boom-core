@@ -30,7 +30,7 @@ class Slide
     public function getAsset()
     {
         if ($this->asset === null) {
-            $this->asset = AssetFacade::findById($this->attrs['asset_id']);
+            $this->asset = AssetFacade::find($this->attrs['asset_id']);
         }
 
         return $this->asset;

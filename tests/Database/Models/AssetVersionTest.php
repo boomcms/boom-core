@@ -1,15 +1,16 @@
 <?php
 
-namespace BoomCMS\Tests\Models\Asset;
+namespace BoomCMS\Tests\Database\Models;
 
-use BoomCMS\Database\Models\Asset\Version;
-use BoomCMS\Tests\AbstractTestCase;
+use BoomCMS\Database\Models\AssetVersion as V;
 
-class VersionTest extends AbstractTestCase
+class VersionTest extends AbstractModelTestCase
 {
+    protected $model = V::class;
+
     public function testExtensionIsAlwaysLowercase()
     {
-        $v = new Version();
+        $v = new V();
         $v->extension = 'TXT';
 
         $this->assertEquals('txt', $v->extension);
@@ -17,7 +18,7 @@ class VersionTest extends AbstractTestCase
 
     public function testExtensionIsOnlyAlphaNumeric()
     {
-        $v = new Version();
+        $v = new V();
         $v->extension = '. mp3 ';
 
         $this->assertEquals('mp3', $v->extension);

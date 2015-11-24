@@ -4,18 +4,11 @@ namespace BoomCMS\Tests\Database\Models;
 
 use BoomCMS\Database\Models\Template;
 use BoomCMS\Core\Theme\Theme;
-use BoomCMS\Tests\AbstractTestCase;
 use Illuminate\Support\Facades\View;
 
-class TemplateTest extends AbstractTestCase
+class TemplateTest extends AbstractModelTestCase
 {
-    public function testGetIdReturnsIdAttribute()
-    {
-        $template = new Template();
-        $template->{Template::ATTR_ID} = 1;
-
-        $this->assertEquals(1, $template->getId());
-    }
+    protected $model = Template::class;
 
     public function testGetThemeName()
     {

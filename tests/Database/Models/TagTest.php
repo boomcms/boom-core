@@ -3,17 +3,10 @@
 namespace BoomCMS\Tests\Database\Models;
 
 use BoomCMS\Database\Models\Tag;
-use BoomCMS\Tests\AbstractTestCase;
 
-class TagTest extends AbstractTestCase
+class TagTest extends AbstractModelTestCase
 {
-    public function testGetIdReturnsIdAttribute()
-    {
-        $tag = new Tag();
-        $tag->{Tag::ATTR_ID} = 1;
-
-        $this->assertEquals(1, $tag->getId());
-    }
+    protected $model = Tag::class;
 
     public function testNameIsTrimmed()
     {

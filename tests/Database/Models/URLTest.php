@@ -4,7 +4,6 @@ namespace BoomCMS\Tests\Models;
 
 use BoomCMS\Database\Models\Page;
 use BoomCMS\Database\Models\URL;
-use BoomCMS\Support\Facades\Page as PageFacade;
 use BoomCMS\Tests\AbstractTestCase;
 
 class URLTest extends AbstractTestCase
@@ -29,24 +28,14 @@ class URLTest extends AbstractTestCase
 
     public function testIsForPage()
     {
-        $page = new Page(['id' => 2]);
+        $page = new Page();
+        $page->id = 2;
+
         $url = new URL(['page_id' => 1]);
         $this->assertFalse($url->isForPage($page));
 
         $url = new URL(['page_id' => 2]);
         $this->assertTrue($url->isForPage($page));
-    }
-
-    public function testGetPage()
-    {
-        $page = new Page(['id' => 1]);
-        $url = new URL(['page_id' => 1]);
-
-        PageFacade::shouldReceive('findById')
-            ->once()
-            ->andReturn($page);
-
-        $this->assertEquals($page, $url->getPage());
     }
 
     public function testSetPageId()

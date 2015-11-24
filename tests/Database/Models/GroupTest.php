@@ -3,23 +3,16 @@
 namespace BoomCMS\Tests\Database\Models;
 
 use BoomCMS\Database\Models\Group;
-use BoomCMS\Tests\AbstractTestCase;
 
-class GroupTest extends AbstractTestCase
+class GroupTest extends AbstractModelTestCase
 {
+    protected $model = Group::class;
+
     public function testGetNameReturnsName()
     {
         $group = new Group([Group::ATTR_NAME => 'test']);
 
         $this->assertEquals('test', $group->getName());
-    }
-
-    public function testGetIdReturnsIdAttribute()
-    {
-        $group = new Group();
-        $group->{Group::ATTR_ID} = 1;
-
-        $this->assertEquals(1, $group->getId());
     }
 
     public function testSetName()

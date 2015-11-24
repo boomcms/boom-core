@@ -13,13 +13,13 @@ class Finder extends BaseFinder
     protected $allowedOrderByColumns = ['last_modified', 'title', 'downloads', 'filesize', 'uploaded_time'];
 
     protected $orderByAliases = [
-        'last_modified' => 'version.edited_at',
-        'filesize'      => 'version.filesize',
+        'last_modified' => 'asset_versions.edited_at',
+        'filesize'      => 'asset_versions.filesize',
     ];
 
     public function __construct()
     {
-        $this->query = (new Model())->withLatestVersion();
+        $this->query = (new Model())->with('latestVersion');
     }
 
     public function setOrderBy($field, $direction = null)

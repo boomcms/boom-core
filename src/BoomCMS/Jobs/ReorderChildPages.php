@@ -34,7 +34,7 @@ class ReorderChildPages extends Command implements SelfHandling
     {
         DB::transaction(function () {
             foreach ($this->sequences as $sequence => $pageId) {
-                $page = PageFacade::findById($pageId);
+                $page = PageFacade::find($pageId);
 
                 // Only update the sequence of pages which are children of this page.
                 if ($this->parent->isParentOf($page)) {

@@ -4,14 +4,12 @@ namespace BoomCMS\Database\Models;
 
 use BoomCMS\Contracts\Models\Tag as TagInterface;
 use BoomCMS\Support\Traits\Comparable;
-use BoomCMS\Support\Traits\HasId;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
 class Tag extends Model implements TagInterface
 {
     use Comparable;
-    use HasId;
 
     const ATTR_ID = 'id';
     const ATTR_GROUP = 'group';

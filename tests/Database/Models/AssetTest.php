@@ -1,32 +1,38 @@
 <?php
 
-namespace BoomCMS\Tests\Asset;
+namespace BoomCMS\Tests\Database\Models;
 
-use BoomCMS\Core\Asset\Asset;
-use BoomCMS\Support\Facades\Person;
-use BoomCMS\Tests\AbstractTestCase;
+use BoomCMS\Database\Models\Asset;
+use BoomCMS\Database\Models\AssetVersion;
 
-class AssetTest extends AbstractTestCase
+class AssetTest extends AbstractModelTestCase
 {
+    protected $model = Asset::class;
+
     public function testDirectory()
     {
-        $this->assertEquals(storage_path().'/boomcms/assets', Asset::directory());
+        $model = new Asset();
+
+        $this->assertEquals(storage_path().'/boomcms/assets', $model->directory());
     }
 
     public function testGetFilename()
     {
-        $asset = $this->getAsset(['version:id' => 1], ['getType']);
+        $asset = $this->getMock(Asset::class, ['getLatestVersionId']);
+        $asset->expects($this->once())
+            ->method('getLatestVersionId')
+            ->will($this->returnValue(1));
 
-        $this->assertEquals(Asset::directory().'/1', $asset->getFilename());
+        $this->assertEquals($asset->directory().'/1', $asset->getFilename());
     }
 
     public function testGetExtension()
     {
-        $asset = $this->getAsset(['extension' => 'txt']);
+        $asset = $this->mockVersionedAttribute(['extension' => 'txt']);
         $this->assertEquals('txt', $asset->getExtension());
 
-        $asset = $this->getAsset();
-        $this->assertNull($asset->getExtension());
+        $asset = $this->mockVersionedAttribute(['extension' => '']);
+        $this->assertEquals('', $asset->getExtension());
     }
 
     public function testGetType()
@@ -55,26 +61,29 @@ class AssetTest extends AbstractTestCase
 
     public function testGetWidth()
     {
-        $asset = $this->getAsset(['width' => 1]);
+        $asset = $this->mockVersionedAttribute(['width' => 1]);
         $this->assertEquals(1, $asset->getWidth());
         $this->assertInternalType('int', $asset->getWidth());
     }
 
     public function testGetHeight()
     {
-        $asset = $this->getAsset(['height' => 1]);
+        $asset = $this->mockVersionedAttribute(['height' => 1]);
         $this->assertEquals(1, $asset->getHeight());
         $this->assertInternalType('int', $asset->getHeight());
     }
 
-    public function testGetUploadedBy()
+    protected function mockVersionedAttribute($attrs)
     {
-        Person::shouldReceive('find')
-            ->with(1)
-            ->andReturn('a person');
+        $version = new AssetVersion($attrs);
 
-        $asset = $this->getAsset(['uploaded_by' => 1]);
-        $this->assertEquals('a person', $asset->getUploadedBy());
+        $asset = $this->getMock(Asset::class, ['getLatestVersion']);
+        $asset
+            ->expects($this->any())
+            ->method('getLatestVersion')
+            ->will($this->returnValue($version));
+
+        return $asset;
     }
 
     protected function getAsset($attrs = [], $methods = null)

@@ -43,7 +43,7 @@ class Provider
      */
     public function allowedToEdit(Page $page)
     {
-        if (!$page->loaded()) {
+        if ($page !== null) {
             return true;
         }
 

@@ -31,7 +31,7 @@ class LogAssetDownload
     {
         $asset = $request->route()->getParameter('asset');
 
-        if ($asset->loaded() && !$this->auth->loggedIn()) {
+        if ($asset && !$this->auth->loggedIn()) {
             $ip = ip2long($request->ip());
 
             if (!AssetDownload::recentlyLogged($asset->getId(), $ip)->count() > 0) {

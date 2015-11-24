@@ -59,6 +59,9 @@ abstract class AbstractTestCase extends \Illuminate\Foundation\Testing\TestCase
 
     protected function validPage()
     {
-        return new Page(['id' => 1]);
+        $page = new Page();
+        $page->id = 1;
+
+        return $page;
     }
 }

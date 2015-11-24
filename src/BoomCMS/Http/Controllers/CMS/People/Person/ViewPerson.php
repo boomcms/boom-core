@@ -24,7 +24,7 @@ class ViewPerson extends BasePerson
 
     public function view()
     {
-        if (!$this->editPerson->loaded()) {
+        if (!$this->editPerson) {
             abourt(404);
         }
 

@@ -109,7 +109,7 @@ class BaseChunkTest extends AbstractTestCase
 
         $chunk = $this->getMockBuilder(BaseChunk::class)
             ->setMethods(['show', 'showDefault', 'hasContent', 'getType'])
-            ->setConstructorArgs([new Page(['id' => 1]), ['id' => 2], 'test', true])
+            ->setConstructorArgs([$this->validPage(), ['id' => 2], 'test', true])
             ->getMock();
 
         $chunk

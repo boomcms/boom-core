@@ -132,14 +132,14 @@ class AuthTest extends AbstractTestCase
     public function testRefreshRememberLoginToken()
     {
         $person = $this->getMockBuilder(Person::class)
-            ->setMethods(['setRememberToken', 'loaded'])
+            ->setMethods(['setRememberToken', 'getId'])
             ->setConstructorArgs([[]])
             ->getMock();
 
         $person
             ->expects($this->once())
-            ->method('loaded')
-            ->will($this->returnValue(true));
+            ->method('getId')
+            ->will($this->returnValue(1));
 
         $person
             ->expects($this->once())

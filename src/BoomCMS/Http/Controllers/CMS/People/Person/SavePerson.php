@@ -25,7 +25,7 @@ class SavePerson extends BasePerson
         foreach ($this->request->input('groups') as $groupId) {
             $group = Group::find($groupId);
 
-            if ($group->loaded()) {
+            if ($group) {
                 $this->editPerson->addGroup($group);
             }
         }

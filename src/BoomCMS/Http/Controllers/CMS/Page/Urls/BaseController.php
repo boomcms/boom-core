@@ -25,10 +25,10 @@ class BaseController extends Controller
     public function __construct(Request $request)
     {
         $this->request = $request;
-        $this->page = Page::findById($request->input('page_id'));
+        $this->page = Page::find($request->input('page_id'));
 
         if ($id = $request->route()->getParameter('id')) {
-            $this->url = URLFacade::findById($id);
+            $this->url = URLFacade::find($id);
         } else {
             $this->url = new URL();
         }
@@ -37,11 +37,11 @@ class BaseController extends Controller
             about(404);
         }
 
-        if ($request->input('page_id') && !$this->page->loaded()) {
+        if ($request->input('page_id') && !$this->page) {
             abourt(404);
         }
 
-        if ($this->page->loaded()) {
+        if ($this->page) {
             parent::authorization('edit_page_urls', $this->page);
         }
     }

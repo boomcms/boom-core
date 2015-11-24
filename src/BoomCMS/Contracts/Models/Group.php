@@ -6,6 +6,11 @@ interface Group
 {
     public function addRole($roleId, $allowed, $pageId = 0);
 
+    /**
+     * @return int
+     */
+    public function getId();
+
     public function getName();
 
     public function getRoles();

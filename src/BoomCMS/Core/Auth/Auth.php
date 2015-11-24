@@ -95,7 +95,7 @@ class Auth
             list($personId, $token) = explode('-', $token);
             $person = $this->personRepository->findByAutoLoginToken($token);
 
-            if ($person && $person->isValid() && $person->getId() == $personId) {
+            if ($person && $personId && $person->getId() == $personId) {
                 $this->login($person);
 
                 return $person;
@@ -154,7 +154,7 @@ class Auth
 
     public function isLoggedIn()
     {
-        return $this->getPerson()->isValid();
+        return $this->getPerson()->getId() > 0;
     }
 
     public function loggedIn($role = null, $page = null)
@@ -205,7 +205,7 @@ class Auth
 
     public function refreshRememberLoginToken(Person $person)
     {
-        if ($person->loaded()) {
+        if ($person->getId() > 0) {
             $token = str_random(60);
             $person->setRememberToken($token);
             $this->personRepository->save($person);

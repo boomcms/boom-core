@@ -2,6 +2,7 @@
 
 namespace BoomCMS\Core\Asset;
 
+use BoomCMS\Contracts\Models\Asset as AssetInterface;
 use Imagick;
 use InvalidArgumentException;
 
@@ -11,14 +12,14 @@ use InvalidArgumentException;
 class PdfThumbnail
 {
     /**
-     * @var Asset
+     * @var AssetInterface
      */
     protected $asset;
 
     /**
-     * @param Asset $asset
+     * @param AssetInterface $asset
      */
-    public function __construct(Asset $asset)
+    public function __construct(AssetInterface $asset)
     {
         $this->asset = $asset;
 

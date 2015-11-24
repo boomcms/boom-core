@@ -7,14 +7,11 @@ use BoomCMS\Contracts\Models\PageVersion as PageVersionInterface;
 use BoomCMS\Contracts\Models\Person as PersonInterface;
 use BoomCMS\Contracts\Models\Template as TemplateInterface;
 use BoomCMS\Support\Facades\Editor;
-use BoomCMS\Support\Traits\HasId;
 use DateTime;
 use Illuminate\Database\Eloquent\Model;
 
 class PageVersion extends Model implements PageVersionInterface
 {
-    use HasId;
-
     const ATTR_ID = 'id';
     const ATTR_PAGE = 'page_id';
     const ATTR_TEMPLATE = 'template_id';
@@ -72,6 +69,14 @@ class PageVersion extends Model implements PageVersionInterface
     public function getEmbargoedUntil()
     {
         return (new DateTime())->setTimestamp($this->{self::ATTR_EMBARGOED_UNTIL});
+    }
+
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return  (int) $this->{self::ATTR_ID};
     }
 
     /**

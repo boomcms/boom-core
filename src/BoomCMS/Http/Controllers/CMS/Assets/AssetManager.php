@@ -41,9 +41,9 @@ class AssetManager extends Controller
         $assets = [];
 
         foreach ($assetIds as $assetId) {
-            $asset = AssetFacade::findById($assetId);
+            $asset = AssetFacade::find($assetId);
 
-            if ($asset->loaded()) {
+            if ($asset) {
                 $assets[] = $asset;
             }
         }

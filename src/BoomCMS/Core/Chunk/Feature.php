@@ -18,7 +18,7 @@ class Feature extends BaseChunk
         parent::__construct($page, $attrs, $slotname, $editable);
 
         if (isset($this->attrs['target_page_id'])) {
-            $this->targetPage = PageFacade::findById($this->attrs['target_page_id']);
+            $this->targetPage = PageFacade::find($this->attrs['target_page_id']);
         }
     }
 
@@ -53,7 +53,7 @@ class Feature extends BaseChunk
 
     public function hasContent()
     {
-        return $this->targetPage && $this->targetPage->loaded();
+        return $this->targetPage !== null;
     }
 
     public function target()

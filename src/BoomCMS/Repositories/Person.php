@@ -87,7 +87,7 @@ class Person implements PersonRepositoryInterface
 
     public function save(PersonInterface $person)
     {
-        if ($person->loaded()) {
+        if ($person->getId()) {
             $model = isset($this->cache[$person->getId()]) ?
                 $this->cache[$person->getId()]
                 : Model::find($person->getId());

@@ -3,9 +3,9 @@
 namespace BoomCMS\Tests\Asset\Finder;
 
 use BoomCMS\Core\Asset\Finder\Type;
-use BoomCMS\Tests\Support\Helpers\AssetTest;
+use BoomCMS\Tests\AbstractTestCase;
 
-class TypeTest extends AssetTest
+class TypeTest extends AbstractTestCase
 {
     public function testRemoveInvalidTypes()
     {

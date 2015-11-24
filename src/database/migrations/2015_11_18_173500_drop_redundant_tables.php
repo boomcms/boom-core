@@ -12,7 +12,7 @@ class DropRedundantTables extends Migration
      */
     public function up()
     {
-        DB::statement('drop table pages_roles');
+        DB::statement('drop table people_roles');
         DB::statement('drop table auth_logs');
     }
 

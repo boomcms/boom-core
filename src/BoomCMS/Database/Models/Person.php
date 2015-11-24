@@ -5,7 +5,6 @@ namespace BoomCMS\Database\Models;
 use BoomCMS\Contracts\Models\Group as GroupInterface;
 use BoomCMS\Contracts\Models\Person as PersonInterface;
 use BoomCMS\Support\Traits\Comparable;
-use BoomCMS\Support\Traits\HasId;
 use DateTime;
 use Hautelook\Phpass\PasswordHash;
 use Illuminate\Contracts\Auth\CanResetPassword;
@@ -16,7 +15,6 @@ use Illuminate\Support\Facades\DB;
 class Person extends Model implements PersonInterface, CanResetPassword
 {
     use Comparable;
-    use HasId;
     use SoftDeletes;
 
     const ATTR_ID = 'id';
@@ -97,10 +95,15 @@ class Person extends Model implements PersonInterface, CanResetPassword
      */
     public function getGroupIds()
     {
-        return (array) DB::table('group_person')
-            ->select('group_id as id')
-            ->where('person_id', '=', $this->getId())
-            ->lists('id');
+        return (array) $this->groups->lists('id');
+    }
+
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return  (int) $this->{self::ATTR_ID};
     }
 
     /**

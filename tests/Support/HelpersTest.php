@@ -39,11 +39,11 @@ class HelpersTest extends AbstractTestCase
     public function testViewUsesNamespaceOfActivePageTemplate()
     {
         $template = new Template(['theme' => 'test']);
-        $page = $this->getMock(Page::class);
+        $page = $this->getMock(Page::class, ['getTemplate']);
         $page
             ->expects($this->once())
             ->method('getTemplate')
-            ->willReturn($template);
+            ->will($this->returnValue($template));
 
         Editor::shouldReceive('getActivePage')->andReturn($page);
 
@@ -70,7 +70,7 @@ class HelpersTest extends AbstractTestCase
     public function testPubUsesNamespaceOfActivePageTemplate()
     {
         $template = new Template(['theme' => 'test']);
-        $page = $this->getMock(Page::class);
+        $page = $this->getMock(Page::class, ['getTemplate']);
         $page
             ->expects($this->once())
             ->method('getTemplate')

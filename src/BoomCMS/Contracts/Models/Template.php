@@ -23,6 +23,11 @@ interface Template
     public function getFilename();
 
     /**
+     * @return int
+     */
+    public function getId();
+
+    /**
      * @return Theme
      */
     public function getTheme();

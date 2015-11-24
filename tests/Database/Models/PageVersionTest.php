@@ -1,12 +1,13 @@
 <?php
 
-namespace BoomCMS\Tests\Page;
+namespace BoomCMS\Tests\Database\Models;
 
-use BoomCMS\Core\Page\Version;
-use BoomCMS\Tests\AbstractTestCase;
+use BoomCMS\Database\Models\PageVersion as Version;
 
-class VersionTest extends AbstractTestCase
+class PageVersionTest extends AbstractModelTestCase
 {
+    protected $model = Version::class;
+
     public function testIsPublishedIfEmbargoedTimeIsPast()
     {
         $published = new Version(['embargoed_until' => time() - 10]);

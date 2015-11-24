@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Tests\Support\Helpers;
 
-use BoomCMS\Core\Asset\Asset;
+use BoomCMS\Database\Models\Asset;
 use BoomCMS\Support\Helpers\Asset as AssetHelper;
 use BoomCMS\Tests\AbstractTestCase;
 
@@ -36,19 +36,29 @@ class AssetTest extends AbstractTestCase
     {
         $namespace = 'BoomCMS\Http\Controllers\Asset\\';
 
-        $asset = new Asset();
+        $asset = $this->getMock(Asset::class, ['getExtension']);
+        $asset->expects($this->any())->method('getExtension')->will($this->returnValue(null));
+
         $this->assertEquals(null, AssetHelper::controller($asset));
 
-        $pdf = new Asset(['id' => 1, 'extension' => 'pdf']);
+        $pdf = $this->getMock(Asset::class, ['getExtension']);
+        $pdf->expects($this->any())->method('getExtension')->will($this->returnValue('pdf'));
+
         $this->assertEquals($namespace.'Pdf', AssetHelper::controller($pdf));
 
-        $image = new Asset(['id' => 1, 'type' => 'image']);
+        $image = $this->getMock(Asset::class, ['getType', 'getExtension']);
+        $image->expects($this->any())->method('getExtension')->will($this->returnValue('png'));
+        $image->expects($this->any())->method('getType')->will($this->returnValue('image'));
         $this->assertEquals($namespace.'Image', AssetHelper::controller($image));
 
-        $tiff = new Asset(['id' => 1, 'type' => 'image', 'extension' => 'tiff']);
+        $tiff = $this->getMock(Asset::class, ['getType', 'getExtension']);
+        $tiff->expects($this->any())->method('getType')->will($this->returnValue('image'));
+        $tiff->expects($this->any())->method('getExtension')->will($this->returnValue('tiff'));
         $this->assertEquals($namespace.'Tiff', AssetHelper::controller($tiff));
 
-        $video = new Asset(['id' => 1, 'type' => 'video']);
+        $video = $this->getMock(Asset::class, ['getType', 'getExtension']);
+        $video->expects($this->any())->method('getExtension')->will($this->returnValue('mp4'));
+        $video->expects($this->any())->method('getType')->will($this->returnValue('video'));
         $this->assertEquals($namespace.'Video', AssetHelper::controller($video));
     }
 }

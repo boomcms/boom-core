@@ -60,7 +60,7 @@ class Editor
      */
     public function isActive()
     {
-        return $this->getActivePage()->loaded() && $this->auth->loggedIn('edit_page', $this->getActivePage());
+        return $this->getActivePage() && $this->auth->loggedIn('edit_page', $this->getActivePage());
     }
 
     public function isDisabled()

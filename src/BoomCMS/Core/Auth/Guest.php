@@ -64,6 +64,14 @@ class Guest implements Person
     }
 
     /**
+     * @return int
+     */
+    public function getId()
+    {
+        return 0;
+    }
+
+    /**
      * @return null
      */
     public function getLastFailedLogin()

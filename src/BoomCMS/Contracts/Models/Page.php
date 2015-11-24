@@ -2,7 +2,6 @@
 
 namespace BoomCMS\Contracts\Models;
 
-use BoomCMS\Core\Asset\Asset;
 use DateTime;
 
 interface Page
@@ -106,6 +105,11 @@ interface Page
      * @return int
      */
     public function getGrandchildTemplateId();
+
+    /**
+     * @return int
+     */
+    public function getId();
 
     /**
      * @return string

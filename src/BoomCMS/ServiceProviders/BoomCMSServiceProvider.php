@@ -2,6 +2,7 @@
 
 namespace BoomCMS\ServiceProviders;
 
+use BoomCMS\Database\Models\Page;
 use BoomCMS\ServiceProviders;
 use BoomCMS\Support\Facades;
 use BoomCMS\Support\Helpers\Asset;
@@ -10,7 +11,6 @@ use Illuminate\Foundation\AliasLoader;
 use Illuminate\Html\HtmlServiceProvider;
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class BoomCMSServiceProvider extends ServiceProvider
 {
@@ -54,15 +54,7 @@ class BoomCMSServiceProvider extends ServiceProvider
         $this->loadTranslationsFrom(__DIR__.'/../../lang', 'boomcms');
 
         $router->pattern('page', '[0-9]+');
-        $router->bind('page', function ($pageId) {
-            $page = Facades\Page::findById($pageId);
-
-            if (!$page->loaded()) {
-                throw new NotFoundHttpException();
-            }
-
-            return $page;
-        });
+        $router->model('page', Page::class);
 
         $this->publishes([
             __DIR__.'/../../../public'           => public_path('vendor/boomcms/boom-core'),

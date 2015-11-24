@@ -22,12 +22,12 @@ class Asset implements AssetRepositoryInterface
 
     public function delete(array $assetIds)
     {
-        $this->model->destory($assetIds);
+        $this->model->destroy($assetIds);
     }
 
     public function find($id)
     {
-        return $this->findAndCache(Model::withLatestVersion()->find($id));
+        return $this->model->with('latestVersion')->find($id);
     }
 
     public function findByVersionId($versionId)

@@ -32,9 +32,9 @@ class Templates extends Controller
      */
     public function pages($id)
     {
-        $template = TemplateFacade::findById($id);
+        $template = TemplateFacade::find($id);
 
-        if (!$template->loaded()) {
+        if (!$template) {
             throw new NotFoundHttpException();
         }
 
@@ -82,7 +82,7 @@ class Templates extends Controller
         $templateIds = $post['templates'];
 
         foreach ($templateIds as $templateId) {
-            $template = TemplateFacade::findById($templateId);
+            $template = TemplateFacade::find($templateId);
             $template
                 ->setName($post["name-$templateId"])
                 ->setFilename($post["filename-$templateId"])

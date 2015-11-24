@@ -3,16 +3,16 @@
 namespace BoomCMS\Tests\Database\Models;
 
 use BoomCMS\Core\Chunk\Text;
+use BoomCMS\Database\Models\Asset;
 use BoomCMS\Database\Models\Page;
 use BoomCMS\Database\Models\Tag;
-use BoomCMS\Support\Facades\Asset;
 use BoomCMS\Support\Facades\Chunk;
-use BoomCMS\Support\Facades\Page as PageFacade;
-use BoomCMS\Tests\AbstractTestCase;
 use Illuminate\Support\Facades\DB;
 
-class PageTest extends AbstractTestCase
+class PageTest extends AbstractModelTestCase
 {
+    protected $model = Page::class;
+
     public function testGetChildOrderingPolicy()
     {
         $values = [
@@ -31,20 +31,6 @@ class PageTest extends AbstractTestCase
 
             $this->assertEquals($expected, $page->getChildOrderingPolicy());
         }
-    }
-
-    public function testGetParentReturnsPageObject()
-    {
-        $page = new Page();
-
-        $this->assertInstanceOf(Page::class, $page->getParent());
-    }
-
-    public function testGetTemplateId()
-    {
-        $page = new Page(['template_id' => 1]);
-
-        $this->assertEquals(1, $page->getTemplateId());
     }
 
     public function testHasFeatureImage()
@@ -67,11 +53,8 @@ class PageTest extends AbstractTestCase
 
     public function testGetFeatureImage()
     {
-        $page = new Page([Page::ATTR_FEATURE_IMAGE => 1]);
-
-        Asset::shouldReceive('findById')
-            ->once()
-            ->with($page->getFeatureImageId());
+        $page = $this->getMock(Page::class, ['hasOne']);
+        $page->expects($this->once())->method('hasOne')->with($this->equalTo(Asset::class));
 
         $page->getFeatureImage();
     }
@@ -161,40 +144,11 @@ class PageTest extends AbstractTestCase
         $this->assertTrue($page->hasChildren());
     }
 
-    public function testAddTag()
-    {
-        $page = $this->getMockBuilder(Page::class)
-            ->setMethods(['loaded'])
-            ->setConstructorArgs([[Page::ATTR_ID => 1]])
-            ->getMock();
-
-        $tag = new Tag([Tag::ATTR_ID => 1]);
-
-        $page
-            ->expects($this->once())
-            ->method('loaded')
-            ->will($this->returnValue(true));
-
-        DB::shouldReceive('table')
-            ->once()
-            ->with('pages_tags')
-            ->andReturnSelf();
-
-        DB::shouldReceive('insert')
-            ->once()
-            ->with([
-                'page_id' => $page->getId(),
-                'tag_id'  => $tag->getId(),
-            ])
-            ->andReturnSelf();
-
-        $page->addTag($tag);
-    }
-
     public function testIsParentOf()
     {
-        $parent = new Page([Page::ATTR_ID => 1]);
-        $child = new Page([Page::ATTR_PARENT => 1]);
+        $parent = $this->validPage();
+
+        $child = new Page([Page::ATTR_PARENT => $parent->getId()]);
         $notAChild = new Page([Page::ATTR_PARENT => 2]);
 
         $this->assertTrue($parent->isParentOf($child), 'Child');

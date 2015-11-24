@@ -5,7 +5,6 @@ namespace BoomCMS\Database\Models;
 use BoomCMS\Contracts\Models\Group as GroupInterface;
 use BoomCMS\Database\Models\Role;
 use BoomCMS\Support\Traits\Comparable;
-use BoomCMS\Support\Traits\HasId;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
@@ -13,7 +12,6 @@ use Illuminate\Support\Facades\DB;
 class Group extends Model implements GroupInterface
 {
     use Comparable;
-    use HasId;
     use SoftDeletes;
 
     const ATTR_ID = 'id';
@@ -63,6 +61,14 @@ class Group extends Model implements GroupInterface
         }
 
         return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return  (int) $this->{self::ATTR_ID};
     }
 
     public function getName()
