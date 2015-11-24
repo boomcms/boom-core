@@ -83,6 +83,14 @@ class AssetVersion extends Model
     }
 
     /**
+     * @return string
+     */
+    public function getMimetype()
+    {
+        return $this->{self::ATTR_MIME};
+    }
+
+    /**
      * @return int
      */
     public function getWidth()

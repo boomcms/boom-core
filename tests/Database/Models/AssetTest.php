@@ -72,6 +72,12 @@ class AssetTest extends AbstractModelTestCase
         $this->assertFalse($empty->isImage());
     }
 
+    public function testGetMimetype()
+    {
+        $asset = $this->mockVersionedAttribute(['mimetype' => 'image/png']);
+        $this->assertEquals('image/png', $asset->getMimetype());
+    }
+
     public function testGetWidth()
     {
         $asset = $this->mockVersionedAttribute(['width' => 1]);
