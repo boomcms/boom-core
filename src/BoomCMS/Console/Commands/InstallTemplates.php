@@ -2,11 +2,8 @@
 
 namespace BoomCMS\Console\Commands;
 
-use BoomCMS\Core\Template;
-use BoomCMS\Database\Models\Template as TemplateModel;
-use BoomCMS\Repositories\Template as TemplateRepository;
+use BoomCMS\Core\Template\Manager as TemplateManager;
 use Illuminate\Console\Command;
-use Illuminate\Filesystem\Filesystem;
 use PDOException;
 
 class InstallTemplates extends Command
@@ -19,33 +16,21 @@ class InstallTemplates extends Command
     protected $name = 'boomcms:installTemplates';
 
     /**
-     * @var Template\Manager
-     */
-    protected $manager;
-
-    /**
      * The console command description.
      *
      * @var string
      */
     protected $description = 'Searches the themes directory for new templates and installs them.';
 
-    public function __construct(Filesystem $filesystem)
-    {
-        parent::__construct();
-
-        $this->manager = new Template\Manager($filesystem, new TemplateRepository(new TemplateModel()));
-    }
-
     /**
      * Execute the console command.
      *
      * @return mixed
      */
-    public function fire()
+    public function fire(TemplateManager $manager)
     {
         try {
-            $installed = $this->manager->findAndInstallNewTemplates();
+            $installed = $manager->findAndInstallNewTemplates();
 
             if (count($installed)) {
                 foreach ($installed as $i) {
