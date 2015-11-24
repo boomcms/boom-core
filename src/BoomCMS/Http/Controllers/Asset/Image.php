@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Http\Controllers\Asset;
 
-use BoomCMS\Core\Asset\Asset;
+use BoomCMS\Contracts\Models\Asset;
 use BoomCMS\Core\Auth;
 use Intervention\Image\ImageManager;
 
