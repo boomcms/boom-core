@@ -32,8 +32,7 @@ class AssetManager extends Controller
 
     public function delete()
     {
-        $collection = new Asset\Collection($this->request->input('assets'));
-        $collection->delete();
+        AssetFacade::delete($this->request->input('assets'));
     }
 
     public function download()

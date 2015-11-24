@@ -2,11 +2,13 @@
 
 namespace BoomCMS\Core\Asset;
 
+use BoomCMS\Contracts\Models\Asset as AssetInterface;
+
 abstract class Archive
 {
     protected $filename;
 
-    abstract public function addAsset(Asset $asset);
+    abstract public function addAsset(AssetInterface $asset);
 
     abstract public function close();
 

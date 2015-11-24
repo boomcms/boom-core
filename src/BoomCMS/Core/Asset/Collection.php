@@ -53,23 +53,6 @@ class Collection
         return $this;
     }
 
-    public function delete()
-    {
-        foreach ($this->getAssetIds() as $assetId) {
-            $filename = Asset::directory().$assetId;
-
-            file_exists($filename) && unlink($filename);
-
-            foreach (glob($filename.'.*') as $file) {
-                unlink($file);
-            }
-        }
-
-        DB::table('assets')
-            ->whereIn('id', $this->getAssetIds())
-            ->delete();
-    }
-
     /**
      * @return array
      */

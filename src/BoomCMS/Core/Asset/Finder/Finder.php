@@ -2,7 +2,6 @@
 
 namespace BoomCMS\Core\Asset\Finder;
 
-use BoomCMS\Core\Asset\Asset;
 use BoomCMS\Database\Models\Asset as Model;
 use BoomCMS\Foundation\Finder\Finder as BaseFinder;
 
@@ -21,30 +20,6 @@ class Finder extends BaseFinder
     public function __construct()
     {
         $this->query = (new Model())->withLatestVersion();
-    }
-
-    protected function createFrom(Model $model)
-    {
-        return new Asset($model->toArray());
-    }
-
-    public function find()
-    {
-        $model = parent::find();
-
-        return $this->createFrom($model);
-    }
-
-    public function findAll()
-    {
-        $models = parent::findAll();
-        $assets = [];
-
-        foreach ($models as $m) {
-            $assets[] = $this->createFrom($m);
-        }
-
-        return $assets;
     }
 
     public function setOrderBy($field, $direction = null)

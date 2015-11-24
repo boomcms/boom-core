@@ -2,51 +2,46 @@
 
 namespace BoomCMS\Repositories;
 
-use BoomCMS\Core\Asset\Asset as AssetObject;
-use BoomCMS\Database\Models\Asset as Model;
+use BoomCMS\Contracts\Repositories\Asset as AssetRepositoryInterface;
+use BoomCMS\Database\Models\Asset as AssetModel;
 
-class Asset
+class Asset implements AssetRepositoryInterface
 {
-    protected $cache = [];
+    /**
+     * @var AssetModel
+     */
+    protected $model;
 
-    public function findById($id)
+    /**
+     * @param AssetModel $model
+     */
+    public function __construct(AssetModel $model)
+    {
+        $this->model = $model;
+    }
+
+    public function delete(array $assetIds)
+    {
+        $this->model->destory($assetIds);
+    }
+
+    public function find($id)
     {
         return $this->findAndCache(Model::withLatestVersion()->find($id));
     }
 
     public function findByVersionId($versionId)
     {
-        $model = Model::withVersion($versionId)->first();
-
-        return $model ? new AssetObject($model->toArray()) : new Asset();
+        return $this->model->withVersion($versionId)->first();
     }
 
-    private function findAndCache(Model $model = null)
+    /**
+     * @param AssetModel $model
+     *
+     * @return AssetModel
+     */
+    public function save(AssetModel $model)
     {
-        if (!$model) {
-            return;
-        }
-
-        if ($model->id) {
-            $this->cache[$model->id] = $model;
-        }
-
-        return new AssetObject($model->toArray());
-    }
-
-    public function save(AssetObject $asset)
-    {
-        if ($asset->loaded()) {
-            $model = isset($this->cache[$asset->getId()]) ?
-                $this->cache[$asset->getId()]
-                : Model::find($asset->getId());
-
-            $model->update($asset->toArray());
-        } else {
-            $model = Model::create($asset->toArray());
-            $asset->setId($model->id);
-        }
-
-        return $asset;
+        return $model->save();
     }
 }

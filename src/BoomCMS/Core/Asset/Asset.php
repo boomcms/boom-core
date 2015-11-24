@@ -47,7 +47,7 @@ class Asset implements Arrayable
         $this->attributes = $attributes;
     }
 
-    public static function directory()
+    public function directory()
     {
         return storage_path().'/boomcms/assets';
     }
@@ -55,39 +55,6 @@ class Asset implements Arrayable
     public function exists()
     {
         return $this->loaded() && file_exists($this->getFilename());
-    }
-
-    public function get($key)
-    {
-        return isset($this->attributes[$key]) ? $this->attributes[$key] : null;
-    }
-
-    public function getAspectRatio()
-    {
-        return ($this->getHeight() > 0) ? ($this->getWidth() / $this->getHeight()) : 1;
-    }
-
-    public function getCredits()
-    {
-        return $this->get('credits');
-    }
-
-    public function getDescription()
-    {
-        return $this->get('description');
-    }
-
-    public function getDownloads()
-    {
-        return $this->get('downloads');
-    }
-
-    /**
-     * @return string
-     */
-    public function getExtension()
-    {
-        return $this->get('extension');
     }
 
     /**
@@ -125,16 +92,6 @@ class Asset implements Arrayable
             'height' => $height,
             'width'  => $width,
         ]);
-    }
-
-    public function getId()
-    {
-        return $this->get('id');
-    }
-
-    public function getLastModified()
-    {
-        return (new DateTime())->setTimestamp($this->get('edited_at'));
     }
 
     public function getLatestVersionId()
