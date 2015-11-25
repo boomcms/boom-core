@@ -66,6 +66,7 @@ class Page
     {
         $finder = new Finder\Finder();
         $finder->addFilter(new Finder\Uri($uri));
+
         return $page = $finder->find();
     }
 
