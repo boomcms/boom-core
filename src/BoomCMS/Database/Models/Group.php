@@ -3,7 +3,6 @@
 namespace BoomCMS\Database\Models;
 
 use BoomCMS\Contracts\Models\Group as GroupInterface;
-use BoomCMS\Database\Models\Role;
 use BoomCMS\Support\Traits\Comparable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -47,7 +46,7 @@ class Group extends Model implements GroupInterface
             $this->roles()
                 ->attach($roleId, [
                     self::PIVOT_ATTR_ALLOWED => $allowed,
-                    self::PIVOT_ATTR_PAGE_ID => $pageId
+                    self::PIVOT_ATTR_PAGE_ID => $pageId,
                 ]);
 
             $select = DB::table('people_groups')
@@ -127,7 +126,6 @@ class Group extends Model implements GroupInterface
     }
 
     /**
-     * 
      * @return $this
      */
     public function roles()

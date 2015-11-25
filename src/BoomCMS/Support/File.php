@@ -5,7 +5,7 @@ namespace BoomCMS\Support;
 abstract class File
 {
     /**
-     * Returns the mimetype for a file at a given path
+     * Returns the mimetype for a file at a given path.
      *
      * @param string $path
      *

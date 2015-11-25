@@ -2,8 +2,8 @@
 
 namespace BoomCMS\ServiceProviders;
 
-use BoomCMS\Repositories;
 use BoomCMS\Database\Models\Person;
+use BoomCMS\Repositories;
 use Illuminate\Support\ServiceProvider;
 
 class PersonServiceProvider extends ServiceProvider

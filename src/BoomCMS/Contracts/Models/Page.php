@@ -7,7 +7,7 @@ use DateTime;
 interface Page
 {
     /**
-     * Add a related page
+     * Add a related page.
      *
      * @param Page $page
      *
@@ -16,7 +16,7 @@ interface Page
     public function addRelation(Page $page);
 
     /**
-     * Add a tag to the page
+     * Add a tag to the page.
      *
      * @param Tag $tag
      *
@@ -60,7 +60,7 @@ interface Page
     public function deleteDrafts();
 
     /**
-     * Returns an array of [column, direction]
+     * Returns an array of [column, direction].
      *
      * @return array
      */
@@ -201,14 +201,14 @@ interface Page
     public function isParentOf(Page $page);
 
     /**
-     * Returns true if the page doesn't have a parent
+     * Returns true if the page doesn't have a parent.
      *
      * @return bool
      */
     public function isRoot();
 
     /**
-     * Returns true if the page is visible at the current time
+     * Returns true if the page is visible at the current time.
      *
      * @return bool
      */
@@ -242,7 +242,7 @@ interface Page
     public function markUpdatesAsPendingApproval();
 
     /**
-     * Remove the relationship with another page
+     * Remove the relationship with another page.
      *
      * @param Page $page
      *
@@ -251,7 +251,7 @@ interface Page
     public function removeRelation(Page $page);
 
     /**
-     * Remove a tag from the page
+     * Remove a tag from the page.
      *
      * @param Tag $tag
      *
@@ -368,7 +368,7 @@ interface Page
     public function setParent(self $parent);
 
     /**
-     * Set the primary URI attribute
+     * Set the primary URI attribute.
      *
      * @param string
      *
@@ -391,7 +391,7 @@ interface Page
     public function setTemplate(Template $template);
 
     /**
-     * Set the title of the page
+     * Set the title of the page.
      *
      * @param string $title
      *
@@ -435,13 +435,12 @@ interface Page
     public function setVisibleTo(DateTime $time = null);
 
     /**
-     *
      * @return URL
      */
     public function url();
 
     /**
-     * Returns true if the given person created the page
+     * Returns true if the given person created the page.
      *
      * @param Person $person
      *

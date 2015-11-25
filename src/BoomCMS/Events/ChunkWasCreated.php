@@ -2,8 +2,8 @@
 
 namespace BoomCMS\Events;
 
-use BoomCMS\Core\Chunk\BaseChunk as Chunk;
 use BoomCMS\Contracts\Models\Page;
+use BoomCMS\Core\Chunk\BaseChunk as Chunk;
 use BoomCMS\Foundation\Events\PageEvent;
 
 class ChunkWasCreated extends PageEvent

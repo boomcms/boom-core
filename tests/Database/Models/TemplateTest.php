@@ -2,8 +2,8 @@
 
 namespace BoomCMS\Tests\Database\Models;
 
-use BoomCMS\Database\Models\Template;
 use BoomCMS\Core\Theme\Theme;
+use BoomCMS\Database\Models\Template;
 use Illuminate\Support\Facades\View;
 
 class TemplateTest extends AbstractModelTestCase

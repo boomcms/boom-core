@@ -10,19 +10,19 @@ use Rych\ByteSize;
 abstract class Str extends BaseStr
 {
     /**
-     * Turn a number of bytes into a human friendly filesize
+     * Turn a number of bytes into a human friendly filesize.
      *
      * @param int $bytes
      *
      * @return string
      */
     public static function filesize($bytes)
-    { 
+    {
         $precision = (($bytes % 1024) === 0 || $bytes <= 1024) ? 0 : 1;
 
         $formatter = new ByteSize\Formatter\Binary();
         $formatter->setPrecision($precision);
-        
+
         return $formatter->format($bytes);
     }
 
@@ -75,7 +75,7 @@ abstract class Str extends BaseStr
     }
 
     /**
-     * Embed storify links (doesn't use OEmbed)
+     * Embed storify links (doesn't use OEmbed).
      *
      * @param string $text
      *

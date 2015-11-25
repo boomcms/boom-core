@@ -3,8 +3,8 @@
 namespace BoomCMS\Http\Controllers;
 
 use BoomCMS\Contracts\Models\Page;
-use BoomCMS\Support\Facades\Chunk;
 use BoomCMS\Core\Page\RssFeed;
+use BoomCMS\Support\Facades\Chunk;
 use Illuminate\Support\Facades\View;
 
 class PageController extends Controller

@@ -37,7 +37,7 @@ interface Person
 
     /**
      * @param string $role
-     * @param int $pageId
+     * @param int    $pageId
      *
      * @return bool
      */

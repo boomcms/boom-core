@@ -5,9 +5,7 @@ namespace BoomCMS\Tests\Database\Models;
 use BoomCMS\Core\Chunk\Text;
 use BoomCMS\Database\Models\Asset;
 use BoomCMS\Database\Models\Page;
-use BoomCMS\Database\Models\Tag;
 use BoomCMS\Support\Facades\Chunk;
-use Illuminate\Support\Facades\DB;
 
 class PageTest extends AbstractModelTestCase
 {
@@ -16,14 +14,14 @@ class PageTest extends AbstractModelTestCase
     public function testGetChildOrderingPolicy()
     {
         $values = [
-            Page::ORDER_TITLE => ['title', 'desc'], // Default is descending
-            Page::ORDER_TITLE | Page::ORDER_ASC => ['title', 'asc'],
-            Page::ORDER_TITLE | Page::ORDER_DESC => ['title', 'desc'],
-            Page::ORDER_VISIBLE_FROM | Page::ORDER_ASC => ['visible_from', 'asc'],
+            Page::ORDER_TITLE                           => ['title', 'desc'], // Default is descending
+            Page::ORDER_TITLE | Page::ORDER_ASC         => ['title', 'asc'],
+            Page::ORDER_TITLE | Page::ORDER_DESC        => ['title', 'desc'],
+            Page::ORDER_VISIBLE_FROM | Page::ORDER_ASC  => ['visible_from', 'asc'],
             Page::ORDER_VISIBLE_FROM | Page::ORDER_DESC => ['visible_from', 'desc'],
-            Page::ORDER_SEQUENCE | Page::ORDER_ASC => ['sequence', 'asc'],
-            Page::ORDER_SEQUENCE | Page::ORDER_DESC => ['sequence', 'desc'],
-            0 => ['sequence', 'desc'],
+            Page::ORDER_SEQUENCE | Page::ORDER_ASC      => ['sequence', 'asc'],
+            Page::ORDER_SEQUENCE | Page::ORDER_DESC     => ['sequence', 'desc'],
+            0                                           => ['sequence', 'desc'],
         ];
 
         foreach ($values as $order => $expected) {

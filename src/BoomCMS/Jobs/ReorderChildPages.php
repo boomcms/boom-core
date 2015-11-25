@@ -21,7 +21,7 @@ class ReorderChildPages extends Command implements SelfHandling
     protected $sequences;
 
     /**
-     * @param Page $page
+     * @param Page  $page
      * @param array $sequences
      */
     public function __construct(Page $page, array $sequences)

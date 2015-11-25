@@ -2,8 +2,8 @@
 
 namespace BoomCMS\Contracts\Repositories;
 
-use BoomCMS\Core\Auth\Guest;
 use BoomCMS\Contracts\Models\Person as PersonInterface;
+use BoomCMS\Core\Auth\Guest;
 
 interface Person
 {

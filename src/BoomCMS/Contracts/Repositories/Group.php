@@ -2,8 +2,8 @@
 
 namespace BoomCMS\Contracts\Repositories;
 
-use BoomCMS\Database\Models\Group as GroupModel;
 use BoomCMS\Contracts\Models\Group as GroupInterface;
+use BoomCMS\Database\Models\Group as GroupModel;
 
 interface Group
 {

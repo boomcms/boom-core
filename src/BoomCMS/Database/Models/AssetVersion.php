@@ -38,7 +38,6 @@ class AssetVersion extends Model
     }
 
     /**
-     * 
      * @return PersonInterface
      */
     public function getEditedBy()

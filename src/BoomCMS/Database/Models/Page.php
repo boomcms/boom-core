@@ -48,7 +48,7 @@ class Page extends Model implements PageInterface
     const ATTR_DELETED_AT = 'deleted_at';
     const ATTR_DELETED_BY = 'deleted_by';
     const ATTR_DISABLE_DELETE = 'disable_delete';
-    
+
     const ORDER_SEQUENCE = 1;
     const ORDER_TITLE = 2;
     const ORDER_VISIBLE_FROM = 4;
@@ -71,7 +71,7 @@ class Page extends Model implements PageInterface
     public function addRelation(PageInterface $page)
     {
         $this->relations()->attach($page, [
-            'created_at' => time(),
+            'created_at'  => time(),
             'created_by'  => Auth::getPerson()->getId(),
         ]);
 
@@ -227,7 +227,7 @@ class Page extends Model implements PageInterface
     {
         $description = $this->{self::ATTR_DESCRIPTION};
         $description = ($description != null) ? $description : Chunk::get('text', 'standfirst', $this)->text();
-    
+
         return strip_tags($description);
     }
 
@@ -321,7 +321,6 @@ class Page extends Model implements PageInterface
     }
 
     /**
-     * 
      * @return TemplateInterface
      */
     public function getTemplate()
@@ -630,7 +629,7 @@ class Page extends Model implements PageInterface
      */
     public function setParent(PageInterface $parent)
     {
-        if (! $parent->is($this) && !$parent->getParentId() === $this->getId()) {
+        if (!$parent->is($this) && !$parent->getParentId() === $this->getId()) {
             $this->{self::ATTR_PARENT} = $parent->getId();
         }
 

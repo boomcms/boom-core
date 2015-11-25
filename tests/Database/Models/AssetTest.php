@@ -28,7 +28,7 @@ class AssetTest extends AbstractModelTestCase
             ->method('getHeight')
             ->will($this->returnValue(3));
 
-        $this->assertEquals(4/3, $asset->getAspectRatio());
+        $this->assertEquals(4 / 3, $asset->getAspectRatio());
     }
 
     public function testGetAspectRatioReturnsZeroWhenAssetHasNoHeight()

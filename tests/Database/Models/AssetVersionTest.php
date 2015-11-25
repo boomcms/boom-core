@@ -4,7 +4,7 @@ namespace BoomCMS\Tests\Database\Models;
 
 use BoomCMS\Database\Models\AssetVersion as V;
 
-class VersionTest extends AbstractModelTestCase
+class AssetVersionTest extends AbstractModelTestCase
 {
     protected $model = V::class;
 

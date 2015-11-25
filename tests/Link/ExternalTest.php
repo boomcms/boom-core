@@ -12,7 +12,7 @@ class ExternalTest extends AbstractTestCase
         $links = [
             'http://www.google.com/test',
             'www.google.com/test',
-            'www.google.com/test?test=test#test'
+            'www.google.com/test?test=test#test',
         ];
 
         foreach ($links as $l) {
@@ -27,7 +27,7 @@ class ExternalTest extends AbstractTestCase
         $links = [
             'http://www.google.com/test',
             'www.google.com/test',
-            'www.google.com/test?test=test#test'
+            'www.google.com/test?test=test#test',
         ];
 
         foreach ($links as $l) {

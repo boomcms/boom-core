@@ -5,7 +5,6 @@ namespace BoomCMS\Database\Models;
 use BoomCMS\Contracts\Models\Page as PageInterface;
 use BoomCMS\Contracts\Models\URL as URLInterface;
 use BoomCMS\Support\Helpers\URL as URLHelper;
-use BoomCMS\Support\Facades\Page as PageFacade;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\URL as URLFacade;
 use InvalidArgumentException;
@@ -104,9 +103,9 @@ class URL extends Model implements URLInterface
     /**
      * @param bool $isPrimary
      *
-     * @return $this
-     *
      * @throws InvalidArgumentException
+     *
+     * @return $this
      */
     public function setIsPrimary($isPrimary)
     {

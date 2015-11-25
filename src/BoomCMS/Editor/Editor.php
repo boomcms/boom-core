@@ -2,9 +2,9 @@
 
 namespace BoomCMS\Editor;
 
+use BoomCMS\Contracts\Models\Page;
 use BoomCMS\Core\Auth\Auth;
 use BoomCMS\Database\Models\Page as PageObject;
-use BoomCMS\Contracts\Models\Page;
 use Illuminate\Session\SessionManager as Session;
 
 class Editor

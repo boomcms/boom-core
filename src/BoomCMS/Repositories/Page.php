@@ -26,7 +26,7 @@ class Page
     {
         $this->model = $model;
     }
-    
+
     private function cache(Model $page = null)
     {
         $this->cache['id'][$page->getId()] = $page;

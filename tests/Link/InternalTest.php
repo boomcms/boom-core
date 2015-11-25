@@ -54,7 +54,7 @@ class InternalTest extends AbstractTestCase
         $page = $this->getMock(Page::class, ['getTitle']);
         $page->expects($this->any())
             ->method('getTitle')
-            ->will($this->returnValue("test"));
+            ->will($this->returnValue('test'));
 
         PageFacade::shouldReceive('findByUri')->with('test')->andReturn($page);
         $link = new Link('test');
