@@ -341,7 +341,7 @@ class Page extends Model implements PageInterface
 
     public function getUrls()
     {
-        return URL::where('page_id', $this->getId())->get();
+        return $this->hasMany(URL::class)->orderBy('location', 'asc')->get();
     }
 
     /**

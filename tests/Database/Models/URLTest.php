@@ -1,13 +1,14 @@
 <?php
 
-namespace BoomCMS\Tests\Models;
+namespace BoomCMS\Tests\Database\Models;
 
 use BoomCMS\Database\Models\Page;
 use BoomCMS\Database\Models\URL;
-use BoomCMS\Tests\AbstractTestCase;
 
-class URLTest extends AbstractTestCase
+class URLTest extends AbstractModelTestCase
 {
+    protected $model = URL::class;
+
     public function testIsPrimary()
     {
         $url = new URL();

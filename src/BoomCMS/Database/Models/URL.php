@@ -5,7 +5,6 @@ namespace BoomCMS\Database\Models;
 use BoomCMS\Contracts\Models\Page as PageInterface;
 use BoomCMS\Contracts\Models\URL as URLInterface;
 use BoomCMS\Support\Helpers\URL as URLHelper;
-use BoomCMS\Support\Facades\Page as PageFacade;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\URL as URLFacade;
 use InvalidArgumentException;
@@ -33,6 +32,14 @@ class URL extends Model implements URLInterface
         $url = URLFacade::to($location);
 
         return ($location === '/') ? $url.'/' : $url;
+    }
+
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return (int) $this->{self::ATTR_ID};
     }
 
     /**
