@@ -26,25 +26,17 @@ class Page
     {
         $this->model = $model;
     }
-    
-    private function cache(Model $page = null)
-    {
-        $this->cache['id'][$page->getId()] = $page;
-
-        return $page;
-    }
 
     public function create(array $attrs = [])
     {
-        $model = Model::create($attrs);
-
-        return $this->cache($model);
+        return Model::create($attrs);
     }
 
     public function delete(Page $page)
     {
-        unset($this->cache['id'][$page->getId()]);
-        Model::destroy($page->getId());
+        $page->delete();
+
+        return $this;
     }
 
     public function find($id)
@@ -54,7 +46,7 @@ class Page
 
     public function findByInternalName($name)
     {
-        return $this->findAndCache(Model::where(Model::ATTR_INTERNAL_NAME, '=', $name)->first());
+        return $this->model->where(Model::ATTR_INTERNAL_NAME, '=', $name)->first();
     }
 
     public function findByParentId($parentId)
@@ -67,43 +59,18 @@ class Page
 
     public function findByPrimaryUri($uri)
     {
-        return $this->findAndCache(Model::where('primary_uri', '=', $uri)->first());
+        return $this->model->where(Model::ATTR_PRIMARY_URI, '=', $uri)->first();
     }
 
     public function findByUri($uri)
     {
-        if (!isset($this->cache['uri'][$uri])) {
-            $finder = new Finder\Finder();
-            $finder->addFilter(new Finder\Uri($uri));
-            $page = $finder->find();
-
-            $this->cache($page);
-            $this->cache['uri'][$uri] = $page;
-        }
-
-        return $this->cache['uri'][$uri];
+        $finder = new Finder\Finder();
+        $finder->addFilter(new Finder\Uri($uri));
+        return $page = $finder->find();
     }
 
-    private function findAndCache(Model $model = null)
+    public function save(Model $page)
     {
-        if ($model) {
-            return $this->cache($model);
-        }
-    }
-
-    public function save(PageObject $page)
-    {
-        if ($page->getId()) {
-            $model = isset($this->cache[$page->getId()]) ?
-                $this->cache[$page->getId()]
-                : Model::find($page->getId());
-
-            $model->update($page->toArray());
-        } else {
-            $model = Model::create($page->toArray());
-            $page->setId($model->id);
-        }
-
-        return $page;
+        return $page->save();
     }
 }

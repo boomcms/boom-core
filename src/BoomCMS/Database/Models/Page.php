@@ -341,7 +341,7 @@ class Page extends Model implements PageInterface
 
     public function getUrls()
     {
-        return $this->hasMany(URL::class)->orderBy('location', 'asc')->get();
+        return $this->hasMany(URL::class)->orderBy(URL::ATTR_LOCATION, 'asc')->get();
     }
 
     /**
@@ -359,7 +359,7 @@ class Page extends Model implements PageInterface
      */
     public function getVisibleTo()
     {
-        return $this->{self::ATTR_VISIBLE_TO} == 0 ? null : new DateTime('@'.$this->get('visible_to'));
+        return $this->{self::ATTR_VISIBLE_TO} == 0 ? null : new DateTime('@'.$this->{self::ATTR_VISIBLE_TO});
     }
 
     /**
