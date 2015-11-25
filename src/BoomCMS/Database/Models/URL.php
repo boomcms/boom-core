@@ -35,6 +35,14 @@ class URL extends Model implements URLInterface
     }
 
     /**
+     * @return int
+     */
+    public function getId()
+    {
+        return (int) $this->{self::ATTR_ID};
+    }
+
+    /**
      * @return string
      */
     public function getLocation()
