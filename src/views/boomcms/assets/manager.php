@@ -9,8 +9,11 @@
 			<?= $button('trash-o', 'delete', ['id' => 'b-button-multiaction-delete', 'disabled' => 'disabled']) ?>
 			<?= $button('download', 'download', ['id' => 'b-button-multiaction-download', 'disabled' => 'disabled']) ?>
 			<?= $button('tags', 'add-tags', ['id' => 'b-button-multiaction-tag', 'disabled' => 'disabled']) ?>
-			<?= $button('close', 'clear-selected', ['id' => 'b-button-multiaction-clear', 'disabled' => 'disabled']) ?>
-		</div>
+		
+            <a href="#" id="b-assets-select-all"><?= Lang::get('Select all') ?></a>
+            &nbsp;:&nbsp;
+            <a href="#" id="b-assets-select-none"><?= Lang::get('Select none') ?></a>
+        </div>
 	</div>
 
 	<div id="b-assets-filters">

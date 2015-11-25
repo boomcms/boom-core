@@ -43640,8 +43640,15 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 			.on('click', '#b-button-multiaction-download', function() {
 				assetManager.selection.download();
 			})
-			.on('click', '#b-button-multiaction-clear', function() {
+			.on('click', '#b-assets-select-all', function() {
+				assetManager.selectAll();
+
+				$(this).blur();
+			})
+			.on('click', '#b-assets-select-none', function() {
 				assetManager.clearSelection();
+
+				$(this).blur();
 			})
 			.on('click', '#b-button-multiaction-tag', function() {
 				assetManager.selection.tag();
@@ -43724,7 +43731,18 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 		this.getAssets();
 	},
 
-	select : function(assetId) {
+	selectAll: function() {
+		var assetManager = this,
+			$thumbs = this.element.find('#b-assets-view-thumbs .thumb');
+
+		$thumbs.addClass('selected');
+
+		$thumbs.each(function() {
+			assetManager.select($(this).attr('data-asset'));
+		});
+	},
+
+	select: function(assetId) {
 		this.selection.add(assetId);
 
 		this.toggleButtons();

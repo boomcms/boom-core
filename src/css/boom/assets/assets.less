@@ -8,6 +8,19 @@
 #b-assets {
 	&-buttons {
 		display: inline-block;
+
+		a {
+			text-decoration: underline;
+
+			&:hover, &:focus {
+				color: @red;
+				text-decoration: none;
+			}
+		}
+		
+		#b-assets-select-all {
+			margin-left: 1.5rem;
+		}
 	}
 
 	&-content {
