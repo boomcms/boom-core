@@ -27,7 +27,7 @@ class Asset implements AssetRepositoryInterface
 
     public function find($id)
     {
-        return $this->model->with('latestVersion')->find($id);
+        $this->model->find($id);
     }
 
     public function findByVersionId($versionId)

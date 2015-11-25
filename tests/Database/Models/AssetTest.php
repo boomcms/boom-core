@@ -10,17 +10,48 @@ class AssetTest extends AbstractModelTestCase
 {
     protected $model = Asset::class;
 
+    public function testDirectory()
+    {
+        $model = new Asset();
+
+        $this->assertEquals(storage_path().'/boomcms/assets', $model->directory());
+    }
+
+    public function testGetAspectRatio()
+    {
+        $asset = $this->getMock(Asset::class, ['getWidth', 'getHeight']);
+        $asset->expects($this->any())
+            ->method('getWidth')
+            ->will($this->returnValue(4));
+
+        $asset->expects($this->any())
+            ->method('getHeight')
+            ->will($this->returnValue(3));
+
+        $this->assertEquals(4/3, $asset->getAspectRatio());
+    }
+
+    public function testGetAspectRatioReturnsZeroWhenAssetHasNoHeight()
+    {
+        $asset = $this->getMock(Asset::class, ['getHeight']);
+
+        $asset->expects($this->once())
+            ->method('getHeight')
+            ->will($this->returnValue(0));
+
+        $this->assertEquals(0, $asset->getAspectRatio());
+    }
+
     public function testGetCreditsReturnsCreditsAttribute()
     {
         $asset = new Asset([Asset::ATTR_CREDITS => 'test']);
         $this->assertEquals('test', $asset->getCredits());
     }
 
-    public function testDirectory()
+    public function testGetDescriptionReturnsDescriptionAttribute()
     {
-        $model = new Asset();
-
-        $this->assertEquals(storage_path().'/boomcms/assets', $model->directory());
+        $asset = new Asset([Asset::ATTR_DESCRIPTION => 'test']);
+        $this->assertEquals('test', $asset->getDescription());
     }
 
     public function testGetFilename()

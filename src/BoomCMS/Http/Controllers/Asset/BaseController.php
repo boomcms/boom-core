@@ -10,7 +10,7 @@ use Illuminate\Http\Response;
 class BaseController extends Controller
 {
     /**
-     * @var Asset\Asset
+     * @var Asset
      */
     protected $asset;
 

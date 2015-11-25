@@ -2,7 +2,8 @@
 
 namespace BoomCMS\Http\Controllers\CMS\Assets;
 
-use BoomCMS\Core\Asset;
+use BoomCMS\Core\Asset\Query;
+use BoomCMS\Database\Models\Asset;
 use BoomCMS\Http\Controllers\Controller;
 use BoomCMS\Support\Facades\Asset as AssetFacade;
 use BoomCMS\Support\Facades\Auth;
@@ -96,7 +97,7 @@ class AssetManager extends Controller
 
         $params = $this->request->input() + $defaults;
 
-        $query = new Asset\Query($params);
+        $query = new Query($params);
         $count = $query->count();
 
         if ($count === 0) {
@@ -124,7 +125,7 @@ class AssetManager extends Controller
         return View::make($this->viewPrefix.'picker');
     }
 
-    public function replace(Asset\Asset $asset)
+    public function replace(Asset $asset)
     {
         list($validFiles, $errors) = $this->validateFileUpload();
 
@@ -140,12 +141,12 @@ class AssetManager extends Controller
         }
     }
 
-    public function revert(Asset\Asset $asset)
+    public function revert(Asset $asset)
     {
         $asset->revertTo($this->request->input('version_id'));
     }
 
-    public function save(Asset\Asset $asset)
+    public function save(Asset $asset)
     {
         $asset
             ->setTitle($this->request->input('title'))
@@ -163,7 +164,7 @@ class AssetManager extends Controller
         list($validFiles, $errors) = $this->validateFileUpload();
 
         foreach ($validFiles as $file) {
-            $asset = new Asset\Asset();
+            $asset = new Asset();
             $asset
                 ->setUploadedTime(new DateTime('now'))
                 ->setUploadedBy(Auth::getPerson());
@@ -201,7 +202,7 @@ class AssetManager extends Controller
         return [$validFiles, $errors];
     }
 
-    public function view(Asset\Asset $asset)
+    public function view(Asset $asset)
     {
         return View::make("$this->viewPrefix/view", [
             'asset' => $asset,

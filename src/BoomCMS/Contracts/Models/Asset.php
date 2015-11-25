@@ -18,9 +18,19 @@ interface Asset
     public function exists();
 
     /**
+     * @return float
+     */
+    public function getAspectRatio();
+
+    /**
      * @return string
      */
     public function getCredits();
+
+    /**
+     * @return string
+     */
+    public function getDescription();
 
     /**
      * @return string

@@ -1,5 +1,5 @@
 <div id="b-assets-content">
-	<?= View::make('boomcms::assets.thumbs', ['assets' => $assets]) ?>
+	<?= View::make('boomcms::assets.thumbs', ['assets' => $assets])->render() ?>
 </div>
 
 <div id="b-assets-pagination" class="b-pagination">

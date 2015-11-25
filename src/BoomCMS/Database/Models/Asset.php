@@ -17,7 +17,7 @@ class Asset extends Model implements AssetInterface
 
     const ATTR_ID = 'id';
     const ATTR_TITLE = 'title';
-    const ATTR_DESC = 'description';
+    const ATTR_DESCRIPTION = 'description';
     const ATTR_TYPE = 'type';
     const ATTR_UPLOADED_BY = 'uploaded_by';
     const ATTR_UPLOADED_AT = 'uploaded_time';
@@ -41,7 +41,19 @@ class Asset extends Model implements AssetInterface
     /**
      * @var AssetVersion
      */
-    protected $latestVersionCache;
+    protected $latestVersion;
+
+    protected $versionColumns = [
+        'asset_id'   => '',
+        'width'      => '',
+        'height'     => '',
+        'filesize'   => '',
+        'filename'   => '',
+        'edited_at'  => '',
+        'edited_by'  => '',
+        'version:id' => '',
+        'extension'  => '',
+    ];
 
     /**
      * @return string
@@ -60,11 +72,31 @@ class Asset extends Model implements AssetInterface
     }
 
     /**
+     * @return float
+     */
+    public function getAspectRatio()
+    {
+        if (!$this->getHeight()) {
+            return 0;
+        }
+
+        return $this->getWidth() / $this->getHeight();
+    }
+
+    /**
      * @return string
      */
     public function getCredits()
     {
         return $this->{self::ATTR_CREDITS};
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->{self::ATTR_DESCRIPTION};
     }
 
     /**
@@ -136,11 +168,13 @@ class Asset extends Model implements AssetInterface
      */
     public function getLatestVersion()
     {
-        if ($this->latestVersionCache === null) {
-            $this->latestVersionCache = $this->latestVersion->first()->first();
+        if ($this->latestVersion === null) {
+            $this->latestVersion = $this->versions()
+                ->orderBy(AssetVersion::ATTR_ID, 'desc')
+                ->first();
         }
 
-        return $this->latestVersionCache;
+        return $this->latestVersion;
     }
 
     public function getLatestVersionId()
@@ -207,7 +241,7 @@ class Asset extends Model implements AssetInterface
     public function getUploadedBy()
     {
         if ($this->uploadedBy === null) {
-            $this->uploadedBy = $this->hasOne(Person::class, 'uploaded_by')->first();
+            $this->uploadedBy = $this->belongsTo(Person::class, 'uploaded_by')->first();
         }
 
         return $this->uploadedBy;
@@ -236,7 +270,7 @@ class Asset extends Model implements AssetInterface
      */
     public function hasPreviousVersions()
     {
-        return $this->versions
+        return $this->versions()
             ->where('id', '!=', $this->getLatestVersionId())
             ->exists();
     }
@@ -392,13 +426,16 @@ class Asset extends Model implements AssetInterface
         return $this;
     }
 
-    public function latestVersion()
+
+    public function scopeWithLatestVersion($query)
     {
-        return $this->versions()
+        return $query
+            ->select('assets.*')
+            ->join('asset_versions as version', 'assets.id', '=', 'version.asset_id')
             ->leftJoin('asset_versions as av2', function ($query) {
                 $query
-                    ->on('av2.asset_id', '=', 'asset_versions.asset_id')
-                    ->on('av2.id', '>', 'asset_versions.id');
+                    ->on('av2.asset_id', '=', 'version.asset_id')
+                    ->on('av2.id', '>', 'version.id');
             })
             ->whereNull('av2.id');
     }
