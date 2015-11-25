@@ -27,15 +27,4 @@
 
         <?= $button('plus', 'add-url', ['class' => 'b-urls-add b-button-withtext']) ?>
     </section>
-
-    <section class='b-page-urls-short'>
-        <h1>Short URL</h1>
-        <p>This URL is automatically generated for use where the shortest URL possible is desirable such as when sharing on social media.</p>
-        <p>When used the short URL will redirect to the page's primary URL</p>
-        <p>Short URLs always start with an underscore to avoid conflicting with regular URLs. You should therefore avoid using underscores at the start of regular URLs.</p>
-
-        <p class='short-url'>
-            <?= url(BoomCMS\Core\URL\ShortURL::urlFromPage($page)) ?>
-        </p>
-    </section>
 </div>
