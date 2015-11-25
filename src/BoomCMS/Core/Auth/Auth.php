@@ -124,7 +124,6 @@ class Auth
     }
 
     /**
-     * 
      * @return Guest
      */
     public function getEmptyUser()

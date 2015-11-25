@@ -24,8 +24,8 @@ class URL implements URLRepositoryInterface
 
     /**
      * @param string $location
-     * @param int $pageId
-     * @param bool $isPrimary
+     * @param int    $pageId
+     * @param bool   $isPrimary
      *
      * @return URLInterface
      */

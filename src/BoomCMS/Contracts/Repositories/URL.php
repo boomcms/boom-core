@@ -6,10 +6,10 @@ use BoomCMS\Contracts\Models\URL as URLInterface;
 
 interface URL
 {
-   /**
+    /**
      * @param string $location
-     * @param int $pageId
-     * @param bool $isPrimary
+     * @param int    $pageId
+     * @param bool   $isPrimary
      *
      * @return URLInterface
      */

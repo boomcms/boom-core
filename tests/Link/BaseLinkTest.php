@@ -24,7 +24,7 @@ class BaseLinkTest extends AbstractTestCase
         Page::shouldReceive('find')
             ->with(m::any(1, '1'))
             ->andReturn($this->validPage());
-            
+
         Page::shouldReceive('findByUri')
             ->with('test')
             ->andReturn($this->validPage());
@@ -38,9 +38,9 @@ class BaseLinkTest extends AbstractTestCase
     {
         $internalLinks = [
             '/test', // Relative link but the page doens't exist
-            "http://www.google.com/test",
+            'http://www.google.com/test',
         ];
-            
+
         Page::shouldReceive('findByUri')
             ->with('test')
             ->andReturn($this->invalidPage());

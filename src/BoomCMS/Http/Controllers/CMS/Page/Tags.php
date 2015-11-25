@@ -43,7 +43,7 @@ class Tags extends Controller
         }
 
         return View::make('boomcms::editor.page.settings.tags', [
-            'tags' => $grouped
+            'tags' => $grouped,
         ]);
     }
 

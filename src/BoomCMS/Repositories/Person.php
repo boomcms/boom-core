@@ -2,8 +2,8 @@
 
 namespace BoomCMS\Repositories;
 
-use BoomCMS\Contracts\Repositories\Person as PersonRepositoryInterface;
 use BoomCMS\Contracts\Models\Person as PersonInterface;
+use BoomCMS\Contracts\Repositories\Person as PersonRepositoryInterface;
 use BoomCMS\Core\Auth\Guest;
 use BoomCMS\Database\Models\Person as Model;
 use BoomCMS\Exceptions\DuplicateEmailException;

@@ -5,7 +5,7 @@ namespace BoomCMS\Tests\Repositories;
 use BoomCMS\Database\Models\Template;
 use BoomCMS\Repositories\Template as TemplateRepository;
 use BoomCMS\Tests\AbstractTestCase;
-use \Mockery as m;
+use Mockery as m;
 
 class TemplateTest extends AbstractTestCase
 {

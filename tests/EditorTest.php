@@ -4,9 +4,9 @@ namespace BoomCMS\Tests;
 
 use BoomCMS\Core\Auth\Auth;
 use BoomCMS\Core\Auth\PermissionsProvider;
-use BoomCMS\Editor\Editor;
 use BoomCMS\Database\Models\Page;
 use BoomCMS\Database\Models\Person;
+use BoomCMS\Editor\Editor;
 
 class EditorTest extends AbstractTestCase
 {

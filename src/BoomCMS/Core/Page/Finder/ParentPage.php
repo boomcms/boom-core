@@ -13,7 +13,7 @@ class ParentPage extends Filter
 
     public function __construct($parent)
     {
-        $this->parent = ($parent instanceof Page)? $parent : PageFacade::find($parent);
+        $this->parent = ($parent instanceof Page) ? $parent : PageFacade::find($parent);
     }
 
     public function build(Builder $query)

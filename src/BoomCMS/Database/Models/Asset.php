@@ -28,7 +28,7 @@ class Asset extends Model implements AssetInterface
     public $table = 'assets';
 
     public $guarded = [
-        self::ATTR_ID
+        self::ATTR_ID,
     ];
 
     public $timestamps = false;
@@ -425,7 +425,6 @@ class Asset extends Model implements AssetInterface
 
         return $this;
     }
-
 
     public function scopeWithLatestVersion($query)
     {

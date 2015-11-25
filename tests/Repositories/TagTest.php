@@ -5,7 +5,7 @@ namespace BoomCMS\Tests\Repositories;
 use BoomCMS\Database\Models\Tag;
 use BoomCMS\Repositories\Tag as TagRepository;
 use BoomCMS\Tests\AbstractTestCase;
-use \Mockery as m;
+use Mockery as m;
 
 class TagTest extends AbstractTestCase
 {
@@ -18,7 +18,7 @@ class TagTest extends AbstractTestCase
         $model->shouldReceive('create')->with($name, $group)->andReturn($model);
 
         $repository = new TagRepository($model);
-        
+
         $this->assertEquals($model, $repository->create($name, $group));
     }
 
@@ -28,7 +28,7 @@ class TagTest extends AbstractTestCase
         $model->shouldReceive('find')->with(1)->andReturnSelf();
 
         $repository = new TagRepository($model);
-        
+
         $this->assertEquals($model, $repository->find(1));
     }
 
@@ -39,7 +39,7 @@ class TagTest extends AbstractTestCase
         $model->shouldReceive('first')->andReturnSelf();
 
         $repository = new TagRepository($model);
-        
+
         $this->assertEquals($model, $repository->findByName('test'));
     }
 
@@ -52,7 +52,7 @@ class TagTest extends AbstractTestCase
         $model->shouldReceive('first')->andReturnSelf();
 
         $repository = new TagRepository($model);
-        
+
         $this->assertEquals($model, $repository->findByNameAndGroup('test name', 'test group'));
     }
 

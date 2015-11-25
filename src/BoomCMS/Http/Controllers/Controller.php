@@ -2,8 +2,8 @@
 
 namespace BoomCMS\Http\Controllers;
 
-use BoomCMS\Editor\Editor;
 use BoomCMS\Contracts\Models\Page;
+use BoomCMS\Editor\Editor;
 use BoomCMS\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;

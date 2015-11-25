@@ -76,7 +76,7 @@ class Guest implements Person
      */
     public function getLastFailedLogin()
     {
-        return null;
+        return;
     }
 
     /**
@@ -84,7 +84,7 @@ class Guest implements Person
      */
     public function getLockedUntil()
     {
-        return null;
+        return;
     }
 
     /**
@@ -113,7 +113,7 @@ class Guest implements Person
 
     /**
      * @param string $role
-     * @param int $pageId
+     * @param int    $pageId
      *
      * @return bool
      */
@@ -155,7 +155,6 @@ class Guest implements Person
     }
 
     /**
-     * 
      * @return bool
      */
     public function isValid()
@@ -170,7 +169,7 @@ class Guest implements Person
      */
     public function removeGroup(Group $group)
     {
-       return $this;
+        return $this;
     }
 
     /**

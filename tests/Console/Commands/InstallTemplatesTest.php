@@ -2,8 +2,8 @@
 
 namespace BoomCMS\Tests\Console\Commands;
 
-use BoomCMS\Core\Template\Manager;
 use BoomCMS\Console\Commands\InstallTemplates;
+use BoomCMS\Core\Template\Manager;
 use BoomCMS\Tests\AbstractTestCase;
 
 class InstallTemplatesTest extends AbstractTestCase
@@ -15,12 +15,12 @@ class InstallTemplatesTest extends AbstractTestCase
         $manager->expects($this->once())
             ->method('findAndInstallNewTemplates')
             ->will($this->returnValue([['testTheme', 'testTemplate']]));
-        
+
         $command = $this->getCommand();
 
         $command->expects($this->once())
             ->method('info')
-            ->with($this->equalTo("Installed testTemplate in theme testTheme"));
+            ->with($this->equalTo('Installed testTemplate in theme testTheme'));
 
         $command->expects($this->once())
             ->method('call')
@@ -36,12 +36,12 @@ class InstallTemplatesTest extends AbstractTestCase
         $manager->expects($this->once())
             ->method('findAndInstallNewTemplates')
             ->will($this->returnValue([]));
-        
+
         $command = $this->getCommand();
 
         $command->expects($this->once())
             ->method('info')
-            ->with($this->equalTo("No templates to install"));
+            ->with($this->equalTo('No templates to install'));
 
         $command->fire($manager);
     }

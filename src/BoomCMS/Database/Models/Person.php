@@ -154,7 +154,6 @@ class Person extends Model implements PersonInterface, CanResetPassword
         return $this;
     }
 
-    
     public function isAllowed($role, $pageId = null)
     {
         $result = DB::table('group_role')
@@ -197,7 +196,6 @@ class Person extends Model implements PersonInterface, CanResetPassword
     }
 
     /**
-     *
      * @return bool
      */
     public function isValid()
@@ -217,7 +215,7 @@ class Person extends Model implements PersonInterface, CanResetPassword
         return $this;
     }
 
-   /**
+    /**
      * @param string $email
      *
      * @return $this

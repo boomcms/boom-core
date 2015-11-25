@@ -6,8 +6,8 @@ use BoomCMS\Core\Auth\Auth;
 use BoomCMS\Core\Auth\Guest;
 use BoomCMS\Database\Models\Person;
 use BoomCMS\Tests\AbstractTestCase;
-use Illuminate\Support\Facades\Cookie;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cookie;
 
 class AuthTest extends AbstractTestCase
 {
@@ -19,7 +19,7 @@ class AuthTest extends AbstractTestCase
             ->method('get')
             ->with($this->anything())
             ->will($this->returnValue(null));
-        
+
         $permissions = $this->getMockPermissionsProvider();
         $repository = $this->getMockPersonRepository();
 
@@ -37,7 +37,7 @@ class AuthTest extends AbstractTestCase
             ->method('get')
             ->with($this->anything())
             ->will($this->returnValue($personId));
-        
+
         $permissions = $this->getMockPermissionsProvider();
 
         $repository = $this->getMockPersonRepository(['find']);

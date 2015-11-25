@@ -2,8 +2,8 @@
 
 namespace BoomCMS\Contracts\Models;
 
-use Symfony\Component\HttpFoundation\File\UploadedFile as File;
 use DateTime;
+use Symfony\Component\HttpFoundation\File\UploadedFile as File;
 
 interface Asset
 {
@@ -43,7 +43,7 @@ interface Asset
     public function getFilename();
 
     /**
-     * Returns the filesize in bytes
+     * Returns the filesize in bytes.
      *
      * @return int
      */
@@ -67,7 +67,7 @@ interface Asset
     public function getLastModified();
 
     public function getLatestVersion();
-    
+
     /**
      * @return int
      */
@@ -106,7 +106,7 @@ interface Asset
     public function getType();
 
     /**
-     * Person
+     * Person.
      */
     public function getUploadedBy();
 

@@ -2,9 +2,9 @@
 
 namespace BoomCMS\Core\Template;
 
-use BoomCMS\Repositories\Template as TemplateRepository;
 use BoomCMS\Core\Theme\Theme;
 use BoomCMS\Database\Models\Template as Model;
+use BoomCMS\Repositories\Template as TemplateRepository;
 use Illuminate\Filesystem\Filesystem;
 
 class Manager
