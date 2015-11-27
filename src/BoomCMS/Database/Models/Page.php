@@ -104,7 +104,7 @@ class Page extends Model implements PageInterface
             $attrs['embargoed_until'] = null;
         }
 
-        $this->currentVersion = PageVersionl::create($attrs);
+        $this->currentVersion = PageVersion::create($attrs);
 
         return $this->currentVersion;
     }
