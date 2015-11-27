@@ -81,7 +81,7 @@ abstract class Str extends BaseStr
      *
      * @return string
      */
-    public function storifyEmbed($text)
+    public static function storifyEmbed($text)
     {
         $matchString = "/\<p\>(https?\:\/\/(?:www\.)?storify\.com\/(?:[^\/]+)\/(?:[^\/]+))\/?\<\/p\>/i";
         $replaceString = '<script type="text/javascript" src="${1}.js"></script>';
