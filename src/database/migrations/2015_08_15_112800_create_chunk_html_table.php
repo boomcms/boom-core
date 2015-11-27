@@ -32,7 +32,7 @@ class CreateChunkHtmlTable extends Migration
 
             $table->string('slotname', 50)->nullable();
             $table->text('html');
-            $table->unique(['slotname','page_vid'], 'slotname');
+            $table->unique(['slotname', 'page_vid'], 'slotname');
         });
     }
 

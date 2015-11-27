@@ -18,7 +18,7 @@ class CreateTagsTable extends Migration
             $table->string('slug_short')->index('tags_slug_short');
             $table->string('slug_long')->index('tags_slug_long');
             $table->string('group', 100)->nullable();
-            $table->unique(['group','name'], 'tags_group_name');
+            $table->unique(['group', 'name'], 'tags_group_name');
         });
     }
 

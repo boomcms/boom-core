@@ -15,7 +15,7 @@ class CreatePagesTagsTable extends Migration
         Schema::create('pages_tags', function (Blueprint $table) {
             $table->integer('page_id')->unsigned()->default(0)->index('pages_tags_page_id');
             $table->integer('tag_id')->unsigned()->default(0)->index('pages_tags_tag_id');
-            $table->primary(['page_id','tag_id']);
+            $table->primary(['page_id', 'tag_id']);
         });
     }
 

@@ -18,8 +18,8 @@ class CreatePeopleRolesTable extends Migration
             $table->smallInteger('group_id')->unsigned();
             $table->integer('page_id')->unsigned()->default(0);
             $table->boolean('allowed');
-            $table->primary(['person_id','role_id','group_id','page_id']);
-            $table->index(['group_id','person_id'], 'people_roles_group_id_person_id');
+            $table->primary(['person_id', 'role_id', 'group_id', 'page_id']);
+            $table->index(['group_id', 'person_id'], 'people_roles_group_id_person_id');
         });
     }
 

@@ -17,7 +17,7 @@ class CreateAssetDownloadsTable extends Migration
             $table->integer('asset_id')->unsigned()->index('asset_downloads_asset_id');
             $table->integer('time')->unsigned()->nullable();
             $table->integer('ip')->nullable();
-            $table->index(['ip','asset_id','time'], 'asset_downloads_ip_asset_id_time');
+            $table->index(['ip', 'asset_id', 'time'], 'asset_downloads_ip_asset_id_time');
         });
     }
 

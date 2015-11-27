@@ -20,7 +20,7 @@ class CreateAuthLogsTable extends Migration
             $table->integer('ip')->index('auth_log_ip');
             $table->string('user_agent', 2000)->nullable();
             $table->integer('time')->unsigned();
-            $table->index(['person_id','time'], 'auth_log_person_id_time');
+            $table->index(['person_id', 'time'], 'auth_log_person_id_time');
         });
     }
 

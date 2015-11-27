@@ -15,7 +15,7 @@ class CreatePeopleGroupsTable extends Migration
         Schema::create('people_groups', function (Blueprint $table) {
             $table->integer('person_id')->unsigned();
             $table->smallInteger('group_id')->unsigned()->index('group_id');
-            $table->unique(['person_id','group_id'], 'person_group_person_id_group_id');
+            $table->unique(['person_id', 'group_id'], 'person_group_person_id_group_id');
         });
     }
 
