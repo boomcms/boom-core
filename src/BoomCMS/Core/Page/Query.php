@@ -2,6 +2,7 @@
 
 namespace BoomCMS\Core\Page;
 
+use BoomCMS\Contracts\Models\Page as PageInterface;
 use BoomCMS\Foundation\Finder\Finder as BaseFinder;
 use BoomCMS\Foundation\Query as BaseQuery;
 
@@ -56,7 +57,7 @@ class Query extends BaseQuery
         return $finder->findAll();
     }
 
-    public function getNextTo(Page $page, $direction)
+    public function getNextTo(PageInterface $page, $direction)
     {
         $params = $this->params;
 
