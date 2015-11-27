@@ -39322,13 +39322,17 @@ function boomHistory() {
 				this.contents.dialog('open');
 			} else {
 				setTimeout(function() {
-					self.contents.load(self.options.url, function(response, status) {
-						self.init();
+					self.contents.load(self.options.url, function(response, status, xhr) {
+						if (xhr.status === 200) {
+							self.init();
 
-						if ($.isFunction(self.options.onLoad)) {
-							self.options.onLoad.apply(self.dialog);
-						}
-					});
+							if ($.isFunction(self.options.onLoad)) {
+								self.options.onLoad.apply(self.dialog);
+							}
+						} else {
+							self.deferred.reject(response, xhr.status);
+						} 
+					})
 				}, 100);
 			}
 
@@ -39646,10 +39650,16 @@ function boomPage(page_id) {
 			url: url,
 			title: 'Please confirm',
 			id: 'b-page-confirmdelete'
-		}).done(function() {
+		})
+		.done(function() {
 			$.post(url, {}, function(response) {
 				promise.resolve(response);
 			});
+		})
+		.fail(function(response, status) {
+			if (status === 423) {
+				new boomAlert('You cannot delete this page because deletion has been disabled.');
+			}
 		});
 
 		return promise;

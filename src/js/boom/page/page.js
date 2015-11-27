@@ -39,10 +39,16 @@ function boomPage(page_id) {
 			url: url,
 			title: 'Please confirm',
 			id: 'b-page-confirmdelete'
-		}).done(function() {
+		})
+		.done(function() {
 			$.post(url, {}, function(response) {
 				promise.resolve(response);
 			});
+		})
+		.fail(function(response, status) {
+			if (status === 423) {
+				new boomAlert('You cannot delete this page because deletion has been disabled.');
+			}
 		});
 
 		return promise;

@@ -100,13 +100,17 @@ function boomDialog(options) {
 				this.contents.dialog('open');
 			} else {
 				setTimeout(function() {
-					self.contents.load(self.options.url, function(response, status) {
-						self.init();
+					self.contents.load(self.options.url, function(response, status, xhr) {
+						if (xhr.status === 200) {
+							self.init();
 
-						if ($.isFunction(self.options.onLoad)) {
-							self.options.onLoad.apply(self.dialog);
-						}
-					});
+							if ($.isFunction(self.options.onLoad)) {
+								self.options.onLoad.apply(self.dialog);
+							}
+						} else {
+							self.deferred.reject(response, xhr.status);
+						} 
+					})
 				}, 100);
 			}
 

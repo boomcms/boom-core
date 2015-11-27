@@ -17,9 +17,13 @@ class Delete extends PageController
         if (!($this->page->wasCreatedBy($auth->getPerson()) ||
                 $auth->loggedIn('delete_page', $this->page) ||
                 $auth->loggedIn('manage_pages')
-            ) || !$this->page->canBeDeleted()
+            )
         ) {
             abort(403);
+        }
+
+        if (!$this->page->canBeDeleted()) {
+            abort(423);
         }
     }
 
