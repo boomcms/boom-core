@@ -16,7 +16,7 @@ class CreateChunkTextAssetsTable extends Migration
             $table->integer('chunk_id')->unsigned()->nullable()->index('chunk_text_assets_chunk_id');
             $table->smallInteger('asset_id')->nullable();
             $table->smallInteger('position')->unsigned()->nullable();
-            $table->unique(['chunk_id','asset_id'], 'chunk_text_assets');
+            $table->unique(['chunk_id', 'asset_id'], 'chunk_text_assets');
         });
     }
 

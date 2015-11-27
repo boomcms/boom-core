@@ -19,8 +19,8 @@ class CreatePageMpttTable extends Migration
             $table->boolean('lvl')->index('page_mptt_lvl');
             $table->boolean('scope')->default(1);
             $table->smallInteger('id', true)->unsigned();
-            $table->index(['lft','rgt'], 'page_mptt_lft_rgt');
-            $table->index(['lft','scope'], 'page_mptt_lft_scope_page_id');
+            $table->index(['lft', 'rgt'], 'page_mptt_lft_rgt');
+            $table->index(['lft', 'scope'], 'page_mptt_lft_scope_page_id');
         });
     }
 

@@ -17,7 +17,7 @@ class CreateChunkTagsTable extends Migration
             $table->string('slotname', 50);
             $table->integer('page_vid')->unsigned();
             $table->string('tag', 50);
-            $table->unique(['page_vid','slotname'], 'chunk_tags_page_vid_slotname');
+            $table->unique(['page_vid', 'slotname'], 'chunk_tags_page_vid_slotname');
         });
     }
 

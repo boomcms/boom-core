@@ -15,7 +15,7 @@ class CreateAssetsTagsTable extends Migration
         Schema::create('assets_tags', function (Blueprint $table) {
             $table->integer('asset_id')->unsigned()->default(0);
             $table->string('tag', 50);
-            $table->unique(['tag','asset_id'], 'assets_tags_tag_asset_id');
+            $table->unique(['tag', 'asset_id'], 'assets_tags_tag_asset_id');
         });
     }
 
