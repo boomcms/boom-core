@@ -3,7 +3,7 @@
 namespace BoomCMS\Events;
 
 use BoomCMS\Contracts\Models\Page;
-use BoomCMS\Core\Template\Template;
+use BoomCMS\Contracts\Models\Template;
 use BoomCMS\Foundation\Events\PageEvent;
 
 class PageTemplateWasChanged extends PageEvent
