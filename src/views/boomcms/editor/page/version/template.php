@@ -8,7 +8,7 @@
 		<label for="template_id">Template:</label>
 		<select id='template' name='template_id'>
 			<?php foreach ($templates as $t): ?>
-				<option value='<?= $t->getId() ?>' data-description="<?= $t->getDescription() ?>" data-count='<?= $countPages(['tempalte' => $t]) ?>'<?php if ($t->is($current)): ?> selected='selected'<?php endif ?>><?= $t->getTheme() ?> - <?= $t->getName() ?></option>
+				<option value='<?= $t->getId() ?>' data-description="<?= $t->getDescription() ?>" data-count='<?= $countPages(['template' => $t]) ?>'<?php if ($t->is($current)): ?> selected='selected'<?php endif ?>><?= $t->getTheme() ?> - <?= $t->getName() ?></option>
 			<?php endforeach ?>
 		</select>
 
