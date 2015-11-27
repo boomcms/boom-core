@@ -17,8 +17,8 @@ class CreateGroupRolesTable extends Migration
             $table->integer('page_id')->unsigned()->default(0);
             $table->smallInteger('role_id')->unsigned()->index('role_id');
             $table->boolean('allowed')->nullable();
-            $table->primary(['group_id','role_id','page_id']);
-            $table->index(['group_id','role_id','page_id'], 'permissions_role_id_action_id_where_id');
+            $table->primary(['group_id', 'role_id', 'page_id']);
+            $table->index(['group_id', 'role_id', 'page_id'], 'permissions_role_id_action_id_where_id');
         });
     }
 

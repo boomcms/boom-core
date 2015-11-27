@@ -36,8 +36,8 @@ class CreatePagesTable extends Migration
             $table->string('primary_uri', 2048)->nullable()->index('pages_primary_uri');
             $table->boolean('deleted')->nullable()->default(0);
             $table->integer('feature_image_id')->unsigned()->nullable()->index('pages_feature_image_id');
-            $table->index(['deleted','visible','visible_from','visible_to','visible_in_nav'], 'pages_sitelist');
-            $table->index(['deleted','visible_in_nav_cms','visible_from'], 'pages_cmslist');
+            $table->index(['deleted', 'visible', 'visible_from', 'visible_to', 'visible_in_nav'], 'pages_sitelist');
+            $table->index(['deleted', 'visible_in_nav_cms', 'visible_from'], 'pages_cmslist');
         });
     }
 

@@ -17,7 +17,7 @@ class CreatePageUrlsTable extends Migration
             $table->integer('page_id')->unsigned();
             $table->string('location', 2048)->nullable();
             $table->boolean('is_primary')->nullable();
-            $table->index(['page_id','is_primary'], 'page_uri_page_id_primary_uri');
+            $table->index(['page_id', 'is_primary'], 'page_uri_page_id_primary_uri');
         });
     }
 

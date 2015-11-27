@@ -17,7 +17,7 @@ class CreateChunkLinksetsTable extends Migration
             $table->increments('id');
             $table->string('slotname', 50)->nullable();
             $table->integer('page_vid')->unsigned()->nullable()->index('page_vid');
-            $table->unique(['slotname','page_vid'], 'slotname');
+            $table->unique(['slotname', 'page_vid'], 'slotname');
         });
     }
 

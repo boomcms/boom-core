@@ -23,9 +23,9 @@ class CreatePageVersionsTable extends Migration
             $table->integer('embargoed_until')->unsigned()->nullable();
             $table->boolean('stashed')->nullable()->default(0)->index('page_versions_stashed');
             $table->boolean('pending_approval')->nullable()->default(0)->index('page_versions_pending_approval');
-            $table->index(['edited_time','page_id'], 'page_v_aduit_time_rid_deleted');
-            $table->index(['title','page_id'], 'page_v_title_rid_deleted');
-            $table->index(['page_id','published','embargoed_until'], 'page_versions_page_id_published_embargoed_until');
+            $table->index(['edited_time', 'page_id'], 'page_v_aduit_time_rid_deleted');
+            $table->index(['title', 'page_id'], 'page_v_title_rid_deleted');
+            $table->index(['page_id', 'published', 'embargoed_until'], 'page_versions_page_id_published_embargoed_until');
         });
     }
 
