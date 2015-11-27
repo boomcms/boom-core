@@ -2,6 +2,7 @@
 
 namespace BoomCMS\Core\Chunk\Slideshow;
 
+use BoomCMS\Database\Models\Asset;
 use BoomCMS\Link\Link;
 use BoomCMS\Support\Facades\Asset as AssetFacade;
 
