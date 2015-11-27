@@ -108,7 +108,12 @@ class PageVersion extends Model implements PageVersionInterface
      */
     public function getTemplate()
     {
-        return $this->template()->first();
+        if ($this->template === null) {
+            $template = $this->template()->first();
+            $this->template = $template ?: new Template();
+        }
+
+        return $this->template;
     }
 
     /**
