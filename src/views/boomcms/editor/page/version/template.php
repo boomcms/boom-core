@@ -7,7 +7,7 @@
 		<label for="template_id"><?= Lang::get('boomcms::settings.template.template') ?></label>
 		<select id='template' name='template_id'>
             <?php if (!$current->getId()): ?>
-                <option selected><?= Lang::get('boomcms::settings.template.default') ?></option>
+                <option value="" selected><?= Lang::get('boomcms::settings.template.default') ?></option>
             <?php endif ?>
 
 			<?php foreach ($templates as $t): ?>

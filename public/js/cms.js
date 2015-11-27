@@ -40986,19 +40986,31 @@ $.widget('boom.pageTree', {
 			})
 			.on('click', '.b-template-save', function(e) {
 				e.preventDefault();
+		
+				var templateId = templateEditor.element.find('select option:selected').val();
 
-				templateEditor.options.page.setTemplate(templateEditor.element.find('select option:selected').val())
-					.done(function() {
-						new boomNotification('Page template updated');
-						
-						templateEditor._trigger('done');
-					});
+				templateEditor.save(templateId);
 			})
 			.on('click', '.b-template-cancel', function(e) {
 				e.preventDefault();
 
 				templateEditor.element.find('select').val(initial);
 			});
+	},
+
+	save: function(templateId) {
+		var templateEditor = this;
+
+		if (templateId) {
+			this.options.page.setTemplate(templateId)
+				.done(function() {
+					new boomNotification('Page template updated');
+
+					templateEditor._trigger('done');
+				});
+		} else {
+			new boomAlert('You must select a template from the list');
+		}
 	},
 
 	showDetails: function() {
