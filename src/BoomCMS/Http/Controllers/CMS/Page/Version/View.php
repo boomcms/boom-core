@@ -34,7 +34,7 @@ class View extends Version
         $templates = $manager->getValidTemplates();
 
         return ViewFacade::make("$this->viewPrefix.template", [
-            'template_id' => $this->page->getCurrentVersion()->getTemplateId(),
+            'current' => $this->page->getTemplate(),
             'templates'   => $templates,
         ]);
     }
