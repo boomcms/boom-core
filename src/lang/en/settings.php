@@ -71,8 +71,12 @@ return [
         'heading' => 'Page tags',
     ],
     'template' => [
-        'heading' => 'Page template',
-        'default' => 'Select a template to use in this page',
+        'heading'     => 'Page template',
+        'default'     => 'Select a template to use in this page',
+        'about'       => 'Changing the template of the page will change how the content of the page is visually displayed.</p><p>Although some content may not be visible with certain templates, the content will remain with the page and become visible if the template is changed back.',
+        'template'    => 'Template:',
+        'description' => 'Template description:',
+        'count'       => 'Pages using this template:',
     ],
     'visibility' => [
         'heading'          => 'Page visibility',

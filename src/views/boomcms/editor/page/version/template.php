@@ -2,10 +2,9 @@
     <h1><?= Lang::get('boomcms::settings.template.heading') ?></h1>
 
 	<div class="b-template">
-		<p>Changing the template of the page will change how the content of the page is visually displayed.</p>
-		<p>Although some content may not be visible with certain templates, the content will remain with the page and become visible if the template is changed back.</p>
+        <p><?= Lang::get('boomcms::settings.template.about') ?></p>
 
-		<label for="template_id">Template:</label>
+		<label for="template_id"><?= Lang::get('boomcms::settings.template.template') ?></label>
 		<select id='template' name='template_id'>
             <?php if (!$current->getId()): ?>
                 <option selected><?= Lang::get('boomcms::settings.template.default') ?></option>
@@ -16,8 +15,8 @@
 			<?php endforeach ?>
 		</select>
 
-		<div id='description'><strong>Template description:</strong><p></p></div>
-		<div id='count'><strong>Pages using this template:</strong><p></p></div>
+		<div id='description'><strong><?= Lang::get('boomcms::settings.template.description') ?></strong><p></p></div>
+		<div id='count'><strong><?= Lang::get('boomcms::settings.template.count') ?></strong><p></p></div>
         
         <?= $button('refresh', 'reset', ['class' => 'b-template-cancel b-button-withtext']) ?>
         <?= $button('save', 'save', ['class' => 'b-template-save b-button-withtext']) ?>
