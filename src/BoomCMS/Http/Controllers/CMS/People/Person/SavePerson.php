@@ -3,6 +3,7 @@
 namespace BoomCMS\Http\Controllers\CMS\People\Person;
 
 use BoomCMS\Jobs\CreatePerson;
+use BoomCMS\Support\Facades\Auth;
 use BoomCMS\Support\Facades\Group;
 use BoomCMS\Support\Facades\Person;
 use Illuminate\Support\Facades\Bus;
@@ -49,8 +50,8 @@ class SavePerson extends BasePerson
             ->setEnabled($this->request->input('enabled') == 1);
 
         if ($superuser = $this->request->input('superuser')
-            && $this->auth->getPerson()->isSuperuser()
-            && $this->auth->getPerson()->getId() != $this->editPerson->getId()
+            && Auth::getPerson()->isSuperuser()
+            && Auth::getPerson()->getId() != $this->editPerson->getId()
         ) {
             $this->editPerson->setSuperuser($superuser == 1);
         }
