@@ -7,6 +7,10 @@
 
 		<label for="template_id">Template:</label>
 		<select id='template' name='template_id'>
+            <?php if (!$current->getId()): ?>
+                <option selected><?= Lang::get('boomcms::settings.template.default') ?></option>
+            <?php endif ?>
+
 			<?php foreach ($templates as $t): ?>
 				<option value='<?= $t->getId() ?>' data-description="<?= $t->getDescription() ?>" data-count='<?= $countPages(['template' => $t]) ?>'<?php if ($t->is($current)): ?> selected='selected'<?php endif ?>><?= $t->getTheme() ?> - <?= $t->getName() ?></option>
 			<?php endforeach ?>

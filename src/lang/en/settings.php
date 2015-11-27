@@ -72,6 +72,7 @@ return [
     ],
     'template' => [
         'heading' => 'Page template',
+        'default' => 'Select a template to use in this page',
     ],
     'visibility' => [
         'heading'          => 'Page visibility',
