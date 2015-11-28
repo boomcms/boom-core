@@ -21,6 +21,15 @@ class Template
     }
 
     /**
+     * @param array $attrs
+     * @return TemplateInterface
+     */
+    public function create(array $attrs)
+    {
+        return $this->model->create($attrs);
+    }
+
+    /**
      * @param int $id
      *
      * @return $this

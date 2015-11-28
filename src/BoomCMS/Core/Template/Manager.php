@@ -3,7 +3,6 @@
 namespace BoomCMS\Core\Template;
 
 use BoomCMS\Core\Theme\Theme;
-use BoomCMS\Database\Models\Template as Model;
 use BoomCMS\Repositories\Template as TemplateRepository;
 use Illuminate\Filesystem\Filesystem;
 
@@ -27,7 +26,7 @@ class Manager
 
     public function createTemplateWithFilename($theme, $filename)
     {
-        Model::create([
+        $this->repository->create([
             'name'     => ucwords(str_replace('_', ' ', $filename)),
             'theme'    => $theme,
             'filename' => $filename,
