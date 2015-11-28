@@ -34,16 +34,6 @@ class Manager
         ]);
     }
 
-    /**
-     * Deletes templates where the filename points to an non-existent file.
-     */
-    public function deleteInvalidTemplates()
-    {
-        foreach ($this->getInvalidTemplates() as $template) {
-            $template->delete();
-        }
-    }
-
     public function findAndInstallNewTemplates()
     {
         $installed = [];
@@ -94,23 +84,6 @@ class Manager
     public function getAllTemplates()
     {
         return $this->repository->findAll();
-    }
-
-    /**
-     * Gets templates where the filename points to an non-existent file.
-     */
-    public function getInvalidTemplates()
-    {
-        $invalid = [];
-        $templates = $this->getAllTemplates();
-
-        foreach ($templates as $template) {
-            if (!$template->fileExists()) {
-                $invalid[] = $template;
-            }
-        }
-
-        return $invalid;
     }
 
     public function getValidTemplates()
