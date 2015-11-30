@@ -304,12 +304,20 @@ class Asset extends Model implements AssetInterface
             $this->setTitle($file->getClientOriginalName());
         }
 
+        $this->setType(AssetHelper::typeFromMimetype($file->getMimeType()));
+
         list($width, $height) = getimagesize($file->getRealPath());
         preg_match('|\.([a-z]+)$|', $file->getClientOriginalName(), $extension);
 
+        if (isset($extension[1])) {
+            $extension = $extension[1];
+        } elseif ($this->isImage()) {
+            $extension = image_type_to_extension($file->getMimeType(), false);
+        }
+
         $version = AssetVersion::create([
             'asset_id'  => $this->getId(),
-            'extension' => $extension[1],
+            'extension' => $extension,
             'filesize'  => $file->getClientSize(),
             'filename'  => $file->getClientOriginalName(),
             'width'     => $width,
@@ -318,8 +326,6 @@ class Asset extends Model implements AssetInterface
             'edited_by' => Auth::getPerson()->getId(),
             'mimetype'  => File::mime($file->getRealPath()),
         ]);
-
-        $this->setType(AssetHelper::typeFromMimetype($file->getMimeType()));
 
         $file->move(static::directory(), $version->id);
 
