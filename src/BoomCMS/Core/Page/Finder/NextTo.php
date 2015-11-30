@@ -26,11 +26,11 @@ class NextTo extends Filter
 
     public function build(Builder $query)
     {
-        $order = $this->currentPage->getParent()->getChildOrderingPolicy();
+        list($column, $direction) = $this->currentPage->getParent()->getChildOrderingPolicy();
 
         if (
-            ($this->direction === 'before' && $order->getDirection() === 'asc') ||
-            ($this->direction === 'after' && $order->getDirection() === 'desc')
+            ($this->direction === 'before' && $direction === 'asc') ||
+            ($this->direction === 'after' && $direction === 'desc')
         ) {
             $operator = '<';
             $direction = 'desc';
@@ -40,9 +40,21 @@ class NextTo extends Filter
         }
 
         return $query
-            ->where($order->getColumn(), $operator.'=', $this->currentPage->{$order->getAccessor()}())
+            ->where($column, $operator.'=', $this->getValue($column))
             ->where('pages.id', $operator, $this->currentPage->getId())
             ->limit(1)
-            ->orderBy($order->getColumn(), $direction);
+            ->orderBy($column, $direction);
+    }
+
+    protected function getValue($column)
+    {
+        switch ($column) {
+            case 'visible_from':
+                return $this->currentPage->getVisibleFrom()->getTimestamp();
+            case 'sequence':
+                return $this->currentPage->getManualOrderPosition();
+            default:
+                return $this->currentPage->getTitle();
+        }
     }
 }
