@@ -21,6 +21,22 @@ class TemplateManagerTest extends AbstractTestCase
         return m::mock(TemplateRepository::class);
     }
 
+    public function testCreateTemplateWithFilename()
+    {
+        $theme = 'test';
+        $filename = 'test_template';
+
+        $repository = $this->getTemplateRepository();
+        $repository->shouldReceive('create')->with([
+            'name'    => 'Test Template',
+            'theme'    => 'test',
+            'filename' => 'test_template',
+        ]);
+
+        $manager = new Manager($this->getFilesystem(), $repository);
+        $manager->createTemplateWithFilename($theme, $filename);
+    }
+
     public function testFindInstalledThemes()
     {
         $themes = [new Theme('test1'), new Theme('test2')];

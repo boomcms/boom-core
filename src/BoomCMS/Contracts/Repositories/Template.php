@@ -7,6 +7,13 @@ use BoomCMS\Contracts\Models\Template as TemplateInterface;
 interface Template
 {
     /**
+     * @param array $attrs
+     *
+     * @return TemplateInterface
+     */
+    public function create(array $attrs);
+
+    /**
      * @param int $id
      *
      * @return TemplateInterface

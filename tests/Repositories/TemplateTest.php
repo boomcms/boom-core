@@ -26,4 +26,18 @@ class TemplateTest extends AbstractTestCase
         $repository = new TemplateRepository($model);
         $repository->find(1);
     }
+
+    public function testCreate()
+    {
+        $attrs = [
+            'filename' => 'test',
+            'name'     => 'test',
+        ];
+
+        $model = m::mock(Template::class);
+        $model->shouldReceive('create')->with($attrs);
+
+        $repository = new TemplateRepository($model);
+        $repository->create($attrs);
+    }
 }
