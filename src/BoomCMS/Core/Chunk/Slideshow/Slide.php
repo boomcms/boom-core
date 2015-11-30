@@ -24,6 +24,7 @@ class Slide
 
         if (isset($this->attrs['asset'])) {
             $this->asset = new Asset($this->attrs['asset']);
+            $this->asset->id = $this->attrs['asset']['id'];
         }
     }
 
