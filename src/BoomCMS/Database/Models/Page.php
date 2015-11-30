@@ -55,6 +55,11 @@ class Page extends Model implements PageInterface
     const ORDER_ASC = 8;
     const ORDER_DESC = 16;
 
+    /**
+     * @var PageVersion
+     */
+    protected $currentVersion;
+
     protected $table = 'pages';
 
     public $guarded = [
