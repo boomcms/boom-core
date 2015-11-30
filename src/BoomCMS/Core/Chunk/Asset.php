@@ -77,7 +77,7 @@ class Asset extends BaseChunk
 
     public function hasContent()
     {
-        return $this->asset;
+        return $this->asset !== null;
     }
 
     /**
@@ -95,6 +95,6 @@ class Asset extends BaseChunk
 
     public function target()
     {
-        return $this->asset ? $this->asset->getId() : 0;
+        return $this->hasContent() ? $this->asset->getId() : 0;
     }
 }

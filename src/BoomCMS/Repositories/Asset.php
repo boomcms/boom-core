@@ -20,14 +20,26 @@ class Asset implements AssetRepositoryInterface
         $this->model = $model;
     }
 
+    /**
+     * @param array $assetIds
+     *
+     * @return $this
+     */
     public function delete(array $assetIds)
     {
         $this->model->destroy($assetIds);
+
+        return $this;
     }
 
+    /**
+     * @param int $id
+     *
+     * @return AssetModel
+     */
     public function find($id)
     {
-        $this->model->find($id);
+        return $this->model->find($id);
     }
 
     public function findByVersionId($versionId)
