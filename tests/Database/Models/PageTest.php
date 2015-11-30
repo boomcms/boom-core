@@ -153,6 +153,22 @@ class PageTest extends AbstractModelTestCase
         $this->assertFalse($parent->isParentOf($notAChild), 'Not child');
     }
 
+    public function testIsVisibleAtAnyTime()
+    {
+        $yes = [1, true];
+        $no = [0, false, null];
+
+        foreach ($yes as $y) {
+            $page = new Page([Page::ATTR_VISIBLE => $y]);
+            $this->assertTrue($page->isVisibleAtAnyTime(), $y);
+        }
+
+        foreach ($no as $n) {
+            $page = new Page([Page::ATTR_VISIBLE => $n]);
+            $this->assertFalse($page->isVisibleAtAnyTime(), $n);
+        }
+    }
+
     public function testSetSequence()
     {
         $page = new Page();

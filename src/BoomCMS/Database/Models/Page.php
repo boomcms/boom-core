@@ -403,7 +403,7 @@ class Page extends Model implements PageInterface
 
     public function isVisibleAtAnyTime()
     {
-        return $this->{self::ATTR_VISIBLE} == true;
+        return $this->attributes[self::ATTR_VISIBLE] == true;
     }
 
     /**
