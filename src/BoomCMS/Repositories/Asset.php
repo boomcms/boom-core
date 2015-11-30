@@ -54,6 +54,8 @@ class Asset implements AssetRepositoryInterface
      */
     public function save(AssetModel $model)
     {
-        return $model->save();
+        $model->save();
+
+        return $model;
     }
 }

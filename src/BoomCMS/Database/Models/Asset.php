@@ -4,13 +4,15 @@ namespace BoomCMS\Database\Models;
 
 use BoomCMS\Contracts\Models\Asset as AssetInterface;
 use BoomCMS\Contracts\Models\Person as PersonInterface;
+use BoomCMS\Support\Facades\Auth;
+use BoomCMS\Support\File;
 use BoomCMS\Support\Helpers\Asset as AssetHelper;
 use BoomCMS\Support\Traits\Comparable;
 use DateTime;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View;
-use Symfony\Component\HttpFoundation\File\UploadedFile as File;
+use Symfony\Component\HttpFoundation\File\UploadedFile as UploadedFile;
 
 class Asset extends Model implements AssetInterface
 {
@@ -184,6 +186,14 @@ class Asset extends Model implements AssetInterface
     }
 
     /**
+     * @return array
+     */
+    public function getMetadata()
+    {
+        return $this->getLatestVersion()->getMetadata();
+    }
+
+    /**
      * @return string
      */
     public function getMimetype()
@@ -269,6 +279,14 @@ class Asset extends Model implements AssetInterface
     /**
      * @return bool
      */
+    public function hasMetadata()
+    {
+        return !empty($this->getMetadata());
+    }
+
+    /**
+     * @return bool
+     */
     public function hasPreviousVersions()
     {
         return $this->versions()
@@ -299,7 +317,7 @@ class Asset extends Model implements AssetInterface
         return $this->getType() == 'image';
     }
 
-    public function createVersionFromFile(File $file)
+    public function createVersionFromFile(UploadedFile $file)
     {
         if (!$this->getTitle()) {
             $this->setTitle($file->getClientOriginalName());
@@ -316,6 +334,22 @@ class Asset extends Model implements AssetInterface
             $extension = AssetHelper::extensionFromMimetype($file->getMimeType());
         }
 
+        $metadata = [];
+
+        if (in_array($extension, ['jpg', 'jpeg', 'tiff'])) {
+            $exif = exif_read_data($file->getRealPath(), 'IFD0', true, false);
+
+            foreach ($exif['IFD0'] as $key => $value) {
+                if (is_string($value) || is_numeric($value)) {
+                    $value = trim(strip_tags($value));
+
+                    if ($value) {
+                        $metadata[$key] = $value;
+                    }
+                }
+            }
+        }
+
         $version = AssetVersion::create([
             'asset_id'  => $this->getId(),
             'extension' => $extension,
@@ -326,6 +360,7 @@ class Asset extends Model implements AssetInterface
             'edited_at' => time(),
             'edited_by' => Auth::getPerson()->getId(),
             'mimetype'  => File::mime($file->getRealPath()),
+            'metadata'  => (empty($metadata)) ? null : $metadata,
         ]);
 
         $file->move(static::directory(), $version->id);

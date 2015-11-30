@@ -74,6 +74,11 @@ interface Asset
     public function getLatestVersionId();
 
     /**
+     * @return array
+     */
+    public function getMetadata();
+
+    /**
      * @return string
      */
     public function getMimetype();
@@ -121,6 +126,11 @@ interface Asset
      * @return int
      */
     public function getWidth();
+
+    /**
+     * @return bool
+     */
+    public function hasMetadata();
 
     /**
      * @return bool

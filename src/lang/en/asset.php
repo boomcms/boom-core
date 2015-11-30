@@ -6,6 +6,7 @@ return [
     'previous_versions_intro' => 'These files were previously assigned to this asset but were replaced.',
     'openeditor'              => 'Open in image editor',
     'aspect-ratio'            => 'Aspect ratio',
+    'metadata'                => 'Metadata',
     'search'                  => [
         'sort' => 'Sort assets by',
         'tag'  => 'Filter by tag',

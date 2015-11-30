@@ -18,6 +18,11 @@ class AssetVersion extends Model
     const ATTR_EDITED_BY = 'edited_by';
     const ATTR_EXTENSION = 'extension';
     const ATTR_MIME = 'mimetype';
+    const ATTR_METADATA = 'metadata';   
+
+    protected $casts = [
+        self::ATTR_METADATA => 'array',
+    ];
 
     public $table = 'asset_versions';
 
@@ -79,6 +84,16 @@ class AssetVersion extends Model
     public function getId()
     {
         return (int) $this->{self::ATTR_ID};
+    }
+
+    /**
+     * @return array
+     */
+    public function getMetadata()
+    {
+        $data = $this->{self::ATTR_METADATA};
+
+        return $data ? (array) $data : [];
     }
 
     /**

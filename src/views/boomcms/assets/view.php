@@ -19,6 +19,10 @@
             <li><a href="#b-assets-view-attributes"><?= Lang::get('Attributes') ?></a></li>
             <li><a href="#b-tags"><?= Lang::get('Tags') ?></a></li>
 
+            <?php if ($asset->hasMetadata()): ?>
+                <li><a href="#b-assets-metadata"><?= Lang::get('boomcms::asset.metadata') ?></a></li>
+            <?php endif ?>
+
             <?php if ($asset->hasPreviousVersions()): ?>
                 <li><a href="#b-assets-view-files"><?= Lang::get('boomcms::asset.previous_versions') ?></a></li>
             <?php endif ?>
@@ -83,6 +87,17 @@
         </div>
 
         <?= View::make('boomcms::assets.tags', ['tags' => $asset->getTags()]) ?>
+
+        <?php if ($asset->hasMetadata()): ?>
+            <div id="b-assets-metadata">
+                <dl>
+                    <?php foreach ($asset->getMetadata() as $key => $value): ?>
+                        <dt><?= $key ?></dt>
+                        <dd><?= $value ?></dd>
+                    <?php endforeach ?>
+                </dl>
+            </div>
+        <?php endif ?>
 
         <?php if ($asset->hasPreviousVersions()): ?>
             <div id="b-assets-view-files">
