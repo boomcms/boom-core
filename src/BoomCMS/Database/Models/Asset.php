@@ -4,6 +4,7 @@ namespace BoomCMS\Database\Models;
 
 use BoomCMS\Contracts\Models\Asset as AssetInterface;
 use BoomCMS\Contracts\Models\Person as PersonInterface;
+use BoomCMS\Support\Helpers\Asset as AssetHelper;
 use BoomCMS\Support\Traits\Comparable;
 use DateTime;
 use Illuminate\Database\Eloquent\Model;
@@ -311,8 +312,8 @@ class Asset extends Model implements AssetInterface
 
         if (isset($extension[1])) {
             $extension = $extension[1];
-        } elseif ($this->isImage()) {
-            $extension = image_type_to_extension($file->getMimeType(), false);
+        } else {
+            $extension = AssetHelper::extensionFromMimetype($file->getMimeType());
         }
 
         $version = AssetVersion::create([
