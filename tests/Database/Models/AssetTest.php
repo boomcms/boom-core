@@ -39,7 +39,7 @@ class AssetTest extends AbstractModelTestCase
             ->method('getHeight')
             ->will($this->returnValue(0));
 
-        $this->assertEquals(0, $asset->getAspectRatio());
+        $this->assertEquals(1, $asset->getAspectRatio());
     }
 
     public function testGetCreditsReturnsCreditsAttribute()
