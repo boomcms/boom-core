@@ -49,9 +49,4 @@ class Slideshow extends BaseChunk
     {
         return isset($this->attrs['title']) ? $this->attrs['title'] : '';
     }
-
-    public function thumbnail()
-    {
-        return $this->_chunk->thumbnail();
-    }
 }
