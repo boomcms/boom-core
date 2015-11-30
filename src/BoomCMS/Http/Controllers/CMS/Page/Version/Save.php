@@ -18,7 +18,7 @@ class Save extends Version
             strtotime($this->request->input('embargoed_until'))
             : time();
 
-        $this->page->setEmbargoTime(new DateTime($time));
+        $this->page->setEmbargoTime(new DateTime('@'.$time));
 
         $version = $this->page->getCurrentVersion();
 

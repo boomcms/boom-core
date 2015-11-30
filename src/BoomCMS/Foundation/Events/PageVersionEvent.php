@@ -4,7 +4,7 @@ namespace BoomCMS\Foundation\Events;
 
 use BoomCMS\Contracts\Models\Page;
 use BoomCMS\Contracts\Models\Person;
-use BoomCMS\Core\Page\Version;
+use BoomCMS\Contracts\Models\PageVersion;
 
 class PageVersionEvent extends PageEvent
 {
@@ -18,7 +18,7 @@ class PageVersionEvent extends PageEvent
      */
     protected $version;
 
-    public function __construct(Page $page, Person $person, Version $version)
+    public function __construct(Page $page, Person $person, PageVersion $version)
     {
         parent::__construct($page);
 

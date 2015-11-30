@@ -52,7 +52,7 @@ class PageVersion extends Model implements PageVersionInterface
      */
     public function getEditedBy()
     {
-        return $this->belongsTo(Person::class, 'edited_by');
+        return $this->belongsTo(Person::class, 'edited_by')->first();
     }
 
     /**
