@@ -54,4 +54,14 @@ class PersonTest extends AbstractTestCase
 
         $this->assertEquals([], $repository->findByGroupId(1));
     }
+
+    public function testSave()
+    {
+        $person = m::mock(Person::class);
+        $person->shouldReceive('save');
+
+        $repository = new PersonRepository(new Person());
+
+        $this->assertEquals($person, $repository->save($person));
+    }
 }

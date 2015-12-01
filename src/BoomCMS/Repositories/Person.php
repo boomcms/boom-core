@@ -103,16 +103,7 @@ class Person implements PersonRepositoryInterface
 
     public function save(PersonInterface $person)
     {
-        if ($person->getId()) {
-            $model = isset($this->cache[$person->getId()]) ?
-                $this->cache[$person->getId()]
-                : Model::find($person->getId());
-
-            $model->update($person->toArray());
-        } else {
-            $model = Model::create($person->toArray());
-            $person->setId($model->id);
-        }
+        $person->save();
 
         return $person;
     }
