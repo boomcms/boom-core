@@ -2,6 +2,7 @@
 
 namespace BoomCMS\Contracts\Models;
 
+use BoomCMS\Database\Models\AssetVersion;
 use DateTime;
 
 interface Asset
@@ -199,4 +200,11 @@ interface Asset
     public function setUploadedBy(Person $person);
 
     public function setUploadedTime(DateTime $time);
+
+    /**
+     * @param AssetVersion
+     *
+     * @return $this
+     */
+    public function setVersion(AssetVersion $version);
 }

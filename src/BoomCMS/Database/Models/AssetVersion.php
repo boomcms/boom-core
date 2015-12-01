@@ -37,6 +37,11 @@ class AssetVersion extends Model
      */
     protected $editedBy;
 
+    public function getAsset()
+    {
+        return $this->belongsTo(Asset::class, 'asset_id')->first();
+    }
+
     public function getEditedAt()
     {
         return (new DateTime())->setTimestamp($this->attributes[self::ATTR_EDITED_AT]);

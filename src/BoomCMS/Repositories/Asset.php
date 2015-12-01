@@ -107,7 +107,16 @@ class Asset implements AssetRepositoryInterface
 
     public function findByVersionId($versionId)
     {
-        return $this->model->withVersion($versionId)->first();
+        $version = $this->findVersion($versionId);
+        $asset = $version->getAsset();
+        $asset->setVersion($version);
+
+        return $asset;
+    }
+
+    public function findVersion($versionId)
+    {
+        return $this->version->find($versionId);
     }
 
     public function revert(AssetInterface $asset, $versionId)

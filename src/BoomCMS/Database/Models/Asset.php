@@ -269,7 +269,10 @@ class Asset extends Model implements AssetInterface
 
     public function getVersions()
     {
-        return $this->versions;
+        return $this->versions()
+            ->orderBy(AssetVersion::ATTR_EDITED_AT, 'desc')
+            ->where(AssetVersion::ATTR_ID, '!=', $this->getLatestVersionId())
+            ->get();
     }
 
     /**
@@ -400,6 +403,20 @@ class Asset extends Model implements AssetInterface
         return $this;
     }
 
+    /**
+     * Set the version to use with the asset.
+     *
+     * @param AssetVersion $version
+     *
+     * @return $this
+     */
+    public function setVersion(AssetVersion $version)
+    {
+        $this->latestVersion = $version;
+
+        return $this;
+    }
+
     public function scopeWithLatestVersion($query)
     {
         return $query
@@ -411,13 +428,6 @@ class Asset extends Model implements AssetInterface
                     ->on('av2.id', '>', 'version.id');
             })
             ->whereNull('av2.id');
-    }
-
-    public function scopeWithVersion($query, $versionId)
-    {
-        return $query
-            ->where('asset_versions.id', '=', $versionId)
-            ->first();
     }
 
     public function versions()

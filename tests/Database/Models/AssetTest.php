@@ -170,6 +170,16 @@ class AssetTest extends AbstractModelTestCase
         $this->assertFalse($asset->hasMetadata());
     }
 
+    public function testSetVersion()
+    {
+        $asset = new Asset();
+        $version = new AssetVersion();
+
+        $asset->setVersion($version);
+
+        $this->assertEquals($version, $asset->getLatestVersion());
+    }
+
     protected function mockVersionedAttribute($attrs)
     {
         $version = new AssetVersion($attrs);

@@ -23,4 +23,18 @@ class AssetTest extends AbstractTestCase
 
         $this->assertEquals($asset, $repository->find(1));
     }
+
+    public function testFindVersion()
+    {
+        $version = m::mock(AssetVersion::class);
+        $model = m::mock(AssetVersion::class);
+
+        $model->shouldReceive('find')
+            ->with(1)
+            ->andReturn($version);
+
+        $repository = new AssetRepository(new Asset(), $model);
+
+        $this->assertEquals($version, $repository->findVersion(1));
+    }
 }
