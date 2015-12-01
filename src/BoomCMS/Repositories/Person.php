@@ -67,6 +67,15 @@ class Person implements PersonRepositoryInterface
         return $this->findBy(Model::ATTR_EMAIL, $email);
     }
 
+    public function findByGroupId($groupId)
+    {
+        return $this->model
+            ->join('group_person', 'people.id', '=', 'person_id')
+            ->where('group_id', '=', $groupId)
+            ->orderBy('name', 'asc')
+            ->get();
+    }
+
     public function findByLogin($login)
     {
         return $this->findByEmail($login);

@@ -38,6 +38,13 @@ interface Person
     public function find($id);
 
     /**
+     * @param int $groupId
+     *
+     * @return array
+     */
+    public function findByGroupId($groupId);
+
+    /**
      * @param string $email
      *
      * @return PersonInterface

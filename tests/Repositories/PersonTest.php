@@ -5,6 +5,7 @@ namespace BoomCMS\Tests\Repositories;
 use BoomCMS\Database\Models\Person;
 use BoomCMS\Repositories\Person as PersonRepository;
 use BoomCMS\Tests\AbstractTestCase;
+use Mockery as m;
 
 class PersonTest extends AbstractTestCase
 {
@@ -28,5 +29,19 @@ class PersonTest extends AbstractTestCase
             ->will($this->returnValue($person));
 
         $provider->create(['name' => 'test', 'email' => $email]);
+    }
+
+    public function testFindByGroupId()
+    {
+        $model = m::mock(Person::class);
+
+        $model->shouldReceive('join')->with('group_person', 'people.id', '=', 'person_id')->andReturnSelf();
+        $model->shouldReceive('where')->with('group_id', '=', 1)->andReturnSelf();
+        $model->shouldReceive('orderBy')->with('name', 'asc')->andReturnSelf();
+        $model->shouldReceive('get')->andReturn([]);
+
+        $repository = new PersonRepository($model);
+
+        $this->assertEquals([], $repository->findByGroupId(1));
     }
 }
