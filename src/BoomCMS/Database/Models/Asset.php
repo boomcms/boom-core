@@ -4,7 +4,6 @@ namespace BoomCMS\Database\Models;
 
 use BoomCMS\Contracts\Models\Asset as AssetInterface;
 use BoomCMS\Contracts\Models\Person as PersonInterface;
-use BoomCMS\Support\Facades\Auth;
 use BoomCMS\Support\Traits\Comparable;
 use DateTime;
 use Illuminate\Database\Eloquent\Model;
