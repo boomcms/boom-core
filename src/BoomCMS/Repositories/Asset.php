@@ -84,6 +84,27 @@ class Asset implements AssetRepositoryInterface
         return $this->model->find($id);
     }
 
+    /**
+     * @param array $assetIds
+     *
+     * @return array
+     */
+    public function findMultiple(array $assetIds)
+    {
+        $assetIds = array_unique($assetIds);
+        $assets = [];
+
+        foreach ($assetIds as $assetId) {
+            $asset = $this->find($assetId);
+
+            if ($asset) {
+                $assets[] = $asset;
+            }
+        }
+
+        return $assets;
+    }
+
     public function findByVersionId($versionId)
     {
         return $this->model->withVersion($versionId)->first();

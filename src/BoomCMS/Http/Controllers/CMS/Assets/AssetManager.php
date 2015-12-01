@@ -38,16 +38,7 @@ class AssetManager extends Controller
 
     public function download()
     {
-        $assetIds = array_unique((array) $this->request->input('asset'));
-        $assets = [];
-
-        foreach ($assetIds as $assetId) {
-            $asset = AssetFacade::find($assetId);
-
-            if ($asset) {
-                $assets[] = $asset;
-            }
-        }
+        $assets = AssetFacade::findMultiple((array) $this->request->input('asset'));
 
         if (count($assets) === 1) {
             return Response::download(
