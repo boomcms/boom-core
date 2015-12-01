@@ -1,4 +1,6 @@
 #b-assets-view {
+	overflow: hidden;
+
 	&-files {
 		ul {
 			padding-left: 0;
@@ -38,8 +40,16 @@
 	.b-assets-preview, .boom-tabs {
 		display: inline-block;
 		vertical-align: top;
-		width: 49%;
-		min-width: 300px;
+		float: left;
+	}
+
+	.b-assets-preview {
+		width: 400px;
+		margin-right: 2rem;
+	}
+
+	.boom-tabs {
+		width: calc(~"100% - 2rem - 400px");
 	}
 
 	.b-buttons {
