@@ -32,7 +32,7 @@ class Page
         return Model::create($attrs);
     }
 
-    public function delete(Page $page)
+    public function delete(Model $page)
     {
         $page->delete();
 
