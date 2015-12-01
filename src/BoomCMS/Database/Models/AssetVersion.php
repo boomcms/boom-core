@@ -63,6 +63,14 @@ class AssetVersion extends Model
     }
 
     /**
+     * @return string
+     */
+    public function getFilename()
+    {
+        return $this->{self::ATTR_FILENAME};
+    }
+
+    /**
      * @return int
      */
     public function getFilesize()
