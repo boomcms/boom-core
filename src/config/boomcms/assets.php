@@ -28,7 +28,7 @@ return [
         'extensions' => [
             'png'  => 'image/png',
             'gif'  => 'image/gif',
-            'jpeg' => 'image/jpeg',
+            'jpg'  => 'image/jpeg',
             'tiff' => 'image/tiff',
             'doc'  => 'application/msword',
             'docx' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',

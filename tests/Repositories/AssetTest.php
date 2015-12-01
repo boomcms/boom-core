@@ -3,6 +3,7 @@
 namespace BoomCMS\Tests\Repositories;
 
 use BoomCMS\Database\Models\Asset;
+use BoomCMS\Database\Models\AssetVersion;
 use BoomCMS\Repositories\Asset as AssetRepository;
 use BoomCMS\Tests\AbstractTestCase;
 use Mockery as m;
@@ -18,7 +19,7 @@ class AssetTest extends AbstractTestCase
             ->with(1)
             ->andReturn($asset);
 
-        $repository = new AssetRepository($model);
+        $repository = new AssetRepository($model, new AssetVersion());
 
         $this->assertEquals($asset, $repository->find(1));
     }

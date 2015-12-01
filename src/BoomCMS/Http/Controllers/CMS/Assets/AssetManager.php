@@ -131,8 +131,9 @@ class AssetManager extends Controller
         list($validFiles, $errors) = $this->validateFileUpload();
 
         foreach ($validFiles as $file) {
-            $asset->createVersionFromFile($file);
+            $asset->setType(AssetHelper::typeFromMimetype($file->getMimeType()));
             AssetFacade::save($asset);
+            AssetFacade::createVersionFromFile($asset, $file);
 
             return [$asset->getId()];
         }
@@ -144,7 +145,7 @@ class AssetManager extends Controller
 
     public function revert(Asset $asset)
     {
-        $asset->revertTo($this->request->input('version_id'));
+        AssetFacade::revert($asset, $this->request->input('version_id'));
     }
 
     public function save(Asset $asset)
@@ -168,11 +169,12 @@ class AssetManager extends Controller
             $asset = new Asset();
             $asset
                 ->setUploadedTime(new DateTime('now'))
-                ->setUploadedBy(Auth::getPerson());
+                ->setUploadedBy(Auth::getPerson())
+                ->setTitle($file->getClientOriginalName())
+                ->setType(AssetHelper::typeFromMimetype($file->getMimeType()));
 
             $assetIds[] = AssetFacade::save($asset)->getId();
-            $asset->createVersionFromFile($file);
-            AssetFacade::save($asset);
+            AssetFacade::createVersionFromFile($asset, $file);
         }
 
         return (count($errors)) ? new JsonResponse($errors, 500) : $assetIds;

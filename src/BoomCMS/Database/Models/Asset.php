@@ -5,14 +5,11 @@ namespace BoomCMS\Database\Models;
 use BoomCMS\Contracts\Models\Asset as AssetInterface;
 use BoomCMS\Contracts\Models\Person as PersonInterface;
 use BoomCMS\Support\Facades\Auth;
-use BoomCMS\Support\File;
-use BoomCMS\Support\Helpers\Asset as AssetHelper;
 use BoomCMS\Support\Traits\Comparable;
 use DateTime;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View;
-use Symfony\Component\HttpFoundation\File\UploadedFile as UploadedFile;
 
 class Asset extends Model implements AssetInterface
 {
@@ -100,6 +97,14 @@ class Asset extends Model implements AssetInterface
     public function getDescription()
     {
         return $this->{self::ATTR_DESCRIPTION};
+    }
+
+    /**
+     * @return int
+     */
+    public function getDownloads()
+    {
+        return (int) $this->{self::ATTR_DOWNLOADS};
     }
 
     /**
@@ -315,78 +320,6 @@ class Asset extends Model implements AssetInterface
     public function isImage()
     {
         return $this->getType() == 'image';
-    }
-
-    public function createVersionFromFile(UploadedFile $file)
-    {
-        if (!$this->getTitle()) {
-            $this->setTitle($file->getClientOriginalName());
-        }
-
-        $this->setType(AssetHelper::typeFromMimetype($file->getMimeType()));
-
-        list($width, $height) = getimagesize($file->getRealPath());
-        preg_match('|\.([a-z]+)$|', $file->getClientOriginalName(), $extension);
-
-        if (isset($extension[1])) {
-            $extension = $extension[1];
-        } else {
-            $extension = AssetHelper::extensionFromMimetype($file->getMimeType());
-        }
-
-        $metadata = [];
-
-        if (in_array($extension, ['jpg', 'jpeg', 'tiff'])) {
-            $exif = exif_read_data($file->getRealPath(), 'IFD0', true, false);
-
-            foreach ($exif['IFD0'] as $key => $value) {
-                if (is_string($value) || is_numeric($value)) {
-                    $value = trim(strip_tags($value));
-
-                    if ($value) {
-                        $metadata[$key] = $value;
-                    }
-                }
-            }
-        }
-
-        $version = AssetVersion::create([
-            'asset_id'  => $this->getId(),
-            'extension' => $extension,
-            'filesize'  => $file->getClientSize(),
-            'filename'  => $file->getClientOriginalName(),
-            'width'     => $width,
-            'height'    => $height,
-            'edited_at' => time(),
-            'edited_by' => Auth::getPerson()->getId(),
-            'mimetype'  => File::mime($file->getRealPath()),
-            'metadata'  => (empty($metadata)) ? null : $metadata,
-        ]);
-
-        $file->move(static::directory(), $version->id);
-
-        return $this;
-    }
-
-    public function revertTo($versionId)
-    {
-        $version = AssetVersion::find($versionId);
-
-        if ($version && $version->asset_id = $this->getId()) {
-            $attrs = $version->toArray();
-            unset($attrs['id']);
-            $attrs['edited_at'] = time();
-            $attrs['edited_by'] = Auth::getPerson()->getId();
-
-            $version = VersionModel::create($attrs);
-
-            copy(
-                static::directory().DIRECTORY_SEPARATOR.$versionId,
-                static::directory().DIRECTORY_SEPARATOR.$version->id
-            );
-        }
-
-        return $this;
     }
 
     /**

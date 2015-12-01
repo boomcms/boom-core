@@ -16,7 +16,6 @@ class AssetTest extends AbstractTestCase
 
         $config = include __DIR__.'/../../../src/config/boomcms/assets.php';
         $this->types = $config['assets']['types'];
-        $this->extensions = $config['assets']['extensions'];
     }
 
     public function testTypes()
@@ -30,13 +29,6 @@ class AssetTest extends AbstractTestCase
             foreach ($mimetypes as $mimetype) {
                 $this->assertEquals($type, AssetHelper::typeFromMimetype($mimetype));
             }
-        }
-    }
-
-    public function testExtensionFromMimetype()
-    {
-        foreach ($this->extensions as $extension => $mimetype) {
-            $this->assertEquals($extension, AssetHelper::extensionFromMimetype($mimetype));
         }
     }
 

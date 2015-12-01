@@ -3,7 +3,6 @@
 namespace BoomCMS\Contracts\Models;
 
 use DateTime;
-use Symfony\Component\HttpFoundation\File\UploadedFile as File;
 
 interface Asset
 {
@@ -31,6 +30,11 @@ interface Asset
      * @return string
      */
     public function getDescription();
+
+    /**
+     * @return int
+     */
+    public function getDownloads();
 
     /**
      * @return string
@@ -151,10 +155,6 @@ interface Asset
      * @return bool
      */
     public function isImage();
-
-    public function createVersionFromFile(File $file);
-
-    public function revertTo($versionId);
 
     /**
      * @param string $credits

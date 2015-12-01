@@ -21,7 +21,10 @@ class AddMimeTypeToAssetVersions extends Migration
 
         foreach ($versions as $v) {
             $path = realpath($directory.DIRECTORY_SEPARATOR.$v->id);
-            $mime = File::mime($path);
+
+            $finfo = finfo_open(FILEINFO_MIME_TYPE);
+            $mime = finfo_file($finfo, $path);
+            finfo_close($finfo);
 
             if ($mime) {
                 $v->mimetype = $mime;

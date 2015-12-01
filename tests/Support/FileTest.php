@@ -7,28 +7,27 @@ use BoomCMS\Tests\AbstractTestCase;
 
 class FileTest extends AbstractTestCase
 {
-    public function testMimeReturnsMimetypeOfFile()
+    public function testExtension()
     {
-        $files = [
-            'test.png' => 'image/png',
-            'test.jpg' => 'image/jpeg',
-            'test.txt' => 'text/plain',
+        $expected = [
+            'csv' => ['test.csv', 'text/plain'],
+            'txt' => ['test', 'text/plain'],
+            'jpg' => ['test', 'image/jpeg'],
+            'png' => ['test', 'image/png'],
         ];
 
-        foreach ($files as $file => $mime) {
-            $path = realpath(__DIR__.'/../files/'.$file);
-
-            $this->assertEquals($mime, File::mime($path));
+        foreach ($expected as $extension => $args) {
+            $this->assertEquals($extension, File::extension($args[0], $args[1]));
         }
     }
 
-    public function testMimeWithInvalidPathReturnsFalse()
+    public function testExtensionFromMimetype()
     {
-        $this->assertFalse(File::mime(realpath(__DIR__.'/files/idonotexist')));
-    }
+        $config = include __DIR__.'/../../src/config/boomcms/assets.php';
+        $extensions = $config['assets']['extensions'];
 
-    public function testMimeWithDirectoryReturnsFalse()
-    {
-        $this->assertFalse(File::mime(realpath(__DIR__)));
+        foreach ($extensions as $extension => $mimetype) {
+            $this->assertEquals($extension, File::extensionFromMimetype($mimetype));
+        }
     }
 }

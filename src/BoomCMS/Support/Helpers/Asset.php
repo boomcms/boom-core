@@ -35,21 +35,7 @@ abstract class Asset
         return $namespace.'BaseController';
     }
 
-    /**
-     * Returns an extension which can be used for a particular mimetype.
-     *
-     * Used to determine the extension for a file when it's not present in the filename.
-     *
-     * @param string $mimetype
-     *
-     * @return string
-     */
-    public static function extensionFromMimetype($mimetype)
-    {
-        $extensions = ConfigFacade::get('boomcms.assets.extensions');
 
-        return array_search($mimetype, $extensions);
-    }
 
     /**
      * @param string $mime

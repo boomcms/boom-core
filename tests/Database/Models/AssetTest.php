@@ -54,6 +54,12 @@ class AssetTest extends AbstractModelTestCase
         $this->assertEquals('test', $asset->getDescription());
     }
 
+    public function testGetDownloadsReturnsDownloadsAttribute()
+    {
+        $asset = new Asset([Asset::ATTR_DOWNLOADS => 1]);
+        $this->assertEquals(1, $asset->getDownloads());
+    }
+
     public function testGetFilename()
     {
         $asset = $this->getMock(Asset::class, ['getLatestVersionId']);

@@ -48,7 +48,7 @@ class AssetVersion extends Model
     public function getEditedBy()
     {
         if ($this->editedBy === null) {
-            $this->editedBy = $this->hasOne(Person::class, static::ATTR_EDITED_BY);
+            $this->editedBy = $this->belongsTo(Person::class, static::ATTR_EDITED_BY)->first();
         }
 
         return $this->editedBy;
