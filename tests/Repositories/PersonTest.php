@@ -9,6 +9,16 @@ use Mockery as m;
 
 class PersonTest extends AbstractTestCase
 {
+    public function testDeleteByIds()
+    {
+        $model = m::mock(Person::class);
+        $model->shouldReceive('destroy')->with([1,2]);
+
+        $repository = new PersonRepository($model);
+
+        $this->assertEquals($repository, $repository->deleteByIds([1,2]));
+    }
+
     /**
      * @expectedException BoomCMS\Exceptions\DuplicateEmailException
      */

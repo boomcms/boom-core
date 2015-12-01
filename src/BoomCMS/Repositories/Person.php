@@ -34,9 +34,16 @@ class Person implements PersonRepositoryInterface
         return $this->model->create($credentials);
     }
 
+    /**
+     * @param array $ids
+     *
+     * @return $this
+     */
     public function deleteByIds(array $ids)
     {
-        $this->destroy($ids);
+        $this->model->destroy($ids);
+
+        return $this;
     }
 
     public function find($id)
