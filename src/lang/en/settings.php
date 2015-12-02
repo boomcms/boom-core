@@ -46,7 +46,7 @@ return [
         'urls'     => [
             'heading'              => 'Page URLs',
             'intro'                => 'Set the behaviour of this page\'s URLs after the page is deleted.',
-            'leave'                => 'Don't redirect the URLs to a new page.',
+            'leave'                => 'Don\'t redirect the URLs to a new page.',
             'leave-explanation'    => 'This will return a \'page not found\' error if the link is used but is recommended if no other page has content which is relevant to the content of this page.',
             'redirect'             => 'Redirect the URLs to another page',
             'redirect-explanation' => 'This is recommended if another page has content which is relevant to content of this page.',
