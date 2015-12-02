@@ -9,16 +9,6 @@ $.widget( 'boom.pageManager', {
 			$el.append("<div><a href='#' class='fa fa-plus b-pages-add'><span>Add page</span></a><a href='#' class='fa fa-trash-o b-pages-delete'><span>Delete page</span></a><a href='#' class='fa fa-cog b-pages-settings'><span>Settings</span></a></div>");
 			elementsById[$el.find('a').attr('rel')] = $el;
 		});
-
-		$(children).each(function(i, child) {
-			var $visibilityButton = $("<a class='b-pages-visibility' href='#'>Visibility</a>");
-
-			child.visible? $visibilityButton.addClass('visible') : $visibilityButton.addClass('invisible');
-
-			if (elementsById[child.id]) {
-				elementsById[child.id].find('div').append($visibilityButton);
-			}
-		});
 	},
 
 	addPage : function($el) {
@@ -79,21 +69,6 @@ $.widget( 'boom.pageManager', {
 			});
 	},
 
-	editVisibility : function($el) {
-		var page = new boomPage($el.data('page-id'));
-
-		page.visibility()
-			.done(function(visible) {
-				var $visibilityButton = $el.find('.b-page-visibility');
-
-				if (visible) {
-					$visibilityButton.removeClass('invisible').addClass('visible');
-				} else {
-					$visibilityButton.removeClass('visible').addClass('invisible');
-				}
-			});
-	},
-
 	_init : function() {
 		var pageManager = this;
 
@@ -112,11 +87,6 @@ $.widget( 'boom.pageManager', {
 				e.preventDefault();
 
 				pageManager.editSettings($(this).closest('li'));
-			})
-			.on('click', '.b-pages-visibility', function(e) {
-				e.preventDefault();
-
-				pageManager.editVisibility($(this).closest('li'));
 			});
 	}
 });
