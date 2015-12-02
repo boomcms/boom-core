@@ -4,7 +4,6 @@ namespace BoomCMS\Http\Controllers\CMS\Page\Settings;
 
 use BoomCMS\Core\Page\Finder as PageFinder;
 use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\View as ViewFacade;
 
 class View extends Settings
 {
@@ -12,7 +11,7 @@ class View extends Settings
     {
         parent::admin();
 
-        return ViewFacade::make("$this->viewPrefix/admin", [
+        return view("$this->viewPrefix/admin", [
             'page' => $this->page,
         ]);
     }
@@ -45,18 +44,28 @@ class View extends Settings
         return $v;
     }
 
+    public function delete()
+    {
+        parent::delete();
+
+        return view($this->viewPrefix.'/delete', [
+            'children' => $this->page->countChildren(),
+            'page'     => $this->page,
+        ]);
+    }
+
     public function feature()
     {
         parent::feature();
 
-        return ViewFacade::make("$this->viewPrefix/feature", [
+        return view("$this->viewPrefix/feature", [
             'featureImageId' => $this->page->getFeatureImageId(),
         ]);
     }
 
     public function index()
     {
-        return ViewFacade::make("$this->viewPrefix/index", [
+        return view("$this->viewPrefix/index", [
             'page' => $this->page,
         ]);
     }
@@ -65,7 +74,7 @@ class View extends Settings
     {
         parent::navigation();
 
-        return ViewFacade::make("$this->viewPrefix/navigation", [
+        return view("$this->viewPrefix/navigation", [
             'page'          => $this->page,
             'allowAdvanced' => $this->allowAdvanced,
         ]);
@@ -75,7 +84,7 @@ class View extends Settings
     {
         parent::search($this->page);
 
-        return ViewFacade::make("$this->viewPrefix/search", [
+        return view("$this->viewPrefix/search", [
             'allowAdvanced' => $this->allowAdvanced,
             'page'          => $this->page,
         ]);
@@ -92,7 +101,7 @@ class View extends Settings
             ->setLimit(50)
             ->findAll();
 
-        return ViewFacade::make("$this->viewPrefix/sort_children", [
+        return view("$this->viewPrefix/sort_children", [
             'children' => $children,
         ]);
     }
@@ -101,7 +110,7 @@ class View extends Settings
     {
         parent::visibility();
 
-        return ViewFacade::make("$this->viewPrefix/visibility", [
+        return view("$this->viewPrefix/visibility", [
             'page' => $this->page,
         ]);
     }

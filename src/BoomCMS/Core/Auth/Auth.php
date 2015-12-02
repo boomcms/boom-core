@@ -2,6 +2,7 @@
 
 namespace BoomCMS\Core\Auth;
 
+use BoomCMS\Contracts\Models\Page;
 use BoomCMS\Contracts\Models\Person;
 use BoomCMS\Repositories\Person as PersonRepository;
 use Hautelook\Phpass\PasswordHash;
@@ -103,6 +104,20 @@ class Auth
         }
 
         return false;
+    }
+
+    /**
+     * Determines whether the current user can delete a given page.
+     *
+     * @param Page $page
+     *
+     * @return bool
+     */
+    public function canDelete(Page $page)
+    {
+        return $page->wasCreatedBy($this->getPerson())
+            || $this->loggedIn('delete_page', $page)
+            || $this->loggedIn('manage_pages');
     }
 
     public function getAutoLoginCookie()

@@ -11,11 +11,8 @@ $.widget( 'boom.pageToolbar', {
 
 		this.element.contents()
 			.on('click', '#b-page-delete', function() {
-				self.options.page.delete()
-					.done(function(response) {
-						new boomNotification("Page deleted, redirecting to parent.");
-						top.location = response;
-					});
+				self.$settings.pageSettings('show', 'delete');
+				self.openPageSettings();
 			})
 			.on('click', '#b-page-addpage', function() {
 				self.options.page.add()
@@ -152,6 +149,13 @@ $.widget( 'boom.pageToolbar', {
 						top.window.document.title,
 						'/' + primaryUrl
 					);
+				},
+				deleteSave: function(event, response) {
+					new boomNotification('Page deleted, redirecting to parent');
+
+					setTimeout(function() {
+						top.location = response;
+					}, 500);
 				}
 			});
 

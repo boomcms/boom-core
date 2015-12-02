@@ -39642,27 +39642,7 @@ function boomPage(page_id) {
 	};
 
 	boomPage.prototype.delete = function() {
-		var promise = new $.Deferred(),
-			url = this.baseUrl + 'delete/' + this.id;
-
-		new boomDialog({
-			width: 600,
-			url: url,
-			title: 'Please confirm',
-			id: 'b-page-confirmdelete'
-		})
-		.done(function() {
-			$.post(url, {}, function(response) {
-				promise.resolve(response);
-			});
-		})
-		.fail(function(response, status) {
-			if (status === 423) {
-				new boomAlert('You cannot delete this page because deletion has been disabled.');
-			}
-		});
-
-		return promise;
+		return $.post(this.baseUrl + 'settings/delete/' + this.id);
 	};
 
 	boomPage.prototype.embargo = function() {
@@ -39956,11 +39936,8 @@ $.widget( 'boom.pageToolbar', {
 
 		this.element.contents()
 			.on('click', '#b-page-delete', function() {
-				self.options.page.delete()
-					.done(function(response) {
-						new boomNotification("Page deleted, redirecting to parent.");
-						top.location = response;
-					});
+				self.$settings.pageSettings('show', 'delete');
+				self.openPageSettings();
 			})
 			.on('click', '#b-page-addpage', function() {
 				self.options.page.add()
@@ -40097,6 +40074,13 @@ $.widget( 'boom.pageToolbar', {
 						top.window.document.title,
 						'/' + primaryUrl
 					);
+				},
+				deleteSave: function(event, response) {
+					new boomNotification('Page deleted, redirecting to parent');
+
+					setTimeout(function() {
+						top.location = response;
+					}, 500);
 				}
 			});
 
@@ -40465,7 +40449,83 @@ $.widget('boom.pageTree', {
 
 		return deferred;
 	};
-};$.widget('boom.pageSettingsDefault', {
+};$.widget('boom.pageSettingsChildren', {
+	bind: function() {
+		var settingsEditor = this,
+			page = this.options.page;
+
+		this.element
+			.on('change', 'select[name="children_ordering_policy"]', function() {
+				if ($(this).find('option:selected').val() === 'sequence') {
+					settingsEditor.$reorderButton.show();
+				} else {
+					settingsEditor.$reorderButton.hide();
+				}
+			})
+			.on('click', '#b-page-settings-children-reorder', function(e) {
+				e.preventDefault();
+		
+				$.get('/cms/search/pages', {parent: page.id})
+					.done(function(pages) {
+						var sortDialog = new boomDialog({
+							msg: "<div></div>",
+							title: 'Reorder child pages',
+							width: 'auto',
+							open: function() {
+								var $ul = $('<ul>')
+									.attr('id', 'b-page-settings-children-sort')
+									.appendTo(sortDialog.contents);
+
+								for (var i = 0; i < pages.length; i++) {
+									$('<li>')
+										.attr('data-id', pages[i].id)
+										.append(
+											$('<span>')
+												.addClass('title fa fa-bars')
+												.text(pages[i].title)
+										)
+										.appendTo($ul);
+								}
+										
+								$ul.sortable();
+							}
+						});
+
+						sortDialog.done(function() {
+							var sequences = sortDialog.contents.find('li').map(function() {
+								return $(this).attr('data-id');
+							}).get();
+
+							$.post(settingsEditor.sortUrl, {sequences: sequences})
+								.done(function() {
+									new boomNotification('Child page ordering saved');
+								});
+						});
+					});
+			})
+			.on('click', '.b-button-cancel', function(e) {
+				e.preventDefault();
+
+				settingsEditor.options.settings.show('children');
+			})
+			.on('click', '.b-button-save', function(e) {
+				e.preventDefault();
+
+				page
+					.saveSettings('children', settingsEditor.element.find('form').serialize())
+					.done(function() {
+						new boomNotification('Child page settings saved');
+					});
+			});;
+	},
+
+	_create: function() {
+		this.$reorderButton = this.element.find('#b-page-settings-children-reorder');
+		this.sortUrl = '/cms/page/settings/sort_children/' + this.options.page.id;
+
+		this.bind();
+	}
+});;$.widget('boom.pageSettingsDefault', {
 	bind: function() {
 		var settingsEditor = this,
 			section = settingsEditor.options.section;
@@ -40489,6 +40549,81 @@ $.widget('boom.pageTree', {
 	_create: function() {
 		this.page = this.options.page;
 		this.bind();
+	}
+});;$.widget('boom.pageSettingsDelete', {
+	bind: function() {
+		var settingsEditor = this,
+			page = this.page;
+
+		this.element
+			.on('click', '#b-page-delete-confirm', function(e) {
+				e.preventDefault();
+
+				page.delete()
+					.done(function(response) {
+						settingsEditor._trigger('done', null, response);
+					});
+			});
+	},
+
+	_create: function() {
+		this.page = this.options.page;
+		this.bind();
+	}
+});;$.widget('boom.pageSettingsDrafts', {
+	bind: function() {
+		var draftSettings = this,
+			page = this.options.page;
+
+		this.element
+			.on('click', '.b-page-publish', function() {
+				page.publish()
+					.done(function(status) {
+						draftSettings.update({
+							action: 'publish',
+							status: status
+						});
+					});
+			})
+			.on('click', '.b-page-embargo', function() {
+				page.embargo()
+					.done(function(status) {
+						draftSettings.update({
+							action: 'embargo',
+							status: status
+						});
+					});
+			})
+			.on('click', '.b-page-revert', function() {
+				page.revertToPublished()
+					.done(function(status) {
+						draftSettings.update({
+							action: 'revert',
+							status: status
+						});
+					});
+			})
+			.on('click', '.b-page-request-approval', function() {
+				page.requestApproval()
+					.done(function(status) {
+						draftSettings.update({
+							action: 'request approval',
+							status: status
+						});
+					});
+			})
+			.on('click', '.b-page-preview', function() {
+				$.boom.editor.state('preview', $(this).attr('data-url'));
+			});
+	},
+
+	_create: function() {
+		this.bind();
+	},
+	
+	update: function(status) {
+		this._trigger('done', null, status);
+		this.options.settings.show('drafts');
 	}
 });;$.widget('boom.pageSettingsFeature', {
 	changed: false,
@@ -40589,6 +40724,352 @@ $.widget('boom.pageTree', {
 			this.hasNoFeatureImage();
 		}
 	}
+});;$.widget('boom.pageSettingsNavigation', $.boom.pageSettingsDefault, {
+	bind: function() {
+		var settingsEditor = this,
+			section = settingsEditor.options.section;
+
+		this.element
+			.on('click', '.b-button-cancel', function(e) {
+				e.preventDefault();
+
+				settingsEditor.options.settings.show(section);
+			})
+			.on('click', '.b-button-save', function(e) {
+				e.preventDefault();
+
+				settingsEditor.page.saveSettings(section, settingsEditor.element.find('form').serialize())
+					.done(function() {
+						new boomNotification('Page settings saved');
+					});
+			})
+			.on('click', '.b-navigation-reparent', function(e) {
+				var current = settingsEditor.element.find('input[name=parent_id]').val();
+
+				e.preventDefault();
+
+				new boomLinkPicker(new boomLink(null, current), {
+						external: false,
+						asset: false
+					})
+					.done(function(link) {
+						settingsEditor.element.find('input[name=parent_id]').val(link.getPageId());
+				
+						settingsEditor.element
+							.find('.title')
+							.text(link.getTitle())
+							.end()
+							.find('.uri')
+							.text(link.getUrl());
+					});
+			});
+	},
+
+	_create: function() {
+		var $el = this.element;
+		this.page = this.options.page;
+		this.bind();
+
+		$el.find('.boom-tree').pageTree({
+			active: $el.find('input[name=parent_id]').val(),
+			onPageSelect : function(page) {
+				$el.find('input[name=parent_id]').val(page.pageId);
+			}
+		});
+	}
+});;$.widget('boom.pageSettingsRelations', {
+	addRelatedPage: function() {
+		var page = this.page,
+			$relatedPages = this.element.find('ul'),
+			$el = this.element;
+
+		new boomLinkPicker(new boomLink(), {
+				external: false,
+				asset: false
+			})
+			.done(function(link) {
+				page.addRelatedPage(link.getPageId())
+					.done(function() {
+						var $li = $('<li></li>')
+							.append('<span class="title">' + link.getTitle() + '</span>')
+							.append('<span class="uri">' + link.getUrl() + '</span>')
+							.append('<a href="#" class="fa fa-trash-o"><span>Remove</span></a>');
+
+						$relatedPages.append($li);
+						$el.find('.current').show();
+					});
+			});
+	},
+
+	bind: function() {
+		var editor = this,
+			page = this.page;
+
+		this.element
+			.on('click', '#b-tags-addpage', function() {
+				editor.addRelatedPage();
+			})
+			.on('click', 'li a', function() {
+				editor.removeRelatedPage($(this));
+			});
+	},
+
+	_create: function() {
+		this.page = this.options.page;
+
+		this.getRelatedPages();
+		this.bind();
+	},
+
+	getRelatedPages: function() {
+		var $element = this.element;
+
+		$.get('/cms/search/pages', {relatedTo: this.page.id})
+			.done(function(pages) {
+				var $ul = $element.find('ul');
+
+				if (pages.length) {
+					$element.find('.current').show();
+				}
+
+				for (var i = 0; i < pages.length; i++) {
+					var $li = $('<li>'),
+						$title = $('<span>').addClass('title').text(pages[i].title).appendTo($li),
+						$uri = $('<span>').addClass('uri').text(pages[i].uri).appendTo($li),
+						$delete = $('<a>')
+							.attr('href', '#')
+							.addClass('fa fa-trash-o')
+							.attr('data-page-id', pages[i].id)
+							.html('<span>Remove</span>')
+							.appendTo($li);
+
+					$ul.append($li);
+				}
+			});
+	},
+
+	removeRelatedPage: function($a) {
+		var $el = this.element,
+			$relatedPages = $el.find('ul'),
+			$current = $el.find('.current');
+
+		this.page.removeRelatedPage($a.attr('data-page-id'))
+			.done(function() {
+				$a.parent().remove();
+
+				$relatedPages.find('li').length ? $current.show() : $current.hide();
+			});
+	}
+});;$.widget('boom.pageSettingsTags', {
+	baseUrl: '/cms/page/tags/',
+
+	addTag: function(group, tag) {
+		var tagEditor = this;
+
+		$.post(this.getUrl('add'), {
+			group : group,
+			tag : tag.name
+		});
+	},
+
+	addTagGroup: function(name) {
+		if (name) {
+			var $newGroup = $('<li><p>' + name + '</p><ul class="b-tags-list" data-group="' + name + '"><li class="b-tag"></li></ul></li>');
+
+			$newGroup.find('.b-tag').html(this.element.find('.b-tags-add').first().clone());
+			$newGroup.insertBefore(this.element.find('.b-tags-grouped').children().last());
+			$newGroup.find('.b-tags-add input[type=text]').focus();
+
+			this.initTagList($newGroup.find('.b-tags-list'));
+		}
+	},
+
+	bind: function() {
+		var tagEditor = this,
+			page = this.page;
+
+		this.element
+			.on('submit', '.b-tags-newgroup form', function(e) {
+				e.preventDefault();
+
+				var $input = $(this).find('input[type=text]');
+
+				tagEditor.addTagGroup($input.val());
+				$input.val('');
+			});
+
+		this.initTagList(this.element.find('.b-tags-list'));
+	},
+
+	_create: function() {
+		this.page = this.options.page;
+
+		this.bind();
+	},
+
+	getUrl: function(action) {
+		return this.baseUrl + action + '/' + this.page.id;
+	},
+
+	initTagList: function($list) {
+		var page = this.page;
+
+		$list.pageTagSearch({
+			addTag : function(e, data) {
+				page.addTag(data.group, data.tag);
+			},
+			removeTag : function(e, tagId) {
+				page.removeTag(tagId);
+			}
+		});
+	},
+
+	removeTag: function($a) {
+		$.post(this.getUrl('remove'), {
+			tag : $a.attr('data-tag_id')
+		})
+		.done(function() {
+			$a.parent().remove();
+		});
+	},
+
+	updateTagList: function() {
+		var tagEditor = this;
+
+		$.get(this.getUrl('list'));
+	}
+});;$.widget('boom.pageSettingsTemplate', {
+	_create: function() {
+		var templateEditor = this,
+			initial = this.element.find('select option:selected').val();
+
+		this.showDetails();
+
+		this.element
+			.on('change', 'select', function() {
+				templateEditor.showDetails();
+			})
+			.on('click', '.b-template-save', function(e) {
+				e.preventDefault();
+		
+				var templateId = templateEditor.element.find('select option:selected').val();
+
+				templateEditor.save(templateId);
+			})
+			.on('click', '.b-template-cancel', function(e) {
+				e.preventDefault();
+
+				templateEditor.element.find('select').val(initial);
+			});
+	},
+
+	save: function(templateId) {
+		var templateEditor = this;
+
+		if (templateId) {
+			this.options.page.setTemplate(templateId)
+				.done(function() {
+					new boomNotification('Page template updated');
+
+					templateEditor._trigger('done');
+				});
+		} else {
+			new boomAlert('You must select a template from the list');
+		}
+	},
+
+	showDetails: function() {
+		var $template = this.element.find('#template'),
+			$description = this.element.find('#description'),
+			$count = this.element.find('#count'),
+			$selected = $template.find('option:selected'),
+			description_text = $selected.data('description');
+
+		if (description_text) {
+			$description.show().find('p').html($selected.data('description'));
+		} else {
+			$description.hide();
+		}
+
+		$count.find('p').html($selected.data('count'));
+	}
+});;$.widget('boom.pageSettingsUrls', {
+	baseUrl: '/cms/page/urls/',
+
+	add: function() {
+		var url = new boomPageUrl(),
+			urlEditor = this;
+
+		url.add(this.page.id)
+			.done(function(response) {
+				new boomNotification('Url added.');
+
+				urlEditor.element.load(urlEditor.list_url);
+			});
+	},
+
+	bind: function() {
+		var urlEditor = this,
+			page = this.page;
+
+		this.element
+			.on('change', '.b-urls-primary', function() {
+				var $url = $(this).closest('li'),
+					is_primary = $url.find('.b-urls-primary').is(':checked')? 1 : 0;
+
+				if (is_primary) {
+					urlEditor.makePrimary($url);
+					urlEditor._trigger('done', null, $url.find('label').text());
+				}
+			})
+			.on('click', '.b-urls-remove', function(e) {
+				e.preventDefault();
+
+				urlEditor.delete($(e.target).closest('li'));
+			})
+			.on('click', '.b-urls-add', function() {
+				urlEditor.add();
+			});
+	},
+
+	_create: function() {
+		var urlEditor = this;
+
+		this.page = this.options.page;
+		this.list_url = this.baseUrl + this.page.id;
+
+		this.bind();
+	},
+
+	delete: function($li) {
+		var id = $li.data('id'),
+			url = new boomPageUrl(id);
+
+		url.delete()
+			.done(function() {
+				$li.remove();
+
+				new boomNotification("The specified URL has been deleted.");
+			});
+	},
+
+	makePrimary: function($url) {
+		var url = new boomPageUrl($url.data('id'));
+
+		url.makePrimary()
+			.done(function() {
+				$url
+					.parent()
+					.find('.b-page-urls-primary')
+					.removeClass('b-page-urls-primary')
+					.end()
+					.find('.b-urls-primary:checked')
+					.parent()
+					.addClass('b-page-urls-primary');
+
+				new boomNotification("The primary URL of the page has been updated.");
+			});
+	}
 });;$.widget('boom.pageSettingsVisibility', {
 	changed: false,
 	baseUrl: '/cms/page/settings/visibility/',
@@ -40688,483 +41169,6 @@ $.widget('boom.pageTree', {
 
 			visibleTo.blur();
 		}
-	}
-});;$.widget('boom.pageSettingsTags', {
-	baseUrl: '/cms/page/tags/',
-
-	addTag: function(group, tag) {
-		var tagEditor = this;
-
-		$.post(this.getUrl('add'), {
-			group : group,
-			tag : tag.name
-		});
-	},
-
-	addTagGroup: function(name) {
-		if (name) {
-			var $newGroup = $('<li><p>' + name + '</p><ul class="b-tags-list" data-group="' + name + '"><li class="b-tag"></li></ul></li>');
-
-			$newGroup.find('.b-tag').html(this.element.find('.b-tags-add').first().clone());
-			$newGroup.insertBefore(this.element.find('.b-tags-grouped').children().last());
-			$newGroup.find('.b-tags-add input[type=text]').focus();
-
-			this.initTagList($newGroup.find('.b-tags-list'));
-		}
-	},
-
-	bind: function() {
-		var tagEditor = this,
-			page = this.page;
-
-		this.element
-			.on('submit', '.b-tags-newgroup form', function(e) {
-				e.preventDefault();
-
-				var $input = $(this).find('input[type=text]');
-
-				tagEditor.addTagGroup($input.val());
-				$input.val('');
-			});
-
-		this.initTagList(this.element.find('.b-tags-list'));
-	},
-
-	_create: function() {
-		this.page = this.options.page;
-
-		this.bind();
-	},
-
-	getUrl: function(action) {
-		return this.baseUrl + action + '/' + this.page.id;
-	},
-
-	initTagList: function($list) {
-		var page = this.page;
-
-		$list.pageTagSearch({
-			addTag : function(e, data) {
-				page.addTag(data.group, data.tag);
-			},
-			removeTag : function(e, tagId) {
-				page.removeTag(tagId);
-			}
-		});
-	},
-
-	removeTag: function($a) {
-		$.post(this.getUrl('remove'), {
-			tag : $a.attr('data-tag_id')
-		})
-		.done(function() {
-			$a.parent().remove();
-		});
-	},
-
-	updateTagList: function() {
-		var tagEditor = this;
-
-		$.get(this.getUrl('list'));
-	}
-});;$.widget('boom.pageSettingsUrls', {
-	baseUrl: '/cms/page/urls/',
-
-	add: function() {
-		var url = new boomPageUrl(),
-			urlEditor = this;
-
-		url.add(this.page.id)
-			.done(function(response) {
-				new boomNotification('Url added.');
-
-				urlEditor.element.load(urlEditor.list_url);
-			});
-	},
-
-	bind: function() {
-		var urlEditor = this,
-			page = this.page;
-
-		this.element
-			.on('change', '.b-urls-primary', function() {
-				var $url = $(this).closest('li'),
-					is_primary = $url.find('.b-urls-primary').is(':checked')? 1 : 0;
-
-				if (is_primary) {
-					urlEditor.makePrimary($url);
-					urlEditor._trigger('done', null, $url.find('label').text());
-				}
-			})
-			.on('click', '.b-urls-remove', function(e) {
-				e.preventDefault();
-
-				urlEditor.delete($(e.target).closest('li'));
-			})
-			.on('click', '.b-urls-add', function() {
-				urlEditor.add();
-			});
-	},
-
-	_create: function() {
-		var urlEditor = this;
-
-		this.page = this.options.page;
-		this.list_url = this.baseUrl + this.page.id;
-
-		this.bind();
-	},
-
-	delete: function($li) {
-		var id = $li.data('id'),
-			url = new boomPageUrl(id);
-
-		url.delete()
-			.done(function() {
-				$li.remove();
-
-				new boomNotification("The specified URL has been deleted.");
-			});
-	},
-
-	makePrimary: function($url) {
-		var url = new boomPageUrl($url.data('id'));
-
-		url.makePrimary()
-			.done(function() {
-				$url
-					.parent()
-					.find('.b-page-urls-primary')
-					.removeClass('b-page-urls-primary')
-					.end()
-					.find('.b-urls-primary:checked')
-					.parent()
-					.addClass('b-page-urls-primary');
-
-				new boomNotification("The primary URL of the page has been updated.");
-			});
-	}
-});;$.widget('boom.pageSettingsChildren', {
-	bind: function() {
-		var settingsEditor = this,
-			page = this.options.page;
-
-		this.element
-			.on('change', 'select[name="children_ordering_policy"]', function() {
-				if ($(this).find('option:selected').val() === 'sequence') {
-					settingsEditor.$reorderButton.show();
-				} else {
-					settingsEditor.$reorderButton.hide();
-				}
-			})
-			.on('click', '#b-page-settings-children-reorder', function(e) {
-				e.preventDefault();
-		
-				$.get('/cms/search/pages', {parent: page.id})
-					.done(function(pages) {
-						var sortDialog = new boomDialog({
-							msg: "<div></div>",
-							title: 'Reorder child pages',
-							width: 'auto',
-							open: function() {
-								var $ul = $('<ul>')
-									.attr('id', 'b-page-settings-children-sort')
-									.appendTo(sortDialog.contents);
-
-								for (var i = 0; i < pages.length; i++) {
-									$('<li>')
-										.attr('data-id', pages[i].id)
-										.append(
-											$('<span>')
-												.addClass('title fa fa-bars')
-												.text(pages[i].title)
-										)
-										.appendTo($ul);
-								}
-										
-								$ul.sortable();
-							}
-						});
-
-						sortDialog.done(function() {
-							var sequences = sortDialog.contents.find('li').map(function() {
-								return $(this).attr('data-id');
-							}).get();
-
-							$.post(settingsEditor.sortUrl, {sequences: sequences})
-								.done(function() {
-									new boomNotification('Child page ordering saved');
-								});
-						});
-					});
-			})
-			.on('click', '.b-button-cancel', function(e) {
-				e.preventDefault();
-
-				settingsEditor.options.settings.show('children');
-			})
-			.on('click', '.b-button-save', function(e) {
-				e.preventDefault();
-
-				page
-					.saveSettings('children', settingsEditor.element.find('form').serialize())
-					.done(function() {
-						new boomNotification('Child page settings saved');
-					});
-			});;
-	},
-
-	_create: function() {
-		this.$reorderButton = this.element.find('#b-page-settings-children-reorder');
-		this.sortUrl = '/cms/page/settings/sort_children/' + this.options.page.id;
-
-		this.bind();
-	}
-});;$.widget('boom.pageSettingsNavigation', $.boom.pageSettingsDefault, {
-	bind: function() {
-		var settingsEditor = this,
-			section = settingsEditor.options.section;
-
-		this.element
-			.on('click', '.b-button-cancel', function(e) {
-				e.preventDefault();
-
-				settingsEditor.options.settings.show(section);
-			})
-			.on('click', '.b-button-save', function(e) {
-				e.preventDefault();
-
-				settingsEditor.page.saveSettings(section, settingsEditor.element.find('form').serialize())
-					.done(function() {
-						new boomNotification('Page settings saved');
-					});
-			})
-			.on('click', '.b-navigation-reparent', function(e) {
-				var current = settingsEditor.element.find('input[name=parent_id]').val();
-
-				e.preventDefault();
-
-				new boomLinkPicker(new boomLink(null, current), {
-						external: false,
-						asset: false
-					})
-					.done(function(link) {
-						settingsEditor.element.find('input[name=parent_id]').val(link.getPageId());
-				
-						settingsEditor.element
-							.find('.title')
-							.text(link.getTitle())
-							.end()
-							.find('.uri')
-							.text(link.getUrl());
-					});
-			});
-	},
-
-	_create: function() {
-		var $el = this.element;
-		this.page = this.options.page;
-		this.bind();
-
-		$el.find('.boom-tree').pageTree({
-			active: $el.find('input[name=parent_id]').val(),
-			onPageSelect : function(page) {
-				$el.find('input[name=parent_id]').val(page.pageId);
-			}
-		});
-	}
-});;$.widget('boom.pageSettingsTemplate', {
-	_create: function() {
-		var templateEditor = this,
-			initial = this.element.find('select option:selected').val();
-
-		this.showDetails();
-
-		this.element
-			.on('change', 'select', function() {
-				templateEditor.showDetails();
-			})
-			.on('click', '.b-template-save', function(e) {
-				e.preventDefault();
-		
-				var templateId = templateEditor.element.find('select option:selected').val();
-
-				templateEditor.save(templateId);
-			})
-			.on('click', '.b-template-cancel', function(e) {
-				e.preventDefault();
-
-				templateEditor.element.find('select').val(initial);
-			});
-	},
-
-	save: function(templateId) {
-		var templateEditor = this;
-
-		if (templateId) {
-			this.options.page.setTemplate(templateId)
-				.done(function() {
-					new boomNotification('Page template updated');
-
-					templateEditor._trigger('done');
-				});
-		} else {
-			new boomAlert('You must select a template from the list');
-		}
-	},
-
-	showDetails: function() {
-		var $template = this.element.find('#template'),
-			$description = this.element.find('#description'),
-			$count = this.element.find('#count'),
-			$selected = $template.find('option:selected'),
-			description_text = $selected.data('description');
-
-		if (description_text) {
-			$description.show().find('p').html($selected.data('description'));
-		} else {
-			$description.hide();
-		}
-
-		$count.find('p').html($selected.data('count'));
-	}
-});;$.widget('boom.pageSettingsDrafts', {
-	bind: function() {
-		var draftSettings = this,
-			page = this.options.page;
-
-		this.element
-			.on('click', '.b-page-publish', function() {
-				page.publish()
-					.done(function(status) {
-						draftSettings.update({
-							action: 'publish',
-							status: status
-						});
-					});
-			})
-			.on('click', '.b-page-embargo', function() {
-				page.embargo()
-					.done(function(status) {
-						draftSettings.update({
-							action: 'embargo',
-							status: status
-						});
-					});
-			})
-			.on('click', '.b-page-revert', function() {
-				page.revertToPublished()
-					.done(function(status) {
-						draftSettings.update({
-							action: 'revert',
-							status: status
-						});
-					});
-			})
-			.on('click', '.b-page-request-approval', function() {
-				page.requestApproval()
-					.done(function(status) {
-						draftSettings.update({
-							action: 'request approval',
-							status: status
-						});
-					});
-			})
-			.on('click', '.b-page-preview', function() {
-				$.boom.editor.state('preview', $(this).attr('data-url'));
-			});
-	},
-
-	_create: function() {
-		this.bind();
-	},
-	
-	update: function(status) {
-		this._trigger('done', null, status);
-		this.options.settings.show('drafts');
-	}
-});;$.widget('boom.pageSettingsRelations', {
-	addRelatedPage: function() {
-		var page = this.page,
-			$relatedPages = this.element.find('ul'),
-			$el = this.element;
-
-		new boomLinkPicker(new boomLink(), {
-				external: false,
-				asset: false
-			})
-			.done(function(link) {
-				page.addRelatedPage(link.getPageId())
-					.done(function() {
-						var $li = $('<li></li>')
-							.append('<span class="title">' + link.getTitle() + '</span>')
-							.append('<span class="uri">' + link.getUrl() + '</span>')
-							.append('<a href="#" class="fa fa-trash-o"><span>Remove</span></a>');
-
-						$relatedPages.append($li);
-						$el.find('.current').show();
-					});
-			});
-	},
-
-	bind: function() {
-		var editor = this,
-			page = this.page;
-
-		this.element
-			.on('click', '#b-tags-addpage', function() {
-				editor.addRelatedPage();
-			})
-			.on('click', 'li a', function() {
-				editor.removeRelatedPage($(this));
-			});
-	},
-
-	_create: function() {
-		this.page = this.options.page;
-
-		this.getRelatedPages();
-		this.bind();
-	},
-
-	getRelatedPages: function() {
-		var $element = this.element;
-
-		$.get('/cms/search/pages', {relatedTo: this.page.id})
-			.done(function(pages) {
-				var $ul = $element.find('ul');
-
-				if (pages.length) {
-					$element.find('.current').show();
-				}
-
-				for (var i = 0; i < pages.length; i++) {
-					var $li = $('<li>'),
-						$title = $('<span>').addClass('title').text(pages[i].title).appendTo($li),
-						$uri = $('<span>').addClass('uri').text(pages[i].uri).appendTo($li),
-						$delete = $('<a>')
-							.attr('href', '#')
-							.addClass('fa fa-trash-o')
-							.attr('data-page-id', pages[i].id)
-							.html('<span>Remove</span>')
-							.appendTo($li);
-
-					$ul.append($li);
-				}
-			});
-	},
-
-	removeRelatedPage: function($a) {
-		var $el = this.element,
-			$relatedPages = $el.find('ul'),
-			$current = $el.find('.current');
-
-		this.page.removeRelatedPage($a.attr('data-page-id'))
-			.done(function() {
-				$a.parent().remove();
-
-				$relatedPages.find('li').length ? $current.show() : $current.hide();
-			});
 	}
 });;/**
 @fileOverview Boom interface for wysihtml5.

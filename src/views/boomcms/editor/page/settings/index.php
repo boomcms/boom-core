@@ -84,6 +84,14 @@
             </li>
         </div>
 
+        <?php if ($auth->canDelete($page)): ?>
+            <li>
+                <a href="#" class="fa fa-trash-o" data-b-page-setting="delete">
+                    <?= Lang::get('boomcms::settings.menu.delete') ?>
+                </a>
+            </li>
+        <?php endif ?>
+
         <li class="b-page-settings-close">
             <a href="#" class="fa fa-close">
                 <?= Lang::get('boomcms::settings.menu.close') ?>

@@ -33,6 +33,13 @@ abstract class Settings extends PageController
         $this->allowAdvanced = Auth::loggedIn('edit_page_children_advanced', $this->page);
     }
 
+    public function delete()
+    {
+        if (!Auth::canDelete($this->page)) {
+            abort(403);
+        }
+    }
+
     public function feature()
     {
         $this->authorization('edit_feature_image');

@@ -1,4 +1,4 @@
-#b-page-confirmdelete {
+#b-page-delete-options {
 	dl {
 		overflow: hidden;
 
@@ -20,15 +20,22 @@
 		}
 	}
 
-	/* List of child pages which will be affected by a page being deleted */
-	&-children {
+	#b-page-delete-children {
 		overflow: auto;
 		max-height: 200px;
-		_height: 200px;
 		margin-bottom: 1em;
 
 		ul {
 			margin-bottom: 0;
+		}
+	}
+
+	#b-page-delete-confirm {
+		background: @red;
+		color: @white;
+
+		&:hover, &:focus {
+			color: @black;
 		}
 	}
 }

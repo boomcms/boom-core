@@ -4,6 +4,7 @@ namespace BoomCMS\Http\Controllers\CMS\Page\Settings;
 
 use BoomCMS\Events\PageSearchSettingsWereUpdated;
 use BoomCMS\Events\PageWasMadeVisible;
+use BoomCMS\Jobs\DeletePage;
 use BoomCMS\Jobs\ReorderChildPages;
 use BoomCMS\Support\Facades\Auth;
 use BoomCMS\Support\Facades\Page;
@@ -47,6 +48,19 @@ class Save extends Settings
         }
 
         Page::save($this->page);
+    }
+
+    public function delete()
+    {
+        $parentUrl = $this->page->getParent()->url();
+
+        if ($this->request->input('with_children') == 1) {
+            Bus::dispatch(new DeletePageChildren($this->page));
+        }
+
+        Bus::dispatch(new DeletePage($this->page));
+
+        return (string) $parentUrl;
     }
 
     public function feature()

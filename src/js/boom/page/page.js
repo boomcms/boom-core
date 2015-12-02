@@ -31,27 +31,7 @@ function boomPage(page_id) {
 	};
 
 	boomPage.prototype.delete = function() {
-		var promise = new $.Deferred(),
-			url = this.baseUrl + 'delete/' + this.id;
-
-		new boomDialog({
-			width: 600,
-			url: url,
-			title: 'Please confirm',
-			id: 'b-page-confirmdelete'
-		})
-		.done(function() {
-			$.post(url, {}, function(response) {
-				promise.resolve(response);
-			});
-		})
-		.fail(function(response, status) {
-			if (status === 423) {
-				new boomAlert('You cannot delete this page because deletion has been disabled.');
-			}
-		});
-
-		return promise;
+		return $.post(this.baseUrl + 'settings/delete/' + this.id);
 	};
 
 	boomPage.prototype.embargo = function() {

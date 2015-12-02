@@ -103,8 +103,6 @@ Route::group(['middleware' => [
             Route::controller('chunk/{page}', 'Chunk');
 
             Route::group(['prefix' => 'page', 'namespace' => 'Page'], function () {
-                Route::get('delete/{page}', 'Delete@confirm');
-                Route::post('delete/{page}', 'Delete@delete');
                 Route::post('discard/{page}', 'PageController@discard');
 
                 Route::group(['prefix' => 'version', 'namespace' => 'Version'], function () {

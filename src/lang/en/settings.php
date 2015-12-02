@@ -3,6 +3,7 @@
 return [
     'menu' => [
         'close'      => 'Close settings window',
+        'delete'     => 'Delete page',
         'navigation' => 'Navigation',
         'urls'       => 'URLs',
         'search'     => 'Search',
@@ -30,6 +31,11 @@ return [
         'nav-cms'             => 'Children visible in CMS nav',
         'uri-prefix'          => 'Default child URI prefix',
         'grandchild-template' => 'Default grandchild template',
+    ],
+    'delete' => [
+        'heading'  => 'Delete page',
+        'intro'    => 'Are you sure you want to delete this page? This cannot be undone.',
+        'disabled' => 'You cannot delete this page because deletion has been disabled.'
     ],
     'draft-status' => [
         'heading'        => 'Draft status',

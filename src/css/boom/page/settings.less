@@ -48,6 +48,17 @@
 				&:hover, &:focus {
 					color: @red;
 				}
+
+				&[data-b-page-setting="delete"] {
+					background: @red;
+					color: @white;
+
+					&:hover, &:focus {
+						&:before {
+							color: @black;
+						}
+					}
+				}
 			}
 		}
 	}
