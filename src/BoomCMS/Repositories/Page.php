@@ -72,6 +72,8 @@ class Page
 
     public function save(Model $page)
     {
-        return $page->save();
+        $page->save();
+
+        return $page;
     }
 }

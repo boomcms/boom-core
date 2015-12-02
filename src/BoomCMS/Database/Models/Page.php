@@ -322,7 +322,7 @@ class Page extends Model implements PageInterface
 
     public function getParentId()
     {
-        return $this->{self::ATTR_PARENT};
+        return (int) $this->{self::ATTR_PARENT};
     }
 
     /**
@@ -634,7 +634,7 @@ class Page extends Model implements PageInterface
      */
     public function setParent(PageInterface $parent)
     {
-        if (!$parent->is($this) && !$parent->getParentId() === $this->getId()) {
+        if (!$parent->is($this) && $parent->getParentId() !== $this->getId()) {
             $this->{self::ATTR_PARENT} = $parent->getId();
         }
 

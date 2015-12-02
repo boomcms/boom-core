@@ -57,10 +57,10 @@ abstract class AbstractTestCase extends \Illuminate\Foundation\Testing\TestCase
         return new Page();
     }
 
-    protected function validPage()
+    protected function validPage($id = 1)
     {
         $page = new Page();
-        $page->id = 1;
+        $page->id = $id;
 
         return $page;
     }

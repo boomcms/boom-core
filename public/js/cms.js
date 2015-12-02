@@ -39641,8 +39641,8 @@ function boomPage(page_id) {
 		});
 	};
 
-	boomPage.prototype.delete = function() {
-		return $.post(this.baseUrl + 'settings/delete/' + this.id);
+	boomPage.prototype.delete = function(options) {
+		return $.post(this.baseUrl + 'settings/delete/' + this.id, options);
 	};
 
 	boomPage.prototype.embargo = function() {
@@ -40555,11 +40555,74 @@ $.widget('boom.pageTree', {
 		var settingsEditor = this,
 			page = this.page;
 
+		this.deleteOptions = {
+			redirectTo: 0,
+			reparentChildrenTo: 0
+		};
+
 		this.element
+			.on('change', 'input[type=radio][name=urls]', function() {
+				var $this = $(this);
+
+				if ($this.val() == 1 && settingsEditor.deleteOptions.redirectTo === 0) {
+					new boomLinkPicker(null, {external: false, asset: false})
+						.done(function(link) {
+							settingsEditor.deleteOptions.redirectTo = link.getPageId();
+							
+							$this.closest('label')
+								.find('.target')
+								.show()
+								.find('span')
+								.text(link.getTitle());
+						})
+						.fail(function() {
+								settingsEditor.element
+									.find('input[type=radio][name=urls][value=0]')
+									.prop('checked', true);
+						});
+				}
+			})
+			.on('change', 'input[type=radio][name=children]', function() {
+				var $this = $(this);
+
+				if ($this.val() == 1 && settingsEditor.deleteOptions.reparentChildrenTo === 0) {
+					new boomLinkPicker(null, {external: false, asset: false})
+						.done(function(link) {
+							settingsEditor.deleteOptions.reparentChildrenTo = link.getPageId();
+							
+							$this.closest('label')
+								.find('.target')
+								.show()
+								.find('span')
+								.text(link.getTitle());
+						})
+						.fail(function() {
+							settingsEditor.element
+								.find('input[type=radio][name=children][value=0]')
+								.prop('checked', true);
+						});
+				}
+			})
+			.on('click', 'a.edit', function() {
+				var $this = $(this),
+					option = $this.attr('data-option'),
+					link = new boomLink(null, settingsEditor.deleteOptions[option], $this.siblings('span').text());
+
+					new boomLinkPicker(link, {external: false, asset: false})
+						.done(function(link) {
+							settingsEditor.deleteOptions[option] = link.getPageId();
+							
+							$this.closest('label')
+								.find('.target')
+								.show()
+								.find('span')
+								.text(link.getTitle());
+						});
+			})
 			.on('click', '#b-page-delete-confirm', function(e) {
 				e.preventDefault();
 
-				page.delete()
+				page.delete(settingsEditor.deleteOptions)
 					.done(function(response) {
 						settingsEditor._trigger('done', null, response);
 					});
@@ -65348,11 +65411,19 @@ if (!console) {
 	},
 
 	deletePage : function($el) {
-		var page = new boomPage($el.data('page-id'));
+		var page = new boomPage($el.data('page-id')),
+			$el = $('<div></div>');
 
-		page.delete()
-			.done(function() {
-				$el.remove();
+		$el
+			.addClass('b-settings-container')
+			.appendTo($('#b-pages'))
+			.load('/cms/page/settings/index/' + page.id, function() {
+				$el
+					.addClass('open')
+					.pageSettings({
+						page: page
+					})
+					.pageSettings('show', 'delete');
 			});
 	},
 

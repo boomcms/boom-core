@@ -47,11 +47,19 @@ $.widget( 'boom.pageManager', {
 	},
 
 	deletePage : function($el) {
-		var page = new boomPage($el.data('page-id'));
+		var page = new boomPage($el.data('page-id')),
+			$el = $('<div></div>');
 
-		page.delete()
-			.done(function() {
-				$el.remove();
+		$el
+			.addClass('b-settings-container')
+			.appendTo($('#b-pages'))
+			.load('/cms/page/settings/index/' + page.id, function() {
+				$el
+					.addClass('open')
+					.pageSettings({
+						page: page
+					})
+					.pageSettings('show', 'delete');
 			});
 	},
 

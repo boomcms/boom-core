@@ -30,8 +30,8 @@ function boomPage(page_id) {
 		});
 	};
 
-	boomPage.prototype.delete = function() {
-		return $.post(this.baseUrl + 'settings/delete/' + this.id);
+	boomPage.prototype.delete = function(options) {
+		return $.post(this.baseUrl + 'settings/delete/' + this.id, options);
 	};
 
 	boomPage.prototype.embargo = function() {

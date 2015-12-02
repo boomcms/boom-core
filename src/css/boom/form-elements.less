@@ -34,6 +34,28 @@ html.boom {
 		margin-top: 0.75em;
 		overflow: hidden;
 
+		input[type=radio] {
+			position: absolute;
+			top: -1000%;
+
+			+ span.radio {
+				display: inline-block;
+
+				&:before {
+					.fa;
+					content: @fa-var-circle-o;
+				}
+			}
+
+			&:checked + span.radio {
+				color: @red;
+
+				&:before {
+					content: @fa-var-circle;
+				}
+			}
+		}
+
 		input[type=text], select, textarea {
 			float: right;
 			width: 70%;

@@ -3,6 +3,7 @@
 namespace BoomCMS\Http\Controllers\CMS\Page\Urls;
 
 use BoomCMS\Jobs\MakeURLPrimary;
+use BoomCMS\Jobs\ReassignURL;
 use BoomCMS\Support\Facades\URL;
 use Illuminate\Support\Facades\Bus;
 
@@ -36,10 +37,6 @@ class Save extends BaseController
 
     public function move()
     {
-        $this->url
-            ->setPageId($this->page->getId())
-            ->setIsPrimary(false);
-
-        URL::save($this->url);
+        Bus::dispatch(new ReassignURL($this->url, $this->page));
     }
 }

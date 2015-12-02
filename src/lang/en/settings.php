@@ -35,7 +35,23 @@ return [
     'delete' => [
         'heading'  => 'Delete page',
         'intro'    => 'Are you sure you want to delete this page? This cannot be undone.',
-        'disabled' => 'You cannot delete this page because deletion has been disabled.'
+        'disabled' => 'You cannot delete this page because deletion has been disabled.',
+        'children' => [
+            'heading'         => 'Page Children',
+            'intro'           => 'What action should be taken with this page\'s :count children?',
+            'delete'          => 'Also delete the child pages',
+            'reparent'        => 'Assign these pages to a new parent',
+            'reparent-target' => 'New parent page: ',
+        ],
+        'urls'     => [
+            'heading'              => 'Page URLs',
+            'intro'                => 'Set the behaviour of this page\'s URLs after the page is deleted.',
+            'leave'                => 'Leave the URLs in place. They will return a page not found error.',
+            'leave-explanation'    => 'This is the optimal user experience if no other page has content which is relevant to the content of this page.',
+            'redirect'             => 'Redirect the URLs to another page',
+            'redirect-explanation' => 'This is the optimal user experience if another page has content which is relevant to this page.',
+            'redirect-target'      => 'Redirect URLs to: ',
+        ],
     ],
     'draft-status' => [
         'heading'        => 'Draft status',

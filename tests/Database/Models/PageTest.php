@@ -106,7 +106,8 @@ class PageTest extends AbstractModelTestCase
 
     public function testSetParentPageCantBeChildOfItself()
     {
-        $page = new Page([Page::ATTR_ID => 1, Page::ATTR_PARENT => 2]);
+        $page = new Page([Page::ATTR_PARENT => 2]);
+        $page->{Page::ATTR_ID} = 1;
         $page->setParent($page);
 
         $this->assertEquals(2, $page->getParentId());

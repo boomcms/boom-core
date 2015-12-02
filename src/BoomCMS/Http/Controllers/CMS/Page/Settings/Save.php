@@ -54,11 +54,7 @@ class Save extends Settings
     {
         $parentUrl = $this->page->getParent()->url();
 
-        if ($this->request->input('with_children') == 1) {
-            Bus::dispatch(new DeletePageChildren($this->page));
-        }
-
-        Bus::dispatch(new DeletePage($this->page));
+        Bus::dispatch(new DeletePage($this->page, $this->request->input()));
 
         return (string) $parentUrl;
     }
