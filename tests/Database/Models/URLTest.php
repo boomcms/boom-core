@@ -4,6 +4,8 @@ namespace BoomCMS\Tests\Database\Models;
 
 use BoomCMS\Database\Models\Page;
 use BoomCMS\Database\Models\URL;
+use Illuminate\Database\Eloquent\Builder;
+use Mockery as m;
 
 class URLTest extends AbstractModelTestCase
 {
@@ -16,6 +18,23 @@ class URLTest extends AbstractModelTestCase
 
         $url = new URL(['is_primary' => true]);
         $this->assertTrue($url->isPrimary());
+    }
+
+    public function testGetPage()
+    {
+        $page = $this->validPage();
+
+        $query = m::mock(Builder::class);
+        $query->shouldReceive('first')->andReturn($page);
+
+        $url = m::mock(URL::class)->makePartial();
+        $url->shouldReceive('belongsTo')
+            ->once()
+            ->with(Page::class)
+            ->andReturn($query);
+
+        $this->assertEquals($page, $url->getPage());
+        $this->assertEquals($page, $url->getPage());
     }
 
     public function testGetLocation()

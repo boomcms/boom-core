@@ -16,6 +16,11 @@ class URL extends Model implements URLInterface
     const ATTR_LOCATION = 'location';
     const ATTR_IS_PRIMARY = 'is_primary';
 
+    /**
+     * @var PageInterface
+     */
+    protected $page;
+
     protected $table = 'page_urls';
 
     public $guarded = [
@@ -51,11 +56,15 @@ class URL extends Model implements URLInterface
     }
 
     /**
-     * @return PageObject
+     * @return PageInterface
      */
     public function getPage()
     {
-        return $this->hasOne(Page::class)->first();
+        if ($this->page === null) {
+            $this->page = $this->belongsTo(Page::class)->first();
+        }
+
+        return $this->page;
     }
 
     /**
