@@ -25,7 +25,7 @@ class View extends Settings
         $templates = $manager->getValidTemplates();
 
         // Create the main view with the basic settings
-        $v = ViewFacade::make("$this->viewPrefix/children", [
+        $v = view("$this->viewPrefix/children", [
             'default_child_template' => $this->page->getDefaultChildTemplateId(),
             'templates'              => $templates,
             'child_order_column'     => $orderCol,
