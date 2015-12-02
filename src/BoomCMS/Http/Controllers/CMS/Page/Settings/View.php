@@ -2,7 +2,6 @@
 
 namespace BoomCMS\Http\Controllers\CMS\Page\Settings;
 
-use BoomCMS\Core\Page\Finder as PageFinder;
 use Illuminate\Support\Facades\App;
 
 class View extends Settings
@@ -87,22 +86,6 @@ class View extends Settings
         return view("$this->viewPrefix/search", [
             'allowAdvanced' => $this->allowAdvanced,
             'page'          => $this->page,
-        ]);
-    }
-
-    public function sort_children()
-    {
-        parent::children();
-
-        $finder = new PageFinder\Finder();
-
-        $children = $finder
-            ->addFilter(new PageFinder\ParentPage($this->page))
-            ->setLimit(50)
-            ->findAll();
-
-        return view("$this->viewPrefix/sort_children", [
-            'children' => $children,
         ]);
     }
 
