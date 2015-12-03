@@ -65,7 +65,7 @@ function boomImageEditor(imageUrl) {
 	boomImageEditor.prototype.createCanvas = function() {
 		var imageEditor = this,
 			$el = this.$element;
-			
+
 		this.$cropImage = $('<img>').css('display', 'none');
 
 		$el
@@ -131,6 +131,7 @@ function boomImageEditor(imageUrl) {
 	
 	boomImageEditor.prototype.hideCropTool = function() {
 		this.$cropImage.Jcrop('destroy');
+		this.$cropImage.hide();
 
 		this.$toolbar
 			.children('.b-button')
@@ -215,25 +216,26 @@ function boomImageEditor(imageUrl) {
 		this.getImageBase64()
 			.done(function(base64) {
 				var crop = {};
-			
+
 				imageEditor.$cropImage
 					.attr('src', base64)
 					.on('load', function() {
 						imageEditor.$cropImage
-						.Jcrop({
-							boxWidth: imageEditor.imageWidth,
-							boxHeight: imageEditor.imageHeight,
-							setSelect: [
-								0,
-								0,
-								imageEditor.$cropImage[0].naturalWidth,
-								imageEditor.$cropImage[0].naturalHeight
-							],
-							onChange: function(c) {
-								crop = c;
-							},
-							aspectRatio: $el.find('.crop-tools select option:selected').val()
-						});
+							.show()
+							.Jcrop({
+								boxWidth: imageEditor.imageWidth,
+								boxHeight: imageEditor.imageHeight,
+								setSelect: [
+									0,
+									0,
+									imageEditor.$cropImage[0].naturalWidth,
+									imageEditor.$cropImage[0].naturalHeight
+								],
+								onChange: function(c) {
+									crop = c;
+								},
+								aspectRatio: $el.find('.crop-tools select option:selected').val()
+							});
 
 						$el
 							.find('.jcrop-active canvas')
