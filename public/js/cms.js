@@ -40561,18 +40561,21 @@ $.widget('boom.pageTree', {
 		};
 
 		this.element
-			.on('change', 'input[type=radio][name=urls]', function() {
+			.on('change', 'input[type=radio]', function() {
+				$(this).closest('section')
+					.find('.target')
+					.toggle();
+			})
+			.on('change', 'input[name=urls]', function() {
 				var $this = $(this);
 
-				if ($this.val() == 1 && settingsEditor.deleteOptions.redirectTo === 0) {
+				if ($this.val() === '1' && settingsEditor.deleteOptions.redirectTo === 0) {
 					new boomLinkPicker(null, {external: false, asset: false})
 						.done(function(link) {
 							settingsEditor.deleteOptions.redirectTo = link.getPageId();
 							
 							$this.closest('label')
-								.find('.target')
-								.show()
-								.find('span')
+								.find('.target span')
 								.text(link.getTitle());
 						})
 						.fail(function() {
@@ -40582,18 +40585,16 @@ $.widget('boom.pageTree', {
 						});
 				}
 			})
-			.on('change', 'input[type=radio][name=children]', function() {
+			.on('change', 'input[name=children]', function() {
 				var $this = $(this);
 
-				if ($this.val() == 1 && settingsEditor.deleteOptions.reparentChildrenTo === 0) {
+				if ($this.val() === '1' && settingsEditor.deleteOptions.reparentChildrenTo === 0) {
 					new boomLinkPicker(null, {external: false, asset: false})
 						.done(function(link) {
 							settingsEditor.deleteOptions.reparentChildrenTo = link.getPageId();
-							
+
 							$this.closest('label')
-								.find('.target')
-								.show()
-								.find('span')
+								.find('.target span')
 								.text(link.getTitle());
 						})
 						.fail(function() {
@@ -40622,7 +40623,7 @@ $.widget('boom.pageTree', {
 			.on('click', '#b-page-delete-confirm', function(e) {
 				e.preventDefault();
 
-				page.delete(settingsEditor.deleteOptions)
+				page.delete(settingsEditor.getDeleteOptions())
 					.done(function(response) {
 						settingsEditor._trigger('done', null, response);
 					});
@@ -40632,6 +40633,16 @@ $.widget('boom.pageTree', {
 	_create: function() {
 		this.page = this.options.page;
 		this.bind();
+	},
+
+	getDeleteOptions: function() {
+		var reparentChildrenTo = this.element.find('input[name=children]').val(),
+			redirectTo = this.element.find('input[name=urls]').val();
+
+		return {
+			reparentChildrenTo: (reparentChildrenTo === 0) ? 0 : reparentChildrenTo,
+			redirectTo: (redirectTo ===0) ? 0 : redirectTo
+		};
 	}
 });;$.widget('boom.pageSettingsDrafts', {
 	bind: function() {
