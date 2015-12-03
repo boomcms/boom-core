@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html dir="ltr" lang="en-gb" class="boom">
 	<head>
-		<title>BoomCMS | <?= Lang::get('Password reset') ?></title>
+		<title>BoomCMS | <?= Lang::get('boomcms::auth.reset.title') ?></title>
 		<meta name="robots" content="noindex, nofollow" />
 		<link rel="stylesheet" type="text/css" href="/vendor/boomcms/boom-core/css/cms.css" />
 	</head>
+
 	<body id='b-login'>
 		<div>
 			<div id="logo"></div>
@@ -13,6 +14,12 @@
 				<input type="hidden" name="_token" value="<?php echo csrf_token() ?>">
 
 				<fieldset>
+                    <?php if (isset($token)): ?>
+                        <legend>
+                            <?= Lang::get('boomcms::auth.reset.intro') ?>
+                        </legend>
+                    <?php endif ?>
+
 					<?php if (isset($error)): ?>
 						<p class="b-error"><?= $error ?></p>
 					<?php endif ?>
@@ -20,41 +27,43 @@
 					<?php if (isset($token)) : ?>
 						<p>
 							<label for="email">
-								<?= Lang::get('Email address') ?>
+								<?= Lang::get('boomcms::auth.reset.email') ?>
 							</label>
-							<input type="email" placeholder='<?= Lang::get('Email address') ?>' name="email" required class="b-input" id="email" />
+							<input type="email" placeholder='<?= Lang::get('boomcms::auth.reset.email') ?>' name="email" required id="email" />
 						</p>
 
 						<p>
 							<label for="password1">
-								<?= Lang::get('Enter a new password') ?>
+								<?= Lang::get('boomcms::auth.reset.password1') ?>
 							</label>
-							<input type="password" placeholder='<?= Lang::get('Enter a new password') ?>' name="password1" required class="b-input" id="password1" />
+							<input type="password" placeholder='<?= Lang::get('boomcms::auth.reset.password1') ?>' name="password1" required id="password1" />
 						</p>
 
 						<p>
 							<label for="password2">
-								<?= Lang::get('Re-enter your new password') ?>
+								<?= Lang::get('boomcms::auth.reset.password2') ?>
 							</label>
-							<input type="password" placeholder='<?= Lang::get('Re-enter your new password') ?>' name="password2" required class="b-input" id="password2" />
+							<input type="password" placeholder='<?= Lang::get('boomcms::auth.reset.password2') ?>' name="password2" required id="password2" />
 						</p>
 
-						<input type='submit' value='<?= Lang::get('Update my password') ?>' />
+						<input type='submit' value='<?= Lang::get('boomcms::auth.reset.update') ?>' />
 					<?php else: ?>
 						<p>
-							Please enter your email address.
+							<?= Lang::get('boomcms::auth.reset.enter-email') ?>
 						</p>
+                
 						<p>
-							An email will be sent to you with a link create a new password.
-						</p>
-						<p>
-							<label for="email">
-								<?= Lang::get('Email address') ?>
-							</label>
-							<input type="email" placeholder='<?= Lang::get('Email address') ?>' name="email" required class="b-input" id="email" />
+							<?= Lang::get('boomcms::auth.reset.what-will-happen') ?>
 						</p>
 
-						<input type='submit' value='<?= Lang::get('Send me a reset link') ?>' />
+						<p>
+							<label for="email">
+								<?= Lang::get('boomcms::auth.reset.email') ?>
+							</label>
+							<input type="email" placeholder='<?= Lang::get('boomcms::auth.reset.email') ?>' name="email" required id="email" />
+						</p>
+
+						<input type='submit' value='<?= Lang::get('boomcms::auth.reset.send-link') ?>' />
 					<?php endif ?>
 				</fieldset>
 			</form>
