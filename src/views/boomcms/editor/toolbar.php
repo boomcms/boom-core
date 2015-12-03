@@ -52,5 +52,4 @@
     <?= View::make('boomcms::editor.page.settings.index') ?>
 </div>
 
-<?= View::make('boomcms::editor.linkPicker') ?>
 <?= View::make('boomcms::editor.footer') ?>

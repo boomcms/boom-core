@@ -9,3 +9,4 @@
         <link rel="stylesheet" type="text/css" href="/vendor/boomcms/boom-core/css/cms.css" />
     </head>
     <body>
+        <?= View::make('boomcms::editor.linkPicker') ?>

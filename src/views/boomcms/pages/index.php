@@ -17,7 +17,7 @@
 			$.boom.init();
 
 			$('body').ui();
-			$('.boom-tree').pageManager();
+			$('#b-pages > .boom-tree').pageManager();
 		};
 		//]]>
 	</script>
