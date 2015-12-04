@@ -4,7 +4,6 @@ namespace BoomCMS\Core\Chunk;
 
 use BoomCMS\Contracts\Models\Page;
 use BoomCMS\Foundation\Chunk\AcceptsHtmlString;
-use Illuminate\Support\Facades\View;
 
 class Text extends BaseChunk
 {
@@ -66,15 +65,9 @@ class Text extends BaseChunk
 
     private function showText($text)
     {
-        if ($this->template) {
-            return View::make($this->viewPrefix.'text.'.$this->template, [
-                'text' => $text,
-            ])->render();
-        } else {
-            $html = $this->html ?: $this->getHtmlContainerForSlotname($this->slotname);
+        $html = $this->html ?: $this->getHtmlContainerForSlotname($this->slotname);
 
-            return str_replace('{text}', $text, $html);
-        }
+        return str_replace('{text}', $text, $html);
     }
 
     public function text()
