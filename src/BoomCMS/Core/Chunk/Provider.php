@@ -41,9 +41,9 @@ class Provider
      *
      * @return bool
      */
-    public function allowedToEdit(Page $page)
+    public function allowedToEdit(Page $page = null)
     {
-        if ($page !== null) {
+        if ($page === null) {
             return true;
         }
 
