@@ -686,7 +686,7 @@ class Page extends Model implements PageInterface
      */
     public function setVisibleAtAnyTime($visible)
     {
-        $this->{self::ATTR_VISIBLE} = $visible;
+        $this->attributes[self::ATTR_VISIBLE] = $visible;
 
         return $this;
     }

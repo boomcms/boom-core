@@ -113,6 +113,23 @@ class PageTest extends AbstractModelTestCase
         $this->assertEquals(2, $page->getParentId());
     }
 
+    public function testSetVisibleAtAnyTime()
+    {
+        $values = [
+            1     => true,
+            true  => true,
+            0     => false,
+            false => false,
+        ];
+
+        foreach ($values as $value => $expected) {
+            $page = new Page();
+            $page->setVisibleAtAnyTime($value);
+
+            $this->assertEquals($expected, $page->isVisibleAtAnyTime());
+        }
+    }
+
     public function testHasChildrenReturnsFalseIfChildCountIs0()
     {
         $page = $this->getMockBuilder(Page::class)
