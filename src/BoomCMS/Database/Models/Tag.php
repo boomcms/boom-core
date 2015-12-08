@@ -56,15 +56,6 @@ class Tag extends Model implements TagInterface
         return $this->{self::ATTR_SLUG};
     }
 
-    public function scopeAppliedToALivePage($query)
-    {
-        return $query
-            ->leftJoin('pages_tags as pt1', 'tags.id', '=', 'pt1.tag_id')
-            ->leftJoin('pages as p1', 'pt1.page_id', '=', 'p1.id')
-            ->whereNull('p1.deleted_at')
-            ->groupBy('tags.id');
-    }
-
     /**
      * @param string $name
      *
