@@ -22,6 +22,7 @@ class Template
 
     /**
      * @param array $attrs
+     *
      * @return TemplateInterface
      */
     public function create(array $attrs)

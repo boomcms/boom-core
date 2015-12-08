@@ -418,10 +418,9 @@ class Page extends Model implements PageInterface
      */
     public function isVisibleAtTime(DateTime $time)
     {
-        return ($this->isVisibleAtAnyTime() &&
+        return $this->isVisibleAtAnyTime() &&
             $this->getVisibleFrom()->getTimestamp() <= $time->getTimestamp() &&
-            ($this->getVisibleTo() === null || $this->getVisibleTo()->getTimestamp() >= $time->getTimestamp())
-        );
+            ($this->getVisibleTo() === null || $this->getVisibleTo()->getTimestamp() >= $time->getTimestamp());
     }
 
     public function isVisibleInCmsNav()

@@ -89,7 +89,7 @@ class Editor
 
     public function hasState($state)
     {
-        return ($this->state == $state);
+        return $this->state == $state;
     }
 
     public function getActivePage()

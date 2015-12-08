@@ -8,9 +8,9 @@ return [
         'email'            => 'Your email address',
         'password1'        => 'Enter a new password',
         'password2'        => 'Confirm your new password',
-        'update'          => 'Update my password',
+        'update'           => 'Update my password',
         'enter-email'      => 'Please enter your email address.',
         'send-link'        => 'Send me a reset link',
-        'what-will-happen' => 'An email will be sent to you with a link create a new password.'
+        'what-will-happen' => 'An email will be sent to you with a link create a new password.',
     ],
 ];

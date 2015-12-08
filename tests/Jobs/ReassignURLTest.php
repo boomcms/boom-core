@@ -3,8 +3,8 @@
 namespace BoomCMS\Tests\Jobs;
 
 use BoomCMS\Database\Models\URL;
-use BoomCMS\Tests\AbstractTestCase;
 use BoomCMS\Support\Facades\URL as URLFacade;
+use BoomCMS\Tests\AbstractTestCase;
 use Mockery as m;
 
 class ReassignURLTest extends AbstractTestCase
