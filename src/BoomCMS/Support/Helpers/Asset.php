@@ -35,8 +35,6 @@ abstract class Asset
         return $namespace.'BaseController';
     }
 
-
-
     /**
      * @param string $mime
      *

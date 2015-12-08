@@ -8,7 +8,7 @@ use Imagick;
 abstract class File
 {
     /**
-     * Returns an array of 'interesting' exif data for a filepath
+     * Returns an array of 'interesting' exif data for a filepath.
      * 
      * If the file at the given path isn't supported then an empt array is returned.
      *
@@ -20,7 +20,7 @@ abstract class File
     {
         $im = new Imagick($path);
 
-        $exif = $im->getImageProperties("exif:*");
+        $exif = $im->getImageProperties('exif:*');
 
         foreach ($exif as $key => $value) {
             $newKey = str_replace('exif:', '', $key);
@@ -34,7 +34,7 @@ abstract class File
     }
 
     /**
-     * Determines the file extension from a filename and mimetype
+     * Determines the file extension from a filename and mimetype.
      *
      * @param string $mimetype
      * @param string $filename

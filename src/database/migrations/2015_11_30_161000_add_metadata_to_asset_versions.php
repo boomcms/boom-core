@@ -13,8 +13,7 @@ class AddMetaDataToAssetVersions extends Migration
      */
     public function up()
     {
-        Schema::table('asset_versions', function(Blueprint $table)
-        {
+        Schema::table('asset_versions', function (Blueprint $table) {
             $table->json(AssetVersion::ATTR_METADATA)->nullable();
         });
     }
@@ -26,8 +25,7 @@ class AddMetaDataToAssetVersions extends Migration
      */
     public function down()
     {
-        Schema::table('asset_versions', function(Blueprint $table)
-        {
+        Schema::table('asset_versions', function (Blueprint $table) {
             $table->dropColumn(AssetVersion::ATTR_METADATA);
         });
     }

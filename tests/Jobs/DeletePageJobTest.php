@@ -3,9 +3,9 @@
 namespace BoomCMS\Tests\Jobs;
 
 use BoomCMS\Database\Models\Page as PageModel;
-use BoomCMS\Tests\AbstractTestCase;
 use BoomCMS\Jobs;
 use BoomCMS\Support\Facades\Page;
+use BoomCMS\Tests\AbstractTestCase;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Event;
 use Mockery as m;

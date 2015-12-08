@@ -15,7 +15,7 @@ interface Asset
      * Add an asset version to an asset from an uploaded file.
      * 
      * @param AssetInterface $asset
-     * @param UploadedFile $file
+     * @param UploadedFile   $file
      */
     public function createVersionFromFile(AssetInterface $asset, UploadedFile $file);
 
@@ -27,7 +27,7 @@ interface Asset
     public function find($id);
 
     /**
-     * Find assets by an array of asset IDs
+     * Find assets by an array of asset IDs.
      *
      * @param array $assetIds
      *
@@ -46,7 +46,7 @@ interface Asset
      * Revert an asset to a previous version ID.
      *
      * @param AssetInterface $asset
-     * @param int $versionId
+     * @param int            $versionId
      */
     public function revert(AssetInterface $asset, $versionId);
 

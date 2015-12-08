@@ -2,8 +2,8 @@
 
 namespace BoomCMS\Repositories;
 
-use BoomCMS\Contracts\Repositories\Asset as AssetRepositoryInterface;
 use BoomCMS\Contracts\Models\Asset as AssetInterface;
+use BoomCMS\Contracts\Repositories\Asset as AssetRepositoryInterface;
 use BoomCMS\Database\Models\Asset as AssetModel;
 use BoomCMS\Database\Models\AssetVersion as AssetVersionModel;
 use BoomCMS\Support\Facades\Auth;
@@ -23,7 +23,7 @@ class Asset implements AssetRepositoryInterface
     protected $version;
 
     /**
-     * @param AssetModel $model
+     * @param AssetModel        $model
      * @param AsserVersionModel $version
      */
     public function __construct(AssetModel $model, AssetVersionModel $version)
@@ -34,7 +34,7 @@ class Asset implements AssetRepositoryInterface
 
     /**
      * @param AssetInterface $asset
-     * @param UploadedFile $file
+     * @param UploadedFile   $file
      *
      * @return AssetVersion
      */
