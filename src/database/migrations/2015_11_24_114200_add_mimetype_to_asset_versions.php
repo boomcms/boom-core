@@ -1,7 +1,6 @@
 <?php
 
 use BoomCMS\Database\Models\AssetVersion;
-use BoomCMS\Support\File;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\DB;
 

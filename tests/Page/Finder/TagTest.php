@@ -4,8 +4,8 @@ namespace BoomCMS\Tests\Page\Finder;
 
 use BoomCMS\Core\Page\Finder\Tag;
 use BoomCMS\Database\Models\Tag as TagModel;
-use BoomCMS\Tests\AbstractTestCase;
 use BoomCMS\Support\Facades\Tag as TagFacade;
+use BoomCMS\Tests\AbstractTestCase;
 
 class TagTest extends AbstractTestCase
 {

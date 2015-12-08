@@ -38,7 +38,7 @@ class Store implements \ArrayAccess
 
     public function exists($key)
     {
-        return (isset($this->settings[$key]) || array_key_exists($key, $this->settings));
+        return isset($this->settings[$key]) || array_key_exists($key, $this->settings);
     }
 
     public function delete($key)

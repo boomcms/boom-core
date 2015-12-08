@@ -28,7 +28,7 @@ class TemplateManagerTest extends AbstractTestCase
 
         $repository = $this->getTemplateRepository();
         $repository->shouldReceive('create')->with([
-            'name'    => 'Test Template',
+            'name'     => 'Test Template',
             'theme'    => 'test',
             'filename' => 'test_template',
         ]);

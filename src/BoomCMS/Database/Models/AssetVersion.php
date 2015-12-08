@@ -18,7 +18,7 @@ class AssetVersion extends Model
     const ATTR_EDITED_BY = 'edited_by';
     const ATTR_EXTENSION = 'extension';
     const ATTR_MIME = 'mimetype';
-    const ATTR_METADATA = 'metadata';   
+    const ATTR_METADATA = 'metadata';
 
     protected $casts = [
         self::ATTR_METADATA => 'array',

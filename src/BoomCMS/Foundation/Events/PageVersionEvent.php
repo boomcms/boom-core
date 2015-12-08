@@ -3,8 +3,8 @@
 namespace BoomCMS\Foundation\Events;
 
 use BoomCMS\Contracts\Models\Page;
-use BoomCMS\Contracts\Models\Person;
 use BoomCMS\Contracts\Models\PageVersion;
+use BoomCMS\Contracts\Models\Person;
 
 class PageVersionEvent extends PageEvent
 {
