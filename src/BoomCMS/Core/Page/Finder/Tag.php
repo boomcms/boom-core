@@ -4,6 +4,7 @@ namespace BoomCMS\Core\Page\Finder;
 
 use BoomCMS\Contracts\Models\Tag as TagInterface;
 use BoomCMS\Foundation\Finder\Filter;
+use BoomCMS\Support\Facades\Tag as TagFacade;
 use Illuminate\Database\Eloquent\Builder;
 
 class Tag extends Filter
@@ -18,17 +19,21 @@ class Tag extends Filter
      */
     public function __construct($tags)
     {
-        if (is_array($tags)) {
-            foreach ($tags as $i => $tag) {
-                if (!$tag instanceof TagInterface || !$tag->getId()) {
-                    unset($tags[$i]);
-                }
+        if (!is_array($tags)) {
+            $tags = [$tags];
+        }
+
+        foreach ($tags as $i => $tag) {
+            if (is_int($tag) || ctype_digit($tag)) {
+                $tags[$i] = $tag = TagFacade::find($tag);
             }
 
-            $this->tags = $tags;
-        } elseif ($tags instanceof TagInterface && $tags->getId()) {
-            $this->tags = [$tags];
+            if (!$tag instanceof TagInterface || !$tag->getId()) {
+                unset($tags[$i]);
+            }
         }
+
+        $this->tags = $tags;
     }
 
     public function build(Builder $query)
