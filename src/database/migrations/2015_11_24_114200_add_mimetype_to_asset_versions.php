@@ -19,7 +19,6 @@ class AddMimeTypeToAssetVersions extends Migration
         $directory = storage_path('boomcms/assets');
 
         foreach ($versions as $v) {
-
             $path = realpath($directory.DIRECTORY_SEPARATOR.$v->id);
 
             if ($path) {
