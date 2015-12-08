@@ -1,7 +1,7 @@
 <?php
 
 use BoomCMS\Database\Models\AssetVersion;
-use BoomCMS\Support\Helpers\Asset as AssetHelper;
+use BoomCMS\Support\File;
 use Illuminate\Database\Migrations\Migration;
 
 class SetMissingExtensionOfImages extends Migration
@@ -16,7 +16,7 @@ class SetMissingExtensionOfImages extends Migration
         $versions = AssetVersion::whereNull('extension')->get();
 
         foreach ($versions as $v) {
-            $v->extension = AssetHelper::extensionFromMimetype($v->mimetype);
+            $v->extension = File::extensionFromMimetype($v->mimetype);
             $v->save();
         }
     }

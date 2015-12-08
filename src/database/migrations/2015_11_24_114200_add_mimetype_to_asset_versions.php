@@ -1,7 +1,6 @@
 <?php
 
 use BoomCMS\Database\Models\AssetVersion;
-use BoomCMS\Support\File;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\DB;
 
@@ -20,15 +19,18 @@ class AddMimeTypeToAssetVersions extends Migration
         $directory = storage_path('boomcms/assets');
 
         foreach ($versions as $v) {
+
             $path = realpath($directory.DIRECTORY_SEPARATOR.$v->id);
 
-            $finfo = finfo_open(FILEINFO_MIME_TYPE);
-            $mime = finfo_file($finfo, $path);
-            finfo_close($finfo);
+            if ($path) {
+                $finfo = finfo_open(FILEINFO_MIME_TYPE);
+                $mime = finfo_file($finfo, $path);
+                finfo_close($finfo);
 
-            if ($mime) {
-                $v->mimetype = $mime;
-                $v->save();
+                if ($mime) {
+                    $v->mimetype = $mime;
+                    $v->save();
+                }
             }
         }
     }
