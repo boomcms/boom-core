@@ -2,6 +2,9 @@
 
 namespace BoomCMS\Support;
 
+use BoomCMS\Contracts\Models\Asset as AssetInterface;
+use BoomCMS\Contracts\Models\Page as PageInterface;
+use BoomCMS\Contracts\Models\Tag as TagInterface;
 use BoomCMS\Core\Asset;
 use BoomCMS\Core\Page;
 use BoomCMS\Core\Tag;
@@ -40,7 +43,7 @@ abstract class Helpers
      *
      * @return string
      */
-    public static function assetEmbed(Asset\Asset $asset, $height = null, $width = null)
+    public static function assetEmbed(AssetInterface $asset, $height = null, $width = null)
     {
         return (string) $asset->getEmbedHtml($height, $width);
     }
@@ -164,9 +167,9 @@ abstract class Helpers
         foreach (func_get_args() as $arg) {
             if (is_string($arg)) {
                 $finder->addFilter(new Tag\Finder\Group($arg));
-            } elseif ($arg instanceof Page\Page) {
+            } elseif ($arg instanceof PageInterface) {
                 $finder->addFilter(new Tag\Finder\AppliedToPage($arg));
-            } elseif ($arg instanceof Tag\Tag) {
+            } elseif ($arg instanceof TagInterface) {
                 $finder->addFilter(new Tag\Finder\AppliedWith($arg));
             }
         }
@@ -185,7 +188,7 @@ abstract class Helpers
      *
      * @return array
      */
-    public static function getTagsInSection(Page\Page $page = null, $group = null)
+    public static function getTagsInSection(PageInterface $page = null, $group = null)
     {
         $page = $page ?: Editor::getActivePage();
 
