@@ -2,11 +2,11 @@
 
 namespace BoomCMS\Http\Controllers\CMS;
 
-use BoomCMS\Core\Page;
 use BoomCMS\Core\Template\Manager as TemplateManager;
 use BoomCMS\Database\Models\Template;
 use BoomCMS\Http\Controllers\Controller;
 use BoomCMS\Support\Facades\Template as TemplateFacade;
+use BoomCMS\Support\Helpers;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\View;
@@ -32,10 +32,7 @@ class Templates extends Controller
      */
     public function pages(Template $template)
     {
-        $finder = new Page\Finder\Finder();
-        $finder->addFilter(new Page\Finder\Template($template));
-        $finder->setOrderBy('title', 'asc');
-        $pages = $finder->findAll();
+        $pages = Helpers::getPages(['template' => $template, 'order' => 'title asc']);
 
         if ($this->request->route()->getParameter('format') === 'csv') {
             $headers = [
