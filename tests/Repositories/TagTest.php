@@ -56,6 +56,19 @@ class TagTest extends AbstractTestCase
         $this->assertEquals($model, $repository->findByNameAndGroup('test name', 'test group'));
     }
 
+    public function testFindBySlugAndGroup()
+    {
+        $model = m::mock(Tag::class);
+        $model->shouldReceive('where')
+            ->with(m::any('slug', 'group'), '=', m::any('test-slug', 'test group'))
+            ->andReturnSelf();
+        $model->shouldReceive('first')->andReturnSelf();
+
+        $repository = new TagRepository($model);
+
+        $this->assertEquals($model, $repository->findBySlugAndGroup('test-slug', 'test group'));
+    }
+
     public function testFindOrCreateByNameAndGroupReturnsExisting()
     {
         $name = 'name';

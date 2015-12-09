@@ -74,7 +74,7 @@ class Tag
      *
      * @return TagInterface
      */
-    public function findBySlugAndSlug($slug, $group = null)
+    public function findBySlugAndGroup($slug, $group = null)
     {
         return $this->model
             ->where(Model::ATTR_NAME, '=', $slug)
