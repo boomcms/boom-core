@@ -38,16 +38,20 @@ $.widget( 'boom.pageManager', {
 
 	deletePage : function($el) {
 		var page = new boomPage($el.data('page-id')),
-			$el = $('<div></div>');
+			$settings = $('<div></div>');
 
-		$el
+		$settings
 			.addClass('b-settings-container')
 			.appendTo($('#b-pages'))
 			.load('/cms/page/settings/index/' + page.id, function() {
-				$el
+				$settings
 					.addClass('open')
 					.pageSettings({
-						page: page
+						page: page,
+						deleteSave: function() {
+							$el.remove();
+							$settings.remove();
+						}
 					})
 					.pageSettings('show', 'delete');
 			});
