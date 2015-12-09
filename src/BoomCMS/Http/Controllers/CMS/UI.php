@@ -9,6 +9,6 @@ class UI extends Controller
 {
     public function getImageEditor()
     {
-        return View::make('boomcms::assets.image_editor');
+        return view('boomcms::assets.image_editor');
     }
 }

@@ -41,6 +41,6 @@ class Editor extends Controller
 
         $toolbarFilename = ($this->editor->isEnabled()) ? 'toolbar' : 'toolbar_preview';
 
-        return View::make("boomcms::editor.$toolbarFilename");
+        return view("boomcms::editor.$toolbarFilename");
     }
 }

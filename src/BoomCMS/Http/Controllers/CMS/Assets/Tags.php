@@ -12,7 +12,7 @@ class Tags extends Controller
     {
         $collection = new Asset\Collection(explode('-', $this->request->route('assets')));
 
-        return View::make('boomcms::assets.tags', [
+        return view('boomcms::assets.tags', [
             'tags' => $collection->getTags(),
         ]);
     }

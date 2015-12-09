@@ -12,7 +12,7 @@ class Approvals extends Controller
     {
         $this->authorization('manage_approvals');
 
-        return View::make('boomcms::approvals.index', [
+        return view('boomcms::approvals.index', [
             'pages' => $this->getPagesAwaitingApproval(),
         ]);
     }

@@ -12,7 +12,6 @@ use DateTime;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
-use Illuminate\Support\Facades\View;
 use ZipArchive;
 
 class AssetManager extends Controller
@@ -73,7 +72,7 @@ class AssetManager extends Controller
      */
     public function index()
     {
-        return View::make($this->viewPrefix.'index', [
+        return view($this->viewPrefix.'index', [
             'manager' => $this->manager(),
             'person'  => $this->person,
         ]);
@@ -93,9 +92,9 @@ class AssetManager extends Controller
         $count = $query->count();
 
         if ($count === 0) {
-            return View::make($this->viewPrefix.'none_found');
+            return view($this->viewPrefix.'none_found');
         } else {
-            return View::make($this->viewPrefix.'list', [
+            return view($this->viewPrefix.'list', [
                 'assets' => $query->getResults(),
                 'total'  => $count,
                 'pages'  => ceil($count / $params['limit']),
@@ -109,12 +108,12 @@ class AssetManager extends Controller
      */
     public function manager()
     {
-        return View::make($this->viewPrefix.'manager');
+        return view($this->viewPrefix.'manager');
     }
 
     public function picker()
     {
-        return View::make($this->viewPrefix.'picker');
+        return view($this->viewPrefix.'picker');
     }
 
     public function replace(Asset $asset)
@@ -198,7 +197,7 @@ class AssetManager extends Controller
 
     public function view(Asset $asset)
     {
-        return View::make("$this->viewPrefix/view", [
+        return view("$this->viewPrefix/view", [
             'asset' => $asset,
         ]);
     }

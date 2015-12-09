@@ -36,6 +36,6 @@ class Relations extends Controller
 
     public function view()
     {
-        return View::make('boomcms::editor.page.settings.relations');
+        return view('boomcms::editor.page.settings.relations');
     }
 }

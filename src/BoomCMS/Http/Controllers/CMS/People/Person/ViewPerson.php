@@ -9,14 +9,14 @@ class ViewPerson extends BasePerson
 {
     public function add()
     {
-        return View::make($this->viewPrefix.'new', [
+        return view($this->viewPrefix.'new', [
             'groups' => GroupFacade::findAll(),
         ]);
     }
 
     public function addGroup()
     {
-        return View::make("$this->viewPrefix/addgroup", [
+        return view("$this->viewPrefix/addgroup", [
             'person' => $this->editPerson,
             'groups' => GroupFacade::allExcept($this->editPerson->getGroupIds()),
         ]);
@@ -28,7 +28,7 @@ class ViewPerson extends BasePerson
             abourt(404);
         }
 
-        return View::make($this->viewPrefix.'view', [
+        return view($this->viewPrefix.'view', [
             'person'  => $this->editPerson,
             'request' => $this->request,
             'groups'  => $this->editPerson->getGroups(),

@@ -15,14 +15,14 @@ class Settings extends Controller
 
     public function getIndex()
     {
-        return View::make($this->view);
+        return view($this->view);
     }
 
     public function postIndex()
     {
         SettingsStore::replaceAll($this->request->input('settings'));
 
-        return View::make($this->view, [
+        return view($this->view, [
             'message' => Lang::get('boomcms::settings-manager._saved'),
         ]);
     }

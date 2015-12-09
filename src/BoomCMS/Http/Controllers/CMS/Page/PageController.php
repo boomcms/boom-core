@@ -55,7 +55,7 @@ class PageController extends Controller
 
     public function urls()
     {
-        return View::make($this->viewPrefix.'urls', [
+        return view($this->viewPrefix.'urls', [
             'page' => $this->page,
             'urls' => $this->page->getUrls(),
         ]);

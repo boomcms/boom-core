@@ -43,12 +43,12 @@ class Recover extends Controller
                 ->subject('BoomCMS Password Reset');
         });
 
-        return View::make('boomcms::account.recover.email_sent');
+        return view('boomcms::account.recover.email_sent');
     }
 
     public function showForm($vars = [])
     {
-        return View::make('boomcms::account.recover.form', $vars);
+        return view('boomcms::account.recover.form', $vars);
     }
 
     public function setPassword()

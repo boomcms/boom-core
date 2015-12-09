@@ -17,7 +17,7 @@ class PeopleManager extends Controller
         $groupId = $this->request->input('group');
         $people = $groupId ? Person::findByGroupId($groupId) : Person::findAll();
 
-        return View::make($this->viewPrefix.'list', [
+        return view($this->viewPrefix.'list', [
             'people' => $people,
         ]);
     }
