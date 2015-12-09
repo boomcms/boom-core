@@ -4,6 +4,7 @@ namespace BoomCMS\Support;
 
 use Illuminate\Support\Facades\Config as ConfigFacade;
 use Imagick;
+use ImagickException;
 
 abstract class File
 {
@@ -18,9 +19,12 @@ abstract class File
      */
     public static function exif($path)
     {
-        $im = new Imagick($path);
-
-        $exif = $im->getImageProperties('exif:*');
+        try {
+            $im = new Imagick($path);
+            $exif = $im->getImageProperties('exif:*');
+        } catch (ImagickException $e) {
+            return [];
+        }
 
         foreach ($exif as $key => $value) {
             $newKey = str_replace('exif:', '', $key);
