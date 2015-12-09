@@ -1,8 +1,11 @@
 $.widget('boom.assetManager', {
 	baseUrl: '/cms/assets/',
 	listUrl: '/cms/assets/get',
+
 	postData: {
-		page: 1
+		page: 1,
+		limit: 30,
+		order: 'last_modified desc'
 	},
 
 	selection: new boomAssetSelection(),
@@ -135,7 +138,7 @@ $.widget('boom.assetManager', {
 		this.element.find('#b-assets-view-thumbs .selected').removeClass('selected');
 	},
 
-	_create : function() {
+	_create: function() {
 		this.menu = this.element.find('#b-topbar');
 		this.uploader = this.element.find('#b-assets-upload-form');
 		this.bind();
@@ -143,16 +146,16 @@ $.widget('boom.assetManager', {
 		this.getAssets();
 	},
 
-	getAssets : function() {
+	getAssets: function() {
 		var assetManager = this;
 
 		return $.post(this.listUrl, this.postData)
 			.done(function(response) {
-				var $response = $(response);
+				var $thumbs = $(response.html);
 
 				assetManager.element
 					.find('#b-assets-content')
-					.html($($response[0]).html());
+					.html($thumbs);
 
 				assetManager.element
 					.find('#b-assets-view-thumbs')
@@ -160,11 +163,7 @@ $.widget('boom.assetManager', {
 					.find('[data-asset]')
 					.assetManagerImages();
 
-				assetManager.element
-					.find('.b-pagination')
-					.replaceWith($response[2]);
-
-				assetManager.initPagination();
+				assetManager.initPagination(response.total);
 				assetManager.clearSelection();
 				assetManager.updateContentAreaMargin();
 			});
@@ -172,25 +171,33 @@ $.widget('boom.assetManager', {
 
 	getPage : function(page) {
 		if (this.postData.page !== page) {
-			this.addFilter('page', page);
+			this.postData.page = page;
 			this.getAssets();
 		}
 	},
 
-	initPagination : function() {
-		var assetManager = this;
+	initPagination : function(total) {
+		var assetManager = this,
+			$el = assetManager.element.find('.b-pagination');
 
-		assetManager.element.find('.b-pagination')
-			.jqPagination({
-				paged: function(page) {
-					assetManager.getPage(page);
-				}
-			});
+		// Max page isn't set correctly when re-initialising
+		if ($el.data('jqPagination')) {
+			$el.jqPagination('destroy');
+		}
+
+		$el.jqPagination({
+			paged: function(page) {
+				assetManager.getPage(page);
+			},
+			max_page: Math.ceil(total / this.postData.limit),
+			current_page: total > 0 ? this.postData.page : 0
+		});
 	},
 
 	removeFilters : function() {
 		this.postData = {
-			page : 1
+			page: 1,
+			limit: 30
 		};
 
 		this.element.find('#b-assets-types').val(0);

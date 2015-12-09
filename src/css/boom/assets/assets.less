@@ -114,22 +114,13 @@
 		}
 	}
 
-	/* Styling for the 'no assets found' message when the asset manager returns no assets */
 	&-none {
-		display: table;
-		position: absolute;
-		top: 0;
-		width: 100%;
-		height: 100%;
-
-		p {
-			font-weight: bold;
-			font-size: 20pt;
-			text-align: center;
-			display: table-cell;
-			vertical-align: middle;
-			color: @white;
-		}
+		.text-large;
+		line-height: 85vh;
+		font-weight: bold;
+		text-align: center;
+		height: 100vh;
+		color: @black;
 	}
 
 	&-upload {

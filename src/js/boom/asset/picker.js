@@ -84,7 +84,9 @@ function boomAssetPicker(currentAsset, filters) {
 
 	boomAssetPicker.prototype.clearFilters = function() {
 		this.filters = {
-			page : 1
+			page: 1,
+			limit: 30,
+			order: 'last_modified desc'
 		};
 
 		this.titleFilter.val('');
@@ -100,19 +102,18 @@ function boomAssetPicker(currentAsset, filters) {
 
 		$.post(this.listUrl, this.filters)
 			.done(function(response) {
-				var $response = $(response);
+				var $thumbs = $(response.html);
 
-				assetPicker.picker.find('#b-assets-view-thumbs').replaceWith($response.find('#b-assets-view-thumbs'));
+				assetPicker.picker.find('#b-assets-view-thumbs').replaceWith($thumbs);
 				assetPicker.justifyAssets();
 
-				assetPicker.picker.find('.b-pagination').replaceWith($response[2]);
-				assetPicker.initPagination();
+				assetPicker.initPagination(response.total);
 			});
 	};
 
 	boomAssetPicker.prototype.getPage = function(page) {
 		if (this.filters.page !== page) {
-			this.addFilter('page', page);
+			this.filters.page = page;
 			this.getAssets();
 		}
 	};
@@ -123,15 +124,22 @@ function boomAssetPicker(currentAsset, filters) {
 			.hide();
 	};
 
-	boomAssetPicker.prototype.initPagination = function() {
-		var assetPicker = this;
+	boomAssetPicker.prototype.initPagination = function(total) {
+		var assetPicker = this,
+			$el = this.picker.find('.b-pagination');
 
-		assetPicker.picker.find('.b-pagination')
-			.jqPagination({
-				paged: function(page) {
-					assetPicker.getPage(page);
-				}
-			});
+		// Max page isn't set correctly when re-initialising
+		if ($el.data('jqPagination')) {
+			$el.jqPagination('destroy');
+		}
+
+		$el.jqPagination({
+			paged: function(page) {
+				assetPicker.getPage(page);
+			},
+			max_page: Math.ceil(total / this.filters.limit),
+			current_page: total > 0 ? this.filters.page : 0
+		});
 	};
 
 	boomAssetPicker.prototype.justifyAssets = function() {
@@ -144,6 +152,9 @@ function boomAssetPicker(currentAsset, filters) {
 
 	boomAssetPicker.prototype.loadPicker = function() {
 		var assetPicker = this;
+
+		this.filters.limit = 30;
+		this.filters.order = 'last_modified desc';
 
 		this.dialog = new boomDialog({
 			url : this.url,

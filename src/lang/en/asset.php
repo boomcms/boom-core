@@ -7,6 +7,7 @@ return [
     'openeditor'              => 'Open in image editor',
     'aspect-ratio'            => 'Aspect ratio',
     'metadata'                => 'Metadata',
+    'none'                    => 'No assets found',
     'search'                  => [
         'sort' => 'Sort assets by',
         'tag'  => 'Filter by tag',

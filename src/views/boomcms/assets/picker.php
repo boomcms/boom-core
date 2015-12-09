@@ -38,14 +38,7 @@
             </div>
         </section>
 
-        <section id="b-assets-pagination" class="b-pagination">
-            <a href="#" class="first" data-action="first">&laquo;</a>
-            <a href="#" class="previous" data-action="previous">&lsaquo;</a>
-            <input type="text" readonly="readonly" data-max-page="" data-current-page="" />
-            <a href="#" class="next" data-action="next">&rsaquo;</a>
-            <a href="#" class="last" data-action="last">&raquo;</a>
-        </section>
-
+        <?= View::make('boomcms::assets.pagination') ?>
         <?= $button('times', 'Close asset picker', ['class' => 'b-button-withtext', 'id' => 'b-assets-picker-close']) ?>
     </section>
 </div>

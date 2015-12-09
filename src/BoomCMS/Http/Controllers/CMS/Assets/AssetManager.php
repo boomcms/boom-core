@@ -2,11 +2,11 @@
 
 namespace BoomCMS\Http\Controllers\CMS\Assets;
 
-use BoomCMS\Core\Asset\Query;
 use BoomCMS\Database\Models\Asset;
 use BoomCMS\Http\Controllers\Controller;
 use BoomCMS\Support\Facades\Asset as AssetFacade;
 use BoomCMS\Support\Facades\Auth;
+use BoomCMS\Support\Helpers;
 use BoomCMS\Support\Helpers\Asset as AssetHelper;
 use DateTime;
 use Illuminate\Http\JsonResponse;
@@ -80,27 +80,14 @@ class AssetManager extends Controller
 
     public function get()
     {
-        $defaults = [
-            'page'  => 1,
-            'limit' => 30,
-            'order' => 'last_modified desc',
+        $params = $this->request->input();
+
+        return [
+            'total' => Helpers::countAssets($params),
+            'html'  => view($this->viewPrefix.'thumbs', [
+                'assets' => Helpers::getAssets($params),
+            ])->render(),
         ];
-
-        $params = $this->request->input() + $defaults;
-
-        $query = new Query($params);
-        $count = $query->count();
-
-        if ($count === 0) {
-            return view($this->viewPrefix.'none_found');
-        } else {
-            return view($this->viewPrefix.'list', [
-                'assets' => $query->getResults(),
-                'total'  => $count,
-                'pages'  => ceil($count / $params['limit']),
-                'page'   => $this->request->input('page'),
-            ]);
-        }
     }
 
     /**

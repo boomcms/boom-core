@@ -28,13 +28,10 @@
         <?= View::make('boomcms::assets.search.type') ?>
         <?= View::make('boomcms::assets.search.tag') ?>
         <?= View::make('boomcms::assets.search.sort') ?>
-
-        <div id="b-assets-pagination" class="b-pagination"></div>
+        <?= View::make('boomcms::assets.pagination') ?>
 	</div>
 
-	<div id="b-assets-content">
-		<div id="b-assets-view-thumbs"></div>
-	</div>
+	<div id="b-assets-content"></div>
 
 	<?= View::make('boomcms::assets.upload') ?>
 </div>
