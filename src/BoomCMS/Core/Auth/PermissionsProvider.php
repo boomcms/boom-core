@@ -36,7 +36,7 @@ class PermissionsProvider
             if ($result === null) {
                 $page = $page->getParent();
             }
-        } while ($result === null);
+        } while ($result === null && $page !== null);
 
         return (bool) $result;
     }
