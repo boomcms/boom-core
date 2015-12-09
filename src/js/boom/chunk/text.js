@@ -23,20 +23,20 @@ $.widget('ui.chunkText', $.ui.chunk,
 
 	bind : function() {
 		var element = this.element,
-			self = this,
-			old_html = element.html();
+			self = this;
+
+		this.setOriginalContent();
 
 		$.ui.chunk.prototype.bind.call(this);
 
 		element.textEditor({
-			edit : function() {
-				var edited = old_html != self.element.html();
-
-				if ( ! self.hasContent()) {
+			edit: function() {
+				if (!self.hasContent()) {
 					self.remove();
 					self.element.text('Default text.');
-				} else if (edited == true) {
+				} else if (self.isEdited()) {
 					self._save();
+					self.setOriginalContent();
 				}
 			}
 		});
@@ -59,6 +59,14 @@ $.widget('ui.chunkText', $.ui.chunk,
 
 	hasContent : function() {
 		return this.element.text() !== '' || this.element.find('img').length > 0;
+	},
+
+	isEdited: function() {
+		return this.originalContent !== this.element.html();
+	},
+
+	setOriginalContent: function() {
+		this.originalContent = this.element.html();
 	},
 
 	unbind : function() {
