@@ -9,7 +9,6 @@ use BoomCMS\Support\Facades\Template as TemplateFacade;
 use BoomCMS\Support\Helpers;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Response;
-use Illuminate\Support\Facades\View;
 
 class Templates extends Controller
 {
@@ -22,7 +21,7 @@ class Templates extends Controller
         $manager = new TemplateManager(App::make('files'), TemplateFacade::getFacadeRoot());
         $manager->findAndInstallNewTemplates();
 
-        return View::make($this->viewPrefix.'index', [
+        return view($this->viewPrefix.'index', [
             'templates' => TemplateFacade::findAll(),
         ]);
     }
@@ -61,7 +60,7 @@ class Templates extends Controller
 
             return Response::stream($callback, 200, $headers);
         } else {
-            return View::make($this->viewPrefix.'.pages', [
+            return view($this->viewPrefix.'.pages', [
                 'pages'    => $pages,
                 'template' => $template,
             ]);
