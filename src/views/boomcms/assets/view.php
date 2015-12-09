@@ -8,40 +8,40 @@
             <?= $button('refresh', 'Replace', ['class' => 'b-assets-replace']) ?>
 
             <?php if ($asset->isImage()): ?>
-                <?= $button('edit', Lang::get('boomcms::asset.openeditor'), ['class' => 'b-assets-openeditor b-button-withtext']) ?>
+                <?= $button('edit', trans('boomcms::asset.openeditor'), ['class' => 'b-assets-openeditor b-button-withtext']) ?>
             <?php endif ?>
         </div>
     </div>
 
     <div class="boom-tabs">
         <ul>
-            <li><a href="#b-assets-view-info"><?= Lang::get('Info') ?></a></li>
-            <li><a href="#b-assets-view-attributes"><?= Lang::get('Attributes') ?></a></li>
-            <li><a href="#b-tags"><?= Lang::get('Tags') ?></a></li>
+            <li><a href="#b-assets-view-info"><?= trans('Info') ?></a></li>
+            <li><a href="#b-assets-view-attributes"><?= trans('Attributes') ?></a></li>
+            <li><a href="#b-tags"><?= trans('Tags') ?></a></li>
 
             <?php if ($asset->hasMetadata()): ?>
-                <li><a href="#b-assets-metadata"><?= Lang::get('boomcms::asset.metadata') ?></a></li>
+                <li><a href="#b-assets-metadata"><?= trans('boomcms::asset.metadata') ?></a></li>
             <?php endif ?>
 
             <?php if ($asset->hasPreviousVersions()): ?>
-                <li><a href="#b-assets-view-files"><?= Lang::get('boomcms::asset.previous_versions') ?></a></li>
+                <li><a href="#b-assets-view-files"><?= trans('boomcms::asset.previous_versions') ?></a></li>
             <?php endif ?>
         </ul>
 
         <div id="b-assets-view-attributes">
             <form>
                 <label>
-                    <?= Lang::get('Title') ?>
+                    <?= trans('Title') ?>
                     <input type="text" id="title" name="title" value="<?= $asset->getTitle() ?>" />
                 </label>
 
                 <label>
-                    <?= Lang::get('Description') ?>
+                    <?= trans('Description') ?>
                     <textarea id="description" name="description"><?= $asset->getDescription() ?></textarea>
                 </label>
 
                 <label>
-                    <?= Lang::get('Credits') ?>
+                    <?= trans('Credits') ?>
                     <textarea id="credits" name="credits"><?= $asset->getCredits() ?></textarea>
                 </label>
 
@@ -57,30 +57,30 @@
 
         <div id="b-assets-view-info">
             <dl>
-                <dt><?= Lang::get('Type') ?></dt>
-                <dd><?= Lang::get('boomcms::asset.type.'.strtolower($asset->getType())) ?></dd>
+                <dt><?= trans('Type') ?></dt>
+                <dd><?= trans('boomcms::asset.type.'.strtolower($asset->getType())) ?></dd>
 
-                <dt><?= Lang::get('boomcms::asset.extension') ?></dt>
+                <dt><?= trans('boomcms::asset.extension') ?></dt>
                 <dd><?= $asset->getExtension() ?></dd>
 
-                <dt><?= Lang::get('Filesize') ?></dt>
+                <dt><?= trans('Filesize') ?></dt>
                 <dd><span id='filesize'><?= Str::filesize($asset->getFilesize()) ?></dd>
 
                 <?php if ($asset->isImage()): ?>
-                    <dt><?= Lang::get('Dimensions') ?></dt>
+                    <dt><?= trans('Dimensions') ?></dt>
                     <dd><?= $asset->getWidth() ?> x <?= $asset->getHeight() ?></dd>
                 <?php endif ?>
 
                 <?php if ($uploader = $asset->getUploadedBy()): ?>
-                    <dt><?= Lang::get('Uploaded by') ?></dt>
+                    <dt><?= trans('Uploaded by') ?></dt>
                     <dd><?= $uploader->getName() ?></dd>
                 <?php endif ?>
 
-                <dt><?= Lang::get('Uploaded on') ?></dt>
+                <dt><?= trans('Uploaded on') ?></dt>
                 <dd><?= $asset->getUploadedTime()->format('d F Y h:i:s') ?></dd>
 
                 <?php if (!$asset->isImage()): ?>
-                    <dt><?= Lang::get('Downloads') ?></dt>
+                    <dt><?= trans('Downloads') ?></dt>
                     <dd><?= $asset->getDownloads() ?></dd>
                 <?php endif ?>
             </dl>
@@ -101,7 +101,7 @@
 
         <?php if ($asset->hasPreviousVersions()): ?>
             <div id="b-assets-view-files">
-                <p><?= Lang::get('boomcms::asset.previous_versions_intro') ?></p>
+                <p><?= trans('boomcms::asset.previous_versions_intro') ?></p>
 
                 <ul>
                     <?php foreach ($asset->getVersions() as $version): ?>

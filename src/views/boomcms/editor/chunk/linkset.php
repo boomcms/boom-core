@@ -51,6 +51,6 @@
 </div>
 
 <div id="b-linkset-editor-buttons">
-	<?= $button('trash-o', Lang::get('Delete linkset'), ['id' => 'b-linkset-delete', 'class' => 'b-button-textonly']) ?>
+	<?= $button('trash-o', trans('Delete linkset'), ['id' => 'b-linkset-delete', 'class' => 'b-button-textonly']) ?>
 	<?= $button('plus', 'Add link', ['id' => 'b-linkset-add', 'class' => 'b-button-withtext']) ?>
 </div>

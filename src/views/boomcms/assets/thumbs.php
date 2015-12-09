@@ -9,7 +9,7 @@
                         <h2><?= $asset->getTitle() ?></h2>
 
                         <p>
-                            <?= Lang::get('boomcms::asset.type.'.strtolower($asset->getType())) ?><br />
+                            <?= trans('boomcms::asset.type.'.strtolower($asset->getType())) ?><br />
 
                             <?php if ($asset->isImage()): ?>
                                 <?= $asset->getWidth() ?> x <?= $asset->getHeight() ?>
@@ -22,6 +22,6 @@
             </div>
         <?php endforeach ?>
     <?php else: ?>
-        <p id="b-assets-none"><?= Lang::get('boomcms::asset.none') ?></p>
+        <p id="b-assets-none"><?= trans('boomcms::asset.none') ?></p>
     <?php endif ?>
 </div>

@@ -1,28 +1,28 @@
 <div>
-    <h1><?= Lang::get('boomcms::settings.draft-status.heading') ?></h1>
-    <p><?= Lang::get('boomcms::settings.draft-status.intro') ?></p>
+    <h1><?= trans('boomcms::settings.draft-status.heading') ?></h1>
+    <p><?= trans('boomcms::settings.draft-status.intro') ?></p>
 
     <?php if ($version->isDraft() && !$version->isPendingApproval()): ?>
-        <p><?= Lang::get('boomcms::settings.draft-status.draft') ?></p>
+        <p><?= trans('boomcms::settings.draft-status.draft') ?></p>
         
         <?php if (!$auth->loggedIn('publish_page', $page)): ?>
             <?= $button('thumbs-up', 'request-approval', ['class' => 'b-button-withtext b-page-request-approval']) ?>
         <?php endif ?>
     <?php elseif ($version->isPendingApproval()): ?>
-        <p><?= Lang::get('boomcms::settings.draft-status.pending') ?></p>
+        <p><?= trans('boomcms::settings.draft-status.pending') ?></p>
     <?php elseif ($version->isEmbargoed()): ?>
         <p>
-            <?= Lang::get('boomcms::settings.draft-status.embargoed', [
+            <?= trans('boomcms::settings.draft-status.embargoed', [
                 'date' => $version->getEmbargoedUntil()->format('l d F Y'),
                 'time' => $version->getEmbargoedUntil()->format('H:i'),
             ]) ?>
         </p>
     <?php elseif ($version->isPublished()): ?>
-        <p><?= Lang::get('boomcms::settings.draft-status.published') ?></p>
+        <p><?= trans('boomcms::settings.draft-status.published') ?></p>
     <?php endif ?>
         
     <p>
-        <?= Lang::get('boomcms::settings.draft-status.latest', [
+        <?= trans('boomcms::settings.draft-status.latest', [
             'name'  => $version->getEditedBy()->getName(),
             'email' => $version->getEditedBy()->getEmail(),
             'date'  => $version->getEditedTime()->format('l d F Y'),
@@ -32,7 +32,7 @@
     
     <?php if (!$version->isPublished()): ?>
         <p>
-            <?= Lang::get('boomcms::settings.draft-status.last-published', [
+            <?= trans('boomcms::settings.draft-status.last-published', [
                 'date' => $page->getLastPublishedTime()->format('l d F Y'),
                 'time' => $page->getLastPublishedTime()->format('H:i'),
             ]) ?>

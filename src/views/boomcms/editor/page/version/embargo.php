@@ -8,7 +8,7 @@
     </p>
 
     <label>
-        <?= Lang::get('Embargo until') ?>
+        <?= trans('Embargo until') ?>
         <input type="text" name="embargoed_until" value="<?= ($version->getEmbargoedUntil()->getTimestamp()) ? $version->getEmbargoedUntil()->format('d F Y h:i') : date('d F Y h:i', time()) ?>" class="boom-datepicker" id="page-embargo" />
     </label>
 </form>

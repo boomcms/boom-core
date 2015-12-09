@@ -6,12 +6,12 @@
 
 	<div id="b-topbar-page-buttons">
 		<?php if ($auth->loggedIn('add_page', $page)): ?>
-			<?= $button('plus', Lang::get('Add a new page as a child of the current page'), ['id' => 'b-page-addpage']) ?>
+			<?= $button('plus', trans('Add a new page as a child of the current page'), ['id' => 'b-page-addpage']) ?>
 		<?php endif ?>
 
 		<?php if ($auth->loggedIn('edit_page', $page)): ?>
 			<div id="b-page-settings-menu">
-				<?= $button('cog', Lang::get('Page settings which apply whichever version is published'), ['id' => 'b-page-settings']) ?>
+				<?= $button('cog', trans('Page settings which apply whichever version is published'), ['id' => 'b-page-settings']) ?>
 			</div>
 		<?php endif ?>
 
@@ -24,20 +24,20 @@
 		<?php endif ?>
 
 		<?php if ($auth->loggedIn('edit_page', $page)): ?>
-			<?= $button('eye', Lang::get('This page is visible. The content displayed will depend on which version of the page is published'), ['id' => 'b-page-visible', 'class' => $page->isVisible() ? 'b-page-visibility ' : 'b-page-visibility ui-helper-hidden']) ?>
-			<?= $button('eye-slash', Lang::get('This page is hidden regardless of whether there is a published version'), ['id' => 'b-page-invisible', 'class' => $page->isVisible() ? 'b-page-visibility ui-helper-hidden' : 'b-page-visibility']) ?>
+			<?= $button('eye', trans('This page is visible. The content displayed will depend on which version of the page is published'), ['id' => 'b-page-visible', 'class' => $page->isVisible() ? 'b-page-visibility ' : 'b-page-visibility ui-helper-hidden']) ?>
+			<?= $button('eye-slash', trans('This page is hidden regardless of whether there is a published version'), ['id' => 'b-page-invisible', 'class' => $page->isVisible() ? 'b-page-visibility ui-helper-hidden' : 'b-page-visibility']) ?>
 		<?php endif ?>
 
 		<?php if ($auth->canDelete($page)) : ?>
             <?php if ($page->canBeDeleted()): ?>
-    			<?= $button('trash-o', Lang::get('Delete this page'), ['id' => 'b-page-delete']) ?>
+    			<?= $button('trash-o', trans('Delete this page'), ['id' => 'b-page-delete']) ?>
             <?php else: ?>
-                <?= $button('trash-o', Lang::get('Page delete has been disabled for this page'), ['id' => 'b-page-delete', 'disabled' => 'disabled']) ?>
+                <?= $button('trash-o', trans('Page delete has been disabled for this page'), ['id' => 'b-page-delete', 'disabled' => 'disabled']) ?>
             <?php endif ?>
 		<?php endif ?>
 
 		<div class="b-page-container">
-			<?= $button('view-live', Lang::get('View the page as it appears on the live site'), ['id' => 'b-page-viewlive', 'class' => 'b-button-preview', 'data-preview' => 'disabled']) ?>
+			<?= $button('view-live', trans('View the page as it appears on the live site'), ['id' => 'b-page-viewlive', 'class' => 'b-button-preview', 'data-preview' => 'disabled']) ?>
 		</div>
 	</div>
 

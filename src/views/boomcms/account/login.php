@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html dir="ltr" lang="en-gb" class="boom">
 	<head>
-		<title>BoomCMS | <?= Lang::get('Login') ?></title>
+		<title>BoomCMS | <?= trans('Login') ?></title>
 		<meta name="robots" content="noindex, nofollow" />
 		<link rel="stylesheet" type="text/css" href="/vendor/boomcms/boom-core/css/cms.css" />
 	</head>
@@ -19,26 +19,26 @@
 					<?php endif ?>
 					<p>
 						<label for="email">
-							<?= Lang::get('Email address') ?>
+							<?= trans('Email address') ?>
 						</label>
-						<input type="email" placeholder='<?= Lang::get('Email address') ?>' name="email" required id="email" value="<?= $request->input('email') ?>" />
+						<input type="email" placeholder='<?= trans('Email address') ?>' name="email" required id="email" value="<?= $request->input('email') ?>" />
 					</p>
 
 					<p>
 						<label for="password">
-							<?= Lang::get('Password') ?>
+							<?= trans('Password') ?>
 						</label>
-						<input type="password" placeholder='<?= Lang::get('Password') ?>' name="password" required id="password" />
+						<input type="password" placeholder='<?= trans('Password') ?>' name="password" required id="password" />
 					</p>
 
 					<p>
 						<label class="b-remember-me-label">
 							<input type="checkbox" name="remember" class="b-remember-me" value='1' />
-							<?= Lang::get('Keep me signed in') ?> (<?= Lang::get('until you log out') ?>)
+							<?= trans('Keep me signed in') ?> (<?= trans('until you log out') ?>)
 						</label>
 					</p>
 
-					<input type='submit' value='<?= Lang::get('Login') ?>' />
+					<input type='submit' value='<?= trans('Login') ?>' />
 					<a id='b-login-recover-link' href='/cms/recover'>I've forgotten my password</a>
 				</fieldset>
 			</form>

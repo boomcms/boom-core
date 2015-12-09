@@ -4,22 +4,22 @@
 		<?= $menu() ?>
 
 		<?= $menuButton() ?>
-		<?= $button('plus', Lang::get('New person'), ['id' => 'b-people-create']) ?>
-		<?= $button('trash-o', Lang::get('Delete'), ['id' => 'b-people-multi-delete', 'disabled' => 'disabled']) ?>
+		<?= $button('plus', trans('New person'), ['id' => 'b-people-create']) ?>
+		<?= $button('trash-o', trans('Delete'), ['id' => 'b-people-multi-delete', 'disabled' => 'disabled']) ?>
 
 		<button id="b-people-all" class="b-button">
-			<?= Lang::get('All people') ?>
+			<?= trans('All people') ?>
 		</button>
 	</div>
 
 	<div id="b-people-manager">
-        <h1><?= Lang::get('boomcms::people.heading') ?></h1>
+        <h1><?= trans('boomcms::people.heading') ?></h1>
 
 		<div id="b-groups">
 			<div id="b-groups-header">
-				<?= $button('plus', Lang::get('Add group'), ['class' => 'b-people-group-add']) ?>
+				<?= $button('plus', trans('Add group'), ['class' => 'b-people-group-add']) ?>
 				<h2>
-					<?= Lang::get('Groups') ?>
+					<?= trans('Groups') ?>
 				</h2>
 			</div>
 

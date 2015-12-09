@@ -1,5 +1,5 @@
 <div id='b-page-feature' class="b-pagesettings">
-    <h1><?= Lang::get('boomcms::settings.feature.heading') ?></h1>
+    <h1><?= trans('boomcms::settings.feature.heading') ?></h1>
 
 	<section>
 		<p id="b-page-feature-none">This page has no feature image.</p>
@@ -15,7 +15,7 @@
 	</section>
 
 	<section>
-		<h2><?= Lang::get('boomcms::settings.feature.from-page') ?></h2>
+		<h2><?= trans('boomcms::settings.feature.from-page') ?></h2>
 
         <ul class="images-in-page"></ul>
 	</section>

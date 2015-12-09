@@ -3,7 +3,7 @@
 
     <ul>
         <li>
-            <a target='_top' href='/' class="fa fa-home"><?= Lang::get('boomcms::menu.home') ?></a>
+            <a target='_top' href='/' class="fa fa-home"><?= trans('boomcms::menu.home') ?></a>
         </li>
 
         <?php foreach (BoomCMS\Support\Menu::items() as $item): ?>
@@ -13,11 +13,11 @@
         <?php endforeach ?>
 
         <li>
-            <a target='_top' href='/cms/account' class="fa fa-user"><?= Lang::get('boomcms::menu.account') ?></a>
+            <a target='_top' href='/cms/account' class="fa fa-user"><?= trans('boomcms::menu.account') ?></a>
         </li>
 
         <li>
-            <a target='_top' href='/cms/logout' class="fa fa-sign-out"><?= Lang::get('boomcms::menu.logout') ?></a>
+            <a target='_top' href='/cms/logout' class="fa fa-sign-out"><?= trans('boomcms::menu.logout') ?></a>
         </li>
     </ul>
 </nav>

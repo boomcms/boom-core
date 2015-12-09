@@ -3,11 +3,11 @@
 
 	<div id="b-topbar" class="b-toolbar">
 		<?= $menuButton() ?>
-		<?= $button('check', Lang::get('Save all'), ['id' => 'b-templates-save', 'class' => 'b-button-withtext']) ?>
+		<?= $button('check', trans('Save all'), ['id' => 'b-templates-save', 'class' => 'b-button-withtext']) ?>
 	</div>
 
 	<form id="b-templates">
-        <h1><?= Lang::get('boomcms::templates.heading') ?></h1>
+        <h1><?= trans('boomcms::templates.heading') ?></h1>
 
         <table id="b-templates-table" class="b-table tablesorter">
             <thead>
@@ -37,7 +37,7 @@
                         <td><input type="text" name="filename-<?= $t->getId() ?>" value="<?= $t->getFilename() ?>" /></td>
                         <td>
                             <?php $pageCount = $countPages(['template' => $t]) ?>
-                            <a href='/cms/templates/pages/<?= $t->getId() ?>' title='View the title and URL of <?= $pageCount, ' ', Lang::get('page', [$pageCount]) ?> which use this template'><?= $pageCount ?>
+                            <a href='/cms/templates/pages/<?= $t->getId() ?>' title='View the title and URL of <?= $pageCount, ' ', trans('page', [$pageCount]) ?> which use this template'><?= $pageCount ?>
                         </td>
                         <td><?= $button('trash', "Delete the &quot;{$t->getName()}&quot; template", ['class' => 'b-templates-delete']) ?>
                     </tr>

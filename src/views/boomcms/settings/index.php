@@ -17,7 +17,7 @@
         <?php endif ?>
 
         <form method="post" id="b-settings-manager-form">
-            <h1><?= Lang::get('boomcms::settings-manager._heading') ?></h1>
+            <h1><?= trans('boomcms::settings-manager._heading') ?></h1>
 
             <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
 

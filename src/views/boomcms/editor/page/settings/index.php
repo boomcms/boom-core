@@ -3,7 +3,7 @@
         <?php if ($page->wasCreatedBy($person) || $auth->loggedIn('edit_page_template', $page)): ?>
             <li>
                 <a href="#" class="fa fa-file-text-o" data-b-page-setting="template">
-                    <?= Lang::get('boomcms::settings.menu.template') ?>
+                    <?= trans('boomcms::settings.menu.template') ?>
                 </a>
             </li>
         <?php endif ?>
@@ -11,7 +11,7 @@
         <?php if ($auth->loggedIn('edit_page_navigation_basic', $page)): ?>
             <li>
                 <a href="#" class="fa fa-sitemap" data-b-page-setting="navigation">
-                    <?= Lang::get('boomcms::settings.menu.navigation') ?>
+                    <?= trans('boomcms::settings.menu.navigation') ?>
                 </a>
             </li>
         <?php endif ?>
@@ -19,7 +19,7 @@
         <?php if ($auth->loggedIn('edit_page_urls', $page)): ?>
             <li>
                 <a href="#" class="fa fa-link" data-b-page-setting="urls">
-                    <?= Lang::get('boomcms::settings.menu.urls') ?>
+                    <?= trans('boomcms::settings.menu.urls') ?>
                 </a>
             </li>
         <?php endif ?>
@@ -27,27 +27,27 @@
         <?php if ($auth->loggedIn('edit_page_search_basic', $page)): ?>
             <li>
                 <a href="#" class="fa fa-search" data-b-page-setting="search">
-                    <?= Lang::get('boomcms::settings.menu.search') ?>
+                    <?= trans('boomcms::settings.menu.search') ?>
                 </a>
             </li>
         <?php endif ?>
 
         <li>
             <a href="#" class="fa fa-tag" data-b-page-setting="tags">
-                <?= Lang::get('boomcms::settings.menu.tags') ?>
+                <?= trans('boomcms::settings.menu.tags') ?>
             </a>
         </li>
 
         <li>
             <a href="#" class="fa fa-puzzle-piece" data-b-page-setting="relations">
-                <?= Lang::get('boomcms::settings.menu.relations') ?>
+                <?= trans('boomcms::settings.menu.relations') ?>
             </a>
         </li>
 
         <?php if ($auth->loggedIn('edit_page_children_basic', $page)): ?>
             <li>
                 <a href="#" class="fa fa-child" data-b-page-setting="children">
-                    <?= Lang::get('boomcms::settings.menu.children') ?>
+                    <?= trans('boomcms::settings.menu.children') ?>
                 </a>
             </li>
         <?php endif ?>
@@ -55,7 +55,7 @@
         <?php if ($auth->loggedIn('edit_page_admin', $page)): ?>
             <li>
                 <a href="#" class="fa fa-lock" data-b-page-setting="admin">
-                    <?= Lang::get('boomcms::settings.menu.admin') ?>
+                    <?= trans('boomcms::settings.menu.admin') ?>
                 </a>
             </li>
         <?php endif ?>
@@ -63,7 +63,7 @@
         <?php if ($auth->loggedIn('edit_feature_image', $page)): ?>
             <li>
                 <a href="#" class="fa fa-image" data-b-page-setting="feature">
-                    <?= Lang::get('boomcms::settings.menu.feature') ?>
+                    <?= trans('boomcms::settings.menu.feature') ?>
                 </a>
             </li>
         <?php endif ?>
@@ -72,14 +72,14 @@
             <?php if ($auth->loggedIn('edit_page', $page)): ?>
                 <li>
                     <a href="#" class="fa fa-eye" data-b-page-setting="visibility">
-                        <?= Lang::get('boomcms::settings.menu.visibility') ?>
+                        <?= trans('boomcms::settings.menu.visibility') ?>
                     </a>
                 </li>
             <?php endif ?>
 
             <li>
                 <a href="#" class="fa fa-pencil" data-b-page-setting="drafts">
-                    <?= Lang::get('boomcms::settings.menu.drafts') ?>
+                    <?= trans('boomcms::settings.menu.drafts') ?>
                 </a>
             </li>
         </div>
@@ -87,14 +87,14 @@
         <?php if ($auth->canDelete($page)): ?>
             <li>
                 <a href="#" class="fa fa-trash-o" data-b-page-setting="delete">
-                    <?= Lang::get('boomcms::settings.menu.delete') ?>
+                    <?= trans('boomcms::settings.menu.delete') ?>
                 </a>
             </li>
         <?php endif ?>
 
         <li class="b-page-settings-close">
             <a href="#" class="fa fa-close">
-                <?= Lang::get('boomcms::settings.menu.close') ?>
+                <?= trans('boomcms::settings.menu.close') ?>
             </a>
         </li>
     </ul>

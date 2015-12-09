@@ -27,13 +27,13 @@
             </div>
 
             <div>
-                <h2><?= Lang::get('boomcms::asset.search.type') ?></h2>
+                <h2><?= trans('boomcms::asset.search.type') ?></h2>
 
                 <?= View::make('boomcms::assets.search.type') ?>
             </div>
 
             <div>
-                <h2><?= Lang::get('boomcms::asset.search.tag') ?></h2>
+                <h2><?= trans('boomcms::asset.search.tag') ?></h2>
                 <?= View::make('boomcms::assets.search.tag') ?>
             </div>
         </section>

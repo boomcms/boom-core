@@ -6,12 +6,12 @@
                 <p class="message"></p>
 
                 <div id="b-assets-upload-progress"></div>
-                <?= $button('times', Lang::get('Cancel'), ['id' => 'b-assets-upload-cancel']) ?>
+                <?= $button('times', trans('Cancel'), ['id' => 'b-assets-upload-cancel']) ?>
             </div>
 
 			<input type="file" name="b-assets-upload-files[]" id="b-assets-upload-file" multiple min="1" max="5" />
 
-            <?= $button('times', Lang::get('Close uploader'), ['id' => 'b-assets-upload-close', 'class' => 'b-button-withtext']) ?>
+            <?= $button('times', trans('Close uploader'), ['id' => 'b-assets-upload-close', 'class' => 'b-button-withtext']) ?>
         </div>
 	</form>
 </div>

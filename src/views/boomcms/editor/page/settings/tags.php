@@ -1,8 +1,8 @@
 <div id="b-tags">
-    <h1><?= Lang::get('boomcms::settings.tags.heading') ?></h1>
+    <h1><?= trans('boomcms::settings.tags.heading') ?></h1>
 
     <section id="free">
-        <h2><?= Lang::get('Free tags') ?></h2>
+        <h2><?= trans('Free tags') ?></h2>
 
         <ul class="b-tags-list" data-group="">
             <?php if (isset($tags[''])): ?>
@@ -21,7 +21,7 @@
     </section>
 
     <section id="grouped">
-        <h2><?= Lang::get('Grouped tags') ?></h2>
+        <h2><?= trans('Grouped tags') ?></h2>
 
         <ul class="b-tags-grouped">
             <?php foreach (array_keys($tags) as $group): ?>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html dir="ltr" lang="en-gb" class="boom">
 	<head>
-		<title>BoomCMS | <?= Lang::get('Password reset') ?></title>
+		<title>BoomCMS | <?= trans('Password reset') ?></title>
 		<meta name="robots" content="noindex, nofollow" />
 		<link rel="stylesheet" type="text/css" href="/vendor/boomcms/boom-core/css/cms.css" />
 	</head>

@@ -6,8 +6,8 @@
     </div>
 
     <div id="b-account">
-        <h1><?= Lang::get('boomcms::account.heading') ?></h1>
-        <p class="information"><?= Lang::get('boomcms::account.intro') ?></p>
+        <h1><?= trans('boomcms::account.heading') ?></h1>
+        <p class="information"><?= trans('boomcms::account.intro') ?></p>
 
         <div style="margin-top: 20px;">
             <?php if (isset($message)): ?>

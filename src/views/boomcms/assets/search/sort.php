@@ -15,7 +15,7 @@
 <select id="b-assets-sortby">
     <?php foreach ($options as $o): ?>
         <option value="<?= $o ?>"<?php if ($selected === $o): ?> selected="selected"<?php endif ?>>
-            <?= Lang::get("boomcms::asset.sort.$o") ?>
+            <?= trans("boomcms::asset.sort.$o") ?>
         </option>
     <?php endforeach ?>
 </select>
