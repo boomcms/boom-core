@@ -71,7 +71,8 @@ class Templates extends Controller
             return Response::stream($callback, 200, $headers);
         } else {
             return View::make($this->viewPrefix.'.pages', [
-                'pages' => $pages,
+                'pages'    => $pages,
+                'template' => $template,
             ]);
         }
     }

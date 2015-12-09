@@ -6,7 +6,9 @@
 		<?= $button('download', Lang::get('Download as CSV'), ['id' => 'b-template-pages-download', 'class' => 'b-button-withtext']) ?>
 	</div>
 
-    <div>
+    <div id="b-templates">
+        <h1><?= Lang::get('boomcms::templates.pages') ?> <?= $template->getName() ?></h1>
+
         <table class="b-table tablesorter">
 			<thead>
 				<tr>
