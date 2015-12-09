@@ -35,9 +35,9 @@ class Template
      *
      * @return $this
      */
-    public function deleteById($id)
+    public function delete(TemplateModel $template)
     {
-        $this->model->destroy($id);
+        $template->delete();
 
         return $this;
     }

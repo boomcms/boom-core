@@ -89,10 +89,10 @@ Route::group(['middleware' => [
 
                 Route::group(['prefix' => 'templates'], function () {
                     Route::get('', 'Templates@index');
-                    Route::get('pages/{id}.{format?}', 'Templates@pages');
+                    Route::get('pages/{template}.{format?}', 'Templates@pages');
 
                     Route::post('save', 'Templates@save');
-                    Route::post('delete/{id}', 'Templates@delete');
+                    Route::post('delete/{template}', 'Templates@delete');
                 });
 
                 Route::group(['prefix' => 'pages'], function () {

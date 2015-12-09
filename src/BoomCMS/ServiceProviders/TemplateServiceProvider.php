@@ -6,6 +6,7 @@ use BoomCMS\Core\Template\Manager as TemplateManager;
 use BoomCMS\Database\Models\Template as TemplateModel;
 use BoomCMS\Repositories\Template as TemplateRepository;
 use BoomCMS\Support\Helpers\Config;
+use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
 
 class TemplateServiceProvider extends ServiceProvider
@@ -22,8 +23,10 @@ class TemplateServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
+    public function boot(Router $router)
     {
+        $router->model('template', TemplateModel::class);
+
         $this->themes = $this->manager->findInstalledThemes();
 
         foreach ($this->themes as $theme) {

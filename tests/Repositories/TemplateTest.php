@@ -9,13 +9,13 @@ use Mockery as m;
 
 class TemplateTest extends AbstractTestCase
 {
-    public function testDeleteById()
+    public function testDelete()
     {
-        $model = m::mock(Template::class);
-        $model->shouldReceive('destroy')->with(1);
+        $template = m::mock(Template::class);
+        $template->shouldReceive('delete');
 
-        $repository = new TemplateRepository($model);
-        $repository->deleteById(1);
+        $repository = new TemplateRepository(new Template());
+        $this->assertEquals($repository, $repository->delete($template));
     }
 
     public function testFind()

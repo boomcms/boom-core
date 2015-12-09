@@ -3,13 +3,13 @@
 namespace BoomCMS\Http\Controllers\CMS;
 
 use BoomCMS\Core\Page;
-use BoomCMS\Core\Template;
+use BoomCMS\Core\Template\Manager as TemplateManager;
+use BoomCMS\Database\Models\Template;
 use BoomCMS\Http\Controllers\Controller;
 use BoomCMS\Support\Facades\Template as TemplateFacade;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\View;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class Templates extends Controller
 {
@@ -19,7 +19,7 @@ class Templates extends Controller
 
     public function index()
     {
-        $manager = new Template\Manager(App::make('files'), TemplateFacade::getFacadeRoot());
+        $manager = new TemplateManager(App::make('files'), TemplateFacade::getFacadeRoot());
         $manager->findAndInstallNewTemplates();
 
         return View::make($this->viewPrefix.'index', [
@@ -30,14 +30,8 @@ class Templates extends Controller
     /**
      * Display a list of pages which use a given template.
      */
-    public function pages($id)
+    public function pages(Template $template)
     {
-        $template = TemplateFacade::find($id);
-
-        if (!$template) {
-            throw new NotFoundHttpException();
-        }
-
         $finder = new Page\Finder\Finder();
         $finder->addFilter(new Page\Finder\Template($template));
         $finder->setOrderBy('title', 'asc');
@@ -93,8 +87,8 @@ class Templates extends Controller
         }
     }
 
-    public function delete($id)
+    public function delete(Template $template)
     {
-        TemplateFacade::deleteById($id);
+        TemplateFacade::delete($template);
     }
 }
