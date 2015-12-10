@@ -5,7 +5,6 @@ namespace BoomCMS\Repositories;
 use BoomCMS\Contracts\Models\Group as GroupModelInterface;
 use BoomCMS\Contracts\Repositories\Group as GroupRepositoryInterface;
 use BoomCMS\Database\Models\Group as Model;
-use Illuminate\Support\Facades\DB;
 
 class Group implements GroupRepositoryInterface
 {
@@ -41,12 +40,9 @@ class Group implements GroupRepositoryInterface
 
     public function delete(GroupModelInterface $group)
     {
-        // Delete all people roles associated with the group.
-        DB::table('people_roles')
-            ->where('group_id', '=', $group->getId())
-            ->delete();
-
         $group->delete();
+
+        return $this;
     }
 
     public function findAll()
