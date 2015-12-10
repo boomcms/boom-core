@@ -632,7 +632,7 @@ class Page extends Model implements PageInterface
     }
 
     /**
-     * @param int $parentId
+     * @param PageInterface $parent
      *
      * @return $this
      */
