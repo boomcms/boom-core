@@ -67,9 +67,9 @@ class Templates extends Controller
         }
     }
 
-    public function save(Request $request)
+    public function save()
     {
-        $post = $request->input();
+        $post = $this->request->input();
         $templateIds = $post['templates'];
 
         foreach ($templateIds as $templateId) {
