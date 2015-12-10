@@ -244,7 +244,7 @@ class Page extends Model implements PageInterface
 
         $parent = $this->getParent();
 
-        return ($parent->getGrandchildTemplateId() != 0) ? $parent->getGrandchildTemplateId() : $this->getTemplateId();
+        return ($parent && $parent->getGrandchildTemplateId() != 0) ? $parent->getGrandchildTemplateId() : $this->getTemplateId();
     }
 
     /**

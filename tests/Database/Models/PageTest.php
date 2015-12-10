@@ -6,6 +6,7 @@ use BoomCMS\Core\Chunk\Text;
 use BoomCMS\Database\Models\Asset;
 use BoomCMS\Database\Models\Page;
 use BoomCMS\Support\Facades\Chunk;
+use Mockery as m;
 
 class PageTest extends AbstractModelTestCase
 {
@@ -29,6 +30,20 @@ class PageTest extends AbstractModelTestCase
 
             $this->assertEquals($expected, $page->getChildOrderingPolicy());
         }
+    }
+
+    /**
+     * Give a page with no parent and no default child template ID
+     * 
+     * getDefaultChildTemplateId should return the page's template ID
+     */
+    public function testGetDefaultChildTemplateIdAtRootPage()
+    {
+        $page = m::mock(Page::class)->makePartial();
+        $page->shouldReceive('getParent')->once()->andReturnNull();
+        $page->shouldReceive('getTemplateId')->once()->andReturn(1);
+
+        $this->assertEquals(1, $page->getDefaultChildTemplateId());
     }
 
     public function testHasFeatureImage()
