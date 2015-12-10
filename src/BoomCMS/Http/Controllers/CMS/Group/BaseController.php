@@ -2,6 +2,7 @@
 
 namespace BoomCMS\Http\Controllers\CMS\Group;
 
+use BoomCMS\Contracts\Models\Group;
 use BoomCMS\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -10,7 +11,7 @@ class BaseController extends Controller
     protected $viewPrefix = 'boomcms::groups.';
 
     /**
-     * @var Group\Group
+     * @var Group
      */
     public $group;
 
