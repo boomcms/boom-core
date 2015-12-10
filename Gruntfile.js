@@ -143,7 +143,8 @@ module.exports = function(grunt) {
 				},
 				files: {
 					"public/css/cms.css": "src/css/cms.less",
-					"public/css/inpage.css": "src/css/inpage.less"
+					"public/css/inpage.css": "src/css/inpage.less",
+					"public/css/default-template.css": "src/css/default-template.less"
 				}
 			}
 		},
@@ -154,6 +155,10 @@ module.exports = function(grunt) {
 			},
 			target: {
 				files: {
+					'public/css/default-template.css': [
+						'bower_components/normalize.css/normalize.css',
+						'public/css/default-template.css'
+					],
 					'public/css/inpage.css': [
 						'public/css/inpage.css'
 					],

@@ -1,0 +1,51 @@
+@import 'boom/main/base.less';
+@import 'boom/main/colors.less';
+@import 'boom/main/fonts.less';
+
+body#default-template {
+	background: @lightest-grey;
+
+	header {
+		background: @red;
+		height: 40rem;
+		width: 100%;
+
+		h1 {
+			position: relative;
+			top: 50%;
+			transform: translateY(-50%);
+			text-align: center;
+			color: @white;
+			margin: 0 auto;
+			padding: 0;
+			font-size: 5rem;
+			line-height: 1.4em;
+		}
+	}
+
+	main {
+		width: 100rem;
+		max-width: 100%;
+		margin: auto;
+		padding: 5rem 15rem;
+		background: @white;
+		min-height: calc(~"100vh - 40rem");
+
+		.standfirst {
+			.text-large;
+			color: @red;
+			margin: 0 0 5rem 0;
+			font-weight: bold;
+		}
+
+		.content {
+			*:first-child {
+				margin-top: 0;
+			}
+
+			*:last-child {
+				margin-bottom: 0;
+			}
+		}
+	}
+}
