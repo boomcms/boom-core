@@ -258,7 +258,7 @@ class Page extends Model implements PageInterface
     public function getFeatureImage()
     {
         if ($this->featureImage === null) {
-            $this->featureImage = $this->hasOne(Asset::class, self::ATTR_FEATURE_IMAGE);
+            $this->featureImage = $this->belongsTo(Asset::class, self::ATTR_FEATURE_IMAGE)->first();
         }
 
         return $this->featureImage;
