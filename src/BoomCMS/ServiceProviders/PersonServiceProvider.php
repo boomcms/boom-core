@@ -2,10 +2,8 @@
 
 namespace BoomCMS\ServiceProviders;
 
-use BoomCMS\Database\Models\Group;
 use BoomCMS\Database\Models\Person;
 use BoomCMS\Repositories;
-use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
 
 class PersonServiceProvider extends ServiceProvider
@@ -15,9 +13,8 @@ class PersonServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot(Router $router)
+    public function boot()
     {
-        $router->model('group', Group::class);
     }
 
     /**

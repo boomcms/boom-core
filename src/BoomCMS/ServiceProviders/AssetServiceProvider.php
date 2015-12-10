@@ -15,9 +15,8 @@ class AssetServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot(Router $router)
+    public function boot()
     {
-        $router->model('asset', Asset::class);
     }
 
     /**
