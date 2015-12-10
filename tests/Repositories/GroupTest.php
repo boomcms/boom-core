@@ -16,7 +16,7 @@ class GroupTest extends AbstractTestCase
             ->shouldReceive('delete');
 
         $repository = new GroupRepository($model);
-        
+
         $this->assertEquals($repository, $repository->delete($model));
     }
 
