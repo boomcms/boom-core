@@ -76,4 +76,36 @@ class PageVersionTest extends AbstractModelTestCase
         $version = new Version(['pending_approval' => true]);
         $this->assertTrue($version->isPendingApproval());
     }
+
+    /**
+     * Page titles over 100 characters should not be saved.
+     */
+    public function testSetTitleIsIgnoredIfTooLong()
+    {
+        $version = new Version();
+        $version->title = str_random(101);
+
+        $this->assertEquals('', $version->title);
+    }
+
+    public function testTitleIsSetIfLessThan100Characters()
+    {
+        $title = str_random(99);
+
+        $version = new Version();
+        $version->title = $title;
+
+        $this->assertEquals($title, $version->title);
+    }
+
+    /**
+     * Page title should be trimmed and have HTML removed.
+     */
+    public function testTitleIsCleaned()
+    {
+        $version = new Version();
+        $version->title = ' <b>test</b> ';
+
+        $this->assertEquals('test', $version->title);
+    }
 }

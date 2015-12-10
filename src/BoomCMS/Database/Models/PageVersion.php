@@ -186,7 +186,7 @@ class PageVersion extends Model implements PageVersionInterface
     {
         $title = trim(html_entity_decode(strip_tags($title)));
 
-        if (strlen($title) <= 70) {
+        if (strlen($title) <= 100) {
             $this->attributes[self::ATTR_TITLE] = $title;
         }
     }

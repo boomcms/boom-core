@@ -1,12 +1,13 @@
-/**
- * TODO: Tell someone off for trying to blank a page title or writing an essay in the title.
- */
 $.widget('boom.pageTitle', $.ui.chunk, {
 	lengthCounterCreated : false,
 
-	max_length : 70,
+	/* The length at which the title length inidcator turns red */
+	softLimit: 70,
 
-	saveOnBlur : false,
+	/* The length at which the title won't save */
+	hardLimit: 100,
+
+	saveOnBlur: false,
 
 	bind : function() {
 		$.ui.chunk.prototype.bind.call(this);
@@ -19,7 +20,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 			edit : function() {
 				var title = self.getTitle();
 
-				if (title != '' && title != old_text && title.length <= self.max_length) {
+				if (title != '' && title != old_text && title.length <= self.hardLimit) {
 					self.updatePageTitle(old_text, title);
 					self._save(title, old_text);
 				}
@@ -89,11 +90,11 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 	edit : function() {},
 
 	_get_counter_color_for_length : function(length) {
-		if (length >= this.max_length) {
+		if (length >= this.softLimit) {
 			return 'red';
-		} else if (length >= this.max_length * 0.9) {
+		} else if (length >= this.softLimit * 0.9) {
 			return 'orange';
-		} else if (length >= this.max_length * 0.8) {
+		} else if (length >= this.softLimit * 0.8) {
 			return 'yellow';
 		}
 
@@ -168,7 +169,7 @@ $.widget('boom.pageTitle', $.ui.chunk, {
 			.end()
 			.css('background-color', this._get_counter_color_for_length(length));
 
-		var disable_accept_button = (length >= this.max_length || length === 0)? true : false;
+		var disable_accept_button = (length >= this.hardLimit || length === 0)? true : false;
 		var opacity = disable_accept_button? '.35' : 1;
 		$('.b-editor-accept')
 			.prop('disabled', disable_accept_button)
