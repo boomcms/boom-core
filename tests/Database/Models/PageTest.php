@@ -33,7 +33,7 @@ class PageTest extends AbstractModelTestCase
     }
 
     /**
-     * Give a page with no parent and no default child template ID
+     * Give a page with no parent and no default child template ID.
      * 
      * getDefaultChildTemplateId should return the page's template ID
      */
