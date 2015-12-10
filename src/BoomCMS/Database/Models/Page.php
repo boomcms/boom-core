@@ -73,6 +73,11 @@ class Page extends Model implements PageInterface
      */
     protected $featureImage;
 
+    /**
+     * @var URLInterface
+     */
+    protected $primaryUrl;
+
     public function addRelation(PageInterface $page)
     {
         $this->relations()->attach($page, [
