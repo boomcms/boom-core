@@ -75,13 +75,13 @@ Route::group(['middleware' => [
                 ], function () {
                     Route::get('group/add', 'View@add');
                     Route::post('group/add', 'Save@add');
-                    Route::get('group/list_roles/{id}', 'View@listRoles');
-                    Route::post('group/remove_role/{id}', 'Save@removeRole');
-                    Route::post('group/add_role/{id}', 'Save@addRole');
-                    Route::post('group/delete/{id}', 'Save@delete');
-                    Route::post('group/save/{id}', 'Save@save');
+                    Route::get('group/list_roles/{group}', 'View@listRoles');
+                    Route::post('group/remove_role/{group}', 'Save@removeRole');
+                    Route::post('group/add_role/{group}', 'Save@addRole');
+                    Route::post('group/delete/{group}', 'Save@delete');
+                    Route::post('group/save/{group}', 'Save@save');
 
-                    Route::get('group/edit/{id}', [
+                    Route::get('group/edit/{group}', [
                         'as'   => 'group-edit',
                         'uses' => 'View@edit',
                     ]);

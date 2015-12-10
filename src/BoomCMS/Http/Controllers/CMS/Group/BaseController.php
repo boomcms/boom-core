@@ -3,7 +3,6 @@
 namespace BoomCMS\Http\Controllers\CMS\Group;
 
 use BoomCMS\Http\Controllers\Controller;
-use BoomCMS\Support\Facades\Group;
 use Illuminate\Http\Request;
 
 class BaseController extends Controller
@@ -20,6 +19,6 @@ class BaseController extends Controller
         $this->request = $request;
 
         $this->authorization('manage_people');
-        $this->group = Group::find($this->request->route()->getParameter('id'));
+        $this->group = $this->request->route()->getParameter('group');
     }
 }
