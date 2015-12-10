@@ -28,5 +28,8 @@
 		"psr-4": {"BoomCMS\\Tests\\": "tests/"}
 	},
 	"minimum-stability" : "dev",
-	"prefer-stable": true
+	"prefer-stable": true,
+	"scripts": {
+		"test": "phpunit"
+	}
 }

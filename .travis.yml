@@ -5,7 +5,7 @@ php:
   - 5.6
 services:
   - mysql
-script: phpunit
+script: composer test
 before_script:
   - printf "\n" | pecl install imagick
   - composer install
