@@ -6,6 +6,7 @@ use BoomCMS\Core\Chunk\Text;
 use BoomCMS\Database\Models\Asset;
 use BoomCMS\Database\Models\Page;
 use BoomCMS\Support\Facades\Chunk;
+use Illuminate\Database\Eloquent\Builder;
 use Mockery as m;
 
 class PageTest extends AbstractModelTestCase
@@ -66,8 +67,14 @@ class PageTest extends AbstractModelTestCase
 
     public function testGetFeatureImage()
     {
-        $page = $this->getMock(Page::class, ['hasOne']);
-        $page->expects($this->once())->method('hasOne')->with($this->equalTo(Asset::class));
+        $builder = m::mock(Builder::class);
+        $builder->shouldReceive('first')->once();
+
+        $page = $this->getMock(Page::class, ['belongsTo']);
+        $page->expects($this->once())
+            ->method('belongsTo')
+            ->with($this->equalTo(Asset::class))
+            ->willReturn($builder);
 
         $page->getFeatureImage();
     }
