@@ -151,11 +151,9 @@ $.widget('boom.assetManager', {
 
 		return $.post(this.listUrl, this.postData)
 			.done(function(response) {
-				var $thumbs = $(response.html);
-
 				assetManager.element
-					.find('#b-assets-content')
-					.html($thumbs);
+					.find('#b-assets-view-thumbs')
+					.replaceWith(response.html);
 
 				assetManager.element
 					.find('#b-assets-view-thumbs')

@@ -102,9 +102,7 @@ function boomAssetPicker(currentAsset, filters) {
 
 		$.post(this.listUrl, this.filters)
 			.done(function(response) {
-				var $thumbs = $(response.html);
-
-				assetPicker.picker.find('#b-assets-view-thumbs').replaceWith($thumbs);
+				assetPicker.picker.find('#b-assets-view-thumbs').replaceWith(response.html);
 				assetPicker.justifyAssets();
 
 				assetPicker.initPagination(response.total);

@@ -31,7 +31,9 @@
         <?= View::make('boomcms::assets.pagination') ?>
 	</div>
 
-	<div id="b-assets-content"></div>
+    <div id="b-assets-content">
+        <?= View::make('boomcms::assets.thumbs', ['assets' => []]) ?>
+    </div>
 
 	<?= View::make('boomcms::assets.upload') ?>
 </div>
