@@ -26,16 +26,7 @@ class BaseController extends Controller
     {
         $this->request = $request;
         $this->page = $request->route()->getParameter('page');
-
-        if ($id = $request->route()->getParameter('id')) {
-            $this->url = URLFacade::find($id);
-        } else {
-            $this->url = new URL();
-        }
-
-        if ($request->route()->getParameter('id') && !$this->url->getId()) {
-            about(404);
-        }
+        $this->url = $request->route()->getParameter('url');
 
         if ($this->page) {
             parent::authorization('edit_page_urls', $this->page);

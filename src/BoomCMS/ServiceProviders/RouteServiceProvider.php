@@ -14,6 +14,7 @@ class RouteServiceProvider extends ServiceProvider
         $router->model('page', Models\Page::class);
         $router->model('group', Models\Group::class);
         $router->model('template', Models\Template::class);
+        $router->model('url', Models\URL::class);
 
         require __DIR__.'/../../routes.php';
     }
