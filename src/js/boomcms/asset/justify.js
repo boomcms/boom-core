@@ -21,10 +21,12 @@ $.widget('boom.justifyAssets', {
 		var currentRow = new Row();
 		var prevRow;
 		var self = this;
+		var rows = 0;
 
 		if (this.$el.children().length > 1) {
 			this.$el.children().each(function(index, element) {
 				var $child = $(element);
+
 				$child.offset = self._getOffset($child);
 
 				if ( ! $child.css('height') || ! $child.attr('data-aspect-ratio')) {
@@ -36,6 +38,7 @@ $.widget('boom.justifyAssets', {
 				currentRow.addElementToRow($child);
 
 				if (currentRow.isAtStart() && index > 0) {
+					rows++;
 					prevRow.expandTo(self.targetRightOffset);
 				}
 
@@ -45,7 +48,7 @@ $.widget('boom.justifyAssets', {
 
 			if (lastRowGap <= (this.$el.outerWidth(true) * 0.75)) {
 				currentRow.expandTo(self.targetRightOffset);
-			} else {
+			} else if (rows > 1) {
 				prevRow.merge(currentRow);
 			}
 		}
