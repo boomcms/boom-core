@@ -3,7 +3,7 @@
 return [
     'text' => [
         'default'    => 'Default text',
-        'standfirst' => 'Insert standfirst here. A single sentence of around 15 words introducing the page',
+        'standfirst' => 'Insert standfirst here - a single sentence of around 15 words introducing the page',
         'bodycopy'   => 'Insert the main content of the page here',
     ],
     'feature' => [
