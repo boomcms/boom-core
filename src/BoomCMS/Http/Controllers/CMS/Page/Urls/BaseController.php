@@ -25,7 +25,7 @@ class BaseController extends Controller
     public function __construct(Request $request)
     {
         $this->request = $request;
-        $this->page = Page::find($request->input('page_id'));
+        $this->page = $request->route()->getParameter('page');
 
         if ($id = $request->route()->getParameter('id')) {
             $this->url = URLFacade::find($id);
@@ -35,10 +35,6 @@ class BaseController extends Controller
 
         if ($request->route()->getParameter('id') && !$this->url->getId()) {
             about(404);
-        }
-
-        if ($request->input('page_id') && !$this->page) {
-            abourt(404);
         }
 
         if ($this->page) {

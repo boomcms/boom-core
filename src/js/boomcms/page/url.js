@@ -7,7 +7,7 @@ function boomPageUrl(id) {
 			dialog;
 
 		dialog = new boomDialog({
-			url : '/cms/page/urls/add?page_id=' + page_id,
+			url : '/cms/page/urls/add/' + page_id,
 			title : 'Add URL',
 			closeButton: false,
 			saveButton: true,
@@ -27,7 +27,7 @@ function boomPageUrl(id) {
 	boomPageUrl.prototype.addWithLocation = function(page_id, location) {
 		var deferred = new $.Deferred();
 
-		$.post('/cms/page/urls/add?page_id=' + page_id, {location : location})
+		$.post('/cms/page/urls/add/' + page_id, {location : location})
 			.done(function(response) {
 				if (response) {
 					if (typeof response.existing_url_id !== 'undefined') {

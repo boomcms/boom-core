@@ -40392,7 +40392,7 @@ $.widget('boom.pageTree', {
 			dialog;
 
 		dialog = new boomDialog({
-			url : '/cms/page/urls/add?page_id=' + page_id,
+			url : '/cms/page/urls/add/' + page_id,
 			title : 'Add URL',
 			closeButton: false,
 			saveButton: true,
@@ -40412,7 +40412,7 @@ $.widget('boom.pageTree', {
 	boomPageUrl.prototype.addWithLocation = function(page_id, location) {
 		var deferred = new $.Deferred();
 
-		$.post('/cms/page/urls/add?page_id=' + page_id, {location : location})
+		$.post('/cms/page/urls/add/' + page_id, {location : location})
 			.done(function(response) {
 				if (response) {
 					if (typeof response.existing_url_id !== 'undefined') {
@@ -44353,10 +44353,10 @@ $.widget('ui.chunkPageVisibility', {
 	},
 
 	justify : function() {
-		var currentRow = new Row();
-		var prevRow;
-		var self = this;
-		var rows = 0;
+		var currentRow = new Row(),
+			prevRow,
+			self = this,
+			rows = 0;
 
 		if (this.$el.children().length > 1) {
 			this.$el.children().each(function(index, element) {
