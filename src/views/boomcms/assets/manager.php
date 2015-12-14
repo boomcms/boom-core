@@ -25,15 +25,15 @@
 
 		<input type='text' class="b-filter-input" id="b-assets-filter-title" placeholder="Search by asset name" value="Search by asset name" />
 
-        <?= View::make('boomcms::assets.search.type') ?>
-        <?= View::make('boomcms::assets.search.tag') ?>
-        <?= View::make('boomcms::assets.search.sort') ?>
-        <?= View::make('boomcms::assets.pagination') ?>
+        <?= view('boomcms::assets.search.type') ?>
+        <?= view('boomcms::assets.search.tag') ?>
+        <?= view('boomcms::assets.search.sort') ?>
+        <?= view('boomcms::assets.pagination') ?>
 	</div>
 
     <div id="b-assets-content">
-        <?= View::make('boomcms::assets.thumbs', ['assets' => []]) ?>
+        <?= view('boomcms::assets.thumbs', ['assets' => []]) ?>
     </div>
 
-	<?= View::make('boomcms::assets.upload') ?>
+	<?= view('boomcms::assets.upload') ?>
 </div>

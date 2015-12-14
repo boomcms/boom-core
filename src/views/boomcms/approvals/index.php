@@ -1,4 +1,4 @@
-    <?= View::make('boomcms::header', ['title' => 'Pending Approvals']) ?>
+    <?= view('boomcms::header', ['title' => 'Pending Approvals']) ?>
     <?= $menu() ?>
 
     <div id="b-topbar" class="b-toolbar">

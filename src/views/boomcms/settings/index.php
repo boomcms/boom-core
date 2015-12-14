@@ -1,4 +1,4 @@
-    <?= View::make('boomcms::header', ['title' => 'Settings']) ?>
+    <?= view('boomcms::header', ['title' => 'Settings']) ?>
 
     <div id="b-settings-manager">
         <div id="b-topbar" class="b-toolbar">

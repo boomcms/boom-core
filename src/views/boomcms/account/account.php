@@ -1,4 +1,4 @@
-<?= View::make('boomcms::header', ['title' => 'Manage Account']) ?>
+<?= view('boomcms::header', ['title' => 'Manage Account']) ?>
 
     <div id="b-topbar" class="b-toolbar">
         <?= $menuButton() ?>

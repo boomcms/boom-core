@@ -1,5 +1,5 @@
 <div id="b-assets-picker">
-    <?= View::make('boomcms::assets.thumbs', ['assets' => []]) ?>
+    <?= view('boomcms::assets.thumbs', ['assets' => []]) ?>
 
     <section id="b-assets-picker-sidebar">
         <section id="b-assets-picker-current">
@@ -12,7 +12,7 @@
         <?php if ($auth->loggedIn('manage_assets')): ?>
             <section id="b-assets-picker-upload">
                 <h1>Upload Asset</h1>
-                <?= View::make('boomcms::assets.upload') ?>
+                <?= view('boomcms::assets.upload') ?>
             </section>
         <?php endif ?>
 
@@ -29,16 +29,16 @@
             <div>
                 <h2><?= trans('boomcms::asset.search.type') ?></h2>
 
-                <?= View::make('boomcms::assets.search.type') ?>
+                <?= view('boomcms::assets.search.type') ?>
             </div>
 
             <div>
                 <h2><?= trans('boomcms::asset.search.tag') ?></h2>
-                <?= View::make('boomcms::assets.search.tag') ?>
+                <?= view('boomcms::assets.search.tag') ?>
             </div>
         </section>
 
-        <?= View::make('boomcms::assets.pagination') ?>
+        <?= view('boomcms::assets.pagination') ?>
         <?= $button('times', 'Close asset picker', ['class' => 'b-button-withtext', 'id' => 'b-assets-picker-close']) ?>
     </section>
 </div>
