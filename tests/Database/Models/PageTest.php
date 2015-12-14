@@ -103,6 +103,21 @@ class PageTest extends AbstractModelTestCase
         $this->assertEquals('description', $page->getDescription());
     }
 
+    public function testIsDeleted()
+    {
+        $values = [
+            0      => false,
+            null   => false,
+            time() => true,
+        ];
+
+        foreach ($values as $deletedAt => $isDeleted) {
+            $page = new Page(['deleted_at' => $deletedAt]);
+
+            $this->assertEquals($isDeleted, $page->isDeleted());
+        }
+    }
+
     public function testSetAndGetChildOrderingPolicy()
     {
         $values = [

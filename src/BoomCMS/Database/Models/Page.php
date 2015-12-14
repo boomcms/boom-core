@@ -386,7 +386,7 @@ class Page extends Model implements PageInterface
 
     public function isDeleted()
     {
-        return $this->{self::ATTR_DELETED_AT} == null;
+        return $this->{self::ATTR_DELETED_AT} != null;
     }
 
     /**
