@@ -39785,7 +39785,7 @@ function boomPage(page_id) {
 	getUrl: function(section) {
 		switch (section) {
 			case 'urls':
-				return '/cms/page/urls/' + this.page.id;
+				return '/cms/page/' + this.page.id + '/urls';
 			case 'relations':
 				return '/cms/page/relations/view/' + this.page.id;
 			case 'tags':
@@ -40092,7 +40092,7 @@ $.widget( 'boom.pageToolbar', {
 				},
 				urlsSave: function(event, primaryUrl) {
 					var history = new boomHistory();
-console.log(primaryUrl);
+
 					history.replaceState({},
 						top.window.document.title,
 						'/' + ((primaryUrl === '/') ? '' : primaryUrl)
@@ -40384,16 +40384,17 @@ $.widget('boom.pageTree', {
 			});
 		}
 	}
-});;function boomPageUrl(id) {
+});;function boomPageUrl(id, pageId) {
 	this.id = id;
+	this.pageId = pageId;
 
-	boomPageUrl.prototype.add = function(page_id) {
+	boomPageUrl.prototype.add = function() {
 		var url = this,
 			deferred = new $.Deferred(),
 			dialog;
 
 		dialog = new boomDialog({
-			url : '/cms/page/urls/add/' + page_id,
+			url : '/cms/page/' + this.pageId + '/urls/add',
 			title : 'Add URL',
 			closeButton: false,
 			saveButton: true,
@@ -40401,7 +40402,7 @@ $.widget('boom.pageTree', {
 		}).done(function() {
 			var location = dialog.contents.find('input[name=url]').val();
 
-			url.addWithLocation(page_id, location)
+			url.addWithLocation(location)
 				.done(function() {
 					deferred.resolve();
 				});
@@ -40410,15 +40411,16 @@ $.widget('boom.pageTree', {
 		return deferred;
 	};
 
-	boomPageUrl.prototype.addWithLocation = function(page_id, location) {
-		var deferred = new $.Deferred();
+	boomPageUrl.prototype.addWithLocation = function(location) {
+		var deferred = new $.Deferred(),
+			pageId = this.pageId;
 
-		$.post('/cms/page/urls/add/' + page_id, {location : location})
+		$.post('/cms/page/' + pageId + '/urls/add', {location : location})
 			.done(function(response) {
 				if (response) {
 					if (typeof response.existing_url_id !== 'undefined') {
-						var url = new boomPageUrl(response.existing_url_id);
-						url.move(page_id)
+						var url = new boomPageUrl(response.existing_url_id, pageId);
+						url.move()
 							.done(function() {
 								deferred.resolve();
 							});
@@ -40438,7 +40440,7 @@ $.widget('boom.pageTree', {
 
 			confirmation
 			.done(function() {
-				$.post('/cms/page/urls/delete/' + url.id)
+				$.post('/cms/page/' + url.pageId + '/urls/' + url.id + '/delete')
 				.done(function() {
 					deferred.resolve();
 				});
@@ -40448,13 +40450,13 @@ $.widget('boom.pageTree', {
 	};
 
 	boomPageUrl.prototype.makePrimary = function(is_primary) {
-		return $.post('/cms/page/urls/make_primary/' + this.id);
+		return $.post('/cms/page/' + this.pageId + '/urls/' + this.id + '/make_primary');
 	};
 
-	boomPageUrl.prototype.move = function(page_id) {
+	boomPageUrl.prototype.move = function() {
 		var deferred = new $.Deferred(),
 			move_dialog,
-			form_url = '/cms/page/urls/move/' + this.id + '?page_id=' + page_id,
+			form_url = '/cms/page/' + this.pageId + '/urls/' + this.id + '/move',
 			dialog;
 
 		dialog = new boomDialog({
@@ -41091,13 +41093,13 @@ $.widget('boom.pageTree', {
 		$count.find('p').html($selected.data('count'));
 	}
 });;$.widget('boom.pageSettingsUrls', {
-	baseUrl: '/cms/page/urls/',
+	baseUrl: '/cms/page/{page}/urls',
 
 	add: function() {
-		var url = new boomPageUrl(),
+		var url = new boomPageUrl(null, this.page.id),
 			urlEditor = this;
 
-		url.add(this.page.id)
+		url.add()
 			.done(function(response) {
 				new boomNotification('Url added.');
 
@@ -41133,14 +41135,14 @@ $.widget('boom.pageTree', {
 		var urlEditor = this;
 
 		this.page = this.options.page;
-		this.list_url = this.baseUrl + this.page.id;
+		this.list_url = this.baseUrl.replace('{page}', this.page.id);
 
 		this.bind();
 	},
 
 	delete: function($li) {
 		var id = $li.data('id'),
-			url = new boomPageUrl(id);
+			url = new boomPageUrl(id, this.page.id);
 
 		url.delete()
 			.done(function() {
@@ -41151,7 +41153,7 @@ $.widget('boom.pageTree', {
 	},
 
 	makePrimary: function($url) {
-		var url = new boomPageUrl($url.data('id'));
+		var url = new boomPageUrl($url.data('id'), this.page.id);
 
 		url.makePrimary()
 			.done(function() {

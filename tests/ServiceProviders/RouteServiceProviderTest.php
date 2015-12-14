@@ -19,6 +19,7 @@ class RouteServiceProviderTest extends AbstractTestCase
             Models\Asset::class,
             Models\Page::class,
             Models\Template::class,
+            Models\URL::class,
         ] as $model) {
             $binding = strtolower(class_basename($model));
 

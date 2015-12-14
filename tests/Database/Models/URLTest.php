@@ -28,9 +28,9 @@ class URLTest extends AbstractModelTestCase
         $query->shouldReceive('first')->andReturn($page);
 
         $url = m::mock(URL::class)->makePartial();
-        $url->shouldReceive('hasOne')
+        $url->shouldReceive('belongsTo')
             ->once()
-            ->with(Page::class, 'id')
+            ->with(Page::class, 'page_id')
             ->andReturn($query);
 
         $this->assertEquals($page, $url->getPage());

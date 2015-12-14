@@ -1,11 +1,11 @@
 $.widget('boom.pageSettingsUrls', {
-	baseUrl: '/cms/page/urls/',
+	baseUrl: '/cms/page/{page}/urls',
 
 	add: function() {
-		var url = new boomPageUrl(),
+		var url = new boomPageUrl(null, this.page.id),
 			urlEditor = this;
 
-		url.add(this.page.id)
+		url.add()
 			.done(function(response) {
 				new boomNotification('Url added.');
 
@@ -41,14 +41,14 @@ $.widget('boom.pageSettingsUrls', {
 		var urlEditor = this;
 
 		this.page = this.options.page;
-		this.list_url = this.baseUrl + this.page.id;
+		this.list_url = this.baseUrl.replace('{page}', this.page.id);
 
 		this.bind();
 	},
 
 	delete: function($li) {
 		var id = $li.data('id'),
-			url = new boomPageUrl(id);
+			url = new boomPageUrl(id, this.page.id);
 
 		url.delete()
 			.done(function() {
@@ -59,7 +59,7 @@ $.widget('boom.pageSettingsUrls', {
 	},
 
 	makePrimary: function($url) {
-		var url = new boomPageUrl($url.data('id'));
+		var url = new boomPageUrl($url.data('id'), this.page.id);
 
 		url.makePrimary()
 			.done(function() {

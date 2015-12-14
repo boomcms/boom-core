@@ -116,13 +116,13 @@ Route::group(['middleware' => [
             });
 
             Route::post('page/add/{page}', 'Page\PageController@add');
-            Route::get('page/urls/{page}', 'Page\PageController@urls');
-            Route::get('page/urls/add/{page}', 'Page\Urls\View@add');
-            Route::get('page/urls/move/{url}', 'Page\Urls\View@move');
-            Route::post('page/urls/add/{page}', 'Page\Urls\Save@add');
-            Route::post('page/urls/make_primary/{url}', 'Page\Urls\Save@makePrimary');
-            Route::post('page/urls/move/{url}', 'Page\Urls\Save@move');
-            Route::post('page/urls/delete/{url}', 'Page\Urls\Save@delete');
+            Route::get('page/{page}/urls', 'Page\PageController@urls');
+            Route::get('page/{page}/urls/add', 'Page\Urls@getAdd');
+            Route::get('page/{page}/urls/{url}/move', 'Page\Urls@getMove');
+            Route::post('page/{page}/urls/add', 'Page\Urls@postAdd');
+            Route::post('page/{page}/urls/{url}/make_primary', 'Page\Urls@postMakePrimary');
+            Route::post('page/{page}/urls/{url}/move', 'Page\Urls@postMove');
+            Route::post('page/{page}/urls/{url}/delete/', 'Page\Urls@postDelete');
 
             Route::group(['prefix' => 'page/tags'], function () {
                 Route::get('list/{page}', 'Page\Tags@listTags');

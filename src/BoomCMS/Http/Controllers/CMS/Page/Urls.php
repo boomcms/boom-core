@@ -1,14 +1,16 @@
 <?php
 
-namespace BoomCMS\Http\Controllers\CMS\Page\Urls;
+namespace BoomCMS\Http\Controllers\CMS\Page;
 
-use BoomCMS\Database\Models\URL;
+use BoomCMS\Contracts\Models\Page as PageInterface;
 use BoomCMS\Http\Controllers\Controller;
-use BoomCMS\Support\Facades\Page;
-use BoomCMS\Support\Facades\URL as URLFacade;
+use BoomCMS\Jobs\MakeURLPrimary;
+use BoomCMS\Jobs\ReassignURL;
+use BoomCMS\Support\Facades\URL;
+use Illuminate\Support\Facades\Bus;
 use Illuminate\Http\Request;
 
-class BaseController extends Controller
+class Urls extends Controller
 {
     /**
      * @var string
@@ -18,7 +20,7 @@ class BaseController extends Controller
     public $url;
 
     /**
-     * @var Page\Page
+     * @var PageInterface
      */
     public $page;
 
@@ -28,8 +30,53 @@ class BaseController extends Controller
         $this->page = $request->route()->getParameter('page');
         $this->url = $request->route()->getParameter('url');
 
-        if ($this->page) {
-            parent::authorization('edit_page_urls', $this->page);
+        $this->authorization('edit_page_urls', $this->page);
+    }
+
+    public function getAdd()
+    {
+        return view("$this->viewPrefix.add", [
+            'page' => $this->page,
+        ]);
+    }
+
+    public function getMove()
+    {
+        return view("$this->viewPrefix.move", [
+            'url'     => $this->url,
+            'current' => $this->url->getPage(),
+            'page'    => $this->page,
+        ]);
+    }
+
+    public function postAdd()
+    {
+        $location = $this->request->input('location');
+        $this->url = URL::findByLocation($location);
+
+        if ($this->url && !$this->url->isForPage($this->page)) {
+            // Url is being used for a different page.
+            // Notify that the url is already in use so that the JS can load a prompt to move the url.
+            return ['existing_url_id' => $this->url->getId()];
+        } elseif (!$this->url) {
+            URL::create($location, $this->page->getId());
         }
+    }
+
+    public function postDelete()
+    {
+        if (!$this->url->isPrimary()) {
+            URL::delete($this->url);
+        }
+    }
+
+    public function postMakePrimary()
+    {
+        Bus::dispatch(new MakeURLPrimary($this->url));
+    }
+
+    public function postMove()
+    {
+        Bus::dispatch(new ReassignURL($this->url, $this->page));
     }
 }
