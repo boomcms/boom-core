@@ -20,15 +20,17 @@
     <?php elseif ($version->isPublished()): ?>
         <p><?= trans('boomcms::settings.draft-status.published') ?></p>
     <?php endif ?>
-        
-    <p>
-        <?= trans('boomcms::settings.draft-status.latest', [
-            'name'  => $version->getEditedBy()->getName(),
-            'email' => $version->getEditedBy()->getEmail(),
-            'date'  => $version->getEditedTime()->format('l d F Y'),
-            'time'  => $version->getEditedTime()->format('H:i'),
-        ]) ?>
-    </p>
+
+    <?php if ($editedBy = $version->getEditedBy()): ?>
+        <p>
+            <?= trans('boomcms::settings.draft-status.latest', [
+                'name'  => $editedBy->getName(),
+                'email' => $editedBy->getEmail(),
+                'date'  => $version->getEditedTime()->format('l d F Y'),
+                'time'  => $version->getEditedTime()->format('H:i'),
+            ]) ?>
+        </p>
+    <?php endif ?>
     
     <?php if (!$version->isPublished()): ?>
         <p>
