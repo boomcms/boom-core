@@ -2,7 +2,7 @@
     $selected = isset($selected) ? $selected : 'last_modified desc';
 
     $options = [
-        'last_modifed desc',
+        'last_modified desc',
         'last_modified asc',
         'title asc',
         'title desc',
