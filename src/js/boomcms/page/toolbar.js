@@ -145,9 +145,10 @@ $.widget( 'boom.pageToolbar', {
 				},
 				urlsSave: function(event, primaryUrl) {
 					var history = new boomHistory();
+
 					history.replaceState({},
 						top.window.document.title,
-						'/' + primaryUrl
+						'/' + ((primaryUrl === '/') ? '' : primaryUrl)
 					);
 				},
 				deleteSave: function(event, response) {
