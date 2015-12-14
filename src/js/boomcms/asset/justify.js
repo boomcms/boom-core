@@ -18,10 +18,10 @@ $.widget('boom.justifyAssets', {
 	},
 
 	justify : function() {
-		var currentRow = new Row();
-		var prevRow;
-		var self = this;
-		var rows = 0;
+		var currentRow = new Row(),
+			prevRow,
+			self = this,
+			rows = 0;
 
 		if (this.$el.children().length > 1) {
 			this.$el.children().each(function(index, element) {
