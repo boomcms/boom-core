@@ -7,8 +7,8 @@ use BoomCMS\Http\Controllers\Controller;
 use BoomCMS\Jobs\MakeURLPrimary;
 use BoomCMS\Jobs\ReassignURL;
 use BoomCMS\Support\Facades\URL;
-use Illuminate\Support\Facades\Bus;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Bus;
 
 class Urls extends Controller
 {
