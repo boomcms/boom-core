@@ -53,11 +53,11 @@ class Slide
     }
 
     /**
-     * @return Link
+     * @return Link|null
      */
     public function getLink()
     {
-        return Link::factory($this->attrs['url']);
+        return isset($this->attrs['url']) ? Link::factory($this->attrs['url']) : null;
     }
 
     public function getLinktext()
