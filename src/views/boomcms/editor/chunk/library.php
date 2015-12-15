@@ -4,17 +4,17 @@
 
     <section>
         <h2><?= trans('boomcms::asset.search.type') ?></h2>
-        <?= View::make('boomcms::assets.search.type', ['selected' => $chunk->getParam('type')]) ?>
+        <?= view('boomcms::assets.search.type', ['selected' => $chunk->getParam('type')]) ?>
     </section>
 
     <section id="b-tags-search">
         <h2><?= trans('boomcms::asset.search.tag') ?></h2>
-        <?= View::make('boomcms::assets.search.tag', ['tags' => $chunk->getTags()]) ?>
+        <?= view('boomcms::assets.search.tag', ['tags' => $chunk->getTags()]) ?>
     </section>
 
     <section>
         <h2><?= trans('boomcms::asset.search.sort') ?></h2>
-        <?= View::make('boomcms::assets.search.sort', ['selected' => $chunk->getOrder()]) ?>
+        <?= view('boomcms::assets.search.sort', ['selected' => $chunk->getOrder()]) ?>
     </section>
 
     <section>

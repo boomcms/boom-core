@@ -30,7 +30,7 @@ $.widget('boom.pageSettings', {
 	getUrl: function(section) {
 		switch (section) {
 			case 'urls':
-				return '/cms/page/urls/' + this.page.id;
+				return '/cms/page/' + this.page.id + '/urls';
 			case 'relations':
 				return '/cms/page/relations/view/' + this.page.id;
 			case 'tags':

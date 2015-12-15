@@ -1,4 +1,4 @@
-<?= View::make('boomcms::header', ['title' => $page->getTitle()]) ?>
+<?= view('boomcms::header', ['title' => $page->getTitle()]) ?>
 
 <div id="b-topbar" class='b-page-toolbar b-toolbar b-toolbar-vertical'>
 	<?= $menuButton() ?>
@@ -49,7 +49,7 @@
 </div>
 
 <div id="b-page-settings-toolbar">
-    <?= View::make('boomcms::editor.page.settings.index') ?>
+    <?= view('boomcms::editor.page.settings.index') ?>
 </div>
 
-<?= View::make('boomcms::editor.footer') ?>
+<?= view('boomcms::editor.footer') ?>

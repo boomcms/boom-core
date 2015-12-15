@@ -6,7 +6,6 @@ use BoomCMS\Contracts\Models\Group as GroupInterface;
 use BoomCMS\Support\Traits\Comparable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Facades\DB;
 
 class Group extends Model implements GroupInterface
 {
@@ -48,15 +47,6 @@ class Group extends Model implements GroupInterface
                     self::PIVOT_ATTR_ALLOWED => $allowed,
                     self::PIVOT_ATTR_PAGE_ID => $pageId,
                 ]);
-
-            $select = DB::table('people_groups')
-                ->select('person_id', 'group_id', DB::raw($roleId), DB::raw($allowed), DB::raw($pageId))
-                ->where('group_id', '=', $this->getId());
-
-            $bindings = $select->getBindings();
-            $insert = 'INSERT INTO people_roles (person_id, group_id, role_id, allowed, page_id) '.$select->toSql();
-
-            DB::statement($insert, $bindings);
         }
 
         return $this;
@@ -114,13 +104,6 @@ class Group extends Model implements GroupInterface
             ->wherePivot(self::PIVOT_ATTR_ROLE_ID, '=', $roleId)
             ->wherePivot(self::PIVOT_ATTR_PAGE_ID, '=', $pageId)
             ->detach();
-
-        // Remove the role from people in this group.
-        DB::table('people_roles')
-            ->where('group_id', '=', $this->getId())
-            ->where('role_id', '=', $roleId)
-            ->where('page_id', '=', $pageId)
-            ->delete();
 
         return $this;
     }

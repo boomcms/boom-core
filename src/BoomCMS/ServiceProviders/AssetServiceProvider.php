@@ -5,7 +5,6 @@ namespace BoomCMS\ServiceProviders;
 use BoomCMS\Database\Models\Asset;
 use BoomCMS\Database\Models\AssetVersion;
 use BoomCMS\Repositories\Asset as Repository;
-use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
 
 class AssetServiceProvider extends ServiceProvider
@@ -15,9 +14,8 @@ class AssetServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot(Router $router)
+    public function boot()
     {
-        $router->model('asset', Asset::class);
     }
 
     /**

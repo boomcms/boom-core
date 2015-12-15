@@ -2,14 +2,12 @@
 
 namespace BoomCMS\ServiceProviders;
 
-use BoomCMS\Database\Models\Page;
 use BoomCMS\ServiceProviders;
 use BoomCMS\Support\Facades;
 use BoomCMS\Support\Helpers\Asset;
 use BoomCMS\Support\Str;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Html\HtmlServiceProvider;
-use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
 
 class BoomCMSServiceProvider extends ServiceProvider
@@ -39,6 +37,7 @@ class BoomCMSServiceProvider extends ServiceProvider
         ServiceProviders\URLServiceProvider::class,
         ServiceProviders\TagServiceProvider::class,
         ServiceProviders\EventServiceProvider::class,
+        ServiceProviders\RouteServiceProvider::class,
         HtmlServiceProvider::class,
     ];
 
@@ -47,21 +46,16 @@ class BoomCMSServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot(Router $router)
+    public function boot()
     {
         $this->loadViewsFrom(__DIR__.'/../../views/boomcms', 'boomcms');
         $this->loadViewsFrom(__DIR__.'/../../views/chunks', 'boomcms.chunks');
         $this->loadTranslationsFrom(__DIR__.'/../../lang', 'boomcms');
 
-        $router->pattern('page', '[0-9]+');
-        $router->model('page', Page::class);
-
         $this->publishes([
             __DIR__.'/../../../public'           => public_path('vendor/boomcms/boom-core'),
             __DIR__.'/../../database/migrations' => base_path('/migrations/boomcms'),
         ], 'boomcms');
-
-        include __DIR__.'/../../routes.php';
     }
 
     /**

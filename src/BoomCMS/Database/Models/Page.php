@@ -73,6 +73,11 @@ class Page extends Model implements PageInterface
      */
     protected $featureImage;
 
+    /**
+     * @var URLInterface
+     */
+    protected $primaryUrl;
+
     public function addRelation(PageInterface $page)
     {
         $this->relations()->attach($page, [
@@ -244,7 +249,7 @@ class Page extends Model implements PageInterface
 
         $parent = $this->getParent();
 
-        return ($parent->getGrandchildTemplateId() != 0) ? $parent->getGrandchildTemplateId() : $this->getTemplateId();
+        return ($parent && $parent->getGrandchildTemplateId() != 0) ? $parent->getGrandchildTemplateId() : $this->getTemplateId();
     }
 
     /**
@@ -253,7 +258,7 @@ class Page extends Model implements PageInterface
     public function getFeatureImage()
     {
         if ($this->featureImage === null) {
-            $this->featureImage = $this->hasOne(Asset::class, self::ATTR_FEATURE_IMAGE);
+            $this->featureImage = $this->belongsTo(Asset::class, self::ATTR_FEATURE_IMAGE)->first();
         }
 
         return $this->featureImage;
@@ -381,7 +386,7 @@ class Page extends Model implements PageInterface
 
     public function isDeleted()
     {
-        return $this->{self::ATTR_DELETED_AT} == null;
+        return $this->{self::ATTR_DELETED_AT} != null;
     }
 
     /**
@@ -627,7 +632,7 @@ class Page extends Model implements PageInterface
     }
 
     /**
-     * @param int $parentId
+     * @param PageInterface $parent
      *
      * @return $this
      */

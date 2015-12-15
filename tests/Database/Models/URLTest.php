@@ -30,7 +30,7 @@ class URLTest extends AbstractModelTestCase
         $url = m::mock(URL::class)->makePartial();
         $url->shouldReceive('belongsTo')
             ->once()
-            ->with(Page::class)
+            ->with(Page::class, 'page_id')
             ->andReturn($query);
 
         $this->assertEquals($page, $url->getPage());

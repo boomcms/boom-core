@@ -11,7 +11,6 @@ use BoomCMS\Jobs\CreatePagePrimaryUri;
 use Illuminate\Foundation\Bus\DispatchesCommands;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Event;
-use Illuminate\Support\Facades\View;
 
 class PageController extends Controller
 {

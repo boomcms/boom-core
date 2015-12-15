@@ -6,6 +6,8 @@ use BoomCMS\Core\Chunk\Text;
 use BoomCMS\Database\Models\Asset;
 use BoomCMS\Database\Models\Page;
 use BoomCMS\Support\Facades\Chunk;
+use Illuminate\Database\Eloquent\Builder;
+use Mockery as m;
 
 class PageTest extends AbstractModelTestCase
 {
@@ -31,6 +33,20 @@ class PageTest extends AbstractModelTestCase
         }
     }
 
+    /**
+     * Give a page with no parent and no default child template ID.
+     * 
+     * getDefaultChildTemplateId should return the page's template ID
+     */
+    public function testGetDefaultChildTemplateIdAtRootPage()
+    {
+        $page = m::mock(Page::class)->makePartial();
+        $page->shouldReceive('getParent')->once()->andReturnNull();
+        $page->shouldReceive('getTemplateId')->once()->andReturn(1);
+
+        $this->assertEquals(1, $page->getDefaultChildTemplateId());
+    }
+
     public function testHasFeatureImage()
     {
         $page = new Page([Page::ATTR_FEATURE_IMAGE => 1]);
@@ -51,8 +67,14 @@ class PageTest extends AbstractModelTestCase
 
     public function testGetFeatureImage()
     {
-        $page = $this->getMock(Page::class, ['hasOne']);
-        $page->expects($this->once())->method('hasOne')->with($this->equalTo(Asset::class));
+        $builder = m::mock(Builder::class);
+        $builder->shouldReceive('first')->once();
+
+        $page = $this->getMock(Page::class, ['belongsTo']);
+        $page->expects($this->once())
+            ->method('belongsTo')
+            ->with($this->equalTo(Asset::class))
+            ->willReturn($builder);
 
         $page->getFeatureImage();
     }
@@ -79,6 +101,21 @@ class PageTest extends AbstractModelTestCase
     {
         $page = new Page([Page::ATTR_DESCRIPTION => '<p>description</p>']);
         $this->assertEquals('description', $page->getDescription());
+    }
+
+    public function testIsDeleted()
+    {
+        $values = [
+            0      => false,
+            null   => false,
+            time() => true,
+        ];
+
+        foreach ($values as $deletedAt => $isDeleted) {
+            $page = new Page(['deleted_at' => $deletedAt]);
+
+            $this->assertEquals($isDeleted, $page->isDeleted());
+        }
     }
 
     public function testSetAndGetChildOrderingPolicy()

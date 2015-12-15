@@ -86,7 +86,7 @@
             </dl>
         </div>
 
-        <?= View::make('boomcms::assets.tags', ['tags' => $asset->getTags()]) ?>
+        <?= view('boomcms::assets.tags', ['tags' => $asset->getTags()]) ?>
 
         <?php if ($asset->hasMetadata()): ?>
             <div id="b-assets-metadata">

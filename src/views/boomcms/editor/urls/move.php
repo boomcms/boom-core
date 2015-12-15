@@ -1,52 +1,55 @@
-<p>
-	Would you like to move the URL <?= $url->getLocation() ?>?
-</p>
+<div id="b-page-urls-move">
+    <h1><?= trans('boomcms::page.urls.move.heading') ?> - /<?= ltrim($url->getLocation(), '/') ?></h1>
 
-<?php if ($url->isPrimary() && !$current->isDeleted()): ?>
-	<p>
-		<b>This URL is the primary URL for its page. If you move this URL its current page may become inaccessible.</b>
-	</p>
-<?php endif ?>
-<br />
+    <?php if ($url->isPrimary() && !$current->isDeleted()): ?>
+        <p><strong><?= trans('boomcms::page.urls.move.primary') ?></strong></p>
+    <?php endif ?>
 
-<?php if ($current->isDeleted()): ?>
-	<p>
-		<b>This URL is assigned to a page which has been deleted.</b>
-	</p>
-<?php endif ?>
+    <?php if ($current->isDeleted()): ?>
+        <p>
+            <strong><?= trans('boomcms::page.urls.move.deleted-warning') ?></strong>
+        </p>
+    <?php endif ?>
 
-<br />
-<table>
-	<tr>
-		<th>
-			Current Page<?php if ($current->isDeleted()): ?> (deleted) <?php endif ?>
-		</th>
-		<th>
-			New Page
-		</th>
-	</tr>
-	<tr>
-		<td>
-			<?= $current->getTitle() ?>
-		</td>
-		<td>
-			<?= $page->getTitle() ?>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<?= ($current->isVisible()) ? 'Visible' : 'Invisible' ?>
-		</td>
-		<td>
-			<?= ($page->isVisible()) ? 'Visible' : 'Invisible' ?>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<?= ucfirst($current->getCurrentVersion()->getStatus()) ?>
-		</td>
-		<td>
-			<?= ucfirst($page->getCurrentVersion()->getStatus()) ?>
-		</td>
-	</tr>
-</table>
+    <table>
+        <tr>
+            <th>
+                <?= trans('boomcms::page.urls.move.current') ?><?php if ($current->isDeleted()): ?> <?= trans('boomcms::page.urls.move.deleted') ?><?php endif ?>
+            </th>
+
+            <th>
+                <?= trans('boomcms::page.urls.move.new') ?>
+            </th>
+        </tr>
+
+        <tr>
+            <td>
+                <?= $current->getTitle() ?>
+            </td>
+
+            <td>
+                <?= $page->getTitle() ?>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <?= trans('boomcms::page.'.(($current->isVisible()) ? 'visible' : 'invisible')) ?>
+            </td>
+
+            <td>
+                <?= trans('boomcms::page.'.(($page->isVisible()) ? 'visible' : 'invisible')) ?>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <?= ucfirst($current->getCurrentVersion()->getStatus()) ?>
+            </td>
+
+            <td>
+                <?= ucfirst($page->getCurrentVersion()->getStatus()) ?>
+            </td>
+        </tr>
+    </table>
+</div>

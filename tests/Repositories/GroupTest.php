@@ -9,6 +9,17 @@ use Mockery as m;
 
 class GroupTest extends AbstractTestCase
 {
+    public function testDelete()
+    {
+        $model = m::mock(GroupModel::class);
+        $model
+            ->shouldReceive('delete');
+
+        $repository = new GroupRepository($model);
+
+        $this->assertEquals($repository, $repository->delete($model));
+    }
+
     public function testFind()
     {
         $id = 1;
