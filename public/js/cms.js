@@ -45234,8 +45234,6 @@ function Row() {
 				} else {
 					imageEditor.showCropTool();
 				}
-				
-				imageEditor.isCropping = !imageEditor.isCropping;
 		
 				$(this).blur();
 			})
@@ -45331,8 +45329,12 @@ function Row() {
 	};
 	
 	boomImageEditor.prototype.hideCropTool = function() {
-		this.$cropImage.Jcrop('destroy');
-		this.$cropImage.hide();
+		this.isCropping = false;
+
+		// Using the Jcrop destroy method causing a JS error when we try to crop again.
+		// So we manually remove the data and DOM element instead.
+		this.$cropImage.removeData('Jcrop');
+		this.$element.find('.jcrop-active').remove();
 
 		this.$toolbar
 			.children('.b-button')
@@ -45406,12 +45408,13 @@ function Row() {
 	boomImageEditor.prototype.showCropTool = function() {
 		var $el = this.dialog.contents,
 			imageEditor = this;
-	
+
 		this.$toolbar
 			.children('.b-button')
 			.not(this.cropButtonSelector)
 			.prop('disabled', true);
 	
+		this.isCropping = true;
 		this.toggleCropTools();
 
 		this.getImageBase64()
@@ -45421,6 +45424,7 @@ function Row() {
 				imageEditor.$cropImage
 					.attr('src', base64)
 					.on('load', function() {
+
 						imageEditor.$cropImage
 							.Jcrop({
 								boxWidth: imageEditor.imageWidth,
