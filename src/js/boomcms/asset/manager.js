@@ -195,7 +195,8 @@ $.widget('boom.assetManager', {
 	removeFilters : function() {
 		this.postData = {
 			page: 1,
-			limit: 30
+			limit: 30,
+			order: 'last_modified desc'
 		};
 
 		this.element.find('#b-assets-types').val(0);
