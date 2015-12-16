@@ -14,7 +14,7 @@ return [
         'type' => 'Filter by asset type',
     ],
     'sort' => [
-        'last_modifed desc' => 'Most recent',
+        'last_modified desc' => 'Most recent',
         'last_modified asc' => 'Oldest',
         'title asc'         => 'Title A - Z',
         'title desc'        => 'Title Z - A',
