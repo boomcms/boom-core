@@ -8,6 +8,14 @@ class AssetVersionTest extends AbstractModelTestCase
 {
     protected $model = V::class;
 
+    public function testGetAssetId()
+    {
+        $v = new V([V::ATTR_ASSET => 1]);
+
+        $this->assertEquals($v->{V::ATTR_ASSET}, $v->getAssetId());
+        $this->assertInternalType('int', $v->getAssetId());
+    }
+
     public function testExtensionIsAlwaysLowercase()
     {
         $v = new V();

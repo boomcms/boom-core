@@ -21,6 +21,7 @@ class AssetVersion extends Model
     const ATTR_METADATA = 'metadata';
 
     protected $casts = [
+        self::ATTR_ASSET    => 'integer',
         self::ATTR_METADATA => 'array',
     ];
 
@@ -39,7 +40,15 @@ class AssetVersion extends Model
 
     public function getAsset()
     {
-        return $this->belongsTo(Asset::class, 'asset_id')->first();
+        return $this->belongsTo(Asset::class, $this->getAssetId())->first();
+    }
+
+    /**
+     * @return int
+     */
+    public function getAssetId()
+    {
+        return $this->{self::ATTR_ASSET};
     }
 
     public function getEditedAt()
