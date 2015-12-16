@@ -15,7 +15,7 @@ $.widget('boom.assetManager', {
 		this.postData[type] = value;
 	},
 
-	assetsUploaded : function(assetIds) {
+	assetsUploaded : function() {
 		var assetManager = this;
 
 		assetManager.getAssets();
