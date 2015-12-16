@@ -13,7 +13,7 @@ class Link extends Linkset
 
     protected $defaultHtml = "<a href='{url}'>{text}</a>";
 
-    protected $links;
+    protected $link;
 
     public function addContentToHtml($url, $text)
     {
@@ -43,23 +43,15 @@ class Link extends Linkset
 
     public function getLink()
     {
-        if ($this->links === null) {
-            if (isset($this->attrs['links'])) {
-                $this->links = $this->attrs['links'];
+        if ($this->link === null) {
+            $links = $this->getLinks();
 
-                if (!$this->editable) {
-                    foreach ($this->links as $i => $link) {
-                        if ($link->isInternal() && !$link->getLink()->getPage()->isVisible()) {
-                            unset($this->links[$i]);
-                        }
-                    }
-                }
-            } else {
-                $this->links = [];
+            if (isset($links[0])) {
+                $this->link = $links[0];
             }
         }
 
-        return isset($this->links[0]) ? $this->links[0] : null;
+        return $this->link;
     }
 
     public function getTargetPageId()
