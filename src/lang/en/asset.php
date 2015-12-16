@@ -15,12 +15,12 @@ return [
     ],
     'sort' => [
         'last_modified desc' => 'Most recent',
-        'last_modified asc' => 'Oldest',
-        'title asc'         => 'Title A - Z',
-        'title desc'        => 'Title Z - A',
-        'filesize asc'      => 'Size (smallest)',
-        'filesize desc'     => 'Size (largest)',
-        'downloads desc'    => 'Most downloaded',
+        'last_modified asc'  => 'Oldest',
+        'title asc'          => 'Title A - Z',
+        'title desc'         => 'Title Z - A',
+        'filesize asc'       => 'Size (smallest)',
+        'filesize desc'      => 'Size (largest)',
+        'downloads desc'     => 'Most downloaded',
     ],
     'type'                    => [
         'image'    => 'Image',
