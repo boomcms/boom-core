@@ -45422,7 +45422,6 @@ function Row() {
 					.attr('src', base64)
 					.on('load', function() {
 						imageEditor.$cropImage
-							.show()
 							.Jcrop({
 								boxWidth: imageEditor.imageWidth,
 								boxHeight: imageEditor.imageHeight,
