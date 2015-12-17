@@ -39133,10 +39133,9 @@ $.extend({
 			( options ) && $.extend( this.config, options );
 			this.options = options;
 
-			$('#b-topbar').ui();
+			$('#b-topbar, body').ui();
 
 			this._init_widgets();
-			$('body').ui();
 		},
 
 		_init_widgets : function() {
