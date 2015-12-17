@@ -5,13 +5,14 @@ namespace BoomCMS\Http\Controllers;
 use BoomCMS\Contracts\Models\Page;
 use BoomCMS\Core\Page\RssFeed;
 use BoomCMS\Support\Facades\Chunk;
+use BoomCMS\Support\Facades\Editor;
 use Illuminate\Support\Facades\View;
 
 class PageController extends Controller
 {
     public function show()
     {
-        $page = $this->request->route()->getParameter('page');
+        $page = Editor::getActivePage();
         $format = $this->request->format();
 
         if ($this->request->route()->getParameter('format')) {
