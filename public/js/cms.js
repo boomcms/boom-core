@@ -39053,16 +39053,14 @@ window.boomConfig =
 				if (permission === "granted") {
 					var n = new Notification('BoomCMS', {
 						body: message,
-						icon: '/vendor/boomcms/boom-core/img/logo-sq.png'
+						icon: '/vendor/boomcms/boom-core/img/logo-sq.png',
+						requireInteraction: false
 					});
 
 					notified = true;
 	
-					$.boom.notifications.push(n);
-
 					setTimeout(function() {
 						n.close();
-						$.boom.notifications.splice($.boom.notifications.indexOf(n), -1);
 					}, 3000);
 				}
 			});
@@ -39108,8 +39106,6 @@ $.extend({
 
 		options: {},
 
-		notifications: [],
-
 		setup: function(){
 
 			$.extend(this, { config: window.boomConfig });
@@ -39145,23 +39141,6 @@ $.extend({
 
 		_init_widgets : function() {
 			this.loader = $('body').boomLoader({}).data('boomBoomLoader');
-		},
-
-		/**
-		 * Close all notifications before reload the page.
-		 *
-		 * Because Chrome doesn't do it for us :(
-		 *
-		 * @returns {undefined}
-		 */
-		reload: function() {
-			var notifications = $.boom.notifications, i;
-
-			for (i = 0; i < notifications.length; i++) {
-				notifications[i].close();
-			}
-
-			top.location.reload();
 		}
 	}
 });
@@ -40041,7 +40020,7 @@ $.widget( 'boom.pageToolbar', {
 				},
 				draftsSave: function(event, data) {
 					if (data.action === 'revert') {
-						$.boom.reload();
+						top.location.reload();
 					} else {
 						toolbar.status.set(data.status);
 					}
@@ -40078,7 +40057,7 @@ $.widget( 'boom.pageToolbar', {
 
 					new boomConfirmation('Reload page?', "Do you want to reload the page to view the new template?")
 						.done(function() {
-							$.boom.reload();
+							top.location.reload();
 						});
 				},
 				visibilitySave: function(event, response) {
@@ -45032,7 +45011,7 @@ function Row() {
 				new boomNotification('Group successfully saved, reloading.');
 
 				window.setTimeout(function() {
-					$.boom.reload();
+					top.location.reload();
 				}, 1500);
 			});
 	},
@@ -45045,7 +45024,7 @@ function Row() {
 				new boomNotification('Success');
 
 				setTimeout(function() {
-					$.boom.reload();
+					top.location.reload();
 				}, 300);
 			})
 			.fail(function() {

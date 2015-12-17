@@ -58,7 +58,7 @@ $.widget('boom.peopleManager', {
 				new boomNotification('Group successfully saved, reloading.');
 
 				window.setTimeout(function() {
-					$.boom.reload();
+					top.location.reload();
 				}, 1500);
 			});
 	},
@@ -71,7 +71,7 @@ $.widget('boom.peopleManager', {
 				new boomNotification('Success');
 
 				setTimeout(function() {
-					$.boom.reload();
+					top.location.reload();
 				}, 300);
 			})
 			.fail(function() {

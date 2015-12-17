@@ -92,7 +92,7 @@ $.widget( 'boom.pageToolbar', {
 				},
 				draftsSave: function(event, data) {
 					if (data.action === 'revert') {
-						$.boom.reload();
+						top.location.reload();
 					} else {
 						toolbar.status.set(data.status);
 					}
@@ -129,7 +129,7 @@ $.widget( 'boom.pageToolbar', {
 
 					new boomConfirmation('Reload page?', "Do you want to reload the page to view the new template?")
 						.done(function() {
-							$.boom.reload();
+							top.location.reload();
 						});
 				},
 				visibilitySave: function(event, response) {
