@@ -244,7 +244,7 @@ class PageTest extends AbstractModelTestCase
     {
         $page = new Page([Page::ATTR_PRIMARY_URI => 'test']);
         $url = $page->url();
-        
+
         $this->assertInstanceOf(URL::class, $url);
         $this->assertEquals('test', $url->getLocation());
     }
