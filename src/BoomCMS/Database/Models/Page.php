@@ -749,17 +749,21 @@ class Page extends Model implements PageInterface
     }
 
     /**
-     * Returns the Model_Page_URL object for the page's primary URI.
+     * Returns the URL object for the page's primary URI.
      *
      * The URL can be displayed by casting the returned object to a string:
      *
      *		(string) $page->url();
      *
      *
-     * @return URLInterface
+     * @return URLInterface|null
      */
     public function url($refresh = false)
     {
+        if ($this->{self::ATTR_PRIMARY_URI} === null) {
+            return;
+        }
+
         if ($refresh || $this->primaryUrl === null) {
             $this->primaryUrl = new URL([
                 'page'       => $this,
