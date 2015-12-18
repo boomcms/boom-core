@@ -2,27 +2,10 @@
 
 namespace BoomCMS\Listeners;
 
-use BoomCMS\Contracts\Models\Page;
 use BoomCMS\Events\PageTitleWasChanged;
-use BoomCMS\Jobs\CreatePagePrimaryUri;
-use Illuminate\Support\Facades\Bus;
 
-class UpdatePagePrimaryURLToTitle
+class UpdatePagePrimaryURLToTitle extends CreatePagePrimaryURL
 {
-    public function getPrefix(Page $page)
-    {
-        return ($page->getParent()->getChildPageUrlPrefix()) ?: $page->getParent()->url()->getLocation();
-    }
-
-    public function handle(PageTitleWasChanged $event)
-    {
-        if ($this->urlShouldBeChanged($event)) {
-            $page = $event->getPage();
-
-            Bus::dispatch(new CreatePagePrimaryUri($page, $this->getPrefix($page)));
-        }
-    }
-
     public function urlShouldBeChanged(PageTitleWasChanged $event)
     {
         $oldTitle = $event->getOldTitle();

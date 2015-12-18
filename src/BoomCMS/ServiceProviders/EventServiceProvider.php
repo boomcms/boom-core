@@ -24,6 +24,9 @@ class EventServiceProvider extends ServiceProvider
         Events\PageTitleWasChanged::class => [
             Listeners\UpdatePagePrimaryURLToTitle::class,
         ],
+        Events\PageWasCreated::class => [
+            Listeners\CreatePagePrimaryURL::class,
+        ],
         Events\PageWasDeleted::class => [
             Listeners\RemovePageFromSearch::class,
         ],

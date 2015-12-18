@@ -7,7 +7,6 @@ use BoomCMS\Core\Page as Page;
 use BoomCMS\Events\PageWasCreated;
 use BoomCMS\Http\Controllers\Controller;
 use BoomCMS\Jobs\CreatePage;
-use BoomCMS\Jobs\CreatePagePrimaryUri;
 use Illuminate\Foundation\Bus\DispatchesCommands;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Event;
@@ -36,13 +35,10 @@ class PageController extends Controller
 
         $newPage = $this->dispatch(new CreatePage($this->auth->getPerson(), $this->page));
 
-        $urlPrefix = ($this->page->getChildPageUrlPrefix()) ?: $this->page->url()->getLocation();
-        $url = $this->dispatch(new CreatePagePrimaryUri($newPage, $urlPrefix));
-
         Event::fire(new PageWasCreated($newPage, $this->page));
 
         return [
-            'url' => (string) $url,
+            'url' => (string) $newPage->url(),
             'id'  => $newPage->getId(),
         ];
     }
