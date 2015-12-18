@@ -9,7 +9,6 @@ use BoomCMS\Support\Facades\Tag;
 use BoomCMS\Support\Helpers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Event;
-use Illuminate\Support\Facades\View;
 
 class Tags extends Controller
 {

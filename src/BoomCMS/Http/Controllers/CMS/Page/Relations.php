@@ -5,7 +5,6 @@ namespace BoomCMS\Http\Controllers\CMS\Page;
 use BoomCMS\Http\Controllers\Controller;
 use BoomCMS\Support\Facades\Page as Page;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\View;
 
 class Relations extends Controller
 {
