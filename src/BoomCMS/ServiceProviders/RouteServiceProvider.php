@@ -12,6 +12,7 @@ class RouteServiceProvider extends ServiceProvider
     {
         $router->model('asset', Models\Asset::class);
         $router->model('page', Models\Page::class);
+        $router->model('person', Models\Person::class);
         $router->model('group', Models\Group::class);
         $router->model('template', Models\Template::class);
         $router->model('url', Models\URL::class);

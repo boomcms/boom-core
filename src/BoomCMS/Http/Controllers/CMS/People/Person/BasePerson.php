@@ -3,7 +3,6 @@
 namespace BoomCMS\Http\Controllers\CMS\People\Person;
 
 use BoomCMS\Http\Controllers\CMS\People\PeopleManager;
-use BoomCMS\Support\Facades\Person;
 use Illuminate\Http\Request;
 
 class BasePerson extends PeopleManager
@@ -29,6 +28,6 @@ class BasePerson extends PeopleManager
     {
         $this->request = $request;
 
-        $this->editPerson = Person::find($this->request->route()->getParameter('id'));
+        $this->editPerson = $request->route()->getParameter('person');
     }
 }
