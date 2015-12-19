@@ -3,7 +3,6 @@
 namespace BoomCMS\Http\Controllers\CMS\People\Person;
 
 use BoomCMS\Support\Facades\Group as GroupFacade;
-use Illuminate\Support\Facades\View;
 
 class ViewPerson extends BasePerson
 {
@@ -24,10 +23,6 @@ class ViewPerson extends BasePerson
 
     public function view()
     {
-        if (!$this->editPerson) {
-            abourt(404);
-        }
-
         return view($this->viewPrefix.'view', [
             'person'  => $this->editPerson,
             'request' => $this->request,
