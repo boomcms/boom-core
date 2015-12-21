@@ -13,7 +13,7 @@ class SimplifyAssetTypes extends Migration
     public function up()
     {
         DB::statement('update assets set type = 1 where type = 4');
-        DB::statement('update assets set type = 1 where type in (6,7,8)');
+        DB::statement('update assets set type = 2 where type in (6,7,8)');
         DB::statement('update assets set type = 4 where type  = 5');
 
         DB::statement('alter table assets drop index asset_v_type');
