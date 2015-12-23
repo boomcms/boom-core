@@ -7,9 +7,7 @@ $.widget('ui.chunkLibrary', $.ui.chunk, {
 		$el.find('input[type=text]').val('');
 	},
 
-	edit : function(){
-		$.boom.log('Tag library edit');
-
+	edit : function() {
 		var library = this;
 
 		this.dialog = new boomDialog({
@@ -27,10 +25,10 @@ $.widget('ui.chunkLibrary', $.ui.chunk, {
 			}
 		})
 		.always(function() {
-			library.bind();	
+			library.bind();
 		})
 		.done(function() {
-			library._save(library.getData());	
+			library._save(library.getData());
 		});
 	},
 

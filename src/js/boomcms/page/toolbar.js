@@ -52,7 +52,7 @@ $.widget( 'boom.pageToolbar', {
 
 		this.buttonBar = this.element.contents().find('#b-topbar');
 	},
-	
+
 	closePageSettings: function() {
 		var toolbar = this;
 
@@ -70,11 +70,9 @@ $.widget( 'boom.pageToolbar', {
 	_create : function() {
 		var toolbar = this;
 
-		$.boom.log('init CMS toolbar');
-
 		this.findButtons();
-
 		this._toggle_view_live_button();
+
 		this.status = $('#b-page-version-status')
 			.pageStatus({
 				page : this.options.page,
@@ -176,8 +174,6 @@ $.widget( 'boom.pageToolbar', {
 	* @function
 	*/
 	maximise : function() {
-		$.boom.log('maximise iframe');
-
 		this.element.css({
 			width : '100%',
 			'z-index' : 100002
@@ -189,8 +185,6 @@ $.widget( 'boom.pageToolbar', {
 	* @function
 	*/
 	minimise : function() {
-		$.boom.log('minimise iframe');
-
 		this.element.css({
 			width : '60px',
 			'z-index' : 10000
@@ -222,7 +216,7 @@ $.widget( 'boom.pageToolbar', {
 	show : function() {
 		this.buttonBar.css('z-index', 10000);
 	},
-	
+
 	showSettingsAndCloseOnSave: function(settingsGroup) {
 		var toolbar = this;
 
@@ -232,9 +226,9 @@ $.widget( 'boom.pageToolbar', {
 					toolbar.$settings.pageSettings({
 						save: function() {}
 					});
-					
+
 					toolbar.closePageSettings();
-				}	
+				}
 			})
 			.pageSettings('show', settingsGroup);
 

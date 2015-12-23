@@ -15,33 +15,6 @@ window.boomConfig =
 	@static
 	@class
 	*/
-	logs : {
-		/**
-		@type boolean
-		@default true
-		*/
-		show: true,
-		/**
-		@type boolean
-		@default true
-		*/
-		showTimes: true,
-		/**
-		@type array
-		@default []
-		*/
-		times: [],
-		/**
-		@type number
-		@default 0
-		*/
-		totalTime: 0
-	},
-
-	/**
-	@static
-	@class
-	*/
 	datepicker : {
 		/**
 		@type boolean

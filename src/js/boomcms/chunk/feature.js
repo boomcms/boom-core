@@ -79,8 +79,6 @@ $.widget('ui.chunkFeature', $.ui.chunk,
 	editTarget : function() {
 		var featureEditor = this;
 
-		$.boom.log('Feature chunk slot edit');
-
 		new boomLinkPicker(new boomLink(null, this.options.currentPage.id), {
 				external: false
 			})

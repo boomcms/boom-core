@@ -56,7 +56,6 @@ module.exports = function(grunt) {
 					'src/js/boomcms/notification.js',
 					'src/js/boomcms/core.js',
 					'src/js/boomcms/history.js',
-					'src/js/boomcms/log.js',
 					'src/js/boomcms/dialog.js',
 					'src/js/boomcms/alert.js',
 					'src/js/boomcms/confirmation.js',

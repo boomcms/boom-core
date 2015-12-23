@@ -52,26 +52,19 @@ $.extend({
 
 		_init_widgets : function() {
 			this.loader = $('body').boomLoader({}).data('boomBoomLoader');
-		}
-	}
-});
+		},
 
-$.extend($.boom,
-	/** @lends $.boom */
-	{
-	/**
-	@class
-	*/
-	editor: {
-		state : function(state, url) {
+		editor: {
+			state : function(state, url) {
 
-			$.post('/cms/editor/state', {state: state}, function() {
-				if (url) {
-					top.location = url;
-				} else {
-					top.location.reload();
-				}
-			});
+				$.post('/cms/editor/state', {state: state}, function() {
+					if (url) {
+						top.location = url;
+					} else {
+						top.location.reload();
+					}
+				});
+			}
 		}
 	}
 });

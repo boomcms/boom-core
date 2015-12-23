@@ -45,9 +45,7 @@ $.widget('ui.chunk',
 			});
 	},
 
-	_create : function(){
-		$.boom.log( 'CHUNK CREATE' );
-
+	_create : function() {
 		this.bind();
 	},
 

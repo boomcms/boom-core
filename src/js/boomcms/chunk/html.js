@@ -1,10 +1,8 @@
 $.widget('ui.chunkHtml', $.ui.chunk, {
-	edit : function(){
-		$.boom.log('Html chunk edit');
-
+	edit : function() {
 		var self = this,
 			dialog;
-			
+
 		dialog = new boomDialog({
 			url: '/cms/chunk/' + this.options.currentPage.id + '/edit?type=html&slotname=' + this.options.name,
 			width: 600,
@@ -13,7 +11,7 @@ $.widget('ui.chunkHtml', $.ui.chunk, {
 			saveButton: true
 		}).done(function() {
 			var html = dialog.contents.find('textarea').val();
-			
+
 			if (html.trim() !== '') {
 				self.insert(html);
 			} else {

@@ -24,13 +24,9 @@ $.widget('ui.chunkTimestamp', $.ui.chunk,
 		$.ui.chunk.prototype._create.call(this);
 	},
 
-	edit : function(){
-
-		var self = this;
-
-		$.boom.log('Timestamp chunk slot edit');
-
-		var data = this.getData();
+	edit : function() {
+		var self = this,
+			data = this.getData();
 
 		this.dialog = new boomDialog({
 			url: '/cms/chunk/' + this.options.currentPage.id + '/edit?slotname=' + self.options.name + '&type=timestamp',

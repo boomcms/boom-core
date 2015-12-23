@@ -23,8 +23,6 @@ $.widget( 'boom.pageEditor', {
 			})
 			.data('boom-pageToolbar');
 
-		$.boom.log('Page registered for editing: ' + self.options.page_id);
-
 		if (this.options.editable) {
 			this.createChunks();
 			this.watchForDialogs();
@@ -74,7 +72,7 @@ $.widget( 'boom.pageEditor', {
 			.find('.b-page-featureimage')
 			.each(function() {
 				var $this = $(this);
-		
+
 				$this
 					.addClass('b-editable')
 					.on('click', function(e) {

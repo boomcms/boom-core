@@ -13,12 +13,8 @@
 	@function
 	*/
 	$.fn.ui = function(opts){
-		$.boom.log('Start bind UI events');
-
 		this.find('.boom-tabs').tabs();
 		this.find('.boom-datepicker').datetimepicker($.boom.config.datepicker);
-
-		$.boom.log('Stop bind UI events');
 
 		return this;
 	};
@@ -29,7 +25,7 @@
 				asset = new boomAsset($this.attr('data-asset')),
 				url  = asset.getUrl('thumb', $this.width(), $this.height()) + '?' + Math.floor(Date.now() / 1000);
 
-			$this.find('img').attr('src', url);	
+			$this.find('img').attr('src', url);
 		});
 	};
 })( jQuery );
