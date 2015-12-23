@@ -15,9 +15,6 @@ $.extend({
 	boom :
 		/** @lends $.boom */
 		{
-
-		options: {},
-
 		setup: function(){
 
 			$.extend(this, { config: window.boomConfig });
@@ -39,12 +36,8 @@ $.extend({
 
 		/**
 		Initialise boom classes. Create top bar and UI.
-		@param {Object} options Boom options. Extends and overrides defaults in boom.config.
 		*/
-		init: function(options) {
-			( options ) && $.extend( this.config, options );
-			this.options = options;
-
+		init: function() {
 			$('#b-topbar, body').ui();
 
 			this._init_widgets();

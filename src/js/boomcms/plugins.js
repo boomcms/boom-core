@@ -12,9 +12,11 @@
 	/**
 	@function
 	*/
-	$.fn.ui = function(opts){
+	$.fn.ui = function() {
 		this.find('.boom-tabs').tabs();
-		this.find('.boom-datepicker').datetimepicker($.boom.config.datepicker);
+		this.find('.boom-datepicker').datetimepicker({
+			format: 'd F Y H:i'
+		});
 
 		return this;
 	};

@@ -38868,9 +38868,11 @@ var Modernizr = (function( window, document, undefined ) {
 	/**
 	@function
 	*/
-	$.fn.ui = function(opts){
+	$.fn.ui = function() {
 		this.find('.boom-tabs').tabs();
-		this.find('.boom-datepicker').datetimepicker($.boom.config.datepicker);
+		this.find('.boom-datepicker').datetimepicker({
+			format: 'd F Y H:i'
+		});
 
 		return this;
 	};
@@ -38884,60 +38886,7 @@ var Modernizr = (function( window, document, undefined ) {
 			$this.find('img').attr('src', url);
 		});
 	};
-})( jQuery );;/**
-@fileOverview CMS config, including default config for all widgets.
-*/
-/**
-global boom config
-@namespace
-@name $.boom.config
-*/
-
-window.boomConfig =
-	/** @lends $.boom.config */
-	{
-
-	/**
-	@static
-	@class
-	*/
-	datepicker : {
-		/**
-		@type boolean
-		@default true
-		*/
-		mandatory: true,
-		/**
-		@type boolean
-		@default true
-		*/
-		hideIfNoPrevNext: true,
-		/**
-		@type string
-		@default 'fast'
-		*/
-		duration: 'fast',
-		/**
-		@type string
-		@default 'fadeIn'
-		*/
-		showAnim: 'fadeIn',
-		/**
-		@type string
-		*/
-		format: 'd F Y H:i',
-		/**
-		@type boolean
-		@default true
-		*/
-		showTime: true,
-		/**
-		@type string
-		@default 'bottom'
-		*/
-		timePos: 'bottom'
-	}
-};;$.widget('boom.boomLoader', {
+})( jQuery );;$.widget('boom.boomLoader', {
 	_create : function(){
 		var img = new Image();
 		img.src = '/vendor/boomcms/boom-core/img/ajax_load.gif';
@@ -39043,9 +38992,6 @@ $.extend({
 	boom :
 		/** @lends $.boom */
 		{
-
-		options: {},
-
 		setup: function(){
 
 			$.extend(this, { config: window.boomConfig });
@@ -39067,12 +39013,8 @@ $.extend({
 
 		/**
 		Initialise boom classes. Create top bar and UI.
-		@param {Object} options Boom options. Extends and overrides defaults in boom.config.
 		*/
-		init: function(options) {
-			( options ) && $.extend( this.config, options );
-			this.options = options;
-
+		init: function() {
 			$('#b-topbar, body').ui();
 
 			this._init_widgets();
