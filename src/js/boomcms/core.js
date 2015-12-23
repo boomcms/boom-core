@@ -15,7 +15,10 @@ $.extend({
 	boom :
 		/** @lends $.boom */
 		{
-		setup: function() {
+		/**
+		Initialise boom classes. Create top bar and UI.
+		*/
+		init: function() {
 			if (typeof(top.$) === 'undefined') {
 				top.$ = $;
 			}
@@ -29,12 +32,7 @@ $.extend({
 					'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 				}
 			});
-		},
 
-		/**
-		Initialise boom classes. Create top bar and UI.
-		*/
-		init: function() {
 			$('#b-topbar, body').ui();
 
 			this._init_widgets();
@@ -58,5 +56,3 @@ $.extend({
 		}
 	}
 });
-
-$.boom.setup();
