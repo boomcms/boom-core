@@ -50,27 +50,5 @@ window.boomConfig =
 		@default 'bottom'
 		*/
 		timePos: 'bottom'
-	},
-
-	/**
-	@static
-	@class
-	*/
-	sortable : {
-		/**
-		@type string
-		@default 'parent'
-		*/
-		containment: 'parent',
-		/**
-		@type number
-		@default 0.7
-		*/
-		opacity: 0.7,
-		/**
-		@type string
-		@default 'y'
-		*/
-		axis: 'y'
 	}
 };
