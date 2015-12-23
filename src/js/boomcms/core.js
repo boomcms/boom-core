@@ -15,10 +15,7 @@ $.extend({
 	boom :
 		/** @lends $.boom */
 		{
-		setup: function(){
-
-			$.extend(this, { config: window.boomConfig });
-
+		setup: function() {
 			if (typeof(top.$) === 'undefined') {
 				top.$ = $;
 			}
