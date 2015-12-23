@@ -34,12 +34,6 @@ $.extend({
 			});
 
 			$('#b-topbar, body').ui();
-
-			this._init_widgets();
-		},
-
-		_init_widgets : function() {
-			this.loader = $('body').boomLoader({}).data('boomBoomLoader');
 		},
 
 		editor: {

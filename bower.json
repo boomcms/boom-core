@@ -27,6 +27,7 @@
     "leaflet": "~0.7.3",
     "caman": "~4.1.2",
     "jcrop": "~2.0.0",
-    "normalize.css": "~3.0.3"
+    "normalize.css": "~3.0.3",
+    "pace": "~1.0.2"
   }
 }

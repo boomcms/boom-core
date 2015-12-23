@@ -50,8 +50,8 @@ module.exports = function(grunt) {
 					'bower_components/leaflet/dist/leaflet.js',
 					'bower_components/caman/dist/caman.full.js',
 					'bower_components/jcrop/js/Jcrop.js',
+					'bower_components/pace/pace.js',
 					'src/js/boomcms/plugins.js',
-					'src/js/boomcms/loader.js',
 					'src/js/boomcms/notification.js',
 					'src/js/boomcms/core.js',
 					'src/js/boomcms/history.js',
@@ -166,6 +166,7 @@ module.exports = function(grunt) {
 						'bower_components/jquery-ui/themes/base/autocomplete.css',
 						'bower_components/leaflet/dist/leaflet.css',
 						'bower_components/jcrop/css/Jcrop.css',
+						'bower_components/pace/themes/red/pace-theme-minimal.css',
 						'src/css/libraries/jqpagination.css',
 						'public/css/cms.css'
 					 ]
