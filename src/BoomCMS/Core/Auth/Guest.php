@@ -40,14 +40,6 @@ class Guest implements Person
     }
 
     /**
-     * @return int
-     */
-    public function getFailedLogins()
-    {
-        return 0;
-    }
-
-    /**
      * @return array
      */
     public function getGroups()
@@ -69,22 +61,6 @@ class Guest implements Person
     public function getId()
     {
         return 0;
-    }
-
-    /**
-     * @return null
-     */
-    public function getLastFailedLogin()
-    {
-        return;
-    }
-
-    /**
-     * @return null
-     */
-    public function getLockedUntil()
-    {
-        return;
     }
 
     /**
@@ -123,25 +99,9 @@ class Guest implements Person
     }
 
     /**
-     * @return $this
-     */
-    public function incrementFailedLogins()
-    {
-        return $this;
-    }
-
-    /**
      * @return bool
      */
     public function isEnabled()
-    {
-        return false;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isLocked()
     {
         return false;
     }
@@ -196,26 +156,6 @@ class Guest implements Person
      * @return $this
      */
     public function setEnabled($enabled)
-    {
-        return $this;
-    }
-
-    /**
-     * @param int $timestamp
-     *
-     * @return $this
-     */
-    public function setLastFailedLogin($timestamp)
-    {
-        return $this;
-    }
-
-    /**
-     * @param int $timestamp
-     *
-     * @return $this
-     */
-    public function setLockedUntil($timestamp)
     {
         return $this;
     }

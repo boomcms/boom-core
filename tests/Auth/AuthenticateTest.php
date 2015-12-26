@@ -10,9 +10,9 @@ use BoomCMS\Tests\AbstractTestCase;
 class AuthenticateTest extends AbstractTestCase
 {
     /**
-     * @expectedException BoomCMS\Core\Auth\PersonNotFoundException
+     * @expectedException BoomCMS\Core\Auth\InvalidLoginException
      */
-    public function testPersonNotFoundExceptionIfInvalidEmail()
+    public function testInvalidLoginExceptionIfInvalidEmail()
     {
         $session = $this->getMockSession();
         $personRepository = $this->getMockPersonRepository(['findByEmail']);
@@ -32,9 +32,9 @@ class AuthenticateTest extends AbstractTestCase
     }
 
     /**
-     * @expectedException BoomCMS\Core\Auth\InvalidPasswordException
+     * @expectedException BoomCMS\Core\Auth\InvalidLoginException
      */
-    public function testInvalidPasswordExceptionIfInvalidPassword()
+    public function testInvalidLoginExceptionIfInvalidPassword()
     {
         $session = $this->getMockSession();
         $personRepository = $this->getMockPersonRepository(['findByEmail', 'save']);

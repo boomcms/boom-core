@@ -18,13 +18,6 @@ class Auth
     protected $autoLoginCookie = 'boomcms_autologin';
 
     /**
-     * Amount of time to lock an account for after too many failed logins.
-     *
-     * @var int
-     */
-    protected $lockWait = 900;
-
-    /**
      * @var Person
      */
     protected $person;
@@ -60,8 +53,7 @@ class Auth
      * @param type $password
      * @param type $remember
      *
-     * @throws PersonNotFoundException
-     * @throws PersonSuspendedException
+     * @throws InvalidLoginException
      *
      * @return Person
      */
@@ -69,18 +61,8 @@ class Auth
     {
         $person = $this->personRepository->findByEmail(trim($email));
 
-        if ($person && $person->isLocked()) {
-            throw new PersonLockedException($person->getLockedUntil());
-        }
-
         if (!$person || !$person->checkPassword($password)) {
-            if ($person) {
-                $this->loginFailed($person);
-
-                throw new InvalidPasswordException($person);
-            }
-
-            throw new PersonNotFoundException();
+            throw new InvalidLoginException();
         }
 
         $this->login($person, $remember);
@@ -187,22 +169,6 @@ class Auth
             $this->refreshRememberLoginToken($person);
             $this->rememberLogin($person);
         }
-    }
-
-    public function loginFailed(Person $person)
-    {
-        if ($person->getLastFailedLogin()->getTimestamp() > (time() - 600)) {
-            $person->incrementFailedLogins();
-
-            if ($person->getFailedLogins() > 10) {
-                $person->setLockedUntil(time() + $this->lockWait);
-            }
-        } else {
-            $person->setFailedLogins(1);
-        }
-
-        $person->setLastFailedLogin(time());
-        $this->personRepository->save($person);
     }
 
     public function logout()

@@ -22,11 +22,8 @@ class Person extends Model implements PersonInterface, CanResetPassword
     const ATTR_EMAIL = 'email';
     const ATTR_ENABLED = 'enabled';
     const ATTR_PASSWORD = 'password';
-    const ATTR_FAILED_LOGINS = 'failed_logins';
-    const ATTR_LOCKED_UNTIL = 'locked_until';
     const ATTR_SUPERUSER = 'superuser';
     const ATTR_REMEMBER_TOKEN = 'remember_token';
-    const ATTR_LAST_FAILED_LOGIN = 'last_failed_login';
 
     public $table = 'people';
 
@@ -80,11 +77,6 @@ class Person extends Model implements PersonInterface, CanResetPassword
         return $this->getEmail();
     }
 
-    public function getFailedLogins()
-    {
-        return $this->{self::ATTR_FAILED_LOGINS};
-    }
-
     public function getGroups()
     {
         return $this->groups()->get();
@@ -104,19 +96,6 @@ class Person extends Model implements PersonInterface, CanResetPassword
     public function getId()
     {
         return  (int) $this->{self::ATTR_ID};
-    }
-
-    /**
-     * @return DateTime
-     */
-    public function getLastFailedLogin()
-    {
-        return (new DateTime())->setTimestamp($this->{self::ATTR_LAST_FAILED_LOGIN});
-    }
-
-    public function getLockedUntil()
-    {
-        return $this->{self::ATTR_LOCKED_UNTIL};
     }
 
     public function getLogin()
@@ -144,16 +123,6 @@ class Person extends Model implements PersonInterface, CanResetPassword
         return $this->belongsToMany(Group::class);
     }
 
-    /**
-     * @return $this
-     */
-    public function incrementFailedLogins()
-    {
-        $this->increment(self::ATTR_FAILED_LOGINS);
-
-        return $this;
-    }
-
     public function isAllowed($role, $pageId = null)
     {
         $result = DB::table('group_role')
@@ -177,14 +146,6 @@ class Person extends Model implements PersonInterface, CanResetPassword
     public function isEnabled()
     {
         return $this->{self::ATTR_ENABLED} == true;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isLocked()
-    {
-        return $this->getLockedUntil() && ($this->getLockedUntil() > time());
     }
 
     /**
@@ -252,42 +213,6 @@ class Person extends Model implements PersonInterface, CanResetPassword
     public function setEncryptedPassword($password)
     {
         $this->{self::ATTR_PASSWORD} = $password;
-
-        return $this;
-    }
-
-    /**
-     * @param int $count
-     *
-     * @return $this
-     */
-    public function setFailedLogins($count)
-    {
-        $this->{self::ATTR_FAILED_LOGINS} = $count;
-
-        return $this;
-    }
-
-    /**
-     * @param int $time
-     *
-     * @return $this
-     */
-    public function setLastFailedLogin($time)
-    {
-        $this->{self::ATTR_LAST_FAILED_LOGIN} = $time;
-
-        return $this;
-    }
-
-    /**
-     * @param int $timestamp
-     *
-     * @return $this
-     */
-    public function setLockedUntil($timestamp)
-    {
-        $this->{self::ATTR_LOCKED_UNTIL} = $timestamp;
 
         return $this;
     }

@@ -12,8 +12,6 @@ interface Person
 
     public function getEmail();
 
-    public function getFailedLogins();
-
     public function getGroups();
 
     public function getGroupIds();
@@ -23,17 +21,11 @@ interface Person
      */
     public function getId();
 
-    public function getLastFailedLogin();
-
-    public function getLockedUntil();
-
     public function getName();
 
     public function getPassword();
 
     public function getRememberToken();
-
-    public function incrementFailedLogins();
 
     /**
      * @param string $role
@@ -45,8 +37,6 @@ interface Person
 
     public function isEnabled();
 
-    public function isLocked();
-
     public function isSuperUser();
 
     public function isValid();
@@ -56,10 +46,6 @@ interface Person
     public function setEmail($email);
 
     public function setEnabled($enabled);
-
-    public function setLastFailedLogin($timestamp);
-
-    public function setLockedUntil($timestamp);
 
     public function setName($name);
 

@@ -15,9 +15,6 @@ class EventServiceProvider extends ServiceProvider
         Events\Auth\PasswordChanged::class => [
             Listeners\SendPasswordChangedNotification::class,
         ],
-        BoomCMS\Events\Auth\SuccessfulLogin::class => [
-            Listeners\ResetFailedLogins::class,
-        ],
         Events\PageSearchSettingsWereUpdated::class => [
             Listeners\UpdateSearchText::class,
         ],
