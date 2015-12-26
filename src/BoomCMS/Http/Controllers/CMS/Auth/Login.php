@@ -34,7 +34,7 @@ class Login extends Controller
 
             if ($this->hasTooManyLoginAttempts($request)) {
                 return $this->displayLoginForm([
-                    'login_error' => $this->getLockoutErrorMessage($this->lockoutTime())
+                    'login_error' => $this->getLockoutErrorMessage($this->lockoutTime()),
                 ]);
             } else {
                 return $this->displayLoginForm(['login_error' => Lang::get('Invalid email address or password')]);

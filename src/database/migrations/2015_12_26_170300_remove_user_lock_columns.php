@@ -1,6 +1,5 @@
 <?php
 
-use BoomCMS\Database\Models\AssetVersion;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
