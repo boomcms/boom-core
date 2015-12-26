@@ -39,8 +39,6 @@ interface Person
 
     public function isSuperUser();
 
-    public function isValid();
-
     public function removeGroup(Group $group);
 
     public function setEmail($email);

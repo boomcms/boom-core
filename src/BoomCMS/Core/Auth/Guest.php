@@ -115,14 +115,6 @@ class Guest implements Person
     }
 
     /**
-     * @return bool
-     */
-    public function isValid()
-    {
-        return false;
-    }
-
-    /**
      * @param Group $group
      *
      * @return $this

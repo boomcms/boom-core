@@ -157,14 +157,6 @@ class Person extends Model implements PersonInterface, CanResetPassword
     }
 
     /**
-     * @return bool
-     */
-    public function isValid()
-    {
-        return $this->getId() > 0 && !$this->isLocked();
-    }
-
-    /**
      * @param GroupInterface $group
      *
      * @return $this

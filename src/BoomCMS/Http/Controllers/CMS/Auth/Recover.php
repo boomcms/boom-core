@@ -27,7 +27,7 @@ class Recover extends Controller
     {
         $person = Person::findByEmail($this->request->input('email'));
 
-        if (!$person->isValid()) {
+        if (!$person) {
             return $this->showForm([
                 'error' => Lang::get('boomcms::recover.errors.invalid_email'),
             ]);
@@ -61,7 +61,7 @@ class Recover extends Controller
 
         $person = Person::findByEmail($this->request->input('email'));
 
-        if (!$person->isValid()) {
+        if (!$person) {
             return $this->showForm([
                 'error' => Lang::get('boomcms::recover.errors.invalid_email'),
                 'token' => $this->request->input('token'),
