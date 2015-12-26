@@ -16,6 +16,7 @@ class RemoveUserLockColumns extends Migration
         Schema::table('people', function (Blueprint $table) {
             $table->dropColumn('failed_logins');
             $table->dropColumn('locked_until');
+            $table->dropColumn('last_failed_login');
         });
     }
 
@@ -29,6 +30,7 @@ class RemoveUserLockColumns extends Migration
         Schema::table('people', function (Blueprint $table) {
             $table->integer('failed_logins')->nullable()->default(0);
             $table->integer('locked_until')->unsigned()->nullable()->default(0);
+            $table->integer('last_failed_login')->unsigned()->nullable()->default(0);
         });
     }
 }
