@@ -5,7 +5,6 @@ namespace BoomCMS\Core\Auth;
 use BoomCMS\Contracts\Models\Page;
 use BoomCMS\Contracts\Models\Person;
 use BoomCMS\Repositories\Person as PersonRepository;
-use Hautelook\Phpass\PasswordHash;
 use Illuminate\Http\Request;
 use Illuminate\Session\SessionManager as Session;
 use Illuminate\Support\Facades\Cookie;

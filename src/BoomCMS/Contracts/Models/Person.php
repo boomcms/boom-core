@@ -6,8 +6,6 @@ interface Person
 {
     public function addGroup(Group $group);
 
-    public function checkPassword($password);
-
     public function checkPersistCode($code);
 
     public function getEmail();

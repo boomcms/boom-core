@@ -12,16 +12,6 @@ class Guest implements Person
     }
 
     /**
-     * @param string $password
-     *
-     * @return bool
-     */
-    public function checkPassword($password)
-    {
-        return false;
-    }
-
-    /**
      * @param string $code
      *
      * @return bool

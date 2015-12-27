@@ -5,7 +5,6 @@ namespace BoomCMS\Database\Models;
 use BoomCMS\Contracts\Models\Group as GroupInterface;
 use BoomCMS\Contracts\Models\Person as PersonInterface;
 use BoomCMS\Support\Traits\Comparable;
-use Hautelook\Phpass\PasswordHash;
 use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -42,18 +41,6 @@ class Person extends Model implements PersonInterface, CanResetPassword
         $this->groups()->attach($group);
 
         return $this;
-    }
-
-    /**
-     * @param string $password
-     *
-     * @return bool
-     */
-    public function checkPassword($password)
-    {
-        $hasher = new PasswordHash(8, false);
-
-        return $hasher->checkPassword($password, $this->getPassword());
     }
 
     /**
