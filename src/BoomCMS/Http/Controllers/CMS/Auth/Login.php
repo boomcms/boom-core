@@ -3,10 +3,8 @@
 namespace BoomCMS\Http\Controllers\CMS\Auth;
 
 use BoomCMS\Core\Auth;
-use BoomCMS\Events\Auth\SuccessfulLogin;
 use BoomCMS\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
-use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Session;
 
@@ -42,7 +40,6 @@ class Login extends Controller
         }
 
         $this->clearLoginAttempts($request);
-        Event::fire(new SuccessfulLogin($this->auth->getPerson(), $this->request));
 
         $url = Session::get('boomcms.redirect_url');
 
