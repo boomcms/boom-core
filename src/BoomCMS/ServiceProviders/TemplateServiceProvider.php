@@ -13,18 +13,19 @@ class TemplateServiceProvider extends ServiceProvider
     protected $themes = [];
 
     /**
-     * @var Template\Manager
-     */
-    protected $manager;
-
-    /**
      * Bootstrap any application services.
      *
      * @return void
      */
     public function boot()
     {
-        $this->themes = $this->manager->findInstalledThemes();
+        $manager = new TemplateManager($this->app['files'], $this->app['boomcms.repositories.template']);
+
+        $this->app->singleton('boomcms.template.manager', function ($app) use ($manager) {
+            return $manager;
+        });
+
+        $this->themes = $manager->findInstalledThemes();
 
         foreach ($this->themes as $theme) {
             Config::merge($theme->getConfigDirectory().DIRECTORY_SEPARATOR.'boomcms.php');
@@ -57,20 +58,7 @@ class TemplateServiceProvider extends ServiceProvider
         }
     }
 
-    /**
-     * @return void
-     */
     public function register()
     {
-        $repository = new TemplateRepository(new TemplateModel());
-        $this->manager = $manager = new TemplateManager($this->app['files'], $repository);
-
-        $this->app->singleton('boomcms.repositories.template', function ($app) use ($repository) {
-            return $repository;
-        });
-
-        $this->app->singleton('boomcms.template.manager', function ($app) use ($manager) {
-            return $manager;
-        });
     }
 }

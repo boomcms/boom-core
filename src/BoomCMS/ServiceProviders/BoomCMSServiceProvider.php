@@ -27,15 +27,11 @@ class BoomCMSServiceProvider extends ServiceProvider
 
     protected $serviceProviders = [
         ServiceProviders\TemplateServiceProvider::class,
-        ServiceProviders\AssetServiceProvider::class,
-        ServiceProviders\PersonServiceProvider::class,
+        ServiceProviders\RepositoryServiceProvider::class,
         ServiceProviders\AuthServiceProvider::class,
         ServiceProviders\EditorServiceProvider::class,
-        ServiceProviders\PageServiceProvider::class,
         ServiceProviders\SettingsServiceProvider::class,
         ServiceProviders\ChunkServiceProvider::class,
-        ServiceProviders\URLServiceProvider::class,
-        ServiceProviders\TagServiceProvider::class,
         ServiceProviders\EventServiceProvider::class,
         ServiceProviders\RouteServiceProvider::class,
         HtmlServiceProvider::class,
