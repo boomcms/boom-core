@@ -2,12 +2,12 @@
 
 namespace BoomCMS\Tests\Stubs;
 
-use BoomCMS\ServiceProviders\RepositoryServiceProvider;
 use BoomCMS\ServiceProviders\AuthServiceProvider;
 use BoomCMS\ServiceProviders\BoomCMSServiceProvider as BaseServiceProvider;
 use BoomCMS\ServiceProviders\ChunkServiceProvider;
 use BoomCMS\ServiceProviders\EditorServiceProvider;
 use BoomCMS\ServiceProviders\EventServiceProvider;
+use BoomCMS\ServiceProviders\RepositoryServiceProvider;
 use Illuminate\Html\HtmlServiceProvider;
 
 class BoomCMSServiceProvider extends BaseServiceProvider
