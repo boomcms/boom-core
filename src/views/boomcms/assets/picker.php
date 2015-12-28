@@ -9,7 +9,7 @@
             <?= $button('trash-o', 'Remove current asset', ['id' => 'b-assets-picker-current-remove', 'class' => 'b-button-withtext']) ?>
         </section>
 
-        <?php if ($auth->check('manage_assets')): ?>
+        <?php if ($auth->check('manage_assets', $request)): ?>
             <section id="b-assets-picker-upload">
                 <h1>Upload Asset</h1>
                 <?= view('boomcms::assets.upload') ?>

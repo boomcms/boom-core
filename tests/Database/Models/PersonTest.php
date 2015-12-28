@@ -3,7 +3,6 @@
 namespace BoomCMS\Tests\Database\Models;
 
 use BoomCMS\Database\Models\Person;
-use Hautelook\Phpass\PasswordHash;
 
 class PersonTest extends AbstractModelTestCase
 {
@@ -51,16 +50,6 @@ class PersonTest extends AbstractModelTestCase
         $person = new Person(['superuser' => true]);
 
         $this->assertTrue($person->isSuperuser());
-    }
-
-    public function testCheckPassword()
-    {
-        $hasher = new PasswordHash(8, false);
-        $password = $hasher->HashPassword('test');
-
-        $person = new Person(['password' => $password]);
-        $this->assertTrue($person->checkPassword('test'));
-        $this->assertFalse($person->checkPassword('test2'));
     }
 
     public function testSetGetRememberLoginToken()

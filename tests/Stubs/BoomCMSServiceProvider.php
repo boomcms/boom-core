@@ -8,6 +8,7 @@ use BoomCMS\ServiceProviders\BoomCMSServiceProvider as BaseServiceProvider;
 use BoomCMS\ServiceProviders\ChunkServiceProvider;
 use BoomCMS\ServiceProviders\EditorServiceProvider;
 use BoomCMS\ServiceProviders\EventServiceProvider;
+use BoomCMS\ServiceProviders\SettingsServiceProvider;
 use Illuminate\Html\HtmlServiceProvider;
 
 class BoomCMSServiceProvider extends BaseServiceProvider
@@ -19,5 +20,6 @@ class BoomCMSServiceProvider extends BaseServiceProvider
         ChunkServiceProvider::class,
         EventServiceProvider::class,
         HtmlServiceProvider::class,
+        SettingsServiceProvider::class,
     ];
 }

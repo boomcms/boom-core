@@ -4,8 +4,8 @@ namespace BoomCMS\Editor;
 
 use BoomCMS\Contracts\Models\Page;
 use BoomCMS\Database\Models\Page as PageObject;
-use Illuminate\Auth\AuthManager as Auth;
-use Illuminate\Session\SessionManager as Session;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class Editor
 {
@@ -16,26 +16,24 @@ class Editor
     public static $default = self::EDIT;
 
     /**
-     * @var Auth
-     */
-    protected $auth;
-
-    /**
      * @var Page
      */
     protected $activePage;
 
-    protected $session;
+    /**
+     * @var bool
+     */
+    protected $loggedIn;
+
     protected $state;
     protected $statePersistenceKey = 'editor_state';
 
-    public function __construct(Auth $auth, Session $session)
+    public function __construct()
     {
-        $this->auth = $auth;
-        $this->session = $session;
+        $this->loggedIn = Auth::check();
 
-        if ($this->auth->check()) {
-            $this->state = $this->session->get($this->statePersistenceKey, static::$default);
+        if ($this->loggedIn === true) {
+            $this->state = Session::get($this->statePersistenceKey, static::$default);
         } else {
             $this->state = static::DISABLED;
         }
@@ -60,7 +58,9 @@ class Editor
      */
     public function isActive()
     {
-        return $this->getActivePage() && $this->auth->check('edit_page', $this->getActivePage());
+        return $this->getActivePage()
+            && $this->loggedIn
+            && Auth::check('edit_page', $this->getActivePage());
     }
 
     public function isDisabled()
@@ -79,7 +79,7 @@ class Editor
      */
     public function isEditable(Page $page)
     {
-        return $page->wasCreatedBy($this->auth->user()) || $this->auth->check('edit_page_content', $page);
+        return $page->wasCreatedBy(Auth::user()) || Auth::check('edit_page_content', $page);
     }
 
     public function isEnabled()
@@ -118,6 +118,6 @@ class Editor
     {
         $this->state = $state;
 
-        return $this->session->put($this->statePersistenceKey, $state);
+        return Session::put($this->statePersistenceKey, $state);
     }
 }

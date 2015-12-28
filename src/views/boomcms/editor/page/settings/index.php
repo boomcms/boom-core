@@ -84,7 +84,7 @@
             </li>
         </div>
 
-        <?php if ($auth->canDelete($page)): ?>
+        <?php if ($auth->check('delete_page', $page)): ?>
             <li>
                 <a href="#" class="fa fa-trash-o" data-b-page-setting="delete">
                     <?= trans('boomcms::settings.menu.delete') ?>

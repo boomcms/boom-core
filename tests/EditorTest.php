@@ -2,31 +2,13 @@
 
 namespace BoomCMS\Tests;
 
-use BoomCMS\Core\Auth\Auth;
-use BoomCMS\Core\Auth\PermissionsProvider;
 use BoomCMS\Database\Models\Page;
 use BoomCMS\Database\Models\Person;
 use BoomCMS\Editor\Editor;
+use Illuminate\Support\Facades\Auth;
 
 class EditorTest extends AbstractTestCase
 {
-    protected $auth, $session;
-
-    public function setUp()
-    {
-        parent::setUp();
-
-        $this->session = $this->getMockSession();
-        $repository = $this->getMockPersonRepository();
-        $permissionsProvider = $this->getMock(PermissionsProvider::class);
-        $this->auth = $this->getMock(Auth::class, ['getPerson', 'check'], [$this->session, $repository, $permissionsProvider]);
-
-        $this->auth
-            ->expects($this->any())
-            ->method('getPerson')
-            ->will($this->returnValue(new Person(['id' => 1])));
-    }
-
     public function testGetActivePageAlwaysReturnsAPage()
     {
         $this->assertInstanceOf(Page::class, $this->getEditor()->getActivePage());
@@ -41,15 +23,17 @@ class EditorTest extends AbstractTestCase
         $this->assertEquals($page, $editor->getActivePage());
     }
 
-    public function testIsActiveIsFalseIfNotcheck()
+    public function testIsActiveIsFalseIfNotLoggedIn()
     {
-        $this->auth
-            ->expects($this->once())
-            ->method('check')
-            ->will($this->returnValue(false));
+        $page = $this->validPage();
+
+        Auth::shouldReceive('check')
+            ->once()
+            ->withNoArgs()
+            ->andReturn(false);
 
         $editor = $this->getEditor();
-        $editor->setActivePage(new Page(['id' => 1]));
+        $editor->setActivePage($page);
 
         $this->assertFalse($editor->isActive());
     }
@@ -61,14 +45,19 @@ class EditorTest extends AbstractTestCase
         $this->assertFalse($editor->isActive());
     }
 
-    public function testIsActiveIsTrueIfActivePageSetAndcheckUserCanEditPage()
+    public function testIsActiveIsTrueIfActivePageSetAndLoggedInUserCanEditPage()
     {
-        $page = new Page(['id' => 1]);
-        $this->auth
-            ->expects($this->once())
-            ->method('check')
-            ->with($this->equalTo('edit_page'), $this->equalTo($page))
-            ->will($this->returnValue(true));
+        $page = $this->validPage();
+
+        Auth::shouldReceive('check')
+            ->once()
+            ->withNoArgs()
+            ->andReturn(true);
+
+        Auth::shouldReceive('check')
+            ->once()
+            ->with('edit_page', $page)
+            ->andReturn(true);
 
         $editor = $this->getEditor();
         $editor->setActivePage($page);
@@ -129,7 +118,6 @@ class EditorTest extends AbstractTestCase
     {
         return $this->getMockBuilder(Editor::class)
             ->setMethods($methods)
-            ->setConstructorArgs([$this->auth, $this->session])
             ->getMock();
     }
 }

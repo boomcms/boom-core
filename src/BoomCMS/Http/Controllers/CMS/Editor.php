@@ -38,10 +38,13 @@ class Editor extends Controller
 
         $toolbarFilename = ($this->editor->isEnabled()) ? 'toolbar' : 'toolbar_preview';
 
-        return view("boomcms::editor.$toolbarFilename", [
+        View::share([
             'page'   => $page,
             'editor' => $this->editor,
             'auth'   => auth(),
+            'person' => auth()->user(),
         ]);
+
+        return view("boomcms::editor.$toolbarFilename");
     }
 }
