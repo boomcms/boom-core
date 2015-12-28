@@ -3,12 +3,15 @@
 namespace BoomCMS\Http\Controllers;
 
 use BoomCMS\Editor\Editor;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Session\SessionManager as Session;
 
 class Controller extends BaseController
 {
+    use AuthorizesRequests;
+
     /**
      * @var Editor
      */

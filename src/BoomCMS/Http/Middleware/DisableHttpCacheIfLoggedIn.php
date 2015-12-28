@@ -6,7 +6,7 @@ use Illuminate\Auth\AuthManager;
 use Closure;
 use Illuminate\Http\Response;
 
-class DisableHttpCacheIfcheck
+class DisableHttpCacheIfLoggedIn
 {
     /**
      * @var Auth

@@ -5,13 +5,13 @@ use BoomCMS\Http\Middleware;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => [
-    Middleware\DisableHttpCacheIfcheck::class,
+    Middleware\DisableHttpCacheIfLoggedIn::class,
     Middleware\DefineCMSViewSharedVariables::class,
 ]], function () {
     Route::group(['prefix' => 'cms', 'namespace' => 'BoomCMS\Http\Controllers\CMS'], function () {
         Route::get('logout', 'Auth\Logout@index');
 
-        Route::group(['namespace' => 'Auth', 'middleware' => [Middleware\RedirectIfAuthenticated::class]], function () {
+        Route::group(['namespace' => 'Auth'], function () {
             Route::get('login', 'AuthController@getLogin');
             Route::post('login', 'AuthController@postLogin');
             Route::get('logout', 'AuthController@getLogout');
