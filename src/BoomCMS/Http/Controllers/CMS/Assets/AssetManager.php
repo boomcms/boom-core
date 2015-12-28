@@ -26,7 +26,7 @@ class AssetManager extends Controller
         $this->request = $request;
 
         if (!$this->request->is('*/picker') && !$this->request->is('*/get')) {
-            $this->authorization('manage_assets');
+            $this->authorize('manage_assets');
         }
     }
 
@@ -146,7 +146,7 @@ class AssetManager extends Controller
             $asset = new Asset();
             $asset
                 ->setUploadedTime(new DateTime('now'))
-                ->setUploadedBy(Auth::getPerson())
+                ->setUploadedBy(Auth::user())
                 ->setTitle($file->getClientOriginalName())
                 ->setType(AssetHelper::typeFromMimetype($file->getMimeType()));
 

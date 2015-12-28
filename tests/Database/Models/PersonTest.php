@@ -9,12 +9,34 @@ class PersonTest extends AbstractModelTestCase
 {
     protected $model = Person::class;
 
+    public function testGetAuthIdentifier()
+    {
+        $person = new Person();
+        $person->id = 1;
+
+        $this->assertEquals($person->id, $person->getAuthIdentifier());
+    }
+
+    public function testGetAuthPassword()
+    {
+        $person = new Person(['password' => 'test']);
+
+        $this->assertEquals($person->password, $person->getAuthPassword());
+    }
+
     public function testGetEmailReturnsEmailAttribute()
     {
         $email = 'test@test.com';
         $person = new Person([Person::ATTR_EMAIL => $email]);
 
         $this->assertEquals($email, $person->getEmail());
+    }
+
+    public function testGetRememberTokenName()
+    {
+        $person = new Person();
+
+        $this->assertEquals(Person::ATTR_REMEMBER_TOKEN, $person->getRememberTokenName());
     }
 
     public function testIsSuperuserDefaultFalse()

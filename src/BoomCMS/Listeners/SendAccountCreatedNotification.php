@@ -11,7 +11,7 @@ class SendAccountCreatedNotification extends EmailNotification
     public function handle(AccountCreated $event)
     {
         $createdBy = $event->getCreatedBy();
-        $person = $event->getPerson();
+        $person = $event->user();
 
         $this->send($person, 'Welcome to BoomCMS', 'newperson', [
             'person'    => $person,

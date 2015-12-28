@@ -23,7 +23,7 @@ class Chunk extends Controller
         $this->request = $request;
         $this->page = $this->request->route()->getParameter('page');
 
-        $this->page->wasCreatedBy(Auth::getPerson()) ||
+        $this->page->wasCreatedBy(Auth::user()) ||
             parent::authorization('edit_page_content', $this->page);
     }
 

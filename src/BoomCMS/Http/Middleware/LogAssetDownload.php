@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Http\Middleware;
 
-use BoomCMS\Core\Auth\Auth;
+use Illuminate\Auth\AuthManager;
 use BoomCMS\Database\Models\Asset\Download as AssetDownload;
 use Closure;
 use Illuminate\Http\Request;
@@ -10,11 +10,11 @@ use Illuminate\Http\Request;
 class LogAssetDownload
 {
     /**
-     * @var Auth
+     * @var AuthManager
      */
     protected $auth;
 
-    public function __construct(Auth $auth)
+    public function __construct(AuthManager $auth)
     {
         $this->auth = $auth;
     }
@@ -31,7 +31,7 @@ class LogAssetDownload
     {
         $asset = $request->route()->getParameter('asset');
 
-        if ($asset && !$this->auth->loggedIn()) {
+        if ($asset && !$this->auth->check()) {
             $ip = ip2long($request->ip());
 
             if (!AssetDownload::recentlyLogged($asset->getId(), $ip)->count() > 0) {

@@ -5,23 +5,21 @@ use BoomCMS\Http\Middleware;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => [
-    Middleware\DisableHttpCacheIfLoggedIn::class,
+    Middleware\DisableHttpCacheIfcheck::class,
     Middleware\DefineCMSViewSharedVariables::class,
 ]], function () {
     Route::group(['prefix' => 'cms', 'namespace' => 'BoomCMS\Http\Controllers\CMS'], function () {
         Route::get('logout', 'Auth\Logout@index');
 
         Route::group(['namespace' => 'Auth', 'middleware' => [Middleware\RedirectIfAuthenticated::class]], function () {
-            Route::get('login', [
-                'as'   => 'login',
-                'uses' => 'Login@showLoginForm',
-            ]);
+            Route::get('login', 'AuthController@getLogin');
+            Route::post('login', 'AuthController@postLogin');
+            Route::get('logout', 'AuthController@getLogout');
 
-            Route::post('login', 'Login@processLogin');
-
-            Route::get('recover', 'Recover@showForm');
-            Route::post('recover', 'Recover@createToken');
-            Route::any('recover/set-password', 'Recover@setPassword');
+            // Password reset link request routes...
+            Route::controller('password/email', 'PasswordReset');
+            Route::get('password/reset/{token}', 'PasswordReset@getReset');
+            Route::post('password/reset', 'PasswordController@postReset');
         });
 
         Route::group(['middleware' => [Middleware\RequireLogin::class]], function () {

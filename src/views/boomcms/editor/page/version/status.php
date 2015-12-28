@@ -5,7 +5,7 @@
     <?php if ($version->isDraft() && !$version->isPendingApproval()): ?>
         <p><?= trans('boomcms::settings.draft-status.draft') ?></p>
         
-        <?php if (!$auth->loggedIn('publish_page', $page)): ?>
+        <?php if (!$auth->check('publish_page', $page)): ?>
             <?= $button('thumbs-up', 'request-approval', ['class' => 'b-button-withtext b-page-request-approval']) ?>
         <?php endif ?>
     <?php elseif ($version->isPendingApproval()): ?>
@@ -40,7 +40,7 @@
             ]) ?>
         </p>
         
-        <?php if ($auth->loggedIn('publish_page', $page)): ?>
+        <?php if ($auth->check('publish_page', $page)): ?>
             <?= $button('check', 'publish', ['class' => 'b-button-withtext b-page-publish']) ?>
             
             <?php if ($version->isEmbargoed()): ?>

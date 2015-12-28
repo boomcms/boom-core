@@ -52,8 +52,8 @@ class SavePerson extends BasePerson
             ->setEnabled($this->request->input('enabled') == 1);
 
         if ($superuser !== null
-            && Auth::getPerson()->isSuperuser()
-            && Auth::getPerson()->getId() != $this->editPerson->getId()
+            && Auth::user()->isSuperuser()
+            && Auth::user()->getId() != $this->editPerson->getId()
         ) {
             $this->editPerson->setSuperuser($superuser == 1);
         }

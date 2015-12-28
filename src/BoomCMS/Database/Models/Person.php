@@ -8,10 +8,12 @@ use BoomCMS\Support\Traits\Comparable;
 use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Auth\Authenticatable;
 use Illuminate\Support\Facades\DB;
 
 class Person extends Model implements PersonInterface, CanResetPassword
 {
+    use Authenticatable;
     use Comparable;
     use SoftDeletes;
 
@@ -97,11 +99,6 @@ class Person extends Model implements PersonInterface, CanResetPassword
     public function getPassword()
     {
         return $this->{self::ATTR_PASSWORD};
-    }
-
-    public function getRememberToken()
-    {
-        return $this->{self::ATTR_REMEMBER_TOKEN};
     }
 
     public function groups()
@@ -215,18 +212,6 @@ class Person extends Model implements PersonInterface, CanResetPassword
     public function setSuperuser($superuser)
     {
         $this->{self::ATTR_SUPERUSER} = $superuser;
-
-        return $this;
-    }
-
-    /**
-     * @param string $token
-     *
-     * @return $this
-     */
-    public function setRememberToken($token)
-    {
-        $this->{self::ATTR_REMEMBER_TOKEN} = $token;
 
         return $this;
     }

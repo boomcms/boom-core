@@ -2,8 +2,8 @@
 
 namespace BoomCMS\Http\Middleware;
 
-use BoomCMS\Core\Auth\Auth;
 use Closure;
+use Illuminate\Auth\AuthMananger;
 use Illuminate\Http\Request;
 
 class AutoLogin
@@ -13,7 +13,7 @@ class AutoLogin
      */
     protected $auth;
 
-    public function __construct(Auth $auth)
+    public function __construct(AuthManager $auth)
     {
         $this->auth = $auth;
     }

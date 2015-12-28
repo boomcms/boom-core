@@ -82,7 +82,7 @@ class Page extends Model implements PageInterface
     {
         $this->relations()->attach($page, [
             'created_at'  => time(),
-            'created_by'  => Auth::getPerson()->getId(),
+            'created_by'  => Auth::user()->getId(),
         ]);
 
         return $this;
@@ -103,7 +103,7 @@ class Page extends Model implements PageInterface
 
         $attrs = array_merge($attrs, [
             'page_id'     => $this->getId(),
-            'edited_by'   => Auth::getPerson()->getId(),
+            'edited_by'   => Auth::user()->getId(),
             'edited_time' => time(),
         ]);
 

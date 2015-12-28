@@ -52,7 +52,7 @@ class Asset implements AssetRepositoryInterface
             'width'     => $width,
             'height'    => $height,
             'edited_at' => time(),
-            'edited_by' => Auth::getPerson()->getId(),
+            'edited_by' => Auth::user()->getId(),
             'mimetype'  => $file->getMimeType(),
             'metadata'  => File::exif($file->getRealPath()),
         ]);
@@ -127,7 +127,7 @@ class Asset implements AssetRepositoryInterface
             $attrs = $version->toArray();
             unset($attrs['id']);
             $attrs['edited_at'] = time();
-            $attrs['edited_by'] = Auth::getPerson()->getId();
+            $attrs['edited_by'] = Auth::user()->getId();
 
             $version = $this->version->create($attrs);
 

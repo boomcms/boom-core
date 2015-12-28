@@ -20,7 +20,7 @@ class Save extends Settings
 
         $this->page->setInternalName($this->request->input('internal_name'));
 
-        if (Auth::loggedIn('edit_disable_delete', $this->page)) {
+        if (Auth::check('edit_disable_delete', $this->page)) {
             $this->page->setDisableDelete($this->request->input('disable_delete') == '1');
         }
 
@@ -130,7 +130,7 @@ class Save extends Settings
         Page::save($this->page);
 
         if (!$wasVisible && $this->page->isVisible()) {
-            Event::fire(new PageWasMadeVisible($this->page, Auth::getPerson()));
+            Event::fire(new PageWasMadeVisible($this->page, Auth::user()));
         }
 
         return (int) $this->page->isVisible();

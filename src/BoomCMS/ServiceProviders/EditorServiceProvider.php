@@ -15,7 +15,7 @@ class EditorServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->app->singleton('boomcms.editor', function ($app) {
-            return new Editor\Editor($app['boomcms.auth'], $app['session']);
+            return new Editor\Editor($app['auth'], $app['session']);
         });
     }
 

@@ -51,7 +51,7 @@ class CreatePerson extends Command implements SelfHandling
                 $person->addGroup(Group::find($groupId));
             }
 
-            Event::fire(new AccountCreated($person, $password, Auth::getPerson()));
+            Event::fire(new AccountCreated($person, $password, Auth::user()));
 
             return $person;
         } else {

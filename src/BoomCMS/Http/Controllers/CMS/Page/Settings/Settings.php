@@ -24,13 +24,13 @@ abstract class Settings extends PageController
 
     public function admin()
     {
-        $this->authorization('edit_page_admin');
+        $this->authorize('edit_page_admin');
     }
 
     public function children()
     {
-        $this->authorization('edit_page_children_basic');
-        $this->allowAdvanced = Auth::loggedIn('edit_page_children_advanced', $this->page);
+        $this->authorize('edit_page_children_basic');
+        $this->allowAdvanced = Auth::check('edit_page_children_advanced', $this->page);
     }
 
     public function delete()
@@ -42,29 +42,29 @@ abstract class Settings extends PageController
 
     public function feature()
     {
-        $this->authorization('edit_feature_image');
+        $this->authorize('edit_feature_image');
     }
 
     public function navigation()
     {
-        $this->authorization('edit_page_navigation_basic');
-        $this->allowAdvanced = Auth::loggedIn('edit_page_navigation_advanced', $this->page);
+        $this->authorize('edit_page_navigation_basic');
+        $this->allowAdvanced = Auth::check('edit_page_navigation_advanced', $this->page);
     }
 
     public function search()
     {
-        $this->authorization('edit_page_search_basic');
-        $this->allowAdvanced = Auth::loggedIn('edit_page_search_advanced', $this->page);
+        $this->authorize('edit_page_search_basic');
+        $this->allowAdvanced = Auth::check('edit_page_search_advanced', $this->page);
     }
 
     public function visibility()
     {
-        $this->authorization('edit_page');
+        $this->authorize('edit_page');
     }
 
     public function authorization($role, Page $page = null)
     {
-        if (!Auth::loggedIn('manage_pages')) {
+        if (!Auth::check('manage_pages')) {
             parent::authorization($role, $page);
         }
     }

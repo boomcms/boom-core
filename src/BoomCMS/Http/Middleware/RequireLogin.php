@@ -28,7 +28,7 @@ class RequireLogin
      */
     public function handle($request, Closure $next)
     {
-        if (!$this->auth->isLoggedIn()) {
+        if (!$this->auth->check()) {
             return new RedirectResponse(route('login'));
         }
 

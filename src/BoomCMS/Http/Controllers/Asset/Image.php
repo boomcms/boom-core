@@ -3,7 +3,6 @@
 namespace BoomCMS\Http\Controllers\Asset;
 
 use BoomCMS\Contracts\Models\Asset;
-use BoomCMS\Core\Auth;
 use Intervention\Image\ImageManager;
 
 class Image extends BaseController
@@ -15,9 +14,9 @@ class Image extends BaseController
 
     protected $encoding;
 
-    public function __construct(Auth\Auth $auth, Asset $asset)
+    public function __construct(Asset $asset)
     {
-        parent::__construct($auth, $asset);
+        parent::__construct($asset);
 
         $this->manager = new ImageManager(['driver' => 'imagick']);
     }

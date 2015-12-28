@@ -3,8 +3,8 @@
 namespace BoomCMS\Editor;
 
 use BoomCMS\Contracts\Models\Page;
-use BoomCMS\Core\Auth\Auth;
 use BoomCMS\Database\Models\Page as PageObject;
+use Illuminate\Auth\AuthManager as Auth;
 use Illuminate\Session\SessionManager as Session;
 
 class Editor
@@ -34,7 +34,7 @@ class Editor
         $this->auth = $auth;
         $this->session = $session;
 
-        if ($this->auth->isLoggedIn()) {
+        if ($this->auth->check()) {
             $this->state = $this->session->get($this->statePersistenceKey, static::$default);
         } else {
             $this->state = static::DISABLED;
@@ -60,7 +60,7 @@ class Editor
      */
     public function isActive()
     {
-        return $this->getActivePage() && $this->auth->loggedIn('edit_page', $this->getActivePage());
+        return $this->getActivePage() && $this->auth->check('edit_page', $this->getActivePage());
     }
 
     public function isDisabled()
@@ -70,16 +70,16 @@ class Editor
 
     /**
      * Returns whether or not the logged in user can edit the content of a page.
-     * 
+     *
      * A page can be edited if it was created by a user or they have edit permissions for the page.
-     * 
+     *
      * @param Page $page
      *
      * @return bool
      */
     public function isEditable(Page $page)
     {
-        return $page->wasCreatedBy($this->auth->getPerson()) || $this->auth->loggedIn('edit_page_content', $page);
+        return $page->wasCreatedBy($this->auth->user()) || $this->auth->check('edit_page_content', $page);
     }
 
     public function isEnabled()

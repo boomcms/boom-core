@@ -11,21 +11,21 @@ abstract class Version extends PageController
 
     public function embargo()
     {
-        $this->authorization('edit_page_content', $this->page);
+        $this->authorize('edit_page_content', $this->page);
     }
 
     public function request_approval()
     {
-        $this->authorization('edit_page_content', $this->page);
+        $this->authorize('edit_page_content', $this->page);
     }
 
     public function status()
     {
-        $this->authorization('edit_page_content', $this->page);
+        $this->authorize('edit_page_content', $this->page);
     }
 
     public function template(Template\Manager $manager)
     {
-        $this->authorization('edit_page_template', $this->page);
+        $this->authorize('edit_page_template', $this->page);
     }
 }

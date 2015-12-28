@@ -13,7 +13,7 @@ abstract class Menu
         $items = Config::get('boomcms.menu');
 
         foreach ($items as $key => $item) {
-            if (isset($item['role']) && !Auth::loggedIn($item['role'])) {
+            if (isset($item['role']) && !Auth::check($item['role'])) {
                 unset($items[$key]);
                 continue;
             }

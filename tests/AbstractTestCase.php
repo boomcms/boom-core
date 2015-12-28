@@ -2,7 +2,6 @@
 
 namespace BoomCMS\Tests;
 
-use BoomCMS\Core\Auth\PermissionsProvider;
 use BoomCMS\Database\Models\Page;
 use BoomCMS\Repositories;
 use Illuminate\Contracts\Console\Kernel;
@@ -45,11 +44,6 @@ abstract class AbstractTestCase extends \Illuminate\Foundation\Testing\TestCase
             ->setMethods($methods)
             ->disableOriginalConstructor()
             ->getMock();
-    }
-
-    protected function getMockPermissionsProvider()
-    {
-        return $this->getMock(PermissionsProvider::class);
     }
 
     protected function invalidPage()

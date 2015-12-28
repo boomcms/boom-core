@@ -19,7 +19,7 @@ class EditorTest extends AbstractTestCase
         $this->session = $this->getMockSession();
         $repository = $this->getMockPersonRepository();
         $permissionsProvider = $this->getMock(PermissionsProvider::class);
-        $this->auth = $this->getMock(Auth::class, ['getPerson', 'loggedIn'], [$this->session, $repository, $permissionsProvider]);
+        $this->auth = $this->getMock(Auth::class, ['getPerson', 'check'], [$this->session, $repository, $permissionsProvider]);
 
         $this->auth
             ->expects($this->any())
@@ -41,11 +41,11 @@ class EditorTest extends AbstractTestCase
         $this->assertEquals($page, $editor->getActivePage());
     }
 
-    public function testIsActiveIsFalseIfNotLoggedIn()
+    public function testIsActiveIsFalseIfNotcheck()
     {
         $this->auth
             ->expects($this->once())
-            ->method('loggedIn')
+            ->method('check')
             ->will($this->returnValue(false));
 
         $editor = $this->getEditor();
@@ -61,12 +61,12 @@ class EditorTest extends AbstractTestCase
         $this->assertFalse($editor->isActive());
     }
 
-    public function testIsActiveIsTrueIfActivePageSetAndLoggedInUserCanEditPage()
+    public function testIsActiveIsTrueIfActivePageSetAndcheckUserCanEditPage()
     {
         $page = new Page(['id' => 1]);
         $this->auth
             ->expects($this->once())
-            ->method('loggedIn')
+            ->method('check')
             ->with($this->equalTo('edit_page'), $this->equalTo($page))
             ->will($this->returnValue(true));
 

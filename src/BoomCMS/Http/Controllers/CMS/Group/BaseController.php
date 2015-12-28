@@ -19,7 +19,7 @@ class BaseController extends Controller
     {
         $this->request = $request;
 
-        $this->authorization('manage_people');
+        $this->authorize('manage_people');
         $this->group = $this->request->route()->getParameter('group');
     }
 }
