@@ -61,14 +61,15 @@ class BoomCMSServiceProvider extends ServiceProvider
     public function register()
     {
         $this->registerAliases();
+        $this->registerServiceProviders();
 
+        $this->mergeConfigFrom(__DIR__.'/../../config/auth.php', 'auth');
+        $this->mergeConfigFrom(__DIR__.'/../../config/mail.php', 'mail');
         $this->mergeConfigFrom(__DIR__.'/../../config/boomcms/menu.php', 'boomcms.menu');
         $this->mergeConfigFrom(__DIR__.'/../../config/boomcms/text_editor_toolbar.php', 'boomcms');
         $this->mergeConfigFrom(__DIR__.'/../../config/boomcms/viewHelpers.php', 'boomcms');
         $this->mergeConfigFrom(__DIR__.'/../../config/boomcms/settingsManagerOptions.php', 'boomcms');
         $this->mergeConfigFrom(__DIR__.'/../../config/boomcms/assets.php', 'boomcms');
-
-        $this->registerServiceProviders();
     }
 
     private function registerAliases()

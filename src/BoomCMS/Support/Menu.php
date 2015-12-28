@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Support;
 
-use BoomCMS\Support\Facades\Auth;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Lang;
 

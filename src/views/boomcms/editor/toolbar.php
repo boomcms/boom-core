@@ -15,7 +15,7 @@
 			</div>
 		<?php endif ?>
 
-		<?php if ($page->wasCreatedBy($person) || $auth->check('edit_page_content', $page)): ?>
+		<?php if ($page->wasCreatedBy($auth->user()) || $auth->check('edit_page_content', $page)): ?>
 			<div id="b-page-publish-menu">
 				<button id="b-page-version-status" class="b-button" data-status="<?= $page->getCurrentVersion()->status() ?>">
 					<?= $page->getCurrentVersion()->status() ?>
@@ -28,7 +28,7 @@
 			<?= $button('eye-slash', trans('This page is hidden regardless of whether there is a published version'), ['id' => 'b-page-invisible', 'class' => $page->isVisible() ? 'b-page-visibility ui-helper-hidden' : 'b-page-visibility']) ?>
 		<?php endif ?>
 
-		<?php if ($auth->canDelete($page)) : ?>
+		<?php if ($auth->check('delete_page', $page)) : ?>
             <?php if ($page->canBeDeleted()): ?>
     			<?= $button('trash-o', trans('Delete this page'), ['id' => 'b-page-delete']) ?>
             <?php else: ?>
