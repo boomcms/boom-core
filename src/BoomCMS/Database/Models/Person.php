@@ -10,7 +10,6 @@ use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Auth\Authenticatable;
-use Illuminate\Support\Facades\DB;
 
 class Person extends Model implements PersonInterface, AuthenticatableContract, CanResetPassword
 {
