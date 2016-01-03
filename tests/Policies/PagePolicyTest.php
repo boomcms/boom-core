@@ -17,4 +17,24 @@ class PagePolicyTest extends AbstractTestCase
         $this->assertTrue($policy->before($super, ''));
         $this->assertNull($policy->before($normal, ''));
     }
+
+    public function testUserCanDeleteIfTheyCreatedPage()
+    {
+        $this->markTestIncomplete();
+    }
+
+    public function testUserCanDeleteIfTheyCanManagePages()
+    {
+        $this->markTestIncomplete();
+    }
+
+    public function testUserCanEditTemplateIfTheyCreatedPage()
+    {
+        $this->markTestIncomplete();
+    }
+
+    public function testUserCanEditContentIfTheyCreatedPage()
+    {
+        $this->markTestIncomplete();
+    }
 }

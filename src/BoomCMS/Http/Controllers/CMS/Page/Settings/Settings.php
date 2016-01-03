@@ -23,39 +23,39 @@ abstract class Settings extends PageController
 
     public function admin()
     {
-        $this->authorize('edit_page_admin', $this->page);
+        $this->authorize('editAdmin', $this->page);
     }
 
     public function children()
     {
-        $this->authorize('edit_page_children_basic', $this->page);
-        $this->allowAdvanced = Auth::check('edit_page_children_advanced', $this->page);
+        $this->authorize('editChildrenBasic', $this->page);
+        $this->allowAdvanced = Auth::check('editChildrenAdvanced', $this->page);
     }
 
     public function delete()
     {
-        $this->authorize('delete_page', $this->page);
+        $this->authorize('delete', $this->page);
     }
 
     public function feature()
     {
-        $this->authorize('edit_feature_image', $this->page);
+        $this->authorize('editFeatureImage', $this->page);
     }
 
     public function navigation()
     {
-        $this->authorize('edit_page_navigation_basic', $this->page);
-        $this->allowAdvanced = Auth::check('edit_page_navigation_advanced', $this->page);
+        $this->authorize('editNavigationBasic', $this->page);
+        $this->allowAdvanced = Auth::check('editNavigationAdvanced', $this->page);
     }
 
     public function search()
     {
-        $this->authorize('edit_page_search_basic', $this->page);
-        $this->allowAdvanced = Auth::check('edit_page_search_advanced', $this->page);
+        $this->authorize('editSearchBasic', $this->page);
+        $this->allowAdvanced = Auth::check('editSearchAdvanced', $this->page);
     }
 
     public function visibility()
     {
-        $this->authorize('edit_page', $this->page);
+        $this->authorize('edit', $this->page);
     }
 }

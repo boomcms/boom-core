@@ -60,7 +60,7 @@ class Editor
     {
         return $this->getActivePage()
             && $this->loggedIn
-            && Auth::check('edit_page', $this->getActivePage());
+            && Auth::check('edit', $this->getActivePage());
     }
 
     public function isDisabled()
@@ -79,7 +79,7 @@ class Editor
      */
     public function isEditable(Page $page)
     {
-        return $page->wasCreatedBy(Auth::user()) || Auth::check('edit_page_content', $page);
+        return Auth::check('editContent', $page);
     }
 
     public function isEnabled()

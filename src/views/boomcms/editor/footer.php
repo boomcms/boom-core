@@ -7,7 +7,7 @@
 
             $('body').pageEditor({
                 page_id : <?= $page->getId() ?>,
-                editable : <?= (int) ($editor->isEnabled() && ($auth->check('edit_page_content', $page) || $page->wasCreatedBy($person))) ?>,
+                editable : <?= (int) ($editor->isEnabled() && ($auth->check('editContent', $page) || $page->wasCreatedBy($person))) ?>,
             });
         });
         //]]>

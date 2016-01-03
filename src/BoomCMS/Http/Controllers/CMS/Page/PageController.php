@@ -29,7 +29,7 @@ class PageController extends Controller
 
     public function add()
     {
-        $this->authorize('add_page', $this->page);
+        $this->authorize('add', $this->page);
 
         $newPage = $this->dispatch(new CreatePage($this->auth->user(), $this->page));
 

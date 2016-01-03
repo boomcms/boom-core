@@ -56,7 +56,7 @@ class EditorTest extends AbstractTestCase
 
         Auth::shouldReceive('check')
             ->once()
-            ->with('edit_page', $page)
+            ->with('edit', $page)
             ->andReturn(true);
 
         $editor = $this->getEditor();

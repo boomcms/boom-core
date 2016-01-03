@@ -26,7 +26,7 @@ class AssetManager extends Controller
         $this->request = $request;
 
         if (!$this->request->is('*/picker') && !$this->request->is('*/get')) {
-            $this->authorize('manage_assets');
+            $this->authorize('manageAssets');
         }
     }
 

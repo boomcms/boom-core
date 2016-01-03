@@ -10,7 +10,7 @@ class Approvals extends Controller
 {
     public function getIndex()
     {
-        $this->authorize('manage_approvals');
+        $this->authorize('manageApprovals');
 
         return view('boomcms::approvals.index', [
             'pages' => $this->getPagesAwaitingApproval(),
