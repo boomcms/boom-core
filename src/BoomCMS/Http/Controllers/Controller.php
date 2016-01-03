@@ -34,7 +34,7 @@ class Controller extends BaseController
         $this->editor = $editor;
 
         if ($this->role) {
-            $this->authorize($this->role);
+            $this->authorize($this->role, $request);
         }
     }
 }

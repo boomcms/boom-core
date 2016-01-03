@@ -6,7 +6,7 @@ use BoomCMS\Events\PageSearchSettingsWereUpdated;
 use BoomCMS\Events\PageWasMadeVisible;
 use BoomCMS\Jobs\DeletePage;
 use BoomCMS\Jobs\ReorderChildPages;
-use BoomCMS\Support\Facades\Auth;
+use Illuminate\Support\Facades\Auth;
 use BoomCMS\Support\Facades\Page;
 use DateTime;
 use Illuminate\Support\Facades\Bus;

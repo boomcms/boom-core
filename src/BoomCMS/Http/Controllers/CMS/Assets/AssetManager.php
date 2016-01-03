@@ -5,7 +5,7 @@ namespace BoomCMS\Http\Controllers\CMS\Assets;
 use BoomCMS\Database\Models\Asset;
 use BoomCMS\Http\Controllers\Controller;
 use BoomCMS\Support\Facades\Asset as AssetFacade;
-use BoomCMS\Support\Facades\Auth;
+use Illuminate\Support\Facades\Auth;
 use BoomCMS\Support\Helpers;
 use BoomCMS\Support\Helpers\Asset as AssetHelper;
 use DateTime;
@@ -26,7 +26,7 @@ class AssetManager extends Controller
         $this->request = $request;
 
         if (!$this->request->is('*/picker') && !$this->request->is('*/get')) {
-            $this->authorize('manageAssets');
+            $this->authorize('manageAssets', $request);
         }
     }
 
@@ -74,7 +74,7 @@ class AssetManager extends Controller
     {
         return view($this->viewPrefix.'index', [
             'manager' => $this->manager(),
-            'person'  => $this->person,
+            'person'  => auth()->user(),
         ]);
     }
 

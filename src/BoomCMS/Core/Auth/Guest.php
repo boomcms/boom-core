@@ -78,17 +78,6 @@ class Guest implements Person
     }
 
     /**
-     * @param string $role
-     * @param int    $pageId
-     *
-     * @return bool
-     */
-    public function isAllowed($role, $pageId = 0)
-    {
-        return false;
-    }
-
-    /**
      * @return bool
      */
     public function isEnabled()

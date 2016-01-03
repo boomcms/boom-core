@@ -14,14 +14,14 @@
 				<input type="hidden" name="_token" value="<?php echo csrf_token() ?>">
 
 				<fieldset>
-					<?php if (isset($login_error)): ?>
-						<p class="b-error"><?= $login_error ?></p>
+					<?php if (count($errors)): ?>
+						<p class="b-error"><?= implode('<br />', $errors->all()) ?></p>
 					<?php endif ?>
 					<p>
 						<label for="email">
 							<?= trans('Email address') ?>
 						</label>
-						<input type="email" placeholder='<?= trans('Email address') ?>' name="email" required id="email" value="<?= $request->input('email') ?>" />
+						<input type="email" placeholder='<?= trans('Email address') ?>' name="email" required id="email" value="<?= old('email') ?>" />
 					</p>
 
 					<p>

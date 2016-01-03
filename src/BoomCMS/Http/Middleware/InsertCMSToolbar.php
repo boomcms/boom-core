@@ -32,7 +32,7 @@ class InsertCMSToolbar
     {
         $activePage = Editor::getActivePage();
 
-        if ($activePage !== null && Auth::check('edit', $activePage)) {
+        if ($activePage === null || !Auth::check('edit', $activePage)) {
             return $next($request);
         }
 

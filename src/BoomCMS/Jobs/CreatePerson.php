@@ -5,7 +5,7 @@ namespace BoomCMS\Jobs;
 use BoomCMS\Core\Auth\RandomPassword;
 use BoomCMS\Events\AccountCreated;
 use BoomCMS\Exceptions\DuplicateEmailException;
-use BoomCMS\Support\Facades\Auth;
+use Illuminate\Support\Facades\Auth;
 use BoomCMS\Support\Facades\Group;
 use BoomCMS\Support\Facades\Person;
 use Illuminate\Console\Command;

@@ -3,7 +3,7 @@
 namespace BoomCMS\Http\Controllers\CMS\Page\Settings;
 
 use BoomCMS\Http\Controllers\CMS\Page\PageController;
-use BoomCMS\Support\Facades\Auth;
+use Illuminate\Support\Facades\Auth;
 
 abstract class Settings extends PageController
 {
@@ -39,13 +39,13 @@ abstract class Settings extends PageController
 
     public function feature()
     {
-        $this->authorize('editFeatureImage', $this->page);
+        $this->authorize('editFeature', $this->page);
     }
 
     public function navigation()
     {
-        $this->authorize('editNavigationBasic', $this->page);
-        $this->allowAdvanced = Auth::check('editNavigationAdvanced', $this->page);
+        $this->authorize('editNavBasic', $this->page);
+        $this->allowAdvanced = Auth::check('editNavAdvanced', $this->page);
     }
 
     public function search()

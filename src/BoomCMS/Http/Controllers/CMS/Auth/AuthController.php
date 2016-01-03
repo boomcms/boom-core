@@ -12,4 +12,6 @@ class AuthController extends Controller
     use AuthenticatesUsers;
     use ThrottlesLogins;
     use ValidatesRequests;
+
+    protected $loginPath = '/cms/login';
 }

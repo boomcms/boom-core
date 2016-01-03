@@ -3,7 +3,7 @@
 namespace BoomCMS\Http\Controllers\CMS\People\Person;
 
 use BoomCMS\Jobs\CreatePerson;
-use BoomCMS\Support\Facades\Auth;
+use Illuminate\Support\Facades\Auth;
 use BoomCMS\Support\Facades\Group;
 use BoomCMS\Support\Facades\Person;
 use Illuminate\Support\Facades\Bus;

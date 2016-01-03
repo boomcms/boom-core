@@ -107,23 +107,6 @@ class Person extends Model implements PersonInterface, AuthenticatableContract, 
         return $this->belongsToMany(Group::class);
     }
 
-    public function isAllowed($role, $pageId = null)
-    {
-        $result = DB::table('group_role')
-            ->select(DB::raw('bit_and(allowed) as allowed'))
-            ->join('group_person', 'group_person.group_id', '=', 'group_role.group_id')
-            ->join('groups', 'group_person.group_id', '=', 'groups.id')
-            ->join('roles', 'roles.id', '=', 'group_role.role_id')
-            ->whereNull('groups.deleted_at')
-            ->where('group_person.person_id', '=', $this->getId())
-            ->where('roles.name', '=', $role)
-            ->groupBy('person_id')    // Strange results if this isn't here.
-            ->where('group_role.page_id', '=', $pageId)
-            ->first();
-
-        return (isset($result->allowed)) ? (bool) $result->allowed : null;
-    }
-
     /**
      * @return bool
      */

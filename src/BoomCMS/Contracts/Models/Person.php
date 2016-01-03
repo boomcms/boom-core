@@ -25,14 +25,6 @@ interface Person
 
     public function getRememberToken();
 
-    /**
-     * @param string $role
-     * @param int    $pageId
-     *
-     * @return bool
-     */
-    public function isAllowed($role, $pageId);
-
     public function isEnabled();
 
     public function isSuperUser();

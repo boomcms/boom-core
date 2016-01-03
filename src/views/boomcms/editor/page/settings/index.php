@@ -60,7 +60,7 @@
             </li>
         <?php endif ?>
 
-        <?php if ($auth->check('editFeatureImage', $page)): ?>
+        <?php if ($auth->check('editFeature', $page)): ?>
             <li>
                 <a href="#" class="fa fa-image" data-b-page-setting="feature">
                     <?= trans('boomcms::settings.menu.feature') ?>
