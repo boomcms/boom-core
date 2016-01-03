@@ -2,14 +2,15 @@
 
 namespace BoomCMS\Jobs;
 
-use BoomCMS\Core\Auth\RandomPassword;
+use BoomCMS\Auth\Hasher;
+use BoomCMS\Auth\RandomPassword;
 use BoomCMS\Events\AccountCreated;
 use BoomCMS\Exceptions\DuplicateEmailException;
-use BoomCMS\Support\Facades\Auth;
 use BoomCMS\Support\Facades\Group;
 use BoomCMS\Support\Facades\Person;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Bus\SelfHandling;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Event;
 
 class CreatePerson extends Command implements SelfHandling
@@ -39,7 +40,8 @@ class CreatePerson extends Command implements SelfHandling
     public function handle()
     {
         $password = (string) new RandomPassword();
-        $this->credentials['password'] = Auth::hash($password);
+        $hasher = new Hasher();
+        $this->credentials['password'] = $hasher->make($password);
 
         try {
             $person = Person::create($this->credentials);
@@ -51,7 +53,7 @@ class CreatePerson extends Command implements SelfHandling
                 $person->addGroup(Group::find($groupId));
             }
 
-            Event::fire(new AccountCreated($person, $password, Auth::getPerson()));
+            Event::fire(new AccountCreated($person, $password, Auth::user()));
 
             return $person;
         } else {

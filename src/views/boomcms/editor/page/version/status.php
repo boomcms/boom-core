@@ -4,8 +4,8 @@
 
     <?php if ($version->isDraft() && !$version->isPendingApproval()): ?>
         <p><?= trans('boomcms::settings.draft-status.draft') ?></p>
-        
-        <?php if (!$auth->loggedIn('publish_page', $page)): ?>
+
+        <?php if (!$auth->check('publish', $page)): ?>
             <?= $button('thumbs-up', 'request-approval', ['class' => 'b-button-withtext b-page-request-approval']) ?>
         <?php endif ?>
     <?php elseif ($version->isPendingApproval()): ?>
@@ -31,7 +31,7 @@
             ]) ?>
         </p>
     <?php endif ?>
-    
+
     <?php if (!$version->isPublished()): ?>
         <p>
             <?= trans('boomcms::settings.draft-status.last-published', [
@@ -39,10 +39,10 @@
                 'time' => $page->getLastPublishedTime()->format('H:i'),
             ]) ?>
         </p>
-        
-        <?php if ($auth->loggedIn('publish_page', $page)): ?>
+
+        <?php if ($auth->check('publish', $page)): ?>
             <?= $button('check', 'publish', ['class' => 'b-button-withtext b-page-publish']) ?>
-            
+
             <?php if ($version->isEmbargoed()): ?>
                 <?= $button('clock-o', 'embargo-change', ['class' => 'b-button-withtext b-page-embargo']) ?>
             <?php else: ?>
@@ -52,7 +52,7 @@
             <?= $button('undo', 'page-revert', ['class' => 'b-button-withtext b-page-revert']) ?>
         <?php endif ?>
     <?php endif ?>
-        
+
     <?php if (!$version->isPublished() || !$page->isVisible()): ?>
         <div>
             <?= $button('', 'preview', [

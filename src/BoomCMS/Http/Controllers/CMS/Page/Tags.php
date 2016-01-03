@@ -17,7 +17,7 @@ class Tags extends Controller
         $this->request = $request;
         $this->page = $request->route()->getParameter('page');
 
-        $this->authorization('edit_page', $this->page);
+        $this->authorize('edit', $this->page);
     }
 
     public function add()

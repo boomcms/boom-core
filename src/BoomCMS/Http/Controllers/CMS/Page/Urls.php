@@ -30,7 +30,7 @@ class Urls extends Controller
         $this->page = $request->route()->getParameter('page');
         $this->url = $request->route()->getParameter('url');
 
-        $this->authorization('edit_page_urls', $this->page);
+        $this->authorize('editUrls', $this->page);
     }
 
     public function getAdd()

@@ -14,9 +14,6 @@ class SettingsServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->app->singleton('boomcms.settings', function ($app) {
-            return new Settings\Store($app['files']);
-        });
     }
 
     /**
@@ -24,5 +21,8 @@ class SettingsServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->app->singleton('boomcms.settings', function ($app) {
+            return new Settings\Store($app['files']);
+        });
     }
 }

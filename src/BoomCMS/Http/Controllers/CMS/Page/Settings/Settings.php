@@ -2,9 +2,8 @@
 
 namespace BoomCMS\Http\Controllers\CMS\Page\Settings;
 
-use BoomCMS\Contracts\Models\Page;
 use BoomCMS\Http\Controllers\CMS\Page\PageController;
-use BoomCMS\Support\Facades\Auth;
+use Illuminate\Support\Facades\Auth;
 
 abstract class Settings extends PageController
 {
@@ -24,48 +23,39 @@ abstract class Settings extends PageController
 
     public function admin()
     {
-        $this->authorization('edit_page_admin');
+        $this->authorize('editAdmin', $this->page);
     }
 
     public function children()
     {
-        $this->authorization('edit_page_children_basic');
-        $this->allowAdvanced = Auth::loggedIn('edit_page_children_advanced', $this->page);
+        $this->authorize('editChildrenBasic', $this->page);
+        $this->allowAdvanced = Auth::check('editChildrenAdvanced', $this->page);
     }
 
     public function delete()
     {
-        if (!Auth::canDelete($this->page)) {
-            abort(403);
-        }
+        $this->authorize('delete', $this->page);
     }
 
     public function feature()
     {
-        $this->authorization('edit_feature_image');
+        $this->authorize('editFeature', $this->page);
     }
 
     public function navigation()
     {
-        $this->authorization('edit_page_navigation_basic');
-        $this->allowAdvanced = Auth::loggedIn('edit_page_navigation_advanced', $this->page);
+        $this->authorize('editNavBasic', $this->page);
+        $this->allowAdvanced = Auth::check('editNavAdvanced', $this->page);
     }
 
     public function search()
     {
-        $this->authorization('edit_page_search_basic');
-        $this->allowAdvanced = Auth::loggedIn('edit_page_search_advanced', $this->page);
+        $this->authorize('editSearchBasic', $this->page);
+        $this->allowAdvanced = Auth::check('editSearchAdvanced', $this->page);
     }
 
     public function visibility()
     {
-        $this->authorization('edit_page');
-    }
-
-    public function authorization($role, Page $page = null)
-    {
-        if (!Auth::loggedIn('manage_pages')) {
-            parent::authorization($role, $page);
-        }
+        $this->authorize('edit', $this->page);
     }
 }

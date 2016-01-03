@@ -4,7 +4,6 @@ namespace BoomCMS\Repositories;
 
 use BoomCMS\Contracts\Models\Person as PersonInterface;
 use BoomCMS\Contracts\Repositories\Person as PersonRepositoryInterface;
-use BoomCMS\Core\Auth\Guest;
 use BoomCMS\Database\Models\Person as Model;
 use BoomCMS\Exceptions\DuplicateEmailException;
 
@@ -64,11 +63,6 @@ class Person implements PersonRepositoryInterface
         return $this->model->where($key, '=', $value)->first();
     }
 
-    public function findByAutoLoginToken($token)
-    {
-        return $this->findBy(Model::ATTR_REMEMBER_TOKEN, $token);
-    }
-
     public function findByEmail($email)
     {
         return $this->findBy(Model::ATTR_EMAIL, $email);
@@ -81,24 +75,6 @@ class Person implements PersonRepositoryInterface
             ->where('group_id', '=', $groupId)
             ->orderBy('name', 'asc')
             ->get();
-    }
-
-    public function findByLogin($login)
-    {
-        return $this->findByEmail($login);
-    }
-
-    public function findByResetPasswordCode($code)
-    {
-        return $this->findBy(Model::ATTR_REMEMBER_TOKEN, $code);
-    }
-
-    /**
-     * @return Guest
-     */
-    public function getEmptyUser()
-    {
-        return new Guest();
     }
 
     public function save(PersonInterface $person)

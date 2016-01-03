@@ -2,8 +2,8 @@
 
 namespace BoomCMS\Http\Middleware;
 
-use BoomCMS\Core\Auth\Auth;
 use Closure;
+use Illuminate\Auth\AuthManager;
 use Illuminate\Http\Response;
 
 class DisableHttpCacheIfLoggedIn
@@ -13,7 +13,7 @@ class DisableHttpCacheIfLoggedIn
      */
     protected $auth;
 
-    public function __construct(Auth $auth)
+    public function __construct(AuthManager $auth)
     {
         $this->auth = $auth;
     }
@@ -30,7 +30,7 @@ class DisableHttpCacheIfLoggedIn
     {
         $response = $next($request);
 
-        if ($this->auth->isLoggedIn() && $response instanceof Response) {
+        if ($this->auth->check() && $response instanceof Response) {
             $response->header('Cache-Control', 'no-cache, max-age=0, must-revalidate, no-store');
         }
 

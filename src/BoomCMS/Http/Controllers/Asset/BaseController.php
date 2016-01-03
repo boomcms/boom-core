@@ -3,7 +3,6 @@
 namespace BoomCMS\Http\Controllers\Asset;
 
 use BoomCMS\Contracts\Models\Asset;
-use BoomCMS\Core\Auth;
 use BoomCMS\Http\Controllers\Controller;
 use Illuminate\Http\Response;
 
@@ -14,9 +13,8 @@ class BaseController extends Controller
      */
     protected $asset;
 
-    public function __construct(Auth\Auth $auth, Asset $asset)
+    public function __construct(Asset $asset)
     {
-        $this->auth = $auth;
         $this->asset = $asset;
         $this->response = new Response();
     }

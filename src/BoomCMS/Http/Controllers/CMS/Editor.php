@@ -36,10 +36,14 @@ class Editor extends Controller
         $page = Page::find($this->request->input('page_id'));
         $this->editor->setActivePage($page);
 
-        View::share('page', $page);
-        View::share('editor', $this->editor);
-
         $toolbarFilename = ($this->editor->isEnabled()) ? 'toolbar' : 'toolbar_preview';
+
+        View::share([
+            'page'   => $page,
+            'editor' => $this->editor,
+            'auth'   => auth(),
+            'person' => auth()->user(),
+        ]);
 
         return view("boomcms::editor.$toolbarFilename");
     }

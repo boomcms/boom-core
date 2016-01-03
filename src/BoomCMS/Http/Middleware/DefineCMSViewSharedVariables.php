@@ -27,14 +27,12 @@ class DefineCMSViewSharedVariables
      */
     public function handle(Request $request, Closure $next)
     {
-        $auth = $this->app['boomcms.auth'];
-
         View::share('button', function ($type, $text, $attrs = []) {
             return new UI\Button($type, $text, $attrs);
         });
 
-        View::share('menu', function () use ($auth) {
-            return View::make('boomcms::menu')->render();
+        View::share('menu', function () {
+            return view('boomcms::menu')->render();
         });
 
         View::share('menuButton', function () {
@@ -44,10 +42,7 @@ class DefineCMSViewSharedVariables
         $jsFile = $this->app->environment('local') ? 'cms.js' : 'cms.min.js';
 
         View::share('boomJS', "<script type='text/javascript' src='/vendor/boomcms/boom-core/js/$jsFile'></script>");
-
-        View::share('auth', $auth);
         View::share('editor', $this->app['boomcms.editor']);
-        View::share('person', $auth->getPerson());
 
         return $next($request);
     }

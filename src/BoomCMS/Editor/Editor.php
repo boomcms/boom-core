@@ -3,9 +3,8 @@
 namespace BoomCMS\Editor;
 
 use BoomCMS\Contracts\Models\Page;
-use BoomCMS\Core\Auth\Auth;
-use BoomCMS\Database\Models\Page as PageObject;
-use Illuminate\Session\SessionManager as Session;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class Editor
 {
@@ -16,29 +15,18 @@ class Editor
     public static $default = self::EDIT;
 
     /**
-     * @var Auth
-     */
-    protected $auth;
-
-    /**
      * @var Page
      */
     protected $activePage;
 
-    protected $session;
     protected $state;
     protected $statePersistenceKey = 'editor_state';
 
-    public function __construct(Auth $auth, Session $session)
+    public function __construct()
     {
-        $this->auth = $auth;
-        $this->session = $session;
-
-        if ($this->auth->isLoggedIn()) {
-            $this->state = $this->session->get($this->statePersistenceKey, static::$default);
-        } else {
-            $this->state = static::DISABLED;
-        }
+        $this->state = (Auth::check()) ?
+            Session::get($this->statePersistenceKey, static::$default)
+            : static::DISABLED;
     }
 
     public function disable()
@@ -51,35 +39,9 @@ class Editor
         return $this->setState(static::EDIT);
     }
 
-    /**
-     * Whether the editor is active.
-     *
-     * Determines whether the CMS toolbar should be injected into the response HTML.
-     *
-     * @return bool
-     */
-    public function isActive()
-    {
-        return $this->getActivePage() && $this->auth->loggedIn('edit_page', $this->getActivePage());
-    }
-
     public function isDisabled()
     {
         return $this->hasState(static::DISABLED);
-    }
-
-    /**
-     * Returns whether or not the logged in user can edit the content of a page.
-     * 
-     * A page can be edited if it was created by a user or they have edit permissions for the page.
-     * 
-     * @param Page $page
-     *
-     * @return bool
-     */
-    public function isEditable(Page $page)
-    {
-        return $page->wasCreatedBy($this->auth->getPerson()) || $this->auth->loggedIn('edit_page_content', $page);
     }
 
     public function isEnabled()
@@ -94,7 +56,7 @@ class Editor
 
     public function getActivePage()
     {
-        return $this->activePage ?: new PageObject();
+        return $this->activePage;
     }
 
     public function getState()
@@ -118,6 +80,6 @@ class Editor
     {
         $this->state = $state;
 
-        return $this->session->put($this->statePersistenceKey, $state);
+        return Session::put($this->statePersistenceKey, $state);
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace BoomCMS\Core\Auth;
+namespace BoomCMS\Auth;
 
 class RandomPassword
 {

@@ -5,7 +5,6 @@ namespace BoomCMS\Http\Controllers\CMS;
 use BoomCMS\Contracts\Models\Page;
 use BoomCMS\Events\ChunkWasCreated;
 use BoomCMS\Http\Controllers\Controller;
-use BoomcMS\Support\Facades\Auth;
 use BoomCMS\Support\Facades\Chunk as ChunkFacade;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Event;
@@ -23,8 +22,7 @@ class Chunk extends Controller
         $this->request = $request;
         $this->page = $this->request->route()->getParameter('page');
 
-        $this->page->wasCreatedBy(Auth::getPerson()) ||
-            parent::authorization('edit_page_content', $this->page);
+        $this->authorize('editContent', $this->page);
     }
 
     public function getEdit()

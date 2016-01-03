@@ -5,13 +5,12 @@ namespace BoomCMS\Http\Controllers\CMS;
 use BoomCMS\Http\Controllers\Controller;
 use BoomCMS\Support\Facades\Settings as SettingsStore;
 use Illuminate\Support\Facades\Lang;
-use Illuminate\Support\Facades\View;
 
 class Settings extends Controller
 {
     protected $view = 'boomcms::settings.index';
 
-    protected $role = 'manage_settings';
+    protected $role = 'manageSettings';
 
     public function getIndex()
     {

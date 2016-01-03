@@ -13,7 +13,7 @@ class Role extends Model
     public function scopeGetGeneralRoles($query)
     {
         return $query
-            ->where('name', 'not like', 'p_%')
+            ->where('tree', '=', false)
             ->orderBy('description', 'asc')
             ->get();
     }
@@ -21,7 +21,7 @@ class Role extends Model
     public function scopeGetPageRoles($query)
     {
         return $query
-            ->where('name', 'like', 'p_%')
+            ->where('tree', '=', true)
             ->orderBy('description', 'asc')
             ->get();
     }

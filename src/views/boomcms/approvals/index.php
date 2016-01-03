@@ -19,7 +19,7 @@
                     <th></th>
                 </tr>
                 <?php foreach ($pages as $page): ?>
-                    <?php if ($auth->loggedIn('publish', $page)): ?>
+                    <?php if ($auth->check('publish', $page)): ?>
                         <tr data-page-id="<?= $page->getId() ?>">
                             <td><a href="<?= $page->url() ?>"><?= $page->getTitle() ?></a></td>
                             <td><?= $page->getCurrentVersion()->getEditedBy()->getName() ?> (<?= $page->getCurrentVersion()->getEditedBy()->getEmail() ?>)</td>

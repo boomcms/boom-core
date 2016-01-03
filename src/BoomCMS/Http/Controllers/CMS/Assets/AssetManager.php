@@ -5,12 +5,12 @@ namespace BoomCMS\Http\Controllers\CMS\Assets;
 use BoomCMS\Database\Models\Asset;
 use BoomCMS\Http\Controllers\Controller;
 use BoomCMS\Support\Facades\Asset as AssetFacade;
-use BoomCMS\Support\Facades\Auth;
 use BoomCMS\Support\Helpers;
 use BoomCMS\Support\Helpers\Asset as AssetHelper;
 use DateTime;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 use ZipArchive;
 
@@ -26,7 +26,7 @@ class AssetManager extends Controller
         $this->request = $request;
 
         if (!$this->request->is('*/picker') && !$this->request->is('*/get')) {
-            $this->authorization('manage_assets');
+            $this->authorize('manageAssets', $request);
         }
     }
 
@@ -74,7 +74,7 @@ class AssetManager extends Controller
     {
         return view($this->viewPrefix.'index', [
             'manager' => $this->manager(),
-            'person'  => $this->person,
+            'person'  => auth()->user(),
         ]);
     }
 
@@ -146,7 +146,7 @@ class AssetManager extends Controller
             $asset = new Asset();
             $asset
                 ->setUploadedTime(new DateTime('now'))
-                ->setUploadedBy(Auth::getPerson())
+                ->setUploadedBy(Auth::user())
                 ->setTitle($file->getClientOriginalName())
                 ->setType(AssetHelper::typeFromMimetype($file->getMimeType()));
 

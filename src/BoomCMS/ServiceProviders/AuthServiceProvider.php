@@ -2,34 +2,28 @@
 
 namespace BoomCMS\ServiceProviders;
 
-use BoomCMS\Core\Auth;
-use BoomCMS\Support\Facades\Person;
-use Illuminate\Support\ServiceProvider;
+use BoomCMS\Database\Models\Page;
+use BoomCMS\Database\Models\Person;
+use BoomCMS\Policies\PagePolicy;
+use BoomCMS\Policies\PersonPolicy;
+use BoomCMS\Policies\SitePolicy;
+use Illuminate\Contracts\Auth\Access\Gate;
+use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Http\Request;
 
 class AuthServiceProvider extends ServiceProvider
 {
     /**
-     * Bootstrap any application services.
-     *
-     * @return void
+     * @var array
      */
-    public function boot()
-    {
-        $auth = new Auth\Auth($this->app['session'],
-            $this->app['boomcms.repositories.person'],
-            new Auth\PermissionsProvider(),
-            $this->app['cookie']
-        );
+    protected $policies = [
+        Request::class => SitePolicy::class,
+        Page::class    => PagePolicy::class,
+        Person::class  => PersonPolicy::class,
+    ];
 
-        $this->app->singleton('boomcms.auth', function ($app) use ($auth) {
-            return $auth;
-        });
-    }
-
-    /**
-     * @return void
-     */
-    public function register()
+    public function boot(Gate $gate)
     {
+        $this->registerPolicies($gate);
     }
 }

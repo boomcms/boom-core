@@ -4,17 +4,17 @@ namespace BoomCMS\Core\Chunk;
 
 use BoomCMS\Contracts\Models\Page;
 use BoomCMS\Contracts\Models\PageVersion;
-use BoomCMS\Core\Auth\Auth;
 use BoomCMS\Support\Facades\Editor;
+use Illuminate\Auth\AuthManager;
 
 class Provider
 {
     /**
-     * @var Auth
+     * @var AuthManager
      */
     protected $auth;
 
-    public function __construct(Auth $auth)
+    public function __construct(AuthManager $auth)
     {
         $this->auth = $auth;
     }
@@ -47,7 +47,7 @@ class Provider
             return true;
         }
 
-        return Editor::isEnabled() && Editor::isEditable($page);
+        return Editor::isEnabled() && $this->auth->check('edit', $page);
     }
 
     /**

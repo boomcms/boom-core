@@ -2,17 +2,19 @@
 
 namespace BoomCMS\Database\Models;
 
+use BoomCMS\Auth\Hasher;
 use BoomCMS\Contracts\Models\Group as GroupInterface;
 use BoomCMS\Contracts\Models\Person as PersonInterface;
 use BoomCMS\Support\Traits\Comparable;
-use Hautelook\Phpass\PasswordHash;
+use Illuminate\Auth\Authenticatable;
+use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Facades\DB;
 
-class Person extends Model implements PersonInterface, CanResetPassword
+class Person extends Model implements PersonInterface, AuthenticatableContract, CanResetPassword
 {
+    use Authenticatable;
     use Comparable;
     use SoftDeletes;
 
@@ -44,16 +46,9 @@ class Person extends Model implements PersonInterface, CanResetPassword
         return $this;
     }
 
-    /**
-     * @param string $password
-     *
-     * @return bool
-     */
     public function checkPassword($password)
     {
-        $hasher = new PasswordHash(8, false);
-
-        return $hasher->checkPassword($password, $this->getPassword());
+        return (new Hasher())->check($password, $this->getPassword());
     }
 
     /**
@@ -112,31 +107,9 @@ class Person extends Model implements PersonInterface, CanResetPassword
         return $this->{self::ATTR_PASSWORD};
     }
 
-    public function getRememberToken()
-    {
-        return $this->{self::ATTR_REMEMBER_TOKEN};
-    }
-
     public function groups()
     {
         return $this->belongsToMany(Group::class);
-    }
-
-    public function isAllowed($role, $pageId = null)
-    {
-        $result = DB::table('group_role')
-            ->select(DB::raw('bit_and(allowed) as allowed'))
-            ->join('group_person', 'group_person.group_id', '=', 'group_role.group_id')
-            ->join('groups', 'group_person.group_id', '=', 'groups.id')
-            ->join('roles', 'roles.id', '=', 'group_role.role_id')
-            ->whereNull('groups.deleted_at')
-            ->where('group_person.person_id', '=', $this->getId())
-            ->where('roles.name', '=', $role)
-            ->groupBy('person_id')    // Strange results if this isn't here.
-            ->where('group_role.page_id', '=', $pageId)
-            ->first();
-
-        return (isset($result->allowed)) ? (bool) $result->allowed : null;
     }
 
     /**
@@ -228,18 +201,6 @@ class Person extends Model implements PersonInterface, CanResetPassword
     public function setSuperuser($superuser)
     {
         $this->{self::ATTR_SUPERUSER} = $superuser;
-
-        return $this;
-    }
-
-    /**
-     * @param string $token
-     *
-     * @return $this
-     */
-    public function setRememberToken($token)
-    {
-        $this->{self::ATTR_REMEMBER_TOKEN} = $token;
 
         return $this;
     }

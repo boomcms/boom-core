@@ -39,17 +39,6 @@
 
                 <input type="submit" value="Submit" />
             </form>
-
-            <table id="b-people-profile-authlog">
-                <?php foreach ($logs as $log): ?>
-                    <tr>
-                        <td><?= $log->time ?></td>
-                        <td><?= $log->get_action() ?></td>
-                        <td><?= ucfirst($log->method) ?></td>
-                        <td><?= long2ip($log->ip) ?></td>
-                    </tr>
-                <?php endforeach ?>
-            </table>
         </div>
     </div>
 

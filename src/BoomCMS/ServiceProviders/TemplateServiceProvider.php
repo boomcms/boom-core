@@ -3,8 +3,6 @@
 namespace BoomCMS\ServiceProviders;
 
 use BoomCMS\Core\Template\Manager as TemplateManager;
-use BoomCMS\Database\Models\Template as TemplateModel;
-use BoomCMS\Repositories\Template as TemplateRepository;
 use BoomCMS\Support\Helpers\Config;
 use Illuminate\Support\ServiceProvider;
 
@@ -33,12 +31,19 @@ class TemplateServiceProvider extends ServiceProvider
 
         foreach ($this->themes as $theme) {
             $views = $theme->getViewDirectory();
+            $authViews = $views.DIRECTORY_SEPARATOR.'auth';
             $public = $theme->getPublicDirectory();
             $init = $theme->getDirectory().DIRECTORY_SEPARATOR.'init.php';
             $migrations = $theme->getDirectory().'/migrations/';
 
             $this->loadViewsFrom($views, $theme->getName());
             $this->loadViewsFrom($views.'/chunks', 'boomcms.chunks');
+
+            if (file_exists($authViews)) {
+                $this->publishes([
+                    $authViews => base_path('resources/views/auth'),
+                ], 'boomcms');
+            }
 
             if (file_exists($public)) {
                 $this->publishes([

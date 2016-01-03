@@ -2,10 +2,11 @@
 
 namespace BoomCMS\Http\Middleware;
 
+use BoomCMS\Support\Facades\Editor;
 use Closure;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Auth;
 
 class InsertCMSToolbar
 {
@@ -29,7 +30,9 @@ class InsertCMSToolbar
      */
     public function handle($request, Closure $next)
     {
-        if (!$this->app['boomcms.editor']->isActive()) {
+        $activePage = Editor::getActivePage();
+
+        if ($activePage === null || !Auth::check('edit', $activePage)) {
             return $next($request);
         }
 
@@ -42,7 +45,7 @@ class InsertCMSToolbar
         preg_match('|(.*)(</head>)(.*<body[^>]*>)|imsU', $originalHtml, $matches);
 
         if (!empty($matches)) {
-            $head = View::make('boomcms::editor.iframe', [
+            $head = view('boomcms::editor.iframe', [
                 'before_closing_head' => $matches[1],
                 'body_tag'            => $matches[3],
                 'editor'              => $this->app['boomcms.editor'],

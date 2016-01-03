@@ -49,6 +49,7 @@ class BoomCMSServiceProvider extends ServiceProvider
         $this->loadTranslationsFrom(__DIR__.'/../../lang', 'boomcms');
 
         $this->publishes([
+            __DIR__.'/../../views/auth'          => base_path('resources/views/auth'),
             __DIR__.'/../../../public'           => public_path('vendor/boomcms/boom-core'),
             __DIR__.'/../../database/migrations' => base_path('/migrations/boomcms'),
         ], 'boomcms');
@@ -60,14 +61,15 @@ class BoomCMSServiceProvider extends ServiceProvider
     public function register()
     {
         $this->registerAliases();
+        $this->registerServiceProviders();
 
+        $this->mergeConfigFrom(__DIR__.'/../../config/auth.php', 'auth');
+        $this->mergeConfigFrom(__DIR__.'/../../config/mail.php', 'mail');
         $this->mergeConfigFrom(__DIR__.'/../../config/boomcms/menu.php', 'boomcms.menu');
         $this->mergeConfigFrom(__DIR__.'/../../config/boomcms/text_editor_toolbar.php', 'boomcms');
         $this->mergeConfigFrom(__DIR__.'/../../config/boomcms/viewHelpers.php', 'boomcms');
         $this->mergeConfigFrom(__DIR__.'/../../config/boomcms/settingsManagerOptions.php', 'boomcms');
         $this->mergeConfigFrom(__DIR__.'/../../config/boomcms/assets.php', 'boomcms');
-
-        $this->registerServiceProviders();
     }
 
     private function registerAliases()

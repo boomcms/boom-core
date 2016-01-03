@@ -3,7 +3,6 @@
 namespace BoomCMS\Contracts\Repositories;
 
 use BoomCMS\Contracts\Models\Person as PersonInterface;
-use BoomCMS\Core\Auth\Guest;
 
 interface Person
 {
@@ -22,13 +21,6 @@ interface Person
     public function deleteByIds(array $ids);
 
     public function findAll();
-
-    /**
-     * @param string $token
-     *
-     * @return PersonInterface
-     */
-    public function findByAutoLoginToken($token);
 
     /**
      * @param int $id
@@ -50,11 +42,6 @@ interface Person
      * @return PersonInterface
      */
     public function findByEmail($email);
-
-    /**
-     * @return Guest
-     */
-    public function getEmptyUser();
 
     /**
      * @param PersonInterface $person

@@ -23,9 +23,9 @@ class Save extends Version
         $version = $this->page->getCurrentVersion();
 
         if ($version->isPublished()) {
-            Event::fire(new Events\PageWasPublished($this->page, $this->auth->getPerson(), $version));
+            Event::fire(new Events\PageWasPublished($this->page, $this->auth->user(), $version));
         } elseif ($version->isEmbargoed()) {
-            Event::fire(new Events\PageWasEmbargoed($this->page, $this->auth->getPerson(), $version));
+            Event::fire(new Events\PageWasEmbargoed($this->page, $this->auth->user(), $version));
         }
 
         return $this->page->getCurrentVersion()->getStatus();
@@ -37,7 +37,7 @@ class Save extends Version
 
         $this->page->markUpdatesAsPendingApproval();
 
-        Event::fire(new Events\PageApprovalRequested($this->page, $this->auth->getPerson()));
+        Event::fire(new Events\PageApprovalRequested($this->page, $this->auth->user()));
 
         return $this->page->getCurrentVersion()->getStatus();
     }

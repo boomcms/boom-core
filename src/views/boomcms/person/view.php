@@ -26,7 +26,7 @@
 					</select>
 				</label>
 
-				<?php if ($auth->getPerson()->isSuperuser() && $auth->getPerson()->getId() != $person->getId()): ?>
+				<?php if (Auth::check('editSuperuser', $person)): ?>
 					<label for='person-superuser'>
 						Superuser
 

@@ -3,11 +3,25 @@
 namespace BoomCMS\Tests\Database\Models;
 
 use BoomCMS\Database\Models\Person;
-use Hautelook\Phpass\PasswordHash;
 
 class PersonTest extends AbstractModelTestCase
 {
     protected $model = Person::class;
+
+    public function testGetAuthIdentifier()
+    {
+        $person = new Person();
+        $person->id = 1;
+
+        $this->assertEquals($person->id, $person->getAuthIdentifier());
+    }
+
+    public function testGetAuthPassword()
+    {
+        $person = new Person(['password' => 'test']);
+
+        $this->assertEquals($person->password, $person->getAuthPassword());
+    }
 
     public function testGetEmailReturnsEmailAttribute()
     {
@@ -15,6 +29,13 @@ class PersonTest extends AbstractModelTestCase
         $person = new Person([Person::ATTR_EMAIL => $email]);
 
         $this->assertEquals($email, $person->getEmail());
+    }
+
+    public function testGetRememberTokenName()
+    {
+        $person = new Person();
+
+        $this->assertEquals(Person::ATTR_REMEMBER_TOKEN, $person->getRememberTokenName());
     }
 
     public function testIsSuperuserDefaultFalse()
@@ -29,16 +50,6 @@ class PersonTest extends AbstractModelTestCase
         $person = new Person(['superuser' => true]);
 
         $this->assertTrue($person->isSuperuser());
-    }
-
-    public function testCheckPassword()
-    {
-        $hasher = new PasswordHash(8, false);
-        $password = $hasher->HashPassword('test');
-
-        $person = new Person(['password' => $password]);
-        $this->assertTrue($person->checkPassword('test'));
-        $this->assertFalse($person->checkPassword('test2'));
     }
 
     public function testSetGetRememberLoginToken()
