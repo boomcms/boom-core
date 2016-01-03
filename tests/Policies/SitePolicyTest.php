@@ -2,8 +2,8 @@
 
 namespace BoomCMS\Tests\Policies;
 
-use BoomCMS\Policies\SitePolicy;
 use BoomCMS\Database\Models\Person;
+use BoomCMS\Policies\SitePolicy;
 use BoomCMS\Tests\AbstractTestCase;
 
 class SitePolicyTest extends AbstractTestCase

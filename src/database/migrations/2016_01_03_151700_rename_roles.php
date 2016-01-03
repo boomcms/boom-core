@@ -7,29 +7,29 @@ use Illuminate\Support\Facades\DB;
 class RenameRoles extends Migration
 {
     protected $roles = [
-        'manage_people' => 'managePeople',
-        'manage_assets' => 'manageAssets',
-        'manage_templates' => 'manageTemplates',
-        'p_edit_page' => 'edit',
-        'p_delete_page' => 'delete',
-        'p_add_page' => 'add',
-        'p_edit_feature_image' => 'editFeature',
-        'p_publish_page' => 'publish',
-        'p_edit_page_navigation_basic' => 'editNavBasic',
+        'manage_people'                   => 'managePeople',
+        'manage_assets'                   => 'manageAssets',
+        'manage_templates'                => 'manageTemplates',
+        'p_edit_page'                     => 'edit',
+        'p_delete_page'                   => 'delete',
+        'p_add_page'                      => 'add',
+        'p_edit_feature_image'            => 'editFeature',
+        'p_publish_page'                  => 'publish',
+        'p_edit_page_navigation_basic'    => 'editNavBasic',
         'p_edit_page_navigation_advanced' => 'editNavAdvanced',
-        'p_edit_page_search_basic' => 'editSearchBasic',
-        'p_edit_page_search_advanced' => 'editSearchAdvanced',
-        'p_edit_page_children_basic' => 'editChildrenBasic',
-        'p_edit_page_children_advanced' => 'editChildrenAdvanced',
-        'p_edit_page_admin' => 'editAdmin',
-        'p_edit_page_content' => 'editContent',
-        'p_edit_page_urls' => 'editUrls',
-        'p_edit_page_template' => 'editTemplate',
-        'manage_pages' => 'managePages',
-        'manage_approvals' => 'manageApprovals',
-        'manage_robots' => 'manageRobotsTxt',
-        'p_edit_disable_delete' => 'editDeletable',
-        'manage_settings' => 'manageSettings',
+        'p_edit_page_search_basic'        => 'editSearchBasic',
+        'p_edit_page_search_advanced'     => 'editSearchAdvanced',
+        'p_edit_page_children_basic'      => 'editChildrenBasic',
+        'p_edit_page_children_advanced'   => 'editChildrenAdvanced',
+        'p_edit_page_admin'               => 'editAdmin',
+        'p_edit_page_content'             => 'editContent',
+        'p_edit_page_urls'                => 'editUrls',
+        'p_edit_page_template'            => 'editTemplate',
+        'manage_pages'                    => 'managePages',
+        'manage_approvals'                => 'manageApprovals',
+        'manage_robots'                   => 'manageRobotsTxt',
+        'p_edit_disable_delete'           => 'editDeletable',
+        'manage_settings'                 => 'manageSettings',
     ];
 
     /**
@@ -50,7 +50,7 @@ class RenameRoles extends Migration
             DB::table('roles')
                 ->where('name', '=', $old)
                 ->update([
-                    'name' => $new
+                    'name' => $new,
                 ]);
         }
 
@@ -74,7 +74,7 @@ class RenameRoles extends Migration
             DB::table('roles')
                 ->where('name', '=', $new)
                 ->update([
-                    'name' => $old
+                    'name' => $old,
                 ]);
         }
 

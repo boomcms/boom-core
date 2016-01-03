@@ -5,12 +5,12 @@ namespace BoomCMS\Http\Controllers\CMS\Assets;
 use BoomCMS\Database\Models\Asset;
 use BoomCMS\Http\Controllers\Controller;
 use BoomCMS\Support\Facades\Asset as AssetFacade;
-use Illuminate\Support\Facades\Auth;
 use BoomCMS\Support\Helpers;
 use BoomCMS\Support\Helpers\Asset as AssetHelper;
 use DateTime;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 use ZipArchive;
 

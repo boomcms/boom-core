@@ -2,9 +2,9 @@
 
 namespace BoomCMS\Http\Middleware;
 
-use Illuminate\Auth\AuthManager;
 use BoomCMS\Database\Models\Asset\Download as AssetDownload;
 use Closure;
+use Illuminate\Auth\AuthManager;
 use Illuminate\Http\Request;
 
 class LogAssetDownload

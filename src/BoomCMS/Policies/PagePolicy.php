@@ -2,8 +2,8 @@
 
 namespace BoomCMS\Policies;
 
-use BoomCMS\Foundation\Policies\BoomCMSPolicy;
 use BoomCMS\Contracts\Models\Person;
+use BoomCMS\Foundation\Policies\BoomCMSPolicy;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
 

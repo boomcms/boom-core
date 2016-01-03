@@ -3,8 +3,6 @@
 namespace BoomCMS\ServiceProviders;
 
 use BoomCMS\Core\Template\Manager as TemplateManager;
-use BoomCMS\Database\Models\Template as TemplateModel;
-use BoomCMS\Repositories\Template as TemplateRepository;
 use BoomCMS\Support\Helpers\Config;
 use Illuminate\Support\ServiceProvider;
 

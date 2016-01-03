@@ -2,8 +2,8 @@
 
 namespace BoomCMS\Auth;
 
-use Illuminate\Contracts\Hashing\Hasher as HasherContract;
 use Hautelook\Phpass\PasswordHash;
+use Illuminate\Contracts\Hashing\Hasher as HasherContract;
 
 class Hasher implements HasherContract
 {
@@ -17,18 +17,17 @@ class Hasher implements HasherContract
         $this->hasher = new PasswordHash(8, false);
     }
 
-    public function check($value, $hashedValue, array $options = array())
+    public function check($value, $hashedValue, array $options = [])
     {
         return $this->hasher->checkPassword($value, $hashedValue);
     }
 
-    public function make($value, array $options = array())
+    public function make($value, array $options = [])
     {
         return $this->hasher->HashPassword($value);
     }
 
-    public function needsRehash($hashedValue, array $options = array())
+    public function needsRehash($hashedValue, array $options = [])
     {
-
     }
 }

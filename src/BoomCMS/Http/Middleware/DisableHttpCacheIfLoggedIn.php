@@ -2,8 +2,8 @@
 
 namespace BoomCMS\Http\Middleware;
 
-use Illuminate\Auth\AuthManager;
 use Closure;
+use Illuminate\Auth\AuthManager;
 use Illuminate\Http\Response;
 
 class DisableHttpCacheIfLoggedIn

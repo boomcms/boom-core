@@ -15,7 +15,6 @@ class Editor
     public static $default = self::EDIT;
 
     /**
-     *
      * @var Page
      */
     protected $activePage;

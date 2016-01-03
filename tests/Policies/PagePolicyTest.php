@@ -2,13 +2,13 @@
 
 namespace BoomCMS\Tests\Policies;
 
-use BoomCMS\Policies\PagePolicy;
 use BoomCMS\Database\Models\Page;
 use BoomCMS\Database\Models\Person;
+use BoomCMS\Policies\PagePolicy;
 use BoomCMS\Tests\AbstractTestCase;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
-use \Mockery as m;
+use Mockery as m;
 
 class PagePolicyTest extends AbstractTestCase
 {
