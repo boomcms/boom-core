@@ -10,7 +10,7 @@ class Settings extends Controller
 {
     protected $view = 'boomcms::settings.index';
 
-    protected $role = 'manage_settings';
+    protected $role = 'manageSettings';
 
     public function getIndex()
     {

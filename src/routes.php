@@ -1,6 +1,5 @@
 <?php
 
-use BoomCMS\Core\Auth\Auth;
 use BoomCMS\Http\Middleware;
 use Illuminate\Support\Facades\Route;
 
@@ -9,18 +8,16 @@ Route::group(['middleware' => [
     Middleware\DefineCMSViewSharedVariables::class,
 ]], function () {
     Route::group(['prefix' => 'cms', 'namespace' => 'BoomCMS\Http\Controllers\CMS'], function () {
-        Route::get('logout', 'Auth\Logout@index');
-
         Route::group(['namespace' => 'Auth'], function () {
             Route::get('login', ['as' => 'login', 'uses' => 'AuthController@getLogin']);
             Route::post('login', 'AuthController@postLogin');
             Route::get('logout', 'AuthController@getLogout');
-
-            // Password reset link request routes...
-            Route::controller('password/email', 'PasswordReset');
-            Route::get('password/reset/{token}', 'PasswordReset@getReset');
-            Route::post('password/reset', 'PasswordController@postReset');
         });
+
+        // Password reset link request routes...
+        Route::controller('recover/email', 'Auth\PasswordReset');
+        Route::get('recover/reset/{token}', 'Auth\PasswordReset@getReset');
+        Route::post('recover/reset', 'Auth\PasswordController@postReset');
 
         Route::group(['middleware' => [Middleware\RequireLogin::class]], function () {
             Route::controller('autocomplete', 'Autocomplete');

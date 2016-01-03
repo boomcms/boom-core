@@ -4,13 +4,12 @@ namespace BoomCMS\Http\Controllers\CMS;
 
 use BoomCMS\Core\Page\Finder;
 use BoomCMS\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 
 class Approvals extends Controller
 {
     protected $role = 'manageApprovals';
 
-    public function getIndex(Request $request)
+    public function getIndex()
     {
         return view('boomcms::approvals.index', [
             'pages' => $this->getPagesAwaitingApproval(),

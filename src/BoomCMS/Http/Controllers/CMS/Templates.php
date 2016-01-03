@@ -14,7 +14,7 @@ class Templates extends Controller
 {
     protected $viewPrefix = 'boomcms::templates.';
 
-    protected $role = 'manage_templates';
+    protected $role = 'manageTemplates';
 
     public function index()
     {

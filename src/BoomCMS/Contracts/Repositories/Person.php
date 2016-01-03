@@ -3,7 +3,6 @@
 namespace BoomCMS\Contracts\Repositories;
 
 use BoomCMS\Contracts\Models\Person as PersonInterface;
-use BoomCMS\Core\Auth\Guest;
 
 interface Person
 {
@@ -50,11 +49,6 @@ interface Person
      * @return PersonInterface
      */
     public function findByEmail($email);
-
-    /**
-     * @return Guest
-     */
-    public function getEmptyUser();
 
     /**
      * @param PersonInterface $person

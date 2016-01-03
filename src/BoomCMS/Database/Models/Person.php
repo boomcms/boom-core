@@ -2,6 +2,7 @@
 
 namespace BoomCMS\Database\Models;
 
+use BoomCMS\Auth\Hasher;
 use BoomCMS\Contracts\Models\Group as GroupInterface;
 use BoomCMS\Contracts\Models\Person as PersonInterface;
 use BoomCMS\Support\Traits\Comparable;
@@ -43,6 +44,11 @@ class Person extends Model implements PersonInterface, AuthenticatableContract, 
         $this->groups()->attach($group);
 
         return $this;
+    }
+
+    public function checkPassword($password)
+    {
+        return (new Hasher())->check($password, $this->getPassword());
     }
 
     /**

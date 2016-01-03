@@ -2,6 +2,7 @@
 
 namespace BoomCMS\Http\Controllers\CMS\Auth;
 
+use BoomCMS\Auth\Hasher;
 use BoomCMS\Events\Auth\PasswordChanged;
 use BoomCMS\Http\Controllers\Controller;
 use BoomCMS\Support\Facades\Person;
@@ -18,8 +19,7 @@ class Account extends Controller
     public function getIndex()
     {
         return view('boomcms::account.account', [
-            'person' => $this->person,
-            'logs'   => [],
+            'person' => auth()->user(),
         ]);
     }
 
@@ -40,7 +40,7 @@ class Account extends Controller
             } elseif ($this->request->input('password1') != $this->request->input('password2')) {
                 $message = 'The passwords you entered did not match';
             } else {
-                $person->setEncryptedPassword(auth()->hash($this->request->input('password1')));
+                $person->setEncryptedPassword((new Hasher())->make($this->request->input('password1')));
 
                 Event::fire(new PasswordChanged($person, $this->request));
                 $message = 'Your password has been updated';
@@ -50,7 +50,7 @@ class Account extends Controller
         Person::save($person);
 
         return view('boomcms::account.account', [
-            'person'  => $this->person,
+            'person'  => $person,
             'logs'    => [],
             'message' => $message,
         ]);

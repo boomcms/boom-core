@@ -4,13 +4,12 @@ namespace BoomCMS\Http\Controllers\CMS\People;
 
 use BoomCMS\Http\Controllers\Controller;
 use BoomCMS\Support\Facades\Person;
-use Illuminate\Support\Facades\View;
 
 class PeopleManager extends Controller
 {
     protected $viewPrefix = 'boomcms::people.';
 
-    protected $role = 'manage_people';
+    protected $role = 'managePeople';
 
     public function index()
     {

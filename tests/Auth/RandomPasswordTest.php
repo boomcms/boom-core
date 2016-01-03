@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Tests\Auth;
 
-use BoomCMS\Core\Auth\RandomPassword;
+use BoomCMS\Auth\RandomPassword;
 use BoomCMS\Tests\AbstractTestCase;
 
 class RandomPasswordTest extends AbstractTestCase

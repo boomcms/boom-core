@@ -9,7 +9,7 @@ class SendPasswordChangedNotification extends EmailNotification
 {
     public function handle(PasswordChanged $event)
     {
-        $person = $event->user();
+        $person = $event->getPerson();
 
         $this->send($person, 'BoomCMS Password Changed', 'password_changed', [
             'person' => $person,
