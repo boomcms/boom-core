@@ -47,7 +47,7 @@ class Provider
             return true;
         }
 
-        return Editor::isEnabled() && Editor::isEditable($page);
+        return Editor::isEnabled() && $this->auth->check('edit', $page);
     }
 
     /**
