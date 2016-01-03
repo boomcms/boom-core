@@ -3,7 +3,6 @@
 namespace BoomCMS\Editor;
 
 use BoomCMS\Contracts\Models\Page;
-use BoomCMS\Database\Models\Page as PageObject;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
@@ -16,27 +15,19 @@ class Editor
     public static $default = self::EDIT;
 
     /**
+     *
      * @var Page
      */
     protected $activePage;
-
-    /**
-     * @var bool
-     */
-    protected $loggedIn;
 
     protected $state;
     protected $statePersistenceKey = 'editor_state';
 
     public function __construct()
     {
-        $this->loggedIn = Auth::check();
-
-        if ($this->loggedIn === true) {
-            $this->state = Session::get($this->statePersistenceKey, static::$default);
-        } else {
-            $this->state = static::DISABLED;
-        }
+        $this->state = (Auth::check()) ?
+            Session::get($this->statePersistenceKey, static::$default)
+            : static::DISABLED;
     }
 
     public function disable()
@@ -47,20 +38,6 @@ class Editor
     public function enable()
     {
         return $this->setState(static::EDIT);
-    }
-
-    /**
-     * Whether the editor is active.
-     *
-     * Determines whether the CMS toolbar should be injected into the response HTML.
-     *
-     * @return bool
-     */
-    public function isActive()
-    {
-        return $this->getActivePage()
-            && $this->loggedIn
-            && Auth::check('edit', $this->getActivePage());
     }
 
     public function isDisabled()
@@ -80,7 +57,7 @@ class Editor
 
     public function getActivePage()
     {
-        return $this->activePage ?: new PageObject();
+        return $this->activePage;
     }
 
     public function getState()

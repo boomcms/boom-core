@@ -3,15 +3,13 @@
 namespace BoomCMS\Tests;
 
 use BoomCMS\Database\Models\Page;
-use BoomCMS\Database\Models\Person;
 use BoomCMS\Editor\Editor;
-use Illuminate\Support\Facades\Auth;
 
 class EditorTest extends AbstractTestCase
 {
-    public function testGetActivePageAlwaysReturnsAPage()
+    public function testGetActiveReturnsNullWhenNoActivePage()
     {
-        $this->assertInstanceOf(Page::class, $this->getEditor()->getActivePage());
+        $this->assertNull($this->getEditor()->getActivePage());
     }
 
     public function testSetGetActivePage()
@@ -21,48 +19,6 @@ class EditorTest extends AbstractTestCase
 
         $editor->setActivePage($page);
         $this->assertEquals($page, $editor->getActivePage());
-    }
-
-    public function testIsActiveIsFalseIfNotLoggedIn()
-    {
-        $page = $this->validPage();
-
-        Auth::shouldReceive('check')
-            ->once()
-            ->withNoArgs()
-            ->andReturn(false);
-
-        $editor = $this->getEditor();
-        $editor->setActivePage($page);
-
-        $this->assertFalse($editor->isActive());
-    }
-
-    public function testIsActiveIsFalseIfNoActivePageSet()
-    {
-        $editor = $this->getEditor();
-
-        $this->assertFalse($editor->isActive());
-    }
-
-    public function testIsActiveIsTrueIfActivePageSetAndLoggedInUserCanEditPage()
-    {
-        $page = $this->validPage();
-
-        Auth::shouldReceive('check')
-            ->once()
-            ->withNoArgs()
-            ->andReturn(true);
-
-        Auth::shouldReceive('check')
-            ->once()
-            ->with('edit', $page)
-            ->andReturn(true);
-
-        $editor = $this->getEditor();
-        $editor->setActivePage($page);
-
-        $this->assertTrue($editor->isActive());
     }
 
     public function testIsEnabledIfHasEditState()
