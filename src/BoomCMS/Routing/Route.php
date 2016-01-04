@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Routing;
 
-use BoomCMS\Contracts\Database\Models\Pages;
+use BoomCMS\Contracts\Database\Models\Page;
 
 class Route
 {

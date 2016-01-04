@@ -190,7 +190,7 @@ Route::group(['middleware' => [
 
 Route::any('{location}.{format?}', [
     'middleware' => [
-        Middleware\ProcessSiteURL::class,
+        Middleware\RouteRequest::class,
         Middleware\InsertCMSToolbar::class,
     ],
     'uses' => 'BoomCMS\Http\Controllers\PageController@show',
