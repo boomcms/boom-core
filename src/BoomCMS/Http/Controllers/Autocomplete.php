@@ -3,7 +3,6 @@
 namespace BoomCMS\Http\Controllers;
 
 use BoomCMS\Database\Models\Page;
-use BoomCMS\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 

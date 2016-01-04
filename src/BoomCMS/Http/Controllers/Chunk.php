@@ -4,7 +4,6 @@ namespace BoomCMS\Http\Controllers;
 
 use BoomCMS\Contracts\Models\Page;
 use BoomCMS\Events\ChunkWasCreated;
-use BoomCMS\Http\Controllers\Controller;
 use BoomCMS\Support\Facades\Chunk as ChunkFacade;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Event;

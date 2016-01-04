@@ -2,7 +2,6 @@
 
 namespace BoomCMS\Http\Controllers;
 
-use BoomCMS\Http\Controllers\Controller;
 use BoomCMS\Support\Helpers;
 
 class Search extends Controller
