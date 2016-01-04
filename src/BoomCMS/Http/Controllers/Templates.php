@@ -4,7 +4,6 @@ namespace BoomCMS\Http\Controllers;
 
 use BoomCMS\Core\Template\Manager as TemplateManager;
 use BoomCMS\Database\Models\Template;
-use BoomCMS\Http\Controllers\Controller;
 use BoomCMS\Support\Facades\Template as TemplateFacade;
 use BoomCMS\Support\Helpers;
 use Illuminate\Support\Facades\App;

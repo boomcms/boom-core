@@ -2,8 +2,6 @@
 
 namespace BoomCMS\Http\Controllers;
 
-use BoomCMS\Http\Controllers\Controller;
-
 class Pages extends Controller
 {
     protected $role = 'managePages';

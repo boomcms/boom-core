@@ -3,7 +3,6 @@
 namespace BoomCMS\Http\Controllers;
 
 use BoomCMS\Editor\Editor as EditorObject;
-use BoomCMS\Http\Controllers\Controller;
 use BoomCMS\Support\Facades\Page;
 use Illuminate\Support\Facades\View;
 
