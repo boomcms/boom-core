@@ -1,6 +1,6 @@
 <?php
 
-namespace BoomCMS\Core\Chunk;
+namespace BoomCMS\Chunk;
 
 use Illuminate\Support\Facades\View;
 

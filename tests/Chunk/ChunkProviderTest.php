@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Tests\Chunk;
 
-use BoomCMS\Core\Chunk\Provider;
+use BoomCMS\Chunk\Provider;
 use BoomCMS\Tests\AbstractTestCase;
 use Mockery as m;
 

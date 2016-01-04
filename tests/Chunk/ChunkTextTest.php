@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Tests\Chunk;
 
-use BoomCMS\Core\Chunk\Text;
+use BoomCMS\Chunk\Text;
 use BoomCMS\Foundation\Chunk\AcceptsHtmlString;
 use BoomCMS\Tests\AbstractTestCase;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace BoomCMS\Core\Chunk;
+namespace BoomCMS\Chunk;
 
 use BoomCMS\Support\Facades\Editor;
 use Illuminate\Support\Facades\Lang;

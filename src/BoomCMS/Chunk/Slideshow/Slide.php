@@ -1,6 +1,6 @@
 <?php
 
-namespace BoomCMS\Core\Chunk\Slideshow;
+namespace BoomCMS\Chunk\Slideshow;
 
 use BoomCMS\Database\Models\Asset;
 use BoomCMS\Link\Link;

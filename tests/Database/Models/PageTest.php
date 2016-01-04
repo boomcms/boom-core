@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Tests\Database\Models;
 
-use BoomCMS\Core\Chunk\Text;
+use BoomCMS\Chunk\Text;
 use BoomCMS\Database\Models\Asset;
 use BoomCMS\Database\Models\Page;
 use BoomCMS\Database\Models\URL;

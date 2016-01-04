@@ -1,6 +1,6 @@
 <?php
 
-namespace BoomCMS\Core\Chunk\Linkset;
+namespace BoomCMS\Chunk\Linkset;
 
 use BoomCMS\Link\Link as LinkObject;
 

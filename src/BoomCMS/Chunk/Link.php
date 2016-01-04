@@ -1,6 +1,6 @@
 <?php
 
-namespace BoomCMS\Core\Chunk;
+namespace BoomCMS\Chunk;
 
 use BoomCMS\Foundation\Chunk\AcceptsHtmlString;
 

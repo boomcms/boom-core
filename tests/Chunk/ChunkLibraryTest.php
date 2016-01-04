@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Tests\Chunk;
 
-use BoomCMS\Core\Chunk\Library;
+use BoomCMS\Chunk\Library;
 use BoomCMS\Database\Models\Page;
 use BoomCMS\Tests\AbstractTestCase;
 

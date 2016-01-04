@@ -17,7 +17,7 @@ class ChunkControllerTest extends AbstractTestCase
         });
 
         foreach ($types as $type) {
-            $className = 'BoomCMS\Core\Chunk\\'.ucfirst($type);
+            $className = 'BoomCMS\Chunk\\'.ucfirst($type);
 
             $chunk = new $className(new Page(), [], 'test', true);
             View::make('boomcms::editor.chunk.'.$type, [

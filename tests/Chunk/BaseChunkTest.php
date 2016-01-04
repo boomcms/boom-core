@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Tests\Chunk;
 
-use BoomCMS\Core\Chunk\BaseChunk;
+use BoomCMS\Chunk\BaseChunk;
 use BoomCMS\Database\Models\Page;
 use BoomCMS\Tests\AbstractTestCase;
 use Illuminate\Support\Facades\Lang;

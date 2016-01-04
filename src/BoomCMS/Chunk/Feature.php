@@ -1,6 +1,6 @@
 <?php
 
-namespace BoomCMS\Core\Chunk;
+namespace BoomCMS\Chunk;
 
 use BoomCMS\Contracts\Models\Page;
 use BoomCMS\Support\Facades\Page as PageFacade;
