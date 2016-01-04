@@ -1,5 +1,5 @@
 $.widget('boom.pageSettingsTags', {
-	baseUrl: '/cms/page/tags/',
+	baseUrl: '/boomcms/page/tags/',
 
 	addTag: function(group, tag) {
 		var tagEditor = this;

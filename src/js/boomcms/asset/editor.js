@@ -71,7 +71,7 @@ function boomAssetEditor(asset, uploader) {
 
         this.dialog = new boomDialog({
 			title : 'Edit Asset',
-			url : '/cms/assets/view/' + assetEditor.asset.id,
+			url : '/boomcms/assets/view/' + assetEditor.asset.id,
 			width: document.documentElement.clientWidth >= 1000? '1000px' : '100%',
 			closeButton: false,
 			onLoad : function() {
@@ -107,7 +107,7 @@ function boomAssetEditor(asset, uploader) {
 
 		$.ajax({
 			data: data,
-			url: '/cms/assets/replace/' + asset.getId(),
+			url: '/boomcms/assets/replace/' + asset.getId(),
 			processData: false,
 			contentType: false,
 			type: 'POST'

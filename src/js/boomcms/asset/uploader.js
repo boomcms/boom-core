@@ -2,9 +2,9 @@ $.widget('boom.assetUploader', {
 	uploaderOptions: {
 		/**
 		@type string
-		@default '/cms/assets/upload'
+		@default '/boomcms/assets/upload'
 		*/
-		url: '/cms/assets/upload',
+		url: '/boomcms/assets/upload',
 
 		/**
 		@type string
@@ -96,7 +96,7 @@ $.widget('boom.assetUploader', {
 	 */
 	replacesAsset: function(asset) {
 		this.uploadForm.fileupload('option', {
-			url: '/cms/assets/replace/' + asset.id,
+			url: '/boomcms/assets/replace/' + asset.id,
 			singleFileUploads: true
 		});
 	},

@@ -1,4 +1,4 @@
-<form method="post" action="/cms/people/add" id="b-people-create-form" class="b-dialog-form">
+<form method="post" action="/boomcms/people/add" id="b-people-create-form" class="b-dialog-form">
     <label>
         Name
         <input type="text" name="name" />

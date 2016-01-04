@@ -2,7 +2,7 @@ function boomImageEditor(imageUrl) {
 	this.imageUrl = imageUrl;
 	this.imageSelector = '#b-imageeditor-image';
 	this.cropButtonSelector = '#b-imageeditor-crop';
-	this.url = '/cms/ui/image-editor';
+	this.url = '/boomcms/ui/image-editor';
 	this.deferred = new $.Deferred();
 	this.isCropping = false;
 	

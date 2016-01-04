@@ -1,5 +1,5 @@
 <div>
-	<form method="post" enctype="multipart/form-data" id="b-assets-upload-form" action="/cms/assets/upload">
+	<form method="post" enctype="multipart/form-data" id="b-assets-upload-form" action="/boomcms/assets/upload">
 		<div id="b-assets-upload-container">
             <div id="b-assets-upload-info">
                 <p>Drag and drop files here, or <a id="b-assets-upload-add" href="#"><label for="b-assets-upload-file">select files</label></a> to start uploading.</p>

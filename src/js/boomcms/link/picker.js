@@ -39,7 +39,7 @@ function boomLinkPicker(link, options) {
 				if (linkPicker.externalTypeSelector.val('http') || linkPicker.externalTypeSelector.val('https')) {
 					if (linkPicker.externalUrl.val()) {
 						$.ajax({
-							url: '/cms/autocomplete/page-titles',
+							url: '/boomcms/autocomplete/page-titles',
 							dataType: 'json',
 							data: {
 								text : linkPicker.externalUrl.val()

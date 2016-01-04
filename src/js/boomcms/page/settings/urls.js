@@ -1,5 +1,5 @@
 $.widget('boom.pageSettingsUrls', {
-	baseUrl: '/cms/page/{page}/urls',
+	baseUrl: '/boomcms/page/{page}/urls',
 
 	add: function() {
 		var url = new boomPageUrl(null, this.page.id),

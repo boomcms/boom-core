@@ -4,7 +4,7 @@
 */
 function boomPage(page_id) {
 	this.id = page_id;
-	this.baseUrl = '/cms/page/';
+	this.baseUrl = '/boomcms/page/';
 
 	boomPage.prototype.add = function() {
 		var promise = new $.Deferred(),

@@ -9,7 +9,7 @@ $.widget('boom.assetTitleFilter', {
 
 		this.options.source = function(request, response) {
 			$.ajax({
-				url: '/cms/autocomplete/assets',
+				url: '/boomcms/autocomplete/assets',
 				dataType: 'json',
 				data: {
 					text : element.val()

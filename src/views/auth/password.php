@@ -13,7 +13,7 @@
             <?php if (isset($status)): ?>
                 <p><?= $status ?>
             <?php else: ?>
-                <form name="login-form" action="/cms/recover" method="post">
+                <form name="login-form" action="<?= URL::route('password') ?>" method="post">
                     <input type="hidden" name="_token" value="<?php echo csrf_token() ?>">
 
                     <fieldset>

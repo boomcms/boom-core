@@ -15,7 +15,7 @@
 						<input type="checkbox" class="b-people-select" />
 					</td>
 					<td>
-						<a href="/cms/person/view/<?= $person->getId() ?>"><?= $person->getName() ?></a>
+						<a href="/boomcms/person/view/<?= $person->getId() ?>"><?= $person->getName() ?></a>
 					</td>
 					<td>
 						<?= $person->getEmail() ?>
@@ -23,7 +23,7 @@
 					<td>
 						<span class='tags'>
 							<?php foreach ($person->getGroups() as $group): ?>
-								<a rel=​'ajax' name='<?= $group->getId() ?>' href='/cms/people?group=<?= $group->getId() ?>'><?= $group->getName() ?> &raquo;</a>
+								<a rel=​'ajax' name='<?= $group->getId() ?>' href='/boomcms/people?group=<?= $group->getId() ?>'><?= $group->getName() ?> &raquo;</a>
 							<?php endforeach ?>​
 						</span>
 					</td>

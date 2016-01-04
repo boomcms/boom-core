@@ -39,7 +39,7 @@ $.extend({
 		editor: {
 			state : function(state, url) {
 
-				$.post('/cms/editor/state', {state: state}, function() {
+				$.post('/boomcms/editor/state', {state: state}, function() {
 					if (url) {
 						top.location = url;
 					} else {

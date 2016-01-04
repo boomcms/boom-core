@@ -4,7 +4,7 @@ $.widget('ui.chunkHtml', $.ui.chunk, {
 			dialog;
 
 		dialog = new boomDialog({
-			url: '/cms/chunk/' + this.options.currentPage.id + '/edit?type=html&slotname=' + this.options.name,
+			url: '/boomcms/chunk/' + this.options.currentPage.id + '/edit?type=html&slotname=' + this.options.name,
 			width: 600,
 			title: 'Edit HTML',
 			closeButton: false,

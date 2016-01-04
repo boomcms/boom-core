@@ -23,7 +23,7 @@ $.widget('boom.groupPermissionsEditor', {
 
 		/**
 		 * Clicking on a page in the tree.
-		 * Should make a GET call to /cms/groups/list_roles/<group ID>?page_id=<page ID>
+		 * Should make a GET call to /boomcms/groups/list_roles/<group ID>?page_id=<page ID>
 		 *
 		 * This will return a json encoded array of role ID => <value>
 		 * Possible values are 1 if the role is allowed and 0 if the role is disallowed.

@@ -43,7 +43,7 @@ $.widget( 'boom.pageManager', {
 		$settings
 			.addClass('b-settings-container')
 			.appendTo($('#b-pages'))
-			.load('/cms/page/settings/index/' + page.id, function() {
+			.load('/boomcms/page/settings/index/' + page.id, function() {
 				$settings
 					.addClass('open')
 					.pageSettings({
@@ -64,7 +64,7 @@ $.widget( 'boom.pageManager', {
 		$el
 			.addClass('b-settings-container')
 			.appendTo($('#b-pages'))
-			.load('/cms/page/settings/index/' + page.id, function() {
+			.load('/boomcms/page/settings/index/' + page.id, function() {
 				$el
 					.addClass('open')
 					.pageSettings({
