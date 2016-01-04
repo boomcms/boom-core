@@ -2,7 +2,6 @@
 
 namespace BoomCMS\Http\Controllers;
 
-use BoomCMS\Http\Controllers\Controller;
 use BoomCMS\Support\Facades\Settings as SettingsStore;
 use Illuminate\Support\Facades\Lang;
 
