@@ -48,7 +48,7 @@ class Tags extends Controller
 
     public function remove()
     {
-        $tag = Tag::byId($this->request->input('tag'));
+        $tag = Tag::find($this->request->input('tag'));
         $this->page->removeTag($tag);
 
         Event::fire(new PageHadTagRemoved($this->page, $tag));
