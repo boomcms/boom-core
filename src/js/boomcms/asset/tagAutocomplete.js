@@ -1,5 +1,5 @@
 $.widget('boom.assetTagAutocomplete', $.boom.tagAutocomplete,  {
-	url : '/cms/autocomplete/asset-tags',
+	url : '/boomcms/autocomplete/asset-tags',
 
 	tagSelected : function(tag) {
 		if (typeof(tag) === 'object') {

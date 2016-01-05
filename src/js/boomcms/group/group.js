@@ -1,7 +1,7 @@
 function boomGroup(group_id) {
 	this.id = group_id;
 
-	boomGroup.prototype.base_url = '/cms/group/';
+	boomGroup.prototype.base_url = '/boomcms/group/';
 
 	boomGroup.prototype.add = function() {
 		var group = this,

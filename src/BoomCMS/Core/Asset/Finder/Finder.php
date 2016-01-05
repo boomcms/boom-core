@@ -13,7 +13,7 @@ class Finder extends BaseFinder
     protected $allowedOrderByColumns = ['last_modified', 'title', 'downloads', 'filesize', 'uploaded_time'];
 
     protected $orderByAliases = [
-        'last_modified' => 'version.edited_at',
+        'last_modified' => 'assets.uploaded_time',
         'filesize'      => 'version.filesize',
     ];
 

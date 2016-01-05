@@ -14,7 +14,7 @@
                 <p class="message"><?= $message ?></p>
             <?php endif ?>
 
-            <form method="post" action="/cms/account">
+            <form method="post" action="/boomcms/account">
 				<input type="hidden" name="_token" value="<?= csrf_token() ?>" />
 
 				<p>

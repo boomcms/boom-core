@@ -77,7 +77,7 @@ class Tag
     public function findBySlugAndGroup($slug, $group = null)
     {
         return $this->model
-            ->where(Model::ATTR_NAME, '=', $slug)
+            ->where(Model::ATTR_SLUG, '=', $slug)
             ->where(Model::ATTR_GROUP, '=', $group)
             ->first();
     }

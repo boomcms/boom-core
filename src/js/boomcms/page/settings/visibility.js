@@ -1,6 +1,6 @@
 $.widget('boom.pageSettingsVisibility', {
 	changed: false,
-	baseUrl: '/cms/page/settings/visibility/',
+	baseUrl: '/boomcms/page/settings/visibility/',
 
 	bind: function() {
 		var pageVisibilityEditor = this;

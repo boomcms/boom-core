@@ -8,7 +8,7 @@ function boomPageUrl(id, pageId) {
 			dialog;
 
 		dialog = new boomDialog({
-			url : '/cms/page/' + this.pageId + '/urls/add',
+			url : '/boomcms/page/' + this.pageId + '/urls/add',
 			title : 'Add URL',
 			closeButton: false,
 			saveButton: true,
@@ -29,7 +29,7 @@ function boomPageUrl(id, pageId) {
 		var deferred = new $.Deferred(),
 			pageId = this.pageId;
 
-		$.post('/cms/page/' + pageId + '/urls/add', {location : location})
+		$.post('/boomcms/page/' + pageId + '/urls/add', {location : location})
 			.done(function(response) {
 				if (response) {
 					if (typeof response.existing_url_id !== 'undefined') {
@@ -54,7 +54,7 @@ function boomPageUrl(id, pageId) {
 
 			confirmation
 			.done(function() {
-				$.post('/cms/page/' + url.pageId + '/urls/' + url.id + '/delete')
+				$.post('/boomcms/page/' + url.pageId + '/urls/' + url.id + '/delete')
 				.done(function() {
 					deferred.resolve();
 				});
@@ -64,13 +64,13 @@ function boomPageUrl(id, pageId) {
 	};
 
 	boomPageUrl.prototype.makePrimary = function(is_primary) {
-		return $.post('/cms/page/' + this.pageId + '/urls/' + this.id + '/make_primary');
+		return $.post('/boomcms/page/' + this.pageId + '/urls/' + this.id + '/make_primary');
 	};
 
 	boomPageUrl.prototype.move = function() {
 		var deferred = new $.Deferred(),
 			move_dialog,
-			form_url = '/cms/page/' + this.pageId + '/urls/' + this.id + '/move',
+			form_url = '/boomcms/page/' + this.pageId + '/urls/' + this.id + '/move',
 			dialog;
 
 		dialog = new boomDialog({

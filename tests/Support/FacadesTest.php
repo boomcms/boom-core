@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Tests\Support;
 
-use BoomCMS\Core\Chunk\Provider as Chunk;
+use BoomCMS\Chunk\Provider as Chunk;
 use BoomCMS\Editor\Editor;
 use BoomCMS\Repositories;
 use BoomCMS\Support\Facades;

@@ -5,7 +5,7 @@
         <?= trans('boomcms::editor.timestamp.format') ?>
 
         <select name="format" id="format">
-            <?php foreach (BoomCMS\Core\Chunk\Timestamp::$formats as $format): ?>
+            <?php foreach (BoomCMS\Chunk\Timestamp::$formats as $format): ?>
               <option value="<?= $format ?>"<?php if ($format == $chunk->getFormat()): ?> selected="selected"<?php endif ?>><?= date($format, time()) ?></option>
             <?php endforeach ?>
         </select>

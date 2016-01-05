@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Tests\Chunk;
 
-use BoomCMS\Core\Chunk\Library;
+use BoomCMS\Chunk\Library;
 use BoomCMS\Database\Models\Page;
 use BoomCMS\Tests\AbstractTestCase;
 
@@ -137,6 +137,7 @@ class ChunkLibraryTest extends AbstractTestCase
             ['tag' => 'test'],
             ['type'  => 'image'],
             ['tag'   => 'test', 'type' => null],
+            ['tag'   => ['test']],
         ];
 
         foreach ($values as $v) {
@@ -161,6 +162,17 @@ class ChunkLibraryTest extends AbstractTestCase
     {
         $params = ['limit' => 5];
         $merged = ['tag' => 'test', 'limit' => 4];
+
+        $chunk = $this->getChunk(['params' => $params]);
+        $chunk->mergeParams($merged);
+
+        $this->assertEquals(['tag' => 'test', 'limit' => 5], $chunk->getParams());
+    }
+
+    public function testMergeParamsDoesntRemoveFilters()
+    {
+        $params = ['limit' => 5, 'tag' => 'test'];
+        $merged = ['limit' => 4];
 
         $chunk = $this->getChunk(['params' => $params]);
         $chunk->mergeParams($merged);

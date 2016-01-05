@@ -1,7 +1,7 @@
 function boomAssetSelection(assetIds) {
 	this.assets = typeof(assetIds) === 'object' ? assetIds : [];
 
-	boomAssetSelection.prototype.baseUrl = '/cms/assets/';
+	boomAssetSelection.prototype.baseUrl = '/boomcms/assets/';
 
 	boomAssetSelection.prototype.add = function(assetId) {
 		var index = this.assets.indexOf(assetId);

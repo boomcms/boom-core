@@ -2,6 +2,7 @@
 
 namespace BoomCMS\Core\Page;
 
+use BoomCMS\Contracts\Models\Page;
 use BoomCMS\Support\Facades\Page as PageFacade;
 use BoomCMS\Support\Helpers;
 use Thujohn\Rss\Rss;
@@ -28,10 +29,13 @@ class RssFeed
 
     public function addItem(Rss $feed, Page $page)
     {
-        $authors = (array) Helpers::getTags($page, 'Author');
+        $tags = Helpers::getTags($page, 'Author');
+        $authors = [];
 
-        foreach ($authors as &$author) {
-            $author = $author->getName();
+        if (count($tags)) {
+            foreach ($tags as $tag) {
+                $authors[] = $tag->getName();
+            }
         }
 
         $feed->item([

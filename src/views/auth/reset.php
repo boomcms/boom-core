@@ -10,7 +10,7 @@
 		<div>
 			<div id="logo"></div>
 
-			<form name="login-form" action="/cms/recover/<?= $token ?>" method="post">
+			<form name="login-form" action="<?= URL::route('password'), "/$token" ?>" method="post">
                 <input type="hidden" name="_token" value="<?php echo csrf_token() ?>">
 
 				<fieldset>

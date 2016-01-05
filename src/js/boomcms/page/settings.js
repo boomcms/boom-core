@@ -30,17 +30,17 @@ $.widget('boom.pageSettings', {
 	getUrl: function(section) {
 		switch (section) {
 			case 'urls':
-				return '/cms/page/' + this.page.id + '/urls';
+				return '/boomcms/page/' + this.page.id + '/urls';
 			case 'relations':
-				return '/cms/page/relations/view/' + this.page.id;
+				return '/boomcms/page/relations/view/' + this.page.id;
 			case 'tags':
-				return '/cms/page/tags/list/' + this.page.id;
+				return '/boomcms/page/tags/list/' + this.page.id;
 			case 'template':
-				return '/cms/page/version/template/' + this.page.id;
+				return '/boomcms/page/version/template/' + this.page.id;
 			case 'drafts':
-				return '/cms/page/version/status/' + this.page.id;
+				return '/boomcms/page/version/status/' + this.page.id;
 			default:
-				return '/cms/page/settings/' + section + '/' + this.page.id;
+				return '/boomcms/page/settings/' + section + '/' + this.page.id;
 		}
 	},
 

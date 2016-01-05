@@ -8,6 +8,11 @@ class RoutesTest extends AbstractTestCase
 {
     public function testLoginRoute()
     {
-        $this->assertEquals('http://localhost/cms/login', URL::route('login'));
+        $this->assertEquals('http://localhost/boomcms/login', URL::route('login'));
+    }
+
+    public function testPasswordRoute()
+    {
+        $this->assertEquals('http://localhost/boomcms/recover', URL::route('password'));
     }
 }

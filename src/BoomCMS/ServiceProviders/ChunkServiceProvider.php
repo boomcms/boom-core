@@ -2,7 +2,7 @@
 
 namespace BoomCMS\ServiceProviders;
 
-use BoomCMS\Core\Chunk;
+use BoomCMS\Chunk;
 use Illuminate\Support\ServiceProvider;
 
 class ChunkServiceProvider extends ServiceProvider

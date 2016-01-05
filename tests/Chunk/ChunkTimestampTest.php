@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Tests\Chunk;
 
-use BoomCMS\Core\Chunk\Timestamp;
+use BoomCMS\Chunk\Timestamp;
 use BoomCMS\Foundation\Chunk\AcceptsHtmlString;
 use BoomCMS\Tests\AbstractTestCase;
 

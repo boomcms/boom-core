@@ -10,7 +10,7 @@
 		<div>
 			<div id="logo"></div>
 
-			<form name="login-form" action="/cms/login" method="post">
+			<form name="login-form" action="<?= URL::route('login') ?>" method="post">
 				<input type="hidden" name="_token" value="<?php echo csrf_token() ?>">
 
 				<fieldset>
@@ -39,7 +39,7 @@
 					</p>
 
 					<input type='submit' value='<?= trans('Login') ?>' />
-					<a id='b-login-recover-link' href='/cms/recover'>I've forgotten my password</a>
+					<a id='b-login-recover-link' href='<?= URL::route('password') ?>'>I've forgotten my password</a>
 				</fieldset>
 			</form>
 		</div>

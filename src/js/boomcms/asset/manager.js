@@ -1,6 +1,6 @@
 $.widget('boom.assetManager', {
-	baseUrl: '/cms/assets/',
-	listUrl: '/cms/assets/get',
+	baseUrl: '/boomcms/assets/',
+	listUrl: '/boomcms/assets/get',
 
 	postData: {
 		page: 1,

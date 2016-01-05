@@ -9,7 +9,7 @@ $.widget('boom.templateManager', {
 
 				confirmation
 					.done(function() {
-						$.post('/cms/templates/delete/' + item.attr('data-id'))
+						$.post('/boomcms/templates/delete/' + item.attr('data-id'))
 							.done(function() {
 								item.fadeOut(600, function(){
 									item.remove();
@@ -20,7 +20,7 @@ $.widget('boom.templateManager', {
 			.on('click', '#b-templates-save', function() {
 				var data = $('#b-templates').serialize();
 
-				$.post('/cms/templates/save', data, function(){
+				$.post('/boomcms/templates/save', data, function(){
 					new boomNotification('Templates successfully saved.');
 				});
 			})

@@ -1,5 +1,5 @@
 $.widget('boom.peopleManager', {
-	homeUrl : '/cms/people',
+	homeUrl : '/boomcms/people',
 	selectedPeople : 0,
 
 	bind : function() {

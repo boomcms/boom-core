@@ -45,7 +45,7 @@ $.widget('boom.pageSettingsRelations', {
 	getRelatedPages: function() {
 		var $element = this.element;
 
-		$.get('/cms/search/pages', {relatedTo: this.page.id})
+		$.get('/boomcms/search/pages', {relatedTo: this.page.id})
 			.done(function(pages) {
 				var $ul = $element.find('ul');
 

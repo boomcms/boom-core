@@ -1,7 +1,7 @@
 function boomPerson(person_id) {
 	this.id = person_id;
 
-	boomPerson.prototype.base_url = '/cms/person/';
+	boomPerson.prototype.base_url = '/boomcms/person/';
 
 	boomPerson.prototype.add = function() {
 		var deferred = new $.Deferred(),

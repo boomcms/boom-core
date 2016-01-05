@@ -9,6 +9,6 @@ class Finder extends BaseFinder
 {
     public function __construct()
     {
-        $this->query = Model::query()->select('tags.*');
+        $this->query = Model::query()->select('tags.*')->appliedToALivePage();
     }
 }

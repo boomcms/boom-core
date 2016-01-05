@@ -13,11 +13,11 @@
         <?php endforeach ?>
 
         <li>
-            <a target='_top' href='/cms/account' class="fa fa-user"><?= trans('boomcms::menu.account') ?></a>
+            <a target='_top' href='/boomcms/account' class="fa fa-user"><?= trans('boomcms::menu.account') ?></a>
         </li>
 
         <li>
-            <a target='_top' href='/cms/logout' class="fa fa-sign-out"><?= trans('boomcms::menu.logout') ?></a>
+            <a target='_top' href='/boomcms/logout' class="fa fa-sign-out"><?= trans('boomcms::menu.logout') ?></a>
         </li>
     </ul>
 </nav>
