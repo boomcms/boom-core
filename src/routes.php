@@ -142,8 +142,6 @@ Route::group(['middleware' => [
         });
     });
 
-    Route::get('page/children', 'BoomCMS\Http\Controllers\PageController@children');
-
     Route::get('asset/version/{id}/{width?}/{height?}', [
         'as'         => 'asset-version',
         'middleware' => [Middleware\RequireLogin::class],
