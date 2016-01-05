@@ -4,7 +4,7 @@ namespace BoomCMS\Tests\Support;
 
 use BoomCMS\Database\Models\Page;
 use BoomCMS\Database\Models\Template;
-use BoomCMS\Support\Facades\Editor;
+use BoomCMS\Support\Facades\Router;
 use BoomCMS\Support\Facades\Settings;
 use BoomCMS\Support\Helpers;
 use BoomCMS\Tests\AbstractTestCase;
@@ -45,7 +45,7 @@ class HelpersTest extends AbstractTestCase
             ->method('getTemplate')
             ->will($this->returnValue($template));
 
-        Editor::shouldReceive('getActivePage')->andReturn($page);
+        Router::shouldReceive('getActivePage')->andReturn($page);
 
         View::shouldReceive('make')->with('test::name', [])->andReturn('view');
 
@@ -76,7 +76,7 @@ class HelpersTest extends AbstractTestCase
             ->method('getTemplate')
             ->willReturn($template);
 
-        Editor::shouldReceive('getActivePage')->andReturn($page);
+        Router::shouldReceive('getActivePage')->andReturn($page);
 
         $this->assertEquals('/vendor/boomcms/themes/test/file.png', Helpers::pub('file.png'));
     }

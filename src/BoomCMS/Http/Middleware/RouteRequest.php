@@ -3,12 +3,8 @@
 namespace BoomCMS\Http\Middleware;
 
 use BoomCMS\Routing\Router;
-use BoomCMS\Support\Facades\Editor;
-use BoomCMS\Support\Facades\Page;
-use BoomCMS\Support\Facades\URL;
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\View;
 
 class RouteRequest
 {
@@ -22,7 +18,11 @@ class RouteRequest
      */
     public function handle(Request $request, Closure $next, Router $router)
     {
-        $router = $router->process($request);
+        $response = $router->process($request->route()->getParameter('location'));
+
+        if ($response) {
+            return $response;
+        }
 
         return $next($request);
     }

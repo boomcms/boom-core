@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Http\Middleware;
 
-use BoomCMS\Support\Facades\Editor;
+use BoomCMS\Support\Facades\Router;
 use Closure;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Response;
@@ -30,7 +30,7 @@ class InsertCMSToolbar
      */
     public function handle($request, Closure $next)
     {
-        $activePage = Editor::getActivePage();
+        $activePage = Router::getActivePage();
 
         if ($activePage === null || !Auth::check('edit', $activePage)) {
             return $next($request);
@@ -49,7 +49,7 @@ class InsertCMSToolbar
                 'before_closing_head' => $matches[1],
                 'body_tag'            => $matches[3],
                 'editor'              => $this->app['boomcms.editor'],
-                'page_id'             => $this->app['boomcms.editor']->getActivePage()->getId(),
+                'page_id'             => $activePage->getId(),
             ]);
 
             $newHtml = str_replace($matches[0], (string) $head, $originalHtml);

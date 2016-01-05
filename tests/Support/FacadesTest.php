@@ -5,6 +5,7 @@ namespace BoomCMS\Tests\Support;
 use BoomCMS\Chunk\Provider as Chunk;
 use BoomCMS\Editor\Editor;
 use BoomCMS\Repositories;
+use BoomCMS\Routing\Router;
 use BoomCMS\Support\Facades;
 use BoomCMS\Tests\AbstractTestCase;
 
@@ -16,6 +17,7 @@ class FacadesTest extends AbstractTestCase
         Facades\Editor::class   => Editor::class,
         Facades\Group::class    => Repositories\Group::class,
         Facades\Page::class     => Repositories\Page::class,
+        Facades\Router::class   => Router::class,
         Facades\Tag::class      => Repositories\Tag::class,
         Facades\URL::class      => Repositories\URL::class,
     ];

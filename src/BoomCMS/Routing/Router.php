@@ -2,19 +2,40 @@
 
 namespace BoomCMS\Routing;
 
+use BoomCMS\Contracts\Models\Page as PageInterface;
 use BoomCMS\Support\Facades\Editor;
 use BoomCMS\Support\Facades\Page;
 use BoomCMS\Support\Facades\URL;
-use Illuminate\Http\Request;
 
 class Router
 {
-    public function process(Request $request)
-    {
-        $uri = $request->route()->getParameter('location');
-        $page = Page::findByUri($uri);
+    /**
+     * @var PageInterface
+     */
+    protected $page;
 
-        if (!$page) {
+    /**
+     * @var string
+     */
+    protected $requestUri;
+
+    /**
+     * @return PageInterface
+     */
+    public function getActivePage()
+    {
+        return $this->page;
+    }
+
+    /**
+     * @param string $uri
+     * @return mixed
+     */
+    public function process($uri)
+    {
+        $this->page = Page::findByUri($uri);
+
+        if (!$this->page) {
             $url = URL::findByLocation($uri);
 
             // The URL isn't in use or
@@ -36,7 +57,7 @@ class Router
             abort(404);
         }
 
-        if (!$page->url()->is($uri)) {
+        if (!$this->page->url()->is($uri)) {
             return redirect((string) $page->url(), 301);
         }
     }

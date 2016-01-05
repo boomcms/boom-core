@@ -2,7 +2,6 @@
 
 namespace BoomCMS\Editor;
 
-use BoomCMS\Contracts\Models\Page;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
@@ -54,11 +53,6 @@ class Editor
         return $this->state == $state;
     }
 
-    public function getActivePage()
-    {
-        return $this->activePage;
-    }
-
     public function getState()
     {
         return $this->state;
@@ -67,13 +61,6 @@ class Editor
     public function preview()
     {
         return $this->setState(static::PREVIEW);
-    }
-
-    public function setActivePage(Page $page)
-    {
-        $this->activePage = $page;
-
-        return $this;
     }
 
     public function setState($state)
