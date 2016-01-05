@@ -137,7 +137,7 @@ class ChunkLibraryTest extends AbstractTestCase
             ['tag' => 'test'],
             ['type'  => 'image'],
             ['tag'   => 'test', 'type' => null],
-            ['tag' => ['test']],
+            ['tag'   => ['test']],
         ];
 
         foreach ($values as $v) {
