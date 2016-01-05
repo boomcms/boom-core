@@ -147,10 +147,10 @@ Route::group(['middleware' => [
     Route::get('asset/version/{id}/{width?}/{height?}', [
         'as'         => 'asset-version',
         'middleware' => [Middleware\RequireLogin::class],
-        'uses'       => function (Auth $auth, $id, $width = null, $height = null) {
+        'uses'       => function ($id, $width = null, $height = null) {
             $asset = Asset::findByVersionId($id);
 
-            return App::make(AssetHelper::controller($asset), [$auth, $asset])->view($width, $height);
+            return App::make(AssetHelper::controller($asset), [$asset])->view($width, $height);
         },
     ]);
 
@@ -159,8 +159,8 @@ Route::group(['middleware' => [
         'middleware' => [
             Middleware\LogAssetDownload::class,
         ],
-        'uses' => function (Auth $auth, $asset) {
-            return App::make(AssetHelper::controller($asset), [$auth, $asset])->download();
+        'uses' => function ($asset) {
+            return App::make(AssetHelper::controller($asset), [$asset])->download();
         },
     ]);
 
@@ -169,8 +169,8 @@ Route::group(['middleware' => [
         'middleware' => [
             Middleware\CheckAssetETag::class,
         ],
-        'uses' => function (Auth $auth, $asset, $action = 'view', $width = null, $height = null) {
-            return App::make(AssetHelper::controller($asset), [$auth, $asset])->$action($width, $height);
+        'uses' => function ($asset, $action = 'view', $width = null, $height = null) {
+            return App::make(AssetHelper::controller($asset), [$asset])->$action($width, $height);
         },
     ])->where([
         'action'    => '[a-z]+',
@@ -182,8 +182,8 @@ Route::group(['middleware' => [
         'middleware' => [
             Middleware\CheckAssetETag::class,
         ],
-        'uses' => function (Auth $auth, $asset, $action = 'view', $width = null, $height = null) {
-            return App::make(AssetHelper::controller($asset), [$auth, $asset])->$action($width, $height);
+        'uses' => function ($asset, $action = 'view', $width = null, $height = null) {
+            return App::make(AssetHelper::controller($asset), [$asset])->$action($width, $height);
         },
     ]);
 });
