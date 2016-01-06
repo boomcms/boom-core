@@ -13,7 +13,7 @@ class InsertCMSToolbar
     /**
      * @var Application
      */
-    protected $ap;
+    protected $app;
 
     public function __construct(Application $app)
     {

@@ -23,7 +23,7 @@ class RouteServiceProvider extends ServiceProvider
 
     public function register()
     {
-        $this->app->singleton('boomcms.router', function() {
+        $this->app->singleton(BoomCMSRouter::class, function() {
             return new BoomCMSRouter();
         });
     }

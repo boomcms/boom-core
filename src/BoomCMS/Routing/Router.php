@@ -6,6 +6,8 @@ use BoomCMS\Contracts\Models\Page as PageInterface;
 use BoomCMS\Support\Facades\Editor;
 use BoomCMS\Support\Facades\Page;
 use BoomCMS\Support\Facades\URL;
+use Symfony\Component\HttpKernel\Exception\GoneHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class Router
 {
@@ -43,18 +45,18 @@ class Router
             //
             // 404.
             if (!$url || !$url->getPage()->isVisible()) {
-                abort(404);
+                throw new NotFoundHttpException();
             }
 
             // The url is in use but doesn't have a page.
             // The page must have been deleted.
             //
             // 410.
-            abort(410);
+            throw new GoneHttpException();
         }
 
         if (Editor::isDisabled() && !$this->page->isVisible()) {
-            abort(404);
+            throw new NotFoundHttpException();
         }
 
         if (!$this->page->url()->is($uri)) {

@@ -37,6 +37,6 @@ class RouteServiceProviderTest extends AbstractTestCase
     {
         $app = App::getFacadeRoot();
 
-        $this->assertInstanceOf(BoomCMSRouter::class, $app['boomcms.router']);
+        $this->assertInstanceOf(BoomCMSRouter::class, $app[BoomCMSRouter::class]);
     }
 }
