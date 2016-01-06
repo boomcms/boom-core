@@ -3,9 +3,11 @@
 namespace BoomCMS\Tests\ServiceProviders;
 
 use BoomCMS\Database\Models;
+use BoomCMS\Routing\Router as BoomCMSRouter;
 use BoomCMS\ServiceProviders\RouteServiceProvider;
 use BoomCMS\Tests\AbstractTestCase;
 use Illuminate\Routing\Router;
+use Illuminate\Support\Facades\App;
 use Mockery as m;
 
 class RouteServiceProviderTest extends AbstractTestCase
@@ -29,5 +31,12 @@ class RouteServiceProviderTest extends AbstractTestCase
 
         $sp = m::mock(RouteServiceProvider::class)->makePartial();
         $sp->boot($router);
+    }
+
+    public function testRouterIsRegistered()
+    {
+        $app = App::getFacadeRoot();
+
+        $this->assertInstanceOf(BoomCMSRouter::class, $app[BoomCMSRouter::class]);
     }
 }

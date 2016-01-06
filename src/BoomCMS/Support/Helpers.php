@@ -8,7 +8,7 @@ use BoomCMS\Contracts\Models\Tag as TagInterface;
 use BoomCMS\Core\Asset;
 use BoomCMS\Core\Page;
 use BoomCMS\Core\Tag;
-use BoomCMS\Support\Facades\Editor;
+use BoomCMS\Support\Facades\Router;
 use BoomCMS\Support\Facades\Settings;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\View;
@@ -22,7 +22,7 @@ abstract class Helpers
      */
     public static function activeThemeName()
     {
-        return Editor::getActivePage()->getTemplate()->getThemeName();
+        return Router::getActivePage()->getTemplate()->getThemeName();
     }
 
     /**
@@ -137,7 +137,7 @@ abstract class Helpers
     public static function next(array $params)
     {
         return (new Page\Query($params))
-            ->getNextTo(Editor::getActivePage(), 'after');
+            ->getNextTo(Router::getActivePage(), 'after');
     }
 
     /**
@@ -150,7 +150,7 @@ abstract class Helpers
     public static function prev(array $params)
     {
         return (new Page\Query($params))
-            ->getNextTo(Editor::getActivePage(), 'before');
+            ->getNextTo(Router::getActivePage(), 'before');
     }
 
     /**
@@ -190,7 +190,7 @@ abstract class Helpers
      */
     public static function getTagsInSection(PageInterface $page = null, $group = null)
     {
-        $page = $page ?: Editor::getActivePage();
+        $page = $page ?: Router::getActivePage();
 
         $finder = new Tag\Finder\Finder();
         $finder->addFilter(new Tag\Finder\AppliedToPageDescendants($page));

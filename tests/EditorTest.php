@@ -2,25 +2,10 @@
 
 namespace BoomCMS\Tests;
 
-use BoomCMS\Database\Models\Page;
 use BoomCMS\Editor\Editor;
 
 class EditorTest extends AbstractTestCase
 {
-    public function testGetActiveReturnsNullWhenNoActivePage()
-    {
-        $this->assertNull($this->getEditor()->getActivePage());
-    }
-
-    public function testSetGetActivePage()
-    {
-        $editor = $this->getEditor();
-        $page = new Page();
-
-        $editor->setActivePage($page);
-        $this->assertEquals($page, $editor->getActivePage());
-    }
-
     public function testIsEnabledIfHasEditState()
     {
         $editor = $this->getEditor(['hasState']);

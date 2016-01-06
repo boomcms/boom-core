@@ -5,6 +5,7 @@ namespace BoomCMS\Chunk;
 use BoomCMS\Contracts\Models\Page;
 use BoomCMS\Contracts\Models\PageVersion;
 use BoomCMS\Support\Facades\Editor;
+use BoomCMS\Support\Facades\Router;
 use Illuminate\Auth\AuthManager;
 
 class Provider
@@ -64,7 +65,7 @@ class Provider
         $className = 'BoomCMS\Chunk\\'.ucfirst($type);
 
         if ($page === null) {
-            $page = Editor::getActivePage();
+            $page = Router::getActivePage();
         } elseif ($page === 0) {
             // 0 was given as the page - this signifies a 'global' chunk not assigned to any page.
             $page = new Page();

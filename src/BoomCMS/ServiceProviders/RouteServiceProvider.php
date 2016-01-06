@@ -3,6 +3,7 @@
 namespace BoomCMS\ServiceProviders;
 
 use BoomCMS\Database\Models;
+use BoomCMS\Routing\Router as BoomCMSRouter;
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
 
@@ -22,5 +23,8 @@ class RouteServiceProvider extends ServiceProvider
 
     public function register()
     {
+        $this->app->singleton(BoomCMSRouter::class, function () {
+            return new BoomCMSRouter();
+        });
     }
 }

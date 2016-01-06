@@ -1,32 +1,44 @@
 <?php
 
-namespace BoomCMS\Http\Middleware;
+namespace BoomCMS\Routing;
 
+use BoomCMS\Contracts\Models\Page as PageInterface;
 use BoomCMS\Support\Facades\Editor;
 use BoomCMS\Support\Facades\Page;
 use BoomCMS\Support\Facades\URL;
-use Closure;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\View;
 use Symfony\Component\HttpKernel\Exception\GoneHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class ProcessSiteURL
+class Router
 {
     /**
-     * Handle an incoming request.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param \Closure                 $next
+     * @var PageInterface
+     */
+    protected $page;
+
+    /**
+     * @var string
+     */
+    protected $requestUri;
+
+    /**
+     * @return PageInterface
+     */
+    public function getActivePage()
+    {
+        return $this->page;
+    }
+
+    /**
+     * @param string $uri
      *
      * @return mixed
      */
-    public function handle(Request $request, Closure $next)
+    public function process($uri)
     {
-        $uri = $request->route()->getParameter('location');
-        $page = Page::findByUri($uri);
+        $this->page = Page::findByUri($uri);
 
-        if (!$page) {
+        if (!$this->page) {
             $url = URL::findByLocation($uri);
 
             // The URL isn't in use or
@@ -44,19 +56,12 @@ class ProcessSiteURL
             throw new GoneHttpException();
         }
 
-        if (Editor::isDisabled() && !$page->isVisible()) {
+        if (Editor::isDisabled() && !$this->page->isVisible()) {
             throw new NotFoundHttpException();
         }
 
-        if (!$page->url()->is($uri)) {
-            return redirect((string) $page->url(), 301);
+        if (!$this->page->url()->is($uri)) {
+            return redirect((string) $this->page->url(), 301);
         }
-
-        $request->route()->setParameter('page', $page);
-        Editor::setActivePage($page);
-
-        View::share('page', $page);
-
-        return $next($request);
     }
 }

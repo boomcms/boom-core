@@ -4,15 +4,15 @@ namespace BoomCMS\Http\Controllers;
 
 use BoomCMS\Contracts\Models\Page;
 use BoomCMS\Core\Page\RssFeed;
-use BoomCMS\Support\Facades\Chunk;
-use BoomCMS\Support\Facades\Editor;
+use BoomCMS\Support\Facades\Chunk as ChunkFacade;
+use BoomCMS\Support\Facades\Router;
 use Illuminate\Support\Facades\View;
 
 class PageController extends Controller
 {
     public function show()
     {
-        $page = Editor::getActivePage();
+        $page = Router::getActivePage();
         $format = $this->request->format();
 
         if ($this->request->route()->getParameter('format')) {
@@ -32,16 +32,17 @@ class PageController extends Controller
     {
         $template = $page->getTemplate();
 
+        View::share('page', $page);
         View::share('chunk', function ($type, $slotname, $page = null) {
             $chunks = [];
 
             if ($page) {
-                return Chunk::get($type, $slotname, $page);
+                return ChunkFacade::get($type, $slotname, $page);
             }
 
             return (isset($chunks[$type][$slotname])) ?
                 $chunks[$type][$slotname] :
-                Chunk::edit($type, $slotname);
+                ChunkFacade::edit($type, $slotname);
         });
 
         return $template->getView();
