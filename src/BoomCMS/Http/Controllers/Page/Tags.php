@@ -29,6 +29,8 @@ class Tags extends Controller
 
         $this->page->addTag($tag);
         Event::fire(new PageHadTagAdded($this->page, $tag));
+
+        return $tag->getId();
     }
 
     public function listTags()

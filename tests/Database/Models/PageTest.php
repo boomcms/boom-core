@@ -142,6 +142,30 @@ class PageTest extends AbstractModelTestCase
         }
     }
 
+    /**
+     * A page internal name can contain lowercase letters, underscores, hyphens, or numbers.
+     * 
+     * All other characters should be removed.
+     */
+    public function testSetInternalNameRemovesInvalidCharacters()
+    {
+        $page = new Page();
+
+        $values = [
+            '404'      => '404',
+            ' test '   => 'test',
+            'test'     => 'test',
+            '£$%^&*()' => '',
+            'TEST'     => 'test',
+        ];
+
+        foreach ($values as $in => $out) {
+            $page->setInternalName($in);
+
+            $this->assertEquals($out, $page->getInternalName());
+        }
+    }
+
     public function testSetParentPageCantBeChildOfItself()
     {
         $page = new Page([Page::ATTR_PARENT => 2]);
