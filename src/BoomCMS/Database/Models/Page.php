@@ -848,7 +848,7 @@ class Page extends Model implements PageInterface
     {
         $value = strtolower(preg_replace('|[^-_0-9a-zA-Z]|', '', $value));
 
-        $this->{self::ATTR_INTERNAL_NAME} = $value ? $value : null;
+        $this->attributes[self::ATTR_INTERNAL_NAME] = $value ? $value : null;
     }
 
     public function setPrimaryUriAttribute($value)
