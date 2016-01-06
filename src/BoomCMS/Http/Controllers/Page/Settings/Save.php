@@ -18,7 +18,10 @@ class Save extends Settings
     {
         parent::admin();
 
-        $this->page->setInternalName($this->request->input('internal_name'));
+        $this->page
+            ->setInternalName($this->request->input('internal_name'))
+            ->setAddPageBehaviour($this->request->input('add_behaviour'))
+            ->setChildAddPageBehaviour($this->request->input('child_add_behaviour'));
 
         if (Auth::check('editDeletable', $this->page)) {
             $this->page->setDisableDelete($this->request->input('disable_delete') == '1');

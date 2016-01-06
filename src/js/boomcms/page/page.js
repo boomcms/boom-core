@@ -11,7 +11,15 @@ function boomPage(page_id) {
 			page_id = this.id;
 
 		$.post(this.baseUrl + 'add/' + page_id, function(response) {
-			(typeof response.url !== 'undefined')? promise.resolve(response) : promise.reject(response);
+			if (response.prompt) {
+				new boomDialog({
+					html: response.prompt
+				});
+			} else if (response.url) {
+				promise.resolve(response);
+			} else {
+				promise.reject(response);
+			}
 		});
 
 		return promise;

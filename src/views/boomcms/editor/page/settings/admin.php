@@ -6,6 +6,30 @@
         <input type='text' name='internal_name' value='<?= $page->getInternalName() ?>' />
     </label>
 
+    <label>
+        <p><?= trans('boomcms::settings.admin.add-behaviour') ?></p>
+
+        <select name="add_behaviour">
+            <?php foreach (Lang::get('boomcms::page.add-behaviour') as $value => $desc): ?>
+              <option value="<?= $value ?>"<?php if ($page->getAddPageBehaviour() === $value): ?> selected<?php endif ?>>
+                <?= $desc ?>
+              </option>
+            <?php endforeach ?>
+        </select>
+    </label>
+
+    <label>
+        <p><?= trans('boomcms::settings.admin.child-add-behaviour') ?></p>
+        
+        <select name="child_add_behaviour">
+            <?php foreach (Lang::get('boomcms::page.add-behaviour') as $value => $desc): ?>
+              <option value="<?= $value ?>"<?php if ($page->getChildAddPageBehaviour() === $value): ?> selected<?php endif ?>>
+                <?= $desc ?>
+              </option>
+            <?php endforeach ?>
+        </select>
+    </label>
+
     <?php if (Auth::check('editDeletable', $page)): ?>
         <label>
             <p><?= trans('boomcms::settings.admin.disable-delete') ?></p>

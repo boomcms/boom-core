@@ -1,6 +1,18 @@
 <?php
 
+use BoomCMS\Database\Models\Page;
+
 return [
+    'add' => [
+        'heading'  => 'Add page',
+        'question' => 'Do you want to add the new page as a child or a sibling of the current page?',
+        
+    ],
+    'add-behaviour' => [
+        Page::ADD_PAGE_PROMPT  => 'Display a prompt',
+        Page::ADD_PAGE_CHILD   => 'Add a child page',
+        Page::ADD_PAGE_SIBLING => 'Add a sibling page',
+    ],
     'visible'   => 'Visible',
     'invisible' => 'Invisible',
     'urls'      => [

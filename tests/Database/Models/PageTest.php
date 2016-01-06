@@ -14,6 +14,31 @@ class PageTest extends AbstractModelTestCase
 {
     protected $model = Page::class;
 
+    public function testGetAddPageBehaviour()
+    {
+        $page = new Page([Page::ATTR_ADD_BEHAVIOUR => Page::ADD_PAGE_CHILD]);
+        $this->assertEquals(Page::ADD_PAGE_CHILD, $page->getAddPageBehaviour());
+    }
+
+    public function testGetAddPageBehaviourDefaultIsPrompt()
+    {
+        $page = new Page();
+        $this->assertEquals(Page::ADD_PAGE_PROMPT, $page->getAddPageBehaviour());
+    }
+
+    public function testGetChildAddPageBehaviour()
+    {
+        $page = new Page([Page::ATTR_CHILD_ADD_BEHAVIOUR => Page::ADD_PAGE_CHILD]);
+
+        $this->assertEquals(Page::ADD_PAGE_CHILD, $page->getChildAddPageBehaviour());
+    }
+
+    public function testGetChildAddPageBehaviourDefaultIsPrompt()
+    {
+        $page = new Page();
+        $this->assertEquals(Page::ADD_PAGE_PROMPT, $page->getChildAddPageBehaviour());
+    }
+
     public function testGetChildOrderingPolicy()
     {
         $values = [
@@ -117,6 +142,22 @@ class PageTest extends AbstractModelTestCase
 
             $this->assertEquals($isDeleted, $page->isDeleted());
         }
+    }
+
+    public function testSetAddPageBehaviour()
+    {
+        $page = new Page();
+
+        $this->assertEquals($page, $page->setAddPageBehaviour(Page::ADD_PAGE_CHILD));
+        $this->assertEquals(Page::ADD_PAGE_CHILD, $page->getAddPageBehaviour());
+    }
+
+    public function testSetChildAddPageBehaviour()
+    {
+        $page = new Page();
+
+        $this->assertEquals($page, $page->setChildAddPageBehaviour(Page::ADD_PAGE_CHILD));
+        $this->assertEquals(Page::ADD_PAGE_CHILD, $page->getChildAddPageBehaviour());
     }
 
     public function testSetAndGetChildOrderingPolicy()

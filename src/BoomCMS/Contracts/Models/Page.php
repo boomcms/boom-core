@@ -60,6 +60,25 @@ interface Page
     public function deleteDrafts();
 
     /**
+     * @return int
+     */
+    public function getAddPageBehaviour();
+
+    /**
+     * Returns the Page to use as the parent when the add page button is used on this page.
+     *
+     * Either the current page or its parent depending on the add page behaviour settings.
+     *
+     * @return Page
+     */
+    public function getAddPageParent();
+
+    /**
+     * @return int
+     */
+    public function getChildAddPageBehaviour();
+
+    /**
      * Returns an array of [column, direction].
      *
      * @return array
@@ -260,6 +279,20 @@ interface Page
     public function removeTag(Tag $tag);
 
     /**
+     * @param int $value
+     *
+     * @return $this
+     */
+    public function setAddPageBehaviour($value);
+
+    /**
+     * @param int $value
+     *
+     * @return $this
+     */
+    public function setChildAddPageBehaviour($value);
+
+    /**
      * @param bool $value
      *
      * @return $this
@@ -433,6 +466,13 @@ interface Page
      * @return $this
      */
     public function setVisibleTo(DateTime $time = null);
+
+    /**
+     * Whether or not the add page button should show a prompt
+     *
+     * @return bool
+     */
+    public function shouldPromptOnAddPage();
 
     /**
      * @return URL

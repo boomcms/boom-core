@@ -2,7 +2,7 @@
 
 namespace BoomCMS\Http\Controllers\Page;
 
-use BoomCMS\Core\Page as Page;
+use BoomCMS\Contracts\Models\Page;
 use BoomCMS\Events\PageWasCreated;
 use BoomCMS\Http\Controllers\Controller;
 use BoomCMS\Jobs\CreatePage;
@@ -17,7 +17,7 @@ class PageController extends Controller
     protected $viewPrefix = 'boomcms::editor.page.';
 
     /**
-     * @var Page\Page
+     * @var Page
      */
     protected $page;
 
@@ -31,14 +31,21 @@ class PageController extends Controller
     {
         $this->authorize('add', $this->page);
 
-        $newPage = $this->dispatch(new CreatePage($this->auth->user(), $this->page));
+        if ($this->page->shouldPromptOnAddPage()) {
+            return [
+                'prompt' => view("{$this->viewPreifx}add"),
+            ];
+        } else {
+            $parent = $this->page->getAddPageParent();
+            $newPage = $this->dispatch(new CreatePage($this->auth->user(), $parent));
 
-        Event::fire(new PageWasCreated($newPage, $this->page));
+            Event::fire(new PageWasCreated($newPage, $this->page));
 
-        return [
-            'url' => (string) $newPage->url(),
-            'id'  => $newPage->getId(),
-        ];
+            return [
+                'url' => (string) $newPage->url(),
+                'id'  => $newPage->getId(),
+            ];
+        }
     }
 
     public function discard()
