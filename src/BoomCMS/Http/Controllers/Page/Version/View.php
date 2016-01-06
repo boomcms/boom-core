@@ -23,6 +23,7 @@ class View extends Version
         return ViewFacade::make("$this->viewPrefix.status", [
             'page'    => $this->page,
             'version' => $this->page->getCurrentVersion(),
+            'auth'    => auth(),
         ]);
     }
 

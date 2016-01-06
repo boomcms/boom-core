@@ -23,9 +23,9 @@ class Save extends Version
         $version = $this->page->getCurrentVersion();
 
         if ($version->isPublished()) {
-            Event::fire(new Events\PageWasPublished($this->page, $this->auth->user(), $version));
+            Event::fire(new Events\PageWasPublished($this->page, auth()->user(), $version));
         } elseif ($version->isEmbargoed()) {
-            Event::fire(new Events\PageWasEmbargoed($this->page, $this->auth->user(), $version));
+            Event::fire(new Events\PageWasEmbargoed($this->page, auth()->user(), $version));
         }
 
         return $this->page->getCurrentVersion()->getStatus();
