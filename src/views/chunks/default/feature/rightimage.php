@@ -1,6 +1,6 @@
 <?php
-    # Copyright 2009, Hoop Associates Ltd
-    # Hoop Associates   www.thisishoop.com   mail@hoopassociates.co.uk
+    // Copyright 2009, Hoop Associates Ltd
+    // Hoop Associates   www.thisishoop.com   mail@hoopassociates.co.uk
 ?>
 
 <a class="feature feature-image corner-10 clearfix" href="#">
