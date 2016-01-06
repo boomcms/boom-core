@@ -3,6 +3,9 @@ $.widget('boom.pageSettings', {
 		var pageSettings = this;
 
 		this.$menu
+			.on('click', 'a', function(e) {
+				e.preventDefault();
+			})
 			.on('click', '.b-page-settings-close', function() {
 				pageSettings.close();
 			})
