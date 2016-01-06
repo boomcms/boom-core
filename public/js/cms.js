@@ -40796,15 +40796,6 @@ $.widget('boom.pageTree', {
 		});
 	},
 
-	removeTag: function($a) {
-		$.post(this.getUrl('remove'), {
-			tag : $a.attr('data-tag_id')
-		})
-		.done(function() {
-			$a.parent().remove();
-		});
-	},
-
 	updateTagList: function() {
 		var tagEditor = this;
 
