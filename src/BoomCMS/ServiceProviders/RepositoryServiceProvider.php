@@ -22,31 +22,31 @@ class RepositoryServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton('boomcms.repositories.asset', function ($app) {
+        $this->app->singleton('boomcms.repositories.asset', function () {
             return new Repositories\Asset(new Models\Asset(), new Models\AssetVersion());
         });
 
-        $this->app->singleton('boomcms.repositories.page', function ($app) {
+        $this->app->singleton('boomcms.repositories.page', function () {
             return new Repositories\Page(new Models\Page());
         });
 
-        $this->app->singleton('boomcms.repositories.person', function ($app) {
+        $this->app->singleton('boomcms.repositories.person', function () {
             return new Repositories\Person(new Models\Person());
         });
 
-        $this->app->singleton('boomcms.repositories.group', function ($app) {
+        $this->app->singleton('boomcms.repositories.group', function () {
             return new Repositories\Group();
         });
 
-        $this->app->singleton('boomcms.repositories.tag', function ($app) {
+        $this->app->singleton('boomcms.repositories.tag', function () {
             return new Repositories\Tag(new Models\Tag());
         });
 
-        $this->app->singleton('boomcms.repositories.template', function ($app) {
+        $this->app->singleton('boomcms.repositories.template', function () {
             return new Repositories\Template(new Models\Template());
         });
 
-        $this->app->singleton('boomcms.repositories.url', function ($app) {
+        $this->app->singleton('boomcms.repositories.url', function () {
             return new Repositories\URL(new Models\URL());
         });
     }
