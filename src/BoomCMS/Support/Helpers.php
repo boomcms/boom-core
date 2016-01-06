@@ -8,7 +8,6 @@ use BoomCMS\Contracts\Models\Tag as TagInterface;
 use BoomCMS\Core\Asset;
 use BoomCMS\Core\Page;
 use BoomCMS\Core\Tag;
-use BoomCMS\Support\Facades\Editor;
 use BoomCMS\Support\Facades\Router;
 use BoomCMS\Support\Facades\Settings;
 use Illuminate\Support\Facades\App;

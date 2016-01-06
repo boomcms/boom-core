@@ -31,6 +31,7 @@ class Router
 
     /**
      * @param string $uri
+     *
      * @return mixed
      */
     public function process($uri)
