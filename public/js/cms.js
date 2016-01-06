@@ -30768,8 +30768,7 @@ Date.parseFunctions={count:0};Date.parseRegexes=[];Date.formatFunctions={count:0
  * http://stackoverflow.com/q/4998908
  */
 
-/*jslint nomen: true, regexp: true */
-/*global window, atob, Blob, ArrayBuffer, Uint8Array, define */
+/*global window, atob, Blob, ArrayBuffer, Uint8Array, define, module */
 
 (function (window) {
     'use strict';
@@ -30858,6 +30857,8 @@ Date.parseFunctions={count:0};Date.parseRegexes=[];Date.formatFunctions={count:0
         define(function () {
             return dataURLtoBlob;
         });
+    } else if (typeof module === 'object' && module.exports) {
+        module.exports = dataURLtoBlob;
     } else {
         window.dataURLtoBlob = dataURLtoBlob;
     }
@@ -40287,12 +40288,13 @@ $.widget('boom.pageTree', {
 	addTag : function(tag) {
 		this.tags.push(tag.id);
 
-		$('<li class="b-tag"><span>' + tag.name + '</span><a href="#" class="fa fa-trash-o b-tag-remove" data-tag="' + tag.id + '"></a></li>')
+		var $el = $('<li class="b-tag"><span>' + tag.name + '</span><a href="#" class="fa fa-trash-o b-tag-remove" data-tag="' + tag.id + '"></a></li>')
 			.insertBefore(this.tagList.children().last());
 
 		this._trigger('addTag', null, {
-			group : this.group,
-			tag : tag.name
+			group: this.group,
+			tag: tag.name,
+			element: $el
 		});
 
 		this.update();
@@ -40942,12 +40944,9 @@ $.widget('boom.pageTree', {
 });;$.widget('boom.pageSettingsTags', {
 	baseUrl: '/cms/page/tags/',
 
-	addTag: function(group, tag) {
-		var tagEditor = this;
-
-		$.post(this.getUrl('add'), {
-			group : group,
-			tag : tag.name
+	addTag: function(group, tag, $el) {
+		this.page.addTag(group, tag).done(function(tagId) {
+			$el.find('a').attr('data-tag', tagId);
 		});
 	},
 
@@ -40991,13 +40990,14 @@ $.widget('boom.pageTree', {
 	},
 
 	initTagList: function($list) {
-		var page = this.page;
+		var page = this.page,
+			pageTags = this;
 
 		$list.pageTagSearch({
-			addTag : function(e, data) {
-				page.addTag(data.group, data.tag);
+			addTag: function(e, data) {
+				pageTags.addTag(data.group, data.tag, data.element);
 			},
-			removeTag : function(e, tagId) {
+			removeTag: function(e, tagId) {
 				page.removeTag(tagId);
 			}
 		});
