@@ -146,7 +146,6 @@ class PageTest extends AbstractModelTestCase
      * A page internal name can contain lowercase letters, underscores, hyphens, or numbers.
      * 
      * All other characters should be removed.
-     * 
      */
     public function testSetInternalNameRemovesInvalidCharacters()
     {
