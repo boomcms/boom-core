@@ -53,12 +53,12 @@ class Router
             abort(410);
         }
 
-        if (Editor::isDisabled() && !$page->isVisible()) {
+        if (Editor::isDisabled() && !$this->page->isVisible()) {
             abort(404);
         }
 
         if (!$this->page->url()->is($uri)) {
-            return redirect((string) $page->url(), 301);
+            return redirect((string) $this->page->url(), 301);
         }
     }
 }

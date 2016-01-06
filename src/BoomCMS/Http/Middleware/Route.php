@@ -6,8 +6,21 @@ use BoomCMS\Routing\Router;
 use Closure;
 use Illuminate\Http\Request;
 
-class RouteRequest
+class Route
 {
+    /**
+     * @var Router
+     */
+    protected $router;
+
+    /**
+     * @param Router $router
+     */
+    public function __construct(Router $router)
+    {
+        $this->router = $router;
+    }
+
     /**
      * Handle an incoming request.
      *
@@ -16,9 +29,9 @@ class RouteRequest
      *
      * @return mixed
      */
-    public function handle(Request $request, Closure $next, Router $router)
+    public function handle(Request $request, Closure $next)
     {
-        $response = $router->process($request->route()->getParameter('location'));
+        $response = $this->router->process($request->route()->getParameter('location'));
 
         if ($response) {
             return $response;
