@@ -233,6 +233,26 @@ class PageTest extends AbstractModelTestCase
         }
     }
 
+    public function testShouldPromptOnAddPage()
+    {
+        $values = [
+            Page::ADD_PAGE_PROMPT => true,
+            Page::ADD_PAGE_CHILD => false,
+            Page::ADD_PAGE_SIBLING => false,
+            // GetAddPageBehaviour should never return anything else
+            // But just incase it does anything else should trigger the add page prompt
+            null => true,
+            0 => true,
+            'asflsdkjfl' => true,
+        ];
+
+        foreach ($values as $behaviour => $shouldPrompt) {
+            $page = new Page([Page::ATTR_ADD_BEHAVIOUR => $behaviour]);
+
+            $this->assertEquals($shouldPrompt, $page->shouldPromptOnAddPage());
+        }
+    }
+
     public function testHasChildrenReturnsFalseIfChildCountIs0()
     {
         $page = $this->getMockBuilder(Page::class)
