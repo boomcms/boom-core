@@ -11,6 +11,4 @@ class Site extends Model implements SiteInterface
 {
     use Comparable;
     use SoftDeletes;
-
-
 }
