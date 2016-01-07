@@ -2,6 +2,7 @@
 
 namespace BoomCMS\Foundation\Http;
 
+use BoomCMS\Http\Middleware;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -18,6 +19,7 @@ class Kernel extends HttpKernel
         'Illuminate\Session\Middleware\StartSession',
         'Illuminate\View\Middleware\ShareErrorsFromSession',
         'App\Http\Middleware\VerifyCsrfToken',
-        'BoomCMS\Http\Middleware\DefineGlobalViewSharedVariables',
+        Middleware\DefineGlobalViewSharedVariables::class,
+        Middleware\RouteSite::class,
     ];
 }

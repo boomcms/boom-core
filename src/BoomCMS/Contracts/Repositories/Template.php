@@ -38,6 +38,11 @@ interface Template
     public function findByThemeAndFilename($theme, $filename);
 
     /**
+     * @return array
+     */
+    public function findValid();
+
+    /**
      * @param TemplateInterface $model
      *
      * @return $this

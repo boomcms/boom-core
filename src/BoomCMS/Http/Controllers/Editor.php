@@ -2,39 +2,28 @@
 
 namespace BoomCMS\Http\Controllers;
 
+use BoomCMS\Database\Models\Page;
 use BoomCMS\Editor\Editor as EditorObject;
-use BoomCMS\Support\Facades\Page;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
 
 class Editor extends Controller
 {
-    /**
-     * Sets the page editor state.
-     */
-    public function postState()
+    public function setState(Request $request, EditorObject $editor)
     {
-        $state = $this->request->input('state');
+        $state = $request->input('state');
         $numericState = constant(EditorObject::class.'::'.strtoupper($state));
 
-        if ($numericState === null) {
-            throw new \Exception('Invalid editor state: :state', [
-                ':state'    => $state,
-            ]);
-        }
-
-        $this->editor->setState($numericState);
+        $editor->setState($numericState);
     }
 
     /**
      * Displays the CMS interface with buttons for add page, settings, etc.
      * Called from an iframe when logged into the CMS.
-     * The ID of the page which is being viewed is given as a URL paramater (e.g. /boomscms/editor/toolbar/<page ID>).
      */
-    public function getToolbar()
+    public function getToolbar(EditorObject $editor, Page $page)
     {
-        $page = Page::find($this->request->input('page_id'));
-
-        $toolbarFilename = ($this->editor->isEnabled()) ? 'toolbar' : 'toolbar_preview';
+        $toolbarFilename = ($editor->isEnabled()) ? 'toolbar' : 'toolbar_preview';
 
         View::share([
             'page'   => $page,

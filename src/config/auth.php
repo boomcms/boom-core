@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'driver'   => 'eloquent',
+    'driver'   => 'boomcms',
     'model'    => BoomCMS\Database\Models\Person::class,
     'table'    => 'people',
     'password' => [

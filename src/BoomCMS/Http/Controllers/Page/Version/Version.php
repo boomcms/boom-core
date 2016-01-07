@@ -24,7 +24,7 @@ abstract class Version extends PageController
         $this->authorize('editContent', $this->page);
     }
 
-    public function template(Template\Manager $manager)
+    public function template()
     {
         $this->authorize('editTemplate', $this->page);
     }

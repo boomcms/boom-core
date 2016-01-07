@@ -21,11 +21,8 @@ class Save extends Settings
         $this->page
             ->setInternalName($this->request->input('internal_name'))
             ->setAddPageBehaviour($this->request->input('add_behaviour'))
-            ->setChildAddPageBehaviour($this->request->input('child_add_behaviour'));
-
-        if (Auth::check('editDeletable', $this->page)) {
-            $this->page->setDisableDelete($this->request->input('disable_delete') == '1');
-        }
+            ->setChildAddPageBehaviour($this->request->input('child_add_behaviour'))
+            ->setDisableDelete($this->request->has('disable_delete'));
 
         Page::save($this->page);
     }
@@ -41,8 +38,8 @@ class Save extends Settings
         if ($this->allowAdvanced) {
             $this->page
                 ->setChildrenUrlPrefix($this->request->input('children_url_prefix'))
-                ->setChildrenVisibleInNav($this->request->input('children_visible_in_nav') == 1)
-                ->setChildrenVisibleInNavCms($this->request->input('children_visible_in_nav_cms') == 1)
+                ->setChildrenVisibleInNav($this->request->has('children_visible_in_nav'))
+                ->setChildrenVisibleInNavCms($this->request->has('children_visible_in_nav_cms'))
                 ->setGrandchildTemplateId($this->request->input('grandchild_template_id'));
         }
 
@@ -55,11 +52,11 @@ class Save extends Settings
 
     public function delete()
     {
-        $redirect = $this->page->isRoot() ? '/' : $this->page->getParent()->url();
+        $redirect = $this->page->isRoot() ? '/' : (string) $this->page->getParent()->url();
 
         Bus::dispatch(new DeletePage($this->page, $this->request->input()));
 
-        return (string) $redirect;
+        return $redirect;
     }
 
     public function feature()
@@ -83,8 +80,8 @@ class Save extends Settings
         }
 
         $this->page
-            ->setVisibleInNav($this->request->input('visible_in_nav'))
-            ->setVisibleInCmsNav($this->request->input('visible_in_nav_cms'));
+            ->setVisibleInNav($this->request->has('visible_in_nav'))
+            ->setVisibleInCmsNav($this->request->has('visible_in_nav_cms'));
 
         Page::save($this->page);
     }
@@ -99,8 +96,8 @@ class Save extends Settings
 
         if ($this->allowAdvanced) {
             $this->page
-                ->setExternalIndexing($this->request->input('external_indexing'))
-                ->setInternalIndexing($this->request->input('internal_indexing'));
+                ->setExternalIndexing($this->request->has('external_indexing'))
+                ->setInternalIndexing($this->request->has('internal_indexing'));
         }
 
         Page::save($this->page);

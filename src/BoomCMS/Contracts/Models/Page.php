@@ -50,11 +50,6 @@ interface Page
     public function childrenAreVisibleInCmsNav();
 
     /**
-     * @return bool
-     */
-    public function childShouldPromptOnAddPage();
-
-    /**
      * @return int
      */
     public function countChildren();
@@ -169,6 +164,13 @@ interface Page
      * @return int
      */
     public function getParentId();
+
+    /**
+     * Returns the site that the page belongs to.
+     *
+     * @return Site
+     */
+    public function getSite();
 
     /**
      * @return Template
@@ -422,6 +424,15 @@ interface Page
     public function setSequence($sequence);
 
     /**
+     * Set the site that the page belongs to.
+     *
+     * @param Site $site
+     *
+     * @return $this
+     */
+    public function setSite(Site $site);
+
+    /**
      * @param Template $template
      *
      * @return $this
@@ -471,13 +482,6 @@ interface Page
      * @return $this
      */
     public function setVisibleTo(DateTime $time = null);
-
-    /**
-     * Whether or not the add page button should show a prompt.
-     *
-     * @return bool
-     */
-    public function shouldPromptOnAddPage();
 
     /**
      * @return URL

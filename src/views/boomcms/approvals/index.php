@@ -19,10 +19,12 @@
                     <th></th>
                 </tr>
                 <?php foreach ($pages as $page): ?>
-                    <?php if ($auth->check('publish', $page)): ?>
+                    <?php $editedBy = $page->getCurrentVersion()->getEditedBy() ?>
+
+                    <?php if (auth()->check('publish', $page)): ?>
                         <tr data-page-id="<?= $page->getId() ?>">
                             <td><a href="<?= $page->url() ?>"><?= $page->getTitle() ?></a></td>
-                            <td><?= $page->getCurrentVersion()->getEditedBy()->getName() ?> (<?= $page->getCurrentVersion()->getEditedBy()->getEmail() ?>)</td>
+                            <td><?= $editedBy ? $editedBy->getName() : '' ?> (<?= $editedBy ? $editedBy->getEmail() : '' ?>)</td>
                             <td><?= $page->getCurrentVersion()->getEditedTime()->format('d F Y H:i') ?></td>
                             <td><a href="#" class="b-approvals-publish">Publish</a></td>
                             <td><a href="#" class="b-approvals-reject">Revert to published version</a></td>
@@ -31,7 +33,7 @@
                     <?php endif ?>
                 <?php endforeach ?>
             </table>
-        <?php else: ?>
+        <?php else : ?>
             <p>
                 None!
             </p>

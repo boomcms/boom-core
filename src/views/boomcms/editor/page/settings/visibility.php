@@ -10,7 +10,7 @@
 
         <select name="visible" id="b-page-visible">
             <option value="1"<?php if ($page->isVisibleAtAnyTime()): ?> selected="selected"<?php endif ?>>Yes</option>
-            <option value="0"<?php if (!$page->isVisibleAtAnyTime()): ?> selected="selected"<?php endif ?>>No</option>
+            <option value=""<?php if (!$page->isVisibleAtAnyTime()): ?> selected="selected"<?php endif ?>>No</option>
         </select>
     </label>
 

@@ -2,6 +2,7 @@
 
 namespace BoomCMS\Tests\Repositories;
 
+use BoomCMS\Database\Models\Site;
 use BoomCMS\Database\Models\Tag;
 use BoomCMS\Repositories\Tag as TagRepository;
 use BoomCMS\Tests\AbstractTestCase;
@@ -9,17 +10,30 @@ use Mockery as m;
 
 class TagTest extends AbstractTestCase
 {
+    /**
+     * @var Site
+     */
+    protected $site;
+
+    public function setUp()
+    {
+        parent::setUp();
+
+        $this->site = new Site();
+        $this->site->{Site::ATTR_ID} = 1;
+    }
+
     public function create()
     {
         $name = 'test name';
         $group = 'test group';
 
         $model = m::mock(Tag::class);
-        $model->shouldReceive('create')->with($name, $group)->andReturn($model);
+        $model->shouldReceive('create')->with($this->site, $name, $group)->andReturn($model);
 
         $repository = new TagRepository($model);
 
-        $this->assertEquals($model, $repository->create($name, $group));
+        $this->assertEquals($model, $repository->create($this->site, $name, $group));
     }
 
     public function testFind()
@@ -35,83 +49,119 @@ class TagTest extends AbstractTestCase
     public function testFindByName()
     {
         $model = m::mock(Tag::class);
-        $model->shouldReceive('where')->with('name', '=', 'test')->andReturnSelf();
+        $model
+            ->shouldReceive('whereSiteIs')
+            ->once()
+            ->with($this->site)
+            ->andReturnSelf();
+
+        $model
+            ->shouldReceive('where')
+            ->once()
+            ->with(Tag::ATTR_NAME, '=', 'test')
+            ->andReturnSelf();
+
         $model->shouldReceive('first')->andReturnSelf();
 
         $repository = new TagRepository($model);
 
-        $this->assertEquals($model, $repository->findByName('test'));
+        $this->assertEquals($model, $repository->findByName($this->site, 'test'));
     }
 
     public function testFindByNameAndGroup()
     {
+        $name = 'test name';
+        $group = 'test group';
+
         $model = m::mock(Tag::class);
-        $model->shouldReceive('where')
-            ->with(m::any('name', 'group'), '=', m::any('test name', 'test group'))
+        $model
+            ->shouldReceive('whereSiteIs')
+            ->once()
+            ->with($this->site)
             ->andReturnSelf();
+
+        $model
+            ->shouldReceive('where')
+            ->once()
+            ->with(Tag::ATTR_NAME, '=', $name)
+            ->andReturnSelf();
+
+        $model
+            ->shouldReceive('where')
+            ->once()
+            ->with(Tag::ATTR_GROUP, '=', $group)
+            ->andReturnSelf();
+
         $model->shouldReceive('first')->andReturnSelf();
 
         $repository = new TagRepository($model);
 
-        $this->assertEquals($model, $repository->findByNameAndGroup('test name', 'test group'));
+        $this->assertEquals($model, $repository->findByNameAndGroup($this->site, $name, $group));
     }
 
     public function testFindBySlugAndGroup()
     {
+        $slug = 'test-slug';
+        $group = 'test group';
         $model = m::mock(Tag::class);
 
-        $model->shouldReceive('where')
-            ->with('slug', '=', 'test-slug')
+        $model
+            ->shouldReceive('whereSiteIs')
+            ->once()
+            ->with($this->site)
             ->andReturnSelf();
 
-        $model->shouldReceive('where')
-            ->with('group', '=', 'test group')
+        $model
+            ->shouldReceive('where')
+            ->once()
+            ->with(Tag::ATTR_SLUG, '=', $slug)
+            ->andReturnSelf();
+
+        $model
+            ->shouldReceive('where')
+            ->once()
+            ->with(Tag::ATTR_GROUP, '=', $group)
             ->andReturnSelf();
 
         $model->shouldReceive('first')->andReturnSelf();
 
         $repository = new TagRepository($model);
-        $this->assertEquals($model, $repository->findBySlugAndGroup('test-slug', 'test group'));
+        $this->assertEquals($model, $repository->findBySlugAndGroup($this->site, $slug, $group));
     }
 
-    public function testFindOrCreateByNameAndGroupReturnsExisting()
+    public function testfindOrCreateReturnsExisting()
     {
         $name = 'name';
         $group = 'group';
-
         $model = new Tag();
-        $repository = $this->getMock(TagRepository::class, ['findByNameAndGroup'], [$model]);
+        $repository = m::mock(TagRepository::class.'[findByNameAndGroup]', [$model]);
 
         $repository
-            ->expects($this->once())
-            ->method('findByNameAndGroup')
-            ->with($this->equalTo($name), $this->equalTo($group))
-            ->will($this->returnValue($model));
+            ->shouldReceive('findByNameAndGroup')
+            ->once()
+            ->with($this->site, $name, $group)
+            ->andReturn($model);
 
-        $this->assertEquals($model, $repository->findOrCreateByNameAndGroup($name, $group));
+        $this->assertEquals($model, $repository->findOrCreate($this->site, $name, $group));
     }
 
-    public function testFindOrCreateByNameAndGroupReturnsNew()
+    public function testfindOrCreateReturnsNew()
     {
         $name = 'name';
         $group = 'group';
-
         $model = new Tag();
-        $repository = $this
-            ->getMock(TagRepository::class, ['findByNameAndGroup', 'create'], [$model]);
+        $repository = m::mock(TagRepository::class.'[findByNameAndGroup,create]', [$model]);
 
         $repository
-            ->expects($this->once())
-            ->method('findByNameAndGroup')
-            ->with($this->equalTo($name), $this->equalTo($group))
-            ->will($this->returnValue(false));
+            ->shouldReceive('findByNameAndGroup')
+            ->with($this->site, $name, $group)
+            ->andReturn(null);
 
         $repository
-            ->expects($this->once())
-            ->method('create')
-            ->with($this->equalTo($name), $this->equalTo($group))
-            ->will($this->returnValue($model));
+            ->shouldReceive('create')
+            ->with($this->site, $name, $group)
+            ->andReturn($model);
 
-        $this->assertEquals($model, $repository->findOrCreateByNameAndGroup($name, $group));
+        $this->assertEquals($model, $repository->findOrCreate($this->site, $name, $group));
     }
 }

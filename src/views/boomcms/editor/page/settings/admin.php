@@ -6,16 +6,14 @@
         <input type='text' name='internal_name' value='<?= $page->getInternalName() ?>' />
     </label>
 
-    <?php if (Auth::check('editDeletable', $page)): ?>
-        <label>
-            <p><?= trans('boomcms::settings.admin.disable-delete') ?></p>
+    <label>
+        <p><?= trans('boomcms::settings.admin.disable-delete') ?></p>
 
-            <select name="disable_delete">
-                <option value="1"<?php if (!$page->canBeDeleted()): ?> selected<?php endif ?>>Yes</option>
-                <option value="0"<?php if ($page->canBeDeleted()): ?> selected<?php endif ?>>No</option>
-            </select>
-        </label>
-    <?php endif ?>
+        <select name="disable_delete">
+            <option value="1"<?php if (!$page->canBeDeleted()): ?> selected<?php endif ?>>Yes</option>
+            <option value=""<?php if ($page->canBeDeleted()): ?> selected<?php endif ?>>No</option>
+        </select>
+    </label>
 
     <section>
         <h2><?= trans('boomcms::settings.admin.add-behaviour-heading') ?></h2>
