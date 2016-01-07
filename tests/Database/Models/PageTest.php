@@ -40,12 +40,12 @@ class PageTest extends AbstractModelTestCase
      */
     public function testGetAddPageParentReturnsSelf()
     {
-        $page = m::mock(Page::class.'[getParent]');
+        $page = m::mock(Page::class.'[isRoot]');
 
         $page
-            ->shouldReceive('getParent')
+            ->shouldReceive('isRoot')
             ->once()
-            ->andReturn(null);
+            ->andReturn(true);
 
         foreach ([Page::ADD_PAGE_CHILD, Page::ADD_PAGE_SIBLING] as $behaviour) {
             $page->{Page::ATTR_ADD_BEHAVIOUR} = $behaviour;
@@ -57,8 +57,13 @@ class PageTest extends AbstractModelTestCase
     public function testGetAddPageParentReturnsItsParent()
     {
         $parent = new Page();
-        $page = m::mock(Page::class.'[getParent]');
-        $page->{Page::ATTR_ADD_BEHAVIOUR} = Page::ADD_SIBLING;
+        $page = m::mock(Page::class.'[isRoot,getParent]');
+        $page->{Page::ATTR_ADD_BEHAVIOUR} = Page::ADD_PAGE_SIBLING;
+
+        $page
+            ->shouldReceive('isRoot')
+            ->once()
+            ->andReturn(false);
 
         $page
             ->shouldReceive('getParent')

@@ -200,6 +200,20 @@ class Page extends Model implements PageInterface
     }
 
     /**
+     * @return null|Page
+     */
+    public function getAddPageParent()
+    {
+        $behaviour = $this->{self::ATTR_ADD_BEHAVIOUR};
+
+        if ($behaviour === self::ADD_PAGE_CHILD) {
+            return $this;
+        } else if ($behaviour === self::ADD_PAGE_SIBLING) {
+            return $this->isRoot() ? $this : $this->getParent();
+        }
+    }
+
+    /**
      * @return int
      */
     public function getChildAddPageBehaviour()
@@ -499,6 +513,20 @@ class Page extends Model implements PageInterface
     public function relations()
     {
         return $this->belongsToMany(self::class, 'pages_relations', 'page_id', 'related_page_id');
+    }
+
+    /**
+     * @return bool
+     */
+    public function shouldPromptOnAddPage()
+    {
+        $behaviour = $this->getAddPageBehaviour();
+
+        if ($behaviour === self::ADD_PAGE_CHILD || $behaviour === self::ADD_PAGE_SIBLING) {
+            return false;
+        }
+
+        return true;
     }
 
     /**
