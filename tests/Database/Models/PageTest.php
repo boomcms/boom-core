@@ -71,11 +71,12 @@ class PageTest extends AbstractModelTestCase
         $builder = m::mock(Builder::class);
         $builder->shouldReceive('first')->once();
 
-        $page = $this->getMock(Page::class, ['belongsTo']);
-        $page->expects($this->once())
-            ->method('belongsTo')
-            ->with($this->equalTo(Asset::class))
-            ->willReturn($builder);
+        $page = m::mock(Page::class.'[belongsTo]');
+        $page
+            ->shouldReceive('belongsTo')
+            ->once()
+            ->with(Asset::class, 'feature_image_id')
+            ->andReturn($builder);
 
         $page->getFeatureImage();
     }
@@ -194,30 +195,22 @@ class PageTest extends AbstractModelTestCase
 
     public function testHasChildrenReturnsFalseIfChildCountIs0()
     {
-        $page = $this->getMockBuilder(Page::class)
-            ->setMethods(['countChildren'])
-            ->setConstructorArgs([[]])
-            ->getMock();
-
+        $page = m::mock(Page::class)->makePartial();
         $page
-            ->expects($this->once())
-            ->method('countChildren')
-            ->will($this->returnValue(0));
+            ->shouldReceive('countChildren')
+            ->once()
+            ->andReturn(0);
 
         $this->assertFalse($page->hasChildren());
     }
 
     public function testHasChildrenReturnsTrueIfChildCountGreaterThan0()
     {
-        $page = $this->getMockBuilder(Page::class)
-            ->setMethods(['countChildren'])
-            ->setConstructorArgs([[]])
-            ->getMock();
-
+        $page = m::mock(Page::class)->makePartial();
         $page
-           ->expects($this->once())
-            ->method('countChildren')
-            ->will($this->returnValue(1));
+            ->shouldReceive('countChildren')
+            ->once()
+            ->andReturn(1);
 
         $this->assertTrue($page->hasChildren());
     }
