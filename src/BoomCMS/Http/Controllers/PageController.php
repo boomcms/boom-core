@@ -23,9 +23,10 @@ class PageController extends Controller
 
         if (method_exists($this, $method)) {
             return $this->$method($page);
-        } else {
-            abort(406);
         }
+        
+        abort(406);
+        
     }
 
     public function asHtml(Page $page)
