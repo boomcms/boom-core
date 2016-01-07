@@ -58,7 +58,7 @@ class Page extends Model implements PageInterface
     const ORDER_DESC = 16;
 
     /**
-     * Values for the 'add_behaviour' and 'child_add_behaviour' columns
+     * Values for the 'add_behaviour' and 'child_add_behaviour' columns.
      * 
      * These columns store the behaviour of the add page button when on the page / its children
      */
@@ -67,7 +67,7 @@ class Page extends Model implements PageInterface
     const ADD_PAGE_SIBLING = 3;
 
     protected $casts = [
-        self::ATTR_ADD_BEHAVIOUR => 'integer',
+        self::ATTR_ADD_BEHAVIOUR       => 'integer',
         self::ATTR_CHILD_ADD_BEHAVIOUR => 'integer',
     ];
 
@@ -226,7 +226,7 @@ class Page extends Model implements PageInterface
 
         if ($behaviour === self::ADD_PAGE_CHILD || $behaviour === self::ADD_PAGE_PROMPT) {
             return $this;
-        } else if ($behaviour === self::ADD_PAGE_SIBLING) {
+        } elseif ($behaviour === self::ADD_PAGE_SIBLING) {
             return $this->isRoot() ? $this : $this->getParent();
         }
     }

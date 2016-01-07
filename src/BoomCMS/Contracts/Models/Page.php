@@ -473,7 +473,7 @@ interface Page
     public function setVisibleTo(DateTime $time = null);
 
     /**
-     * Whether or not the add page button should show a prompt
+     * Whether or not the add page button should show a prompt.
      *
      * @return bool
      */

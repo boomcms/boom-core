@@ -3,7 +3,6 @@
 use BoomCMS\Database\Models\Page;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\DB;
 
 class AddButtonSettingColumnsOnPageTable extends Migration
 {

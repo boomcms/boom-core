@@ -36,7 +36,6 @@ class PageTest extends AbstractModelTestCase
     /**
      * The add page parent is the current page if the add page behaviour is to add a child
      * Or it's to add a sibling but the page doesn't have a parent.
-     * 
      */
     public function testGetAddPageParentReturnsSelf()
     {
@@ -81,11 +80,11 @@ class PageTest extends AbstractModelTestCase
     {
         $parent = new Page();
         $page = m::mock(Page::class.'[isRoot,getParent]');
-        
+
         $values = [
-            Page::ADD_PAGE_CHILD => $page,
+            Page::ADD_PAGE_CHILD   => $page,
             Page::ADD_PAGE_SIBLING => $parent,
-            Page::ADD_PAGE_PROMPT => $page,
+            Page::ADD_PAGE_PROMPT  => $page,
         ];
 
         $page->{Page::ATTR_ADD_BEHAVIOUR} = Page::ADD_PAGE_PROMPT;
@@ -308,19 +307,19 @@ class PageTest extends AbstractModelTestCase
     public function testShouldPromptOnAddPageAndChildShouldPromptOnAddPage()
     {
         $values = [
-            Page::ADD_PAGE_PROMPT => true,
-            Page::ADD_PAGE_CHILD => false,
+            Page::ADD_PAGE_PROMPT  => true,
+            Page::ADD_PAGE_CHILD   => false,
             Page::ADD_PAGE_SIBLING => false,
             // GetAddPageBehaviour should never return anything else
             // But just incase it does anything else should trigger the add page prompt
-            null => true,
-            0 => true,
+            null         => true,
+            0            => true,
             'asflsdkjfl' => true,
         ];
 
         foreach ($values as $behaviour => $shouldPrompt) {
             $page = new Page([
-                Page::ATTR_ADD_BEHAVIOUR => $behaviour,
+                Page::ATTR_ADD_BEHAVIOUR       => $behaviour,
                 Page::ATTR_CHILD_ADD_BEHAVIOUR => $behaviour,
             ]);
 
