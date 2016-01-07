@@ -30,7 +30,7 @@ class SiteTest extends AbstractTestCase
             ->andReturnSelf;
 
         $repository = new SiteRepository($model);
-        
+
         $this->assertEquals($model, $repository->find($id));
     }
 

@@ -19,21 +19,21 @@ interface Site
     public function getAnalytics();
 
     /**
-     * Reutrns the site hostname
+     * Reutrns the site hostname.
      *
      * @return string
      */
     public function getHostname();
 
     /**
-     * Returns the ID of the site
+     * Returns the ID of the site.
      *
      * @return int
      */
     public function getId();
 
     /**
-     * Returns the name of the site
+     * Returns the name of the site.
      *
      * @return string
      */
@@ -49,7 +49,7 @@ interface Site
     public function setAdminEmail($email);
 
     /**
-     * Set the site's analytics code
+     * Set the site's analytics code.
      *
      * @param string $code
      *
@@ -58,7 +58,7 @@ interface Site
     public function setAnalytics($code);
 
     /**
-     * Set the site's hostname
+     * Set the site's hostname.
      *
      * @param string $hostname
      *
@@ -67,7 +67,7 @@ interface Site
     public function setHostname($hostname);
 
     /**
-     * Set the name of the site
+     * Set the name of the site.
      *
      * @param string $name
      *
