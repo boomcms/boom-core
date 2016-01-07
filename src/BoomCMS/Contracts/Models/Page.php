@@ -50,6 +50,11 @@ interface Page
     public function childrenAreVisibleInCmsNav();
 
     /**
+     * @return bool
+     */
+    public function childShouldPromptOnAddPage();
+
+    /**
      * @return int
      */
     public function countChildren();

@@ -166,6 +166,20 @@ class Page extends Model implements PageInterface
     }
 
     /**
+     * @return bool
+     */
+    public function childShouldPromptOnAddPage()
+    {
+        $behaviour = $this->getChildAddPageBehaviour();
+
+        if ($behaviour === self::ADD_PAGE_CHILD || $behaviour === self::ADD_PAGE_SIBLING) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
      * @return int
      */
     public function countChildren()
@@ -206,7 +220,11 @@ class Page extends Model implements PageInterface
     {
         $behaviour = $this->{self::ATTR_ADD_BEHAVIOUR};
 
-        if ($behaviour === self::ADD_PAGE_CHILD) {
+        if ($behaviour === self::ADD_PAGE_PROMPT && !$this->isRoot()) {
+            $behaviour = $this->getParent()->getChildAddPageBehaviour();
+        }
+
+        if ($behaviour === self::ADD_PAGE_CHILD || $behaviour === self::ADD_PAGE_PROMPT) {
             return $this;
         } else if ($behaviour === self::ADD_PAGE_SIBLING) {
             return $this->isRoot() ? $this : $this->getParent();
@@ -524,6 +542,10 @@ class Page extends Model implements PageInterface
 
         if ($behaviour === self::ADD_PAGE_CHILD || $behaviour === self::ADD_PAGE_SIBLING) {
             return false;
+        }
+
+        if (!$this->isRoot()) {
+            return $this->getParent()->childShouldPromptOnAddPage();
         }
 
         return true;

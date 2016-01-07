@@ -17,11 +17,13 @@ return [
         'relations'  => 'Relationships',
     ],
     'admin' => [
-        'heading'             => 'Admin settings',
-        'internal-name'       => 'Internal name',
-        'disable-delete'      => 'Prevent this page from being deleted?',
-        'add-behaviour'       => 'What should the \'add page\' button do on this page?',
-        'child-add-behaviour' => 'What should the \'add page\' button do on the children of this page?',
+        'heading'               => 'Admin settings',
+        'internal-name'         => 'Internal name',
+        'disable-delete'        => 'Prevent this page from being deleted?',
+        'add-behaviour'         => 'What should the \'add page\' button do on this page?',
+        'child-add-behaviour'   => 'What should the \'add page\' button do on the children of this page?',
+        'add-behaviour-heading' => 'Add page button behaviour',
+        'add-behaviour-desc'    => 'You can configure the behaviour of the add page button for this page and its children. This is useful on, for example, a blog landing page to ensure that new pages are always created as children of the landing page.'
     ],
     'advanced' => 'Advanced',
     'basic'    => 'Basic',

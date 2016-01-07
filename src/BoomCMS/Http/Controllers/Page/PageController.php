@@ -31,13 +31,15 @@ class PageController extends Controller
     {
         $this->authorize('add', $this->page);
 
-        if ($this->page->shouldPromptOnAddPage()) {
+        if (!$this->request->input('noprompt') && $this->page->shouldPromptOnAddPage()) {
             return [
-                'prompt' => view("{$this->viewPreifx}add"),
+                'prompt' => view("{$this->viewPrefix}add", [
+                    'page' => $this->page,
+                ])->render(),
             ];
         } else {
             $parent = $this->page->getAddPageParent();
-            $newPage = $this->dispatch(new CreatePage($this->auth->user(), $parent));
+            $newPage = $this->dispatch(new CreatePage(auth()->user(), $parent));
 
             Event::fire(new PageWasCreated($newPage, $this->page));
 
