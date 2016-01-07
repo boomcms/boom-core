@@ -17,6 +17,35 @@
         </label>
     <?php endif ?>
 
+    <section>
+        <h2><?= trans('boomcms::settings.admin.add-behaviour-heading') ?></h2>
+        <p><?= trans('boomcms::settings.admin.add-behaviour-desc') ?></p>
+
+        <label>
+            <p><?= trans('boomcms::settings.admin.add-behaviour') ?></p>
+
+            <select name="add_behaviour">
+                <?php foreach (Lang::get('boomcms::page.add-behaviour') as $value => $desc): ?>
+                  <option value="<?= $value ?>"<?php if ($page->getAddPageBehaviour() === $value): ?> selected<?php endif ?>>
+                    <?= $desc ?>
+                  </option>
+                <?php endforeach ?>
+            </select>
+        </label>
+
+        <label>
+            <p><?= trans('boomcms::settings.admin.child-add-behaviour') ?></p>
+
+            <select name="child_add_behaviour">
+                <?php foreach (Lang::get('boomcms::page.add-behaviour') as $value => $desc): ?>
+                  <option value="<?= $value ?>"<?php if ($page->getChildAddPageBehaviour() === $value): ?> selected<?php endif ?>>
+                    <?= $desc ?>
+                  </option>
+                <?php endforeach ?>
+            </select>
+        </label>
+    </section>
+
     <?= $button('refresh', 'reset', ['class' => 'b-button-cancel b-button-withtext']) ?>
     <?= $button('save', 'save', ['class' => 'b-button-save b-button-withtext']) ?>
 </form>

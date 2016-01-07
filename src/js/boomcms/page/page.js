@@ -11,7 +11,48 @@ function boomPage(page_id) {
 			page_id = this.id;
 
 		$.post(this.baseUrl + 'add/' + page_id, function(response) {
-			(typeof response.url !== 'undefined')? promise.resolve(response) : promise.reject(response);
+			if (response.prompt) {
+				var dialog = new boomDialog({
+					msg: response.prompt,
+					cancelButton: false,
+					closeButton: false,
+					onLoad: function() {
+						dialog.contents.on('click', 'button', function() {
+							var parentId = $(this).attr('data-parent'),
+								parent = parentId === this.id ? this : new boomPage(parentId);
+
+							if (!parentId) {
+								dialog.cancel();
+							} else {
+								parent.addWithoutPrompt()
+									.done(function(response) {
+										promise.resolve(response);
+									});
+										
+							}
+						});
+					}
+				});
+			} else if (response.url) {
+				promise.resolve(response);
+			} else {
+				promise.reject(response);
+			}
+		});
+
+		return promise;
+	};
+
+	boomPage.prototype.addWithoutPrompt = function() {
+		var promise = new $.Deferred(),
+			page_id = this.id;
+
+		$.post(this.baseUrl + 'add/' + page_id, {noprompt: 1}, function(response) {
+			if (response.url) {
+				promise.resolve(response);
+			} else {
+				promise.reject(response);
+			}
 		});
 
 		return promise;
