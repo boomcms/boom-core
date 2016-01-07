@@ -33,6 +33,58 @@ class PageTest extends AbstractModelTestCase
         $this->assertEquals(Page::ADD_PAGE_CHILD, $page->getChildAddPageBehaviour());
     }
 
+    /**
+     * The add page parent is the current page if the add page behaviour is to add a child
+     * Or it's to add a sibling but the page doesn't have a parent.
+     * 
+     */
+    public function testGetAddPageParentReturnsSelf()
+    {
+        $page = m::mock(Page::class.'[getParent]');
+
+        $page
+            ->shouldReceive('getParent')
+            ->once()
+            ->andReturn(null);
+
+        foreach ([Page::ADD_PAGE_CHILD, Page::ADD_PAGE_SIBLING] as $behaviour) {
+            $page->{Page::ATTR_ADD_BEHAVIOUR} = $behaviour;
+
+            $this->assertEquals($page, $page->getAddPageParent());
+        }
+    }
+
+    public function testGetAddPageParentReturnsItsParent()
+    {
+        $parent = new Page();
+        $page = m::mock(Page::class.'[getParent]');
+        $page->{Page::ATTR_ADD_BEHAVIOUR} = Page::ADD_SIBLING;
+
+        $page
+            ->shouldReceive('getParent')
+            ->once()
+            ->andReturn($parent);
+
+        $this->assertEquals($parent, $page->getAddPageParent());
+    }
+
+    /**
+     * getAddPageParent() should return null when the behaviour is to prompt
+     * since the parent is then determined by the user response.
+     */
+    public function testGetAddPageParentReturnsNull()
+    {
+        $values = [
+            null,
+            Page::ADD_PAGE_PROMPT,
+        ];
+
+        foreach ($values as $v) {
+            $page = new Page([Page::ATTR_ADD_BEHAVIOUR => $v]);
+            $this->assertNull($page->getAddPageParent());
+        }
+    }
+
     public function testGetChildAddPageBehaviourDefaultIsPrompt()
     {
         $page = new Page();
