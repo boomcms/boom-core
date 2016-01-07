@@ -63,8 +63,6 @@ class Templates extends Controller
         };
 
         return Response::stream($callback, 200, $headers);
-        
-        
     }
 
     public function save()
